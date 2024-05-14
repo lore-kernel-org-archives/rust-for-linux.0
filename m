@@ -1,77 +1,165 @@
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+Received: from mail-oi1-f182.google.com (mail-oi1-f182.google.com [209.85.167.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D79D12E75
-	for <rust-for-linux@vger.kernel.org>; Tue, 14 May 2024 13:02:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84F11143740;
+	Tue, 14 May 2024 13:13:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715691737; cv=none; b=TzD799iyrC6rJD3jrdo7svUdXTCEWJOh72R+kWy247uUOBzSI0nZ4WNlagqjQEyx5QSvGeFBZaiXnA0ZFnYgYhQB8nNehrxlz0j1UYf9+XtkI9BF7kLrnAX9Sfkdaw34BA1LgDsStdAvx7ONbdYLvsuVVKgi3K5RsC1feYPpXAQ=
+	t=1715692390; cv=none; b=hs6YxOOVck+la3biKYGE+XRYCnXL2+C9knwK4qyuMN1HL5875dp84keNev6TYBJCIC+UaZYtrf6NtMVq3+5QVbRXqDRJMfijz8whG4ZVfalgIO63VZnFtsJBRIuK5RwzORPFt2qrxYt8G/gPGCSh4lmkebfVQHViFekEBmbyAvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715691737; c=relaxed/simple;
-	bh=81Vs3hDatk5+oV0AULwuGRhiDaCOuBFD7ni84DWoO2Q=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Vfw88YsfC5A4KW9pM7QR7GKut4lYOREoDVWBrJQotcr6pEt2biPpjUXw8IhsHjecVoo9VoNSRal733KZpo5KMlYEjyuIO+1L+DSxGiFftfwV+OmNXkLW9ZjfaWI+XlHKGzaqB13DWoGn393RidSO9s4piDBlutCeTI0usoCbC8E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y3341O+6; arc=none smtp.client-ip=209.85.208.45
+	s=arc-20240116; t=1715692390; c=relaxed/simple;
+	bh=2lHTd9vD3VaBq8JrPEYGQii+4KayEbxjkulRHrk3MWk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rAV0c66vAyMPqKbLSanV9SbEFyVconFT7Hu8bWvrBb98bYVThFMlu5uaYw9ToqalUhQXhMWG/BxikCalJZD6ybByICY/leLPhNYp7Jq6LWoLaetLL1Q4iYrAVm2A2KRKD3Tn7I1I1nUxzfQvPRzIbyV7YdPCR22RloGvbC/g9x8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LtDHnUEv; arc=none smtp.client-ip=209.85.167.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y3341O+6"
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-56e6affdd21so25383a12.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 14 May 2024 06:02:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LtDHnUEv"
+Received: by mail-oi1-f182.google.com with SMTP id 5614622812f47-3c999d53e04so2462342b6e.2;
+        Tue, 14 May 2024 06:13:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1715691734; x=1716296534; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=81Vs3hDatk5+oV0AULwuGRhiDaCOuBFD7ni84DWoO2Q=;
-        b=Y3341O+6WxA7456kmv66CT7izZSg7hqjqG1RK4ZU7MKv1DABJaqJ2iIgadefAX6DqN
-         bRMNBZofvNKAdJD3t0tSyoPucpM56loMlOSABK+8+FpU6yVSyQuzNcXZNbnKV41DlVdT
-         HYPpSkeN0uzw6MKRi00jvSSpj1M2Os/RNnciyLsyPlsYcMgj2M4lFSUfJUyyRBM5KNDN
-         ydOgvobO5dt8LUB6+kSZH+AV0byJ/XMfPcilm03ysgxYXpV4Evitv/7Q6dKiLIZ3zn/U
-         OD9sPZU6JBNT8MfSKVCWpH83EBU6O7lLc1aKiAQQTPGgdy5qUGl/x2VzE1B4gKcDZpun
-         FRDg==
+        d=gmail.com; s=20230601; t=1715692388; x=1716297188; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=aun1f18+4H8YVvMFiItfXiXA+SpbSD5X4Dn6XNELRpk=;
+        b=LtDHnUEvawTvQ9gHc53BkpB99aoyQAL3yGmMl7pAaU1F0JlEJPPaK+clG/Qd0aM1k7
+         rG/q/YhDi/jAyQUYmGMUCtTLiCreP0aGFBkd2zogwbMxUFdox5/9o55j0kdou5FD9/JG
+         7C+dfbI4O4VETLJsyqXrkgpoaKfnKaRp/SomI3ieRPzNwQQuKIgLr06PPI6p805tIfia
+         dnixFos01VL8azYHXEQiiGV3OT5Ia+5HlkqqvfHfHVfAYI3E+R67ZWArT70Yw0JeZsDd
+         +8TaXjHJIYWmfg56noA0e02DVIEs5VSR0iCuhbGOTyvrATKfhvjuswJjLum+wL1w0/xx
+         9y5Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715691734; x=1716296534;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20230601; t=1715692388; x=1716297188;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=81Vs3hDatk5+oV0AULwuGRhiDaCOuBFD7ni84DWoO2Q=;
-        b=ksGZzb8KcBPTYebNaSdfcSghlMdrazY+1M3I3LXcx9tmnV3iXhGaB3QFsS3n+k/2nO
-         8SD9UvvMQ7iBCFGXxIpTPlVx7NDaWEdbaQovGWH3Eq6U0LaQEMyM8xTupHPANjBHT41Q
-         Oqx71GAR/PQdoBpMezxBabUVstNrnCAiKTME4fAHfkFbEfqfgZUPOtRAPe+9NZRdu7y7
-         BQHnPoLUzPFkU9RavUJN4nF7U/Au5HghA4jWqn4UR2vB05S+nPJPqsi3TOOcSX735+xX
-         +j9DTr9k0E8C5Usr/uNf5+x5I5IZjqDLcNabe17CV9l1DzhbAIwFrCC5I9PLC4NmOM6m
-         I9/A==
-X-Forwarded-Encrypted: i=1; AJvYcCU6ZvQUrJTd+Ihe5B4nuhbgK3fxNqbfMIjGGbX6s+LTLHiOiQHV5YIT9VSPF0JLkGwkMU45tTAqQLLdTAjUJ+1/WQ9ioBI2trLMzd5f1yo=
-X-Gm-Message-State: AOJu0Yz5F86+IEPe/VYIcRytGVoM838eHsKbGUTVu7HFraVgXP65fhVY
-	FpUE2nSj3fFSgKf4iG0UcqG0CKemMKBBTLXf+XZoR0hg/sDtvQ6CCFMi7+gFsoJn7/FrqWRmsS0
-	t8/oiRu9XzYRQTfFnTnfTRKBl5Uo=
-X-Google-Smtp-Source: AGHT+IH6dm0KtY6AOXsBR8+CKLrncTjvsxXqGpDBlOK9nLz374DTBfAaYF/RKuf+ezQBiaU/EJeka1R58wiMkaM5J60=
-X-Received: by 2002:a50:999d:0:b0:574:ec65:9934 with SMTP id
- 4fb4d7f45d1cf-574ec65996dmr371051a12.24.1715691734261; Tue, 14 May 2024
- 06:02:14 -0700 (PDT)
+        bh=aun1f18+4H8YVvMFiItfXiXA+SpbSD5X4Dn6XNELRpk=;
+        b=Rcuh0OKqzBfecHwsLFNY/fG4GlRYE0z9bxGCeL0ZL33cSfz/JexbQwhwo+Z7CUk1Bv
+         H2lNEEia9lVCrhb+xOYaDAkpaojQkvyfyU57PzJXj0xae58eG41HyOywrbwxoNBD4Ncd
+         /0W4TINug6Ioq/sc85G+C9AOUXC31bm6RwJAQY+9dLRQvV4srw9jlvqXN3pnqjwA7XMp
+         A2gOHqecOEz5Dm1w+WRExitbJa8Rgkc+jIy+U1P5ElgA16eUnXXXwjmylM8372FnHh9T
+         /5KlPWRR8tOiIXCzmq5r7bRCiJMRaWe/+uIjAwYXPEPx3+LzKeQlwhr9lBtkcSHcHjGU
+         S4ig==
+X-Forwarded-Encrypted: i=1; AJvYcCWuUNMJosKkQrM+OC1Eu67pBzuVb4XlWux8PhSnBke6Ofd13rOr3xLoDpG/XgAm2Oa7lVElAlBZdyP/giwBWYFjswR05V8oRNlleafqKYT+aKH8JJ0KXHCDXYirA3YRw/uewue3PvJw68mESi8=
+X-Gm-Message-State: AOJu0YxBtitkM7vPM3PwhCCD196622AU1j4ByccAlZFAMEATLTHzujyk
+	u8NN9n4xqD7S1mx/VFkHJ1AYMq98J2LiUx9c/nmh53SBk3L3WvJt
+X-Google-Smtp-Source: AGHT+IF15FNrz0c/YsAcF06c7l9yWKhemZCZaq1+dTj53wOeDjDUvnmNbB+f+xaDjqjDDDJoEZXahw==
+X-Received: by 2002:a54:4702:0:b0:3c9:9567:e5bd with SMTP id 5614622812f47-3c9970ca982mr13658803b6e.54.1715692387116;
+        Tue, 14 May 2024 06:13:07 -0700 (PDT)
+Received: from fauth2-smtp.messagingengine.com (fauth2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-792bf27f625sm561460185a.33.2024.05.14.06.13.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 14 May 2024 06:13:06 -0700 (PDT)
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
+	by mailfauth.nyi.internal (Postfix) with ESMTP id 241F31200066;
+	Tue, 14 May 2024 09:13:06 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute2.internal (MEProxy); Tue, 14 May 2024 09:13:06 -0400
+X-ME-Sender: <xms:YWNDZuiMqNkaiks8U3N61vFl_qq6LfRH2wKzQ0bftso4ZGmDXhQyiQ>
+    <xme:YWNDZvCKMnkSd42lbbDE9yI1Bra6kqYQCD29mTlEOVbTaJVVj4Vo4lFOJJXRan5i1
+    cJFnHZmoedeks40NA>
+X-ME-Received: <xmr:YWNDZmEg-S9JBDv1u6SIRhGRzWEt777fqVTNaDv5a4ROA9KrI31E6OTGFVwHXA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrvdegiedgieduucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggugfgjsehtkeertddttdejnecuhfhrohhmpeeuohhq
+    uhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrf
+    grthhtvghrnhepgeekgeettdelffekfedtveelueeiudevjeegieekvdegkedufeetfeei
+    iedvueelnecuffhomhgrihhnpehgihhthhhusgdrtghomhenucevlhhushhtvghrufhiii
+    gvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhht
+    hhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquh
+    hnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvg
+X-ME-Proxy: <xmx:YWNDZnRbeXzQTVFS-8rlP951nqZ441rnFEu49vDRV2BBFzzL_jBPhg>
+    <xmx:YWNDZrzsCSsGm4KOB1fbmgykRDilC9jwZYGL1qqTrw8qv5x4Rh2Qww>
+    <xmx:YWNDZl5QIQRzovoG61DRbawlONVeNTNjFmTrpaus4gCrzl4DiK8hEw>
+    <xmx:YWNDZow9qb3YLxZ3Z9W-S9rTQtkIUC-Re9Bzc_A27CUe7Gs9IJIh9A>
+    <xmx:YmNDZnjJG_xY24h3SYKGk9vThvtAVqoAVaNlKq8fbR9C0FyT2FzU8WJe>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 14 May 2024 09:13:05 -0400 (EDT)
+Date: Tue, 14 May 2024 06:12:53 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>, Miguel Ojeda <ojeda@kernel.org>,
+	John Stultz <jstultz@google.com>, Stephen Boyd <sboyd@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Gary Guo <gary@garyguo.net>, bjorn3_gh@protonmail.com,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Kees Cook <keescook@chromium.org>,
+	Mara Bos <m-ou.se@m-ou.se>, Amanieu d'Antras <amanieu@gmail.com>
+Subject: Re: [PATCH 2/2] rust: time: Use wrapping_sub() for Ktime::sub()
+Message-ID: <ZkNjVbqR6gYqg4YZ@boqun-archlinux>
+References: <Zigj-lY5lnBSKuib@boqun-archlinux>
+ <87cypvnpwn.ffs@tglx>
+ <CANiq72nGHhgRjfMOhz=ss51q2egHYexPMVvWTr0RES9WAmMF=A@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240414180929.79033-1-sergio.collado@gmail.com>
- <ea4a1a66-b584-48f3-8453-370d9ffb1f2d@redhat.com> <bf76a42e-715d-46ba-8609-3dc3d804653e@redhat.com>
-In-Reply-To: <bf76a42e-715d-46ba-8609-3dc3d804653e@redhat.com>
-From: =?UTF-8?Q?Sergio_Gonz=C3=A1lez_Collado?= <sergio.collado@gmail.com>
-Date: Tue, 14 May 2024 15:01:37 +0200
-Message-ID: <CAA76j90+FfXv+30a1=7p_UWOpD0FzewMGv8L6rhSrw6FCEq_Nw@mail.gmail.com>
-Subject: Re: [PATCH] Add room for insn-enconding and symbol name
-To: Danilo Krummrich <dakr@redhat.com>
-Cc: Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, "H . Peter Anvin" <hpa@zytor.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, David Rheinsberg <david@readahead.eu>, 
-	John Baublitz <john.m.baublitz@gmail.com>, x86@kernel.org, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72nGHhgRjfMOhz=ss51q2egHYexPMVvWTr0RES9WAmMF=A@mail.gmail.com>
 
-I don't have any news on my side.
+On Mon, May 13, 2024 at 05:04:43PM +0200, Miguel Ojeda wrote:
+> On Thu, May 9, 2024 at 2:14 PM Thomas Gleixner <tglx@linutronix.de> wrote:
+> >
+> > In principle ktime_sub() should not overflow for regular use cases.
+> >
+> > If the binder example overflows the substraction, then something is
+> > seriously wrong. Though in that case as it's only for debug purposes
+> > panicing would be totally counter productive. A warning might be
+> > appropriate though.
+> 
+> Thanks for the clarification Thomas.
+> 
+> Alice and I pinged about this in the RustNL Unconf, i.e. about having
+> a way to customize what happens on integer overflow (and, in general,
+> other panics too), which I had in:
+> 
+>     https://github.com/Rust-for-Linux/linux/issues/354
+> 
+> e.g. like UBSan that allows a "report and continue" option.
+> 
+> We chatted with Mara and Amanieu, who were receptive. In particular,
+> Mara posted right away:
+> 
+>     https://github.com/rust-lang/rfcs/pull/3632
+> 
+> as a possible first step to eventually have that ability, mentioning
+> Rust for Linux as a user.
+> 
+> If we get the ability to customize those, then this could simply be a
+> normal arithmetic operation, i.e. like any other. That is, considered
+> to be a bug if it overflows.
+> 
+
+That is nice to have, thank you guys!
+
+> Meanwhile, one alternative is going with Boqun's approach, but I would
+> just use the standard operator (i.e. what we do elsewhere) and try to
+> get the customization happen as soon as possible since we will need it
+> for everything else (plus we avoid to make the code uglier with
+> changes that we will need to revert anyway; and it also allows us to
+> easily test any new customization feature from the compiler/library).
+> 
+
+However, I must point out that it needs more than a customized panic
+handler to work: we also need to change the code generation (or adding
+a different flag similar to -Coverflow-checks), because the current code
+generation is Rust panic when overflow happens, which means the
+subsequent code is unreachable.
+
+Regards,
+Boqun
+
+> Cheers,
+> Miguel
