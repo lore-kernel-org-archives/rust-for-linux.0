@@ -1,139 +1,100 @@
-Received: from wfout7-smtp.messagingengine.com (wfout7-smtp.messagingengine.com [64.147.123.150])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vs1-f49.google.com (mail-vs1-f49.google.com [209.85.217.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 153D342061;
-	Wed, 15 May 2024 07:34:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=64.147.123.150
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C98F5A0E0
+	for <rust-for-linux@vger.kernel.org>; Wed, 15 May 2024 09:47:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715758498; cv=none; b=l5l02ae6uBLiiGSuqedtNsds/njp/KhNDoK49XI9t54JT72p7+gQmRYEBmf78Qr4ji8XCzqX7ShtUar2qJ8nkZIL9Nq+2q/bpz4eEaj0GKh7TWKCuySFsiX5LxhN06CQxN1cAruer833rXuIIYkylLy4LrteNBUoH7sHd5BX7mw=
+	t=1715766435; cv=none; b=BgrqHsYm2stmc0iJFUxfLNzd3asiD/YRGPolp7gm/OHxqyn7KqaP7gpd/5KSuqkiQeODB1qYOEacwgnGR5/G72IoMOG2GbOMDGGrGtviFwGM+FLiXtYLZiVd2ppbe0o8rclCD4m2PeILw7EjZ52DzAuKvXSCFzfd/AEBPhFcfVw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715758498; c=relaxed/simple;
-	bh=o0K8SOZhFFx3AbDud2mrFyHDdGrcVFTLMD9MdfObI+0=;
-	h=MIME-Version:Message-Id:In-Reply-To:References:Date:From:To:Cc:
-	 Subject:Content-Type; b=T1gtPYyMWuNmwoPeuEV2b98s2GeOonp/ShQIUc2u7FNP49cB5wh8RzlzXo3eXHIob5nMBDUPqG9dzjwI7dhLw2Tb963e6bHUhn9zlVGvCdmZrYD6cjejcwqeqI5RLvqEYG/Xnsz1IDgt7jQB4FGRAfqYfhlYfy6J1yDmlL+Ndqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de; spf=pass smtp.mailfrom=arndb.de; dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b=fBh8nkRi; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=AsX96VWV; arc=none smtp.client-ip=64.147.123.150
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arndb.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arndb.de
+	s=arc-20240116; t=1715766435; c=relaxed/simple;
+	bh=3/tM/ZF6be42GO69o3PShY/4v9/iUGx+l+jSEb5jbSo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=aft6z94B8nXqO/KzVBex2KzMoAZ/j8sz0+UCD5AXQVZyaUAdFBa0SO+Iy3MUZAOIa57r+G6KiL2WF0KzZWL9NWOXDoFzCbg1YDiFM7whwdawoSWnYpkMeFqmkz9Zlvgd/xVMeQvFWt2DjbF6MJ2FmCt1dvMs0ApSrP1Q/pP125c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TL0N8/NN; arc=none smtp.client-ip=209.85.217.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=arndb.de header.i=@arndb.de header.b="fBh8nkRi";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="AsX96VWV"
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailfout.west.internal (Postfix) with ESMTP id 664B51C000EC;
-	Wed, 15 May 2024 03:34:53 -0400 (EDT)
-Received: from imap51 ([10.202.2.101])
-  by compute5.internal (MEProxy); Wed, 15 May 2024 03:34:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=arndb.de; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm3; t=1715758493; x=1715844893; bh=vYBANP9AhE
-	/d4SYDAtFqOYHR51zF89WgGBJY4yYfEbU=; b=fBh8nkRioN2mg4e68WVi/3USgv
-	+hXgKI9+wvlzhnDN/BsJAkWcdpd4vm8XxJ1ytSeV9eA5dJPGsYAHiwAWKBkiqI0o
-	Z/nnMXdhVsQeu31HeBjkvfsw4y90IS20zEd1XXS6LklsF5IhWirTXBibO9GGpTgO
-	OosXcJG1YXO9uhW/OiIwAwyLnwrbLzE+TxQA/ilRj2/eS/eK/TQ0iElSpEJfQx5Y
-	1kprX8MUZlkdQcPwZoG5tK67SyZ11d0Y+W+D3vzDK86aTsXACzwjRQBt6v2o8OKh
-	r0lyugNyjYdec86oSIv5CyPIKMxBXWEstiyFwNtQAKa/87HigMWHWSmotCrQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm3; t=1715758493; x=1715844893; bh=vYBANP9AhE/d4SYDAtFqOYHR51zF
-	89WgGBJY4yYfEbU=; b=AsX96VWVBUDft5ySkos/jCnMBF+Jq5h6nP2QvMhrDCL/
-	J27ZPMy9V8syoXKAfZN3bHQuKnpvYsBH7BfF81NGWq6bzD2/y+tM+zLjaZk8qh1K
-	78uckXnN7U6hMCOAMlC+rL3VxX2ikeqlmpUZx3hw1zRAu8toxyTAjgCZsfvc3SY/
-	BnfGNNpX17ggOEbdYUm5gmpyq703jVGoQPvs6QVDKKZFzr/NLZkUWWnC0k7lW4g7
-	9idkhMwYDmCMjSuLxKXqlkx8UaEsCUmC72B2YKc0wsUAnmYwGrq/G8Du5vrHHLuF
-	f4fV/bfY4HWal34oyDp92MK43avjyJTOfqfo3GId1w==
-X-ME-Sender: <xms:nGVEZrTWXeO-r8Q2ZkDMO7k0wgBnmpFJZfBVoLPZoN4K5RgUU9bF-Q>
-    <xme:nGVEZsw-wGtDI211XsS1nUc5k_52Ue7M9J3DuiTYGDWaZD_aJJTbfVPIm1zFmGZ--
-    egzIGyEPXDnfyvkTAg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrvdegjedguddujecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpefofgggkfgjfhffhffvvefutgesthdtredtreertdenucfhrhhomhepfdet
-    rhhnugcuuegvrhhgmhgrnhhnfdcuoegrrhhnugesrghrnhgusgdruggvqeenucggtffrrg
-    htthgvrhhnpeffheeugeetiefhgeethfejgfdtuefggeejleehjeeutefhfeeggefhkedt
-    keetffenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
-    grrhhnugesrghrnhgusgdruggv
-X-ME-Proxy: <xmx:nGVEZg1dtlyn73t6SSZDCWleJ4f6fVHqNX91Oh4wgX-ZF2ZFc67Cnw>
-    <xmx:nGVEZrC4HqRqXaolYHiHL0fI16fXbFBLc-0kAJaKf34bECT17kXqmw>
-    <xmx:nGVEZkiHhpkzRvcSRDMRhoZ111s-M0KagK3KST73zwXZeDYopa2EBQ>
-    <xmx:nGVEZvrlGOP-h5H9ccuKDmycdu6Mh7YZOUX7FBImidU7sEv-K9wGTg>
-    <xmx:nWVEZrTJGabmz0WlGvhGr4yxxbHT4SGICnzcZ4SHDhWNLtrMqiCUSkAv>
-Feedback-ID: i56a14606:Fastmail
-Received: by mailuser.nyi.internal (Postfix, from userid 501)
-	id E9B46B6008D; Wed, 15 May 2024 03:34:51 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
-User-Agent: Cyrus-JMAP/3.11.0-alpha0-455-g0aad06e44-fm-20240509.001-g0aad06e4
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TL0N8/NN"
+Received: by mail-vs1-f49.google.com with SMTP id ada2fe7eead31-47eff9b3c23so2118818137.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 15 May 2024 02:47:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1715766433; x=1716371233; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3/tM/ZF6be42GO69o3PShY/4v9/iUGx+l+jSEb5jbSo=;
+        b=TL0N8/NNqPfnb15ADeGRfQNDPz0y4AMq5Lunjv2fVniS0Jj/VZvfSDIa9zdqTaRa8B
+         if8GmgTl6+qrC9MlYX0BpAgbsC5m1IL6+xduxYsUkvbcyHV8QTeetC2Kls6BNntXdeog
+         zyQCRi0qss9xGMVn0jPdC0UAi6+ohTk4idE/a6KRghCKWCdhknvhCZP4vqTT9iVN/Ogd
+         CKmJ4njM23rXfPp0VFDh8v1rAo/73uCPCuWqVTNdJn4mc5DVeyqXLsFrsoCPhul9nzbC
+         yr1u38uvdarB496LsxERuLJx0mSTLULAfRD19tGvdl6+Vt2JYRcAPxk8bVDhooPx3kpa
+         yUqQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1715766433; x=1716371233;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=3/tM/ZF6be42GO69o3PShY/4v9/iUGx+l+jSEb5jbSo=;
+        b=BP7IQera50uA79yqL/npZTn99be/LsoABMpy3tixCPYQlUpzg+82bgi/SdW0wyV7Px
+         U//sYvuAz1pi7iyEyBxKhak4AVY+iK1st+48QS8oUcttAgRg39QZ8uOX0uwkaO8su8u6
+         0K+gGoImTEjGxHERAd2tit/Oce1ZxadXtfejIurJaLhhwqH1P8gVRjFeUgrrjGUhhKX6
+         j0hvFBlWyq3wf5yr4PgPJO9FLZkSL8OUAskcRAWh5pAIMrN0jNZqNpANEbPc3+fNxDgi
+         F85gc8drfAvkTWdISj6y2m2k7kEF90wy1QLkavX+lPx6HeTivCb4rSoFhT2aNodToqcp
+         5Jrw==
+X-Forwarded-Encrypted: i=1; AJvYcCX+b/UUtW66wm/arv87N0BxQBWDgNQYhAX58QaaEtNiDqAWE49BIHk3cUcYI2FRkj35S5Ysba9qMlY2xQWfOyccYBjNpv7y3rWMmiqGxLc=
+X-Gm-Message-State: AOJu0YzmoWTQTb/f2dmpBqdMZaKm2Kqu+XFBBfNJ541d9cxsZKBpJHuo
+	1+fJuQpXxnKMq/ql4asGEF5yWov8SBOCcvXxR76JjqkZ7nYquZBxHPgLZnSHhJMMZTcKG84Pxx8
+	sy3ArcY0VpKbAR0p1jnaZjZLHfkCkRK6MXO5p12k29Ng1vJDdsA==
+X-Google-Smtp-Source: AGHT+IE2Fab+kONhounuKNSFJaecaR5izar5a60/lJv1XkiipyShJzYgwdCrIBvqcX5cYD8l2jRN2y0zFCpOg4cphYs=
+X-Received: by 2002:a05:6102:3051:b0:47e:fe45:eb32 with SMTP id
+ ada2fe7eead31-48077e79174mr14390185137.25.1715766432963; Wed, 15 May 2024
+ 02:47:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Message-Id: <ace5ac5c-88d2-43be-9236-11d3913886b9@app.fastmail.com>
-In-Reply-To: <20240514102757.b7034966a58e6cf44d75dc7d@linux-foundation.org>
-References: <20240418-alice-mm-v6-0-cb8f3e5d688f@google.com>
- <20240418-alice-mm-v6-2-cb8f3e5d688f@google.com>
- <20240514102757.b7034966a58e6cf44d75dc7d@linux-foundation.org>
-Date: Wed, 15 May 2024 07:34:31 +0000
-From: "Arnd Bergmann" <arnd@arndb.de>
-To: "Andrew Morton" <akpm@linux-foundation.org>,
- "Alice Ryhl" <aliceryhl@google.com>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Matthew Wilcox" <willy@infradead.org>,
- "Alexander Viro" <viro@zeniv.linux.org.uk>,
- "Kees Cook" <keescook@chromium.org>, "Alex Gaynor" <alex.gaynor@gmail.com>,
- "Wedson Almeida Filho" <wedsonaf@gmail.com>,
- "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- "Benno Lossin" <benno.lossin@proton.me>,
- "Andreas Hindborg" <a.hindborg@samsung.com>,
- "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
- =?UTF-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
- "Todd Kjos" <tkjos@android.com>, "Martijn Coenen" <maco@android.com>,
- "Joel Fernandes" <joel@joelfernandes.org>,
- "Carlos Llamas" <cmllamas@google.com>,
- "Suren Baghdasaryan" <surenb@google.com>, "Trevor Gross" <tmgross@umich.edu>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, "Christian Brauner" <brauner@kernel.org>
-Subject: Re: [PATCH v6 2/4] uaccess: always export _copy_[from|to]_user with
- CONFIG_RUST
-Content-Type: text/plain
+References: <20240425213419.3904105-1-benno.lossin@proton.me>
+ <20240425213419.3904105-2-benno.lossin@proton.me> <CAH5fLggj_MT=njdieD9BX_gV+4A02m0+zMyzPTJ9DR6hSkQhEg@mail.gmail.com>
+ <1fa87967-079f-4ff8-9946-81a571eb09bf@proton.me>
+In-Reply-To: <1fa87967-079f-4ff8-9946-81a571eb09bf@proton.me>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Wed, 15 May 2024 11:47:02 +0200
+Message-ID: <CAH5fLgjXmc_+1Zx_VyMMStTFixPnGJcJkKheOunZ-1ScHYBUiA@mail.gmail.com>
+Subject: Re: [PATCH 2/2] rust: init: add re-initialization functions
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-
-
-On Tue, May 14, 2024, at 17:27, Andrew Morton wrote:
-> On Thu, 18 Apr 2024 08:59:18 +0000 Alice Ryhl <aliceryhl@google.com> wrote:
+On Sat, May 4, 2024 at 5:45=E2=80=AFPM Benno Lossin <benno.lossin@proton.me=
+> wrote:
 >
->> From: Arnd Bergmann <arnd@arndb.de>
->> 
->> Rust code needs to be able to access _copy_from_user and _copy_to_user
->> so that it can skip the check_copy_size check in cases where the length
->> is known at compile-time, mirroring the logic for when C code will skip
->> check_copy_size. To do this, we ensure that exported versions of these
->> methods are available when CONFIG_RUST is enabled.
->> 
->> Alice has verified that this patch passes the CONFIG_TEST_USER_COPY test
->> on x86 using the Android cuttlefish emulator.
->> 
->>  ...
->>
->> -#ifdef INLINE_COPY_TO_USER
->>  static inline __must_check unsigned long
->> -_copy_to_user(void __user *to, const void *from, unsigned long n)
->> +_inline_copy_to_user(void __user *to, const void *from, unsigned long n)
->>  {
+> On 03.05.24 13:34, Alice Ryhl wrote:
+> > On Thu, Apr 25, 2024 at 11:34=E2=80=AFPM Benno Lossin <benno.lossin@pro=
+ton.me> wrote:
+> >>
+> >> Sometimes it is necessary to split allocation and initialization into
+> >> two steps. One such situation is when reusing existing allocations
+> >> obtained via `Box::drop_contents`. See [1] for an example.
+> >> In order to support this use case add `re_[pin_]init` functions to the
+> >> pin-init API. These functions operate on already allocated smart
+> >> pointers that contain `MaybeUninit<T>`.
+> >>
+> >> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
+> >> Link: https://lore.kernel.org/rust-for-linux/f026532f-8594-4f18-9aa5-5=
+7ad3f5bc592@proton.me/ [1]
+> >
+> > I'm not a big fan of the name. Perhaps we can use a name similar to
+> > `Box::write`?
 >
-> I think it would be helpful to have some comments in here describing
-> why we're doing this _inline_* thing.  What problem is it avoiding?
+> Sure, what would be your suggestion? I can only think of `write_pinned`,
+> but no idea what to do for `impl Init<T>`...
 
-How about
-
-/*
- * Architectures that #define INLINE_COPY_TO_USER use this function
- * directly in the normal copy_to_user(), the other ones go through
- * an extern _copy_to_user(), which expands the same code here.
- * Rust code always uses the extern definition.
- */
-
-       Arnd
+write_init and write_pin_init?
