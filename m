@@ -1,112 +1,225 @@
-Received: from mail-vk1-f182.google.com (mail-vk1-f182.google.com [209.85.221.182])
+Received: from mail-lj1-f202.google.com (mail-lj1-f202.google.com [209.85.208.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC41079FE
-	for <rust-for-linux@vger.kernel.org>; Fri, 17 May 2024 08:37:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2253428DA4
+	for <rust-for-linux@vger.kernel.org>; Fri, 17 May 2024 09:31:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1715935069; cv=none; b=bJBLN1wp8uvEVBtuRGk7PbBqCX6Z9MUNjJmNZsv/g0TFyn5APOMiZA5hM6o10o3+PymQ8yjseO8gZhtlDVkVAWN/VFdolFfqssI/i7uHsBCxVua72BZ9fZlDgRnSFCU5CQAc3DFcVB1N68u3crxJd1OHe4IOFpL5t+XbcVp5408=
+	t=1715938287; cv=none; b=OJB62cdvEucONxv4gtmevU0MJrVrWhsKuNeXNjtC2kxyZ1zOMuoLkuebZm/BggqnqEVIIDVR45qX/UwZFNZSamdSihETdm9AGS3NBELfT1Gme7tZF9l+ckIefr4DuI3xgYB97JdGMlUF9dwfcs+BKz3VV8Gl5k5PRUREInG2R8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1715935069; c=relaxed/simple;
-	bh=oZaYfIg1b5PeNakYmZDSai/ytacaCteV8o/JUE4aplk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rKw2og68C7V1JyPVFH8adLby+F4OwLgIxdlzyrurNrdj7VGVG4KuRLoZljXO05Ur4ozFnvkH9EOT9GL7AIBr2U1BdJ9WWYhaeIp0fH6yT6RRXVnXnBJ6XSdrpMpD50O9f9K9Gqe/56+qtp2s7O843Xvqbn5Ayfr6JMCQa/BJJ3g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PjNWKdOc; arc=none smtp.client-ip=209.85.221.182
+	s=arc-20240116; t=1715938287; c=relaxed/simple;
+	bh=hSK+knjcsqKhhCAnnycqnUg4XBMIyHFVkdVU8n8ahvQ=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=S6nlIFYX7UjVRXSvPjbl4Pa4T0HeK+9M06dclkeh7lFgLG3KInrldaAUU+cKB8ZOdFJ3OYJNYGxlXQlo07SjqCEhmsiyBGmqm+MNOXDuedVa1azHf5VrWgi45jXrFtew68LquH1CpGKY0DNQSXQxyg5zKO5dvQ7gSwICK/cHyGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RYClSJWU; arc=none smtp.client-ip=209.85.208.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PjNWKdOc"
-Received: by mail-vk1-f182.google.com with SMTP id 71dfb90a1353d-4df97a50d1aso176765e0c.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 17 May 2024 01:37:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RYClSJWU"
+Received: by mail-lj1-f202.google.com with SMTP id 38308e7fff4ca-2e3003fae2dso60963181fa.3
+        for <rust-for-linux@vger.kernel.org>; Fri, 17 May 2024 02:31:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1715935066; x=1716539866; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=oZaYfIg1b5PeNakYmZDSai/ytacaCteV8o/JUE4aplk=;
-        b=PjNWKdOc+jiPLw/cLjb6GqM+aByQsl/n2bQMebvgP7vLp1kcOEjpbhRKabUToMk6pn
-         6sJyoQ3tKHmgFJG/7QNkiOIgAMCtsszcmWyQzvmdcx+05a8Xaj3yrDN3nSxJgM423Ojd
-         0+JrixuRY3Y+oghgZKXfjleKAFut+DjTXH56juerziV6ymGMRQeeh/sJqCxk+i7UQtZE
-         Yt+WqCR4oXViBIfqwDxjcB58TU4otian04w3VrsoNruPs0M1odploz2MDM7m7CQKAgCt
-         CcqI3Eo5inWNoj60NynfjBmpliEc1B6IuByIb4X4hK3xI4lmBsWKrjthZaOiX+43ReZb
-         +T7w==
+        d=google.com; s=20230601; t=1715938284; x=1716543084; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=2/To727/n+aLzSDrbT0W4j64hJKiEwlroEI7/qAwsAE=;
+        b=RYClSJWUeut/vFFp2yLl0+OsY7OTiDNY10/QGSVgmXtsTz8XCZl6k/vB8bNImdKSsK
+         INV8ZQtl4Xs5k3FGv/uannuhPaKum5KtA1/qg68ITqGBgYHQf6qYT/8POP2/5xdOgIUh
+         fIu1L2yAJgccaRQuVK/D1TNvBQfo6N7nTlzI2JZtdoWRulsKUv0OYCS7GM9STHhMLXuF
+         mPuevRbF7TPEDQ7VrdW4LC+Kaxl2Gw+TyoJsgGD36WAdZ5u0fdXGjIOip4uEO9QVlgvi
+         pE6thaggtwdIyW3gP9/t84Tjifm7eBajcccSLwpNWlGF/Y0Bay1T7yhy2eKGrFEK2qa/
+         5SPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1715935066; x=1716539866;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=oZaYfIg1b5PeNakYmZDSai/ytacaCteV8o/JUE4aplk=;
-        b=TN+YTBZGF96v9hjYicwMuZD+hWexsSP8zPVjZuD6ap6P/Ohjkkqr2UqH76guf2/O7M
-         JDnazB7QeljOhDbELnmmAiZXeTni13EZ1pwUlN60YXEaV95YsfaJYBf7f2ByYSGs7oYY
-         L8ThahEhFBp24t7ZOGEXZ+0gedVdn4vxDm52tqmSHJdnl9VLaAarGy396XlAjI83KPWt
-         wtr+TSzrWBqkhFkDYOR9bKFzu+HQH+RvDV2QrpgN2U5FAHXtiMoOJAbVs6hPzbkK7Ifp
-         2TpbIJJtpeZ8phrt1xHv4c+EXNRizLizt5QV1vjrdZZmvwBCMpEoVF6L9w5ZdWZwqgnA
-         uEag==
-X-Gm-Message-State: AOJu0Yw1b49wkQ1xZbQYmRHChLZfe5LneRfAsNKekArVKZTbi4ILas0A
-	SGLvboiKXbd2VCgBueqz+Q7ifTtkXMYK5r2Z/YifG32iA/1wmdnLHGe6QFXc1KppruzHWi7xWgS
-	gp8NKEPhYOn0q6v2q5ag5sHmgBphQ1XwZ8D4R
-X-Google-Smtp-Source: AGHT+IFL4GJ3IW86f4TdAqBso4sQrEZT9ST0LY2/Kk3ESEsh091gdbRchgGrqHSDTOg0AXet+59cHAjpLBjAdY3+y0Y=
-X-Received: by 2002:a05:6122:17a0:b0:4db:223b:1c0a with SMTP id
- 71dfb90a1353d-4df8834b107mr18839185e0c.11.1715935066358; Fri, 17 May 2024
- 01:37:46 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1715938284; x=1716543084;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=2/To727/n+aLzSDrbT0W4j64hJKiEwlroEI7/qAwsAE=;
+        b=tnfD0mfapdSnvKt4ERx2BWOBKRAwW9sTrewLrqhn5pu0h7OAJ04BZjyHSyflCBse0+
+         lxdYSgyh8dNnyrf8wkTa+YscQd14x0iLmEQUiE3sIDxkinDm7JC/hIJXsUO0ODtp15ak
+         FdEXHw77GxondaeGC3ovEFRwNVFb20QmTIlYfARBnWJr2nmqBeg8CED2cGUjPeU1XQTe
+         AUZLnyrH6zbmHZ1v8priidq1fjeNi2tZE4z+zBrnPYwVe15osMdi4Q9edAL8VnY2+gel
+         Qeaw5K5+J2U8uWkGmfG3ufi2kC+YBromG6UhUMAC93lKC4IGmJ8VyRlAw1d9dRQVhAKB
+         1h9g==
+X-Forwarded-Encrypted: i=1; AJvYcCWGlCerh8Ta5mtZFqnGq5jKJTbzuDLUCj4YMIImolgeX0jTQRR28s9VQGHhFd3ZSBPblaHfdakC2+aCVoqgQVaPgxl1sPUo0lyRxs8PArc=
+X-Gm-Message-State: AOJu0Yz+6IpNbwsWXlG7UtZ+6GS8D1oEKuE41X6UMRa5+tdfkWXUlTMo
+	Hm+QRjNTXtcaYYS1Fbm8FLCE38mOFOaHdYj8UHKAhHmkAdHt4Z0KylwLVC4ecizRqMCWZvSAaIn
+	tSvG8YLCXOhr2Zw==
+X-Google-Smtp-Source: AGHT+IHNdDEZjFcycPEFWtxfyl965wyqycW7lOOcmPg0I5NmYgekQ7z0KPgz7ULB52CqKndexAklv77dUDBU0VE=
+X-Received: from aliceryhl2.c.googlers.com ([fda3:e722:ac3:cc00:68:949d:c0a8:572])
+ (user=aliceryhl job=sendgmr) by 2002:a05:651c:19a9:b0:2e5:67a7:dda5 with SMTP
+ id 38308e7fff4ca-2e567a7dfa6mr193011fa.8.1715938284225; Fri, 17 May 2024
+ 02:31:24 -0700 (PDT)
+Date: Fri, 17 May 2024 09:30:33 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240516190345.957477-1-amiculas@cisco.com> <20240516190345.957477-19-amiculas@cisco.com>
-In-Reply-To: <20240516190345.957477-19-amiculas@cisco.com>
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIALojR2YC/2XPTWrDMBAF4KsErasijf5GXeUeJQtZHjkCNyp2M
+ A3Bd68cCInwZuANfI+ZO5tpyjSzr8OdTbTkOZdLDfbjwOI5XAbiua+ZgQAlJSgexhyJpzwSN2A
+ 6j4TBgWYV/E6U8t+j7PtU8znP1zLdHt2L3LbPGv9es0gueEIZEmF0YOVxKGUY6TOWH7b1LPCyI
+ GxjodqQrHRR9L73emfV02ohJTZWVeut151N3qCIO6tfto7G6u3m6CMIFNaqbmfNu23/NdvNyiF ah0qAaey6rv8/gqGVlQEAAA==
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5505; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=hSK+knjcsqKhhCAnnycqnUg4XBMIyHFVkdVU8n8ahvQ=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBmRyPUk04BJtJTBHui5PmAd7jWVds0TPhG4CxKu
+ SGEr+RqHXaJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZkcj1AAKCRAEWL7uWMY5
+ RhkrD/0coG025BTMLiCEoOUW1bopEFXyqGJ+3uAQDuzfGpzlSRzHH6J6tM/NGqw62UCXzUSAF4w
+ Yvp70av9jmSpnW4Sxw/TsoZ6Z/g82u+ZcOdmMcY+IjUunCbKEjvzdjzf5/EhUoAN7zBpucqR4+d
+ Why3J3oOxsR5H3quZHDfHoyGXl052cE2ljhCSr/JtT2N8YvNXlhFVB2iLOt8EqzLvymgDMMJ2cz
+ D3T7uZqRV5b85H3Y6tYU05DdlWD9qIEUXzGR6UQxbbK3NdCCTKkIeQcr7h8av+Hxi8tU6zRCNwp
+ Fh6aJHqsw/2i9k/645I+aODNndaPlPpmkqCrz/obGIhRsrZH8vjNLOtEcaywM3aC4o1OVED4wc6
+ a+a28V/BP5VzuMCbtU8IR1PSfLOlcOkQgE0X6wEkNCbCGz1koV56cQL7XnVmOmTtMdvG0fJou3L
+ d3qiRv3MZq4DkyOpainALhvGl1pb3SM+6TjQ9K92HcerxX8I8byjiubEvYKp19oNxPDx07vTubJ
+ 6PUfsu+45gHIztjyX4HifEqPqtutxdXw1Pl4GH+Q3R5eE2RD0GLaWRxAGmDKCHG/1asNiGCjD3I
+ 01ho+nA7C7akgdI+drrwxaYZYUc1luNuCyXlz+QLsi5j7HZZ6OPpWI+Gcw+VVQZdt6Lvadtv23R o4PXDfbwSgwrB8w==
+X-Mailer: b4 0.13-dev-26615
+Message-ID: <20240517-alice-file-v6-0-b25bafdc9b97@google.com>
+Subject: [PATCH v6 0/8] File abstractions needed by Rust Binder
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Fri, 17 May 2024 10:37:35 +0200
-Message-ID: <CAH5fLgjUQxES8spGx0QDmGJBmqyAfKChjDfLLWUaqSUWWTAhLA@mail.gmail.com>
-Subject: Re: [RFC PATCH v3 18/22] rust: add improved version of `ForeignOwnable::borrow_mut`
-To: Ariel Miculas <amiculas@cisco.com>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org, tycho@tycho.pizza, brauner@kernel.org, 
-	viro@zeniv.linux.org.uk, ojeda@kernel.org, alex.gaynor@gmail.com, 
-	wedsonaf@gmail.com, shallyn@cisco.com, Benno Lossin <benno.lossin@proton.me>, 
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Boqun Feng <boqun.feng@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"=?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
+	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
+	Suren Baghdasaryan <surenb@google.com>
+Cc: Dan Williams <dan.j.williams@intel.com>, Kees Cook <keescook@chromium.org>, 
+	Matthew Wilcox <willy@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, Daniel Xu <dxu@dxuuu.xyz>, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Thu, May 16, 2024 at 9:04=E2=80=AFPM Ariel Miculas <amiculas@cisco.com> =
-wrote:
->
-> From: Alice Ryhl <aliceryhl@google.com>
->
-> Previously, the `ForeignOwnable` trait had a method called `borrow_mut`
-> that was intended to provide mutable access to the inner value. However,
-> the method accidentally made it possible to change the address of the
-> object being modified, which usually isn't what we want. (And when we
-> want that, it can be done by calling `from_foreign` and `into_foreign`,
-> like how the old `borrow_mut` was implemented.)
->
-> In this patch, we introduce an alternate definition of `borrow_mut` that
-> solves the previous problem. Conceptually, given a pointer type `P` that
-> implements `ForeignOwnable`, the `borrow_mut` method gives you the same
-> kind of access as an `&mut P` would, except that it does not let you
-> change the pointer `P` itself.
->
-> This is analogous to how the existing `borrow` method provides the same
-> kind of access to the inner value as an `&P`.
->
-> Note that for types like `Arc`, having an `&mut Arc<T>` only gives you
-> immutable access to the inner `T`. This is because mutable references
-> assume exclusive access, but there might be other handles to the same
-> reference counted value, so the access isn't exclusive. The `Arc` type
-> implements this by making `borrow_mut` return the same type as `borrow`.
->
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-> Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-> Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
-> Link: https://lore.kernel.org/r/20230710074642.683831-1-aliceryhl@google.=
-com
-> Signed-off-by: Ariel Miculas <amiculas@cisco.com>
+This patchset contains the file abstractions needed by the Rust
+implementation of the Binder driver.
 
-This particular patch something that I have abandoned because I did
-not end up having any user for it. If you have a user for it, then I
-recommend that you resend my patch and ask Miguel to take it.
+Please see the Rust Binder RFC for usage examples:
+https://lore.kernel.org/rust-for-linux/20231101-rust-binder-v1-0-08ba9197f637@google.com/
 
-Alice
+Users of "rust: types: add `NotThreadSafe`":
+	[PATCH 5/9] rust: file: add `FileDescriptorReservation`
+
+Users of "rust: task: add `Task::current_raw`":
+	[PATCH 7/9] rust: file: add `Kuid` wrapper
+	[PATCH 8/9] rust: file: add `DeferredFdCloser`
+
+Users of "rust: file: add Rust abstraction for `struct file`":
+	[PATCH RFC 02/20] rust_binder: add binderfs support to Rust binder
+	[PATCH RFC 03/20] rust_binder: add threading support
+
+Users of "rust: cred: add Rust abstraction for `struct cred`":
+	[PATCH RFC 05/20] rust_binder: add nodes and context managers
+	[PATCH RFC 06/20] rust_binder: add oneway transactions
+	[PATCH RFC 11/20] rust_binder: send nodes in transaction
+	[PATCH RFC 13/20] rust_binder: add BINDER_TYPE_FD support
+
+Users of "rust: security: add abstraction for secctx":
+	[PATCH RFC 06/20] rust_binder: add oneway transactions
+
+Users of "rust: file: add `FileDescriptorReservation`":
+	[PATCH RFC 13/20] rust_binder: add BINDER_TYPE_FD support
+	[PATCH RFC 14/20] rust_binder: add BINDER_TYPE_FDA support
+
+Users of "rust: file: add `Kuid` wrapper":
+	[PATCH RFC 05/20] rust_binder: add nodes and context managers
+	[PATCH RFC 06/20] rust_binder: add oneway transactions
+
+Users of "rust: file: add abstraction for `poll_table`":
+	[PATCH RFC 07/20] rust_binder: add epoll support
+
+This patchset has some uses of read_volatile in place of READ_ONCE.
+Please see the following rfc for context on this:
+https://lore.kernel.org/all/20231025195339.1431894-1-boqun.feng@gmail.com/
+
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+Changes in v6:
+- Introduce file sharing modes.
+- Rewrite most documentation for `struct file` wrapper.
+- Drop `DeferredFdCloser`. It will be sent later when it can be placed
+  somewhere where only Rust Binder can use it.
+- Rebase on top of rust-next: 97ab3e8eec0c ("rust: alloc: fix dangling pointer in VecExt<T>::reserve()")
+- Link to v5: https://lore.kernel.org/r/20240209-alice-file-v5-0-a37886783025@google.com
+
+Changes in v5:
+- Pass a null pointer to task_tgid_nr_ns.
+- Fix some typos and other formatting issues.
+- Add Reviewed-by where appropriate.
+- Link to v4: https://lore.kernel.org/r/20240202-alice-file-v4-0-fc9c2080663b@google.com
+
+Changes in v4:
+- Moved the two really simple patches to the beginning of the patchset.
+- Update Send safety comments.
+- Use srctree relative links.
+- Mention that `Credential::euid` is immutable.
+- Update some safety comments to mention the invariant on Self.
+- Use new name for close_fd_get_file.
+- Move safety comments on DeferredFdCloser around and be more explicit
+  about how many refcounts we own.
+- Reword safety comments related to _qproc.
+- Add Reviewed-by where appropriate.
+- Link to v3: https://lore.kernel.org/r/20240118-alice-file-v3-0-9694b6f9580c@google.com
+
+Changes in v3:
+- Completely rewrite comments about refcounting in the first patch.
+  - And add a note to the documentation in fs/file.c.
+- Discuss speculation gadgets in commit message for the Kuid wrapper.
+- Introduce NotThreadSafe and Task::current_raw patches and use them in
+  later patches.
+- Improve safety comments in DeferredFdCloser.
+- Some other minor changes.
+- Link to v2: https://lore.kernel.org/r/20231206-alice-file-v2-0-af617c0d9d94@google.com
+
+Changes in v2:
+- Update various docs and safety comments.
+- Rename method names to match the C name.
+- Use ordinary read instead of READ_ONCE in File::cred.
+- Changed null check in secctx.
+- Add type alias for PhantomData in FileDescriptorReservation.
+- Use Kuid::from_raw in Kuid::current_euid.
+- Make DeferredFdCloser fallible if it is unable to schedule a task
+  work. And also schedule the task work *before* closing the file.
+- Moved PollCondVar to rust/kernel/sync.
+- Updated PollCondVar to use wake_up_pollfree.
+- Link to v1: https://lore.kernel.org/all/20231129-alice-file-v1-0-f81afe8c7261@google.com/
+
+Link to RFC:
+https://lore.kernel.org/all/20230720152820.3566078-1-aliceryhl@google.com/
+
+---
+Alice Ryhl (5):
+      rust: types: add `NotThreadSafe`
+      rust: task: add `Task::current_raw`
+      rust: security: add abstraction for secctx
+      rust: file: add `Kuid` wrapper
+      rust: file: add abstraction for `poll_table`
+
+Wedson Almeida Filho (3):
+      rust: file: add Rust abstraction for `struct file`
+      rust: cred: add Rust abstraction for `struct cred`
+      rust: file: add `FileDescriptorReservation`
+
+ fs/file.c                       |   7 +
+ rust/bindings/bindings_helper.h |   6 +
+ rust/helpers.c                  |  86 +++++++++
+ rust/kernel/cred.rs             |  83 ++++++++
+ rust/kernel/file.rs             | 416 ++++++++++++++++++++++++++++++++++++++++
+ rust/kernel/lib.rs              |   3 +
+ rust/kernel/security.rs         |  72 +++++++
+ rust/kernel/sync.rs             |   1 +
+ rust/kernel/sync/lock.rs        |  13 +-
+ rust/kernel/sync/poll.rs        | 119 ++++++++++++
+ rust/kernel/task.rs             |  91 ++++++++-
+ rust/kernel/types.rs            |  26 +++
+ 12 files changed, 911 insertions(+), 12 deletions(-)
+---
+base-commit: 97ab3e8eec0ce79d9e265e6c9e4c480492180409
+change-id: 20231123-alice-file-525b98e8a724
+
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
+
