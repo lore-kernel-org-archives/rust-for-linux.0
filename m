@@ -1,68 +1,64 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53CCF53E13
-	for <rust-for-linux@vger.kernel.org>; Mon, 20 May 2024 17:24:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2580B11184
+	for <rust-for-linux@vger.kernel.org>; Mon, 20 May 2024 17:26:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716225890; cv=none; b=ttalDw0RTofk+gDk7IUqSnbIIjTbV/6AtKa0p3r/xnUdUD8j33LaB7I1QklshyIW0ytr60WIRBXM8/C0OzToWziK3M3O1C9JcHn1Dtl6Wi9EwYxQ75mHqyT5iTgRu6aWi5zZPbNoAsnEWQ0Qrb+oA+W9McGBeWmFFae86nGTn3Y=
+	t=1716226018; cv=none; b=cMI1SzjZrcCZuJ1LkWHEIwHQfXjRsWReDY2oOx7vNSthWjDOutKrYVA24GOYkQvDr72/8MQ2eGfjSLkfjUsYGG7RPIyx4z782RDvZMp+rhdZE4xHgiTPvULWNXX+InivsxqtGBfIKliNqgKOCh81xSLiWgT6YFETARlPj9mnXcA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716225890; c=relaxed/simple;
-	bh=zYa/JjbCczRBtomKbGzen8ymdps5XRdMORa++migg1I=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Y7nJ3zO2Zo/h8S/TWRb3vwomee4AVjXUGM5RXnFVzSOKzl9cnmqW2BReiI443c6HAabH2DC0YfCicXXDfGUMev47KDxOEOFKwM0jsow7ivcIkPTwuT3ij5dJITRutVpHncMC+OzS9XrAoCr31ac2+JEbjg7sOR2eDrkHgs1FfP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fzltwXOD; arc=none smtp.client-ip=170.10.133.124
+	s=arc-20240116; t=1716226018; c=relaxed/simple;
+	bh=kxfAh9lS7Mn3sjXjn7qlnE4XYCDSGyNPjC+wTb+HBwA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=dT2F0L9wRTwq/Dsz1NVpU4S6FtZKNiIfipgpUsEMwLgxc8wm8fSHf7WnUZbFvofpeF1UyYbnWp5L1/ylw3r3SRk7M/8UEPWNIcjErsw2soDs1pB05Oo1jNUjWF1BHzk0kNdOLbL18lMqQUlYzowWgVNr8bOgHta/4lqfFsDiajs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=O1H9RVRV; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fzltwXOD"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="O1H9RVRV"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1716225887;
+	s=mimecast20190719; t=1716226016;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=82Vph+Q3j8BVvO/RuEAHK7JPrZ2ySneeAlIJaZohjIQ=;
-	b=fzltwXODhPuMbGE73PGwXQUsxZ8kyzoh81ncCKNzDvLvEo+12TCvv1Uhm73U1od9VOnPKt
-	uigmcogTbIcj4iX0fnfhEBskX8qX9zAlryVa/XTNvSJD+SPjkno3DchMuJyt0CIbm+NJAu
-	iWIedVqjVsMjNA/NFmSjIMaQTbBW6gU=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=Gx3u0JEgfsEhAPjA6GAC4pQYVsboBrU6ONnJXfcQWCM=;
+	b=O1H9RVRVKMjA15AK1o46rw/kxCuRxm64NW9ArhxraQMoQjrx3Kfrh5LnSrWsxSDkCb3irO
+	nezLTGMELNCMZPRgZmRiTtq/b6WmmbBpztspoRgiR6hi7nfd08KqAHDqJQRJwLe2oTKY4D
+	HGYKxl5GwSfMvYg+STN2MaM3DSiZ0kg=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-580-MfcDCBkqPruBQOpj13r7Zg-1; Mon, 20 May 2024 13:24:43 -0400
-X-MC-Unique: MfcDCBkqPruBQOpj13r7Zg-1
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-34d7e948a41so6099846f8f.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 20 May 2024 10:24:43 -0700 (PDT)
+ us-mta-457-7HtZa3btPUqmuFYd_BqjFA-1; Mon, 20 May 2024 13:26:54 -0400
+X-MC-Unique: 7HtZa3btPUqmuFYd_BqjFA-1
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4201248bcd4so42711875e9.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 20 May 2024 10:26:54 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716225882; x=1716830682;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=82Vph+Q3j8BVvO/RuEAHK7JPrZ2ySneeAlIJaZohjIQ=;
-        b=RUclEYIsOYM178zX2UT9FXf6+ZbicX9NaI/lWvp2+ca3OwQbyw9+2dug05ne/1KhVL
-         URiEOJgkXszKu111pcpPVU5ZC/3vlf1JN3bvsuXuAQTaE7Os83ihWe+FNJMhP30sJJn6
-         H1DfaajAYxh7BYxjFgXgcIh4J6LIv+ig/8FzlkaJWkAS/xAX0WHbh7SIKe1/xf4wjjLK
-         +iM/uDakx2yLSLgoJ+svc04KIEiKSaohcQZ1GPRkRO5k/sZJoJZ9q4AyY3KggXqwiUkz
-         zXuWIcsS3TmupE4kQsBrOh42mdR8gsiueriA5SOEJ1AMuwDJ1qZ0Y+zwdMYTL/2ZiZEN
-         Zs4A==
-X-Gm-Message-State: AOJu0Ywh55wNXz1E4R14HP12By/3FQr656Ea1os1R3Wm7BPkWbrjP1N3
-	RgqZetaWSFokhobyOc42yvE/YRfqVvOJTQrB1MTLQ9GQqWGFyjF35HZdUsa5e/HDd4mBfn0lWQF
-	EESgISLpMUcFHYZvoK00rS0U+bpsay+hsDXquMDFDgQEJ1VBOWEmG0wmqYhSc31TZ
-X-Received: by 2002:a5d:5450:0:b0:351:dd2d:f6ad with SMTP id ffacd0b85a97d-351dd2df934mr7531642f8f.67.1716225882019;
-        Mon, 20 May 2024 10:24:42 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG2QQOtaLaHDV4phxxm8NaIVRPTBK2ykMJJupK+1ptCW1PGIZFTGlFFUO7k02cx8LGlySQeJQ==
-X-Received: by 2002:a5d:5450:0:b0:351:dd2d:f6ad with SMTP id ffacd0b85a97d-351dd2df934mr7531624f8f.67.1716225881653;
-        Mon, 20 May 2024 10:24:41 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1716226013; x=1716830813;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Gx3u0JEgfsEhAPjA6GAC4pQYVsboBrU6ONnJXfcQWCM=;
+        b=EJJfPOKaSXbMBpflYduAwP7v7gHk+F+LgWUvoVig+OhditNlxyvfnDlVuYRZMBergZ
+         ihgdMcVr2W61PH3SmBhFlc3ST4Y9XHfCV5kPJc7D3e+S4WpBCKvZNlUBiuRNoFUbn78V
+         n6tpnXgwnTAqLUtKD1zTh7KVPe70ckNqqltYEr0YQNk1XIGhcMgkhC7uhv7qWgyHXksE
+         RfFiCQ3/FKLJhK0SSxdZvlhfGQBM7DEwwIiFYVCaH6Fa5W3Sok2hB9+pSuIdor23otKW
+         bHrxWEO1Sf2r4pz/Y8zahlYB2co5z8nNx6YfW4UY4UnTDXYNwL29fRWmFn4oZ6tcK1Zq
+         v7ow==
+X-Gm-Message-State: AOJu0YwEcH4kX7ZkfBFJ3WUTJWJ4pwjaR7TGle8AWdME/mUN4gLP7PR1
+	Z388pL6Z/wzjL0en1aelQVmCVBPy6t2Tlvw9QwfhGJ8110S2gb8SOEsXceoG9yQO+idSccwirk1
+	8JaUhsWMa6+MSeurGyUgPLRjse3paW8eF5nnIQmmuEgW9LmXD4D6UfWzQz9XVj7Wx
+X-Received: by 2002:a05:600c:5008:b0:41b:dca6:a3fa with SMTP id 5b1f17b1804b1-41fead6dc7amr216719315e9.39.1716226013255;
+        Mon, 20 May 2024 10:26:53 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHbmLLTMe3CGThrlx2vgSOJ73LtYD3RAzGHWt9c3xNEvxKcy9SyuzQjhuQVYI306IjBPps6SA==
+X-Received: by 2002:a05:600c:5008:b0:41b:dca6:a3fa with SMTP id 5b1f17b1804b1-41fead6dc7amr216719145e9.39.1716226012470;
+        Mon, 20 May 2024 10:26:52 -0700 (PDT)
 Received: from cassiopeiae.. ([2a02:810d:4b3f:ee94:642:1aff:fe31:a19f])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-351d7861323sm12513280f8f.74.2024.05.20.10.24.40
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-41fccce9348sm421295005e9.24.2024.05.20.10.26.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 May 2024 10:24:41 -0700 (PDT)
+        Mon, 20 May 2024 10:26:51 -0700 (PDT)
 From: Danilo Krummrich <dakr@redhat.com>
-To: maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org,
-	tzimmermann@suse.de,
-	airlied@gmail.com,
-	daniel@ffwll.ch,
+To: gregkh@linuxfoundation.org,
+	rafael@kernel.org,
+	bhelgaas@google.com,
 	ojeda@kernel.org,
 	alex.gaynor@gmail.com,
 	wedsonaf@gmail.com,
@@ -72,22 +68,20 @@ To: maarten.lankhorst@linux.intel.com,
 	benno.lossin@proton.me,
 	a.hindborg@samsung.com,
 	aliceryhl@google.com,
+	airlied@gmail.com,
 	fujita.tomonori@gmail.com,
 	lina@asahilina.net,
 	pstanner@redhat.com,
 	ajanulgu@redhat.com,
-	lyude@redhat.com,
-	gregkh@linuxfoundation.org
+	lyude@redhat.com
 Cc: rust-for-linux@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	nouveau@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org,
 	Danilo Krummrich <dakr@redhat.com>
-Subject: [RFC PATCH 8/8] nova: add initial driver stub
-Date: Mon, 20 May 2024 19:24:20 +0200
-Message-ID: <20240520172422.181763-5-dakr@redhat.com>
+Subject: [RFC PATCH 00/11] [RFC] Device / Driver and PCI Rust abstractions
+Date: Mon, 20 May 2024 19:25:37 +0200
+Message-ID: <20240520172554.182094-1-dakr@redhat.com>
 X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240520172059.181256-1-dakr@redhat.com>
-References: <20240520172059.181256-1-dakr@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -99,687 +93,89 @@ X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset="US-ASCII"; x-default=true
 
-Add the initial driver stub of Nova, a Rust-based GSP-only driver for
-Nvidia GPUs. Nova, in the long term, is intended to serve as the
-successor of Nouveau for GSP-firmware-based GPUs. [1]
+This patch sereis implements basic generic device / driver Rust abstractions,
+as well as some basic PCI abstractions.
 
-As a stub driver Nova's focus is to make use of the most basic device /
-driver infrastructure required to build a DRM driver on the PCI bus and
-serve as demonstration example and justification for this
-infrastructure.
+This patch series is sent in the context of [1], and the corresponding patch
+series [2], which contains some basic DRM Rust abstractions and a stub
+implementation of the Nova GPU driver.
 
-In further consequence, the idea is to develop Nova continuously
-upstream, using those increments to lift further Rust abstractions and
-infrastructure upstream.
+Nova is intended to be developed upstream, starting out with just a stub driver
+to lift some initial required infrastructure upstream. A more detailed
+explanation can be found in [1].
 
-Link: https://lore.kernel.org/dri-devel/Zfsj0_tb-0-tNrJy@cassiopeiae/T/#u [1]
-Signed-off-by: Danilo Krummrich <dakr@redhat.com>
----
- MAINTAINERS                    |  10 ++
- drivers/gpu/drm/Kconfig        |   2 +
- drivers/gpu/drm/Makefile       |   1 +
- drivers/gpu/drm/nova/Kconfig   |  11 +++
- drivers/gpu/drm/nova/Makefile  |   3 +
- drivers/gpu/drm/nova/driver.rs | 110 +++++++++++++++++++++
- drivers/gpu/drm/nova/file.rs   |  71 ++++++++++++++
- drivers/gpu/drm/nova/gem.rs    |  50 ++++++++++
- drivers/gpu/drm/nova/gpu.rs    | 172 +++++++++++++++++++++++++++++++++
- drivers/gpu/drm/nova/nova.rs   |  20 ++++
- include/uapi/drm/nova_drm.h    | 101 +++++++++++++++++++
- rust/uapi/uapi_helper.h        |   1 +
- 12 files changed, 552 insertions(+)
- create mode 100644 drivers/gpu/drm/nova/Kconfig
- create mode 100644 drivers/gpu/drm/nova/Makefile
- create mode 100644 drivers/gpu/drm/nova/driver.rs
- create mode 100644 drivers/gpu/drm/nova/file.rs
- create mode 100644 drivers/gpu/drm/nova/gem.rs
- create mode 100644 drivers/gpu/drm/nova/gpu.rs
- create mode 100644 drivers/gpu/drm/nova/nova.rs
- create mode 100644 include/uapi/drm/nova_drm.h
+Some patches, which implement the generic device / driver Rust abstractions have
+been sent a couple of weeks ago already [3]. For those patches the following
+changes have been made since then:
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index aa3b947fb080..1ca0ea445e3f 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -6863,6 +6863,16 @@ T:	git https://gitlab.freedesktop.org/drm/nouveau.git
- F:	drivers/gpu/drm/nouveau/
- F:	include/uapi/drm/nouveau_drm.h
- 
-+DRM DRIVER (STUB) FOR NVIDIA GSP GPUS [RUST]
-+M:	Danilo Krummrich <dakr@redhat.com>
-+L:	dri-devel@lists.freedesktop.org
-+L:	nouveau@lists.freedesktop.org
-+S:	Supported
-+C:	irc://irc.oftc.net/nouveau
-+T:	git https://gitlab.freedesktop.org/drm/nova.git
-+F:	drivers/gpu/drm/nova/
-+F:	include/uapi/drm/nova_drm.h
-+
- DRM DRIVER FOR OLIMEX LCD-OLINUXINO PANELS
- M:	Stefan Mavrodiev <stefan@olimex.com>
- S:	Maintained
-diff --git a/drivers/gpu/drm/Kconfig b/drivers/gpu/drm/Kconfig
-index 5a0c476361c3..0bb0442a252e 100644
---- a/drivers/gpu/drm/Kconfig
-+++ b/drivers/gpu/drm/Kconfig
-@@ -274,6 +274,8 @@ source "drivers/gpu/drm/amd/amdgpu/Kconfig"
- 
- source "drivers/gpu/drm/nouveau/Kconfig"
- 
-+source "drivers/gpu/drm/nova/Kconfig"
-+
- source "drivers/gpu/drm/i915/Kconfig"
- 
- source "drivers/gpu/drm/xe/Kconfig"
-diff --git a/drivers/gpu/drm/Makefile b/drivers/gpu/drm/Makefile
-index 104b42df2e95..de6dc006cb7f 100644
---- a/drivers/gpu/drm/Makefile
-+++ b/drivers/gpu/drm/Makefile
-@@ -143,6 +143,7 @@ obj-$(CONFIG_DRM_VMWGFX)+= vmwgfx/
- obj-$(CONFIG_DRM_VGEM)	+= vgem/
- obj-$(CONFIG_DRM_VKMS)	+= vkms/
- obj-$(CONFIG_DRM_NOUVEAU) +=nouveau/
-+obj-$(CONFIG_DRM_NOVA_STUB) += nova/
- obj-$(CONFIG_DRM_EXYNOS) +=exynos/
- obj-$(CONFIG_DRM_ROCKCHIP) +=rockchip/
- obj-$(CONFIG_DRM_GMA500) += gma500/
-diff --git a/drivers/gpu/drm/nova/Kconfig b/drivers/gpu/drm/nova/Kconfig
-new file mode 100644
-index 000000000000..1ae2d1322a92
---- /dev/null
-+++ b/drivers/gpu/drm/nova/Kconfig
-@@ -0,0 +1,11 @@
-+config DRM_NOVA_STUB
-+	tristate "Nova GPU driver stub"
-+	depends on DRM
-+	depends on PCI
-+	depends on RUST
-+	default n
-+	help
-+	  Choose this if you want to build the Nova stub driver for Nvidia
-+	  GSP-based GPUs.
-+
-+	  If M is selected, the module will be called nova.
-diff --git a/drivers/gpu/drm/nova/Makefile b/drivers/gpu/drm/nova/Makefile
-new file mode 100644
-index 000000000000..733ac5fb9f4f
---- /dev/null
-+++ b/drivers/gpu/drm/nova/Makefile
-@@ -0,0 +1,3 @@
-+# SPDX-License-Identifier: GPL-2.0
-+
-+obj-$(CONFIG_DRM_NOVA_STUB) += nova.o
-diff --git a/drivers/gpu/drm/nova/driver.rs b/drivers/gpu/drm/nova/driver.rs
-new file mode 100644
-index 000000000000..47eaa2eddf16
---- /dev/null
-+++ b/drivers/gpu/drm/nova/driver.rs
-@@ -0,0 +1,110 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+use alloc::boxed::Box;
-+use core::pin::Pin;
-+use kernel::{
-+    bindings, c_str, device, driver, drm,
-+    drm::{drv, ioctl},
-+    pci,
-+    pci::define_pci_id_table,
-+    prelude::*,
-+    sync::Arc,
-+};
-+
-+use crate::{file::File, gpu::Gpu};
-+
-+pub(crate) struct NovaDriver;
-+
-+/// Convienence type alias for the DRM device type for this driver
-+pub(crate) type NovaDevice = drm::device::Device<NovaDriver>;
-+
-+#[allow(dead_code)]
-+pub(crate) struct NovaData {
-+    pub(crate) gpu: Arc<Gpu>,
-+    pub(crate) pdev: pci::Device,
-+}
-+
-+type DeviceData = device::Data<drm::drv::Registration<NovaDriver>, NovaData>;
-+
-+const INFO: drm::drv::DriverInfo = drm::drv::DriverInfo {
-+    major: 0,
-+    minor: 0,
-+    patchlevel: 0,
-+    name: c_str!("nova"),
-+    desc: c_str!("Nvidia Graphics"),
-+    date: c_str!("20240227"),
-+};
-+
-+impl pci::Driver for NovaDriver {
-+    type Data = Arc<DeviceData>;
-+
-+    define_pci_id_table! {
-+        (),
-+        [ (pci::DeviceId::new(bindings::PCI_VENDOR_ID_NVIDIA, bindings::PCI_ANY_ID as u32), None) ]
-+    }
-+
-+    fn probe(pdev: &mut pci::Device, _id_info: Option<&Self::IdInfo>) -> Result<Arc<DeviceData>> {
-+        dev_dbg!(pdev.as_ref(), "Probe Nova GPU driver.\n");
-+
-+        let reg = drm::drv::Registration::<NovaDriver>::new(pdev.as_ref())?;
-+
-+        pdev.enable_device_mem()?;
-+        pdev.set_master();
-+
-+        let bar = pdev.iomap_region(0, c_str!("nova"))?;
-+
-+        let gpu = Gpu::new(pdev, bar)?;
-+
-+        let data = kernel::new_device_data!(
-+            reg,
-+            NovaData {
-+                gpu,
-+                pdev: pdev.clone(),
-+            },
-+            "NovaData"
-+        )?;
-+        let data: Arc<DeviceData> = data.into();
-+
-+        kernel::drm_device_register!(
-+            data.registrations().ok_or(ENXIO)?.as_pinned_mut(),
-+            data.clone(),
-+            0
-+        )?;
-+
-+        Ok(data)
-+    }
-+
-+    fn remove(data: &Self::Data) {
-+        dev_dbg!(data.pdev.as_ref(), "Remove Nova GPU driver.\n");
-+    }
-+}
-+
-+#[vtable]
-+impl drm::drv::Driver for NovaDriver {
-+    type Data = Arc<DeviceData>;
-+    type File = File;
-+    type Object = crate::gem::Object;
-+
-+    const INFO: drm::drv::DriverInfo = INFO;
-+    const FEATURES: u32 = drv::FEAT_GEM;
-+
-+    kernel::declare_drm_ioctls! {
-+        (NOVA_GETPARAM, drm_nova_getparam, ioctl::RENDER_ALLOW, File::get_param),
-+        (NOVA_GEM_CREATE, drm_nova_gem_create, ioctl::AUTH | ioctl::RENDER_ALLOW, File::gem_create),
-+        (NOVA_GEM_INFO, drm_nova_gem_info, ioctl::AUTH | ioctl::RENDER_ALLOW, File::gem_info),
-+    }
-+}
-+
-+pub(crate) struct NovaModule {
-+    _registration: Pin<Box<driver::Registration<pci::Adapter<NovaDriver>>>>,
-+}
-+
-+impl kernel::Module for NovaModule {
-+    fn init(_name: &'static CStr, module: &'static ThisModule) -> Result<Self> {
-+        let registration = driver::Registration::new_pinned(c_str!("nova"), module)?;
-+
-+        Ok(Self {
-+            _registration: registration,
-+        })
-+    }
-+}
-diff --git a/drivers/gpu/drm/nova/file.rs b/drivers/gpu/drm/nova/file.rs
-new file mode 100644
-index 000000000000..d649fa3973b5
---- /dev/null
-+++ b/drivers/gpu/drm/nova/file.rs
-@@ -0,0 +1,71 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+use crate::driver::{NovaDevice, NovaDriver};
-+use crate::gem;
-+use kernel::{
-+    alloc::flags::*,
-+    drm::{self, device::Device as DrmDevice, gem::BaseObject},
-+    prelude::*,
-+    uapi,
-+};
-+
-+pub(crate) struct File();
-+
-+/// Convenience type alias for our DRM `File` type
-+pub(crate) type DrmFile = drm::file::File<File>;
-+
-+impl drm::file::DriverFile for File {
-+    type Driver = NovaDriver;
-+
-+    fn open(dev: &DrmDevice<Self::Driver>) -> Result<Pin<Box<Self>>> {
-+        dev_dbg!(dev.as_ref(), "drm::device::Device::open\n");
-+
-+        Ok(Box::into_pin(Box::new(Self(), GFP_KERNEL)?))
-+    }
-+}
-+
-+impl File {
-+    /// IOCTL: get_param: Query GPU / driver metadata.
-+    pub(crate) fn get_param(
-+        dev: &NovaDevice,
-+        getparam: &mut uapi::drm_nova_getparam,
-+        _file: &DrmFile,
-+    ) -> Result<u32> {
-+        let data = dev.data().ok_or(ENODEV)?;
-+        let pdev = &data.pdev;
-+
-+        getparam.value = match getparam.param as u32 {
-+            uapi::NOVA_GETPARAM_VRAM_BAR_SIZE => pdev.resource_len(1)?,
-+            _ => return Err(EINVAL),
-+        };
-+
-+        Ok(0)
-+    }
-+
-+    /// IOCTL: gem_create: Create a new DRM GEM object.
-+    pub(crate) fn gem_create(
-+        dev: &NovaDevice,
-+        req: &mut uapi::drm_nova_gem_create,
-+        file: &DrmFile,
-+    ) -> Result<u32> {
-+        let obj = gem::object_new(dev, req.size.try_into()?)?;
-+
-+        let handle = obj.create_handle(file)?;
-+        req.handle = handle;
-+
-+        Ok(0)
-+    }
-+
-+    /// IOCTL: gem_info: Query GEM metadata.
-+    pub(crate) fn gem_info(
-+        _dev: &NovaDevice,
-+        req: &mut uapi::drm_nova_gem_info,
-+        file: &DrmFile,
-+    ) -> Result<u32> {
-+        let bo = gem::lookup_handle(file, req.handle)?;
-+
-+        req.size = bo.size().try_into()?;
-+
-+        Ok(0)
-+    }
-+}
-diff --git a/drivers/gpu/drm/nova/gem.rs b/drivers/gpu/drm/nova/gem.rs
-new file mode 100644
-index 000000000000..51bc30c226e2
---- /dev/null
-+++ b/drivers/gpu/drm/nova/gem.rs
-@@ -0,0 +1,50 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+use kernel::{
-+    drm::{
-+        gem,
-+        gem::{BaseObject, ObjectRef},
-+    },
-+    prelude::*,
-+};
-+
-+use crate::{
-+    driver::{NovaDevice, NovaDriver},
-+    file::DrmFile,
-+};
-+
-+/// GEM Object inner driver data
-+#[pin_data]
-+pub(crate) struct DriverObject {}
-+
-+/// Type alias for the GEM object tyoe for this driver.
-+pub(crate) type Object = gem::Object<DriverObject>;
-+
-+impl gem::BaseDriverObject<Object> for DriverObject {
-+    fn new(dev: &NovaDevice, _size: usize) -> impl PinInit<Self, Error> {
-+        dev_dbg!(dev.as_ref(), "DriverObject::new\n");
-+        DriverObject {}
-+    }
-+}
-+
-+impl gem::DriverObject for DriverObject {
-+    type Driver = NovaDriver;
-+}
-+
-+/// Create a new DRM GEM object.
-+pub(crate) fn object_new(dev: &NovaDevice, size: usize) -> Result<ObjectRef<Object>> {
-+    let aligned_size = size.next_multiple_of(1 << 12);
-+
-+    if size == 0 || size > aligned_size {
-+        return Err(EINVAL);
-+    }
-+
-+    let gem = Object::new(dev, aligned_size)?;
-+
-+    Ok(ObjectRef::from_pinned_unique(gem))
-+}
-+
-+/// Look up a GEM object handle for a `File` and return an `ObjectRef` for it.
-+pub(crate) fn lookup_handle(file: &DrmFile, handle: u32) -> Result<ObjectRef<Object>> {
-+    Object::lookup_handle(file, handle)
-+}
-diff --git a/drivers/gpu/drm/nova/gpu.rs b/drivers/gpu/drm/nova/gpu.rs
-new file mode 100644
-index 000000000000..b35d055e5322
---- /dev/null
-+++ b/drivers/gpu/drm/nova/gpu.rs
-@@ -0,0 +1,172 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+use kernel::{
-+    device, devres::Devres, error::code::*, firmware, fmt, pci, prelude::*, str::CString, sync::Arc,
-+};
-+
-+use core::fmt::Debug;
-+
-+/// Enum representing the GPU chipset.
-+#[derive(Debug)]
-+pub(crate) enum Chipset {
-+    TU102 = 0x162,
-+    TU104 = 0x164,
-+    TU106 = 0x166,
-+    TU117 = 0x167,
-+    TU116 = 0x168,
-+    GA102 = 0x172,
-+    GA103 = 0x173,
-+    GA104 = 0x174,
-+    GA106 = 0x176,
-+    GA107 = 0x177,
-+    AD102 = 0x192,
-+    AD103 = 0x193,
-+    AD104 = 0x194,
-+    AD106 = 0x196,
-+    AD107 = 0x197,
-+}
-+
-+/// Enum representing the GPU generation.
-+#[derive(Debug)]
-+pub(crate) enum CardType {
-+    /// Turing
-+    TU100 = 0x160,
-+    /// Ampere
-+    GA100 = 0x170,
-+    /// Ada Lovelace
-+    AD100 = 0x190,
-+}
-+
-+/// Structure holding the metadata of the GPU.
-+#[allow(dead_code)]
-+pub(crate) struct GpuSpec {
-+    /// Contents of the boot0 register.
-+    boot0: u64,
-+    card_type: CardType,
-+    chipset: Chipset,
-+    /// The revision of the chipset.
-+    chiprev: u8,
-+}
-+
-+/// Structure encapsulating the firmware blobs required for the GPU to operate.
-+#[allow(dead_code)]
-+pub(crate) struct Firmware {
-+    booter_load: firmware::Firmware,
-+    booter_unload: firmware::Firmware,
-+    gsp: firmware::Firmware,
-+}
-+
-+/// Structure holding the resources required to operate the GPU.
-+#[allow(dead_code)]
-+#[pin_data]
-+pub(crate) struct Gpu {
-+    spec: GpuSpec,
-+    /// MMIO mapping of PCI BAR 0
-+    bar: Devres<pci::Bar>,
-+    fw: Firmware,
-+}
-+
-+// TODO replace with something like derive(FromPrimitive)
-+impl Chipset {
-+    fn from_u32(value: u32) -> Option<Chipset> {
-+        match value {
-+            0x162 => Some(Chipset::TU102),
-+            0x164 => Some(Chipset::TU104),
-+            0x166 => Some(Chipset::TU106),
-+            0x167 => Some(Chipset::TU117),
-+            0x168 => Some(Chipset::TU116),
-+            0x172 => Some(Chipset::GA102),
-+            0x173 => Some(Chipset::GA103),
-+            0x174 => Some(Chipset::GA104),
-+            0x176 => Some(Chipset::GA106),
-+            0x177 => Some(Chipset::GA107),
-+            0x192 => Some(Chipset::AD102),
-+            0x193 => Some(Chipset::AD103),
-+            0x194 => Some(Chipset::AD104),
-+            0x196 => Some(Chipset::AD106),
-+            0x197 => Some(Chipset::AD107),
-+            _ => None,
-+        }
-+    }
-+}
-+
-+// TODO replace with something like derive(FromPrimitive)
-+impl CardType {
-+    fn from_u32(value: u32) -> Option<CardType> {
-+        match value {
-+            0x160 => Some(CardType::TU100),
-+            0x170 => Some(CardType::GA100),
-+            0x190 => Some(CardType::AD100),
-+            _ => None,
-+        }
-+    }
-+}
-+
-+impl GpuSpec {
-+    fn new(bar: &Devres<pci::Bar>) -> Result<GpuSpec> {
-+        let bar = bar.try_access().ok_or(ENXIO)?;
-+        let boot0 = u64::from_le(bar.readq(0)?);
-+        let chip = ((boot0 & 0x1ff00000) >> 20) as u32;
-+
-+        if boot0 & 0x1f000000 == 0 {
-+            return Err(ENODEV);
-+        }
-+
-+        let chipset = match Chipset::from_u32(chip) {
-+            Some(x) => x,
-+            None => return Err(ENODEV),
-+        };
-+
-+        let card_type = match CardType::from_u32(chip & 0x1f0) {
-+            Some(x) => x,
-+            None => return Err(ENODEV),
-+        };
-+
-+        Ok(Self {
-+            boot0,
-+            card_type,
-+            chipset,
-+            chiprev: (boot0 & 0xff) as u8,
-+        })
-+    }
-+}
-+
-+impl Firmware {
-+    fn new(dev: &device::Device, spec: &GpuSpec, ver: &str) -> Result<Firmware> {
-+        let mut chip_name = CString::try_from_fmt(fmt!("{:?}", spec.chipset))?;
-+        chip_name.make_ascii_lowercase();
-+
-+        let fw_booter_load_path =
-+            CString::try_from_fmt(fmt!("nvidia/{}/gsp/booter_load-{}.bin", &*chip_name, ver,))?;
-+        let fw_booter_unload_path =
-+            CString::try_from_fmt(fmt!("nvidia/{}/gsp/booter_unload-{}.bin", &*chip_name, ver))?;
-+        let fw_gsp_path =
-+            CString::try_from_fmt(fmt!("nvidia/{}/gsp/gsp-{}.bin", &*chip_name, ver))?;
-+
-+        let booter_load = firmware::Firmware::request(&fw_booter_load_path, dev)?;
-+        let booter_unload = firmware::Firmware::request(&fw_booter_unload_path, dev)?;
-+        let gsp = firmware::Firmware::request(&fw_gsp_path, dev)?;
-+
-+        Ok(Firmware {
-+            booter_load,
-+            booter_unload,
-+            gsp,
-+        })
-+    }
-+}
-+
-+impl Gpu {
-+    pub(crate) fn new(pdev: &pci::Device, bar: Devres<pci::Bar>) -> Result<Arc<Gpu>> {
-+        let spec = GpuSpec::new(&bar)?;
-+        let fw = Firmware::new(pdev.as_ref(), &spec, "535.113.01")?;
-+
-+        dev_info!(
-+            pdev.as_ref(),
-+            "NVIDIA {:?} ({:#x})",
-+            spec.chipset,
-+            spec.boot0
-+        );
-+
-+        Arc::pin_init(try_pin_init!(Self { spec, bar, fw }), GFP_KERNEL)
-+    }
-+}
-diff --git a/drivers/gpu/drm/nova/nova.rs b/drivers/gpu/drm/nova/nova.rs
-new file mode 100644
-index 000000000000..48420267bcc1
---- /dev/null
-+++ b/drivers/gpu/drm/nova/nova.rs
-@@ -0,0 +1,20 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Nova GPU Driver
-+
-+mod driver;
-+mod file;
-+mod gem;
-+mod gpu;
-+
-+use kernel::prelude::module;
-+
-+use driver::NovaModule;
-+
-+module! {
-+    type: NovaModule,
-+    name: "Nova",
-+    author: "Danilo Krummrich",
-+    description: "Nova GPU driver",
-+    license: "GPL v2",
-+}
-diff --git a/include/uapi/drm/nova_drm.h b/include/uapi/drm/nova_drm.h
-new file mode 100644
-index 000000000000..3ca90ed9d2bb
---- /dev/null
-+++ b/include/uapi/drm/nova_drm.h
-@@ -0,0 +1,101 @@
-+/* SPDX-License-Identifier: MIT */
-+
-+#ifndef __NOVA_DRM_H__
-+#define __NOVA_DRM_H__
-+
-+#include "drm.h"
-+
-+/* DISCLAIMER: Do not use, this is not a stable uAPI.
-+ *
-+ * This uAPI serves only testing purposes as long as this driver is still in
-+ * development. It is required to implement and test infrastructure which is
-+ * upstreamed in the context of this driver. See also [1].
-+ *
-+ * [1] https://lore.kernel.org/dri-devel/Zfsj0_tb-0-tNrJy@cassiopeiae/T/#u
-+ */
-+
-+#if defined(__cplusplus)
-+extern "C" {
-+#endif
-+
-+/*
-+ * NOVA_GETPARAM_VRAM_BAR_SIZE
-+ *
-+ * Query the VRAM BAR size in bytes.
-+ */
-+#define NOVA_GETPARAM_VRAM_BAR_SIZE	0x1
-+
-+/**
-+ * struct drm_nova_getparam - query GPU and driver metadata
-+ */
-+struct drm_nova_getparam {
-+	/**
-+	 * @param: The identifier of the parameter to query.
-+	 */
-+	__u64 param;
-+
-+	/**
-+	 * @value: The value for the specified parameter.
-+	 */
-+	__u64 value;
-+};
-+
-+/**
-+ * struct drm_nova_gem_create - create a new DRM GEM object
-+ */
-+struct drm_nova_gem_create {
-+	/**
-+	 * @handle: The handle of the new DRM GEM object.
-+	 */
-+	__u32 handle;
-+
-+	/**
-+	 * @pad: 32 bit padding, should be 0.
-+	 */
-+	__u32 pad;
-+
-+	/**
-+	 * @size: The size of the new DRM GEM object.
-+	 */
-+	__u64 size;
-+};
-+
-+/**
-+ * struct drm_nova_gem_info - query DRM GEM object metadata
-+ */
-+struct drm_nova_gem_info {
-+	/**
-+	 * @handle: The handle of the DRM GEM object to query.
-+	 */
-+	__u32 handle;
-+
-+	/**
-+	 * @pad: 32 bit padding, should be 0.
-+	 */
-+	__u32 pad;
-+
-+	/**
-+	 * @size: The size of the DRM GEM obejct.
-+	 */
-+	__u64 size;
-+};
-+
-+#define DRM_NOVA_GETPARAM		0x00
-+#define DRM_NOVA_GEM_CREATE		0x01
-+#define DRM_NOVA_GEM_INFO		0x02
-+
-+/* Note: this is an enum so that it can be resolved by Rust bindgen. */
-+enum {
-+	DRM_IOCTL_NOVA_GETPARAM		= DRM_IOWR(DRM_COMMAND_BASE + DRM_NOVA_GETPARAM,
-+						   struct drm_nova_getparam),
-+	DRM_IOCTL_NOVA_GEM_CREATE	= DRM_IOWR(DRM_COMMAND_BASE + DRM_NOVA_GEM_CREATE,
-+						   struct drm_nova_gem_create),
-+	DRM_IOCTL_NOVA_GEM_INFO		= DRM_IOWR(DRM_COMMAND_BASE + DRM_NOVA_GEM_INFO,
-+						   struct drm_nova_gem_info),
-+};
-+
-+#if defined(__cplusplus)
-+}
-+#endif
-+
-+#endif /* __NOVA_DRM_H__ */
-diff --git a/rust/uapi/uapi_helper.h b/rust/uapi/uapi_helper.h
-index ed42a456da2e..b9ab3406b2ce 100644
---- a/rust/uapi/uapi_helper.h
-+++ b/rust/uapi/uapi_helper.h
-@@ -8,5 +8,6 @@
- 
- #include <uapi/asm-generic/ioctl.h>
- #include <uapi/drm/drm.h>
-+#include <uapi/drm/nova_drm.h>
- #include <uapi/linux/mii.h>
- #include <uapi/linux/ethtool.h>
+- remove RawDevice::name()
+- remove rust helper for dev_name() and dev_get_drvdata()
+- use AlwaysRefCounted for struct Device
+- drop trait RawDevice entirely in favor of AsRef and provide
+  Device::from_raw(), Device::as_raw() and Device::as_ref() instead
+- implement RevocableGuard
+- device::Data, remove resources and replace it with a Devres abstraction
+- implement Devres abstraction for resources
+
+As mentioned above, a driver serving as example on how these abstractions are
+used within a (DRM) driver can be found in [2].
+
+Additionally, the device / driver bits can also be found in [3], all
+abstractions required for Nova in [4] and Nova in [5].
+
+[1] https://lore.kernel.org/dri-devel/Zfsj0_tb-0-tNrJy@cassiopeiae/T/#u
+[2] https://lore.kernel.org/dri-devel/20240520172059.181256-1-dakr@redhat.com/
+[3] https://github.com/Rust-for-Linux/linux/tree/staging/rust-device
+[4] https://github.com/Rust-for-Linux/linux/tree/staging/dev
+[5] https://gitlab.freedesktop.org/drm/nova/-/tree/nova-next
+
+Danilo Krummrich (2):
+  rust: add abstraction for struct device
+  rust: add devres abstraction
+
+FUJITA Tomonori (1):
+  rust: add basic PCI driver abstractions
+
+Philipp Stanner (2):
+  rust: add basic abstractions for iomem operations
+  rust: PCI: add BAR request and ioremap
+
+Wedson Almeida Filho (6):
+  rust: add driver abstraction
+  rust: add rcu abstraction
+  rust: add revocable mutex
+  rust: add revocable objects
+  rust: add device::Data
+  rust: add `dev_*` print macros.
+
+ rust/bindings/bindings_helper.h |   1 +
+ rust/helpers.c                  | 145 ++++++++++
+ rust/kernel/device.rs           | 498 ++++++++++++++++++++++++++++++++
+ rust/kernel/devres.rs           | 151 ++++++++++
+ rust/kernel/driver.rs           | 492 +++++++++++++++++++++++++++++++
+ rust/kernel/iomem.rs            | 135 +++++++++
+ rust/kernel/lib.rs              |  10 +-
+ rust/kernel/pci.rs              | 449 ++++++++++++++++++++++++++++
+ rust/kernel/prelude.rs          |   2 +
+ rust/kernel/revocable.rs        | 441 ++++++++++++++++++++++++++++
+ rust/kernel/sync.rs             |   3 +
+ rust/kernel/sync/rcu.rs         |  52 ++++
+ rust/kernel/sync/revocable.rs   | 148 ++++++++++
+ rust/macros/module.rs           |   2 +-
+ samples/rust/rust_minimal.rs    |   2 +-
+ samples/rust/rust_print.rs      |   2 +-
+ 16 files changed, 2529 insertions(+), 4 deletions(-)
+ create mode 100644 rust/kernel/device.rs
+ create mode 100644 rust/kernel/devres.rs
+ create mode 100644 rust/kernel/driver.rs
+ create mode 100644 rust/kernel/iomem.rs
+ create mode 100644 rust/kernel/pci.rs
+ create mode 100644 rust/kernel/revocable.rs
+ create mode 100644 rust/kernel/sync/rcu.rs
+ create mode 100644 rust/kernel/sync/revocable.rs
+
+
+base-commit: 97ab3e8eec0ce79d9e265e6c9e4c480492180409
 -- 
 2.45.1
 
