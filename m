@@ -1,62 +1,62 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E18C13A415
-	for <rust-for-linux@vger.kernel.org>; Mon, 20 May 2024 17:27:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3190713AA4E
+	for <rust-for-linux@vger.kernel.org>; Mon, 20 May 2024 17:27:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716226050; cv=none; b=dFYgrSwfs8ZhPeUthdAtpb9yyKMiMTaWfczVkO86yV4t9Yudn5hjRxGjdDS9giYYfIrO/5LQNieXLzHFVmuZ2/G0qWNDq9kRUYGSmRBbA2cXA2Xd9bLuFhObeoxQ9HqgllbAwpmH7s9vrQbUJqJ+HRjGG2BD2ff03rTQ4lSmEaE=
+	t=1716226059; cv=none; b=O3XkDxxrPtBHpVvR9MfwS3/ezm8TM6kH7NquyCSDjNROnMgiE/l4BUKEOTPflj4bLFe2t4EyPd4726KS85OTkDlvrb/IjtJc7A3SA5DFlq7nHEgQEH/CpcKCMJxe/QxuW3cJqCpFV0QxOySwr0wtjrTllcU9SIdJwU/GZb10SpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716226050; c=relaxed/simple;
-	bh=Pf+OOnuHz5mcZsGqaVhIEIMHurAZcjaBobj/NJHA3CI=;
+	s=arc-20240116; t=1716226059; c=relaxed/simple;
+	bh=ByeqkzM2jzSrDGnfHWAPGFr2QDs6pyQQOFnYXBVMUb0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TTT1d1R674lKiHRqQDY1CBGmunR91aMJpJEwOUBg9wzfoqXhBBou/74jpEEtxFoRNeSOrEfxBt/1fO2Uwk61UFOpXYfU82q7GgL7fpEUB5uMdr/ELGXv8WZhDBG2tFLeUIHp3ZhcP501uARotGaxl6zgbnX30AuhIeXnQO3HtcM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ExE5BtHl; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:Content-Type; b=IiC8x1BdxXdEFwfN/4hER6dY0VskIf3alGD3A+2MQdrXSSCbjudkyhLVD1F5Zx7TExBFFL9lUkTEdFXwZayVl3037NMmn0dm55wsnIiVUen+33XhRz5llBXHDVD05bFHn9awgHExep03W+B1X0dAeU4p10D+aapmfhCDa67Wu7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QF/q9zu7; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ExE5BtHl"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QF/q9zu7"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1716226048;
+	s=mimecast20190719; t=1716226056;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=1CsnJXGBZcLyYjfrlAMv2FyBTh8bc+Mt3a3EbW5Rnks=;
-	b=ExE5BtHleDoyXqrEfK5QsAJTi8PrZ9h/iZ6pR/utbZc6PmifZJ2Qlt7JBpYyxgfqmj7Stm
-	IF2WqlnEXK1pVqXPlnfF12WVwPPKayMr+fX3WhvXEzE4Rwng5yfCIlwScpmIF8JQuviO31
-	s7V9taxbwrXFMUkl0yHK9ZBHLxpMi9I=
-Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
- [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=q+KTbXYumAmw16h3rTz/Xv/htYjuUG13nuBarwTBt2A=;
+	b=QF/q9zu7uV+w8+nDhfWEM1QRHov8P0OJgh06w1sQk1Kk/1O87d3nwnPeBtlJid9T3Eaa42
+	xoDpQqH48mFAusYq4k6J3kfDDJ9hZIjC1KDEnPmn5VWds3cfD9I3muGZhN8fyRmuCd52tg
+	8QC1kBx6YORE9oU+sYDOuJe/EuE3074=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-628-sOakeINRPiikriTyTkQStg-1; Mon, 20 May 2024 13:27:26 -0400
-X-MC-Unique: sOakeINRPiikriTyTkQStg-1
-Received: by mail-lj1-f197.google.com with SMTP id 38308e7fff4ca-2e3208c29abso103894121fa.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 20 May 2024 10:27:26 -0700 (PDT)
+ us-mta-615-lyeIfSVgPRWe3kS-HFayeg-1; Mon, 20 May 2024 13:27:34 -0400
+X-MC-Unique: lyeIfSVgPRWe3kS-HFayeg-1
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-34ffd710a31so7610334f8f.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 20 May 2024 10:27:34 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716226045; x=1716830845;
+        d=1e100.net; s=20230601; t=1716226053; x=1716830853;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=1CsnJXGBZcLyYjfrlAMv2FyBTh8bc+Mt3a3EbW5Rnks=;
-        b=K3Nny2y8qpOnP3nDqTP1Oyieo5h2Ovc9ep1I5jxFaeqid6pUKHxeuHDqCrS9fXP5pL
-         6v7jeIY24xhv6X1EK8UPzjyAhKsI++6WNGX6h3x2CybUOKxJqRqed8KUJbeDdea4rosL
-         wWnTuBrtSoNMKyD/dxCY5dti+PzI7zJEjWInE4pviXYkyGq6maorO2Q3ZxSEzll1gQSI
-         O212/o1cAG+s8Rc7bnNx4Om0DuxPXAPNHWJYGFuqsVovrek831UcU/w34RIirH3Bqkuz
-         bHrQm5xhiAKiLPXuXUfX3MScqlbOHogm4vQvS4+RXUbwaPxDaTI+VhZVkvRlVPr+Kt6B
-         frjQ==
-X-Gm-Message-State: AOJu0YwZidtNrBQeDr0hc3PZAqS+TWy2wElVwujQaOVlcHhBxWp1pKKx
-	D/J+LzO2hH3TqWTtE9hwZpcgOMCLUwaygqG8Z7YfUxcJr3Fh0URkaOo2R30n3RsmE9sNC+/j6B4
-	ZupctP/yQ/4TFsmJE4VNL5TruieJ9iQkQdIWgDXkQ4qWUIRsWimIADsNOCUtrGAsc
-X-Received: by 2002:a2e:be9f:0:b0:2e3:ba0e:de12 with SMTP id 38308e7fff4ca-2e51ff5cf48mr319538871fa.22.1716226045285;
-        Mon, 20 May 2024 10:27:25 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHbLE5+nNhphlxlGh18a3Zy/HbW451IH7B3zyMvPHBImYdCotrNMydqRvyk8NUf6/7klPUZ8Q==
-X-Received: by 2002:a2e:be9f:0:b0:2e3:ba0e:de12 with SMTP id 38308e7fff4ca-2e51ff5cf48mr319538611fa.22.1716226044936;
-        Mon, 20 May 2024 10:27:24 -0700 (PDT)
+        bh=q+KTbXYumAmw16h3rTz/Xv/htYjuUG13nuBarwTBt2A=;
+        b=SXMW/ObzdvSRT4NmMYRm9UiZ40BTjpf8Jv0b/vgOtCv5ggKWMk1VeYGSBAZ5t2cyc+
+         Oj54vIfDJFHGtb35mwwXLIo9jAvk3eO3bMWXGXb0adjwj/K3dRynsQ3q+8MNTQBh7eOc
+         wzX90xCFNIhuvb8mjlrrDCrI209jZIV7dQ/E7ZZBMi6d/dKDFmxapAgbWz1vqjwGkkRT
+         9WNXBDhd2rasnUsxhFAJpr1SIZFHW4Dtqwuhhn/mnNkjnyZhpbB9EKra5AK7D5Iw0XN7
+         bzYpm7IqQFS5V/cVQg16RXmtDXRJW29l61YswfsvLlCwDmylN+v+mrD7v64ZPTzwSN4Q
+         SUBA==
+X-Gm-Message-State: AOJu0YwasReY3Nt2yh8IiLFW9SUUpKYCSyZQwMzIkyNwqDS3i0rHlnXc
+	bp/OONZSOd3TieSta/G5nsiJcZ/dmG4PKyWpxOqrlLP3sY9BcsyS6/ez+m2Th0S2sa5UGaAp26V
+	eFREEq45k7RdeG3CJSUt2OoCCnGPLczPmnBhP/d+UY2AbBP58G2l0S25LkcMV6ppD
+X-Received: by 2002:a5d:4801:0:b0:34d:a5fd:977b with SMTP id ffacd0b85a97d-3504a969ffcmr20289229f8f.60.1716226053183;
+        Mon, 20 May 2024 10:27:33 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFa/Dnd6VAJ4Gwv9ggHRXIUtmNL29Xn1V3x1XOit8dv4TaIg0ybWQ9BXCbBKMeVj5eQB/k2Pw==
+X-Received: by 2002:a5d:4801:0:b0:34d:a5fd:977b with SMTP id ffacd0b85a97d-3504a969ffcmr20289201f8f.60.1716226052819;
+        Mon, 20 May 2024 10:27:32 -0700 (PDT)
 Received: from cassiopeiae.. ([2a02:810d:4b3f:ee94:642:1aff:fe31:a19f])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42009eda143sm363816305e9.14.2024.05.20.10.27.23
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-351d7d0f3absm12506111f8f.73.2024.05.20.10.27.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 May 2024 10:27:24 -0700 (PDT)
+        Mon, 20 May 2024 10:27:32 -0700 (PDT)
 From: Danilo Krummrich <dakr@redhat.com>
 To: gregkh@linuxfoundation.org,
 	rafael@kernel.org,
@@ -80,9 +80,9 @@ Cc: rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-pci@vger.kernel.org,
 	Danilo Krummrich <dakr@redhat.com>
-Subject: [RFC PATCH 08/11] rust: add devres abstraction
-Date: Mon, 20 May 2024 19:25:45 +0200
-Message-ID: <20240520172554.182094-9-dakr@redhat.com>
+Subject: [RFC PATCH 10/11] rust: add basic abstractions for iomem operations
+Date: Mon, 20 May 2024 19:25:47 +0200
+Message-ID: <20240520172554.182094-11-dakr@redhat.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240520172554.182094-1-dakr@redhat.com>
 References: <20240520172554.182094-1-dakr@redhat.com>
@@ -97,213 +97,366 @@ X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset="US-ASCII"; x-default=true
 
-Add a Rust abstraction for the kernel's devres (device resource
-management) implementation.
+From: Philipp Stanner <pstanner@redhat.com>
 
-The Devres type acts as a container to manage the lifetime and
-accessibility of device bound resources. Therefore it registers a
-devres callback and revokes access to the resource on invocation.
+Access to the kernel's IO-functions (e.g., readb()) is needed by almost
+all drivers. Currently, there are no abstractions for those functions.
 
-Users of the Devres abstraction can simply free the corresponding
-resources in their Drop implementation, which is invoked when either the
-Devres instance goes out of scope or the devres callback leads to the
-resource being revoked, which implies a call to drop_in_place().
+Since iomem is so widely used, it's necessary to provide a generic
+interface that all subsystems providing IO memory can use. The existing
+C implementations of such subsystems typically provide their own
+wrappers around functions like ioremap() which take care of respecting
+resource boundaries etc. It is, therefore, desirable to use these
+wrappers because using ioremap() and iounmap() directly would
+effectively result in parts of those subsystems being reimplemented in
+Rust.
 
-Co-developed-by: Philipp Stanner <pstanner@redhat.com>
+As most if not all device drivers should be fully satisfied regarding
+their iomem demands by the existing subsystem interfaces, Rust
+abstractions as congruent as possible with the existing infrastructure
+shall use the existing subsystem (e.g., PCI) interfaces for creating
+IO mappings, while simultaneously wrapping those mappings in Rust
+containers whose Drop() traits ensure that the resources are released
+again.
+
+The process for mapping iomem would consequently look as follows:
+
+  1. The subsystem abstraction (e.g., PCI) requests and ioremaps the
+     memory through the corresponding C functions.
+  2. The subsystem uses resources obtained in step #1 to create a Rust
+     IoMem data structure that implements the IO functionality such as
+     readb() for the iomem.
+  3. The subsystem code wrapps IoMem into additional containers that
+     ensure, e.g., thread safety, prevent UAF etc. Additionally, the
+     subsystem ensures that access to IoMem is revoked latest when the
+     driver's remove() callback is invoked.
+
+Hereby, the subsystem data structure obtains ownership over the iomem.
+Release of the iomem and, possibly, other subsystem associated data is
+then handled through the Drop() trait of the subsystem data structure.
+
+IO memory can become invalid during runtime (for example because the
+driver's remove() callback was invoked, revoking access to the driver's
+resources). However, in parallel executing routines might still be
+active. Consequently, the subsytem should also guard the iomem in some
+way.
+
+One way to do this is the Devres implementation, which provides a
+container that is capable of revoking access to its payload when
+the driver's remove() callback is invoked.
+
+The figure illustrates what usage of IoMem through subsystems might look
+like:
+               Devres
+  *------------------------------*
+  |                              |
+  |   subsystem data structure   |
+  |   *----------------------*   |
+  |   |        IoMem         |   |
+  |   | *------------------* |   |
+  |   | |  io_addr = 0x42, | |   |
+  |   | |  io_len = 9001,  | |   |
+  |   | |                  | |   |
+  |   | |  readb(),        | |   |
+  |   | |  writeb(),       | |   |
+  |   | |  ...             | |   |
+  |   | *------------------* |   |
+  |   |   deref(),           |   |
+  |   |   drop(),            |   |
+  |   |   ...                |   |
+  |   *----------------------*   |
+  |    deref(),                  |
+  |    drop(),                   |
+  *------------------------------*
+
+For additional convenience, subsystem abstractions can implement the
+Deref() trait for their data structures so that access he iomem can be
+fully transparent.
+
+In summary, IoMem would just serve as a container providing the IO
+functions, and the subsystem, which knows about the memory layout,
+request mechanisms etc, shall create and guard IoMem and ensure that its
+resources are released latest at remove() (through Devres) or earlier
+through its Drop() implementation.
+
+Add 'IoMem', a struct holding an IO-Pointer and a length parameter,
+which both shall be initialized validly by the subsystem.
+
+Add Rust abstractions for basic IO memory operations on IoMem.
+
 Signed-off-by: Philipp Stanner <pstanner@redhat.com>
 Signed-off-by: Danilo Krummrich <dakr@redhat.com>
 ---
- rust/helpers.c        |   5 ++
- rust/kernel/devres.rs | 151 ++++++++++++++++++++++++++++++++++++++++++
- rust/kernel/lib.rs    |   1 +
- 3 files changed, 157 insertions(+)
- create mode 100644 rust/kernel/devres.rs
+ rust/helpers.c       | 106 +++++++++++++++++++++++++++++++++
+ rust/kernel/iomem.rs | 135 +++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 241 insertions(+)
+ create mode 100644 rust/kernel/iomem.rs
 
 diff --git a/rust/helpers.c b/rust/helpers.c
-index 1d3e800140fc..34061eca05a0 100644
+index c3d80301185c..dc2405772b1a 100644
 --- a/rust/helpers.c
 +++ b/rust/helpers.c
-@@ -173,6 +173,11 @@ void rust_helper_rcu_read_unlock(void)
- EXPORT_SYMBOL_GPL(rust_helper_rcu_read_unlock);
- /* end rcu */
+@@ -34,6 +34,7 @@
+ #include <linux/wait.h>
+ #include <linux/workqueue.h>
+ #include <linux/pci.h>
++#include <linux/io.h>
  
-+int rust_helper_devm_add_action(struct device *dev, void (*action)(void *), void *data)
+ __noreturn void rust_helper_BUG(void)
+ {
+@@ -179,6 +180,111 @@ int rust_helper_devm_add_action(struct device *dev, void (*action)(void *), void
+ 	return devm_add_action(dev, action, data);
+ }
+ 
++/* io.h */
++u8 rust_helper_readb(const volatile void __iomem *addr)
 +{
-+	return devm_add_action(dev, action, data);
++	return readb(addr);
 +}
++EXPORT_SYMBOL_GPL(rust_helper_readb);
 +
- /*
-  * `bindgen` binds the C `size_t` type as the Rust `usize` type, so we can
-  * use it in contexts where Rust expects a `usize` like slice (array) indices.
-diff --git a/rust/kernel/devres.rs b/rust/kernel/devres.rs
++u16 rust_helper_readw(const volatile void __iomem *addr)
++{
++	return readw(addr);
++}
++EXPORT_SYMBOL_GPL(rust_helper_readw);
++
++u32 rust_helper_readl(const volatile void __iomem *addr)
++{
++	return readl(addr);
++}
++EXPORT_SYMBOL_GPL(rust_helper_readl);
++
++#ifdef CONFIG_64BIT
++u64 rust_helper_readq(const volatile void __iomem *addr)
++{
++	return readq(addr);
++}
++EXPORT_SYMBOL_GPL(rust_helper_readq);
++#endif
++
++void rust_helper_writeb(u8 value, volatile void __iomem *addr)
++{
++	writeb(value, addr);
++}
++EXPORT_SYMBOL_GPL(rust_helper_writeb);
++
++void rust_helper_writew(u16 value, volatile void __iomem *addr)
++{
++	writew(value, addr);
++}
++EXPORT_SYMBOL_GPL(rust_helper_writew);
++
++void rust_helper_writel(u32 value, volatile void __iomem *addr)
++{
++	writel(value, addr);
++}
++EXPORT_SYMBOL_GPL(rust_helper_writel);
++
++#ifdef CONFIG_64BIT
++void rust_helper_writeq(u64 value, volatile void __iomem *addr)
++{
++	writeq(value, addr);
++}
++EXPORT_SYMBOL_GPL(rust_helper_writeq);
++#endif
++
++u8 rust_helper_readb_relaxed(const volatile void __iomem *addr)
++{
++	return readb_relaxed(addr);
++}
++EXPORT_SYMBOL_GPL(rust_helper_readb_relaxed);
++
++u16 rust_helper_readw_relaxed(const volatile void __iomem *addr)
++{
++	return readw_relaxed(addr);
++}
++EXPORT_SYMBOL_GPL(rust_helper_readw_relaxed);
++
++u32 rust_helper_readl_relaxed(const volatile void __iomem *addr)
++{
++	return readl_relaxed(addr);
++}
++EXPORT_SYMBOL_GPL(rust_helper_readl_relaxed);
++
++#ifdef CONFIG_64BIT
++u64 rust_helper_readq_relaxed(const volatile void __iomem *addr)
++{
++	return readq_relaxed(addr);
++}
++EXPORT_SYMBOL_GPL(rust_helper_readq_relaxed);
++#endif
++
++void rust_helper_writeb_relaxed(u8 value, volatile void __iomem *addr)
++{
++	writeb_relaxed(value, addr);
++}
++EXPORT_SYMBOL_GPL(rust_helper_writeb_relaxed);
++
++void rust_helper_writew_relaxed(u16 value, volatile void __iomem *addr)
++{
++	writew_relaxed(value, addr);
++}
++EXPORT_SYMBOL_GPL(rust_helper_writew_relaxed);
++
++void rust_helper_writel_relaxed(u32 value, volatile void __iomem *addr)
++{
++	writel_relaxed(value, addr);
++}
++EXPORT_SYMBOL_GPL(rust_helper_writel_relaxed);
++
++#ifdef CONFIG_64BIT
++void rust_helper_writeq_relaxed(u64 value, volatile void __iomem *addr)
++{
++	writeq_relaxed(value, addr);
++}
++EXPORT_SYMBOL_GPL(rust_helper_writeq_relaxed);
++#endif
++
+ void rust_helper_pci_set_drvdata(struct pci_dev *pdev, void *data)
+ {
+ 	pci_set_drvdata(pdev, data);
+diff --git a/rust/kernel/iomem.rs b/rust/kernel/iomem.rs
 new file mode 100644
-index 000000000000..bf7bd304cd9b
+index 000000000000..efb6cd0829b4
 --- /dev/null
-+++ b/rust/kernel/devres.rs
-@@ -0,0 +1,151 @@
++++ b/rust/kernel/iomem.rs
+@@ -0,0 +1,135 @@
 +// SPDX-License-Identifier: GPL-2.0
 +
-+//! Devres abstraction
-+//!
-+//! [`Devres`] represents an abstraction for the kernel devres (device resource management)
-+//! implementation.
++use crate::bindings;
++use crate::error::{code::EINVAL, Result};
 +
-+use crate::{
-+    alloc::Flags,
-+    bindings,
-+    device::Device,
-+    error::{Error, Result},
-+    prelude::*,
-+    revocable::Revocable,
-+    types::ARef,
-+};
-+
-+use core::ffi::c_void;
-+use core::ops::Deref;
-+
-+#[pin_data]
-+struct DevresInner<T> {
-+    dev: ARef<Device>,
-+    #[pin]
-+    data: Revocable<T>,
++/// IO-mapped memory, starting at the base pointer @ioptr and spanning @malxen bytes.
++///
++/// The creator (usually a subsystem such as PCI) is responsible for creating the
++/// mapping, performing an additional region request etc.
++pub struct IoMem {
++    pub ioptr: usize,
++    maxlen: usize,
 +}
 +
-+/// This abstraction is meant to be used by subsystems to containerize [`Device`] bound resources to
-+/// manage their lifetime.
-+///
-+/// [`Device`] bound resources should be freed when either the resource goes out of scope or the
-+/// [`Device`] is unbound respectively, depending on what happens first.
-+///
-+/// To achieve that [`Devres`] registers a devres callback on creation, which is called once the
-+/// [`Device`] is unbound, revoking access to the encapsulated resource (see also [`Revocable`]).
-+///
-+/// After the [`Devres`] has been unbound it is not possible to access the encapsulated resource
-+/// anymore.
-+///
-+/// [`Devres`] users should make sure to simply free the corresponding backing resource in `T`'s
-+/// [`Drop`] implementation.
-+///
-+/// # Example
-+///
-+/// ```
-+/// use kernel::devres::Devres;
-+///
-+/// // See also [`pci::Bar`] for a real example.
-+/// struct IoRemap(IoMem);
-+///
-+/// impl IoRemap {
-+///     fn new(usize paddr, usize len) -> Result<Self>{
-+///         // assert success
-+///         let addr = unsafe { bindings::ioremap(paddr as _); };
-+///         let iomem = IoMem::new(addr, len)?;
-+///
-+///         Ok(IoRemap(iomem))
-+///     }
-+/// }
-+///
-+/// impl Drop for IoRemap {
-+///     fn drop(&mut self) {
-+///         unsafe { bindings::iounmap(self.0.ioptr as _); };
-+///     }
-+/// }
-+///
-+/// impl Deref for IoRemap {
-+///    type Target = IoMem;
-+///
-+///    fn deref(&self) -> &Self::Target {
-+///        &self.0
-+///    }
-+/// }
-+///
-+/// let devres = Devres::new(dev, IoRemap::new(0xBAAAAAAD, 0x4)?, GFP_KERNEL)?;
-+///
-+/// let res = devres.try_access().ok_or(ENXIO)?;
-+/// res.writel(0xBAD);
-+/// ```
-+///
-+pub struct Devres<T> {
-+    inner: Pin<Box<DevresInner<T>>>,
-+    callback: unsafe extern "C" fn(*mut c_void),
-+}
-+
-+impl<T> DevresInner<T> {
-+    fn as_ptr(&self) -> *const DevresInner<T> {
-+        self as *const DevresInner<T>
-+    }
-+
-+    fn as_cptr(&self) -> *mut c_void {
-+        self.as_ptr() as *mut c_void
-+    }
-+}
-+
-+unsafe extern "C" fn devres_callback<T>(inner: *mut c_void) {
-+    let inner = inner as *const DevresInner<T>;
-+    let inner = unsafe { &*inner };
-+
-+    inner.data.revoke();
-+}
-+
-+impl<T> Devres<T> {
-+    /// Creates a new [`Devres`] instance of the give data.
-+    pub fn new(dev: ARef<Device>, data: T, flags: Flags) -> Result<Self> {
-+        let callback = devres_callback::<T>;
-+
-+        let inner = Box::pin_init(
-+            pin_init!( DevresInner {
-+                dev: dev,
-+                data <- Revocable::new(data),
-+            }),
-+            flags,
-+        )?;
-+
-+        let ret = unsafe {
-+            bindings::devm_add_action(inner.dev.as_raw(), Some(callback), inner.as_cptr())
-+        };
-+
-+        if ret != 0 {
-+            return Err(Error::from_errno(ret));
++impl IoMem {
++    pub(crate) fn new(ioptr: usize, maxlen: usize) -> Result<Self> {
++        if ioptr == 0 || maxlen == 0 {
++            return Err(EINVAL);
 +        }
 +
-+        // We have to store the exact callback function pointer used with
-+        // `bindings::devm_add_action` for `bindings::devm_remove_action`. There compiler might put
-+        // multiple definitions of `devres_callback<T>` for the same `T` in both the kernel itself
-+        // and modules. Hence, we might see different pointer values depending on whether we look
-+        // at `devres_callback<T>`'s address from `Devres::new` or `Devres::drop`.
-+        Ok(Devres { inner, callback })
++        Ok(Self { ioptr, maxlen })
 +    }
-+}
 +
-+impl<T> Deref for Devres<T> {
-+    type Target = Revocable<T>;
-+
-+    fn deref(&self) -> &Self::Target {
-+        &self.inner.data
-+    }
-+}
-+
-+impl<T> Drop for Devres<T> {
-+    fn drop(&mut self) {
-+        unsafe {
-+            bindings::devm_remove_action(
-+                self.inner.dev.as_raw(),
-+                Some(self.callback),
-+                self.inner.as_cptr(),
-+            )
++    fn get_io_addr(&self, offset: usize, len: usize) -> Result<usize> {
++        if offset + len > self.maxlen {
++            return Err(EINVAL);
 +        }
++
++        Ok(self.ioptr + offset)
++    }
++
++    pub fn readb(&self, offset: usize) -> Result<u8> {
++        let ioptr: usize = self.get_io_addr(offset, 1)?;
++
++        Ok(unsafe { bindings::readb(ioptr as _) })
++    }
++
++    pub fn readw(&self, offset: usize) -> Result<u16> {
++        let ioptr: usize = self.get_io_addr(offset, 2)?;
++
++        Ok(unsafe { bindings::readw(ioptr as _) })
++    }
++
++    pub fn readl(&self, offset: usize) -> Result<u32> {
++        let ioptr: usize = self.get_io_addr(offset, 4)?;
++
++        Ok(unsafe { bindings::readl(ioptr as _) })
++    }
++
++    pub fn readq(&self, offset: usize) -> Result<u64> {
++        let ioptr: usize = self.get_io_addr(offset, 8)?;
++
++        Ok(unsafe { bindings::readq(ioptr as _) })
++    }
++
++    pub fn readb_relaxed(&self, offset: usize) -> Result<u8> {
++        let ioptr: usize = self.get_io_addr(offset, 1)?;
++
++        Ok(unsafe { bindings::readb_relaxed(ioptr as _) })
++    }
++
++    pub fn readw_relaxed(&self, offset: usize) -> Result<u16> {
++        let ioptr: usize = self.get_io_addr(offset, 2)?;
++
++        Ok(unsafe { bindings::readw_relaxed(ioptr as _) })
++    }
++
++    pub fn readl_relaxed(&self, offset: usize) -> Result<u32> {
++        let ioptr: usize = self.get_io_addr(offset, 4)?;
++
++        Ok(unsafe { bindings::readl_relaxed(ioptr as _) })
++    }
++
++    pub fn readq_relaxed(&self, offset: usize) -> Result<u64> {
++        let ioptr: usize = self.get_io_addr(offset, 8)?;
++
++        Ok(unsafe { bindings::readq_relaxed(ioptr as _) })
++    }
++
++    pub fn writeb(&self, byte: u8, offset: usize) -> Result {
++        let ioptr: usize = self.get_io_addr(offset, 1)?;
++
++        unsafe { bindings::writeb(byte, ioptr as _) }
++        Ok(())
++    }
++
++    pub fn writew(&self, word: u16, offset: usize) -> Result {
++        let ioptr: usize = self.get_io_addr(offset, 2)?;
++
++        unsafe { bindings::writew(word, ioptr as _) }
++        Ok(())
++    }
++
++    pub fn writel(&self, lword: u32, offset: usize) -> Result {
++        let ioptr: usize = self.get_io_addr(offset, 4)?;
++
++        unsafe { bindings::writel(lword, ioptr as _) }
++        Ok(())
++    }
++
++    pub fn writeq(&self, qword: u64, offset: usize) -> Result {
++        let ioptr: usize = self.get_io_addr(offset, 8)?;
++
++        unsafe { bindings::writeq(qword, ioptr as _) }
++        Ok(())
++    }
++
++    pub fn writeb_relaxed(&self, byte: u8, offset: usize) -> Result {
++        let ioptr: usize = self.get_io_addr(offset, 1)?;
++
++        unsafe { bindings::writeb_relaxed(byte, ioptr as _) }
++        Ok(())
++    }
++
++    pub fn writew_relaxed(&self, word: u16, offset: usize) -> Result {
++        let ioptr: usize = self.get_io_addr(offset, 2)?;
++
++        unsafe { bindings::writew_relaxed(word, ioptr as _) }
++        Ok(())
++    }
++
++    pub fn writel_relaxed(&self, lword: u32, offset: usize) -> Result {
++        let ioptr: usize = self.get_io_addr(offset, 4)?;
++
++        unsafe { bindings::writel_relaxed(lword, ioptr as _) }
++        Ok(())
++    }
++
++    pub fn writeq_relaxed(&self, qword: u64, offset: usize) -> Result {
++        let ioptr: usize = self.get_io_addr(offset, 8)?;
++
++        unsafe { bindings::writeq_relaxed(qword, ioptr as _) }
++        Ok(())
 +    }
 +}
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index d7d415429517..11645060b444 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -30,6 +30,7 @@
- pub mod alloc;
- mod build_assert;
- pub mod device;
-+pub mod devres;
- pub mod driver;
- pub mod error;
- pub mod init;
 -- 
 2.45.1
 
