@@ -1,62 +1,62 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0984C13AD05
-	for <rust-for-linux@vger.kernel.org>; Mon, 20 May 2024 17:27:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C6881384A8
+	for <rust-for-linux@vger.kernel.org>; Mon, 20 May 2024 17:27:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716226062; cv=none; b=QrsuIi9tYUYRkaNs+kh+Ei9NIQqyC9v5xpCqjAlnlkuqSzxHM1ZzP2MywZLxu5t2s3P6hfmtT+3X4+4mZzKiDvTBcvZobSkhqHjJ4Qd1NdE2fWha4acoZNgJWT4DdDp9XuApdNsJG2Nrfuwup7Z5kALh5/sTBhHFEY/AiaHe+Oc=
+	t=1716226068; cv=none; b=bOgMDJe5tXwAzwCCbCLvaHv9qP3HTRzPfY89fILhhE2XkZ7EPMcRmn2XjAGa/lA8WlbqCCfNSupz7xDuRxxf/r4bk4ciK47ClmUwf6CYKhu4OPLnyTutxIgAcrN+xHMBOZDgXee7Bkza3WP8eASsjUR7+mxTyjub9l2DabWjMNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716226062; c=relaxed/simple;
-	bh=YZfg+yFUJvGKf66LKiZJyB7z2AoSnnfdsff2xWWMZwY=;
+	s=arc-20240116; t=1716226068; c=relaxed/simple;
+	bh=5ysJ7veRsD9TP3SKhDxVg22CoKwjiIVIqxUU9mdur14=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sE39F+VkZ98/LUn97ZnE91Dsj2aeoQKVqJ++ZX8RX5dPl+Odd9jHkP8r7gKDGBwfOD1fim3ICu3uVGMt9FyxH+gpk2mFTmFVEA8t38poKc0LT0TnfrGTjYQs1PIOKQnCeoWmTEjMVgYNZZ4RzgpiH5jE2GsVxhsoz20VML3+65Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Dsf+nX4F; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:Content-Type; b=dooWMmdWT54DM6LFeMJT/Fy87AAcCKl7+9ZxbrY0FeEtlVV4mCZ2BM25zI+mEspFdxqw/4hWPkiTK9SyYd+9EwsQdGMeRAAwYQU2eMuxyeQfaBwvk+HOYAUvh+wQchy5X+T8/X7I+QUw5nnhntaL4hKI/xq9Tdekr79zGqysbG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QMA2glob; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Dsf+nX4F"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QMA2glob"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1716226060;
+	s=mimecast20190719; t=1716226064;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=V3g+oeQpArsYWOlDSausMXlW95ZfMKvIKOo6W5/n3oc=;
-	b=Dsf+nX4FeTVE4ittJoyxJgKr82bhAlXgCdUxKsKOItRW1T4HQYcJDcml93rQNnV0PtlJTo
-	L/VSorgoWX1Lc9TfEw2FX29t+nnamNtE+JJ3O71PoluIIbuvRtW567j0JwhME0AQSYMP/I
-	H/+npJQflECwMjeuWjJ47CVufq2o3dY=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=6S1JMvs3wWwoYY5yLjwWSAqPBxm7FbzVGctvxFDmowc=;
+	b=QMA2glob3LXH9WhCu3AM1fq+t7OP1YEShX+p+4M0kBNw8HAYsImBnO3KOFdNwZoEAYAV7d
+	wZe3X54McKPkZaqjCRms5+IgvWYRDmanac9HVnJ/gS7Ksn6tu70kxZOz1DNBwIXgPEQZX3
+	lwbrsqjj6WTH5itN4FiBwC8ZwpjpTAw=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-414-gkZQtxbLMJmwA3sDllN_uQ-1; Mon, 20 May 2024 13:27:38 -0400
-X-MC-Unique: gkZQtxbLMJmwA3sDllN_uQ-1
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-34e0836d91eso7975927f8f.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 20 May 2024 10:27:38 -0700 (PDT)
+ us-mta-561-oGgiTvztO1aNKWhZJzagcQ-1; Mon, 20 May 2024 13:27:31 -0400
+X-MC-Unique: oGgiTvztO1aNKWhZJzagcQ-1
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-420061cf1b1so44454255e9.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 20 May 2024 10:27:30 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716226057; x=1716830857;
+        d=1e100.net; s=20230601; t=1716226049; x=1716830849;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=V3g+oeQpArsYWOlDSausMXlW95ZfMKvIKOo6W5/n3oc=;
-        b=oyzBhp06uHbApf0fRVKykjhi+ZXaVHINUcGjDPNJ+Scb5cy5irYCr9KBaOlwOR8QV3
-         6GFaP4Tuu29PecBM9G8v1u7la4IFXL5RWIqNk0Tc10qBETvK94keS8RhdFtv1OQfIVXL
-         p/QHqqkjp3rEvFixWj7UfGFDuJFrKfQ6dt+26+69ZO53ecsxSZtI71KlXA2i4bJhYec7
-         +sMMH3wlJe5+O+LwhCJkd2lPrUy4TOW28beIFj5UFW7O0LXYGUHSqpXXpm86ctQFkX76
-         8FbEknIUNSk8Jlbra6+IHOCPRtRuwB/m+8dKrJY8G6kELz+r6HrHwq8VPw+X4mdxz7C2
-         Z7qQ==
-X-Gm-Message-State: AOJu0Yw47pSOf+rR+N6PEFFz5smCer6RpqKRKhNlh9Qd7YOj9nJE3i8c
-	O9LqLlhvjplnuoExF/v8C+sUOL4MGv7QASzzfoY5JJlxPo/98GQkZrzC6cXnWA2IW6Rcpsrdw9F
-	lRXpZW43Ja7IneSFyXagAwwp7os79u6s82xlI59sMrZehRjna4a3oDC1Xo77rQMvw
-X-Received: by 2002:adf:ab1a:0:b0:351:4e42:c5f0 with SMTP id ffacd0b85a97d-3514e42c73emr20272333f8f.52.1716226057087;
-        Mon, 20 May 2024 10:27:37 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGu7wi4ZLZ2yvRdkdYrPpzRkpeebcFzF47KqCnjyY1JeHk/jzOQJr9+KzuhFk2uiAX8OmXa2g==
-X-Received: by 2002:adf:ab1a:0:b0:351:4e42:c5f0 with SMTP id ffacd0b85a97d-3514e42c73emr20272302f8f.52.1716226056700;
-        Mon, 20 May 2024 10:27:36 -0700 (PDT)
+        bh=6S1JMvs3wWwoYY5yLjwWSAqPBxm7FbzVGctvxFDmowc=;
+        b=pvNxnZwa6MqibvRc33z6gYmpl2W1XBi3y+ncmt4npmZCq6WIEwPD2dO3feQf3kL1Uz
+         p19qsQ1cXKtuOoeHoNCnF+jb3lLJALmkMnIcGWopSbTICd+zApaj+rgDhJKIzO8Pcxig
+         RoGttinYO2MABu4xotSc1ARd1JcHC7Qbh7ilPLOqjhQwgoG7DEAPVg0MX/2ibKVaL/Wi
+         Ads1LCj7J+jS7DKXcV9NSZH3eWc47Ec7aSvCC1hL0OtFkZoKvg2KSwVGW1niRTv0f4A0
+         /zrBrjQFF0SgqLzHOaoi2z15hEX1LozZsoXLAP2+wWpK76+9mEd4o92JeHUYXf6fyomQ
+         4hfg==
+X-Gm-Message-State: AOJu0YxBDVW7tuCBV+qotHKGwwNvSw4NffjZUugvjCW8F2RkcbZP62nU
+	IjpdWQn+i/SoFm2LvEWJ9fXTLGXAoRC9KuELaBNqYvtikFdLSWz+bE81p2Nf3NU7UcOvrpdOgnJ
+	qPxOkBue8qhMAIcqkfxLhz8FMWjidf1JDnk9L9HjWB4oUDnB5HKi/5LeXCXUcxJ5+
+X-Received: by 2002:a05:600c:1547:b0:420:1078:a74c with SMTP id 5b1f17b1804b1-4201078a89cmr192092495e9.20.1716226049332;
+        Mon, 20 May 2024 10:27:29 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEowXlkhLoQlD536HTIQse+gl+PqtvMMQTha8X+ha5edJrAVhb5zSf/srjBFRZN7CNK5aE/Hg==
+X-Received: by 2002:a05:600c:1547:b0:420:1078:a74c with SMTP id 5b1f17b1804b1-4201078a89cmr192092225e9.20.1716226048892;
+        Mon, 20 May 2024 10:27:28 -0700 (PDT)
 Received: from cassiopeiae.. ([2a02:810d:4b3f:ee94:642:1aff:fe31:a19f])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-352f264c7f1sm9827066f8f.42.2024.05.20.10.27.35
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-41fccce24c0sm430961865e9.17.2024.05.20.10.27.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 May 2024 10:27:36 -0700 (PDT)
+        Mon, 20 May 2024 10:27:28 -0700 (PDT)
 From: Danilo Krummrich <dakr@redhat.com>
 To: gregkh@linuxfoundation.org,
 	rafael@kernel.org,
@@ -80,9 +80,9 @@ Cc: rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-pci@vger.kernel.org,
 	Danilo Krummrich <dakr@redhat.com>
-Subject: [RFC PATCH 11/11] rust: PCI: add BAR request and ioremap
-Date: Mon, 20 May 2024 19:25:48 +0200
-Message-ID: <20240520172554.182094-12-dakr@redhat.com>
+Subject: [RFC PATCH 09/11] rust: add basic PCI driver abstractions
+Date: Mon, 20 May 2024 19:25:46 +0200
+Message-ID: <20240520172554.182094-10-dakr@redhat.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240520172554.182094-1-dakr@redhat.com>
 References: <20240520172554.182094-1-dakr@redhat.com>
@@ -97,215 +97,444 @@ X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset="US-ASCII"; x-default=true
 
-From: Philipp Stanner <pstanner@redhat.com>
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
-This commit implements a basic mechanism for requesting and IO-mapping
-PCI BARs.
+This commit implements the abstractions necessary to bind a most basic
+PCI driver to a PCI device. It also serves as a ground layer for further
+PCI functionality.
 
-To perform IO on PCI devices it is necessary to have memory mapped PCI
-BARs. Before mapping those, a region request should be performed so that
-collisions with other drivers can be avoided.
+Specifically, a basic PCI driver has to provide register() and
+unregister() methods, a PCI device structure for Rust, and probe() and
+remove() callbacks for the C side.
 
-Since all the logic necessary to obtain the aforementioned resources are
-already implemented in C, Rust abstractions should use these interfaces.
-Hereby, the Rust implementation has to ensure that all resources are
-released again latest when the driver's remove() callback gets invoked,
-or earlier if the driver drop()s the PCI resource.
+A PCI driver shall be able to register itself for the desired devices,
+recognized by their device ID. Another basic necessity is the ability to
+store driver data, i.e., through pci_set_drvdata().
 
-This can be achieved through the Devres container, which uses devres
-callbacks combined with Revocable to block access to the resource - in
-this case, the PCI BAR and its IoMem.
+In congruency with the C implementation of pci_dev, a Rust PCI device
+holds a basic device (device::Device) which is always reference counted
+to ensure it cannot disappear as long as there are still users.
 
-A pci::Bar's Drop() trait shall deregister the memory region request and
-iounmap() the mapping. In case remove() is invoked before such a Bar is
-drop()ed, the Devres container shall ensure that access to the Bar is
-revoke()d (through Revocable) so that no UAFs can occur.
+Holding a basic device allows for both using interfaces that require a
+device, as well as such that demand a pci_dev, which can be obtained
+through as_raw(), using the established container_of() macro.
 
-Implement 'Bar', a container for requested and ioremapped PCI BARs.
+Implement a basic driver model with probe() and remove() callbacks,
+implementing the corresponding traits from the 'driver' crate.
 
-Implement the Drop() trait such that the memory request and IO-mapping
-get freed if Bar goes out of scope.
+Implement PCI device IDs.
 
-Implement Deref() so that the container is transparent.
+Implement pci::Device with basic methods, holding an always reference
+counted device::Device.
 
-Implement iomap_region() to create a Bar and have the result returned
-through a Devres container, ensuring that the resources are latest freed
-in the driver's remove() callback and access to the Bar is revoke()d for
-outstanding users.
-
+Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Co-developed-by: Philipp Stanner <pstanner@redhat.com>
 Signed-off-by: Philipp Stanner <pstanner@redhat.com>
 Co-developed-by: Danilo Krummrich <dakr@redhat.com>
 Signed-off-by: Danilo Krummrich <dakr@redhat.com>
 ---
- rust/kernel/lib.rs |   1 +
- rust/kernel/pci.rs | 123 ++++++++++++++++++++++++++++++++++++++++++++-
- 2 files changed, 123 insertions(+), 1 deletion(-)
+ rust/bindings/bindings_helper.h |   1 +
+ rust/helpers.c                  |  18 ++
+ rust/kernel/lib.rs              |   2 +
+ rust/kernel/pci.rs              | 328 ++++++++++++++++++++++++++++++++
+ 4 files changed, 349 insertions(+)
+ create mode 100644 rust/kernel/pci.rs
 
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index 606391cbff83..15730deca822 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -54,6 +54,7 @@
+diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+index ddb5644d4fd9..32221de16e57 100644
+--- a/rust/bindings/bindings_helper.h
++++ b/rust/bindings/bindings_helper.h
+@@ -11,6 +11,7 @@
+ #include <linux/ethtool.h>
+ #include <linux/jiffies.h>
+ #include <linux/mdio.h>
++#include <linux/pci.h>
+ #include <linux/phy.h>
+ #include <linux/refcount.h>
+ #include <linux/sched.h>
+diff --git a/rust/helpers.c b/rust/helpers.c
+index 34061eca05a0..c3d80301185c 100644
+--- a/rust/helpers.c
++++ b/rust/helpers.c
+@@ -33,6 +33,7 @@
+ #include <linux/spinlock.h>
+ #include <linux/wait.h>
+ #include <linux/workqueue.h>
++#include <linux/pci.h>
  
- #[doc(hidden)]
- pub use bindings;
-+mod iomem;
- pub use macros;
- #[cfg(all(CONFIG_PCI, CONFIG_PCI_MSI))]
- pub mod pci;
-diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
-index 323aea565d84..403a1f53eb25 100644
---- a/rust/kernel/pci.rs
-+++ b/rust/kernel/pci.rs
-@@ -5,12 +5,17 @@
- //! C header: [`include/linux/pci.h`](../../../../include/linux/pci.h)
- 
- use crate::{
--    bindings, container_of, device, driver,
-+    alloc::flags::*,
-+    bindings, container_of, device,
-+    devres::Devres,
-+    driver,
-     error::{to_result, Result},
-+    iomem::IoMem,
-     str::CStr,
-     types::{ARef, ForeignOwnable},
-     ThisModule,
- };
-+use core::ops::Deref;
- use kernel::prelude::*; // for pinned_drop
- 
- /// An adapter for the registration of PCI drivers.
-@@ -287,6 +292,104 @@ pub trait Driver {
- #[derive(Clone)]
- pub struct Device(ARef<device::Device>);
- 
-+/// A PCI BAR to perform IO-Operations on.
-+pub struct Bar {
-+    pdev: Device,
-+    iomem: IoMem,
-+    num: u8,
-+}
-+
-+impl Bar {
-+    fn new(pdev: Device, num: u8, name: &CStr) -> Result<Self> {
-+        let barnr = num as i32;
-+
-+        let barlen = pdev.resource_len(num)?;
-+        if barlen == 0 {
-+            return Err(ENOMEM);
-+        }
-+
-+        // SAFETY:
-+        // `pdev` is always valid.
-+        // `barnr` is checked for validity at the top of the function.
-+        // `name` is always valid.
-+        let ret = unsafe { bindings::pci_request_region(pdev.as_raw(), barnr, name.as_char_ptr()) };
-+        if ret != 0 {
-+            return Err(EBUSY);
-+        }
-+
-+        // SAFETY:
-+        // `pdev` is always valid.
-+        // `barnr` is checked for validity at the top of the function.
-+        // `name` is always valid.
-+        let ioptr: usize = unsafe { bindings::pci_iomap(pdev.as_raw(), barnr, 0) } as usize;
-+        if ioptr == 0 {
-+            // SAFETY:
-+            // `pdev` is always valid.
-+            // `barnr` is checked for validity at the top of the function.
-+            unsafe { bindings::pci_release_region(pdev.as_raw(), barnr) };
-+            return Err(ENOMEM);
-+        }
-+
-+        let iomem = match IoMem::new(ioptr, barlen as usize) {
-+            Ok(iomem) => iomem,
-+            Err(err) => {
-+                // SAFETY:
-+                // `pdev` is always valid.
-+                // `ioptr` was created above, and `num` was checked at the top of the function.
-+                unsafe { Self::do_release(&pdev, ioptr, num) };
-+                return Err(err);
-+            }
-+        };
-+
-+        Ok(Bar { pdev, iomem, num })
-+    }
-+
-+    fn index_is_valid(i: u8) -> bool {
-+        // A pci_dev on the C side owns an array of resources with at most
-+        // PCI_NUM_RESOURCES entries.
-+        if i as i32 >= bindings::PCI_NUM_RESOURCES as i32 {
-+            return false;
-+        }
-+
-+        true
-+    }
-+
-+    // SAFETY: The caller should ensure that `ioptr` is valid.
-+    unsafe fn do_release(pdev: &Device, ioptr: usize, num: u8) {
-+        // SAFETY:
-+        // `pdev` is Rust data and guaranteed to be valid.
-+        // A valid `ioptr` should be provided by the caller, but an invalid one
-+        // does not cause faults on the C side.
-+        // `num` is checked for validity above.
-+        unsafe {
-+            bindings::pci_iounmap(pdev.as_raw(), ioptr as _);
-+            bindings::pci_release_region(pdev.as_raw(), num as i32);
-+        }
-+    }
-+
-+    fn release(&self) {
-+        // SAFETY:
-+        // Safe because `self` always contains a refcounted device that belongs
-+        // to a pci::Device.
-+        // `ioptr` and `num` are always valid because the Bar was created successfully.
-+        unsafe { Self::do_release(&self.pdev, self.iomem.ioptr, self.num) };
-+    }
-+}
-+
-+impl Drop for Bar {
-+    fn drop(&mut self) {
-+        self.release();
-+    }
-+}
-+
-+impl Deref for Bar {
-+    type Target = IoMem;
-+
-+    fn deref(&self) -> &Self::Target {
-+        &self.iomem
-+    }
-+}
-+
- impl Device {
-     /// Create a PCI Device instance from an existing `device::Device`.
-     ///
-@@ -319,6 +422,24 @@ pub fn set_master(&self) {
-         // SAFETY: By the type invariants, we know that `self.ptr` is non-null and valid.
-         unsafe { bindings::pci_set_master(self.as_raw()) };
-     }
-+
-+    /// Returns the size of the given PCI bar resource.
-+    pub fn resource_len(&self, bar: u8) -> Result<bindings::resource_size_t> {
-+        if !Bar::index_is_valid(bar) {
-+            return Err(EINVAL);
-+        }
-+
-+        // SAFETY: Safe as by the type invariant.
-+        Ok(unsafe { bindings::pci_resource_len(self.as_raw(), bar.into()) })
-+    }
-+
-+    /// Mapps an entire PCI-BAR after performing a region-request on it.
-+    pub fn iomap_region(&mut self, barnr: u8, name: &CStr) -> Result<Devres<Bar>> {
-+        let bar = Bar::new(self.clone(), barnr, name)?;
-+        let devres = Devres::new(self.0.clone(), bar, GFP_KERNEL)?;
-+
-+        Ok(devres)
-+    }
+ __noreturn void rust_helper_BUG(void)
+ {
+@@ -178,6 +179,23 @@ int rust_helper_devm_add_action(struct device *dev, void (*action)(void *), void
+ 	return devm_add_action(dev, action, data);
  }
  
- impl AsRef<device::Device> for Device {
++void rust_helper_pci_set_drvdata(struct pci_dev *pdev, void *data)
++{
++	pci_set_drvdata(pdev, data);
++}
++EXPORT_SYMBOL_GPL(rust_helper_pci_set_drvdata);
++
++void *rust_helper_pci_get_drvdata(struct pci_dev *pdev)
++{
++	return pci_get_drvdata(pdev);
++}
++EXPORT_SYMBOL_GPL(rust_helper_pci_get_drvdata);
++
++u64 rust_helper_pci_resource_len(struct pci_dev *pdev, int barnr)
++{
++	return pci_resource_len(pdev, barnr);
++}
++
+ /*
+  * `bindgen` binds the C `size_t` type as the Rust `usize` type, so we can
+  * use it in contexts where Rust expects a `usize` like slice (array) indices.
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index 11645060b444..606391cbff83 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -55,6 +55,8 @@
+ #[doc(hidden)]
+ pub use bindings;
+ pub use macros;
++#[cfg(all(CONFIG_PCI, CONFIG_PCI_MSI))]
++pub mod pci;
+ pub use uapi;
+ 
+ #[doc(hidden)]
+diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
+new file mode 100644
+index 000000000000..323aea565d84
+--- /dev/null
++++ b/rust/kernel/pci.rs
+@@ -0,0 +1,328 @@
++// SPDX-License-Identifier: GPL-2.0
++
++//! Wrappers for the PCI subsystem
++//!
++//! C header: [`include/linux/pci.h`](../../../../include/linux/pci.h)
++
++use crate::{
++    bindings, container_of, device, driver,
++    error::{to_result, Result},
++    str::CStr,
++    types::{ARef, ForeignOwnable},
++    ThisModule,
++};
++use kernel::prelude::*; // for pinned_drop
++
++/// An adapter for the registration of PCI drivers.
++///
++/// # Example
++///
++///```
++/// use kernel::pci;
++///
++/// impl pci::Driver for MyDriver {
++///     type Data = Arc<MyDeviceData>;
++///
++///     define_pci_id_table! {
++///         (),
++///         [ (pci::DeviceId::new(bindings::PCI_VENDOR_ID_MY_VENDOR,
++///                               bindings::PCI_ANY_ID as u32),
++///            None)
++///         ]
++///     }
++///
++///     fn probe(
++///         pdev: &mut pci::Device,
++///         id_info: Option<&Self::IdInfo>
++///     ) -> Result<Arc<Self::Data>> {
++///         ...
++///     }
++///
++///     fn remove(data: &Self::Data) {
++///         ...
++///     }
++/// }
++///
++/// struct MyModule {
++///     _registration: Pin<Box<driver::Registration<pci::Adapter<MyDriver>>>>,
++/// }
++///
++/// impl kernel::Module for MyModule {
++///     fn init(_name: &'static CStr, module: &'static ThisModule) -> Result<Self> {
++///         let registration = driver::Registration::new_pinned(c_str!("MyDriver"), module)?;
++///
++///         Ok(Self {
++///             _registration: registration,
++///         })
++///     }
++/// }
++///```
++pub struct Adapter<T: Driver>(T);
++
++impl<T: Driver> driver::DriverOps for Adapter<T> {
++    type RegType = bindings::pci_driver;
++
++    // SAFETY: The caller must ensure that `reg` is valid and unequal NULL.
++    unsafe fn register(
++        reg: *mut bindings::pci_driver,
++        name: &'static CStr,
++        module: &'static ThisModule,
++    ) -> Result {
++        // SAFETY: Guaranteed by the safety requirements of this function.
++        let pdrv: &mut bindings::pci_driver = unsafe { &mut *reg };
++
++        pdrv.name = name.as_char_ptr();
++        pdrv.probe = Some(Self::probe_callback);
++        pdrv.remove = Some(Self::remove_callback);
++        pdrv.id_table = T::ID_TABLE.as_ref();
++        // SAFETY: Guaranteed by the safety requirements of this function.
++        to_result(unsafe { bindings::__pci_register_driver(reg, module.0, name.as_char_ptr()) })
++    }
++
++    // SAFETY: The caller must ensure that `reg` is valid and unequal NULL.
++    unsafe fn unregister(reg: *mut bindings::pci_driver) {
++        // SAFETY: Guaranteed by the safety requirements of this function.
++        unsafe { bindings::pci_unregister_driver(reg) }
++    }
++}
++
++impl<T: Driver> Adapter<T> {
++    extern "C" fn probe_callback(
++        pdev: *mut bindings::pci_dev,
++        id: *const bindings::pci_device_id,
++    ) -> core::ffi::c_int {
++        // SAFETY: Safe because the core kernel only ever calls the probe callback with a valid
++        // `pdev`.
++        let dev = unsafe { device::Device::from_raw(&mut (*pdev).dev) };
++        // SAFETY: Guaranteed by the rules described above.
++        let mut pdev = unsafe { Device::from_dev(dev) };
++
++        // SAFETY: `id` is a pointer within the static table, so it's always valid.
++        let offset = unsafe { (*id).driver_data };
++        let info = {
++            // SAFETY: The offset comes from a previous call to `offset_from` in `IdArray::new`,
++            // which guarantees that the resulting pointer is within the table.
++            let ptr = unsafe {
++                id.cast::<u8>()
++                    .offset(offset as _)
++                    .cast::<Option<T::IdInfo>>()
++            };
++            // SAFETY: Guaranteed by the preceding safety requirement.
++            unsafe { (*ptr).as_ref() }
++        };
++        match T::probe(&mut pdev, info) {
++            Ok(data) => {
++                // SAFETY:
++                // A valid `pdev` is always passed to this function. `data` is always valid since
++                // it's created in Rust.
++                unsafe { bindings::pci_set_drvdata(pdev.as_raw(), data.into_foreign() as _) };
++            }
++            Err(err) => return Error::to_errno(err),
++        }
++
++        0
++    }
++
++    extern "C" fn remove_callback(pdev: *mut bindings::pci_dev) {
++        // SAFETY: This function is called by the C side and always with a valid `pdev`.
++        let ptr = unsafe { bindings::pci_get_drvdata(pdev) };
++        // SAFETY: Guaranteed by the preceding safety requirement.
++        let data = unsafe { T::Data::from_foreign(ptr) };
++        T::remove(&data);
++        <T::Data as driver::DeviceRemoval>::device_remove(&data);
++    }
++}
++
++/// Abstraction for bindings::pci_device_id.
++#[derive(Clone, Copy)]
++pub struct DeviceId {
++    /// Vendor ID
++    pub vendor: u32,
++    /// Device ID
++    pub device: u32,
++    /// Subsystem vendor ID
++    pub subvendor: u32,
++    /// Subsystem device ID
++    pub subdevice: u32,
++    /// Device class and subclass
++    pub class: u32,
++    /// Limit which sub-fields of the class
++    pub class_mask: u32,
++}
++
++impl DeviceId {
++    const PCI_ANY_ID: u32 = !0;
++
++    /// PCI_DEVICE macro.
++    pub const fn new(vendor: u32, device: u32) -> Self {
++        Self {
++            vendor,
++            device,
++            subvendor: DeviceId::PCI_ANY_ID,
++            subdevice: DeviceId::PCI_ANY_ID,
++            class: 0,
++            class_mask: 0,
++        }
++    }
++
++    /// PCI_DEVICE_CLASS macro.
++    pub const fn with_class(class: u32, class_mask: u32) -> Self {
++        Self {
++            vendor: DeviceId::PCI_ANY_ID,
++            device: DeviceId::PCI_ANY_ID,
++            subvendor: DeviceId::PCI_ANY_ID,
++            subdevice: DeviceId::PCI_ANY_ID,
++            class,
++            class_mask,
++        }
++    }
++
++    /// PCI_DEVICE_ID macro.
++    pub const fn to_rawid(&self, offset: isize) -> bindings::pci_device_id {
++        bindings::pci_device_id {
++            vendor: self.vendor,
++            device: self.device,
++            subvendor: self.subvendor,
++            subdevice: self.subdevice,
++            class: self.class,
++            class_mask: self.class_mask,
++            driver_data: offset as _,
++            override_only: 0,
++        }
++    }
++}
++
++// SAFETY: `ZERO` is all zeroed-out and `to_rawid` stores `offset` in `pci_device_id::driver_data`.
++unsafe impl driver::RawDeviceId for DeviceId {
++    type RawType = bindings::pci_device_id;
++
++    const ZERO: Self::RawType = bindings::pci_device_id {
++        vendor: 0,
++        device: 0,
++        subvendor: 0,
++        subdevice: 0,
++        class: 0,
++        class_mask: 0,
++        driver_data: 0,
++        override_only: 0,
++    };
++}
++
++/// Define a const pci device id table
++///
++/// # Examples
++///
++/// ```ignore
++/// # use kernel::{pci, define_pci_id_table};
++/// #
++/// struct MyDriver;
++/// impl pci::Driver for MyDriver {
++///     // [...]
++/// #   fn probe(_dev: &mut pci::Device, _id_info: Option<&Self::IdInfo>) -> Result {
++/// #       Ok(())
++/// #   }
++/// #   define_pci_id_table! {u32, [
++/// #       (pci::DeviceId::new(0x010800, 0xffffff), None),
++/// #       (pci::DeviceId::with_class(0x010802, 0xfffff), Some(0x10)),
++/// #   ]}
++/// }
++/// ```
++#[macro_export]
++macro_rules! define_pci_id_table {
++    ($data_type:ty, $($t:tt)*) => {
++        type IdInfo = $data_type;
++        const ID_TABLE: $crate::driver::IdTable<'static, $crate::pci::DeviceId, $data_type> = {
++            $crate::define_id_array!(ARRAY, $crate::pci::DeviceId, $data_type, $($t)* );
++            ARRAY.as_table()
++        };
++    };
++}
++pub use define_pci_id_table;
++
++/// The PCI driver trait.
++///
++/// Drivers must implement this trait in order to get a PCI driver registered. Please refer to the
++/// `Adapter` documentation for an example.
++pub trait Driver {
++    /// Data stored on device by driver.
++    ///
++    /// Corresponds to the data set or retrieved via the kernel's
++    /// `pci_{set,get}_drvdata()` functions.
++    ///
++    /// Require that `Data` implements `ForeignOwnable`. We guarantee to
++    /// never move the underlying wrapped data structure.
++    ///
++    /// TODO: Use associated_type_defaults once stabilized:
++    ///
++    /// `type Data: ForeignOwnable + driver::DeviceRemoval = ();`
++    type Data: ForeignOwnable + driver::DeviceRemoval;
++
++    /// The type holding information about each device id supported by the driver.
++    ///
++    /// TODO: Use associated_type_defaults once stabilized:
++    ///
++    /// type IdInfo: 'static = ();
++    type IdInfo: 'static;
++
++    /// The table of device ids supported by the driver.
++    const ID_TABLE: driver::IdTable<'static, DeviceId, Self::IdInfo>;
++
++    /// PCI driver probe.
++    ///
++    /// Called when a new platform device is added or discovered.
++    /// Implementers should attempt to initialize the device here.
++    fn probe(dev: &mut Device, id: Option<&Self::IdInfo>) -> Result<Self::Data>;
++
++    /// PCI driver remove.
++    ///
++    /// Called when a platform device is removed.
++    /// Implementers should prepare the device for complete removal here.
++    fn remove(_data: &Self::Data);
++}
++
++/// The PCI device representation.
++///
++/// A PCI device is based on an always reference counted `device:Device` instance. Cloning a PCI
++/// device, hence, also increments the base device' reference count.
++#[derive(Clone)]
++pub struct Device(ARef<device::Device>);
++
++impl Device {
++    /// Create a PCI Device instance from an existing `device::Device`.
++    ///
++    /// # Safety
++    ///
++    /// `dev` must be an `ARef<device::Device>` whose underlying `bindings::device` is a member of
++    /// a `bindings::pci_dev`.
++    pub unsafe fn from_dev(dev: ARef<device::Device>) -> Self {
++        Self(dev)
++    }
++
++    fn as_raw(&self) -> *mut bindings::pci_dev {
++        // SAFETY: Guaranteed by the requirements described in pci::Device::new().
++        unsafe { container_of!(self.0.as_raw(), bindings::pci_dev, dev) as _ }
++    }
++
++    /// Enable the Device's memory.
++    pub fn enable_device_mem(&self) -> Result {
++        // SAFETY: By the type invariants, we know that `self.ptr` is non-null and valid.
++        let ret = unsafe { bindings::pci_enable_device_mem(self.as_raw()) };
++        if ret != 0 {
++            Err(Error::from_errno(ret))
++        } else {
++            Ok(())
++        }
++    }
++
++    /// Set the Device's master.
++    pub fn set_master(&self) {
++        // SAFETY: By the type invariants, we know that `self.ptr` is non-null and valid.
++        unsafe { bindings::pci_set_master(self.as_raw()) };
++    }
++}
++
++impl AsRef<device::Device> for Device {
++    fn as_ref(&self) -> &device::Device {
++        &self.0
++    }
++}
 -- 
 2.45.1
 
