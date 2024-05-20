@@ -1,62 +1,62 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E64B13A3F2
-	for <rust-for-linux@vger.kernel.org>; Mon, 20 May 2024 17:27:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E18C13A415
+	for <rust-for-linux@vger.kernel.org>; Mon, 20 May 2024 17:27:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716226047; cv=none; b=FxMCcQ7Z8+4OY+E2qQtcf/CEiJGesWFpA2+TwEuBk/QztZVYbbrsejA5uorUkhW87SwX+XzIrzDNy30dsx9rETnSI4nJp2map4sh/SljmVCNzI3TEKLR7wxxzDDZ6ATglS0K1wzP5/8ASWFyo/fpU4q9EmXTHd8nGQaeYhZPZAk=
+	t=1716226050; cv=none; b=dFYgrSwfs8ZhPeUthdAtpb9yyKMiMTaWfczVkO86yV4t9Yudn5hjRxGjdDS9giYYfIrO/5LQNieXLzHFVmuZ2/G0qWNDq9kRUYGSmRBbA2cXA2Xd9bLuFhObeoxQ9HqgllbAwpmH7s9vrQbUJqJ+HRjGG2BD2ff03rTQ4lSmEaE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716226047; c=relaxed/simple;
-	bh=Z/Z6FQt+IfhzYJGtOfnWM7hOAZBD5lo+z7OWyx94ou4=;
+	s=arc-20240116; t=1716226050; c=relaxed/simple;
+	bh=Pf+OOnuHz5mcZsGqaVhIEIMHurAZcjaBobj/NJHA3CI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=n52Nn245NQa8ZBdW8lWQibzhB+Uxiec3DNHojJO7RTA9JrgE4bxtE+xmLPuwNKQpMfkTKy8QMSJrnKQvGu8FT/qhsx8gfMGy4wlJ0GPDWDJKO81HZhmAtZBUjmCc3InuxcaGai19ilxcK/PBZtMRzxsIVDTKtVEB/kLwCz3QIow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=dHJ/KblD; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:Content-Type; b=TTT1d1R674lKiHRqQDY1CBGmunR91aMJpJEwOUBg9wzfoqXhBBou/74jpEEtxFoRNeSOrEfxBt/1fO2Uwk61UFOpXYfU82q7GgL7fpEUB5uMdr/ELGXv8WZhDBG2tFLeUIHp3ZhcP501uARotGaxl6zgbnX30AuhIeXnQO3HtcM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ExE5BtHl; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dHJ/KblD"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ExE5BtHl"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1716226044;
+	s=mimecast20190719; t=1716226048;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=8ykRJ38aWUQhPojOF0arCmW/c5j5xwBTUzFlxtSsGSA=;
-	b=dHJ/KblDu+jx0u3gedar8aoT4ntTD5MpJfHKB1iR6s4ayS7wbqmVeUw5Ykpkn5C3rlFymH
-	B6QsxXdvwnDpBslE3a9Bi5wx8zmfYIWlO84NNsLQlcS3sePup9UCzK1ZX97pKSkuTJlANM
-	mOWa9Fc35eCKIwaUglzj4QnmsVBHsCw=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=1CsnJXGBZcLyYjfrlAMv2FyBTh8bc+Mt3a3EbW5Rnks=;
+	b=ExE5BtHleDoyXqrEfK5QsAJTi8PrZ9h/iZ6pR/utbZc6PmifZJ2Qlt7JBpYyxgfqmj7Stm
+	IF2WqlnEXK1pVqXPlnfF12WVwPPKayMr+fX3WhvXEzE4Rwng5yfCIlwScpmIF8JQuviO31
+	s7V9taxbwrXFMUkl0yHK9ZBHLxpMi9I=
+Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
+ [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-694-qDjO3XnjOe20-bVPkflVgg-1; Mon, 20 May 2024 13:27:22 -0400
-X-MC-Unique: qDjO3XnjOe20-bVPkflVgg-1
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-354c7c04325so643442f8f.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 20 May 2024 10:27:22 -0700 (PDT)
+ us-mta-628-sOakeINRPiikriTyTkQStg-1; Mon, 20 May 2024 13:27:26 -0400
+X-MC-Unique: sOakeINRPiikriTyTkQStg-1
+Received: by mail-lj1-f197.google.com with SMTP id 38308e7fff4ca-2e3208c29abso103894121fa.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 20 May 2024 10:27:26 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716226041; x=1716830841;
+        d=1e100.net; s=20230601; t=1716226045; x=1716830845;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=8ykRJ38aWUQhPojOF0arCmW/c5j5xwBTUzFlxtSsGSA=;
-        b=FfLtStyG50ZWXZMchEeX2lHWuLrEN93s85JZ3gCVxl8KKnzFEc+Or8JPtegxKh/w+r
-         tIkfYNmxN5czEPiWRYqZiaD9rPnN3JWyr71GH5/V3G+B5pJXql8lrMUw74DSRAILCxXo
-         n4ntIDLPc5kGi2LC/tT75cQzEGTtvmhbnZi7KSTLWFCYuuylSP9vl5EofwTfjkC08rWG
-         B/bnLe6Fu8rzL5pL7vBtIBDz43MY8V6fR9Q1HVastDixCVCQfn9KvaDUR8MhSBLuvyck
-         N0iVD8sltGhIdSn4/HGYLpsOGeuLPcpkaY5Tbb/iBLZ/l2HRfCEQG2Uvp1ObfOtuNytR
-         EvuQ==
-X-Gm-Message-State: AOJu0YyBU2N2vXHuK0TdoriVIrQ4kXTUdYfpVG75Zu+HPSv0XLtylZMw
-	TWckx2IqYbGH+qqw17PhkHq1rwtg0W8+rmt0EoT76Iy+HDTaglSY8TogDM2+fZcXotThYgDiPpA
-	U/VUuvd2C9CR+fCaPpqOmtpqpSHXGLavTlICDF6Z9SS2awV2igc4JhcU7jUPGW7ZC
-X-Received: by 2002:a05:6000:1083:b0:350:2ba9:ca03 with SMTP id ffacd0b85a97d-354b8e6577cmr5817514f8f.23.1716226041280;
-        Mon, 20 May 2024 10:27:21 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEi7mAWZQwNorKfygViuMjJctRMt7yGRf02f78cLaq2jisR8KhggcCcLDZDt+WNalb6qNuquA==
-X-Received: by 2002:a05:6000:1083:b0:350:2ba9:ca03 with SMTP id ffacd0b85a97d-354b8e6577cmr5817476f8f.23.1716226040747;
-        Mon, 20 May 2024 10:27:20 -0700 (PDT)
+        bh=1CsnJXGBZcLyYjfrlAMv2FyBTh8bc+Mt3a3EbW5Rnks=;
+        b=K3Nny2y8qpOnP3nDqTP1Oyieo5h2Ovc9ep1I5jxFaeqid6pUKHxeuHDqCrS9fXP5pL
+         6v7jeIY24xhv6X1EK8UPzjyAhKsI++6WNGX6h3x2CybUOKxJqRqed8KUJbeDdea4rosL
+         wWnTuBrtSoNMKyD/dxCY5dti+PzI7zJEjWInE4pviXYkyGq6maorO2Q3ZxSEzll1gQSI
+         O212/o1cAG+s8Rc7bnNx4Om0DuxPXAPNHWJYGFuqsVovrek831UcU/w34RIirH3Bqkuz
+         bHrQm5xhiAKiLPXuXUfX3MScqlbOHogm4vQvS4+RXUbwaPxDaTI+VhZVkvRlVPr+Kt6B
+         frjQ==
+X-Gm-Message-State: AOJu0YwZidtNrBQeDr0hc3PZAqS+TWy2wElVwujQaOVlcHhBxWp1pKKx
+	D/J+LzO2hH3TqWTtE9hwZpcgOMCLUwaygqG8Z7YfUxcJr3Fh0URkaOo2R30n3RsmE9sNC+/j6B4
+	ZupctP/yQ/4TFsmJE4VNL5TruieJ9iQkQdIWgDXkQ4qWUIRsWimIADsNOCUtrGAsc
+X-Received: by 2002:a2e:be9f:0:b0:2e3:ba0e:de12 with SMTP id 38308e7fff4ca-2e51ff5cf48mr319538871fa.22.1716226045285;
+        Mon, 20 May 2024 10:27:25 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHbLE5+nNhphlxlGh18a3Zy/HbW451IH7B3zyMvPHBImYdCotrNMydqRvyk8NUf6/7klPUZ8Q==
+X-Received: by 2002:a2e:be9f:0:b0:2e3:ba0e:de12 with SMTP id 38308e7fff4ca-2e51ff5cf48mr319538611fa.22.1716226044936;
+        Mon, 20 May 2024 10:27:24 -0700 (PDT)
 Received: from cassiopeiae.. ([2a02:810d:4b3f:ee94:642:1aff:fe31:a19f])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3525f7f7d88sm10352988f8f.57.2024.05.20.10.27.18
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42009eda143sm363816305e9.14.2024.05.20.10.27.23
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 20 May 2024 10:27:19 -0700 (PDT)
+        Mon, 20 May 2024 10:27:24 -0700 (PDT)
 From: Danilo Krummrich <dakr@redhat.com>
 To: gregkh@linuxfoundation.org,
 	rafael@kernel.org,
@@ -79,11 +79,10 @@ To: gregkh@linuxfoundation.org,
 Cc: rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-pci@vger.kernel.org,
-	Wedson Almeida Filho <wedsonaf@google.com>,
 	Danilo Krummrich <dakr@redhat.com>
-Subject: [RFC PATCH 07/11] rust: add `dev_*` print macros.
-Date: Mon, 20 May 2024 19:25:44 +0200
-Message-ID: <20240520172554.182094-8-dakr@redhat.com>
+Subject: [RFC PATCH 08/11] rust: add devres abstraction
+Date: Mon, 20 May 2024 19:25:45 +0200
+Message-ID: <20240520172554.182094-9-dakr@redhat.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240520172554.182094-1-dakr@redhat.com>
 References: <20240520172554.182094-1-dakr@redhat.com>
@@ -98,382 +97,213 @@ X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset="US-ASCII"; x-default=true
 
-From: Wedson Almeida Filho <wedsonaf@google.com>
+Add a Rust abstraction for the kernel's devres (device resource
+management) implementation.
 
-Implement `dev_*` print macros for `device::Device`.
+The Devres type acts as a container to manage the lifetime and
+accessibility of device bound resources. Therefore it registers a
+devres callback and revokes access to the resource on invocation.
 
-They behave like the macros with the same names in C, i.e., they print
-messages to the kernel ring buffer with the given level, prefixing the
-messages with corresponding device information.
+Users of the Devres abstraction can simply free the corresponding
+resources in their Drop implementation, which is invoked when either the
+Devres instance goes out of scope or the devres callback leads to the
+resource being revoked, which implies a call to drop_in_place().
 
-Signed-off-by: Wedson Almeida Filho <wedsonaf@google.com>
+Co-developed-by: Philipp Stanner <pstanner@redhat.com>
+Signed-off-by: Philipp Stanner <pstanner@redhat.com>
 Signed-off-by: Danilo Krummrich <dakr@redhat.com>
 ---
- rust/kernel/device.rs  | 321 +++++++++++++++++++++++++++++++++++++++++
- rust/kernel/prelude.rs |   2 +
- 2 files changed, 323 insertions(+)
+ rust/helpers.c        |   5 ++
+ rust/kernel/devres.rs | 151 ++++++++++++++++++++++++++++++++++++++++++
+ rust/kernel/lib.rs    |   1 +
+ 3 files changed, 157 insertions(+)
+ create mode 100644 rust/kernel/devres.rs
 
-diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
-index b1c3f7a0d623..2988aeb4e040 100644
---- a/rust/kernel/device.rs
-+++ b/rust/kernel/device.rs
-@@ -18,11 +18,15 @@
-     types::{ARef, Opaque},
- };
- use core::{
-+    fmt,
-     ops::{Deref, DerefMut},
-     pin::Pin,
-     ptr,
- };
+diff --git a/rust/helpers.c b/rust/helpers.c
+index 1d3e800140fc..34061eca05a0 100644
+--- a/rust/helpers.c
++++ b/rust/helpers.c
+@@ -173,6 +173,11 @@ void rust_helper_rcu_read_unlock(void)
+ EXPORT_SYMBOL_GPL(rust_helper_rcu_read_unlock);
+ /* end rcu */
  
-+#[cfg(CONFIG_PRINTK)]
-+use crate::c_str;
++int rust_helper_devm_add_action(struct device *dev, void (*action)(void *), void *data)
++{
++	return devm_add_action(dev, action, data);
++}
 +
- /// A ref-counted device.
- ///
- /// # Invariants
-@@ -66,6 +70,110 @@ pub unsafe fn as_ref<'a>(ptr: *mut bindings::device) -> &'a Self {
-         // SAFETY: Guaranteed by the safety requirements of the function.
-         unsafe { &*ptr.cast() }
-     }
+ /*
+  * `bindgen` binds the C `size_t` type as the Rust `usize` type, so we can
+  * use it in contexts where Rust expects a `usize` like slice (array) indices.
+diff --git a/rust/kernel/devres.rs b/rust/kernel/devres.rs
+new file mode 100644
+index 000000000000..bf7bd304cd9b
+--- /dev/null
++++ b/rust/kernel/devres.rs
+@@ -0,0 +1,151 @@
++// SPDX-License-Identifier: GPL-2.0
 +
-+    /// Prints an emergency-level message (level 0) prefixed with device information.
-+    ///
-+    /// More details are available from [`dev_emerg`].
-+    ///
-+    /// [`dev_emerg`]: crate::dev_emerg
-+    pub fn pr_emerg(&self, args: fmt::Arguments<'_>) {
-+        // SAFETY: `klevel` is null-terminated, uses one of the kernel constants.
-+        unsafe { self.printk(bindings::KERN_EMERG, args) };
++//! Devres abstraction
++//!
++//! [`Devres`] represents an abstraction for the kernel devres (device resource management)
++//! implementation.
++
++use crate::{
++    alloc::Flags,
++    bindings,
++    device::Device,
++    error::{Error, Result},
++    prelude::*,
++    revocable::Revocable,
++    types::ARef,
++};
++
++use core::ffi::c_void;
++use core::ops::Deref;
++
++#[pin_data]
++struct DevresInner<T> {
++    dev: ARef<Device>,
++    #[pin]
++    data: Revocable<T>,
++}
++
++/// This abstraction is meant to be used by subsystems to containerize [`Device`] bound resources to
++/// manage their lifetime.
++///
++/// [`Device`] bound resources should be freed when either the resource goes out of scope or the
++/// [`Device`] is unbound respectively, depending on what happens first.
++///
++/// To achieve that [`Devres`] registers a devres callback on creation, which is called once the
++/// [`Device`] is unbound, revoking access to the encapsulated resource (see also [`Revocable`]).
++///
++/// After the [`Devres`] has been unbound it is not possible to access the encapsulated resource
++/// anymore.
++///
++/// [`Devres`] users should make sure to simply free the corresponding backing resource in `T`'s
++/// [`Drop`] implementation.
++///
++/// # Example
++///
++/// ```
++/// use kernel::devres::Devres;
++///
++/// // See also [`pci::Bar`] for a real example.
++/// struct IoRemap(IoMem);
++///
++/// impl IoRemap {
++///     fn new(usize paddr, usize len) -> Result<Self>{
++///         // assert success
++///         let addr = unsafe { bindings::ioremap(paddr as _); };
++///         let iomem = IoMem::new(addr, len)?;
++///
++///         Ok(IoRemap(iomem))
++///     }
++/// }
++///
++/// impl Drop for IoRemap {
++///     fn drop(&mut self) {
++///         unsafe { bindings::iounmap(self.0.ioptr as _); };
++///     }
++/// }
++///
++/// impl Deref for IoRemap {
++///    type Target = IoMem;
++///
++///    fn deref(&self) -> &Self::Target {
++///        &self.0
++///    }
++/// }
++///
++/// let devres = Devres::new(dev, IoRemap::new(0xBAAAAAAD, 0x4)?, GFP_KERNEL)?;
++///
++/// let res = devres.try_access().ok_or(ENXIO)?;
++/// res.writel(0xBAD);
++/// ```
++///
++pub struct Devres<T> {
++    inner: Pin<Box<DevresInner<T>>>,
++    callback: unsafe extern "C" fn(*mut c_void),
++}
++
++impl<T> DevresInner<T> {
++    fn as_ptr(&self) -> *const DevresInner<T> {
++        self as *const DevresInner<T>
 +    }
 +
-+    /// Prints an alert-level message (level 1) prefixed with device information.
-+    ///
-+    /// More details are available from [`dev_alert`].
-+    ///
-+    /// [`dev_alert`]: crate::dev_alert
-+    pub fn pr_alert(&self, args: fmt::Arguments<'_>) {
-+        // SAFETY: `klevel` is null-terminated, uses one of the kernel constants.
-+        unsafe { self.printk(bindings::KERN_ALERT, args) };
++    fn as_cptr(&self) -> *mut c_void {
++        self.as_ptr() as *mut c_void
 +    }
++}
 +
-+    /// Prints a critical-level message (level 2) prefixed with device information.
-+    ///
-+    /// More details are available from [`dev_crit`].
-+    ///
-+    /// [`dev_crit`]: crate::dev_crit
-+    pub fn pr_crit(&self, args: fmt::Arguments<'_>) {
-+        // SAFETY: `klevel` is null-terminated, uses one of the kernel constants.
-+        unsafe { self.printk(bindings::KERN_CRIT, args) };
-+    }
++unsafe extern "C" fn devres_callback<T>(inner: *mut c_void) {
++    let inner = inner as *const DevresInner<T>;
++    let inner = unsafe { &*inner };
 +
-+    /// Prints an error-level message (level 3) prefixed with device information.
-+    ///
-+    /// More details are available from [`dev_err`].
-+    ///
-+    /// [`dev_err`]: crate::dev_err
-+    pub fn pr_err(&self, args: fmt::Arguments<'_>) {
-+        // SAFETY: `klevel` is null-terminated, uses one of the kernel constants.
-+        unsafe { self.printk(bindings::KERN_ERR, args) };
-+    }
++    inner.data.revoke();
++}
 +
-+    /// Prints a warning-level message (level 4) prefixed with device information.
-+    ///
-+    /// More details are available from [`dev_warn`].
-+    ///
-+    /// [`dev_warn`]: crate::dev_warn
-+    pub fn pr_warn(&self, args: fmt::Arguments<'_>) {
-+        // SAFETY: `klevel` is null-terminated, uses one of the kernel constants.
-+        unsafe { self.printk(bindings::KERN_WARNING, args) };
-+    }
++impl<T> Devres<T> {
++    /// Creates a new [`Devres`] instance of the give data.
++    pub fn new(dev: ARef<Device>, data: T, flags: Flags) -> Result<Self> {
++        let callback = devres_callback::<T>;
 +
-+    /// Prints a notice-level message (level 5) prefixed with device information.
-+    ///
-+    /// More details are available from [`dev_notice`].
-+    ///
-+    /// [`dev_notice`]: crate::dev_notice
-+    pub fn pr_notice(&self, args: fmt::Arguments<'_>) {
-+        // SAFETY: `klevel` is null-terminated, uses one of the kernel constants.
-+        unsafe { self.printk(bindings::KERN_NOTICE, args) };
-+    }
++        let inner = Box::pin_init(
++            pin_init!( DevresInner {
++                dev: dev,
++                data <- Revocable::new(data),
++            }),
++            flags,
++        )?;
 +
-+    /// Prints an info-level message (level 6) prefixed with device information.
-+    ///
-+    /// More details are available from [`dev_info`].
-+    ///
-+    /// [`dev_info`]: crate::dev_info
-+    pub fn pr_info(&self, args: fmt::Arguments<'_>) {
-+        // SAFETY: `klevel` is null-terminated, uses one of the kernel constants.
-+        unsafe { self.printk(bindings::KERN_INFO, args) };
-+    }
-+
-+    /// Prints a debug-level message (level 7) prefixed with device information.
-+    ///
-+    /// More details are available from [`dev_dbg`].
-+    ///
-+    /// [`dev_dbg`]: crate::dev_dbg
-+    pub fn pr_dbg(&self, args: fmt::Arguments<'_>) {
-+        if cfg!(debug_assertions) {
-+            // SAFETY: `klevel` is null-terminated, uses one of the kernel constants.
-+            unsafe { self.printk(bindings::KERN_DEBUG, args) };
-+        }
-+    }
-+
-+    /// Prints the provided message to the console.
-+    ///
-+    /// # Safety
-+    ///
-+    /// Callers must ensure that `klevel` is null-terminated; in particular, one of the
-+    /// `KERN_*`constants, for example, `KERN_CRIT`, `KERN_ALERT`, etc.
-+    #[cfg_attr(not(CONFIG_PRINTK), allow(unused_variables))]
-+    unsafe fn printk(&self, klevel: &[u8], msg: fmt::Arguments<'_>) {
-+        // SAFETY: `klevel` is null-terminated and one of the kernel constants. `self.as_raw`
-+        // is valid because `self` is valid. The "%pA" format string expects a pointer to
-+        // `fmt::Arguments`, which is what we're passing as the last argument.
-+        #[cfg(CONFIG_PRINTK)]
-+        unsafe {
-+            bindings::_dev_printk(
-+                klevel as *const _ as *const core::ffi::c_char,
-+                self.as_raw(),
-+                c_str!("%pA").as_char_ptr(),
-+                &msg as *const _ as *const core::ffi::c_void,
-+            )
++        let ret = unsafe {
++            bindings::devm_add_action(inner.dev.as_raw(), Some(callback), inner.as_cptr())
 +        };
-+    }
- }
- 
- // SAFETY: Instances of `Device` are always ref-counted.
-@@ -175,3 +283,216 @@ fn deref_mut(&mut self) -> &mut U {
-         &mut self.general
-     }
- }
 +
-+#[doc(hidden)]
-+#[macro_export]
-+macro_rules! dev_printk {
-+    ($method:ident, $dev:expr, $($f:tt)*) => {
-+        {
-+            // We have an explicity `use` statement here so that callers of this macro are not
-+            // required to explicitly use the `RawDevice` trait to use its functions.
-+            use $crate::device::Device;
-+            ($dev).$method(core::format_args!($($f)*));
++        if ret != 0 {
++            return Err(Error::from_errno(ret));
++        }
++
++        // We have to store the exact callback function pointer used with
++        // `bindings::devm_add_action` for `bindings::devm_remove_action`. There compiler might put
++        // multiple definitions of `devres_callback<T>` for the same `T` in both the kernel itself
++        // and modules. Hence, we might see different pointer values depending on whether we look
++        // at `devres_callback<T>`'s address from `Devres::new` or `Devres::drop`.
++        Ok(Devres { inner, callback })
++    }
++}
++
++impl<T> Deref for Devres<T> {
++    type Target = Revocable<T>;
++
++    fn deref(&self) -> &Self::Target {
++        &self.inner.data
++    }
++}
++
++impl<T> Drop for Devres<T> {
++    fn drop(&mut self) {
++        unsafe {
++            bindings::devm_remove_action(
++                self.inner.dev.as_raw(),
++                Some(self.callback),
++                self.inner.as_cptr(),
++            )
 +        }
 +    }
 +}
-+
-+/// Prints an emergency-level message (level 0) prefixed with device information.
-+///
-+/// This level should be used if the system is unusable.
-+///
-+/// Equivalent to the kernel's `dev_emerg` macro.
-+///
-+/// Mimics the interface of [`std::print!`]. More information about the syntax is available from
-+/// [`core::fmt`] and [`alloc::format!`].
-+///
-+/// [`std::print!`]: https://doc.rust-lang.org/std/macro.print.html
-+///
-+/// # Examples
-+///
-+/// ```
-+/// # use kernel::device::Device;
-+///
-+/// fn example(dev: &Device) {
-+///     dev_emerg!(dev, "hello {}\n", "there");
-+/// }
-+/// ```
-+#[macro_export]
-+macro_rules! dev_emerg {
-+    ($($f:tt)*) => { $crate::dev_printk!(pr_emerg, $($f)*); }
-+}
-+
-+/// Prints an alert-level message (level 1) prefixed with device information.
-+///
-+/// This level should be used if action must be taken immediately.
-+///
-+/// Equivalent to the kernel's `dev_alert` macro.
-+///
-+/// Mimics the interface of [`std::print!`]. More information about the syntax is available from
-+/// [`core::fmt`] and [`alloc::format!`].
-+///
-+/// [`std::print!`]: https://doc.rust-lang.org/std/macro.print.html
-+///
-+/// # Examples
-+///
-+/// ```
-+/// # use kernel::device::Device;
-+///
-+/// fn example(dev: &Device) {
-+///     dev_alert!(dev, "hello {}\n", "there");
-+/// }
-+/// ```
-+#[macro_export]
-+macro_rules! dev_alert {
-+    ($($f:tt)*) => { $crate::dev_printk!(pr_alert, $($f)*); }
-+}
-+
-+/// Prints a critical-level message (level 2) prefixed with device information.
-+///
-+/// This level should be used in critical conditions.
-+///
-+/// Equivalent to the kernel's `dev_crit` macro.
-+///
-+/// Mimics the interface of [`std::print!`]. More information about the syntax is available from
-+/// [`core::fmt`] and [`alloc::format!`].
-+///
-+/// [`std::print!`]: https://doc.rust-lang.org/std/macro.print.html
-+///
-+/// # Examples
-+///
-+/// ```
-+/// # use kernel::device::Device;
-+///
-+/// fn example(dev: &Device) {
-+///     dev_crit!(dev, "hello {}\n", "there");
-+/// }
-+/// ```
-+#[macro_export]
-+macro_rules! dev_crit {
-+    ($($f:tt)*) => { $crate::dev_printk!(pr_crit, $($f)*); }
-+}
-+
-+/// Prints an error-level message (level 3) prefixed with device information.
-+///
-+/// This level should be used in error conditions.
-+///
-+/// Equivalent to the kernel's `dev_err` macro.
-+///
-+/// Mimics the interface of [`std::print!`]. More information about the syntax is available from
-+/// [`core::fmt`] and [`alloc::format!`].
-+///
-+/// [`std::print!`]: https://doc.rust-lang.org/std/macro.print.html
-+///
-+/// # Examples
-+///
-+/// ```
-+/// # use kernel::device::Device;
-+///
-+/// fn example(dev: &Device) {
-+///     dev_err!(dev, "hello {}\n", "there");
-+/// }
-+/// ```
-+#[macro_export]
-+macro_rules! dev_err {
-+    ($($f:tt)*) => { $crate::dev_printk!(pr_err, $($f)*); }
-+}
-+
-+/// Prints a warning-level message (level 4) prefixed with device information.
-+///
-+/// This level should be used in warning conditions.
-+///
-+/// Equivalent to the kernel's `dev_warn` macro.
-+///
-+/// Mimics the interface of [`std::print!`]. More information about the syntax is available from
-+/// [`core::fmt`] and [`alloc::format!`].
-+///
-+/// [`std::print!`]: https://doc.rust-lang.org/std/macro.print.html
-+///
-+/// # Examples
-+///
-+/// ```
-+/// # use kernel::device::Device;
-+///
-+/// fn example(dev: &Device) {
-+///     dev_warn!(dev, "hello {}\n", "there");
-+/// }
-+/// ```
-+#[macro_export]
-+macro_rules! dev_warn {
-+    ($($f:tt)*) => { $crate::dev_printk!(pr_warn, $($f)*); }
-+}
-+
-+/// Prints a notice-level message (level 5) prefixed with device information.
-+///
-+/// This level should be used in normal but significant conditions.
-+///
-+/// Equivalent to the kernel's `dev_notice` macro.
-+///
-+/// Mimics the interface of [`std::print!`]. More information about the syntax is available from
-+/// [`core::fmt`] and [`alloc::format!`].
-+///
-+/// [`std::print!`]: https://doc.rust-lang.org/std/macro.print.html
-+///
-+/// # Examples
-+///
-+/// ```
-+/// # use kernel::device::Device;
-+///
-+/// fn example(dev: &Device) {
-+///     dev_notice!(dev, "hello {}\n", "there");
-+/// }
-+/// ```
-+#[macro_export]
-+macro_rules! dev_notice {
-+    ($($f:tt)*) => { $crate::dev_printk!(pr_notice, $($f)*); }
-+}
-+
-+/// Prints an info-level message (level 6) prefixed with device information.
-+///
-+/// This level should be used for informational messages.
-+///
-+/// Equivalent to the kernel's `dev_info` macro.
-+///
-+/// Mimics the interface of [`std::print!`]. More information about the syntax is available from
-+/// [`core::fmt`] and [`alloc::format!`].
-+///
-+/// [`std::print!`]: https://doc.rust-lang.org/std/macro.print.html
-+///
-+/// # Examples
-+///
-+/// ```
-+/// # use kernel::device::Device;
-+///
-+/// fn example(dev: &Device) {
-+///     dev_info!(dev, "hello {}\n", "there");
-+/// }
-+/// ```
-+#[macro_export]
-+macro_rules! dev_info {
-+    ($($f:tt)*) => { $crate::dev_printk!(pr_info, $($f)*); }
-+}
-+
-+/// Prints a debug-level message (level 7) prefixed with device information.
-+///
-+/// This level should be used for debug messages.
-+///
-+/// Equivalent to the kernel's `dev_dbg` macro, except that it doesn't support dynamic debug yet.
-+///
-+/// Mimics the interface of [`std::print!`]. More information about the syntax is available from
-+/// [`core::fmt`] and [`alloc::format!`].
-+///
-+/// [`std::print!`]: https://doc.rust-lang.org/std/macro.print.html
-+///
-+/// # Examples
-+///
-+/// ```
-+/// # use kernel::device::Device;
-+///
-+/// fn example(dev: &Device) {
-+///     dev_dbg!(dev, "hello {}\n", "there");
-+/// }
-+/// ```
-+#[macro_export]
-+macro_rules! dev_dbg {
-+    ($($f:tt)*) => { $crate::dev_printk!(pr_dbg, $($f)*); }
-+}
-diff --git a/rust/kernel/prelude.rs b/rust/kernel/prelude.rs
-index b37a0b3180fb..c5765ab863d6 100644
---- a/rust/kernel/prelude.rs
-+++ b/rust/kernel/prelude.rs
-@@ -27,6 +27,8 @@
- // `super::std_vendor` is hidden, which makes the macro inline for some reason.
- #[doc(no_inline)]
- pub use super::dbg;
-+pub use super::fmt;
-+pub use super::{dev_alert, dev_crit, dev_dbg, dev_emerg, dev_err, dev_info, dev_notice, dev_warn};
- pub use super::{pr_alert, pr_crit, pr_debug, pr_emerg, pr_err, pr_info, pr_notice, pr_warn};
- 
- pub use super::{init, pin_init, try_init, try_pin_init};
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index d7d415429517..11645060b444 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -30,6 +30,7 @@
+ pub mod alloc;
+ mod build_assert;
+ pub mod device;
++pub mod devres;
+ pub mod driver;
+ pub mod error;
+ pub mod init;
 -- 
 2.45.1
 
