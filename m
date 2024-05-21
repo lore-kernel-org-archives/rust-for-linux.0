@@ -1,164 +1,91 @@
-Received: from mail-ej1-f44.google.com (mail-ej1-f44.google.com [209.85.218.44])
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 111197F47F
-	for <rust-for-linux@vger.kernel.org>; Tue, 21 May 2024 14:02:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EFB91E87C
+	for <rust-for-linux@vger.kernel.org>; Tue, 21 May 2024 14:52:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716300126; cv=none; b=FwZhdViAixBxNgcRVYbKOGfQLOsihbHqmezUaplZMmtthEYX2ZYv02LZPE1YpSZHYbhaml0fPJxFkkAo0nRzLpmQh676DnH0manVwVzKu0wnfubI5+pZo8/38C0B1yDhmjk4pQLICWJymgOmfWbYgrmfOeKMj09f0mQ+sGqUQPk=
+	t=1716303176; cv=none; b=JtEWlEATI1ow61sY03FTChRxptlurQ/cpI4mEc2N1r3eCldJma10eudC2N15KCgYvnrUCyCyS1JPYA04sw8p+BVKj+PeM2UjM1gE8EovqpZCm5LpAckurE+OzwuS81Bt6vX7Y7nuYM2w62l6fPHB0Id8LnP48Sk3t4Y4PS4ngk0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716300126; c=relaxed/simple;
-	bh=8Nm4bcloCkKdTAMMAl5tnTAzfKE2/nmNvNzGM5tA6ls=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=aEedcVdlGDqf6/o8Obrl9WFp2L2ivAsPr4Czgl19jo0jLfc3WLbmg1YRTY+KtHXeqUEPLpfjPBb3KnoXif+wPh1puaX895+LrGdGUJkvrqlKtxaw6780QJ3iOVtxuS+GzZnj1sSSwsIrz571omig0WK9t8C8GmkmKW4QYE7wJ98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk; spf=none smtp.mailfrom=metaspace.dk; dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b=i9A/70qC; arc=none smtp.client-ip=209.85.218.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=metaspace.dk
+	s=arc-20240116; t=1716303176; c=relaxed/simple;
+	bh=cvBTOOpGuFTwSUUDgAgTQvDnQx/z7QcwtMFWKNPEBDE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=q9f/Km6vOMm6tO6xz46TJoyBAw9p6WrYX9Yxq1FMHn0Y4x4j5098IYBHmU/WsB9FtWofdOXzdtQ0gP5peh2Izytp0Vuns/h+3MqC6g+0D7d+piWazjwi9fZVJbdMeT5jhbQ9BCRwFpuxRYd0I0FNNjWP904YaF03zGWuYru3eTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ObNc/rDh; arc=none smtp.client-ip=209.85.216.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b="i9A/70qC"
-Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-a59ab4f60a6so759418066b.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 21 May 2024 07:02:04 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ObNc/rDh"
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-2b2b42b5126so409401a91.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 21 May 2024 07:52:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=metaspace-dk.20230601.gappssmtp.com; s=20230601; t=1716300123; x=1716904923; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=CPucwLlGIDCoc/kjcAh9Snn7SwWN3nO4JXCoZKLG+xY=;
-        b=i9A/70qCeaPJ9fVvG1CGVImnZPkBsih6cmpV+AYWxFsuSjB6UCUQXVnDxl7Oa7/KDz
-         bNTF3Zz54dzoFH0CJNb9pW2oW7t5HmFlMZp6dqmFIQNV4OY1xNGEMFleQ80v1BUv49N5
-         TbwEKmFTrtBAH7sX93BZ3m4OBCx3nKlOfVoK/9eWWTMGGncPDjWiicDRuzIBQCD/KFQ5
-         HjCadcWwICs7fTYSTOQBzNesW+ZtgP+Vb6CRG81R0q8RKYl8hdhJz9rls36HEXDFV3fR
-         sSqAGFyH8DZmzNwXNnBxrx3Pu3T+61qanm2aCpP7pCKa4Np+h9yhtXug9Y/a+j6q21/W
-         h/QA==
+        d=gmail.com; s=20230601; t=1716303174; x=1716907974; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cvBTOOpGuFTwSUUDgAgTQvDnQx/z7QcwtMFWKNPEBDE=;
+        b=ObNc/rDhEhLU74MyjnMExoxJRrrGtzWWWbx6/XhTwMe+yRZJRm3zJl51hF3Pz+nMak
+         FgCT3ViMISe+xA5jqQUKsQySda56gACyIPEnjFbz76LZ7d3tnANzmU/6CEO9RowwO1tS
+         p+utTzvgSh5a+mHnJ1YVEVkzZxd4aJ2N9hzV+4Ou6dPlw1LGfYVz8NAhqu6xqk+wIvnc
+         f2xzyYom1dyC7Y8kXLmCqLdELLRiZPoN/Q7WzccLoQBNePSMR/ky9USVtryDzoYk2MCs
+         PgnIQRPBlDX7+Avbj6AbQbRbcXggJxHUQBC6zezzL+AoBLAM5QIogksB+1ECOeSXvtWF
+         rUzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716300123; x=1716904923;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=CPucwLlGIDCoc/kjcAh9Snn7SwWN3nO4JXCoZKLG+xY=;
-        b=k0JrIuQzK0CoRIyIkdqbh8ZFvkrL24HTz1H8m4Ffx2hjc49jCkRtXdnlMyhX8UJ+xg
-         jvRk23xbOQUACEH3drXOCap42dC5EILRzp5Mn+KEtWzh7lc5vDs1peuiYybGjTY1GDEf
-         cASWbqmIEeH8JCSzJFhXhEm+u+Rqw+Ur96AAegt9By0Io3I4G/zaQ4Fn0RvwAsJgYVtn
-         bIZl7u/Q8epqv8i4y3T7Qky2impkZ0c+T2Mzyi/d8XfuDyRe+Ch+bSBKbBSzyKmwmh1g
-         JfJSiUSaAT9wPyqVl6LPEl4UUdYk55I5EslEOJHnPtxXm5Sr9JE2xZzMGM+aTHZpMcOL
-         b6Sw==
-X-Forwarded-Encrypted: i=1; AJvYcCU3ebH8hpMzlcc58jzUWcuXcPtxQVzAuEgwXsIcipgO1rwkdSFKRE5/jIxXsCPcMDj2L3BMZS11XQ0w0wmWyITSfY5zL+N55KWvegG0268=
-X-Gm-Message-State: AOJu0YwyXlfsUhsvgq9cStw8RzTONPFOaXbayYNTjfjoIja5EUcFbkMQ
-	6CvmMz//X0SLuizxZ8dk/WgWudkLQKZQJ+Q4TS+vVBMZQRxDAv01MQ4rSLyP1OM=
-X-Google-Smtp-Source: AGHT+IFJ4zfLKPxtbiw4xxELdC1BmK4mShvQZFdNEbqdSzHTDVr/Il5ZklL0ZZ2+RuKmdn6Vxt1h4g==
-X-Received: by 2002:a17:906:c45:b0:a5a:423:a69e with SMTP id a640c23a62f3a-a5a2d53ae73mr2762700766b.15.1716300123418;
-        Tue, 21 May 2024 07:02:03 -0700 (PDT)
-Received: from localhost ([79.142.230.34])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a5a1781d29fsm1604366166b.25.2024.05.21.07.02.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 May 2024 07:02:03 -0700 (PDT)
-From: Andreas Hindborg <nmi@metaspace.dk>
-To: Jens Axboe <axboe@kernel.dk>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Hannes Reinecke <hare@suse.de>,
-	Ming Lei <ming.lei@redhat.com>,
-	"linux-block@vger.kernel.org" <linux-block@vger.kernel.org>
-Cc: Andreas Hindborg <a.hindborg@samsung.com>,
-	Greg KH <gregkh@linuxfoundation.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Chaitanya Kulkarni <chaitanyak@nvidia.com>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Yexuan Yang <1182282462@bupt.edu.cn>,
-	=?UTF-8?q?Sergio=20Gonz=C3=A1lez=20Collado?= <sergio.collado@gmail.com>,
-	Joel Granados <j.granados@samsung.com>,
-	"Pankaj Raghav (Samsung)" <kernel@pankajraghav.com>,
-	Daniel Gomez <da.gomez@samsung.com>,
-	Niklas Cassel <Niklas.Cassel@wdc.com>,
-	Philipp Stanner <pstanner@redhat.com>,
-	Conor Dooley <conor@kernel.org>,
-	Johannes Thumshirn <Johannes.Thumshirn@wdc.com>,
-	=?UTF-8?q?Matias=20Bj=C3=B8rling?= <m@bjorling.me>,
-	open list <linux-kernel@vger.kernel.org>,
-	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
-	"lsf-pc@lists.linux-foundation.org" <lsf-pc@lists.linux-foundation.org>,
-	"gost.dev@samsung.com" <gost.dev@samsung.com>
-Subject: [PATCH v2 0/3] Rust block device driver API and null block driver
-Date: Tue, 21 May 2024 16:03:19 +0200
-Message-ID: <20240521140323.2960069-1-nmi@metaspace.dk>
-X-Mailer: git-send-email 2.44.0
+        d=1e100.net; s=20230601; t=1716303174; x=1716907974;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=cvBTOOpGuFTwSUUDgAgTQvDnQx/z7QcwtMFWKNPEBDE=;
+        b=RKWfw7LI/3QTbN1u/gPVBC+lnlVMzNTDjmHbGbdmaWgokqllFH8niEha3Hfyog+FF5
+         v9nmGEoOaZVggTLktSQKzxZ24m3hjaIBo15OQRUpGNRQjo2P3Dl7jFdI1hicFl0UKo1S
+         31bMEVccaucWN1/do1wjKLn9cJOdB5xXPBTKU2O9QkbkXsigzS4jh+8wP5XCVV/3crYa
+         nDIptiB2UI0osnVQ5EED62xhbrIblUYr6KcYO/iCV++oW6499Rpj2k82woWOj1qHvq/j
+         BykEhYKfYlc/OpDxExi9rnEL0H2tNUexsxDNAAYG+WtqwUdag2mYRlcl6ijZqM7e91Xz
+         dRdA==
+X-Gm-Message-State: AOJu0YzI0UJpZqCR9vuetOOU/uRiLxcr7KBI+l/xOrCeVJHsgk6Ys/Uw
+	ozHcNYaCMdL4rBNOHbT5AmOvQzqF/Kr5gycOXXm81qxs5L9uLagMJTtyR+x4qBaaQrE8SW34HbB
+	ERPDzayTnLS7nVD5qKXORHEM6STCO7Pah
+X-Google-Smtp-Source: AGHT+IGbebOpc/Bx4tjzpU/mf/ArjZQxuPU5AQ6EuIcdoWe3pgjRnQHP/NatVj2thO5SyRu+qoyxoo74dJHkSXZ1XTM=
+X-Received: by 2002:a17:90a:9601:b0:2ac:9baf:25b5 with SMTP id
+ 98e67ed59e1d1-2b6cc76f70emr27725435a91.25.1716303174579; Tue, 21 May 2024
+ 07:52:54 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <D1F44P3VLTBN.30LUQ60X5J3DN@kernel.org>
+In-Reply-To: <D1F44P3VLTBN.30LUQ60X5J3DN@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 21 May 2024 16:52:42 +0200
+Message-ID: <CANiq72=Kv217NDGf5sXgx+EYez=cs+hO50+YNnZf9oL2zxni9Q@mail.gmail.com>
+Subject: Re: ASN.1
+To: Jarkko Sakkinen <jarkko@kernel.org>
+Cc: rust-for-linux@vger.kernel.org, 
+	Daniel Almeida <daniel.almeida@collabora.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Andreas Hindborg <a.hindborg@samsung.com>
+Hi Jarkko,
 
-Hi All!
+On Tue, May 21, 2024 at 8:36=E2=80=AFAM Jarkko Sakkinen <jarkko@kernel.org>=
+ wrote:
+>
+> So question is how to approach this? How the holding data structure for
+> holding the deserialized data should represented so that is is also
+> directly accessible from C?
 
-Kernel robot found a few issues with the first iteration of this patch [1]. I
-also rebased the patch on the Rust PR for 6.10 [2], because we have some changes
-to allocation going in, and this patch needs updates for those changes.
+Daniel (Cc'd) is working on in-kernel Rust codecs and is experimenting
+with `cbindgen` support to easily provide an API for C code (of
+course, you can do it manually too), so you may want to talk :) He
+recently wrote this article on it: https://lwn.net/Articles/970565/
 
-This is a resend to correct those issues.
+The main issue with a parallel implementation is whether the relevant
+maintainers will be OK with keeping both versions alive in the kernel.
+As usual, some ideas that may help offsetting the maintenance cost may
+be showcasing a security benefit, or a performance improvement, or a
+complexity reduction, or an avoidance of unsafe code, etc.
 
-Changes from v1:
-
-- Fix paths in doc comments so they are correct and `rustdoc` does not complain.
-- Fix a typo regarding stabilization of `const_refs_to_static`.
-- Properly gate `to_blk_status` behind `CONFIG_BLOCK`.
-- Update doc comment, a sector is usually 4096 bytes, not 512.
-- Update doc comment, use consistent unit names.
-- Rebase on `rust-6.10`.
-
-I did not change the interface to use bytes rather than sectors, even though I
-like the idea. I think it is preferable to have some similarity to the C API for
-now.
-
-Best regards,
-Andreas Hindborg
-
-Link: https://lore.kernel.org/all/20240512183950.1982353-1-nmi@metaspace.dk/ [1]
-Link: https://lore.kernel.org/all/20240512202215.67763-1-ojeda@kernel.org/ [2]
-
-Andreas Hindborg (3):
-  rust: block: introduce `kernel::block::mq` module
-  rust: block: add rnull, Rust null_blk implementation
-  MAINTAINERS: add entry for Rust block device driver API
-
- MAINTAINERS                        |  14 ++
- drivers/block/Kconfig              |   9 ++
- drivers/block/Makefile             |   3 +
- drivers/block/rnull.rs             |  86 ++++++++++
- rust/bindings/bindings_helper.h    |   2 +
- rust/helpers.c                     |  16 ++
- rust/kernel/block.rs               |   5 +
- rust/kernel/block/mq.rs            |  99 ++++++++++++
- rust/kernel/block/mq/gen_disk.rs   | 206 ++++++++++++++++++++++++
- rust/kernel/block/mq/operations.rs | 245 +++++++++++++++++++++++++++++
- rust/kernel/block/mq/raw_writer.rs |  55 +++++++
- rust/kernel/block/mq/request.rs    | 227 ++++++++++++++++++++++++++
- rust/kernel/block/mq/tag_set.rs    |  93 +++++++++++
- rust/kernel/error.rs               |   6 +
- rust/kernel/lib.rs                 |   2 +
- 15 files changed, 1068 insertions(+)
- create mode 100644 drivers/block/rnull.rs
- create mode 100644 rust/kernel/block.rs
- create mode 100644 rust/kernel/block/mq.rs
- create mode 100644 rust/kernel/block/mq/gen_disk.rs
- create mode 100644 rust/kernel/block/mq/operations.rs
- create mode 100644 rust/kernel/block/mq/raw_writer.rs
- create mode 100644 rust/kernel/block/mq/request.rs
- create mode 100644 rust/kernel/block/mq/tag_set.rs
-
-
-base-commit: 97ab3e8eec0ce79d9e265e6c9e4c480492180409
--- 
-2.44.0
-
+Cheers,
+Miguel
