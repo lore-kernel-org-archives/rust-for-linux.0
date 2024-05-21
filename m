@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0C117EEFD
-	for <rust-for-linux@vger.kernel.org>; Tue, 21 May 2024 15:20:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30C371865C
+	for <rust-for-linux@vger.kernel.org>; Tue, 21 May 2024 18:01:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716304836; cv=none; b=OAVF5DbyheVbQvfsll5uhG/YIS7CBW/eHyksjqRtn+pJY2U54cmPOxgeHB78LoPgaKNRCGqXiWXi7CnXpPmNe83ON7c8/PGMZa88tNDr/iSkZ2AHUB2ulJ7fcDZ2YBA6yKO/WJ8fQS3y+Mv80zmvvYt8KC0utlYL+xkFE1jLffQ=
+	t=1716314472; cv=none; b=mNS4FkQOAPi//fSZEBLynrUjbVrQnFxzrE8xrUkG+bkIsiHLbH9Z7Lf/m8ePNoO5i0Q7Ganzj1gdCIAoq/hpsNzN2rSbsi4uf9j7MCB4MdOv3KiwcHo5B60N+4+5K6EcbMEQiDjcSQSEUP2DyppCis0ci5R1jJ8gpCduZABJx2M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716304836; c=relaxed/simple;
-	bh=eEcz/+iuzm6fgHIJGfAKLVLEhLlMIWtjsJFN14kjXkE=;
+	s=arc-20240116; t=1716314472; c=relaxed/simple;
+	bh=wHG6h+FEK3S/JxaA75n0MWUY5UZdQzdPXahIkRSZ/Mo=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=BrDzbzZ/Dm+dYkGM3K/ymO5klNZFdOglrDIvcGzokn8TOfQ693NssfHf7kgk1ZNml7CasT9jZafVCCiS84AeNm/kIDOqJfAyUjP/NbBAvJmjY7jB0+47xEcEx1wgZCEj+Tj05cJx65hnupjrflllfDm3zsWhuPaHicKbMFhp08E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kqZx8QcH; arc=none smtp.client-ip=10.30.226.201
+	 References:In-Reply-To; b=b12PPpRLEzv4u564m6CoT8XSaZ1IBmmpjUHLMqHv683KEie4JrpkWY85bVEjG1JXRuYwFtFVHQa6QQmR9bdzBEWjYbjM0Uz9JAWY8AunLt8YNFXSY8Y1Xqj1t5hwUZcvspJ1Ly4x4CbhqjcpQWfGA1ckRrOSQV1zrt2uimBhbjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A4r6zxY9; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kqZx8QcH"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3FF3C2BD11;
-	Tue, 21 May 2024 15:20:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A4r6zxY9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD4C7C32782;
+	Tue, 21 May 2024 18:01:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716304835;
-	bh=eEcz/+iuzm6fgHIJGfAKLVLEhLlMIWtjsJFN14kjXkE=;
+	s=k20201202; t=1716314471;
+	bh=wHG6h+FEK3S/JxaA75n0MWUY5UZdQzdPXahIkRSZ/Mo=;
 	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=kqZx8QcHb7VEdfjv7T3zcqe2EjR6yBjlaaTxkeC4mUP4fZP3K8WiupAEMha0ik5SM
-	 rOuBJc1hZSqrVv6EcpGpf6yLplMtWDTEt9Zm878BhTt5tYk8HlcaEXnK2UaYPwolG7
-	 2G4e2EKePBEPkui5BTsbTFt4i+vdm8YmUNazarEc5z1YoeBZzlM5cy3ZRSWdStQuti
-	 pi7V0dj2VBTGx/PvGkucoy4PSXGfOZTl+ICk7BqPqe5OjgnTODE5rnt41zRaFIQe8i
-	 tIurrZs5tyOVwknyV99AAWLnpS4tBMv1/K5vAxvrRHlY+kwtJRwRM2T80SyKnvRpH9
-	 PiWc5SGpEUDRA==
+	b=A4r6zxY9oWclU9J50+3TeBiYDKjNJg5qn6wTms6NWrtj2kb3qhRFVI4w/VwugyNpt
+	 ODUO8RYka0NPmhCjeLMpDKZVP7h1Og+i+SSuiHTwA6XKjMAN/dOC6GPwa3YydloKZK
+	 9WNd6wG70Unx1YkCOENYv4ygynJhocM+4TWa1BvWvtqiJgf+LRBIPxIFas4S+vyuMC
+	 Zk1tzD4g8DLwX67Mx7cPXOEmcKVyix1VxjBewl7bgBPiIqtw0l1FIxb5HutLDisM+n
+	 YwnchYkjYepbQeMrCK3kQV1Flr2XLslmjY3LMUXbTbxrG/FJjtcHFuyF0bEIUId9X3
+	 a+gBxInD4L1ZQ==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -34,61 +34,44 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Tue, 21 May 2024 18:20:33 +0300
-Message-Id: <D1FFABJRCD85.1EA4JBU93JT5Y@kernel.org>
+Date: Tue, 21 May 2024 21:01:08 +0300
+Message-Id: <D1FIPA4YAU84.M7Z9VMR4P739@kernel.org>
 Cc: <rust-for-linux@vger.kernel.org>, "Daniel Almeida"
  <daniel.almeida@collabora.com>
 Subject: Re: ASN.1
 From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>
+To: "Jarkko Sakkinen" <jarkko@kernel.org>, "Miguel Ojeda"
+ <miguel.ojeda.sandonis@gmail.com>
 X-Mailer: aerc 0.17.0
 References: <D1F44P3VLTBN.30LUQ60X5J3DN@kernel.org>
  <CANiq72=Kv217NDGf5sXgx+EYez=cs+hO50+YNnZf9oL2zxni9Q@mail.gmail.com>
-In-Reply-To: <CANiq72=Kv217NDGf5sXgx+EYez=cs+hO50+YNnZf9oL2zxni9Q@mail.gmail.com>
+ <D1FFABJRCD85.1EA4JBU93JT5Y@kernel.org>
+In-Reply-To: <D1FFABJRCD85.1EA4JBU93JT5Y@kernel.org>
 
-On Tue May 21, 2024 at 5:52 PM EEST, Miguel Ojeda wrote:
-> Hi Jarkko,
->
-> On Tue, May 21, 2024 at 8:36=E2=80=AFAM Jarkko Sakkinen <jarkko@kernel.or=
-g> wrote:
-> >
-> > So question is how to approach this? How the holding data structure for
-> > holding the deserialized data should represented so that is is also
-> > directly accessible from C?
->
-> Daniel (Cc'd) is working on in-kernel Rust codecs and is experimenting
-> with `cbindgen` support to easily provide an API for C code (of
-> course, you can do it manually too), so you may want to talk :) He
-> recently wrote this article on it: https://lwn.net/Articles/970565/
->
-> The main issue with a parallel implementation is whether the relevant
-> maintainers will be OK with keeping both versions alive in the kernel.
-> As usual, some ideas that may help offsetting the maintenance cost may
-> be showcasing a security benefit, or a performance improvement, or a
-> complexity reduction, or an avoidance of unsafe code, etc.
+On Tue May 21, 2024 at 6:20 PM EEST, Jarkko Sakkinen wrote:
+> On Tue May 21, 2024 at 5:52 PM EEST, Miguel Ojeda wrote:
+> In this case I could imagine loading ASN.1 blob by calling Rust
+> functions. But yeah more like "immediate mode" API rather than "retained
+> mode" style ;-)
 
-For me the main use case would be loading of keys (I co-maintain
-keyring).
+Hey, sorry I was mixing things a bit so let me clear this up!
 
-For keyring the ASN.1 C-API is actually quite good in the sense that
-callbacks in parsing and sequential encoding are great at not conserving
-memory (actually zero consumption almost). In that sense I'm happy with
-it.
+The decoder works as follows. There is a compiler, which generates
+bytecode object linked to vmlinux and a header with symbol declaration.
+Then there is a asn1_ber_decoder(), which runs the bytecode through a
+trivial interpreter with e.g. a key blob as parameter.
 
-It is just hard to modify in the sense that it is very prone to
-off-by-one errors and such.
+And this part is great and it does not really get in the way. All of
+kernel uses it to parse ber/der/cer blobs in, and it is somewhat stable,
+and super well tested. For decoder the value of Rust is not that great.
 
-Here's an example of a patch set that I wrote over the weekend for
-asymmetric keys:
+Encoder (asn1_encoder.c) is just a set of basic functions, like one
+function per tagged type to serialize that type. Most valuable asset
+would be to replicate this set in Rust with better defined contraints
+etc.
 
-https://lore.kernel.org/linux-integrity/20240521031645.17008-1-jarkko@kerne=
-l.org/
-
-In this case I could imagine loading ASN.1 blob by calling Rust
-functions. But yeah more like "immediate mode" API rather than "retained
-mode" style ;-)
-
-> Cheers,
-> Miguel
+Sorry for longish explanation, just wanted to clear up this story :-)
+I.e encoder is higher value asset than the decoder as far as I'm
+concerned, despite being much more trivial to implement.
 
 BR, Jarkko
