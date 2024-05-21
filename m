@@ -1,124 +1,255 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E913E1FBB
-	for <rust-for-linux@vger.kernel.org>; Tue, 21 May 2024 18:55:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9994F149C71
+	for <rust-for-linux@vger.kernel.org>; Tue, 21 May 2024 20:42:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716317733; cv=none; b=iT8Zzv/YCWUYxTfcHF1uhMxCIez+NLdpjpqBXysXsW4uaTI/0+HsIDk2AB3WFvICsuGTktGWoOpCrGV7cJPFtYE/m9T56ABIgqv3NlE0R7w8mE41Rk6dXNK+Qke0i2rmZLq1SfliIF9C5sNMkx+wqOQgGBAJnMZ0OCHeF9bD9Qo=
+	t=1716324139; cv=none; b=n2m7cMe0pCxd3HEqGJ5gu79aESrUHyXdRUskPI1NZkAKHgXG8Dws2JkY5jmzggS1qEIj4XCv6QJO39RZs9YZu4zMcfb0p33jnHCMFFwMA9ysPWBOJHxarYvulN8emq3r3zmDo4gNIDN357QzmaX0aTNLpW1yfgczLDi/JIpjupQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716317733; c=relaxed/simple;
-	bh=a7EDAaQnPrME/aBwHQQ0oLFDpvyTRxdNrAqpxInxL2k=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=U1nCNraabcqdWAjB+FA6UL7miZGFjEjhRP0fI7aGwywcoXrJo3INCjGyKfigbe1XiXu49b0uygvNKVoswNLzpXqno1cYROdh4zkncLXzXMYJDccwRG7dLQRHGNMkdFJbjoMb20SatI5rJOg9977D66LR+M0Ms3+QdmfnBaSmpxc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tdDDAi+P; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1716324139; c=relaxed/simple;
+	bh=DeVryntqW6T9gzJ3NkQ54JUgALeUyNz/fkIreO4nDrg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 In-Reply-To:Content-Type:Content-Disposition; b=nuxsXK1NjlCjsd8A5RQa9AIZLKHPFlKERJhyw2AuUFEI7umsDFIGkuXOny2+/xtCRSZ7Y9UgxlUO+veugOY8BZwTMYKqoFUAl6KKYQSY0rZHFR9DzINL7kY6aYnRUvmwXC9JpR/e+PKgUv5PxfU4ZeywZjGcujHxdPu7XIPBT2w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=et/AMhKI; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tdDDAi+P"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EDC0C2BD11;
-	Tue, 21 May 2024 18:55:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716317732;
-	bh=a7EDAaQnPrME/aBwHQQ0oLFDpvyTRxdNrAqpxInxL2k=;
-	h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-	b=tdDDAi+Pk0/s3N1awamGy/CL6K5tl9W8HLnQ4s39oYj2JPZvY2bEbTm/t64xx4AWy
-	 rfYp/blbUxoYjQg4Jg0zazpTrdNkUnJf+UVxefF0VS/MDLYqf4QG2aB8bRaEF/z36q
-	 RiHsS6ibdNafF8LRq16/ARksT6aWAxUF/fLN5pW69A/2jcP7SJB6E3kBZUE6QxOWGm
-	 fHFzSYL/+9YO5bhED9xvQxl318aIpx5dzlWzp2PG8ICuSkP4Vch+E6ESlscuNZSEcR
-	 0hJPmbGeiG96BnZkiySmaZvSkLwJaoa7G5eTPmH+/PXfnAvZzaUpofMwgPZpCP2lXZ
-	 eBuydjRpZ8m7g==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="et/AMhKI"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1716324135;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=GyEo75ShgkctdoTB9XVFsNNvhww6FBPThPwlmflGWzU=;
+	b=et/AMhKIUAWq/dvemZhqPkMtjo6ohUM+MsSMAjqwzm1bvPAhUvkeLhSuzs7GrnnfDS4272
+	epxsmRsoZ5XisqKSQHDBnZ/GvrDIQM6xZI9lbCdOO/SX9PDDbyE6P18lxFBSwZkBA9lJDn
+	jQQ0kNm6MxxF4YiWYvDPC0+7+RUvZP0=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-556-KB3UDxMaNNimmBM30gUkGQ-1; Tue, 21 May 2024 16:42:08 -0400
+X-MC-Unique: KB3UDxMaNNimmBM30gUkGQ-1
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-42024ca94d0so41214895e9.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 21 May 2024 13:42:08 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716324128; x=1716928928;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=GyEo75ShgkctdoTB9XVFsNNvhww6FBPThPwlmflGWzU=;
+        b=MYqp7QaNjlFBV/Btcbcc5hNUAfHfOWYB72rCRY3oYzWIypmJ8oGtQGkapmrj+9BUVz
+         N1xmPpcDqmUfX5//q0qIjELYFkI4BvmZ/5KxVCv1C3SuKBJEIYLGJ01+FT6l8h1bRO16
+         mysPRgy0ZTWB15gkHtMQx24CH/WWlyLeVJf85WlPOLpld7OzUMQrID+6L53+GYDJowIQ
+         9WdtoP4R4Gg1wbzGxi4BFYskLglJ3e5TItAuiekvHbidQAtZsNK79NfFdqC3eQN4LGuY
+         rExDzU3wtqo25GB1XHJKXDHLglECzBBBLdCsvveTTPPRSfzLWRyk5Z8Jfd4ExtzkM5Dc
+         WOXg==
+X-Forwarded-Encrypted: i=1; AJvYcCWG1CAjWz1Im3iffQwQuyk25BIIXQ71/+Sd2tU0m5UIgN0VnStQhjcqUTSr3uRI0prT5PkJko5Y/EHO43H3+S/TZSoeJcj9yi9TvOooKVU=
+X-Gm-Message-State: AOJu0YzzYITFEnwZFTEx8ItHViZhSLiw5mFvhBA7qcwD7GEJ602r0WK1
+	Z1ak2/iGse0gUaRjxrZeQsvIsSAISw/E/CQfnHJCq10rUmoyC4fMB4LQSLXVhclb8mKnP+F2A0x
+	h1zISXUTL0eKh3W9ntBjQIOkdZ4GXB50asjA2dJSgR8DSuL1aYWdtbvrAEpjeegBM
+X-Received: by 2002:a05:600c:2211:b0:420:1592:da3f with SMTP id 5b1f17b1804b1-420fd3136dcmr85865e9.11.1716324127635;
+        Tue, 21 May 2024 13:42:07 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGnUJVaYVtACB++fi5RssmcOEjMUtrwFF1XJNUHwn8eHCCHFpci+u9toh2LA44i0R8lQkT4UA==
+X-Received: by 2002:a05:600c:2211:b0:420:1592:da3f with SMTP id 5b1f17b1804b1-420fd3136dcmr85425e9.11.1716324126890;
+        Tue, 21 May 2024 13:42:06 -0700 (PDT)
+Received: from pollux ([2a02:810d:4b3f:ee94:abf:b8ff:feee:998b])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-420193b0903sm335271625e9.47.2024.05.21.13.42.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 May 2024 13:42:05 -0700 (PDT)
+Date: Tue, 21 May 2024 22:42:03 +0200
+From: Danilo Krummrich <dakr@redhat.com>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: rafael@kernel.org, bhelgaas@google.com, ojeda@kernel.org,
+	alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@samsung.com, aliceryhl@google.com, airlied@gmail.com,
+	fujita.tomonori@gmail.com, lina@asahilina.net, pstanner@redhat.com,
+	ajanulgu@redhat.com, lyude@redhat.com,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org
+Subject: Re: [RFC PATCH 01/11] rust: add abstraction for struct device
+Message-ID: <Zk0HG5Ot-_e0o89p@pollux>
+References: <20240520172554.182094-1-dakr@redhat.com>
+ <20240520172554.182094-2-dakr@redhat.com>
+ <2024052038-deviancy-criteria-e4fe@gregkh>
+ <Zkuw/nOlpAe1OesV@pollux.localdomain>
+ <2024052144-alibi-mourner-d463@gregkh>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 21 May 2024 21:55:29 +0300
-Message-Id: <D1FJUW4RPWYR.38P76LESQMV4L@kernel.org>
-Cc: <rust-for-linux@vger.kernel.org>, "Daniel Almeida"
- <daniel.almeida@collabora.com>
-Subject: Re: ASN.1
-From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: "Jarkko Sakkinen" <jarkko@kernel.org>, "Miguel Ojeda"
- <miguel.ojeda.sandonis@gmail.com>
-X-Mailer: aerc 0.17.0
-References: <D1F44P3VLTBN.30LUQ60X5J3DN@kernel.org>
- <CANiq72=Kv217NDGf5sXgx+EYez=cs+hO50+YNnZf9oL2zxni9Q@mail.gmail.com>
- <D1FFABJRCD85.1EA4JBU93JT5Y@kernel.org>
- <D1FIPA4YAU84.M7Z9VMR4P739@kernel.org>
-In-Reply-To: <D1FIPA4YAU84.M7Z9VMR4P739@kernel.org>
+MIME-Version: 1.0
+In-Reply-To: <2024052144-alibi-mourner-d463@gregkh>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 
-On Tue May 21, 2024 at 9:01 PM EEST, Jarkko Sakkinen wrote:
-> On Tue May 21, 2024 at 6:20 PM EEST, Jarkko Sakkinen wrote:
-> > On Tue May 21, 2024 at 5:52 PM EEST, Miguel Ojeda wrote:
-> > In this case I could imagine loading ASN.1 blob by calling Rust
-> > functions. But yeah more like "immediate mode" API rather than "retaine=
-d
-> > mode" style ;-)
->
-> Hey, sorry I was mixing things a bit so let me clear this up!
->
-> The decoder works as follows. There is a compiler, which generates
-> bytecode object linked to vmlinux and a header with symbol declaration.
-> Then there is a asn1_ber_decoder(), which runs the bytecode through a
-> trivial interpreter with e.g. a key blob as parameter.
->
-> And this part is great and it does not really get in the way. All of
-> kernel uses it to parse ber/der/cer blobs in, and it is somewhat stable,
-> and super well tested. For decoder the value of Rust is not that great.
->
-> Encoder (asn1_encoder.c) is just a set of basic functions, like one
-> function per tagged type to serialize that type. Most valuable asset
-> would be to replicate this set in Rust with better defined contraints
-> etc.
->
-> Sorry for longish explanation, just wanted to clear up this story :-)
-> I.e encoder is higher value asset than the decoder as far as I'm
-> concerned, despite being much more trivial to implement.
+On Tue, May 21, 2024 at 11:24:38AM +0200, Greg KH wrote:
+> On Mon, May 20, 2024 at 10:22:22PM +0200, Danilo Krummrich wrote:
+> > On Mon, May 20, 2024 at 08:00:23PM +0200, Greg KH wrote:
+> > > On Mon, May 20, 2024 at 07:25:38PM +0200, Danilo Krummrich wrote:
+> > > > Add an (always) reference counted abstraction for a generic struct
+> > > > device. This abstraction encapsulates existing struct device instances
+> > > > and manages its reference count.
+> > > > 
+> > > > Subsystems may use this abstraction as a base to abstract subsystem
+> > > > specific device instances based on a generic struct device.
+> > > > 
+> > > > Co-developed-by: Wedson Almeida Filho <wedsonaf@gmail.com>
+> > > > Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
+> > > > Signed-off-by: Danilo Krummrich <dakr@redhat.com>
+> > > > ---
+> > > >  rust/helpers.c        |  1 +
+> > > >  rust/kernel/device.rs | 76 +++++++++++++++++++++++++++++++++++++++++++
+> > > 
+> > > What's the status of moving .rs files next to their respective .c files
+> > > in the build system?  Keeping them separate like this just isn't going
+> > > to work, sorry.
+> > > 
+> > > > --- /dev/null
+> > > > +++ b/rust/kernel/device.rs
+> > > > @@ -0,0 +1,76 @@
+> > > > +// SPDX-License-Identifier: GPL-2.0
+> > > > +
+> > > > +//! Generic devices that are part of the kernel's driver model.
+> > > > +//!
+> > > > +//! C header: [`include/linux/device.h`](../../../../include/linux/device.h)
+> > > 
+> > > relative paths for a common "include <linux/device.h" type of thing?
+> > > Rust can't handle include paths from directories?
+> > 
+> > Going to change this to `srctree/` as proposed by Miguel.
+> > 
+> > > 
+> > > > +
+> > > > +use crate::{
+> > > > +    bindings,
+> > > > +    types::{ARef, Opaque},
+> > > > +};
+> > > > +use core::ptr;
+> > > > +
+> > > > +/// A ref-counted device.
+> > > > +///
+> > > > +/// # Invariants
+> > > > +///
+> > > > +/// The pointer stored in `Self` is non-null and valid for the lifetime of the ARef instance. In
+> > > > +/// particular, the ARef instance owns an increment on underlying object’s reference count.
+> > > > +#[repr(transparent)]
+> > > > +pub struct Device(Opaque<bindings::device>);
+> > > > +
+> > > > +impl Device {
+> > > > +    /// Creates a new ref-counted instance of an existing device pointer.
+> > > > +    ///
+> > > > +    /// # Safety
+> > > > +    ///
+> > > > +    /// Callers must ensure that `ptr` is valid, non-null, and has a non-zero reference count.
+> > > 
+> > > Callers NEVER care about the reference count of a struct device, anyone
+> > > poking in that is asking for trouble.
+> > 
+> > That's confusing, if not the caller who's passing the device pointer somewhere,
+> > who else?
+> > 
+> > Who takes care that a device' reference count is non-zero when a driver's probe
+> > function is called?
+> 
+> A device's reference count will be non-zero, I'm saying that sometimes,
+> some driver core functions are called with a 'struct device' that is
+> NULL, and it can handle it just fine.  Hopefully no callbacks to the
+> rust code will happen that way, but why aren't you checking just "to be
+> sure!" otherwise you could have a bug here, and it costs nothing to
+> verify it, right?
 
-For the patch set I'm working on I do have good solution. I only need to
-encode this:
+I get your point on that one. But let me explain a bit more why I think that
+check is not overly helpful here.
 
-RsaPubKey ::=3D SEQUENCE {
-	n INTEGER ({ rsa_get_n }),
-	e INTEGER ({ rsa_get_e })
-}
+In Rust we have the concept of marking functions as 'unsafe'. Unsafe functions
+need to document their safety preconsitions, i.e. the conditions the caller of
+the function must guarantee. The caller of an unsafe function needs an unsafe
+block for it to compile and every unsafe block needs an explanation why it is
+safe to call this function with the corresponding arguments.
 
-And nice thing is that e is always 65537 and length of e is always 3
-i.e. {3} serialized so it is serialized as
+(Ideally, we want to avoid having them in the first place, but for C abstractions
+we have to deal with raw pointers we receive from the C side and dereferencing a
+raw pointer is unsafe by definition.)
 
-	static const u8 EXPONENT[5] =3D {0x02, 1, 0x01, 0x01, 0x01};
+In this case we have a function that constructs the Rust `Device` structure from
+a raw (device) pointer we potentially received from the C side. Now we have to
+decide whether this function is going to be unsafe or safe.
 
-Sequence and n can be expressed along the lines of
+In order for this function to be safe we would need to be able to guarantee that
+this is a valid, non-null pointer with a non-zero reference count, which
+unfortunately we can't. Hence, it's going to be an unsafe function.
 
-	/* Last two bytes are filled with 16-bit big-endian length: */
-	u8 sequence[] =3D {0x30, 0x82, 0x00, 0x00};
-	u8 n_head[] =3D {0x02, 0x82, 0x00, 0x00};
+A NULL pointer check would not make it a safe function either, since the pointer
+could still be an invalid one, or a pointer to a device it's not guaranteed that
+the reference count is held up for the duration of the function call.
 
-So I just copy stuff in order:
+Given that, we could add the NULL check and change the safety precondition to
+"valid pointer to a device with non-zero reference count OR NULL", but I don't
+see how this improves the situation for the caller, plus we'd need to return
+`Result<Device>` instead and let the caller handle that the `Device` was not
+created.
 
-1. sequence
-2. n_head
-3. n (contents)
-4. e
+> 
+> > It's the same here. The PCI code calls Device::from_raw() from its
+> > probe_callback() function, which is called from the C side. For instance:
+> > 
+> > extern "C" fn probe_callback(
+> >    pdev: *mut bindings::pci_dev,
+> >    id: *const bindings::pci_device_id,
+> > ) -> core::ffi::c_int {
+> >    // SAFETY: This is safe, since the C side guarantees that pdev is a valid,
+> >    // non-null pointer to a struct pci_dev with a non-zero reference count.
+> >    let dev = unsafe { device::Device::from_raw(&mut (*pdev).dev) };
+> 
+> Yes, that's fine, if you are calling this from a probe callback, but
+> again, the driver core has lots of functions in it :)
 
-And this is along the line what I'm actually going to do because it is
-stable for the use case. However, it would be nice that instead of such
-sudoku there would be super stable Rust functions to take care of
-writing these. This particular use case is sorted and I'll be fine, but
-these pop up from time to time in different situations.
+See explanation above.
 
-The problem with encoders I found for Rust from crates.io is that they
-are like too bounded to the type system of Rust by implementing
-conversion traits (From, Into etc.) available. Instead of this approach
-for it might be more feasible to have dummy functions with no mangling
-in the symbols like encode_sequence, encode_integer etc. You can always
-use these dummy global functions to implement those fancy traits and
-provide bridge for C at the same time and direct as possible access to
-the actual functionality.
+> 
+> >    [...]
+> > }
+> > 
+> > > 
+> > > And why non-NULL?  Can't you check for that here?  Shouldn't you check
+> > > for that here?  Many driver core functions can handle a NULL pointer
+> > > just fine (i.e. get/put_device() can), why should Rust code assume that
+> > > a pointer passed to it from the C layer is going to have stricter rules
+> > > than the C layer can provide?
+> > 
+> > We could check for NULL here, but I think it'd be pointless. Even if the pointer
+> > is not NULL, it can still be an invalid one. There is no check we can do to
+> > guarantee safety, hence the function is and remains unsafe and has safety
+> > requirements instead that the caller must guarantee to fulfil.
+> > 
+> > Like in the example above, probe_callback() can give those guarantees instead.
+> 
+> Ok, if you say so, should we bookmark this thread for when this does
+> happen?  :)
 
-I think this is simple but very nice and usable pattern for bridging
-from C to Rust provided services.
+I'm just saying the caller has to validate that or provide a rationale why this
+is safe anyways, hence it'd be just a duplicate check.
 
-BR, Jarkko
+> 
+> What will the rust code do if it is passed in a NULL pointer?  Will it
+> crash like C code does?  Or something else?
+
+It mostly calls into C functions with this pointer, depends on what they do.
+
+Checking a few random places, e.g. [1], it seems to crash in most cases.
+
+[1] https://elixir.free-electrons.com/linux/latest/source/drivers/base/core.c#L3863
+
+> 
+> thanks,
+> 
+> greg k-h
+> 
+
