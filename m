@@ -1,64 +1,187 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A500A41C63
-	for <rust-for-linux@vger.kernel.org>; Tue, 21 May 2024 06:36:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A99A94F88A
+	for <rust-for-linux@vger.kernel.org>; Tue, 21 May 2024 07:36:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716273362; cv=none; b=KbgRRP+YRWwod22r96mK/VhCsQBkJ8hl00o764nwsCjWsBF+oVSeTvLSJTY00Vw/n5Y7mu13+gDaORfEfmqtJVlCx0hc/vXjXybrpo75ENyjrdvtsJHKv5VnsTtJHa9jqnfRSvq6HJJedkMkxruYUv0BG7kPD2VuWbjhFXLD5EU=
+	t=1716276971; cv=none; b=V3D3DmOuElgMDMdx5l5jqxkqbrTM/PsCtTnESKUz4nQ7NG0hQB20ZrT0X5RQloZxhl2LWYSu2ed4+NPeECpg2bL/TDlo3OgMs7XT9f0J2ihiMS2vLpRTiHlnKADl/V2B173ChKglId6zsVK/rWQZ/8xTe0UD6Y6eDko0fRlARDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716273362; c=relaxed/simple;
-	bh=c7qyTtt793BDIP4o0FyzeUdAhEuYJMa1loS4Y96AUrg=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:From:To; b=h9z7/uQtJOQ7JbgM8jmkJocs1pf9jeEWYJZkxyb5gkmWTcWKRdkyqj7QLsnXn9vaFPfeuiwCGRx1v7SRfe1MyIBy8qhoe82cJO3FeVGPTWe0hi2+TolaBmdH2qeKiAu7ppFu2VyWA3eOobc5q6MvwhbPBMwpZce9qTsJV6tsZIY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ALEXhwuK; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1716276971; c=relaxed/simple;
+	bh=XdN+2zttHQ0MjCqkV/rL3F/G1MvLNe2WB7xdOgF7Tr0=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Iin/l8IjtEvNAyWkeEn1bOvThPUcD6JtpXeUwBUNsxeYexWMGdmrPDH3o7le1yFIraK+ogu2x9A7SAswZiPFlotaVwFLYWEUxD4LlqpxYWnzZqojmH3VKD7wxa79jgfH419sasQM2TlVPTc+AXRNzobBnKyfBBV8sqNQVnH4YVo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Bqc14bkZ; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ALEXhwuK"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7D60C2BD11
-	for <rust-for-linux@vger.kernel.org>; Tue, 21 May 2024 06:36:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716273362;
-	bh=c7qyTtt793BDIP4o0FyzeUdAhEuYJMa1loS4Y96AUrg=;
-	h=Date:Subject:From:To:From;
-	b=ALEXhwuKd47J9ZJCpajk2XE2msY0n565IlVzHbxpLVqMEx98z8DJs9xpdoIPGTTnQ
-	 ojp6j+bqnB4Yka34N6WZRmiN4YphrMekj4J+eOMk0zoO361FlR5gXZp9B3oQXU1MqW
-	 TNE2h8bRXvB3bjmwEjgsiORcQe668+qtgQYq1FOOi2f0yzg/G+4qRpNxXbF9Cg3rwy
-	 YvhGFJhjwyG6tD+Vo3KiUOQoDkQdTEGARz202sixWGpPkEHvetYWQ2zXuLbxBgrUUB
-	 ao96rwtIUrHFq611wO9c0bxzU7QzxBrPBUKBML0y8cDMpxQbvo8fBPMLDb89Amkpcw
-	 OuicVOyOcr0YA==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Bqc14bkZ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1716276968;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=XdN+2zttHQ0MjCqkV/rL3F/G1MvLNe2WB7xdOgF7Tr0=;
+	b=Bqc14bkZDgunCi7TUI7MIbbLRFU+SbAoZ/kHWnEbMaa2OT0/y5PWUNmMFn3rAFlfheDo4f
+	uUEL4OLMtc3Tvh6fDNjey1drKx/oIIcYhGpCCRiYDcIdNEPUZtXmW/qo1IL/47TAgiVThm
+	PrDMiG7HFpUQ+7yATeL5rSo838FTuoI=
+Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
+ [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-489-tdSCHpusMgWVfnb6VB_scw-1; Tue, 21 May 2024 03:36:05 -0400
+X-MC-Unique: tdSCHpusMgWVfnb6VB_scw-1
+Received: by mail-ed1-f71.google.com with SMTP id 4fb4d7f45d1cf-574ec74fb6bso685924a12.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 21 May 2024 00:36:05 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716276964; x=1716881764;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=XdN+2zttHQ0MjCqkV/rL3F/G1MvLNe2WB7xdOgF7Tr0=;
+        b=Q763VUQwLWmYW86S3lh1de/vqIiajVZyoG+eFti2ZU46xbC3XV2bUd2/ELUQbUa3kd
+         O6YN94b37Z4s62nYQgitUHvUykxBbAsnRKqTMZT0t2kbKH+19cXbP6jsZU+WCEF14I7t
+         FI6sZC3ECjAJx9SWLt5Em1EfKggf6Bteax8+NBueukwfvcV1LnMEODFvs3JnhnI9CYF4
+         thDJVkvEqorgf6NjRoNKOYTEhqG31+CNdFli+ZI0pN6bNqPufcmqAcr+xnrEQdV/xvbo
+         D9ltZvoQ+bwnZpKBfrzP7fZoiaMmK+MOYzp5S0sedAnwamrI/ivWhIRrxnAuN0Iq4psD
+         SP7g==
+X-Forwarded-Encrypted: i=1; AJvYcCVX0zYsM7gsFX8TB8FVGVh3P0T1tqAnBuyxFoHXTaY81t/+ml8rgLlemybpoxEZo8LEPkNrkFPDhrFV8vtpoFE6FiO/J6yu9vBjyb/FcWI=
+X-Gm-Message-State: AOJu0Yyg760d741xxuKYTtfhjEo2GXVFCZpLadiMo6rgrZPbz+uewpMs
+	QNAKiOhthj0fYxiGLuqQZ2zgM2EQglDqIh0MRtlY4fyZmvuaGHId2D86oaL4AamRwqBRLLo+/U7
+	CAoFCDi80WEjW/HQdS3s7sxOyzHEn/UavVGoWX4BZQJyK0n1sPxAH3ZGrKOtNfvOH
+X-Received: by 2002:a17:907:986:b0:a59:bce9:8454 with SMTP id a640c23a62f3a-a5a2d55347bmr2891347466b.1.1716276964268;
+        Tue, 21 May 2024 00:36:04 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF6X/1XcE2E6yjKqIiqCpzGiiQ6iBNuEwXlVNXHnfjn+aSwnJU50wIIah1qpk9DeBlBs9Y+Mg==
+X-Received: by 2002:a17:907:986:b0:a59:bce9:8454 with SMTP id a640c23a62f3a-a5a2d55347bmr2891343466b.1.1716276963771;
+        Tue, 21 May 2024 00:36:03 -0700 (PDT)
+Received: from pstanner-thinkpadt14sgen1.remote.csb (nat-pool-muc-t.redhat.com. [149.14.88.26])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a5a3c65d06fsm1409594266b.52.2024.05.21.00.36.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 21 May 2024 00:36:03 -0700 (PDT)
+Message-ID: <cf89c02d45545b67272aba933fbc8a8a0df83358.camel@redhat.com>
+Subject: Re: [RFC PATCH 10/11] rust: add basic abstractions for iomem
+ operations
+From: Philipp Stanner <pstanner@redhat.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Danilo Krummrich
+	 <dakr@redhat.com>
+Cc: gregkh@linuxfoundation.org, rafael@kernel.org, bhelgaas@google.com, 
+ ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
+ boqun.feng@gmail.com,  gary@garyguo.net, bjorn3_gh@protonmail.com,
+ benno.lossin@proton.me,  a.hindborg@samsung.com, aliceryhl@google.com,
+ airlied@gmail.com,  fujita.tomonori@gmail.com, lina@asahilina.net,
+ ajanulgu@redhat.com,  lyude@redhat.com, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org,  linux-pci@vger.kernel.org
+Date: Tue, 21 May 2024 09:36:02 +0200
+In-Reply-To: <CANiq72kHrgOVrdw7rB9KpHvOMy244TgmEzAcL=v5O9rchs8T1g@mail.gmail.com>
+References: <20240520172554.182094-1-dakr@redhat.com>
+	 <20240520172554.182094-11-dakr@redhat.com>
+	 <CANiq72kHrgOVrdw7rB9KpHvOMy244TgmEzAcL=v5O9rchs8T1g@mail.gmail.com>
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Tue, 21 May 2024 09:36:00 +0300
-Message-Id: <D1F44P3VLTBN.30LUQ60X5J3DN@kernel.org>
-Subject: ASN.1
-From: "Jarkko Sakkinen" <jarkko@kernel.org>
-To: <rust-for-linux@vger.kernel.org>
-X-Mailer: aerc 0.17.0
 
-Hi,
+On Tue, 2024-05-21 at 00:32 +0200, Miguel Ojeda wrote:
+> On Mon, May 20, 2024 at 7:27=E2=80=AFPM Danilo Krummrich <dakr@redhat.com=
+>
+> wrote:
+> >=20
+> > through its Drop() implementation.
+>=20
+> Nit: `Drop`, `Deref` and so on are traits -- what do the `()` mean
+> here? I guess you may be referring to their method, but those are
+> lowercase.
 
-There's one application where it would make a lot of sense to have the
-core implementation in Rust, and make it callable from C. It is encoding
-and decoding of ASN.1 (DER).
+ACK
 
-It is essentially hierarchical binary parsing, i.e. exactly kind of
-stuff where it is too easy to shoot yourself into foot with C.
+>=20
+> > +/// IO-mapped memory, starting at the base pointer @ioptr and
+> > spanning @malxen bytes.
+>=20
+> Please use Markdown code spans instead (and intra-doc links where
+> possible) -- we don't use the `@` notation. There is a typo on the
+> variable name too.
+>=20
+> > +pub struct IoMem {
+> > +=C2=A0=C2=A0=C2=A0 pub ioptr: usize,
+>=20
+> This field is public, which raises some questions...
 
-So question is how to approach this? How the holding data structure for
-holding the deserialized data should represented so that is is also
-directly accessible from C?
+Justified questions =E2=80=93 it is public because the Drop implementation =
+for
+pci::Bar requires the ioptr to pass it to pci_iounmap().
 
-Maybe not the sexiest application ever, but it is an actual applications
-where Rust might weight a lot, also for the C code base ;-)
+The alternative would be to give pci::Bar a copy of ioptr (it's just an
+integer after all), but that would also not be exactly beautiful.
 
-I'm interested to help with this too as I consume a lot of DER type of
-input data... so I know what it should look like to work at all for the
-C code. Or do not know at this poinnt, but can verify the sensibility
-at minimum :-)
+The subsystem (as PCI does here) shall not make an instance of IoMem
+mutable, so the driver programmer couldn't modify ioptr.
 
-BR, Jarkko
+I'm very open for ideas for alternatives, though. See also the other
+mail where Danilo brainstorms about making IoMem a trait.
+
+>=20
+> > +=C2=A0=C2=A0=C2=A0 pub fn readb(&self, offset: usize) -> Result<u8> {
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 let ioptr: usize =3D self.g=
+et_io_addr(offset, 1)?;
+> > +
+> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Ok(unsafe { bindings::readb=
+(ioptr as _) })
+> > +=C2=A0=C2=A0=C2=A0 }
+>=20
+> These methods are unsound, since `ioptr` may end up being anything
+> here, given `self.ioptr` it is controlled by the caller.=C2=A0
+
+Only if IoMem is mutable, correct?
+
+The commit message states (btw this file would get more extensive
+comments soonish) that with this design its the subsystem that is
+responsible for creating IoMem validly, because the subsystem is the
+one who knows about the memory regions and lengths and stuff.
+
+The driver should only ever take an IoMem through a subsystem, so that
+would be safe.
+
+> One could
+> also trigger an overflow in `get_io_addr`.
+
+Yes, if the addition violates the capacity of a usize. But that would
+then be a bug we really want to notice, wouldn't we?
+
+Only alternative I can think of would be to do a wrapping_add(), but
+that would be even worse UB.
+
+Ideas?
+
+>=20
+> Wedson wrote a similar abstraction in the past
+> (`rust/kernel/io_mem.rs` in the old `rust` branch), with a
+> compile-time `SIZE` -- it is probably worth taking a look.
+
+Yes, we're aware of that one. We also did some experiments with it.
+Will discuss it in the other thread where Dave and Wedson mention it.
+
+>=20
+> Also, there are missing `// SAFETY:` comments here. Documentation and
+> examples would also be nice to have.
+
+Oh yes, ACK, will do
+
+
+Thx for the review!
+
+
+>=20
+> Thanks!
+>=20
+> Cheers,
+> Miguel
+>=20
+
