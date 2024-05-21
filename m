@@ -1,81 +1,84 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A99A94F88A
-	for <rust-for-linux@vger.kernel.org>; Tue, 21 May 2024 07:36:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 776374D9EA
+	for <rust-for-linux@vger.kernel.org>; Tue, 21 May 2024 08:03:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716276971; cv=none; b=V3D3DmOuElgMDMdx5l5jqxkqbrTM/PsCtTnESKUz4nQ7NG0hQB20ZrT0X5RQloZxhl2LWYSu2ed4+NPeECpg2bL/TDlo3OgMs7XT9f0J2ihiMS2vLpRTiHlnKADl/V2B173ChKglId6zsVK/rWQZ/8xTe0UD6Y6eDko0fRlARDY=
+	t=1716278594; cv=none; b=LGM5aDo4ENkAyYielGItZL1/lJ04F9VtwelT/tdt3CCl95xM0Og+gsFWe7ksn2HaVfLPpMUFWzeUIbeiCGGqy6IRJM+nWkwvzHUP55x1xJj2AwjE2yiVQgQYnXxnb//7RLLDEFqR7+j7W7/wEILe+Xliv3WFTPpRoFjm3CRQWQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716276971; c=relaxed/simple;
-	bh=XdN+2zttHQ0MjCqkV/rL3F/G1MvLNe2WB7xdOgF7Tr0=;
+	s=arc-20240116; t=1716278594; c=relaxed/simple;
+	bh=P8i8lpZFDK9qhijLTo40alsf+/38zDsCsS5gsVu0+68=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Iin/l8IjtEvNAyWkeEn1bOvThPUcD6JtpXeUwBUNsxeYexWMGdmrPDH3o7le1yFIraK+ogu2x9A7SAswZiPFlotaVwFLYWEUxD4LlqpxYWnzZqojmH3VKD7wxa79jgfH419sasQM2TlVPTc+AXRNzobBnKyfBBV8sqNQVnH4YVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Bqc14bkZ; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version:Content-Type; b=KfkfmiRmbMRJSuoogR25MMLGS0JXNThFjlWUUNHeGm+ZHcR+dLU8sJWyccZm0KWfUiAqgoGuidpzu7yzlFDV7ti7uHE3pLDaVUlFhO3c9sQo4vhK/839SUZB21UBzrRI2DCDGJFQ0yDcyuMIR1Z0ACeTA2M+tqiaI0CgD1ccWIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=S1GZHcZF; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Bqc14bkZ"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="S1GZHcZF"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1716276968;
+	s=mimecast20190719; t=1716278591;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=XdN+2zttHQ0MjCqkV/rL3F/G1MvLNe2WB7xdOgF7Tr0=;
-	b=Bqc14bkZDgunCi7TUI7MIbbLRFU+SbAoZ/kHWnEbMaa2OT0/y5PWUNmMFn3rAFlfheDo4f
-	uUEL4OLMtc3Tvh6fDNjey1drKx/oIIcYhGpCCRiYDcIdNEPUZtXmW/qo1IL/47TAgiVThm
-	PrDMiG7HFpUQ+7yATeL5rSo838FTuoI=
-Received: from mail-ed1-f71.google.com (mail-ed1-f71.google.com
- [209.85.208.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=P8i8lpZFDK9qhijLTo40alsf+/38zDsCsS5gsVu0+68=;
+	b=S1GZHcZF54lipAfTVHHkXhO5mLGl+Hbh3ju64kqYOEv3iUj2llAZedVoC0hiYizbJVmyVH
+	016FiIWZFsa1be5y9jaCbSak4MR8KZ0xhqLi70nPYfTpjth45yxtlgXdnRVTNpc9ttgMcG
+	xfK4ACiVHJ+2HFUYWBIKwrknp85ONbk=
+Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
+ [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-489-tdSCHpusMgWVfnb6VB_scw-1; Tue, 21 May 2024 03:36:05 -0400
-X-MC-Unique: tdSCHpusMgWVfnb6VB_scw-1
-Received: by mail-ed1-f71.google.com with SMTP id 4fb4d7f45d1cf-574ec74fb6bso685924a12.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 21 May 2024 00:36:05 -0700 (PDT)
+ us-mta-247-ziibqWWdM9CUHh3tQY-07Q-1; Tue, 21 May 2024 04:03:10 -0400
+X-MC-Unique: ziibqWWdM9CUHh3tQY-07Q-1
+Received: by mail-ed1-f69.google.com with SMTP id 4fb4d7f45d1cf-572afd2a951so722557a12.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 21 May 2024 01:03:10 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716276964; x=1716881764;
+        d=1e100.net; s=20230601; t=1716278589; x=1716883389;
         h=mime-version:user-agent:content-transfer-encoding:references
          :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=XdN+2zttHQ0MjCqkV/rL3F/G1MvLNe2WB7xdOgF7Tr0=;
-        b=Q763VUQwLWmYW86S3lh1de/vqIiajVZyoG+eFti2ZU46xbC3XV2bUd2/ELUQbUa3kd
-         O6YN94b37Z4s62nYQgitUHvUykxBbAsnRKqTMZT0t2kbKH+19cXbP6jsZU+WCEF14I7t
-         FI6sZC3ECjAJx9SWLt5Em1EfKggf6Bteax8+NBueukwfvcV1LnMEODFvs3JnhnI9CYF4
-         thDJVkvEqorgf6NjRoNKOYTEhqG31+CNdFli+ZI0pN6bNqPufcmqAcr+xnrEQdV/xvbo
-         D9ltZvoQ+bwnZpKBfrzP7fZoiaMmK+MOYzp5S0sedAnwamrI/ivWhIRrxnAuN0Iq4psD
-         SP7g==
-X-Forwarded-Encrypted: i=1; AJvYcCVX0zYsM7gsFX8TB8FVGVh3P0T1tqAnBuyxFoHXTaY81t/+ml8rgLlemybpoxEZo8LEPkNrkFPDhrFV8vtpoFE6FiO/J6yu9vBjyb/FcWI=
-X-Gm-Message-State: AOJu0Yyg760d741xxuKYTtfhjEo2GXVFCZpLadiMo6rgrZPbz+uewpMs
-	QNAKiOhthj0fYxiGLuqQZ2zgM2EQglDqIh0MRtlY4fyZmvuaGHId2D86oaL4AamRwqBRLLo+/U7
-	CAoFCDi80WEjW/HQdS3s7sxOyzHEn/UavVGoWX4BZQJyK0n1sPxAH3ZGrKOtNfvOH
-X-Received: by 2002:a17:907:986:b0:a59:bce9:8454 with SMTP id a640c23a62f3a-a5a2d55347bmr2891347466b.1.1716276964268;
-        Tue, 21 May 2024 00:36:04 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF6X/1XcE2E6yjKqIiqCpzGiiQ6iBNuEwXlVNXHnfjn+aSwnJU50wIIah1qpk9DeBlBs9Y+Mg==
-X-Received: by 2002:a17:907:986:b0:a59:bce9:8454 with SMTP id a640c23a62f3a-a5a2d55347bmr2891343466b.1.1716276963771;
-        Tue, 21 May 2024 00:36:03 -0700 (PDT)
+        bh=P8i8lpZFDK9qhijLTo40alsf+/38zDsCsS5gsVu0+68=;
+        b=dyeW/CQXU7nXBGDMFo2vIuVEJMEGOw6WONhc8nXp/ujSnoM5VW/EpNyigcJQzIoI+G
+         mURXdCHxBpORg1ghZcvlvgc7tG1JgftQrbEq7qgu9FEkAQVKTv1nlY1PtBKEO7Ft4URP
+         4cqc377nyQpzW3at2BDsnEqi1uiuCoLWrJBAGArKO/U8mwahNOWeL+zgXBpcsxR86hdK
+         0yFqfIz5MQiP+EpSLgSUuJ0s4vzYPZk0GSwKuflN6AMw0wXkLiLowD04ObjE79c8mnU8
+         /sFySzaHBbJyjvs/a6B0Lfbe1vES1OMz2HLvnlJBDyYEvpOc9P3580fVdQUtJEsaIXsc
+         fIMA==
+X-Forwarded-Encrypted: i=1; AJvYcCUdxSaJqgwdf7vt8scjejU2AG1DgX+FUierI7I4YGmwXpQFAo1DFF+B6+AL8kCsQ7fCuryPGPLE5kqr+xBo9AW1ZR4mr3Ose/sWosmUmgI=
+X-Gm-Message-State: AOJu0YxfiGK9nmKsMc+mvFAGPYUThqE29aS6B7LeFnkwwJxxqQrdhFQM
+	GIf+0oITAC5h4GHTWURXl5Q6OcDm17VqGt/bqgoHPGyiEcZEecY+jES3dwkKfNX7CN/o1l0bWZY
+	AafHLAxRwHkR5Utt4WQFyfFw2PG7txZdCNEwd7bTvkeooRNokFkKePhLKDUoD6BVi
+X-Received: by 2002:a17:906:5a4a:b0:a59:bbd6:bb38 with SMTP id a640c23a62f3a-a5a2d6d1b90mr1909492366b.7.1716278589493;
+        Tue, 21 May 2024 01:03:09 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF+r903jJsCsfgUxdSOggtSi2Aisrx2uTa8+qStRPyE+96/oWSWqcZCONUYZVQp3fx1iO7+SA==
+X-Received: by 2002:a17:906:5a4a:b0:a59:bbd6:bb38 with SMTP id a640c23a62f3a-a5a2d6d1b90mr1909489066b.7.1716278589063;
+        Tue, 21 May 2024 01:03:09 -0700 (PDT)
 Received: from pstanner-thinkpadt14sgen1.remote.csb (nat-pool-muc-t.redhat.com. [149.14.88.26])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a5a3c65d06fsm1409594266b.52.2024.05.21.00.36.02
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a5a1781e97bsm1560827766b.32.2024.05.21.01.03.08
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 21 May 2024 00:36:03 -0700 (PDT)
-Message-ID: <cf89c02d45545b67272aba933fbc8a8a0df83358.camel@redhat.com>
+        Tue, 21 May 2024 01:03:08 -0700 (PDT)
+Message-ID: <1c8bb8044bc1943ad8d19cd6fc84a2d886004163.camel@redhat.com>
 Subject: Re: [RFC PATCH 10/11] rust: add basic abstractions for iomem
  operations
 From: Philipp Stanner <pstanner@redhat.com>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Danilo Krummrich
-	 <dakr@redhat.com>
-Cc: gregkh@linuxfoundation.org, rafael@kernel.org, bhelgaas@google.com, 
- ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
+To: Wedson Almeida Filho <wedsonaf@gmail.com>, Dave Airlie
+ <airlied@gmail.com>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Danilo Krummrich
+ <dakr@redhat.com>, gregkh@linuxfoundation.org, rafael@kernel.org, 
+ bhelgaas@google.com, ojeda@kernel.org, alex.gaynor@gmail.com,
  boqun.feng@gmail.com,  gary@garyguo.net, bjorn3_gh@protonmail.com,
  benno.lossin@proton.me,  a.hindborg@samsung.com, aliceryhl@google.com,
- airlied@gmail.com,  fujita.tomonori@gmail.com, lina@asahilina.net,
- ajanulgu@redhat.com,  lyude@redhat.com, rust-for-linux@vger.kernel.org,
+ fujita.tomonori@gmail.com,  lina@asahilina.net, ajanulgu@redhat.com,
+ lyude@redhat.com,  rust-for-linux@vger.kernel.org,
  linux-kernel@vger.kernel.org,  linux-pci@vger.kernel.org
-Date: Tue, 21 May 2024 09:36:02 +0200
-In-Reply-To: <CANiq72kHrgOVrdw7rB9KpHvOMy244TgmEzAcL=v5O9rchs8T1g@mail.gmail.com>
+Date: Tue, 21 May 2024 10:03:07 +0200
+In-Reply-To: <CANeycqpNeHFUu-RwSc6Ewa3r5TMhYYFDC6bO+sj3OZ398JfJ1A@mail.gmail.com>
 References: <20240520172554.182094-1-dakr@redhat.com>
 	 <20240520172554.182094-11-dakr@redhat.com>
 	 <CANiq72kHrgOVrdw7rB9KpHvOMy244TgmEzAcL=v5O9rchs8T1g@mail.gmail.com>
+	 <CAPM=9txb5STBo05xiTy9+wF7=mMO=X2==BP4JVORPFAtX=nS0g@mail.gmail.com>
+	 <CANeycqpNeHFUu-RwSc6Ewa3r5TMhYYFDC6bO+sj3OZ398JfJ1A@mail.gmail.com>
 User-Agent: Evolution 3.48.4 (3.48.4-1.fc38)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -88,100 +91,56 @@ X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, 2024-05-21 at 00:32 +0200, Miguel Ojeda wrote:
-> On Mon, May 20, 2024 at 7:27=E2=80=AFPM Danilo Krummrich <dakr@redhat.com=
->
-> wrote:
+On Tue, 2024-05-21 at 00:01 -0300, Wedson Almeida Filho wrote:
+> On Mon, 20 May 2024 at 23:07, Dave Airlie <airlied@gmail.com> wrote:
 > >=20
-> > through its Drop() implementation.
+> > >=20
+> > > Wedson wrote a similar abstraction in the past
+> > > (`rust/kernel/io_mem.rs` in the old `rust` branch), with a
+> > > compile-time `SIZE` -- it is probably worth taking a look.
+> > >=20
+> >=20
+> > Just on this point, we can't know in advance what size the IO BARs
+> > are
+> > at compile time.
+> >=20
+> > The old method just isn't useful for real devices with runtime IO
+> > BAR sizes.
 >=20
-> Nit: `Drop`, `Deref` and so on are traits -- what do the `()` mean
-> here? I guess you may be referring to their method, but those are
-> lowercase.
-
-ACK
-
+> The compile-time `SIZE` in my implementation is a minimum size.
 >=20
-> > +/// IO-mapped memory, starting at the base pointer @ioptr and
-> > spanning @malxen bytes.
+> Attempts to read/write with constants within that size (offset +
+> size)
+> were checked at compile time, that is, they would have zero
+> additional
+> runtime cost when compared to C. Reads/writes beyond the minimum
+> would
+> have to be checked at runtime.
 >=20
-> Please use Markdown code spans instead (and intra-doc links where
-> possible) -- we don't use the `@` notation. There is a typo on the
-> variable name too.
->=20
-> > +pub struct IoMem {
-> > +=C2=A0=C2=A0=C2=A0 pub ioptr: usize,
->=20
-> This field is public, which raises some questions...
 
-Justified questions =E2=80=93 it is public because the Drop implementation =
-for
-pci::Bar requires the ioptr to pass it to pci_iounmap().
+We looked at this implementation
 
-The alternative would be to give pci::Bar a copy of ioptr (it's just an
-integer after all), but that would also not be exactly beautiful.
+Its disadvantage is that it moves the responsibility for setting that
+minimum size to the driver programmer. Andreas Hindborg is using that
+currently for rnvme [1].
 
-The subsystem (as PCI does here) shall not make an instance of IoMem
-mutable, so the driver programmer couldn't modify ioptr.
+I believe that the driver programmer in Rust should not be responsible
+for controlling such sensitive parameters (one could far more easily
+provide invalid values), but the subsystem (e.g. PCI) should do it,
+because it knows about the exact resource lengths.
 
-I'm very open for ideas for alternatives, though. See also the other
-mail where Danilo brainstorms about making IoMem a trait.
+The only way to set the actual, real value is through subsystem code.
+But when we (i.e., currently, the driver programmer) have to use that
+anyways, we can just use it from the very beginning and have the exact
+valid parameters.
 
->=20
-> > +=C2=A0=C2=A0=C2=A0 pub fn readb(&self, offset: usize) -> Result<u8> {
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 let ioptr: usize =3D self.g=
-et_io_addr(offset, 1)?;
-> > +
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 Ok(unsafe { bindings::readb=
-(ioptr as _) })
-> > +=C2=A0=C2=A0=C2=A0 }
->=20
-> These methods are unsound, since `ioptr` may end up being anything
-> here, given `self.ioptr` it is controlled by the caller.=C2=A0
-
-Only if IoMem is mutable, correct?
-
-The commit message states (btw this file would get more extensive
-comments soonish) that with this design its the subsystem that is
-responsible for creating IoMem validly, because the subsystem is the
-one who knows about the memory regions and lengths and stuff.
-
-The driver should only ever take an IoMem through a subsystem, so that
-would be safe.
-
-> One could
-> also trigger an overflow in `get_io_addr`.
-
-Yes, if the addition violates the capacity of a usize. But that would
-then be a bug we really want to notice, wouldn't we?
-
-Only alternative I can think of would be to do a wrapping_add(), but
-that would be even worse UB.
-
-Ideas?
-
->=20
-> Wedson wrote a similar abstraction in the past
-> (`rust/kernel/io_mem.rs` in the old `rust` branch), with a
-> compile-time `SIZE` -- it is probably worth taking a look.
-
-Yes, we're aware of that one. We also did some experiments with it.
-Will discuss it in the other thread where Dave and Wedson mention it.
-
->=20
-> Also, there are missing `// SAFETY:` comments here. Documentation and
-> examples would also be nice to have.
-
-Oh yes, ACK, will do
+So driver programmers would always have correct IoMem and would have a
+harder time breaking stuff, and wouldn't have to think about minimum
+lengths and things like that.
 
 
-Thx for the review!
+P.
 
-
->=20
-> Thanks!
->=20
-> Cheers,
-> Miguel
->=20
+[1] https://github.com/metaspace/linux/blob/rnvme/drivers/block/rnvme.rs#L5=
+80
 
