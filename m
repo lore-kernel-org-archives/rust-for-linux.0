@@ -1,154 +1,287 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2074.outbound.protection.outlook.com [40.107.94.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F299C210E4;
-	Tue, 21 May 2024 04:15:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716264920; cv=none; b=uoqiJEsZpvRdF6JZ7noRr8AsI3BsT55TtESX3bzSEw7jUGCAynOxOEn/DTJ0pqOw5CJyWgDDZUWSAyTv09seeYoBqTAQNOAsNbpW5WkmHqjwWzpN8AlbxPvaW0hj+N5xLUm0OhPjSY7ejrf6mTe7hni88lzgJFYRbG/rmdZ3OIE=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716264920; c=relaxed/simple;
-	bh=ZLMQim0b27vvKLlAakfM9liuAkhebuAx7GW5o3VAU5E=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JZgA/rJITsz0n1YC7SI/D9WToMlzv8dVP985elIKxdFQNJkTT7LObQ7/XSBT5t4l60eMtL+w15c7CZebb8rrZc5UD4ChNYZyVAmeqV3+spSy5UlMv+2rhxhezTH6yG8PBEF+JnBI2DqyvNZ/KoCH7Lb23q1TXAcwiTRiLpD7GU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AAvFdIIa; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E7C28836
+	for <rust-for-linux@vger.kernel.org>; Tue, 21 May 2024 05:32:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.74
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1716269581; cv=fail; b=Has/vW92V0U38ORQ5D1mAZppJEVFrVu0nJ/72PMNVTKJ8Y2driSqJgT5xbS4SM3r1n25i/7EzZ/JOb1uWi1/ratHdX9oJ+RGxTSEe1PF9r8YMOSi23lWFbFGMrvuprH/vslsYo4O3BqyhZkpLOS4Rh5fbaBvlxdKmtGdluAmjHw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1716269581; c=relaxed/simple;
+	bh=RCnNNgi2maBpk98VQMT2Zi3XX2LBVaMUUQTWnClSjUs=;
+	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=d40vS26yKjRHGbBh+dNZcU/07yVBC5YX0bwsvyxuksvbLXq//nfjdmUei+oJfLzCe3VRki0i90PeVLpR25a3FMrXGzuMm17ZJ4ja1P+G0wl2A2ofrmw5dlc2tHAzL7ESAV3NvyMos/B5E6FnNUCkuogzocNfonnvJDdpy2O9rOY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=eUBkMohU; arc=fail smtp.client-ip=40.107.94.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AAvFdIIa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97258C4AF0A;
-	Tue, 21 May 2024 04:15:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1716264919;
-	bh=ZLMQim0b27vvKLlAakfM9liuAkhebuAx7GW5o3VAU5E=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=AAvFdIIa62aHZqk2WwB1k2rH7MSFFeheUO4UGa31iZgjxzWhnfzfbdXvWBSBaR/0k
-	 Wmxg7aUUOq2gBLZpar58Z1SqyIvbBIQpwGVWkehmuit1lmyJv3R68YfmzXu+kpuikJ
-	 2Ama4H4WnbU4knUSEKgX1bz6qRZ1l1LMZ5q9l3SNPaRxyxn3L+9fLJw171NSUsZZE4
-	 sbzaGjsN1CT8hARONz22tV1iCOrBpvAIUliy/CYiTtXdUDrrN2rcd6INRzGgzFgs+D
-	 60Xb4O0OXpCrQkuWQ/VkPlNyiK7mR1yeQaMHutZwyTEeW+S2IzuSs/HEdpzYb+An/V
-	 QDLrDR2qdgqhw==
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-51f72a29f13so4817248e87.3;
-        Mon, 20 May 2024 21:15:19 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCX3vMowg2KmdYoy8UIro5/i+csXvasGcLITEiP/pJHcVJ6VpnSzM4nP6XvZ9UNusiGSOi9btNzA/abPKS0lOy6ovRhqXs4//cqHe6eVzKbOQzCoQX5jvsbRknncP2WNVDbdUjRpBh8Afz/fDuka9Ip+mNecKObCNV9ACW57VzrDT/JUzvAAMC9E3eY=
-X-Gm-Message-State: AOJu0YxI6xwMbU7Kjz2UxC/9R+8fI2+g21IePcQzl3FW9UEStBSFf00w
-	rkpjL3+jXhglsFqsFxx62d4kaQEIoISFiHiIbD8fEg0EOrL5AQDlMZ0/vgRT+WVoSmGL2FWcSAs
-	1Nvv03yRc7Wk0rDJPkKTA2jtDh/o=
-X-Google-Smtp-Source: AGHT+IFERR+XMF96W4SPi3XHkk3UQctvgLTXKkG1ygvj6FlJ+ABpgu+t9Zh29tpfT+a9yTz5hr7oL9PgCDtM3MhVShU=
-X-Received: by 2002:ac2:4209:0:b0:51f:567b:c398 with SMTP id
- 2adb3069b0e04-5221006fe6fmr18145163e87.28.1716264918252; Mon, 20 May 2024
- 21:15:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="eUBkMohU"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=PCDMQ09/bvfUbGlQbR1PZTZt7wTMIqiaSA52FYXIgPh9X9xdfwXB0JJAVtXWX+6thI+tLvFi5T/W+7hBdLVtiaApJ3e3STrhJtjB1ZYFwCV38Zgn9CVkuZCIbU6sDipes5PMFiufnndN09XBSnBxWYM5EyY/YhL0YS9ZpFa0eOauL1ryJVbRAyjumy8Glfw25feOKtTZ97nnJdZN+Jb4btTeD8e39x1pl6n0Q7IP3fBRp9ayGtiun/cABEax018/GnVrghO7u1fmmmgnmPntp8FTl7f0YQsR39/zWfgGowU38CsOLky6dA5+Cg57kBHXrVVhuLhKKxPz6NVadvD1Kw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Pstbe91UcByHUI2rX6yclJjmfZwRKdxBJLtJ+KsLJic=;
+ b=DpW9ouly1oAl55dFsUQwwE/n3iGLskrAxZApdTE/3P9yAaUrtWEqJ2pmOYbUnc/QNM0OxxsMfdEYCTdu3LbS2ZUazXZFlSXyBz4vmeRIPF+54ehslsJf1k+6fAVJUBFxgEc31i77pZEOAUh0U2mURK+aBikTrqD06Y9xMRYeKjQ8JBTZAVGM9WMvMlAvjczmWD3QxuY98DlG+xybvEwuSWO+pPqLtuHEUUOQmiEViZzTB1HToIhTJ/MWVxnqnaKHbsLTFh+YbQk/Z+Q8Ezzf6wbvpiq5YqLoZyRrlBZ2x9OPI5qKjWK5CJUfYI9xHAbFwoleVROnMWZa1VIBS54YLQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=redhat.com smtp.mailfrom=nvidia.com;
+ dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Pstbe91UcByHUI2rX6yclJjmfZwRKdxBJLtJ+KsLJic=;
+ b=eUBkMohU9ktXT6HK5cXLm8UaY6BEbDBCLhH/cEnkTGHwcGrmuXJOvCqfBuu/WdOx3Ec+h2GDE2bc7v53tND4TGoyKqcS8Po1YP4B4UcA67pWBWhYwJaEWbxisjvigp6+voDYatm5QGJ36fInW8PTO8VVZangrPYAqWVUXCls3ACWwOyy8E8j9f5E0UXKjRl1yPMYJv/MnVTPsDCDvQcmebWpEsw5CjPCA19+cesg7lgdgm/J1Dev0kngD8DqZ0K4QGSg+FYVTtK3HVOSr7i+22SPSL6Vr+KKdjscHJOn08iON2ZBp0tSxVUVamKIKNxf0YPmnKQikdwHGXz83hXj/A==
+Received: from SA9P221CA0028.NAMP221.PROD.OUTLOOK.COM (2603:10b6:806:25::33)
+ by CY8PR12MB7609.namprd12.prod.outlook.com (2603:10b6:930:99::17) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7587.35; Tue, 21 May
+ 2024 05:32:57 +0000
+Received: from SA2PEPF00001509.namprd04.prod.outlook.com
+ (2603:10b6:806:25:cafe::44) by SA9P221CA0028.outlook.office365.com
+ (2603:10b6:806:25::33) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7587.36 via Frontend
+ Transport; Tue, 21 May 2024 05:32:56 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ SA2PEPF00001509.mail.protection.outlook.com (10.167.242.41) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7611.14 via Frontend Transport; Tue, 21 May 2024 05:32:56 +0000
+Received: from rnnvmail202.nvidia.com (10.129.68.7) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Mon, 20 May
+ 2024 22:32:39 -0700
+Received: from rnnvmail205.nvidia.com (10.129.68.10) by rnnvmail202.nvidia.com
+ (10.129.68.7) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Mon, 20 May
+ 2024 22:32:39 -0700
+Received: from localhost (10.127.8.10) by mail.nvidia.com (10.129.68.10) with
+ Microsoft SMTP Server id 15.2.1544.4 via Frontend Transport; Mon, 20 May 2024
+ 22:32:34 -0700
+Date: Tue, 21 May 2024 08:32:31 +0300
+From: Zhi Wang <zhiw@nvidia.com>
+To: Danilo Krummrich <dakr@redhat.com>
+CC: <maarten.lankhorst@linux.intel.com>, <mripard@kernel.org>,
+	<tzimmermann@suse.de>, <airlied@gmail.com>, <daniel@ffwll.ch>,
+	<ojeda@kernel.org>, <alex.gaynor@gmail.com>, <wedsonaf@gmail.com>,
+	<boqun.feng@gmail.com>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
+	<benno.lossin@proton.me>, <a.hindborg@samsung.com>, <aliceryhl@google.com>,
+	<fujita.tomonori@gmail.com>, <lina@asahilina.net>, <pstanner@redhat.com>,
+	<ajanulgu@redhat.com>, <lyude@redhat.com>, <gregkh@linuxfoundation.org>,
+	<rust-for-linux@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
+	<nouveau@lists.freedesktop.org>
+Subject: Re: [RFC PATCH 7/8] rust: add firmware abstractions
+Message-ID: <20240521083231.000074c2.zhiw@nvidia.com>
+In-Reply-To: <20240520172422.181763-4-dakr@redhat.com>
+References: <20240520172059.181256-1-dakr@redhat.com>
+	<20240520172422.181763-4-dakr@redhat.com>
+Organization: NVIDIA
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.38; x86_64-w64-mingw32)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240519211235.589325-1-ojeda@kernel.org> <20240519211235.589325-2-ojeda@kernel.org>
-In-Reply-To: <20240519211235.589325-2-ojeda@kernel.org>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Tue, 21 May 2024 13:14:41 +0900
-X-Gmail-Original-Message-ID: <CAK7LNATPx2wTEM=KDmGtcH8vVTB4suOhh-CUQKP54F8wtPWDiw@mail.gmail.com>
-Message-ID: <CAK7LNATPx2wTEM=KDmGtcH8vVTB4suOhh-CUQKP54F8wtPWDiw@mail.gmail.com>
-Subject: Re: [PATCH 2/3] kbuild: rust: apply `CONFIG_WERROR` to all Rust targets
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, linux-kbuild@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	patches@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="US-ASCII"
+Content-Transfer-Encoding: 7bit
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SA2PEPF00001509:EE_|CY8PR12MB7609:EE_
+X-MS-Office365-Filtering-Correlation-Id: 108f9c62-773c-4c96-87fe-08dc79577861
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230031|7416005|1800799015|82310400017|376005|36860700004;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?A4r8yspaop0dvsSthELRqxU5FVqnBXolMFBAFY3tav3QD7iVWJdgmoV14QDL?=
+ =?us-ascii?Q?7bTV0/s8nEBL+nnDF62NL2m9p2bXXY28RxeCRktzQ0kofZf6KG6lnbl+Z7C/?=
+ =?us-ascii?Q?ZEfbMme/Y0DEJGJ6TboZ/FcUaIYetH46SrCbU+oqjelgE/lGmxuke3BPtd2D?=
+ =?us-ascii?Q?lzz+xaSCeOsQkjcwEbLB8Em2Fr15Z/jYJdRy83nui4BBTQx9v0c+e7Zsdt9d?=
+ =?us-ascii?Q?D/48BAtbAYbd1ekckPOrEF3Skf6ha/5Iylx62xJqVAysd1W1FAh5H+lKX/e/?=
+ =?us-ascii?Q?z5+Pd3Ui1XvqQ5nIuzKAEO1xmPt7h5zoNvd/lBqU8r3ZuzLn4kVITFPhxPf6?=
+ =?us-ascii?Q?QB2EjguguZAhyDApnW9lXM46b/dv3nmf641DidtFAPRrhqwt6M+gbOWeOHvi?=
+ =?us-ascii?Q?nbuGTtVdDAEi5WVgMkE7Nu2xS5+ZfDnLQqETVeoMgP9lh1FxTdr942AH1OE5?=
+ =?us-ascii?Q?KsBgNBNhxpE1ZsHXYr/7InRz1w16sFc7+EtyZuxpsm0EPCFvWYWvZ+sLJCQg?=
+ =?us-ascii?Q?Ksl6PEMSupC0Q/4OxwpS9F1wDUqcBrgwD21Av5v7St8mL8v5cYLbTyls4bxE?=
+ =?us-ascii?Q?RW7az9Yf+L2KZ8EqbDiq5moxrGjNacBacz69VEZS6OP2zxqh9ZYxqE2NDk2r?=
+ =?us-ascii?Q?4Kmk3UtaceErYYWtuuBrqz07jblNpAvIMrIAaxDh3DW8L208iL8Ou79Ess6p?=
+ =?us-ascii?Q?blrkQ1xs6cuqaO33Xqb8YvwTMSPLapJooJl9hBpG+jaKZVUl2UHl5l9NUuWR?=
+ =?us-ascii?Q?xT8t0PA4R9rL4JknVJd7O7IPYR9xoc8btg1pVHhoc08sP5Xomib8+VicQ2mm?=
+ =?us-ascii?Q?VyVNg85WOzLYVjUFkLoyYk6NPyI2eWvNo5wisy4cmhwjtVd+ht3MbQNyhF+U?=
+ =?us-ascii?Q?jWD8g1ZQtaYRWEGUZQbBIix3OikDN+scnNBssnWpcePkrP5qopHdvU7vHt5f?=
+ =?us-ascii?Q?fjXNtLk1uT5RnnrRIZsJE3Kw0+JAsWVzTTYompwHJqXHGAmdlYt84Ac8Hujs?=
+ =?us-ascii?Q?DEUd8b/nrECaw6+xOjEOVymWlVjh/UmVGoIg3zcqmSHDsGMe1SWvEQIaXUD6?=
+ =?us-ascii?Q?HsNy2H2gQHsn89b6DiJ9lNPMs/PekWOfvW9y0qHUNWoqtOLLr5IOuRUYRwex?=
+ =?us-ascii?Q?YZWYVCXqLwRdyZKmXTij2MNoR36ZzRn/uTlECNbYXXKMvUruXovvACA4Nldh?=
+ =?us-ascii?Q?LQycJooeW7q42EVN2wpF1PMdxkh0nFcEdPNBiBuHjhV09/9AAeE58umQE5vB?=
+ =?us-ascii?Q?VN1pBk6PkckJfQnetZXIyi/Pg82kky5gekz9uZEYQb77F4uCLewkKVMmGMiy?=
+ =?us-ascii?Q?muD53h+ZteGlwCUeiZceVrc3IegIL55uQXPOswc2iTmdyT9GaGK6+zkChCAT?=
+ =?us-ascii?Q?l9030p0=3D?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230031)(7416005)(1800799015)(82310400017)(376005)(36860700004);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 May 2024 05:32:56.7134
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 108f9c62-773c-4c96-87fe-08dc79577861
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SA2PEPF00001509.namprd04.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7609
 
-On Mon, May 20, 2024 at 6:12=E2=80=AFAM Miguel Ojeda <ojeda@kernel.org> wro=
-te:
->
-> Make all Rust code (i.e. not just kernel code) respect `CONFIG_WERROR`,
-> so that we keep everything warning clean.
+On Mon, 20 May 2024 19:24:19 +0200
+Danilo Krummrich <dakr@redhat.com> wrote:
 
+> Add an abstraction around the kernels firmware API to request firmware
+> images. The abstraction provides functions to access the firmware
+> buffer and / or copy it to a new buffer allocated with a given
+> allocator backend.
+> 
 
-Rust started to do something different from C.
+Was playing with firmware extractions based on this patch.
+Unfortunately I ended up with a lot of pointer operations, unsafe
+statements.
 
+As we know many vendors have a C headers for the definitions of the
+firwmare content, the driver extract the data by applying a struct
+pointer on it.
 
-KBUILD_HOSTCFLAGS is not affected by any CONFIG option.
+But in rust, I feel it would nice that we can also have a common
+firmware extractor for drivers, that can wrap the pointer operations,
+take a list of the firmware struct members that converted from C headers
+as the input, offer the driver some common ABI methods to query them.
+Maybe that would ease the pain a lot.
 
-The reason is because HOSTCC is needed for building Kconfig.
-If the flags for HOSTCC is changed by a CONFIG option,
-it would be a chicken-egg problem.
-Also, some host programs might be compiled even
-without .config at all. (e.g. scripts/unifdef)
+Thanks,
+Zhi.
 
-
-I know Rust will not become a part of the core infrastructure
-of the build system, but IMHO, host programs should not be
-affected by any CONFIG option.
-
-I do not like this patch.
-
-
-
-
-
-
->
-> In particular, this affects targets in `rust/` (`RUSTDOC H`, `RUSTC TL`,
-> `RUSTDOC T`, `RUSTC T` and `RUSTC P`), plus host programs and any others
-> we may add later.
->
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> The firmware is released once the abstraction is dropped.
+> 
+> Signed-off-by: Danilo Krummrich <dakr@redhat.com>
 > ---
-> This one requires the `rusttest` warning cleanup at
-> https://lore.kernel.org/rust-for-linux/20240519210735.587323-1-ojeda@kern=
-el.org/
->
->  Makefile                   | 4 ++--
->  scripts/Makefile.extrawarn | 4 ++--
->  2 files changed, 4 insertions(+), 4 deletions(-)
->
-> diff --git a/Makefile b/Makefile
-> index fba567a55607..2d0ea441cb9c 100644
-> --- a/Makefile
-> +++ b/Makefile
-> @@ -469,7 +469,7 @@ export rust_common_flags :=3D --edition=3D2021 \
->
->  KBUILD_HOSTCFLAGS   :=3D $(KBUILD_USERHOSTCFLAGS) $(HOST_LFS_CFLAGS) $(H=
-OSTCFLAGS)
->  KBUILD_HOSTCXXFLAGS :=3D -Wall -O2 $(HOST_LFS_CFLAGS) $(HOSTCXXFLAGS)
-> -KBUILD_HOSTRUSTFLAGS :=3D $(rust_common_flags) -O -Cstrip=3Ddebuginfo \
-> +KBUILD_HOSTRUSTFLAGS =3D $(rust_common_flags) -O -Cstrip=3Ddebuginfo \
->                         -Zallow-features=3D $(HOSTRUSTFLAGS)
->  KBUILD_HOSTLDFLAGS  :=3D $(HOST_LFS_LDFLAGS) $(HOSTLDFLAGS)
->  KBUILD_HOSTLDLIBS   :=3D $(HOST_LFS_LIBS) $(HOSTLDLIBS)
-> @@ -560,7 +560,7 @@ KBUILD_CFLAGS +=3D -fno-PIE
->  KBUILD_CFLAGS +=3D -fno-strict-aliasing
->
->  KBUILD_CPPFLAGS :=3D -D__KERNEL__
-> -KBUILD_RUSTFLAGS :=3D $(rust_common_flags) \
-> +KBUILD_RUSTFLAGS =3D $(rust_common_flags) \
->                     -Cpanic=3Dabort -Cembed-bitcode=3Dn -Clto=3Dn \
->                     -Cforce-unwind-tables=3Dn -Ccodegen-units=3D1 \
->                     -Csymbol-mangling-version=3Dv0 \
-> diff --git a/scripts/Makefile.extrawarn b/scripts/Makefile.extrawarn
-> index 48114e91c386..990890821889 100644
-> --- a/scripts/Makefile.extrawarn
-> +++ b/scripts/Makefile.extrawarn
-> @@ -26,8 +26,8 @@ endif
->
->  KBUILD_CPPFLAGS-$(CONFIG_WERROR) +=3D -Werror
->  KBUILD_CPPFLAGS +=3D $(KBUILD_CPPFLAGS-y)
-> -KBUILD_RUSTFLAGS-$(CONFIG_WERROR) +=3D -Dwarnings
-> -KBUILD_RUSTFLAGS +=3D $(KBUILD_RUSTFLAGS-y)
-> +rust_common_flags-$(CONFIG_WERROR) +=3D -Dwarnings
-> +rust_common_flags +=3D $(rust_common_flags-y)
->
->  KBUILD_CFLAGS-$(CONFIG_CC_NO_ARRAY_BOUNDS) +=3D -Wno-array-bounds
->
-> --
-> 2.45.1
+>  rust/bindings/bindings_helper.h |  1 +
+>  rust/kernel/firmware.rs         | 74
+> +++++++++++++++++++++++++++++++++ rust/kernel/lib.rs              |
+> 1 + 3 files changed, 76 insertions(+)
+>  create mode 100644 rust/kernel/firmware.rs
+> 
+> diff --git a/rust/bindings/bindings_helper.h
+> b/rust/bindings/bindings_helper.h index b245db8d5a87..e4ffc47da5ec
+> 100644 --- a/rust/bindings/bindings_helper.h
+> +++ b/rust/bindings/bindings_helper.h
+> @@ -14,6 +14,7 @@
+>  #include <kunit/test.h>
+>  #include <linux/errname.h>
+>  #include <linux/ethtool.h>
+> +#include <linux/firmware.h>
+>  #include <linux/jiffies.h>
+>  #include <linux/mdio.h>
+>  #include <linux/pci.h>
+> diff --git a/rust/kernel/firmware.rs b/rust/kernel/firmware.rs
+> new file mode 100644
+> index 000000000000..700504fb3c9c
+> --- /dev/null
+> +++ b/rust/kernel/firmware.rs
+> @@ -0,0 +1,74 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! Firmware abstraction
+> +//!
+> +//! C header:
+> [`include/linux/firmware.h`](../../../../include/linux/firmware.h") +
+> +use crate::{bindings, device::Device, error::Error, error::Result,
+> str::CStr, types::Opaque}; +
+> +/// Abstraction around a C firmware struct.
+> +///
+> +/// This is a simple abstraction around the C firmware API. Just
+> like with the C API, firmware can +/// be requested. Once requested
+> the abstraction provides direct access to the firmware buffer as +///
+> `&[u8]`. Alternatively, the firmware can be copied to a new buffer
+> using `Firmware::copy`. The +/// firmware is released once
+> [`Firmware`] is dropped. +/// +/// # Examples
+> +///
+> +/// ```
+> +/// let fw = Firmware::request("path/to/firmware.bin",
+> dev.as_ref())?; +/// driver_load_firmware(fw.data());
+> +/// ```
+> +pub struct Firmware(Opaque<*const bindings::firmware>);
+> +
+> +impl Firmware {
+> +    /// Send a firmware request and wait for it. See also
+> `bindings::request_firmware`.
+> +    pub fn request(name: &CStr, dev: &Device) -> Result<Self> {
+> +        let fw = Opaque::uninit();
+> +
+> +        let ret = unsafe { bindings::request_firmware(fw.get(),
+> name.as_char_ptr(), dev.as_raw()) };
+> +        if ret != 0 {
+> +            return Err(Error::from_errno(ret));
+> +        }
+> +
+> +        Ok(Firmware(fw))
+> +    }
+> +
+> +    /// Send a request for an optional fw module. See also
+> `bindings::request_firmware_nowarn`.
+> +    pub fn request_nowarn(name: &CStr, dev: &Device) -> Result<Self>
+> {
+> +        let fw = Opaque::uninit();
+> +
+> +        let ret = unsafe {
+> +            bindings::firmware_request_nowarn(fw.get(),
+> name.as_char_ptr(), dev.as_raw())
+> +        };
+> +        if ret != 0 {
+> +            return Err(Error::from_errno(ret));
+> +        }
+> +
+> +        Ok(Firmware(fw))
+> +    }
+> +
+> +    /// Returns the size of the requested firmware in bytes.
+> +    pub fn size(&self) -> usize {
+> +        unsafe { (*(*self.0.get())).size }
+> +    }
+> +
+> +    /// Returns the requested firmware as `&[u8]`.
+> +    pub fn data(&self) -> &[u8] {
+> +        unsafe {
+> core::slice::from_raw_parts((*(*self.0.get())).data, self.size()) }
+> +    }
+> +}
+> +
+> +impl Drop for Firmware {
+> +    fn drop(&mut self) {
+> +        unsafe { bindings::release_firmware(*self.0.get()) };
+> +    }
+> +}
+> +
+> +// SAFETY: `Firmware` only holds a pointer to a C firmware struct,
+> which is safe to be used from any +// thread.
+> +unsafe impl Send for Firmware {}
+> +
+> +// SAFETY: `Firmware` only holds a pointer to a C firmware struct,
+> references to which are safe to +// be used from any thread.
+> +unsafe impl Sync for Firmware {}
+> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> index 6415968ee3b8..ed97d131661a 100644
+> --- a/rust/kernel/lib.rs
+> +++ b/rust/kernel/lib.rs
+> @@ -35,6 +35,7 @@
+>  #[cfg(CONFIG_DRM = "y")]
+>  pub mod drm;
+>  pub mod error;
+> +pub mod firmware;
+>  pub mod init;
+>  pub mod ioctl;
+>  #[cfg(CONFIG_KUNIT)]
 
-
-
---
-Best Regards
-
-Masahiro Yamada
