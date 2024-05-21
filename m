@@ -1,115 +1,131 @@
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CF764CE04;
-	Tue, 21 May 2024 08:05:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52D542EB1D;
+	Tue, 21 May 2024 09:18:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716278730; cv=none; b=cEyUbtwVcd1H+EXRZPMa0nTisMp9+6wf6BVYdvtHPncOUk6lBpKpwjattZjErodvDVszmXM8eR4o1M5gk2fs7/owckQlj1wtAtXdty8jA5aIiJDzkzAAf9QhwqTNLKFcJScvn20MCJhFwEMg1Rb9iFpCw+y5BRW94sBHIGFpIL4=
+	t=1716283099; cv=none; b=PZSKkf5WH/FnEamiU7oIR3IU9/xYo3FBOfwxWpH2BSh+R7PGNnyFw3z85HkpztU6m4bosZUbbPt/ay138L8wzABHJpVG9Yn1bSE5EY95IL/FuWEyNuZVFma5mROu42qPn62zPmQ2Zpmv29gVnqjRlId8cEyMWM7WCl+J5RcLMtw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716278730; c=relaxed/simple;
-	bh=5LQIN76LGk6Do2fSAu4Q5mVj5ZWkrdbmP+HHXF42gLc=;
+	s=arc-20240116; t=1716283099; c=relaxed/simple;
+	bh=evIKBeDjrjIyrHQrE6yLoAQSN9K9vIdfXRpSaiKjBgE=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=GUh/G6cMxw4q0LvSNv4g7Guls5TCCckUNFpigeHoL6SapEnX4QGmuI+a+iSfzCXfxis+zI7OCmcglO2s9cLUVmlnQrrVOCFYpVPmzCNl9vwPRq4BDoORKcmzpOyRNxp3LQGmUR1dnOwroiUD0sXa+8CrT1MPZ89wRz6806gnVVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eyjLUVUn; arc=none smtp.client-ip=209.85.214.179
+	 To:Cc:Content-Type; b=lo24sDu/byA9YSvJsJwpM4vrhZCg64aaL9I8NFchZkQkCq99crRJjFtJLYCXNwJPSSUx3PM9M36/ScwfbJXT9yyN/ieVtmXpXZtjECnkSo8phj7i8Zl6BEdWbkAws9tcinlOdsRlI4SL5CFr01KAwPtzV7AyXpdxc2Mtt23qm8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FsFmmGOE; arc=none smtp.client-ip=209.85.214.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eyjLUVUn"
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-1ec486198b6so92962565ad.1;
-        Tue, 21 May 2024 01:05:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FsFmmGOE"
+Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-1eb0e08bfd2so106299215ad.1;
+        Tue, 21 May 2024 02:18:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1716278728; x=1716883528; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1716283097; x=1716887897; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=5LQIN76LGk6Do2fSAu4Q5mVj5ZWkrdbmP+HHXF42gLc=;
-        b=eyjLUVUntnJvy2+sxdkI29LVMSmA47K15QwAdi1QtJPxedW3dxVQVt0NRu2DqzGEF1
-         k3jCz1RYbPicd7QnamypesEzn1lbgv4DGzc9PSUhkWLGYmLOI9EumEjmAt7eNMq9cfoO
-         mdSoWIKThJXooqeAhsacdTogZGurxfLvuMBA4OoBKmWrIlvdrVWsSi16SgVI1vxEqs8Y
-         luO5NMvpupCCFfnizcywAlhwvTxRXb5P2w2Vac4eEXASd3tHpWsZQt7KRgyhdfO6m/dp
-         WARuqTvGHb2YZ2jv1gE7h45gUnts5lRPpGGTuuzg1/czvcrTncFONM2qxqqzAg+Eg//p
-         z87w==
+        bh=evIKBeDjrjIyrHQrE6yLoAQSN9K9vIdfXRpSaiKjBgE=;
+        b=FsFmmGOEC/VhY0UUXUWBNpzNjtvFmEfMl3npl973KK7v+92QY7xSWH8phaAOQeZd1r
+         1o4m/wncg2yy6V1dBctSYohnyOBOMZGcoFIn3HmbfuZCz0UWQfrKaO1GtYBwtspe0ws7
+         Q/aEPMM20YB58OffunAPcoVJjRnxIc2H5E9k4k8UND8dURoD0+4FcDBWB0nmA1DE9ZXS
+         uzNfssLVprmuxh2tElgkRbYr/RrEZaDM63ArcEYsMT/tAMb0djl1EnlKXbh2Bprsnac4
+         bEucmxJS9bR09XK0yfjEOcdOHVQxJ7fFTJhpK0wG8IBQvuVoSbKn1eQYk6aRlLuVYKz3
+         sF/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716278728; x=1716883528;
+        d=1e100.net; s=20230601; t=1716283097; x=1716887897;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=5LQIN76LGk6Do2fSAu4Q5mVj5ZWkrdbmP+HHXF42gLc=;
-        b=Mtw2CviWO/GXVSepXAv4mGG4U5vK+ZjCC9J2yl4skLUcEg9MzsBciaj36hkyhjAxdz
-         5JJqNEiRJQtLeFw4baUONNBGyi9ieiqsXnQFWUOuhpTDlQwdpP2SLG7SrBU7jGv1xFOR
-         m7t8dqG/6vO+T9I+XQuu7ic6dyAt2OTYeMYHYA1DPUoxKTnGIcI5N/CX9dj7w6rz1LWP
-         qT2AiFGA26P9Po/nMKOXlZMqSuWNiuAmifZPborMA3wRZ9kyBYMAAgS3M+7cU4BBBKy9
-         FIH9p8KvfNeL1CzTlRkvp24OmbSVxQlmzg5/lLpNnZSkdN1M74mQojqCujlSf5KhN6Gc
-         01Ng==
-X-Forwarded-Encrypted: i=1; AJvYcCX82o8ZyFdbwxcLKfHRroSdL4gCrJBhqz7Sr1ucQU2GGfEDTRHveuDa9nRG/8DN/HBON5jdEjMvy3ADMIZ8axeXZvdxlzUHQQPKvNxu361gBf8oV0ayglW/fxn7W/IP1FVNuZ8dHg/K8wVq0WeOa6BUY1zqqNU4razehq+CoR4EJoWFEWjuJ0td4IM=
-X-Gm-Message-State: AOJu0YxNMjhO4i+yj7DTrDdDXu2w3VFLYPvv0zQB/NycXTpG8onE6rKz
-	8I5HhlXUK9avn+4uqu+tp8oBEYZGKFRKzfKHOOWDXWPEkyDdBo44d6MFL8UK2lJm7UXQb6rqCSO
-	FKM4lnUFCtuqqiAFpLU6/98m0H9g=
-X-Google-Smtp-Source: AGHT+IGbNuVDfS2/nNPcPvcGmN5RBzUfnDNopwneysKedo3ubG5AEFhMAOmNVByi64q15tTgCTzcyTQeLmmpXz4BNV4=
-X-Received: by 2002:a17:90a:ca8b:b0:2bd:6f2e:8c1a with SMTP id
- 98e67ed59e1d1-2bd6f2e91b7mr5738211a91.2.1716278728508; Tue, 21 May 2024
- 01:05:28 -0700 (PDT)
+        bh=evIKBeDjrjIyrHQrE6yLoAQSN9K9vIdfXRpSaiKjBgE=;
+        b=AosQKbJ4XKolCiyW9z3X5/aulE+WV6E/4DOUHhtWgve0jsKdx/G+W7YfglRmqtmtSj
+         ojrjq+ROZnyy2xiZQF+aiIYgRsId2lbrVZzFPciW8QBYMyi2cyscDMwTmEGhkndPeL4R
+         HxknI6dBEvWDjSvib8wzmEmbu41oe0HNj/UKsnD6/f7sC5nS5SXm837Hz6zEAOGDxVj9
+         7ijh+lUM9OoCZCTfFS5APAaHe7+o9ZEpSOqxDGXX3FMUUfduCNfFi4trRJ+l/cn6sF70
+         sY2dHB8/OJdOack7YqXp9Uz3qFqrP6OnsT6kQKh59T9VjCpNWFqLcmJKbV7895xEGb2C
+         4UAg==
+X-Forwarded-Encrypted: i=1; AJvYcCUV5aVN8sUq6a/QOmkHHgPU+xNUZh2Yj9oPvdNY3bBj/hye+tDjZZgvl78fkoteMo3splLuB/mAlE+Maxj9ZFW+Qs/gF3Gx3AekBn5m08eqireICG/aeYjkNCve4MBePZgaB+krDbtTSBxA56c/cL17lPXVYbkwStDtsFjv8o2exRYSu61FgRk=
+X-Gm-Message-State: AOJu0YxRdCn7E16TDRNIG1zem0kobVUI+Cogv+RDdq1G8oCAuNMurVgu
+	jEKviECqyYFdZEW3uvWUT1E6CjgUEJUDuaChdf9M9Wm968397MbtMs1XcrxxJd5chUW9aXvQdIj
+	YzamfY2vvnUYtY6haCyN2yoFSOis=
+X-Google-Smtp-Source: AGHT+IFieXXoG+hRo4v8ZQFVy0FPx0LzOZqLI2NQxeJ8z3p0jf0pXavFZ5ZiMD9/R71xHVho3OeDGCXPVB6CXwJTom4=
+X-Received: by 2002:a17:90b:100d:b0:2b6:2ef4:e2aa with SMTP id
+ 98e67ed59e1d1-2b6cc780466mr24891904a91.25.1716283097622; Tue, 21 May 2024
+ 02:18:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240519211235.589325-1-ojeda@kernel.org> <20240519211235.589325-2-ojeda@kernel.org>
- <CAK7LNATPx2wTEM=KDmGtcH8vVTB4suOhh-CUQKP54F8wtPWDiw@mail.gmail.com>
-In-Reply-To: <CAK7LNATPx2wTEM=KDmGtcH8vVTB4suOhh-CUQKP54F8wtPWDiw@mail.gmail.com>
+References: <20240520172554.182094-1-dakr@redhat.com> <20240520172554.182094-11-dakr@redhat.com>
+ <CANiq72kHrgOVrdw7rB9KpHvOMy244TgmEzAcL=v5O9rchs8T1g@mail.gmail.com> <cf89c02d45545b67272aba933fbc8a8a0df83358.camel@redhat.com>
+In-Reply-To: <cf89c02d45545b67272aba933fbc8a8a0df83358.camel@redhat.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 21 May 2024 10:05:16 +0200
-Message-ID: <CANiq72mcdtNie=t=HHhZnjQa7gQiDZin+TYP_7Rgi4kL83H2BA@mail.gmail.com>
-Subject: Re: [PATCH 2/3] kbuild: rust: apply `CONFIG_WERROR` to all Rust targets
-To: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Nathan Chancellor <nathan@kernel.org>, 
-	Nicolas Schier <nicolas@fjasle.eu>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, linux-kbuild@vger.kernel.org, 
+Date: Tue, 21 May 2024 11:18:04 +0200
+Message-ID: <CANiq72k7H3Y0ksdquVsrAbRtj_5CqMCYfo79UrhSVcK5VwfG5Q@mail.gmail.com>
+Subject: Re: [RFC PATCH 10/11] rust: add basic abstractions for iomem operations
+To: Philipp Stanner <pstanner@redhat.com>
+Cc: Danilo Krummrich <dakr@redhat.com>, gregkh@linuxfoundation.org, rafael@kernel.org, 
+	bhelgaas@google.com, ojeda@kernel.org, alex.gaynor@gmail.com, 
+	wedsonaf@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@samsung.com, 
+	aliceryhl@google.com, airlied@gmail.com, fujita.tomonori@gmail.com, 
+	lina@asahilina.net, ajanulgu@redhat.com, lyude@redhat.com, 
 	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	patches@lists.linux.dev
+	linux-pci@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, May 21, 2024 at 6:15=E2=80=AFAM Masahiro Yamada <masahiroy@kernel.o=
-rg> wrote:
+On Tue, May 21, 2024 at 9:36=E2=80=AFAM Philipp Stanner <pstanner@redhat.co=
+m> wrote:
 >
-> Rust started to do something different from C.
+> Justified questions =E2=80=93 it is public because the Drop implementatio=
+n for
+> pci::Bar requires the ioptr to pass it to pci_iounmap().
 >
-> KBUILD_HOSTCFLAGS is not affected by any CONFIG option.
->
-> The reason is because HOSTCC is needed for building Kconfig.
-> If the flags for HOSTCC is changed by a CONFIG option,
-> it would be a chicken-egg problem.
-> Also, some host programs might be compiled even
-> without .config at all. (e.g. scripts/unifdef)
->
-> I know Rust will not become a part of the core infrastructure
-> of the build system, but IMHO, host programs should not be
-> affected by any CONFIG option.
->
-> I do not like this patch.
+> The alternative would be to give pci::Bar a copy of ioptr (it's just an
+> integer after all), but that would also not be exactly beautiful.
 
-Thanks Masahiro -- yeah, I can see how it makes sense for C host
-programs, and consistency with those may be best, even if it is not
-used for core infrastructure in the case of Rust.
+If by copy you mean keeping an actual copy elsewhere, then you could
+provide an access method instead.
 
-Do you think it would be OK if we do it only for everything else, i.e.
-no host programs? That covers most of the Rust things so far and would
-have helped with the warning I linked above (which is why I would like
-to change this -- one can pass the flag manually, of course, but
-having more targets affected by `CONFIG_WERROR` means more developers
-will have it enabled and thus notice earlier).
+If you meant the access method, it may not be "beautiful" (Why? What
+do you mean?), but it is way more important to be sound.
 
-(I am also thinking whether it could make sense to eventually
-explicitly mark the C host programs that would be exempt from
-`CONFIG_WERROR` so that we could apply it to everything else -- I
-guess it could be easy to get wrong and/or forget when new ones are
-added.)
+> The commit message states (btw this file would get more extensive
+> comments soonish) that with this design its the subsystem that is
+> responsible for creating IoMem validly, because the subsystem is the
+> one who knows about the memory regions and lengths and stuff.
+>
+> The driver should only ever take an IoMem through a subsystem, so that
+> would be safe.
+
+The Rust safety boundary is normally the module -- you want that
+subsystems cannot make mistakes either when using the `iomem` module,
+not just drivers when using the subsystem APIs.
+
+So you can't rely on a user, even if it is a subsystem, to "validly
+create" objects and also hope that they do not modify the fields later
+etc. If you need to ask subsystems for that, then you need to require
+`unsafe` somewhere, e.g. the constructor (and make the field private,
+and add an invariant to the type, and add `INVARIANT:` comments).
+
+Think about it this way: if we were to write all the code like that
+(e.g. with all structs using public fields), then essentially we would
+be back at C, since we would be trusting everybody not to touch what
+they shouldn't, and not to put values that could later lead something
+else into UB, and we would not even have the documentation/invariants
+to verify those either, etc.
+
+> Yes, if the addition violates the capacity of a usize. But that would
+> then be a bug we really want to notice, wouldn't we?
+
+Definitely, but what I wanted is that you consider whether it is
+reasonable to have the panic possibility there, since it depends on a
+value that others control. For instance, would it make sense to make
+it a fallible operation instead? Should the panic be documented
+otherwise? Could it be prevented somehow? etc.
+
+Please check Wedson's `io_mem` in the old `rust` branch for some ideas too.
 
 Cheers,
 Miguel
