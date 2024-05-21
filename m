@@ -1,94 +1,154 @@
-Received: from mail-yb1-f175.google.com (mail-yb1-f175.google.com [209.85.219.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CDF421BC44;
-	Tue, 21 May 2024 03:01:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F299C210E4;
+	Tue, 21 May 2024 04:15:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716260517; cv=none; b=LLSIJj2BJIsMPajoWpc4XbO9Itkf7DaYf0YDNOn3sN9JDHjmgyv2tg/eXaACw5Xg97aH8xcfhDycmB5gY53vaYbBuGNjslzZ/chJ0LLcQf0f2R5KELxxqYjuIxHfM4bZWlTfxa2eeyrCLstXcg+9RQBcey05ePfIExaEbX3M8KY=
+	t=1716264920; cv=none; b=uoqiJEsZpvRdF6JZ7noRr8AsI3BsT55TtESX3bzSEw7jUGCAynOxOEn/DTJ0pqOw5CJyWgDDZUWSAyTv09seeYoBqTAQNOAsNbpW5WkmHqjwWzpN8AlbxPvaW0hj+N5xLUm0OhPjSY7ejrf6mTe7hni88lzgJFYRbG/rmdZ3OIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716260517; c=relaxed/simple;
-	bh=akufwTAxaGwYpcPiUZ4tvDW/YYUXHCiwJM49ewu8Q34=;
+	s=arc-20240116; t=1716264920; c=relaxed/simple;
+	bh=ZLMQim0b27vvKLlAakfM9liuAkhebuAx7GW5o3VAU5E=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ceUqOwcrHVuL0SWjLue7IUBujqlQod9uCsksph4OmWpfFLFq1SxJJng3c0loklUqWSgWuwo9w2P3fxpPqhVJG5/0nBVA+E9jnCWXcz5/+1Gy6fRBgWsnCkgAHZZDjINtvK7K4tAyKoVKzUSNo8UgcBQko5+JS6y2IGm41HouDtg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RSlCxhG1; arc=none smtp.client-ip=209.85.219.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=JZgA/rJITsz0n1YC7SI/D9WToMlzv8dVP985elIKxdFQNJkTT7LObQ7/XSBT5t4l60eMtL+w15c7CZebb8rrZc5UD4ChNYZyVAmeqV3+spSy5UlMv+2rhxhezTH6yG8PBEF+JnBI2DqyvNZ/KoCH7Lb23q1TXAcwiTRiLpD7GU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AAvFdIIa; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RSlCxhG1"
-Received: by mail-yb1-f175.google.com with SMTP id 3f1490d57ef6-df475159042so2683187276.1;
-        Mon, 20 May 2024 20:01:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1716260515; x=1716865315; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=akufwTAxaGwYpcPiUZ4tvDW/YYUXHCiwJM49ewu8Q34=;
-        b=RSlCxhG1V6P2kT2DRXdwZXlQvcinFC1YgWJJdA2Ti7gWwOBXzjDWEjKDXwizl4JaUq
-         It+QxURrVVwPrfv/4CVxowy/Zrb8ubJBf6oD/u8PTwfvm+jqFu6hgtDMKs8jz+KnpEh3
-         ilUIv2fr5J+58fmKndfWKwu9JjH+fwkKDFdzPXL2aqwDFbc3QrFNFtSFdLFlaQaC0veU
-         AUFhbSg9p0MgkiRep3EzagG6g+xc++OaEUbhC3yBpezWOJhgcIQ1J8VS3EGKOl9iPToj
-         z3AvNPnnnoeEAgaxjeEMEglT8NEUrgaX4W0KfWO+Qhhga62eWIv9/wF3WZVNNNIuDCGO
-         iUAA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716260515; x=1716865315;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=akufwTAxaGwYpcPiUZ4tvDW/YYUXHCiwJM49ewu8Q34=;
-        b=QnIsgZO0Jabmkceo7CY1jqmV8hW86muxWVXRlavuzEo5j4sHuiRwYRDVdbYLk2kTE/
-         9L0GbXzzzuCdIjo58JRVNq54X2/zUtKyv3and8hmUf0j3qN0SlQGrujMGq3kcUcRTdL5
-         qLmi5Yfq1jotc8NaFmLU5EHjPXeyql9SiquA+idGbDnN7b9EYDksEWsbRABWWEn+dQfc
-         nyaa4RSeYyaHU5/HsB2QU7ZiHPb/3t6Y5JQ+WtnAnyhjEyPDl+ysaEpskS0kmBhopJGN
-         3u8docqx2pxE6AW92HfRUz2/3uV5f0q4h6CYct1GIpXdPHA00vZpYatDThzCV+5w56H7
-         c6Fg==
-X-Forwarded-Encrypted: i=1; AJvYcCVjv/NvYNJxOj9xX2cUyZs6zKmMaYo/S5TQMsekP4zNSmf2ska+F23Zi64KoQpbLFv7a63ETNU4DzJF5RVxP4wMzZs8teenYU685508SMINibszxWl67zafYAJZvghmiiAuI301Nxrsm02hW46jdCGGcYTRVpL0EPSpqygzHTNW9iimskGx/5A=
-X-Gm-Message-State: AOJu0YzHEdL++ZKf6WqnACOe6YTHKwWcK8878VyBVxMpTaJMcwUNEq8k
-	OFm1EyCQnqPUkLVhL5DGaCazWt2w+d6Usa34TKEr15NqYf8HNP1cpvPrcCyBVWYqNBcFoTw42yc
-	AyHi+3rRvXWIx+FlkIYG0HJGEfzQ=
-X-Google-Smtp-Source: AGHT+IE0/WVO6nR4/cHU1sX1iomx+pe/SEQq3X/aVg/mNrKACAn0MJCQM6DnG6b8Mgh1xr/qfS4c6yNYgy2o1QZO8ek=
-X-Received: by 2002:a25:c945:0:b0:de5:5b81:c724 with SMTP id
- 3f1490d57ef6-dee4f1a61ebmr26963127276.23.1716260514826; Mon, 20 May 2024
- 20:01:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AAvFdIIa"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97258C4AF0A;
+	Tue, 21 May 2024 04:15:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1716264919;
+	bh=ZLMQim0b27vvKLlAakfM9liuAkhebuAx7GW5o3VAU5E=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=AAvFdIIa62aHZqk2WwB1k2rH7MSFFeheUO4UGa31iZgjxzWhnfzfbdXvWBSBaR/0k
+	 Wmxg7aUUOq2gBLZpar58Z1SqyIvbBIQpwGVWkehmuit1lmyJv3R68YfmzXu+kpuikJ
+	 2Ama4H4WnbU4knUSEKgX1bz6qRZ1l1LMZ5q9l3SNPaRxyxn3L+9fLJw171NSUsZZE4
+	 sbzaGjsN1CT8hARONz22tV1iCOrBpvAIUliy/CYiTtXdUDrrN2rcd6INRzGgzFgs+D
+	 60Xb4O0OXpCrQkuWQ/VkPlNyiK7mR1yeQaMHutZwyTEeW+S2IzuSs/HEdpzYb+An/V
+	 QDLrDR2qdgqhw==
+Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-51f72a29f13so4817248e87.3;
+        Mon, 20 May 2024 21:15:19 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCX3vMowg2KmdYoy8UIro5/i+csXvasGcLITEiP/pJHcVJ6VpnSzM4nP6XvZ9UNusiGSOi9btNzA/abPKS0lOy6ovRhqXs4//cqHe6eVzKbOQzCoQX5jvsbRknncP2WNVDbdUjRpBh8Afz/fDuka9Ip+mNecKObCNV9ACW57VzrDT/JUzvAAMC9E3eY=
+X-Gm-Message-State: AOJu0YxI6xwMbU7Kjz2UxC/9R+8fI2+g21IePcQzl3FW9UEStBSFf00w
+	rkpjL3+jXhglsFqsFxx62d4kaQEIoISFiHiIbD8fEg0EOrL5AQDlMZ0/vgRT+WVoSmGL2FWcSAs
+	1Nvv03yRc7Wk0rDJPkKTA2jtDh/o=
+X-Google-Smtp-Source: AGHT+IFERR+XMF96W4SPi3XHkk3UQctvgLTXKkG1ygvj6FlJ+ABpgu+t9Zh29tpfT+a9yTz5hr7oL9PgCDtM3MhVShU=
+X-Received: by 2002:ac2:4209:0:b0:51f:567b:c398 with SMTP id
+ 2adb3069b0e04-5221006fe6fmr18145163e87.28.1716264918252; Mon, 20 May 2024
+ 21:15:18 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240520172554.182094-1-dakr@redhat.com> <20240520172554.182094-11-dakr@redhat.com>
- <CANiq72kHrgOVrdw7rB9KpHvOMy244TgmEzAcL=v5O9rchs8T1g@mail.gmail.com> <CAPM=9txb5STBo05xiTy9+wF7=mMO=X2==BP4JVORPFAtX=nS0g@mail.gmail.com>
-In-Reply-To: <CAPM=9txb5STBo05xiTy9+wF7=mMO=X2==BP4JVORPFAtX=nS0g@mail.gmail.com>
-From: Wedson Almeida Filho <wedsonaf@gmail.com>
-Date: Tue, 21 May 2024 00:01:45 -0300
-Message-ID: <CANeycqpNeHFUu-RwSc6Ewa3r5TMhYYFDC6bO+sj3OZ398JfJ1A@mail.gmail.com>
-Subject: Re: [RFC PATCH 10/11] rust: add basic abstractions for iomem operations
-To: Dave Airlie <airlied@gmail.com>
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Danilo Krummrich <dakr@redhat.com>, 
-	gregkh@linuxfoundation.org, rafael@kernel.org, bhelgaas@google.com, 
-	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com, 
-	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me, 
-	a.hindborg@samsung.com, aliceryhl@google.com, fujita.tomonori@gmail.com, 
-	lina@asahilina.net, pstanner@redhat.com, ajanulgu@redhat.com, 
-	lyude@redhat.com, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org
+References: <20240519211235.589325-1-ojeda@kernel.org> <20240519211235.589325-2-ojeda@kernel.org>
+In-Reply-To: <20240519211235.589325-2-ojeda@kernel.org>
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Tue, 21 May 2024 13:14:41 +0900
+X-Gmail-Original-Message-ID: <CAK7LNATPx2wTEM=KDmGtcH8vVTB4suOhh-CUQKP54F8wtPWDiw@mail.gmail.com>
+Message-ID: <CAK7LNATPx2wTEM=KDmGtcH8vVTB4suOhh-CUQKP54F8wtPWDiw@mail.gmail.com>
+Subject: Re: [PATCH 2/3] kbuild: rust: apply `CONFIG_WERROR` to all Rust targets
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Alice Ryhl <aliceryhl@google.com>, linux-kbuild@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	patches@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 20 May 2024 at 23:07, Dave Airlie <airlied@gmail.com> wrote:
+On Mon, May 20, 2024 at 6:12=E2=80=AFAM Miguel Ojeda <ojeda@kernel.org> wro=
+te:
 >
-> >
-> > Wedson wrote a similar abstraction in the past
-> > (`rust/kernel/io_mem.rs` in the old `rust` branch), with a
-> > compile-time `SIZE` -- it is probably worth taking a look.
-> >
->
-> Just on this point, we can't know in advance what size the IO BARs are
-> at compile time.
->
-> The old method just isn't useful for real devices with runtime IO BAR sizes.
+> Make all Rust code (i.e. not just kernel code) respect `CONFIG_WERROR`,
+> so that we keep everything warning clean.
 
-The compile-time `SIZE` in my implementation is a minimum size.
 
-Attempts to read/write with constants within that size (offset + size)
-were checked at compile time, that is, they would have zero additional
-runtime cost when compared to C. Reads/writes beyond the minimum would
-have to be checked at runtime.
+Rust started to do something different from C.
+
+
+KBUILD_HOSTCFLAGS is not affected by any CONFIG option.
+
+The reason is because HOSTCC is needed for building Kconfig.
+If the flags for HOSTCC is changed by a CONFIG option,
+it would be a chicken-egg problem.
+Also, some host programs might be compiled even
+without .config at all. (e.g. scripts/unifdef)
+
+
+I know Rust will not become a part of the core infrastructure
+of the build system, but IMHO, host programs should not be
+affected by any CONFIG option.
+
+I do not like this patch.
+
+
+
+
+
+
+>
+> In particular, this affects targets in `rust/` (`RUSTDOC H`, `RUSTC TL`,
+> `RUSTDOC T`, `RUSTC T` and `RUSTC P`), plus host programs and any others
+> we may add later.
+>
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> ---
+> This one requires the `rusttest` warning cleanup at
+> https://lore.kernel.org/rust-for-linux/20240519210735.587323-1-ojeda@kern=
+el.org/
+>
+>  Makefile                   | 4 ++--
+>  scripts/Makefile.extrawarn | 4 ++--
+>  2 files changed, 4 insertions(+), 4 deletions(-)
+>
+> diff --git a/Makefile b/Makefile
+> index fba567a55607..2d0ea441cb9c 100644
+> --- a/Makefile
+> +++ b/Makefile
+> @@ -469,7 +469,7 @@ export rust_common_flags :=3D --edition=3D2021 \
+>
+>  KBUILD_HOSTCFLAGS   :=3D $(KBUILD_USERHOSTCFLAGS) $(HOST_LFS_CFLAGS) $(H=
+OSTCFLAGS)
+>  KBUILD_HOSTCXXFLAGS :=3D -Wall -O2 $(HOST_LFS_CFLAGS) $(HOSTCXXFLAGS)
+> -KBUILD_HOSTRUSTFLAGS :=3D $(rust_common_flags) -O -Cstrip=3Ddebuginfo \
+> +KBUILD_HOSTRUSTFLAGS =3D $(rust_common_flags) -O -Cstrip=3Ddebuginfo \
+>                         -Zallow-features=3D $(HOSTRUSTFLAGS)
+>  KBUILD_HOSTLDFLAGS  :=3D $(HOST_LFS_LDFLAGS) $(HOSTLDFLAGS)
+>  KBUILD_HOSTLDLIBS   :=3D $(HOST_LFS_LIBS) $(HOSTLDLIBS)
+> @@ -560,7 +560,7 @@ KBUILD_CFLAGS +=3D -fno-PIE
+>  KBUILD_CFLAGS +=3D -fno-strict-aliasing
+>
+>  KBUILD_CPPFLAGS :=3D -D__KERNEL__
+> -KBUILD_RUSTFLAGS :=3D $(rust_common_flags) \
+> +KBUILD_RUSTFLAGS =3D $(rust_common_flags) \
+>                     -Cpanic=3Dabort -Cembed-bitcode=3Dn -Clto=3Dn \
+>                     -Cforce-unwind-tables=3Dn -Ccodegen-units=3D1 \
+>                     -Csymbol-mangling-version=3Dv0 \
+> diff --git a/scripts/Makefile.extrawarn b/scripts/Makefile.extrawarn
+> index 48114e91c386..990890821889 100644
+> --- a/scripts/Makefile.extrawarn
+> +++ b/scripts/Makefile.extrawarn
+> @@ -26,8 +26,8 @@ endif
+>
+>  KBUILD_CPPFLAGS-$(CONFIG_WERROR) +=3D -Werror
+>  KBUILD_CPPFLAGS +=3D $(KBUILD_CPPFLAGS-y)
+> -KBUILD_RUSTFLAGS-$(CONFIG_WERROR) +=3D -Dwarnings
+> -KBUILD_RUSTFLAGS +=3D $(KBUILD_RUSTFLAGS-y)
+> +rust_common_flags-$(CONFIG_WERROR) +=3D -Dwarnings
+> +rust_common_flags +=3D $(rust_common_flags-y)
+>
+>  KBUILD_CFLAGS-$(CONFIG_CC_NO_ARRAY_BOUNDS) +=3D -Wno-array-bounds
+>
+> --
+> 2.45.1
+
+
+
+--
+Best Regards
+
+Masahiro Yamada
