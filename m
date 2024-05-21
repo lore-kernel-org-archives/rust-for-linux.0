@@ -1,287 +1,350 @@
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2074.outbound.protection.outlook.com [40.107.94.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E7C28836
-	for <rust-for-linux@vger.kernel.org>; Tue, 21 May 2024 05:32:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.74
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716269581; cv=fail; b=Has/vW92V0U38ORQ5D1mAZppJEVFrVu0nJ/72PMNVTKJ8Y2driSqJgT5xbS4SM3r1n25i/7EzZ/JOb1uWi1/ratHdX9oJ+RGxTSEe1PF9r8YMOSi23lWFbFGMrvuprH/vslsYo4O3BqyhZkpLOS4Rh5fbaBvlxdKmtGdluAmjHw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716269581; c=relaxed/simple;
-	bh=RCnNNgi2maBpk98VQMT2Zi3XX2LBVaMUUQTWnClSjUs=;
-	h=Date:From:To:CC:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=d40vS26yKjRHGbBh+dNZcU/07yVBC5YX0bwsvyxuksvbLXq//nfjdmUei+oJfLzCe3VRki0i90PeVLpR25a3FMrXGzuMm17ZJ4ja1P+G0wl2A2ofrmw5dlc2tHAzL7ESAV3NvyMos/B5E6FnNUCkuogzocNfonnvJDdpy2O9rOY=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=eUBkMohU; arc=fail smtp.client-ip=40.107.94.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 423783D963;
+	Tue, 21 May 2024 05:43:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1716270186; cv=none; b=A8D2C0h4Co0ocvLc8wLhA+1Br02tm13fVYNESlibLVyWMVDZTDXHEj9jp4uCmAcLwdyUaXfEVCWz5tfz3sEK3fyT+VRmii6gK1WreS7u3yKA9/TJc18VLnELIBjjhirVSWtSxi3MooTVZ5LQOGiqCdmZvgiUWjp7ZQB26ibARew=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1716270186; c=relaxed/simple;
+	bh=WXDULDhlS+P1LFJpdyb14ettr8QU9Kdr6GqCzoSRiXw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RVm6m9SH5hinMFDePetDq9eGvuxmlh4zJuy+S8oRehUx2dcYFhvto9C0zX6EjPLMMnMyF+7emCSklpwBR3+uUccLAHJdH0j1ai3pNqAq3Xos88/wsJPVcW/bHlmshk0DVO/LTqoS9RW9UxhBQ770GT6WQHqvZNr4CQHiePgtYJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LtYpIcUe; arc=none smtp.client-ip=209.85.218.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="eUBkMohU"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=PCDMQ09/bvfUbGlQbR1PZTZt7wTMIqiaSA52FYXIgPh9X9xdfwXB0JJAVtXWX+6thI+tLvFi5T/W+7hBdLVtiaApJ3e3STrhJtjB1ZYFwCV38Zgn9CVkuZCIbU6sDipes5PMFiufnndN09XBSnBxWYM5EyY/YhL0YS9ZpFa0eOauL1ryJVbRAyjumy8Glfw25feOKtTZ97nnJdZN+Jb4btTeD8e39x1pl6n0Q7IP3fBRp9ayGtiun/cABEax018/GnVrghO7u1fmmmgnmPntp8FTl7f0YQsR39/zWfgGowU38CsOLky6dA5+Cg57kBHXrVVhuLhKKxPz6NVadvD1Kw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Pstbe91UcByHUI2rX6yclJjmfZwRKdxBJLtJ+KsLJic=;
- b=DpW9ouly1oAl55dFsUQwwE/n3iGLskrAxZApdTE/3P9yAaUrtWEqJ2pmOYbUnc/QNM0OxxsMfdEYCTdu3LbS2ZUazXZFlSXyBz4vmeRIPF+54ehslsJf1k+6fAVJUBFxgEc31i77pZEOAUh0U2mURK+aBikTrqD06Y9xMRYeKjQ8JBTZAVGM9WMvMlAvjczmWD3QxuY98DlG+xybvEwuSWO+pPqLtuHEUUOQmiEViZzTB1HToIhTJ/MWVxnqnaKHbsLTFh+YbQk/Z+Q8Ezzf6wbvpiq5YqLoZyRrlBZ2x9OPI5qKjWK5CJUfYI9xHAbFwoleVROnMWZa1VIBS54YLQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=redhat.com smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Pstbe91UcByHUI2rX6yclJjmfZwRKdxBJLtJ+KsLJic=;
- b=eUBkMohU9ktXT6HK5cXLm8UaY6BEbDBCLhH/cEnkTGHwcGrmuXJOvCqfBuu/WdOx3Ec+h2GDE2bc7v53tND4TGoyKqcS8Po1YP4B4UcA67pWBWhYwJaEWbxisjvigp6+voDYatm5QGJ36fInW8PTO8VVZangrPYAqWVUXCls3ACWwOyy8E8j9f5E0UXKjRl1yPMYJv/MnVTPsDCDvQcmebWpEsw5CjPCA19+cesg7lgdgm/J1Dev0kngD8DqZ0K4QGSg+FYVTtK3HVOSr7i+22SPSL6Vr+KKdjscHJOn08iON2ZBp0tSxVUVamKIKNxf0YPmnKQikdwHGXz83hXj/A==
-Received: from SA9P221CA0028.NAMP221.PROD.OUTLOOK.COM (2603:10b6:806:25::33)
- by CY8PR12MB7609.namprd12.prod.outlook.com (2603:10b6:930:99::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7587.35; Tue, 21 May
- 2024 05:32:57 +0000
-Received: from SA2PEPF00001509.namprd04.prod.outlook.com
- (2603:10b6:806:25:cafe::44) by SA9P221CA0028.outlook.office365.com
- (2603:10b6:806:25::33) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7587.36 via Frontend
- Transport; Tue, 21 May 2024 05:32:56 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- SA2PEPF00001509.mail.protection.outlook.com (10.167.242.41) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7611.14 via Frontend Transport; Tue, 21 May 2024 05:32:56 +0000
-Received: from rnnvmail202.nvidia.com (10.129.68.7) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Mon, 20 May
- 2024 22:32:39 -0700
-Received: from rnnvmail205.nvidia.com (10.129.68.10) by rnnvmail202.nvidia.com
- (10.129.68.7) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.4; Mon, 20 May
- 2024 22:32:39 -0700
-Received: from localhost (10.127.8.10) by mail.nvidia.com (10.129.68.10) with
- Microsoft SMTP Server id 15.2.1544.4 via Frontend Transport; Mon, 20 May 2024
- 22:32:34 -0700
-Date: Tue, 21 May 2024 08:32:31 +0300
-From: Zhi Wang <zhiw@nvidia.com>
-To: Danilo Krummrich <dakr@redhat.com>
-CC: <maarten.lankhorst@linux.intel.com>, <mripard@kernel.org>,
-	<tzimmermann@suse.de>, <airlied@gmail.com>, <daniel@ffwll.ch>,
-	<ojeda@kernel.org>, <alex.gaynor@gmail.com>, <wedsonaf@gmail.com>,
-	<boqun.feng@gmail.com>, <gary@garyguo.net>, <bjorn3_gh@protonmail.com>,
-	<benno.lossin@proton.me>, <a.hindborg@samsung.com>, <aliceryhl@google.com>,
-	<fujita.tomonori@gmail.com>, <lina@asahilina.net>, <pstanner@redhat.com>,
-	<ajanulgu@redhat.com>, <lyude@redhat.com>, <gregkh@linuxfoundation.org>,
-	<rust-for-linux@vger.kernel.org>, <dri-devel@lists.freedesktop.org>,
-	<nouveau@lists.freedesktop.org>
-Subject: Re: [RFC PATCH 7/8] rust: add firmware abstractions
-Message-ID: <20240521083231.000074c2.zhiw@nvidia.com>
-In-Reply-To: <20240520172422.181763-4-dakr@redhat.com>
-References: <20240520172059.181256-1-dakr@redhat.com>
-	<20240520172422.181763-4-dakr@redhat.com>
-Organization: NVIDIA
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.38; x86_64-w64-mingw32)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LtYpIcUe"
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-a59a387fbc9so822584166b.1;
+        Mon, 20 May 2024 22:43:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1716270182; x=1716874982; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=eN6lzfF0TF9YL/tL1ueWEL5A+JkIp+mxATt/0iGA22A=;
+        b=LtYpIcUekMeIrppMl4CDd9sNGNIyx8I6V8fu123NeLFK+l/YZqRf1Dt4/L2SKPIXnG
+         L0jAmMXF/su82yWi05pckVfLxr9Do9O5hczTWaJ1LKmBmtvi7g4+I/KlEdz6NB/tapcs
+         gyC0+NB1t4CwX5RA4UK4idKUtVm72qbY/rz32npu/5TY2dIv3DpXDTZDYO+GhOtrnC0V
+         4qq5c8vkStH52M7Nyw9q7mMx8ka+b0Q5EZxHV0qWDclcP+uf083z7ZdTJ5KZyinW5hGB
+         A938zbf0tEvJBgU6CwMUTYj0X1nocbsRGZwiKkpbIto4oKcJzl8jgvuT8ZXvXXSl+ASJ
+         KkkQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716270182; x=1716874982;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=eN6lzfF0TF9YL/tL1ueWEL5A+JkIp+mxATt/0iGA22A=;
+        b=WRMqH19+lgIhKx0Sf9m6C1WleaXagbfExwPoTnbRd0yN7pdby/BTTAqHQjKStb0s2Q
+         cD8iDjRMGCRa6wlMddnNI+RnZ1fUge3pVW724CsoyciDaHIex8RVZSP05XdF9s/gTLuE
+         saGCFhdCFTVRCWCqBwOcVAQHT1aU+j4vWWtzm01AT9NIlREmkobx+SELc7ZpPZ4B1Tx5
+         IJYGOnMUkqeQ4GCVvuxkFyCQxFwGdyGfywgF45UIJ8hIibUiE8sieHqTGvYG/g4P/ELX
+         9X+uFZAq1tQHqFKjZdVrCCBBLko1hR4HSs7UwXALIUG7ARCPJUzIYPGd7QldSa64QLGL
+         sf1w==
+X-Forwarded-Encrypted: i=1; AJvYcCVCPgNixZwK0uwSKp90ijzF/BAdZPC0+GatK2hpoqqdFy6VMxVQDr+TVjf5oJaXyKmAI9PuYhazPnvAM3XYWXHzSSB5ebogg1FWC7/1IKuRivg5JuJne2GvoZBwOzsGALR5gu1YA+NXR73XmjAquFZCKYdLXCv3/ABRmQu3yRqETtBVbK52m4k=
+X-Gm-Message-State: AOJu0YzZiWPt4/jDHQoxW6JRIMwzHjQITDhvaR7/DBWL/rPPV29ea/ot
+	7tKcSm9tfRDIatB07XqdnmTQ24dVSmHULKPAxStMCokC1Zsv+um4ksioftbTlfDM3BElENYIBlz
+	OUToHoUp3nCnddjKq/F1yX8oGNqo=
+X-Google-Smtp-Source: AGHT+IFWv44tk0TgIYASqqilojZdgUrZpLjalRFnNy7WwtNlAq63N3NzPaLK6F2nKTP8D27Er9z/+gTMYINFHxSyuyM=
+X-Received: by 2002:a17:906:9a8f:b0:a62:7ef:ca4a with SMTP id
+ a640c23a62f3a-a6207efcb29mr162655266b.70.1716270182130; Mon, 20 May 2024
+ 22:43:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="US-ASCII"
-Content-Transfer-Encoding: 7bit
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SA2PEPF00001509:EE_|CY8PR12MB7609:EE_
-X-MS-Office365-Filtering-Correlation-Id: 108f9c62-773c-4c96-87fe-08dc79577861
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230031|7416005|1800799015|82310400017|376005|36860700004;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?A4r8yspaop0dvsSthELRqxU5FVqnBXolMFBAFY3tav3QD7iVWJdgmoV14QDL?=
- =?us-ascii?Q?7bTV0/s8nEBL+nnDF62NL2m9p2bXXY28RxeCRktzQ0kofZf6KG6lnbl+Z7C/?=
- =?us-ascii?Q?ZEfbMme/Y0DEJGJ6TboZ/FcUaIYetH46SrCbU+oqjelgE/lGmxuke3BPtd2D?=
- =?us-ascii?Q?lzz+xaSCeOsQkjcwEbLB8Em2Fr15Z/jYJdRy83nui4BBTQx9v0c+e7Zsdt9d?=
- =?us-ascii?Q?D/48BAtbAYbd1ekckPOrEF3Skf6ha/5Iylx62xJqVAysd1W1FAh5H+lKX/e/?=
- =?us-ascii?Q?z5+Pd3Ui1XvqQ5nIuzKAEO1xmPt7h5zoNvd/lBqU8r3ZuzLn4kVITFPhxPf6?=
- =?us-ascii?Q?QB2EjguguZAhyDApnW9lXM46b/dv3nmf641DidtFAPRrhqwt6M+gbOWeOHvi?=
- =?us-ascii?Q?nbuGTtVdDAEi5WVgMkE7Nu2xS5+ZfDnLQqETVeoMgP9lh1FxTdr942AH1OE5?=
- =?us-ascii?Q?KsBgNBNhxpE1ZsHXYr/7InRz1w16sFc7+EtyZuxpsm0EPCFvWYWvZ+sLJCQg?=
- =?us-ascii?Q?Ksl6PEMSupC0Q/4OxwpS9F1wDUqcBrgwD21Av5v7St8mL8v5cYLbTyls4bxE?=
- =?us-ascii?Q?RW7az9Yf+L2KZ8EqbDiq5moxrGjNacBacz69VEZS6OP2zxqh9ZYxqE2NDk2r?=
- =?us-ascii?Q?4Kmk3UtaceErYYWtuuBrqz07jblNpAvIMrIAaxDh3DW8L208iL8Ou79Ess6p?=
- =?us-ascii?Q?blrkQ1xs6cuqaO33Xqb8YvwTMSPLapJooJl9hBpG+jaKZVUl2UHl5l9NUuWR?=
- =?us-ascii?Q?xT8t0PA4R9rL4JknVJd7O7IPYR9xoc8btg1pVHhoc08sP5Xomib8+VicQ2mm?=
- =?us-ascii?Q?VyVNg85WOzLYVjUFkLoyYk6NPyI2eWvNo5wisy4cmhwjtVd+ht3MbQNyhF+U?=
- =?us-ascii?Q?jWD8g1ZQtaYRWEGUZQbBIix3OikDN+scnNBssnWpcePkrP5qopHdvU7vHt5f?=
- =?us-ascii?Q?fjXNtLk1uT5RnnrRIZsJE3Kw0+JAsWVzTTYompwHJqXHGAmdlYt84Ac8Hujs?=
- =?us-ascii?Q?DEUd8b/nrECaw6+xOjEOVymWlVjh/UmVGoIg3zcqmSHDsGMe1SWvEQIaXUD6?=
- =?us-ascii?Q?HsNy2H2gQHsn89b6DiJ9lNPMs/PekWOfvW9y0qHUNWoqtOLLr5IOuRUYRwex?=
- =?us-ascii?Q?YZWYVCXqLwRdyZKmXTij2MNoR36ZzRn/uTlECNbYXXKMvUruXovvACA4Nldh?=
- =?us-ascii?Q?LQycJooeW7q42EVN2wpF1PMdxkh0nFcEdPNBiBuHjhV09/9AAeE58umQE5vB?=
- =?us-ascii?Q?VN1pBk6PkckJfQnetZXIyi/Pg82kky5gekz9uZEYQb77F4uCLewkKVMmGMiy?=
- =?us-ascii?Q?muD53h+ZteGlwCUeiZceVrc3IegIL55uQXPOswc2iTmdyT9GaGK6+zkChCAT?=
- =?us-ascii?Q?l9030p0=3D?=
-X-Forefront-Antispam-Report:
-	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230031)(7416005)(1800799015)(82310400017)(376005)(36860700004);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 May 2024 05:32:56.7134
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 108f9c62-773c-4c96-87fe-08dc79577861
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	SA2PEPF00001509.namprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7609
+References: <20240520172554.182094-1-dakr@redhat.com> <20240520172554.182094-3-dakr@redhat.com>
+ <2024052045-lived-retiree-d8b9@gregkh>
+In-Reply-To: <2024052045-lived-retiree-d8b9@gregkh>
+From: Dave Airlie <airlied@gmail.com>
+Date: Tue, 21 May 2024 15:42:50 +1000
+Message-ID: <CAPM=9txQPmYU593MAR97yyCoHaQR3o+E_N1D2mJjP23Gevzddw@mail.gmail.com>
+Subject: Re: [RFC PATCH 02/11] rust: add driver abstraction
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Danilo Krummrich <dakr@redhat.com>, rafael@kernel.org, bhelgaas@google.com, 
+	ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, 
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	benno.lossin@proton.me, a.hindborg@samsung.com, aliceryhl@google.com, 
+	fujita.tomonori@gmail.com, lina@asahilina.net, pstanner@redhat.com, 
+	ajanulgu@redhat.com, lyude@redhat.com, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On Mon, 20 May 2024 19:24:19 +0200
-Danilo Krummrich <dakr@redhat.com> wrote:
+On Tue, 21 May 2024 at 04:14, Greg KH <gregkh@linuxfoundation.org> wrote:
+>
+> On Mon, May 20, 2024 at 07:25:39PM +0200, Danilo Krummrich wrote:
+> > From: Wedson Almeida Filho <wedsonaf@gmail.com>
+> >
+> > This defines general functionality related to registering drivers with
+> > their respective subsystems, and registering modules that implement
+> > drivers.
+> >
+> > Co-developed-by: Asahi Lina <lina@asahilina.net>
+> > Signed-off-by: Asahi Lina <lina@asahilina.net>
+> > Co-developed-by: Andreas Hindborg <a.hindborg@samsung.com>
+> > Signed-off-by: Andreas Hindborg <a.hindborg@samsung.com>
+> > Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
+> > Signed-off-by: Danilo Krummrich <dakr@redhat.com>
+> > ---
+> >  rust/kernel/driver.rs        | 492 +++++++++++++++++++++++++++++++++++
+> >  rust/kernel/lib.rs           |   4 +-
+> >  rust/macros/module.rs        |   2 +-
+> >  samples/rust/rust_minimal.rs |   2 +-
+> >  samples/rust/rust_print.rs   |   2 +-
+> >  5 files changed, 498 insertions(+), 4 deletions(-)
+> >  create mode 100644 rust/kernel/driver.rs
+> >
+> > diff --git a/rust/kernel/driver.rs b/rust/kernel/driver.rs
+> > new file mode 100644
+> > index 000000000000..e0cfc36d47ff
+> > --- /dev/null
+> > +++ b/rust/kernel/driver.rs
+> > @@ -0,0 +1,492 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +
+> > +//! Generic support for drivers of different buses (e.g., PCI, Platform, Amba, etc.).
+> > +//!
+> > +//! Each bus/subsystem is expected to implement [`DriverOps`], which allows drivers to register
+> > +//! using the [`Registration`] class.
+>
+> Why are you creating new "names" here?  "DriverOps" is part of a 'struct
+> device_driver' why are you separating it out here?  And what is
+> 'Registration'?  That's a bus/class thing, not a driver thing.
+>
+> And be very careful of the use of the word 'class' here, remember, there
+> is 'struct class' as part of the driver model :)
+>
+> > +use crate::{
+> > +    alloc::{box_ext::BoxExt, flags::*},
+> > +    error::code::*,
+> > +    error::Result,
+> > +    str::CStr,
+> > +    sync::Arc,
+> > +    ThisModule,
+> > +};
+> > +use alloc::boxed::Box;
+> > +use core::{cell::UnsafeCell, marker::PhantomData, ops::Deref, pin::Pin};
+> > +
+> > +/// A subsystem (e.g., PCI, Platform, Amba, etc.) that allows drivers to be written for it.
+> > +pub trait DriverOps {
+>
+> Again, why is this not called DeviceDriver?
 
-> Add an abstraction around the kernels firmware API to request firmware
-> images. The abstraction provides functions to access the firmware
-> buffer and / or copy it to a new buffer allocated with a given
-> allocator backend.
-> 
+This is not the same as the C device_driver, it might mildly align in
+concept with it, but I'm not sure it shares enough to align it name
+wise with the C one.
 
-Was playing with firmware extractions based on this patch.
-Unfortunately I ended up with a lot of pointer operations, unsafe
-statements.
+> > +    /// The type that holds information about the registration. This is typically a struct defined
+> > +    /// by the C portion of the kernel.
+> > +    type RegType: Default;
+> > +
+> > +    /// Registers a driver.
+> > +    ///
+> > +    /// # Safety
+> > +    ///
+> > +    /// `reg` must point to valid, initialised, and writable memory. It may be modified by this
+> > +    /// function to hold registration state.
+> > +    ///
+> > +    /// On success, `reg` must remain pinned and valid until the matching call to
+> > +    /// [`DriverOps::unregister`].
+> > +    unsafe fn register(
+> > +        reg: *mut Self::RegType,
+> > +        name: &'static CStr,
+> > +        module: &'static ThisModule,
+> > +    ) -> Result;
+> > +
+> > +    /// Unregisters a driver previously registered with [`DriverOps::register`].
+> > +    ///
+> > +    /// # Safety
+> > +    ///
+> > +    /// `reg` must point to valid writable memory, initialised by a previous successful call to
+> > +    /// [`DriverOps::register`].
+> > +    unsafe fn unregister(reg: *mut Self::RegType);
+> > +}
+> > +
+> > +/// The registration of a driver.
+> > +pub struct Registration<T: DriverOps> {
+> > +    is_registered: bool,
+>
+> Why does a driver need to know if it is registered or not?  Only the
+> driver core cares about that, please do not expose that, it's racy and
+> should not be relied on.
 
-As we know many vendors have a C headers for the definitions of the
-firwmare content, the driver extract the data by applying a struct
-pointer on it.
+From the C side this does look unusual because on the C side something
+like struct pci_driver is statically allocated everywhere.
+In this rust abstraction, these are allocated dynamically, so instead
+of just it always being safe to just call register/unregister
+with static memory, a flag is kept around to say if the unregister
+should happen at all, as the memory may have
+been allocated but never registered. This is all the Registration is
+for, it's tracking the bus _driver structure allocation, and
+whether the bus register/unregister have been called since the object
+was allocated.
 
-But in rust, I feel it would nice that we can also have a common
-firmware extractor for drivers, that can wrap the pointer operations,
-take a list of the firmware struct members that converted from C headers
-as the input, offer the driver some common ABI methods to query them.
-Maybe that would ease the pain a lot.
+I'm not sure it makes sense (or if you can at all), have a static like
+pci_driver object here to match how C does things.
 
-Thanks,
-Zhi.
+> > +impl<T: DriverOps> Drop for Registration<T> {
+> > +    fn drop(&mut self) {
+> > +        if self.is_registered {
+> > +            // SAFETY: This path only runs if a previous call to `T::register` completed
+> > +            // successfully.
+> > +            unsafe { T::unregister(self.concrete_reg.get()) };
+>
+> Can't the rust code ensure that this isn't run if register didn't
+> succeed?  Having a boolean feels really wrong here (can't that race?)
 
-> The firmware is released once the abstraction is dropped.
-> 
-> Signed-off-by: Danilo Krummrich <dakr@redhat.com>
-> ---
->  rust/bindings/bindings_helper.h |  1 +
->  rust/kernel/firmware.rs         | 74
-> +++++++++++++++++++++++++++++++++ rust/kernel/lib.rs              |
-> 1 + 3 files changed, 76 insertions(+)
->  create mode 100644 rust/kernel/firmware.rs
-> 
-> diff --git a/rust/bindings/bindings_helper.h
-> b/rust/bindings/bindings_helper.h index b245db8d5a87..e4ffc47da5ec
-> 100644 --- a/rust/bindings/bindings_helper.h
-> +++ b/rust/bindings/bindings_helper.h
-> @@ -14,6 +14,7 @@
->  #include <kunit/test.h>
->  #include <linux/errname.h>
->  #include <linux/ethtool.h>
-> +#include <linux/firmware.h>
->  #include <linux/jiffies.h>
->  #include <linux/mdio.h>
->  #include <linux/pci.h>
-> diff --git a/rust/kernel/firmware.rs b/rust/kernel/firmware.rs
-> new file mode 100644
-> index 000000000000..700504fb3c9c
-> --- /dev/null
-> +++ b/rust/kernel/firmware.rs
-> @@ -0,0 +1,74 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! Firmware abstraction
-> +//!
-> +//! C header:
-> [`include/linux/firmware.h`](../../../../include/linux/firmware.h") +
-> +use crate::{bindings, device::Device, error::Error, error::Result,
-> str::CStr, types::Opaque}; +
-> +/// Abstraction around a C firmware struct.
-> +///
-> +/// This is a simple abstraction around the C firmware API. Just
-> like with the C API, firmware can +/// be requested. Once requested
-> the abstraction provides direct access to the firmware buffer as +///
-> `&[u8]`. Alternatively, the firmware can be copied to a new buffer
-> using `Firmware::copy`. The +/// firmware is released once
-> [`Firmware`] is dropped. +/// +/// # Examples
-> +///
-> +/// ```
-> +/// let fw = Firmware::request("path/to/firmware.bin",
-> dev.as_ref())?; +/// driver_load_firmware(fw.data());
-> +/// ```
-> +pub struct Firmware(Opaque<*const bindings::firmware>);
-> +
-> +impl Firmware {
-> +    /// Send a firmware request and wait for it. See also
-> `bindings::request_firmware`.
-> +    pub fn request(name: &CStr, dev: &Device) -> Result<Self> {
-> +        let fw = Opaque::uninit();
-> +
-> +        let ret = unsafe { bindings::request_firmware(fw.get(),
-> name.as_char_ptr(), dev.as_raw()) };
-> +        if ret != 0 {
-> +            return Err(Error::from_errno(ret));
-> +        }
-> +
-> +        Ok(Firmware(fw))
-> +    }
-> +
-> +    /// Send a request for an optional fw module. See also
-> `bindings::request_firmware_nowarn`.
-> +    pub fn request_nowarn(name: &CStr, dev: &Device) -> Result<Self>
-> {
-> +        let fw = Opaque::uninit();
-> +
-> +        let ret = unsafe {
-> +            bindings::firmware_request_nowarn(fw.get(),
-> name.as_char_ptr(), dev.as_raw())
-> +        };
-> +        if ret != 0 {
-> +            return Err(Error::from_errno(ret));
-> +        }
-> +
-> +        Ok(Firmware(fw))
-> +    }
-> +
-> +    /// Returns the size of the requested firmware in bytes.
-> +    pub fn size(&self) -> usize {
-> +        unsafe { (*(*self.0.get())).size }
-> +    }
-> +
-> +    /// Returns the requested firmware as `&[u8]`.
-> +    pub fn data(&self) -> &[u8] {
-> +        unsafe {
-> core::slice::from_raw_parts((*(*self.0.get())).data, self.size()) }
-> +    }
-> +}
-> +
-> +impl Drop for Firmware {
-> +    fn drop(&mut self) {
-> +        unsafe { bindings::release_firmware(*self.0.get()) };
-> +    }
-> +}
-> +
-> +// SAFETY: `Firmware` only holds a pointer to a C firmware struct,
-> which is safe to be used from any +// thread.
-> +unsafe impl Send for Firmware {}
-> +
-> +// SAFETY: `Firmware` only holds a pointer to a C firmware struct,
-> references to which are safe to +// be used from any thread.
-> +unsafe impl Sync for Firmware {}
-> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> index 6415968ee3b8..ed97d131661a 100644
-> --- a/rust/kernel/lib.rs
-> +++ b/rust/kernel/lib.rs
-> @@ -35,6 +35,7 @@
->  #[cfg(CONFIG_DRM = "y")]
->  pub mod drm;
->  pub mod error;
-> +pub mod firmware;
->  pub mod init;
->  pub mod ioctl;
->  #[cfg(CONFIG_KUNIT)]
+There might be a way of using Option<> here but I don't think it adds
+anything over and above using an explicit bool.
 
+> > +///
+> > +/// This is meant to be implemented by buses/subsystems so that they can use [`IdTable`] to
+> > +/// guarantee (at compile-time) zero-termination of device id tables provided by drivers.
+> > +///
+> > +/// Originally, RawDeviceId was implemented as a const trait. However, this unstable feature is
+> > +/// broken/gone in 1.73. To work around this, turn IdArray::new() into a macro such that it can use
+> > +/// concrete types (which can still have const associated functions) instead of a trait.
+> > +///
+> > +/// # Safety
+> > +///
+> > +/// Implementers must ensure that:
+> > +///   - [`RawDeviceId::ZERO`] is actually a zeroed-out version of the raw device id.
+> > +///   - [`RawDeviceId::to_rawid`] stores `offset` in the context/data field of the raw device id so
+> > +///     that buses can recover the pointer to the data.
+> > +pub unsafe trait RawDeviceId {
+> > +    /// The raw type that holds the device id.
+> > +    ///
+> > +    /// Id tables created from [`Self`] are going to hold this type in its zero-terminated array.
+> > +    type RawType: Copy;
+> > +
+> > +    /// A zeroed-out representation of the raw device id.
+> > +    ///
+> > +    /// Id tables created from [`Self`] use [`Self::ZERO`] as the sentinel to indicate the end of
+> > +    /// the table.
+> > +    const ZERO: Self::RawType;
+>
+> All busses have their own way of creating "ids" and that is limited to
+> the bus code itself, why is any of this in the rust side?  What needs
+> this?  A bus will create the id for the devices it manages, and can use
+> it as part of the name it gives the device (but not required), so all of
+> this belongs to the bus, NOT to a driver, or a device.
+
+Consider this a base class (Trait) for bus specific IDs.
+
+> > +}
+> > +
+> > +// Creates a new ID array. This is a macro so it can take as a parameter the concrete ID type in
+> > +// order to call to_rawid() on it, and still remain const. This is necessary until a new
+> > +// const_trait_impl implementation lands, since the existing implementation was removed in Rust
+> > +// 1.73.
+>
+> Again, what are these id lists for?  Busses work on individual ids that
+> they create dynamically.
+>
+> You aren't thinking this is an id that could be used to match devices to
+> drivers, are you?  That's VERY bus specific, and also specified already
+> in .c code for those busses and passed to userspace.  That doesn't
+> belong here.
+>
+> If this isn't that list, what exactly is this?
+
+Rust traits have to be specified somewhere, a RawDeviceId is the basis
+for other DeviceId Traits to be implemented on top off, those then
+talk to the C side ones.
+
+All the pci and nova code is posted as well for you to work this out,
+like you asked for. The use cases are all there to be reviewed, and
+should help answer these sorts of questions.
+
+
+>
+> > +#[macro_export]
+> > +#[doc(hidden)]
+> > +macro_rules! _new_id_array {
+> > +    (($($args:tt)*), $id_type:ty) => {{
+> > +        /// Creates a new instance of the array.
+> > +        ///
+> > +        /// The contents are derived from the given identifiers and context information.
+> > +        const fn new< U, const N: usize>(ids: [$id_type; N], infos: [Option<U>; N])
+> > +            -> $crate::driver::IdArray<$id_type, U, N>
+> > +        where
+> > +            $id_type: $crate::driver::RawDeviceId + Copy,
+> > +            <$id_type as $crate::driver::RawDeviceId>::RawType: Copy + Clone,
+> > +        {
+> > +            let mut raw_ids =
+> > +                [<$id_type as $crate::driver::RawDeviceId>::ZERO; N];
+> > +            let mut i = 0usize;
+> > +            while i < N {
+> > +                let offset: isize = $crate::driver::IdArray::<$id_type, U, N>::get_offset(i);
+> > +                raw_ids[i] = ids[i].to_rawid(offset);
+> > +                i += 1;
+> > +            }
+> > +
+> > +            // SAFETY: We are passing valid arguments computed with the correct offsets.
+> > +            unsafe {
+> > +                $crate::driver::IdArray::<$id_type, U, N>::new(raw_ids, infos)
+> > +            }
+> > +       }
+> > +
+> > +        new($($args)*)
+> > +    }}
+> > +}
+> > +
+> > +/// A device id table.
+> > +///
+> > +/// The table is guaranteed to be zero-terminated and to be followed by an array of context data of
+> > +/// type `Option<U>`.
+> > +pub struct IdTable<'a, T: RawDeviceId, U> {
+> > +    first: &'a T::RawType,
+> > +    _p: PhantomData<&'a U>,
+> > +}
+>
+> All busses have different ways of matching drivers to devices, and they
+> might be called a "device id table" and it might not.  The driver core
+> doesn't care, and neither should this rust code.  That's all
+> bus-specific and unique to each and every one of them.  None of this
+> should be needed here at all.
+
+This is just a base Trait, for the bus specifics to implement.
+Consider it a bunch of C macros or a bunch of C++ vfuncs, whatever
+mental model helps more.
+
+> Shouldn't this go in some common header somewhere?  Why is this here?
+
+Again to reiterate what Danilo said, rust has no header files. Things
+that in C we would put in header files (macros, struct definitions,
+inlines) go into rust code and other rust code references it.
+
+Now there might be some sense in splitting things further into
+separate rust files if this concept is going to confuse people, and
+what is "core" device code, and what is "template" device code. But
+I'm not sure how much sense that makes really.
+
+Maybe the device table stuff should be in a separate file?
+
+> > +/// Custom code within device removal.
+>
+> You better define the heck out of "device removal" as specified last
+> time this all came up.  From what I can see here, this is totally wrong
+> and confusing and will be a mess.
+>
+> Do it right, name it properly.
+>
+> I'm not reviewingn beyond here, sorry.  It's the merge window and I
+> shouldn't have even looked at this until next week anyway.
+>
+> But I was hoping that the whole long rant I gave last time would be
+> addressed at least a little bit.  I don't see that it has :(
+
+I won't comment too much on the specifics here, but you've twice got
+to this stage, said something is wrong, change it, and given no
+actionable feedback on what is wrong, or what to change.
+
+I've looked at this code for a few hours today with the device docs
+and core code and can't spot what you are seeing that is wrong here,
+which means I don't expect anyone else is going to unless you can help
+educate us more.
+
+Dave.
