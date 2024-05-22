@@ -1,55 +1,55 @@
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
+Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA1FD824AC
-	for <rust-for-linux@vger.kernel.org>; Wed, 22 May 2024 12:37:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33A7813D600;
+	Wed, 22 May 2024 12:38:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716381454; cv=none; b=pbOIzYWsNVVd6ZHw5r3Nk248Vygs88mkrJN4FtydSxwAkIHYMgvF4v3E7GRpmWyoU4MKir6MCCqqWs8XwIAnrQyNS2ldVkif1/bUvDccCa88oZC+3PyY9Vli7/LH/7dw6GIt6e+qT3OEwCMgODY+aY9Rwd3A8c4WUaVZHDWfFog=
+	t=1716381537; cv=none; b=fdmlsnJVTlNflR2sXb3g2ubaMPs7C/lUr2OEUDgcAiFO5M28ujTdOdG4XiBk0dasISA1F0v8SR6O3PcNQbbnwZ9JuGHJJZ26PoM6mdJCb5tzdzFp6PPVMSNX9mCBaSUPUi1ordH9TZ7npnaUPcH7L1PSdhaNdMHBKBiPd7n9pfU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716381454; c=relaxed/simple;
-	bh=EMnIYHaY7LLVlAqbN0Em3LajT8YCdusKQh/jH5I8FNA=;
+	s=arc-20240116; t=1716381537; c=relaxed/simple;
+	bh=xDIQkhllY02adSjrb3kzc45LzfmT7BSoh0HJs4BYivQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UWVEwU/zqvfkizGTg7NcjT4Xto3v1gC1xcfWUrwxMfl+29Mv/K6fx0M19sSLyIaeyXr6QGM5FafhNHRePovA++JVaWzHQTrPk/i7e6Dc8gQWKpEknbant3oNNhyZZUdV9W4MbX4uZtxxEyxN8F1JS9EAuGsXOZU/BpvW8gScon8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=kULq4VoT; arc=none smtp.client-ip=209.85.221.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=nJp9SyNwTU2aU6t5g9i1g3ClrUBcFILc/ztGg9YAvSTbiIlEWyKBZ2pdFs3U6W8AWG2gikza8cW9gX/ntKTkU0wTKEL5bYkMxZDKFt07X2eQur0quhWTdtXcepdqOPrqQehw/PrQl+kKqU6eLF4Taw5L9ofv9EmuysgPrKyWzhk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IXoM8cF0; arc=none smtp.client-ip=209.85.215.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="kULq4VoT"
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-354dfe54738so335118f8f.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 22 May 2024 05:37:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IXoM8cF0"
+Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-5d42e7ab8a9so860353a12.3;
+        Wed, 22 May 2024 05:38:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1716381451; x=1716986251; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1716381535; x=1716986335; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=P25DPsLo0fuN2OKJTl/EGAh8Y3s1DSkqFIXVqeeCVVc=;
-        b=kULq4VoToY2Vat7vm8GGjVA6foF0Uvp7NuZJAGIy/qwIu6TJdSrH8/rXgvsTlUUGtN
-         E28mvwzI/Q4zWKdxGVhmPx7unW09xyPwoGQckbRGHR1TEzP2X3iODzruBUrlqnpnpTeF
-         Zhwg1DGEKgJEGubaDnwoaGZByR8PTj8eA9ok4xPDLEFwl4pni8WOlxt+45TYFbUlP/1m
-         jmau5/scArzcXYJECl+5QBuBvDq+zc8AfZ2gCc2gkDImjpPAT+Dxy8BeHyiziP7M3heA
-         gSfi52+83PyN8AScEFHvFGd2wC5lqXkRUi9LeaWprrXKojuLjyVVWeMGd+/Vd4hZ+nGW
-         LKPA==
+        bh=xDIQkhllY02adSjrb3kzc45LzfmT7BSoh0HJs4BYivQ=;
+        b=IXoM8cF0DH/9PloL1JMjF8SyqVdhfZeEo9NO7PXWwQB9JXKZUVN70GYxMBkMlzZcpZ
+         CmiPDh4t4i5ZRqzEDuSYkqQuBkZVx7MutSuAOMiy2knWm/bpLOtmX2azfoJ/ak2tEzMf
+         FwjcOnybKKjry456Ay9bQmVG3QzosQFUXiqH3yH0Mzryp3JEw4nyDzV21+AwX3kjQzN9
+         Q06xJ759zF2N6RJ9VntAf6r72Sq41oPTttvG7m4YZFj83KHg83tAXfjlV5atohz51EZc
+         r4RXSIs3Nvmdy+xtQ9PylbA8nCHJBLetzQt5IP9MUbSnf8fJHhDh0DujRF4TI7qxRPgu
+         QwIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716381451; x=1716986251;
+        d=1e100.net; s=20230601; t=1716381535; x=1716986335;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=P25DPsLo0fuN2OKJTl/EGAh8Y3s1DSkqFIXVqeeCVVc=;
-        b=IMt2MMxZNe0SagqUWmNXpD31To59dDlZUE7l3NcYOaMNiE/mQE3DKIT9Uj2yZPwgrE
-         f14mKVPxdVEo8meIrn0anKcA7VQy6jPw+qhb6tKTbweKLI5ZTnC0F8yHqdl2Csp1Pdym
-         tF0/FN5J4WLUc0CpuByrMTMQL3GTC1tPZU7yzVtWwGVKakqCW2AjBXZBmQw8LBdYTtwM
-         9Y+IQIPP0N7GGSLawiFOpUfV8pcjqyHoUEYMhexUjA1ig045Ns52CmntfzDg82fnBLXw
-         ukshyHwjhmRQ5QXU044WmEkdxDa5DXCb4+CsWRIg0MPLdNzKU5KoKQfvLQn9rU9EXpwz
-         WF4w==
-X-Forwarded-Encrypted: i=1; AJvYcCUN2RmmNTgPOXEX5aWp8sWMWLTsFXHMpN956xWseoMnWRuQ2DFZI4kNDgmyJxADu0p9SMhpp21vcM/UgrnBTxXXXczTtqc77DenkwELbSE=
-X-Gm-Message-State: AOJu0Yw4O1CqF7L0PKz/Te6AHdLWQaWce/0AMOvvug8OfGehaBakw3Z4
-	WFKOBqaWqlT+4YYJeGIkOLOdrDJ0EWnZ96DuaNS/wfuaN564x3jJ4/mgHr/dIp29OU4pSs82O1U
-	EzOGwCuzbytfSlV+Hziig88hPb0Y1J/K46+Ir
-X-Google-Smtp-Source: AGHT+IHqXaamjnUmjvBxFPNiRV+xFMiG4l6hh3Y9Gjymq+7Usr/czLNVkJc84E+5l0e/SJVREuKfW8ugea4XTlNrNck=
-X-Received: by 2002:a5d:4104:0:b0:354:f2a7:97dc with SMTP id
- ffacd0b85a97d-354f2a79916mr422094f8f.2.1716381451014; Wed, 22 May 2024
- 05:37:31 -0700 (PDT)
+        bh=xDIQkhllY02adSjrb3kzc45LzfmT7BSoh0HJs4BYivQ=;
+        b=B/VMT1q6xOrCQ86n2SJjdBpQjC6mHBzuaHDuLwfF5LnHazcvZOqGBagQ21tKixzp5p
+         qlwWeeAwIs16Xri6QO5hsklb/jO5up9ved3X5v3S+DBz+Sf3rRcyTgee4s5OyG19EOZj
+         uGlJymWxAd4NRK/wemQvrht55GpNRIoYUBDFKHtRYDhRWIATBs8hsni6QVr/1W1wEn0o
+         PTZa2H9lybh/7bpHlOrs1JHBSZlL/23Zf76AEUEjxJvKwtAaHB7/Wm/hjs9T3ttbFFpR
+         meCVbGm62gskAGCr3HvceaL50PJjGt10yrs5nhiQIQF8hNKQZr4kb26oN5mCZ+uDWKj+
+         NnUw==
+X-Forwarded-Encrypted: i=1; AJvYcCVlCCIGzWKD5KiTEwj9c/EMkddafI9lPWTKpTjqwmcSS8HRxYuBi/7PBRvIGSeXUGOYgEjvQlPSYZ2HbfkqPaKOBQLx/fbcjfT9o0MZnu0uAcb19ffueh8a44CITsDUPeROZ054Rt3XP3xf0jY=
+X-Gm-Message-State: AOJu0YwLBqWeNRYpbEUKRS7J8RIT3ntmweY8Cj6jGoQ90rdD28uTfkiI
+	HTdAu9WZFE1kz7tYWMTNxvmNDt8xu4UsSWwqILNFflmYg0p+dtQcVoJP26FtpVyteurf0DVaRux
+	nCMg2NH1HlOjTolNgiDUMnIWK1d8VwsOU
+X-Google-Smtp-Source: AGHT+IEPY9L1CQGXcDSdzc/AQZtCJISoFHziN7HvOH6CC+P8l8mkXZrG5UQqX2mvOqUE90zDFXAKAq0Zkc71QWI8og8=
+X-Received: by 2002:a17:90a:4409:b0:2bd:6f31:2ae5 with SMTP id
+ 98e67ed59e1d1-2bd9f5b9624mr1737534a91.44.1716381535376; Wed, 22 May 2024
+ 05:38:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -58,9 +58,9 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <ME0P282MB48901A79E405F9CF615FF2F1CCEB2@ME0P282MB4890.AUSP282.PROD.OUTLOOK.COM>
 In-Reply-To: <ME0P282MB48901A79E405F9CF615FF2F1CCEB2@ME0P282MB4890.AUSP282.PROD.OUTLOOK.COM>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 22 May 2024 14:37:19 +0200
-Message-ID: <CAH5fLgiL7EdnzRL79x4zX0pXrtb8OjVkRib+qkoi=TyzHzEc4A@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 22 May 2024 14:38:43 +0200
+Message-ID: <CANiq72nz1a2hm0co80er+Xx3F99gjNfc4Xs6Fpp138EPhdU49A@mail.gmail.com>
 Subject: Re: [PATCH] rust: kernel: make impl_has_work compatible with more
  complex generics
 To: mu001999 <mu001999@outlook.com>
@@ -74,16 +74,10 @@ te:
 >
 > Signed-off-by: mu001999 <mu001999@outlook.com>
 
-Please provide a more complete commit description. What user motivates
-this change?
+The kernel requires a "known identity" (it does not accept anonymous
+contributions) -- please see
+https://docs.kernel.org/process/submitting-patches.html#sign-your-work-the-=
+developer-s-certificate-of-origin.
 
->  impl_has_work! {
-> -    impl<T> HasWork<Self> for ClosureWork<T> { self.work }
-> +    impl{T} HasWork<Self> for ClosureWork<T> { self.work }
->  }
-
-I ended up doing something similar for the generics in some of the
-linked list patches. Does anyone know if it's possible to support this
-without giving up the <T> syntax?
-
-Alice
+Cheers,
+Miguel
