@@ -1,170 +1,160 @@
-Received: from mail-yb1-f171.google.com (mail-yb1-f171.google.com [209.85.219.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from AUS01-SY4-obe.outbound.protection.outlook.com (mail-sy4aus01olkn2141.outbound.protection.outlook.com [40.92.62.141])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 622B677117
-	for <rust-for-linux@vger.kernel.org>; Wed, 22 May 2024 12:04:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.171
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716379481; cv=none; b=LNzYauP++2+xWv2DvaHN79u9pn1HEQcifyDGzN4Pys4om8EmtWu7fwAikcKX3bt7j2ZunO8yFGKTbj51Bx6cmynIeOdSUeGtIWWn6dC4P2RbLqtmRq6IbzX3ZBnoSs8BrDO/S1D1+yHyiEmhbjidmQGH38hb23r3dIyin5TIr2M=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716379481; c=relaxed/simple;
-	bh=fJ/sPbihNIxW9vhVKiEEJLhbBXtMIxgSC7LmYq5fVq8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=I0P1mGmyg6MPsoYNG3+galAhV5TkW1jDJy7lURQHe5EQTehbZbl9AYIJOernSAJ2Ck19qbrEEDQXqEAntUnAlhIV44XGzGuANh/UGabHgTu3RoOFAdsie+go2Ni0dCQF1BIDgvez4rlXpGT0bioclbF5CP65v4kDZ2qUz/x9Mfc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QZBfgrCD; arc=none smtp.client-ip=209.85.219.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 718358287C;
+	Wed, 22 May 2024 12:27:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.92.62.141
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1716380869; cv=fail; b=eTfRIGGiUIEF1TnDscQnYLwzeNyVTOENFl/63z0SBCT3Ge37q8VSmmf5TUVKTO0FmTxtCCzJabCa58kfximmEZOT2ko/yBfOtIQyi6slPTociCdfzbcwJVKxjXgpBjcx7anqzzIqYdkpl3B2bVF4hHCZgaYxqUlQM+0kHGwHp74=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1716380869; c=relaxed/simple;
+	bh=G953yS5FUgdPdfjKmuE23S5ZKLsYS+v+wOEE1YYuiRo=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=mttNMFCoWdWY/FB8KqS75GfEcwd0Hw/cbA8OtX9JDy/zCbfKyrws3gu8f/71Z7asNIQyy0zTxe+iybv1yT1Z3tJOij2kOBRa8g8Xt7FAwrXo2rIqtDSjlxlDGP5YYn3ONBxc9H6N5PFY1/qBpNgEo+1MloyY1zTFVe0hd//Q+lw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=KSunp74n; arc=fail smtp.client-ip=40.92.62.141
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QZBfgrCD"
-Received: by mail-yb1-f171.google.com with SMTP id 3f1490d57ef6-df4e1f0f315so645206276.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 22 May 2024 05:04:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1716379479; x=1716984279; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=uwVDi/8SRhVuR/ROIz62XO09PzGSpT74QeSqHhAGKNQ=;
-        b=QZBfgrCD4R76mewrRnKpDJwzRNFupU6WkLxgU0y5sbQA9/oRThLwqNAhitjOJwWLYd
-         iOFBFpzXMVnc0PTFH0SYQLoBxqAkgV4SD4UllgUOHZVvyFVvk7nmkjVhF7K5oQJStUT4
-         Y2JeGfb67bsBO4KdfBo1mWvwbYm/kuJ+GS1fG+iyU2cHbQP+OfCiFurK8lXG4JDFRrBk
-         DO73diypj1Pxwsv4obscte1oILRz6AsUMalf7aeDtAayxqtzMhUhnVOxRTTfeYf+u2Tx
-         +sgYzk49AFaWuR20DB929SOrde+kBS2dvfzBGz/OvOy9XplVUhphEdUnyUCPMzQMNER9
-         XPnA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716379479; x=1716984279;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=uwVDi/8SRhVuR/ROIz62XO09PzGSpT74QeSqHhAGKNQ=;
-        b=FbPOqFeLCGyh1lKNE6yMlFhzMN7Cf1o7slzQoC0Ps9Z3vcidMhG8O7BpV2OYqJr4U1
-         9J1gi0X/ppbBMocvpEBnzihdeTgL6wlFx2rvWT3GRCeCoSDw/VZWmdDXZZqKeBYaJ31D
-         YH5+uOCKRS5F32RoqMBP8ZFtAfxWkL5K8BE4DEXrDypStrSQ08pXDHdPRkrU850olQQR
-         PSRGikJguCbkq/0p2rbXJHQWzKUtgzPt4L5Q43y2prixlGMI2YaIQnzKoVNhCxEKtfxz
-         gST4j9Yzut47pfAiyNxDAotcBU5d0/l83W8083l4bHespzmWJaytM8X1F8q7xH+h3bad
-         E/NA==
-X-Forwarded-Encrypted: i=1; AJvYcCWOuiZvYVCNsy54tOZX5Kcuz3u+s2fuKxnsM3W1sfguzHLhrIfSO9n/JtrFf4g4+MEXMBg2UxUYLkrxA96J4iVuc9Ue9Jsedi0CELYJdmg=
-X-Gm-Message-State: AOJu0YxW+b0LdYKOiwxzdISi5ZU6qXMdqBKFvHMW0yWqTY7PprlivMVu
-	TyDxddEkOX2tuenZwP4vE2RttbXRz6gLMsJ4KqQ8MdRPCbYtSgQZUReGkBohQq3Feq1OlhCZjLt
-	KtWpYEVZkBCBcr4E2+NqVfhlGCpQ=
-X-Google-Smtp-Source: AGHT+IEXJRWjp7QtN/BAX5Hc+CkffG6+PUFVeJrjSgUO/NRzhFd/rUXq1/CKupZwlcpTVRb1p5kA8upror8e8bO69+w=
-X-Received: by 2002:a25:4ec4:0:b0:dcf:c299:2467 with SMTP id
- 3f1490d57ef6-df4e0a6e694mr1858941276.5.1716379479295; Wed, 22 May 2024
- 05:04:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="KSunp74n"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=OBirbeB0izVOVW5Mwp9QfnWu+ROAETPvcm5kDWjbPxqen8fjpTyvy7L6TgdjdtbF3SoO6MaNyLBEK/YCc21J37ICFJeGT7dIJc28Ia0XaXmk2q0fvRSE0v7t49hIBWFRXOESzBAE1iaGHRn4xJIbe+7MHi1sd/yat1HzlPgv/ZD9CLqG1j7xA7aFNTixujCi7CxT1ZifIbqn6HpZaM1G2mJuRoMf0P/4DouAXOXJS6CMqaFzHfcX3A1NDbPCCbtmH62AIilKftm+jeXOqomBwPL9fFDDVPazuA/GdbMwV6OnQzTGYWdZXHTKJak09YVouXwn5gymxQ63mmqxj4eOXg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=uVy31cflwKbOAJiDRY3V4FWPxedKKcyKu9CpqoIIHaE=;
+ b=BoB+KTo+2zAkqaviu5gWJKKxigZUeqLSBDRk8A7JOGYxbb5Zl9dYd8z3iTrvEKS0ZJbFjcmwvBniJsFGVy/EVdBfII1O0YCuHB9nEKM6fIaf0i1favrM15hb65eHMjDzSltArDxkxJhVgRICvHzZPQbtAx7bDsaL2cKP2IHHRjMTpHb3zi/RpwqXjs1aGE7VjaqcjdREDDVkFDAQlTqqRzdeo4qQTtf+cGPuZuLV7YDGKyzlCGj8hkp4QM9EDhi3lVnbYoB0PYAJ/AqcO1xtm4gZdJYhIeix+562kNco9gMrP9bV6V7LNgEtqpQqmiCH9vcE7lgsr3b9coryNJxqmA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=uVy31cflwKbOAJiDRY3V4FWPxedKKcyKu9CpqoIIHaE=;
+ b=KSunp74nkgO0xX6I7yz0q/wvRhPWMRUG2XeIkk6OTrxF4qyufOKQorVcaUfOX7ETzmScnufDZr8kckjpfVtV5MRygewuLPJd9xxX0NWkROtN5wFzQ4YnsTlzhuN/41qGbgyfg+oXOXJVocIr0TEQeGtH+dU+wGPA/CQu7wIWrYMzsupg2pnbKmXgRY8YAEn0/3IYs7j+od8zx/mbPVXcNwqYvtKid/+ywoS3hKPJoG7BLBZw2iYIQYAGFwAbQjS0AbWMbHAcEgnhsf7jfc48SSbHNwo0JMpzXgXTpyNAXZ3ikcXHwFO4+AiT6s1QJ0tu9NCxr3GTgMZH5MVOVHQSWw==
+Received: from ME0P282MB4890.AUSP282.PROD.OUTLOOK.COM (2603:10c6:220:228::21)
+ by ME3P282MB3492.AUSP282.PROD.OUTLOOK.COM (2603:10c6:220:189::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7611.19; Wed, 22 May
+ 2024 12:27:42 +0000
+Received: from ME0P282MB4890.AUSP282.PROD.OUTLOOK.COM
+ ([fe80::d384:a02f:2370:f33e]) by ME0P282MB4890.AUSP282.PROD.OUTLOOK.COM
+ ([fe80::d384:a02f:2370:f33e%7]) with mapi id 15.20.7587.035; Wed, 22 May 2024
+ 12:27:42 +0000
+From: mu001999 <mu001999@outlook.com>
+To: ojeda@kernel.org,
+	boqun.feng@gmail.com
+Cc: rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	mu001999 <mu001999@outlook.com>
+Subject: [PATCH] rust: kernel: make impl_has_work compatible with more complex generics
+Date: Wed, 22 May 2024 20:27:25 +0800
+Message-ID:
+ <ME0P282MB48901A79E405F9CF615FF2F1CCEB2@ME0P282MB4890.AUSP282.PROD.OUTLOOK.COM>
+X-Mailer: git-send-email 2.34.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-TMN: [RRXUrFn7JKYdFT/Fwe9a3+BAvW+U9nXF]
+X-ClientProxiedBy: SGBP274CA0006.SGPP274.PROD.OUTLOOK.COM (2603:1096:4:b0::18)
+ To ME0P282MB4890.AUSP282.PROD.OUTLOOK.COM (2603:10c6:220:228::21)
+X-Microsoft-Original-Message-ID:
+ <20240522122725.277401-1-mu001999@outlook.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <D1F44P3VLTBN.30LUQ60X5J3DN@kernel.org> <CANiq72=Kv217NDGf5sXgx+EYez=cs+hO50+YNnZf9oL2zxni9Q@mail.gmail.com>
- <D1FFABJRCD85.1EA4JBU93JT5Y@kernel.org> <D1FIPA4YAU84.M7Z9VMR4P739@kernel.org>
- <D1FJUW4RPWYR.38P76LESQMV4L@kernel.org>
-In-Reply-To: <D1FJUW4RPWYR.38P76LESQMV4L@kernel.org>
-From: Alex Gaynor <alex.gaynor@gmail.com>
-Date: Wed, 22 May 2024 08:04:27 -0400
-Message-ID: <CAFRnB2Vxez-i7Trxe-5ErAWGszVRt6MSvN7Ed-XOcSLVp8piRQ@mail.gmail.com>
-Subject: Re: ASN.1
-To: Jarkko Sakkinen <jarkko@kernel.org>
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, rust-for-linux@vger.kernel.org, 
-	Daniel Almeida <daniel.almeida@collabora.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-Exchange-MessageSentRepresentingType: 1
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: ME0P282MB4890:EE_|ME3P282MB3492:EE_
+X-MS-Office365-Filtering-Correlation-Id: 9f23a7b2-5ee9-41ea-9bae-08dc7a5a9378
+X-Microsoft-Antispam:
+	BCL:0;ARA:14566002|461199019|3430499023|3412199016|440099019|1710799017;
+X-Microsoft-Antispam-Message-Info:
+	eXu4a/IFoJuCvoW3K5oPeNmB9somzYWp9M4DdVtBm7kIWwscYlENZ1uG4vVz/BJTE/23WmJXIa+mXrZfRnnqvg6LyQPDLUjPUoCJdSy9qQBQpHZ5ijdG8Yx3fzJv39E4pANXp5KfJlumod9jrSDOIfX/XN+s2bnAkBMcNaHn73ecXZFeq/FyyFw+/P7xLMjvtMS80o2s8Qfaem3a67oaAhn0kI5LYkj6Vh/oJHhmGzX02TGBin4OjMSAlUmOiV820lMc6IDLVSWhEHIf9sYU7LhkbhgWHBcrI1llvIh0i7csHCzxCgs0rthaBNf2T0bFikj/kguwNreRWaGHxF/eaRsqEQYeQk7aTqYntKSuejMFDfGuo5Wqa7UFbqT2fOIBlfSsngKpo6jmL7VAqtNSaDybUCbaAfXVM70PsZAiKVAzBFDZea4kBKzMoi6OMHk8jU47g1W8spJTXPOco6RAdsVLv/w8yzLo3dTpDGQpHF8EWDqel+h4PSKAUGisJb4QKJTgo6/EKzj6LuR14X68SwYcLiHompwxAgulYoFCa4wF74Y4PbMA8Zdl4vFR29otQRx4Y6r5Co/Y6KYd/Wb0skMbcBd7Fi8GTcCzjlw4cDA=
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?ZGVh6Np16H4e0AvSXvR2NlC6ldHs/x5KLXq1lodMLRM2/M9FYd7og+LwzWFM?=
+ =?us-ascii?Q?jDG0mdHG0AyTNYGOsGjlTaSJC2ppZWKqzbhoj61eJvSOQCBQ4KthKzGUzN8t?=
+ =?us-ascii?Q?0+9/bngYStTTgKB9H0j8QfKIoPNM0R1D2gmTYHJxQCt/SSR9FO/QDrstapxQ?=
+ =?us-ascii?Q?5wO5RSyUpR7rPNYkoy6pP+eD1Pfwbd0tMKjC8c8wrW07z6v8X7c6v9xQ5bBc?=
+ =?us-ascii?Q?YssSUg/6cVVDONGumy5a9eWijiyO54zW6C61ccNxMdYaUzCEeBylMxhpwwO/?=
+ =?us-ascii?Q?wsSxn+XYmhPJNMEPatFAtHNypT4syLIhp6fxZYeSKU/WmJ78Y3ZeYu48tkNv?=
+ =?us-ascii?Q?EyzzKKnrwT7PuEhBP1mGqrJozUdwNtecy91S3TCXNm4K132wJUczndBVmqva?=
+ =?us-ascii?Q?Ok4r5GwF4F09pL0Vk4HlKlN9B0Frf+rfZS/7ABB6H/mlPMjOZuFE0zFadXjj?=
+ =?us-ascii?Q?7NLVKt2zQU8v3mA+TS+EqLkU0ZRrBF20kEY6AufZz/P6r5eEyUT+xqcUyv2/?=
+ =?us-ascii?Q?WatmZ39aXabl8Sgst3FB3NgbIbj2O7OJf6MmNsunYm6EFEohTaVu+onNCbpC?=
+ =?us-ascii?Q?rAswdaEes+Pzck+e9lgYaZh2fxKV79ACftBUBRSfBtt5gXlQFSy2BnpIfyWd?=
+ =?us-ascii?Q?gNo6FFH0UIIF3pjwH8gqpq4TpwxBsvk4R+FepelnMjFWz4pcLqKh5od7+1zu?=
+ =?us-ascii?Q?uzweyjxEY7lDJmcl9T/hR2VFQ4iyBmgnjYuuJ9M7re7Xoai6YiPsUJjYiINM?=
+ =?us-ascii?Q?Qc9CyZYmZk+8R0YIAe80MgP7fdkj3r+YZ3qo4VQxq7Sfj7J/pCmdCt4uPmcr?=
+ =?us-ascii?Q?FoDW7v8cLTMrOCaD5XaHNBwES4bluGAcTrE7zeCV0/EK0H59hHSdNB4YWdiJ?=
+ =?us-ascii?Q?xzNO+ibNjVQYylXuZmT/h5Vlba9IJA+mkrOxXG+AEhqPEYJPTQ5+ROtmrykG?=
+ =?us-ascii?Q?1qtdjQbN1obBwNE0SEqJYKft3D89HviLOf/OjXqBU65PdA/HpX4xsiwL98nZ?=
+ =?us-ascii?Q?kMwiTsRVSCVDQWCV3uTXorVhEXZglt2AB62SbUaK0/neyJ0SP/PSr5Lx3dGC?=
+ =?us-ascii?Q?U55d28tgaXNCtcFaOB8bsLncjfVIfsXhbB29//dVu3pLDnP9M2oVy+R5VRQ4?=
+ =?us-ascii?Q?WTT2Ff/WxssZerYah9658DxSlUQnTFCos5zTl7Pm8ANFGkh+UBLReHuoTcK/?=
+ =?us-ascii?Q?bJNPthKGvjIm+k3jJ5znE9KZhF5MdSH0ntD0Ziscc1n/wvv/eDTuvp7a9X8?=
+ =?us-ascii?Q?=3D?=
+X-OriginatorOrg: outlook.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: 9f23a7b2-5ee9-41ea-9bae-08dc7a5a9378
+X-MS-Exchange-CrossTenant-AuthSource: ME0P282MB4890.AUSP282.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 May 2024 12:27:42.1646
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: ME3P282MB3492
 
-Hi Jarkko,
+Signed-off-by: mu001999 <mu001999@outlook.com>
+---
+ rust/kernel/workqueue.rs | 15 ++++++++-------
+ 1 file changed, 8 insertions(+), 7 deletions(-)
 
-I'm one of the maintainers of https://crates.io/crates/asn1/. Based on
-that experience, if you want to implement a DER encoder in Rust, I
-think it'd make more sense to write the type-code in Rust, and then
-expose symbols to C like `encode_rsa_pub_key`. This should be simpler,
-but also more efficient (fewer allocations).
+diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
+index 1cec63a2aea8..1ff81d88b61d 100644
+--- a/rust/kernel/workqueue.rs
++++ b/rust/kernel/workqueue.rs
+@@ -482,24 +482,25 @@ unsafe fn work_container_of(ptr: *mut Work<T, ID>) -> *mut Self
+ /// use kernel::sync::Arc;
+ /// use kernel::workqueue::{self, impl_has_work, Work};
+ ///
+-/// struct MyStruct {
+-///     work_field: Work<MyStruct, 17>,
++/// struct MyStruct<'a, T, const N: usize> {
++///     work_field: Work<MyStruct<'a, T, N>, 17>,
++///     f: fn(&'a [T; N]),
+ /// }
+ ///
+ /// impl_has_work! {
+-///     impl HasWork<MyStruct, 17> for MyStruct { self.work_field }
++///     impl{'a, T, const N: usize} HasWork<MyStruct<'a, T, N>, 17> for MyStruct<'a, T, N> { self.work_field }
+ /// }
+ /// ```
+ #[macro_export]
+ macro_rules! impl_has_work {
+-    ($(impl$(<$($implarg:ident),*>)?
++    ($(impl$({$($generics:tt)*})?
+        HasWork<$work_type:ty $(, $id:tt)?>
+-       for $self:ident $(<$($selfarg:ident),*>)?
++       for $self:ty
+        { self.$field:ident }
+     )*) => {$(
+         // SAFETY: The implementation of `raw_get_work` only compiles if the field has the right
+         // type.
+-        unsafe impl$(<$($implarg),*>)? $crate::workqueue::HasWork<$work_type $(, $id)?> for $self $(<$($selfarg),*>)? {
++        unsafe impl$(<$($generics)+>)? $crate::workqueue::HasWork<$work_type $(, $id)?> for $self {
+             const OFFSET: usize = ::core::mem::offset_of!(Self, $field) as usize;
+ 
+             #[inline]
+@@ -515,7 +516,7 @@ unsafe fn raw_get_work(ptr: *mut Self) -> *mut $crate::workqueue::Work<$work_typ
+ pub use impl_has_work;
+ 
+ impl_has_work! {
+-    impl<T> HasWork<Self> for ClosureWork<T> { self.work }
++    impl{T} HasWork<Self> for ClosureWork<T> { self.work }
+ }
+ 
+ unsafe impl<T, const ID: u64> WorkItemPointer<ID> for Arc<T>
+-- 
+2.34.1
 
-For what it's worth, rust-asn1 is _intended_ to be usable from the
-kernel/embedded targets. It's no_std. It currently relies on alloc,
-but I'd be happy to accept PRs to make it work with the kernel's
-approach to fallible allocation (it currently does support fallible
-allocation, but using the reserve APIs).
-
-Alex
-
-On Tue, May 21, 2024 at 2:55=E2=80=AFPM Jarkko Sakkinen <jarkko@kernel.org>=
- wrote:
->
-> On Tue May 21, 2024 at 9:01 PM EEST, Jarkko Sakkinen wrote:
-> > On Tue May 21, 2024 at 6:20 PM EEST, Jarkko Sakkinen wrote:
-> > > On Tue May 21, 2024 at 5:52 PM EEST, Miguel Ojeda wrote:
-> > > In this case I could imagine loading ASN.1 blob by calling Rust
-> > > functions. But yeah more like "immediate mode" API rather than "retai=
-ned
-> > > mode" style ;-)
-> >
-> > Hey, sorry I was mixing things a bit so let me clear this up!
-> >
-> > The decoder works as follows. There is a compiler, which generates
-> > bytecode object linked to vmlinux and a header with symbol declaration.
-> > Then there is a asn1_ber_decoder(), which runs the bytecode through a
-> > trivial interpreter with e.g. a key blob as parameter.
-> >
-> > And this part is great and it does not really get in the way. All of
-> > kernel uses it to parse ber/der/cer blobs in, and it is somewhat stable=
-,
-> > and super well tested. For decoder the value of Rust is not that great.
-> >
-> > Encoder (asn1_encoder.c) is just a set of basic functions, like one
-> > function per tagged type to serialize that type. Most valuable asset
-> > would be to replicate this set in Rust with better defined contraints
-> > etc.
-> >
-> > Sorry for longish explanation, just wanted to clear up this story :-)
-> > I.e encoder is higher value asset than the decoder as far as I'm
-> > concerned, despite being much more trivial to implement.
->
-> For the patch set I'm working on I do have good solution. I only need to
-> encode this:
->
-> RsaPubKey ::=3D SEQUENCE {
->         n INTEGER ({ rsa_get_n }),
->         e INTEGER ({ rsa_get_e })
-> }
->
-> And nice thing is that e is always 65537 and length of e is always 3
-> i.e. {3} serialized so it is serialized as
->
->         static const u8 EXPONENT[5] =3D {0x02, 1, 0x01, 0x01, 0x01};
->
-> Sequence and n can be expressed along the lines of
->
->         /* Last two bytes are filled with 16-bit big-endian length: */
->         u8 sequence[] =3D {0x30, 0x82, 0x00, 0x00};
->         u8 n_head[] =3D {0x02, 0x82, 0x00, 0x00};
->
-> So I just copy stuff in order:
->
-> 1. sequence
-> 2. n_head
-> 3. n (contents)
-> 4. e
->
-> And this is along the line what I'm actually going to do because it is
-> stable for the use case. However, it would be nice that instead of such
-> sudoku there would be super stable Rust functions to take care of
-> writing these. This particular use case is sorted and I'll be fine, but
-> these pop up from time to time in different situations.
->
-> The problem with encoders I found for Rust from crates.io is that they
-> are like too bounded to the type system of Rust by implementing
-> conversion traits (From, Into etc.) available. Instead of this approach
-> for it might be more feasible to have dummy functions with no mangling
-> in the symbols like encode_sequence, encode_integer etc. You can always
-> use these dummy global functions to implement those fancy traits and
-> provide bridge for C at the same time and direct as possible access to
-> the actual functionality.
->
-> I think this is simple but very nice and usable pattern for bridging
-> from C to Rust provided services.
->
-> BR, Jarkko
->
-
-
---=20
-All that is necessary for evil to succeed is for good people to do nothing.
