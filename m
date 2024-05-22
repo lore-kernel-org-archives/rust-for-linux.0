@@ -1,150 +1,112 @@
-Received: from AUS01-SY4-obe.outbound.protection.outlook.com (mail-sy4aus01olkn2169.outbound.protection.outlook.com [40.92.62.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B27D6CDA3;
-	Wed, 22 May 2024 16:11:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.92.62.169
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716394298; cv=fail; b=fQFHcESfk01WN5I0dtvU0AEXS3sDHhFJSlOIYI/34eANcX7jQzltW4YGAGBMwFjTgelfN9bkvQ5XaYaBUjVez88FyHNML5iSMeqtUbF8AyPlG4UZbZPH3L55eDqypT2EjFZRsOO+w0e2LRc1EefDQ6CWPH8vJL8zRCSOdG5yQ6Y=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716394298; c=relaxed/simple;
-	bh=KXFjCYbp9xs4bWdwZp5uarbw0wMWe6eYSMre5zg7XIk=;
-	h=From:To:CC:Subject:Date:Message-ID:References:In-Reply-To:
-	 Content-Type:MIME-Version; b=k6neos09EtwTqE9MoHmpOtAYPnCpFNHK2jcmiEm9JD+/FGLhlO1B2jJNlt6XJviiTD/YpOEeLodx5bQAC8GHLazqwW3XveT5GtzslLsqh+bm8mDHzDoLBXuIcKgz1rMU+C61fccnyO6JIH5NjTNseg/I2pp5RMdq74/MDD8EXgs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com; spf=pass smtp.mailfrom=outlook.com; dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b=Uaq/GF7R; arc=fail smtp.client-ip=40.92.62.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=outlook.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=outlook.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 696998004F
+	for <rust-for-linux@vger.kernel.org>; Wed, 22 May 2024 23:15:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.41
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1716419722; cv=none; b=SbFBAOBvcJjNU7UwP8Anx7X1GyxxA9cdaOdcXpuBGiB1G+TLnNGjiuzEAd2wLFAe5D4Rv7pWYEgfxkVcCOJVebQwdjftFCjWyVLUf3WCxVt/w520nyrSCAqRP2T0dCSprY/wUcywlS3hYGBSwSBSEe/YiuSWeiTLHRH+ISYHWSI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1716419722; c=relaxed/simple;
+	bh=Ir2XqinlUrPpaQlopq6pGICD8nECQfQb9VlUJ47Cml4=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=UdkcHfTDZwWaM2VkKCno9vr2UEji7B+1k6eznNv5ZQq09BaDF6SuGXoOwvRpJ0tExba5NOXZ5KTsfckcPJ77ThrwbaSZANo+1thUC1oWsPFe4xnQW4/tj1SUCfCMexR2a/IcrTSxThNVENRRz4T6rKfb4JbbaIehwVhUYnWPP5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ku1757oY; arc=none smtp.client-ip=209.85.210.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=outlook.com header.i=@outlook.com header.b="Uaq/GF7R"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=Qy+6wIPZbJ7XLFkvjTBw0gI0JzFIetjiDbjt2tihCH0kQAdJ/G8ltn8uZCNCUEPQe/NnJ991uSSOqiBU6R89+2PX5DQf9zPnJdGpHlxDHYImBs2/3dOLiAz1QzEqBInUel+vJRmJ8qVC/1EZl4tj2CcL/t67mrK3QmERru8wPkO+XGVJerwn8T4WXFrw8vy40jIO+neeWVNOhQLL+6ixBYLHMJ+Peeqaz/KqJdxcb1nHk+9A19GDHfTBV8tEOjlXtvnCNCHcD9MXeYbKFUEc5t3aAC10MT4A9nSupOnpWcFZydPSPqVoMb+dFXXE393GyIL+DGbiisOulZqJCS7aEg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=KXFjCYbp9xs4bWdwZp5uarbw0wMWe6eYSMre5zg7XIk=;
- b=ITyE3r3zSgj2sB7nxF9H1HDs0mt7/VTReOgwMvZdQkj9+doZt1zQreDjrbv3hz5mo2qVLsaEv3i02SwaCaIoe5J5BUeH1f6W+XUBvK/4PZfYGk2/VSVIn8Vt/iFyxE1GWlxefCNoEkVKjUAByX+HmeFqAcv8Q4WjqYaIHnf/NgKR2Ho/BTG72w3g6d3A7M+bRKYyv24NiVEFyN0tU2vdp6E8sJPj5XA/r/29bMaGNmG+lw1KEP15QjURtMLHGvAolztYuQlogxYKaahpgRRNNkoz8pf44Yt10TTYYmzDgkv62V8ifRqrLuGdPgCYGb8ZE7e2g9IBZw1LuHBtQ3b3Hw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=outlook.com;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=KXFjCYbp9xs4bWdwZp5uarbw0wMWe6eYSMre5zg7XIk=;
- b=Uaq/GF7RQ7bNX7sUumd82iM42Q1tBjSvbYL+WWioKuNZTcdQamMJq+YhfWHxE1WyHufWG0PtZpHtN/jzGmLrTwoC6lIZX32vUhlaYEb8eMC8B1ndnVFysUCekDOWpy4+IpGdw0BfMqTmTJQCnQ44mX4Hz6eHi5FnDinDg/wC9n38xIzk1usuANWKGzhpH5E3RPSfBKJSn9hjroXCnLpfk27IwnhJmNvKf8EnNFkdgzOKtLrB1SV7H13b7yDvApbP9usFONWch0+0k5z2fYqYighy9rLIhHi570brkzo+yR/YNpEIBnPot4jo4zLO/SlvekKFNmhxTBkcDi2BRlNELg==
-Received: from ME0P282MB4890.AUSP282.PROD.OUTLOOK.COM (2603:10c6:220:228::21)
- by SY4P282MB3710.AUSP282.PROD.OUTLOOK.COM (2603:10c6:10:1c2::7) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7611.19; Wed, 22 May
- 2024 16:11:32 +0000
-Received: from ME0P282MB4890.AUSP282.PROD.OUTLOOK.COM
- ([fe80::d384:a02f:2370:f33e]) by ME0P282MB4890.AUSP282.PROD.OUTLOOK.COM
- ([fe80::d384:a02f:2370:f33e%7]) with mapi id 15.20.7611.016; Wed, 22 May 2024
- 16:11:31 +0000
-From: Roland Xu <mu001999@outlook.com>
-To: Greg KH <gregkh@linuxfoundation.org>
-CC: "ojeda@kernel.org" <ojeda@kernel.org>, "boqun.feng@gmail.com"
-	<boqun.feng@gmail.com>, "rust-for-linux@vger.kernel.org"
-	<rust-for-linux@vger.kernel.org>, "linux-kernel@vger.kernel.org"
-	<linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2] rust: kernel: make impl_has_work compatible with more
- generics
-Thread-Topic: [PATCH v2] rust: kernel: make impl_has_work compatible with more
- generics
-Thread-Index: AQHarF8coE4PoIOd2k6IcQOC1yqiIbGjaL8AgAABlAs=
-Date: Wed, 22 May 2024 16:11:31 +0000
-Message-ID:
- <ME0P282MB48903BD06ACC00C372A9602ACCEB2@ME0P282MB4890.AUSP282.PROD.OUTLOOK.COM>
-References:
- <ME0P282MB489023110AAF1163F0A4B2E1CCEB2@ME0P282MB4890.AUSP282.PROD.OUTLOOK.COM>
- <SY8P282MB48866A68C05C6444F0340A00CCEB2@SY8P282MB4886.AUSP282.PROD.OUTLOOK.COM>
- <2024052258-trifocals-engaged-8d80@gregkh>
-In-Reply-To: <2024052258-trifocals-engaged-8d80@gregkh>
-Accept-Language: en-US, zh-CN
-Content-Language: en-US
-X-MS-Has-Attach:
-X-MS-TNEF-Correlator:
-msip_labels:
-x-ms-exchange-messagesentrepresentingtype: 1
-x-tmn: [W4uqE9M4emq3hq2Ni6AwIobktTl56Q3769W7wgfQm9w=]
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: ME0P282MB4890:EE_|SY4P282MB3710:EE_
-x-ms-office365-filtering-correlation-id: e3cdd099-bf60-4a4f-a798-08dc7a79d85c
-x-microsoft-antispam:
- BCL:0;ARA:14566002|461199019|102099023|3430499023|440099019|3412199016;
-x-microsoft-antispam-message-info:
- Qr9hFGK36dIHbbC8aEU8yonwQNpDYSuO13W6c41FGhXYbQx6F6y3hfkG+1yf+6p46Mld5i1cDiiY98VlXf+8V5vy/8EliHxOoach/1yHpUdJEt6FEhNb3C4dHqJTi3RZGGRO+sSWv/0tx+Zo5wd6MrxSHM0KbGN+BsDo44zflCTwyrnYl6v7QcfFpVEu8V6U7DgjTpoado88w00uiyEjzViz/df9QFYGeGseiKUnn8SjrvLDrflaCpHczUkkTKoYr9K0vEbh1nKRVD7CnZP5G2NdJY5509QRJpvl7BSpOCV3/2XtTyypAFyJjt1+x//Zzmv4/AT4VJhHGgC9CDTNBLZ0TJk8u3CYIWdo/TavO0AXi3j/JYCWBJOSJXljrxG+WRls4v43CXDM6g/wTNlol0W77uFOIJkE+Q7oVRaudn7eFGAeYDeEsftRRT0evaakoQDtGb3oZx5/VB5eTLZ+TdlIsxk5dRnIahcNW7KUOywrJbWIcTq5MkbKRIc7tj0Nvpb3JLO7xk53edMXo2dS4i9r659+n75Sp5ZY8iaCj5KnXPnxzo5m+CXIXOQfS/rV
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0:
- =?us-ascii?Q?lYgzBws4Gs53ay83WtXQh2spjqj9iaIonlrSBbg8QG5zTjuHk9TQCtENdHwR?=
- =?us-ascii?Q?oCKcxCPbod40H/UT/XRXKq3BM4biav/tOY5APBVm36Dgadiaq0ocOIHifPsS?=
- =?us-ascii?Q?VLlUaBxwlCB5dXaHD5xkXAy2SsGczOFgVWan86Dv2nBBUiuPoQdUuWiHfPyf?=
- =?us-ascii?Q?r/DuqB7mkADidQulfRWfnQYPd/oR4Of+S7fNXHbbxSeG7KU1FK+xOSx09tD3?=
- =?us-ascii?Q?8tL5ilGkApsyOx7YFmnZFwgCH/YTncmT2uEzq0aJn8IghpZ1E4bPdFigtpCN?=
- =?us-ascii?Q?7Jf7/cvfCvKA2KZn3h1f2rTNaSmV/wXV8BlVNEy1O5Z6w2u7o5sOt97CdH1v?=
- =?us-ascii?Q?OKeRHHHkSL3/aLCiEw3uQ/8UOOp2jiPeO4vH6ND/R7LOPpKpmXm2vuEU7wKn?=
- =?us-ascii?Q?1jPXPtDXFNiKPtUr1rXhb0ktPMJ743UVzhdiG/ehTuH5F8NBXBCitQeUV1FG?=
- =?us-ascii?Q?ash0BsqSyF4wwOz0uAZ5tP6bPz44HrlorDLb3HxqY34pLWSd/XSsqh61Z47L?=
- =?us-ascii?Q?VSIU3Ke9wvAYt1L3AYHtk9M6PhTDAO9ryJs608jjgzTdgwAEo8nrnGLm9HeI?=
- =?us-ascii?Q?t415gySwUe6JOfftitsjiKWRl5+ILEIp+RUm7skRY0xO24Z/jW9NUs7HnnIb?=
- =?us-ascii?Q?S2XvHTsOxaDsagDeZvCuw8eFUChtAJubLbAFPpRtuhNtVyfswiV/134nI5zL?=
- =?us-ascii?Q?Z3XRUn16oIrtvuqGhYurNLuy8bbA8mb6OecJ2cjAwj/cM4yWWBh4Ao3DqgDo?=
- =?us-ascii?Q?GLWgjuBFKYK00tATrz2wcwsXAywLUdEVVb1bSrW6MRrmlh7v1ihNXUNOXn/c?=
- =?us-ascii?Q?yQlwTQ+vZBWFhC6OcwgiDmmSyuF/DCTcQbSceY9VtwFfUBvfg6S3JnwIEU6v?=
- =?us-ascii?Q?R3+RqCj5SXCTaT/BFfYjVTuGY8qx0MdVoRPdCip6ih4uohIxOAQXkajIkkxl?=
- =?us-ascii?Q?2ePEXspK6sKp+Tm5cieKIh7SFxfBTew0uY26+LXRD6xMgl6s0Orog1pzSdn+?=
- =?us-ascii?Q?bgEUHoQmn59UbLSb4eQ0U8hAgjrQMhEuJ+Aqnctu76N+QVNahhNOYFHiOVSv?=
- =?us-ascii?Q?jtLNx5PFwQZYTisDdMG+9dwgqJBcyHg9SPzFpg6ifgcKoWIF8XDWeEQxiVj/?=
- =?us-ascii?Q?rxz5yxfufZzABCL40MF3sgulSURoB6BhIh++kchd0b4b4LOPjpxLKYuGpmEg?=
- =?us-ascii?Q?zu/LpRtPieecwHHihqIjtVgsHs3tZpgwF+1xHkLxOGESHZGrWMz2XkgkJuc?=
- =?us-ascii?Q?=3D?=
-Content-Type: text/plain; charset="us-ascii"
-Content-Transfer-Encoding: quoted-printable
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ku1757oY"
+Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-6f0fa5eb6b2so327329a34.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 22 May 2024 16:15:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1716419720; x=1717024520; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Ir2XqinlUrPpaQlopq6pGICD8nECQfQb9VlUJ47Cml4=;
+        b=ku1757oYdRJYY6VbZ9xoVhqjtoPz1448vVkz43lRXsfAu6GwtQhxhEVsE2Rvza2lX7
+         Vybg6d+S394njPj7kdOmw7LbUHTu/qrrZMhmpvV8wsM16aX8VfPDQ++Ti3Q8Hw/z4wwV
+         z0RPnanRabZAz2Mz5fE54/S43+a+WodXYFxuJbfU7sBuKXpEog1RyrStmmICcFoYXIJI
+         JdQcYvrrT42fXomq0wbLbmxF0wWhmfMT4+kF2Sygw/o7HzvyMbPVGly29tdixIPrRGsJ
+         cNvHK8cHSsnuuPjDQ2uTfpOzLN6iwrXAUTD5yxI/miNfMPdEenkz+LrbM0LYuiRnV2I2
+         uzoQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716419720; x=1717024520;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Ir2XqinlUrPpaQlopq6pGICD8nECQfQb9VlUJ47Cml4=;
+        b=Dmk/pd5I21YKkO+JOe1jCY9mDsZadMxXQTY5CJlFffJ+ifajT9AXd3P0hcV0H6NXZB
+         hg2y7Sc2UcWxgR6Z59da8LcswkpogCpp2pXPsUHXxW1kEnJ6WyG9MM4w6e6eCAT40TP9
+         e4f2taAEbC9kCadRp+1Pi+LswmYX02gVzVp2gJeWg/SApsK4eFrZfm4Z8Y4DtF4T+7xu
+         V+Q/GM09Le0zGRY78CFq3Bj7sQz/GQjsJxt5pTd+rDXK9CEUm66EZVBrj4kYCO6BDf+T
+         VOz+Q09Rqpxcrt+gtKv8rHhxBu7HJ6E/ZrLdM1KZbK88rRgrjgQYVsQ1f5+Zfedz9jMy
+         pE0w==
+X-Forwarded-Encrypted: i=1; AJvYcCW6MfKaNdacDjlwqJrtq0qw762Zc/O7Ut98dDFdqR17JU9KNT7JYo4Q9S2gc8Edd7OxmN3Ucw/vay8ZboDGMTdOERUdjKZQzhArnn3ZxSU=
+X-Gm-Message-State: AOJu0Yy2G+5gIowy0bMmPL7Mhc4vbxNRLc4Cb2TDrOZmPIjc9LxW9ClL
+	DB3dJwuRthgcb/aAcqIxHs38uquveeTbOgdBSJ76uA6xtqaoEQGL
+X-Google-Smtp-Source: AGHT+IEg0tD1wihn+c8EcE3GfwFZJ9P0oCxBgIaw/cJq+yGvGb5ZmoLis9eA4mwP5hlUp53Vcp3WSg==
+X-Received: by 2002:a05:6358:2921:b0:192:82da:43df with SMTP id e5c5f4694b2df-19791b7d6d6mr377565255d.1.1716419720266;
+        Wed, 22 May 2024 16:15:20 -0700 (PDT)
+Received: from localhost (p5261226-ipxg23801hodogaya.kanagawa.ocn.ne.jp. [180.15.241.226])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-6f4d2a66557sm22855335b3a.44.2024.05.22.16.15.15
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 22 May 2024 16:15:19 -0700 (PDT)
+Date: Thu, 23 May 2024 08:15:13 +0900 (JST)
+Message-Id: <20240523.081513.81513679981916366.fujita.tomonori@gmail.com>
+To: pstanner@redhat.com
+Cc: fujita.tomonori@gmail.com, dakr@redhat.com,
+ maarten.lankhorst@linux.intel.com, mripard@kernel.org,
+ tzimmermann@suse.de, airlied@gmail.com, daniel@ffwll.ch, ojeda@kernel.org,
+ alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com,
+ gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+ a.hindborg@samsung.com, aliceryhl@google.com, lina@asahilina.net,
+ ajanulgu@redhat.com, lyude@redhat.com, gregkh@linuxfoundation.org,
+ rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ nouveau@lists.freedesktop.org
+Subject: Re: [RFC PATCH 7/8] rust: add firmware abstractions
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <35fef820ed6e67f2203e78735fc9e15248436221.camel@redhat.com>
+References: <20240520172422.181763-4-dakr@redhat.com>
+	<20240522.085334.1009573112046880609.fujita.tomonori@gmail.com>
+	<35fef820ed6e67f2203e78735fc9e15248436221.camel@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-OriginatorOrg: outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: ME0P282MB4890.AUSP282.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-Network-Message-Id: e3cdd099-bf60-4a4f-a798-08dc7a79d85c
-X-MS-Exchange-CrossTenant-rms-persistedconsumerorg: 00000000-0000-0000-0000-000000000000
-X-MS-Exchange-CrossTenant-originalarrivaltime: 22 May 2024 16:11:31.9261
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SY4P282MB3710
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=utf-8
+Content-Transfer-Encoding: base64
 
-Greg KH:
-> Columns are still not wrapped :(
-
-Oh, sorry. I used `scripts/checkpatch.pl` and it only told me the commit ti=
-tle is too long, that's why I only change it.
-
-________________________________________
-From: Greg KH <gregkh@linuxfoundation.org>
-Sent: Wednesday, May 22, 2024 23:57
-To: Roland Xu
-Cc: ojeda@kernel.org; boqun.feng@gmail.com; rust-for-linux@vger.kernel.org;=
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] rust: kernel: make impl_has_work compatible with mo=
-re generics
-
-On Wed, May 22, 2024 at 11:45:33PM +0800, Roland Xu wrote:
-> v2: apply comments, wrap lines at 72 columns
-> ---
-
-That goes below the --- line.
-
-> Make the impl_has_work macro compatible with more complex generics such a=
-s lifetimes and const generic arguments.
-
-Columns are still not wrapped :(
-
-Look at example submissions on the mailing list for how to structure
-this.
-
-thanks,
-
-greg k-h
+SGksDQoNCk9uIFdlZCwgMjIgTWF5IDIwMjQgMDk6Mzc6MzAgKzAyMDANClBoaWxpcHAgU3Rhbm5l
+ciA8cHN0YW5uZXJAcmVkaGF0LmNvbT4gd3JvdGU6DQoNCj4+ID4gKy8vLyBBYnN0cmFjdGlvbiBh
+cm91bmQgYSBDIGZpcm13YXJlIHN0cnVjdC4NCj4+ID4gKy8vLw0KPj4gPiArLy8vIFRoaXMgaXMg
+YSBzaW1wbGUgYWJzdHJhY3Rpb24gYXJvdW5kIHRoZSBDIGZpcm13YXJlIEFQSS4gSnVzdA0KPj4g
+PiBsaWtlIHdpdGggdGhlIEMgQVBJLCBmaXJtd2FyZSBjYW4NCj4+ID4gKy8vLyBiZSByZXF1ZXN0
+ZWQuIE9uY2UgcmVxdWVzdGVkIHRoZSBhYnN0cmFjdGlvbiBwcm92aWRlcyBkaXJlY3QNCj4+ID4g
+YWNjZXNzIHRvIHRoZSBmaXJtd2FyZSBidWZmZXIgYXMNCj4+ID4gKy8vLyBgJlt1OF1gLiBBbHRl
+cm5hdGl2ZWx5LCB0aGUgZmlybXdhcmUgY2FuIGJlIGNvcGllZCB0byBhIG5ldw0KPj4gPiBidWZm
+ZXIgdXNpbmcgYEZpcm13YXJlOjpjb3B5YC4gVGhlDQo+PiA+ICsvLy8gZmlybXdhcmUgaXMgcmVs
+ZWFzZWQgb25jZSBbYEZpcm13YXJlYF0gaXMgZHJvcHBlZC4NCj4+ID4gKy8vLw0KPj4gPiArLy8v
+ICMgRXhhbXBsZXMNCj4+ID4gKy8vLw0KPj4gPiArLy8vIGBgYA0KPj4gPiArLy8vIGxldCBmdyA9
+IEZpcm13YXJlOjpyZXF1ZXN0KCJwYXRoL3RvL2Zpcm13YXJlLmJpbiIsDQo+PiA+IGRldi5hc19y
+ZWYoKSk/Ow0KPj4gPiArLy8vIGRyaXZlcl9sb2FkX2Zpcm13YXJlKGZ3LmRhdGEoKSk7DQo+PiA+
+ICsvLy8gYGBgDQo+PiA+ICtwdWIgc3RydWN0IEZpcm13YXJlKE9wYXF1ZTwqY29uc3QgYmluZGlu
+Z3M6OmZpcm13YXJlPik7DQo+PiANCj4+IFdyYXBwaW5nIGEgcmF3IHBvaW50ZXIgaXMgbm90IHRo
+ZSBpbnRlbmRlZCB1c2Ugb2YgUXBhcXVlIHR5cGU/DQo+PiANCj4gDQo+IFdoYXQgaXMgdGhlIGlu
+dGVuZGVkIHVzZT8NCj4gQXMgSSBzZWUgaXQsIGFsbCB1c2VzIHdyYXBwIHNvbWUgYmluZGluZzo6
+KiDigJMgYnV0IGEgcmF3cG9pbnRlciB0byBhDQo+IGJpbmRpbmcgc2hvdWxkbid0IGJlIHdyYXBw
+ZWQgYnkgaXQ/DQoNCklmIEkgdW5kZXJzdGFuZCBjb3JyZWN0bHksIGl0J3MgZm9yIGVtYmVkZGlu
+ZyBDJ3Mgc3RydWN0IGluIFJ1c3Qncw0Kc3RydWN0IChhcyBhbGwgdGhlIHVzYWdlIGluIHRoZSB0
+cmVlIGRvKS4gSXQgZ2l2ZXMgdGhlIHRyaWNrcyBmb3INCmluaXRpYWxpemF0aW9uIGFuZCBhIHBv
+aW50ZXIgdG8gdGhlIGVtYmVkZGVkIG9iamVjdC4NCg0KVGhlIEMncyBmaXJtd2FyZSBBUEkgZ2l2
+ZXMgYSBwb2ludGVyIHRvIGFuIGluaXRpYWxpemVkIG9iamVjdCBzbyBubw0KcmVhc29uIHRvIHVz
+ZSBPcGFxdWUuDQoNCldpdGggc3VjaCBDIEFQSSwgUnVzdCdzIHN0cnVjdCBzaW1wbHkgdXNlcyBy
+YXcgcG9pbnRlcnMgaW4gb2xkIHJ1c3QNCmJyYW5jaC4gRm9yIGV4YW1wbGUsDQoNCmh0dHBzOi8v
+Z2l0aHViLmNvbS9SdXN0LWZvci1MaW51eC9saW51eC9ibG9iL3J1c3QvcnVzdC9rZXJuZWwvY2hy
+ZGV2LnJzI0wyOA0KDQpzdHJ1Y3QgQ2RldigqbXV0IGJpbmRpbmdzOjpjZGV2KTsNCg0KDQpBbm90
+aGVyIGNob2ljZSB0aGF0IEkga25vdyBpcyBOb25OdWxsOg0KDQpodHRwczovL2xvcmUua2VybmVs
+Lm9yZy9sa21sLzIwMjQwNDE1LWFsaWNlLW1tLXY1LTQtNmY1NWU0ZDhlZjUxQGdvb2dsZS5jb20v
+DQoNCnB1YiBzdHJ1Y3QgUGFnZSB7DQogICAgcGFnZTogTm9uTnVsbDxiaW5kaW5nczo6cGFnZT4s
+DQp9DQo=
