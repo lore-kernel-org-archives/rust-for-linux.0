@@ -1,62 +1,55 @@
-Received: from lahtoruutu.iki.fi (lahtoruutu.iki.fi [185.185.170.37])
+Received: from meesny.iki.fi (meesny.iki.fi [195.140.195.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2E9342070
-	for <rust-for-linux@vger.kernel.org>; Thu, 23 May 2024 07:03:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.185.170.37
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1075811723
+	for <rust-for-linux@vger.kernel.org>; Thu, 23 May 2024 15:44:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=195.140.195.201
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716447796; cv=pass; b=NDg0AL4NSQ9IpC8MAOrrzeCAnavwIQH11HhsjLI7fdbsi7d4/wqr+5NpYWE+2saUdZFdzt7CVaFlffsLVArS/h5XZ5ttnYWtr/VpD/OTbqYYa7eNVlK/9q0HgPWZ0f6I5wwcUYxqNzob/Sn3j6+qfl3A585wdZehm1Zhgwx8fyE=
+	t=1716479047; cv=pass; b=sM2LIFz2AFmT9YQnh84P3HjoxJbsO9DVnHzdLfiVsCtr5PPstWhExWdywMw2PtGtByHryZmzVRDnUqHKGtnaDE1SOMXTDF8fvBXozEo9ckIRD/pc9fh0bFDKWmF3+rk07Hwqh4dqy4B47WOnWTSMTmRmSchAxaiLDjSE7nhIswo=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716447796; c=relaxed/simple;
-	bh=6iNHqLVzlgdD5Kl8hP1qsc/0GFsyR0mzThQJL00thco=;
+	s=arc-20240116; t=1716479047; c=relaxed/simple;
+	bh=3ftcu0qYvTDnxxr9Q7rPjYf+wVzMP5MvKDtIp7jiLw8=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=S/3Rua9ettmgTBDDhbPuSqGX+DUrEnuaCZdiRyJgKiglTSrJHCV5NNfWoaLPUdYUReLiw9yrgXInX9VvD8drDWE5eiJO/nMgi+lLRsTjPwxOM7Pw1xr2/AFYvdpZmdXsrXp9/oDyPAyBjdxJQwSBT5rEOGK9EXoEG9ROSFpQAv4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi; spf=pass smtp.mailfrom=iki.fi; dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b=n0YnqUig; arc=pass smtp.client-ip=185.185.170.37
+	 References:In-Reply-To; b=RcBDQuRn9XQh98SnPXa9b+hnFRtCq094LQk6ZA4fvZWoLSOdfuH8B/BCRyVdX4nBqY+v+PXXGMKwsW8JDgLfJVsPFBy77TnR+knTTPAcuAtuJdFThoAdhCtWCngYsJmEc/cWWmZ0DG/l0h9x72RqY8piHoSEfnj2rU1Zi10pMQk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi; spf=pass smtp.mailfrom=iki.fi; dkim=pass (1024-bit key) header.d=iki.fi header.i=@iki.fi header.b=e3OQrqND; arc=pass smtp.client-ip=195.140.195.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iki.fi
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b="n0YnqUig"
+	dkim=pass (1024-bit key) header.d=iki.fi header.i=@iki.fi header.b="e3OQrqND"
 Received: from localhost (91-154-92-47.elisa-laajakaista.fi [91.154.92.47])
 	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
 	(Authenticated sender: sakkinen)
-	by lahtoruutu.iki.fi (Postfix) with ESMTPSA id 4VlJzM6Pz5z49Psb;
-	Thu, 23 May 2024 10:03:11 +0300 (EEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=lahtoruutu;
-	t=1716447792;
+	by meesny.iki.fi (Postfix) with ESMTPSA id 4VlXXJ67J0zyT0;
+	Thu, 23 May 2024 18:44:00 +0300 (EEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=meesny;
+	t=1716479041;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=6iNHqLVzlgdD5Kl8hP1qsc/0GFsyR0mzThQJL00thco=;
-	b=n0YnqUig/CEij2sJGhHZEHSH4Z5g4URLNnoQLcxGb741ZVLZ4GmN35aUB4CQmMYua7oATd
-	WAvy8v8OdPEujjBGybPN2HgGvCtLGEMecltOVySZK8WCvRKmNIohFDmwVErkmEIrOMFbXF
-	1g6wyNBekOSKoHBYVOq90fFM/p9PUpjdBgeA2u+XFWNf+QGN8SnQOU5BuH6J9STkiwIF78
-	QRw/FHf/wR5xpjId3sI+LLg4BUnMNSxFQF3Kw5rW0YdpLelT70CPRI8dQHCBsxYv7HlD/5
-	0KZE/OdR+yqutdmQhnEa2G6e7jw5levnwJcbNdhFIJrcpnn5GSeaxruUtdgtNQ==
-ARC-Seal: i=1; s=lahtoruutu; d=iki.fi; t=1716447792; a=rsa-sha256;
-	cv=none;
-	b=SombeEznFo18nu6aUVnEFMbiaxLWjewdRHyt5D+VcVYnkZRDqNNUe407Z37YtSYn94Wzac
-	lS6EXt8BqyUkKUT/QsQaBLYnol3k/U3lBqxLai50ZSHHBh/k/LyRv+FyOK1O7ArsYyssW5
-	uJqvGLNbrqjHMJPhVCfIJWQbb2gG7VyOHc9mCN4Y37s/bA+lvmBvLn0h8w26dMOkfCEUoU
-	Ec2nhixhiNlVrq4OceL18Djadhvno9nSpxR2pYBkQq8abifhRfnkEYs5jiOoC3Vf/lq293
-	26HnEhcTBX/91J8w+5Lu02SoUgOZnJBPhNrMSnPHfnMFhXtNYBY++apvT+NBBQ==
+	bh=3ftcu0qYvTDnxxr9Q7rPjYf+wVzMP5MvKDtIp7jiLw8=;
+	b=e3OQrqNDXdmar884K42QTYUPQ+hPlvnL46XaxOJIVWlEzpxO2aeyzfxJCKkvCHE0GEWNAo
+	5QPfNctsmAJX+LgAWBwO9KYGNlu4io33FUNNnk2DurUQceV/sXnJYDAMKrhiDBMdG9RLDl
+	I+lzzMW5hVBBSUfgHKEL36KUkQfPR0Y=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
+	s=meesny; t=1716479041;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=3ftcu0qYvTDnxxr9Q7rPjYf+wVzMP5MvKDtIp7jiLw8=;
+	b=ZvvXuo3HBVvWdjHE+BiXGaHrNN1akNuyV81IHL9MzqHbJDLeoYsoDp3BviSnJInMt7I7XV
+	bo32MbFqVwoDU7NLi0mHh+i8X5szBTwXO6BjpPEX4Q3490kz0HouOUG4RTx8mY9Txf4bHK
+	3VdhzUk/ul7+N50D4WlyYpl4t4G++MI=
 ARC-Authentication-Results: i=1;
 	ORIGINATING;
 	auth=pass smtp.auth=sakkinen smtp.mailfrom=jarkko.sakkinen@iki.fi
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
-	s=lahtoruutu; t=1716447791;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=6iNHqLVzlgdD5Kl8hP1qsc/0GFsyR0mzThQJL00thco=;
-	b=HbeGx5MY2cbTge4NZCY+i3IXb9TR96CWIjp2C3Ax3/l+1sGLAOKi+lQ2+m//LRdHD61kGc
-	whFwV9B8cCZFo8OXBTrSvmUXHlAg0fEDZ8wkzk/dIyrxBbFAqQxVR3cv+ddiiGqNYYnwpt
-	eRamSvPw04XAXfhRyMGyGqs4UjmNcTeoTJtf9SXnCf/w6XE0axB8YgNCa3EMB5XwkN3fno
-	NJ9zzo0UlMLMiTiDK40abKx46/rtrxvSzpaM3M5aDEglHuTd0d1bUVu68UwEdkJguJMriK
-	8wVDZFd9HuDOSz4indX6GXRiySfn/3cjbverwHreUbIfOvCdpKLS4won8qc81w==
+ARC-Seal: i=1; s=meesny; d=iki.fi; t=1716479041; a=rsa-sha256; cv=none;
+	b=KR0VJbDSCr/3bhv+FMmjtiH/lN5YFfQfpTPPUtkI/3LacXPZdsmDwWMtncTZAS+Q1oFVBc
+	fRtG9xNFPnDez6UQTvVkFfH58wL9TLtu3y4C5bqP3CRZf0og30nqmkxAFAbP/dOSnenAD1
+	LaC5MdHK4/NfOwVdbOrVQTj+nUIM57Q=
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -65,8 +58,8 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Thu, 23 May 2024 10:03:11 +0300
-Message-Id: <D1GTYLS0T694.20ADKJ10BM09M@iki.fi>
+Date: Thu, 23 May 2024 18:44:00 +0300
+Message-Id: <D1H51DDEJPIG.3232U7ZBKUU70@iki.fi>
 Cc: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>,
  <rust-for-linux@vger.kernel.org>, "Daniel Almeida"
  <daniel.almeida@collabora.com>
@@ -87,13 +80,19 @@ In-Reply-To: <D1GTWC4OLYQ8.WIH9UMLI2LC2@iki.fi>
 
 On Thu May 23, 2024 at 10:00 AM EEST, Jarkko Sakkinen wrote:
 > On Wed May 22, 2024 at 4:49 PM EEST, Jarkko Sakkinen wrote:
-> > If we want to considering getting your code to land to the kernel I
-> > would start with the decoder as it already delivers, as an
-> > *experimental* feature. Then when it is landed it would not be
-> > as huge stretch to move forward with the encoder.
->
-> About the encoder. It is relatively new and has only caller, and I'm not
+> Given this if we want to work on ASN1_RUST experimental feature, I
+> can create a patch that open codes the call site in trusted_tpm2.c
+> and thus ASN1_ENCODER can be droper entirely. It is not a priority
+> but could be part of the patch set, or Git branch, which adds
+> ASN1_RUST.
 
-*only single caller.
+Not necessarily entirely, that was an overkill statement, but
+mostly have only dynamic stuff in it and improve the C API to
+be good match of whatever done in encoding side on Rust. I.e.
+no regrets for picking it but it needs to mature, and I think
+this rust opt-in would also do good for C implementation.
+
+Just writing the notes so that I recall all this some weeks
+from now ;-)
 
 BR, Jarkko
