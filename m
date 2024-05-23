@@ -1,112 +1,190 @@
-Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
+Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 696998004F
-	for <rust-for-linux@vger.kernel.org>; Wed, 22 May 2024 23:15:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0031F29AB
+	for <rust-for-linux@vger.kernel.org>; Thu, 23 May 2024 02:48:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716419722; cv=none; b=SbFBAOBvcJjNU7UwP8Anx7X1GyxxA9cdaOdcXpuBGiB1G+TLnNGjiuzEAd2wLFAe5D4Rv7pWYEgfxkVcCOJVebQwdjftFCjWyVLUf3WCxVt/w520nyrSCAqRP2T0dCSprY/wUcywlS3hYGBSwSBSEe/YiuSWeiTLHRH+ISYHWSI=
+	t=1716432539; cv=none; b=Ab6E/UTP8Sns4tc0tEU0gWZSmC4sdk/eCKWeHWtLlcD/hjmNvfeELr9gPBd7E0hVTFJ4P0S4ZuVuinta3pOrsMe0VOMKMye+DQKwhgfHvmvl0P79B1lnSat9jD3WkOybXCfxMhj+hA3vZmpNJ2JHVbNJVpmZd7//j6BTpDfFnJo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716419722; c=relaxed/simple;
-	bh=Ir2XqinlUrPpaQlopq6pGICD8nECQfQb9VlUJ47Cml4=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=UdkcHfTDZwWaM2VkKCno9vr2UEji7B+1k6eznNv5ZQq09BaDF6SuGXoOwvRpJ0tExba5NOXZ5KTsfckcPJ77ThrwbaSZANo+1thUC1oWsPFe4xnQW4/tj1SUCfCMexR2a/IcrTSxThNVENRRz4T6rKfb4JbbaIehwVhUYnWPP5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ku1757oY; arc=none smtp.client-ip=209.85.210.41
+	s=arc-20240116; t=1716432539; c=relaxed/simple;
+	bh=jWHSOq9ij/x/sbM+kLhCxJeFsRFgcGrXYoOg8rRHvWs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JPDEaiyU3E/bSbquuhU+bNy6B3GbwkCvSzQ1ALGUKIxmoe3sXT8G52AHWhjV5FnUMZWW1UkBwfIhyBgA23fwAN/mmjGZPZc80/+1edt16qwg00rFTmBkA9VKwefV6TNUn8uMzhPeRcsVVvLF9UX2DqtqFtofpxGqdwEGq0IhHoA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T/8JrjPv; arc=none smtp.client-ip=209.85.128.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ku1757oY"
-Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-6f0fa5eb6b2so327329a34.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 22 May 2024 16:15:21 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T/8JrjPv"
+Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-627dfbcf42aso15845197b3.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 22 May 2024 19:48:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1716419720; x=1717024520; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=Ir2XqinlUrPpaQlopq6pGICD8nECQfQb9VlUJ47Cml4=;
-        b=ku1757oYdRJYY6VbZ9xoVhqjtoPz1448vVkz43lRXsfAu6GwtQhxhEVsE2Rvza2lX7
-         Vybg6d+S394njPj7kdOmw7LbUHTu/qrrZMhmpvV8wsM16aX8VfPDQ++Ti3Q8Hw/z4wwV
-         z0RPnanRabZAz2Mz5fE54/S43+a+WodXYFxuJbfU7sBuKXpEog1RyrStmmICcFoYXIJI
-         JdQcYvrrT42fXomq0wbLbmxF0wWhmfMT4+kF2Sygw/o7HzvyMbPVGly29tdixIPrRGsJ
-         cNvHK8cHSsnuuPjDQ2uTfpOzLN6iwrXAUTD5yxI/miNfMPdEenkz+LrbM0LYuiRnV2I2
-         uzoQ==
+        d=gmail.com; s=20230601; t=1716432537; x=1717037337; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=TJvI5ka+7JgZUuM9P+5dJkLsAfZT/399LMPF7VVV6Qw=;
+        b=T/8JrjPv3ivsL8TOYrtg5HwNTfruH5YnTm0iK6DSt8gFnt+F7UUQeSE1hfLmd+emkT
+         948V6iybczTYfL3bi/Xceadn46qOhMg/uHK/uQpVOb0Zgl6g0U6qHFFzsJuHGigQiv8w
+         wzqG9q1437qdc+Di9DSZIiq5Gjiw+vmmfkts9V0W9ZcnQJRot5N7GqHWrcbifwM+z9jZ
+         KwDVfS6lK1lbYQNoz5L9BOt6EkH0yaT9bmLWRgzYD9CTTlIl6XOgGX7+tc6KINgkPcWn
+         GRpiLtPoqAfrXeeqH9x+Vjm6y49LQt1UJFYRp9nUAX+VRA+Niv3pWNyKvOod1CEdpteB
+         8XRg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716419720; x=1717024520;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=Ir2XqinlUrPpaQlopq6pGICD8nECQfQb9VlUJ47Cml4=;
-        b=Dmk/pd5I21YKkO+JOe1jCY9mDsZadMxXQTY5CJlFffJ+ifajT9AXd3P0hcV0H6NXZB
-         hg2y7Sc2UcWxgR6Z59da8LcswkpogCpp2pXPsUHXxW1kEnJ6WyG9MM4w6e6eCAT40TP9
-         e4f2taAEbC9kCadRp+1Pi+LswmYX02gVzVp2gJeWg/SApsK4eFrZfm4Z8Y4DtF4T+7xu
-         V+Q/GM09Le0zGRY78CFq3Bj7sQz/GQjsJxt5pTd+rDXK9CEUm66EZVBrj4kYCO6BDf+T
-         VOz+Q09Rqpxcrt+gtKv8rHhxBu7HJ6E/ZrLdM1KZbK88rRgrjgQYVsQ1f5+Zfedz9jMy
-         pE0w==
-X-Forwarded-Encrypted: i=1; AJvYcCW6MfKaNdacDjlwqJrtq0qw762Zc/O7Ut98dDFdqR17JU9KNT7JYo4Q9S2gc8Edd7OxmN3Ucw/vay8ZboDGMTdOERUdjKZQzhArnn3ZxSU=
-X-Gm-Message-State: AOJu0Yy2G+5gIowy0bMmPL7Mhc4vbxNRLc4Cb2TDrOZmPIjc9LxW9ClL
-	DB3dJwuRthgcb/aAcqIxHs38uquveeTbOgdBSJ76uA6xtqaoEQGL
-X-Google-Smtp-Source: AGHT+IEg0tD1wihn+c8EcE3GfwFZJ9P0oCxBgIaw/cJq+yGvGb5ZmoLis9eA4mwP5hlUp53Vcp3WSg==
-X-Received: by 2002:a05:6358:2921:b0:192:82da:43df with SMTP id e5c5f4694b2df-19791b7d6d6mr377565255d.1.1716419720266;
-        Wed, 22 May 2024 16:15:20 -0700 (PDT)
-Received: from localhost (p5261226-ipxg23801hodogaya.kanagawa.ocn.ne.jp. [180.15.241.226])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-6f4d2a66557sm22855335b3a.44.2024.05.22.16.15.15
+        d=1e100.net; s=20230601; t=1716432537; x=1717037337;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=TJvI5ka+7JgZUuM9P+5dJkLsAfZT/399LMPF7VVV6Qw=;
+        b=jhi5aclaZDsjl+kpqbrryyli2xJiuaK9qSwnhcMP4YjGMFVdyJOBgeiW7YVvrf5+T6
+         NKgwt2/rte6AfdvbjA0mmpMakSNuKQlXkWoOA7jitmqvMpCep5b2TNSQdn6t/0T+0oIH
+         Urq0PsHNBXuRzVAITEqS/NxGw4aRAEjPxGswh7ajSu60d6J/BL/QhIe5NX75P9i9fxHc
+         wwqto5mb3YBTNs60NPFLQ6IUb6yKuqXRyfVZAkMqCm9j5WpuCQT9LtXJGmqSzZQozBQH
+         b/f9rpZVRAh3I8MeAz320hY9RxpiBc1C08NET9qwZgUvOm6T/UTOxrA1qWZwblPRZHG+
+         +atA==
+X-Forwarded-Encrypted: i=1; AJvYcCUCZjdia6NFf5y4DqOy+8QJFVEf/HoYaqBUhMbJC0EYttd40+n7pL0KxQPAvu9Gh/hSdxPVPoGRV3oe4C2K/DJUlQqM5bwLvjTwx+JeQyo=
+X-Gm-Message-State: AOJu0YwG0ATlKnJZPbqydOQyUCfHEub87RCGo2zhks0t8KpeOHIdbekZ
+	xtUlKtxEKsjlTNYTzKSW+OcGBShV+a8krGXIdg3fmag/ARH29ln5
+X-Google-Smtp-Source: AGHT+IH0dxdXbgmC4rYlR/hwUOO+Wp8dfkUpjfFuvGBklHjUOcOUKupWE7JhBWZ/Fbp+d7zv5g0sWA==
+X-Received: by 2002:a05:690c:660c:b0:627:88fc:61e4 with SMTP id 00721157ae682-627e46c77a6mr47090767b3.1.1716432536685;
+        Wed, 22 May 2024 19:48:56 -0700 (PDT)
+Received: from fauth2-smtp.messagingengine.com (fauth2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6ab9335edf3sm486806d6.54.2024.05.22.19.48.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 May 2024 16:15:19 -0700 (PDT)
-Date: Thu, 23 May 2024 08:15:13 +0900 (JST)
-Message-Id: <20240523.081513.81513679981916366.fujita.tomonori@gmail.com>
-To: pstanner@redhat.com
-Cc: fujita.tomonori@gmail.com, dakr@redhat.com,
- maarten.lankhorst@linux.intel.com, mripard@kernel.org,
- tzimmermann@suse.de, airlied@gmail.com, daniel@ffwll.ch, ojeda@kernel.org,
- alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com,
- gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
- a.hindborg@samsung.com, aliceryhl@google.com, lina@asahilina.net,
- ajanulgu@redhat.com, lyude@redhat.com, gregkh@linuxfoundation.org,
- rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org,
- nouveau@lists.freedesktop.org
+        Wed, 22 May 2024 19:48:56 -0700 (PDT)
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+	by mailfauth.nyi.internal (Postfix) with ESMTP id 5D3BB1200043;
+	Wed, 22 May 2024 22:48:55 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute5.internal (MEProxy); Wed, 22 May 2024 22:48:55 -0400
+X-ME-Sender: <xms:l65OZr9JgWgOPevW5yJppccZOOcaKoF1y1Q-zOeEZOswlQ-KqF7COw>
+    <xme:l65OZnscWI1OsvTggyuLZVJO_Bncv7ufzMNE5V3hj-DMKkUJf0KNMJLGKWdnpDbTf
+    f1Llj0I-VdnK9fASA>
+X-ME-Received: <xmr:l65OZpD63joYbDlA02gOpBHu68Z8AqYCVeGfdTJcU5aXuCrkC93E0IM-2w>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrvdeihedgiedvucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggugfgjsehtkeertddttdejnecuhfhrohhmpeeuohhq
+    uhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrf
+    grthhtvghrnhepveffgedtgfetvdfgudfhgfehgffgveevvdelkefhjeeiudffkefhhfdv
+    heeljeefnecuffhomhgrihhnpehgihhthhhusgdrtghomhdptghhrhguvghvrdhrshdpkh
+    gvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghi
+    lhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqie
+    elvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdr
+    tghomhesfhhigihmvgdrnhgrmhgv
+X-ME-Proxy: <xmx:l65OZnd7sYcwsq4EahySDVP_rcHk5LbPyZCq3gVR9UPROv5R8kxsEA>
+    <xmx:l65OZgNAdnvMAm4YjgLWf2ArjzaV4-wkunlqPk7laIC3sP2UbPJumw>
+    <xmx:l65OZpmPhuz8l8B2xc5bBebr2iev-w4i7F-whjk-ZadLf6TOxiFOjQ>
+    <xmx:l65OZqsr-BuwfODBOdojAbsWIzKP4m-LGWgduDHqXUdk4bT6XG6DYA>
+    <xmx:l65OZqsGO3Q7ks2k17BChTc3GSPOdJHTB9Od0O7mkbGZCU-g6zbTQKVf>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 22 May 2024 22:48:54 -0400 (EDT)
+Date: Wed, 22 May 2024 19:48:53 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: pstanner@redhat.com, dakr@redhat.com, maarten.lankhorst@linux.intel.com,
+	mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com,
+	daniel@ffwll.ch, ojeda@kernel.org, alex.gaynor@gmail.com,
+	wedsonaf@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me, a.hindborg@samsung.com,
+	aliceryhl@google.com, lina@asahilina.net, ajanulgu@redhat.com,
+	lyude@redhat.com, gregkh@linuxfoundation.org,
+	rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	nouveau@lists.freedesktop.org
 Subject: Re: [RFC PATCH 7/8] rust: add firmware abstractions
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <35fef820ed6e67f2203e78735fc9e15248436221.camel@redhat.com>
+Message-ID: <Zk6ulWF72cbp14O3@Boquns-Mac-mini.home>
 References: <20240520172422.181763-4-dakr@redhat.com>
-	<20240522.085334.1009573112046880609.fujita.tomonori@gmail.com>
-	<35fef820ed6e67f2203e78735fc9e15248436221.camel@redhat.com>
+ <20240522.085334.1009573112046880609.fujita.tomonori@gmail.com>
+ <35fef820ed6e67f2203e78735fc9e15248436221.camel@redhat.com>
+ <20240523.081513.81513679981916366.fujita.tomonori@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=utf-8
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20240523.081513.81513679981916366.fujita.tomonori@gmail.com>
 
-SGksDQoNCk9uIFdlZCwgMjIgTWF5IDIwMjQgMDk6Mzc6MzAgKzAyMDANClBoaWxpcHAgU3Rhbm5l
-ciA8cHN0YW5uZXJAcmVkaGF0LmNvbT4gd3JvdGU6DQoNCj4+ID4gKy8vLyBBYnN0cmFjdGlvbiBh
-cm91bmQgYSBDIGZpcm13YXJlIHN0cnVjdC4NCj4+ID4gKy8vLw0KPj4gPiArLy8vIFRoaXMgaXMg
-YSBzaW1wbGUgYWJzdHJhY3Rpb24gYXJvdW5kIHRoZSBDIGZpcm13YXJlIEFQSS4gSnVzdA0KPj4g
-PiBsaWtlIHdpdGggdGhlIEMgQVBJLCBmaXJtd2FyZSBjYW4NCj4+ID4gKy8vLyBiZSByZXF1ZXN0
-ZWQuIE9uY2UgcmVxdWVzdGVkIHRoZSBhYnN0cmFjdGlvbiBwcm92aWRlcyBkaXJlY3QNCj4+ID4g
-YWNjZXNzIHRvIHRoZSBmaXJtd2FyZSBidWZmZXIgYXMNCj4+ID4gKy8vLyBgJlt1OF1gLiBBbHRl
-cm5hdGl2ZWx5LCB0aGUgZmlybXdhcmUgY2FuIGJlIGNvcGllZCB0byBhIG5ldw0KPj4gPiBidWZm
-ZXIgdXNpbmcgYEZpcm13YXJlOjpjb3B5YC4gVGhlDQo+PiA+ICsvLy8gZmlybXdhcmUgaXMgcmVs
-ZWFzZWQgb25jZSBbYEZpcm13YXJlYF0gaXMgZHJvcHBlZC4NCj4+ID4gKy8vLw0KPj4gPiArLy8v
-ICMgRXhhbXBsZXMNCj4+ID4gKy8vLw0KPj4gPiArLy8vIGBgYA0KPj4gPiArLy8vIGxldCBmdyA9
-IEZpcm13YXJlOjpyZXF1ZXN0KCJwYXRoL3RvL2Zpcm13YXJlLmJpbiIsDQo+PiA+IGRldi5hc19y
-ZWYoKSk/Ow0KPj4gPiArLy8vIGRyaXZlcl9sb2FkX2Zpcm13YXJlKGZ3LmRhdGEoKSk7DQo+PiA+
-ICsvLy8gYGBgDQo+PiA+ICtwdWIgc3RydWN0IEZpcm13YXJlKE9wYXF1ZTwqY29uc3QgYmluZGlu
-Z3M6OmZpcm13YXJlPik7DQo+PiANCj4+IFdyYXBwaW5nIGEgcmF3IHBvaW50ZXIgaXMgbm90IHRo
-ZSBpbnRlbmRlZCB1c2Ugb2YgUXBhcXVlIHR5cGU/DQo+PiANCj4gDQo+IFdoYXQgaXMgdGhlIGlu
-dGVuZGVkIHVzZT8NCj4gQXMgSSBzZWUgaXQsIGFsbCB1c2VzIHdyYXBwIHNvbWUgYmluZGluZzo6
-KiDigJMgYnV0IGEgcmF3cG9pbnRlciB0byBhDQo+IGJpbmRpbmcgc2hvdWxkbid0IGJlIHdyYXBw
-ZWQgYnkgaXQ/DQoNCklmIEkgdW5kZXJzdGFuZCBjb3JyZWN0bHksIGl0J3MgZm9yIGVtYmVkZGlu
-ZyBDJ3Mgc3RydWN0IGluIFJ1c3Qncw0Kc3RydWN0IChhcyBhbGwgdGhlIHVzYWdlIGluIHRoZSB0
-cmVlIGRvKS4gSXQgZ2l2ZXMgdGhlIHRyaWNrcyBmb3INCmluaXRpYWxpemF0aW9uIGFuZCBhIHBv
-aW50ZXIgdG8gdGhlIGVtYmVkZGVkIG9iamVjdC4NCg0KVGhlIEMncyBmaXJtd2FyZSBBUEkgZ2l2
-ZXMgYSBwb2ludGVyIHRvIGFuIGluaXRpYWxpemVkIG9iamVjdCBzbyBubw0KcmVhc29uIHRvIHVz
-ZSBPcGFxdWUuDQoNCldpdGggc3VjaCBDIEFQSSwgUnVzdCdzIHN0cnVjdCBzaW1wbHkgdXNlcyBy
-YXcgcG9pbnRlcnMgaW4gb2xkIHJ1c3QNCmJyYW5jaC4gRm9yIGV4YW1wbGUsDQoNCmh0dHBzOi8v
-Z2l0aHViLmNvbS9SdXN0LWZvci1MaW51eC9saW51eC9ibG9iL3J1c3QvcnVzdC9rZXJuZWwvY2hy
-ZGV2LnJzI0wyOA0KDQpzdHJ1Y3QgQ2RldigqbXV0IGJpbmRpbmdzOjpjZGV2KTsNCg0KDQpBbm90
-aGVyIGNob2ljZSB0aGF0IEkga25vdyBpcyBOb25OdWxsOg0KDQpodHRwczovL2xvcmUua2VybmVs
-Lm9yZy9sa21sLzIwMjQwNDE1LWFsaWNlLW1tLXY1LTQtNmY1NWU0ZDhlZjUxQGdvb2dsZS5jb20v
-DQoNCnB1YiBzdHJ1Y3QgUGFnZSB7DQogICAgcGFnZTogTm9uTnVsbDxiaW5kaW5nczo6cGFnZT4s
-DQp9DQo=
+On Thu, May 23, 2024 at 08:15:13AM +0900, FUJITA Tomonori wrote:
+> Hi,
+> 
+> On Wed, 22 May 2024 09:37:30 +0200
+> Philipp Stanner <pstanner@redhat.com> wrote:
+> 
+> >> > +/// Abstraction around a C firmware struct.
+> >> > +///
+> >> > +/// This is a simple abstraction around the C firmware API. Just
+> >> > like with the C API, firmware can
+> >> > +/// be requested. Once requested the abstraction provides direct
+> >> > access to the firmware buffer as
+> >> > +/// `&[u8]`. Alternatively, the firmware can be copied to a new
+> >> > buffer using `Firmware::copy`. The
+> >> > +/// firmware is released once [`Firmware`] is dropped.
+> >> > +///
+> >> > +/// # Examples
+> >> > +///
+> >> > +/// ```
+> >> > +/// let fw = Firmware::request("path/to/firmware.bin",
+> >> > dev.as_ref())?;
+> >> > +/// driver_load_firmware(fw.data());
+> >> > +/// ```
+> >> > +pub struct Firmware(Opaque<*const bindings::firmware>);
+> >> 
+> >> Wrapping a raw pointer is not the intended use of Qpaque type?
+> >> 
+> > 
+> > What is the intended use?
+> > As I see it, all uses wrapp some binding::* – but a rawpointer to a
+> > binding shouldn't be wrapped by it?
+> 
+
+Thank you Tomo for calling this out!
+
+And yes, using `Opaque` on a pointer is weird. A `Opaque<T>` is
+`UnsafeCell<MayUninit<T>>`, `UnsafeCell` means the inner `T` may be
+accessed by C code at anytime, and `MayUninit` means that the inner `T`
+may not be properly initialized by the C code. So as the doc says:
+
+	This is meant to be used with FFI objects that are never
+	interpreted by Rust code.
+
+that is, Rust code should never create a `&T` or `&mut T`, it should
+only be accessed with `Opaque::get()` or its friends (i.e. accessing it
+via a raw pointer), much like a black box to Rust code in some sense.
+
+Hence putting `Opaque` on a raw pointer is not what you want to do.
+
+> If I understand correctly, it's for embedding C's struct in Rust's
+> struct (as all the usage in the tree do). It gives the tricks for
+> initialization and a pointer to the embedded object.
+> 
+> The C's firmware API gives a pointer to an initialized object so no
+> reason to use Opaque.
+> 
+> With such C API, Rust's struct simply uses raw pointers in old rust
+> branch. For example,
+> 
+> https://github.com/Rust-for-Linux/linux/blob/rust/rust/kernel/chrdev.rs#L28
+> 
+> struct Cdev(*mut bindings::cdev);
+> 
+> 
+> Another choice that I know is NonNull:
+> 
+> https://lore.kernel.org/lkml/20240415-alice-mm-v5-4-6f55e4d8ef51@google.com/
+> 
+> pub struct Page {
+>     page: NonNull<bindings::page>,
+> }
+
+Both are reasonable for temporary use, although, we could generify the
+"wrapping on pointer which owns the underlying object" in the future.
+
+Regards,
+Boqun
+
