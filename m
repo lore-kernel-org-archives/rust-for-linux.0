@@ -1,190 +1,167 @@
-Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from lahtoruutu.iki.fi (lahtoruutu.iki.fi [185.185.170.37])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0031F29AB
-	for <rust-for-linux@vger.kernel.org>; Thu, 23 May 2024 02:48:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.175
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716432539; cv=none; b=Ab6E/UTP8Sns4tc0tEU0gWZSmC4sdk/eCKWeHWtLlcD/hjmNvfeELr9gPBd7E0hVTFJ4P0S4ZuVuinta3pOrsMe0VOMKMye+DQKwhgfHvmvl0P79B1lnSat9jD3WkOybXCfxMhj+hA3vZmpNJ2JHVbNJVpmZd7//j6BTpDfFnJo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716432539; c=relaxed/simple;
-	bh=jWHSOq9ij/x/sbM+kLhCxJeFsRFgcGrXYoOg8rRHvWs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JPDEaiyU3E/bSbquuhU+bNy6B3GbwkCvSzQ1ALGUKIxmoe3sXT8G52AHWhjV5FnUMZWW1UkBwfIhyBgA23fwAN/mmjGZPZc80/+1edt16qwg00rFTmBkA9VKwefV6TNUn8uMzhPeRcsVVvLF9UX2DqtqFtofpxGqdwEGq0IhHoA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=T/8JrjPv; arc=none smtp.client-ip=209.85.128.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C69F53BB30
+	for <rust-for-linux@vger.kernel.org>; Thu, 23 May 2024 07:00:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=185.185.170.37
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1716447627; cv=pass; b=GP8VZGodcRm6n0vUm0iHtd0i2it0y/r5Q64f38AxyM2y2uPy7xQb6PqcE/YE+LM3yUspTcJBrQnQUOGN3M8qLMyw17suBYsxO/AApJqUEtH/xHx4SjhXijktjTVexQtRB2miFwup8A9TPdtRhOIoziHpKFJ9Nc8zEPfSBslNO5Y=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1716447627; c=relaxed/simple;
+	bh=3oSY+DPQiU2H7YEH+aAcK1EQbOB9q1ZbOHy0VgiL07o=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=VMkIQhKvLvJ0jnta7FWMH1pazuyq1tAOEXiEpR+0F04pu4iS+mU2ToH/PXSFKhkTJ6hwJEbsBZ8GDbH0DACpGiv1izlZhx4sJf84HD/CmIFOzOBxtL/oScmZGibOAtrz12RtDyjb1StkgpuEFURPs2mykeADE+cKcC3Q8nyzTfc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi; spf=pass smtp.mailfrom=iki.fi; dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b=T9UYcmaD; arc=pass smtp.client-ip=185.185.170.37
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iki.fi
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="T/8JrjPv"
-Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-627dfbcf42aso15845197b3.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 22 May 2024 19:48:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1716432537; x=1717037337; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=TJvI5ka+7JgZUuM9P+5dJkLsAfZT/399LMPF7VVV6Qw=;
-        b=T/8JrjPv3ivsL8TOYrtg5HwNTfruH5YnTm0iK6DSt8gFnt+F7UUQeSE1hfLmd+emkT
-         948V6iybczTYfL3bi/Xceadn46qOhMg/uHK/uQpVOb0Zgl6g0U6qHFFzsJuHGigQiv8w
-         wzqG9q1437qdc+Di9DSZIiq5Gjiw+vmmfkts9V0W9ZcnQJRot5N7GqHWrcbifwM+z9jZ
-         KwDVfS6lK1lbYQNoz5L9BOt6EkH0yaT9bmLWRgzYD9CTTlIl6XOgGX7+tc6KINgkPcWn
-         GRpiLtPoqAfrXeeqH9x+Vjm6y49LQt1UJFYRp9nUAX+VRA+Niv3pWNyKvOod1CEdpteB
-         8XRg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716432537; x=1717037337;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=TJvI5ka+7JgZUuM9P+5dJkLsAfZT/399LMPF7VVV6Qw=;
-        b=jhi5aclaZDsjl+kpqbrryyli2xJiuaK9qSwnhcMP4YjGMFVdyJOBgeiW7YVvrf5+T6
-         NKgwt2/rte6AfdvbjA0mmpMakSNuKQlXkWoOA7jitmqvMpCep5b2TNSQdn6t/0T+0oIH
-         Urq0PsHNBXuRzVAITEqS/NxGw4aRAEjPxGswh7ajSu60d6J/BL/QhIe5NX75P9i9fxHc
-         wwqto5mb3YBTNs60NPFLQ6IUb6yKuqXRyfVZAkMqCm9j5WpuCQT9LtXJGmqSzZQozBQH
-         b/f9rpZVRAh3I8MeAz320hY9RxpiBc1C08NET9qwZgUvOm6T/UTOxrA1qWZwblPRZHG+
-         +atA==
-X-Forwarded-Encrypted: i=1; AJvYcCUCZjdia6NFf5y4DqOy+8QJFVEf/HoYaqBUhMbJC0EYttd40+n7pL0KxQPAvu9Gh/hSdxPVPoGRV3oe4C2K/DJUlQqM5bwLvjTwx+JeQyo=
-X-Gm-Message-State: AOJu0YwG0ATlKnJZPbqydOQyUCfHEub87RCGo2zhks0t8KpeOHIdbekZ
-	xtUlKtxEKsjlTNYTzKSW+OcGBShV+a8krGXIdg3fmag/ARH29ln5
-X-Google-Smtp-Source: AGHT+IH0dxdXbgmC4rYlR/hwUOO+Wp8dfkUpjfFuvGBklHjUOcOUKupWE7JhBWZ/Fbp+d7zv5g0sWA==
-X-Received: by 2002:a05:690c:660c:b0:627:88fc:61e4 with SMTP id 00721157ae682-627e46c77a6mr47090767b3.1.1716432536685;
-        Wed, 22 May 2024 19:48:56 -0700 (PDT)
-Received: from fauth2-smtp.messagingengine.com (fauth2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6ab9335edf3sm486806d6.54.2024.05.22.19.48.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 22 May 2024 19:48:56 -0700 (PDT)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailfauth.nyi.internal (Postfix) with ESMTP id 5D3BB1200043;
-	Wed, 22 May 2024 22:48:55 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute5.internal (MEProxy); Wed, 22 May 2024 22:48:55 -0400
-X-ME-Sender: <xms:l65OZr9JgWgOPevW5yJppccZOOcaKoF1y1Q-zOeEZOswlQ-KqF7COw>
-    <xme:l65OZnscWI1OsvTggyuLZVJO_Bncv7ufzMNE5V3hj-DMKkUJf0KNMJLGKWdnpDbTf
-    f1Llj0I-VdnK9fASA>
-X-ME-Received: <xmr:l65OZpD63joYbDlA02gOpBHu68Z8AqYCVeGfdTJcU5aXuCrkC93E0IM-2w>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrvdeihedgiedvucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggugfgjsehtkeertddttdejnecuhfhrohhmpeeuohhq
-    uhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrf
-    grthhtvghrnhepveffgedtgfetvdfgudfhgfehgffgveevvdelkefhjeeiudffkefhhfdv
-    heeljeefnecuffhomhgrihhnpehgihhthhhusgdrtghomhdptghhrhguvghvrdhrshdpkh
-    gvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghi
-    lhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqie
-    elvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdr
-    tghomhesfhhigihmvgdrnhgrmhgv
-X-ME-Proxy: <xmx:l65OZnd7sYcwsq4EahySDVP_rcHk5LbPyZCq3gVR9UPROv5R8kxsEA>
-    <xmx:l65OZgNAdnvMAm4YjgLWf2ArjzaV4-wkunlqPk7laIC3sP2UbPJumw>
-    <xmx:l65OZpmPhuz8l8B2xc5bBebr2iev-w4i7F-whjk-ZadLf6TOxiFOjQ>
-    <xmx:l65OZqsr-BuwfODBOdojAbsWIzKP4m-LGWgduDHqXUdk4bT6XG6DYA>
-    <xmx:l65OZqsGO3Q7ks2k17BChTc3GSPOdJHTB9Od0O7mkbGZCU-g6zbTQKVf>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 22 May 2024 22:48:54 -0400 (EDT)
-Date: Wed, 22 May 2024 19:48:53 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: pstanner@redhat.com, dakr@redhat.com, maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com,
-	daniel@ffwll.ch, ojeda@kernel.org, alex.gaynor@gmail.com,
-	wedsonaf@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me, a.hindborg@samsung.com,
-	aliceryhl@google.com, lina@asahilina.net, ajanulgu@redhat.com,
-	lyude@redhat.com, gregkh@linuxfoundation.org,
-	rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	nouveau@lists.freedesktop.org
-Subject: Re: [RFC PATCH 7/8] rust: add firmware abstractions
-Message-ID: <Zk6ulWF72cbp14O3@Boquns-Mac-mini.home>
-References: <20240520172422.181763-4-dakr@redhat.com>
- <20240522.085334.1009573112046880609.fujita.tomonori@gmail.com>
- <35fef820ed6e67f2203e78735fc9e15248436221.camel@redhat.com>
- <20240523.081513.81513679981916366.fujita.tomonori@gmail.com>
+	dkim=pass (2048-bit key) header.d=iki.fi header.i=@iki.fi header.b="T9UYcmaD"
+Received: from localhost (91-154-92-47.elisa-laajakaista.fi [91.154.92.47])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: sakkinen)
+	by lahtoruutu.iki.fi (Postfix) with ESMTPSA id 4VlJvy1mGNz49Psb;
+	Thu, 23 May 2024 10:00:14 +0300 (EEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=lahtoruutu;
+	t=1716447614;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=oOzy23cUkJcQVqXdrE3pXQdTVddahnam+9dh4Udc6jM=;
+	b=T9UYcmaDNphzJQc8UBu87/OruiUNI7ffgMB7VvBOdiEpUuCCTdN4OGNVhsCIbV73vQ4fvd
+	AsjplaaCzR4kJlhXLg/qugvYXLiHnQCDgMBXI1hsCT8H49jUODGRTBdUAPJSm7nfBpr4Ge
+	YrOLFQgUhfaYkc2dGm/mFgED9ZUoLYcVkA3OEo27cwz4S4GZdf9X5Q6WbHvc84RiqsC5j0
+	zZFpDvF3/G1EP0bsZ6cL2NZzk2Avp1ydMsjaJOIY+sJdQzW2cGQsLJpL+J5uHYkdhUHatc
+	vpGT5a8mHYatvmpNreovTM98KCRd7vc5MFMFL1TRQLoE4LUp4XLQOd6EAbzLsg==
+ARC-Seal: i=1; s=lahtoruutu; d=iki.fi; t=1716447614; a=rsa-sha256;
+	cv=none;
+	b=jRyhOWUCWcjGFnUixUODAqn3013TL97+FJgt7iEkeQcWQq8m9PsSVp2bDlZULX3t3jxpyN
+	M6NhmU53YcxyX4lFb434LUrMfuTtai8nCi/qdlNbuFWBb695JnjL2VTNODaKEgYk6LCQeD
+	JYAEeZDVoSJNQaWF1do+73f5sAT1VKPRhULPxg/XkONzuvc1QNyrAuPLoWH4Xppf3svCNw
+	WjfALI8l4RHitFr7DZo33sswuxMjCMPvOj26Avruy3OcOpWmJZVeCORzN4CjY2pH3DhFST
+	gjwMjS7E/zFsnj7bl6hlerORFAdY0LNBdefiguXW35KJOZyrL4St6rP++X40zg==
+ARC-Authentication-Results: i=1;
+	ORIGINATING;
+	auth=pass smtp.auth=sakkinen smtp.mailfrom=jarkko.sakkinen@iki.fi
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
+	s=lahtoruutu; t=1716447614;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=oOzy23cUkJcQVqXdrE3pXQdTVddahnam+9dh4Udc6jM=;
+	b=Ke4BGmKKbL6wgEnF5gyjKpXxQPf2uyPT3jELMlZOE9DRbvmErQYFQ8YmZgAL5UeBTZRBg3
+	rNAu7wx1q2lvueMfcChj4HkRZrySGff6rt/5tsPH6wJ2ccaCgW0eAHXbwKKJp+ohLjeKH6
+	iKDk+KJibbWXuZRVt4wS3aXKhDMb+1uOUCN2HpEGEinPPaBun9o5tXfTUubCglA1IpRexV
+	o78FYoD94VCXPZpPDJVYY8ZDOQ+HnQTRykiI9MPe0aMJW9OfS9nopzLBHO00MT5fWrYKW0
+	pjYQciX6m2Je8nERzKr7RIDcCByuyI8OrlpZFzBWpG4aVWvJ3iFtzzv5HwE/WA==
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240523.081513.81513679981916366.fujita.tomonori@gmail.com>
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Thu, 23 May 2024 10:00:13 +0300
+Message-Id: <D1GTWC4OLYQ8.WIH9UMLI2LC2@iki.fi>
+Cc: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>,
+ <rust-for-linux@vger.kernel.org>, "Daniel Almeida"
+ <daniel.almeida@collabora.com>
+Subject: Re: ASN.1
+From: "Jarkko Sakkinen" <jarkko.sakkinen@iki.fi>
+To: "Jarkko Sakkinen" <jarkko@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>
+X-Mailer: aerc 0.17.0
+References: <D1F44P3VLTBN.30LUQ60X5J3DN@kernel.org>
+ <CANiq72=Kv217NDGf5sXgx+EYez=cs+hO50+YNnZf9oL2zxni9Q@mail.gmail.com>
+ <D1FFABJRCD85.1EA4JBU93JT5Y@kernel.org>
+ <D1FIPA4YAU84.M7Z9VMR4P739@kernel.org>
+ <D1FJUW4RPWYR.38P76LESQMV4L@kernel.org>
+ <CAFRnB2Vxez-i7Trxe-5ErAWGszVRt6MSvN7Ed-XOcSLVp8piRQ@mail.gmail.com>
+ <D1G6UP4N7LP4.OUPA5JVLE1WO@kernel.org>
+ <D1G7YTUR11EW.WIG4RQVBNCXU@kernel.org>
+In-Reply-To: <D1G7YTUR11EW.WIG4RQVBNCXU@kernel.org>
 
-On Thu, May 23, 2024 at 08:15:13AM +0900, FUJITA Tomonori wrote:
-> Hi,
-> 
-> On Wed, 22 May 2024 09:37:30 +0200
-> Philipp Stanner <pstanner@redhat.com> wrote:
-> 
-> >> > +/// Abstraction around a C firmware struct.
-> >> > +///
-> >> > +/// This is a simple abstraction around the C firmware API. Just
-> >> > like with the C API, firmware can
-> >> > +/// be requested. Once requested the abstraction provides direct
-> >> > access to the firmware buffer as
-> >> > +/// `&[u8]`. Alternatively, the firmware can be copied to a new
-> >> > buffer using `Firmware::copy`. The
-> >> > +/// firmware is released once [`Firmware`] is dropped.
-> >> > +///
-> >> > +/// # Examples
-> >> > +///
-> >> > +/// ```
-> >> > +/// let fw = Firmware::request("path/to/firmware.bin",
-> >> > dev.as_ref())?;
-> >> > +/// driver_load_firmware(fw.data());
-> >> > +/// ```
-> >> > +pub struct Firmware(Opaque<*const bindings::firmware>);
-> >> 
-> >> Wrapping a raw pointer is not the intended use of Qpaque type?
-> >> 
-> > 
-> > What is the intended use?
-> > As I see it, all uses wrapp some binding::* – but a rawpointer to a
-> > binding shouldn't be wrapped by it?
-> 
+On Wed May 22, 2024 at 4:49 PM EEST, Jarkko Sakkinen wrote:
+> If we want to considering getting your code to land to the kernel I
+> would start with the decoder as it already delivers, as an
+> *experimental* feature. Then when it is landed it would not be
+> as huge stretch to move forward with the encoder.
 
-Thank you Tomo for calling this out!
+About the encoder. It is relatively new and has only caller, and I'm not
+sure if we care about it that much.
 
-And yes, using `Opaque` on a pointer is weird. A `Opaque<T>` is
-`UnsafeCell<MayUninit<T>>`, `UnsafeCell` means the inner `T` may be
-accessed by C code at anytime, and `MayUninit` means that the inner `T`
-may not be properly initialized by the C code. So as the doc says:
+In my case I just did:
 
-	This is meant to be used with FFI objects that are never
-	interpreted by Rust code.
+static int tpm2_key_rsa_encode(const struct tpm2_key_rsa *key, u8 *buf)
+{
+	int pub_len =3D key->pub_len;
+	const u8 *pub =3D key->pub;
+	u8 *start =3D &buf[4];
+	u8 *work =3D &buf[4];
+	u32 seq_len;
 
-that is, Rust code should never create a `&T` or `&mut T`, it should
-only be accessed with `Opaque::get()` or its friends (i.e. accessing it
-via a raw pointer), much like a black box to Rust code in some sense.
+	work[0] =3D 0x02;			/* INTEGER */
+	work[1] =3D 0x82;			/* u16 */
+	work[2] =3D pub_len >> 8;
+	work[3] =3D pub_len & 0xff;
+	work =3D &work[4];
+	memcpy(work, pub, pub_len);
+	work =3D &work[pub_len];
+	work[0] =3D 0x02;			/* INTEGER */
+	work[1] =3D 3;			/* < 128 */
+	work[2] =3D 1;			/* 65537 */
+	work[3] =3D 0;
+	work[4]	=3D 1;
+	work =3D &work[5];
+	memset(work, 0, 8);
+	seq_len =3D work - start;
+	buf[0] =3D 0x30;			/* SEQUENCE */
+	buf[1] =3D 0x82;			/* u16 */
+	buf[2] =3D seq_len >> 8;
+	buf[3] =3D seq_len & 0xff;
 
-Hence putting `Opaque` on a raw pointer is not what you want to do.
+	return seq_len + 4;
+}
 
-> If I understand correctly, it's for embedding C's struct in Rust's
-> struct (as all the usage in the tree do). It gives the tricks for
-> initialization and a pointer to the embedded object.
-> 
-> The C's firmware API gives a pointer to an initialized object so no
-> reason to use Opaque.
-> 
-> With such C API, Rust's struct simply uses raw pointers in old rust
-> branch. For example,
-> 
-> https://github.com/Rust-for-Linux/linux/blob/rust/rust/kernel/chrdev.rs#L28
-> 
-> struct Cdev(*mut bindings::cdev);
-> 
-> 
-> Another choice that I know is NonNull:
-> 
-> https://lore.kernel.org/lkml/20240415-alice-mm-v5-4-6f55e4d8ef51@google.com/
-> 
-> pub struct Page {
->     page: NonNull<bindings::page>,
-> }
+Not the prettiest looking but it does the job and is actually easy
+to verify :-) Decoder is on the other hand old and mature and makes
+more sense both in implementation and architecture.
 
-Both are reasonable for temporary use, although, we could generify the
-"wrapping on pointer which owns the underlying object" in the future.
+Looking back it was my mistake to let that encoder into the mainline,
+I did not use it because it did not make sense to me, or at least
+less sense than above, which practically never changes and is easy
+to also later verify and fix, despite being somewhat archaic.
 
-Regards,
-Boqun
+Given this if we want to work on ASN1_RUST experimental feature, I
+can create a patch that open codes the call site in trusted_tpm2.c
+and thus ASN1_ENCODER can be droper entirely. It is not a priority
+but could be part of the patch set, or Git branch, which adds
+ASN1_RUST.
 
+So what I might do to move forward is early next month to start
+with such patch and create asn1rust branch to my tree at:
+
+https://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git
+
+And then start looking at the crate and perhaps post here a more
+refined suggestion how to move forward.
+
+Early next month because I have a conference demo to do (actually
+in Rust but not kernel related) by the end of the month.
+
+The reason I'm concerned about the topic is that keyring has literally
+billions of users dependent on it (mostly without knowing but it is used
+practically in any Linux installation) and I know that Rust side needs
+ASN.1 eventually, so I want to make sure that the integration path works
+for us.
+
+So let's now pretend that encoder did not exist and focus only on
+decoder :-)
+
+Sounds like a plan?=20
+
+BR, Jarkko
