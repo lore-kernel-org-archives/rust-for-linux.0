@@ -1,98 +1,112 @@
-Received: from meesny.iki.fi (meesny.iki.fi [195.140.195.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1075811723
-	for <rust-for-linux@vger.kernel.org>; Thu, 23 May 2024 15:44:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=195.140.195.201
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716479047; cv=pass; b=sM2LIFz2AFmT9YQnh84P3HjoxJbsO9DVnHzdLfiVsCtr5PPstWhExWdywMw2PtGtByHryZmzVRDnUqHKGtnaDE1SOMXTDF8fvBXozEo9ckIRD/pc9fh0bFDKWmF3+rk07Hwqh4dqy4B47WOnWTSMTmRmSchAxaiLDjSE7nhIswo=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716479047; c=relaxed/simple;
-	bh=3ftcu0qYvTDnxxr9Q7rPjYf+wVzMP5MvKDtIp7jiLw8=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=RcBDQuRn9XQh98SnPXa9b+hnFRtCq094LQk6ZA4fvZWoLSOdfuH8B/BCRyVdX4nBqY+v+PXXGMKwsW8JDgLfJVsPFBy77TnR+knTTPAcuAtuJdFThoAdhCtWCngYsJmEc/cWWmZ0DG/l0h9x72RqY8piHoSEfnj2rU1Zi10pMQk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi; spf=pass smtp.mailfrom=iki.fi; dkim=pass (1024-bit key) header.d=iki.fi header.i=@iki.fi header.b=e3OQrqND; arc=pass smtp.client-ip=195.140.195.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iki.fi
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iki.fi
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF88479C8;
+	Fri, 24 May 2024 01:51:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1716515466; cv=none; b=L4WBpQ3EPytkS6UbP91N9IV8e3fS+a4QsS4EUtq7GMsBA5REGLIEyZZyMZqIaaagglglaJu1JoZBuYy8aNjX8xuKCy7aOBcwvSWV77noz9JV/mJFIwREcZXrcR5TqNKhXM6pbByGKCv7kZs1MhF9g/wLz9mQNOVrYgKFcXBxmNk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1716515466; c=relaxed/simple;
+	bh=1Dx6B0x3HwSyPtDZPkm3qQoaDQgUwygq0DF1q7lwqAo=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=BOns2aWPJ5TK+gFOnqi4VRlZg73dyhinpBrpBlRC/0tnXmeEc9tLCcQrH1waE6NQ1iylqFR7mdrBoV2U266t6RuvELworEfUBxW97S++LyCo9PTJGJEEESa6scziS14lVQb09BMp9uodFWTa3FNvDhUAkkNqP4wI3OvdKnTF95s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MwNKJC8g; arc=none smtp.client-ip=209.85.210.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=iki.fi header.i=@iki.fi header.b="e3OQrqND"
-Received: from localhost (91-154-92-47.elisa-laajakaista.fi [91.154.92.47])
-	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: sakkinen)
-	by meesny.iki.fi (Postfix) with ESMTPSA id 4VlXXJ67J0zyT0;
-	Thu, 23 May 2024 18:44:00 +0300 (EEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi; s=meesny;
-	t=1716479041;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3ftcu0qYvTDnxxr9Q7rPjYf+wVzMP5MvKDtIp7jiLw8=;
-	b=e3OQrqNDXdmar884K42QTYUPQ+hPlvnL46XaxOJIVWlEzpxO2aeyzfxJCKkvCHE0GEWNAo
-	5QPfNctsmAJX+LgAWBwO9KYGNlu4io33FUNNnk2DurUQceV/sXnJYDAMKrhiDBMdG9RLDl
-	I+lzzMW5hVBBSUfgHKEL36KUkQfPR0Y=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=iki.fi;
-	s=meesny; t=1716479041;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3ftcu0qYvTDnxxr9Q7rPjYf+wVzMP5MvKDtIp7jiLw8=;
-	b=ZvvXuo3HBVvWdjHE+BiXGaHrNN1akNuyV81IHL9MzqHbJDLeoYsoDp3BviSnJInMt7I7XV
-	bo32MbFqVwoDU7NLi0mHh+i8X5szBTwXO6BjpPEX4Q3490kz0HouOUG4RTx8mY9Txf4bHK
-	3VdhzUk/ul7+N50D4WlyYpl4t4G++MI=
-ARC-Authentication-Results: i=1;
-	ORIGINATING;
-	auth=pass smtp.auth=sakkinen smtp.mailfrom=jarkko.sakkinen@iki.fi
-ARC-Seal: i=1; s=meesny; d=iki.fi; t=1716479041; a=rsa-sha256; cv=none;
-	b=KR0VJbDSCr/3bhv+FMmjtiH/lN5YFfQfpTPPUtkI/3LacXPZdsmDwWMtncTZAS+Q1oFVBc
-	fRtG9xNFPnDez6UQTvVkFfH58wL9TLtu3y4C5bqP3CRZf0og30nqmkxAFAbP/dOSnenAD1
-	LaC5MdHK4/NfOwVdbOrVQTj+nUIM57Q=
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MwNKJC8g"
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-6f8e987617dso14989b3a.1;
+        Thu, 23 May 2024 18:51:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1716515464; x=1717120264; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=1G9CXv9nfwqE5OkPVRybOEjUygy+4YTjIzuZ+oweX1c=;
+        b=MwNKJC8glEayN6rFRMjg4PyIwMnDQ/6PPhF/7wJN9UsPPk/40b1u9T1ZfNEJXfh7Mm
+         LAyuYHCyTg91iGFBVUhBPlbBmiXOPXXi4Bc8I2uwkOLVWjwWWRbs05UQopTghxhK/toU
+         OXZPpUkdLnXFTzVifeFKq59P46YNk2TAk4pZwmQHAajSBBObYpBaNbGCuIfq7XV2yo+G
+         HEczxJlB4FBS6uh4jJMYp1/CS1dglNOMHXkGs3pQZ2mbzoQWO8Zjbsw3LYtbAPKDQMmB
+         tEGpeDp8L22x9E6PZKrdCS/SnJKHPAIDKUkkxTKyxLXE4F+t1kYGHZw7FwQ3jkj67M7i
+         sdaQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716515464; x=1717120264;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=1G9CXv9nfwqE5OkPVRybOEjUygy+4YTjIzuZ+oweX1c=;
+        b=v4bkn6SJEY6OFt8sWED48rMV4u40vNhuwIyzoibIDoZYW4HfRSkTcO5NiideXbcjvo
+         kbl6tiazgpyLc4PfKf31Ak1n2OENae75sgIucz0+BpL4FOkqyO1rtxY2o6wFWVOlwmKy
+         z5IdAVVlDBtq6ptvvBBJWKrU9zQ0H9xjEIss7VL9xO/3vcNvFqj2GuWbPy7hNlULP+mN
+         nrjc5KGYJIcVCxLBu5KmoFsG2rA41XG5Ge/smHewIsHCfoM6EAdOwDnJw9lQfcT4i1Ml
+         arVSY5a6fq8y99vTPu+k964++mTQLHpOqZbPzkc/sNOZSC4O4os3qgJ/yAR37Ma17Ohc
+         JCnw==
+X-Forwarded-Encrypted: i=1; AJvYcCXmn4P7Jmpb7sr+Cnb5nwHuSN3+xiuj2ttOEBdVWGhvQGfHCdvrL8TNd2giSFiPbU6mv1XNgUGcb/q4XOCVF6XQVjkcpQNIVg4CW8unr2Qtc7+/nHZbbtjFY+tvEZguA/MctJ1xNSM=
+X-Gm-Message-State: AOJu0YzNL9aaCBTKmu3SNM52YdpCN5GDWGdq03w6xPb+dKZ+DrqFLEca
+	fYVJK3GMqrWmZDogg8UNMl9qzT9ejDx/2BdSXiDmCPF+2wORDR14ezHHzA==
+X-Google-Smtp-Source: AGHT+IFHU9epZnKkThJzLGUH0v6UIM9p4iRNjXHsQnLlzQc9UI9paQ1gVWCet7y+YGvUfhe3cAa9SQ==
+X-Received: by 2002:a05:6a00:4b16:b0:6ea:ba47:a63b with SMTP id d2e1a72fcca58-6f8f1a66115mr999375b3a.0.1716515463792;
+        Thu, 23 May 2024 18:51:03 -0700 (PDT)
+Received: from localhost (p5261226-ipxg23801hodogaya.kanagawa.ocn.ne.jp. [180.15.241.226])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-6f8fd4dcde6sm234131b3a.211.2024.05.23.18.51.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 23 May 2024 18:51:03 -0700 (PDT)
+Date: Fri, 24 May 2024 10:50:50 +0900 (JST)
+Message-Id: <20240524.105050.1475782462057764400.fujita.tomonori@gmail.com>
+To: andrew@lunn.ch
+Cc: tmgross@umich.edu, fujita.tomonori@gmail.com, netdev@vger.kernel.org,
+ rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH net-next v1 4/4] net: phy: add Applied Micro QT2025 PHY
+ driver
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <0aa87df5-a2b8-45b8-a483-37eee86739bc@lunn.ch>
+References: <20240415104701.4772-5-fujita.tomonori@gmail.com>
+	<CALNs47v+35RX4+ibHrcZgrJEJ52RqWRQUBa=_Aky_6gk1ika4w@mail.gmail.com>
+	<0aa87df5-a2b8-45b8-a483-37eee86739bc@lunn.ch>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 23 May 2024 18:44:00 +0300
-Message-Id: <D1H51DDEJPIG.3232U7ZBKUU70@iki.fi>
-Cc: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>,
- <rust-for-linux@vger.kernel.org>, "Daniel Almeida"
- <daniel.almeida@collabora.com>
-Subject: Re: ASN.1
-From: "Jarkko Sakkinen" <jarkko.sakkinen@iki.fi>
-To: "Jarkko Sakkinen" <jarkko.sakkinen@iki.fi>, "Jarkko Sakkinen"
- <jarkko@kernel.org>, "Alex Gaynor" <alex.gaynor@gmail.com>
-X-Mailer: aerc 0.17.0
-References: <D1F44P3VLTBN.30LUQ60X5J3DN@kernel.org>
- <CANiq72=Kv217NDGf5sXgx+EYez=cs+hO50+YNnZf9oL2zxni9Q@mail.gmail.com>
- <D1FFABJRCD85.1EA4JBU93JT5Y@kernel.org>
- <D1FIPA4YAU84.M7Z9VMR4P739@kernel.org>
- <D1FJUW4RPWYR.38P76LESQMV4L@kernel.org>
- <CAFRnB2Vxez-i7Trxe-5ErAWGszVRt6MSvN7Ed-XOcSLVp8piRQ@mail.gmail.com>
- <D1G6UP4N7LP4.OUPA5JVLE1WO@kernel.org>
- <D1G7YTUR11EW.WIG4RQVBNCXU@kernel.org> <D1GTWC4OLYQ8.WIH9UMLI2LC2@iki.fi>
-In-Reply-To: <D1GTWC4OLYQ8.WIH9UMLI2LC2@iki.fi>
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-On Thu May 23, 2024 at 10:00 AM EEST, Jarkko Sakkinen wrote:
-> On Wed May 22, 2024 at 4:49 PM EEST, Jarkko Sakkinen wrote:
-> Given this if we want to work on ASN1_RUST experimental feature, I
-> can create a patch that open codes the call site in trusted_tpm2.c
-> and thus ASN1_ENCODER can be droper entirely. It is not a priority
-> but could be part of the patch set, or Git branch, which adds
-> ASN1_RUST.
+Hi,
+Sorry for the long delay,
 
-Not necessarily entirely, that was an overkill statement, but
-mostly have only dynamic stuff in it and improve the C API to
-be good match of whatever done in encoding side on Rust. I.e.
-no regrets for picking it but it needs to mature, and I think
-this rust opt-in would also do good for C implementation.
+On Tue, 16 Apr 2024 14:08:32 +0200
+Andrew Lunn <andrew@lunn.ch> wrote:
 
-Just writing the notes so that I recall all this some weeks
-from now ;-)
+>> > +        let mut a = MDIO_MMD_PCS;
+>> > +        for (i, val) in fw.data().iter().enumerate() {
+>> > +            if i == 0x4000 {
+>> > +                a = MDIO_MMD_PHYXS;
+>> > +                j = 0x8000;
+>> > +            }
+>> 
+>> Looks like firmware is split between PCS and PHYXS at 0x4000, but like
+>> Greg said you should probably explain where this comes from.
+>> 
+>> > +            dev.c45_write(a, j, (*val).into())?;
+>> 
+>> I think this is writing one byte at a time, to answer Andrew's
+>> question. Can you write a `u16::from_le_bytes(...)` to alternating
+>> addresses instead? This would be pretty easy by doing
+>> `fw.data().chunks(2)`.
+> 
+> That probably does not work, given my understanding of what is going
+> on. A C45 register is a u16.
 
-BR, Jarkko
+Confirmed that it doesn't work.
+
+After some experiments, I found that the PHY on my environment works
+without the firmware loaded. So I'll remove the firmware code in v2.
+
+I assume that there are PHYs that need the firmware because the
+original driver loads the firmware. Thus I'll add the firmware support
+in the future after the abstractions for the firmware API are merged,
+which the Nova GPU team has been working on [1].
+
+[1] https://lore.kernel.org/all/20240521212333.GA731457-robh@kernel.org/T/
