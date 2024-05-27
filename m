@@ -1,43 +1,43 @@
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4A0F1755A;
-	Mon, 27 May 2024 09:58:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27AE013C3ED
+	for <rust-for-linux@vger.kernel.org>; Mon, 27 May 2024 10:06:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716803906; cv=none; b=XF5rh+QgkNGYF3e+JGwzXSEta5G8+Xc8QIkvt6piyaswgXjWrDANz8PrgbELzyw5yHn99e+ALiqAp4Ka4k6G4puO7N2fas10iQx8VIJlbHGtPy/Wm+ayt9+LGUDCaZQxq9KW7cbhgNwaJqYg+HN8wGXUInJAK+hbsmKNe79dIhA=
+	t=1716804397; cv=none; b=YHAf7iHv4Df6rXYnrDo5hCW/bGgq/IA0sJgCXvKs3wIFtXGyijZ9aROCoVPkCQdQBB7ixF6DhRyrYKHySlL4PSzuw0+tESFpC7xTmC1Fw/uPCXEiT265QBbLhEhUkmgQNK2Rh31rt7puOo2xO2VAhzx/O81B8CnG5azIzC3gKD4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716803906; c=relaxed/simple;
-	bh=Al2pkDUSRqc1rQ6eBN1ZtNx95wDfg2Iwmefz5m22r/4=;
+	s=arc-20240116; t=1716804397; c=relaxed/simple;
+	bh=WXMFmaCXyOHrCsBpiBVUwdLSoPEMW5xY3pxYv40bbh8=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sUDaibqRwKrZ8lJsNTZTiSx1nMdpsurSb0b1GmX8uAqL80KZ2cOSisXJsZL2xW/nPisCstZnNP9JP2ArUZe2UHfDnobGeN+yM1HEvk25IZDqrZDkc/AHzhVl1kf+n9ux1FO8U7aHLtg/zKMz57z6bojsyPtLy1sfnSSd5DN1kuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=PX5K/wj+; arc=none smtp.client-ip=185.70.43.22
+	 MIME-Version:Content-Type; b=cv059piUaczUUSYBCX1n/G9ref+FwaTGyXYrcxrS8YI5ocJ0dy+o3696s1nUrRP9CHs5lseDy9zB/AASKqvUjfQBSTwgMkY3Q3Q6vN4Ncarix3Xal5ALsIP0d/HzTVAmFqjLwwxdks8bHT1LpxZscxYu+b6qL5InxvlnyLBJXKA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=dnj8zF5q; arc=none smtp.client-ip=185.70.40.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="PX5K/wj+"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="dnj8zF5q"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1716803901; x=1717063101;
-	bh=bXVeyLZ5rfr6W8gD3PoVwJ5eVkWxrmnOFZgyD6JZRV8=;
+	s=f2rrrjo2erahtl2gjjputfb44u.protonmail; t=1716804388; x=1717063588;
+	bh=hYiUOg3qu0xInrbrlGKtxB4IjvbTEiIJES/QFtLiWqk=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=PX5K/wj+GcOIbp4yJGaB7j718f9EmmmMKJpWcubxky2FtqFrbesZF7p6Eoa4/6KRr
-	 Bk+qGHtW51qB+F1KScGFdyxnI4IWBZMh8Uw4LqAnwupg/F9Kb79aYRKm/Hmw2k+Odz
-	 gEzPXaBzTy9FoTYbtSCbU0jOs2Xw8SI/wjAJHJezuP0piHCU4lcOuDPtssYPqRhrQb
-	 tEJI8UcRSzRGRtRzmYiBoLW59qvDSlSBvLLbgt8j5Uw0eNLQq3pZFBX66meSihqUmU
-	 8DYkUrwhNNxvvBfXICEpb0csss0vsOgEtOKYhYwslGP6gkDgMCQe+wVMqlBHEXcAvf
-	 urxAkDEx1bqwA==
-Date: Mon, 27 May 2024 09:58:16 +0000
+	b=dnj8zF5q4gFWHa1KZ5saphR+PTdIniYhjfsQBUA3WlVGPTZIl5wu3G8Ns0MtOMUFK
+	 bvqTtmwScdEJahEZBJ391IcHAeqZVEUitEWx0QJCNc5nyRQJ1J8fSS0kmIdaPQoq85
+	 1GtktxsUBq3FLDwMa4n5XqYYf0euwTsSQtxNp+T4p8Sxlis8eSUKZBjpGCQDE19dfh
+	 NMSckxYWnA1ZEKSCj0UifutS/b8cTRLOZGygZ4brFkLI9jH6fws2vyVJVllY6FDfmN
+	 MNqH6w7+xJwq4fPDmgPUfL4V83bWxYcb/yhDTqURAa/XUWbRu3e32CuewJiEx9+g+g
+	 0mbohOqAR+Nsw==
+Date: Mon, 27 May 2024 10:06:22 +0000
 To: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
 From: Benno Lossin <benno.lossin@proton.me>
 Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Marco Elver <elver@google.com>, Kees Cook <keescook@chromium.org>, Coly Li <colyli@suse.de>, Paolo Abeni <pabeni@redhat.com>, Pierre Gondois <pierre.gondois@arm.com>, Ingo Molnar <mingo@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Wei Yang <richard.weiyang@gmail.com>, Matthew Wilcox <willy@infradead.org>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v2 3/9] rust: list: add struct with prev/next pointers
-Message-ID: <82220d9b-3f4f-43ba-ad15-412ceb349a56@proton.me>
-In-Reply-To: <20240506-linked-list-v2-3-7b910840c91f@google.com>
-References: <20240506-linked-list-v2-0-7b910840c91f@google.com> <20240506-linked-list-v2-3-7b910840c91f@google.com>
+Subject: Re: [PATCH v2 4/9] rust: list: add macro for implementing ListItem
+Message-ID: <a3ea800c-4776-4890-8853-cd5704598a7f@proton.me>
+In-Reply-To: <20240506-linked-list-v2-4-7b910840c91f@google.com>
+References: <20240506-linked-list-v2-0-7b910840c91f@google.com> <20240506-linked-list-v2-4-7b910840c91f@google.com>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: bfecf62831420d9cb4d8e4f3085258a6eba4236f
+X-Pm-Message-ID: 001f9e86a32912698f89c7fb9185c64dbef96aed
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -48,206 +48,187 @@ Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
 On 06.05.24 11:53, Alice Ryhl wrote:
-> Define the ListLinks struct, which wraps the prev/next pointers that
-> will be used to insert values into a List in a future patch. Also
-> define the ListItem trait, which is implemented by structs that have a
-> ListLinks field.
+> Adds a macro for safely implementing the ListItem trait. As part of the
+> implementation of the macro, we also provide a HasListLinks trait
+> similar to the workqueue's HasWorkItem trait.
 >=20
-> The ListItem trait provides four different methods that are all
-> essentially container_of or the reverse of container_of. Two of them are
-> used before inserting/after removing an item from the list, and the two
-> others are used when looking at a value without changing whether it is
-> in a list. This distinction is introduced because it is needed for the
-> patch that adds support for heterogeneous lists, which are implemented
-> by adding a third pointer field with a fat pointer to the full struct.
-> When inserting into the heterogeneous list, the pointer-to-self is
-> updated to have the right vtable, and the container_of operation is
-> implemented by just returning that pointer instead of using the real
-> container_of operation.
+> The HasListLinks trait is only necessary if you are implementing
+> ListItem using the impl_list_item macro.
 >=20
 > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 > ---
->  rust/kernel/list.rs | 116 ++++++++++++++++++++++++++++++++++++++++++++++=
+>  rust/kernel/list.rs                    |  3 ++
+>  rust/kernel/list/impl_list_item_mod.rs | 99 ++++++++++++++++++++++++++++=
 ++++++
->  1 file changed, 116 insertions(+)
+>  2 files changed, 102 insertions(+)
 >=20
 > diff --git a/rust/kernel/list.rs b/rust/kernel/list.rs
-> index c5caa0f6105c..b5cfbb96a392 100644
+> index b5cfbb96a392..f2eca542e090 100644
 > --- a/rust/kernel/list.rs
 > +++ b/rust/kernel/list.rs
-> @@ -4,7 +4,123 @@
+> @@ -8,6 +8,9 @@
+>  use crate::types::Opaque;
+>  use core::ptr;
 >=20
->  //! A linked list implementation.
->=20
-> +use crate::init::PinInit;
-> +use crate::types::Opaque;
-> +use core::ptr;
+> +mod impl_list_item_mod;
+> +pub use self::impl_list_item_mod::{impl_has_list_links, impl_list_item, =
+HasListLinks};
 > +
 >  mod arc;
 >  pub use self::arc::{
 >      impl_list_arc_safe, AtomicListArcTracker, ListArc, ListArcSafe, TryN=
 ewListArc,
->  };
+> diff --git a/rust/kernel/list/impl_list_item_mod.rs b/rust/kernel/list/im=
+pl_list_item_mod.rs
+> new file mode 100644
+> index 000000000000..3ff483be89d1
+> --- /dev/null
+> +++ b/rust/kernel/list/impl_list_item_mod.rs
+> @@ -0,0 +1,99 @@
+> +// SPDX-License-Identifier: GPL-2.0
 > +
-> +/// Implemented by types where a [`ListArc<Self>`] can be inserted into =
-a `List`.
+> +// Copyright (C) 2024 Google LLC.
+> +
+> +//! Helpers for implementing list traits safely.
+> +
+> +use crate::list::ListLinks;
+> +
+> +/// Declares that this type has a `ListLinks<ID>` field at a fixed offse=
+t.
+> +///
+> +/// This trait is only used to help implement `ListItem` safely. If `Lis=
+tItem` is implemented
+> +/// manually, then this trait is not needed.
 > +///
 > +/// # Safety
 > +///
-> +/// Implementers must ensure that they provide the guarantees documented=
- on the three methods
-
-I would not mention the number of methods, since it is difficult to
-maintain and doesn't actually provide any value (it already is incorrect :)
-
-> +/// below.
-> +///
-> +/// [`ListArc<Self>`]: ListArc
-> +pub unsafe trait ListItem<const ID: u64 =3D 0>: ListArcSafe<ID> {
-> +    /// Views the [`ListLinks`] for this value.
-> +    ///
-> +    /// # Guarantees
-> +    ///
-> +    /// If there is a previous call to `prepare_to_insert` and there is =
-no call to `post_remove`
-> +    /// since the most recent such call, then this returns the same poin=
-ter as the one returned by
-> +    /// the most recent call to `prepare_to_insert`.
-> +    ///
-> +    /// Otherwise, the returned pointer points at a read-only [`ListLink=
-s`] with two null pointers.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// The provided pointer must point at a valid value. (It need not b=
-e in an `Arc`.)
-> +    unsafe fn view_links(me: *const Self) -> *mut ListLinks<ID>;
+> +/// All values of this type must have a `ListLinks<ID>` field at the giv=
+en offset.
+> +pub unsafe trait HasListLinks<const ID: u64 =3D 0> {
+> +    /// The offset of the `ListLinks` field.
+> +    const OFFSET: usize;
 > +
-> +    /// View the full value given its [`ListLinks`] field.
-> +    ///
-> +    /// Can only be used when the value is in a list.
-> +    ///
-> +    /// # Guarantees
-> +    ///
-> +    /// * Returns the same pointer as the one passed to the previous cal=
-l to `prepare_to_insert`.
-> +    /// * The returned pointer is valid until the next call to `post_rem=
-ove`.
+> +    /// Returns a pointer to the [`ListLinks<T, ID>`] field.
 > +    ///
 > +    /// # Safety
 > +    ///
-> +    /// * The provided pointer must originate from the previous call to =
-`prepare_to_insert`, or
-> +    ///   from a call to `view_links` that happened after the previous c=
-all to `prepare_to_insert`.
-> +    /// * Since the previous call to `prepare_to_insert`, the `post_remo=
-ve` method must not have
-> +    ///   been called.
-> +    unsafe fn view_value(me: *mut ListLinks<ID>) -> *const Self;
-> +
-> +    /// This is called when an item is inserted into a `List`.
-> +    ///
-> +    /// # Guarantees
-> +    ///
-> +    /// The caller is granted exclusive access to the returned [`ListLin=
-ks`] until `post_remove` is
-> +    /// called.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// * The provided pointer must point at a valid value in an [`Arc`]=
+> +    /// The provided pointer must point at a valid struct of type `Self`=
 .
-> +    /// * Calls to `prepare_to_insert` and `post_remove` on the same val=
-ue must alternate.
-
-Are there any synchronization requirements? Am I allowed to call
-`prepare_to_insert` and `post_remove` on different threads without
-synchronizing?
-
-> +    /// * The caller must own the [`ListArc`] for this value.
-> +    /// * The caller must not give up ownership of the [`ListArc`] unles=
-s `post_remove` has been
-> +    ///   called after this call to `prepare_to_insert`.
 > +    ///
-> +    /// [`Arc`]: crate::sync::Arc
-> +    unsafe fn prepare_to_insert(me: *const Self) -> *mut ListLinks<ID>;
+> +    /// [`ListLinks<T, ID>`]: ListLinks
+> +    // We don't really need this method, but it's necessary for the impl=
+ementation of
+> +    // `impl_has_work!` to be correct.
+
+You could also check for correctness within the expansion of
+`impl_has_list_links` (by creating an invisible function there), so you
+don't need this function. It still could be useful for `dyn Trait`
+though.
+
+> +    #[inline]
+> +    unsafe fn raw_get_list_links(ptr: *mut Self) -> *mut ListLinks<ID> {
+> +        // SAFETY: The caller promises that the pointer is valid. The im=
+plementer promises that the
+> +        // `OFFSET` constant is correct.
+> +        unsafe { (ptr as *mut u8).add(Self::OFFSET) as *mut ListLinks<ID=
+> }
+> +    }
+> +}
 > +
-> +    /// This undoes a previous call to `prepare_to_insert`.
-> +    ///
-> +    /// # Guarantees
-> +    ///
-> +    /// The returned pointer is the pointer that was originally passed t=
-o `prepare_to_insert`.
-> +    ///
-> +    /// The caller is free to recreate the `ListArc` after this call.
+> +/// Implements the [`HasListLinks`] trait for the given type.
+> +#[macro_export]
+> +macro_rules! impl_has_list_links {
+> +    ($(impl$(<$($implarg:ident),*>)?
+> +       HasListLinks$(<$id:tt>)?
+> +       for $self:ident $(<$($selfarg:ty),*>)?
+> +       { self$(.$field:ident)* }
+> +    )*) =3D> {$(
+> +        // SAFETY: The implementation of `raw_get_list_links` only compi=
+les if the field has the
+> +        // right type.
+> +        unsafe impl$(<$($implarg),*>)? $crate::list::HasListLinks$(<$id>=
+)? for
+> +            $self $(<$($selfarg),*>)?
+> +        {
+> +            const OFFSET: usize =3D ::core::mem::offset_of!(Self, $($fie=
+ld).*) as usize;
 
-As I read the requirements on `prepare_to_insert`, the caller is not
-required to deconstruct the `ListArc`. For example the caller is allowed
-to `clone_arc()` and then `into_raw()` and then pass that pointer to
-`prepare_to_insert`.
-So I would just remove this sentence.
+AFAIK only a single field is supported on stable.
 
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// The provided pointer must be the pointer returned by the previou=
-s call to
+> +
+> +            #[inline]
+> +            unsafe fn raw_get_list_links(ptr: *mut Self) -> *mut $crate:=
+:list::ListLinks$(<$id>)? {
+> +                // SAFETY: The caller promises that the pointer is not d=
+angling.
+> +                unsafe {
+> +                    ::core::ptr::addr_of_mut!((*ptr)$(.$field)*)
 
-Does "most recent call" make more sense? I find previous call a bit
-weird. (also in the requirements above)
+Note that this runs into the `Box` issue, but `offset_of` will fail to
+compile in that case, so it is fine.
+Do we want to note this in a comment?
+
+> +                }
+> +            }
+> +        }
+> +    )*};
+> +}
+> +pub use impl_has_list_links;
+> +
+> +/// Implements the [`ListItem`] trait for the given type.
+> +///
+> +/// Assumes that the type implements [`HasListLinks`].
+> +///
+> +/// [`ListItem`]: crate::list::ListItem
+> +#[macro_export]
+> +macro_rules! impl_list_item {
+> +    (
+> +        impl$({$($generics:tt)*})? $crate::list::ListItem<$num:tt> for $=
+t:ty {
+> +            using ListLinks;
+> +        } $($rest:tt)*
+> +    ) =3D> {
+> +        unsafe impl$(<$($generics)*>)? $crate::list::ListItem<$num> for =
+$t {
+
+Missing SAFETY comment.
 
 ---
 Cheers,
 Benno
 
-> +    /// `prepare_to_insert`.
-> +    unsafe fn post_remove(me: *mut ListLinks<ID>) -> *const Self;
-> +}
+> +            unsafe fn view_links(me: *const Self) -> *mut $crate::list::=
+ListLinks<$num> {
+> +                unsafe {
+> +                    <Self as $crate::list::HasListLinks<$num>>::raw_get_=
+list_links(me.cast_mut())
+> +                }
+> +            }
 > +
-> +#[repr(C)]
-> +#[derive(Copy, Clone)]
-> +struct ListLinksFields {
-> +    next: *mut ListLinksFields,
-> +    prev: *mut ListLinksFields,
-> +}
+> +            unsafe fn view_value(me: *mut $crate::list::ListLinks<$num>)=
+ -> *const Self {
+> +                let offset =3D <Self as $crate::list::HasListLinks<$num>=
+>::OFFSET;
+> +                unsafe { (me as *const u8).sub(offset) as *const Self }
+> +            }
 > +
-> +/// The prev/next pointers for an item in a linked list.
-> +///
-> +/// # Invariants
-> +///
-> +/// The fields are null if and only if this item is not in a list.
-> +#[repr(transparent)]
-> +pub struct ListLinks<const ID: u64 =3D 0> {
-> +    #[allow(dead_code)]
-> +    inner: Opaque<ListLinksFields>,
-> +}
+> +            unsafe fn prepare_to_insert(me: *const Self) -> *mut $crate:=
+:list::ListLinks<$num> {
+> +                unsafe { <Self as $crate::list::ListItem<$num>>::view_li=
+nks(me) }
+> +            }
 > +
-> +// SAFETY: The next/prev fields of a ListLinks can be moved across threa=
-d boundaries.
-> +unsafe impl<const ID: u64> Send for ListLinks<ID> {}
-> +// SAFETY: The type is opaque so immutable references to a ListLinks are=
- useless. Therefore, it's
-> +// okay to have immutable access to a ListLinks from several threads at =
-once.
-> +unsafe impl<const ID: u64> Sync for ListLinks<ID> {}
-> +
-> +impl<const ID: u64> ListLinks<ID> {
-> +    /// Creates a new initializer for this type.
-> +    pub fn new() -> impl PinInit<Self> {
-> +        // INVARIANT: Pin-init initializers can't be used on an existing=
- `Arc`, so this value will
-> +        // not be constructed in an `Arc` that already has a `ListArc`.
-> +        ListLinks {
-> +            inner: Opaque::new(ListLinksFields {
-> +                prev: ptr::null_mut(),
-> +                next: ptr::null_mut(),
-> +            }),
+> +            unsafe fn post_remove(me: *mut $crate::list::ListLinks<$num>=
+) -> *const Self {
+> +                unsafe { <Self as $crate::list::ListItem<$num>>::view_va=
+lue(me) }
+> +            }
 > +        }
-> +    }
+> +    };
 > +}
+> +pub use impl_list_item;
 >=20
 > --
 > 2.45.0.rc1.225.g2a3ae87e7f-goog
 >=20
-
 
