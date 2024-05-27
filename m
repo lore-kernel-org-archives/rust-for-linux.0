@@ -1,255 +1,214 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+Received: from mail-lj1-f202.google.com (mail-lj1-f202.google.com [209.85.208.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BCA315D5C3
-	for <rust-for-linux@vger.kernel.org>; Mon, 27 May 2024 11:42:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96B8313A3ED
+	for <rust-for-linux@vger.kernel.org>; Mon, 27 May 2024 16:04:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716810139; cv=none; b=rMEl89T8s/KV+kGiL23NeKOaqoi2/oyeGflg19YQq/PusrVVGbPE2KUljuoTuZtyRsvFTbhl5SZiff8sTBdFIr44nfG2f6WE0GSn20YcqpwCZZr3SFtZvB2KSeT7Y/v7s9EZ3mfniGqIQ6vtsJ1YwPTfw2UcvmF6ZT1vFJskrzc=
+	t=1716825843; cv=none; b=dVBtQmGmQ/k019cjIdBRXRnW2s80IV7o+kpnlcyk+lX97bYBIetnc2qT+iJoVg8uCZ5LHzxJAny8nlySQNBO36/yILFbeugBH8n0ee2tmCEtkeVXq++hPwYaMO8DfDgIHWpEwO8MZ/cC+w/dmau7NHdL/75/2Kw2Pv33Fkn7X+A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716810139; c=relaxed/simple;
-	bh=W9k0BmIHyn2MJjOZIKvOW1YY7kqid4ihPr/22yJ4bvg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=exlRRRslQzAuJ3vL0c17+wD831LEpyxYpoazJvWs0lHu+ilehlIVgYiBL7lVBY7mqYKqS+5b7bv5N8VdkIK+nnFCDXSzrRvNSlVmG8U57jdP1ia0xQWQVstZjPHAhYE1FRyTZTHeB2pI4PcITqXCdcoMVzTZ7l4zGTJ5Kx85ZeQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nyx/MeDg; arc=none smtp.client-ip=209.85.128.46
+	s=arc-20240116; t=1716825843; c=relaxed/simple;
+	bh=4EmFyncAhhLiKY+1D8a0clxDIqQWULOdjf0ovBAqZOg=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=hwScvf5SwXgm+4eiN1VMiQMtyHUTn35/cZiyhtgKDXIw+4u4MAYBpk13Isu5NoSftKH2qTqqz1G7G0785wQpX/zBchObIT4acI5BzMhW3RkFCuP3RskRI/1+gOjLiUyrAsURQLSSed9F6Hs7GomtBonQL3lZhhxzl8RO0O9xIYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=H1M6ni55; arc=none smtp.client-ip=209.85.208.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nyx/MeDg"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-420180b5898so78537005e9.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 27 May 2024 04:42:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="H1M6ni55"
+Received: by mail-lj1-f202.google.com with SMTP id 38308e7fff4ca-2e7185089daso35593591fa.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 27 May 2024 09:04:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1716810135; x=1717414935; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3a0IwIbKiun5ZjFq+aihsDppfHB3sjCXZbCHtC5Ys0k=;
-        b=nyx/MeDgKKERkccBb8krpG9Zcn51T8/wtu+tMFcA7w749z9aNlDwVM8w/w/UAS3Omk
-         758YFkShJPxJR5ABY8VEnROnHc5XoelAUQKjB9WSmi6gc9ArfFYYWCT8AtvoyEhHywXG
-         6b2+PWval2bDSwxD2UGeLS1lxMKOOfcfz0P2TqVFDg33det/0BR5FMdBM2o3Sa7gAicV
-         LDp8i0NeNh/0tHqROhUZKFy0/AMQD9v1OepuIzH2t9YhoT0qB5UmNZ3ootX57bKYOsb6
-         x6141u8jsB2WqQKoMi64pPGHUkJozG4CrqjArFcOabj5/na44h5ko5bX6OT9KL6JoVKi
-         cJag==
+        d=google.com; s=20230601; t=1716825840; x=1717430640; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=EJWqJxrkn9eN5G99j0riJdNLIsQh7HlIjrBMGMc+Qc0=;
+        b=H1M6ni55WKT5hNa6QGjItDS8EnlyiMwcMYm7r0Yar834aTI/MhAr6DAUme4y9CkPmX
+         E/GW1CJ2ChhAKqHMwykpg1e9cV4bw9dxdn5o7LBK/ghdDjfZRk5mXeCmn3nipmw/gi2g
+         bfH/oYsFqgLgyODVKHvW8H4shJqDjBcfwzaj7wLUGdiYS5j5riuO3rsaWQSc7L7iFtWz
+         B1HC09oQXUGxNLy/8demm/W6OmZR9k4H0NV7pIxwttu9bPHDDPLSvbdXivNJxarp0M/F
+         ePEyDQCV2QE0IV4vk/TZL/TutSEehNP1wjboQQ2L/c48NmTXEsXay2fsW+dMNG1Fyfm1
+         Temw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716810135; x=1717414935;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=3a0IwIbKiun5ZjFq+aihsDppfHB3sjCXZbCHtC5Ys0k=;
-        b=rCESsCZcPsy4wn5p8chtqvBOp6fs1CZ8QeMJeQSShc1um66XZuL3DrOUoa41O5qA4s
-         /dfH3W/Ygarcv23510LdhRrPr8GNXNs0CF+Q5wK2w/j7Ccw33wDJmxzhd/suefeFw9xh
-         N2Ie56mobXWb21kiD+sgj1d0Ya1V0t9wr7wzu/qtecWW8w8hKinzYJfaxkqN20JWn2LJ
-         O029KqVS+/LKSsAwi/1rgfZzsaQvNkaSBa8cWu+leYtuTXdbP6oLarbqOLXBORtmldq/
-         VUGPNDtQiobDy626yh1n5NA8p0xqA4WgZGdC6OOL+ro89ASaKEAXusLHU5hucW9HO+J1
-         l4hQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUDqo5DmfYOyT/ahLF6IMzt7qndtUHbKa8KOa+kf7wH5gvVa4BTZ1hsaq81yz7RNa6dh1imS17hKAjTg/4Y4sqfNrkU39JGCjBUhJFYaxQ=
-X-Gm-Message-State: AOJu0YxqnvBV88RWrEr4nl0UAltfpGQ7mT+kni4ucNGy7tcEy77vdQ3s
-	TVgpLRVsuIm4obAHFo/jovMqISC4g5b/VGvuC32sVwjbRjsw3C+Vf9eKWTjy8np/zmin5MC2K8k
-	B2bocVDJu3KvqnTccRtHlftXUSgpiniqSiQaF
-X-Google-Smtp-Source: AGHT+IEvpaRfqMw/sKzNNtB4iVjDlASFoCmySrw4aSwM/P8O6KFd2w0EJJJKBGrH4vKAXtoiorMDYk9QNOejAdn6UG8=
-X-Received: by 2002:a05:600c:4589:b0:41c:503:9a01 with SMTP id
- 5b1f17b1804b1-42108a00012mr73225675e9.25.1716810135124; Mon, 27 May 2024
- 04:42:15 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1716825840; x=1717430640;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=EJWqJxrkn9eN5G99j0riJdNLIsQh7HlIjrBMGMc+Qc0=;
+        b=J0EqRKMj0n+eEoR4IbMca9ZeF18sF0GCWC1namr6P3JaMpKmPiO2PiZ2XzqkAUMtNE
+         biS7PUXwWQFdPlpHX8ibjPJkhCG/xq4Sv2sQ0ft3v8bqcdst76/LWecO5DmuAQojYXV2
+         T/V5doLXwVhDGnVHhDRbbJhSXET4nNx5X9ngKxAcwJZzI3bhat3FoTg364EU4ZrEQA7m
+         hS/EKl8bNvc0KmAh/GVVHafD6W0Zmg4C8a7uanpr0Nj5leJp9itCdpr62oaoGrfDrL4K
+         T1JIIaAb1XEo77CR99NMpDhqowspcaAnlsj0Yno02tLKsyQmd/revjjsL6GEmeaLbmyp
+         +xnQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWp6q4su+fe1VON6lI5IORo7de2QQrz7XrevBD9GFDH5AuZ5NaGN2tyUYxEBFypfUCcHXvrim3F6gSlM2oykIgQXvejp0ny5B3M8gNQunQ=
+X-Gm-Message-State: AOJu0YzT/z+Cz0BxxM8Dnk+IvCnL2Ej61G9Ye/askcnCERadKNp9ZIGx
+	Xknw++GRo1PAnmD369raCqTgFC1xXj9gQ+OKen2ppwdI/DkvdNkWwYHauRo1Hdp2+6dHaxLl7E1
+	PFIIUeOuAjI087Q==
+X-Google-Smtp-Source: AGHT+IF3eJeOUIBjEjZ9ZRQCMvF3qFkK/+/n2pG/a8Q4YqeNxCsqp6O78uLUaBfl65HTl/3GKm7277j1vlQVAB8=
+X-Received: from aliceryhl2.c.googlers.com ([fda3:e722:ac3:cc00:68:949d:c0a8:572])
+ (user=aliceryhl job=sendgmr) by 2002:a2e:9155:0:b0:2e2:a6dc:8289 with SMTP id
+ 38308e7fff4ca-2e95b25667emr88131fa.7.1716825839717; Mon, 27 May 2024 09:03:59
+ -0700 (PDT)
+Date: Mon, 27 May 2024 16:03:56 +0000
+In-Reply-To: <20240524213245.GT2118490@ZenIV>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240506-linked-list-v2-0-7b910840c91f@google.com>
- <20240506-linked-list-v2-3-7b910840c91f@google.com> <82220d9b-3f4f-43ba-ad15-412ceb349a56@proton.me>
-In-Reply-To: <82220d9b-3f4f-43ba-ad15-412ceb349a56@proton.me>
+Mime-Version: 1.0
+References: <20240524213245.GT2118490@ZenIV>
+X-Mailer: git-send-email 2.45.1.288.g0e0cd299f1-goog
+Message-ID: <20240527160356.3909000-1-aliceryhl@google.com>
+Subject: Re: [PATCH v6 3/8] rust: file: add Rust abstraction for `struct file`
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 27 May 2024 13:42:00 +0200
-Message-ID: <CAH5fLghoHiU928pCzMy3DRZzbw7J_HUVMObGXGtX-0ncVJnP3Q@mail.gmail.com>
-Subject: Re: [PATCH v2 3/9] rust: list: add struct with prev/next pointers
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@samsung.com>, Marco Elver <elver@google.com>, 
-	Kees Cook <keescook@chromium.org>, Coly Li <colyli@suse.de>, Paolo Abeni <pabeni@redhat.com>, 
-	Pierre Gondois <pierre.gondois@arm.com>, Ingo Molnar <mingo@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Wei Yang <richard.weiyang@gmail.com>, 
-	Matthew Wilcox <willy@infradead.org>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+To: viro@zeniv.linux.org.uk
+Cc: a.hindborg@samsung.com, alex.gaynor@gmail.com, aliceryhl@google.com, 
+	arve@android.com, benno.lossin@proton.me, bjorn3_gh@protonmail.com, 
+	boqun.feng@gmail.com, brauner@kernel.org, cmllamas@google.com, 
+	dan.j.williams@intel.com, dxu@dxuuu.xyz, gary@garyguo.net, 
+	gregkh@linuxfoundation.org, joel@joelfernandes.org, keescook@chromium.org, 
+	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org, maco@android.com, 
+	ojeda@kernel.org, peterz@infradead.org, rust-for-linux@vger.kernel.org, 
+	surenb@google.com, tglx@linutronix.de, tkjos@android.com, tmgross@umich.edu, 
+	wedsonaf@gmail.com, willy@infradead.org, yakoyoku@gmail.com
+Content-Type: text/plain; charset="utf-8"
 
-On Mon, May 27, 2024 at 11:58=E2=80=AFAM Benno Lossin <benno.lossin@proton.=
-me> wrote:
->
-> On 06.05.24 11:53, Alice Ryhl wrote:
-> > Define the ListLinks struct, which wraps the prev/next pointers that
-> > will be used to insert values into a List in a future patch. Also
-> > define the ListItem trait, which is implemented by structs that have a
-> > ListLinks field.
-> >
-> > The ListItem trait provides four different methods that are all
-> > essentially container_of or the reverse of container_of. Two of them ar=
-e
-> > used before inserting/after removing an item from the list, and the two
-> > others are used when looking at a value without changing whether it is
-> > in a list. This distinction is introduced because it is needed for the
-> > patch that adds support for heterogeneous lists, which are implemented
-> > by adding a third pointer field with a fat pointer to the full struct.
-> > When inserting into the heterogeneous list, the pointer-to-self is
-> > updated to have the right vtable, and the container_of operation is
-> > implemented by just returning that pointer instead of using the real
-> > container_of operation.
-> >
-> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> > ---
-> >  rust/kernel/list.rs | 116 ++++++++++++++++++++++++++++++++++++++++++++=
-++++++++
-> >  1 file changed, 116 insertions(+)
-> >
-> > diff --git a/rust/kernel/list.rs b/rust/kernel/list.rs
-> > index c5caa0f6105c..b5cfbb96a392 100644
-> > --- a/rust/kernel/list.rs
-> > +++ b/rust/kernel/list.rs
-> > @@ -4,7 +4,123 @@
-> >
-> >  //! A linked list implementation.
-> >
-> > +use crate::init::PinInit;
-> > +use crate::types::Opaque;
-> > +use core::ptr;
-> > +
-> >  mod arc;
-> >  pub use self::arc::{
-> >      impl_list_arc_safe, AtomicListArcTracker, ListArc, ListArcSafe, Tr=
-yNewListArc,
-> >  };
-> > +
-> > +/// Implemented by types where a [`ListArc<Self>`] can be inserted int=
-o a `List`.
-> > +///
-> > +/// # Safety
-> > +///
-> > +/// Implementers must ensure that they provide the guarantees document=
-ed on the three methods
->
-> I would not mention the number of methods, since it is difficult to
-> maintain and doesn't actually provide any value (it already is incorrect =
-:)
+Al Viro <viro@zeniv.linux.org.uk> writes:
+> > > You obviously are aware of this but I'm just spelling it out. Iirc,
+> > > there will practically only ever be one light refcount per file.
+> > >
+> > > For a light refcount to be used we know that the file descriptor table
+> > > isn't shared with any other task. So there are no threads that could
+> > > concurrently access the file descriptor table. We also know that the
+> > > file descriptor table cannot become shared while we're in system call
+> > > context because the caller can't create new threads and they can't
+> > > unshare the file descriptor table.
+> > >
+> > > So there's only one fdget() caller (Yes, they could call fdget()
+> > > multiple times and then have to do fdput() multiple times but that's a
+> > > level of weirdness that we don't need to worry about.).
+> > 
+> > Hmm. Is it not the case that different processes with different file
+> > descriptor tables could reference the same underlying `struct file` and
+> > both use light refcounts to do so, as long as each fd table is not
+> > shared? So there could be multiple light refcounts to the same `struct
+> > file` at the same time on different threads.
+> 
+> Relevant rules:
+> 
+> 	* Each file pointer in any descriptor table contributes to refcount
+> of file.
+> 
+> 	* All assignments to task->files are done by the task itself or,
+> during task creation, by its parent The latter happens before the task
+> runs for the first time.  The former is done with task_lock(current)
+> held.
+> 
+> 	* current->files is always stable.  The object it points to
+> is guaranteed to stay alive at least until you explicitly change
+> current->files.
+> 	* task->files is stable while you are holding task_lock(task).
+> The object it points to is guaranteed to stay alive until you release
+> task_lock(task).
+> 	* task->files MAY be fetched (racily) without either of the
+> above, but it should not be dereferenced - the memory may be freed
+> and reused right after you've fetched the pointer.
+> 
+> 	* descriptor tables are refcounted by table->count.
+> 	* descriptor table is created with ->count equal to 1 and
+> destroyed when its ->count reaches 0.
+> 	* each task with task->files == table contributes to table->count.
+> 	* before the task dies, its ->files becomes NULL (see exit_files()).
+> 	* when task is born (see copy_process() and copy_files())) the parent
+> is responsible for setting the value of task->files and making sure that
+> refcounts are correct; that's the only case where one is allowed to acquire
+> an extra reference to existing table (handling of clone(2) with COPY_FILES).
+> 
+> 	* the only descriptor table one may modify is that pointed to
+> by current->files.  Any access to other threads' descriptor tables is
+> read-only.
+> 
+> 	* struct fd is fundamentally thread-local.  It should never be
+> passed around, put into shared data structures, etc.
+> 
+> 	* if you have done fdget(N), the matching fdput() MUST be done
+> before the caller modifies the Nth slot of its descriptor table,
+> spawns children that would share the descriptor table.
+> 
+> 	* fdget() MAY borrow a reference from caller's descriptor table.
+> That can be done if current->files->count is equal to 1.
+> In that case we can be certain that the file reference we fetched from
+> our descriptor table will remain unchanged (and thus contributing to refcount
+> of file) until fdput().  Indeed,
+> 	+ at the time of fdget() no other thread has task->files pointing
+> to our table (otherwise ->count would be greater than 1).
+> 	+ our thread will remain the sole owner of descriptor table at
+> least until fdput().  Indeed, the first additional thread with task->files
+> pointing to our table would have to have been spawned by us and we are
+> forbidden to do that (rules for fdget() use)
+> 	+ no other thread could modify our descriptor table (they would
+> have to share it first).
+> 	+ we are allowed to modify our table, but we are forbidden to touch
+> the slot we'd copied from (rules for fdget() use).
+> 
+> In other words, if current->files->count is equal to 1 at fdget() time
+> we can skip incrementing refcount.  Matching fdput() would need to
+> skip decrement, of course.  Note that we must record that (borrowed
+> vs. cloned) in struct fd - the condition cannot be rechecked at fdput()
+> time, since the table that had been shared at fdget() time might no longer
+> be shared by the time of fdput().
 
-I will remove the mention of a number.
+This is great! It matches my understanding. I didn't know the details
+about current->files and task->files.
 
-> > +    /// This is called when an item is inserted into a `List`.
-> > +    ///
-> > +    /// # Guarantees
-> > +    ///
-> > +    /// The caller is granted exclusive access to the returned [`ListL=
-inks`] until `post_remove` is
-> > +    /// called.
-> > +    ///
-> > +    /// # Safety
-> > +    ///
-> > +    /// * The provided pointer must point at a valid value in an [`Arc=
-`].
-> > +    /// * Calls to `prepare_to_insert` and `post_remove` on the same v=
-alue must alternate.
->
-> Are there any synchronization requirements? Am I allowed to call
-> `prepare_to_insert` and `post_remove` on different threads without
-> synchronizing?
+You should copy this to the kernel documentation somewhere. :)
 
-No, if you call them at the same time, then they aren't alternating.
+> > And this does *not* apply to `fdget_pos`, which checks the refcount of
+> > the `struct file` instead of the refcount of the fd table.
+> 
+> False.  fdget_pos() is identical to fdget() as far as file refcount
+> handling goes.  The part that is different is that grabbing ->f_pos_lock
+> is sensitive to file refcount in some cases.  This is orthogonal to
+> "does this struct fd contribute to file refcount".
 
-> > +    /// * The caller must own the [`ListArc`] for this value.
-> > +    /// * The caller must not give up ownership of the [`ListArc`] unl=
-ess `post_remove` has been
-> > +    ///   called after this call to `prepare_to_insert`.
-> > +    ///
-> > +    /// [`Arc`]: crate::sync::Arc
-> > +    unsafe fn prepare_to_insert(me: *const Self) -> *mut ListLinks<ID>=
-;
-> > +
-> > +    /// This undoes a previous call to `prepare_to_insert`.
-> > +    ///
-> > +    /// # Guarantees
-> > +    ///
-> > +    /// The returned pointer is the pointer that was originally passed=
- to `prepare_to_insert`.
-> > +    ///
-> > +    /// The caller is free to recreate the `ListArc` after this call.
->
-> As I read the requirements on `prepare_to_insert`, the caller is not
-> required to deconstruct the `ListArc`. For example the caller is allowed
-> to `clone_arc()` and then `into_raw()` and then pass that pointer to
-> `prepare_to_insert`.
-> So I would just remove this sentence.
+Sorry, I see now that I didn't phrase that quite right. What I meant is
+that there are ways of sharing a `struct file` reference during an fdget
+scope that are not dangerous, but where it *would be* dangerous if it
+was an fdget_pos scope instead. Specifically, the reason they are
+dangerous is that they can lead to a data race on the file position if
+the fdget_pos scope did not take the f_pos_lock mutex.
 
-I will remove it.
+For example, during an `fdget(N)` scope, you can always do a `get_file`
+and then send it to another process and `fd_install` it into that other
+process. There's no way that this could result in the deletion of the
+Nth entry of `current->files`.
 
-> > +    ///
-> > +    /// # Safety
-> > +    ///
-> > +    /// The provided pointer must be the pointer returned by the previ=
-ous call to
->
-> Does "most recent call" make more sense? I find previous call a bit
-> weird. (also in the requirements above)
+However, during an `fdget_pos(N)` scope, then it is *not* the case that
+it's always okay to send a `get_file` reference to another thread and
+`fd_install` it. Because after the remote process returns from the
+syscall in which we `fd_install`ed the file, the remote process could
+proceed to call another syscall that in turn modifies the file position.
+And if the original `fdget_pos(N)` scope modifies the file position
+after sending the `get_file` reference, then that could be a data race
+on f_pos.
 
-Sure, I can say "most recent".
+> Again, "light" references are tied to thread; they can only be created
+> if we are guaranteed that descriptor table's slot they came from will
+> remain unchanged for as long as the reference is used.
+> 
+> And yes, there may be several light references to the same file - both
+> in different processes that do not share descriptor table *and* in the
+> same thread, if e.g. sendfile(in_fd, out_fd, ...) is called with
+> in_fd == out_fd.
+
+Thanks for confirming this!
+
+
+
+
+
+I hope this reply along with my reply to Christian Brauner also
+addresses your other thread. Let me know if it doesn't.
 
 Alice
-
-> ---
-> Cheers,
-> Benno
->
-> > +    /// `prepare_to_insert`.
-> > +    unsafe fn post_remove(me: *mut ListLinks<ID>) -> *const Self;
-> > +}
-> > +
-> > +#[repr(C)]
-> > +#[derive(Copy, Clone)]
-> > +struct ListLinksFields {
-> > +    next: *mut ListLinksFields,
-> > +    prev: *mut ListLinksFields,
-> > +}
-> > +
-> > +/// The prev/next pointers for an item in a linked list.
-> > +///
-> > +/// # Invariants
-> > +///
-> > +/// The fields are null if and only if this item is not in a list.
-> > +#[repr(transparent)]
-> > +pub struct ListLinks<const ID: u64 =3D 0> {
-> > +    #[allow(dead_code)]
-> > +    inner: Opaque<ListLinksFields>,
-> > +}
-> > +
-> > +// SAFETY: The next/prev fields of a ListLinks can be moved across thr=
-ead boundaries.
-> > +unsafe impl<const ID: u64> Send for ListLinks<ID> {}
-> > +// SAFETY: The type is opaque so immutable references to a ListLinks a=
-re useless. Therefore, it's
-> > +// okay to have immutable access to a ListLinks from several threads a=
-t once.
-> > +unsafe impl<const ID: u64> Sync for ListLinks<ID> {}
-> > +
-> > +impl<const ID: u64> ListLinks<ID> {
-> > +    /// Creates a new initializer for this type.
-> > +    pub fn new() -> impl PinInit<Self> {
-> > +        // INVARIANT: Pin-init initializers can't be used on an existi=
-ng `Arc`, so this value will
-> > +        // not be constructed in an `Arc` that already has a `ListArc`=
-.
-> > +        ListLinks {
-> > +            inner: Opaque::new(ListLinksFields {
-> > +                prev: ptr::null_mut(),
-> > +                next: ptr::null_mut(),
-> > +            }),
-> > +        }
-> > +    }
-> > +}
-> >
-> > --
-> > 2.45.0.rc1.225.g2a3ae87e7f-goog
-> >
->
->
