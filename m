@@ -1,43 +1,43 @@
-Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 791DC13A89E
-	for <rust-for-linux@vger.kernel.org>; Mon, 27 May 2024 09:39:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4A0F1755A;
+	Mon, 27 May 2024 09:58:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716802786; cv=none; b=dLh+yNalzNxzBF8kCKeAKivTKUaFNJ+7gonCNZ7bFjWrES8wwdeRIgCPDJ61xxn9c/tPCSUTP6yJALKxBsnkQpxVxXOgcM+fW+C43lr7XEiAnCMyRwbe6w38owerRaj9YzVdbxE4uV/UZvGLGKF3+TBGj+ymK+wYz/mv1wKFqNs=
+	t=1716803906; cv=none; b=XF5rh+QgkNGYF3e+JGwzXSEta5G8+Xc8QIkvt6piyaswgXjWrDANz8PrgbELzyw5yHn99e+ALiqAp4Ka4k6G4puO7N2fas10iQx8VIJlbHGtPy/Wm+ayt9+LGUDCaZQxq9KW7cbhgNwaJqYg+HN8wGXUInJAK+hbsmKNe79dIhA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716802786; c=relaxed/simple;
-	bh=Bc9tW9Cz1DZ6iFpTzDPfmkj3uh5mXjjEkrZPtv5Yq/0=;
+	s=arc-20240116; t=1716803906; c=relaxed/simple;
+	bh=Al2pkDUSRqc1rQ6eBN1ZtNx95wDfg2Iwmefz5m22r/4=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hnn2LDb436tscLCMl+4AzZ81PzmZSWvPXcFhDW2bnJ4MYh6wZCfHTGAOhKpClpRYOC7YIKROX8Y2xPzqTdB1+zkL3Zk00vWIGLLIkqdvKAl2D99JLyI/Xx+juY35Fbxl4RZzmA7NQvEYmfoxrAuvGWXj3zlGt1AIcImNFrSV8mg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=MbsgICAu; arc=none smtp.client-ip=185.70.40.133
+	 MIME-Version:Content-Type; b=sUDaibqRwKrZ8lJsNTZTiSx1nMdpsurSb0b1GmX8uAqL80KZ2cOSisXJsZL2xW/nPisCstZnNP9JP2ArUZe2UHfDnobGeN+yM1HEvk25IZDqrZDkc/AHzhVl1kf+n9ux1FO8U7aHLtg/zKMz57z6bojsyPtLy1sfnSSd5DN1kuI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=PX5K/wj+; arc=none smtp.client-ip=185.70.43.22
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="MbsgICAu"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="PX5K/wj+"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1716802782; x=1717061982;
-	bh=bkUwFBzgjFcOaacbjZdsraAbAQYEQ569ujl7iN25NmA=;
+	s=protonmail; t=1716803901; x=1717063101;
+	bh=bXVeyLZ5rfr6W8gD3PoVwJ5eVkWxrmnOFZgyD6JZRV8=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=MbsgICAunyMFYYipG/xUhINPKEFnTmWeYRVF4b34mD4oRscCS2SzKlcPXtfB4kygL
-	 Dwxt99gJxJd3h1ymCxYxV7A6rrqmdBWPL/hsaths91EhC8WIe+jhrKisOWUBjwvOFB
-	 VL0f0JB78OR3M7XeOvJus5Zx/XU6O+DMzw5PFtMGIbgR4AbecPchcUqG3MIoWI6Loq
-	 nr0faS5MbTwNw3Q1QFOk3Zpmj87VAb4n9sNPMIUDc3C8DaVTZcmK14CvZNY3ZtPcW1
-	 8hlZeWL128JxBTp6EY42zRKsP/YCCiYr4rXYKx7g/vjknQLdasT6H8+pM0XWTV9adv
-	 0nvwJez8MS/iQ==
-Date: Mon, 27 May 2024 09:39:38 +0000
+	b=PX5K/wj+GcOIbp4yJGaB7j718f9EmmmMKJpWcubxky2FtqFrbesZF7p6Eoa4/6KRr
+	 Bk+qGHtW51qB+F1KScGFdyxnI4IWBZMh8Uw4LqAnwupg/F9Kb79aYRKm/Hmw2k+Odz
+	 gEzPXaBzTy9FoTYbtSCbU0jOs2Xw8SI/wjAJHJezuP0piHCU4lcOuDPtssYPqRhrQb
+	 tEJI8UcRSzRGRtRzmYiBoLW59qvDSlSBvLLbgt8j5Uw0eNLQq3pZFBX66meSihqUmU
+	 8DYkUrwhNNxvvBfXICEpb0csss0vsOgEtOKYhYwslGP6gkDgMCQe+wVMqlBHEXcAvf
+	 urxAkDEx1bqwA==
+Date: Mon, 27 May 2024 09:58:16 +0000
 To: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
 From: Benno Lossin <benno.lossin@proton.me>
 Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Marco Elver <elver@google.com>, Kees Cook <keescook@chromium.org>, Coly Li <colyli@suse.de>, Paolo Abeni <pabeni@redhat.com>, Pierre Gondois <pierre.gondois@arm.com>, Ingo Molnar <mingo@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Wei Yang <richard.weiyang@gmail.com>, Matthew Wilcox <willy@infradead.org>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v2 2/9] rust: list: add tracking for ListArc
-Message-ID: <35544d52-166a-45a0-ae60-b39ecde576bc@proton.me>
-In-Reply-To: <20240506-linked-list-v2-2-7b910840c91f@google.com>
-References: <20240506-linked-list-v2-0-7b910840c91f@google.com> <20240506-linked-list-v2-2-7b910840c91f@google.com>
+Subject: Re: [PATCH v2 3/9] rust: list: add struct with prev/next pointers
+Message-ID: <82220d9b-3f4f-43ba-ad15-412ceb349a56@proton.me>
+In-Reply-To: <20240506-linked-list-v2-3-7b910840c91f@google.com>
+References: <20240506-linked-list-v2-0-7b910840c91f@google.com> <20240506-linked-list-v2-3-7b910840c91f@google.com>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 4cc69eeba12c0c462a2df5fdc5ed89fa72890678
+X-Pm-Message-ID: bfecf62831420d9cb4d8e4f3085258a6eba4236f
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -48,125 +48,206 @@ Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
 On 06.05.24 11:53, Alice Ryhl wrote:
-> @@ -32,9 +33,24 @@ pub trait ListArcSafe<const ID: u64 =3D 0> {
->     unsafe fn on_drop_list_arc(&self);
->  }
+> Define the ListLinks struct, which wraps the prev/next pointers that
+> will be used to insert values into a List in a future patch. Also
+> define the ListItem trait, which is implemented by structs that have a
+> ListLinks field.
 >=20
-> +/// Declares that this type is able to safely attempt to create `ListArc=
-`s at any time.
+> The ListItem trait provides four different methods that are all
+> essentially container_of or the reverse of container_of. Two of them are
+> used before inserting/after removing an item from the list, and the two
+> others are used when looking at a value without changing whether it is
+> in a list. This distinction is introduced because it is needed for the
+> patch that adds support for heterogeneous lists, which are implemented
+> by adding a third pointer field with a fat pointer to the full struct.
+> When inserting into the heterogeneous list, the pointer-to-self is
+> updated to have the right vtable, and the container_of operation is
+> implemented by just returning that pointer instead of using the real
+> container_of operation.
+>=20
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> ---
+>  rust/kernel/list.rs | 116 ++++++++++++++++++++++++++++++++++++++++++++++=
+++++++
+>  1 file changed, 116 insertions(+)
+>=20
+> diff --git a/rust/kernel/list.rs b/rust/kernel/list.rs
+> index c5caa0f6105c..b5cfbb96a392 100644
+> --- a/rust/kernel/list.rs
+> +++ b/rust/kernel/list.rs
+> @@ -4,7 +4,123 @@
+>=20
+>  //! A linked list implementation.
+>=20
+> +use crate::init::PinInit;
+> +use crate::types::Opaque;
+> +use core::ptr;
+> +
+>  mod arc;
+>  pub use self::arc::{
+>      impl_list_arc_safe, AtomicListArcTracker, ListArc, ListArcSafe, TryN=
+ewListArc,
+>  };
+> +
+> +/// Implemented by types where a [`ListArc<Self>`] can be inserted into =
+a `List`.
 > +///
 > +/// # Safety
 > +///
-> +/// Implementers must ensure that `try_new_list_arc` does not return `tr=
-ue` if a `ListArc` already
-> +/// exists.
-> +pub unsafe trait TryNewListArc<const ID: u64 =3D 0>: ListArcSafe<ID> {
-> +    /// Attempts to convert an `Arc<Self>` into an `ListArc<Self>`. Retu=
-rns `true` if the
-> +    /// conversion was successful.
-> +    fn try_new_list_arc(&self) -> bool;
-> +}
-> +
->  /// Declares that this type supports [`ListArc`].
->  ///
-> -/// When using this macro, it will only be possible to create a [`ListAr=
-c`] from a [`UniqueArc`].
-> +/// When using this macro, you may choose between the `untracked` strate=
-gy where it is not tracked
-> +/// whether a [`ListArc`] exists, and the `tracked_by` strategy where th=
-e tracking is deferred to a
-> +/// field of the struct. The `tracked_by` strategy can be combined with =
-a field of type
-> +/// [`AtomicListArcTracker`] to track whether a [`ListArc`] exists.
+> +/// Implementers must ensure that they provide the guarantees documented=
+ on the three methods
 
-I think it would make sense to use bullet points here.
-Also, you should mention that in the `tracked_by` strategy, the field is
-required to implement `TryNewListArc`.
+I would not mention the number of methods, since it is difficult to
+maintain and doesn't actually provide any value (it already is incorrect :)
 
->  #[macro_export]
->  macro_rules! impl_list_arc_safe {
->     (impl$({$($generics:tt)*})? ListArcSafe<$num:tt> for $t:ty { untracke=
-d; } $($rest:tt)*) =3D> {
-> @@ -45,6 +61,37 @@ unsafe fn on_drop_list_arc(&self) {}
->         $crate::list::impl_list_arc_safe! { $($rest)* }
->     };
->=20
-> +    (impl$({$($generics:tt)*})? ListArcSafe<$num:tt> for $t:ty {
-> +        tracked_by $field:ident : $fty:ty;
-> +    } $($rest:tt)*) =3D> {
-> +        impl$(<$($generics)*>)? $crate::list::ListArcSafe<$num> for $t {
-> +            unsafe fn on_create_list_arc_from_unique(self: ::core::pin::=
-Pin<&mut Self>) {
-> +                // SAFETY: This field is structurally pinned.
-
-Who ensures this? This is not documented on the macro.
-The only way that I see to fix this would be to make the `tracked_by`
-strategy `unsafe`. At least until we implement proper structural pinning
-of fields.
-
-> +                let field =3D unsafe {
-> +                    ::core::pin::Pin::map_unchecked_mut(self, |me| &mut =
-me.$field)
-> +                };
-> +                // SAFETY: The caller promises that there is no `ListArc=
-`.
-> +                unsafe {
-> +                    <$fty as $crate::list::ListArcSafe<$num>>::on_create=
-_list_arc_from_unique(field)
-> +                };
-> +            }
-> +            unsafe fn on_drop_list_arc(&self) {
-> +                // SAFETY: The caller promises that there is no `ListArc=
-` reference, and also
-> +                // promises that the tracking thinks there is a `ListArc=
-` reference.
-> +                unsafe { <$fty as $crate::list::ListArcSafe<$num>>::on_d=
-rop_list_arc(&self.$field) };
-> +            }
-> +        }
-> +        unsafe impl$(<$($generics)*>)? $crate::list::TryNewListArc<$num>=
- for $t
-> +        where
-> +            $fty: TryNewListArc<$num>,
-> +        {
-> +            fn try_new_list_arc(&self) -> bool {
-> +                <$fty as $crate::list::TryNewListArc<$num>>::try_new_lis=
-t_arc(&self.field)
-> +            }
-> +        }
-> +        $crate::list::impl_list_arc_safe! { $($rest)* }
-> +    };
-> +
->     () =3D> {};
->  }
->  pub use impl_list_arc_safe;
-
-[...]
-
-> @@ -313,3 +406,60 @@ impl<T, U, const ID: u64> core::ops::DispatchFromDyn=
-<ListArc<U, ID>> for ListArc
->     U: ListArcSafe<ID> + ?Sized,
->  {
->  }
-> +
-> +/// A utility for tracking whether a [`ListArc`] exists using an atomic.
+> +/// below.
 > +///
-> +/// # Invariant
-> +///
-> +/// If the boolean is `false`, then there is no [`ListArc`] for this val=
-ue.
+> +/// [`ListArc<Self>`]: ListArc
+> +pub unsafe trait ListItem<const ID: u64 =3D 0>: ListArcSafe<ID> {
+> +    /// Views the [`ListLinks`] for this value.
+> +    ///
+> +    /// # Guarantees
+> +    ///
+> +    /// If there is a previous call to `prepare_to_insert` and there is =
+no call to `post_remove`
+> +    /// since the most recent such call, then this returns the same poin=
+ter as the one returned by
+> +    /// the most recent call to `prepare_to_insert`.
+> +    ///
+> +    /// Otherwise, the returned pointer points at a read-only [`ListLink=
+s`] with two null pointers.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// The provided pointer must point at a valid value. (It need not b=
+e in an `Arc`.)
+> +    unsafe fn view_links(me: *const Self) -> *mut ListLinks<ID>;
+> +
+> +    /// View the full value given its [`ListLinks`] field.
+> +    ///
+> +    /// Can only be used when the value is in a list.
+> +    ///
+> +    /// # Guarantees
+> +    ///
+> +    /// * Returns the same pointer as the one passed to the previous cal=
+l to `prepare_to_insert`.
+> +    /// * The returned pointer is valid until the next call to `post_rem=
+ove`.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// * The provided pointer must originate from the previous call to =
+`prepare_to_insert`, or
+> +    ///   from a call to `view_links` that happened after the previous c=
+all to `prepare_to_insert`.
+> +    /// * Since the previous call to `prepare_to_insert`, the `post_remo=
+ve` method must not have
+> +    ///   been called.
+> +    unsafe fn view_value(me: *mut ListLinks<ID>) -> *const Self;
+> +
+> +    /// This is called when an item is inserted into a `List`.
+> +    ///
+> +    /// # Guarantees
+> +    ///
+> +    /// The caller is granted exclusive access to the returned [`ListLin=
+ks`] until `post_remove` is
+> +    /// called.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// * The provided pointer must point at a valid value in an [`Arc`]=
+.
+> +    /// * Calls to `prepare_to_insert` and `post_remove` on the same val=
+ue must alternate.
 
-"If `inner` is `false`, ..."
+Are there any synchronization requirements? Am I allowed to call
+`prepare_to_insert` and `post_remove` on different threads without
+synchronizing?
+
+> +    /// * The caller must own the [`ListArc`] for this value.
+> +    /// * The caller must not give up ownership of the [`ListArc`] unles=
+s `post_remove` has been
+> +    ///   called after this call to `prepare_to_insert`.
+> +    ///
+> +    /// [`Arc`]: crate::sync::Arc
+> +    unsafe fn prepare_to_insert(me: *const Self) -> *mut ListLinks<ID>;
+> +
+> +    /// This undoes a previous call to `prepare_to_insert`.
+> +    ///
+> +    /// # Guarantees
+> +    ///
+> +    /// The returned pointer is the pointer that was originally passed t=
+o `prepare_to_insert`.
+> +    ///
+> +    /// The caller is free to recreate the `ListArc` after this call.
+
+As I read the requirements on `prepare_to_insert`, the caller is not
+required to deconstruct the `ListArc`. For example the caller is allowed
+to `clone_arc()` and then `into_raw()` and then pass that pointer to
+`prepare_to_insert`.
+So I would just remove this sentence.
+
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// The provided pointer must be the pointer returned by the previou=
+s call to
+
+Does "most recent call" make more sense? I find previous call a bit
+weird. (also in the requirements above)
 
 ---
 Cheers,
 Benno
 
-> +#[repr(transparent)]
-> +pub struct AtomicListArcTracker<const ID: u64 =3D 0> {
-> +    inner: AtomicBool,
-> +    _pin: PhantomPinned,
+> +    /// `prepare_to_insert`.
+> +    unsafe fn post_remove(me: *mut ListLinks<ID>) -> *const Self;
 > +}
+> +
+> +#[repr(C)]
+> +#[derive(Copy, Clone)]
+> +struct ListLinksFields {
+> +    next: *mut ListLinksFields,
+> +    prev: *mut ListLinksFields,
+> +}
+> +
+> +/// The prev/next pointers for an item in a linked list.
+> +///
+> +/// # Invariants
+> +///
+> +/// The fields are null if and only if this item is not in a list.
+> +#[repr(transparent)]
+> +pub struct ListLinks<const ID: u64 =3D 0> {
+> +    #[allow(dead_code)]
+> +    inner: Opaque<ListLinksFields>,
+> +}
+> +
+> +// SAFETY: The next/prev fields of a ListLinks can be moved across threa=
+d boundaries.
+> +unsafe impl<const ID: u64> Send for ListLinks<ID> {}
+> +// SAFETY: The type is opaque so immutable references to a ListLinks are=
+ useless. Therefore, it's
+> +// okay to have immutable access to a ListLinks from several threads at =
+once.
+> +unsafe impl<const ID: u64> Sync for ListLinks<ID> {}
+> +
+> +impl<const ID: u64> ListLinks<ID> {
+> +    /// Creates a new initializer for this type.
+> +    pub fn new() -> impl PinInit<Self> {
+> +        // INVARIANT: Pin-init initializers can't be used on an existing=
+ `Arc`, so this value will
+> +        // not be constructed in an `Arc` that already has a `ListArc`.
+> +        ListLinks {
+> +            inner: Opaque::new(ListLinksFields {
+> +                prev: ptr::null_mut(),
+> +                next: ptr::null_mut(),
+> +            }),
+> +        }
+> +    }
+> +}
+>=20
+> --
+> 2.45.0.rc1.225.g2a3ae87e7f-goog
+>=20
 
-[...]
 
