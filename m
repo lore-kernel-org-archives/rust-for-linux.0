@@ -1,378 +1,114 @@
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BF2264D
-	for <rust-for-linux@vger.kernel.org>; Mon, 27 May 2024 01:47:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55134653;
+	Mon, 27 May 2024 02:00:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716774423; cv=none; b=KpP3Go+sDyFKmAdG9APXlo9GlmVxmeupwpTGkJatPxAB43nzkWNN3Y1RakjSTuZ/LtGRoZ2Fk/MPNmFzGkQPJs8mYmMnYLS5p1X83qPJc/w42WTsTYd1TvltwHRdloRqUP4ZXUpoZS5iDI1Bj/0Py9MT33v0mfvw6W21cN1z4NY=
+	t=1716775247; cv=none; b=KQnu+T12oDCS4MNcwNqm0W/4+4Pkg2P4YejureJfJWwPO5Cim3bhYJ89QEqlrV30qtCxp6mh5ZBmu9/FESJYFeSuPead9ishpzBybqrREISvX8fyrWdEsvzHq+qqKg0Uvrk+5mC7idABsWQ03+fpWVyUCihuq/IAPsf5lyHwfu4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716774423; c=relaxed/simple;
-	bh=VxzKzTgIMiGOsHlLhdyq33MiWvinfAFvUm3hcNwFLnA=;
-	h=Date:Message-Id:To:Cc:Subject:From:Mime-Version:Content-Type; b=h5W6D/Cx2x1r1dVgIcsHdHO/EWG5YH1ZZWqaQV+TkBCfgDsSujL1uxtEkVFl0AxHwqihM4G2W/ZXE2RJHFLIWwfmf09tH9OxYu8ddco0e5I1rVHEsTNN1n03qX1XwkYBdzRKpaZcfHxzQPEXgfnOA50y6tzVyacgHrGB4Y//axY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=k/uLVQvo; arc=none smtp.client-ip=209.85.216.44
+	s=arc-20240116; t=1716775247; c=relaxed/simple;
+	bh=ctWiv0pC9SqzWM/MujflPIZFnUTSkuqfQfgBDXVtC2U=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=TD7eueNnez5em44Ot6LxFPJB1s9xohw10Iabxkgi2IGNG6ZpWIfXpL3D8HEf6HaGCQ1apZQfriWzFeyeDkWiEd71JRT204sf51mnmG6xnDIpl0uZ0uF+rq5OCVMEW/XXdz60NrDaOIp8gvgXDOTaF1TaPwl5G3AtpZejS+vHuBQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ekaRMcxg; arc=none smtp.client-ip=209.85.215.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="k/uLVQvo"
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-2bfc0b5e06fso108864a91.2
-        for <rust-for-linux@vger.kernel.org>; Sun, 26 May 2024 18:47:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ekaRMcxg"
+Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-64f12fc9661so482096a12.3;
+        Sun, 26 May 2024 19:00:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1716774421; x=1717379221; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:from:subject:cc:to
-         :message-id:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=q4FFJvhqGlJIW7hZ4ayMdm3DHX2K2AoIhnxqg1XTK6w=;
-        b=k/uLVQvoAbemUNimX4Qzff5E289IwDe4TR1zmLNx0zRSAmsymcIjFLS7ed7qOfU95m
-         yWZUdMNhK5jtHXFh0kzOqFhnPUiuGOfYbIBRH11FfiDj5a1T+sU9F35tCgGMmfCziBdS
-         fuibDrlQTMHva+tvCsZTRpkg1kYqWo3teCs1qrfiH7noVQ7cHhyMtXGRMQ6vnPhNJe+g
-         Uec+IiFLH6Ho4Z/YDknqlVBltWTdc/3rrdePU20ARU0iq6cV8SWf7++6kc5e2/VcGxLW
-         W9cypSBmr8iF9ryoUyD0kL0FalmmWUk6cytxPCcFkdsUbppRVKRdIu2cEEIZsl+nJIMH
-         yEow==
+        d=gmail.com; s=20230601; t=1716775244; x=1717380044; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ctWiv0pC9SqzWM/MujflPIZFnUTSkuqfQfgBDXVtC2U=;
+        b=ekaRMcxgoE0YqR9kWb2MXRnkH5JdqezjvmIQGzGl9syXy2ifTOmuh2vpXVnkran2xR
+         Xu5q/WhvZWYayQgVvr66ASJxzqAWsFmDdHum2PuEUn+CaYr2rdADUEbesuceLL1bzKbZ
+         F453XmLRF3DsOKpj1RgYFvhYQN68/ZQifYYQgNnm2DYzIjAVS97DX7VBxlQktW4hQcpc
+         VMIVJ+hBswKHIhsh6DYKpKjRdYlIuq9PNPj2N3BkMv6TJ0iUfRAB0AefJ0cMRkiqGf1d
+         fLmnGp4YQs6xTA1fb+mTgom1KGH3mMd14lKrn686LYlF5gLDwKrgs/SzrjHH2G6XZBSG
+         PC/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716774421; x=1717379221;
-        h=content-transfer-encoding:mime-version:from:subject:cc:to
-         :message-id:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=q4FFJvhqGlJIW7hZ4ayMdm3DHX2K2AoIhnxqg1XTK6w=;
-        b=uoXGmXDXt2Ysbue3cvakR6Cvf7n4Ul8LB/f1CW7vgH0U0rcZEF9eI31EUSDr3ZNEqx
-         vGXoyobPMgvCg5bGKdWl+E70GQmr1M/PUsGOCowPQhTJCoKL/yO3Ohr7qmrzCz58zFAE
-         HtVjp92D7cVN5g80kXPTQ0tiI9v+NMjSbJXlbk1nRTxwrLkblDrCXorESmjLyq4VBOps
-         Z6jqW23L7tIJYwOALOsZzIj7+nX0LqNQ8UczMHpU0i9gauuHavuh+3hVET8pzN3vQ75Y
-         4NlNa/9Ideps1VEPJGEhDHz4AyQoxwvk1kp/yP4nHGV7sSfRvMgNtWhDWNhL9ub7cwgj
-         IhYA==
-X-Gm-Message-State: AOJu0YzVHEL+bqaTxipveLmbgzNyYicIoGItR3x1ibmB/KALyGO09Lpc
-	XZFi6l7Iv4u/raoeJj+U9ETUZdo5dRf6RYCabuwSzy7G2egumT03ylkYOA==
-X-Google-Smtp-Source: AGHT+IFzuZE5YvU9Vsv0ydsb2zao9jRI0hBwVHCEg2wdlnc/wJZXsI1tPSKGLZonTb8QWGjXvdHmjw==
-X-Received: by 2002:a17:903:32c5:b0:1f4:b02d:bb61 with SMTP id d9443c01a7336-1f4b02dbe0amr216975ad.3.1716774421283;
-        Sun, 26 May 2024 18:47:01 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1716775244; x=1717380044;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=ctWiv0pC9SqzWM/MujflPIZFnUTSkuqfQfgBDXVtC2U=;
+        b=IM1zA3xy3oulBIxnWLY0vV9310QeseKDLcB51aMmTbAZEqbswdv4/e9Gg7p8SUdf3I
+         Eu+sFMa+fSR1W0f51pLqnXwtAv6stWZLRZBj77mm9/6MQkXWtfloZhahqyKaTadZIxcX
+         5fPPoKcdr9rPxiSTxIuzBn6ggknRoQDXQf9xqFjXYhmE9XwcfggU5q6SDu413Y5nazf6
+         ddLnx7O1EUfpQJX189epGh71F+4hMV7a4ZNDsEnDmU3NIHf9hhhvaVS8tY/V5WRcO7lP
+         wvSpD/dEqonb7JBzG6LAxYNCoqlT3qT+IjZk7qOX9yJ1iKDuLrfDiY1rFFYQXg95A1Xt
+         5IZw==
+X-Forwarded-Encrypted: i=1; AJvYcCUJ3BRPzeCc0hZ88nyPhVnZLcrNn9xs/44qzfsDE19zx8+P1n8k0b+gnVwzce+wzED8ZhN6Lu07nEs4wJ4VIvOuXNCV90ltOTr2NSFsixhEvYvWtnbm8TOAwxpj+Jf1x8odUXlxxow=
+X-Gm-Message-State: AOJu0Yye30tOPFB3XHc+t1GcPvlAugnaEzaKSizJ1Qr2EvhSoOZ1BSE0
+	cNk6t0rpmSD+Qzo/TBWF0Fl6U1KNSS/icFsJIbEosm+kTE0Mi34I
+X-Google-Smtp-Source: AGHT+IH7uATPGo5J3aTuTT6u6sgX24Pe5Wvj4QbKJ3mNR6pTXaIq76ucFsy8wzD3LWBs45E9126kLw==
+X-Received: by 2002:a05:6a21:81a7:b0:1ad:8f18:8621 with SMTP id adf61e73a8af0-1b212f7af7cmr7629417637.6.1716775244525;
+        Sun, 26 May 2024 19:00:44 -0700 (PDT)
 Received: from localhost (p5261226-ipxg23801hodogaya.kanagawa.ocn.ne.jp. [180.15.241.226])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f46cc0e0c9sm29978905ad.148.2024.05.26.18.46.59
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f481c24d13sm17910495ad.202.2024.05.26.19.00.42
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 26 May 2024 18:47:00 -0700 (PDT)
-Date: Mon, 27 May 2024 10:46:50 +0900 (JST)
-Message-Id: <20240527.104650.353359058235482782.fujita.tomonori@gmail.com>
-To: andrew@lunn.ch, benno.lossin@proton.me, tmgross@umich.edu
-Cc: rust-for-linux@vger.kernel.org
-Subject: [RFC PATCH v1] rust: net::phy support to C45 registers access
+        Sun, 26 May 2024 19:00:44 -0700 (PDT)
+Date: Mon, 27 May 2024 11:00:31 +0900 (JST)
+Message-Id: <20240527.110031.1543730602683806299.fujita.tomonori@gmail.com>
+To: tmgross@umich.edu
+Cc: fujita.tomonori@gmail.com, netdev@vger.kernel.org, andrew@lunn.ch,
+ rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH net-next v1 2/4] rust: net::phy support C45 helpers
 From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <CALNs47t0FDS59xckUV0QkozbX-RAs8U3woN_sBc0TVm8d=dKNA@mail.gmail.com>
+References: <20240415104701.4772-1-fujita.tomonori@gmail.com>
+	<20240415104701.4772-3-fujita.tomonori@gmail.com>
+	<CALNs47t0FDS59xckUV0QkozbX-RAs8U3woN_sBc0TVm8d=dKNA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+Content-Type: Text/Plain; charset=utf-8
+Content-Transfer-Encoding: base64
 
-Hi,
-
-After the discussion on C45 register support, I implemented a more rusty
-solution based on Benno's idea (hopefully, I understand correctly):
-
-https://lore.kernel.org/all/20240415104701.4772-3-fujita.tomonori@gmail.com/
-
-I'm not sure so I sent a RFC patch to rust-for-linux only. Once I have
-something that we could agree on, I'll send non RFC patch to netdev.
-
-
-Adds support for C45 registers access. C45 registers can be accessed
-in two ways: either C45 bus protocol or C45 over C22. Normally, a PHY
-driver shouldn't care how to access. PHYLIB chooses the appropriate
-one. But there is an exception; PHY hardware supporting only C45 bus
-protocol.
-
-This adds two ways to access C45; RegC45 and RegC45Direct. Normally, a
-driver should use the former; let the PHYLIB take care of how to
-access (by calling phy_read_mmd/phy_write_mmd). The latter calls
-mdiobus_c45_read/mdiobus_c45_write; C45 over C22 isn't used.
-
-The API to access to C22 registers is also updated to align with the
-above changes.
-
-Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
----
- drivers/net/phy/ax88796b_rust.rs |   7 +-
- rust/kernel/net/phy.rs           | 218 +++++++++++++++++++++++++++----
- 2 files changed, 198 insertions(+), 27 deletions(-)
-
-diff --git a/drivers/net/phy/ax88796b_rust.rs b/drivers/net/phy/ax88796b_rust.rs
-index 5c92572962dc..9526729dc35a 100644
---- a/drivers/net/phy/ax88796b_rust.rs
-+++ b/drivers/net/phy/ax88796b_rust.rs
-@@ -6,7 +6,7 @@
- //! C version of this driver: [`drivers/net/phy/ax88796b.c`](./ax88796b.c)
- use kernel::{
-     c_str,
--    net::phy::{self, DeviceId, Driver},
-+    net::phy::{self, DeviceId, Driver, RegC22},
-     prelude::*,
-     uapi,
- };
-@@ -24,7 +24,6 @@
-     license: "GPL",
- }
- 
--const MII_BMCR: u16 = uapi::MII_BMCR as u16;
- const BMCR_SPEED100: u16 = uapi::BMCR_SPEED100 as u16;
- const BMCR_FULLDPLX: u16 = uapi::BMCR_FULLDPLX as u16;
- 
-@@ -33,7 +32,7 @@
- // Toggle BMCR_RESET bit off to accommodate broken AX8796B PHY implementation
- // such as used on the Individual Computers' X-Surf 100 Zorro card.
- fn asix_soft_reset(dev: &mut phy::Device) -> Result {
--    dev.write(uapi::MII_BMCR as u16, 0)?;
-+    dev.write(RegC22::Bmcr, 0)?;
-     dev.genphy_soft_reset()
- }
- 
-@@ -55,7 +54,7 @@ fn read_status(dev: &mut phy::Device) -> Result<u16> {
-         }
-         // If MII_LPA is 0, phy_resolve_aneg_linkmode() will fail to resolve
-         // linkmode so use MII_BMCR as default values.
--        let ret = dev.read(MII_BMCR)?;
-+        let ret = dev.read(RegC22::Bmcr)?;
- 
-         if ret & BMCR_SPEED100 != 0 {
-             dev.set_speed(uapi::SPEED_100);
-diff --git a/rust/kernel/net/phy.rs b/rust/kernel/net/phy.rs
-index fd40b703d224..5bb4a8c9e493 100644
---- a/rust/kernel/net/phy.rs
-+++ b/rust/kernel/net/phy.rs
-@@ -175,32 +175,15 @@ pub fn set_duplex(&mut self, mode: DuplexMode) {
-         unsafe { (*phydev).duplex = v };
-     }
- 
--    /// Reads a given C22 PHY register.
-+    /// Reads a PHY register.
-     // This function reads a hardware register and updates the stats so takes `&mut self`.
--    pub fn read(&mut self, regnum: u16) -> Result<u16> {
--        let phydev = self.0.get();
--        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
--        // So it's just an FFI call, open code of `phy_read()` with a valid `phy_device` pointer
--        // `phydev`.
--        let ret = unsafe {
--            bindings::mdiobus_read((*phydev).mdio.bus, (*phydev).mdio.addr, regnum.into())
--        };
--        if ret < 0 {
--            Err(Error::from_errno(ret))
--        } else {
--            Ok(ret as u16)
--        }
-+    pub fn read<R: RegAccess>(&mut self, reg: R) -> Result<u16> {
-+        reg.read(self)
-     }
- 
--    /// Writes a given C22 PHY register.
--    pub fn write(&mut self, regnum: u16, val: u16) -> Result {
--        let phydev = self.0.get();
--        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
--        // So it's just an FFI call, open code of `phy_write()` with a valid `phy_device` pointer
--        // `phydev`.
--        to_result(unsafe {
--            bindings::mdiobus_write((*phydev).mdio.bus, (*phydev).mdio.addr, regnum.into(), val)
--        })
-+    /// Writes a PHY register.
-+    pub fn write<R: RegAccess>(&mut self, reg: R, val: u16) -> Result {
-+        reg.write(self, val)
-     }
- 
-     /// Reads a paged register.
-@@ -302,6 +285,195 @@ pub fn genphy_read_abilities(&mut self) -> Result {
-     }
- }
- 
-+/// Reads and writes C22 and C45 registers.
-+///
-+/// This trait is used to implement multiple ways to read and write
-+/// PHY registers.
-+pub trait RegAccess {
-+    /// Reads a PHY register.
-+    fn read(&self, dev: &mut Device) -> Result<u16>;
-+
-+    /// Writes a PHY register.
-+    fn write(&self, dev: &mut Device, val: u16) -> Result;
-+}
-+
-+/// Accesses to C22 registers.
-+#[derive(Clone, Copy)]
-+pub enum RegC22 {
-+    /// Basic mode control.
-+    Bmcr = uapi::MII_BMCR as isize,
-+    /// Basic mode status.
-+    Bmsr = uapi::MII_BMSR as isize,
-+    /// PHY identifier 1.
-+    PhysId1 = uapi::MII_PHYSID1 as isize,
-+    /// PHY identifier 2.
-+    PhysId2 = uapi::MII_PHYSID2 as isize,
-+    /// Auto-negotiation advertisement.
-+    Advertise = uapi::MII_ADVERTISE as isize,
-+    /// Auto-negotiation link partner base page ability.
-+    Lpa = uapi::MII_LPA as isize,
-+    /// Auto-negotiation expansion.
-+    Expansion = uapi::MII_EXPANSION as isize,
-+    /// 1000BASE-T control.
-+    Ctrl1000 = uapi::MII_CTRL1000 as isize,
-+    /// 1000BASE-T status.
-+    Stat1000 = uapi::MII_STAT1000 as isize,
-+    /// MMD access control.
-+    MmdCtrl = uapi::MII_MMD_CTRL as isize,
-+    /// MMD access data.
-+    MmdData = uapi::MII_MMD_DATA as isize,
-+    /// Extended status.
-+    Estatus = uapi::MII_ESTATUS as isize,
-+    /// Disconnect counter.
-+    Dcounter = uapi::MII_DCOUNTER as isize,
-+    /// False carrier sense counter.
-+    Fcscounter = uapi::MII_FCSCOUNTER as isize,
-+    /// N-way auto-negotiation test.
-+    Nwaytest = uapi::MII_NWAYTEST as isize,
-+    /// Receive error counter.
-+    Rerrcounter = uapi::MII_RERRCOUNTER as isize,
-+    /// Silicon revision.
-+    Srervision = uapi::MII_SREVISION as isize,
-+    /// Reserved.
-+    Resv1 = uapi::MII_RESV1 as isize,
-+    /// Lpback, rx, bypass error.
-+    Lbrerror = uapi::MII_LBRERROR as isize,
-+    /// PHY address.
-+    Phyaddr = uapi::MII_PHYADDR as isize,
-+    /// Reserved.
-+    Resv2 = uapi::MII_RESV2 as isize,
-+    /// TPI status for 10Mbps.
-+    TpiStatus = uapi::MII_TPISTATUS as isize,
-+    /// Network interface configuration.
-+    Nconfig = uapi::MII_NCONFIG as isize,
-+}
-+
-+impl RegAccess for RegC22 {
-+    /// Reads a given C22 PHY register.
-+    fn read(&self, dev: &mut Device) -> Result<u16> {
-+        let phydev = dev.0.get();
-+        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Device`.
-+        // So it's just an FFI call, open code of `phy_read()` with a valid `phy_device` pointer
-+        // `phydev`.
-+        let ret = unsafe {
-+            bindings::mdiobus_read((*phydev).mdio.bus, (*phydev).mdio.addr, *self as u32)
-+        };
-+        if ret < 0 {
-+            Err(Error::from_errno(ret))
-+        } else {
-+            Ok(ret as u16)
-+        }
-+    }
-+
-+    /// Writes a given C22 PHY register.
-+    fn write(&self, dev: &mut Device, val: u16) -> Result {
-+        let phydev = dev.0.get();
-+        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Device`.
-+        // So it's just an FFI call, open code of `phy_write()` with a valid `phy_device` pointer
-+        // `phydev`.
-+        to_result(unsafe {
-+            bindings::mdiobus_write((*phydev).mdio.bus, (*phydev).mdio.addr, *self as u32, val)
-+        })
-+    }
-+}
-+
-+/// Accesses to C45 registers.
-+///
-+/// C45 registers can be accessed in two ways: either C45 bus protocol or
-+/// C45 over C22 bus protocol. Normally, a PHY driver shouldn't care how to
-+/// access. `PHYLIB` chooses the appropriate one. `RegC45` is preferred over
-+/// `RegC45Direct`.
-+pub struct RegC45 {
-+    devad: u8,
-+    regnum: u16,
-+}
-+
-+impl RegC45 {
-+    /// Creates a new instance of `RegC45`.
-+    pub fn new(devad: u8, regnum: u16) -> Self {
-+        Self { devad, regnum }
-+    }
-+}
-+
-+impl RegAccess for RegC45 {
-+    /// Reads a given C45 PHY register.
-+    fn read(&self, dev: &mut Device) -> Result<u16> {
-+        let phydev = dev.0.get();
-+        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Device`.
-+        // So it's just an FFI call.
-+        let ret = unsafe { bindings::phy_read_mmd(phydev, self.devad.into(), self.regnum.into()) };
-+        if ret < 0 {
-+            Err(Error::from_errno(ret))
-+        } else {
-+            Ok(ret as u16)
-+        }
-+    }
-+
-+    /// Writes a given C45 PHY register.
-+    fn write(&self, dev: &mut Device, val: u16) -> Result {
-+        let phydev = dev.0.get();
-+        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Device`.
-+        // So it's just an FFI call.
-+        to_result(unsafe {
-+            bindings::phy_write_mmd(phydev, self.devad.into(), self.regnum.into(), val)
-+        })
-+    }
-+}
-+
-+/// Accesses to C45 registers with C45 bus protocol.
-+///
-+/// This struct is used to access C45 registers with C45 bus protocol;
-+/// C45 over C22 bus protocol isn't used.
-+pub struct RegC45Direct {
-+    devad: u8,
-+    regnum: u16,
-+}
-+
-+impl RegC45Direct {
-+    /// Creates a new instance of `RegC45Direct`.
-+    pub fn new(devad: u8, regnum: u16) -> Self {
-+        Self { devad, regnum }
-+    }
-+}
-+
-+impl RegAccess for RegC45Direct {
-+    /// Reads a given C45 PHY register.
-+    fn read(&self, dev: &mut Device) -> Result<u16> {
-+        let phydev = dev.0.get();
-+        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Device`.
-+        // So it's just an FFI call.
-+        let ret = unsafe {
-+            bindings::mdiobus_c45_read(
-+                (*phydev).mdio.bus,
-+                (*phydev).mdio.addr,
-+                self.devad.into(),
-+                self.regnum.into(),
-+            )
-+        };
-+        if ret < 0 {
-+            Err(Error::from_errno(ret))
-+        } else {
-+            Ok(ret as u16)
-+        }
-+    }
-+
-+    /// Writes a given C45 PHY register.
-+    fn write(&self, dev: &mut Device, val: u16) -> Result {
-+        let phydev = dev.0.get();
-+        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Device`.
-+        // So it's just an FFI call.
-+        to_result(unsafe {
-+            bindings::mdiobus_c45_write(
-+                (*phydev).mdio.bus,
-+                (*phydev).mdio.addr,
-+                self.devad.into(),
-+                self.regnum.into(),
-+                val,
-+            )
-+        })
-+    }
-+}
-+
- /// Defines certain other features this PHY supports (like interrupts).
- ///
- /// These flag values are used in [`Driver::FLAGS`].
--- 
-2.34.1
-
+SGksDQpTb3JyeSBhYm91dCB0aGUgbG9uZyBkZWxheSwNCg0KT24gTW9uLCAxNSBBcHIgMjAyNCAy
+MzoyNToyMiAtMDQwMA0KVHJldm9yIEdyb3NzIDx0bWdyb3NzQHVtaWNoLmVkdT4gd3JvdGU6DQoN
+Cj4gT24gTW9uLCBBcHIgMTUsIDIwMjQgYXQgNjo0N+KAr0FNIEZVSklUQSBUb21vbm9yaQ0KPiA8
+ZnVqaXRhLnRvbW9ub3JpQGdtYWlsLmNvbT4gd3JvdGU6DQo+PiArICAgIC8vLyBSZWFkcyBhIGdp
+dmVuIEM0NSBQSFkgcmVnaXN0ZXIuDQo+PiArICAgIC8vLyBUaGlzIGZ1bmN0aW9uIHJlYWRzIGEg
+aGFyZHdhcmUgcmVnaXN0ZXIgYW5kIHVwZGF0ZXMgdGhlIHN0YXRzIHNvIHRha2VzIGAmbXV0IHNl
+bGZgLg0KPj4gKyAgICBwdWIgZm4gYzQ1X3JlYWQoJm11dCBzZWxmLCBkZXZhZDogdTgsIHJlZ251
+bTogdTE2KSAtPiBSZXN1bHQ8dTE2PiB7DQo+PiArICAgICAgICBsZXQgcGh5ZGV2ID0gc2VsZi4w
+LmdldCgpOw0KPj4gKyAgICAgICAgLy8gU0FGRVRZOiBgcGh5ZGV2YCBpcyBwb2ludGluZyB0byBh
+IHZhbGlkIG9iamVjdCBieSB0aGUgdHlwZSBpbnZhcmlhbnQgb2YgYFNlbGZgLg0KPj4gKyAgICAg
+ICAgLy8gU28gaXQncyBqdXN0IGFuIEZGSSBjYWxsLg0KPiANCj4gRGVwZW5kaW5nIG9uIHRoZSBy
+ZXNwb25zZSB0byBBbmRyZXcncyBub3RlcywgdGhlc2UgU0FGRVRZIGNvbW1lbnRzDQo+IHdpbGwg
+cHJvYmFibHkgbmVlZCB0byBiZSB1cGRhdGVkIHRvIHNheSB3aHkgd2Uga25vdyBDNDUgaXMgc3Vw
+cG9ydGVkLg0KDQpJZiBhIGRyaXZlciB1c2VzIG9ubHktYzQ1IEFQSSAoUmVnQzQ1RGlyZWN0IGlu
+IHRoZSBuZXcgcGF0Y2gpLCBpdCByZXR1cm5zDQphbiBlcnJvci4gV2UgbmVlZCB0byB3cml0ZSBz
+b21ldGhpbmcgaW4gU0FGRVRZPw0KDQoNCj4+ICsgICAgICAgIGxldCByZXQgPSB1bnNhZmUgew0K
+Pj4gKyAgICAgICAgICAgIGJpbmRpbmdzOjptZGlvYnVzX2M0NV9yZWFkKA0KPj4gKyAgICAgICAg
+ICAgICAgICAoKnBoeWRldikubWRpby5idXMsDQo+PiArICAgICAgICAgICAgICAgICgqcGh5ZGV2
+KS5tZGlvLmFkZHIsDQo+PiArICAgICAgICAgICAgICAgIGRldmFkIGFzIGkzMiwNCj4gDQo+IFRo
+aXMgY291bGQgcHJvYmFibHkgYWxzbyBiZSBmcm9tLy5pbnRvKCkNCg0KRml4ZWQuDQoNCj4+ICsg
+ICAgICAgICAgICAgICAgcmVnbnVtLmludG8oKSwNCj4+ICsgICAgICAgICAgICApDQo+PiArICAg
+ICAgICB9Ow0KPj4gKyAgICAgICAgaWYgcmV0IDwgMCB7DQo+PiArICAgICAgICAgICAgRXJyKEVy
+cm9yOjpmcm9tX2Vycm5vKHJldCkpDQo+PiArICAgICAgICB9IGVsc2Ugew0KPj4gKyAgICAgICAg
+ICAgIE9rKHJldCBhcyB1MTYpDQo+PiArICAgICAgICB9DQo+IA0KPiBDb3VsZCB0aGlzIGJlIHNp
+bXBsaWZpZWQgd2l0aCB0b19yZXN1bHQ/DQoNCnRvX3Jlc3VsdCByZXR1cm5zIE9rKCgpKS4gU28g
+SSB0aGluayB0aGF0IHdlIG5lZWQgc29tZXRoaW5nDQp0b19yZXN1bHRfd2l0aF92YWx1ZSgpLg0K
+DQpJIHRoaW5rIHRoYXQgd2UgZGlzY3Vzc2VkIHNvbWV0aGluZyBsaWtlIHRoYXQgYWdvOg0KDQpo
+dHRwczovL2xvcmUua2VybmVsLm9yZy9hbGwvQ0FOaXE3Mj1WYU50Wl9CMGppOTR4RmZ0YjRQY3Rm
+ZXArNGMyY05Xa21DY0tocFpZMmtRQG1haWwuZ21haWwuY29tLw0KDQpBIG5ldyBmdW5jdGlvbiB3
+YXMgaW50cm9kdWNlZCwgd2hpY2ggSSBtaXNzZWQ/DQoNCg0KPj4gKyAgICB9DQo+PiArDQo+PiAr
+ICAgIC8vLyBXcml0ZXMgYSBnaXZlbiBDNDUgUEhZIHJlZ2lzdGVyLg0KPj4gKyAgICBwdWIgZm4g
+YzQ1X3dyaXRlKCZtdXQgc2VsZiwgZGV2YWQ6IHU4LCByZWdudW06IHUxNiwgdmFsOiB1MTYpIC0+
+IFJlc3VsdCB7DQo+PiArICAgICAgICBsZXQgcGh5ZGV2ID0gc2VsZi4wLmdldCgpOw0KPj4gKyAg
+ICAgICAgLy8gU0FGRVRZOiBgcGh5ZGV2YCBpcyBwb2ludGluZyB0byBhIHZhbGlkIG9iamVjdCBi
+eSB0aGUgdHlwZSBpbnZhcmlhbnQgb2YgYFNlbGZgLg0KPj4gKyAgICAgICAgLy8gU28gaXQncyBq
+dXN0IGFuIEZGSSBjYWxsLg0KPj4gKyAgICAgICAgdG9fcmVzdWx0KHVuc2FmZSB7DQo+PiArICAg
+ICAgICAgICAgYmluZGluZ3M6Om1kaW9idXNfYzQ1X3dyaXRlKA0KPj4gKyAgICAgICAgICAgICAg
+ICAoKnBoeWRldikubWRpby5idXMsDQo+PiArICAgICAgICAgICAgICAgICgqcGh5ZGV2KS5tZGlv
+LmFkZHIsDQo+PiArICAgICAgICAgICAgICAgIGRldmFkIGFzIGkzMiwNCj4gDQo+IFNhbWUgYXMg
+YWJvdmUNCg0KRml4ZWQuDQo=
