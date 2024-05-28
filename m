@@ -1,242 +1,221 @@
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28EA016F0DD;
-	Tue, 28 May 2024 13:28:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BF426A8A3
+	for <rust-for-linux@vger.kernel.org>; Tue, 28 May 2024 14:18:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716902883; cv=none; b=FFarb3x2NAv0Zesjj0bjZdamO5VXGdxzxi0lM42UeI4X4GhV3/8vjGcZxSzasuXg1qH1DPaFo58DtvwAB0YePOj954gvXZsC5ECTP2ykWwNhlZC3UKIgO4jGl8HdIGNpiWvoCakM41aKRcjHqZN2TsocR27MGX+ygNG3orBdKDY=
+	t=1716905934; cv=none; b=M/Kj07v/hiJGn9PHP18RVWqFcr/OGd07jNhWiMhI2I+JOk9AmaDloPd0jtY8x1VtY3fRTnXredkgX6fa+JvyNWasKyN9m7/7dz0mtLjqLMldq8z/wI7lZ1XFRN/TPRXwclKCdENlZNCuJQWA7a5sVRL5fniWzPvF6uTbmskt/KM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716902883; c=relaxed/simple;
-	bh=uqJvrqqgKH4Ec/381jSSZ52PTmJenP9/HfohYBBu8t8=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KeEOk2e5+x9KagiZn0VYCyh7ap4CZTSS8R0ruPycKMdbEmBZLz0x+Z2IAh2S0tM7RmIEmv4cxm2GpJwVKrCR9+MdC6CarjNh7Lt9A7URgvlWYPXMhZkdz/gYFJzmYAhS1oK5f7iag8t1tgsKkoCL1hhOBQ9+NPjXPTaijQUOybc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=iz7cX5nU; arc=none smtp.client-ip=185.70.43.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1716905934; c=relaxed/simple;
+	bh=bYzk1OnIzBTdgH/qhRITEf2NZ+0V+6FIJbO2yy3Z8Uc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 In-Reply-To:Content-Type:Content-Disposition; b=D4/0DWoPaYCeNt8ZByFfgC9dPv4teFcv4OWGCfYRxEiHhPx5MiqRJkLA0r4B0cUtY4Fat/JZbt/Gejpi/ssoa0MHSxUzKsXNMf6SMs9W7Konl8UXQPzw8acDPTOUhygK+AGzGYRJn2Wk+B8cliIpuxkrVg3QP5cvGxf7EUzA4iU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JJmm1wog; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="iz7cX5nU"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1716902877; x=1717162077;
-	bh=qqtgzJlmFD04DRomp01Lp8PnnmfNEYuAnmxTd28A+mA=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=iz7cX5nUCsaHQ52ilcQPLn8UCQS6kbxIvJYCj1eOLRr1srtopY4o2ivbhPDQlUzHK
-	 6BHbaaKvpcNWNCqh3e5tW+82RM5JcCp5KvNR4KDm4FubnmbcnFjd0SUN2RaZ7nOYEF
-	 QUhuU1pdOxv1xYcM3ISSI4XRFIDyUbndnv83j3AIh5PKZGoB72roa39rIZWMqppKFn
-	 gCBMJmFKi4xHXnD1VdGaQbnaJgQ45lqsAV+HDX9FkoZmyslo/h04c/Yv7QumbgATss
-	 JNic77RjO0rpHPEGuGRN0V/1iKLivB8I/lQS23qUMmRQ2+opsfoeWRT9Tx0VMhaNhm
-	 RKMwSzl2RNm9Q==
-Date: Tue, 28 May 2024 13:27:53 +0000
-To: Andreas Hindborg <nmi@metaspace.dk>, Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>, Keith Busch <kbusch@kernel.org>, Damien Le Moal <dlemoal@kernel.org>, Bart Van Assche <bvanassche@acm.org>, Hannes Reinecke <hare@suse.de>, Ming Lei <ming.lei@redhat.com>, "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Andreas Hindborg <a.hindborg@samsung.com>, Greg KH <gregkh@linuxfoundation.org>, Matthew Wilcox <willy@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Chaitanya Kulkarni <chaitanyak@nvidia.com>, Luis Chamberlain <mcgrof@kernel.org>, Yexuan Yang <1182282462@bupt.edu.cn>, =?utf-8?Q?Sergio_Gonz=C3=A1lez_Collado?= <sergio.collado@gmail.com>, Joel Granados <j.granados@samsung.com>, "Pankaj Raghav (Samsung)" <kernel@pankajraghav.com>, Daniel Gomez <da.gomez@samsung.com>, Niklas Cassel <Niklas.Cassel@wdc.com>, Philipp Stanner <pstanner@redhat.com>, Conor Dooley <conor@kernel.org>, Johannes Thumshirn <Johannes.Thumshirn@wdc.com>, =?utf-8?Q?Matias_Bj=C3=B8rling?= <m@bjorling.me>, open list <linux-kernel@vger.kernel.org>,
-	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>, "lsf-pc@lists.linux-foundation.org" <lsf-pc@lists.linux-foundation.org>, "gost.dev@samsung.com" <gost.dev@samsung.com>
-Subject: Re: [PATCH v2 2/3] rust: block: add rnull, Rust null_blk implementation
-Message-ID: <d7b963f0-060f-44c0-8358-fb8dbd064575@proton.me>
-In-Reply-To: <20240521140323.2960069-3-nmi@metaspace.dk>
-References: <20240521140323.2960069-1-nmi@metaspace.dk> <20240521140323.2960069-3-nmi@metaspace.dk>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: dba9a313b25dad8f775da433a567bc08de8caa87
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JJmm1wog"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1716905932;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=z/BZ1nt51YTWYadDCqba2r6Z+lAvTA6hSb41k488cU8=;
+	b=JJmm1wog/Xi3hUw3G9uspZVX9UNt/A7bXSMY0c+hmjskjYopNokUaFBTe1qvXvWRT37nLo
+	Hvi6mQ0X/PyHeDYeO0TlL9Xi7/uXNP30FigRqyabv3HIF5Sf2y05dtG8pve8+ucUDeHH2+
+	gvpNNL28HFUSJ/DE15xZHRpaRkS7Ig8=
+Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
+ [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-547-yR6wQXe3M1idTF25brWn1A-1; Tue, 28 May 2024 10:18:48 -0400
+X-MC-Unique: yR6wQXe3M1idTF25brWn1A-1
+Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-35847dc0690so477520f8f.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 28 May 2024 07:18:48 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1716905927; x=1717510727;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=z/BZ1nt51YTWYadDCqba2r6Z+lAvTA6hSb41k488cU8=;
+        b=sEDa4koCj2plBQT5TryT0ClZPAd/p2/2B1W3cWlK18R26AuFS81CrEvkRUgx+cjmRb
+         GhlpHx8kB/y4cySudFk7QZpUw9TtVAdlKWHH9/LKM1Gn1HmsMruzFyC33QmV7koodY77
+         PRk9pPCNTWqgjctvkoxMrTtpQuI0APlcb1b3B9i7oZA4cJfGH+7E7g0c8lDiOcQTkYBp
+         PWKrpLI9P5u0IJDASSCGrzZcffDL6KH6fGHLSfVnDOmqjdKJk+WTVs1WI/r0RVOUhnR9
+         nFYYEpp4hZO81cZMmOsEDFXkRBorzRwlA2SY/nhn2DmrglWMTazYYhUqt4ZWaEEsfS/M
+         r9Ng==
+X-Forwarded-Encrypted: i=1; AJvYcCVtHjRP+l7i0N1db1SXlcYZAU/V20QeqUaYIm8tX9Cn4Jw6z1Pcu1jmKNY9y5EIN811bVqFQ9/Z4LyyVGPF7kKnaKvBo7rtnX/CGeh4zIs=
+X-Gm-Message-State: AOJu0Yx7rw0mTjR4cE/Nm6RvBu4et2+nKJV+o9IuNIg2FOasdt+sgVx6
+	HUy5OIhCZJ5vENTu0+I35WQ5WbjrQ8P5Hstm42Blb8oUqg4/wImn0VgW7L/VvVWmkjbl6E6wfh1
+	/gSJPPMaEIpUD01gYYVXVwDYTKjRdiCjmO3O43LZVqjpOkf5QWtmKa78a4UOcKl+c
+X-Received: by 2002:adf:f14a:0:b0:354:e22c:ea86 with SMTP id ffacd0b85a97d-35506d48b8cmr9521439f8f.9.1716905927695;
+        Tue, 28 May 2024 07:18:47 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHzv0UKkNsSlIQyIXiOI2f3K/kj+ZZJuaGQwe6Mug19LllcchtBIhDXNRyuC86tE0PcwWttfw==
+X-Received: by 2002:adf:f14a:0:b0:354:e22c:ea86 with SMTP id ffacd0b85a97d-35506d48b8cmr9521398f8f.9.1716905927283;
+        Tue, 28 May 2024 07:18:47 -0700 (PDT)
+Received: from pollux ([2a02:810d:4b3f:ee94:abf:b8ff:feee:998b])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-35607bcdf26sm11788342f8f.99.2024.05.28.07.18.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 28 May 2024 07:18:46 -0700 (PDT)
+Date: Tue, 28 May 2024 16:18:44 +0200
+From: Danilo Krummrich <dakr@redhat.com>
+To: Zhi Wang <zhiw@nvidia.com>
+Cc: "maarten.lankhorst@linux.intel.com" <maarten.lankhorst@linux.intel.com>,
+	"mripard@kernel.org" <mripard@kernel.org>,
+	"tzimmermann@suse.de" <tzimmermann@suse.de>,
+	"airlied@gmail.com" <airlied@gmail.com>,
+	"daniel@ffwll.ch" <daniel@ffwll.ch>,
+	"ojeda@kernel.org" <ojeda@kernel.org>,
+	"alex.gaynor@gmail.com" <alex.gaynor@gmail.com>,
+	"wedsonaf@gmail.com" <wedsonaf@gmail.com>,
+	"boqun.feng@gmail.com" <boqun.feng@gmail.com>,
+	"gary@garyguo.net" <gary@garyguo.net>,
+	"bjorn3_gh@protonmail.com" <bjorn3_gh@protonmail.com>,
+	"benno.lossin@proton.me" <benno.lossin@proton.me>,
+	"a.hindborg@samsung.com" <a.hindborg@samsung.com>,
+	"aliceryhl@google.com" <aliceryhl@google.com>,
+	"fujita.tomonori@gmail.com" <fujita.tomonori@gmail.com>,
+	"lina@asahilina.net" <lina@asahilina.net>,
+	"pstanner@redhat.com" <pstanner@redhat.com>,
+	"ajanulgu@redhat.com" <ajanulgu@redhat.com>,
+	"lyude@redhat.com" <lyude@redhat.com>,
+	"gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
+	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
+	"dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
+	"nouveau@lists.freedesktop.org" <nouveau@lists.freedesktop.org>
+Subject: Re: [RFC PATCH 7/8] rust: add firmware abstractions
+Message-ID: <ZlXnxGK24QaYLDmM@pollux>
+References: <20240520172059.181256-1-dakr@redhat.com>
+ <20240520172422.181763-4-dakr@redhat.com>
+ <20240521083231.000074c2.zhiw@nvidia.com>
+ <ZlTcnYNff2EDQJdj@pollux.localdomain>
+ <fd5dbd42-24b7-422b-bc0b-393347b3fdca@nvidia.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <fd5dbd42-24b7-422b-bc0b-393347b3fdca@nvidia.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On 21.05.24 16:03, Andreas Hindborg wrote:
-> From: Andreas Hindborg <a.hindborg@samsung.com>
->=20
-> This patch adds an initial version of the Rust null block driver.
->=20
-> Signed-off-by: Andreas Hindborg <a.hindborg@samsung.com>
-> ---
->  drivers/block/Kconfig   |  9 +++++
->  drivers/block/Makefile  |  3 ++
->  drivers/block/rnull.rs  | 86 +++++++++++++++++++++++++++++++++++++++++
->  rust/kernel/block/mq.rs |  4 +-
->  4 files changed, 101 insertions(+), 1 deletion(-)
->  create mode 100644 drivers/block/rnull.rs
->=20
-> diff --git a/drivers/block/Kconfig b/drivers/block/Kconfig
-> index 5b9d4aaebb81..ed209f4f2798 100644
-> --- a/drivers/block/Kconfig
-> +++ b/drivers/block/Kconfig
-> @@ -354,6 +354,15 @@ config VIRTIO_BLK
->  =09  This is the virtual block driver for virtio.  It can be used with
->            QEMU based VMMs (like KVM or Xen).  Say Y or M.
->=20
-> +config BLK_DEV_RUST_NULL
-> +=09tristate "Rust null block driver (Experimental)"
-> +=09depends on RUST
-> +=09help
-> +=09  This is the Rust implementation of the null block driver. For now i=
-t
-> +=09  is only a minimal stub.
-> +
-> +=09  If unsure, say N.
-> +
->  config BLK_DEV_RBD
->  =09tristate "Rados block device (RBD)"
->  =09depends on INET && BLOCK
-> diff --git a/drivers/block/Makefile b/drivers/block/Makefile
-> index 101612cba303..1105a2d4fdcb 100644
-> --- a/drivers/block/Makefile
-> +++ b/drivers/block/Makefile
-> @@ -9,6 +9,9 @@
->  # needed for trace events
->  ccflags-y=09=09=09=09+=3D -I$(src)
->=20
-> +obj-$(CONFIG_BLK_DEV_RUST_NULL) +=3D rnull_mod.o
-> +rnull_mod-y :=3D rnull.o
-> +
->  obj-$(CONFIG_MAC_FLOPPY)=09+=3D swim3.o
->  obj-$(CONFIG_BLK_DEV_SWIM)=09+=3D swim_mod.o
->  obj-$(CONFIG_BLK_DEV_FD)=09+=3D floppy.o
-> diff --git a/drivers/block/rnull.rs b/drivers/block/rnull.rs
-> new file mode 100644
-> index 000000000000..1d6ab6f0f26f
-> --- /dev/null
-> +++ b/drivers/block/rnull.rs
-> @@ -0,0 +1,86 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! This is a Rust implementation of the C null block driver.
-> +//!
-> +//! Supported features:
-> +//!
-> +//! - blk-mq interface
-> +//! - direct completion
-> +//! - block size 4k
-> +//!
-> +//! The driver is not configurable.
-> +
-> +use kernel::{
-> +    alloc::flags,
-> +    block::mq::{
-> +        self,
-> +        gen_disk::{self, GenDisk},
-> +        Operations, TagSet,
-> +    },
-> +    error::Result,
-> +    new_mutex, pr_info,
-> +    prelude::*,
-> +    sync::{Arc, Mutex},
-> +    types::ARef,
-> +};
-> +
-> +module! {
-> +    type: NullBlkModule,
-> +    name: "rnull_mod",
-> +    author: "Andreas Hindborg",
-> +    license: "GPL v2",
-> +}
-> +
-> +struct NullBlkModule {
-> +    _disk: Pin<Box<Mutex<GenDisk<NullBlkDevice, gen_disk::Added>>>>,
-> +}
-> +
-> +fn add_disk(tagset: Arc<TagSet<NullBlkDevice>>) -> Result<GenDisk<NullBl=
-kDevice, gen_disk::Added>> {
+On Tue, May 28, 2024 at 08:40:20AM +0000, Zhi Wang wrote:
+> On 27/05/2024 22.18, Danilo Krummrich wrote:
+> > External email: Use caution opening links or attachments
+> > 
+> > 
+> > On Tue, May 21, 2024 at 08:32:31AM +0300, Zhi Wang wrote:
+> >> On Mon, 20 May 2024 19:24:19 +0200
+> >> Danilo Krummrich <dakr@redhat.com> wrote:
+> >>
+> >>> Add an abstraction around the kernels firmware API to request firmware
+> >>> images. The abstraction provides functions to access the firmware
+> >>> buffer and / or copy it to a new buffer allocated with a given
+> >>> allocator backend.
+> >>>
+> >>
+> >> Was playing with firmware extractions based on this patch.
+> >> Unfortunately I ended up with a lot of pointer operations, unsafe
+> >> statements.
+> >>
+> >> As we know many vendors have a C headers for the definitions of the
+> >> firwmare content, the driver extract the data by applying a struct
+> >> pointer on it.
+> >>
+> >> But in rust, I feel it would nice that we can also have a common
+> >> firmware extractor for drivers, that can wrap the pointer operations,
+> >> take a list of the firmware struct members that converted from C headers
+> >> as the input, offer the driver some common ABI methods to query them.
+> >> Maybe that would ease the pain a lot.
+> > 
+> > So, you mean some abstraction that takes a list of types, offsets in the
+> > firmware and a reference to the firmware itself and provides references to the
+> > corresponding objects?
+> > 
+> > I agree it might be helpful to have some common infrastructure for this, but the
+> > operations on it would still be unsafe, since ultimately it involves
+> > dereferencing pointers.
+> > 
+> 
+> I think the goal is to 1) concentrate the "unsafe" operations in a 
+> abstraction so the driver doesn't have to write explanation of unsafe 
+> operations here and there, improve the readability of the driver that 
+> interacts with vendor-firmware buffer. 2) ease the driver maintenance 
+> burden.
 
-Any reason that this is its own function and not in the
-`NullBlkModule::init` function?
+With a generic abstraction, as in 1), at lest some of the abstraction's
+functions would be unsafe themselves, since they have to rely on the layout
+(or offset) passed by the driver being correct. What if I pass a wrong layout /
+offset for a structure that contains a pointer? This might still result in an
+invalid pointer dereference. Am I missing something?
 
-> +    let block_size: u16 =3D 4096;
-> +    if block_size % 512 !=3D 0 || !(512..=3D4096).contains(&block_size) =
-{
-> +        return Err(kernel::error::code::EINVAL);
-> +    }
-> +
-> +    let mut disk =3D gen_disk::try_new(tagset)?;
-> +    disk.set_name(format_args!("rnullb{}", 0))?;
-> +    disk.set_capacity_sectors(4096 << 11);
-> +    disk.set_queue_logical_block_size(block_size.into());
-> +    disk.set_queue_physical_block_size(block_size.into());
-> +    disk.set_rotational(false);
-> +    disk.add()
-> +}
-> +
-> +impl kernel::Module for NullBlkModule {
-> +    fn init(_module: &'static ThisModule) -> Result<Self> {
-> +        pr_info!("Rust null_blk loaded\n");
-> +        let tagset =3D Arc::pin_init(TagSet::try_new(1, 256, 1), flags::=
-GFP_KERNEL)?;
-> +        let disk =3D Box::pin_init(
-> +            new_mutex!(add_disk(tagset)?, "nullb:disk"),
-> +            flags::GFP_KERNEL,
-> +        )?;
-> +
-> +        Ok(Self { _disk: disk })
-> +    }
-> +}
-> +
-> +struct NullBlkDevice;
-> +
-> +#[vtable]
-> +impl Operations for NullBlkDevice {
-> +    #[inline(always)]
-> +    fn queue_rq(rq: ARef<mq::Request<Self>>, _is_last: bool) -> Result {
-> +        mq::Request::end_ok(rq)
-> +            .map_err(|_e| kernel::error::code::EIO)
-> +            .expect("Failed to complete request");
+> 
+> Some solutions I saw in different projects written in rust for 
+> de-referencing a per-defined struct:
+> 
+> 1) Take the vendor firmware buffer as a whole, invent methods like 
+> read/write with offset for operating the buffer.
+> 
+> In this scheme, the driver is responsible for taking care of each data 
+> member in a vendor firmware struct and also its valid offset. The 
+> abstraction only covers the boundary of the whole firmware buffer.
+> 
+> The cons is the readability of the operation of the vendor firmware 
+> buffer in the driver is not good comparing with C code.
+> 
+> Hate to think a lot of xxx = vendor_firmware_struct.read(offset); // 
+> reading item A in the code.
+> 
+> 2) Define the firmware struct in rust (might need to find a better way 
+> to handle "union" in the definition of the vendor firmware struct). Use 
+> macros to generate methods of accessing each data member for the vendor 
+> firmware struct.
+> 
+> Then the code in the driver will be like xxx = 
+> vendor_firmware_struct.item_a(); in the driver.
+> 
+> In this scheme, the abstraction and the generated methods covers the 
+> boundary check. The "unsafe" statement can stay in the generated 
+> struct-access methods.
+> 
+> This might even be implemented as a more generic rust feature in the kernel.
 
-This error would only happen if `rq` is not the only ARef to that
-request, right?
+This sounds more like a driver specific abstraction to me, which, as you write,
+we can probably come up with some macros that help implementing it.
 
-> +
-> +        Ok(())
-> +    }
-> +
-> +    fn commit_rqs() {}
-> +
-> +    fn complete(rq: ARef<mq::Request<Self>>) {
+But again, what if the offsets are within the boundary, but still at a wrong
+offset? What if the data obtained from a wrong offset leads to other safety
+implications when further processing them? I think no generic abstraction can
+ever cover the safety parts of this (entirely). I think there are always semanic
+parts to this the driver has to cover.
 
-Am I correct in thinking that this function is never actually called,
-since all requests that are queued are immediately ended?
+Generally, I think we should aim for some generalization, but I think we should
+not expect it to cover all the safety aspects.
 
-> +        mq::Request::end_ok(rq)
-> +            .map_err(|_e| kernel::error::code::EIO)
-> +            .expect("Failed to complete request")
-> +    }
-> +}
-> diff --git a/rust/kernel/block/mq.rs b/rust/kernel/block/mq.rs
-> index efbd2588791b..54e032bbdffd 100644
-> --- a/rust/kernel/block/mq.rs
-> +++ b/rust/kernel/block/mq.rs
-> @@ -51,6 +51,7 @@
->  //!
->  //! ```rust
->  //! use kernel::{
-> +//!     alloc::flags,
->  //!     block::mq::*,
->  //!     new_mutex,
->  //!     prelude::*,
-> @@ -77,7 +78,8 @@
->  //!     }
->  //! }
->  //!
-> -//! let tagset: Arc<TagSet<MyBlkDevice>> =3D Arc::pin_init(TagSet::try_n=
-ew(1, 256, 1))?;
-> +//! let tagset: Arc<TagSet<MyBlkDevice>> =3D
-> +//!     Arc::pin_init(TagSet::try_new(1, 256, 1), flags::GFP_KERNEL)?;
+> 
+> The cons is still the driver might need to sync between the C-version 
+> definition and rust-version definition.
 
-This change should probably be in the patch before (seems like an
-artifact from rebasing).
+What do you mean with the driver needs to sync between a C and a Rust version of
+structure definitions?
 
----
-Cheers,
-Benno
+> 
+> 3) Also re-using C bindings generation in the kernel came to my mind 
+> when thinking of this problem, since it allows the rust code to access 
+> the C struct, but they don't have the boundary check. Still need another 
+> layer/macros to wrap it.
 
->  //! let mut disk =3D gen_disk::try_new(tagset)?;
->  //! disk.set_name(format_args!("myblk"))?;
->  //! disk.set_capacity_sectors(4096);
-> --
-> 2.44.0
->=20
->=20
+I think we should have the structure definitions in Rust directly.
+
+- Danilo
+
+> 
+> 
+> >>
+> >> Thanks,
+> >> Zhi.
+> >>
 
