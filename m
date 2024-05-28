@@ -1,221 +1,225 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f201.google.com (mail-lj1-f201.google.com [209.85.208.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BF426A8A3
-	for <rust-for-linux@vger.kernel.org>; Tue, 28 May 2024 14:18:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA7C479F6
+	for <rust-for-linux@vger.kernel.org>; Tue, 28 May 2024 14:58:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716905934; cv=none; b=M/Kj07v/hiJGn9PHP18RVWqFcr/OGd07jNhWiMhI2I+JOk9AmaDloPd0jtY8x1VtY3fRTnXredkgX6fa+JvyNWasKyN9m7/7dz0mtLjqLMldq8z/wI7lZ1XFRN/TPRXwclKCdENlZNCuJQWA7a5sVRL5fniWzPvF6uTbmskt/KM=
+	t=1716908297; cv=none; b=VuHH2w3y3LD1gEpcW+mwmQRIc9FqphNUZCF99dZyTE5ECNxi+xz8oAiEB8gw+8pB0RuDE/qeUCbQZ5f5uAZt6QuLv+D99jc0cMAWb/0ycpzbJgGZzbDYVBBmY1tVJoeulj2a/wFp46ZlmLWdEeOEvmZKA/Heg/HsLObO3VZEwL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716905934; c=relaxed/simple;
-	bh=bYzk1OnIzBTdgH/qhRITEf2NZ+0V+6FIJbO2yy3Z8Uc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 In-Reply-To:Content-Type:Content-Disposition; b=D4/0DWoPaYCeNt8ZByFfgC9dPv4teFcv4OWGCfYRxEiHhPx5MiqRJkLA0r4B0cUtY4Fat/JZbt/Gejpi/ssoa0MHSxUzKsXNMf6SMs9W7Konl8UXQPzw8acDPTOUhygK+AGzGYRJn2Wk+B8cliIpuxkrVg3QP5cvGxf7EUzA4iU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=JJmm1wog; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1716908297; c=relaxed/simple;
+	bh=UGSUXvJPMuX9Bkae/WPEm6A6AVU8nmv5zPwgw0bs7/Y=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=Gkd5y9CDRg1YxPt2p5ng8giMZ721ZUEVCJOow+swuca481kdokMiQlPuq6dpCoNB8tvEKh3CIxAfciQtaGmrEHX4KQ9nQExVx2yVjHAbDSo35ZXkkedt4IvXmi8qazAYXYOUgOlxHI6hGdGRYmId1d9Q/rwc1sBC/GA5evrwohI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Jyr4jZOL; arc=none smtp.client-ip=209.85.208.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="JJmm1wog"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1716905932;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=z/BZ1nt51YTWYadDCqba2r6Z+lAvTA6hSb41k488cU8=;
-	b=JJmm1wog/Xi3hUw3G9uspZVX9UNt/A7bXSMY0c+hmjskjYopNokUaFBTe1qvXvWRT37nLo
-	Hvi6mQ0X/PyHeDYeO0TlL9Xi7/uXNP30FigRqyabv3HIF5Sf2y05dtG8pve8+ucUDeHH2+
-	gvpNNL28HFUSJ/DE15xZHRpaRkS7Ig8=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-547-yR6wQXe3M1idTF25brWn1A-1; Tue, 28 May 2024 10:18:48 -0400
-X-MC-Unique: yR6wQXe3M1idTF25brWn1A-1
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-35847dc0690so477520f8f.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 28 May 2024 07:18:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Jyr4jZOL"
+Received: by mail-lj1-f201.google.com with SMTP id 38308e7fff4ca-2e95abc0d8eso7611941fa.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 28 May 2024 07:58:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1716908294; x=1717513094; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=xLfLKzdeYSLpodZjM1TmVnfFmup+gWezC6j62g1XHPU=;
+        b=Jyr4jZOLI2Te9/VtxKIaQRi4538PI190E+cpqB93kjBDis43Y9LIJSe1hHGBRs6O/4
+         LLN3r4ycLleZP6f35C6I82l7MW5QRnZz5H2vIjcI7Wehu5olPWKQLSNgkZkzFyp5f3f5
+         VzevJno7SexdE7QFUVtLuGb/Y15ShVYmhyFfHHEPDfH05BcHL0udiOAtMtUmR2rHaLV3
+         gxlincMTiMzZZqPj9ZP81twa66Oz+EPSdC73ugxFpPUhqDhHWAQPUcJ1sMZ+iRRwtHh8
+         ojqki2Dz8gApGsaOfoL6EkSJNk5gDlnqw/J4srvmsnnIY6Cm6xL3zI/NRM920ll2Lgfz
+         aNkw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716905927; x=1717510727;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=z/BZ1nt51YTWYadDCqba2r6Z+lAvTA6hSb41k488cU8=;
-        b=sEDa4koCj2plBQT5TryT0ClZPAd/p2/2B1W3cWlK18R26AuFS81CrEvkRUgx+cjmRb
-         GhlpHx8kB/y4cySudFk7QZpUw9TtVAdlKWHH9/LKM1Gn1HmsMruzFyC33QmV7koodY77
-         PRk9pPCNTWqgjctvkoxMrTtpQuI0APlcb1b3B9i7oZA4cJfGH+7E7g0c8lDiOcQTkYBp
-         PWKrpLI9P5u0IJDASSCGrzZcffDL6KH6fGHLSfVnDOmqjdKJk+WTVs1WI/r0RVOUhnR9
-         nFYYEpp4hZO81cZMmOsEDFXkRBorzRwlA2SY/nhn2DmrglWMTazYYhUqt4ZWaEEsfS/M
-         r9Ng==
-X-Forwarded-Encrypted: i=1; AJvYcCVtHjRP+l7i0N1db1SXlcYZAU/V20QeqUaYIm8tX9Cn4Jw6z1Pcu1jmKNY9y5EIN811bVqFQ9/Z4LyyVGPF7kKnaKvBo7rtnX/CGeh4zIs=
-X-Gm-Message-State: AOJu0Yx7rw0mTjR4cE/Nm6RvBu4et2+nKJV+o9IuNIg2FOasdt+sgVx6
-	HUy5OIhCZJ5vENTu0+I35WQ5WbjrQ8P5Hstm42Blb8oUqg4/wImn0VgW7L/VvVWmkjbl6E6wfh1
-	/gSJPPMaEIpUD01gYYVXVwDYTKjRdiCjmO3O43LZVqjpOkf5QWtmKa78a4UOcKl+c
-X-Received: by 2002:adf:f14a:0:b0:354:e22c:ea86 with SMTP id ffacd0b85a97d-35506d48b8cmr9521439f8f.9.1716905927695;
-        Tue, 28 May 2024 07:18:47 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHzv0UKkNsSlIQyIXiOI2f3K/kj+ZZJuaGQwe6Mug19LllcchtBIhDXNRyuC86tE0PcwWttfw==
-X-Received: by 2002:adf:f14a:0:b0:354:e22c:ea86 with SMTP id ffacd0b85a97d-35506d48b8cmr9521398f8f.9.1716905927283;
-        Tue, 28 May 2024 07:18:47 -0700 (PDT)
-Received: from pollux ([2a02:810d:4b3f:ee94:abf:b8ff:feee:998b])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-35607bcdf26sm11788342f8f.99.2024.05.28.07.18.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 28 May 2024 07:18:46 -0700 (PDT)
-Date: Tue, 28 May 2024 16:18:44 +0200
-From: Danilo Krummrich <dakr@redhat.com>
-To: Zhi Wang <zhiw@nvidia.com>
-Cc: "maarten.lankhorst@linux.intel.com" <maarten.lankhorst@linux.intel.com>,
-	"mripard@kernel.org" <mripard@kernel.org>,
-	"tzimmermann@suse.de" <tzimmermann@suse.de>,
-	"airlied@gmail.com" <airlied@gmail.com>,
-	"daniel@ffwll.ch" <daniel@ffwll.ch>,
-	"ojeda@kernel.org" <ojeda@kernel.org>,
-	"alex.gaynor@gmail.com" <alex.gaynor@gmail.com>,
-	"wedsonaf@gmail.com" <wedsonaf@gmail.com>,
-	"boqun.feng@gmail.com" <boqun.feng@gmail.com>,
-	"gary@garyguo.net" <gary@garyguo.net>,
-	"bjorn3_gh@protonmail.com" <bjorn3_gh@protonmail.com>,
-	"benno.lossin@proton.me" <benno.lossin@proton.me>,
-	"a.hindborg@samsung.com" <a.hindborg@samsung.com>,
-	"aliceryhl@google.com" <aliceryhl@google.com>,
-	"fujita.tomonori@gmail.com" <fujita.tomonori@gmail.com>,
-	"lina@asahilina.net" <lina@asahilina.net>,
-	"pstanner@redhat.com" <pstanner@redhat.com>,
-	"ajanulgu@redhat.com" <ajanulgu@redhat.com>,
-	"lyude@redhat.com" <lyude@redhat.com>,
-	"gregkh@linuxfoundation.org" <gregkh@linuxfoundation.org>,
-	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
-	"dri-devel@lists.freedesktop.org" <dri-devel@lists.freedesktop.org>,
-	"nouveau@lists.freedesktop.org" <nouveau@lists.freedesktop.org>
-Subject: Re: [RFC PATCH 7/8] rust: add firmware abstractions
-Message-ID: <ZlXnxGK24QaYLDmM@pollux>
-References: <20240520172059.181256-1-dakr@redhat.com>
- <20240520172422.181763-4-dakr@redhat.com>
- <20240521083231.000074c2.zhiw@nvidia.com>
- <ZlTcnYNff2EDQJdj@pollux.localdomain>
- <fd5dbd42-24b7-422b-bc0b-393347b3fdca@nvidia.com>
+        d=1e100.net; s=20230601; t=1716908294; x=1717513094;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=xLfLKzdeYSLpodZjM1TmVnfFmup+gWezC6j62g1XHPU=;
+        b=aT4mKGxFqeaM2lhvi1HJ5y9VAgteIqFTtKpv7VN48YMtJFUANKZ+99vBDLHMipImRX
+         qJgweqcB/b/AadGLHr1jXp7wlWY1z6EQ/xmKCXpRzAhARI2+ghb1nI0zaeEyxmza81Vp
+         Y5Qa/zXjTdcKhYMfX6eheTRR1tNw46q3Tdnm6MHxmonOGnMVL4O7GCJbVFe0aSe6RXDC
+         y8/U0INHrM8sWaUUaI61iX+5Wsar9fmLUzNvxwpyuceg6T3uB/4gkxCzTzHP8h0yM5AN
+         T59JMka5Hlj+sBOBkFpNaSHTW0JuY4NQ1RUTroLaepp3Zo2XfhyzoeE3384Q7Vndz+mT
+         V9tQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUbgEChg6m8WtyrvxOhh8VSmg9124vaBbvhcrxnTBJ2l2VAgIPQmT/ctLtbLnVutMnXOznUx8lOq5WkrMALdGYsu98NzCbsUEVW4J9Wnoo=
+X-Gm-Message-State: AOJu0YzN81vns7OuT7lGTKqaacjoHeiOcA7kMb1dA1HhbFU3CUfkYDbB
+	JQp7R81SHwk6t38Nc1p84J7mRhH+7vdcEcnkZCQmuT4AEjESkBf9+tE+fNe8PoHiiWAsSWx8HEc
+	I2VltnhX4pyn43g==
+X-Google-Smtp-Source: AGHT+IG5oCwliI55QSm/nlB6Lw5lzzQdTvktowkRPiBa6vXNuKdy+E+CON0y6SPl/fSx7Q5eHzfvSrmI1t/i15A=
+X-Received: from aliceryhl2.c.googlers.com ([fda3:e722:ac3:cc00:68:949d:c0a8:572])
+ (user=aliceryhl job=sendgmr) by 2002:a05:6512:2c86:b0:529:b6cf:cd0c with SMTP
+ id 2adb3069b0e04-529b6cfcebemr3146e87.2.1716908293547; Tue, 28 May 2024
+ 07:58:13 -0700 (PDT)
+Date: Tue, 28 May 2024 14:58:01 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-In-Reply-To: <fd5dbd42-24b7-422b-bc0b-393347b3fdca@nvidia.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAPnwVWYC/2XPQW7DIBAF0KtErEsFw0BIV71H1QUeDw5SHFd2Z
+ bWKfPcO2ZjKYvWB9xkeauG58KLeTg8181qWMt0lnF9Oiq7pPrAuvWQFBpy1EHW6FWI9jroj7xz
+ 6QMxRyfWvmXP5eVZ9fEq+luV7mn+fzautu7UEjQXcS1arje5t6ogpOkJ8H6ZpuPErTaOqLSvsE
+ kzz/ApVRrDg5QBTOEi3Sxm9kU4k9fncuSTyQgeJu5TVSBSJlxQRECgbOEjfSOsb6UWG7D1jHzl 7e5Chle0/Q522i9mx70OM+Z/ctu0PVYM4psMBAAA=
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5369; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=UGSUXvJPMuX9Bkae/WPEm6A6AVU8nmv5zPwgw0bs7/Y=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBmVfD/kk+kkk74MgEVp2uFripge2b1MUFf9QTh8
+ lMpBFLiVYqJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZlXw/wAKCRAEWL7uWMY5
+ RjK4D/9tsWpL60+RGj9Xb+y1ietr1OB2e/gUpbdzbfoK8fTqVGvkw1xvetxbsGyDjHtkhrB/Qou
+ uzTgJBqVbbBBXK6Udk7MXKirnMOpoW3L05zP9fDm8p4JRFvwX69B5p0d+9YplqWmjEFBPg3Qv+I
+ kvW4YcV4gq0LP9wYQDHoE9CoIUq5vR9gmtxRz2xPRjSGUXiJJCTquL23dOaJ1AVPRoeZTi0xde4
+ 0NPm/CAPEXCye1BY/G/favUIfvl3jPSQjPdETIwpv9jEJ/ASp5Hgwr78ij/lzl25FxVEqjRloaQ
+ Ob5pcTDrxJ+5porJkDPaHxsKXVVqunRKepKIyrL/xEe2Ykd5upy/kQR+3CBeZMd5WPy6UTqYzJP
+ rEXlKc+ha895BR8UMiCbd2ezCpBy7Si5u3oJvoBR/E2ZVESfzu1uWghhsVUs6KA1IMo2iwHJzgm
+ d2XAJJcHCRHHuvJt4OqXqP7gXEDeJ/JGZ2sVCV2GLcn+7TUc1ibp10BySSlCWgolC6Yxtz/HLO3
+ SZAGc7hvjI4okhSdcXOFf8Qnc5JNodCoFX4fL237/v/Z/nXXgN2yu5dDsnnPToW+d6qSXkSs6RG
+ NppAJvA0n53Rpn1pMIGQNXCTf0+YpZSGgAKobh3c3CrSsPfYTQK4JSlHWDFrV77nw4vwCVS/Vwd uanXNPTOk0FEDKA==
+X-Mailer: b4 0.13-dev-26615
+Message-ID: <20240528-alice-mm-v7-0-78222c31b8f4@google.com>
+Subject: [PATCH v7 0/4] Memory management patches needed by Rust Binder
+From: Alice Ryhl <aliceryhl@google.com>
+To: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
+	Al Viro <viro@zeniv.linux.org.uk>, Andrew Morton <akpm@linux-foundation.org>, 
+	Kees Cook <keescook@chromium.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"=?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
+	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Arnd Bergmann <arnd@arndb.de>, Trevor Gross <tmgross@umich.edu>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>, 
+	Christian Brauner <brauner@kernel.org>
+Content-Type: text/plain; charset="utf-8"
 
-On Tue, May 28, 2024 at 08:40:20AM +0000, Zhi Wang wrote:
-> On 27/05/2024 22.18, Danilo Krummrich wrote:
-> > External email: Use caution opening links or attachments
-> > 
-> > 
-> > On Tue, May 21, 2024 at 08:32:31AM +0300, Zhi Wang wrote:
-> >> On Mon, 20 May 2024 19:24:19 +0200
-> >> Danilo Krummrich <dakr@redhat.com> wrote:
-> >>
-> >>> Add an abstraction around the kernels firmware API to request firmware
-> >>> images. The abstraction provides functions to access the firmware
-> >>> buffer and / or copy it to a new buffer allocated with a given
-> >>> allocator backend.
-> >>>
-> >>
-> >> Was playing with firmware extractions based on this patch.
-> >> Unfortunately I ended up with a lot of pointer operations, unsafe
-> >> statements.
-> >>
-> >> As we know many vendors have a C headers for the definitions of the
-> >> firwmare content, the driver extract the data by applying a struct
-> >> pointer on it.
-> >>
-> >> But in rust, I feel it would nice that we can also have a common
-> >> firmware extractor for drivers, that can wrap the pointer operations,
-> >> take a list of the firmware struct members that converted from C headers
-> >> as the input, offer the driver some common ABI methods to query them.
-> >> Maybe that would ease the pain a lot.
-> > 
-> > So, you mean some abstraction that takes a list of types, offsets in the
-> > firmware and a reference to the firmware itself and provides references to the
-> > corresponding objects?
-> > 
-> > I agree it might be helpful to have some common infrastructure for this, but the
-> > operations on it would still be unsafe, since ultimately it involves
-> > dereferencing pointers.
-> > 
-> 
-> I think the goal is to 1) concentrate the "unsafe" operations in a 
-> abstraction so the driver doesn't have to write explanation of unsafe 
-> operations here and there, improve the readability of the driver that 
-> interacts with vendor-firmware buffer. 2) ease the driver maintenance 
-> burden.
+This patchset contains some abstractions needed by the Rust
+implementation of the Binder driver for passing data between userspace,
+kernelspace, and directly into other processes.
 
-With a generic abstraction, as in 1), at lest some of the abstraction's
-functions would be unsafe themselves, since they have to rely on the layout
-(or offset) passed by the driver being correct. What if I pass a wrong layout /
-offset for a structure that contains a pointer? This might still result in an
-invalid pointer dereference. Am I missing something?
+These abstractions do not exactly match what was included in the Rust
+Binder RFC - I have made various improvements and simplifications since
+then. Nonetheless, please see the Rust Binder RFC [1] to get an
+understanding for how this will be used:
 
-> 
-> Some solutions I saw in different projects written in rust for 
-> de-referencing a per-defined struct:
-> 
-> 1) Take the vendor firmware buffer as a whole, invent methods like 
-> read/write with offset for operating the buffer.
-> 
-> In this scheme, the driver is responsible for taking care of each data 
-> member in a vendor firmware struct and also its valid offset. The 
-> abstraction only covers the boundary of the whole firmware buffer.
-> 
-> The cons is the readability of the operation of the vendor firmware 
-> buffer in the driver is not good comparing with C code.
-> 
-> Hate to think a lot of xxx = vendor_firmware_struct.read(offset); // 
-> reading item A in the code.
-> 
-> 2) Define the firmware struct in rust (might need to find a better way 
-> to handle "union" in the definition of the vendor firmware struct). Use 
-> macros to generate methods of accessing each data member for the vendor 
-> firmware struct.
-> 
-> Then the code in the driver will be like xxx = 
-> vendor_firmware_struct.item_a(); in the driver.
-> 
-> In this scheme, the abstraction and the generated methods covers the 
-> boundary check. The "unsafe" statement can stay in the generated 
-> struct-access methods.
-> 
-> This might even be implemented as a more generic rust feature in the kernel.
+Users of "rust: add userspace pointers"
+     and "rust: add typed accessors for userspace pointers":
+	rust_binder: add binderfs support to Rust binder
+	rust_binder: add threading support
+	rust_binder: add nodes and context managers
+	rust_binder: add oneway transactions
+	rust_binder: add death notifications
+	rust_binder: send nodes in transactions
+	rust_binder: add BINDER_TYPE_PTR support
+	rust_binder: add BINDER_TYPE_FDA support
+	rust_binder: add process freezing
 
-This sounds more like a driver specific abstraction to me, which, as you write,
-we can probably come up with some macros that help implementing it.
+Users of "rust: add abstraction for `struct page`":
+	rust_binder: add oneway transactions
+	rust_binder: add vma shrinker
 
-But again, what if the offsets are within the boundary, but still at a wrong
-offset? What if the data obtained from a wrong offset leads to other safety
-implications when further processing them? I think no generic abstraction can
-ever cover the safety parts of this (entirely). I think there are always semanic
-parts to this the driver has to cover.
+Links: https://lore.kernel.org/rust-for-linux/20231101-rust-binder-v1-0-08ba9197f637@google.com/ [1]
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+Changes in v7:
+- Fix call to `reserve` under `make rusttest`.
+- Add comment on _inline_copy_from_user.
+- Add Reviewed-by tags.
+- Link to v6: https://lore.kernel.org/r/20240418-alice-mm-v6-0-cb8f3e5d688f@google.com
 
-Generally, I think we should aim for some generalization, but I think we should
-not expect it to cover all the safety aspects.
+Changes in v6:
+- Base on top of Wedson's Allocation APIs patchset.
+  - Do not define my own gfp flags, instead use the ones that are now
+    available in `kernel::alloc`.
+  - Add gfp flags to `read_all` methods instead of always using
+    GFP_KERNEL.
+  - The __GFP_HIGHMEM flag is not provided by the Allocation APIs
+    patchset, and I do not add it here. I will send a separate patchset
+    for adding it.
+- Use usize instead of void pointer for userspace address.
+- Add _raw suffix to `fill_zero` and `copy_from_user_slice`.
+- Do not allow interior mutability in AsBytes/FromBytes.
+- Doc changes:
+  - Mention that validity of user slices is checked at read/write time,
+    not in the constructor of the user slice.
+  - Mention that methods can also return EFAULT if a bounds check fails.
+  - Mention that methods may have partially copied data even if they
+    return EFAULT.
+  - Add link from `read_raw` to `read_slice`.
+  - Move comment about initialized memory on `read_raw` to
+    `# Guarantees` section.
+  - Add examples for `Page::alloc_page`.
+  - A previous version renamed UserSlicePtr to UserSlice but forgot to
+    update that in the commit message. Commit message fixed in this
+    version.
+- Add Reviewed-by tags submitted on v5.
+- Link to v5: https://lore.kernel.org/rust-for-linux/20240415-alice-mm-v5-0-6f55e4d8ef51@google.com/
 
-> 
-> The cons is still the driver might need to sync between the C-version 
-> definition and rust-version definition.
+Changes in v5:
+- Fix casts in declarations of PAGE_* constants.
+- Fix formatting of PAGE_MASK.
+- Reformat comments at 100 line length.
+- Minor fixes to safety comments of `read_raw` and `write_slice`.
+- Link to v4: https://lore.kernel.org/rust-for-linux/20240404-alice-mm-v4-0-49a84242cf02@google.com/
 
-What do you mean with the driver needs to sync between a C and a Rust version of
-structure definitions?
+Changes in v4:
+- Rephrase when we fail with EFAULT.
+- Remove `pub` from examples.
+- Use slices for raw uaccess methods.
+- Fix PAGE_MASK constant.
+- Rephrase most safety comments in Page abstraction.
+- Make with_pointer_into_page and with_page_mapped private.
+- Explain how raw pointers into pages are used correctly.
+- Other minor doc improvements.
+- Link to v3: https://lore.kernel.org/rust-for-linux/20240311-alice-mm-v3-0-cdf7b3a2049c@google.com/
 
-> 
-> 3) Also re-using C bindings generation in the kernel came to my mind 
-> when thinking of this problem, since it allows the rust code to access 
-> the C struct, but they don't have the boundary check. Still need another 
-> layer/macros to wrap it.
+Changes in v3:
+- Fix bug in read_all.
+- Add missing `#include <linux/nospec.h>`.
+- Mention that the second patch passes CONFIG_TEST_USER_COPY.
+- Add gfp flags for Page.
+- Minor documentation adjustments.
+- Link to v2: https://lore.kernel.org/rust-for-linux/20240208-alice-mm-v2-0-d821250204a6@google.com/
 
-I think we should have the structure definitions in Rust directly.
+Changes in v2:
+- Rename user_ptr module to uaccess.
+- Use srctree-relative links.
+- Improve documentation.
+- Rename UserSlicePtr to UserSlice.
+- Make read_to_end append to the buffer.
+- Use named fields for uaccess types.
+- Add examples.
+- Use _copy_from/to_user to skip check_object_size.
+- Rename traits and move to kernel::types.
+- Remove PAGE_MASK constant.
+- Rename page methods to say _raw.
+- Link to v1: https://lore.kernel.org/rust-for-linux/20240124-alice-mm-v1-0-d1abcec83c44@google.com/
 
-- Danilo
+---
+Alice Ryhl (2):
+      rust: uaccess: add typed accessors for userspace pointers
+      rust: add abstraction for `struct page`
 
-> 
-> 
-> >>
-> >> Thanks,
-> >> Zhi.
-> >>
+Arnd Bergmann (1):
+      uaccess: always export _copy_[from|to]_user with CONFIG_RUST
+
+Wedson Almeida Filho (1):
+      rust: uaccess: add userspace pointers
+
+ include/linux/uaccess.h         |  46 +++--
+ lib/usercopy.c                  |  30 +---
+ rust/bindings/bindings_helper.h |   1 +
+ rust/helpers.c                  |  34 ++++
+ rust/kernel/alloc.rs            |   7 +
+ rust/kernel/lib.rs              |   2 +
+ rust/kernel/page.rs             | 250 ++++++++++++++++++++++++++
+ rust/kernel/types.rs            |  64 +++++++
+ rust/kernel/uaccess.rs          | 388 ++++++++++++++++++++++++++++++++++++++++
+ 9 files changed, 782 insertions(+), 40 deletions(-)
+---
+base-commit: 1613e604df0cd359cf2a7fbd9be7a0bcfacfabd0
+change-id: 20231128-alice-mm-bc533456cee8
+
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
 
