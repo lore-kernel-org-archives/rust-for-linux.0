@@ -1,104 +1,111 @@
-Received: from mail-lj1-f202.google.com (mail-lj1-f202.google.com [209.85.208.202])
+Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E13716937B
-	for <rust-for-linux@vger.kernel.org>; Wed, 29 May 2024 08:34:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F8FE175B1
+	for <rust-for-linux@vger.kernel.org>; Wed, 29 May 2024 09:33:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1716971699; cv=none; b=ViIJJjXl0cQ2upnzLi2mXNYge6MkkiUXnG6aW4ZhQRir/QkUSBXDdpL/N31m0aGheiLTN9mAfmm7KfduHb/p+5fqS53LbPrJgFF4l2ukEF1/WCMFleBvszv27iLang9ghOj4wJ3rXWwfF0oDjAn9P3PuBga7Tw3P1MAnGEjqWfs=
+	t=1716975225; cv=none; b=VrVDEMpTOewQDk/CBwOY4VjXs4Wsa8TywIu0aRgOdkLrTAILYe0Tv8w1FZidLjzOBXvueQU8rkCgrdp31vxAnBoX+PvFrXdLdpeIreKxkgRD9tsaM1yBh9JxkAg9IlaMNIhb6HUWyb23fRzIeYyEQW0ZqVcEt0egEzZEqAcUtWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1716971699; c=relaxed/simple;
-	bh=6X34OVOHAjYoamh2IBvL7SOBIOohi5VHJFdJLDGSzo0=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=HNEGQSeMgaVogpvFoyEZ7O7kNt1YKnaOnE0oHy1aKjCKMgalP0JkRg6qDOVYD7biFWkdXBOCemzy645M03+A/qD8TU7qJMhvwx40wmdO5ETkR3+4J1ui8kVBmUn8STCji5cAe6+SUbbGDry5QGbJzVRVWI8RLsyH2Jp5zSg0zDg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jmTKIqID; arc=none smtp.client-ip=209.85.208.202
+	s=arc-20240116; t=1716975225; c=relaxed/simple;
+	bh=oy2sM9E9I28X4sqiqOUHF7G+ZKdVaxkvEWZkR6GjuF0=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=ly5NEJbjla1C6m7IKU3OJSP8/Tz1zQrxADLXPUlrTO5uYXZx6WyZktOVHk0/oQGpvjxakENJQCKTlcuRxbstFGTJzmwy/WBF7ch2YBuFv8iQotE1RCwX2U3dXt+36ltaOh2bdHJxlvS4YWoeaiIC4a1UROKUHAC6kA+owNVJLek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--davidgow.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MTXWrx/T; arc=none smtp.client-ip=209.85.128.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--davidgow.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jmTKIqID"
-Received: by mail-lj1-f202.google.com with SMTP id 38308e7fff4ca-2e981ee840dso13906891fa.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 29 May 2024 01:34:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MTXWrx/T"
+Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-62a1e9807c0so8739567b3.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 29 May 2024 02:33:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1716971696; x=1717576496; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1716975222; x=1717580022; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=SyPICyLIwuPiunBTmscbTFB4jg6gJxz96UtrCxjPoUE=;
-        b=jmTKIqIDCHoi0zJd8DXRRx/XgIIt5dy+I9Nrbx4Ca32mabn6wqpoEoSj0JbsJl3R5Q
-         vFas8smU7t+Cxe0He3jEZfruxJLhDyB8FHirbzdvBhpwYUF6HQ63DyeSZmtkD28YJ20L
-         JcjiwVp9OefqEnpSDn9+bgQP0u8FuNr+hQHGjhtgnSAXVoFbxXcf4mG1BmayBSYkaOMf
-         JC+5ubnybNXstrtrz5FslOUVHjDtr4woNOvOzkhmnldDFNshcltYJv8KdyQ8jlPjdoPn
-         s8bw5/A+XyDs8BqAh26Facw8wbP76AjHOzf4WAOmqgdOF3uLGiH3utJx3c7kxuDMAudN
-         wk4A==
+        bh=A7jFrnYLPr4qszl6iKNvj0kihvPlgpEbfCiq9QGfEb4=;
+        b=MTXWrx/TTOh848PoKDFOKcbzSm4J7/r3PgJgTCHMO39eD3Y3rPafClGBFLxNwLIKIl
+         ZVoKygkl5y3QGNEUXnSehKMDWhimYfp0BXOq5F5srZhNKrWQoz55dc/6LAB58sYviqe7
+         biI6qejfRn1ZZ/6aOQWl818S4FXbOu1Lb/wAy9t09iMJCvJA3pIZbs8TY0mHWYa7AeSK
+         QwcDnRGkxX0EJe11Oz2bv5izfdC0x14jTr3EvqwBu7bL2GuGlqLdzVCwQck2bH74K5ir
+         qKHiAHnwm+C1q2FtaNvrZsZfEEP5DO61tTFDhnhbhpWuD9P609zb0RaKvgHNpHy7u0Il
+         ayvw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1716971696; x=1717576496;
+        d=1e100.net; s=20230601; t=1716975222; x=1717580022;
         h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=SyPICyLIwuPiunBTmscbTFB4jg6gJxz96UtrCxjPoUE=;
-        b=OwE3pmv2GffOiGoRodGauTeilgt0F49RjMN3X5r6KzGJWsJj2M00LyLEnklriAt8Vj
-         y2f4KPSg+kUfI+admCv3IghMn6vNDZdPa9OwTv2frL0HggDr+D44j0bt5n7mtKSS1IAD
-         +ZP2l7xDYU29IB4Pbya+/SA0CnKMp62w2NFjZZiC0AjihfKFCTD12kNkqn1dJqpix97L
-         T/ivLOlm/JO6WzpGFxOCeiPRBEpw66Xu6OG7Fsm8axIpZ3icUvCACbNMQPiLjcdocEMW
-         IMdXn6vFWWSp9JQRwzVayP7CGNwa8+h7XMowc/l/EtYCuKmkw0zNrwJvs1RJcRMIfQbC
-         chXw==
-X-Gm-Message-State: AOJu0YyS2ikS5BtK1KwqA9EFLoKf3pmH9xkT3cFCiSZUhcLQNv73n4SA
-	4X972W6AyQHJW5s4jO+MJLm0C53opIFL/4FJ6GJmKGt2DHBQMWqyCxmvh8wM6XathVL/ep/pwdi
-	799o2ebjk6oWyrQ==
-X-Google-Smtp-Source: AGHT+IHWyByzY5TbG4pk4n8BChSUHByZANEctcvBgOzUbh1xKWR3qttTa6VIzNv8AX7kQtH0NGbx9y6rTa7c/dc=
-X-Received: from aliceryhl2.c.googlers.com ([fda3:e722:ac3:cc00:68:949d:c0a8:572])
- (user=aliceryhl job=sendgmr) by 2002:a2e:96d2:0:b0:2e9:5498:9fa8 with SMTP id
- 38308e7fff4ca-2e95b2d33b1mr131511fa.9.1716971696045; Wed, 29 May 2024
- 01:34:56 -0700 (PDT)
-Date: Wed, 29 May 2024 08:34:52 +0000
+        bh=A7jFrnYLPr4qszl6iKNvj0kihvPlgpEbfCiq9QGfEb4=;
+        b=kvY4+v+T1vWiNRfP0OH/GkCjwNyAtiwM2tSTbhU9he4Ze1TLy49ypLUfIKVtjrI1jP
+         21mSRBJEgmw4NO/zTAFx/r5I7Dy90+uLiu64Vl/kSVkIiNoyHafqVs7nolxiqApc9da/
+         LhI7O717KIHiFgOcg+WBq3bZ5qmQDpRESJxDBm5zVgHetlj5gmKu7p+WnJWvQjDzZEKH
+         VelhWft1lZmSEnBNw7FiFxdNeYdwN5CrsFaQ8XkT29BFOiJtIdawLSGv6EpuUGfV9/wD
+         YgBXggt10Ryw8AbzjLp7yNYgZzGWr/tO5L7RL56+WKKy+DVEHUj4/+pA9kgrMMfZAMey
+         sDBA==
+X-Forwarded-Encrypted: i=1; AJvYcCWKIIjzCkt1DwhoZ5ecdAS+cqvcYJKkbusBhrwGlK5bk1Tgcf1It9lhC+1e9vt9MHzBlGQ9gK+7ruMg4rMr6Br2co588fyRFC6FIYT+uS0=
+X-Gm-Message-State: AOJu0Yz5ve5EdyjfRltXPpYq3h+vPmacG9iA97EWcexloWw603EtH5BV
+	vBUfDIbCmyTYw3jWn6xMYQK8vMlJGY/Ub+YGYHXrwtlk2+Nt491kpBix3oVzRjR5cX0sFk5zeuz
+	W/T47ffZJFQ==
+X-Google-Smtp-Source: AGHT+IHxdg2ya01s660665HE7gx0TzIhtq+AMegN495R/PRhtdyxXJThsqXUppWR5I/ihiLisAVQ7G09XOsdQg==
+X-Received: from slicestar.c.googlers.com ([fda3:e722:ac3:cc00:4f:4b78:c0a8:20a1])
+ (user=davidgow job=sendgmr) by 2002:a81:924c:0:b0:627:edcb:cbe2 with SMTP id
+ 00721157ae682-62c5d5d451bmr2897097b3.5.1716975222191; Wed, 29 May 2024
+ 02:33:42 -0700 (PDT)
+Date: Wed, 29 May 2024 17:33:35 +0800
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1023; i=aliceryhl@google.com;
- h=from:subject; bh=6X34OVOHAjYoamh2IBvL7SOBIOohi5VHJFdJLDGSzo0=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBmVufiPdW/kVYB6b4T6Ty+V3m0tft595KyrMtMc
- +t9z1w3UDyJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZlbn4gAKCRAEWL7uWMY5
- RnhLD/92r3xT22mSgwlA5UwVB19HAeGa6CdkJhuVB3w7aVV3D+B/vePBnXXgvSp9wflDAfNs6Nc
- wZv3jx2H/n1BGAPeQEqUKUjxQuNV8NNgevIf0nMOsigq1OrCr/ITSWEnzlxuDgC+epEBcmbiRMn
- dC388gCqrqiM+v/53z7BNOO3IaT3zWHctBFO1y8NKAKQSQDEkR1sM1btL9bjFaWW+nqbfNAIqCa
- Muh4OvQ0QonmHw53Dgy088YCTJEX94FtHZEyk0zGjuyw3+gBWOf8ZnA054673UVayI32R0C9L1q
- 5qqy2QY93fO9RE3Uo27Y/AdGR3bTn73ZttNOQECA4S/aMqtU8izaoAmazhXR8LHny++ctXL5aDc
- Nsl/hXChzD59BjayvShq9OXCi11XcIX16xD+E74tIsPYN8dwek5vXO6o/G2VsKCwyAgo1r9pYHm
- f9ZY9UhZ6cBCNNrhyfWUaow/8lgR9f9jtEN7uIFhzeMq8q9zKqi/dVZATciIiR0CckZQPg+N/sY
- ojeGqtiDFB/bu8w3MqNAnJaZWDTHnz0agQjagGfFq/uK/zxLlvjdGleatgaL6AM2To9mF4kOZPG
- GOyOFfIkMw2Yoj4zY37bKLey4sr6+tPhiJPhd4jhqDopcTMHlftV7LIzH9RHOPRMP3/qbkb6bQs aIZUV41ihGD8/dQ==
 X-Mailer: git-send-email 2.45.1.288.g0e0cd299f1-goog
-Message-ID: <20240529083452.779865-1-aliceryhl@google.com>
-Subject: [PATCH] rust: alloc: fix typo in docs for GFP_NOWAIT
-From: Alice Ryhl <aliceryhl@google.com>
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Alice Ryhl <aliceryhl@google.com>
+Message-ID: <20240529093336.4075206-1-davidgow@google.com>
+Subject: [PATCH] arch: um: rust: Use the generated target.json again
+From: David Gow <davidgow@google.com>
+To: Rae Moar <rmoar@google.com>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, "H . Peter Anvin" <hpa@zytor.com>, Masahiro Yamada <masahiroy@kernel.org>, 
+	Jamie Cunliffe <Jamie.Cunliffe@arm.com>, Catalin Marinas <catalin.marinas@arm.com>, 
+	Richard Weinberger <richard@nod.at>, Anton Ivanov <anton.ivanov@cambridgegreys.com>, 
+	Johannes Berg <johannes@sipsolutions.net>
+Cc: David Gow <davidgow@google.com>, kunit-dev@googlegroups.com, 
+	linux-kernel@vger.kernel.org, linux-um@lists.infradead.org, 
+	rust-for-linux@vger.kernel.org, x86@kernel.org, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>
 Content-Type: text/plain; charset="UTF-8"
 
-Fix a typo in alloc.rs by replacing Ror with For.
+The Rust compiler can take a target config from 'target.json', which is
+generated by scripts/generate_rust_target.rs. It used to be that all
+Linux architectures used this to generate a target.json, but now
+architectures must opt-in to this, or they will default to the Rust
+compiler's built-in target definition.
 
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+This is mostly okay for (64-bit) x86 and UML, except that it can
+generate SSE instructions, which we can't use in the kernel. So
+re-instate the custom target.json, which disables SSE (and generally
+enables the 'soft-float' feature). This fixes the following compile
+error:
+
+error: <unknown>:0:0: in function _RNvMNtCs5QSdWC790r4_4core3f32f7next_up float (float): SSE register return with SSE disabled
+
+Fixes: f82811e22b48 ("rust: Refactor the build target to allow the use of builtin targets")
+Signed-off-by: David Gow <davidgow@google.com>
 ---
- rust/kernel/alloc.rs | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/Makefile.um | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/rust/kernel/alloc.rs b/rust/kernel/alloc.rs
-index 531b5e471cb1..c44995914f75 100644
---- a/rust/kernel/alloc.rs
-+++ b/rust/kernel/alloc.rs
-@@ -66,7 +66,7 @@ pub mod flags {
-     /// The same as [`GFP_KERNEL`], except the allocation is accounted to kmemcg.
-     pub const GFP_KERNEL_ACCOUNT: Flags = Flags(bindings::GFP_KERNEL_ACCOUNT);
+diff --git a/arch/x86/Makefile.um b/arch/x86/Makefile.um
+index 2106a2bd152b..a46b1397ad01 100644
+--- a/arch/x86/Makefile.um
++++ b/arch/x86/Makefile.um
+@@ -9,6 +9,7 @@ core-y += arch/x86/crypto/
+ #
+ ifeq ($(CONFIG_CC_IS_CLANG),y)
+ KBUILD_CFLAGS += -mno-sse -mno-mmx -mno-sse2 -mno-3dnow -mno-avx
++KBUILD_RUSTFLAGS += --target=$(objtree)/scripts/target.json
+ KBUILD_RUSTFLAGS += -Ctarget-feature=-sse,-sse2,-sse3,-ssse3,-sse4.1,-sse4.2,-avx,-avx2
+ endif
  
--    /// Ror kernel allocations that should not stall for direct reclaim, start physical IO or
-+    /// For kernel allocations that should not stall for direct reclaim, start physical IO or
-     /// use any filesystem callback.  It is very likely to fail to allocate memory, even for very
-     /// small allocations.
-     pub const GFP_NOWAIT: Flags = Flags(bindings::GFP_NOWAIT);
-
-base-commit: 1613e604df0cd359cf2a7fbd9be7a0bcfacfabd0
 -- 
 2.45.1.288.g0e0cd299f1-goog
 
