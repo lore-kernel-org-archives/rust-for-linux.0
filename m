@@ -1,294 +1,77 @@
-Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f179.google.com (mail-lj1-f179.google.com [209.85.208.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4130DDA1
-	for <rust-for-linux@vger.kernel.org>; Wed, 29 May 2024 18:18:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91BC61C0DEE
+	for <rust-for-linux@vger.kernel.org>; Wed, 29 May 2024 18:56:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717006722; cv=none; b=RiiyLa92cTyeA4WESz89+hcdwDBx0dFJvYoHSS22Iw0IzsK087NCRdxPMAYMu+mk2dWjKKV40UxrA8/a3ZP7ahknKTlNTJmvqqTsDDk3APZx3nJlyLz6eRB1U2jvowkX4onLJ07eqmxDsBvxUvP5vrSqqb+NnO7l2HS01OL42v4=
+	t=1717008967; cv=none; b=I/kz92IzPfgbnJ9FfUGIOj3CWdGzpaCXJLtZdG5KWVwVz52cmrAZ5d8qpg/b101UKC0XWafAEv5UF3+nh7BQTFPAG5vKM5SZW/pdtfXeSKlxy9VM6ly+AIsL2vna7rbndr+5AcFV1NE24OnYT/oAtotADM+YxvtM64ieeFc0+e4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717006722; c=relaxed/simple;
-	bh=x1uIa9qFl9MgT/+Tx/DjJcUTbZlrr3u+Ap8fVtd1sLQ=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nhp9LWHEU2hJ8mhz3fU640v+ZjVhqCulhr9qfJHJO1Zao8nWl8C7iX26SsIBvhgcrGC4bPD+BWOfJBpgWQaWnWU21XlAwTn2d+ABoMGjAUPp8ZSLTIbNkrz36t195Ei9bKBDAiYKLBMY2fmgikMZ1S7TUMjnE0UTGrx8l0Jjzz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=MCrudcvg; arc=none smtp.client-ip=185.70.40.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1717008967; c=relaxed/simple;
+	bh=1O4SjRlMTF2QrhErdJ+MeR7qjjl7rX/IA6vyiawGwT4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=A09p6kpvKo7e6PvwK/Sq9F3vQq0LiD7dDWw6OwBwPcZRcrySLMAK4NkSTaAx2ZipK2EJuBd1aId6FhKVKOmnPnfFueI+QJxpAhRry0gL0h59UtunNlBbKyXjaQm3GaxhxnKmpX63WwUkq0Z71qQ48Z2TprVmM2TGccRHmQKt93E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZQ3r6985; arc=none smtp.client-ip=209.85.208.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="MCrudcvg"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1717006717; x=1717265917;
-	bh=mN6rlRNn3MkvqaT7Si8e5huY2ekoNIjInihot9QvrPQ=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=MCrudcvgNlJeeflA2EBSvfCIOeskq0dvDX2YsuYAvQJ63WhS8gWkK5eAmjD2iqwfz
-	 Cily2ftzbGdbeRVtbzJ8hTNaNoeo7adV/9RWPftXl6YOZJ307jTdE4yWu++5mX3ZxR
-	 1dPpKdUv09gdMWd0HZ3j1RKll2NEMzugYj6KP5NPOGxp6jmSMhuVRGrP6R/UlV/lqK
-	 1Fu3JzXCWLu3wx2Mi7K1S0hxm8ShNBtsyhH6Kz3bNgOH1+Fc6i/9r5E8vZMc6yrNXJ
-	 QIXhYjIClctyfzb+dUGU2VU5VVvdtWPRx7pck8OODWa0DuTBhutdfAX4fAOaP2QNJc
-	 QVP161Q5juXGA==
-Date: Wed, 29 May 2024 18:18:30 +0000
-To: Andreas Hindborg <nmi@metaspace.dk>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>, Keith Busch <kbusch@kernel.org>, Damien Le Moal <dlemoal@kernel.org>, Bart Van Assche <bvanassche@acm.org>, Hannes Reinecke <hare@suse.de>, Ming Lei <ming.lei@redhat.com>, "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>, Andreas Hindborg <a.hindborg@samsung.com>, Greg KH <gregkh@linuxfoundation.org>, Matthew Wilcox <willy@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Chaitanya Kulkarni <chaitanyak@nvidia.com>, Luis Chamberlain <mcgrof@kernel.org>, Yexuan Yang <1182282462@bupt.edu.cn>, =?utf-8?Q?Sergio_Gonz=C3=A1lez_Collado?= <sergio.collado@gmail.com>, Joel Granados <j.granados@samsung.com>, "Pankaj Raghav (Samsung)" <kernel@pankajraghav.com>, Daniel Gomez
-	<da.gomez@samsung.com>, Niklas Cassel <Niklas.Cassel@wdc.com>, Philipp Stanner <pstanner@redhat.com>, Conor Dooley <conor@kernel.org>, Johannes Thumshirn <Johannes.Thumshirn@wdc.com>, =?utf-8?Q?Matias_Bj=C3=B8rling?= <m@bjorling.me>, open list <linux-kernel@vger.kernel.org>, "rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>, "lsf-pc@lists.linux-foundation.org" <lsf-pc@lists.linux-foundation.org>, "gost.dev@samsung.com" <gost.dev@samsung.com>
-Subject: Re: [PATCH v2 2/3] rust: block: add rnull, Rust null_blk implementation
-Message-ID: <8ae158cd-d2ee-4698-8034-9fe1e31c7ca5@proton.me>
-In-Reply-To: <87o78orcvz.fsf@metaspace.dk>
-References: <20240521140323.2960069-1-nmi@metaspace.dk> <20240521140323.2960069-3-nmi@metaspace.dk> <d7b963f0-060f-44c0-8358-fb8dbd064575@proton.me> <87o78orcvz.fsf@metaspace.dk>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 9bdbafa95f62c59fba69a44ced9d95829d0411dc
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZQ3r6985"
+Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-2ea82db9a1fso828671fa.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 29 May 2024 11:56:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1717008964; x=1717613764; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=1O4SjRlMTF2QrhErdJ+MeR7qjjl7rX/IA6vyiawGwT4=;
+        b=ZQ3r69850wlDBYcCsUGHl/PC7TO/4uhn7B4vaeIB/3oS51ElbcllYWWm3TEvMGgOYr
+         8m269d7VzLO9g4TYBwz7DBSa1LMP3G/FfAd2M/m8RSGIc4AYjQJv5ty/Noq4URkpwt6o
+         sETXn+bPFU59q633syHEc5Yq4NVKO0EVmVTHreM2FccUgqf8LsyrSikO+WYvINXYOXod
+         2X+eGOImroxbYCva2z3jrl+WQMfH7T1ZuOwhzP+1YKKs1UiHd4xDwa/HwLoma0gef6S1
+         jgMG9D4IH6eFkaec289QzFtQsaK8z6QZjpvorbsraC9CU2EkMjCwWXca+CKfJkeQPGGH
+         QisA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1717008964; x=1717613764;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=1O4SjRlMTF2QrhErdJ+MeR7qjjl7rX/IA6vyiawGwT4=;
+        b=t6qO6jQFN6YIoxEg7WEOm5tYMoSYeMGr46GThPwf5uSeKb4sIZDNjIiBDy/i1BAoZJ
+         Kx/8iB1DOsP+OpD6lYEvLhKX1QSzKuI5gh17DiQdUcP6SCd9+tKiAfS3FxWOarOSc7KF
+         sUG/AuPLGeaOimkdaK7AhPfL9LLCOSiK/zfYnDp3rdDdbrN5THNgPrQUuDCIlFmfuNol
+         S8503HE5mxvOk5ksrrT9q3eVPpphKWyELtn7HOe5xG5XbxshGYtj0SEnJ2gRPq5oBq9h
+         9JDMf+/5yxHLg/zLYpfEp7SjSkU2TfQE+999d45SXqRd3RmbuGrdoJrxJB6CCrKVuzhq
+         IWfQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV5k/7Z/nuy26i1FukJDOoupl8MiccF5TMJicDAt/8kFlkgKdle9rZq0QEmf192+YnTpFQmMYM9qXU1VLuYAS4dNG0cODrtqCNER4fF+HM=
+X-Gm-Message-State: AOJu0YzpIlaZ+2/Nt31fHDQ7cl3udblKtOCyMaNdeH2GtGBuuynRrkSE
+	2f2tODICRvMxUp7vb+3ZNHjuMOQQg4i4zIQJ/Jn/FU+VW/uJOMvKmr6fR2QWGnRjkQJ4e9VscBz
+	iHdTd8sZuwIJeDZQhTPazyWvPr7s=
+X-Google-Smtp-Source: AGHT+IESNihG+93y8BMjuJNJBNqo9XeHzzN8+2PZdKCYusYBWq2A3oWD9hDHm9oE7uq8JEgiiAUrnlB3rr4eroaGW/A=
+X-Received: by 2002:a2e:bc08:0:b0:2e2:72a7:843c with SMTP id
+ 38308e7fff4ca-2e95b24dea3mr122101121fa.36.1717008963463; Wed, 29 May 2024
+ 11:56:03 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+References: <20240512112324.8514-1-aswinunni01@gmail.com> <20240512112324.8514-2-aswinunni01@gmail.com>
+In-Reply-To: <20240512112324.8514-2-aswinunni01@gmail.com>
+From: Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
+Date: Wed, 29 May 2024 20:55:51 +0200
+Message-ID: <CAKy8djSR76A+PGNBmsSLSyJ8Gnhq5dpLJ2TL7s6URWZ=ug0z5g@mail.gmail.com>
+Subject: Re: [PATCH v2 2/2] rust: fix datatype in docs for `module` macro arguments
+To: Aswin Unnikrishnan <aswinunni01@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On 29.05.24 15:00, Andreas Hindborg wrote:
-> Benno Lossin <benno.lossin@proton.me> writes:
->=20
->> On 21.05.24 16:03, Andreas Hindborg wrote:
->>> From: Andreas Hindborg <a.hindborg@samsung.com>
->>>
->>> This patch adds an initial version of the Rust null block driver.
->>>
->>> Signed-off-by: Andreas Hindborg <a.hindborg@samsung.com>
->>> ---
->>>  drivers/block/Kconfig   |  9 +++++
->>>  drivers/block/Makefile  |  3 ++
->>>  drivers/block/rnull.rs  | 86 +++++++++++++++++++++++++++++++++++++++++
->>>  rust/kernel/block/mq.rs |  4 +-
->>>  4 files changed, 101 insertions(+), 1 deletion(-)
->>>  create mode 100644 drivers/block/rnull.rs
->>>
->>> diff --git a/drivers/block/Kconfig b/drivers/block/Kconfig
->>> index 5b9d4aaebb81..ed209f4f2798 100644
->>> --- a/drivers/block/Kconfig
->>> +++ b/drivers/block/Kconfig
->>> @@ -354,6 +354,15 @@ config VIRTIO_BLK
->>>  =09  This is the virtual block driver for virtio.  It can be used with
->>>            QEMU based VMMs (like KVM or Xen).  Say Y or M.
->>>
->>> +config BLK_DEV_RUST_NULL
->>> +=09tristate "Rust null block driver (Experimental)"
->>> +=09depends on RUST
->>> +=09help
->>> +=09  This is the Rust implementation of the null block driver. For now=
- it
->>> +=09  is only a minimal stub.
->>> +
->>> +=09  If unsure, say N.
->>> +
->>>  config BLK_DEV_RBD
->>>  =09tristate "Rados block device (RBD)"
->>>  =09depends on INET && BLOCK
->>> diff --git a/drivers/block/Makefile b/drivers/block/Makefile
->>> index 101612cba303..1105a2d4fdcb 100644
->>> --- a/drivers/block/Makefile
->>> +++ b/drivers/block/Makefile
->>> @@ -9,6 +9,9 @@
->>>  # needed for trace events
->>>  ccflags-y=09=09=09=09+=3D -I$(src)
->>>
->>> +obj-$(CONFIG_BLK_DEV_RUST_NULL) +=3D rnull_mod.o
->>> +rnull_mod-y :=3D rnull.o
->>> +
->>>  obj-$(CONFIG_MAC_FLOPPY)=09+=3D swim3.o
->>>  obj-$(CONFIG_BLK_DEV_SWIM)=09+=3D swim_mod.o
->>>  obj-$(CONFIG_BLK_DEV_FD)=09+=3D floppy.o
->>> diff --git a/drivers/block/rnull.rs b/drivers/block/rnull.rs
->>> new file mode 100644
->>> index 000000000000..1d6ab6f0f26f
->>> --- /dev/null
->>> +++ b/drivers/block/rnull.rs
->>> @@ -0,0 +1,86 @@
->>> +// SPDX-License-Identifier: GPL-2.0
->>> +
->>> +//! This is a Rust implementation of the C null block driver.
->>> +//!
->>> +//! Supported features:
->>> +//!
->>> +//! - blk-mq interface
->>> +//! - direct completion
->>> +//! - block size 4k
->>> +//!
->>> +//! The driver is not configurable.
->>> +
->>> +use kernel::{
->>> +    alloc::flags,
->>> +    block::mq::{
->>> +        self,
->>> +        gen_disk::{self, GenDisk},
->>> +        Operations, TagSet,
->>> +    },
->>> +    error::Result,
->>> +    new_mutex, pr_info,
->>> +    prelude::*,
->>> +    sync::{Arc, Mutex},
->>> +    types::ARef,
->>> +};
->>> +
->>> +module! {
->>> +    type: NullBlkModule,
->>> +    name: "rnull_mod",
->>> +    author: "Andreas Hindborg",
->>> +    license: "GPL v2",
->>> +}
->>> +
->>> +struct NullBlkModule {
->>> +    _disk: Pin<Box<Mutex<GenDisk<NullBlkDevice, gen_disk::Added>>>>,
->>> +}
->>> +
->>> +fn add_disk(tagset: Arc<TagSet<NullBlkDevice>>) -> Result<GenDisk<Null=
-BlkDevice, gen_disk::Added>> {
->>
->> Any reason that this is its own function and not in the
->> `NullBlkModule::init` function?
->=20
-> Would you embed it inside the `init` function? To what end? I don't
-> think that would read well.
-
-I just found it strange that you have this extracted into its own
-function, since I just expected it to be present in the init function.
-Does this look really that bad?:
-
-    impl kernel::Module for NullBlkModule {
-        fn init(_module: &'static ThisModule) -> Result<Self> {
-            pr_info!("Rust null_blk loaded\n");
-            let block_size: u16 =3D 4096;
-            if block_size % 512 !=3D 0 ||
-!(512..=3D4096).contains(&block_size) {
-                return Err(kernel::error::code::EINVAL);
-            }
-
-            let disk =3D {
-                let tagset =3D Arc::pin_init(TagSet::try_new(1, 256, 1),
-flags::GFP_KERNEL)?;
-                let mut disk =3D gen_disk::try_new(tagset)?;
-                disk.set_name(format_args!("rnullb{}", 0))?;
-                disk.set_capacity_sectors(4096 << 11);
-                disk.set_queue_logical_block_size(block_size.into());
-                disk.set_queue_physical_block_size(block_size.into());
-                disk.set_rotational(false);
-                disk.add()
-            };
-            let disk =3D Box::pin_init(
-                new_mutex!(disk, "nullb:disk"),
-                flags::GFP_KERNEL,
-            )?;
-
-            Ok(Self { _disk: disk })
-        }
-    }
-
->>> +    let block_size: u16 =3D 4096;
->>> +    if block_size % 512 !=3D 0 || !(512..=3D4096).contains(&block_size=
-) {
->>> +        return Err(kernel::error::code::EINVAL);
->>> +    }
->>> +
->>> +    let mut disk =3D gen_disk::try_new(tagset)?;
->>> +    disk.set_name(format_args!("rnullb{}", 0))?;
->>> +    disk.set_capacity_sectors(4096 << 11);
->>> +    disk.set_queue_logical_block_size(block_size.into());
->>> +    disk.set_queue_physical_block_size(block_size.into());
->>> +    disk.set_rotational(false);
->>> +    disk.add()
->>> +}
->>> +
->>> +impl kernel::Module for NullBlkModule {
->>> +    fn init(_module: &'static ThisModule) -> Result<Self> {
->>> +        pr_info!("Rust null_blk loaded\n");
->>> +        let tagset =3D Arc::pin_init(TagSet::try_new(1, 256, 1), flags=
-::GFP_KERNEL)?;
->>> +        let disk =3D Box::pin_init(
->>> +            new_mutex!(add_disk(tagset)?, "nullb:disk"),
->>> +            flags::GFP_KERNEL,
->>> +        )?;
->>> +
->>> +        Ok(Self { _disk: disk })
->>> +    }
->>> +}
->>> +
->>> +struct NullBlkDevice;
->>> +
->>> +#[vtable]
->>> +impl Operations for NullBlkDevice {
->>> +    #[inline(always)]
->>> +    fn queue_rq(rq: ARef<mq::Request<Self>>, _is_last: bool) -> Result=
- {
->>> +        mq::Request::end_ok(rq)
->>> +            .map_err(|_e| kernel::error::code::EIO)
->>> +            .expect("Failed to complete request");
->>
->> This error would only happen if `rq` is not the only ARef to that
->> request, right?
->=20
-> Yes, it should never happen. If it happens, something is seriously
-> broken and panic is adequate.
->=20
-> Other drivers might want to retry later or something, but in this case
-> it should just work.
-
-In that case, I think the error message should reflect that and not just
-be a generic "failed to complete request" error.
-
->>> +
->>> +        Ok(())
->>> +    }
->>> +
->>> +    fn commit_rqs() {}
->>> +
->>> +    fn complete(rq: ARef<mq::Request<Self>>) {
->>
->> Am I correct in thinking that this function is never actually called,
->> since all requests that are queued are immediately ended?
->=20
-> Yes, re my other email. It is a callback that cannot be triggered for
-> now. I will move it to a later patch where it belongs.
->=20
->>
->>> +        mq::Request::end_ok(rq)
->>> +            .map_err(|_e| kernel::error::code::EIO)
->>> +            .expect("Failed to complete request")
->>> +    }
->>> +}
->>> diff --git a/rust/kernel/block/mq.rs b/rust/kernel/block/mq.rs
->>> index efbd2588791b..54e032bbdffd 100644
->>> --- a/rust/kernel/block/mq.rs
->>> +++ b/rust/kernel/block/mq.rs
->>> @@ -51,6 +51,7 @@
->>>  //!
->>>  //! ```rust
->>>  //! use kernel::{
->>> +//!     alloc::flags,
->>>  //!     block::mq::*,
->>>  //!     new_mutex,
->>>  //!     prelude::*,
->>> @@ -77,7 +78,8 @@
->>>  //!     }
->>>  //! }
->>>  //!
->>> -//! let tagset: Arc<TagSet<MyBlkDevice>> =3D Arc::pin_init(TagSet::try=
-_new(1, 256, 1))?;
->>> +//! let tagset: Arc<TagSet<MyBlkDevice>> =3D
->>> +//!     Arc::pin_init(TagSet::try_new(1, 256, 1), flags::GFP_KERNEL)?;
->>
->> This change should probably be in the patch before (seems like an
->> artifact from rebasing).
->=20
-> Yes, thank you for spotting that. I thought I checked that this was
-> building, so this is strange to me. Maybe I failed to build the
-> doctests between the two patches. It is weird that kernel robot did not
-> pick this up. Maybe it is not building doctests?
-
-Hmm, that is strange...
-
----
-Cheers,
-Benno
-
+> Remove the mention of byte array as datatype for `module` macro arguments
+> since the arguments are defined as string, and `alias` is a string array.
+>
+> Signed-off-by: Aswin Unnikrishnan <aswinunni01@gmail.com>
+> ---
+Reviewed-by: Vincenzo Palazzo <vincenzopalazzodev@gmail.com>
