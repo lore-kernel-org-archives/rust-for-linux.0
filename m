@@ -1,75 +1,68 @@
-Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
+Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A45D928E7
-	for <rust-for-linux@vger.kernel.org>; Thu, 30 May 2024 04:24:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71630142E85
+	for <rust-for-linux@vger.kernel.org>; Thu, 30 May 2024 05:53:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717043084; cv=none; b=FULSFZ8fshDLiLLxMJ/3a0LbxpAUtdQ/3yiVdZ2ysM/JOAPu1RtT8NJIBHZW8+TmB2dEbG4VrcJPhNrNlF1jbeBZGiF8dP4ZWi76Bmnl5vmmP6IGLu9DLx9DjI5b9rVewVzZrUfxLTN3vlLLwv1eD5WY7aFXvjLKdORsQwYeiCk=
+	t=1717048396; cv=none; b=HTBX6vxw5FlTcnDYs0VBU0ejzPxWMpTwQ87uShugLqJz/ObbVwRJSQEwPBHcCF+XXPigkWeVEQAqti3sBzA2q7FPNOA2/92qagdqTugbPcE2j1J95YEFMYTnwGgNOTTfeDbTz+f0QJAhYcv+yy/ZHWO5zZkd9CeCghuCIHPw8A4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717043084; c=relaxed/simple;
-	bh=IC1Wra1+SVtkbQuqEH3y3tsrvSDYVBBHGSbOOupxafo=;
+	s=arc-20240116; t=1717048396; c=relaxed/simple;
+	bh=zFTLbJ1LCqJX7laj7qH95dK7PdqAwQjxYgyChTRaIrE=;
 	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=iFfEDkVjD1hADFa6gZ9JxCXzt2pVj26zinn4RHFqxOihVc6cSNrY2PgoXi7GcSVp3t6pr24pCiyF0k6lg9QR+0b4ZplapKMGO0ImUpibBZvBAvD5b9/Tu9VXcgpzJ7bSvoyO6H+yf90lhh8qBzHjfJTry6npUi38M9kMa3sZo8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LtDu6zcT; arc=none smtp.client-ip=209.85.215.170
+	 Mime-Version:Content-Type; b=KAPf5jvqGmIeJuwts9cnWY0i2xno3RJD7gjXENOA5oJZNdMXHqd9URK6emjmxZP8TjMA5qT3Q4nX5v1uZgjALffJFCXiJJKsaKTu6lFmpWHNMTiXWNpomgeSwL8Ls4w/86cPDwjOpiyVdAVBr/tX48EmAbNkd2rd/DQJwXou4es=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fSnQwRuE; arc=none smtp.client-ip=209.85.210.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LtDu6zcT"
-Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-681a3e5d376so7869a12.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 29 May 2024 21:24:42 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fSnQwRuE"
+Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-6f8ec7f1f49so12307b3a.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 29 May 2024 22:53:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1717043082; x=1717647882; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1717048395; x=1717653195; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to:from
          :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=E3VVbhC6I5IDpIBKGc/cIzsKHjro6Wg4me5Z18wNEmY=;
-        b=LtDu6zcTIEOd0OkSHGL2JQLl8n0lb/Z7LlatmofUhDEC2VEEN6AZYzCP9MhYGyjsCf
-         Uh6Z22H86MZ8j6pHZlCdsQUSCSWnl2+JsHb2TAO27/hF1sCrHkqRLfeEEWmztgs7uwcO
-         tfs+j9agq2butscBdEKUGngJAgKXWjbSRaJs9KKVKFvMg+E+7lkI/GrJSVW4b3GmPkEI
-         N1gEFkb87n/TY8Mdne4rey2xbOSEpw6HW1wOwC0mXoNXobnZDKZg/v/dWUaCITQP1Ebz
-         KYlRRdWwG76O/y6r20J3zmqzU4+qhtc+KO9Xk7Qc4GuHQZbQZBgEP2O0BbqkLgzA2Qkv
-         83yg==
+        bh=TQdYYttOduzhdbukjbK3Ooi9MJl+pbbCSNTAhHkmNXA=;
+        b=fSnQwRuEP0Lh/l0bizRgUxbL2y7EdpI8bpS6QswPJswjBtQI6wqZoiK9+e9GyrIvu4
+         9KE4WwAJDHCRTZ+z0DmGWGSRG4zPrcPyLYQ6xpI8NvGbrfEzLc0gGhbwoFAjFVH6mYbU
+         BUpDvgtlRs6gTMoX4khz/eWkvSJ3ZUxeGMjrBvoZgfHUPAAvJZ6UeFEGG7vQG8oR7SDj
+         nJfGjaQT7oONH8UbxySl7RqR0zYgb/rp2/EQNzu42O51Mo9KMQ9JpsjGlGY4obrZbi79
+         1bIKTTC/EqcqiMXiswRSbDJhFU6mq9Q+rMjlLAF8q7P68sr5FtIy6p29w43ZNEowC5ph
+         iqLA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717043082; x=1717647882;
+        d=1e100.net; s=20230601; t=1717048395; x=1717653195;
         h=content-transfer-encoding:mime-version:references:in-reply-to:from
          :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=E3VVbhC6I5IDpIBKGc/cIzsKHjro6Wg4me5Z18wNEmY=;
-        b=uzrjybSla4sv0onnibLIxNMwXlrnrZ4gFD9Twp5bvZmUWQ+hXtb4UkEfE43NfOtpio
-         xI9K3rj/ifSNIwTCoPumineL+zzdy4gy1rliRv8jux0Apv9lbMxpHaD0feTJbZ13L6Dw
-         erf8UnOnWovfBXCWxEcTM150Nqvoc2JrSAzqg2sprJVpuUQCzo1nLFaQTZS3xyyxRNIP
-         C0+KwfdArZbL+TLFfUBToAaVHnGQH04UQAPh/kNEJlj1uNGJs67e9m9xp62VViREZ+fL
-         6Tlp9BTFRN9tzjzPYg2T914zHO4su5kL6RDY92Jo7W5XIQeRSjwsas+9vy6XsFCTBJxF
-         hHeQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXqv5xf6HkQRTp0F8z8uCE2SWN9O+Usfk4ZaTnYvdpDuSBWjMpEca2HlUPGkX+o+n/Sw5LUo9ApHHfHqSjZDFAYRYgtnwnh4x9yAnjDq8U=
-X-Gm-Message-State: AOJu0Yz7HTz6QgXAjQ3GQg1EXajUuoK1qyg8VjsJhMxaXqo2LB/xrHVA
-	vii2iW+L1HcUP/V7h3AUIZj0KomFPr47TK9DbytwokADzmuFNWXP
-X-Google-Smtp-Source: AGHT+IEJdZ4YE8MX8w0oPD51QAdlQikfgmInuFu5dotPFl7flHJL3hSTz7FpJiSJHzOGtR8YnBeuYQ==
-X-Received: by 2002:a05:6a20:3219:b0:1af:96e7:2be6 with SMTP id adf61e73a8af0-1b26440808amr1198934637.0.1717043081669;
-        Wed, 29 May 2024 21:24:41 -0700 (PDT)
+        bh=TQdYYttOduzhdbukjbK3Ooi9MJl+pbbCSNTAhHkmNXA=;
+        b=wl4d4q65rREeoT9OkNP8rPqZhCZCvECIfPN9JtHWb45Lv8jF8npEiXQmHJ2zGyyyvC
+         H20kzFdufXnfZKdqcfS3mLS3zQqhXvfmhcH3QdaB2TZzSNIHvYmeGUg5e7oy3YJK+tO9
+         3hKpcPzkmw7o3iqE6J5JpzkRXRPMfFVfbWFr21eviQM1+L9Avm/YCJDfyWrraEtu1aEN
+         6MwCo1MmqBWxh41UuK2m6OJVzlNhh2nIvQCCC/UPZ8X4OnXZbFhfmZArZoiOL9Umbe14
+         cUC9PzBrI95Fp0o8MVzauYAcXaXfj1MOR8C0ev71od6oa6vdLLm5Gj5AAtOhynP8FxR8
+         1Q2g==
+X-Forwarded-Encrypted: i=1; AJvYcCWm+I3bzrQO+clItP9JJ7bSjhwdzwPhgYmZE4LejBA5/2+j8ufk4SsiQ4uK/7tfKXLD6x1uT9mxkUaJm1PTOHWmrhcl3xoHF+zNcSe6EcQ=
+X-Gm-Message-State: AOJu0YwJgRhSRxEVDkuYTjpCRk1Y4TXEuBXSpJ1DyccDFp1+pKiXNZB0
+	RvhqsQLZVTQ4HMEYWhKoGo2zOyW1n/t75RUn8Fpq5cv0Ztno4wri
+X-Google-Smtp-Source: AGHT+IFZyKGeyRkYjl7Y1XXe5SGYtSCsxKGOZb1IUzehJB7D9E1UqlV7qCF3OQDNlsq/cTdDXuMBmQ==
+X-Received: by 2002:a05:6a00:61c4:b0:6ec:f5d2:f641 with SMTP id d2e1a72fcca58-702310e0887mr1288326b3a.1.1717048394601;
+        Wed, 29 May 2024 22:53:14 -0700 (PDT)
 Received: from localhost (p5261226-ipxg23801hodogaya.kanagawa.ocn.ne.jp. [180.15.241.226])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f477d337cdsm83515795ad.71.2024.05.29.21.24.36
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-6f8fc36d29asm8907891b3a.82.2024.05.29.22.53.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 29 May 2024 21:24:41 -0700 (PDT)
-Date: Thu, 30 May 2024 13:24:33 +0900 (JST)
-Message-Id: <20240530.132433.2195707766186347550.fujita.tomonori@gmail.com>
-To: dakr@redhat.com, gregkh@linuxfoundation.org
-Cc: fujita.tomonori@gmail.com, wedsonaf@gmail.com,
- maarten.lankhorst@linux.intel.com, mripard@kernel.org,
- tzimmermann@suse.de, airlied@gmail.com, daniel@ffwll.ch, ojeda@kernel.org,
- alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
- bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@samsung.com,
- aliceryhl@google.com, lina@asahilina.net, pstanner@redhat.com,
- ajanulgu@redhat.com, lyude@redhat.com, rust-for-linux@vger.kernel.org,
- dri-devel@lists.freedesktop.org, nouveau@lists.freedesktop.org,
- mcgrof@kernel.org, russ.weight@linux.dev
-Subject: Re: [RFC PATCH 7/8] rust: add firmware abstractions
+        Wed, 29 May 2024 22:53:14 -0700 (PDT)
+Date: Thu, 30 May 2024 14:52:58 +0900 (JST)
+Message-Id: <20240530.145258.456915814420167538.fujita.tomonori@gmail.com>
+To: andrew@lunn.ch
+Cc: fujita.tomonori@gmail.com, benno.lossin@proton.me, tmgross@umich.edu,
+ rust-for-linux@vger.kernel.org
+Subject: Re: [RFC PATCH v1] rust: net::phy support to C45 registers access
 From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <ZlfeA7MEZRv404MO@pollux.localdomain>
-References: <2024052950-purely-sandstone-36c7@gregkh>
-	<20240530.082824.289365952172442399.fujita.tomonori@gmail.com>
-	<ZlfeA7MEZRv404MO@pollux.localdomain>
+In-Reply-To: <287303e0-dcca-4ec8-adae-5b17901a60ca@lunn.ch>
+References: <8c47a50d-fbba-4884-b409-925aecf4686a@lunn.ch>
+	<20240528.080317.686110578274075402.fujita.tomonori@gmail.com>
+	<287303e0-dcca-4ec8-adae-5b17901a60ca@lunn.ch>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -81,98 +74,39 @@ Content-Transfer-Encoding: 7bit
 
 Hi,
 
-On Thu, 30 May 2024 04:01:39 +0200
-Danilo Krummrich <dakr@redhat.com> wrote:
+On Tue, 28 May 2024 02:18:05 +0200
+Andrew Lunn <andrew@lunn.ch> wrote:
 
-> On Thu, May 30, 2024 at 08:28:24AM +0900, FUJITA Tomonori wrote:
->> Hi,
->> 
->> On Wed, 29 May 2024 21:57:03 +0200
->> Greg KH <gregkh@linuxfoundation.org> wrote:
->> 
->> >> For a Rust PHY driver, you know that you have a valid pointer to C's
->> >> device object of C's PHY device during the probe callback. The driver
->> >> creates a Rust device object to wrap the C pointer to the C's device
->> >> object and passes it to the firmware abstractions. The firmware
->> >> abstractions gets the C's pointer from the Rust object and calls C's
->> >> function to load firmware, returns the result.
->> >> 
->> >> You have concerns about the simple code like the following?
->> >> 
->> >> 
->> >> diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
->> >> new file mode 100644
->> >> index 000000000000..6144437984a9
->> >> --- /dev/null
->> >> +++ b/rust/kernel/device.rs
->> >> @@ -0,0 +1,30 @@
->> >> +// SPDX-License-Identifier: GPL-2.0
->> >> +
->> >> +//! Generic devices that are part of the kernel's driver model.
->> >> +//!
->> >> +//! C header: [`include/linux/device.h`](srctree/include/linux/device.h)
->> >> +
->> >> +use crate::types::Opaque;
->> >> +
->> >> +#[repr(transparent)]
->> >> +pub struct Device(Opaque<bindings::device>);
->> >> +
->> >> +impl Device {
->> >> +    /// Creates a new [`Device`] instance from a raw pointer.
->> >> +    ///
->> >> +    /// # Safety
->> >> +    ///
->> >> +    /// For the duration of 'a, the pointer must point at a valid `device`.
->> > 
->> > If the following rust code does what this comment says, then sure, I'm
->> > ok with it for now if it helps you all out with stuff like the firmware
->> > interface for the phy rust code.
->> 
->> Great, thanks a lot!
->> 
->> Danilo and Wedson, are there any concerns about pushing this patch [1]
->> for the firmware abstractions?
+>> Ah, I was wondering about the difference between 802.C C22 and mii.h:
+>> - the definition of 7, 8, b, and c are missing
 > 
-> Well, if everyone is fine with this one I don't see why we can't we go with [1]
-> directly? AFAICS, we'd only need the following fix:
+> They have not been used yet. There has been talk of using the two
+> next-page registers, but no patches so far. The PSE registers might be
+> interesting soon, since PoE is being added.
+
+Understood.
+
+>> - why vendoer specific addresses are defined
+>> 
+>> So what we should do are:
+>> 
+>> - define 0-15 according to 802.3.
+>> - doesn't define 16-31 but allow a driver to use
+>> 
+>> Right?
 > 
-> -//! C header: [`include/linux/device.h`](../../../../include/linux/device.h)
-> +//! C header: [`include/linux/device.h`](srctree/include/linux/device.h)
-> 
-> [1] https://lore.kernel.org/rust-for-linux/20240520172554.182094-2-dakr@redhat.com/
+> Yes.
 
-The difference is that your patch touches the reference count of a
-struct device. My patch doesn't.
+Thanks for the confirmation.
 
-The following part in your patch allows the rust code to freely play
-with the reference count of a struct device. Your Rust drm driver
-interact with the reference count in a different way than C's drm
-drivers if I understand correctly. I'm not sure that Greg will be
-convinenced with that approach.
+With updating this patch, I've started to think that it would be more
+consistent for the driver to use phy_read_mmd/phy_write_mmd rather
+than mdiobus_c45_read and mdiobus_c45_write (RegC45 than RegC45Direct
+in this patch). This is because the driver uses
+genphy_c45_read_status() helper for the read_status callback, which
+also lets phylib to choose an appropriate bus protocol.
 
-+// SAFETY: Instances of `Device` are always ref-counted.
-+unsafe impl crate::types::AlwaysRefCounted for Device {
-+    fn inc_ref(&self) {
-+        // SAFETY: The existence of a shared reference guarantees that the refcount is nonzero.
-+        unsafe { bindings::get_device(self.as_raw()) };
-+    }
-+
-+    unsafe fn dec_ref(obj: ptr::NonNull<Self>) {
-+        // SAFETY: The safety requirements guarantee that the refcount is nonzero.
-+        unsafe { bindings::put_device(obj.cast().as_ptr()) }
-+    }
-+}
+Additionally, I thought that we don't need to add RegC45Direct until a
+driver that requires it emerges.
 
-The following comments give the impression that Rust abstractions
-wrongly interact with the reference count; callers check out the
-reference counter. Nobody should do that.
-
-+    /// Callers must ensure that `ptr` is valid, non-null, and has a non-zero reference count.
-+    pub unsafe fn from_raw(ptr: *mut bindings::device) -> ARef<Self> {
-
-+    /// Callers must ensure that `ptr` is valid, non-null, and has a non-zero reference count for
-+    /// the entire duration when the returned reference exists.
-+    pub unsafe fn as_ref<'a>(ptr: *mut bindings::device) -> &'a Self {
-+        // SAFETY: Guaranteed by the safety requirements of the function.
-+        unsafe { &*ptr.cast() }
-+    }
+What do you think?
