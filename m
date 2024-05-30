@@ -1,359 +1,208 @@
-Received: from EUR03-DBA-obe.outbound.protection.outlook.com (mail-dbaeur03on2049.outbound.protection.outlook.com [40.107.104.49])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CE1B142E8C;
-	Thu, 30 May 2024 05:58:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.104.49
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717048740; cv=fail; b=H8FybejQM4QUabRl+svbZZI1OvS3LMJ11HF54sQpsW6VaRrceZ6iOCQyw2olLQOnL9QQeNPmk7sWk2HH5YtZioX08zPOiOCDPYLOpHdOeAuwUg6+4MipoQKrIbqECd5pYH2WjnFdaC0SNjZWCPfbl9aSKzrLT9svEB4p8oXf4ag=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717048740; c=relaxed/simple;
-	bh=3IjoqU1iZjUHDmFN0iuoaRpJ97lmCCdJuDVihgTVCpo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=RiL2bL3nRw4gPm8Diguk1ztOR4t4u8JxYGyor8L4aSn8kuELNh4AcwFxOd5UBSisqCNkz6L3DMLQU/nF78yVP2LmOUvsEKR6LXP1LAaBsuuOqakedHd+xkjK//ZmC49031nrwdt8rrrYtrfd0ui3mwQH/lsALy7C6CDRzg8ziPU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com; spf=pass smtp.mailfrom=de.bosch.com; dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b=e9kQC59G; arc=fail smtp.client-ip=40.107.104.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.bosch.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41F3E3207
+	for <rust-for-linux@vger.kernel.org>; Thu, 30 May 2024 06:50:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1717051857; cv=none; b=EmX/neJgbvpAOg7bo5WRAnWjIpEy18j7gETu+paDaPirS2AhWYU5fw2gaGLw2Nd0zKzwkTWyWVGGbgrrLaVkDzFAs6kqIylpLYrIKNdedlYgGZZ45y9u/PFyHpFvWZp9DkoueOsWYG/3WcvCyAPno19c/VYG2A7UvFDg7uhCNJA=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1717051857; c=relaxed/simple;
+	bh=rmhL0kz/m3mgguBfyG4lSNlnZ1074InA3j0e49mgDJo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 In-Reply-To:Content-Type:Content-Disposition; b=ZW2FfFyeECg0xT9f5S0e05373W3QuB6NCufgbxnV4TLbSiLSIUGxf6O1HL45QDzfibc9Hk1FMEt2xFimSEzMjnLHdXfqFpYJw2cGjUwZ/opEzO4qHBUvsCLnvNv/u5MnykAvPVpVc6bYnwydgmCYSHwMD72i904bgh2L3i60B6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Zo/WB0qz; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b="e9kQC59G"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=X59SxuOyqWRJj/jpOhlOjX4yiseBWzLjmXJzZ3QpItKdyf5XpIf95yh8x6TW0T6mFLC6Zd4rEZjoZ+Wyn2e51HwRtU7le9SQiG0aVQVpxXzcA7cG/T+7I/Z15EN4IyKkXRiaamPocQ0OocRJxDPlZOCy/OdSo8ek5a4nBIl7GDn0sS+3CGhLt7mD2c5+nfnOjGcksKuwpDxKBO4iK3Ey/Zj42Ckrrbr51uDJ012SRS/ZrC+ke+mqc+3Awf87pd7gkgC0zA1CxuxsIVSfchCNAtFBwkVphWjvi09h7AR+/wvMJxHLU6Qg8DzjCZFv/Pv9BAR54kXzjEXEOZJxCGIavg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Six0rx9M6uBQ4xVN+dsG5EpITI6rCgK6jw6kvfgajTM=;
- b=HbUVX+DX0sCnvvedar+KBr7Jc+FBBxRuJ+dpiqkLXpmEmQVg/eM23lKcRffxJrYCr/iy/PnjxBOtdj7dfaxE0yvLeFk2skVJo0VIdGhJbj6PotEFCfOL90RBujsNn0jyeguT4aG4QwTZEjgk5hbV/gz15qIM4cmvqMcUPlqeBXOxnUCRUv7homy7lRXsWvuM4XkPYn6e2SrXs63zjgXE+khnRn/j3qQtSMnrjJECjyxGo/OjWZDj8NvypcXMlWLpKjWgfJBEBG70DgYnCP2CvVZXNxL2kkzJrdSysbvuOduYw060VPWEbWUuZ87nTp0e8By9j708Az2f79xRut+wUg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 139.15.153.205) smtp.rcpttodomain=redhat.com smtp.mailfrom=de.bosch.com;
- dmarc=pass (p=reject sp=none pct=100) action=none header.from=de.bosch.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=de.bosch.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Six0rx9M6uBQ4xVN+dsG5EpITI6rCgK6jw6kvfgajTM=;
- b=e9kQC59GCwY02ltsYqMkNCMgXxE/UvVIBckexRjIBv0ENH5X5s7Gz0ZgbvvIF32SBe2FsLrDXXHyh1AwRKnWOJEEJS1PrzDepCyhM9DQfyY0N4w78FHY3XxeFwRE7XHND0WHHf1Qwsx/AE0CvZtRaV4dC/fNpGQy3SVjtBVJx1MqRTYjO78j4qla91PYJLm++5IyytzDHzVFiPNJLx8IEbovLBWObReTwYi73PaCbo8OnsF3WnT48Ayv+dC0LoYZJoJ4g2eS/DyM5dqZG8HeoCkASAwpCnpbrNQThQL/+PP//jjXtzpVvXg3clgpG8xvY4HLCuUiozlze1Mw0gjbZQ==
-Received: from DB8P191CA0006.EURP191.PROD.OUTLOOK.COM (2603:10a6:10:130::16)
- by PAVPR10MB6961.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:102:30d::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7633.21; Thu, 30 May
- 2024 05:58:53 +0000
-Received: from DB5PEPF00014B88.eurprd02.prod.outlook.com
- (2603:10a6:10:130:cafe::33) by DB8P191CA0006.outlook.office365.com
- (2603:10a6:10:130::16) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7633.18 via Frontend
- Transport; Thu, 30 May 2024 05:58:53 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 139.15.153.205)
- smtp.mailfrom=de.bosch.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=de.bosch.com;
-Received-SPF: Pass (protection.outlook.com: domain of de.bosch.com designates
- 139.15.153.205 as permitted sender) receiver=protection.outlook.com;
- client-ip=139.15.153.205; helo=eop.bosch-org.com; pr=C
-Received: from eop.bosch-org.com (139.15.153.205) by
- DB5PEPF00014B88.mail.protection.outlook.com (10.167.8.196) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7633.15 via Frontend Transport; Thu, 30 May 2024 05:58:53 +0000
-Received: from FE-EXCAS2000.de.bosch.com (10.139.217.199) by eop.bosch-org.com
- (139.15.153.205) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 30 May
- 2024 07:58:48 +0200
-Received: from [10.34.222.178] (10.139.217.196) by FE-EXCAS2000.de.bosch.com
- (10.139.217.199) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 30 May
- 2024 07:58:47 +0200
-Message-ID: <393a0a3f-9142-47c1-8422-40abd688363b@de.bosch.com>
-Date: Thu, 30 May 2024 07:58:36 +0200
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Zo/WB0qz"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1717051855;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=+6UhhRx41Z6T54/uX+rvRSIQ4bG3F0Fzy3rQ4r+M7Xw=;
+	b=Zo/WB0qzugDH8DHm26NNmeR2ftoDnhFlo6Wv33toMGxVO/OiaHUx4WInW1AaDecsZTEFyI
+	FG0oft5YXFF3om1mMH4IL/LFvRSCjDYExOUGIdKUYlqL8hEdmz/QtVFhfUQ6NW/xqYRUZS
+	u9LMMijqRl3IPtWmMngQThYW8QrimTM=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-467-0q8z6SAxNhOYpTbFeUJscw-1; Thu, 30 May 2024 02:47:34 -0400
+X-MC-Unique: 0q8z6SAxNhOYpTbFeUJscw-1
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-3580f213373so430522f8f.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 29 May 2024 23:47:34 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1717051648; x=1717656448;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+6UhhRx41Z6T54/uX+rvRSIQ4bG3F0Fzy3rQ4r+M7Xw=;
+        b=LdQKYDPvpJfU7Zeb1Reu+78wZLr5FLB+nXH5aZ6vXVeO5N+MqW4XGl4YJV0R5J1GuY
+         yl4flT3ilNGlzAGVkg4CmeCueKGXBRUiHIYkT3i64s69/eYuHfLRt2ngqCa+GxJpS9dB
+         O88kMxLJu4y2j5pj2OtKOv07YuGMi2vK33Ren4AkH4+2mek75A73gTz+lUpLZRARdY7S
+         YPLFf5xQcOSTEwUHr5eBzp3pF2gdssoIZiQL/XacneavLtKKZRFf0fuuEjK6nOI3S94x
+         /TX2s4hdo+DdLD7MpKulJviC3Fy/Hlb8vCaVg3LjiIqhGV5q/LzjLos99Y/WTrkISCiu
+         YN7Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWkAHAkeVKWuY1qCXZc+z2Y65F48k8EVJt2PVZ1zTiaK/DqzPSDkEIPHay0Uivis98/vXh15nMhIF88TiiDBs7aIUiyr4R3Q5OHblt+ESA=
+X-Gm-Message-State: AOJu0Yz08fa+xZI21OFATAobpxTVwrCxLX6ZNhQdUccF+Fh0blsjJH10
+	Wakp+S1E7i11lEdIxUVyf4WZjLPVnENK1eZgOsBC9FiVBFW/fWclSr7fZzb3UHVX/6iVIzAa5bQ
+	ZYQ/ZG1QPeX683lOJWnPEbn3x8mRAqfwXdxDm0GBP7Vo0G/ZlnMndqs1Iot3Q5+kz
+X-Received: by 2002:a05:6000:1883:b0:35d:bfa7:5f12 with SMTP id ffacd0b85a97d-35dc0091881mr968717f8f.19.1717051648544;
+        Wed, 29 May 2024 23:47:28 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH2THkDfZkgav7wfIpmSg8axTLOU7esgmVr44vwAJ61wnkwr2ymTrnaq1t0RgEDsR5qCuZd2A==
+X-Received: by 2002:a05:6000:1883:b0:35d:bfa7:5f12 with SMTP id ffacd0b85a97d-35dc0091881mr968678f8f.19.1717051648049;
+        Wed, 29 May 2024 23:47:28 -0700 (PDT)
+Received: from pollux ([2a02:810d:4b3f:ee94:abf:b8ff:feee:998b])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-35579d7d963sm16775384f8f.21.2024.05.29.23.47.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 29 May 2024 23:47:27 -0700 (PDT)
+Date: Thu, 30 May 2024 08:47:25 +0200
+From: Danilo Krummrich <dakr@redhat.com>
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: gregkh@linuxfoundation.org, wedsonaf@gmail.com,
+	maarten.lankhorst@linux.intel.com, mripard@kernel.org,
+	tzimmermann@suse.de, airlied@gmail.com, daniel@ffwll.ch,
+	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@samsung.com, aliceryhl@google.com, lina@asahilina.net,
+	pstanner@redhat.com, ajanulgu@redhat.com, lyude@redhat.com,
+	rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	nouveau@lists.freedesktop.org, mcgrof@kernel.org,
+	russ.weight@linux.dev
+Subject: Re: [RFC PATCH 7/8] rust: add firmware abstractions
+Message-ID: <Zlgg_Q5y3Q99Ts1s@pollux>
+References: <2024052950-purely-sandstone-36c7@gregkh>
+ <20240530.082824.289365952172442399.fujita.tomonori@gmail.com>
+ <ZlfeA7MEZRv404MO@pollux.localdomain>
+ <20240530.132433.2195707766186347550.fujita.tomonori@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 02/11] rust: add driver abstraction
-To: Danilo Krummrich <dakr@redhat.com>, <gregkh@linuxfoundation.org>,
-	<rafael@kernel.org>, <bhelgaas@google.com>, <ojeda@kernel.org>,
-	<alex.gaynor@gmail.com>, <wedsonaf@gmail.com>, <boqun.feng@gmail.com>,
-	<gary@garyguo.net>, <bjorn3_gh@protonmail.com>, <benno.lossin@proton.me>,
-	<a.hindborg@samsung.com>, <aliceryhl@google.com>, <airlied@gmail.com>,
-	<fujita.tomonori@gmail.com>, <lina@asahilina.net>, <pstanner@redhat.com>,
-	<ajanulgu@redhat.com>, <lyude@redhat.com>, Fabien Parent
-	<fabien.parent@linaro.org>
-CC: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
-	<linux-pci@vger.kernel.org>
-References: <20240520172554.182094-1-dakr@redhat.com>
- <20240520172554.182094-3-dakr@redhat.com>
-Content-Language: en-US
-From: Dirk Behme <dirk.behme@de.bosch.com>
-In-Reply-To: <20240520172554.182094-3-dakr@redhat.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB5PEPF00014B88:EE_|PAVPR10MB6961:EE_
-X-MS-Office365-Filtering-Correlation-Id: bbced7f9-2dba-4be4-330c-08dc806d95e5
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230031|36860700004|376005|82310400017|7416005|1800799015|921011;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?MkpzRkVnV0tEcU9GOVNub3oxY1IzR0IxR29mK1pZOHNXQ2ZEYmVJK1pXR0l2?=
- =?utf-8?B?SmVSZ3VRSEJ3UFRmYUtWQWQzVGJMbDdUMDVaS24zT3BJL1ozSnlYMjZJc1kx?=
- =?utf-8?B?YW4wZElON1ptbWtjMWZuZ1ltUjRBNVNXY0JCTzlEVkJmWDBjSzRlWW8xUVdo?=
- =?utf-8?B?UFdUOXB5UmRuLzdvRytkNEpJTnM5ZWpHbGVhZStrOWhJd1Y3eW5WRXlucHVY?=
- =?utf-8?B?RTUwVGZzakxIelkvNnpGYUE1dGtSQ05pYXVSR1VOY3BoNGFWb3ZuaTBiRDJQ?=
- =?utf-8?B?dWxpdENCWW4vNlRERDNaVTdwUDJRNVJmb0Jmdm5rbEdYazJGSDRndmM3djQ2?=
- =?utf-8?B?bmR0SHJQNCt5M1VNc2JwbTB6SHlaS2t3d29Fd1BjKzNTb1VuZGRwQ0lyT2hL?=
- =?utf-8?B?RVZsWWxiak1Jc3Q2SXhacGJueVg5S1RnaFlXaEJ5ZWh4SkcxY05JSTBmV2xX?=
- =?utf-8?B?K2dwQXA2blZJZ1cyanhobXQvMFU1ZVdXTWN6VWZBaWd0TUR0eXY1S0ZwWWZO?=
- =?utf-8?B?bnRZbXFsWEhoQ0dvZk5RSGhoZ3dHM0dBbEdyYXladlpNWTRFdi9SRUVYNE1E?=
- =?utf-8?B?K01QaXA4WDYydUlOZVpDdzUrVEZ4VkpoMEFINzBnZm1nSTROanNWUkcwTXow?=
- =?utf-8?B?Ujc2K2k0N21vc2Ywb2phSm56eEVBS25rSTA3L2lsek5QRUFNaE1GdC9IY1Ny?=
- =?utf-8?B?cGlvQ3doQjk1TCtxNnBSZndFUE8xMmQ0T0FmT0ZiRllNdjZEUHFISUZ4NjZt?=
- =?utf-8?B?em1iRzlBUTdGbEJ6cERxQVNRY3hCVDkxN0JOR0pXVzI0bWV1R0RTNE8vTjM2?=
- =?utf-8?B?SzhRdmxmUDVXY0RibXc4ZW8ySzVaazBmemR5SVBvVE8rcU15TXVRckZ2aE43?=
- =?utf-8?B?QlFTUytnWGJUQWVtYlFpRmwvbjNHcnROVi9vZ2NIdS9NUXByaFdQNkRTYklv?=
- =?utf-8?B?U3FrVVJpOGtMdGJHL1BuVW9JeE15eXQrbEdFMngvN1M3OVJVT2c5RDdTYlcy?=
- =?utf-8?B?NTVsUjJSN2M1a0ZzcjFkK25hNzgvbmI5bHNrTEVITllMVE9Wa3NHOHg3SlNU?=
- =?utf-8?B?ZmJGU00yWlRmbkRTYVNjbDdabmJsUlRCaDJBMDhmaU9DZHZURHJvdmZWTGdj?=
- =?utf-8?B?bU4ycU5LYVZiV2lhc1o3bTNjTllEZTJyZXNnU3ExOWplblBpR0k5eEhMalZS?=
- =?utf-8?B?RzVqN3FTNXpHZmlLQnd2ZmIxVjJ5Rmp4NlB2VGdET2ovV3dBRnZVeHRZZEhH?=
- =?utf-8?B?MGF0RDdPZGdMV1l1aWc2ZkRWWG1OZGQ0VzJyWFlQQkhaUXRMbmE0bi94djVM?=
- =?utf-8?B?WFVHMGpCaDZ4V0dHNVpXM0NXTzhmc0RRWUUrMVBWaEF3K01WenBXQmkycnd4?=
- =?utf-8?B?bmVoYmZHRXQvMEFnWnAxZ2xRQURKL2EyZlVya3BiUWVZdUQyNXVIdTZSaFlO?=
- =?utf-8?B?a1lEZGRBbVpJMG9rRWFzSEV6bVpWQmVLekNVUFJWck5sc3Z5RWNEeVZaQjJX?=
- =?utf-8?B?TUZvS3JWbU5iakFIMEtqVHZRcExsMnNaOGhpZmRDcUI4Z2Z2Nys2QkZrb1VR?=
- =?utf-8?B?SkgzYnhpWGpQYU0yVzZVdGhOY1F4L3hkR09hK0ZnMWhRODBTaWt1SEtyRGJj?=
- =?utf-8?B?UEkrMk9rbTNWZEdEOXZwdjZHZHEvRjA0YkFHaXU4K2xDU1RmcFRYN0xZMk1u?=
- =?utf-8?B?Zkx5bHQyekg0WFUraVR0NUVSWjVxR2Z5U1hnNjRPY0FzQ3J5VkxFZ29EeThB?=
- =?utf-8?B?RFR0eGNEcXpNbWxNTGovaUUwN2JQRVIrTWYzT1RDa0ZVNDd5TU1SSi9OSi84?=
- =?utf-8?B?VEVBN2RmQ09vYUFqWG9Hdz09?=
-X-Forefront-Antispam-Report:
-	CIP:139.15.153.205;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eop.bosch-org.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(36860700004)(376005)(82310400017)(7416005)(1800799015)(921011);DIR:OUT;SFP:1101;
-X-OriginatorOrg: de.bosch.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 30 May 2024 05:58:53.3446
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: bbced7f9-2dba-4be4-330c-08dc806d95e5
-X-MS-Exchange-CrossTenant-Id: 0ae51e19-07c8-4e4b-bb6d-648ee58410f4
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0ae51e19-07c8-4e4b-bb6d-648ee58410f4;Ip=[139.15.153.205];Helo=[eop.bosch-org.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DB5PEPF00014B88.eurprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PAVPR10MB6961
+In-Reply-To: <20240530.132433.2195707766186347550.fujita.tomonori@gmail.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On 20.05.2024 19:25, Danilo Krummrich wrote:
-> From: Wedson Almeida Filho <wedsonaf@gmail.com>
+On Thu, May 30, 2024 at 01:24:33PM +0900, FUJITA Tomonori wrote:
+> Hi,
 > 
-> This defines general functionality related to registering drivers with
-> their respective subsystems, and registering modules that implement
-> drivers.
+> On Thu, 30 May 2024 04:01:39 +0200
+> Danilo Krummrich <dakr@redhat.com> wrote:
 > 
-> Co-developed-by: Asahi Lina <lina@asahilina.net>
-> Signed-off-by: Asahi Lina <lina@asahilina.net>
-> Co-developed-by: Andreas Hindborg <a.hindborg@samsung.com>
-> Signed-off-by: Andreas Hindborg <a.hindborg@samsung.com>
-> Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
-> Signed-off-by: Danilo Krummrich <dakr@redhat.com>
-> ---
->   rust/kernel/driver.rs        | 492 +++++++++++++++++++++++++++++++++++
->   rust/kernel/lib.rs           |   4 +-
->   rust/macros/module.rs        |   2 +-
->   samples/rust/rust_minimal.rs |   2 +-
->   samples/rust/rust_print.rs   |   2 +-
->   5 files changed, 498 insertions(+), 4 deletions(-)
->   create mode 100644 rust/kernel/driver.rs
+> > On Thu, May 30, 2024 at 08:28:24AM +0900, FUJITA Tomonori wrote:
+> >> Hi,
+> >> 
+> >> On Wed, 29 May 2024 21:57:03 +0200
+> >> Greg KH <gregkh@linuxfoundation.org> wrote:
+> >> 
+> >> >> For a Rust PHY driver, you know that you have a valid pointer to C's
+> >> >> device object of C's PHY device during the probe callback. The driver
+> >> >> creates a Rust device object to wrap the C pointer to the C's device
+> >> >> object and passes it to the firmware abstractions. The firmware
+> >> >> abstractions gets the C's pointer from the Rust object and calls C's
+> >> >> function to load firmware, returns the result.
+> >> >> 
+> >> >> You have concerns about the simple code like the following?
+> >> >> 
+> >> >> 
+> >> >> diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
+> >> >> new file mode 100644
+> >> >> index 000000000000..6144437984a9
+> >> >> --- /dev/null
+> >> >> +++ b/rust/kernel/device.rs
+> >> >> @@ -0,0 +1,30 @@
+> >> >> +// SPDX-License-Identifier: GPL-2.0
+> >> >> +
+> >> >> +//! Generic devices that are part of the kernel's driver model.
+> >> >> +//!
+> >> >> +//! C header: [`include/linux/device.h`](srctree/include/linux/device.h)
+> >> >> +
+> >> >> +use crate::types::Opaque;
+> >> >> +
+> >> >> +#[repr(transparent)]
+> >> >> +pub struct Device(Opaque<bindings::device>);
+> >> >> +
+> >> >> +impl Device {
+> >> >> +    /// Creates a new [`Device`] instance from a raw pointer.
+> >> >> +    ///
+> >> >> +    /// # Safety
+> >> >> +    ///
+> >> >> +    /// For the duration of 'a, the pointer must point at a valid `device`.
+> >> > 
+> >> > If the following rust code does what this comment says, then sure, I'm
+> >> > ok with it for now if it helps you all out with stuff like the firmware
+> >> > interface for the phy rust code.
+> >> 
+> >> Great, thanks a lot!
+> >> 
+> >> Danilo and Wedson, are there any concerns about pushing this patch [1]
+> >> for the firmware abstractions?
+> > 
+> > Well, if everyone is fine with this one I don't see why we can't we go with [1]
+> > directly? AFAICS, we'd only need the following fix:
+> > 
+> > -//! C header: [`include/linux/device.h`](../../../../include/linux/device.h)
+> > +//! C header: [`include/linux/device.h`](srctree/include/linux/device.h)
+> > 
+> > [1] https://lore.kernel.org/rust-for-linux/20240520172554.182094-2-dakr@redhat.com/
 > 
-> diff --git a/rust/kernel/driver.rs b/rust/kernel/driver.rs
-> new file mode 100644
-> index 000000000000..e0cfc36d47ff
-> --- /dev/null
-> +++ b/rust/kernel/driver.rs
-> @@ -0,0 +1,492 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! Generic support for drivers of different buses (e.g., PCI, Platform, Amba, etc.).
-> +//!
-> +//! Each bus/subsystem is expected to implement [`DriverOps`], which allows drivers to register
-> +//! using the [`Registration`] class.
-> +
-> +use crate::{
-> +    alloc::{box_ext::BoxExt, flags::*},
-> +    error::code::*,
-> +    error::Result,
-> +    str::CStr,
-> +    sync::Arc,
-> +    ThisModule,
-> +};
-> +use alloc::boxed::Box;
-> +use core::{cell::UnsafeCell, marker::PhantomData, ops::Deref, pin::Pin};
-> +
-> +/// A subsystem (e.g., PCI, Platform, Amba, etc.) that allows drivers to be written for it.
-> +pub trait DriverOps {
-> +    /// The type that holds information about the registration. This is typically a struct defined
-> +    /// by the C portion of the kernel.
-> +    type RegType: Default;
-> +
-> +    /// Registers a driver.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// `reg` must point to valid, initialised, and writable memory. It may be modified by this
-> +    /// function to hold registration state.
-> +    ///
-> +    /// On success, `reg` must remain pinned and valid until the matching call to
-> +    /// [`DriverOps::unregister`].
-> +    unsafe fn register(
-> +        reg: *mut Self::RegType,
-> +        name: &'static CStr,
-> +        module: &'static ThisModule,
-> +    ) -> Result;
-> +
-> +    /// Unregisters a driver previously registered with [`DriverOps::register`].
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// `reg` must point to valid writable memory, initialised by a previous successful call to
-> +    /// [`DriverOps::register`].
-> +    unsafe fn unregister(reg: *mut Self::RegType);
-> +}
-> +
-> +/// The registration of a driver.
-> +pub struct Registration<T: DriverOps> {
-> +    is_registered: bool,
-> +    concrete_reg: UnsafeCell<T::RegType>,
-> +}
-> +
-> +// SAFETY: `Registration` has no fields or methods accessible via `&Registration`, so it is safe to
-> +// share references to it with multiple threads as nothing can be done.
-> +unsafe impl<T: DriverOps> Sync for Registration<T> {}
-> +
-> +impl<T: DriverOps> Registration<T> {
-> +    /// Creates a new instance of the registration object.
-> +    pub fn new() -> Self {
-> +        Self {
-> +            is_registered: false,
-> +            concrete_reg: UnsafeCell::new(T::RegType::default()),
-> +        }
+> The difference is that your patch touches the reference count of a
+> struct device. My patch doesn't.
+> 
+> The following part in your patch allows the rust code to freely play
+> with the reference count of a struct device. Your Rust drm driver
+> interact with the reference count in a different way than C's drm
+> drivers if I understand correctly. I'm not sure that Greg will be
+> convinenced with that approach.
+
+I don't see how this is different than what we do in C. If you (for whatever
+reason) want to keep a pointer to a struct device you should make sure to
+increase the reference count of this device, such that it can't get freed for
+the time being.
+
+This is a 1:1 representation of that and conceptually identical.
+
+> 
+> +// SAFETY: Instances of `Device` are always ref-counted.
+> +unsafe impl crate::types::AlwaysRefCounted for Device {
+> +    fn inc_ref(&self) {
+> +        // SAFETY: The existence of a shared reference guarantees that the refcount is nonzero.
+> +        unsafe { bindings::get_device(self.as_raw()) };
 > +    }
 > +
-> +    /// Allocates a pinned registration object and registers it.
-> +    ///
-> +    /// Returns a pinned heap-allocated representation of the registration.
-> +    pub fn new_pinned(name: &'static CStr, module: &'static ThisModule) -> Result<Pin<Box<Self>>> {
-> +        let mut reg = Pin::from(Box::new(Self::new(), GFP_KERNEL)?);
-> +        reg.as_mut().register(name, module)?;
-> +        Ok(reg)
-> +    }
-> +
-> +    /// Registers a driver with its subsystem.
-> +    ///
-> +    /// It must be pinned because the memory block that represents the registration is potentially
-> +    /// self-referential.
-> +    pub fn register(
-> +        self: Pin<&mut Self>,
-> +        name: &'static CStr,
-> +        module: &'static ThisModule,
-> +    ) -> Result {
-> +        // SAFETY: We never move out of `this`.
-> +        let this = unsafe { self.get_unchecked_mut() };
-> +        if this.is_registered {
-> +            // Already registered.
-> +            return Err(EINVAL);
-> +        }
-> +
-> +        // SAFETY: `concrete_reg` was initialised via its default constructor. It is only freed
-> +        // after `Self::drop` is called, which first calls `T::unregister`.
-> +        unsafe { T::register(this.concrete_reg.get(), name, module) }?;
-> +
-> +        this.is_registered = true;
-> +        Ok(())
+> +    unsafe fn dec_ref(obj: ptr::NonNull<Self>) {
+> +        // SAFETY: The safety requirements guarantee that the refcount is nonzero.
+> +        unsafe { bindings::put_device(obj.cast().as_ptr()) }
 > +    }
 > +}
-> +
-> +impl<T: DriverOps> Default for Registration<T> {
-> +    fn default() -> Self {
-> +        Self::new()
+> 
+> The following comments give the impression that Rust abstractions
+> wrongly interact with the reference count; callers check out the
+> reference counter. Nobody should do that.
+
+No, saying that the caller must ensure that the device "has a non-zero reference
+count" is a perfectly valid requirement.
+
+It doensn't mean that the calling code has to peek the actual reference count,
+but it means that it must be ensured that while we try to increase the reference
+count it can't drop to zero unexpectedly.
+
+Your patch, as a subset of this one, has the same requirements as listed below.
+
+> 
+> +    /// Callers must ensure that `ptr` is valid, non-null, and has a non-zero reference count.
+> +    pub unsafe fn from_raw(ptr: *mut bindings::device) -> ARef<Self> {
+> 
+> +    /// Callers must ensure that `ptr` is valid, non-null, and has a non-zero reference count for
+> +    /// the entire duration when the returned reference exists.
+> +    pub unsafe fn as_ref<'a>(ptr: *mut bindings::device) -> &'a Self {
+> +        // SAFETY: Guaranteed by the safety requirements of the function.
+> +        unsafe { &*ptr.cast() }
 > +    }
-> +}
-> +
-> +impl<T: DriverOps> Drop for Registration<T> {
-> +    fn drop(&mut self) {
-> +        if self.is_registered {
-> +            // SAFETY: This path only runs if a previous call to `T::register` completed
-> +            // successfully.
-> +            unsafe { T::unregister(self.concrete_reg.get()) };
-> +        }
-> +    }
-> +}
-> +
-> +/// Conversion from a device id to a raw device id.
-> +///
-> +/// This is meant to be implemented by buses/subsystems so that they can use [`IdTable`] to
-> +/// guarantee (at compile-time) zero-termination of device id tables provided by drivers.
-> +///
-> +/// Originally, RawDeviceId was implemented as a const trait. However, this unstable feature is
-> +/// broken/gone in 1.73. To work around this, turn IdArray::new() into a macro such that it can use
-> +/// concrete types (which can still have const associated functions) instead of a trait.
-> +///
-> +/// # Safety
-> +///
-> +/// Implementers must ensure that:
-> +///   - [`RawDeviceId::ZERO`] is actually a zeroed-out version of the raw device id.
-> +///   - [`RawDeviceId::to_rawid`] stores `offset` in the context/data field of the raw device id so
-> +///     that buses can recover the pointer to the data.
-
-In his I2C branch Fabien has a patch [1] [2] to remove the 
-RawDeviceId::to_rawid part above. Maybe it could be aligned that that 
-patch isn't required any more?
-
-Best regards
-
-Dirk
-
-[1] 
-https://github.com/Fabo/linux/commit/4b65b8d7ffe07057672b8eb89d376759d67bf060
-
-[2]
-
- From 4b65b8d7ffe07057672b8eb89d376759d67bf060 Mon Sep 17 00:00:00 2001
-From: Fabien Parent <fabien.parent@linaro.org>
-Date: Sun, 28 Apr 2024 11:12:46 -0700
-Subject: [PATCH] fixup! rust: add driver abstraction
-
-RawDeviceId::to_rawid is not part of the RawDeviceId trait. Nonetheless
-this function must be defined by the type that will implement
-RawDeviceId, but to keep `rustdoc` from throwing a warning, let's just
-remove it from the docs.
-
-	warning: unresolved link to `RawDeviceId::to_rawid`
-	   --> rust/kernel/driver.rs:120:11
-	    |
-	120 | ///   - [`RawDeviceId::to_rawid`] stores `offset` in the 
-context/data field of the raw device id so
-	    |           ^^^^^^^^^^^^^^^^^^^^^ the trait `RawDeviceId` has no 
-associated item named `to_rawid`
-	    |
-	    = note: `#[warn(rustdoc::broken_intra_doc_links)]` on by default
-
-	warning: 1 warning emitted
----
-  rust/kernel/driver.rs | 2 --
-  1 file changed, 2 deletions(-)
-
-diff --git a/rust/kernel/driver.rs b/rust/kernel/driver.rs
-index c1258ce0d041af..d141e23224d3db 100644
---- a/rust/kernel/driver.rs
-+++ b/rust/kernel/driver.rs
-@@ -128,8 +128,6 @@ impl<T: DriverOps> Drop for Registration<T> {
-  ///
-  /// Implementers must ensure that:
-  ///   - [`RawDeviceId::ZERO`] is actually a zeroed-out version of the 
-raw device id.
--///   - [`RawDeviceId::to_rawid`] stores `offset` in the context/data 
-field of the raw device id so
--///     that buses can recover the pointer to the data.
-  pub unsafe trait RawDeviceId {
-      /// The raw type that holds the device id.
-      ///
-
+> 
 
