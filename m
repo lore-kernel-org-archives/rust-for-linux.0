@@ -1,282 +1,163 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f172.google.com (mail-pf1-f172.google.com [209.85.210.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7455C140395
-	for <rust-for-linux@vger.kernel.org>; Fri, 31 May 2024 10:00:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C21A15B106
+	for <rust-for-linux@vger.kernel.org>; Fri, 31 May 2024 13:59:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717149603; cv=none; b=gEL4YjN+8IxYZr9spxYYKEO0WJev8pEfetV/+nrU3Pk9wKPT/WyQnBQkxi2trBFkWjDzFQeVTBlBD6vM5GjG0ETY6YiGZ3aqnjMV1PSoLbMFa9t/EfgIk7sKkL+ceoTd13HJA5PUBccL0j48i62sZdUh6oh/MML6xGPpRihLQtQ=
+	t=1717163945; cv=none; b=sd4o7I+DtPPkWir1BHuDCWvmWznKQVQCBbkymas+L/tw0wiZdBW5TS1WiEZr1RcjfHIK3R8YvMg0CbmlnW7oVfQDQkGGQO5vL3Wow/U9OIVIT0gYlrxa6JMBUWjDRPexiQbWxYNKMpJngf8uty9DTMIfi1DXsyzNq01hSqp9e1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717149603; c=relaxed/simple;
-	bh=LFzBA44iwcReBacIMwkY6YOHssOc1CG0UiXSEbtlzQM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 In-Reply-To:Content-Type:Content-Disposition; b=oAFw6Of69jneoBklku5IOmH+Gj7vY+vrREUUR+5t0yuYH5q1Uv8SH8U9iVcPtUfwHpPBUxCEN4WXWW5JkAmTZP05oadukpYHcu5cmyXE27ElqgMzTaWJ25ms3bzS6smvRAR7dInZLoEql+43NDrmsWZUAJ1zRR8FaQX3nu+Wg24=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=I3ocOUhQ; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1717163945; c=relaxed/simple;
+	bh=stHt2TlkHAqh6v4J0X2XomoOzP0sY7/ATfe8L5Ai1n8=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=NwkrU5V6q9RUN/V6QU/zJ6jSCz9gm4vmPA36pflXezA2juGl77ecMGpjmEnYperKx3Q5r29SgSVjL+E0eOuprKm0BQ4tNoLaKeKn+26umDuNCQsywHAVqjTE7sZZTkVf5aWA7lmp3I+lg+GjuzbDtAiSYplofd5n2A/HVdAvzoo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hm5UNEdP; arc=none smtp.client-ip=209.85.210.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="I3ocOUhQ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1717149600;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Z2ekAT+HdylEYfyDggX/JisTQjbKg/RFJZ73WI20cAQ=;
-	b=I3ocOUhQxDmYwdxJ878RfhdAB1BA3h4WGZOdc7gcHS4xygUvWRlyq+c9KbSCc6tro5xtW/
-	zeqWygz1AaZjXEmd/TfbOc5tR7N9PW6Y4WKXGmMN6VJztm44ofNGcOa6+ECzCLcS8HxBM4
-	lUp+FcaqWdM9CbhHxnrxOPkvPwmhPO8=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-546-mP52cML5MM2ITFZkJttOJg-1; Fri, 31 May 2024 05:59:58 -0400
-X-MC-Unique: mP52cML5MM2ITFZkJttOJg-1
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-42120e123beso17634455e9.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 31 May 2024 02:59:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hm5UNEdP"
+Received: by mail-pf1-f172.google.com with SMTP id d2e1a72fcca58-7022f44b53bso76656b3a.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 31 May 2024 06:59:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1717163944; x=1717768744; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ZuMA6lX4upWzeQalJ9m7pUdralNxn+ciFWaj8VjuuuI=;
+        b=hm5UNEdP89GFyTLoyn9xW87aUFq92aUXLuy+TQMsYvJ6xU4A4nbzdgwhsuaGqLam4e
+         PAKssbC2HkPMx2Agcm+7jSSduD3O+uZf64BbZh648pwo9OwC2kQHx3xTjgU0I/BNFJaD
+         iihGP4F73Vnvse3BhJggooeV62A3ph4ZNDlpQlwO1UKHnvdG/iOEIYytBNpTemWtCBX+
+         DcMVjE/qVKXGdcjhZCW7e+xvZDSI1DDNIOUqvWmBW5O6f+erLqoyKl7ZyHQ54dmGMOCF
+         +lORsXACEaLfGHpFskpO6Y4B7EQXvkJ7SwxXTGeA8KTzBdppuJHE5lmtDZA6SIPxnynb
+         CRyA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717149592; x=1717754392;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Z2ekAT+HdylEYfyDggX/JisTQjbKg/RFJZ73WI20cAQ=;
-        b=axVQcQpiyVRmSepSPZ9lG72lqEBbx0jTyUcDtsZv4+qYZQqu51Lj/e7VtU+Oqj1zv5
-         QSEt1aXmUr2wNJz4qUCPzEo/AeOCIG+EtwuUln7D9k4LSy5TcPp0HRHNPNz3fMn/F8sN
-         ypHfqMs9ZQXTatKQp8KRiuz6jMYMox+xWuYz8v/L3v1tdORQJdOBdomyRxM8bgJDnHCd
-         /BmVvisMS7nuWZxbHVzoGfzdqcOmS/S5+ZooX0dtXQCgKpSlww0mYWFyDCx/CmIIc7dU
-         cngTo2ANRbOrFbn2hizkTrHFhgcKeW68X63GkF074JGeF6a3rW3MW5aVEEAKdzci6wTw
-         r1vw==
-X-Forwarded-Encrypted: i=1; AJvYcCWdZWEJ/6twzr7kYvN7IsR2JYAO2smTBAisRTfwi2IJR+htGa6aHh8sluwp2jLLKXRDR6mt49hWM6ysNXAv1hlvF7IOAi0fY1D1nJG8dTc=
-X-Gm-Message-State: AOJu0Yz+8T3ON96CVblarzEMXZ4OI0Qayng0ovZO0Cq335yT+sDKsoU8
-	4O6OJkL4HAExkArkcywgQqufOynJiA+syJutHjjnbvcLVzHRIBwlD8o0gdMC54Wp6xtYTI363Cu
-	UF050tK5ozeGHZdBq0S1Tcvbr242pPxT6AEwEvmxq5kP99Bv6CFwgkdlHWktn1/Hg
-X-Received: by 2002:a7b:cb4d:0:b0:41b:fa34:9e48 with SMTP id 5b1f17b1804b1-4212e0a52eamr14260105e9.30.1717149592488;
-        Fri, 31 May 2024 02:59:52 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEJi89QlpGP04dDoDisBplmOCCPtu2L69G8FLPbczN6kiL/eF0OWVOpZe0h/PK7zHDrNb/nyA==
-X-Received: by 2002:a7b:cb4d:0:b0:41b:fa34:9e48 with SMTP id 5b1f17b1804b1-4212e0a52eamr14259805e9.30.1717149591851;
-        Fri, 31 May 2024 02:59:51 -0700 (PDT)
-Received: from pollux ([2a02:810d:4b3f:ee94:abf:b8ff:feee:998b])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42132d5308csm4535325e9.35.2024.05.31.02.59.50
+        d=1e100.net; s=20230601; t=1717163944; x=1717768744;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=ZuMA6lX4upWzeQalJ9m7pUdralNxn+ciFWaj8VjuuuI=;
+        b=rnP7TRujEX8/4Ripy9eWvYeMTXt7jEy87l67QOpvTGLKTeH1qKA0xKaWN42q4eBlAH
+         iDfHpWAsNE+aVmGNNOTTa5MsnpzVz1816LgZA/LnNIOohlUKvkUKyYZAvYiHvOcJGiEi
+         XGGhvF51/51twHypiv2vk8zO2AN85mr18uQoqaakeb9sxWNTUzi7g1u8Zs3E4FAOm2k6
+         ajJQRDC+dE6jD9KwCICfaADFH+C/Qm+MSX4I3+Nw8s/ixnnovvhpD9zJUb7SJ/eEMw8t
+         xNO8DvyNy5KiIEPdhdmqrpSWYLwSeM78n2nnfCrRVWmIZXN09JY8Aj189Yl9sgBPll0H
+         64XQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWXKaRmSgAWju4DAkZM/X/ajCVO52rUozidfw6CjFO0pjQ7hxfxnBLbwgM9j2uxP5mgrcYMrSc4kd7mHCG/rLmdCJJHB482Tb3590vHOT4=
+X-Gm-Message-State: AOJu0YzqApMgohRAffDGT4npyQbWl11Famdy0emtyYQ0K6VlabnQCsvk
+	ZhUKHrFJFRQJzdH1Ldw/MC494FsfA99XSsa1QHe/AyJeDCCWq6dZnZtwOm68
+X-Google-Smtp-Source: AGHT+IFpUijM20QnEM9V72w1cxRNH3CM7MYAy0WurOJTDI5FMdHfTHndRw5UZt9EsgvkxXUFNwXmlQ==
+X-Received: by 2002:a05:6a21:7887:b0:1af:cf0c:95aa with SMTP id adf61e73a8af0-1b26f1178bamr2495523637.2.1717163943479;
+        Fri, 31 May 2024 06:59:03 -0700 (PDT)
+Received: from localhost (p5261226-ipxg23801hodogaya.kanagawa.ocn.ne.jp. [180.15.241.226])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2c1c27cb414sm1513014a91.16.2024.05.31.06.59.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 31 May 2024 02:59:50 -0700 (PDT)
-Date: Fri, 31 May 2024 11:59:47 +0200
-From: Danilo Krummrich <dakr@redhat.com>
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: gregkh@linuxfoundation.org, wedsonaf@gmail.com,
-	maarten.lankhorst@linux.intel.com, mripard@kernel.org,
-	tzimmermann@suse.de, airlied@gmail.com, daniel@ffwll.ch,
-	ojeda@kernel.org, alex.gaynor@gmail.com, boqun.feng@gmail.com,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	a.hindborg@samsung.com, aliceryhl@google.com, lina@asahilina.net,
-	pstanner@redhat.com, ajanulgu@redhat.com, lyude@redhat.com,
-	rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	nouveau@lists.freedesktop.org, mcgrof@kernel.org,
-	russ.weight@linux.dev
-Subject: Re: [RFC PATCH 7/8] rust: add firmware abstractions
-Message-ID: <Zlmfkws-QjNmFxfr@pollux>
-References: <ZlfeA7MEZRv404MO@pollux.localdomain>
- <20240530.132433.2195707766186347550.fujita.tomonori@gmail.com>
- <Zlgg_Q5y3Q99Ts1s@pollux>
- <20240531.165032.1895479176481879387.fujita.tomonori@gmail.com>
+        Fri, 31 May 2024 06:59:02 -0700 (PDT)
+Date: Fri, 31 May 2024 22:58:57 +0900 (JST)
+Message-Id: <20240531.225857.1252492134294581333.fujita.tomonori@gmail.com>
+To: benno.lossin@proton.me
+Cc: andrew@lunn.ch, fujita.tomonori@gmail.com, tmgross@umich.edu,
+ rust-for-linux@vger.kernel.org
+Subject: Re: [RFC PATCH v1] rust: net::phy support to C45 registers access
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <4a6aba6c-3e52-4ace-be88-58f9c1b44693@proton.me>
+References: <20240527.104650.353359058235482782.fujita.tomonori@gmail.com>
+	<8c47a50d-fbba-4884-b409-925aecf4686a@lunn.ch>
+	<4a6aba6c-3e52-4ace-be88-58f9c1b44693@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-In-Reply-To: <20240531.165032.1895479176481879387.fujita.tomonori@gmail.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-On Fri, May 31, 2024 at 04:50:32PM +0900, FUJITA Tomonori wrote:
-> On Thu, 30 May 2024 08:47:25 +0200
-> Danilo Krummrich <dakr@redhat.com> wrote:
+Hi,
+
+On Thu, 30 May 2024 08:05:50 +0000
+Benno Lossin <benno.lossin@proton.me> wrote:
+
+> On 27.05.24 23:57, Andrew Lunn wrote:
+>>> +/// Accesses to C22 registers.
+>>> +#[derive(Clone, Copy)]
+>>> +pub enum RegC22 {
+>>> +    /// Basic mode control.
+>>> +    Bmcr = uapi::MII_BMCR as isize,
+>>> +    /// Basic mode status.
+>>> +    Bmsr = uapi::MII_BMSR as isize,
+>>> +    /// PHY identifier 1.
+>>> +    PhysId1 = uapi::MII_PHYSID1 as isize,
+>>> +    /// PHY identifier 2.
+>>> +    PhysId2 = uapi::MII_PHYSID2 as isize,
+>>> +    /// Auto-negotiation advertisement.
+>>> +    Advertise = uapi::MII_ADVERTISE as isize,
+>>> +    /// Auto-negotiation link partner base page ability.
+>>> +    Lpa = uapi::MII_LPA as isize,
+>>> +    /// Auto-negotiation expansion.
+>>> +    Expansion = uapi::MII_EXPANSION as isize,
+>>> +    /// 1000BASE-T control.
+>>> +    Ctrl1000 = uapi::MII_CTRL1000 as isize,
+>>> +    /// 1000BASE-T status.
+>>> +    Stat1000 = uapi::MII_STAT1000 as isize,
+>>> +    /// MMD access control.
+>>> +    MmdCtrl = uapi::MII_MMD_CTRL as isize,
+>>> +    /// MMD access data.
+>>> +    MmdData = uapi::MII_MMD_DATA as isize,
+>>> +    /// Extended status.
+>>> +    Estatus = uapi::MII_ESTATUS as isize,
+>>> +    /// Disconnect counter.
+>> 
+>>> +    Dcounter = uapi::MII_DCOUNTER as isize,
+>>> +    /// False carrier sense counter.
+>>> +    Fcscounter = uapi::MII_FCSCOUNTER as isize,
+>>> +    /// N-way auto-negotiation test.
+>>> +    Nwaytest = uapi::MII_NWAYTEST as isize,
+>>> +    /// Receive error counter.
+>>> +    Rerrcounter = uapi::MII_RERRCOUNTER as isize,
+>>> +    /// Silicon revision.
+>>> +    Srervision = uapi::MII_SREVISION as isize,
+>>> +    /// Reserved.
+>>> +    Resv1 = uapi::MII_RESV1 as isize,
+>>> +    /// Lpback, rx, bypass error.
+>>> +    Lbrerror = uapi::MII_LBRERROR as isize,
+>>> +    /// PHY address.
+>>> +    Phyaddr = uapi::MII_PHYADDR as isize,
+>>> +    /// Reserved.
+>>> +    Resv2 = uapi::MII_RESV2 as isize,
+>>> +    /// TPI status for 10Mbps.
+>>> +    TpiStatus = uapi::MII_TPISTATUS as isize,
+>>> +    /// Network interface configuration.
+>>> +    Nconfig = uapi::MII_NCONFIG as isize,
+>> 
+>> 802.3 C22 defines 16 through 31 as vendor specific. Most of the
+>> #defines appear to come from the S390 driver. We probably should not
+>> add them in the Rust API when there meaning is not clearly
+>> defined. However, a driver should be able to use them, e.g, by
+>> defining their own vendor specific name to a given value.
 > 
-> >> >> >> For a Rust PHY driver, you know that you have a valid pointer to C's
-> >> >> >> device object of C's PHY device during the probe callback. The driver
-> >> >> >> creates a Rust device object to wrap the C pointer to the C's device
-> >> >> >> object and passes it to the firmware abstractions. The firmware
-> >> >> >> abstractions gets the C's pointer from the Rust object and calls C's
-> >> >> >> function to load firmware, returns the result.
-> >> >> >> 
-> >> >> >> You have concerns about the simple code like the following?
-> >> >> >> 
-> >> >> >> 
-> >> >> >> diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
-> >> >> >> new file mode 100644
-> >> >> >> index 000000000000..6144437984a9
-> >> >> >> --- /dev/null
-> >> >> >> +++ b/rust/kernel/device.rs
-> >> >> >> @@ -0,0 +1,30 @@
-> >> >> >> +// SPDX-License-Identifier: GPL-2.0
-> >> >> >> +
-> >> >> >> +//! Generic devices that are part of the kernel's driver model.
-> >> >> >> +//!
-> >> >> >> +//! C header: [`include/linux/device.h`](srctree/include/linux/device.h)
-> >> >> >> +
-> >> >> >> +use crate::types::Opaque;
-> >> >> >> +
-> >> >> >> +#[repr(transparent)]
-> >> >> >> +pub struct Device(Opaque<bindings::device>);
-> >> >> >> +
-> >> >> >> +impl Device {
-> >> >> >> +    /// Creates a new [`Device`] instance from a raw pointer.
-> >> >> >> +    ///
-> >> >> >> +    /// # Safety
-> >> >> >> +    ///
-> >> >> >> +    /// For the duration of 'a, the pointer must point at a valid `device`.
-> >> >> > 
-> >> >> > If the following rust code does what this comment says, then sure, I'm
-> >> >> > ok with it for now if it helps you all out with stuff like the firmware
-> >> >> > interface for the phy rust code.
-> >> >> 
-> >> >> Great, thanks a lot!
-> >> >> 
-> >> >> Danilo and Wedson, are there any concerns about pushing this patch [1]
-> >> >> for the firmware abstractions?
-> >> > 
-> >> > Well, if everyone is fine with this one I don't see why we can't we go with [1]
-> >> > directly? AFAICS, we'd only need the following fix:
-> >> > 
-> >> > -//! C header: [`include/linux/device.h`](../../../../include/linux/device.h)
-> >> > +//! C header: [`include/linux/device.h`](srctree/include/linux/device.h)
-> >> > 
-> >> > [1] https://lore.kernel.org/rust-for-linux/20240520172554.182094-2-dakr@redhat.com/
-> >> 
-> >> The difference is that your patch touches the reference count of a
-> >> struct device. My patch doesn't.
-> >> 
-> >> The following part in your patch allows the rust code to freely play
-> >> with the reference count of a struct device. Your Rust drm driver
-> >> interact with the reference count in a different way than C's drm
-> >> drivers if I understand correctly. I'm not sure that Greg will be
-> >> convinenced with that approach.
-> > 
-> > I don't see how this is different than what we do in C. If you (for whatever
-> > reason) want to keep a pointer to a struct device you should make sure to
-> > increase the reference count of this device, such that it can't get freed for
-> > the time being.
-> > 
-> > This is a 1:1 representation of that and conceptually identical.
-> 
-> A drm driver does such? If a drm driver allocates two types of
-> driver-specific data and keep a pointer to the pci device, then the
-> driver calls get_device() twice to increase the reference count of the
-> pci's device?
+> @Fujita, you could fix this by adding a `VendorSpecific(T)` enum variant
+> and add a generic parameter to `C22`. Then the user has the option to
 
-Think about it more generically. If you store a pointer to a device in some
-structure (driver private data, generic subsystem structure, etc.), can you
-guarantee that without acquiring a reference that the device' reference count
-doesn't drop to zero while your structure is alive?
+I'm not sure. You meant something like:
 
-There are cases where you can't, e.g. with Arc<device::Data>. How do you
-guarantee (generically for every driver) the last reference of your device data
-is dropped with the driver's remove callback? If we make it the driver's
-responsibility to care about this the whole thing is unsafe as in C.
+pub enum C22<T> {
+    Bmcr,
+    Bmsr,
+    VendorSpecific(T),
+}
 
-In some cases you can, mostly the ones where you free a structure in the
-driver's remove callback. But again, then there is no advantage over what we do
-in C. What if you change the lifetime of your structure later on, then you may
-introduce a bug.
+?
 
-> 
-> At the very least, network device drivers don't. a driver doesn't play
-> with the reference count. The network subsystem does. And, the network
+Then it's not handy to use the defined registers?
 
-A quick 'grep' shows 23 occurrences of get_device() in network drivers.
+let ret = phy.read(reg::C22::<u8>::Bmcr)?;
 
-> subsystem doesn't care about how many pointers to a pci device a
-> driver keeps.
+I prefer:
 
-If none of the drivers has structures storing a pointer to a pci device that out
-live the driver's remove callback that's fine.
+let ret = phy.read(reg::C22::Bmcr)?;
 
-> 
-> With the patch [1], a driver plays with the reference count of a
-> device and directly calls get/put_device. It's a different than C
-> drivers for me (not sure about drm subsystem though).
 
-It's not different. Again, when a C driver stores a device pointer in a
-structure whose lifetime is not bound a special boundary, like the device remove
-callback, it must increase the reference count.
-
-It's just that most of the time we are moving within this boundary and in C we
-just rely on that. In Rust we can only get this safe by taking a reference for
-every pointer we store. And making it safe to use seems to be the goal.
-
-Generally, the whole point of a reference count is that everyone who owns a
-pointer to this shared structure increases / decreases the reference count
-accordingly.
-
-> 
-> But I might be misunderstanding that Greg isn't convinced with this
-> reference count thing. We need to wait for his response.
-> 
-> 
-> >> +// SAFETY: Instances of `Device` are always ref-counted.
-> >> +unsafe impl crate::types::AlwaysRefCounted for Device {
-> >> +    fn inc_ref(&self) {
-> >> +        // SAFETY: The existence of a shared reference guarantees that the refcount is nonzero.
-> >> +        unsafe { bindings::get_device(self.as_raw()) };
-> >> +    }
-> >> +
-> >> +    unsafe fn dec_ref(obj: ptr::NonNull<Self>) {
-> >> +        // SAFETY: The safety requirements guarantee that the refcount is nonzero.
-> >> +        unsafe { bindings::put_device(obj.cast().as_ptr()) }
-> >> +    }
-> >> +}
-> >> 
-> >> The following comments give the impression that Rust abstractions
-> >> wrongly interact with the reference count; callers check out the
-> >> reference counter. Nobody should do that.
-> > 
-> > No, saying that the caller must ensure that the device "has a non-zero reference
-> > count" is a perfectly valid requirement.
-> > 
-> > It doensn't mean that the calling code has to peek the actual reference count,
-> > but it means that it must be ensured that while we try to increase the reference
-> > count it can't drop to zero unexpectedly.
-> 
-> Yeah, the same requirements but expressed differently.
-
-Well, instead of
-
-"ensure that `ptr` is valid, non-null, and has a non-zero reference count"
-
-you propose
-
-"the pointer must point at a valid `device`".
-
-When I ask you to specify what "pointer to valid device" means, what would be
-the answer?
-
-Since we're still discussing this in the thread of the firmware abstraction, if
-you have any further concerns, let's discuss them in the thread for the
-corresponding patch.
-
-Once we get to a conclusion I can send a series with only the device and firmare
-abstractions such that we can get them in outside of the scope of the reset of
-both series to get your driver going.
-
-- Danilo
-
-> 
-> But again, I might be misunderstanding. Greg might have a different reason.
-> 
-> > Your patch, as a subset of this one, has the same requirements as listed below.
-> > 
-> >> 
-> >> +    /// Callers must ensure that `ptr` is valid, non-null, and has a non-zero reference count.
-> >> +    pub unsafe fn from_raw(ptr: *mut bindings::device) -> ARef<Self> {
-> >> 
-> >> +    /// Callers must ensure that `ptr` is valid, non-null, and has a non-zero reference count for
-> >> +    /// the entire duration when the returned reference exists.
-> >> +    pub unsafe fn as_ref<'a>(ptr: *mut bindings::device) -> &'a Self {
-> >> +        // SAFETY: Guaranteed by the safety requirements of the function.
-> >> +        unsafe { &*ptr.cast() }
-> >> +    }
-> >> 
-> > 
-> > 
-> 
-
+> declare their own variant. You will probably need another trait for the
+> `T` value to extract the correct register number (you can try to use
+> `build_assert!` to ensure that the custom registers are not in the 0..16
+> range).
