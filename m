@@ -1,212 +1,226 @@
-Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR04-HE1-obe.outbound.protection.outlook.com (mail-he1eur04on2053.outbound.protection.outlook.com [40.107.7.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19E7E7442D
-	for <rust-for-linux@vger.kernel.org>; Fri, 31 May 2024 07:50:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717141853; cv=none; b=oVfJCUCgcCxcVfvin4x2JbGE3YJ+XBBX/XncWgH2gJQmT/FJsiVEWtIyzXwTk78v2BmAoxcNOG/Ame/wirOvWIhrpdtEVthfG0M2HlM1CWAKz4G4MZjGvcRfXmDFm1peBZM4FuMrbw74iRZMZlZwUiQZ2P9TDJW0GV4zNAL1j0A=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717141853; c=relaxed/simple;
-	bh=8md6/1NLJ/2FbLQIjFrcSCEeOGr9hnmRUzq43TvwYDw=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=X16+VU+kZeKtoVF+3XFEHjq/F1xPSPSObkRl1k6io6OGTsD3lVqtNM0L8a3o2fJrWqvp0lahla2TR9yMNaP2q6/2kIBI2y7VrQo6hudAeCii7+SXo/q50JokEaEIPDhcDkJC3qHV2qFXyNWVTgtuP+hwwHj0PAIyhWstTBsW/Z4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hgHthWNr; arc=none smtp.client-ip=209.85.210.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D083814F9F9;
+	Fri, 31 May 2024 08:35:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.7.53
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1717144563; cv=fail; b=dANZHARqG8kMa1nHH7p4hZ3imf2ejr3GTUvgTsdLvAI+iHMDxBTth65mOvkG1YswZxMa1foBGekM0/R+pTqPgsgZucbOgvrm5H+/SIKOvXw2j3xYEOG70gwfbWXIqheZbF6jm8dGEra0jtbaS+QlVCgezmSqHQNZ+mqN3vYaxYw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1717144563; c=relaxed/simple;
+	bh=KklarpOiiIqqDhsmxtmSJPZNqcSKrY2BgIpQpqgWZig=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=LsXdvNq+yrhDXi0qr83BaFJxFyv8ciF8Bw6/g+0JnpicMcwKdGwVGOGJMLSEbUL1I+aY8Mz9o6jsokHx4JW0Qwtb307uvWe7pMLNqEfvPFmCHx4702XLIZtabil63Yz/EyzyjpsU4mMbZuSCy4/ouPsZWc41mwkOqoU1M9ot1FY=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com; spf=pass smtp.mailfrom=de.bosch.com; dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b=sKIM6G6W; arc=fail smtp.client-ip=40.107.7.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.bosch.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hgHthWNr"
-Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-7024df1b183so10843b3a.3
-        for <rust-for-linux@vger.kernel.org>; Fri, 31 May 2024 00:50:51 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1717141851; x=1717746651; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=r2XdzJ6IzRamTT3nhFH8XeJzlNSkKuRVnD58Iktcp0o=;
-        b=hgHthWNrs1Lkl4u2kMRm9V77JgxJWeS/wwtWONDeuqo/jbkWUG0ENJjBWqn7yqW8pC
-         WlPAy13z40PPsAtSJffFa4R6OjjZRZX0ACi7cblD8e3/HnO0wQc/3OFP462lhG4mxAGU
-         Y8CZRTdr19vLewUZMf6AhIz4K6LqmQWoBzvNiv2+Q/2L619A4NPQy74ZF2VKPqkYnujS
-         EwICdOId6p2omy37jVfHEkuU9dyKwLg0AVtzcD8aKmTkkL+pTchDayPUsvcPWpZPA5s2
-         NCmsLMQYmvX3cGxsIsdO2YEtNXFwQqvnXRr4qIgZoRdxxqTWaIs9o+Infc+cOb+XUR8k
-         yUIA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717141851; x=1717746651;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=r2XdzJ6IzRamTT3nhFH8XeJzlNSkKuRVnD58Iktcp0o=;
-        b=B0VFMtoWHKG0ZuoiOx7CAJU2FF4zyuMqNErRCLaN876tnn4tP0UjNE8Oqrr+CHrKPi
-         WMpr+B6tOZL1VOx3YD/H9so4eCwa8xdhEO5OIrc0uYD5frwmAEwsoXAX/AB3wTCwU8ra
-         XbJ+HkgUnYn8XuVLebNxGUATmz/j6CpkQdHc0PIlx/wh0OsE+YmhIlpU/dHqKywaFDV8
-         /WUan1fdkiCKb/x+pn/2kdGdIDE4ADmGiqS+CBCaY8Yxz+i9lMOn94rbXHNlGE5bsmOt
-         EofA98AaLx1a3JDIid1xVfJZi24/+HDmLjz+N8EwXz7DKJqeryppVw6tcgW0gPttGE8C
-         VKZg==
-X-Forwarded-Encrypted: i=1; AJvYcCVDK/S6okGxXHirflyw4nRWC34enFioYaqVxqbFFX0HgDZg77y/i3MfEVRWEJbkigzIbgIrBw3o7Ehvaec8aNeUrBd5f6oWEB2B00ymH+o=
-X-Gm-Message-State: AOJu0Yx549V0ZaIqSV2vQBfgj8cEu6kY2w5LBH/AwxZJly6QQKpCd3hG
-	wqnNCQ+vILW+qcn5fCcj6hl9WcsQ1a+DY1ErFl3qFGT8/qSblOfU
-X-Google-Smtp-Source: AGHT+IFmoHx1DOu6EUaKr3kPXbJU6PasPLBG1RJBIrbPUKjR0PqfUbfRMbaW6z2DR6/UwsxA+97g9w==
-X-Received: by 2002:a05:6a21:3394:b0:1ae:42aa:7f1 with SMTP id adf61e73a8af0-1b26f13949emr1469445637.2.1717141851145;
-        Fri, 31 May 2024 00:50:51 -0700 (PDT)
-Received: from localhost (p5261226-ipxg23801hodogaya.kanagawa.ocn.ne.jp. [180.15.241.226])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-70242aea177sm856082b3a.110.2024.05.31.00.50.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 31 May 2024 00:50:50 -0700 (PDT)
-Date: Fri, 31 May 2024 16:50:32 +0900 (JST)
-Message-Id: <20240531.165032.1895479176481879387.fujita.tomonori@gmail.com>
-To: dakr@redhat.com
-Cc: fujita.tomonori@gmail.com, gregkh@linuxfoundation.org,
- wedsonaf@gmail.com, maarten.lankhorst@linux.intel.com, mripard@kernel.org,
- tzimmermann@suse.de, airlied@gmail.com, daniel@ffwll.ch, ojeda@kernel.org,
- alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
- bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@samsung.com,
- aliceryhl@google.com, lina@asahilina.net, pstanner@redhat.com,
- ajanulgu@redhat.com, lyude@redhat.com, rust-for-linux@vger.kernel.org,
- dri-devel@lists.freedesktop.org, nouveau@lists.freedesktop.org,
- mcgrof@kernel.org, russ.weight@linux.dev
-Subject: Re: [RFC PATCH 7/8] rust: add firmware abstractions
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <Zlgg_Q5y3Q99Ts1s@pollux>
-References: <ZlfeA7MEZRv404MO@pollux.localdomain>
-	<20240530.132433.2195707766186347550.fujita.tomonori@gmail.com>
-	<Zlgg_Q5y3Q99Ts1s@pollux>
+	dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b="sKIM6G6W"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=f7gJnVz0XrRgFQEsB3RKCjKHAF/2nvDwpqLVt81sBo0RRYXnzNfBb2g6kS2NxdO0Io4NR3Wo1zsqMcKimWONYZGE4J2ZNfS15lu1FIW3bAM1TKKQXtj1hmFRW1QJg6Wa44ZRC/Tjz3JzrU3EgqW0RKDz0FdTXKWNQbGph/Hg4VAhU17wx6Mk7wLARqtWCUODKZf5UvzCxwb0L5kSEOcjCQnvB9yAC13xm2vqIDsjkuiDvWT839hn5JM9IxKP2VgIXeRVF6oNmfW1oB0vPbzed7fSW8SmwiYh5rouVHAXZSt5GNuxBHjtSRwjSqtne2+Tjwos4uVox4i94RctaisYxA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=xmS+E6WGFfUm0ZLVmaJK08+yN75qeoY93Jm0IrhoaWc=;
+ b=Sm08FMqGcbCzB3ldIRHguOFo8VxbypjTgUS0DpSWh5RLxzbqtrI9A0YqaWCn0i42VS669FlUuCbQd2ZBc8dDlNuiLrlgSJKkupdUog0B0AHZRKg+9mBjruLKI0MidczPf8ctV2ygdB0Wv7rfE+/rStLitZfAlcAFCn3Zg04MBjHXITybrJP06m8dbwEXQCEt+/yQw1M//GVoPxYV2V3DoeHkbjHBOHQnjDUrJ11aiEbSu3ooF0Jzoo4qoaObq69VssjKUOVaBi3KiDep32GsSsUDrmVVBqb3+ELoj5vWnNghT0znESlskCSCdikYUYzWc5GBwJv5TabABf7TINeCZQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 139.15.153.205) smtp.rcpttodomain=redhat.com smtp.mailfrom=de.bosch.com;
+ dmarc=pass (p=reject sp=none pct=100) action=none header.from=de.bosch.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=de.bosch.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=xmS+E6WGFfUm0ZLVmaJK08+yN75qeoY93Jm0IrhoaWc=;
+ b=sKIM6G6WO9dsg/ZMVYQQ9SCbOx5ZVWXiXBzfGR4XN+GGx80OHDuoBAoIXCsaCbUj/UNS+hbbaTx1qxpIL5soGB9/KLStyp3BP7YU32WzbmzEh4/odRAv903emXIfDHadihpL0UbnIbiV7FzgfiTL61bddbIqL0/QNbBuZghhzEBuKDoPFRdqspONrJkOXngr/JqAT8TeFW0KMFCGCPTBJTRfA1ev/NZYZLex+67INlOk46ZoEX1fv8AYRlL8VVOsjDKLwUyOB9nSVLSaEyOgJ9fluBTtjrMNRfmTP+SRVIJT6jljnlorks7m96sPbTuJBQjSPFJg2GX6qvx//aKmqg==
+Received: from AS9P251CA0011.EURP251.PROD.OUTLOOK.COM (2603:10a6:20b:50f::13)
+ by GV1PR10MB8027.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:150:a1::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7633.24; Fri, 31 May
+ 2024 08:35:55 +0000
+Received: from AM1PEPF000252DD.eurprd07.prod.outlook.com
+ (2603:10a6:20b:50f:cafe::b2) by AS9P251CA0011.outlook.office365.com
+ (2603:10a6:20b:50f::13) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7633.24 via Frontend
+ Transport; Fri, 31 May 2024 08:35:54 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 139.15.153.205)
+ smtp.mailfrom=de.bosch.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=de.bosch.com;
+Received-SPF: Pass (protection.outlook.com: domain of de.bosch.com designates
+ 139.15.153.205 as permitted sender) receiver=protection.outlook.com;
+ client-ip=139.15.153.205; helo=eop.bosch-org.com; pr=C
+Received: from eop.bosch-org.com (139.15.153.205) by
+ AM1PEPF000252DD.mail.protection.outlook.com (10.167.16.55) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7633.15 via Frontend Transport; Fri, 31 May 2024 08:35:54 +0000
+Received: from SI-EXCAS2001.de.bosch.com (10.139.217.202) by eop.bosch-org.com
+ (139.15.153.205) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Fri, 31 May
+ 2024 10:35:46 +0200
+Received: from [10.34.222.178] (10.139.217.196) by SI-EXCAS2001.de.bosch.com
+ (10.139.217.202) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Fri, 31 May
+ 2024 10:35:46 +0200
+Message-ID: <f397640b-23ed-412a-a1ac-59b7c56e5110@de.bosch.com>
+Date: Fri, 31 May 2024 10:35:35 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 05/11] rust: add revocable objects
+To: Danilo Krummrich <dakr@redhat.com>, <gregkh@linuxfoundation.org>,
+	<rafael@kernel.org>, <bhelgaas@google.com>, <ojeda@kernel.org>,
+	<alex.gaynor@gmail.com>, <wedsonaf@gmail.com>, <boqun.feng@gmail.com>,
+	<gary@garyguo.net>, <bjorn3_gh@protonmail.com>, <benno.lossin@proton.me>,
+	<a.hindborg@samsung.com>, <aliceryhl@google.com>, <airlied@gmail.com>,
+	<fujita.tomonori@gmail.com>, <lina@asahilina.net>, <pstanner@redhat.com>,
+	<ajanulgu@redhat.com>, <lyude@redhat.com>
+CC: <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<linux-pci@vger.kernel.org>
+References: <20240520172554.182094-1-dakr@redhat.com>
+ <20240520172554.182094-6-dakr@redhat.com>
+Content-Language: en-US
+From: Dirk Behme <dirk.behme@de.bosch.com>
+In-Reply-To: <20240520172554.182094-6-dakr@redhat.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 7bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: AM1PEPF000252DD:EE_|GV1PR10MB8027:EE_
+X-MS-Office365-Filtering-Correlation-Id: cb294c52-74b4-42f7-d3d3-08dc814cafd9
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230031|376005|36860700004|7416005|1800799015|82310400017|921011;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?WFArelh1K1daSlNMZlZPTW04UWNtOENTdTJYa21mTW9GN3gwWkE1UDFiakFT?=
+ =?utf-8?B?QVJjTE90aDQwZjU4UUVvZWlPaDltVVBGZUFGTFJZRVQxMGlBQVI2NTVnSHNT?=
+ =?utf-8?B?RHB2N2RNQ2dPa3I2L1hYSnc2ajR2OFZ5Qk5maXYzL1Z1ekJ0UTJOR0g5dWRn?=
+ =?utf-8?B?VU1EYWR2bVVaZWJSSk1OcGsxTTRrRzFTRksrZDByTzMzMVJUazZ5SW1QWFo2?=
+ =?utf-8?B?a2RUQUxGRmI5V1FjNW5seHhZa2F5YmJrSC9OVWJ6ZzZ0ajF4dzdrQnNiMFFP?=
+ =?utf-8?B?R3U1bTBCYVhiYzdpc0hjYlVLRjVXYWxjVloxVU0wN1M3WTJyNlpub1MrYWlB?=
+ =?utf-8?B?TU9SeElRZWhlMGZKZ2JucS95YWFBZUVmaEw0YVgyWW1PYjk2R3llUEgxd0ZR?=
+ =?utf-8?B?ZUlIeEtOWitJckR4N3NmbGkzMFE5QlpGdEVRWnRDY21YTnc0TnZRSFMrWmU3?=
+ =?utf-8?B?TmR2L2hKQ2RRSWFxNlBzWEpuNHJIODBveUZSbys4cENJbFd3VWNBUHRFZnlo?=
+ =?utf-8?B?NVFHWXBPZ2tkQ3loL3R1ZElBWVlPckxzdFVjZFZMNzliakV2Q28zamQ0YTMr?=
+ =?utf-8?B?OFNCckxmZ1pEUGdJRTA4MWRWZHJtVDRLcEdXdkRmSmhrVWdaY3YxUHFXSldZ?=
+ =?utf-8?B?eGl5ZStuSzI3M1Y0MnVKWFlvdjBkeXRXQXlCMzB6ek8yR2hvb3F2ZEdRK1RG?=
+ =?utf-8?B?RVovRkQrTDNnSjBWc01HQ25QQ3dPOXdSK29ZTFBPVVJKbUx1Z2dLRW5LY1Jv?=
+ =?utf-8?B?OHNUREthL2ZUcCs1WDVDWFI1akdsc09VMnVyOUNWczhUMVptYmI1aG1uMlRX?=
+ =?utf-8?B?R1VVQkFUaUJrRi9janZYM3Q0ajVHYmFpUG90cXY5R05zN1VCK2txSDg0d0JT?=
+ =?utf-8?B?N0EvaExlL0hENzVyeFcxTEJXRWRMNENvaHdaTnZQbGt3WHdLRUgveDBhNUtC?=
+ =?utf-8?B?ait4NFpsaHo3U1NCdnFzeWNZWmNKZGtnc0VkR1RaR2VLNmxOVXQzTk82ZnRO?=
+ =?utf-8?B?UGJMcDFRSFhNSHczRExNUktiaHNpVDVBK1kyRTRDc29KT0RZTVpRUGcwbDNx?=
+ =?utf-8?B?OE9ub0RvaU0xcSszUUprZEk3VTk0R2hqN2x1Uzh5endHeXN1TWM5WEUzN3Vh?=
+ =?utf-8?B?OWd4K3p3Zng5UHlLTE4xRGlubTZlbjAvZXdOSFpWL3FUcEMza1RzVzI1UThF?=
+ =?utf-8?B?dUFqUHhQNWJNMTRpK1dqd2JUUUVneC9qVm85dVB1dTNnT0EvR3JRM2ZEaDdP?=
+ =?utf-8?B?TFVXRjgrN09xalNkbVhuKzNNY3hIOFFBenVMSjdHeFMrT3NwQXBDUkxHTFJ4?=
+ =?utf-8?B?VFJiaXhUYjJNMGRrWUhiRHhZRlduYkZkRVlPYXBFNGMzTkVsamxZN2FtWlhj?=
+ =?utf-8?B?eUhybm9QYVJsdk9GVXRhRGdvQWltRXhZSzRQa2VtMXgxY0taOENzaFFQVWFG?=
+ =?utf-8?B?MG0zS2xXOXZQald6aG4rekt4VXNmMHQ4NVdPRk9sZ3V5ald1SFQvbUowaWVK?=
+ =?utf-8?B?M015ak9rMVZmeFVzWGNGaCtJTDF3NFlWVytMQmZrWTVDVG1PNTdweXlnUXg5?=
+ =?utf-8?B?VkUxUVFOY0dlUXZZUmhhbWlBRDlsdFZSQkRtOHA2QjNlUnpPdVlEQ3F4N0ZU?=
+ =?utf-8?B?QkZmUXMzUnoyMlM5VGtmejdHRGF4dHRxMEJwQ2NDQlQ5eGlscGZBSllyUnIv?=
+ =?utf-8?B?dWw1WTJQLzUrSmJvVGJkSFZmbDhnU1A1Y0VDWEpmcldyS3A0R0FFSGpKUm9S?=
+ =?utf-8?B?dmtNcU1vV3BxNEMrdENweVZwOWZ0dER1VWMvbUdqcFBwcG1jWEc4S3kzaVRn?=
+ =?utf-8?B?QUpTM3pPNmpLbHFibnhWeDlBWGovWkVqOG02UFhjY08vWnA5K2liVWFya3c5?=
+ =?utf-8?Q?EK2jZf0QBX83S?=
+X-Forefront-Antispam-Report:
+	CIP:139.15.153.205;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eop.bosch-org.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(376005)(36860700004)(7416005)(1800799015)(82310400017)(921011);DIR:OUT;SFP:1101;
+X-OriginatorOrg: de.bosch.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 May 2024 08:35:54.6928
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: cb294c52-74b4-42f7-d3d3-08dc814cafd9
+X-MS-Exchange-CrossTenant-Id: 0ae51e19-07c8-4e4b-bb6d-648ee58410f4
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0ae51e19-07c8-4e4b-bb6d-648ee58410f4;Ip=[139.15.153.205];Helo=[eop.bosch-org.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	AM1PEPF000252DD.eurprd07.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: GV1PR10MB8027
 
-On Thu, 30 May 2024 08:47:25 +0200
-Danilo Krummrich <dakr@redhat.com> wrote:
-
->> >> >> For a Rust PHY driver, you know that you have a valid pointer to C's
->> >> >> device object of C's PHY device during the probe callback. The driver
->> >> >> creates a Rust device object to wrap the C pointer to the C's device
->> >> >> object and passes it to the firmware abstractions. The firmware
->> >> >> abstractions gets the C's pointer from the Rust object and calls C's
->> >> >> function to load firmware, returns the result.
->> >> >> 
->> >> >> You have concerns about the simple code like the following?
->> >> >> 
->> >> >> 
->> >> >> diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
->> >> >> new file mode 100644
->> >> >> index 000000000000..6144437984a9
->> >> >> --- /dev/null
->> >> >> +++ b/rust/kernel/device.rs
->> >> >> @@ -0,0 +1,30 @@
->> >> >> +// SPDX-License-Identifier: GPL-2.0
->> >> >> +
->> >> >> +//! Generic devices that are part of the kernel's driver model.
->> >> >> +//!
->> >> >> +//! C header: [`include/linux/device.h`](srctree/include/linux/device.h)
->> >> >> +
->> >> >> +use crate::types::Opaque;
->> >> >> +
->> >> >> +#[repr(transparent)]
->> >> >> +pub struct Device(Opaque<bindings::device>);
->> >> >> +
->> >> >> +impl Device {
->> >> >> +    /// Creates a new [`Device`] instance from a raw pointer.
->> >> >> +    ///
->> >> >> +    /// # Safety
->> >> >> +    ///
->> >> >> +    /// For the duration of 'a, the pointer must point at a valid `device`.
->> >> > 
->> >> > If the following rust code does what this comment says, then sure, I'm
->> >> > ok with it for now if it helps you all out with stuff like the firmware
->> >> > interface for the phy rust code.
->> >> 
->> >> Great, thanks a lot!
->> >> 
->> >> Danilo and Wedson, are there any concerns about pushing this patch [1]
->> >> for the firmware abstractions?
->> > 
->> > Well, if everyone is fine with this one I don't see why we can't we go with [1]
->> > directly? AFAICS, we'd only need the following fix:
->> > 
->> > -//! C header: [`include/linux/device.h`](../../../../include/linux/device.h)
->> > +//! C header: [`include/linux/device.h`](srctree/include/linux/device.h)
->> > 
->> > [1] https://lore.kernel.org/rust-for-linux/20240520172554.182094-2-dakr@redhat.com/
->> 
->> The difference is that your patch touches the reference count of a
->> struct device. My patch doesn't.
->> 
->> The following part in your patch allows the rust code to freely play
->> with the reference count of a struct device. Your Rust drm driver
->> interact with the reference count in a different way than C's drm
->> drivers if I understand correctly. I'm not sure that Greg will be
->> convinenced with that approach.
+On 20.05.2024 19:25, Danilo Krummrich wrote:
+> From: Wedson Almeida Filho <wedsonaf@gmail.com>
 > 
-> I don't see how this is different than what we do in C. If you (for whatever
-> reason) want to keep a pointer to a struct device you should make sure to
-> increase the reference count of this device, such that it can't get freed for
-> the time being.
+> This implements the Revocable and AsyncRevocable types.
 > 
-> This is a 1:1 representation of that and conceptually identical.
-
-A drm driver does such? If a drm driver allocates two types of
-driver-specific data and keep a pointer to the pci device, then the
-driver calls get_device() twice to increase the reference count of the
-pci's device?
-
-At the very least, network device drivers don't. a driver doesn't play
-with the reference count. The network subsystem does. And, the network
-subsystem doesn't care about how many pointers to a pci device a
-driver keeps.
-
-With the patch [1], a driver plays with the reference count of a
-device and directly calls get/put_device. It's a different than C
-drivers for me (not sure about drm subsystem though).
-
-But I might be misunderstanding that Greg isn't convinced with this
-reference count thing. We need to wait for his response.
-
-
->> +// SAFETY: Instances of `Device` are always ref-counted.
->> +unsafe impl crate::types::AlwaysRefCounted for Device {
->> +    fn inc_ref(&self) {
->> +        // SAFETY: The existence of a shared reference guarantees that the refcount is nonzero.
->> +        unsafe { bindings::get_device(self.as_raw()) };
->> +    }
->> +
->> +    unsafe fn dec_ref(obj: ptr::NonNull<Self>) {
->> +        // SAFETY: The safety requirements guarantee that the refcount is nonzero.
->> +        unsafe { bindings::put_device(obj.cast().as_ptr()) }
->> +    }
->> +}
->> 
->> The following comments give the impression that Rust abstractions
->> wrongly interact with the reference count; callers check out the
->> reference counter. Nobody should do that.
+> Revocable allows access to objects to be safely revoked at run time.
 > 
-> No, saying that the caller must ensure that the device "has a non-zero reference
-> count" is a perfectly valid requirement.
+> This is useful, for example, for resources allocated during device probe;
+> when the device is removed, the driver should stop accessing the device
+> resources even if other state is kept in memory due to existing
+> references (i.e., device context data is ref-counted and has a non-zero
+> refcount after removal of the device).
 > 
-> It doensn't mean that the calling code has to peek the actual reference count,
-> but it means that it must be ensured that while we try to increase the reference
-> count it can't drop to zero unexpectedly.
+> AsyncRevocable allows access to objects to be revoked without having to
+> wait for existing users to complete. This will be used to drop futures
+> in tasks when executors are being torn down.
+> 
+> Co-developed-by: Andreas Hindborg <a.hindborg@samsung.com>
+> Signed-off-by: Andreas Hindborg <a.hindborg@samsung.com>
+> Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
+> Signed-off-by: Danilo Krummrich <dakr@redhat.com>
+> ---
+>   rust/kernel/lib.rs       |   1 +
+>   rust/kernel/revocable.rs | 441 +++++++++++++++++++++++++++++++++++++++
+>   2 files changed, 442 insertions(+)
+>   create mode 100644 rust/kernel/revocable.rs
+> 
+> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> index 698121c925f3..d7d415429517 100644
+> --- a/rust/kernel/lib.rs
+> +++ b/rust/kernel/lib.rs
+> @@ -40,6 +40,7 @@
+>   pub mod net;
+>   pub mod prelude;
+>   pub mod print;
+> +pub mod revocable;
+>   mod static_assert;
+>   #[doc(hidden)]
+>   pub mod std_vendor;
+> diff --git a/rust/kernel/revocable.rs b/rust/kernel/revocable.rs
+> new file mode 100644
+> index 000000000000..71408039a117
+> --- /dev/null
+> +++ b/rust/kernel/revocable.rs
+> @@ -0,0 +1,441 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! Revocable objects.
+> +//!
+> +//! The [`Revocable`] type wraps other types and allows access to them to be revoked. The existence
+> +//! of a [`RevocableGuard`] ensures that objects remain valid.
+> +
+> +use crate::{
+> +    bindings,
+> +    init::{self},
+> +    prelude::*,
+> +    sync::rcu,
+> +};
+> +use core::{
+> +    cell::UnsafeCell,
+> +    marker::PhantomData,
+> +    mem::MaybeUninit,
+> +    ops::Deref,
+> +    ptr::drop_in_place,
+> +    sync::atomic::{fence, AtomicBool, AtomicU32, Ordering},
+> +};
+> +
+> +/// An object that can become inaccessible at runtime.
+> +///
+> +/// Once access is revoked and all concurrent users complete (i.e., all existing instances of
+> +/// [`RevocableGuard`] are dropped), the wrapped object is also dropped.
+> +///
+> +/// # Examples
 
-Yeah, the same requirements but expressed differently.
+You might want to enable the doctest and check if the Examples are at 
+least compiling ;) Here and in devres as well.
 
-But again, I might be misunderstanding. Greg might have a different reason.
+Best regards
 
-> Your patch, as a subset of this one, has the same requirements as listed below.
-> 
->> 
->> +    /// Callers must ensure that `ptr` is valid, non-null, and has a non-zero reference count.
->> +    pub unsafe fn from_raw(ptr: *mut bindings::device) -> ARef<Self> {
->> 
->> +    /// Callers must ensure that `ptr` is valid, non-null, and has a non-zero reference count for
->> +    /// the entire duration when the returned reference exists.
->> +    pub unsafe fn as_ref<'a>(ptr: *mut bindings::device) -> &'a Self {
->> +        // SAFETY: Guaranteed by the safety requirements of the function.
->> +        unsafe { &*ptr.cast() }
->> +    }
->> 
-> 
-> 
+Dirk
+
+
+
