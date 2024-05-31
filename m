@@ -1,158 +1,212 @@
-Received: from mail-qk1-f171.google.com (mail-qk1-f171.google.com [209.85.222.171])
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C172A2E620;
-	Thu, 30 May 2024 17:00:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19E7E7442D
+	for <rust-for-linux@vger.kernel.org>; Fri, 31 May 2024 07:50:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717088451; cv=none; b=i0QsWnRHfMlimBctmYbsOeoyUyzMMIzpLgmMNsbGXUt3HHvGzPOyeLqBFaNEV5xd8XBDYtqzJfsfT14g2qqlV3VQdbFzTaxWlvaIaaH2N+UPB/sB5pb7XsT8DYuVDtzYAl2H76OE4AlO2jIo05plEQkkl+FKi/BLeUfET7PEOV8=
+	t=1717141853; cv=none; b=oVfJCUCgcCxcVfvin4x2JbGE3YJ+XBBX/XncWgH2gJQmT/FJsiVEWtIyzXwTk78v2BmAoxcNOG/Ame/wirOvWIhrpdtEVthfG0M2HlM1CWAKz4G4MZjGvcRfXmDFm1peBZM4FuMrbw74iRZMZlZwUiQZ2P9TDJW0GV4zNAL1j0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717088451; c=relaxed/simple;
-	bh=bbdJwx1WdI6hxVv7zkvFnNMBwDtodR0O+WkjCEAlr2I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=VXfGopdgksEEm7a33YtBkTWQ9RhJx5LI4Bh8X9hRSeom8mZqFT2Sx96ja77UKcwuIF3tHeHrJOOY9ui+XvonPLGqJGzK73nMEBJhLldKMHUrV+KXQLNZW/rHqRN12GwWJhFWtf4WQB8ea+y3tj7R/z2nSXLt1JSldK5wvKy5v94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ym5uA+he; arc=none smtp.client-ip=209.85.222.171
+	s=arc-20240116; t=1717141853; c=relaxed/simple;
+	bh=8md6/1NLJ/2FbLQIjFrcSCEeOGr9hnmRUzq43TvwYDw=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=X16+VU+kZeKtoVF+3XFEHjq/F1xPSPSObkRl1k6io6OGTsD3lVqtNM0L8a3o2fJrWqvp0lahla2TR9yMNaP2q6/2kIBI2y7VrQo6hudAeCii7+SXo/q50JokEaEIPDhcDkJC3qHV2qFXyNWVTgtuP+hwwHj0PAIyhWstTBsW/Z4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hgHthWNr; arc=none smtp.client-ip=209.85.210.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ym5uA+he"
-Received: by mail-qk1-f171.google.com with SMTP id af79cd13be357-794ba2d4d82so55421185a.0;
-        Thu, 30 May 2024 10:00:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hgHthWNr"
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-7024df1b183so10843b3a.3
+        for <rust-for-linux@vger.kernel.org>; Fri, 31 May 2024 00:50:51 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1717088448; x=1717693248; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=JSxUji88N/0NxFl9gX5AHTL6yyOqY2Ahz7gjZDA3w2s=;
-        b=Ym5uA+heeRTMZcRrSGGutokPsRIUohHxraqlivzO02FG2yafHsZ7YlGK8hw8HLn73d
-         hty1rjlA4yzzNRwlE44Knah52SNh3ijydS0nz2IWM7XgAWlktbfVZ7NolUidL4yLEMCB
-         r5H6utrA9u6MpRB3X+JZ6Rr17czar8jVyNcUDaNlYhMjTSqa8TNPtHnnkeN2S26zGC50
-         P4kzwVLCHyGGLb6igtyLgVwHyc1wgpSV4fxR7MGLCvyKJu+yBtYQzCysfiSjwBhQKyNE
-         5pX5ztqSObToGQeYzTCMejWDR6jBgycv5VsZFdBPugf495v18RfTN/ZKZ34YB/5NCrg0
-         LcpA==
+        d=gmail.com; s=20230601; t=1717141851; x=1717746651; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=r2XdzJ6IzRamTT3nhFH8XeJzlNSkKuRVnD58Iktcp0o=;
+        b=hgHthWNrs1Lkl4u2kMRm9V77JgxJWeS/wwtWONDeuqo/jbkWUG0ENJjBWqn7yqW8pC
+         WlPAy13z40PPsAtSJffFa4R6OjjZRZX0ACi7cblD8e3/HnO0wQc/3OFP462lhG4mxAGU
+         Y8CZRTdr19vLewUZMf6AhIz4K6LqmQWoBzvNiv2+Q/2L619A4NPQy74ZF2VKPqkYnujS
+         EwICdOId6p2omy37jVfHEkuU9dyKwLg0AVtzcD8aKmTkkL+pTchDayPUsvcPWpZPA5s2
+         NCmsLMQYmvX3cGxsIsdO2YEtNXFwQqvnXRr4qIgZoRdxxqTWaIs9o+Infc+cOb+XUR8k
+         yUIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717088448; x=1717693248;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=JSxUji88N/0NxFl9gX5AHTL6yyOqY2Ahz7gjZDA3w2s=;
-        b=T0R4GgsUwPSa9ImRlL4RcfDUYEir+A00T3GHCwLKEc4tAhjrJMiMGdQXvSAMZbbyuD
-         bo0KfkS6IrZUIEvYL3ucFvvx0JNcjO+UoyUObAryQR7gjzC6eisF9oAbM5TS+EOQwEBU
-         AHYuOCGgzOKXM9Fk6wJ/XfyWlNRmXezkyFvssn0WGyK6fdhV6ZJTprptsFtSrwufX9w3
-         3Blb4kbaUjqbxoYTlOJsokWGeziAhF5jNyHyMgk44oRmLRCiQ2WmzTGUM0M72tjv3+zl
-         QaRSEqoYCjbryFVBEJTJskjYQ4elQa4FD/i96dsmqyHFGIILnoYzTb6AeGTFwBQbjY2J
-         RJcg==
-X-Forwarded-Encrypted: i=1; AJvYcCUe09rulD3i7Q0/cmCzlKtN/qgqae50/hYl7gq1QJFR1h6YF2EybmcM2zCnp3tT0nU/2SelyEs2n5/tXzRsLdD6MSYw/FXlM7XjtDBfafC5p+Uc8E94GDmeOEj1B+SZD4uvJBB/krGkIWKXYo4=
-X-Gm-Message-State: AOJu0YzWEnqQEC25uLA+3FG76mtLjDtEzzAlL+Ag73J+CQO+6/YhAfZ/
-	rtM1xojb4KS9MTATKsxLqESBuLBg08pgx86wjmdzq+ykLKVlYaid
-X-Google-Smtp-Source: AGHT+IHwxOQVjX4jjMP5xINeb0ZRE7/H4u3Ev9hJuE7HJA0tJskyy/XS+vI2s8I6LF4ZaPYlPA+CLw==
-X-Received: by 2002:a05:620a:210b:b0:794:99f3:d407 with SMTP id af79cd13be357-794e9da1730mr288097885a.19.1717088448277;
-        Thu, 30 May 2024 10:00:48 -0700 (PDT)
-Received: from fauth2-smtp.messagingengine.com (fauth2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-794abcd9673sm560623285a.55.2024.05.30.10.00.47
+        d=1e100.net; s=20230601; t=1717141851; x=1717746651;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=r2XdzJ6IzRamTT3nhFH8XeJzlNSkKuRVnD58Iktcp0o=;
+        b=B0VFMtoWHKG0ZuoiOx7CAJU2FF4zyuMqNErRCLaN876tnn4tP0UjNE8Oqrr+CHrKPi
+         WMpr+B6tOZL1VOx3YD/H9so4eCwa8xdhEO5OIrc0uYD5frwmAEwsoXAX/AB3wTCwU8ra
+         XbJ+HkgUnYn8XuVLebNxGUATmz/j6CpkQdHc0PIlx/wh0OsE+YmhIlpU/dHqKywaFDV8
+         /WUan1fdkiCKb/x+pn/2kdGdIDE4ADmGiqS+CBCaY8Yxz+i9lMOn94rbXHNlGE5bsmOt
+         EofA98AaLx1a3JDIid1xVfJZi24/+HDmLjz+N8EwXz7DKJqeryppVw6tcgW0gPttGE8C
+         VKZg==
+X-Forwarded-Encrypted: i=1; AJvYcCVDK/S6okGxXHirflyw4nRWC34enFioYaqVxqbFFX0HgDZg77y/i3MfEVRWEJbkigzIbgIrBw3o7Ehvaec8aNeUrBd5f6oWEB2B00ymH+o=
+X-Gm-Message-State: AOJu0Yx549V0ZaIqSV2vQBfgj8cEu6kY2w5LBH/AwxZJly6QQKpCd3hG
+	wqnNCQ+vILW+qcn5fCcj6hl9WcsQ1a+DY1ErFl3qFGT8/qSblOfU
+X-Google-Smtp-Source: AGHT+IFmoHx1DOu6EUaKr3kPXbJU6PasPLBG1RJBIrbPUKjR0PqfUbfRMbaW6z2DR6/UwsxA+97g9w==
+X-Received: by 2002:a05:6a21:3394:b0:1ae:42aa:7f1 with SMTP id adf61e73a8af0-1b26f13949emr1469445637.2.1717141851145;
+        Fri, 31 May 2024 00:50:51 -0700 (PDT)
+Received: from localhost (p5261226-ipxg23801hodogaya.kanagawa.ocn.ne.jp. [180.15.241.226])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-70242aea177sm856082b3a.110.2024.05.31.00.50.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 30 May 2024 10:00:47 -0700 (PDT)
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-	by mailfauth.nyi.internal (Postfix) with ESMTP id E8A291200082;
-	Thu, 30 May 2024 13:00:46 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute3.internal (MEProxy); Thu, 30 May 2024 13:00:46 -0400
-X-ME-Sender: <xms:vrBYZp5KRn6Yokrmm4wUm8MbLiDC2d2vDB34oYRw-8gseOQ-u3xAQw>
-    <xme:vrBYZm7VlQBIPFw_6yc8qpiFkcBDzved8K32D9x63EutaKeI3SV53a2ru7JVcWPRS
-    Qe90z7fLTHh4s4gWQ>
-X-ME-Received: <xmr:vrBYZgcMVfpUQ74zHxzzVgKZM5QMp_1mromfpYUDowwJWgwduOi7lGPKTTw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrvdekgedguddthecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhq
-    uhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrf
-    grthhtvghrnhephedugfduffffteeutddvheeuveelvdfhleelieevtdeguefhgeeuveei
-    udffiedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
-    epsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedt
-    ieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfh
-    higihmvgdrnhgrmhgv
-X-ME-Proxy: <xmx:vrBYZiLVW2wH-IWwI4iJ3qIkVixnuJ33bEe0hbyC6OgmmnlXqQtFRg>
-    <xmx:vrBYZtIPMtjYzViOTIKer1KuHoFXaKwa2EhHxeOsYUmVsp0CfdAUiA>
-    <xmx:vrBYZrwEBjqOnwSGWM4O6vcH6zacpSfL_OXiVkmSfgoCmhqiN0bH1g>
-    <xmx:vrBYZpJ9vvRL5BtBH6BEIfilMhuVETT94Lq5OSKBS05-3znEN6hjfQ>
-    <xmx:vrBYZgZwNcEGSZh2yW_WcnB51C1Fb65gEeMQqO0a7KBH9hLGayeOq1Ye>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 30 May 2024 13:00:45 -0400 (EDT)
-Date: Thu, 30 May 2024 10:00:00 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: David Gow <davidgow@google.com>
-Cc: Rae Moar <rmoar@google.com>, Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Miguel Ojeda <ojeda@kernel.org>,
-	"H . Peter Anvin" <hpa@zytor.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Jamie Cunliffe <Jamie.Cunliffe@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Richard Weinberger <richard@nod.at>,
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-	Johannes Berg <johannes@sipsolutions.net>,
-	kunit-dev@googlegroups.com, linux-kernel@vger.kernel.org,
-	linux-um@lists.infradead.org, rust-for-linux@vger.kernel.org,
-	x86@kernel.org, Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Alex Gaynor <alex.gaynor@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>
-Subject: Re: [PATCH] arch: um: rust: Use the generated target.json again
-Message-ID: <ZliwkPY-psgVNhZY@boqun-archlinux>
-References: <20240529093336.4075206-1-davidgow@google.com>
+        Fri, 31 May 2024 00:50:50 -0700 (PDT)
+Date: Fri, 31 May 2024 16:50:32 +0900 (JST)
+Message-Id: <20240531.165032.1895479176481879387.fujita.tomonori@gmail.com>
+To: dakr@redhat.com
+Cc: fujita.tomonori@gmail.com, gregkh@linuxfoundation.org,
+ wedsonaf@gmail.com, maarten.lankhorst@linux.intel.com, mripard@kernel.org,
+ tzimmermann@suse.de, airlied@gmail.com, daniel@ffwll.ch, ojeda@kernel.org,
+ alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+ bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@samsung.com,
+ aliceryhl@google.com, lina@asahilina.net, pstanner@redhat.com,
+ ajanulgu@redhat.com, lyude@redhat.com, rust-for-linux@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, nouveau@lists.freedesktop.org,
+ mcgrof@kernel.org, russ.weight@linux.dev
+Subject: Re: [RFC PATCH 7/8] rust: add firmware abstractions
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <Zlgg_Q5y3Q99Ts1s@pollux>
+References: <ZlfeA7MEZRv404MO@pollux.localdomain>
+	<20240530.132433.2195707766186347550.fujita.tomonori@gmail.com>
+	<Zlgg_Q5y3Q99Ts1s@pollux>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240529093336.4075206-1-davidgow@google.com>
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-On Wed, May 29, 2024 at 05:33:35PM +0800, David Gow wrote:
-> The Rust compiler can take a target config from 'target.json', which is
-> generated by scripts/generate_rust_target.rs. It used to be that all
-> Linux architectures used this to generate a target.json, but now
-> architectures must opt-in to this, or they will default to the Rust
-> compiler's built-in target definition.
-> 
-> This is mostly okay for (64-bit) x86 and UML, except that it can
-> generate SSE instructions, which we can't use in the kernel. So
-> re-instate the custom target.json, which disables SSE (and generally
-> enables the 'soft-float' feature). This fixes the following compile
-> error:
-> 
-> error: <unknown>:0:0: in function _RNvMNtCs5QSdWC790r4_4core3f32f7next_up float (float): SSE register return with SSE disabled
-> 
-> Fixes: f82811e22b48 ("rust: Refactor the build target to allow the use of builtin targets")
-> Signed-off-by: David Gow <davidgow@google.com>
+On Thu, 30 May 2024 08:47:25 +0200
+Danilo Krummrich <dakr@redhat.com> wrote:
 
-Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
-
-Regards,
-Boqun
-
-> ---
->  arch/x86/Makefile.um | 1 +
->  1 file changed, 1 insertion(+)
+>> >> >> For a Rust PHY driver, you know that you have a valid pointer to C's
+>> >> >> device object of C's PHY device during the probe callback. The driver
+>> >> >> creates a Rust device object to wrap the C pointer to the C's device
+>> >> >> object and passes it to the firmware abstractions. The firmware
+>> >> >> abstractions gets the C's pointer from the Rust object and calls C's
+>> >> >> function to load firmware, returns the result.
+>> >> >> 
+>> >> >> You have concerns about the simple code like the following?
+>> >> >> 
+>> >> >> 
+>> >> >> diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
+>> >> >> new file mode 100644
+>> >> >> index 000000000000..6144437984a9
+>> >> >> --- /dev/null
+>> >> >> +++ b/rust/kernel/device.rs
+>> >> >> @@ -0,0 +1,30 @@
+>> >> >> +// SPDX-License-Identifier: GPL-2.0
+>> >> >> +
+>> >> >> +//! Generic devices that are part of the kernel's driver model.
+>> >> >> +//!
+>> >> >> +//! C header: [`include/linux/device.h`](srctree/include/linux/device.h)
+>> >> >> +
+>> >> >> +use crate::types::Opaque;
+>> >> >> +
+>> >> >> +#[repr(transparent)]
+>> >> >> +pub struct Device(Opaque<bindings::device>);
+>> >> >> +
+>> >> >> +impl Device {
+>> >> >> +    /// Creates a new [`Device`] instance from a raw pointer.
+>> >> >> +    ///
+>> >> >> +    /// # Safety
+>> >> >> +    ///
+>> >> >> +    /// For the duration of 'a, the pointer must point at a valid `device`.
+>> >> > 
+>> >> > If the following rust code does what this comment says, then sure, I'm
+>> >> > ok with it for now if it helps you all out with stuff like the firmware
+>> >> > interface for the phy rust code.
+>> >> 
+>> >> Great, thanks a lot!
+>> >> 
+>> >> Danilo and Wedson, are there any concerns about pushing this patch [1]
+>> >> for the firmware abstractions?
+>> > 
+>> > Well, if everyone is fine with this one I don't see why we can't we go with [1]
+>> > directly? AFAICS, we'd only need the following fix:
+>> > 
+>> > -//! C header: [`include/linux/device.h`](../../../../include/linux/device.h)
+>> > +//! C header: [`include/linux/device.h`](srctree/include/linux/device.h)
+>> > 
+>> > [1] https://lore.kernel.org/rust-for-linux/20240520172554.182094-2-dakr@redhat.com/
+>> 
+>> The difference is that your patch touches the reference count of a
+>> struct device. My patch doesn't.
+>> 
+>> The following part in your patch allows the rust code to freely play
+>> with the reference count of a struct device. Your Rust drm driver
+>> interact with the reference count in a different way than C's drm
+>> drivers if I understand correctly. I'm not sure that Greg will be
+>> convinenced with that approach.
 > 
-> diff --git a/arch/x86/Makefile.um b/arch/x86/Makefile.um
-> index 2106a2bd152b..a46b1397ad01 100644
-> --- a/arch/x86/Makefile.um
-> +++ b/arch/x86/Makefile.um
-> @@ -9,6 +9,7 @@ core-y += arch/x86/crypto/
->  #
->  ifeq ($(CONFIG_CC_IS_CLANG),y)
->  KBUILD_CFLAGS += -mno-sse -mno-mmx -mno-sse2 -mno-3dnow -mno-avx
-> +KBUILD_RUSTFLAGS += --target=$(objtree)/scripts/target.json
->  KBUILD_RUSTFLAGS += -Ctarget-feature=-sse,-sse2,-sse3,-ssse3,-sse4.1,-sse4.2,-avx,-avx2
->  endif
->  
-> -- 
-> 2.45.1.288.g0e0cd299f1-goog
+> I don't see how this is different than what we do in C. If you (for whatever
+> reason) want to keep a pointer to a struct device you should make sure to
+> increase the reference count of this device, such that it can't get freed for
+> the time being.
+> 
+> This is a 1:1 representation of that and conceptually identical.
+
+A drm driver does such? If a drm driver allocates two types of
+driver-specific data and keep a pointer to the pci device, then the
+driver calls get_device() twice to increase the reference count of the
+pci's device?
+
+At the very least, network device drivers don't. a driver doesn't play
+with the reference count. The network subsystem does. And, the network
+subsystem doesn't care about how many pointers to a pci device a
+driver keeps.
+
+With the patch [1], a driver plays with the reference count of a
+device and directly calls get/put_device. It's a different than C
+drivers for me (not sure about drm subsystem though).
+
+But I might be misunderstanding that Greg isn't convinced with this
+reference count thing. We need to wait for his response.
+
+
+>> +// SAFETY: Instances of `Device` are always ref-counted.
+>> +unsafe impl crate::types::AlwaysRefCounted for Device {
+>> +    fn inc_ref(&self) {
+>> +        // SAFETY: The existence of a shared reference guarantees that the refcount is nonzero.
+>> +        unsafe { bindings::get_device(self.as_raw()) };
+>> +    }
+>> +
+>> +    unsafe fn dec_ref(obj: ptr::NonNull<Self>) {
+>> +        // SAFETY: The safety requirements guarantee that the refcount is nonzero.
+>> +        unsafe { bindings::put_device(obj.cast().as_ptr()) }
+>> +    }
+>> +}
+>> 
+>> The following comments give the impression that Rust abstractions
+>> wrongly interact with the reference count; callers check out the
+>> reference counter. Nobody should do that.
+> 
+> No, saying that the caller must ensure that the device "has a non-zero reference
+> count" is a perfectly valid requirement.
+> 
+> It doensn't mean that the calling code has to peek the actual reference count,
+> but it means that it must be ensured that while we try to increase the reference
+> count it can't drop to zero unexpectedly.
+
+Yeah, the same requirements but expressed differently.
+
+But again, I might be misunderstanding. Greg might have a different reason.
+
+> Your patch, as a subset of this one, has the same requirements as listed below.
+> 
+>> 
+>> +    /// Callers must ensure that `ptr` is valid, non-null, and has a non-zero reference count.
+>> +    pub unsafe fn from_raw(ptr: *mut bindings::device) -> ARef<Self> {
+>> 
+>> +    /// Callers must ensure that `ptr` is valid, non-null, and has a non-zero reference count for
+>> +    /// the entire duration when the returned reference exists.
+>> +    pub unsafe fn as_ref<'a>(ptr: *mut bindings::device) -> &'a Self {
+>> +        // SAFETY: Guaranteed by the safety requirements of the function.
+>> +        unsafe { &*ptr.cast() }
+>> +    }
+>> 
+> 
 > 
