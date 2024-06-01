@@ -1,151 +1,95 @@
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+Received: from mail-oo1-f45.google.com (mail-oo1-f45.google.com [209.85.161.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B3B9B64B
-	for <rust-for-linux@vger.kernel.org>; Sat,  1 Jun 2024 04:37:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6054C7482
+	for <rust-for-linux@vger.kernel.org>; Sat,  1 Jun 2024 04:51:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717216646; cv=none; b=b63nllNanCPVLQ1pNBPRhlzz7i/9ZU4qtml+JZmmCc6QVzI7Rj167A3vEAgKH55EldDwP6M1Q9X+0PPJl+2eq049MOwPMAvdsLp25FjBEtbdGsTGji2C4b2fWlwx+mWzZtGCZ1Xkbg7/swDzUHz/MuBR/5ML4Jjj9pDz0QPGrtE=
+	t=1717217508; cv=none; b=f+Zvi32Q2bpc0gAesP+m8s0/gzvRW1S3cprf5wndkdIcShEOg6a22EuIVvxdIcjNdqVGsBC6nLUcdOTHa8TKHpjQv8ED6YoZUeoKtABvf2hxG3hV+NvKmYvs4EwZzO+gY5tz+P7YpS+0xfUy0Z6CZytGx9CkIYu+gd5Y6TwMhxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717216646; c=relaxed/simple;
-	bh=qCbN8A51MJPrOtd1NK2CJAxcT1PE0TLyCeT46kqbD6U=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=MC2dqRZXhHXak5hTXPwt1RlhrYb7uvhKv3laUQ+vpDfG+eTXyq7BzU03uiLvCOD2qoq7Bmu7yREyimZX2bxFPkmkLFfMnxDZxTBq566VWjMwtosrUOxP4J/ViQSImtHnehislmlmbUdq1eNwwStGFYxWbVVta9k8tD3oCAMYK3A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jNKJJc3a; arc=none smtp.client-ip=209.85.216.46
+	s=arc-20240116; t=1717217508; c=relaxed/simple;
+	bh=gfwQUjf8HBR68jWYyqkbyvvgKQw98aYpyrXY4LbvnXk=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=HlucsWkcmdYzwnu/t/eBnoyBym9r1VXAinH+EfZ+PqPQoZsoGTiF6MnMkQX35xzxhix6a8YLwjpUScNIxzcmmJ8ngMIOg+LdiiCbLHUl1F9UCoVXsfkjIMTvAUIHmKDoC37Z6+9ar6DPPQSUqusfwI4NAgYnWjE8wUHTotZcO90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=inTSuQ5G; arc=none smtp.client-ip=209.85.161.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jNKJJc3a"
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-2bfae86f1ffso309405a91.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 31 May 2024 21:37:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="inTSuQ5G"
+Received: by mail-oo1-f45.google.com with SMTP id 006d021491bc7-5b2e8d73bfcso290462eaf.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 31 May 2024 21:51:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1717216643; x=1717821443; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XNb7PXv3YjULHNm4p9+8kaG9DtPF4iw/ILuLLLrPg2I=;
-        b=jNKJJc3an+wsZnZU+qrdjhKGG+B+10kgmM8MThEtTRSQEWP9Y5MUmCU/K4L0mBGVbE
-         feykg/clFIyVWAc/e6tE/SMGuk435trIFWZLhu31x94VVEDRyGJYEfdQyDTuwg7ueqF9
-         wGj4N+c677OrbUu802EFgQ8yIWXz1BeJE6Fk//ZqjYVo7xyRGA7CwzL9dsIv325GESmp
-         FZyjWfe7MSWHIN9/X0qLuCynqgyYRKyMmtc7jqKYf5hS0kFngxC47rqey9A9KebSy/Fd
-         v4HvWtoQRr6+qNnbvdPgUHCcvnBzm0G/IjAaD59Och5Yo4vL50HfGV7GYljXMgAhV5Rw
-         iX2Q==
+        d=gmail.com; s=20230601; t=1717217506; x=1717822306; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=XfOI88RXcmRkKQKcmtgWEYCvR/hNGygw3QGJ0O3R6Cs=;
+        b=inTSuQ5GZ4KFC73pZxzTsJUOG5bQtMCRc6UhtDw0Q99KLRI0Eqy1rd4u5aQAbPbtSL
+         HRFN5hQfSyKkPDSGb+NsLVXgTAewrA6bB9SWk6O/Dg2XAPWHhKeSEFJqRnTOu8rgBmgx
+         ce+EmFiVrt651NEO+rAbgAaSgNfShhyyYwOA+nWu5v/sYmiifNUx89Ql6vaNchr8URrz
+         0f/M1XaHkIrs+ahFkt/gPEigstsoM5t/taFPduAsIWW4FSZ38EBmjfxo0WOIqcz2xX4d
+         iqJqwXfY1UD1QWONleJHheiA48ilYC1Lfnau30R4unzxN9z3ynXRfvS4cMX6bZ6RoCiz
+         jabg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717216643; x=1717821443;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=XNb7PXv3YjULHNm4p9+8kaG9DtPF4iw/ILuLLLrPg2I=;
-        b=B0Tvrx+cWr/zh2MYmWwLnamc8zIMY7hxXkPJrRYRStSJko6FsL8tPmk53laCSdkDsb
-         603RZJqg8tFN7LUYhF7dhJ7tzeZwxsRSYUh+p6ckNr3o8GfIz5aeM7TMi8e0xcUymnWP
-         PHgVBY18+u4byP0btf6p92Jym61fV6T8fuxh5Gv2pv+AAj2tEjqIGTyc/QIuksUmDLhU
-         uN8/7G39NBgtDxnvNW4el4qT3tNjKiv+fse9E9xtTaQWUFNJ2R5OUrelvACn0bbKio1G
-         NjrwEf0pSdu6WBkNc68CyA9pqG4n0JsyGPIV1A52GIp6/y1ReMK9MGuNpQ9uPOkp2Bdk
-         Vjsg==
-X-Gm-Message-State: AOJu0YyxLqs1Al2ZNvPhUdl+xuayVJE9bYpwyEQ4dd21Iw+48k2ztY91
-	U5LCazSrgcftG3mUVzek12Qk4zoRTPq0r5P7TsXNjTh5S3223lgOXfTajDFo
-X-Google-Smtp-Source: AGHT+IHxRxaxGrYPHzoorrzkxlsJUh6PkRmZ3RNnz3QSrJ2Dh9KZNMNQG7z97LrBnzh1XCIs6hacxw==
-X-Received: by 2002:a05:6a20:324e:b0:1af:acda:979d with SMTP id adf61e73a8af0-1b26f0f19a3mr3142512637.1.1717216643441;
-        Fri, 31 May 2024 21:37:23 -0700 (PDT)
-Received: from rpi.. (p5261226-ipxg23801hodogaya.kanagawa.ocn.ne.jp. [180.15.241.226])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2c1a776e212sm4013086a91.16.2024.05.31.21.37.22
+        d=1e100.net; s=20230601; t=1717217506; x=1717822306;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=XfOI88RXcmRkKQKcmtgWEYCvR/hNGygw3QGJ0O3R6Cs=;
+        b=fDk1gGncQ+nXsk3J4/yiD6YVO3utD145RICyjFyI7TcWyFw89sTKz9D8Z0Fsjx1f9i
+         9QTVRSFKiP8hTp6w7R18QElDSNm549O0i21tVyptiDQMdnoJRVuLoJHmpmqxq2D4nGx7
+         /4FXI4H0A3lqeBUtsyX7WRL0cIG2m56L5/639n46MCqUkcFXQ16F7jNuApVM/jtjTe1H
+         3Qw/jUTN/zFCHWFM9vNrYvSgAyRJ6cgKveRDAxm7vhz9cWytU9dC9U7FQtNvZagaXI/+
+         gDCXJKyp5DHr8y5Y1LR0gf1YQ7vBC13eJhNncCHGrNDeZurVXUs1glTGpfbQzcOM017q
+         T1nQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXDorWc+fSx3fP4u8P0ODqMDxcTAGwr14cUedTrRDtzmqBiyCucPxqD/zex3jDkFTKvVgAnmvtxw2Wh68u4Yvrpqb5Oj42jSVJcOJxyjhI=
+X-Gm-Message-State: AOJu0YwPxkFiROzyh08pura7kmftUYLiwfTF+o0SuIBvRIAqfouzk9/3
+	BRoANEWr7vMMk63yruIGbYQVSfkKxXArQ5kuwpp0/kANkKStvtwR
+X-Google-Smtp-Source: AGHT+IGyZKWE7Jv1WVe+mwfYQqQlxEQSMC58rN8028tWIKjoKG+BzrCS2IsRCtPdkbn3VKlm5qOjUw==
+X-Received: by 2002:a05:6870:8327:b0:24c:4ab2:7f9c with SMTP id 586e51a60fabf-2508ba3e963mr3939247fac.1.1717217506395;
+        Fri, 31 May 2024 21:51:46 -0700 (PDT)
+Received: from localhost (p5261226-ipxg23801hodogaya.kanagawa.ocn.ne.jp. [180.15.241.226])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-70242b05932sm2343806b3a.174.2024.05.31.21.51.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 31 May 2024 21:37:23 -0700 (PDT)
+        Fri, 31 May 2024 21:51:46 -0700 (PDT)
+Date: Sat, 01 Jun 2024 13:51:32 +0900 (JST)
+Message-Id: <20240601.135132.1027202187900417203.fujita.tomonori@gmail.com>
+To: benno.lossin@proton.me
+Cc: fujita.tomonori@gmail.com, andrew@lunn.ch, tmgross@umich.edu,
+ rust-for-linux@vger.kernel.org
+Subject: Re: [RFC PATCH v1] rust: net::phy support to C45 registers access
 From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-To: rust-for-linux@vger.kernel.org
-Cc: andrew@lunn.ch,
-	benno.lossin@proton.me,
-	tmgross@umich.edu
-Subject: [RFC PATCH v2 2/2] rust: net::phy support for C45 genphy helpers
-Date: Sat,  1 Jun 2024 13:35:35 +0900
-Message-Id: <20240601043535.53545-3-fujita.tomonori@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240601043535.53545-1-fujita.tomonori@gmail.com>
-References: <20240601043535.53545-1-fujita.tomonori@gmail.com>
+In-Reply-To: <310b155c-9f06-4748-85c4-cd8c87f196c1@proton.me>
+References: <4a6aba6c-3e52-4ace-be88-58f9c1b44693@proton.me>
+	<20240531.225857.1252492134294581333.fujita.tomonori@gmail.com>
+	<310b155c-9f06-4748-85c4-cd8c87f196c1@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-Add support for genphy_c45_* helper functions. Instead of adding
-genphy_c45_ methods, this unifies the API for genphy functions with
-trait.
+On Fri, 31 May 2024 14:04:18 +0000
+Benno Lossin <benno.lossin@proton.me> wrote:
 
-Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
----
- rust/kernel/net/phy.rs | 49 +++++++++++++++++++++++++++++++++---------
- 1 file changed, 39 insertions(+), 10 deletions(-)
+> Hmm I guess that it probably can't infer a default type. In that case,
+> you can also try if a struct approach for C22 is better. So:
+> 
+>     pub struct C22(u16); // choose the correct size
 
-diff --git a/rust/kernel/net/phy.rs b/rust/kernel/net/phy.rs
-index 286fd5a7ec91..aabd714ae3f6 100644
---- a/rust/kernel/net/phy.rs
-+++ b/rust/kernel/net/phy.rs
-@@ -248,16 +248,8 @@ pub fn genphy_suspend(&mut self) -> Result {
-     }
- 
-     /// Checks the link status and updates current link state.
--    pub fn genphy_read_status(&mut self) -> Result<u16> {
--        let phydev = self.0.get();
--        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
--        // So it's just an FFI call.
--        let ret = unsafe { bindings::genphy_read_status(phydev) };
--        if ret < 0 {
--            Err(Error::from_errno(ret))
--        } else {
--            Ok(ret as u16)
--        }
-+    pub fn genphy_read_status<G: reg::GenPhyOps>(&mut self) -> Result<u16> {
-+        G::read_status(self)
-     }
- 
-     /// Updates the link status.
-@@ -446,6 +438,43 @@ fn write(&self, dev: &mut Device, val: u16) -> Result {
-             })
-         }
-     }
-+
-+    /// PHY helper functions.
-+    ///
-+    /// This trait is used to implement some helper functions executed either
-+    /// via C22 or C45 registers.
-+    pub trait GenPhyOps {
-+        /// Checks the link status and updates current link state.
-+        fn read_status(dev: &mut Device) -> Result<u16>;
-+    }
-+
-+    impl GenPhyOps for C22 {
-+        fn read_status(dev: &mut Device) -> Result<u16> {
-+            let phydev = dev.0.get();
-+            // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
-+            // So it's just an FFI call.
-+            let ret = unsafe { bindings::genphy_read_status(phydev) };
-+            if ret < 0 {
-+                Err(Error::from_errno(ret))
-+            } else {
-+                Ok(ret as u16)
-+            }
-+        }
-+    }
-+
-+    impl GenPhyOps for C45 {
-+        fn read_status(dev: &mut Device) -> Result<u16> {
-+            let phydev = dev.0.get();
-+            // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
-+            // So it's just an FFI call.
-+            let ret = unsafe { bindings::genphy_c45_read_status(phydev) };
-+            if ret < 0 {
-+                Err(Error::from_errno(ret))
-+            } else {
-+                Ok(ret as u16)
-+            }
-+        }
-+    }
- }
- 
- /// Defines certain other features this PHY supports (like interrupts).
--- 
-2.34.1
+Thanks, I think that this works nicely.
 
+>     impl C22 {
+>         pub fn new(reg: u16) -> Self;
+> 
+>         pub const BMCR: Self = Self::new(uapi::MII_BMCR);
+>         // ...
+>     }
+> 
+> And then a specific driver can declare its own constants.
+
+I uses const generic to declare a vendor specific register in the v2
+patch, I've just sent. Please let me know what do you think.
