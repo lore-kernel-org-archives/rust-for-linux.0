@@ -1,208 +1,202 @@
-Received: from hs01.dakr.org (hs01.dk-develop.de [173.249.23.66])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2085.outbound.protection.outlook.com [40.107.94.85])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AAEF41C69;
-	Fri, 31 May 2024 14:40:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=173.249.23.66
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717166416; cv=none; b=Wp19KFH/WtNleM6m7mR6gOitjhbMiKGFNV7c52yeLcSQ7kgvkGWqSm3PrJIbMH21cZd6MQJ3NoEKVQS8DgX9xogOj62eLv0ogIRXi90cPhr7D3sUPOBxOjZhweDneiY46R8nNrrZ8RW/a/9m/iRUOAVt15uLmPBrwncm2dQwKOY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717166416; c=relaxed/simple;
-	bh=xlO1Mp3KBU+sq/6oeFxX6/VD7mrtgTn6P2Yuj2MlJiA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ZaWzj8KSWYQwkgpPSZX7nQ1U+DDCPqT8hllVg7G7+WAWYZerVqwOxPKKiPv7HWZIWak+wtakC7ZxP7FAXH4WHDGKl3ChRymUiniRlsDihrKDhwe5muBY5X/bCf1ryCjZnFQU/i3DgdNrgalrd9qh9d8b3V6chL3x1Zxgoka0BAU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dakr.org; spf=pass smtp.mailfrom=dakr.org; arc=none smtp.client-ip=173.249.23.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dakr.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dakr.org
-Message-ID: <38f11766-b601-410b-9025-1e6b4c2203e7@dakr.org>
-Date: Fri, 31 May 2024 16:34:00 +0200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D609A6FB6;
+	Sat,  1 Jun 2024 00:49:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.85
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1717202944; cv=fail; b=G11ERI89AaxkwFJ6k5XUP92HcEiIXDrnK7qanbsja3lO0clL+RG8E/3aWzwjemwp1FWfijPcKPlBY179udBMNyfqNw5MP70AMj9xDXZ8sDfiRM0RMn6bnxyEjMEt5l/KaqiRhXZWMWqKwzEEE9dNNadWfmJ/ckLntYALRV6WVzg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1717202944; c=relaxed/simple;
+	bh=hSheAr1uPHW/ocTPDYc3WyKn4GKNbpjIbW/zSKj78A4=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=O0rRP5V+9xnkmpypHyNw9gugphg5a7ZgJg4yGRPl+tYGVjYvQpDrrC4oLB39JiBXzuQJjq/hEkduYQka0sw9oQ1HbVK5KVJ22p/JSoY6NKVDCQzzjrPKChDAeceqCxXOgYU3UEEJITgXgQzKhBR+A2cEr6dDuJMKaSWNk/p+aRk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=SA5C+/qg; arc=fail smtp.client-ip=40.107.94.85
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="SA5C+/qg"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=So61LHcxj/K9xRsx+GbWfFlBzG5DW2GKXiYso6L5CBB0j4xqz609Q89se7O1ObO9oeZjFbr5lubNMUfmH4IG055XCq1WGu2piYQ24Pz0AtSmxgHJmTHyIqPYvcWekqI6aETYt39SxjSDJjuvLm+kLuPRDNOCkWPryZneFf522GUT8A45lqbkU26sXtW5AiHG7bq+3SX686qIh10cZZY0kfgWkduckne2qIt30B4KY/shd5w14TdD9mtmS5h+k5HGittfpNgC5FmiI8MJKpXiW6P+sjLqTrKRG0riPe0XhbKwd2rjn9bSqQprmK+OaWOgFM2J7dsXdt4eT2FQ+35IRA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=S4CjiUWzwWVDo5U5rggXo8NhTAk0+tvy0s6AgdaDpIY=;
+ b=kyuPXDbs7GCpzCk87oiCcFB+XeQ0g5lRl0uyXeOO8K0GABIY7ShPB4brHwv8DU/9juihb2jaT1xbSrxhXVyq6ncDMcROrUBo0Om5jGnXYoX+rmnBob/bzft7Z2rAn5eKUzJkVJoQ9Dt0gRpYxDMi7BfP5T7akN9ySM47RTYRIaXWW4567DNm+sIpqN9RY26iQG58h30lJomo/gAmnNa+XQrxzy8aL1Ph2BxKAR4Dj7BoiaXb98x8oRcFtwqaexzl+KUrsz+mp7XFDhysqbstUYkfG5O/l8YSUYssIFfXq49b95iW6Sg7xrW/sTyb+PnTeNWRj9VQHZnt9DhRmI3Xsg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
+ dkim=pass header.d=nvidia.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=S4CjiUWzwWVDo5U5rggXo8NhTAk0+tvy0s6AgdaDpIY=;
+ b=SA5C+/qgqlDP1lM0EXZ19DC8Q6o3zvaqbO+fuAkmmycPEhFmS7UCAXur5SGehq8JB9eMmtmxVI5N2VbWMgiHcjvtQELjJP+AGKSC22z4/iYco9nDPIxK4jXrs011355RfEtGtC67a9B0fY3Kfo+ZUhyndlrn//SG5PUkSj3LIMZoSRySj7ua9lhhXwyFEC9UMBBmWYrCkqIET8Wzq7IjXn0lEq/CFTopqQ1tpbHWI+kaZ0hOcUpBsU9KPVKUPf6s0BShT2w7CBqpRXcpem/HcXmMSEeWrxWUxPy1+uz9NB0L5TQ0OhsKrMXxhnwnarUGuiFtgISZJXj1aq/ny1d3ZA==
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=nvidia.com;
+Received: from BY5PR12MB4130.namprd12.prod.outlook.com (2603:10b6:a03:20b::16)
+ by CY8PR12MB7682.namprd12.prod.outlook.com (2603:10b6:930:85::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7633.22; Sat, 1 Jun
+ 2024 00:48:58 +0000
+Received: from BY5PR12MB4130.namprd12.prod.outlook.com
+ ([fe80::2cf4:5198:354a:cd07]) by BY5PR12MB4130.namprd12.prod.outlook.com
+ ([fe80::2cf4:5198:354a:cd07%4]) with mapi id 15.20.7633.021; Sat, 1 Jun 2024
+ 00:48:58 +0000
+From: John Hubbard <jhubbard@nvidia.com>
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Masahiro Yamada <masahiroy@kernel.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nicolas@fjasle.eu>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	linux-kbuild@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	LKML <linux-kernel@vger.kernel.org>,
+	John Hubbard <jhubbard@nvidia.com>
+Subject: [PATCH] Makefile: rust-analyzer target: better error handling and comments
+Date: Fri, 31 May 2024 17:48:56 -0700
+Message-ID: <20240601004856.206682-1-jhubbard@nvidia.com>
+X-Mailer: git-send-email 2.45.1
+X-NVConfidentiality: public
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: BY5PR20CA0008.namprd20.prod.outlook.com
+ (2603:10b6:a03:1f4::21) To BY5PR12MB4130.namprd12.prod.outlook.com
+ (2603:10b6:a03:20b::16)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [RFC PATCH v2 00/30] Rust abstractions for VFS
-To: Wedson Almeida Filho <wedsonaf@gmail.com>
-Cc: Dave Chinner <david@fromorbit.com>,
- Alexander Viro <viro@zeniv.linux.org.uk>,
- Matthew Wilcox <willy@infradead.org>,
- Kent Overstreet <kent.overstreet@gmail.com>,
- Christian Brauner <brauner@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- linux-fsdevel@vger.kernel.org, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20240514131711.379322-1-wedsonaf@gmail.com>
-Content-Language: en-US
-From: Danilo Krummrich <me@dakr.org>
-In-Reply-To: <20240514131711.379322-1-wedsonaf@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BY5PR12MB4130:EE_|CY8PR12MB7682:EE_
+X-MS-Office365-Filtering-Correlation-Id: e3552b23-15b9-40a7-3bb7-08dc81d49f4c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230031|1800799015|7416005|376005|366007;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?zkldY+v0Z8iMSd3NjT/8zcG0HDr3dg3u7OODTARDGeM30AsrLFd7RAlwgChS?=
+ =?us-ascii?Q?o6QaTth/ldChVy9+WjsrOukrBbDPiueYQhaMypYMpeswzlV0RxH4EUKM9I7R?=
+ =?us-ascii?Q?De9/h+GM7JJ0ZDMXbftCQoWWW5FJkP8VTfyQYz+1o9Onfr/PntUWLNtmXJ6F?=
+ =?us-ascii?Q?6JDuTpHRgWajuSpMW46eUsAWCmTSXOMHaWhWvKeM7UyLOIyaAPVagf/SGwOh?=
+ =?us-ascii?Q?tDNbJD7H94gDkUw0roIKMBvKMy6nF0jpOsoVeg14Zw5vtvWT4q0Qt5vdB7s1?=
+ =?us-ascii?Q?5aH5sPEB/o7Z6B0F95sZ8eZD2f7yaEgxjlxFdnH6HB2rbfskMMcaNh3DvwTW?=
+ =?us-ascii?Q?0Y9VZF5dJyrMdPCNMpG8lRfymPwOYKlk1ic95EcQ+41co3ZHiEv7m5cl8Flz?=
+ =?us-ascii?Q?AT00yD1eq1C7ZgkYX1s8TbNYG+4BjiBB4liw9x12Sh/QzD5maoTcihBSRMnc?=
+ =?us-ascii?Q?OAKgrqmfeFtjkFzFUU19NeRJEhSi5KX8M4cWrNRvADmVUK40ro+BqyUmvFhs?=
+ =?us-ascii?Q?YMMAOBtUOWZ/fyzt3G3vw6ikHVRBceCiz+heUNKmhYKtTQ1n7QfWT7x9i5Tk?=
+ =?us-ascii?Q?Jg/NNIgunMmqGr3bm4S559bONjwtP9mDrivqh3Tq2z9rb2R12aTflqKe797w?=
+ =?us-ascii?Q?Fm5xMSLaEEC3jTywoRspEueyJco8cT85/Ekjs9TrY9/UfGMIEmOZHtGJr5De?=
+ =?us-ascii?Q?igwNauQmgESsbjYgLu1jFMYQwPt5zIoxTfQyCb4D3+f+MPS6JuwQhw/NkE9a?=
+ =?us-ascii?Q?xxIO9HLiTBaf/+As8b/48pk9n0ZDu4xTZXuj2GnwQ1SY/jxtkIwQr3sOl7Su?=
+ =?us-ascii?Q?zxwrnnp/loVuvKnQKLJ13PNpsSuA3DJsz3bLQcMQlPGvSlyPTjv2XN1pa7tj?=
+ =?us-ascii?Q?BVjr5SyfJ7NxlpuRSXN7kAjmLK8459nH8hOPYM4q4KeCtER5fw7pzzTcNbEz?=
+ =?us-ascii?Q?Xl1dPr0ET3YO8J21h8dcoxaomMvEQN9Jq6p/UtEhSnjat/VKdNRMv5rgWEsE?=
+ =?us-ascii?Q?+XOeYBzNR2OjWQN7knq1IOgjLpsRcpndMGwsIHJ1gTo0Kb3b1vYQb8h1nYcn?=
+ =?us-ascii?Q?hfolBgiS5T61Uln2Pls8A20/6WBk7KbeKlky2PiLv6aTiqSxn5NeZyCwXbD6?=
+ =?us-ascii?Q?M/D8kSD+OOFOwOlNKten8FwU+KVNgXG75n7B8nEyToaqfgDwH+wpSzjM10Rb?=
+ =?us-ascii?Q?/9MYjcCD2ykwEaM5Yoz9KuHNBGdnuT3bbCY79BNGTjaqTRcsCbN2upOnK3uX?=
+ =?us-ascii?Q?RWw/7SHgnhAWDeQ00pMOTR5zQHgb/KFlycYnnKWMaw=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BY5PR12MB4130.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(7416005)(376005)(366007);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?YKDQOrrM7CDRUJvHcKBFVaE2BWMcUHimiJGFZSgGg6KT1hd5IAeXf+1+IuDR?=
+ =?us-ascii?Q?cBqZbYecYx5IGlIUL9snXjwmYxLak5ZRsuUdSdSETdFadv0HMmHcAn4jv4f1?=
+ =?us-ascii?Q?syVq/yVpOzqddANDHE525xJpesOq6qAGuyhye4Inw0sY4phPGNgPuoPrmqFk?=
+ =?us-ascii?Q?rtcVoU7O+460TOJdFMHVV8iFj7Iao/m2k7nurS+boyMo6XR6BV2ljyA/EwL+?=
+ =?us-ascii?Q?VbFKAG3EACNxXiNOO8o+UaXX1RnEnWA7sICILk/KkkR8xLwiTJnf18FTX+v5?=
+ =?us-ascii?Q?9lJV6PNSuoE/gB5t20h19Y5B3BK8WUa343xuKNKRIUAmWAmgOEsfUo9W0NE/?=
+ =?us-ascii?Q?tznee1GljiSx431JwaDBDr9Qw+VF7WaJz/6MeuU8n1APex0nKmW1Eru5ELXT?=
+ =?us-ascii?Q?5CLW6aj3KhElAAk7KKPZvmc4R62IXr66/5SmwyfBs0AWLLiEnwiDw3NMBdP0?=
+ =?us-ascii?Q?O+BPUhq1g1+WrcwzLDgUHS8MHw5YDDiKM/HrJtNqeMcyss/vNKgu5gQ/7U/1?=
+ =?us-ascii?Q?ThYXOhhqI7u17Old6ZFinxSapwnMnewSIn5www4/i7cU3fQK1p/obS1LGHaa?=
+ =?us-ascii?Q?j7XzwxJUjcffYLf6vw7F1Ge+m2LIVqY7MfevpvoB/gizlfOzphI3SKhwFCW0?=
+ =?us-ascii?Q?1vd+uvRXgPfUyG4y2j7Szpq+ZFBhyIqX6IUOG2Y4Ci0hbeWdTBIKAV04RG0e?=
+ =?us-ascii?Q?diwFBL1euveiPMwb7Sjm2dAYI97cHF8eWcEDMSdUGnit9Pl69NWO+rOiahCO?=
+ =?us-ascii?Q?qXa+uRF8AY5ti7WG9p66vXhilLyCxGzCKfGUHwv8v7Kk+Bb7zVAtGsjnCYcW?=
+ =?us-ascii?Q?g5xFPzbWQKKNlGmobrjgGH7Zx/xaTxoV4bvx7pMOS4l8C6THTbUWLP/H6IyY?=
+ =?us-ascii?Q?4AjOCnue8WAOA7EZv5KmL2aKz7k5x1EjoAMo6DholV+D+bj7NROE7/aBWh3n?=
+ =?us-ascii?Q?zkgnRu9cc/0ayGqtf+V5jduWQJYP3elLmQYCDdCwySpXV42QgCFdGPcfzSJp?=
+ =?us-ascii?Q?38zSg9tVw6uo5ok13UKx7RJ1U+fZd/UA+oFcgdN/zUzgw2QpdD4xDGtu1xOg?=
+ =?us-ascii?Q?LyDjWKCAPfXIQZ9iczau0Yv+V3n89/gj6VcOQ+FnvP7L34siZjFSHxgySFep?=
+ =?us-ascii?Q?dU/kjqUlqOiAd+79EhCxLZTt6JlJjJrG2QqVn2m4kfMpcm8dk8EQY9SQMb9c?=
+ =?us-ascii?Q?5awg/e0Ky7k2WwdtYVd2oIRGNItUWDw/bmolE3ATyJ28xBx0nIdxYTusppJW?=
+ =?us-ascii?Q?9Fyh4SAbSjaBGRFqChRD50F1MJF/qclXc15qnU0NOqSpPhXZCsb3kr/nSjIy?=
+ =?us-ascii?Q?uN54Ow8YXR6hOy+W7cUjVpvwCvOJhJ91DOkP8AnUUmeMgWvLb3dmB1B40+28?=
+ =?us-ascii?Q?q43n7257rk63ORDyqjiKMhpcD3pMDM/dcXRieT0PUnXUsTAzRMRbrqOK9ioA?=
+ =?us-ascii?Q?9HiXCtIDshUxZfaVOGpAa18skVNDisOpfJV4T4cNngzyh06HWIaza6xJ8ig9?=
+ =?us-ascii?Q?WxIU9HJLz0AodQPufD6Bd6otRAxWBRaX4w10ySZAxa1JbRaeguK0Ff/OZqZZ?=
+ =?us-ascii?Q?/SKzfxhAcahi7oA8bcVyWNcw792RHLHpvGbU1pkq?=
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: e3552b23-15b9-40a7-3bb7-08dc81d49f4c
+X-MS-Exchange-CrossTenant-AuthSource: BY5PR12MB4130.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Jun 2024 00:48:58.6179
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: NmH7EnXbEUqHaz0wutgp6d5sTnRCopDlQehJ21dZbe6D4AJf1LIIUbJmv7p6+v5kw7lM3TdPh2x0mpfObnYUjw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7682
 
-Hi Wedson,
+1) Provide a more self-explanatory error message for the "Rust not
+available" case. Without this patch, if Rust is not set up properly
+(which happens a lot, seeing as how one must routinely run "rustup
+override ..." with each new kernel release), the "make rust-analyzer"
+invocation generates a somewhat confusing message:
 
-On 5/14/24 15:16, Wedson Almeida Filho wrote:
-> This series introduces Rust abstractions that allow read-only file systems to
-> be written in Rust.
-> 
-> There are three file systems implementations using these abstractions
-> abstractions: ext2, tarfs, and puzzlefs. The first two are part of this series.
-> 
-> Rust file system modules can be declared with the `module_fs` macro and are
-> required to implement the following functions (which are part of the
-> `FileSystem` trait):
-> 
->      fn fill_super(
->          sb: &mut SuperBlock<Self, sb::New>,
->          mapper: Option<inode::Mapper>,
->      ) -> Result<Self::Data>;
-> 
->      fn init_root(sb: &SuperBlock<Self>) -> Result<dentry::Root<Self>>;
-> 
-> They can optionally implement the following:
-> 
->      fn read_xattr(
->          _dentry: &DEntry<Self>,
->          _inode: &INode<Self>,
->          _name: &CStr,
->          _outbuf: &mut [u8],
->      ) -> Result<usize>;
-> 
->      fn statfs(_dentry: &DEntry<Self>) -> Result<Stat>;
-> 
-> They may also choose the type of the data they can attach to superblocks and/or
-> inodes.
-> 
-> Lastly, file systems can implement inode, file, and address space operations
-> and attach them to inodes when they're created, similar to how C does it. They
-> can get a ro address space operations table from an implementation of iomap
-> operations, to be used with generic ro file operations.
-> 
-> A git tree is available here:
->      git://github.com/wedsonaf/linux.git vfs-v2
-> 
-> Web:
->      https://github.com/wedsonaf/linux/commits/vfs-v2
+    "No rule to make target 'rust-analyzer"
 
-This branch indicates that this patch series might have a few more dependencies
-that are not upstream yet, e.g. [1].
+This is confusing at first, because there is, in fact, a rust-analyzer
+build target. It's just not set up to handle errors gracefully.
 
-Do you intend to send them in a separate series (soon)? In case they were already
-submitted somewhere and I just failed to find them, please be so kind an provide
-me with a pointer.
+Instead of inflicting that on the developer, just print that Rust is
+not available, with a blank line above and below, so it doesn't get lost
+in the noise. Now the error case looks like this:
 
-[1] https://github.com/wedsonaf/linux/commit/96ef0376887f4194ebad608f9943eb41108cf255
+    $ make rust-analyzer
 
-- Danilo
+    Rust is not available
 
-> 
-> ---
-> 
-> Changes in v2:
-> 
-> - Rebased to latest rust-next tree
-> - Removed buffer heads
-> - Added iomap support
-> - Removed `_pin` field from `Registration` as it's not needed anymore
-> - Renamed sample filesystem to match the module's name
-> - Using typestate instead of a separate type for superblock/new-superblock
-> - Created separate submodules for superblocks, inodes, dentries, and files
-> - Split out operations from FileSystem to inode/file/address_space ops, similar to how C does it
-> - Removed usages of folio_set_error
-> - Removed UniqueFolio, for now reading blocks from devices via the pagecache
-> - Changed map() to return the entire folio if not in highmem
-> - Added support for unlocking the folio asynchronously
-> - Added `from_raw` to all new ref-counted types
-> - Added explicit types in calls to cast()
-> - Added typestate to folio
-> - Added support for implementing get_link
-> - Fixed data race when reading inode->i_state
-> - Added nofs scope support during allocation
-> - Link to v1: https://lore.kernel.org/rust-for-linux/20231018122518.128049-1-wedsonaf@gmail.com/
-> 
-> ---
-> 
-> Wedson Almeida Filho (30):
->    rust: fs: add registration/unregistration of file systems
->    rust: fs: introduce the `module_fs` macro
->    samples: rust: add initial ro file system sample
->    rust: fs: introduce `FileSystem::fill_super`
->    rust: fs: introduce `INode<T>`
->    rust: fs: introduce `DEntry<T>`
->    rust: fs: introduce `FileSystem::init_root`
->    rust: file: move `kernel::file` to `kernel::fs::file`
->    rust: fs: generalise `File` for different file systems
->    rust: fs: add empty file operations
->    rust: fs: introduce `file::Operations::read_dir`
->    rust: fs: introduce `file::Operations::seek`
->    rust: fs: introduce `file::Operations::read`
->    rust: fs: add empty inode operations
->    rust: fs: introduce `inode::Operations::lookup`
->    rust: folio: introduce basic support for folios
->    rust: fs: add empty address space operations
->    rust: fs: introduce `address_space::Operations::read_folio`
->    rust: fs: introduce `FileSystem::read_xattr`
->    rust: fs: introduce `FileSystem::statfs`
->    rust: fs: introduce more inode types
->    rust: fs: add per-superblock data
->    rust: fs: allow file systems backed by a block device
->    rust: fs: allow per-inode data
->    rust: fs: export file type from mode constants
->    rust: fs: allow populating i_lnk
->    rust: fs: add `iomap` module
->    rust: fs: add memalloc_nofs support
->    tarfs: introduce tar fs
->    WIP: fs: ext2: add rust ro ext2 implementation
-> 
->   fs/Kconfig                        |   2 +
->   fs/Makefile                       |   2 +
->   fs/rust-ext2/Kconfig              |  13 +
->   fs/rust-ext2/Makefile             |   8 +
->   fs/rust-ext2/defs.rs              | 173 +++++++
->   fs/rust-ext2/ext2.rs              | 551 +++++++++++++++++++++
->   fs/tarfs/Kconfig                  |  15 +
->   fs/tarfs/Makefile                 |   8 +
->   fs/tarfs/defs.rs                  |  80 +++
->   fs/tarfs/tar.rs                   | 394 +++++++++++++++
->   rust/bindings/bindings_helper.h   |  11 +
->   rust/helpers.c                    | 182 +++++++
->   rust/kernel/block.rs              |  10 +-
->   rust/kernel/error.rs              |   8 +-
->   rust/kernel/file.rs               | 251 ----------
->   rust/kernel/folio.rs              | 305 ++++++++++++
->   rust/kernel/fs.rs                 | 492 +++++++++++++++++++
->   rust/kernel/fs/address_space.rs   |  90 ++++
->   rust/kernel/fs/dentry.rs          | 136 ++++++
->   rust/kernel/fs/file.rs            | 607 +++++++++++++++++++++++
->   rust/kernel/fs/inode.rs           | 780 ++++++++++++++++++++++++++++++
->   rust/kernel/fs/iomap.rs           | 281 +++++++++++
->   rust/kernel/fs/sb.rs              | 194 ++++++++
->   rust/kernel/lib.rs                |   6 +-
->   rust/kernel/mem_cache.rs          |   2 -
->   rust/kernel/user.rs               |   1 -
->   samples/rust/Kconfig              |  10 +
->   samples/rust/Makefile             |   1 +
->   samples/rust/rust_rofs.rs         | 202 ++++++++
->   scripts/generate_rust_analyzer.py |   2 +-
->   30 files changed, 4555 insertions(+), 262 deletions(-)
->   create mode 100644 fs/rust-ext2/Kconfig
->   create mode 100644 fs/rust-ext2/Makefile
->   create mode 100644 fs/rust-ext2/defs.rs
->   create mode 100644 fs/rust-ext2/ext2.rs
->   create mode 100644 fs/tarfs/Kconfig
->   create mode 100644 fs/tarfs/Makefile
->   create mode 100644 fs/tarfs/defs.rs
->   create mode 100644 fs/tarfs/tar.rs
->   delete mode 100644 rust/kernel/file.rs
->   create mode 100644 rust/kernel/folio.rs
->   create mode 100644 rust/kernel/fs.rs
->   create mode 100644 rust/kernel/fs/address_space.rs
->   create mode 100644 rust/kernel/fs/dentry.rs
->   create mode 100644 rust/kernel/fs/file.rs
->   create mode 100644 rust/kernel/fs/inode.rs
->   create mode 100644 rust/kernel/fs/iomap.rs
->   create mode 100644 rust/kernel/fs/sb.rs
->   create mode 100644 samples/rust/rust_rofs.rs
-> 
-> 
-> base-commit: 183ea65d1fcd71039cf4d111a22d69c337bfd344
+    make[1]: *** [/kernel_work/linux-github/Makefile:1975: rust-analyzer] Error 1
+    make: *** [Makefile:240: __sub-make] Error 2
+
+2) As long as I'm there, also add some documentation about what
+rust-analyzer provides.
+
+Signed-off-by: John Hubbard <jhubbard@nvidia.com>
+---
+ Makefile | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/Makefile b/Makefile
+index f975b6396328..aca2c96820aa 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1967,9 +1967,13 @@ quiet_cmd_tags = GEN     $@
+ tags TAGS cscope gtags: FORCE
+ 	$(call cmd,tags)
+ 
+-# IDE support targets
++# Generate rust-project.json, which does for Rust what clangd's
++# compile_commands.json does for C/C++: provides a browsing database for code
++# editors and IDEs.
+ PHONY += rust-analyzer
+ rust-analyzer:
++	$(Q)$(CONFIG_SHELL) $(srctree)/scripts/rust_is_available.sh 2>/dev/null || \
++	    { echo; echo "Rust is not available"; echo; false; }
+ 	$(Q)$(MAKE) $(build)=rust $@
+ 
+ # Script to generate missing namespace dependencies
+
+base-commit: b050496579632f86ee1ef7e7501906db579f3457
+-- 
+2.45.1
+
