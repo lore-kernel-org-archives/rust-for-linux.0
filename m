@@ -1,95 +1,271 @@
-Received: from mail-oo1-f45.google.com (mail-oo1-f45.google.com [209.85.161.45])
+Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6054C7482
-	for <rust-for-linux@vger.kernel.org>; Sat,  1 Jun 2024 04:51:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90E31F9CC
+	for <rust-for-linux@vger.kernel.org>; Sat,  1 Jun 2024 06:35:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717217508; cv=none; b=f+Zvi32Q2bpc0gAesP+m8s0/gzvRW1S3cprf5wndkdIcShEOg6a22EuIVvxdIcjNdqVGsBC6nLUcdOTHa8TKHpjQv8ED6YoZUeoKtABvf2hxG3hV+NvKmYvs4EwZzO+gY5tz+P7YpS+0xfUy0Z6CZytGx9CkIYu+gd5Y6TwMhxw=
+	t=1717223746; cv=none; b=Ve7km6wAKxwWy/3TZzavP3leK2YeKvMRp5xQYoNs4Ghw/We/1AKfV6SERGOTrrvpfjIdeUU0IZO7LRwpgthPStelM6zaN1U0RZ/r/cBIx8NhUQaDrLJo2vE7q/wNBrPCRDEKF45TllrrVubkGy3MrGk6C/Q0MaCcpYaM4qFOVjk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717217508; c=relaxed/simple;
-	bh=gfwQUjf8HBR68jWYyqkbyvvgKQw98aYpyrXY4LbvnXk=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=HlucsWkcmdYzwnu/t/eBnoyBym9r1VXAinH+EfZ+PqPQoZsoGTiF6MnMkQX35xzxhix6a8YLwjpUScNIxzcmmJ8ngMIOg+LdiiCbLHUl1F9UCoVXsfkjIMTvAUIHmKDoC37Z6+9ar6DPPQSUqusfwI4NAgYnWjE8wUHTotZcO90=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=inTSuQ5G; arc=none smtp.client-ip=209.85.161.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1717223746; c=relaxed/simple;
+	bh=Mz8Hxjrxu4rGo4t3crAqddJyc25JjD3rXRWX5qNVWjU=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=o7TyyYKq+qILqRSunwI5T2QyemO8ay5c1iXu11a/jz06pSVQjqFnea/BAcIDIY8FDY78hFvYAuUAGAkJ4IgS4OgzgDp945LHDUeY5CMEay/UPeMKlF1n9fAaJTrh1pBJkxZxmD459HflX7yhHql5ojehYuQnzUoGgPPnSigsqOE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk; spf=none smtp.mailfrom=metaspace.dk; dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b=iLEcL3Go; arc=none smtp.client-ip=209.85.208.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=metaspace.dk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="inTSuQ5G"
-Received: by mail-oo1-f45.google.com with SMTP id 006d021491bc7-5b2e8d73bfcso290462eaf.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 31 May 2024 21:51:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b="iLEcL3Go"
+Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-57a1fe639a5so2677543a12.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 31 May 2024 23:35:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1717217506; x=1717822306; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+        d=metaspace-dk.20230601.gappssmtp.com; s=20230601; t=1717223742; x=1717828542; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:references
+         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=XfOI88RXcmRkKQKcmtgWEYCvR/hNGygw3QGJ0O3R6Cs=;
-        b=inTSuQ5GZ4KFC73pZxzTsJUOG5bQtMCRc6UhtDw0Q99KLRI0Eqy1rd4u5aQAbPbtSL
-         HRFN5hQfSyKkPDSGb+NsLVXgTAewrA6bB9SWk6O/Dg2XAPWHhKeSEFJqRnTOu8rgBmgx
-         ce+EmFiVrt651NEO+rAbgAaSgNfShhyyYwOA+nWu5v/sYmiifNUx89Ql6vaNchr8URrz
-         0f/M1XaHkIrs+ahFkt/gPEigstsoM5t/taFPduAsIWW4FSZ38EBmjfxo0WOIqcz2xX4d
-         iqJqwXfY1UD1QWONleJHheiA48ilYC1Lfnau30R4unzxN9z3ynXRfvS4cMX6bZ6RoCiz
-         jabg==
+        bh=D6LNY6xv2/4eeyQXLXkI83LJOKbMoY6Do9+TvOQJ91Q=;
+        b=iLEcL3GoHCw1zddiCfLUrBFHjKYJ55r0UpBhr2CAWNXCArvXgXzwtUUoU1BGz4jo+Y
+         o30Dle1xk3iq/eH0eyi0k7+yqiswjApHVmcFoxTR+NrGn3Pnz7Hr+9G5hosEmLfFmlN0
+         JgXEsdbE1rJZwM/tD9AtES/hT6eF2+C0xanOesEMeSqWwTjnsvt2FmRQHTDwptG8rolZ
+         smFfBkOHm9wAcq5ZybEmsf4A/r0IXDI876TS2DVW+zIHXqnGd3tQpYhfiWwF8K0yrWph
+         orfzSjJZTDOeJe8Wpy2JQVVnrSA6Kyg28pnypQP6gJnQKAyDb2mP7KX+tf2hJpV08ptv
+         jXaw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717217506; x=1717822306;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=XfOI88RXcmRkKQKcmtgWEYCvR/hNGygw3QGJ0O3R6Cs=;
-        b=fDk1gGncQ+nXsk3J4/yiD6YVO3utD145RICyjFyI7TcWyFw89sTKz9D8Z0Fsjx1f9i
-         9QTVRSFKiP8hTp6w7R18QElDSNm549O0i21tVyptiDQMdnoJRVuLoJHmpmqxq2D4nGx7
-         /4FXI4H0A3lqeBUtsyX7WRL0cIG2m56L5/639n46MCqUkcFXQ16F7jNuApVM/jtjTe1H
-         3Qw/jUTN/zFCHWFM9vNrYvSgAyRJ6cgKveRDAxm7vhz9cWytU9dC9U7FQtNvZagaXI/+
-         gDCXJKyp5DHr8y5Y1LR0gf1YQ7vBC13eJhNncCHGrNDeZurVXUs1glTGpfbQzcOM017q
-         T1nQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXDorWc+fSx3fP4u8P0ODqMDxcTAGwr14cUedTrRDtzmqBiyCucPxqD/zex3jDkFTKvVgAnmvtxw2Wh68u4Yvrpqb5Oj42jSVJcOJxyjhI=
-X-Gm-Message-State: AOJu0YwPxkFiROzyh08pura7kmftUYLiwfTF+o0SuIBvRIAqfouzk9/3
-	BRoANEWr7vMMk63yruIGbYQVSfkKxXArQ5kuwpp0/kANkKStvtwR
-X-Google-Smtp-Source: AGHT+IGyZKWE7Jv1WVe+mwfYQqQlxEQSMC58rN8028tWIKjoKG+BzrCS2IsRCtPdkbn3VKlm5qOjUw==
-X-Received: by 2002:a05:6870:8327:b0:24c:4ab2:7f9c with SMTP id 586e51a60fabf-2508ba3e963mr3939247fac.1.1717217506395;
-        Fri, 31 May 2024 21:51:46 -0700 (PDT)
-Received: from localhost (p5261226-ipxg23801hodogaya.kanagawa.ocn.ne.jp. [180.15.241.226])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-70242b05932sm2343806b3a.174.2024.05.31.21.51.44
+        d=1e100.net; s=20230601; t=1717223742; x=1717828542;
+        h=content-transfer-encoding:mime-version:message-id:date:references
+         :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=D6LNY6xv2/4eeyQXLXkI83LJOKbMoY6Do9+TvOQJ91Q=;
+        b=vjfhf50yG4+InR9K4EfsmD7TpSEsEBAIlHqlbfe+HkboP4xxX8Eua4BBgIQ8K2MVxK
+         9j+7+kymV5zphfXWzX5Th0tF96GtnA+cp3zg1vjS5DuKyaTl5/l6U3PMPpJYaAS2RWz+
+         ffxSwrXvKghm5VFURKqef+ToFA78ZYBjsNpLePbQliKWhlkPlsmtP/AB0lcw45FxQZ7x
+         G/UglGPR6jsghiXiCa+5WnFFqiREmOELM87SRfd40Swj/w+1SHgee9UTUXIyAWRS9q0c
+         82i0TfaLQuCGJTuqIMu6C/dtc9t5P2fqByy/6WC9XSTHtO027vPM5Nod3pwPDMDGDUiU
+         +7Ug==
+X-Forwarded-Encrypted: i=1; AJvYcCX5oA6rQqzb52F7XLHzWEcQiKFg/uaIhbYWIFtOBiLhwjeIjpvGD6GH7QY8IcXn5LcBBUfH/Nk1Ns0JDOBH6xBKGN1PyMOvPtzzaogsV6s=
+X-Gm-Message-State: AOJu0YzbsHTP6kEWRBqZ8guuxMH12MY0DiadApTKNGoGwDQo8OFeOI+k
+	CMbfTGguvQYyA6wFU/CKiiKoRYT+MqHvY8K/kwGco7jkXq07DpCVznBt+cq/jkI=
+X-Google-Smtp-Source: AGHT+IGNFc6BIvNUh2peUBk1UIPpjkqoa6xCb2VUlR5N6dXhaLyFRabOGddaiynXAOGYrDINtoHzMQ==
+X-Received: by 2002:a50:871d:0:b0:57a:3273:e646 with SMTP id 4fb4d7f45d1cf-57a3644a330mr2629575a12.26.1717223741445;
+        Fri, 31 May 2024 23:35:41 -0700 (PDT)
+Received: from localhost ([194.62.217.3])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-57a4d468a4fsm240767a12.79.2024.05.31.23.35.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 31 May 2024 21:51:46 -0700 (PDT)
-Date: Sat, 01 Jun 2024 13:51:32 +0900 (JST)
-Message-Id: <20240601.135132.1027202187900417203.fujita.tomonori@gmail.com>
-To: benno.lossin@proton.me
-Cc: fujita.tomonori@gmail.com, andrew@lunn.ch, tmgross@umich.edu,
- rust-for-linux@vger.kernel.org
-Subject: Re: [RFC PATCH v1] rust: net::phy support to C45 registers access
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <310b155c-9f06-4748-85c4-cd8c87f196c1@proton.me>
-References: <4a6aba6c-3e52-4ace-be88-58f9c1b44693@proton.me>
-	<20240531.225857.1252492134294581333.fujita.tomonori@gmail.com>
-	<310b155c-9f06-4748-85c4-cd8c87f196c1@proton.me>
+        Fri, 31 May 2024 23:35:41 -0700 (PDT)
+From: Andreas Hindborg <nmi@metaspace.dk>
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Jens Axboe <axboe@kernel.dk>,  Christoph Hellwig <hch@lst.de>,  Keith
+ Busch <kbusch@kernel.org>,  Damien Le Moal <dlemoal@kernel.org>,  Bart Van
+ Assche <bvanassche@acm.org>,  Hannes Reinecke <hare@suse.de>,  Ming Lei
+ <ming.lei@redhat.com>,  "linux-block@vger.kernel.org"
+ <linux-block@vger.kernel.org>,  Andreas Hindborg <a.hindborg@samsung.com>,
+  Wedson Almeida Filho <wedsonaf@gmail.com>,  Greg KH
+ <gregkh@linuxfoundation.org>,  Matthew Wilcox <willy@infradead.org>,
+  Miguel Ojeda <ojeda@kernel.org>,  Alex Gaynor <alex.gaynor@gmail.com>,
+  Boqun Feng <boqun.feng@gmail.com>,  Gary Guo <gary@garyguo.net>,
+  =?utf-8?Q?Bj=C3=B6rn?=
+ Roy Baron <bjorn3_gh@protonmail.com>,  Alice Ryhl <aliceryhl@google.com>,
+  Chaitanya Kulkarni <chaitanyak@nvidia.com>,  Luis Chamberlain
+ <mcgrof@kernel.org>,  Yexuan Yang <1182282462@bupt.edu.cn>,  Sergio
+ =?utf-8?Q?Gonz=C3=A1lez?= Collado <sergio.collado@gmail.com>,  Joel
+ Granados
+ <j.granados@samsung.com>,  "Pankaj Raghav (Samsung)"
+ <kernel@pankajraghav.com>,  Daniel Gomez <da.gomez@samsung.com>,  Niklas
+ Cassel <Niklas.Cassel@wdc.com>,  Philipp Stanner <pstanner@redhat.com>,
+  Conor Dooley <conor@kernel.org>,  Johannes Thumshirn
+ <Johannes.Thumshirn@wdc.com>,  Matias =?utf-8?Q?Bj=C3=B8rling?=
+ <m@bjorling.me>,  open list
+ <linux-kernel@vger.kernel.org>,  "rust-for-linux@vger.kernel.org"
+ <rust-for-linux@vger.kernel.org>,  "lsf-pc@lists.linux-foundation.org"
+ <lsf-pc@lists.linux-foundation.org>,  "gost.dev@samsung.com"
+ <gost.dev@samsung.com>
+Subject: Re: [PATCH v2 1/3] rust: block: introduce `kernel::block::mq` module
+In-Reply-To: <29e31afd-c10f-4262-82ef-d0e3599753ea@proton.me> (Benno Lossin's
+	message of "Wed, 29 May 2024 18:07:33 +0000")
+References: <20240521140323.2960069-1-nmi@metaspace.dk>
+	<20240521140323.2960069-2-nmi@metaspace.dk>
+	<2d2689e7-7052-4a92-b6fb-37f25fd05810@proton.me>
+	<87sey0rda8.fsf@metaspace.dk>
+	<29e31afd-c10f-4262-82ef-d0e3599753ea@proton.me>
+Date: Sat, 01 Jun 2024 08:35:30 +0200
+Message-ID: <87v82tnpal.fsf@metaspace.dk>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, 31 May 2024 14:04:18 +0000
-Benno Lossin <benno.lossin@proton.me> wrote:
+Benno Lossin <benno.lossin@proton.me> writes:
 
-> Hmm I guess that it probably can't infer a default type. In that case,
-> you can also try if a struct approach for C22 is better. So:
-> 
->     pub struct C22(u16); // choose the correct size
+[...]
 
-Thanks, I think that this works nicely.
+>>>> +    /// Notify the block layer that the request has been completed wi=
+thout errors.
+>>>> +    ///
+>>>> +    /// This function will return `Err` if `this` is not the only `AR=
+ef`
+>>>> +    /// referencing the request.
+>>>> +    pub fn end_ok(this: ARef<Self>) -> Result<(), ARef<Self>> {
+>>>
+>>> I am not yet fully convinced that this is the way we should go. I think
+>>> I would have to see a more complex usage of `Request` with that id <->
+>>> request mapping that you mentioned. Because with how rnull uses this
+>>> API, it could also have a `URef<Self>` parameter (URef :=3D unique ARef=
+).
+>>=20
+>> I considered a `UniqueARef` but it would just move the error handing to
+>> `ARef::into_unique` and then make `end_ok` infallible.
+>>=20
+>> There are four states for a request that we need to track:
+>>=20
+>> A) Request is owned by block layer (refcount 0)
+>> B) Request is owned by driver but with zero `ARef`s in existence
+>>    (refcount 1)
+>> C) Request is owned by driver with exactly one `ARef` in existence
+>>    (refcount 2)
+>> D) Request is owned by driver with more than one `ARef` in existence
+>>    (refcount > 2)
+>>=20
+>> It is in the doc comments for `RequestDataWrapper` as well.
+>>=20
+>> We need A and B to ensure we fail tag to request conversions for
+>> requests that are not owned by the driver.
+>>=20
+>> We need C and D to ensure that it is safe to end the request and hand ba=
+ck
+>> ownership to the block layer.
+>>=20
+>> I will ping you when I hook up the NVMe driver with this.
+>
+> Thanks. I think that since the C side doesn't use ref-counting, the
+> lifecycle of a request is probably rather simple. Therefore we should
+> try to also avoid refcounting in Rust and see if we can eg tie ending
+> requests to the associated `TagSet` (ie require `&mut` on the tagset)
+> and tie accessing requests to shared access to the `TagSet`. Then we
+> would be able to avoid the refcount. But I will first have to take a
+> look at the nvme driver to gauge the plausibility.
 
->     impl C22 {
->         pub fn new(reg: u16) -> Self;
-> 
->         pub const BMCR: Self = Self::new(uapi::MII_BMCR);
->         // ...
->     }
-> 
-> And then a specific driver can declare its own constants.
+C side _does_ use ref-counting in the `ref` field of the C `struct
+request`. I am not able to reuse that field for the state tracking I
+need. Other users such as iostat will take references on the request and
+we will not be able to tell if there are no more Rust refs to the
+request from that field. We need a separate one.
 
-I uses const generic to declare a vendor specific register in the v2
-patch, I've just sent. Please let me know what do you think.
+Anyways I think we should go with the current implementation for now. We
+can always change it, nothing is locked in stone.
+
+[...]
+
+>>>> +/// Store the result of `op(target.load())` in target, returning new =
+value of
+>>>> +/// taret.
+>>>> +fn atomic_relaxed_op_return(target: &AtomicU64, op: impl Fn(u64) -> u=
+64) -> u64 {
+>>>> +    let mut old =3D target.load(Ordering::Relaxed);
+>>>> +    loop {
+>>>> +        match target.compare_exchange_weak(old, op(old), Ordering::Re=
+laxed, Ordering::Relaxed) {
+>>>> +            Ok(_) =3D> break,
+>>>> +            Err(x) =3D> {
+>>>> +                old =3D x;
+>>>> +            }
+>>>> +        }
+>>>> +    }
+>>>
+>>> This seems like a reimplementation of `AtomicU64::fetch_update` to me.
+>>=20
+>> It looks like it! Except this function is returning the updated value,
+>> `fetch_update` is returning the old value.
+>>=20
+>> Would you rather that I rewrite in terms of the library function?
+>
+> If you can just use the fetch_update function, then that would be better
+> than (almost) reimplementing it. But if you really need to get the new
+> value, then I guess it can't really be helped. (or do you think you can
+> just apply `op` to the old value returned by `fetch_update`?)
+
+I can implement `atomic_relaxed_op_return` in terms of `fetch_update` =F0=
+=9F=91=8D
+
+[...]
+
+>>>> +                let place =3D place.cast::<bindings::blk_mq_tag_set>(=
+);
+>>>> +
+>>>> +                // SAFETY: try_ffi_init promises that `place` is writ=
+able, and
+>>>> +                // zeroes is a valid bit pattern for this structure.
+>>>> +                core::ptr::write_bytes(place, 0, 1);
+>>>> +
+>>>> +                /// For a raw pointer to a struct, write a struct fie=
+ld without
+>>>> +                /// creating a reference to the field
+>>>> +                macro_rules! write_ptr_field {
+>>>> +                    ($target:ident, $field:ident, $value:expr) =3D> {
+>>>> +                        ::core::ptr::write(::core::ptr::addr_of_mut!(=
+(*$target).$field), $value)
+>>>> +                    };
+>>>> +                }
+>>>> +
+>>>> +                // SAFETY: try_ffi_init promises that `place` is writ=
+able
+>>>> +                    write_ptr_field!(place, ops, OperationsVTable::<T=
+>::build());
+>>>> +                    write_ptr_field!(place, nr_hw_queues , nr_hw_queu=
+es);
+>>>> +                    write_ptr_field!(place, timeout , 0); // 0 means =
+default which is 30 * HZ in C
+>>>> +                    write_ptr_field!(place, numa_node , bindings::NUM=
+A_NO_NODE);
+>>>> +                    write_ptr_field!(place, queue_depth , num_tags);
+>>>> +                    write_ptr_field!(place, cmd_size , core::mem::siz=
+e_of::<RequestDataWrapper>().try_into()?);
+>>>> +                    write_ptr_field!(place, flags , bindings::BLK_MQ_=
+F_SHOULD_MERGE);
+>>>> +                    write_ptr_field!(place, driver_data , core::ptr::=
+null_mut::<core::ffi::c_void>());
+>>>> +                    write_ptr_field!(place, nr_maps , num_maps);
+>>>
+>>> I think that there is some way for pinned-init to do a better job here.
+>>> I feel like we ought to be able to just write:
+>>>
+>>>     Opaque::init(
+>>>         try_init!(bindings::blk_mq_tag_set {
+>>>             ops: OperationsVTable::<T>::build(),
+>>>             nr_hw_queues,
+>>>             timeout: 0, // 0 means default, which is 30Hz
+>>>             numa_node: bindings::NUMA_NO_NODE,
+>>>             queue_depth: num_tags,
+>>>             cmd_size: size_of::<RequestDataWrapper>().try_into()?,
+>>>             flags: bindings::BLK_MQ_F_SHOULD_MERGE,
+>>>             driver_data: null_mut(),
+>>>             nr_maps: num_maps,
+>>>             ..Zeroable::zeroed()
+>>>         }? Error)
+>>>         .chain(|tag_set| to_result(bindings::blk_mq_alloc_tag_set(tag_s=
+et)))
+>>>     )
+>>>
+>>> But we don't have `Opaque::init` (shouldn't be difficult) and
+>>> `bindings::blk_mq_tag_set` doesn't implement `Zeroable`. We would need
+>>> bindgen to put `derive(Zeroable)` on certain structs...
+>>>
+>>> Another option would be to just list the fields explicitly, since there
+>>> aren't that many. What do you think?
+>>=20
+>> Both options sound good. Ofc the first one sounds more user friendly
+>> while the latter one sounds easier to implement. Getting rid of the
+>> unsafe blocks here would be really nice.
+>
+> I think since it is not that expensive in this case, you should go for
+> the second approach.
+> We can fix it later, when we get the proper bindgen support.
+
+Cool, I will send a follow up patch with this =F0=9F=91=8D
+
+Best regards,
+Andreas
+
