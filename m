@@ -1,55 +1,55 @@
-Received: from mail-lj1-f173.google.com (mail-lj1-f173.google.com [209.85.208.173])
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91B4F153BC9
-	for <rust-for-linux@vger.kernel.org>; Sat,  1 Jun 2024 16:59:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10189154BF3
+	for <rust-for-linux@vger.kernel.org>; Sat,  1 Jun 2024 19:53:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717261181; cv=none; b=uA9hoDkM0mh8vyL/nR03rtbBaKkSUTDkrddZGFcfn6LQ650K3PBcjcsHYiHse5MZuV326mleJsO00LBRhdeiFNcEIBBNQeNj5Vl4EMWww+yveL6Ydtz23oYH/uprsFDevh0BstqvsT/p9NOZZpPIBbs/edfTpOLGuYOjlx3R9kY=
+	t=1717271642; cv=none; b=lZORuS9IW/caylyk0g9jDYmJOtNOJQa79kH3McvSz2r9d6/kuAlc2rfBVGN1w5E8cFvOH6kAmkx9LTGnPW0znh9BvKS2o9VBdCmZ3VcWEvIcN3zOrgoVnnKaOkf9lYmrRwaq1WeydSuMWPM00EJwPS/Kl14550FhcT9yE3HOhYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717261181; c=relaxed/simple;
-	bh=vY83/g5DnlUfQZA9zDchrVy8+HtF22bRD22oke+NysM=;
+	s=arc-20240116; t=1717271642; c=relaxed/simple;
+	bh=sjTvnLL15+axd8kEPHCrI1q2EZzeItpEAdxMZyj56QQ=;
 	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=CBY0T7c1T8kz+8iqGLXP+D1yW0j2vLBDGlh97WvWoXskofbhuyaI081lTY/K0i/BoZFTG6YqzKRoDZHhjLbARpCF+/mZt4WjoIwjibIvLT9BRb5r6ucLvpU2Glj0Yv6KPIfXywo+Z/BNNTzeLqWAnCHCYmmRxJpM/gtLl+hTjVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk; spf=none smtp.mailfrom=metaspace.dk; dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b=wwKh0pMr; arc=none smtp.client-ip=209.85.208.173
+	 MIME-Version:Content-Type; b=XSqvT35W+dTLlhw7LsPsOA61HnZC6NHhusj10lCBGQw8cizAff4PdNANicnA+WY44BdEMkmpOSPuPzA+dbc6mQDE9R55itFW6+uE8L99PKPoNkPlRDkuKEsdWYcYkroIEiqM/1UJ8fZ4joJ2hyh6UEhTgeZ8IWlVgfjXUbr8XXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk; spf=none smtp.mailfrom=metaspace.dk; dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b=j6+JKXK9; arc=none smtp.client-ip=209.85.208.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk
 Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=metaspace.dk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b="wwKh0pMr"
-Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-2e95a1d5ee2so50261871fa.0
-        for <rust-for-linux@vger.kernel.org>; Sat, 01 Jun 2024 09:59:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b="j6+JKXK9"
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-5751bcb3139so3779453a12.1
+        for <rust-for-linux@vger.kernel.org>; Sat, 01 Jun 2024 12:53:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=metaspace-dk.20230601.gappssmtp.com; s=20230601; t=1717261178; x=1717865978; darn=vger.kernel.org;
+        d=metaspace-dk.20230601.gappssmtp.com; s=20230601; t=1717271638; x=1717876438; darn=vger.kernel.org;
         h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
          :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=2mL6l8seCFLH+FLqk0uzi6xe60dPnwEuIbsZWb+Jgs8=;
-        b=wwKh0pMrCWNf4pWpmwi3ABDnaTpDxSwyyrA80PhnQmjMYHVBfFwl1gU1tNehlN70yp
-         AjJVtXUN+8hXokiyJ4QYKhcpZsbH2K27Em0LrPQfHHzp5ud8CI1uNPsSH5In2/0iMC5w
-         zsicMxacBqOKMgUTEKxQCKKQxQn8p7iB838ge4xG4Y6IJqpHpNzmKUpWDWtfb/DLrP9u
-         d0fZhIEP7ExWRHBgIbhq9cF5dV0QFebPozDtHJEWTJmEBB74d7sMPhaqoP/3Z9PlRsFB
-         3l3Vc+c6tWQXlmYxHmUpRs/+fGnyzJ+XWXONFfpmAVWwSzZLkla5MghltLYFGqBEtbqS
-         fZkw==
+        bh=jr2Al8+ndIMPJPdlShlncDNXoaIKKJSR1q01cY4wntc=;
+        b=j6+JKXK9DoUXHI7BnH41+jvrY3T7Uyzt4W0eazDXOhSvG1K8S2duPPt/Hqm6AhZsgB
+         C5IQLXFJWRYblqCxJQ7FXZ4oFVxqRUvL0Y33GYbPZcv9WftEP2hFcMYzw2b3WLcyorYc
+         0gzd+u8pPG9J11WR6tkwwwXgXD+dbl2/gIOU3bEDJHMsXT0RJRS1EaBMjqBWvRQj6nM2
+         bfyVgH55WgIRcRuDIaL8FRIrMBdCbEH6GZ0k/SU/S7rmqhLqgRDpPy7/3ib8HP6XaIrw
+         o/j2AgllMma/RokiDWrjkbT8gvYHvAF10tOZyQh5sWBK1cfVyWF6uwVl6+uEhzlw0Q7A
+         yWTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717261178; x=1717865978;
+        d=1e100.net; s=20230601; t=1717271638; x=1717876438;
         h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
          :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=2mL6l8seCFLH+FLqk0uzi6xe60dPnwEuIbsZWb+Jgs8=;
-        b=e38a0PZzNzLTurSQ4RZ1pvySdYjh14cmbM+vyhmhgmlZ/jpIBbFAGgZy6M+2QiakcK
-         c9Rv3d62+l9XWGvdgnyLcECDzPPzmWVLuVK/851dpUpYXk9I/doj4OHZ8FQcUISz9G0D
-         OWwUByY6XD8hU+8FvwEfQHD/DNqfNPm6QGZH5D0eoeYkkRySEzE1zcLzUArPx/0WlAt3
-         kh+hHtISljQamxpr0G/xqdnmg7VGSiIwlHxMclJYntCSsMEmpeXwedfkQ17BUIJS90D/
-         nciuPSZcmUQvGo5OdX7pKUnS+cD316Xj2J+jQb605Y1cVqHJTJhwTFSD6nhkaUSj1t+D
-         pDZQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXJ5mw6STaXtBEzR2qNnuWL+Y56V5BWaJAdjNg8CV9BD5tE1YEbyibf7g5Ce4fSp5tGcfxT66UuAjKFalQfguPG6gfTQMyC5I1qEarEtlU=
-X-Gm-Message-State: AOJu0YxxRUhOUzdUIK1OAY8r3wPoQnJjVEjaHR1Rh+j6yBzV4zJ2lKtA
-	3YsSZEbLjw/5UxkmjeRTb4Z7TZBtUGNCk07Zg+x4B3j19laxFzDh4snPBQxKSiw=
-X-Google-Smtp-Source: AGHT+IFVGuaNXbhM1O7OzZMAjBCAkB+1ODN3q2YCCYkCSfm5BH2IuT/IISoTcabi+6Ng5qUysh1/bw==
-X-Received: by 2002:a2e:3517:0:b0:2e2:a99a:4c4 with SMTP id 38308e7fff4ca-2ea951f5e53mr39476581fa.47.1717261177607;
-        Sat, 01 Jun 2024 09:59:37 -0700 (PDT)
+        bh=jr2Al8+ndIMPJPdlShlncDNXoaIKKJSR1q01cY4wntc=;
+        b=ArU0SxPyL45ZXE7houzLzJbYBfK7TXNqRGPZc3ZKtddbXpiSM8MACHEyU3pFm7MmJO
+         gUfmWEXPpzFsEQSHUwMeuk7zE0bQuHEx204tc3doEXKMO8Yhj22IhXKcUW8gDVs2OX7L
+         40pprg8eGsJoQKCdslLhHQUvB0T9NdlTSsnLx0qyRgOGZjiFaCi1L9ZSxzwOEEalnUue
+         7Mi/RZvBLCzj3MXa6FE17uB5UsTSIsorZA1C30cviULMzbLqaY4bvw3fG8XJkYRig8pp
+         9+j0uYWYAfrnCRZd6FD2FwnoRXbV7PLx2/2Vn9VaCEhL3UTovaRkh1USv6KmYiEkGvgy
+         ROcg==
+X-Forwarded-Encrypted: i=1; AJvYcCUMLys2ETRr6a53cjXwh1XlYHOAUoasLMt6admt8bCrW4F+K0X9kHbJofQYKXlNL0YpNkBdp02bXJ7OxO+YungPXg7VQTRR20Ed7+KC3Ck=
+X-Gm-Message-State: AOJu0YxlY6atJlMOyIfy1Q0Vs+3V9K0mOy9Zs3NzpKniP96ox+/PetxD
+	fqQsHXOce12zprVn0/NSB3/DnxBb1gA8uXmyBoa5N1S6XSI+S2aCoOgcW5qPcjo=
+X-Google-Smtp-Source: AGHT+IHg/Tdb9DK9+R9MFmqVcUxrNUbRCWNDM/3aHBB9G/2ub/z/P4O87DthrD+4wpkjKUhladJ/Gw==
+X-Received: by 2002:a50:9992:0:b0:57a:2546:2512 with SMTP id 4fb4d7f45d1cf-57a36456201mr3737951a12.34.1717271637875;
+        Sat, 01 Jun 2024 12:53:57 -0700 (PDT)
 Received: from localhost ([79.142.230.34])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a67ea67b4b2sm217708466b.117.2024.06.01.09.59.37
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-57a31b9958fsm2594386a12.2.2024.06.01.12.53.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 01 Jun 2024 09:59:37 -0700 (PDT)
+        Sat, 01 Jun 2024 12:53:57 -0700 (PDT)
 From: Andreas Hindborg <nmi@metaspace.dk>
 To: Keith Busch <kbusch@kernel.org>
 Cc: Jens Axboe <axboe@kernel.dk>,  Christoph Hellwig <hch@lst.de>,  Damien
@@ -79,15 +79,16 @@ Cc: Jens Axboe <axboe@kernel.dk>,  Christoph Hellwig <hch@lst.de>,  Damien
  <gost.dev@samsung.com>
 Subject: Re: [PATCH v4 2/3] rust: block: add rnull, Rust null_blk
  implementation
-In-Reply-To: <ZltF5NvDnKFphcOo@kbusch-mbp.dhcp.thefacebook.com> (Keith Busch's
-	message of "Sat, 1 Jun 2024 10:01:40 -0600")
+In-Reply-To: <871q5goaz0.fsf@metaspace.dk> (Andreas Hindborg's message of
+	"Sat, 01 Jun 2024 18:59:31 +0200")
 References: <20240601134005.621714-1-nmi@metaspace.dk>
 	<20240601134005.621714-3-nmi@metaspace.dk>
 	<ZlsvHV6y4DEdC8ja@kbusch-mbp.dhcp.thefacebook.com>
 	<875xusoetn.fsf@metaspace.dk>
 	<ZltF5NvDnKFphcOo@kbusch-mbp.dhcp.thefacebook.com>
-Date: Sat, 01 Jun 2024 18:59:31 +0200
-Message-ID: <871q5goaz0.fsf@metaspace.dk>
+	<871q5goaz0.fsf@metaspace.dk>
+Date: Sat, 01 Jun 2024 21:53:38 +0200
+Message-ID: <87wmn8mocd.fsf@metaspace.dk>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -96,47 +97,61 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
 
-Keith Busch <kbusch@kernel.org> writes:
+Andreas Hindborg <nmi@metaspace.dk> writes:
 
-> On Sat, Jun 01, 2024 at 05:36:20PM +0200, Andreas Hindborg wrote:
->> Keith Busch <kbusch@kernel.org> writes:
->> 
->> > On Sat, Jun 01, 2024 at 03:40:04PM +0200, Andreas Hindborg wrote:
->> >> +impl kernel::Module for NullBlkModule {
->> >> +    fn init(_module: &'static ThisModule) -> Result<Self> {
->> >> +        pr_info!("Rust null_blk loaded\n");
->> >> +        let tagset = Arc::pin_init(TagSet::try_new(1, 256, 1), flags::GFP_KERNEL)?;
->> >> +
->> >> +        let disk = {
->> >> +            let block_size: u16 = 4096;
->> >> +            if block_size % 512 != 0 || !(512..=4096).contains(&block_size) {
->> >> +                return Err(kernel::error::code::EINVAL);
->> >> +            }
->> >
->> > You've set block_size to the literal 4096, then validate its value
->> > immediately after? Am I missing some way this could ever be invalid?
->> 
->> Good catch. It is because I have a patch in the outbound queue that allows setting
->> the block size via a module parameter. The module parameter patch is not
->> upstream yet. Once I have that up, I will send the patch with the block
->> size config.
->> 
->> Do you think it is OK to have this redundancy? It would only be for a
->> few cycles.
+> Keith Busch <kbusch@kernel.org> writes:
 >
-> It's fine, just wondering why it's there. But it also allows values like
-> 1536 and 3584, which are not valid block sizes, so I think you want the
-> check to be:
+>> On Sat, Jun 01, 2024 at 05:36:20PM +0200, Andreas Hindborg wrote:
+>>> Keith Busch <kbusch@kernel.org> writes:
+>>> 
+>>> > On Sat, Jun 01, 2024 at 03:40:04PM +0200, Andreas Hindborg wrote:
+>>> >> +impl kernel::Module for NullBlkModule {
+>>> >> +    fn init(_module: &'static ThisModule) -> Result<Self> {
+>>> >> +        pr_info!("Rust null_blk loaded\n");
+>>> >> +        let tagset = Arc::pin_init(TagSet::try_new(1, 256, 1), flags::GFP_KERNEL)?;
+>>> >> +
+>>> >> +        let disk = {
+>>> >> +            let block_size: u16 = 4096;
+>>> >> +            if block_size % 512 != 0 || !(512..=4096).contains(&block_size) {
+>>> >> +                return Err(kernel::error::code::EINVAL);
+>>> >> +            }
+>>> >
+>>> > You've set block_size to the literal 4096, then validate its value
+>>> > immediately after? Am I missing some way this could ever be invalid?
+>>> 
+>>> Good catch. It is because I have a patch in the outbound queue that allows setting
+>>> the block size via a module parameter. The module parameter patch is not
+>>> upstream yet. Once I have that up, I will send the patch with the block
+>>> size config.
+>>> 
+>>> Do you think it is OK to have this redundancy? It would only be for a
+>>> few cycles.
+>>
+>> It's fine, just wondering why it's there. But it also allows values like
+>> 1536 and 3584, which are not valid block sizes, so I think you want the
+>> check to be:
+>>
+>> 	if !(512..=4096).contains(&block_size) || ((block_size & (block_size - 1)) != 0)
 >
-> 	if !(512..=4096).contains(&block_size) || ((block_size & (block_size - 1)) != 0)
+> Right, that makes sense. I modeled it after the C null_blk validation
+> code in `null_validate_conf`. It contains this:
+>
+> 	dev->blocksize = round_down(dev->blocksize, 512);
+> 	dev->blocksize = clamp_t(unsigned int, dev->blocksize, 512, 4096);
+>
+> That would have the same semantics, right? I guess I'll try to make a
+> device with a 1536 block size and see what happens.
 
-Right, that makes sense. I modeled it after the C null_blk validation
-code in `null_validate_conf`. It contains this:
+This happens:
 
-	dev->blocksize = round_down(dev->blocksize, 512);
-	dev->blocksize = clamp_t(unsigned int, dev->blocksize, 512, 4096);
+root@debian:~# insmod /mnt/linux-build/drivers/block/null_blk/null_blk.ko bs=1536
+BUG: kernel NULL pointer dereference, address: 0000000000000000
+#PF: supervisor write access in kernel mode
+#PF: error_code(0x0002) - not-present page
+PGD 0 P4D 0
+Oops: Oops: 0002 [#1] SMP
+CPU: 2 PID: 291 Comm: insmod Not tainted 6.10.0-rc1+ #839
 
-That would have the same semantics, right? I guess I'll try to make a
-device with a 1536 block size and see what happens.
+Probably a good idea with a better check.
 
 BR Andreas
