@@ -1,202 +1,228 @@
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2085.outbound.protection.outlook.com [40.107.94.85])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D609A6FB6;
-	Sat,  1 Jun 2024 00:49:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.85
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717202944; cv=fail; b=G11ERI89AaxkwFJ6k5XUP92HcEiIXDrnK7qanbsja3lO0clL+RG8E/3aWzwjemwp1FWfijPcKPlBY179udBMNyfqNw5MP70AMj9xDXZ8sDfiRM0RMn6bnxyEjMEt5l/KaqiRhXZWMWqKwzEEE9dNNadWfmJ/ckLntYALRV6WVzg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717202944; c=relaxed/simple;
-	bh=hSheAr1uPHW/ocTPDYc3WyKn4GKNbpjIbW/zSKj78A4=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=O0rRP5V+9xnkmpypHyNw9gugphg5a7ZgJg4yGRPl+tYGVjYvQpDrrC4oLB39JiBXzuQJjq/hEkduYQka0sw9oQ1HbVK5KVJ22p/JSoY6NKVDCQzzjrPKChDAeceqCxXOgYU3UEEJITgXgQzKhBR+A2cEr6dDuJMKaSWNk/p+aRk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=SA5C+/qg; arc=fail smtp.client-ip=40.107.94.85
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 724713C30
+	for <rust-for-linux@vger.kernel.org>; Sat,  1 Jun 2024 04:20:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1717215652; cv=none; b=eqidvSYVVNt0/kQFQqGpEX8LN1rwBYOwV+z8aHi9mYIvbLKSpHk4ATUQyCjMr3sfXNvSaf3rE5Ta3w2v34kRwtuTohbs8/hT5QGwlMAtuVQyItRwbeEudsuTZH1hzXXKULPq1eQRyp8sr1oWJhYdPaqxkJWEvfLhAQlK8R5C2uo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1717215652; c=relaxed/simple;
+	bh=gRx/KzzPwhB4JlYhF0jJ5wbH9lA4xo3Jbf6rubN5Bc8=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=jeKULLocWGbTw/f6X6wjuzmZ89HQD9ue/ei0eCh1KlXzAj+H6C6AeehkkekMDRAc0UHCuRkjJ+Mg2GF0FWI0DRNBtJ3zxwJB7nmTnYjO00kEg3RmlyyfsjX5kP8DDhEuFEqTlzZXDzRhoseeoYkYfmUQJQTJUCqk5cMF1N0rZIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nktSq74X; arc=none smtp.client-ip=209.85.210.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="SA5C+/qg"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=So61LHcxj/K9xRsx+GbWfFlBzG5DW2GKXiYso6L5CBB0j4xqz609Q89se7O1ObO9oeZjFbr5lubNMUfmH4IG055XCq1WGu2piYQ24Pz0AtSmxgHJmTHyIqPYvcWekqI6aETYt39SxjSDJjuvLm+kLuPRDNOCkWPryZneFf522GUT8A45lqbkU26sXtW5AiHG7bq+3SX686qIh10cZZY0kfgWkduckne2qIt30B4KY/shd5w14TdD9mtmS5h+k5HGittfpNgC5FmiI8MJKpXiW6P+sjLqTrKRG0riPe0XhbKwd2rjn9bSqQprmK+OaWOgFM2J7dsXdt4eT2FQ+35IRA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=S4CjiUWzwWVDo5U5rggXo8NhTAk0+tvy0s6AgdaDpIY=;
- b=kyuPXDbs7GCpzCk87oiCcFB+XeQ0g5lRl0uyXeOO8K0GABIY7ShPB4brHwv8DU/9juihb2jaT1xbSrxhXVyq6ncDMcROrUBo0Om5jGnXYoX+rmnBob/bzft7Z2rAn5eKUzJkVJoQ9Dt0gRpYxDMi7BfP5T7akN9ySM47RTYRIaXWW4567DNm+sIpqN9RY26iQG58h30lJomo/gAmnNa+XQrxzy8aL1Ph2BxKAR4Dj7BoiaXb98x8oRcFtwqaexzl+KUrsz+mp7XFDhysqbstUYkfG5O/l8YSUYssIFfXq49b95iW6Sg7xrW/sTyb+PnTeNWRj9VQHZnt9DhRmI3Xsg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=S4CjiUWzwWVDo5U5rggXo8NhTAk0+tvy0s6AgdaDpIY=;
- b=SA5C+/qgqlDP1lM0EXZ19DC8Q6o3zvaqbO+fuAkmmycPEhFmS7UCAXur5SGehq8JB9eMmtmxVI5N2VbWMgiHcjvtQELjJP+AGKSC22z4/iYco9nDPIxK4jXrs011355RfEtGtC67a9B0fY3Kfo+ZUhyndlrn//SG5PUkSj3LIMZoSRySj7ua9lhhXwyFEC9UMBBmWYrCkqIET8Wzq7IjXn0lEq/CFTopqQ1tpbHWI+kaZ0hOcUpBsU9KPVKUPf6s0BShT2w7CBqpRXcpem/HcXmMSEeWrxWUxPy1+uz9NB0L5TQ0OhsKrMXxhnwnarUGuiFtgISZJXj1aq/ny1d3ZA==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from BY5PR12MB4130.namprd12.prod.outlook.com (2603:10b6:a03:20b::16)
- by CY8PR12MB7682.namprd12.prod.outlook.com (2603:10b6:930:85::15) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7633.22; Sat, 1 Jun
- 2024 00:48:58 +0000
-Received: from BY5PR12MB4130.namprd12.prod.outlook.com
- ([fe80::2cf4:5198:354a:cd07]) by BY5PR12MB4130.namprd12.prod.outlook.com
- ([fe80::2cf4:5198:354a:cd07%4]) with mapi id 15.20.7633.021; Sat, 1 Jun 2024
- 00:48:58 +0000
-From: John Hubbard <jhubbard@nvidia.com>
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Masahiro Yamada <masahiroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nicolas@fjasle.eu>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	linux-kbuild@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	LKML <linux-kernel@vger.kernel.org>,
-	John Hubbard <jhubbard@nvidia.com>
-Subject: [PATCH] Makefile: rust-analyzer target: better error handling and comments
-Date: Fri, 31 May 2024 17:48:56 -0700
-Message-ID: <20240601004856.206682-1-jhubbard@nvidia.com>
-X-Mailer: git-send-email 2.45.1
-X-NVConfidentiality: public
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: BY5PR20CA0008.namprd20.prod.outlook.com
- (2603:10b6:a03:1f4::21) To BY5PR12MB4130.namprd12.prod.outlook.com
- (2603:10b6:a03:20b::16)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nktSq74X"
+Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-7022c872aa1so59428b3a.3
+        for <rust-for-linux@vger.kernel.org>; Fri, 31 May 2024 21:20:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1717215651; x=1717820451; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=PLoDdm+otmxD4sV2gn6nCfbyDiRELPqRU2JUKFEHrhA=;
+        b=nktSq74XncQrnB1kcRLVM/AZ1d/JImj6Mlw44h/m/LDDttu1s69T7tDFLaXq5l/Ask
+         e3CjRezVsWMI3kFnxbcTYo+ZR7eXEG/nDJlbqyW3AfekGrKg42NwdUch3wJpUvvBFfx+
+         lgvdVlL+FNg+xfH1uRrIBypK6l/OkTMGKb/4ya1ZXLE4PLovUjSadmdfGAgwd6XYeZ8b
+         LAcPzDcCltbtgh+rTyQd7vyuOEMX5u90lk/VBDn6W2buwG+ruJOqANEh9TNxmrb1DOsm
+         Dj9PTvRmfo2YF3eTnLguKzSZKxwYcYwDX/SB8WqPdJiBlN/5597rcSWGFzXSGNBa6kGG
+         oRjg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1717215651; x=1717820451;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=PLoDdm+otmxD4sV2gn6nCfbyDiRELPqRU2JUKFEHrhA=;
+        b=tYlgrBM/aiv2chgGRIk8ujmg5ljUxiytf592eiBa4zze2qRoPfFzx+clwUYYHXiAJ3
+         WY1SB4O47yH+J2xlqDWPAwofpG1RNrsay4/rZdiLuPRglr5BWB0xIlign76y51EyRL25
+         3CB3ynA3lfOIp/DjVQEqZErzTleuOv1OlRxkkPYTOMB0oDXAQmk6pI0FZU8rMwZgSrpR
+         Wm3W/BNB62N8gceaS1b7oOj+pThPfNPo0hfLBz+AllxsRn0XwA4zpYY8bpHWzNaZ3Ppb
+         lKy8MKWo6BfGh6D/q7YLpB1RZECwZhG9iJZCvjAxl27oORezSAxp7cOyJS1W4rTuJ3Q5
+         hydQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXhGT8RkbqoW4/HIU7v5rXwt2tyTCbNjdjjbRoFdh/MDiQmK1cs003jYymZB95MbqwANkKYD5jCbi2K1HKIsW2AnbP990+lwC1sVMzrOoc=
+X-Gm-Message-State: AOJu0Yw2evPAW2c3WUTW2BIi+6oHxEpXRV+Cwtz18vkW8jhse8O42ra9
+	lJbihH6qJfQnZNXCAbDdBqs8QM+l2L3gIy2OIQvlhnXqrh2RLIRB
+X-Google-Smtp-Source: AGHT+IF1j+NnQqnGPbACXwKCXTDdyJ4kfKZYkmHbSYPCe57WFHmLGnLwZ8+8omI/EpaUM+XJljepdQ==
+X-Received: by 2002:a05:6a00:6585:b0:701:bde7:c857 with SMTP id d2e1a72fcca58-702478c7471mr3781960b3a.3.1717215650517;
+        Fri, 31 May 2024 21:20:50 -0700 (PDT)
+Received: from localhost (p5261226-ipxg23801hodogaya.kanagawa.ocn.ne.jp. [180.15.241.226])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-702425e2c18sm2203045b3a.93.2024.05.31.21.20.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 31 May 2024 21:20:50 -0700 (PDT)
+Date: Sat, 01 Jun 2024 13:20:37 +0900 (JST)
+Message-Id: <20240601.132037.1757081254736477214.fujita.tomonori@gmail.com>
+To: benno.lossin@proton.me
+Cc: fujita.tomonori@gmail.com, andrew@lunn.ch, tmgross@umich.edu,
+ rust-for-linux@vger.kernel.org
+Subject: Re: [RFC PATCH v1] rust: net::phy support to C45 registers access
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <62cdc40e-1852-4444-80f2-d26fb45018b4@proton.me>
+References: <20240527.104650.353359058235482782.fujita.tomonori@gmail.com>
+	<62cdc40e-1852-4444-80f2-d26fb45018b4@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BY5PR12MB4130:EE_|CY8PR12MB7682:EE_
-X-MS-Office365-Filtering-Correlation-Id: e3552b23-15b9-40a7-3bb7-08dc81d49f4c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230031|1800799015|7416005|376005|366007;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?zkldY+v0Z8iMSd3NjT/8zcG0HDr3dg3u7OODTARDGeM30AsrLFd7RAlwgChS?=
- =?us-ascii?Q?o6QaTth/ldChVy9+WjsrOukrBbDPiueYQhaMypYMpeswzlV0RxH4EUKM9I7R?=
- =?us-ascii?Q?De9/h+GM7JJ0ZDMXbftCQoWWW5FJkP8VTfyQYz+1o9Onfr/PntUWLNtmXJ6F?=
- =?us-ascii?Q?6JDuTpHRgWajuSpMW46eUsAWCmTSXOMHaWhWvKeM7UyLOIyaAPVagf/SGwOh?=
- =?us-ascii?Q?tDNbJD7H94gDkUw0roIKMBvKMy6nF0jpOsoVeg14Zw5vtvWT4q0Qt5vdB7s1?=
- =?us-ascii?Q?5aH5sPEB/o7Z6B0F95sZ8eZD2f7yaEgxjlxFdnH6HB2rbfskMMcaNh3DvwTW?=
- =?us-ascii?Q?0Y9VZF5dJyrMdPCNMpG8lRfymPwOYKlk1ic95EcQ+41co3ZHiEv7m5cl8Flz?=
- =?us-ascii?Q?AT00yD1eq1C7ZgkYX1s8TbNYG+4BjiBB4liw9x12Sh/QzD5maoTcihBSRMnc?=
- =?us-ascii?Q?OAKgrqmfeFtjkFzFUU19NeRJEhSi5KX8M4cWrNRvADmVUK40ro+BqyUmvFhs?=
- =?us-ascii?Q?YMMAOBtUOWZ/fyzt3G3vw6ikHVRBceCiz+heUNKmhYKtTQ1n7QfWT7x9i5Tk?=
- =?us-ascii?Q?Jg/NNIgunMmqGr3bm4S559bONjwtP9mDrivqh3Tq2z9rb2R12aTflqKe797w?=
- =?us-ascii?Q?Fm5xMSLaEEC3jTywoRspEueyJco8cT85/Ekjs9TrY9/UfGMIEmOZHtGJr5De?=
- =?us-ascii?Q?igwNauQmgESsbjYgLu1jFMYQwPt5zIoxTfQyCb4D3+f+MPS6JuwQhw/NkE9a?=
- =?us-ascii?Q?xxIO9HLiTBaf/+As8b/48pk9n0ZDu4xTZXuj2GnwQ1SY/jxtkIwQr3sOl7Su?=
- =?us-ascii?Q?zxwrnnp/loVuvKnQKLJ13PNpsSuA3DJsz3bLQcMQlPGvSlyPTjv2XN1pa7tj?=
- =?us-ascii?Q?BVjr5SyfJ7NxlpuRSXN7kAjmLK8459nH8hOPYM4q4KeCtER5fw7pzzTcNbEz?=
- =?us-ascii?Q?Xl1dPr0ET3YO8J21h8dcoxaomMvEQN9Jq6p/UtEhSnjat/VKdNRMv5rgWEsE?=
- =?us-ascii?Q?+XOeYBzNR2OjWQN7knq1IOgjLpsRcpndMGwsIHJ1gTo0Kb3b1vYQb8h1nYcn?=
- =?us-ascii?Q?hfolBgiS5T61Uln2Pls8A20/6WBk7KbeKlky2PiLv6aTiqSxn5NeZyCwXbD6?=
- =?us-ascii?Q?M/D8kSD+OOFOwOlNKten8FwU+KVNgXG75n7B8nEyToaqfgDwH+wpSzjM10Rb?=
- =?us-ascii?Q?/9MYjcCD2ykwEaM5Yoz9KuHNBGdnuT3bbCY79BNGTjaqTRcsCbN2upOnK3uX?=
- =?us-ascii?Q?RWw/7SHgnhAWDeQ00pMOTR5zQHgb/KFlycYnnKWMaw=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BY5PR12MB4130.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(1800799015)(7416005)(376005)(366007);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?YKDQOrrM7CDRUJvHcKBFVaE2BWMcUHimiJGFZSgGg6KT1hd5IAeXf+1+IuDR?=
- =?us-ascii?Q?cBqZbYecYx5IGlIUL9snXjwmYxLak5ZRsuUdSdSETdFadv0HMmHcAn4jv4f1?=
- =?us-ascii?Q?syVq/yVpOzqddANDHE525xJpesOq6qAGuyhye4Inw0sY4phPGNgPuoPrmqFk?=
- =?us-ascii?Q?rtcVoU7O+460TOJdFMHVV8iFj7Iao/m2k7nurS+boyMo6XR6BV2ljyA/EwL+?=
- =?us-ascii?Q?VbFKAG3EACNxXiNOO8o+UaXX1RnEnWA7sICILk/KkkR8xLwiTJnf18FTX+v5?=
- =?us-ascii?Q?9lJV6PNSuoE/gB5t20h19Y5B3BK8WUa343xuKNKRIUAmWAmgOEsfUo9W0NE/?=
- =?us-ascii?Q?tznee1GljiSx431JwaDBDr9Qw+VF7WaJz/6MeuU8n1APex0nKmW1Eru5ELXT?=
- =?us-ascii?Q?5CLW6aj3KhElAAk7KKPZvmc4R62IXr66/5SmwyfBs0AWLLiEnwiDw3NMBdP0?=
- =?us-ascii?Q?O+BPUhq1g1+WrcwzLDgUHS8MHw5YDDiKM/HrJtNqeMcyss/vNKgu5gQ/7U/1?=
- =?us-ascii?Q?ThYXOhhqI7u17Old6ZFinxSapwnMnewSIn5www4/i7cU3fQK1p/obS1LGHaa?=
- =?us-ascii?Q?j7XzwxJUjcffYLf6vw7F1Ge+m2LIVqY7MfevpvoB/gizlfOzphI3SKhwFCW0?=
- =?us-ascii?Q?1vd+uvRXgPfUyG4y2j7Szpq+ZFBhyIqX6IUOG2Y4Ci0hbeWdTBIKAV04RG0e?=
- =?us-ascii?Q?diwFBL1euveiPMwb7Sjm2dAYI97cHF8eWcEDMSdUGnit9Pl69NWO+rOiahCO?=
- =?us-ascii?Q?qXa+uRF8AY5ti7WG9p66vXhilLyCxGzCKfGUHwv8v7Kk+Bb7zVAtGsjnCYcW?=
- =?us-ascii?Q?g5xFPzbWQKKNlGmobrjgGH7Zx/xaTxoV4bvx7pMOS4l8C6THTbUWLP/H6IyY?=
- =?us-ascii?Q?4AjOCnue8WAOA7EZv5KmL2aKz7k5x1EjoAMo6DholV+D+bj7NROE7/aBWh3n?=
- =?us-ascii?Q?zkgnRu9cc/0ayGqtf+V5jduWQJYP3elLmQYCDdCwySpXV42QgCFdGPcfzSJp?=
- =?us-ascii?Q?38zSg9tVw6uo5ok13UKx7RJ1U+fZd/UA+oFcgdN/zUzgw2QpdD4xDGtu1xOg?=
- =?us-ascii?Q?LyDjWKCAPfXIQZ9iczau0Yv+V3n89/gj6VcOQ+FnvP7L34siZjFSHxgySFep?=
- =?us-ascii?Q?dU/kjqUlqOiAd+79EhCxLZTt6JlJjJrG2QqVn2m4kfMpcm8dk8EQY9SQMb9c?=
- =?us-ascii?Q?5awg/e0Ky7k2WwdtYVd2oIRGNItUWDw/bmolE3ATyJ28xBx0nIdxYTusppJW?=
- =?us-ascii?Q?9Fyh4SAbSjaBGRFqChRD50F1MJF/qclXc15qnU0NOqSpPhXZCsb3kr/nSjIy?=
- =?us-ascii?Q?uN54Ow8YXR6hOy+W7cUjVpvwCvOJhJ91DOkP8AnUUmeMgWvLb3dmB1B40+28?=
- =?us-ascii?Q?q43n7257rk63ORDyqjiKMhpcD3pMDM/dcXRieT0PUnXUsTAzRMRbrqOK9ioA?=
- =?us-ascii?Q?9HiXCtIDshUxZfaVOGpAa18skVNDisOpfJV4T4cNngzyh06HWIaza6xJ8ig9?=
- =?us-ascii?Q?WxIU9HJLz0AodQPufD6Bd6otRAxWBRaX4w10ySZAxa1JbRaeguK0Ff/OZqZZ?=
- =?us-ascii?Q?/SKzfxhAcahi7oA8bcVyWNcw792RHLHpvGbU1pkq?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: e3552b23-15b9-40a7-3bb7-08dc81d49f4c
-X-MS-Exchange-CrossTenant-AuthSource: BY5PR12MB4130.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Jun 2024 00:48:58.6179
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: NmH7EnXbEUqHaz0wutgp6d5sTnRCopDlQehJ21dZbe6D4AJf1LIIUbJmv7p6+v5kw7lM3TdPh2x0mpfObnYUjw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7682
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-1) Provide a more self-explanatory error message for the "Rust not
-available" case. Without this patch, if Rust is not set up properly
-(which happens a lot, seeing as how one must routinely run "rustup
-override ..." with each new kernel release), the "make rust-analyzer"
-invocation generates a somewhat confusing message:
+Hi,
+Thanks for reviewing the patch!
 
-    "No rule to make target 'rust-analyzer"
+On Thu, 30 May 2024 08:02:35 +0000
+Benno Lossin <benno.lossin@proton.me> wrote:
 
-This is confusing at first, because there is, in fact, a rust-analyzer
-build target. It's just not set up to handle errors gracefully.
+>> After the discussion on C45 register support, I implemented a more rusty
+>> solution based on Benno's idea (hopefully, I understand correctly):
+> 
+> Yes this looks similar to what I imagined.
 
-Instead of inflicting that on the developer, just print that Rust is
-not available, with a blank line above and below, so it doesn't get lost
-in the noise. Now the error case looks like this:
+Great.
 
-    $ make rust-analyzer
+>> https://lore.kernel.org/all/20240415104701.4772-3-fujita.tomonori@gmail.com/
+>> 
+>> I'm not sure so I sent a RFC patch to rust-for-linux only. Once I have
+>> something that we could agree on, I'll send non RFC patch to netdev.
+>> 
+>> 
+>> Adds support for C45 registers access. C45 registers can be accessed
+>> in two ways: either C45 bus protocol or C45 over C22. Normally, a PHY
+>> driver shouldn't care how to access. PHYLIB chooses the appropriate
+>> one. But there is an exception; PHY hardware supporting only C45 bus
+>> protocol.
+>> 
+>> This adds two ways to access C45; RegC45 and RegC45Direct. Normally, a
+>> driver should use the former; let the PHYLIB take care of how to
+>> access (by calling phy_read_mmd/phy_write_mmd). The latter calls
+>> mdiobus_c45_read/mdiobus_c45_write; C45 over C22 isn't used.
+>> 
+>> The API to access to C22 registers is also updated to align with the
+>> above changes.
+>> 
+>> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+>> ---
+>>  drivers/net/phy/ax88796b_rust.rs |   7 +-
+>>  rust/kernel/net/phy.rs           | 218 +++++++++++++++++++++++++++----
+>>  2 files changed, 198 insertions(+), 27 deletions(-)
 
-    Rust is not available
+(snip)
 
-    make[1]: *** [/kernel_work/linux-github/Makefile:1975: rust-analyzer] Error 1
-    make: *** [Makefile:240: __sub-make] Error 2
+>> -    /// Writes a given C22 PHY register.
+>> -    pub fn write(&mut self, regnum: u16, val: u16) -> Result {
+>> -        let phydev = self.0.get();
+>> -        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
+>> -        // So it's just an FFI call, open code of `phy_write()` with a valid `phy_device` pointer
+>> -        // `phydev`.
+>> -        to_result(unsafe {
+>> -            bindings::mdiobus_write((*phydev).mdio.bus, (*phydev).mdio.addr, regnum.into(), val)
+>> -        })
+>> +    /// Writes a PHY register.
+>> +    pub fn write<R: RegAccess>(&mut self, reg: R, val: u16) -> Result {
+>> +        reg.write(self, val)
+>>      }
+>> 
+>>      /// Reads a paged register.
+>> @@ -302,6 +285,195 @@ pub fn genphy_read_abilities(&mut self) -> Result {
+>>      }
+>>  }
+>> 
+>> +/// Reads and writes C22 and C45 registers.
+> 
+> You used "PHY register" below, so you should probably use it here as
+> well.
 
-2) As long as I'm there, also add some documentation about what
-rust-analyzer provides.
+Yeah, fixed.
 
-Signed-off-by: John Hubbard <jhubbard@nvidia.com>
----
- Makefile | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+>> +///
+>> +/// This trait is used to implement multiple ways to read and write
+>> +/// PHY registers.
+>> +pub trait RegAccess {
+>> +    /// Reads a PHY register.
+>> +    fn read(&self, dev: &mut Device) -> Result<u16>;
+> 
+> Do all registers have a size of exactly `u16`? If there are also
 
-diff --git a/Makefile b/Makefile
-index f975b6396328..aca2c96820aa 100644
---- a/Makefile
-+++ b/Makefile
-@@ -1967,9 +1967,13 @@ quiet_cmd_tags = GEN     $@
- tags TAGS cscope gtags: FORCE
- 	$(call cmd,tags)
- 
--# IDE support targets
-+# Generate rust-project.json, which does for Rust what clangd's
-+# compile_commands.json does for C/C++: provides a browsing database for code
-+# editors and IDEs.
- PHONY += rust-analyzer
- rust-analyzer:
-+	$(Q)$(CONFIG_SHELL) $(srctree)/scripts/rust_is_available.sh 2>/dev/null || \
-+	    { echo; echo "Rust is not available"; echo; false; }
- 	$(Q)$(MAKE) $(build)=rust $@
- 
- # Script to generate missing namespace dependencies
+Yes.
 
-base-commit: b050496579632f86ee1ef7e7501906db579f3457
--- 
-2.45.1
+> registers with `u8`, then I would prefer an associated type in the trait
+> that you then use as the return type.
+> 
+>> +
+>> +    /// Writes a PHY register.
+>> +    fn write(&self, dev: &mut Device, val: u16) -> Result;
+>> +}
+>> +
+>> +/// Accesses to C22 registers.
+>> +#[derive(Clone, Copy)]
+>> +pub enum RegC22 {
+> 
+> I think we could just name this `C22`.
+> It might also make sense to move all registers into a `reg` module. What
+> do you think?
+
+Makes sense. I did both and like them.
+
+
+>> +impl RegAccess for RegC22 {
+>> +    /// Reads a given C22 PHY register.
+>> +    fn read(&self, dev: &mut Device) -> Result<u16> {
+>> +        let phydev = dev.0.get();
+>> +        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Device`.
+>> +        // So it's just an FFI call, open code of `phy_read()` with a valid `phy_device` pointer
+>> +        // `phydev`.
+>> +        let ret = unsafe {
+>> +            bindings::mdiobus_read((*phydev).mdio.bus, (*phydev).mdio.addr, *self as u32)
+>> +        };
+>> +        if ret < 0 {
+>> +            Err(Error::from_errno(ret))
+>> +        } else {
+>> +            Ok(ret as u16)
+>> +        }
+>> +    }
+>> +
+>> +    /// Writes a given C22 PHY register.
+>> +    fn write(&self, dev: &mut Device, val: u16) -> Result {
+>> +        let phydev = dev.0.get();
+>> +        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Device`.
+>> +        // So it's just an FFI call, open code of `phy_write()` with a valid `phy_device` pointer
+>> +        // `phydev`.
+>> +        to_result(unsafe {
+>> +            bindings::mdiobus_write((*phydev).mdio.bus, (*phydev).mdio.addr, *self as u32, val)
+>> +        })
+>> +    }
+>> +}
+>> +
+>> +/// Accesses to C45 registers.
+>> +///
+>> +/// C45 registers can be accessed in two ways: either C45 bus protocol or
+>> +/// C45 over C22 bus protocol. Normally, a PHY driver shouldn't care how to
+>> +/// access. `PHYLIB` chooses the appropriate one. `RegC45` is preferred over
+>> +/// `RegC45Direct`.
+>> +pub struct RegC45 {
+> 
+> Same here, this could just be named `C45`.
+
+Changed.
+
+>> +    devad: u8,
+>> +    regnum: u16,
+>> +}
+>> +
+>> +impl RegC45 {
+>> +    /// Creates a new instance of `RegC45`.
+>> +    pub fn new(devad: u8, regnum: u16) -> Self {
+> 
+> Are there really no common values that you would use as the parameters
+> here? If you want to add any, you can do so via associated constants:
+> 
+>     const COMMON_REGISTER: RegC45 = RegC45::new(/* ... */);
+
+I think that there are combinations that are often used. But they
+aren't defined in such way, I guess. I suppose that the developpers
+are familier with a way to access a register with devad and regnum.
 
