@@ -1,135 +1,156 @@
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72E0A29401
-	for <rust-for-linux@vger.kernel.org>; Sun,  2 Jun 2024 07:36:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B85B72C1AC
+	for <rust-for-linux@vger.kernel.org>; Sun,  2 Jun 2024 09:28:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717313781; cv=none; b=bw8ydsvoN82oGqq1qvgsn+xtEyqZcTk/HCUQQlVvDFGWfFuUexreOWiOP+O8Kqd/2UCF8bi4Pc00336Jyu0VH1TMz64scSA70Hdnx8wcR2S5UG5vAmYgy5XeNSo1Wo4kHFpPsR10jd3q1woysgnt+ILj6Jjo14RiDivIQzY3Az0=
+	t=1717320487; cv=none; b=SIdiuA8H1r4GqknDMfQVBsLGzrq8ucsmHWk1gEgbf5Fw3BePkmk9YMRtJAUX79LvI8wKhwOsD86SVmoC1ddoUQE81EZX2DaD5wSMQW8mWrWiEhO6dADsqDdyhacGDa6Sn7+08h6Uv6Ine9kiMLtakEExaUarcQiiwE7pr8PJdIQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717313781; c=relaxed/simple;
-	bh=VgT9Gm+qax6Y7etYDdUOKmuT+soeiz2PWDhUKiwur5Q=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=LlHH3WsV7g9mqWym2IPh8FTvv23opmIm/ZBmxP8vu6KWONl8vFpCbrj+x6w6KEa4y3H7ycL/GVLgHqOjKPpyatgy+3UT8dZCinJrQoH3FNmx5DXCqwc491RqqKnrWd2+nsQLZyuAWXWGETP/rQbB6MK3OzMTqvzZIETN1jt9sIY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XslLFhJm; arc=none smtp.client-ip=209.85.210.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1717320487; c=relaxed/simple;
+	bh=J6TIPS1GAf2SCnwgcDej5TyjCcgyhxhkgcJ3f/46rQM=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=EZ+5wcNSLje0p2BQvZmtHUoGouI6qOOKDm5lXUKPlw0smLw+xeubPUcBOzVRloSP9UeaAOw07qbp3Bt+VVJ1GGYwk4U1EEdWacdbDsQJO0x3V4BNLJD6lAOnzUfvZZwRJUYDAI4x8sfFBoszURS6iSo3HGc2DTCIYT9FTxgkIzA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk; spf=none smtp.mailfrom=metaspace.dk; dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b=mrPD/MEG; arc=none smtp.client-ip=209.85.218.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=metaspace.dk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XslLFhJm"
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-70264696399so10759b3a.3
-        for <rust-for-linux@vger.kernel.org>; Sun, 02 Jun 2024 00:36:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b="mrPD/MEG"
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-a689ad8d1f6so177023666b.2
+        for <rust-for-linux@vger.kernel.org>; Sun, 02 Jun 2024 02:28:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1717313780; x=1717918580; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=oivA9MpjXV/c0JIavaOEgd+O/g0Zy9f/RTEL8IZ+hPg=;
-        b=XslLFhJmBEcScyPdj05X6ehpZin/NiOrXc2D+Vk/og+oexxTlqIVxVWxSgFTclYKjF
-         29BuarCld0kHrS4Bd3ZYIukWV4BfqtsahlODzX3R1w2eOJNdjNSkVQs9FN1LRvCcdg6f
-         8Ff50qc3aaTsYJO6TWk6SmLLgt/RazWEdwQiYCecM9Gqfa7Ec7/Qe3PlZslVyV5y12m+
-         5fxMZ8+sGz8msLEJh2CKTDhqMPF8jfGJXyXlNttkylifZcGuYJY/6ewjD/E/mGyZR0X9
-         TdwqJ05qwU6XZtGEfgLTWKcwPlgNdIstr2gRk6w5E6pM5N4x5Bq1bO3WB6ce5vY6pMUt
-         y3gQ==
+        d=metaspace-dk.20230601.gappssmtp.com; s=20230601; t=1717320483; x=1717925283; darn=vger.kernel.org;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=bJwF3q+t+A1DpoaxsaOYNQPfvGAIw2IDRpun6/tsk/o=;
+        b=mrPD/MEGRoyx2A9ueQ+jZ6rSYNqo5bJctavsrZ3W8CN7Hd4EIMyNmhDvDBf0KEBmfu
+         IlGHXQHHYfLJy1INosOhOlifsqz8WOO3tOaB7KHpCZ/LaFXOsiAx9eroArEhdVpU9GPt
+         DDsRgzQR7DXG7rYJ5QmWzVwdCPHYdb/R0bEU4jaswHhPKELa3mJ2m1oZw7de0/GeO12h
+         8827Jn5TjM7NhnH/hfTzHufrAbWS+pMWdens59YHGwl+KAnG0xQ2cZLi9C/rVeNaJ0QT
+         e128x20f7pmPaEg827F5MSkJBXBuC4saUtIOffBz+k7JUWNNu5ZWDdfISdDv5uLQbIKM
+         kj/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717313780; x=1717918580;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=oivA9MpjXV/c0JIavaOEgd+O/g0Zy9f/RTEL8IZ+hPg=;
-        b=Q9vfzyKdR27XwOuN3wmiHuxZQiXUmjrX8bhaQkSc0t3UTAUDBZudzxO0+LnYozKcA+
-         yMZLHTgPLzEBA7VnMOS/YstFbxgA/z5N1JBErYzkrtfWSej6O+Bk4xv2IemGSi/buP7w
-         rLmqFxs8qMQfVMEM9zvxwWoNH+x3/dpI7YpiE0qBubsNPzwZNCoy7muyyiOkQdN9SE8x
-         LOvZqSeofEhyKbEIppWAB37NAIWHUKN9q256A+C6dgW7lQwMRfOrWVhc0eOeoPzpRiQo
-         Sn1catJv7iVezyu3NLEm4woX3uJs8szcyEoV9RU48aZDfHSKZDRUI2JpBNfEJO7DiK8g
-         t2Gg==
-X-Forwarded-Encrypted: i=1; AJvYcCWRT3qbTQ6vwjGIqmwMEwYFgvNt3TDgnTybtX8px9wvAh3AWlKtIF85Afm8xOpi8r5US+wNB35Q5H+/5HbbjLCXrUlZanAYc44tIaSi1so=
-X-Gm-Message-State: AOJu0YzA2MhUhb9tQfQ39Vwd1chAvEt/sftzgNIQ7U6NWFT2/D1h8HxH
-	+QX3ri5Fcg0TwNbuIJo+Or9R1tX5RWDWFIXJR8mJYwhV+vuGsOR7
-X-Google-Smtp-Source: AGHT+IGBvqMaoDHWYdfCBHuSCaQdv+R/KSgoCrEVc+FBTz2dNpv835YnS3WDeKUt6yVQDb9J9Jxtcg==
-X-Received: by 2002:a05:6a21:78a1:b0:1b0:111f:2b70 with SMTP id adf61e73a8af0-1b26f2b0776mr7512706637.3.1717313779547;
-        Sun, 02 Jun 2024 00:36:19 -0700 (PDT)
-Received: from localhost (p5261226-ipxg23801hodogaya.kanagawa.ocn.ne.jp. [180.15.241.226])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7025477bbb2sm2019361b3a.158.2024.06.02.00.36.18
+        d=1e100.net; s=20230601; t=1717320483; x=1717925283;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=bJwF3q+t+A1DpoaxsaOYNQPfvGAIw2IDRpun6/tsk/o=;
+        b=azsKSzTvQwy4PLoHX27RpkY5xeK7DX3+x1DbAHQ95XDG48ueV3B7B7E2WRZ7tlrS4A
+         R9siuTY7gVmakSNbPIIYIxgBKbxssoLLhIar6DwLrNCEZGZg+CtvPWShnhSVhgONx0gZ
+         LFD/NNs7xR+V/jEblxl7lKgRFbMGhcQWPketaBcCxNfYcO4GWEjnDyrQfD7apWTPmne9
+         XRu82jXzihcy2V1i3dKF+TVT8iUVU2gj4HNUFkXJZD9u6KDL99+/BUYNLPhRjdxiFdHQ
+         I+G/ybwZ7gXkqSStyHe0R8rbuXVfEBdO82qWP4Zlunu3K6NGeg0wwZy1/5vEn0EImLQC
+         azmA==
+X-Forwarded-Encrypted: i=1; AJvYcCU//lC0G4J8t5G9v5i5LdWTlF0SvXvDO5ww1lI4h3n3fcPUe8qeSMGLXR3LU57dFNnSrzpDUDgh/1re2kw+tavUCTAVwl5x7ahEkg7mwOQ=
+X-Gm-Message-State: AOJu0YznW5gb8T7FKlDK7OoYm/tiku0OEbNiSrxfyXnpjB/9UO7lBdxi
+	bSYKGVGfjz6nsyhyI4Wc4nA7KMHOC7QgOAe9tqO5SH62LtRSX9wGbDv+Huxd6+8=
+X-Google-Smtp-Source: AGHT+IGFlfYHryGwagfRHunmriFz3Ud/gnVhIdpwenAZTGPR/AZRD0JBNNJ2v6tqbUTBYOKFrCwy/Q==
+X-Received: by 2002:a17:907:9284:b0:a62:5ff6:c728 with SMTP id a640c23a62f3a-a6822157081mr494056866b.76.1717320482689;
+        Sun, 02 Jun 2024 02:28:02 -0700 (PDT)
+Received: from localhost ([79.142.230.34])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a68c162a69csm155894266b.187.2024.06.02.02.28.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 02 Jun 2024 00:36:19 -0700 (PDT)
-Date: Sun, 02 Jun 2024 16:36:05 +0900 (JST)
-Message-Id: <20240602.163605.1664548427631907126.fujita.tomonori@gmail.com>
-To: benno.lossin@proton.me
-Cc: fujita.tomonori@gmail.com, rust-for-linux@vger.kernel.org,
- andrew@lunn.ch, tmgross@umich.edu
-Subject: Re: [RFC PATCH v2 2/2] rust: net::phy support for C45 genphy
- helpers
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <c67b9654-cc6c-41b0-9693-b8830ec42e78@proton.me>
-References: <20240601043535.53545-1-fujita.tomonori@gmail.com>
-	<20240601043535.53545-3-fujita.tomonori@gmail.com>
-	<c67b9654-cc6c-41b0-9693-b8830ec42e78@proton.me>
+        Sun, 02 Jun 2024 02:28:02 -0700 (PDT)
+From: Andreas Hindborg <nmi@metaspace.dk>
+To: Matthew Wilcox <willy@infradead.org>
+Cc: Keith Busch <kbusch@kernel.org>,  Jens Axboe <axboe@kernel.dk>,
+  Christoph Hellwig <hch@lst.de>,  Damien Le Moal <dlemoal@kernel.org>,
+  Bart Van Assche <bvanassche@acm.org>,  Hannes Reinecke <hare@suse.de>,
+  Ming Lei <ming.lei@redhat.com>,  "linux-block@vger.kernel.org"
+ <linux-block@vger.kernel.org>,  Andreas Hindborg <a.hindborg@samsung.com>,
+  Greg KH <gregkh@linuxfoundation.org>,  Miguel Ojeda <ojeda@kernel.org>,
+  Alex Gaynor <alex.gaynor@gmail.com>,  Wedson Almeida Filho
+ <wedsonaf@gmail.com>,  Boqun Feng <boqun.feng@gmail.com>,  Gary Guo
+ <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,  Benno
+ Lossin <benno.lossin@proton.me>,  Alice Ryhl <aliceryhl@google.com>,
+  Chaitanya Kulkarni <chaitanyak@nvidia.com>,  Luis Chamberlain
+ <mcgrof@kernel.org>,  Yexuan Yang <1182282462@bupt.edu.cn>,  Sergio
+ =?utf-8?Q?Gonz=C3=A1lez?= Collado <sergio.collado@gmail.com>,  Joel
+ Granados
+ <j.granados@samsung.com>,  "Pankaj Raghav (Samsung)"
+ <kernel@pankajraghav.com>,  Daniel Gomez <da.gomez@samsung.com>,  Niklas
+ Cassel <Niklas.Cassel@wdc.com>,  Philipp Stanner <pstanner@redhat.com>,
+  Conor Dooley <conor@kernel.org>,  Johannes Thumshirn
+ <Johannes.Thumshirn@wdc.com>,  Matias =?utf-8?Q?Bj=C3=B8rling?=
+ <m@bjorling.me>,  open list
+ <linux-kernel@vger.kernel.org>,  "rust-for-linux@vger.kernel.org"
+ <rust-for-linux@vger.kernel.org>,  "lsf-pc@lists.linux-foundation.org"
+ <lsf-pc@lists.linux-foundation.org>,  "gost.dev@samsung.com"
+ <gost.dev@samsung.com>
+Subject: Re: [PATCH v4 2/3] rust: block: add rnull, Rust null_blk
+ implementation
+In-Reply-To: <ZlvrwbQ1WJZQ6_KR@casper.infradead.org> (Matthew Wilcox's message
+	of "Sun, 2 Jun 2024 04:49:21 +0100")
+References: <20240601134005.621714-1-nmi@metaspace.dk>
+	<20240601134005.621714-3-nmi@metaspace.dk>
+	<ZlsvHV6y4DEdC8ja@kbusch-mbp.dhcp.thefacebook.com>
+	<875xusoetn.fsf@metaspace.dk>
+	<ZltF5NvDnKFphcOo@kbusch-mbp.dhcp.thefacebook.com>
+	<ZlvrwbQ1WJZQ6_KR@casper.infradead.org>
+Date: Sun, 02 Jun 2024 11:27:55 +0200
+Message-ID: <87sexvn17o.fsf@metaspace.dk>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+Content-Type: text/plain
 
-On Sat, 01 Jun 2024 12:23:16 +0000
-Benno Lossin <benno.lossin@proton.me> wrote:
+Matthew Wilcox <willy@infradead.org> writes:
 
-> On 01.06.24 06:35, FUJITA Tomonori wrote:
->> Add support for genphy_c45_* helper functions. Instead of adding
->> genphy_c45_ methods, this unifies the API for genphy functions with
->> trait.
+> On Sat, Jun 01, 2024 at 10:01:40AM -0600, Keith Busch wrote:
+>> It's fine, just wondering why it's there. But it also allows values like
+>> 1536 and 3584, which are not valid block sizes, so I think you want the
+>> check to be:
 >> 
->> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
->> ---
->>  rust/kernel/net/phy.rs | 49 +++++++++++++++++++++++++++++++++---------
->>  1 file changed, 39 insertions(+), 10 deletions(-)
->> 
->> diff --git a/rust/kernel/net/phy.rs b/rust/kernel/net/phy.rs
->> index 286fd5a7ec91..aabd714ae3f6 100644
->> --- a/rust/kernel/net/phy.rs
->> +++ b/rust/kernel/net/phy.rs
->> @@ -248,16 +248,8 @@ pub fn genphy_suspend(&mut self) -> Result {
->>      }
->> 
->>      /// Checks the link status and updates current link state.
->> -    pub fn genphy_read_status(&mut self) -> Result<u16> {
->> -        let phydev = self.0.get();
->> -        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
->> -        // So it's just an FFI call.
->> -        let ret = unsafe { bindings::genphy_read_status(phydev) };
->> -        if ret < 0 {
->> -            Err(Error::from_errno(ret))
->> -        } else {
->> -            Ok(ret as u16)
->> -        }
->> +    pub fn genphy_read_status<G: reg::GenPhyOps>(&mut self) -> Result<u16> {
-> 
-> With this change, don't you also need a change in the ax88796b Rust
-> driver?
+>> 	if !(512..=4096).contains(&block_size) || ((block_size & (block_size - 1)) != 0)
+>
+> I'd drop the range check.  We're pretty close to landing the bs>PS
+> patches, so just
+>
+> 	if block_size & block_size - 1 != 0
+>
+> should be enough of a validation.
 
-No, the driver doesn't use genphy_read_status().
+Is it safe to do so already? Otherwise we just remove it when it is
+safe, no biggie.
 
+> Is it considered "good style" in
+> Rust to omit the brackets here?
 
->> +        G::read_status(self)
->>      }
->> 
->>      /// Updates the link status.
->> @@ -446,6 +438,43 @@ fn write(&self, dev: &mut Device, val: u16) -> Result {
->>              })
->>          }
->>      }
->> +
->> +    /// PHY helper functions.
->> +    ///
->> +    /// This trait is used to implement some helper functions executed either
->> +    /// via C22 or C45 registers.
->> +    pub trait GenPhyOps {
-> 
-> Why does this need another trait? Can't it be part of the `Register`
-> (currently named `Access`) trait?
+Yes, the compiler will complain if you add parenthesis here.
 
-Indeed, it can be. I'll do with the comment on `Register` updated.
+```rust
+fn main() {
+    if (true) {
+        return;
+    }
+}
+```
 
-Thanks a lot!
+Building this will give you:
+
+```text
+warning: unnecessary parentheses around `if` condition
+ --> src/main.rs:2:8
+  |
+2 |     if (true) {
+  |        ^    ^
+  |
+  = note: `#[warn(unused_parens)]` on by default
+help: remove these parentheses
+  |
+2 -     if (true) {
+2 +     if true {
+  |
+
+warning: `playground` (bin "playground") generated 1 warning (run `cargo fix --bin "playground"` to apply 1 suggestion)
+    Finished `dev` profile [unoptimized + debuginfo] target(s) in 0.64s
+     Running `target/debug/playground`
+```
+
+If you omit the `{}` block after the `if` it is a syntax error.
+
+Best regards,
+Andreas
