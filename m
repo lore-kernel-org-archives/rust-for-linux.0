@@ -1,86 +1,85 @@
-Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
+Received: from mail-qk1-f178.google.com (mail-qk1-f178.google.com [209.85.222.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 408E112E1F9;
-	Mon,  3 Jun 2024 17:12:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 085B3135A6F;
+	Mon,  3 Jun 2024 17:42:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717434747; cv=none; b=q+5Qz5jz6sAT9sMW+LU1AivG3/nNDJYf9de3b7jJIxR5YB0dmgo9DSCKtf+41nz8RY+17LZrC3osV7zDEByuHKZt8VX1XTQotrwY3bKAmOKhNf6r8s00d2uVTFzdz3C1uL9BV71UQYInIZhaUjy7xguVsyDlvkzqxll40tnHSyU=
+	t=1717436563; cv=none; b=apXD1M23RVEWF94N77fxsnk9fMbMi+Do1G+pAYnB5qxMysTs1CODJ1KSd17rgy/n3k/D99+5AXue1zY+RpBqdFlR9EKT7+R8QV/JEfuc6Fj7/LR5N6vOn5wr6XpyXJBX5oMFnw9lyN2PJ6ynfIwNyN0h6xbQ+4+Gusv/rFV4ICU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717434747; c=relaxed/simple;
-	bh=rbtH+DpYhqBMd0xLDXJmN7RirgQ6wnLGRMVHaZoyBt8=;
+	s=arc-20240116; t=1717436563; c=relaxed/simple;
+	bh=epvhLo1mWE99TSJ4TRY/EC7cNxGbjrIEgwOICO3Bt3o=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=i2fu9gnHjrB50ZABF1paHfxKsjU6/3IypSyEi2nSVIxqKQofKr17i7ExeJ0n3ebbb/a8Ffu92nb0UU2UNxCv9u5QlRMewSAwhze+6I7WODemrsNOwH7Ge2Uv5WcE5hUXd/kqjsG4VWCXVdH/ZgdMlh9JLnRN5UHMy3XngcdI7Cg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HzHULEMQ; arc=none smtp.client-ip=209.85.222.170
+	 Content-Type:Content-Disposition:In-Reply-To; b=YVf/lAxI/UFs4s8DoaNwhh0+zn8DcoFLABp/qjvnbHUb2dx9td8VIOBvAaHJ/9p2t3/lck1lfl+VrHSgEN93OhTeb5jdVFzz/4lR7KG+FOy421R3jTy8mdK9Tazh8HOLcy0q7pUETAJo/hn6bAyAhLIL04Hzb1oDfXR5x3BDZJs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lcATzdGS; arc=none smtp.client-ip=209.85.222.178
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HzHULEMQ"
-Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-794ab01e747so8949185a.1;
-        Mon, 03 Jun 2024 10:12:26 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lcATzdGS"
+Received: by mail-qk1-f178.google.com with SMTP id af79cd13be357-794ab0ae817so265299685a.2;
+        Mon, 03 Jun 2024 10:42:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1717434745; x=1718039545; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1717436561; x=1718041361; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=xowQVtG5FrDvjNgj7LbV6txQKMGt2SxrGC16ykxcKRw=;
-        b=HzHULEMQf7QqvnzkLcLLAgGbu/mBmi1Tho5Hhkw896d6Jmrr8IW9w01JGStFtXnN04
-         oTr5GelT9OtR8hW6uFfsMMR/gonjw42VQHGfHjoRitNYFhzz9ECNpQ0n6pYrdjGJYmR6
-         wQdEq8VYRoCooSr0/isdHKfPgP4J5gJ79hyMBIZCDF4hvDWIb29ZpsCf9AzJs/Fkl4hf
-         fy7vioXn06EpD/yFInaQ32LFb+mLF17fSIXIulQ+wzOmZcMahAuUUpyK2HbXuQnM/wiN
-         xb1h/Mg+Vh69quNxGHMkLvqSWKtfC4r35vtxgiZZSX/bkDSaga4/YVBJU7H2Ce+DqS/h
-         ttGA==
+        bh=lqo8/N2WL4gT1OcLo3qtSeNxyML4fela4YEeG8cnJxQ=;
+        b=lcATzdGSJn1yZ9xfDVR6N6R4EueZpZapx8iH0pgOKSvAtC9RxkEsvoUs9cvKw92upk
+         QDldr6/a+UGs5cjW0FNdytMnobzrtF0AuKQFPeCGmZWyBE3IUiamqJt+46nRYPy5o6nz
+         lz4Qi3PfJwkyC71SIiy8jI4kWorux0JIEoJT4tc08c8/3/x+fPpkaiBG7adZuUpVusOG
+         270o9nqUkxCcsf4LgwrybRYDNGKRK2VlaVgi3JkJoH3qVzyitZ3vKOQWyhow+q7VZWyd
+         A+3+ZmcrdHjSd73ks/k7NZhPmL7rnTKbKLqlg073tVvpupd5tYFashWF9SP5X0VoRYSN
+         ThrA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717434745; x=1718039545;
+        d=1e100.net; s=20230601; t=1717436561; x=1718041361;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=xowQVtG5FrDvjNgj7LbV6txQKMGt2SxrGC16ykxcKRw=;
-        b=XROeovn/HTZGgFGctQDtLxzj+vaHA6ZcsK9JWgM1ExhaOySh1yMKLVZyrAtWhJADeI
-         PgXskJyGEU+2tYlsZlaxHR099cbPlIlBGcfS5akrD2rkr4G1hRDCPUxGqO9v1U98CtPg
-         Bd0R9WhbdbHPlBhfh9snld1lSSqPK+mNpqSI8YHU/CIRXrtnoY9rwMpsTJS4vPOUq4uO
-         6HTc4Hp0q24HIT1HFdViZR1i84pH5QydN8y5yMueiHeZwyU8bQG76xPJLihzvwPU4/Pv
-         TraqTHBb0xvTWaFwzKkfkn8dTd3tRM3qOlsTSm7OhYANWYNAAagKiMDowGhgUE6yc+Uk
-         jMFg==
-X-Forwarded-Encrypted: i=1; AJvYcCWeabnqRFUo07INiKuww9jiI2UbUsedYaj8UyfwC/N1IdjWYtsryDFgowxBDtQNded1/UTs5ehTcyJhcGEW9dIXvCqhiitQnzWEkSdYIh7E6Yh5lPDjJvT1h/q/Ac6RGuajfL589Nw+lUVsupM=
-X-Gm-Message-State: AOJu0YxfZsSf1gg0LLFDR4hJuiw5PVvOP8HpJPKCevrT1U+plYkBnRVk
-	lWhegwdP3uimGAcAWjlMOMoVJDIpctIvtdyOKjY/Vnb1CcCB9KF6rEYYmQ==
-X-Google-Smtp-Source: AGHT+IG1+ImgQlShZJjOVinqc19ZW7tffsoXk/S/ELVIsV9v9S0BiFRQszbLq8XpL1zK1XQ8didDJQ==
-X-Received: by 2002:a05:620a:4691:b0:78e:c890:1aa9 with SMTP id af79cd13be357-794f5c97363mr1194128685a.39.1717434745113;
-        Mon, 03 Jun 2024 10:12:25 -0700 (PDT)
+        bh=lqo8/N2WL4gT1OcLo3qtSeNxyML4fela4YEeG8cnJxQ=;
+        b=NfNGqc6MFQv55FCDbribHj3auNATqWduNQjoazwlR5AJ/JqlOeQLUxp6LfV5XTzZ8U
+         tRVR9O/WSsh+JXsc4KbarS4uT9XzJaeN8UeJeYDBkl0A0PXzs+AMKMjX9onmoA4chSvm
+         kAzweIW+/in3wQgSexyMrNwN6GKjEP+PqkdusY9IgJNLZYQBYdwKyGwVGxFQARqgXwBd
+         jzxm76yLL1AdYCtA3LDMy7b3LvUnj/A58mUWJrV/2ppa94edSOjW6fscPcCRFaG141vb
+         h8gAQJQFWMLY21l0ZDzJABw+NhmtGmyZ3KnOna9KDuGzAIw5WW9YZJiBYXPvnnbOrla+
+         YTVQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUuGB9T/g2rh+gsLSgHrQJwIcpOPsXAWyr24LHBS4X8PLJlu2XED1QK6MS2hiEHSxq+voQbOjAoMaGqKSVcnqXaiguaM6A186mY61DJWn0iyZmjRWLbPQqIt+MifhTttuCpy2j16xMuXnInrd0=
+X-Gm-Message-State: AOJu0YyPF2nzA1no6uN2GIy1FRqZ8h1LoHq3i6MsgKYrzIXHEQwNcmET
+	t7NOGaE3r9vFGVMIcZtKU+1xvYheMurqaDqos1SKTdYKlX3/7bS7
+X-Google-Smtp-Source: AGHT+IEmh2P7iFc4eHQR6V8pIF45N/E5P3S8BMMDUYIxJmX1LvdjLvcw/Fv4sfFtQsIF/XDScyoEpA==
+X-Received: by 2002:a05:620a:4720:b0:790:ef5d:25ae with SMTP id af79cd13be357-794f5ebf4f1mr1306054385a.56.1717436560788;
+        Mon, 03 Jun 2024 10:42:40 -0700 (PDT)
 Received: from fauth1-smtp.messagingengine.com (fauth1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-43ff2593ba4sm40794651cf.90.2024.06.03.10.12.24
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-794f328fcc9sm298141885a.129.2024.06.03.10.42.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 03 Jun 2024 10:12:24 -0700 (PDT)
+        Mon, 03 Jun 2024 10:42:40 -0700 (PDT)
 Received: from compute7.internal (compute7.nyi.internal [10.202.2.48])
-	by mailfauth.nyi.internal (Postfix) with ESMTP id DC78E1200043;
-	Mon,  3 Jun 2024 13:12:23 -0400 (EDT)
+	by mailfauth.nyi.internal (Postfix) with ESMTP id 76B861200032;
+	Mon,  3 Jun 2024 13:42:39 -0400 (EDT)
 Received: from mailfrontend1 ([10.202.2.162])
-  by compute7.internal (MEProxy); Mon, 03 Jun 2024 13:12:23 -0400
-X-ME-Sender: <xms:d_ldZu-pV7_Pvupb69iz5JKxoz354vxmfK5THE5C7DFvk1j7K4ctrg>
-    <xme:d_ldZuswSm17kqi6ADV-Jnq_2IERMhLmD15C4Cdb0jNENJTTolq3_yjHyH-s3ZAg3
-    ZsHNuDBRd9paEI-oA>
-X-ME-Received: <xmr:d_ldZkBOjgqOhxKuETdhi_dfohwyf-vePb0boAxnAOxNwfzJXTBbJ2QxWf38ZA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrvdelvddguddtlecutefuodetggdotefrod
+  by compute7.internal (MEProxy); Mon, 03 Jun 2024 13:42:39 -0400
+X-ME-Sender: <xms:jwBeZvliBAJQ0jP-BL4p-l7CeLV7KYQdICONxbrU2Ewc_G8L3GIXew>
+    <xme:jwBeZi32S0DdEk9I-SzRsdREWh6B1uDORSNy10puQGJ8_dQ0kNkPkKmDqOGfDDZKK
+    UG-R8JnzAMdr5jD7A>
+X-ME-Received: <xmr:jwBeZlqXYI4edETMm1XtM9OTjx3cp09au2r8qClcbPBjNod4N4Y6bZcG_4D9PA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrvdelvddgudduhecutefuodetggdotefrod
     ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
     necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
     enucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhq
     uhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrf
-    grthhtvghrnhepgfelfeetleeivdeigfektddvhefhjeevfeeujeelleejgedtvdfggfff
-    jefftdevnecuffhomhgrihhnpehnohguvgdrrghspdhruhhsthdqlhgrnhhgrdhorhhgne
-    cuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhu
-    nhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqdduje
-    ejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdr
-    nhgrmhgv
-X-ME-Proxy: <xmx:d_ldZmc9yED-qrYV6w3qJyFagxFhvrH7Vr466_PKVFMTWrSEHinVWA>
-    <xmx:d_ldZjNzpKX9S1a4k8H6hOZ4f7GpiLdbxGQGKkcODx2SR2VMnRNyJw>
-    <xmx:d_ldZgl7bzS34JlitWJRMef1cnQK8Jz91q2kXu3RWMelAVTw0I_B7w>
-    <xmx:d_ldZlsK6yg7Q0vmGOfdklzI5O68Y7AKchREJk73SjVsHv1T0QdhVg>
-    <xmx:d_ldZpv39RV6RJcBadnjxSr5fkCoeCeUBeMYYcSqKjLh69HvaiHDJtwy>
+    grthhtvghrnhepkeekledtgeffgeduvefgffelieetgfeuudevudefleeugeekkedutdeg
+    heejveelnecuffhomhgrihhnpehnvgigthdrmhgrphenucevlhhushhtvghrufhiiigvpe
+    dtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhp
+    vghrshhonhgrlhhithihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrd
+    hfvghngheppehgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvg
+X-ME-Proxy: <xmx:jwBeZnm59j4LA_c1AdI-Aa8Txi-EcRsYRibQmayXtKiTUm7BWI4X3w>
+    <xmx:jwBeZt1yf5-CSsgvJT8RpzyqV3qUmvhFh2vrUsTx821XdpgjL8cv8g>
+    <xmx:jwBeZmsSGXVyLnSFdKtMZw0B3ova98VK2txeU52tz4ETF_uxM60fHA>
+    <xmx:jwBeZhWLepnyZdiN8bnxj5y1fCMpRjHaTfp9KeedynaRJy8nLGafcw>
+    <xmx:jwBeZs3iLugazPjHs1ztSUEElg-VohepnO5UAEcHAFoj3aPjL0n3yKGT>
 Feedback-ID: iad51458e:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 3 Jun 2024 13:12:23 -0400 (EDT)
-Date: Mon, 3 Jun 2024 10:11:25 -0700
+ 3 Jun 2024 13:42:38 -0400 (EDT)
+Date: Mon, 3 Jun 2024 10:41:41 -0700
 From: Boqun Feng <boqun.feng@gmail.com>
 To: Matt Gilbride <mattgilbride@google.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
@@ -100,11 +99,10 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
 	Rob Landley <rob@landley.net>, Davidlohr Bueso <dave@stgolabs.net>,
 	Michel Lespinasse <michel@lespinasse.org>,
 	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 2/6] rust: rbtree: add red-black tree implementation
- backed by the C version
-Message-ID: <Zl35PQ8LAdw67xaS@boqun-archlinux>
+Subject: Re: [PATCH v4 4/6] rust: rbtree: add mutable iterator
+Message-ID: <Zl4AVUqq8Hd-a230@boqun-archlinux>
 References: <20240603-b4-rbtree-v4-0-308e43d6abfc@google.com>
- <20240603-b4-rbtree-v4-2-308e43d6abfc@google.com>
+ <20240603-b4-rbtree-v4-4-308e43d6abfc@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -113,96 +111,46 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240603-b4-rbtree-v4-2-308e43d6abfc@google.com>
+In-Reply-To: <20240603-b4-rbtree-v4-4-308e43d6abfc@google.com>
 
-On Mon, Jun 03, 2024 at 04:05:17PM +0000, Matt Gilbride wrote:
+On Mon, Jun 03, 2024 at 04:05:19PM +0000, Matt Gilbride wrote:
 [...]
-> +/// A memory reservation for a red-black tree node.
+> +/// A mutable iterator over the nodes of a [`RBTree`].
 > +///
-> +///
-> +/// It contains the memory needed to hold a node that can be inserted into a red-black tree. One
-> +/// can be obtained by directly allocating it ([`RBTreeNodeReservation::new`]).
-> +pub struct RBTreeNodeReservation<K, V> {
-> +    node: Box<MaybeUninit<Node<K, V>>>,
+> +/// Instances are created by calling [`RBTree::iter_mut`].
+> +pub struct IterMut<'a, K, V> {
+> +    _tree: PhantomData<&'a mut RBTree<K, V>>,
+> +    iter_raw: IterRaw<K, V>,
 > +}
 > +
-> +impl<K, V> RBTreeNodeReservation<K, V> {
-> +    /// Allocates memory for a node to be eventually initialised and inserted into the tree via a
-> +    /// call to [`RBTree::insert`].
-> +    pub fn new(flags: Flags) -> Result<RBTreeNodeReservation<K, V>> {
-> +        Ok(RBTreeNodeReservation {
-> +            node: Box::new_uninit(flags)?,
-> +        })
-> +    }
-> +}
-> +
-> +// SAFETY: This doesn't actually contain K or V, and is just a memory allocation. Those can always
-> +// be moved across threads.
-> +unsafe impl<K, V> Send for RBTreeNodeReservation<K, V> {}
-> +
-> +// SAFETY: This doesn't actually contain K or V, and is just a memory allocation.
-> +unsafe impl<K, V> Sync for RBTreeNodeReservation<K, V> {}
-> +
-> +impl<K, V> RBTreeNodeReservation<K, V> {
-> +    /// Initialises a node reservation.
-> +    ///
-> +    /// It then becomes an [`RBTreeNode`] that can be inserted into a tree.
-> +    pub fn into_node(mut self, key: K, value: V) -> RBTreeNode<K, V> {
-> +        let node_ptr = self.node.as_mut_ptr();
-> +        // SAFETY: `node_ptr` is a valid pointer to a tree node.
-> +        unsafe {
-> +            node_ptr.write(Node {
-> +                key,
-> +                value,
-> +                links: bindings::rb_node::default(),
-> +            })
-> +        }
-> +        RBTreeNode {
-> +            // SAFETY: The pointer came from a `MaybeUninit<Node>` whose fields have all been
-> +            // initialised. Additionally, it has the same layout as `Node`.
-> +            node: unsafe { Box::<MaybeUninit<_>>::assume_init(self.node) },
-> +        }
+> +// SAFETY: The [`RBTreeIterator`] gives out mutable references to K and V, so it has the same
 
-nit: could you use Box::write()[1] here? It saves two `unsafe` blocks.
+s/RBTreeIterator/IterMut ?
 
-[1]: https://doc.rust-lang.org/std/boxed/struct.Box.html#method.write 
+Also `IterMut` doesn't give out mutable references to K, which makes
+me think...
+
+> +// thread safety requirements as mutable references.
+> +unsafe impl<'a, K: Send, V: Send> Send for IterMut<'a, K, V> {}
+> +
+
+we can lose the constrains to `K: Sync`, right?
 
 Regards,
 Boqun
 
+> +// SAFETY: The [`RBTreeIterator`] gives out mutable references to K and V, so it has the same
+> +// thread safety requirements as mutable references.
+> +unsafe impl<'a, K: Sync, V: Sync> Sync for IterMut<'a, K, V> {}
+> +
+> +impl<'a, K, V> Iterator for IterMut<'a, K, V> {
+> +    type Item = (&'a K, &'a mut V);
+> +
+> +    fn next(&mut self) -> Option<Self::Item> {
+> +        self.iter_raw.next().map(|(k, v)|
+> +            // SAFETY: Due to `&mut self`, we have exclusive access to `k` and `v`, for the lifetime of `'a`.
+> +            unsafe { (&*k, &mut *v) })
 > +    }
 > +}
 > +
-> +/// A red-black tree node.
-> +///
-> +/// The node is fully initialised (with key and value) and can be inserted into a tree without any
-> +/// extra allocations or failure paths.
-> +pub struct RBTreeNode<K, V> {
-> +    node: Box<Node<K, V>>,
-> +}
-> +
-> +impl<K, V> RBTreeNode<K, V> {
-> +    /// Allocates and initialises a node that can be inserted into the tree via
-> +    /// [`RBTree::insert`].
-> +    pub fn new(key: K, value: V, flags: Flags) -> Result<RBTreeNode<K, V>> {
-> +        Ok(RBTreeNodeReservation::new(flags)?.into_node(key, value))
-> +    }
-> +}
-> +
-> +// SAFETY: If K and V can be sent across threads, then it's also okay to send [`RBTreeNode`] across
-> +// threads.
-> +unsafe impl<K: Send, V: Send> Send for RBTreeNode<K, V> {}
-> +
-> +// SAFETY: If K and V can be accessed without synchronization, then it's also okay to access
-> +// [`RBTreeNode`] without synchronization.
-> +unsafe impl<K: Sync, V: Sync> Sync for RBTreeNode<K, V> {}
-> +
-> +struct Node<K, V> {
-> +    links: bindings::rb_node,
-> +    key: K,
-> +    value: V,
-> +}
-> 
-> -- 
-> 2.45.1.288.g0e0cd299f1-goog
-> 
+[...]
