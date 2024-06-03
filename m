@@ -1,111 +1,170 @@
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+Received: from mail-oa1-f52.google.com (mail-oa1-f52.google.com [209.85.160.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9625220317
-	for <rust-for-linux@vger.kernel.org>; Mon,  3 Jun 2024 17:52:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F42B12F373;
+	Mon,  3 Jun 2024 18:23:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717437172; cv=none; b=H4vlyMxqroD1cECFRQJtCmP9xwT7EJkQCjksv7gbtAFHx9TTpjlRor3v2usEAv15k2w8bWhtLgMCkiGXlbEN0Q3970c6qJzz4eM/l9dr2vDh94pkg6gQc/vzo7W3zm/XAz+dkr530Y3WU6vY353S+QPmCyo3Ecv+u2j73SkANtE=
+	t=1717439014; cv=none; b=KMjtkvccxyj/N7jUIwgFdNzDom/HiqEhf4cFHkLSXt/fGs+bXBwWfa47aKWe76FzyaOeyasJU3rHSorGQJ0x28V2MsIBRTXU+pJIWcNEdAe0C7gaKkjYY2VtUBnFx5T0G9ex4ApUUlNQtxs/DsufeMnuhMHcyAh1lFyu/lQJpes=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717437172; c=relaxed/simple;
-	bh=m0FweyHdPSFpIkTfVZW//pFgcOZYHKV+wSHlMJh9TJs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IBX9uUrSFh1nwOQDlW7fRB8uPA0t6iHuSm2FSiEUmzoGGoJiovigR4P+NuwuHx9lpFdIbR+BsmKnAHAE8yG88yXcDwg8+8ixOEOJp9XUeIQdNeBQXY1jpLfd5nG/IL593/Pu/eLr50+ZtAGtwxeJRT1KOFGMyxL5DXheKDTTqEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HzZ5bNhx; arc=none smtp.client-ip=209.85.221.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1717439014; c=relaxed/simple;
+	bh=+LsBDBbnK7K81j+VutGsbSjZ8b8W3RQlBCTwKrkDT2I=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XEfYuftcMaM3TTjvG29g+6InnBkHeiOk0cptzY3UmEwNE+kC++gsvzr2CKIOiThcGqmayGF7JGSVF4iPGknhBbDQy2VHtYUedsTakkLQEsCUhtfJd8hhazl3XH6sP1j2rjP9mie6q4bzwgGpiQcKjmsUaJXDZFwQyXKqPrqTRqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=j/zuQt/E; arc=none smtp.client-ip=209.85.160.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HzZ5bNhx"
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-35e1fcd0c0fso220485f8f.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 03 Jun 2024 10:52:50 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="j/zuQt/E"
+Received: by mail-oa1-f52.google.com with SMTP id 586e51a60fabf-24c9f6338a4so1811277fac.1;
+        Mon, 03 Jun 2024 11:23:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1717437169; x=1718041969; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1717439012; x=1718043812; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=lPGBLbNhfIBiQu1H48kkSjUpEcH7DNN2Yir8GhdMltY=;
-        b=HzZ5bNhxn5aGtQkw1VuBDyFvsombNwZoKhNq3jUBc9lsSZ9nbpefvKWd3uj528Cjae
-         diNPSTowrSLSMz8xrHqxZZr+ljdmWil969mX2nEppJW61aDcDfZBFQGoKonQV87umNvc
-         yxIrJTtn7IxRNbsN/Npu/XfunGnhB/nG1JRloGrjtBwOpLvdQVWXbs7pku8HpmSgo8Qt
-         5Eht74+1RlWgRg9b4c9J2fRJbm9K98LYtYNfhw7kNJMxtW8uWL6JVCKCRf48aUerv3/Y
-         nshXBD8yaT1iC6Y7RJ3tUvCq72enV6JXXIBYCqXlLdh7wAYW31aCEJWAvJIzK+LLOE+K
-         Znjg==
+        bh=BPIkN+Vz6u0IAS0DSpZkSencyyQI4KXXUBpf2kyrDBU=;
+        b=j/zuQt/EEHKFRSYcCCv6eXS+SSBPRVhNtSv0ILnj/74que9yORY9eqFV9IfmraZIaP
+         C1/FBxE3f4Jb316OVGtP31g3zWS5PQJ0JQB4P+ROfRwL5oNF+p4qmMe29SYX50CkxUMa
+         sbCTWxLJI5+zycT4IfLfJ/SUoSETedRH81KEwVjfcVDgPZGvizH/rF76wvSImJhojDsd
+         xF9qAHMmyZjUppkkOjnBCk8WrpJ+GC2wNktT3LMG1T2gtGR36F1ofrcA48UI/zOXJ8kG
+         nFgw5jIcLJA6chXu/vPqCup8lnN+j17KRE6cdjm5D2/klbYafHKweplN8Guon1dFBvQ8
+         tI6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717437169; x=1718041969;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1717439012; x=1718043812;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=lPGBLbNhfIBiQu1H48kkSjUpEcH7DNN2Yir8GhdMltY=;
-        b=CZ4cxJExJjKtsGo3VjPsj8P5AnZWjvhgRxZG1rN2OrIjmZEStgBOUvkerdZcrwM9ac
-         Dr3w/T0UEZl+d7RHOeJTREAK5X/TmRDaYpaHv/F01otvTmwdAQnpmGzsS3dHp/LseLXg
-         UVO+9OecwTVwAHQlmiVAqeJ6whCZCEHuNKnVoPlfIndPkCstdS/WgkC8HTJDmpVl4RJZ
-         tIlNtfH2gAoDnLVYeW/STcz37JuuJjS18sWK0xo1Cto/xo5BaDIJx2H+ODBWrq8CtUXw
-         Twok0P26d1rkmIETgaHh71q1sW/Fr666KY6AN5aKV7LoC0VEq2LskdRrmR+/HTF3erSG
-         yzBQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXdZWMp9PcCQbE2MmNV7ee/IqtMmIZB86lrnKAJ5ftDJNw3+cXHjT4ark6c51AAQhyMjYtMhI7OK0LQlrMsaViNdfi/yBZWbG6fb+zJH+o=
-X-Gm-Message-State: AOJu0YypvmQ+Fe7fc+cKeQW1V0X15ccrX5OxHn2y/52dhMzxEFWJ00NN
-	i+ZcNJglVxuqBtpAeXwQV8YDE86SwaHj8VyUtHhOD/5heoryO4eiXW4ZTF0qFtCbJEcnmvxo7ZK
-	3n0q+BaiftusZ67eZai1ivA7eSUwvXYfK1eIy
-X-Google-Smtp-Source: AGHT+IGT7vuNvV+/UZ3RyhLSvxAihEQitzlypLgGkLqd3nrZ7SFySLqLiMieU6ERiozMYwiGcYicOPgQMNPD0/zrwB0=
-X-Received: by 2002:adf:ee46:0:b0:355:7ab:2a86 with SMTP id
- ffacd0b85a97d-35e0f285ab5mr6799341f8f.28.1717437168661; Mon, 03 Jun 2024
- 10:52:48 -0700 (PDT)
+        bh=BPIkN+Vz6u0IAS0DSpZkSencyyQI4KXXUBpf2kyrDBU=;
+        b=Qa7oS6yWK1UVq6k5khWTBBr19vnwFeseakQrcS9zvFre+D9OxDyzH7Vt5eJeDRKvHn
+         nDpxxxS3Wi3Avgv5N8x2N6ukyuVnDUTBg8jwtqo1k5dYXZx/nOBft5w+K/Pk5/kRETSO
+         HQmWFXzoPoyNrGdMTNnTFEPij1sE1kRAIgoOOZXfKbOxA38V7m5SNfXryjbXE9VQB/mg
+         /0xwZZAMPhkITfc3vA0IxCofrtGE1qKq+z2qAF9cLrl9JmuMK7G9Rm+7L8MH/LL8iCGV
+         Yw0OfLsPYfJ4kyVDKWrVW4l6L32o2a7Kxxp6eau0+U0U0weriuf4VWF/KFKmUwRJC0JK
+         2g8w==
+X-Forwarded-Encrypted: i=1; AJvYcCUzXmoqT22aU6h1N+uLSQB1dtzOL9+VKiYWG3nkojs5lcO1yv3+dtKdwiZZmcjXKUsPKVmR6W0Xk7kdwA3sCPfP44coBze4qed1NL53rNu+nGNG5gxnXVnql+pvds8CvWTqclm/HMQuCwSBzSA=
+X-Gm-Message-State: AOJu0Yzog7sUBbMIVvY9DxrCRF7XeEk5vNhxCGMjN0YONsIPcv6QCHfd
+	7JQh17GnUj7LOqIwxud8EO4pTvsB3dHLIB7j8941gZpSX9w5aYYw
+X-Google-Smtp-Source: AGHT+IGI1i0dw7bQS7otMUvvzgFeO10QfSZBNWp3zgZIrGEqwD3HX+QfvUl/b+r5hgnfic27c1IayA==
+X-Received: by 2002:a05:6871:3a22:b0:24c:b1d8:8475 with SMTP id 586e51a60fabf-2508bbc0756mr10556765fac.42.1717439012346;
+        Mon, 03 Jun 2024 11:23:32 -0700 (PDT)
+Received: from fauth1-smtp.messagingengine.com (fauth1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-794f2efc664sm302801485a.4.2024.06.03.11.23.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 03 Jun 2024 11:23:31 -0700 (PDT)
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+	by mailfauth.nyi.internal (Postfix) with ESMTP id 066F01200032;
+	Mon,  3 Jun 2024 14:23:31 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute5.internal (MEProxy); Mon, 03 Jun 2024 14:23:31 -0400
+X-ME-Sender: <xms:IgpeZm6pBxNaIwGaSY6TmZGwGfdy_XcXrLjmhZlsZv9CLnkho7J7IA>
+    <xme:IgpeZv4T2tki4aHhmEOzU1ymfAA0_NhgC1wp09GSsXhABSs1ff08HWl5vAI3TbRP_
+    _yqwdmu3GRho1L72A>
+X-ME-Received: <xmr:IgpeZlcPWVm0nIM3F8m5VCApHm0JBPj4CbUR2grSkHty5dux6sYi9bY_7uuI1g>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrvdelvddguddvfecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhq
+    uhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrf
+    grthhtvghrnhephedugfduffffteeutddvheeuveelvdfhleelieevtdeguefhgeeuveei
+    udffiedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
+    epsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedt
+    ieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfh
+    higihmvgdrnhgrmhgv
+X-ME-Proxy: <xmx:IgpeZjIey-mBZYIQ8Y9IF5U8FThKD5FDeg4sQQ8Dh8lNK7q5gE66mQ>
+    <xmx:IgpeZqKL-HZcd7ojsQQFRCYZVDY0YMsMzzZTThvZSjlOIHLQaB5hcg>
+    <xmx:IgpeZkychas1FcRXbiU8INtAs9Y-YIveNjs6ghJB8Pl0w_kTWQ4D1w>
+    <xmx:IgpeZuJl_YJpncukmxT2vNtuaQ_fvbGPyO20oJ1Zm63sFM220W2qzA>
+    <xmx:IgpeZhY6dmC82tEdA5z_OU2CHbluxvFlTXNyWSkSo7PITwR_DjSdZdHa>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 3 Jun 2024 14:23:30 -0400 (EDT)
+Date: Mon, 3 Jun 2024 11:22:32 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Matt Gilbride <mattgilbride@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
+	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>,
+	Joel Fernandes <joel@joelfernandes.org>,
+	Carlos Llamas <cmllamas@google.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Rob Landley <rob@landley.net>, Davidlohr Bueso <dave@stgolabs.net>,
+	Michel Lespinasse <michel@lespinasse.org>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 5/6] rust: rbtree: add `RBTreeCursor`
+Message-ID: <Zl4J6IrdweiI0MgC@boqun-archlinux>
+References: <20240603-b4-rbtree-v4-0-308e43d6abfc@google.com>
+ <20240603-b4-rbtree-v4-5-308e43d6abfc@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240603-b4-rbtree-v4-0-308e43d6abfc@google.com>
- <20240603-b4-rbtree-v4-4-308e43d6abfc@google.com> <Zl4AVUqq8Hd-a230@boqun-archlinux>
-In-Reply-To: <Zl4AVUqq8Hd-a230@boqun-archlinux>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 3 Jun 2024 19:52:36 +0200
-Message-ID: <CAH5fLggfMNcuu0KD13_K49NBXXWD133BB6uc5ph7xQi0WTxBZg@mail.gmail.com>
-Subject: Re: [PATCH v4 4/6] rust: rbtree: add mutable iterator
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: Matt Gilbride <mattgilbride@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
-	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
-	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Christian Brauner <brauner@kernel.org>, Rob Landley <rob@landley.net>, 
-	Davidlohr Bueso <dave@stgolabs.net>, Michel Lespinasse <michel@lespinasse.org>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240603-b4-rbtree-v4-5-308e43d6abfc@google.com>
 
-On Mon, Jun 3, 2024 at 7:42=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com> wr=
-ote:
->
-> On Mon, Jun 03, 2024 at 04:05:19PM +0000, Matt Gilbride wrote:
-> [...]
-> > +/// A mutable iterator over the nodes of a [`RBTree`].
-> > +///
-> > +/// Instances are created by calling [`RBTree::iter_mut`].
-> > +pub struct IterMut<'a, K, V> {
-> > +    _tree: PhantomData<&'a mut RBTree<K, V>>,
-> > +    iter_raw: IterRaw<K, V>,
-> > +}
-> > +
-> > +// SAFETY: The [`RBTreeIterator`] gives out mutable references to K an=
-d V, so it has the same
->
-> s/RBTreeIterator/IterMut ?
->
-> Also `IterMut` doesn't give out mutable references to K, which makes
-> me think...
->
-> > +// thread safety requirements as mutable references.
-> > +unsafe impl<'a, K: Send, V: Send> Send for IterMut<'a, K, V> {}
-> > +
->
-> we can lose the constrains to `K: Sync`, right?
+On Mon, Jun 03, 2024 at 04:05:20PM +0000, Matt Gilbride wrote:
+[...]
+> +    /// Remove the current node from the tree.
+> +    ///
+> +    /// Returns a cursor to the next node, if it exists,
+> +    /// else the previous node. Returns [`None`] if the tree
+> +    /// becomes empty.
+> +    pub fn remove_current(self) -> Option<Self> {
 
-Either Send or Sync would be valid here, but almost all types that are
-Sync are also Send, but the opposite is not the case. So I wouldn't
-consider that to be loosening the constrain.
+I'd expect this function returns a `(Option<Self>, Option<RBTreeNode>)`
+or something similar, since it removes a node in a tree, could you
+explain why we don't need to care the removed node?
 
-Alice
+Regards,
+Boqun
+
+> +        let prev = self.get_neighbor_raw(Direction::Prev);
+> +        let next = self.get_neighbor_raw(Direction::Next);
+> +        // SAFETY: By the type invariant of `Self`, all non-null `rb_node` pointers stored in `self`
+> +        // point to the links field of `Node<K, V>` objects.
+> +        let this = unsafe { container_of!(self.current, Node<K, V>, links) }.cast_mut();
+> +        // SAFETY: The reference to the tree used to create the cursor outlives the cursor, so
+> +        // the tree cannot change. By the tree invariant, all nodes are valid.
+> +        unsafe { bindings::rb_erase(&mut (*this).links, addr_of_mut!(self.tree.root)) };
+> +
+> +        let current = match (prev, next) {
+> +            (_, Some(next)) => next,
+> +            (Some(prev), None) => prev,
+> +            (None, None) => {
+> +                return None;
+> +            }
+> +        };
+> +
+> +        // INVARIANT:
+> +        // - `current` is a valid node in the [`RBTree`] pointed to by `self.tree`.
+> +        // - Due to the function signature, `self` is an owned [`RBTreeCursor`],
+> +        //   and [`RBTreeCursor`]s are only created via functions with a mutable reference
+> +        //   to an [`RBTree`].
+> +        Some(Self {
+> +            current,
+> +            tree: self.tree,
+> +        })
+> +    }
+> +
+> +    /// Remove the previous node, returning it if it exists.
+> +    pub fn remove_prev(&mut self) -> Option<RBTreeNode<K, V>> {
+> +        self.remove_neighbor(Direction::Prev)
+> +    }
+> +
+> +    /// Remove the next node, returning it if it exists.
+> +    pub fn remove_next(&mut self) -> Option<RBTreeNode<K, V>> {
+> +        self.remove_neighbor(Direction::Next)
+> +    }
+> +
+[...]
