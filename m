@@ -1,49 +1,47 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28FC012E1C6;
-	Tue,  4 Jun 2024 14:29:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67A0E144313;
+	Tue,  4 Jun 2024 14:32:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717511390; cv=none; b=bjHws1ApojPWOjbeTQfCQnsB9zvPR/hwlKEQn34EXyLjnzJU6u2y4ZfxMke1e9J6eAsGGVsXJcYnJV3iSkIn00T/R6Nh8woWpGFFwmb0VO8xpGks7i6edWPJ2aQMFx9ahnfco+eBJgXYeP2cshTKWP1pMoB9XwvhnS8wqzDe+/U=
+	t=1717511577; cv=none; b=VYG7Gs0FGPwKSCvuAEtD/Ye32DmP38MuxKOBio3sw3MvS1UyZvEfGTNsotP5u7fI0r3+IfdIi/lcrF0JX7n8Dz/cAllnu5cJBRZGGggWgGOqc1REKpWn9QDIpcTcV1Wj92i/TmfQUfyn3PUN2VRkLM1skvAHYobwW28gIwKz76k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717511390; c=relaxed/simple;
-	bh=RYVqR2gATEQ+i8NFnZGN6b5inLIzZ2bALRV5omE/pto=;
+	s=arc-20240116; t=1717511577; c=relaxed/simple;
+	bh=o2mxzel60r7gCRivC5Z4TUDgKE+d9kjE+8mhknQD8YM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tVj6HpWuQ8S2NzyoFmHuSEYC9iXsH/uq/14M3GtVfUJl7u+sDZQeJmFCaCyo5TiQ73bpVmmzlskjngi5B/Q4lwRs2FpwPZ3L4stwBjZtDvT6+NIrZvT9SUKZFZY2f2gZwEQ0wSgBW9yjwspHuowikvSAnoQ6Ghw8OmiwEuT4DOg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LMQxkxwI; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=nd1/l3dRy36g1Dt1Bmri3HOd6N5s/0jC3kcNgKlhg8JR1ZC2yJKDwzdh4JGTfh9k38VRuAQ3pv1onVxiBVzt6myB4wOIrjxUzOButPLYEvQerxs27bJ0dEecuq/uE+OsQmeE3Q/D0n/m3Zf62XvysWAJrXX5Frd0RYfkcV7WrgA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Tl32S+f; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LMQxkxwI"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E945BC32786;
-	Tue,  4 Jun 2024 14:29:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1717511389;
-	bh=RYVqR2gATEQ+i8NFnZGN6b5inLIzZ2bALRV5omE/pto=;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Tl32S+f"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44CA5C4AF08;
+	Tue,  4 Jun 2024 14:32:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1717511577;
+	bh=o2mxzel60r7gCRivC5Z4TUDgKE+d9kjE+8mhknQD8YM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LMQxkxwItHEyc0tuHD46Cq6ZIFnI2PqRgcPo/rHiZxmQYoXWcW+z8Me6WqY4UTpfD
-	 p5xGiufhACSdpulwIDjc0ROPASwruHfmhvDGJrlbuQ5SU9meMtvwCAl8OarGE6bd2+
-	 gfxwVfJUUAu3EUroDavLsd7BdRTR054oPF8jtuyDlOw62e8zeX2Bgahp+BimJ5102H
-	 lOcSUeEF88Y0hF+lR1V4e+KgswypSX6qb6On8mHFA4JOrX2mej4kbhWlLfQn1HcG/d
-	 5IwUiGDgxSpr/+hxtVtgubCv1WC1s6TgLE4dthl42VVGbfAw3hKjoekzIXTrM1q8Ht
-	 QxMsW4NONw73w==
-Date: Tue, 4 Jun 2024 15:29:41 +0100
-From: Will Deacon <will@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Jamie.Cunliffe@arm.com, a.hindborg@samsung.com, alex.gaynor@gmail.com,
-	ardb@kernel.org, benno.lossin@proton.me, bjorn3_gh@protonmail.com,
-	boqun.feng@gmail.com, broonie@kernel.org, catalin.marinas@arm.com,
-	gary@garyguo.net, keescook@chromium.org, kernel@valentinobst.de,
-	linux-arm-kernel@lists.infradead.org, linux-kbuild@vger.kernel.org,
-	linux-kernel@vger.kernel.org, mark.rutland@arm.com,
-	masahiroy@kernel.org, maz@kernel.org,
-	miguel.ojeda.sandonis@gmail.com, nathan@kernel.org,
-	ndesaulniers@google.com, nicolas@fjasle.eu, ojeda@kernel.org,
-	rust-for-linux@vger.kernel.org, samitolvanen@google.com,
-	wedsonaf@gmail.com
-Subject: Re: [PATCH v2] rust: add flags for shadow call stack sanitizer
-Message-ID: <20240604142941.GD20384@willie-the-truck>
-References: <20240409103120.GA22557@willie-the-truck>
- <20240430110925.1064685-1-aliceryhl@google.com>
+	b=2Tl32S+f0uYVyDTYPdJKeLmAq5C7wR3ltmjeG9Hk45252TkQrW6BOA02wijrNgVqu
+	 1RYzMpiz6b2mKESpa4q/yLcU0j7uA5lm9D3ZfAjAHCRH1njiVH2H5vvXFm19nN4pQH
+	 vrmhg48+g8pdeHO6xd0cHGkmVsarK4CZkEBT2o08=
+Date: Tue, 4 Jun 2024 16:17:29 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Danilo Krummrich <dakr@redhat.com>
+Cc: rafael@kernel.org, bhelgaas@google.com, ojeda@kernel.org,
+	alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@samsung.com, aliceryhl@google.com, airlied@gmail.com,
+	fujita.tomonori@gmail.com, lina@asahilina.net, pstanner@redhat.com,
+	ajanulgu@redhat.com, lyude@redhat.com,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org
+Subject: Re: [RFC PATCH 01/11] rust: add abstraction for struct device
+Message-ID: <2024060428-whoops-flattop-7f43@gregkh>
+References: <20240520172554.182094-1-dakr@redhat.com>
+ <20240520172554.182094-2-dakr@redhat.com>
+ <2024052038-deviancy-criteria-e4fe@gregkh>
+ <Zkuw/nOlpAe1OesV@pollux.localdomain>
+ <2024052144-alibi-mourner-d463@gregkh>
+ <Zk0HG5Ot-_e0o89p@pollux>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -52,43 +50,92 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240430110925.1064685-1-aliceryhl@google.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+In-Reply-To: <Zk0HG5Ot-_e0o89p@pollux>
 
-On Tue, Apr 30, 2024 at 11:09:25AM +0000, Alice Ryhl wrote:
-> Will Deacon <will@kernel.org> wrote:
-> > On Tue, Mar 05, 2024 at 01:14:19PM +0100, Miguel Ojeda wrote:
-> >> Otherwise partially reverting to the `target.json` approach sounds good too.
-> >> 
-> >> I added the `-Zuse-sync-unwind=n` to the list at
-> >> https://github.com/Rust-for-Linux/linux/issues/2. Given the default is
-> >> what we want, I have put it in the "Good to have" section.
+On Tue, May 21, 2024 at 10:42:03PM +0200, Danilo Krummrich wrote:
+> On Tue, May 21, 2024 at 11:24:38AM +0200, Greg KH wrote:
+> > On Mon, May 20, 2024 at 10:22:22PM +0200, Danilo Krummrich wrote:
+> > > > > +impl Device {
+> > > > > +    /// Creates a new ref-counted instance of an existing device pointer.
+> > > > > +    ///
+> > > > > +    /// # Safety
+> > > > > +    ///
+> > > > > +    /// Callers must ensure that `ptr` is valid, non-null, and has a non-zero reference count.
+> > > > 
+> > > > Callers NEVER care about the reference count of a struct device, anyone
+> > > > poking in that is asking for trouble.
+> > > 
+> > > That's confusing, if not the caller who's passing the device pointer somewhere,
+> > > who else?
+> > > 
+> > > Who takes care that a device' reference count is non-zero when a driver's probe
+> > > function is called?
 > > 
-> > I think we have time to do this properly, like we did for the clang
-> > enablement a few years ago. In hindsight, avoiding hacks for the early
-> > toolchains back then was a really good idea because it meant we could
-> > rely on a solid baseline set of compiler features from the start.
+> > A device's reference count will be non-zero, I'm saying that sometimes,
+> > some driver core functions are called with a 'struct device' that is
+> > NULL, and it can handle it just fine.  Hopefully no callbacks to the
+> > rust code will happen that way, but why aren't you checking just "to be
+> > sure!" otherwise you could have a bug here, and it costs nothing to
+> > verify it, right?
+> 
+> I get your point on that one. But let me explain a bit more why I think that
+> check is not overly helpful here.
+> 
+> In Rust we have the concept of marking functions as 'unsafe'. Unsafe functions
+> need to document their safety preconsitions, i.e. the conditions the caller of
+> the function must guarantee. The caller of an unsafe function needs an unsafe
+> block for it to compile and every unsafe block needs an explanation why it is
+> safe to call this function with the corresponding arguments.
+> 
+> (Ideally, we want to avoid having them in the first place, but for C abstractions
+> we have to deal with raw pointers we receive from the C side and dereferencing a
+> raw pointer is unsafe by definition.)
+> 
+> In this case we have a function that constructs the Rust `Device` structure from
+> a raw (device) pointer we potentially received from the C side. Now we have to
+> decide whether this function is going to be unsafe or safe.
+> 
+> In order for this function to be safe we would need to be able to guarantee that
+> this is a valid, non-null pointer with a non-zero reference count, which
+> unfortunately we can't. Hence, it's going to be an unsafe function.
+
+But you can verify it is non-null, so why not?
+
+> A NULL pointer check would not make it a safe function either, since the pointer
+> could still be an invalid one, or a pointer to a device it's not guaranteed that
+> the reference count is held up for the duration of the function call.
+
+True, but you just took one huge swatch of "potential crashes" off the
+table.  To ignore that feels odd.
+
+> Given that, we could add the NULL check and change the safety precondition to
+> "valid pointer to a device with non-zero reference count OR NULL", but I don't
+> see how this improves the situation for the caller, plus we'd need to return
+> `Result<Device>` instead and let the caller handle that the `Device` was not
+> created.
+
+It better be able to handle if `Device` was not created, as you could
+have been out of memory and nothing would have been allocated.  To not
+check feels very broken.
+
+> > Ok, if you say so, should we bookmark this thread for when this does
+> > happen?  :)
+> 
+> I'm just saying the caller has to validate that or provide a rationale why this
+> is safe anyways, hence it'd be just a duplicate check.
+> 
 > > 
-> > So, please can we fix this in rustc and just have SCS dependent on that?
+> > What will the rust code do if it is passed in a NULL pointer?  Will it
+> > crash like C code does?  Or something else?
 > 
-> Just to keep you in the loop, I've posted a PR to make rustc recognize
-> the reserve-x18 target feature, so that the -Ctarget-feature=+reserve-x18
-> flag stops emitting a warning.
+> It mostly calls into C functions with this pointer, depends on what they do.
 > 
-> This should be sufficient for adding support for CONFIG_DYNAMIC_SCS.
+> Checking a few random places, e.g. [1], it seems to crash in most cases.
 > 
-> You can find it here:
-> https://github.com/rust-lang/rust/pull/124323
-> 
-> As for non-dynamic SCS, I plan to tackle that after the PR is merged.
-> See the "Future possibilities" section in the linked PR for more info on
-> that.
+> [1] https://elixir.free-electrons.com/linux/latest/source/drivers/base/core.c#L3863
 
-Thanks for persevering with this, Alice. I read the pull request above,
-but it looks like you went with:
+Great, then you should check :)
 
-https://github.com/rust-lang/rust/pull/124655
+thanks,
 
-instead, which was merged (hurrah!). Do we need anything else?
-
-Will
+greg k-h
