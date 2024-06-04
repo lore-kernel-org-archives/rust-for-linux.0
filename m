@@ -1,257 +1,192 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f202.google.com (mail-yb1-f202.google.com [209.85.219.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8727914D280
-	for <rust-for-linux@vger.kernel.org>; Tue,  4 Jun 2024 20:06:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9FD114B09F
+	for <rust-for-linux@vger.kernel.org>; Tue,  4 Jun 2024 22:41:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717531606; cv=none; b=imI3xCpoosNEejUHyq47a8NGCLyp5yQJX2FqQgMu2FV+Pn9zXn+OVnbOS7Kpr6qnQtSlp/M6kWYR98RG4SxE9r/H1WkbWvXLtND/XHQwoj0QRiF8Zuh9MUWu352kDtWM5z+MkT9Pznid/1LPktFaJHqocyRey8lfGZjDxLNLtYc=
+	t=1717540885; cv=none; b=kC9ep5klkLyt0/76UwX93i2lcTWFLXK+0YCP8AC/gBIoi4V9rlzTTNWmCbgITcW94DCZrXi1e9hyti8LW0o6QIpjtAwWv0QH4Y2Xc0INaDoqj6xJGVtqvlJRx0xzr1vf8VUNfyKtcRMBc3sGF4w5pVAK0CKVuqiwIwTqENRAjH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717531606; c=relaxed/simple;
-	bh=aSCQYI2hmOCD/IbP1xwsFpZTAcY2IeBlcORVlIkjZRc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 In-Reply-To:Content-Type:Content-Disposition; b=WZIPi/QVducGYLI0LZrwvr9AJEIFBNNBJCnnpNs0tZLIioe1SATK39LSXIXu2MPSYFFp3KJCRLK8jgNDvFvRi+FyNU0bTilvN1ZyBOjDpjjGxoPoCp9BaWUJjuT75O6xMTLzd2m37+oy8Qbmvb4sDbvo9anMeSQ/GgrhzlXWzTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bTHccH/S; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1717540885; c=relaxed/simple;
+	bh=48X2qgdP1gIxKDJW40AJ3Odff8DBYT35+62pDzTjg8s=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=RHUc/CaSVmfk5T8UyZAug93zCMC3JGnaaThliOXD8B/vmekP7DvH2YE9qVmYQ8KDVm0bZ1yBF25U2lKaoq1jBg1EsnWPjfj8SqRZoLZdI976u2O4lgRRHDv7w533oBvrZMVvDMCUHhArKFpg+kixjBC/wjxhlSGdH1lR3O1agqU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--davidgow.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=K0OaYR3i; arc=none smtp.client-ip=209.85.219.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--davidgow.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bTHccH/S"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1717531602;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=ZOQwPW0aG2Foum3BxxDnBe7vRUHsrv0pioUfgn6NI/E=;
-	b=bTHccH/S5s18t5GBpKN4T5WBHvLPvccvvgZwvaRdpvsdTIC567TihxQUlcacTosr2ojELi
-	quDN330KVQJdufwoOd8M7nWgbEJc1BuIzDUyqvEeEqB/2Guz4EkFIyU0vGs4oOsbCFsh/s
-	cAE2H6bKHXAPamuhQfrw4bi/5O8/yEc=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-307-27_1b-ZCP16ofHXql0QF9A-1; Tue, 04 Jun 2024 16:06:37 -0400
-X-MC-Unique: 27_1b-ZCP16ofHXql0QF9A-1
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-42135f6012fso26621015e9.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 04 Jun 2024 13:06:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="K0OaYR3i"
+Received: by mail-yb1-f202.google.com with SMTP id 3f1490d57ef6-df773f9471fso11159705276.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 04 Jun 2024 15:41:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1717540882; x=1718145682; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=5BFhMURlOxwbCZPlt3t+cMRvFnuBznLgUYvajgNDozE=;
+        b=K0OaYR3i07zq5e5v5zpwIGXGynOZVzDIE3GP5tlL2EcCO09llUjrJvzCgrAN4/i/aM
+         IIC4mDBqZ5yKXk6+m4qNMa/CWLymETiW7D6VaDoUznE+NAReuY7MrBJzUhdN7U6n5fV8
+         qqp6MfVLt2DAOUaSuPCTdmXmx+mPzWRq9UZ7MxOrGVE7lVq7nQcWdo+1SK56r5/kP8Te
+         NyUXcrT5QtwN+fB2/lvDLMK9bvmM4FY6xeFwtANSwD3sFo2CStl9x/RkyukL0eWUDC7b
+         NyDIfNTAQa+e8vwYWgh6l5tdO2kgTTuqKSHHp3lnsP7lF/u6WDd+wdjNBHOr/4AAPQl5
+         GJ0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717531596; x=1718136396;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ZOQwPW0aG2Foum3BxxDnBe7vRUHsrv0pioUfgn6NI/E=;
-        b=FrN6fzEAz5nZg/BIFTqGy0ffLBwwQH3C4EJbhOYvDKJDhlAiunH5eZtzkwiUGZvKgO
-         RgJEh3UsKJA2PPlxdmEP8zUVwz82eb21HkkNglGgFmVs/LBJGHEbXO958AFzxBtHY5EH
-         wf4r/iG/eMiIzlUiluhRaHVxfemlm+jbIWGjZhOwdxb2mYXpvZQUuDs6afyaABy/DXZ4
-         72nUrE5DpPK4Bbu9JfiMGgSyHTbGn+fTwPNSHgpw/5P+OHQMbngTSXEFKqYWWg5gBRHR
-         lWU7+HOJhppTQX2B2KS70Oogv1h8sPOXyG62SWnah4vXLCbUcuZyCFNevAzHW/8bPxXN
-         Seag==
-X-Forwarded-Encrypted: i=1; AJvYcCWzT1YD/i45EDb8ISfNykf7Ocm4tC04klQQBE4rjtHCJObPo4h2BvwkZa1Idi3sZgvtOI4D3lvABPUwBoSKnHyIvzj/T+aEey8vp2AJFsM=
-X-Gm-Message-State: AOJu0YxnQbQgtNXu7OY7qijx5YK+wKTzNYmo7JZbY4DT0cIUFTrTRzIm
-	vUMcCyYgFA+t1WkZdPqeWBT46CitzeyE8LpUST1wqO/WXteOGET/op45ZPezy3yA/3OgY9DF4ZS
-	NZODTiAfmQUFY0tdtcwrpmmK61of6cby2G9CSAzmwg4ybMXAg9o++iTy4Pg4w5gxX
-X-Received: by 2002:a05:600c:3c97:b0:41a:c170:701f with SMTP id 5b1f17b1804b1-42156356ac6mr3557935e9.38.1717531596353;
-        Tue, 04 Jun 2024 13:06:36 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEvgnv3dsKpQRLAsQ3oX8Eyk4WLvjXVlc3Cl2eoNi52H9/3hBfkpYiRdpbspAeOhGIOZiuWIQ==
-X-Received: by 2002:a05:600c:3c97:b0:41a:c170:701f with SMTP id 5b1f17b1804b1-42156356ac6mr3557815e9.38.1717531595889;
-        Tue, 04 Jun 2024 13:06:35 -0700 (PDT)
-Received: from pollux ([2a02:810d:4b3f:ee94:abf:b8ff:feee:998b])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42138260c5asm123349765e9.41.2024.06.04.13.06.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Jun 2024 13:06:35 -0700 (PDT)
-Date: Tue, 4 Jun 2024 22:06:33 +0200
-From: Danilo Krummrich <dakr@redhat.com>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: rafael@kernel.org, bhelgaas@google.com, ojeda@kernel.org,
-	alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	a.hindborg@samsung.com, aliceryhl@google.com, airlied@gmail.com,
-	fujita.tomonori@gmail.com, lina@asahilina.net, pstanner@redhat.com,
-	ajanulgu@redhat.com, lyude@redhat.com,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org
-Subject: Re: [RFC PATCH 02/11] rust: add driver abstraction
-Message-ID: <Zl9zybWIeZqt8tWc@pollux>
-References: <20240520172554.182094-1-dakr@redhat.com>
- <20240520172554.182094-3-dakr@redhat.com>
- <2024052045-lived-retiree-d8b9@gregkh>
- <ZkvPDbAQLo2/7acY@pollux.localdomain>
- <2024052155-pulverize-feeble-49bb@gregkh>
- <Zk0egew_AxvNpUG-@pollux>
- <2024060432-chloride-grappling-cf95@gregkh>
- <Zl81oUmNO5TX063x@cassiopeiae>
- <2024060404-figment-resolute-7c6c@gregkh>
+        d=1e100.net; s=20230601; t=1717540882; x=1718145682;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=5BFhMURlOxwbCZPlt3t+cMRvFnuBznLgUYvajgNDozE=;
+        b=X6mnFC2mnSoj3/FnC1pcIf4u5q9AKfzbgD1TgB+76+aXDm/9s70/gunVPxQhkUMyna
+         ua04w5HG3JmbQwtRu5Ikvtbe+z/+m6mfCX1fq4/1DawjRpSwXr3lOnKNvNxd3jESgldw
+         xnsNUTtG5+Mfu9S1xiQ4fZt3V5v4xupaWcBkwAj6zQBhs2bExdqiUhFvm90OD0dHXafI
+         nW8rqVG+F3wJGAeGDEkIp+4z1SbrI8SFBS/zPRdMPXkXmc7TeTQ54wVOJivdBbZN+cYn
+         oxzkrqYm0WOa1XhHWwGUP0OGFaArEkp6LJMBX67J7DTBTwv0FbZ6kcAGL+ESZrM8/PuI
+         SZQw==
+X-Forwarded-Encrypted: i=1; AJvYcCUffJaSpAqHJvCr843Wf+D7FOvwWfRTMACAvj3ebo//LmC8UoYQ0epWnCdWnvl+oJkU64tsmEHgpeKjPNB7egwkUqRCn+Dyp2x95SNVAjc=
+X-Gm-Message-State: AOJu0YyV4+7LQUbW03u7QmGxiTUcAbpHc8P/Ws2rgPPgfi8/rIzsw4un
+	ZVqVm5QWO3hqYuBeMZH9+OEG80mpaXXFWrjiIM/DGuLfLp9THbtynK7J8cMeKngLzoHYEYFUzpU
+	vuey6AaxKEg==
+X-Google-Smtp-Source: AGHT+IFe9doWPRL9bdOBiprw606KPAUV1/yCDGjKHg9/0f16jSpDeFrPKk08bm1aGwBuEsC7VjTpzn499oFw4w==
+X-Received: from slicestar.c.googlers.com ([fda3:e722:ac3:cc00:4f:4b78:c0a8:20a1])
+ (user=davidgow job=sendgmr) by 2002:a05:6902:120d:b0:dcb:e982:4e40 with SMTP
+ id 3f1490d57ef6-dfacad28c85mr236994276.12.1717540882585; Tue, 04 Jun 2024
+ 15:41:22 -0700 (PDT)
+Date: Wed,  5 Jun 2024 06:40:50 +0800
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-In-Reply-To: <2024060404-figment-resolute-7c6c@gregkh>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.45.1.288.g0e0cd299f1-goog
+Message-ID: <20240604224052.3138504-1-davidgow@google.com>
+Subject: [PATCH] arch: um: rust: Add i386 support for Rust
+From: David Gow <davidgow@google.com>
+To: Brendan Higgins <brendan.higgins@linux.dev>, Rae Moar <rmoar@google.com>, 
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	"H . Peter Anvin" <hpa@zytor.com>, Masahiro Yamada <masahiroy@kernel.org>, 
+	Richard Weinberger <richard@nod.at>, Anton Ivanov <anton.ivanov@cambridgegreys.com>, 
+	Johannes Berg <johannes@sipsolutions.net>
+Cc: David Gow <davidgow@google.com>, kunit-dev@googlegroups.com, 
+	linux-kernel@vger.kernel.org, linux-um@lists.infradead.org, 
+	rust-for-linux@vger.kernel.org, x86@kernel.org, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, linux-doc@vger.kernel.org, 
+	linux-kbuild@vger.kernel.org, llvm@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Jun 04, 2024 at 06:00:11PM +0200, Greg KH wrote:
-> On Tue, Jun 04, 2024 at 05:41:21PM +0200, Danilo Krummrich wrote:
-> > On Tue, Jun 04, 2024 at 04:27:31PM +0200, Greg KH wrote:
-> > > On Wed, May 22, 2024 at 12:21:53AM +0200, Danilo Krummrich wrote:
-> > > > On Tue, May 21, 2024 at 11:35:43AM +0200, Greg KH wrote:
-> > > > > On Tue, May 21, 2024 at 12:30:37AM +0200, Danilo Krummrich wrote:
-> > > > > > On Mon, May 20, 2024 at 08:14:18PM +0200, Greg KH wrote:
-> > > > > > > On Mon, May 20, 2024 at 07:25:39PM +0200, Danilo Krummrich wrote:
-> > > > > > > > From: Wedson Almeida Filho <wedsonaf@gmail.com>
-> > > > > > > > 
-> > > > > > > > This defines general functionality related to registering drivers with
-> > > > > > > > their respective subsystems, and registering modules that implement
-> > > > > > > > drivers.
-> > > > > > > > 
-> > > > > > > > Co-developed-by: Asahi Lina <lina@asahilina.net>
-> > > > > > > > Signed-off-by: Asahi Lina <lina@asahilina.net>
-> > > > > > > > Co-developed-by: Andreas Hindborg <a.hindborg@samsung.com>
-> > > > > > > > Signed-off-by: Andreas Hindborg <a.hindborg@samsung.com>
-> > > > > > > > Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
-> > > > > > > > Signed-off-by: Danilo Krummrich <dakr@redhat.com>
-> > > > > > > > ---
-> > > > > > > >  rust/kernel/driver.rs        | 492 +++++++++++++++++++++++++++++++++++
-> > > > > > > >  rust/kernel/lib.rs           |   4 +-
-> > > > > > > >  rust/macros/module.rs        |   2 +-
-> > > > > > > >  samples/rust/rust_minimal.rs |   2 +-
-> > > > > > > >  samples/rust/rust_print.rs   |   2 +-
-> > > > > > > >  5 files changed, 498 insertions(+), 4 deletions(-)
-> > > > > > > >  create mode 100644 rust/kernel/driver.rs
-> > > > > > > > 
-> > > > > > > > diff --git a/rust/kernel/driver.rs b/rust/kernel/driver.rs
-> > > > > > > > new file mode 100644
-> > > > > > > > index 000000000000..e0cfc36d47ff
-> > > > > > > > --- /dev/null
-> > > > > > > > +++ b/rust/kernel/driver.rs
-> > > > > > > > @@ -0,0 +1,492 @@
-> > > > > > > > +// SPDX-License-Identifier: GPL-2.0
-> > > > > > > > +
-> > > > > > > > +//! Generic support for drivers of different buses (e.g., PCI, Platform, Amba, etc.).
-> > > > > > > > +//!
-> > > > > > > > +//! Each bus/subsystem is expected to implement [`DriverOps`], which allows drivers to register
-> > > > > > > > +//! using the [`Registration`] class.
-> > > > > > > 
-> > > > > > > Why are you creating new "names" here?  "DriverOps" is part of a 'struct
-> > > > > > > device_driver' why are you separating it out here?  And what is
-> > > > > > 
-> > > > > > DriverOps is a trait which abstracts a subsystems register() and unregister()
-> > > > > > functions to (un)register drivers. It exists such that a generic Registration
-> > > > > > implementation calls the correct one for the subsystem.
-> > > > > > 
-> > > > > > For instance, PCI would implement DriverOps::register() by calling into
-> > > > > > bindings::__pci_register_driver().
-> > > > > > 
-> > > > > > We can discuss whether DriverOps is a good name for the trait, but it's not a
-> > > > > > (different) name for something that already exists and already has a name.
-> > > > > 
-> > > > > It's a name we don't have in the C code as the design of the driver core
-> > > > > does not need or provide it.  It's just the section of 'struct
-> > > > > device_driver' that provides function callbacks, why does it need to be
-> > > > > separate at all?
-> > > > 
-> > > > I'm confused by the relationship to `struct device_driver` you seem to imply.
-> > > > How is it related?
-> > > > 
-> > > > Again, this is just a trait for subsystems to provide their corresponding
-> > > > register and unregister implementation, e.g. pci_register_driver() and
-> > > > pci_unregister_driver(), such that they can be called from the generic
-> > > > Registration code below.
-> > > > 
-> > > > See [1] for an example implementation in PCI.
-> > > 
-> > > registering and unregistering drivers belongs in the bus code, NOT in
-> > > the driver code.
-> > 
-> > Why? We're not (re-)implementing a bus here. Again, those are just abstractions
-> > to call the C functions to register a driver. The corresponding C functions are
-> > e.g. driver_register() or __pci_register_driver(). Those are defined in
-> > drivers/base/driver.c and drivers/pci/pci-driver.c respectively.
-> > 
-> > Why wouldn't we follow the same scheme in Rust abstractions?
-> 
-> It's the bus that does the registering, so yeah, don't put it here at
-> all as it's not going to be needed (i.e. unless you write a bus in rust
-> you will never call driver_register())  So this can just be a wrapper
-> for the pci bus logic, keeping it simpler.
+At present, Rust in the kernel only supports 64-bit x86, so UML has
+followed suit. However, it's significantly easier to support 32-bit i386
+on UML than on bare metal, as UML does not use the -mregparm option
+(which alters the ABI), which is not yet supported by rustc[1].
 
-We never call driver_register() of course, I gave this example for another
-reason above. Sorry if that was confusing.
+Add support for CONFIG_RUST on um/i386, by adding a new target config to
+generate_rust_target, and replacing various checks on CONFIG_X86_64 to
+also support CONFIG_X86_32.
 
-> 
-> So you might be able to delete a lot of code here, only deal with a
-> "dumb" struct device wrapper to handle reference counts, and then do the
-> rest for the specific bus bindings?  Or is that too much to dream?
+We still use generate_rust_target, rather than a built-in rustc target,
+in order to match x86_64, provide a future place for -mregparm, and more
+easily disable floating point instructions.
 
-Again, this is a generalization such that we do not have to replicate code for
-every subsystem / bus. Please see the full explanation below.
+With these changes, the KUnit tests pass with:
+kunit.py run --make_options LLVM=1 --kconfig_add CONFIG_RUST=y
+--kconfig_add CONFIG_64BIT=n --kconfig_add CONFIG_FORTIFY_SOURCE=n
 
-> 
-> You aren't writing a "raw" driver here, no one does that, it's a bus
-> that handles that logic for you, and you should not have to expose any
-> "raw" driver attributes.
+An earlier version of these changes was proposed on the Rust-for-Linux
+github[2].
 
-Indeed - we're not doing that here.
+[1]: https://github.com/rust-lang/rust/issues/116972
+[2]: https://github.com/Rust-for-Linux/linux/pull/966
 
-> 
-> Yes, for some busses, they like to force a driver to set the "raw"
-> driver attribute, but I don't think that's a good idea and for the pci
-> driver layer, that shouldn't be necessary now, right?  If not, what
-> fields are you wanting to get direct access to?
+Signed-off-by: David Gow <davidgow@google.com>
+---
+ Documentation/rust/arch-support.rst |  2 +-
+ arch/um/Kconfig                     |  2 +-
+ rust/Makefile                       |  2 +-
+ scripts/Makefile                    |  2 +-
+ scripts/generate_rust_target.rs     | 17 +++++++++++++++++
+ 5 files changed, 21 insertions(+), 4 deletions(-)
 
-Honestly, this all reads as if you did not (carefully) read the code we're
-discussing about in the first place, did you?
-
-It reads more as if you take assumptions based on my previous explanations, and
-since communication is difficult, it looks like we're talking past each other.
-Maybe also my explanations were just not good enough. :(
-
-Either way, I suggest to focus more on the actual code. In particular let's have
-a look at the `Registration` and `DriverOps` struct from this patch and how
-they're used in the PCI code and in an actual driver.
-
-Please have a look at how the PCI code implements the `DriverOps` trait (or
-interface as many other languages would call it) [1]. In `DriverOps::register`
-and `DriverOps::unregister` the PCI code simply calls the C functions
-__pci_register_driver() and pci_unregister_driver().
-
-A driver can use the `module_pci_driver!` macro [2] to declare a kernel module
-that registers a single PCI driver. This is equivalent to C's
-module_pci_driver() macro.
-
-The `module_pci_driver!` macro calls the generic `module_driver!` macro [3] and
-passes the `pci::Adapter` [1] (the PCI thing that actually calls the C
-pci_{un}register_driver() functions).
-
-The `module_driver!` macro creates a new `Module` structure [4] that holds the
-`Registration` structure. This `Registration` structure has a generic argument
-which is the `pci::Adapter` [1]. Which means that once the `Registration` is
-created C's __pci_register_driver() is called and once it is destroyed C's
-pci_unregister_driver() is called. The `Registration` is created in
-module_init() and destroyed in module_exit() accordingly.
-
-So, as you can see a `Registration` is really just the parts generalized that
-otherwise every subsystem would need to implement and `DriverOps` is the glue
-between a driver `Registration` and the subsystem (e.g. PCI) defining which
-function to call on driver register() or driver unregister().
-
-My argument above is simply that since  all this is just the abstraction to
-declare a driver structure and register it, it belongs into driver.rs. At least
-if we want to go along with where the C side places the correspong functions on
-the C side.
-
-(The links already point to the new code that allocates the driver statically,
-but this should not matter, since conceptually it's the same.)
-
-[1] https://gitlab.freedesktop.org/drm/nova/-/blob/989338f129146af9952304c2cc6b33fbd90e8909/rust/kernel/pci.rs#L24
-[2] https://gitlab.freedesktop.org/drm/nova/-/blob/989338f129146af9952304c2cc6b33fbd90e8909/rust/kernel/pci.rs#L135
-[3] https://gitlab.freedesktop.org/drm/nova/-/blob/989338f129146af9952304c2cc6b33fbd90e8909/rust/kernel/driver.rs#L453
-[4] https://gitlab.freedesktop.org/drm/nova/-/blob/989338f129146af9952304c2cc6b33fbd90e8909/rust/kernel/driver.rs#L435
-
-> 
-> thanks,
-> 
-> greg k-h
-> 
+diff --git a/Documentation/rust/arch-support.rst b/Documentation/rust/arch-support.rst
+index b13e19d84744..750ff371570a 100644
+--- a/Documentation/rust/arch-support.rst
++++ b/Documentation/rust/arch-support.rst
+@@ -18,7 +18,7 @@ Architecture   Level of support  Constraints
+ ``arm64``      Maintained        Little Endian only.
+ ``loongarch``  Maintained        \-
+ ``riscv``      Maintained        ``riscv64`` only.
+-``um``         Maintained        ``x86_64`` only.
++``um``         Maintained        \-
+ ``x86``        Maintained        ``x86_64`` only.
+ =============  ================  ==============================================
+ 
+diff --git a/arch/um/Kconfig b/arch/um/Kconfig
+index 93a5a8999b07..b6ac49fec5bb 100644
+--- a/arch/um/Kconfig
++++ b/arch/um/Kconfig
+@@ -31,7 +31,7 @@ config UML
+ 	select TRACE_IRQFLAGS_SUPPORT
+ 	select TTY # Needed for line.c
+ 	select HAVE_ARCH_VMAP_STACK
+-	select HAVE_RUST			if X86_64
++	select HAVE_RUST
+ 
+ config MMU
+ 	bool
+diff --git a/rust/Makefile b/rust/Makefile
+index f70d5e244fee..83f675adbfab 100644
+--- a/rust/Makefile
++++ b/rust/Makefile
+@@ -426,7 +426,7 @@ $(obj)/core.o: private rustc_objcopy = $(foreach sym,$(redirect-intrinsics),--re
+ $(obj)/core.o: private rustc_target_flags = $(core-cfgs)
+ $(obj)/core.o: $(RUST_LIB_SRC)/core/src/lib.rs FORCE
+ 	+$(call if_changed_dep,rustc_library)
+-ifdef CONFIG_X86_64
++ifneq ($(or $(CONFIG_X86_64),$(CONFIG_X86_32)),)
+ $(obj)/core.o: scripts/target.json
+ endif
+ 
+diff --git a/scripts/Makefile b/scripts/Makefile
+index fe56eeef09dd..dccef663ca82 100644
+--- a/scripts/Makefile
++++ b/scripts/Makefile
+@@ -12,7 +12,7 @@ hostprogs-always-$(CONFIG_SYSTEM_EXTRA_CERTIFICATE)	+= insert-sys-cert
+ hostprogs-always-$(CONFIG_RUST_KERNEL_DOCTESTS)		+= rustdoc_test_builder
+ hostprogs-always-$(CONFIG_RUST_KERNEL_DOCTESTS)		+= rustdoc_test_gen
+ 
+-ifdef CONFIG_X86_64
++ifneq ($(or $(CONFIG_X86_64),$(CONFIG_X86_32)),)
+ always-$(CONFIG_RUST)					+= target.json
+ filechk_rust_target = $< < include/config/auto.conf
+ 
+diff --git a/scripts/generate_rust_target.rs b/scripts/generate_rust_target.rs
+index 641b713a033a..87f34925eb7b 100644
+--- a/scripts/generate_rust_target.rs
++++ b/scripts/generate_rust_target.rs
+@@ -169,6 +169,23 @@ fn main() {
+         ts.push("features", features);
+         ts.push("llvm-target", "x86_64-linux-gnu");
+         ts.push("target-pointer-width", "64");
++    } else if cfg.has("X86_32") {
++        // This only works on UML, as i386 otherwise needs regparm support in rustc
++        if !cfg.has("UML") {
++            panic!("32-bit x86 only works under UML");
++        }
++        ts.push("arch", "x86");
++        ts.push(
++            "data-layout",
++            "e-m:e-p:32:32-p270:32:32-p271:32:32-p272:64:64-i128:128-f64:32:64-f80:32-n8:16:32-S128",
++        );
++        let mut features = "-3dnow,-3dnowa,-mmx,+soft-float".to_string();
++        if cfg.has("MITIGATION_RETPOLINE") {
++            features += ",+retpoline-external-thunk";
++        }
++        ts.push("features", features);
++        ts.push("llvm-target", "i386-unknown-linux-gnu");
++        ts.push("target-pointer-width", "32");
+     } else if cfg.has("LOONGARCH") {
+         panic!("loongarch uses the builtin rustc loongarch64-unknown-none-softfloat target");
+     } else {
+-- 
+2.45.1.288.g0e0cd299f1-goog
 
