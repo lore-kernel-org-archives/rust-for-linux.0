@@ -1,227 +1,94 @@
-Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8EF21448C8
-	for <rust-for-linux@vger.kernel.org>; Tue,  4 Jun 2024 09:59:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28FC012E1C6;
+	Tue,  4 Jun 2024 14:29:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717495200; cv=none; b=pfHKyNLRCJU7HIGF8KuH3fvM1VB5NUkYDgomHhURcpavRsVRqzLPMkxsGUH098nV1Ho5upDn4kOE6Y7mbW+XUeK9PgA879+dpmYjoJ7rqaVa5/GNWEmAo2ip/ndc348cqfAtdfDKfEE8YaXFIEPlNCpH/p864VJdjtGWiQyYOH4=
+	t=1717511390; cv=none; b=bjHws1ApojPWOjbeTQfCQnsB9zvPR/hwlKEQn34EXyLjnzJU6u2y4ZfxMke1e9J6eAsGGVsXJcYnJV3iSkIn00T/R6Nh8woWpGFFwmb0VO8xpGks7i6edWPJ2aQMFx9ahnfco+eBJgXYeP2cshTKWP1pMoB9XwvhnS8wqzDe+/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717495200; c=relaxed/simple;
-	bh=ojWCF20cfUoiMtLqDIeUZ96Ul+Nd3RwITJw/ORXbDbc=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=GfhVsvnrYsiPvphOn2y3zZ8FN8LImt1Ksi8WVB8edCXwTLS0gTVOo7RL3B2SxZ0poDN41+ecwzUK/tVFdcu7jnYv+zjmakIOFkaTuzLNg3cc0fFTB0tiIj6nZXnVS2aUgkRELy7kL385jFcKaj5QJWYPp+Ry8OASh4fab9EqmPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk; spf=none smtp.mailfrom=metaspace.dk; dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b=YgXe1opa; arc=none smtp.client-ip=209.85.218.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=metaspace.dk
+	s=arc-20240116; t=1717511390; c=relaxed/simple;
+	bh=RYVqR2gATEQ+i8NFnZGN6b5inLIzZ2bALRV5omE/pto=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tVj6HpWuQ8S2NzyoFmHuSEYC9iXsH/uq/14M3GtVfUJl7u+sDZQeJmFCaCyo5TiQ73bpVmmzlskjngi5B/Q4lwRs2FpwPZ3L4stwBjZtDvT6+NIrZvT9SUKZFZY2f2gZwEQ0wSgBW9yjwspHuowikvSAnoQ6Ghw8OmiwEuT4DOg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LMQxkxwI; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b="YgXe1opa"
-Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-a6267778b3aso472684766b.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 04 Jun 2024 02:59:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=metaspace-dk.20230601.gappssmtp.com; s=20230601; t=1717495196; x=1718099996; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:references
-         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=NIq/eUO9YgOB4ouX5wft1IfVxCcuFVt84XqSDqsem4E=;
-        b=YgXe1opacThhBRASQJwpscZaF/tEgG1LG33rXLo3BpRu9hTkLUwxt0J6rI/zAXEk7z
-         XX6UHIQrSij5pwyWtjV+OFbtZQcwga6UTYdc3ThO6qbI/pTexKAqZooQhqRyHyuUBNHS
-         bR/IsfWiWZEQ9WKwG1TE+CjG3i12C3qv6tOPs5lIADpqiG0GkTpHnBA9gs+iALgzZ+Hp
-         DerLvIOZ7vIyP0EpvCQ5+tKouonIze8jyKUgizkE7Y86shIeCNGA/npaVxKEcS2QtMLR
-         XKmY7BIdaPiBIgMnymRC/BMkCqul9w/H4AeMVE8buHGYddxZgJS3FkKfvdH1hETkQLD5
-         kbvw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717495196; x=1718099996;
-        h=content-transfer-encoding:mime-version:message-id:date:references
-         :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=NIq/eUO9YgOB4ouX5wft1IfVxCcuFVt84XqSDqsem4E=;
-        b=NDZfD//uKfzItYSLP6CAlLX8Zd1qkQNRY2ldt9X5ulNuCI6BfkkNnMIbNqJCJuQkJi
-         cl5VtvWjdzwy9pz79u8WLqFtbVRByrA7id+wsB+fq3miFJR0jDw6SxPQw2mdiKErKbLW
-         ZT4v3NaUYdUJV78pO+tH0zeDzKNYhMhNKivFNUq9Gfv+w/QA7cOLRVdMBYX0FFFGg+g+
-         dfds8ESSfiOuyjqhMGO8F4Q3NYzwmRrYP/xZuHdM4qzWqIHk4wpk56GfIHvhqRFTPdsB
-         6SMxSVY/GRQTIni9jTx3LwJW+3/jHSgGyvI4hmA+rRsmx2QHGa6zj+5ugbuEeacuQEo2
-         fjlQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUL+D7RlTz2fKIpIh7rDAdb5qbSduIVm69zXu1BIjYDdPkbdHd1rwMncN3dkZfiLWimvQYXC0eVRIIoa/sdD/qGNVhUQEzjGkxXDlQKF8I=
-X-Gm-Message-State: AOJu0YzDtihnlTWtkKJIJ0RGB5oPM3Wv+2k96vDSvnUUaiAtzD3nnLah
-	SvfwSAwFHhhs7ouBO9g1V+Aim12+DLiOcp/q9uq4tOXkarGSQT2L8z0C7cMWopo=
-X-Google-Smtp-Source: AGHT+IH5c8gvgpxeYJR9DYjfzyPr9/QZPrSpme+Az/DADz5sutMsuFt/AqEGuTF3K5Xc2qa5/1JKTQ==
-X-Received: by 2002:a17:906:6807:b0:a68:bae4:94d3 with SMTP id a640c23a62f3a-a68bae49c1fmr545115966b.8.1717495195916;
-        Tue, 04 Jun 2024 02:59:55 -0700 (PDT)
-Received: from localhost ([79.142.230.34])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a67e6f03b7esm594011066b.2.2024.06.04.02.59.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Jun 2024 02:59:55 -0700 (PDT)
-From: Andreas Hindborg <nmi@metaspace.dk>
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Jens Axboe <axboe@kernel.dk>,  Christoph Hellwig <hch@lst.de>,  Keith
- Busch <kbusch@kernel.org>,  Damien Le Moal <dlemoal@kernel.org>,  Bart Van
- Assche <bvanassche@acm.org>,  Hannes Reinecke <hare@suse.de>,  Ming Lei
- <ming.lei@redhat.com>,  "linux-block@vger.kernel.org"
- <linux-block@vger.kernel.org>,  Andreas Hindborg <a.hindborg@samsung.com>,
-  Wedson Almeida Filho <wedsonaf@gmail.com>,  Greg KH
- <gregkh@linuxfoundation.org>,  Matthew Wilcox <willy@infradead.org>,
-  Miguel Ojeda <ojeda@kernel.org>,  Alex Gaynor <alex.gaynor@gmail.com>,
-  Boqun Feng <boqun.feng@gmail.com>,  Gary Guo <gary@garyguo.net>,
-  =?utf-8?Q?Bj=C3=B6rn?=
- Roy Baron <bjorn3_gh@protonmail.com>,  Alice Ryhl <aliceryhl@google.com>,
-  Chaitanya Kulkarni <chaitanyak@nvidia.com>,  Luis Chamberlain
- <mcgrof@kernel.org>,  Yexuan Yang <1182282462@bupt.edu.cn>,  Sergio
- =?utf-8?Q?Gonz=C3=A1lez?= Collado <sergio.collado@gmail.com>,  Joel
- Granados
- <j.granados@samsung.com>,  "Pankaj Raghav (Samsung)"
- <kernel@pankajraghav.com>,  Daniel Gomez <da.gomez@samsung.com>,  Niklas
- Cassel <Niklas.Cassel@wdc.com>,  Philipp Stanner <pstanner@redhat.com>,
-  Conor Dooley <conor@kernel.org>,  Johannes Thumshirn
- <Johannes.Thumshirn@wdc.com>,  Matias =?utf-8?Q?Bj=C3=B8rling?=
- <m@bjorling.me>,  open list
- <linux-kernel@vger.kernel.org>,  "rust-for-linux@vger.kernel.org"
- <rust-for-linux@vger.kernel.org>,  "lsf-pc@lists.linux-foundation.org"
- <lsf-pc@lists.linux-foundation.org>,  "gost.dev@samsung.com"
- <gost.dev@samsung.com>
-Subject: Re: [PATCH v4 1/3] rust: block: introduce `kernel::block::mq` module
-In-Reply-To: <925fe0fe-9303-4f49-b473-c3a3ecc5e2e6@proton.me> (Benno Lossin's
-	message of "Mon, 03 Jun 2024 18:26:08 +0000")
-References: <20240601134005.621714-1-nmi@metaspace.dk>
-	<20240601134005.621714-2-nmi@metaspace.dk>
-	<b6b8e3e6-a2b9-4ddd-bf0f-e924d5d65653@proton.me>
-	<87mso2me0p.fsf@metaspace.dk>
-	<925fe0fe-9303-4f49-b473-c3a3ecc5e2e6@proton.me>
-Date: Tue, 04 Jun 2024 11:59:49 +0200
-Message-ID: <87y17lqb8q.fsf@metaspace.dk>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LMQxkxwI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E945BC32786;
+	Tue,  4 Jun 2024 14:29:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1717511389;
+	bh=RYVqR2gATEQ+i8NFnZGN6b5inLIzZ2bALRV5omE/pto=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=LMQxkxwItHEyc0tuHD46Cq6ZIFnI2PqRgcPo/rHiZxmQYoXWcW+z8Me6WqY4UTpfD
+	 p5xGiufhACSdpulwIDjc0ROPASwruHfmhvDGJrlbuQ5SU9meMtvwCAl8OarGE6bd2+
+	 gfxwVfJUUAu3EUroDavLsd7BdRTR054oPF8jtuyDlOw62e8zeX2Bgahp+BimJ5102H
+	 lOcSUeEF88Y0hF+lR1V4e+KgswypSX6qb6On8mHFA4JOrX2mej4kbhWlLfQn1HcG/d
+	 5IwUiGDgxSpr/+hxtVtgubCv1WC1s6TgLE4dthl42VVGbfAw3hKjoekzIXTrM1q8Ht
+	 QxMsW4NONw73w==
+Date: Tue, 4 Jun 2024 15:29:41 +0100
+From: Will Deacon <will@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Jamie.Cunliffe@arm.com, a.hindborg@samsung.com, alex.gaynor@gmail.com,
+	ardb@kernel.org, benno.lossin@proton.me, bjorn3_gh@protonmail.com,
+	boqun.feng@gmail.com, broonie@kernel.org, catalin.marinas@arm.com,
+	gary@garyguo.net, keescook@chromium.org, kernel@valentinobst.de,
+	linux-arm-kernel@lists.infradead.org, linux-kbuild@vger.kernel.org,
+	linux-kernel@vger.kernel.org, mark.rutland@arm.com,
+	masahiroy@kernel.org, maz@kernel.org,
+	miguel.ojeda.sandonis@gmail.com, nathan@kernel.org,
+	ndesaulniers@google.com, nicolas@fjasle.eu, ojeda@kernel.org,
+	rust-for-linux@vger.kernel.org, samitolvanen@google.com,
+	wedsonaf@gmail.com
+Subject: Re: [PATCH v2] rust: add flags for shadow call stack sanitizer
+Message-ID: <20240604142941.GD20384@willie-the-truck>
+References: <20240409103120.GA22557@willie-the-truck>
+ <20240430110925.1064685-1-aliceryhl@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240430110925.1064685-1-aliceryhl@google.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 
-Benno Lossin <benno.lossin@proton.me> writes:
+On Tue, Apr 30, 2024 at 11:09:25AM +0000, Alice Ryhl wrote:
+> Will Deacon <will@kernel.org> wrote:
+> > On Tue, Mar 05, 2024 at 01:14:19PM +0100, Miguel Ojeda wrote:
+> >> Otherwise partially reverting to the `target.json` approach sounds good too.
+> >> 
+> >> I added the `-Zuse-sync-unwind=n` to the list at
+> >> https://github.com/Rust-for-Linux/linux/issues/2. Given the default is
+> >> what we want, I have put it in the "Good to have" section.
+> > 
+> > I think we have time to do this properly, like we did for the clang
+> > enablement a few years ago. In hindsight, avoiding hacks for the early
+> > toolchains back then was a really good idea because it meant we could
+> > rely on a solid baseline set of compiler features from the start.
+> > 
+> > So, please can we fix this in rustc and just have SCS dependent on that?
+> 
+> Just to keep you in the loop, I've posted a PR to make rustc recognize
+> the reserve-x18 target feature, so that the -Ctarget-feature=+reserve-x18
+> flag stops emitting a warning.
+> 
+> This should be sufficient for adding support for CONFIG_DYNAMIC_SCS.
+> 
+> You can find it here:
+> https://github.com/rust-lang/rust/pull/124323
+> 
+> As for non-dynamic SCS, I plan to tackle that after the PR is merged.
+> See the "Future possibilities" section in the linked PR for more info on
+> that.
 
-[...]
+Thanks for persevering with this, Alice. I read the pull request above,
+but it looks like you went with:
 
->>>> +impl<T: Operations> OperationsVTable<T> {
->>>> +    /// This function is called by the C kernel. A pointer to this fu=
-nction is
->>>> +    /// installed in the `blk_mq_ops` vtable for the driver.
->>>> +    ///
->>>> +    /// # Safety
->>>> +    ///
->>>> +    /// - The caller of this function must ensure `bd` is valid
->>>> +    ///   and initialized. The pointees must outlive this function.
->>>
->>> Until when do the pointees have to be alive? "must outlive this
->>> function" could also be the case if the pointees die immediately after
->>> this function returns.
->>=20
->> It should not be plural. What I intended to communicate is that what
->> `bd` points to must be valid for read for the duration of the function
->> call. I think that is what "The pointee must outlive this function"
->> states? Although when we talk about lifetime of an object pointed to by
->> a pointer, I am not sure about the correct way to word this. Do we talk
->> about the lifetime of the pointer or the lifetime of the pointed to
->> object (the pointee). We should not use the same wording for the pointer
->> and the pointee.
->>=20
->> How about:
->>=20
->>     /// - The caller of this function must ensure that the pointee of `b=
-d` is
->>     ///   valid for read for the duration of this function.
->
-> But this is not enough for it to be sound, right? You create an `ARef`
-> from `bd.rq`, which potentially lives forever. You somehow need to
-> require that the pointer `bd` stays valid for reads and (synchronized)
-> writes until the request is ended (probably via `blk_mq_end_request`).
+https://github.com/rust-lang/rust/pull/124655
 
-The statement does not say anything about `*((*bd).rq)`. `*bd` needs to
-be valid only for the duration of the function. It carries a pointer to
-a `struct request` in the `rq` field. The pointee of that pointer must
-be exclusively owned by the driver until the request is done.
+instead, which was merged (hurrah!). Do we need anything else?
 
-Maybe like this:
-
-# Safety
-
-- The caller of this function must ensure that the pointee of `bd` is
-  valid for read for the duration of this function.
-- This function must be called for an initialized and live `hctx`. That
-  is, `Self::init_hctx_callback` was called and
-  `Self::exit_hctx_callback()` was not yet called.
-- `(*bd).rq` must point to an initialized and live `bindings:request`.
-  That is, `Self::init_request_callback` was called but
-  `Self::exit_request_callback` was not yet called for the request.
-- `(*bd).rq` must be owned by the driver. That is, the block layer must
-  promise to not access the request until the driver calls
-  `bindings::blk_mq_end_request` for the request.
-
-[...]
-
->>>> +    /// This function is called by the C kernel. A pointer to this fu=
-nction is
->>>> +    /// installed in the `blk_mq_ops` vtable for the driver.
->>>> +    ///
->>>> +    /// # Safety
->>>> +    ///
->>>> +    /// This function may only be called by blk-mq C infrastructure. =
-`set` must
->
-> `set` doesn't exist (`_set` does), you are also not using this
-> requirement.
-
-Would be nice if there was a way in `rustdoc` no name arguments
-explicitly.
-
->
->>>> +    /// point to an initialized `TagSet<T>`.
->>>> +    unsafe extern "C" fn init_request_callback(
->>>> +        _set: *mut bindings::blk_mq_tag_set,
->>>> +        rq: *mut bindings::request,
->>>> +        _hctx_idx: core::ffi::c_uint,
->>>> +        _numa_node: core::ffi::c_uint,
->>>> +    ) -> core::ffi::c_int {
->>>> +        from_result(|| {
->>>> +            // SAFETY: The `blk_mq_tag_set` invariants guarantee that=
- all
->>>> +            // requests are allocated with extra memory for the reque=
-st data.
->>>
->>> What guarantees that the right amount of memory has been allocated?
->>> AFAIU that is guaranteed by the `TagSet` (but there is no invariant).
->>=20
->> It is by C API contract. `TagSet`::try_new` (now `new`) writes
->> `cmd_size` into the `struct blk_mq_tag_set`. That is picked up by
->> `blk_mq_alloc_tag_set` to allocate the right amount of space for each re=
-quest.
->>=20
->> The invariant here is on the C type. Perhaps the wording is wrong. I am
->> not exactly sure how to express this. How about this:
->>=20
->>             // SAFETY: We instructed `blk_mq_alloc_tag_set` to allocate =
-requests
->>             // with extra memory for the request data when we called it =
-in
->>             // `TagSet::new`.
->
-> I think you need a safety requirement on the function: `rq` points to a
-> valid `Request`. Then you could just use `Request::wrapper_ptr` instead
-> of the line below.
-
-I cannot require `rq` to point to a valid `Request`, because that would
-require the private data area to already be initialized as a valid
-`RequestDataWrapper`. Using the `wrapper_ptr` is good =F0=9F=91=8D. How is =
-this:
-
-
-    /// # Safety
-    ///
-    /// - This function may only be called by blk-mq C infrastructure.
-    /// - `_set` must point to an initialized `TagSet<T>`.
-    /// - `rq` must point to an initialized `bindings::request`.
-    /// - The allocation pointed to by `rq` must be at the size of `Request`
-    ///   plus the size of `RequestDataWrapper`.
-
-
-BR Andreas
+Will
