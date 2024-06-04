@@ -1,63 +1,63 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB95033F6
-	for <rust-for-linux@vger.kernel.org>; Tue,  4 Jun 2024 16:23:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8727914D280
+	for <rust-for-linux@vger.kernel.org>; Tue,  4 Jun 2024 20:06:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717518200; cv=none; b=ol3OFYoO4ZE1163oMhnK06bnldAPAlfSzpHDYSdONKPJBn8mefOS+1FsjTQcNhfCR/ZqiTwhnyM92n0G9UQ8JOQfdeZR3Peo2BZsp8MeKkRjTtcjqV7UlZ6Qzz+CjQ3T3COr9YLfrwwZnb154sSjpIIMbQnGoYcuwrKYeu/L6wc=
+	t=1717531606; cv=none; b=imI3xCpoosNEejUHyq47a8NGCLyp5yQJX2FqQgMu2FV+Pn9zXn+OVnbOS7Kpr6qnQtSlp/M6kWYR98RG4SxE9r/H1WkbWvXLtND/XHQwoj0QRiF8Zuh9MUWu352kDtWM5z+MkT9Pznid/1LPktFaJHqocyRey8lfGZjDxLNLtYc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717518200; c=relaxed/simple;
-	bh=L42C0MqxlWUis1/vQ2kmicKTlDmz8GjJwo4hZVEkM70=;
+	s=arc-20240116; t=1717531606; c=relaxed/simple;
+	bh=aSCQYI2hmOCD/IbP1xwsFpZTAcY2IeBlcORVlIkjZRc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 In-Reply-To:Content-Type:Content-Disposition; b=iPE0al/tLAz8y1K/SN5oi/krntn2bdgWhvYxvwgnGIZLkBdiZy/zI09fC+WJLk3dDKVkfcmS9GWgFiHbuMzx5p3vL0nGMUye20xGCReAX8vTNZHooEJIpyaKSOUwBG5lYmT5SIqlV0OKhfuTOp8kwuUDcIy0TXKgnxABXdU5jP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CFpeMNb7; arc=none smtp.client-ip=170.10.129.124
+	 In-Reply-To:Content-Type:Content-Disposition; b=WZIPi/QVducGYLI0LZrwvr9AJEIFBNNBJCnnpNs0tZLIioe1SATK39LSXIXu2MPSYFFp3KJCRLK8jgNDvFvRi+FyNU0bTilvN1ZyBOjDpjjGxoPoCp9BaWUJjuT75O6xMTLzd2m37+oy8Qbmvb4sDbvo9anMeSQ/GgrhzlXWzTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bTHccH/S; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CFpeMNb7"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bTHccH/S"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1717518197;
+	s=mimecast20190719; t=1717531602;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 in-reply-to:in-reply-to:references:references;
-	bh=t9m4FJ0/GJVz2wRY4oBw6RkZiK4RCdJiPQkTonn2MFI=;
-	b=CFpeMNb7ZImLUtNdun1WObSyROrMRlyySsuXnXfIPmEzyKeWtxPz06sdWQEKTKBdC6ZtA/
-	sP8wjGKJQDOmfxCMyxIcPezEr1ILxTmreTyVh2JGuaIBFtRpxzKjsRzqc7fQp59aQCzqG/
-	wUs77NFks58d7ZY1V6G7raGIVH4cG7g=
-Received: from mail-lj1-f197.google.com (mail-lj1-f197.google.com
- [209.85.208.197]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=ZOQwPW0aG2Foum3BxxDnBe7vRUHsrv0pioUfgn6NI/E=;
+	b=bTHccH/S5s18t5GBpKN4T5WBHvLPvccvvgZwvaRdpvsdTIC567TihxQUlcacTosr2ojELi
+	quDN330KVQJdufwoOd8M7nWgbEJc1BuIzDUyqvEeEqB/2Guz4EkFIyU0vGs4oOsbCFsh/s
+	cAE2H6bKHXAPamuhQfrw4bi/5O8/yEc=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-295-MaO3cKVAMGOE0xXNJtgxhg-1; Tue, 04 Jun 2024 12:23:14 -0400
-X-MC-Unique: MaO3cKVAMGOE0xXNJtgxhg-1
-Received: by mail-lj1-f197.google.com with SMTP id 38308e7fff4ca-2eab0fe8a7eso20410031fa.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 04 Jun 2024 09:23:13 -0700 (PDT)
+ us-mta-307-27_1b-ZCP16ofHXql0QF9A-1; Tue, 04 Jun 2024 16:06:37 -0400
+X-MC-Unique: 27_1b-ZCP16ofHXql0QF9A-1
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-42135f6012fso26621015e9.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 04 Jun 2024 13:06:37 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717518192; x=1718122992;
+        d=1e100.net; s=20230601; t=1717531596; x=1718136396;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=t9m4FJ0/GJVz2wRY4oBw6RkZiK4RCdJiPQkTonn2MFI=;
-        b=sE5NIAQ6h2jPNq8Xy5YzlWZcdogmoRkiqkXxMKcCcVeITqPBUHxXANRbCOHPcI9LRZ
-         Yw422LELZTxf4q8Xoxc7OJHl8vw9uWOQV8Y2QDMUdja44CKNxhQXxG+l6QEMnC8Rg/sD
-         WAsPcXD/JP851DxJ6SQ2IJSwT0iYdsnS9Qp+tQ32YmHOBzce7a3k6oA0CHNgH68rvSbO
-         +dQjRARyu2WqP6+ajq7l2ThKZnJWksz00xhNqiplVCj6SOXfVdeVZjxqUKBizbLiFH6H
-         pEKsinh8+uDfnAKuhGkOBb50UUSAu7sf6tUn10MzfydJ+68PRcofJGzBHQhSWg5X+Pp5
-         dvQQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXFetJQF7PnIXIUWpDxQgRjOpus7W9BqtILl7m5dBYwlbOLLStYL/ZEhDl8RTfSINrMl5m1HXVe65kFWFTUwnIoPzeDCC5z+FEQiEkmIFM=
-X-Gm-Message-State: AOJu0Yzdr6SopXQWTIvB3budIHh0ZiawgpqIxpU8gtFL0K5aRKzuyL8g
-	PNPNUMzjDIFkSqeoG22eI2tTScKikhMASUOgOz9ceLQfubZaXHxBC+3RS1AXK3ml1ZPZbd9Lt2x
-	RrciJDI8qdkZWElX7e9CH3ddeYNvJi11qOey6RndoKR0SThm7Bbv2cQZSmoFsPgZp
-X-Received: by 2002:a2e:b053:0:b0:2ea:938f:a23d with SMTP id 38308e7fff4ca-2ea951b6102mr79735751fa.42.1717518192420;
-        Tue, 04 Jun 2024 09:23:12 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFpDgl6mVBcVb02NoTlLuJeCPaA3ijNInKKoW4CUr3sKzP9Qc3fogPqdIuifYw03YqFir9JPw==
-X-Received: by 2002:a2e:b053:0:b0:2ea:938f:a23d with SMTP id 38308e7fff4ca-2ea951b6102mr79735491fa.42.1717518191954;
-        Tue, 04 Jun 2024 09:23:11 -0700 (PDT)
-Received: from cassiopeiae ([2a02:810d:4b3f:ee94:642:1aff:fe31:a19f])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4212709d336sm190116295e9.37.2024.06.04.09.23.10
+        bh=ZOQwPW0aG2Foum3BxxDnBe7vRUHsrv0pioUfgn6NI/E=;
+        b=FrN6fzEAz5nZg/BIFTqGy0ffLBwwQH3C4EJbhOYvDKJDhlAiunH5eZtzkwiUGZvKgO
+         RgJEh3UsKJA2PPlxdmEP8zUVwz82eb21HkkNglGgFmVs/LBJGHEbXO958AFzxBtHY5EH
+         wf4r/iG/eMiIzlUiluhRaHVxfemlm+jbIWGjZhOwdxb2mYXpvZQUuDs6afyaABy/DXZ4
+         72nUrE5DpPK4Bbu9JfiMGgSyHTbGn+fTwPNSHgpw/5P+OHQMbngTSXEFKqYWWg5gBRHR
+         lWU7+HOJhppTQX2B2KS70Oogv1h8sPOXyG62SWnah4vXLCbUcuZyCFNevAzHW/8bPxXN
+         Seag==
+X-Forwarded-Encrypted: i=1; AJvYcCWzT1YD/i45EDb8ISfNykf7Ocm4tC04klQQBE4rjtHCJObPo4h2BvwkZa1Idi3sZgvtOI4D3lvABPUwBoSKnHyIvzj/T+aEey8vp2AJFsM=
+X-Gm-Message-State: AOJu0YxnQbQgtNXu7OY7qijx5YK+wKTzNYmo7JZbY4DT0cIUFTrTRzIm
+	vUMcCyYgFA+t1WkZdPqeWBT46CitzeyE8LpUST1wqO/WXteOGET/op45ZPezy3yA/3OgY9DF4ZS
+	NZODTiAfmQUFY0tdtcwrpmmK61of6cby2G9CSAzmwg4ybMXAg9o++iTy4Pg4w5gxX
+X-Received: by 2002:a05:600c:3c97:b0:41a:c170:701f with SMTP id 5b1f17b1804b1-42156356ac6mr3557935e9.38.1717531596353;
+        Tue, 04 Jun 2024 13:06:36 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEvgnv3dsKpQRLAsQ3oX8Eyk4WLvjXVlc3Cl2eoNi52H9/3hBfkpYiRdpbspAeOhGIOZiuWIQ==
+X-Received: by 2002:a05:600c:3c97:b0:41a:c170:701f with SMTP id 5b1f17b1804b1-42156356ac6mr3557815e9.38.1717531595889;
+        Tue, 04 Jun 2024 13:06:35 -0700 (PDT)
+Received: from pollux ([2a02:810d:4b3f:ee94:abf:b8ff:feee:998b])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42138260c5asm123349765e9.41.2024.06.04.13.06.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 04 Jun 2024 09:23:11 -0700 (PDT)
-Date: Tue, 4 Jun 2024 18:23:09 +0200
+        Tue, 04 Jun 2024 13:06:35 -0700 (PDT)
+Date: Tue, 4 Jun 2024 22:06:33 +0200
 From: Danilo Krummrich <dakr@redhat.com>
 To: Greg KH <gregkh@linuxfoundation.org>
 Cc: rafael@kernel.org, bhelgaas@google.com, ojeda@kernel.org,
@@ -68,159 +68,186 @@ Cc: rafael@kernel.org, bhelgaas@google.com, ojeda@kernel.org,
 	ajanulgu@redhat.com, lyude@redhat.com,
 	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
 	linux-pci@vger.kernel.org
-Subject: Re: [RFC PATCH 01/11] rust: add abstraction for struct device
-Message-ID: <Zl8_bXqK-T24y1kp@cassiopeiae>
+Subject: Re: [RFC PATCH 02/11] rust: add driver abstraction
+Message-ID: <Zl9zybWIeZqt8tWc@pollux>
 References: <20240520172554.182094-1-dakr@redhat.com>
- <20240520172554.182094-2-dakr@redhat.com>
- <2024052038-deviancy-criteria-e4fe@gregkh>
- <Zkuw/nOlpAe1OesV@pollux.localdomain>
- <2024052144-alibi-mourner-d463@gregkh>
- <Zk0HG5Ot-_e0o89p@pollux>
- <2024060428-whoops-flattop-7f43@gregkh>
+ <20240520172554.182094-3-dakr@redhat.com>
+ <2024052045-lived-retiree-d8b9@gregkh>
+ <ZkvPDbAQLo2/7acY@pollux.localdomain>
+ <2024052155-pulverize-feeble-49bb@gregkh>
+ <Zk0egew_AxvNpUG-@pollux>
+ <2024060432-chloride-grappling-cf95@gregkh>
+ <Zl81oUmNO5TX063x@cassiopeiae>
+ <2024060404-figment-resolute-7c6c@gregkh>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <2024060428-whoops-flattop-7f43@gregkh>
+In-Reply-To: <2024060404-figment-resolute-7c6c@gregkh>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 
-On Tue, Jun 04, 2024 at 04:17:29PM +0200, Greg KH wrote:
-> On Tue, May 21, 2024 at 10:42:03PM +0200, Danilo Krummrich wrote:
-> > On Tue, May 21, 2024 at 11:24:38AM +0200, Greg KH wrote:
-> > > On Mon, May 20, 2024 at 10:22:22PM +0200, Danilo Krummrich wrote:
-> > > > > > +impl Device {
-> > > > > > +    /// Creates a new ref-counted instance of an existing device pointer.
-> > > > > > +    ///
-> > > > > > +    /// # Safety
-> > > > > > +    ///
-> > > > > > +    /// Callers must ensure that `ptr` is valid, non-null, and has a non-zero reference count.
+On Tue, Jun 04, 2024 at 06:00:11PM +0200, Greg KH wrote:
+> On Tue, Jun 04, 2024 at 05:41:21PM +0200, Danilo Krummrich wrote:
+> > On Tue, Jun 04, 2024 at 04:27:31PM +0200, Greg KH wrote:
+> > > On Wed, May 22, 2024 at 12:21:53AM +0200, Danilo Krummrich wrote:
+> > > > On Tue, May 21, 2024 at 11:35:43AM +0200, Greg KH wrote:
+> > > > > On Tue, May 21, 2024 at 12:30:37AM +0200, Danilo Krummrich wrote:
+> > > > > > On Mon, May 20, 2024 at 08:14:18PM +0200, Greg KH wrote:
+> > > > > > > On Mon, May 20, 2024 at 07:25:39PM +0200, Danilo Krummrich wrote:
+> > > > > > > > From: Wedson Almeida Filho <wedsonaf@gmail.com>
+> > > > > > > > 
+> > > > > > > > This defines general functionality related to registering drivers with
+> > > > > > > > their respective subsystems, and registering modules that implement
+> > > > > > > > drivers.
+> > > > > > > > 
+> > > > > > > > Co-developed-by: Asahi Lina <lina@asahilina.net>
+> > > > > > > > Signed-off-by: Asahi Lina <lina@asahilina.net>
+> > > > > > > > Co-developed-by: Andreas Hindborg <a.hindborg@samsung.com>
+> > > > > > > > Signed-off-by: Andreas Hindborg <a.hindborg@samsung.com>
+> > > > > > > > Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
+> > > > > > > > Signed-off-by: Danilo Krummrich <dakr@redhat.com>
+> > > > > > > > ---
+> > > > > > > >  rust/kernel/driver.rs        | 492 +++++++++++++++++++++++++++++++++++
+> > > > > > > >  rust/kernel/lib.rs           |   4 +-
+> > > > > > > >  rust/macros/module.rs        |   2 +-
+> > > > > > > >  samples/rust/rust_minimal.rs |   2 +-
+> > > > > > > >  samples/rust/rust_print.rs   |   2 +-
+> > > > > > > >  5 files changed, 498 insertions(+), 4 deletions(-)
+> > > > > > > >  create mode 100644 rust/kernel/driver.rs
+> > > > > > > > 
+> > > > > > > > diff --git a/rust/kernel/driver.rs b/rust/kernel/driver.rs
+> > > > > > > > new file mode 100644
+> > > > > > > > index 000000000000..e0cfc36d47ff
+> > > > > > > > --- /dev/null
+> > > > > > > > +++ b/rust/kernel/driver.rs
+> > > > > > > > @@ -0,0 +1,492 @@
+> > > > > > > > +// SPDX-License-Identifier: GPL-2.0
+> > > > > > > > +
+> > > > > > > > +//! Generic support for drivers of different buses (e.g., PCI, Platform, Amba, etc.).
+> > > > > > > > +//!
+> > > > > > > > +//! Each bus/subsystem is expected to implement [`DriverOps`], which allows drivers to register
+> > > > > > > > +//! using the [`Registration`] class.
+> > > > > > > 
+> > > > > > > Why are you creating new "names" here?  "DriverOps" is part of a 'struct
+> > > > > > > device_driver' why are you separating it out here?  And what is
+> > > > > > 
+> > > > > > DriverOps is a trait which abstracts a subsystems register() and unregister()
+> > > > > > functions to (un)register drivers. It exists such that a generic Registration
+> > > > > > implementation calls the correct one for the subsystem.
+> > > > > > 
+> > > > > > For instance, PCI would implement DriverOps::register() by calling into
+> > > > > > bindings::__pci_register_driver().
+> > > > > > 
+> > > > > > We can discuss whether DriverOps is a good name for the trait, but it's not a
+> > > > > > (different) name for something that already exists and already has a name.
 > > > > > 
-> > > > > Callers NEVER care about the reference count of a struct device, anyone
-> > > > > poking in that is asking for trouble.
+> > > > > It's a name we don't have in the C code as the design of the driver core
+> > > > > does not need or provide it.  It's just the section of 'struct
+> > > > > device_driver' that provides function callbacks, why does it need to be
+> > > > > separate at all?
 > > > > 
-> > > > That's confusing, if not the caller who's passing the device pointer somewhere,
-> > > > who else?
+> > > > I'm confused by the relationship to `struct device_driver` you seem to imply.
+> > > > How is it related?
 > > > > 
-> > > > Who takes care that a device' reference count is non-zero when a driver's probe
-> > > > function is called?
+> > > > Again, this is just a trait for subsystems to provide their corresponding
+> > > > register and unregister implementation, e.g. pci_register_driver() and
+> > > > pci_unregister_driver(), such that they can be called from the generic
+> > > > Registration code below.
+> > > > 
+> > > > See [1] for an example implementation in PCI.
 > > > 
-> > > A device's reference count will be non-zero, I'm saying that sometimes,
-> > > some driver core functions are called with a 'struct device' that is
-> > > NULL, and it can handle it just fine.  Hopefully no callbacks to the
-> > > rust code will happen that way, but why aren't you checking just "to be
-> > > sure!" otherwise you could have a bug here, and it costs nothing to
-> > > verify it, right?
+> > > registering and unregistering drivers belongs in the bus code, NOT in
+> > > the driver code.
 > > 
-> > I get your point on that one. But let me explain a bit more why I think that
-> > check is not overly helpful here.
+> > Why? We're not (re-)implementing a bus here. Again, those are just abstractions
+> > to call the C functions to register a driver. The corresponding C functions are
+> > e.g. driver_register() or __pci_register_driver(). Those are defined in
+> > drivers/base/driver.c and drivers/pci/pci-driver.c respectively.
 > > 
-> > In Rust we have the concept of marking functions as 'unsafe'. Unsafe functions
-> > need to document their safety preconsitions, i.e. the conditions the caller of
-> > the function must guarantee. The caller of an unsafe function needs an unsafe
-> > block for it to compile and every unsafe block needs an explanation why it is
-> > safe to call this function with the corresponding arguments.
-> > 
-> > (Ideally, we want to avoid having them in the first place, but for C abstractions
-> > we have to deal with raw pointers we receive from the C side and dereferencing a
-> > raw pointer is unsafe by definition.)
-> > 
-> > In this case we have a function that constructs the Rust `Device` structure from
-> > a raw (device) pointer we potentially received from the C side. Now we have to
-> > decide whether this function is going to be unsafe or safe.
-> > 
-> > In order for this function to be safe we would need to be able to guarantee that
-> > this is a valid, non-null pointer with a non-zero reference count, which
-> > unfortunately we can't. Hence, it's going to be an unsafe function.
+> > Why wouldn't we follow the same scheme in Rust abstractions?
 > 
-> But you can verify it is non-null, so why not?
+> It's the bus that does the registering, so yeah, don't put it here at
+> all as it's not going to be needed (i.e. unless you write a bus in rust
+> you will never call driver_register())  So this can just be a wrapper
+> for the pci bus logic, keeping it simpler.
 
-I suggest to check out the code making use of this.
-
-From the PCI abstractions:
-
-    extern "C" fn probe_callback(
-        pdev: *mut bindings::pci_dev,
-        id: *const bindings::pci_device_id,
-    ) -> core::ffi::c_int {
-        // SAFETY: Safe because the core kernel only ever calls the probe callback with a valid
-        // `pdev`.
-        let dev = unsafe { device::Device::from_raw(&mut (*pdev).dev) };
-
-        [...]
-    }
-
-Doing the NULL check would turn this into something like:
-
-    extern "C" fn probe_callback(
-        pdev: *mut bindings::pci_dev,
-        id: *const bindings::pci_device_id,
-    ) -> core::ffi::c_int {
-        // SAFETY: Safe because the core kernel only ever calls the probe callback with a valid
-        // `pdev`, but we still have to handle `Device::from_raw`'s NULL check.
-        let dev = match unsafe { device::Device::from_raw(&mut (*pdev).dev) } {
-           Ok(dev) => dev,
-           Err(err) => return Error::to_errno(err),
-        }
-    }
-
-This would be super odd. If `Device::from_raw` reports "Ok" it actually wouldn't
-mean everything is well. It would *only* mean that the pointer that was passed
-is not NULL. This is counter intuitive; IMHO unsafe functions shouldn't return
-any type of result, because it just isn't meaningful.
+We never call driver_register() of course, I gave this example for another
+reason above. Sorry if that was confusing.
 
 > 
-> > A NULL pointer check would not make it a safe function either, since the pointer
-> > could still be an invalid one, or a pointer to a device it's not guaranteed that
-> > the reference count is held up for the duration of the function call.
-> 
-> True, but you just took one huge swatch of "potential crashes" off the
-> table.  To ignore that feels odd.
-> 
-> > Given that, we could add the NULL check and change the safety precondition to
-> > "valid pointer to a device with non-zero reference count OR NULL", but I don't
-> > see how this improves the situation for the caller, plus we'd need to return
-> > `Result<Device>` instead and let the caller handle that the `Device` was not
-> > created.
-> 
-> It better be able to handle if `Device` was not created, as you could
-> have been out of memory and nothing would have been allocated.  To not
-> check feels very broken.
+> So you might be able to delete a lot of code here, only deal with a
+> "dumb" struct device wrapper to handle reference counts, and then do the
+> rest for the specific bus bindings?  Or is that too much to dream?
 
-The abstraction is not allocating a new C struct device, it's just abstracting a
-pointer to an existing struct device. There is no OOM case to handle, the
-abstraction holding the pointer lives on the stack.
+Again, this is a generalization such that we do not have to replicate code for
+every subsystem / bus. Please see the full explanation below.
 
 > 
-> > > Ok, if you say so, should we bookmark this thread for when this does
-> > > happen?  :)
-> > 
-> > I'm just saying the caller has to validate that or provide a rationale why this
-> > is safe anyways, hence it'd be just a duplicate check.
-> > 
-> > > 
-> > > What will the rust code do if it is passed in a NULL pointer?  Will it
-> > > crash like C code does?  Or something else?
-> > 
-> > It mostly calls into C functions with this pointer, depends on what they do.
-> > 
-> > Checking a few random places, e.g. [1], it seems to crash in most cases.
-> > 
-> > [1] https://elixir.free-electrons.com/linux/latest/source/drivers/base/core.c#L3863
+> You aren't writing a "raw" driver here, no one does that, it's a bus
+> that handles that logic for you, and you should not have to expose any
+> "raw" driver attributes.
+
+Indeed - we're not doing that here.
+
 > 
-> Great, then you should check :)
+> Yes, for some busses, they like to force a driver to set the "raw"
+> driver attribute, but I don't think that's a good idea and for the pci
+> driver layer, that shouldn't be necessary now, right?  If not, what
+> fields are you wanting to get direct access to?
 
-Why isn't the conclusion that the C code should check (as well)? :) Would you
-want to add a NULL check at the beginning of device_del()?
+Honestly, this all reads as if you did not (carefully) read the code we're
+discussing about in the first place, did you?
 
-In Rust we have a clear separation between safe and unsafe functions with, for
-the latter, documented requirements on what's actually allowed to pass in and
-which preconditions must be guaranteed. The check happens, just not within the
-unsafe function.
+It reads more as if you take assumptions based on my previous explanations, and
+since communication is difficult, it looks like we're talking past each other.
+Maybe also my explanations were just not good enough. :(
+
+Either way, I suggest to focus more on the actual code. In particular let's have
+a look at the `Registration` and `DriverOps` struct from this patch and how
+they're used in the PCI code and in an actual driver.
+
+Please have a look at how the PCI code implements the `DriverOps` trait (or
+interface as many other languages would call it) [1]. In `DriverOps::register`
+and `DriverOps::unregister` the PCI code simply calls the C functions
+__pci_register_driver() and pci_unregister_driver().
+
+A driver can use the `module_pci_driver!` macro [2] to declare a kernel module
+that registers a single PCI driver. This is equivalent to C's
+module_pci_driver() macro.
+
+The `module_pci_driver!` macro calls the generic `module_driver!` macro [3] and
+passes the `pci::Adapter` [1] (the PCI thing that actually calls the C
+pci_{un}register_driver() functions).
+
+The `module_driver!` macro creates a new `Module` structure [4] that holds the
+`Registration` structure. This `Registration` structure has a generic argument
+which is the `pci::Adapter` [1]. Which means that once the `Registration` is
+created C's __pci_register_driver() is called and once it is destroyed C's
+pci_unregister_driver() is called. The `Registration` is created in
+module_init() and destroyed in module_exit() accordingly.
+
+So, as you can see a `Registration` is really just the parts generalized that
+otherwise every subsystem would need to implement and `DriverOps` is the glue
+between a driver `Registration` and the subsystem (e.g. PCI) defining which
+function to call on driver register() or driver unregister().
+
+My argument above is simply that since  all this is just the abstraction to
+declare a driver structure and register it, it belongs into driver.rs. At least
+if we want to go along with where the C side places the correspong functions on
+the C side.
+
+(The links already point to the new code that allocates the driver statically,
+but this should not matter, since conceptually it's the same.)
+
+[1] https://gitlab.freedesktop.org/drm/nova/-/blob/989338f129146af9952304c2cc6b33fbd90e8909/rust/kernel/pci.rs#L24
+[2] https://gitlab.freedesktop.org/drm/nova/-/blob/989338f129146af9952304c2cc6b33fbd90e8909/rust/kernel/pci.rs#L135
+[3] https://gitlab.freedesktop.org/drm/nova/-/blob/989338f129146af9952304c2cc6b33fbd90e8909/rust/kernel/driver.rs#L453
+[4] https://gitlab.freedesktop.org/drm/nova/-/blob/989338f129146af9952304c2cc6b33fbd90e8909/rust/kernel/driver.rs#L435
 
 > 
 > thanks,
