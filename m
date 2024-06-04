@@ -1,152 +1,227 @@
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2054.outbound.protection.outlook.com [40.107.20.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f50.google.com (mail-ej1-f50.google.com [209.85.218.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 690672209B
-	for <rust-for-linux@vger.kernel.org>; Tue,  4 Jun 2024 07:07:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717484835; cv=fail; b=jptLUE2xU2u7cJh4jcNJ2aRHj3gOhFk54estGje8Lg9Ih0cwg0GQeMfFE+3LZboM0qUkNyJ322r+5kmNZ5ZcL+7oONiZmGMZdCZy7AIKipdWJMHgvX1fZNtBzFDrdX0nabNDz//kviBc4mfEFUuSGIuCPOk1Tths0CseKSwxlvA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717484835; c=relaxed/simple;
-	bh=B3rvzISbm5w61DdbderYzI/Lv9ACF4ChklHNMuiGcX4=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=BpO6Ubf7FJL2sAAt5FvP6yyDYkpb112xr5SkQ5jCOTn02A62Q6xq9fCiabctX+geeIjGTQ3PZXuqzpLWGFfWxsZxET9MoLn/TaW7EWjEqShmbE/ZQi6fUCwEu4EJMZzkNf9VY7jv3JWmtpxcDsb7+V6y4bSsvOLwpSO3ZnQEXjc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com; spf=pass smtp.mailfrom=de.bosch.com; dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b=Z2KK3OVW; arc=fail smtp.client-ip=40.107.20.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.bosch.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8EF21448C8
+	for <rust-for-linux@vger.kernel.org>; Tue,  4 Jun 2024 09:59:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.50
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1717495200; cv=none; b=pfHKyNLRCJU7HIGF8KuH3fvM1VB5NUkYDgomHhURcpavRsVRqzLPMkxsGUH098nV1Ho5upDn4kOE6Y7mbW+XUeK9PgA879+dpmYjoJ7rqaVa5/GNWEmAo2ip/ndc348cqfAtdfDKfEE8YaXFIEPlNCpH/p864VJdjtGWiQyYOH4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1717495200; c=relaxed/simple;
+	bh=ojWCF20cfUoiMtLqDIeUZ96Ul+Nd3RwITJw/ORXbDbc=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=GfhVsvnrYsiPvphOn2y3zZ8FN8LImt1Ksi8WVB8edCXwTLS0gTVOo7RL3B2SxZ0poDN41+ecwzUK/tVFdcu7jnYv+zjmakIOFkaTuzLNg3cc0fFTB0tiIj6nZXnVS2aUgkRELy7kL385jFcKaj5QJWYPp+Ry8OASh4fab9EqmPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk; spf=none smtp.mailfrom=metaspace.dk; dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b=YgXe1opa; arc=none smtp.client-ip=209.85.218.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=metaspace.dk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b="Z2KK3OVW"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=OaPr0QCPg5i/9BDdt6dNW6JA7eWThaFeEV473fm7cBzto/fNQRdyoFlkLGZ2YY69ETQDKDC8bOH/OGW67Bv/SBF+tQnHi34C+lJ4kBwY0PbG/rferU6zDA37M5/e1okLMprFxxb+tHu/dTmdWfaozEu0PUZOXltV6Xn26O+dWCgNvNVh9Mo7L3UFDiMkH0GMSJyb/t/g7aEcVyyALBfAfcR6iE0TN8I/RzVdJaVFFhBEhyiLN5TL5DwOgGc8m+9etvHlZFQYdxXYckKwSgk7kSJ31C3xqcpwyjMFAHG+xv+fzn8w3QeX7nC4LxWBXtPD+UmcYKpP7jP1w+nMLX0czg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=rpG5GdsahRk8PZx74heFfcl2Dg0GltV+I7L4fKid2VI=;
- b=TqUmq6Inqi8TUj8TP/RU3oLBvqw1PdMEE7QRS/ZV7J+j7CP9OTmA59gOLkc/QHccPYRspcjOLzideojB4UczbLESV7AmDsHb17UoaLD4wINHvMzCPnoSq++d/UimWtt/mLlMfsPdeAtOubCgqN448wrUU96a3drF8mKWSr3VaRmZlzbaTa9D1up3So8Wijfq9XpLVtjY3ITK2Lb3dc5YtUVU9XXOiAJ5bH6afGO4aK7I2qUbdE2UX3/nqkZnDHJqaSpwU5gfS9Xd13rGyumeBiaW4KsP0GYvHEhc3Kqo9h5gMGFLMPLLvI0twIAk9b2Uine3vi/R4phih593ZA5Kkw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 139.15.153.206) smtp.rcpttodomain=vger.kernel.org smtp.mailfrom=de.bosch.com;
- dmarc=pass (p=reject sp=none pct=100) action=none header.from=de.bosch.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=de.bosch.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=rpG5GdsahRk8PZx74heFfcl2Dg0GltV+I7L4fKid2VI=;
- b=Z2KK3OVWaOG16KZK3poyGz00zsGtFmw1deu6zkbLkQsspnJ/79eg9yGPGUm2Qq81dN21OZiI0e6gsMFQWUwgZap0Duz1LARr4v8kGKKNEQ2KlJiqHdik+JZpYDI4ybC2NHZJszwt031dJlsBSrIODhZqjfguhBM2cajpr5+Zu7gQZht/3UQMutPbq0QWKtr6D6D8o4vtqfu0BlKSWGyPG8FTZ/WzDmLN2Dkz7iLONWc5dO9lsZUomCgq7eN7HG+bUM7ntJzRhZaKQAulJUvAXtPb8iTNLZuwjd3YeWEUL7WLsaFZWIgaKdkoaL7NMXbqW4rcKkCJk+i1D2EmZGwHGw==
-Received: from DUZPR01CA0008.eurprd01.prod.exchangelabs.com
- (2603:10a6:10:3c3::17) by DB8PR10MB3781.EURPRD10.PROD.OUTLOOK.COM
- (2603:10a6:10:167::24) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7633.26; Tue, 4 Jun
- 2024 07:07:08 +0000
-Received: from DB5PEPF00014B8F.eurprd02.prod.outlook.com
- (2603:10a6:10:3c3:cafe::7c) by DUZPR01CA0008.outlook.office365.com
- (2603:10a6:10:3c3::17) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7633.30 via Frontend
- Transport; Tue, 4 Jun 2024 07:07:08 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 139.15.153.206)
- smtp.mailfrom=de.bosch.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=de.bosch.com;
-Received-SPF: Pass (protection.outlook.com: domain of de.bosch.com designates
- 139.15.153.206 as permitted sender) receiver=protection.outlook.com;
- client-ip=139.15.153.206; helo=eop.bosch-org.com; pr=C
-Received: from eop.bosch-org.com (139.15.153.206) by
- DB5PEPF00014B8F.mail.protection.outlook.com (10.167.8.203) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7633.15 via Frontend Transport; Tue, 4 Jun 2024 07:07:08 +0000
-Received: from SI-EXCAS2000.de.bosch.com (10.139.217.201) by eop.bosch-org.com
- (139.15.153.206) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 4 Jun
- 2024 09:06:54 +0200
-Received: from HI7-C-0001H.de.bosch.com (10.139.217.196) by
- SI-EXCAS2000.de.bosch.com (10.139.217.201) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.39; Tue, 4 Jun 2024 09:06:54 +0200
-From: Dirk Behme <dirk.behme@de.bosch.com>
-To: <rust-for-linux@vger.kernel.org>
-CC: Dirk Behme <dirk.behme@de.bosch.com>
-Subject: [PATCH] docs: rust: no_std is used
-Date: Tue, 4 Jun 2024 09:06:46 +0200
-Message-ID: <20240604070646.1819816-1-dirk.behme@de.bosch.com>
-X-Mailer: git-send-email 2.28.0
+	dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b="YgXe1opa"
+Received: by mail-ej1-f50.google.com with SMTP id a640c23a62f3a-a6267778b3aso472684766b.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 04 Jun 2024 02:59:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=metaspace-dk.20230601.gappssmtp.com; s=20230601; t=1717495196; x=1718099996; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:references
+         :in-reply-to:subject:cc:to:from:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=NIq/eUO9YgOB4ouX5wft1IfVxCcuFVt84XqSDqsem4E=;
+        b=YgXe1opacThhBRASQJwpscZaF/tEgG1LG33rXLo3BpRu9hTkLUwxt0J6rI/zAXEk7z
+         XX6UHIQrSij5pwyWtjV+OFbtZQcwga6UTYdc3ThO6qbI/pTexKAqZooQhqRyHyuUBNHS
+         bR/IsfWiWZEQ9WKwG1TE+CjG3i12C3qv6tOPs5lIADpqiG0GkTpHnBA9gs+iALgzZ+Hp
+         DerLvIOZ7vIyP0EpvCQ5+tKouonIze8jyKUgizkE7Y86shIeCNGA/npaVxKEcS2QtMLR
+         XKmY7BIdaPiBIgMnymRC/BMkCqul9w/H4AeMVE8buHGYddxZgJS3FkKfvdH1hETkQLD5
+         kbvw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1717495196; x=1718099996;
+        h=content-transfer-encoding:mime-version:message-id:date:references
+         :in-reply-to:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=NIq/eUO9YgOB4ouX5wft1IfVxCcuFVt84XqSDqsem4E=;
+        b=NDZfD//uKfzItYSLP6CAlLX8Zd1qkQNRY2ldt9X5ulNuCI6BfkkNnMIbNqJCJuQkJi
+         cl5VtvWjdzwy9pz79u8WLqFtbVRByrA7id+wsB+fq3miFJR0jDw6SxPQw2mdiKErKbLW
+         ZT4v3NaUYdUJV78pO+tH0zeDzKNYhMhNKivFNUq9Gfv+w/QA7cOLRVdMBYX0FFFGg+g+
+         dfds8ESSfiOuyjqhMGO8F4Q3NYzwmRrYP/xZuHdM4qzWqIHk4wpk56GfIHvhqRFTPdsB
+         6SMxSVY/GRQTIni9jTx3LwJW+3/jHSgGyvI4hmA+rRsmx2QHGa6zj+5ugbuEeacuQEo2
+         fjlQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUL+D7RlTz2fKIpIh7rDAdb5qbSduIVm69zXu1BIjYDdPkbdHd1rwMncN3dkZfiLWimvQYXC0eVRIIoa/sdD/qGNVhUQEzjGkxXDlQKF8I=
+X-Gm-Message-State: AOJu0YzDtihnlTWtkKJIJ0RGB5oPM3Wv+2k96vDSvnUUaiAtzD3nnLah
+	SvfwSAwFHhhs7ouBO9g1V+Aim12+DLiOcp/q9uq4tOXkarGSQT2L8z0C7cMWopo=
+X-Google-Smtp-Source: AGHT+IH5c8gvgpxeYJR9DYjfzyPr9/QZPrSpme+Az/DADz5sutMsuFt/AqEGuTF3K5Xc2qa5/1JKTQ==
+X-Received: by 2002:a17:906:6807:b0:a68:bae4:94d3 with SMTP id a640c23a62f3a-a68bae49c1fmr545115966b.8.1717495195916;
+        Tue, 04 Jun 2024 02:59:55 -0700 (PDT)
+Received: from localhost ([79.142.230.34])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a67e6f03b7esm594011066b.2.2024.06.04.02.59.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 04 Jun 2024 02:59:55 -0700 (PDT)
+From: Andreas Hindborg <nmi@metaspace.dk>
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Jens Axboe <axboe@kernel.dk>,  Christoph Hellwig <hch@lst.de>,  Keith
+ Busch <kbusch@kernel.org>,  Damien Le Moal <dlemoal@kernel.org>,  Bart Van
+ Assche <bvanassche@acm.org>,  Hannes Reinecke <hare@suse.de>,  Ming Lei
+ <ming.lei@redhat.com>,  "linux-block@vger.kernel.org"
+ <linux-block@vger.kernel.org>,  Andreas Hindborg <a.hindborg@samsung.com>,
+  Wedson Almeida Filho <wedsonaf@gmail.com>,  Greg KH
+ <gregkh@linuxfoundation.org>,  Matthew Wilcox <willy@infradead.org>,
+  Miguel Ojeda <ojeda@kernel.org>,  Alex Gaynor <alex.gaynor@gmail.com>,
+  Boqun Feng <boqun.feng@gmail.com>,  Gary Guo <gary@garyguo.net>,
+  =?utf-8?Q?Bj=C3=B6rn?=
+ Roy Baron <bjorn3_gh@protonmail.com>,  Alice Ryhl <aliceryhl@google.com>,
+  Chaitanya Kulkarni <chaitanyak@nvidia.com>,  Luis Chamberlain
+ <mcgrof@kernel.org>,  Yexuan Yang <1182282462@bupt.edu.cn>,  Sergio
+ =?utf-8?Q?Gonz=C3=A1lez?= Collado <sergio.collado@gmail.com>,  Joel
+ Granados
+ <j.granados@samsung.com>,  "Pankaj Raghav (Samsung)"
+ <kernel@pankajraghav.com>,  Daniel Gomez <da.gomez@samsung.com>,  Niklas
+ Cassel <Niklas.Cassel@wdc.com>,  Philipp Stanner <pstanner@redhat.com>,
+  Conor Dooley <conor@kernel.org>,  Johannes Thumshirn
+ <Johannes.Thumshirn@wdc.com>,  Matias =?utf-8?Q?Bj=C3=B8rling?=
+ <m@bjorling.me>,  open list
+ <linux-kernel@vger.kernel.org>,  "rust-for-linux@vger.kernel.org"
+ <rust-for-linux@vger.kernel.org>,  "lsf-pc@lists.linux-foundation.org"
+ <lsf-pc@lists.linux-foundation.org>,  "gost.dev@samsung.com"
+ <gost.dev@samsung.com>
+Subject: Re: [PATCH v4 1/3] rust: block: introduce `kernel::block::mq` module
+In-Reply-To: <925fe0fe-9303-4f49-b473-c3a3ecc5e2e6@proton.me> (Benno Lossin's
+	message of "Mon, 03 Jun 2024 18:26:08 +0000")
+References: <20240601134005.621714-1-nmi@metaspace.dk>
+	<20240601134005.621714-2-nmi@metaspace.dk>
+	<b6b8e3e6-a2b9-4ddd-bf0f-e924d5d65653@proton.me>
+	<87mso2me0p.fsf@metaspace.dk>
+	<925fe0fe-9303-4f49-b473-c3a3ecc5e2e6@proton.me>
+Date: Tue, 04 Jun 2024 11:59:49 +0200
+Message-ID: <87y17lqb8q.fsf@metaspace.dk>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB5PEPF00014B8F:EE_|DB8PR10MB3781:EE_
-X-MS-Office365-Filtering-Correlation-Id: 607ac218-7616-4c4d-cf26-08dc8464f30b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230031|82310400017|376005|1800799015|36860700004;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?uq+NBWx/lnIRJgmyuzTbzbjsBF8DrKgQMfHPDdz904h8YFYkn1e5BrZ1Slqb?=
- =?us-ascii?Q?yQ5etcbvlEngDQuFiE4+etY9nPqSfVPVAvDokNXTJ8hEjEnJ0hnuQELBZgXB?=
- =?us-ascii?Q?aPUGmWri5BzIYKMmaE6G19+cxlQnVlIJCX7TwcBQ8cqEPeXd3BnmCSuSfT22?=
- =?us-ascii?Q?mP+MuZnR+v7ImbNeZT7X15LExwaoLk3Q17T2N0bDkSK2PfyeFczmT/MB5bej?=
- =?us-ascii?Q?rdtvk/hJVmuID1q7hoOjRt6YjWcjjByy9cVGyeT7gMVkuEjtZqRk1ChRgQWB?=
- =?us-ascii?Q?fUC3wwmoo91p/JimrsPC0ZHYJpWd9v9NZRplbaoR6hkgDRjEgldlD9EfrnEp?=
- =?us-ascii?Q?pYbSE1tH/kUxi5TKxZefVzfFAE3cUMMInufbaRY64apmgfPiSbeGg++RoUhG?=
- =?us-ascii?Q?pW/cfBF8XigOfPA2CuRzBzUqafYwPekV+Ursontxq5i1maWSU8SQouXyQyB2?=
- =?us-ascii?Q?tfXnOaJOZ7ORIQMv6r/LIlRQPSoXYCC61KYTQ5xlHMWAviUdoRkHaiG9fXc7?=
- =?us-ascii?Q?zo8VeR2MSs9vHCwJdChIKahL9Zv/nQ0oyFf39aRghRReGgdqWoHgVSYDdsnC?=
- =?us-ascii?Q?Yu9gDG116dKsr0WSRvdmGEpqAgLgtr8OhNdJK4k9IN4JkwtBBDL0zlTuK1ws?=
- =?us-ascii?Q?sgBHhEuWh00y7Axg/LFrJ7dE+a4rYzoBWJYbD0cO5gNtjSrXzHeRpbAmjj4m?=
- =?us-ascii?Q?Vkhr/EGCrMPTO7GO7wGaZZVh+wJnYE4wiZxjRGeJ3CcUZR89ddawqBvMJDrB?=
- =?us-ascii?Q?luMMNzb1TvidYxniDc7u/wJWH3TX/V/6giu5ihPYnaoHV7Zd5on9qnba38Ll?=
- =?us-ascii?Q?YVNCbwo2wfLwM4J+pdcrMJBZzaTFpmUOEvX8JnoXM9yz+yfEp4DxUrzkXQrU?=
- =?us-ascii?Q?K3R5dqNBnr2tIXYmN7AFilCermu1MZTkZV8JnX5aUZtW/lqQoTro3y5Xe8qQ?=
- =?us-ascii?Q?c+thWf2TnkWZ/5JR2ty8eRbl4Y6oY3MXJQj8p4sq7Pf09EVrxidPg585vO+Y?=
- =?us-ascii?Q?Pzu/4xUfLNh+9cGRD5u/vRVI6BtaqL3L8YtoY1nJkILRwQXlIrFls8RU8f/6?=
- =?us-ascii?Q?NUmn4q3EyXMyvHEt84qDTwSkOGEZVu9k0aX+w7vmSIhQU/vNahMF2P1157Cm?=
- =?us-ascii?Q?H/2kWXfx3sY7MNFEe1R9YTkk3x0jT/9/8jw7mJEcztdsEyj9XEO4Wcpfv2PT?=
- =?us-ascii?Q?Wy/1sdpNnacfYSDeVepApSwouTqgVL2ffskVy3hEsB9RwSmJQTAGK94OmDT3?=
- =?us-ascii?Q?GHAbIu0qIgD4PsSYAp/jBZFGWqvDMI4MBCdzEl4PvAzcImgQY52BNQqBpQy3?=
- =?us-ascii?Q?IvxbFjUd8odsAOgHOqvO1bHv?=
-X-Forefront-Antispam-Report:
-	CIP:139.15.153.206;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eop.bosch-org.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(82310400017)(376005)(1800799015)(36860700004);DIR:OUT;SFP:1101;
-X-OriginatorOrg: de.bosch.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 04 Jun 2024 07:07:08.8063
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 607ac218-7616-4c4d-cf26-08dc8464f30b
-X-MS-Exchange-CrossTenant-Id: 0ae51e19-07c8-4e4b-bb6d-648ee58410f4
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0ae51e19-07c8-4e4b-bb6d-648ee58410f4;Ip=[139.15.153.206];Helo=[eop.bosch-org.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DB5PEPF00014B8F.eurprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DB8PR10MB3781
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Using the #![no_std] attribute in the Rust kernel support is different
-to the default Rust usage. Mention this in the Documentation.
+Benno Lossin <benno.lossin@proton.me> writes:
 
-Signed-off-by: Dirk Behme <dirk.behme@de.bosch.com>
----
- Documentation/rust/general-information.rst | 8 ++++++++
- 1 file changed, 8 insertions(+)
+[...]
 
-diff --git a/Documentation/rust/general-information.rst b/Documentation/rust/general-information.rst
-index 4bb6ac12d482c..bdbafd916daa5 100644
---- a/Documentation/rust/general-information.rst
-+++ b/Documentation/rust/general-information.rst
-@@ -7,6 +7,14 @@ This document contains useful information to know when working with
- the Rust support in the kernel.
- 
- 
-+``no_std``
-+----------
-+
-+The Rust support in the kernel links to the `core-crate <https://doc.rust-
-+lang.org/core/>`_ instead of the std-crate. This is done by using
-+the ``#![no_std]`` attribute.
-+
-+
- Code documentation
- ------------------
- 
--- 
-2.28.0
+>>>> +impl<T: Operations> OperationsVTable<T> {
+>>>> +    /// This function is called by the C kernel. A pointer to this fu=
+nction is
+>>>> +    /// installed in the `blk_mq_ops` vtable for the driver.
+>>>> +    ///
+>>>> +    /// # Safety
+>>>> +    ///
+>>>> +    /// - The caller of this function must ensure `bd` is valid
+>>>> +    ///   and initialized. The pointees must outlive this function.
+>>>
+>>> Until when do the pointees have to be alive? "must outlive this
+>>> function" could also be the case if the pointees die immediately after
+>>> this function returns.
+>>=20
+>> It should not be plural. What I intended to communicate is that what
+>> `bd` points to must be valid for read for the duration of the function
+>> call. I think that is what "The pointee must outlive this function"
+>> states? Although when we talk about lifetime of an object pointed to by
+>> a pointer, I am not sure about the correct way to word this. Do we talk
+>> about the lifetime of the pointer or the lifetime of the pointed to
+>> object (the pointee). We should not use the same wording for the pointer
+>> and the pointee.
+>>=20
+>> How about:
+>>=20
+>>     /// - The caller of this function must ensure that the pointee of `b=
+d` is
+>>     ///   valid for read for the duration of this function.
+>
+> But this is not enough for it to be sound, right? You create an `ARef`
+> from `bd.rq`, which potentially lives forever. You somehow need to
+> require that the pointer `bd` stays valid for reads and (synchronized)
+> writes until the request is ended (probably via `blk_mq_end_request`).
 
+The statement does not say anything about `*((*bd).rq)`. `*bd` needs to
+be valid only for the duration of the function. It carries a pointer to
+a `struct request` in the `rq` field. The pointee of that pointer must
+be exclusively owned by the driver until the request is done.
+
+Maybe like this:
+
+# Safety
+
+- The caller of this function must ensure that the pointee of `bd` is
+  valid for read for the duration of this function.
+- This function must be called for an initialized and live `hctx`. That
+  is, `Self::init_hctx_callback` was called and
+  `Self::exit_hctx_callback()` was not yet called.
+- `(*bd).rq` must point to an initialized and live `bindings:request`.
+  That is, `Self::init_request_callback` was called but
+  `Self::exit_request_callback` was not yet called for the request.
+- `(*bd).rq` must be owned by the driver. That is, the block layer must
+  promise to not access the request until the driver calls
+  `bindings::blk_mq_end_request` for the request.
+
+[...]
+
+>>>> +    /// This function is called by the C kernel. A pointer to this fu=
+nction is
+>>>> +    /// installed in the `blk_mq_ops` vtable for the driver.
+>>>> +    ///
+>>>> +    /// # Safety
+>>>> +    ///
+>>>> +    /// This function may only be called by blk-mq C infrastructure. =
+`set` must
+>
+> `set` doesn't exist (`_set` does), you are also not using this
+> requirement.
+
+Would be nice if there was a way in `rustdoc` no name arguments
+explicitly.
+
+>
+>>>> +    /// point to an initialized `TagSet<T>`.
+>>>> +    unsafe extern "C" fn init_request_callback(
+>>>> +        _set: *mut bindings::blk_mq_tag_set,
+>>>> +        rq: *mut bindings::request,
+>>>> +        _hctx_idx: core::ffi::c_uint,
+>>>> +        _numa_node: core::ffi::c_uint,
+>>>> +    ) -> core::ffi::c_int {
+>>>> +        from_result(|| {
+>>>> +            // SAFETY: The `blk_mq_tag_set` invariants guarantee that=
+ all
+>>>> +            // requests are allocated with extra memory for the reque=
+st data.
+>>>
+>>> What guarantees that the right amount of memory has been allocated?
+>>> AFAIU that is guaranteed by the `TagSet` (but there is no invariant).
+>>=20
+>> It is by C API contract. `TagSet`::try_new` (now `new`) writes
+>> `cmd_size` into the `struct blk_mq_tag_set`. That is picked up by
+>> `blk_mq_alloc_tag_set` to allocate the right amount of space for each re=
+quest.
+>>=20
+>> The invariant here is on the C type. Perhaps the wording is wrong. I am
+>> not exactly sure how to express this. How about this:
+>>=20
+>>             // SAFETY: We instructed `blk_mq_alloc_tag_set` to allocate =
+requests
+>>             // with extra memory for the request data when we called it =
+in
+>>             // `TagSet::new`.
+>
+> I think you need a safety requirement on the function: `rq` points to a
+> valid `Request`. Then you could just use `Request::wrapper_ptr` instead
+> of the line below.
+
+I cannot require `rq` to point to a valid `Request`, because that would
+require the private data area to already be initialized as a valid
+`RequestDataWrapper`. Using the `wrapper_ptr` is good =F0=9F=91=8D. How is =
+this:
+
+
+    /// # Safety
+    ///
+    /// - This function may only be called by blk-mq C infrastructure.
+    /// - `_set` must point to an initialized `TagSet<T>`.
+    /// - `rq` must point to an initialized `bindings::request`.
+    /// - The allocation pointed to by `rq` must be at the size of `Request`
+    ///   plus the size of `RequestDataWrapper`.
+
+
+BR Andreas
