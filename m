@@ -1,456 +1,200 @@
-Received: from mail-yb1-f202.google.com (mail-yb1-f202.google.com [209.85.219.202])
+Received: from mail-lj1-f201.google.com (mail-lj1-f201.google.com [209.85.208.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 159751A01DD
-	for <rust-for-linux@vger.kernel.org>; Thu,  6 Jun 2024 14:50:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A5121974FE
+	for <rust-for-linux@vger.kernel.org>; Thu,  6 Jun 2024 15:05:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717685433; cv=none; b=udAKK1Uki4BpTXr/70B3QZeeD5tK4kFk75XL0clofPO64d4xwzjkEktfrL9MlcZcOGAldtS3PleFqEPKPIkUL+DmBFPHhmAVdNbBofw7E6PubfIoHWxpj91QGqsM6jQ4JmXkBiabUV798WnKo+a1L7M6YIcDXwAn3+Fb52RaK4M=
+	t=1717686355; cv=none; b=dHtGjkTNYMPE+XBGTshyynDqgQO7eLA7iAlhcG0MOQO+CTL1JdCNifIRBq8TgQiALL5KeTmOi6ASGCsZXqmYDQiyZ333lg0NckRiBoeigsz9sNJGNjsVhWnGe7TFfyVWoh0B7FxZXVT79qotuOcOEO1Bs7A6IcwWcr73svz51Xo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717685433; c=relaxed/simple;
-	bh=6EG3QOfdwARKfFCejHHg6mBqrcpobBc7q9qUj/fnYvM=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=rD/XbyVEg92lbK+ZTXCBzND1DWESMaPknrFhBFb36Y226NvayfkvsiFjeZPgYHnSeBo35OCFMSD8AvTTaRvD7VOAjxZ+XYaCmgk+9+r934TMrMdr2GsDcpDgMoTXcoK4vZN6nU0Wtm1j3x+VC1pin+6CqXBPQqy8oK+JJxfBLMc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--mattgilbride.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=d5QJCqIq; arc=none smtp.client-ip=209.85.219.202
+	s=arc-20240116; t=1717686355; c=relaxed/simple;
+	bh=vEsutBZlhKMnWIsGe05c46SdkM5cY+SQXmb/5CmFXnI=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=ARNuHWVbRV72n6/b9WG2lvlaAtpSU5jA3TleqQSF8iCP9EYuEDXBb4jUPRo+DX0G/u5ioEaKghECft+bk6pvct/gygNEreP4vKQEEqf2qyKE0ZdkftGAdwW75C/CqPedA25QIXqJbcjVS6Vda/JSjQZt4+XEEecUPgyWq16r5N0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=m+AMUMiH; arc=none smtp.client-ip=209.85.208.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--mattgilbride.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="d5QJCqIq"
-Received: by mail-yb1-f202.google.com with SMTP id 3f1490d57ef6-dfa744fe2f9so1848526276.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 06 Jun 2024 07:50:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="m+AMUMiH"
+Received: by mail-lj1-f201.google.com with SMTP id 38308e7fff4ca-2eaa38c4396so8272391fa.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 06 Jun 2024 08:05:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1717685428; x=1718290228; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=yVrgIvaHSGbHkrR8NyIHNZn//P+8xowqH7qWXONQdGk=;
-        b=d5QJCqIqAe5DNv8yHvmvjj3MVqBP6mobihQc9WyJ32qtLPkoj+4594GUZo4SER481j
-         HS5EqgRla3BL2pt+z6v7Hq4Ogkg7phQNgfQxgFYr6ujytxiEjwHw2Aa4EvlqgYXypU0l
-         Sg3pPf0mjnaQ66ZEiu8RITezm19caxk+/j2amyHtNhoFik6cL0Q4qIYqIn63BIR0p28/
-         ROyJEgu677bucUn/PaKUXA+AaSn6G/wSosxJFahexZCmHO8BhI5npi70mC8LduWXuFUk
-         Lb+/wF9EUL2EUsHLZXmOIlyOxO/5yfxnEjqVuii2AdOnlSH39mTvDUcMZLEjXdhhJSN4
-         HMrw==
+        d=google.com; s=20230601; t=1717686352; x=1718291152; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=svRBg3ehYrz5hUxTlJzLKiH5OmJzeQR08XpR/4Jyz1s=;
+        b=m+AMUMiH3umfXNwD03HKV2xj6mZbu0qoC2UgW8zcq2SBdQxyp6zLNwlvIcH6v/bWvW
+         hle8EHapzd9iQih+DSzSBWrPpHHCCFLGBPgiroJXI2fdq0waU3h7MAzKcBCY//skIOCh
+         sIGgb+9Ge+9sa3Qgvz2NAA/yRK7pbFo4jkn18ljQz+ws9KvvfWI2V1CFEl5EXfVF4RU3
+         CRG1aBJUCMtNrhzCbr7UbTBxKRjloHls7EBCeQxO75UzBJNMpMxNn3zmTT99j+R9mzGY
+         +xIHa4N0WRnxL8jLOvB+9P9x+6tcGR6GMlYHWCIwIxVL2sWxEods25dC9TKfZojPylvv
+         04Mg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717685428; x=1718290228;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=yVrgIvaHSGbHkrR8NyIHNZn//P+8xowqH7qWXONQdGk=;
-        b=wQmlh87xelc1mILx31Y3Ffq/z2NO1KBH2iyqI1eSg58FuJ/MjumIEUpIGRSiXqD6RO
-         tfGWRWkpRV/+DMH5e/FycyG9+k3ZY+67GLY0TlJ8WQZ0VBAq7wsi5+ayJSnpv5ICrifi
-         Wz+0vgKXEROGGpcFfEV0nAlsFisrIF4yrjq97qP5NBjUMvaAcBM0hEUinu9qK+1432VT
-         /9JFEtzx8SYIvTfcTEmbfi1LjQc3BT/lAD8i2heVSJEQDjPgQZERFqS51skiQaYSz9Ki
-         3GT7RmLgooaibviyNs21UmEAvX4LqpLqQQv9syDzlCgg82Zd20Zri1jMWl43Yua+TsFu
-         gxSw==
-X-Forwarded-Encrypted: i=1; AJvYcCXcICkXqaPPTBIthJl1vcdfMx8kHD9GUF/ruatLPf9QcK9Fx15APHeqil46dhpnT4f8IwlsL7Al7zOLV6HxLHmh8nhquAFA0dJ+ZkYt6Mw=
-X-Gm-Message-State: AOJu0YxwQeAbWGajvIbY8GOkhQmBHpSoEoOZ+iloTcQVaEoizVmyVJP9
-	+4KR4xwM/cRs5jeHwQL0N9cKB9FOxWGgw0wn1k6yf5jHhOvPV2Ch+IU2EcfVBBzqzYYZkNI3cvr
-	RB7eeiIruevMf6iXaEGcG6OXXxw==
-X-Google-Smtp-Source: AGHT+IHW9FLpsph6b8XZ7IqprKBI/ass2Dwtgc44j+3w04yWtvJ1AxFcVVN0DinIvEf05eC9TPhTRq0FaFM5z6JMu1A=
-X-Received: from mattgilbride.c.googlers.com ([fda3:e722:ac3:cc00:2b:7d90:c0a8:2ac5])
- (user=mattgilbride job=sendgmr) by 2002:a25:84cc:0:b0:dfa:57e8:a37 with SMTP
- id 3f1490d57ef6-dfacad239f1mr353011276.13.1717685427811; Thu, 06 Jun 2024
- 07:50:27 -0700 (PDT)
-Date: Thu, 06 Jun 2024 14:50:09 +0000
-In-Reply-To: <20240606-b4-rbtree-v5-0-96fe1a0e97c0@google.com>
+        d=1e100.net; s=20230601; t=1717686352; x=1718291152;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=svRBg3ehYrz5hUxTlJzLKiH5OmJzeQR08XpR/4Jyz1s=;
+        b=PbGxgMvJHyOv+e664UStrJ5ra/C/pto9zU/zHVP4lJS6vkQLVwogBI9KHEsExsC+jW
+         6TW+jwGb7is6GFNI6vOraoZ6Eijbo8NRqNyWO1fyE9ihhEc8nq+B7gIM5zjZQvr5i9pY
+         BJeUAaP0OLEzaR6wXozVd13KgFHhOjg2K6XJDTy9JgDduxclTRz63AnbyjF5YuE2Idik
+         hi070JRZPWKWOUFfKiPigJnstk/qqrY4akuf/SRUNwr0iUEaQupxJXlUAPFMGrRoKH0J
+         69rpcPbxgxrodP8vsqUFndabWvAevjS1Vg7k+8GcPU6Ihv/7dtODTpfizNc7arNrcvxx
+         R51g==
+X-Forwarded-Encrypted: i=1; AJvYcCXhRdqxHENXRGtqq8mgFlYkAiw6hTvoiKGbpTE12vakayfAMUHfipnhBGRu2O+L+BUqZlfDjusPI1rUH6rpCa8wo0IZRx/LzN+8AGWivWc=
+X-Gm-Message-State: AOJu0YwCTnAsrkk9VJ8/Zq8631zWAOieR6oSz7YSjzs9h6+SO7hzGSMF
+	05fAk5FfAoj4kiFyMP8Wnm69gLEwnzELpfokvxW18Ly0cRD0s9eMkLmCCs0aRTe4AVUU6TX1GYY
+	Xs4nni2L5nDhhBg==
+X-Google-Smtp-Source: AGHT+IEkC4tJkKW66Tm9hAmKtZpBXUx5yLPklB64SQ5u7BYAWEQWIHI0aOMgcj6m1qnJQ7SdqcrAeAA67ifIajI=
+X-Received: from aliceryhl2.c.googlers.com ([fda3:e722:ac3:cc00:68:949d:c0a8:572])
+ (user=aliceryhl job=sendgmr) by 2002:a2e:800c:0:b0:2e1:d6d5:6354 with SMTP id
+ 38308e7fff4ca-2eac7a91f91mr64171fa.10.1717686351279; Thu, 06 Jun 2024
+ 08:05:51 -0700 (PDT)
+Date: Thu, 06 Jun 2024 15:05:23 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20240606-b4-rbtree-v5-0-96fe1a0e97c0@google.com>
-X-Mailer: b4 0.12.4
-Message-ID: <20240606-b4-rbtree-v5-6-96fe1a0e97c0@google.com>
-Subject: [PATCH v5 6/6] rust: rbtree: add `RBTree::entry`
-From: Matt Gilbride <mattgilbride@google.com>
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+X-B4-Tracking: v=1; b=H4sIADTQYWYC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxMDMwMz3ZKixOTUgvzMvBJdY8NUQ9MkS4NUE3NDJaCGgqLUtMwKsGHRsbW 1ACjAlRpcAAAA
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4496; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=vEsutBZlhKMnWIsGe05c46SdkM5cY+SQXmb/5CmFXnI=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBmYdBGVbbcpYhdO8um73PzslTL3fQK3Vilrqkzy
+ t6ldQtbPNSJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZmHQRgAKCRAEWL7uWMY5
+ Rg+0D/0Rl5tPOn6qzNZdHaMCN8arml0tdRNBaach4+YmnFtkE7sIs6FDMeZgUbVQ7c0A8Ev+BeR
+ GqOiq6UfLhtOiZ19IZdPdlTmhitNhWoFdRy/GNJ3rgSlgu/694F/MC00UjONOeubNLUjxmtzzqM
+ sLH9C4AtkTMjo2xT+Htse/rE3gjQlJTTRl9cSB7lQoBA5WZnHIR/kTgtxqZZvUSyT7/l7dpes6u
+ 5ouWuOQoaLmkossg+WKUrUyxkYgd4tIHeAfjn/zjjBIgliEzPWCf6VOq9teK1QV88oNj4L/4DSx
+ B20Pi6iMuXKEAC8WuT3HVRfM2fNqRl8BBieHTfI2k3dnXhht8CEFpHKBWsy/X7URXuEJM7ZPTCE
+ W0iXC4v2r+SvazJr27qRpIYCyVoQ1TvkNn/P0nDg4Qz7pgX0V1reEf8dMpplI+EQrzks8bZN5Cn
+ cF44cx94L26FBCdLoE+z796w/ZWmFpajVWznmILSSXl4t85YF1I/OGXD5M+ELpW9vrGB9S2csaC
+ GBeH0lCrhIvtO2JK2aODg7vM0lewHkoMadQoHgwnyQ+TOwVN1VDcDbpqHVXWHczVeCV9wfU25QM
+ bYS3A8XMyG9B8KAuRYL8CynH3crBivglxTsVI7jZOOGYX47gW+wayFPYuw4mbYnBygER/m0I39E Nmf1vxRfsI6oWsg==
+X-Mailer: b4 0.13-dev-26615
+Message-ID: <20240606-tracepoint-v1-0-6551627bf51b@google.com>
+Subject: [PATCH 0/3] Tracepoints and static branch/call in Rust
+From: Alice Ryhl <aliceryhl@google.com>
+To: Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Josh Poimboeuf <jpoimboe@kernel.org>, Jason Baron <jbaron@akamai.com>, 
+	Ard Biesheuvel <ardb@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"=?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
-	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Christian Brauner <brauner@kernel.org>
-Cc: Rob Landley <rob@landley.net>, Davidlohr Bueso <dave@stgolabs.net>, 
-	Michel Lespinasse <michel@lespinasse.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Matt Gilbride <mattgilbride@google.com>
+	Andreas Hindborg <a.hindborg@samsung.com>
+Cc: linux-trace-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-From: Alice Ryhl <aliceryhl@google.com>
+An important part of a production ready Linux kernel driver is
+tracepoints. So to write production ready Linux kernel drivers in Rust,
+we must be able to call tracepoints from Rust code. This patch series
+adds support for calling tracepoints declared in C from Rust.
 
-This mirrors the entry API [1] from the Rust standard library on
-`RBTree`. This API can be used to access the entry at a specific key and
-make modifications depending on whether the key is vacant or occupied.
-This API is useful because it can often be used to avoid traversing the
-tree multiple times.
+To use the tracepoint support, you must:
 
-This is used by binder to look up and conditionally access or insert a
-value, depending on whether it is there or not [2].
+1. Declare the tracepoint in a C header file as usual.
+2. Make sure that the header file is visible to bindgen so that Rust
+   bindings are generated for the symbols that the tracepoint macro
+   emits.
+3. Use the declare_trace! macro in your Rust code to generate Rust
+   functions that call into the tracepoint.
 
-Link: https://doc.rust-lang.org/stable/std/collections/btree_map/enum.Entry.html [1]
-Link: https://android-review.googlesource.com/c/kernel/common/+/2849906 [2]
+For example, the kernel has a tracepoint called `sched_kthread_stop`. It
+is declared like this:
+
+	TRACE_EVENT(sched_kthread_stop,
+		TP_PROTO(struct task_struct *t),
+		TP_ARGS(t),
+		TP_STRUCT__entry(
+			__array(	char,	comm,	TASK_COMM_LEN	)
+			__field(	pid_t,	pid			)
+		),
+		TP_fast_assign(
+			memcpy(__entry->comm, t->comm, TASK_COMM_LEN);
+			__entry->pid	= t->pid;
+		),
+		TP_printk("comm=%s pid=%d", __entry->comm, __entry->pid)
+	);
+
+To call the above tracepoint from Rust code, you would add the relevant
+header file to rust/bindings/bindings_helper.h and add the following
+invocation somewhere in your Rust code:
+
+	declare_trace! {
+	    fn sched_kthread_stop(task: *mut task_struct);
+	}
+
+This will define a Rust function of the given name that you can call
+like any other Rust function. Since these tracepoints often take raw
+pointers as arguments, it may be convenient to wrap it in a safe
+wrapper:
+
+	mod raw {
+	    declare_trace! {
+	        fn sched_kthread_stop(task: *mut task_struct);
+	    }
+	}
+	
+	#[inline]
+	pub fn trace_sched_kthread_stop(task: &Task) {
+	    // SAFETY: The pointer to `task` is valid.
+	    unsafe { raw::sched_kthread_stop(task.as_raw()) }
+	}
+
+A future expansion of the tracepoint support could generate these safe
+versions automatically, but that is left as future work for now.
+
+This is intended for use in the Rust Binder driver, which was originally
+sent as an RFC [1]. The RFC did not include tracepoint support, but you
+can see how it will be used in Rust Binder at [2]. The author has
+verified that the tracepoint support works on Android devices.
+
+This implementation implements support for static keys in Rust so that
+the actual static branch will end up in the Rust object file. However,
+it would also be possible to just wrap the trace_##name generated by
+__DECLARE_TRACE in an extern C function and then call that from Rust.
+This will simplify the Rust code by removing the need for static
+branches and calls, but it places the static branch behind an external
+call, which has performance implications.
+
+A possible middle ground would be to place just the __DO_TRACE body in
+an extern C function and to implement the Rust wrapper by doing the
+static branch in Rust, and then calling into C the code that contains
+__DO_TRACE when the tracepoint is active. However, this would need some
+changes to include/linux/tracepoint.h to generate and export a function
+containing the body of __DO_TRACE when the tracepoint should be callable
+from Rust.
+
+So in general, there is a tradeoff between placing parts of the
+tracepoint (which is perf sensitive) behind an external call, and having
+code duplicated in both C and Rust (which must be kept in sync when
+changes are made). This is an important point that I would like feedback
+on from the C maintainers.
+
+Link: https://lore.kernel.org/rust-for-linux/20231101-rust-binder-v1-0-08ba9197f637@google.com/ [1]
+Link: https://r.android.com/3110088 [2]
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-Tested-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Matt Gilbride <mattgilbride@google.com>
 ---
- rust/kernel/rbtree.rs | 295 +++++++++++++++++++++++++++++++++++++-------------
- 1 file changed, 221 insertions(+), 74 deletions(-)
+Alice Ryhl (3):
+      rust: add static_call support
+      rust: add static_key_false
+      rust: add tracepoint support
 
-diff --git a/rust/kernel/rbtree.rs b/rust/kernel/rbtree.rs
-index cf90f23b20f6..228c5467d88c 100644
---- a/rust/kernel/rbtree.rs
-+++ b/rust/kernel/rbtree.rs
-@@ -297,12 +297,18 @@ pub fn try_create_and_insert(
-     /// key/value pair). Returns [`None`] if a node with the same key didn't already exist.
-     ///
-     /// This function always succeeds.
--    pub fn insert(&mut self, RBTreeNode { node }: RBTreeNode<K, V>) -> Option<RBTreeNode<K, V>> {
--        let node = Box::into_raw(node);
--        // SAFETY: `node` is valid at least until we call `Box::from_raw`, which only happens when
--        // the node is removed or replaced.
--        let node_links = unsafe { addr_of_mut!((*node).links) };
-+    pub fn insert(&mut self, node: RBTreeNode<K, V>) -> Option<RBTreeNode<K, V>> {
-+        match self.raw_entry(&node.node.key) {
-+            RawEntry::Occupied(entry) => Some(entry.replace(node)),
-+            RawEntry::Vacant(entry) => {
-+                entry.insert(node);
-+                None
-+            }
-+        }
-+    }
- 
-+    fn raw_entry(&mut self, key: &K) -> RawEntry<'_, K, V> {
-+        // The returned `RawEntry` is used to call either `rb_link_node` or `rb_replace_node`.
-         // The parameters of `rb_link_node` are as follows:
-         // - `node`: A pointer to an uninitialized node being inserted.
-         // - `parent`: A pointer to an existing node in the tree. One of its child pointers must be
-@@ -322,61 +328,52 @@ pub fn insert(&mut self, RBTreeNode { node }: RBTreeNode<K, V>) -> Option<RBTree
-         // we find an empty subtree, we can insert the new node using `rb_link_node`.
-         let mut parent = core::ptr::null_mut();
-         let mut child_field_of_parent: &mut *mut bindings::rb_node = &mut self.root.rb_node;
--        while !child_field_of_parent.is_null() {
--            parent = *child_field_of_parent;
-+        while !(*child_field_of_parent).is_null() {
-+            let curr = *child_field_of_parent;
-+            // SAFETY: All links fields we create are in a `Node<K, V>`.
-+            let node = unsafe { container_of!(curr, Node<K, V>, links) };
- 
--            // We need to determine whether `node` should be the left or right child of `parent`,
--            // so we will compare with the `key` field of `parent` a.k.a. `this` below.
--            //
--            // SAFETY: By the type invariant of `Self`, all non-null `rb_node` pointers stored in `self`
--            // point to the links field of `Node<K, V>` objects.
--            let this = unsafe { container_of!(parent, Node<K, V>, links) };
--
--            // SAFETY: `this` is a non-null node so it is valid by the type invariants. `node` is
--            // valid until the node is removed.
--            match unsafe { (*node).key.cmp(&(*this).key) } {
--                // We would like `node` to be the left child of `parent`.  Move to this child to check
--                // whether we can use it, or continue searching, at the next iteration.
--                //
--                // SAFETY: `parent` is a non-null node so it is valid by the type invariants.
--                Ordering::Less => child_field_of_parent = unsafe { &mut (*parent).rb_left },
--                // We would like `node` to be the right child of `parent`.  Move to this child to check
--                // whether we can use it, or continue searching, at the next iteration.
--                //
--                // SAFETY: `parent` is a non-null node so it is valid by the type invariants.
--                Ordering::Greater => child_field_of_parent = unsafe { &mut (*parent).rb_right },
-+            // SAFETY: `node` is a non-null node so it is valid by the type invariants.
-+            match key.cmp(unsafe { &(*node).key }) {
-+                // SAFETY: `curr` is a non-null node so it is valid by the type invariants.
-+                Ordering::Less => child_field_of_parent = unsafe { &mut (*curr).rb_left },
-+                // SAFETY: `curr` is a non-null node so it is valid by the type invariants.
-+                Ordering::Greater => child_field_of_parent = unsafe { &mut (*curr).rb_right },
-                 Ordering::Equal => {
--                    // There is an existing node in the tree with this key, and that node is
--                    // parent.  Thus, we are replacing parent with a new node.
--                    //
--                    // INVARIANT: We are replacing an existing node with a new one, which is valid.
--                    // It remains valid because we "forgot" it with `Box::into_raw`.
--                    // SAFETY: All pointers are non-null and valid.
--                    unsafe { bindings::rb_replace_node(parent, node_links, &mut self.root) };
--
--                    // INVARIANT: The node is being returned and the caller may free it, however,
--                    // it was removed from the tree. So the invariants still hold.
--                    return Some(RBTreeNode {
--                        // SAFETY: `this` was a node in the tree, so it is valid.
--                        node: unsafe { Box::from_raw(this.cast_mut()) },
--                    });
-+                    return RawEntry::Occupied(OccupiedEntry {
-+                        rbtree: self,
-+                        node_links: curr,
-+                    })
-                 }
-             }
-+            parent = curr;
-         }
- 
--        // INVARIANT: We are linking in a new node, which is valid. It remains valid because we
--        // "forgot" it with `Box::into_raw`.
--        // SAFETY: All pointers are non-null and valid (`*child_field_of_parent` is null, but `child_field_of_parent` is a
--        // mutable reference).
--        unsafe { bindings::rb_link_node(node_links, parent, child_field_of_parent) };
-+        RawEntry::Vacant(RawVacantEntry {
-+            parent,
-+            child_field_of_parent,
-+            rbtree: self,
-+        })
-+    }
- 
--        // SAFETY: All pointers are valid. `node` has just been inserted into the tree.
--        unsafe { bindings::rb_insert_color(node_links, &mut self.root) };
--        None
-+    /// Gets the given key's corresponding entry in the map for in-place manipulation.
-+    pub fn entry(&mut self, key: K) -> Entry<'_, K, V> {
-+        match self.raw_entry(&key) {
-+            RawEntry::Occupied(entry) => Entry::Occupied(entry),
-+            RawEntry::Vacant(entry) => Entry::Vacant(VacantEntry { raw: entry, key }),
-+        }
-+    }
-+
-+    /// Used for accessing the given node, if it exists.
-+    pub fn find_mut(&mut self, key: &K) -> Option<OccupiedEntry<'_, K, V>> {
-+        match self.raw_entry(key) {
-+            RawEntry::Occupied(entry) => Some(entry),
-+            RawEntry::Vacant(_entry) => None,
-+        }
-     }
- 
--    /// Returns a node with the given key, if one exists.
--    fn find(&self, key: &K) -> Option<NonNull<Node<K, V>>> {
-+    /// Returns a reference to the value corresponding to the key.
-+    pub fn get(&self, key: &K) -> Option<&V> {
-         let mut node = self.root.rb_node;
-         while !node.is_null() {
-             // SAFETY: By the type invariant of `Self`, all non-null `rb_node` pointers stored in `self`
-@@ -388,47 +385,30 @@ fn find(&self, key: &K) -> Option<NonNull<Node<K, V>>> {
-                 Ordering::Less => unsafe { (*node).rb_left },
-                 // SAFETY: `node` is a non-null node so it is valid by the type invariants.
-                 Ordering::Greater => unsafe { (*node).rb_right },
--                Ordering::Equal => return NonNull::new(this.cast_mut()),
-+                // SAFETY: `node` is a non-null node so it is valid by the type invariants.
-+                Ordering::Equal => return Some(unsafe { &(*this).value }),
-             }
-         }
-         None
-     }
- 
--    /// Returns a reference to the value corresponding to the key.
--    pub fn get(&self, key: &K) -> Option<&V> {
--        // SAFETY: The `find` return value is a node in the tree, so it is valid.
--        self.find(key).map(|node| unsafe { &node.as_ref().value })
--    }
--
-     /// Returns a mutable reference to the value corresponding to the key.
-     pub fn get_mut(&mut self, key: &K) -> Option<&mut V> {
--        // SAFETY: The `find` return value is a node in the tree, so it is valid.
--        self.find(key)
--            .map(|mut node| unsafe { &mut node.as_mut().value })
-+        self.find_mut(key).map(|node| node.into_mut())
-     }
- 
-     /// Removes the node with the given key from the tree.
-     ///
-     /// It returns the node that was removed if one exists, or [`None`] otherwise.
--    fn remove_node(&mut self, key: &K) -> Option<RBTreeNode<K, V>> {
--        let mut node = self.find(key)?;
--
--        // SAFETY: The `find` return value is a node in the tree, so it is valid.
--        unsafe { bindings::rb_erase(&mut node.as_mut().links, &mut self.root) };
--
--        // INVARIANT: The node is being returned and the caller may free it, however, it was
--        // removed from the tree. So the invariants still hold.
--        Some(RBTreeNode {
--            // SAFETY: The `find` return value was a node in the tree, so it is valid.
--            node: unsafe { Box::from_raw(node.as_ptr()) },
--        })
-+    pub fn remove_node(&mut self, key: &K) -> Option<RBTreeNode<K, V>> {
-+        self.find_mut(key).map(OccupiedEntry::remove_node)
-     }
- 
-     /// Removes the node with the given key from the tree.
-     ///
-     /// It returns the value that was removed if one exists, or [`None`] otherwise.
-     pub fn remove(&mut self, key: &K) -> Option<V> {
--        self.remove_node(key).map(|node| node.node.value)
-+        self.find_mut(key).map(OccupiedEntry::remove)
-     }
- 
-     /// Returns a cursor over the tree nodes based on the given key.
-@@ -1125,6 +1105,173 @@ unsafe impl<K: Send, V: Send> Send for RBTreeNode<K, V> {}
- // [`RBTreeNode`] without synchronization.
- unsafe impl<K: Sync, V: Sync> Sync for RBTreeNode<K, V> {}
- 
-+impl<K, V> RBTreeNode<K, V> {
-+    /// Drop the key and value, but keep the allocation.
-+    ///
-+    /// It then becomes a reservation that can be re-initialised into a different node (i.e., with
-+    /// a different key and/or value).
-+    ///
-+    /// The existing key and value are dropped in-place as part of this operation, that is, memory
-+    /// may be freed (but only for the key/value; memory for the node itself is kept for reuse).
-+    pub fn into_reservation(self) -> RBTreeNodeReservation<K, V> {
-+        RBTreeNodeReservation {
-+            node: Box::drop_contents(self.node),
-+        }
-+    }
-+}
-+
-+/// A view into a single entry in a map, which may either be vacant or occupied.
-+///
-+/// This enum is constructed from the [`RBTree::entry`].
-+///
-+/// [`entry`]: fn@RBTree::entry
-+pub enum Entry<'a, K, V> {
-+    /// This [`RBTree`] does not have a node with this key.
-+    Vacant(VacantEntry<'a, K, V>),
-+    /// This [`RBTree`] already has a node with this key.
-+    Occupied(OccupiedEntry<'a, K, V>),
-+}
-+
-+/// Like [`Entry`], except that it doesn't have ownership of the key.
-+enum RawEntry<'a, K, V> {
-+    Vacant(RawVacantEntry<'a, K, V>),
-+    Occupied(OccupiedEntry<'a, K, V>),
-+}
-+
-+/// A view into a vacant entry in a [`RBTree`]. It is part of the [`Entry`] enum.
-+pub struct VacantEntry<'a, K, V> {
-+    key: K,
-+    raw: RawVacantEntry<'a, K, V>,
-+}
-+
-+/// Like [`VacantEntry`], but doesn't hold on to the key.a
-+///
-+/// # Invariants
-+/// - `parent` may be null if the new node becomes the root.
-+/// - `child_field_of_parent` is a valid pointer to the left-child or right-child of `parent`. If `parent` is
-+///     null, it is a pointer to the root of the [`RBTree`].
-+struct RawVacantEntry<'a, K, V> {
-+    rbtree: &'a mut RBTree<K, V>,
-+    /// The node that will become the parent of the new node if we insert one.
-+    parent: *mut bindings::rb_node,
-+    /// This points to the left-child or right-child field of `parent`, or `root` if `parent` is
-+    /// null.
-+    child_field_of_parent: *mut *mut bindings::rb_node,
-+}
-+
-+impl<'a, K, V> RawVacantEntry<'a, K, V> {
-+    /// Inserts the given node into the [`RBTree`] at this entry.
-+    ///
-+    /// The `node` must have a key such that inserting it here does not break the ordering of this
-+    /// [`RBTree`].
-+    fn insert(self, node: RBTreeNode<K, V>) -> &'a mut V {
-+        let node = Box::into_raw(node.node);
-+
-+        // SAFETY: `node` is valid at least until we call `Box::from_raw`, which only happens when
-+        // the node is removed or replaced.
-+        let node_links = unsafe { addr_of_mut!((*node).links) };
-+
-+        // INVARIANT: We are linking in a new node, which is valid. It remains valid because we
-+        // "forgot" it with `Box::into_raw`.
-+        // SAFETY: The type invariants of `RawVacantEntry` are exactly the safety requirements of `rb_link_node`.
-+        unsafe { bindings::rb_link_node(node_links, self.parent, self.child_field_of_parent) };
-+
-+        // SAFETY: All pointers are valid. `node` has just been inserted into the tree.
-+        unsafe { bindings::rb_insert_color(node_links, &mut self.rbtree.root) };
-+
-+        // SAFETY: The node is valid until we remove it from the tree.
-+        unsafe { &mut (*node).value }
-+    }
-+}
-+
-+impl<'a, K, V> VacantEntry<'a, K, V> {
-+    /// Inserts the given node into the [`RBTree`] at this entry.
-+    pub fn insert(self, value: V, reservation: RBTreeNodeReservation<K, V>) -> &'a mut V {
-+        self.raw.insert(reservation.into_node(self.key, value))
-+    }
-+}
-+
-+/// A view into an occupied entry in a [`RBTree`]. It is part of the [`Entry`] enum.
-+///
-+/// # Invariants
-+/// - `node_links` is a valid, non-null pointer to a tree node in `self.rbtree`
-+pub struct OccupiedEntry<'a, K, V> {
-+    rbtree: &'a mut RBTree<K, V>,
-+    /// The node that this entry corresponds to.
-+    node_links: *mut bindings::rb_node,
-+}
-+
-+impl<'a, K, V> OccupiedEntry<'a, K, V> {
-+    fn node_ptr(&self) -> *mut Node<K, V> {
-+        // SAFETY: By the type invariant of `Self`, all `node_links` pointers stored in `self`
-+        // point to the links field of `Node<K, V>` objects.
-+        unsafe { container_of!(self.node_links, Node<K, V>, links) }.cast_mut()
-+    }
-+
-+    /// Gets a reference to the value in the entry.
-+    pub fn get(&self) -> &V {
-+        // SAFETY: `self.node_ptr` produces a valid pointer to a node in the tree.
-+        unsafe { &(*self.node_ptr()).value }
-+    }
-+
-+    /// Gets a mutable reference to the value in the entry.
-+    pub fn get_mut(&mut self) -> &mut V {
-+        // SAFETY: `self.node_ptr` produces a valid pointer to a node in the tree.
-+        unsafe { &mut (*self.node_ptr()).value }
-+    }
-+
-+    /// Converts the entry into a mutable reference to its value.
-+    ///
-+    /// If you need multiple references to the `OccupiedEntry`, see [`self#get_mut`].
-+    pub fn into_mut(self) -> &'a mut V {
-+        // SAFETY: `self.node_ptr` produces a valid pointer to a node in the tree.
-+        unsafe { &mut (*self.node_ptr()).value }
-+    }
-+
-+    /// Remove this entry from the [`RBTree`].
-+    pub fn remove_node(self) -> RBTreeNode<K, V> {
-+        // SAFETY: The node is a node in the tree, so it is valid.
-+        unsafe { bindings::rb_erase(self.node_links, &mut self.rbtree.root) };
-+
-+        // INVARIANT: The node is being returned and the caller may free it, however, it was
-+        // removed from the tree. So the invariants still hold.
-+        RBTreeNode {
-+            // SAFETY: The node was a node in the tree, but we removed it, so we can convert it
-+            // back into a box.
-+            node: unsafe { Box::from_raw(self.node_ptr()) },
-+        }
-+    }
-+
-+    /// Takes the value of the entry out of the map, and returns it.
-+    pub fn remove(self) -> V {
-+        self.remove_node().node.value
-+    }
-+
-+    /// Swap the current node for the provided node.
-+    ///
-+    /// The key of both nodes must be equal.
-+    fn replace(self, node: RBTreeNode<K, V>) -> RBTreeNode<K, V> {
-+        let node = Box::into_raw(node.node);
-+
-+        // SAFETY: `node` is valid at least until we call `Box::from_raw`, which only happens when
-+        // the node is removed or replaced.
-+        let new_node_links = unsafe { addr_of_mut!((*node).links) };
-+
-+        // SAFETY: This updates the pointers so that `new_node_links` is in the tree where
-+        // `self.node_links` used to be.
-+        unsafe {
-+            bindings::rb_replace_node(self.node_links, new_node_links, &mut self.rbtree.root)
-+        };
-+
-+        // SAFETY:
-+        // - `self.node_ptr` produces a valid pointer to a node in the tree.
-+        // - Now that we removed this entry from the tree, we can convert the node to a box.
-+        let old_node = unsafe { Box::from_raw(self.node_ptr()) };
-+
-+        RBTreeNode { node: old_node }
-+    }
-+}
-+
- struct Node<K, V> {
-     links: bindings::rb_node,
-     key: K,
+ rust/bindings/bindings_helper.h |  1 +
+ rust/bindings/lib.rs            | 15 +++++++
+ rust/helpers.c                  | 24 +++++++++++
+ rust/kernel/lib.rs              |  3 ++
+ rust/kernel/static_call.rs      | 92 +++++++++++++++++++++++++++++++++++++++++
+ rust/kernel/static_key.rs       | 87 ++++++++++++++++++++++++++++++++++++++
+ rust/kernel/tracepoint.rs       | 92 +++++++++++++++++++++++++++++++++++++++++
+ scripts/Makefile.build          |  2 +-
+ 8 files changed, 315 insertions(+), 1 deletion(-)
+---
+base-commit: 1613e604df0cd359cf2a7fbd9be7a0bcfacfabd0
+change-id: 20240606-tracepoint-31e15b90e471
 
+Best regards,
 -- 
-2.45.1.467.gbab1589fc0-goog
+Alice Ryhl <aliceryhl@google.com>
 
