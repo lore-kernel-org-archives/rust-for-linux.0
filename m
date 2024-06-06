@@ -1,40 +1,87 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f43.google.com (mail-qv1-f43.google.com [209.85.219.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B50861991BD;
-	Thu,  6 Jun 2024 17:35:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7469438DE4;
+	Thu,  6 Jun 2024 19:00:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717695358; cv=none; b=jlwh9MiF5OJfPl1KR1Y6TvPTzOkkvwI7qUxgvMuaSx5pSsV4iE5l3f35WQJFij1st3AW9xOXqRd0V72xRmeSwjeE+iFZJ7X/PWLs9L7YN2yLnoUnw+IBvNwiISyCMCl7xr16VoW3p5NZT1h0OwQ+V4frl5/Z8NDTIGEL21EvEsU=
+	t=1717700451; cv=none; b=Kzoo/NRJblJY0FLH7MOJ8TLZ8Sa58iVvhQFqygUw7w/sDtk36XnLSXfZw4INTgv7dOEpP8iTE+ysevnhcA5cMKBfpz4FDeJFwBtiE+s0X/sIEx9Hax1zxHd7JVwBwpM1Nz3WUGX/Pp/C4vyf9c0PZd23sk+DH0ykIr1vN8tcqEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717695358; c=relaxed/simple;
-	bh=K95UY5fmgibcQQ6sthv1S5/PdLYNFoyPKt9sEpSCbeg=;
+	s=arc-20240116; t=1717700451; c=relaxed/simple;
+	bh=M8H0xy1DWWc/H9ZG2Ee51cJpwzjTKk41amkrJ5t6vg4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WwqQIxUWXBQ3eeitP4IqhMunjStPnSqSgZefic71HNvFxu+P1+P+Tl8ynbYa06b5CP3SkbnIqHNYWVHUqaaxXilw0+qfGy15ub4DHCoRukPExjGoLXuVKzVApxU25XUffNmq5Pcj8Ir+6Pa14ojrMcLXE0nRYUXHchBMdOtOMv0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=l0DHKAp9; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=XpKpK6MeJWqnZvK0aXTkolN3mrECpZOOBaIWLDaiL+NSe0Ca0LDGMBjBz54vu/8+mL9GQKwAuhQ8rOJ6HM2kQMxXTtXpGaJHb210tF8L29nhfiSydfU1Xz+fwNgxC4+XofDOOOuCpISj83/eZsuYIYpYZ/6fomcJeggoV8IEkn0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bB5TPFkr; arc=none smtp.client-ip=209.85.219.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="l0DHKAp9"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=Rey5qJ7BY13ky3bigo4MWBL8ulxyTtDItl78FrbFPQE=; b=l0DHKAp9pgwOYJGy6q17IxAKYk
-	InZ8CQSKwrYAb46Fg4KCTzN0hqcA6Dse+Q+x9G57PSijSP0134gUjHRdPavJ79WSIX7dEMkbz93QU
-	Ak/4eVkq9cFudul86GtuBwn5f6BsMhNAi3HHmYdDU67cgiROZ0a3SOWbF8OmAPX7eBCh4sXDTBHeL
-	mm9e72L3F2C0zI7Kz+v54fJUrG//TSU1Oqpp7LPaZany+XqCeWqqoO0omgFXfKSZxVZXFVu+Qvk1b
-	OLlXB5X7JmZ4xv/eEK+EON/AXSs9gCkVe21PhVDJssmS+P9//zSPOLxhNuK798NJXn+tjo2u6HBEk
-	XR4zCXiQ==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sFH1g-00000001g1c-19xi;
-	Thu, 06 Jun 2024 17:35:48 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id BBAD930047C; Thu,  6 Jun 2024 19:35:44 +0200 (CEST)
-Date: Thu, 6 Jun 2024 19:35:44 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Boqun Feng <boqun.feng@gmail.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bB5TPFkr"
+Received: by mail-qv1-f43.google.com with SMTP id 6a1803df08f44-6ad8243dba8so6196406d6.3;
+        Thu, 06 Jun 2024 12:00:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1717700449; x=1718305249; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=tJSI3NIhPWMG6BD/WGBLSN52oRpjiTs5BIySoaDVF5A=;
+        b=bB5TPFkrkjTe107LdClyhXoqBkLJTDKaByk9m6EmL0Q4RgtuAuCu0/Ci3Fswg5h+yq
+         nOAx2c5DORwnV1fdWINBdzGEoBg0e/DIqf8bz74fuNbZrj9mASTGr6fztrIx1qkQw+HC
+         J/WnYj2twOCnA2p+NZ6oRe4zZFX+8kTxrmDk4ehSO5RoVKTX5xZ59vYgsr8vfz5afko7
+         xMONggt+cK9z2Q4GbYbBUnRvhi4Ro8C0YEapI4wZqy5UacQM1+cStjVw8ORbiDn8y3/X
+         Cxjl6uWtFMnkA5A+JqoiFbn1Qia+tfy2TwtvORHkY/9NG4J5AIHYHv3jzLyXDx/46Jg/
+         ikIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1717700449; x=1718305249;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=tJSI3NIhPWMG6BD/WGBLSN52oRpjiTs5BIySoaDVF5A=;
+        b=xKI2SUuV32RFhdWmlLB9mANwLbt68/6tZUzn67KKo75HCfsc2y2OGEwZTU5AwFlzbd
+         ZfMEhlAKNIqK5U83R/v4I7emOsjLRdgMqqzjY7Bxvx1F58cFzEUpf3JkUqpfBF/AWsg0
+         9fGlOFN6YowJaKKVEXfgDg2XsEhuZKT7dNP0swdDaE8wc7hHh2zRIm0ig/LoYveUjrsw
+         jUBjIA1R30jE7Fj8v0LJGUK9dFdFEMvYYRhy/DnLRyeONs1aP9z+jPqu5KHWuF4ZJIkj
+         v4IgoMBL0kDA+Fa/tK5cofYbB0MQMXu/Yy27WyZ52/EAkhGoqirbJPN3Q8PBevInOJdB
+         Ftng==
+X-Forwarded-Encrypted: i=1; AJvYcCVWwR29kBIgKdcD8HQcOJObtN73bAthR0EV1nB40FPLm/Ex2UiL9jKbh7mB4VmqQH5hJPYTD8uwZVXDMWxudkpAfE9SL2Kss0tuBJwh3vkjlkgLf2aSFPQXDr7XzhE9d2gQN97rozvivI+XU1boApS7yaM2sj7fsAWtcsyDsBNkGaKVYNutxE4r/VxxiWoDCtU=
+X-Gm-Message-State: AOJu0YxW/ICncIkQFzWYJEQVjzhTKF6B21qgXnSgxsIXFRqCfzqazWip
+	MrNSMH5Obh/KmH600A3d96LVMKuQ/LzwB73XMQ5D75g0DNsKkBM+
+X-Google-Smtp-Source: AGHT+IFOp9gYgqV4RZHHnvLu8DoLTWoXwWYQmb0M8EL8ZoGT8LWwFmlNERK4ERZIRB3euxXxOc4okg==
+X-Received: by 2002:a05:6214:398c:b0:6ae:2f16:561e with SMTP id 6a1803df08f44-6b059f942b4mr3292806d6.59.1717700449225;
+        Thu, 06 Jun 2024 12:00:49 -0700 (PDT)
+Received: from fauth2-smtp.messagingengine.com (fauth2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6b04f620e8asm8886706d6.2.2024.06.06.12.00.48
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 06 Jun 2024 12:00:48 -0700 (PDT)
+Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
+	by mailfauth.nyi.internal (Postfix) with ESMTP id 196F01200043;
+	Thu,  6 Jun 2024 15:00:47 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute1.internal (MEProxy); Thu, 06 Jun 2024 15:00:47 -0400
+X-ME-Sender: <xms:XgdiZjjzp4mBDiFlMp9IbI-xGd0sFLiT3Nql8z3gnQsRgo6S1MERRA>
+    <xme:XgdiZgD7nJDKTjFMwZexehjcn4sv66d2xnydx5hOVJA0i-PzfdaFdNmtqRXqPfj5L
+    2lYlXH2xui-QSIc5g>
+X-ME-Received: <xmr:XgdiZjE3ufdkQXuogjJ7dZL_D_cx1iIotz9jCrsX0HmjKUnMnEQ5srRLszA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrvdelkedgudeftdcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpeffhffvvefukfhfgggtuggjsehttdortddttddvnecuhfhrohhmpeeuohhq
+    uhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrf
+    grthhtvghrnhepjeffgeeijedvtdfgkeekhfejgeejveeuudfgheeftdekffejtdelieeu
+    hfdvfeegnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiii
+    gvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhht
+    hhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquh
+    hnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvg
+X-ME-Proxy: <xmx:XgdiZgTygYU-bTpl38OO-Lc9Ed4MVX-_HjizOrEDfqkQxN_qq8-H1Q>
+    <xmx:XgdiZgxot2emvToLEK0uQn0I4nKNM0StNiz66Pxd3bMp3IRc8fG96Q>
+    <xmx:XgdiZm6xiMRtMKdpDm5T-ajGdqte27LYzt25E3QZeYqBxnF7vHjc0w>
+    <xmx:XgdiZlzxoeX1vxK6sWxaMxNuWPn3_XswKdi70Ot8ahLcHCJY_qR47A>
+    <xmx:XwdiZgg5TZaG81_lRGvcWkneSN2np1aVwny1AuAsSxyX4u8zgtKsnE9A>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 6 Jun 2024 15:00:46 -0400 (EDT)
+Date: Thu, 6 Jun 2024 12:00:36 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Peter Zijlstra <peterz@infradead.org>
 Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
 	Alice Ryhl <aliceryhl@google.com>,
 	Steven Rostedt <rostedt@goodmis.org>,
@@ -51,11 +98,12 @@ Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
 	linux-trace-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org
 Subject: Re: [PATCH 3/3] rust: add tracepoint support
-Message-ID: <20240606173544.GI8774@noisy.programming.kicks-ass.net>
+Message-ID: <ZmIHVIqEukWWRMgd@boqun-archlinux>
 References: <20240606-tracepoint-v1-0-6551627bf51b@google.com>
  <20240606-tracepoint-v1-3-6551627bf51b@google.com>
  <389a8c55-a169-47ef-99c0-48f58003b40c@efficios.com>
  <ZmHacqvRwBj7OvWm@boqun-archlinux>
+ <20240606173544.GI8774@noisy.programming.kicks-ass.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -64,17 +112,30 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZmHacqvRwBj7OvWm@boqun-archlinux>
+In-Reply-To: <20240606173544.GI8774@noisy.programming.kicks-ass.net>
 
-On Thu, Jun 06, 2024 at 08:49:06AM -0700, Boqun Feng wrote:
-
-> Long-term plan is to 1) compile the C helpers in some IR and 2) inline
-> the helpers with Rust in IR-level, as what Gary has:
+On Thu, Jun 06, 2024 at 07:35:44PM +0200, Peter Zijlstra wrote:
+> On Thu, Jun 06, 2024 at 08:49:06AM -0700, Boqun Feng wrote:
 > 
-> 	https://lore.kernel.org/rust-for-linux/20240529202817.3641974-1-gary@garyguo.net/
+> > Long-term plan is to 1) compile the C helpers in some IR and 2) inline
+> > the helpers with Rust in IR-level, as what Gary has:
+> > 
+> > 	https://lore.kernel.org/rust-for-linux/20240529202817.3641974-1-gary@garyguo.net/
+> 
+> Urgh, that still needs us to maintain that silly list of helpers :-/
+> 
 
-Urgh, that still needs us to maintain that silly list of helpers :-/
+But it's an improvement from the current stage, right? ;-)
 
-Can't we pretty please have clang parse the actual header files into IR
-and munge that into rust? So that we don't get to manually duplicate
-everything+dog.
+> Can't we pretty please have clang parse the actual header files into IR
+> and munge that into rust? So that we don't get to manually duplicate
+> everything+dog.
+
+That won't always work, because some of our kernel APIs are defined as
+macros, and I don't think it's a trivial job to generate a macro
+definition to a function definition so that it can be translated to
+something in IR. We will have to do the macro -> function mapping
+ourselves somewhere, if we want to inline the API across languages.
+
+Regards,
+Boqun
