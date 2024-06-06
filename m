@@ -1,159 +1,105 @@
-Received: from mail-yb1-f169.google.com (mail-yb1-f169.google.com [209.85.219.169])
+Received: from mail-yb1-f174.google.com (mail-yb1-f174.google.com [209.85.219.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91CC714D2BE
-	for <rust-for-linux@vger.kernel.org>; Thu,  6 Jun 2024 08:52:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E691F13C8E0
+	for <rust-for-linux@vger.kernel.org>; Thu,  6 Jun 2024 09:14:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717663947; cv=none; b=OAiVErWRuo6yWhjdBsbQaewT038muO5sYgXXY18Sy/ncuZJeutJnH8ke+h5US1IiAqcoK35ANFkSGHuYhH6ErFmcMrNUg2kxl+cLdt4T6IkTtO8blavn2SmNSJ8aRBVMRPJeInx3KFMi3c55GbHLgJZiYMiDAijLbHs4Xzt8nQQ=
+	t=1717665261; cv=none; b=AeBzlltHpa/2X/63rZZehb4rk23VELhMp0WeCqesdciEKtZt1eIkhWKo3gaFY7hPqRoPqa7ELkIEGAkxzWhKG005lrCbmO329BONq319ij++sjgckUSt/afQYHMXOgSB0MB6mmENVuooe8nNy6pjk4526ReZUeWeBlE/tFcpQgk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717663947; c=relaxed/simple;
-	bh=+YspFDH6otVImqzKUhM3pD64yLGNprTW/hzxmSEfZSo=;
+	s=arc-20240116; t=1717665261; c=relaxed/simple;
+	bh=NCUDiUIR7y4F2sGhg5am1GVnfp2MtRfrw5kgtBke/Ho=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=u53Dq+xyfK4Fj08MiPSAVqgX24eMh5Hpb52ZJJcIm8/wJqAvCyppUX9ORjTtAcu1ntGhjaWsCewWeNuyoY1zmSfiPM7fXdkI3z6XHMvLrwe5IubhiurKF/XMHqAFSz5qKMA8K6qUhHyMRs5ASWX16bZqPC/s2TOdwj7nrSOyHkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=fX4RErXm; arc=none smtp.client-ip=209.85.219.169
+	 To:Cc:Content-Type; b=eBjFg7pPMmykPQd3hlFb3PMCsKdFrBh8qwV+kARQrQnsI0IA/tZHKQ3iLp2R0Lt0PtBlAKrEUloFSDeU9p7Llbp3i/AJMsdHO58WNQxn1ejIu5mZcNm/Ey1ZFIo0SmJaXZp3HL4tousXvNLb84IfuEgDSGZ3ntXRSbgABF1TCpI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=YSatq9Kn; arc=none smtp.client-ip=209.85.219.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=umich.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="fX4RErXm"
-Received: by mail-yb1-f169.google.com with SMTP id 3f1490d57ef6-dfab2474152so772383276.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 06 Jun 2024 01:52:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="YSatq9Kn"
+Received: by mail-yb1-f174.google.com with SMTP id 3f1490d57ef6-dfab2474152so795040276.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 06 Jun 2024 02:14:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=umich.edu; s=google-2016-06-03; t=1717663943; x=1718268743; darn=vger.kernel.org;
+        d=umich.edu; s=google-2016-06-03; t=1717665258; x=1718270058; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=H7gsszoZt8jemG4Ut4zqtdFYOy+EULbM9qWIOR/nGJ4=;
-        b=fX4RErXmEDz95j+5UlZ228abeLUcXqwM7pe3Z30zQNf4IDPE+kXcDsax5ghbVmllk5
-         2jB/vpJkDgd0qyjtV5lfKLWsOCWNzwGChsyu7XGWK8keZmzBTW40xDgSsWRKVRisaa6L
-         hhPeeIMQxktTAkyTK0Hn9II2bj/807L48oQt8EATa4hrk0FvbjV88WOslFDxgXHRtfnV
-         +8bE1P3nmMv0V6ER3PGQy3etKvrhaDJIXoX6Z+F640PHj1VNpjsjnXX3oI/ashO4Rk+P
-         A4Jda6b+YysNE2EKTOraQoPv9wE5ZgPrI32tYZThj24l6ez8YBKyqBFfXlQ69pyOF5JS
-         uiZA==
+        bh=ccR4kKGg6IgPEzF3bYzcD4mh9giWPRAa85nmjlfrVh4=;
+        b=YSatq9KnLUMg6KLJ/dbG3MU0YFhuQLmgVvUkvXepi9TrIQuFji/Iiuw7RQOTv4jv5r
+         h2PFNpPg/qRSfuvWYm8ORvCKhFopkDJlnr0XYfvNpeOIEsze6Vz/L68UbeWUdkQh01Xd
+         oa6VQ+OVhPgOJNyhZf8lD34CaSN4ikJWdN9L0VLJoTNU4MxMIWMm84vFKHrh91nYZHYP
+         4Qy3/ukoM4x/4WKjGEi4r9rjkQFMq9r+iDHMEXePSy/1Ghy2Up8GHmKpzLs4EcyWu0Mm
+         UVUfG1DXWJ5utFYXn77r05HTed2DbeGnMvkhZIwoyakN144E+T5lL6SVq457AwBvr1eO
+         eXPA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717663943; x=1718268743;
+        d=1e100.net; s=20230601; t=1717665258; x=1718270058;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=H7gsszoZt8jemG4Ut4zqtdFYOy+EULbM9qWIOR/nGJ4=;
-        b=LBBvECgoQgfto/WJuKWKsyHhxRYvXjl6b6rNNd8RjHDlJjWyJNXDHBGFLPakdqTgfK
-         llvEKzK5EUg2x/7iL8zZihSNf1tE73UClWeMRSUcdKDZVjbK00jkUq9g+DuN8NXdOONY
-         YuMUESpXkqLh0A/1JuptVYM3tecis6xNWGvmn7EWIcnVMB8z4WlWR0n9SYuj99Tf50Kb
-         wcUv/30FqhZXKf0TxxvkM+XnoP9uCgHIq+y2mXmHIveqEKaL+MZGtPB+FjevGAyf8Pa7
-         EVfA1P4YzPOa0czibA6MkgMaNy6OnYvfFC8/EySDs5UZSoWc5foSW6GMbGyyWEHRNu9z
-         6aNg==
-X-Gm-Message-State: AOJu0YxHryx3OHv3mHP5j66JmPZCpRmHvaBjmu5W84iIeCaYNH1yY3sJ
-	5xdY3/r2wIdZ081AylZ6zQI3SM0wUp9gSlWO0OkgKspd3rGdprvO1jDDWxaMcqPYkYAa6YxnNZD
-	5wf29919UZGd6JimKsRFJvt1OfJ0djTZDjsBd6g==
-X-Google-Smtp-Source: AGHT+IEtiT613w4WUuw5GrO+Uv9bym9jkKwFeSqfajGQxyBL5RDdMfoHbKhrn9Di0uGZ0BvFOaO9UZXI/nkXPd0R8ns=
-X-Received: by 2002:a25:2f0e:0:b0:df7:93d4:61ef with SMTP id
- 3f1490d57ef6-dfacac32c1amr5001075276.26.1717663943580; Thu, 06 Jun 2024
- 01:52:23 -0700 (PDT)
+        bh=ccR4kKGg6IgPEzF3bYzcD4mh9giWPRAa85nmjlfrVh4=;
+        b=FDtLqYeAOQcf2M3jlbeFwRkz8kaUJAoEZS9Q2zn5DbW6vLMO7f6WD1Oj6lMpYQ0X+b
+         6APZ8EZ+/pwFEndVVr4RuoUMOTxXavQfxf3ct8sU2jRfhXQfedT9PQoBN+oy6MD+FdLL
+         PhQUkV4u5+Jzf/HO3ICWkjhKfb4V08Kw2o4Im3RrSxFolkS95osEUWsDB9hOKkWWXBiY
+         TrCvknOXBHUr2McE7/rm3q9ucOMeIFguhFynFsIQmz7ojXnai12wGFjj3cq1H3PndAQu
+         aU+Ow5Yn0Yc1RQELjDGr9+i9zZHAjZJTIWluQ7WiBQGUytoIK2Gmkh0Bbaadwv1xXElc
+         lSxg==
+X-Gm-Message-State: AOJu0YxI6cTOfu7ZoPWBM7a4oFDvyzMCfdtuia93LC56toNAu+14qivM
+	78tv/C88Aewnc8ZmOnjUev15Qo+CnylfO8+4JUm92O4fk+XGM9i5sjZTIZnnUMsF9Dg8urbxftP
+	P79O9raj1eexihzegyE8cRpalOVZ8C9lpGCI9kw==
+X-Google-Smtp-Source: AGHT+IHWDNpAUh+Y3h8JmvhPTnTleYsCF7AET8UMyBINiIOPVRc8cQFMpZDlrQFijaAMf2YGcIaaiUca0cGt96/AIOg=
+X-Received: by 2002:a25:8002:0:b0:df4:d29a:6897 with SMTP id
+ 3f1490d57ef6-dfacac590femr4507066276.35.1717665257655; Thu, 06 Jun 2024
+ 02:14:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240602231749.57111-1-fujita.tomonori@gmail.com> <20240602231749.57111-3-fujita.tomonori@gmail.com>
-In-Reply-To: <20240602231749.57111-3-fujita.tomonori@gmail.com>
+References: <20240604070646.1819816-1-dirk.behme@de.bosch.com>
+In-Reply-To: <20240604070646.1819816-1-dirk.behme@de.bosch.com>
 From: Trevor Gross <tmgross@umich.edu>
-Date: Thu, 6 Jun 2024 03:52:12 -0500
-Message-ID: <CALNs47tOMsT2dxUGSqZzsOvmja_744ykc1SUj3EJH=YFLk+wRw@mail.gmail.com>
-Subject: Re: [PATCH v3 2/2] rust: net::phy unified genphy_read_status function
- for C22 and C45 registers
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, andrew@lunn.ch, benno.lossin@proton.me
+Date: Thu, 6 Jun 2024 04:14:06 -0500
+Message-ID: <CALNs47u9RtRS8rfTR=7S-xRZ_43PMHXbjhVKEnAFmHeNFEM3Vw@mail.gmail.com>
+Subject: Re: [PATCH] docs: rust: no_std is used
+To: Dirk Behme <dirk.behme@de.bosch.com>
+Cc: rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Jun 2, 2024 at 6:18=E2=80=AFPM FUJITA Tomonori
-<fujita.tomonori@gmail.com> wrote:
+On Tue, Jun 4, 2024 at 2:07=E2=80=AFAM Dirk Behme <dirk.behme@de.bosch.com>=
+ wrote:
 >
-> Add unified genphy_read_status function for C22 and C45
-> registers. Instead of having genphy_c22 and genphy_c45 methods, this
-> unifies genphy_read_status functions for C22 and C45.
+> Using the #![no_std] attribute in the Rust kernel support is different
+> to the default Rust usage. Mention this in the Documentation.
 >
-> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-> [...]
-> diff --git a/rust/kernel/net/phy.rs b/rust/kernel/net/phy.rs
-> index 9b4c4d24b231..ff16d44c7bb0 100644
-> --- a/rust/kernel/net/phy.rs
-> +++ b/rust/kernel/net/phy.rs
-> @@ -249,16 +249,8 @@ pub fn genphy_suspend(&mut self) -> Result {
->      }
+> Signed-off-by: Dirk Behme <dirk.behme@de.bosch.com>
+> ---
+>  Documentation/rust/general-information.rst | 8 ++++++++
+>  1 file changed, 8 insertions(+)
 >
->      /// Checks the link status and updates current link state.
-
-Can you add an example with the usage you showed at [1]?
-
-[1]: https://lore.kernel.org/rust-for-linux/20240603.233954.164480315126803=
-5787.fujita.tomonori@gmail.com/
-
-> +    pub fn genphy_read_status<R: reg::Register>(&mut self) -> Result<u16=
-> {
-> +        R::read_status(self)
->      }
+> diff --git a/Documentation/rust/general-information.rst b/Documentation/r=
+ust/general-information.rst
+> index 4bb6ac12d482c..bdbafd916daa5 100644
+> --- a/Documentation/rust/general-information.rst
+> +++ b/Documentation/rust/general-information.rst
+> @@ -7,6 +7,14 @@ This document contains useful information to know when w=
+orking with
+>  the Rust support in the kernel.
 >
->      /// Updates the link status.
-> diff --git a/rust/kernel/net/phy/reg.rs b/rust/kernel/net/phy/reg.rs
-> index 53a83e69b200..7628eb09e902 100644
-> --- a/rust/kernel/net/phy/reg.rs
-> +++ b/rust/kernel/net/phy/reg.rs
-> [...]
->  /// C22 registers.
-> @@ -96,6 +99,18 @@ fn write(&self, dev: &mut Device, val: u16) -> Result =
-{
->              bindings::mdiobus_write((*phydev).mdio.bus, (*phydev).mdio.a=
-ddr, self.0.into(), val)
->          })
->      }
+>
+> +``no_std``
+> +----------
 > +
-> +    fn read_status(dev: &mut Device) -> Result<u16> {
-> [...]
-> +        if ret < 0 {
-> +            Err(Error::from_errno(ret))
-> +        } else {
-> +            Ok(ret as u16)
-> +        }
+> +The Rust support in the kernel links to the `core-crate <https://doc.rus=
+t-
+> +lang.org/core/>`_ instead of the std-crate. This is done by using
+> +the ``#![no_std]`` attribute.
 
-to_result can do this check and conversion a bit more succinctly, up
-to you if you would prefer to use it
+This is a good thing to make clear. "instead" probably isn't right
+(since core is still linked when std is available), maybe:
 
-    error::to_result(ret)?;
-    Ok(ret as u16)
-
-There are some instances in patch 1/2 as well if you choose to change it.
-
-> +    }
->  }
->
->  /// MDIO manageable devices.
-> @@ -171,4 +186,16 @@ fn write(&self, dev: &mut Device, val: u16) -> Resul=
-t {
->              bindings::phy_write_mmd(phydev, self.devad.0.into(), self.re=
-gnum.into(), val)
->          })
->      }
-> +
-> +    fn read_status(dev: &mut Device) -> Result<u16> {
-> +        let phydev =3D dev.0.get();
-> +        // SAFETY: `phydev` is pointing to a valid object by the type in=
-variant of `Self`.
-> +        // So it's just an FFI call.
-> +        let ret =3D unsafe { bindings::genphy_c45_read_status(phydev) };
-> +        if ret < 0 {
-> +            Err(Error::from_errno(ret))
-> +        } else {
-> +            Ok(ret as u16)
-> +        }
-
-Ditto the above
-
-> +    }
->  }
-> --
-> 2.34.1
->
+    ...kernel can link only `core <link>`, not ``std`` Crates for use in
+    the kernel must opt into this behavior using the ``#![no_std]``
+    attribute.
 
 - Trevor
