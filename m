@@ -1,126 +1,175 @@
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+Received: from mail-yb1-f174.google.com (mail-yb1-f174.google.com [209.85.219.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BF24535C8
-	for <rust-for-linux@vger.kernel.org>; Thu,  6 Jun 2024 23:07:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F67B13DDA0
+	for <rust-for-linux@vger.kernel.org>; Thu,  6 Jun 2024 23:44:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717715260; cv=none; b=u4j6HJAn4BZft5k3wWNtkUdzjmXseClGV634m6i20W+nd5vn9rMJYGJfkciVRb335KDrccvRgsk4QCYlLGjzQkUBG5M1aYQ5kF4AFOImA0lv/ITpguqoRDpxN40NIXr299a2Z60XK6gXNfjEXTDTcDpoL8pgRFbJ2MdKJGZUwXE=
+	t=1717717450; cv=none; b=G9GUw7TFQ7iX3fhZdPMwUPhz/xIlYX+PPO7dVyyO7D4/MqP0SF4DvVTyFJlMj+wbCoF73Ss3ZnbyoCIDSwcaWzbicg6a1KcUSGThLFbk27uytJTmCaK9s/CTQ8yCwrcJdxArNKZWjnTEUvN3zx7vyqxVh56pNH9DZm3usJXUplI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717715260; c=relaxed/simple;
-	bh=dVCca+Ne+2PEfi/get0Sy7WUAa2AM06r/LAkq1tl2Cs=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=fLybkBtMDDJCmUa+oWZ7vq/Kzm/em+GAj5dnl+xD3J3s7oAXt22A+/8TrGimLAdn60F3LerV5FHGp114UlFbI30HZnvD/QAucVk3dVZYobAQms3Hx1NSRfQZYjebOXHtA5CG75BDt9KY3JMexRi7GcaSY5M3NdhkdHONCheQMp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UHC8RtIV; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1717717450; c=relaxed/simple;
+	bh=VDDj6jzaTCuSSDrrKX+kna8Teyj8rLorL/UVeh298tA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=KvZ7KgsFS7D5t/Br1sxKZ9S2PD4zgJA0a7qmkTYDbc1cEdRNrR1oCuHOOnRUm8ha327XtcXSz5TTiNn9q/LdJNlcjh0zwL54mOKz9VfXTr3GCHbMZBXldO4WvUdaK641QGfNcxzX/c76Rn67s06rEVifcMhcufuSYIhWxG50KYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=Ywo6EZ+0; arc=none smtp.client-ip=209.85.219.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=umich.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UHC8RtIV"
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-1f61c2c689eso391455ad.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 06 Jun 2024 16:07:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="Ywo6EZ+0"
+Received: by mail-yb1-f174.google.com with SMTP id 3f1490d57ef6-df771b45e13so1704200276.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 06 Jun 2024 16:44:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1717715258; x=1718320058; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=dVCca+Ne+2PEfi/get0Sy7WUAa2AM06r/LAkq1tl2Cs=;
-        b=UHC8RtIVtZwWCE2WUPSTWrAzhbuN+i1yZBIBjWTYP739TI83sgPH/Kvb7K7PvOzp45
-         cmvgvkA7DJIQaY0lPQztYmmEZeuSgQTdQlgyO86N8qh/+XWF43W6T3oFd6wCq6fzC3Bh
-         /j9qUuM8bzHQG3zrbRzyVVOl4td264Mx59uGG83nlfFHwInJDEX6mPMpZoHix1kRLYLy
-         nqEeV9j3Fnvbe8Jd7pApCv9xX06B251dub84//3/PsYPUI+BN255P4hzh+r1u67z4ZLB
-         GVsqFsWwpqwXV1qn+4c9+Cm36lyCNtNzqpqXuvsGNf3vLFFeuMFNWzVJ0CZF1p2Pm4nX
-         Vj+w==
+        d=umich.edu; s=google-2016-06-03; t=1717717447; x=1718322247; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=njBMNSK84cja7ZCWozMeEx6Bd0h6tsa8kjIjqvFXUWU=;
+        b=Ywo6EZ+0ezhnELz6Tr7fLCzeYCHohrnT3DHPZJ1SOwfZOhx4hqPoT25z72x+nvcpAo
+         GY7TJMLCyCr38AwQ6G+KR/rKfCZ2lcv40v1XARpuNrYq/KNBpjhBnZCL3U1ZrDKH/z7B
+         noWKnJ2pz2XTR4wHG2mwJ7nahqwWAoJpUgR+NFq7FtIZP7HAvvpchqow65yZvwQabp3r
+         x6FbtTzFVC9neQb9bKgeQb7EfetWvEMQ4pahYlSyVCwy7H3IvEk+Zue0cIiMF4GlLp77
+         UJ3lOVW2MVlHvRbJsJ7A/oygph6+36B0oGQIJMbWRLCDKtNAZ6JQfLuLOnEI46dysPon
+         JTSg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717715258; x=1718320058;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=dVCca+Ne+2PEfi/get0Sy7WUAa2AM06r/LAkq1tl2Cs=;
-        b=qAqF1bzw2pBSRTZYlG2K0PucMydXQmFCdBCKBb7QdX4b5Paj6xNkENAbJLexqctlr7
-         5dKu2e2K5CC371/0OK9qMoDR8+lCh1Jlk0GXFFHdmAGf3xfYEIhDd37UrqebH902u19N
-         G0JJtzj7O93zzc5667QjW+LYg8vzTM0nAN28dFFmfVKLwDZWAV27jSVT0/coaIzR9rAx
-         x1TjK/DNS+LwmvlRIUEF1b3DXeE2pLjzocOnxclP8Ifi13ZtybFzuT6Qdw0TqfK4KJnL
-         +xa79caBzH+5olqgwrPMr17c7EB1kNK74VC1ik02GEgbhq+thr2bqp/tyICISR3KEoio
-         lxHA==
-X-Forwarded-Encrypted: i=1; AJvYcCVzOZXq1mVQGtnXovE0ZyvTKIizmS0muIYX7JCCO0yxhM3DxtnGgX/hF3PVkshawZiCKX51Rgi58j1H94SpszipqvozGNemCBRNag2q5wU=
-X-Gm-Message-State: AOJu0YyfEhVXYKhebf44GaWdkOLOpn/92eT9IsUqOmAwpfRQiDt3VyKC
-	5A+IfdbKyMBpr47X7jInHZXpj9qOA7RpQeiXx+QhGh5RS7OcJc1V
-X-Google-Smtp-Source: AGHT+IH6cLRm/L1j53L6QKXGBxU0AiCacWHPpZOXdCFDP5CJDVYHZbKohSMDEyHZhJyXcsPZSp2jgw==
-X-Received: by 2002:a17:902:e84f:b0:1f4:b02d:bb61 with SMTP id d9443c01a7336-1f6d039ec98mr10749105ad.3.1717715257614;
-        Thu, 06 Jun 2024 16:07:37 -0700 (PDT)
-Received: from localhost (p5261226-ipxg23801hodogaya.kanagawa.ocn.ne.jp. [180.15.241.226])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f6bd769bc7sm21158465ad.67.2024.06.06.16.07.36
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Jun 2024 16:07:37 -0700 (PDT)
-Date: Fri, 07 Jun 2024 08:07:34 +0900 (JST)
-Message-Id: <20240607.080734.1452322747397069433.fujita.tomonori@gmail.com>
-To: tmgross@umich.edu
-Cc: fujita.tomonori@gmail.com, rust-for-linux@vger.kernel.org,
- andrew@lunn.ch, benno.lossin@proton.me
-Subject: Re: [PATCH v3 2/2] rust: net::phy unified genphy_read_status
- function for C22 and C45 registers
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <CALNs47tOMsT2dxUGSqZzsOvmja_744ykc1SUj3EJH=YFLk+wRw@mail.gmail.com>
-References: <20240602231749.57111-1-fujita.tomonori@gmail.com>
-	<20240602231749.57111-3-fujita.tomonori@gmail.com>
-	<CALNs47tOMsT2dxUGSqZzsOvmja_744ykc1SUj3EJH=YFLk+wRw@mail.gmail.com>
+        d=1e100.net; s=20230601; t=1717717447; x=1718322247;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=njBMNSK84cja7ZCWozMeEx6Bd0h6tsa8kjIjqvFXUWU=;
+        b=FkU0QKaFX2dZ3nZWQrnQ3NYHcBtOVfg2vO6sKzFvXzLiMWB1KyjppxJAFvnLhEUU6s
+         Zj9KUVuZHyfczoQP9pN2tC7YhOOotc2XoWVekvTrgrdwdlvVX9p7bDpYJxOuT8noYcqK
+         6GYYlOa0BblzdOGG6h7krlgxuHoAmi/8VuC+S52HuLnchst3LthAlxTWnm8/7JnVVFML
+         /69pSocuMYfLUEpe6L6bMAUlILEJOjyvuXklqRZFP3Etdmm+cvcJNYs7s6cqPs0CRZcd
+         3Led+w+kGKR3VBSWllb4AnkJYxrlWryhIerdM6jLEXnVVyNKjekSiSeEYtJzJkErbxUD
+         ItXw==
+X-Gm-Message-State: AOJu0Yx9nZ7Fc5lPhp69UivYcaQQtTYbEO9Poni37j5aBTpjvwzOnsJP
+	5wV1chEX0/yCa4B0GoturkN87bwgyBf7U9qfP6xBu4sG+ce6p6k7YPV5sLWPbfySgJyDNzjF6Cl
+	sKYwm50T7gCOR5VBogxMr7pQ/NTgi0Pi4FcuPUg==
+X-Google-Smtp-Source: AGHT+IEh8KXfGYnv4j/Oqphaw8OMDYBYuaXejb1qbuD67MgmuWOTV02L2DJsrdQvFrTlQEHyUFzYdjoBRqlpVfV0HHU=
+X-Received: by 2002:a25:d88a:0:b0:dfa:4a32:3c04 with SMTP id
+ 3f1490d57ef6-dfaf65f9f80mr888456276.23.1717717447034; Thu, 06 Jun 2024
+ 16:44:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=utf-8
-Content-Transfer-Encoding: base64
+MIME-Version: 1.0
+References: <20240602231749.57111-1-fujita.tomonori@gmail.com>
+ <20240602231749.57111-2-fujita.tomonori@gmail.com> <CALNs47sQeXZExxQK-vdx0zh6-aC376KYLbLcS6_e2rsFe_piZQ@mail.gmail.com>
+ <20240607.080236.199306626197602234.fujita.tomonori@gmail.com>
+In-Reply-To: <20240607.080236.199306626197602234.fujita.tomonori@gmail.com>
+From: Trevor Gross <tmgross@umich.edu>
+Date: Thu, 6 Jun 2024 19:43:55 -0400
+Message-ID: <CALNs47urAkARWg+e4eAqXDpOJFUjoe73WZxYHjL-_DvvzWtOZg@mail.gmail.com>
+Subject: Re: [PATCH v3 1/2] rust: net::phy unified read/write API for C22 and
+ C45 registers
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, andrew@lunn.ch, benno.lossin@proton.me
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-T24gVGh1LCA2IEp1biAyMDI0IDAzOjUyOjEyIC0wNTAwDQpUcmV2b3IgR3Jvc3MgPHRtZ3Jvc3NA
-dW1pY2guZWR1PiB3cm90ZToNCg0KPiBPbiBTdW4sIEp1biAyLCAyMDI0IGF0IDY6MTjigK9QTSBG
-VUpJVEEgVG9tb25vcmkNCj4gPGZ1aml0YS50b21vbm9yaUBnbWFpbC5jb20+IHdyb3RlOg0KPj4N
-Cj4+IEFkZCB1bmlmaWVkIGdlbnBoeV9yZWFkX3N0YXR1cyBmdW5jdGlvbiBmb3IgQzIyIGFuZCBD
-NDUNCj4+IHJlZ2lzdGVycy4gSW5zdGVhZCBvZiBoYXZpbmcgZ2VucGh5X2MyMiBhbmQgZ2VucGh5
-X2M0NSBtZXRob2RzLCB0aGlzDQo+PiB1bmlmaWVzIGdlbnBoeV9yZWFkX3N0YXR1cyBmdW5jdGlv
-bnMgZm9yIEMyMiBhbmQgQzQ1Lg0KPj4NCj4+IFNpZ25lZC1vZmYtYnk6IEZVSklUQSBUb21vbm9y
-aSA8ZnVqaXRhLnRvbW9ub3JpQGdtYWlsLmNvbT4NCj4+IFsuLi5dDQo+PiBkaWZmIC0tZ2l0IGEv
-cnVzdC9rZXJuZWwvbmV0L3BoeS5ycyBiL3J1c3Qva2VybmVsL25ldC9waHkucnMNCj4+IGluZGV4
-IDliNGM0ZDI0YjIzMS4uZmYxNmQ0NGM3YmIwIDEwMDY0NA0KPj4gLS0tIGEvcnVzdC9rZXJuZWwv
-bmV0L3BoeS5ycw0KPj4gKysrIGIvcnVzdC9rZXJuZWwvbmV0L3BoeS5ycw0KPj4gQEAgLTI0OSwx
-NiArMjQ5LDggQEAgcHViIGZuIGdlbnBoeV9zdXNwZW5kKCZtdXQgc2VsZikgLT4gUmVzdWx0IHsN
-Cj4+ICAgICAgfQ0KPj4NCj4+ICAgICAgLy8vIENoZWNrcyB0aGUgbGluayBzdGF0dXMgYW5kIHVw
-ZGF0ZXMgY3VycmVudCBsaW5rIHN0YXRlLg0KPiANCj4gQ2FuIHlvdSBhZGQgYW4gZXhhbXBsZSB3
-aXRoIHRoZSB1c2FnZSB5b3Ugc2hvd2VkIGF0IFsxXT8NCj4gDQo+IFsxXTogaHR0cHM6Ly9sb3Jl
-Lmtlcm5lbC5vcmcvcnVzdC1mb3ItbGludXgvMjAyNDA2MDMuMjMzOTU0LjE2NDQ4MDMxNTEyNjgw
-MzU3ODcuZnVqaXRhLnRvbW9ub3JpQGdtYWlsLmNvbS8NCg0KSW5kZWVkLCBJJ2xsLg0KDQoNCj4+
-ICsgICAgcHViIGZuIGdlbnBoeV9yZWFkX3N0YXR1czxSOiByZWc6OlJlZ2lzdGVyPigmbXV0IHNl
-bGYpIC0+IFJlc3VsdDx1MTY+IHsNCj4+ICsgICAgICAgIFI6OnJlYWRfc3RhdHVzKHNlbGYpDQo+
-PiAgICAgIH0NCj4+DQo+PiAgICAgIC8vLyBVcGRhdGVzIHRoZSBsaW5rIHN0YXR1cy4NCj4+IGRp
-ZmYgLS1naXQgYS9ydXN0L2tlcm5lbC9uZXQvcGh5L3JlZy5ycyBiL3J1c3Qva2VybmVsL25ldC9w
-aHkvcmVnLnJzDQo+PiBpbmRleCA1M2E4M2U2OWIyMDAuLjc2MjhlYjA5ZTkwMiAxMDA2NDQNCj4+
-IC0tLSBhL3J1c3Qva2VybmVsL25ldC9waHkvcmVnLnJzDQo+PiArKysgYi9ydXN0L2tlcm5lbC9u
-ZXQvcGh5L3JlZy5ycw0KPj4gWy4uLl0NCj4+ICAvLy8gQzIyIHJlZ2lzdGVycy4NCj4+IEBAIC05
-Niw2ICs5OSwxOCBAQCBmbiB3cml0ZSgmc2VsZiwgZGV2OiAmbXV0IERldmljZSwgdmFsOiB1MTYp
-IC0+IFJlc3VsdCB7DQo+PiAgICAgICAgICAgICAgYmluZGluZ3M6Om1kaW9idXNfd3JpdGUoKCpw
-aHlkZXYpLm1kaW8uYnVzLCAoKnBoeWRldikubWRpby5hZGRyLCBzZWxmLjAuaW50bygpLCB2YWwp
-DQo+PiAgICAgICAgICB9KQ0KPj4gICAgICB9DQo+PiArDQo+PiArICAgIGZuIHJlYWRfc3RhdHVz
-KGRldjogJm11dCBEZXZpY2UpIC0+IFJlc3VsdDx1MTY+IHsNCj4+IFsuLi5dDQo+PiArICAgICAg
-ICBpZiByZXQgPCAwIHsNCj4+ICsgICAgICAgICAgICBFcnIoRXJyb3I6OmZyb21fZXJybm8ocmV0
-KSkNCj4+ICsgICAgICAgIH0gZWxzZSB7DQo+PiArICAgICAgICAgICAgT2socmV0IGFzIHUxNikN
-Cj4+ICsgICAgICAgIH0NCj4gDQo+IHRvX3Jlc3VsdCBjYW4gZG8gdGhpcyBjaGVjayBhbmQgY29u
-dmVyc2lvbiBhIGJpdCBtb3JlIHN1Y2NpbmN0bHksIHVwDQo+IHRvIHlvdSBpZiB5b3Ugd291bGQg
-cHJlZmVyIHRvIHVzZSBpdA0KPiANCj4gICAgIGVycm9yOjp0b19yZXN1bHQocmV0KT87DQo+ICAg
-ICBPayhyZXQgYXMgdTE2KQ0KPiANCj4gVGhlcmUgYXJlIHNvbWUgaW5zdGFuY2VzIGluIHBhdGNo
-IDEvMiBhcyB3ZWxsIGlmIHlvdSBjaG9vc2UgdG8gY2hhbmdlIGl0Lg0KDQpBaCwgY2xlYXZlci4g
-SSdsbCB1c2UgdGhpcy4NCg0KDQo+PiArICAgIH0NCj4+ICB9DQo+Pg0KPj4gIC8vLyBNRElPIG1h
-bmFnZWFibGUgZGV2aWNlcy4NCj4+IEBAIC0xNzEsNCArMTg2LDE2IEBAIGZuIHdyaXRlKCZzZWxm
-LCBkZXY6ICZtdXQgRGV2aWNlLCB2YWw6IHUxNikgLT4gUmVzdWx0IHsNCj4+ICAgICAgICAgICAg
-ICBiaW5kaW5nczo6cGh5X3dyaXRlX21tZChwaHlkZXYsIHNlbGYuZGV2YWQuMC5pbnRvKCksIHNl
-bGYucmVnbnVtLmludG8oKSwgdmFsKQ0KPj4gICAgICAgICAgfSkNCj4+ICAgICAgfQ0KPj4gKw0K
-Pj4gKyAgICBmbiByZWFkX3N0YXR1cyhkZXY6ICZtdXQgRGV2aWNlKSAtPiBSZXN1bHQ8dTE2PiB7
-DQo+PiArICAgICAgICBsZXQgcGh5ZGV2ID0gZGV2LjAuZ2V0KCk7DQo+PiArICAgICAgICAvLyBT
-QUZFVFk6IGBwaHlkZXZgIGlzIHBvaW50aW5nIHRvIGEgdmFsaWQgb2JqZWN0IGJ5IHRoZSB0eXBl
-IGludmFyaWFudCBvZiBgU2VsZmAuDQo+PiArICAgICAgICAvLyBTbyBpdCdzIGp1c3QgYW4gRkZJ
-IGNhbGwuDQo+PiArICAgICAgICBsZXQgcmV0ID0gdW5zYWZlIHsgYmluZGluZ3M6OmdlbnBoeV9j
-NDVfcmVhZF9zdGF0dXMocGh5ZGV2KSB9Ow0KPj4gKyAgICAgICAgaWYgcmV0IDwgMCB7DQo+PiAr
-ICAgICAgICAgICAgRXJyKEVycm9yOjpmcm9tX2Vycm5vKHJldCkpDQo+PiArICAgICAgICB9IGVs
-c2Ugew0KPj4gKyAgICAgICAgICAgIE9rKHJldCBhcyB1MTYpDQo+PiArICAgICAgICB9DQo+IA0K
-PiBEaXR0byB0aGUgYWJvdmUNCg0KSSdsbCBjaGFuZ2UgdGhlIGFib3ZlIHRvby4NCg0KDQpUaGFu
-a3MgYSBsb3QhDQo=
+On Thu, Jun 6, 2024 at 7:03=E2=80=AFPM FUJITA Tomonori
+<fujita.tomonori@gmail.com> wrote:
+>
+> On Thu, 6 Jun 2024 03:41:18 -0500
+> Trevor Gross <tmgross@umich.edu> wrote:
+>
+> > On Sun, Jun 2, 2024 at 6:18=E2=80=AFPM FUJITA Tomonori
+> > <fujita.tomonori@gmail.com> wrote:
+> [..]
+> >> +use super::Device;
+> >> +use crate::build_assert;
+> >> +use crate::error::*;
+> >> +use crate::uapi;
+> >> +
+> >> +/// Accesses PHY registers.
+> >> +///
+> >> +/// This trait is used to implement the unified interface to access
+> >> +/// C22 and C45 PHY registers.
+> >> +pub trait Register {
+> >
+> > Since we don't use this anywhere could it be sealed?
+>
+> Yeah. Only reg module implements it. How it can be done?
+>
+> diff --git a/rust/kernel/net/phy/reg.rs b/rust/kernel/net/phy/reg.rs
+> index 7628eb09e902..0dfae4677574 100644
+> --- a/rust/kernel/net/phy/reg.rs
+> +++ b/rust/kernel/net/phy/reg.rs
+> @@ -12,11 +12,18 @@
+>  use crate::error::*;
+>  use crate::uapi;
+>
+> +mod private {
+> +    pub trait Sealed {}
+> +
+> +    impl Sealed for super::C22 {}
+> +    impl Sealed for super::C45 {}
+> +}
+> +
+>  /// Accesses PHY registers.
+>  ///
+>  /// This trait is used to implement the unified interface to access
+>  /// C22 and C45 PHY registers.
+> -pub trait Register {
+> +pub trait Register: private::Sealed {
+>      /// Reads a PHY register.
+>      fn read(&self, dev: &mut Device) -> Result<u16>;
+>
+>
+> > This might not even need to be public since it should probably only be
+> > used as a method on `Device` (i.e. `my_device.read(C22::BMCR)` rather
+> > than importing the trait and using `C22::BCMR::read(my_device)`).
+>
+> If I drop public, I got the following error:
+>
+> error[E0603]: trait `Register` is private
+>    --> rust/kernel/net/phy.rs:181:25
+>     |
+> 181 |     pub fn read<R: reg::Register>(&mut self, reg: R) -> Result<u16>=
+ {
+>     |                         ^^^^^^^^ private trait
+>     |
+> note: the trait `Register` is defined here
+>    --> rust/kernel/net/phy/reg.rs:19:1
+>     |
+> 19  | trait Register {
+>     | ^^^^^^^^^^^^^^:
+>
+> (snip)
+
+Oh, I did mean `pub(crate)`.
+
+If that doesn't work, usually the sealed pattern looks like this:
+
+    /* lib.rs */
+    mod private {
+        /// Marker that a trait cannot be implemented outside of this crate
+        trait Sealed {}
+    }
+
+    /* reg.rs or other modules */
+    use crate::private::Sealed;
+
+    // Traits that aren't meant to be implemented outside of the crate
+    // get `Sealed` as a bound
+    pub trait Register: Sealed { /* ... */ }
+
+    // Anything with a `Register` impl now also needs `Sealed`
+    impl Sealed for C22 {}
+    impl Register for C22 { /* ... */ }
+
+    // And then nobody from a different crate can implement `Register` on
+    // some random type, because they have no way to access/implement
+    // private `Sealed`
+
+I also asked about this because I'm a bit surprised it hasn't come up yet [=
+1].
+
+But if `pub(crate)` works then that is easier, of course.
+
+- Trevor
+
+[1]: https://rust-for-linux.zulipchat.com/#narrow/stream/288089-General/top=
+ic/Sealed.20traits/near/443180412
