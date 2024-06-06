@@ -1,210 +1,675 @@
-Received: from smtpout.efficios.com (smtpout.efficios.com [167.114.26.122])
+Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 114F513BAEB;
-	Thu,  6 Jun 2024 15:25:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=167.114.26.122
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81AF5195FC4
+	for <rust-for-linux@vger.kernel.org>; Thu,  6 Jun 2024 15:26:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717687507; cv=none; b=p6vIVJMkSOA6+qpmJFZi9iwkbV8RKSddRaHANzu26H9mAMfu9c2G4t2ay+BNqmGPvTvnen8FVwLvlLH+ltCCSelq/2g12YGbXmuYZROI2JN8AGzzT9/STUa8X7b7GskWq3AJQIwaicNBQJiZNcKCmH/vyKg7rgTfrSoabFZoWoQ=
+	t=1717687604; cv=none; b=lgMxdHJKAlAvRqaAVNuuECXBrNDig5mOFWx9U14bCbr/atU4bOM6zCTj5p/tk+++1+1V72hdyffaWnB8/+aZ272DCu1rzKit3h/bDyzNqvYVyFQNqkFRKVVLBRCytPpSaNsLP+hHpDElG/vYxOjlXCGKVEjv4DS2/m+BNTV8FAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717687507; c=relaxed/simple;
-	bh=tgTzIjWs3IOWhzy9aFIvKKOyh5lSjPt68eYtmBGavek=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rINkwfwg/Kl4pwGMzOvl5F8jC3OU5BSMu5BVHawvKe4ARi9pvsxEXrp2pdXc7N7cLJkOPmBs3AeOuG9aUzoeVbdgX/GOJ1Dv8oDOvdA9p3lCsgry0IYXnQwMjWZtCq9qKAMtS7yPdGMT9E9NzqMSuRW0GIgwmx3grAN0dNmLMI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=efficios.com; spf=pass smtp.mailfrom=efficios.com; dkim=pass (2048-bit key) header.d=efficios.com header.i=@efficios.com header.b=L/JvKhzu; arc=none smtp.client-ip=167.114.26.122
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=efficios.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=efficios.com
+	s=arc-20240116; t=1717687604; c=relaxed/simple;
+	bh=V4bgInjXOWQUJlXaJjeamx+ykLHLx/l3xHE6UC4UOo0=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=XNE08QdE1QDkhpQ7gmQ6YBCm5hQVsKKXYj19CeD6cujcokmZAK4Mv/QMQWuTPkSdAmO4WmBUZN53DRYlIbmYOpp2aQHnJkT/fmG/iGpCzanCOUYYgo0wTa0boEnEwC+ElfjmBB88eoJjt7OJevAkvQxiE7Wnzg/omEHxGJwge6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=Zt3Afebb; arc=none smtp.client-ip=46.235.227.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=efficios.com header.i=@efficios.com header.b="L/JvKhzu"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=efficios.com;
-	s=smtpout1; t=1717687503;
-	bh=tgTzIjWs3IOWhzy9aFIvKKOyh5lSjPt68eYtmBGavek=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=L/JvKhzuuKxAlugKssZBtUEsAaiWcHP3Vsgav8zTxI+r7wA6dxJDKgIupT6DuDL/S
-	 4MVlCmzNVRTUAitMTNaHYNnqoNq4rWsydmXWT5LR4kxIdXbsM3dcn/5Qg/2UAAd4UK
-	 y9idJGjRH6yF1GL6KhV6BS/Syuplst1fAr74l6N6RQGvfvjdbi+YGSABc6zabGlAxP
-	 PhrNbG3Ju7Vaai55JsTea8XVVTPCHP2mHJwWx6D742GwzeQLiBtxi/CJrvmjVTpjkm
-	 anX8DQKVBlFHo2ExjSDdfHy/gOXrVyU/niLSrPKee1y7ub1Q+uPjfuERfogqBqFxli
-	 FrmnDD54Zhmxw==
-Received: from [172.16.0.134] (192-222-143-198.qc.cable.ebox.net [192.222.143.198])
-	by smtpout.efficios.com (Postfix) with ESMTPSA id 4Vw7Rz1ztMz13B4;
-	Thu,  6 Jun 2024 11:25:03 -0400 (EDT)
-Message-ID: <cd4a58d9-3e0a-49d1-8a74-bc9d53fc2dfd@efficios.com>
-Date: Thu, 6 Jun 2024 11:25:49 -0400
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="Zt3Afebb"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1717687600;
+	bh=V4bgInjXOWQUJlXaJjeamx+ykLHLx/l3xHE6UC4UOo0=;
+	h=Subject:From:In-Reply-To:Date:Cc:References:To:From;
+	b=Zt3AfebbxW3T1MfwZLEIKIv8rLxuFHUdbglD3qY42QyhH84h8jMiDHDpnHPGLx5lR
+	 gezWRvulNkk7Al2zJcHq1+SXsUvt4LLLWcCqnoB+4qZK+8tvRO0BMCb8jrOSEqdKIk
+	 t2kQbYDmQ/7qPwaM89Tk/SA/QmDhdFSM1blMN6DUBSuiV9CVRkdnkFIAmAf8l0UV6u
+	 IdSLLbXrEZqpBzNDWKx4D0f1i3yQAei9fX5wXanik9BKghkqcXq47BhBWuyPLzVlmC
+	 aNshKHEF3caiELLu8zsfeT/B33M281GUhfklVGORWIlU2Kok7mhVZO8iEWclyjUXKr
+	 +DpnDGbTwGVdg==
+Received: from smtpclient.apple (cola.collaboradmins.com [195.201.22.229])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	(Authenticated sender: dwlsalmeida)
+	by madrid.collaboradmins.com (Postfix) with ESMTPSA id 290EE37821C1;
+	Thu,  6 Jun 2024 15:26:32 +0000 (UTC)
+Content-Type: text/plain;
+	charset=us-ascii
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 0/3] Tracepoints and static branch/call in Rust
-To: Alice Ryhl <aliceryhl@google.com>, Steven Rostedt <rostedt@goodmis.org>,
- Masami Hiramatsu <mhiramat@kernel.org>, Peter Zijlstra
- <peterz@infradead.org>, Josh Poimboeuf <jpoimboe@kernel.org>,
- Jason Baron <jbaron@akamai.com>, Ard Biesheuvel <ardb@kernel.org>,
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng
- <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@samsung.com>
-Cc: linux-trace-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20240606-tracepoint-v1-0-6551627bf51b@google.com>
-From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Content-Language: en-US
-In-Reply-To: <20240606-tracepoint-v1-0-6551627bf51b@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.600.62\))
+Subject: Re: [RFC PATCH 6/8] rust: drm: gem: Add GEM object abstraction
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20240520172422.181763-3-dakr@redhat.com>
+Date: Thu, 6 Jun 2024 12:26:20 -0300
+Cc: maarten.lankhorst@linux.intel.com,
+ mripard@kernel.org,
+ tzimmermann@suse.de,
+ airlied@gmail.com,
+ Daniel Vetter <daniel@ffwll.ch>,
+ ojeda@kernel.org,
+ alex.gaynor@gmail.com,
+ Wedson Almeida Filho <wedsonaf@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ gary@garyguo.net,
+ bjorn3_gh@protonmail.com,
+ benno.lossin@proton.me,
+ a.hindborg@samsung.com,
+ aliceryhl@google.com,
+ fujita.tomonori@gmail.com,
+ lina@asahilina.net,
+ pstanner@redhat.com,
+ ajanulgu@redhat.com,
+ lyude@redhat.com,
+ gregkh@linuxfoundation.org,
+ rust-for-linux@vger.kernel.org,
+ dri-devel@lists.freedesktop.org,
+ nouveau@lists.freedesktop.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <9054B5B3-D117-4FD5-A050-7E32AE6452F1@collabora.com>
+References: <20240520172059.181256-1-dakr@redhat.com>
+ <20240520172422.181763-3-dakr@redhat.com>
+To: Danilo Krummrich <dakr@redhat.com>
+X-Mailer: Apple Mail (2.3774.600.62)
 
-On 2024-06-06 11:05, Alice Ryhl wrote:
-> An important part of a production ready Linux kernel driver is
-> tracepoints. So to write production ready Linux kernel drivers in Rust,
-> we must be able to call tracepoints from Rust code. This patch series
-> adds support for calling tracepoints declared in C from Rust.
-
-I'm glad to see progress on this front ! Please see feedback below.
-
-> 
-> To use the tracepoint support, you must:
-> 
-> 1. Declare the tracepoint in a C header file as usual.
-> 2. Make sure that the header file is visible to bindgen so that Rust
->     bindings are generated for the symbols that the tracepoint macro
->     emits.
-> 3. Use the declare_trace! macro in your Rust code to generate Rust
->     functions that call into the tracepoint.
-> 
-> For example, the kernel has a tracepoint called `sched_kthread_stop`. It
-> is declared like this:
-> 
-> 	TRACE_EVENT(sched_kthread_stop,
-> 		TP_PROTO(struct task_struct *t),
-> 		TP_ARGS(t),
-> 		TP_STRUCT__entry(
-> 			__array(	char,	comm,	TASK_COMM_LEN	)
-> 			__field(	pid_t,	pid			)
-> 		),
-> 		TP_fast_assign(
-> 			memcpy(__entry->comm, t->comm, TASK_COMM_LEN);
-> 			__entry->pid	= t->pid;
-> 		),
-> 		TP_printk("comm=%s pid=%d", __entry->comm, __entry->pid)
-> 	);
-> 
-> To call the above tracepoint from Rust code, you would add the relevant
-> header file to rust/bindings/bindings_helper.h and add the following
-> invocation somewhere in your Rust code:
-> 
-> 	declare_trace! {
-> 	    fn sched_kthread_stop(task: *mut task_struct);
-> 	}
-> 
-> This will define a Rust function of the given name that you can call
-> like any other Rust function. Since these tracepoints often take raw
-> pointers as arguments, it may be convenient to wrap it in a safe
-> wrapper:
-> 
-> 	mod raw {
-> 	    declare_trace! {
-> 	        fn sched_kthread_stop(task: *mut task_struct);
-> 	    }
-> 	}
-> 	
-> 	#[inline]
-> 	pub fn trace_sched_kthread_stop(task: &Task) {
-> 	    // SAFETY: The pointer to `task` is valid.
-> 	    unsafe { raw::sched_kthread_stop(task.as_raw()) }
-> 	}
-> 
-> A future expansion of the tracepoint support could generate these safe
-> versions automatically, but that is left as future work for now.
-> 
-> This is intended for use in the Rust Binder driver, which was originally
-> sent as an RFC [1]. The RFC did not include tracepoint support, but you
-> can see how it will be used in Rust Binder at [2]. The author has
-> verified that the tracepoint support works on Android devices.
-> 
-> This implementation implements support for static keys in Rust so that
-> the actual static branch will end up in the Rust object file. However,
-> it would also be possible to just wrap the trace_##name generated by
-> __DECLARE_TRACE in an extern C function and then call that from Rust.
-> This will simplify the Rust code by removing the need for static
-> branches and calls, but it places the static branch behind an external
-> call, which has performance implications.
-
-The tracepoints try very hard to minimize overhead of dormant tracepoints
-so it is not frowned-upon to have them built into production binaries.
-This is needed to make sure distribution vendors keep those tracepoints
-in the kernel binaries that reach end-users.
-
-Adding a function call before evaluation of the static branch goes against
-this major goal.
-
-> 
-> A possible middle ground would be to place just the __DO_TRACE body in
-> an extern C function and to implement the Rust wrapper by doing the
-> static branch in Rust, and then calling into C the code that contains
-> __DO_TRACE when the tracepoint is active. However, this would need some
-> changes to include/linux/tracepoint.h to generate and export a function
-> containing the body of __DO_TRACE when the tracepoint should be callable
-> from Rust.
-
-This tradeoff is more acceptable than having a function call before
-evaluation of the static branch, but I wonder what is the upside of
-this tradeoff compared to inlining the whole __DO_TRACE in Rust ?
-
-> So in general, there is a tradeoff between placing parts of the
-> tracepoint (which is perf sensitive) behind an external call, and having
-> code duplicated in both C and Rust (which must be kept in sync when
-> changes are made). This is an important point that I would like feedback
-> on from the C maintainers.
-
-I don't see how the duplication happens there: __DO_TRACE is meant to be
-inlined into each C tracepoint caller site, so the code is already meant
-to be duplicated. Having an explicit function wrapping the tracepoint
-for Rust would just create an extra instance of __DO_TRACE if it happens
-to be also inlined into C code.
-
-Or do you meant you would like to prevent having to duplicate the
-implementation of __DO_TRACE in both C and Rust ?
-
-I'm not sure if you mean to prevent source code duplication between
-C and Rust or duplication of binary code (instructions).
-
-Thanks,
-
-Mathieu
+Hi Danilo, Lina
 
 
-> 
-> Link: https://lore.kernel.org/rust-for-linux/20231101-rust-binder-v1-0-08ba9197f637@google.com/ [1]
-> Link: https://r.android.com/3110088 [2]
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> On 20 May 2024, at 14:24, Danilo Krummrich <dakr@redhat.com> wrote:
+>=20
+> From: Asahi Lina <lina@asahilina.net>
+>=20
+> The DRM GEM subsystem is the DRM memory management subsystem used by
+> most modern drivers. Add a Rust abstraction to allow Rust DRM driver
+> implementations to use it.
+>=20
+> Signed-off-by: Asahi Lina <lina@asahilina.net>
+> Co-developed-by: Danilo Krummrich <dakr@redhat.com>
+> Signed-off-by: Danilo Krummrich <dakr@redhat.com>
 > ---
-> Alice Ryhl (3):
->        rust: add static_call support
->        rust: add static_key_false
->        rust: add tracepoint support
-> 
->   rust/bindings/bindings_helper.h |  1 +
->   rust/bindings/lib.rs            | 15 +++++++
->   rust/helpers.c                  | 24 +++++++++++
->   rust/kernel/lib.rs              |  3 ++
->   rust/kernel/static_call.rs      | 92 +++++++++++++++++++++++++++++++++++++++++
->   rust/kernel/static_key.rs       | 87 ++++++++++++++++++++++++++++++++++++++
->   rust/kernel/tracepoint.rs       | 92 +++++++++++++++++++++++++++++++++++++++++
->   scripts/Makefile.build          |  2 +-
->   8 files changed, 315 insertions(+), 1 deletion(-)
-> ---
-> base-commit: 1613e604df0cd359cf2a7fbd9be7a0bcfacfabd0
-> change-id: 20240606-tracepoint-31e15b90e471
-> 
-> Best regards,
+> rust/bindings/bindings_helper.h |   1 +
+> rust/helpers.c                  |  23 ++
+> rust/kernel/drm/drv.rs          |   4 +-
+> rust/kernel/drm/gem/mod.rs      | 406 ++++++++++++++++++++++++++++++++
+> rust/kernel/drm/mod.rs          |   1 +
+> 5 files changed, 433 insertions(+), 2 deletions(-)
+> create mode 100644 rust/kernel/drm/gem/mod.rs
+>=20
+> diff --git a/rust/bindings/bindings_helper.h =
+b/rust/bindings/bindings_helper.h
+> index c591811ccb67..b245db8d5a87 100644
+> --- a/rust/bindings/bindings_helper.h
+> +++ b/rust/bindings/bindings_helper.h
+> @@ -9,6 +9,7 @@
+> #include <drm/drm_device.h>
+> #include <drm/drm_drv.h>
+> #include <drm/drm_file.h>
+> +#include <drm/drm_gem.h>
+> #include <drm/drm_ioctl.h>
+> #include <kunit/test.h>
+> #include <linux/errname.h>
+> diff --git a/rust/helpers.c b/rust/helpers.c
+> index dc2405772b1a..30e86bf00337 100644
+> --- a/rust/helpers.c
+> +++ b/rust/helpers.c
+> @@ -20,6 +20,7 @@
+>  * Sorted alphabetically.
+>  */
+>=20
+> +#include <drm/drm_gem.h>
+> #include <kunit/test-bug.h>
+> #include <linux/bug.h>
+> #include <linux/build_bug.h>
+> @@ -302,6 +303,28 @@ u64 rust_helper_pci_resource_len(struct pci_dev =
+*pdev, int barnr)
+> return pci_resource_len(pdev, barnr);
+> }
+>=20
+> +#ifdef CONFIG_DRM
+> +
+> +void rust_helper_drm_gem_object_get(struct drm_gem_object *obj)
+> +{
+> + drm_gem_object_get(obj);
+> +}
+> +EXPORT_SYMBOL_GPL(rust_helper_drm_gem_object_get);
+> +
+> +void rust_helper_drm_gem_object_put(struct drm_gem_object *obj)
+> +{
+> + drm_gem_object_put(obj);
+> +}
+> +EXPORT_SYMBOL_GPL(rust_helper_drm_gem_object_put);
+> +
+> +__u64 rust_helper_drm_vma_node_offset_addr(struct drm_vma_offset_node =
+*node)
+> +{
+> + return drm_vma_node_offset_addr(node);
+> +}
+> +EXPORT_SYMBOL_GPL(rust_helper_drm_vma_node_offset_addr);
+> +
+> +#endif
+> +
+> /*
+>  * `bindgen` binds the C `size_t` type as the Rust `usize` type, so we =
+can
+>  * use it in contexts where Rust expects a `usize` like slice (array) =
+indices.
+> diff --git a/rust/kernel/drm/drv.rs b/rust/kernel/drm/drv.rs
+> index c5a63663ea21..063b420f57e5 100644
+> --- a/rust/kernel/drm/drv.rs
+> +++ b/rust/kernel/drm/drv.rs
+> @@ -113,7 +113,7 @@ pub struct AllocOps {
+> }
+>=20
+> /// Trait for memory manager implementations. Implemented internally.
+> -pub trait AllocImpl: Sealed {
+> +pub trait AllocImpl: Sealed + drm::gem::IntoGEMObject {
+>     /// The C callback operations for this memory manager.
+>     const ALLOC_OPS: AllocOps;
+> }
+> @@ -243,7 +243,7 @@ pub fn new(parent: &device::Device) -> =
+Result<Self> {
+>             drm: drm::device::Device::new(parent, &vtable)?,
+>             registered: false,
+>             vtable,
+> -            fops: Default::default(), // TODO: GEM abstraction
+> +            fops: drm::gem::create_fops(),
+>             _pin: PhantomPinned,
+>             _p: PhantomData,
+>         })
+> diff --git a/rust/kernel/drm/gem/mod.rs b/rust/kernel/drm/gem/mod.rs
+> new file mode 100644
+> index 000000000000..4cd85d5f1df8
+> --- /dev/null
+> +++ b/rust/kernel/drm/gem/mod.rs
+> @@ -0,0 +1,406 @@
+> +// SPDX-License-Identifier: GPL-2.0 OR MIT
+> +
+> +//! DRM GEM API
+> +//!
+> +//! C header: =
+[`include/linux/drm/drm_gem.h`](../../../../include/linux/drm/drm_gem.h)
+> +
+> +use alloc::boxed::Box;
+> +
+> +use crate::{
+> +    alloc::flags::*,
+> +    bindings,
+> +    drm::{device, drv, file},
+> +    error::{to_result, Result},
+> +    prelude::*,
+> +};
+> +use core::{marker::PhantomPinned, mem, ops::Deref, ops::DerefMut};
+> +
+> +/// GEM object functions, which must be implemented by drivers.
+> +pub trait BaseDriverObject<T: BaseObject>: Sync + Send + Sized {
+> +    /// Create a new driver data object for a GEM object of a given =
+size.
+> +    fn new(dev: &device::Device<T::Driver>, size: usize) -> impl =
+PinInit<Self, Error>;
+> +
+> +    /// Open a new handle to an existing object, associated with a =
+File.
+> +    fn open(
+> +        _obj: &<<T as IntoGEMObject>::Driver as drv::Driver>::Object,
+> +        _file: &file::File<<<T as IntoGEMObject>::Driver as =
+drv::Driver>::File>,
 
--- 
-Mathieu Desnoyers
-EfficiOS Inc.
-https://www.efficios.com
+I wonder if these can be put into a type alias? As in,
+
+type File<T: IntoGEMObject> =3D file::File<<<T as IntoGEMObject>::Driver =
+as drv::Driver>::File>;
+
+etc
+
+That would clean things up a bit.
+
+> +    ) -> Result {
+> +        Ok(())
+> +    }
+> +
+> +    /// Close a handle to an existing object, associated with a File.
+> +    fn close(
+> +        _obj: &<<T as IntoGEMObject>::Driver as drv::Driver>::Object,
+> +        _file: &file::File<<<T as IntoGEMObject>::Driver as =
+drv::Driver>::File>,
+> +    ) {
+> +    }
+> +}
+> +
+> +/// Trait that represents a GEM object subtype
+> +pub trait IntoGEMObject: Sized + crate::private::Sealed {
+> +    /// Owning driver for this type
+> +    type Driver: drv::Driver;
+> +
+> +    /// Returns a reference to the raw `drm_gem_object` structure, =
+which must be valid as long as
+> +    /// this owning object is valid.
+> +    fn gem_obj(&self) -> &bindings::drm_gem_object;
+> +
+> +    /// Converts a pointer to a `drm_gem_object` into a pointer to =
+this type.
+> +    fn from_gem_obj(obj: *mut bindings::drm_gem_object) -> *mut Self;
+> +}
+> +
+> +/// Trait which must be implemented by drivers using base GEM =
+objects.
+> +pub trait DriverObject: BaseDriverObject<Object<Self>> {
+> +    /// Parent `Driver` for this object.
+> +    type Driver: drv::Driver;
+> +}
+> +
+> +unsafe extern "C" fn free_callback<T: DriverObject>(obj: *mut =
+bindings::drm_gem_object) {
+> +    // SAFETY: All of our objects are Object<T>.
+> +    let this =3D unsafe { crate::container_of!(obj, Object<T>, obj) } =
+as *mut Object<T>;
+> +
+> +    // SAFETY: The pointer we got has to be valid
+> +    unsafe { bindings::drm_gem_object_release(obj) };
+> +
+> +    // SAFETY: All of our objects are allocated via Box<>, and we're =
+in the
+> +    // free callback which guarantees this object has zero remaining =
+references,
+> +    // so we can drop it
+> +    unsafe {
+> +        let _ =3D Box::from_raw(this);
+> +    };
+> +}
+> +
+> +unsafe extern "C" fn open_callback<T: BaseDriverObject<U>, U: =
+BaseObject>(
+> +    raw_obj: *mut bindings::drm_gem_object,
+> +    raw_file: *mut bindings::drm_file,
+> +) -> core::ffi::c_int {
+> +    // SAFETY: The pointer we got has to be valid.
+> +    let file =3D unsafe {
+> +        file::File::<<<U as IntoGEMObject>::Driver as =
+drv::Driver>::File>::from_raw(raw_file)
+> +    };
+> +    let obj =3D
+> +        <<<U as IntoGEMObject>::Driver as drv::Driver>::Object as =
+IntoGEMObject>::from_gem_obj(
+> +            raw_obj,
+> +        );
+> +
+> +    // SAFETY: from_gem_obj() returns a valid pointer as long as the =
+type is
+> +    // correct and the raw_obj we got is valid.
+> +    match T::open(unsafe { &*obj }, &file) {
+> +        Err(e) =3D> e.to_errno(),
+> +        Ok(()) =3D> 0,
+> +    }
+> +}
+> +
+> +unsafe extern "C" fn close_callback<T: BaseDriverObject<U>, U: =
+BaseObject>(
+> +    raw_obj: *mut bindings::drm_gem_object,
+> +    raw_file: *mut bindings::drm_file,
+> +) {
+> +    // SAFETY: The pointer we got has to be valid.
+> +    let file =3D unsafe {
+> +        file::File::<<<U as IntoGEMObject>::Driver as =
+drv::Driver>::File>::from_raw(raw_file)
+> +    };
+> +    let obj =3D
+> +        <<<U as IntoGEMObject>::Driver as drv::Driver>::Object as =
+IntoGEMObject>::from_gem_obj(
+> +            raw_obj,
+> +        );
+> +
+> +    // SAFETY: from_gem_obj() returns a valid pointer as long as the =
+type is
+> +    // correct and the raw_obj we got is valid.
+> +    T::close(unsafe { &*obj }, &file);
+> +}
+> +
+> +impl<T: DriverObject> IntoGEMObject for Object<T> {
+> +    type Driver =3D T::Driver;
+> +
+> +    fn gem_obj(&self) -> &bindings::drm_gem_object {
+> +        &self.obj
+> +    }
+> +
+> +    fn from_gem_obj(obj: *mut bindings::drm_gem_object) -> *mut =
+Object<T> {
+> +        unsafe { crate::container_of!(obj, Object<T>, obj) as *mut =
+Object<T> }
+> +    }
+> +}
+> +
+> +/// Base operations shared by all GEM object classes
+> +pub trait BaseObject: IntoGEMObject {
+> +    /// Returns the size of the object in bytes.
+> +    fn size(&self) -> usize {
+> +        self.gem_obj().size
+> +    }
+> +
+> +    /// Creates a new reference to the object.
+> +    fn reference(&self) -> ObjectRef<Self> {
+> +        // SAFETY: Having a reference to an Object implies holding a =
+GEM reference
+> +        unsafe {
+> +            bindings::drm_gem_object_get(self.gem_obj() as *const _ =
+as *mut _);
+> +        }
+> +        ObjectRef {
+> +            ptr: self as *const _,
+> +        }
+> +    }
+> +
+> +    /// Creates a new handle for the object associated with a given =
+`File`
+> +    /// (or returns an existing one).
+> +    fn create_handle(
+> +        &self,
+> +        file: &file::File<<<Self as IntoGEMObject>::Driver as =
+drv::Driver>::File>,
+> +    ) -> Result<u32> {
+> +        let mut handle: u32 =3D 0;
+> +        // SAFETY: The arguments are all valid per the type =
+invariants.
+> +        to_result(unsafe {
+> +            bindings::drm_gem_handle_create(
+> +                file.raw() as *mut _,
+> +                self.gem_obj() as *const _ as *mut _,
+> +                &mut handle,
+> +            )
+> +        })?;
+> +        Ok(handle)
+> +    }
+> +
+> +    /// Looks up an object by its handle for a given `File`.
+> +    fn lookup_handle(
+> +        file: &file::File<<<Self as IntoGEMObject>::Driver as =
+drv::Driver>::File>,
+> +        handle: u32,
+> +    ) -> Result<ObjectRef<Self>> {
+> +        // SAFETY: The arguments are all valid per the type =
+invariants.
+> +        let ptr =3D unsafe { =
+bindings::drm_gem_object_lookup(file.raw() as *mut _, handle) };
+> +
+> +        if ptr.is_null() {
+> +            Err(ENOENT)
+> +        } else {
+> +            Ok(ObjectRef {
+> +                ptr: ptr as *const _,
+> +            })
+> +        }
+> +    }
+> +
+> +    /// Creates an mmap offset to map the object from userspace.
+> +    fn create_mmap_offset(&self) -> Result<u64> {
+> +        // SAFETY: The arguments are valid per the type invariant.
+> +        to_result(unsafe {
+> +            bindings::drm_gem_create_mmap_offset(self.gem_obj() as =
+*const _ as *mut _)
+> +        })?;
+> +        Ok(unsafe {
+> +            =
+bindings::drm_vma_node_offset_addr(&self.gem_obj().vma_node as *const _ =
+as *mut _)
+> +        })
+> +    }
+> +}
+> +
+> +impl<T: IntoGEMObject> BaseObject for T {}
+> +
+> +/// A base GEM object.
+> +#[repr(C)]
+> +#[pin_data]
+> +pub struct Object<T: DriverObject> {
+> +    obj: bindings::drm_gem_object,
+> +    // The DRM core ensures the Device exists as long as its objects =
+exist, so we don't need to
+> +    // manage the reference count here.
+> +    dev: *const bindings::drm_device,
+> +    #[pin]
+> +    inner: T,
+> +    #[pin]
+> +    _p: PhantomPinned,
+> +}
+
+A bit minor, but why is PhantomPinned structurally pinned here?
+
+Maybe Benno can also chime in, but, at a first glance, I do not see any =
+reason for a marker type to be pinned.
+
+> +
+> +// SAFETY: This struct is safe to zero-initialize
+> +unsafe impl init::Zeroable for bindings::drm_gem_object {}
+> +
+> +impl<T: DriverObject> Object<T> {
+> +    /// The size of this object's structure.
+> +    pub const SIZE: usize =3D mem::size_of::<Self>();
+> +
+> +    const OBJECT_FUNCS: bindings::drm_gem_object_funcs =3D =
+bindings::drm_gem_object_funcs {
+> +        free: Some(free_callback::<T>),
+> +        open: Some(open_callback::<T, Object<T>>),
+> +        close: Some(close_callback::<T, Object<T>>),
+> +        print_info: None,
+> +        export: None,
+> +        pin: None,
+> +        unpin: None,
+> +        get_sg_table: None,
+> +        vmap: None,
+> +        vunmap: None,
+> +        mmap: None,
+> +        status: None,
+> +        vm_ops: core::ptr::null_mut(),
+> +        evict: None,
+> +        rss: None,
+> +    };
+> +
+> +    /// Create a new GEM object.
+> +    pub fn new(dev: &device::Device<T::Driver>, size: usize) -> =
+Result<Pin<UniqueObjectRef<Self>>> {
+> +        let obj: Pin<Box<Self>> =3D Box::pin_init(
+> +            try_pin_init!(Self {
+> +                // SAFETY: This struct is expected to be =
+zero-initialized
+> +                obj: bindings::drm_gem_object {
+> +                    funcs: &Self::OBJECT_FUNCS,
+> +                    ..Default::default()
+> +                },
+> +                inner <- T::new(dev, size),
+> +                // SAFETY: The drm subsystem guarantees that the =
+drm_device will live as long as
+> +                // the GEM object lives, so we can conjure a =
+reference out of thin air.
+> +                dev: dev.as_raw(),
+> +                _p: PhantomPinned
+> +            }),
+> +            GFP_KERNEL,
+> +        )?;
+> +
+> +        to_result(unsafe {
+> +            bindings::drm_gem_object_init(dev.as_raw(), &obj.obj as =
+*const _ as *mut _, size)
+> +        })?;
+> +
+> +        // SAFETY: We never move out of self
+> +        let obj_ref =3D unsafe {
+> +            Pin::new_unchecked(UniqueObjectRef {
+> +                // SAFETY: We never move out of the Box
+> +                ptr: Box::leak(Pin::into_inner_unchecked(obj)),
+> +                _p: PhantomPinned,
+> +            })
+> +        };
+> +
+> +        Ok(obj_ref)
+> +    }
+> +
+> +    /// Returns the `Device` that owns this GEM object.
+> +    pub fn dev(&self) -> &device::Device<T::Driver> {
+> +        // SAFETY: The drm subsystem guarantees that the drm_device =
+will live as long as
+> +        // the GEM object lives, so we can just borrow from the raw =
+pointer.
+> +        unsafe { device::Device::borrow(self.dev) }
+> +    }
+> +}
+> +
+> +impl<T: DriverObject> crate::private::Sealed for Object<T> {}
+> +
+> +impl<T: DriverObject> Deref for Object<T> {
+> +    type Target =3D T;
+> +
+> +    fn deref(&self) -> &Self::Target {
+> +        &self.inner
+> +    }
+> +}
+> +
+> +impl<T: DriverObject> DerefMut for Object<T> {
+> +    fn deref_mut(&mut self) -> &mut Self::Target {
+> +        &mut self.inner
+> +    }
+> +}
+> +
+> +impl<T: DriverObject> drv::AllocImpl for Object<T> {
+> +    const ALLOC_OPS: drv::AllocOps =3D drv::AllocOps {
+> +        gem_create_object: None,
+> +        prime_handle_to_fd: None,
+> +        prime_fd_to_handle: None,
+> +        gem_prime_import: None,
+> +        gem_prime_import_sg_table: None,
+> +        dumb_create: None,
+> +        dumb_map_offset: None,
+> +    };
+> +}
+> +
+> +/// A reference-counted shared reference to a base GEM object.
+> +pub struct ObjectRef<T: IntoGEMObject> {
+> +    // Invariant: the pointer is valid and initialized, and this =
+ObjectRef owns a reference to it.
+> +    ptr: *const T,
+> +}
+> +
+> +impl<T: IntoGEMObject> ObjectRef<T> {
+> +    /// Downgrade this reference to a shared reference.
+> +    pub fn from_pinned_unique(pin: Pin<UniqueObjectRef<T>>) -> Self {
+> +        // SAFETY: A (shared) `ObjectRef` doesn't need to be pinned, =
+since it doesn't allow us to
+> +        // optain a mutable reference.
+> +        let uq =3D unsafe { Pin::into_inner_unchecked(pin) };
+> +
+> +        uq.into_ref()
+> +    }
+> +}
+> +
+> +/// SAFETY: GEM object references are safe to share between threads.
+> +unsafe impl<T: IntoGEMObject> Send for ObjectRef<T> {}
+> +unsafe impl<T: IntoGEMObject> Sync for ObjectRef<T> {}
+> +
+> +impl<T: IntoGEMObject> Clone for ObjectRef<T> {
+> +    fn clone(&self) -> Self {
+> +        self.reference()
+> +    }
+> +}
+> +
+> +impl<T: IntoGEMObject> Drop for ObjectRef<T> {
+> +    fn drop(&mut self) {
+> +        // SAFETY: Having an ObjectRef implies holding a GEM =
+reference.
+> +        // The free callback will take care of deallocation.
+> +        unsafe {
+> +            bindings::drm_gem_object_put((*self.ptr).gem_obj() as =
+*const _ as *mut _);
+> +        }
+> +    }
+> +}
+> +
+> +impl<T: IntoGEMObject> Deref for ObjectRef<T> {
+> +    type Target =3D T;
+> +
+> +    fn deref(&self) -> &Self::Target {
+> +        // SAFETY: The pointer is valid per the invariant
+> +        unsafe { &*self.ptr }
+> +    }
+> +}
+> +
+> +/// A unique reference to a base GEM object.
+> +pub struct UniqueObjectRef<T: IntoGEMObject> {
+> +    // Invariant: the pointer is valid and initialized, and this =
+ObjectRef owns the only reference
+> +    // to it.
+> +    ptr: *mut T,
+> +    _p: PhantomPinned,
+> +}
+> +
+> +impl<T: IntoGEMObject> UniqueObjectRef<T> {
+> +    /// Downgrade this reference to a shared reference.
+> +    pub fn into_ref(self) -> ObjectRef<T> {
+> +        let ptr =3D self.ptr as *const _;
+> +        core::mem::forget(self);
+> +
+> +        ObjectRef { ptr }
+> +    }
+> +}
+> +
+> +impl<T: IntoGEMObject> Drop for UniqueObjectRef<T> {
+> +    fn drop(&mut self) {
+> +        // SAFETY: Having a UniqueObjectRef implies holding a GEM
+> +        // reference. The free callback will take care of =
+deallocation.
+> +        unsafe {
+> +            bindings::drm_gem_object_put((*self.ptr).gem_obj() as =
+*const _ as *mut _);
+> +        }
+> +    }
+> +}
+> +
+> +impl<T: IntoGEMObject> Deref for UniqueObjectRef<T> {
+> +    type Target =3D T;
+> +
+> +    fn deref(&self) -> &Self::Target {
+> +        // SAFETY: The pointer is valid per the invariant
+> +        unsafe { &*self.ptr }
+> +    }
+> +}
+> +
+> +impl<T: IntoGEMObject> DerefMut for UniqueObjectRef<T> {
+> +    fn deref_mut(&mut self) -> &mut Self::Target {
+> +        // SAFETY: The pointer is valid per the invariant
+> +        unsafe { &mut *self.ptr }
+> +    }
+> +}
+> +
+> +pub(super) fn create_fops() -> bindings::file_operations {
+> +    bindings::file_operations {
+> +        owner: core::ptr::null_mut(),
+> +        open: Some(bindings::drm_open),
+> +        release: Some(bindings::drm_release),
+> +        unlocked_ioctl: Some(bindings::drm_ioctl),
+> +        #[cfg(CONFIG_COMPAT)]
+> +        compat_ioctl: Some(bindings::drm_compat_ioctl),
+> +        #[cfg(not(CONFIG_COMPAT))]
+> +        compat_ioctl: None,
+> +        poll: Some(bindings::drm_poll),
+> +        read: Some(bindings::drm_read),
+> +        llseek: Some(bindings::noop_llseek),
+> +        mmap: Some(bindings::drm_gem_mmap),
+> +        ..Default::default()
+> +    }
+> +}
+> diff --git a/rust/kernel/drm/mod.rs b/rust/kernel/drm/mod.rs
+> index a767942d0b52..c44760a1332f 100644
+> --- a/rust/kernel/drm/mod.rs
+> +++ b/rust/kernel/drm/mod.rs
+> @@ -5,4 +5,5 @@
+> pub mod device;
+> pub mod drv;
+> pub mod file;
+> +pub mod gem;
+> pub mod ioctl;
+> --=20
+> 2.45.1
+
+This looks good to me,
+
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
 
