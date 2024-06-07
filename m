@@ -1,164 +1,144 @@
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+Received: from mail-yb1-f201.google.com (mail-yb1-f201.google.com [209.85.219.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD29D1BC4F
-	for <rust-for-linux@vger.kernel.org>; Fri,  7 Jun 2024 05:21:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D86315A873
+	for <rust-for-linux@vger.kernel.org>; Fri,  7 Jun 2024 08:23:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717737715; cv=none; b=bM9BQdEYTAIra73yjjNIp5tFYL5VX+vz97XdOSvOXjbnVAf40wWnhSpbCKfyfuCSgIsd/KqSRM9NJn9pwJRJdRqDy2XeUsiojSh3TylIXEaNz2rkvgAzu5ZmM+WiCVEPMOgCDIRbbvgv8v5PzuK+LGKDSf3x9vZ1nlN6BFPzx9Y=
+	t=1717748628; cv=none; b=O7E8WjKjvKhu/m5iFzvhEoJ774HipwAyn1DSmf8wnyr1n7OHS9b6kmuAwxhPtgROa4krO/zHOBPNmHVm6+3djNiA9ZDmSClRCoi9rb6SCzOauSmpWNUz7V+EbKu8lKVgVpjGe/vb331yeYoBPPQiX5ikMZAV8/eSfbQ035R/GIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717737715; c=relaxed/simple;
-	bh=aYk2xfoA6YivZbjIXzu4eGpg+pT85XyYUV9vHOIGTAU=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=KmUZ82sMPs5KX7HxhMC+ZOz0F8O17E9pJawh+tqjgxTxjdjAXUEtxSUKbjUBOn6BKPeOnNbYxsLEkX5dQPGoCn1fvAedQhi/x/hLHqcSiPH/h9CgnAwOwmmXHk4Ggx3prknBcMfaTD5KemkCl9Y64R8bp9zwiGf4wtH3u+XYEwU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=e0zuP8sL; arc=none smtp.client-ip=209.85.215.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1717748628; c=relaxed/simple;
+	bh=Xgwy+VXx5E3JZbP4Ybw+wTF/Dg2wgJSpewPSloTt8eQ=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=ijR07f9duTaXdxy3oD7XUulKuehpF/Nk51DwVuu729n28zNDf4+Wdh04OTsz9PsGjbIXPw0l5OH40uytEknZnZb/HjxxTxRqpL4iHPRgvgJwwo6CDrV60gvI72GqgImU9U3F5i1F8mJsMYvaMDwzCvnKUl5rUa6vlAoptSg7mdY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Gp/EqZVB; arc=none smtp.client-ip=209.85.219.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="e0zuP8sL"
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-6e3341c8767so6696a12.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 06 Jun 2024 22:21:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Gp/EqZVB"
+Received: by mail-yb1-f201.google.com with SMTP id 3f1490d57ef6-df7bdb0455bso2885208276.2
+        for <rust-for-linux@vger.kernel.org>; Fri, 07 Jun 2024 01:23:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1717737712; x=1718342512; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=aRm7Js5NCebFHrEbcgyPR1HnEuANZUqfja2CtKxD1Cc=;
-        b=e0zuP8sL1j4Tw/kbn0kHYr+duX20ns8MoPS1MPliWvGC0wxlxbWFT37jgrx8fgfZCZ
-         MTCsFrXr2GkKIDHfq1fq3dbYdGpjHaxG9rGNf2zGwra5cm/T1zEG6N3X9JF6RRhRvuGH
-         z9OvA/M+3S8DmJpJQZ7AnelESeRXAP3xeDTzwZ2Kj+uyB/EOGkuFnrIbmikGb4Kpppg+
-         +jolXSahx/2AFjoRST86Bl1VEPI0VA4ZLiVcm4kw79qmtpVYEnyGIKHtQVMMqkLO+wPJ
-         Q6MvFmd7XBWPm9UGCU6aVAEkIDbrCkIk5hYlaC6DKCObAmg2qEX7CF3FwW4nJi62EO4M
-         CrmQ==
+        d=google.com; s=20230601; t=1717748625; x=1718353425; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=jFzDLAm2JoetzCIq+IZooWSo9+/OTnrDCeqgi9Uf1Qw=;
+        b=Gp/EqZVBAwQU/FP8j2ygb08OWyI7m6v3xhkUSXQ/y6g6BXng7yl9da3U14aZd66aSi
+         ednzH3E6eRHPipL+4x9DNAhscBgVJMfCf8IDWjjNC5eee/KdO99HUWjuOfInVR+i7NHY
+         0m8R1JO8z/5Uumf4Zdv6bPcY1AuyN/uaKGdP+1vGxepJg364FmGWPCAxCPDsJYlfMKIG
+         sk1COkb6qzGETOMuahdazmLj69tjhgKqaXQRjDCX+lj/u0Q4PkqFCsQakg0Ww7MPvkNx
+         WZ4m/eiJds79teQDqLHUIbYPxL04JGQKoVeDmih/M8yAxzNAoW6WA7afGFlMOTSKwS6n
+         s+yQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717737712; x=1718342512;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=aRm7Js5NCebFHrEbcgyPR1HnEuANZUqfja2CtKxD1Cc=;
-        b=SMkw6sxfqNMEqvHUAYRXxTzYcbNecHRXE1adkqix2PY8HzwbCotozbh+3iQDk5zIsk
-         0m79fEu8YJ6pcxP+NweX4HPVorR1ffllzcqefux4R2Vy+8eLO0m/lNjxJ2Gp9Vp7TbRZ
-         ErPxbN7yeWWzHwP7+YloJBY12hv8wPMNsiZiin6UDkqSdoIqxHWhdkL4z6NUovsdKsHE
-         Uad4rXcpmj/UDMFIWEO42hzajzO8I3+OW8aoodSkktI3SsCK8tD2dfl61TlruYO8JQh/
-         mHNNhWdwBUvGRIqHkvfMXUu8hU8pegMhrvk1z1HHs4l1hxiEZdTGJ3fNWMQk9QeThFDw
-         mA+g==
-X-Gm-Message-State: AOJu0YxpL/b7+/PdCSIyHLxwCanSSzAQtE0PIZdoM2+Py1IUL9MDuteU
-	q+nqydYrZo9NtiNateF8nt4BAZRuNtI+7OemBpokWqXOyBe+iZtFkJmN3Q==
-X-Google-Smtp-Source: AGHT+IG6x0xCxlDFxCDo0Tf3q2ia77GdlW+3a0yIZGFy+VuzqjOplQ08fghfjj0ldkYjW4g4vmOTKA==
-X-Received: by 2002:a05:6a20:9741:b0:1b0:1ce1:e7b2 with SMTP id adf61e73a8af0-1b2f9dcc7b4mr1591646637.4.1717737711995;
-        Thu, 06 Jun 2024 22:21:51 -0700 (PDT)
-Received: from rpi.. (p5261226-ipxg23801hodogaya.kanagawa.ocn.ne.jp. [180.15.241.226])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f6bd6c30a6sm25106215ad.0.2024.06.06.22.21.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 06 Jun 2024 22:21:51 -0700 (PDT)
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-To: rust-for-linux@vger.kernel.org
-Cc: andrew@lunn.ch,
-	tmgross@umich.edu,
-	benno.lossin@proton.me
-Subject: [RFC PATCH v4 2/2] rust: net::phy unified genphy_read_status function for C22 and C45 registers
-Date: Fri,  7 Jun 2024 14:21:13 +0900
-Message-Id: <20240607052113.69026-3-fujita.tomonori@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20240607052113.69026-1-fujita.tomonori@gmail.com>
-References: <20240607052113.69026-1-fujita.tomonori@gmail.com>
+        d=1e100.net; s=20230601; t=1717748625; x=1718353425;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=jFzDLAm2JoetzCIq+IZooWSo9+/OTnrDCeqgi9Uf1Qw=;
+        b=YnL04zqNsPuTKnYt4hQ4jUCCWeslzhBoXnLfp7uuIab0kz4KgxykfTlEgieDD6e61l
+         hly2ljS27FZnEZkJq05tOr189b2qc+v1CKvGTUyy7Y8bUF2x6BsIGiQqFTN0js07Bh+w
+         XZW3x9AtCJ9+jXZ8MaxdCuwx2qNDEnG8d2+Z8T5ZJiDlgXwoxZVrqQ9FYsVSnPvTan0X
+         DiICVQwjXINsLDZblacGaWZFAZfyCkU+5fVw06Y8i3Ib3XfhHsQG+Yuqzm8SgQxvbfFq
+         dHtG8gE6HHbByVwEokhclAmO0OSixX77Hit91/zT11hpslLKaoQX1I3BGhFLqlHd6riK
+         mbTA==
+X-Forwarded-Encrypted: i=1; AJvYcCVk6MTzy9BQtLK3+ENtU2KcvA5fofcnKZ0axDMCkdY5J95zU3fCNdT38zKIekMfpMvF1VTDNKPhfRP4vVyqWdj63bo2ieT2rS0CvfIo0ok=
+X-Gm-Message-State: AOJu0Yz+ZKGVG9slM8geAG21K3HZN5DKVlWmSgdML1oC0T82wo7tsLMa
+	WJOz6H4FMLzmz/iet+fhMd+Mrn9/01AS83MkXlRlqWib/W2B7QLerN3z4arMqvlLxDThvm4+PBu
+	n5Z3jlTteZBJIBw==
+X-Google-Smtp-Source: AGHT+IEF7CwqKNpySd+6AuoFJi32vnnmAET+ZclCVOtY5J7qFDRYXcocHOA7xl/OSLW2UDLxrIJKMjnMqQ92lHY=
+X-Received: from aliceryhl2.c.googlers.com ([fda3:e722:ac3:cc00:68:949d:c0a8:572])
+ (user=aliceryhl job=sendgmr) by 2002:a25:6b08:0:b0:dfa:59bc:8867 with SMTP id
+ 3f1490d57ef6-dfaf64d3340mr115964276.5.1717748624990; Fri, 07 Jun 2024
+ 01:23:44 -0700 (PDT)
+Date: Fri, 07 Jun 2024 08:23:41 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAIzDYmYC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxMDE0Nz3YzM9Izc1FzdlKTElBRDU8ukVENDJaDqgqLUtMwKsEnRsbW1ABY H8rlZAAAA
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2472; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=Xgwy+VXx5E3JZbP4Ybw+wTF/Dg2wgJSpewPSloTt8eQ=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBmYsONk+jvByYL2TvCtGEpw2mG1FeLXT5tMEqGf
+ QENb1/iRbmJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZmLDjQAKCRAEWL7uWMY5
+ Rtg5D/97pMiTip/qY8xClBaqwr63gv3MaEt8Te2hgLcwePAMnxTBOxvv7XkJAggvpaPBODWZyX5
+ k049GAOcgQykCCJI7lcBbnlCJcUgCiCqdvhx4+uSKHtlu2KqqkWvE7aadk9mtSK1LKEqWKzgw64
+ O+G/8qQ1/MuKgZq7UdXAS+W087EfyC2Vcy0md0dCvMBMPVS04ujRsvQsugtUswaomEh6/Y5dbIR
+ CM/gobk6d+WYYyXfWuxWOA0Lahb/YcCndsQdlAYw4T+GRiOjvrNuewH7OFnQneS89yQGrvSOT90
+ twfceUV3O65lVsZI0EDrctFXv2U5iHgc1EJd1+ccoM8+MFOYoRuHgvJugMysWCJvuGZZGQq6tL5
+ 9SYegBtv/YY0tDovG9l/XzBxbe0aTXwofemBpHJuH68g6B8INU2eTtl+ZPLMHY9u1Enw04xnnyW
+ W55EPhsp1NDsYV5MVDi+RGq8YYNa1FdUfWeY/bjwLIJdzI9O02LuzZlAFAdEJ4+g14p9wb5ZIqz
+ +Mcm2UIbJ/n6wBEk7teLnGTMlr0FcMFsyZTuZ0w/N/GMuoVn35L6vYWltCgRj+N03venG14qMS6
+ X2Htqv9BIwEe431MxLTlmrJmzFvO+gELPdL2jzLRgCvh2f3O0iuR63qjN0dRs7bEvjntlDT0l4S NhuJ8H3zSx1Z/6Q==
+X-Mailer: b4 0.13-dev-26615
+Message-ID: <20240607-highmem-v1-1-d18c5ca4072f@google.com>
+Subject: [PATCH] rust: alloc: add __GFP_HIGHMEM flag
+From: Alice Ryhl <aliceryhl@google.com>
+To: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
+	Al Viro <viro@zeniv.linux.org.uk>, Andrew Morton <akpm@linux-foundation.org>, 
+	Kees Cook <keescook@chromium.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-Add unified genphy_read_status function for C22 and C45
-registers. Instead of having genphy_c22 and genphy_c45 methods, this
-unifies genphy_read_status functions for C22 and C45.
+Make it possible to allocate memory that doesn't need to mapped into the
+kernel's address space. This flag is useful together with
+Page::alloc_page [1].
 
-Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Rust Binder needs this for the memory that holds incoming transactions
+for each process. Each process will have a few megabytes of memory
+allocated with this flag, which is mapped into the process using
+vm_insert_page. When the kernel copies data for an incoming transaction
+into a process's memory region, it will use kmap_local_page to
+temporarily map pages that are being modified. There is no need for them
+to take up address space in the kernel when the kernel is not writing an
+incoming transaction into the page.
+
+Link: https://lore.kernel.org/all/20240528-alice-mm-v7-4-78222c31b8f4@google.com/ [1]
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
- rust/kernel/net/phy.rs     | 12 ++----------
- rust/kernel/net/phy/reg.rs | 26 ++++++++++++++++++++++++++
- 2 files changed, 28 insertions(+), 10 deletions(-)
+ rust/bindings/bindings_helper.h | 1 +
+ rust/kernel/alloc.rs            | 8 ++++++++
+ 2 files changed, 9 insertions(+)
 
-diff --git a/rust/kernel/net/phy.rs b/rust/kernel/net/phy.rs
-index 9b4c4d24b231..ff16d44c7bb0 100644
---- a/rust/kernel/net/phy.rs
-+++ b/rust/kernel/net/phy.rs
-@@ -249,16 +249,8 @@ pub fn genphy_suspend(&mut self) -> Result {
-     }
+diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+index ddb5644d4fd9..52a1412338ef 100644
+--- a/rust/bindings/bindings_helper.h
++++ b/rust/bindings/bindings_helper.h
+@@ -25,3 +25,4 @@ const gfp_t RUST_CONST_HELPER_GFP_KERNEL = GFP_KERNEL;
+ const gfp_t RUST_CONST_HELPER_GFP_KERNEL_ACCOUNT = GFP_KERNEL_ACCOUNT;
+ const gfp_t RUST_CONST_HELPER_GFP_NOWAIT = GFP_NOWAIT;
+ const gfp_t RUST_CONST_HELPER___GFP_ZERO = __GFP_ZERO;
++const gfp_t RUST_CONST_HELPER___GFP_HIGHMEM = ___GFP_HIGHMEM;
+diff --git a/rust/kernel/alloc.rs b/rust/kernel/alloc.rs
+index 531b5e471cb1..f2994aea5d8e 100644
+--- a/rust/kernel/alloc.rs
++++ b/rust/kernel/alloc.rs
+@@ -52,6 +52,14 @@ pub mod flags {
+     /// This is normally or'd with other flags.
+     pub const __GFP_ZERO: Flags = Flags(bindings::__GFP_ZERO);
  
-     /// Checks the link status and updates current link state.
--    pub fn genphy_read_status(&mut self) -> Result<u16> {
--        let phydev = self.0.get();
--        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
--        // So it's just an FFI call.
--        let ret = unsafe { bindings::genphy_read_status(phydev) };
--        if ret < 0 {
--            Err(Error::from_errno(ret))
--        } else {
--            Ok(ret as u16)
--        }
-+    pub fn genphy_read_status<R: reg::Register>(&mut self) -> Result<u16> {
-+        R::read_status(self)
-     }
- 
-     /// Updates the link status.
-diff --git a/rust/kernel/net/phy/reg.rs b/rust/kernel/net/phy/reg.rs
-index 91f73179315e..4cf47335539b 100644
---- a/rust/kernel/net/phy/reg.rs
-+++ b/rust/kernel/net/phy/reg.rs
-@@ -30,6 +30,11 @@ pub trait Sealed {}
- ///     dev.read(C22::BMCR);
- ///     // read C45 PMA/PMD control 1 register
- ///     dev.read(C45::new(Mmd::PMAPMD, 0));
-+///
-+///     // Checks the link status and updates current link state via C22.
-+///     dev.genphy_read_status::<phy::C22>();
-+///     // Checks the link status and updates current link state via C45.
-+///     dev.genphy_read_status::<phy::C45>();
- /// }
- /// ```
- pub trait Register: private::Sealed {
-@@ -38,6 +43,9 @@ pub trait Register: private::Sealed {
- 
-     /// Writes a PHY register.
-     fn write(&self, dev: &mut Device, val: u16) -> Result;
++    /// Allow the allocation to be in high memory.
++    ///
++    /// Allocations in high memory may not be mapped into the kernel's address space, so this can't
++    /// be used with `kmalloc` and other similar methods.
++    ///
++    /// This is normally or'd with other flags.
++    pub const __GFP_HIGHMEM: Flags = Flags(bindings::__GFP_HIGHMEM);
 +
-+    /// Checks the link status and updates current link state.
-+    fn read_status(dev: &mut Device) -> Result<u16>;
- }
- 
- /// A single MDIO clause 22 register address (5 bits).
-@@ -111,6 +119,15 @@ fn write(&self, dev: &mut Device, val: u16) -> Result {
-             bindings::mdiobus_write((*phydev).mdio.bus, (*phydev).mdio.addr, self.0.into(), val)
-         })
-     }
-+
-+    fn read_status(dev: &mut Device) -> Result<u16> {
-+        let phydev = dev.0.get();
-+        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
-+        // So it's just an FFI call.
-+        let ret = unsafe { bindings::genphy_read_status(phydev) };
-+        to_result(ret)?;
-+        Ok(ret as u16)
-+    }
- }
- 
- /// A single MDIO clause 45 register device and address.
-@@ -190,4 +207,13 @@ fn write(&self, dev: &mut Device, val: u16) -> Result {
-             bindings::phy_write_mmd(phydev, self.devad.0.into(), self.regnum.into(), val)
-         })
-     }
-+
-+    fn read_status(dev: &mut Device) -> Result<u16> {
-+        let phydev = dev.0.get();
-+        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Self`.
-+        // So it's just an FFI call.
-+        let ret = unsafe { bindings::genphy_c45_read_status(phydev) };
-+        to_result(ret)?;
-+        Ok(ret as u16)
-+    }
- }
+     /// Users can not sleep and need the allocation to succeed.
+     ///
+     /// A lower watermark is applied to allow access to "atomic reserves". The current
+
+---
+base-commit: 1613e604df0cd359cf2a7fbd9be7a0bcfacfabd0
+change-id: 20240417-highmem-dbadd159be11
+
+Best regards,
 -- 
-2.34.1
+Alice Ryhl <aliceryhl@google.com>
 
