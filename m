@@ -1,206 +1,162 @@
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF3F418734E
-	for <rust-for-linux@vger.kernel.org>; Fri,  7 Jun 2024 11:08:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D180418733D
+	for <rust-for-linux@vger.kernel.org>; Fri,  7 Jun 2024 11:24:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717758521; cv=none; b=AWT8oMCEwpwCceD1BD6sDh+0COvfymvB2fQqgAgXFBZ982RAFViZgM0KOLf7bm10UO8SR3tFbPlPwiN+QoLPkLZJwwIVAo5JuzLBHtuEHmcDr9HusVnyJOPBH0MNVPUrr1aVs0G1Cg1NDku1jaRGKM6ewxYS/bd63nrInhhJ6vs=
+	t=1717759482; cv=none; b=CRBExj07Yaywhdl+Fa0L7dzKgMR5/evB5Bd365mkZKj1CsiJd4BXZiLb9nCA8z5w5fIIyFmCCqF/GNPDNRf9LuX8h3XyCF74NWu6cLwBeMIs91v4wxGYRvtbgzFk7MkW3SFtL5S9ijup8t4xPPmjRuXhco3VbWYYtFUtWwdRq8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717758521; c=relaxed/simple;
-	bh=oyhlSsZ9u9jea1W+2i6eZUOvz1sTt2oMZhFdHqZNdTw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RJ5Ha4oN9lC3R938/2tmsp0WsVwydXRJBIGjkNBBKDaSFvfpeKegLlNyQ0/Part5QQcz7GckLw17F4HN37PQ/bGRgfNSd1BmpJQqfTcvi2s3fV22awdzRn1IBzVBbTqamWAafgxFOsz6PCHluRNA5gdVwpO0Gp9wSyJxKWgPSuw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gH4Gbsz0; arc=none smtp.client-ip=209.85.221.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1717759482; c=relaxed/simple;
+	bh=QDB7wOedg633ySJnJZZj65PiGCmpyS2TDfWcEfEhYxM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=YTS87tgQlQrUi7Q71qUYtWaOVvKnIbV45pVbtfFv0KQz/PoFXgQJ+LUdlCeuLP/qaED8HIa8lKnl33pG6crHT0kNHRdXmOLxEsZvxuJOYYtxqHp1YTqnWbo0ldZPYdZyK2RooOS8ji7VGiFR9FWCr+p5naUDB5gLA8dS5AWHvN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=VLYqQIjb; arc=none smtp.client-ip=209.85.167.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gH4Gbsz0"
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-35dca73095aso1761426f8f.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 07 Jun 2024 04:08:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="VLYqQIjb"
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-52b950aa47bso3008612e87.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 07 Jun 2024 04:24:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1717758518; x=1718363318; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2nK7eNQ+hoX2l5wdTyQQ8AV5LulVt/l/ya99NvQfTdM=;
-        b=gH4Gbsz01CLU+qqGp62pq4ARD9t9VcIVrXFI29L84aeKfnFGQ2MJyA2Kldh3iyl2YJ
-         NzYVgucvTII3CyresLN7OCRGAXUq8wLQsUpXbY2+M4cQNPjMeps6y/lweGDLy1XmM7Ur
-         cpGae86RQKqJ/d9cub//wKyVg6rMUHsmUvCgeXco+Njb1yZAzUTqcVRtObZ5Wd/utXnf
-         tOBQ9mk1gDl9zoDVHLM1ak5sMrPImIjIP707aSB+rBJeIhzK90K7OtDY8ysi324ln7Z0
-         THZkdDlRyFGE4Dex3xyqgcAxatQbTF9o9EOqAX48ZAr24J3pBfFhPBbMP2nXl6GJ8wf8
-         5OZQ==
+        d=linaro.org; s=google; t=1717759478; x=1718364278; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:in-reply-to
+         :references:user-agent:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=TxKqtp38KhT9aMHnsIeC+TX8dWAC4DZuSMvsQh7h8Sc=;
+        b=VLYqQIjbfl2wPFGZk2xA8XlK0+V39hR5wdPBCyTESDrnh3YR30F8bI4q/SNm47jJNe
+         o08BMPN+GNyTgFimyII+lrhnkC4Uf1FEikintb3U3gDEASsfWcXlegSE88S+ImBqNEFP
+         9F7RZGDc178x3utWSuvRTTWc/mj2ek9oT4Cl0VpP7BYQiDCMTBYcB5PzrUB+BW5LEX4I
+         +tXkTrTxVl+P1ByffSeVnyaVa9ErMgczBm7Jwnf5EUJBfR2fxIHPhwNyVFPTrVm/8g4T
+         CkY1imGKX6k4PAdjUA9Ma+I/9VcXHPiPwdeo/2g+xpewxISLuVQAX4c8kl1LJkrdtfXz
+         /aUQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717758518; x=1718363318;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=2nK7eNQ+hoX2l5wdTyQQ8AV5LulVt/l/ya99NvQfTdM=;
-        b=AtZfOrlxTIa7sGD3N+kqVlKkx0VJFFRIZjgyCC5ZZbUrK1+NBFPh2JCgcUQm7agYBQ
-         cOccd8/6Y9H5AG1FgE0TD3eNm8aM6JotkrFyB6XI5uXAuhNQmGpd+gcydrjNCl0kXFdL
-         eaX4HJOK1QY7gYXCm0fT51en13Dx0/oKZS80+yUZ3zOaTN0tcEs422toN+7/Vtv4o/yj
-         yvErsrBByEcRev9/NARpEOWNV1bZg78wVBhSP0S4Bt3AY+AwI1tFCHb2eVZutzODo1b6
-         dQJsbleK7laPQw7MsYjq+ElRaRQe/adPljs8qEsqrswlaO3Sd4uDVKpUqKdJcEvjKByR
-         wbOA==
-X-Forwarded-Encrypted: i=1; AJvYcCURNHB6LgtG/pkmUml9cdXmJL05O31Wf3OUq3mHY8oGIR/rwtA/6JNce/g4PqZa1ip9FdTscBw2GQGxmkSdYWY7PZY0+jLrEcelvLbN+2s=
-X-Gm-Message-State: AOJu0Yy+G3nwfBZsh5HRWQ1IkN70f43XxclTwBYO6L/AYO5tiYqmIEvB
-	Od8UY4goR6xl1qi6nDljlmHNkY1GWYT76gNvdGrq3VZGOw8xYkDRy8ieR7R/l89fW7nFEC4lu3D
-	CMfifIa2fVMNzNuqpJI3YjngQas/3aSH/Ae30
-X-Google-Smtp-Source: AGHT+IEySEbc8YI+5RaCD9sW2IuIsZd7+PNu+mqp7niXSuiZHWd3aAdVtgXnRo/4POEAdDLpUYXf53dYxlwhawtJvRg=
-X-Received: by 2002:a5d:59a3:0:b0:355:692:f663 with SMTP id
- ffacd0b85a97d-35efedc9eb5mr2103498f8f.50.1717758517672; Fri, 07 Jun 2024
- 04:08:37 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1717759478; x=1718364278;
+        h=content-transfer-encoding:mime-version:message-id:in-reply-to
+         :references:user-agent:subject:cc:to:from:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=TxKqtp38KhT9aMHnsIeC+TX8dWAC4DZuSMvsQh7h8Sc=;
+        b=sBJ4pQBO3aB1HUxQ5kg+Xr4OCnr5KXXdP5MUfYTN3TaGIqszOlXclzWrinp+CZKxmO
+         PuCP8ZYdI4ZDVhag1TqbYz/+Wc4PAP3fwaUI3CP2vPVaR0FdljoFhvLfdgBIbwm/g9MZ
+         5pz8/GtBTuM7TQ/ujUVSYCD6yyAYfY0Dwl2fUyrzDi3IdAisbpvkucKTmbzC3XzXJw5+
+         SR3WKPcgKJe5BPRCxdT4jdUhGBwxOXLZyyWRpAvh36dnEIZ4Dqc86mmlqfS7CnOuGaTu
+         6OFm/YKpfQnldJ7STrjRrOTOKdEJF4MJwx02AT2/t7QzCzZH2mFq4e+Tsk0xnMO/wANl
+         w1sw==
+X-Forwarded-Encrypted: i=1; AJvYcCVKJoEiEZxTAP0i54QtHmgbSE0lMkraHLC1cOqzh+/h76E+7jgN47EoT1rv4ObGX/Nt8jSJsmUilXcInml9KOYA7za8vVHJ24iGn3k2/Zg=
+X-Gm-Message-State: AOJu0Ywg5bdD2G0VHFbU2vLgNt7pjYWTezCOTYkRTv4AK+/2wRo7BMxn
+	xUwhx2ZxYMCDULTSfbIKhvdir12TcoA0BpN6v0X5R3PGsdiSWRaycXy9F2DcVdE=
+X-Google-Smtp-Source: AGHT+IGn858uClRXM981tpsaA+vmiD0FQcCFjuKV9/5cUuIuy0VYS5bgZRqyLlCPVkDX655Cz+J0Tw==
+X-Received: by 2002:a05:6512:ac4:b0:52b:7bde:896b with SMTP id 2adb3069b0e04-52bb9f5d3b5mr1689086e87.14.1717759477758;
+        Fri, 07 Jun 2024 04:24:37 -0700 (PDT)
+Received: from meli-email.org (adsl-105.37.6.1.tellas.gr. [37.6.1.105])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4215c19e572sm50531555e9.10.2024.06.07.04.24.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 07 Jun 2024 04:24:37 -0700 (PDT)
+Date: Fri, 07 Jun 2024 14:18:54 +0300
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+To: Alice Ryhl <aliceryhl@google.com>, Viresh Kumar <viresh.kumar@linaro.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, Bj=?UTF-8?B?w7Y=?= rn Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, linux-pm@vger.kernel.org, Vincent Guittot <vincent.guittot@linaro.org>, Stephen Boyd <sboyd@kernel.org>, Nishanth Menon <nm@ti.com>, rust-for-linux@vger.kernel.org, Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, Erik Schilling <erik.schilling@linaro.org>, Alex Benn=?UTF-8?B?w6k=?= e <alex.bennee@linaro.org>, Joakim Bech <joakim.bech@linaro.org>, Rob Herring <robh@kernel.org>, linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH V2 1/8] rust: Add initial bindings for OPP framework
+User-Agent: meli 0.8.5
+References: <cover.1717750631.git.viresh.kumar@linaro.org> <e74e3a14e6da3f920cee90d32a023ba4805328a0.1717750631.git.viresh.kumar@linaro.org> <CAH5fLgjChZCtTUnHVHJat-sXFyLVE+MgDXrNDiUD0LNsUndpBQ@mail.gmail.com>
+In-Reply-To: <CAH5fLgjChZCtTUnHVHJat-sXFyLVE+MgDXrNDiUD0LNsUndpBQ@mail.gmail.com>
+Message-ID: <epjoz.s6l4l8qrt331@linaro.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240606193318.GK8774@noisy.programming.kicks-ass.net>
- <20240607094329.3878781-1-aliceryhl@google.com> <20240607105232.GP8774@noisy.programming.kicks-ass.net>
-In-Reply-To: <20240607105232.GP8774@noisy.programming.kicks-ass.net>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Fri, 7 Jun 2024 13:08:25 +0200
-Message-ID: <CAH5fLgiF1bq52sTHKQRvqzVv5VP2w1WMeDZPHZ7qnxZ59zKNjQ@mail.gmail.com>
-Subject: Re: [PATCH 1/3] rust: add static_call support
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: a.hindborg@samsung.com, alex.gaynor@gmail.com, ardb@kernel.org, 
-	benno.lossin@proton.me, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, 
-	gary@garyguo.net, jbaron@akamai.com, jpoimboe@kernel.org, 
-	linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
-	mathieu.desnoyers@efficios.com, mhiramat@kernel.org, 
-	miguel.ojeda.sandonis@gmail.com, ojeda@kernel.org, rostedt@goodmis.org, 
-	rust-for-linux@vger.kernel.org, wedsonaf@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8; format=flowed
 
-On Fri, Jun 7, 2024 at 12:52=E2=80=AFPM Peter Zijlstra <peterz@infradead.or=
-g> wrote:
+On Fri, 07 Jun 2024 13:51, Alice Ryhl <aliceryhl@google.com> wrote:
+>On Fri, Jun 7, 2024 at 11:12 AM Viresh Kumar <viresh.kumar@linaro.org> wrote:
+>>
+>> This commit adds initial Rust bindings for the Operating performance
+>> points (OPP) core. This adds bindings for `struct dev_pm_opp` and
+>> `struct dev_pm_opp_data` to begin with.
+>>
+>> Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 >
-> On Fri, Jun 07, 2024 at 09:43:29AM +0000, Alice Ryhl wrote:
-> > Peter Zijlstra <peterz@infradead.org> wrote:
-> > > On Thu, Jun 06, 2024 at 09:09:00PM +0200, Miguel Ojeda wrote:
-> > > > On Thu, Jun 6, 2024 at 7:19=E2=80=AFPM Peter Zijlstra <peterz@infra=
-dead.org> wrote:
-> > > > >
-> > > > > This is absolutely unreadable gibberish -- how am I supposed to k=
-eep
-> > > > > this in sync with the rest of the static_call infrastructure?
-> > > >
-> > > > Yeah, they are macros, which look different from "normal" Rust code=
-.
-> > >
-> > > Macros like CPP ?
-> >
-> > Yes, this patch series uses declarative macros, which are the closest
-> > that Rust has to the C preprocessor. They are powerful, but just like
-> > CPP, they can become pretty complicated and hard to read if you are
-> > doing something non-trivial.
-> >
-> > The macro_rules! block is how you define a new declarative macro.
+>> +//! Operating performance points.
+>> +//!
+>> +//! This module provides bindings for interacting with the OPP subsystem.
+>> +//!
+>> +//! C header: [`include/linux/pm_opp.h`](../../../../../../include/linux/pm_opp.h)
 >
-> I'm sorry, but 30+ years of reading ! as NOT (or factorial) isn't going
-> to go away. So I'm reading your macros do NOT rule.
-
-So you already understand ! in two ways, but you don't want to add a
-third? That seems to violate the Zero One Infinity rule. :)
-
-https://en.wikipedia.org/wiki/Zero_one_infinity_rule
-
-> > The ($name:ident($($args:expr),* $(,)?)) part defines the arguments to
-> > the declarative macro. This syntax means:
-> >
-> > 1. The input starts with any identifier, which we call $name.
-> > 2. Then there must be a ( token.
+>Please use srctree links instead.
 >
-> The above exaple fails, because the next token is :ident, whatever the
-> heck that might be. Also, extra points for line-noise due to lack of
-> whitespace.
-
-The :ident part means that $name should be parsed as an identifier.
-Similarly, the :expr part means that $args should be parsed as an
-expression. It doesn't mean that the input should literally contain
-":ident".
-
-> > So for example, you might invoke the macro like this:
-> >
-> > static_call!(tp_func_my_tracepoint(__data, &mut my_task_struct));
+>C header: [`include/linux/pm_opp.h`](srctree/include/linux/pm_opp.h)
 >
-> static_call NOT (blah dog blah);
+>> +impl OPP {
+>> +    /// Creates a reference to a [`OPP`] from a valid pointer.
+>> +    ///
+>> +    /// # Safety
+>> +    ///
+>> +    /// The caller must ensure that `ptr` is valid and remains valid for the lifetime of the
+>> +    /// returned [`OPP`] reference.
+>> +    pub unsafe fn from_ptr_owned(ptr: *mut bindings::dev_pm_opp) -> Result<ARef<Self>> {
+>> +        let ptr = ptr::NonNull::new(ptr).ok_or(ENODEV)?;
+>> +
+>> +        // SAFETY: The safety requirements guarantee the validity of the pointer.
+>> +        //
+>> +        // INVARIANT: The refcount is already incremented by the C API that returned the pointer,
+>> +        // and we pass ownership of the refcount to the new `ARef<OPP>`.
+>> +        Ok(unsafe { ARef::from_raw(ptr.cast()) })
+>> +    }
+>> +
+>> +    /// Creates a reference to a [`OPP`] from a valid pointer.
+>> +    ///
+>> +    /// # Safety
+>> +    ///
+>> +    /// The caller must ensure that `ptr` is valid and remains valid for the lifetime of the
+>> +    /// returned [`OPP`] reference.
+>> +    pub unsafe fn from_ptr(ptr: *mut bindings::dev_pm_opp) -> Result<ARef<Self>> {
+>> +        let opp = unsafe { Self::from_ptr_owned(ptr) }?;
+>> +
+>> +        // Take an extra reference to the OPP since the caller didn't take it.
+>> +        opp.inc_ref();
+>> +
+>> +        Ok(opp)
+>> +    }
 >
-> > Inside the macro, you will see things such as:
-> > $crate::macros::paste! { $crate::bindings:: [<__SCK__ $name >]; }
-> >
-> > The Rust syntax for invoking a macro has an exclamation mark after the
+>I would recommend a slightly different approach here. You can provide
+>a method called `from_raw_opp` that takes a *mut bindings::dev_pm_opp
+>and returns a &Self. The ARef type provides a method that converts
+>&Self to ARef<Self> by taking a refcount. This way, users would also
+>be able to call OPP methods without giving Rust any refcounts. You can
+
+Wouldn't this allow for use-after-free? What if the refcount drops to 0 
+before the method is called?
+
+>As for `from_ptr_owned`, I would probably rename it to
+>`from_raw_opp_owned` or similar. It's often nice to use a more
+>descriptive name than just "ptr".
+>I think most existing examples call this `as_raw` and mark it 
+>`#[inline]`.
+
+I think `ptr` is more idiomatic to Rust users, not that your suggestion 
+is wrong. from_ptr_owned also implies the function signature.
+
+
 >
-> Like I said before, the creator of Rust must've been an esoteric
-> language freak and must've wanted to make this unreadable on purpose :/
+>> +    /// Adds an OPP dynamically.
+>> +    pub fn add(dev: ARef<Device>, mut data: Data) -> Result<()> {
+>> +        // SAFETY: The requirements are satisfied by the existence of `Device` and its safety
+>> +        // requirements.
+>> +        to_result(unsafe { bindings::dev_pm_opp_add_dynamic(dev.as_raw(), &mut data.0) })
+>> +    }
+>> +
+>> +    /// Removes a dynamically added OPP.
+>> +    pub fn remove(dev: ARef<Device>, freq: u64) {
+>> +        // SAFETY: The requirements are satisfied by the existence of `Device` and its safety
+>> +        // requirements.
+>> +        unsafe { bindings::dev_pm_opp_remove(dev.as_raw(), freq) };
+>> +    }
 >
-> Also, why the white space beteen the :: scope operator and the [< thing?
-> that's just weird. I would then expect the output to be:
->
->   ...::bindings:: __SCK__my_static_key
+>Is it intentional that these methods take ownership of a refcount to
+>the device that it then drops after calling the C function?
 
-Sorry, you are right. There is a space in the output.
-
-> > name, so you know that $crate::macros::paste is a macro. The `paste`
-> > macro just emits its input unchanged, except that any identifiers
-> > between [< and >] are concatenated into a single identifier. So if $nam=
-e
-> > is my_static_key, then the above invocation of paste! emits:
-> >
-> >       $crate::bindings::__SCK__my_static_key;
->
-> But it doesn't, so it isn't unmodified, it seems to strip whitespace.
-
-Thanks for the correction. The actual output is:
-
-$crate::bindings:: __SCK__my_static_key;
-
-However, although whitespace is generally not used here, the syntax allows =
-it.
-
-> > The $crate::bindings module is where the output of bindgen goes, so thi=
-s
-> > should correspond to the C symbol called __SCK__my_static_key.
-> >
-> > > > Is there something we could do to help here? I think Alice and othe=
-rs
-> > > > would be happy to explain how it works and/or help maintain it in t=
-he
-> > > > future if you prefer.
-> > >
-> > > Write a new language that looks more like C -- pretty please ? :-)
-> > >
-> > > Mostly I would just really like you to just use arm/jump_label.h,
-> > > they're inline functions and should be doable with IR, no weirdo CPP
-> > > involved in this case.
-> >
-> > I assume that you're referring to static_key_false here? I don't think
-> > that function can be exposed using IR because it passes the function
-> > argument called key as an "i" argument to an inline assembly block. Any
-> > attempt to compile static_key_false without knowing the value of key at
-> > compile time will surely fail to compile with the
-> >
-> >       invalid operand for inline asm constraint 'i'
-> >
-> > error.
->
-> You can have clang read the header files and compile them into
-> Intermediate-Representation, and have it splice the lot into the Rust
-> crap's IR and voila, compile time.
->
-> You just need to extend the rust thing to be able to consume C header
-> files.
-
-I wish! There are people, including me, who want this. See e.g. this
-very recent document:
-https://rust-lang.github.io/rust-project-goals/2024h2/Seamless-C-Support.ht=
-ml
-
-But there are also people who dislike the idea, so it does not have
-unanimous support yet, unfortunately.
-
-Ultimately, I have to work with what exists today.
-
-Alice
+use-after-free again? Though I'm suggesting this without actually 
+examining if it can happen.
