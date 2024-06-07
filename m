@@ -1,57 +1,57 @@
-Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53EF815CD58
-	for <rust-for-linux@vger.kernel.org>; Fri,  7 Jun 2024 09:12:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C065115B569
+	for <rust-for-linux@vger.kernel.org>; Fri,  7 Jun 2024 09:12:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717751569; cv=none; b=C9RC5DOBHfp8j/VUjeEJubinO++3wwWwIX3aVEsaaV2esOJXR7b6vVsOGYXzj42oleHiBhtr51OMY2BeEqLuNjgQ3ZmXLOG0vdMIaSfR0MWVdxaQGR+4nO299gde5dwuxq9T3OvYUHgLXoqGWRWYSBLc7fKc2629azwQAxD61B8=
+	t=1717751574; cv=none; b=AoI536PKj7K7hr4t2aNwwzNS+389HkLCpZHNRu6KCJW7JH9+Qa01eN3uRu25DCiO0bVOW7G4moBDnR4yqBbmRFYEkZkduW6QKcnu1wOS9jpxda9PYrEEAN3ucO+uXtI+CGoGYY8KH4OgoEckUP+7XnrlEyheXAldsqjHZcmqxWs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717751569; c=relaxed/simple;
-	bh=yQbu2BzvfcyL06wty0oKxJIOgxPxe0NA+Oypu+rr8gs=;
+	s=arc-20240116; t=1717751574; c=relaxed/simple;
+	bh=3WppIDEiHtkc27oSZ5kYhcEWVyq8ODvpkSqW+McEEvk=;
 	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=K78G6zRgd+oXUm9j/YhNbdtPRoHZUoFQa6sCJlToJUj7h3MQ3V9tJMSzBONGhPG9mjx+0iyFfYnQS9yclMT1+m7Es1o0Ratvnlf63LuoRoqqVaU3PNSDQpxjshCt7T+smAJ6uRTBMdOOT28FZmiARoCc270G3Zbezze57tXQvRs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=J1T8ZkTE; arc=none smtp.client-ip=209.85.214.181
+	 MIME-Version; b=M67QutsM4rRgSVEMNb9NIrpwoIYjOC3xkBbICFvZk0yk4VdQ0ZPzZwVI8Nv2iTwNAzOSGM45xFAixCDbEIxPdo/fB6VAkHonaPiTIHSJbePeC4VYJV5wYgyz/GfZOzHOiQWCfmSX7Qp67NPurbSjzfSZkGXZMU1NhfjYirUWo8U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=WJ1e9WJH; arc=none smtp.client-ip=209.85.210.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="J1T8ZkTE"
-Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-1f6da06ba24so2968595ad.2
-        for <rust-for-linux@vger.kernel.org>; Fri, 07 Jun 2024 02:12:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="WJ1e9WJH"
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-702492172e3so1659481b3a.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 07 Jun 2024 02:12:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1717751567; x=1718356367; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1717751572; x=1718356372; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=zFgEQc5AxyZLZc/ZKTPUL3s2+RpIEiR6EvwV6W5lrPI=;
-        b=J1T8ZkTELA5SI9D4hxC0pkjO6v3bd9v7W11iG/AmMtR0EZFLwxbINxtrs+Hk8PtX0I
-         Pdad2urIax4uaRGxOcMbZYIBCj6T7d/R39n1i3VnSbzKXN1XIpU6bEFlDdRV//nleYXH
-         VU6Mdi39oopr/8hCqgsLxYxXQuuJWwApMalmCdT9h0HprKNl4NFvEYPkdRbnxU1patbu
-         0gXt08cyOu0nhe3QB55r3vJKwgei1ZVVuPV0LF4aX2j3qFxErMIEPgXT1py/K64Xnk76
-         sqcLcJKMY+ZiATmd6rNoqGJfrSeJfIpCAeXJ7FMsSS/pMO+92FZGsZ5ymMa2tEihrCbm
-         fKbA==
+        bh=z/xFIPejr4cmz4ji8m0mAcQhzeX5l9Sd0Ky95hRycz0=;
+        b=WJ1e9WJHMEq28nVnUsaWAdgFi5wN5i96yzwJ7VRpblJ//ueG6zqOq+smT/RTzQMeEN
+         DTMyUSP+i5HgaTEav0eR/KHb7aYAOqoIvC3znc58iCTzLZTZGLpryLd4+dVNX/tOBaWg
+         dy3WMxg6blALCIq0dgtjksi+7ifNEAKDtNoAYinc0HXAokz4+2k/Rc9z3W5zPaw+ZNNy
+         SQU995cUwWXqrzmkxOgv5cUxh/dA5Wa3flWCx0mqoO1CXlPLhJHmYae2b3y+soQS5YPE
+         mgEKw6EqDOof2FQkc1fUJVsz9uZlWmS25AvuCA9oMiin8inn9oh6b8WTNP+PaIm8hFJ4
+         hdCQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717751567; x=1718356367;
+        d=1e100.net; s=20230601; t=1717751572; x=1718356372;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=zFgEQc5AxyZLZc/ZKTPUL3s2+RpIEiR6EvwV6W5lrPI=;
-        b=BtcMsM7yYBQ/GkOiI+a0VJP/FgUr1myTFAkXwP1WO0omLxnq/QhMaBbxP7j802M7Od
-         pPcKHH+c8biMCwHC0hI1W9ZQDuWS6/ARVIxkmLgi2QhFkRwCloiX9HqhxQkoblmj7NzR
-         xHi+1aHO6/m+27BMX+SF/CqU8PyiSof/78LQ4PddEzywSBL+tkL7ZOqFhZfQcnalPOvU
-         vO8MlGwCzdNHNeqNpQVo9gQwZ1A4B0qDCEXkDcH+66VQHrW3AA5xXhGJ3D3eRDn/s9Vc
-         lL58MBgl2gzrMRHNmpZu6K8KR0i9chNDbbz/S4qoYjVIpSj2qtStyFG+IKpu6LcoCFib
-         c1rQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVp6MRUiHrPasdq+quHD+VsUoD7C6KQ//2E4nnDXaleMhOde9wmQHmD2Bk/d+PqTRcx/EzDZfaZTa/Xk02reYpYI43JgPHQpLlADmeiG3s=
-X-Gm-Message-State: AOJu0YxHJo2H9/J/XIyBoshpSbn/omOr2ID2BwlwewBaPnVkiVWFq8O7
-	qq0CmjvYYGLbEfheUwRhlUH1kmgOb/VaRt4V8RH8RotXW0TF4WsLH+kjSqpEx0o=
-X-Google-Smtp-Source: AGHT+IEBd3DIoYngBelIp3hj7BJXY8CXcrTfGyQViok7B8N4sl1SBFb77/zOViK4tMx3pS79KHwrBg==
-X-Received: by 2002:a17:903:984:b0:1f6:8235:dbbc with SMTP id d9443c01a7336-1f6d02f4747mr24505395ad.29.1717751567374;
-        Fri, 07 Jun 2024 02:12:47 -0700 (PDT)
+        bh=z/xFIPejr4cmz4ji8m0mAcQhzeX5l9Sd0Ky95hRycz0=;
+        b=h1hFDIS6xjtKvup7frhYPkR+1wVZlwBGqv7UiiNyTbrf4COQ9Lb07G5ZE5CafWcjTO
+         pQr34PA5nphQZvI2Eb+f+Va6IQJRQZIKDO0tfMVjoBI67nQlkQgufbkQ4yeo8J51FAZk
+         EkAA2P3AWvh5RRkoh6W9fYhKhtNwf+300/NyOmiTbnYlAAEuWD2GU7Vz/Im6xA+2i1Ki
+         kfF7GkQT+AHLO1wb1yAXTgN7ONE/DYrYQloboy5yiFq8781pALjeKa98UFx20ttj9ooL
+         OnUgZlmB02nHBNRDoQ5X+DIqPcCKR2vF5GCrWWoScTrS/qq3a030nGDZCyylT37dSZjQ
+         pUqQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUJLEM4DPmADoVSZBIoiyQW2hlqS2PNhqRvj4DvxBlHxWMNi03Y0R91N6MEkpV5uPzRK1JnzhfTbkcfLSDr2Wf9yfz4MN4rSiYQDh3/ulU=
+X-Gm-Message-State: AOJu0Yzg03B+lyp3ppqeiXXMMUkphJG5dKs/Fe5+RHnNw8jRGGAwcf1R
+	ZQO5HXQtXSoX+m2qZ9aKZepMxezdqQbrdjLA8FIf7OnPbu/SRFWgt7zz4N8Lt8o=
+X-Google-Smtp-Source: AGHT+IG08Pxsyb1sKknE5FGDbGy+wVdyb/51Y3SH8UCEHGGJE0lkwjQeXCVUgmSPEhYisNbBmJNkKA==
+X-Received: by 2002:a05:6a21:3393:b0:1a7:5e8f:8707 with SMTP id adf61e73a8af0-1b2f9a27efemr2211516637.26.1717751571615;
+        Fri, 07 Jun 2024 02:12:51 -0700 (PDT)
 Received: from localhost ([122.172.82.13])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f6bd7fd6cfsm29198765ad.274.2024.06.07.02.12.46
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f6bd7ccea9sm29508395ad.161.2024.06.07.02.12.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Jun 2024 02:12:46 -0700 (PDT)
+        Fri, 07 Jun 2024 02:12:51 -0700 (PDT)
 From: Viresh Kumar <viresh.kumar@linaro.org>
 To: "Rafael J. Wysocki" <rafael@kernel.org>,
 	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
@@ -76,9 +76,9 @@ Cc: Viresh Kumar <viresh.kumar@linaro.org>,
 	Joakim Bech <joakim.bech@linaro.org>,
 	Rob Herring <robh@kernel.org>,
 	linux-kernel@vger.kernel.org
-Subject: [RFC PATCH V2 3/8] rust: Extend OPP bindings for the configuration options
-Date: Fri,  7 Jun 2024 14:42:18 +0530
-Message-Id: <37bdd7ee7b74292830dd9977154b08ebcf08a138.1717750631.git.viresh.kumar@linaro.org>
+Subject: [RFC PATCH V2 4/8] rust: Add initial bindings for cpufreq framework
+Date: Fri,  7 Jun 2024 14:42:19 +0530
+Message-Id: <8a53d1e0bf52f02027ff4be2296bf59088bbd163.1717750631.git.viresh.kumar@linaro.org>
 X-Mailer: git-send-email 2.31.1.272.g89b43f80a514
 In-Reply-To: <cover.1717750631.git.viresh.kumar@linaro.org>
 References: <cover.1717750631.git.viresh.kumar@linaro.org>
@@ -90,340 +90,333 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-This extends OPP bindings with the bindings for the OPP core
-configuration options.
+This commit adds initial Rust bindings for the cpufreq core. This adds
+basic bindings for cpufreq flags, relations and cpufreq table.
 
 Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 ---
- rust/kernel/opp.rs | 305 ++++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 303 insertions(+), 2 deletions(-)
+ rust/bindings/bindings_helper.h |   1 +
+ rust/helpers.c                  |  15 ++
+ rust/kernel/cpufreq.rs          | 251 ++++++++++++++++++++++++++++++++
+ rust/kernel/lib.rs              |   2 +
+ 4 files changed, 269 insertions(+)
+ create mode 100644 rust/kernel/cpufreq.rs
 
-diff --git a/rust/kernel/opp.rs b/rust/kernel/opp.rs
-index 06f36845047f..ebcb77b52558 100644
---- a/rust/kernel/opp.rs
-+++ b/rust/kernel/opp.rs
-@@ -9,11 +9,28 @@
- use crate::{
-     bindings, cpumask,
-     device::Device,
--    error::{code::*, from_err_ptr, to_result, Error, Result},
-+    error::{code::*, from_err_ptr, from_result, to_result, Error, Result, VTABLE_DEFAULT_ERROR},
-+    prelude::*,
-+    str::CString,
-     types::{ARef, AlwaysRefCounted, Opaque},
- };
+diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+index 0465b03828b8..9ae8aab41c53 100644
+--- a/rust/bindings/bindings_helper.h
++++ b/rust/bindings/bindings_helper.h
+@@ -7,6 +7,7 @@
+  */
  
--use core::ptr;
-+use core::{ffi::c_char, marker::PhantomData, ptr};
-+
-+use macros::vtable;
-+
-+// Creates a null-terminated slice of pointers to Cstrings.
-+fn to_c_str_array(names: &Vec<CString>) -> Result<Vec<*const c_char>> {
-+    // Allocated a null-terminated vector of pointers.
-+    let mut list = Vec::with_capacity(names.len() + 1, GFP_KERNEL)?;
-+
-+    for name in names.iter() {
-+        list.push(name.as_ptr() as _, GFP_KERNEL)?;
-+    }
-+
-+    list.push(ptr::null(), GFP_KERNEL)?;
-+    Ok(list)
-+}
- 
- /// Equivalent to `struct dev_pm_opp_data` in the C Code.
- #[repr(transparent)]
-@@ -42,6 +59,290 @@ pub enum SearchType {
-     Ceil,
+ #include <kunit/test.h>
++#include <linux/cpufreq.h>
+ #include <linux/errname.h>
+ #include <linux/ethtool.h>
+ #include <linux/jiffies.h>
+diff --git a/rust/helpers.c b/rust/helpers.c
+index 25cc8adac468..35c8b66d258f 100644
+--- a/rust/helpers.c
++++ b/rust/helpers.c
+@@ -24,6 +24,7 @@
+ #include <linux/bug.h>
+ #include <linux/build_bug.h>
+ #include <linux/cpumask.h>
++#include <linux/cpufreq.h>
+ #include <linux/device.h>
+ #include <linux/err.h>
+ #include <linux/errname.h>
+@@ -230,6 +231,20 @@ void rust_helper_cpumask_setall(struct cpumask *dstp)
  }
+ EXPORT_SYMBOL_GPL(rust_helper_cpumask_setall);
  
-+/// Implement this trait to provide OPP Configuration callbacks.
-+#[vtable]
-+pub trait ConfigOps {
-+    /// Called by the OPP core to configure OPP clks.
-+    fn config_clks(
-+        _dev: ARef<Device>,
-+        _table: &Table,
-+        _opp: ARef<OPP>,
-+        _scaling_down: bool,
-+    ) -> Result<()> {
-+        kernel::build_error(VTABLE_DEFAULT_ERROR)
++#ifdef CONFIG_CPU_FREQ
++unsigned int rust_helper_cpufreq_table_len(struct cpufreq_frequency_table *freq_table)
++{
++	return cpufreq_table_len(freq_table);
++}
++EXPORT_SYMBOL_GPL(rust_helper_cpufreq_table_len);
++
++void rust_helper_cpufreq_register_em_with_opp(struct cpufreq_policy *policy)
++{
++	cpufreq_register_em_with_opp(policy);
++}
++EXPORT_SYMBOL_GPL(rust_helper_cpufreq_register_em_with_opp);
++#endif
++
+ #ifndef CONFIG_OF_DYNAMIC
+ struct device_node *rust_helper_of_node_get(struct device_node *node)
+ {
+diff --git a/rust/kernel/cpufreq.rs b/rust/kernel/cpufreq.rs
+new file mode 100644
+index 000000000000..51a4a9bd8d3c
+--- /dev/null
++++ b/rust/kernel/cpufreq.rs
+@@ -0,0 +1,251 @@
++// SPDX-License-Identifier: GPL-2.0
++
++//! CPU frequency scaling.
++//!
++//! This module provides bindings for interacting with the cpufreq subsystem.
++//!
++//! C header: [`include/linux/cpufreq.h`](../../../../../../include/linux/cpufreq.h)
++
++use crate::{
++    bindings,
++    error::{code::*, to_result, Result},
++    prelude::*,
++};
++
++use core::{
++    pin::Pin,
++};
++
++/// Default transition latency value.
++pub const ETERNAL_LATENCY: u32 = bindings::CPUFREQ_ETERNAL as u32;
++
++/// Container for cpufreq driver flags.
++pub mod flags {
++    use crate::bindings;
++
++    /// Set by drivers that need to update internal upper and lower boundaries along with the
++    /// target frequency and so the core and governors should also invoke the driver if the target
++    /// frequency does not change, but the policy min or max may have changed.
++    pub const NEED_UPDATE_LIMITS: u16 = bindings::CPUFREQ_NEED_UPDATE_LIMITS as _;
++
++    /// Set by drivers for platforms where loops_per_jiffy or other kernel "constants" aren't
++    /// affected by frequency transitions.
++    pub const CONST_LOOPS: u16 = bindings::CPUFREQ_CONST_LOOPS as _;
++
++    /// Set by drivers that want the core to automatically register the cpufreq driver as a thermal
++    /// cooling device.
++    pub const IS_COOLING_DEV: u16 = bindings::CPUFREQ_IS_COOLING_DEV as _;
++
++    /// Set by drivers for platforms that have multiple clock-domains, i.e.  supporting multiple
++    /// policies. With this sysfs directories of governor would be created in cpu/cpuN/cpufreq/
++    /// directory and so they can use the same governor with different tunables for different
++    /// clusters.
++    pub const HAVE_GOVERNOR_PER_POLICY: u16 = bindings::CPUFREQ_HAVE_GOVERNOR_PER_POLICY as _;
++
++    /// Set by drivers which do POSTCHANGE notifications from outside of their ->target() routine.
++    pub const ASYNC_NOTIFICATION: u16 = bindings::CPUFREQ_ASYNC_NOTIFICATION as _;
++
++    /// Set by drivers that want cpufreq core to check if CPU is running at a frequency present in
++    /// freq-table exposed by the driver. For these drivers if CPU is found running at an out of
++    /// table freq, the cpufreq core will try to change the frequency to a value from the table.
++    /// And if that fails, it will stop further boot process by issuing a BUG_ON().
++    pub const NEED_INITIAL_FREQ_CHECK: u16 = bindings::CPUFREQ_NEED_INITIAL_FREQ_CHECK as _;
++
++    /// Set by drivers to disallow use of governors with "dynamic_switching" flag set.
++    pub const NO_AUTO_DYNAMIC_SWITCHING: u16 = bindings::CPUFREQ_NO_AUTO_DYNAMIC_SWITCHING as _;
++}
++
++/// CPU frequency selection relations. Each value contains a `bool` argument which corresponds to
++/// the Relation being efficient.
++#[derive(Copy, Clone, Debug, Eq, PartialEq)]
++pub enum Relation {
++    /// Select the lowest frequency at or above target.
++    Low(bool),
++    /// Select the highest frequency below or at target.
++    High(bool),
++    /// Select the closest frequency to the target.
++    Close(bool),
++}
++
++impl Relation {
++    // Converts from a value compatible with the C code.
++    fn new(val: u32) -> Result<Self> {
++        let efficient = val & bindings::CPUFREQ_RELATION_E != 0;
++
++        Ok(match val & !bindings::CPUFREQ_RELATION_E {
++            bindings::CPUFREQ_RELATION_L => Self::Low(efficient),
++            bindings::CPUFREQ_RELATION_H => Self::High(efficient),
++            bindings::CPUFREQ_RELATION_C => Self::Close(efficient),
++            _ => return Err(EINVAL),
++        })
 +    }
 +
-+    /// Called by the OPP core to configure OPP regulators.
-+    fn config_regulators(
-+        _dev: ARef<Device>,
-+        _opp_old: ARef<OPP>,
-+        _opp_new: ARef<OPP>,
-+        _data: *mut *mut bindings::regulator,
-+        _count: u32,
-+    ) -> Result<()> {
-+        kernel::build_error(VTABLE_DEFAULT_ERROR)
++    /// Converts to a value compatible with the C code.
++    pub fn val(&self) -> u32 {
++        let (mut val, e) = match self {
++            Self::Low(e) => (bindings::CPUFREQ_RELATION_L, e),
++            Self::High(e) => (bindings::CPUFREQ_RELATION_H, e),
++            Self::Close(e) => (bindings::CPUFREQ_RELATION_C, e),
++        };
++
++        if *e {
++            val |= bindings::CPUFREQ_RELATION_E;
++        }
++
++        val
 +    }
 +}
 +
-+/// Config token returned by the C code.
-+pub struct ConfigToken(i32);
++/// Equivalent to `struct cpufreq_policy_data` in the C code.
++#[repr(transparent)]
++pub struct PolicyData(*mut bindings::cpufreq_policy_data);
 +
-+impl Drop for ConfigToken {
-+    fn drop(&mut self) {
-+        // SAFETY: By the type invariants, we know that `self` owns a reference, so it is safe
-+        // to relinquish it now.
-+        unsafe { bindings::dev_pm_opp_clear_config(self.0) };
++impl PolicyData {
++    /// Creates new instance of [`PolicyData`].
++    ///
++    /// # Safety
++    ///
++    /// Callers must ensure that `ptr` is valid and non-null.
++    pub unsafe fn from_ptr(ptr: *mut bindings::cpufreq_policy_data) -> Self {
++        Self(ptr)
++    }
++
++    /// Returns the raw pointer to the C structure.
++    pub fn as_ptr(&self) -> *mut bindings::cpufreq_policy_data {
++        self.0
++    }
++
++    /// Provides a wrapper to the generic verify routine.
++    pub fn generic_verify(&self) -> Result<()> {
++        // SAFETY: By the type invariants, we know that `self` owns a reference, so it is safe to
++        // use it now.
++        to_result(unsafe { bindings::cpufreq_generic_frequency_table_verify(self.as_ptr()) })
 +    }
 +}
 +
-+/// Equivalent to `struct dev_pm_opp_config` in the C Code.
-+pub struct Config<T: ConfigOps> {
-+    clk_names: Option<Vec<CString>>,
-+    prop_name: Option<CString>,
-+    regulator_names: Option<Vec<CString>>,
-+    genpd_names: Option<Vec<CString>>,
-+    supported_hw: Option<Vec<u32>>,
-+    required_devs: Option<Vec<ARef<Device>>>,
-+    _data: PhantomData<T>,
++/// Builder for the `struct cpufreq_frequency_table` in the C code.
++#[repr(transparent)]
++pub struct TableBuilder {
++    entries: Vec<bindings::cpufreq_frequency_table>,
 +}
 +
-+impl<T: ConfigOps> Config<T> {
-+    /// Creates a new instance of [`Config`].
++impl TableBuilder {
++    /// Creates new instance of [`TableBuilder`].
 +    pub fn new() -> Self {
 +        Self {
-+            clk_names: None,
-+            prop_name: None,
-+            regulator_names: None,
-+            genpd_names: None,
-+            supported_hw: None,
-+            required_devs: None,
-+            _data: PhantomData,
++            entries: Vec::new(),
 +        }
 +    }
 +
-+    /// Initializes clock names.
-+    pub fn set_clk_names(mut self, names: Vec<CString>) -> Result<Self> {
-+        // Already configured.
-+        if self.clk_names.is_some() {
-+            return Err(EBUSY);
-+        }
-+
-+        if names.is_empty() {
-+            return Err(EINVAL);
-+        }
-+
-+        self.clk_names = Some(names);
-+        Ok(self)
-+    }
-+
-+    /// Initializes property name.
-+    pub fn set_prop_name(mut self, name: CString) -> Result<Self> {
-+        // Already configured.
-+        if self.prop_name.is_some() {
-+            return Err(EBUSY);
-+        }
-+
-+        self.prop_name = Some(name);
-+        Ok(self)
-+    }
-+
-+    /// Initializes regulator names.
-+    pub fn set_regulator_names(mut self, names: Vec<CString>) -> Result<Self> {
-+        // Already configured.
-+        if self.regulator_names.is_some() {
-+            return Err(EBUSY);
-+        }
-+
-+        if names.is_empty() {
-+            return Err(EINVAL);
-+        }
-+
-+        self.regulator_names = Some(names);
-+
-+        Ok(self)
-+    }
-+
-+    /// Initializes genpd names.
-+    pub fn set_genpd_names(mut self, names: Vec<CString>) -> Result<Self> {
-+        // Already configured. Only one of genpd or required devs can be configured.
-+        if self.genpd_names.is_some() || self.required_devs.is_some() {
-+            return Err(EBUSY);
-+        }
-+
-+        if names.is_empty() {
-+            return Err(EINVAL);
-+        }
-+
-+        self.genpd_names = Some(names);
-+        Ok(self)
-+    }
-+
-+    /// Initializes required devices.
-+    pub fn set_required_devs(mut self, devs: Vec<ARef<Device>>) -> Result<Self> {
-+        // Already configured. Only one of genpd or required devs can be configured.
-+        if self.genpd_names.is_some() || self.required_devs.is_some() {
-+            return Err(EBUSY);
-+        }
-+
-+        if devs.is_empty() {
-+            return Err(EINVAL);
-+        }
-+
-+        self.required_devs = Some(devs);
-+        Ok(self)
-+    }
-+
-+    /// Initializes supported hardware.
-+    pub fn set_supported_hw(mut self, hw: Vec<u32>) -> Result<Self> {
-+        // Already configured.
-+        if self.supported_hw.is_some() {
-+            return Err(EBUSY);
-+        }
-+
-+        if hw.is_empty() {
-+            return Err(EINVAL);
-+        }
-+
-+        self.supported_hw = Some(hw);
-+        Ok(self)
-+    }
-+
-+    /// Sets the configuration with the OPP core.
-+    pub fn set(self, dev: ARef<Device>) -> Result<ConfigToken> {
-+        let (_clk_list, clk_names) = match &self.clk_names {
-+            Some(x) => {
-+                let list = to_c_str_array(x)?;
-+                let ptr = list.as_ptr();
-+                (Some(list), ptr)
-+            }
-+            None => (None, ptr::null()),
-+        };
-+
-+        let (_regulator_list, regulator_names) = match &self.regulator_names {
-+            Some(x) => {
-+                let list = to_c_str_array(x)?;
-+                let ptr = list.as_ptr();
-+                (Some(list), ptr)
-+            }
-+            None => (None, ptr::null()),
-+        };
-+
-+        let (_genpd_list, genpd_names) = match &self.genpd_names {
-+            Some(x) => {
-+                let list = to_c_str_array(x)?;
-+                let ptr = list.as_ptr();
-+                (Some(list), ptr)
-+            }
-+            None => (None, ptr::null()),
-+        };
-+
-+        let prop_name = match &self.prop_name {
-+            Some(x) => x.as_char_ptr(),
-+            None => ptr::null(),
-+        };
-+
-+        let (supported_hw, supported_hw_count) = match &self.supported_hw {
-+            Some(x) => (x.as_ptr(), x.len() as u32),
-+            None => (ptr::null(), 0),
-+        };
-+
-+        let (_required_devs_list, required_devs) = match &self.required_devs {
-+            Some(x) => {
-+                // Create a non-NULL-terminated vectorof pointers.
-+                let mut list = Vec::with_capacity(x.len(), GFP_KERNEL)?;
-+
-+                for dev in x.iter() {
-+                    list.push(dev.as_raw(), GFP_KERNEL)?;
-+                }
-+
-+                let ptr = list.as_mut_ptr();
-+                (Some(list), ptr)
-+            }
-+            None => (None, ptr::null_mut()),
-+        };
-+
-+        let mut config = bindings::dev_pm_opp_config {
-+            clk_names,
-+            config_clks: if T::HAS_CONFIG_CLKS {
-+                Some(Self::config_clks)
-+            } else {
-+                None
++    /// Adds a new entry to the table.
++    pub fn add(&mut self, frequency: u32, flags: u32, driver_data: u32) -> Result<()> {
++        // Adds new entry to the end of the vector.
++        Ok(self.entries.push(
++            bindings::cpufreq_frequency_table {
++                flags,
++                driver_data,
++                frequency,
 +            },
-+            prop_name,
-+            regulator_names,
-+            config_regulators: if T::HAS_CONFIG_REGULATORS {
-+                Some(Self::config_regulators)
-+            } else {
-+                None
-+            },
-+            genpd_names,
-+            supported_hw,
-+            supported_hw_count,
-+
-+            // Don't need to support virt_devs for now.
-+            virt_devs: ptr::null_mut(),
-+            required_devs,
-+        };
-+
-+        // SAFETY: The requirements are satisfied by the existence of `Device` and its safety
-+        // requirements. The OPP core guarantees to not use fields of `config`, after this call has
-+        // returned and so we don't need to save a copy of them for future use
-+        let ret = unsafe { bindings::dev_pm_opp_set_config(dev.as_raw(), &mut config) };
-+        if ret < 0 {
-+            Err(Error::from_errno(ret))
-+        } else {
-+            Ok(ConfigToken(ret))
-+        }
++            GFP_KERNEL,
++        )?)
 +    }
 +
-+    // Config's config_clks callback.
-+    extern "C" fn config_clks(
-+        dev: *mut bindings::device,
-+        opp_table: *mut bindings::opp_table,
-+        opp: *mut bindings::dev_pm_opp,
-+        _data: *mut core::ffi::c_void,
-+        scaling_down: bool,
-+    ) -> core::ffi::c_int {
-+        from_result(|| {
-+            // SAFETY: 'dev' is guaranteed by the C code to be valid.
-+            let dev = unsafe { Device::from_raw(dev) };
-+            T::config_clks(
-+                dev.clone(),
-+                // SAFETY: 'opp_table' is guaranteed by the C code to be valid.
-+                &unsafe { Table::from_ptr(opp_table, dev) },
-+                // SAFETY: 'opp' is guaranteed by the C code to be valid.
-+                unsafe { OPP::from_ptr(opp)? },
-+                scaling_down,
-+            )
-+            .map(|_| 0)
-+        })
-+    }
-+
-+    // Config's config_regulators callback.
-+    extern "C" fn config_regulators(
-+        dev: *mut bindings::device,
-+        old_opp: *mut bindings::dev_pm_opp,
-+        new_opp: *mut bindings::dev_pm_opp,
-+        regulators: *mut *mut bindings::regulator,
-+        count: core::ffi::c_uint,
-+    ) -> core::ffi::c_int {
-+        from_result(|| {
-+            // SAFETY: 'dev' is guaranteed by the C code to be valid.
-+            let dev = unsafe { Device::from_raw(dev) };
-+            T::config_regulators(
-+                dev,
-+                // SAFETY: 'old_opp' is guaranteed by the C code to be valid.
-+                unsafe { OPP::from_ptr(old_opp)? },
-+                // SAFETY: 'new_opp' is guaranteed by the C code to be valid.
-+                unsafe { OPP::from_ptr(new_opp)? },
-+                regulators,
-+                count,
-+            )
-+            .map(|_| 0)
-+        })
++    /// Creates [`Table`] from [`TableBuilder`].
++    pub fn into_table(mut self) -> Result<Table> {
++        // Add last entry to the table.
++        self.add(bindings::CPUFREQ_TABLE_END as u32, 0, 0)?;
++        Table::from_builder(self.entries)
 +    }
 +}
 +
- /// Operating performance point (OPP) table.
- ///
- /// # Invariants
++/// A simple implementation of the cpufreq table, equivalent to the `struct
++/// cpufreq_frequency_table` in the C code.
++pub struct Table {
++    #[allow(dead_code)]
++    // Dynamically created table.
++    entries: Option<Pin<Vec<bindings::cpufreq_frequency_table>>>,
++
++    // Pointer to the statically or dynamically created table.
++    ptr: *mut bindings::cpufreq_frequency_table,
++
++    // Number of entries in the table.
++    len: usize,
++}
++
++impl Table {
++    /// Creates new instance of [`Table`] from [`TableBuilder`].
++    fn from_builder(entries: Vec<bindings::cpufreq_frequency_table>) -> Result<Self> {
++        let len = entries.len();
++        if len == 0 {
++            return Err(EINVAL);
++        }
++
++        // Pin the entries to memory, since we are passing its pointer to the C code.
++        let mut entries = Pin::new(entries);
++
++        // The pointer is valid until the table gets dropped.
++        let ptr = entries.as_mut_ptr();
++
++        Ok(Self {
++            entries: Some(entries),
++            ptr,
++            // The last entry in table is reserved for `CPUFREQ_TABLE_END`.
++            len: len - 1,
++        })
++    }
++
++    /// Creates new instance of [`Table`] from raw pointer.
++    ///
++    /// # Safety
++    ///
++    /// Callers must ensure that `ptr` is valid and non-null for the lifetime of the [`Table`].
++    pub unsafe fn from_raw(ptr: *mut bindings::cpufreq_frequency_table) -> Self {
++        Self {
++            entries: None,
++            ptr,
++            // SAFETY: The pointer is guaranteed to be valid for the lifetime of `Self`.
++            len: unsafe { bindings::cpufreq_table_len(ptr) } as usize,
++        }
++    }
++
++    // Validate the index.
++    fn validate(&self, index: usize) -> Result<()> {
++        if index >= self.len {
++            Err(EINVAL)
++        } else {
++            Ok(())
++        }
++    }
++
++    /// Returns raw pointer to the `struct cpufreq_frequency_table` compatible with the C code.
++    pub fn as_ptr(&self) -> *mut bindings::cpufreq_frequency_table {
++        self.ptr
++    }
++
++    /// Returns `frequency` at index in the [`Table`].
++    pub fn freq(&self, index: usize) -> Result<u32> {
++        self.validate(index)?;
++
++        // SAFETY: The pointer is guaranteed to be valid for the lifetime of `self` and `index` is
++        // also validated before this and is guaranteed to be within limits of the frequency table.
++        Ok(unsafe { (*self.ptr.add(index)).frequency })
++    }
++
++    /// Returns `flags` at index in the [`Table`].
++    pub fn flags(&self, index: usize) -> Result<u32> {
++        self.validate(index)?;
++
++        // SAFETY: The pointer is guaranteed to be valid for the lifetime of `self` and `index` is
++        // also validated before this and is guaranteed to be within limits of the frequency table.
++        Ok(unsafe { (*self.ptr.add(index)).flags })
++    }
++
++    /// Returns `data` at index in the [`Table`].
++    pub fn data(&self, index: usize) -> Result<u32> {
++        self.validate(index)?;
++
++        // SAFETY: The pointer is guaranteed to be valid for the lifetime of `self` and `index` is
++        // also validated before this and is guaranteed to be within limits of the frequency table.
++        Ok(unsafe { (*self.ptr.add(index)).driver_data })
++    }
++}
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index 82b527c76017..7a3dcf1c3755 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -30,6 +30,8 @@
+ pub mod alloc;
+ mod build_assert;
+ pub mod clk;
++#[cfg(CONFIG_CPU_FREQ)]
++pub mod cpufreq;
+ pub mod cpumask;
+ pub mod device;
+ pub mod devres;
 -- 
 2.31.1.272.g89b43f80a514
 
