@@ -1,150 +1,494 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DCC41862B7;
-	Fri,  7 Jun 2024 10:52:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C223E1862BC
+	for <rust-for-linux@vger.kernel.org>; Fri,  7 Jun 2024 11:04:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717757568; cv=none; b=SvIOtYnMl1Qj6S+iqv3ySb1ku0N6nTpqzN8ghHYaknUrQd3+Pcr/R3XUv2q5i0dPuPjd+qk3Y3GwzgSdWMS6LLbE7gZ2IXQZzfghLYicuAqHzRLW7ZiiA6ovOSHO7e2fY80Dmr6iEaIbgAmplYZVhnhkpNzIBDKhDzurJUkCRXs=
+	t=1717758262; cv=none; b=rEahkCSI2IB6DiCaxiXI/Kbp0Fu+eBLkzVqxDcXiBMQ4KhokVHYtmJX75f61KRw1KX9iqqt3Kkcr3W3BICRSUvFLOvXlFKlAcIvtvGeCKm3DEdkD9ZZYjlR6+Iwm8JVUaJtwiqQI+MyeIE/Xpt/zGlUIT7oh36EaQoZEt027g5M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717757568; c=relaxed/simple;
-	bh=3SY741i1aIiLsGZWztwjlZpBTWd8uktQ6DwDmA39LP0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rHOTcUur9KlqJQPTnOfN+74eR+eVSfjqvfGx6Q9iwnonFND3iXec1MCQiLnrBIoIhAdwKUaPsULkmXG6UXMzM4tH+uDUx+i8oPOj9fbqw2F9729+XxdYJGbRWRSeaUDdaO/rcYYdEhbmYbvKO+8A8qPZn85sX8Dw12z0zsKJ6GI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=Zk8JR6ka; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1717758262; c=relaxed/simple;
+	bh=AN/mXFLmmOOxh4ohQqh0I5EZsgTEbPwsV7LU8Ha71SI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:Message-ID:
+	 MIME-Version:Content-Type; b=IGLYbcw+qRklCqmJRWGcOJUJlDCgSLAiDWGS6pxApDP3rtFnTV0aqJVPQtVUjUEF5TQTfNXhs+mdcl8zeUYeQch7oJTfqwPEY2TnP+y4SkGBO0tFbobC7c01NyY9zS72MnVeHGHqd1zQSKbv6lQwY3/aD8mweVY/AObfpQozuL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=sx8ROLsc; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Zk8JR6ka"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Transfer-Encoding:
-	Content-Type:MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:
-	Sender:Reply-To:Content-ID:Content-Description;
-	bh=juY0wWEQb5LaFKacVEjtLjtoEwuz5HfLcwyYZHOCQWo=; b=Zk8JR6kakPe/gsurlaGxk40xu0
-	mkoAdiKJY9k7PVZIAOGadi7BlR8R0zYEcA9+/4pVqJEwkQbJMTKmwP0aWbDqBJrGYVz4BSRWSr5Do
-	6OOCTKY5AaVy0AnKtxVulTb5sI3lx8PC0gfQXIONNmopaSsrPt9rs762eRIwMiTYyKL/ZedL5fk03
-	o2hLpGSlRRTs6IlzJWQqEIUJIAe0asxns/fuWJZYAYrFSv093wSFk9NXz9r4vsN0cTN64P/KObQNE
-	TqMqcducmFtsrch9WxIbBUGy3U/q48AnY3aYdCKhUL/XWtP23N08Y+HQuPHU4kTqFaK3cgg/WnQvu
-	woHRPJxQ==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sFXCy-00000005mUb-430Q;
-	Fri, 07 Jun 2024 10:52:33 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 947B530047C; Fri,  7 Jun 2024 12:52:32 +0200 (CEST)
-Date: Fri, 7 Jun 2024 12:52:32 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: a.hindborg@samsung.com, alex.gaynor@gmail.com, ardb@kernel.org,
-	benno.lossin@proton.me, bjorn3_gh@protonmail.com,
-	boqun.feng@gmail.com, gary@garyguo.net, jbaron@akamai.com,
-	jpoimboe@kernel.org, linux-kernel@vger.kernel.org,
-	linux-trace-kernel@vger.kernel.org, mathieu.desnoyers@efficios.com,
-	mhiramat@kernel.org, miguel.ojeda.sandonis@gmail.com,
-	ojeda@kernel.org, rostedt@goodmis.org,
-	rust-for-linux@vger.kernel.org, wedsonaf@gmail.com
-Subject: Re: [PATCH 1/3] rust: add static_call support
-Message-ID: <20240607105232.GP8774@noisy.programming.kicks-ass.net>
-References: <20240606193318.GK8774@noisy.programming.kicks-ass.net>
- <20240607094329.3878781-1-aliceryhl@google.com>
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="sx8ROLsc"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4210aa00c94so18404795e9.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 07 Jun 2024 04:04:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1717758258; x=1718363058; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:in-reply-to
+         :references:user-agent:subject:cc:to:from:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=dlz1M1Q96MoJTbBHiqN6xZFkx4A4jAugPwmqHEAfQlM=;
+        b=sx8ROLscim+16/5RnC+EJHtkqutKqN66BekfmIea1CLQhllcXogYZaoxQi8OF/AFFb
+         LdpWUCQFpqsnLrV5UlB2nE3NOkXOxvhgnlViZjHiyQxI6wEbEy/RZGJvt3Fc2JixA7gP
+         cIy67SSNzLIGMq8jmWLPb1uuYlgiDIOoIXuWzYBT0fVeHMrzeUVNzOS/57nTalCcXOxC
+         ti8HfZnqu7yar+kDZ154joNwXa8SWV9heVAVfXVM4rGrBdii1yK2E7+jzIMuDH/G8IeL
+         vcrqYUIcv8nrBx8cWUZRRcgVeT1zSM2opxHYaE2AdckFqqpzQe9JxLgYZ4GqD4/BOCXh
+         chKw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1717758258; x=1718363058;
+        h=content-transfer-encoding:mime-version:message-id:in-reply-to
+         :references:user-agent:subject:cc:to:from:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=dlz1M1Q96MoJTbBHiqN6xZFkx4A4jAugPwmqHEAfQlM=;
+        b=wxWMRHwKY4UK201OAULRObmhlFr5e+/5vGrS01ku05hPgSIIcINisfNSse4MmlvTDE
+         GrcSo3LXBayhHlNyQ9bEtC+sz60jle56eToV2a050tfGlkomvcosGqOjVDVy3PK4dFaD
+         2SYBCupGAbYo60xCl3mQWF8BKZHmb2xkINKoGI5Lwqmszhx4xEHy8W7ynNLplLiFpPWF
+         DibIYByIVcMLubkcPm6kX3jSjgzQjXVsuRUDs4nK1ipeJ/HklAIMN7ZU+NSbYQQBOLP5
+         pChTUYAQZZvaJ0lVe2jqFG7A/jBniPJ/kd44BUN2AoPmUsExTrOvif/KScTbgufWyA0b
+         ZBrA==
+X-Forwarded-Encrypted: i=1; AJvYcCVLC8VlDiABFDaxp3LsDQeygiS+2GhO0JwKDbGS+NxgcfnSk9z0RhpTTwWxNzmS+zlbYbos6z/2WVol5LFyu00FuKcFAf4qvkVX7HR4org=
+X-Gm-Message-State: AOJu0YysZoDpQ3d4d1DiGVZrAj/iL/xQ0aF+W2hZLplLupZBFtZobXBM
+	wJtIzQJsYAamfo05AXpIcYHlAf0bVMuLwVj5TyoXzXqaf+XzWzJK8drvIN/cV5k=
+X-Google-Smtp-Source: AGHT+IHod7WifBUl7WN31uqgwKkQIdjobL7dtcDM7zsUKlmpwG3Nkk+YAZ0yifsUngtlMlKS08HWgA==
+X-Received: by 2002:a05:600c:4f8e:b0:41b:f022:8e69 with SMTP id 5b1f17b1804b1-42164a03160mr19707055e9.19.1717758258064;
+        Fri, 07 Jun 2024 04:04:18 -0700 (PDT)
+Received: from meli-email.org (adsl-105.37.6.1.tellas.gr. [37.6.1.105])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4215809fcbesm84707525e9.0.2024.06.07.04.04.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 07 Jun 2024 04:04:17 -0700 (PDT)
+Date: Fri, 07 Jun 2024 13:38:17 +0300
+From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+To: Viresh Kumar <viresh.kumar@linaro.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, Bj=?UTF-8?B?w7Y=?= rn Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>
+Cc: Viresh Kumar <viresh.kumar@linaro.org>, linux-pm@vger.kernel.org, Vincent Guittot <vincent.guittot@linaro.org>, Stephen Boyd <sboyd@kernel.org>, Nishanth Menon <nm@ti.com>, rust-for-linux@vger.kernel.org, Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, Erik Schilling <erik.schilling@linaro.org>, Alex Benn=?UTF-8?B?w6k=?= e <alex.bennee@linaro.org>, Joakim Bech <joakim.bech@linaro.org>, Rob Herring <robh@kernel.org>, linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH V2 2/8] rust: Extend OPP bindings for the OPP table
+User-Agent: meli 0.8.5
+References: <cover.1717750631.git.viresh.kumar@linaro.org> <dc156230814a899e5e3ffb6f3a0e5471d92506de.1717750631.git.viresh.kumar@linaro.org>
+In-Reply-To: <dc156230814a899e5e3ffb6f3a0e5471d92506de.1717750631.git.viresh.kumar@linaro.org>
+Message-ID: <epir3.2kxc5jzd28c@linaro.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20240607094329.3878781-1-aliceryhl@google.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
 
-On Fri, Jun 07, 2024 at 09:43:29AM +0000, Alice Ryhl wrote:
-> Peter Zijlstra <peterz@infradead.org> wrote:
-> > On Thu, Jun 06, 2024 at 09:09:00PM +0200, Miguel Ojeda wrote:
-> > > On Thu, Jun 6, 2024 at 7:19 PM Peter Zijlstra <peterz@infradead.org> wrote:
-> > > >
-> > > > This is absolutely unreadable gibberish -- how am I supposed to keep
-> > > > this in sync with the rest of the static_call infrastructure?
-> > > 
-> > > Yeah, they are macros, which look different from "normal" Rust code.
-> > 
-> > Macros like CPP ?
+On Fri, 07 Jun 2024 12:12, Viresh Kumar <viresh.kumar@linaro.org> wrote:
+>This extends OPP bindings with the bindings for the `struct opp_table`.
+>
+>Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+>---
+> rust/kernel/opp.rs | 374 ++++++++++++++++++++++++++++++++++++++++++++-
+> 1 file changed, 372 insertions(+), 2 deletions(-)
+>
+>diff --git a/rust/kernel/opp.rs b/rust/kernel/opp.rs
+>index 9e5cf0412ed5..06f36845047f 100644
+>--- a/rust/kernel/opp.rs
+>+++ b/rust/kernel/opp.rs
+>@@ -7,9 +7,9 @@
+> //! C header: [`include/linux/pm_opp.h`](../../../../../../include/linux/pm_opp.h)
 > 
-> Yes, this patch series uses declarative macros, which are the closest
-> that Rust has to the C preprocessor. They are powerful, but just like
-> CPP, they can become pretty complicated and hard to read if you are
-> doing something non-trivial.
+> use crate::{
+>-    bindings,
+>+    bindings, cpumask,
+>     device::Device,
+>-    error::{code::*, to_result, Result},
+>+    error::{code::*, from_err_ptr, to_result, Error, Result},
+>     types::{ARef, AlwaysRefCounted, Opaque},
+> };
 > 
-> The macro_rules! block is how you define a new declarative macro.
-
-I'm sorry, but 30+ years of reading ! as NOT (or factorial) isn't going
-to go away. So I'm reading your macros do NOT rule.
-
-> The ($name:ident($($args:expr),* $(,)?)) part defines the arguments to
-> the declarative macro. This syntax means:
+>@@ -31,6 +31,376 @@ pub fn new(freq: u64, u_volt: u64, level: u32, turbo: bool) -> Self {
+>     }
+> }
 > 
-> 1. The input starts with any identifier, which we call $name.
-> 2. Then there must be a ( token.
+>+/// OPP search types.
+>+#[derive(Copy, Clone, Debug, Eq, PartialEq)]
+>+pub enum SearchType {
+>+    /// Search for exact value.
+>+    Exact,
+>+    /// Search for highest value less than equal to value.
+>+    Floor,
+>+    /// Search for lowest value greater than equal to value.
+>+    Ceil,
+>+}
 
-The above exaple fails, because the next token is :ident, whatever the
-heck that might be. Also, extra points for line-noise due to lack of
-whitespace.
+Seeing this enum made me think about memory layouts which are not stable 
+in Rust and can change between compilations unless they have a specific 
+`repr`.
 
-> So for example, you might invoke the macro like this:
-> 
-> static_call!(tp_func_my_tracepoint(__data, &mut my_task_struct));
+Not related to this series directly, has there been discussion about 
+guaranteeing struct layouts in kernel APIs? It'd require a lot of things 
+to happen to cause a problem (multiple users of an API in the kernel in 
+separate compilation units maybe even compiled with different rustc 
+versions).
 
-static_call NOT (blah dog blah);
+>+
+>+/// Operating performance point (OPP) table.
+>+///
+>+/// # Invariants
+>+///
+>+/// The pointer stored in `Self` is non-null and valid for the lifetime of the ARef instance. In
+>+/// particular, the ARef instance owns an increment on underlying object’s reference count.
+>+pub struct Table {
+>+    ptr: *mut bindings::opp_table,
+>+    dev: ARef<Device>,
+>+    em: bool,
+>+    of: bool,
+>+    cpumask: Option<cpumask::Cpumask>,
+>+}
+>+
+>+// SAFETY: The fields of `Table` are safe to be used from any thread.
+>+unsafe impl Send for Table {}
+>+
+>+// SAFETY: The fields of `Table` are safe to be referenced from any thread.
+>+unsafe impl Sync for Table {}
+>+
+>+impl Table {
+>+    /// Creates a new OPP table instance from raw pointer.
+>+    ///
+>+    /// # Safety
+>+    ///
+>+    /// Callers must ensure that `ptr` is valid and non-null.
+>+    unsafe fn from_ptr(ptr: *mut bindings::opp_table, dev: ARef<Device>) -> Self {
+>+        // SAFETY: By the safety requirements, ptr is valid and its refcount will be incremented.
+>+        unsafe { bindings::dev_pm_opp_get_opp_table_ref(ptr) };
+>+
+>+        Self {
+>+            ptr,
+>+            dev,
+>+            em: false,
+>+            of: false,
+>+            cpumask: None,
+>+        }
+>+    }
+>+
+>+    /// Find OPP table from device.
+>+    pub fn from_dev(dev: ARef<Device>) -> Result<Self> {
+>+        // SAFETY: The requirements are satisfied by the existence of `Device` and its safety
+>+        // requirements. Refcount of the OPP table is incremented as well.
+>+        let ptr = from_err_ptr(unsafe { bindings::dev_pm_opp_get_opp_table(dev.as_raw()) })?;
+>+
+>+        Ok(Self {
+>+            ptr,
+>+            dev: dev.clone(),
 
-> Inside the macro, you will see things such as:
-> $crate::macros::paste! { $crate::bindings:: [<__SCK__ $name >]; }
-> 
-> The Rust syntax for invoking a macro has an exclamation mark after the
+Clone is not probably not needed here, right? the argument value will be 
+dropped after this.
 
-Like I said before, the creator of Rust must've been an esoteric
-language freak and must've wanted to make this unreadable on purpose :/
+>+            em: false,
+>+            of: false,
+>+            cpumask: None,
+>+        })
+>+    }
+>+
+>+    /// Add device tree based OPP table for the device.
+>+    #[cfg(CONFIG_OF)]
+>+    pub fn from_of(dev: ARef<Device>, index: i32) -> Result<Self> {
+>+        // SAFETY: The requirements are satisfied by the existence of `Device` and its safety
+>+        // requirements. Refcount of the OPP table is incremented as well.
+>+        to_result(unsafe { bindings::dev_pm_opp_of_add_table_indexed(dev.as_raw(), index) })?;
+>+
+>+        // Fetch the newly created table.
+>+        let mut table = Self::from_dev(dev)?;
+>+        table.of = true;
+>+
+>+        Ok(table)
+>+    }
+>+
+>+    // Remove device tree based OPP table for the device.
+>+    #[cfg(CONFIG_OF)]
+>+    fn remove_of(&self) {
+>+        // SAFETY: The requirements are satisfied by the existence of `Device` and its safety
+>+        // requirements. We took the reference from `from_of` earlier, it is safe to drop the same
+>+        // now.
+>+        unsafe { bindings::dev_pm_opp_of_remove_table(self.dev.as_raw()) };
+>+    }
+>+
+>+    /// Add device tree based OPP table for CPU devices.
+>+    #[cfg(CONFIG_OF)]
+>+    pub fn from_of_cpumask(dev: ARef<Device>, cpumask: &mut cpumask::Cpumask) -> Result<Self> {
+>+        // SAFETY: The cpumask is valid and the returned ptr will be owned by the [`Table`] instance.
+>+        to_result(unsafe { bindings::dev_pm_opp_of_cpumask_add_table(cpumask.as_ptr()) })?;
+>+
+>+        // Fetch the newly created table.
+>+        let mut table = Self::from_dev(dev)?;
+>+        // SAFETY: The `cpumask` is guaranteed by the C code to be valid.
+>+        table.cpumask = Some(unsafe { cpumask::Cpumask::new(cpumask.as_mut_ptr()) });
+>+
+>+        Ok(table)
+>+    }
+>+
+>+    // Remove device tree based OPP table for CPU devices.
+>+    #[cfg(CONFIG_OF)]
+>+    fn remove_of_cpumask(&self, cpumask: &cpumask::Cpumask) {
+>+        // SAFETY: The cpumask is valid and we took the reference from `from_of_cpumask` earlier,
+>+        // it is safe to drop the same now.
+>+        unsafe { bindings::dev_pm_opp_of_cpumask_remove_table(cpumask.as_ptr()) };
+>+    }
+>+
+>+    /// Returns the number of OPPs in the table.
+>+    pub fn opp_count(&self) -> Result<u32> {
+>+        // SAFETY: The requirements are satisfied by the existence of `Device` and its safety
+>+        // requirements.
+>+        let ret = unsafe { bindings::dev_pm_opp_get_opp_count(self.dev.as_raw()) };
+>+        if ret < 0 {
+>+            Err(Error::from_errno(ret))
+>+        } else {
+>+            Ok(ret as u32)
+>+        }
+>+    }
+>+
+>+    /// Returns max clock latency of the OPPs in the table.
+>+    pub fn max_clock_latency(&self) -> u64 {
+>+        // SAFETY: The requirements are satisfied by the existence of `Device` and its safety
+>+        // requirements.
+>+        unsafe { bindings::dev_pm_opp_get_max_clock_latency(self.dev.as_raw()) }
+>+    }
+>+
+>+    /// Returns max volt latency of the OPPs in the table.
+>+    pub fn max_volt_latency(&self) -> u64 {
+>+        // SAFETY: The requirements are satisfied by the existence of `Device` and its safety
+>+        // requirements.
+>+        unsafe { bindings::dev_pm_opp_get_max_volt_latency(self.dev.as_raw()) }
+>+    }
+>+
+>+    /// Returns max transition latency of the OPPs in the table.
+>+    pub fn max_transition_latency(&self) -> u64 {
+>+        // SAFETY: The requirements are satisfied by the existence of `Device` and its safety
+>+        // requirements.
+>+        unsafe { bindings::dev_pm_opp_get_max_transition_latency(self.dev.as_raw()) }
+>+    }
+>+
+>+    /// Returns the suspend OPP.
+>+    pub fn suspend_freq(&self) -> u64 {
+>+        // SAFETY: The requirements are satisfied by the existence of `Device` and its safety
+>+        // requirements.
+>+        unsafe { bindings::dev_pm_opp_get_suspend_opp_freq(self.dev.as_raw()) }
+>+    }
+>+
+>+    /// Synchronizes regulators used by the OPP table.
+>+    pub fn sync_regulators(&self) -> Result<()> {
+>+        // SAFETY: The requirements are satisfied by the existence of `Device` and its safety
+>+        // requirements.
+>+        to_result(unsafe { bindings::dev_pm_opp_sync_regulators(self.dev.as_raw()) })
+>+    }
+>+
+>+    /// Gets sharing CPUs.
+>+    pub fn sharing_cpus(dev: ARef<Device>, cpumask: &mut cpumask::Cpumask) -> Result<()> {
+>+        // SAFETY: The requirements are satisfied by the existence of `Device` and its safety
+>+        // requirements.
+>+        to_result(unsafe {
+>+            bindings::dev_pm_opp_get_sharing_cpus(dev.as_raw(), cpumask.as_mut_ptr())
+>+        })
+>+    }
+>+
+>+    /// Sets sharing CPUs.
+>+    pub fn set_sharing_cpus(&self, cpumask: &cpumask::Cpumask) -> Result<()> {
+>+        // SAFETY: The requirements are satisfied by the existence of `Device` and its safety
+>+        // requirements.
+>+        to_result(unsafe {
+>+            bindings::dev_pm_opp_set_sharing_cpus(self.dev.as_raw(), cpumask.as_ptr())
+>+        })
+>+    }
+>+
+>+    /// Gets sharing CPUs from Device tree.
+>+    #[cfg(CONFIG_OF)]
+>+    pub fn of_sharing_cpus(dev: ARef<Device>, cpumask: &mut cpumask::Cpumask) -> Result<()> {
+>+        // SAFETY: The requirements are satisfied by the existence of `Device` and its safety
+>+        // requirements.
+>+        to_result(unsafe {
+>+            bindings::dev_pm_opp_of_get_sharing_cpus(dev.as_raw(), cpumask.as_mut_ptr())
+>+        })
+>+    }
+>+
+>+    /// Updates the voltage value for an OPP.
+>+    pub fn adjust_voltage(
+>+        &self,
+>+        freq: u64,
+>+        u_volt: u64,
+>+        u_volt_min: u64,
+>+        u_volt_max: u64,
+>+    ) -> Result<()> {
+>+        // SAFETY: The requirements are satisfied by the existence of `Device` and its safety
+>+        // requirements.
+>+        to_result(unsafe {
+>+            bindings::dev_pm_opp_adjust_voltage(
+>+                self.dev.as_raw(),
+>+                freq,
+>+                u_volt,
+>+                u_volt_min,
+>+                u_volt_max,
+>+            )
+>+        })
+>+    }
+>+
+>+    /// Sets a matching OPP based on frequency.
+>+    pub fn set_rate(&self, freq: u64) -> Result<()> {
+>+        // SAFETY: The requirements are satisfied by the existence of `Device` and its safety
+>+        // requirements.
+>+        to_result(unsafe { bindings::dev_pm_opp_set_rate(self.dev.as_raw(), freq) })
+>+    }
+>+
+>+    /// Sets exact OPP.
+>+    pub fn set_opp(&self, opp: ARef<OPP>) -> Result<()> {
+>+        // SAFETY: The requirements are satisfied by the existence of `Device` and its safety
+>+        // requirements.
+>+        to_result(unsafe { bindings::dev_pm_opp_set_opp(self.dev.as_raw(), opp.as_mut_ptr()) })
+>+    }
+>+
+>+    /// Finds OPP based on frequency.
+>+    pub fn opp_from_freq(
+>+        &self,
+>+        mut freq: u64,
+>+        available: Option<bool>,
+>+        index: Option<u32>,
+>+        stype: SearchType,
+>+    ) -> Result<ARef<OPP>> {
+>+        let rdev = self.dev.as_raw();
+>+        let index = index.unwrap_or(0);
+>+
+>+        let ptr = from_err_ptr(match stype {
+>+            SearchType::Exact => {
+>+                if let Some(available) = available {
+>+                    // SAFETY: The requirements are satisfied by the existence of `Device` and
+>+                    // its safety requirements. The returned ptr will be owned by the new [`OPP`]
+>+                    // instance.
+>+                    unsafe {
+>+                        bindings::dev_pm_opp_find_freq_exact_indexed(rdev, freq, index, available)
+>+                    }
+>+                } else {
+>+                    return Err(EINVAL);
+>+                }
+>+            }
+>+
+>+            // SAFETY: The requirements are satisfied by the existence of `Device` and its
+>+            // safety requirements. The returned ptr will be owned by the new [`OPP`] instance.
+>+            SearchType::Ceil => unsafe {
+>+                bindings::dev_pm_opp_find_freq_ceil_indexed(rdev, &mut freq as *mut u64, index)
+>+            },
+>+
+>+            // SAFETY: The requirements are satisfied by the existence of `Device` and its
+>+            // safety requirements. The returned ptr will be owned by the new [`OPP`] instance.
+>+            SearchType::Floor => unsafe {
+>+                bindings::dev_pm_opp_find_freq_floor_indexed(rdev, &mut freq as *mut u64, index)
+>+            },
+>+        })?;
+>+
+>+        // SAFETY: The `ptr` is guaranteed by the C code to be valid.
+>+        unsafe { OPP::from_ptr_owned(ptr) }
+>+    }
+>+
+>+    /// Finds OPP based on level.
+>+    pub fn opp_from_level(&self, mut level: u32, stype: SearchType) -> Result<ARef<OPP>> {
+>+        let rdev = self.dev.as_raw();
+>+
+>+        let ptr = from_err_ptr(match stype {
+>+            // SAFETY: The requirements are satisfied by the existence of `Device` and its
+>+            // safety requirements. The returned ptr will be owned by the new [`OPP`] instance.
+>+            SearchType::Exact => unsafe { bindings::dev_pm_opp_find_level_exact(rdev, level) },
+>+
 
-Also, why the white space beteen the :: scope operator and the [< thing?
-that's just weird. I would then expect the output to be:
+Minor style comment, the empty lines between match patterns are unusual
 
-  ...::bindings:: __SCK__my_static_key
-
-> name, so you know that $crate::macros::paste is a macro. The `paste`
-> macro just emits its input unchanged, except that any identifiers
-> between [< and >] are concatenated into a single identifier. So if $name
-> is my_static_key, then the above invocation of paste! emits:
-> 
-> 	$crate::bindings::__SCK__my_static_key;
-
-But it doesn't, so it isn't unmodified, it seems to strip whitespace.
-
-> The $crate::bindings module is where the output of bindgen goes, so this
-> should correspond to the C symbol called __SCK__my_static_key.
-> 
-> > > Is there something we could do to help here? I think Alice and others
-> > > would be happy to explain how it works and/or help maintain it in the
-> > > future if you prefer.
-> > 
-> > Write a new language that looks more like C -- pretty please ? :-)
-> > 
-> > Mostly I would just really like you to just use arm/jump_label.h,
-> > they're inline functions and should be doable with IR, no weirdo CPP
-> > involved in this case.
-> 
-> I assume that you're referring to static_key_false here? I don't think
-> that function can be exposed using IR because it passes the function
-> argument called key as an "i" argument to an inline assembly block. Any
-> attempt to compile static_key_false without knowing the value of key at
-> compile time will surely fail to compile with the
-> 
-> 	invalid operand for inline asm constraint 'i'
-> 
-> error.
-
-You can have clang read the header files and compile them into
-Intermediate-Representation, and have it splice the lot into the Rust
-crap's IR and voila, compile time.
-
-You just need to extend the rust thing to be able to consume C header
-files.
-
+>+            // SAFETY: The requirements are satisfied by the existence of `Device` and its
+>+            // safety requirements. The returned ptr will be owned by the new [`OPP`] instance.
+>+            SearchType::Ceil => unsafe {
+>+                bindings::dev_pm_opp_find_level_ceil(rdev, &mut level as *mut u32)
+>+            },
+>+
+>+            // SAFETY: The requirements are satisfied by the existence of `Device` and its
+>+            // safety requirements. The returned ptr will be owned by the new [`OPP`] instance.
+>+            SearchType::Floor => unsafe {
+>+                bindings::dev_pm_opp_find_level_floor(rdev, &mut level as *mut u32)
+>+            },
+>+        })?;
+>+
+>+        // SAFETY: The `ptr` is guaranteed by the C code to be valid.
+>+        unsafe { OPP::from_ptr_owned(ptr) }
+>+    }
+>+
+>+    /// Finds OPP based on bandwidth.
+>+    pub fn opp_from_bw(&self, mut bw: u32, index: i32, stype: SearchType) -> Result<ARef<OPP>> {
+>+        let rdev = self.dev.as_raw();
+>+
+>+        let ptr = from_err_ptr(match stype {
+>+            // The OPP core doesn't support this yet.
+>+            SearchType::Exact => return Err(EINVAL),
+>+
+>+            // SAFETY: The requirements are satisfied by the existence of `Device` and its
+>+            // safety requirements. The returned ptr will be owned by the new [`OPP`] instance.
+>+            SearchType::Ceil => unsafe {
+>+                bindings::dev_pm_opp_find_bw_ceil(rdev, &mut bw as *mut u32, index)
+>+            },
+>+
+>+            // SAFETY: The requirements are satisfied by the existence of `Device` and its
+>+            // safety requirements. The returned ptr will be owned by the new [`OPP`] instance.
+>+            SearchType::Floor => unsafe {
+>+                bindings::dev_pm_opp_find_bw_floor(rdev, &mut bw as *mut u32, index)
+>+            },
+>+        })?;
+>+
+>+        // SAFETY: The `ptr` is guaranteed by the C code to be valid.
+>+        unsafe { OPP::from_ptr_owned(ptr) }
+>+    }
+>+
+>+    /// Enable the OPP.
+>+    pub fn enable_opp(&self, freq: u64) -> Result<()> {
+>+        // SAFETY: The requirements are satisfied by the existence of `Device` and its safety
+>+        // requirements.
+>+        to_result(unsafe { bindings::dev_pm_opp_enable(self.dev.as_raw(), freq) })
+>+    }
+>+
+>+    /// Disable the OPP.
+>+    pub fn disable_opp(&self, freq: u64) -> Result<()> {
+>+        // SAFETY: The requirements are satisfied by the existence of `Device` and its safety
+>+        // requirements.
+>+        to_result(unsafe { bindings::dev_pm_opp_disable(self.dev.as_raw(), freq) })
+>+    }
+>+
+>+    /// Registers with Energy model.
+>+    #[cfg(CONFIG_OF)]
+>+    pub fn of_register_em(&mut self, cpumask: &mut cpumask::Cpumask) -> Result<()> {
+>+        // SAFETY: The requirements are satisfied by the existence of `Device` and its safety
+>+        // requirements.
+>+        to_result(unsafe {
+>+            bindings::dev_pm_opp_of_register_em(self.dev.as_raw(), cpumask.as_mut_ptr())
+>+        })?;
+>+
+>+        self.em = true;
+>+        Ok(())
+>+    }
+>+
+>+    // Unregisters with Energy model.
+>+    #[cfg(CONFIG_OF)]
+>+    fn of_unregister_em(&self) {
+>+        // SAFETY: The requirements are satisfied by the existence of `Device` and its safety
+>+        // requirements. We registered with the EM framework earlier, it is safe to unregister now.
+>+        unsafe { bindings::em_dev_unregister_perf_domain(self.dev.as_raw()) };
+>+    }
+>+}
+>+
+>+impl Drop for Table {
+>+    fn drop(&mut self) {
+>+        // SAFETY: By the type invariants, we know that `self` owns a reference, so it is safe
+>+        // to relinquish it now.
+>+        unsafe { bindings::dev_pm_opp_put_opp_table(self.ptr) };
+>+
+>+        #[cfg(CONFIG_OF)]
+>+        {
+>+            if self.em {
+>+                self.of_unregister_em();
+>+            }
+>+
+>+            if self.of {
+>+                self.remove_of();
+>+            } else if let Some(cpumask) = &self.cpumask {
+>+                self.remove_of_cpumask(cpumask);
+>+            }
+>+        }
+>+    }
+>+}
+>+
+> /// Operating performance point (OPP).
+> ///
+> /// # Invariants
+>-- 
+>2.31.1.272.g89b43f80a514
+>
