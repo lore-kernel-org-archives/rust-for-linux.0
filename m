@@ -1,144 +1,152 @@
-Received: from mail-yb1-f201.google.com (mail-yb1-f201.google.com [209.85.219.201])
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D86315A873
-	for <rust-for-linux@vger.kernel.org>; Fri,  7 Jun 2024 08:23:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F734156C5B
+	for <rust-for-linux@vger.kernel.org>; Fri,  7 Jun 2024 09:12:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717748628; cv=none; b=O7E8WjKjvKhu/m5iFzvhEoJ774HipwAyn1DSmf8wnyr1n7OHS9b6kmuAwxhPtgROa4krO/zHOBPNmHVm6+3djNiA9ZDmSClRCoi9rb6SCzOauSmpWNUz7V+EbKu8lKVgVpjGe/vb331yeYoBPPQiX5ikMZAV8/eSfbQ035R/GIE=
+	t=1717751558; cv=none; b=lcNq/sIEYO1awNrFN7Ne6ukaOLmLnqc1Pg5jSJyqYHG2aQl17Hh5WKyCF+zjABVFekTOA+kJNpfEvAsM9nIIlCc1WqyCH9yvfxYteRPCRhKdDPbbnjgwAQM5Th50ut0rLFJUYE++mfsMNjTNub+dbh08H+ajsrTf54coyXOjbA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717748628; c=relaxed/simple;
-	bh=Xgwy+VXx5E3JZbP4Ybw+wTF/Dg2wgJSpewPSloTt8eQ=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=ijR07f9duTaXdxy3oD7XUulKuehpF/Nk51DwVuu729n28zNDf4+Wdh04OTsz9PsGjbIXPw0l5OH40uytEknZnZb/HjxxTxRqpL4iHPRgvgJwwo6CDrV60gvI72GqgImU9U3F5i1F8mJsMYvaMDwzCvnKUl5rUa6vlAoptSg7mdY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Gp/EqZVB; arc=none smtp.client-ip=209.85.219.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1717751558; c=relaxed/simple;
+	bh=Q2KyKee5qAk5yhcRdV4zkO1fcS4SwRxZde8YLboA1fM=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=sYPHdAP9ivkm7yqq80h7dl5oVpbNUQkJmB1PF/rTpGAMtZvxbiHD8j387MUOwiPu+t5taeix6nX8l5T/sdz5aVPoQBr+dCdiYnKORtw2hjboOBguq4RsaIhetkCAW6z92aL8zzkuM3aBy2h6TImqiobuacJ1QSElzu08Krrv4jo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=aCl9vHVJ; arc=none smtp.client-ip=209.85.214.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Gp/EqZVB"
-Received: by mail-yb1-f201.google.com with SMTP id 3f1490d57ef6-df7bdb0455bso2885208276.2
-        for <rust-for-linux@vger.kernel.org>; Fri, 07 Jun 2024 01:23:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="aCl9vHVJ"
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-1f6ab88dfaeso16770045ad.2
+        for <rust-for-linux@vger.kernel.org>; Fri, 07 Jun 2024 02:12:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1717748625; x=1718353425; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=jFzDLAm2JoetzCIq+IZooWSo9+/OTnrDCeqgi9Uf1Qw=;
-        b=Gp/EqZVBAwQU/FP8j2ygb08OWyI7m6v3xhkUSXQ/y6g6BXng7yl9da3U14aZd66aSi
-         ednzH3E6eRHPipL+4x9DNAhscBgVJMfCf8IDWjjNC5eee/KdO99HUWjuOfInVR+i7NHY
-         0m8R1JO8z/5Uumf4Zdv6bPcY1AuyN/uaKGdP+1vGxepJg364FmGWPCAxCPDsJYlfMKIG
-         sk1COkb6qzGETOMuahdazmLj69tjhgKqaXQRjDCX+lj/u0Q4PkqFCsQakg0Ww7MPvkNx
-         WZ4m/eiJds79teQDqLHUIbYPxL04JGQKoVeDmih/M8yAxzNAoW6WA7afGFlMOTSKwS6n
-         s+yQ==
+        d=linaro.org; s=google; t=1717751556; x=1718356356; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=hPveJQ5m/OIT5FdwV6oYgK1mHcEkZsFVv5qp/eyftFQ=;
+        b=aCl9vHVJECUN8oyvlZIZqfL11NXmIXugJjUpD00WAuL0qWZyjotVrVM9Xi5gHljFbp
+         nN5yQZQif0FBMAbhPPGgde8G2+fQ7Z6wrO2usRhLrvtcc4RV7tH76SG13vL83JePM4DS
+         37Gtg9NpDx9sH1T277jyi2B5VJyHOEy46Y/4M882B/7HSGkD/uMLEWU6HwgergO5+/2+
+         IMxWiX5uEqRGAgiugWl9UmFZlBwUCrG/UIKd1b4W9H+HAndfAILQScbytqHWskuSR57M
+         iQzcpLXEma/Jpkg6s7QL1yGTBRXF3C2h74hOU75XoUZOTLEbGOAIl2F0DjTAuffvOBUf
+         cHIQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717748625; x=1718353425;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=jFzDLAm2JoetzCIq+IZooWSo9+/OTnrDCeqgi9Uf1Qw=;
-        b=YnL04zqNsPuTKnYt4hQ4jUCCWeslzhBoXnLfp7uuIab0kz4KgxykfTlEgieDD6e61l
-         hly2ljS27FZnEZkJq05tOr189b2qc+v1CKvGTUyy7Y8bUF2x6BsIGiQqFTN0js07Bh+w
-         XZW3x9AtCJ9+jXZ8MaxdCuwx2qNDEnG8d2+Z8T5ZJiDlgXwoxZVrqQ9FYsVSnPvTan0X
-         DiICVQwjXINsLDZblacGaWZFAZfyCkU+5fVw06Y8i3Ib3XfhHsQG+Yuqzm8SgQxvbfFq
-         dHtG8gE6HHbByVwEokhclAmO0OSixX77Hit91/zT11hpslLKaoQX1I3BGhFLqlHd6riK
-         mbTA==
-X-Forwarded-Encrypted: i=1; AJvYcCVk6MTzy9BQtLK3+ENtU2KcvA5fofcnKZ0axDMCkdY5J95zU3fCNdT38zKIekMfpMvF1VTDNKPhfRP4vVyqWdj63bo2ieT2rS0CvfIo0ok=
-X-Gm-Message-State: AOJu0Yz+ZKGVG9slM8geAG21K3HZN5DKVlWmSgdML1oC0T82wo7tsLMa
-	WJOz6H4FMLzmz/iet+fhMd+Mrn9/01AS83MkXlRlqWib/W2B7QLerN3z4arMqvlLxDThvm4+PBu
-	n5Z3jlTteZBJIBw==
-X-Google-Smtp-Source: AGHT+IEF7CwqKNpySd+6AuoFJi32vnnmAET+ZclCVOtY5J7qFDRYXcocHOA7xl/OSLW2UDLxrIJKMjnMqQ92lHY=
-X-Received: from aliceryhl2.c.googlers.com ([fda3:e722:ac3:cc00:68:949d:c0a8:572])
- (user=aliceryhl job=sendgmr) by 2002:a25:6b08:0:b0:dfa:59bc:8867 with SMTP id
- 3f1490d57ef6-dfaf64d3340mr115964276.5.1717748624990; Fri, 07 Jun 2024
- 01:23:44 -0700 (PDT)
-Date: Fri, 07 Jun 2024 08:23:41 +0000
+        d=1e100.net; s=20230601; t=1717751556; x=1718356356;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=hPveJQ5m/OIT5FdwV6oYgK1mHcEkZsFVv5qp/eyftFQ=;
+        b=QDsI9cJoqMx3yfejzUJJA6AgcqZRzim5h/vRSze9jxGafXRJwcMyFdqS8k9pzXOX9o
+         Cg0m9MJHn73J/b8J6zU67HgiW5NOfXc96St2iRwt1I/f92a7cELZO3VylbkSzCxp8T7t
+         Q68wirVuwH6cgrF5PqvjuBhOv9nYjYSH5mHSu7rVQwVSwtan8KkbMD/HGaD1HSPCvEBC
+         YEX4B4VgthzNHyTMvrjnC3pUbKx4Djq3u8QfKG2Khqp/gMGAYeHpVRcMtDc1Cn7aht9k
+         RgDb1j7czMDRifQtdEsgvGRPHKXpbSj9s93R67gclvWU7jjZzhE6lX7it+IEshdoCzzA
+         N+jQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVVr4BuUGVc+aTvI13ZXcxm25jz1Lwn6K7LKZfgtUtx9NA+MNxSydpMPI/338ti263gPEXALDbH0pQ73mU9q5f6T1DeJaL616KmebRW5lM=
+X-Gm-Message-State: AOJu0YyV8R6jI+UDwKPTMR8JX4ZD01AKFpH6VKrwRjRt8guzsJJU/K8M
+	9x1D3LXa6zsFNX70lVnNgvRlMQM+iXVMAWWwY8t+29u2CdzqhZNDQhAXfaxhczg=
+X-Google-Smtp-Source: AGHT+IETqK0zIIliNwoalKCFWPqaghIKyxJIFCSap/cz1CcyLlXt9SgcECRYv4nhSTpyDxxto+jOcQ==
+X-Received: by 2002:a17:902:d2ca:b0:1f6:7f0c:6c3e with SMTP id d9443c01a7336-1f6d02d3acamr23916915ad.12.1717751555988;
+        Fri, 07 Jun 2024 02:12:35 -0700 (PDT)
+Received: from localhost ([122.172.82.13])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f6bd7e3e66sm29238035ad.182.2024.06.07.02.12.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 07 Jun 2024 02:12:35 -0700 (PDT)
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>
+Cc: linux-pm@vger.kernel.org,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Nishanth Menon <nm@ti.com>,
+	rust-for-linux@vger.kernel.org,
+	Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+	Erik Schilling <erik.schilling@linaro.org>,
+	=?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+	Joakim Bech <joakim.bech@linaro.org>,
+	Rob Herring <robh@kernel.org>,
+	linux-kernel@vger.kernel.org
+Subject: [RFC PATCH V2 0/8] Rust bindings for cpufreq and OPP core + sample driver
+Date: Fri,  7 Jun 2024 14:42:15 +0530
+Message-Id: <cover.1717750631.git.viresh.kumar@linaro.org>
+X-Mailer: git-send-email 2.31.1.272.g89b43f80a514
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAIzDYmYC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIxMDE0Nz3YzM9Izc1FzdlKTElBRDU8ukVENDJaDqgqLUtMwKsEnRsbW1ABY H8rlZAAAA
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2472; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=Xgwy+VXx5E3JZbP4Ybw+wTF/Dg2wgJSpewPSloTt8eQ=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBmYsONk+jvByYL2TvCtGEpw2mG1FeLXT5tMEqGf
- QENb1/iRbmJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZmLDjQAKCRAEWL7uWMY5
- Rtg5D/97pMiTip/qY8xClBaqwr63gv3MaEt8Te2hgLcwePAMnxTBOxvv7XkJAggvpaPBODWZyX5
- k049GAOcgQykCCJI7lcBbnlCJcUgCiCqdvhx4+uSKHtlu2KqqkWvE7aadk9mtSK1LKEqWKzgw64
- O+G/8qQ1/MuKgZq7UdXAS+W087EfyC2Vcy0md0dCvMBMPVS04ujRsvQsugtUswaomEh6/Y5dbIR
- CM/gobk6d+WYYyXfWuxWOA0Lahb/YcCndsQdlAYw4T+GRiOjvrNuewH7OFnQneS89yQGrvSOT90
- twfceUV3O65lVsZI0EDrctFXv2U5iHgc1EJd1+ccoM8+MFOYoRuHgvJugMysWCJvuGZZGQq6tL5
- 9SYegBtv/YY0tDovG9l/XzBxbe0aTXwofemBpHJuH68g6B8INU2eTtl+ZPLMHY9u1Enw04xnnyW
- W55EPhsp1NDsYV5MVDi+RGq8YYNa1FdUfWeY/bjwLIJdzI9O02LuzZlAFAdEJ4+g14p9wb5ZIqz
- +Mcm2UIbJ/n6wBEk7teLnGTMlr0FcMFsyZTuZ0w/N/GMuoVn35L6vYWltCgRj+N03venG14qMS6
- X2Htqv9BIwEe431MxLTlmrJmzFvO+gELPdL2jzLRgCvh2f3O0iuR63qjN0dRs7bEvjntlDT0l4S NhuJ8H3zSx1Z/6Q==
-X-Mailer: b4 0.13-dev-26615
-Message-ID: <20240607-highmem-v1-1-d18c5ca4072f@google.com>
-Subject: [PATCH] rust: alloc: add __GFP_HIGHMEM flag
-From: Alice Ryhl <aliceryhl@google.com>
-To: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
-	Al Viro <viro@zeniv.linux.org.uk>, Andrew Morton <akpm@linux-foundation.org>, 
-	Kees Cook <keescook@chromium.org>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@samsung.com>, linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 
-Make it possible to allocate memory that doesn't need to mapped into the
-kernel's address space. This flag is useful together with
-Page::alloc_page [1].
+Hello,
 
-Rust Binder needs this for the memory that holds incoming transactions
-for each process. Each process will have a few megabytes of memory
-allocated with this flag, which is mapped into the process using
-vm_insert_page. When the kernel copies data for an incoming transaction
-into a process's memory region, it will use kmap_local_page to
-temporarily map pages that are being modified. There is no need for them
-to take up address space in the kernel when the kernel is not writing an
-incoming transaction into the page.
+This RFC adds initial rust bindings for two subsystems, cpufreq and operating
+performance points (OPP). The bindings are provided for most of the interface
+these subsystems expose.
 
-Link: https://lore.kernel.org/all/20240528-alice-mm-v7-4-78222c31b8f4@google.com/ [1]
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
- rust/bindings/bindings_helper.h | 1 +
- rust/kernel/alloc.rs            | 8 ++++++++
- 2 files changed, 9 insertions(+)
+This series also provides a sample cpufreq driver rcpufreq-dt, which is a
+duplicate of the merged cpufreq-dt driver (A generic platform agnostic device
+tree based cpufreq driver) used on most of the ARM platforms.
 
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index ddb5644d4fd9..52a1412338ef 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -25,3 +25,4 @@ const gfp_t RUST_CONST_HELPER_GFP_KERNEL = GFP_KERNEL;
- const gfp_t RUST_CONST_HELPER_GFP_KERNEL_ACCOUNT = GFP_KERNEL_ACCOUNT;
- const gfp_t RUST_CONST_HELPER_GFP_NOWAIT = GFP_NOWAIT;
- const gfp_t RUST_CONST_HELPER___GFP_ZERO = __GFP_ZERO;
-+const gfp_t RUST_CONST_HELPER___GFP_HIGHMEM = ___GFP_HIGHMEM;
-diff --git a/rust/kernel/alloc.rs b/rust/kernel/alloc.rs
-index 531b5e471cb1..f2994aea5d8e 100644
---- a/rust/kernel/alloc.rs
-+++ b/rust/kernel/alloc.rs
-@@ -52,6 +52,14 @@ pub mod flags {
-     /// This is normally or'd with other flags.
-     pub const __GFP_ZERO: Flags = Flags(bindings::__GFP_ZERO);
- 
-+    /// Allow the allocation to be in high memory.
-+    ///
-+    /// Allocations in high memory may not be mapped into the kernel's address space, so this can't
-+    /// be used with `kmalloc` and other similar methods.
-+    ///
-+    /// This is normally or'd with other flags.
-+    pub const __GFP_HIGHMEM: Flags = Flags(bindings::__GFP_HIGHMEM);
-+
-     /// Users can not sleep and need the allocation to succeed.
-     ///
-     /// A lower watermark is applied to allow access to "atomic reserves". The current
+This is tested with the help of QEMU for now and frequency transitions and
+configurations work as expected. No performance measurement is done as of now
+with this.
 
----
-base-commit: 1613e604df0cd359cf2a7fbd9be7a0bcfacfabd0
-change-id: 20240417-highmem-dbadd159be11
+These patches (along with few other dependencies) are pushed here for anyone to
+give them a try:
 
-Best regards,
+git://git.kernel.org/pub/scm/linux/kernel/git/vireshk/linux.git rust/cpufreq-dt
+
+
+This depends on basic bindings for few other modules: device/driver, platform
+driver, OF, clk, and cpumask. I am not looking to upstream a full fledged
+support for them yet.
+
+Based staging/rust-device from the Rust tree (which is based over v6.10-rc1).
+
+V1->V2:
+- Create and use separate bindings for OF, clk, cpumask, etc (not included in
+  this patchset but pushed to the above branch). This helped removing direct
+  calls from the driver.
+- Fix wrong usage of Pinning + Vec.
+- Use Token for OPP Config.
+- Use Opaque, transparent and Aref for few structures.
+- Broken down into smaller patches to make it easy for reviewers.
+- Based over staging/rust-device.
+
+Thanks.
+
+Viresh Kumar (8):
+  rust: Add initial bindings for OPP framework
+  rust: Extend OPP bindings for the OPP table
+  rust: Extend OPP bindings for the configuration options
+  rust: Add initial bindings for cpufreq framework
+  rust: Extend cpufreq bindings for policy and driver ops
+  rust: Extend cpufreq bindings for driver registration
+  rust: Extend OPP bindings with CPU frequency table
+  cpufreq: Add Rust based cpufreq-dt driver
+
+ drivers/cpufreq/Kconfig         |   12 +
+ drivers/cpufreq/Makefile        |    1 +
+ drivers/cpufreq/rcpufreq_dt.rs  |  229 +++++++
+ rust/bindings/bindings_helper.h |    2 +
+ rust/helpers.c                  |   15 +
+ rust/kernel/cpufreq.rs          | 1070 +++++++++++++++++++++++++++++++
+ rust/kernel/lib.rs              |    4 +
+ rust/kernel/opp.rs              |  886 +++++++++++++++++++++++++
+ 8 files changed, 2219 insertions(+)
+ create mode 100644 drivers/cpufreq/rcpufreq_dt.rs
+ create mode 100644 rust/kernel/cpufreq.rs
+ create mode 100644 rust/kernel/opp.rs
+
 -- 
-Alice Ryhl <aliceryhl@google.com>
+2.31.1.272.g89b43f80a514
 
