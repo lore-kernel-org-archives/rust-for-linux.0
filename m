@@ -1,380 +1,159 @@
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+Received: from mail-lf1-f74.google.com (mail-lf1-f74.google.com [209.85.167.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BAD015EFC6
-	for <rust-for-linux@vger.kernel.org>; Fri,  7 Jun 2024 09:13:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E895013790B
+	for <rust-for-linux@vger.kernel.org>; Fri,  7 Jun 2024 09:43:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717751589; cv=none; b=Cn7h9PDu9wocGRb6QSUbA4BNB4B9ndCjTMKnJO+smcYyhYL7la5LEO2nFKX6J4fe9jpT+5xNO6phvKF7fuPwrflAoS5Yyo5uEh4UHFz0vrftxQBTYv3DTsmhrJxkW9ohfmmjNAm7gZFJIzHPAQwS2zZzvs+aZf9MeYjQbd9A1DA=
+	t=1717753415; cv=none; b=usmIuBVlmru2wNoxJxnNzCDmQ2xnZIoUwGRRX5xCDJuZwWodDjNKVGbN6diJqDJAdW3eFzdK/gSF+4J90J3T5Ab61+D8N/sP7OAkFzLAYslxqT92f9RJNXUAhrt6p0VlbIemYwVRKUUXZ8JkHcwFB1dY0zkxg6fj/6xEqLxoqAc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717751589; c=relaxed/simple;
-	bh=PlYAE9z0g5K3iAsbL9S0/w/lr81FU4c5zUhtR8b3HfE=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=eRY0Zy68w/z/HlojJE5PQi9GVZbEoxK1OZxpq1lk+o1FhhcM4afXlf8vdBxhqNrUlb+tEcfKR+bBceEluGKHyCZut442DGsTRQAEYMnlwEJ5XJjFpICHCiFZQVjS9ETiWKDGA8LgDO72GYR8iSo/JoDQoVcMMZLn0WGRHYhEjQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=P3XiygEV; arc=none smtp.client-ip=209.85.216.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1717753415; c=relaxed/simple;
+	bh=VeVSJnLlRH/miBgW1vozdVuS6TLtZvGfRxG/7G2ETMY=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=FZowLDC5FAY1wC9eBO61Q+YbdqeDPGh18k+LbJ3AjdsJQj2g6QF+qHF4VzDBYcU9dkRyxAgxdW2r28/2IpR0M9+LfjDAzlIdGQf+zjxh27UWePlyTqQ8I0VddHD8Rr8XpoAjnf3GWwTtkA6c8aOKEo09QuuW+BQddEl/rhBuEg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=0DdUoUPH; arc=none smtp.client-ip=209.85.167.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="P3XiygEV"
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-2c27bc473d9so1615596a91.3
-        for <rust-for-linux@vger.kernel.org>; Fri, 07 Jun 2024 02:13:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="0DdUoUPH"
+Received: by mail-lf1-f74.google.com with SMTP id 2adb3069b0e04-52bc277a9f7so72243e87.2
+        for <rust-for-linux@vger.kernel.org>; Fri, 07 Jun 2024 02:43:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1717751587; x=1718356387; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gpdjfdsu7F7InZnhYGTwKFUVSu8T2YzyZYnj5q/OC3w=;
-        b=P3XiygEVSzpvjJFpzadjMKZWCn0y7tolzdnqeClHXN/tF7mOyozN4k2qT+psTZYBEA
-         y51bwWGhhejCinprctUg0MCiTumDoV6Yb632JPCNvfG1tF3mIptUQHn2NoFsJXET5RXD
-         a76kfzK7UU9Gdbn1HCfQq1xeqG2pjxhpEqWm8fRHEYZFKMACOzHKWPGLpc7Ka/Dg625Z
-         R4j8/wqwH2DYmxekCnaMAEr/vIw2shJAJhGb0kgcKDl7A2BLobIjxUqJz+dh6aXw+MCR
-         J5K+dTQbXInmzAXiXHb+7EGCLT7Tw3Nmbi/4KWjWr8G+enB1P6PdbYhXDpifTNjCGqLt
-         BfYg==
+        d=google.com; s=20230601; t=1717753412; x=1718358212; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=0/YN8NbApmrplnThMGLuKQX7kmaVgfISdJYXyZPraf4=;
+        b=0DdUoUPHWOp7ZOsnqYmoChdqHZqsExA2MyNEVGWixSYqX3UcTEOTc7V9GkhQaQ8iN7
+         3atmRcyIxD5Hh71jFvaFKJuCg44lZrQb+G0Ile8ylbcfj1ysnuvickT7J15bo35Dhe/K
+         MWD6Tx3a/tvHPnH2qPGk3z/dEEl8XNqvXbEbVlArsj9J6kX0NjJirfQ4qeZdb5tqh4T1
+         i6f/1Rc9jdoDFXqS7MwNxKQOEKA2usYgBJJ6rjl9KW9/T/hIB/kUO4k02eQNRAck8Xr4
+         KWvog0ujEWXfUtLKZfADgpzUQvde1T1kVlwkQ53MJGIo1EVq+addxotUgB4gxNwSscFy
+         U2Cw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717751587; x=1718356387;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=gpdjfdsu7F7InZnhYGTwKFUVSu8T2YzyZYnj5q/OC3w=;
-        b=A/FLodeJJVMKrsQre8v8fOGh+Zl5wDRU+zWztDITeG7FjQYYbaatL9YNu9ZrCWxxIG
-         idIVkvgpOko4ZSfLwknQI7lb43okaeGiGrxU1K6nRhqDtr10/M5vbD7tjltLC3THmXnH
-         d21HEFaeODup7gr1fVw++ESUBdOC8BTG7UhDX6sL04s+jIiUzBOgYC2Leh1uLWUYK1MC
-         dDnmwZoMLbLPzuhRFVa7escbAOikZ36xuOvN4Nnu75/40gqMWzM3IMIW/u5jOkZh+9GA
-         lpYp2mgGD7umMxzDO4a3Ra9tnHZ+ZMgpy2otuM9AfbuPFEOydeT5+G8Sudlb6ZVKTBlF
-         20uw==
-X-Forwarded-Encrypted: i=1; AJvYcCVPu69Oej5FExlW58coAZvfvuXpD6BKqpXUXD+AWMBQ+qWvvETcXfZGXebf/pprEgRHDL37sLkDkVZBeBpQxA5EJM6dvTmklu1DKClDSvs=
-X-Gm-Message-State: AOJu0YzMNf751gWun8XJxeNKDRxSILT399nWW2vwlcBMyqZzoXw0SrsJ
-	zsCTzJfJk3tvDu3MlVNlCnPv8NM834DvMbO8cZSxm4U88Yw99SkNoTFUrZ+2TFc=
-X-Google-Smtp-Source: AGHT+IGTKWVmYcNoQJyhcj1P+6/81dmOtIBoL4JNvjOpvNWJY60yKyW7M76qmcyTJfvXfVUqVxTKmw==
-X-Received: by 2002:a17:90a:b008:b0:2bd:d2f9:e71a with SMTP id 98e67ed59e1d1-2c2bcc0bbe9mr1875468a91.29.1717751586630;
-        Fri, 07 Jun 2024 02:13:06 -0700 (PDT)
-Received: from localhost ([122.172.82.13])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2c29c4a574bsm3069258a91.56.2024.06.07.02.13.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Jun 2024 02:13:06 -0700 (PDT)
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>
-Cc: linux-pm@vger.kernel.org,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Nishanth Menon <nm@ti.com>,
-	rust-for-linux@vger.kernel.org,
-	Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
-	Erik Schilling <erik.schilling@linaro.org>,
-	=?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
-	Joakim Bech <joakim.bech@linaro.org>,
-	Rob Herring <robh@kernel.org>,
-	linux-kernel@vger.kernel.org
-Subject: [RFC PATCH V2 8/8] cpufreq: Add Rust based cpufreq-dt driver
-Date: Fri,  7 Jun 2024 14:42:23 +0530
-Message-Id: <994d50cbf25a1301e4c0ffbc48eaabd8c90ab827.1717750631.git.viresh.kumar@linaro.org>
-X-Mailer: git-send-email 2.31.1.272.g89b43f80a514
-In-Reply-To: <cover.1717750631.git.viresh.kumar@linaro.org>
-References: <cover.1717750631.git.viresh.kumar@linaro.org>
+        d=1e100.net; s=20230601; t=1717753412; x=1718358212;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=0/YN8NbApmrplnThMGLuKQX7kmaVgfISdJYXyZPraf4=;
+        b=ByEvYpxIPCorXZus/hpNJvruV2W8Ei6mp3f7aR3eqAAiLOqYaDYJfJZeH1jnXHVYGJ
+         ijKZhT3bm7OYgMm5g6EoWRF+jXN6myrky8l7gJO0YKmfqyFd57MP6k2xm4Z2EMyV09zU
+         FJdi4DSvlcpxkGokjtMNh60yPKlgCxl6rEQHoZQIb/Ql6kYKbz+InFxyBvii8vsNhn+x
+         PWvd1sVFvsSzm80YgDLN4KG7dpoDn0QJcvbjXfg8wGUI3Xxy+D/BUfRRp/pzdA/jTYY8
+         Ud7Kuguc5wbwlQkDDA9QlIsesPlJ5bZfba/KFEjqckFuVKIftyEPWqcPntO6hTFgdptW
+         Klgg==
+X-Forwarded-Encrypted: i=1; AJvYcCXGYL4Zrs7s28uH6Hqi//3NFelH8Ohz7oyQK4RSrQUxcixn3B33Ao17HIutwu6+kh3GfjZEUxaVma+fgNHfNh1hbcjXsAiOXouf5Bb6kB0=
+X-Gm-Message-State: AOJu0YwVw/CyYwrPOdoon7gwEs9S3VNU67UxIeoWPqxyyqRiaGhWf3ZU
+	h/DN4pSpaJrCum9SevLGCNpku1IOmp0MBNQH/nYjggYSDWrTSSAv0FZRgvUtaadqP+0IL0RgWVr
+	kzV5o90s7/DtH6w==
+X-Google-Smtp-Source: AGHT+IE7NAXSKHEZJR73S0J+KkqobFZvO93f/V0dPMCOMhXIEXFB0cuBoB/UlBUY6YBl7cWQkLstuSti/tQ9kp8=
+X-Received: from aliceryhl2.c.googlers.com ([fda3:e722:ac3:cc00:68:949d:c0a8:572])
+ (user=aliceryhl job=sendgmr) by 2002:ac2:5687:0:b0:52b:7a59:5199 with SMTP id
+ 2adb3069b0e04-52bb9fcb16amr2622e87.11.1717753412145; Fri, 07 Jun 2024
+ 02:43:32 -0700 (PDT)
+Date: Fri,  7 Jun 2024 09:43:29 +0000
+In-Reply-To: <20240606193318.GK8774@noisy.programming.kicks-ass.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+References: <20240606193318.GK8774@noisy.programming.kicks-ass.net>
+X-Mailer: git-send-email 2.45.2.505.gda0bf45e8d-goog
+Message-ID: <20240607094329.3878781-1-aliceryhl@google.com>
+Subject: Re: [PATCH 1/3] rust: add static_call support
+From: Alice Ryhl <aliceryhl@google.com>
+To: peterz@infradead.org
+Cc: a.hindborg@samsung.com, alex.gaynor@gmail.com, aliceryhl@google.com, 
+	ardb@kernel.org, benno.lossin@proton.me, bjorn3_gh@protonmail.com, 
+	boqun.feng@gmail.com, gary@garyguo.net, jbaron@akamai.com, 
+	jpoimboe@kernel.org, linux-kernel@vger.kernel.org, 
+	linux-trace-kernel@vger.kernel.org, mathieu.desnoyers@efficios.com, 
+	mhiramat@kernel.org, miguel.ojeda.sandonis@gmail.com, ojeda@kernel.org, 
+	rostedt@goodmis.org, rust-for-linux@vger.kernel.org, wedsonaf@gmail.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-This commit adds a Rust based cpufreq-dt driver, which covers most of
-the functionality of the existing C based driver. Only a handful of
-things are left, like fetching platform data from cpufreq-dt-platdev.c.
+Peter Zijlstra <peterz@infradead.org> wrote:
+> On Thu, Jun 06, 2024 at 09:09:00PM +0200, Miguel Ojeda wrote:
+> > On Thu, Jun 6, 2024 at 7:19=E2=80=AFPM Peter Zijlstra <peterz@infradead=
+.org> wrote:
+> > >
+> > > This is absolutely unreadable gibberish -- how am I supposed to keep
+> > > this in sync with the rest of the static_call infrastructure?
+> >=20
+> > Yeah, they are macros, which look different from "normal" Rust code.
+>=20
+> Macros like CPP ?
 
-This is tested with the help of QEMU for now and switching of
-frequencies work as expected.
+Yes, this patch series uses declarative macros, which are the closest
+that Rust has to the C preprocessor. They are powerful, but just like
+CPP, they can become pretty complicated and hard to read if you are
+doing something non-trivial.
 
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
----
- drivers/cpufreq/Kconfig        |  12 ++
- drivers/cpufreq/Makefile       |   1 +
- drivers/cpufreq/rcpufreq_dt.rs | 229 +++++++++++++++++++++++++++++++++
- 3 files changed, 242 insertions(+)
- create mode 100644 drivers/cpufreq/rcpufreq_dt.rs
+The macro_rules! block is how you define a new declarative macro.
 
-diff --git a/drivers/cpufreq/Kconfig b/drivers/cpufreq/Kconfig
-index 94e55c40970a..eb9359bd3c5c 100644
---- a/drivers/cpufreq/Kconfig
-+++ b/drivers/cpufreq/Kconfig
-@@ -217,6 +217,18 @@ config CPUFREQ_DT
- 
- 	  If in doubt, say N.
- 
-+config CPUFREQ_DT_RUST
-+	tristate "Rust based Generic DT based cpufreq driver"
-+	depends on HAVE_CLK && OF && RUST
-+	select CPUFREQ_DT_PLATDEV
-+	select PM_OPP
-+	help
-+	  This adds a Rust based generic DT based cpufreq driver for frequency
-+	  management.  It supports both uniprocessor (UP) and symmetric
-+	  multiprocessor (SMP) systems.
-+
-+	  If in doubt, say N.
-+
- config CPUFREQ_DT_PLATDEV
- 	tristate "Generic DT based cpufreq platdev driver"
- 	depends on OF
-diff --git a/drivers/cpufreq/Makefile b/drivers/cpufreq/Makefile
-index 8d141c71b016..4981d908b803 100644
---- a/drivers/cpufreq/Makefile
-+++ b/drivers/cpufreq/Makefile
-@@ -15,6 +15,7 @@ obj-$(CONFIG_CPU_FREQ_GOV_COMMON)		+= cpufreq_governor.o
- obj-$(CONFIG_CPU_FREQ_GOV_ATTR_SET)	+= cpufreq_governor_attr_set.o
- 
- obj-$(CONFIG_CPUFREQ_DT)		+= cpufreq-dt.o
-+obj-$(CONFIG_CPUFREQ_DT_RUST)		+= rcpufreq_dt.o
- obj-$(CONFIG_CPUFREQ_DT_PLATDEV)	+= cpufreq-dt-platdev.o
- 
- # Traces
-diff --git a/drivers/cpufreq/rcpufreq_dt.rs b/drivers/cpufreq/rcpufreq_dt.rs
-new file mode 100644
-index 000000000000..b016771e6180
---- /dev/null
-+++ b/drivers/cpufreq/rcpufreq_dt.rs
-@@ -0,0 +1,229 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Rust based implementation of the cpufreq-dt driver.
-+
-+use core::format_args;
-+
-+use kernel::{
-+    b_str, c_str, clk, cpufreq, define_of_id_table,
-+    device::{self, Device},
-+    error::code::*,
-+    fmt,
-+    macros::vtable,
-+    module_platform_driver, of, opp, platform,
-+    prelude::*,
-+    str::CString,
-+    sync::Arc,
-+    types::ARef,
-+};
-+
-+// Finds exact supply name from the OF node.
-+fn find_supply_name_exact(np: &ARef<of::DeviceNode>, name: &str) -> Option<CString> {
-+    let name_cstr = CString::try_from_fmt(fmt!("{}-supply", name)).ok()?;
-+
-+    np.find_property(&name_cstr).ok()?;
-+    CString::try_from_fmt(fmt!("{}", name)).ok()
-+}
-+
-+// Finds supply name for the CPU from DT.
-+fn find_supply_names(dev: ARef<Device>, cpu: u32) -> Option<Vec<CString>> {
-+    let np = of::DeviceNode::from_dev(dev).ok()?;
-+
-+    // Try "cpu0" for older DTs.
-+    let name = match cpu {
-+        0 => find_supply_name_exact(&np, "cpu0"),
-+        _ => None,
-+    }
-+    .or(find_supply_name_exact(&np, "cpu"))?;
-+
-+    let mut list = Vec::with_capacity(1, GFP_KERNEL).ok()?;
-+    list.push(name, GFP_KERNEL).ok()?;
-+
-+    Some(list)
-+}
-+
-+// Represents the cpufreq dt device.
-+struct CPUFreqDTDevice {
-+    opp_table: opp::Table,
-+    freq_table: opp::FreqTable,
-+    #[allow(dead_code)]
-+    token: Option<opp::ConfigToken>,
-+    #[allow(dead_code)]
-+    clk: clk::Clk,
-+}
-+
-+#[vtable]
-+impl opp::ConfigOps for CPUFreqDTDevice {}
-+
-+#[vtable]
-+impl cpufreq::DriverOps for CPUFreqDTDevice {
-+    type Data = ();
-+    type PData = Arc<Self>;
-+
-+    fn init(policy: &mut cpufreq::Policy) -> Result<Self::PData> {
-+        let cpu = policy.cpu();
-+        let dev = Device::from_cpu(cpu)?;
-+
-+        policy.set_cpus(cpu);
-+
-+        let token = match find_supply_names(dev.clone(), cpu) {
-+            Some(names) => Some(
-+                opp::Config::<Self>::new()
-+                    .set_regulator_names(names)?
-+                    .set(dev.clone())?,
-+            ),
-+            _ => None,
-+        };
-+
-+        // Get OPP-sharing information from "operating-points-v2" bindings.
-+        let fallback = match opp::Table::of_sharing_cpus(dev.clone(), policy.cpus()) {
-+            Ok(_) => false,
-+            Err(e) => {
-+                if e != ENOENT {
-+                    return Err(e);
-+                }
-+
-+                // "operating-points-v2" not supported. If the platform hasn't
-+                // set sharing CPUs, fallback to all CPUs share the `Policy`
-+                // for backward compatibility.
-+                opp::Table::sharing_cpus(dev.clone(), policy.cpus()).is_err()
-+            }
-+        };
-+
-+        // Initialize OPP tables for all policy cpus.
-+        //
-+        // For platforms not using "operating-points-v2" bindings, we do this
-+        // before updating policy cpus. Otherwise, we will end up creating
-+        // duplicate OPPs for the CPUs.
-+        //
-+        // OPPs might be populated at runtime, don't fail for error here unless
-+        // it is -EPROBE_DEFER.
-+        let mut opp_table = match opp::Table::from_of_cpumask(dev.clone(), policy.cpus()) {
-+            Ok(table) => table,
-+            Err(e) => {
-+                if e == EPROBE_DEFER {
-+                    return Err(e);
-+                }
-+
-+                // The table is added dynamically ?
-+                opp::Table::from_dev(dev.clone())?
-+            }
-+        };
-+
-+        // The OPP table must be initialized, statically or dynamically, by this point.
-+        opp_table.opp_count()?;
-+
-+        // Set sharing cpus for fallback scenario.
-+        if fallback {
-+            policy.set_all_cpus();
-+            opp_table.set_sharing_cpus(policy.cpus())?;
-+        }
-+
-+        let mut transition_latency = opp_table.max_transition_latency() as u32;
-+        if transition_latency == 0 {
-+            transition_latency = cpufreq::ETERNAL_LATENCY;
-+        }
-+
-+        let freq_table = opp_table.to_cpufreq_table()?;
-+        let clk = policy
-+            .set_freq_table(freq_table.table())
-+            .set_dvfs_possible_from_any_cpu()
-+            .set_suspend_freq((opp_table.suspend_freq() / 1000) as u32)
-+            .set_transition_latency(transition_latency)
-+            .set_clk(dev, None)?;
-+
-+        Ok(Arc::new(
-+            CPUFreqDTDevice {
-+                opp_table,
-+                token,
-+                freq_table,
-+                clk,
-+            },
-+            GFP_KERNEL,
-+        )?)
-+    }
-+
-+    fn exit(_policy: &mut cpufreq::Policy, _data: Option<Self::PData>) -> Result<()> {
-+        Ok(())
-+    }
-+
-+    fn online(_policy: &mut cpufreq::Policy) -> Result<()> {
-+        // We did light-weight tear down earlier, nothing to do here.
-+        Ok(())
-+    }
-+
-+    fn offline(_policy: &mut cpufreq::Policy) -> Result<()> {
-+        // Preserve policy->data and don't free resources on light-weight
-+        // tear down.
-+        Ok(())
-+    }
-+
-+    fn suspend(policy: &mut cpufreq::Policy) -> Result<()> {
-+        policy.generic_suspend()
-+    }
-+
-+    fn verify(data: &mut cpufreq::PolicyData) -> Result<()> {
-+        data.generic_verify()
-+    }
-+
-+    fn target_index(policy: &mut cpufreq::Policy, index: u32) -> Result<()> {
-+        let data = match policy.data::<Self::PData>() {
-+            Some(data) => data,
-+            None => return Err(ENOENT),
-+        };
-+
-+        let freq = data.freq_table.freq(index.try_into().unwrap())? as u64;
-+        data.opp_table.set_rate(freq * 1000)
-+    }
-+
-+    fn get(policy: &mut cpufreq::Policy) -> Result<u32> {
-+        policy.generic_get()
-+    }
-+
-+    fn set_boost(_policy: &mut cpufreq::Policy, _state: i32) -> Result<()> {
-+        Ok(())
-+    }
-+
-+    fn register_em(policy: &mut cpufreq::Policy) {
-+        policy.register_em_opp()
-+    }
-+}
-+
-+type DeviceData = device::Data<cpufreq::Registration<CPUFreqDTDevice>, ()>;
-+
-+struct CPUFreqDTDriver;
-+
-+impl platform::Driver for CPUFreqDTDriver {
-+    type Data = Arc<DeviceData>;
-+
-+    define_of_id_table! {(), [
-+        (of::DeviceId(b_str!("operating-points-v2")), None),
-+    ]}
-+
-+    fn probe(_dev: &mut platform::Device, _id_info: Option<&Self::IdInfo>) -> Result<Self::Data> {
-+        let data = Arc::<DeviceData>::from(kernel::new_device_data!(
-+            cpufreq::Registration::new(),
-+            (),
-+            "CPUFreqDT::Registration"
-+        )?);
-+        let flags = cpufreq::flags::NEED_INITIAL_FREQ_CHECK | cpufreq::flags::IS_COOLING_DEV;
-+        let boost = true;
-+
-+        data.registrations()
-+            .ok_or(ENXIO)?
-+            .as_pinned_mut()
-+            .register(c_str!("cpufreq-dt"), (), flags, boost)?;
-+
-+        pr_info!("CPUFreq DT driver registered\n");
-+
-+        Ok(data)
-+    }
-+}
-+
-+module_platform_driver! {
-+    type: CPUFreqDTDriver,
-+    name: "cpufreq_dt",
-+    author: "Viresh Kumar <viresh.kumar@linaro.org>",
-+    description: "Generic CPUFreq DT driver",
-+    license: "GPL v2",
-+}
--- 
-2.31.1.272.g89b43f80a514
+The ($name:ident($($args:expr),* $(,)?)) part defines the arguments to
+the declarative macro. This syntax means:
 
+1. The input starts with any identifier, which we call $name.
+2. Then there must be a ( token.
+3. Then the $(),* part defines a repetition group. The contents inside
+   the parenthesises are what is being repeated. The comma means that
+   repetitions are separated by commas. The asterisk means that the
+   contents may be repeated any number of times, including zero times.
+   (Alternatives are + which means repeated at least once, and ? which
+   means that the contents may be repeated zero or one time.)
+4. The contents of the repetition group will be an expression, which we
+   call $args.
+5. After the last expression, we have $(,)? which means that you can
+   have zero or one commas after the last expression. Rust usually
+   allows trailing commas in lists, which is why I included it.
+6. And finally, you must close the input with a ) token.
+
+So for example, you might invoke the macro like this:
+
+static_call!(tp_func_my_tracepoint(__data, &mut my_task_struct));
+
+Here, $name will be tp_func_my_tracepoint, and the repetition group is
+repeated twice, with $args first corresponding to `__data` and then to
+`&mut my_task_struct` when the macro is expanded. The $(,)? group is
+repeated zero times.
+
+
+Inside the macro, you will see things such as:
+$crate::macros::paste! { $crate::bindings:: [<__SCK__ $name >]; }
+
+The Rust syntax for invoking a macro has an exclamation mark after the
+name, so you know that $crate::macros::paste is a macro. The `paste`
+macro just emits its input unchanged, except that any identifiers
+between [< and >] are concatenated into a single identifier. So if $name
+is my_static_key, then the above invocation of paste! emits:
+
+	$crate::bindings::__SCK__my_static_key;
+
+The $crate::bindings module is where the output of bindgen goes, so this
+should correspond to the C symbol called __SCK__my_static_key.
+
+> > Is there something we could do to help here? I think Alice and others
+> > would be happy to explain how it works and/or help maintain it in the
+> > future if you prefer.
+>=20
+> Write a new language that looks more like C -- pretty please ? :-)
+>=20
+> Mostly I would just really like you to just use arm/jump_label.h,
+> they're inline functions and should be doable with IR, no weirdo CPP
+> involved in this case.
+
+I assume that you're referring to static_key_false here? I don't think
+that function can be exposed using IR because it passes the function
+argument called key as an "i" argument to an inline assembly block. Any
+attempt to compile static_key_false without knowing the value of key at
+compile time will surely fail to compile with the
+
+	invalid operand for inline asm constraint 'i'
+
+error.
+
+Alice
