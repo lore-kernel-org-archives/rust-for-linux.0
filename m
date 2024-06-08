@@ -1,114 +1,64 @@
-Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from hop.stappers.nl (hop.stappers.nl [141.105.120.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 781D217BB7;
-	Sat,  8 Jun 2024 12:16:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 39573176FC0;
+	Sat,  8 Jun 2024 12:54:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.105.120.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717848979; cv=none; b=lCd2LDomXwhsMH7UlC+Na4gaYyxnHNCojFy4VnqNwH9cGu293EHMFL77a8jJZ3TXOA5lhyfGGRk5db/BuuHUTTDyBn0g0ADIO8Hahkpql/b3uF+a+sSvwxTuOJ0hR+qf94WFv6Rua5a4ybPP7amgIqJzz9IzvNVIO3nEjOJJOsM=
+	t=1717851262; cv=none; b=n7OFLbXJOwxo5HTa8oFJs6SeyohiJ9KOQILS8wS5TyU5gNnxlnEBpJx4ea4dANdMRbHywMHv6HzQCx6iP/Ggv2Ub6ImakWYRS9We5sZCDHNAif5VgB4plzb8VIEb6Kksx8K6nyxa4Dak6gvIehqu+esxEhLAIUUhL6ualx4YHxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717848979; c=relaxed/simple;
-	bh=5/UAPYwcgAe7ZWfUsvTDZ0S/CUfovi6lXYY8woJq+8c=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=od+pEFM9Zi3biSrSKlE4rm5PJJfFnoggnnAojcZPwfzZLPSko+hAiCedOwxzx7Wgq4RUrdcCOota7Nj0t5IvXV9ph71o14wE/zB+mA+CLJYng0wGx6d1msudHm+xf5rNGvf+ubL1VPr0zvooV03WdvuuWc96jn0EX0o82/qQwBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EfTFPqM6; arc=none smtp.client-ip=209.85.215.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EfTFPqM6"
-Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-681ad081695so2316998a12.3;
-        Sat, 08 Jun 2024 05:16:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1717848978; x=1718453778; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QKSBnGSmzchFpYgSY1/szHPlRvPcQPGig0KHSHqMUl8=;
-        b=EfTFPqM6y2h3bLvXK9eUmS78D4SvVF5fiZdzzeEqoxlhQq3u5wNMBSv7CKymnID/SS
-         ziYs0mHUStlT9olzCzcardCXForae6JhFPbM4wTBWAAQrOifOnq0glz34Sjp96Sr53nU
-         fiIX77oFfVYm6sqIJZkc+/C+zYl6A6x86TYbIBQhHFDxDF0i2fRUus9wREa5q4u6nyE8
-         jvhpD6zufEWfJ8Yn3szdqVMto7itulDRMTQfk3yJk1SA5yfng+C319iqiGt+SlK7L9XA
-         mRDwkE+y00Kbiyiy3lfqqdPCkQ61zQd/T1mT1uBa+4AHZtB7QO2wCLRmesojXLNBr7jD
-         iP0g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717848978; x=1718453778;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=QKSBnGSmzchFpYgSY1/szHPlRvPcQPGig0KHSHqMUl8=;
-        b=uWAhRfOowA2grYa86N9W8KIgTLycEp3YfkDXufrPhyTxcPnIDxYIPKrPR8KAdcm2Oc
-         tXDvAUNCVfGFjuSKXlhyNHaz9wf0GVHzkyritWnRY5C+ctnrV5FNUjWZW96gtkLxMKUX
-         inclYIbUo8GII/nRADplaxobuCuO4ZsNvGEI/bJ/xwC8+/qMBa20SGgiOCqWhZ1zGQaH
-         v2Cw9jhPIYOX/cwjBTqPWFGpYEWRjs0OcbR40e21CXuhjs1ArRW5D/NVQbrBQuHs9nf1
-         z4TA17qslfMqO6Y8QqW4b2mFLfeEHVpfCzSoaLiVobN8Rky0Z3qk/Xr/N3NKJviTEKTs
-         H5JQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUMuloKjUINsjEFRfRY6esSI1n2lwUrComofeaYrZ5UsNNhTgxG98fAKspxZSFxg3xmuYC2M3I9UunMOrOzmb86hB+u2kMH+z0M70FCylo=
-X-Gm-Message-State: AOJu0YwE4+mpLWY1aIN2WKdvlfVSQCSMTLLPELPOu8VpodaRtKCvtH4I
-	BPVL4EbhbxjLUH21A7tlE0OTQtYUV0g3nB8w7dQMyy2orgqyG1cmB9Xv4/J0L20EXy4k2NpejN9
-	6nsaein1G9WIUUVX5ywYsQ39qzPI=
-X-Google-Smtp-Source: AGHT+IHIYC+jXj7oKSbCIQMn0EzuWo5mO4AS/ZMfyaP7ov3SM8eiT8jgL4H6GyHHSF0xknZrZwBHWyzpxvn1NVg7DR8=
-X-Received: by 2002:a17:90a:8a10:b0:2be:9547:41a8 with SMTP id
- 98e67ed59e1d1-2c2bcc61b80mr4817088a91.48.1717848977670; Sat, 08 Jun 2024
- 05:16:17 -0700 (PDT)
+	s=arc-20240116; t=1717851262; c=relaxed/simple;
+	bh=Jpx/+HGoQT7FfdP9UmOZYjW7RwlxvVsAXIw5WWqoBI4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=MyDExHV9LFvBk0zhEH/Lk0Fs4H+3g+7aUkDzjhJqfJ00HceAcl4Wvlz5wPnOGoGnmWhjZImxBpiR+C6kG3t/dnfdfGbLc/P276eSZv7TEVbp4t86dud4ubuS8e4bhAspCgmYzidq1Yfa/I47pOi1JryzSofANHZJJI6tZJpwaRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=stappers.nl; spf=pass smtp.mailfrom=stappers.nl; arc=none smtp.client-ip=141.105.120.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=stappers.nl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=stappers.nl
+Received: from gpm.stappers.nl (gpm.stappers.nl [82.168.249.201])
+	by hop.stappers.nl (Postfix) with ESMTP id F2B2D20219;
+	Sat,  8 Jun 2024 12:43:01 +0000 (UTC)
+Received: by gpm.stappers.nl (Postfix, from userid 1000)
+	id 47AF730417C; Sat,  8 Jun 2024 14:43:00 +0200 (CEST)
+Date: Sat, 8 Jun 2024 14:42:59 +0200
+From: Geert Stappers <stappers@stappers.nl>
+To: Christian Schrefl <chrisi.schrefl@gmail.com>
+Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+	rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+	Jamie Cunliffe <Jamie.Cunliffe@arm.com>,
+	Sven Van Asbroeck <thesven73@gmail.com>
+Subject: Re: [PATCH 1/1] arm: rust: Enable Rust support for ARMv7
+Message-ID: <ZmRR0yuqgVd50xXL@gpm.stappers.nl>
+References: <4e0f5932-c7bc-4878-862c-1186cbecd71d@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <4e0f5932-c7bc-4878-862c-1186cbecd71d@gmail.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 In-Reply-To: <4e0f5932-c7bc-4878-862c-1186cbecd71d@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sat, 8 Jun 2024 14:16:05 +0200
-Message-ID: <CANiq72kaVw_t=hCJ-qEr=9ybuOngAR6isnCK717dBEm7CFm2NQ@mail.gmail.com>
-Subject: Re: [PATCH 1/1] arm: rust: Enable Rust support for ARMv7
-To: Christian Schrefl <chrisi.schrefl@gmail.com>, Jamie Cunliffe <jamie.cunliffe@arm.com>
-Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
-	Sven Van Asbroeck <thesven73@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Sat, Jun 8, 2024 at 12:30=E2=80=AFAM Christian Schrefl
-<chrisi.schrefl@gmail.com> wrote:
->
-> This is based on the code by Sven Van Asbroeck from the original
-> rust branch and inspired by the AArch version by Jamie Cunliffe.
+On Sat, Jun 08, 2024 at 12:30:12AM +0200, Christian Schrefl wrote:
+> --- a/rust/Makefile
+> +++ b/rust/Makefile
+> @@ -286,7 +286,8 @@ bindgen_skip_c_flags := -mno-fp-ret-in-387 -mpreferred-stack-boundary=% \
+>  
+>  # Derived from `scripts/Makefile.clang`.
+>  BINDGEN_TARGET_x86	:= x86_64-linux-gnu
+> -BINDGEN_TARGET_arm64	:= aarch64-linux-gnu
+> +BINDGEN_TARGET_arm64:= aarch64-linux-gnu
 
-Thanks for mentioning that!
+That white space change is probably accidently.
 
-(AArch64 perhaps?)
 
-> I have tested the rust samples and a custom simple MMIO module
-> on on hardware (De1SoC FPGA + Arm A9 CPU).
+> +BINDGEN_TARGET_arm	:= arm-linux-gnueabi
+>  BINDGEN_TARGET		:= $(BINDGEN_TARGET_$(SRCARCH))
+>  
+>  # All warnings are inhibited since GCC builds are very experimental,
 
-Very nice to have tested it in real hardware, thanks!
 
-(Duplicate "on on").
-
-> +``arm``        Maintained        ARMv7 Little Endian only.
-
-How hard would it be to test and maintain other versions, eventually?
-I met Jamie recently, he may have some ideas here.
-
-> -BINDGEN_TARGET_arm64   :=3D aarch64-linux-gnu
-> +BINDGEN_TARGET_arm64:=3D aarch64-linux-gnu
-
-Spurious change?
-
-> +# Depending on how the architecute defines ARCH_SLAB_MINALIGN, bindgen m=
-ight generate a binding.
-> +# Disable this here as there is a const that will always be generated in=
- bindings_helper.c
-
-Typo in "architecute". Also, I guess you mean `.h` instead. Please use
-Markdown formatting for consistency with the rest of the file.
-
-> +        panic!("arm uses the builtin rustc target");
-
-Since ARM64 puts the name of the target in the message, it would be
-nice to do the same (or perhaps it can be removed from the ARM64 one
-otherwise).
-
-Cheers,
-Miguel
+Groeten
+Geert Stappers
+-- 
+Silence is hard to parse
