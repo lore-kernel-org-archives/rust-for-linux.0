@@ -1,108 +1,114 @@
-Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+Received: from mail-pg1-f180.google.com (mail-pg1-f180.google.com [209.85.215.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F10A018059
-	for <rust-for-linux@vger.kernel.org>; Fri,  7 Jun 2024 23:28:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 781D217BB7;
+	Sat,  8 Jun 2024 12:16:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717802909; cv=none; b=QtqA8r/oslrHMoNgYQFZyaBnuda8eh9nWj3whpsI2jgPVYKBMzhnSc5tAe1gUPd8A5vFYeLI6g1cUwYSzfU00Fo3ZmOdex7fV+x44fnxqbx4aTfcup/1ePstJa98vzSaJf4xg4rzYn5PKqi3g8Ai9eI+W1CtQCLdsKARk4SAW98=
+	t=1717848979; cv=none; b=lCd2LDomXwhsMH7UlC+Na4gaYyxnHNCojFy4VnqNwH9cGu293EHMFL77a8jJZ3TXOA5lhyfGGRk5db/BuuHUTTDyBn0g0ADIO8Hahkpql/b3uF+a+sSvwxTuOJ0hR+qf94WFv6Rua5a4ybPP7amgIqJzz9IzvNVIO3nEjOJJOsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717802909; c=relaxed/simple;
-	bh=LdcHXq3pzhJ/k2XjNOM+2FodVMNzTKSke9sg+KAzgEg=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=TTEK5xgJqsZ1Atc3EQnu+h7mB/zswfo4siAvbJ90GMKRgwGk8JO/YykXcnkqcuBqJysX+ow1ySOwJJhO/pclqW3LnkxMfhDFBYbspE6iVCeEn7xdEPJvEw3kAi1bStDjcbsLqWxWbjDxNKJ5xz49qNMm2EgUkibrIZLdDExO4IA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lQ1sE5f8; arc=none smtp.client-ip=209.85.215.169
+	s=arc-20240116; t=1717848979; c=relaxed/simple;
+	bh=5/UAPYwcgAe7ZWfUsvTDZ0S/CUfovi6lXYY8woJq+8c=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=od+pEFM9Zi3biSrSKlE4rm5PJJfFnoggnnAojcZPwfzZLPSko+hAiCedOwxzx7Wgq4RUrdcCOota7Nj0t5IvXV9ph71o14wE/zB+mA+CLJYng0wGx6d1msudHm+xf5rNGvf+ubL1VPr0zvooV03WdvuuWc96jn0EX0o82/qQwBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EfTFPqM6; arc=none smtp.client-ip=209.85.215.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lQ1sE5f8"
-Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-6dccc583e89so298429a12.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 07 Jun 2024 16:28:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EfTFPqM6"
+Received: by mail-pg1-f180.google.com with SMTP id 41be03b00d2f7-681ad081695so2316998a12.3;
+        Sat, 08 Jun 2024 05:16:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1717802907; x=1718407707; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=FCpSnT/Z3gu96TW6Bi5jW20jSUnyH6/NiGyW/o29kp4=;
-        b=lQ1sE5f8gXFPq2zraoXf7AptbTG4cf5mnkCXXEtBecc7D2oFHZq8K4DFYQ5Z+c3/6T
-         9Jpeh2CsL18QZG+wl/H31ilPmtbGW4BWEFlDn2OdwLMsgarL6Y4G/tGHRRHzyKbIh7NH
-         DoyHVc7Xs3cQxjCbu548mgsHNmj+UaO3VWex/+Kw9mIyrkcIoh/XREZyYx8QwkfhKgj3
-         X6mVewCUReGNR+xzNNXktgzgcK7Mp3wwiq+9aHXuctCrommFNRqvuW8duNvIUp13SmCm
-         F6A47w4LbGI0SJYbaDHWiPvV3wKBNxxlycMvQGpRLG2jy8qGs+OVEOks4oMPezBkyyJU
-         +0MA==
+        d=gmail.com; s=20230601; t=1717848978; x=1718453778; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QKSBnGSmzchFpYgSY1/szHPlRvPcQPGig0KHSHqMUl8=;
+        b=EfTFPqM6y2h3bLvXK9eUmS78D4SvVF5fiZdzzeEqoxlhQq3u5wNMBSv7CKymnID/SS
+         ziYs0mHUStlT9olzCzcardCXForae6JhFPbM4wTBWAAQrOifOnq0glz34Sjp96Sr53nU
+         fiIX77oFfVYm6sqIJZkc+/C+zYl6A6x86TYbIBQhHFDxDF0i2fRUus9wREa5q4u6nyE8
+         jvhpD6zufEWfJ8Yn3szdqVMto7itulDRMTQfk3yJk1SA5yfng+C319iqiGt+SlK7L9XA
+         mRDwkE+y00Kbiyiy3lfqqdPCkQ61zQd/T1mT1uBa+4AHZtB7QO2wCLRmesojXLNBr7jD
+         iP0g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717802907; x=1718407707;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=FCpSnT/Z3gu96TW6Bi5jW20jSUnyH6/NiGyW/o29kp4=;
-        b=HNER0yTXBusZILMvNUYDETGVzxsvIoIZ3580j0J3bWlqWqvOd/NiCZwuwq9zA1jmdO
-         Hyi1WM/uS/gMSGYbAFj2V8Uzw7dx+oQvAAMC/ZqBLf5MZ5r+/TRLO+UmNMb6Pu0ziU2R
-         4+tlnwHBrG7x8N4BRrJYMpVd07DGRwNek/YRanVyNyBj9AvjX7cn4xqUdIuLUrWh+kAM
-         XhVIND/jKBRMubeQh/Vgi5UCLCTPRMPffAuaCfXrLafCOWXMFIUDEymw3PPqAb8zgZno
-         s2lTiZ2V7k3MXF4vuBFo7dtHCOkSB1FTVit5GSRKmC7mu5MnIZsW9Sa0W2jJLxn+H/pP
-         Pb9w==
-X-Forwarded-Encrypted: i=1; AJvYcCV/Y52i06HctaJZlEcPKjajHrtN2xpa5EzSNoq0PrjPuKJMXVwkqDjCTnJ/QpmCG4bWscbAAKo0kbUjnsAr81lhPontCNa7p1edEIH+xbc=
-X-Gm-Message-State: AOJu0YyJ3C1pgORrokSbVlh8VRYP42QJTpP6xeJPNF+e5x0bqjw2BRB4
-	pHSoCM66eJIFzwGlejEoPnDB+6d1YLcv84J1jgdUpf/u9GNSnGJa
-X-Google-Smtp-Source: AGHT+IHKqP8BpJ3GvlWBCtH9BHSef3p/eg8WyNZ0fLmpTYYkVZFK8lROhnr7aPwhZgNBRJIsfeTjWA==
-X-Received: by 2002:a17:903:2308:b0:1f6:ee76:1b35 with SMTP id d9443c01a7336-1f6ee762403mr9866665ad.5.1717802907232;
-        Fri, 07 Jun 2024 16:28:27 -0700 (PDT)
-Received: from localhost (p5261226-ipxg23801hodogaya.kanagawa.ocn.ne.jp. [180.15.241.226])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f6bd75f157sm40102215ad.18.2024.06.07.16.28.19
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 07 Jun 2024 16:28:26 -0700 (PDT)
-Date: Sat, 08 Jun 2024 08:28:06 +0900 (JST)
-Message-Id: <20240608.082806.872238171846642664.fujita.tomonori@gmail.com>
-To: dakr@redhat.com
-Cc: gregkh@linuxfoundation.org, fujita.tomonori@gmail.com,
- wedsonaf@gmail.com, maarten.lankhorst@linux.intel.com, mripard@kernel.org,
- tzimmermann@suse.de, airlied@gmail.com, daniel@ffwll.ch, ojeda@kernel.org,
- alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
- bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@samsung.com,
- aliceryhl@google.com, lina@asahilina.net, pstanner@redhat.com,
- ajanulgu@redhat.com, lyude@redhat.com, rust-for-linux@vger.kernel.org,
- dri-devel@lists.freedesktop.org, nouveau@lists.freedesktop.org,
- mcgrof@kernel.org, russ.weight@linux.dev
-Subject: Re: [RFC PATCH 7/8] rust: add firmware abstractions
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <ZmNJpQbTtFUPOkAJ@cassiopeiae>
-References: <ZmMMMyi3uXTFtIae@cassiopeiae>
-	<2024060745-palatable-dragging-32d1@gregkh>
-	<ZmNJpQbTtFUPOkAJ@cassiopeiae>
+        d=1e100.net; s=20230601; t=1717848978; x=1718453778;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=QKSBnGSmzchFpYgSY1/szHPlRvPcQPGig0KHSHqMUl8=;
+        b=uWAhRfOowA2grYa86N9W8KIgTLycEp3YfkDXufrPhyTxcPnIDxYIPKrPR8KAdcm2Oc
+         tXDvAUNCVfGFjuSKXlhyNHaz9wf0GVHzkyritWnRY5C+ctnrV5FNUjWZW96gtkLxMKUX
+         inclYIbUo8GII/nRADplaxobuCuO4ZsNvGEI/bJ/xwC8+/qMBa20SGgiOCqWhZ1zGQaH
+         v2Cw9jhPIYOX/cwjBTqPWFGpYEWRjs0OcbR40e21CXuhjs1ArRW5D/NVQbrBQuHs9nf1
+         z4TA17qslfMqO6Y8QqW4b2mFLfeEHVpfCzSoaLiVobN8Rky0Z3qk/Xr/N3NKJviTEKTs
+         H5JQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUMuloKjUINsjEFRfRY6esSI1n2lwUrComofeaYrZ5UsNNhTgxG98fAKspxZSFxg3xmuYC2M3I9UunMOrOzmb86hB+u2kMH+z0M70FCylo=
+X-Gm-Message-State: AOJu0YwE4+mpLWY1aIN2WKdvlfVSQCSMTLLPELPOu8VpodaRtKCvtH4I
+	BPVL4EbhbxjLUH21A7tlE0OTQtYUV0g3nB8w7dQMyy2orgqyG1cmB9Xv4/J0L20EXy4k2NpejN9
+	6nsaein1G9WIUUVX5ywYsQ39qzPI=
+X-Google-Smtp-Source: AGHT+IHIYC+jXj7oKSbCIQMn0EzuWo5mO4AS/ZMfyaP7ov3SM8eiT8jgL4H6GyHHSF0xknZrZwBHWyzpxvn1NVg7DR8=
+X-Received: by 2002:a17:90a:8a10:b0:2be:9547:41a8 with SMTP id
+ 98e67ed59e1d1-2c2bcc61b80mr4817088a91.48.1717848977670; Sat, 08 Jun 2024
+ 05:16:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+References: <4e0f5932-c7bc-4878-862c-1186cbecd71d@gmail.com>
+In-Reply-To: <4e0f5932-c7bc-4878-862c-1186cbecd71d@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sat, 8 Jun 2024 14:16:05 +0200
+Message-ID: <CANiq72kaVw_t=hCJ-qEr=9ybuOngAR6isnCK717dBEm7CFm2NQ@mail.gmail.com>
+Subject: Re: [PATCH 1/1] arm: rust: Enable Rust support for ARMv7
+To: Christian Schrefl <chrisi.schrefl@gmail.com>, Jamie Cunliffe <jamie.cunliffe@arm.com>
+Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
+	Sven Van Asbroeck <thesven73@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, 7 Jun 2024 19:55:49 +0200
-Danilo Krummrich <dakr@redhat.com> wrote:
+On Sat, Jun 8, 2024 at 12:30=E2=80=AFAM Christian Schrefl
+<chrisi.schrefl@gmail.com> wrote:
+>
+> This is based on the code by Sven Van Asbroeck from the original
+> rust branch and inspired by the AArch version by Jamie Cunliffe.
 
-> On Fri, Jun 07, 2024 at 05:41:11PM +0200, Greg KH wrote:
->> On Fri, Jun 07, 2024 at 03:33:39PM +0200, Danilo Krummrich wrote:
->> > On Fri, Jun 07, 2024 at 02:36:50PM +0200, Greg KH wrote:
->> > > Anyway, that's all hand-wavy right now, sorry, to get back to the point
->> > > here, again, let's take this, which will allow the firmware bindings to
->> > > be resubmitted and hopefully accepted, and we can move forward from
->> > > there to "real" things like a USB or PCI or even platform device and
->> > > driver binding stuff.
->> > 
->> > In order to continue I propose to send out the following series:
->> > 
->> > 1) minimal device and firmware abstractions only
->> 
->> Sounds good.
-> 
-> Just a heads-up, I'll probably send this one quite a bit earlier than the other
-> two to make sure to unblock Fujita on their PHY driver.
+Thanks for mentioning that!
 
-Please. The sooner, the better. I need to send the PHY driver with
-these patchse to netdev.
+(AArch64 perhaps?)
 
-I'm not sure what the above "minimal device" means. If you send the
-original patch again instead of the patch that Greg already approved
-and the discussion continues, then I proceed with the approved patch.
+> I have tested the rust samples and a custom simple MMIO module
+> on on hardware (De1SoC FPGA + Arm A9 CPU).
+
+Very nice to have tested it in real hardware, thanks!
+
+(Duplicate "on on").
+
+> +``arm``        Maintained        ARMv7 Little Endian only.
+
+How hard would it be to test and maintain other versions, eventually?
+I met Jamie recently, he may have some ideas here.
+
+> -BINDGEN_TARGET_arm64   :=3D aarch64-linux-gnu
+> +BINDGEN_TARGET_arm64:=3D aarch64-linux-gnu
+
+Spurious change?
+
+> +# Depending on how the architecute defines ARCH_SLAB_MINALIGN, bindgen m=
+ight generate a binding.
+> +# Disable this here as there is a const that will always be generated in=
+ bindings_helper.c
+
+Typo in "architecute". Also, I guess you mean `.h` instead. Please use
+Markdown formatting for consistency with the rest of the file.
+
+> +        panic!("arm uses the builtin rustc target");
+
+Since ARM64 puts the name of the target in the message, it would be
+nice to do the same (or perhaps it can be removed from the ARM64 one
+otherwise).
+
+Cheers,
+Miguel
