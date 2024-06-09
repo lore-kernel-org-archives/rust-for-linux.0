@@ -1,59 +1,40 @@
-Received: from mail-ed1-f42.google.com (mail-ed1-f42.google.com [209.85.208.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.marcansoft.com (marcansoft.com [212.63.210.85])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59B4B179953;
-	Sat,  8 Jun 2024 13:57:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 105A615E9B
+	for <rust-for-linux@vger.kernel.org>; Sun,  9 Jun 2024 05:21:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.63.210.85
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717855060; cv=none; b=Vl1pwmKN3PN+jNXzJxqRt5v9+3v04TLpZXjDnmFJsXASl7W05r46rhXKrkC/j03FVQamx8DB1CcLWwtFMFQqFDPHDbMpmEK5P6LfFMXmxHVHjfKiB8xEytCgdvAN+somT18DNNd6h028kz/MXhlk5wtctDyXPBjDLt8RGLV0l14=
+	t=1717910516; cv=none; b=fjoukaXX+FkYGAidGrHzTYc17VJevknuKSs/WYc05H9oEFVEO4fchg8IsylCxIA/qIg87yJVB0h24831tFdDXiIrz5YFHvKMao2sqtQmM8sE9/ND7MWK7BcqEQek37BWfHSyoT4dwrdIU8MipjZAjJ9pW+ONSX+kz+6+u1EVrFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717855060; c=relaxed/simple;
-	bh=2UM4TkAgmyxv6SDb5F+kaL1JQiFce8cl1rLs6OODL04=;
+	s=arc-20240116; t=1717910516; c=relaxed/simple;
+	bh=Q1UPsINbFsF/krHvhKS9VhOJNdX4dv8c3DHiOLZvWI4=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iYKGWTSJtiLs7MauF4+yUpOxLu4/eRh+S6H/w5rjfZwOaFC4fOAcR9lChY4QPUMkv4xAtt/N1rezMNSjuOI60jlYFodvir0aGDHlie1geHcbf3rCq9viV1j3E8DtiePHQevCKob1yd1k8Q0cZ2nXSuVsYLDEKaHiHNdY5r5qw2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CK6JmMcY; arc=none smtp.client-ip=209.85.208.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 In-Reply-To:Content-Type; b=PFSo0Rm+ckaF51r3UqW7GD/TYjO+2HDZSCzj09bSVriCyLQ63fWiJDMpibz01u1d7ceuwYUVSbRzxZRMquQ9J1QJgs0hBqMZ8zOmNr/u5V7WW4IbwUblMrSVXv/GTUeK0SL86fKxeIIRH0gLIvqT0jcgoY4UCATW7JAvO+6BMKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=asahilina.net; spf=pass smtp.mailfrom=asahilina.net; dkim=pass (2048-bit key) header.d=asahilina.net header.i=@asahilina.net header.b=MKTLYKrO; arc=none smtp.client-ip=212.63.210.85
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=asahilina.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=asahilina.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CK6JmMcY"
-Received: by mail-ed1-f42.google.com with SMTP id 4fb4d7f45d1cf-57c5920ed3bso1361272a12.2;
-        Sat, 08 Jun 2024 06:57:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1717855058; x=1718459858; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ATHWp/dx9XNWFfxqyNzwyLWvmPFO9JtEj/8KGLy30MQ=;
-        b=CK6JmMcY6G1IUJkxdD5nja9MTv9JGjXzqp25xJKS18ljXbSt04Q33eOXm+kLBdGE3c
-         Mha6Miaujkoc54ZoikMKqS1rl8JozI32iH24hHlM1TeiL3MCvsF+6bkDfLBX+ST/I9rW
-         ZL6LzQIY9v9o+rJ2lUMDbauBCWk2VRRpM4WGYtczqj8AlmShfmTdoVRmqN2JxxUJdOEG
-         tIPVJsHRse3wNj7Cypo+tgWZ7aIKE3iC7D4jYvpECv88uDNIPPzohJN2kQWID24s6HuN
-         IC8KQDWcMqbJknyZPxDW8Nc2KqoVIM6ccE8PyLoUPhu2xcFB8DyOxVP61fxK8DCCBAjP
-         Mteg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717855058; x=1718459858;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ATHWp/dx9XNWFfxqyNzwyLWvmPFO9JtEj/8KGLy30MQ=;
-        b=RupLXrBfF+TJ3mtfFPjd3HE83ju5m7vxsGYZp7OHzhXb3JfI5Ci59gRQQ9xKZF41lZ
-         Faw3H0V+8URkOU15OlKXk7tQfrqzJCTqVlCVe69T3njtlepXpcVcnAY9k1kpeBonF9uk
-         A7TXrDADNf3Xt3OMlyIzEHGo7bWwREvnR6pNs1whZqUWVe58mYDzNzvaQEtmFWV0HIfT
-         TJWQsnjWiQ6SECP1P5rXrQ2YQXQZRO4QTwYr5+v3iQgpwniyjBo51ekBKMfWapOSToYN
-         IpnKVu7Wb1tKeYUW9G7G1G8YmFl7C8zR/sr2L+G29CuLP0+jcIf2fkabobaGY05if4TF
-         7lQw==
-X-Forwarded-Encrypted: i=1; AJvYcCXrH3eLHIvURXTTGUlYoauk5kGE5HsN0K04cTcTcCDTs729zW28H+WOEf2eVvPYI7V4NMVftBJhBoJ253TKKCEsisGuKzC8cZJTeWnbBg8=
-X-Gm-Message-State: AOJu0YxtzP455vjQKc1Epl6PCJpl9QGZQKXE3CGp2SivMRNBO5FZzNyT
-	UMgzFgRNLSpbIKnYRz/IR1IMmngtkNZa4mcwpgtO5GovmvOXAwgk
-X-Google-Smtp-Source: AGHT+IHu1PowfDXRPVKxaC2rG5ito/4e7ETPFqVb1Wv2SDwuvHewQVtdPwJZiBgS6ziT6RxESzzQ7A==
-X-Received: by 2002:a50:d50e:0:b0:579:ca97:da1b with SMTP id 4fb4d7f45d1cf-57c5084e0damr2882721a12.6.1717855057289;
-        Sat, 08 Jun 2024 06:57:37 -0700 (PDT)
-Received: from [10.5.1.156] (188-22-218-164.adsl.highway.telekom.at. [188.22.218.164])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-57aae12ce21sm4292594a12.49.2024.06.08.06.57.36
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 08 Jun 2024 06:57:37 -0700 (PDT)
-Message-ID: <0a45a87f-84d1-4fb7-adaf-c612af68cd40@gmail.com>
-Date: Sat, 8 Jun 2024 15:57:36 +0200
+	dkim=pass (2048-bit key) header.d=asahilina.net header.i=@asahilina.net header.b="MKTLYKrO"
+Received: from [127.0.0.1] (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: lina@asahilina.net)
+	by mail.marcansoft.com (Postfix) with ESMTPSA id BF26342617;
+	Sun,  9 Jun 2024 05:16:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=asahilina.net;
+	s=default; t=1717910167;
+	bh=Q1UPsINbFsF/krHvhKS9VhOJNdX4dv8c3DHiOLZvWI4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To;
+	b=MKTLYKrOSsm/45Zu8zlMpg5cHCCmtUYs78RXDFx+vbnpC2vwRmE6sX9PpFFsV2ck3
+	 cYE2oMwAkWRzkzrraGCNNombTT/oB7o0lBw5GrSrzRdSiOqiA+8INQHGce+tmOrLAp
+	 PBQ+tx3uAUELizkifvD7TFXoGUVge95JggmnhYG6qYeMJ7Qf56ZXAEx5tSzpU9QIJO
+	 yd2/RXSyP8q3zcici48sSQXRWYiL9qqjB7yJz9ARtiqpZnMBlR1jlj5FW99UAbnJFu
+	 pwKqmNSXjZzsO2th3PcGvuP3qtK2EAqWBMQiu+JmkOS92IZDwCCRQ2YQ3c1qh/U9tt
+	 0ILhGRf4fJSgA==
+Message-ID: <641bda93-35f3-429e-b627-a9485505b6bf@asahilina.net>
+Date: Sun, 9 Jun 2024 14:15:57 +0900
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -61,75 +42,118 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] arm: rust: Enable Rust support for ARMv7
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
- Jamie Cunliffe <jamie.cunliffe@arm.com>
-Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
- Sven Van Asbroeck <thesven73@gmail.com>
-References: <4e0f5932-c7bc-4878-862c-1186cbecd71d@gmail.com>
- <CANiq72kaVw_t=hCJ-qEr=9ybuOngAR6isnCK717dBEm7CFm2NQ@mail.gmail.com>
+Subject: Re: [RFC PATCH 3/8] rust: drm: Add Device and Driver abstractions
+To: Rob Herring <robh@kernel.org>, Danilo Krummrich <dakr@redhat.com>
+Cc: maarten.lankhorst@linux.intel.com, mripard@kernel.org,
+ tzimmermann@suse.de, airlied@gmail.com, daniel@ffwll.ch, ojeda@kernel.org,
+ alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com,
+ gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+ a.hindborg@samsung.com, aliceryhl@google.com, fujita.tomonori@gmail.com,
+ pstanner@redhat.com, ajanulgu@redhat.com, lyude@redhat.com,
+ gregkh@linuxfoundation.org, rust-for-linux@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, nouveau@lists.freedesktop.org
+References: <20240520172059.181256-1-dakr@redhat.com>
+ <20240520172059.181256-4-dakr@redhat.com>
+ <20240521212333.GA731457-robh@kernel.org>
 Content-Language: en-US
-From: Christian Schrefl <chrisi.schrefl@gmail.com>
-In-Reply-To: <CANiq72kaVw_t=hCJ-qEr=9ybuOngAR6isnCK717dBEm7CFm2NQ@mail.gmail.com>
+From: Asahi Lina <lina@asahilina.net>
+In-Reply-To: <20240521212333.GA731457-robh@kernel.org>
 Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Transfer-Encoding: 7bit
 
-On 08.06.24 2:16 PM, Miguel Ojeda wrote:
-> On Sat, Jun 8, 2024 at 12:30 AM Christian Schrefl
-> <chrisi.schrefl@gmail.com> wrote:
+
+
+On 5/22/24 6:23 AM, Rob Herring wrote:
+> On Mon, May 20, 2024 at 07:20:50PM +0200, Danilo Krummrich wrote:
+>> From: Asahi Lina <lina@asahilina.net>
 >>
->> This is based on the code by Sven Van Asbroeck from the original
->> rust branch and inspired by the AArch version by Jamie Cunliffe.
+>> Add abstractions for DRM drivers and devices. These go together in one
+>> commit since both are fairly tightly coupled types.
+>>
+>> A few things have been stubbed out, to be implemented as further bits of
+>> the DRM subsystem are introduced.
+>>
+>> Signed-off-by: Asahi Lina <lina@asahilina.net>
+>> Co-developed-by: Danilo Krummrich <dakr@redhat.com>
+>> Signed-off-by: Danilo Krummrich <dakr@redhat.com>
+>> ---
+>>  rust/bindings/bindings_helper.h |   2 +
+>>  rust/kernel/drm/device.rs       |  87 +++++++++
+>>  rust/kernel/drm/drv.rs          | 318 ++++++++++++++++++++++++++++++++
+>>  rust/kernel/drm/mod.rs          |   2 +
+>>  4 files changed, 409 insertions(+)
+>>  create mode 100644 rust/kernel/drm/device.rs
+>>  create mode 100644 rust/kernel/drm/drv.rs
 > 
-> Thanks for mentioning that!
+> [...]
 > 
-> (AArch64 perhaps?)
-
-Ah yes I meant AArch64. Fixed it locally.
-
->> I have tested the rust samples and a custom simple MMIO module
->> on on hardware (De1SoC FPGA + Arm A9 CPU).
+>> diff --git a/rust/kernel/drm/drv.rs b/rust/kernel/drm/drv.rs
+>> new file mode 100644
+>> index 000000000000..5dd8f3f8df7c
+>> --- /dev/null
+>> +++ b/rust/kernel/drm/drv.rs
+>> @@ -0,0 +1,318 @@
+>> +// SPDX-License-Identifier: GPL-2.0 OR MIT
+>> +
+>> +//! DRM driver core.
+>> +//!
+>> +//! C header: [`include/linux/drm/drm_drv.h`](../../../../include/linux/drm/drm_drv.h)
+>> +
+>> +use crate::{
+>> +    alloc::flags::*,
+>> +    bindings, device, drm,
+>> +    error::code::*,
+>> +    error::{Error, Result},
+>> +    prelude::*,
+>> +    private::Sealed,
+>> +    str::CStr,
+>> +    types::{ARef, ForeignOwnable},
+>> +    ThisModule,
+>> +};
+>> +use core::{
+>> +    marker::{PhantomData, PhantomPinned},
+>> +    pin::Pin,
+>> +};
+>> +use macros::vtable;
+>> +
+>> +/// Driver use the GEM memory manager. This should be set for all modern drivers.
+>> +pub const FEAT_GEM: u32 = bindings::drm_driver_feature_DRIVER_GEM;
+>> +/// Driver supports mode setting interfaces (KMS).
+>> +pub const FEAT_MODESET: u32 = bindings::drm_driver_feature_DRIVER_MODESET;
+>> +/// Driver supports dedicated render nodes.
+>> +pub const FEAT_RENDER: u32 = bindings::drm_driver_feature_DRIVER_RENDER;
+>> +/// Driver supports the full atomic modesetting userspace API.
+>> +///
+>> +/// Drivers which only use atomic internally, but do not support the full userspace API (e.g. not
+>> +/// all properties converted to atomic, or multi-plane updates are not guaranteed to be tear-free)
+>> +/// should not set this flag.
+>> +pub const FEAT_ATOMIC: u32 = bindings::drm_driver_feature_DRIVER_ATOMIC;
+>> +/// Driver supports DRM sync objects for explicit synchronization of command submission.
+>> +pub const FEAT_SYNCOBJ: u32 = bindings::drm_driver_feature_DRIVER_SYNCOBJ;
+>> +/// Driver supports the timeline flavor of DRM sync objects for explicit synchronization of command
+>> +/// submission.
+>> +pub const FEAT_SYNCOBJ_TIMELINE: u32 = bindings::drm_driver_feature_DRIVER_SYNCOBJ_TIMELINE;
 > 
-> Very nice to have tested it in real hardware, thanks!
+> This is missing an entry for DRIVER_GEM_GPUVA. And some others perhaps. 
+> I suppose some are legacy which won't be needed any time soon if ever. 
+> Not sure if you intend for this to be complete, or you are just adding 
+> what you are using? Only FEAT_GEM is used by nova ATM.
 > 
-> (Duplicate "on on").
 
-I fixed that locally, but forgot to run format-patch again, sorry! 
+This was developed before DRIVER_GEM_GPUVA existed ^^
 
->> +``arm``        Maintained        ARMv7 Little Endian only.
-> 
-> How hard would it be to test and maintain other versions, eventually?
-> I met Jamie recently, he may have some ideas here.
+I have this in my branch since I'm using the GPUVA manager now. Danilo,
+what tree are you using for this submission? It would be good to
+coordinate this and try to keep the WIP branches from diverging too much...
 
-I think it would just be setting the correct rust target,
-but I have no hardware to test it and I think its best to
-only do v7 for the initial support.
+That said, I don't think there's reason to support all features unless
+we expect new drivers to actually use them. The goal of the abstractions
+is to serve the drivers that will use them, and to evolve together with
+them and any newer drivers, not to attempt to be feature-complete from
+the get go (it's very difficult to evaluate an abstraction if it has no
+users!). In general my approach when writing them was to abstract what I
+need and add "obvious" extra trivial features that didn't require much
+thought even if I wasn't using them, but otherwise not attempt to
+comprehensively cover everything.
 
->> -BINDGEN_TARGET_arm64   := aarch64-linux-gnu
->> +BINDGEN_TARGET_arm64:= aarch64-linux-gnu
-> 
-> Spurious change?
-
-I've changed that so the := aligns with the others, but I can
-remove that for v2 if you want
-
->> +# Depending on how the architecute defines ARCH_SLAB_MINALIGN, bindgen might generate a binding.
->> +# Disable this here as there is a const that will always be generated in bindings_helper.c
-> 
-> Typo in "architecute". Also, I guess you mean `.h` instead. Please use
-> Markdown formatting for consistency with the rest of the file.
-
-Fixed.
-
->> +        panic!("arm uses the builtin rustc target");
-> 
-> Since ARM64 puts the name of the target in the message, it would be
-> nice to do the same (or perhaps it can be removed from the ARM64 one
-> otherwise).
-
-I can add the target here but then the message would have to depend
-on the sub architecture if we support v6 in the future. 
-
-> Cheers,
-> Miguel
+~~ Lina
