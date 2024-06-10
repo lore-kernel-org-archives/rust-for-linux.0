@@ -1,98 +1,67 @@
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7A8013665D;
-	Mon, 10 Jun 2024 19:37:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C03701B812
+	for <rust-for-linux@vger.kernel.org>; Mon, 10 Jun 2024 20:07:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718048229; cv=none; b=ezG34UqifjlhqzWbJtjBVi5WUVG1smlmYNHeZC5Rm/qNOqhzSYmiYrXj9IQ7ktUts4w9UPq0iiy0ygVXyZq6ZAMFeFi/xzteeSXU44oQ3YdptywKefVl9SSetZD00ygd1ucpM1cmXjKtW+kEWO14QVUjjm8h4EuCaqfy7enFidk=
+	t=1718050053; cv=none; b=dqWHWzh5OvW3jHVeN5FG+e73ph1XuIgQ1lb3WnhUdY+GhTnQyRxEusxqsdxB6zI+GrJU9O3Fgjs+kPsf7fuO0Y46XW9uC9+/PNC4/ftwO3GgkXj6pPm2JZgI2/BKGOI3lDWufeRkbAkNZJXmwEsTQgcNj+I1LtHhLq+za0kktl8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718048229; c=relaxed/simple;
-	bh=0PnQ7JcDwQy6GuS+h90eAb+hPmSTVuQjXun3YIoqONI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=d6snecBWQeOqogBeiQ6j90w5Ty7CbHGREWc48WP9FOGbpQc5RLL1d2LyZNNTSKjne0UAtxD5fsdpze4M0gkdRW8NXf98zJ9gjBQbLa4AJIqaVtdJPb02RNEzkDPt6joe0tIgUCoAa0iCMj8Yn8FLDkP1zD3P9tbeS/XHUeloC0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Gk4qi51v; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1718050053; c=relaxed/simple;
+	bh=gsBPbPnYKAP9lMCqyZCeXmja+Pyc5B6zW7EZJXPlBQA=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=H+I7CCU4eEfscR6VEaJPO3T/eVZbLLGrzbKMCZJw/aHSij+nKZ6lrFBPspsHKf5oNYtZCsYdIUnFxGpwDmuTJpYgVakJwlW5SMRJidPesDp/TCZE8RNuw68XxzvU1WHRjL8uZWRlYT5OlhccIMNFfA04ruIIq5uvzsyP1BtBDC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=QFQj0aQ9; arc=none smtp.client-ip=185.70.43.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Gk4qi51v"
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-42249a4f9e4so351825e9.2;
-        Mon, 10 Jun 2024 12:37:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718048226; x=1718653026; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=8h0SoR1IdP8sTl9hCTv4WQ8Vv5cv7/2sTEnWF1cX+rc=;
-        b=Gk4qi51vrkceTG0kMnqi4POaOrAxPVqEHGeLwbf3S54rmdRIlu3zCXSWgypsvPonvo
-         oaz7HG3wAPL0N/QjlWu5LD3v7J+I5+kbWQeN4/sN1Mns2ChTHond0kLXU1yXWK07KFdP
-         35pLtP1WNw7wJHqTJ1vdaN+DeDHMALWOAdrW6kErY98afv2KXfPTrjL+tMHzxUgTPPTj
-         hqBvuWteCl6iEpx1WGUTtQZyD9q/sLb4TzCXv92Sy9p7TfXxkpT5vyLTZDo5lIcZMZa6
-         o/JAldhsamNUqkgrOkFnWjitam+sTeP4cpoIYxtjGs6wrjHAans7bfLxOA0C831wWfO8
-         0mLQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718048226; x=1718653026;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=8h0SoR1IdP8sTl9hCTv4WQ8Vv5cv7/2sTEnWF1cX+rc=;
-        b=HRePfXXrFaBbq8vz5RVYIQgjuIa8g8tPe3IE/RkZEyWiu4utmJtKCmltBoP4RHDSEI
-         f5MdbN3vpC91JhXvs2X+RQV6JdbXNWY++Z0AxRMJjj45j90hVXKjaaCFxBHdkLv+ZAAT
-         RyugUf+w5tEuquUESo2b2nXWy32PR5EkxizTSa8QOUqt01iHaH1ytx7mSfzgozhVv23i
-         BydWN2bx0qw+mB+xmQYOdbd44fiX5zvgauT66TM6Yzwa4Y7qozrmQEkcaXp1BO9uc1b/
-         rQSCnBR+y1WNkzSXjK5TafmjkAhJG6k4PfTDJZIKnw2lOzcCGuaZfDOrcMHSSgZqR5Hr
-         OO9g==
-X-Forwarded-Encrypted: i=1; AJvYcCVlNPtvlgT5JW3c5iSM+Z59xpfVetnIngyslPRVhpRFO6SRn6R/jtlDxIGooFDS6h0DqMPpTGGeM5Ifjma3xNBimaZ/JH0Kmta4i1VtDyM=
-X-Gm-Message-State: AOJu0YxQm75zzpBLVf9e2hB4zM7rkVhPHS2lcjMtcntICXGHhyiwvT52
-	vNIheoUm34DS9i7qFdqBo/uj7FsOHcujriFYDqDrHb2rTCEyFSTw
-X-Google-Smtp-Source: AGHT+IFIHjGgGY8+jGNdwOx+v6ZxtwK5erxpCzpfi8hOa1DDVsere/GMRkhDY79Ziybi04Jiw9nQlw==
-X-Received: by 2002:a05:600c:314f:b0:41b:60ae:7827 with SMTP id 5b1f17b1804b1-42164a033b7mr93615665e9.24.1718048225886;
-        Mon, 10 Jun 2024 12:37:05 -0700 (PDT)
-Received: from [10.5.1.156] (188-22-218-164.adsl.highway.telekom.at. [188.22.218.164])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-35f1efe9a74sm5100004f8f.104.2024.06.10.12.37.05
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 10 Jun 2024 12:37:05 -0700 (PDT)
-Message-ID: <f798777d-6a56-45d4-8136-6aa9e0e77abc@gmail.com>
-Date: Mon, 10 Jun 2024 21:37:04 +0200
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="QFQj0aQ9"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1718050042; x=1718309242;
+	bh=YaudkvTAFLJ++bghqSZYe4gWhD1sK1cupANwv9nOdZM=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=QFQj0aQ9UrLzFPF+gUn/CRwt+AHtSb9LsJY4rF4T2VFnEqLHBmNtCZBr4e6aT2bkV
+	 0Rlas9rDr3JslF05T+X3blo3fG7H3RznctbNms5RALorGyqc5KYbdigVI+3ob01Mkw
+	 tj/fp4+NItpsf3IWKVU0Bcs1symzYPWXe7ko/49glT/fvmBg22SyQbEqhCUQyRU/xs
+	 Fo5kLuVlUuy0hfU00FRUBZkcJx9HArKjNZURqsK8pUqqXI3tQjQdC2aTJtD+uBKq0K
+	 ZUdA9B+9VJZG7wHxWZCQSNoZzmLeROleKM6lwudahQ4KvMSav+1M6I2ON4tnkwji7T
+	 BN99wZZ0a0kJw==
+Date: Mon, 10 Jun 2024 20:07:15 +0000
+To: Andreas Hindborg <nmi@metaspace.dk>, Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>, Keith Busch <kbusch@kernel.org>, Damien Le Moal <dlemoal@kernel.org>, Bart Van Assche <bvanassche@acm.org>, Hannes Reinecke <hare@suse.de>, Ming Lei <ming.lei@redhat.com>, "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Andreas Hindborg <a.hindborg@samsung.com>, Greg KH <gregkh@linuxfoundation.org>, Matthew Wilcox <willy@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Chaitanya Kulkarni <chaitanyak@nvidia.com>, Luis Chamberlain <mcgrof@kernel.org>, Yexuan Yang <1182282462@bupt.edu.cn>, =?utf-8?Q?Sergio_Gonz=C3=A1lez_Collado?= <sergio.collado@gmail.com>, Joel Granados <j.granados@samsung.com>, "Pankaj Raghav (Samsung)" <kernel@pankajraghav.com>, Daniel Gomez <da.gomez@samsung.com>, Niklas Cassel <Niklas.Cassel@wdc.com>, Philipp Stanner <pstanner@redhat.com>, Conor Dooley <conor@kernel.org>, Johannes Thumshirn <Johannes.Thumshirn@wdc.com>, =?utf-8?Q?Matias_Bj=C3=B8rling?= <m@bjorling.me>, open list <linux-kernel@vger.kernel.org>,
+	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>, "lsf-pc@lists.linux-foundation.org" <lsf-pc@lists.linux-foundation.org>, "gost.dev@samsung.com" <gost.dev@samsung.com>
+Subject: Re: [PATCH v5 2/3] rust: block: add rnull, Rust null_blk implementation
+Message-ID: <f05832b5-de63-46a0-b623-ae9ef18c2648@proton.me>
+In-Reply-To: <20240603191455.968301-3-nmi@metaspace.dk>
+References: <20240603191455.968301-1-nmi@metaspace.dk> <20240603191455.968301-3-nmi@metaspace.dk>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: e8280eca314cd33587780377548bd7cae8afc414
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/1] arm: rust: Enable Rust support for ARMv7
-To: Andrew Lunn <andrew@lunn.ch>, Miguel Ojeda <ojeda@kernel.org>
-Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- rust-for-linux@vger.kernel.org, Jamie Cunliffe <Jamie.Cunliffe@arm.com>,
- Sven Van Asbroeck <thesven73@gmail.com>
-References: <4e0f5932-c7bc-4878-862c-1186cbecd71d@gmail.com>
- <5a8a6b44-9f89-4e26-869c-e9361da4cb5c@lunn.ch>
-Content-Language: en-US
-From: Christian Schrefl <chrisi.schrefl@gmail.com>
-In-Reply-To: <5a8a6b44-9f89-4e26-869c-e9361da4cb5c@lunn.ch>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On 10.06.24 9:00 PM, Andrew Lunn wrote:
->> --- a/Documentation/rust/arch-support.rst
->> +++ b/Documentation/rust/arch-support.rst
->> @@ -15,6 +15,7 @@ support corresponds to ``S`` values in the ``MAINTAINERS`` file.
->>  =============  ================  ==============================================
->>  Architecture   Level of support  Constraints
->>  =============  ================  ==============================================
->> +``arm``        Maintained        ARMv7 Little Endian only.
-> 
-> Might be a FAQ, but what does Maintained mean here? Should you be
-> adding yourself to the RUST entry in MAINTAINERS? You are Maintaining
-> Rust on ARMv7 and so should be given credit/responsibility for that in
-> MAINTAINERS?
+On 03.06.24 21:14, Andreas Hindborg wrote:
+> From: Andreas Hindborg <a.hindborg@samsung.com>
+>=20
+> This patch adds an initial version of the Rust null block driver.
+>=20
+> Signed-off-by: Andreas Hindborg <a.hindborg@samsung.com>
+> ---
+>  drivers/block/Kconfig  |  9 ++++++
+>  drivers/block/Makefile |  3 ++
+>  drivers/block/rnull.rs | 73 ++++++++++++++++++++++++++++++++++++++++++
 
-From my side I can/will take a look if there are issues/patches related to this, but I 
-can't be sure how fast I'll be able to respond and I don't feel qualified to handle
-larger or more complicated issues myself.
+Reviewed-by: Benno Lossin <benno.lossin@proton.me>
 
-But there isn't a MAINTAINERS entry depending on the architecture, so I'm not sure
-who will be responsible for this.
+---
+Cheers,
+Benno
 
-Miguel how is the support handled for the other architectures?
