@@ -1,174 +1,154 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B4251CD3C
-	for <rust-for-linux@vger.kernel.org>; Sun,  9 Jun 2024 14:18:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 953A5125DB
+	for <rust-for-linux@vger.kernel.org>; Mon, 10 Jun 2024 06:17:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1717942702; cv=none; b=qKRMGvs4xKc+g9MZv5TTxWO2Tw7kS2f1YAhxg3Bbd4EJbel1OYMw1fLv9ALPI/38fAQLkUK7dDfoyre1Gc9OJ51p+cDa9yAy66vQt1cRMywL8eFGumldYYrYOgphajc+ybtHYz7yq1wKtPbz+YJkRL0JSrq8+dr/6a1CyTiMr3k=
+	t=1718000230; cv=none; b=nEEpIxGIgXmZNuvbOxfFDoIPKIylekmSgNei8hJ4/75KEh/oJOx2zlAZOXwc03C9jMwFvz+YIWNx4ZgSHygnaib3JZUUvfb+0d4IPxDr0tzWqkMRAXLOMlufNGK4FV03BFLN3MH37FRQGlLcZu0Z/gV7U3rk5OPe7hfaXqTkcXo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1717942702; c=relaxed/simple;
-	bh=+tIF+L0O8D60T7bi+aoQxieV46zwUkRLNZSQ4d0TJus=;
+	s=arc-20240116; t=1718000230; c=relaxed/simple;
+	bh=s4tHLeN/JQ4Sw0Rb/SIllLLkTuy/lx7zwd13CxrMaQo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 In-Reply-To:Content-Type:Content-Disposition; b=pRgr7HmmCLT+9Z05SspP8dON7XBNHWkhTbyrFCzJkRQulCj3z6iizaZww3P4pAMPyPQZ+I2tKl54/MRabcl8eI/ARWfbkmu24LMtga3aGqk2UUV4hbffQMpt08RvQu86k1P2ARZx6Prs7knjBz4hBrITLXI7bDawra+P9R9nyf8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=aH7eJ7TG; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=HDHlJ1e1GsTSeZQISOYfoIkIK99tIw/1iOkfGfL0iuhL31Rg0ZC4MkfB5vXPIQ7biQBbbxb7CpD8fIWZp6ALmszTiLeD6Vmm5bDrVaRZJ6hL+PUzVX8WD/fSWhFohTmz2zBd/3EB6UKLpBCXslC3RgQ1aW6czZuPRv3x6r0oUFI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=RcMznEtb; arc=none smtp.client-ip=209.85.214.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="aH7eJ7TG"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1717942699;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=cMyIMuZIV0J4WT/bbuPywT6mF+m6iBHlzM2Be2NV7Fg=;
-	b=aH7eJ7TGMwjekjAUhFK9xuioVVMb/dEmxlUkPtncPl1BbnzTJHiLneyUl5lY8eVtROL8iA
-	i+of4eCxV0wDPMPNJIW3I8GipoJTDTkSI5/1Ky86pYNJaZ7DjRbMAgokI1sBbxgxlDFrvs
-	TA11uKDLG4GyHq4G/tH+GLUMHFdv+q4=
-Received: from mail-ot1-f69.google.com (mail-ot1-f69.google.com
- [209.85.210.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-393-QmCUD7A8OEGKXBQSMZQBIQ-1; Sun, 09 Jun 2024 10:18:17 -0400
-X-MC-Unique: QmCUD7A8OEGKXBQSMZQBIQ-1
-Received: by mail-ot1-f69.google.com with SMTP id 46e09a7af769-6f9b0989f50so269967a34.1
-        for <rust-for-linux@vger.kernel.org>; Sun, 09 Jun 2024 07:18:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="RcMznEtb"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-1f6fada63a6so8756945ad.3
+        for <rust-for-linux@vger.kernel.org>; Sun, 09 Jun 2024 23:17:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1718000228; x=1718605028; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=zRyYafF7FFhRREQMxHKJZeOnD/kuer3fST0Jc3qLYZI=;
+        b=RcMznEtb/0TzHm5zHp6xvZFGoZ/tYS6n/AAvvHsZOWDPE1bn3649SwEPx5IhIskqBE
+         Afgm7v/zm3Kvj0qvr4hE8swxxqHfkrkZ/LE8X6LHiue5vnwyOvtG0Xfo0NJongLPvny2
+         kt2wYsvz9ZIHY77sYfdB9FKjgwWlPnsw5mQaML6KZBPW0LyI891uPVfCq3MJ00FlTyQM
+         HSIvt4uZVCWQeKzKHQFXq7VOk0VmfMmUiGPwZD/8SL/jOS/yXA6xkUolcsLysxnOP+QI
+         DNq8ykKv/+Wv1qfK0OD7sXLouPvmPTG6OqbnPkszD9S1qGgBXzbxqRDaKNnq9NV7xTpy
+         t11Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1717942696; x=1718547496;
+        d=1e100.net; s=20230601; t=1718000228; x=1718605028;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=cMyIMuZIV0J4WT/bbuPywT6mF+m6iBHlzM2Be2NV7Fg=;
-        b=LFekzWx0A7NmSxroQCv8bBftDcN926skZzCBepiQJdhTISk5LjEARUIdNeLF7a2UtT
-         wcZe9/eR+QCxSC4NLsUeWx+zUmo0fcPZJI2MADbq+Hy1E0Ux1w/NYNoDu6KxlBSKSJXW
-         ymiKDxUdTp/JzmgmX/OtjIv45T3mQ/eMq2lh636ult3whlunyHdfCTAU5T6HE+cqM2Ms
-         G+zXmLeEBWNndQUpiHO95OQiVWQYr21EdeTvnUK45QjFDOh5EZQn7TSj845PV22q4K5R
-         nChNRCLeAGdnmzPUK/+NcsRMY/cGPBmW10FjTEpiX9nzHaNuhgpQXiZLbRrsyZ+v5QZ7
-         tXhA==
-X-Forwarded-Encrypted: i=1; AJvYcCWBhO3QPqTY+GTkZvzgks+M2abI+Oqhptn+vYOVvobbIKksSoe95MOWCJ5BWR6/2voyfp7/0c6xVHZgyErx6/9jMAsidWPRxUn5ikdzxFc=
-X-Gm-Message-State: AOJu0YzeT1L/s/sWlAJ9JHG4GbDUBycEyAJ+GfDk6thrWVcHGkuHB5Pm
-	A1zOuiMtyQwZuMUQ5q6UIRF2vQhH+l7Mc1EQYvBQC5N2Lh9TvDqihCmZJFmQTodxrB/Q9qmyQKZ
-	0ys4sBhvDYlO3jUIStG0VrQO6FObDg+UvoGU41eEQQue+eLImR0R21Ej0Gm7c2r8p
-X-Received: by 2002:a05:6830:1306:b0:6f9:b071:28c6 with SMTP id 46e09a7af769-6f9b07129eamr776374a34.18.1717942696222;
-        Sun, 09 Jun 2024 07:18:16 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFEgFJzPhPL9AfxoVR1rmqk6GbXBxcYfuvjBNWJrBUiacSd3hziDK5FPsK0p/sHN42elFxnZg==
-X-Received: by 2002:a05:6830:1306:b0:6f9:b071:28c6 with SMTP id 46e09a7af769-6f9b07129eamr776339a34.18.1717942695725;
-        Sun, 09 Jun 2024 07:18:15 -0700 (PDT)
-Received: from pollux.localdomain ([2a02:810d:4b3f:ee94:34d8:5ea8:12d:c9ae])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-6f97eb7c200sm513850a34.20.2024.06.09.07.18.11
+        bh=zRyYafF7FFhRREQMxHKJZeOnD/kuer3fST0Jc3qLYZI=;
+        b=eIgQRvKn65u1rMDVOw2RRwjZMWbIUnbL7g495pda0nII1IDZbSuchBdwoUXHl/s5/2
+         1sT8lMIyLMkELJXiwxEvRzEucSL4Pf3Rm0yul3AbeGFSToybcD1o6tldHF1aFVEzYHEl
+         EK4jcesGJsleYP/dug96IAofHysZGJqjad2qGUi+E+3v60y5PH/DNtlt2IhQM5cFFfbM
+         FAKYxekDN1sylkfm3tC0DTu/qG2E2iS9RminD7yx10Hw+gClmFCuwm/MZlQJX6KeSpBA
+         3SEWr5YbsZ5urGybJn6viS4JZSIomJv+RvbK/CzCAyEu0NSMZE8BRIpkoU/gKnhFZZ0b
+         jXkw==
+X-Forwarded-Encrypted: i=1; AJvYcCXp1eiivMgAAOMOBSgmeLcFQR6PYCT6ih5qFNcqh60PkVB6Tc6olzQlfW/ZbkHQhmdyp4HBlfFUDKVFuBFz+h3Erct+pxZMWJDIKpga3wc=
+X-Gm-Message-State: AOJu0Yz8Ho60Pug/XnJbOhuyUimb1Icu94pdd/vylReKQ8CNxyR8BmeM
+	9f/r9+4g7n/QUQJFcdLbVvMY4byXjv8oqBTxHlFF9/D7hOxri9oFo67yiTIEd80=
+X-Google-Smtp-Source: AGHT+IF/Pq85SQr6hwAPu0rpG83JvHV+XjAapFFtvWDWqW3dZBCDsURQ/IR/ZmdNh8HUADlr6aGwag==
+X-Received: by 2002:a17:902:da8b:b0:1f6:65d3:296 with SMTP id d9443c01a7336-1f6d02f7476mr105244315ad.29.1718000227759;
+        Sun, 09 Jun 2024 23:17:07 -0700 (PDT)
+Received: from localhost ([122.172.82.13])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f6bd760225sm75473875ad.15.2024.06.09.23.17.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 09 Jun 2024 07:18:15 -0700 (PDT)
-Date: Sun, 9 Jun 2024 16:18:09 +0200
-From: Danilo Krummrich <dakr@redhat.com>
-To: Asahi Lina <lina@asahilina.net>
-Cc: Rob Herring <robh@kernel.org>, maarten.lankhorst@linux.intel.com,
-	mripard@kernel.org, tzimmermann@suse.de, airlied@gmail.com,
-	daniel@ffwll.ch, ojeda@kernel.org, alex.gaynor@gmail.com,
-	wedsonaf@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
-	bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	a.hindborg@samsung.com, aliceryhl@google.com,
-	fujita.tomonori@gmail.com, pstanner@redhat.com, ajanulgu@redhat.com,
-	lyude@redhat.com, gregkh@linuxfoundation.org,
-	rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	nouveau@lists.freedesktop.org
-Subject: Re: [RFC PATCH 3/8] rust: drm: Add Device and Driver abstractions
-Message-ID: <ZmW5oT7knQh9nKeD@pollux.localdomain>
-References: <20240520172059.181256-1-dakr@redhat.com>
- <20240520172059.181256-4-dakr@redhat.com>
- <20240521212333.GA731457-robh@kernel.org>
- <641bda93-35f3-429e-b627-a9485505b6bf@asahilina.net>
+        Sun, 09 Jun 2024 23:17:07 -0700 (PDT)
+Date: Mon, 10 Jun 2024 11:47:05 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?utf-8?Q?Bj=C3=B6?= rn Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>, linux-pm@vger.kernel.org,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Stephen Boyd <sboyd@kernel.org>, Nishanth Menon <nm@ti.com>,
+	rust-for-linux@vger.kernel.org,
+	Erik Schilling <erik.schilling@linaro.org>,
+	Alex =?utf-8?B?QmVubsOp?= e <alex.bennee@linaro.org>,
+	Joakim Bech <joakim.bech@linaro.org>, Rob Herring <robh@kernel.org>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH V2 2/8] rust: Extend OPP bindings for the OPP table
+Message-ID: <20240610061705.rismfufmsmq44qt6@vireshk-i7>
+References: <cover.1717750631.git.viresh.kumar@linaro.org>
+ <dc156230814a899e5e3ffb6f3a0e5471d92506de.1717750631.git.viresh.kumar@linaro.org>
+ <epir3.2kxc5jzd28c@linaro.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <641bda93-35f3-429e-b627-a9485505b6bf@asahilina.net>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <epir3.2kxc5jzd28c@linaro.org>
 
-Hi Lina,
-
-Welcome back!
-
-On Sun, Jun 09, 2024 at 02:15:57PM +0900, Asahi Lina wrote:
+On 07-06-24, 13:38, Manos Pitsidianakis wrote:
+> On Fri, 07 Jun 2024 12:12, Viresh Kumar <viresh.kumar@linaro.org> wrote:
+> > +/// OPP search types.
+> > +#[derive(Copy, Clone, Debug, Eq, PartialEq)]
+> > +pub enum SearchType {
+> > +    /// Search for exact value.
+> > +    Exact,
+> > +    /// Search for highest value less than equal to value.
+> > +    Floor,
+> > +    /// Search for lowest value greater than equal to value.
+> > +    Ceil,
+> > +}
 > 
+> Seeing this enum made me think about memory layouts which are not stable in
+> Rust and can change between compilations unless they have a specific `repr`.
+
+Just to clarify, this enum is a Rust only entity. It doesn't have a C
+counterpart..
+
+> Not related to this series directly, has there been discussion about
+> guaranteeing struct layouts in kernel APIs? It'd require a lot of things to
+> happen to cause a problem (multiple users of an API in the kernel in
+> separate compilation units maybe even compiled with different rustc
+> versions).
+
+I haven't followed the Rust discussions closely, hopefully someone
+else can answer on this. But isn't repr(C) good enough to take care of
+layout issues ? I must not be understanding it since you asked this :)
+
+> > +    /// Find OPP table from device.
+> > +    pub fn from_dev(dev: ARef<Device>) -> Result<Self> {
+> > +        // SAFETY: The requirements are satisfied by the existence of `Device` and its safety
+> > +        // requirements. Refcount of the OPP table is incremented as well.
+> > +        let ptr = from_err_ptr(unsafe { bindings::dev_pm_opp_get_opp_table(dev.as_raw()) })?;
+> > +
+> > +        Ok(Self {
+> > +            ptr,
+> > +            dev: dev.clone(),
 > 
-> On 5/22/24 6:23 AM, Rob Herring wrote:
-> > On Mon, May 20, 2024 at 07:20:50PM +0200, Danilo Krummrich wrote:
-> >> From: Asahi Lina <lina@asahilina.net>
-> > This is missing an entry for DRIVER_GEM_GPUVA. And some others perhaps. 
-> > I suppose some are legacy which won't be needed any time soon if ever. 
-> > Not sure if you intend for this to be complete, or you are just adding 
-> > what you are using? Only FEAT_GEM is used by nova ATM.
-> > 
+> Clone is not probably not needed here, right? the argument value will be
+> dropped after this.
+
+Hmm, I was expecting the build system to raise an error for such
+things. Tried both rustfmtcheck and CLIPPY=1 and this isn't reported.
+Anyway, fixed it now (along with few other that CLIPPY=1 reported).
+
+> > +    /// Finds OPP based on level.
+> > +    pub fn opp_from_level(&self, mut level: u32, stype: SearchType) -> Result<ARef<OPP>> {
+> > +        let rdev = self.dev.as_raw();
+> > +
+> > +        let ptr = from_err_ptr(match stype {
+> > +            // SAFETY: The requirements are satisfied by the existence of `Device` and its
+> > +            // safety requirements. The returned ptr will be owned by the new [`OPP`] instance.
+> > +            SearchType::Exact => unsafe { bindings::dev_pm_opp_find_level_exact(rdev, level) },
+> > +
 > 
-> This was developed before DRIVER_GEM_GPUVA existed ^^
-> 
-> I have this in my branch since I'm using the GPUVA manager now. Danilo,
-> what tree are you using for this submission? It would be good to
-> coordinate this and try to keep the WIP branches from diverging too much...
+> Minor style comment, the empty lines between match patterns are unusual
 
-Trying to prevent things from diverging was one of my main objectives when I
-started those efforts a couple of month ago (I also sent you a mail for that
-purpose back then).
+Yeah, since there were a lot of comments and code, I added them to
+make it more readable. rustfmt doesn't raise any issues with it, so I
+guess I can keep them :)
 
-I am maintaining a couple of branches:
+Thanks Manos.
 
-In the RfL repository [1]:
-
-  - staging/rust-device [2] (Device / driver, devres infrastructure)
-  - staging/dev [3] (common branch containing all the Rust infrastructure I'm
-    currently upstreaming, including PCI and firmware abstractions)
-
-In the drm-misc repository [4]:
-  - topic/rust-drm [5] (all the DRM abstractions)
-
-In the Nova repository [6]
-  - nova-next [7] (the Nova stub driver making use of everything)
-
-I regularly rebase those branches and keep them up to date with improvements and
-feedback from the mailing list.
-
-The device / driver and PCI abstractions are getting most of my attention
-currently, but there are some recent changes (besides some minor ones) on the
-DRM abstractions I plan to send in a v2 as well:
-
-- static const allocation of driver and fops structures
-- rework of the `Registration` type to use `Devres` and combine the new() and
-  register() methods to register in new() already
-
-There is also some more information regarding those branches in the cover
-letters of the series and the links included there.
-
-[1] https://github.com/Rust-for-Linux/linux
-[2] https://github.com/Rust-for-Linux/linux/tree/staging/rust-device
-[3] https://github.com/Rust-for-Linux/linux/tree/staging/dev
-[4] https://gitlab.freedesktop.org/drm/misc/kernel
-[5] https://gitlab.freedesktop.org/drm/misc/kernel/-/tree/topic/rust-drm
-[6] https://gitlab.freedesktop.org/drm/nova
-[7] https://gitlab.freedesktop.org/drm/nova/-/tree/nova-next
-
-> 
-> That said, I don't think there's reason to support all features unless
-> we expect new drivers to actually use them. The goal of the abstractions
-> is to serve the drivers that will use them, and to evolve together with
-> them and any newer drivers, not to attempt to be feature-complete from
-> the get go (it's very difficult to evaluate an abstraction if it has no
-> users!). In general my approach when writing them was to abstract what I
-> need and add "obvious" extra trivial features that didn't require much
-> thought even if I wasn't using them, but otherwise not attempt to
-> comprehensively cover everything.
-
-Fully agree, I think the point here only was whether we want to list all the
-feature flags in the abstraction already. Which I think is something we can do.
-However, I'm also find with only listing the ones we actually use and keep
-adding further ones subsequently. It just shouldn't be random.
-
-- Danilo
-
-> 
-> ~~ Lina
-> 
-
+-- 
+viresh
