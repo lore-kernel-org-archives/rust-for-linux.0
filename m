@@ -1,124 +1,86 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55DD0142915
-	for <rust-for-linux@vger.kernel.org>; Mon, 10 Jun 2024 20:47:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3B9D210E7;
+	Mon, 10 Jun 2024 21:19:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718052425; cv=none; b=pspELTpB2k6j2L3YovXC1qaCociD+QCfBrz1b3+UMbu1y0OQ/p4/NVYddPXSTFHR5RePKENdpYU8m8JfOcELTHW1SBD2zffMF2NoOh/f3LqqUhGDDr9+FouTTwbCfwqH8S/XZTj5n4lRgU1wBazwppClNJkOIJhKyABvUGGn/DU=
+	t=1718054386; cv=none; b=X4e+NYe65MyjRkSxxaUUROrznqmhypUbYQ1QGBZB7a9U9jHzttR9qAvPG4mjNKPgPOM1XRENjWr3fo0rMvdTS3m6+FzIt/5T0dRxf+OyW0ZTV+R2su/VQnSTfFxt8Rb3yWt9RjSHz3yBFmOrNzySWHWqb0Z7yB8UnYrSQzov7ec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718052425; c=relaxed/simple;
-	bh=hmr/nmEFUE7SPqQJeyyfPQSSwzYNqDpKNtuMcCl1Yo0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eB6IUzDQ3OqxzSyqUSKHpAVMEkUIJ/2kUXBtVTEwnz61xSIHO9W2qWGL/MfTG/5tl2aMFTKlvlPNY8E2j6KCUkp4g8czXFlawK7Y4K1ugfQ5XF6omPKHODJGFVIGiIIW5D/hTq0fPY5aGdFYKp91FD4+p1My8LmwBoMegnQNB8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=fil56E3P; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1718054386; c=relaxed/simple;
+	bh=FtdRUttpEY2am6yfvvMS6/NQ9twjSVWtoC+FNYI2FAg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=DLb1dIwGIV5zOLrqLdbvEj9zwauvwBKnlRxCziz90JOCfQOKqltpRZa/gcup8wbrj8nPuJJrNM+88wLO6oF0Dg8rMpeBVjWrZZSJ3mfmejuBXxUjh8xSoe3kdZT1YEAbeKbA7KBpPQPgU1EISXqftSSp1/t3ni9ji2cWs3UqKt0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=c5aPov1L; arc=none smtp.client-ip=209.85.216.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="fil56E3P"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1718052423;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=LxiNEvx2Od2nkRp3Ia5+BRC8R4WpmCSdFEiRdP/JyGs=;
-	b=fil56E3P3ugYF4HzsaQcfhPFjc8Dbv1qdplEfPXig9Wz0yrgtytZ6UZD5NylBqyoH1KyNI
-	46ivMKa6vr6+Pj0/H7YNRb6KcHqIPIW8d1PhJkg2LykNlha7MON3RXlcw/ETKjaYQDUg8u
-	ewkKZyHuTGUsHI846aRwAK0A2TtkfTg=
-Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
- [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-74-9Ow-u1iaOmOlug1LCFEy1A-1; Mon, 10 Jun 2024 16:46:59 -0400
-X-MC-Unique: 9Ow-u1iaOmOlug1LCFEy1A-1
-Received: by mail-lj1-f199.google.com with SMTP id 38308e7fff4ca-2ebe82e96e4so2779781fa.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 10 Jun 2024 13:46:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="c5aPov1L"
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-2bfdae7997aso351301a91.2;
+        Mon, 10 Jun 2024 14:19:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1718054384; x=1718659184; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=FtdRUttpEY2am6yfvvMS6/NQ9twjSVWtoC+FNYI2FAg=;
+        b=c5aPov1L2oONfQ4k+7s0J2Zl+1S+JLLNWEGNUlB+y77yuiwRtmcxyoZGgrWarHAZr6
+         5ewUoA5PMabAKTqG1l9iLJ38iQysRJG7XBjOjqRpWYR+XBQ2Xv3obkN1c1F3UChwQW5W
+         IO5M5uY5JdCuhXCG0TFrxIU5EIKLqbWUCwKThSvyfsKLWePC0VztU7NYv1/HhIvFA6pB
+         TQCZG8DEv9MTnA0EEsvzW3BaKHCUub9zaVE6TT1BGFHn4nLDy0VB/kWi6toUhAzaAbpp
+         uhw/8m7tjcf2bLJK8K9sutZlo7ngADvXmXagZWoB3/BsYlJ/60yWHGtsVAcTzmFFyKXT
+         lY7g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718052418; x=1718657218;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=LxiNEvx2Od2nkRp3Ia5+BRC8R4WpmCSdFEiRdP/JyGs=;
-        b=DJhRPtgwyqk+qqdN3fpg+lGNkrf/P1II5XQ9k+V9+4eMEv8oY+nxB4bBUk93zw1d49
-         Gwe9/HzfWDEUS8wIJ2V1Ezwb0VnQvNpal1BdxekKR56IRciKru1Tp8RSfvX+CuT7hztq
-         w8OfIyxyV8J0rnDy47+7yrpljchwgf76+GiIz5QQvX2ce92tqz0VwoGf+tGWraywwGdz
-         2441nXUtVUEtb0OOxKTZohwj6ZPl/585AntPyjmuFgFfhj0HSNLnfwbfAMTxP6CCP3Cs
-         UkZD98jdCOhIa0I7h3Llu2L8S0TRDCuGMSKCVn57AKzNiHnMURzhfRVQDdyw+whmivn7
-         FmUA==
-X-Forwarded-Encrypted: i=1; AJvYcCUWoOOUA7UILjqEFbwToL6z8GT0Rt7PTLROSk2d3/apjuv8ZSDZ48Lb1hAiiwE3z60uSb8MthITXrdGnNDT1/dUNbKd/2J7kM5WxMjQrfQ=
-X-Gm-Message-State: AOJu0YzyXBlm4CvJL3CiJVTC3EoiLlQNwA7nFRrN7joY0bTh8mWIZfEo
-	FOJ4+1nszpjJnP95ciLnsMyRslj5ZrO7y2YyngQpGEhBPfRl3ZM1JVi7eIrT2jpRz8zoO1eOMMl
-	5lJOexVzBu6KkndN6EXVzrLEzWch9t/n0BeB8u5KzP60xyQxpEGZrwFYChvtKUh7R
-X-Received: by 2002:a2e:a7c8:0:b0:2eb:e505:ebd5 with SMTP id 38308e7fff4ca-2ebe505ee5emr34276461fa.3.1718052418280;
-        Mon, 10 Jun 2024 13:46:58 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHLAjsaXc5BdwEtJmjiyy6QV5OH60ABPwmHSupwxu8PY7u/HPHzdfQDvJCtikV8xZ3ymgDwNw==
-X-Received: by 2002:a2e:a7c8:0:b0:2eb:e505:ebd5 with SMTP id 38308e7fff4ca-2ebe505ee5emr34276171fa.3.1718052417814;
-        Mon, 10 Jun 2024 13:46:57 -0700 (PDT)
-Received: from [192.168.1.146] (87-94-132-183.rev.dnainternet.fi. [87.94.132.183])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2ebdcbff7fasm10900121fa.78.2024.06.10.13.46.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 10 Jun 2024 13:46:57 -0700 (PDT)
-Message-ID: <882a4ba5-b0ef-4c21-8167-e2949424912c@redhat.com>
-Date: Mon, 10 Jun 2024 23:46:55 +0300
+        d=1e100.net; s=20230601; t=1718054384; x=1718659184;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=FtdRUttpEY2am6yfvvMS6/NQ9twjSVWtoC+FNYI2FAg=;
+        b=JKjF5ccrsZO2vONIN812i1A3A5pp+vPuYE+Az4/uGuf2omXu3MIYuSUFHmhStL6KVF
+         OugCJhCXtXeCi5wwlO9z/Q5MglDfB/SuZau26az1ijgiTigbUJpUqEASvrHeFcoVPuDD
+         ZMeEOHPgHM41FHj5uxKR1/zdfadlL5QZjlT2s9G3GNi3ZopMUCgNFOuPyE2pUpkmROnz
+         9UxZKG+2o0dwCwJY5Onrcv5bPmEezuYiycffzm8eiL3qkHK4jwg5+G/5xpbeGx+zOxD0
+         KTyU9C/4Ij4S0GofswoWQVvwAeKHoIieqSUaVF43dIYhhmiI7DQHKF1POVpCk5/Hh2tC
+         VPyA==
+X-Forwarded-Encrypted: i=1; AJvYcCUd8ojnEs6jT/eoSJTmrVdpp5H4NL1JulkYxEBhKEJhopOnEsdix6C1R5B68nC5oOzH8n1VQPFYWSppOAkZ7OI2QL0H4ulMbFRth0OWk9VLq8x6aleLi4ydnfqUG2prAQ7DHJ8CGWEJbAo3VIQ=
+X-Gm-Message-State: AOJu0Yxf9TxYGGqGRdm+O296wOZWBAbyWVTjhwJIhWN0iycaETmQwiRa
+	Ge+4W5AT/bgO1Z1ftEqQjRqY2qxZKVn99PSMhHbHuNE+wOfIo5zX9+/FnzQS1GVh5nb3sGTNt9j
+	jhrm3V392Mt5/JWGmyI+svtsydduafP6w/fc=
+X-Google-Smtp-Source: AGHT+IHjDLQOcWNekU89fNyKyTc1fKWYn5FPRFpRv1SWgiR8+EA/jBDtKU90YCClM6+6s3vYGWfX1IpW6yxkuiF9G54=
+X-Received: by 2002:a17:90a:c7d2:b0:2c2:cf61:34fb with SMTP id
+ 98e67ed59e1d1-2c2cf6135b5mr6918872a91.44.1718054384125; Mon, 10 Jun 2024
+ 14:19:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 4/4] rust: add abstraction for `struct page`
-To: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>,
- Matthew Wilcox <willy@infradead.org>, Al Viro <viro@zeniv.linux.org.uk>,
- Andrew Morton <akpm@linux-foundation.org>, Kees Cook <keescook@chromium.org>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>,
- Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng
- <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@samsung.com>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- =?UTF-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
- Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>,
- Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas
- <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>,
- Arnd Bergmann <arnd@arndb.de>, Trevor Gross <tmgross@umich.edu>,
- linux-mm@kvack.org, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, Christian Brauner <brauner@kernel.org>,
- Danilo Krummrich <dakr@redhat.com>
-References: <20240528-alice-mm-v7-0-78222c31b8f4@google.com>
- <20240528-alice-mm-v7-4-78222c31b8f4@google.com>
-From: Abdiel Janulgue <abdiel@redhat.com>
-In-Reply-To: <20240528-alice-mm-v7-4-78222c31b8f4@google.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <4e0f5932-c7bc-4878-862c-1186cbecd71d@gmail.com>
+ <5a8a6b44-9f89-4e26-869c-e9361da4cb5c@lunn.ch> <f798777d-6a56-45d4-8136-6aa9e0e77abc@gmail.com>
+In-Reply-To: <f798777d-6a56-45d4-8136-6aa9e0e77abc@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 10 Jun 2024 23:19:32 +0200
+Message-ID: <CANiq72nbs0cqzfC15q7KXykjHMjkd3reLpZL5Pjx942Y6+bdew@mail.gmail.com>
+Subject: Re: [PATCH 1/1] arm: rust: Enable Rust support for ARMv7
+To: Christian Schrefl <chrisi.schrefl@gmail.com>
+Cc: Andrew Lunn <andrew@lunn.ch>, Miguel Ojeda <ojeda@kernel.org>, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, rust-for-linux@vger.kernel.org, 
+	Jamie Cunliffe <Jamie.Cunliffe@arm.com>, Sven Van Asbroeck <thesven73@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi,
+On Mon, Jun 10, 2024 at 9:37=E2=80=AFPM Christian Schrefl
+<chrisi.schrefl@gmail.com> wrote:
+>
+> Miguel how is the support handled for the other architectures?
 
-On 28/05/2024 17:58, Alice Ryhl wrote:
-> Adds a new struct called `Page` that wraps a pointer to `struct page`.
-> This struct is assumed to hold ownership over the page, so that Rust
-> code can allocate and manage pages directly.
-> 
-> +
-> +impl Drop for Page {
-> +    fn drop(&mut self) {
-> +        // SAFETY: By the type invariants, we have ownership of the page and can free it.
-> +        unsafe { bindings::__free_pages(self.page.as_ptr(), 0) };
-> +    }
-> +}
-> 
+The arch maintainers are the ones taking the patches through their
+trees and so on (with the initial exception of x86).
 
-What about cases where the struct page pointer is not owned or allocated 
-by this wrapper? For example, pages returned vmalloc_to_page()?
-Any thoughts about exposing a provision to avoid freeing those pages 
-during Drop?
+Of course, if you want to contribute to that, that is great. If an
+entry is wanted/needed, then a possibility is a sub-entry to the
+architecture.
 
-We've been experimenting in adapting this Page wrapper in advance for 
-page management within the Nova DRM driver.
-
-/Abdiel
-
+Cheers,
+Miguel
