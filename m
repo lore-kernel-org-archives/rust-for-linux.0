@@ -1,244 +1,131 @@
-Received: from mail-lj1-f202.google.com (mail-lj1-f202.google.com [209.85.208.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02E0D13DB9B
-	for <rust-for-linux@vger.kernel.org>; Mon, 10 Jun 2024 14:01:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2282B3611B
+	for <rust-for-linux@vger.kernel.org>; Mon, 10 Jun 2024 18:03:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718028114; cv=none; b=pWecI3QUEepUK+3aejCnDkHPQ00j4xxXwKJVI8vHjOqTyIC+Zc4PQI+9Tv6d4rMvavWh3VKgAy4D/RZKluFGRx4mKEAALUSxLEj3JAD9qTHMOlnpD9VTbAiZsA0Qyvk6xV0ayQCt+vocWSV4i+rlUxhPtZZvp6x0mLaxSiN3pzo=
+	t=1718042611; cv=none; b=jOJ+UUjZPLJrCWj6SjWpSSv8791YTzfwQVXxK2XCUvPSL1RNW8O6mSilSUnZ6LiWjjx4irdF6GCe7R244Tq63tw43cwBppGvpcW12/qTzagjG5eJNtDrw7RGW9G6FIwMB6z9FGcAd5vPx2kM852XcrtelJz/nkcGt6DeFCXo/bY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718028114; c=relaxed/simple;
-	bh=Cbr/oyqLs30l5kHzPHIKBFw+7ijjcP/soSV8d5bF/6c=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=s5+/uzieR9pZDLgd4ISGqgfa14nq/NJo7VrEEN0u3pKrTF9NNqoD+GGq0Hw6gUsqhVcWZdKmGyyDRGqtzEAm+YrFP3luZIHc37mIkwCACV8rX5wffaQ1I44Ph2Yu2ilW25370GLlqPvro2aryzSR7B+Wh/OWryFaNgNYUFlt/BA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=umrWojCO; arc=none smtp.client-ip=209.85.208.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1718042611; c=relaxed/simple;
+	bh=BUjM1t3PIXAC6Ytd/MmTqu6Vsv+XYZQHt79/aOU6bkk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=mYNSmZVm9/I8ITMTwa7PpdSRAaHBjXNZWb2w9XnTeuYFBftgI2LadTFVqqrY2jgL7QYzWR34nvtfMO4w0DGfeIgjYNAbN3MqroM4q71/u8ATRX3ZQtK8Wb5AQsFxgPlYCRbD/ySumrxPD/Tnc2lK1QlGm40YsVmAL9NUOQp2Vk8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OiFwslh1; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="umrWojCO"
-Received: by mail-lj1-f202.google.com with SMTP id 38308e7fff4ca-2ebe2f0f4d9so12197681fa.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 10 Jun 2024 07:01:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1718028111; x=1718632911; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=KHgyDe9OFhKfiKpcPG5odSWdTyuUd8K6Z6ATNBTmhDw=;
-        b=umrWojCOZLvj1CmIiRlfeXgyBFWZaZkYQGx5Fl5U25WeqiqXsq6U2+S4xmUTAq6QDN
-         2zYwfaBl836JpAHcEe7+ahhnRKqCM9QddBM30bUkZ2zZRge96Pv+gfklhePA6eGs8XFS
-         fuHlcDhu68iLkqhFGQjbfZ2li4oYK5XGgMckVBQ/FWE+T4KNKSfP40C7nhMTWMIzg2lp
-         6ew5bTWRmIeaFz46b6dGlpf/KirENE0eyW2AKEFEboGT1AzUzB6N4ActZqHBjZUYLjTl
-         mVNoRNaFTRD0L9RElLOQGRPdZrNfz7rwzOWnW8InjQY6nbexoQOBVt436X4nIdiQSunx
-         hZ7Q==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OiFwslh1"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1718042609;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=lBAdoXrWxfngAOXeETgZ/9eMi7EOVwujj0O8BRZDoD0=;
+	b=OiFwslh1aMhCsX97ZA9hIG/hLtgax00Qnv+kujCHgW8Rgw63YrwAXjpbxZtW7det/qD+PR
+	kd0pdryRgdKc0i4ToaFnDLISJuCF6jjGQ6+797qXWb5PQXfSup1FkHOi5IfDPtdgPhs8bX
+	UBEEnqtYH8LKVu1iWSBUwPlKqZ+ntNY=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-520-A4oJJHhkMaio4yNJxkAcnw-1; Mon, 10 Jun 2024 14:03:28 -0400
+X-MC-Unique: A4oJJHhkMaio4yNJxkAcnw-1
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-35f1f958b7dso168280f8f.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 10 Jun 2024 11:03:27 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718028111; x=1718632911;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=KHgyDe9OFhKfiKpcPG5odSWdTyuUd8K6Z6ATNBTmhDw=;
-        b=vEvwWNXCTaICjA6ah30wYSR8H036c3KPvBikVBaAz4xlOJGarD+IaXoRcIOXVTzlVb
-         5vFywCPJ8CHIaqW/giCNDGbtgqsz/BcaYuFOk44xQ9y36U1QstpF9QpovSzdEjlR55g3
-         9b+Bc+WSaUNYlcYcrQEArNH7nbMdGzEpa2S0wHJ83DscnOqOCxYtJU5NGdXRYlQ/+TMx
-         00yBxhEXu/+jPEKiQ1P8e5yfYS/jozCNakfCWCdMY8ohLoFuu2mY49CdZGCY2BKGlXlG
-         YxUiTkLOo8eKm+ZCC/q2oujWPNJoiRJOaQoVQGTWGgWZ60nqRvDMYGZCsCAOzOG+ZYkY
-         OB2w==
-X-Forwarded-Encrypted: i=1; AJvYcCWyMd3u7T9Da0KWsz/8qZqwyWkcE/zuLyKa8YV/bbN+AmqdRVd6IgekEl1wlMZmvXfbpUH3lasygRE/0tTTH5bGLq6JiOPFzs2CjIeqgLk=
-X-Gm-Message-State: AOJu0YwT5jWaH0a9R9wFUR/ktPf1vAIIUGV0rdsUKVaBU6mkquwITn+w
-	C0bcIVSli3zYFyj+K7u1jwAwPsCu0V0sX41MkRyna3DjsGJG2FIUoWRzumtOR+wuB51LwqpqyjZ
-	S1qZOYvDAlFShhA==
-X-Google-Smtp-Source: AGHT+IEccQhl85iyAkHm79GW1ZTFlTgN5K/F0xRloYf0k9KFN8QZT/uSMpgILMSEjfT1xaJgdafVpHDBL+WygIg=
-X-Received: from aliceryhl2.c.googlers.com ([fda3:e722:ac3:cc00:68:949d:c0a8:572])
- (user=aliceryhl job=sendgmr) by 2002:a2e:2c19:0:b0:2eb:ec37:ad85 with SMTP id
- 38308e7fff4ca-2ebec37b072mr18821fa.9.1718028110654; Mon, 10 Jun 2024 07:01:50
- -0700 (PDT)
-Date: Mon, 10 Jun 2024 14:01:05 +0000
-In-Reply-To: <20240610-tracepoint-v2-0-faebad81b355@google.com>
+        d=1e100.net; s=20230601; t=1718042604; x=1718647404;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=lBAdoXrWxfngAOXeETgZ/9eMi7EOVwujj0O8BRZDoD0=;
+        b=LxJiqOumsVnwRhg0CNS6QiU50F33F8BEJN5yuwjozE7h0q5VjFktmvFbYBxx88HES3
+         an5SXEoZKOXROz/LdVU/5yzrVEyotymgaDo919pARyYS9dU8EAEo9tPlbvoLy47i3P0C
+         GlRxtKNXDU8f9qry8EvK9ifPOsG9010TF+MdcUFKxIM2tfVhvyjHSYnWTlwnQ/6iD0mc
+         yKs+OadTPbVHI2zw/qFM6IX5y10Yy54hT2Y/xKBYwq5peFp3Q71ZFY1GlRZT+RYeYsvJ
+         giCkSlFm0tNVeDDutg2i7RNMilUmPrc+EfS9L0nc7n23G7ylpMD8l92IN46PcUUjpTyT
+         mQRQ==
+X-Gm-Message-State: AOJu0YxEq21tFa0z5iMewOqcYgvktBZ5CaqJ+E8Q0k+CyOLCMR3vKPjq
+	qMXbsjHacurUxUQmbNuQvwN7slABMDee5Mr0FoHULfavg2FgyaX1aWzuX0Cwunldi8U5zLTL/ET
+	0xAlly5WEghmX97QKLaP0SfKOfjwrGVcaxnVhAFUDGMxP63SypmpOZbQBp02zY67v
+X-Received: by 2002:a5d:6305:0:b0:35f:1c26:b68d with SMTP id ffacd0b85a97d-35f1c26b7d4mr4334328f8f.60.1718042604301;
+        Mon, 10 Jun 2024 11:03:24 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF6fttIySqaLlAtrmoTpFqX0+ZaGQTLMt4MDrm2NDweITHX9K6XyLSqHw5pHedfj/9Hbj+mrA==
+X-Received: by 2002:a5d:6305:0:b0:35f:1c26:b68d with SMTP id ffacd0b85a97d-35f1c26b7d4mr4334305f8f.60.1718042603941;
+        Mon, 10 Jun 2024 11:03:23 -0700 (PDT)
+Received: from cassiopeiae.. ([2a02:810d:4b3f:ee94:642:1aff:fe31:a19f])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-35f0ccc5f03sm8384464f8f.88.2024.06.10.11.03.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 10 Jun 2024 11:03:22 -0700 (PDT)
+From: Danilo Krummrich <dakr@redhat.com>
+To: gregkh@linuxfoundation.org,
+	rafael@kernel.org,
+	mcgrof@kernel.org,
+	russell.h.weight@intel.com,
+	ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	wedsonaf@gmail.com,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me,
+	a.hindborg@samsung.com,
+	aliceryhl@google.com,
+	airlied@gmail.com,
+	fujita.tomonori@gmail.com,
+	pstanner@redhat.com,
+	ajanulgu@redhat.com,
+	lyude@redhat.com
+Cc: rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Danilo Krummrich <dakr@redhat.com>
+Subject: [PATCH v2 0/2] Rust abstractions for Device & Firmware
+Date: Mon, 10 Jun 2024 20:02:26 +0200
+Message-ID: <20240610180318.72152-1-dakr@redhat.com>
+X-Mailer: git-send-email 2.45.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20240610-tracepoint-v2-0-faebad81b355@google.com>
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5679; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=Cbr/oyqLs30l5kHzPHIKBFw+7ijjcP/soSV8d5bF/6c=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBmZwdFyoZES6wUnB8a6HfkMMvV3cAI2deGLmDYw
- YjVBlpZV9SJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZmcHRQAKCRAEWL7uWMY5
- RgKLD/99q9BaDPXlZi93F4HrhWiyx3jSWWiL3FlVntMFmRjh30wfOBLJwSneVkTvLDr/UONVh6p
- LgRKlhQfXVYFHK3JFfYbEXSonuGFWkaRFPF0A+i3XuYUosnS+LxNcHv0md16126nUtrhtEyMgr4
- 1B+m6thCprxdnJU8KofRtFvz2cRAP9Z2KPVorFBL7libs3XRcJfO9HHaYYcqT0hSm/MzLvq9OBt
- AzNIa1ZZD8AvNn+vnKjZr6wvpJmJ5ljiXTUskTc/qQ4eyho0izkoHRMMhqanxI3G8LMNoXmGUB3
- 3iP2ZECiFB5tlDP0yKmP6Ee42WcFqrTcVP3y8coiQv9efgKDc9j75g/0F+VXWGSXwpiEA+z5L3h
- WsovfcZE48Wo6Nk0HxaplalVElXl941R/ZDxDrpyru9Gxisty496fmuy2Era2M3EYq9iVeM67zE
- RsEJBkAlP08pvJ27sEtl8PwTOtsZI7Jrq1jsWxICXSw62nG1KAAuIMoRAOGg7hQb6Pjmis9ZOns
- VMtVqXExCcdnki/ribs68aTwAfl6RG4YLLKb6ddtlH9NTvNYVBPZmrJhqFWn8PGZOsQOuU3WrTv
- NeZYWE3flvevie9DeqTfo1zMKwDvi7Mdtrh8IBC6uskew3ZG3LRkYqckoR9zN8WfVcrCT8+HAv2 7lhMJU9ONZeRPxQ==
-X-Mailer: b4 0.13-dev-26615
-Message-ID: <20240610-tracepoint-v2-2-faebad81b355@google.com>
-Subject: [PATCH v2 2/2] rust: add tracepoint support
-From: Alice Ryhl <aliceryhl@google.com>
-To: Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Josh Poimboeuf <jpoimboe@kernel.org>, Jason Baron <jbaron@akamai.com>, 
-	Ard Biesheuvel <ardb@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@samsung.com>
-Cc: linux-trace-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="US-ASCII"; x-default=true
 
-Make it possible to have Rust code call into tracepoints defined by C
-code. It is still required that the tracepoint is declared in a C
-header, and that this header is included in the input to bindgen.
+Hi,
 
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
- include/linux/tracepoint.h      | 18 +++++++++++++++-
- include/trace/define_trace.h    |  7 ++++++
- rust/bindings/bindings_helper.h |  1 +
- rust/kernel/lib.rs              |  1 +
- rust/kernel/tracepoint.rs       | 47 +++++++++++++++++++++++++++++++++++++++++
- 5 files changed, 73 insertions(+), 1 deletion(-)
+as agreed in [1] this is the separate series for the device and firmware
+abstractions to unblock the inclusion of Fujita's PHY driver.
 
-diff --git a/include/linux/tracepoint.h b/include/linux/tracepoint.h
-index 689b6d71590e..d82af4d77c9f 100644
---- a/include/linux/tracepoint.h
-+++ b/include/linux/tracepoint.h
-@@ -238,6 +238,20 @@ static inline struct tracepoint *tracepoint_ptr_deref(tracepoint_ptr_t *p)
- #define __DECLARE_TRACE_RCU(name, proto, args, cond)
- #endif
- 
-+/*
-+ * Declare an exported function that Rust code can call to trigger this
-+ * tracepoint. This function does not include the static branch; that is done
-+ * in Rust to avoid a function call when the tracepoint is disabled.
-+ */
-+#define DEFINE_RUST_DO_TRACE(name, proto, args)
-+#define DEFINE_RUST_DO_TRACE_REAL(name, proto, args)			\
-+	notrace void rust_do_trace_##name(proto)			\
-+	{								\
-+		__DO_TRACE(name,					\
-+			TP_ARGS(args),					\
-+			cpu_online(raw_smp_processor_id()), 0);		\
-+	}
-+
- /*
-  * Make sure the alignment of the structure in the __tracepoints section will
-  * not add unwanted padding between the beginning of the section and the
-@@ -253,6 +267,7 @@ static inline struct tracepoint *tracepoint_ptr_deref(tracepoint_ptr_t *p)
- 	extern int __traceiter_##name(data_proto);			\
- 	DECLARE_STATIC_CALL(tp_func_##name, __traceiter_##name);	\
- 	extern struct tracepoint __tracepoint_##name;			\
-+	extern void rust_do_trace_##name(proto);			\
- 	static inline void trace_##name(proto)				\
- 	{								\
- 		if (static_key_false(&__tracepoint_##name.key))		\
-@@ -337,7 +352,8 @@ static inline struct tracepoint *tracepoint_ptr_deref(tracepoint_ptr_t *p)
- 	void __probestub_##_name(void *__data, proto)			\
- 	{								\
- 	}								\
--	DEFINE_STATIC_CALL(tp_func_##_name, __traceiter_##_name);
-+	DEFINE_STATIC_CALL(tp_func_##_name, __traceiter_##_name);	\
-+	DEFINE_RUST_DO_TRACE(_name, TP_PROTO(proto), TP_ARGS(args))
- 
- #define DEFINE_TRACE(name, proto, args)		\
- 	DEFINE_TRACE_FN(name, NULL, NULL, PARAMS(proto), PARAMS(args));
-diff --git a/include/trace/define_trace.h b/include/trace/define_trace.h
-index 00723935dcc7..b47cc036acba 100644
---- a/include/trace/define_trace.h
-+++ b/include/trace/define_trace.h
-@@ -72,6 +72,13 @@
- #define DECLARE_TRACE(name, proto, args)	\
- 	DEFINE_TRACE(name, PARAMS(proto), PARAMS(args))
- 
-+/* If requested, create helpers for calling these tracepoints from Rust. */
-+#ifdef CREATE_RUST_TRACE_POINTS
-+#undef DEFINE_RUST_DO_TRACE
-+#define DEFINE_RUST_DO_TRACE(name, proto, args)	\
-+	DEFINE_RUST_DO_TRACE_REAL(name, PARAMS(proto), PARAMS(args))
-+#endif
-+
- #undef TRACE_INCLUDE
- #undef __TRACE_INCLUDE
- 
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index ddb5644d4fd9..d442f9ccfc2c 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -15,6 +15,7 @@
- #include <linux/refcount.h>
- #include <linux/sched.h>
- #include <linux/slab.h>
-+#include <linux/tracepoint.h>
- #include <linux/wait.h>
- #include <linux/workqueue.h>
- 
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index a0be9544996d..96f8f11c51f2 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -45,6 +45,7 @@
- pub mod sync;
- pub mod task;
- pub mod time;
-+pub mod tracepoint;
- pub mod types;
- pub mod workqueue;
- 
-diff --git a/rust/kernel/tracepoint.rs b/rust/kernel/tracepoint.rs
-new file mode 100644
-index 000000000000..1005f09e0330
---- /dev/null
-+++ b/rust/kernel/tracepoint.rs
-@@ -0,0 +1,47 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+// Copyright (C) 2024 Google LLC.
-+
-+//! Logic for tracepoints.
-+
-+/// Declare the Rust entry point for a tracepoint.
-+#[macro_export]
-+macro_rules! declare_trace {
-+    ($($(#[$attr:meta])* $pub:vis fn $name:ident($($argname:ident : $argtyp:ty),* $(,)?);)*) => {$(
-+        $( #[$attr] )*
-+        #[inline(always)]
-+        $pub unsafe fn $name($($argname : $argtyp),*) {
-+            #[cfg(CONFIG_TRACEPOINTS)]
-+            {
-+                use $crate::bindings::*;
-+
-+                // SAFETY: It's always okay to query the static key for a tracepoint.
-+                let should_trace = unsafe {
-+                    $crate::macros::paste! {
-+                        $crate::static_key::static_key_false!(
-+                            [< __tracepoint_ $name >],
-+                            $crate::bindings::tracepoint,
-+                            key
-+                        )
-+                    }
-+                };
-+
-+                if should_trace {
-+                    $crate::macros::paste! {
-+                        // SAFETY: The caller guarantees that it is okay to call this tracepoint.
-+                        unsafe { [< rust_do_trace_ $name >]($($argname),*) };
-+                    }
-+                }
-+            }
-+
-+            #[cfg(not(CONFIG_TRACEPOINTS))]
-+            {
-+                // If tracepoints are disabled, insert a trivial use of each argument
-+                // to avoid unused argument warnings.
-+                $( let _unused = $argname; )*
-+            }
-+        }
-+    )*}
-+}
-+
-+pub use declare_trace;
+Originally, those patches were part of the patch series [2][3].
 
+Changes in v2
+=============
+- use the 'srctree/' notation
+- expand the existing documentation and make it more unambiguous
+- use `NonNull` in `Firmware`
+- generalize the `Firmware` request functions
+- add missing safety comments to `Firmware`
+
+[1] https://lore.kernel.org/rust-for-linux/2024060745-palatable-dragging-32d1@gregkh/
+[2] https://lore.kernel.org/rust-for-linux/20240520172554.182094-1-dakr@redhat.com/
+[3] https://lore.kernel.org/rust-for-linux/20240520172059.181256-1-dakr@redhat.com/
+
+Danilo Krummrich (2):
+  rust: add abstraction for struct device
+  rust: add firmware abstractions
+
+ rust/bindings/bindings_helper.h |   1 +
+ rust/helpers.c                  |   1 +
+ rust/kernel/device.rs           |  97 +++++++++++++++++++++++++++++
+ rust/kernel/firmware.rs         | 107 ++++++++++++++++++++++++++++++++
+ rust/kernel/lib.rs              |   2 +
+ 5 files changed, 208 insertions(+)
+ create mode 100644 rust/kernel/device.rs
+ create mode 100644 rust/kernel/firmware.rs
+
+
+base-commit: 1613e604df0cd359cf2a7fbd9be7a0bcfacfabd0
 -- 
-2.45.2.505.gda0bf45e8d-goog
+2.45.1
 
