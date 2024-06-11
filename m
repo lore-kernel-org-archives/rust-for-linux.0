@@ -1,189 +1,183 @@
-Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com [209.85.218.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 834A216F839
-	for <rust-for-linux@vger.kernel.org>; Tue, 11 Jun 2024 11:46:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 649B117C9FA
+	for <rust-for-linux@vger.kernel.org>; Tue, 11 Jun 2024 13:21:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718106373; cv=none; b=gx4syUf/K7OULCzUjlWEFAxSNAVGc9dDgVKzVCcUxKWhvAb+Z3XSaVJdk+hsx4B9/OpAs+gej8hXyprdpcakSLVh9JD/47bEDPJI8zvH3MeLGYWi8rUBFjlpdS2uNsyDhA/am0f5S0PUjl3aT0xO060redeTv5a+R4yRyV3V+K0=
+	t=1718112102; cv=none; b=m414lcmsVW1aixgE7UWhxfZsgCgHzlNIitRCP2BZuDGLmu5bE9nuAuFFO0cGgT1hd5euns3qsaNJSXKDFagUkOYim2rfxkcZm7OWcXFE8HlyDK4ATXFSRkBhdaGPagsXY5Jjgktg4HByDRdw7d5B8VPCZlsK5XXVG33B5vTX4jQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718106373; c=relaxed/simple;
-	bh=b3NGj7oL6Jv0SejkdL5Ni5oUGz6hL0S7RKz9eET4iBU=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MaH/H0J0o5kBW+5zoktUQrCOMKqiUrKRsUX7a+WJK6p9nxvTY6hmCXEO6mI0OSE+5eM1dTQKU6JBW9MYLz8tOVkqo/burUvF6uvXu3NSnnl2zXKJ/6/cBDd4OihfNNGnth8TTLoIc2ByKGoE+ar7fdjQvleHassCGFsN3KBVBgE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk; spf=none smtp.mailfrom=metaspace.dk; dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b=dtej5ZfY; arc=none smtp.client-ip=209.85.218.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=metaspace.dk
+	s=arc-20240116; t=1718112102; c=relaxed/simple;
+	bh=N9bbDuUtVI3n6modvV8e2C1xul8okVr+fDJnep69kXQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 In-Reply-To:Content-Type:Content-Disposition; b=TXNuqB6dZsWbYlooQwMlx6R4mGXUT6MJMgrs/ntJmoJ1KIwS7iyvIyiSeiQT29tauQ0a3QBS92o5XVEFsmsYHSuGyGw821Rhe87pmO/gnbE+KFhE4QkXiREqzjkUyaua5QRfnrst246b4CJxgbZ4bDqxouuKoVhkt45FHFO1FB0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Y5DWPQfS; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b="dtej5ZfY"
-Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-a6f176c5c10so100925166b.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 11 Jun 2024 04:46:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=metaspace-dk.20230601.gappssmtp.com; s=20230601; t=1718106369; x=1718711169; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=zAkMV8dOReDwzeJM6A6yM+HS2q42IbWrPAmzhy7HUmU=;
-        b=dtej5ZfYwzoeE/0R7zbBd+A8yqpyEZzJcl4cjjbvxiKs5Q7wI7l7pROdLZPxlYYEoQ
-         xFAXoIT917FDdbG7bS5b6NYn1G49ySs9YJTG6X1CTllvRjxFyrME9x6nq+HIVjQPt/U4
-         rOkTaMJbiNVK0uKT8xfk5wMBmmQM0e0W7Vg+GWuISmzeRMZLF7fzI0grFCxS4fTsPxO8
-         2IPXxIrW0jPUqbHqrVX4YFkS1mzlXSrGo8sWKgljLBpcSAm763SwZW+6zRm417uXkRpd
-         2gIOaTZ0p5GUh9q7K03rsfLmqaaexFIQb2Fx9emNPrKQmGqTCOoPzmxokaNiJVVocqri
-         6NvA==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Y5DWPQfS"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1718112099;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZIL3WzHfFsP6BI60s8nCj0qGjt3OC3BNLgftYsOna64=;
+	b=Y5DWPQfSDECkQ7ihJmw9garw6wyk0RJmw0Fn7h+2KJmm+9M1nLuydZ+fEcg+bd8yGLnhLC
+	U3miO60YB9brMnsi8mWloryL96PjXxItz9tEHubzk6ZsbTstkpblBcypawq8ySki6CMCBM
+	HYa+dPFFz05fwV40uXEjZk+yHFncnJQ=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-650-LwBSc6OcMrGJXh8wePAP0A-1; Tue, 11 Jun 2024 09:21:36 -0400
+X-MC-Unique: LwBSc6OcMrGJXh8wePAP0A-1
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-35f10585251so1700061f8f.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 11 Jun 2024 06:21:36 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718106369; x=1718711169;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=zAkMV8dOReDwzeJM6A6yM+HS2q42IbWrPAmzhy7HUmU=;
-        b=pswRVnqtpoGL+l2WjxvCdvz/GmbffmHY2TXSk+XoGo+ePUfoQeqqiBazr9nB4nkUBJ
-         Y0+7q9aV4zw0ZPEmrYjGqOCX3/XMoOYvuk6t7Y3KdIE1NBXSCXECkATKGSn4QC90Ajy1
-         dowr/OEfhNTQV0YEs767BS6+siGJfde8UHm+DEn6+Gu7xF5o6dnjs5YJewBJZoLfXIbq
-         706ttoEsLAacKDuzyXfPckULYJmgdptJZO4pbQnSCufC98Fwiam+4SisM+qtPNWWon8a
-         ZGENbi8WnTF9ah7tbmBJqCH4xtAEgTLbRyR5AD6ijGoqmdlYk5Yh49flJug3NK+1YK+U
-         EWlw==
-X-Forwarded-Encrypted: i=1; AJvYcCX2hpQvcwI8P1WAmwRMkW89biRE5D5KSuf5QbP9CLty7sRsTaPuwb52TSvbJNATXAY18epdZdrTocX5QmAEn6g/Upqx5erz0reEgUb6mgs=
-X-Gm-Message-State: AOJu0Yy8YsPipsCBSPr/wtdu9QsV9GlbahbCEr4uGE+RG+5cuU19qQ2T
-	kislhALd6B3uW/cWOvc/tOOve/lDJDHvE6t3N/T9Q1YYndzMTv9QPfXW6cgcYEg=
-X-Google-Smtp-Source: AGHT+IFl2q2onMUUXk9QqKpsWKHTXHyxa4wuk2b6Y4wX75ZliOJXw4eHqe7iyC+vhCnnecOBQTDihg==
-X-Received: by 2002:a17:906:2a99:b0:a6f:e36:abae with SMTP id a640c23a62f3a-a6f0e36ace7mr553579266b.42.1718106368615;
-        Tue, 11 Jun 2024 04:46:08 -0700 (PDT)
-Received: from localhost ([79.142.230.34])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6f2e7eb1f9sm144962466b.221.2024.06.11.04.46.08
+        d=1e100.net; s=20230601; t=1718112095; x=1718716895;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ZIL3WzHfFsP6BI60s8nCj0qGjt3OC3BNLgftYsOna64=;
+        b=WwqKe6mXgbR+ps3OzBAdB3+CYBSp8ikH2ZeRM8lK3NEfGm6k/la3TW6XliK1iZayZH
+         fhwvrrr8AGK9r7kUdsLTHlKez8vV07pUZtM1tc4o2YQNMGDdt2MrhDLnhgXkUJDGvK3x
+         m1oS5S4Wm69vL9X5MGG25y6nxhF41x33jihir+I9IR/y3Pn1d7ssxJGxBgllS3eg1/WW
+         B23Uc2CAIskPQR28O88yxpbdav7qOaDBDiK8ngiF/BmeAr3Zh7BwB5se956pvHeACJ1D
+         Md5fyrykNl4EwbH78NcbyTj1rAE6dqm1JPds5wzzPX8QSUT2cj11WwWml3kZAgYlziHb
+         GFSQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW9ChiI87h7dkYnvXnFgcb2fBU/qBWdTFO6fbxUhASmwSqb6Tvm0KCvX/bF9eNhqI9uZdCx96tMDzlMDFvMm/QqsXtUKN41KqAfuj0OgG0=
+X-Gm-Message-State: AOJu0YyMS9o41tky++vbBrBIstFhczSpxV+3tSok2RIqaQ6J/2lFWXJ+
+	vfmgJ374udmjcokFMFocZNZWbBM+vhLJh4FE+EZbl3g1i9qQQOhorJvwgHZLJZV9a87hdQd9Ok1
+	9LaeL/XnA49P0sN5mOxGs6A6GtzabedULGLri2epskTjj1jjeq5Y3DFxMwE/1N7zZ
+X-Received: by 2002:a05:6000:1e92:b0:35f:2fd3:85c1 with SMTP id ffacd0b85a97d-35f2fd386f6mr603172f8f.12.1718112095110;
+        Tue, 11 Jun 2024 06:21:35 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGdrgyGSXnWsxnxLNMq9gvn3zIKYLzq6W4Ui2uJAaYYqihXeuvxSaXL/IXX8Ulu/RvLhy739g==
+X-Received: by 2002:a05:6000:1e92:b0:35f:2fd3:85c1 with SMTP id ffacd0b85a97d-35f2fd386f6mr603148f8f.12.1718112094727;
+        Tue, 11 Jun 2024 06:21:34 -0700 (PDT)
+Received: from pollux ([2a02:810d:4b3f:ee94:abf:b8ff:feee:998b])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-35f1aa8d4f3sm8441598f8f.99.2024.06.11.06.21.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 11 Jun 2024 04:46:08 -0700 (PDT)
-From: Andreas Hindborg <nmi@metaspace.dk>
-To: Jens Axboe <axboe@kernel.dk>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Hannes Reinecke <hare@suse.de>,
-	Ming Lei <ming.lei@redhat.com>,
-	"linux-block@vger.kernel.org" <linux-block@vger.kernel.org>
-Cc: Andreas Hindborg <a.hindborg@samsung.com>,
-	Greg KH <gregkh@linuxfoundation.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Chaitanya Kulkarni <chaitanyak@nvidia.com>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Yexuan Yang <1182282462@bupt.edu.cn>,
-	=?UTF-8?q?Sergio=20Gonz=C3=A1lez=20Collado?= <sergio.collado@gmail.com>,
-	Joel Granados <j.granados@samsung.com>,
-	"Pankaj Raghav (Samsung)" <kernel@pankajraghav.com>,
-	Daniel Gomez <da.gomez@samsung.com>,
-	Niklas Cassel <Niklas.Cassel@wdc.com>,
-	Philipp Stanner <pstanner@redhat.com>,
-	Conor Dooley <conor@kernel.org>,
-	Johannes Thumshirn <Johannes.Thumshirn@wdc.com>,
-	=?UTF-8?q?Matias=20Bj=C3=B8rling?= <m@bjorling.me>,
-	open list <linux-kernel@vger.kernel.org>,
-	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
-	"lsf-pc@lists.linux-foundation.org" <lsf-pc@lists.linux-foundation.org>,
-	"gost.dev@samsung.com" <gost.dev@samsung.com>
-Subject: [PATCH v6 0/3] Rust block device driver API and null block driver
-Date: Tue, 11 Jun 2024 13:45:48 +0200
-Message-ID: <20240611114551.228679-1-nmi@metaspace.dk>
-X-Mailer: git-send-email 2.45.2
+        Tue, 11 Jun 2024 06:21:34 -0700 (PDT)
+Date: Tue, 11 Jun 2024 15:21:31 +0200
+From: Danilo Krummrich <dakr@redhat.com>
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: gregkh@linuxfoundation.org, rafael@kernel.org, mcgrof@kernel.org,
+	russell.h.weight@intel.com, ojeda@kernel.org, alex.gaynor@gmail.com,
+	wedsonaf@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me, a.hindborg@samsung.com,
+	aliceryhl@google.com, airlied@gmail.com, fujita.tomonori@gmail.com,
+	pstanner@redhat.com, ajanulgu@redhat.com, lyude@redhat.com,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] rust: add abstraction for struct device
+Message-ID: <ZmhPW9yq7y6jbmIg@pollux>
+References: <20240610180318.72152-1-dakr@redhat.com>
+ <20240610180318.72152-2-dakr@redhat.com>
+ <ZmdID8AlXtoxUfC1@boqun-archlinux>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2824; i=a.hindborg@samsung.com;
- h=from:subject; bh=Pn9pPWG4joCwFmB/Fietx6Dc7vYUqajhD+Kxe5sk6M8=;
- b=LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgpvd0o0bkFGdEFwTDlrQTBEQUFvQjRiZ2FQb
- mtvWTNjQnl5WmlBR1pvTnE5MUZmeWMxdTFkUmxBWGVrV0ZFQjlhCmRUb2RqNHhtdnh4Uml0c2xs
- M3pxRDRrQ013UUFBUW9BSFJZaEJCTEIrVWRXdjN3cUZkYkFFdUc0R2o1NUtHTjMKQlFKbWFEYXZ
- BQW9KRU9HNEdqNTVLR04zdEZBUC9pbWxPMWNmZEVDM0NZRkZ5RFdFV0hGeWpIQkZHTlpYc1k3Vw
- pFKzZiaWt1NGdIOU05b21tbi9BLzVPd1FVb2E2TkZMTUR6MDUvMWgzNHBlYTJYRkJGelM2Y0d5d
- CtKSnMrY0ZVCmw3T0FndTdsQ21jT2VqSHFZOWJmNDJwN3ZPazRDWEZtbkIyc1hCcUNsS0lXek8v
- a0pBZWJycXJhWWhJZlp6T2gKa0JNVWx6WEsrRW5YMzRVVkpNUi80MUdDNDhwODRRWHRpQ3Y3ekN
- 4aEZ4ZW5DZkdyaUJtd3FOTjRqQjZNd1FEMwpncEFmOTlSRGp2YjZ0M3Z3dUlLbjRaTXBwcjhGNH
- k4RXJ0TW9QcmUzWEVtUFhNckRIR0VUR0pmeFRxamlmcFIxCnAxdWdmNnlXbVVTc1BrUUZ0U0RzM
- 2hwZkowamlGVzFPbk51TnVZM295YzNxZjVRNkZ2RWxXYnN1TmxZMlBzUjUKMDFENlJnVk0xWVF4
- Mk5zV1N1MEFXWTFqNERjTG44Z0lod3R1TzZLc1hqalQxQ05abFZSN0lGWndzM1lVVU1ZVgpOZmt
- wSVZJOWZLS1ZDajV3N3NldUdsRnNKeG4vZVZFaUFpYlNOaCs5VEptUU1PS1BqZXRXbnlHeUVUUW
- p4MVhrCndxMFZRVUd2dVNHTS9nemNxaUR0WFhyUGEwNmZnVjBxWGZGWkpTN21ERlBraHNHVnZyQ
- zZtR21TWVl3VlJZVEYKQ3h2Uk9VcUkwdnJyck8yeHVXZFIwK1IvcVYzdHV1cWpqcVlLYWdBcXFj
- OFNnQ21CbForV21UbmVMUDlFRFZLOQowUUQzOThOWlJTWUkzTU1SL3ZrRko3dFhIcVlXaXpvWnM
- 2Um51V0RjZ2dxVVBibG1vMjZFdmpvdDFqS3hZNjFtCmZGb3RJSVpNNXBzaEJRPT0KPW5zRW4KLS 0tLS1FTkQgUEdQIE1FU1NBR0UtLS0tLQo=
-X-Developer-Key: i=a.hindborg@samsung.com; a=openpgp; fpr=3108C10F46872E248D1FB221376EB100563EF7A7
+In-Reply-To: <ZmdID8AlXtoxUfC1@boqun-archlinux>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
 
-From: Andreas Hindborg <a.hindborg@samsung.com>
+On Mon, Jun 10, 2024 at 11:38:07AM -0700, Boqun Feng wrote:
+> On Mon, Jun 10, 2024 at 08:02:27PM +0200, Danilo Krummrich wrote:
+> [...]
+> > +/// A reference-counted device.
+> > +///
+> > +/// This structure represents the Rust abstraction for a C `struct device`. This implementation
+> > +/// abstracts the usage of an already existing C `struct device` within Rust code that we get
+> > +/// passed from the C side.
+> > +///
+> > +/// An instance of this abstraction can be obtained temporarily or permanent.
+> > +///
+> > +/// A temporary one is bound to the lifetime of the C `struct device` pointer used for creation.
+> > +/// A permanent instance is always reference-counted and hence not restricted by any lifetime
+> > +/// boundaries.
+> > +///
+> > +/// For subsystems it is recommended to create a permanent instance to wrap into a subsystem
+> > +/// specifc device structure (e.g. `pci::Device`). This is useful for passing it to drivers in
+> > +/// `T::probe()`, such that a driver can store the `ARef<Device>` (equivalent to storing a
+> > +/// `struct device` pointer in a C driver) for arbitrary purposes, e.g. allocating DMA coherent
+> > +/// memory.
+> > +///
+> > +/// # Invariants
+> > +///
+> > +/// The pointer stored in `Self` is non-null and valid for the lifetime of the `ARef` instance. In
+> > +/// particular, the `ARef` instance owns an increment on the underlying object’s reference count.
+> > +#[repr(transparent)]
+> > +pub struct Device(Opaque<bindings::device>);
+> > +
+> [...]
+> > +
+> > +// SAFETY: `Device` only holds a pointer to a C `struct device`, which is safe to be used from any
+> > +// thread.
+> > +unsafe impl Send for Device {}
+> > +
+> > +// SAFETY: `Device` only holds a pointer to a C `struct device`, references to which are safe to be
+> > +// used from any thread.
+> > +unsafe impl Sync for Device {}
+> 
+> These comments need some rework, `Device` is not a pointer to `struct
+> device` anymore. For the `Sync` one, how about:
 
-Hi,
+Indeed, I forgot to update them.
 
-This series provides an initial Rust block layer device driver API, and a very
-minimal null block driver to exercise the API. The driver has only one mode of
-operation and cannot be configured.
+> 
+> // SAFETY: `Device` can be shared among threads because all immutable
+> // methods are protected by the synchronization in `struct device`.
+> unsafe impl Sync for Device {}
 
-These patches are an updated and trimmed down version of the v2 RFC [1]. One of
-the requests for the v2 RFC was to split the abstractions into smaller pieces
-that are easier to review. This is the first part of the split patches.
+Sounds good.
 
-A notable change in this patch set is that they no longer use the `ref` field of
-the C `struct request` to manage lifetime of the request structure.
+> 
+> and for `Send`, I actually don't think we can easily say the generic
+> `Device` is `Send`: you can create a `struct device` where `->release`
+> requires to be run on the same thread that creates the `device`, and
+> nothing is wrong about it, I think (e.g. making a thread be the sole
 
-The removed features will be sent later, as their dependencies land upstream.
+Hm, I guess in this case we actually can't argue that it's the owners fault to
+pass a pointer of this device somewhere else. Since it's C the owner can't
+enforce that someone else is not taking a reference and prevent sharing
+ownership...
 
-Changes from v5 [2]:
- - update `SAFETY` comments of `Operations::queue_rq_callback`
- - update `SAFETY` comments of `Operations::init_request_callback`
- - update `SAFETY` comments of `Operations::exit_request_callback`
- - update `SAFETY` comments of `Request::wrapper_ptr`
- - change `Operations::init_request_callback` implementation to use `Request::wrapper_ptr`
- - rebased on v6.10-rc3
+> owner of some special devices). Unless, in the #Invariants of `Device`,
+> and the #safety of `from_ptr`, you mention that `Device` assume its
+> `->release` can be called on any thread.
 
-Thanks to everyone for comments on previous version!
+...hence, I agree we should indeed add to the #Invariants and #Safety section
+that `->release` must be callable  from any thread.
 
-Best regards,
-Andreas Hindborg
+However, this is just theory, do we actually have cases where `device::release`
+is not allowed to be called from any thread? If so, this would be very confusing
+for a reference counted type from a design point of view...
 
+- Danilo
 
-Link: https://lore.kernel.org/all/20240313110515.70088-1-nmi@metaspace.dk/ [1]
-Link: https://lore.kernel.org/all/20240603191455.968301-1-nmi@metaspace.dk/ [2]
-
-
-Andreas Hindborg (3):
-  rust: block: introduce `kernel::block::mq` module
-  rust: block: add rnull, Rust null_blk implementation
-  MAINTAINERS: add entry for Rust block device driver API
-
- MAINTAINERS                        |  14 ++
- drivers/block/Kconfig              |   9 +
- drivers/block/Makefile             |   3 +
- drivers/block/rnull.rs             |  73 +++++++++
- rust/bindings/bindings_helper.h    |   3 +
- rust/helpers.c                     |  16 ++
- rust/kernel/block.rs               |   5 +
- rust/kernel/block/mq.rs            |  98 +++++++++++
- rust/kernel/block/mq/gen_disk.rs   | 215 ++++++++++++++++++++++++
- rust/kernel/block/mq/operations.rs | 245 ++++++++++++++++++++++++++++
- rust/kernel/block/mq/raw_writer.rs |  55 +++++++
- rust/kernel/block/mq/request.rs    | 253 +++++++++++++++++++++++++++++
- rust/kernel/block/mq/tag_set.rs    |  86 ++++++++++
- rust/kernel/error.rs               |   6 +
- rust/kernel/lib.rs                 |   2 +
- 15 files changed, 1083 insertions(+)
- create mode 100644 drivers/block/rnull.rs
- create mode 100644 rust/kernel/block.rs
- create mode 100644 rust/kernel/block/mq.rs
- create mode 100644 rust/kernel/block/mq/gen_disk.rs
- create mode 100644 rust/kernel/block/mq/operations.rs
- create mode 100644 rust/kernel/block/mq/raw_writer.rs
- create mode 100644 rust/kernel/block/mq/request.rs
- create mode 100644 rust/kernel/block/mq/tag_set.rs
-
-
-base-commit: 83a7eefedc9b56fe7bfeff13b6c7356688ffa670
--- 
-2.45.2
+> 
+> Regards,
+> Boqun
+> 
+> > diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> > index fbd91a48ff8b..dd1207f1a873 100644
+> > --- a/rust/kernel/lib.rs
+> > +++ b/rust/kernel/lib.rs
+> > @@ -28,6 +28,7 @@
+> >  
+> >  pub mod alloc;
+> >  mod build_assert;
+> > +pub mod device;
+> >  pub mod error;
+> >  pub mod init;
+> >  pub mod ioctl;
+> > -- 
+> > 2.45.1
+> > 
+> 
 
