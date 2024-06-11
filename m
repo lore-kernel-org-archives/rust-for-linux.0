@@ -1,119 +1,100 @@
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E670720314;
-	Tue, 11 Jun 2024 22:08:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5693E1553BC;
+	Tue, 11 Jun 2024 22:13:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718143725; cv=none; b=RY1Bob4Zpe2962tBH/AMumpQvDN0LhXaktIvwdX9RVBaeq8SUkhSZGMowAkhsxv859+E1zFeBaZekVkS3t6ydu3jWWPa/rjpCljPpiGmEWb1QqUNV6yWycGQy7oUb75XCjCL/FiJGh8lLx5rLDkoDBtrbgFBbR6Svtij0DzyxmU=
+	t=1718144011; cv=none; b=dMPK7GVydzIxKr3cc2qmKWX+XGAAE6/BJLz/0QYcz3ZpHMD74nMAMmn76k5AYSiEp5fhztnwIsTdzwPePeFUOWYdwHBUqmdVylUkdPtW4n3rRkRscBcCjsvUhmgmB+oHqIteMD7twYu1U1uvOdT2zq3H85Ehd0bILlakEOZFV+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718143725; c=relaxed/simple;
-	bh=xDAi/LehtiGuKcebgCW9P5JNBdnm/nWvTWG7gETgqwU=;
+	s=arc-20240116; t=1718144011; c=relaxed/simple;
+	bh=jJPNqfRI/Cz7z2/d2q/YscZrx1nNwYFta+zUuMDS5wU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JboyArTcYeYbD7RyWpxieveFi9ORlVOfUX4VB9lzRovbk6vEPibb87eOf2Ugb5pj4vMPvqYiQxsCvpwO13XtuGNfbBg+dt301UtEvGh9kmTIKDWwZCfU3vDY/3Cg6uKz3mk2OPnZYxDH54FRcYqDd6cUQmRi5P1bbOMSnaBnsEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=d97d9fIL; arc=none smtp.client-ip=209.85.216.52
+	 To:Cc:Content-Type; b=YnVRFUX+7x38Gt+W66PtICFlsmvzb4pssDhOBzPHLOfF0JfuVQqfcsG8PYl4AxRuZSiVoHcjsZxADq/Cj4A+BnsR9Pgr0BbIYABQrOKFwETQESPkgHiYUb6NwR4FkR6R+dychP8pWG9uiuf50NOjbv6stDmsfl+BIw1vctH2fkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RRa6VIsc; arc=none smtp.client-ip=209.85.216.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="d97d9fIL"
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-2c2eb98a64fso2909834a91.2;
-        Tue, 11 Jun 2024 15:08:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RRa6VIsc"
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-2c348a263easo253294a91.0;
+        Tue, 11 Jun 2024 15:13:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718143723; x=1718748523; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1718144010; x=1718748810; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=xDAi/LehtiGuKcebgCW9P5JNBdnm/nWvTWG7gETgqwU=;
-        b=d97d9fILkRIyxIF0DgpOnwUEgsr/e8B3bvA0GJhmf9FJQm5CZNyvjQa62hZMOqTvNj
-         QtiypAhnzdMELMRM8/0sMF2sgn5aAQxmDKXWheXyfl2MStDrKPGE2Vpi+hf3duBofoB4
-         GgGy73BE+U/NianoMS6wkJ5EUH11CSJF3kFT71DQDxSXVcE1VwSx2m8QZhCvdRvlnGMi
-         1SoCtJip8OpKvORvdkC1Fy1xV+k2883jMnpu4cI1ztEVfn4JL/DFMw80bP35/DM5KyG3
-         OpBamcmpzc5ak9gP/VG+yHSVE8gkOo/rfER8P4YGY8IuoMb+peuR4zn9EdX8BzzA4tJS
-         3wOg==
+        bh=afhBt1R47m/ezKSoV/9ouvvCFpR5TvvNgsKkb4qH0kc=;
+        b=RRa6VIscs2pdvpDYtJc/BAS0BTUUJLx+lgrYXKplAM/gv2i9EtGh0AfTEE74mar0Ug
+         yyKVZc3ueazT1zm/KT+EphmBcPEVFumypSvmnNcJAIrBJ9aj2ELb0YI3iySvTARLCYHU
+         AntXxOQbVEuY4JCLsLlXTR27CVqVe4hx3H8xyQpw2epyVpb08Ew42doyaxrPT0nzbjZw
+         wdgpn6ja/HUyKz2j9/iYc3mdgKyeAP5XIOQ2O0NKRjOdfjGjBOi4c2hn4g57GGL6TCbt
+         QAS+LYz6nor7SdbASnQMhsyC2hPJfkRrrnphjuziYbXcTgTasa9ypoIEjwg6ctKbtDl6
+         2kXQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718143723; x=1718748523;
+        d=1e100.net; s=20230601; t=1718144010; x=1718748810;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=xDAi/LehtiGuKcebgCW9P5JNBdnm/nWvTWG7gETgqwU=;
-        b=co5yYr4vzJ8uViJh4eL8tyVhhfG+5BrOfjw6lSwnBWuMFpcFCpGVOLOO6Uxxd3qIez
-         7zeZUARu0hCpCsu1cHrchO87IE10zn5ZK4my10+HeYKQXS6VvmrQraFwklEabGbLMhwa
-         GTE4NOEuEzt+EzgBNo6yBmLl/NruG/Rlradaw4puDJ+LG5I6UmJPyyMf54LUdY3zcdRg
-         QG5EqTqk1Sz4SERvNPnEuJiYfOQdpG6Tiuf1lsHR4vfr2fs81IT+PYhZzYtjgPDj9m4e
-         ERKIFw2k06y2hQgAc4McX8NbnHQ3Wh+7JbNWvrEcEFBBhZHes4Eg8/+to+5PikVyx3ou
-         7yPQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVVpP4YwB3lcgcl0XrLAoeeWEsNBd8BnV/cA1wTqfQfTh7S0buD9d3jJ/bmszKnAk722VrxXbXEyEYBwhAItYK2MCu8PEyFP23MOmspbQHHgcM6cIyoUvKfWgI/ekhlksHWfs7GMvM2YTrIgaw=
-X-Gm-Message-State: AOJu0YyNZjcn7U4AZzmS0n5AXHKJ80NDtHSUBv5CTzzdQy1Flis4e5Ia
-	SG96VnJOCPdZXy4AEhzuNiu+vM3/SXObNiEGVtwKUGBh8tXeQh1mPEwEYJtGs6Gf3ep7ERiR7t/
-	C0akD6e4wke1bI0/tOAyvMQd5HGg=
-X-Google-Smtp-Source: AGHT+IFBHffem54xLZczBJ5Xe/oS4MPcXIdYx89tohNq89Cp7pMB4O45YjeNBKL1s1OfEMOCHqgJQtN9Pa89PVrrbZU=
-X-Received: by 2002:a17:90b:b06:b0:2bd:8378:af81 with SMTP id
- 98e67ed59e1d1-2c4a7602018mr213853a91.4.1718143723147; Tue, 11 Jun 2024
- 15:08:43 -0700 (PDT)
+        bh=afhBt1R47m/ezKSoV/9ouvvCFpR5TvvNgsKkb4qH0kc=;
+        b=Fvt2eYnv8S5Z2idGbWkBKoGwREpx7DLxzR/uOOgKQkIaeD1uwGfn65baVKRIpKvAXD
+         gkjxwf/snTBI+mgv9F0RvR0gWOhWPOllb8vIqwDLc+hHQQuHH1o91mmhox97YkwY72IC
+         4Ogkxn8sSGkKB6CbmyysmkI6sPfh4t62xu7Q6/Uv+1I0vwbQD90Sjf7p/Ps2+o864nG5
+         MH0Z59lFOnaS9jjLiiDp/fvjI/Eg9s9pgmRpoaU1GJxoiyP91+vB7V5tvVk4a+X9CaNz
+         foKiYSqHWebZiLTnyZHVb/tRXUecfB/TLic3xEqlflEO5qD8l3KPs4BShUe2Jcyr1zKo
+         z0GA==
+X-Forwarded-Encrypted: i=1; AJvYcCWtUnlJY1PqXosIE/T6P0YuCisefFIWG2hOjOtpg0Nbtv+BadMaPEtwd6NzmksgqRzDj4Y/pdpEc3f2dc+IfuDGnqyeeOgXQH/1cGmxcH0U8z4F+3TLlZBUZCNxOZANDLYhVc4Gs19MWcYoImI=
+X-Gm-Message-State: AOJu0YzrnzExKiCrrbQPHZCF2kjKQlckjdmp9oW7qd5NSLs/a04XWIp0
+	orUJJGt8W/RekTPdIwqViubhViEi9JxSjEFWFjJRb8vM7/VTGPCK8khY8koIhISwKSYuYK+vQFw
+	9Db6tgbp+CXR4GqYpdwnSNBl1zQw=
+X-Google-Smtp-Source: AGHT+IE9qlCqOLeQ05QKNJPKnN7tKouREQ3dXdvn72wh7ojH+wuSAOzWfyGt9Erib8sm0i0A/GgDresrtb8V839STDE=
+X-Received: by 2002:a17:90a:6fa3:b0:2bd:801f:dabd with SMTP id
+ 98e67ed59e1d1-2c4a73a5950mr378332a91.3.1718144009637; Tue, 11 Jun 2024
+ 15:13:29 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240529093336.4075206-1-davidgow@google.com>
-In-Reply-To: <20240529093336.4075206-1-davidgow@google.com>
+References: <20240519210735.587323-1-ojeda@kernel.org>
+In-Reply-To: <20240519210735.587323-1-ojeda@kernel.org>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 12 Jun 2024 00:08:30 +0200
-Message-ID: <CANiq72mXWERtFSqQRtcgP28aLokwZmXaBiqcrn_zoASawjfdsQ@mail.gmail.com>
-Subject: Re: [PATCH] arch: um: rust: Use the generated target.json again
-To: David Gow <davidgow@google.com>
-Cc: Rae Moar <rmoar@google.com>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, "H . Peter Anvin" <hpa@zytor.com>, Masahiro Yamada <masahiroy@kernel.org>, 
-	Jamie Cunliffe <Jamie.Cunliffe@arm.com>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Richard Weinberger <richard@nod.at>, Anton Ivanov <anton.ivanov@cambridgegreys.com>, 
-	Johannes Berg <johannes@sipsolutions.net>, kunit-dev@googlegroups.com, 
-	linux-kernel@vger.kernel.org, linux-um@lists.infradead.org, 
-	rust-for-linux@vger.kernel.org, x86@kernel.org, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
+Date: Wed, 12 Jun 2024 00:13:17 +0200
+Message-ID: <CANiq72nXkNY2EUd_6noS-ZZ9xKa0sBYcby1QCovA8V9VxwTNXw@mail.gmail.com>
+Subject: Re: [PATCH] rust: avoid unused import warning in `rusttest`
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>
+	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev, 
+	Danilo Krummrich <dakr@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, May 29, 2024 at 11:33=E2=80=AFAM David Gow <davidgow@google.com> wr=
+On Sun, May 19, 2024 at 11:07=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wr=
 ote:
 >
-> The Rust compiler can take a target config from 'target.json', which is
-> generated by scripts/generate_rust_target.rs. It used to be that all
-> Linux architectures used this to generate a target.json, but now
-> architectures must opt-in to this, or they will default to the Rust
-> compiler's built-in target definition.
+> When compiling for the `rusttest` target, the `core::ptr` import is
+> unused since its only use happens in the `reserve()` method which is
+> not compiled in that target:
 >
-> This is mostly okay for (64-bit) x86 and UML, except that it can
-> generate SSE instructions, which we can't use in the kernel. So
-> re-instate the custom target.json, which disables SSE (and generally
-> enables the 'soft-float' feature). This fixes the following compile
-> error:
+>     warning: unused import: `core::ptr`
+>     --> rust/kernel/alloc/vec_ext.rs:7:5
+>       |
+>     7 | use core::ptr;
+>       |     ^^^^^^^^^
+>       |
+>       =3D note: `#[warn(unused_imports)]` on by default
 >
-> error: <unknown>:0:0: in function _RNvMNtCs5QSdWC790r4_4core3f32f7next_up=
- float (float): SSE register return with SSE disabled
+> Thus clean it.
 >
-> Fixes: f82811e22b48 ("rust: Refactor the build target to allow the use of=
- builtin targets")
-> Signed-off-by: David Gow <davidgow@google.com>
+> Fixes: 97ab3e8eec0c ("rust: alloc: fix dangling pointer in VecExt<T>::res=
+erve()")
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-I guess this should go through UML, but please let me know otherwise
-(I don't see it in next).
-
-Tested-by: Miguel Ojeda <ojeda@kernel.org>
-Reviewed-by: Miguel Ojeda <ojeda@kernel.org>
-
-Should this have a
-
-Cc: stable@vger.kernel.org
-
-too?
-
-Thanks!
+Applied to `rust-fixes` -- thanks everyone!
 
 Cheers,
 Miguel
