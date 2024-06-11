@@ -1,126 +1,252 @@
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 562DD175549
-	for <rust-for-linux@vger.kernel.org>; Tue, 11 Jun 2024 08:51:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E72C17BB1D
+	for <rust-for-linux@vger.kernel.org>; Tue, 11 Jun 2024 11:46:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718095895; cv=none; b=e9ua2aLCwQ/KhYL6SboJVYkF8axBZ3lPuQZKQpu8jtyOpUizz7u5Y8KUZw/Ap5guDqYVYvTiYJo5IlqI6sqXMya1JbKP42G1JLReLtzvqiS1ulJT6XqES9P0gig8yvuzfhF+UPFWv/D+UGoQs5BDmxleNA5Y0jp79zvtwKkElYk=
+	t=1718106371; cv=none; b=o1BbgGCB59rbxoCxiPpy6mYDoCn82t109T3ssY2ZmJ4qMxv7rkWMnC3krKBkcFToRZe4la6bxU4Bp+3Oox5TPHPmlDUaj4dYbwy95U/nknJbI7kzQvN6ywwRzc0DCZ6KDOHoKNTwMr1gE3BKRC2X31RCqHDHHnpdQihs9zupyKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718095895; c=relaxed/simple;
-	bh=UWU68DxMsnWJ89XSm/fDPJZsxETEh3lhJSfrsW5fAhA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ebxoFVNL6dVdptn4hL78El0szU9I6qYO6DRHbtm3ztqneFs+z2KS6L1+jcrTe3944P8AYjhARXEW5jy0SqkMBWwa/10OewkkG0h9JMEhJVraDK5NkXL2PoDllYP+PIH3UkQCg99p/CDyjjRbTRolDWGHY8IRz0SvQOiv5qqqK9E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=miaLz83g; arc=none smtp.client-ip=209.85.221.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1718106371; c=relaxed/simple;
+	bh=lPk0DHo0qn2ngIxulPs6rImg+UVgHo9sWl8XWBY8tX0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=O5IMvoDvQjyx24QXWdEsdsDBr3WrIlylHA0QwpLDSZR/ke4Br8b/KX+1d0WxyigFK4HVT9SZiQ0sr6+nOxdqyl7PqfHrPUJ/pHpVKcJy6p5onqmFWznuwMr0Q4yU2MuW/hUq5maHrJxkbt1mtFYQtrmv2p7c44Q3fdJYZgx01MY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk; spf=none smtp.mailfrom=metaspace.dk; dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b=yJI1pI/c; arc=none smtp.client-ip=209.85.208.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=metaspace.dk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="miaLz83g"
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-35f2266edd8so664460f8f.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 11 Jun 2024 01:51:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b="yJI1pI/c"
+Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-2eaae2a6dc1so108863911fa.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 11 Jun 2024 04:46:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1718095893; x=1718700693; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=metaspace-dk.20230601.gappssmtp.com; s=20230601; t=1718106366; x=1718711166; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=lWmRJ+DS9QOyVc/Vbdc3INhVnAvdDE8ka30qlfy9z30=;
-        b=miaLz83gv6NfB94Z6HLCV8X+V8WDSVskQXOezqS4/aBUg8cvSHNQChbdarSeMNadjB
-         tJOMwf00j0EPKbzSWbgt1Zj0Io1K1+JoFDm3+ve2deWoIRiicw7xYVCbmTrG1LGOiOJN
-         lUdnrQ7RfQHGhYegxXG7N/agFRv6SwJ9mnOcbQWrf9NU1D1Yja+Ujswx6NRUGvEgalis
-         vEIS68userFGwLn6Le1Y9iFU4+oAdArn9dMgHRqyFYuYnPDwJhUGGZ+UIdg1c5ZTUSs1
-         S7dX57cDbfKhcldz/s6IyU9DrA72Fi42P/RQNIbxIcDxBuucEbghFy27LvLrNHej1SiH
-         7obQ==
+        bh=FNx00mxi5pBwMfCPuGqeNzsaOgfcJX2bZVPG62r30rM=;
+        b=yJI1pI/c2+3YN3q0w+LujFD2uMzICShBFLOUTOwFrEKT2diCez/cHRUgpu6QWQ3bkF
+         Yxi1wcYoZJ3x6hhovfesi6NWALq23jIyRFlAVH3lPslb/K66L+NQodQdZ0XXasp6nJvE
+         977/FNpCTjuB9xlfkiUicPvUajBwRuv1Cr9zjYQnIBuimXNZsOZeKlAejvffcik6MPh5
+         yix/G+oUthz6O+mNsPr4JC0jayxRAcXNJQ4G8YiE9dr+/oQuZoi/Datr5AuJq0Fqk0sf
+         VF53qowrkU2Qm9+BqjojeVmdiGoPh3oSRtL09LXtbiapM4T9wBPWbz3OVoCQjTCKjFn7
+         itwg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718095893; x=1718700693;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1718106366; x=1718711166;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=lWmRJ+DS9QOyVc/Vbdc3INhVnAvdDE8ka30qlfy9z30=;
-        b=Ws6TiZbPRYtDKEV4CXWO5QuvHfCy18LeXuoB/hzsPVxxxiRO4n4OzN6qvjs6nHkrO/
-         h4A0saO8HWJ80r9nwardNcuYLk7VBr0HK64AG/4jPwaPrepbYfIrG4HqSMawuc4rslt4
-         7hto/83xyMlHWNxG0es80otI//2UY2MiwIZgz+t3P+nMWZD7579YSTo6K3Tvc7w2+NqB
-         HhcZBZxWTo3AiJTQIbTQTq9riXT0FFR2MoqWTEVqrJGNlGkTSxdrmJMektdzF8iziHmX
-         nBZkGRRD5Zb0sRQEV6OmGgMZsHJIE95M9PzP7wvFtocyhf+qjYY1my/FIlLQ8xJ7FuvT
-         UJig==
-X-Forwarded-Encrypted: i=1; AJvYcCX0GGYaQdwGogQL0Eet1XvLRcpl7k6lwnW9mLnGDAKiF2iubzFkmy0uveg+Z3zXm+xF3Cc8zmgBEvvVXgIRcOeYGbfw0ApPjOL+NPnE0KY=
-X-Gm-Message-State: AOJu0YzEooo2x+Q1Hwzawqh8eySjTpFld0oYossa52iR1zW/x/LHWb6M
-	aDQXSiU2tWxEgGTEdiUqxGkiLsbZXY797HAzwCxvtFhs1EMy83qjnAfvuCPUw+CapubE2FnCaQD
-	Pc6HInmJxb2k1NpKkHVfyffGqDjbnfYFe+H80
-X-Google-Smtp-Source: AGHT+IHbMb+7XlG53W12WXEF6AXFOPxNGQEg+5JLxaoMvIxZkN5MKxJsr00B1X4JZqpKLyAwyqD2mrvFQITfqkWsnzw=
-X-Received: by 2002:adf:e74c:0:b0:35f:2b1d:433 with SMTP id
- ffacd0b85a97d-35f2b1d04a9mr1545251f8f.26.1718095892531; Tue, 11 Jun 2024
- 01:51:32 -0700 (PDT)
+        bh=FNx00mxi5pBwMfCPuGqeNzsaOgfcJX2bZVPG62r30rM=;
+        b=XMVTVf/xywSRuuFbjgQrFxj2cfm1Q+94kA4AK3uN0X54daLM0jp+nhbgArjTOeKcUY
+         VZw23Sne/Dhd1E3zGJvreotLMo/3VBgb92lzJNa7yuH5RGUbh+JlkaILTPlad1Wh12g6
+         1zvp6qya723BgYam6pEzyexwe5Z/U5BGINEWEZpcgrUgxlQ6B+wubsBHkCvf++oMf5hf
+         v/UAi7Y2QI65H0WxRw7XUeXfL1JuAEyn70H5xncBhEvUFtZYaoOpd3zzL3PQUoPpkq1P
+         MN7i+Rai0Ctwn3cM7AEV89ml7gq5hWuXbFW6wHTtM39mC21YbvGfvtbQkobNNc3m7AKL
+         AN2Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXdwG6HHd7tOp28ffzQwXwWHMW+HjFZjGQwllhSfk0rL6FeZU6zOxkC+LV5kNN6VSP7v951dFoE5EHCzxfL8U4v4zmn4ziIEFXMIYY43F4=
+X-Gm-Message-State: AOJu0YyEL1Ul2PJPQWrQUXkemGi1fC44TxUEDhGir/aQcAMgZLlTqnQl
+	apgMw7ejbhMF/i/qXWi87OToitwvNaHf4FLSp+VH8tWyVFNlAoGDc0Jl97C9jYs=
+X-Google-Smtp-Source: AGHT+IHgpG5CsbD+dAu/3bc1p58dYePXUyNLZtxPwjK2XZy9iEWocrxe9YoH3sLm0LJ0jMbPHQIzHg==
+X-Received: by 2002:a2e:8717:0:b0:2eb:eb25:81f4 with SMTP id 38308e7fff4ca-2ebeb25868dmr35702261fa.6.1718106366157;
+        Tue, 11 Jun 2024 04:46:06 -0700 (PDT)
+Received: from localhost ([79.142.230.34])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6f1c2b1e80sm290850966b.145.2024.06.11.04.46.05
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 11 Jun 2024 04:46:05 -0700 (PDT)
+From: Andreas Hindborg <nmi@metaspace.dk>
+To: Jens Axboe <axboe@kernel.dk>,
+	Christoph Hellwig <hch@lst.de>,
+	Keith Busch <kbusch@kernel.org>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Hannes Reinecke <hare@suse.de>,
+	Ming Lei <ming.lei@redhat.com>,
+	"linux-block@vger.kernel.org" <linux-block@vger.kernel.org>
+Cc: Andreas Hindborg <a.hindborg@samsung.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Greg KH <gregkh@linuxfoundation.org>,
+	Matthew Wilcox <willy@infradead.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Chaitanya Kulkarni <chaitanyak@nvidia.com>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Yexuan Yang <1182282462@bupt.edu.cn>,
+	=?UTF-8?q?Sergio=20Gonz=C3=A1lez=20Collado?= <sergio.collado@gmail.com>,
+	Joel Granados <j.granados@samsung.com>,
+	"Pankaj Raghav (Samsung)" <kernel@pankajraghav.com>,
+	Daniel Gomez <da.gomez@samsung.com>,
+	Niklas Cassel <Niklas.Cassel@wdc.com>,
+	Philipp Stanner <pstanner@redhat.com>,
+	Conor Dooley <conor@kernel.org>,
+	Johannes Thumshirn <Johannes.Thumshirn@wdc.com>,
+	=?UTF-8?q?Matias=20Bj=C3=B8rling?= <m@bjorling.me>,
+	open list <linux-kernel@vger.kernel.org>,
+	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>,
+	"lsf-pc@lists.linux-foundation.org" <lsf-pc@lists.linux-foundation.org>,
+	"gost.dev@samsung.com" <gost.dev@samsung.com>
+Subject: [PATCH v6 2/3] rust: block: add rnull, Rust null_blk implementation
+Date: Tue, 11 Jun 2024 13:45:50 +0200
+Message-ID: <20240611114551.228679-3-nmi@metaspace.dk>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240611114551.228679-1-nmi@metaspace.dk>
+References: <20240611114551.228679-1-nmi@metaspace.dk>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240528-alice-mm-v7-0-78222c31b8f4@google.com>
- <20240528-alice-mm-v7-4-78222c31b8f4@google.com> <882a4ba5-b0ef-4c21-8167-e2949424912c@redhat.com>
-In-Reply-To: <882a4ba5-b0ef-4c21-8167-e2949424912c@redhat.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 11 Jun 2024 10:51:19 +0200
-Message-ID: <CAH5fLgjrt0Ohj1qBv=GrqZumBTMQ1jbsKakChmxmG2JYDJEM8w@mail.gmail.com>
-Subject: Re: [PATCH v7 4/4] rust: add abstraction for `struct page`
-To: Abdiel Janulgue <abdiel@redhat.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
-	Al Viro <viro@zeniv.linux.org.uk>, Andrew Morton <akpm@linux-foundation.org>, 
-	Kees Cook <keescook@chromium.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
-	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
-	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Arnd Bergmann <arnd@arndb.de>, Trevor Gross <tmgross@umich.edu>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, Christian Brauner <brauner@kernel.org>, 
-	Danilo Krummrich <dakr@redhat.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3705; i=a.hindborg@samsung.com;
+ h=from:subject; bh=kjItG6yERTCWNvess/5I9t6qK6ZC0wX9SHch+CVZfT4=;
+ b=LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgpvd0o0bkFGdEFwTDlrQTBEQUFvQjRiZ2FQb
+ mtvWTNjQnl5WmlBR1pvTnJ2MGdOaUV6Y2xZcGE1d2xmZHhqOWlFClpncFg4S1hoZE1kcHk2a3RM
+ NnNvcllrQ013UUFBUW9BSFJZaEJCTEIrVWRXdjN3cUZkYkFFdUc0R2o1NUtHTjMKQlFKbWFEYTd
+ BQW9KRU9HNEdqNTVLR04zeVNJUC8zSWFnRlYrdXdpV0VVYXNJQzZRTFRCRVlOQklaaGEwN1crZA
+ pkNXYzcytFbTRSMmltOWpyK3JHVTRIc0tvV2J5UWs3cmxkM2VxeUVHMTlaZlYvVEszck5xYThMY
+ kZFektOZFhQCnREbHNoRzlYNGZyR1ZUbnBuVmdqMG9TZUV3ZnBvaW1DdUE1MXF1dURYZW1DTFlS
+ SW1BRFhCRWQyckV0cFV4dFYKZkFWelhNYnhUekJha3RjWm9HaDVPaEZicUI2TXFVdkxGTjRoZk1
+ pMTk5b2picDFuNTJFclZ3N2dIWnc2WUVxVwpESzJpWjlkWWYySW9GUFpHa0hkelZjWWc3VGFNOC
+ s3eDI1SGhCNTVXWURXUWhGTytLeVFQQStCT25UNzlZeVNWClFDRlA5b1JkRFBlckMzQ3l5U2EwY
+ kFuN01RQkwwTFVSS2x6Ny8rUHIvRGtFNGlJb3hhNVVIbzhyWjltVEVVUmQKeDIyQURaM1poRS84
+ Z3YxR1M1VFVQTG10NkN4UFVVQUpzYlduNlIza0M0eTloYi9XeHAwcWFmZDM3WlM4WU5zNgp5Q2d
+ 2Y2hWVVZKZllKNGZWYzFFTWFWbnFDcnBDNGsrU2wzR3JhMXF1MzBhUjZheTM2RUU2NDd1R055MU
+ 0rZjM0CjN5U1hlMThUNG5uTld5RGJVU2RGcE8wNktyWU93ejB2Rm4wZ0tHWFRSaVRJTHVEaVJoe
+ G1ucDg0UVBLMk8yUjkKeVVUVTFnR2dRL3RmY3VBODdGV3N5OCtUckgzVVV2WDZIOCthdkNOQ2xq
+ UXY2amtzTGpoSitWQWhDMGt1NFFCUgoyZTZpTVg1aDFLRVF0MUtBeEFwYmxlcDluOGhCYkhBZnd
+ CdW9xRjJLUWwrenVYRS9uRFdmU3pKV20rN2dSaXQvCkZMby93TUhnNFBJbjNnPT0KPTVHazQKLS 0tLS1FTkQgUEdQIE1FU1NBR0UtLS0tLQo=
+X-Developer-Key: i=a.hindborg@samsung.com; a=openpgp; fpr=3108C10F46872E248D1FB221376EB100563EF7A7
+Content-Transfer-Encoding: 8bit
 
-On Mon, Jun 10, 2024 at 10:47=E2=80=AFPM Abdiel Janulgue <abdiel@redhat.com=
-> wrote:
->
-> Hi,
->
-> On 28/05/2024 17:58, Alice Ryhl wrote:
-> > Adds a new struct called `Page` that wraps a pointer to `struct page`.
-> > This struct is assumed to hold ownership over the page, so that Rust
-> > code can allocate and manage pages directly.
-> >
-> > +
-> > +impl Drop for Page {
-> > +    fn drop(&mut self) {
-> > +        // SAFETY: By the type invariants, we have ownership of the pa=
-ge and can free it.
-> > +        unsafe { bindings::__free_pages(self.page.as_ptr(), 0) };
-> > +    }
-> > +}
-> >
->
-> What about cases where the struct page pointer is not owned or allocated
-> by this wrapper? For example, pages returned vmalloc_to_page()?
-> Any thoughts about exposing a provision to avoid freeing those pages
-> during Drop?
->
-> We've been experimenting in adapting this Page wrapper in advance for
-> page management within the Nova DRM driver.
+From: Andreas Hindborg <a.hindborg@samsung.com>
 
-That would make a lot of sense, but this Page wrapper doesn't support
-it. You are very welcome to extend it.
+This patch adds an initial version of the Rust null block driver.
 
-There are essentially two ways to go about it:
+Signed-off-by: Andreas Hindborg <a.hindborg@samsung.com>
+Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+---
+ drivers/block/Kconfig  |  9 ++++++
+ drivers/block/Makefile |  3 ++
+ drivers/block/rnull.rs | 73 ++++++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 85 insertions(+)
+ create mode 100644 drivers/block/rnull.rs
 
-1. Change the Page struct to be a `Opaque<bindings::page>` and use the
-types &Page and BoxLikeType<Page> for these two purposes. Here,
-BoxLikeType would be a new type that is to Box in the same way as how
-ARef is to Arc.
-2. Introduce a new PageRef<'a> type that's like a reference to a page.
-You can have Page deref to PageRef so that they share methods.
+diff --git a/drivers/block/Kconfig b/drivers/block/Kconfig
+index 5b9d4aaebb81..ed209f4f2798 100644
+--- a/drivers/block/Kconfig
++++ b/drivers/block/Kconfig
+@@ -354,6 +354,15 @@ config VIRTIO_BLK
+ 	  This is the virtual block driver for virtio.  It can be used with
+           QEMU based VMMs (like KVM or Xen).  Say Y or M.
+ 
++config BLK_DEV_RUST_NULL
++	tristate "Rust null block driver (Experimental)"
++	depends on RUST
++	help
++	  This is the Rust implementation of the null block driver. For now it
++	  is only a minimal stub.
++
++	  If unsure, say N.
++
+ config BLK_DEV_RBD
+ 	tristate "Rados block device (RBD)"
+ 	depends on INET && BLOCK
+diff --git a/drivers/block/Makefile b/drivers/block/Makefile
+index 101612cba303..1105a2d4fdcb 100644
+--- a/drivers/block/Makefile
++++ b/drivers/block/Makefile
+@@ -9,6 +9,9 @@
+ # needed for trace events
+ ccflags-y				+= -I$(src)
+ 
++obj-$(CONFIG_BLK_DEV_RUST_NULL) += rnull_mod.o
++rnull_mod-y := rnull.o
++
+ obj-$(CONFIG_MAC_FLOPPY)	+= swim3.o
+ obj-$(CONFIG_BLK_DEV_SWIM)	+= swim_mod.o
+ obj-$(CONFIG_BLK_DEV_FD)	+= floppy.o
+diff --git a/drivers/block/rnull.rs b/drivers/block/rnull.rs
+new file mode 100644
+index 000000000000..b0227cf9ddd3
+--- /dev/null
++++ b/drivers/block/rnull.rs
+@@ -0,0 +1,73 @@
++// SPDX-License-Identifier: GPL-2.0
++
++//! This is a Rust implementation of the C null block driver.
++//!
++//! Supported features:
++//!
++//! - blk-mq interface
++//! - direct completion
++//! - block size 4k
++//!
++//! The driver is not configurable.
++
++use kernel::{
++    alloc::flags,
++    block::mq::{
++        self,
++        gen_disk::{self, GenDisk},
++        Operations, TagSet,
++    },
++    error::Result,
++    new_mutex, pr_info,
++    prelude::*,
++    sync::{Arc, Mutex},
++    types::ARef,
++};
++
++module! {
++    type: NullBlkModule,
++    name: "rnull_mod",
++    author: "Andreas Hindborg",
++    license: "GPL v2",
++}
++
++struct NullBlkModule {
++    _disk: Pin<Box<Mutex<GenDisk<NullBlkDevice>>>>,
++}
++
++impl kernel::Module for NullBlkModule {
++    fn init(_module: &'static ThisModule) -> Result<Self> {
++        pr_info!("Rust null_blk loaded\n");
++        let tagset = Arc::pin_init(TagSet::new(1, 256, 1), flags::GFP_KERNEL)?;
++
++        let disk = gen_disk::GenDiskBuilder::new()
++            .capacity_sectors(4096 << 11)
++            .logical_block_size(4096)?
++            .physical_block_size(4096)?
++            .rotational(false)
++            .build(format_args!("rnullb{}", 0), tagset)?;
++
++        let disk = Box::pin_init(new_mutex!(disk, "nullb:disk"), flags::GFP_KERNEL)?;
++
++        Ok(Self { _disk: disk })
++    }
++}
++
++struct NullBlkDevice;
++
++#[vtable]
++impl Operations for NullBlkDevice {
++    #[inline(always)]
++    fn queue_rq(rq: ARef<mq::Request<Self>>, _is_last: bool) -> Result {
++        mq::Request::end_ok(rq)
++            .map_err(|_e| kernel::error::code::EIO)
++            // We take no refcounts on the request, so we expect to be able to
++            // end the request. The request reference must be unique at this
++            // point, and so `end_ok` cannot fail.
++            .expect("Fatal error - expected to be able to end request");
++
++        Ok(())
++    }
++
++    fn commit_rqs() {}
++}
+-- 
+2.45.2
 
-The second solution is easiest right now. The first solution is
-probably what we want long-term.
-
-Alice
