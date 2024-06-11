@@ -1,86 +1,166 @@
-Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3B9D210E7;
-	Mon, 10 Jun 2024 21:19:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23F5A13F43E;
+	Tue, 11 Jun 2024 06:31:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718054386; cv=none; b=X4e+NYe65MyjRkSxxaUUROrznqmhypUbYQ1QGBZB7a9U9jHzttR9qAvPG4mjNKPgPOM1XRENjWr3fo0rMvdTS3m6+FzIt/5T0dRxf+OyW0ZTV+R2su/VQnSTfFxt8Rb3yWt9RjSHz3yBFmOrNzySWHWqb0Z7yB8UnYrSQzov7ec=
+	t=1718087510; cv=none; b=anKaPje5ltc9Afwpp08kMI4mh7rC55nvugidmJxXqreNpgXUMQ9Y/YxzBthpMgP6/x6MF3PNSFV3XDW/orH++5Ws8DsCwS1U8f+6ZAhz+qMsVrzid5SMgrCNJXlfLsndZZ5cqKhcj+lSJT40KW8zopOgGkPnzO+3qRjAL2Qsut0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718054386; c=relaxed/simple;
-	bh=FtdRUttpEY2am6yfvvMS6/NQ9twjSVWtoC+FNYI2FAg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=DLb1dIwGIV5zOLrqLdbvEj9zwauvwBKnlRxCziz90JOCfQOKqltpRZa/gcup8wbrj8nPuJJrNM+88wLO6oF0Dg8rMpeBVjWrZZSJ3mfmejuBXxUjh8xSoe3kdZT1YEAbeKbA7KBpPQPgU1EISXqftSSp1/t3ni9ji2cWs3UqKt0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=c5aPov1L; arc=none smtp.client-ip=209.85.216.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1718087510; c=relaxed/simple;
+	bh=2ZPT3S+8HRYZ+/M0fqX0hFmUPpAO06wEJb3duJQkoAo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PclHaKvNWwoYsdycEaaPUxteTty+JiaYoj7G7sVYL2Y1RnmbeOK21mkUV/wllPqGau1vvgbJR4B4WEoVJ3GvtgvNHvSs1y6L2SIxVHqOmIZHVQy7P1EOPU4oMVKquihc5RUOihD5XUiyZHUkxdvsPyObW3RAV5jZRtDsjwlIhEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0JPPfuGX; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="c5aPov1L"
-Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-2bfdae7997aso351301a91.2;
-        Mon, 10 Jun 2024 14:19:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718054384; x=1718659184; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FtdRUttpEY2am6yfvvMS6/NQ9twjSVWtoC+FNYI2FAg=;
-        b=c5aPov1L2oONfQ4k+7s0J2Zl+1S+JLLNWEGNUlB+y77yuiwRtmcxyoZGgrWarHAZr6
-         5ewUoA5PMabAKTqG1l9iLJ38iQysRJG7XBjOjqRpWYR+XBQ2Xv3obkN1c1F3UChwQW5W
-         IO5M5uY5JdCuhXCG0TFrxIU5EIKLqbWUCwKThSvyfsKLWePC0VztU7NYv1/HhIvFA6pB
-         TQCZG8DEv9MTnA0EEsvzW3BaKHCUub9zaVE6TT1BGFHn4nLDy0VB/kWi6toUhAzaAbpp
-         uhw/8m7tjcf2bLJK8K9sutZlo7ngADvXmXagZWoB3/BsYlJ/60yWHGtsVAcTzmFFyKXT
-         lY7g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718054384; x=1718659184;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=FtdRUttpEY2am6yfvvMS6/NQ9twjSVWtoC+FNYI2FAg=;
-        b=JKjF5ccrsZO2vONIN812i1A3A5pp+vPuYE+Az4/uGuf2omXu3MIYuSUFHmhStL6KVF
-         OugCJhCXtXeCi5wwlO9z/Q5MglDfB/SuZau26az1ijgiTigbUJpUqEASvrHeFcoVPuDD
-         ZMeEOHPgHM41FHj5uxKR1/zdfadlL5QZjlT2s9G3GNi3ZopMUCgNFOuPyE2pUpkmROnz
-         9UxZKG+2o0dwCwJY5Onrcv5bPmEezuYiycffzm8eiL3qkHK4jwg5+G/5xpbeGx+zOxD0
-         KTyU9C/4Ij4S0GofswoWQVvwAeKHoIieqSUaVF43dIYhhmiI7DQHKF1POVpCk5/Hh2tC
-         VPyA==
-X-Forwarded-Encrypted: i=1; AJvYcCUd8ojnEs6jT/eoSJTmrVdpp5H4NL1JulkYxEBhKEJhopOnEsdix6C1R5B68nC5oOzH8n1VQPFYWSppOAkZ7OI2QL0H4ulMbFRth0OWk9VLq8x6aleLi4ydnfqUG2prAQ7DHJ8CGWEJbAo3VIQ=
-X-Gm-Message-State: AOJu0Yxf9TxYGGqGRdm+O296wOZWBAbyWVTjhwJIhWN0iycaETmQwiRa
-	Ge+4W5AT/bgO1Z1ftEqQjRqY2qxZKVn99PSMhHbHuNE+wOfIo5zX9+/FnzQS1GVh5nb3sGTNt9j
-	jhrm3V392Mt5/JWGmyI+svtsydduafP6w/fc=
-X-Google-Smtp-Source: AGHT+IHjDLQOcWNekU89fNyKyTc1fKWYn5FPRFpRv1SWgiR8+EA/jBDtKU90YCClM6+6s3vYGWfX1IpW6yxkuiF9G54=
-X-Received: by 2002:a17:90a:c7d2:b0:2c2:cf61:34fb with SMTP id
- 98e67ed59e1d1-2c2cf6135b5mr6918872a91.44.1718054384125; Mon, 10 Jun 2024
- 14:19:44 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0JPPfuGX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F72BC2BD10;
+	Tue, 11 Jun 2024 06:31:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1718087509;
+	bh=2ZPT3S+8HRYZ+/M0fqX0hFmUPpAO06wEJb3duJQkoAo=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=0JPPfuGXCrZ6lXFH3MNQIVzydNYC1Ez7pLYaDlhmGhBeO/gQR1uq6ZpiIXlVW1wLP
+	 q9KJ+LIe/vdCP1qGQllOpuwHaFTakhpNIBKfjpoGkbscZ04wjb0Updauu86oFlq54B
+	 95DRMaFmFRTTD1b9Il4u9ZK7C1TpnQdnL9brKK1M=
+Date: Tue, 11 Jun 2024 08:31:46 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Danilo Krummrich <dakr@redhat.com>
+Cc: rafael@kernel.org, mcgrof@kernel.org, russell.h.weight@intel.com,
+	ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me, a.hindborg@samsung.com,
+	aliceryhl@google.com, airlied@gmail.com, fujita.tomonori@gmail.com,
+	pstanner@redhat.com, ajanulgu@redhat.com, lyude@redhat.com,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] rust: add firmware abstractions
+Message-ID: <2024061128-provolone-coyness-1d3c@gregkh>
+References: <20240610180318.72152-1-dakr@redhat.com>
+ <20240610180318.72152-3-dakr@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <4e0f5932-c7bc-4878-862c-1186cbecd71d@gmail.com>
- <5a8a6b44-9f89-4e26-869c-e9361da4cb5c@lunn.ch> <f798777d-6a56-45d4-8136-6aa9e0e77abc@gmail.com>
-In-Reply-To: <f798777d-6a56-45d4-8136-6aa9e0e77abc@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 10 Jun 2024 23:19:32 +0200
-Message-ID: <CANiq72nbs0cqzfC15q7KXykjHMjkd3reLpZL5Pjx942Y6+bdew@mail.gmail.com>
-Subject: Re: [PATCH 1/1] arm: rust: Enable Rust support for ARMv7
-To: Christian Schrefl <chrisi.schrefl@gmail.com>
-Cc: Andrew Lunn <andrew@lunn.ch>, Miguel Ojeda <ojeda@kernel.org>, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, rust-for-linux@vger.kernel.org, 
-	Jamie Cunliffe <Jamie.Cunliffe@arm.com>, Sven Van Asbroeck <thesven73@gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240610180318.72152-3-dakr@redhat.com>
 
-On Mon, Jun 10, 2024 at 9:37=E2=80=AFPM Christian Schrefl
-<chrisi.schrefl@gmail.com> wrote:
->
-> Miguel how is the support handled for the other architectures?
+On Mon, Jun 10, 2024 at 08:02:28PM +0200, Danilo Krummrich wrote:
+> Add an abstraction around the kernels firmware API to request firmware
+> images. The abstraction provides functions to access the firmware's size
+> and backing buffer.
+> 
+> The firmware is released once the abstraction instance is dropped.
+> 
+> Signed-off-by: Danilo Krummrich <dakr@redhat.com>
+> ---
+>  rust/bindings/bindings_helper.h |   1 +
+>  rust/kernel/firmware.rs         | 107 ++++++++++++++++++++++++++++++++
+>  rust/kernel/lib.rs              |   1 +
+>  3 files changed, 109 insertions(+)
+>  create mode 100644 rust/kernel/firmware.rs
+> 
+> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+> index ddb5644d4fd9..18a3f05115cb 100644
+> --- a/rust/bindings/bindings_helper.h
+> +++ b/rust/bindings/bindings_helper.h
+> @@ -9,6 +9,7 @@
+>  #include <kunit/test.h>
+>  #include <linux/errname.h>
+>  #include <linux/ethtool.h>
+> +#include <linux/firmware.h>
+>  #include <linux/jiffies.h>
+>  #include <linux/mdio.h>
+>  #include <linux/phy.h>
+> diff --git a/rust/kernel/firmware.rs b/rust/kernel/firmware.rs
+> new file mode 100644
+> index 000000000000..7ff4c325f670
+> --- /dev/null
+> +++ b/rust/kernel/firmware.rs
+> @@ -0,0 +1,107 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! Firmware abstraction
+> +//!
+> +//! C header: [`include/linux/firmware.h`](srctree/include/linux/firmware.h")
+> +
+> +use crate::{bindings, device::Device, error::Error, error::Result, str::CStr};
+> +use core::ptr::NonNull;
+> +
+> +// One of the following: `bindings::request_firmware`, `bindings::firmware_request_nowarn`,
+> +// `firmware_request_platform`, `bindings::request_firmware_direct`
+> +type FwFunc =
+> +    unsafe extern "C" fn(*mut *const bindings::firmware, *const i8, *mut bindings::device) -> i32;
+> +
+> +/// Abstraction around a C `struct firmware`.
+> +///
+> +/// This is a simple abstraction around the C firmware API. Just like with the C API, firmware can
+> +/// be requested. Once requested the abstraction provides direct access to the firmware buffer as
+> +/// `&[u8]`. The firmware is released once [`Firmware`] is dropped.
+> +///
+> +/// # Invariants
+> +///
+> +/// The pointer is valid, and has ownership over the instance of `struct firmware`.
+> +///
+> +/// # Examples
+> +///
+> +/// ```
+> +/// use kernel::firmware::Firmware;
+> +///
+> +/// let fw = Firmware::request("path/to/firmware.bin", dev.as_ref())?;
+> +/// driver_load_firmware(fw.data());
+> +/// ```
+> +pub struct Firmware(NonNull<bindings::firmware>);
+> +
+> +impl Firmware {
+> +    fn request_internal(name: &CStr, dev: &Device, func: FwFunc) -> Result<Self> {
+> +        let mut fw: *mut bindings::firmware = core::ptr::null_mut();
+> +        let pfw: *mut *mut bindings::firmware = &mut fw;
+> +
+> +        // SAFETY: `pfw` is a valid pointer to a NULL initialized `bindings::firmware` pointer.
+> +        // `name` and `dev` are valid as by their type invariants.
+> +        let ret = unsafe { func(pfw as _, name.as_char_ptr(), dev.as_raw()) };
+> +        if ret != 0 {
+> +            return Err(Error::from_errno(ret));
+> +        }
+> +
+> +        // SAFETY: `func` not bailing out with a non-zero error code, guarantees that `fw` is a
+> +        // valid pointer to `bindings::firmware`.
+> +        Ok(Firmware(unsafe { NonNull::new_unchecked(fw) }))
+> +    }
+> +
+> +    /// Send a firmware request and wait for it. See also `bindings::request_firmware`.
+> +    pub fn request(name: &CStr, dev: &Device) -> Result<Self> {
+> +        Self::request_internal(name, dev, bindings::request_firmware)
+> +    }
 
-The arch maintainers are the ones taking the patches through their
-trees and so on (with the initial exception of x86).
+How does this handle when CONFIG_FW_LOADER is not enabled?  Why are you
+building these bindings if that option is not checked?
 
-Of course, if you want to contribute to that, that is great. If an
-entry is wanted/needed, then a possibility is a sub-entry to the
-architecture.
+> +
+> +    /// Send a request for an optional firmware module. See also
+> +    /// `bindings::firmware_request_nowarn`.
+> +    pub fn request_nowarn(name: &CStr, dev: &Device) -> Result<Self> {
+> +        Self::request_internal(name, dev, bindings::firmware_request_nowarn)
+> +    }
+> +
+> +    /// Send a request for a firmware with platform-fw fallback. See also
+> +    /// `bindings::firmware_request_platform`.
+> +    pub fn request_platform(name: &CStr, dev: &Device) -> Result<Self> {
+> +        Self::request_internal(name, dev, bindings::firmware_request_platform)
+> +    }
+> +
+> +    /// Send a request for a firmware directly without usermode helper. See also
+> +    /// `bindings::request_firmware_direct`.
+> +    pub fn request_direct(name: &CStr, dev: &Device) -> Result<Self> {
+> +        Self::request_internal(name, dev, bindings::request_firmware_direct)
+> +    }
 
-Cheers,
-Miguel
+Why just these variants?  Why not just add the ones that people actually
+need instead of a random assortment like you choose here :)
+
+thanks,
+
+greg k-h
