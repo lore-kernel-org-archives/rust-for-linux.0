@@ -1,166 +1,126 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23F5A13F43E;
-	Tue, 11 Jun 2024 06:31:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 562DD175549
+	for <rust-for-linux@vger.kernel.org>; Tue, 11 Jun 2024 08:51:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718087510; cv=none; b=anKaPje5ltc9Afwpp08kMI4mh7rC55nvugidmJxXqreNpgXUMQ9Y/YxzBthpMgP6/x6MF3PNSFV3XDW/orH++5Ws8DsCwS1U8f+6ZAhz+qMsVrzid5SMgrCNJXlfLsndZZ5cqKhcj+lSJT40KW8zopOgGkPnzO+3qRjAL2Qsut0=
+	t=1718095895; cv=none; b=e9ua2aLCwQ/KhYL6SboJVYkF8axBZ3lPuQZKQpu8jtyOpUizz7u5Y8KUZw/Ap5guDqYVYvTiYJo5IlqI6sqXMya1JbKP42G1JLReLtzvqiS1ulJT6XqES9P0gig8yvuzfhF+UPFWv/D+UGoQs5BDmxleNA5Y0jp79zvtwKkElYk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718087510; c=relaxed/simple;
-	bh=2ZPT3S+8HRYZ+/M0fqX0hFmUPpAO06wEJb3duJQkoAo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PclHaKvNWwoYsdycEaaPUxteTty+JiaYoj7G7sVYL2Y1RnmbeOK21mkUV/wllPqGau1vvgbJR4B4WEoVJ3GvtgvNHvSs1y6L2SIxVHqOmIZHVQy7P1EOPU4oMVKquihc5RUOihD5XUiyZHUkxdvsPyObW3RAV5jZRtDsjwlIhEw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0JPPfuGX; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1718095895; c=relaxed/simple;
+	bh=UWU68DxMsnWJ89XSm/fDPJZsxETEh3lhJSfrsW5fAhA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ebxoFVNL6dVdptn4hL78El0szU9I6qYO6DRHbtm3ztqneFs+z2KS6L1+jcrTe3944P8AYjhARXEW5jy0SqkMBWwa/10OewkkG0h9JMEhJVraDK5NkXL2PoDllYP+PIH3UkQCg99p/CDyjjRbTRolDWGHY8IRz0SvQOiv5qqqK9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=miaLz83g; arc=none smtp.client-ip=209.85.221.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0JPPfuGX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F72BC2BD10;
-	Tue, 11 Jun 2024 06:31:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718087509;
-	bh=2ZPT3S+8HRYZ+/M0fqX0hFmUPpAO06wEJb3duJQkoAo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=0JPPfuGXCrZ6lXFH3MNQIVzydNYC1Ez7pLYaDlhmGhBeO/gQR1uq6ZpiIXlVW1wLP
-	 q9KJ+LIe/vdCP1qGQllOpuwHaFTakhpNIBKfjpoGkbscZ04wjb0Updauu86oFlq54B
-	 95DRMaFmFRTTD1b9Il4u9ZK7C1TpnQdnL9brKK1M=
-Date: Tue, 11 Jun 2024 08:31:46 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Danilo Krummrich <dakr@redhat.com>
-Cc: rafael@kernel.org, mcgrof@kernel.org, russell.h.weight@intel.com,
-	ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me, a.hindborg@samsung.com,
-	aliceryhl@google.com, airlied@gmail.com, fujita.tomonori@gmail.com,
-	pstanner@redhat.com, ajanulgu@redhat.com, lyude@redhat.com,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] rust: add firmware abstractions
-Message-ID: <2024061128-provolone-coyness-1d3c@gregkh>
-References: <20240610180318.72152-1-dakr@redhat.com>
- <20240610180318.72152-3-dakr@redhat.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="miaLz83g"
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-35f2266edd8so664460f8f.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 11 Jun 2024 01:51:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1718095893; x=1718700693; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lWmRJ+DS9QOyVc/Vbdc3INhVnAvdDE8ka30qlfy9z30=;
+        b=miaLz83gv6NfB94Z6HLCV8X+V8WDSVskQXOezqS4/aBUg8cvSHNQChbdarSeMNadjB
+         tJOMwf00j0EPKbzSWbgt1Zj0Io1K1+JoFDm3+ve2deWoIRiicw7xYVCbmTrG1LGOiOJN
+         lUdnrQ7RfQHGhYegxXG7N/agFRv6SwJ9mnOcbQWrf9NU1D1Yja+Ujswx6NRUGvEgalis
+         vEIS68userFGwLn6Le1Y9iFU4+oAdArn9dMgHRqyFYuYnPDwJhUGGZ+UIdg1c5ZTUSs1
+         S7dX57cDbfKhcldz/s6IyU9DrA72Fi42P/RQNIbxIcDxBuucEbghFy27LvLrNHej1SiH
+         7obQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718095893; x=1718700693;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=lWmRJ+DS9QOyVc/Vbdc3INhVnAvdDE8ka30qlfy9z30=;
+        b=Ws6TiZbPRYtDKEV4CXWO5QuvHfCy18LeXuoB/hzsPVxxxiRO4n4OzN6qvjs6nHkrO/
+         h4A0saO8HWJ80r9nwardNcuYLk7VBr0HK64AG/4jPwaPrepbYfIrG4HqSMawuc4rslt4
+         7hto/83xyMlHWNxG0es80otI//2UY2MiwIZgz+t3P+nMWZD7579YSTo6K3Tvc7w2+NqB
+         HhcZBZxWTo3AiJTQIbTQTq9riXT0FFR2MoqWTEVqrJGNlGkTSxdrmJMektdzF8iziHmX
+         nBZkGRRD5Zb0sRQEV6OmGgMZsHJIE95M9PzP7wvFtocyhf+qjYY1my/FIlLQ8xJ7FuvT
+         UJig==
+X-Forwarded-Encrypted: i=1; AJvYcCX0GGYaQdwGogQL0Eet1XvLRcpl7k6lwnW9mLnGDAKiF2iubzFkmy0uveg+Z3zXm+xF3Cc8zmgBEvvVXgIRcOeYGbfw0ApPjOL+NPnE0KY=
+X-Gm-Message-State: AOJu0YzEooo2x+Q1Hwzawqh8eySjTpFld0oYossa52iR1zW/x/LHWb6M
+	aDQXSiU2tWxEgGTEdiUqxGkiLsbZXY797HAzwCxvtFhs1EMy83qjnAfvuCPUw+CapubE2FnCaQD
+	Pc6HInmJxb2k1NpKkHVfyffGqDjbnfYFe+H80
+X-Google-Smtp-Source: AGHT+IHbMb+7XlG53W12WXEF6AXFOPxNGQEg+5JLxaoMvIxZkN5MKxJsr00B1X4JZqpKLyAwyqD2mrvFQITfqkWsnzw=
+X-Received: by 2002:adf:e74c:0:b0:35f:2b1d:433 with SMTP id
+ ffacd0b85a97d-35f2b1d04a9mr1545251f8f.26.1718095892531; Tue, 11 Jun 2024
+ 01:51:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240610180318.72152-3-dakr@redhat.com>
+References: <20240528-alice-mm-v7-0-78222c31b8f4@google.com>
+ <20240528-alice-mm-v7-4-78222c31b8f4@google.com> <882a4ba5-b0ef-4c21-8167-e2949424912c@redhat.com>
+In-Reply-To: <882a4ba5-b0ef-4c21-8167-e2949424912c@redhat.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Tue, 11 Jun 2024 10:51:19 +0200
+Message-ID: <CAH5fLgjrt0Ohj1qBv=GrqZumBTMQ1jbsKakChmxmG2JYDJEM8w@mail.gmail.com>
+Subject: Re: [PATCH v7 4/4] rust: add abstraction for `struct page`
+To: Abdiel Janulgue <abdiel@redhat.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
+	Al Viro <viro@zeniv.linux.org.uk>, Andrew Morton <akpm@linux-foundation.org>, 
+	Kees Cook <keescook@chromium.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
+	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
+	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Arnd Bergmann <arnd@arndb.de>, Trevor Gross <tmgross@umich.edu>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Christian Brauner <brauner@kernel.org>, 
+	Danilo Krummrich <dakr@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jun 10, 2024 at 08:02:28PM +0200, Danilo Krummrich wrote:
-> Add an abstraction around the kernels firmware API to request firmware
-> images. The abstraction provides functions to access the firmware's size
-> and backing buffer.
-> 
-> The firmware is released once the abstraction instance is dropped.
-> 
-> Signed-off-by: Danilo Krummrich <dakr@redhat.com>
-> ---
->  rust/bindings/bindings_helper.h |   1 +
->  rust/kernel/firmware.rs         | 107 ++++++++++++++++++++++++++++++++
->  rust/kernel/lib.rs              |   1 +
->  3 files changed, 109 insertions(+)
->  create mode 100644 rust/kernel/firmware.rs
-> 
-> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-> index ddb5644d4fd9..18a3f05115cb 100644
-> --- a/rust/bindings/bindings_helper.h
-> +++ b/rust/bindings/bindings_helper.h
-> @@ -9,6 +9,7 @@
->  #include <kunit/test.h>
->  #include <linux/errname.h>
->  #include <linux/ethtool.h>
-> +#include <linux/firmware.h>
->  #include <linux/jiffies.h>
->  #include <linux/mdio.h>
->  #include <linux/phy.h>
-> diff --git a/rust/kernel/firmware.rs b/rust/kernel/firmware.rs
-> new file mode 100644
-> index 000000000000..7ff4c325f670
-> --- /dev/null
-> +++ b/rust/kernel/firmware.rs
-> @@ -0,0 +1,107 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! Firmware abstraction
-> +//!
-> +//! C header: [`include/linux/firmware.h`](srctree/include/linux/firmware.h")
-> +
-> +use crate::{bindings, device::Device, error::Error, error::Result, str::CStr};
-> +use core::ptr::NonNull;
-> +
-> +// One of the following: `bindings::request_firmware`, `bindings::firmware_request_nowarn`,
-> +// `firmware_request_platform`, `bindings::request_firmware_direct`
-> +type FwFunc =
-> +    unsafe extern "C" fn(*mut *const bindings::firmware, *const i8, *mut bindings::device) -> i32;
-> +
-> +/// Abstraction around a C `struct firmware`.
-> +///
-> +/// This is a simple abstraction around the C firmware API. Just like with the C API, firmware can
-> +/// be requested. Once requested the abstraction provides direct access to the firmware buffer as
-> +/// `&[u8]`. The firmware is released once [`Firmware`] is dropped.
-> +///
-> +/// # Invariants
-> +///
-> +/// The pointer is valid, and has ownership over the instance of `struct firmware`.
-> +///
-> +/// # Examples
-> +///
-> +/// ```
-> +/// use kernel::firmware::Firmware;
-> +///
-> +/// let fw = Firmware::request("path/to/firmware.bin", dev.as_ref())?;
-> +/// driver_load_firmware(fw.data());
-> +/// ```
-> +pub struct Firmware(NonNull<bindings::firmware>);
-> +
-> +impl Firmware {
-> +    fn request_internal(name: &CStr, dev: &Device, func: FwFunc) -> Result<Self> {
-> +        let mut fw: *mut bindings::firmware = core::ptr::null_mut();
-> +        let pfw: *mut *mut bindings::firmware = &mut fw;
-> +
-> +        // SAFETY: `pfw` is a valid pointer to a NULL initialized `bindings::firmware` pointer.
-> +        // `name` and `dev` are valid as by their type invariants.
-> +        let ret = unsafe { func(pfw as _, name.as_char_ptr(), dev.as_raw()) };
-> +        if ret != 0 {
-> +            return Err(Error::from_errno(ret));
-> +        }
-> +
-> +        // SAFETY: `func` not bailing out with a non-zero error code, guarantees that `fw` is a
-> +        // valid pointer to `bindings::firmware`.
-> +        Ok(Firmware(unsafe { NonNull::new_unchecked(fw) }))
-> +    }
-> +
-> +    /// Send a firmware request and wait for it. See also `bindings::request_firmware`.
-> +    pub fn request(name: &CStr, dev: &Device) -> Result<Self> {
-> +        Self::request_internal(name, dev, bindings::request_firmware)
-> +    }
+On Mon, Jun 10, 2024 at 10:47=E2=80=AFPM Abdiel Janulgue <abdiel@redhat.com=
+> wrote:
+>
+> Hi,
+>
+> On 28/05/2024 17:58, Alice Ryhl wrote:
+> > Adds a new struct called `Page` that wraps a pointer to `struct page`.
+> > This struct is assumed to hold ownership over the page, so that Rust
+> > code can allocate and manage pages directly.
+> >
+> > +
+> > +impl Drop for Page {
+> > +    fn drop(&mut self) {
+> > +        // SAFETY: By the type invariants, we have ownership of the pa=
+ge and can free it.
+> > +        unsafe { bindings::__free_pages(self.page.as_ptr(), 0) };
+> > +    }
+> > +}
+> >
+>
+> What about cases where the struct page pointer is not owned or allocated
+> by this wrapper? For example, pages returned vmalloc_to_page()?
+> Any thoughts about exposing a provision to avoid freeing those pages
+> during Drop?
+>
+> We've been experimenting in adapting this Page wrapper in advance for
+> page management within the Nova DRM driver.
 
-How does this handle when CONFIG_FW_LOADER is not enabled?  Why are you
-building these bindings if that option is not checked?
+That would make a lot of sense, but this Page wrapper doesn't support
+it. You are very welcome to extend it.
 
-> +
-> +    /// Send a request for an optional firmware module. See also
-> +    /// `bindings::firmware_request_nowarn`.
-> +    pub fn request_nowarn(name: &CStr, dev: &Device) -> Result<Self> {
-> +        Self::request_internal(name, dev, bindings::firmware_request_nowarn)
-> +    }
-> +
-> +    /// Send a request for a firmware with platform-fw fallback. See also
-> +    /// `bindings::firmware_request_platform`.
-> +    pub fn request_platform(name: &CStr, dev: &Device) -> Result<Self> {
-> +        Self::request_internal(name, dev, bindings::firmware_request_platform)
-> +    }
-> +
-> +    /// Send a request for a firmware directly without usermode helper. See also
-> +    /// `bindings::request_firmware_direct`.
-> +    pub fn request_direct(name: &CStr, dev: &Device) -> Result<Self> {
-> +        Self::request_internal(name, dev, bindings::request_firmware_direct)
-> +    }
+There are essentially two ways to go about it:
 
-Why just these variants?  Why not just add the ones that people actually
-need instead of a random assortment like you choose here :)
+1. Change the Page struct to be a `Opaque<bindings::page>` and use the
+types &Page and BoxLikeType<Page> for these two purposes. Here,
+BoxLikeType would be a new type that is to Box in the same way as how
+ARef is to Arc.
+2. Introduce a new PageRef<'a> type that's like a reference to a page.
+You can have Page deref to PageRef so that they share methods.
 
-thanks,
+The second solution is easiest right now. The first solution is
+probably what we want long-term.
 
-greg k-h
+Alice
