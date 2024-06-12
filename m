@@ -1,198 +1,212 @@
-Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
+Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AFD052F62;
-	Wed, 12 Jun 2024 21:28:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C88D2CCB4;
+	Wed, 12 Jun 2024 22:31:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718227737; cv=none; b=deewg77tZlTXpkzikE0BWiyGS/5JNofBJHArhdVvCTj6At5FrydT6akfDfi/K2kiikmgug4q8FvcijHXUc6THc3iA6/Sb6WAj/e7GdXWr3/RP4MAE/0fYnrsXJQNE1B+y1PflK0ki/uxY3OMog/N2PE/hNMDXQXOkRKEFL2qu9Y=
+	t=1718231464; cv=none; b=Oc0p1+wGoy0MRpsudwfRUBH+KNvaZdtnCYvurnP4Xw2V2ArDCSnwLaw2a/BsHF69sACimRRgySFE5OvjMopgvE60LHbf0U7EXbGmRPYuTfPeI0L8QoeK5e0Zrb1lBW2LuJ9CBFnLlk08a0YRikuHEgPmezbmOHKpwNr5C29kgJk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718227737; c=relaxed/simple;
-	bh=znNn8FFLkKjz4pF51useI6yJeK2t3fPxERcqxi3+5zo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=R9i99gO1fcklPlNWOiHV92QsG3LOaSEc+3V7pMaYwFj2h0vQyQ+7/pLfOSilTGx4f2e6uALWSfl6FlqkaMnt5NpZOgzCpwcDQkt14/t5YSa/btrjuKGJf42XSCGbqW4WhW/L9mSoqhpaNM/SVtwiJWeQbub3OHUWxkX1hvXTtcY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OKjM0Dm8; arc=none smtp.client-ip=209.85.210.43
+	s=arc-20240116; t=1718231464; c=relaxed/simple;
+	bh=jnIZy7v6gRkoBg8xknS0zEjcBUhw4V/Kkf/pzr9ZLKk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=S9mxJj8xywFa63PbgzZIpzMe91aMe0A74eAmkO55M8agceNmz5zZPQcJ67IlCLHTgyHXgd4PNlf/fmhiny6taJ7A6Ah+HRM6UIpXjDLraBm+fRBSF56Z3KJtsZFnp4LW4idRXIbRW7/GlFSkUVY4ie8n3j2a9mk4Rrj+VaxWnrA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Yl7ZBO3F; arc=none smtp.client-ip=209.85.219.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OKjM0Dm8"
-Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-6f9774a556cso199732a34.0;
-        Wed, 12 Jun 2024 14:28:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Yl7ZBO3F"
+Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-6b0745efaeeso1762376d6.1;
+        Wed, 12 Jun 2024 15:31:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718227734; x=1718832534; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=n/LiUVrOSh1qk2OL4B+ympIMZiV3sPMaaoOJZVMjpss=;
-        b=OKjM0Dm84UK5sobqKS+o/nIVNctysZfiM/MLN7f7OtymIPB1EoDBS7EHLPdbGoGyMz
-         VU1QtUZuDrmgMhz496jySReAb52Bpyh4dtq3komiYJnrhlcOtfsr6Tz5v5/1gXNpUm2G
-         NBz/SrA2tLyzCBJDU90DQgXh1ULsP3lEw2EOPCVsKnQHcn80pw9dJcBvWshvFTKxbT8v
-         YFFTSV2edQxu6TBm2LFGcklEX5WLONdtvhqCpKwKzLqx0PBQ2mQr83Aa5IpYcj03bTD6
-         qH28jSG+yof4+9HHS5mVyXClG8OxPu3j1WgfzVRDmKMsESc0wlUBDSTUUHf+r69UHwis
-         sZBQ==
+        d=gmail.com; s=20230601; t=1718231461; x=1718836261; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:feedback-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=HaKXS0ZZbil+kikiY7Uq0U6QIK8rKqbj9kgNRJOfwg0=;
+        b=Yl7ZBO3FsoaBbzlSK/kCw40FIVRb6hIvjlbeUtQ6+NcXwSh+7dEFSIKg19YVebG3lE
+         dgoLvT7aMVdr21IKp2gnvvLtBzO0lD7UqoBMfzXLfF8v8QnWG79SuN+K8bBC5OnLZpD7
+         AAwmpxOGw+8rCgTwBgrz4AAEYv6evZeEH58Uf72fAch7nq8mTuYlLamgRkA02SFZsZuY
+         aojcODXalMqXBUq/bEJoenyPweMCoYDynwejo8qnJ97qS6XmQiKIu8OJaL72nqjUadlE
+         NJZF7hB/nvn9g3ClIVW++YI+ZClyFtiBWCAm+nWI6G0/zIG9/qn/5sKhP8VpY2TyV3/4
+         htlQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718227734; x=1718832534;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=n/LiUVrOSh1qk2OL4B+ympIMZiV3sPMaaoOJZVMjpss=;
-        b=fNBWeWB3haKJQffUN8158LvfEwYgLJxJGiJF9FFBq8/T2C+qtqrZJ57Ash9f4bF7cK
-         ApSWRGt75urI7knE8yDq+JQSvT2bMo0AWaNhH6yHdUivUy1JM/lIXdn3T3z1ulO8DN8L
-         E6YWv/LjtCCM7mh2KgcLsrnEO7HOlZiJsRdFmv+4S/uL2dvqUbQLIaN5hFwtVb/+9izs
-         hHI2sRSEsUJtylg3/uyDpJ+Hj/qQCvY61bPrmDSA3MxtPLYsyACO4PzuSK8Jmo9i6dws
-         nD5mouahr9xgsawOjbze7/d2DRITfvdJbcG8awCcbTIH7rlQDqHzcZt55gtiUtppNrBG
-         uEsA==
-X-Forwarded-Encrypted: i=1; AJvYcCXkLhdbyLYSJCMltXczVoOS67/bXFIUo9vDtimQ5AK/7fHzNkxAapMWZEcH+39u62/RYBqgmrYut87BZVMS4UqvQ1ykGYyQDCbunRkZ7bGJgyE1XOeZvZLM1+iyLI08BKT7OH7dBLrt5HEm7PpfMH0tnC04bwHMo3qfuN87SU96T/1NtpIxgJkezDc=
-X-Gm-Message-State: AOJu0YyQftDgErhteo91/qygm3JCuEfWdxbPUvlx1Chyie6L/kpJlnwY
-	gsXJvYLWekyLwSsTnNmWgE4a/IVG8gMwQ3XbcWUI9ZYnumrnHSU5
-X-Google-Smtp-Source: AGHT+IHgfy++8B1+QoKz5RUZk7S+hSnXgmAO0CmHWpGF56LEkgMgR0X3dl9BU04gXBdJPCiR2dF02A==
-X-Received: by 2002:a05:6830:3446:b0:6f9:61a1:aa73 with SMTP id 46e09a7af769-6fa1bf59799mr2936246a34.9.1718227734100;
-        Wed, 12 Jun 2024 14:28:54 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1718231461; x=1718836261;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:feedback-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HaKXS0ZZbil+kikiY7Uq0U6QIK8rKqbj9kgNRJOfwg0=;
+        b=wy4jVgNQcEuSFa0QwLJrtf/NAQq3mXUUm/0XOhbXO6AcKFMAsR9a1+NNxmLl7Q9aUc
+         UftpwYp4CbjZacuBLMpB17TzikjhwaAmI4sWGbOsEwLSTbaljYuFUNu1q02+XO5IdWQu
+         hHz/VmBR+MpUdp1eaKn/WJBeaFMi/48NV6dE1KNGji+tK++xc15022B3VIvoz6BiumF7
+         jtk1LKpcMQ+anNWZnIo9baXUoWv4e7PLba9FvWrP8n+lnGn69o5QOjlyk+sGr4g1Jpc6
+         YSWV1IhfS//jxCSiOoevy2O0V7fp0k7jSQVnqJ7nb/hp8vmAMVvfL/bQNilMni3To67J
+         Zasg==
+X-Forwarded-Encrypted: i=1; AJvYcCUhYWVmtd4vW1ezGvtK7Y7ctoCSzkxQKG66eFjUIahFINIQA0t1y98hRQmOS6c9Bj9VvRcINz69x8UH7po9Mek6ADUDmiApsNfCLBfQjqLrJ6Mfn6SieL1UbbhGJDxJmqR+VIyFY6BlfnvJlBlVqzE1TMhDskdyyf8ToKWYRGmYWXoGXqygBY0=
+X-Gm-Message-State: AOJu0YzirqeRUZX2i7Xo5ufmDzXtUJVBuBL/1c/xCg2hSWT315+ec9v1
+	l0sgmW3w48Dl9gXrVcbh8NVN43iZlGrG+H7/Wx9edw+QescToTLa
+X-Google-Smtp-Source: AGHT+IE24GnzXvXHctahz7LCplx76fc3qiNipMvkxpU+kgWUnnS/78AStzuLW5X4k22oyxY3TY7sSg==
+X-Received: by 2002:a05:6214:3a81:b0:6b0:7a61:c69a with SMTP id 6a1803df08f44-6b1b5c07c5dmr41069396d6.53.1718231461421;
+        Wed, 12 Jun 2024 15:31:01 -0700 (PDT)
 Received: from fauth1-smtp.messagingengine.com (fauth1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7955ff369dasm347650185a.34.2024.06.12.14.28.53
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6b2a5bf2321sm482416d6.6.2024.06.12.15.31.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 12 Jun 2024 14:28:53 -0700 (PDT)
-Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
-	by mailfauth.nyi.internal (Postfix) with ESMTP id 08C861200043;
-	Wed, 12 Jun 2024 17:28:53 -0400 (EDT)
+        Wed, 12 Jun 2024 15:31:00 -0700 (PDT)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+	by mailfauth.nyi.internal (Postfix) with ESMTP id C53A11200068;
+	Wed, 12 Jun 2024 18:30:59 -0400 (EDT)
 Received: from mailfrontend1 ([10.202.2.162])
-  by compute1.internal (MEProxy); Wed, 12 Jun 2024 17:28:53 -0400
-X-ME-Sender: <xms:FBNqZkhphvJzzZt-KjuHgCcQzPzeU8i1NuO0E6PAnxboHnzWnD5lNA>
-    <xme:FBNqZtCfJ8yTUkAq1UGghkNzL57w7OrsP6t6g9uv0LszXA4O1spVSfQH4G5pJkosd
-    jJrMbHiBYWoP-Gs8A>
-X-ME-Received: <xmr:FBNqZsFDlDH7n8NFHaT89kLB-P7JWoaVNA3NwmLpJfDK5yk4KZS60CXDNrDvWQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrfedugedgudehlecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
-    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
-    enucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhq
-    uhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrf
-    grthhtvghrnhephedugfduffffteeutddvheeuveelvdfhleelieevtdeguefhgeeuveei
-    udffiedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
-    epsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedt
-    ieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfh
-    higihmvgdrnhgrmhgv
-X-ME-Proxy: <xmx:FBNqZlSrz2l5LFZhfM0_i1xFOxFXodwbOUfdd6JM_jDYpHX3ESAssw>
-    <xmx:FBNqZhwvDaflNlsvQYNmOFXVoe_JqHeggj4wa2ocJRFnJxelY5RbMA>
-    <xmx:FBNqZj7Tpi_6F4iUYyW7J9Hmzu3suAMS8_4egvWhFZGHy9kRGwIw3w>
-    <xmx:FBNqZuw2lx9O1kin1_vKRQGhYHl5txGMtz7QWP8Vv5l6A0-M-jswWQ>
-    <xmx:FRNqZlg3-6AqebltSlzGU8hMpKZK5Lx6MWcj4PQZyZxu17Y5bBoQjjet>
+  by compute6.internal (MEProxy); Wed, 12 Jun 2024 18:30:59 -0400
+X-ME-Sender: <xms:oyFqZiQ-WvmBIvD0sqlLQ-lCnX5rKwuTMCezlDN_9AZRb37MfaWDAg>
+    <xme:oyFqZnzpZgjrA7KE1MyLYUmJ1Jasf838cGNRKYBR9cmN-h06r_Mm-7wCTJuUGNvQc
+    IMvl745UYclYNnkKw>
+X-ME-Received: <xmr:oyFqZv0pR8czYrFZBfwaMrhVaEqTrYZVrO9_z--9aWvZMiUzf4Wz98__H1Fr9g>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrfeduhedgudduucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhephffvvefufffkofgggfestdekredtredttdenucfhrhhomhepuehoqhhunhcu
+    hfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrghtth
+    gvrhhnpeejtdffueetfeetgfelvdetueeltefgieeiuedttdehuddtleeiheekfeeghfdv
+    veenucffohhmrghinhepghhithhhuhgsrdgtohhmpdhkvghrnhgvlhdrohhrghenucevlh
+    hushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnodhm
+    vghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedqudejjeekhe
+    ehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghm
+    vg
+X-ME-Proxy: <xmx:oyFqZuCaJSmS98VfGA9zj4mLRpiD3i2pZpHBIt5wTZ-V36xK3e8jlA>
+    <xmx:oyFqZrj165BCm8jCn54D3GXblgeQirQz_th-secKNAdOJxOikWdt1Q>
+    <xmx:oyFqZqqLwUmFLJ8aBEPTTYMt-szbs8GMM4Ijnul9ZAv6NhPqd4_7jg>
+    <xmx:oyFqZujEOOoAmrN3ioIqfRL96eY3-oRwa5UK4xUgOcgTFNQhaF-aUQ>
+    <xmx:oyFqZqQTpXnFfijf9j2bwNis1Cv9YzF90IF3jt93gVKYbNv_DRLnXnDD>
 Feedback-ID: iad51458e:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 12 Jun 2024 17:28:52 -0400 (EDT)
-Date: Wed, 12 Jun 2024 14:28:25 -0700
+ 12 Jun 2024 18:30:58 -0400 (EDT)
 From: Boqun Feng <boqun.feng@gmail.com>
-To: Gary Guo <gary@garyguo.net>
-Cc: Masahiro Yamada <masahiroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nicolas@fjasle.eu>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
+To: rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-arch@vger.kernel.org,
+	llvm@lists.linux.dev
+Cc: Miguel Ojeda <ojeda@kernel.org>,	Alex Gaynor <alex.gaynor@gmail.com>,
 	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@samsung.com>,
 	Alice Ryhl <aliceryhl@google.com>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>, linux-kbuild@vger.kernel.org,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	llvm@lists.linux.dev
-Subject: Re: [RFC PATCH 2/2] kbuild: rust: provide an option to inline C
- helpers into Rust
-Message-ID: <ZmoS-cB20k1_u7Wv@boqun-archlinux>
-References: <20240529202817.3641974-1-gary@garyguo.net>
- <20240529202817.3641974-3-gary@garyguo.net>
+	Alan Stern <stern@rowland.harvard.edu>,
+	Andrea Parri <parri.andrea@gmail.com>,	Will Deacon <will@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Nicholas Piggin <npiggin@gmail.com>,	David Howells <dhowells@redhat.com>,
+	Jade Alglave <j.alglave@ucl.ac.uk>,	Luc Maranget <luc.maranget@inria.fr>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Akira Yokosawa <akiyks@gmail.com>,	Daniel Lustig <dlustig@nvidia.com>,
+	Joel Fernandes <joel@joelfernandes.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,	kent.overstreet@gmail.com,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,	elver@google.com,
+	Mark Rutland <mark.rutland@arm.com>,
+	Thomas Gleixner <tglx@linutronix.de>,	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,	x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,	torvalds@linux-foundation.org,
+	linux-arm-kernel@lists.infradead.org,	linux-fsdevel@vger.kernel.org,
+	Trevor Gross <tmgross@umich.edu>,	dakr@redhat.com
+Subject: [RFC 0/2] Initial LKMM atomics support in Rust
+Date: Wed, 12 Jun 2024 15:30:23 -0700
+Message-ID: <20240612223025.1158537-1-boqun.feng@gmail.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240529202817.3641974-3-gary@garyguo.net>
+Content-Transfer-Encoding: 8bit
 
-On Wed, May 29, 2024 at 09:28:15PM +0100, Gary Guo wrote:
-[...]
-> +$(obj)/helpers.bc: $(obj)/helpers.c FORCE
-> +	+$(call if_changed_dep,rust_helper)
-> +
->  quiet_cmd_exports = EXPORTS $@
->        cmd_exports = \
->  	$(NM) -p --defined-only $< \
-> @@ -396,11 +413,13 @@ quiet_cmd_rustc_library = $(if $(skip_clippy),RUSTC,$(RUSTC_OR_CLIPPY_QUIET)) L
->  	OBJTREE=$(abspath $(objtree)) \
->  	$(if $(skip_clippy),$(RUSTC),$(RUSTC_OR_CLIPPY)) \
->  		$(filter-out $(skip_flags),$(rust_flags) $(rustc_target_flags)) \
-> -		--emit=dep-info=$(depfile) --emit=obj=$@ \
-> +		--emit=dep-info=$(depfile) --emit=$(if $(link_helper),llvm-bc=$(patsubst %.o,%.bc,$@),obj=$@) \
->  		--emit=metadata=$(dir $@)$(patsubst %.o,lib%.rmeta,$(notdir $@)) \
->  		--crate-type rlib -L$(objtree)/$(obj) \
->  		--crate-name $(patsubst %.o,%,$(notdir $@)) $< \
->  		--sysroot=/dev/null \
-> +	$(if $(link_helper),;$(LLVM_LINK) $(patsubst %.o,%.bc,$@) $(obj)/helpers.bc -o $(patsubst %.o,%.m.bc,$@); \
-> +		$(CC) $(KBUILD_CFLAGS) -mllvm=--ignore-tti-inline-compatible -c $(patsubst %.o,%.m.bc,$@) -o $@) \
+Hi,
 
-I hit some errors when I tried to cross-compile arm64 on x86. Adding
-$(CLANG_FLAGS) here resolves my issue, it's really because the target
-selection for clang is done in $(CLANG_FLAGS) and carried into
-$(KBUILD_CPPFLAGS), but seems you cannot use $(KBUILD_CPPFLAGS) here
-because you only use clang as a linker. Without either, clang will just
-use the target of host.
+This is a follow-up of [1]. Thanks for all the inputs from that thread.
+I use Mark's outline atomic scripts, but make them specific for atomics
+in Rust. The reason is that I want to use Gary's work [2], and inline
+atomics if possible in Rust code. My local test can confirm it works:
 
-diff --git a/rust/Makefile b/rust/Makefile
-index ad0797467102..84d698c09c65 100644
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -419,7 +419,7 @@ quiet_cmd_rustc_library = $(if $(skip_clippy),RUSTC,$(RUSTC_OR_CLIPPY_QUIET)) L
-                --crate-name $(patsubst %.o,%,$(notdir $@)) $< \
-                --sysroot=/dev/null \
-        $(if $(link_helper),;$(LLVM_LINK) $(patsubst %.o,%.bc,$@) $(obj)/helpers.bc -o $(patsubst %.o,%.m.bc,$@); \
--               $(CC) $(KBUILD_CFLAGS) -mllvm=--ignore-tti-inline-compatible -c $(patsubst %.o,%.m.bc,$@) -o $@) \
-+               $(CC) $(CLANG_FLAGS) $(KBUILD_CFLAGS) -mllvm=--ignore-tti-inline-compatible -c $(patsubst %.o,%.m.bc,$@) -o $@) \
-        $(if $(rustc_objcopy),;$(OBJCOPY) $(rustc_objcopy) $@)
+With RUST_LTO_HELPERS=n
 
- rust-analyzer:
+  224edc:       52800180        mov     w0, #0xc                        // #12
+  224ee0:       94000000        bl      219640 <rust_helper_atomic_fetch_add_relaxed>
 
->  	$(if $(rustc_objcopy),;$(OBJCOPY) $(rustc_objcopy) $@)
->  
->  rust-analyzer:
-> @@ -463,4 +482,11 @@ $(obj)/kernel.o: $(src)/kernel/lib.rs $(obj)/alloc.o $(obj)/build_error.o \
->      $(obj)/libmacros.so $(obj)/bindings.o $(obj)/uapi.o FORCE
->  	+$(call if_changed_dep,rustc_library)
->  
-> +ifdef CONFIG_RUST_LTO_HELPERS
-> +
-> +$(obj)/kernel.o: private link_helper = 1
-> +$(obj)/kernel.o: $(obj)/helpers.bc
-> +
-> +endif
-> +
->  endif # CONFIG_RUST
-[...]
-> diff --git a/scripts/Makefile.build b/scripts/Makefile.build
-> index efacca63c897..201e7dc5ae5d 100644
-> --- a/scripts/Makefile.build
-> +++ b/scripts/Makefile.build
-> @@ -288,7 +288,10 @@ rust_common_cmd = \
->  # would not match each other.
->  
->  quiet_cmd_rustc_o_rs = $(RUSTC_OR_CLIPPY_QUIET) $(quiet_modtag) $@
-> -      cmd_rustc_o_rs = $(rust_common_cmd) --emit=obj=$@ $<
-> +      cmd_rustc_o_rs = $(rust_common_cmd) --emit=$(if $(CONFIG_RUST_LTO_HELPERS),llvm-bc=$(patsubst %.o,%.bc,$@),obj=$@) $< \
-> +	$(if $(CONFIG_RUST_LTO_HELPERS),;$(LLVM_LINK) $(patsubst %.o,%.bc,$@) $(objtree)/rust/helpers.bc -o $(patsubst %.o,%.m.bc,$@); \
-> +		$(CC) $(KBUILD_CFLAGS) -mllvm=--ignore-tti-inline-compatible -c $(patsubst %.o,%.m.bc,$@) -o $@)
-> +
->  
+With RUST_LTO_HELPERS=y
 
-Ditto.
+  222fd4:       52800189        mov     w9, #0xc                        // #12
+  222fd8:       b8290108        ldadd   w9, w8, [x8]
+
+
+Only AtomicI32 (atomic_t) and AtomicI64 (atomic64_t) are added, and for
+AtomicPtr (atomic pointers) I plan to implement with compile-time
+selection on either of these two.
+
+You can find a branch contains this series and Gray's patchset at:
+
+	https://github.com/fbq/linux.git dev/rust/atomic-rfc
+
+
+For testing, I randomly picked up some function and inspected the
+generated code, plus Rust code can use the function document as tests,
+so I added two tests there. Ideally we should have something similar to
+lib/atomic64_test.c, but I want to get some feedback on the
+implementation part first, plus it's just using C functions, so as long
+as C code passes the tests, it should be fine (famous last words).
+
+ARM64 maintainers, I use the following to simulate cases where LSE is
+configured but not available from hardware:
+
+diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
+index 48e7029f1054..99e6e2b2867f 100644
+--- a/arch/arm64/kernel/cpufeature.c
++++ b/arch/arm64/kernel/cpufeature.c
+@@ -1601,6 +1601,8 @@ static bool
+ has_cpuid_feature(const struct arm64_cpu_capabilities *entry, int scope)
+ {
+        u64 val = read_scoped_sysreg(entry, scope);
++       if (entry->capability == ARM64_HAS_LSE_ATOMICS)
++               return false;
+        return feature_matches(val, entry);
+ }
+
+and my tests in a qemu emulated VM passed for both RUST_LTO_HELPERS=n
+and =y cases. Let me know what I can also do to test this.
+
+
+Notes for people who are working on Rust code and need atomics, my
+target of this set of APIs is 6.11 or 6.12 (will work hard on it, but no
+guarantee ;-)). If you are currently using Rust own atomics, it's OK, we
+can always clean up quickly after this merged.
 
 Regards,
 Boqun
 
->  $(obj)/%.o: $(obj)/%.rs FORCE
->  	+$(call if_changed_dep,rustc_o_rs)
-> -- 
-> 2.42.0
-> 
+[1]: https://lore.kernel.org/rust-for-linux/20240322233838.868874-1-boqun.feng@gmail.com/
+[2]: https://lore.kernel.org/rust-for-linux/20240529202817.3641974-1-gary@garyguo.net/
+
+Boqun Feng (2):
+  rust: Introduce atomic API helpers
+  rust: sync: Add atomic support
+
+ MAINTAINERS                               |    4 +-
+ arch/arm64/kernel/cpufeature.c            |    2 +
+ rust/atomic_helpers.h                     | 1035 ++++++++++++++++
+ rust/helpers.c                            |    2 +
+ rust/kernel/sync.rs                       |    1 +
+ rust/kernel/sync/atomic.rs                |   63 +
+ rust/kernel/sync/atomic/impl.rs           | 1375 +++++++++++++++++++++
+ scripts/atomic/gen-atomics.sh             |    2 +
+ scripts/atomic/gen-rust-atomic-helpers.sh |   64 +
+ scripts/atomic/gen-rust-atomic.sh         |  136 ++
+ 10 files changed, 2683 insertions(+), 1 deletion(-)
+ create mode 100644 rust/atomic_helpers.h
+ create mode 100644 rust/kernel/sync/atomic.rs
+ create mode 100644 rust/kernel/sync/atomic/impl.rs
+ create mode 100755 scripts/atomic/gen-rust-atomic-helpers.sh
+ create mode 100755 scripts/atomic/gen-rust-atomic.sh
+
+-- 
+2.45.2
+
