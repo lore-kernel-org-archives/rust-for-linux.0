@@ -1,192 +1,180 @@
-Received: from GBR01-LO4-obe.outbound.protection.outlook.com (mail-lo4gbr01on2093.outbound.protection.outlook.com [40.107.122.93])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A21CF1822ED;
-	Wed, 12 Jun 2024 16:26:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.122.93
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718209589; cv=fail; b=fgsbb4i64hZGJUpkekp24V3lOnMMU/o9a+Ew6LyyKmGWPB6tmWuwRaHI5ElUxmilnzH71RSre1VeE/yKg4EBAMhO/+2hpg0XYMLAuM0ztEwA/KaQRKHibj+m2io+cIuOHGVntN/b4jxu7FYkS6Rw7t2+N+kiZxm2rrSqaVFops0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718209589; c=relaxed/simple;
-	bh=MBFu4J9+OxZubq8gfcMp9FsYuDVq9pnlAH0AAvK8mPo=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=iycEyNzleKFvCKTkToK4RFRWNJm0jWn8iFn37w8xeoMCTwWGQlnTMkrwBd7vqsoCf8o+vtrQ+iXHGv+6XcTIwAsTXW+g7eibYfifbT/wvH8+jr7h1tE6OGjtx683V8rn8hBW7FO/HTXJVZmeeRT8i6xEf5zWglx+1RteiVpBpT8=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=auijZpC8; arc=fail smtp.client-ip=40.107.122.93
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F287417FAC5;
+	Wed, 12 Jun 2024 17:13:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1718212415; cv=none; b=ZcdYdAK78A2iBRf6/2lyTfYqYR6O5i9VxWVbfGCWN6ZxGJLnu4+B7jIFWrFneJnC8XVdTlWJhVcXsSmp3EHgIblStlOtQ3/g6cA8j/raLPMZY0ZzA/FOOgniD95VpKo6EYylWCspOBnL+CD27a2fz2SAgYFFnY/DaR0CHHYmGKg=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1718212415; c=relaxed/simple;
+	bh=YddBzQ3+G8dpMI1SPWT5hGHfO/uLv6eA4KaATQnMwGM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jSOXqYksUHd98L47E4SRjkNdqdsucMxEb7G1gfcesSCJXLUvnObJIO3jA5eVLahoKT6/lRXoP+sdzeQsq36aOTxr7Ly8vAmaJLIEXB9ocgzb3DYN9bMrYkrjwHayQoiIs0k0CpOxesAhrTZ7bs7y+6dC6+nfdnmb3wcS7qHKyhk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m4b2nDT+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="auijZpC8"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=JeO9Vss6Cu8VBT9X8iFsrZs7ua6lRlNvVfJh6XGICbOy7OqMmjd3XQoOS6LzLy50gyJuVgwjADrTYlBGHqz+QDued646sITNsX1YYKI8xJEsM03A70HApNn5XYu2rvuoajwZxqB/fbCISveEeeQbCr94/yalZsq+HM1tvpm4G0flygNXTPtibEMsmQWigpN+V6IvskVEU/wuu+02Hn7nYSBvN5gXMPCMNs2lcT0CjbjwnzI8ThzqPhnsH7hVlFk7+UhX1jGJvmssMpNNZXmK8PRaZScW/sIk4oSKkbfYtB3dCtuoTw/Hlp9DfvRbQ+mtPhV6HqusAcjkmALsQjQaag==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=MBFu4J9+OxZubq8gfcMp9FsYuDVq9pnlAH0AAvK8mPo=;
- b=IIg/mkPnP3Ev5ippvQw3GgluKQuy8+oNtw8d3srhMxdI+dq7N68nVT21CV2L6Kxf+lUkF0jY7NkVBcg24uUSaYmNYqr+WuXY5NOCP9yMVOofDyY959Qn2tTk8acYPzuGpJuF3gHBd2tUdyiXaWjfu04JkhymTZG2S9YCm8IlqWPuN1XGPHGjpTobLTixiKBLFPgO2O1oZ41gwuZogCPZVZLcql5tyq8iHFeZ5810fuTAyQfAFu/cR0SvqrIz02JJC1T2rM3wWcmPiY99Ry4SyX3+GjglWixIHJbxKjDyr53VlQYf/ZNvcu6jW8SCv6rEi8FI+6wOzfKp1ZOzGn8d2g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=MBFu4J9+OxZubq8gfcMp9FsYuDVq9pnlAH0AAvK8mPo=;
- b=auijZpC8OYH4l7GyQIVDUTpd8zSaw5+mSHC85BNumInsu86oTdYZftitWQ+28UNtXrMB7rNkY9y7gP4Lc5oeuvGmXvG1og4K+QLO8Ve2cWubdVIKQ3bwjivOSl8ssyN/grQh4CBiKK93cGUMacyeQK6h/+5yhkMik1qGrUgi4KY=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
- by CWLP265MB5866.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1a3::5) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7677.20; Wed, 12 Jun
- 2024 16:26:25 +0000
-Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1818:a2bf:38a7:a1e7]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1818:a2bf:38a7:a1e7%5]) with mapi id 15.20.7677.019; Wed, 12 Jun 2024
- 16:26:25 +0000
-Date: Wed, 12 Jun 2024 17:26:22 +0100
-From: Gary Guo <gary@garyguo.net>
-To: Matthew Maurer <mmaurer@google.com>
-Cc: Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor
- <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, Andrew Morton
- <akpm@linux-foundation.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor
- <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun
- Feng <boqun.feng@gmail.com>, =?UTF-8?B?QmrDtnJu?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas
- Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Nick
- Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>,
- Justin Stitt <justinstitt@google.com>, linux-kbuild@vger.kernel.org,
- linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
- llvm@lists.linux.dev
-Subject: Re: [RFC PATCH 2/2] kbuild: rust: provide an option to inline C
- helpers into Rust
-Message-ID: <20240612172623.5876d0ad@eugeo>
-In-Reply-To: <CAGSQo02_siEiS07H+7MCi_T2REGoyF6FFuGHVmiUFi4EocLizQ@mail.gmail.com>
-References: <20240529202817.3641974-1-gary@garyguo.net>
-	<20240529202817.3641974-3-gary@garyguo.net>
-	<CAGSQo02_siEiS07H+7MCi_T2REGoyF6FFuGHVmiUFi4EocLizQ@mail.gmail.com>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-pc-linux-gnu)
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LNXP265CA0009.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:5e::21) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:253::10)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m4b2nDT+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBB70C116B1;
+	Wed, 12 Jun 2024 17:13:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1718212414;
+	bh=YddBzQ3+G8dpMI1SPWT5hGHfO/uLv6eA4KaATQnMwGM=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=m4b2nDT+30zAJ957wVy6JfNicWjRb6NzPw96SZL/2Bmj225KyELj9hHjlePM1ndUf
+	 TcslL1jxexz28yc+sQba7/LjPhi8vbCrkPKAML1FKqeBnKnpjzyYJbxK7rkWc+TNPH
+	 sbSMIMu8540WoQS9/DlhiOMhYpOaP60iBCGDZFsw=
+Date: Wed, 12 Jun 2024 19:13:31 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Danilo Krummrich <dakr@redhat.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>, rafael@kernel.org, mcgrof@kernel.org,
+	russell.h.weight@intel.com, ojeda@kernel.org, alex.gaynor@gmail.com,
+	wedsonaf@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me, a.hindborg@samsung.com,
+	aliceryhl@google.com, airlied@gmail.com, fujita.tomonori@gmail.com,
+	pstanner@redhat.com, ajanulgu@redhat.com, lyude@redhat.com,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] rust: add abstraction for struct device
+Message-ID: <2024061254-scoured-gallantly-5e41@gregkh>
+References: <20240610180318.72152-2-dakr@redhat.com>
+ <ZmdID8AlXtoxUfC1@boqun-archlinux>
+ <ZmhPW9yq7y6jbmIg@pollux>
+ <2024061136-unbridle-confirm-c653@gregkh>
+ <Zmh3oN9sWamaYHOD@Boquns-Mac-mini.home>
+ <d74edb73-1dba-43f4-a50c-36354c39d758@redhat.com>
+ <2024061245-kangaroo-clothes-76e1@gregkh>
+ <ZmnAOfCUFkZqhDji@pollux>
+ <2024061214-dusk-channel-e124@gregkh>
+ <ZmnKXoBYf0qOcPU4@pollux>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|CWLP265MB5866:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5667fda9-ab82-4b94-405f-08dc8afc6756
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230034|7416008|366010|376008|1800799018;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?U9FJoHf6T0Lq4y2n1LMbx0/wXY0fKwf1lp6zHvINIhY4UQTyKqrUwKkohJoi?=
- =?us-ascii?Q?XqK2D7GH6n1NdYdJFTFk5eZJUYMIE4g+irH611foKOLSoMEZqn/+4nyvmQQN?=
- =?us-ascii?Q?D5HmGGP3qJ6cPYj1223Li4mArPx2zIuNubFKnTF1JF6wGlH4m3QKdmuG4rnH?=
- =?us-ascii?Q?ouAS/Ah5xsajeYac+C32ZNImKwENGRxC/pQSpwiXcyb+DQ5Ggv33S/4D6UvK?=
- =?us-ascii?Q?GuHjepb6LYAXBwKoKVu+3KyEnA9x3h71nglJiOlDxbqGZ8uredwPLml9po14?=
- =?us-ascii?Q?Fhold2TjSQCRpN40BGhww+HA5EgAANGPg+kNcL7B/lpMXchAIlkU15WvzS41?=
- =?us-ascii?Q?Zm/f/rAUFcMmPWinS2bahkRZjaKvIR1zCrWVKFBWQ7UtSXdObz4dsNJq7rU6?=
- =?us-ascii?Q?MSfX3up7EVybOAJxvsLKYyG8RYu9HU8TWiWE/Kx/unEaGBB9Y64E44lr5/4E?=
- =?us-ascii?Q?FU8/FcgDBgNjTr30e2rh5aPJRuW6mwvtmF0vB3bZfESKiyneoafjXEYJs+pf?=
- =?us-ascii?Q?kzbcsTfHvAFE05jar2sRhflHSY+vsO9GplknE8fwHNUXEyjxjgvfP7Yx9LNo?=
- =?us-ascii?Q?huxZ79OmxWTwPvbQIfOovdgLGTHxfdmB3ofzZrEH0hFSmqc1fTTUi7kr+d4t?=
- =?us-ascii?Q?A8Xu5/gF8n2UG/tqgzl9OfoLm2TlOLCGzqsx1uOKlnRc5zSAF1ZEZ0i4YXvJ?=
- =?us-ascii?Q?s3+pqynG+uEcyFzIUOrPPp7WtgqDNRF03sTy42o169YizSBUnXc/j+gy7zGd?=
- =?us-ascii?Q?DNFM7egojSz9tbKAilz5W9yArQszhKe+UBm2uaWJJy4BD0MyWLvfHsU5afY6?=
- =?us-ascii?Q?OTHCfARgRjAzifftEGZHExeStbV0tMCnC207CtCAXQqfqYK1NB83ROnyOuX6?=
- =?us-ascii?Q?BJeqssApBIDPeEQS4c0/7yyATbiWRxG8kSaJQb/q1rUkEt+qHBCzYABhxkx2?=
- =?us-ascii?Q?bValPs9CWN5syoLtGygndAwCpfWRZxGVwUM0xkSNwEyQ4L4u7CqKpIImR+4f?=
- =?us-ascii?Q?SdGoUwkGCOwEqbBfO55t6g79AgDM4XrFGW9Hz2oS5QOWWE9uiWJ3qERIGTDe?=
- =?us-ascii?Q?MvxV9e4MsnFfo/tYDWhSkZPBLNKR5PJRnIjM8twYFn5utoTaqn69BkgGXZ7l?=
- =?us-ascii?Q?QxgWMC35RQehf1VfEmFtoAL3C/HGBeS/q/KfvQXA3lZWCSqC6vD5YX0ptoSD?=
- =?us-ascii?Q?v8OJEtwAnjwpUm0yCef2gbYmxDstAZdCD8RjaIAALcTQq1xi58RrDKTlwj8j?=
- =?us-ascii?Q?azUNNdDDrQ5NhW94RndpHNa232MIbaZ8aSEIXOyUD0W6/N2J1wSo8mDpbjHT?=
- =?us-ascii?Q?ZexZGn5PT9fylWFe8SjhxNW/?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230034)(7416008)(366010)(376008)(1800799018);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?G00p+Ka9p+5WUlHg25Or4f2qraxx2Tzxowxct3+RoKjGAnuoZ5jgtjnf5OI8?=
- =?us-ascii?Q?YyRRG+coZxVllxWUhtSR/MLT/uiDwGz1GHgc8lIE9OiW552sfsHTyECJ157B?=
- =?us-ascii?Q?cdAuS0bfCuFifnoul+c2WspK4T4djIWdXzCgSTUusAr+PgFpV4K+9vdZbniv?=
- =?us-ascii?Q?fnL1xkd7LhdeVmUgFg5RQrAO+awZJ9u0UeDgivcqqGSeuvtng2BVxkhzUZA2?=
- =?us-ascii?Q?BbW+/Ki32LWn9cWfG7PoOhYpIi8DItQ3tF6ThVgm2hifwTxMirqBMjQpKesu?=
- =?us-ascii?Q?OXOjMTjxUlCkr82K4oInn0A3XRprndMfTCubFZRD2PrTRMRJgEo2vNB9+dvt?=
- =?us-ascii?Q?066BlM1xxqaRfndeVzU5rYTGz2R81QS+U6walZZ+16pvSdCkZjRBOqQx7BVB?=
- =?us-ascii?Q?+2DRPnXaDTYNld2gM3J9OFJ5GByH54SrHsrB5knoxBpkoFJu5kn3C3Glmqqp?=
- =?us-ascii?Q?VOzdw11lA/uQ+izCh93q/I1kF0GjrvfCm6o1EjUFUWBs3+W5Dt/1fZ/6apfX?=
- =?us-ascii?Q?FyxvkRPaDtoDNqjP0PThWWRWeKlzbBocxZTPhzRiFKNvAGWuYe9NXBnfJPgk?=
- =?us-ascii?Q?30BdtJMtNwxouhzhrVnyVP6IIhjLgZxk5I4yoblxY+JQS81ho+k9p9XAcf6u?=
- =?us-ascii?Q?ZDLMSgUdU0nUHdHyHpF5NAat2H30tiXBvp1gu1/93gkQEPwf4Xk8HwZ9W8nE?=
- =?us-ascii?Q?S3y8mCRnGucv17YdKNBMWakS7eq1O1hrKAY0+miYW+0xaVof6VUm7hBLMj3G?=
- =?us-ascii?Q?z34erQ553iKvtiYLC1Z8RzAI71gcq2Ll42SSh/38qGU6qKZxs+btZZ1nroJq?=
- =?us-ascii?Q?29QuKLshjkW0tSsdD6XHPXay5Gtvh08VDT8KpAbwFNy6spiCNfhoyburU5dp?=
- =?us-ascii?Q?9fwn2rSCPXK/Mqgb+QsK2pITzv+0giH9bBFxanP7KVUns7kJhUzCdkeY90Zu?=
- =?us-ascii?Q?TCn9YnafJzvj+pP3PqI5e4TIc4DO3VZvuTE9YAKkStsMLil+fs9tqp6/XXfs?=
- =?us-ascii?Q?KGN9dLc2qwdn90/vdf/Ay01OFH62oqyIFb83HCOU0B/BO3K57yDMnO6CeR87?=
- =?us-ascii?Q?o16jwzoFB9JD+qT2DWrYJU+oU5Hs24Y0LgukwI4NfHNcH3/dHPZ5PU5sm5hO?=
- =?us-ascii?Q?j0LISiG/aEloO5x8nSVaqReRIawb57hNVTdUBPFu7sKKVsuVv2+WEd8cLDlH?=
- =?us-ascii?Q?Wz5C83FKyHozA7v2N2fb+RBkghx0LpYxfSs/bfxXMr2Kmstw2QRj1j2D+LYI?=
- =?us-ascii?Q?9UfVleDZSng18Kgsb5BGSnZfQv8Qe+VWg64iykl1G4+5VVY/eYOowCWeMonw?=
- =?us-ascii?Q?R7NJhNlz6uVebYtOUEXtezw0z506CK3h46ZCQ+3DsSF6vd/Y8LTxS26EyZ18?=
- =?us-ascii?Q?DLu5r58q4OVhNNUg99kEcv08FwPwRnm14RaC8rtjQpVGxwdFEbpAvbzZ/H3q?=
- =?us-ascii?Q?+wkTlrfKe2JbhL7+uPfr7Sa5ZizdaX1HjTle6eXVm7zC4lsPTpKrxGKkEoN+?=
- =?us-ascii?Q?0+k9qnr5lXojy0Ky3FuFuaPdMj2BllbmWa4ZTV+V+onYVymx2g7hn5evpzV2?=
- =?us-ascii?Q?MkKAoazXsgNI6EXq57L7d26l63qZGsNjTCFfFgcO?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5667fda9-ab82-4b94-405f-08dc8afc6756
-X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Jun 2024 16:26:25.1134
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 2sJlvZX0YWrcnTREky5JpAXWfm+Uz5bDEWiQntfEnJ1duUNmQ6rHl0Lb3R+OsJJPYJmUUmR9L7+ZOT9wRxuHAw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB5866
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZmnKXoBYf0qOcPU4@pollux>
 
-On Fri, 7 Jun 2024 07:40:45 -0700
-Matthew Maurer <mmaurer@google.com> wrote:
+On Wed, Jun 12, 2024 at 06:18:38PM +0200, Danilo Krummrich wrote:
+> On Wed, Jun 12, 2024 at 05:50:42PM +0200, Greg KH wrote:
+> > On Wed, Jun 12, 2024 at 05:35:21PM +0200, Danilo Krummrich wrote:
+> > > On Wed, Jun 12, 2024 at 05:02:52PM +0200, Greg KH wrote:
+> > > > On Wed, Jun 12, 2024 at 04:51:42PM +0200, Danilo Krummrich wrote:
+> > > > > On 6/11/24 18:13, Boqun Feng wrote:
+> > > > > > On Tue, Jun 11, 2024 at 03:29:22PM +0200, Greg KH wrote:
+> > > > > > > On Tue, Jun 11, 2024 at 03:21:31PM +0200, Danilo Krummrich wrote:
+> > > > > > > > ...hence, I agree we should indeed add to the #Invariants and #Safety section
+> > > > > > > > that `->release` must be callable  from any thread.
+> > > > > > > > 
+> > > > > > > > However, this is just theory, do we actually have cases where `device::release`
+> > > > > > 
+> > > > > > @Danilo, right, it's only theorical, but it's good to call it out since
+> > > > > > it's the requirement for a safe Rust abstraction.
+> > > > > 
+> > > > > Similar to my previous reply, if we want to call this out as safety requirement
+> > > > > in `Device::from_raw`, we probably want to add it to the documentation of the C
+> > > > > `struct device`, such that we can argue that this is an invariant of C's
+> > > > > `struct device`.
+> > > > > 
+> > > > > Otherwise we'd have to write something like:
+> > > > > 
+> > > > > "It must also be ensured that the `->release` function of a `struct device` can
+> > > > > be called from any non-atomic context. While not being officially documented this
+> > > > > is guaranteed by the invariant of `struct device`."
+> > > > 
+> > > > In the 20+ years of the driver model being part of the kernel, I don't
+> > > > think this has come up yet, so maybe you can call the release function
+> > > > in irq context.  I don't know, I was just guessing :)
+> > > 
+> > > Ah, I see. I thought you know and it's defined, but just not documented.
+> > > 
+> > > This means it's simply undefined what we expect to happen when the last
+> > > reference of a device is dropped from atomic context.
+> > > 
+> > > Now, I understand (and would even expect) that practically this has never been
+> > > an issue. You'd need two circumstances, release() actually does something that
+> > > is not allowed in atomic context plus the last device reference is dropped from
+> > > atomic context - rather unlikely.
+> > > 
+> > > > 
+> > > > So let's not go adding constraints that we just do not have please.
+> > > > Same goes for the C code, so the rust code is no different here.
+> > > 
+> > > I agree we shouldn't add random constraints, but for writing safe code we also
+> > > have to rely on defined behavior.
+> > 
+> > As the rust code is relying on C code that could change at any point in
+> > time, how can that ever be "safe"?  :)
+> 
+> That's the same as with any other API. If the logic of an API is changed the
+> users (e.g a Rust abstraction) of the API have to be adjusted.
 
-> The LLVM `.ll` textual bitcode representation may change from version
-> to version, which makes using `sed` to edit it potentially fragile.
-> Would it be possible to attach similar attributes without this? (Or
-> other attributes that can accomplish something similar, see the second
-> part.)
+Agreed, just like any other in-kernel code, so there shouldn't be
+anything special here.
 
-I agree that text editing is fragile and should be avoided, but I'm not
-aware of a way to achieve this without text editing.
+> > Sorry, this type of definition annoys me.
+> > 
+> > > I see two options:
+> > > 
+> > > (1) We globally (for struct device) define from which context release() is
+> > >     allowed to be called.
+> > 
+> > If you want, feel free to do that work please.  And then find out how to
+> > enforce it in the driver core.
+> 
+> If we *would* define non-atomic context only, we could enforce it with
+> might_sleep() for instance.
 
-> Would it be possible to use a Rust-only-LTO (actual LTO) flag rather
-> than a `llvm-link`? It seems likely that someone that wants to use a
-> synced `clang` and `rustc` to allow helpers to be inlined would be
-> unlikely to object to thin LTO of Rust. This would avoid introducing a
-> new tool.
+might_sleep() isn't always correct from what I remember.
 
-There's no way for rustc to actually perform the LTO, since the crate
-type that we use is rlib rather than staticlibs or cdylibs, Rust does
-not take care of the linking.
+> If we *would* define any context, there is nothing to enforce, but we'd need to
+> validate that no implementer of release() voids that.
 
-> As one possible route around editing the `.ll` file, we could consider
-> *not* hiding these symbols, just marking them as "good idea to inline
-> if possible", and then masking any symbol that ends up in the final
-> `.o` via `objcopy --localize-symbol=blah`. If we're doing full-kernel
-> LTO rather than rust-only LTO, we'd need to use `llvm-objcopy`
-> instead, but the same process would follow - a postprocessing step on
-> the final crate object that localizes the symbol, with LTO giving the
-> compiler the option (but not requirement) to inline these functions if
-> it seems like a good idea.
+Trying to validate that might be hard, again, I don't think it's worth
+it.
 
-This was one of the approach that I considered, but IIUC objcopy
-require you to supply it a list of exact-match symbols rather than
-patterns, so we have to get all helper symbols and then feed it to
-objcopy. I really want to avoid having a script or host program to do
-this step.
+> The former is a constaint you don't want to add, the latter a lot of work. What
+> if we at least define that implementers of release() must *minimally* make sure
+> that it can be call from any non-atomic context.
+> 
+> That'd be something we can rely on in Rust.
 
-Best,
-Gary
+Determining if you are, or are not, in atomic context is almost
+impossible in C, I don't know how you are going to do that at build time
+in Rust.  Good luck!
 
+> Oh, I fully agree with that. Let me try to explain a bit what this is about:
+> 
+> In Rust we have the `Send` and `Sync` marker traits. If a type (e.g. `Device`)
+> implements `Send` it means that it's safe to pass an instance of this type
+> between threads. Which is clearly something we want to do with a `Device`.
+> 
+> If I don't implement `Sync` for `Device` the compiler will prevent me from
+> sending it between threads, e.g. by disallowing me to put an instance of
+> `Device` into another data structure that is potentially passed between threads.
+> 
+> If I implement `Sync` I have to add a safety comment on why it is safe to pass
+> `Device` between threads. And here we have what Boqun pointed out: `Device` can
+> only be passed between threads when we're allowed to drop the last reference
+> from any thread. In the case of the kernel this can be any non-atomic context,
+> any context or any other subset. But I have to write something here that is
+> a defined rule and can be relied on.
 
+You really have two things here, a matrix of:
+	can transfer between threads
+	can call in irq context
+that are independent and not related to each other at all.
+
+Looks like Rust has built in support for the first.  And nothing for the
+second as that is a very kernel-specific thing.
+
+So let's not confuse the two please.  `Send` and `Sync` should be fine
+for a device pointer to be passed around, as long as the reference is
+incremented, as that's what all of the kernel C code does today.  Let's
+not worry about irq context at all, that's independent and can be
+handled at a later time, if at all, with a different "marking" as it's
+independent of the current two things.
+
+thanks,
+
+greg k-h
