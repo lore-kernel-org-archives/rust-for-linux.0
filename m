@@ -1,29 +1,29 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F287417FAC5;
-	Wed, 12 Jun 2024 17:13:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE6003770D;
+	Wed, 12 Jun 2024 17:43:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718212415; cv=none; b=ZcdYdAK78A2iBRf6/2lyTfYqYR6O5i9VxWVbfGCWN6ZxGJLnu4+B7jIFWrFneJnC8XVdTlWJhVcXsSmp3EHgIblStlOtQ3/g6cA8j/raLPMZY0ZzA/FOOgniD95VpKo6EYylWCspOBnL+CD27a2fz2SAgYFFnY/DaR0CHHYmGKg=
+	t=1718214207; cv=none; b=eDYpT+7iPvhqqJU78+FbAnuXfxStGIlhuzqpXYISkkEpBf4L6jLVB/IteEXLeAWP0tQq1CdHHAXs2Gu3va3YrRg9c0oCZrY0CmX3GzHZaAXUh7RJiz1KIy6Ov6YpjHcQeeLyKmULl1+r3dQqLoPqbL0bPDmixnzmZ1mYpWR8qVQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718212415; c=relaxed/simple;
-	bh=YddBzQ3+G8dpMI1SPWT5hGHfO/uLv6eA4KaATQnMwGM=;
+	s=arc-20240116; t=1718214207; c=relaxed/simple;
+	bh=u5T/nSVvfaLT6nbxQudcD8WYR/OAGJmqsMYRFUTyupo=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jSOXqYksUHd98L47E4SRjkNdqdsucMxEb7G1gfcesSCJXLUvnObJIO3jA5eVLahoKT6/lRXoP+sdzeQsq36aOTxr7Ly8vAmaJLIEXB9ocgzb3DYN9bMrYkrjwHayQoiIs0k0CpOxesAhrTZ7bs7y+6dC6+nfdnmb3wcS7qHKyhk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m4b2nDT+; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=Yi6VhM2GDrqRQDpMbxbnXS+qqjgkG5dTl5p6qn41Uqh9xesBt14zUw7eAP64EQay6JkuR6ZM7N2uOOLnHZSqnqv0yW5mfC2XfDZIPJX83XwABP3DPHshqYV6IpKUizDTopXYJeWlzjNzRC7+vBTewpjAKRfDYQ3vPeSJbY8wLbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sGpOP4OG; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m4b2nDT+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBB70C116B1;
-	Wed, 12 Jun 2024 17:13:33 +0000 (UTC)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sGpOP4OG"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B12D4C116B1;
+	Wed, 12 Jun 2024 17:43:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718212414;
-	bh=YddBzQ3+G8dpMI1SPWT5hGHfO/uLv6eA4KaATQnMwGM=;
+	s=korg; t=1718214207;
+	bh=u5T/nSVvfaLT6nbxQudcD8WYR/OAGJmqsMYRFUTyupo=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=m4b2nDT+30zAJ957wVy6JfNicWjRb6NzPw96SZL/2Bmj225KyELj9hHjlePM1ndUf
-	 TcslL1jxexz28yc+sQba7/LjPhi8vbCrkPKAML1FKqeBnKnpjzyYJbxK7rkWc+TNPH
-	 sbSMIMu8540WoQS9/DlhiOMhYpOaP60iBCGDZFsw=
-Date: Wed, 12 Jun 2024 19:13:31 +0200
+	b=sGpOP4OGZo8djUP2T/ixGMUEL5tmHJVmOL5kdXtL2GKHd+QNr9ldjFJZzOw6pMWaG
+	 daYYCxLUsxmpjC2VKGovIo0uqZzQSU3CtzJn04cTuc2pFQLnXS40Zrw6HiOxl4TNh3
+	 go/ZRNRlK9q/FF+QVP0pN+zc1z2DAQsoPcS+mi78=
+Date: Wed, 12 Jun 2024 19:43:24 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
 To: Danilo Krummrich <dakr@redhat.com>
 Cc: Boqun Feng <boqun.feng@gmail.com>, rafael@kernel.org, mcgrof@kernel.org,
@@ -34,9 +34,8 @@ Cc: Boqun Feng <boqun.feng@gmail.com>, rafael@kernel.org, mcgrof@kernel.org,
 	pstanner@redhat.com, ajanulgu@redhat.com, lyude@redhat.com,
 	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH v2 1/2] rust: add abstraction for struct device
-Message-ID: <2024061254-scoured-gallantly-5e41@gregkh>
-References: <20240610180318.72152-2-dakr@redhat.com>
- <ZmdID8AlXtoxUfC1@boqun-archlinux>
+Message-ID: <2024061234-civic-isolation-824a@gregkh>
+References: <ZmdID8AlXtoxUfC1@boqun-archlinux>
  <ZmhPW9yq7y6jbmIg@pollux>
  <2024061136-unbridle-confirm-c653@gregkh>
  <Zmh3oN9sWamaYHOD@Boquns-Mac-mini.home>
@@ -45,6 +44,7 @@ References: <20240610180318.72152-2-dakr@redhat.com>
  <ZmnAOfCUFkZqhDji@pollux>
  <2024061214-dusk-channel-e124@gregkh>
  <ZmnKXoBYf0qOcPU4@pollux>
+ <2024061254-scoured-gallantly-5e41@gregkh>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -53,127 +53,115 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZmnKXoBYf0qOcPU4@pollux>
+In-Reply-To: <2024061254-scoured-gallantly-5e41@gregkh>
 
-On Wed, Jun 12, 2024 at 06:18:38PM +0200, Danilo Krummrich wrote:
-> On Wed, Jun 12, 2024 at 05:50:42PM +0200, Greg KH wrote:
-> > On Wed, Jun 12, 2024 at 05:35:21PM +0200, Danilo Krummrich wrote:
-> > > On Wed, Jun 12, 2024 at 05:02:52PM +0200, Greg KH wrote:
-> > > > On Wed, Jun 12, 2024 at 04:51:42PM +0200, Danilo Krummrich wrote:
-> > > > > On 6/11/24 18:13, Boqun Feng wrote:
-> > > > > > On Tue, Jun 11, 2024 at 03:29:22PM +0200, Greg KH wrote:
-> > > > > > > On Tue, Jun 11, 2024 at 03:21:31PM +0200, Danilo Krummrich wrote:
-> > > > > > > > ...hence, I agree we should indeed add to the #Invariants and #Safety section
-> > > > > > > > that `->release` must be callable  from any thread.
-> > > > > > > > 
-> > > > > > > > However, this is just theory, do we actually have cases where `device::release`
+On Wed, Jun 12, 2024 at 07:13:31PM +0200, Greg KH wrote:
+> On Wed, Jun 12, 2024 at 06:18:38PM +0200, Danilo Krummrich wrote:
+> > On Wed, Jun 12, 2024 at 05:50:42PM +0200, Greg KH wrote:
+> > > On Wed, Jun 12, 2024 at 05:35:21PM +0200, Danilo Krummrich wrote:
+> > > > On Wed, Jun 12, 2024 at 05:02:52PM +0200, Greg KH wrote:
+> > > > > On Wed, Jun 12, 2024 at 04:51:42PM +0200, Danilo Krummrich wrote:
+> > > > > > On 6/11/24 18:13, Boqun Feng wrote:
+> > > > > > > On Tue, Jun 11, 2024 at 03:29:22PM +0200, Greg KH wrote:
+> > > > > > > > On Tue, Jun 11, 2024 at 03:21:31PM +0200, Danilo Krummrich wrote:
+> > > > > > > > > ...hence, I agree we should indeed add to the #Invariants and #Safety section
+> > > > > > > > > that `->release` must be callable  from any thread.
+> > > > > > > > > 
+> > > > > > > > > However, this is just theory, do we actually have cases where `device::release`
+> > > > > > > 
+> > > > > > > @Danilo, right, it's only theorical, but it's good to call it out since
+> > > > > > > it's the requirement for a safe Rust abstraction.
 > > > > > > 
-> > > > > > @Danilo, right, it's only theorical, but it's good to call it out since
-> > > > > > it's the requirement for a safe Rust abstraction.
+> > > > > > Similar to my previous reply, if we want to call this out as safety requirement
+> > > > > > in `Device::from_raw`, we probably want to add it to the documentation of the C
+> > > > > > `struct device`, such that we can argue that this is an invariant of C's
+> > > > > > `struct device`.
+> > > > > > 
+> > > > > > Otherwise we'd have to write something like:
+> > > > > > 
+> > > > > > "It must also be ensured that the `->release` function of a `struct device` can
+> > > > > > be called from any non-atomic context. While not being officially documented this
+> > > > > > is guaranteed by the invariant of `struct device`."
 > > > > > 
-> > > > > Similar to my previous reply, if we want to call this out as safety requirement
-> > > > > in `Device::from_raw`, we probably want to add it to the documentation of the C
-> > > > > `struct device`, such that we can argue that this is an invariant of C's
-> > > > > `struct device`.
-> > > > > 
-> > > > > Otherwise we'd have to write something like:
-> > > > > 
-> > > > > "It must also be ensured that the `->release` function of a `struct device` can
-> > > > > be called from any non-atomic context. While not being officially documented this
-> > > > > is guaranteed by the invariant of `struct device`."
+> > > > > In the 20+ years of the driver model being part of the kernel, I don't
+> > > > > think this has come up yet, so maybe you can call the release function
+> > > > > in irq context.  I don't know, I was just guessing :)
 > > > > 
-> > > > In the 20+ years of the driver model being part of the kernel, I don't
-> > > > think this has come up yet, so maybe you can call the release function
-> > > > in irq context.  I don't know, I was just guessing :)
-> > > 
-> > > Ah, I see. I thought you know and it's defined, but just not documented.
-> > > 
-> > > This means it's simply undefined what we expect to happen when the last
-> > > reference of a device is dropped from atomic context.
-> > > 
-> > > Now, I understand (and would even expect) that practically this has never been
-> > > an issue. You'd need two circumstances, release() actually does something that
-> > > is not allowed in atomic context plus the last device reference is dropped from
-> > > atomic context - rather unlikely.
-> > > 
+> > > > Ah, I see. I thought you know and it's defined, but just not documented.
 > > > > 
-> > > > So let's not go adding constraints that we just do not have please.
-> > > > Same goes for the C code, so the rust code is no different here.
+> > > > This means it's simply undefined what we expect to happen when the last
+> > > > reference of a device is dropped from atomic context.
+> > > > 
+> > > > Now, I understand (and would even expect) that practically this has never been
+> > > > an issue. You'd need two circumstances, release() actually does something that
+> > > > is not allowed in atomic context plus the last device reference is dropped from
+> > > > atomic context - rather unlikely.
+> > > > 
+> > > > > 
+> > > > > So let's not go adding constraints that we just do not have please.
+> > > > > Same goes for the C code, so the rust code is no different here.
+> > > > 
+> > > > I agree we shouldn't add random constraints, but for writing safe code we also
+> > > > have to rely on defined behavior.
 > > > 
-> > > I agree we shouldn't add random constraints, but for writing safe code we also
-> > > have to rely on defined behavior.
+> > > As the rust code is relying on C code that could change at any point in
+> > > time, how can that ever be "safe"?  :)
 > > 
-> > As the rust code is relying on C code that could change at any point in
-> > time, how can that ever be "safe"?  :)
+> > That's the same as with any other API. If the logic of an API is changed the
+> > users (e.g a Rust abstraction) of the API have to be adjusted.
 > 
-> That's the same as with any other API. If the logic of an API is changed the
-> users (e.g a Rust abstraction) of the API have to be adjusted.
-
-Agreed, just like any other in-kernel code, so there shouldn't be
-anything special here.
-
-> > Sorry, this type of definition annoys me.
-> > 
-> > > I see two options:
+> Agreed, just like any other in-kernel code, so there shouldn't be
+> anything special here.
+> 
+> > > Sorry, this type of definition annoys me.
 > > > 
-> > > (1) We globally (for struct device) define from which context release() is
-> > >     allowed to be called.
+> > > > I see two options:
+> > > > 
+> > > > (1) We globally (for struct device) define from which context release() is
+> > > >     allowed to be called.
+> > > 
+> > > If you want, feel free to do that work please.  And then find out how to
+> > > enforce it in the driver core.
 > > 
-> > If you want, feel free to do that work please.  And then find out how to
-> > enforce it in the driver core.
+> > If we *would* define non-atomic context only, we could enforce it with
+> > might_sleep() for instance.
 > 
-> If we *would* define non-atomic context only, we could enforce it with
-> might_sleep() for instance.
-
-might_sleep() isn't always correct from what I remember.
-
-> If we *would* define any context, there is nothing to enforce, but we'd need to
-> validate that no implementer of release() voids that.
-
-Trying to validate that might be hard, again, I don't think it's worth
-it.
-
-> The former is a constaint you don't want to add, the latter a lot of work. What
-> if we at least define that implementers of release() must *minimally* make sure
-> that it can be call from any non-atomic context.
+> might_sleep() isn't always correct from what I remember.
 > 
-> That'd be something we can rely on in Rust.
-
-Determining if you are, or are not, in atomic context is almost
-impossible in C, I don't know how you are going to do that at build time
-in Rust.  Good luck!
-
-> Oh, I fully agree with that. Let me try to explain a bit what this is about:
+> > If we *would* define any context, there is nothing to enforce, but we'd need to
+> > validate that no implementer of release() voids that.
 > 
-> In Rust we have the `Send` and `Sync` marker traits. If a type (e.g. `Device`)
-> implements `Send` it means that it's safe to pass an instance of this type
-> between threads. Which is clearly something we want to do with a `Device`.
+> Trying to validate that might be hard, again, I don't think it's worth
+> it.
 > 
-> If I don't implement `Sync` for `Device` the compiler will prevent me from
-> sending it between threads, e.g. by disallowing me to put an instance of
-> `Device` into another data structure that is potentially passed between threads.
+> > The former is a constaint you don't want to add, the latter a lot of work. What
+> > if we at least define that implementers of release() must *minimally* make sure
+> > that it can be call from any non-atomic context.
+> > 
+> > That'd be something we can rely on in Rust.
 > 
-> If I implement `Sync` I have to add a safety comment on why it is safe to pass
-> `Device` between threads. And here we have what Boqun pointed out: `Device` can
-> only be passed between threads when we're allowed to drop the last reference
-> from any thread. In the case of the kernel this can be any non-atomic context,
-> any context or any other subset. But I have to write something here that is
-> a defined rule and can be relied on.
+> Determining if you are, or are not, in atomic context is almost
+> impossible in C, I don't know how you are going to do that at build time
+> in Rust.  Good luck!
 
-You really have two things here, a matrix of:
-	can transfer between threads
-	can call in irq context
-that are independent and not related to each other at all.
+Note, the real problem with calling release() on a device, is when you
+do so from within the device's sysfs file.  That causes all sorts of
+"fun" times that people have had to work around over the years.  It's
+not something you probably need to worry about yet, as you are not
+writing a bus subsystem in Rust yet, but it is something that can get
+tricky very quickly.  Look at the hoops that scsi has to deal with if
+you want to see the gory details...
 
-Looks like Rust has built in support for the first.  And nothing for the
-second as that is a very kernel-specific thing.
+But this is all just "logic" bugs, not thread or irq issues at all.
+Nothing is different, nor should be different, for code doing this in C
+or in rust.
 
-So let's not confuse the two please.  `Send` and `Sync` should be fine
-for a device pointer to be passed around, as long as the reference is
-incremented, as that's what all of the kernel C code does today.  Let's
-not worry about irq context at all, that's independent and can be
-handled at a later time, if at all, with a different "marking" as it's
-independent of the current two things.
+What I'm trying to get at is that you can't document all of the
+"constraints" you are dealing with when handling C apis like this,
+sorry.  It's going to be hard, if not impossible, to worry about that at
+this point in the api.  It's better left to be documented where the real
+call happens (i.e. in the C code), than attempting to keep it up to date
+in the c<->rust binding point.
 
 thanks,
 
