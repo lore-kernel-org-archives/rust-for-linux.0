@@ -1,66 +1,66 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA7AB17E47A
-	for <rust-for-linux@vger.kernel.org>; Wed, 12 Jun 2024 13:59:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADFEE17F360
+	for <rust-for-linux@vger.kernel.org>; Wed, 12 Jun 2024 14:51:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718200791; cv=none; b=ZwdB5q1eZ4YNjqROlG0ohd0PoXOyQ2uOkvYyVHHnaO/ofe6FiU7lGqokYzfkQZcnu0/X/xv5vfd2nTCYXVasJuzMKQX2OMSDiGQagAZTJ6Azw4w7rEsgUlWFWy7rhJHot5Uk+eMLP+Ednzi0hyGC1kT6hZuRA1ih/OHaK7PZIkA=
+	t=1718203910; cv=none; b=qOvOM/NFCrSaDQz28GbmBGC3lW8slVnu1bvTIwWZ3ir9+QhJrCxkhWeyBG1bSxU3kTT/oExtUCT94i5+XXGvIHGL0IVw0yPmnPip9D6Smh8h+rnq5+IMHKHB4dL7WUKGOCaAv1gtrrFS3OwbYoY6ydDXOCqTEgpRL+rC0dOQQ5w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718200791; c=relaxed/simple;
-	bh=LnL6vXABxodRA0g/3uUnvhhic5N3VDGXGX/xdceAgHE=;
+	s=arc-20240116; t=1718203910; c=relaxed/simple;
+	bh=uQnPob09RXsb+k15cJ24zoa5K6h1QNmp6SDtPOiGCwY=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lLqjfGG0IU/FAbgjfsFAomaIazx9og9DcV5rOMwmOW9hd8FEjznHMlRttILqz4dg5VI/zWuUGT9cWXa2fhp+m+vYLCgLBCsCbaAd5Gw4/atlSHrJmd6ep3MB+mQCZjKlFNCpBQmJeBxF2ZTNOfGKI2xL9wl/JfcC7YubIf7horg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=A3cYhldV; arc=none smtp.client-ip=170.10.133.124
+	 In-Reply-To:Content-Type; b=qJ1xmo3cpFre+jyJ17FOMIUm/Z7bBdD7eanQR+oruiGZOnay10FkdTkwenAq7XYTft2u16N1g4Z6b/sEA1NnY6OBMeUEbx/Bl0mA0P6XaxodrjDnTG4lFCA1RsYUtl3sKdIvAMbKQ8kiK1WVASHHrD+9hlXBDHECD2zBM37G8xY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hgUm2iG9; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="A3cYhldV"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hgUm2iG9"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1718200788;
+	s=mimecast20190719; t=1718203907;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=0+lgoZYSUH8a1r7cAFWJj8pD+hPUc4udC9LVoFE9F2E=;
-	b=A3cYhldVoCWBkin5rPCB8cwGi1SSiWDgdTgsht1N8jVZrnQe2FIUNzclOKHv+X9E+gTIIH
-	T609l7ixgtwAeTFFs/fDr6D3ZYTAYQYpaaqL6xmRP66gQ8Z1e9Koy568B4VI7DxQHTSqdw
-	2WrPXv5yHP5l5O6yT7JY4HJ4Pfr8q0c=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=zVmTidelMG1PiYfixcVkCNJNOeFZsMw+GcpMsMjUemA=;
+	b=hgUm2iG9Ng/CTy6S/E6IRNKoUOM2ZLZaDpogiLHU7SfMc34+6S2alfzViepIEQibo4PcMK
+	wFrnXJB2GvJ/02NVLqv27X0A3KA9hTooz6uTTu/r47UTuP9qetztctJVq9eFAtCyfay/mo
+	VhiigXOZUaTKaeI+zQd1AE8UryJpy8k=
+Received: from mail-ej1-f70.google.com (mail-ej1-f70.google.com
+ [209.85.218.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-16-8gRGLgHWP_aiP1UWjvNn4g-1; Wed, 12 Jun 2024 09:59:47 -0400
-X-MC-Unique: 8gRGLgHWP_aiP1UWjvNn4g-1
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4210d151c5bso49777155e9.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 12 Jun 2024 06:59:46 -0700 (PDT)
+ us-mta-79-Ntf0SJeDOAS4rXlmR5cfig-1; Wed, 12 Jun 2024 10:51:46 -0400
+X-MC-Unique: Ntf0SJeDOAS4rXlmR5cfig-1
+Received: by mail-ej1-f70.google.com with SMTP id a640c23a62f3a-a6f2af30793so122911166b.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 12 Jun 2024 07:51:46 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718200785; x=1718805585;
+        d=1e100.net; s=20230601; t=1718203905; x=1718808705;
         h=content-transfer-encoding:in-reply-to:organization:from
          :content-language:references:cc:to:subject:user-agent:mime-version
          :date:message-id:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=0+lgoZYSUH8a1r7cAFWJj8pD+hPUc4udC9LVoFE9F2E=;
-        b=eG+R+XJG/jG9EPlj+/YbAjBzVPu+M5GJvwRk5XZf743DGM0e4fnUgyACOynTx9TT2G
-         tgAaH4O/xknuOVq1srfbL/2Qrt9+8UJHISC4GT0KCbapRkN3d0NnzD8iuNqKOtLBl5VJ
-         hpspzrRsNRWrfKRDiNvPwIDkWvzCRtnlDv/UVzEcBFuMc8QmtwlFl+QDdibFMsrTxY3C
-         3kaCnAMRgxE8wBwpKnfE8UtINocGOtxMrhh9N5YfwPFN80OM3Hee+HcrYToQH8waySgx
-         301p3WKjk34mEluhbWIy1ZL5LAliRLsFWXSZyUwXnNCWuMUftX9deTxMzn3htac0HAg/
-         uP9w==
-X-Forwarded-Encrypted: i=1; AJvYcCXbc70I6x9rcdd1OSgn++rcAJTtjtc4fvtUg1hz6YnhNYxL/Cq8DsFyusHFxOOAypFh1NfsE6jYrbX3SOnFujuRmg44BLAnHn/cOgkjyic=
-X-Gm-Message-State: AOJu0YyNx4OI+o9N+h2Fn3aGQB0fg+mspABb7zFctlGLXuxIA9D4Njz5
-	r0g/+uT/i8/0q6fGTUOmgX99pPF/sUHD4ItsNTpkc5HFPF2io2Ic0eII1wNfLmeBVtfFRqfCJy8
-	3fVFoYEVMPgQ+Zbjy1nAK47d0lj8ru989hOSLxe06NbjpjqqfB+CyWmqk7l0tJc05
-X-Received: by 2002:a05:600c:350f:b0:421:7aa1:435 with SMTP id 5b1f17b1804b1-422866bcd1amr18073005e9.25.1718200785542;
-        Wed, 12 Jun 2024 06:59:45 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFd2vyH6GtmeuAXkuJpdbwpHi6ddrSvmUfaRuvR9d+72lJ6HKDEGhZiKptTfeidD7H06+zUvA==
-X-Received: by 2002:a05:600c:350f:b0:421:7aa1:435 with SMTP id 5b1f17b1804b1-422866bcd1amr18072605e9.25.1718200785207;
-        Wed, 12 Jun 2024 06:59:45 -0700 (PDT)
+        bh=zVmTidelMG1PiYfixcVkCNJNOeFZsMw+GcpMsMjUemA=;
+        b=gjstnDDKBZvmR5PkgLnQUGnUAxE3NzYgy71jarjISn6AGIyeHv8otOcrfReVu1MpmA
+         rk7om04iH3d6Xk5Zy9bGnB9HAusFXiw3qscoFkSrjcH5qame4YooVk4KNcw8df7DRZOm
+         +aT+u95D/+qRrIE7QoIoVYJneY+zMwSMRcRl0A2VauEdtQnd8fMXgfKvlx2f3QcvbiCr
+         orrAH1St8gAe0enMxwO+Hc3Wsd83qhOrCFVzB+Ju2lW9/ZDPBmP0+VFqsMrbNMtLAtQ6
+         F9Nmg56JZ2pi1+9WitFCVBjuJ0cKU703PZLVecra60p+0+lUovbH8kgdEIhBumR/CMSE
+         h8SQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV8LlpdjVghl0U11yxj91+h6w5+e+rSk0uFdjJCZBEW0jAyYCpDqgxrhpl5+M5EeSWJErwsX3cRcS7rlnKB/H8i9/3PrU6Y5sdTKE+gNmc=
+X-Gm-Message-State: AOJu0YykjkkuUkeaStD7pvJ27/g9BfVskCQ8SXU/1thjqQ/L7YZnMTP5
+	gM/2Shg5G1lukyz5H3NGIDk0lH2WOQ45A+TO5JL2o5NYLHz4ltTdsoKM/+oG7yV/Ev+EpsVOMwA
+	IIRHXrWCgqbnIsSwvzrh3cUVWacrB79vwwrMIiAVX0FiqH1RxXlIG0t5ExlG2MrEW
+X-Received: by 2002:a17:907:7e87:b0:a6f:e36:abae with SMTP id a640c23a62f3a-a6f47ce6c8bmr168032266b.42.1718203905096;
+        Wed, 12 Jun 2024 07:51:45 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHbGf3kVGrfya669fPpWGOZYpQmZGTofto5bcgn7UtgXwLAm8zLWXejA536NlRPQkJg4vVVqg==
+X-Received: by 2002:a17:907:7e87:b0:a6f:e36:abae with SMTP id a640c23a62f3a-a6f47ce6c8bmr168029066b.42.1718203904649;
+        Wed, 12 Jun 2024 07:51:44 -0700 (PDT)
 Received: from ?IPV6:2a02:810d:4b3f:ee94:abf:b8ff:feee:998b? ([2a02:810d:4b3f:ee94:abf:b8ff:feee:998b])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-35f0e49e898sm12964745f8f.22.2024.06.12.06.59.43
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6f102c4494sm539231766b.112.2024.06.12.07.51.43
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 12 Jun 2024 06:59:44 -0700 (PDT)
-Message-ID: <975fec7c-6abd-40c3-9eeb-b718960ee206@redhat.com>
-Date: Wed, 12 Jun 2024 15:59:43 +0200
+        Wed, 12 Jun 2024 07:51:44 -0700 (PDT)
+Message-ID: <d74edb73-1dba-43f4-a50c-36354c39d758@redhat.com>
+Date: Wed, 12 Jun 2024 16:51:42 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -100,6 +100,18 @@ On 6/11/24 18:13, Boqun Feng wrote:
 > 
 > @Danilo, right, it's only theorical, but it's good to call it out since
 > it's the requirement for a safe Rust abstraction.
+
+Similar to my previous reply, if we want to call this out as safety requirement
+in `Device::from_raw`, we probably want to add it to the documentation of the C
+`struct device`, such that we can argue that this is an invariant of C's
+`struct device`.
+
+Otherwise we'd have to write something like:
+
+"It must also be ensured that the `->release` function of a `struct device` can
+be called from any non-atomic context. While not being officially documented this
+is guaranteed by the invariant of `struct device`."
+
 > 
 >>> is not allowed to be called from any thread? If so, this would be very confusing
 >>> for a reference counted type from a design point of view...
@@ -111,14 +123,6 @@ On 6/11/24 18:13, Boqun Feng wrote:
 > However, we rely on klint[1] to detect context mismatch in compile time
 > (it's still a WIP though). For this case, we would need to mark the
 > `Device::dec_ref` function as might sleep.
-
-I think once we can detect it on compile time we should do that.
-
-As for the might_sleep(), if we want to have this check, we should probably
-do it in device_release() [1], rather than in the Rust code only.
-
-[1] https://elixir.bootlin.com/linux/latest/source/drivers/base/core.c#L2557
-
 > 
 > Regards,
 > Boqun
