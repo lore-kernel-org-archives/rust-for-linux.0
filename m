@@ -1,57 +1,57 @@
-Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
+Received: from mail-yb1-f202.google.com (mail-yb1-f202.google.com [209.85.219.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84B615A4FD
-	for <rust-for-linux@vger.kernel.org>; Wed, 12 Jun 2024 18:33:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91A6F6BFA7
+	for <rust-for-linux@vger.kernel.org>; Wed, 12 Jun 2024 18:33:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718217212; cv=none; b=F8RNg6kEke1O4ODTl02K7amPykuZVFTthEYkH4EozVAqiOadU3qafmBHN7I2xHcM4N37da6Qd5pjVWPSkGeWpKXgHSLfMIDKvPuNDPjxlkZJcEEF7OCIYnuCYPiJa/Uqsp1RcvY9pXRWE9odhLkwWA5BNjbhKRzOSshAyEIT/hM=
+	t=1718217214; cv=none; b=jtf45ncFEEsEqzAO3MhnXFRe7uA2XnCFsSBRzJBbWYO8w3jGF1e1HYMGZaVQ549N5WY08LoSRH0Fzt6cfQ4Umx5hgOHT6P7W6Ngxq4p1nNGos18SIDY3yqpnyPU6rKcxdt/tuACmRtYKq4sX4BysMKXiAjVDCRHKPAQ8ZZViEX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718217212; c=relaxed/simple;
-	bh=xM2OraEzCHPYA1XYxDOu/vQ1lb7fq6Wfuu93T3xy8mk=;
+	s=arc-20240116; t=1718217214; c=relaxed/simple;
+	bh=NNqeYFueEGmiFs0MppMDPJRfzajeEqe5rFYPlwNa4Qw=;
 	h=Date:In-Reply-To:Message-Id:Mime-Version:References:Subject:From:
-	 To:Content-Type; b=e4VUaTAQ4xk9cdMa62QndSjbTVt0jSiasKuw+h5jTbEO3MH5WlBXiSh0CdySaHYGmQhyZUx6k0H44ERbw/CrEri0Bs4MrWp3hw8WbY9Ksv4UssSud+sh6rWbt3AQOUieVQPLz/Ye+tHoOOSXp30cIs8jhNoe3JhULKtPDkfSIYs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--irogers.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=xl43Op6X; arc=none smtp.client-ip=209.85.128.202
+	 To:Content-Type; b=h3nQ5VcD5fGjjcfYggt/KyjuIJA8i7wZX3p44Ufusf3ja3UXASjj0VCtzlDE/Ojvpc3QKMLCTq0JX3pvbVkL0hJdk293/KH78RfC05+xjbT/INF+Zqbo4P4CxI0BSwWqhxvPxTqOwyw3pC3ki21XDUJEi/TGZ+u0W2M4bUeQcuM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--irogers.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=JD9QIzGo; arc=none smtp.client-ip=209.85.219.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--irogers.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="xl43Op6X"
-Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-630a9589417so2737577b3.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 12 Jun 2024 11:33:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="JD9QIzGo"
+Received: by mail-yb1-f202.google.com with SMTP id 3f1490d57ef6-dfec7058deeso282611276.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 12 Jun 2024 11:33:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1718217209; x=1718822009; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1718217211; x=1718822011; darn=vger.kernel.org;
         h=to:from:subject:references:mime-version:message-id:in-reply-to:date
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=VGJvGIe1CwvnPYERWz1EPbS43EUUz4nerE4PJ3wm8uk=;
-        b=xl43Op6XK7zi980STBylFDTWGj0pMAX95odZBVnQI/iaf8cWbuaZHXRg/jAJMLv+hs
-         UFariMYZ/EMdrxRXTtc1Kgrmlj0kJnSgkMGix72plsRAj9et8187Jva3ZnCuIXMKFkcA
-         /biBSI6T06Ht6ImUr7O3yhHBf4ij1yQuOP9FELPJJ+ltCmUBRYS0A/To5fZlRvhkRnu9
-         wdJG7YB7iIx9FAzfmi2oH0glHP/VPE6XTB0aM8tkrCXpQe0t+Ve3/SzcDLG/EVIFzokC
-         Yq+hTUM+zn/YLc9zt9zpwuNXulBdWIF++zhR2pgrcMz3i+LnWGVBVVp1H51YFT8zjXlk
-         B96g==
+        bh=p5Va0kqcQZC3C24SRwLWszsblcvKrIdDi6DATMgrSLY=;
+        b=JD9QIzGoRfajXPrqApcGe/gP3YVOTvNVWEg/OBLn5Kinqu0TXfOTC50NadlfSiPw8w
+         vSVZKjthcQAeLv22+zLymL1oaYbfft9QHkioisMlqKrpTg1Tk8gaD8Jt7fu8aygq0I6B
+         h+sLiP9xU5jfwnCKtmEG85yXOwDL1zk9ybk9Qi3o3oEvQBtY+icz+c10u8QBhZRa4rw/
+         09Mz8lSxw/ivg9gPxGHiSMOJY7yUPWOghEmHLdgB7h0ydjMWApbWG8Uf3uFeZeW3JfO/
+         ttZm6YX6JBDLhDoJZjLpaD1/RjU/d3teIVpW7p/aaPJeDCS5fFIczx44lwL21wFyFrMy
+         jApQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718217209; x=1718822009;
+        d=1e100.net; s=20230601; t=1718217211; x=1718822011;
         h=to:from:subject:references:mime-version:message-id:in-reply-to:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=VGJvGIe1CwvnPYERWz1EPbS43EUUz4nerE4PJ3wm8uk=;
-        b=I/oj0Ne8lU6UIR96eapd57G6f54FLTLWSAnr2VAKmG0+T/vNeN13NjYxzmjBdWTIFv
-         6mXiRA67JS4XGQ1lsB1yPSN4ycuZt2MrqiNe7BGsh2nNuZ4sbHMDTJIvxiE2i7O1wTs4
-         kux7it5tgwaxroQe2Bze8UkxjopNhJ4nkwdDmMknCj//xJdyVzU34LtVvzNajTpD0yAT
-         VeIP0x8DtZHZA9aPYTVNXjSrTBq6wqAx+lOp0LljGb/yMc+L9t1ua77Fp3K96/5zFpEd
-         V81B4yYffX+r4aE/kxZyD1eGNbigPXYnwdswHGEhZCOlGqLdPlGBSP2jksY+RdVCqd3R
-         cT1A==
-X-Forwarded-Encrypted: i=1; AJvYcCVTU6yODGpd0wTrpOpeEaEzr9R/Ew93dDriV+i9N+b10bGV8KHReC+RIMUdgAEo/Y/P371uJ68KVnKBe2vE9YXYZHvG37s8BHolYkHAyYA=
-X-Gm-Message-State: AOJu0YwHBmCF0gdvYISpvUy5GRSUub+jQn/Q5x21gHOeQOMkSHyTN75W
-	66KP1PmGh2b1c3YKu7eZie+Cl9MSjTUZbTJx5noQssPscaWqaBpKUQktsQUCkgCudjVnXuRj8ss
-	op3ApEA==
-X-Google-Smtp-Source: AGHT+IGXEDI7uql6mJLDFjO1+Fqeh1AyLA9O3UleyCaiFC6kUY86MVaz89Z/OC+PlyfjDDJprAmYcNiyixd1
+        bh=p5Va0kqcQZC3C24SRwLWszsblcvKrIdDi6DATMgrSLY=;
+        b=vUzysuKKB2+DUqejDAFvCqgzQnmJr+m01sYP/Rg8HpB7XixEGuY59CQx6fPAnabebV
+         ZmsSR6EW00UlkKgfz7bEYSbPnG+IDzYSytWUG2pqOmfzqC715Zf/3TK+yGnxsgqL1hX7
+         +FK+XQplv1L8uZmoa02Ri0ukQkkBdqMCcaH2hbarrb29Xv7LIZutSK5SHTWujXkrQ3g8
+         +K2UNDecb2kh6T46a8afKVPAdAGhdvEy5WlRMXdTPZy4TDWyibPOa84b2mU5dEMn1B5C
+         zJvsXT5gGkmdBKGrNDqs3Xzx0aLWrQmAmEmEuH9J2dNuUE3dyeLONrX2pIu7jxBc1O32
+         m2LQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW9j7pVruE/fsjZok7SZ066hWPArTGxo4q60kRqrVYtSLQL2gHgS0fzE1vbeGjtreNXkUfTGG8ZRRVGv0R36a2BUPI9gQQ+5j8ACRCH9I4=
+X-Gm-Message-State: AOJu0YxGoMYYbRcqz5rDEeMV26ybWgQrdGIXNJkmSGyJr1vdYqyCjPOX
+	YhXt3cgwSaEWCmVVlGWKc1D4QkKgavP7VYmwP3zUS/4McLle1spX+5hzLvYDkJp1ESg2qCBpc9F
+	xfrQt5g==
+X-Google-Smtp-Source: AGHT+IFUjDHCGs84lPZNlYc/Q/ZUwcsW2T3rfw8kPPl4R6rItL56LbKeXSgs9qEESLh60H5wgpjHWSuTCdXt
 X-Received: from irogers.svl.corp.google.com ([2620:15c:2a3:200:959d:4302:db0e:d12a])
- (user=irogers job=sendgmr) by 2002:a05:690c:6605:b0:62c:ea0b:a44e with SMTP
- id 00721157ae682-62fb97e690dmr7848007b3.2.1718217209459; Wed, 12 Jun 2024
- 11:33:29 -0700 (PDT)
-Date: Wed, 12 Jun 2024 11:31:59 -0700
+ (user=irogers job=sendgmr) by 2002:a05:6902:2b8a:b0:dfa:849d:3a59 with SMTP
+ id 3f1490d57ef6-dfe68d0a82bmr656820276.13.1718217211451; Wed, 12 Jun 2024
+ 11:33:31 -0700 (PDT)
+Date: Wed, 12 Jun 2024 11:32:00 -0700
 In-Reply-To: <20240612183205.3120248-1-irogers@google.com>
-Message-Id: <20240612183205.3120248-2-irogers@google.com>
+Message-Id: <20240612183205.3120248-3-irogers@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -60,7 +60,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20240612183205.3120248-1-irogers@google.com>
 X-Mailer: git-send-email 2.45.2.505.gda0bf45e8d-goog
-Subject: [PATCH v1 1/7] perf ui: Make ui its own library
+Subject: [PATCH v1 2/7] perf pmu-events: Make pmu-events a library
 From: Ian Rogers <irogers@google.com>
 To: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
 	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
@@ -87,121 +87,68 @@ To: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
 	bpf@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-Make the ui code its own library. This is done to avoid compiling code
-twice, once for the perf tool and once for the perf python module.
+Make pmu-events into a library so it may be linked against things like
+the python module and not built from source.
 
 Signed-off-by: Ian Rogers <irogers@google.com>
 ---
- tools/perf/Build             |  2 +-
- tools/perf/Makefile.perf     | 10 ++++++++++
- tools/perf/ui/Build          | 18 +++++++++---------
- tools/perf/ui/browsers/Build | 14 +++++++-------
- tools/perf/ui/tui/Build      |  8 ++++----
- 5 files changed, 31 insertions(+), 21 deletions(-)
+ tools/perf/Makefile.perf | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/tools/perf/Build b/tools/perf/Build
-index b0cb7ad8e6ac..16ed1357202b 100644
---- a/tools/perf/Build
-+++ b/tools/perf/Build
-@@ -55,7 +55,7 @@ CFLAGS_builtin-report.o	   += -DDOCDIR="BUILD_STR($(srcdir_SQ)/Documentation)"
- 
- perf-y += util/
- perf-y += arch/
--perf-y += ui/
-+perf-ui-y += ui/
- perf-y += scripts/
- 
- gtk-y += ui/gtk/
 diff --git a/tools/perf/Makefile.perf b/tools/perf/Makefile.perf
-index 5c35c0d89306..350b65088fc1 100644
+index 350b65088fc1..ff1ff1e739b7 100644
 --- a/tools/perf/Makefile.perf
 +++ b/tools/perf/Makefile.perf
-@@ -425,10 +425,14 @@ endif
+@@ -428,11 +428,14 @@ export PERL_PATH
+ LIBPERF_UI_IN := $(OUTPUT)perf-ui-in.o
+ LIBPERF_UI := $(OUTPUT)libperf-ui.a
  
- export PERL_PATH
- 
-+LIBPERF_UI_IN := $(OUTPUT)perf-ui-in.o
-+LIBPERF_UI := $(OUTPUT)libperf-ui.a
++LIBPMU_EVENTS_IN := $(OUTPUT)pmu-events/pmu-events-in.o
++LIBPMU_EVENTS := $(OUTPUT)libpmu-events.a
 +
  PERFLIBS = $(LIBAPI) $(LIBPERF) $(LIBSUBCMD) $(LIBSYMBOL)
  ifdef LIBBPF_STATIC
    PERFLIBS += $(LIBBPF)
  endif
-+PERFLIBS += $(LIBPERF_UI)
+-PERFLIBS += $(LIBPERF_UI)
++PERFLIBS += $(LIBPERF_UI) $(LIBPMU_EVENTS)
  
  # We choose to avoid "if .. else if .. else .. endif endif"
  # because maintaining the nesting to match is a pain.  If
-@@ -729,6 +733,12 @@ $(PERF_IN): prepare FORCE
- $(PMU_EVENTS_IN): FORCE prepare
+@@ -721,8 +724,6 @@ strip: $(PROGRAMS) $(OUTPUT)perf
+ 	$(STRIP) $(STRIP_OPTS) $(PROGRAMS) $(OUTPUT)perf
+ 
+ PERF_IN := $(OUTPUT)perf-in.o
+-
+-PMU_EVENTS_IN := $(OUTPUT)pmu-events/pmu-events-in.o
+ export NO_JEVENTS
+ 
+ build := -f $(srctree)/tools/build/Makefile.build dir=. obj
+@@ -730,18 +731,21 @@ build := -f $(srctree)/tools/build/Makefile.build dir=. obj
+ $(PERF_IN): prepare FORCE
+ 	$(Q)$(MAKE) $(build)=perf
+ 
+-$(PMU_EVENTS_IN): FORCE prepare
++$(LIBPMU_EVENTS_IN): FORCE prepare
  	$(Q)$(MAKE) -f $(srctree)/tools/build/Makefile.build dir=pmu-events obj=pmu-events
  
-+$(LIBPERF_UI_IN): FORCE prepare
-+	$(Q)$(MAKE) $(build)=perf-ui
-+
-+$(LIBPERF_UI): $(LIBPERF_UI_IN)
++$(LIBPMU_EVENTS): $(LIBPMU_EVENTS_IN)
 +	$(QUIET_AR)$(RM) $@ && $(AR) rcs $@ $<
 +
- $(OUTPUT)perf: $(PERFLIBS) $(PERF_IN) $(PMU_EVENTS_IN)
+ $(LIBPERF_UI_IN): FORCE prepare
+ 	$(Q)$(MAKE) $(build)=perf-ui
+ 
+ $(LIBPERF_UI): $(LIBPERF_UI_IN)
+ 	$(QUIET_AR)$(RM) $@ && $(AR) rcs $@ $<
+ 
+-$(OUTPUT)perf: $(PERFLIBS) $(PERF_IN) $(PMU_EVENTS_IN)
++$(OUTPUT)perf: $(PERFLIBS) $(PERF_IN)
  	$(QUIET_LINK)$(CC) $(CFLAGS) $(LDFLAGS) \
- 		$(PERF_IN) $(PMU_EVENTS_IN) $(LIBS) -o $@
-diff --git a/tools/perf/ui/Build b/tools/perf/ui/Build
-index 6b6d7143a37b..d2ecd9290600 100644
---- a/tools/perf/ui/Build
-+++ b/tools/perf/ui/Build
-@@ -1,12 +1,12 @@
--perf-y += setup.o
--perf-y += helpline.o
--perf-y += progress.o
--perf-y += util.o
--perf-y += hist.o
--perf-y += stdio/hist.o
-+perf-ui-y += setup.o
-+perf-ui-y += helpline.o
-+perf-ui-y += progress.o
-+perf-ui-y += util.o
-+perf-ui-y += hist.o
-+perf-ui-y += stdio/hist.o
+-		$(PERF_IN) $(PMU_EVENTS_IN) $(LIBS) -o $@
++		$(PERF_IN) $(LIBS) -o $@
  
- CFLAGS_setup.o += -DLIBDIR="BUILD_STR($(LIBDIR))"
- 
--perf-$(CONFIG_SLANG) += browser.o
--perf-$(CONFIG_SLANG) += browsers/
--perf-$(CONFIG_SLANG) += tui/
-+perf-ui-$(CONFIG_SLANG) += browser.o
-+perf-ui-$(CONFIG_SLANG) += browsers/
-+perf-ui-$(CONFIG_SLANG) += tui/
-diff --git a/tools/perf/ui/browsers/Build b/tools/perf/ui/browsers/Build
-index 2608b5da3167..a07489e44765 100644
---- a/tools/perf/ui/browsers/Build
-+++ b/tools/perf/ui/browsers/Build
-@@ -1,7 +1,7 @@
--perf-y += annotate.o
--perf-y += annotate-data.o
--perf-y += hists.o
--perf-y += map.o
--perf-y += scripts.o
--perf-y += header.o
--perf-y += res_sample.o
-+perf-ui-y += annotate.o
-+perf-ui-y += annotate-data.o
-+perf-ui-y += hists.o
-+perf-ui-y += map.o
-+perf-ui-y += scripts.o
-+perf-ui-y += header.o
-+perf-ui-y += res_sample.o
-diff --git a/tools/perf/ui/tui/Build b/tools/perf/ui/tui/Build
-index f916df33a1a7..2ac058ad1a61 100644
---- a/tools/perf/ui/tui/Build
-+++ b/tools/perf/ui/tui/Build
-@@ -1,4 +1,4 @@
--perf-y += setup.o
--perf-y += util.o
--perf-y += helpline.o
--perf-y += progress.o
-+perf-ui-y += setup.o
-+perf-ui-y += util.o
-+perf-ui-y += helpline.o
-+perf-ui-y += progress.o
+ $(GTK_IN): FORCE prepare
+ 	$(Q)$(MAKE) $(build)=gtk
 -- 
 2.45.2.505.gda0bf45e8d-goog
 
