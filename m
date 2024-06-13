@@ -1,192 +1,189 @@
-Received: from mail-yb1-f202.google.com (mail-yb1-f202.google.com [209.85.219.202])
+Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C89D815666B
-	for <rust-for-linux@vger.kernel.org>; Thu, 13 Jun 2024 18:32:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C144130487;
+	Thu, 13 Jun 2024 19:05:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718303573; cv=none; b=ngGYkXkHqB6xobB4F+VhTSc4Prtf+OUGt3jEK3sL7UD285aiEmiPtwisbpPJgEznoUC4xHAr60zS26KYEYOWJenK1J0Z7LiqB5StzTcGEnEClN+3doUmNe4ocUjRmO76LCxp54Aq4CP5HNqm/+9ZDpKrlt4eOYqPACAcRDyyw4A=
+	t=1718305553; cv=none; b=BWwqOT80akdOGLEzL3GUPxmwrA4K9/gJ8LdnfCZO8Oy3ZGsRjf/RUgHoveVqz5nGXn9IldOUuF2FgO0zESqI3JRIZx8jREpJDjderGiSYVo9dYPCHV9Yvj+TOa4EenguEfxPnHI1Mv5tuVCzXVyQ4hhqZ/qoNazJUN2gW1LNt5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718303573; c=relaxed/simple;
-	bh=/ONs+RfIi9pLA0kZMRaJefFpcB8Apxh4eLPjFTsRe2k=;
-	h=Date:In-Reply-To:Message-Id:Mime-Version:References:Subject:From:
-	 To:Content-Type; b=rLYTkRCA0aOzq9Hu/gcI55ADhj4Vn8NYySQ/LY8enuNgEYV2CD37OZ88BjI13n4syLwrBNLX6yYwL+HEFND/6pGWwOGin7N7m3cLgCqlwMEspJuuqOYqCUL/E/NGdLMJphgM4t6LGou3ofWwJ7ZH5gDTaR3iK+aWllNfH4axYow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--irogers.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hEO2CNJA; arc=none smtp.client-ip=209.85.219.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--irogers.bounces.google.com
+	s=arc-20240116; t=1718305553; c=relaxed/simple;
+	bh=Gjcaa8+6uCgQkQx/KQDUdcFBpRQxKJkZkyyvTptG/DQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mjR4T4hwWQYQ5eNWRWXV8mNfRGP8EdGkP+K4GP1hwbgCiQ/e04F654vLg5RsNacRxu/mDD2qyop3xi7Lx2BLAlKO+bhvmcZv3Kf7I5F/czVaAu8y18lOyG0P6HeUt8Ef+/rJsngxBAzGXwum743bjG9/6p+HBwldlh4rkCVtomM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PCUvASAU; arc=none smtp.client-ip=209.85.160.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hEO2CNJA"
-Received: by mail-yb1-f202.google.com with SMTP id 3f1490d57ef6-dfdfe3d9fc8so2458405276.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 13 Jun 2024 11:32:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PCUvASAU"
+Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-44055ca3103so7775101cf.3;
+        Thu, 13 Jun 2024 12:05:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1718303571; x=1718908371; darn=vger.kernel.org;
-        h=to:from:subject:references:mime-version:message-id:in-reply-to:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=r+L2y8W9nebELrh4jjwhLDqIvkQwPnsfqcpkdzoDYes=;
-        b=hEO2CNJAvcrlwDrlDCWdHdQlJpSR6QLZZeIrYGoKOAoOVxz8KDLFnx9ctYVko3Gman
-         NNgP4L8MztFV3ElCGGLcg7wj6twQ1MCORgUVT+4FTjKrtRYX1g6v+e7eTQoVbZQGcvOw
-         5aoOd/Lv3zWENB3Ctu/k3D40tbO/jRYIX+fsZf3HzoiSBk4CTDBUHeGnS+VVsDhQohm7
-         x3dYo/eM+wTHm0M7J5A4hTq08I8Nt5lNanQwX1MTdvgdXlTlztrq4BFUcvYkgNyEs3mE
-         nw8Hgh29aitOej1fBpPN+bu811f3wrIORLjEXda9qTjU5QF5ZUzweT38VFgVh9bXUObS
-         9UdQ==
+        d=gmail.com; s=20230601; t=1718305551; x=1718910351; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=Ffc3VX56CZ7smTmD9fwLf7azxKQfNJQFr7EZRiaut9M=;
+        b=PCUvASAUnkWfnh4k6w1wQPRfaMgJclN0P+i9l1fhmBAU1LQGuEJ5B28lINOklT7vM+
+         9nFPMRNg8G4uWSAYlMg3oIbOQpdAk7kYrqjnBiM+Xoub8yNgBnyF07ZmUHUsOYl9VsgM
+         Zt86rgo1hIkye9kpw2CQDzC3L0OTNVrESueWpsNZuQQNxDxfxK7X/Od7H4jUpxH4BTtr
+         5V93w03AZDkcsi7TOjz17vaAse6mCz7TlWlVOcraaUxWBK/PVhRYxkN/NfJkhbhrYBnf
+         4PCxYSto5wua9AkAtIUeGgt1l3shzhtLAOwr8jRpDz/sJDt6jRTjp4tN/RVoU50RCKz8
+         jmfA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718303571; x=1718908371;
-        h=to:from:subject:references:mime-version:message-id:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=r+L2y8W9nebELrh4jjwhLDqIvkQwPnsfqcpkdzoDYes=;
-        b=OQ3tZTMQRlR7cvT/GiBZZUVeACFCN2HIBWR3AnCad13Ef7a1AIlGrNYkT4iy1my5x1
-         wIhJRrxoQoPIZzoBnbvWF+oCU4rZk3jr1WvSRY+DK67K2cOaHaViBTIBrm9uc328uNSg
-         0/C2ibtpC0fhV2SRyxyLcKAt75DpGtS3ZzDFRz2QIJrw889YQ2dDCKcoG8CbWtgOJ/0A
-         P46Q0gI0nmgu2ULoztgY1GpzM/hTFIOIrkQXN27gKEGI2RnzFckP9fMu8I4xepzhpbjm
-         bK0ZzpzL5cM47ZxveuH7pS1mKIF3OuigPQsNfmQ71qGziYwsBiA2fncq8EjTQr/lEdkr
-         oT3w==
-X-Forwarded-Encrypted: i=1; AJvYcCWkuMPGJqDx5OObLfryeBvucNrj7wAEsYFowPLamP2v4z7bniEijoUJteyoOIDKcqmLJxeQs+jZWiI5LrdwslBoIp5skTOomoSQiNb+lck=
-X-Gm-Message-State: AOJu0YyeUpAnxah+0KrGd+/qNxqD2JKZSYYlyrSPhUpa3JR+bjgdTC0y
-	TTyUWLrAG8yESNCoEoRPyy8vUP4eKjqk1Le/pGMtDzqFvg+Ro/VwrIqfcrPNxTavV9Q+IwUJGMm
-	zUlLKjQ==
-X-Google-Smtp-Source: AGHT+IG80DNm/FDT+O5OUP8JFT4D2XNhLByUqwk2k3UfIObo7dkaLn3FPAjmCygWQ5MUqnfeOwJ1qGBNNewF
-X-Received: from irogers.svl.corp.google.com ([2620:15c:2a3:200:96dd:26a6:1493:53c8])
- (user=irogers job=sendgmr) by 2002:a05:6902:2b90:b0:dfa:7278:b4c4 with SMTP
- id 3f1490d57ef6-dff1538dae8mr77808276.4.1718303570700; Thu, 13 Jun 2024
- 11:32:50 -0700 (PDT)
-Date: Thu, 13 Jun 2024 11:32:24 -0700
-In-Reply-To: <20240613183224.3399628-1-irogers@google.com>
-Message-Id: <20240613183224.3399628-9-irogers@google.com>
+        d=1e100.net; s=20230601; t=1718305551; x=1718910351;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Ffc3VX56CZ7smTmD9fwLf7azxKQfNJQFr7EZRiaut9M=;
+        b=bs5Ve05CCHlwNIfEkUWnKnG2nUqB9zSoJw/z31wmlBpKu3HwaxOw7X0QvbRmsQpZS5
+         R92rZjO2CPGulTrmxujgJAT1cP7QO/1Lftgc7A2YaZUHHUz+X+bP64alqPuRJBPtdpQb
+         miBzgVN2o5DkAKlJ3NlNOl/1JQcsWIpDXJeqYe08oUsiy2q/yplYdV2Xjtw9y0lk2Qzs
+         sYJoaIpLuMcaMdgpSFaSSNPjRFR1etjLiowmPhiLLQSf4xHmx5noqmwIDhUJi4lR8Lb2
+         C5enHtweNgpkd7C+KpkgB+q6rWMuMxCHX8RsvFY5ogwOUuBeoJopCYFevJ7JZ2jmFm86
+         MVpw==
+X-Forwarded-Encrypted: i=1; AJvYcCX9jtuYy2jTgxx93CulyRdakYcO/brK9SlsVWFm6fbm09hhbx1WHnEqSksROd/cK3qL44+2NvfXo0viEwU+anWsbM/NwtnCGKnBL8DiRBD3RAinUZurXbTwOqrE5nIV48yWEkuXpFfPSyBt6Ht5/VScKTmghbQlb1RpU5cSHdBUZQRCy6KVJbKhkROwK48LfukykwCVuUvI8cYDWUdHhmFcOWwCcMOP3A==
+X-Gm-Message-State: AOJu0YzmFcVbp7F0UlSLf62Xs+wKw/RZtT2OZETE1BBievjkQLMo5tAc
+	IPTbJ5obNz4YVNOuAapcFkop2GI4EwEOHnZpuApI6hlKpTyxhVmn
+X-Google-Smtp-Source: AGHT+IE7frHfV9qWWrHFx6ZJCKnyiIFeH/wvgqxxR+AWnNkmcvkTjALGUbQSHHQF3wfhTv0YEkSdrg==
+X-Received: by 2002:a05:622a:284:b0:43a:f698:2b21 with SMTP id d75a77b69052e-442168efe33mr5802941cf.36.1718305550923;
+        Thu, 13 Jun 2024 12:05:50 -0700 (PDT)
+Received: from fauth2-smtp.messagingengine.com (fauth2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-441f310c9f3sm8692321cf.94.2024.06.13.12.05.49
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 13 Jun 2024 12:05:50 -0700 (PDT)
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
+	by mailfauth.nyi.internal (Postfix) with ESMTP id D6B961200068;
+	Thu, 13 Jun 2024 15:05:48 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute2.internal (MEProxy); Thu, 13 Jun 2024 15:05:48 -0400
+X-ME-Sender: <xms:DENrZlFyE4PKus7PtcngvvYJ3LDlv17zq_-foOA-R_uwn2jWAj5rmg>
+    <xme:DENrZqWOnjAN0L_ogg5Eh5sTwvLhgw7t1HLptF-85aJTCt9K3ooSlaqXarlDVcwt0
+    UFDeP7cZzo6WHb1Sg>
+X-ME-Received: <xmr:DENrZnJSJ7VqUNPf6OqtGP4nPRTqgpQmCGv9P9T2DHk-SIFKM-_WloxqWCmTaQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrfedujedgudeftdcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpeffhffvvefukfhfgggtugfgjgesthekredttddtjeenucfhrhhomhepueho
+    qhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtf
+    frrghtthgvrhhnpeevgffhueevkedutefgveduuedujeefledthffgheegkeekiefgudek
+    hffggeelfeenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhroh
+    hmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeeh
+    tdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmse
+    hfihigmhgvrdhnrghmvg
+X-ME-Proxy: <xmx:DENrZrHyy5dfzSclIt6WrauysNCojKo0axfasGsZcmpz8USlRnpVFQ>
+    <xmx:DENrZrUfUVM4S_BiOu3E8BA8rZJVtfctsRmyF5dw0BITnGnmSAxdSg>
+    <xmx:DENrZmO6yQ36TILhM_mcUmir8zxJ5zFCQyoMAiqCFePOn4zhQciS1w>
+    <xmx:DENrZq3fOjwskOsIlU1kCxV2aA6xYxwuK4exCf5HiG5uRm3ryIoFzw>
+    <xmx:DENrZoV3M8wFR_ypgM1ymcj7O08B1d2k9Pfm3jwltwuf14xQA3ysxuMX>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 13 Jun 2024 15:05:47 -0400 (EDT)
+Date: Thu, 13 Jun 2024 12:05:18 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Gary Guo <gary@garyguo.net>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
+	llvm@lists.linux.dev, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Andrea Parri <parri.andrea@gmail.com>,	Will Deacon <will@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Nicholas Piggin <npiggin@gmail.com>,	David Howells <dhowells@redhat.com>,
+	Jade Alglave <j.alglave@ucl.ac.uk>,	Luc Maranget <luc.maranget@inria.fr>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Akira Yokosawa <akiyks@gmail.com>,	Daniel Lustig <dlustig@nvidia.com>,
+	Joel Fernandes <joel@joelfernandes.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,	kent.overstreet@gmail.com,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, elver@google.com,
+	Mark Rutland <mark.rutland@arm.com>,
+	Thomas Gleixner <tglx@linutronix.de>,	Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,	torvalds@linux-foundation.org,
+ linux-arm-kernel@lists.infradead.org,	linux-fsdevel@vger.kernel.org,
+ Trevor Gross <tmgross@umich.edu>,	dakr@redhat.com
+Subject: Re: [RFC 2/2] rust: sync: Add atomic support
+Message-ID: <ZmtC7h7v1t6XJ6EI@boqun-archlinux>
+References: <20240612223025.1158537-1-boqun.feng@gmail.com>
+ <20240612223025.1158537-3-boqun.feng@gmail.com>
+ <20240613144432.77711a3a@eugeo>
+ <ZmseosxVQXdsQjNB@boqun-archlinux>
+ <CANiq72myhoCCWs7j0eZuxfoYMbTez7cPa795T57+gz2Dpd+xAw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20240613183224.3399628-1-irogers@google.com>
-X-Mailer: git-send-email 2.45.2.627.g7a2c4fd464-goog
-Subject: [PATCH v2 8/8] perf python: Clean up build dependencies
-From: Ian Rogers <irogers@google.com>
-To: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, 
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, 
-	Ian Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, 
-	Kan Liang <kan.liang@linux.intel.com>, John Garry <john.g.garry@oracle.com>, 
-	Will Deacon <will@kernel.org>, James Clark <james.clark@arm.com>, 
-	Mike Leach <mike.leach@linaro.org>, Leo Yan <leo.yan@linux.dev>, Guo Ren <guoren@kernel.org>, 
-	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Albert Ou <aou@eecs.berkeley.edu>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
-	Yicong Yang <yangyicong@hisilicon.com>, Jonathan Cameron <jonathan.cameron@huawei.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, 
-	Nick Terrell <terrelln@fb.com>, Ravi Bangoria <ravi.bangoria@amd.com>, 
-	Kees Cook <keescook@chromium.org>, Andrei Vagin <avagin@google.com>, 
-	Athira Jajeev <atrajeev@linux.vnet.ibm.com>, Oliver Upton <oliver.upton@linux.dev>, 
-	Ze Gao <zegao2021@gmail.com>, linux-kernel@vger.kernel.org, 
-	linux-perf-users@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-csky@vger.kernel.org, linux-riscv@lists.infradead.org, 
-	coresight@lists.linaro.org, rust-for-linux@vger.kernel.org, 
-	bpf@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72myhoCCWs7j0eZuxfoYMbTez7cPa795T57+gz2Dpd+xAw@mail.gmail.com>
 
-The python build now depends on libraries and doesn't use
-python-ext-sources except for the util/python.c dependency. Switch to
-just directly depending on that file and util/setup.py. This allows
-the removal of python-ext-sources.
+On Thu, Jun 13, 2024 at 07:22:54PM +0200, Miguel Ojeda wrote:
+> On Thu, Jun 13, 2024 at 6:31 PM Boqun Feng <boqun.feng@gmail.com> wrote:
+> >
+> > So let's start with some basic and simple until we really have a need
+> > for generic `Atomic<T>`. Thoughts?
+> 
+> I don't want to delay this, but using generics would be more flexible,
+> right? e.g. it could allow us to have atomics of, say, newtypes, if
+> that were to be useful.
+> 
+> Is there a particular disadvantage of using the generics? The two
+> cases you mentioned would just be written explicitly, right?
+> 
+> One disadvantage would be that they are different from the Rust
+> standard library ones, e.g. in case we wanted third-party code to use
+> them, but could be provided if needed later on.
+> 
 
-Signed-off-by: Ian Rogers <irogers@google.com>
-Reviewed-by: James Clark <james.clark@arm.com>
----
- tools/perf/Makefile.perf           | 10 +-----
- tools/perf/util/python-ext-sources | 53 ------------------------------
- 2 files changed, 1 insertion(+), 62 deletions(-)
- delete mode 100644 tools/perf/util/python-ext-sources
+Well, the other thing is AtomicI32 -> atomic_t and AtomicI64 ->
+atomic64_t are perfect mappings, and we can treat AtomicI32 and
+AtomicI64 as a separate layer that wires C atomics into Rust. As I said,
+we can build `Atomic<T>` on top of this layer, like:
 
-diff --git a/tools/perf/Makefile.perf b/tools/perf/Makefile.perf
-index 4a1a9f09fa09..590081384882 100644
---- a/tools/perf/Makefile.perf
-+++ b/tools/perf/Makefile.perf
-@@ -380,14 +380,6 @@ python-clean := $(call QUIET_CLEAN, python) $(RM) -r $(PYTHON_EXTBUILD) $(OUTPUT
- # Use the detected configuration
- -include $(OUTPUT).config-detected
- 
--ifeq ($(CONFIG_LIBTRACEEVENT),y)
--  PYTHON_EXT_SRCS := $(shell grep -v ^\# util/python-ext-sources)
--else
--  PYTHON_EXT_SRCS := $(shell grep -v ^\#\\\|util/trace-event.c\\\|util/trace-event-parse.c util/python-ext-sources)
--endif
--
--PYTHON_EXT_DEPS := util/python-ext-sources util/setup.py $(LIBAPI)
--
- SCRIPTS = $(patsubst %.sh,%,$(SCRIPT_SH))
- 
- PROGRAMS += $(OUTPUT)perf
-@@ -715,7 +707,7 @@ all: shell_compatibility_test $(ALL_PROGRAMS) $(LANG_BINDINGS) $(OTHER_PROGRAMS)
- # Create python binding output directory if not already present
- $(shell [ -d '$(OUTPUT)python' ] || mkdir -p '$(OUTPUT)python')
- 
--$(OUTPUT)python/perf$(PYTHON_EXTENSION_SUFFIX): $(PYTHON_EXT_SRCS) $(PYTHON_EXT_DEPS) $(PERFLIBS)
-+$(OUTPUT)python/perf$(PYTHON_EXTENSION_SUFFIX): util/python.c util/setup.py $(PERFLIBS)
- 	$(QUIET_GEN)LDSHARED="$(CC) -pthread -shared" \
-         CFLAGS='$(CFLAGS)' LDFLAGS='$(LDFLAGS) $(LIBS)' \
- 	  $(PYTHON_WORD) util/setup.py \
-diff --git a/tools/perf/util/python-ext-sources b/tools/perf/util/python-ext-sources
-deleted file mode 100644
-index 1bec945f4838..000000000000
---- a/tools/perf/util/python-ext-sources
-+++ /dev/null
-@@ -1,53 +0,0 @@
--#
--# List of files needed by perf python extension
--#
--# Each source file must be placed on its own line so that it can be
--# processed by Makefile and util/setup.py accordingly.
--#
--
--util/python.c
--../lib/ctype.c
--util/cap.c
--util/evlist.c
--util/evsel.c
--util/evsel_fprintf.c
--util/perf_event_attr_fprintf.c
--util/cpumap.c
--util/memswap.c
--util/mmap.c
--util/namespaces.c
--../lib/bitmap.c
--../lib/find_bit.c
--../lib/list_sort.c
--../lib/hweight.c
--../lib/string.c
--../lib/vsprintf.c
--util/thread_map.c
--util/util.c
--util/cgroup.c
--util/parse-branch-options.c
--util/rblist.c
--util/counts.c
--util/print_binary.c
--util/strlist.c
--util/trace-event.c
--util/trace-event-parse.c
--../lib/rbtree.c
--util/string.c
--util/symbol_fprintf.c
--util/units.c
--util/affinity.c
--util/rwsem.c
--util/hashmap.c
--util/perf_regs.c
--util/fncache.c
--util/rlimit.c
--util/perf-regs-arch/perf_regs_aarch64.c
--util/perf-regs-arch/perf_regs_arm.c
--util/perf-regs-arch/perf_regs_csky.c
--util/perf-regs-arch/perf_regs_loongarch.c
--util/perf-regs-arch/perf_regs_mips.c
--util/perf-regs-arch/perf_regs_powerpc.c
--util/perf-regs-arch/perf_regs_riscv.c
--util/perf-regs-arch/perf_regs_s390.c
--util/perf-regs-arch/perf_regs_x86.c
--- 
-2.45.2.627.g7a2c4fd464-goog
+    Atomic<T>
+      |
+      V
+    AtomicI{32,64}
+      |
+      V
+    atomic{,64}_t
 
+and if we drop this layer, the dependencies become:
+
+    Atomic<i32,i64> <- Atomic<u32,u64>
+      |
+      V
+    atomic{,64}_t
+
+i.e. in the same layer of Atomic<T>, some of them directly depend on
+some other Atomic<T> types, which doesn't look very clean to me. And it
+might be difficult for architecture maintainers to track the exact
+dependency for Rust code.
+
+This is also the reason why I didn't use Rust macros to generate
+AtomicI32 and AtomicI64 implementation: I use a script to generate .rs
+file. This ensures AtomicI32 and AtomicI64 stay with the exact same set
+of APIs as atomic{,64}_t (described by scripts/atomic/atomics.tbl. Put
+it in another way, I guess you can think AtomicI32 and AtomicI64 as some
+sort of intrinsic layer provided by C. And should we need it, we can
+build an Atomic<T> layer on top of it.
+
+Does this make sense?
+
+Regards,
+Boqun
+
+> Cheers,
+> Miguel
