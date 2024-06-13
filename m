@@ -1,79 +1,173 @@
-Received: from mail-yb1-f180.google.com (mail-yb1-f180.google.com [209.85.219.180])
+Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE63312D1F4
-	for <rust-for-linux@vger.kernel.org>; Thu, 13 Jun 2024 18:00:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B197214A623
+	for <rust-for-linux@vger.kernel.org>; Thu, 13 Jun 2024 18:32:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718301632; cv=none; b=LHiJ7bpiLYD7j6s676H8jx39Hbxl6HjGt+L33WNox2gHruUdesiwPs78ztSAgsrC/iQAU4eDZSILLokmZJ2rxQpBude1paOnQadNTZMesGm0tpXiL8dEJfkqPfgahUHXMiuhrpmOvzVBGaXf3u9Zr3RgYPjzPUuDFqZTMw0tjvQ=
+	t=1718303555; cv=none; b=oUeeIS2yZlLRA3n3b0IF23fEiTubavwotC0pznTgitp0NI+eCt9OTDAOfd3kxXKHzZ8HmFo9ZTpikwic8idahVhUHtw93jSeb+crCae/fiDJfn7b6z+jF/R/Avkcno00bpqUY2Pdni/LSwy1X/oQgV7rZDmIjhoQNrSkjRnagnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718301632; c=relaxed/simple;
-	bh=KIxYCZxky4LIq9N2MrGF8XCDHlu1RDhJ4fNMn6Ih6lM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BRQkT8CAVTTLonVqcldikSyr8n3Ho8B0jL9AlqQpxgG6sLgSX03Fw1YBd38/ahRwgxLBOWCy0+HSZ48UZr3C7/xkngF7/MLjIj4IoCAUNVeBIYbtet/p98g+//+pnZdIjJd8PVB25y/BdXV9UGuqLpBvHVhwDukptQtycdpdMQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=Ry29gjiX; arc=none smtp.client-ip=209.85.219.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=umich.edu
+	s=arc-20240116; t=1718303555; c=relaxed/simple;
+	bh=cpWXRE0Fqv7sRk4O6Nqc1zzeKbf0oJzhfcWUtE6IajI=;
+	h=Date:Message-Id:Mime-Version:Subject:From:To:Content-Type; b=kh1sycs+J55jsK71l0etbzqvAd4gkJWCzokmstWDd1RXsMbQuE147ugQymB6eAIZjaIptNiGwb2mBQSledA8FSQmWtIYOAyeez7CwgFB8qx3UF9S0ZV5E2S0fbio4XBI/87wGaHfNe1M477dpNVAo5SUKbLNE/wDl5N+BHJG7WE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--irogers.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UIVuaW5m; arc=none smtp.client-ip=209.85.128.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--irogers.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="Ry29gjiX"
-Received: by mail-yb1-f180.google.com with SMTP id 3f1490d57ef6-dff0712ede2so1202150276.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 13 Jun 2024 11:00:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UIVuaW5m"
+Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-627f20cff42so22527497b3.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 13 Jun 2024 11:32:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=umich.edu; s=google-2016-06-03; t=1718301630; x=1718906430; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KIxYCZxky4LIq9N2MrGF8XCDHlu1RDhJ4fNMn6Ih6lM=;
-        b=Ry29gjiXf/iwVp6KMSm8GPo2c5nKJEfy/mLC0qHqVdtvoCwkpZbMj678Wkuoo/RmdF
-         H9zyAQKyAm/jmiQCl4V7SPPvgQEBTlTEPUvOKedLTUjOuzuaXTBTSL1b5/T7unEyjXjm
-         6xk2V7P1TpzJ7P2fTFo2/mGGxkx7jKOPthqmx335EoA0nJzNOGzU+a0Wj597In4zKeaf
-         d5qROKhupBtUS/B9i6OyCzZWzsaPhTTK1p2TVxTEB4lTeluzkZPBxi7s0DQXbWyU9Fli
-         vKmWsBoWtoa/mJy6lUxL8aJE+rgOlTnRybBq4l8yGB6ACZzYRbGiKkhngQxmIylpIQLZ
-         gfKA==
+        d=google.com; s=20230601; t=1718303553; x=1718908353; darn=vger.kernel.org;
+        h=to:from:subject:mime-version:message-id:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=GvTiDUv73PJ62h8lVRQjJMyYJyL2LnE71Yt7gAeiVUY=;
+        b=UIVuaW5mcqRS6Om8kCTGkKgvQWSeMloQ1RrRyKb0hlgLotfUgIIrf+CNucF5YWXpSK
+         4agbddR0fMUmfCMhujEJtk9DkKQpxLLFvPqlSNWg4jZuuZ2Io4ddGy0XTJS7ZX1O5qfz
+         egaWJX9QOb3xVYtQDoUwU+iDnSVILwKW9bW8Oe1bKrJAPdee7/wWp4hCho8vaun8tf0b
+         GZS9QtjXyekrRhFhh1DT539tla1Ru2vZn95U6QsyJuhklwVpXaVkuKI/aFUN3i2qpQ/L
+         huC6NUvTFvQBGO53YKNnrU0Z0XsM8tbsi0PF0HLBfXHAmAvaSMRk2B7KLcDQ8BCvFAoY
+         lR6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718301630; x=1718906430;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=KIxYCZxky4LIq9N2MrGF8XCDHlu1RDhJ4fNMn6Ih6lM=;
-        b=ZSZfy5f0hJxUpIRfwi9NY08Bd23n91RHWU1n2Q+IcD8P/gbfyD4rm3c/PAtf+hoVzs
-         iiqopwzLiUXh392k/5PE4I2HvAheGFck9OeoT4VTm33sXG1D1HcKNTTJbVccwoUqaGek
-         l/BORnUlJqW6nA4fij8jf66RD5KLme91sOoOGzm18IPlGxhu5CkqfgAm5S7O6lpdxCae
-         9hJw+Z9IDFtwNNQfsxqHBGIbkRet300lWnJIdCEgvvXAox4m8RlD6kqLawLcuV9DDqUi
-         l9wreV7/simXdZDrGBIqDlGAw5yOP9rimzKBjm5NrdBFBM6PY9V3hiq9lF0WIHdFkhBD
-         Pa6A==
-X-Gm-Message-State: AOJu0YzkyTVCqNBNz2z1X/4rXBtlN10C6c7UcNGGSXmetIpVfIRNtMGI
-	uzpOuPVpWNeXCRIWr9+BBGPpbvhjFFCCFJQVIQuO50ck63iX4X/XMV+OHPygSlChpZgwSKjajvO
-	ctS/BX7CQ2OwTBJ4XpmzZjd2L1hmzRLitOXcPYw==
-X-Google-Smtp-Source: AGHT+IH40YJJAafPACacG5K1ir7hVn41gm6516ova29SoKU/d8Xv2WSocBs5Qt49GeK2ciqcsIByQ4oBlssKRC6wO2Y=
-X-Received: by 2002:a25:acdb:0:b0:df7:7096:4097 with SMTP id
- 3f1490d57ef6-dff1534b75emr244650276.11.1718301629827; Thu, 13 Jun 2024
- 11:00:29 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1718303553; x=1718908353;
+        h=to:from:subject:mime-version:message-id:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=GvTiDUv73PJ62h8lVRQjJMyYJyL2LnE71Yt7gAeiVUY=;
+        b=Qn8WqrlgFljDEv3kuOY7OT1GFOhsliOkAtTmv3ooCHrZLq6g1iX9bIj+sYWcuHDau0
+         hTADwdKnf2SlmBNWrkZE7+ahM2Arb3HtdtJB9ypfX+p1sysxt4aCN2vNcK9xfHX1/yX8
+         Ay5WEJlm6z94QTygrQLnyJ0HAcB6LV6+O+rqGHpIfacVbOLbLa8lCxzA5pF2A9iaejnE
+         eQmaGhZd/u1tIxd4soVCZu+NkIEEPMFapGnJ2eC0iADIltAwnKHZpIupntqdx6AKu9in
+         9LykHQSs8muKGoAA4jHVFfKnyXA5n4j5YR2Sq80Q/tWu9yP7HRU/Ug4Z/xRx+A3ihk+C
+         rnHA==
+X-Forwarded-Encrypted: i=1; AJvYcCWPPkFtxPEH7UTsBQc+oeGslZdG+3q662xQV+WWhkdqHlqadZgFVCE6VIQKxwIoqD4ox7LXKJc1K07pZFePNw4n59CuMp5/JVg0bUSHxsY=
+X-Gm-Message-State: AOJu0YyG4DlTs90CtvBPVJ+Yxqnl7b0WbcVVY3vV8OwXTta7Ox8lcXoT
+	Cz7RXMyMq994YDGqzy5tcBIDnSdyX1k4egxfSpK44B8RyX06sAlpt23UFkROgtpLj0AiBDd9WON
+	GiwbI8A==
+X-Google-Smtp-Source: AGHT+IF2KkrgoY57dGWdPw77kXn2zBaD+Uy2G1hRssubmTdIuyA2t/vU2zQn1FmdaIlmDTTWb1i59wcVKt0o
+X-Received: from irogers.svl.corp.google.com ([2620:15c:2a3:200:96dd:26a6:1493:53c8])
+ (user=irogers job=sendgmr) by 2002:a05:6902:2988:b0:dfa:4b20:bdaf with SMTP
+ id 3f1490d57ef6-dff15470dfdmr25437276.13.1718303552539; Thu, 13 Jun 2024
+ 11:32:32 -0700 (PDT)
+Date: Thu, 13 Jun 2024 11:32:16 -0700
+Message-Id: <20240613183224.3399628-1-irogers@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240607052113.69026-1-fujita.tomonori@gmail.com> <20240607052113.69026-3-fujita.tomonori@gmail.com>
-In-Reply-To: <20240607052113.69026-3-fujita.tomonori@gmail.com>
-From: Trevor Gross <tmgross@umich.edu>
-Date: Thu, 13 Jun 2024 13:00:19 -0500
-Message-ID: <CALNs47uno7eE7nzJPLCxDqahh98Kr9Y2RWNeXtGOvknOCER4iQ@mail.gmail.com>
-Subject: Re: [RFC PATCH v4 2/2] rust: net::phy unified genphy_read_status
- function for C22 and C45 registers
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, andrew@lunn.ch, benno.lossin@proton.me
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.45.2.627.g7a2c4fd464-goog
+Subject: [PATCH v2 0/8] Refactor perf python module build
+From: Ian Rogers <irogers@google.com>
+To: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, 
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, 
+	Ian Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, 
+	Kan Liang <kan.liang@linux.intel.com>, John Garry <john.g.garry@oracle.com>, 
+	Will Deacon <will@kernel.org>, James Clark <james.clark@arm.com>, 
+	Mike Leach <mike.leach@linaro.org>, Leo Yan <leo.yan@linux.dev>, Guo Ren <guoren@kernel.org>, 
+	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Albert Ou <aou@eecs.berkeley.edu>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
+	Yicong Yang <yangyicong@hisilicon.com>, Jonathan Cameron <jonathan.cameron@huawei.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, 
+	Nick Terrell <terrelln@fb.com>, Ravi Bangoria <ravi.bangoria@amd.com>, 
+	Kees Cook <keescook@chromium.org>, Andrei Vagin <avagin@google.com>, 
+	Athira Jajeev <atrajeev@linux.vnet.ibm.com>, Oliver Upton <oliver.upton@linux.dev>, 
+	Ze Gao <zegao2021@gmail.com>, linux-kernel@vger.kernel.org, 
+	linux-perf-users@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-csky@vger.kernel.org, linux-riscv@lists.infradead.org, 
+	coresight@lists.linaro.org, rust-for-linux@vger.kernel.org, 
+	bpf@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jun 7, 2024 at 12:22=E2=80=AFAM FUJITA Tomonori
-<fujita.tomonori@gmail.com> wrote:
->
-> Add unified genphy_read_status function for C22 and C45
-> registers. Instead of having genphy_c22 and genphy_c45 methods, this
-> unifies genphy_read_status functions for C22 and C45.
->
-> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Refactor the perf python module build to instead of building C files
+it links libraries. To support this make static libraries for tests,
+ui, util and pmu-events. Doing this allows fewer functions to be
+stubbed out, importantly parse_events is no longer stubbed out which
+will improve the ability to work with heterogeneous cores.
 
-Reviewed-by: Trevor Gross <tmgross@umich.edu>
+By not building .c files for the python module and for the build of
+perf, this should also help build times.
+
+Patch 1 adds '*.a' cleanup to the clean target.
+
+Patches 2 to 6 add static libraries for existing parts of the perf
+build.
+
+Patch 7 adds the python build using libraries rather than C source
+files.
+
+Patch 8 cleans up the python dependencies and removes the no longer
+needed python-ext-sources.
+
+v2: Add '*.a' cleanup to clean target. Add reviewed-by James Clark.
+
+Ian Rogers (8):
+  perf build: Add '*.a' to clean targets
+  perf ui: Make ui its own library
+  perf pmu-events: Make pmu-events a library
+  perf test: Make tests its own library
+  perf bench: Make bench its own library
+  perf util: Make util its own library
+  perf python: Switch module to linking libraries from building source
+  perf python: Clean up build dependencies
+
+ tools/perf/Build                              |  14 +-
+ tools/perf/Makefile.config                    |   5 +
+ tools/perf/Makefile.perf                      |  83 +++-
+ tools/perf/arch/Build                         |   4 +-
+ tools/perf/arch/arm/Build                     |   4 +-
+ tools/perf/arch/arm/tests/Build               |   8 +-
+ tools/perf/arch/arm/util/Build                |  10 +-
+ tools/perf/arch/arm64/Build                   |   4 +-
+ tools/perf/arch/arm64/tests/Build             |   8 +-
+ tools/perf/arch/arm64/util/Build              |  20 +-
+ tools/perf/arch/csky/Build                    |   2 +-
+ tools/perf/arch/csky/util/Build               |   6 +-
+ tools/perf/arch/loongarch/Build               |   2 +-
+ tools/perf/arch/loongarch/util/Build          |   8 +-
+ tools/perf/arch/mips/Build                    |   2 +-
+ tools/perf/arch/mips/util/Build               |   6 +-
+ tools/perf/arch/powerpc/Build                 |   4 +-
+ tools/perf/arch/powerpc/tests/Build           |   6 +-
+ tools/perf/arch/powerpc/util/Build            |  24 +-
+ tools/perf/arch/riscv/Build                   |   2 +-
+ tools/perf/arch/riscv/util/Build              |   8 +-
+ tools/perf/arch/s390/Build                    |   2 +-
+ tools/perf/arch/s390/util/Build               |  16 +-
+ tools/perf/arch/sh/Build                      |   2 +-
+ tools/perf/arch/sh/util/Build                 |   2 +-
+ tools/perf/arch/sparc/Build                   |   2 +-
+ tools/perf/arch/sparc/util/Build              |   2 +-
+ tools/perf/arch/x86/Build                     |   6 +-
+ tools/perf/arch/x86/tests/Build               |  20 +-
+ tools/perf/arch/x86/util/Build                |  42 +-
+ tools/perf/bench/Build                        |  46 +-
+ tools/perf/scripts/Build                      |   4 +-
+ tools/perf/scripts/perl/Perf-Trace-Util/Build |   2 +-
+ .../perf/scripts/python/Perf-Trace-Util/Build |   2 +-
+ tools/perf/tests/Build                        | 140 +++----
+ tools/perf/tests/workloads/Build              |  12 +-
+ tools/perf/ui/Build                           |  18 +-
+ tools/perf/ui/browsers/Build                  |  14 +-
+ tools/perf/ui/tui/Build                       |   8 +-
+ tools/perf/util/Build                         | 394 +++++++++---------
+ tools/perf/util/arm-spe-decoder/Build         |   2 +-
+ tools/perf/util/cs-etm-decoder/Build          |   2 +-
+ tools/perf/util/hisi-ptt-decoder/Build        |   2 +-
+ tools/perf/util/intel-pt-decoder/Build        |   2 +-
+ tools/perf/util/perf-regs-arch/Build          |  18 +-
+ tools/perf/util/python-ext-sources            |  53 ---
+ tools/perf/util/python.c                      | 271 +++++-------
+ tools/perf/util/scripting-engines/Build       |   4 +-
+ tools/perf/util/setup.py                      |  33 +-
+ 49 files changed, 624 insertions(+), 727 deletions(-)
+ delete mode 100644 tools/perf/util/python-ext-sources
+
+-- 
+2.45.2.627.g7a2c4fd464-goog
+
