@@ -1,105 +1,205 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 633C025632;
-	Thu, 13 Jun 2024 10:36:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4687F130A47
+	for <rust-for-linux@vger.kernel.org>; Thu, 13 Jun 2024 12:22:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718274986; cv=none; b=b0z2+vRFtNbsGtRSzTZBvxDzirSZ/SgbSwz+UCEiDSHbsA0usAbG9R60h55u+su++pl81lOa6pOLVTofLQJfP6Fj/BcykqpQ4wZRqAfjUx2HDgboiRdMSay01NwV2k75CsrrfZef2osTTY2ijzAsSRvQInEnmevc1NLMg2toMsc=
+	t=1718281358; cv=none; b=VclhYtUL2gMtozT8jgULm0GgNfMgtfSV12TIlLdtbDK26ziKUhEnGO/PO6eb9y+tZ1q134V6Ykmp3xSx/sx8Hckh9zIAxS/nTY2rm8J4xzIzSxE0PmqZjV76R09rw/p9UnITkZsD7+CTsJ4aT5S68YZa2TsVwj63IdGjUD/KYJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718274986; c=relaxed/simple;
-	bh=cHpapWwllRR92WhnROTVW7uuoH/zjVZME5D0Uwcllug=;
+	s=arc-20240116; t=1718281358; c=relaxed/simple;
+	bh=tFRzojTDUSFvsvrvIfBq83Iefr9prpj0FsVzc4sRZcE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nFCdRzakVCdoG/G+WWu26nBhHmeEZcLdDqcRVoykWKUeiimrjmdDslp/mHZPrb2aU0SC3R3psftxrijHZc9r+jKGVNivZ8AOdcjPpcSFD1BPNTyecmuUdubcv44gONbq3YnHkaecqzah69Gti5z4N5tWKZHeECJUyiTsEgFCuXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4C82113D5;
-	Thu, 13 Jun 2024 03:36:43 -0700 (PDT)
-Received: from J2N7QTR9R3 (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CD2203F5A1;
-	Thu, 13 Jun 2024 03:36:12 -0700 (PDT)
-Date: Thu, 13 Jun 2024 11:36:10 +0100
-From: Mark Rutland <mark.rutland@arm.com>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Boqun Feng <boqun.feng@gmail.com>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
-	llvm@lists.linux.dev, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Andrea Parri <parri.andrea@gmail.com>,
-	Will Deacon <will@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
-	David Howells <dhowells@redhat.com>,
-	Jade Alglave <j.alglave@ucl.ac.uk>,
-	Luc Maranget <luc.maranget@inria.fr>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Akira Yokosawa <akiyks@gmail.com>,
-	Daniel Lustig <dlustig@nvidia.com>,
-	Joel Fernandes <joel@joelfernandes.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	kent.overstreet@gmail.com, elver@google.com,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	torvalds@linux-foundation.org, linux-arm-kernel@lists.infradead.org,
-	linux-fsdevel@vger.kernel.org, Trevor Gross <tmgross@umich.edu>,
-	dakr@redhat.com
-Subject: Re: [RFC 1/2] rust: Introduce atomic API helpers
-Message-ID: <ZmrLmnPz_0Q8oXny@J2N7QTR9R3>
-References: <20240612223025.1158537-1-boqun.feng@gmail.com>
- <20240612223025.1158537-2-boqun.feng@gmail.com>
- <2024061341-whole-snowfall-89a6@gregkh>
- <20240613091747.GB17707@noisy.programming.kicks-ass.net>
+	 In-Reply-To:Content-Type:Content-Disposition; b=OF1d4JwA2eTLdXZnieNDUJH1LMCBO4/NfzGwdHigW+JjaqUFg6d48yI/dw+vB46ezomIWL6ij2DyFw9OtFWb+IJG/NLRIN0BA8sBss1suzUOTKrIepRvuROoa6THeC7HVHKOBWXqDMorA4dQAvcX26jhNFrV1bmFSIsele7PEwI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=T4iDKV5o; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="T4iDKV5o"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1718281355;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=9bREAov0qeqdC1R+IP3cuQHiAdwt4/67Pzt58ig6NBc=;
+	b=T4iDKV5oWK0i6EP/lh9HbJxiBPe+uqLobvVBgwhVgWhrXYrAR/VStnOYTtpjmLFBdeF/FD
+	LMkgshc8r81SKoQRHM0F8FiHTPfiNNoWOP6j9egJMEgFRk+Xbqzzpv0J8ClgmaM77QUDV8
+	m6UfoMdp9l/9Ui51xudIhGxKeNkqVG0=
+Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
+ [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-605-f4yL4Hk7PMmlpSRdQHwNsg-1; Thu, 13 Jun 2024 08:22:33 -0400
+X-MC-Unique: f4yL4Hk7PMmlpSRdQHwNsg-1
+Received: by mail-lf1-f70.google.com with SMTP id 2adb3069b0e04-52bbd8ac2c1so668600e87.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 13 Jun 2024 05:22:32 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718281351; x=1718886151;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=9bREAov0qeqdC1R+IP3cuQHiAdwt4/67Pzt58ig6NBc=;
+        b=v+lzdLttWOiTKyI5bz0wFbTvVV6JFNFkCjF0Jv4hOWU7FYN8VyDTaSlD5HTWEkr1CM
+         t6ldphDT6Yav5+QZxRpSpPJ7K0og+pkWKWKwuX5e++iPZ8M4YjddsQ1BJ7K1TYRlb5NV
+         +yfMJ08UiGOWGdwmCklKZNIZccR1dwxYdZ3+EDugWSLXMpP4sv+XtpuGVskn9nAhH4Cw
+         wqZa+KSvC9oSdn9iG/cI2ntQSdWyJyYBUYbD8ZcxSiao5S7qETVUmbP5tWOjg1bc0sLf
+         a7jkCjaxLM9alauruxWIqc07Wr7MF3FCP2MMr6SGOpXh09mjIpskGFLWejWN5XjcMgmg
+         P1wQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUi4wWqn0AJxkh1sOX0zpAiBfQ1EhL4zDHS07SZeLfRQcJjE0yxEDKKtgs5D9YIUkX3li81eJBu1t0YpaxwNLCRiCMkSrFRABEdgMg5fU0=
+X-Gm-Message-State: AOJu0YzflfIUQeiU3BxL+WXB8XlhbOkpsFOnwbRSXZdThQYOnQZEjfgF
+	x3SPkNz/qn8hI2IYtmvZwZq2WAx0vFQ3nYqWEsy8rGtyyZoaMY7xu0/XP0y9fPWJRqzj2y+t/2M
+	0JmkqEeC3LfnZP6GU8zkAMKTtU6nQc/TrvB9/KIlHCuBSFPNazNou0Q2Mkl2xCg4Z
+X-Received: by 2002:a05:6512:1095:b0:52c:90ba:96f9 with SMTP id 2adb3069b0e04-52c9a3fe0b1mr3885815e87.46.1718281351567;
+        Thu, 13 Jun 2024 05:22:31 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGcn6oO67nyAU+DJNaPbAgvWuyctBbodumVqTuS6V/O2nuBxav+b+bW9vkQfhc9KiQd2ydG4w==
+X-Received: by 2002:a05:6512:1095:b0:52c:90ba:96f9 with SMTP id 2adb3069b0e04-52c9a3fe0b1mr3885786e87.46.1718281350865;
+        Thu, 13 Jun 2024 05:22:30 -0700 (PDT)
+Received: from pollux ([2a02:810d:4b3f:ee94:abf:b8ff:feee:998b])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-422f602efc4sm23256965e9.15.2024.06.13.05.22.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 13 Jun 2024 05:22:30 -0700 (PDT)
+Date: Thu, 13 Jun 2024 14:22:27 +0200
+From: Danilo Krummrich <dakr@redhat.com>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>, rafael@kernel.org, mcgrof@kernel.org,
+	russell.h.weight@intel.com, ojeda@kernel.org, alex.gaynor@gmail.com,
+	wedsonaf@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me, a.hindborg@samsung.com,
+	aliceryhl@google.com, airlied@gmail.com, fujita.tomonori@gmail.com,
+	pstanner@redhat.com, ajanulgu@redhat.com, lyude@redhat.com,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] rust: add abstraction for struct device
+Message-ID: <Zmrkg7oOceWWV4nz@pollux>
+References: <2024061136-unbridle-confirm-c653@gregkh>
+ <Zmh3oN9sWamaYHOD@Boquns-Mac-mini.home>
+ <d74edb73-1dba-43f4-a50c-36354c39d758@redhat.com>
+ <2024061245-kangaroo-clothes-76e1@gregkh>
+ <ZmnAOfCUFkZqhDji@pollux>
+ <2024061214-dusk-channel-e124@gregkh>
+ <ZmnKXoBYf0qOcPU4@pollux>
+ <2024061254-scoured-gallantly-5e41@gregkh>
+ <ZmoLi57aT4EB_97W@pollux>
+ <2024061345-troubling-visiting-830a@gregkh>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+In-Reply-To: <2024061345-troubling-visiting-830a@gregkh>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240613091747.GB17707@noisy.programming.kicks-ass.net>
 
-On Thu, Jun 13, 2024 at 11:17:47AM +0200, Peter Zijlstra wrote:
-> On Thu, Jun 13, 2024 at 07:38:51AM +0200, Greg Kroah-Hartman wrote:
-> > On Wed, Jun 12, 2024 at 03:30:24PM -0700, Boqun Feng wrote:
-> > > +// Generated by scripts/atomic/gen-rust-atomic-helpers.sh
-> > > +// DO NOT MODIFY THIS FILE DIRECTLY
+On Thu, Jun 13, 2024 at 07:47:13AM +0200, Greg KH wrote:
+> On Wed, Jun 12, 2024 at 10:56:43PM +0200, Danilo Krummrich wrote:
+> > > > Oh, I fully agree with that. Let me try to explain a bit what this is about:
+> > > > 
+> > > > In Rust we have the `Send` and `Sync` marker traits. If a type (e.g. `Device`)
+> > > > implements `Send` it means that it's safe to pass an instance of this type
+> > > > between threads. Which is clearly something we want to do with a `Device`.
+> > > > 
+> > > > If I don't implement `Sync` for `Device` the compiler will prevent me from
+> > > > sending it between threads, e.g. by disallowing me to put an instance of
+> > > > `Device` into another data structure that is potentially passed between threads.
+> > > > 
+> > > > If I implement `Sync` I have to add a safety comment on why it is safe to pass
+> > > > `Device` between threads. And here we have what Boqun pointed out: `Device` can
+> > > > only be passed between threads when we're allowed to drop the last reference
+> > > > from any thread. In the case of the kernel this can be any non-atomic context,
+> > > > any context or any other subset. But I have to write something here that is
+> > > > a defined rule and can be relied on.
+> > > 
+> > > You really have two things here, a matrix of:
+> > > 	can transfer between threads
+> > > 	can call in irq context
+> > > that are independent and not related to each other at all.
+> > > 
+> > > Looks like Rust has built in support for the first.  And nothing for the
+> > > second as that is a very kernel-specific thing.
 > > 
-> > Why not just build this at build time and not check the file into the
-> > tree if it is always automatically generated?  That way it never gets
-> > out of sync.  We do this for other types of auto-generated files in the
-> > kernel today already.
+> > The language documentation defines `Send` as "can be transferred between
+> > threads", likely because it's written from a userspace perspective. But in
+> > the kernel context it actually means can be transferred between any context,
+> > thread, IRQ, etc.
+> > 
+> > If this isn't true, then we have to add a comment what is allowed (e.g. any
+> > non-atomic context) and what's not allowed.
 > 
-> Part of the problem is, is that a *TON* of files depend on the atomic.h
-> headers. If we'd generate it on every build, you'd basically get to
-> rebuild the whole kernel every single time.
+> That isn't good, you are going to have to change how `Send` works here
+> if you think it's safe to do stuff in all of those different contexts,
+> as that is almost never going to be true.
 > 
-> Also, these files don't change too often. And if you look, there's a
-> hash in those files which is used to check if things somehow got stale.
+> Why not just stick with "accessed from another thread" and leave it at
+> that, as again, the combinations here are a matrix, not a boolean yes/no
+> type of thing.
 
-That and:
+I probably didn't phrase this very well, let me try again.
 
-1) The generation is currently slow (multiple seconds), which gets
-   people angry if they have to wait for it for a clean build. Improving
-   that would require changing the way we generate the headers (e.g.
-   rewrite that in something else to avoid the subshell fork problem).
+What the compiler can do for us currently is to check whether a data structure
+is kept only in it's current context or whether it is send to another one - it
+can't distinguish context types though.
 
-   Last I looked there wasn't an obvious better way to do this, because
-   nice options ended up pulling in more build-time dependencies.
+So, the actual definition of `Send` isn't really "can be send across threads",
+but "is not restricted to be kept in a single context".
 
-2) Linus wanted git grep to work, which meant checking in the generated
-   files:
+This means that if something is "is not restricted to be kept in a single
+context", but limited to certain context type, we, unfortunately, just have to
+make it `Send`, but document the restriction.
 
-   https://lore.kernel.org/all/CA+55aFxjU0op8QLLu0n-RjHBs7gQsLvD8jcyedgw6jeZFN7B+Q@mail.gmail.com/
+> 
+> > > So let's not confuse the two please.  `Send` and `Sync` should be fine
+> > > for a device pointer to be passed around, as long as the reference is
+> > > incremented, as that's what all of the kernel C code does today.  Let's
+> > > not worry about irq context at all, that's independent and can be
+> > > handled at a later time, if at all, with a different "marking" as it's
+> > > independent of the current two things.
+> > 
+> > That'd be great, but as mentioned above, we only have `Send`, but nothing like
+> > `SendIrq`, hence `Send` really means any context.
+> > 
+> > Given your proposal, to just say it's fine to pass between (actual) threads and
+> > ignore IRQ context for now, we have to implement `Send`, but document that IRQ
+> > context is not covered.
+> > 
+> > We can either do that in the Rust abstraction as safety requirement, or we can,
+> > as proposed previously, add a comment to the C `struct device` documentation
+> > that implementers of release() must *at least* make sure that it can be called
+> > from any non-atomic context. We can then refer to that.
+> 
+> As someone who has written comments in code for functions that are
+> always ignored, I am happy to see you think that this is actually going
+> to do anything :)
 
-Mark.
+One advantage we have in Rust is, that if something has a specific requirement
+we mark it as `unsafe` and the user of the API has to put it in an `unsafe`
+block, which we require a sfety comment for, where the user of the API has to
+explain why this is the correct thing to do in this case.
+
+In other words we can technically enforce that people read the comment and
+explain how they ensure to fulfill what the comment asks for.
+
+> 
+> Heck, I have put huge messages in kernel code for when people implement
+> the api wrong[1], and they still ignore that at runtime.  Only way to get
+> it noticed is if you break someone's build.
+
+You only see the ones who still do it wrong. You probably don't have visibility
+of the ones who did it right due to your effort to write it down. :-)
+
+> 
+> So you all need to really define what `Send` means, as it sounds like a
+> userspace thing that isn't going to fit in well within the kernel model.
+
+Please see the explanation above.
+
+> 
+> thanks,
+> 
+> greg k-h
+> 
+> [1] See the pr_debug() calls in kobject_cleanup() as proof, people just
+>     create an "empty" release function to shut them up, thinking that is
+>     the correct solution when obviously it is not...
+> 
+
