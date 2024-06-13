@@ -1,176 +1,146 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f173.google.com (mail-qk1-f173.google.com [209.85.222.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C68CD13B280
-	for <rust-for-linux@vger.kernel.org>; Thu, 13 Jun 2024 20:19:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B47A983A12;
+	Thu, 13 Jun 2024 20:25:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718309959; cv=none; b=VmN6p4iC8bUkOa/V668WS8yenlLvy9NHuUbqjDTQn2mAguOFMbgcXudXOp6QczdnylGtS0WqiIizS4d3bh0zcEMg9iPbbdklPhBfrDHAR/7VO/he9zDrBNt4yT0HFdPt7lQ9dCO+diFoEtmCMXISPNez5v05N5Edj/B2V9atsdI=
+	t=1718310337; cv=none; b=Nra0SlQRLm1e2JUncEVMW4wPtSjv3hos5mGWgw2oOlsOv+tq6QNxIC9UJrRfCDUTLIa9omgLzPbphPE0m2iNS+3CXYyVYbuVbi2GdpTuhD3ro4wW7rbH91Z5moBP1Jj32nZeW7ecP3WhFIiSnqefiB4ADmHndcmSwb9LAmNSWsw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718309959; c=relaxed/simple;
-	bh=Jqdp3U67GObwq5246ghxD3ALRxVeQ0KFTivrPhuYxVc=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=h6W7pdh2jlVhIkRYnO1bzmKlfbWo0+jnYCVDnXuYip/iYpnr4R9KAU3uCxfrChCtNPTlpMY0kQfbz331MXzyUgTDin2GlyRzL2FqgHxs4GH8BPrBA6Y52xa1Az9OooOPpCt2peLyMcyWJ9HJAj0WjEBlZlBzeQB+AE4+W7BsDlo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=emM7S1ah; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1718310337; c=relaxed/simple;
+	bh=XZMnBPtlkifS5Fdca+gG4KAFlQ4eMVf6o5s14uxWoGY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nMIz51rIJsW1wc842ilQC2XWhtzODoMVdemf9+96S9VzGFxz3jBTF+/U5t/sNNuWjQi+U5zd4C6onGsQ5Kw3Vc1euuh3ZvRD9BjTWBluopRw+IAbX33oVbYlvtcxx4HDpSu0PGpu07wbviLFmuwT5wK8zw91NhOdkLZUejd78EY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XTte/A1u; arc=none smtp.client-ip=209.85.222.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="emM7S1ah"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1718309956;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Jqdp3U67GObwq5246ghxD3ALRxVeQ0KFTivrPhuYxVc=;
-	b=emM7S1ahyuVzORPebjykdUKTnmzLkLwiBJLIz4jZKGus0AK4uvEpblfbLRo/BrE415LE1q
-	lz9DOdKjMwgND6sZoP59jhU6OjCjJKEu088qBxpYJuCmyaevBmPn1ZHX7M54w9ogsrzLUc
-	e3lSynb+X3h8IG9bglsqrifXLP3uoDg=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-75-hSNSVkW2Pd-DIt058s5MzA-1; Thu, 13 Jun 2024 16:18:58 -0400
-X-MC-Unique: hSNSVkW2Pd-DIt058s5MzA-1
-Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-6b2aec935f5so4529506d6.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 13 Jun 2024 13:18:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XTte/A1u"
+Received: by mail-qk1-f173.google.com with SMTP id af79cd13be357-7955c585af0so101523585a.2;
+        Thu, 13 Jun 2024 13:25:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1718310335; x=1718915135; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=EMz0ZFRHVHUChYlldLB+9O1uGefbqiAdPKIID9/kO3c=;
+        b=XTte/A1ur7U4yPV8CpLWuoJfbuWjv0eH6hAe0zuYkJjv+CQXcsMliBV+kzJFAjm4eO
+         6VdP6RjtHe1R2k80KPxR5xr3+9tXGDIxq/+IzSlyI7tWt/tLDJgDUT7Gb763ITIauxdn
+         7kt0lyklucCd4jq5MV9JH7hiaepKdTGihH25qxPHmbU8XKsU3CvAJNV/cJcyJKPUbvLo
+         DieUdtL1qet2oPhA/qG+KxCwBf4INgVKkG/Ar9FqAIgpiQVbCkQGDyXK9kS18fkIzIui
+         ZJT0X8+I/tE30PCWdtHseqd6ikbtamxzWWdIX2BpcHjHKVYxTxcMvo/KOchmEY2BgBgQ
+         ePMw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718309938; x=1718914738;
-        h=mime-version:user-agent:content-transfer-encoding:organization
-         :references:in-reply-to:date:cc:to:from:subject:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Jqdp3U67GObwq5246ghxD3ALRxVeQ0KFTivrPhuYxVc=;
-        b=mnH7pKxMix24Xf4SpFfvRWqqeU1obxpxjXdlOgdgr4cTzpBw0mjEgF7AMSWpJLtCi6
-         sGCEnzqZ6ly2t2zFvB6eNbRhlRQY5ycuvTEmo1c6IXCi+32z6MzVoR+5nHgqqspRaLE+
-         umF6PYz6T+WvEDm6kVA2FvPQNo5uQeOmMfzpR9Q5LUnl4Y8giXeopbPaOIhDV2P6cLBo
-         /vU9kYNyAePli1ie1Z3879N0gnpCTnahYPXS0GEzL3FBMzzY3jAm9jJJwEizhbOIrKvR
-         mtlwws20ETb0yJcBn5E8oJIylbb9XPMrZ0KTt+QnOpT/+gNdz5poUw1QN9oweAv1UknG
-         n09g==
-X-Forwarded-Encrypted: i=1; AJvYcCU/1E31m0YiB9i98Udnl346Qh/vaRJ1e1IDdviPy5+HJfqOANdULrf64HQk06qCRnKnotMR7dxTej7w/6OknTzHtDZ8tLJ45rwWnvmJ1dg=
-X-Gm-Message-State: AOJu0Yx19oj/3tVvVgJ5+PfTMTAxs0ZqYACFyvVSxHsA12bZouhFdfJi
-	bzfD8EqGjEfUNCkJU5t3oRYXCY8amv8jWQxqhkANyF4VDr0FwqnpJbALt1C7W6TWGLP5Upa1hUZ
-	RgS7rw+p1nlWz7sN7I09/ZA82U6ANzoM+39IZiw/EKWT6ehkQsBRDZtN2lavunUpm
-X-Received: by 2002:a05:6214:5016:b0:6ad:650a:855d with SMTP id 6a1803df08f44-6b2afc9e1f1mr8824546d6.23.1718309937638;
-        Thu, 13 Jun 2024 13:18:57 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IErJd8M9fqhwfjCydqbIqLlZFHMREZAW10/WLYJOeLO/N0JndEwGAHhKdPLaAPDMteuOgnpLg==
-X-Received: by 2002:a05:6214:5016:b0:6ad:650a:855d with SMTP id 6a1803df08f44-6b2afc9e1f1mr8824256d6.23.1718309937268;
-        Thu, 13 Jun 2024 13:18:57 -0700 (PDT)
-Received: from chopper.lyude.net ([2600:4040:5c4c:a000::789])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6b2a5efb07csm10255266d6.134.2024.06.13.13.18.56
+        d=1e100.net; s=20230601; t=1718310335; x=1718915135;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=EMz0ZFRHVHUChYlldLB+9O1uGefbqiAdPKIID9/kO3c=;
+        b=u7M+8EIVt+lxWSA6xdopu1lkKdXVE4eMXrUpvRu6oCYtRCr17GSPhecI8CiGRqLv42
+         JdiNioVuUNgSXqa5Yf1hhLkxtJNs/xf6SmjL9mbaP3s5pG3ZqJbwWmaXCCHPcsVKB4N5
+         n66jWjZfDjAF2rWL12hpFFa5mxUKOC+/mBzwS2V1DPK8AdTonPvCNVKFTQqHVdYeXziM
+         qwg67QbrW4YMM4/Jum4juJ43BnyJT7e+kRSOmbi5+Ko1rwsN+UOU4gJ7k9qxcqb4vc39
+         k76LMa6zAoIfOA7eFTk1DI5frfo2V0Z3O33W3+UP4JevKkACfrv4sLCrlYLdjKBXeG7/
+         1rpA==
+X-Forwarded-Encrypted: i=1; AJvYcCWhnf80OBNqZ/7DpRPleaLAVxJr5IDeIYgldyzxKwV1/rJap1Dc+RWHLGczKmG6MO5nxLSdsqXGA+WgQrtxq/mSgSJnXWDPKu3HlbSw1acyBH52u27Co1nTCix4p42s1Q5uy45cuCaluJ4p/OmqWlqrE0im8NxxJ539CHlO5skPYfyhH7mIFrg=
+X-Gm-Message-State: AOJu0YwTH0Io9hr5Ir4dOnURrL777JdJzoMVc4heUjKgXkhVp0qmYLj8
+	fLpiWz5z43Rr5Nxog3OuJXd0X07u2laGrgQja7UrXEd5GkJOchCf
+X-Google-Smtp-Source: AGHT+IGpSoIULcvWez99JK7JK+Up8HU1l/s1FINDWZs8LC9tBJeQ3hxxZVJWnFEHKbk+02gDLzMs0Q==
+X-Received: by 2002:a05:620a:4007:b0:797:e9f7:e924 with SMTP id af79cd13be357-798d26af852mr68059885a.65.1718310334648;
+        Thu, 13 Jun 2024 13:25:34 -0700 (PDT)
+Received: from fauth2-smtp.messagingengine.com (fauth2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-441f2fcc468sm9379261cf.70.2024.06.13.13.25.33
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 13 Jun 2024 13:18:56 -0700 (PDT)
-Message-ID: <3fae55cb4012c137072b54f4ec96027190958048.camel@redhat.com>
-Subject: Re: [PATCH v2 1/2] rust: add abstraction for struct device
-From: Lyude Paul <lyude@redhat.com>
-To: Danilo Krummrich <dakr@redhat.com>, Greg KH <gregkh@linuxfoundation.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>, rafael@kernel.org, mcgrof@kernel.org,
-  russell.h.weight@intel.com, ojeda@kernel.org, alex.gaynor@gmail.com, 
- wedsonaf@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
- benno.lossin@proton.me, a.hindborg@samsung.com, aliceryhl@google.com, 
- airlied@gmail.com, fujita.tomonori@gmail.com, pstanner@redhat.com, 
- ajanulgu@redhat.com, rust-for-linux@vger.kernel.org, 
- linux-kernel@vger.kernel.org
-Date: Thu, 13 Jun 2024 16:18:55 -0400
-In-Reply-To: <Zmrkg7oOceWWV4nz@pollux>
-References: <2024061136-unbridle-confirm-c653@gregkh>
-	 <Zmh3oN9sWamaYHOD@Boquns-Mac-mini.home>
-	 <d74edb73-1dba-43f4-a50c-36354c39d758@redhat.com>
-	 <2024061245-kangaroo-clothes-76e1@gregkh> <ZmnAOfCUFkZqhDji@pollux>
-	 <2024061214-dusk-channel-e124@gregkh> <ZmnKXoBYf0qOcPU4@pollux>
-	 <2024061254-scoured-gallantly-5e41@gregkh> <ZmoLi57aT4EB_97W@pollux>
-	 <2024061345-troubling-visiting-830a@gregkh> <Zmrkg7oOceWWV4nz@pollux>
-Organization: Red Hat Inc.
-User-Agent: Evolution 3.52.1 (3.52.1-1.fc40)
+        Thu, 13 Jun 2024 13:25:34 -0700 (PDT)
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+	by mailfauth.nyi.internal (Postfix) with ESMTP id 283391200069;
+	Thu, 13 Jun 2024 16:25:33 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute5.internal (MEProxy); Thu, 13 Jun 2024 16:25:33 -0400
+X-ME-Sender: <xms:vFVrZgtyFF8uQGfrwFobOorS3vOPl_--u_9m9T3AhsbuxVq2xi72zw>
+    <xme:vFVrZteMRM4PasZI_VHT9e2_LY__Y8z3ZnNYO3RfHb23AFY2Z913Tln8h8msbAnfB
+    eYMqpyIJIRn0-XRBg>
+X-ME-Received: <xmr:vFVrZrx5Tan5t4KnPFuuL5T2vPasCz-gKubfZx0xAmf_NUnPbp19npTIFsk>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrfedujedgudegiecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhq
+    uhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrf
+    grthhtvghrnhephedugfduffffteeutddvheeuveelvdfhleelieevtdeguefhgeeuveei
+    udffiedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
+    epsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedt
+    ieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfh
+    higihmvgdrnhgrmhgv
+X-ME-Proxy: <xmx:vVVrZjMpjzd4Kew3lRZR2cVcvzPaSrroXMn4v74PLBzfBsascPkW1Q>
+    <xmx:vVVrZg8hQLget4rip9IgUQthGkKPjBxRow_6r2bsiNtYh8W7qBADYQ>
+    <xmx:vVVrZrUpvA1qg1wcNJfzvK9OScd1f1tINnwbxniD6g1bzVvlFGZ-_w>
+    <xmx:vVVrZpfxD8JRupYWW-fTnuQwYYUeIqAPuEbyfo7uRA5cNm_a5wxaeg>
+    <xmx:vVVrZidUvKWatd8WUPO9_xQZFbBUTxfkOpnCNTkVq6SSFMg-qIW2TX_D>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 13 Jun 2024 16:25:32 -0400 (EDT)
+Date: Thu, 13 Jun 2024 13:25:02 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arch@vger.kernel.org, llvm@lists.linux.dev
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Andrea Parri <parri.andrea@gmail.com>,	Will Deacon <will@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Nicholas Piggin <npiggin@gmail.com>,	David Howells <dhowells@redhat.com>,
+	Jade Alglave <j.alglave@ucl.ac.uk>,	Luc Maranget <luc.maranget@inria.fr>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Akira Yokosawa <akiyks@gmail.com>,	Daniel Lustig <dlustig@nvidia.com>,
+	Joel Fernandes <joel@joelfernandes.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,	kent.overstreet@gmail.com,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, elver@google.com,
+	Mark Rutland <mark.rutland@arm.com>,
+	Thomas Gleixner <tglx@linutronix.de>,	Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,	torvalds@linux-foundation.org,
+ linux-arm-kernel@lists.infradead.org,	linux-fsdevel@vger.kernel.org,
+ Trevor Gross <tmgross@umich.edu>,	dakr@redhat.com
+Subject: Re: [RFC 2/2] rust: sync: Add atomic support
+Message-ID: <ZmtVngqKZ0arLzL-@boqun-archlinux>
+References: <20240612223025.1158537-1-boqun.feng@gmail.com>
+ <20240612223025.1158537-3-boqun.feng@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240612223025.1158537-3-boqun.feng@gmail.com>
 
-On Thu, 2024-06-13 at 14:22 +0200, Danilo Krummrich wrote:
-> On Thu, Jun 13, 2024 at 07:47:13AM +0200, Greg KH wrote:
-> > On Wed, Jun 12, 2024 at 10:56:43PM +0200, Danilo Krummrich wrote:
-> >=20
-> > As someone who has written comments in code for functions that are
-> > always ignored, I am happy to see you think that this is actually
-> > going
-> > to do anything :)
->=20
-> One advantage we have in Rust is, that if something has a specific
-> requirement
-> we mark it as `unsafe` and the user of the API has to put it in an
-> `unsafe`
-> block, which we require a sfety comment for, where the user of the
-> API has to
-> explain why this is the correct thing to do in this case.
->=20
-> In other words we can technically enforce that people read the
-> comment and
-> explain how they ensure to fulfill what the comment asks for.
+On Wed, Jun 12, 2024 at 03:30:25PM -0700, Boqun Feng wrote:
+[...]
+> diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
+> index 48e7029f1054..99e6e2b2867f 100644
+> --- a/arch/arm64/kernel/cpufeature.c
+> +++ b/arch/arm64/kernel/cpufeature.c
+> @@ -1601,6 +1601,8 @@ static bool
+>  has_cpuid_feature(const struct arm64_cpu_capabilities *entry, int scope)
+>  {
+>  	u64 val = read_scoped_sysreg(entry, scope);
+> +	if (entry->capability == ARM64_HAS_LSE_ATOMICS)
+> +		return false;
+>  	return feature_matches(val, entry);
+>  }
+>  
 
-Been going through this thread to catch up on the status of the patches
-here: I've been working with danilo for a while, but have been busy
-with kernel modesetting bindings for rust. Anyway, as someone who's
-spent quite a lot of time writing up really detailed documentation for
-some of the DisplayPort MST kernel APIs only to keep running into
-situations where said documentation was ignored (not to criticize
-anyone! I'm certainly guilty of having misread documentation or not
-reading something myself :) I like to think about unsafe blocks in the
-sense of being one thing I'm less likely to have to keep repeating
-myself about over a mailing list. Because I know at the very least that
-a contributor has to actively ignore a compiler warning or be aware in
-some sense that there is some kind of safety constraint they're being
-held responsible for that will come up during code review. If it's just
-a comment in C code, I don't even have a guarantee that a contributor's
-IDE isn't hiding large kdoc comments by default.
+Yeah, this part was mis-committed, will remove it in the next version.
 
-Also, in regards to rust code relying on C code not being guaranteed
-safe even if it is 'safe' code: frankly, sometimes I wish "unsafe" was
-just named "danger". "un-safe" implies code outside the block is
-perfectly "safe" - but it is still possible to introduce UB in entirely
-safe code bases (source: cve-rs) and most rust contributors I've talked
-to don't see safe code as being perfectly-safe either.
+Regards,
+Boqun
 
->=20
-> >=20
-> > Heck, I have put huge messages in kernel code for when people
-> > implement
-> > the api wrong[1], and they still ignore that at runtime.=C2=A0 Only way
-> > to get
-> > it noticed is if you break someone's build.
->=20
-> You only see the ones who still do it wrong. You probably don't have
-> visibility
-> of the ones who did it right due to your effort to write it down. :-)
->=20
-> >=20
-> > So you all need to really define what `Send` means, as it sounds
-> > like a
-> > userspace thing that isn't going to fit in well within the kernel
-> > model.
->=20
-> Please see the explanation above.
->=20
-> >=20
-> > thanks,
-> >=20
-> > greg k-h
-> >=20
-> > [1] See the pr_debug() calls in kobject_cleanup() as proof, people
-> > just
-> > =C2=A0=C2=A0=C2=A0 create an "empty" release function to shut them up, =
-thinking
-> > that is
-> > =C2=A0=C2=A0=C2=A0 the correct solution when obviously it is not...
-> >=20
->=20
-
---=20
-Cheers,
- Lyude Paul (she/her)
- Software Engineer at Red Hat
-
+[...]
