@@ -1,192 +1,95 @@
-Received: from mail-yb1-f202.google.com (mail-yb1-f202.google.com [209.85.219.202])
+Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94C3C1581E8
-	for <rust-for-linux@vger.kernel.org>; Thu, 13 Jun 2024 23:31:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3663314BF91
+	for <rust-for-linux@vger.kernel.org>; Thu, 13 Jun 2024 23:32:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718321520; cv=none; b=XDfxcMvSGlJDnFmVeX5t0/x8KgCCiKkjFo+w5QfpWxuJ64MOXnYaTKJfVXN51wwOmyPRJEBVytDO/lcsZFVuhPuQtziRy9H7+lDxjVoftqZGcVjMqXoR4A+WpQ/025iGYcHrg8B9scMILbVlXiMcm1WiRrbjpFpi0aNj4RYE22g=
+	t=1718321541; cv=none; b=EaEWK+6Gb/FusR458OzUc4gfY/2VY4lFnK1v2x07bSQOJ17SrcREK0c5PFe/cMehbhImeC8qHnAf9lhlBdgovn36//h3MWrOdPqm2jfCLBFi0whPXK5mgx8vpZOJxn1eMmFFL0DIg2i5JcmsTFdhoJ7LnoqKb7mTG3tg7JU81ZU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718321520; c=relaxed/simple;
-	bh=/ONs+RfIi9pLA0kZMRaJefFpcB8Apxh4eLPjFTsRe2k=;
-	h=Date:In-Reply-To:Message-Id:Mime-Version:References:Subject:From:
-	 To:Content-Type; b=WYIsJzymNjfxQsGO1qwxwnR4BE33yhRhugAiVGmrHjdaGYFhBRp7jxFZQpvsu1MTHCyt51mnITravOE2riiEAv7kWbI8dLrmhuE2/aJ60FU9jHCKp+P98OVXALtoCHPsAgzIk8cP2wIBd0l+39fsNx8BPyNZf1g6vedn+5+9UZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--irogers.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LJjVVOL1; arc=none smtp.client-ip=209.85.219.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--irogers.bounces.google.com
+	s=arc-20240116; t=1718321541; c=relaxed/simple;
+	bh=GjP2uAN8jblETmJ3yuN6ZerylWMI7UjM9n8UqgoJgaY=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=lheVmnMMjTr7T55aPiJpkwlEMKP2WIFhXIEHr+BYRnBhuAqvV0AF1N0qBSEdGmGmtKE4X0DYNToFSv6bQaq1ECGW+7/PIn5Ug09d3eJCgN1zMzHySsdn8zE46R5ESrHpu+bk6mWpmZOzdiOWyN6wiTxeK27CLFsR8Qfj36W8Nag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RDChtSwH; arc=none smtp.client-ip=209.85.216.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LJjVVOL1"
-Received: by mail-yb1-f202.google.com with SMTP id 3f1490d57ef6-dfeec5da777so2568974276.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 13 Jun 2024 16:31:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RDChtSwH"
+Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-2c30a527479so253566a91.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 13 Jun 2024 16:32:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1718321518; x=1718926318; darn=vger.kernel.org;
-        h=to:from:subject:references:mime-version:message-id:in-reply-to:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=r+L2y8W9nebELrh4jjwhLDqIvkQwPnsfqcpkdzoDYes=;
-        b=LJjVVOL1W7z8ariv5eRv9Oc6qcqSdVDidnv8bkp3K2wOzpZfTOLJVFmBqT9PRObT5z
-         QXlNHk7ECb3QA/P9QyevKRSD21n8+RB3q6fRoW15Lni86MpU+MZcFOLOoZjxffImjaO5
-         LQyc/rILhpO3s/RwLj7aDZON71WIc9/bk91gebnxiO3kVRsJxQxUZ2zWUWR245RQtKbi
-         qloZLDGq8vM9znddDkZiZia6VXCYlfD5tbAMhRTOUcDYUtgnvaKQBRof5aTfZZkuqZfp
-         FfQRTUvRtoFKHpFQKXXNSoNonGdt8SO23oMIG7a17eYQDp5Y3zbDOEdnrCE1ARzR9pAx
-         aH5A==
+        d=gmail.com; s=20230601; t=1718321539; x=1718926339; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=PjhfXiwy4Yiot/ntBBLSLpKIhMpEVoDs7KpnGOYNAuU=;
+        b=RDChtSwH5eDs1Oeg6fOq0tIwB6iruyxi/vhbxU2ymSCeZgfRrTRAyGCy128CXEC2JY
+         TURO9bV8fgHNf8zFGVL9FVJA5aBlmhvEOk+/KQAQ624UvCzB8fbzSuzHqMH20p4J1qf2
+         eA3Xba3e1v2C+vg/Jq3c79+h5cXQdMno1/6M316SKGhaM953ovqEDQQfYHP5lxE8uBRE
+         hBdzXX5XpDmNRZ3ICG8+G2F4fapSdmbtftbUfBDkS2Sk6+DyBZkEdwqrfN1PYxuTZ8+u
+         jsaA/+aGTHH4hWYlW2sk7dI8ZQicrCyt9dovoVVynOUXEI9VuVrtjGm2eG4mHAj3uziA
+         QJWQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718321518; x=1718926318;
-        h=to:from:subject:references:mime-version:message-id:in-reply-to:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=r+L2y8W9nebELrh4jjwhLDqIvkQwPnsfqcpkdzoDYes=;
-        b=NCAVardvGQAQf4jTrfsFMFze/FsUjDWAzhOclzt3dH1EFaCCm5btIwUy/agKeFwvEP
-         zJzizvr5v9ia+wB/tv8BhyfOMg9SrQg5OdLKzUWQMOvr3sBCvvKN056TtAV9dPJOKyJE
-         B2sjTMQn/4DOSYJt2WU4kwjFb+UV6E/AZn6s4Ov6a4wU/ykxGPlzSzeSvZotWNfVWigj
-         Hg5kXpgOs0V2+CE4N4FE3bJv4uFLYlZlKn4oWHnQK+PAMuDHfWGpwnxnL/rC6f2dkMS6
-         TRvswpkrzwJ0e5GnsvXqz1WXMqv4Ikf1JUK3yqNoisnFRHEvwHJdh1TCBK0BQc9zg6oE
-         zN9Q==
-X-Forwarded-Encrypted: i=1; AJvYcCWLFX4fEPaCCQ0iaOKic9FB/0Su2r/S+qOSt4wfPNYb/q6gJ2HhpoP3X109cnX3CrU6TzbtXzUgV/hauBMvVPP8JM3lO3c2tv24nflaz+k=
-X-Gm-Message-State: AOJu0YxAeT7PQ3+dsYqmZzMLVdYNnPbPJJ9mlyHs5NMUskaO2VZ0mqtH
-	PaiiOiURdvJn9YbKz2U95sGHWznQ63CLmO/b3HwTwTnKHIsNbiwi6DDpTZJ95NtvdLQRnKE2kD5
-	Fro2MUw==
-X-Google-Smtp-Source: AGHT+IEPh6V7sGbFHR3+mSLnMHVnCNCyXK9wRdgNwAVEtM+jm7kOCyEDIINjZOrKiPFf8Nvnv9P0x6gU6Ikz
-X-Received: from irogers.svl.corp.google.com ([2620:15c:2a3:200:96dd:26a6:1493:53c8])
- (user=irogers job=sendgmr) by 2002:a05:6902:1204:b0:dfa:ff27:db1 with SMTP id
- 3f1490d57ef6-dff15412181mr135767276.4.1718321517470; Thu, 13 Jun 2024
- 16:31:57 -0700 (PDT)
-Date: Thu, 13 Jun 2024 16:31:22 -0700
-In-Reply-To: <20240613233122.3564730-1-irogers@google.com>
-Message-Id: <20240613233122.3564730-9-irogers@google.com>
+        d=1e100.net; s=20230601; t=1718321539; x=1718926339;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=PjhfXiwy4Yiot/ntBBLSLpKIhMpEVoDs7KpnGOYNAuU=;
+        b=DxQZyaMNQ1BnpfUMqK8jWaKd81ccZqlFyRUqDhQSPNiahLVt2iV/RMeHecnd9SkTQN
+         fToiCsZ/iBk6Dm0aAKgu9TpU2KrqQAeQJMa0GjnHLYSVHTd1K3KpsYaI7zraJFR43mxa
+         jrgGVIF2DpsJ7D7P1rH0VENjWj6vTM7s+Px9hinZVjGAr/v57//sVh9LpNnFBEWz9nSF
+         LSuSk+WZHqdraQbhFhDLnxrxTjZQ7oUVNg25+Jmy02zu4MBDTf22mKAjqLmUCUa005x1
+         qqLtDqXn8mlQZ4uxPCR1ETTBCwO3hcQlmP2nCADZscb8BIx7g1PYuC+CsPam66EtC/YL
+         OE4A==
+X-Forwarded-Encrypted: i=1; AJvYcCUKfla/qtgU/x3ZkBuDsbshagImZpZ+vOnuXBunCFhuRBPrBxIKN9Xqov/M6CVUMf3MMIo3xfBoWCHXTDR1iswf+CMYEN6tU8HE0LNx3fs=
+X-Gm-Message-State: AOJu0Yzamgtb3qg73QhnZ5sg8b8lYJGsCBcUHYSx2H05DxF2iWm6JF3A
+	GmmiBvScB3f10832FJXF1DOkSZBUovM+1ZaT5aftlL6eNv2T7zZ4
+X-Google-Smtp-Source: AGHT+IFuLdhwE00/MoWYXEEdcfAyQ2z21n0FQ9ixdD+ltqkRUKJz8WuHhyEG/0CNvTsyJ8l+DyvpPQ==
+X-Received: by 2002:a05:6a21:9988:b0:1b8:622a:cf74 with SMTP id adf61e73a8af0-1bae8414973mr1417014637.6.1718321539474;
+        Thu, 13 Jun 2024 16:32:19 -0700 (PDT)
+Received: from localhost (p5261226-ipxg23801hodogaya.kanagawa.ocn.ne.jp. [180.15.241.226])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-6fee2d366e0sm1648563a12.75.2024.06.13.16.32.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 13 Jun 2024 16:32:19 -0700 (PDT)
+Date: Fri, 14 Jun 2024 08:32:06 +0900 (JST)
+Message-Id: <20240614.083206.60448678473106718.fujita.tomonori@gmail.com>
+To: tmgross@umich.edu, benno.lossin@proton.me
+Cc: fujita.tomonori@gmail.com, rust-for-linux@vger.kernel.org,
+ andrew@lunn.ch
+Subject: Re: [RFC PATCH v4 1/2] rust: net::phy unified read/write API for
+ C22 and C45 registers
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <CALNs47vVU-rD99zrGPT2DG9BsAEwQdjVwaBfFx-268TbsEc3rg@mail.gmail.com>
+References: <20240607052113.69026-1-fujita.tomonori@gmail.com>
+	<20240607052113.69026-2-fujita.tomonori@gmail.com>
+	<CALNs47vVU-rD99zrGPT2DG9BsAEwQdjVwaBfFx-268TbsEc3rg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20240613233122.3564730-1-irogers@google.com>
-X-Mailer: git-send-email 2.45.2.627.g7a2c4fd464-goog
-Subject: [PATCH v3 8/8] perf python: Clean up build dependencies
-From: Ian Rogers <irogers@google.com>
-To: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, 
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, 
-	Ian Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, 
-	Kan Liang <kan.liang@linux.intel.com>, John Garry <john.g.garry@oracle.com>, 
-	Will Deacon <will@kernel.org>, James Clark <james.clark@arm.com>, 
-	Mike Leach <mike.leach@linaro.org>, Leo Yan <leo.yan@linux.dev>, Guo Ren <guoren@kernel.org>, 
-	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Albert Ou <aou@eecs.berkeley.edu>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
-	Yicong Yang <yangyicong@hisilicon.com>, Jonathan Cameron <jonathan.cameron@huawei.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, 
-	Nick Terrell <terrelln@fb.com>, Ravi Bangoria <ravi.bangoria@amd.com>, 
-	Kees Cook <keescook@chromium.org>, Andrei Vagin <avagin@google.com>, 
-	Athira Jajeev <atrajeev@linux.vnet.ibm.com>, Oliver Upton <oliver.upton@linux.dev>, 
-	Ze Gao <zegao2021@gmail.com>, linux-kernel@vger.kernel.org, 
-	linux-perf-users@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-csky@vger.kernel.org, linux-riscv@lists.infradead.org, 
-	coresight@lists.linaro.org, rust-for-linux@vger.kernel.org, 
-	bpf@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-The python build now depends on libraries and doesn't use
-python-ext-sources except for the util/python.c dependency. Switch to
-just directly depending on that file and util/setup.py. This allows
-the removal of python-ext-sources.
+On Thu, 13 Jun 2024 12:59:52 -0500
+Trevor Gross <tmgross@umich.edu> wrote:
 
-Signed-off-by: Ian Rogers <irogers@google.com>
-Reviewed-by: James Clark <james.clark@arm.com>
----
- tools/perf/Makefile.perf           | 10 +-----
- tools/perf/util/python-ext-sources | 53 ------------------------------
- 2 files changed, 1 insertion(+), 62 deletions(-)
- delete mode 100644 tools/perf/util/python-ext-sources
+>> Add the unified read/write API for C22 and C45 registers. The
+>> abstractions support access to only C22 registers now. Instead of
+>> adding read/write_c45 methods specifically for C45, a new reg module
+>> supports the unified API to access C22 and C45 registers with trait,
+>> by calling an appropriate phylib functions.
+>>
+>> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> 
+> This new API looks good to me:
+> 
+> Reviewed-by: Trevor Gross <tmgross@umich.edu>
 
-diff --git a/tools/perf/Makefile.perf b/tools/perf/Makefile.perf
-index 4a1a9f09fa09..590081384882 100644
---- a/tools/perf/Makefile.perf
-+++ b/tools/perf/Makefile.perf
-@@ -380,14 +380,6 @@ python-clean := $(call QUIET_CLEAN, python) $(RM) -r $(PYTHON_EXTBUILD) $(OUTPUT
- # Use the detected configuration
- -include $(OUTPUT).config-detected
- 
--ifeq ($(CONFIG_LIBTRACEEVENT),y)
--  PYTHON_EXT_SRCS := $(shell grep -v ^\# util/python-ext-sources)
--else
--  PYTHON_EXT_SRCS := $(shell grep -v ^\#\\\|util/trace-event.c\\\|util/trace-event-parse.c util/python-ext-sources)
--endif
--
--PYTHON_EXT_DEPS := util/python-ext-sources util/setup.py $(LIBAPI)
--
- SCRIPTS = $(patsubst %.sh,%,$(SCRIPT_SH))
- 
- PROGRAMS += $(OUTPUT)perf
-@@ -715,7 +707,7 @@ all: shell_compatibility_test $(ALL_PROGRAMS) $(LANG_BINDINGS) $(OTHER_PROGRAMS)
- # Create python binding output directory if not already present
- $(shell [ -d '$(OUTPUT)python' ] || mkdir -p '$(OUTPUT)python')
- 
--$(OUTPUT)python/perf$(PYTHON_EXTENSION_SUFFIX): $(PYTHON_EXT_SRCS) $(PYTHON_EXT_DEPS) $(PERFLIBS)
-+$(OUTPUT)python/perf$(PYTHON_EXTENSION_SUFFIX): util/python.c util/setup.py $(PERFLIBS)
- 	$(QUIET_GEN)LDSHARED="$(CC) -pthread -shared" \
-         CFLAGS='$(CFLAGS)' LDFLAGS='$(LDFLAGS) $(LIBS)' \
- 	  $(PYTHON_WORD) util/setup.py \
-diff --git a/tools/perf/util/python-ext-sources b/tools/perf/util/python-ext-sources
-deleted file mode 100644
-index 1bec945f4838..000000000000
---- a/tools/perf/util/python-ext-sources
-+++ /dev/null
-@@ -1,53 +0,0 @@
--#
--# List of files needed by perf python extension
--#
--# Each source file must be placed on its own line so that it can be
--# processed by Makefile and util/setup.py accordingly.
--#
--
--util/python.c
--../lib/ctype.c
--util/cap.c
--util/evlist.c
--util/evsel.c
--util/evsel_fprintf.c
--util/perf_event_attr_fprintf.c
--util/cpumap.c
--util/memswap.c
--util/mmap.c
--util/namespaces.c
--../lib/bitmap.c
--../lib/find_bit.c
--../lib/list_sort.c
--../lib/hweight.c
--../lib/string.c
--../lib/vsprintf.c
--util/thread_map.c
--util/util.c
--util/cgroup.c
--util/parse-branch-options.c
--util/rblist.c
--util/counts.c
--util/print_binary.c
--util/strlist.c
--util/trace-event.c
--util/trace-event-parse.c
--../lib/rbtree.c
--util/string.c
--util/symbol_fprintf.c
--util/units.c
--util/affinity.c
--util/rwsem.c
--util/hashmap.c
--util/perf_regs.c
--util/fncache.c
--util/rlimit.c
--util/perf-regs-arch/perf_regs_aarch64.c
--util/perf-regs-arch/perf_regs_arm.c
--util/perf-regs-arch/perf_regs_csky.c
--util/perf-regs-arch/perf_regs_loongarch.c
--util/perf-regs-arch/perf_regs_mips.c
--util/perf-regs-arch/perf_regs_powerpc.c
--util/perf-regs-arch/perf_regs_riscv.c
--util/perf-regs-arch/perf_regs_s390.c
--util/perf-regs-arch/perf_regs_x86.c
--- 
-2.45.2.627.g7a2c4fd464-goog
+Thanks a lot!
 
+> It should probably also get Benno's review since he suggested the API.
+
+Indeed. Benno, that patchset looks good?
