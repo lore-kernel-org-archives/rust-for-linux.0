@@ -1,57 +1,57 @@
 Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC18114F10B
-	for <rust-for-linux@vger.kernel.org>; Thu, 13 Jun 2024 23:31:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ED3315622F
+	for <rust-for-linux@vger.kernel.org>; Thu, 13 Jun 2024 23:31:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718321504; cv=none; b=Bq8LypDdN/POdnPIFdhsPbJe/dJVQzFbpfZufhphkPIb8+7zBRel0DxNucHak2yT9EEI0J3A2jzzkd3kOG6j0MNX8d5EXFtZDb9rx8zdwsnfUVXi4SrVa7ZkFiqaZc0Sv41cYjvrpp034eEAHMcKbJDA+u0LMQPQr9a4vP+okrU=
+	t=1718321505; cv=none; b=J+L5Cfl1n73v76Jhb1z1xAks5n0U1Wl6qfPCjzXEqU+y3oiMV6Di4nmi3NfUZ5arSNplLbhnP2fGFpZiBzhuECax47J0Aq+6FY74ICNZUWbwFleTkOslKjx9hxrI6G4IAYkjKNMq2zVsaI2fLz5qDX2M1qgMIqYsNHnei3si9Rk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718321504; c=relaxed/simple;
-	bh=ERrHbjKpSrLndzYhYX3mAlB26TR8JNOzocZcSDYCu0o=;
+	s=arc-20240116; t=1718321505; c=relaxed/simple;
+	bh=rFcy+S2+2TKAedCtBmi8koJqecDAqvQ96WMKLQwJCVE=;
 	h=Date:In-Reply-To:Message-Id:Mime-Version:References:Subject:From:
-	 To:Content-Type; b=C9U7PLdAe1Q2tnEPI7xkCmrx794iyT4D5gNc4OiYzehnSFrA+clfQOxZj+s8xZ7956gQLzYmT9Z0cm6enCZSSYxU7H+lknqHoHfkPqHCPk6XBhHkknzHQqjaLspUwosZUlK23nIn0B6ZiVXOtLFtsJyv3hXRZqaYIIAgZUa9ULQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--irogers.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=H757mI7r; arc=none smtp.client-ip=209.85.128.201
+	 To:Content-Type; b=kYEbIRWZ6JpB7KnGUOdl9llFSQ2JRcuhshQW7XUvzmwTxmmjOBVRAjP10tXITsdnvOeIOOjqNnwtaAXfL3Mu2PldqBJ+VHJJXzaKZUzGrmSAPWOh2kalv7L52wXzN/1scPMpEtkgB8mFqowU73oPFqwDiUfBhyfgAnGdoelW31A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--irogers.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=bX8QD1l7; arc=none smtp.client-ip=209.85.128.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--irogers.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="H757mI7r"
-Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-62f8a1b2969so28813867b3.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 13 Jun 2024 16:31:41 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="bX8QD1l7"
+Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-631b498f981so13954577b3.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 13 Jun 2024 16:31:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1718321501; x=1718926301; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1718321503; x=1718926303; darn=vger.kernel.org;
         h=to:from:subject:references:mime-version:message-id:in-reply-to:date
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=qbSOB/P6de3ygMIG7fdBTW+eS92Yyh1ZhXc/HewO9bA=;
-        b=H757mI7rXcdwMc7RqT84wjqCNsslS7Dbcq4i+lTRPlyCJ9P2El/c3bh/VmBHGTkl45
-         qeXaKeiIjnCG+LdUNZ1lx8Z3FTpbMkKA/SorZmkj5kaEqXF7L7TYi4eCK0SVCIKyGwQ/
-         Aeim6hodHDGdFKp9ZGhlMAach1u16QOKemf0iPa/wVMvm98cMakuQFj+4SOIDBm8s3rx
-         xFkI7uMEUiQzKE2LoTeo429sA8/TMcD7FZXRRl3tZgK1DPKgRr8N9Wh8PsKrF8xzpkOg
-         gqEE0rJlE8oPKohPLTealsZ/EYdeR1nVt0zp9ookmOHFb/iAqPbqg3CWkrYj2+eyPiny
-         lqaQ==
+        bh=r+7hNL7GU/EnUYuEiQpshzYvHRCk9RdYS1NEyctZDl4=;
+        b=bX8QD1l70xe2wkNwM/mT9kDZR9IsbViT1kmFgT8bJ7BJYTAAWJFfMeSUSW0djdwLAK
+         +7HS8N+OpeAOzdMhnHmLd5eh3ERWMSL+cHWMabVCSLLqAlhZKQuNH9i0m9l2ep5WxTNt
+         Zl0iAT6cnh9zXFmtRXTGlaGx5kMhJRXkwhW2TLdGHwWFsLh9FqfGK1ChHTtmKTRB6Mye
+         hpMGUJkkF6dJKTjSDKDviHLGaUEiKePpn7Si6MbY82+PSJNqhdDnU41umWgyr5voFtM4
+         Des/mtO6Z2f8WcybOPDe27HUMNWhM6XG1eHIK+n0U341X+Uhc/prm5LM0hZbwDNp4BKY
+         WCTA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718321501; x=1718926301;
+        d=1e100.net; s=20230601; t=1718321503; x=1718926303;
         h=to:from:subject:references:mime-version:message-id:in-reply-to:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=qbSOB/P6de3ygMIG7fdBTW+eS92Yyh1ZhXc/HewO9bA=;
-        b=pf5l6Kvxo1m0KmSISbXkcalPNwlCYIXy+fSy9S7TIWCdw2IHJPxiGlg6xyk+BFtSVN
-         knjbtZzIXWORpYeDvitauiZ8YO1k6jd0inK1HWAbpcZphsNJSJMqelmFmYc40ipU6icA
-         Y22enCWmD9fn7XqogDkOJm0i/0x9UMYL8d0inc5ytrGIdw51kG/t93LaxT4bxYwbeICp
-         QL+nAOgk2Z+BBp5XX01UbepcOVy3Rnz9VnQoB218alGFRzls2x/kHU07Kh96HRexfiEq
-         Yc/Kz05fKkpZuN1pYzoheRAGqFg/25yRpRFyrFXtq5Iz93HTCmuezDH6jR8ISH87skwy
-         qFFg==
-X-Forwarded-Encrypted: i=1; AJvYcCXqNADyJHcqb56U4cWOjvzbXezkrRvXs4B5jJxEZlulIlqBmMl4o07iKUIyuiwUVUJDybzqEiBka5MMOUBO2gmu1ihw98cHzEFCdcfc8Rg=
-X-Gm-Message-State: AOJu0YytHorCiEZRI09OOShvF7xDynRrpC3d2we6snfKHJKY/Tb1YBxd
-	QYdXVq53pkBxjqZQl2jmeIM7INdtWhMFoz05ZgxvqDsE+K+jUEIHIRo3PiFVey2zUEm3UhTUNf6
-	/YvDJGA==
-X-Google-Smtp-Source: AGHT+IHE5wM91COFyENsSJs6TdkrEyube8x5jVXFZVcONmu94l5YziFn9V2oVKc/3BzWS0BiAYO2r5J5dtvN
+        bh=r+7hNL7GU/EnUYuEiQpshzYvHRCk9RdYS1NEyctZDl4=;
+        b=vD8+Fyod+27cAIC2yWvaUL+dqTgBKOWE/0ZD8OsiIUvqGIuL3MmovMjvI/Mv14prpb
+         JTtS7Q3FOYySwdwIdj/YvJVbZEdpmK1o4CgggLYMbu8RkYp5vLCn3ycJx9zW/JcyHvKp
+         NzKlaAGbmHKnDGf26HygRpmKmY5Fy4f1nIHuoUEvsuz9KhUWoTBAaGxao3zz2uZPIgyD
+         LCZwlePN0Lo1X+r9ELNYx6sEFnSozeyO7nPqQoyBWZDbJ/O8txpD7fkJ7b7faLP0zldW
+         EhTA/mGgsh4251xo1pf46kaWZ55YRt9C8o6E2XnifQkGPX75L8vUM9w0gKQ1JFP3dWYj
+         eclg==
+X-Forwarded-Encrypted: i=1; AJvYcCXqHc5lJeO4enOnKMewRBSu3o8f+GddklqssbdKrr7YlGTFzZT3YdOhmSW2hWiJuujzrrM0ySy3ixYPUU7HevGfgsTNvwKNNw7Np4lcYSo=
+X-Gm-Message-State: AOJu0YwMW7l7CsIVV6CPT4GPiuweL0BoTnev0dEu3bLUS+AhF+gDFjd3
+	nKdqKtEXp7UBxOrZuszoUwmJVgAh7SBrcUYw+oPQB+uBcOV4lcCdfZsPItdVZ3dij6+42D/D96q
+	5gXf+1w==
+X-Google-Smtp-Source: AGHT+IFn2/Zt1q3vLtrOIzuqJ1p4Eu87kh7DLSgs2XgUvKC7/KbRAInI64oUnn9ccHvLPYSIt3Qb2v5r0Lgf
 X-Received: from irogers.svl.corp.google.com ([2620:15c:2a3:200:96dd:26a6:1493:53c8])
- (user=irogers job=sendgmr) by 2002:a05:690c:d1b:b0:61d:ece5:2bf with SMTP id
- 00721157ae682-6322265e839mr3417667b3.4.1718321500762; Thu, 13 Jun 2024
- 16:31:40 -0700 (PDT)
-Date: Thu, 13 Jun 2024 16:31:15 -0700
+ (user=irogers job=sendgmr) by 2002:a05:690c:19:b0:62d:cb6:1cff with SMTP id
+ 00721157ae682-6322235c1e3mr2906847b3.1.1718321503168; Thu, 13 Jun 2024
+ 16:31:43 -0700 (PDT)
+Date: Thu, 13 Jun 2024 16:31:16 -0700
 In-Reply-To: <20240613233122.3564730-1-irogers@google.com>
-Message-Id: <20240613233122.3564730-2-irogers@google.com>
+Message-Id: <20240613233122.3564730-3-irogers@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -60,7 +60,7 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20240613233122.3564730-1-irogers@google.com>
 X-Mailer: git-send-email 2.45.2.627.g7a2c4fd464-goog
-Subject: [PATCH v3 1/8] perf build: Add '*.a' to clean targets
+Subject: [PATCH v3 2/8] perf ui: Make ui its own library
 From: Ian Rogers <irogers@google.com>
 To: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
 	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
@@ -87,42 +87,122 @@ To: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
 	bpf@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-Fix some excessively long lines by deploying '\'.
+Make the ui code its own library. This is done to avoid compiling code
+twice, once for the perf tool and once for the perf python module.
 
 Signed-off-by: Ian Rogers <irogers@google.com>
+Reviewed-by: James Clark <james.clark@arm.com>
 ---
- tools/perf/Makefile.perf | 17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ tools/perf/Build             |  2 +-
+ tools/perf/Makefile.perf     | 10 ++++++++++
+ tools/perf/ui/Build          | 18 +++++++++---------
+ tools/perf/ui/browsers/Build | 14 +++++++-------
+ tools/perf/ui/tui/Build      |  8 ++++----
+ 5 files changed, 31 insertions(+), 21 deletions(-)
 
+diff --git a/tools/perf/Build b/tools/perf/Build
+index b0cb7ad8e6ac..16ed1357202b 100644
+--- a/tools/perf/Build
++++ b/tools/perf/Build
+@@ -55,7 +55,7 @@ CFLAGS_builtin-report.o	   += -DDOCDIR="BUILD_STR($(srcdir_SQ)/Documentation)"
+ 
+ perf-y += util/
+ perf-y += arch/
+-perf-y += ui/
++perf-ui-y += ui/
+ perf-y += scripts/
+ 
+ gtk-y += ui/gtk/
 diff --git a/tools/perf/Makefile.perf b/tools/perf/Makefile.perf
-index 5c35c0d89306..acc41a6717db 100644
+index acc41a6717db..c5a027381c55 100644
 --- a/tools/perf/Makefile.perf
 +++ b/tools/perf/Makefile.perf
-@@ -1201,12 +1201,19 @@ endif # CONFIG_PERF_BPF_SKEL
- bpf-skel-clean:
- 	$(call QUIET_CLEAN, bpf-skel) $(RM) -r $(SKEL_TMP_OUT) $(SKELETONS) $(SKEL_OUT)/vmlinux.h
+@@ -425,10 +425,14 @@ endif
  
--clean:: $(LIBAPI)-clean $(LIBBPF)-clean $(LIBSUBCMD)-clean $(LIBSYMBOL)-clean $(LIBPERF)-clean arm64-sysreg-defs-clean fixdep-clean python-clean bpf-skel-clean tests-coresight-targets-clean
--	$(call QUIET_CLEAN, core-objs)  $(RM) $(LIBPERF_A) $(OUTPUT)perf-archive $(OUTPUT)perf-iostat $(LANG_BINDINGS)
--	$(Q)find $(or $(OUTPUT),.) -name '*.o' -delete -o -name '\.*.cmd' -delete -o -name '\.*.d' -delete -o -name '*.shellcheck_log' -delete
-+clean:: $(LIBAPI)-clean $(LIBBPF)-clean $(LIBSUBCMD)-clean $(LIBSYMBOL)-clean $(LIBPERF)-clean \
-+		arm64-sysreg-defs-clean fixdep-clean python-clean bpf-skel-clean \
-+		tests-coresight-targets-clean
-+	$(call QUIET_CLEAN, core-objs)  $(RM) $(LIBPERF_A) $(OUTPUT)perf-archive \
-+		$(OUTPUT)perf-iostat $(LANG_BINDINGS)
-+	$(Q)find $(or $(OUTPUT),.) -name '*.o' -delete -o -name '*.a' -delete -o \
-+		-name '\.*.cmd' -delete -o -name '\.*.d' -delete -o -name '*.shellcheck_log' -delete
- 	$(Q)$(RM) $(OUTPUT).config-detected
--	$(call QUIET_CLEAN, core-progs) $(RM) $(ALL_PROGRAMS) perf perf-read-vdso32 perf-read-vdsox32 $(OUTPUT)$(LIBJVMTI).so
--	$(call QUIET_CLEAN, core-gen)   $(RM)  *.spec *.pyc *.pyo */*.pyc */*.pyo $(OUTPUT)common-cmds.h TAGS tags cscope* $(OUTPUT)PERF-VERSION-FILE $(OUTPUT)FEATURE-DUMP $(OUTPUT)util/*-bison* $(OUTPUT)util/*-flex* \
-+	$(call QUIET_CLEAN, core-progs) $(RM) $(ALL_PROGRAMS) perf perf-read-vdso32 \
-+		perf-read-vdsox32 $(OUTPUT)$(LIBJVMTI).so
-+	$(call QUIET_CLEAN, core-gen)   $(RM)  *.spec *.pyc *.pyo */*.pyc */*.pyo \
-+		$(OUTPUT)common-cmds.h TAGS tags cscope* $(OUTPUT)PERF-VERSION-FILE \
-+		$(OUTPUT)FEATURE-DUMP $(OUTPUT)util/*-bison* $(OUTPUT)util/*-flex* \
- 		$(OUTPUT)util/intel-pt-decoder/inat-tables.c \
- 		$(OUTPUT)tests/llvm-src-{base,kbuild,prologue,relocation}.c \
- 		$(OUTPUT)pmu-events/pmu-events.c \
+ export PERL_PATH
+ 
++LIBPERF_UI_IN := $(OUTPUT)perf-ui-in.o
++LIBPERF_UI := $(OUTPUT)libperf-ui.a
++
+ PERFLIBS = $(LIBAPI) $(LIBPERF) $(LIBSUBCMD) $(LIBSYMBOL)
+ ifdef LIBBPF_STATIC
+   PERFLIBS += $(LIBBPF)
+ endif
++PERFLIBS += $(LIBPERF_UI)
+ 
+ # We choose to avoid "if .. else if .. else .. endif endif"
+ # because maintaining the nesting to match is a pain.  If
+@@ -729,6 +733,12 @@ $(PERF_IN): prepare FORCE
+ $(PMU_EVENTS_IN): FORCE prepare
+ 	$(Q)$(MAKE) -f $(srctree)/tools/build/Makefile.build dir=pmu-events obj=pmu-events
+ 
++$(LIBPERF_UI_IN): FORCE prepare
++	$(Q)$(MAKE) $(build)=perf-ui
++
++$(LIBPERF_UI): $(LIBPERF_UI_IN)
++	$(QUIET_AR)$(RM) $@ && $(AR) rcs $@ $<
++
+ $(OUTPUT)perf: $(PERFLIBS) $(PERF_IN) $(PMU_EVENTS_IN)
+ 	$(QUIET_LINK)$(CC) $(CFLAGS) $(LDFLAGS) \
+ 		$(PERF_IN) $(PMU_EVENTS_IN) $(LIBS) -o $@
+diff --git a/tools/perf/ui/Build b/tools/perf/ui/Build
+index 6b6d7143a37b..d2ecd9290600 100644
+--- a/tools/perf/ui/Build
++++ b/tools/perf/ui/Build
+@@ -1,12 +1,12 @@
+-perf-y += setup.o
+-perf-y += helpline.o
+-perf-y += progress.o
+-perf-y += util.o
+-perf-y += hist.o
+-perf-y += stdio/hist.o
++perf-ui-y += setup.o
++perf-ui-y += helpline.o
++perf-ui-y += progress.o
++perf-ui-y += util.o
++perf-ui-y += hist.o
++perf-ui-y += stdio/hist.o
+ 
+ CFLAGS_setup.o += -DLIBDIR="BUILD_STR($(LIBDIR))"
+ 
+-perf-$(CONFIG_SLANG) += browser.o
+-perf-$(CONFIG_SLANG) += browsers/
+-perf-$(CONFIG_SLANG) += tui/
++perf-ui-$(CONFIG_SLANG) += browser.o
++perf-ui-$(CONFIG_SLANG) += browsers/
++perf-ui-$(CONFIG_SLANG) += tui/
+diff --git a/tools/perf/ui/browsers/Build b/tools/perf/ui/browsers/Build
+index 2608b5da3167..a07489e44765 100644
+--- a/tools/perf/ui/browsers/Build
++++ b/tools/perf/ui/browsers/Build
+@@ -1,7 +1,7 @@
+-perf-y += annotate.o
+-perf-y += annotate-data.o
+-perf-y += hists.o
+-perf-y += map.o
+-perf-y += scripts.o
+-perf-y += header.o
+-perf-y += res_sample.o
++perf-ui-y += annotate.o
++perf-ui-y += annotate-data.o
++perf-ui-y += hists.o
++perf-ui-y += map.o
++perf-ui-y += scripts.o
++perf-ui-y += header.o
++perf-ui-y += res_sample.o
+diff --git a/tools/perf/ui/tui/Build b/tools/perf/ui/tui/Build
+index f916df33a1a7..2ac058ad1a61 100644
+--- a/tools/perf/ui/tui/Build
++++ b/tools/perf/ui/tui/Build
+@@ -1,4 +1,4 @@
+-perf-y += setup.o
+-perf-y += util.o
+-perf-y += helpline.o
+-perf-y += progress.o
++perf-ui-y += setup.o
++perf-ui-y += util.o
++perf-ui-y += helpline.o
++perf-ui-y += progress.o
 -- 
 2.45.2.627.g7a2c4fd464-goog
 
