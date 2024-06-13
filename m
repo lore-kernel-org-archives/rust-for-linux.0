@@ -1,165 +1,269 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9C3B713C691;
-	Thu, 13 Jun 2024 15:10:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-ot1-f46.google.com (mail-ot1-f46.google.com [209.85.210.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85C262C80;
+	Thu, 13 Jun 2024 16:31:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718291450; cv=none; b=GiV/NJHFYXHEFoMvWrCHqzVFlgrooCl+ruSP3Ayy4tQRBUp6EvHqcnF4Gjkv9ET1oqqzMBOv3FVJwIJ4m+phRCKHJK5INsc4AXbtcwkbStJXdt8Cf6dx32rqkE2qm90B3hpg1m8NG//0usg4VMHQs1NMLUSO2gCh9siVYM+Ft4Q=
+	t=1718296262; cv=none; b=nDsesyjxBQGo3XU3toUv7AALEythwS05DMuvatc2NDfBX1h4dTGdCXj6ke4twvlHMSiY9MeAMjReXxX1acZVyEF6d1CziSZwidQqaKxULZ1co/sAPUfBTtEft+WDDOu8+zQqBourR/UioTXnGqRT5CXnZxS9SKH7o7P3+iZUzE8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718291450; c=relaxed/simple;
-	bh=7NXk+p80KoKxvILnhkPLqOnRPGa7Kr/UOYr9kzKZ6zU=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Os937KiRPWMsZcQMaUFL4yA2hyBpkk67a3hgbGTT1p1jy0o6+HzsScHxaKqoJRUszR9alkbGPWA066lNsxB90m41HLBSJe8ki7otqbRaq5GlIgzaXUZ8a5CHyOlBtP74T9vsubY65lDwZA6beIrVrUnNECX2DE1Q8Rb0/hJd03A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 2DB91FEC;
-	Thu, 13 Jun 2024 08:11:11 -0700 (PDT)
-Received: from [192.168.1.100] (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 3ADB23F73B;
-	Thu, 13 Jun 2024 08:10:41 -0700 (PDT)
-Message-ID: <9814866a-8f9d-4d82-ad2d-4b36203aa196@arm.com>
-Date: Thu, 13 Jun 2024 16:10:39 +0100
+	s=arc-20240116; t=1718296262; c=relaxed/simple;
+	bh=IqOshH+3NtW6LgDbCLrcCvzFRZD6Ag+RJPv0ggdyq2c=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WLxEa8KN1RecaNK0mSjISHhR+bWnuosvIdNwETCDlms3Xznw1nAQpoBkS8fO/vHY/E7rSOwfd4s3q2bYijPRn92pNXPXcKo68NXJOQeLR3wRCwMPEbr7+9IgZBUPXIccX/BxvXBM+It9ddkXQ81KP1994U3VcV78dPxRzAyfc0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=egRfCbv3; arc=none smtp.client-ip=209.85.210.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="egRfCbv3"
+Received: by mail-ot1-f46.google.com with SMTP id 46e09a7af769-6f9b5bc97baso703547a34.0;
+        Thu, 13 Jun 2024 09:31:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1718296259; x=1718901059; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=S/xQDUQkQkXZSewCHGCYidY7ntUnzyPAgvU909rXsNE=;
+        b=egRfCbv3D7EK1GrVHXlw5zNQndyygNvnJ9E3HQNALWDLrItk23Avab5kF+VNVlNUx+
+         rOEZjBgvfdktV9P0pb2xmEACvp68HXWWbCbRx9XHzXWo1sFEItkzDCDf6wh4PVTllWU1
+         s/TswBA90n67xtYaH6n9armlVmidU+OHRFHDHextbaPVIdAt5iRSX0V6V3xOmtpylphn
+         T/tZOf/O6Ys3uQRAJG/Sk3D7hZwoc4TvtLgfFf8cxD5Iozzofd6Ay2tEC2RClS/YmHMY
+         GFB+P+BhM0TUnNxaDqfuKW1dmA9r1ONOPr5Di1JLjsJpt6sU8M4n1pSSybYB+F9LVjEl
+         /vpQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718296259; x=1718901059;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=S/xQDUQkQkXZSewCHGCYidY7ntUnzyPAgvU909rXsNE=;
+        b=sgE8Q7nrrK0x/wrIWQ9HPNH/GNAplXgRbv+22aBTNbCBQf4H/uxYhclNLNcISIyM2U
+         MUHoFP9RA8j3yanC8zJjhnxanvDyY7IOrzn6nTyZqXOOEsgaSkCuqTfBRUkIaIjMoTpP
+         1S1JS97J9tUaoKQUmIIVPn4LpoK4K6cLj/wnnkD3ZcWaccdgbzIKfq+Wxx7/Fsg5fo2m
+         RzE2ai++6cU8Ag4cg+/2T0EcAMpyLCaGzHsbJ9nntpnmyJpZnzd9AyhSkSM/m7F8GgXQ
+         wiTZM8f0WuIozA22yDiirJlaqq4/B8ii5nOq7Qv5XzPSNZ7azM6e2MRVlmyJ1DadntHv
+         qXfg==
+X-Forwarded-Encrypted: i=1; AJvYcCXP+nKi2kGapUDegNuAQve3kFlBX+TGJqEVLYCU2PZ8tjZj6qn56WOnSueSSJE2CFCGpnAGNtoDjp6Igt+ypayCKciPBVligvXePSFVBGDipoIgPtrLjQs/IQGeX9W8ampvVGEM9/s+7XaMb/Yd/g+x8tIPhXRDx56ZZo0U5ilGqpM5t68oGkE=
+X-Gm-Message-State: AOJu0Yw0JykziiPJZJpT89VftUnz7JNNl/NhRSa5n7qym96jPTTpBRtl
+	ACGwCYI8CJ6JPKgb8RpagGyQYPfEkSknQPbrgHwPiMtrXJ6BHAr3
+X-Google-Smtp-Source: AGHT+IHwFVJixei88Rxkp/sFGEHh3v1G3Dr0Ysp8cDcd+fUGWk//eWkUZmoRtez0cWgxv3IlizQUJg==
+X-Received: by 2002:a05:6830:2018:b0:6f9:89dd:edd7 with SMTP id 46e09a7af769-6fb93b0ee7bmr230805a34.36.1718296258768;
+        Thu, 13 Jun 2024 09:30:58 -0700 (PDT)
+Received: from fauth1-smtp.messagingengine.com (fauth1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-798aacc5267sm65463685a.18.2024.06.13.09.30.57
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 13 Jun 2024 09:30:58 -0700 (PDT)
+Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
+	by mailfauth.nyi.internal (Postfix) with ESMTP id 177071200043;
+	Thu, 13 Jun 2024 12:30:57 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute1.internal (MEProxy); Thu, 13 Jun 2024 12:30:57 -0400
+X-ME-Sender: <xms:wB5rZlQDP15NYqqa2GCA3T1oyIrN0TeOvBx9ypN8ZpQO1NaCUNtIOg>
+    <xme:wB5rZuz-N--h2ec81KEXlyv7MX9rUerjjSoaGBv1GlMujS0W3C6Rcu-qOE5SRXJrl
+    CagXw_tQ7fYxreufg>
+X-ME-Received: <xmr:wB5rZq3qz8o4YMkFgo70BP6jwqmYfDPReAocx3eVJFLAM9jtM3GrEjYBkgI8TQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrfedujedgleekucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggujgesthdtrodttddtvdenucfhrhhomhepuehoqhhu
+    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
+    htthgvrhhnpefhfefhfeelieffveetfffggeffhfeluddvtedtgedufefgteetiefgjeev
+    ieehvdenucffohhmrghinhepughotghsrdhrshenucevlhhushhtvghrufhiiigvpedtne
+    curfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghr
+    shhonhgrlhhithihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvg
+    hngheppehgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvg
+X-ME-Proxy: <xmx:wB5rZtDFvclFjf_8MJgIyO2ZGEg6qkBtejoRSVRWpJMsSYmeU4F5LQ>
+    <xmx:wB5rZujdiV1kzawIFX9nZXwIq2rnaI5JKWuSUveuKBGMiJM4eZKEGQ>
+    <xmx:wB5rZhqI2PPPNfOG6kheYMIP-Mi3wEGLJZeZQ8IR5UFdBT5KMRmF5g>
+    <xmx:wB5rZpjgDtSNqbsLSg56TaGEk6UZhugXYXxCJxyvCj5jkCteR_bepw>
+    <xmx:wR5rZpT97owrzRnWgiAN44FGPS9ePdSHjWTKIzugoHbT_OXktczmG2ti>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 13 Jun 2024 12:30:56 -0400 (EDT)
+Date: Thu, 13 Jun 2024 09:30:26 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Gary Guo <gary@garyguo.net>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arch@vger.kernel.org, llvm@lists.linux.dev,
+	Miguel Ojeda <ojeda@kernel.org>,	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Andrea Parri <parri.andrea@gmail.com>,	Will Deacon <will@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Nicholas Piggin <npiggin@gmail.com>,	David Howells <dhowells@redhat.com>,
+	Jade Alglave <j.alglave@ucl.ac.uk>,	Luc Maranget <luc.maranget@inria.fr>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Akira Yokosawa <akiyks@gmail.com>,	Daniel Lustig <dlustig@nvidia.com>,
+	Joel Fernandes <joel@joelfernandes.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,	kent.overstreet@gmail.com,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, elver@google.com,
+	Mark Rutland <mark.rutland@arm.com>,
+	Thomas Gleixner <tglx@linutronix.de>,	Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,	torvalds@linux-foundation.org,
+ linux-arm-kernel@lists.infradead.org,	linux-fsdevel@vger.kernel.org,
+ Trevor Gross <tmgross@umich.edu>,	dakr@redhat.com
+Subject: Re: [RFC 2/2] rust: sync: Add atomic support
+Message-ID: <ZmseosxVQXdsQjNB@boqun-archlinux>
+References: <20240612223025.1158537-1-boqun.feng@gmail.com>
+ <20240612223025.1158537-3-boqun.feng@gmail.com>
+ <20240613144432.77711a3a@eugeo>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v1 0/7] Refactor perf python module build
-To: Arnaldo Carvalho de Melo <acme@kernel.org>
-Cc: Ian Rogers <irogers@google.com>, Peter Zijlstra <peterz@infradead.org>,
- Ingo Molnar <mingo@redhat.com>, Namhyung Kim <namhyung@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>,
- Alexander Shishkin <alexander.shishkin@linux.intel.com>,
- Jiri Olsa <jolsa@kernel.org>, Adrian Hunter <adrian.hunter@intel.com>,
- Kan Liang <kan.liang@linux.intel.com>, John Garry <john.g.garry@oracle.com>,
- Will Deacon <will@kernel.org>, Mike Leach <mike.leach@linaro.org>,
- Leo Yan <leo.yan@linux.dev>, Guo Ren <guoren@kernel.org>,
- Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
- <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
- Suzuki K Poulose <suzuki.poulose@arm.com>,
- Yicong Yang <yangyicong@hisilicon.com>,
- Jonathan Cameron <jonathan.cameron@huawei.com>,
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng
- <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl
- <aliceryhl@google.com>, Nick Terrell <terrelln@fb.com>,
- Ravi Bangoria <ravi.bangoria@amd.com>, Kees Cook <keescook@chromium.org>,
- Andrei Vagin <avagin@google.com>, Athira Jajeev
- <atrajeev@linux.vnet.ibm.com>, Oliver Upton <oliver.upton@linux.dev>,
- Ze Gao <zegao2021@gmail.com>, linux-kernel@vger.kernel.org,
- linux-perf-users@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- linux-csky@vger.kernel.org, linux-riscv@lists.infradead.org,
- coresight@lists.linaro.org, rust-for-linux@vger.kernel.org,
- bpf@vger.kernel.org
-References: <20240612183205.3120248-1-irogers@google.com>
- <bdf1ab6e-b887-4182-a0ae-7653bd835907@arm.com> <Zmr_CfhYsvKePZFt@x1>
-Content-Language: en-US
-From: James Clark <james.clark@arm.com>
-In-Reply-To: <Zmr_CfhYsvKePZFt@x1>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240613144432.77711a3a@eugeo>
 
-
-
-On 13/06/2024 15:15, Arnaldo Carvalho de Melo wrote:
-> On Thu, Jun 13, 2024 at 10:27:15AM +0100, James Clark wrote:
->> On 12/06/2024 19:31, Ian Rogers wrote:
->>> Refactor the perf python module build to instead of building C files
->>> it links libraries. To support this make static libraries for tests,
->>> ui, util and pmu-events. Doing this allows fewer functions to be
->>> stubbed out, importantly parse_events is no longer stubbed out which
->>> will improve the ability to work with heterogeneous cores.
->>>
->>> Patches 1 to 5 add static libraries for existing parts of the perf
->>> build.
->>>
->>> Patch 6 adds the python build using libraries rather than C source
->>> files.
->>>
->>> Patch 7 cleans up the python dependencies and removes the no longer
->>> needed python-ext-sources.
->>>
->>
->> Reviewed-by: James Clark <james.clark@arm.com>
->>
->> It does require a clean build to avoid some -fPIC errors presumably
->> because not everything that requires it gets rebuilt, for anyone who
->> gets stuck on that.
+On Thu, Jun 13, 2024 at 02:44:32PM +0100, Gary Guo wrote:
+> On Wed, 12 Jun 2024 15:30:25 -0700
+> Boqun Feng <boqun.feng@gmail.com> wrote:
 > 
-> We need to find a way to avoid requiring the 'make clean' :-/
+> > Provide two atomic types: AtomicI32 and AtomicI64 with the existing
+> > implemenation of C atomics. These atomics have the same semantics of the
+> > corresponding LKMM C atomics, and using one memory (ordering) model
+> > certainly reduces the reasoning difficulty and potential bugs from the
+> > interaction of two different memory models.
+> > 
+> > Also bump my role to the maintainer of ATOMIC INFRASTRUCTURE to reflect
+> > my responsiblity on these Rust APIs.
+> > 
+> > Note that `Atomic*::new()`s are implemented vi open coding on struct
+> > atomic*_t. This allows `new()` being a `const` function, so that it can
+> > be used in constant contexts.
+> > 
+> > Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+> > ---
+> >  MAINTAINERS                       |    4 +-
+> >  arch/arm64/kernel/cpufeature.c    |    2 +
+> >  rust/kernel/sync.rs               |    1 +
+> >  rust/kernel/sync/atomic.rs        |   63 ++
+> >  rust/kernel/sync/atomic/impl.rs   | 1375 +++++++++++++++++++++++++++++
+> >  scripts/atomic/gen-atomics.sh     |    1 +
+> >  scripts/atomic/gen-rust-atomic.sh |  136 +++
+> >  7 files changed, 1581 insertions(+), 1 deletion(-)
+> >  create mode 100644 rust/kernel/sync/atomic.rs
+> >  create mode 100644 rust/kernel/sync/atomic/impl.rs
+> >  create mode 100755 scripts/atomic/gen-rust-atomic.sh
+> > 
+> > diff --git a/MAINTAINERS b/MAINTAINERS
+> > index d6c90161c7bf..a8528d27b260 100644
+> > --- a/MAINTAINERS
+> > +++ b/MAINTAINERS
+> > @@ -3458,7 +3458,7 @@ F:	drivers/input/touchscreen/atmel_mxt_ts.c
+> >  ATOMIC INFRASTRUCTURE
+> >  M:	Will Deacon <will@kernel.org>
+> >  M:	Peter Zijlstra <peterz@infradead.org>
+> > -R:	Boqun Feng <boqun.feng@gmail.com>
+> > +M:	Boqun Feng <boqun.feng@gmail.com>
+> >  R:	Mark Rutland <mark.rutland@arm.com>
+> >  L:	linux-kernel@vger.kernel.org
+> >  S:	Maintained
+> > @@ -3467,6 +3467,8 @@ F:	arch/*/include/asm/atomic*.h
+> >  F:	include/*/atomic*.h
+> >  F:	include/linux/refcount.h
+> >  F:	scripts/atomic/
+> > +F:	rust/kernel/sync/atomic.rs
+> > +F:	rust/kernel/sync/atomic/
+> >  
+> >  ATTO EXPRESSSAS SAS/SATA RAID SCSI DRIVER
+> >  M:	Bradley Grove <linuxdrivers@attotech.com>
+> > diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
+> > index 48e7029f1054..99e6e2b2867f 100644
+> > --- a/arch/arm64/kernel/cpufeature.c
+> > +++ b/arch/arm64/kernel/cpufeature.c
+> > @@ -1601,6 +1601,8 @@ static bool
+> >  has_cpuid_feature(const struct arm64_cpu_capabilities *entry, int scope)
+> >  {
+> >  	u64 val = read_scoped_sysreg(entry, scope);
+> > +	if (entry->capability == ARM64_HAS_LSE_ATOMICS)
+> > +		return false;
+> >  	return feature_matches(val, entry);
+> >  }
+> >  
+> > diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
+> > index 0ab20975a3b5..66ac3752ca71 100644
+> > --- a/rust/kernel/sync.rs
+> > +++ b/rust/kernel/sync.rs
+> > @@ -8,6 +8,7 @@
+> >  use crate::types::Opaque;
+> >  
+> >  mod arc;
+> > +pub mod atomic;
+> >  mod condvar;
+> >  pub mod lock;
+> >  mod locked_by;
+> > diff --git a/rust/kernel/sync/atomic.rs b/rust/kernel/sync/atomic.rs
+> > new file mode 100644
+> > index 000000000000..b0f852cf1741
+> > --- /dev/null
+> > +++ b/rust/kernel/sync/atomic.rs
+> > @@ -0,0 +1,63 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +
+> > +//! Atomic primitives.
+> > +//!
+> > +//! These primitives have the same semantics as their C counterparts, for precise definitions of
+> > +//! the semantics, please refer to tools/memory-model. Note that Linux Kernel Memory (Consistency)
+> > +//! Model is the only model for Rust development in kernel right now, please avoid to use Rust's
+> > +//! own atomics.
+> > +
+> > +use crate::bindings::{atomic64_t, atomic_t};
+> > +use crate::types::Opaque;
+> > +
+> > +mod r#impl;
+> > +
+> > +/// Atomic 32bit signed integers.
+> > +pub struct AtomicI32(Opaque<atomic_t>);
+> > +
+> > +/// Atomic 64bit signed integers.
+> > +pub struct AtomicI64(Opaque<atomic64_t>);
 > 
-> - Arnaldo
->  
+> 
+> Can we avoid two types and use a generic `Atomic<T>` and then implement
+> on `Atomic<i32>` and `Atomic<i64>` instead? Like the recent
+> generic NonZero in Rust standard library or the atomic crate
+> (https://docs.rs/atomic/).
+> 
 
-Do we need to make it so that if any of the Makefiles are touched it
-does a clean? I'm assuming that was the cause of the issue I experienced
-here and that the Makefile and/or Build files aren't mentioned as
-dependencies of any target.
+We can always add a layer on top of what we have here to provide the
+generic `Atomic<T>`. However, I personally don't think generic
+`Atomic<T>` is a good idea, for a few reasons:
 
->>> Ian Rogers (7):
->>>   perf ui: Make ui its own library
->>>   perf pmu-events: Make pmu-events a library
->>>   perf test: Make tests its own library
->>>   perf bench: Make bench its own library
->>>   perf util: Make util its own library
->>>   perf python: Switch module to linking libraries from building source
->>>   perf python: Clean up build dependencies
->>>
->>>  tools/perf/Build                              |  14 +-
->>>  tools/perf/Makefile.config                    |   5 +
->>>  tools/perf/Makefile.perf                      |  66 ++-
->>>  tools/perf/arch/Build                         |   4 +-
->>>  tools/perf/arch/arm/Build                     |   4 +-
->>>  tools/perf/arch/arm/tests/Build               |   8 +-
->>>  tools/perf/arch/arm/util/Build                |  10 +-
->>>  tools/perf/arch/arm64/Build                   |   4 +-
->>>  tools/perf/arch/arm64/tests/Build             |   8 +-
->>>  tools/perf/arch/arm64/util/Build              |  20 +-
->>>  tools/perf/arch/csky/Build                    |   2 +-
->>>  tools/perf/arch/csky/util/Build               |   6 +-
->>>  tools/perf/arch/loongarch/Build               |   2 +-
->>>  tools/perf/arch/loongarch/util/Build          |   8 +-
->>>  tools/perf/arch/mips/Build                    |   2 +-
->>>  tools/perf/arch/mips/util/Build               |   6 +-
->>>  tools/perf/arch/powerpc/Build                 |   4 +-
->>>  tools/perf/arch/powerpc/tests/Build           |   6 +-
->>>  tools/perf/arch/powerpc/util/Build            |  24 +-
->>>  tools/perf/arch/riscv/Build                   |   2 +-
->>>  tools/perf/arch/riscv/util/Build              |   8 +-
->>>  tools/perf/arch/s390/Build                    |   2 +-
->>>  tools/perf/arch/s390/util/Build               |  16 +-
->>>  tools/perf/arch/sh/Build                      |   2 +-
->>>  tools/perf/arch/sh/util/Build                 |   2 +-
->>>  tools/perf/arch/sparc/Build                   |   2 +-
->>>  tools/perf/arch/sparc/util/Build              |   2 +-
->>>  tools/perf/arch/x86/Build                     |   6 +-
->>>  tools/perf/arch/x86/tests/Build               |  20 +-
->>>  tools/perf/arch/x86/util/Build                |  42 +-
->>>  tools/perf/bench/Build                        |  46 +-
->>>  tools/perf/scripts/Build                      |   4 +-
->>>  tools/perf/scripts/perl/Perf-Trace-Util/Build |   2 +-
->>>  .../perf/scripts/python/Perf-Trace-Util/Build |   2 +-
->>>  tools/perf/tests/Build                        | 140 +++----
->>>  tools/perf/tests/workloads/Build              |  12 +-
->>>  tools/perf/ui/Build                           |  18 +-
->>>  tools/perf/ui/browsers/Build                  |  14 +-
->>>  tools/perf/ui/tui/Build                       |   8 +-
->>>  tools/perf/util/Build                         | 394 +++++++++---------
->>>  tools/perf/util/arm-spe-decoder/Build         |   2 +-
->>>  tools/perf/util/cs-etm-decoder/Build          |   2 +-
->>>  tools/perf/util/hisi-ptt-decoder/Build        |   2 +-
->>>  tools/perf/util/intel-pt-decoder/Build        |   2 +-
->>>  tools/perf/util/perf-regs-arch/Build          |  18 +-
->>>  tools/perf/util/python-ext-sources            |  53 ---
->>>  tools/perf/util/python.c                      | 271 +++++-------
->>>  tools/perf/util/scripting-engines/Build       |   4 +-
->>>  tools/perf/util/setup.py                      |  33 +-
->>>  49 files changed, 612 insertions(+), 722 deletions(-)
->>>  delete mode 100644 tools/perf/util/python-ext-sources
->>>
+*	I'm not sure it will bring benefits to users, the current atomic
+	users in kernel are pretty specific on the size of atomic they
+	use, so they want to directly use AtomicI32 or AtomicI64 in
+	their type definitions rather than use a `Atomic<T>` where their
+	users can provide type later.
+
+*	I can also see the future where we have different APIs on
+	different types of atomics, for example, we could have a:
+
+		impl AtomicI64 {
+		    pub fn split(&self) -> (&AtomicI32, &AtomicI32)
+		}
+
+	which doesn't exist for AtomicI32. Note this is not a UB because
+	we write our atomic implementation in asm, so it's perfectly
+	fine for mix-sized atomics.
+
+So let's start with some basic and simple until we really have a need
+for generic `Atomic<T>`. Thoughts?
+
+Regards,
+Boqun
+
+> I think this is better for ergonomics. The impl do need some extra
+> casting though.
+> 
+> Best,
+> Gary
