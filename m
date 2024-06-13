@@ -1,38 +1,34 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20BCF134409;
-	Thu, 13 Jun 2024 10:03:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 633C025632;
+	Thu, 13 Jun 2024 10:36:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718272987; cv=none; b=tC7jmHQ9xKhItrBQXQmYz3FNHLKDQNA0/x0CHLf9TVenGVNn4eNR4TcU+00DL7Sm9HaKSjipj1LZizmpsgkEwqggt6xygjDcKKX0z4PFYt5QVB0Y+b0ixzCXi2vkzdT11MbzgukLnXhFWUqry13PeW52lraB/drG9bw09kCCeHI=
+	t=1718274986; cv=none; b=b0z2+vRFtNbsGtRSzTZBvxDzirSZ/SgbSwz+UCEiDSHbsA0usAbG9R60h55u+su++pl81lOa6pOLVTofLQJfP6Fj/BcykqpQ4wZRqAfjUx2HDgboiRdMSay01NwV2k75CsrrfZef2osTTY2ijzAsSRvQInEnmevc1NLMg2toMsc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718272987; c=relaxed/simple;
-	bh=CqHO2/KK7eIKe3EFoA4TtHPEMTMPdLClBxAJ4UmrvLg=;
+	s=arc-20240116; t=1718274986; c=relaxed/simple;
+	bh=cHpapWwllRR92WhnROTVW7uuoH/zjVZME5D0Uwcllug=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KXEbRwvpUv0yDre/bda07f9U93V5poLFzW8WRCqXVi3juaBI/RjmH5CmvqwrsdZwxAgvZ1OnCZMwtzsoVbOQotE8mnl7Vg5APzQQAAT21ifCZBx9XtcMwA58yBnjXizWxf/jHl6pVkA6HIdkNwFI2GvoXODN9gU1Ylu4Ss34FHY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NqNPZhTJ; arc=none smtp.client-ip=10.30.226.201
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NqNPZhTJ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18679C2BBFC;
-	Thu, 13 Jun 2024 10:03:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718272986;
-	bh=CqHO2/KK7eIKe3EFoA4TtHPEMTMPdLClBxAJ4UmrvLg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=NqNPZhTJEpyCvzXfGU5AnNh2gavLMwsYzQ5eTYx5mLDPdSSIqSRAKZLJPIpCHaYJR
-	 ZbGmNlNWp/ql5XfAGCsjaIZewR5YWdNBQPF/JbE+b4CeU2YsQUlvxT4PItgpgWF4TL
-	 CUhzvnxOEk/9SvVUdnWqARHGMUiC0hjz2Vn2kezE=
-Date: Thu, 13 Jun 2024 12:03:03 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+	 Content-Type:Content-Disposition:In-Reply-To; b=nFCdRzakVCdoG/G+WWu26nBhHmeEZcLdDqcRVoykWKUeiimrjmdDslp/mHZPrb2aU0SC3R3psftxrijHZc9r+jKGVNivZ8AOdcjPpcSFD1BPNTyecmuUdubcv44gONbq3YnHkaecqzah69Gti5z4N5tWKZHeECJUyiTsEgFCuXo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 4C82113D5;
+	Thu, 13 Jun 2024 03:36:43 -0700 (PDT)
+Received: from J2N7QTR9R3 (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id CD2203F5A1;
+	Thu, 13 Jun 2024 03:36:12 -0700 (PDT)
+Date: Thu, 13 Jun 2024 11:36:10 +0100
+From: Mark Rutland <mark.rutland@arm.com>
 To: Peter Zijlstra <peterz@infradead.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>, rust-for-linux@vger.kernel.org,
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Boqun Feng <boqun.feng@gmail.com>, rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
 	llvm@lists.linux.dev, Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
 	Wedson Almeida Filho <wedsonaf@gmail.com>,
 	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@samsung.com>,
 	Alice Ryhl <aliceryhl@google.com>,
@@ -49,7 +45,6 @@ Cc: Boqun Feng <boqun.feng@gmail.com>, rust-for-linux@vger.kernel.org,
 	Nathan Chancellor <nathan@kernel.org>,
 	Nick Desaulniers <ndesaulniers@google.com>,
 	kent.overstreet@gmail.com, elver@google.com,
-	Mark Rutland <mark.rutland@arm.com>,
 	Thomas Gleixner <tglx@linutronix.de>,
 	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
 	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
@@ -59,7 +54,7 @@ Cc: Boqun Feng <boqun.feng@gmail.com>, rust-for-linux@vger.kernel.org,
 	linux-fsdevel@vger.kernel.org, Trevor Gross <tmgross@umich.edu>,
 	dakr@redhat.com
 Subject: Re: [RFC 1/2] rust: Introduce atomic API helpers
-Message-ID: <2024061353-stillness-unearned-dc4f@gregkh>
+Message-ID: <ZmrLmnPz_0Q8oXny@J2N7QTR9R3>
 References: <20240612223025.1158537-1-boqun.feng@gmail.com>
  <20240612223025.1158537-2-boqun.feng@gmail.com>
  <2024061341-whole-snowfall-89a6@gregkh>
@@ -92,4 +87,19 @@ On Thu, Jun 13, 2024 at 11:17:47AM +0200, Peter Zijlstra wrote:
 > Also, these files don't change too often. And if you look, there's a
 > hash in those files which is used to check if things somehow got stale.
 
-Ok, fair enough, if you all don't think this will change often...
+That and:
+
+1) The generation is currently slow (multiple seconds), which gets
+   people angry if they have to wait for it for a clean build. Improving
+   that would require changing the way we generate the headers (e.g.
+   rewrite that in something else to avoid the subshell fork problem).
+
+   Last I looked there wasn't an obvious better way to do this, because
+   nice options ended up pulling in more build-time dependencies.
+
+2) Linus wanted git grep to work, which meant checking in the generated
+   files:
+
+   https://lore.kernel.org/all/CA+55aFxjU0op8QLLu0n-RjHBs7gQsLvD8jcyedgw6jeZFN7B+Q@mail.gmail.com/
+
+Mark.
