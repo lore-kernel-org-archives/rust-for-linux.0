@@ -1,114 +1,91 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F66B1946CA;
-	Fri, 14 Jun 2024 09:51:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2FE81922C2
+	for <rust-for-linux@vger.kernel.org>; Fri, 14 Jun 2024 09:58:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718358699; cv=none; b=P/VqgciYAcMTdqZanNfyk6wFv4pPLFfk403Grd+FVBJLCLQm3M/zJQnVKJ7VB/0JkcDJF8owAZuTP0riEXBpJatYsEBbWWsFSfhbddL+UARl9ctOQXFXrm3u8KzpE2tuuWgaVvU8Q/JoH+jJW4nFON2HUTdQtJPefZgxF0Opcl8=
+	t=1718359087; cv=none; b=Qrmmln7+X6DDB1ZPjIZfIk3Oi8ZopTRRS0QzyqCg3bixiUL5oRKVxF7zIOI04t6E/tmkBzbVXm6EKv54QB8H4vIjNpgQf0UVgKneB4JbUGYXBXnSIk70ful7ksM2zVbRm6uvme8Bm47d48Kj2/Dpexi9eX3TguBLXNg8P77St6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718358699; c=relaxed/simple;
-	bh=YY13vYUMWiH23OOj6eMMyehLr25oWbUwaRTSmzzu/jM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ekuB2KHBAT5s9MgIw8n8+R/lTopXKm1EZyt/ANvdtsYgAKv+AW4TezOWeiMUQfpZnQ6/XBiu298/roJpe3DOHbJ8jbizFGEZClJIgQYknnlnc/uyMvnfCMjDQFwJrSnPcibG3IZJ6MZmtgtGU3KrOSNg15gJvpNrgAYrG/2xAiY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=bKHqjXQG; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1718359087; c=relaxed/simple;
+	bh=PppIF2oxzLoMr5bhd36wr7h3NLYqoJ5XAUDcJvtC5DU=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=MjxRpEnZ6V6UjJdCIyBX1W+Gq1rKEWwfftKl6jExt4D411tjnyt2GboYKhDFaN/qKrXKK2jbPYPdf4AwFJwyP97ni58p/mtXoKNWhKBln/Ka80vETPLafiJJHPWaAA0kaM6z1qrOv734QNXf9+spn/fN+vPdJZbkrw+lmrs89eo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NfYasPZM; arc=none smtp.client-ip=209.85.216.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="bKHqjXQG"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=D9R7E/DpQNgNsvkfegKfRFjQEUms/ZvV0CqLhYXEFAA=; b=bKHqjXQGGIli99vP1x6nMU+0Wv
-	brwBnfym82dpij06ITc7lhF4/DrVQ57Rc9tY++BYcFExsfbjR0XKprP2XHneZN/UP/9xwBhuyMBiI
-	wlhFvx/kqIHBrq3o7fR9RdOOdsZlHMzYQYnRJ3HqOI6pHMMTMiT5FUAJ5QPUUpn+gWyZPCrhkYiSf
-	FeGGy4wnXf1PgUVqVAji84k1epbdnE9UJlWLnyO8KMpSqvA4Bw/zgpJmJ5AzyWVkmbRsjQhll5Dul
-	NgxZPYtR27wlrT+/wqmquormdS9nbzjQp1UOplrndUGRb45Nl1sOtfuBrAYzEX/zLdOFxHLC6Lgwn
-	ndhwOYFA==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sI3af-0000000GqAB-0CFR;
-	Fri, 14 Jun 2024 09:51:25 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id A8C26300886; Fri, 14 Jun 2024 11:51:24 +0200 (CEST)
-Date: Fri, 14 Jun 2024 11:51:24 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: Gary Guo <gary@garyguo.net>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
-	llvm@lists.linux.dev, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Andrea Parri <parri.andrea@gmail.com>,
-	Will Deacon <will@kernel.org>, Nicholas Piggin <npiggin@gmail.com>,
-	David Howells <dhowells@redhat.com>,
-	Jade Alglave <j.alglave@ucl.ac.uk>,
-	Luc Maranget <luc.maranget@inria.fr>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Akira Yokosawa <akiyks@gmail.com>,
-	Daniel Lustig <dlustig@nvidia.com>,
-	Joel Fernandes <joel@joelfernandes.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	kent.overstreet@gmail.com,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, elver@google.com,
-	Mark Rutland <mark.rutland@arm.com>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	torvalds@linux-foundation.org, linux-arm-kernel@lists.infradead.org,
-	linux-fsdevel@vger.kernel.org, Trevor Gross <tmgross@umich.edu>,
-	dakr@redhat.com
-Subject: Re: [RFC 2/2] rust: sync: Add atomic support
-Message-ID: <20240614095124.GN8774@noisy.programming.kicks-ass.net>
-References: <20240612223025.1158537-1-boqun.feng@gmail.com>
- <20240612223025.1158537-3-boqun.feng@gmail.com>
- <20240613144432.77711a3a@eugeo>
- <ZmseosxVQXdsQjNB@boqun-archlinux>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NfYasPZM"
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-2c2cb6750fcso338223a91.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 14 Jun 2024 02:58:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1718359086; x=1718963886; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=iKc/kM/hiKTHP/cdFaq30RsEqXjf0iQQycsBO/HV2Kw=;
+        b=NfYasPZMUMW1RkNq4Z8CNu+ZNDEiS4Vsk4uIGZtlVC2q9yJ7NsJPKiNIW1CLYJJy30
+         ErEnX3x/AKq6Vpu1c8VpOIdTtJ9X4sbv4ozkmwl3bFp4MsjW/DOF+C2cn9U86PuoEO8U
+         pMLYcW0MYQ0KtI11kS9pPD3VEc9u5BHFXsXn34liTkK9lMlFjzYLBrKLvI9W+Nbce0iD
+         OfcjNH7bruAjm7jHh0AobbcGI244OE9vQoozx35leRSX6yZH+wTQw73n3gP7+S1F9u9r
+         JOfAcy3IMwV/QsUJG2y0T7Du01Idb24lki3D4Xj4IEM2Y3YlKX+VgqPt8uRmu7nGpjXI
+         6qKQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718359086; x=1718963886;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=iKc/kM/hiKTHP/cdFaq30RsEqXjf0iQQycsBO/HV2Kw=;
+        b=IH/J5o15YsQr23jOfumJYF1Z105+c1yCI37NkjOEgVqL1iUw8EP1oWvGD0dBixB/aK
+         v4+524NZPNuNLNGG2JQ9WfFfa5qeaNjG7ZCwgdNjiL+N6FlEgG8+mGQGYMxuRphQTX8X
+         kIDRWxz00awXa6h3artxtqQfkDR7l3WvNfUddDBLq1eQU//Zmf7IgVir4MuaCY8rQkNq
+         0V1kFj4YJuEunzM2pmhYMKOQfbAG/i3y8JyE4FD2Lavi8yurwCJC+bai0UgGMWZtvhwR
+         xbOlwqS4Qj1VkC0I/YDAm/IzoaG32IY1Ej3wdiyaMEg2Ku/gkzTeKP2pP/jo7zbDHYyL
+         BEYg==
+X-Forwarded-Encrypted: i=1; AJvYcCWAF8WU/Jr8TF68YON+7lPSSvrNThZoIdmM5OqWndL7leH8b31sSWRC53DeDhPEb3b8eBcDwxdEwfGWX5Lpaf9LoqmHhE5v4MqiF0MyO4Q=
+X-Gm-Message-State: AOJu0Yx50H0FTtCh6kbweebh3HlXMw845eVTVt1I3JKAxaoHqZhxVrB6
+	+PUXss8MKC6TU3ab9Bpo5ihIxt+9AKlN1RVyy8bXtrnFSXgNpzmzXrjnxvJT
+X-Google-Smtp-Source: AGHT+IGhuNf9wcdDmq7YldpGzfZSty3Z4zF6vFFnltgFetdqy9Em0q7eCVbpjGBSU0iQsOn3Oy/Slg==
+X-Received: by 2002:a05:6a21:6da3:b0:1af:d9a3:f3a3 with SMTP id adf61e73a8af0-1bae8253a95mr2388577637.4.1718359085751;
+        Fri, 14 Jun 2024 02:58:05 -0700 (PDT)
+Received: from localhost (p5261226-ipxg23801hodogaya.kanagawa.ocn.ne.jp. [180.15.241.226])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f855efea73sm28320145ad.182.2024.06.14.02.58.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 14 Jun 2024 02:58:05 -0700 (PDT)
+Date: Fri, 14 Jun 2024 18:57:52 +0900 (JST)
+Message-Id: <20240614.185752.1273244464018578044.fujita.tomonori@gmail.com>
+To: benno.lossin@proton.me
+Cc: fujita.tomonori@gmail.com, tmgross@umich.edu,
+ rust-for-linux@vger.kernel.org, andrew@lunn.ch
+Subject: Re: [RFC PATCH v4 1/2] rust: net::phy unified read/write API for
+ C22 and C45 registers
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <77052e4e-c7d8-4e2c-8bb1-274c7cd3f555@proton.me>
+References: <CALNs47vVU-rD99zrGPT2DG9BsAEwQdjVwaBfFx-268TbsEc3rg@mail.gmail.com>
+	<20240614.083206.60448678473106718.fujita.tomonori@gmail.com>
+	<77052e4e-c7d8-4e2c-8bb1-274c7cd3f555@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZmseosxVQXdsQjNB@boqun-archlinux>
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-On Thu, Jun 13, 2024 at 09:30:26AM -0700, Boqun Feng wrote:
+On Fri, 14 Jun 2024 08:30:56 +0000
+Benno Lossin <benno.lossin@proton.me> wrote:
 
-> We can always add a layer on top of what we have here to provide the
-> generic `Atomic<T>`. However, I personally don't think generic
-> `Atomic<T>` is a good idea, for a few reasons:
+>>> It should probably also get Benno's review since he suggested the API.
+>> 
+>> Indeed. Benno, that patchset looks good?
 > 
-> *	I'm not sure it will bring benefits to users, the current atomic
-> 	users in kernel are pretty specific on the size of atomic they
-> 	use, so they want to directly use AtomicI32 or AtomicI64 in
-> 	their type definitions rather than use a `Atomic<T>` where their
-> 	users can provide type later.
-> 
-> *	I can also see the future where we have different APIs on
-> 	different types of atomics, for example, we could have a:
-> 
-> 		impl AtomicI64 {
-> 		    pub fn split(&self) -> (&AtomicI32, &AtomicI32)
-> 		}
-> 
-> 	which doesn't exist for AtomicI32. Note this is not a UB because
-> 	we write our atomic implementation in asm, so it's perfectly
-> 	fine for mix-sized atomics.
-> 
-> So let's start with some basic and simple until we really have a need
-> for generic `Atomic<T>`. Thoughts?
+> I haven't had a lot of time recently, I can try to take a look today or
+> the next few days.
 
-Not on the generic thing, but on the lack of long. atomic_long_t is
-often used when we have pointers with extra bits on. Then you want a
-number type in order to be able to manipulate the low bits.
+Sorry, no need to rust.
+
+> I am a bit confused though, why is this marked as RFC? The previous
+> patches weren't RFCs.
+
+Oops, my bad. Shouldn't have benn marked as RFC.
