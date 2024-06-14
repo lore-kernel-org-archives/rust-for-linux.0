@@ -1,244 +1,91 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A8F31946A7;
-	Fri, 14 Jun 2024 10:41:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-40135.protonmail.ch (mail-40135.protonmail.ch [185.70.40.135])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87D2A19AD91;
+	Fri, 14 Jun 2024 12:42:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.135
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718361664; cv=none; b=Sx5l7sE2zfq1/c30R0zmXkpDbzgbGGkJN9C1M1VoLJlSnQXpkjoEXjm+f8TIc41WnBAhDzMSQ5ncdmmjxYWyNJIhqXHgPzXHR6zsZVPZII3MzxyWTqA9+Yrp1jsqJONyNgFo/JHpy9v0TOUg03LxRNgg2Njqgxv2VhZdoGAyEKA=
+	t=1718368981; cv=none; b=aTNfdsBVNucGu35kBrcMH+1a6XomFS9DLOAaXFgf5ToZkAnQHoe8gMiZNv+DYtGpQ6HGHZxxfcEzkGq3QqyhRbh58k3hfK07DPn0VKuo3fOPcawe1KIEfi4icDsNit5PFTXBl+qfg1te05XrWUXF7s9Le+zps2RvBFofBvquWAw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718361664; c=relaxed/simple;
-	bh=AmUgqvZgbKj2NQIuvs3Dt8TOXhMLfPmQOpUxQzf8iYk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Evrx9fNGU2jVeYxwLjvjMGFXC+H+z4aLP/LKiZRCe0CFw0uL1wELo5Zx8soyJQHg5iLj5qgP+iZZVBuGOvIhos/UwR12rWu/21tDb8u/q3gPn+dZaRZYaVyKwEPIP94yRxuKtTzjHnBCQOArvPUW6OdhdcHHzatf/KQCwbRrX34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1476B1480;
-	Fri, 14 Jun 2024 03:41:20 -0700 (PDT)
-Received: from J2N7QTR9R3.cambridge.arm.com (usa-sjc-imap-foss1.foss.arm.com [10.121.207.14])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id B4E003F5A1;
-	Fri, 14 Jun 2024 03:40:49 -0700 (PDT)
-Date: Fri, 14 Jun 2024 11:40:47 +0100
-From: Mark Rutland <mark.rutland@arm.com>
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arch@vger.kernel.org, llvm@lists.linux.dev,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Andrea Parri <parri.andrea@gmail.com>,
-	Will Deacon <will@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	David Howells <dhowells@redhat.com>,
-	Jade Alglave <j.alglave@ucl.ac.uk>,
-	Luc Maranget <luc.maranget@inria.fr>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Akira Yokosawa <akiyks@gmail.com>,
-	Daniel Lustig <dlustig@nvidia.com>,
-	Joel Fernandes <joel@joelfernandes.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	kent.overstreet@gmail.com,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, elver@google.com,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	torvalds@linux-foundation.org, linux-arm-kernel@lists.infradead.org,
-	linux-fsdevel@vger.kernel.org, Trevor Gross <tmgross@umich.edu>,
-	dakr@redhat.com
-Subject: Re: [RFC 2/2] rust: sync: Add atomic support
-Message-ID: <ZmweL12SL7Unlfpe@J2N7QTR9R3.cambridge.arm.com>
-References: <20240612223025.1158537-1-boqun.feng@gmail.com>
- <20240612223025.1158537-3-boqun.feng@gmail.com>
+	s=arc-20240116; t=1718368981; c=relaxed/simple;
+	bh=R35MwdhkDzAwQQIkOBIkyiAwfm1duRkanzr02CqKYFs=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=lRF2VrbVnfza8ukAQpbzlWeRShTO4uEG+tlFgnsyMevaTNkRyiEsHkEwfjPCyu7uTWFY01fPycM7XEhsdEpz3kbyron79KQrPMdnqLpkZbio0xhKMo5Mb55JpyT5Ino9RNctRscH29rpIvFmL+XLHFmx12RU2ryWuVno8OLeNbM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=fo0v88/d; arc=none smtp.client-ip=185.70.40.135
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="fo0v88/d"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1718368971; x=1718628171;
+	bh=/P4Ipyi5V6XC49ifR6u6XzXB7A6kcDydd2cvy9jsBTs=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=fo0v88/dWr1ArYRzF6gRPHiUh6wNMMwjTG545+fQA16wqy3rMw0m3Ji9M1PSyZjdN
+	 DY3/CrNeJggZTkIva5imy27cnX4KCUK7nKumSxnF+LpRkjICj4WIuLPvdnFj56wWfv
+	 yjFw++7rnh2CJN/xYBZkjMoCe+o9HW9Twuhc2rRx/XO4mJ5AMhM70qe0AUzC42KHDT
+	 AX+UsBmsEtzoV9+7uv0/gu3ixqrxNThB8YlyZmSCAOTBeEqMhZOhFDFJg7sPxwcETI
+	 SqcnT8LJMRaZXtQzW1uVJoGDcjQFRJKt3ZVxB75MiyZerO4A2IONn3GZtDFmoXYjuv
+	 1wTo+R5/J1AfA==
+Date: Fri, 14 Jun 2024 12:42:45 +0000
+To: Andreas Hindborg <nmi@metaspace.dk>, Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>, Keith Busch <kbusch@kernel.org>, Damien Le Moal <dlemoal@kernel.org>, Bart Van Assche <bvanassche@acm.org>, Hannes Reinecke <hare@suse.de>, Ming Lei <ming.lei@redhat.com>, "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Andreas Hindborg <a.hindborg@samsung.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Greg KH <gregkh@linuxfoundation.org>, Matthew Wilcox <willy@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Chaitanya Kulkarni <chaitanyak@nvidia.com>, Luis Chamberlain <mcgrof@kernel.org>, Yexuan Yang <1182282462@bupt.edu.cn>, =?utf-8?Q?Sergio_Gonz=C3=A1lez_Collado?= <sergio.collado@gmail.com>, Joel Granados <j.granados@samsung.com>, "Pankaj Raghav (Samsung)" <kernel@pankajraghav.com>, Daniel Gomez <da.gomez@samsung.com>, Niklas Cassel <Niklas.Cassel@wdc.com>, Philipp Stanner <pstanner@redhat.com>, Conor Dooley <conor@kernel.org>, Johannes Thumshirn <Johannes.Thumshirn@wdc.com>, =?utf-8?Q?Matias_Bj=C3=B8rling?= <m@bjorling.me>, open list <linux-kernel@vger.kernel.org>,
+	"rust-for-linux@vger.kernel.org" <rust-for-linux@vger.kernel.org>, "lsf-pc@lists.linux-foundation.org" <lsf-pc@lists.linux-foundation.org>, "gost.dev@samsung.com" <gost.dev@samsung.com>
+Subject: Re: [PATCH v6 1/3] rust: block: introduce `kernel::block::mq` module
+Message-ID: <e9a36116-6cb9-479a-a883-dd36f78a8577@proton.me>
+In-Reply-To: <20240611114551.228679-2-nmi@metaspace.dk>
+References: <20240611114551.228679-1-nmi@metaspace.dk> <20240611114551.228679-2-nmi@metaspace.dk>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: 9d41ef20cbfc7aaec43b1f1474cb4170cff5c190
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240612223025.1158537-3-boqun.feng@gmail.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jun 12, 2024 at 03:30:25PM -0700, Boqun Feng wrote:
-> Provide two atomic types: AtomicI32 and AtomicI64 with the existing
-> implemenation of C atomics. These atomics have the same semantics of the
-> corresponding LKMM C atomics, and using one memory (ordering) model
-> certainly reduces the reasoning difficulty and potential bugs from the
-> interaction of two different memory models.
-> 
-> Also bump my role to the maintainer of ATOMIC INFRASTRUCTURE to reflect
-> my responsiblity on these Rust APIs.
-> 
-> Note that `Atomic*::new()`s are implemented vi open coding on struct
-> atomic*_t. This allows `new()` being a `const` function, so that it can
-> be used in constant contexts.
-> 
-> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-
-I have a few minor comments below.
-
+On 11.06.24 13:45, Andreas Hindborg wrote:
+> From: Andreas Hindborg <a.hindborg@samsung.com>
+>=20
+> Add initial abstractions for working with blk-mq.
+>=20
+> This patch is a maintained, refactored subset of code originally publishe=
+d
+> by Wedson Almeida Filho <wedsonaf@gmail.com> [1].
+>=20
+> [1] https://github.com/wedsonaf/linux/tree/f2cfd2fe0e2ca4e90994f96afe268b=
+bd4382a891/rust/kernel/blk/mq.rs
+>=20
+> Cc: Wedson Almeida Filho <wedsonaf@gmail.com>
+> Signed-off-by: Andreas Hindborg <a.hindborg@samsung.com>
 > ---
->  MAINTAINERS                       |    4 +-
->  arch/arm64/kernel/cpufeature.c    |    2 +
->  rust/kernel/sync.rs               |    1 +
->  rust/kernel/sync/atomic.rs        |   63 ++
->  rust/kernel/sync/atomic/impl.rs   | 1375 +++++++++++++++++++++++++++++
->  scripts/atomic/gen-atomics.sh     |    1 +
->  scripts/atomic/gen-rust-atomic.sh |  136 +++
->  7 files changed, 1581 insertions(+), 1 deletion(-)
->  create mode 100644 rust/kernel/sync/atomic.rs
->  create mode 100644 rust/kernel/sync/atomic/impl.rs
->  create mode 100755 scripts/atomic/gen-rust-atomic.sh
-> 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index d6c90161c7bf..a8528d27b260 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -3458,7 +3458,7 @@ F:	drivers/input/touchscreen/atmel_mxt_ts.c
->  ATOMIC INFRASTRUCTURE
->  M:	Will Deacon <will@kernel.org>
->  M:	Peter Zijlstra <peterz@infradead.org>
-> -R:	Boqun Feng <boqun.feng@gmail.com>
-> +M:	Boqun Feng <boqun.feng@gmail.com>
->  R:	Mark Rutland <mark.rutland@arm.com>
->  L:	linux-kernel@vger.kernel.org
->  S:	Maintained
-> @@ -3467,6 +3467,8 @@ F:	arch/*/include/asm/atomic*.h
->  F:	include/*/atomic*.h
->  F:	include/linux/refcount.h
->  F:	scripts/atomic/
-> +F:	rust/kernel/sync/atomic.rs
-> +F:	rust/kernel/sync/atomic/
->  
->  ATTO EXPRESSSAS SAS/SATA RAID SCSI DRIVER
->  M:	Bradley Grove <linuxdrivers@attotech.com>
-> diff --git a/arch/arm64/kernel/cpufeature.c b/arch/arm64/kernel/cpufeature.c
-> index 48e7029f1054..99e6e2b2867f 100644
-> --- a/arch/arm64/kernel/cpufeature.c
-> +++ b/arch/arm64/kernel/cpufeature.c
-> @@ -1601,6 +1601,8 @@ static bool
->  has_cpuid_feature(const struct arm64_cpu_capabilities *entry, int scope)
->  {
->  	u64 val = read_scoped_sysreg(entry, scope);
-> +	if (entry->capability == ARM64_HAS_LSE_ATOMICS)
-> +		return false;
->  	return feature_matches(val, entry);
->  }
+>  rust/bindings/bindings_helper.h    |   3 +
+>  rust/helpers.c                     |  16 ++
+>  rust/kernel/block.rs               |   5 +
+>  rust/kernel/block/mq.rs            |  98 +++++++++++
+>  rust/kernel/block/mq/gen_disk.rs   | 215 ++++++++++++++++++++++++
+>  rust/kernel/block/mq/operations.rs | 245 ++++++++++++++++++++++++++++
+>  rust/kernel/block/mq/raw_writer.rs |  55 +++++++
+>  rust/kernel/block/mq/request.rs    | 253 +++++++++++++++++++++++++++++
+>  rust/kernel/block/mq/tag_set.rs    |  86 ++++++++++
+>  rust/kernel/error.rs               |   6 +
+>  rust/kernel/lib.rs                 |   2 +
+>  11 files changed, 984 insertions(+)
+>  create mode 100644 rust/kernel/block.rs
+>  create mode 100644 rust/kernel/block/mq.rs
+>  create mode 100644 rust/kernel/block/mq/gen_disk.rs
+>  create mode 100644 rust/kernel/block/mq/operations.rs
+>  create mode 100644 rust/kernel/block/mq/raw_writer.rs
+>  create mode 100644 rust/kernel/block/mq/request.rs
+>  create mode 100644 rust/kernel/block/mq/tag_set.rs
 
-As per other replies, this'll obviously need to go.
+Reviewed-by: Benno Lossin <benno.lossin@proton.me>
 
-> diff --git a/rust/kernel/sync/atomic.rs b/rust/kernel/sync/atomic.rs
-> new file mode 100644
-> index 000000000000..b0f852cf1741
-> --- /dev/null
-> +++ b/rust/kernel/sync/atomic.rs
-> @@ -0,0 +1,63 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! Atomic primitives.
-> +//!
-> +//! These primitives have the same semantics as their C counterparts, for precise definitions of
-> +//! the semantics, please refer to tools/memory-model. Note that Linux Kernel Memory (Consistency)
-> +//! Model is the only model for Rust development in kernel right now, please avoid to use Rust's
-> +//! own atomics.
-> +
-> +use crate::bindings::{atomic64_t, atomic_t};
+---
+Cheers,
+Benno
 
-As with the last patch, why no atomic_long_t?
-
-[...]
-
-> +#gen_proto_order_variant(meta, pfx, name, sfx, order, atomic, ty, int, raw, arg...)
-> +gen_proto_order_variant()
-> +{
-> +	local meta="$1"; shift
-> +	local pfx="$1"; shift
-> +	local name="$1"; shift
-> +	local sfx="$1"; shift
-> +	local order="$1"; shift
-> +	local atomic="$1"; shift
-> +	local ty="$1"; shift
-> +	local int="$1"; shift
-> +	local raw="$1"; shift
-> +
-> +	local fn_name="${raw}${pfx}${name}${sfx}${order}"
-> +	local atomicname="${raw}${atomic}_${pfx}${name}${sfx}${order}"
-> +
-> +	local ret="$(gen_ret_type "${meta}" "${int}")"
-> +	local params="$(gen_params "${int}" $@)"
-> +	local args="$(gen_args "$@")"
-> +	local retstmt="$(gen_ret_stmt "${meta}")"
-> +
-> +cat <<EOF
-> +    /// See \`${atomicname}\`.
-> +    #[inline(always)]
-> +    pub fn ${fn_name}(&self${params}) ${ret}{
-> +        // SAFETY:\`self.0.get()\` is a valid pointer.
-> +        unsafe {
-> +            ${retstmt}${atomicname}(${args});
-> +        }
-> +    }
-> +EOF
-> +}
-
-AFAICT the 'ty' argument (AtomicI32/AtomicI64) isn't used and can be
-removed.
-
-Likewise for 'raw'.
-
-> +
-> +cat << EOF
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! Generated by $0
-> +//! DO NOT MODIFY THIS FILE DIRECTLY
-> +
-> +use super::*;
-> +use crate::bindings::*;
-> +
-> +impl AtomicI32 {
-> +EOF
-> +
-> +grep '^[a-z]' "$1" | while read name meta args; do
-> +	gen_proto "${meta}" "${name}" "atomic" "AtomicI32" "i32" "" ${args}
-
-With 'ty' and 'raw' gone, this'd be:
-
-	gen_proto "${meta}" "${name}" "atomic" "i32" ${args}
-
-> +done
-> +
-> +cat << EOF
-> +}
-> +
-> +impl AtomicI64 {
-> +EOF
-> +
-> +grep '^[a-z]' "$1" | while read name meta args; do
-> +	gen_proto "${meta}" "${name}" "atomic64" "AtomicI64" "i64" "" ${args}
-
-With 'ty' and 'raw' gone, this'd be:
-
-	gen_proto "${meta}" "${name}" "atomic64" "i64" ${args}
-
-Mark.
-
-> +done
-> +
-> +cat << EOF
-> +}
-> +
-> +EOF
-> -- 
-> 2.45.2
-> 
