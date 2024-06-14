@@ -1,79 +1,151 @@
-Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5843F13A24B;
-	Fri, 14 Jun 2024 21:22:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C92617FAA4
+	for <rust-for-linux@vger.kernel.org>; Fri, 14 Jun 2024 23:54:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718400163; cv=none; b=WZx+ewLtxT3GZETcRxljiCmxmcPc0mdZfjUOh4XUWyqfYcBt8OQJuEd9CrEudT1q4n4P0dhVE/AZNwD+NZLORFI9u/jrPyV2Lrr+J25PStiig36edQ+V3uY0mpzYxQZA+sFIF3V87/tiXRZAUA8TgwgWusag6rqeP8Xx5MVi0dE=
+	t=1718409276; cv=none; b=T48ck9uDQ/BbW7hgHoB+eYy+01PnKdvPpCMmiLtnaATlFsn4Mp2y8ANoag1XlRLjyF07s1oH/5gIVZPRNbcgJHSrEIecCVNJcC0gyA9zNpf6eMuFmY1b7opqStraZCJvlG6UOeOxtZBKTZg7gH1VzL2//eS0P4sf+GFvcHiDAvk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718400163; c=relaxed/simple;
-	bh=mI0xdPiIrvwp6EccuD83bzOdj0amVBKo2auwQXYt8uE=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Q61tnWaCXIGZQYHYEHlOtSsjB8DrW02zqtDGn9zT2s9hfk8d6jo29gcFiSpwED268xntkWbRo3S43EEGyMQ60/VldFzFngj4ni4WdWk+Om8y4LsJUYDd95ptW3OlTtOVPiQCrWzDEC1W7cpdxyQXee8/QDczuJfAlrCzCLo+nwg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=GGbMHccH; arc=none smtp.client-ip=185.70.40.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1718409276; c=relaxed/simple;
+	bh=eq2bnC+Kto6G+yAEZZDc+NgUyz39TjriuInfX1pG6wg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=h4/HvG4D2rJn+oeLOUFwmQNuYWt0hukONIp/QJd2WQ9C1beH7vgC8aEbP1k5YstsOwcu8JvUvuWrHIcLWVC6X5i1rVuj46icalEFRGYfi6Hm8p7FJl0qIjSjv3Q/G52ptfpDYZvKGenx72wOfgz4eoPPkZiN8P9xpjMYli0Ev74=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk; spf=none smtp.mailfrom=metaspace.dk; dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b=TTf0akaj; arc=none smtp.client-ip=209.85.208.50
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=metaspace.dk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="GGbMHccH"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=masz3u7cozgmbioxpjqwm7i5ae.protonmail; t=1718400152; x=1718659352;
-	bh=mI0xdPiIrvwp6EccuD83bzOdj0amVBKo2auwQXYt8uE=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=GGbMHccHMMsGnA/ccfGbUrR5Ou/GaweRk7E0oAtlGGyBcg52NBBjlrI00Y/agaBDJ
-	 CEufLLgMBzlcAvbGboVOpXkQluxsmGSAzGhdhYEtoFmexZg5DmttSiVAvUGT51qbBe
-	 V33dUaziIsAWC4qndI9dLduaBwSF+BZdcDikAIXaIm1bjM3RIJ/ARE05k6WRxH38GZ
-	 K+dNjGtj7D7LksWZAk+iuEDyO+dWA7bDW9f44Eqxpwld1dTVHkP0nHv0L3ES4lwzdS
-	 7/dA6hIHPXoLvQ25Yht47pYU0Cav3JsEJrb3po6zYvO07E+iCD1RN5VagbqatQnhMM
-	 mb3QBQhupzr1A==
-Date: Fri, 14 Jun 2024 21:22:24 +0000
-To: Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Gary Guo <gary@garyguo.net>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org, llvm@lists.linux.dev, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Alan Stern <stern@rowland.harvard.edu>, Andrea Parri <parri.andrea@gmail.com>, Will Deacon <will@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Nicholas Piggin <npiggin@gmail.com>, David Howells <dhowells@redhat.com>, Jade Alglave <j.alglave@ucl.ac.uk>, Luc Maranget <luc.maranget@inria.fr>, "Paul E. McKenney" <paulmck@kernel.org>, Akira Yokosawa <akiyks@gmail.com>, Daniel Lustig <dlustig@nvidia.com>, Joel Fernandes <joel@joelfernandes.org>, Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, kent.overstreet@gmail.com, Greg Kroah-Hartman
-	<gregkh@linuxfoundation.org>, elver@google.com, Mark Rutland <mark.rutland@arm.com>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, Catalin Marinas <catalin.marinas@arm.com>, torvalds@linux-foundation.org, linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org, Trevor Gross <tmgross@umich.edu>, dakr@redhat.com
-Subject: Re: [RFC 2/2] rust: sync: Add atomic support
-Message-ID: <c1c45a2e-afdf-40a6-9f44-142752368d5e@proton.me>
-In-Reply-To: <ZmxUxaIwHWnB42h-@Boquns-Mac-mini.home>
-References: <20240612223025.1158537-1-boqun.feng@gmail.com> <20240612223025.1158537-3-boqun.feng@gmail.com> <20240613144432.77711a3a@eugeo> <ZmseosxVQXdsQjNB@boqun-archlinux> <CANiq72myhoCCWs7j0eZuxfoYMbTez7cPa795T57+gz2Dpd+xAw@mail.gmail.com> <ZmtC7h7v1t6XJ6EI@boqun-archlinux> <CANiq72=JdqTRPiUfT=-YMTTN+bHeAe2Pba8nERxU3cN8Q-BEOw@mail.gmail.com> <ZmxUxaIwHWnB42h-@Boquns-Mac-mini.home>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 53ca9493f4ed178b60e9c57bdabd3b5e208fb377
+	dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b="TTf0akaj"
+Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-57cb9efd8d1so3838087a12.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 14 Jun 2024 16:54:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=metaspace-dk.20230601.gappssmtp.com; s=20230601; t=1718409271; x=1719014071; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=gZu/IIRvhXvFotOTSriopPgpYSumlLx6Rgvx2BrjDjs=;
+        b=TTf0akaj+ggH17msuZDC/lPXdfO5ff+6LgD3ftwYbDQJSD8rATACdeTCVMpA/BMhSH
+         zovPgXxbyPCeL3ObLr5EdWzosfxjNvBTRDC6lBLTae9tOvLg4Ye7SF76xDJV0js4z73T
+         m1rDl7E3cSrCM8kC+iWWJXsUilUO8qKIEhEZoDKWejIyh225VaVH24stz04MQXPYxKOE
+         GEUqrCXVaFc3ErBxtS1wkEkPDQKttoWQpvtPV0fm/+mv8EqcxpDJDJvb/uWlDLaYKKJo
+         fiVs1tefVqBpCcu0GKWKtr9QaxAxcgdxbAnMxlwpcLS7WDP/zh+wZERANcTmmeowXUM1
+         YhFg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718409271; x=1719014071;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=gZu/IIRvhXvFotOTSriopPgpYSumlLx6Rgvx2BrjDjs=;
+        b=DKlsJbce3zyzfM8Oa3B6dbYWDmJu0WM/NhcuM1GqAHY42gc1b8LjSFowVIBTKM2CoI
+         uZaqGNVJIlV0bWYCSPPQxL2l9CF4xlR8WdhA2cLWUS0mt7c+MuxjLiFSVlefEpToVpNX
+         Hms4Klr5i/7IAGjbIzltbxA6MFhV/oCujWwEB7TibnFBUOZg6RJo7c0UpJj3wj2nfoFG
+         RomB9i9lYcLkzR1sajPGFPxU5Ix4dNOEXqOpjs1WqAlpX9xySm/UDw2RLX8R9g3pf+MM
+         WJ7P7xHuuewR0qoXi0Fz4o46iYsknnAjkd/OGQtc8mZatbc/YJPVZMcf2cWwlOF4sw0E
+         vNxg==
+X-Forwarded-Encrypted: i=1; AJvYcCXxv97t8mjDAf3uOmccL+Ari4MDfgOpMIWf9Rz3yEV7WSObUHN/W1mVd5IspLFmUKdRH682aGGcwMbeDd51+sCWX5udU9pofNBjksO1u6A=
+X-Gm-Message-State: AOJu0YwkJoOr96zTld5T6AL7w7h3vky31pO8wZC1Pd4iIRpOHHFNGUup
+	etqIG6n1djw64DnsWzV2cmqzkl1k3Z1jME31TI5WtDD8JJ7x5mfm5Mk+sexRcVI=
+X-Google-Smtp-Source: AGHT+IEt2RsfFZLBXTpCse+hxHi+1xaGk3nQdfa3QlVg6gP0B4pud43hAedq+iwJK+I55tLUr9jwMQ==
+X-Received: by 2002:a17:906:6a14:b0:a6e:7720:7e39 with SMTP id a640c23a62f3a-a6f523ec10bmr547713166b.8.1718409271209;
+        Fri, 14 Jun 2024 16:54:31 -0700 (PDT)
+Received: from localhost ([79.142.230.34])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6f56ed0d89sm237215666b.134.2024.06.14.16.54.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 14 Jun 2024 16:54:30 -0700 (PDT)
+From: Andreas Hindborg <nmi@metaspace.dk>
+To: Jens Axboe <axboe@kernel.dk>,
+	"linux-block @ vger . kernel . org" <linux-block@vger.kernel.org>
+Cc: Christoph Hellwig <hch@lst.de>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	rust-for-linux@vger.kernel.org,
+	Andreas Hindborg <nmi@metaspace.dk>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Boqun Feng <boqun.feng@gmail.com>
+Subject: [PATCH] rust: block: do not use removed queue limit API
+Date: Sat, 15 Jun 2024 01:53:50 +0200
+Message-ID: <20240614235350.621121-1-nmi@metaspace.dk>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2473; i=a.hindborg@samsung.com;
+ h=from:subject; bh=odo+QThTIhIcr8sNk1XDIIxIe423Cu3o1cIcLJ2Bws8=;
+ b=LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgpvd0o0bkFGdEFwTDlrQTBEQUFvQjRiZ2FQb
+ mtvWTNjQnl5WmlBR1pzMTNURVl2NEdDZDhBKzh6dE5GOW9tVjJtCmF0cy9mTEg5bHNUbUJ5Y1V3
+ aUt4bFlrQ013UUFBUW9BSFJZaEJCTEIrVWRXdjN3cUZkYkFFdUc0R2o1NUtHTjMKQlFKbWJOZDB
+ BQW9KRU9HNEdqNTVLR04zYXowUUFMMFNLVjY0akVCZjBnVjRYaUVqV21uTjB4akRGelhyRGxNNw
+ pQNHl1dnJkeUdvMENoR1l4blFhTWs4STR6RFM5b1pZM3NtS3ROK2hMenNTOW5McWd6SW5JRU9Xd
+ 1NWK1paditFClhJaTdtSlIvb294YXgwTWxTQlQydDlRcitVMzV0L3hTTWNwbllDeDJJTzd3UVVI
+ TUU3aFRmc1RBbkUxbmZySlUKakJ2ajNTVVZndTJPN2hQK3dVUXFzTXNxWFNxYk9TWXpEekY3VUc
+ 1eU00NE5wcTR2TVV4SlRqY1ppU0xEQ1h0TgptT2pEK3N1TnB6WGdQMWR2YTBHR3BBOHlHVUY0ZD
+ d0U29rMWQrQXIrSFpvVFFDTFh1UUtwQXBMTVB0YkRoME5RCkh2cDFGb0UreWhYRWMraG5jTWtJR
+ nE4dXFON3dwWXh0cHVDc1pCQVIwaWorb2s4WlJDdU42RU42V3pSUTBBNUkKSENWSFZTbWw3YnRL
+ NW9tK21jZC9yTE5mcGJxeW50YmZQWUJCM05lWmx2cTFRd29hWlRCblgxT3ZJNWRuUklnYwptWEF
+ 1aEorZHdKRXJuMSs4QllIUTRzNURYKzBCeUhBWVExN2FGZUR1TXAvWjhRWjQvQmw4SFF0SG1qNG
+ 83MDMyClRiRDU0dXd6MzVNQVRUY0RNUkhpcVdwcDZsS0FxT1dFckRYWEhaeCtxRVd5S3FQVHZYe
+ ktPbFB4WWtRdzdxTlUKUExxZHNWQVhlemdRMGRKb1NZU2o0czF4THpSWVJxKzZHUWhKbHA4d0cr
+ c3ZxaTlyNXNwUFF2VGhyeWlmWXhkNApncU5OaUhjcDN5QzVGY3JhY0JnNDZyVDc2VFNqcDF5MGR
+ iemRLWDJIUUUzeGo4YmwvZnFIajd2MDdPOFlmT0NNCnpaNXdYSFVCSnlnamx3PT0KPW0za08KLS 0tLS1FTkQgUEdQIE1FU1NBR0UtLS0tLQo=
+X-Developer-Key: i=a.hindborg@samsung.com; a=openpgp; fpr=3108C10F46872E248D1FB221376EB100563EF7A7
+Content-Transfer-Encoding: 8bit
 
-On 14.06.24 16:33, Boqun Feng wrote:
-> On Fri, Jun 14, 2024 at 11:59:58AM +0200, Miguel Ojeda wrote:
->> On Thu, Jun 13, 2024 at 9:05=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com=
-> wrote:
->>>
->>> Does this make sense?
->>
->> Implementation-wise, if you think it is simpler or more clear/elegant
->> to have the extra lower level layer, then that sounds fine.
->>
->> However, I was mainly talking about what we would eventually expose to
->> users, i.e. do we want to provide `Atomic<T>` to begin with? If yes,
->=20
-> The truth is I don't know ;-) I don't have much data on which one is
-> better. Personally, I think AtomicI32 and AtomicI64 make the users have
-> to think about size, alignment, etc, and I think that's important for
-> atomic users and people who review their code, because before one uses
-> atomics, one should ask themselves: why don't I use a lock? Atomics
-> provide the ablities to do low level stuffs and when doing low level
-> stuffs, you want to be more explicit than ergonomic.
+From: Andreas Hindborg <a.hindborg@samsung.com>
 
-How would this be different with `Atomic<i32>` and `Atomic<i64>`? Just
-because the underlying `Atomic<I>` type is generic shouldn't change
-this, right?
+The Rust block layer API was using the old queue limit API, which was just
+removed. Use the new API instead.
 
+Reported-by: Boqun Feng <boqun.feng@gmail.com>
+Fixes: 3253aba3408a ("rust: block: introduce `kernel::block::mq` module")
+Signed-off-by: Andreas Hindborg <a.hindborg@samsung.com>
 ---
-Cheers,
-Benno
+ rust/kernel/block/mq/gen_disk.rs | 20 +++++++-------------
+ 1 file changed, 7 insertions(+), 13 deletions(-)
+
+diff --git a/rust/kernel/block/mq/gen_disk.rs b/rust/kernel/block/mq/gen_disk.rs
+index 3b9edb96c8ff..e06044b549e0 100644
+--- a/rust/kernel/block/mq/gen_disk.rs
++++ b/rust/kernel/block/mq/gen_disk.rs
+@@ -95,11 +95,17 @@ pub fn build<T: Operations>(
+     ) -> Result<GenDisk<T>> {
+         let lock_class_key = crate::sync::LockClassKey::new();
+ 
++        // SAFETY: `bindings::queue_limits` contain only fields that are valid when zeroed.
++        let mut lim: bindings::queue_limits = unsafe { core::mem::zeroed() };
++
++        lim.logical_block_size = self.logical_block_size;
++        lim.physical_block_size = self.physical_block_size;
++
+         // SAFETY: `tagset.raw_tag_set()` points to a valid and initialized tag set
+         let gendisk = from_err_ptr(unsafe {
+             bindings::__blk_mq_alloc_disk(
+                 tagset.raw_tag_set(),
+-                core::ptr::null_mut(), // TODO: We can pass queue limits right here
++                &mut lim,
+                 core::ptr::null_mut(),
+                 lock_class_key.as_ptr(),
+             )
+@@ -141,18 +147,6 @@ pub fn build<T: Operations>(
+         raw_writer.write_fmt(name)?;
+         raw_writer.write_char('\0')?;
+ 
+-        // SAFETY: `gendisk` points to a valid and initialized instance of
+-        // `struct gendisk`. We have exclusive access, so we cannot race.
+-        unsafe {
+-            bindings::blk_queue_logical_block_size((*gendisk).queue, self.logical_block_size)
+-        };
+-
+-        // SAFETY: `gendisk` points to a valid and initialized instance of
+-        // `struct gendisk`. We have exclusive access, so we cannot race.
+-        unsafe {
+-            bindings::blk_queue_physical_block_size((*gendisk).queue, self.physical_block_size)
+-        };
+-
+         // SAFETY: `gendisk` points to a valid and initialized instance of
+         // `struct gendisk`. `set_capacity` takes a lock to synchronize this
+         // operation, so we will not race.
+
+base-commit: 813025d515f5a4c232504487f5b8b2091ab43dcc
+-- 
+2.45.2
 
