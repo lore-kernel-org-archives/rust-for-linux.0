@@ -1,108 +1,120 @@
-Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f43.google.com (mail-oo1-f43.google.com [209.85.161.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E68FF199247
-	for <rust-for-linux@vger.kernel.org>; Fri, 14 Jun 2024 12:53:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0A3FBE68
+	for <rust-for-linux@vger.kernel.org>; Fri, 14 Jun 2024 13:45:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718369621; cv=none; b=eo3D2SoW7Yh6CiWy/FfKkIHtnbOM8ROgWG97qVrdKiyyKOMpSKsmqthvUmPoBrdz2iTUL03OSLnj9Jljyih3U+iT/WI39mBU8x67ryGSCA8Bge5iI30Si6FCimQslCdOvoGk3wUefUjqZ5oV8fnr3PFncP2XwNSLzVRDI4L8+Lk=
+	t=1718372735; cv=none; b=ut1qE6mCozXLDArJT+gJ7/BYA6YSnoLsRZu13BTWmMvJ7GeV2dmO50wtXnQ3PKOosyU1y6velzUJLu4cDLlWtRIjA79BaLqK4+gfX5AAMT98h7+50Q7qkppYxhi+5bHrZ38brpI57wB3uomn4BlPZK64LK6Sri1+DJjH3WTdgMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718369621; c=relaxed/simple;
-	bh=4XAyiCwNCkxhmabj6b8PpLn3L4deLCaxnSe9b7Kd3Eo=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SmdfsNk5bngYSx8GhpzZlzSZCLbIcFQ7zFLyrbAXa+65/zDp/A1a4i2tMCZtI/YmUh8ylVAeqikN3jPR/Bbii3fRTXA+2Hv45hI0brUCLNizcEILL6o2L2fTp2HHBRvuW9AJMiKwNx7v+nHgTaXNGhq4hZdojTiwN4q2s95OYCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=Q1ddlaTN; arc=none smtp.client-ip=185.70.40.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1718372735; c=relaxed/simple;
+	bh=bkw/wY75bOQcJPR9sExzb0NjpK0DZZ2z5tR/Pyk+NQs=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=kGl143Ls8qhLEhhY/rt7pxU2uXo9gg0yZfIN5BYAPYhjhGHm1EeWHDqj87Mm/+zHMH4IoKbAbs+eXcmaELmQ7RRn/x9CPs71XAODAIYJA8WJuxR39ZUSi78rNHGKI/2QCup9EocPYBCN8trSyOW8nOuk+vIHRbl0Zq6AV8y9BYo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=dbQOX+Ap; arc=none smtp.client-ip=209.85.161.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="Q1ddlaTN"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1718369617; x=1718628817;
-	bh=YIKd80VR73bJEjwoYB7J6Xl/AM4wvcqBvxJAKMWKVEo=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=Q1ddlaTNCVFmutNoM2andrkcPcwwh3Lx5e/FH3pP/AYOkVeTdVtjQIFU2cFx2n30p
-	 7REqCQpjLCJITmVJ0egqS9/4y3nFxVnml5O5Ypi3FNsf20cb23bk7QO1WXydgAHKJD
-	 rUO5RZkoIh3h0327nLF01JYQyOAqmdhNa702mrP59xIhm7k5+rXH1g3eL9DGMM05GV
-	 Qy9EWclAyjBsSwrzZvfF6G6no32TSJvC0MaxJAXlcs4ug+rE+C/3pjvyLtepglFPuI
-	 WdoMrQ7QFaxMfqRufGfJvqWUtUxnmPunog5mMFUqg6QTovuQlgy+o/rYf/jjtHtol6
-	 3/kp79mvFj99w==
-Date: Fri, 14 Jun 2024 12:53:33 +0000
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>, rust-for-linux@vger.kernel.org
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: andrew@lunn.ch, tmgross@umich.edu
-Subject: Re: [RFC PATCH v4 0/2] net::phy add unified API for C22 and C45 registers
-Message-ID: <7faa2f7c-32a6-4eb0-86e0-29f962fa47c7@proton.me>
-In-Reply-To: <20240607052113.69026-1-fujita.tomonori@gmail.com>
-References: <20240607052113.69026-1-fujita.tomonori@gmail.com>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 802637b20b0d7c8ed348540e9db8d065abfabab5
+	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="dbQOX+Ap"
+Received: by mail-oo1-f43.google.com with SMTP id 006d021491bc7-5b3356fd4f3so205620eaf.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 14 Jun 2024 06:45:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1718372733; x=1718977533; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XwHxi2gZBAyY9Pth3TgUjB1fWtcztmwkH5X6Og4iAe4=;
+        b=dbQOX+Ap8OOrj1DLrfhsPCZYTieWn667BxBNNMBTZAV2870uDNWKNBEWYrGTlKyoyw
+         o8v6SX8TIGVuziD0ohXOiBBmP5JJNp8aVYXjYLRnzRTaJjvpsJfu7OsxIchlYTudFO6u
+         Pqs/yrqfu228sO+912lZ4cSTk/2iAYFh2nipjZQubwHQ5qj3gYenyUw7gSwYZ1CEE+C0
+         eQYG8Zn9ojJO2qkbTA7Sl3CS85zPLP7hCvZrJvQp22GaOlSdd5quC/evySeJCpQe4Cwr
+         ZQiKPgJe4VQvdhX+1VO0iKQD6BZkfT57VeTwXToOzANBWOV2CQU2BTH9moXyuYXEDaRl
+         2kQw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718372733; x=1718977533;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=XwHxi2gZBAyY9Pth3TgUjB1fWtcztmwkH5X6Og4iAe4=;
+        b=srMuAuaWxAZ/4fDYt0RTdP4GTUiBgFhCJKkTMtXl2OgxcFrP1oETSI5UeRgQ9zVVy9
+         q/heWDQ7jYY2xU7udoG8bvRp1nrPw1IEiHu7Pi4yX4Tk2vTW/aFHD1VFT1EsB1xRIhIG
+         pq+cmC0LZsdjC7b07iDukRKnpjtOQL4TRRwa5DLarvTqxxIJOZTSAHz+8q0sPj00oXWy
+         3uuxg1GhrX5IuZEEEQeR1UHSLXhHyZmuJ+vXIvAeTlqmGhM76LEssjMFTAhrxhDGtQut
+         zEVfXNA+4IFc4NbcdA4Ynkj9p2Ii+ftl5k8+WRNs9hH/wGa20R3n6PIFQPwYVyT8KzxQ
+         Z/CA==
+X-Forwarded-Encrypted: i=1; AJvYcCUebzgR64MSRVECwQSSQPfHV6ORm4raVX/RpjIDV5PaMRvJwll48KTcC+7HomeRXZNsTPTNVbJsC8OFrc07VyCrr0/COzNbqaQmN9qMsL0=
+X-Gm-Message-State: AOJu0YwjIzFFP7ZTVW1JXHhO1q6swwGifkYsVPVUqTxCTKhm8p+Lc/KZ
+	WnIHvhV7B4jkbv32eQFi7foW7ivdm7wFb9nan3wqJVDUDbYMf4ffUPACCNj5RJA=
+X-Google-Smtp-Source: AGHT+IHPJ3jg4O4CayCJVLz/XAlaPDCafPLLXbngTwTHtLC5YfmxuMPfjWHQ9h4w7Y2VgmE0awSFQQ==
+X-Received: by 2002:a05:6870:f112:b0:254:7e18:7e1a with SMTP id 586e51a60fabf-25842c5e66emr2860477fac.5.1718372732531;
+        Fri, 14 Jun 2024 06:45:32 -0700 (PDT)
+Received: from [127.0.0.1] ([198.8.77.157])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-705cc97fd59sm3043883b3a.84.2024.06.14.06.45.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 14 Jun 2024 06:45:31 -0700 (PDT)
+From: Jens Axboe <axboe@kernel.dk>
+To: Christoph Hellwig <hch@lst.de>, Keith Busch <kbusch@kernel.org>, 
+ Damien Le Moal <dlemoal@kernel.org>, Bart Van Assche <bvanassche@acm.org>, 
+ Hannes Reinecke <hare@suse.de>, Ming Lei <ming.lei@redhat.com>, 
+ linux-block@vger.kernel.org, Andreas Hindborg <nmi@metaspace.dk>
+Cc: Andreas Hindborg <a.hindborg@samsung.com>, 
+ Greg KH <gregkh@linuxfoundation.org>, Matthew Wilcox <willy@infradead.org>, 
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+ Wedson Almeida Filho <wedsonaf@gmail.com>, 
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, 
+ Chaitanya Kulkarni <chaitanyak@nvidia.com>, 
+ Luis Chamberlain <mcgrof@kernel.org>, Yexuan Yang <1182282462@bupt.edu.cn>, 
+ =?utf-8?q?Sergio_Gonz=C3=A1lez_Collado?= <sergio.collado@gmail.com>, 
+ Joel Granados <j.granados@samsung.com>, 
+ "Pankaj Raghav (Samsung)" <kernel@pankajraghav.com>, 
+ Daniel Gomez <da.gomez@samsung.com>, Niklas Cassel <Niklas.Cassel@wdc.com>, 
+ Philipp Stanner <pstanner@redhat.com>, Conor Dooley <conor@kernel.org>, 
+ Johannes Thumshirn <Johannes.Thumshirn@wdc.com>, 
+ =?utf-8?q?Matias_Bj=C3=B8rling?= <m@bjorling.me>, 
+ open list <linux-kernel@vger.kernel.org>, rust-for-linux@vger.kernel.org, 
+ lsf-pc@lists.linux-foundation.org, gost.dev@samsung.com
+In-Reply-To: <20240611114551.228679-1-nmi@metaspace.dk>
+References: <20240611114551.228679-1-nmi@metaspace.dk>
+Subject: Re: [PATCH v6 0/3] Rust block device driver API and null block
+ driver
+Message-Id: <171837272952.233538.14745417711842930177.b4-ty@kernel.dk>
+Date: Fri, 14 Jun 2024 07:45:29 -0600
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.12.5-dev-2aabd
 
-On 07.06.24 07:21, FUJITA Tomonori wrote:
-> add unified API for C22 and C45, reading/writing registers and
-> genphy_read_status().
->=20
-> We could add methods specifically C45 like read/write_c45 and
-> genphy_c45_read_status. Instead, this implements the unified API for
-> C22 and C45 with a new reg module.
->=20
-> v4:
-> - make reg module sealed
-> - improve the comments
-> - add examples
-> - use error::to_result() to simplify some functions
-> v3: https://lore.kernel.org/all/20240603.233954.1644803151268035787.fujit=
-a.tomonori@gmail.com/T/
-> - move reg module to a new file (with MAINTAINERS updated)
-> - rewrite commit log and subjects
-> - rename Access trait to Register
-> - add build error message for build_assert!
-> - define the complete MMD list
-> - drop new func for Mmd
-> - remove trait GenPhyOps
-> v2: https://lore.kernel.org/all/20240601043535.53545-2-fujita.tomonori@gm=
-ail.com/T/
-> - add genphy helper support and split the patch
-> - create a 'reg' module
-> - define C22 according to the specs
-> - handle C22 vendor specific registers
-> - add const for C45 MMD
-> v1: https://lore.kernel.org/all/20240530.145258.456915814420167538.fujita=
-.tomonori@gmail.com/T/
->=20
-> FUJITA Tomonori (2):
->   rust: net::phy unified read/write API for C22 and C45 registers
->   rust: net::phy unified genphy_read_status function for C22 and C45
->     registers
->=20
->  MAINTAINERS                      |   1 +
->  drivers/net/phy/ax88796b_rust.rs |   7 +-
->  rust/kernel/net/phy.rs           |  44 ++-----
->  rust/kernel/net/phy/reg.rs       | 219 +++++++++++++++++++++++++++++++
->  rust/uapi/uapi_helper.h          |   1 +
->  5 files changed, 234 insertions(+), 38 deletions(-)
->  create mode 100644 rust/kernel/net/phy/reg.rs
->=20
->=20
-> base-commit: c790275b5edf5d8280ae520bda7c1f37da460c00
-> --
-> 2.34.1
->=20
 
-Both patches:
+On Tue, 11 Jun 2024 13:45:48 +0200, Andreas Hindborg wrote:
+> This series provides an initial Rust block layer device driver API, and a very
+> minimal null block driver to exercise the API. The driver has only one mode of
+> operation and cannot be configured.
+> 
+> These patches are an updated and trimmed down version of the v2 RFC [1]. One of
+> the requests for the v2 RFC was to split the abstractions into smaller pieces
+> that are easier to review. This is the first part of the split patches.
+> 
+> [...]
 
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+Applied, thanks!
 
----
-Cheers,
-Benno
+[1/3] rust: block: introduce `kernel::block::mq` module
+      commit: 3253aba3408aa4eb2e4e09365eede3e63ef7536b
+[2/3] rust: block: add rnull, Rust null_blk implementation
+      commit: bc5b533b91ef0b8a09fe507e23d1c6c43c1fb0f5
+[3/3] MAINTAINERS: add entry for Rust block device driver API
+      commit: d37a9ab8331cfc0fc2eac0480f0af624c0144a92
+
+Best regards,
+-- 
+Jens Axboe
+
+
 
