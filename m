@@ -1,151 +1,93 @@
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C92617FAA4
-	for <rust-for-linux@vger.kernel.org>; Fri, 14 Jun 2024 23:54:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6C2810F7
+	for <rust-for-linux@vger.kernel.org>; Sat, 15 Jun 2024 00:25:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718409276; cv=none; b=T48ck9uDQ/BbW7hgHoB+eYy+01PnKdvPpCMmiLtnaATlFsn4Mp2y8ANoag1XlRLjyF07s1oH/5gIVZPRNbcgJHSrEIecCVNJcC0gyA9zNpf6eMuFmY1b7opqStraZCJvlG6UOeOxtZBKTZg7gH1VzL2//eS0P4sf+GFvcHiDAvk=
+	t=1718411150; cv=none; b=VgYyL/5YBhEQsqrXbU06Nl9N0HC6RxH8Ee43MGAyAQIbqBNMGlDLp/jdAGRWHQxUJf2VhFhmf7VjWRQNnEV6y5FLOn47eFjoMJEyEU0rMPrcGWHhiaCmQKH4ccXlh/kVv4Cr3vYs4n/uiPSe1UJsNipzP4Vxp9j00kNUGsNQGfg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718409276; c=relaxed/simple;
-	bh=eq2bnC+Kto6G+yAEZZDc+NgUyz39TjriuInfX1pG6wg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=h4/HvG4D2rJn+oeLOUFwmQNuYWt0hukONIp/QJd2WQ9C1beH7vgC8aEbP1k5YstsOwcu8JvUvuWrHIcLWVC6X5i1rVuj46icalEFRGYfi6Hm8p7FJl0qIjSjv3Q/G52ptfpDYZvKGenx72wOfgz4eoPPkZiN8P9xpjMYli0Ev74=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk; spf=none smtp.mailfrom=metaspace.dk; dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b=TTf0akaj; arc=none smtp.client-ip=209.85.208.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=metaspace.dk
+	s=arc-20240116; t=1718411150; c=relaxed/simple;
+	bh=l0U3qMRsLnZY2lqgtOcYQhCI9pd+f4Bj85pMynNRZ7g=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=pNYLhkOB98jh3s76iNzpteuMV3xMpckISZzgIrTApjXLOoLq6/fDhzBp4zAbucUYZshiPhYCjOsXzvTZkSSBQmmWQJpN3erIMws7MP36cvzz9+XPP3DVMDAMRR+8Kb1JWYfdhwD5rYeoH3VKmZKsW4jKwbeRSnRZ4qBK8xnL3Hg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=e4OqhDM0; arc=none smtp.client-ip=209.85.216.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b="TTf0akaj"
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-57cb9efd8d1so3838087a12.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 14 Jun 2024 16:54:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="e4OqhDM0"
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-2c30a527479so463038a91.3
+        for <rust-for-linux@vger.kernel.org>; Fri, 14 Jun 2024 17:25:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=metaspace-dk.20230601.gappssmtp.com; s=20230601; t=1718409271; x=1719014071; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=gZu/IIRvhXvFotOTSriopPgpYSumlLx6Rgvx2BrjDjs=;
-        b=TTf0akaj+ggH17msuZDC/lPXdfO5ff+6LgD3ftwYbDQJSD8rATACdeTCVMpA/BMhSH
-         zovPgXxbyPCeL3ObLr5EdWzosfxjNvBTRDC6lBLTae9tOvLg4Ye7SF76xDJV0js4z73T
-         m1rDl7E3cSrCM8kC+iWWJXsUilUO8qKIEhEZoDKWejIyh225VaVH24stz04MQXPYxKOE
-         GEUqrCXVaFc3ErBxtS1wkEkPDQKttoWQpvtPV0fm/+mv8EqcxpDJDJvb/uWlDLaYKKJo
-         fiVs1tefVqBpCcu0GKWKtr9QaxAxcgdxbAnMxlwpcLS7WDP/zh+wZERANcTmmeowXUM1
-         YhFg==
+        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1718411146; x=1719015946; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=PZ1xWC5EmOpv9HIfdMEnyUpCiKtYSD98i0rZtjKhl9Q=;
+        b=e4OqhDM04cVQLldVMilHNuxofkMICXCGcbdPGmMrfcSxl5H2ldrIpwIRgv/xDZDjrK
+         6OfDdpZcKjYuKThc6TLgvxvB4LynsHzwjrTGOnMEHnARoX1fOELGNP7Ovip/8+PObF3t
+         yVTk6EAFgTgj/hz82eazrLB18I9s+jzdALmQKAANqILz4IwE+uHEzxa9d6erMBEd+1Pl
+         h1Hd3YfUG1HreQFp+trxeqcT9y0KI/cgds/PdChVwWxlSYESUk0crOT6xzE1xj/LJT61
+         2QYZqS+/ANOyCRfPpZX3RVvDvjpMZ2f9Kekvj8wJGofUF5ctJNQtdSobyEbGVpHOnQ6U
+         OwXA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718409271; x=1719014071;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=gZu/IIRvhXvFotOTSriopPgpYSumlLx6Rgvx2BrjDjs=;
-        b=DKlsJbce3zyzfM8Oa3B6dbYWDmJu0WM/NhcuM1GqAHY42gc1b8LjSFowVIBTKM2CoI
-         uZaqGNVJIlV0bWYCSPPQxL2l9CF4xlR8WdhA2cLWUS0mt7c+MuxjLiFSVlefEpToVpNX
-         Hms4Klr5i/7IAGjbIzltbxA6MFhV/oCujWwEB7TibnFBUOZg6RJo7c0UpJj3wj2nfoFG
-         RomB9i9lYcLkzR1sajPGFPxU5Ix4dNOEXqOpjs1WqAlpX9xySm/UDw2RLX8R9g3pf+MM
-         WJ7P7xHuuewR0qoXi0Fz4o46iYsknnAjkd/OGQtc8mZatbc/YJPVZMcf2cWwlOF4sw0E
-         vNxg==
-X-Forwarded-Encrypted: i=1; AJvYcCXxv97t8mjDAf3uOmccL+Ari4MDfgOpMIWf9Rz3yEV7WSObUHN/W1mVd5IspLFmUKdRH682aGGcwMbeDd51+sCWX5udU9pofNBjksO1u6A=
-X-Gm-Message-State: AOJu0YwkJoOr96zTld5T6AL7w7h3vky31pO8wZC1Pd4iIRpOHHFNGUup
-	etqIG6n1djw64DnsWzV2cmqzkl1k3Z1jME31TI5WtDD8JJ7x5mfm5Mk+sexRcVI=
-X-Google-Smtp-Source: AGHT+IEt2RsfFZLBXTpCse+hxHi+1xaGk3nQdfa3QlVg6gP0B4pud43hAedq+iwJK+I55tLUr9jwMQ==
-X-Received: by 2002:a17:906:6a14:b0:a6e:7720:7e39 with SMTP id a640c23a62f3a-a6f523ec10bmr547713166b.8.1718409271209;
-        Fri, 14 Jun 2024 16:54:31 -0700 (PDT)
-Received: from localhost ([79.142.230.34])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a6f56ed0d89sm237215666b.134.2024.06.14.16.54.30
+        d=1e100.net; s=20230601; t=1718411146; x=1719015946;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=PZ1xWC5EmOpv9HIfdMEnyUpCiKtYSD98i0rZtjKhl9Q=;
+        b=rTIpg8ldHaDmcrM2dnog3GAmrPtUgaSqVunRDl9LEMwdTmkYF134hzpDHggW2JBps+
+         spYwtzqZj/dOHvf5N9UsklzcLRvoYB3fdGnZ32G3XfmI7KYfbFtYC9BexH1eOvqfE/z8
+         MmoOxVFk+1ZQ1Hct1aP4TdFCKo3lx5l3Tm8ikYMNd1TrO6xjLeDG2DUKxGzgwNAs+HuP
+         9on3vmIRnQfGR7l3JXp7Y2kBp3JYgj2Ct4CkaW7kxs4OkxwrFxd0aqsveCoQpGLrk7zn
+         V1rMjZ3ASWNoFBmB5DPPRdJhWN5uuV1D5AiKOWXLjK1uPndtQyl0le3ZAYIXOUecPdCR
+         I79A==
+X-Forwarded-Encrypted: i=1; AJvYcCVepAVVu1IMRKKbgrYNR/b2S81BNNC22oZ2uMMFUKSsNsKS4bdfR92lfBeEnT+ySqEjYKCrWO2BjkYdr+hGq25HbaHLQ/vK7q5+pJEp5/0=
+X-Gm-Message-State: AOJu0Yx4G4fP2ufyIMr8ItQ0XqNPljMYxMIe4OhA29bNDnxr5YwG1/2k
+	7+b7e1B0PqgymJfR+I4FfzJ12s729ny8eNfu6WVAojEzj9zPpgkRyrDbtQ/5hLc=
+X-Google-Smtp-Source: AGHT+IHZ9UTPYHt91tC5/5Qvaoyc7IMwpsJEF3kdU4Z0NlVDGI8Sbduufq7pAraYmmhrTrg6mthYkw==
+X-Received: by 2002:a17:902:e543:b0:1f7:2dca:ea32 with SMTP id d9443c01a7336-1f862c1db23mr45192005ad.3.1718411145945;
+        Fri, 14 Jun 2024 17:25:45 -0700 (PDT)
+Received: from [127.0.0.1] ([198.8.77.157])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f855ee80f2sm38478875ad.175.2024.06.14.17.25.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 14 Jun 2024 16:54:30 -0700 (PDT)
-From: Andreas Hindborg <nmi@metaspace.dk>
-To: Jens Axboe <axboe@kernel.dk>,
-	"linux-block @ vger . kernel . org" <linux-block@vger.kernel.org>
-Cc: Christoph Hellwig <hch@lst.de>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	rust-for-linux@vger.kernel.org,
-	Andreas Hindborg <nmi@metaspace.dk>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Boqun Feng <boqun.feng@gmail.com>
-Subject: [PATCH] rust: block: do not use removed queue limit API
-Date: Sat, 15 Jun 2024 01:53:50 +0200
-Message-ID: <20240614235350.621121-1-nmi@metaspace.dk>
-X-Mailer: git-send-email 2.45.2
+        Fri, 14 Jun 2024 17:25:45 -0700 (PDT)
+From: Jens Axboe <axboe@kernel.dk>
+To: "linux-block @ vger . kernel . org" <linux-block@vger.kernel.org>, 
+ Andreas Hindborg <nmi@metaspace.dk>
+Cc: Christoph Hellwig <hch@lst.de>, Miguel Ojeda <ojeda@kernel.org>, 
+ rust-for-linux@vger.kernel.org, Andreas Hindborg <a.hindborg@samsung.com>, 
+ Boqun Feng <boqun.feng@gmail.com>
+In-Reply-To: <20240614235350.621121-1-nmi@metaspace.dk>
+References: <20240614235350.621121-1-nmi@metaspace.dk>
+Subject: Re: [PATCH] rust: block: do not use removed queue limit API
+Message-Id: <171841114473.4596.16051114715055838099.b4-ty@kernel.dk>
+Date: Fri, 14 Jun 2024 18:25:44 -0600
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2473; i=a.hindborg@samsung.com;
- h=from:subject; bh=odo+QThTIhIcr8sNk1XDIIxIe423Cu3o1cIcLJ2Bws8=;
- b=LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgpvd0o0bkFGdEFwTDlrQTBEQUFvQjRiZ2FQb
- mtvWTNjQnl5WmlBR1pzMTNURVl2NEdDZDhBKzh6dE5GOW9tVjJtCmF0cy9mTEg5bHNUbUJ5Y1V3
- aUt4bFlrQ013UUFBUW9BSFJZaEJCTEIrVWRXdjN3cUZkYkFFdUc0R2o1NUtHTjMKQlFKbWJOZDB
- BQW9KRU9HNEdqNTVLR04zYXowUUFMMFNLVjY0akVCZjBnVjRYaUVqV21uTjB4akRGelhyRGxNNw
- pQNHl1dnJkeUdvMENoR1l4blFhTWs4STR6RFM5b1pZM3NtS3ROK2hMenNTOW5McWd6SW5JRU9Xd
- 1NWK1paditFClhJaTdtSlIvb294YXgwTWxTQlQydDlRcitVMzV0L3hTTWNwbllDeDJJTzd3UVVI
- TUU3aFRmc1RBbkUxbmZySlUKakJ2ajNTVVZndTJPN2hQK3dVUXFzTXNxWFNxYk9TWXpEekY3VUc
- 1eU00NE5wcTR2TVV4SlRqY1ppU0xEQ1h0TgptT2pEK3N1TnB6WGdQMWR2YTBHR3BBOHlHVUY0ZD
- d0U29rMWQrQXIrSFpvVFFDTFh1UUtwQXBMTVB0YkRoME5RCkh2cDFGb0UreWhYRWMraG5jTWtJR
- nE4dXFON3dwWXh0cHVDc1pCQVIwaWorb2s4WlJDdU42RU42V3pSUTBBNUkKSENWSFZTbWw3YnRL
- NW9tK21jZC9yTE5mcGJxeW50YmZQWUJCM05lWmx2cTFRd29hWlRCblgxT3ZJNWRuUklnYwptWEF
- 1aEorZHdKRXJuMSs4QllIUTRzNURYKzBCeUhBWVExN2FGZUR1TXAvWjhRWjQvQmw4SFF0SG1qNG
- 83MDMyClRiRDU0dXd6MzVNQVRUY0RNUkhpcVdwcDZsS0FxT1dFckRYWEhaeCtxRVd5S3FQVHZYe
- ktPbFB4WWtRdzdxTlUKUExxZHNWQVhlemdRMGRKb1NZU2o0czF4THpSWVJxKzZHUWhKbHA4d0cr
- c3ZxaTlyNXNwUFF2VGhyeWlmWXhkNApncU5OaUhjcDN5QzVGY3JhY0JnNDZyVDc2VFNqcDF5MGR
- iemRLWDJIUUUzeGo4YmwvZnFIajd2MDdPOFlmT0NNCnpaNXdYSFVCSnlnamx3PT0KPW0za08KLS 0tLS1FTkQgUEdQIE1FU1NBR0UtLS0tLQo=
-X-Developer-Key: i=a.hindborg@samsung.com; a=openpgp; fpr=3108C10F46872E248D1FB221376EB100563EF7A7
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.0-rc0
 
-From: Andreas Hindborg <a.hindborg@samsung.com>
 
-The Rust block layer API was using the old queue limit API, which was just
-removed. Use the new API instead.
+On Sat, 15 Jun 2024 01:53:50 +0200, Andreas Hindborg wrote:
+> The Rust block layer API was using the old queue limit API, which was just
+> removed. Use the new API instead.
+> 
+> 
 
-Reported-by: Boqun Feng <boqun.feng@gmail.com>
-Fixes: 3253aba3408a ("rust: block: introduce `kernel::block::mq` module")
-Signed-off-by: Andreas Hindborg <a.hindborg@samsung.com>
----
- rust/kernel/block/mq/gen_disk.rs | 20 +++++++-------------
- 1 file changed, 7 insertions(+), 13 deletions(-)
+Applied, thanks!
 
-diff --git a/rust/kernel/block/mq/gen_disk.rs b/rust/kernel/block/mq/gen_disk.rs
-index 3b9edb96c8ff..e06044b549e0 100644
---- a/rust/kernel/block/mq/gen_disk.rs
-+++ b/rust/kernel/block/mq/gen_disk.rs
-@@ -95,11 +95,17 @@ pub fn build<T: Operations>(
-     ) -> Result<GenDisk<T>> {
-         let lock_class_key = crate::sync::LockClassKey::new();
- 
-+        // SAFETY: `bindings::queue_limits` contain only fields that are valid when zeroed.
-+        let mut lim: bindings::queue_limits = unsafe { core::mem::zeroed() };
-+
-+        lim.logical_block_size = self.logical_block_size;
-+        lim.physical_block_size = self.physical_block_size;
-+
-         // SAFETY: `tagset.raw_tag_set()` points to a valid and initialized tag set
-         let gendisk = from_err_ptr(unsafe {
-             bindings::__blk_mq_alloc_disk(
-                 tagset.raw_tag_set(),
--                core::ptr::null_mut(), // TODO: We can pass queue limits right here
-+                &mut lim,
-                 core::ptr::null_mut(),
-                 lock_class_key.as_ptr(),
-             )
-@@ -141,18 +147,6 @@ pub fn build<T: Operations>(
-         raw_writer.write_fmt(name)?;
-         raw_writer.write_char('\0')?;
- 
--        // SAFETY: `gendisk` points to a valid and initialized instance of
--        // `struct gendisk`. We have exclusive access, so we cannot race.
--        unsafe {
--            bindings::blk_queue_logical_block_size((*gendisk).queue, self.logical_block_size)
--        };
--
--        // SAFETY: `gendisk` points to a valid and initialized instance of
--        // `struct gendisk`. We have exclusive access, so we cannot race.
--        unsafe {
--            bindings::blk_queue_physical_block_size((*gendisk).queue, self.physical_block_size)
--        };
--
-         // SAFETY: `gendisk` points to a valid and initialized instance of
-         // `struct gendisk`. `set_capacity` takes a lock to synchronize this
-         // operation, so we will not race.
+[1/1] rust: block: do not use removed queue limit API
+      commit: 5e3b7009f116f684ac6b93d8924506154f3b1f6d
 
-base-commit: 813025d515f5a4c232504487f5b8b2091ab43dcc
+Best regards,
 -- 
-2.45.2
+Jens Axboe
+
+
 
