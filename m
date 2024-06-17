@@ -1,87 +1,236 @@
-Received: from mail-lj1-f178.google.com (mail-lj1-f178.google.com [209.85.208.178])
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AD7B186E47
-	for <rust-for-linux@vger.kernel.org>; Mon, 17 Jun 2024 09:32:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3906C1D951C;
+	Mon, 17 Jun 2024 16:03:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718616746; cv=none; b=RourfNaIyX0WC6Mleri0hLlf013P6bBCXLPkP5LhIg71pWx/v8vA7v/XgKzCBGUBOMJFphRKUo+cCS9pa+AwgztFwtD+NxU1WFLr1ivGa47iylrTa8XL2swCMOwy1eXnHnJ55KDw72v7iXPjb9P/LXPvYqAL3eeR2ZivLjSYmPk=
+	t=1718640201; cv=none; b=T3WsFz3VxHKPgFuDzxQMaoE3BNxGad0FlkwkETza6PBRpHwbaWqTfbOkFa/XTIqHx4wHgA3gHtvbpNoR2nq0zX8pmpfihWnx/0wmhHT33eH2UaxwKH3VbiT3EYQg6W/AaUjKkdFq2q3RDGNC+UY23HXL/wPgLyVBq1K/pQjvixg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718616746; c=relaxed/simple;
-	bh=LNpuMpWjAfWkh2SBYhoHHVU/hSaGGKXWVCOL+iHaXFA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:Message-ID:
-	 MIME-Version:Content-Type; b=FqC3LcT0pigxlef6EP8byIGL+pdYH8XVLPEInP1TFx68WGuwc/zw0Z0NLtMGps1dX0zl9GXAtzFoZBzFxsZsXEXAk2xSbxD+kf9X/1Ba4BmB4wM4tF9c96vlv4DMszrkrpxaBn0uhu9ye2PGhgYNa5KjqpCxmWw4+3VZ3eKa8hQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=NsA2sAEk; arc=none smtp.client-ip=209.85.208.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1718640201; c=relaxed/simple;
+	bh=lBSAhG4kxwlt8HqpfAYOA3z3MYxAXqQuxAFF04DLk3A=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:Content-Type; b=M8Xz3k6UBtuNn3V8MCueFORS68Le2LceMolM10zJIE29Ar9HiXNPZo3mjNgKxCHtoQ7V//iC8WocHNQJMVHdEV0ky8iVWvtZhiaS1s0/3SQwLIiy85p2CPI93EYrU6W820Mnr8dH9P5hkfpqxrA6qiX6ZV46IlaX2s9tFc6ukdY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XIFnqAKj; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="NsA2sAEk"
-Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-2ebd421a931so40408731fa.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 17 Jun 2024 02:32:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XIFnqAKj"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-421f4d1c057so35254605e9.3;
+        Mon, 17 Jun 2024 09:03:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1718616744; x=1719221544; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:in-reply-to
-         :references:user-agent:subject:cc:to:from:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=Vn7FXPTC3oDopyoLncz961C4PZuJpHX/UbBJ99RzoDs=;
-        b=NsA2sAEk71wuHm5WFsAbG7POHkdrQsEtiQrg1pd8RQ+gECuIZVHIL/zTDinJLfiC5k
-         62HmjDWpAR1qifJd3N45gIuRwuLxb+M6kk3y0Qvbs/1mSkMQ0TxEDf1fywIqfRVVKm2u
-         kCnM6tBYKAwhgpG/iorbYxQ26hDHwmBlRbx0QgYCRZy8xwX0Fi2LY2NojrE3XabJYPNm
-         WCQesg/Kv63+9JW36AWikHRc8ZcZaUSxAnXZ+PFlRlopzT5MZG6Lo0YiJJ9Ug58GeCnB
-         b2695PPR6qsCWQX4iMRm5kSxiDzvrLCD38TIut0GGLO5Yzg3MTHynbzcHKEZSbcUqi2w
-         /7Bg==
+        d=gmail.com; s=20230601; t=1718640197; x=1719244997; darn=vger.kernel.org;
+        h=content-transfer-encoding:content-language:cc:to:subject:from
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4zrczeM4bdzO0oUIzzu48HGb8iTeMt/017ltLJZV/Sk=;
+        b=XIFnqAKj5DWPPl15jMhvWraTLgKk4tkf8xTRjeOb0EiiGtkidtMwq9TwGYZexogD+s
+         I4ouMtfBfzpI09XFoJOM3ptlsli9Gkv5enKybgpuWtA5tti+mCTwUW0YfRX+urDqRm2Q
+         Ep9MEFcmA2onvBcsvbUikvMLn8kgs7Ufnwvj37yGxmFHU7+YtWhiMUQPZXQ9s8lnbAAa
+         S087ZrRuUWLp9Ac6ANh7bIkN25FIOsjhZTxUoRwMBuSzWMr2znJiOQfjfQQ9f8P0on9d
+         yaGmw0KSGflZ4BQdYvWvRMFR6sAWpVPmXTLDDh0AncCxF4L3D5Vp3KeRYV0+KcOabewx
+         U2kw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718616744; x=1719221544;
-        h=content-transfer-encoding:mime-version:message-id:in-reply-to
-         :references:user-agent:subject:cc:to:from:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Vn7FXPTC3oDopyoLncz961C4PZuJpHX/UbBJ99RzoDs=;
-        b=IH0CYDYyxNj33YfW7tvk/iVuYoz3qt7hak35yUR0uZAAmNMc4U5ks/SUM+CTQF3Wsz
-         bbmvuKlNpMvlIeX64YRBoMw0g4zSAH4gC1+WzlPtgOPj5zEoovRnBW72oa16cPi+ZYoA
-         kXRyPUOY96V3pCwF1w7SoyZtQJ9VsGRGX8t5wriFwHF5pHOeE5GbEbC/tRt8QL89XDN0
-         XjUsA+ckcwnHFcirO1aJ5UwPrcjWv1lu9uJTKhDnoo4kwhh9jGXIJ45CTSijltpjAexf
-         TmR/Olq7JeOr6GTT+MTMrr5wfEC74pMqm98g87BLO5YldABrmICF9yi3ThmhWzKKqrLr
-         b9KA==
-X-Forwarded-Encrypted: i=1; AJvYcCUgv2UvEwQa9xKg4Mfv39l7poJOxO4aMj7/24xW7aW8CY0e9rVvvIPOc2gJjAC55MVI4CAIsbGBLSUI5GrVmf40CpcyUImJuO24p2K4APM=
-X-Gm-Message-State: AOJu0YyPN/g+mV+piYQWQS9/b/I+0mLQsbitySuvowIhARMh2tnp4T9E
-	pStihrK2W3EzajmuZMlvs/15G5Y1c42bOaX2aVhICy40cqyqvLnoEqv8eH0m54M=
-X-Google-Smtp-Source: AGHT+IERhDJHkxzaQFPoFIV6vwAY64N/UErLLjS6cy8dGj9JTOjmTCXvGH8sSNVbXMq4F7qYoO+BSg==
-X-Received: by 2002:a2e:be05:0:b0:2ec:eee:f198 with SMTP id 38308e7fff4ca-2ec0eeef74emr70338751fa.1.1718616743544;
-        Mon, 17 Jun 2024 02:32:23 -0700 (PDT)
-Received: from meli-email.org (adsl-33.109.242.225.tellas.gr. [109.242.225.33])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-36075104b45sm11408120f8f.109.2024.06.17.02.32.23
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Jun 2024 02:32:23 -0700 (PDT)
-Date: Mon, 17 Jun 2024 12:23:12 +0300
-From: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-To: Viresh Kumar <viresh.kumar@linaro.org>, "Rafael J. Wysocki" <rafael@kernel.org>, Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, Bj=?UTF-8?B?w7Y=?= rn Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>
-Cc: Viresh Kumar <viresh.kumar@linaro.org>, linux-pm@vger.kernel.org, Vincent Guittot <vincent.guittot@linaro.org>, Stephen Boyd <sboyd@kernel.org>, Nishanth Menon <nm@ti.com>, rust-for-linux@vger.kernel.org, Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, Erik Schilling <erik.schilling@linaro.org>, Alex Benn=?UTF-8?B?w6k=?= e <alex.bennee@linaro.org>, Joakim Bech <joakim.bech@linaro.org>, Rob Herring <robh@kernel.org>, linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH V2 4/8] rust: Add initial bindings for cpufreq framework
-User-Agent: meli 0.8.6
-References: <cover.1717750631.git.viresh.kumar@linaro.org> <8a53d1e0bf52f02027ff4be2296bf59088bbd163.1717750631.git.viresh.kumar@linaro.org>
-In-Reply-To: <8a53d1e0bf52f02027ff4be2296bf59088bbd163.1717750631.git.viresh.kumar@linaro.org>
-Message-ID: <f7x5x.0h3ihwj957m@linaro.org>
+        d=1e100.net; s=20230601; t=1718640197; x=1719244997;
+        h=content-transfer-encoding:content-language:cc:to:subject:from
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=4zrczeM4bdzO0oUIzzu48HGb8iTeMt/017ltLJZV/Sk=;
+        b=ePnuubQTnc1D7Oi3BCu8MqsiB4UPltTUSfJaja/XIl1f01f4v8mqia9Fjtzu3wOkQy
+         s7Urzrd9HvNzjDFphplTQh6iDirVWIVKsLeWuwxMBAtEril4xNEEl74r8mJQ413zJ5Lx
+         AcFmwIDTQf66g9Q8a6Lf5GmqTomur28E2yizqvUWkso4GHCXnCKpMqvyJ11piMRbFp24
+         t4ggFxFjom8u6W7OiYzHZbxdtVzO/xyvkCLz4rD6sRPv7tBDIRBBF2wUrWd7NoFjd8dU
+         HtH+iV8qY02u2PkuxKmIbvlmF0bj2cDXbwJFrgGAeOmZsqqAWdT8AKWAXCShdyBw+u6r
+         Atmg==
+X-Forwarded-Encrypted: i=1; AJvYcCVPrCLcfR1pGH0sxefPp9wl+z0JQLwVI4C2aIRvCxEROt7697Va8VV13PwCaLeE7oiLtQdZlcc+CHCq25cUhun5EPpUOnxg+JyNkpI6IFc=
+X-Gm-Message-State: AOJu0YxBAZ48V0r8ZGia78lV/ur+3RwEt0MAev84P7nF0gOUS3prbf4k
+	22wOvX24nu7D+6uFULvj1Srn3mkcoejHSrHfdTIrBoik+OWn3uHo7YAz9YIC
+X-Google-Smtp-Source: AGHT+IF6Ix1kuSan1958bYh1RWh8Zhz3051jysHe2tCHrIEyyJ43VzeMCWehCn/FWGfEkdNwIhyLgQ==
+X-Received: by 2002:a05:600c:4ed0:b0:421:963b:57d9 with SMTP id 5b1f17b1804b1-4230484c5fdmr85942305e9.33.1718640197053;
+        Mon, 17 Jun 2024 09:03:17 -0700 (PDT)
+Received: from [10.5.1.156] (188-22-218-164.adsl.highway.telekom.at. [188.22.218.164])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-36075114e09sm12117931f8f.117.2024.06.17.09.03.16
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 17 Jun 2024 09:03:16 -0700 (PDT)
+Message-ID: <2dbd1491-149d-443c-9802-75786a6a3b73@gmail.com>
+Date: Mon, 17 Jun 2024 18:03:11 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset=utf-8; format=flowed
+User-Agent: Mozilla Thunderbird
+From: Christian Schrefl <chrisi.schrefl@gmail.com>
+Subject: [PATCH v2] arm: rust: Enable Rust support for ARMv7
+To: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ rust-for-linux@vger.kernel.org
+Cc: Miguel Ojeda <ojeda@kernel.org>, Jamie Cunliffe <Jamie.Cunliffe@arm.com>,
+ Sven Van Asbroeck <thesven73@gmail.com>,
+ Geert Stappers <stappers@stappers.nl>, Andrew Lunn <andrew@lunn.ch>
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Fri, 07 Jun 2024 12:12, Viresh Kumar <viresh.kumar@linaro.org> wrote:
->This commit adds initial Rust bindings for the cpufreq core. This adds
->basic bindings for cpufreq flags, relations and cpufreq table.
->
->Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
->---
-> rust/bindings/bindings_helper.h |   1 +
-> rust/helpers.c                  |  15 ++
-> rust/kernel/cpufreq.rs          | 251 ++++++++++++++++++++++++++++++++
-> rust/kernel/lib.rs              |   2 +
-> 4 files changed, 269 insertions(+)
-> create mode 100644 rust/kernel/cpufreq.rs
->
+This commit allows building ARMv7 kernels with Rust support.
 
-Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
+The rust core library expects some __eabi_... functions
+that are not implemented in the kernel.
+Those functions are some float operations and __aeabi_uldivmod.
+For now those are implemented with define_panicking_intrinsics!.
+
+This is based on the code by Sven Van Asbroeck from the original
+rust branch and inspired by the AArch64 version by Jamie Cunliffe.
+
+I have tested the rust samples and a custom simple MMIO module
+on hardware (De1SoC FPGA + Arm A9 CPU).
+
+This only includes support for ARMv7, but supporting other
+sub-architectures in the future should be as simple as setting 
+the correct rustc target.
+
+Signed-off-by: Christian Schrefl <chrisi.schrefl@gmail.com>
+---
+Changes since V1 [1]:
+- Removed unrelated whitespace change.
+- Added target name to panic message in scripts/generate_rust_target.rs.
+- Fixed the comment in rust/bindgen_parameters.
+
+
+[1]: https://lore.kernel.org/rust-for-linux/4e0f5932-c7bc-4878-862c-1186cbecd71d@gmail.com 
+--
+ Documentation/rust/arch-support.rst |  1 +
+ arch/arm/Kconfig                    |  1 +
+ arch/arm/Makefile                   |  1 +
+ rust/Makefile                       |  8 ++++++++
+ rust/bindgen_parameters             |  4 ++++
+ rust/compiler_builtins.rs           | 24 ++++++++++++++++++++++++
+ scripts/generate_rust_target.rs     |  4 +++-
+ 7 files changed, 42 insertions(+), 1 deletion(-)
+
+diff --git a/Documentation/rust/arch-support.rst b/Documentation/rust/arch-support.rst
+index b13e19d84744..4bf5205f526d 100644
+--- a/Documentation/rust/arch-support.rst
++++ b/Documentation/rust/arch-support.rst
+@@ -15,6 +15,7 @@ support corresponds to ``S`` values in the ``MAINTAINERS`` file.
+ =============  ================  ==============================================
+ Architecture   Level of support  Constraints
+ =============  ================  ==============================================
++``arm``        Maintained        ARMv7 Little Endian only.
+ ``arm64``      Maintained        Little Endian only.
+ ``loongarch``  Maintained        \-
+ ``riscv``      Maintained        ``riscv64`` only.
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index ee5115252aac..f07149fe078b 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -126,6 +126,7 @@ config ARM
+ 	select MMU_GATHER_RCU_TABLE_FREE if SMP && ARM_LPAE
+ 	select HAVE_REGS_AND_STACK_ACCESS_API
+ 	select HAVE_RSEQ
++	select HAVE_RUST if CPU_LITTLE_ENDIAN && CPU_32v7
+ 	select HAVE_STACKPROTECTOR
+ 	select HAVE_SYSCALL_TRACEPOINTS
+ 	select HAVE_UID16
+diff --git a/arch/arm/Makefile b/arch/arm/Makefile
+index 71afdd98ddf2..9cc10e32e8be 100644
+--- a/arch/arm/Makefile
++++ b/arch/arm/Makefile
+@@ -150,6 +150,7 @@ endif
+ KBUILD_CPPFLAGS	+=$(cpp-y)
+ KBUILD_CFLAGS	+=$(CFLAGS_ABI) $(CFLAGS_ISA) $(arch-y) $(tune-y) $(call cc-option,-mshort-load-bytes,$(call cc-option,-malignment-traps,)) -msoft-float -Uarm
+ KBUILD_AFLAGS	+=$(CFLAGS_ABI) $(AFLAGS_ISA) -Wa,$(arch-y) $(tune-y) -include asm/unified.h -msoft-float
++KBUILD_RUSTFLAGS += --target=arm-unknown-linux-gnueabi
+ 
+ CHECKFLAGS	+= -D__arm__
+ 
+diff --git a/rust/Makefile b/rust/Makefile
+index f70d5e244fee..8214a6f378e3 100644
+--- a/rust/Makefile
++++ b/rust/Makefile
+@@ -287,6 +287,7 @@ bindgen_skip_c_flags := -mno-fp-ret-in-387 -mpreferred-stack-boundary=% \
+ # Derived from `scripts/Makefile.clang`.
+ BINDGEN_TARGET_x86	:= x86_64-linux-gnu
+ BINDGEN_TARGET_arm64	:= aarch64-linux-gnu
++BINDGEN_TARGET_arm	:= arm-linux-gnueabi
+ BINDGEN_TARGET		:= $(BINDGEN_TARGET_$(SRCARCH))
+ 
+ # All warnings are inhibited since GCC builds are very experimental,
+@@ -413,6 +414,13 @@ redirect-intrinsics = \
+ 	__muloti4 __multi3 \
+ 	__udivmodti4 __udivti3 __umodti3
+ 
++ifdef CONFIG_ARM
++	# Add eabi initrinsics for ARM 32-bit
++	redirect-intrinsics += \
++		__aeabi_fadd __aeabi_fmul __aeabi_fcmpeq __aeabi_fcmple __aeabi_fcmplt __aeabi_fcmpun \
++		__aeabi_dadd __aeabi_dmul __aeabi_dcmple __aeabi_dcmplt __aeabi_dcmpun \
++		__aeabi_uldivmod
++endif
+ ifneq ($(or $(CONFIG_ARM64),$(and $(CONFIG_RISCV),$(CONFIG_64BIT))),)
+ 	# These intrinsics are defined for ARM64 and RISCV64
+ 	redirect-intrinsics += \
+diff --git a/rust/bindgen_parameters b/rust/bindgen_parameters
+index a721d466bee4..83f28ae4bb2b 100644
+--- a/rust/bindgen_parameters
++++ b/rust/bindgen_parameters
+@@ -24,3 +24,7 @@
+ # These functions use the `__preserve_most` calling convention, which neither bindgen
+ # nor Rust currently understand, and which Clang currently declares to be unstable.
+ --blocklist-function __list_.*_report
++
++# Depending on how the architecture defines `ARCH_SLAB_MINALIGN`, `bindgen` might generate a binding.
++# Disable this here as there is a `const` item that will always be generated in `bindings_helper.h`
++--blocklist-item ARCH_SLAB_MINALIGN
+diff --git a/rust/compiler_builtins.rs b/rust/compiler_builtins.rs
+index bba2922c6ef7..c37142b16a45 100644
+--- a/rust/compiler_builtins.rs
++++ b/rust/compiler_builtins.rs
+@@ -70,5 +70,29 @@ pub extern "C" fn $ident() {
+     __umodti3,
+ });
+ 
++#[cfg(target_arch = "arm")]
++define_panicking_intrinsics!("`f32` should not be used", {
++    __aeabi_fadd,
++    __aeabi_fmul,
++    __aeabi_fcmpeq,
++    __aeabi_fcmple,
++    __aeabi_fcmplt,
++    __aeabi_fcmpun,
++});
++
++#[cfg(target_arch = "arm")]
++define_panicking_intrinsics!("`f64` should not be used", {
++    __aeabi_dadd,
++    __aeabi_dmul,
++    __aeabi_dcmple,
++    __aeabi_dcmplt,
++    __aeabi_dcmpun,
++});
++
++#[cfg(target_arch = "arm")]
++define_panicking_intrinsics!("`u64` division/modulo should not be used", {
++    __aeabi_uldivmod,
++});
++
+ // NOTE: if you are adding a new intrinsic here, you should also add it to
+ // `redirect-intrinsics` in `rust/Makefile`.
+diff --git a/scripts/generate_rust_target.rs b/scripts/generate_rust_target.rs
+index 641b713a033a..c3a6058fdf30 100644
+--- a/scripts/generate_rust_target.rs
++++ b/scripts/generate_rust_target.rs
+@@ -148,7 +148,9 @@ fn main() {
+     let mut ts = TargetSpec::new();
+ 
+     // `llvm-target`s are taken from `scripts/Makefile.clang`.
+-    if cfg.has("ARM64") {
++    if cfg.has("ARM") {
++        panic!("arm uses the builtin rustc arm-unknown-linux-gnueabi target");
++    } else if cfg.has("ARM64") {
+         panic!("arm64 uses the builtin rustc aarch64-unknown-none target");
+     } else if cfg.has("RISCV") {
+         if cfg.has("64BIT") {
+
+base-commit: 1613e604df0cd359cf2a7fbd9be7a0bcfacfabd0
+-- 
+2.45.2
