@@ -1,62 +1,62 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A8D71741DF
-	for <rust-for-linux@vger.kernel.org>; Mon, 17 Jun 2024 20:30:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86B491990D2
+	for <rust-for-linux@vger.kernel.org>; Mon, 17 Jun 2024 20:30:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718656229; cv=none; b=V7AhRrEdbb6upzIWXzFa6ptOJg3e8setTd2vX39kC07YQCI3i4CNMwtYbV0WOgI5O01sPILZ2l52Un/webOMKxWEVcx5AAjzmYVzFRhN0geiGa7vmdQRdWryBFBqMzlMSy4/eWUKu3I4jWSwS6JNjV6rVpNtYLzYDmaSVEkV4es=
+	t=1718656232; cv=none; b=n73wu6neYRIpWDWpw1v0gPHEzIhR4nNtSjT/PYvaYN5DrFMlMOfdaocdloerCtVakyMX8Rz2LGGSdObf6IvT/553cYdmhB3VtyU8MOlHzj5YKxu+Ir7XqcTZZRGiKvTH9HmRq6zIK8udnUjwgjMl4DJEodTtr5/MozXfbvkdxDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718656229; c=relaxed/simple;
-	bh=A8M6FF7htEPo5boFGolkHiGeAc6qKIiKNMl16i3X2mY=;
+	s=arc-20240116; t=1718656232; c=relaxed/simple;
+	bh=B1mlD2gcDZn3WcFLN8earxzL3eEqpyTKvhmSVNGtGhM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=b5tRVz2w5cAcpZuyPaB0z1Gq9dQIoFeuex+zi7NNPvtFgStjJ0Cmlk6Py/HBQxjw6OgL64Zlw2EKURwyxgEfsKzdfoRVaSqqt6Yzw+WryGgSwzZT8hpyq8pw+F1ryJK0Ww/d/+HdwUQjU/5xRnWFSSYF1uoEViIX6bO3sWo/2FU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SopFgF19; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:Content-Type; b=Ldm97y3089v29oKziG7uogeKpJp4VdZ00OR9aO//U7veCmKyEINtOgYppwlupRp0sM3M/9m8dhYb+JHPbhHntYC6YruRCSSrozCRWGRGeisKU6bzBd7jVK/K7akHnexdYvWAbiyyKXCEPXD4s9rdRvd5y5l4KQVU6CWLhiAPKOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=EEbeSyJa; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SopFgF19"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="EEbeSyJa"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1718656226;
+	s=mimecast20190719; t=1718656228;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=xI+z2ALaUfW3Qgvh6spulMhk7FV84f8kGNKB6ILw4nc=;
-	b=SopFgF1916kTTNX3RnnGqfWI0q13jLoaDbgPNGTg9RITaBe0T2W5vW2T50l5nIk1ClTG30
-	Ak9XNzqRIEjOWbtuanix62crRKWbcCpiTm4cSSx2mx2HAD8QpYYnb8APGwGauGgq3e2EKO
-	7dRzjKpkGEwmQB7DtRT8bxW+zaULsOw=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=PgQhmsr/qwpQV0Je5+W+RhOcNOfhN6QQb+s3cR1jcGU=;
+	b=EEbeSyJa9L/Vois1KSV76pJXx73ZD8+8DtwCVktLDfGH/a7Z1TjYxVWYAU16euZXuMb6fQ
+	nKA4cMppiwmRP4wzDyHXbCUuKZOZN8G9eiTDvj0hGnVTDLTBMAn8xuKgV2g9hEcai5MsfZ
+	djYIk7DrlMeOOWg4KkPRuosci+W+TkU=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-398-V3KGN7ooMjWvGBhTS3EzXQ-1; Mon, 17 Jun 2024 16:30:23 -0400
-X-MC-Unique: V3KGN7ooMjWvGBhTS3EzXQ-1
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-421791c4eadso26828195e9.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 17 Jun 2024 13:30:23 -0700 (PDT)
+ us-mta-681-WrcVEGbuM_W97GuEfWhvYA-1; Mon, 17 Jun 2024 16:30:27 -0400
+X-MC-Unique: WrcVEGbuM_W97GuEfWhvYA-1
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4217a6a00d8so31218805e9.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 17 Jun 2024 13:30:27 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718656222; x=1719261022;
+        d=1e100.net; s=20230601; t=1718656226; x=1719261026;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=xI+z2ALaUfW3Qgvh6spulMhk7FV84f8kGNKB6ILw4nc=;
-        b=w3tDZjmmoPdLSvH6SNw9Rpg+oRVQlnMyiE0t9urpdcOllllo0k5jhr/2h1pNuK7CFe
-         qfhkU4+B5K+B30hmplRMMb9gIVBlkmAxvKHiReQqsxYvQh1WTVLHepELWLKcPB+658pq
-         0AcPRff6SffceSCIX1/oNp5Bc2ZZL5M6yeoCmS7Y+1iGdSfbfAogMf6UVYF9HXqCa5bD
-         owum81Ryj7YWDz8wXVQ78a22kvmi7pG4zP4/mkGeapj5/Bs8Okthl3Ffw/nCebLnR8zb
-         KzrGwy39Q1NACG42z4rI3dRiAXd+iioF4wjHoF3Y1+E0q6ilBDukDVLgATHlQ+J1YgXa
-         LIsA==
-X-Gm-Message-State: AOJu0Yx2O9FwnBdfEFIHqnZvdLdJhxZrDf+L2pkFS0+YaeQbXoD4F8Iz
-	3/WrHVcmoLDgxRTIr0yu1guKvZGZ1t2xsLoP0wC9/ucpXKgpRDftYp4H5YjlM/6tm6X+I3Cj3lh
-	f9dpoRBxWkhFBDZFrEOlIRCzSlwwReLRqxC0d/D2dGPTo0+Fkmy7KvjvDyqBj50lF
-X-Received: by 2002:a05:600c:1d82:b0:420:ffe3:8536 with SMTP id 5b1f17b1804b1-42304854ecdmr88726075e9.37.1718656222035;
-        Mon, 17 Jun 2024 13:30:22 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHmp0ZVVmRphzqmYQn2Ly27dG0tqw083L13j4r8JcE0pxXR+Ka+RQpWXbiA8+YnOYH4G8hKeg==
-X-Received: by 2002:a05:600c:1d82:b0:420:ffe3:8536 with SMTP id 5b1f17b1804b1-42304854ecdmr88725825e9.37.1718656221727;
-        Mon, 17 Jun 2024 13:30:21 -0700 (PDT)
+        bh=PgQhmsr/qwpQV0Je5+W+RhOcNOfhN6QQb+s3cR1jcGU=;
+        b=prA4lBF5634dMfNCW87zxBffCdoA+xNaZvkfZAnEai2rM8DZqXSCvwQmGfNZomcXYE
+         cIcpzyo9O+OzDtul1HPr8jobVk6gzaleRy5ODuLqj2bof7gfSW7nMMfcLQd8uE0tJV38
+         JL6u4xDWH2wTEnSQjXFIXKOQq/o2fFW0gNrjUrx3Wk0BJG/yeanKu1sqntS/2kYN4ZVS
+         w8eHQRyUtH0ZgG/ZtjsVa3GULhr812Qc2VPajZt6dfmIzpnI/4Xf2CHPdDxESiHjcHnW
+         Lt7A9qt+LZ1azUCxxxxN5PfqWs9uEe97Xp/CQv6M9YgvClxWuNFRbWX2T/KEQuA1dHxo
+         KkUw==
+X-Gm-Message-State: AOJu0YzcLkmNzIesiBCyPzKlsKd/oEnMdqIXowJX9TwrIJkCi08BM+fw
+	J0gs+jB/nhmncp1CNGKFahyKcPQg4Q8DZb1B/4bUutdAEiM/BY/Y1h1POFFVaIfxKFM4TBNnQdy
+	Q1jZ/5I5SNP8BdOmckZk7hSEXw4QQzCJQT1AwuwPIzEG5Ml19NvNmxMg0Y2v2kmOT
+X-Received: by 2002:a05:600c:2d8c:b0:422:140:f440 with SMTP id 5b1f17b1804b1-4230484adc9mr86367865e9.36.1718656225969;
+        Mon, 17 Jun 2024 13:30:25 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGFEnB6x2MMZffzzdSjL8T8/a13bSO8sq6uqSY99yH4rtqsHFx2SMJS7ed+5la0ootKESeSwQ==
+X-Received: by 2002:a05:600c:2d8c:b0:422:140:f440 with SMTP id 5b1f17b1804b1-4230484adc9mr86367725e9.36.1718656225662;
+        Mon, 17 Jun 2024 13:30:25 -0700 (PDT)
 Received: from cassiopeiae.. ([2a02:810d:4b3f:ee94:642:1aff:fe31:a19f])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-422a1e68d04sm185142205e9.36.2024.06.17.13.30.19
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-422f6127c6fsm168658825e9.24.2024.06.17.13.30.24
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 17 Jun 2024 13:30:20 -0700 (PDT)
+        Mon, 17 Jun 2024 13:30:25 -0700 (PDT)
 From: Danilo Krummrich <dakr@redhat.com>
 To: gregkh@linuxfoundation.org,
 	rafael@kernel.org,
@@ -79,9 +79,9 @@ To: gregkh@linuxfoundation.org,
 Cc: rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Danilo Krummrich <dakr@redhat.com>
-Subject: [PATCH v3 1/2] rust: add abstraction for struct device
-Date: Mon, 17 Jun 2024 22:29:40 +0200
-Message-ID: <20240617203010.101452-2-dakr@redhat.com>
+Subject: [PATCH v3 2/2] rust: add firmware abstractions
+Date: Mon, 17 Jun 2024 22:29:41 +0200
+Message-ID: <20240617203010.101452-3-dakr@redhat.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240617203010.101452-1-dakr@redhat.com>
 References: <20240617203010.101452-1-dakr@redhat.com>
@@ -93,159 +93,171 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="US-ASCII"; x-default=true
 
-Add an (always) reference-counted abstraction for a generic C `struct
-device`. This abstraction encapsulates existing `struct device` instances
-and manages its reference count.
+Add an abstraction around the kernels firmware API to request firmware
+images. The abstraction provides functions to access the firmware's size
+and backing buffer.
 
-Subsystems may use this abstraction as a base to abstract subsystem
-specific device instances based on a generic `struct device`, such as
-`struct pci_dev`.
+The firmware is released once the abstraction instance is dropped.
 
-Co-developed-by: Wedson Almeida Filho <wedsonaf@gmail.com>
-Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
 Signed-off-by: Danilo Krummrich <dakr@redhat.com>
 ---
- rust/helpers.c        |   1 +
- rust/kernel/device.rs | 102 ++++++++++++++++++++++++++++++++++++++++++
- rust/kernel/lib.rs    |   1 +
- 3 files changed, 104 insertions(+)
- create mode 100644 rust/kernel/device.rs
+ drivers/base/firmware_loader/Kconfig |  7 ++
+ rust/bindings/bindings_helper.h      |  1 +
+ rust/kernel/firmware.rs              | 98 ++++++++++++++++++++++++++++
+ rust/kernel/lib.rs                   |  2 +
+ 4 files changed, 108 insertions(+)
+ create mode 100644 rust/kernel/firmware.rs
 
-diff --git a/rust/helpers.c b/rust/helpers.c
-index 2c37a0f5d7a8..0e02b2c64c72 100644
---- a/rust/helpers.c
-+++ b/rust/helpers.c
-@@ -23,6 +23,7 @@
- #include <kunit/test-bug.h>
- #include <linux/bug.h>
- #include <linux/build_bug.h>
-+#include <linux/device.h>
- #include <linux/err.h>
+diff --git a/drivers/base/firmware_loader/Kconfig b/drivers/base/firmware_loader/Kconfig
+index 5ca00e02fe82..a03701674265 100644
+--- a/drivers/base/firmware_loader/Kconfig
++++ b/drivers/base/firmware_loader/Kconfig
+@@ -37,6 +37,13 @@ config FW_LOADER_DEBUG
+ 	  SHA256 checksums to the kernel log for each firmware file that is
+ 	  loaded.
+ 
++config RUST_FW_LOADER_ABSTRACTIONS
++	bool "Rust Firmware Loader abstractions"
++	depends on RUST
++	depends on FW_LOADER=y
++	help
++	  This enables the Rust abstractions for the firmware loader API.
++
+ if FW_LOADER
+ 
+ config FW_LOADER_PAGED_BUF
+diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+index ddb5644d4fd9..18a3f05115cb 100644
+--- a/rust/bindings/bindings_helper.h
++++ b/rust/bindings/bindings_helper.h
+@@ -9,6 +9,7 @@
+ #include <kunit/test.h>
  #include <linux/errname.h>
- #include <linux/mutex.h>
-diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
+ #include <linux/ethtool.h>
++#include <linux/firmware.h>
+ #include <linux/jiffies.h>
+ #include <linux/mdio.h>
+ #include <linux/phy.h>
+diff --git a/rust/kernel/firmware.rs b/rust/kernel/firmware.rs
 new file mode 100644
-index 000000000000..e445e87fb7d7
+index 000000000000..05a4f84cfd42
 --- /dev/null
-+++ b/rust/kernel/device.rs
-@@ -0,0 +1,102 @@
++++ b/rust/kernel/firmware.rs
+@@ -0,0 +1,98 @@
 +// SPDX-License-Identifier: GPL-2.0
 +
-+//! Generic devices that are part of the kernel's driver model.
++//! Firmware abstraction
 +//!
-+//! C header: [`include/linux/device.h`](srctree/include/linux/device.h)
++//! C header: [`include/linux/firmware.h`](srctree/include/linux/firmware.h")
 +
-+use crate::{
-+    bindings,
-+    types::{ARef, Opaque},
-+};
-+use core::ptr;
++use crate::{bindings, device::Device, error::Error, error::Result, str::CStr};
++use core::ptr::NonNull;
 +
-+/// A reference-counted device.
++// One of the following: `bindings::request_firmware`, `bindings::firmware_request_nowarn`,
++// `firmware_request_platform`, `bindings::request_firmware_direct`
++type FwFunc =
++    unsafe extern "C" fn(*mut *const bindings::firmware, *const i8, *mut bindings::device) -> i32;
++
++/// Abstraction around a C `struct firmware`.
 +///
-+/// This structure represents the Rust abstraction for a C `struct device`. This implementation
-+/// abstracts the usage of an already existing C `struct device` within Rust code that we get
-+/// passed from the C side.
-+///
-+/// An instance of this abstraction can be obtained temporarily or permanent.
-+///
-+/// A temporary one is bound to the lifetime of the C `struct device` pointer used for creation.
-+/// A permanent instance is always reference-counted and hence not restricted by any lifetime
-+/// boundaries.
-+///
-+/// For subsystems it is recommended to create a permanent instance to wrap into a subsystem
-+/// specific device structure (e.g. `pci::Device`). This is useful for passing it to drivers in
-+/// `T::probe()`, such that a driver can store the `ARef<Device>` (equivalent to storing a
-+/// `struct device` pointer in a C driver) for arbitrary purposes, e.g. allocating DMA coherent
-+/// memory.
++/// This is a simple abstraction around the C firmware API. Just like with the C API, firmware can
++/// be requested. Once requested the abstraction provides direct access to the firmware buffer as
++/// `&[u8]`. The firmware is released once [`Firmware`] is dropped.
 +///
 +/// # Invariants
 +///
-+/// The pointer stored in `Self` is non-null and valid for the lifetime of the `ARef` instance. In
-+/// particular, the `ARef` instance owns an increment on the underlying object’s reference count.
++/// The pointer is valid, and has ownership over the instance of `struct firmware`.
 +///
-+/// `bindings::device::release` is valid to be called from any thread, hence `ARef<Device>` can be
-+/// dropped from any thread.
-+#[repr(transparent)]
-+pub struct Device(Opaque<bindings::device>);
++/// # Examples
++///
++/// ```
++/// # use kernel::{c_str, device::Device, firmware::Firmware};
++///
++/// # // SAFETY: *NOT* safe, just for the example to get an `ARef<Device>` instance
++/// # let dev = unsafe { Device::from_raw(core::ptr::null_mut()) };
++///
++/// let fw = Firmware::request(c_str!("path/to/firmware.bin"), &dev).unwrap();
++/// let blob = fw.data();
++/// ```
++pub struct Firmware(NonNull<bindings::firmware>);
 +
-+impl Device {
-+    /// Creates a new reference-counted abstraction instance of an existing `struct device` pointer.
-+    ///
-+    /// # Safety
-+    ///
-+    /// Callers must ensure that `ptr` is valid, non-null, and has a non-zero reference count,
-+    /// i.e. it must be ensured that the reference count of the C `struct device` `ptr` points to
-+    /// can't drop to zero, for the duration of this function call.
-+    ///
-+    /// It must also be ensured that `bindings::device::release` can be called from any thread.
-+    /// While not officially documented, this should be the case for any `struct device`.
-+    pub unsafe fn from_raw(ptr: *mut bindings::device) -> ARef<Self> {
-+        // SAFETY: By the safety requirements, ptr is valid.
-+        // Initially increase the reference count by one to compensate for the final decrement once
-+        // this newly created `ARef<Device>` instance is dropped.
-+        unsafe { bindings::get_device(ptr) };
++impl Firmware {
++    fn request_internal(name: &CStr, dev: &Device, func: FwFunc) -> Result<Self> {
++        let mut fw: *mut bindings::firmware = core::ptr::null_mut();
++        let pfw: *mut *mut bindings::firmware = &mut fw;
 +
-+        // CAST: `Self` is a `repr(transparent)` wrapper around `bindings::device`.
-+        let ptr = ptr.cast::<Self>();
++        // SAFETY: `pfw` is a valid pointer to a NULL initialized `bindings::firmware` pointer.
++        // `name` and `dev` are valid as by their type invariants.
++        let ret = unsafe { func(pfw as _, name.as_char_ptr(), dev.as_raw()) };
++        if ret != 0 {
++            return Err(Error::from_errno(ret));
++        }
 +
-+        // SAFETY: By the safety requirements, ptr is valid.
-+        unsafe { ARef::from_raw(ptr::NonNull::new_unchecked(ptr)) }
++        // SAFETY: `func` not bailing out with a non-zero error code, guarantees that `fw` is a
++        // valid pointer to `bindings::firmware`.
++        Ok(Firmware(unsafe { NonNull::new_unchecked(fw) }))
 +    }
 +
-+    /// Obtain the raw `struct device *`.
-+    pub(crate) fn as_raw(&self) -> *mut bindings::device {
-+        self.0.get()
++    /// Send a firmware request and wait for it. See also `bindings::request_firmware`.
++    pub fn request(name: &CStr, dev: &Device) -> Result<Self> {
++        Self::request_internal(name, dev, bindings::request_firmware)
 +    }
 +
-+    /// Convert a raw C `struct device` pointer to a `&'a Device`.
-+    ///
-+    /// # Safety
-+    ///
-+    /// Callers must ensure that `ptr` is valid, non-null, and has a non-zero reference count,
-+    /// i.e. it must be ensured that the reference count of the C `struct device` `ptr` points to
-+    /// can't drop to zero, for the duration of this function call and the entire duration when the
-+    /// returned reference exists.
-+    pub unsafe fn as_ref<'a>(ptr: *mut bindings::device) -> &'a Self {
-+        // SAFETY: Guaranteed by the safety requirements of the function.
-+        unsafe { &*ptr.cast() }
++    /// Send a request for an optional firmware module. See also
++    /// `bindings::firmware_request_nowarn`.
++    pub fn request_nowarn(name: &CStr, dev: &Device) -> Result<Self> {
++        Self::request_internal(name, dev, bindings::firmware_request_nowarn)
++    }
++
++    fn as_raw(&self) -> *mut bindings::firmware {
++        self.0.as_ptr()
++    }
++
++    /// Returns the size of the requested firmware in bytes.
++    pub fn size(&self) -> usize {
++        // SAFETY: Safe by the type invariant.
++        unsafe { (*self.as_raw()).size }
++    }
++
++    /// Returns the requested firmware as `&[u8]`.
++    pub fn data(&self) -> &[u8] {
++        // SAFETY: Safe by the type invariant. Additionally, `bindings::firmware` guarantees, if
++        // successfully requested, that `bindings::firmware::data` has a size of
++        // `bindings::firmware::size` bytes.
++        unsafe { core::slice::from_raw_parts((*self.as_raw()).data, self.size()) }
 +    }
 +}
 +
-+// SAFETY: Instances of `Device` are always reference-counted.
-+unsafe impl crate::types::AlwaysRefCounted for Device {
-+    fn inc_ref(&self) {
-+        // SAFETY: The existence of a shared reference guarantees that the refcount is non-zero.
-+        unsafe { bindings::get_device(self.as_raw()) };
-+    }
-+
-+    unsafe fn dec_ref(obj: ptr::NonNull<Self>) {
-+        // SAFETY: The safety requirements guarantee that the refcount is non-zero.
-+        unsafe { bindings::put_device(obj.cast().as_ptr()) }
++impl Drop for Firmware {
++    fn drop(&mut self) {
++        // SAFETY: Safe by the type invariant.
++        unsafe { bindings::release_firmware(self.as_raw()) };
 +    }
 +}
 +
-+// SAFETY: As by the type invariant `Device` can be sent to any thread.
-+unsafe impl Send for Device {}
++// SAFETY: `Firmware` only holds a pointer to a C `struct firmware`, which is safe to be used from
++// any thread.
++unsafe impl Send for Firmware {}
 +
-+// SAFETY: `Device` can be shared among threads because all immutable methods are protected by the
-+// synchronization in `struct device`.
-+unsafe impl Sync for Device {}
++// SAFETY: `Firmware` only holds a pointer to a C `struct firmware`, references to which are safe to
++// be used from any thread.
++unsafe impl Sync for Firmware {}
 diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index fbd91a48ff8b..dd1207f1a873 100644
+index dd1207f1a873..7707cb013ce9 100644
 --- a/rust/kernel/lib.rs
 +++ b/rust/kernel/lib.rs
-@@ -28,6 +28,7 @@
- 
- pub mod alloc;
+@@ -30,6 +30,8 @@
  mod build_assert;
-+pub mod device;
+ pub mod device;
  pub mod error;
++#[cfg(CONFIG_RUST_FW_LOADER_ABSTRACTIONS)]
++pub mod firmware;
  pub mod init;
  pub mod ioctl;
+ #[cfg(CONFIG_KUNIT)]
 -- 
 2.45.1
 
