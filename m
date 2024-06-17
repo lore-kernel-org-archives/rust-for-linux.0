@@ -1,236 +1,185 @@
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+Received: from mail-yb1-f202.google.com (mail-yb1-f202.google.com [209.85.219.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3906C1D951C;
-	Mon, 17 Jun 2024 16:03:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7F5D1D9520
+	for <rust-for-linux@vger.kernel.org>; Mon, 17 Jun 2024 17:58:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718640201; cv=none; b=T3WsFz3VxHKPgFuDzxQMaoE3BNxGad0FlkwkETza6PBRpHwbaWqTfbOkFa/XTIqHx4wHgA3gHtvbpNoR2nq0zX8pmpfihWnx/0wmhHT33eH2UaxwKH3VbiT3EYQg6W/AaUjKkdFq2q3RDGNC+UY23HXL/wPgLyVBq1K/pQjvixg=
+	t=1718647108; cv=none; b=EGs8j6u8fIAowhJS0lZVme6jynggh+zx2Sae8daCuVRy7uX908et+IFQeZEpebpL1uE7Xtw/0+pXLKX3evqejPAPnY3feJkfNaIFpgqd89u7rDby9suKIRlwOjHTFREOPyE00Nq22RSD2BhP4VGVJ1iWAtQQYo+TUwuIQsVIviE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718640201; c=relaxed/simple;
-	bh=lBSAhG4kxwlt8HqpfAYOA3z3MYxAXqQuxAFF04DLk3A=;
-	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:Content-Type; b=M8Xz3k6UBtuNn3V8MCueFORS68Le2LceMolM10zJIE29Ar9HiXNPZo3mjNgKxCHtoQ7V//iC8WocHNQJMVHdEV0ky8iVWvtZhiaS1s0/3SQwLIiy85p2CPI93EYrU6W820Mnr8dH9P5hkfpqxrA6qiX6ZV46IlaX2s9tFc6ukdY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XIFnqAKj; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1718647108; c=relaxed/simple;
+	bh=tXPKxVYsjjJsY1k10biTjwWu9hPJ9D/IhHpy6cm2zjA=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=rbwQJr+kiAwr4Owpj0lra8z8RicGkcelCwgOYVwhnuUWxl++k2FhcTzH/49ff4VpoW5XUK79WzTJO1JRjymT7u0UNKbca2daJ0CDBbIVqUfRBuRIzi3LIKg/fKlGx7baVp/3rskfq8J399b3JDCFJahyoKJiRulQ/i6DGuN8hPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--samitolvanen.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WMZm+8B1; arc=none smtp.client-ip=209.85.219.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--samitolvanen.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XIFnqAKj"
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-421f4d1c057so35254605e9.3;
-        Mon, 17 Jun 2024 09:03:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WMZm+8B1"
+Received: by mail-yb1-f202.google.com with SMTP id 3f1490d57ef6-dfeec5da787so8043182276.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 17 Jun 2024 10:58:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718640197; x=1719244997; darn=vger.kernel.org;
-        h=content-transfer-encoding:content-language:cc:to:subject:from
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4zrczeM4bdzO0oUIzzu48HGb8iTeMt/017ltLJZV/Sk=;
-        b=XIFnqAKj5DWPPl15jMhvWraTLgKk4tkf8xTRjeOb0EiiGtkidtMwq9TwGYZexogD+s
-         I4ouMtfBfzpI09XFoJOM3ptlsli9Gkv5enKybgpuWtA5tti+mCTwUW0YfRX+urDqRm2Q
-         Ep9MEFcmA2onvBcsvbUikvMLn8kgs7Ufnwvj37yGxmFHU7+YtWhiMUQPZXQ9s8lnbAAa
-         S087ZrRuUWLp9Ac6ANh7bIkN25FIOsjhZTxUoRwMBuSzWMr2znJiOQfjfQQ9f8P0on9d
-         yaGmw0KSGflZ4BQdYvWvRMFR6sAWpVPmXTLDDh0AncCxF4L3D5Vp3KeRYV0+KcOabewx
-         U2kw==
+        d=google.com; s=20230601; t=1718647106; x=1719251906; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=tE8iwa2ZayN0y+FsAJoQxOYNFCmll9YcgC2KyKrqU8w=;
+        b=WMZm+8B1Z1BLoRI1fIsjTFn4tEPZkQGTyZA+vSsfQTDVAtQEYQer9iN7xLVx05J4jW
+         beNpt5uExS1Qg91VBvEFbDEFaPpKtbDhri4lBLJbKHPa7LqDlLyprrG+zi1PgiYkTyc0
+         f37gMbR4rE51FxCecca5uw2aO+G8mpG0vBEpvVv2A59rKFifHHXls+0AfzFhng7wadp/
+         zB8VwHi0DOVAdmfzf5O2jQZLRa5rqN4HO8jxzeMhZveUC6FVCcoSgVL+e1qg23l+r2gF
+         azys4+izrdrXE8j47K8LBDlGvZGAPZ6ZPG7P7FDo2aPd9mTAO1ELdkwqABMgZv6C6gYI
+         D76Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718640197; x=1719244997;
-        h=content-transfer-encoding:content-language:cc:to:subject:from
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=4zrczeM4bdzO0oUIzzu48HGb8iTeMt/017ltLJZV/Sk=;
-        b=ePnuubQTnc1D7Oi3BCu8MqsiB4UPltTUSfJaja/XIl1f01f4v8mqia9Fjtzu3wOkQy
-         s7Urzrd9HvNzjDFphplTQh6iDirVWIVKsLeWuwxMBAtEril4xNEEl74r8mJQ413zJ5Lx
-         AcFmwIDTQf66g9Q8a6Lf5GmqTomur28E2yizqvUWkso4GHCXnCKpMqvyJ11piMRbFp24
-         t4ggFxFjom8u6W7OiYzHZbxdtVzO/xyvkCLz4rD6sRPv7tBDIRBBF2wUrWd7NoFjd8dU
-         HtH+iV8qY02u2PkuxKmIbvlmF0bj2cDXbwJFrgGAeOmZsqqAWdT8AKWAXCShdyBw+u6r
-         Atmg==
-X-Forwarded-Encrypted: i=1; AJvYcCVPrCLcfR1pGH0sxefPp9wl+z0JQLwVI4C2aIRvCxEROt7697Va8VV13PwCaLeE7oiLtQdZlcc+CHCq25cUhun5EPpUOnxg+JyNkpI6IFc=
-X-Gm-Message-State: AOJu0YxBAZ48V0r8ZGia78lV/ur+3RwEt0MAev84P7nF0gOUS3prbf4k
-	22wOvX24nu7D+6uFULvj1Srn3mkcoejHSrHfdTIrBoik+OWn3uHo7YAz9YIC
-X-Google-Smtp-Source: AGHT+IF6Ix1kuSan1958bYh1RWh8Zhz3051jysHe2tCHrIEyyJ43VzeMCWehCn/FWGfEkdNwIhyLgQ==
-X-Received: by 2002:a05:600c:4ed0:b0:421:963b:57d9 with SMTP id 5b1f17b1804b1-4230484c5fdmr85942305e9.33.1718640197053;
-        Mon, 17 Jun 2024 09:03:17 -0700 (PDT)
-Received: from [10.5.1.156] (188-22-218-164.adsl.highway.telekom.at. [188.22.218.164])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-36075114e09sm12117931f8f.117.2024.06.17.09.03.16
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 17 Jun 2024 09:03:16 -0700 (PDT)
-Message-ID: <2dbd1491-149d-443c-9802-75786a6a3b73@gmail.com>
-Date: Mon, 17 Jun 2024 18:03:11 +0200
+        d=1e100.net; s=20230601; t=1718647106; x=1719251906;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=tE8iwa2ZayN0y+FsAJoQxOYNFCmll9YcgC2KyKrqU8w=;
+        b=Izr7UU827PDATUu4zkzmbdh9FqSTOB13zEGUsmaQ7t/Hqsu3aNRVkOtVfXG5cPIlt2
+         6wrJlwTtAX20zr3GOJoeMT7Y1CyT3QNLYzLnukyQz94Q8zG5cYjSd5QWfRp5f+TBlKPx
+         1O2L0koYFAeDNiOsHAI/91cla6e3DDXQT9UUbqcaKHwR0hkNtyrG4KtlzLp03GyUPoj9
+         zD5Fv83cgucfV3o1XtZ6wzMBzPBr4zyDRsTX8dCdY3qwMl5VQdMpsHWq6dlmItEKnY72
+         +UdAHtOWF60hA18qlD7KqABVC7LMiRkJj5rzxscvePZ37qsB3IsdxmE5q8lB55gQsgcO
+         YX4A==
+X-Forwarded-Encrypted: i=1; AJvYcCV0Hk8rGWf28REV0l74L4HfW/GOeMTXQfr5H7JfII/pYlF3eIJxPPuv04yBFZqI5q2NjyjSAxGstKmjgUeYKntC2WnJyW4yzxJMcvO5wNw=
+X-Gm-Message-State: AOJu0YxJVPtiJfJLVSqyOj/tCbKQuaRKjL+/RsEAHvLMcx5IUHcrW1KD
+	XYeq5chYoDNOt0HVnvPzU2WQPEiY10SPqCPGz5x+dvbVaOniGj6C6jvxkQYX7HqYCGZKQkTjYdr
+	Y+DAraN79PYzenGRGeuVXGc74Sg==
+X-Google-Smtp-Source: AGHT+IGGiudEmyxQxxClQZhcBXAIKfShE/2fjOTgqifTILv3lcTryYRr7+QwmmD2B8/WoEMY5JxgXGuQKOchzSuPpZo=
+X-Received: from samitolvanen.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:4f92])
+ (user=samitolvanen job=sendgmr) by 2002:a05:6902:726:b0:dfa:fda1:51d with
+ SMTP id 3f1490d57ef6-dff15396b94mr1172855276.7.1718647105713; Mon, 17 Jun
+ 2024 10:58:25 -0700 (PDT)
+Date: Mon, 17 Jun 2024 17:58:19 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-From: Christian Schrefl <chrisi.schrefl@gmail.com>
-Subject: [PATCH v2] arm: rust: Enable Rust support for ARMv7
-To: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- rust-for-linux@vger.kernel.org
-Cc: Miguel Ojeda <ojeda@kernel.org>, Jamie Cunliffe <Jamie.Cunliffe@arm.com>,
- Sven Van Asbroeck <thesven73@gmail.com>,
- Geert Stappers <stappers@stappers.nl>, Andrew Lunn <andrew@lunn.ch>
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+X-Developer-Key: i=samitolvanen@google.com; a=openpgp; fpr=35CCFB63B283D6D3AEB783944CB5F6848BBC56EE
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4931; i=samitolvanen@google.com;
+ h=from:subject; bh=tXPKxVYsjjJsY1k10biTjwWu9hPJ9D/IhHpy6cm2zjA=;
+ b=owEB7QES/pANAwAKAUy19oSLvFbuAcsmYgBmcHk6Z/HYbC7sBepRQ7DF3vVZPcrV2Gjy8PSbj
+ 8YYRZQ0CNWJAbMEAAEKAB0WIQQ1zPtjsoPW0663g5RMtfaEi7xW7gUCZnB5OgAKCRBMtfaEi7xW
+ 7me9C/9DTozoMNdY+G6oQtTtSWOgmdsJksSv/d5t7KR/HA+5t36B8GQs1ja7yUu/07ZOFuQ9uMb
+ zJMIsw0QnLiQIbFlFxK9F7RSyuJcvb0xvAsQxoXFxHAOpqAkrsGTZh3x1Bj+tUBGoD5Yq8pKEuw
+ F1xoQcyiroztYeuP5Ief6RwPZM4YQ8hTirr+08vrIA/M0VmTubz5/rKImANntU6lLTFApi+t3wv
+ ezyk3Ok35Oz+5UXbgkEwxKvveXvU3YRMfYYvx+Si10MOGiANCmB10vdGtxZy+elsOusi5y8Ueef
+ Tf3F5C6Z1R/kjvLZBqxKZo9jAWFDUskMkD75p79vOsle8o9zSnhiksZWJAobBlP/LYw8XinML3L
+ NcTAlLWyH+8iZOw/mGF5DxlkiwLP3RYL0TChn64Ao1dA9s62dKkya1i5E9bDfcGhQaBvb6JVi63 6nDHreFm0Ha9rxDNxGgjBgZ6yvtO6h/AEwcYYim+anhu+3Xq5+PU6olV6pb9ggAbOQVqI=
+X-Mailer: git-send-email 2.45.2.627.g7a2c4fd464-goog
+Message-ID: <20240617175818.58219-17-samitolvanen@google.com>
+Subject: [PATCH 00/15] Implement MODVERSIONS for Rust
+From: Sami Tolvanen <samitolvanen@google.com>
+To: Masahiro Yamada <masahiroy@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Matthew Maurer <mmaurer@google.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Sami Tolvanen <samitolvanen@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-This commit allows building ARMv7 kernels with Rust support.
+Hi folks,
 
-The rust core library expects some __eabi_... functions
-that are not implemented in the kernel.
-Those functions are some float operations and __aeabi_uldivmod.
-For now those are implemented with define_panicking_intrinsics!.
+This series implements CONFIG_MODVERSIONS for Rust, an important
+feature for distributions like Android that want to ship Rust
+kernel modules, and depend on modversions to help ensure module ABI
+compatibility.
 
-This is based on the code by Sven Van Asbroeck from the original
-rust branch and inspired by the AArch64 version by Jamie Cunliffe.
+There have been earlier proposals [1][2] that would allow Rust
+modules to coexist with modversions, but none that actually implement
+symbol versioning. Unlike C, Rust source code doesn't have sufficient
+information about the final ABI, as the compiler has considerable
+freedom in adjusting structure layout for improved performance [3],
+for example, which makes using a source code parser like genksyms
+a non-starter. Based on Matt's suggestion and previous feedback
+from maintainers, this series uses DWARF debugging information for
+computing versions. DWARF is an established and relatively stable
+format, which includes all the necessary ABI details, and adding a
+CONFIG_DEBUG_INFO dependency for Rust symbol versioning seems like a
+reasonable trade-off.
 
-I have tested the rust samples and a custom simple MMIO module
-on hardware (De1SoC FPGA + Arm A9 CPU).
+The first 12 patches of this series add a small tool for computing
+symbol versions from DWARF, called gendwarfksyms. When passed a list
+of exported symbols, the tool generates an expanded type string
+for each symbol, and computes symbol CRCs similarly to genksyms.
+gendwarfksyms is written in C and uses libdw to process DWARF, mainly
+because of the existing support for C host tools that use elfutils
+(e.g., objtool).
 
-This only includes support for ARMv7, but supporting other
-sub-architectures in the future should be as simple as setting 
-the correct rustc target.
+Another compatibility issue is fitting the extremely long mangled
+Rust symbol names into struct modversion_info, which can only hold
+55-character names (on 64-bit systems). Previous proposals suggested
+changing the structure to support longer names, but the conclusion was
+that we cannot break userspace tools that parse the version table.
 
-Signed-off-by: Christian Schrefl <chrisi.schrefl@gmail.com>
----
-Changes since V1 [1]:
-- Removed unrelated whitespace change.
-- Added target name to panic message in scripts/generate_rust_target.rs.
-- Fixed the comment in rust/bindgen_parameters.
+The next two patches of the series implement support for hashed
+symbol names in struct modversion_info, where names longer than 55
+characters are hashed, and the hash is stored in the name field. To
+avoid breaking userspace tools, the binary hash is prefixed with a
+null-terminated string containing the name of the hash function. While
+userspace tools can later be updated to potentially produce more
+useful information about the long symbols, this allows them to
+continue working in the meantime.
+
+The final patch allows CONFIG_MODVERSIONS to be selected with Rust,
+provided that debugging information is also available.
+
+[1] https://lore.kernel.org/lkml/20230111161155.1349375-1-gary@garyguo.net/
+[2] https://lore.kernel.org/rust-for-linux/20231118025748.2778044-1-mmaurer@google.com/
+[3] https://lore.kernel.org/rust-for-linux/CAGSQo005hRiUZdeppCifDqG9zFDJRwahpBLE4x7-MyfJscn7tQ@mail.gmail.com/
+
+Sami
 
 
-[1]: https://lore.kernel.org/rust-for-linux/4e0f5932-c7bc-4878-862c-1186cbecd71d@gmail.com 
---
- Documentation/rust/arch-support.rst |  1 +
- arch/arm/Kconfig                    |  1 +
- arch/arm/Makefile                   |  1 +
- rust/Makefile                       |  8 ++++++++
- rust/bindgen_parameters             |  4 ++++
- rust/compiler_builtins.rs           | 24 ++++++++++++++++++++++++
- scripts/generate_rust_target.rs     |  4 +++-
- 7 files changed, 42 insertions(+), 1 deletion(-)
+Sami Tolvanen (15):
+  tools: Add gendwarfksyms
+  gendwarfksyms: Add symbol list input handling
+  gendwarfksyms: Add CRC calculation
+  gendwarfksyms: Expand base_type
+  gendwarfksyms: Add a cache
+  gendwarfksyms: Expand type modifiers and typedefs
+  gendwarfksyms: Add pretty-printing
+  gendwarfksyms: Expand subroutine_type
+  gendwarfksyms: Expand array_type
+  gendwarfksyms: Expand structure types
+  gendwarfksyms: Limit structure expansion
+  gendwarfksyms: Add inline debugging
+  modpost: Add support for hashing long symbol names
+  module: Support hashed symbol names when checking modversions
+  kbuild: Use gendwarfksyms to generate Rust symbol versions
 
-diff --git a/Documentation/rust/arch-support.rst b/Documentation/rust/arch-support.rst
-index b13e19d84744..4bf5205f526d 100644
---- a/Documentation/rust/arch-support.rst
-+++ b/Documentation/rust/arch-support.rst
-@@ -15,6 +15,7 @@ support corresponds to ``S`` values in the ``MAINTAINERS`` file.
- =============  ================  ==============================================
- Architecture   Level of support  Constraints
- =============  ================  ==============================================
-+``arm``        Maintained        ARMv7 Little Endian only.
- ``arm64``      Maintained        Little Endian only.
- ``loongarch``  Maintained        \-
- ``riscv``      Maintained        ``riscv64`` only.
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index ee5115252aac..f07149fe078b 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -126,6 +126,7 @@ config ARM
- 	select MMU_GATHER_RCU_TABLE_FREE if SMP && ARM_LPAE
- 	select HAVE_REGS_AND_STACK_ACCESS_API
- 	select HAVE_RSEQ
-+	select HAVE_RUST if CPU_LITTLE_ENDIAN && CPU_32v7
- 	select HAVE_STACKPROTECTOR
- 	select HAVE_SYSCALL_TRACEPOINTS
- 	select HAVE_UID16
-diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-index 71afdd98ddf2..9cc10e32e8be 100644
---- a/arch/arm/Makefile
-+++ b/arch/arm/Makefile
-@@ -150,6 +150,7 @@ endif
- KBUILD_CPPFLAGS	+=$(cpp-y)
- KBUILD_CFLAGS	+=$(CFLAGS_ABI) $(CFLAGS_ISA) $(arch-y) $(tune-y) $(call cc-option,-mshort-load-bytes,$(call cc-option,-malignment-traps,)) -msoft-float -Uarm
- KBUILD_AFLAGS	+=$(CFLAGS_ABI) $(AFLAGS_ISA) -Wa,$(arch-y) $(tune-y) -include asm/unified.h -msoft-float
-+KBUILD_RUSTFLAGS += --target=arm-unknown-linux-gnueabi
- 
- CHECKFLAGS	+= -D__arm__
- 
-diff --git a/rust/Makefile b/rust/Makefile
-index f70d5e244fee..8214a6f378e3 100644
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -287,6 +287,7 @@ bindgen_skip_c_flags := -mno-fp-ret-in-387 -mpreferred-stack-boundary=% \
- # Derived from `scripts/Makefile.clang`.
- BINDGEN_TARGET_x86	:= x86_64-linux-gnu
- BINDGEN_TARGET_arm64	:= aarch64-linux-gnu
-+BINDGEN_TARGET_arm	:= arm-linux-gnueabi
- BINDGEN_TARGET		:= $(BINDGEN_TARGET_$(SRCARCH))
- 
- # All warnings are inhibited since GCC builds are very experimental,
-@@ -413,6 +414,13 @@ redirect-intrinsics = \
- 	__muloti4 __multi3 \
- 	__udivmodti4 __udivti3 __umodti3
- 
-+ifdef CONFIG_ARM
-+	# Add eabi initrinsics for ARM 32-bit
-+	redirect-intrinsics += \
-+		__aeabi_fadd __aeabi_fmul __aeabi_fcmpeq __aeabi_fcmple __aeabi_fcmplt __aeabi_fcmpun \
-+		__aeabi_dadd __aeabi_dmul __aeabi_dcmple __aeabi_dcmplt __aeabi_dcmpun \
-+		__aeabi_uldivmod
-+endif
- ifneq ($(or $(CONFIG_ARM64),$(and $(CONFIG_RISCV),$(CONFIG_64BIT))),)
- 	# These intrinsics are defined for ARM64 and RISCV64
- 	redirect-intrinsics += \
-diff --git a/rust/bindgen_parameters b/rust/bindgen_parameters
-index a721d466bee4..83f28ae4bb2b 100644
---- a/rust/bindgen_parameters
-+++ b/rust/bindgen_parameters
-@@ -24,3 +24,7 @@
- # These functions use the `__preserve_most` calling convention, which neither bindgen
- # nor Rust currently understand, and which Clang currently declares to be unstable.
- --blocklist-function __list_.*_report
-+
-+# Depending on how the architecture defines `ARCH_SLAB_MINALIGN`, `bindgen` might generate a binding.
-+# Disable this here as there is a `const` item that will always be generated in `bindings_helper.h`
-+--blocklist-item ARCH_SLAB_MINALIGN
-diff --git a/rust/compiler_builtins.rs b/rust/compiler_builtins.rs
-index bba2922c6ef7..c37142b16a45 100644
---- a/rust/compiler_builtins.rs
-+++ b/rust/compiler_builtins.rs
-@@ -70,5 +70,29 @@ pub extern "C" fn $ident() {
-     __umodti3,
- });
- 
-+#[cfg(target_arch = "arm")]
-+define_panicking_intrinsics!("`f32` should not be used", {
-+    __aeabi_fadd,
-+    __aeabi_fmul,
-+    __aeabi_fcmpeq,
-+    __aeabi_fcmple,
-+    __aeabi_fcmplt,
-+    __aeabi_fcmpun,
-+});
-+
-+#[cfg(target_arch = "arm")]
-+define_panicking_intrinsics!("`f64` should not be used", {
-+    __aeabi_dadd,
-+    __aeabi_dmul,
-+    __aeabi_dcmple,
-+    __aeabi_dcmplt,
-+    __aeabi_dcmpun,
-+});
-+
-+#[cfg(target_arch = "arm")]
-+define_panicking_intrinsics!("`u64` division/modulo should not be used", {
-+    __aeabi_uldivmod,
-+});
-+
- // NOTE: if you are adding a new intrinsic here, you should also add it to
- // `redirect-intrinsics` in `rust/Makefile`.
-diff --git a/scripts/generate_rust_target.rs b/scripts/generate_rust_target.rs
-index 641b713a033a..c3a6058fdf30 100644
---- a/scripts/generate_rust_target.rs
-+++ b/scripts/generate_rust_target.rs
-@@ -148,7 +148,9 @@ fn main() {
-     let mut ts = TargetSpec::new();
- 
-     // `llvm-target`s are taken from `scripts/Makefile.clang`.
--    if cfg.has("ARM64") {
-+    if cfg.has("ARM") {
-+        panic!("arm uses the builtin rustc arm-unknown-linux-gnueabi target");
-+    } else if cfg.has("ARM64") {
-         panic!("arm64 uses the builtin rustc aarch64-unknown-none target");
-     } else if cfg.has("RISCV") {
-         if cfg.has("64BIT") {
+ Makefile                            |   6 +
+ init/Kconfig                        |   2 +-
+ kernel/module/version.c             |  38 +-
+ rust/Makefile                       |  30 +-
+ scripts/mod/Makefile                |   4 +-
+ scripts/mod/modpost.c               |  20 +-
+ scripts/mod/modpost.h               |  20 +
+ scripts/mod/symhash.c               | 327 +++++++++++++
+ tools/Makefile                      |  11 +-
+ tools/gendwarfksyms/Build           |   5 +
+ tools/gendwarfksyms/Makefile        |  49 ++
+ tools/gendwarfksyms/cache.c         | 209 +++++++++
+ tools/gendwarfksyms/crc32.c         |  69 +++
+ tools/gendwarfksyms/crc32.h         |  34 ++
+ tools/gendwarfksyms/gendwarfksyms.c | 141 ++++++
+ tools/gendwarfksyms/gendwarfksyms.h | 173 +++++++
+ tools/gendwarfksyms/symbols.c       | 193 ++++++++
+ tools/gendwarfksyms/types.c         | 697 ++++++++++++++++++++++++++++
+ 18 files changed, 2008 insertions(+), 20 deletions(-)
+ create mode 100644 scripts/mod/symhash.c
+ create mode 100644 tools/gendwarfksyms/Build
+ create mode 100644 tools/gendwarfksyms/Makefile
+ create mode 100644 tools/gendwarfksyms/cache.c
+ create mode 100644 tools/gendwarfksyms/crc32.c
+ create mode 100644 tools/gendwarfksyms/crc32.h
+ create mode 100644 tools/gendwarfksyms/gendwarfksyms.c
+ create mode 100644 tools/gendwarfksyms/gendwarfksyms.h
+ create mode 100644 tools/gendwarfksyms/symbols.c
+ create mode 100644 tools/gendwarfksyms/types.c
 
-base-commit: 1613e604df0cd359cf2a7fbd9be7a0bcfacfabd0
+
+base-commit: 6ba59ff4227927d3a8530fc2973b80e94b54d58f
 -- 
-2.45.2
+2.45.2.627.g7a2c4fd464-goog
+
