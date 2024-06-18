@@ -1,302 +1,91 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEDD1199E8E
-	for <rust-for-linux@vger.kernel.org>; Tue, 18 Jun 2024 23:41:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDC84185E5C
+	for <rust-for-linux@vger.kernel.org>; Tue, 18 Jun 2024 23:42:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718754090; cv=none; b=NLaGroO3XowTVo05Mvx5QFNQwcU15QSe+AUF5sJzhyBTWzpKEq7U6pyxFoE22PIvBiJdufApvTXC6YpKGMXccgyIkxalkwPE4SobKovCzl3FHuT2828JfwDbA2MR6I0sGtiwUuJF0UhIelUN8eRaMho9IKtj5RbX/F78hDgBsDM=
+	t=1718754176; cv=none; b=rFLJY8urXqzxpnJM+EfBEswzLvBVXPX6g2vfICww2PNmvyypoqD4tCVe/N7JuUSmH6EE96TcPosmModGrctbfsjUzxReM8G4BD3Hpo4u2sgsAs6kum2FsCp5lcOIc8fLrTK4j78dKtVKpNvSyLqcMKvRiqDMRee31AJvoMnarCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718754090; c=relaxed/simple;
-	bh=RCEMwYVvuUbZz+/rEeI8myzcrUIo6owjk7lRZAsrGQM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Lr5uVlU4wXbKiwaHciEejMvQ+UFFInp4MoZ+TAPksBnahx/hE/fFfuTW7U4jXGv35WUhtJZGM1OpxHxX8Wa8P6WosemWwp9Yg1OzoVdOCDURK2qTTamUN+ZZLd0dxZH7GML0dOepQ0+V6Na+i7TJEEk5Fp1T4UDieDAppNkUHBw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PlqakNth; arc=none smtp.client-ip=170.10.133.124
+	s=arc-20240116; t=1718754176; c=relaxed/simple;
+	bh=O3Z2evdNPMBXT7admKZAc1Ne4tYdRPgWACHYuEqy2nE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=kvQxtQVApgo3RC88peuAgItbPN6afvOb2M1146rCrFh651Z4DwFhQ9wRRJnuz65/X1JnYyFue1W3mQJis5YDVLfj1T69Ihnz4zlzTkg4Pf3IIITBNF4JsqDWQDCjmnJ6+FCUy9ljJdJECTp9jIS8HmavFUITIYfsUrziX+HmR6c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gvjKHKgH; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PlqakNth"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gvjKHKgH"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1718754088;
+	s=mimecast20190719; t=1718754174;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=UVH4NPjG6WbuLQxLO9Ab399xq2yWE6YB8L0prZ4B/nk=;
-	b=PlqakNthGjCaJrt5Q8LWQGYP9MfPY+kW+TWck1QjbKDcKPWZ6G2Z6X1KASdDFgu8y/aus4
-	T3L0C6SwqcrVtTimmpBNeGVTFHUKgKkTO1DxLNaJ/0U32Thih/1roCcmcHP+J/K0rI4opP
-	ejlxXoUBR740cYXW4kCloju/3vGuQz0=
-Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
- [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=O3Z2evdNPMBXT7admKZAc1Ne4tYdRPgWACHYuEqy2nE=;
+	b=gvjKHKgHstZD0iCmQNPg5uoOQkdmvUiXaL80tR0FPVBTDVj2lk5Y3/TpNOcxt7uyGo9X1V
+	V7sk7k+bosHbujhlsRTeXG89fVbJ9vwlsXnFU9+zm01OYIDEcQ4pactUCVJIoU6C8JGekV
+	bf6NladAa5ykz5caBADZh6hhXfFzg1g=
+Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
+ [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-336-azU6oj0NOaiqhXtLA1nHbA-1; Tue, 18 Jun 2024 19:41:24 -0400
-X-MC-Unique: azU6oj0NOaiqhXtLA1nHbA-1
-Received: by mail-lf1-f72.google.com with SMTP id 2adb3069b0e04-52c9894a547so4849635e87.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 18 Jun 2024 16:41:24 -0700 (PDT)
+ us-mta-249-HyT5JLpkMsurx7GvURFCVg-1; Tue, 18 Jun 2024 19:42:52 -0400
+X-MC-Unique: HyT5JLpkMsurx7GvURFCVg-1
+Received: by mail-lj1-f198.google.com with SMTP id 38308e7fff4ca-2ebe662e992so53939071fa.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 18 Jun 2024 16:42:52 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718754083; x=1719358883;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=UVH4NPjG6WbuLQxLO9Ab399xq2yWE6YB8L0prZ4B/nk=;
-        b=COmeM82szMfJ1u/iwlwuSpLgSiAmxspjnpwnN6gm3d33POc1/z7O4UTdeyhWDYQxNQ
-         BhAMn46A8RFY9e+lxu9WWvv6jijcP/fPHI4uCn6vmd/BD9VRsPwzSYr5Szm6A4TrPQti
-         CGCsNzri68qBo6/wQAADrOyA9rgkCh0XSZv4hQMeFgb3L3+zjih8PFpAlFgNKueNtsVZ
-         C7rvNvoIMQBR27TZmG+bHw0xMGL/e/pt29ooGHQ3WhaeJQV29U/7ge/sQFbh4ES2G00e
-         +zXSZHM2wYMsJ/2P9HW3Ok0GXFRUtrRITgfvwSkmeBI9o6dQL/+ponrWPl+paiBq3q7r
-         GX+w==
-X-Gm-Message-State: AOJu0YyLHO0WpSAwYbxI+R3ldDr/fOvW8RD/4b2Ri38tJspU6ebVE6cE
-	IAj12rulxFPxu1KZRhXM26t+x3SV1zzkJ/ZAaw7LJ2oa87zYIX/5gu/9G3M2nLSrnSkEeYVUdhR
-	mig3g2vwk5OUbi44NfWfjEjqB4IFwcMniCBqDq2u/G/Hl7GMJgGJU4Xf008mM6kEM
-X-Received: by 2002:a05:6512:2c9a:b0:52b:c15f:2613 with SMTP id 2adb3069b0e04-52ccaa62157mr550001e87.35.1718754083002;
-        Tue, 18 Jun 2024 16:41:23 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFoZ2RS3AlTl1V/f0PC+9/w7xUZieCfcwyUejXDg+egJxREfUqX3QPWZZGosxlVoeE0P/NjeQ==
-X-Received: by 2002:a05:6512:2c9a:b0:52b:c15f:2613 with SMTP id 2adb3069b0e04-52ccaa62157mr549994e87.35.1718754082636;
-        Tue, 18 Jun 2024 16:41:22 -0700 (PDT)
-Received: from cassiopeiae.. ([2a02:810d:4b3f:ee94:642:1aff:fe31:a19f])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-422870e9145sm242850535e9.22.2024.06.18.16.41.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Jun 2024 16:41:22 -0700 (PDT)
-From: Danilo Krummrich <dakr@redhat.com>
-To: gregkh@linuxfoundation.org,
-	rafael@kernel.org,
-	bhelgaas@google.com,
-	ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	wedsonaf@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me,
-	a.hindborg@samsung.com,
-	aliceryhl@google.com,
-	airlied@gmail.com,
-	fujita.tomonori@gmail.com,
-	lina@asahilina.net,
-	pstanner@redhat.com,
-	ajanulgu@redhat.com,
-	lyude@redhat.com,
-	robh@kernel.org,
-	daniel.almeida@collabora.com
-Cc: rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	Danilo Krummrich <dakr@redhat.com>
-Subject: [PATCH v2 10/10] rust: pci: implement I/O mappable `pci::Bar`
-Date: Wed, 19 Jun 2024 01:39:56 +0200
-Message-ID: <20240618234025.15036-11-dakr@redhat.com>
-X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240618234025.15036-1-dakr@redhat.com>
-References: <20240618234025.15036-1-dakr@redhat.com>
+        d=1e100.net; s=20230601; t=1718754171; x=1719358971;
+        h=content-transfer-encoding:in-reply-to:organization:from
+         :content-language:references:cc:to:subject:user-agent:mime-version
+         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=O3Z2evdNPMBXT7admKZAc1Ne4tYdRPgWACHYuEqy2nE=;
+        b=EGe3y2yRo81YGI4qxnt7lRb/k7+OnAtkWIJVWQNNFz79p1YqVH+T/MCrJcE4JQ7yDO
+         +I4HS4VC6pK+DYPPQqBmZzSTra6W2Z2rP0W6UqQjJUFBnT7R0WvhK58tIIH+DqdG/DLT
+         rGz8+LvGyCq6UTCQRtNjnxN7bAsc3HKXBMxrfjeNParExrqnEzKv4mdZq2AJGsClPu8y
+         ModS186falrnZmY4pAJCh6dnV/qM/qVC+eybJjFBPYCFf+kSC2heZH51V9iW4VR9QUeq
+         VWH88hCY9LJ9W/vggxLMFN0YInkLOm4/8hunEhOT1RKbm86WxbLoKSsnKnnGoMbfJCRr
+         dOPg==
+X-Gm-Message-State: AOJu0Yx3Xv5MRs6mb+XkZLyh+DDwWv5cffc3GBySVecCXACP+raeDJoE
+	qgnqpHkJjYKWl4E9UrUbuOICJE9Ta4qYHS7Z02zb14P8tiickAPiuJdeVyjzCSJnEKE4DLevkSI
+	pLmKAzv8kNhG0+wQn2H+YMz6LWMm1RXzNPMS2mufuQKpZqqOibnX+zOyv0COcPrkx
+X-Received: by 2002:a2e:2c1a:0:b0:2ea:edac:4886 with SMTP id 38308e7fff4ca-2ec3cffc4e1mr7588611fa.45.1718754171323;
+        Tue, 18 Jun 2024 16:42:51 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHXxWA0oSKg9/uHRxkYZqgQapFgTGUJtV9NxLiRf53cMqUzSCZPEdoUfvLiePJ4nZRU6sP21w==
+X-Received: by 2002:a2e:2c1a:0:b0:2ea:edac:4886 with SMTP id 38308e7fff4ca-2ec3cffc4e1mr7588381fa.45.1718754170863;
+        Tue, 18 Jun 2024 16:42:50 -0700 (PDT)
+Received: from ?IPV6:2a02:810d:4b3f:ee94:abf:b8ff:feee:998b? ([2a02:810d:4b3f:ee94:abf:b8ff:feee:998b])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-422f8be0c69sm208261285e9.33.2024.06.18.16.42.49
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 18 Jun 2024 16:42:50 -0700 (PDT)
+Message-ID: <c67afe11-82b4-4ef5-8ef1-cfed502b545f@redhat.com>
+Date: Wed, 19 Jun 2024 01:42:49 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Device / Driver and PCI Rust abstractions
+To: maarten.lankhorst@linux.intel.com, mripard@kernel.org,
+ tzimmermann@suse.de, airlied@gmail.com, daniel@ffwll.ch, ojeda@kernel.org,
+ alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com,
+ gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+ a.hindborg@samsung.com, aliceryhl@google.com, lina@asahilina.net,
+ pstanner@redhat.com, ajanulgu@redhat.com, lyude@redhat.com,
+ gregkh@linuxfoundation.org, robh@kernel.org, daniel.almeida@collabora.com
+Cc: rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ nouveau@lists.freedesktop.org
+References: <20240618233324.14217-1-dakr@redhat.com>
+From: Danilo Krummrich <dakr@redhat.com>
+Organization: RedHat
+In-Reply-To: <20240618233324.14217-1-dakr@redhat.com>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="US-ASCII"; x-default=true
+Content-Language: en-US
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Implement `pci::Bar`, `pci::Device::iomap_region` and
-`pci::Device::iomap_region_sized` to allow for I/O mappings of PCI BARs.
-
-To ensure that a `pci::Bar`, and hence the I/O memory mapping, can't
-out-live the PCI device, the `pci::Bar` type is always embedded into a
-`Devres` container, such that the `pci::Bar` is revoked once the device
-is unbound and hence the I/O mapped memory is unmapped.
-
-A `pci::Bar` can be requested with (`pci::Device::iomap_region_sized`) or
-without (`pci::Device::iomap_region`) a const generic representing the
-minimal requested size of the I/O mapped memory region. In case of the
-latter only runtime checked I/O reads / writes are possible.
-
-Co-developed-by: Philipp Stanner <pstanner@redhat.com>
-Signed-off-by: Philipp Stanner <pstanner@redhat.com>
-Signed-off-by: Danilo Krummrich <dakr@redhat.com>
----
- rust/kernel/pci.rs | 142 +++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 142 insertions(+)
-
-diff --git a/rust/kernel/pci.rs b/rust/kernel/pci.rs
-index a8230474e9b8..2b61fb59d4a7 100644
---- a/rust/kernel/pci.rs
-+++ b/rust/kernel/pci.rs
-@@ -5,14 +5,18 @@
- //! C header: [`include/linux/pci.h`](srctree/include/linux/pci.h)
- 
- use crate::{
-+    alloc::flags::*,
-     bindings, container_of, device,
-     device_id::{IdTable, RawDeviceId},
-+    devres::Devres,
-     driver,
-     error::{to_result, Result},
-+    io::Io,
-     str::CStr,
-     types::{ARef, ForeignOwnable},
-     ThisModule,
- };
-+use core::ops::Deref;
- use kernel::prelude::*; // for pinned_drop
- 
- /// An adapter for the registration of PCI drivers.
-@@ -281,9 +285,114 @@ pub trait Driver {
- ///
- /// A PCI device is based on an always reference counted `device:Device` instance. Cloning a PCI
- /// device, hence, also increments the base device' reference count.
-+///
-+/// # Invariants
-+///
-+/// `Device` hold a valid reference of `ARef<device::Device>` whose underlying `struct device` is a
-+/// member of a `struct pci_dev`.
- #[derive(Clone)]
- pub struct Device(ARef<device::Device>);
- 
-+/// A PCI BAR to perform I/O-Operations on.
-+///
-+/// # Invariants
-+///
-+/// `Bar` always holds an `Io` inststance that holds a valid pointer to the start of the I/O memory
-+/// mapped PCI bar and its size.
-+pub struct Bar<const SIZE: usize = 0> {
-+    pdev: Device,
-+    io: Io<SIZE>,
-+    num: i32,
-+}
-+
-+impl<const SIZE: usize> Bar<SIZE> {
-+    fn new(pdev: Device, num: u32, name: &CStr) -> Result<Self> {
-+        let len = pdev.resource_len(num)?;
-+        if len == 0 {
-+            return Err(ENOMEM);
-+        }
-+
-+        // Convert to `i32`, since that's what all the C bindings use.
-+        let num = i32::try_from(num)?;
-+
-+        // SAFETY:
-+        // `pdev` is valid by the invariants of `Device`.
-+        // `num` is checked for validity by a previous call to `Device::resource_len`.
-+        // `name` is always valid.
-+        let ret = unsafe { bindings::pci_request_region(pdev.as_raw(), num, name.as_char_ptr()) };
-+        if ret != 0 {
-+            return Err(EBUSY);
-+        }
-+
-+        // SAFETY:
-+        // `pdev` is valid by the invariants of `Device`.
-+        // `num` is checked for validity by a previous call to `Device::resource_len`.
-+        // `name` is always valid.
-+        let ioptr: usize = unsafe { bindings::pci_iomap(pdev.as_raw(), num, 0) } as usize;
-+        if ioptr == 0 {
-+            // SAFETY:
-+            // `pdev` valid by the invariants of `Device`.
-+            // `num` is checked for validity by a previous call to `Device::resource_len`.
-+            unsafe { bindings::pci_release_region(pdev.as_raw(), num) };
-+            return Err(ENOMEM);
-+        }
-+
-+        // SAFETY: `ioptr` is guaranteed to be the start of a valid I/O mapped memory region of size
-+        // `len`.
-+        let io = match unsafe { Io::new(ioptr, len as usize) } {
-+            Ok(io) => io,
-+            Err(err) => {
-+                // SAFETY:
-+                // `pdev` is valid by the invariants of `Device`.
-+                // `ioptr` is guaranteed to be the start of a valid I/O mapped memory region.
-+                // `num` is checked for validity by a previous call to `Device::resource_len`.
-+                unsafe { Self::do_release(&pdev, ioptr, num) };
-+                return Err(err);
-+            }
-+        };
-+
-+        Ok(Bar { pdev, io, num })
-+    }
-+
-+    // SAFETY: `ioptr` must be a valid pointer to the memory mapped PCI bar number `num`.
-+    unsafe fn do_release(pdev: &Device, ioptr: usize, num: i32) {
-+        // SAFETY:
-+        // `pdev` is valid by the invariants of `Device`.
-+        // `ioptr` is valid by the safety requirements.
-+        // `num` is valid by the safety requirements.
-+        unsafe {
-+            bindings::pci_iounmap(pdev.as_raw(), ioptr as _);
-+            bindings::pci_release_region(pdev.as_raw(), num);
-+        }
-+    }
-+
-+    fn release(&self) {
-+        // SAFETY: Safe by the invariants of `Device` and `Bar`.
-+        unsafe { Self::do_release(&self.pdev, self.io.base_addr(), self.num) };
-+    }
-+}
-+
-+impl Bar {
-+    fn index_is_valid(index: u32) -> bool {
-+        // A `struct pci_dev` owns an array of resources with at most `PCI_NUM_RESOURCES` entries.
-+        index < bindings::PCI_NUM_RESOURCES
-+    }
-+}
-+
-+impl<const SIZE: usize> Drop for Bar<SIZE> {
-+    fn drop(&mut self) {
-+        self.release();
-+    }
-+}
-+
-+impl<const SIZE: usize> Deref for Bar<SIZE> {
-+    type Target = Io<SIZE>;
-+
-+    fn deref(&self) -> &Self::Target {
-+        &self.io
-+    }
-+}
-+
- impl Device {
-     /// Create a PCI Device instance from an existing `device::Device`.
-     ///
-@@ -316,6 +425,39 @@ pub fn set_master(&self) {
-         // SAFETY: Safe by the type invariants.
-         unsafe { bindings::pci_set_master(self.as_raw()) };
-     }
-+
-+    /// Returns the size of the given PCI bar resource.
-+    pub fn resource_len(&self, bar: u32) -> Result<bindings::resource_size_t> {
-+        if !Bar::index_is_valid(bar) {
-+            return Err(EINVAL);
-+        }
-+
-+        // SAFETY: Safe by the type invariant.
-+        Ok(unsafe { bindings::pci_resource_len(self.as_raw(), bar.try_into()?) })
-+    }
-+
-+    /// Mapps an entire PCI-BAR after performing a region-request on it. I/O operation bound checks
-+    /// can be performed on compile time for offsets (plus the requested type size) < SIZE.
-+    pub fn iomap_region_sized<const SIZE: usize>(
-+        &self,
-+        bar: u32,
-+        name: &CStr,
-+    ) -> Result<Devres<Bar<SIZE>>> {
-+        let bar = Bar::<SIZE>::new(self.clone(), bar, name)?;
-+        let devres = Devres::new(self.as_ref(), bar, GFP_KERNEL)?;
-+
-+        Ok(devres)
-+    }
-+
-+    /// Mapps an entire PCI-BAR after performing a region-request on it.
-+    pub fn iomap_region(&self, bar: u32, name: &CStr) -> Result<Devres<Bar>> {
-+        self.iomap_region_sized::<0>(bar, name)
-+    }
-+
-+    /// Returns a new `ARef` of the base `device::Device`.
-+    pub fn as_dev(&self) -> ARef<device::Device> {
-+        self.0.clone()
-+    }
- }
- 
- impl AsRef<device::Device> for Device {
--- 
-2.45.1
+https://lore.kernel.org/lkml/20240618234025.15036-1-dakr@redhat.com/
 
