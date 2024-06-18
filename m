@@ -1,62 +1,62 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CB6D155351
-	for <rust-for-linux@vger.kernel.org>; Tue, 18 Jun 2024 23:34:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 468D2155351
+	for <rust-for-linux@vger.kernel.org>; Tue, 18 Jun 2024 23:34:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718753645; cv=none; b=KutEWUC5zpErbAAsnYdJhV9GAv1sDM3UX86L/0yP75zvv3d7s4HmJ7lryKxcLSSsvxoltTLyayUPheiheGzhCQCWHunH8RiwVXeXbHyapzxQ+04IljRfQj4OPjfoZxj1QEPI6BfF4gMzQsf0LLilHuTNV0f2CWgA5QszqrDxkwU=
+	t=1718753649; cv=none; b=aSGA3JmymNYyOzMdWbORMu0LcA4oI97i2Zn473VAEA8RMXFTjNpoSanc+PQzkQLYJX+LlCzdpWfUP0bkcRMzFZDqiEFG9I9o+cxgrbQUlPcYTeGqGKBCK7nP6OMGg6GYSDB4sl7VNWc7rCgqjqiYYtprsbDhTU1/KDwD8Vekf+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718753645; c=relaxed/simple;
-	bh=3wiqJeX/zAi95PqEAbgBUZ18yHWN81twJjWDy/m8B1w=;
+	s=arc-20240116; t=1718753649; c=relaxed/simple;
+	bh=Rlar8CxDsIGHlf+J+v8x/g6P1IUpHwkvEvqwKVM7uNY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Rsz9qeYXpeew9ydVth+6yz+oArPkD9CtMDkmhF7dqReQIfLxVKSi1+JESCqz0tieJuF76Da79zAwUVuRfjvW8lnc2Hf7jTPbI2qmBcfgZvjEbcEAFzKpAqYUVxy5JVok1GGjSM4F3dkrUtXsv8s/xt1PUva74v1mXccl9KyuOwY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Nsv17b1k; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:Content-Type; b=ire1mIuPoa4cEWis29LFX/qD/t2m/hNT0GICeXPHiSd89qcDFGaTr+ReRm9Ri65FfzeUVf15cxSIIBvxhFfNHuUndIuCAZu9I+d4jAaeh8Wc2BCp0VOkDl0eELTUshgSakp1HHhaV23LmLc9GWJ2QsnhODFzy+/6xmN71vSrUuU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YF7e7z1g; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Nsv17b1k"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YF7e7z1g"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1718753642;
+	s=mimecast20190719; t=1718753646;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=rX17Ynp5kjTABr7Arpco1GyGC6qaf7qHT4D9XChbblc=;
-	b=Nsv17b1k7S+9dThNvkqj13SJ7kDkRK5H6nqTkM13ltw1FTz0hoHhYzIvOWQvstpiqOkqIA
-	B9mhATvnfz/gjk1vFibQ/Rxi4Skeg9j5k9xqQzhiFBQTrZNkj7nLD6u9CjbvpRzghkiU7X
-	90KcOJPAKgZzaMEpWL1byVCIK1tHbkE=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=x0Bto6qyi282V0FfFQETmOtdKduKSr9xi2/2rtGnlRY=;
+	b=YF7e7z1gIjcxv3QwyyMbEQJRAAc5BfvqW4jU2yIgXbsCJ7job/6ruuPi8onGjBhFz8Z9Yg
+	l1YQrNZ8zlmq9pRnHM9+Yzs1cgPweg504lyUZ8QNHr/GgK8EaxuPlIqzimKBgQ5iGHvS2g
+	ZHu2fNEdHWPUJksr0OwmFr8eN2QnnQo=
+Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
+ [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-640-aNsoaepmNvSxsw52iX7kKw-1; Tue, 18 Jun 2024 19:34:00 -0400
-X-MC-Unique: aNsoaepmNvSxsw52iX7kKw-1
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4212e2a3a1bso39167425e9.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 18 Jun 2024 16:34:00 -0700 (PDT)
+ us-mta-478-H3sM0OZKPVi1hl-DhGdSTA-1; Tue, 18 Jun 2024 19:34:04 -0400
+X-MC-Unique: H3sM0OZKPVi1hl-DhGdSTA-1
+Received: by mail-lf1-f70.google.com with SMTP id 2adb3069b0e04-52cb4cf42f6so2607244e87.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 18 Jun 2024 16:34:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718753639; x=1719358439;
+        d=1e100.net; s=20230601; t=1718753643; x=1719358443;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=rX17Ynp5kjTABr7Arpco1GyGC6qaf7qHT4D9XChbblc=;
-        b=VYzoIt1dJeclKALbhuJV9a94ZJ9Uldov7L2yiExxzP+qyZ9qejpfL1USX6VvbezyFu
-         hRT4rM+BPgHhDFbicw7WjzZPKocf+Xn7FimO4J75oh+DYRtK8ujNbXFo19hj/N1brboN
-         lm0MNugIzmakc/nl8ILfcXOOIAsL6T6NNXucBK7kXLoT+YNEfbHQ6qYqVBK+T6AkzFe5
-         lHPiKyNqefZU4aMpRsBXkNPK2thArKMAtTc8l+g7UQoP0erPicnZ5c5G2XNHZ9TSkt3G
-         LycyJD9wnHhe0ZU+IjVOytPBYxOBu2x+ZER15HFeGqRGU0JtebVfesBactqnKWEF0Tjd
-         dOJA==
-X-Gm-Message-State: AOJu0Yxu5N3OsXDCduuI523LDEewp4e/sdDctuPs/GGykgDGHiBi+eLF
-	FBi72TbM3ZeJGjc3Q8YEA7ma5S50TPAOjMCuID7ImlxBAAeNvmtIbpxJn09/qt0e0spgBcvJyVA
-	1nWn2yxQhttOTOaDtrjuKDo0uSOyF3iZzXX83EGYX3qGMZNeci48IDFDqklupkB80
-X-Received: by 2002:a05:600c:47cf:b0:423:b63e:74d1 with SMTP id 5b1f17b1804b1-42475296a85mr4688965e9.29.1718753638964;
-        Tue, 18 Jun 2024 16:33:58 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHOa7woJJzq8BR2gVnLTKiZG/T/seFOpSGmvPhaqEP1bNK/u8mmko3Sekw3yuKSLjz27NLLkA==
-X-Received: by 2002:a05:600c:47cf:b0:423:b63e:74d1 with SMTP id 5b1f17b1804b1-42475296a85mr4688685e9.29.1718753638430;
-        Tue, 18 Jun 2024 16:33:58 -0700 (PDT)
+        bh=x0Bto6qyi282V0FfFQETmOtdKduKSr9xi2/2rtGnlRY=;
+        b=NAqJ6PSNikUT3yfLDzjXJutQZpLJnoJ6n3Qo/hcsUYFtQKxf67EkLdqxqK4dqVo9QS
+         A3ZxcpUMOFG0sv9mF5Lr/ufc/cNl7jyOaVpPwrAquVTgwGZs10IT0Lhi4ZQHKQQrWfas
+         zi9AL1vEPUVQI3aiPd5aBRi+lYUJmKWoXNC9MnRsgBn9I/R8Z/Ji8ZlobTLMeVLUQ6vT
+         Ynfb2KHacRau7OJPBs6PRuoEhCjZyVtFtNlyzU8RNGcK7gyRLJOjVQoFcD4TZUl0rxpv
+         mR2In10c02/2CV8mmoIK6YMk2dzsFJXbfv8eqCsgNHetKQpzCWoOc5rPqbSQkZhVW1JG
+         3C6A==
+X-Gm-Message-State: AOJu0YxZc4qTlzwZJY+u397ZQDBnNSP9jkWT/3VywN9a7CIsrmuBbomn
+	82Wc6dBg95c6GkrdO5Ah2REEC1XVWjx+LJWUkX+iVlwW7ulBnOJGdmInp4IE1YwM5vxi/r2jMPS
+	p4N+A6pK0UZj+JhOBXXN8kmRFO7xs65ArW/Bezvp+iuUDzdkBoocv9jx9HE013ygd
+X-Received: by 2002:a05:6512:3a90:b0:52c:cbb4:7810 with SMTP id 2adb3069b0e04-52ccbb478afmr258848e87.8.1718753643076;
+        Tue, 18 Jun 2024 16:34:03 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE76RwFXNcn06n31+CxDk2+RBLAA6Ow+iK4Kyj7qDOn/TkTQ1xvZUZFDP+7uys3HXRUlJOiUg==
+X-Received: by 2002:a05:6512:3a90:b0:52c:cbb4:7810 with SMTP id 2adb3069b0e04-52ccbb478afmr258835e87.8.1718753642627;
+        Tue, 18 Jun 2024 16:34:02 -0700 (PDT)
 Received: from cassiopeiae.. ([2a02:810d:4b3f:ee94:642:1aff:fe31:a19f])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-422f61277fesm206880965e9.21.2024.06.18.16.33.56
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-360750f2489sm15331736f8f.69.2024.06.18.16.34.01
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Jun 2024 16:33:57 -0700 (PDT)
+        Tue, 18 Jun 2024 16:34:02 -0700 (PDT)
 From: Danilo Krummrich <dakr@redhat.com>
 To: maarten.lankhorst@linux.intel.com,
 	mripard@kernel.org,
@@ -83,9 +83,9 @@ Cc: rust-for-linux@vger.kernel.org,
 	dri-devel@lists.freedesktop.org,
 	nouveau@lists.freedesktop.org,
 	Danilo Krummrich <dakr@redhat.com>
-Subject: [PATCH v2 7/8] rust: drm: gem: Add GEM object abstraction
-Date: Wed, 19 Jun 2024 01:31:43 +0200
-Message-ID: <20240618233324.14217-8-dakr@redhat.com>
+Subject: [PATCH v2 8/8] nova: add initial driver stub
+Date: Wed, 19 Jun 2024 01:31:44 +0200
+Message-ID: <20240618233324.14217-9-dakr@redhat.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240618233324.14217-1-dakr@redhat.com>
 References: <20240618233324.14217-1-dakr@redhat.com>
@@ -100,533 +100,661 @@ X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset="US-ASCII"; x-default=true
 
-From: Asahi Lina <lina@asahilina.net>
+Add the initial driver stub of Nova, a Rust-based GSP-only driver for
+Nvidia GPUs. Nova, in the long term, is intended to serve as the
+successor of Nouveau for GSP-firmware-based GPUs. [1]
 
-The DRM GEM subsystem is the DRM memory management subsystem used by
-most modern drivers. Add a Rust abstraction to allow Rust DRM driver
-implementations to use it.
+As a stub driver Nova's focus is to make use of the most basic device /
+driver infrastructure required to build a DRM driver on the PCI bus and
+serve as demonstration example and justification for this
+infrastructure.
 
-Signed-off-by: Asahi Lina <lina@asahilina.net>
-Co-developed-by: Danilo Krummrich <dakr@redhat.com>
+In further consequence, the idea is to develop Nova continuously
+upstream, using those increments to lift further Rust abstractions and
+infrastructure upstream.
+
+Link: https://lore.kernel.org/dri-devel/Zfsj0_tb-0-tNrJy@cassiopeiae/T/#u [1]
 Signed-off-by: Danilo Krummrich <dakr@redhat.com>
 ---
- rust/bindings/bindings_helper.h |   1 +
- rust/helpers.c                  |  23 ++
- rust/kernel/drm/device.rs       |   4 +-
- rust/kernel/drm/drv.rs          |   2 +-
- rust/kernel/drm/gem/mod.rs      | 409 ++++++++++++++++++++++++++++++++
- rust/kernel/drm/mod.rs          |   1 +
- 6 files changed, 438 insertions(+), 2 deletions(-)
- create mode 100644 rust/kernel/drm/gem/mod.rs
+ MAINTAINERS                    |  10 ++
+ drivers/gpu/drm/Kconfig        |   2 +
+ drivers/gpu/drm/Makefile       |   1 +
+ drivers/gpu/drm/nova/Kconfig   |  12 +++
+ drivers/gpu/drm/nova/Makefile  |   3 +
+ drivers/gpu/drm/nova/driver.rs |  85 ++++++++++++++++
+ drivers/gpu/drm/nova/file.rs   |  70 +++++++++++++
+ drivers/gpu/drm/nova/gem.rs    |  50 ++++++++++
+ drivers/gpu/drm/nova/gpu.rs    | 173 +++++++++++++++++++++++++++++++++
+ drivers/gpu/drm/nova/nova.rs   |  18 ++++
+ include/uapi/drm/nova_drm.h    | 101 +++++++++++++++++++
+ rust/uapi/uapi_helper.h        |   1 +
+ 12 files changed, 526 insertions(+)
+ create mode 100644 drivers/gpu/drm/nova/Kconfig
+ create mode 100644 drivers/gpu/drm/nova/Makefile
+ create mode 100644 drivers/gpu/drm/nova/driver.rs
+ create mode 100644 drivers/gpu/drm/nova/file.rs
+ create mode 100644 drivers/gpu/drm/nova/gem.rs
+ create mode 100644 drivers/gpu/drm/nova/gpu.rs
+ create mode 100644 drivers/gpu/drm/nova/nova.rs
+ create mode 100644 include/uapi/drm/nova_drm.h
 
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index 3f17961b4c3b..e4ffc47da5ec 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -9,6 +9,7 @@
- #include <drm/drm_device.h>
- #include <drm/drm_drv.h>
- #include <drm/drm_file.h>
-+#include <drm/drm_gem.h>
- #include <drm/drm_ioctl.h>
- #include <kunit/test.h>
- #include <linux/errname.h>
-diff --git a/rust/helpers.c b/rust/helpers.c
-index c7f90b457af5..5d138eb53fc6 100644
---- a/rust/helpers.c
-+++ b/rust/helpers.c
-@@ -20,6 +20,7 @@
-  * Sorted alphabetically.
-  */
+diff --git a/MAINTAINERS b/MAINTAINERS
+index d6c90161c7bf..1f08bdb2d5c2 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -7039,6 +7039,16 @@ T:	git https://gitlab.freedesktop.org/drm/nouveau.git
+ F:	drivers/gpu/drm/nouveau/
+ F:	include/uapi/drm/nouveau_drm.h
  
-+#include <drm/drm_gem.h>
- #include <kunit/test-bug.h>
- #include <linux/bug.h>
- #include <linux/build_bug.h>
-@@ -311,6 +312,28 @@ u64 rust_helper_pci_resource_len(struct pci_dev *pdev, int barnr)
- 	return pci_resource_len(pdev, barnr);
- }
++DRM DRIVER (STUB) FOR NVIDIA GSP GPUS [RUST]
++M:	Danilo Krummrich <dakr@redhat.com>
++L:	dri-devel@lists.freedesktop.org
++L:	nouveau@lists.freedesktop.org
++S:	Supported
++C:	irc://irc.oftc.net/nouveau
++T:	git https://gitlab.freedesktop.org/drm/nova.git
++F:	drivers/gpu/drm/nova/
++F:	include/uapi/drm/nova_drm.h
++
+ DRM DRIVER FOR OLIMEX LCD-OLINUXINO PANELS
+ M:	Stefan Mavrodiev <stefan@olimex.com>
+ S:	Maintained
+diff --git a/drivers/gpu/drm/Kconfig b/drivers/gpu/drm/Kconfig
+index 026444eeb5c6..4123f0eccff2 100644
+--- a/drivers/gpu/drm/Kconfig
++++ b/drivers/gpu/drm/Kconfig
+@@ -308,6 +308,8 @@ source "drivers/gpu/drm/amd/amdgpu/Kconfig"
  
-+#ifdef CONFIG_DRM
-+
-+void rust_helper_drm_gem_object_get(struct drm_gem_object *obj)
-+{
-+	drm_gem_object_get(obj);
-+}
-+EXPORT_SYMBOL_GPL(rust_helper_drm_gem_object_get);
-+
-+void rust_helper_drm_gem_object_put(struct drm_gem_object *obj)
-+{
-+	drm_gem_object_put(obj);
-+}
-+EXPORT_SYMBOL_GPL(rust_helper_drm_gem_object_put);
-+
-+__u64 rust_helper_drm_vma_node_offset_addr(struct drm_vma_offset_node *node)
-+{
-+	return drm_vma_node_offset_addr(node);
-+}
-+EXPORT_SYMBOL_GPL(rust_helper_drm_vma_node_offset_addr);
-+
-+#endif
-+
- /*
-  * `bindgen` binds the C `size_t` type as the Rust `usize` type, so we can
-  * use it in contexts where Rust expects a `usize` like slice (array) indices.
-diff --git a/rust/kernel/drm/device.rs b/rust/kernel/drm/device.rs
-index c6ed8d86700b..2b687033caa2 100644
---- a/rust/kernel/drm/device.rs
-+++ b/rust/kernel/drm/device.rs
-@@ -84,9 +84,11 @@ impl<T: drm::drv::Driver> Device<T> {
-         driver_features: T::FEATURES,
-         ioctls: T::IOCTLS.as_ptr(),
-         num_ioctls: T::IOCTLS.len() as i32,
--        fops: core::ptr::null_mut() as _,
-+        fops: &Self::GEM_FOPS as _,
-     };
+ source "drivers/gpu/drm/nouveau/Kconfig"
  
-+    const GEM_FOPS: bindings::file_operations = drm::gem::create_fops();
++source "drivers/gpu/drm/nova/Kconfig"
 +
-     /// Create a new `drm::device::Device` for a `drm::drv::Driver`.
-     pub fn new(dev: &device::Device, data: T::Data) -> Result<ARef<Self>> {
-         // SAFETY: `dev` is valid by its type invarants; `VTABLE`, as a `const` is pinned to the
-diff --git a/rust/kernel/drm/drv.rs b/rust/kernel/drm/drv.rs
-index 895409f04664..0cf3fb1cea53 100644
---- a/rust/kernel/drm/drv.rs
-+++ b/rust/kernel/drm/drv.rs
-@@ -118,7 +118,7 @@ pub struct AllocOps {
- }
+ source "drivers/gpu/drm/i915/Kconfig"
  
- /// Trait for memory manager implementations. Implemented internally.
--pub trait AllocImpl: Sealed {
-+pub trait AllocImpl: Sealed + drm::gem::IntoGEMObject {
-     /// The C callback operations for this memory manager.
-     const ALLOC_OPS: AllocOps;
- }
-diff --git a/rust/kernel/drm/gem/mod.rs b/rust/kernel/drm/gem/mod.rs
+ source "drivers/gpu/drm/xe/Kconfig"
+diff --git a/drivers/gpu/drm/Makefile b/drivers/gpu/drm/Makefile
+index f9ca4f8fa6c5..cec017f4925a 100644
+--- a/drivers/gpu/drm/Makefile
++++ b/drivers/gpu/drm/Makefile
+@@ -172,6 +172,7 @@ obj-$(CONFIG_DRM_VMWGFX)+= vmwgfx/
+ obj-$(CONFIG_DRM_VGEM)	+= vgem/
+ obj-$(CONFIG_DRM_VKMS)	+= vkms/
+ obj-$(CONFIG_DRM_NOUVEAU) +=nouveau/
++obj-$(CONFIG_DRM_NOVA_STUB) += nova/
+ obj-$(CONFIG_DRM_EXYNOS) +=exynos/
+ obj-$(CONFIG_DRM_ROCKCHIP) +=rockchip/
+ obj-$(CONFIG_DRM_GMA500) += gma500/
+diff --git a/drivers/gpu/drm/nova/Kconfig b/drivers/gpu/drm/nova/Kconfig
 new file mode 100644
-index 000000000000..b5208fdf66c2
+index 000000000000..3c15593e054b
 --- /dev/null
-+++ b/rust/kernel/drm/gem/mod.rs
-@@ -0,0 +1,409 @@
-+// SPDX-License-Identifier: GPL-2.0 OR MIT
++++ b/drivers/gpu/drm/nova/Kconfig
+@@ -0,0 +1,12 @@
++config DRM_NOVA_STUB
++	tristate "Nova GPU driver stub"
++	depends on DRM
++	depends on PCI
++	depends on RUST
++	depends on RUST_FW_LOADER_ABSTRACTIONS
++	default n
++	help
++	  Choose this if you want to build the Nova stub driver for Nvidia
++	  GSP-based GPUs.
 +
-+//! DRM GEM API
-+//!
-+//! C header: [`include/linux/drm/drm_gem.h`](srctree/include/linux/drm/drm_gem.h)
++	  If M is selected, the module will be called nova.
+diff --git a/drivers/gpu/drm/nova/Makefile b/drivers/gpu/drm/nova/Makefile
+new file mode 100644
+index 000000000000..733ac5fb9f4f
+--- /dev/null
++++ b/drivers/gpu/drm/nova/Makefile
+@@ -0,0 +1,3 @@
++# SPDX-License-Identifier: GPL-2.0
 +
-+use alloc::boxed::Box;
++obj-$(CONFIG_DRM_NOVA_STUB) += nova.o
+diff --git a/drivers/gpu/drm/nova/driver.rs b/drivers/gpu/drm/nova/driver.rs
+new file mode 100644
+index 000000000000..69d0efeb125e
+--- /dev/null
++++ b/drivers/gpu/drm/nova/driver.rs
+@@ -0,0 +1,85 @@
++// SPDX-License-Identifier: GPL-2.0
 +
-+use crate::{
++use kernel::{
++    bindings, c_str, drm,
++    drm::{drv, ioctl},
++    pci,
++    pci::define_pci_id_table,
++    prelude::*,
++    sync::Arc,
++};
++
++use crate::{file::File, gpu::Gpu};
++
++pub(crate) struct NovaDriver;
++
++/// Convienence type alias for the DRM device type for this driver
++pub(crate) type NovaDevice = drm::device::Device<NovaDriver>;
++
++#[allow(dead_code)]
++pub(crate) struct NovaData {
++    pub(crate) gpu: Arc<Gpu>,
++    pub(crate) pdev: pci::Device,
++}
++
++const BAR0_SIZE: usize = 8;
++pub(crate) type Bar0 = pci::Bar<BAR0_SIZE>;
++
++const INFO: drm::drv::DriverInfo = drm::drv::DriverInfo {
++    major: 0,
++    minor: 0,
++    patchlevel: 0,
++    name: c_str!("nova"),
++    desc: c_str!("Nvidia Graphics"),
++    date: c_str!("20240227"),
++};
++
++impl pci::Driver for NovaDriver {
++    type Data = Arc<NovaData>;
++
++    define_pci_id_table! {
++        (),
++        [ (pci::DeviceId::new(bindings::PCI_VENDOR_ID_NVIDIA, bindings::PCI_ANY_ID as u32), None) ]
++    }
++
++    fn probe(pdev: &mut pci::Device, _id_info: Option<&Self::IdInfo>) -> Result<Self::Data> {
++        dev_dbg!(pdev.as_ref(), "Probe Nova GPU driver.\n");
++
++        pdev.enable_device_mem()?;
++        pdev.set_master();
++
++        let bar = pdev.iomap_region_sized::<BAR0_SIZE>(0, c_str!("nova"))?;
++        let data = Arc::new(
++            NovaData {
++                gpu: Gpu::new(pdev, bar)?,
++                pdev: pdev.clone(),
++            },
++            GFP_KERNEL,
++        )?;
++
++        let drm = drm::device::Device::<NovaDriver>::new(pdev.as_ref(), data.clone())?;
++        drm::drv::Registration::new_foreign_owned(drm, 0)?;
++
++        Ok(data)
++    }
++
++    fn remove(data: &Self::Data) {
++        dev_dbg!(data.pdev.as_ref(), "Remove Nova GPU driver.\n");
++    }
++}
++
++#[vtable]
++impl drm::drv::Driver for NovaDriver {
++    type Data = Arc<NovaData>;
++    type File = File;
++    type Object = crate::gem::Object;
++
++    const INFO: drm::drv::DriverInfo = INFO;
++    const FEATURES: u32 = drv::FEAT_GEM;
++
++    kernel::declare_drm_ioctls! {
++        (NOVA_GETPARAM, drm_nova_getparam, ioctl::RENDER_ALLOW, File::get_param),
++        (NOVA_GEM_CREATE, drm_nova_gem_create, ioctl::AUTH | ioctl::RENDER_ALLOW, File::gem_create),
++        (NOVA_GEM_INFO, drm_nova_gem_info, ioctl::AUTH | ioctl::RENDER_ALLOW, File::gem_info),
++    }
++}
+diff --git a/drivers/gpu/drm/nova/file.rs b/drivers/gpu/drm/nova/file.rs
+new file mode 100644
+index 000000000000..4fa9df536f78
+--- /dev/null
++++ b/drivers/gpu/drm/nova/file.rs
+@@ -0,0 +1,70 @@
++// SPDX-License-Identifier: GPL-2.0
++
++use crate::driver::{NovaDevice, NovaDriver};
++use crate::gem;
++use kernel::{
 +    alloc::flags::*,
-+    bindings,
-+    drm::{device, drv, file},
-+    error::{to_result, Result},
++    drm::{self, device::Device as DrmDevice, gem::BaseObject},
++    prelude::*,
++    uapi,
++};
++
++pub(crate) struct File();
++
++/// Convenience type alias for our DRM `File` type
++pub(crate) type DrmFile = drm::file::File<File>;
++
++impl drm::file::DriverFile for File {
++    type Driver = NovaDriver;
++
++    fn open(dev: &DrmDevice<Self::Driver>) -> Result<Pin<Box<Self>>> {
++        dev_dbg!(dev.as_ref(), "drm::device::Device::open\n");
++
++        Ok(Box::into_pin(Box::new(Self(), GFP_KERNEL)?))
++    }
++}
++
++impl File {
++    /// IOCTL: get_param: Query GPU / driver metadata.
++    pub(crate) fn get_param(
++        dev: &NovaDevice,
++        getparam: &mut uapi::drm_nova_getparam,
++        _file: &DrmFile,
++    ) -> Result<u32> {
++        let pdev = &dev.data().pdev;
++
++        getparam.value = match getparam.param as u32 {
++            uapi::NOVA_GETPARAM_VRAM_BAR_SIZE => pdev.resource_len(1)?,
++            _ => return Err(EINVAL),
++        };
++
++        Ok(0)
++    }
++
++    /// IOCTL: gem_create: Create a new DRM GEM object.
++    pub(crate) fn gem_create(
++        dev: &NovaDevice,
++        req: &mut uapi::drm_nova_gem_create,
++        file: &DrmFile,
++    ) -> Result<u32> {
++        let obj = gem::object_new(dev, req.size.try_into()?)?;
++
++        let handle = obj.create_handle(file)?;
++        req.handle = handle;
++
++        Ok(0)
++    }
++
++    /// IOCTL: gem_info: Query GEM metadata.
++    pub(crate) fn gem_info(
++        _dev: &NovaDevice,
++        req: &mut uapi::drm_nova_gem_info,
++        file: &DrmFile,
++    ) -> Result<u32> {
++        let bo = gem::lookup_handle(file, req.handle)?;
++
++        req.size = bo.size().try_into()?;
++
++        Ok(0)
++    }
++}
+diff --git a/drivers/gpu/drm/nova/gem.rs b/drivers/gpu/drm/nova/gem.rs
+new file mode 100644
+index 000000000000..51bc30c226e2
+--- /dev/null
++++ b/drivers/gpu/drm/nova/gem.rs
+@@ -0,0 +1,50 @@
++// SPDX-License-Identifier: GPL-2.0
++
++use kernel::{
++    drm::{
++        gem,
++        gem::{BaseObject, ObjectRef},
++    },
 +    prelude::*,
 +};
-+use core::{marker::PhantomPinned, mem, ops::Deref, ops::DerefMut};
 +
-+/// GEM object functions, which must be implemented by drivers.
-+pub trait BaseDriverObject<T: BaseObject>: Sync + Send + Sized {
-+    /// Create a new driver data object for a GEM object of a given size.
-+    fn new(dev: &device::Device<T::Driver>, size: usize) -> impl PinInit<Self, Error>;
++use crate::{
++    driver::{NovaDevice, NovaDriver},
++    file::DrmFile,
++};
 +
-+    /// Open a new handle to an existing object, associated with a File.
-+    fn open(
-+        _obj: &<<T as IntoGEMObject>::Driver as drv::Driver>::Object,
-+        _file: &file::File<<<T as IntoGEMObject>::Driver as drv::Driver>::File>,
-+    ) -> Result {
-+        Ok(())
-+    }
++/// GEM Object inner driver data
++#[pin_data]
++pub(crate) struct DriverObject {}
 +
-+    /// Close a handle to an existing object, associated with a File.
-+    fn close(
-+        _obj: &<<T as IntoGEMObject>::Driver as drv::Driver>::Object,
-+        _file: &file::File<<<T as IntoGEMObject>::Driver as drv::Driver>::File>,
-+    ) {
++/// Type alias for the GEM object tyoe for this driver.
++pub(crate) type Object = gem::Object<DriverObject>;
++
++impl gem::BaseDriverObject<Object> for DriverObject {
++    fn new(dev: &NovaDevice, _size: usize) -> impl PinInit<Self, Error> {
++        dev_dbg!(dev.as_ref(), "DriverObject::new\n");
++        DriverObject {}
 +    }
 +}
 +
-+/// Trait that represents a GEM object subtype
-+pub trait IntoGEMObject: Sized + crate::private::Sealed {
-+    /// Owning driver for this type
-+    type Driver: drv::Driver;
-+
-+    /// Returns a reference to the raw `drm_gem_object` structure, which must be valid as long as
-+    /// this owning object is valid.
-+    fn gem_obj(&self) -> &bindings::drm_gem_object;
-+
-+    /// Converts a pointer to a `drm_gem_object` into a pointer to this type.
-+    fn from_gem_obj(obj: *mut bindings::drm_gem_object) -> *mut Self;
++impl gem::DriverObject for DriverObject {
++    type Driver = NovaDriver;
 +}
 +
-+/// Trait which must be implemented by drivers using base GEM objects.
-+pub trait DriverObject: BaseDriverObject<Object<Self>> {
-+    /// Parent `Driver` for this object.
-+    type Driver: drv::Driver;
++/// Create a new DRM GEM object.
++pub(crate) fn object_new(dev: &NovaDevice, size: usize) -> Result<ObjectRef<Object>> {
++    let aligned_size = size.next_multiple_of(1 << 12);
++
++    if size == 0 || size > aligned_size {
++        return Err(EINVAL);
++    }
++
++    let gem = Object::new(dev, aligned_size)?;
++
++    Ok(ObjectRef::from_pinned_unique(gem))
 +}
 +
-+unsafe extern "C" fn free_callback<T: DriverObject>(obj: *mut bindings::drm_gem_object) {
-+    // SAFETY: All of our objects are Object<T>.
-+    let this = unsafe { crate::container_of!(obj, Object<T>, obj) } as *mut Object<T>;
++/// Look up a GEM object handle for a `File` and return an `ObjectRef` for it.
++pub(crate) fn lookup_handle(file: &DrmFile, handle: u32) -> Result<ObjectRef<Object>> {
++    Object::lookup_handle(file, handle)
++}
+diff --git a/drivers/gpu/drm/nova/gpu.rs b/drivers/gpu/drm/nova/gpu.rs
+new file mode 100644
+index 000000000000..d2cc45b6b636
+--- /dev/null
++++ b/drivers/gpu/drm/nova/gpu.rs
+@@ -0,0 +1,173 @@
++// SPDX-License-Identifier: GPL-2.0
 +
-+    // SAFETY: The pointer we got has to be valid
-+    unsafe { bindings::drm_gem_object_release(obj) };
++use kernel::{
++    device, devres::Devres, error::code::*, firmware, fmt, pci, prelude::*, str::CString, sync::Arc,
++};
 +
-+    // SAFETY: All of our objects are allocated via Box<>, and we're in the
-+    // free callback which guarantees this object has zero remaining references,
-+    // so we can drop it
-+    unsafe {
-+        let _ = Box::from_raw(this);
-+    };
++use crate::driver::Bar0;
++use core::fmt::Debug;
++
++/// Enum representing the GPU chipset.
++#[derive(Debug)]
++pub(crate) enum Chipset {
++    TU102 = 0x162,
++    TU104 = 0x164,
++    TU106 = 0x166,
++    TU117 = 0x167,
++    TU116 = 0x168,
++    GA102 = 0x172,
++    GA103 = 0x173,
++    GA104 = 0x174,
++    GA106 = 0x176,
++    GA107 = 0x177,
++    AD102 = 0x192,
++    AD103 = 0x193,
++    AD104 = 0x194,
++    AD106 = 0x196,
++    AD107 = 0x197,
 +}
 +
-+unsafe extern "C" fn open_callback<T: BaseDriverObject<U>, U: BaseObject>(
-+    raw_obj: *mut bindings::drm_gem_object,
-+    raw_file: *mut bindings::drm_file,
-+) -> core::ffi::c_int {
-+    // SAFETY: The pointer we got has to be valid.
-+    let file = unsafe {
-+        file::File::<<<U as IntoGEMObject>::Driver as drv::Driver>::File>::from_raw(raw_file)
-+    };
-+    let obj =
-+        <<<U as IntoGEMObject>::Driver as drv::Driver>::Object as IntoGEMObject>::from_gem_obj(
-+            raw_obj,
-+        );
-+
-+    // SAFETY: from_gem_obj() returns a valid pointer as long as the type is
-+    // correct and the raw_obj we got is valid.
-+    match T::open(unsafe { &*obj }, &file) {
-+        Err(e) => e.to_errno(),
-+        Ok(()) => 0,
-+    }
++/// Enum representing the GPU generation.
++#[derive(Debug)]
++pub(crate) enum CardType {
++    /// Turing
++    TU100 = 0x160,
++    /// Ampere
++    GA100 = 0x170,
++    /// Ada Lovelace
++    AD100 = 0x190,
 +}
 +
-+unsafe extern "C" fn close_callback<T: BaseDriverObject<U>, U: BaseObject>(
-+    raw_obj: *mut bindings::drm_gem_object,
-+    raw_file: *mut bindings::drm_file,
-+) {
-+    // SAFETY: The pointer we got has to be valid.
-+    let file = unsafe {
-+        file::File::<<<U as IntoGEMObject>::Driver as drv::Driver>::File>::from_raw(raw_file)
-+    };
-+    let obj =
-+        <<<U as IntoGEMObject>::Driver as drv::Driver>::Object as IntoGEMObject>::from_gem_obj(
-+            raw_obj,
-+        );
-+
-+    // SAFETY: from_gem_obj() returns a valid pointer as long as the type is
-+    // correct and the raw_obj we got is valid.
-+    T::close(unsafe { &*obj }, &file);
++/// Structure holding the metadata of the GPU.
++#[allow(dead_code)]
++pub(crate) struct GpuSpec {
++    /// Contents of the boot0 register.
++    boot0: u64,
++    card_type: CardType,
++    chipset: Chipset,
++    /// The revision of the chipset.
++    chiprev: u8,
 +}
 +
-+impl<T: DriverObject> IntoGEMObject for Object<T> {
-+    type Driver = T::Driver;
-+
-+    fn gem_obj(&self) -> &bindings::drm_gem_object {
-+        &self.obj
-+    }
-+
-+    fn from_gem_obj(obj: *mut bindings::drm_gem_object) -> *mut Object<T> {
-+        unsafe { crate::container_of!(obj, Object<T>, obj) as *mut Object<T> }
-+    }
++/// Structure encapsulating the firmware blobs required for the GPU to operate.
++#[allow(dead_code)]
++pub(crate) struct Firmware {
++    booter_load: firmware::Firmware,
++    booter_unload: firmware::Firmware,
++    gsp: firmware::Firmware,
 +}
 +
-+/// Base operations shared by all GEM object classes
-+pub trait BaseObject: IntoGEMObject {
-+    /// Returns the size of the object in bytes.
-+    fn size(&self) -> usize {
-+        self.gem_obj().size
-+    }
++/// Structure holding the resources required to operate the GPU.
++#[allow(dead_code)]
++#[pin_data]
++pub(crate) struct Gpu {
++    spec: GpuSpec,
++    /// MMIO mapping of PCI BAR 0
++    bar: Devres<Bar0>,
++    fw: Firmware,
++}
 +
-+    /// Creates a new reference to the object.
-+    fn reference(&self) -> ObjectRef<Self> {
-+        // SAFETY: Having a reference to an Object implies holding a GEM reference
-+        unsafe {
-+            bindings::drm_gem_object_get(self.gem_obj() as *const _ as *mut _);
-+        }
-+        ObjectRef {
-+            ptr: self as *const _,
-+        }
-+    }
-+
-+    /// Creates a new handle for the object associated with a given `File`
-+    /// (or returns an existing one).
-+    fn create_handle(
-+        &self,
-+        file: &file::File<<<Self as IntoGEMObject>::Driver as drv::Driver>::File>,
-+    ) -> Result<u32> {
-+        let mut handle: u32 = 0;
-+        // SAFETY: The arguments are all valid per the type invariants.
-+        to_result(unsafe {
-+            bindings::drm_gem_handle_create(
-+                file.raw() as *mut _,
-+                self.gem_obj() as *const _ as *mut _,
-+                &mut handle,
-+            )
-+        })?;
-+        Ok(handle)
-+    }
-+
-+    /// Looks up an object by its handle for a given `File`.
-+    fn lookup_handle(
-+        file: &file::File<<<Self as IntoGEMObject>::Driver as drv::Driver>::File>,
-+        handle: u32,
-+    ) -> Result<ObjectRef<Self>> {
-+        // SAFETY: The arguments are all valid per the type invariants.
-+        let ptr = unsafe { bindings::drm_gem_object_lookup(file.raw() as *mut _, handle) };
-+
-+        if ptr.is_null() {
-+            Err(ENOENT)
-+        } else {
-+            Ok(ObjectRef {
-+                ptr: ptr as *const _,
-+            })
++// TODO replace with something like derive(FromPrimitive)
++impl Chipset {
++    fn from_u32(value: u32) -> Option<Chipset> {
++        match value {
++            0x162 => Some(Chipset::TU102),
++            0x164 => Some(Chipset::TU104),
++            0x166 => Some(Chipset::TU106),
++            0x167 => Some(Chipset::TU117),
++            0x168 => Some(Chipset::TU116),
++            0x172 => Some(Chipset::GA102),
++            0x173 => Some(Chipset::GA103),
++            0x174 => Some(Chipset::GA104),
++            0x176 => Some(Chipset::GA106),
++            0x177 => Some(Chipset::GA107),
++            0x192 => Some(Chipset::AD102),
++            0x193 => Some(Chipset::AD103),
++            0x194 => Some(Chipset::AD104),
++            0x196 => Some(Chipset::AD106),
++            0x197 => Some(Chipset::AD107),
++            _ => None,
 +        }
 +    }
++}
 +
-+    /// Creates an mmap offset to map the object from userspace.
-+    fn create_mmap_offset(&self) -> Result<u64> {
-+        // SAFETY: The arguments are valid per the type invariant.
-+        to_result(unsafe {
-+            bindings::drm_gem_create_mmap_offset(self.gem_obj() as *const _ as *mut _)
-+        })?;
-+        Ok(unsafe {
-+            bindings::drm_vma_node_offset_addr(&self.gem_obj().vma_node as *const _ as *mut _)
++// TODO replace with something like derive(FromPrimitive)
++impl CardType {
++    fn from_u32(value: u32) -> Option<CardType> {
++        match value {
++            0x160 => Some(CardType::TU100),
++            0x170 => Some(CardType::GA100),
++            0x190 => Some(CardType::AD100),
++            _ => None,
++        }
++    }
++}
++
++impl GpuSpec {
++    fn new(bar: &Devres<Bar0>) -> Result<GpuSpec> {
++        let bar = bar.try_access().ok_or(ENXIO)?;
++        let boot0 = u64::from_le(bar.readq(0));
++        let chip = ((boot0 & 0x1ff00000) >> 20) as u32;
++
++        if boot0 & 0x1f000000 == 0 {
++            return Err(ENODEV);
++        }
++
++        let chipset = match Chipset::from_u32(chip) {
++            Some(x) => x,
++            None => return Err(ENODEV),
++        };
++
++        let card_type = match CardType::from_u32(chip & 0x1f0) {
++            Some(x) => x,
++            None => return Err(ENODEV),
++        };
++
++        Ok(Self {
++            boot0,
++            card_type,
++            chipset,
++            chiprev: (boot0 & 0xff) as u8,
 +        })
 +    }
 +}
 +
-+impl<T: IntoGEMObject> BaseObject for T {}
++impl Firmware {
++    fn new(dev: &device::Device, spec: &GpuSpec, ver: &str) -> Result<Firmware> {
++        let mut chip_name = CString::try_from_fmt(fmt!("{:?}", spec.chipset))?;
++        chip_name.make_ascii_lowercase();
 +
-+/// A base GEM object.
-+#[repr(C)]
-+#[pin_data]
-+pub struct Object<T: DriverObject> {
-+    obj: bindings::drm_gem_object,
-+    // The DRM core ensures the Device exists as long as its objects exist, so we don't need to
-+    // manage the reference count here.
-+    dev: *const bindings::drm_device,
-+    #[pin]
-+    inner: T,
-+    #[pin]
-+    _p: PhantomPinned,
-+}
++        let fw_booter_load_path =
++            CString::try_from_fmt(fmt!("nvidia/{}/gsp/booter_load-{}.bin", &*chip_name, ver,))?;
++        let fw_booter_unload_path =
++            CString::try_from_fmt(fmt!("nvidia/{}/gsp/booter_unload-{}.bin", &*chip_name, ver))?;
++        let fw_gsp_path =
++            CString::try_from_fmt(fmt!("nvidia/{}/gsp/gsp-{}.bin", &*chip_name, ver))?;
 +
-+// SAFETY: This struct is safe to zero-initialize
-+unsafe impl init::Zeroable for bindings::drm_gem_object {}
++        let booter_load = firmware::Firmware::request(&fw_booter_load_path, dev)?;
++        let booter_unload = firmware::Firmware::request(&fw_booter_unload_path, dev)?;
++        let gsp = firmware::Firmware::request(&fw_gsp_path, dev)?;
 +
-+impl<T: DriverObject> Object<T> {
-+    /// The size of this object's structure.
-+    pub const SIZE: usize = mem::size_of::<Self>();
-+
-+    const OBJECT_FUNCS: bindings::drm_gem_object_funcs = bindings::drm_gem_object_funcs {
-+        free: Some(free_callback::<T>),
-+        open: Some(open_callback::<T, Object<T>>),
-+        close: Some(close_callback::<T, Object<T>>),
-+        print_info: None,
-+        export: None,
-+        pin: None,
-+        unpin: None,
-+        get_sg_table: None,
-+        vmap: None,
-+        vunmap: None,
-+        mmap: None,
-+        status: None,
-+        vm_ops: core::ptr::null_mut(),
-+        evict: None,
-+        rss: None,
-+    };
-+
-+    /// Create a new GEM object.
-+    pub fn new(dev: &device::Device<T::Driver>, size: usize) -> Result<Pin<UniqueObjectRef<Self>>> {
-+        let obj: Pin<Box<Self>> = Box::pin_init(
-+            try_pin_init!(Self {
-+                // SAFETY: This struct is expected to be zero-initialized
-+                obj: bindings::drm_gem_object {
-+                    funcs: &Self::OBJECT_FUNCS,
-+                    ..Default::default()
-+                },
-+                inner <- T::new(dev, size),
-+                // SAFETY: The drm subsystem guarantees that the drm_device will live as long as
-+                // the GEM object lives, so we can conjure a reference out of thin air.
-+                dev: dev.as_raw(),
-+                _p: PhantomPinned
-+            }),
-+            GFP_KERNEL,
-+        )?;
-+
-+        to_result(unsafe {
-+            bindings::drm_gem_object_init(dev.as_raw(), &obj.obj as *const _ as *mut _, size)
-+        })?;
-+
-+        // SAFETY: We never move out of self
-+        let obj_ref = unsafe {
-+            Pin::new_unchecked(UniqueObjectRef {
-+                // SAFETY: We never move out of the Box
-+                ptr: Box::leak(Pin::into_inner_unchecked(obj)),
-+                _p: PhantomPinned,
-+            })
-+        };
-+
-+        Ok(obj_ref)
-+    }
-+
-+    /// Returns the `Device` that owns this GEM object.
-+    pub fn dev(&self) -> &device::Device<T::Driver> {
-+        // SAFETY: The drm subsystem guarantees that the drm_device will live as long as
-+        // the GEM object lives, so we can just borrow from the raw pointer.
-+        unsafe { device::Device::borrow(self.dev) }
++        Ok(Firmware {
++            booter_load,
++            booter_unload,
++            gsp,
++        })
 +    }
 +}
 +
-+impl<T: DriverObject> crate::private::Sealed for Object<T> {}
++impl Gpu {
++    pub(crate) fn new(pdev: &pci::Device, bar: Devres<Bar0>) -> Result<Arc<Gpu>> {
++        let spec = GpuSpec::new(&bar)?;
++        let fw = Firmware::new(pdev.as_ref(), &spec, "535.113.01")?;
 +
-+impl<T: DriverObject> Deref for Object<T> {
-+    type Target = T;
++        dev_info!(
++            pdev.as_ref(),
++            "NVIDIA {:?} ({:#x})",
++            spec.chipset,
++            spec.boot0
++        );
 +
-+    fn deref(&self) -> &Self::Target {
-+        &self.inner
++        Arc::pin_init(try_pin_init!(Self { spec, bar, fw }), GFP_KERNEL)
 +    }
 +}
+diff --git a/drivers/gpu/drm/nova/nova.rs b/drivers/gpu/drm/nova/nova.rs
+new file mode 100644
+index 000000000000..c675be404d9b
+--- /dev/null
++++ b/drivers/gpu/drm/nova/nova.rs
+@@ -0,0 +1,18 @@
++// SPDX-License-Identifier: GPL-2.0
 +
-+impl<T: DriverObject> DerefMut for Object<T> {
-+    fn deref_mut(&mut self) -> &mut Self::Target {
-+        &mut self.inner
-+    }
++//! Nova GPU Driver
++
++mod driver;
++mod file;
++mod gem;
++mod gpu;
++
++use crate::driver::NovaDriver;
++
++kernel::module_pci_driver! {
++    type: NovaDriver,
++    name: "Nova",
++    author: "Danilo Krummrich",
++    description: "Nova GPU driver",
++    license: "GPL v2",
 +}
+diff --git a/include/uapi/drm/nova_drm.h b/include/uapi/drm/nova_drm.h
+new file mode 100644
+index 000000000000..3ca90ed9d2bb
+--- /dev/null
++++ b/include/uapi/drm/nova_drm.h
+@@ -0,0 +1,101 @@
++/* SPDX-License-Identifier: MIT */
 +
-+impl<T: DriverObject> drv::AllocImpl for Object<T> {
-+    const ALLOC_OPS: drv::AllocOps = drv::AllocOps {
-+        gem_create_object: None,
-+        prime_handle_to_fd: None,
-+        prime_fd_to_handle: None,
-+        gem_prime_import: None,
-+        gem_prime_import_sg_table: None,
-+        dumb_create: None,
-+        dumb_map_offset: None,
-+    };
++#ifndef __NOVA_DRM_H__
++#define __NOVA_DRM_H__
++
++#include "drm.h"
++
++/* DISCLAIMER: Do not use, this is not a stable uAPI.
++ *
++ * This uAPI serves only testing purposes as long as this driver is still in
++ * development. It is required to implement and test infrastructure which is
++ * upstreamed in the context of this driver. See also [1].
++ *
++ * [1] https://lore.kernel.org/dri-devel/Zfsj0_tb-0-tNrJy@cassiopeiae/T/#u
++ */
++
++#if defined(__cplusplus)
++extern "C" {
++#endif
++
++/*
++ * NOVA_GETPARAM_VRAM_BAR_SIZE
++ *
++ * Query the VRAM BAR size in bytes.
++ */
++#define NOVA_GETPARAM_VRAM_BAR_SIZE	0x1
++
++/**
++ * struct drm_nova_getparam - query GPU and driver metadata
++ */
++struct drm_nova_getparam {
++	/**
++	 * @param: The identifier of the parameter to query.
++	 */
++	__u64 param;
++
++	/**
++	 * @value: The value for the specified parameter.
++	 */
++	__u64 value;
++};
++
++/**
++ * struct drm_nova_gem_create - create a new DRM GEM object
++ */
++struct drm_nova_gem_create {
++	/**
++	 * @handle: The handle of the new DRM GEM object.
++	 */
++	__u32 handle;
++
++	/**
++	 * @pad: 32 bit padding, should be 0.
++	 */
++	__u32 pad;
++
++	/**
++	 * @size: The size of the new DRM GEM object.
++	 */
++	__u64 size;
++};
++
++/**
++ * struct drm_nova_gem_info - query DRM GEM object metadata
++ */
++struct drm_nova_gem_info {
++	/**
++	 * @handle: The handle of the DRM GEM object to query.
++	 */
++	__u32 handle;
++
++	/**
++	 * @pad: 32 bit padding, should be 0.
++	 */
++	__u32 pad;
++
++	/**
++	 * @size: The size of the DRM GEM obejct.
++	 */
++	__u64 size;
++};
++
++#define DRM_NOVA_GETPARAM		0x00
++#define DRM_NOVA_GEM_CREATE		0x01
++#define DRM_NOVA_GEM_INFO		0x02
++
++/* Note: this is an enum so that it can be resolved by Rust bindgen. */
++enum {
++	DRM_IOCTL_NOVA_GETPARAM		= DRM_IOWR(DRM_COMMAND_BASE + DRM_NOVA_GETPARAM,
++						   struct drm_nova_getparam),
++	DRM_IOCTL_NOVA_GEM_CREATE	= DRM_IOWR(DRM_COMMAND_BASE + DRM_NOVA_GEM_CREATE,
++						   struct drm_nova_gem_create),
++	DRM_IOCTL_NOVA_GEM_INFO		= DRM_IOWR(DRM_COMMAND_BASE + DRM_NOVA_GEM_INFO,
++						   struct drm_nova_gem_info),
++};
++
++#if defined(__cplusplus)
 +}
++#endif
 +
-+/// A reference-counted shared reference to a base GEM object.
-+pub struct ObjectRef<T: IntoGEMObject> {
-+    // Invariant: the pointer is valid and initialized, and this ObjectRef owns a reference to it.
-+    ptr: *const T,
-+}
-+
-+impl<T: IntoGEMObject> ObjectRef<T> {
-+    /// Downgrade this reference to a shared reference.
-+    pub fn from_pinned_unique(pin: Pin<UniqueObjectRef<T>>) -> Self {
-+        // SAFETY: A (shared) `ObjectRef` doesn't need to be pinned, since it doesn't allow us to
-+        // optain a mutable reference.
-+        let uq = unsafe { Pin::into_inner_unchecked(pin) };
-+
-+        uq.into_ref()
-+    }
-+}
-+
-+/// SAFETY: GEM object references are safe to share between threads.
-+unsafe impl<T: IntoGEMObject> Send for ObjectRef<T> {}
-+unsafe impl<T: IntoGEMObject> Sync for ObjectRef<T> {}
-+
-+impl<T: IntoGEMObject> Clone for ObjectRef<T> {
-+    fn clone(&self) -> Self {
-+        self.reference()
-+    }
-+}
-+
-+impl<T: IntoGEMObject> Drop for ObjectRef<T> {
-+    fn drop(&mut self) {
-+        // SAFETY: Having an ObjectRef implies holding a GEM reference.
-+        // The free callback will take care of deallocation.
-+        unsafe {
-+            bindings::drm_gem_object_put((*self.ptr).gem_obj() as *const _ as *mut _);
-+        }
-+    }
-+}
-+
-+impl<T: IntoGEMObject> Deref for ObjectRef<T> {
-+    type Target = T;
-+
-+    fn deref(&self) -> &Self::Target {
-+        // SAFETY: The pointer is valid per the invariant
-+        unsafe { &*self.ptr }
-+    }
-+}
-+
-+/// A unique reference to a base GEM object.
-+pub struct UniqueObjectRef<T: IntoGEMObject> {
-+    // Invariant: the pointer is valid and initialized, and this ObjectRef owns the only reference
-+    // to it.
-+    ptr: *mut T,
-+    _p: PhantomPinned,
-+}
-+
-+impl<T: IntoGEMObject> UniqueObjectRef<T> {
-+    /// Downgrade this reference to a shared reference.
-+    pub fn into_ref(self) -> ObjectRef<T> {
-+        let ptr = self.ptr as *const _;
-+        core::mem::forget(self);
-+
-+        ObjectRef { ptr }
-+    }
-+}
-+
-+impl<T: IntoGEMObject> Drop for UniqueObjectRef<T> {
-+    fn drop(&mut self) {
-+        // SAFETY: Having a UniqueObjectRef implies holding a GEM
-+        // reference. The free callback will take care of deallocation.
-+        unsafe {
-+            bindings::drm_gem_object_put((*self.ptr).gem_obj() as *const _ as *mut _);
-+        }
-+    }
-+}
-+
-+impl<T: IntoGEMObject> Deref for UniqueObjectRef<T> {
-+    type Target = T;
-+
-+    fn deref(&self) -> &Self::Target {
-+        // SAFETY: The pointer is valid per the invariant
-+        unsafe { &*self.ptr }
-+    }
-+}
-+
-+impl<T: IntoGEMObject> DerefMut for UniqueObjectRef<T> {
-+    fn deref_mut(&mut self) -> &mut Self::Target {
-+        // SAFETY: The pointer is valid per the invariant
-+        unsafe { &mut *self.ptr }
-+    }
-+}
-+
-+pub(super) const fn create_fops() -> bindings::file_operations {
-+    // SAFETY: As by the type invariant, it is safe to initialize `bindings::file_operations`
-+    // zeroed.
-+    let mut fops: bindings::file_operations = unsafe { core::mem::zeroed() };
-+
-+    fops.owner = core::ptr::null_mut();
-+    fops.open = Some(bindings::drm_open);
-+    fops.release = Some(bindings::drm_release);
-+    fops.unlocked_ioctl = Some(bindings::drm_ioctl);
-+    #[cfg(CONFIG_COMPAT)]
-+    {
-+        fops.compat_ioctl = Some(bindings::drm_compat_ioctl);
-+    }
-+    fops.poll = Some(bindings::drm_poll);
-+    fops.read = Some(bindings::drm_read);
-+    fops.llseek = Some(bindings::noop_llseek);
-+    fops.mmap = Some(bindings::drm_gem_mmap);
-+
-+    fops
-+}
-diff --git a/rust/kernel/drm/mod.rs b/rust/kernel/drm/mod.rs
-index a767942d0b52..c44760a1332f 100644
---- a/rust/kernel/drm/mod.rs
-+++ b/rust/kernel/drm/mod.rs
-@@ -5,4 +5,5 @@
- pub mod device;
- pub mod drv;
- pub mod file;
-+pub mod gem;
- pub mod ioctl;
++#endif /* __NOVA_DRM_H__ */
+diff --git a/rust/uapi/uapi_helper.h b/rust/uapi/uapi_helper.h
+index ed42a456da2e..b9ab3406b2ce 100644
+--- a/rust/uapi/uapi_helper.h
++++ b/rust/uapi/uapi_helper.h
+@@ -8,5 +8,6 @@
+ 
+ #include <uapi/asm-generic/ioctl.h>
+ #include <uapi/drm/drm.h>
++#include <uapi/drm/nova_drm.h>
+ #include <uapi/linux/mii.h>
+ #include <uapi/linux/ethtool.h>
 -- 
 2.45.1
 
