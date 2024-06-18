@@ -1,62 +1,62 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 468D2155351
-	for <rust-for-linux@vger.kernel.org>; Tue, 18 Jun 2024 23:34:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1574185E46
+	for <rust-for-linux@vger.kernel.org>; Tue, 18 Jun 2024 23:34:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718753649; cv=none; b=aSGA3JmymNYyOzMdWbORMu0LcA4oI97i2Zn473VAEA8RMXFTjNpoSanc+PQzkQLYJX+LlCzdpWfUP0bkcRMzFZDqiEFG9I9o+cxgrbQUlPcYTeGqGKBCK7nP6OMGg6GYSDB4sl7VNWc7rCgqjqiYYtprsbDhTU1/KDwD8Vekf+E=
+	t=1718753652; cv=none; b=WsqqxoRKg8ylk6J9Luy+/wzNu9LNqrrnW78K34m5KVTPbgS2VLZWcdTBRXVpqcveuI3N4iz9AcyiPnEvJaiEG3BCUJo1PCRG7/JrNDTU2FTp/ggNZ5snr130JVm6aYJuYfiSwWRX5wklufaO3J4uRtR0V7zIZXjPysZjl7yAyCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718753649; c=relaxed/simple;
+	s=arc-20240116; t=1718753652; c=relaxed/simple;
 	bh=Rlar8CxDsIGHlf+J+v8x/g6P1IUpHwkvEvqwKVM7uNY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ire1mIuPoa4cEWis29LFX/qD/t2m/hNT0GICeXPHiSd89qcDFGaTr+ReRm9Ri65FfzeUVf15cxSIIBvxhFfNHuUndIuCAZu9I+d4jAaeh8Wc2BCp0VOkDl0eELTUshgSakp1HHhaV23LmLc9GWJ2QsnhODFzy+/6xmN71vSrUuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YF7e7z1g; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:Content-Type; b=aqs5oC7sRr5N0d5jKLb8aQphMACSA43lPGFsX2Y4vK9fZiI0Zqu9FAqI8oIu9zeIaGt8oPgROK/dN/vsygynl3WIJ2xJTcmlSs+akceBeunI6w/sjOsUw15BQxPW3JcLIVJ+w/WM5G6bgxqWi/WRo2fsHXij+aRvsLrYJk97qrU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=EQj92dyI; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YF7e7z1g"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="EQj92dyI"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1718753646;
+	s=mimecast20190719; t=1718753649;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
 	bh=x0Bto6qyi282V0FfFQETmOtdKduKSr9xi2/2rtGnlRY=;
-	b=YF7e7z1gIjcxv3QwyyMbEQJRAAc5BfvqW4jU2yIgXbsCJ7job/6ruuPi8onGjBhFz8Z9Yg
-	l1YQrNZ8zlmq9pRnHM9+Yzs1cgPweg504lyUZ8QNHr/GgK8EaxuPlIqzimKBgQ5iGHvS2g
-	ZHu2fNEdHWPUJksr0OwmFr8eN2QnnQo=
-Received: from mail-lf1-f70.google.com (mail-lf1-f70.google.com
- [209.85.167.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	b=EQj92dyIzcnDsV20aF7qbkyL2PaE+zOKwus+WvXtYj/l3n3u27Z0OmQ+FDDU3D7ggsz604
+	aKpxm0fD05HmTvviQg+PiOgPGaOfXC9cCypIyF/8/2Agd2AfA1tH57seUJJceEYu1sZaPN
+	E7I+SwdZaJOngQB3XWIRt1RAC4jR0mg=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-478-H3sM0OZKPVi1hl-DhGdSTA-1; Tue, 18 Jun 2024 19:34:04 -0400
-X-MC-Unique: H3sM0OZKPVi1hl-DhGdSTA-1
-Received: by mail-lf1-f70.google.com with SMTP id 2adb3069b0e04-52cb4cf42f6so2607244e87.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 18 Jun 2024 16:34:04 -0700 (PDT)
+ us-mta-91-f__W9E9aOlWKdY1APk047Q-1; Tue, 18 Jun 2024 19:34:08 -0400
+X-MC-Unique: f__W9E9aOlWKdY1APk047Q-1
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-421179fd82bso39256425e9.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 18 Jun 2024 16:34:08 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718753643; x=1719358443;
+        d=1e100.net; s=20230601; t=1718753647; x=1719358447;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
         bh=x0Bto6qyi282V0FfFQETmOtdKduKSr9xi2/2rtGnlRY=;
-        b=NAqJ6PSNikUT3yfLDzjXJutQZpLJnoJ6n3Qo/hcsUYFtQKxf67EkLdqxqK4dqVo9QS
-         A3ZxcpUMOFG0sv9mF5Lr/ufc/cNl7jyOaVpPwrAquVTgwGZs10IT0Lhi4ZQHKQQrWfas
-         zi9AL1vEPUVQI3aiPd5aBRi+lYUJmKWoXNC9MnRsgBn9I/R8Z/Ji8ZlobTLMeVLUQ6vT
-         Ynfb2KHacRau7OJPBs6PRuoEhCjZyVtFtNlyzU8RNGcK7gyRLJOjVQoFcD4TZUl0rxpv
-         mR2In10c02/2CV8mmoIK6YMk2dzsFJXbfv8eqCsgNHetKQpzCWoOc5rPqbSQkZhVW1JG
-         3C6A==
-X-Gm-Message-State: AOJu0YxZc4qTlzwZJY+u397ZQDBnNSP9jkWT/3VywN9a7CIsrmuBbomn
-	82Wc6dBg95c6GkrdO5Ah2REEC1XVWjx+LJWUkX+iVlwW7ulBnOJGdmInp4IE1YwM5vxi/r2jMPS
-	p4N+A6pK0UZj+JhOBXXN8kmRFO7xs65ArW/Bezvp+iuUDzdkBoocv9jx9HE013ygd
-X-Received: by 2002:a05:6512:3a90:b0:52c:cbb4:7810 with SMTP id 2adb3069b0e04-52ccbb478afmr258848e87.8.1718753643076;
-        Tue, 18 Jun 2024 16:34:03 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE76RwFXNcn06n31+CxDk2+RBLAA6Ow+iK4Kyj7qDOn/TkTQ1xvZUZFDP+7uys3HXRUlJOiUg==
-X-Received: by 2002:a05:6512:3a90:b0:52c:cbb4:7810 with SMTP id 2adb3069b0e04-52ccbb478afmr258835e87.8.1718753642627;
-        Tue, 18 Jun 2024 16:34:02 -0700 (PDT)
+        b=gr/eQ69RRfVdF84rLETrCmCwkhQM8up0nD80U2Z+l+GjDqZD7h3u+s0hHanEu9s611
+         cQ5VqsOlNNb5Ou7BlpEYJq/U/vn1HXE/wR0HuFikBkfgYii2vAEevDTQ3Rm/H6MX2jeV
+         pf1HI//w80kXzGccvfyxM4/3k0uk5p772t/mQG4OpqWfPZJ3hxqwIYOA+KH1nA+ccQE/
+         AT2faUlQbvNGyYSISAzHazrDWZXAqxRvUqXTxRXqT9lAgh+jM0BvINF1DHzjBKI63wvX
+         7K9/g6ofJfiDjLee4qzfGEj1TUEWICZAxXDVGGNxf5R5HpNSxNAv8fIRUUtSU0XzzP7H
+         cHfg==
+X-Gm-Message-State: AOJu0YytVeQTicTv0f9OBZV/ItjVIxkDLuJeRx1pSEBLHcZoVIWnwIiA
+	VO3ySMME1QhgTHThPhJPxWhmgoIZu4hbwbkucsu9Xp5gSCNWERrnyLESJxiviMtPgEP3JxWJ+TW
+	02h5q0xJ3HXhOM0hUfLOyiVCsQ9nQIsi/7fxlmGvNwKGxjP/4md5dKts2+woGSJ4a
+X-Received: by 2002:a05:600c:47cf:b0:423:b63e:74d1 with SMTP id 5b1f17b1804b1-42475296a85mr4690325e9.29.1718753647175;
+        Tue, 18 Jun 2024 16:34:07 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFDTvesGw+MH8JKeoHbO9/+pZmS2s4IaR0Rx8au+t2uzOsTA1xhO6BS4Uz+ukARoYBv+0g8EQ==
+X-Received: by 2002:a05:600c:47cf:b0:423:b63e:74d1 with SMTP id 5b1f17b1804b1-42475296a85mr4690215e9.29.1718753646737;
+        Tue, 18 Jun 2024 16:34:06 -0700 (PDT)
 Received: from cassiopeiae.. ([2a02:810d:4b3f:ee94:642:1aff:fe31:a19f])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-360750f2489sm15331736f8f.69.2024.06.18.16.34.01
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3607509c8fbsm15303024f8f.43.2024.06.18.16.34.05
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Jun 2024 16:34:02 -0700 (PDT)
+        Tue, 18 Jun 2024 16:34:06 -0700 (PDT)
 From: Danilo Krummrich <dakr@redhat.com>
 To: maarten.lankhorst@linux.intel.com,
 	mripard@kernel.org,
@@ -83,9 +83,9 @@ Cc: rust-for-linux@vger.kernel.org,
 	dri-devel@lists.freedesktop.org,
 	nouveau@lists.freedesktop.org,
 	Danilo Krummrich <dakr@redhat.com>
-Subject: [PATCH v2 8/8] nova: add initial driver stub
-Date: Wed, 19 Jun 2024 01:31:44 +0200
-Message-ID: <20240618233324.14217-9-dakr@redhat.com>
+Subject: [PATCH v2 10/10] nova: add initial driver stub
+Date: Wed, 19 Jun 2024 01:31:45 +0200
+Message-ID: <20240618233324.14217-10-dakr@redhat.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240618233324.14217-1-dakr@redhat.com>
 References: <20240618233324.14217-1-dakr@redhat.com>
