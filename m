@@ -1,116 +1,149 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F15D13BC30
-	for <rust-for-linux@vger.kernel.org>; Tue, 18 Jun 2024 21:15:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D87DC176AC8
+	for <rust-for-linux@vger.kernel.org>; Tue, 18 Jun 2024 21:19:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718745338; cv=none; b=rcUAuTRKemnG3ydmEl/x/QmIWuNyEL+H8qB8iiIruh8OZbGU9QufKwCn83PRzv6twnVhla+PP47QdOrQXsMtWEoH7FGEbYYz9GH6O6ncgl0cesWMY8YaSCpH7HwHLRa9HpUp/9XtiD2F93r+2weXlePJb++tYK1n3/RMEFl5i00=
+	t=1718745596; cv=none; b=u0B+DQx7ysZTLzt6VBjCpIBx1LLqSQ9JC1CJc621E0qBB0fbD+id7KyGbk3TJnwYZYZDKMn9Bfem5EcIM2kSNmGcgIZvAFAz1HcI49+j6Gx6kAfwO6ayM3WShRX7+ne6CvfIFqoUA/X5Qo6TMSM0uv6XVqvnunNAL252VlyXAgw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718745338; c=relaxed/simple;
-	bh=sf4Kk8xdQqZve48iGjYcOf7KxledJ7m6ar/8nEH3AHA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kjoz7RHNgnnGmyp/GIHwcmedT77fCjC4JDfzebxpPgg2goapk/6Zo5UccDNd/zYdUL8+DbDKMOki8sA00UGAEVNKIbAlornjoF/nPW+UZ7J0ConIhEQaYWdkYliN78kYACz7oztF438scxCBdVMzDqBoKISmFSrl0a/lhDQYbDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=h2nG7ESl; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1718745596; c=relaxed/simple;
+	bh=Gp65oFcJHk79zm6jGkHE3iKZLC9l4N5bay4Ton5RAkI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ok6hB2r/eY5YKCG5CqpOQx5JCHGT0//z0KJf19uQEdQSePtpATu37tDkVzw2IXf+k93AeJkQ8RiajxoESBISGRJouqdn2Odc++3uYIMbK8fdhIQj3HDVp633JqbtUsJkLXvcg3CPFOn/+oKL9sa1c0UNrHATfme2IMZ8ey57pkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LwkttVTI; arc=none smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="h2nG7ESl"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1718745336;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=96nBoDElHbTtsoCtF5N08Hdwjkz7BYhf+kPf44yoMq8=;
-	b=h2nG7ESlqTSdZoAf8sTL8LCJ2N3ewGGbsnXupktCssENx1Qxp4xd9PGHKjUJchmKqfcJXH
-	bzD+spesbMC4WIrGmKcAql+9Q7lMMotzRrJUus006Fr6ZeG3OQ7GOPLr2TkunwVcExlT2m
-	Qub6DYt/tdDcIDY7la5mtpy+dNcwmAQ=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-115-Eo2goQHlNLGS-AiaMO9dEA-1; Tue, 18 Jun 2024 17:15:34 -0400
-X-MC-Unique: Eo2goQHlNLGS-AiaMO9dEA-1
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4217f941ca8so38372945e9.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 18 Jun 2024 14:15:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LwkttVTI"
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-1f6e183f084so43034565ad.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 18 Jun 2024 14:19:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1718745594; x=1719350394; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=50YSa4Ao9uogaf7E1ijDuiJSBHVaTQT8KJlzelZTT/A=;
+        b=LwkttVTImLPCW3/wpbhz4VhC49V0EPWg1VVLkHbwFlEXSLvhmpdgW5Kat5d73rED+n
+         IhJqnelZbgXX1rD23hm2VwROQDn8gMIHH7Ai5uXF8rTRcjT78wnKOtQU6l5SVTNC7O1u
+         5uTMC30CrmtVs+ZkCsV5cqiTn/RMTFgaDrA/AAhqGOk7xebnTiRJc33DmZyf5+nW++Fx
+         opUGNb230qLaP7KfDYb/cx353a+KSBCOfMTK1lM+hpZ0S3mZBCEpKS4VrtYgx9E4J4A6
+         JhsKKBJ3yuj/mLiaD9fh2qEI1R4iHJ6KC075qH1F7VFT9ctp3dA0IKFFJXbaF8GB+fTQ
+         cZGQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718745333; x=1719350133;
-        h=content-transfer-encoding:in-reply-to:organization:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
+        d=1e100.net; s=20230601; t=1718745594; x=1719350394;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=96nBoDElHbTtsoCtF5N08Hdwjkz7BYhf+kPf44yoMq8=;
-        b=vGsWzCbYAaqu1JOy6v2MD4nsv4pdfOFe4cL5MSU5G/vjLnV2Bdz22Cc8u+gFDAPyOo
-         nNmnPhmaG7J36SGFbi0bCssc3QRRlgK4DIxqX7Iaab/DGbL8WxSYCDEVWsM3QgHUhFbA
-         d5YFaIF1IU47BUAybuxpW8xdvQrCEgRnJj87p39L9/EzuP2XKyyqCaI+5E30I4LNTBw0
-         6Yj+y4Ccp3e/2kSyxBLV4kMeeB8GUVK6SdKKAliwbxhOGTmTkMlgTk8hL/WCSgwQHmOB
-         hPGaswJYmcMVW949H61vFuJXSsBln0ZHh27oYrD3PRnAIcOpOJD+YfHkBM7zwJrwR+9Q
-         gaeQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUmbb/hu4t8L1a6JHXsIDyinbYVet89OmHtNqZo457mLByxnvNS+Owh/YzjPvjsI34h2ZSDbccjijPckH1pOjKU0O8hbswfJQt4CrR1V9Q=
-X-Gm-Message-State: AOJu0Ywb8jbTJua9GGUSTgCxYjd6Zz4DAB4suLKsXHvW8LJwEYuwilUY
-	QDYECKuf6ywjmYyPu4VD8/fz07oWBlnw/wKqdOfBjnE5ZFzffbIY0LVDOphOvjQO8sc6SwF0+08
-	0tfG53NkJBCZEYob2duOIv7MwpLXKl4Pz0KjmZ4NWId2a+mrsuv8I8sKeWrUoceNq
-X-Received: by 2002:a05:600c:214c:b0:422:6e65:a4bb with SMTP id 5b1f17b1804b1-4247507a10cmr3164155e9.5.1718745333712;
-        Tue, 18 Jun 2024 14:15:33 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGmkvm6Wpg+T20KkbVracoP2lwhqgErIro0Zt5eKTCJ6OBKJ/cZuGS4YIJx2hS2d1tS9Nt4pQ==
-X-Received: by 2002:a05:600c:214c:b0:422:6e65:a4bb with SMTP id 5b1f17b1804b1-4247507a10cmr3163985e9.5.1718745333366;
-        Tue, 18 Jun 2024 14:15:33 -0700 (PDT)
-Received: from ?IPV6:2a02:810d:4b3f:ee94:abf:b8ff:feee:998b? ([2a02:810d:4b3f:ee94:abf:b8ff:feee:998b])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42286fe91f7sm239240225e9.16.2024.06.18.14.15.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 18 Jun 2024 14:15:32 -0700 (PDT)
-Message-ID: <175e7744-1234-44c0-b031-24ac42524b44@redhat.com>
-Date: Tue, 18 Jun 2024 23:15:31 +0200
+        bh=50YSa4Ao9uogaf7E1ijDuiJSBHVaTQT8KJlzelZTT/A=;
+        b=OS+d0D3s33R8iEzFSHrQtDqKhCssDcxPtCFX9UzbvY5Co53Z/Q5lC5nSZSe7ijMQ9N
+         Yf0oiIUa6z1wIo58sXH3LkXvHMBDyNKQ6WDN6gIX6VPqEkReKEiE9R/XsDYro9FThDsn
+         8eYnfh5hoR7hbPlxl+cblQYH1TirM8RsiVY/4qMSpkj43TLNlltC6WTHmJVyrcMXLLGW
+         2D1zu4ngR98GObMSNpwQqfNYJyu5SLWpOdqjUySiqxNzLrJ0D/vAgDwsiQXxkmYeClhZ
+         dITj9B/5nbYoDFPRxXA5+rZrEL9wJRegMNQZkOv7qgfaQUriJqQc3FBq53XjjV6N/Wqg
+         bNIg==
+X-Forwarded-Encrypted: i=1; AJvYcCX1/uoHwuBa0eN6bqq/W7G9i87T/M/x+kkQHTANs8saclo/y5R78nr3lpzm6IpSJF+b4QosPPWNcSj2ns1s7nFSbtuIAmrhm0TrVen8DZ0=
+X-Gm-Message-State: AOJu0YyQe9A551ZFA4JQrKLv/NRsCbtGGooyD6des6Z0hGL8/1d2tUDE
+	ceWrQKWiprsfrcPnwssjjFK8T4ovKjbbscHQRzaGHkasJCbPYpcntSW0lKMtkQ==
+X-Google-Smtp-Source: AGHT+IFC6LosG5J95Q/vdHU1XCPYWAnw91UYD1rLAPhQ60B8axl3RfeB1tNNTT7aB4UYI73ab2iYuQ==
+X-Received: by 2002:a17:902:eb44:b0:1f7:5a6c:ae3e with SMTP id d9443c01a7336-1f9aa3ec4a1mr7767585ad.33.1718745593732;
+        Tue, 18 Jun 2024 14:19:53 -0700 (PDT)
+Received: from google.com ([2620:0:1000:2510:5dfa:e7d1:8470:826c])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f855f48951sm101769505ad.280.2024.06.18.14.19.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 18 Jun 2024 14:19:53 -0700 (PDT)
+Date: Tue, 18 Jun 2024 14:19:47 -0700
+From: Sami Tolvanen <samitolvanen@google.com>
+To: Luis Chamberlain <mcgrof@kernel.org>
+Cc: Kris Van Hees <kris.van.hees@oracle.com>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Matthew Maurer <mmaurer@google.com>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Gary Guo <gary@garyguo.net>, linux-kbuild@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH 00/15] Implement MODVERSIONS for Rust
+Message-ID: <20240618211947.GD1611012@google.com>
+References: <20240617175818.58219-17-samitolvanen@google.com>
+ <ZnHjO7x9nszs9pUC@bombadil.infradead.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 2/2] rust: add firmware abstractions
-To: Luis Chamberlain <mcgrof@kernel.org>
-Cc: gregkh@linuxfoundation.org, rafael@kernel.org, russ.weight@linux.dev,
- ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
- boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
- benno.lossin@proton.me, a.hindborg@samsung.com, aliceryhl@google.com,
- airlied@gmail.com, fujita.tomonori@gmail.com, pstanner@redhat.com,
- ajanulgu@redhat.com, lyude@redhat.com, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20240617203010.101452-1-dakr@redhat.com>
- <20240617203010.101452-3-dakr@redhat.com>
- <ZnHkQpyiX4UKdLEt@bombadil.infradead.org>
-From: Danilo Krummrich <dakr@redhat.com>
-Organization: RedHat
-In-Reply-To: <ZnHkQpyiX4UKdLEt@bombadil.infradead.org>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZnHjO7x9nszs9pUC@bombadil.infradead.org>
 
 Hi Luis,
 
-On 6/18/24 21:47, Luis Chamberlain wrote:
-> On Mon, Jun 17, 2024 at 10:29:41PM +0200, Danilo Krummrich wrote:
->> Add an abstraction around the kernels firmware API to request firmware
->> images. The abstraction provides functions to access the firmware's size
->> and backing buffer.
->>
->> The firmware is released once the abstraction instance is dropped.
->>
->> Signed-off-by: Danilo Krummrich <dakr@redhat.com>
+On Tue, Jun 18, 2024 at 12:42:51PM -0700, Luis Chamberlain wrote:
+> On Mon, Jun 17, 2024 at 05:58:19PM +0000, Sami Tolvanen wrote:
+> > The first 12 patches of this series add a small tool for computing
+> > symbol versions from DWARF, called gendwarfksyms. When passed a list
+> > of exported symbols, the tool generates an expanded type string
+> > for each symbol, and computes symbol CRCs similarly to genksyms.
 > 
-> I don't speak Rust, so if we're gonna add this, I'd just ask you also
-> become a firmware loader maintainer, willing to spend time to help
-> review both C and Rust code. Is that too much to ask?
+> So this is too word centric Rust, let's think about this generically.
+> We still ahve a symbol limitation even in the C world then, and this
+> solution can solve that problem also for other reasons for *whatever*
+> reason we devise to-come-up-with-in-the-future for augmenting symbols.
+> Today Rust, tomorrow, who knows.
 
-That is fine, I'm happy to help out. I think Greg applied the patch already.
-But I can send a separate one adding the corresponding entry later on.
+If you're referring to the symbol hashing in the __versions table,
+that's not specific to Rust. Rust just happens to be the only source of
+long symbol names right now.
 
-- Danilo
-
+> > gendwarfksyms is written in C and uses libdw to process DWARF, mainly
+> > because of the existing support for C host tools that use elfutils
+> > (e.g., objtool).
 > 
->    Luis
-> 
+> I agree with Masahiro, that testing this with vmlinux would be eye
+> opening to what challenges we really have ahead. So, to help with this
+> let's try to re-think about this  from another perspective.
+>
+> Yes, old userspace should not break, but you can add yet another option
+> to let you opt-in to a new world order of how these crc are mapped to
+> hashed repersentations of the symbols. This would allow us to:
 
+We did run into an issue with depmod in our testing, where it needs to
+be taught about hashed names to avoid 'unknown symbol' warnings. I'm not
+sure if this is acceptable, so I would like to hear feedback about the
+viability of the hashing scheme in general.
+
+If old userspace can't have any regressions because of long symbol
+names, I suspect we'll have to go back to omitting long symbols from
+struct modversion_info and adding a v2 of the __versions table with no
+symbol name length limitations. Happy to hear your thoughts.
+
+> a) Ensure correctness for all users / tools, so that proper plumbing is
+>    really done. By considering all symbols you increase your scope of
+>    awareness of anything that could really break.
+> 
+> b) Remove the "Rust" nature about this
+> 
+> c) Rust modules just becomes a *user* of this approach
+
+I believe the only Rust nature here is the last patch that enables
+gendwarfksyms only for Rust. Otherwise, there shouldn't be anything
+strictly Rust specific.
+
+> It gets me wondering, given Kris is also working on allowing traces to
+> map symbols to module names, how does this fit into that world [0]?
+
+AFAIK long symbol names are only a problem for struct modversion_info,
+which uses a relatively short name buffer, so I'm hoping other efforts
+won't be affected.
+
+> As for a) the reason I'm thinking about having the ability to test a
+> full real kernel and moules with this is, without that, how are you sure
+> you have the full scope of the changes needed?
+
+Sure, I can look into hooking this up for the entire kernel and seeing
+what breaks, in addition the issues Masahiro pointed out, of course.
+
+Sami
