@@ -1,62 +1,62 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF3F4188CC4
-	for <rust-for-linux@vger.kernel.org>; Tue, 18 Jun 2024 23:40:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E219C1891D0
+	for <rust-for-linux@vger.kernel.org>; Tue, 18 Jun 2024 23:40:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718754056; cv=none; b=EEFHlVhOMnWcoIeBh1gII65HbKI4fHMXDZbY47rntz8YQvFYD6kzRSuDaUKH6ge1HqR2xX4LvL93wNJ+WFYo5xWKV02hTzytptp/tZmr3ICi/7GcwCPVOWdql/biLxSr6WMlvZ0a/xyOhQ0cEdbzMWodDLQtm+IQzvwfGbZDfVc=
+	t=1718754060; cv=none; b=HU7DA6NLteNxE9ighcCWnhvpyRMuuKU/aj8fCCL8t80LIS+QtVop73UFtr5JtUQqaj9jhvtKpMEUldzyTgCqwkWfn0bnfqtiff85YOaQ+3kSJTcOAjHYEo7s/+yBcJ6gvCYn13giqoYMgXIYzylArbYn6WVP16GN5IWvv/vjKaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718754056; c=relaxed/simple;
-	bh=MLFfiEGNgBcr9bLiufmhyDYAqVr8JMOqYi/vywiSXPs=;
+	s=arc-20240116; t=1718754060; c=relaxed/simple;
+	bh=+7YZ7zoHeaWY2jj+Hmsqe+5GAkc7KbDsloUj0Ihy+bM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sTxR9O/dBITiwCPRe/J/zDP5+djOQpsGSTaofwnQGh4/JOhMaRhAFXg8K2z7iNND7djLZzwYh74WVb7zVEY5gWQazoaRni0RNrCtWui0ApDqtaqgR5ImTbhkMIa+KAo0voG9Xi8bcKhgfefKzJcBYpK0FkEU0yZW+VBpqfjWkSU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=I3DiOWS4; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:Content-Type; b=DJP53NARU8jcirbkFegJOnx5Jl4MzUIdXnTZc1T5b/nggErwMGP4/MObRA+Yq5/x1/nw4MwqwMr/LUdAqnYT6diprIJbFLA0Q/KXw9ppuFHKrSgpmPTW22RXO54V6WshTcgi99TF76LzzJOxMtpJqeN20s0DWlgdE2UaGUM/u4M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=eA6/5MvZ; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="I3DiOWS4"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="eA6/5MvZ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1718754053;
+	s=mimecast20190719; t=1718754056;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=1qjkzHfzy3NUrrPbUMcZvTn0a95wVyUbECTV/h26qqI=;
-	b=I3DiOWS49m89C+/fnULMBMzHhJg03DCMgyY6jVOlndiM2NKifZQ5lfMtwAAun30fduxwso
-	eb4otj3gtqmgd/zo4S/eN+qxZVL0vqz49TE7sZ1APkpsb4JTrb3PfTXGDPs8wnJ2DkMj/2
-	OJ+3UEGqIK/YaAqlTTMGygkinStRhlc=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=zBDr9a0UbEqIFlf/LskXVOaMDv/jbs0Q1ckYvSRHn7Y=;
+	b=eA6/5MvZts0k3Yzp6L06wDXSl9w/sOtFErEMqSlu4uXuzDaDf/L9TBL2Xhe5b8gyU6GXcd
+	3v0J42LoFclatX1yzbcQru9oMaJoRE6TLbMLWC85dkP8tdcEKpo7kUhuWNy3AWeuvMK2zb
+	xMGXL1qjo0Y7bRq5RiBOAWQemrhwDmI=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-664-Nbuix3jXPPOvh-xqtXhr1w-1; Tue, 18 Jun 2024 19:40:47 -0400
-X-MC-Unique: Nbuix3jXPPOvh-xqtXhr1w-1
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-421eed70e30so44159525e9.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 18 Jun 2024 16:40:47 -0700 (PDT)
+ us-mta-689-8FmsPMD-PSiboGo7d2xOYA-1; Tue, 18 Jun 2024 19:40:55 -0400
+X-MC-Unique: 8FmsPMD-PSiboGo7d2xOYA-1
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4246cf4c87dso14575415e9.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 18 Jun 2024 16:40:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718754046; x=1719358846;
+        d=1e100.net; s=20230601; t=1718754054; x=1719358854;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=1qjkzHfzy3NUrrPbUMcZvTn0a95wVyUbECTV/h26qqI=;
-        b=fpsY/0yDWnrMEKo1Yc+Fs8a6ol03LVd5vg/6xmIqlUaY90/up/AljISKXUmndNbzzG
-         5xQ5prWNMuESKRIp4Cpf2v7KtjKfBuOIRSbidW7HDhs4w/3KR8xqheotxD9lCmwwyF/5
-         tif20o/TRdzdq3A2VLgBeif+gI2wNrveLhCWa0ttyA9YaP6T6HuuKw1c7Jxe2uj+bQKf
-         2zM+3r2N2sM6ceOkwZYEXIvOv8AGFZTd3iS8B61+H4qQsxFJri1H4MoX7eKXPcDVBG/B
-         KZ/9uIN6t4dN1zhRzPlr2RlRabiRwuudUE3Wmw893jCDP0GCQ5t1ICQsyy15F3sGphmk
-         s7Ig==
-X-Gm-Message-State: AOJu0YyukVoxRW6s5sXo9wa2PH9uWHulRL4kWpTJiBkIzpSSFi3Fs4xy
-	NzabcQqIfAD9xXxuLYbvG+ON72Yh3sVBNs6+yWaYQ7uaBBzxplGAsRfKBipkPq+taCAcZJJH1Hi
-	qWnzgJTCseKtKPhQ2QSSmnrwcgipDG8rw38qaGAfoDEHx576cIvYq79x4UA9dmOEh
-X-Received: by 2002:a05:600c:26d1:b0:422:35:d19d with SMTP id 5b1f17b1804b1-4247529df2emr5259515e9.36.1718754046258;
-        Tue, 18 Jun 2024 16:40:46 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHDw6Fk9C824R3TVe0mbmNmXLCAKpwzyBK1V1rVulamZFyXGPFnWYHmT55mcrVs+DxsV8w/Pw==
-X-Received: by 2002:a05:600c:26d1:b0:422:35:d19d with SMTP id 5b1f17b1804b1-4247529df2emr5259325e9.36.1718754045909;
-        Tue, 18 Jun 2024 16:40:45 -0700 (PDT)
+        bh=zBDr9a0UbEqIFlf/LskXVOaMDv/jbs0Q1ckYvSRHn7Y=;
+        b=BrHNvuMtQk6MhWZ+Wy6cjPAidyT+4UKigsUfpEs+cXCOGr5+mMwPd4IdIG9VVQQ6Kp
+         Xca27HiJn4vKeI+XfAWMFNVSS3P4o+tsvFkzBS1QPdtrYB1BQjXaCVct+MGNnKe2D5vU
+         srCNs5qFYXpvakCcFDkHONhIvsHbMul8ARLdfh4X9tyc8UfSuVM0uE+7LiHsmO0d1n1u
+         gNi+GHJnJKXjeyXYoAFqO4xuPHUg3sUZuTam6Xb+xgJgtRAm71qRTPREezkDS2vI5Kc7
+         kQfFDHdiXeT2imurwaY2RCAjU2UHzI02H5ti3sJmJnTX8hS7ibIsR68GoS1YG3T6mGWg
+         pKkQ==
+X-Gm-Message-State: AOJu0Yx/pvwEDLm35VsyTjI/1Rq43QH/Qgevr/hgZFsi1MkQ1zlPsbbU
+	Cc75qRqGQKtdv7P9DXcsaJ2WI5TthjVbvUUzS3DYXWakA/n9AM9Q6A1Q2nn1JKQKTmHfTpeFhwp
+	cwP/LigSzxOoVNzD9QZHmKRmnD/pWjkTP0FWCdgEjfHLkvElcj1ncaOl8R+m5+Ouf
+X-Received: by 2002:a05:600c:4999:b0:422:615f:6499 with SMTP id 5b1f17b1804b1-42475296a36mr5599245e9.31.1718754054191;
+        Tue, 18 Jun 2024 16:40:54 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEufWj1Ckx6qQqVdF2phLsYFyC0caxpANSWAXdqR9eux02qPS2yQharLpwxEtuSMotu8Vow8w==
+X-Received: by 2002:a05:600c:4999:b0:422:615f:6499 with SMTP id 5b1f17b1804b1-42475296a36mr5599025e9.31.1718754053787;
+        Tue, 18 Jun 2024 16:40:53 -0700 (PDT)
 Received: from cassiopeiae.. ([2a02:810d:4b3f:ee94:642:1aff:fe31:a19f])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-423034f4129sm198773995e9.14.2024.06.18.16.40.44
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-362e3e1abd5sm1407662f8f.47.2024.06.18.16.40.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Jun 2024 16:40:45 -0700 (PDT)
+        Tue, 18 Jun 2024 16:40:53 -0700 (PDT)
 From: Danilo Krummrich <dakr@redhat.com>
 To: gregkh@linuxfoundation.org,
 	rafael@kernel.org,
@@ -82,9 +82,9 @@ Cc: rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-pci@vger.kernel.org,
 	Danilo Krummrich <dakr@redhat.com>
-Subject: [PATCH v2 01/10] rust: pass module name to `Module::init`
-Date: Wed, 19 Jun 2024 01:39:47 +0200
-Message-ID: <20240618234025.15036-2-dakr@redhat.com>
+Subject: [PATCH v2 03/10] rust: implement `IdArray`, `IdTable` and `RawDeviceId`
+Date: Wed, 19 Jun 2024 01:39:49 +0200
+Message-ID: <20240618234025.15036-4-dakr@redhat.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240618234025.15036-1-dakr@redhat.com>
 References: <20240618234025.15036-1-dakr@redhat.com>
@@ -99,109 +99,390 @@ X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset="US-ASCII"; x-default=true
 
-In a subsequent patch we introduce the `Registration` abstraction used
-to register driver structures. Some subsystems require the module name on
-driver registration (e.g. PCI in __pci_register_driver()), hence pass
-the module name to `Module::init`.
+From: Wedson Almeida Filho <wedsonaf@gmail.com>
 
+Most subsystems use some kind of ID to match devices and drivers. Hence,
+we have to provide Rust drivers an abstraction to register an ID table
+for the driver to match.
+
+Generally, those IDs are subsystem specific and hence need to be
+implemented by the corresponding subsystem. However, the `IdArray`,
+`IdTable` and `RawDeviceId` types provide a generalized implementation
+that makes the life of subsystems easier to do so.
+
+Co-developed-by: Asahi Lina <lina@asahilina.net>
+Signed-off-by: Asahi Lina <lina@asahilina.net>
+Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
+Co-developed-by: Danilo Krummrich <dakr@redhat.com>
 Signed-off-by: Danilo Krummrich <dakr@redhat.com>
 ---
- rust/kernel/lib.rs           | 14 ++++++++++----
- rust/kernel/net/phy.rs       |  2 +-
- rust/macros/module.rs        |  3 ++-
- samples/rust/rust_minimal.rs |  2 +-
- samples/rust/rust_print.rs   |  2 +-
- 5 files changed, 15 insertions(+), 8 deletions(-)
+ rust/kernel/device_id.rs | 336 +++++++++++++++++++++++++++++++++++++++
+ rust/kernel/lib.rs       |   2 +
+ 2 files changed, 338 insertions(+)
+ create mode 100644 rust/kernel/device_id.rs
 
+diff --git a/rust/kernel/device_id.rs b/rust/kernel/device_id.rs
+new file mode 100644
+index 000000000000..c490300f29bb
+--- /dev/null
++++ b/rust/kernel/device_id.rs
+@@ -0,0 +1,336 @@
++// SPDX-License-Identifier: GPL-2.0
++
++//! Generic implementation of device IDs.
++//!
++//! Each bus / subsystem that matches device and driver through a bus / subsystem specific ID is
++//! expected to implement [`RawDeviceId`].
++
++use core::marker::PhantomData;
++
++/// Conversion from a device id to a raw device id.
++///
++/// This is meant to be implemented by buses/subsystems so that they can use [`IdTable`] to
++/// guarantee (at compile-time) zero-termination of device id tables provided by drivers.
++///
++/// Originally, RawDeviceId was implemented as a const trait. However, this unstable feature is
++/// broken/gone in 1.73. To work around this, turn IdArray::new() into a macro such that it can use
++/// concrete types (which can still have const associated functions) instead of a trait.
++///
++/// # Safety
++///
++/// Implementers must ensure that:
++///   - [`RawDeviceId::ZERO`] is actually a zeroed-out version of the raw device id.
++///   - `to_rawid` is implemented and stores `offset` in the context/data field of the raw device
++///     id so that buses can recover the pointer to the data. (This should actually be a trait
++///     function, however, this requires `const_trait_impl`, and hence has to changed once the
++///     feature is stabilized.)
++pub unsafe trait RawDeviceId {
++    /// The raw type that holds the device id.
++    ///
++    /// Id tables created from [`Self`] are going to hold this type in its zero-terminated array.
++    type RawType: Copy;
++
++    /// A zeroed-out representation of the raw device id.
++    ///
++    /// Id tables created from [`Self`] use [`Self::ZERO`] as the sentinel to indicate the end of
++    /// the table.
++    const ZERO: Self::RawType;
++}
++
++/// A zero-terminated device id array, followed by context data.
++#[repr(C)]
++pub struct IdArray<T: RawDeviceId, U, const N: usize> {
++    ids: [T::RawType; N],
++    sentinel: T::RawType,
++    id_infos: [Option<U>; N],
++}
++
++impl<T: RawDeviceId, U, const N: usize> IdArray<T, U, N> {
++    const U_NONE: Option<U> = None;
++
++    /// Returns an `IdTable` backed by `self`.
++    ///
++    /// This is used to essentially erase the array size.
++    pub const fn as_table(&self) -> IdTable<'_, T, U> {
++        IdTable {
++            first: &self.ids[0],
++            _p: PhantomData,
++        }
++    }
++
++    /// Creates a new instance of the array.
++    ///
++    /// The contents are derived from the given identifiers and context information.
++    #[doc(hidden)]
++    pub const unsafe fn new(raw_ids: [T::RawType; N], infos: [Option<U>; N]) -> Self
++    where
++        T: RawDeviceId + Copy,
++        T::RawType: Copy + Clone,
++    {
++        Self {
++            ids: raw_ids,
++            sentinel: T::ZERO,
++            id_infos: infos,
++        }
++    }
++
++    #[doc(hidden)]
++    pub const fn get_offset(idx: usize) -> isize
++    where
++        T: RawDeviceId + Copy,
++        T::RawType: Copy + Clone,
++    {
++        // SAFETY: We are only using this dummy value to get offsets.
++        let array = unsafe { Self::new([T::ZERO; N], [Self::U_NONE; N]) };
++        // SAFETY: Both pointers are within `array` (or one byte beyond), consequently they are
++        // derived from the same allocated object. We are using a `u8` pointer, whose size 1,
++        // so the pointers are necessarily 1-byte aligned.
++        let ret = unsafe {
++            (&array.id_infos[idx] as *const _ as *const u8)
++                .offset_from(&array.ids[idx] as *const _ as _)
++        };
++        core::mem::forget(array);
++        ret
++    }
++}
++
++// Creates a new ID array. This is a macro so it can take the concrete ID type as a parameter in
++// order to call to_rawid() on it, and still remain const. This is necessary until a new
++// const_trait_impl implementation lands, since the existing implementation was removed in Rust
++// 1.73.
++#[macro_export]
++#[doc(hidden)]
++macro_rules! _new_id_array {
++    (($($args:tt)*), $id_type:ty) => {{
++        /// Creates a new instance of the array.
++        ///
++        /// The contents are derived from the given identifiers and context information.
++        const fn new< U, const N: usize>(ids: [$id_type; N], infos: [Option<U>; N])
++            -> $crate::device_id::IdArray<$id_type, U, N>
++        where
++            $id_type: $crate::device_id::RawDeviceId + Copy,
++            <$id_type as $crate::device_id::RawDeviceId>::RawType: Copy + Clone,
++        {
++            let mut raw_ids =
++                [<$id_type as $crate::device_id::RawDeviceId>::ZERO; N];
++            let mut i = 0usize;
++            while i < N {
++                let offset: isize = $crate::device_id::IdArray::<$id_type, U, N>::get_offset(i);
++                raw_ids[i] = ids[i].to_rawid(offset);
++                i += 1;
++            }
++
++            // SAFETY: We are passing valid arguments computed with the correct offsets.
++            unsafe {
++                $crate::device_id::IdArray::<$id_type, U, N>::new(raw_ids, infos)
++            }
++       }
++
++        new($($args)*)
++    }}
++}
++
++/// A device id table.
++///
++/// The table is guaranteed to be zero-terminated and to be followed by an array of context data of
++/// type `Option<U>`.
++pub struct IdTable<'a, T: RawDeviceId, U> {
++    first: &'a T::RawType,
++    _p: PhantomData<&'a U>,
++}
++
++impl<T: RawDeviceId, U> AsRef<T::RawType> for IdTable<'_, T, U> {
++    fn as_ref(&self) -> &T::RawType {
++        self.first
++    }
++}
++
++/// Counts the number of parenthesis-delimited, comma-separated items.
++///
++/// # Examples
++///
++/// ```
++/// # use kernel::count_paren_items;
++///
++/// assert_eq!(0, count_paren_items!());
++/// assert_eq!(1, count_paren_items!((A)));
++/// assert_eq!(1, count_paren_items!((A),));
++/// assert_eq!(2, count_paren_items!((A), (B)));
++/// assert_eq!(2, count_paren_items!((A), (B),));
++/// assert_eq!(3, count_paren_items!((A), (B), (C)));
++/// assert_eq!(3, count_paren_items!((A), (B), (C),));
++/// ```
++#[macro_export]
++macro_rules! count_paren_items {
++    (($($item:tt)*), $($remaining:tt)*) => { 1 + $crate::count_paren_items!($($remaining)*) };
++    (($($item:tt)*)) => { 1 };
++    () => { 0 };
++}
++
++/// Converts a comma-separated list of pairs into an array with the first element. That is, it
++/// discards the second element of the pair.
++///
++/// Additionally, it automatically introduces a type if the first element is warpped in curly
++/// braces, for example, if it's `{v: 10}`, it becomes `X { v: 10 }`; this is to avoid repeating
++/// the type.
++///
++/// # Examples
++///
++/// ```
++/// # use kernel::first_item;
++///
++/// #[derive(PartialEq, Debug)]
++/// struct X {
++///     v: u32,
++/// }
++///
++/// assert_eq!([] as [X; 0], first_item!(X, ));
++/// assert_eq!([X { v: 10 }], first_item!(X, ({ v: 10 }, Y)));
++/// assert_eq!([X { v: 10 }], first_item!(X, ({ v: 10 }, Y),));
++/// assert_eq!([X { v: 10 }], first_item!(X, (X { v: 10 }, Y)));
++/// assert_eq!([X { v: 10 }], first_item!(X, (X { v: 10 }, Y),));
++/// assert_eq!([X { v: 10 }, X { v: 20 }], first_item!(X, ({ v: 10 }, Y), ({ v: 20 }, Y)));
++/// assert_eq!([X { v: 10 }, X { v: 20 }], first_item!(X, ({ v: 10 }, Y), ({ v: 20 }, Y),));
++/// assert_eq!([X { v: 10 }, X { v: 20 }], first_item!(X, (X { v: 10 }, Y), (X { v: 20 }, Y)));
++/// assert_eq!([X { v: 10 }, X { v: 20 }], first_item!(X, (X { v: 10 }, Y), (X { v: 20 }, Y),));
++/// assert_eq!([X { v: 10 }, X { v: 20 }, X { v: 30 }],
++///            first_item!(X, ({ v: 10 }, Y), ({ v: 20 }, Y), ({v: 30}, Y)));
++/// assert_eq!([X { v: 10 }, X { v: 20 }, X { v: 30 }],
++///            first_item!(X, ({ v: 10 }, Y), ({ v: 20 }, Y), ({v: 30}, Y),));
++/// assert_eq!([X { v: 10 }, X { v: 20 }, X { v: 30 }],
++///            first_item!(X, (X { v: 10 }, Y), (X { v: 20 }, Y), (X {v: 30}, Y)));
++/// assert_eq!([X { v: 10 }, X { v: 20 }, X { v: 30 }],
++///            first_item!(X, (X { v: 10 }, Y), (X { v: 20 }, Y), (X {v: 30}, Y),));
++/// ```
++#[macro_export]
++macro_rules! first_item {
++    ($id_type:ty, $(({$($first:tt)*}, $second:expr)),* $(,)?) => {
++        {
++            type IdType = $id_type;
++            [$(IdType{$($first)*},)*]
++        }
++    };
++    ($id_type:ty, $(($first:expr, $second:expr)),* $(,)?) => { [$($first,)*] };
++}
++
++/// Converts a comma-separated list of pairs into an array with the second element. That is, it
++/// discards the first element of the pair.
++///
++/// # Examples
++///
++/// ```
++/// # use kernel::second_item;
++///
++/// assert_eq!([] as [u32; 0], second_item!());
++/// assert_eq!([10u32], second_item!((X, 10u32)));
++/// assert_eq!([10u32], second_item!((X, 10u32),));
++/// assert_eq!([10u32], second_item!(({ X }, 10u32)));
++/// assert_eq!([10u32], second_item!(({ X }, 10u32),));
++/// assert_eq!([10u32, 20], second_item!((X, 10u32), (X, 20)));
++/// assert_eq!([10u32, 20], second_item!((X, 10u32), (X, 20),));
++/// assert_eq!([10u32, 20], second_item!(({ X }, 10u32), ({ X }, 20)));
++/// assert_eq!([10u32, 20], second_item!(({ X }, 10u32), ({ X }, 20),));
++/// assert_eq!([10u32, 20, 30], second_item!((X, 10u32), (X, 20), (X, 30)));
++/// assert_eq!([10u32, 20, 30], second_item!((X, 10u32), (X, 20), (X, 30),));
++/// assert_eq!([10u32, 20, 30], second_item!(({ X }, 10u32), ({ X }, 20), ({ X }, 30)));
++/// assert_eq!([10u32, 20, 30], second_item!(({ X }, 10u32), ({ X }, 20), ({ X }, 30),));
++/// ```
++#[macro_export]
++macro_rules! second_item {
++    ($(({$($first:tt)*}, $second:expr)),* $(,)?) => { [$($second,)*] };
++    ($(($first:expr, $second:expr)),* $(,)?) => { [$($second,)*] };
++}
++
++/// Defines a new constant [`IdArray`] with a concise syntax.
++///
++/// It is meant to be used by buses and subsystems to create a similar macro with their device id
++/// type already specified, i.e., with fewer parameters to the end user.
++///
++/// # Examples
++///
++/// ```
++/// # use kernel::{define_id_array, device_id::RawDeviceId};
++///
++/// #[derive(Copy, Clone)]
++/// struct Id(u32);
++///
++/// // SAFETY: `ZERO` is all zeroes and `to_rawid` stores `offset` as the second element of the raw
++/// // device id pair.
++/// unsafe impl RawDeviceId for Id {
++///     type RawType = (u64, isize);
++///     const ZERO: Self::RawType = (0, 0);
++/// }
++///
++/// impl Id {
++///     #[allow(clippy::wrong_self_convention)]
++///     const fn to_rawid(&self, offset: isize) -> <Id as RawDeviceId>::RawType {
++///         (self.0 as u64 + 1, offset)
++///     }
++/// }
++///
++/// define_id_array!(A1, Id, (), []);
++/// define_id_array!(A2, Id, &'static [u8], [(Id(10), None)]);
++/// define_id_array!(A3, Id, &'static [u8], [(Id(10), Some(b"id1")), ]);
++/// define_id_array!(A4, Id, &'static [u8], [(Id(10), Some(b"id1")), (Id(20), Some(b"id2"))]);
++/// define_id_array!(A5, Id, &'static [u8], [(Id(10), Some(b"id1")), (Id(20), Some(b"id2")), ]);
++/// define_id_array!(A6, Id, &'static [u8], [(Id(10), None), (Id(20), Some(b"id2")), ]);
++/// define_id_array!(A7, Id, &'static [u8], [(Id(10), Some(b"id1")), (Id(20), None), ]);
++/// define_id_array!(A8, Id, &'static [u8], [(Id(10), None), (Id(20), None), ]);
++/// ```
++#[macro_export]
++macro_rules! define_id_array {
++    ($table_name:ident, $id_type:ty, $data_type:ty, [ $($t:tt)* ]) => {
++        const $table_name: $crate::device_id::IdArray<$id_type,
++                                                      $data_type, {
++                                                          $crate::count_paren_items!($($t)*)
++                                                      }> = $crate::_new_id_array!(
++                                                          ($crate::first_item!($id_type, $($t)*),
++                                                           $crate::second_item!($($t)*)),
++                                                          $id_type);
++    };
++}
++
++/// Defines a new constant [`IdTable`] with a concise syntax.
++///
++/// It is meant to be used by buses and subsystems to create a similar macro with their device id
++/// type already specified, i.e., with fewer parameters to the end user.
++///
++/// # Examples
++///
++/// ```
++/// # use kernel::{define_id_table, device_id::RawDeviceId};
++///
++/// #[derive(Copy, Clone)]
++/// struct Id(u32);
++///
++/// // SAFETY: `ZERO` is all zeroes and `to_rawid` stores `offset` as the second element of the raw
++/// // device id pair.
++/// unsafe impl RawDeviceId for Id {
++///     type RawType = (u64, isize);
++///     const ZERO: Self::RawType = (0, 0);
++/// }
++///
++/// impl Id {
++///     #[allow(clippy::wrong_self_convention)]
++///     const fn to_rawid(&self, offset: isize) -> <Id as RawDeviceId>::RawType {
++///         (self.0 as u64 + 1, offset)
++///     }
++/// }
++///
++/// define_id_table!(T1, Id, &'static [u8], [(Id(10), None)]);
++/// define_id_table!(T2, Id, &'static [u8], [(Id(10), Some(b"id1")), ]);
++/// define_id_table!(T3, Id, &'static [u8], [(Id(10), Some(b"id1")), (Id(20), Some(b"id2"))]);
++/// define_id_table!(T4, Id, &'static [u8], [(Id(10), Some(b"id1")), (Id(20), Some(b"id2")), ]);
++/// define_id_table!(T5, Id, &'static [u8], [(Id(10), None), (Id(20), Some(b"id2")), ]);
++/// define_id_table!(T6, Id, &'static [u8], [(Id(10), Some(b"id1")), (Id(20), None), ]);
++/// define_id_table!(T7, Id, &'static [u8], [(Id(10), None), (Id(20), None), ]);
++/// ```
++#[macro_export]
++macro_rules! define_id_table {
++    ($table_name:ident, $id_type:ty, $data_type:ty, [ $($t:tt)* ]) => {
++        const $table_name: Option<$crate::device_id::IdTable<'static, $id_type, $data_type>> = {
++            $crate::define_id_array!(ARRAY, $id_type, $data_type, [ $($t)* ]);
++            Some(ARRAY.as_table())
++        };
++    };
++}
 diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index a791702b4fee..5af00e072a58 100644
+index 5382402cd3db..98e1a1425d17 100644
 --- a/rust/kernel/lib.rs
 +++ b/rust/kernel/lib.rs
-@@ -71,7 +71,7 @@ pub trait Module: Sized + Sync + Send {
-     /// should do.
-     ///
-     /// Equivalent to the `module_init` macro in the C API.
--    fn init(module: &'static ThisModule) -> error::Result<Self>;
-+    fn init(name: &'static str::CStr, module: &'static ThisModule) -> error::Result<Self>;
- }
+@@ -13,6 +13,7 @@
  
- /// A module that is pinned and initialised in-place.
-@@ -79,13 +79,19 @@ pub trait InPlaceModule: Sync + Send {
-     /// Creates an initialiser for the module.
-     ///
-     /// It is called when the module is loaded.
--    fn init(module: &'static ThisModule) -> impl init::PinInit<Self, error::Error>;
-+    fn init(
-+        name: &'static str::CStr,
-+        module: &'static ThisModule,
-+    ) -> impl init::PinInit<Self, error::Error>;
- }
- 
- impl<T: Module> InPlaceModule for T {
--    fn init(module: &'static ThisModule) -> impl init::PinInit<Self, error::Error> {
-+    fn init(
-+        name: &'static str::CStr,
-+        module: &'static ThisModule,
-+    ) -> impl init::PinInit<Self, error::Error> {
-         let initer = move |slot: *mut Self| {
--            let m = <Self as Module>::init(module)?;
-+            let m = <Self as Module>::init(name, module)?;
- 
-             // SAFETY: `slot` is valid for write per the contract with `pin_init_from_closure`.
-             unsafe { slot.write(m) };
-diff --git a/rust/kernel/net/phy.rs b/rust/kernel/net/phy.rs
-index fd40b703d224..ccb2552dc107 100644
---- a/rust/kernel/net/phy.rs
-+++ b/rust/kernel/net/phy.rs
-@@ -887,7 +887,7 @@ struct Module {
-                 [$($crate::net::phy::create_phy_driver::<$driver>()),+];
- 
-             impl $crate::Module for Module {
--                fn init(module: &'static ThisModule) -> Result<Self> {
-+                fn init(_name: &'static CStr, module: &'static ThisModule) -> Result<Self> {
-                     // SAFETY: The anonymous constant guarantees that nobody else can access
-                     // the `DRIVERS` static. The array is used only in the C side.
-                     let drivers = unsafe { &mut DRIVERS };
-diff --git a/rust/macros/module.rs b/rust/macros/module.rs
-index 105be4797f85..be03b2cf77a1 100644
---- a/rust/macros/module.rs
-+++ b/rust/macros/module.rs
-@@ -302,7 +302,8 @@ mod __module_init {{
-                     ///
-                     /// This function must only be called once.
-                     unsafe fn __init() -> core::ffi::c_int {{
--                        let initer = <{type_} as kernel::InPlaceModule>::init(&super::super::THIS_MODULE);
-+                        let initer = <{type_} as kernel::InPlaceModule>::init(kernel::c_str!(\"{name}\"),
-+                                                                              &super::super::THIS_MODULE);
-                         // SAFETY: No data race, since `__MOD` can only be accessed by this module
-                         // and there only `__init` and `__exit` access it. These functions are only
-                         // called once and `__exit` cannot be called before or during `__init`.
-diff --git a/samples/rust/rust_minimal.rs b/samples/rust/rust_minimal.rs
-index 2a9eaab62d1c..3b918ff5eebb 100644
---- a/samples/rust/rust_minimal.rs
-+++ b/samples/rust/rust_minimal.rs
-@@ -17,7 +17,7 @@ struct RustMinimal {
- }
- 
- impl kernel::Module for RustMinimal {
--    fn init(_module: &'static ThisModule) -> Result<Self> {
-+    fn init(_name: &'static CStr, _module: &'static ThisModule) -> Result<Self> {
-         pr_info!("Rust minimal sample (init)\n");
-         pr_info!("Am I built-in? {}\n", !cfg!(MODULE));
- 
-diff --git a/samples/rust/rust_print.rs b/samples/rust/rust_print.rs
-index 6eabb0d79ea3..722275a735f1 100644
---- a/samples/rust/rust_print.rs
-+++ b/samples/rust/rust_print.rs
-@@ -40,7 +40,7 @@ fn arc_print() -> Result {
- }
- 
- impl kernel::Module for RustPrint {
--    fn init(_module: &'static ThisModule) -> Result<Self> {
-+    fn init(_name: &'static CStr, _module: &'static ThisModule) -> Result<Self> {
-         pr_info!("Rust printing macros sample (init)\n");
- 
-         pr_emerg!("Emergency message (level 0) without args\n");
+ #![no_std]
+ #![feature(coerce_unsized)]
++#![feature(const_refs_to_cell)]
+ #![feature(dispatch_from_dyn)]
+ #![feature(new_uninit)]
+ #![feature(receiver_trait)]
+@@ -29,6 +30,7 @@
+ pub mod alloc;
+ mod build_assert;
+ pub mod device;
++pub mod device_id;
+ pub mod driver;
+ pub mod error;
+ #[cfg(CONFIG_RUST_FW_LOADER_ABSTRACTIONS)]
 -- 
 2.45.1
 
