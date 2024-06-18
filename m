@@ -1,62 +1,62 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CED1A17A92C
-	for <rust-for-linux@vger.kernel.org>; Tue, 18 Jun 2024 23:40:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF3F4188CC4
+	for <rust-for-linux@vger.kernel.org>; Tue, 18 Jun 2024 23:40:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718754055; cv=none; b=DyCgJorBj/324684tCMOzpGK26mI4LKIuRha/XAoxQCzNo4+AZR9FoOCysvKABDy+tF7Kz6DEbw6/di0qSdyZmKJ3im6qHSTQPKBOXut2jWFq1rRRzYKUyZq7qrOcs25J4JHmBfbziyIKIlY8+qjPhwR1QGHo62eSgu8Ajdf1W0=
+	t=1718754056; cv=none; b=EEFHlVhOMnWcoIeBh1gII65HbKI4fHMXDZbY47rntz8YQvFYD6kzRSuDaUKH6ge1HqR2xX4LvL93wNJ+WFYo5xWKV02hTzytptp/tZmr3ICi/7GcwCPVOWdql/biLxSr6WMlvZ0a/xyOhQ0cEdbzMWodDLQtm+IQzvwfGbZDfVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718754055; c=relaxed/simple;
-	bh=NJ06HFiNnwp5HwQ1Yv82r8BnXq42M6HbbJtDiVlYhkw=;
+	s=arc-20240116; t=1718754056; c=relaxed/simple;
+	bh=MLFfiEGNgBcr9bLiufmhyDYAqVr8JMOqYi/vywiSXPs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gpVeXQR+ug/hJ5CkkFT16PTQETJCKzDaSsRrX3LGII3+3Y8S25aSCkL1z5PMnP4Cg2vtPRxcY3HW1Co6UVwAxvPcT7JhtRZSGSnDaf1Omi1tX1wo08g9j2hWzsWBG1THKKiz014Vg1aT0OO4NHp1qvDPCNQ/TVrjVj0CljiA1Hc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gXYi91Su; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:Content-Type; b=sTxR9O/dBITiwCPRe/J/zDP5+djOQpsGSTaofwnQGh4/JOhMaRhAFXg8K2z7iNND7djLZzwYh74WVb7zVEY5gWQazoaRni0RNrCtWui0ApDqtaqgR5ImTbhkMIa+KAo0voG9Xi8bcKhgfefKzJcBYpK0FkEU0yZW+VBpqfjWkSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=I3DiOWS4; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gXYi91Su"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="I3DiOWS4"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1718754052;
+	s=mimecast20190719; t=1718754053;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=FLt8R9mG7+Q5vVfP6l0HGRxBa2WWQOQ3AyEB5PRg0/8=;
-	b=gXYi91SuLL9mZxifDtnqsG5lwRl5Z3Yg9/ctVWlPYzzHO0DitEM8Z6xrB+LlNsm33Qyvur
-	Ze9AJ8gVyVXBCu2AN29dBuf0HoJL3GvT9uQjnXCeuJZje2QGDWin7rbXLeOBOm95w+41WV
-	SxESmeBa78gtkJVPUyIvO+hfQPwCKmg=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=1qjkzHfzy3NUrrPbUMcZvTn0a95wVyUbECTV/h26qqI=;
+	b=I3DiOWS49m89C+/fnULMBMzHhJg03DCMgyY6jVOlndiM2NKifZQ5lfMtwAAun30fduxwso
+	eb4otj3gtqmgd/zo4S/eN+qxZVL0vqz49TE7sZ1APkpsb4JTrb3PfTXGDPs8wnJ2DkMj/2
+	OJ+3UEGqIK/YaAqlTTMGygkinStRhlc=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-510-6OaV2ZFsNaul-bvZWkcTMA-1; Tue, 18 Jun 2024 19:40:51 -0400
-X-MC-Unique: 6OaV2ZFsNaul-bvZWkcTMA-1
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-36298880c8bso533343f8f.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 18 Jun 2024 16:40:51 -0700 (PDT)
+ us-mta-664-Nbuix3jXPPOvh-xqtXhr1w-1; Tue, 18 Jun 2024 19:40:47 -0400
+X-MC-Unique: Nbuix3jXPPOvh-xqtXhr1w-1
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-421eed70e30so44159525e9.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 18 Jun 2024 16:40:47 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718754050; x=1719358850;
+        d=1e100.net; s=20230601; t=1718754046; x=1719358846;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=FLt8R9mG7+Q5vVfP6l0HGRxBa2WWQOQ3AyEB5PRg0/8=;
-        b=URTik4NHWONFZtD1DZNtFEjFJ3MhKNSVnVa8+kqqw+gdpY/oUyJq5UjoJiy7KRmFGC
-         d5/iuQ6Pfn2KPEAsLwuKUWgpHHETjVXZDOBmgZw26nlwqUsvYayrlg3V3KbxTda+fnQD
-         Y2Rv4YmmvxPExUgpNcmVWwMLdlMBC950fEiPCofSLTsfwx2lr07hj25Z3h+Bs/QH22Zl
-         twCLiYg0sgnVin+kxvU4DsRv3loifLwNxz9282B2Spwdy8r4QGpokJ+5JdE8wyPxsd8R
-         V7hmWE+BryAHRJqq2XD5MJiDmF3d4R4WRznBvIrOvdfL9aEhkjfpnWKZElq1vOYbPE7o
-         RpjA==
-X-Gm-Message-State: AOJu0YwNRCM+ROzjKmJVZOxvPLuQP2snNHsoAHk85N9TKghklTFYyGCC
-	vuwAFQkn8QbX4O9cAwCZY/PIw65rp8sZ6f+ILzIYPyqg98SZVLwXMxC+4txObzyWDSm2LgjE9An
-	GzajLNJlGmSz6kBBii2FMV424M0lBAaMQjmmsIMvNWln9NsEJm0X202AliKocMLGe
-X-Received: by 2002:a5d:4535:0:b0:354:f218:9661 with SMTP id ffacd0b85a97d-363170ed3femr858528f8f.14.1718754050263;
-        Tue, 18 Jun 2024 16:40:50 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGU+U6Wm0EGp4IMDnnc/QucR5wKEoc9VgmpJhXeJunCegvyHy5rlDYh7FvIr5roHHV/75nmtw==
-X-Received: by 2002:a5d:4535:0:b0:354:f218:9661 with SMTP id ffacd0b85a97d-363170ed3femr858498f8f.14.1718754049849;
-        Tue, 18 Jun 2024 16:40:49 -0700 (PDT)
+        bh=1qjkzHfzy3NUrrPbUMcZvTn0a95wVyUbECTV/h26qqI=;
+        b=fpsY/0yDWnrMEKo1Yc+Fs8a6ol03LVd5vg/6xmIqlUaY90/up/AljISKXUmndNbzzG
+         5xQ5prWNMuESKRIp4Cpf2v7KtjKfBuOIRSbidW7HDhs4w/3KR8xqheotxD9lCmwwyF/5
+         tif20o/TRdzdq3A2VLgBeif+gI2wNrveLhCWa0ttyA9YaP6T6HuuKw1c7Jxe2uj+bQKf
+         2zM+3r2N2sM6ceOkwZYEXIvOv8AGFZTd3iS8B61+H4qQsxFJri1H4MoX7eKXPcDVBG/B
+         KZ/9uIN6t4dN1zhRzPlr2RlRabiRwuudUE3Wmw893jCDP0GCQ5t1ICQsyy15F3sGphmk
+         s7Ig==
+X-Gm-Message-State: AOJu0YyukVoxRW6s5sXo9wa2PH9uWHulRL4kWpTJiBkIzpSSFi3Fs4xy
+	NzabcQqIfAD9xXxuLYbvG+ON72Yh3sVBNs6+yWaYQ7uaBBzxplGAsRfKBipkPq+taCAcZJJH1Hi
+	qWnzgJTCseKtKPhQ2QSSmnrwcgipDG8rw38qaGAfoDEHx576cIvYq79x4UA9dmOEh
+X-Received: by 2002:a05:600c:26d1:b0:422:35:d19d with SMTP id 5b1f17b1804b1-4247529df2emr5259515e9.36.1718754046258;
+        Tue, 18 Jun 2024 16:40:46 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHDw6Fk9C824R3TVe0mbmNmXLCAKpwzyBK1V1rVulamZFyXGPFnWYHmT55mcrVs+DxsV8w/Pw==
+X-Received: by 2002:a05:600c:26d1:b0:422:35:d19d with SMTP id 5b1f17b1804b1-4247529df2emr5259325e9.36.1718754045909;
+        Tue, 18 Jun 2024 16:40:45 -0700 (PDT)
 Received: from cassiopeiae.. ([2a02:810d:4b3f:ee94:642:1aff:fe31:a19f])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-360917c264bsm8131346f8f.56.2024.06.18.16.40.48
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-423034f4129sm198773995e9.14.2024.06.18.16.40.44
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Jun 2024 16:40:49 -0700 (PDT)
+        Tue, 18 Jun 2024 16:40:45 -0700 (PDT)
 From: Danilo Krummrich <dakr@redhat.com>
 To: gregkh@linuxfoundation.org,
 	rafael@kernel.org,
@@ -82,9 +82,9 @@ Cc: rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-pci@vger.kernel.org,
 	Danilo Krummrich <dakr@redhat.com>
-Subject: [PATCH v2 02/10] rust: implement generic driver registration
-Date: Wed, 19 Jun 2024 01:39:48 +0200
-Message-ID: <20240618234025.15036-3-dakr@redhat.com>
+Subject: [PATCH v2 01/10] rust: pass module name to `Module::init`
+Date: Wed, 19 Jun 2024 01:39:47 +0200
+Message-ID: <20240618234025.15036-2-dakr@redhat.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240618234025.15036-1-dakr@redhat.com>
 References: <20240618234025.15036-1-dakr@redhat.com>
@@ -99,180 +99,109 @@ X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset="US-ASCII"; x-default=true
 
-Implement the generic `Registration` type and the `DriverOps` trait.
+In a subsequent patch we introduce the `Registration` abstraction used
+to register driver structures. Some subsystems require the module name on
+driver registration (e.g. PCI in __pci_register_driver()), hence pass
+the module name to `Module::init`.
 
-The `Registration` structure is the common type that represents a driver
-registration and is typically bound to the lifetime of a module. However,
-it doesn't implement actual calls to the kernel's driver core to register
-drivers itself.
-
-Instead the `DriverOps` trait is provided to subsystems, which have to
-implement `DriverOps::register` and `DrvierOps::unregister`. Subsystems
-have to provide an implementation for both of those methods where the
-subsystem specific variants to register / unregister a driver have to
-implemented.
-
-For instance, the PCI subsystem would call __pci_register_driver() from
-`DriverOps::register` and pci_unregister_driver() from
-`DrvierOps::unregister`.
-
-This patch is based on previous work from Wedson Almeida Filho.
-
-Co-developed-by: Wedson Almeida Filho <wedsonaf@gmail.com>
-Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
 Signed-off-by: Danilo Krummrich <dakr@redhat.com>
 ---
- rust/kernel/driver.rs | 128 ++++++++++++++++++++++++++++++++++++++++++
- rust/kernel/lib.rs    |   1 +
- 2 files changed, 129 insertions(+)
- create mode 100644 rust/kernel/driver.rs
+ rust/kernel/lib.rs           | 14 ++++++++++----
+ rust/kernel/net/phy.rs       |  2 +-
+ rust/macros/module.rs        |  3 ++-
+ samples/rust/rust_minimal.rs |  2 +-
+ samples/rust/rust_print.rs   |  2 +-
+ 5 files changed, 15 insertions(+), 8 deletions(-)
 
-diff --git a/rust/kernel/driver.rs b/rust/kernel/driver.rs
-new file mode 100644
-index 000000000000..e04406b93b56
---- /dev/null
-+++ b/rust/kernel/driver.rs
-@@ -0,0 +1,128 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Generic support for drivers of different buses (e.g., PCI, Platform, Amba, etc.).
-+//!
-+//! Each bus / subsystem is expected to implement [`DriverOps`], which allows drivers to register
-+//! using the [`Registration`] class.
-+
-+use crate::error::{Error, Result};
-+use crate::{init::PinInit, str::CStr, try_pin_init, types::Opaque, ThisModule};
-+use core::pin::Pin;
-+use macros::{pin_data, pinned_drop};
-+
-+/// The [`DriverOps`] trait serves as generic interface for subsystems (e.g., PCI, Platform, Amba,
-+/// etc.) to privide the corresponding subsystem specific implementation to register / unregister a
-+/// driver of the particular type (`RegType`).
-+///
-+/// For instance, the PCI subsystem would set `RegType` to `bindings::pci_driver` and call
-+/// `bindings::__pci_register_driver` from `DriverOps::register` and
-+/// `bindings::pci_unregister_driver` from `DriverOps::unregister`.
-+pub trait DriverOps {
-+    /// The type that holds information about the registration. This is typically a struct defined
-+    /// by the C portion of the kernel.
-+    type RegType: Default;
-+
-+    /// Registers a driver.
-+    ///
-+    /// # Safety
-+    ///
-+    /// `reg` must point to valid, initialised, and writable memory. It may be modified by this
-+    /// function to hold registration state.
-+    ///
-+    /// On success, `reg` must remain pinned and valid until the matching call to
-+    /// [`DriverOps::unregister`].
-+    fn register(
-+        reg: &mut Self::RegType,
-+        name: &'static CStr,
-+        module: &'static ThisModule,
-+    ) -> Result;
-+
-+    /// Unregisters a driver previously registered with [`DriverOps::register`].
-+    ///
-+    /// # Safety
-+    ///
-+    /// `reg` must point to valid writable memory, initialised by a previous successful call to
-+    /// [`DriverOps::register`].
-+    fn unregister(reg: &mut Self::RegType);
-+}
-+
-+/// A [`Registration`] is a generic type that represents the registration of some driver type (e.g.
-+/// `bindings::pci_driver`). Therefore a [`Registration`] is initialized with some type that
-+/// implements the [`DriverOps`] trait, such that the generic `T::register` and `T::unregister`
-+/// calls result in the subsystem specific registration calls.
-+///
-+///Once the `Registration` structure is dropped, the driver is unregistered.
-+#[pin_data(PinnedDrop)]
-+pub struct Registration<T: DriverOps> {
-+    #[pin]
-+    reg: Opaque<T::RegType>,
-+}
-+
-+// SAFETY: `Registration` has no fields or methods accessible via `&Registration`, so it is safe to
-+// share references to it with multiple threads as nothing can be done.
-+unsafe impl<T: DriverOps> Sync for Registration<T> {}
-+
-+// SAFETY: Both registration and unregistration are implemented in C and safe to be performed from
-+// any thread, so `Registration` is `Send`.
-+unsafe impl<T: DriverOps> Send for Registration<T> {}
-+
-+impl<T: DriverOps> Registration<T> {
-+    /// Creates a new instance of the registration object.
-+    pub fn new(name: &'static CStr, module: &'static ThisModule) -> impl PinInit<Self, Error> {
-+        try_pin_init!(Self {
-+            reg <- Opaque::try_ffi_init(|ptr: *mut T::RegType| {
-+                // SAFETY: `try_ffi_init` guarantees that `ptr` is valid for write.
-+                unsafe { ptr.write(T::RegType::default()) };
-+
-+                // SAFETY: `try_ffi_init` guarantees that `ptr` is valid for write, and it has
-+                // just been initialised above, so it's also valid for read.
-+                let drv = unsafe { &mut *ptr };
-+
-+                T::register(drv, name, module)
-+            }),
-+        })
-+    }
-+}
-+
-+#[pinned_drop]
-+impl<T: DriverOps> PinnedDrop for Registration<T> {
-+    fn drop(self: Pin<&mut Self>) {
-+        let drv = unsafe { &mut *self.reg.get() };
-+
-+        T::unregister(drv);
-+    }
-+}
-+
-+/// A kernel module that only registers the given driver on init.
-+///
-+/// This is a helper struct to make it easier to define single-functionality modules, in this case,
-+/// modules that offer a single driver.
-+#[pin_data]
-+pub struct Module<T: DriverOps> {
-+    #[pin]
-+    _driver: Registration<T>,
-+}
-+
-+impl<T: DriverOps + Sync + Send> crate::InPlaceModule for Module<T> {
-+    fn init(name: &'static CStr, module: &'static ThisModule) -> impl PinInit<Self, Error> {
-+        try_pin_init!(Self {
-+            _driver <- Registration::<T>::new(name, module),
-+        })
-+    }
-+}
-+
-+/// Declares a kernel module that exposes a single driver.
-+///
-+/// It is meant to be used as a helper by other subsystems so they can more easily expose their own
-+/// macros.
-+#[macro_export]
-+macro_rules! module_driver {
-+    (<$gen_type:ident>, $driver_ops:ty, { type: $type:ty, $($f:tt)* }) => {
-+        type Ops<$gen_type> = $driver_ops;
-+        type ModuleType = $crate::driver::Module<Ops<$type>>;
-+        $crate::prelude::module! {
-+            type: ModuleType,
-+            $($f)*
-+        }
-+    }
-+}
 diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index 5af00e072a58..5382402cd3db 100644
+index a791702b4fee..5af00e072a58 100644
 --- a/rust/kernel/lib.rs
 +++ b/rust/kernel/lib.rs
-@@ -29,6 +29,7 @@
- pub mod alloc;
- mod build_assert;
- pub mod device;
-+pub mod driver;
- pub mod error;
- #[cfg(CONFIG_RUST_FW_LOADER_ABSTRACTIONS)]
- pub mod firmware;
+@@ -71,7 +71,7 @@ pub trait Module: Sized + Sync + Send {
+     /// should do.
+     ///
+     /// Equivalent to the `module_init` macro in the C API.
+-    fn init(module: &'static ThisModule) -> error::Result<Self>;
++    fn init(name: &'static str::CStr, module: &'static ThisModule) -> error::Result<Self>;
+ }
+ 
+ /// A module that is pinned and initialised in-place.
+@@ -79,13 +79,19 @@ pub trait InPlaceModule: Sync + Send {
+     /// Creates an initialiser for the module.
+     ///
+     /// It is called when the module is loaded.
+-    fn init(module: &'static ThisModule) -> impl init::PinInit<Self, error::Error>;
++    fn init(
++        name: &'static str::CStr,
++        module: &'static ThisModule,
++    ) -> impl init::PinInit<Self, error::Error>;
+ }
+ 
+ impl<T: Module> InPlaceModule for T {
+-    fn init(module: &'static ThisModule) -> impl init::PinInit<Self, error::Error> {
++    fn init(
++        name: &'static str::CStr,
++        module: &'static ThisModule,
++    ) -> impl init::PinInit<Self, error::Error> {
+         let initer = move |slot: *mut Self| {
+-            let m = <Self as Module>::init(module)?;
++            let m = <Self as Module>::init(name, module)?;
+ 
+             // SAFETY: `slot` is valid for write per the contract with `pin_init_from_closure`.
+             unsafe { slot.write(m) };
+diff --git a/rust/kernel/net/phy.rs b/rust/kernel/net/phy.rs
+index fd40b703d224..ccb2552dc107 100644
+--- a/rust/kernel/net/phy.rs
++++ b/rust/kernel/net/phy.rs
+@@ -887,7 +887,7 @@ struct Module {
+                 [$($crate::net::phy::create_phy_driver::<$driver>()),+];
+ 
+             impl $crate::Module for Module {
+-                fn init(module: &'static ThisModule) -> Result<Self> {
++                fn init(_name: &'static CStr, module: &'static ThisModule) -> Result<Self> {
+                     // SAFETY: The anonymous constant guarantees that nobody else can access
+                     // the `DRIVERS` static. The array is used only in the C side.
+                     let drivers = unsafe { &mut DRIVERS };
+diff --git a/rust/macros/module.rs b/rust/macros/module.rs
+index 105be4797f85..be03b2cf77a1 100644
+--- a/rust/macros/module.rs
++++ b/rust/macros/module.rs
+@@ -302,7 +302,8 @@ mod __module_init {{
+                     ///
+                     /// This function must only be called once.
+                     unsafe fn __init() -> core::ffi::c_int {{
+-                        let initer = <{type_} as kernel::InPlaceModule>::init(&super::super::THIS_MODULE);
++                        let initer = <{type_} as kernel::InPlaceModule>::init(kernel::c_str!(\"{name}\"),
++                                                                              &super::super::THIS_MODULE);
+                         // SAFETY: No data race, since `__MOD` can only be accessed by this module
+                         // and there only `__init` and `__exit` access it. These functions are only
+                         // called once and `__exit` cannot be called before or during `__init`.
+diff --git a/samples/rust/rust_minimal.rs b/samples/rust/rust_minimal.rs
+index 2a9eaab62d1c..3b918ff5eebb 100644
+--- a/samples/rust/rust_minimal.rs
++++ b/samples/rust/rust_minimal.rs
+@@ -17,7 +17,7 @@ struct RustMinimal {
+ }
+ 
+ impl kernel::Module for RustMinimal {
+-    fn init(_module: &'static ThisModule) -> Result<Self> {
++    fn init(_name: &'static CStr, _module: &'static ThisModule) -> Result<Self> {
+         pr_info!("Rust minimal sample (init)\n");
+         pr_info!("Am I built-in? {}\n", !cfg!(MODULE));
+ 
+diff --git a/samples/rust/rust_print.rs b/samples/rust/rust_print.rs
+index 6eabb0d79ea3..722275a735f1 100644
+--- a/samples/rust/rust_print.rs
++++ b/samples/rust/rust_print.rs
+@@ -40,7 +40,7 @@ fn arc_print() -> Result {
+ }
+ 
+ impl kernel::Module for RustPrint {
+-    fn init(_module: &'static ThisModule) -> Result<Self> {
++    fn init(_name: &'static CStr, _module: &'static ThisModule) -> Result<Self> {
+         pr_info!("Rust printing macros sample (init)\n");
+ 
+         pr_emerg!("Emergency message (level 0) without args\n");
 -- 
 2.45.1
 
