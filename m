@@ -1,62 +1,62 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6041179958
-	for <rust-for-linux@vger.kernel.org>; Tue, 18 Jun 2024 23:41:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 747F418E75F
+	for <rust-for-linux@vger.kernel.org>; Tue, 18 Jun 2024 23:41:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718754063; cv=none; b=LfW/R6ofYjklZ9ASvg5J3Wn9+emMYWzY5PQ+cFnuTxRetpvzMUn181Nsm24b3YePjJAiM+za/9OuKjoCFPj12ZbP29uHx+CDVuUCUWnMhz3Pcv4TVgdLHcK61rtfOkpY8TpfnzmjDoinkOHW7y07MW/N+6GAO0cL9pfhFLEg4xQ=
+	t=1718754068; cv=none; b=U81xYQBPPPTthXDgWhTb99g8RISkqOzReYMa2Bz0ngdn3uAuS2AU0ZYkbYA8653CGHulyxS4js0FJ84A96kz48BWQsDkXEkmkMvNY6I4z9Bc9BtJOyuozkRRNNEwRkeJKWZCEO1u2mmoUkEM4TXOO6v9JiIL0OZ1djHozx4CD80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718754063; c=relaxed/simple;
-	bh=8xOJgvmgRDc6UuoCbIh+OUfNqsEyrLgJDPK4zjjIFpo=;
+	s=arc-20240116; t=1718754068; c=relaxed/simple;
+	bh=UUFxFHITd44dYQQCrdSR7AKzqHAzy/8/2oc53NIFk98=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sVEI6O/TuS6pm8H/dvjhIaDykGRdxKiGEvxF6Q+AxUEqc05+KO+DJHAEJTxKcpCteAATTi78HLjxZFfLXOVc9tkvb6/WjlllLAiA7lgcU0MnOk0QCBKcQ3HxTrAhmx6KF9TGoOTwoGnLWYEe7Ng6flXv1aIUh2P1JJ0KU8u402Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gtA18Ap4; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version:Content-Type; b=T0+PrR4goFD19bR3e63qQ+nQSIa9Gj24/Fcv/iSHKks3M+OvKsS8iSsecD7FKHJaLY41eMx7x5bOxT1VgSca51q8kjYw+I3eo0KweDy8p/R6+XjfRExj0YB34mjgdKIw0xK+JbhhYqxFsraTUIatmfhpe59k1KhFcHfxebpOtG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=NztwgtGs; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gtA18Ap4"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="NztwgtGs"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1718754061;
+	s=mimecast20190719; t=1718754065;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=jprPy2R3mhSfiLsY0D8Ey4z3vVsEHFqMm7nzo3vj3ew=;
-	b=gtA18Ap4Ke3uRlRx2eBFugXVMpPoMpGdo+SSRKEsdnOYke/64GC2mwvNf7KuRauOetG05P
-	TcWn6rLvfeWCdk4GyixpIEnhfrzh0MD+VGSUanSdwK2AkRXshmFyH1RmAQOslLBOQIFaSH
-	N2oxrXobq1D7gM7JiqWCWx8b0pTDgpY=
-Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
- [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=Bi44cMQJYS99EJNabY9/CKPO8kbpcfOs6bSOujDcKYk=;
+	b=NztwgtGsdowhddbJ+MzS0oAIa0NVlqVOlzXG73GasoqPu4sXlDzRP8g9ubyYiwR0LIqOr4
+	gcxqSmPv4MhI9j0Gz2oKfLdqoahB36jYsQbc+DJOzPS8SR77NYsWDyjxaSzx8YtKM6M8Te
+	s4HVo3S0CpmYBW0C7gWukCo/kbjBjiQ=
+Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
+ [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-151-QMEbxJjcOnixWk60u-uvxw-1; Tue, 18 Jun 2024 19:40:59 -0400
-X-MC-Unique: QMEbxJjcOnixWk60u-uvxw-1
-Received: by mail-lf1-f72.google.com with SMTP id 2adb3069b0e04-52c983f4285so4480140e87.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 18 Jun 2024 16:40:59 -0700 (PDT)
+ us-mta-241-ZQ7p1NAgN_qYX51WEOECcg-1; Tue, 18 Jun 2024 19:41:03 -0400
+X-MC-Unique: ZQ7p1NAgN_qYX51WEOECcg-1
+Received: by mail-lj1-f198.google.com with SMTP id 38308e7fff4ca-2ebe77b877eso43889171fa.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 18 Jun 2024 16:41:03 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718754058; x=1719358858;
+        d=1e100.net; s=20230601; t=1718754062; x=1719358862;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=jprPy2R3mhSfiLsY0D8Ey4z3vVsEHFqMm7nzo3vj3ew=;
-        b=FXfnw2bwZ5O1j2IIV7zYgxSBt0UucbQSjAx8qj7w7K3yaqg5yO47kRXubSQA5vO3K0
-         Mitso9Dlni4kHxGPtuvaek03Zu2nKn0ljsr+6FgwGQ5bMLPbhS0Z/qKIDX3LuSsaknp+
-         ThzfS1fweZrcUX0OdK810unHLcFIAoMzlRHDZ2cKsEh9QNFksYcDNOlQ5akb6k95JSYc
-         UYSjgUQZx1NLGQOZYjq0qrNC7pC/pM/eSusZBesga+3gEmPA+gvKKBtHzPG5K0c5rVND
-         V29YJ3FiaY7O0/19Fb8dZNCZJmfNAekR5crzBSpttbaasT7GxIyZguhHCI8SKb2cxuw+
-         momw==
-X-Gm-Message-State: AOJu0YycqqHttKDQ7Rw3kLGHS2KJHiG4h922H0Xu+l/SWB77MrKGQNre
-	Aa/5Ngd9yNOIZHElydIr/rgT1h4AV3F9ahDDmfmoIrKyDc53J1yLRfcxYu/7wKDB+bu4/Vl9P68
-	WzCdtAswPjygIUhv/nwHud13btP7XNgXAAxQuj5lAp6w52SuPMHe9MtNQnlExlDru
-X-Received: by 2002:a05:6512:3992:b0:52c:cc38:592c with SMTP id 2adb3069b0e04-52ccc385978mr111673e87.0.1718754058298;
-        Tue, 18 Jun 2024 16:40:58 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG6PRwRcXm8oRvxKpZbUxJQyrNH1GdkYsyClgqCZ2yzVNat84h8w9f3Fio+1+mz3vgR3u+6fg==
-X-Received: by 2002:a05:6512:3992:b0:52c:cc38:592c with SMTP id 2adb3069b0e04-52ccc385978mr111652e87.0.1718754057790;
-        Tue, 18 Jun 2024 16:40:57 -0700 (PDT)
+        bh=Bi44cMQJYS99EJNabY9/CKPO8kbpcfOs6bSOujDcKYk=;
+        b=oyr9/1sHS24Us1PPOJ9D+/n6iv+R5HeRT2S6iG4Z8IpgMI8rgNNH90rCKVe+cq5ylr
+         wxGpOtZRFUSm9JTp8sPgA6SFIZOTG8Nsh1q0V0MHlzkojCF+awLfI+w2kS4H2/9lKBcy
+         0vQGCbURK4SWwRdw5B4iQsNzx0UGbZNUdQA66bcpcFA9uTWi4Rt+U1lSgerohoqSKZsy
+         9+pjAvUAdHyOsuem+gP0xyiSL3oFOjbpJmvMWcjTkTLMjBDvtLB8oOqf/+I5W3M8QnnT
+         Rqwu6nI/sakh8qbW5wfZJZA/NqY/uO3oDRSX+5fYw5b73QUSMNSreLMTE9cej46yhApJ
+         n7gg==
+X-Gm-Message-State: AOJu0Yy/A9ZsHkZr8LDXMxtBgLBaxM+QBk3KveL/x/ZnG/kE2RZFVN1d
+	X7z5wU0BRAutem63PjWAgy+qkWPwubGh8709zJqDbSRF109YFCtCELVV7fgzJ+nqlC2Ec/yt8tS
+	LHcJum8WXri3lziKdwEDMMBdbdbJ7+FUWRuzb14WZnBYnYZutdoLXZWn/PXkV6B8E
+X-Received: by 2002:a2e:860e:0:b0:2ec:1a6:7b01 with SMTP id 38308e7fff4ca-2ec3cfe89ddmr6249731fa.33.1718754062206;
+        Tue, 18 Jun 2024 16:41:02 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEFgW1oPW6Telack7ZlNngY6AO2Ju8qX6ud+6J6wA8ngjmpZTBDF4ZgU97FkysKrX/11O2PFA==
+X-Received: by 2002:a2e:860e:0:b0:2ec:1a6:7b01 with SMTP id 38308e7fff4ca-2ec3cfe89ddmr6249631fa.33.1718754061829;
+        Tue, 18 Jun 2024 16:41:01 -0700 (PDT)
 Received: from cassiopeiae.. ([2a02:810d:4b3f:ee94:642:1aff:fe31:a19f])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-422874de623sm244364595e9.31.2024.06.18.16.40.56
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-36077536f78sm15232625f8f.7.2024.06.18.16.41.00
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Jun 2024 16:40:57 -0700 (PDT)
+        Tue, 18 Jun 2024 16:41:01 -0700 (PDT)
 From: Danilo Krummrich <dakr@redhat.com>
 To: gregkh@linuxfoundation.org,
 	rafael@kernel.org,
@@ -82,9 +82,9 @@ Cc: rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	linux-pci@vger.kernel.org,
 	Danilo Krummrich <dakr@redhat.com>
-Subject: [PATCH v2 04/10] rust: add rcu abstraction
-Date: Wed, 19 Jun 2024 01:39:50 +0200
-Message-ID: <20240618234025.15036-5-dakr@redhat.com>
+Subject: [PATCH v2 05/10] rust: add `Revocable` type
+Date: Wed, 19 Jun 2024 01:39:51 +0200
+Message-ID: <20240618234025.15036-6-dakr@redhat.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240618234025.15036-1-dakr@redhat.com>
 References: <20240618234025.15036-1-dakr@redhat.com>
@@ -101,122 +101,248 @@ Content-Type: text/plain; charset="US-ASCII"; x-default=true
 
 From: Wedson Almeida Filho <wedsonaf@gmail.com>
 
-Add a simple abstraction to guard critical code sections with an rcu
-read lock.
+Revocable allows access to objects to be safely revoked at run time.
 
-Co-developed-by: Andreas Hindborg <a.hindborg@samsung.com>
-Signed-off-by: Andreas Hindborg <a.hindborg@samsung.com>
+This is useful, for example, for resources allocated during device probe;
+when the device is removed, the driver should stop accessing the device
+resources even if another state is kept in memory due to existing
+references (i.e., device context data is ref-counted and has a non-zero
+refcount after removal of the device).
+
 Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
 Signed-off-by: Danilo Krummrich <dakr@redhat.com>
 ---
- rust/helpers.c          | 15 ++++++++++++
- rust/kernel/sync.rs     |  1 +
- rust/kernel/sync/rcu.rs | 52 +++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 68 insertions(+)
- create mode 100644 rust/kernel/sync/rcu.rs
+ rust/kernel/lib.rs       |   1 +
+ rust/kernel/revocable.rs | 209 +++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 210 insertions(+)
+ create mode 100644 rust/kernel/revocable.rs
 
-diff --git a/rust/helpers.c b/rust/helpers.c
-index 0e02b2c64c72..0ce40ccb978b 100644
---- a/rust/helpers.c
-+++ b/rust/helpers.c
-@@ -27,6 +27,7 @@
- #include <linux/err.h>
- #include <linux/errname.h>
- #include <linux/mutex.h>
-+#include <linux/rcupdate.h>
- #include <linux/refcount.h>
- #include <linux/sched/signal.h>
- #include <linux/slab.h>
-@@ -166,6 +167,20 @@ rust_helper_krealloc(const void *objp, size_t new_size, gfp_t flags)
- }
- EXPORT_SYMBOL_GPL(rust_helper_krealloc);
- 
-+/* rcu */
-+void rust_helper_rcu_read_lock(void)
-+{
-+	rcu_read_lock();
-+}
-+EXPORT_SYMBOL_GPL(rust_helper_rcu_read_lock);
-+
-+void rust_helper_rcu_read_unlock(void)
-+{
-+	rcu_read_unlock();
-+}
-+EXPORT_SYMBOL_GPL(rust_helper_rcu_read_unlock);
-+/* end rcu */
-+
- /*
-  * `bindgen` binds the C `size_t` type as the Rust `usize` type, so we can
-  * use it in contexts where Rust expects a `usize` like slice (array) indices.
-diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
-index 0ab20975a3b5..1806767359fe 100644
---- a/rust/kernel/sync.rs
-+++ b/rust/kernel/sync.rs
-@@ -11,6 +11,7 @@
- mod condvar;
- pub mod lock;
- mod locked_by;
-+pub mod rcu;
- 
- pub use arc::{Arc, ArcBorrow, UniqueArc};
- pub use condvar::{new_condvar, CondVar, CondVarTimeoutResult};
-diff --git a/rust/kernel/sync/rcu.rs b/rust/kernel/sync/rcu.rs
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index 98e1a1425d17..601c3d3c9d54 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -43,6 +43,7 @@
+ pub mod net;
+ pub mod prelude;
+ pub mod print;
++pub mod revocable;
+ mod static_assert;
+ #[doc(hidden)]
+ pub mod std_vendor;
+diff --git a/rust/kernel/revocable.rs b/rust/kernel/revocable.rs
 new file mode 100644
-index 000000000000..5a35495f69a4
+index 000000000000..3d13e7b2f2e8
 --- /dev/null
-+++ b/rust/kernel/sync/rcu.rs
-@@ -0,0 +1,52 @@
++++ b/rust/kernel/revocable.rs
+@@ -0,0 +1,209 @@
 +// SPDX-License-Identifier: GPL-2.0
 +
-+//! RCU support.
++//! Revocable objects.
 +//!
-+//! C header: [`include/linux/rcupdate.h`](srctree/include/linux/rcupdate.h)
++//! The [`Revocable`] type wraps other types and allows access to them to be revoked. The existence
++//! of a [`RevocableGuard`] ensures that objects remain valid.
 +
-+use crate::bindings;
-+use core::marker::PhantomData;
++use crate::{
++    bindings,
++    init::{self},
++    prelude::*,
++    sync::rcu,
++};
++use core::{
++    cell::UnsafeCell,
++    marker::PhantomData,
++    mem::MaybeUninit,
++    ops::Deref,
++    ptr::drop_in_place,
++    sync::atomic::{AtomicBool, Ordering},
++};
 +
-+/// Evidence that the RCU read side lock is held on the current thread/CPU.
++/// An object that can become inaccessible at runtime.
 +///
-+/// The type is explicitly not `Send` because this property is per-thread/CPU.
++/// Once access is revoked and all concurrent users complete (i.e., all existing instances of
++/// [`RevocableGuard`] are dropped), the wrapped object is also dropped.
 +///
-+/// # Invariants
++/// # Examples
 +///
-+/// The RCU read side lock is actually held while instances of this guard exist.
-+pub struct Guard {
-+    _not_send: PhantomData<*mut ()>,
++/// ```
++/// # use kernel::revocable::Revocable;
++///
++/// struct Example {
++///     a: u32,
++///     b: u32,
++/// }
++///
++/// fn add_two(v: &Revocable<Example>) -> Option<u32> {
++///     let guard = v.try_access()?;
++///     Some(guard.a + guard.b)
++/// }
++///
++/// let v = Box::pin_init(Revocable::new(Example { a: 10, b: 20 }), GFP_KERNEL).unwrap();
++/// assert_eq!(add_two(&v), Some(30));
++/// v.revoke();
++/// assert_eq!(add_two(&v), None);
++/// ```
++///
++/// Sample example as above, but explicitly using the rcu read side lock.
++///
++/// ```
++/// # use kernel::revocable::Revocable;
++/// use kernel::sync::rcu;
++///
++/// struct Example {
++///     a: u32,
++///     b: u32,
++/// }
++///
++/// fn add_two(v: &Revocable<Example>) -> Option<u32> {
++///     let guard = rcu::read_lock();
++///     let e = v.try_access_with_guard(&guard)?;
++///     Some(e.a + e.b)
++/// }
++///
++/// let v = Box::pin_init(Revocable::new(Example { a: 10, b: 20 }), GFP_KERNEL).unwrap();
++/// assert_eq!(add_two(&v), Some(30));
++/// v.revoke();
++/// assert_eq!(add_two(&v), None);
++/// ```
++#[pin_data(PinnedDrop)]
++pub struct Revocable<T> {
++    is_available: AtomicBool,
++    #[pin]
++    data: MaybeUninit<UnsafeCell<T>>,
 +}
 +
-+impl Guard {
-+    /// Acquires the RCU read side lock and returns a guard.
-+    pub fn new() -> Self {
-+        // SAFETY: An FFI call with no additional requirements.
-+        unsafe { bindings::rcu_read_lock() };
-+        // INVARIANT: The RCU read side lock was just acquired above.
-+        Self {
-+            _not_send: PhantomData,
++// SAFETY: `Revocable` is `Send` if the wrapped object is also `Send`. This is because while the
++// functionality exposed by `Revocable` can be accessed from any thread/CPU, it is possible that
++// this isn't supported by the wrapped object.
++unsafe impl<T: Send> Send for Revocable<T> {}
++
++// SAFETY: `Revocable` is `Sync` if the wrapped object is both `Send` and `Sync`. We require `Send`
++// from the wrapped object as well because  of `Revocable::revoke`, which can trigger the `Drop`
++// implementation of the wrapped object from an arbitrary thread.
++unsafe impl<T: Sync + Send> Sync for Revocable<T> {}
++
++impl<T> Revocable<T> {
++    /// Creates a new revocable instance of the given data.
++    pub fn new(data: impl PinInit<T>) -> impl PinInit<Self> {
++        pin_init!(Self {
++            is_available: AtomicBool::new(true),
++            data <- unsafe {
++                init::pin_init_from_closure(move |slot: *mut MaybeUninit<UnsafeCell<T>>| {
++                    init::PinInit::<T, core::convert::Infallible>::__pinned_init(data,
++                                                                                 slot as *mut T)?;
++                    Ok::<(), core::convert::Infallible>(())
++                })
++            },
++        })
++    }
++
++    /// Tries to access the \[revocable\] wrapped object.
++    ///
++    /// Returns `None` if the object has been revoked and is therefore no longer accessible.
++    ///
++    /// Returns a guard that gives access to the object otherwise; the object is guaranteed to
++    /// remain accessible while the guard is alive. In such cases, callers are not allowed to sleep
++    /// because another CPU may be waiting to complete the revocation of this object.
++    pub fn try_access(&self) -> Option<RevocableGuard<'_, T>> {
++        let guard = rcu::read_lock();
++        if self.is_available.load(Ordering::Relaxed) {
++            // SAFETY: Since `self.is_available` is true, data is initialised and has to remain
++            // valid because the RCU read side lock prevents it from being dropped.
++            Some(unsafe { RevocableGuard::new(self.data.assume_init_ref().get(), guard) })
++        } else {
++            None
 +        }
 +    }
 +
-+    /// Explicitly releases the RCU read side lock.
-+    pub fn unlock(self) {}
-+}
++    /// Tries to access the \[revocable\] wrapped object.
++    ///
++    /// Returns `None` if the object has been revoked and is therefore no longer accessible.
++    ///
++    /// Returns a shared reference to the object otherwise; the object is guaranteed to
++    /// remain accessible while the rcu read side guard is alive. In such cases, callers are not
++    /// allowed to sleep because another CPU may be waiting to complete the revocation of this
++    /// object.
++    pub fn try_access_with_guard<'a>(&'a self, _guard: &'a rcu::Guard) -> Option<&'a T> {
++        if self.is_available.load(Ordering::Relaxed) {
++            // SAFETY: Since `self.is_available` is true, data is initialised and has to remain
++            // valid because the RCU read side lock prevents it from being dropped.
++            Some(unsafe { &*self.data.assume_init_ref().get() })
++        } else {
++            None
++        }
++    }
 +
-+impl Default for Guard {
-+    fn default() -> Self {
-+        Self::new()
++    /// Revokes access to and drops the wrapped object.
++    ///
++    /// Access to the object is revoked immediately to new callers of [`Revocable::try_access`]. If
++    /// there are concurrent users of the object (i.e., ones that called [`Revocable::try_access`]
++    /// beforehand and still haven't dropped the returned guard), this function waits for the
++    /// concurrent access to complete before dropping the wrapped object.
++    pub fn revoke(&self) {
++        if self
++            .is_available
++            .compare_exchange(true, false, Ordering::Relaxed, Ordering::Relaxed)
++            .is_ok()
++        {
++            // SAFETY: Just an FFI call, there are no further requirements.
++            unsafe { bindings::synchronize_rcu() };
++
++            // SAFETY: We know `self.data` is valid because only one CPU can succeed the
++            // `compare_exchange` above that takes `is_available` from `true` to `false`.
++            unsafe { drop_in_place(self.data.assume_init_ref().get()) };
++        }
 +    }
 +}
 +
-+impl Drop for Guard {
-+    fn drop(&mut self) {
-+        // SAFETY: By the type invariants, the rcu read side is locked, so it is ok to unlock it.
-+        unsafe { bindings::rcu_read_unlock() };
++#[pinned_drop]
++impl<T> PinnedDrop for Revocable<T> {
++    fn drop(self: Pin<&mut Self>) {
++        // Drop only if the data hasn't been revoked yet (in which case it has already been
++        // dropped).
++        // SAFETY: We are not moving out of `p`, only dropping in place
++        let p = unsafe { self.get_unchecked_mut() };
++        if *p.is_available.get_mut() {
++            // SAFETY: We know `self.data` is valid because no other CPU has changed
++            // `is_available` to `false` yet, and no other CPU can do it anymore because this CPU
++            // holds the only reference (mutable) to `self` now.
++            unsafe { drop_in_place(p.data.assume_init_ref().get()) };
++        }
 +    }
 +}
 +
-+/// Acquires the RCU read side lock.
-+pub fn read_lock() -> Guard {
-+    Guard::new()
++/// A guard that allows access to a revocable object and keeps it alive.
++///
++/// CPUs may not sleep while holding on to [`RevocableGuard`] because it's in atomic context
++/// holding the RCU read-side lock.
++///
++/// # Invariants
++///
++/// The RCU read-side lock is held while the guard is alive.
++pub struct RevocableGuard<'a, T> {
++    data_ref: *const T,
++    _rcu_guard: rcu::Guard,
++    _p: PhantomData<&'a ()>,
++}
++
++impl<T> RevocableGuard<'_, T> {
++    fn new(data_ref: *const T, rcu_guard: rcu::Guard) -> Self {
++        Self {
++            data_ref,
++            _rcu_guard: rcu_guard,
++            _p: PhantomData,
++        }
++    }
++}
++
++impl<T> Deref for RevocableGuard<'_, T> {
++    type Target = T;
++
++    fn deref(&self) -> &Self::Target {
++        // SAFETY: By the type invariants, we hold the rcu read-side lock, so the object is
++        // guaranteed to remain valid.
++        unsafe { &*self.data_ref }
++    }
 +}
 -- 
 2.45.1
