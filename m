@@ -1,62 +1,62 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1891E155351
-	for <rust-for-linux@vger.kernel.org>; Tue, 18 Jun 2024 23:33:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CB6D155351
+	for <rust-for-linux@vger.kernel.org>; Tue, 18 Jun 2024 23:34:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718753639; cv=none; b=pHbR4b+OeOqVpbfcKeBlBIeGuWLIBCxcsNIIeh/y0/kZ7TzxThelTS9xnSKrgftcQsXZC1Em2jVYRPu4+VuOxKsinE04YFjJ6PMOk5u2xV4i6k1g4gCUJLET6hKGS98H5vIDtePbNlWEEl3zdk4f/L+/GAVrc0LQqCqT4wMXOJw=
+	t=1718753645; cv=none; b=KutEWUC5zpErbAAsnYdJhV9GAv1sDM3UX86L/0yP75zvv3d7s4HmJ7lryKxcLSSsvxoltTLyayUPheiheGzhCQCWHunH8RiwVXeXbHyapzxQ+04IljRfQj4OPjfoZxj1QEPI6BfF4gMzQsf0LLilHuTNV0f2CWgA5QszqrDxkwU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718753639; c=relaxed/simple;
-	bh=CApZ1/344ZE4+FdXl8Cc2lA6iwiyf3kugkpx32QGULE=;
+	s=arc-20240116; t=1718753645; c=relaxed/simple;
+	bh=3wiqJeX/zAi95PqEAbgBUZ18yHWN81twJjWDy/m8B1w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=j1wLz7VyGR8lCHQO6hFzW0rpSNZNXZw5ThBjDXCa7GnuOnuEY4qSDOKzkO4C/0j+vKXKSw+SFfsnyJknHkp4s59G111wdJRyCwA+WZ80PxuD9VIfGp11NrQJYV3Gks17AZvl+OvTsbSirRpS8HdDhoaq9g0lo6F2dDwB7V3ugtI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=XJU7pFiE; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version:Content-Type; b=Rsz9qeYXpeew9ydVth+6yz+oArPkD9CtMDkmhF7dqReQIfLxVKSi1+JESCqz0tieJuF76Da79zAwUVuRfjvW8lnc2Hf7jTPbI2qmBcfgZvjEbcEAFzKpAqYUVxy5JVok1GGjSM4F3dkrUtXsv8s/xt1PUva74v1mXccl9KyuOwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Nsv17b1k; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="XJU7pFiE"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Nsv17b1k"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1718753637;
+	s=mimecast20190719; t=1718753642;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=R5Dq1z2px+aRPeD/cZv0m9h+suHfEeiyXETJRsMzg14=;
-	b=XJU7pFiECBrrmguebOWIdG7cwm4MCwizEJqNK4S9eaejnZE4sfNe8NxeYpNSuWFGuAxth/
-	sFqJhy8PL9B4gqVpgAVL4NM5OriRc+ig3QH3rYZ4mWn1KktSZN25gpS4cMKnWaLRz430mX
-	cFDYYgg9WDSesJ9XUnfPt9iR+A/GOJE=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=rX17Ynp5kjTABr7Arpco1GyGC6qaf7qHT4D9XChbblc=;
+	b=Nsv17b1k7S+9dThNvkqj13SJ7kDkRK5H6nqTkM13ltw1FTz0hoHhYzIvOWQvstpiqOkqIA
+	B9mhATvnfz/gjk1vFibQ/Rxi4Skeg9j5k9xqQzhiFBQTrZNkj7nLD6u9CjbvpRzghkiU7X
+	90KcOJPAKgZzaMEpWL1byVCIK1tHbkE=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-113-bAidHWVdPSGZU2cQv5BK9A-1; Tue, 18 Jun 2024 19:33:55 -0400
-X-MC-Unique: bAidHWVdPSGZU2cQv5BK9A-1
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4246cf4c87dso14548945e9.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 18 Jun 2024 16:33:55 -0700 (PDT)
+ us-mta-640-aNsoaepmNvSxsw52iX7kKw-1; Tue, 18 Jun 2024 19:34:00 -0400
+X-MC-Unique: aNsoaepmNvSxsw52iX7kKw-1
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4212e2a3a1bso39167425e9.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 18 Jun 2024 16:34:00 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718753635; x=1719358435;
+        d=1e100.net; s=20230601; t=1718753639; x=1719358439;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=R5Dq1z2px+aRPeD/cZv0m9h+suHfEeiyXETJRsMzg14=;
-        b=LIyW0xWDJwtFf/RRlV4D36xFKfzN/qexaS3llvOJEMsgUShwAwjdiw3uH0Ogwga72N
-         MdUNTjuB5d7hwLXPto9VAYu4uQi6XdDqQIIkZpc4WqR6neiRlbR2TKhod06ScLTKK2h4
-         hUsemPbrcMyXsX7904TVGklDiMQpikcfrU7vEtdrtg56uptxyNl6KGVNFM2zNcfpl/+e
-         yn46FYO4XLohl2FwNfIWEezFBVzR0L04ysl6E+GNUqOOFTgh+GdrZARFbveBpng8G8aR
-         O/1a80gE5gy/XRp9DH6/NfmJ1+E6nwo0nKpxy5DPK3SQ4jKCG6Zgmp2dlk4rJRJHBlVT
-         vGGQ==
-X-Gm-Message-State: AOJu0YxH+yN4YYjGF5aKmA+c2NIJ9n1GsL49efnqv7ebfe3nYptnuY+x
-	C6bppEl/ifXxL5pkcEgaMzWhQB/Vn7QPXlY0AKV00BkXW5ithmWi+oNYlE7ADrk0pjXwLLWuY7T
-	9LbtQYR28Y3qTHKAii2npTpC5ixEnwN4QRrvyDW16uKdaTHJK4awk6tQx5f9DCNJQ
-X-Received: by 2002:a05:600c:1509:b0:423:b756:cdaf with SMTP id 5b1f17b1804b1-42475184335mr4496065e9.23.1718753634668;
-        Tue, 18 Jun 2024 16:33:54 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG7DFrDtl23v3+cqL/+gEOk2Z9UNK1uWE0jVahwUIBFUblEr3OBIPlLUqscQPdotpIKf7IZmA==
-X-Received: by 2002:a05:600c:1509:b0:423:b756:cdaf with SMTP id 5b1f17b1804b1-42475184335mr4495775e9.23.1718753634368;
-        Tue, 18 Jun 2024 16:33:54 -0700 (PDT)
+        bh=rX17Ynp5kjTABr7Arpco1GyGC6qaf7qHT4D9XChbblc=;
+        b=VYzoIt1dJeclKALbhuJV9a94ZJ9Uldov7L2yiExxzP+qyZ9qejpfL1USX6VvbezyFu
+         hRT4rM+BPgHhDFbicw7WjzZPKocf+Xn7FimO4J75oh+DYRtK8ujNbXFo19hj/N1brboN
+         lm0MNugIzmakc/nl8ILfcXOOIAsL6T6NNXucBK7kXLoT+YNEfbHQ6qYqVBK+T6AkzFe5
+         lHPiKyNqefZU4aMpRsBXkNPK2thArKMAtTc8l+g7UQoP0erPicnZ5c5G2XNHZ9TSkt3G
+         LycyJD9wnHhe0ZU+IjVOytPBYxOBu2x+ZER15HFeGqRGU0JtebVfesBactqnKWEF0Tjd
+         dOJA==
+X-Gm-Message-State: AOJu0Yxu5N3OsXDCduuI523LDEewp4e/sdDctuPs/GGykgDGHiBi+eLF
+	FBi72TbM3ZeJGjc3Q8YEA7ma5S50TPAOjMCuID7ImlxBAAeNvmtIbpxJn09/qt0e0spgBcvJyVA
+	1nWn2yxQhttOTOaDtrjuKDo0uSOyF3iZzXX83EGYX3qGMZNeci48IDFDqklupkB80
+X-Received: by 2002:a05:600c:47cf:b0:423:b63e:74d1 with SMTP id 5b1f17b1804b1-42475296a85mr4688965e9.29.1718753638964;
+        Tue, 18 Jun 2024 16:33:58 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHOa7woJJzq8BR2gVnLTKiZG/T/seFOpSGmvPhaqEP1bNK/u8mmko3Sekw3yuKSLjz27NLLkA==
+X-Received: by 2002:a05:600c:47cf:b0:423:b63e:74d1 with SMTP id 5b1f17b1804b1-42475296a85mr4688685e9.29.1718753638430;
+        Tue, 18 Jun 2024 16:33:58 -0700 (PDT)
 Received: from cassiopeiae.. ([2a02:810d:4b3f:ee94:642:1aff:fe31:a19f])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4246eb25af4sm49374715e9.4.2024.06.18.16.33.53
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-422f61277fesm206880965e9.21.2024.06.18.16.33.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Jun 2024 16:33:53 -0700 (PDT)
+        Tue, 18 Jun 2024 16:33:57 -0700 (PDT)
 From: Danilo Krummrich <dakr@redhat.com>
 To: maarten.lankhorst@linux.intel.com,
 	mripard@kernel.org,
@@ -83,9 +83,9 @@ Cc: rust-for-linux@vger.kernel.org,
 	dri-devel@lists.freedesktop.org,
 	nouveau@lists.freedesktop.org,
 	Danilo Krummrich <dakr@redhat.com>
-Subject: [PATCH v2 6/8] rust: drm: file: Add File abstraction
-Date: Wed, 19 Jun 2024 01:31:42 +0200
-Message-ID: <20240618233324.14217-7-dakr@redhat.com>
+Subject: [PATCH v2 7/8] rust: drm: gem: Add GEM object abstraction
+Date: Wed, 19 Jun 2024 01:31:43 +0200
+Message-ID: <20240618233324.14217-8-dakr@redhat.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240618233324.14217-1-dakr@redhat.com>
 References: <20240618233324.14217-1-dakr@redhat.com>
@@ -102,194 +102,530 @@ Content-Type: text/plain; charset="US-ASCII"; x-default=true
 
 From: Asahi Lina <lina@asahilina.net>
 
-A DRM File is the DRM counterpart to a kernel file structure,
-representing an open DRM file descriptor. Add a Rust abstraction to
-allow drivers to implement their own File types that implement the
-DriverFile trait.
+The DRM GEM subsystem is the DRM memory management subsystem used by
+most modern drivers. Add a Rust abstraction to allow Rust DRM driver
+implementations to use it.
 
 Signed-off-by: Asahi Lina <lina@asahilina.net>
+Co-developed-by: Danilo Krummrich <dakr@redhat.com>
 Signed-off-by: Danilo Krummrich <dakr@redhat.com>
 ---
  rust/bindings/bindings_helper.h |   1 +
+ rust/helpers.c                  |  23 ++
  rust/kernel/drm/device.rs       |   4 +-
- rust/kernel/drm/drv.rs          |   3 +
- rust/kernel/drm/file.rs         | 116 ++++++++++++++++++++++++++++++++
+ rust/kernel/drm/drv.rs          |   2 +-
+ rust/kernel/drm/gem/mod.rs      | 409 ++++++++++++++++++++++++++++++++
  rust/kernel/drm/mod.rs          |   1 +
- 5 files changed, 123 insertions(+), 2 deletions(-)
- create mode 100644 rust/kernel/drm/file.rs
+ 6 files changed, 438 insertions(+), 2 deletions(-)
+ create mode 100644 rust/kernel/drm/gem/mod.rs
 
 diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index 1d12ee7d3c97..3f17961b4c3b 100644
+index 3f17961b4c3b..e4ffc47da5ec 100644
 --- a/rust/bindings/bindings_helper.h
 +++ b/rust/bindings/bindings_helper.h
-@@ -8,6 +8,7 @@
- 
+@@ -9,6 +9,7 @@
  #include <drm/drm_device.h>
  #include <drm/drm_drv.h>
-+#include <drm/drm_file.h>
+ #include <drm/drm_file.h>
++#include <drm/drm_gem.h>
  #include <drm/drm_ioctl.h>
  #include <kunit/test.h>
  #include <linux/errname.h>
+diff --git a/rust/helpers.c b/rust/helpers.c
+index c7f90b457af5..5d138eb53fc6 100644
+--- a/rust/helpers.c
++++ b/rust/helpers.c
+@@ -20,6 +20,7 @@
+  * Sorted alphabetically.
+  */
+ 
++#include <drm/drm_gem.h>
+ #include <kunit/test-bug.h>
+ #include <linux/bug.h>
+ #include <linux/build_bug.h>
+@@ -311,6 +312,28 @@ u64 rust_helper_pci_resource_len(struct pci_dev *pdev, int barnr)
+ 	return pci_resource_len(pdev, barnr);
+ }
+ 
++#ifdef CONFIG_DRM
++
++void rust_helper_drm_gem_object_get(struct drm_gem_object *obj)
++{
++	drm_gem_object_get(obj);
++}
++EXPORT_SYMBOL_GPL(rust_helper_drm_gem_object_get);
++
++void rust_helper_drm_gem_object_put(struct drm_gem_object *obj)
++{
++	drm_gem_object_put(obj);
++}
++EXPORT_SYMBOL_GPL(rust_helper_drm_gem_object_put);
++
++__u64 rust_helper_drm_vma_node_offset_addr(struct drm_vma_offset_node *node)
++{
++	return drm_vma_node_offset_addr(node);
++}
++EXPORT_SYMBOL_GPL(rust_helper_drm_vma_node_offset_addr);
++
++#endif
++
+ /*
+  * `bindgen` binds the C `size_t` type as the Rust `usize` type, so we can
+  * use it in contexts where Rust expects a `usize` like slice (array) indices.
 diff --git a/rust/kernel/drm/device.rs b/rust/kernel/drm/device.rs
-index c62516f79221..c6ed8d86700b 100644
+index c6ed8d86700b..2b687033caa2 100644
 --- a/rust/kernel/drm/device.rs
 +++ b/rust/kernel/drm/device.rs
-@@ -57,8 +57,8 @@ macro_rules! drm_legacy_fields {
- impl<T: drm::drv::Driver> Device<T> {
-     const VTABLE: bindings::drm_driver = drm_legacy_fields! {
-         load: None,
--        open: None, // TODO: File abstraction
--        postclose: None, // TODO: File abstraction
-+        open: Some(drm::file::open_callback::<T::File>),
-+        postclose: Some(drm::file::postclose_callback::<T::File>),
-         lastclose: None,
-         unload: None,
-         release: Some(Self::release),
+@@ -84,9 +84,11 @@ impl<T: drm::drv::Driver> Device<T> {
+         driver_features: T::FEATURES,
+         ioctls: T::IOCTLS.as_ptr(),
+         num_ioctls: T::IOCTLS.len() as i32,
+-        fops: core::ptr::null_mut() as _,
++        fops: &Self::GEM_FOPS as _,
+     };
+ 
++    const GEM_FOPS: bindings::file_operations = drm::gem::create_fops();
++
+     /// Create a new `drm::device::Device` for a `drm::drv::Driver`.
+     pub fn new(dev: &device::Device, data: T::Data) -> Result<ARef<Self>> {
+         // SAFETY: `dev` is valid by its type invarants; `VTABLE`, as a `const` is pinned to the
 diff --git a/rust/kernel/drm/drv.rs b/rust/kernel/drm/drv.rs
-index ebb79a8c90ee..895409f04664 100644
+index 895409f04664..0cf3fb1cea53 100644
 --- a/rust/kernel/drm/drv.rs
 +++ b/rust/kernel/drm/drv.rs
-@@ -139,6 +139,9 @@ pub trait Driver {
-     /// Should be either `drm::gem::Object<T>` or `drm::gem::shmem::Object<T>`.
-     type Object: AllocImpl;
+@@ -118,7 +118,7 @@ pub struct AllocOps {
+ }
  
-+    /// The type used to represent a DRM File (client)
-+    type File: drm::file::DriverFile;
-+
-     /// Driver metadata
-     const INFO: DriverInfo;
- 
-diff --git a/rust/kernel/drm/file.rs b/rust/kernel/drm/file.rs
+ /// Trait for memory manager implementations. Implemented internally.
+-pub trait AllocImpl: Sealed {
++pub trait AllocImpl: Sealed + drm::gem::IntoGEMObject {
+     /// The C callback operations for this memory manager.
+     const ALLOC_OPS: AllocOps;
+ }
+diff --git a/rust/kernel/drm/gem/mod.rs b/rust/kernel/drm/gem/mod.rs
 new file mode 100644
-index 000000000000..0b6366734c61
+index 000000000000..b5208fdf66c2
 --- /dev/null
-+++ b/rust/kernel/drm/file.rs
-@@ -0,0 +1,116 @@
++++ b/rust/kernel/drm/gem/mod.rs
+@@ -0,0 +1,409 @@
 +// SPDX-License-Identifier: GPL-2.0 OR MIT
 +
-+//! DRM File objects.
++//! DRM GEM API
 +//!
-+//! C header: [`include/linux/drm/drm_file.h`](srctree/include/linux/drm/drm_file.h)
++//! C header: [`include/linux/drm/drm_gem.h`](srctree/include/linux/drm/drm_gem.h)
 +
-+use crate::{bindings, drm, error::Result};
 +use alloc::boxed::Box;
-+use core::marker::PhantomData;
-+use core::pin::Pin;
 +
-+/// Trait that must be implemented by DRM drivers to represent a DRM File (a client instance).
-+pub trait DriverFile {
-+    /// The parent `Driver` implementation for this `DriverFile`.
-+    type Driver: drm::drv::Driver;
++use crate::{
++    alloc::flags::*,
++    bindings,
++    drm::{device, drv, file},
++    error::{to_result, Result},
++    prelude::*,
++};
++use core::{marker::PhantomPinned, mem, ops::Deref, ops::DerefMut};
 +
-+    /// Open a new file (called when a client opens the DRM device).
-+    fn open(device: &drm::device::Device<Self::Driver>) -> Result<Pin<Box<Self>>>;
++/// GEM object functions, which must be implemented by drivers.
++pub trait BaseDriverObject<T: BaseObject>: Sync + Send + Sized {
++    /// Create a new driver data object for a GEM object of a given size.
++    fn new(dev: &device::Device<T::Driver>, size: usize) -> impl PinInit<Self, Error>;
++
++    /// Open a new handle to an existing object, associated with a File.
++    fn open(
++        _obj: &<<T as IntoGEMObject>::Driver as drv::Driver>::Object,
++        _file: &file::File<<<T as IntoGEMObject>::Driver as drv::Driver>::File>,
++    ) -> Result {
++        Ok(())
++    }
++
++    /// Close a handle to an existing object, associated with a File.
++    fn close(
++        _obj: &<<T as IntoGEMObject>::Driver as drv::Driver>::Object,
++        _file: &file::File<<<T as IntoGEMObject>::Driver as drv::Driver>::File>,
++    ) {
++    }
 +}
 +
-+/// An open DRM File.
-+///
-+/// # Invariants
-+/// `raw` is a valid pointer to a `drm_file` struct.
-+#[repr(transparent)]
-+pub struct File<T: DriverFile> {
-+    raw: *mut bindings::drm_file,
-+    _p: PhantomData<T>,
++/// Trait that represents a GEM object subtype
++pub trait IntoGEMObject: Sized + crate::private::Sealed {
++    /// Owning driver for this type
++    type Driver: drv::Driver;
++
++    /// Returns a reference to the raw `drm_gem_object` structure, which must be valid as long as
++    /// this owning object is valid.
++    fn gem_obj(&self) -> &bindings::drm_gem_object;
++
++    /// Converts a pointer to a `drm_gem_object` into a pointer to this type.
++    fn from_gem_obj(obj: *mut bindings::drm_gem_object) -> *mut Self;
 +}
 +
-+/// The open callback of a `struct drm_file`.
-+pub(super) unsafe extern "C" fn open_callback<T: DriverFile>(
-+    raw_dev: *mut bindings::drm_device,
++/// Trait which must be implemented by drivers using base GEM objects.
++pub trait DriverObject: BaseDriverObject<Object<Self>> {
++    /// Parent `Driver` for this object.
++    type Driver: drv::Driver;
++}
++
++unsafe extern "C" fn free_callback<T: DriverObject>(obj: *mut bindings::drm_gem_object) {
++    // SAFETY: All of our objects are Object<T>.
++    let this = unsafe { crate::container_of!(obj, Object<T>, obj) } as *mut Object<T>;
++
++    // SAFETY: The pointer we got has to be valid
++    unsafe { bindings::drm_gem_object_release(obj) };
++
++    // SAFETY: All of our objects are allocated via Box<>, and we're in the
++    // free callback which guarantees this object has zero remaining references,
++    // so we can drop it
++    unsafe {
++        let _ = Box::from_raw(this);
++    };
++}
++
++unsafe extern "C" fn open_callback<T: BaseDriverObject<U>, U: BaseObject>(
++    raw_obj: *mut bindings::drm_gem_object,
 +    raw_file: *mut bindings::drm_file,
 +) -> core::ffi::c_int {
-+    let drm = unsafe { drm::device::Device::borrow(raw_dev) };
-+    // SAFETY: This reference won't escape this function
-+    let file = unsafe { &mut *raw_file };
-+
-+    let inner = match T::open(drm) {
-+        Err(e) => {
-+            return e.to_errno();
-+        }
-+        Ok(i) => i,
++    // SAFETY: The pointer we got has to be valid.
++    let file = unsafe {
++        file::File::<<<U as IntoGEMObject>::Driver as drv::Driver>::File>::from_raw(raw_file)
 +    };
++    let obj =
++        <<<U as IntoGEMObject>::Driver as drv::Driver>::Object as IntoGEMObject>::from_gem_obj(
++            raw_obj,
++        );
 +
-+    // SAFETY: This pointer is treated as pinned, and the Drop guarantee is upheld below.
-+    file.driver_priv = Box::into_raw(unsafe { Pin::into_inner_unchecked(inner) }) as *mut _;
-+
-+    0
++    // SAFETY: from_gem_obj() returns a valid pointer as long as the type is
++    // correct and the raw_obj we got is valid.
++    match T::open(unsafe { &*obj }, &file) {
++        Err(e) => e.to_errno(),
++        Ok(()) => 0,
++    }
 +}
 +
-+/// The postclose callback of a `struct drm_file`.
-+pub(super) unsafe extern "C" fn postclose_callback<T: DriverFile>(
-+    _raw_dev: *mut bindings::drm_device,
++unsafe extern "C" fn close_callback<T: BaseDriverObject<U>, U: BaseObject>(
++    raw_obj: *mut bindings::drm_gem_object,
 +    raw_file: *mut bindings::drm_file,
 +) {
-+    // SAFETY: This reference won't escape this function
-+    let file = unsafe { &*raw_file };
-+
-+    // Drop the DriverFile
-+    unsafe {
-+        let _ = Box::from_raw(file.driver_priv as *mut T);
++    // SAFETY: The pointer we got has to be valid.
++    let file = unsafe {
++        file::File::<<<U as IntoGEMObject>::Driver as drv::Driver>::File>::from_raw(raw_file)
 +    };
++    let obj =
++        <<<U as IntoGEMObject>::Driver as drv::Driver>::Object as IntoGEMObject>::from_gem_obj(
++            raw_obj,
++        );
++
++    // SAFETY: from_gem_obj() returns a valid pointer as long as the type is
++    // correct and the raw_obj we got is valid.
++    T::close(unsafe { &*obj }, &file);
 +}
 +
-+impl<T: DriverFile> File<T> {
-+    // Not intended to be called externally, except via declare_drm_ioctls!()
-+    #[doc(hidden)]
-+    pub unsafe fn from_raw(raw_file: *mut bindings::drm_file) -> File<T> {
-+        File {
-+            raw: raw_file,
-+            _p: PhantomData,
++impl<T: DriverObject> IntoGEMObject for Object<T> {
++    type Driver = T::Driver;
++
++    fn gem_obj(&self) -> &bindings::drm_gem_object {
++        &self.obj
++    }
++
++    fn from_gem_obj(obj: *mut bindings::drm_gem_object) -> *mut Object<T> {
++        unsafe { crate::container_of!(obj, Object<T>, obj) as *mut Object<T> }
++    }
++}
++
++/// Base operations shared by all GEM object classes
++pub trait BaseObject: IntoGEMObject {
++    /// Returns the size of the object in bytes.
++    fn size(&self) -> usize {
++        self.gem_obj().size
++    }
++
++    /// Creates a new reference to the object.
++    fn reference(&self) -> ObjectRef<Self> {
++        // SAFETY: Having a reference to an Object implies holding a GEM reference
++        unsafe {
++            bindings::drm_gem_object_get(self.gem_obj() as *const _ as *mut _);
++        }
++        ObjectRef {
++            ptr: self as *const _,
 +        }
 +    }
 +
-+    #[allow(dead_code)]
-+    /// Return the raw pointer to the underlying `drm_file`.
-+    pub(super) fn raw(&self) -> *const bindings::drm_file {
-+        self.raw
++    /// Creates a new handle for the object associated with a given `File`
++    /// (or returns an existing one).
++    fn create_handle(
++        &self,
++        file: &file::File<<<Self as IntoGEMObject>::Driver as drv::Driver>::File>,
++    ) -> Result<u32> {
++        let mut handle: u32 = 0;
++        // SAFETY: The arguments are all valid per the type invariants.
++        to_result(unsafe {
++            bindings::drm_gem_handle_create(
++                file.raw() as *mut _,
++                self.gem_obj() as *const _ as *mut _,
++                &mut handle,
++            )
++        })?;
++        Ok(handle)
 +    }
 +
-+    /// Return an immutable reference to the raw `drm_file` structure.
-+    pub(super) fn file(&self) -> &bindings::drm_file {
-+        unsafe { &*self.raw }
++    /// Looks up an object by its handle for a given `File`.
++    fn lookup_handle(
++        file: &file::File<<<Self as IntoGEMObject>::Driver as drv::Driver>::File>,
++        handle: u32,
++    ) -> Result<ObjectRef<Self>> {
++        // SAFETY: The arguments are all valid per the type invariants.
++        let ptr = unsafe { bindings::drm_gem_object_lookup(file.raw() as *mut _, handle) };
++
++        if ptr.is_null() {
++            Err(ENOENT)
++        } else {
++            Ok(ObjectRef {
++                ptr: ptr as *const _,
++            })
++        }
 +    }
 +
-+    /// Return a pinned reference to the driver file structure.
-+    pub fn inner(&self) -> Pin<&T> {
-+        unsafe { Pin::new_unchecked(&*(self.file().driver_priv as *const T)) }
++    /// Creates an mmap offset to map the object from userspace.
++    fn create_mmap_offset(&self) -> Result<u64> {
++        // SAFETY: The arguments are valid per the type invariant.
++        to_result(unsafe {
++            bindings::drm_gem_create_mmap_offset(self.gem_obj() as *const _ as *mut _)
++        })?;
++        Ok(unsafe {
++            bindings::drm_vma_node_offset_addr(&self.gem_obj().vma_node as *const _ as *mut _)
++        })
 +    }
 +}
 +
-+impl<T: DriverFile> crate::private::Sealed for File<T> {}
++impl<T: IntoGEMObject> BaseObject for T {}
 +
-+/// Generic trait to allow users that don't care about driver specifics to accept any `File<T>`.
-+///
-+/// # Safety
-+///
-+/// Must only be implemented for `File<T>` and return the pointer, following the normal invariants
-+/// of that type.
-+pub unsafe trait GenericFile: crate::private::Sealed {
-+    /// Returns the raw const pointer to the `struct drm_file`
-+    fn raw(&self) -> *const bindings::drm_file;
-+    /// Returns the raw mut pointer to the `struct drm_file`
-+    fn raw_mut(&mut self) -> *mut bindings::drm_file;
++/// A base GEM object.
++#[repr(C)]
++#[pin_data]
++pub struct Object<T: DriverObject> {
++    obj: bindings::drm_gem_object,
++    // The DRM core ensures the Device exists as long as its objects exist, so we don't need to
++    // manage the reference count here.
++    dev: *const bindings::drm_device,
++    #[pin]
++    inner: T,
++    #[pin]
++    _p: PhantomPinned,
 +}
 +
-+unsafe impl<T: DriverFile> GenericFile for File<T> {
-+    fn raw(&self) -> *const bindings::drm_file {
-+        self.raw
++// SAFETY: This struct is safe to zero-initialize
++unsafe impl init::Zeroable for bindings::drm_gem_object {}
++
++impl<T: DriverObject> Object<T> {
++    /// The size of this object's structure.
++    pub const SIZE: usize = mem::size_of::<Self>();
++
++    const OBJECT_FUNCS: bindings::drm_gem_object_funcs = bindings::drm_gem_object_funcs {
++        free: Some(free_callback::<T>),
++        open: Some(open_callback::<T, Object<T>>),
++        close: Some(close_callback::<T, Object<T>>),
++        print_info: None,
++        export: None,
++        pin: None,
++        unpin: None,
++        get_sg_table: None,
++        vmap: None,
++        vunmap: None,
++        mmap: None,
++        status: None,
++        vm_ops: core::ptr::null_mut(),
++        evict: None,
++        rss: None,
++    };
++
++    /// Create a new GEM object.
++    pub fn new(dev: &device::Device<T::Driver>, size: usize) -> Result<Pin<UniqueObjectRef<Self>>> {
++        let obj: Pin<Box<Self>> = Box::pin_init(
++            try_pin_init!(Self {
++                // SAFETY: This struct is expected to be zero-initialized
++                obj: bindings::drm_gem_object {
++                    funcs: &Self::OBJECT_FUNCS,
++                    ..Default::default()
++                },
++                inner <- T::new(dev, size),
++                // SAFETY: The drm subsystem guarantees that the drm_device will live as long as
++                // the GEM object lives, so we can conjure a reference out of thin air.
++                dev: dev.as_raw(),
++                _p: PhantomPinned
++            }),
++            GFP_KERNEL,
++        )?;
++
++        to_result(unsafe {
++            bindings::drm_gem_object_init(dev.as_raw(), &obj.obj as *const _ as *mut _, size)
++        })?;
++
++        // SAFETY: We never move out of self
++        let obj_ref = unsafe {
++            Pin::new_unchecked(UniqueObjectRef {
++                // SAFETY: We never move out of the Box
++                ptr: Box::leak(Pin::into_inner_unchecked(obj)),
++                _p: PhantomPinned,
++            })
++        };
++
++        Ok(obj_ref)
 +    }
-+    fn raw_mut(&mut self) -> *mut bindings::drm_file {
-+        self.raw
++
++    /// Returns the `Device` that owns this GEM object.
++    pub fn dev(&self) -> &device::Device<T::Driver> {
++        // SAFETY: The drm subsystem guarantees that the drm_device will live as long as
++        // the GEM object lives, so we can just borrow from the raw pointer.
++        unsafe { device::Device::borrow(self.dev) }
 +    }
++}
++
++impl<T: DriverObject> crate::private::Sealed for Object<T> {}
++
++impl<T: DriverObject> Deref for Object<T> {
++    type Target = T;
++
++    fn deref(&self) -> &Self::Target {
++        &self.inner
++    }
++}
++
++impl<T: DriverObject> DerefMut for Object<T> {
++    fn deref_mut(&mut self) -> &mut Self::Target {
++        &mut self.inner
++    }
++}
++
++impl<T: DriverObject> drv::AllocImpl for Object<T> {
++    const ALLOC_OPS: drv::AllocOps = drv::AllocOps {
++        gem_create_object: None,
++        prime_handle_to_fd: None,
++        prime_fd_to_handle: None,
++        gem_prime_import: None,
++        gem_prime_import_sg_table: None,
++        dumb_create: None,
++        dumb_map_offset: None,
++    };
++}
++
++/// A reference-counted shared reference to a base GEM object.
++pub struct ObjectRef<T: IntoGEMObject> {
++    // Invariant: the pointer is valid and initialized, and this ObjectRef owns a reference to it.
++    ptr: *const T,
++}
++
++impl<T: IntoGEMObject> ObjectRef<T> {
++    /// Downgrade this reference to a shared reference.
++    pub fn from_pinned_unique(pin: Pin<UniqueObjectRef<T>>) -> Self {
++        // SAFETY: A (shared) `ObjectRef` doesn't need to be pinned, since it doesn't allow us to
++        // optain a mutable reference.
++        let uq = unsafe { Pin::into_inner_unchecked(pin) };
++
++        uq.into_ref()
++    }
++}
++
++/// SAFETY: GEM object references are safe to share between threads.
++unsafe impl<T: IntoGEMObject> Send for ObjectRef<T> {}
++unsafe impl<T: IntoGEMObject> Sync for ObjectRef<T> {}
++
++impl<T: IntoGEMObject> Clone for ObjectRef<T> {
++    fn clone(&self) -> Self {
++        self.reference()
++    }
++}
++
++impl<T: IntoGEMObject> Drop for ObjectRef<T> {
++    fn drop(&mut self) {
++        // SAFETY: Having an ObjectRef implies holding a GEM reference.
++        // The free callback will take care of deallocation.
++        unsafe {
++            bindings::drm_gem_object_put((*self.ptr).gem_obj() as *const _ as *mut _);
++        }
++    }
++}
++
++impl<T: IntoGEMObject> Deref for ObjectRef<T> {
++    type Target = T;
++
++    fn deref(&self) -> &Self::Target {
++        // SAFETY: The pointer is valid per the invariant
++        unsafe { &*self.ptr }
++    }
++}
++
++/// A unique reference to a base GEM object.
++pub struct UniqueObjectRef<T: IntoGEMObject> {
++    // Invariant: the pointer is valid and initialized, and this ObjectRef owns the only reference
++    // to it.
++    ptr: *mut T,
++    _p: PhantomPinned,
++}
++
++impl<T: IntoGEMObject> UniqueObjectRef<T> {
++    /// Downgrade this reference to a shared reference.
++    pub fn into_ref(self) -> ObjectRef<T> {
++        let ptr = self.ptr as *const _;
++        core::mem::forget(self);
++
++        ObjectRef { ptr }
++    }
++}
++
++impl<T: IntoGEMObject> Drop for UniqueObjectRef<T> {
++    fn drop(&mut self) {
++        // SAFETY: Having a UniqueObjectRef implies holding a GEM
++        // reference. The free callback will take care of deallocation.
++        unsafe {
++            bindings::drm_gem_object_put((*self.ptr).gem_obj() as *const _ as *mut _);
++        }
++    }
++}
++
++impl<T: IntoGEMObject> Deref for UniqueObjectRef<T> {
++    type Target = T;
++
++    fn deref(&self) -> &Self::Target {
++        // SAFETY: The pointer is valid per the invariant
++        unsafe { &*self.ptr }
++    }
++}
++
++impl<T: IntoGEMObject> DerefMut for UniqueObjectRef<T> {
++    fn deref_mut(&mut self) -> &mut Self::Target {
++        // SAFETY: The pointer is valid per the invariant
++        unsafe { &mut *self.ptr }
++    }
++}
++
++pub(super) const fn create_fops() -> bindings::file_operations {
++    // SAFETY: As by the type invariant, it is safe to initialize `bindings::file_operations`
++    // zeroed.
++    let mut fops: bindings::file_operations = unsafe { core::mem::zeroed() };
++
++    fops.owner = core::ptr::null_mut();
++    fops.open = Some(bindings::drm_open);
++    fops.release = Some(bindings::drm_release);
++    fops.unlocked_ioctl = Some(bindings::drm_ioctl);
++    #[cfg(CONFIG_COMPAT)]
++    {
++        fops.compat_ioctl = Some(bindings::drm_compat_ioctl);
++    }
++    fops.poll = Some(bindings::drm_poll);
++    fops.read = Some(bindings::drm_read);
++    fops.llseek = Some(bindings::noop_llseek);
++    fops.mmap = Some(bindings::drm_gem_mmap);
++
++    fops
 +}
 diff --git a/rust/kernel/drm/mod.rs b/rust/kernel/drm/mod.rs
-index 69376b3c6db9..a767942d0b52 100644
+index a767942d0b52..c44760a1332f 100644
 --- a/rust/kernel/drm/mod.rs
 +++ b/rust/kernel/drm/mod.rs
-@@ -4,4 +4,5 @@
- 
+@@ -5,4 +5,5 @@
  pub mod device;
  pub mod drv;
-+pub mod file;
+ pub mod file;
++pub mod gem;
  pub mod ioctl;
 -- 
 2.45.1
