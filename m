@@ -1,62 +1,62 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 611CF41C89
-	for <rust-for-linux@vger.kernel.org>; Tue, 18 Jun 2024 23:33:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FF8141C89
+	for <rust-for-linux@vger.kernel.org>; Tue, 18 Jun 2024 23:33:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718753628; cv=none; b=hDRigmYdMQ6qTFwGh5pDPtPWKblRuMN54ccQZmKPGhPzWrWeUmbsf6fVox4ErBqwIGVVALSq5wdPubT6beXmk7bHQnHSEvLdCFhLhtDvhaflBoZwIfHxiVBAlounFbVXiB+LkXs/q/k4lJF+OvjRAweUJsMCOFak34RgdyCxeoo=
+	t=1718753631; cv=none; b=RmuMOzhsBgs3G+MfnLC3v+GfR4BjVTwiDmQj5qlAuuqnS4AbSzQptYWIS1hfptGoUrSA5ARqPWFcCpFJjjDuuVj9SD4JofXDhFDcALuaMt5r+YkhBhsxrgVUSk4kdgdXSYAFDJL2F3CCyYXjC9TsD+c5D1Io3yR8JcANTB/eMuI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718753628; c=relaxed/simple;
-	bh=ztLuyOvempZ9ASoO9F7sPZNkQEBL82YmK8/rUwoU1pc=;
+	s=arc-20240116; t=1718753631; c=relaxed/simple;
+	bh=rqB38QpznSkRIzSvalOm6TjN/Dt59oouktEhSw36FqA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=W8Gy1fLOQ70QUPT/Yiw4e/7y7Q/rYuOqQWvFhoCmSMn5zeD2L3dGl3/KV4afQB8vFMXmT247tB5F3Wd6ph9t5TVwgahjO9tnSaXff/QXlki1Z54gfui0SiIZPnH4kpe/H63kTqEyoyhTgK75ZYGmeA8dE77CrrH5E28kuGusAiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gNBBcgXp; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:Content-Type; b=t8t9TE2EXvdC/C5d96lNcKCMua4qD0qM5RQPZL5Qi98RgLyCbHjoD2+cf5MLc8o4mj1VNKpNr9cnJCndf7I3mPRf2Du3mLxmG6olziqf68sojE5jGdo1U0qrCUAAlYD1jA4VFI9pAsXBCQLSEtp2T6p5diyRYsWlqvGOR4uiQ2Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=M68PWAlf; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gNBBcgXp"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="M68PWAlf"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1718753625;
+	s=mimecast20190719; t=1718753629;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=jpXHd+jXOaH8DsZOi8XKN320BhvYlcEJISRJoUGPNMs=;
-	b=gNBBcgXpHMLzt1ysT4SFsNBUV/nNRR1mbau8HIInTPwlUA5ebR1IUfL246nDY3n2X9xXka
-	8u41nMiFKop6MhZIbDcPU/EnwJdHyxREAL8c4NCfPiDxu5GSfNN53YSZyfD/VOXTd7b98B
-	hyjuLPhHa+NYds3Lu0OzSN+6ZuhgyMo=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=cs256xb1pxB+aLKo07WjvAHliW0Oujj+1OqKwCCaFMI=;
+	b=M68PWAlfmb+87N5+PNctX9tkGkAkZVRWdGqG6U6YZfBWQ3wtP9rDeM+jOh1EMRmtioX2rE
+	63GMWKO1HUZdBzeIKONeSjB3+aYekNGPqMwupeQz+loO/SKEHLYrDXLKq7Zi1p0h7vYas8
+	0ZBSh3IWa4QFAJAw4mQbsZf8Ryy6izU=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-230-hrWgvQmyP9qlMVgiMyQFdg-1; Tue, 18 Jun 2024 19:33:44 -0400
-X-MC-Unique: hrWgvQmyP9qlMVgiMyQFdg-1
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4217f941ca8so38917475e9.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 18 Jun 2024 16:33:43 -0700 (PDT)
+ us-mta-192-3J3EyzwwMNePYc-j0_VvbQ-1; Tue, 18 Jun 2024 19:33:48 -0400
+X-MC-Unique: 3J3EyzwwMNePYc-j0_VvbQ-1
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-36376ef0221so34373f8f.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 18 Jun 2024 16:33:47 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718753623; x=1719358423;
+        d=1e100.net; s=20230601; t=1718753627; x=1719358427;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=jpXHd+jXOaH8DsZOi8XKN320BhvYlcEJISRJoUGPNMs=;
-        b=fywoNMPTi4nuTF1a9Cy3u6XehuQTsAsKJlOgEivpDEdN8padN8vNpXuLDf8NCz0sWe
-         TAoKaOqSFaZk9ztGwdxWI2+kqH92dMiLQ7NQtnEnIma0srQm0+tdDeeNwOHohKMPp7zp
-         KRG7IvYOuj8wuNpbJsSUWwiz66olZpDxHmuqYKv8V2kAdgjJs8znTFHDkR34KBzdyKjt
-         2QLFnGX8qYlk9VMUI14F9Ivt8WkznIhNRX+2xWK6sliUayh1CCZvnyo0KhByLdXLjeRZ
-         ZtppkNwGmh8SesS1O3rRvM1SFqahG0XvfJTJRkc/Ijk4Ru5W+ai5160bW6WzcaURQbME
-         29aA==
-X-Gm-Message-State: AOJu0YyLvo8gTShdcL7s4FQ5Qa8lWM7CjLLBGGtM5yp0e+NxPfwkvaRQ
-	i2NRZw3B+gojfeDZOpii7VLL50ZQOso8uIrywtkd8AFXQMPzisMdPe4tV2bL2aQRED75Q4nkbj5
-	+1U5KuGiH17e6goaEhMqlwUGDZtH72ZFXiCCkyda/wsuXk03bXZ4r7ehPZS36j8tB
-X-Received: by 2002:a7b:c31a:0:b0:421:f68f:a144 with SMTP id 5b1f17b1804b1-4247529c55emr5095035e9.36.1718753622773;
-        Tue, 18 Jun 2024 16:33:42 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFK+B+d6Q+UBC0SuUD/NJqwziXMqMYTgFshtNZO9KMt8w0uzmrD33Wu68wj0NfFBPKPshI+mA==
-X-Received: by 2002:a7b:c31a:0:b0:421:f68f:a144 with SMTP id 5b1f17b1804b1-4247529c55emr5094835e9.36.1718753622457;
-        Tue, 18 Jun 2024 16:33:42 -0700 (PDT)
+        bh=cs256xb1pxB+aLKo07WjvAHliW0Oujj+1OqKwCCaFMI=;
+        b=efIbTTqSbf6ZXiHukqvYB8DkouAdoBEBjpuyYgX0Bq0aWsXYCaAU4GT797ueJJonBC
+         3pGMPqPfnMSfiVHfGWCaujuObq8Cy9Lps+j+1KXMX3LS3LPzeM+NkcWPx3ncDAuYz2Ol
+         Cu+lZDQheL27O+C7vcpl8x4wESeZwIvMRLE6z31CsIsImgTdj6bIrF0LAS1cH7THlQMo
+         HdZ6OuExODlHOAcMgKff9t3fBXtoJlAeYiqzKjMNmR/PbaJTZzXLT/4i6JBN+9YnV94K
+         PYktBd9STjKYAFzKSldHbv4mh+SoQ8eXaSCT6GfxXdSXwn0ku90AqZpZCBD25/5iXDkd
+         o+LQ==
+X-Gm-Message-State: AOJu0YzFlG0JlRQ2+r8r25dUPRt05pNdNW6Hq81SduhZMwwXbT930oRq
+	9TIiPg53MhpS+aUCGXvvn8/2IXDu1KPVhZrdQhXZ614ZvPsCMCJduafywOv6IOT2xyonOsBRXMj
+	DlH8punJCZL4ULNa6mxFk8kGnjeDPNtFlkb1VFHQp9hNQBDwEC7zF32qK1/F4HLxM
+X-Received: by 2002:a5d:4b46:0:b0:360:8683:c072 with SMTP id ffacd0b85a97d-363192cde9emr559779f8f.50.1718753626819;
+        Tue, 18 Jun 2024 16:33:46 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEDj4GU8KQkEGYxDKLz5FrCgHzqL9Xhx0LSLZPJwbhGZtUQiAHQgPGzyjn01QpFDvnhXqlOWw==
+X-Received: by 2002:a5d:4b46:0:b0:360:8683:c072 with SMTP id ffacd0b85a97d-363192cde9emr559749f8f.50.1718753626458;
+        Tue, 18 Jun 2024 16:33:46 -0700 (PDT)
 Received: from cassiopeiae.. ([2a02:810d:4b3f:ee94:642:1aff:fe31:a19f])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-36087457258sm10773875f8f.89.2024.06.18.16.33.41
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-36245fc625dsm2349536f8f.115.2024.06.18.16.33.45
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 18 Jun 2024 16:33:42 -0700 (PDT)
+        Tue, 18 Jun 2024 16:33:45 -0700 (PDT)
 From: Danilo Krummrich <dakr@redhat.com>
 To: maarten.lankhorst@linux.intel.com,
 	mripard@kernel.org,
@@ -83,9 +83,9 @@ Cc: rust-for-linux@vger.kernel.org,
 	dri-devel@lists.freedesktop.org,
 	nouveau@lists.freedesktop.org,
 	Danilo Krummrich <dakr@redhat.com>
-Subject: [PATCH v2 3/8] rust: drm: add driver abstractions
-Date: Wed, 19 Jun 2024 01:31:39 +0200
-Message-ID: <20240618233324.14217-4-dakr@redhat.com>
+Subject: [PATCH v2 4/8] rust: drm: add device abstraction
+Date: Wed, 19 Jun 2024 01:31:40 +0200
+Message-ID: <20240618233324.14217-5-dakr@redhat.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240618233324.14217-1-dakr@redhat.com>
 References: <20240618233324.14217-1-dakr@redhat.com>
@@ -100,190 +100,230 @@ X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset="US-ASCII"; x-default=true
 
-Implement the DRM driver abstractions.
+Implement the abstraction for a `struct drm_device`.
 
-The `Driver` trait provides the interface to the actual driver to fill
-in the driver specific data, such as the `DriverInfo`, driver features
-and IOCTLs.
+A `drm::device::Device` creates a static const `struct drm_driver` filled
+with the data from the `drm::drv::Driver` trait implementation of the
+actual driver creating the `drm::device::Device`.
 
 Co-developed-by: Asahi Lina <lina@asahilina.net>
 Signed-off-by: Asahi Lina <lina@asahilina.net>
 Signed-off-by: Danilo Krummrich <dakr@redhat.com>
 ---
  rust/bindings/bindings_helper.h |   1 +
- rust/kernel/drm/drv.rs          | 141 ++++++++++++++++++++++++++++++++
+ rust/kernel/drm/device.rs       | 180 ++++++++++++++++++++++++++++++++
  rust/kernel/drm/mod.rs          |   1 +
- 3 files changed, 143 insertions(+)
- create mode 100644 rust/kernel/drm/drv.rs
+ 3 files changed, 182 insertions(+)
+ create mode 100644 rust/kernel/drm/device.rs
 
 diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index ed25b686748e..dc19cb789536 100644
+index dc19cb789536..1d12ee7d3c97 100644
 --- a/rust/bindings/bindings_helper.h
 +++ b/rust/bindings/bindings_helper.h
 @@ -6,6 +6,7 @@
   * Sorted alphabetically.
   */
  
-+#include <drm/drm_drv.h>
++#include <drm/drm_device.h>
+ #include <drm/drm_drv.h>
  #include <drm/drm_ioctl.h>
  #include <kunit/test.h>
- #include <linux/errname.h>
-diff --git a/rust/kernel/drm/drv.rs b/rust/kernel/drm/drv.rs
+diff --git a/rust/kernel/drm/device.rs b/rust/kernel/drm/device.rs
 new file mode 100644
-index 000000000000..cd594a32f9e4
+index 000000000000..c62516f79221
 --- /dev/null
-+++ b/rust/kernel/drm/drv.rs
-@@ -0,0 +1,141 @@
++++ b/rust/kernel/drm/device.rs
+@@ -0,0 +1,180 @@
 +// SPDX-License-Identifier: GPL-2.0 OR MIT
 +
-+//! DRM driver core.
++//! DRM device.
 +//!
-+//! C header: [`include/linux/drm/drm_drv.h`](srctree/include/linux/drm/drm_drv.h)
++//! C header: [`include/linux/drm/drm_device.h`](srctree/include/linux/drm/drm_device.h)
 +
-+use crate::{bindings, drm, private::Sealed, str::CStr, types::ForeignOwnable};
-+use macros::vtable;
++use crate::{
++    bindings, device, drm,
++    drm::drv::AllocImpl,
++    error::code::*,
++    error::from_err_ptr,
++    error::Result,
++    types::{ARef, AlwaysRefCounted, ForeignOwnable, Opaque},
++};
++use core::{ffi::c_void, marker::PhantomData, ptr::NonNull};
 +
-+/// Driver use the GEM memory manager. This should be set for all modern drivers.
-+pub const FEAT_GEM: u32 = bindings::drm_driver_feature_DRIVER_GEM;
-+/// Driver supports mode setting interfaces (KMS).
-+pub const FEAT_MODESET: u32 = bindings::drm_driver_feature_DRIVER_MODESET;
-+/// Driver supports dedicated render nodes.
-+pub const FEAT_RENDER: u32 = bindings::drm_driver_feature_DRIVER_RENDER;
-+/// Driver supports the full atomic modesetting userspace API.
-+///
-+/// Drivers which only use atomic internally, but do not support the full userspace API (e.g. not
-+/// all properties converted to atomic, or multi-plane updates are not guaranteed to be tear-free)
-+/// should not set this flag.
-+pub const FEAT_ATOMIC: u32 = bindings::drm_driver_feature_DRIVER_ATOMIC;
-+/// Driver supports DRM sync objects for explicit synchronization of command submission.
-+pub const FEAT_SYNCOBJ: u32 = bindings::drm_driver_feature_DRIVER_SYNCOBJ;
-+/// Driver supports the timeline flavor of DRM sync objects for explicit synchronization of command
-+/// submission.
-+pub const FEAT_SYNCOBJ_TIMELINE: u32 = bindings::drm_driver_feature_DRIVER_SYNCOBJ_TIMELINE;
-+/// Driver supports compute acceleration devices. This flag is mutually exclusive with `FEAT_RENDER`
-+/// and `FEAT_MODESET`. Devices that support both graphics and compute acceleration should be
-+/// handled by two drivers that are connected using auxiliary bus.
-+pub const FEAT_COMPUTE_ACCEL: u32 = bindings::drm_driver_feature_DRIVER_COMPUTE_ACCEL;
-+/// Driver supports user defined GPU VA bindings for GEM objects.
-+pub const FEAT_GEM_GPUVA: u32 = bindings::drm_driver_feature_DRIVER_GEM_GPUVA;
-+/// Driver supports and requires cursor hotspot information in the cursor plane (e.g. cursor plane
-+/// has to actually track the mouse cursor and the clients are required to set hotspot in order for
-+/// the cursor planes to work correctly).
-+pub const FEAT_CURSOR_HOTSPOT: u32 = bindings::drm_driver_feature_DRIVER_CURSOR_HOTSPOT;
-+
-+/// Information data for a DRM Driver.
-+pub struct DriverInfo {
-+    /// Driver major version.
-+    pub major: i32,
-+    /// Driver minor version.
-+    pub minor: i32,
-+    /// Driver patchlevel version.
-+    pub patchlevel: i32,
-+    /// Driver name.
-+    pub name: &'static CStr,
-+    /// Driver description.
-+    pub desc: &'static CStr,
-+    /// Driver date.
-+    pub date: &'static CStr,
++#[cfg(CONFIG_DRM_LEGACY)]
++macro_rules! drm_legacy_fields {
++    ( $($field:ident: $val:expr),* $(,)? ) => {
++        bindings::drm_driver {
++            $( $field: $val ),*,
++            firstopen: None,
++            preclose: None,
++            dma_ioctl: None,
++            dma_quiescent: None,
++            context_dtor: None,
++            irq_handler: None,
++            irq_preinstall: None,
++            irq_postinstall: None,
++            irq_uninstall: None,
++            get_vblank_counter: None,
++            enable_vblank: None,
++            disable_vblank: None,
++            dev_priv_size: 0,
++        }
++    }
 +}
 +
-+/// Internal memory management operation set, normally created by memory managers (e.g. GEM).
-+///
-+/// See `kernel::drm::gem` and `kernel::drm::gem::shmem`.
-+pub struct AllocOps {
-+    pub(crate) gem_create_object: Option<
-+        unsafe extern "C" fn(
-+            dev: *mut bindings::drm_device,
-+            size: usize,
-+        ) -> *mut bindings::drm_gem_object,
-+    >,
-+    pub(crate) prime_handle_to_fd: Option<
-+        unsafe extern "C" fn(
-+            dev: *mut bindings::drm_device,
-+            file_priv: *mut bindings::drm_file,
-+            handle: u32,
-+            flags: u32,
-+            prime_fd: *mut core::ffi::c_int,
-+        ) -> core::ffi::c_int,
-+    >,
-+    pub(crate) prime_fd_to_handle: Option<
-+        unsafe extern "C" fn(
-+            dev: *mut bindings::drm_device,
-+            file_priv: *mut bindings::drm_file,
-+            prime_fd: core::ffi::c_int,
-+            handle: *mut u32,
-+        ) -> core::ffi::c_int,
-+    >,
-+    pub(crate) gem_prime_import: Option<
-+        unsafe extern "C" fn(
-+            dev: *mut bindings::drm_device,
-+            dma_buf: *mut bindings::dma_buf,
-+        ) -> *mut bindings::drm_gem_object,
-+    >,
-+    pub(crate) gem_prime_import_sg_table: Option<
-+        unsafe extern "C" fn(
-+            dev: *mut bindings::drm_device,
-+            attach: *mut bindings::dma_buf_attachment,
-+            sgt: *mut bindings::sg_table,
-+        ) -> *mut bindings::drm_gem_object,
-+    >,
-+    pub(crate) dumb_create: Option<
-+        unsafe extern "C" fn(
-+            file_priv: *mut bindings::drm_file,
-+            dev: *mut bindings::drm_device,
-+            args: *mut bindings::drm_mode_create_dumb,
-+        ) -> core::ffi::c_int,
-+    >,
-+    pub(crate) dumb_map_offset: Option<
-+        unsafe extern "C" fn(
-+            file_priv: *mut bindings::drm_file,
-+            dev: *mut bindings::drm_device,
-+            handle: u32,
-+            offset: *mut u64,
-+        ) -> core::ffi::c_int,
-+    >,
++#[cfg(not(CONFIG_DRM_LEGACY))]
++macro_rules! drm_legacy_fields {
++    ( $($field:ident: $val:expr),* $(,)? ) => {
++        bindings::drm_driver {
++            $( $field: $val ),*
++        }
++    }
 +}
 +
-+/// Trait for memory manager implementations. Implemented internally.
-+pub trait AllocImpl: Sealed {
-+    /// The C callback operations for this memory manager.
-+    const ALLOC_OPS: AllocOps;
-+}
-+
-+/// The DRM `Driver` trait.
++/// A typed DRM device with a specific `drm::drv::Driver` implementation. The device is always
++/// reference-counted.
 +///
-+/// This trait must be implemented by drivers in order to create a `struct drm_device` and `struct
-+/// drm_driver` to be registered in the DRM subsystem.
-+#[vtable]
-+pub trait Driver {
-+    /// Context data associated with the DRM driver
++/// # Invariants
++///
++/// `drm_dev_release()` can be called from any non-atomic context.
++#[repr(transparent)]
++pub struct Device<T: drm::drv::Driver>(Opaque<bindings::drm_device>, PhantomData<T>);
++
++impl<T: drm::drv::Driver> Device<T> {
++    const VTABLE: bindings::drm_driver = drm_legacy_fields! {
++        load: None,
++        open: None, // TODO: File abstraction
++        postclose: None, // TODO: File abstraction
++        lastclose: None,
++        unload: None,
++        release: Some(Self::release),
++        master_set: None,
++        master_drop: None,
++        debugfs_init: None,
++        gem_create_object: T::Object::ALLOC_OPS.gem_create_object,
++        prime_handle_to_fd: T::Object::ALLOC_OPS.prime_handle_to_fd,
++        prime_fd_to_handle: T::Object::ALLOC_OPS.prime_fd_to_handle,
++        gem_prime_import: T::Object::ALLOC_OPS.gem_prime_import,
++        gem_prime_import_sg_table: T::Object::ALLOC_OPS.gem_prime_import_sg_table,
++        dumb_create: T::Object::ALLOC_OPS.dumb_create,
++        dumb_map_offset: T::Object::ALLOC_OPS.dumb_map_offset,
++        show_fdinfo: None,
++
++        major: T::INFO.major,
++        minor: T::INFO.minor,
++        patchlevel: T::INFO.patchlevel,
++        name: T::INFO.name.as_char_ptr() as *mut _,
++        desc: T::INFO.desc.as_char_ptr() as *mut _,
++        date: T::INFO.date.as_char_ptr() as *mut _,
++
++        driver_features: T::FEATURES,
++        ioctls: T::IOCTLS.as_ptr(),
++        num_ioctls: T::IOCTLS.len() as i32,
++        fops: core::ptr::null_mut() as _,
++    };
++
++    /// Create a new `drm::device::Device` for a `drm::drv::Driver`.
++    pub fn new(dev: &device::Device, data: T::Data) -> Result<ARef<Self>> {
++        // SAFETY: `dev` is valid by its type invarants; `VTABLE`, as a `const` is pinned to the
++        // read-only section of the compilation.
++        let raw_drm = unsafe { bindings::drm_dev_alloc(&Self::VTABLE, dev.as_raw()) };
++        let raw_drm = NonNull::new(from_err_ptr(raw_drm)? as *mut _).ok_or(ENOMEM)?;
++
++        let data_ptr = <T::Data as ForeignOwnable>::into_foreign(data);
++
++        // SAFETY: The reference count is one, and now we take ownership of that reference as a
++        // drm::device::Device.
++        let drm = unsafe { ARef::<Self>::from_raw(raw_drm) };
++
++        // SAFETY: Safe as we set `dev_private` once at device creation.
++        unsafe { drm.set_raw_data(data_ptr) };
++
++        Ok(drm)
++    }
++
++    pub(crate) fn as_raw(&self) -> *mut bindings::drm_device {
++        self.0.get()
++    }
++
++    /// Not intended to be called externally, except via declare_drm_ioctls!()
 +    ///
-+    /// Determines the type of the context data passed to each of the methods of the trait.
-+    type Data: ForeignOwnable + Sync + Send;
-+
-+    /// The type used to manage memory for this driver.
++    /// # Safety
 +    ///
-+    /// Should be either `drm::gem::Object<T>` or `drm::gem::shmem::Object<T>`.
-+    type Object: AllocImpl;
++    /// Callers must ensure that `ptr` is valid, non-null, and has a non-zero reference count,
++    /// i.e. it must be ensured that the reference count of the C `struct drm_device` `ptr` points
++    /// to can't drop to zero, for the duration of this function call and the entire duration when
++    /// the returned reference exists.
++    #[doc(hidden)]
++    pub unsafe fn borrow<'a>(ptr: *const bindings::drm_device) -> &'a Self {
++        // SAFETY: Safe by the safety requirements of this function.
++        unsafe { &*ptr.cast() }
++    }
 +
-+    /// Driver metadata
-+    const INFO: DriverInfo;
++    pub(crate) fn raw_data(&self) -> *const c_void {
++        // SAFETY: `self` is guaranteed to hold a valid `bindings::drm_device` pointer.
++        unsafe { *self.as_raw() }.dev_private
++    }
 +
-+    /// Feature flags
-+    const FEATURES: u32;
++    // SAFETY: Must be called only once after device creation.
++    unsafe fn set_raw_data(&self, ptr: *const c_void) {
++        // SAFETY: Safe as by the safety precondition.
++        unsafe { &mut *self.as_raw() }.dev_private = ptr as _;
++    }
 +
-+    /// IOCTL list. See `kernel::drm::ioctl::declare_drm_ioctls!{}`.
-+    const IOCTLS: &'static [drm::ioctl::DrmIoctlDescriptor];
++    /// Returns a borrowed reference to the user data associated with this Device.
++    pub fn data(&self) -> <T::Data as ForeignOwnable>::Borrowed<'_> {
++        // SAFETY: `dev_private` is always set at device creation.
++        unsafe { T::Data::borrow(self.raw_data()) }
++    }
++
++    unsafe extern "C" fn release(drm: *mut bindings::drm_device) {
++        // SAFETY: Guaranteed to be a valid pointer to a `struct drm_device`.
++        let drm = unsafe { Self::borrow(drm) };
++
++        // SAFETY: `Self::data` is always converted and set on device creation.
++        unsafe { <T::Data as ForeignOwnable>::from_foreign(drm.raw_data()) };
++    }
 +}
++
++// SAFETY: DRM device objects are always reference counted and the get/put functions
++// satisfy the requirements.
++unsafe impl<T: drm::drv::Driver> AlwaysRefCounted for Device<T> {
++    fn inc_ref(&self) {
++        // SAFETY: The existence of a shared reference guarantees that the refcount is non-zero.
++        unsafe { bindings::drm_dev_get(self.as_raw()) };
++    }
++
++    unsafe fn dec_ref(obj: NonNull<Self>) {
++        // SAFETY: The safety requirements guarantee that the refcount is non-zero.
++        unsafe { bindings::drm_dev_put(obj.cast().as_ptr()) };
++    }
++}
++
++impl<T: drm::drv::Driver> AsRef<device::Device> for Device<T> {
++    fn as_ref(&self) -> &device::Device {
++        // SAFETY: `bindings::drm_device::dev` is valid as long as the DRM device itself is valid,
++        // which is guaranteed by the type invariant.
++        unsafe { device::Device::as_ref((*self.as_raw()).dev) }
++    }
++}
++
++// SAFETY: As by the type invariant `Device` can be sent to any thread.
++unsafe impl<T: drm::drv::Driver> Send for Device<T> {}
++
++// SAFETY: `Device` can be shared among threads because all immutable methods are protected by the
++// synchronization in `struct drm_device`.
++unsafe impl<T: drm::drv::Driver> Sync for Device<T> {}
 diff --git a/rust/kernel/drm/mod.rs b/rust/kernel/drm/mod.rs
-index 9ec6d7cbcaf3..d987c56b3cec 100644
+index d987c56b3cec..69376b3c6db9 100644
 --- a/rust/kernel/drm/mod.rs
 +++ b/rust/kernel/drm/mod.rs
-@@ -2,4 +2,5 @@
+@@ -2,5 +2,6 @@
  
  //! DRM subsystem abstractions.
  
-+pub mod drv;
++pub mod device;
+ pub mod drv;
  pub mod ioctl;
 -- 
 2.45.1
