@@ -1,149 +1,179 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f49.google.com (mail-qv1-f49.google.com [209.85.219.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C65E71BF50;
-	Tue, 18 Jun 2024 19:04:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C020A1BF50;
+	Tue, 18 Jun 2024 19:11:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718737463; cv=none; b=boR2UcCW9TuKPBFP8vrU85eXklAnAIyFMVdHBwJD/m648wJXD2cRHQxFtVadQ+qln4LHggwIq8tLxvjuH4QTu3SxkFVYaMWb9RkGyoGjt2H6suJ/Ugr8Zxy16DisNywhZoOz4f5sU2fAYLABxDfxMCrgswospWuEz3V38gtJh5c=
+	t=1718737896; cv=none; b=mA9ZfCAzz9ga+QY5CqlF8/aQbp15zM3+GZ2T1JN/9JdO816uBxzgeVMo+l9RkN59ol/6T0fKACjKIKCY3HykNj7SMRZAjeGdwGHlWkWCWepOKN2I7D/soveQq/VP+wZWBeVLDhG8u8K0fLKTVFaJk4ULH9ivF3qsiNtqvQ9J7AE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718737463; c=relaxed/simple;
-	bh=fJOPYun2JD6QA157Il6JHmdOZCbLeRXz3p5HA5JVDQ4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZyFzNwq76Qk2zQOazoDN93TkC0+EVpOwVtgD4w+7yknkKJP+WMW/1vIngmqlea9rYjuybY70LNpCtIEk81JNhdolck+cTedfCWgUNGCR4/G7++3i0JLOS6VlcVni8R+JeCCxPSvFdMTiGnvjKcnmLmasZsjzHhb8zoPbNiipBus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KrsCiClw; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1718737896; c=relaxed/simple;
+	bh=QkcZdI1SzK/GYifPDzyo4MXKlDf4yGGhyffzTmjSls0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=i6nGxW72kGthFyTtpudpnA/uDcla+d0TwOS5XLHmUMdNuUxA+tU/U52M1ivEM9ZoEFGFvSEECW0dSxCDHnNuYaEQOJsWLmsWzQCPBSlqd94p98BlmZiadjUHghSPBr+e9zvZpd0lYhFht3lDyBJzSdpNHoLAKgCgQ5VzzK77KjE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UP0SvLK2; arc=none smtp.client-ip=209.85.219.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KrsCiClw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F827C3277B;
-	Tue, 18 Jun 2024 19:04:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1718737463;
-	bh=fJOPYun2JD6QA157Il6JHmdOZCbLeRXz3p5HA5JVDQ4=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=KrsCiClwJPeYSihyM58XGFKpFhiWa1ilslZoEhj8kxQeR7EEG+AlCSmgdR9cyN4G8
-	 BwHFwCB2Ca+7VPyCaJzQ5Zu0D779R5zjuPXfl3wmMVfZmfI1Ndj7mBwE+eQxjz5piW
-	 Hqis6SxPxzfbAOjP5JPJntaCSFQnjPqIElGXrybn1L78ZuBgr3YLf0YbkNMMgDOl6D
-	 Tt7NRSfdWhR16oxrNrRRUQkdqyzPoPkgkDj/Xzp16J/MHOhlxKIKb4YqcfYceay7Pd
-	 eMPCYzczyhzAkdpCrr5Yk2YdFSVh56xUMbcTXsuoNWpbbbubRWVIQZAKVf0fotxTFi
-	 1p53b+WGHTOLw==
-Received: by mail-lj1-f179.google.com with SMTP id 38308e7fff4ca-2ebe40673d8so61308371fa.3;
-        Tue, 18 Jun 2024 12:04:23 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUpbWoxWFVBWYbputz2oQGr8aTScMV4jW5PuZ0C7Frs5O90VItO7rHYHlSFtAOcEGrbhnGVjiu0EGTmCEP1DI3CDQ5I+Deide0Ug5HA8rqbGQHO/WjHnUy0gATVw5kQhWrpP7S9NiBPEaWsTAnMa++saANUnytHdhG0Xx2RlG9i4w5vhfpJN2fyHzVfrCXlWSakTvbD6MbD/T45BhtYuLn/J0bC/CGCa0ba
-X-Gm-Message-State: AOJu0YzVr4OSpBbKhRmqeAY3qKBCE+ZYwmt9rvhrl6YQdq/+Za4A8x46
-	oE37bZTMDbPiNnSzBoiF4vIHcmfVXf3honVWTFFQ+LgJvTQ/SuMwmiL/D8fapMR6l2vt7C7WUqO
-	skNk+6f+W+qhTuac63TZuwF7W0uI=
-X-Google-Smtp-Source: AGHT+IHdEQ8Lqi2PjHPIy8+3Q4dGolDkRreSfyx1lVIeSo7oLPFlD7sR6usZ9IvZQdaUPxNjDKG2i0ZdQaXg6Syga60=
-X-Received: by 2002:a05:6512:12cc:b0:52b:79d6:5c28 with SMTP id
- 2adb3069b0e04-52ccaa926f4mr342921e87.52.1718737462037; Tue, 18 Jun 2024
- 12:04:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UP0SvLK2"
+Received: by mail-qv1-f49.google.com with SMTP id 6a1803df08f44-6b060f0f48aso26772156d6.1;
+        Tue, 18 Jun 2024 12:11:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1718737893; x=1719342693; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sjgSAIcGlBvcQWlcdFKimsWuEgiOFseD5bqrSyiqGzI=;
+        b=UP0SvLK2V7vUqfSmcIC9wdDKBUll79QfWxW/OiPey9tZ6LUnl5slkqS3Ly7mbHByRf
+         38FX4ewub/4jF1W2sEHBo8vBweWC0i/0Dk18wF6hd9IOro34950BuchgXr20a4f/HMPa
+         UXRgzgK+nIqf780QYEWpiz9H7b6fY7zlRyDs8/xu9kyaCjU2nd+07CY5hj4biqZYNOtp
+         5SqDwlP3sh4kKUy/1/cwgbatxS7kdy2L9ZNwm6rN8GsU99UBrFVmOd50qtejgov1j29a
+         BesPd4et5gzxcgRO4xyMc08y9QD9iED54x2QXnu+O21Mu6yICYSQh6/T/bKIkzXVTXNv
+         4smQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718737893; x=1719342693;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=sjgSAIcGlBvcQWlcdFKimsWuEgiOFseD5bqrSyiqGzI=;
+        b=l4PQBq3oFE9MEGP15EVMRYS1ZVEI5Sc1JGUDjekCmsgQuxRzGCb+Prp97EBC+wBpHV
+         jxbQt4h0GS2GftQ225zIsZpYUuwkyEz3gt4oYMBykoovqdXko7Isb/9qjO7W1tai0SbH
+         FUzG6Kz+mABJQoXROhCUkuADn2lR7h3n43OKkod9pNYXXhMP0AsdjzKC8kHRKeWxut3i
+         Ao5Ha3Y2SACTRIKQ3zBFYZDy2PZx2U69NrgrWoprmCuHClI4Icdc2SYPop59W/EzjFKn
+         6gnf2f/FWapd6La22cFLJ9uKD36A7mSLxGgdC1CnGmtgmlezvbFUCa+zuSh2ioYZez9y
+         rj7g==
+X-Forwarded-Encrypted: i=1; AJvYcCWvuLNbaV/YvYKnsWlMMcOYNYkHqq2n+WDTlvJC96wZM/vb5kzh9upB0EhgIcLGI6c+lq0TaNTGsZaeYWZwYvfNsDMSCbs+L+3CMCrjbvI3aN4DacyEIEhVU/ibV8NLb41dKJSrDhROJeO+hXE=
+X-Gm-Message-State: AOJu0Yybu295IjFng26zT9UdwZr88/cJ1IBWs3GyiMB10G9fmf3gVEla
+	/vtHm3bS/wn36S1AwIN5cwFdebL1Pbn5FOTT8UFdbAskhAKT8Zmk
+X-Google-Smtp-Source: AGHT+IEP1SvUBgbecfLuQ12FLLwDmBC06TibPURy4ePUKsu2A0PH5rgyMjidMV8w8XcnsQFLMvR/TQ==
+X-Received: by 2002:a0c:ca0e:0:b0:6b0:7997:ee3b with SMTP id 6a1803df08f44-6b501e47ee4mr7097336d6.35.1718737893421;
+        Tue, 18 Jun 2024 12:11:33 -0700 (PDT)
+Received: from fauth2-smtp.messagingengine.com (fauth2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6b2a5c466ccsm69670486d6.71.2024.06.18.12.11.32
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 18 Jun 2024 12:11:32 -0700 (PDT)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+	by mailfauth.nyi.internal (Postfix) with ESMTP id E0DCA120006C;
+	Tue, 18 Jun 2024 15:11:31 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute6.internal (MEProxy); Tue, 18 Jun 2024 15:11:31 -0400
+X-ME-Sender: <xms:49txZtMKwuEAjSl28-g4jrOYzR08I7Og_0vlseQDRMubpF0OpzPvzg>
+    <xme:49txZv9J0rEw-GfB7jyhMsZOCrQfCs6tgx-vBHNCoE3ijGiXvjgsARB7Zdrih9R1e
+    tT-3hDfmEZDoljrdQ>
+X-ME-Received: <xmr:49txZsTzePWd5a69Mw3W5zwRGJi83BUm6iBvUuG6sqzPgV28ekIVztb2FFvEHA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrfedvkedguddtiecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfgh
+    necuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmd
+    enucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhq
+    uhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrf
+    grthhtvghrnhephedugfduffffteeutddvheeuveelvdfhleelieevtdeguefhgeeuveei
+    udffiedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
+    epsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedt
+    ieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfh
+    higihmvgdrnhgrmhgv
+X-ME-Proxy: <xmx:49txZptOFSWVxP9lRUADtEneVZO23NfpcIpvfKe-cIjOsHj_ZSidpw>
+    <xmx:49txZld-2QspmPgi25nr6-yLfv5tpqzPP7fqDQu9ZJ8Y1nVBHSiiuQ>
+    <xmx:49txZl2RN96aaDv2NgWAN2bwljcQfUv_amPNtFmm6m7V6aT99K1AKw>
+    <xmx:49txZh8EnKTXwvU9poVMwphBI8hrl-Ks-kBzUk9qA7Aqbg7ZhFbIIQ>
+    <xmx:49txZg9oZvk9WTofymcXIkNZGgk7DRGkvjjZFXNxuum8l1DdAmFsnO6n>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 18 Jun 2024 15:11:31 -0400 (EDT)
+Date: Tue, 18 Jun 2024 12:11:15 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Matt Gilbride <mattgilbride@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
+	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>,
+	Joel Fernandes <joel@joelfernandes.org>,
+	Carlos Llamas <cmllamas@google.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Rob Landley <rob@landley.net>, Davidlohr Bueso <dave@stgolabs.net>,
+	Michel Lespinasse <michel@lespinasse.org>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v5 5/6] rust: rbtree: add `RBTreeCursor`
+Message-ID: <ZnHb05xshC0ZrGIi@boqun-archlinux>
+References: <20240606-b4-rbtree-v5-0-96fe1a0e97c0@google.com>
+ <20240606-b4-rbtree-v5-5-96fe1a0e97c0@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240617175818.58219-17-samitolvanen@google.com>
- <2024061842-hatless-viewpoint-5024@gregkh> <CAK7LNAS_OsXeoDRoMbdXUGY=-jhuoHgo-L6W79n+Kb4G4xEBwQ@mail.gmail.com>
- <2024061828-tricky-playtime-f844@gregkh>
-In-Reply-To: <2024061828-tricky-playtime-f844@gregkh>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Wed, 19 Jun 2024 04:03:45 +0900
-X-Gmail-Original-Message-ID: <CAK7LNAR9qgk2AxtMUMiOw-jYZyjmj6aVDPH25aPa4K-1jQjOFw@mail.gmail.com>
-Message-ID: <CAK7LNAR9qgk2AxtMUMiOw-jYZyjmj6aVDPH25aPa4K-1jQjOFw@mail.gmail.com>
-Subject: Re: [PATCH 00/15] Implement MODVERSIONS for Rust
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Sami Tolvanen <samitolvanen@google.com>, Luis Chamberlain <mcgrof@kernel.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Matthew Maurer <mmaurer@google.com>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-modules@vger.kernel.org, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240606-b4-rbtree-v5-5-96fe1a0e97c0@google.com>
 
-On Wed, Jun 19, 2024 at 2:18=E2=80=AFAM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> On Wed, Jun 19, 2024 at 01:50:36AM +0900, Masahiro Yamada wrote:
-> > On Wed, Jun 19, 2024 at 1:44=E2=80=AFAM Greg Kroah-Hartman
-> > <gregkh@linuxfoundation.org> wrote:
-> > >
-> > > On Mon, Jun 17, 2024 at 05:58:19PM +0000, Sami Tolvanen wrote:
-> > > > Hi folks,
-> > > >
-> > > > This series implements CONFIG_MODVERSIONS for Rust, an important
-> > > > feature for distributions like Android that want to ship Rust
-> > > > kernel modules, and depend on modversions to help ensure module ABI
-> > > > compatibility.
-> > > >
-> > > > There have been earlier proposals [1][2] that would allow Rust
-> > > > modules to coexist with modversions, but none that actually impleme=
-nt
-> > > > symbol versioning. Unlike C, Rust source code doesn't have sufficie=
-nt
-> > > > information about the final ABI, as the compiler has considerable
-> > > > freedom in adjusting structure layout for improved performance [3],
-> > > > for example, which makes using a source code parser like genksyms
-> > > > a non-starter. Based on Matt's suggestion and previous feedback
-> > > > from maintainers, this series uses DWARF debugging information for
-> > > > computing versions. DWARF is an established and relatively stable
-> > > > format, which includes all the necessary ABI details, and adding a
-> > > > CONFIG_DEBUG_INFO dependency for Rust symbol versioning seems like =
-a
-> > > > reasonable trade-off.
-> > > >
-> > > > The first 12 patches of this series add a small tool for computing
-> > > > symbol versions from DWARF, called gendwarfksyms. When passed a lis=
-t
-> > > > of exported symbols, the tool generates an expanded type string
-> > > > for each symbol, and computes symbol CRCs similarly to genksyms.
-> > > > gendwarfksyms is written in C and uses libdw to process DWARF, main=
-ly
-> > > > because of the existing support for C host tools that use elfutils
-> > > > (e.g., objtool).
-> > >
-> > > That's cool, can the C code be switched to also use this?  That way w=
-e
-> > > only have one path/code for all of this?
-> >
-> >
-> > As the description says, it requires CONFIG_DEBUG_INFO.
-> > We can strip the debug info from the final vmlinux, but
-> > I guess the build speed will be even slower than the current genksyms.
->
-> For people who want genksyms (i.e. distros), don't they normally already
-> enable DEBUG_INFO as well?  The problems of genksyms are well known and
-> a pain (I speak from experience), so replacing it with info based on
-> DWARF would be great, I'll gladly trade off the DEBUG_INFO issue for
-> stablilty!
->
-> thanks,
->
-> greg k-h
->
+On Thu, Jun 06, 2024 at 02:50:08PM +0000, Matt Gilbride wrote:
+[...]
+> +
+> +    /// Returns a cursor over the tree nodes based on the given key.
+> +    ///
+> +    /// If the given key exists, the cursor starts there.
+> +    /// Otherwise it starts with the first larger key in sort order.
+> +    /// If there is no larger key, it returns [`None`].
+> +    pub fn cursor_lower_bound(&mut self, key: &K) -> Option<RBTreeCursor<'_, K, V>>
+> +    where
+> +        K: Ord,
+> +    {
+> +        let mut node = self.root.rb_node;
+> +        let mut best_match: Option<NonNull<Node<K, V>>> = None;
+> +        while !node.is_null() {
+> +            // SAFETY: By the type invariant of `Self`, all non-null `rb_node` pointers stored in `self`
+> +            // point to the links field of `Node<K, V>` objects.
+> +            let this = unsafe { container_of!(node, Node<K, V>, links) }.cast_mut();
+> +            // SAFETY: `this` is a non-null node so it is valid by the type invariants.
+> +            let this_key = unsafe { &(*this).key };
+> +            // SAFETY: `node` is a non-null node so it is valid by the type invariants.
+> +            let left_child = unsafe { (*node).rb_left };
+> +            // SAFETY: `node` is a non-null node so it is valid by the type invariants.
+> +            let right_child = unsafe { (*node).rb_right };
+> +            if key == this_key {
+> +                // INVARIANT:
+> +                // - `node` is a valid node in the [`RBTree`] pointed to by `self`.
+> +                // - Due to the type signature of this function, the returned [`RBTreeCursor`]
+> +                //   borrows mutably from `self`.
+> +                return Some(RBTreeCursor {
+> +                    tree: self,
+> +                    current: node,
+> +                });
+> +            } else {
+> +                node = if key > this_key {
+> +                    right_child
+> +                } else {
+> +                    let is_better_match = match best_match {
+> +                        None => true,
+> +                        Some(best) => {
+> +                            // SAFETY: `best` is a non-null node so it is valid by the type invariants.
+> +                            let best_key = unsafe { &(*best.as_ptr()).key };
+> +                            best_key > this_key
+> +                        }
+> +                    };
+> +                    if is_better_match {
+> +                        best_match = NonNull::new(this);
+> +                    }
+> +                    left_child
+> +                }
+> +            };
 
+These two lines above should really be:
 
++                };
++            }
 
-I do not think gendwarfksyms is a drop-in replacement,
-because it relies on libelf and libdw, which will not
-work with LLVM bitcode when CONFIG_LTO_CLANG=3Dy.
+, right? Any lint we can use to catch this?
 
-His "Let's postpone this until final linking" stuff will
-come back?
-Then, vmlinux.o is processed to extract the CRC
-of all symbols?
+Regards,
+Boqun
 
-
-In my benchmark, this tool took 3.84 sec just for processing
-a single rust/core.o object.
-
-I'd love to see how long it will take to process vmlinux.o
-
-And this occurs even when a single source file is changed
-and vmlinux.o is re-linked.
-
-
-
-
---
-Best Regards
-Masahiro Yamada
+> +        }
+[...]
