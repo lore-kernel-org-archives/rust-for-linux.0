@@ -1,106 +1,261 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45AC214E2DA
-	for <rust-for-linux@vger.kernel.org>; Wed, 19 Jun 2024 13:40:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 063C42139CD;
+	Wed, 19 Jun 2024 15:00:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718804405; cv=none; b=nIiwAStjJu+X19F/cUde5rBo2akMmRWJCmP3RP2GkNeUOmbjRXDNW/A4PtnA7XXYhjLzpptHX+eVHGjn1is+x58T+1zWIMMRnJsp/Z7+33ed5MPpDMv5Fb5rpUau/ITFUJXtEiLB6w78GtSzP0tH/U40BByd4KPL0SDBy/11SzM=
+	t=1718809234; cv=none; b=hLTtR2tDR3IT5EY3Cb527USd775+VxcvraVq/c04853btc1HuhoGofQXh4syFGrpvXpFxcDJxo/Zfm5u8hPHPlqoGce082ovsyeSB3r0VanafhzvFQlYrTW+dW1OHMjFh/tKhs6l0G5Q9MjPAWklqtbA+Kc8OQOtRbOX/68XAmQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718804405; c=relaxed/simple;
-	bh=6MzhpI9fJCcEpgQhs7kB5z05QS7LHzxzTbVhNvTC/wU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=g4iaUEPGHY0YM3PyrfJYqU+K2kxU1HMOtxQw2bRPhLb2RxZhmcv2rXFoIRokA57NLcOBUsZj9YH+OFAObDxBySNr7wgQrAvGyLY7uQcx/kYnMFJ+AXrMRfqawMKNWKv2Ng4DzIvrlH51HXtXTyMrTJt1Q5Y9KR+wy6wJHIuZrqw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OUrzeO8o; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1718809234; c=relaxed/simple;
+	bh=J3Snj/0Qxvlt0FE7ajq+a7K2r9ULR6FYlHEjvEP9EvA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=szDzrrxRRRNrHwtRmPKYIyu5waN33qLmCBnUCEYa2PLy/otT1c8eJBq1xy4WpWf57IHzZXU6Uu1N6koTcc/+X0HewdauMFbpWFPuIBQhpX48lyjsehKL5FcTFjiOOP4tsu1eyctVmUxylyGCHn8uxmu2yuLTpCBhdVHtpjxE4MI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Cbcq5ers; arc=none smtp.client-ip=209.85.219.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OUrzeO8o"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1718804403;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=BuMMLNSwR36fe8ZSML4xmcTbA5i566bPVz1jYRmdpSE=;
-	b=OUrzeO8odv+VWRtTOX8ejIvXL67sYvbKcCE7E9boXsE/H8GkJFCULxleYqcA4WTUa1JjRP
-	l0/O1CuFZt6Qwiq0DfG4Qt6iFb0Q/WTauiLJLTbiFHNmV0NBG8H/d+9UBWtjTC4bdrzcPy
-	AT9tklW4eobWMfecl2SiIOR8nYDUwBM=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-164-MUijEdrGME-p5N0OQV6Cjg-1; Wed, 19 Jun 2024 09:40:01 -0400
-X-MC-Unique: MUijEdrGME-p5N0OQV6Cjg-1
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-4217104c425so41255845e9.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 19 Jun 2024 06:39:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Cbcq5ers"
+Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-6b5031d696dso4894306d6.3;
+        Wed, 19 Jun 2024 08:00:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1718809232; x=1719414032; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hSe7xh6KAt4sne8yLQr6PWQBZTumzGrh6Hd9VCen+Yc=;
+        b=Cbcq5ers8rfiiDYJ3bhw3pV6zvCcdN9L2913Ly+xXDvSGl2XT9cUL+Na9+OImfuEj5
+         JzvWl9Fo+/Wa/S3bd1ntXTZl5e3YUvVbK5a5AQZTMahJBtVag9zgT+49sgw01HXmvxWz
+         oipUvP5seSoHjR4UmcxCEswPwH3R3cRxfm0wTZkACyK4ZtadbzurmOhUVEjcjl+Phphv
+         FL4QUDBWSx6KiGfz/cHjzsVr0qKudYIE1I1B9zweLwj6F3ydo27R3jtEiD7wwl91YbMf
+         fiv+CfuoswtDc/t/IihdsjcNzZy1VzxJyUdGiogQJeS9q4R6sQuyi3zXTXB4EMEf3FPE
+         rKRg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718804398; x=1719409198;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1718809232; x=1719414032;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=BuMMLNSwR36fe8ZSML4xmcTbA5i566bPVz1jYRmdpSE=;
-        b=XDkDgQnifyink0wjXAEAdBX1mltHaNhZF1AAE+/41Pxbw2E+BtNhV3PcYigTiZZfDl
-         jwAFyOGWvQP5hIGbfoXkh0N7PRmx76UyVqa2oDOBjgg+bfh1Q8LDban80Hic3i7thvSk
-         QKk0W9SNd8Dnh1x/tH5TmiZ5Xj4WdOO4nBl0HfV4h7zp3VsFk6qzGwuTieC1fbzJQO48
-         qc/LQKtg/59NTlGy3C/Ecklf8m8Qo0PvTEpVBcYXyjr9UiRaBMg858So6FSaAmi0uiLg
-         HE73Dvik7G4w9mnxQ8A9FFQmx6ic+zkRmLZwFbX7UcQaFo9VtmMLwrqztUREftS2norO
-         cMcw==
-X-Forwarded-Encrypted: i=1; AJvYcCXmbRExro5qdpPlO+hpgurDAeMXdDisF3D/EFxpFVA9anTAZJQgOTM9puCljBu+eY1CvT/G/MD1gWgkcmLaDGF8mjn5nqMip2q2diWZFCA=
-X-Gm-Message-State: AOJu0YyzQtK5v1eh71Nydm8oYNE38YySPoU5pl8nACMXxZ51NTVU9UVM
-	AhPDhEUvf35QIn2SSy4FfdY29rIYxyTdaFtMrb+96IY/U3BCOn1H5U/wpwp2B5KPITD1PW4jb9R
-	958upyPG8AO+bmOBN97kuch4mS+ImMxhVU74frqYNo6EbfHTRfSbykSeC0/usewpA
-X-Received: by 2002:a05:600c:1c94:b0:424:798c:120a with SMTP id 5b1f17b1804b1-424798c1341mr9623895e9.24.1718804397898;
-        Wed, 19 Jun 2024 06:39:57 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IF8xLEHLAiIZGvEWrnYIWMvrdXuriX36HI3VGWbzjKEdB3y6vH9kHZRBFc0eqLASc3sxSsRIQ==
-X-Received: by 2002:a05:600c:1c94:b0:424:798c:120a with SMTP id 5b1f17b1804b1-424798c1341mr9623745e9.24.1718804397530;
-        Wed, 19 Jun 2024 06:39:57 -0700 (PDT)
-Received: from cassiopeiae.. ([2a02:810d:4b3f:ee94:642:1aff:fe31:a19f])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-422f6320c16sm230512565e9.38.2024.06.19.06.39.56
+        bh=hSe7xh6KAt4sne8yLQr6PWQBZTumzGrh6Hd9VCen+Yc=;
+        b=esIDe/ni2adixxjphe8XdD7RhLzNyLF9Y3KVhb5ByU7bsnJI8mwFlTrI3prpjTZS0T
+         T6BbrneZAwypfRaAw4AD5xgeRuvl59hJ/atXVV7RtvpqNImlomW9U8a72ywHT5iWpaxy
+         KU6ZF1jJGBVacpsgOn6R78Ajj3wv2JTtSAHOcHeyOCc2Dd5PyMGL+ypIWO4ENGAkEFNw
+         dAoE8leMYhn16T8RG1sqw+Za9gTtSnepP3oyemGMyIUtAG1qflSTi5yoKR9J/AvqAdEK
+         WY+vRT1NaX2sGkw2hjSZ6p0dmB1iouSnHYTlVoEkBLhI0jFUv1lrUxYCoYO/RlnqiLEF
+         VG/A==
+X-Forwarded-Encrypted: i=1; AJvYcCUTckU2wFnBzajr3+k20GBIPUt5dc5IH6IY00p3yJ8bZtJZaZxU4FERV53updW6qvQ4OJO757tvkGBPqxgEFrShqQgvtGSvQauX1Y/0WPGHbVep9Z4YzBwwNIKrVIoLc/4LjE1O9KkycP1hYPAzUjcEojYLyV3ZZtJCvJvJxNOKWroho7eLhxqwRG1QbcCEwpm9yb78sTegt5w+h1BRguUmg3wLkSXUTQ==
+X-Gm-Message-State: AOJu0YzbFF80al+u7bneZpzl5FbH9uQZYAHIaBIPemBzvdNp52/JPf5q
+	9T6A7Fg+AmE1690GwsmOrx+4u9qNyNr8kBF1UbNENJUJSFkvkPY/
+X-Google-Smtp-Source: AGHT+IFMO2mnnq/pKqebuYpxsv8DFlI+YICYEc0pIpoy8PluBhBbtM2i6uRQLvJpntCKJejZy2TOjA==
+X-Received: by 2002:ad4:4433:0:b0:6b4:d299:e060 with SMTP id 6a1803df08f44-6b501eda83cmr26413976d6.64.1718809231655;
+        Wed, 19 Jun 2024 08:00:31 -0700 (PDT)
+Received: from fauth1-smtp.messagingengine.com (fauth1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6b4f7e0d927sm17249616d6.37.2024.06.19.08.00.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Jun 2024 06:39:56 -0700 (PDT)
-From: Danilo Krummrich <dakr@redhat.com>
-To: gregkh@linuxfoundation.org,
-	rafael@kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	Danilo Krummrich <dakr@redhat.com>
-Subject: [PATCH 2/2] MAINTAINERS: add Rust device abstractions to DRIVER CORE
-Date: Wed, 19 Jun 2024 15:39:18 +0200
-Message-ID: <20240619133949.64638-2-dakr@redhat.com>
-X-Mailer: git-send-email 2.45.1
-In-Reply-To: <20240619133949.64638-1-dakr@redhat.com>
-References: <20240619133949.64638-1-dakr@redhat.com>
+        Wed, 19 Jun 2024 08:00:31 -0700 (PDT)
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
+	by mailfauth.nyi.internal (Postfix) with ESMTP id 031DA120006A;
+	Wed, 19 Jun 2024 11:00:30 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute2.internal (MEProxy); Wed, 19 Jun 2024 11:00:30 -0400
+X-ME-Sender: <xms:jfJyZiqcWeBDUVJGswcaHYY_pVr4V0xn99vCLGWzZBHSP8Smv3wvsg>
+    <xme:jfJyZgpWI7MtG-dtPbD1DBtHetqmqrWAUpzdhlF62RJyuX65eBQtJvnzNHuXOvMQ8
+    m-rwU9qZbElzNp-tA>
+X-ME-Received: <xmr:jfJyZnP28Pm69xMI7Kj-TmRqq4HVV5SwIWk3gf_54icNfRBR8p4MXsbKRw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedvledrfeeftddgkedvucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhu
+    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
+    htthgvrhhnpefhtedvgfdtueekvdekieetieetjeeihedvteehuddujedvkedtkeefgedv
+    vdehtdenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivg
+    eptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhh
+    phgvrhhsohhnrghlihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunh
+    drfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgv
+X-ME-Proxy: <xmx:jfJyZh6t6xm7wl2n5p1feQOpcdTCJWFMiQQ6qhzVth2rlSXst6bv6Q>
+    <xmx:jfJyZh5uzZ5RBWu_MGU9_tISr9HlI8gDgTd9aButBxygfsVSnnlCSA>
+    <xmx:jfJyZhhz9TYzKMtzQruo6upFLG87EG9rf7Hx0aEShqB0qmn2mSXFPw>
+    <xmx:jfJyZr4ip0hg4WXCzpOSav4RNDxhv9TWoAoiUuHTQaRy3KIquOEGYQ>
+    <xmx:jfJyZsJLOextY4AJ_e8fShT5c2e8n3wmWkl5KVNOrvcK6G-NnwOPDdDu>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 19 Jun 2024 11:00:28 -0400 (EDT)
+Date: Wed, 19 Jun 2024 08:00:27 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	Gary Guo <gary@garyguo.net>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org,
+	llvm@lists.linux.dev, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Andrea Parri <parri.andrea@gmail.com>,	Will Deacon <will@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Nicholas Piggin <npiggin@gmail.com>,	David Howells <dhowells@redhat.com>,
+	Jade Alglave <j.alglave@ucl.ac.uk>,	Luc Maranget <luc.maranget@inria.fr>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Akira Yokosawa <akiyks@gmail.com>,	Daniel Lustig <dlustig@nvidia.com>,
+	Joel Fernandes <joel@joelfernandes.org>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,	kent.overstreet@gmail.com,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, elver@google.com,
+	Mark Rutland <mark.rutland@arm.com>,
+	Thomas Gleixner <tglx@linutronix.de>,	Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,	torvalds@linux-foundation.org,
+ linux-arm-kernel@lists.infradead.org,	linux-fsdevel@vger.kernel.org,
+ Trevor Gross <tmgross@umich.edu>,	dakr@redhat.com
+Subject: Re: [RFC 2/2] rust: sync: Add atomic support
+Message-ID: <ZnLyi5mC8JtPMhun@Boquns-Mac-mini.home>
+References: <20240612223025.1158537-3-boqun.feng@gmail.com>
+ <b692945b-8fa4-4918-93f6-783fbcde375c@proton.me>
+ <Zm4R0XwTpsASpBhx@Boquns-Mac-mini.home>
+ <d67aeb8c-3499-4498-aaf9-4ac459c2f747@proton.me>
+ <Zm7xySzPJcddF-I_@Boquns-Mac-mini.home>
+ <f29cb2fd-651b-4bc5-8055-e3a412192e29@proton.me>
+ <Zm8F7ZFnUFJkFGQ3@Boquns-Mac-mini.home>
+ <0653b5d5-7a62-4baa-a500-4c110d816ba0@proton.me>
+ <Zm8TPRK-h2mDUX0b@Boquns-Mac-mini.home>
+ <d87c75d3-9557-4a9f-8fc2-a297a945ef2e@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="US-ASCII"; x-default=true
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d87c75d3-9557-4a9f-8fc2-a297a945ef2e@proton.me>
 
-Add missing file path of the Rust abstractions to the maintainers entry,
-until we can move it to 'drivers/base/'.
+On Wed, Jun 19, 2024 at 09:09:46AM +0000, Benno Lossin wrote:
+[...]
+> >>> Then I might mis-understand Gary? He said:
+> >>>
+> >>> "Can we avoid two types and use a generic `Atomic<T>` and then implement
+> >>> on `Atomic<i32>` and `Atomic<i64>` instead?"
+> >>>
+> >>> , which means just replace `impl AtomicI32` with `impl Atomic<i32>` to
+> >>> me.
+> >>
+> >> This is a fair interpretation, but what prevents you from merging the
+> >> impls of functions that can be? I assumed that you would do that
+> >> automatically.
+> >>
+> > 
+> > I think you missed the point, Gary's suggestion at that time sounds
+> > like: let's impl Atomic<i32> and Atomic<i64> first, and leave rest of
+> > the work for later, that is a "do the design later" to me.
+> 
+> Hmm, but wouldn't that just be less work for you?
+> 
 
-Signed-off-by: Danilo Krummrich <dakr@redhat.com>
----
- MAINTAINERS | 1 +
- 1 file changed, 1 insertion(+)
+Not really ;-) Committing to a generic interface without a vision/design
+is going to be a maintenace nightmare. I will need to deal the soundness
+issues and different ideas about what can be put in <..>. So I'd suggest
+we take great caution before we make our decision, and I may even ask
+for a formal proof of the soundness of a generic interface for key
+components such as atomics. Because last time I check, safety is what
+Rust brings on the table, right?
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index cf9c9221c388..6dc6f264f800 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -6714,6 +6714,7 @@ F:	include/linux/fwnode.h
- F:	include/linux/kobj*
- F:	include/linux/property.h
- F:	lib/kobj*
-+F:	rust/kernel/device.rs
- 
- DRIVERS FOR OMAP ADAPTIVE VOLTAGE SCALING (AVS)
- M:	Nishanth Menon <nm@ti.com>
--- 
-2.45.1
+Someone may say that non generic atomics is one of the biggest mistakes
+that Rust ever made. But I disagree. In fact when I saw this, my first
+impression was "these guys know their stuff": there are only a few types
+and operations that make sense, so putting them in a generic interface
+would be over-engineer (at least at the beginning). It's better correct
+than convenient/popular/aesthetical.
 
+So would you and Gary be interested at working on such a design and
+proof? Maybe someone else Cced would also be interested. Eventually we
+will need the tool of soundness proof for other types as well, that's
+going to be very vaulable. And having that would be the real "less work
+for me" ;-)
+
+Right now, I still plan to do in the current way (i.e. non-generic
+atomcis for i32, i64, isize) because there are already users [1], 
+the correctness is easy to confirm and we won't confuse users with
+half-baked generic design. But should we have a sound Atomic<T> design,
+I'm happy to adopt it ;-)
+
+[...]
+> >> Also to be aligned on the vision, I think we should rather talk about
+> >> the vision and not the design, since the design that we want to have now
+> >> can be different from the vision. On that note, what do you envision the
+> >> future of the atomic API?
+> >>
+> > 
+> > Mine is simple, just providing AtomicI32 and AtomicI64 first, since
+> > there are immediate users right now, and should we learn more needs from
+> > the users, we get more idea about what a good API is, and we evolve from
+> > there.
+> 
+> That is fine, but since we want to get generics in the future anyways, I
+> think it would be good to already implement them now to also gather
+> feedback on them.
+> 
+[...]
+> > 
+> > You mean you said it's a non-issue but gave me two counteract? If it's
+> > really a non-issue, you won't need a couneraction, right? In other words
+> > non-generic atomics do provide some value.
+> 
+> The second counteractions would provide exactly the same API surface as
+> your non-generic version, so I don't see how going non-generic provides
+> any value over going generic.
+> The first approach was intended for a future in which we are not scared
+> of people using generic atomics in their structs. I don't know if we are
+> going to be in that future, so I think we should go with the second
+> approach for the time being.
+> 
+
+Not going to reply the above right now, because I'm leaning more
+torwards switching when we have a sound Atomic<T> design, but I want you
+to know I appreciate your input and explanation.
+
+> >> argument? Because I don't see anything else.
+> >>
+> >>>> - I don't think that we should resort to a script to generate the Rust
+> >>>>   code since it prevents adding good documentation & examples to the
+> >>>>   various methods. AFAIU you want to generate the functions from
+> >>>>   `scripts/atomic/atomics.tbl` to keep it in sync with the C side. I
+> >>>>   looked at the git log of that file and it hasn't been changed
+> >>>>   significantly since its inception. I don't think that there is any
+> >>>>   benefit to generating the functions from that file.
+> >>>
+> >>> I'll leave this to other atomic maintainers.
+> >>>
+> >>>> - most of the documented functions say "See `c_function`", I don't like
+> >>>>   this, can we either copy the C documentation (I imagine it not
+> >>>>   changing that often, or is that assumption wrong?) or write our own?
+> >>>
+> >>> You're not wrong. AN in C side, we do have some documentation template
+> >>> to generate the comments (see scripts/atomic/kerneldoc). But first the
+> >>> format is for doxygen(I guess?), and second as you just bring up, the
+> >>> templates are tied with the bash script.
+> >>
+> >> I see a bash script similarly to how Wedson sees proc macros ;)
+> >> We should try *hard* to avoid them and only use them when there is no
+> >> other way.
+> >>
+> > 
+> > I will just start with the existing mechanism and try to evolve, whether
+> > it's a script or proc macro, I don't mind, I want to get the work done
+> > and most relevant people can understand in the way the they prefer and
+> > step-by-step, move it to the place I think is the best for the project.
+> 
+> I don't think that we need a script or a proc macro. A few declarative
+> macros probably suffice if we go the way of generics.
+> 
+
+Ah right. And even without generics we could use some declarative
+macros, and I'm happy to take a look at this and provide the alternative
+approach so we can choose a better one.
+
+[1]: https://lore.kernel.org/rust-for-linux/20240611114551.228679-2-nmi@metaspace.dk/
+
+Regards,
+Boqun
