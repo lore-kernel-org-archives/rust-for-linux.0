@@ -1,43 +1,43 @@
-Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
+Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21E812139B1
-	for <rust-for-linux@vger.kernel.org>; Wed, 19 Jun 2024 08:53:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F11E7D40D
+	for <rust-for-linux@vger.kernel.org>; Wed, 19 Jun 2024 08:58:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718787200; cv=none; b=KlE5nSB52Qa1UYCuTtrnTieEi+GRIxG7YHkYl9ELPdXdQu50RQ3tUUto6jCcCozkV/3JzKmrgw7HrbGMcFY3ykXNl/sQV9BemG8SW8lizi3SbxN0hjddRiKKlfxJC051n9IYMmLwWaDmi0MAqBnEFQ44h8Y7ZMsVZZS0B0jdMZ4=
+	t=1718787500; cv=none; b=dxVw1UxK+DqH9IAEwXx1F7p06xvS83QGEp/0CQgmp8cC75e5bK1CT5/hzkgHsJx3fD4WRMhtps/I95ME7mFNIQ/6jELDOLjDNbR8niTLvAWYVdHrpPKKxIcM4s8RNAb9Mhub900MmDYRi0P5T0OlefdBd9zwE43grdeOaEgQA7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718787200; c=relaxed/simple;
-	bh=JzOv+FKo4c0KcRrvkL0lGpzjLRpDDjA9GmnK9SkYkJg=;
+	s=arc-20240116; t=1718787500; c=relaxed/simple;
+	bh=rv2HbQXJ+ZNOdIcmtLJ/tLCPs/V13RHkfTLZowlsMyM=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gy652c0KUeFzUXrkahrnSJAYhMzrnJn/ti+AXbKR60P41gHF2sHx+iPbE2RnsHwk8T1mdHG1eP+k7/DMMkvXwauOP1ggTsC96y4jZRsMLHESc1t6L6JY/ELvvtMrWR1vawE8wh5LIfST2FOxWIp7O4xh1huJxVO2JpBnhzpy/dg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=PzXPGTkO; arc=none smtp.client-ip=185.70.40.131
+	 MIME-Version:Content-Type; b=Il0l0/IaDcdaWuPm6+fU3JBTumcPjFIRvatVOo9yPo513WD6lUCjj4ok17toNBimPfsBEPmt6TX6V2aav3N+4s7jqk6KrUVS2nRBezBjbpGOgmLkhdzLoiL3WdwgRU1luq+MZGxznjkshXSpbaZDbfUSVOEHbYslkzikNxvgTvo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=WbQG+LYQ; arc=none smtp.client-ip=185.70.40.133
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="PzXPGTkO"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="WbQG+LYQ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=snlegwbmlfertojwo6ecli3wve.protonmail; t=1718787195; x=1719046395;
-	bh=bznw5tDTy8icVqH5yxfNfTnDKC6dWBkUO+jA+0XZCX8=;
+	s=u5dtot3z6vh7vccjkdu25dkrbe.protonmail; t=1718787488; x=1719046688;
+	bh=HJEykIBQeAFrRfaX3nx6pvcdSxMvWpR/+b2SbLtreiU=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=PzXPGTkO7Q57ToUKolhivkewFshNFBAKwcxnDMYFQAB6fkffK2ugxPbENVNr5qco/
-	 V+v5xHUfQsgTfs0mNOfkpd512GcFUOk+Ry0Umsnb4MziWPVc1Pady/jAfG1rgqA7om
-	 4/RoJLpJQjS3FMKBTM9b4zuhWBXHYj2xZppE4GI6BClkrvkemR+F0TfhCwh8StGQ1G
-	 IBNr8ZVn6VIuA8SofDTP9ZUanHfQgdaAYlmbjbnQJMTNwRizf/c93QSaPdUpJppuaE
-	 lR8dTu5DvbNnplQlSdIOxYlBDOt6GIYM6AW0+TmrPXO+MGPOt3RAjCmGC5+8VxHqR4
-	 Kv8/NtwcrntvA==
-Date: Wed, 19 Jun 2024 08:53:11 +0000
+	b=WbQG+LYQV4puXDcd0PP7gSq5EPjVsxcZ1kL8/Q+mZQm23LBa6AwH+qbkWgHnm34oX
+	 I6/t538tExx3qzzIoJx7lZf84T2/9Hc1nbH7wSGnL96n4REk5xMmNvIzTE8B05ieSp
+	 PeucHvhB8R0tNJgK1ZUJuplRUoyp5+NcErKnwf0De7Fg9ZkKfvpBx1O9NAESzU6Z9+
+	 4jLh7pkN28tRPWZtFgwGCK7S+JC3DvZahtQ+btD/J0IPB4mJjCMZVEkWb9/+rd7+xo
+	 BJfgC6S1bNyhQKlLMEIk25948/Ueurly2H8UN7YTjnvOPoCJUyDKMs+7yyrwp4ktlm
+	 miQEfed4r14pg==
+Date: Wed, 19 Jun 2024 08:58:02 +0000
 To: Danilo Krummrich <dakr@redhat.com>, gregkh@linuxfoundation.org, rafael@kernel.org, mcgrof@kernel.org, russ.weight@linux.dev, ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@samsung.com, aliceryhl@google.com, airlied@gmail.com, fujita.tomonori@gmail.com, pstanner@redhat.com, ajanulgu@redhat.com, lyude@redhat.com
 From: Benno Lossin <benno.lossin@proton.me>
 Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 1/2] rust: add abstraction for struct device
-Message-ID: <a4bf20a0-60e9-4462-a9d7-7353514b02a7@proton.me>
-In-Reply-To: <20240618154841.6716-2-dakr@redhat.com>
-References: <20240618154841.6716-1-dakr@redhat.com> <20240618154841.6716-2-dakr@redhat.com>
+Subject: Re: [PATCH v4 2/2] rust: add firmware abstractions
+Message-ID: <8d6f98c2-afe2-4e94-b630-96a8fa0b39cf@proton.me>
+In-Reply-To: <20240618154841.6716-3-dakr@redhat.com>
+References: <20240618154841.6716-1-dakr@redhat.com> <20240618154841.6716-3-dakr@redhat.com>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: de6d3edd9df502580cfde2cd4dea14fba16b66df
+X-Pm-Message-ID: 5591b58e96b9dc2c505922c5bd6d1cfc55f59249
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -48,197 +48,211 @@ Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
 On 18.06.24 17:48, Danilo Krummrich wrote:
-> Add an (always) reference-counted abstraction for a generic C `struct
-> device`. This abstraction encapsulates existing `struct device` instances
-> and manages its reference count.
+> Add an abstraction around the kernels firmware API to request firmware
+> images. The abstraction provides functions to access the firmware's size
+> and backing buffer.
 >=20
-> Subsystems may use this abstraction as a base to abstract subsystem
-> specific device instances based on a generic `struct device`, such as
-> `struct pci_dev`.
+> The firmware is released once the abstraction instance is dropped.
 >=20
-> Co-developed-by: Wedson Almeida Filho <wedsonaf@gmail.com>
-> Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
 > Signed-off-by: Danilo Krummrich <dakr@redhat.com>
 > ---
->  rust/helpers.c        |   1 +
->  rust/kernel/device.rs | 102 ++++++++++++++++++++++++++++++++++++++++++
->  rust/kernel/lib.rs    |   1 +
->  3 files changed, 104 insertions(+)
->  create mode 100644 rust/kernel/device.rs
+>  drivers/base/firmware_loader/Kconfig |   7 ++
+>  rust/bindings/bindings_helper.h      |   1 +
+>  rust/kernel/firmware.rs              | 101 +++++++++++++++++++++++++++
+>  rust/kernel/lib.rs                   |   2 +
+>  4 files changed, 111 insertions(+)
+>  create mode 100644 rust/kernel/firmware.rs
 >=20
-> diff --git a/rust/helpers.c b/rust/helpers.c
-> index 2c37a0f5d7a8..0e02b2c64c72 100644
-> --- a/rust/helpers.c
-> +++ b/rust/helpers.c
-> @@ -23,6 +23,7 @@
->  #include <kunit/test-bug.h>
->  #include <linux/bug.h>
->  #include <linux/build_bug.h>
-> +#include <linux/device.h>
->  #include <linux/err.h>
+> diff --git a/drivers/base/firmware_loader/Kconfig b/drivers/base/firmware=
+_loader/Kconfig
+> index 5ca00e02fe82..a03701674265 100644
+> --- a/drivers/base/firmware_loader/Kconfig
+> +++ b/drivers/base/firmware_loader/Kconfig
+> @@ -37,6 +37,13 @@ config FW_LOADER_DEBUG
+>  =09  SHA256 checksums to the kernel log for each firmware file that is
+>  =09  loaded.
+>=20
+> +config RUST_FW_LOADER_ABSTRACTIONS
+> +=09bool "Rust Firmware Loader abstractions"
+> +=09depends on RUST
+> +=09depends on FW_LOADER=3Dy
+> +=09help
+> +=09  This enables the Rust abstractions for the firmware loader API.
+> +
+>  if FW_LOADER
+>=20
+>  config FW_LOADER_PAGED_BUF
+> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_hel=
+per.h
+> index ddb5644d4fd9..18a3f05115cb 100644
+> --- a/rust/bindings/bindings_helper.h
+> +++ b/rust/bindings/bindings_helper.h
+> @@ -9,6 +9,7 @@
+>  #include <kunit/test.h>
 >  #include <linux/errname.h>
->  #include <linux/mutex.h>
-> diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
+>  #include <linux/ethtool.h>
+> +#include <linux/firmware.h>
+>  #include <linux/jiffies.h>
+>  #include <linux/mdio.h>
+>  #include <linux/phy.h>
+> diff --git a/rust/kernel/firmware.rs b/rust/kernel/firmware.rs
 > new file mode 100644
-> index 000000000000..e445e87fb7d7
+> index 000000000000..b55ea1b45368
 > --- /dev/null
-> +++ b/rust/kernel/device.rs
-> @@ -0,0 +1,102 @@
+> +++ b/rust/kernel/firmware.rs
+> @@ -0,0 +1,101 @@
 > +// SPDX-License-Identifier: GPL-2.0
 > +
-> +//! Generic devices that are part of the kernel's driver model.
+> +//! Firmware abstraction
 > +//!
-> +//! C header: [`include/linux/device.h`](srctree/include/linux/device.h)
+> +//! C header: [`include/linux/firmware.h`](srctree/include/linux/firmwar=
+e.h")
 > +
-> +use crate::{
-> +    bindings,
-> +    types::{ARef, Opaque},
-> +};
-> +use core::ptr;
+> +use crate::{bindings, device::Device, error::Error, error::Result, str::=
+CStr};
+> +use core::ptr::NonNull;
 > +
-> +/// A reference-counted device.
+> +// One of the following: `bindings::request_firmware`, `bindings::firmwa=
+re_request_nowarn`,
+> +// `firmware_request_platform`, `bindings::request_firmware_direct`
+> +type FwFunc =3D
+> +    unsafe extern "C" fn(*mut *const bindings::firmware, *const i8, *mut=
+ bindings::device) -> i32;
+> +
+> +/// Abstraction around a C `struct firmware`.
 > +///
-> +/// This structure represents the Rust abstraction for a C `struct devic=
-e`. This implementation
-> +/// abstracts the usage of an already existing C `struct device` within =
-Rust code that we get
-> +/// passed from the C side.
-> +///
-> +/// An instance of this abstraction can be obtained temporarily or perma=
-nent.
-> +///
-> +/// A temporary one is bound to the lifetime of the C `struct device` po=
-inter used for creation.
-> +/// A permanent instance is always reference-counted and hence not restr=
-icted by any lifetime
-> +/// boundaries.
-> +///
-> +/// For subsystems it is recommended to create a permanent instance to w=
-rap into a subsystem
-> +/// specific device structure (e.g. `pci::Device`). This is useful for p=
-assing it to drivers in
-> +/// `T::probe()`, such that a driver can store the `ARef<Device>` (equiv=
-alent to storing a
-> +/// `struct device` pointer in a C driver) for arbitrary purposes, e.g. =
-allocating DMA coherent
-> +/// memory.
+> +/// This is a simple abstraction around the C firmware API. Just like wi=
+th the C API, firmware can
+> +/// be requested. Once requested the abstraction provides direct access =
+to the firmware buffer as
+> +/// `&[u8]`. The firmware is released once [`Firmware`] is dropped.
 > +///
 > +/// # Invariants
 > +///
-> +/// The pointer stored in `Self` is non-null and valid for the lifetime =
-of the `ARef` instance. In
-
-There is no pointer stored in `Self` directly. I think you can just
-remove the first sentence.
-
-The second sentence can also be improved, see `Task` in
-`rust/kernel/task.rs:42`.
-
-> +/// particular, the `ARef` instance owns an increment on the underlying =
-object=E2=80=99s reference count.
+> +/// The pointer is valid, and has ownership over the instance of `struct=
+ firmware`.
 > +///
-> +/// `bindings::device::release` is valid to be called from any thread, h=
-ence `ARef<Device>` can be
-> +/// dropped from any thread.
-> +#[repr(transparent)]
-> +pub struct Device(Opaque<bindings::device>);
-> +
-> +impl Device {
-> +    /// Creates a new reference-counted abstraction instance of an exist=
-ing `struct device` pointer.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// Callers must ensure that `ptr` is valid, non-null, and has a non=
--zero reference count,
-> +    /// i.e. it must be ensured that the reference count of the C `struc=
-t device` `ptr` points to
-> +    /// can't drop to zero, for the duration of this function call.
-> +    ///
-> +    /// It must also be ensured that `bindings::device::release` can be =
-called from any thread.
-> +    /// While not officially documented, this should be the case for any=
- `struct device`.
-> +    pub unsafe fn from_raw(ptr: *mut bindings::device) -> ARef<Self> {
-> +        // SAFETY: By the safety requirements, ptr is valid.
-> +        // Initially increase the reference count by one to compensate f=
-or the final decrement once
-> +        // this newly created `ARef<Device>` instance is dropped.
-> +        unsafe { bindings::get_device(ptr) };
-> +
-> +        // CAST: `Self` is a `repr(transparent)` wrapper around `binding=
-s::device`.
-> +        let ptr =3D ptr.cast::<Self>();
-> +
-> +        // SAFETY: By the safety requirements, ptr is valid.
+> +/// Once requested, the `Firmware` backing buffer is not modified until =
+it is freed when `Firmware`
+> +/// is dropped.
 
-That is not the only requirement on `from_raw`, you also need to own
-a refcount (which you do) on `ptr`.
+This can simply be "The `firmware`'s backing buffer is not modified."
+Since I interpret "Once requested" as "Once created" and you are allowed
+to break invariants as long as nobody can observe that.
+
+> +///
+> +/// # Examples
+> +///
+> +/// ```
+> +/// # use kernel::{c_str, device::Device, firmware::Firmware};
+> +///
+> +/// # // SAFETY: *NOT* safe, just for the example to get an `ARef<Device=
+>` instance
+> +/// # let dev =3D unsafe { Device::from_raw(core::ptr::null_mut()) };
+> +///
+> +/// let fw =3D Firmware::request(c_str!("path/to/firmware.bin"), &dev).u=
+nwrap();
+> +/// let blob =3D fw.data();
+> +/// ```
+> +pub struct Firmware(NonNull<bindings::firmware>);
+> +
+> +impl Firmware {
+> +    fn request_internal(name: &CStr, dev: &Device, func: FwFunc) -> Resu=
+lt<Self> {
+> +        let mut fw: *mut bindings::firmware =3D core::ptr::null_mut();
+> +        let pfw: *mut *mut bindings::firmware =3D &mut fw;
+> +
+> +        // SAFETY: `pfw` is a valid pointer to a NULL initialized `bindi=
+ngs::firmware` pointer.
+> +        // `name` and `dev` are valid as by their type invariants.
+> +        let ret =3D unsafe { func(pfw as _, name.as_char_ptr(), dev.as_r=
+aw()) };
+> +        if ret !=3D 0 {
+> +            return Err(Error::from_errno(ret));
+> +        }
+> +
+> +        // SAFETY: `func` not bailing out with a non-zero error code, gu=
+arantees that `fw` is a
+> +        // valid pointer to `bindings::firmware`.
+> +        Ok(Firmware(unsafe { NonNull::new_unchecked(fw) }))
+> +    }
+> +
+> +    /// Send a firmware request and wait for it. See also `bindings::req=
+uest_firmware`.
+> +    pub fn request(name: &CStr, dev: &Device) -> Result<Self> {
+> +        Self::request_internal(name, dev, bindings::request_firmware)
+> +    }
+> +
+> +    /// Send a request for an optional firmware module. See also
+> +    /// `bindings::firmware_request_nowarn`.
+> +    pub fn request_nowarn(name: &CStr, dev: &Device) -> Result<Self> {
+> +        Self::request_internal(name, dev, bindings::firmware_request_now=
+arn)
+> +    }
+> +
+> +    fn as_raw(&self) -> *mut bindings::firmware {
+> +        self.0.as_ptr()
+> +    }
+> +
+> +    /// Returns the size of the requested firmware in bytes.
+> +    pub fn size(&self) -> usize {
+> +        // SAFETY: Safe by the type invariant.
+> +        unsafe { (*self.as_raw()).size }
+> +    }
+> +
+> +    /// Returns the requested firmware as `&[u8]`.
+> +    pub fn data(&self) -> &[u8] {
+> +        // SAFETY: Safe by the type invariant. Additionally, `bindings::=
+firmware` guarantees, if
+
+I would not write "Safe by ...", since it is important to know what is
+guaranteed by what. Instead I would write "self.as_raw() is valid by the
+type invariant.".
+
+> +        // successfully requested, that `bindings::firmware::data` has a=
+ size of
+> +        // `bindings::firmware::size` bytes.
+> +        unsafe { core::slice::from_raw_parts((*self.as_raw()).data, self=
+.size()) }
+> +    }
+> +}
+> +
+> +impl Drop for Firmware {
+> +    fn drop(&mut self) {
+> +        // SAFETY: Safe by the type invariant.
+
+Ditto.
 
 ---
 Cheers,
 Benno
 
-> +        unsafe { ARef::from_raw(ptr::NonNull::new_unchecked(ptr)) }
-> +    }
-> +
-> +    /// Obtain the raw `struct device *`.
-> +    pub(crate) fn as_raw(&self) -> *mut bindings::device {
-> +        self.0.get()
-> +    }
-> +
-> +    /// Convert a raw C `struct device` pointer to a `&'a Device`.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// Callers must ensure that `ptr` is valid, non-null, and has a non=
--zero reference count,
-> +    /// i.e. it must be ensured that the reference count of the C `struc=
-t device` `ptr` points to
-> +    /// can't drop to zero, for the duration of this function call and t=
-he entire duration when the
-> +    /// returned reference exists.
-> +    pub unsafe fn as_ref<'a>(ptr: *mut bindings::device) -> &'a Self {
-> +        // SAFETY: Guaranteed by the safety requirements of the function=
-.
-> +        unsafe { &*ptr.cast() }
+> +        unsafe { bindings::release_firmware(self.as_raw()) };
 > +    }
 > +}
 > +
-> +// SAFETY: Instances of `Device` are always reference-counted.
-> +unsafe impl crate::types::AlwaysRefCounted for Device {
-> +    fn inc_ref(&self) {
-> +        // SAFETY: The existence of a shared reference guarantees that t=
-he refcount is non-zero.
-> +        unsafe { bindings::get_device(self.as_raw()) };
-> +    }
+> +// SAFETY: `Firmware` only holds a pointer to a C `struct firmware`, whi=
+ch is safe to be used from
+> +// any thread.
+> +unsafe impl Send for Firmware {}
 > +
-> +    unsafe fn dec_ref(obj: ptr::NonNull<Self>) {
-> +        // SAFETY: The safety requirements guarantee that the refcount i=
-s non-zero.
-> +        unsafe { bindings::put_device(obj.cast().as_ptr()) }
-> +    }
-> +}
-> +
-> +// SAFETY: As by the type invariant `Device` can be sent to any thread.
-> +unsafe impl Send for Device {}
-> +
-> +// SAFETY: `Device` can be shared among threads because all immutable me=
-thods are protected by the
-> +// synchronization in `struct device`.
-> +unsafe impl Sync for Device {}
+> +// SAFETY: `Firmware` only holds a pointer to a C `struct firmware`, ref=
+erences to which are safe to
+> +// be used from any thread.
+> +unsafe impl Sync for Firmware {}
 > diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> index fbd91a48ff8b..dd1207f1a873 100644
+> index dd1207f1a873..7707cb013ce9 100644
 > --- a/rust/kernel/lib.rs
 > +++ b/rust/kernel/lib.rs
-> @@ -28,6 +28,7 @@
->=20
->  pub mod alloc;
+> @@ -30,6 +30,8 @@
 >  mod build_assert;
-> +pub mod device;
+>  pub mod device;
 >  pub mod error;
+> +#[cfg(CONFIG_RUST_FW_LOADER_ABSTRACTIONS)]
+> +pub mod firmware;
 >  pub mod init;
 >  pub mod ioctl;
+>  #[cfg(CONFIG_KUNIT)]
 > --
 > 2.45.1
 >=20
