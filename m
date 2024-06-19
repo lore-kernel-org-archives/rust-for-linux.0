@@ -1,63 +1,63 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C65D714AD35
-	for <rust-for-linux@vger.kernel.org>; Wed, 19 Jun 2024 13:21:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74DFA143C4E
+	for <rust-for-linux@vger.kernel.org>; Wed, 19 Jun 2024 13:21:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718803273; cv=none; b=UJ5JWNKBEB+ACydqL9OJhyHmElL5zEJwsgHfqbRx+MaKfpi73Ju7GFjTeW5DWJTxrrRCXM8p2DLTQQYp7O5EKhYo1SH96XmpOCY0vQttu+jUz5shr7WXd731DG8KbbmMN7oBJftOylNlOjAy1pLZEL4K/b2IQv74PGAWnoPbeVg=
+	t=1718803278; cv=none; b=BgzyX1Vps7tm4J6Ne1Q8kuoD0+M2+j/osS81hlT5O2Vj1POmfR1DhGJgcnXMI81/S3KHSSPD29LOdOc5Rs/xb71O44FKRWevgGB9ZOyAPdZ6jx51PLPTpozuIEXrLO+/i7IfArWpl8DA1F7G9TQXP72fnkxRXqx34w5e3vRhQkQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718803273; c=relaxed/simple;
-	bh=r7JK+ojeJzz+ITwNKEu20e+lIYE4Nz4rAa+kLRpPCHg=;
+	s=arc-20240116; t=1718803278; c=relaxed/simple;
+	bh=O7y/8GQKJpL9pypMRDSGZHFznl5aYJrfBDozLuBVJG4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CU+f0qw+GDr+hVwsskvfTjcZ6HLtu65BdaXFUBI784eOlXnakZGF56oSqZ8Om4FRm3gyyAy/6b0eaTPpcVT1TNJ0TyOo3f+VcfqsWdshsFc4dRdz3wrnyQ+7A/lf3Y4mRAlr/UwYb2yZXRwXjvjYDgaX6xUo75kfhokXyXPRaFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZkqIai58; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version:Content-Type; b=DvEMTiwLd7sHzyYki01wagtqd7jNOCfdxblICgeh2sNuAIdRaBV03ESSRtKo8LymNHcRmyKA5VnbveuMszgCLczfCjR+8uQvJi1avUea5WVU4HcjqKFhOaNRamvvvRUPAxzJpm/trfOlkw3RCoXoV3pDn2Zs78iQVwP02UpPho4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=jHw78+S4; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZkqIai58"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="jHw78+S4"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1718803270;
+	s=mimecast20190719; t=1718803275;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=RVUc+CEwoyjb/GFZAG0m5bh7U/Mt7pB/alNJ5Y2rN30=;
-	b=ZkqIai58hFLoON16gRWnbcUbkTnn0ZccgETZZp0HJR9NXS16NGfXfZ0mIlrut2S+5lTcQt
-	ILsRSbqXIAdGdxH0gBozWjQ5T/U0vrHD+m1/l6hbsoGpOrW1P/fEsf6x2Sh++MoEczEVHQ
-	kFprx+ojiTz1+Mr6fY7McOwsz6nEQyY=
-Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
- [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=vVXcCL6bH3hJLBrtW5nul9is0NHqTNh55v2IFf+anwo=;
+	b=jHw78+S4PUaad8zbhhAvrz/xd44YHLKe5Xa0Ette2JiaJKzy2rR+8HhVsg7XQFezwZ21Y5
+	+f8uQGeo/mz15o0ks97PiZzEuuTItVD2uTrNzx0ybYNJ0OYLeDZ3esUw1LtQ2xHDY3DIfQ
+	jd0B6yRDxyFAgaf18+jfpkXHB5p8IKc=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-687-vSZ0dNrVNf6kcmWnLJOzDA-1; Wed, 19 Jun 2024 09:21:09 -0400
-X-MC-Unique: vSZ0dNrVNf6kcmWnLJOzDA-1
-Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-35f06558bc3so4551161f8f.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 19 Jun 2024 06:21:09 -0700 (PDT)
+ us-mta-185-rj5zf9niM0Wiu2fOAJOD6Q-1; Wed, 19 Jun 2024 09:21:13 -0400
+X-MC-Unique: rj5zf9niM0Wiu2fOAJOD6Q-1
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-421f43ddc2aso41037325e9.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 19 Jun 2024 06:21:13 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718803268; x=1719408068;
+        d=1e100.net; s=20230601; t=1718803272; x=1719408072;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=RVUc+CEwoyjb/GFZAG0m5bh7U/Mt7pB/alNJ5Y2rN30=;
-        b=Ic33dEtgubEdvDenFih5/NzPIrpd1JsQlxa/srNhQWlRFcLNkvjOy/tuz5Tf9MmEC8
-         8rjnbX4J3trHkcfwDrNLavv3/nVDDx4/K4nOBu8BmUImJHfbcwMiuuI00WZz7DFlHj0G
-         qb2XJqWp7QYZz11XrCAIeRbtAr37ypMVgJlOWmr0fSnEZETcuGDU10sA69plw3pNOeFS
-         OBwVoz4g5kPlrWLDqbXAg4j0kTv3ub1Kr6Gk7EAW9qfn2HPBtUBnAmAxyrvSNC9wx7kJ
-         vfwC/oBRgeXRE8koVWyNjNSD2jfeJ8xvyTmIAGGkjIiRTuHPLCg0cbGPy69bL2QwZw7L
-         /JgA==
-X-Forwarded-Encrypted: i=1; AJvYcCVjIMbAdmSQQIeNozxIaFzr+VjwZiVSEHPIrMOoiyA/bG90i9Pnn+I45nBGbu+ZhqPAf0flI+mgzoVXBdWmSMQjbrhWS85Tr6Mc9dRkhLQ=
-X-Gm-Message-State: AOJu0YzhhsMTpnhudO7t81TjWkH2uEYcljyNAMcrCh32EG4TUtdjLPHx
-	toQx+Y3rJC5G57k2wiyOJz7gTlspnZnVyyHCcLaFgkIjxspTasL3MxiYcEZYOhHGYNuIqGu+/kr
-	O4SMSzJA5/7v+xR1DVbI6GnE9EC9+QdndN8GUjqkZ8853vl83PEYeSmlZutUY/8Lt
-X-Received: by 2002:a5d:680a:0:b0:362:69f1:a08 with SMTP id ffacd0b85a97d-363175b8321mr1692296f8f.19.1718803268432;
-        Wed, 19 Jun 2024 06:21:08 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGdSrprgbJVizfzP3Lh3e2ypK5PlSphzExI5JfLf6vuuDdd27R8n5w8Z2hqucadLKqzsHlOzg==
-X-Received: by 2002:a5d:680a:0:b0:362:69f1:a08 with SMTP id ffacd0b85a97d-363175b8321mr1692281f8f.19.1718803268131;
-        Wed, 19 Jun 2024 06:21:08 -0700 (PDT)
+        bh=vVXcCL6bH3hJLBrtW5nul9is0NHqTNh55v2IFf+anwo=;
+        b=EXgmlRrgJbgL2TZySA7P4op+EDzJ1bX3EDVdAaNJLQrCg9RYO0Yd6hfFx7rBjDkW6o
+         zcZivMarB2iNI5JZfbc+95NQ2cUX6rBMZ9FfEfPqJXNhyeqLF/sXxQH3Cs28gicML3rT
+         xQQum1MYSg+O0wl9Yc+7LTLeID8/nTi21Ol1il96aETDlLIaOCl2qPIdXx0JhNkyZPRB
+         MIXOtriGi/ZyMsd5NvrzCcqhFhVyWF+CrtjrlheAGwdPBrJMKqd20KnyjG6nfSwoMgu6
+         brUci+tTCWDWkRjida3+MrTnfEzeUBfJUb+ioDuO9TK571tzc2EHRC9qhTw48jYfVcim
+         DbrQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWyA/Q+k/4DBdGLmGUueRtG9qWQHGuzZtcMkoS6Ff031P3+nUMwwVPrFcLM+WYSDkULXgMCBFvCmCSuztoVytK4hIJKZQLmjn52K9vRfqI=
+X-Gm-Message-State: AOJu0YyPouRzmmzDhGu00AKXBV5EQiEHZRRBT4FBcNYHEnX2tqOSv+NM
+	vwu0SAKZOpbrzuwY0IxfZfH8HG33VyILWHQ//LIA2jhzC3TF+f4QB+4YF384XD4PBoZ/NFyUCAK
+	+FEW6yD9nyiwapjhOY2c9zUbaM9fuRHyL6aw0IRY9l/o5A1khW8WolVINJkL2Kpvj
+X-Received: by 2002:a5d:4f82:0:b0:362:bb3e:93da with SMTP id ffacd0b85a97d-3631998eebbmr1914388f8f.62.1718803272701;
+        Wed, 19 Jun 2024 06:21:12 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEIlW73KAkOwDRcPRuvHSGy4wqiMt0mgnebBuyTv5FiPDVqkiGOQ5fggLB28PPn9sbHyJarng==
+X-Received: by 2002:a5d:4f82:0:b0:362:bb3e:93da with SMTP id ffacd0b85a97d-3631998eebbmr1914374f8f.62.1718803272471;
+        Wed, 19 Jun 2024 06:21:12 -0700 (PDT)
 Received: from cassiopeiae.. ([2a02:810d:4b3f:ee94:642:1aff:fe31:a19f])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-360750935ecsm17282204f8f.3.2024.06.19.06.21.07
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-3607509c79bsm17475715f8f.41.2024.06.19.06.21.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Jun 2024 06:21:07 -0700 (PDT)
+        Wed, 19 Jun 2024 06:21:12 -0700 (PDT)
 From: Danilo Krummrich <dakr@redhat.com>
 To: mcgrof@kernel.org,
 	russ.weight@linux.dev,
@@ -65,9 +65,9 @@ To: mcgrof@kernel.org,
 Cc: linux-kernel@vger.kernel.org,
 	rust-for-linux@vger.kernel.org,
 	Danilo Krummrich <dakr@redhat.com>
-Subject: [PATCH 2/3] MAINTAINERS: add Rust FW abstractions to FIRMWARE LOADER
-Date: Wed, 19 Jun 2024 15:20:13 +0200
-Message-ID: <20240619132029.59296-2-dakr@redhat.com>
+Subject: [PATCH 3/3] MAINTAINERS: add Danilo as FIRMWARE LOADER maintainer
+Date: Wed, 19 Jun 2024 15:20:14 +0200
+Message-ID: <20240619132029.59296-3-dakr@redhat.com>
 X-Mailer: git-send-email 2.45.1
 In-Reply-To: <20240619132029.59296-1-dakr@redhat.com>
 References: <20240619132029.59296-1-dakr@redhat.com>
@@ -82,29 +82,30 @@ X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset="US-ASCII"; x-default=true
 
-Add missing file path of the Rust abstractions to the maintainers entry,
-until we can move it to 'drivers/base/firmware_loader/'.
+Add myself as firmware loader maintainer, as suggested by Luis in [1].
 
 CC: Luis Chamberlain <mcgrof@kernel.org>
 CC: Russ Weight <russ.weight@linux.dev>
 CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/rust-for-linux/ZnHkQpyiX4UKdLEt@bombadil.infradead.org/ [1]
+Suggested-by: Luis Chamberlain <mcgrof@kernel.org>
 Signed-off-by: Danilo Krummrich <dakr@redhat.com>
 ---
  MAINTAINERS | 1 +
  1 file changed, 1 insertion(+)
 
 diff --git a/MAINTAINERS b/MAINTAINERS
-index cf9c9221c388..38e7e0edd9b8 100644
+index 38e7e0edd9b8..19e4a21e574e 100644
 --- a/MAINTAINERS
 +++ b/MAINTAINERS
-@@ -8573,6 +8573,7 @@ L:	linux-kernel@vger.kernel.org
+@@ -8569,6 +8569,7 @@ F:	include/linux/arm_ffa.h
+ FIRMWARE LOADER (request_firmware)
+ M:	Luis Chamberlain <mcgrof@kernel.org>
+ M:	Russ Weight <russ.weight@linux.dev>
++M:	Danilo Krummrich <dakr@redhat.com>
+ L:	linux-kernel@vger.kernel.org
  S:	Maintained
  F:	Documentation/firmware_class/
- F:	drivers/base/firmware_loader/
-+F:	rust/kernel/firmware.rs
- F:	include/linux/firmware.h
- 
- FLEXTIMER FTM-QUADDEC DRIVER
 -- 
 2.45.1
 
