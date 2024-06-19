@@ -1,73 +1,46 @@
-Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98C5F13DDC7
-	for <rust-for-linux@vger.kernel.org>; Wed, 19 Jun 2024 12:04:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9600213F43B;
+	Wed, 19 Jun 2024 12:18:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718798652; cv=none; b=SR3aNW0ftKPFvHueSW4+lQGgTldWzv+yxKiJCPNs6HXNhZ0Q6TeH7TedwFW1RMYwHqPkgiFcZ3zYqcdgP7y7lw6i8fdAidOzAi9D8UXNMGEwKdDizP1Hh35tYRJnIDiH6HBzPXPfLwXcs7fBIXgZ/VRgreFMOTsHYYWljFoee7o=
+	t=1718799481; cv=none; b=aIWwHr8adbzv2TcJ/xP/vfDVOWEQtqSeipKaZ6cKLDhrk3F3xxgx9oNSZ87y8KDPb+y0AYCy9Vz9eKGwuCJgq94H1dyk9XRa6YrdUBqngw5iiqXOp+FimSIWiVI5EwRLrO4f+gJ7AylD9pc1smwNDCcaa8GbOAULyTiPiTW6EOA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718798652; c=relaxed/simple;
-	bh=iyoNUKkEZit1dBDwIaZdCivBqyqgkQiE+7yY8/y9GeQ=;
+	s=arc-20240116; t=1718799481; c=relaxed/simple;
+	bh=TWnMaEvCvx0cR2o6SryzwIH73EH/ed79KtcNQbuis34=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bie/fJW6psiJAD1vqR4pCOLC+2bsuopRhzvqS6VPlhZDsf5A/0W0AtnnC+uewiRbtY5HaBMsjg9Nb5I5EZW4JdT3jJBjvAiPIfNr2tNqjpqaRyttlaQ7nF0M1rtWILBxp8fxrzXonx8ssvIG2NsrRWveGm2tz8j+gvliok3kKRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=hnYEBizU; arc=none smtp.client-ip=209.85.214.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=LD5hOIwkScN7b4TX7OIp4reO5S3MU6+UfJaMNz7EXanyPcnQrs83Wrat4QY/za0Frk2Hei0I9lNMpgWXWK7K2CwUsVsyS21eW5tfXatef431WqyhbZPGvYBdhdtej7QnxPtZYpjYtX9qTbTZgV5sBcyaT6zBc3VErpexrRu+KR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cu+jPbtp; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="hnYEBizU"
-Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-1f70131063cso51778665ad.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 19 Jun 2024 05:04:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1718798651; x=1719403451; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ybZxfNo2FtYwv7YjHw1QcLjLtoJHxOIkq3qu0lw7na8=;
-        b=hnYEBizU8UYxzGoR1c1kxpjOxnd/nqeLga5VIEqFbtX7tHwyATFfo9MYgRfmThKdkr
-         Zk0pQWTIjUcUzwBqD7HV7+hD/qhig8eFmgmPrgrYmWH4SXPSgLhfg/S/IdWzaJxWFZ4H
-         3GYH2S5j1/pgPpi1boX1BMf0B3Bi2Po5h3astQkv8H75f2ab4418Zuovo0V6i7HFl5fu
-         vL5A5VZDQCL5hyKFx8LoafW8O1SfaF0Tc1q56AlyOStMQJAP2vzOkGGKhXaUDsLDP/hu
-         0ASg9TctzSZINMu1CQjw3DlRsjZN5/0BDchLy48YUUA1WsCaww6cSy2sITF7mx5zutTy
-         P80A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718798651; x=1719403451;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ybZxfNo2FtYwv7YjHw1QcLjLtoJHxOIkq3qu0lw7na8=;
-        b=Lz7G3raRozOGP9OSMdKTz30i6hkYUHmVOUhtKFfTFNrh1DgtGrYxWCYM5+BJMFk0ee
-         y+9EjqHEVU5C9IhzrfIQ52aFQkgN5mydeA9IpZVGF8GKyVFzdRFfOOKOMPhx67CwKrnc
-         OGErF9S2ibHsIjyxUx6tpjYC7XL5+HjxKLwIKvFIF6UYhe2Dyt4WEfDrxmBcUc7GNb/d
-         44hVjwuiOZXq8OKA1/T9yGYfwqDR+QzSSXMvYDBJIv7u2nnKbIJeeG58kuDJfX0tDKEq
-         DRmnAaP3mfRS3XJBzELyaCDW3MrNrGXwEufJtawkD4MgK2wHOkNvrTtERuT0ZGOpRDnE
-         Mppw==
-X-Forwarded-Encrypted: i=1; AJvYcCWrPNVgFZEih6j7Oqzwo3EAhzUMrYxncvDWRu0hm/Q64wBBRqtQRtFMcv57ilCfpJoGbx58Gs8Zczt9mA4co+2I0jW3J6CPvOiPUhXwAGA=
-X-Gm-Message-State: AOJu0YxOjEqSxPw5McsdZ2rBKOHhqGFZslNiPuL1g6qJIOn9dJUhnYRA
-	jcG6AlLpwa5h98xzcHwiyJV2W3kW/zGxFJzUmMdX8177vQfA1FRAQ/XANllNbyg=
-X-Google-Smtp-Source: AGHT+IE2ZZd4OhfxDwoBPs0mWEsUYcQMJICVFlEAvInFFMDu6Mv5FIbUEiAg2iF97pv78mFcmcmtZg==
-X-Received: by 2002:a17:902:cec1:b0:1f8:67e4:398a with SMTP id d9443c01a7336-1f9aa3bcab8mr23010205ad.13.1718798650617;
-        Wed, 19 Jun 2024 05:04:10 -0700 (PDT)
-Received: from localhost ([122.172.82.13])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1f855f32334sm115203405ad.259.2024.06.19.05.04.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 19 Jun 2024 05:04:09 -0700 (PDT)
-Date: Wed, 19 Jun 2024 17:34:07 +0530
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Danilo Krummrich <dakr@redhat.com>
-Cc: gregkh@linuxfoundation.org, rafael@kernel.org, bhelgaas@google.com,
-	ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me, a.hindborg@samsung.com,
-	aliceryhl@google.com, airlied@gmail.com, fujita.tomonori@gmail.com,
-	lina@asahilina.net, pstanner@redhat.com, ajanulgu@redhat.com,
-	lyude@redhat.com, robh@kernel.org, daniel.almeida@collabora.com,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org,
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cu+jPbtp"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E972C2BBFC;
+	Wed, 19 Jun 2024 12:18:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1718799481;
+	bh=TWnMaEvCvx0cR2o6SryzwIH73EH/ed79KtcNQbuis34=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=cu+jPbtpHoi2meRDzKvODYh9ya5iH0Cxunf+1ho54i1DmRo1nvSbH86+B8G8013z9
+	 4//wy45SeW7fRqiLVNI5CKstKRTCVwQoIsCYYce0zTSjbg3mPW7wKkyckO7e7Y3fSN
+	 WKACsgYJDS5b/pbvYldLJmxcuCuRb3py+6SWFfKE=
+Date: Wed, 19 Jun 2024 14:17:58 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Viresh Kumar <viresh.kumar@linaro.org>
+Cc: Danilo Krummrich <dakr@redhat.com>, rafael@kernel.org,
+	bhelgaas@google.com, ojeda@kernel.org, alex.gaynor@gmail.com,
+	wedsonaf@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@samsung.com, aliceryhl@google.com, airlied@gmail.com,
+	fujita.tomonori@gmail.com, lina@asahilina.net, pstanner@redhat.com,
+	ajanulgu@redhat.com, lyude@redhat.com, robh@kernel.org,
+	daniel.almeida@collabora.com, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org,
 	Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
 	Vincent Guittot <vincent.guittot@linaro.org>
 Subject: Re: [PATCH v2 00/10] Device / Driver and PCI Rust abstractions
-Message-ID: <20240619120407.o7qh6jlld76j5luu@vireshk-i7>
+Message-ID: <2024061929-onstage-mongrel-0c92@gregkh>
 References: <20240618234025.15036-1-dakr@redhat.com>
+ <20240619120407.o7qh6jlld76j5luu@vireshk-i7>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -76,55 +49,32 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240618234025.15036-1-dakr@redhat.com>
+In-Reply-To: <20240619120407.o7qh6jlld76j5luu@vireshk-i7>
 
-On 19-06-24, 01:39, Danilo Krummrich wrote:
-> - move base device ID abstractions to a separate source file (Greg)
-> - remove `DeviceRemoval` trait in favor of using a `Devres` callback to
->   unregister drivers
-> - remove `device::Data`, we don't need this abstraction anymore now that we
->   `Devres` to revoke resources and registrations
+On Wed, Jun 19, 2024 at 05:34:07PM +0530, Viresh Kumar wrote:
+> On 19-06-24, 01:39, Danilo Krummrich wrote:
+> > - move base device ID abstractions to a separate source file (Greg)
+> > - remove `DeviceRemoval` trait in favor of using a `Devres` callback to
+> >   unregister drivers
+> > - remove `device::Data`, we don't need this abstraction anymore now that we
+> >   `Devres` to revoke resources and registrations
+> 
+> Hi Danilo,
+> 
+> I am working on writing bindings for CPUFreq drivers [1] and was
+> looking to rebase over staging/rust-device, and I am not sure how to
+> proceed after device::Data is dropped now.
 
-Hi Danilo,
+As it should be dropped :)
 
-I am working on writing bindings for CPUFreq drivers [1] and was
-looking to rebase over staging/rust-device, and I am not sure how to
-proceed after device::Data is dropped now.
+A struct device does not have a "data" pointer, it has specific other
+pointers to hold data in, but they better be accessed by their proper
+name if you want rust code to be reviewable by anyone.
 
-What I was doing at probe() was something like this:
+Also, you shouldn't be accessing that field directly anyway, that's what
+the existing dev_set_drvdata/dev_get_drvdata() calls are for.  Just use
+them please.
 
-    fn probe(dev: &mut platform::Device, id_info: Option<&Self::IdInfo>) -> Result<Self::Data> {
-        let data = Arc::<DeviceData>::from(kernel::new_device_data!(
-            cpufreq::Registration::new(),
-            (),
-            "CPUFreqDT::Registration"
-        )?);
+thanks,
 
-        ...
-
-        // Need a mutable object to be passed to register() here.
-        data.registrations()
-            .ok_or(ENXIO)?
-            .as_pinned_mut()
-            .register(c_str!("cpufreq-dt"), ...)?;
-
-        Ok(data)
-    }
-
-The register() function of cpufreq core needs a mutable pointer to
-`self` and it worked earlier as Data used a RevocableMutex. But with
-Devres, we don't have a Mutex anymore and devres.try_access() doesn't
-give a mutable object.
-
-I am a bit confused on how to get this going. I looked at how PCI bus
-is implemented in the staging/dev but I couldn't find an end driver
-using this work.
-
-Maybe I am making an mistake and missing the obvious.
-
-Thanks.
-
--- 
-viresh
-
-[1] https://lore.kernel.org/all/cover.1717750631.git.viresh.kumar@linaro.org/
+greg k-h
