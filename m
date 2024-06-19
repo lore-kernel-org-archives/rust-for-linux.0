@@ -1,91 +1,245 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDC84185E5C
-	for <rust-for-linux@vger.kernel.org>; Tue, 18 Jun 2024 23:42:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21E812139B1
+	for <rust-for-linux@vger.kernel.org>; Wed, 19 Jun 2024 08:53:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718754176; cv=none; b=rFLJY8urXqzxpnJM+EfBEswzLvBVXPX6g2vfICww2PNmvyypoqD4tCVe/N7JuUSmH6EE96TcPosmModGrctbfsjUzxReM8G4BD3Hpo4u2sgsAs6kum2FsCp5lcOIc8fLrTK4j78dKtVKpNvSyLqcMKvRiqDMRee31AJvoMnarCA=
+	t=1718787200; cv=none; b=KlE5nSB52Qa1UYCuTtrnTieEi+GRIxG7YHkYl9ELPdXdQu50RQ3tUUto6jCcCozkV/3JzKmrgw7HrbGMcFY3ykXNl/sQV9BemG8SW8lizi3SbxN0hjddRiKKlfxJC051n9IYMmLwWaDmi0MAqBnEFQ44h8Y7ZMsVZZS0B0jdMZ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718754176; c=relaxed/simple;
-	bh=O3Z2evdNPMBXT7admKZAc1Ne4tYdRPgWACHYuEqy2nE=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=kvQxtQVApgo3RC88peuAgItbPN6afvOb2M1146rCrFh651Z4DwFhQ9wRRJnuz65/X1JnYyFue1W3mQJis5YDVLfj1T69Ihnz4zlzTkg4Pf3IIITBNF4JsqDWQDCjmnJ6+FCUy9ljJdJECTp9jIS8HmavFUITIYfsUrziX+HmR6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=gvjKHKgH; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1718787200; c=relaxed/simple;
+	bh=JzOv+FKo4c0KcRrvkL0lGpzjLRpDDjA9GmnK9SkYkJg=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=gy652c0KUeFzUXrkahrnSJAYhMzrnJn/ti+AXbKR60P41gHF2sHx+iPbE2RnsHwk8T1mdHG1eP+k7/DMMkvXwauOP1ggTsC96y4jZRsMLHESc1t6L6JY/ELvvtMrWR1vawE8wh5LIfST2FOxWIp7O4xh1huJxVO2JpBnhzpy/dg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=PzXPGTkO; arc=none smtp.client-ip=185.70.40.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="gvjKHKgH"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1718754174;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=O3Z2evdNPMBXT7admKZAc1Ne4tYdRPgWACHYuEqy2nE=;
-	b=gvjKHKgHstZD0iCmQNPg5uoOQkdmvUiXaL80tR0FPVBTDVj2lk5Y3/TpNOcxt7uyGo9X1V
-	V7sk7k+bosHbujhlsRTeXG89fVbJ9vwlsXnFU9+zm01OYIDEcQ4pactUCVJIoU6C8JGekV
-	bf6NladAa5ykz5caBADZh6hhXfFzg1g=
-Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
- [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-249-HyT5JLpkMsurx7GvURFCVg-1; Tue, 18 Jun 2024 19:42:52 -0400
-X-MC-Unique: HyT5JLpkMsurx7GvURFCVg-1
-Received: by mail-lj1-f198.google.com with SMTP id 38308e7fff4ca-2ebe662e992so53939071fa.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 18 Jun 2024 16:42:52 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718754171; x=1719358971;
-        h=content-transfer-encoding:in-reply-to:organization:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=O3Z2evdNPMBXT7admKZAc1Ne4tYdRPgWACHYuEqy2nE=;
-        b=EGe3y2yRo81YGI4qxnt7lRb/k7+OnAtkWIJVWQNNFz79p1YqVH+T/MCrJcE4JQ7yDO
-         +I4HS4VC6pK+DYPPQqBmZzSTra6W2Z2rP0W6UqQjJUFBnT7R0WvhK58tIIH+DqdG/DLT
-         rGz8+LvGyCq6UTCQRtNjnxN7bAsc3HKXBMxrfjeNParExrqnEzKv4mdZq2AJGsClPu8y
-         ModS186falrnZmY4pAJCh6dnV/qM/qVC+eybJjFBPYCFf+kSC2heZH51V9iW4VR9QUeq
-         VWH88hCY9LJ9W/vggxLMFN0YInkLOm4/8hunEhOT1RKbm86WxbLoKSsnKnnGoMbfJCRr
-         dOPg==
-X-Gm-Message-State: AOJu0Yx3Xv5MRs6mb+XkZLyh+DDwWv5cffc3GBySVecCXACP+raeDJoE
-	qgnqpHkJjYKWl4E9UrUbuOICJE9Ta4qYHS7Z02zb14P8tiickAPiuJdeVyjzCSJnEKE4DLevkSI
-	pLmKAzv8kNhG0+wQn2H+YMz6LWMm1RXzNPMS2mufuQKpZqqOibnX+zOyv0COcPrkx
-X-Received: by 2002:a2e:2c1a:0:b0:2ea:edac:4886 with SMTP id 38308e7fff4ca-2ec3cffc4e1mr7588611fa.45.1718754171323;
-        Tue, 18 Jun 2024 16:42:51 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHXxWA0oSKg9/uHRxkYZqgQapFgTGUJtV9NxLiRf53cMqUzSCZPEdoUfvLiePJ4nZRU6sP21w==
-X-Received: by 2002:a2e:2c1a:0:b0:2ea:edac:4886 with SMTP id 38308e7fff4ca-2ec3cffc4e1mr7588381fa.45.1718754170863;
-        Tue, 18 Jun 2024 16:42:50 -0700 (PDT)
-Received: from ?IPV6:2a02:810d:4b3f:ee94:abf:b8ff:feee:998b? ([2a02:810d:4b3f:ee94:abf:b8ff:feee:998b])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-422f8be0c69sm208261285e9.33.2024.06.18.16.42.49
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 18 Jun 2024 16:42:50 -0700 (PDT)
-Message-ID: <c67afe11-82b4-4ef5-8ef1-cfed502b545f@redhat.com>
-Date: Wed, 19 Jun 2024 01:42:49 +0200
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="PzXPGTkO"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=snlegwbmlfertojwo6ecli3wve.protonmail; t=1718787195; x=1719046395;
+	bh=bznw5tDTy8icVqH5yxfNfTnDKC6dWBkUO+jA+0XZCX8=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=PzXPGTkO7Q57ToUKolhivkewFshNFBAKwcxnDMYFQAB6fkffK2ugxPbENVNr5qco/
+	 V+v5xHUfQsgTfs0mNOfkpd512GcFUOk+Ry0Umsnb4MziWPVc1Pady/jAfG1rgqA7om
+	 4/RoJLpJQjS3FMKBTM9b4zuhWBXHYj2xZppE4GI6BClkrvkemR+F0TfhCwh8StGQ1G
+	 IBNr8ZVn6VIuA8SofDTP9ZUanHfQgdaAYlmbjbnQJMTNwRizf/c93QSaPdUpJppuaE
+	 lR8dTu5DvbNnplQlSdIOxYlBDOt6GIYM6AW0+TmrPXO+MGPOt3RAjCmGC5+8VxHqR4
+	 Kv8/NtwcrntvA==
+Date: Wed, 19 Jun 2024 08:53:11 +0000
+To: Danilo Krummrich <dakr@redhat.com>, gregkh@linuxfoundation.org, rafael@kernel.org, mcgrof@kernel.org, russ.weight@linux.dev, ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@samsung.com, aliceryhl@google.com, airlied@gmail.com, fujita.tomonori@gmail.com, pstanner@redhat.com, ajanulgu@redhat.com, lyude@redhat.com
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 1/2] rust: add abstraction for struct device
+Message-ID: <a4bf20a0-60e9-4462-a9d7-7353514b02a7@proton.me>
+In-Reply-To: <20240618154841.6716-2-dakr@redhat.com>
+References: <20240618154841.6716-1-dakr@redhat.com> <20240618154841.6716-2-dakr@redhat.com>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: de6d3edd9df502580cfde2cd4dea14fba16b66df
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Device / Driver and PCI Rust abstractions
-To: maarten.lankhorst@linux.intel.com, mripard@kernel.org,
- tzimmermann@suse.de, airlied@gmail.com, daniel@ffwll.ch, ojeda@kernel.org,
- alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com,
- gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
- a.hindborg@samsung.com, aliceryhl@google.com, lina@asahilina.net,
- pstanner@redhat.com, ajanulgu@redhat.com, lyude@redhat.com,
- gregkh@linuxfoundation.org, robh@kernel.org, daniel.almeida@collabora.com
-Cc: rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org,
- nouveau@lists.freedesktop.org
-References: <20240618233324.14217-1-dakr@redhat.com>
-From: Danilo Krummrich <dakr@redhat.com>
-Organization: RedHat
-In-Reply-To: <20240618233324.14217-1-dakr@redhat.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-https://lore.kernel.org/lkml/20240618234025.15036-1-dakr@redhat.com/
+On 18.06.24 17:48, Danilo Krummrich wrote:
+> Add an (always) reference-counted abstraction for a generic C `struct
+> device`. This abstraction encapsulates existing `struct device` instances
+> and manages its reference count.
+>=20
+> Subsystems may use this abstraction as a base to abstract subsystem
+> specific device instances based on a generic `struct device`, such as
+> `struct pci_dev`.
+>=20
+> Co-developed-by: Wedson Almeida Filho <wedsonaf@gmail.com>
+> Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
+> Signed-off-by: Danilo Krummrich <dakr@redhat.com>
+> ---
+>  rust/helpers.c        |   1 +
+>  rust/kernel/device.rs | 102 ++++++++++++++++++++++++++++++++++++++++++
+>  rust/kernel/lib.rs    |   1 +
+>  3 files changed, 104 insertions(+)
+>  create mode 100644 rust/kernel/device.rs
+>=20
+> diff --git a/rust/helpers.c b/rust/helpers.c
+> index 2c37a0f5d7a8..0e02b2c64c72 100644
+> --- a/rust/helpers.c
+> +++ b/rust/helpers.c
+> @@ -23,6 +23,7 @@
+>  #include <kunit/test-bug.h>
+>  #include <linux/bug.h>
+>  #include <linux/build_bug.h>
+> +#include <linux/device.h>
+>  #include <linux/err.h>
+>  #include <linux/errname.h>
+>  #include <linux/mutex.h>
+> diff --git a/rust/kernel/device.rs b/rust/kernel/device.rs
+> new file mode 100644
+> index 000000000000..e445e87fb7d7
+> --- /dev/null
+> +++ b/rust/kernel/device.rs
+> @@ -0,0 +1,102 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! Generic devices that are part of the kernel's driver model.
+> +//!
+> +//! C header: [`include/linux/device.h`](srctree/include/linux/device.h)
+> +
+> +use crate::{
+> +    bindings,
+> +    types::{ARef, Opaque},
+> +};
+> +use core::ptr;
+> +
+> +/// A reference-counted device.
+> +///
+> +/// This structure represents the Rust abstraction for a C `struct devic=
+e`. This implementation
+> +/// abstracts the usage of an already existing C `struct device` within =
+Rust code that we get
+> +/// passed from the C side.
+> +///
+> +/// An instance of this abstraction can be obtained temporarily or perma=
+nent.
+> +///
+> +/// A temporary one is bound to the lifetime of the C `struct device` po=
+inter used for creation.
+> +/// A permanent instance is always reference-counted and hence not restr=
+icted by any lifetime
+> +/// boundaries.
+> +///
+> +/// For subsystems it is recommended to create a permanent instance to w=
+rap into a subsystem
+> +/// specific device structure (e.g. `pci::Device`). This is useful for p=
+assing it to drivers in
+> +/// `T::probe()`, such that a driver can store the `ARef<Device>` (equiv=
+alent to storing a
+> +/// `struct device` pointer in a C driver) for arbitrary purposes, e.g. =
+allocating DMA coherent
+> +/// memory.
+> +///
+> +/// # Invariants
+> +///
+> +/// The pointer stored in `Self` is non-null and valid for the lifetime =
+of the `ARef` instance. In
+
+There is no pointer stored in `Self` directly. I think you can just
+remove the first sentence.
+
+The second sentence can also be improved, see `Task` in
+`rust/kernel/task.rs:42`.
+
+> +/// particular, the `ARef` instance owns an increment on the underlying =
+object=E2=80=99s reference count.
+> +///
+> +/// `bindings::device::release` is valid to be called from any thread, h=
+ence `ARef<Device>` can be
+> +/// dropped from any thread.
+> +#[repr(transparent)]
+> +pub struct Device(Opaque<bindings::device>);
+> +
+> +impl Device {
+> +    /// Creates a new reference-counted abstraction instance of an exist=
+ing `struct device` pointer.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// Callers must ensure that `ptr` is valid, non-null, and has a non=
+-zero reference count,
+> +    /// i.e. it must be ensured that the reference count of the C `struc=
+t device` `ptr` points to
+> +    /// can't drop to zero, for the duration of this function call.
+> +    ///
+> +    /// It must also be ensured that `bindings::device::release` can be =
+called from any thread.
+> +    /// While not officially documented, this should be the case for any=
+ `struct device`.
+> +    pub unsafe fn from_raw(ptr: *mut bindings::device) -> ARef<Self> {
+> +        // SAFETY: By the safety requirements, ptr is valid.
+> +        // Initially increase the reference count by one to compensate f=
+or the final decrement once
+> +        // this newly created `ARef<Device>` instance is dropped.
+> +        unsafe { bindings::get_device(ptr) };
+> +
+> +        // CAST: `Self` is a `repr(transparent)` wrapper around `binding=
+s::device`.
+> +        let ptr =3D ptr.cast::<Self>();
+> +
+> +        // SAFETY: By the safety requirements, ptr is valid.
+
+That is not the only requirement on `from_raw`, you also need to own
+a refcount (which you do) on `ptr`.
+
+---
+Cheers,
+Benno
+
+> +        unsafe { ARef::from_raw(ptr::NonNull::new_unchecked(ptr)) }
+> +    }
+> +
+> +    /// Obtain the raw `struct device *`.
+> +    pub(crate) fn as_raw(&self) -> *mut bindings::device {
+> +        self.0.get()
+> +    }
+> +
+> +    /// Convert a raw C `struct device` pointer to a `&'a Device`.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// Callers must ensure that `ptr` is valid, non-null, and has a non=
+-zero reference count,
+> +    /// i.e. it must be ensured that the reference count of the C `struc=
+t device` `ptr` points to
+> +    /// can't drop to zero, for the duration of this function call and t=
+he entire duration when the
+> +    /// returned reference exists.
+> +    pub unsafe fn as_ref<'a>(ptr: *mut bindings::device) -> &'a Self {
+> +        // SAFETY: Guaranteed by the safety requirements of the function=
+.
+> +        unsafe { &*ptr.cast() }
+> +    }
+> +}
+> +
+> +// SAFETY: Instances of `Device` are always reference-counted.
+> +unsafe impl crate::types::AlwaysRefCounted for Device {
+> +    fn inc_ref(&self) {
+> +        // SAFETY: The existence of a shared reference guarantees that t=
+he refcount is non-zero.
+> +        unsafe { bindings::get_device(self.as_raw()) };
+> +    }
+> +
+> +    unsafe fn dec_ref(obj: ptr::NonNull<Self>) {
+> +        // SAFETY: The safety requirements guarantee that the refcount i=
+s non-zero.
+> +        unsafe { bindings::put_device(obj.cast().as_ptr()) }
+> +    }
+> +}
+> +
+> +// SAFETY: As by the type invariant `Device` can be sent to any thread.
+> +unsafe impl Send for Device {}
+> +
+> +// SAFETY: `Device` can be shared among threads because all immutable me=
+thods are protected by the
+> +// synchronization in `struct device`.
+> +unsafe impl Sync for Device {}
+> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> index fbd91a48ff8b..dd1207f1a873 100644
+> --- a/rust/kernel/lib.rs
+> +++ b/rust/kernel/lib.rs
+> @@ -28,6 +28,7 @@
+>=20
+>  pub mod alloc;
+>  mod build_assert;
+> +pub mod device;
+>  pub mod error;
+>  pub mod init;
+>  pub mod ioctl;
+> --
+> 2.45.1
+>=20
 
