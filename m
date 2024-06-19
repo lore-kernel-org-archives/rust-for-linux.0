@@ -1,142 +1,283 @@
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D0F47A715;
-	Wed, 19 Jun 2024 09:30:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 913BD80BEC
+	for <rust-for-linux@vger.kernel.org>; Wed, 19 Jun 2024 09:44:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718789425; cv=none; b=DZEByS6vcgfq6EkmvJTjHhdmSGG50jHHjJRvaLKk8G9ES8Q35T5T8Di08sgaM8Q872F6wqooYJl98vMe/pfjirUfITDJLegkm0630NmsGoduMWy+MsLB3WVseBNHvzA24Y9VD73hs6AQmsJ2htmQZUIobz3l2kY82eDFuqBtYzI=
+	t=1718790274; cv=none; b=R0b8yluQVWUxeDn6Mtje6/exRcylv0IWGiUXJVojT6B9bC/osY9xYhIvPynNVKDMC6qyhOaQBzr4pm6ZAq2KdnlxoiKY0SSfp75M2dfxwBiQ/AF054w+ACliCAPmKroGX0nT25A5uGBW2q/ktARlZRlSVJUxFeEYm5SWBRdPGFk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718789425; c=relaxed/simple;
-	bh=7ne4ekeJPSiu9Wa/xWvMdy+2iJetKy2FB72LpR8ncLY=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=YBK3A/xHARiogUJ1Cv+fiFSpnX6YGa2WtEVTGTMVb7ZNJHgH7+ZiR6dI2PebGoS7IgDRQXPIwrFWphW4bTY3fqvEXelj09LCotFB2dBz/+HI2Y3LJr3jRp2NoNksYKnzbA4QofP873GxHlpDHOWw5fWtC/gkxe0w9Qc2RohrUmM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=cSbHonGn; arc=none smtp.client-ip=185.70.43.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1718790274; c=relaxed/simple;
+	bh=VMP6mhRgwQY7n/LpInyVNncbyTcsOnGfFQ1jlSOwKk4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 In-Reply-To:Content-Type:Content-Disposition; b=Q6dTP9YrbCyW0rIDABxtbudRjaRxS0gTK7V7nANkPaZLS7hAwa0Ue3ft99ypPWikKPAAy5czGoo2PvvZFAdrLJXG488J8CeWRPkGu4zIV/K4eNF+tcXES36NcUcUflO1dxDD3godSpwcDIJOcAV28Wrh/rPR0mq2zpJ8/LyFln4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CMhInNag; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="cSbHonGn"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1718789420; x=1719048620;
-	bh=zV1Qzzj1i+vpiKHlTH9zT9EGlrl+KcXNNmM1imA2OVs=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=cSbHonGnWaJH37f1v+pSaKUQwYqlPPs+VtxX+8Sx2EZa4gfkG6EbZpEFL1ac6AJSJ
-	 +zm/edwto6ej3rtZoDCxktTyvEy3KwzMLuGps4gixWJId4+eIiKjM/YMAhuD6RbdTa
-	 j2RiXtPvBlCrR2Ag+uGa4Vgwq0/I7AWttYOmTjke/x5q7y7xM99zlCRi47Or+OqD4B
-	 BNKE8/RAyZk2+tGreTkAu5UwsC5NQJ1h9HMGsX3AIPaP33fOeRgCQa+6byjK08Ys5d
-	 EoE5c2uLBWYZcaqYKWiyoYziz+AMut+hOdm0vJt8NWQ+16u6mtF0WYN3hqgQ6OQor7
-	 e5Z3mWOu+o96A==
-Date: Wed, 19 Jun 2024 09:30:15 +0000
-To: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: John Hubbard <jhubbard@nvidia.com>, Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, linux-arch@vger.kernel.org, llvm@lists.linux.dev, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Alan Stern <stern@rowland.harvard.edu>, Andrea Parri <parri.andrea@gmail.com>, Will Deacon <will@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Nicholas Piggin <npiggin@gmail.com>, David Howells <dhowells@redhat.com>, Jade Alglave <j.alglave@ucl.ac.uk>, Luc Maranget <luc.maranget@inria.fr>, "Paul E. McKenney" <paulmck@kernel.org>, Akira Yokosawa <akiyks@gmail.com>, Daniel Lustig <dlustig@nvidia.com>, Joel Fernandes <joel@joelfernandes.org>, Nathan Chancellor <nathan@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>,
-	kent.overstreet@gmail.com, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, elver@google.com, Mark Rutland <mark.rutland@arm.com>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, Catalin Marinas <catalin.marinas@arm.com>, torvalds@linux-foundation.org, linux-arm-kernel@lists.infradead.org, linux-fsdevel@vger.kernel.org, Trevor Gross <tmgross@umich.edu>, dakr@redhat.com
-Subject: Re: [RFC 2/2] rust: sync: Add atomic support
-Message-ID: <8f23cb56-91a9-4515-a14f-4b7de70f6852@proton.me>
-In-Reply-To: <Zm_LTXm3wJhcQIwI@Boquns-Mac-mini.home>
-References: <ZmseosxVQXdsQjNB@boqun-archlinux> <CANiq72=JdqTRPiUfT=-YMTTN+bHeAe2Pba8nERxU3cN8Q-BEOw@mail.gmail.com> <79239550-dd6e-4738-acea-e7df50176487@nvidia.com> <ZmztZd9OJdLnBZs5@Boquns-Mac-mini.home> <c243bef3-e152-462f-be68-91dbf876092b@nvidia.com> <Zmz-338Ad6r4vzM-@Boquns-Mac-mini.home> <20240616155145.54371240.gary@garyguo.net> <Zm7_XWe6ciy1yN-h@Boquns-Mac-mini.home> <Zm_LTXm3wJhcQIwI@Boquns-Mac-mini.home>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 11698e3de8f944b2217c782e5cf4abe605702990
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CMhInNag"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1718790270;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=8diI/1+iVj3Udu4e3kTQO2ehU3caQ3L16dUerpou0Mc=;
+	b=CMhInNagG9xFpXfV3Zu6t6WK5RnF7rY+oQPzm9euBPK6+6TB6vo3lqh4Y1tfGYpdjv3f45
+	+JBLl7b82Ba18UMqtYzFcwb0hIOg9E1an69b9AWj/EUiyYTfkvNjgAlQteRhaFhk+9xwWv
+	zR2BMxj4FLT4FV+KFm/mid514HeURZo=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-43-nw8gOciUMi64g7Fg-uhwoA-1; Wed, 19 Jun 2024 05:44:28 -0400
+X-MC-Unique: nw8gOciUMi64g7Fg-uhwoA-1
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-35f1230659bso4487208f8f.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 19 Jun 2024 02:44:27 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718790267; x=1719395067;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8diI/1+iVj3Udu4e3kTQO2ehU3caQ3L16dUerpou0Mc=;
+        b=Jh+ST/IcWacxocC3X/5iY5PPn8Y5BAEC5/8Cq9HwN/kgIsW3+o/3aWcg/W9DPr0Qf2
+         EgDF5WoYICOkRgCwlHKCHVC2EI6hUjZDpTV6nFcSK1FOl+BP9shze+7XKnCqgpo0M0Ih
+         +bT5wUKebLG3EdfySkwdSnW6UpDIT1Bw8AHPrjXnPUXGelCtlk5vaHCmrwgpGJuQJz7a
+         0715njT3r9Anj+74Nxoj+0ld22SdKTd6kwEawvri+XGlGD22vfgeJtXnl+VhrDcw5Sij
+         ikX0EeUEWOA1nWNMmS/ipMJSToIZlr14ei//w4sjRvz89qxdDkoSdUtvaVi8iXff2fik
+         X9FA==
+X-Forwarded-Encrypted: i=1; AJvYcCVYeX3WHJ6ueSvTpY++sV4smHr3bpg1vaasKkJOETrHNqzFmmSoK2l6w7OzP0vZNurvv2Sc78PfOwEDxVRfQPnmrHkII6Uh+YAUDKvVI0c=
+X-Gm-Message-State: AOJu0YyDiO6qzwr72J7Kk0ONVNY/A9TrsFXzwF5hYp+XaWp+v6BaYHIg
+	CknYRS7gCUVG88qlFiZ7uUad4NxAiUVjdLl0ecEAVTC8o5eX3vs7QYR6oBYVxWMLMmTcpfphP+L
+	o6+3N5FIrlWlsem3vVTo6x5XO1YqjrwQFpcb4s77D0+Bpx5uKfz0TVGrQEiaF0lFR
+X-Received: by 2002:a5d:53cd:0:b0:362:5b83:51dd with SMTP id ffacd0b85a97d-363192cdeb4mr1670526f8f.49.1718790266831;
+        Wed, 19 Jun 2024 02:44:26 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IE5RS7E8zp8zdTdBbL1WHPRHc72MBqW/N8DEob/STZGOgVB+66YWRdUf8oOtYWcNhh/aJEuZw==
+X-Received: by 2002:a5d:53cd:0:b0:362:5b83:51dd with SMTP id ffacd0b85a97d-363192cdeb4mr1670499f8f.49.1718790266398;
+        Wed, 19 Jun 2024 02:44:26 -0700 (PDT)
+Received: from pollux ([2a02:810d:4b3f:ee94:abf:b8ff:feee:998b])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-36075c6fa4esm16532128f8f.67.2024.06.19.02.44.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 19 Jun 2024 02:44:25 -0700 (PDT)
+Date: Wed, 19 Jun 2024 11:44:23 +0200
+From: Danilo Krummrich <dakr@redhat.com>
+To: Benno Lossin <benno.lossin@proton.me>, gregkh@linuxfoundation.org
+Cc: rafael@kernel.org, mcgrof@kernel.org, russ.weight@linux.dev,
+	ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	a.hindborg@samsung.com, aliceryhl@google.com, airlied@gmail.com,
+	fujita.tomonori@gmail.com, pstanner@redhat.com, ajanulgu@redhat.com,
+	lyude@redhat.com, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v4 2/2] rust: add firmware abstractions
+Message-ID: <ZnKod6Wn5louhPu8@pollux>
+References: <20240618154841.6716-1-dakr@redhat.com>
+ <20240618154841.6716-3-dakr@redhat.com>
+ <8d6f98c2-afe2-4e94-b630-96a8fa0b39cf@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <8d6f98c2-afe2-4e94-b630-96a8fa0b39cf@proton.me>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On 17.06.24 07:36, Boqun Feng wrote:
-> On Sun, Jun 16, 2024 at 08:06:05AM -0700, Boqun Feng wrote:
-> [...]
->>>
->>> Note that crossbeam's AtomicCell is also generic, and crossbeam is used
->>> by tons of crates. As Miguel mentioned, I think it's very likely that i=
-n
->>> the future we want be able to do atomics on new types (e.g. for
->>> seqlocks perhaps). We probably don't need the non-lock-free fallback of
->>
->> Good, another design bit, thank you!
->>
->> What's our overall idea on sub-word types, like Atomic<u8> and
->> Atomic<u16>, do we plan to say no to them, or they could have a limited
->> APIs? IIUC, some operations on them are relatively sub-optimal on some
->> architectures, supporting the same set of API as i32 and i64 is probably
->> a bad idea.
->>
->> Another thing in my mind is making `Atomic<T>`
->>
->> =09pub struct Atomic<T: Send + ...> { ... }
->>
->> so that `Atomic<T>` will always be `Sync`, because quite frankly, an
->> atomic type that cannot `Sync` is pointless.
+Greg,
 
-That is true, but adding semantically "unnecessary" bounds can be bad.
-This is because they infect everything that wants to use `Atomic<T>`,
-since they also need to add that bound.
+Benno's comments provide some nice hints to further improve the safety comments.
+Since I was notified that those patches hit your tree already, how do you want
+to proceed?
 
-> Also, how do we avoid this issue [1] in kernel?
+- Danilo
 
-I think that we can first go the way of my second approach (ie adding a
-private trait as a bound on `Atomic<T>` to prevent generic usage). And
-only allow primitives.
-If we then see that people would like to put their own (u8, u16) tuple
-structs into `Atomic<T>`, we have multiple options:
-
-1. Field projection:
-   Only primitives can be `load`ed and `store`ed, to access the values
-   of the tuple, one would need to project to each field and read them.
-
-2. Disallow padding:
-   We add an `unsafe` trait that asserts there are no padding bytes in
-   there (like `NoUinit` from below) and also add a macro that
-   implements the trait safely.
-
-3. Use `MaybeUninit` under the hood:
-   I don't know if this would fix the issue entirely, since that is what
-   crossbeam currently uses (but the issue remains open).
-
-But I don't think that we should encourage large structs to be put into
-`Atomic<T>`, since that would be bad for perf, right? So I think that
-going the way of 1 would be great (if we had FP, otherwise 2 seems fine).
-
-> `atomic_load()` in C is implemented as READ_ONCE() and it's, at most
-> time, a volatile read, so the eventual code is:
->=20
->     let a: (u8, u16) =3D (1, 2);
->     let b =3D unsafe { core::ptr::read_volatile::<i32>(&a as *const _ as =
-*const i32) };
->=20
-> I know we probably ignore data race here and treat `read_volatile` as a
-> dependency read per LKMM [2]. But this is an using of uninitialized
-> data, so it's a bit different.
-
-But would we implement it this way? Or would it go through a C function?
-If we entirely do it in Rust, then yes this is bad.
-
----
-Cheers,
-Benno
-
-> We can do what https://crates.io/crates/atomic does:
->=20
-> =09pub struct Atomic<T: NoUninit + ..> { ... }
->=20
-> , where `NoUinit` means no internal padding bytes, but it loses the
-> ability to put a
->=20
-> =09#[repr(u32)]
-> =09pub enum Foo { .. }
->=20
-> into `Atomic<T>`, right? Which is probably a case you want to support?
->=20
-> Regards,
-> Boqun
->=20
-> [1]: https://github.com/crossbeam-rs/crossbeam/issues/748#issuecomment-11=
-33926617
-> [2]: tools/memory-model/Documentation/access-marking.txt
-
+On Wed, Jun 19, 2024 at 08:58:02AM +0000, Benno Lossin wrote:
+> On 18.06.24 17:48, Danilo Krummrich wrote:
+> > Add an abstraction around the kernels firmware API to request firmware
+> > images. The abstraction provides functions to access the firmware's size
+> > and backing buffer.
+> > 
+> > The firmware is released once the abstraction instance is dropped.
+> > 
+> > Signed-off-by: Danilo Krummrich <dakr@redhat.com>
+> > ---
+> >  drivers/base/firmware_loader/Kconfig |   7 ++
+> >  rust/bindings/bindings_helper.h      |   1 +
+> >  rust/kernel/firmware.rs              | 101 +++++++++++++++++++++++++++
+> >  rust/kernel/lib.rs                   |   2 +
+> >  4 files changed, 111 insertions(+)
+> >  create mode 100644 rust/kernel/firmware.rs
+> > 
+> > diff --git a/drivers/base/firmware_loader/Kconfig b/drivers/base/firmware_loader/Kconfig
+> > index 5ca00e02fe82..a03701674265 100644
+> > --- a/drivers/base/firmware_loader/Kconfig
+> > +++ b/drivers/base/firmware_loader/Kconfig
+> > @@ -37,6 +37,13 @@ config FW_LOADER_DEBUG
+> >  	  SHA256 checksums to the kernel log for each firmware file that is
+> >  	  loaded.
+> > 
+> > +config RUST_FW_LOADER_ABSTRACTIONS
+> > +	bool "Rust Firmware Loader abstractions"
+> > +	depends on RUST
+> > +	depends on FW_LOADER=y
+> > +	help
+> > +	  This enables the Rust abstractions for the firmware loader API.
+> > +
+> >  if FW_LOADER
+> > 
+> >  config FW_LOADER_PAGED_BUF
+> > diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+> > index ddb5644d4fd9..18a3f05115cb 100644
+> > --- a/rust/bindings/bindings_helper.h
+> > +++ b/rust/bindings/bindings_helper.h
+> > @@ -9,6 +9,7 @@
+> >  #include <kunit/test.h>
+> >  #include <linux/errname.h>
+> >  #include <linux/ethtool.h>
+> > +#include <linux/firmware.h>
+> >  #include <linux/jiffies.h>
+> >  #include <linux/mdio.h>
+> >  #include <linux/phy.h>
+> > diff --git a/rust/kernel/firmware.rs b/rust/kernel/firmware.rs
+> > new file mode 100644
+> > index 000000000000..b55ea1b45368
+> > --- /dev/null
+> > +++ b/rust/kernel/firmware.rs
+> > @@ -0,0 +1,101 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +
+> > +//! Firmware abstraction
+> > +//!
+> > +//! C header: [`include/linux/firmware.h`](srctree/include/linux/firmware.h")
+> > +
+> > +use crate::{bindings, device::Device, error::Error, error::Result, str::CStr};
+> > +use core::ptr::NonNull;
+> > +
+> > +// One of the following: `bindings::request_firmware`, `bindings::firmware_request_nowarn`,
+> > +// `firmware_request_platform`, `bindings::request_firmware_direct`
+> > +type FwFunc =
+> > +    unsafe extern "C" fn(*mut *const bindings::firmware, *const i8, *mut bindings::device) -> i32;
+> > +
+> > +/// Abstraction around a C `struct firmware`.
+> > +///
+> > +/// This is a simple abstraction around the C firmware API. Just like with the C API, firmware can
+> > +/// be requested. Once requested the abstraction provides direct access to the firmware buffer as
+> > +/// `&[u8]`. The firmware is released once [`Firmware`] is dropped.
+> > +///
+> > +/// # Invariants
+> > +///
+> > +/// The pointer is valid, and has ownership over the instance of `struct firmware`.
+> > +///
+> > +/// Once requested, the `Firmware` backing buffer is not modified until it is freed when `Firmware`
+> > +/// is dropped.
+> 
+> This can simply be "The `firmware`'s backing buffer is not modified."
+> Since I interpret "Once requested" as "Once created" and you are allowed
+> to break invariants as long as nobody can observe that.
+> 
+> > +///
+> > +/// # Examples
+> > +///
+> > +/// ```
+> > +/// # use kernel::{c_str, device::Device, firmware::Firmware};
+> > +///
+> > +/// # // SAFETY: *NOT* safe, just for the example to get an `ARef<Device>` instance
+> > +/// # let dev = unsafe { Device::from_raw(core::ptr::null_mut()) };
+> > +///
+> > +/// let fw = Firmware::request(c_str!("path/to/firmware.bin"), &dev).unwrap();
+> > +/// let blob = fw.data();
+> > +/// ```
+> > +pub struct Firmware(NonNull<bindings::firmware>);
+> > +
+> > +impl Firmware {
+> > +    fn request_internal(name: &CStr, dev: &Device, func: FwFunc) -> Result<Self> {
+> > +        let mut fw: *mut bindings::firmware = core::ptr::null_mut();
+> > +        let pfw: *mut *mut bindings::firmware = &mut fw;
+> > +
+> > +        // SAFETY: `pfw` is a valid pointer to a NULL initialized `bindings::firmware` pointer.
+> > +        // `name` and `dev` are valid as by their type invariants.
+> > +        let ret = unsafe { func(pfw as _, name.as_char_ptr(), dev.as_raw()) };
+> > +        if ret != 0 {
+> > +            return Err(Error::from_errno(ret));
+> > +        }
+> > +
+> > +        // SAFETY: `func` not bailing out with a non-zero error code, guarantees that `fw` is a
+> > +        // valid pointer to `bindings::firmware`.
+> > +        Ok(Firmware(unsafe { NonNull::new_unchecked(fw) }))
+> > +    }
+> > +
+> > +    /// Send a firmware request and wait for it. See also `bindings::request_firmware`.
+> > +    pub fn request(name: &CStr, dev: &Device) -> Result<Self> {
+> > +        Self::request_internal(name, dev, bindings::request_firmware)
+> > +    }
+> > +
+> > +    /// Send a request for an optional firmware module. See also
+> > +    /// `bindings::firmware_request_nowarn`.
+> > +    pub fn request_nowarn(name: &CStr, dev: &Device) -> Result<Self> {
+> > +        Self::request_internal(name, dev, bindings::firmware_request_nowarn)
+> > +    }
+> > +
+> > +    fn as_raw(&self) -> *mut bindings::firmware {
+> > +        self.0.as_ptr()
+> > +    }
+> > +
+> > +    /// Returns the size of the requested firmware in bytes.
+> > +    pub fn size(&self) -> usize {
+> > +        // SAFETY: Safe by the type invariant.
+> > +        unsafe { (*self.as_raw()).size }
+> > +    }
+> > +
+> > +    /// Returns the requested firmware as `&[u8]`.
+> > +    pub fn data(&self) -> &[u8] {
+> > +        // SAFETY: Safe by the type invariant. Additionally, `bindings::firmware` guarantees, if
+> 
+> I would not write "Safe by ...", since it is important to know what is
+> guaranteed by what. Instead I would write "self.as_raw() is valid by the
+> type invariant.".
+> 
+> > +        // successfully requested, that `bindings::firmware::data` has a size of
+> > +        // `bindings::firmware::size` bytes.
+> > +        unsafe { core::slice::from_raw_parts((*self.as_raw()).data, self.size()) }
+> > +    }
+> > +}
+> > +
+> > +impl Drop for Firmware {
+> > +    fn drop(&mut self) {
+> > +        // SAFETY: Safe by the type invariant.
+> 
+> Ditto.
+> 
+> ---
+> Cheers,
+> Benno
+> 
+> > +        unsafe { bindings::release_firmware(self.as_raw()) };
+> > +    }
+> > +}
+> > +
+> > +// SAFETY: `Firmware` only holds a pointer to a C `struct firmware`, which is safe to be used from
+> > +// any thread.
+> > +unsafe impl Send for Firmware {}
+> > +
+> > +// SAFETY: `Firmware` only holds a pointer to a C `struct firmware`, references to which are safe to
+> > +// be used from any thread.
+> > +unsafe impl Sync for Firmware {}
+> > diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> > index dd1207f1a873..7707cb013ce9 100644
+> > --- a/rust/kernel/lib.rs
+> > +++ b/rust/kernel/lib.rs
+> > @@ -30,6 +30,8 @@
+> >  mod build_assert;
+> >  pub mod device;
+> >  pub mod error;
+> > +#[cfg(CONFIG_RUST_FW_LOADER_ABSTRACTIONS)]
+> > +pub mod firmware;
+> >  pub mod init;
+> >  pub mod ioctl;
+> >  #[cfg(CONFIG_KUNIT)]
+> > --
+> > 2.45.1
+> > 
+> 
 
