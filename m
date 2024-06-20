@@ -1,59 +1,65 @@
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0146819B3E1
-	for <rust-for-linux@vger.kernel.org>; Thu, 20 Jun 2024 10:05:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B02941AAE30
+	for <rust-for-linux@vger.kernel.org>; Thu, 20 Jun 2024 11:10:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718877961; cv=none; b=QzAPFUPE+xWdRpj/a4jFqWauYCb7MzQnOFJExL+zGBOKf9NSOjvzGriFlwOGMauGD0wro1VrhhvmbrcTzNx4qN9WukvTofL0rrWJ2wdP0a12TAq3IZjRRWXzHVHJ8PbAWbIwGKFPd1UcsY1OtV40QiC+10Cc6FVoytD9r8vdBsk=
+	t=1718881806; cv=none; b=rmb0r+TwN0fzteMi/4jYdyo3I/5/6i6V96K59xMmUXD0N7FQOfpt5L/egVMZJQC6JjGetW8bmt12h3ZxBunwZNRgJrQSQKeyTgeuPxIkCJXlhWvnf1mdUR/pJ3WL4mxmsgkHaxAMNxZd2JeCBpTda17aECcQUpWK5A4Zi+ItEBE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718877961; c=relaxed/simple;
-	bh=eLn2BPyqwtOsU8OJXbiU6ccNFc9v0T0ok33O1jzeSrY=;
+	s=arc-20240116; t=1718881806; c=relaxed/simple;
+	bh=fjIoyLutiqUfKxBUpky93Pe7mU64/kE4jZSsWuFL0cs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CSC+83HzA0qrV4+CTEirRfqvd8Tfz8zTXWKP6zQ8eVA0mx8bDSrzsGyWOBHoGc9Bwm5FopKAVuTTS1mk8rL+GusZnZu3u1irKiDWXq+I07Gi5Wy4H5L+HvyNdov2HJqBUAFYBLk8YDuQoveC3XVxWLNXcOZIXKjQUOWxReOyYPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ei2jqAh+; arc=none smtp.client-ip=209.85.210.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	 In-Reply-To:Content-Type:Content-Disposition; b=hfF+1/y3DZjqfm8U1TN2amFkn45JiLlBSI2PwXsDisvHoSnQeZEW6yQPdeJM7wwvK0VtO5FYecWB+2g2yr8/HSWLZASMxC15ls9MJ9Qo7CbTtUINaGO1JaJGkAT9IIM/dYfBuQA7IlERWfB7Op2gLOIYbwTIniAvLMxd1NBYad4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=J2A3TSx9; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ei2jqAh+"
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-70601bcfddcso675510b3a.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 20 Jun 2024 03:05:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1718877959; x=1719482759; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=NhWu1fk/lCmbQUjWXvQO3v9FYyNWP0Nqdx7mwhkHrbY=;
-        b=ei2jqAh+Dw283azot3aTYueuA2c9WNYQRurx099Xo8IsQSZ8ebgJE8W2S1ZjIRfpLm
-         t1tIZNHjywvOpY3z7wCXWciMoqjwLLpYlk+4sykm6YO3uNIwYhzQ4IHvgUw2yldjLK61
-         KIX7sErrkHKsA7CtMXY68w5ZAFiCNk8up7F6Qj3ygCD0mGZACxooUWgNJxwmV+RdfTra
-         kiRI3Q0rW3zdh1Ali9WPQgfYLvIfHmMXbi9+gnQGBQHrLfJE6vDqUkwILgcfvpeiuslW
-         6Tsh4t0HsROVt5aBdZLAHJyHVKkW1ttZ9leoIM1kPJg5nSDcPZ0xxziWIl8cYu675X5c
-         6pzA==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="J2A3TSx9"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1718881803;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=j94HKKNLZdh9dITeBbXgdoYL8Fm7iRtd8iIrtfpWm7o=;
+	b=J2A3TSx9Ep0H7DOSjpUycUgY83aXh2StmRLgbDIuUuTe84tJxhR0wOcPQkGZLVv1QuA03c
+	kTDneaPKTrSMxYVoRneXxGM+9f4j/nke2RMsDjrJ4qAl23pdbyeWqCfA5As81PCEr0oRYq
+	jmtXZMASgkOPl9CikL/ho+m/Sb7iMU0=
+Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
+ [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-653-Ov863r2-NnGt4nktEXh1zA-1; Thu, 20 Jun 2024 07:10:02 -0400
+X-MC-Unique: Ov863r2-NnGt4nktEXh1zA-1
+Received: by mail-lf1-f72.google.com with SMTP id 2adb3069b0e04-52cc6bdf698so644299e87.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 20 Jun 2024 04:10:01 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718877959; x=1719482759;
+        d=1e100.net; s=20230601; t=1718881800; x=1719486600;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=NhWu1fk/lCmbQUjWXvQO3v9FYyNWP0Nqdx7mwhkHrbY=;
-        b=QyCc538fjgjbrdJMpMkF/wlraseXppqMe1hGiRYFubJa9j62F/HmaevQdyJXlg0jsU
-         BHt9zZ8hH/XA/M6+cYidtJq8CtRJKvEuU1t1Jai2jzlPJ/1qQd2OrWMuWI3nDjOuxOX0
-         2Y2+tP6bEkYClaNoyOQafN9Vw0RDqbB/MX3uqoCCy68/R9/RKfmP42l3RM1lBjx0iTIS
-         v5Y4oI0LHUA3zvoavVe+dYft4swe7EFFG7UOFft1rFCPuXfmTkZ5ndTSR8eiQPjtRDUi
-         Yju8RlWyJD0nyLC8l+x+Fbn3LDHNm/lu17hnwQyHar7oV8hHca2hASK/+4SI3LIWRjsL
-         b22w==
-X-Forwarded-Encrypted: i=1; AJvYcCX4mAeiaCHGVrQ+BYYl9a8ff5dlvvzAYKw8+mOtNnI+rELtwtTvPk+lFBG99M1cIZ5T7ODF5cxkxj2/8tvCYnSaLXsgM4gzept3h1eJ8G0=
-X-Gm-Message-State: AOJu0YxuJMBttlfn0RuQ6nwecgBQ7DOoMRw+cOA/8QjjTfhLRL4u2PjF
-	D4oksOijec89UpONlKZTJ+N7XedCVs50YUP0Lb9sU1kjej7JFsZf8i9C3LCRmLg=
-X-Google-Smtp-Source: AGHT+IFCjK0hOvRoxLRcYP4hRKS/qRnuD1YRVk3loP8lgbZXBmRWqsOlKdxH+a0aQHsc5stH6MChIg==
-X-Received: by 2002:aa7:9291:0:b0:706:337f:1ab7 with SMTP id d2e1a72fcca58-706337f1d69mr4258838b3a.34.1718877959125;
-        Thu, 20 Jun 2024 03:05:59 -0700 (PDT)
-Received: from localhost ([122.172.82.13])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-705cc91e0fbsm12080981b3a.9.2024.06.20.03.05.58
+        bh=j94HKKNLZdh9dITeBbXgdoYL8Fm7iRtd8iIrtfpWm7o=;
+        b=g8CEvExynWnS10M5bEEN56t1TjjGnxoSwkCKudfClOl1yynp1LWJmvJ9ujktKn/SJQ
+         o8wePkwLu6lCNmBws2pa/E6buy+SQSu9Acwe4/Jc6G1wwrRLFnbK6o8LRgKThfYuMsah
+         VE6NQ2k+Jm44TW53VcpqLIsD5tH1i4fo1GYWDvcmJJytTqrFXDYuMJriaD9rQ1SLIGV2
+         yncEQA9gZckLiluvl3zKnKndb1iQQ0VXNtjkML6wa//RgeAXH14OVtSeAp8h0WTwWYPn
+         SY74Dk3TrtPWJ5eiQTyIF9szc3hI4VmwmO8ANocXIwxUcK5OnbVNW45ofK2WQfO8HZl+
+         mEjg==
+X-Forwarded-Encrypted: i=1; AJvYcCU53e/TxCw+U9M+FiscoEmFno7PoobkTVF766U4VsPDFDQzRNEavRu10MBfOALTLNoYasSUcwcwXfbCIeeB1LTT6DTc/hYumFc1oEqG7aA=
+X-Gm-Message-State: AOJu0Yyh2sQKrWPNVWioQ8Ftyxvv2xDL5yMb50DOoJHkiZgKJ6zM+THS
+	zfDchxeYiSvAxMCryjLi0NPEOn3zJJiHvy8bLZSliJNVnHfm7PjY/D5qP1E9mob1C1vVLshxdqk
+	BB3Oa86GebhKRhGPka7JJcD8MKivZ1UVTu8/mb09S2A6q+0MQbeIe9h5HsP4Pjutu
+X-Received: by 2002:a05:6512:2309:b0:52c:9906:fa33 with SMTP id 2adb3069b0e04-52ccaa885ddmr4484219e87.43.1718881800054;
+        Thu, 20 Jun 2024 04:10:00 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFKYO/OJsiuoxGtopx4SVBBkDAH3hoecb89O6oPnar7s+vD4vlzD4TqI6QPjh899vPhPykpPQ==
+X-Received: by 2002:a05:6512:2309:b0:52c:9906:fa33 with SMTP id 2adb3069b0e04-52ccaa885ddmr4484200e87.43.1718881799652;
+        Thu, 20 Jun 2024 04:09:59 -0700 (PDT)
+Received: from pollux ([2a02:810d:4b3f:ee94:abf:b8ff:feee:998b])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4247d0ca0afsm21583415e9.25.2024.06.20.04.09.57
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Jun 2024 03:05:58 -0700 (PDT)
-Date: Thu, 20 Jun 2024 15:35:56 +0530
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Danilo Krummrich <dakr@redhat.com>
+        Thu, 20 Jun 2024 04:09:58 -0700 (PDT)
+Date: Thu, 20 Jun 2024 13:09:56 +0200
+From: Danilo Krummrich <dakr@redhat.com>
+To: Viresh Kumar <viresh.kumar@linaro.org>
 Cc: gregkh@linuxfoundation.org, rafael@kernel.org, bhelgaas@google.com,
 	ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
 	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
@@ -66,75 +72,114 @@ Cc: gregkh@linuxfoundation.org, rafael@kernel.org, bhelgaas@google.com,
 	Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
 	Vincent Guittot <vincent.guittot@linaro.org>
 Subject: Re: [PATCH v2 00/10] Device / Driver and PCI Rust abstractions
-Message-ID: <20240620100556.xsehtd7ii25rtn7k@vireshk-i7>
+Message-ID: <ZnQOBIQPvB8xQ88r@pollux>
 References: <20240618234025.15036-1-dakr@redhat.com>
  <20240619120407.o7qh6jlld76j5luu@vireshk-i7>
  <ZnLQxZjtsmDJb4I1@pollux>
+ <20240620100556.xsehtd7ii25rtn7k@vireshk-i7>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+In-Reply-To: <20240620100556.xsehtd7ii25rtn7k@vireshk-i7>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZnLQxZjtsmDJb4I1@pollux>
 
-On 19-06-24, 14:36, Danilo Krummrich wrote:
-> If you want to split `cpufreq::Registration` in `new()` and `register()`, you
-> probably want to pass the registration object to `Devres` in `register()`
-> instead.
+On Thu, Jun 20, 2024 at 03:35:56PM +0530, Viresh Kumar wrote:
+> On 19-06-24, 14:36, Danilo Krummrich wrote:
+> > If you want to split `cpufreq::Registration` in `new()` and `register()`, you
+> > probably want to pass the registration object to `Devres` in `register()`
+> > instead.
+> > 
+> > However, I wouldn't recommend splitting it up (unless you absolutely have to),
+> > it's way cleaner (and probably less racy) if things are registered once the
+> > registration is created.
 > 
-> However, I wouldn't recommend splitting it up (unless you absolutely have to),
-> it's way cleaner (and probably less racy) if things are registered once the
-> registration is created.
-
-> The PCI abstraction did not need to change for that, since it uses the
-> generalized `driver::Registration`, which is handled by the `Module` structure
-> instead.
+> > The PCI abstraction did not need to change for that, since it uses the
+> > generalized `driver::Registration`, which is handled by the `Module` structure
+> > instead.
+> > 
+> > However, staging/dev also contains the `drm::drv::Registration` type [1], which
+> > in principle does the same thing as `cpufreq::Registration` just for a DRM
+> > device.
+> > 
+> > If you're looking for an example driver making use of this, please have a look
+> > at Nova [1].
 > 
-> However, staging/dev also contains the `drm::drv::Registration` type [1], which
-> in principle does the same thing as `cpufreq::Registration` just for a DRM
-> device.
+> Thanks for the pointers Danilo.
 > 
-> If you're looking for an example driver making use of this, please have a look
-> at Nova [1].
+> There is more to it now and I still don't know what's the best way
+> forward. :(
+> 
+> Devres will probably work well with the frameworks that provide a bus,
+> where a device and driver are matched and probe/remove are called.
+> Obviously Devres needs a struct device, whose probing/removal can
+> allocate/free resources.
 
-Thanks for the pointers Danilo.
+Indeed, but please note that this was the case before as well. When we had
+`device::Data` with a `Revokable<T>` for Registrations this revokable was
+revoked through the `DeviceRemoval` trait when the driver was unbound from the
+device.
 
-There is more to it now and I still don't know what's the best way
-forward. :(
+> 
+> The CPUFreq framework is a bit different. There is no bus, device or
+> driver there. The device for the framework is the CPU device, but we
+> don't (can't) really bind a struct driver to it. There are more layers
+> in the kernel which use the CPU devices directly, like cpuidle, etc.
+> And so the CPU device isn't really private to the cpufreq/cpuidle
+> frameworks.
 
-Devres will probably work well with the frameworks that provide a bus,
-where a device and driver are matched and probe/remove are called.
-Obviously Devres needs a struct device, whose probing/removal can
-allocate/free resources.
+If there is no bus, device or driver, then those abstractions aren't for your
+use case. Those are abstractions around the device / driver core.
 
-The CPUFreq framework is a bit different. There is no bus, device or
-driver there. The device for the framework is the CPU device, but we
-don't (can't) really bind a struct driver to it. There are more layers
-in the kernel which use the CPU devices directly, like cpuidle, etc.
-And so the CPU device isn't really private to the cpufreq/cpuidle
-frameworks.
+> 
+> Most of the cpufreq drivers register with the cpufreq core from their
+> module_init() function, and unregister from module_exit(). There is no
+> probe/remove() callbacks available. Some drivers though have a
+> platform device/driver model implemented over an imaginary platform
+> device, a hack implemented to get them working because of special
+> requirements (one of them is to allow defer probing to work). The
+> driver I am implementing, cpufreq-dt, also has one such platform
+> device which is created at runtime. But there will be others without a
+> platform device.
+> 
+> The point is that the Rust cpufreq core can't do the Devres stuff
+> itself and it can't expect a struct device to be made available to it
+> by the driver. Some cpufreq drivers will have a platform device, some
+> won't.
 
-Most of the cpufreq drivers register with the cpufreq core from their
-module_init() function, and unregister from module_exit(). There is no
-probe/remove() callbacks available. Some drivers though have a
-platform device/driver model implemented over an imaginary platform
-device, a hack implemented to get them working because of special
-requirements (one of them is to allow defer probing to work). The
-driver I am implementing, cpufreq-dt, also has one such platform
-device which is created at runtime. But there will be others without a
-platform device.
+That seems to be purely a design question for cpufreq drivers then.
 
-The point is that the Rust cpufreq core can't do the Devres stuff
-itself and it can't expect a struct device to be made available to it
-by the driver. Some cpufreq drivers will have a platform device, some
-won't.
+What prevents you from always creating a corresponding platform device?
 
-One way to make this whole work is to reintroduce the Data part, just
-for cpufreq core, but I really don't want to do it. What else can be
-done ?
+If you really want some drivers to bypass the device / driver model (not sure
+if that's a good idea though), you need separate abstractions for that.
 
--- 
-viresh
+> 
+> One way to make this whole work is to reintroduce the Data part, just
+> for cpufreq core, but I really don't want to do it.
+
+That doesn't help you either. As mentioned above, `device::Data` was supposed to
+receive a callback (`DeviceRemoval`) from the underlying driver (platform_driver
+in your case) on device detach to revoke the registration.
+
+By using `Devres` instead, nothing changes semantically, but it makes the
+resulting code cleaner.
+
+> What else can be done ?
+
+Think about what you want the lifetime of your cpufreq registration to be.
+
+Currently, it seems you want to do both, bind it to probe() / remove(), in case
+the driver is implemented as platform_driver, and to module_init() /
+module_exit(), in case the device / driver model is bypassed.
+
+> 
+> -- 
+> viresh
+> 
+
