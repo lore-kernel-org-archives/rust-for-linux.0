@@ -1,124 +1,140 @@
-Received: from mail-ed1-f48.google.com (mail-ed1-f48.google.com [209.85.208.48])
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BB4117557C
-	for <rust-for-linux@vger.kernel.org>; Thu, 20 Jun 2024 08:58:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0146819B3E1
+	for <rust-for-linux@vger.kernel.org>; Thu, 20 Jun 2024 10:05:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718873887; cv=none; b=ZFaqKh9jwsumzvL4EaDil2KDGGzSxbrV9q6r5V5EVTIZptWW65bFfaMtMl+ltKBNjaBUw2Y7l1OvXQgU7Ciuszkf1SgqEMKEFlWEK7TTQ5eQFRLU4FMwLdkmYWaq1wgVE0A1i2Bx0MTren5gmolIWGJ/1hTDdPp18d5LEXwseYY=
+	t=1718877961; cv=none; b=QzAPFUPE+xWdRpj/a4jFqWauYCb7MzQnOFJExL+zGBOKf9NSOjvzGriFlwOGMauGD0wro1VrhhvmbrcTzNx4qN9WukvTofL0rrWJ2wdP0a12TAq3IZjRRWXzHVHJ8PbAWbIwGKFPd1UcsY1OtV40QiC+10Cc6FVoytD9r8vdBsk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718873887; c=relaxed/simple;
-	bh=R2m1iTMgAAfEnaRxsHj5OU4tT6yTo3Fl0TJXfy9fNwg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=DjzMAVYI+UdZfuHKarcl+G6F4IFDxk1gFClEHq7VqP2ET240xZPUe59CMEWEaLCxdkqbTBFIy6FQi2Iol0scZ4WwWRtBhNxo5iGgsx0K/7nQmTCP8P5/aLt7yKiBqcneD5jqeyaNaNXAuqJfE+DWVb2rZsI2MLOazH+3pQ2KPN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk; spf=none smtp.mailfrom=metaspace.dk; dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b=zPn3+QHG; arc=none smtp.client-ip=209.85.208.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=metaspace.dk
+	s=arc-20240116; t=1718877961; c=relaxed/simple;
+	bh=eLn2BPyqwtOsU8OJXbiU6ccNFc9v0T0ok33O1jzeSrY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=CSC+83HzA0qrV4+CTEirRfqvd8Tfz8zTXWKP6zQ8eVA0mx8bDSrzsGyWOBHoGc9Bwm5FopKAVuTTS1mk8rL+GusZnZu3u1irKiDWXq+I07Gi5Wy4H5L+HvyNdov2HJqBUAFYBLk8YDuQoveC3XVxWLNXcOZIXKjQUOWxReOyYPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=ei2jqAh+; arc=none smtp.client-ip=209.85.210.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b="zPn3+QHG"
-Received: by mail-ed1-f48.google.com with SMTP id 4fb4d7f45d1cf-57a4d7ba501so579665a12.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 20 Jun 2024 01:58:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="ei2jqAh+"
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-70601bcfddcso675510b3a.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 20 Jun 2024 03:05:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=metaspace-dk.20230601.gappssmtp.com; s=20230601; t=1718873881; x=1719478681; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=nxlm73kuKE2XKIMoWmSTWrBbAjROgxfrZ4Cghh1emzY=;
-        b=zPn3+QHGH3mGdt4J/BB0b0OjbkzZCjpMZIuXAHBEUuyMO46jcv/us/VID/LQQmu53x
-         ttG6miwEvnq3TFTJX489y3q/VQ8fcemswjZjqWPxnaV2xNgkF6U4+C2woh07pjgwamTp
-         a5M3/vTdTwc265yfigTzTOM1cLLej1d7OhC2q0ESPkR/pEpS9we3C5T/hV7SIViaRPKb
-         i2xrAnR5X+CSfbyvjmuKqdTvEpBzBbBmcYDHapJnxF37T2R9mKCGDdPlSxqBwpdWVCq1
-         UF5LP8qO8CKCy8bEqEHAuL1OWYAHEs6K0UWR2qG4Zj8PW8fng3u0o8AVtWSXkUaGMVA7
-         5Eqw==
+        d=linaro.org; s=google; t=1718877959; x=1719482759; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=NhWu1fk/lCmbQUjWXvQO3v9FYyNWP0Nqdx7mwhkHrbY=;
+        b=ei2jqAh+Dw283azot3aTYueuA2c9WNYQRurx099Xo8IsQSZ8ebgJE8W2S1ZjIRfpLm
+         t1tIZNHjywvOpY3z7wCXWciMoqjwLLpYlk+4sykm6YO3uNIwYhzQ4IHvgUw2yldjLK61
+         KIX7sErrkHKsA7CtMXY68w5ZAFiCNk8up7F6Qj3ygCD0mGZACxooUWgNJxwmV+RdfTra
+         kiRI3Q0rW3zdh1Ali9WPQgfYLvIfHmMXbi9+gnQGBQHrLfJE6vDqUkwILgcfvpeiuslW
+         6Tsh4t0HsROVt5aBdZLAHJyHVKkW1ttZ9leoIM1kPJg5nSDcPZ0xxziWIl8cYu675X5c
+         6pzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718873881; x=1719478681;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=nxlm73kuKE2XKIMoWmSTWrBbAjROgxfrZ4Cghh1emzY=;
-        b=SG1+TgF8weeq8h0shsqpmgwMKk/vfqW0TK/Ej07s4xmCgPKAhsKRGvZbZRpRQ1p8aW
-         4wcroZpxCezCOIuGJm6QasOACSn1bbjpB+PWmAa+jpYqBXiqeZgmw//doLXHULC9QC1Z
-         BrPQ8tGX7Zt/9B1ZGrr66jFCO3+nW5KGOoRa4tEDVfs3HQw7VEe01a6gH7QiBkhmO+JP
-         dxmcaNp1VFmsCBWjanuOxjNMvUt4ydA0SI9men3+PsAx1Lb8NleP74/sNLbbmCl7FumD
-         Ywj5cxZZfGS61LM/z/U4b8aRZ9nDbyLJz8rNojocjyLpbwGMFlPUqmgV9y8nPxj+3GR9
-         6Bjw==
-X-Forwarded-Encrypted: i=1; AJvYcCUhzyR3LlW+wtCgfVlY7kSjlSbyPmE3/PUhUN9ZX7xiGsigFX2YAo0KHS/bUDTLuJvLfpzkbFMl/ohHkJ9LnZqZR/ruoPvdUzrJehjINIw=
-X-Gm-Message-State: AOJu0YwWLcmcNKkPdlI6NSciOeq4LAk2G8Lnfmw8COTn+hysRAfHSxRK
-	vF9bxMOuTM3cDamNSsS/s4NBAG9gu3fVk80qw6XBgdpuHkAZeeM8LE6osjMHbwE=
-X-Google-Smtp-Source: AGHT+IFNBPfPRC5d3WpzjNOlLtaGNXM1BXKDPBXyHCQb4RbbNdBlIV04IVIbPwWrAX9/Zw92/CFflw==
-X-Received: by 2002:a50:8d5a:0:b0:57c:6740:f47c with SMTP id 4fb4d7f45d1cf-57d07eabd35mr2962176a12.27.1718873881269;
-        Thu, 20 Jun 2024 01:58:01 -0700 (PDT)
-Received: from localhost ([194.62.217.2])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-57cbe89005asm8226647a12.10.2024.06.20.01.58.00
+        d=1e100.net; s=20230601; t=1718877959; x=1719482759;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NhWu1fk/lCmbQUjWXvQO3v9FYyNWP0Nqdx7mwhkHrbY=;
+        b=QyCc538fjgjbrdJMpMkF/wlraseXppqMe1hGiRYFubJa9j62F/HmaevQdyJXlg0jsU
+         BHt9zZ8hH/XA/M6+cYidtJq8CtRJKvEuU1t1Jai2jzlPJ/1qQd2OrWMuWI3nDjOuxOX0
+         2Y2+tP6bEkYClaNoyOQafN9Vw0RDqbB/MX3uqoCCy68/R9/RKfmP42l3RM1lBjx0iTIS
+         v5Y4oI0LHUA3zvoavVe+dYft4swe7EFFG7UOFft1rFCPuXfmTkZ5ndTSR8eiQPjtRDUi
+         Yju8RlWyJD0nyLC8l+x+Fbn3LDHNm/lu17hnwQyHar7oV8hHca2hASK/+4SI3LIWRjsL
+         b22w==
+X-Forwarded-Encrypted: i=1; AJvYcCX4mAeiaCHGVrQ+BYYl9a8ff5dlvvzAYKw8+mOtNnI+rELtwtTvPk+lFBG99M1cIZ5T7ODF5cxkxj2/8tvCYnSaLXsgM4gzept3h1eJ8G0=
+X-Gm-Message-State: AOJu0YxuJMBttlfn0RuQ6nwecgBQ7DOoMRw+cOA/8QjjTfhLRL4u2PjF
+	D4oksOijec89UpONlKZTJ+N7XedCVs50YUP0Lb9sU1kjej7JFsZf8i9C3LCRmLg=
+X-Google-Smtp-Source: AGHT+IFCjK0hOvRoxLRcYP4hRKS/qRnuD1YRVk3loP8lgbZXBmRWqsOlKdxH+a0aQHsc5stH6MChIg==
+X-Received: by 2002:aa7:9291:0:b0:706:337f:1ab7 with SMTP id d2e1a72fcca58-706337f1d69mr4258838b3a.34.1718877959125;
+        Thu, 20 Jun 2024 03:05:59 -0700 (PDT)
+Received: from localhost ([122.172.82.13])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-705cc91e0fbsm12080981b3a.9.2024.06.20.03.05.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Jun 2024 01:58:00 -0700 (PDT)
-From: Andreas Hindborg <nmi@metaspace.dk>
-To: Jens Axboe <axboe@kernel.dk>,
-	"linux-block @ vger . kernel . org" <linux-block@vger.kernel.org>
-Cc: Christoph Hellwig <hch@lst.de>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	rust-for-linux@vger.kernel.org,
-	Andreas Hindborg <nmi@metaspace.dk>,
-	Andreas Hindborg <a.hindborg@samsung.com>
-Subject: [PATCH] rust: block: do not use removed queue flag API
-Date: Thu, 20 Jun 2024 10:57:21 +0200
-Message-ID: <20240620085721.1218296-1-nmi@metaspace.dk>
-X-Mailer: git-send-email 2.45.2
+        Thu, 20 Jun 2024 03:05:58 -0700 (PDT)
+Date: Thu, 20 Jun 2024 15:35:56 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Danilo Krummrich <dakr@redhat.com>
+Cc: gregkh@linuxfoundation.org, rafael@kernel.org, bhelgaas@google.com,
+	ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me, a.hindborg@samsung.com,
+	aliceryhl@google.com, airlied@gmail.com, fujita.tomonori@gmail.com,
+	lina@asahilina.net, pstanner@redhat.com, ajanulgu@redhat.com,
+	lyude@redhat.com, robh@kernel.org, daniel.almeida@collabora.com,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org,
+	Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+	Vincent Guittot <vincent.guittot@linaro.org>
+Subject: Re: [PATCH v2 00/10] Device / Driver and PCI Rust abstractions
+Message-ID: <20240620100556.xsehtd7ii25rtn7k@vireshk-i7>
+References: <20240618234025.15036-1-dakr@redhat.com>
+ <20240619120407.o7qh6jlld76j5luu@vireshk-i7>
+ <ZnLQxZjtsmDJb4I1@pollux>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZnLQxZjtsmDJb4I1@pollux>
 
-From: Andreas Hindborg <a.hindborg@samsung.com>
+On 19-06-24, 14:36, Danilo Krummrich wrote:
+> If you want to split `cpufreq::Registration` in `new()` and `register()`, you
+> probably want to pass the registration object to `Devres` in `register()`
+> instead.
+> 
+> However, I wouldn't recommend splitting it up (unless you absolutely have to),
+> it's way cleaner (and probably less racy) if things are registered once the
+> registration is created.
 
-`blk_queue_flag_set` and `blk_queue_flag_clear` was removed in favor of a
-new API. This caused a build error for Rust block device abstractions.
-Thus, use the new feature passing API instead of the old removed API.
+> The PCI abstraction did not need to change for that, since it uses the
+> generalized `driver::Registration`, which is handled by the `Module` structure
+> instead.
+> 
+> However, staging/dev also contains the `drm::drv::Registration` type [1], which
+> in principle does the same thing as `cpufreq::Registration` just for a DRM
+> device.
+> 
+> If you're looking for an example driver making use of this, please have a look
+> at Nova [1].
 
-Fixes: bd4a633b6f7c ("block: move the nonrot flag to queue_limits")
-Signed-off-by: Andreas Hindborg <a.hindborg@samsung.com>
----
- rust/kernel/block/mq/gen_disk.rs | 17 +++--------------
- 1 file changed, 3 insertions(+), 14 deletions(-)
+Thanks for the pointers Danilo.
 
-diff --git a/rust/kernel/block/mq/gen_disk.rs b/rust/kernel/block/mq/gen_disk.rs
-index e06044b549e0..f548a6199847 100644
---- a/rust/kernel/block/mq/gen_disk.rs
-+++ b/rust/kernel/block/mq/gen_disk.rs
-@@ -100,6 +100,9 @@ pub fn build<T: Operations>(
- 
-         lim.logical_block_size = self.logical_block_size;
-         lim.physical_block_size = self.physical_block_size;
-+        if self.rotational {
-+            lim.features = bindings::BLK_FEAT_ROTATIONAL;
-+        }
- 
-         // SAFETY: `tagset.raw_tag_set()` points to a valid and initialized tag set
-         let gendisk = from_err_ptr(unsafe {
-@@ -152,20 +155,6 @@ pub fn build<T: Operations>(
-         // operation, so we will not race.
-         unsafe { bindings::set_capacity(gendisk, self.capacity_sectors) };
- 
--        if !self.rotational {
--            // SAFETY: `gendisk` points to a valid and initialized instance of
--            // `struct gendisk`. This operation uses a relaxed atomic bit flip
--            // operation, so there is no race on this field.
--            unsafe { bindings::blk_queue_flag_set(bindings::QUEUE_FLAG_NONROT, (*gendisk).queue) };
--        } else {
--            // SAFETY: `gendisk` points to a valid and initialized instance of
--            // `struct gendisk`. This operation uses a relaxed atomic bit flip
--            // operation, so there is no race on this field.
--            unsafe {
--                bindings::blk_queue_flag_clear(bindings::QUEUE_FLAG_NONROT, (*gendisk).queue)
--            };
--        }
--
-         crate::error::to_result(
-             // SAFETY: `gendisk` points to a valid and initialized instance of
-             // `struct gendisk`.
+There is more to it now and I still don't know what's the best way
+forward. :(
 
-base-commit: 43ccacc7be96b71bf8c1461036034f1174be2f4d
+Devres will probably work well with the frameworks that provide a bus,
+where a device and driver are matched and probe/remove are called.
+Obviously Devres needs a struct device, whose probing/removal can
+allocate/free resources.
+
+The CPUFreq framework is a bit different. There is no bus, device or
+driver there. The device for the framework is the CPU device, but we
+don't (can't) really bind a struct driver to it. There are more layers
+in the kernel which use the CPU devices directly, like cpuidle, etc.
+And so the CPU device isn't really private to the cpufreq/cpuidle
+frameworks.
+
+Most of the cpufreq drivers register with the cpufreq core from their
+module_init() function, and unregister from module_exit(). There is no
+probe/remove() callbacks available. Some drivers though have a
+platform device/driver model implemented over an imaginary platform
+device, a hack implemented to get them working because of special
+requirements (one of them is to allow defer probing to work). The
+driver I am implementing, cpufreq-dt, also has one such platform
+device which is created at runtime. But there will be others without a
+platform device.
+
+The point is that the Rust cpufreq core can't do the Devres stuff
+itself and it can't expect a struct device to be made available to it
+by the driver. Some cpufreq drivers will have a platform device, some
+won't.
+
+One way to make this whole work is to reintroduce the Data part, just
+for cpufreq core, but I really don't want to do it. What else can be
+done ?
+
 -- 
-2.45.2
-
+viresh
