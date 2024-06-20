@@ -1,94 +1,121 @@
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6094F1803A;
-	Thu, 20 Jun 2024 07:49:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3675FEDB;
+	Thu, 20 Jun 2024 08:32:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718869784; cv=none; b=L4FlvI6bAl+pamKuy/7yXmBCD04Mq4VtVvXwADwa2jIbV4YhNRrubgkldiIfB4g4dWslsCgW7uyFBA4GFy9sjtWdEw5g9B/gCddoWK+xKyi3gqrpJh5v3UVu0KcnPuHI93TYdSc8shXK0HxoMkC7vGqg7aY8IL3nS89QpzYgpcI=
+	t=1718872328; cv=none; b=mHH8grbCtPm1OrAe6BD+8ZTp3BBOlh2PA4IVNHnnq8hm+HoaZ3SEXfn0lZFCtbkF9HdW8fM00GhEeYKG/wvxy17dqK2nMQBYL6D2rbqENCT4o175u13vqMV+m+kifx4hU39UQA+5N+ZrKAB8Br8eGsCJEG7G/QGX3BTOF+m2IAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718869784; c=relaxed/simple;
-	bh=o1XFCoagNhJXqXUIiNvyL2xj3ZTqbsjGmTXPfkrfaXg=;
+	s=arc-20240116; t=1718872328; c=relaxed/simple;
+	bh=YWsA2phAgUUjPGZaztk9I/TT/+G7BhuRV9evuqqJKOA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cu9KL4gNAnciqL2HNAP8gnEBa+WNc/Z9q0fMLvgez66V/BbgCTlN+pDJIIbF0Cn+kKlxJXGQDqd4yGLQV6gzAoJ6qz0VTUk9hlwq0ImHgOfNasDCF2e1zR3lX+9lyA8eZi1oFQ0vFKr9vytoGLsZtbqSd7Hh5l9C41f/LDXXkiY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=at4SKJec; arc=none smtp.client-ip=209.85.210.180
+	 To:Cc:Content-Type; b=RRZatpA+WstF3GBCp9OUJrOs7luQrGZCeDk8gzLXNSr60dgL67PDVZzp56URW+D1CtHIT8yGkDJ97IcajJRlCTyrO5MZxj+EU961lGLIFhHWCAPJUtguOMorH2K76jpidC2NMtTt81kBLtSmKLO+ECKEl1lRGEYaAsy3BbXvbUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XyYTlwGF; arc=none smtp.client-ip=209.85.216.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="at4SKJec"
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-70623ec42c2so499386b3a.0;
-        Thu, 20 Jun 2024 00:49:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XyYTlwGF"
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-2c327a0d4c9so1247596a91.1;
+        Thu, 20 Jun 2024 01:32:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1718869783; x=1719474583; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1718872326; x=1719477126; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=03ztKaSOsfSrhkNsQs0sNY3YIw2YL4srv92sD8kx3lo=;
-        b=at4SKJec8OV17ifVw8wDMpmAbw/WzRisiWjOeGI7l7S64lQNx5ps8H+gfo+dKHBa8f
-         RyV8W3Y+ngzsgzN27YlOeqF3zlyZeIJRAPG3AX4lHjYaEd3rEY06eHFrz8nEV3BqkW2e
-         DF2uLdFBWBvQlnYb7E6R5yxvIH8E3+/pYtdzTgEcK74sY0ZoC+zA/RCFyLTdDU7aAcpQ
-         NHX8eEoyXYR7qbwo6m2hXQps0nR0FU0HB1Hlc+3dOu4dTf0/9A3vR45yhegUrU4o7Egl
-         dbAgQx8nXydgpbV69IzcL53R4AC8jtp+OoofzyY/Bvn5A3DWiR9SV1LV/AFdRY7STAYO
-         /Fhg==
+        bh=Pr8Ujvslsv5sAsWX/9nOEEKoUg3IW2eQ+NTKLQgKvLk=;
+        b=XyYTlwGFE+XqXZD+/5EhQ7af+76ERXTgSOSvPMKZLSnvfG0vR0Flt6UUhJ9f3AJSex
+         amp3LRPPW9nJWlj3F5IMu/aMtx6HdnsWxlUHmQ9xC2wcZjxDYZi34cHPDg+2USqbXtcR
+         aBdwqmSRQU9WMTKVOxzKEw0nFO2pHtMrkcz1jBSnIGi0WpwTJbfz/iow2TQ0u7FgmMs4
+         eZNbia1lhMNEZvQiMwfr9VGfnmSbJ8F6+2YFE0NYhyH5kFLLypTA0Jbuvo3W3cAn0Yuf
+         jCML4eY21JBgyrzcgTcnmJeC+8LRqby8tIlThmIv+hyspG7gwX3QpItUvybg6I8KbkQZ
+         RMwg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718869783; x=1719474583;
+        d=1e100.net; s=20230601; t=1718872326; x=1719477126;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=03ztKaSOsfSrhkNsQs0sNY3YIw2YL4srv92sD8kx3lo=;
-        b=rojTDsikBmzG5PwET/kQkOPqyw4vTlk95w7aSz7zcSPoMagLmtOy5Kp1M1SLbaxhDk
-         gI0YXybbJ3Q0Y0cggHbeVHYbdlsLsokCakWTTTW3ZKlkGHq9SdQlgUV1vjA8SZUE1K4o
-         nHoCCho4EGh5axZnbGnWPJoL+C3Y+CkFar8Tsww0KqAd8v0VU+d4SqsvgNHSfoLrUQuY
-         qIAu4Uhdc/h1PWysjk6vzg31ZANgDoexTxUs54C5VcrWNk4Igi1z7ztd9QQy6CJJr6dQ
-         gQj/LqaDMXdB/o+6leZwtmKzWViCLhztaGOK88TKBwCu2S5DsWx9EYN9UOgEJE7/nvkh
-         MbYg==
-X-Forwarded-Encrypted: i=1; AJvYcCU15d73iiC+P7X2LGTbvaMCRv8Fu1RYqjYxj0nAepmM7Iw/2M9VSLAe7/MAQOdYZAwc+bidn4/zSb5MT/ht2oV65jEnxnenymnqDzBtIZM2waB6Jy4Mo5phdMVEx1zGMdtkhu2NqAaDivvEGbk=
-X-Gm-Message-State: AOJu0YxXx8tKce6CSBV+J36J5bb4/O05Kaj3uIC5CJvW78rF+rPeC1tM
-	ZPHYgG18kiYQ4THWYag5pg3y8aGjxFdZLxYx5zycD+d0fAtW0jp+aA1BdIZGXQy5zEaaDmqcLR7
-	ySfClOXklePIbOo/iDQpWQDICQsTxeXxGq/o=
-X-Google-Smtp-Source: AGHT+IFnQPdlijHxiRw7/46UUIuekBm8mYgIp2okL+2RHHKQ4SYTYcEaoXKAkOsINHNkT/pVxZp9JHadT4awGf/9D8Q=
-X-Received: by 2002:a05:6a00:26c6:b0:706:2be3:a2e8 with SMTP id
- d2e1a72fcca58-7062be3a3e1mr5664579b3a.9.1718869782582; Thu, 20 Jun 2024
- 00:49:42 -0700 (PDT)
+        bh=Pr8Ujvslsv5sAsWX/9nOEEKoUg3IW2eQ+NTKLQgKvLk=;
+        b=HEhvHqlsMfodRV35b9SYL5rQ5W56Bn4/RBkpcO4V3gkjwQ1+OEMiWsO8GwWDj9yRgu
+         tw2pUQr1X6oseCAoeaF+PiO/fZljTRBHEG94th/yl7P0FbedTQFzWqh1i16GGSVKa2/z
+         43jlWzZKF0WZUvT0WxhWduFce7xFvz9TD5MSfTlUupjeauNW5AOOHGciqKCDsCt/F6Vu
+         PO+u4d+gGocRN2sy//pfGqqSCozb4pd4xwl/zsTr4y0WI1rr7qIDZLC4ogh6Ej+DZ4gF
+         jsLtxUCx1EUUi4rTqIxLvZ+XW1TeY/6DkimpW5gC/+N9INZdkNvQ2PaUfcNB/cEC571u
+         m4TA==
+X-Forwarded-Encrypted: i=1; AJvYcCX02cIJgMHW3cZRRCNXOiyuok5e0aOHGcaDY9zm28tEMXm5uFFdspysmlnRMg21OJAu8/BdnkoJUkvCxp1Iyht6LVWGxr6HqXHgfYEiTA8EUWCJO8g6voTI7KBCXUgiXPlSOcBUXcLtsQ+vaybavWRVPl3ze+eoLU0RREw+vLmptuHNjkgaDezuN8s=
+X-Gm-Message-State: AOJu0YxliLNmbs1HjeKS+l5wpW3pDGlV7WbejYOsjesAV8/UfaxkIBgx
+	OqnUeR2wVj3F3YyR5aMToVHuIW5HUNNZffNev9Dl/0zYw74yGJmSZ4XXqTCn3l6ujApV+Zl0VWS
+	qUFvKqNjje+ldBtZ9K717boFZ+j8=
+X-Google-Smtp-Source: AGHT+IESD4smgPwpXrdb7RRqONV6KXkwjtJhArdlSbDbSHSmsOz692YJj5kuyxsawEY7HSmisNZpcQXukL8qtXcbC6Y=
+X-Received: by 2002:a17:90a:f281:b0:2c4:f32c:6b with SMTP id
+ 98e67ed59e1d1-2c7b3ba85abmr7285513a91.19.1718872326480; Thu, 20 Jun 2024
+ 01:32:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240620021112.136667-1-ethan.twardy@gmail.com>
-In-Reply-To: <20240620021112.136667-1-ethan.twardy@gmail.com>
+References: <20240601004856.206682-1-jhubbard@nvidia.com> <CANiq72m46gN4GkfeXgykEar6OVa56ck9FmWQComd+iuf61FVSw@mail.gmail.com>
+ <4262dee7-b6fb-449c-9de8-7d6404912338@nvidia.com>
+In-Reply-To: <4262dee7-b6fb-449c-9de8-7d6404912338@nvidia.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 20 Jun 2024 09:49:30 +0200
-Message-ID: <CANiq72nSP8RcHuDmcPWAjjvYtyULi=g7tGcqOo8nKo2dN9evVw@mail.gmail.com>
-Subject: Re: [PATCH] rust: alloc: Fix unused import warning
-To: "Ethan D. Twardy" <ethan.twardy@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+Date: Thu, 20 Jun 2024 10:31:53 +0200
+Message-ID: <CANiq72n=mFF5+MxAmOwNS+ZOGo=H199MX_5nPiZTKchFK+Gn6g@mail.gmail.com>
+Subject: Re: [PATCH] Makefile: rust-analyzer target: better error handling and comments
+To: John Hubbard <jhubbard@nvidia.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Masahiro Yamada <masahiroy@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@redhat.com>, 
-	"open list:RUST" <rust-for-linux@vger.kernel.org>, open list <linux-kernel@vger.kernel.org>
+	Alice Ryhl <aliceryhl@google.com>, linux-kbuild@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jun 20, 2024 at 4:11=E2=80=AFAM Ethan D. Twardy <ethan.twardy@gmail=
-.com> wrote:
+On Thu, Jun 20, 2024 at 8:13=E2=80=AFAM John Hubbard <jhubbard@nvidia.com> =
+wrote:
 >
-> core::ptr is only used in code that's not compiled during test, which
-> causes rustc to emit the below warning while building the rusttest
-> target. Add a conditional attribute to match conditions at the usage
-> site.
+> What exactly did you have in mind for how that should look? The
+> "make rustavailable" target has some leading *** and some bare
+> statements, so I'm not quite sure exactly how to lay it out:
 
-We have an alternative fix (that avoids conditional compilation) for
-this one in the `rust-fixes` branch that I am planning to send to
-Linus this week.
+I was thinking something like:
 
-    https://lore.kernel.org/r/20240519210735.587323-1-ojeda@kernel.org
+    ***
+    *** Rust is not available.
+    ***
 
-If that one does not fix the issue for you, please let me know!
+(the `***` prefix is used also in other similar scripts and by Make itself)=
+.
 
-Thanks!
+However, thinking about it a bit more, we should perhaps just let
+`rust_is_available.sh` tell the user why it fails, since it is likely
+the next step the user would do anyway:
+
+    $ make LLVM=3D1 rust-analyzer
+    ***
+    *** Rust compiler 'rustc' is too old.
+    ***   Your version:    1.62.0
+    ***   Minimum version: 1.78.0
+    ***
+    ***
+    *** Please see Documentation/rust/quick-start.rst for details
+    *** on how to set up the Rust support.
+    ***
+    make[1]: *** [linux/Makefile:1973: rust-analyzer] Error 1
+    make: *** [Makefile:240: __sub-make] Error 2
+
+What do you think? Then there is no need for extra output here and the
+patch becomes simpler too.
+
+The bare statement we have there for the successful case was mainly so
+that the explicit `make rustavailable` did not look empty if there was
+no issue, i.e. we don't print anything extra when there is an error
+(and if we wanted to print something for the failure case, then we
+should probably do it in the script, rather than here).
 
 Cheers,
 Miguel
