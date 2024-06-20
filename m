@@ -1,29 +1,29 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0CBA1ACE89;
-	Thu, 20 Jun 2024 14:58:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 270591AED5A;
+	Thu, 20 Jun 2024 15:11:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718895521; cv=none; b=cCJeGU6lxXcCmNepOoCI++bumjXrAIVNcIVV2Tmku2S0U2GO2Bpv82ya1UrImjqknkhNNvgFXlPLu80iwMccMEQvZFPr1rHrniAnL43yTxot2qs130usUxVUO5Y/1SMhvdVDl+CAVIh4mQUiQNY1X9WP3m6j9MxHI3VmJIeJLa4=
+	t=1718896307; cv=none; b=Y9V0UFsK9RJxXqMDFMaFh4oTjWljUE+9fCSF8MKWIuSTj0NFuYr5wkAH5hjp939ZJpGdRYQVfHS2eHXlah9Le90xTIXQvTt4iKe1Rm64jzGtkZNwEhnJzMStP/FnlS/8TarsdwRJTslZcCOKEX8N8wrr3HxR15kheNHXnEJLSyY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718895521; c=relaxed/simple;
-	bh=sIAmacjUT9hybHQ+dEDQJ3pkqgFTfvJtgU4QdNg0KUM=;
+	s=arc-20240116; t=1718896307; c=relaxed/simple;
+	bh=BQJCcQtirxB2NsQ9DEZ7h6l2NY6z1Y7N7Zei18H96NA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=b6/L7K4YfZcHAFOw/Au07RVwCpX1FIQt7rVgPm2m81DzqJRfJk8khTn2uugWl030MFB1Xta6/GckLnpVBBDJpeTZlnxZmiqi0KZYFr13H/yzJRpT6tMk5CKO1upH7QT9epnkBm5eQ3k6RrWDJgXqfDlvL4OOR/3x6eqE1UXo7As=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pm8rdDTO; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=WNifMgGvUUbU1epflmNps6dXT6Pxvt0nG4ZVwT8/2lwZCXlt0yco80jyPbnqgH1jczL9EU4LP7hgeXo5g/SNVnD0Ue/KkE/9xuoAFUUiIeSaoQ8Wz5oBsqyqx2qhpp4f56vN4Wwm+md02EWCC3yHzJFfsPztqnpeYR3QRCGixK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pm4w85L1; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pm8rdDTO"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB05FC2BD10;
-	Thu, 20 Jun 2024 14:58:39 +0000 (UTC)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pm4w85L1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2828AC2BD10;
+	Thu, 20 Jun 2024 15:11:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718895520;
-	bh=sIAmacjUT9hybHQ+dEDQJ3pkqgFTfvJtgU4QdNg0KUM=;
+	s=korg; t=1718896306;
+	bh=BQJCcQtirxB2NsQ9DEZ7h6l2NY6z1Y7N7Zei18H96NA=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Pm8rdDTOD/sMRafm7umytx4aVpeIyMdQGw92pURrfU9X+oZzTr8O9DZaLx9fz2y5q
-	 XVMPTUYdFr0NlW4V3LtZQo0kMZ+B5Vmr4OloFRY4kO/+QWJQcVc7Wm+WvSyBDpfl/6
-	 vPhtBuEq3L2vXE6Y5og0kYmBPad+iqaxdV/MKjOk=
-Date: Thu, 20 Jun 2024 16:58:37 +0200
+	b=pm4w85L1UGEkJWoArD+dGELBdp3Fz2jkqrARACgDuB954rSkvT7sqEqrPx82yRvnA
+	 A4Aj7j95BEwuCtgHHJMwbEqQTE6K0A66rqEPwWhsUgopEpoK2r1IjFZJ1riQda1t2X
+	 GxWqs7ZyqjOSHr/dZvdghRN2y14Pew6nOC+Ngxd4=
+Date: Thu, 20 Jun 2024 17:11:43 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
 To: Danilo Krummrich <dakr@redhat.com>
 Cc: rafael@kernel.org, bhelgaas@google.com, ojeda@kernel.org,
@@ -34,10 +34,11 @@ Cc: rafael@kernel.org, bhelgaas@google.com, ojeda@kernel.org,
 	ajanulgu@redhat.com, lyude@redhat.com, robh@kernel.org,
 	daniel.almeida@collabora.com, rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org
-Subject: Re: [PATCH v2 08/10] rust: add devres abstraction
-Message-ID: <2024062029-timothy-police-4db0@gregkh>
+Subject: Re: [PATCH v2 09/10] rust: pci: add basic PCI device / driver
+ abstractions
+Message-ID: <2024062011-property-hypnotist-e652@gregkh>
 References: <20240618234025.15036-1-dakr@redhat.com>
- <20240618234025.15036-9-dakr@redhat.com>
+ <20240618234025.15036-10-dakr@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -46,220 +47,253 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240618234025.15036-9-dakr@redhat.com>
+In-Reply-To: <20240618234025.15036-10-dakr@redhat.com>
 
-On Wed, Jun 19, 2024 at 01:39:54AM +0200, Danilo Krummrich wrote:
-> Add a Rust abstraction for the kernel's devres (device resource
-> management) implementation.
+On Wed, Jun 19, 2024 at 01:39:55AM +0200, Danilo Krummrich wrote:
+> +/// Abstraction for bindings::pci_device_id.
+> +#[derive(Clone, Copy)]
+> +pub struct DeviceId {
+> +    /// Vendor ID
+> +    pub vendor: u32,
+> +    /// Device ID
+> +    pub device: u32,
+> +    /// Subsystem vendor ID
+> +    pub subvendor: u32,
+> +    /// Subsystem device ID
+> +    pub subdevice: u32,
+> +    /// Device class and subclass
+> +    pub class: u32,
+> +    /// Limit which sub-fields of the class
+> +    pub class_mask: u32,
+> +}
 
-Ah, here's the devm stuff.  Why not put it right after the "revokable"
-stuff?
+Note, this is exported to userspace, why can't you use the C structure
+that's already defined for you?  This is going to get tricky over time
+for the different busses, please use what is already there.
 
-And why have revokable at all?  Why not just put it all here in devres?
-Who's going to use the generic type?  Especially as it uses rcu when
-devres today does NOT use rcu, so you are might get some "interesting"
-issues with the interaction of the two.
+And question, how are you guaranteeing the memory layout of this
+structure here?  Will rust always do this with no holes and no
+re-arranging?
 
-> The Devres type acts as a container to manage the lifetime and
-> accessibility of device bound resources. Therefore it registers a
-> devres callback and revokes access to the resource on invocation.
+> +impl DeviceId {
+> +    const PCI_ANY_ID: u32 = !0;
+> +
+> +    /// PCI_DEVICE macro.
+> +    pub const fn new(vendor: u32, device: u32) -> Self {
+> +        Self {
+> +            vendor,
+> +            device,
+> +            subvendor: DeviceId::PCI_ANY_ID,
+> +            subdevice: DeviceId::PCI_ANY_ID,
+> +            class: 0,
+> +            class_mask: 0,
+> +        }
+> +    }
+> +
+> +    /// PCI_DEVICE_CLASS macro.
+> +    pub const fn with_class(class: u32, class_mask: u32) -> Self {
+> +        Self {
+> +            vendor: DeviceId::PCI_ANY_ID,
+> +            device: DeviceId::PCI_ANY_ID,
+> +            subvendor: DeviceId::PCI_ANY_ID,
+> +            subdevice: DeviceId::PCI_ANY_ID,
+> +            class,
+> +            class_mask,
+> +        }
+> +    }
 
-Is this last sentence correct?  Revokes on invocation?
-
-> Users of the Devres abstraction can simply free the corresponding
-> resources in their Drop implementation, which is invoked when either the
-> Devres instance goes out of scope or the devres callback leads to the
-> resource being revoked, which implies a call to drop_in_place().
-
-That's not how a normal driver will use it, right?  It's when the
-remove() callback comes into the driver.  That might be well before
-Drop() happens, as there might be other things keeping that memory
-around (again, think of /dev/ node accesses.)
-
-> --- /dev/null
-> +++ b/rust/kernel/devres.rs
-> @@ -0,0 +1,168 @@
-> +// SPDX-License-Identifier: GPL-2.0
-
-One note for all of these new files, no copyright notices?  I'm all for
-that, but I know a LOT of lawyers by people who work for companies that
-have been working on this code do NOT want to see files without
-copyright lines.
-
-So please go check.  Otherwise you might get a "stern talking to" in the
-future when someone notices what you all did...
+Why just these 2 subsets of the normal PCI_DEVICE* macros?
 
 > +
-> +//! Devres abstraction
-> +//!
-> +//! [`Devres`] represents an abstraction for the kernel devres (device resource management)
-> +//! implementation.
-> +
-> +use crate::{
-> +    alloc::Flags,
-> +    bindings,
-> +    device::Device,
-> +    error::{Error, Result},
-> +    prelude::*,
-> +    revocable::Revocable,
-> +    sync::Arc,
-> +};
-> +
-> +use core::ffi::c_void;
-> +use core::ops::Deref;
-> +
-> +#[pin_data]
-> +struct DevresInner<T> {
-> +    #[pin]
-> +    data: Revocable<T>,
+> +    /// PCI_DEVICE_ID macro.
+> +    pub const fn to_rawid(&self, offset: isize) -> bindings::pci_device_id {
+
+PCI_DEVICE_ID is defined to be "0x02" in pci_regs.h, I don't think you
+want that duplication here, right?
+
+> +        bindings::pci_device_id {
+> +            vendor: self.vendor,
+> +            device: self.device,
+> +            subvendor: self.subvendor,
+> +            subdevice: self.subdevice,
+> +            class: self.class,
+> +            class_mask: self.class_mask,
+> +            driver_data: offset as _,
+> +            override_only: 0,
+> +        }
+> +    }
 > +}
 > +
-> +/// This abstraction is meant to be used by subsystems to containerize [`Device`] bound resources to
-> +/// manage their lifetime.
+> +// SAFETY: `ZERO` is all zeroed-out and `to_rawid` stores `offset` in `pci_device_id::driver_data`.
+> +unsafe impl RawDeviceId for DeviceId {
+> +    type RawType = bindings::pci_device_id;
+> +
+> +    const ZERO: Self::RawType = bindings::pci_device_id {
+> +        vendor: 0,
+> +        device: 0,
+> +        subvendor: 0,
+> +        subdevice: 0,
+> +        class: 0,
+> +        class_mask: 0,
+> +        driver_data: 0,
+> +        override_only: 0,
+
+This feels rough, why can't the whole memory chunk be set to 0 for any
+non-initialized values?  What happens if a new value gets added to the C
+side, how will this work here?
+
+> +    };
+> +}
+> +
+> +/// Define a const pci device id table
 > +///
-> +/// [`Device`] bound resources should be freed when either the resource goes out of scope or the
-> +/// [`Device`] is unbound respectively, depending on what happens first.
+> +/// # Examples
 > +///
-> +/// To achieve that [`Devres`] registers a devres callback on creation, which is called once the
-> +/// [`Device`] is unbound, revoking access to the encapsulated resource (see also [`Revocable`]).
+> +/// See [`Driver`]
 > +///
-> +/// After the [`Devres`] has been unbound it is not possible to access the encapsulated resource
-> +/// anymore.
-> +///
-> +/// [`Devres`] users should make sure to simply free the corresponding backing resource in `T`'s
-> +/// [`Drop`] implementation.
+> +#[macro_export]
+> +macro_rules! define_pci_id_table {
+> +    ($data_type:ty, $($t:tt)*) => {
+> +        type IdInfo = $data_type;
+> +        const ID_TABLE: $crate::device_id::IdTable<'static, $crate::pci::DeviceId, $data_type> = {
+> +            $crate::define_id_array!(ARRAY, $crate::pci::DeviceId, $data_type, $($t)* );
+> +            ARRAY.as_table()
+> +        };
+> +    };
+> +}
+> +pub use define_pci_id_table;
+> +
+> +/// The PCI driver trait.
 > +///
 > +/// # Example
 > +///
-> +/// ```
-> +/// # use kernel::{bindings, c_str, device::Device, devres::Devres, io::Io};
-> +/// # use core::ops::Deref;
+> +///```
+> +/// # use kernel::{bindings, define_pci_id_table, pci, sync::Arc};
 > +///
-> +/// // See also [`pci::Bar`] for a real example.
-> +/// struct IoMem<const SIZE: usize>(Io<SIZE>);
+> +/// struct MyDriver;
+> +/// struct MyDeviceData;
 > +///
-> +/// impl<const SIZE: usize> IoMem<SIZE> {
-> +///     fn new(paddr: usize) -> Result<Self>{
+> +/// impl pci::Driver for MyDriver {
+> +///     type Data = Arc<MyDeviceData>;
 > +///
-> +///         // SAFETY: assert safety for this example
-> +///         let addr = unsafe { bindings::ioremap(paddr as _, SIZE.try_into().unwrap()) };
-> +///         if addr.is_null() {
-> +///             return Err(ENOMEM);
-> +///         }
+> +///     define_pci_id_table! {
+> +///         (),
+> +///         [ (pci::DeviceId::new(bindings::PCI_VENDOR_ID_REDHAT,
+> +///                               bindings::PCI_ANY_ID as u32),
+> +///            None)
+> +///         ]
+> +///     }
 > +///
-> +///         // SAFETY: `addr` is guaranteed to be the start of a valid I/O mapped memory region of
-> +///         // size `SIZE`.
-> +///         let io = unsafe { Io::new(addr as _, SIZE)? };
+> +///     fn probe(
+> +///         _pdev: &mut pci::Device,
+> +///         _id_info: Option<&Self::IdInfo>
+> +///     ) -> Result<Self::Data> {
+> +///         Err(ENODEV)
+> +///     }
 > +///
-> +///         Ok(IoMem(io))
+> +///     fn remove(_data: &Self::Data) {
 > +///     }
 > +/// }
-> +///
-> +/// impl<const SIZE: usize> Drop for IoMem<SIZE> {
-> +///     fn drop(&mut self) {
-> +///         // SAFETY: Safe as by the invariant of `Io`.
-> +///         unsafe { bindings::iounmap(self.0.base_addr() as _); };
-> +///     }
-> +/// }
-> +///
-> +/// impl<const SIZE: usize> Deref for IoMem<SIZE> {
-> +///    type Target = Io<SIZE>;
-> +///
-> +///    fn deref(&self) -> &Self::Target {
-> +///        &self.0
-> +///    }
-> +/// }
-> +///
-> +/// # // SAFETY: *NOT* safe, just for the example to get an `ARef<Device>` instance
-> +/// # let dev = unsafe { Device::from_raw(core::ptr::null_mut()) };
-> +///
-> +/// let iomem = IoMem::<{ core::mem::size_of::<u32>() }>::new(0xBAAAAAAD).unwrap();
-> +/// let devres = Devres::new(&dev, iomem, GFP_KERNEL).unwrap();
-> +///
-> +/// let res = devres.try_access().ok_or(ENXIO).unwrap();
-> +/// res.writel(0x42, 0x0);
-> +/// ```
-> +///
-> +pub struct Devres<T>(Arc<DevresInner<T>>);
-> +
-> +impl<T> DevresInner<T> {
-> +    fn new(dev: &Device, data: T, flags: Flags) -> Result<Arc<DevresInner<T>>> {
-> +        let inner = Arc::pin_init(
-> +            pin_init!( DevresInner {
-> +                data <- Revocable::new(data),
-> +            }),
-> +            flags,
-> +        )?;
-> +
-> +        // Convert `Arc<DevresInner>` into a raw pointer and make devres own this reference until
-> +        // `Self::devres_callback` is called.
-> +        let data = inner.clone().into_raw();
-> +        let ret = unsafe {
-> +            bindings::devm_add_action(dev.as_raw(), Some(Self::devres_callback), data as _)
-> +        };
-> +
-> +        if ret != 0 {
-> +            // SAFETY: We just created another reference to `inner` in order to pass it to
-> +            // `bindings::devm_add_action`. If `bindings::devm_add_action` fails, we have to drop
-> +            // this reference accordingly.
-> +            let _ = unsafe { Arc::from_raw(data) };
-> +            return Err(Error::from_errno(ret));
-> +        }
-> +
-> +        Ok(inner)
-> +    }
-> +
-> +    unsafe extern "C" fn devres_callback(ptr: *mut c_void) {
-> +        let ptr = ptr as *mut DevresInner<T>;
-> +        // Devres owned this memory; now that we received the callback, drop the `Arc` and hence the
-> +        // reference.
-> +        // SAFETY: Safe, since we leaked an `Arc` reference to devm_add_action() in
-> +        //         `DevresInner::new`.
-> +        let inner = unsafe { Arc::from_raw(ptr) };
-> +
-> +        inner.data.revoke();
-> +    }
-> +}
-> +
-> +impl<T> Devres<T> {
-> +    /// Creates a new [`Devres`] instance of the given `data`. The `data` encapsulated within the
-> +    /// returned `Devres` instance' `data` will be revoked once the device is detached.
-> +    pub fn new(dev: &Device, data: T, flags: Flags) -> Result<Self> {
-> +        let inner = DevresInner::new(dev, data, flags)?;
-> +
-> +        Ok(Devres(inner))
-> +    }
-> +
-> +    /// Same as [Devres::new`], but does not return a `Devres` instance. Instead the given `data`
-> +    /// is owned by devres and will be revoked / dropped, once the device is detached.
-> +    pub fn new_foreign_owned(dev: &Device, data: T, flags: Flags) -> Result {
-> +        let _ = DevresInner::new(dev, data, flags)?;
-> +
-> +        Ok(())
-> +    }
-> +}
-> +
-> +impl<T> Deref for Devres<T> {
-> +    type Target = Revocable<T>;
-> +
-> +    fn deref(&self) -> &Self::Target {
-> +        &self.0.data
-> +    }
-> +}
-> +
-> +impl<T> Drop for Devres<T> {
-> +    fn drop(&mut self) {
-> +        // Revoke the data, such that it gets dropped already and the actual resource is freed.
-> +        // `DevresInner` has to stay alive until the devres callback has been called. This is
-> +        // necessary since we don't know when `Devres` is dropped and calling
-> +        // `devm_remove_action()` instead could race with `devres_release_all()`.
-> +        self.revoke();
-> +    }
-> +}
+> +///```
+> +/// Drivers must implement this trait in order to get a PCI driver registered. Please refer to the
+> +/// `Adapter` documentation for an example.
+> +pub trait Driver {
+> +    /// Data stored on device by driver.
+> +    ///
+> +    /// Corresponds to the data set or retrieved via the kernel's
+> +    /// `pci_{set,get}_drvdata()` functions.
+> +    ///
+> +    /// Require that `Data` implements `ForeignOwnable`. We guarantee to
+> +    /// never move the underlying wrapped data structure.
+> +    ///
+> +    /// TODO: Use associated_type_defaults once stabilized:
+> +    ///
+> +    /// `type Data: ForeignOwnable = ();`
+> +    type Data: ForeignOwnable;
 
-Again, I don't think this can happen at "drop", it needs to happen
-earlier sometimes.  Or maybe not, I can't tell when exactly is Drop
-called, where would I find that?
+Does this mean this all can be 'static' in memory and never dynamically
+allocated?  If so, good, if not, why not?
+
+> +
+> +    /// The type holding information about each device id supported by the driver.
+> +    ///
+> +    /// TODO: Use associated_type_defaults once stabilized:
+> +    ///
+> +    /// type IdInfo: 'static = ();
+> +    type IdInfo: 'static;
+
+What does static mean here?
+
+> +
+> +    /// The table of device ids supported by the driver.
+> +    const ID_TABLE: IdTable<'static, DeviceId, Self::IdInfo>;
+> +
+> +    /// PCI driver probe.
+> +    ///
+> +    /// Called when a new platform device is added or discovered.
+
+This is not a platform device
+
+> +    /// Implementers should attempt to initialize the device here.
+> +    fn probe(dev: &mut Device, id: Option<&Self::IdInfo>) -> Result<Self::Data>;
+> +
+> +    /// PCI driver remove.
+> +    ///
+> +    /// Called when a platform device is removed.
+
+This is not a platform device.
+
+> +    /// Implementers should prepare the device for complete removal here.
+> +    fn remove(data: &Self::Data);
+
+No suspend?  No resume?  No shutdown?  only probe/remove?  Ok, baby
+steps are nice :)
+
+
+> +}
+> +
+> +/// The PCI device representation.
+> +///
+> +/// A PCI device is based on an always reference counted `device:Device` instance. Cloning a PCI
+> +/// device, hence, also increments the base device' reference count.
+> +#[derive(Clone)]
+> +pub struct Device(ARef<device::Device>);
+> +
+> +impl Device {
+> +    /// Create a PCI Device instance from an existing `device::Device`.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// `dev` must be an `ARef<device::Device>` whose underlying `bindings::device` is a member of
+> +    /// a `bindings::pci_dev`.
+> +    pub unsafe fn from_dev(dev: ARef<device::Device>) -> Self {
+> +        Self(dev)
+> +    }
+> +
+> +    fn as_raw(&self) -> *mut bindings::pci_dev {
+> +        // SAFETY: Guaranteed by the type invaraints.
+> +        unsafe { container_of!(self.0.as_raw(), bindings::pci_dev, dev) as _ }
+> +    }
+> +
+> +    /// Enable the Device's memory.
+> +    pub fn enable_device_mem(&self) -> Result {
+> +        // SAFETY: Safe by the type invariants.
+> +        let ret = unsafe { bindings::pci_enable_device_mem(self.as_raw()) };
+> +        if ret != 0 {
+> +            Err(Error::from_errno(ret))
+> +        } else {
+> +            Ok(())
+> +        }
+> +    }
+> +
+> +    /// Set the Device's master.
+> +    pub fn set_master(&self) {
+> +        // SAFETY: Safe by the type invariants.
+> +        unsafe { bindings::pci_set_master(self.as_raw()) };
+> +    }
+
+Why just these 2 functions?  Just an example, or you don't need anything
+else yet?
 
 thanks,
 
