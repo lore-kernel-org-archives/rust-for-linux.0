@@ -1,199 +1,329 @@
-Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2042.outbound.protection.outlook.com [40.107.220.42])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9FDC770F2;
-	Thu, 20 Jun 2024 20:55:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.220.42
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718916943; cv=fail; b=gtBDmNmlOoXH4nKCV6V82J2ufvgvaZgHW8gCZU7l9wPU+U0hYZfiqtazn1ukMaYQbd01tPumLR96ZgSL3lvNZ6vdYEfY4b6Yh/Vskg6guBM5TgqBZbssA2DAjZgz0+aofJ3uXpjesVPA/m7E3NdkwC3UlXbymOqODk3f6gD37HI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718916943; c=relaxed/simple;
-	bh=pFxOGg5A85dKn8goVOWnl72bABIhO69aSe8dM8KzbAU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=rLkSaeOvMq9gjo0KmhIyGtoOWja5ubxX8Cw295pvnIw3R7sURZwY1KUrwtNvLmW1Uxt4msszVTFMyOuIVY9k6kluI/QnDZLFm3mDXUBLy0Ar/fsr3/CQVcW1FjmK9cRBm1FxJTez+a/r6C4FcyVzMIIyu/lm9sUjXhW7u6zoEPU=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=Dli1C3t6; arc=fail smtp.client-ip=40.107.220.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B25AB13DDAE
+	for <rust-for-linux@vger.kernel.org>; Thu, 20 Jun 2024 21:24:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1718918667; cv=none; b=D3wv7Dx4dUMrsWVE+3+h+xjoLfcZJbdua/oTu09gw4MSEr+d2DkdBV3SXCwwgkBJ+trCXEGZwLBd06ZyMP2DgiGQvk2l+BhoUJeQTYKo50/MHClac0EswvNKmCpL5cJFTO7/TBrrvXqKpWA9gVgRoX3557B3mV19T0Ni2EBW7bM=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1718918667; c=relaxed/simple;
+	bh=XPrGdmEcZ3ysbk6RX8aXJDTE0N4ga1H/XRHY+t+oHyc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 In-Reply-To:Content-Type:Content-Disposition; b=G7IVW2RpOK7eOPOduGYDJaoLg9Hsjz+NF/bBOP8ITqmDdhp1myvKnxTNMBr9oY0icqclf8meOlfBwPkKzRFu5KRuhS81XzIQt3sBpOhVk7y6l6mYbwSaOajbnSpZFvUlrn/0bqucA8ybmmgT9BixQySQ04JRJCkxmebqHcpyobY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=U5cnEWQf; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="Dli1C3t6"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=mwrwOSKQKvUYB4BXeoou2abdfc+i98tHn9S3jUU4b1TyRT9eSCpxBS3wFsQSng+GsEQGQZByZ11Kd5N+pjrsHs4OpZ3bWtC1SXrB3aYVRUX3i26IYYS493qgzomUJGSbomrQyCpqHWJgFKHqyvfKF8rLbZJDfIUC0mZoBiB+YUHyPOLQdYVFvIodQWTCTt5PtY6UPIlK3K4AzO9Vex1lcXW0sSCwMGOaYP2wsA9v8cHNXhljFc1wfinkZ/epaUXP4oQRuS8bXqTG8AAe30pCrfA7ejpo7Rvd4P7GEdbePnRiW6XIsnX6j+SEQbysJ05Rt0PkJJ8UlpdJLGotlFUVZg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=HZ4OM/68Kuff8FC7FNyb8W7fjsLpy4V4xLhB+u4/Wzk=;
- b=fN9OK0NhytPsZv/D33mqxLyWB1yByCHfRXQ4NjuooI/Xhj58YS9CuykCGx8MZe3yHZU9hkB3z0WEs+EVfapfPuNhukb5Asu5Luf+6Q2NEwH9YIOV065i1zbVo7L7DRGPt50FHOYRA9DgOlMVUzS3LXxihZR/U0QIuzXydo7eVzwyvRJKpoB0hUnZdtxjdPWdZUUZ6LW39U9U8T/XgRPUR31tstuc9d+pDMwYyTz7Hd+3YRUFAB4CtE9q7DhoETYgNZJpc1mrj1oNAmlB4mLCSevcWlqLVM4jQEGYW9k5NMq6fKF8HH528EGYGXdO7bH1Lj3Z1GzodgMcJFNHbnRWmQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=HZ4OM/68Kuff8FC7FNyb8W7fjsLpy4V4xLhB+u4/Wzk=;
- b=Dli1C3t68bN0HQoFjb3MVj2jAymT3CYziCLUuURdYXUcPVdA/jmnGEZss4Smfmhz4mNQQjgdDkelTc/l8aHYPhFsvvqDM82h459bCDBshSnBnBO5Xqi9BRRk4sAHEj6J9YLgEbCyecrmFN/D+iDARNNpS0et25lAZ6aAEwVP36dVAdFrgEzWPfEClRIFqPvRq3Inn1fYlCXFShatgiEceYpHyBYMLIvw7qSE56ZaKLQtsk8ArWrctG3T/Rv4UoJYC/59b/jPrphJldqo2e2LTdoB5fxLPejDcEtBZ06+z8pv9r/RzQCegP3Ye3BtKH0y9s5eS4Kvcky15addZdkjnw==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from BY5PR12MB4130.namprd12.prod.outlook.com (2603:10b6:a03:20b::16)
- by SA1PR12MB6725.namprd12.prod.outlook.com (2603:10b6:806:254::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7698.19; Thu, 20 Jun
- 2024 20:55:33 +0000
-Received: from BY5PR12MB4130.namprd12.prod.outlook.com
- ([fe80::2cf4:5198:354a:cd07]) by BY5PR12MB4130.namprd12.prod.outlook.com
- ([fe80::2cf4:5198:354a:cd07%4]) with mapi id 15.20.7698.020; Thu, 20 Jun 2024
- 20:55:33 +0000
-From: John Hubbard <jhubbard@nvidia.com>
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Greg KH <greg@kroah.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nicolas@fjasle.eu>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	linux-kbuild@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	LKML <linux-kernel@vger.kernel.org>,
-	John Hubbard <jhubbard@nvidia.com>
-Subject: [PATCH v2 1/2] Makefile: rust-analyzer target: better error handling
-Date: Thu, 20 Jun 2024 13:54:52 -0700
-Message-ID: <20240620205453.81799-2-jhubbard@nvidia.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240620205453.81799-1-jhubbard@nvidia.com>
-References: <20240620205453.81799-1-jhubbard@nvidia.com>
-X-NVConfidentiality: public
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SJ0PR03CA0071.namprd03.prod.outlook.com
- (2603:10b6:a03:331::16) To BY5PR12MB4130.namprd12.prod.outlook.com
- (2603:10b6:a03:20b::16)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="U5cnEWQf"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1718918664;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=7jbWN+wDikmWCfgl/hT1vuO1XLdsBYPrBuv7e998coY=;
+	b=U5cnEWQf00Xs2uzXhGG85f/Mkne8wULJKOaywePSdSU1YdyWN69AUKsbnZoOyMuOW1N4kN
+	NR95VTslFUHbWIoiVPeN10onyThD4foyhiBF8iTi/pS5d9NRoZ1Nb1QvW9X3TEjzUkho8p
+	RwXi74yTHOKqU9/J4TXHnZ4pCp9qCzk=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-80-zLhVR7FOMAeLwVAdc4kiLw-1; Thu, 20 Jun 2024 17:24:22 -0400
+X-MC-Unique: zLhVR7FOMAeLwVAdc4kiLw-1
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4247d49a373so9617715e9.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 20 Jun 2024 14:24:22 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718918661; x=1719523461;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7jbWN+wDikmWCfgl/hT1vuO1XLdsBYPrBuv7e998coY=;
+        b=Eq7N3aXCPpA5X7FgkDQuU8dwp7NPIGe+hGk7NsTbNxNQwWl352kP4xMrFSOoH1+9LN
+         hQJ2W6uSiJwLs9QiAKQ+zhhOAwRD3l8Bw297TJGB6+uOe86T9q7Ah3AxyH8Dr0siA/nQ
+         QNHDeKDZQ9BeeEkhh6pzACbl21APITHiqJ1lHCqim5mccXZU/RyvPuhCT9dY1E6UaUmY
+         AgfXfOsYxdvySJgfpWjSzwP0r0jOHLjjPqxrAiUMRcox6IwifYo7qB/MgE5v8NaZyijk
+         VMEThB52Q8qvOGodNbYWHBbYvNdhrA12dIBsa9yYm6N0PfauAGjkPmnMyp8l9as0D/Qy
+         TBsw==
+X-Forwarded-Encrypted: i=1; AJvYcCVJHhPJ0OGeEOfZW3Frv3ZeV91GBUnDdZo0r5e6vGRGq9J+0XHje7eIUnc8wb2HBdxbowXDAcfdMnJ4aSbw8799MJEHwdnm38Id8V1sddI=
+X-Gm-Message-State: AOJu0YyEzF3Fj3ErwXtPBi/XXT4+IBzrPlyPt1T4mS+pNs5nBIHcob6d
+	x3zBbpGT19Q7efRodAiCaQCndfkYsbYM0sLGdMxq6s4YTtZ8aYYiKafeNqaQZbzC5fciyS5FXgY
+	oIzYKKi60oEXjqBB18pXKONY/IKqkD35il0ormt0nOyPeJNczghR180X+bbP/so5G
+X-Received: by 2002:a05:600c:47cf:b0:422:1def:e17f with SMTP id 5b1f17b1804b1-4247529691dmr47622145e9.31.1718918660971;
+        Thu, 20 Jun 2024 14:24:20 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHjqtAV2S5YjCos6I4IxgJi+HUHbZigboKFoBlsWH8DZMb5OHeB1gnsbHGaRqyfG671xQWsGA==
+X-Received: by 2002:a05:600c:47cf:b0:422:1def:e17f with SMTP id 5b1f17b1804b1-4247529691dmr47621865e9.31.1718918660417;
+        Thu, 20 Jun 2024 14:24:20 -0700 (PDT)
+Received: from cassiopeiae ([2a02:810d:4b3f:ee94:642:1aff:fe31:a19f])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4247fe1b5desm21574305e9.4.2024.06.20.14.24.18
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 20 Jun 2024 14:24:19 -0700 (PDT)
+Date: Thu, 20 Jun 2024 23:24:17 +0200
+From: Danilo Krummrich <dakr@redhat.com>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: rafael@kernel.org, bhelgaas@google.com, ojeda@kernel.org,
+	alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@samsung.com, aliceryhl@google.com, airlied@gmail.com,
+	fujita.tomonori@gmail.com, lina@asahilina.net, pstanner@redhat.com,
+	ajanulgu@redhat.com, lyude@redhat.com, robh@kernel.org,
+	daniel.almeida@collabora.com, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org
+Subject: Re: [PATCH v2 01/10] rust: pass module name to `Module::init`
+Message-ID: <ZnSeAZu3IMA4fR8P@cassiopeiae>
+References: <20240618234025.15036-1-dakr@redhat.com>
+ <20240618234025.15036-2-dakr@redhat.com>
+ <2024062038-backroom-crunchy-d4c9@gregkh>
+ <ZnRUXdMaFJydAn__@cassiopeiae>
+ <2024062010-change-clubhouse-b16c@gregkh>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BY5PR12MB4130:EE_|SA1PR12MB6725:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8577187b-988b-472d-3a0d-08dc916b53ac
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230037|376011|7416011|366013|1800799021;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?/jgwkcbyfiRf3tlVq8aAiapn/vjVqUrahAE75xJCyXaGRaIjUFmYmyWTOEMy?=
- =?us-ascii?Q?y9WtUMdUWXnrK7+7F+/VSJTVvLSQ1g9gVJsmg6IDRAzU/24oiuDvI/LS6/dc?=
- =?us-ascii?Q?AuVUl0FI7WoKDFGArugdPH4BDtAdwpNfpKMWaRHur+7Zd6tWmoHhBiNKMKam?=
- =?us-ascii?Q?2Snf7XMHkeRq4Uc5OlP+RJBknSJ9HwezgRLcHi745cCbxj+qRxN4EXeCz7Wj?=
- =?us-ascii?Q?1WE3dDWOZpl0EqtLUdWFjIPD9r6MI8qeC49gy3xoaK1IG80HeC1r1JSyEy2b?=
- =?us-ascii?Q?CXP+FQkLJ9/Yvn0c/zfzWEgEawVm6U+YBl6McMxXafmisWyg2oDskmCwpsAv?=
- =?us-ascii?Q?NHaApo810EBEUQUyY+9JVVBw85irentI0FSft0brrMFUvFcvD+82jLFaL6yO?=
- =?us-ascii?Q?sHd4MUht3EdbxpnUErMXoOKaUIwqdis66M+0/FmK7Y5Z5sLLkVYzGBirAVdu?=
- =?us-ascii?Q?JmUA48iVcYf4JJcpItT/iL0Yk8uQVHddEJXk3yGE2CqhT+PRQhcnnLA4F8Hj?=
- =?us-ascii?Q?6zo4RT+4C/N51pNIucsocw+TTNGu9V/Qig2GaJx7iOfKEW7psXgcVX1TXfs8?=
- =?us-ascii?Q?3DBCsm/FBTYJsQqmcaKnZvZOgOjVD5RblJjAFYNCJdk1tl/kTg277AIu9YuE?=
- =?us-ascii?Q?oOOHfa0rIQv5SxknkGMTH3exLOkTOZB682X3+u6R6yq6uHeCU+9/+AbTfu5D?=
- =?us-ascii?Q?k6h3eleesbphseFl8TOdW3CxbmZKQtl9fKg5YhiWRxzK9Fu+tJTJN62LwL6J?=
- =?us-ascii?Q?C/AGjVTK+BUOT8swyieM06hPuLvm/daMnHSHPy2+ZA0gHJqnIll8Sl8nEm6d?=
- =?us-ascii?Q?okJWuV33ASYhqdpU5qfaFVKvkkgtF1dtlCqNdwfox4HKZeW4imAyA7SEa0PS?=
- =?us-ascii?Q?8rIjLHl94fVYT6JIsZMP/xC62MpYZs/J+tv7GugesMcs0s1+7RItVc1IfHAb?=
- =?us-ascii?Q?wCodgFzfP/cyunTpsSC2jdPYLYwHMatCBU+F1geDkpDItkngyUH4gKogr3Gd?=
- =?us-ascii?Q?HkmS0ly96MsUTykEhvhBAoPJIt9IJkODnJBWMbczn4yeYprCgeAA1EFiEB7O?=
- =?us-ascii?Q?Cn1+6isp40KVMZioVKVN3M/npqteycsaM1MixYu8n8nfooMgckD+yV+D57aa?=
- =?us-ascii?Q?2YykMVQuujCUec80Db/e8TVJ8amE+N/Y7EU80jXuN7NnRqvrQScopra1r5hZ?=
- =?us-ascii?Q?jEY5zXqTVWjFNI7gXOtfseyKY3HUGV9+cZMndaiLe0CpMe9ksq9p7hcs0rUb?=
- =?us-ascii?Q?sKUmDAoFjVzJBFjjMajwEx7wQLlLx20WeRD2MULegr++5ghBuTRSWtXqCKsn?=
- =?us-ascii?Q?M9ZPlhN16yHajYOB/yMLFX8e?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BY5PR12MB4130.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230037)(376011)(7416011)(366013)(1800799021);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?aL7ddM4ZpH9DIVv0qi5bv9Frok0SQvE7OG74aLSjxbJbQeUufcmhyDKczZsT?=
- =?us-ascii?Q?cybE83lRinjiOvccUr1yA5DASvfjhJD9d5v0vm3OUves92ZqZ3rwJuhfZXdS?=
- =?us-ascii?Q?dzSHor7JmMIQRGYBoCvgu6dPQvq1pcthcLM9Igo/bU/SJaMZee84kgt7oGCd?=
- =?us-ascii?Q?L+DlbsEaH0CgsERSThr8SgTJaBAtdJY9FGDYnOHkOnQAaci2fmLen5a+yxSa?=
- =?us-ascii?Q?1DzTOymZ/9enz4MuqUEva9IzZAyQkyqQjIfXdAVm+LZ0jxrMUVVdrsEQCPa2?=
- =?us-ascii?Q?ekftWMImO1InXQlJfWHqWSUEy530i+xF446wjHUOk18q1GmdJfVQrvGWS+pM?=
- =?us-ascii?Q?qOC4Lj+dIw3k1UUGXn3eUhpn0PYTObD4y498uXTPcp4qXrX3dtRDxQ9oir4V?=
- =?us-ascii?Q?CfUWnGIcknljP6D3y+pxTeN0wO3j1vG63IwlhtfB5/FGqbgxB5CjuqZ/gy0r?=
- =?us-ascii?Q?MCEKjnspoN/x0BhwsYIzjO8PutlkRj4ydPcifkOkWsBB9SxwZOr4sD6/72Kl?=
- =?us-ascii?Q?xTXjGWwmgLAy6ctwKR6DG+h1sQnTof0j0yyZiL1ACwhY0Yf/nQ45Dex4/AyN?=
- =?us-ascii?Q?0s6WTAxmBf0NuSz7bcnau0DTmA8zgpHjRbaeYDSyRp0e3osCDIdEWOblwfbz?=
- =?us-ascii?Q?eLM2RSqVYolkAQBf57NdyaljRPd3nP3zA7GiX05cRZ8zoQ/T7sZ+13DHLh05?=
- =?us-ascii?Q?OSeZZVDbfCO6B4tTBftzN+pNp3eRcTiZgCzYKMgkWMw78TeeqzKYnO2sO79S?=
- =?us-ascii?Q?nH8ID1CQLgEKUP+wF+llUh6LIdAmxLpTd5n3Ngibi3ormiWKqd7BPblULSk1?=
- =?us-ascii?Q?SPSPURdR4JNIKHFzgdCmzuJ7k5VWG9TjsTKLBpjr1HfHOdwk6ZLMhz10NFuF?=
- =?us-ascii?Q?Y2eZS8ahvVY3D9oFRZrhBnpzq0NYYmaEPobGrLDKzQVKE8zqfMpxp8jvOc9L?=
- =?us-ascii?Q?yth51VVDcSFmhYj/cV1g7/4qskNsL+AHppbv8EHveHUtl5FFt53x/2x/0Kc1?=
- =?us-ascii?Q?tAS51yFMPHzxRHBuHV6wA0YetkcEh4tL2CuVDcTVaZ85EiSoUM/3zWR1Y9fp?=
- =?us-ascii?Q?bPJKjww0fdtP0n90a/70T/Hf6JlrO9k7xDeWHhsSVpyCL5LB/HwcO3esavCk?=
- =?us-ascii?Q?W4Qdr8B1JSJPjMKjEzPwUaa/pXa9ZrqnGh1B5KbWzhS6QBjlkcMOQLksvZeL?=
- =?us-ascii?Q?YuD5u7dIB4YJzS8UUHqdHajXnlCjIIz2eB7ihJL0WAW+MfWiz9EOmCIvtWTK?=
- =?us-ascii?Q?Lv6Sy39iNaRVl2xMulhSQvVZRqhMXUSYStxlx7NTrEo5zguCstBt64m6AOOK?=
- =?us-ascii?Q?Nxliy1PbtJypw7IUTcYXq3HoFr7ugbGLwj68KrEq2L2WDCcqEQ8qGEIpYjKi?=
- =?us-ascii?Q?oblz00zAw6XFXVaUuIbvoz0+U6oIP5wpzn0FqYG5rX+27cJqREDlGx5/k4Ni?=
- =?us-ascii?Q?8I9PeR6Pfd9T/TuSYphNkeH9hnT8lGgY0Dp0aGac+IgUIjeJtlbQm+YOgSLf?=
- =?us-ascii?Q?J2hYMqaapewK36Zh/Myk+Urkv25PsGbSrIomnhsdinHXaqRpxl5Eno0GJX0+?=
- =?us-ascii?Q?YWehSkZe6dzW3HmGL+zVmXgWuWtDZjkVzPq+KOpbiMJEisB7S4wDrpXMIAxL?=
- =?us-ascii?Q?KA=3D=3D?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8577187b-988b-472d-3a0d-08dc916b53ac
-X-MS-Exchange-CrossTenant-AuthSource: BY5PR12MB4130.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 20 Jun 2024 20:55:33.1794
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: n9JdNZ+Mj3f2KcKdeVceblthRgHDJkmRQnUfQLPQH2bh8/GPiGlm6yHqoGe52TN2/ghkombGlH35hXOvXGJW6g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB6725
+In-Reply-To: <2024062010-change-clubhouse-b16c@gregkh>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-1) Provide a better error message for the "Rust not available" case.
-Without this patch, one gets various misleading messages, such as:
+On Thu, Jun 20, 2024 at 06:36:08PM +0200, Greg KH wrote:
+> On Thu, Jun 20, 2024 at 06:10:05PM +0200, Danilo Krummrich wrote:
+> > On Thu, Jun 20, 2024 at 04:19:48PM +0200, Greg KH wrote:
+> > > On Wed, Jun 19, 2024 at 01:39:47AM +0200, Danilo Krummrich wrote:
+> > > > In a subsequent patch we introduce the `Registration` abstraction used
+> > > > to register driver structures. Some subsystems require the module name on
+> > > > driver registration (e.g. PCI in __pci_register_driver()), hence pass
+> > > > the module name to `Module::init`.
+> > > 
+> > > I understand the need/want here, but it feels odd that you have to
+> > > change anything to do it.
+> > > 
+> > > > 
+> > > > Signed-off-by: Danilo Krummrich <dakr@redhat.com>
+> > > > ---
+> > > >  rust/kernel/lib.rs           | 14 ++++++++++----
+> > > >  rust/kernel/net/phy.rs       |  2 +-
+> > > >  rust/macros/module.rs        |  3 ++-
+> > > >  samples/rust/rust_minimal.rs |  2 +-
+> > > >  samples/rust/rust_print.rs   |  2 +-
+> > > >  5 files changed, 15 insertions(+), 8 deletions(-)
+> > > > 
+> > > > diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> > > > index a791702b4fee..5af00e072a58 100644
+> > > > --- a/rust/kernel/lib.rs
+> > > > +++ b/rust/kernel/lib.rs
+> > > > @@ -71,7 +71,7 @@ pub trait Module: Sized + Sync + Send {
+> > > >      /// should do.
+> > > >      ///
+> > > >      /// Equivalent to the `module_init` macro in the C API.
+> > > > -    fn init(module: &'static ThisModule) -> error::Result<Self>;
+> > > > +    fn init(name: &'static str::CStr, module: &'static ThisModule) -> error::Result<Self>;
+> > > 
+> > > Why can't the name come directly from the build system?  Why must it be
+> > > passed into the init function of the module "class"?  What is it going
+> > > to do with it?
+> > 
+> > The name does come from the build system, that's where `Module::init` gets it
+> > from.
+> > 
+> > > 
+> > > A PCI, or other bus, driver "knows" it's name already by virtue of the
+> > > build system, so it can pass that string into whatever function needs
+> > 
+> > Let's take pci_register_driver() as example.
+> > 
+> > ```
+> > #define pci_register_driver(driver)		\
+> > 	__pci_register_driver(driver, THIS_MODULE, KBUILD_MODNAME)
+> > ```
+> > 
+> > In C drivers this works because (1) it's a macro and (2) it's called directly
+> > from the driver code.
+> > 
+> > In Rust, for very good reasons, we have abstractions for C APIs, hence the
+> > actual call to __pci_register_driver() does not come from code within the
+> > module, but from the PCI Rust abstraction `Module::init` calls into instead.
+> 
+> I don't understand those reasons, sorry.
 
-    "No rule to make target 'rust-analyzer'"
+Ok, good you point this out. We should definitely discuss this point then and
+build some consensus around it.
 
-Instead, run scripts/rust_is_available.sh directly, as a prerequisite,
-and let that script report the cause of any problems, as well as
-providing a link to the documentation. Thanks to Miguel Ojeda for the
-idea of just letting rust_is_available.sh report its results directly.
+I propose to focus on this point first and follow up with the discussion of the
+rest of the series afterwards.
 
-The new output in the failure case looks like this:
+Let me explain why I am convinced that it's very important to have abstractions
+in place in general and from the get-go.
 
-$ make rust-analyzer
-***
-*** Rust compiler 'rustc' could not be found.
-***
-***
-*** Please see Documentation/rust/quick-start.rst for details
-*** on how to set up the Rust support.
-***
-make[1]: *** [/kernel_work/linux-github/Makefile:1975: rust-analyzer] Error 1
-make: *** [Makefile:240: __sub-make] Error 2
+In general, having abstractions for C APIs is the foundation of being able to
+make use of a lot of advantages Rust has to offer.
 
-Cc: Alice Ryhl <aliceryhl@google.com>
-Acked-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: John Hubbard <jhubbard@nvidia.com>
----
- Makefile | 1 +
- 1 file changed, 1 insertion(+)
+The most obvious one are all the safety aspects. For instance, with an
+abstraction we have to get exactly one piece of code right in terms of pointer
+validity, lifetimes, type safety, API semantics, etc. and in all other places
+(e.g. drivers) we get the compiler to check those things for us through the
+abstraction.
 
-diff --git a/Makefile b/Makefile
-index 14427547dc1e..07308277a6f5 100644
---- a/Makefile
-+++ b/Makefile
-@@ -1970,6 +1970,7 @@ tags TAGS cscope gtags: FORCE
- # IDE support targets
- PHONY += rust-analyzer
- rust-analyzer:
-+	$(Q)$(CONFIG_SHELL) $(srctree)/scripts/rust_is_available.sh
- 	$(Q)$(MAKE) $(build)=rust $@
- 
- # Script to generate missing namespace dependencies
--- 
-2.45.2
+Now, the abstraction can be buggy or insufficient and hence there is no absolute
+safety guarantee. *But*, if we get this one thing right, there is nothing a
+driver can mess up by itself trying to do stupid things anymore.
+
+If we just call the C code instead we have to get it right everywhere instead.
+
+Now, you could approach this top-down instead and argue that we could at least
+benefit from Rust for the driver specific parts.
+
+Unfortunately, this doesn't really work out either. Also driver specific code is
+typically (very) closely connected to kernel APIs. If you want to use the safety
+aspects of Rust for the driver specific parts you inevitably end up writing
+abstractions for the C APIs in your driver.
+
+There are basically three options you can end up with:
+
+(1) An abstraction for the C API within your driver that is actually generic
+    for every driver, and hence shouldn't be there.
+(2) Your driver specific code is full of raw pointers and `unsafe {}` calls,
+    which in the end just means that you ended up baking the abstraction into
+    your driver specific code.
+(3) You ignore everything, put everything in a huge `unsafe {}` block and
+    compile C code with the Rust compiler. (Admittedly, maybe slightly
+    overstated, but not that far off either.)
+
+The latter is also the reason why it doesn't make sense to only have
+abstractions for some things, but not for other.
+
+If an abstraction for B is based on A, but we don't start with A, then B ends up
+implementing (at least partially) the abstraction for A as well. For instance,
+if we don't implement `driver::Registration` then the PCI abstractions (and
+platform, usb, etc.) have to implement it.
+
+It really comes down to the point that it just bubbles up. We really have to do
+this bottom-up, otherwise we just end up moving those abstractions up, layer by
+layer, where they don't belong to and we re-implement them over and over again.
+
+> 
+> > Consequently, we have to pass things through. This also isn't new, please note
+> > that the current code already does the same thing: `Module::init` (without this
+> > patch) is already declared as
+> > 
+> > `fn init(module: &'static ThisModule) -> error::Result<Self>`
+> > passing through `ThisModule` for the exact same reason.
+> 
+> Yeah, and I never quite understood that either :)
+
+Since commit 247b365dc8dc ("rust: add `kernel` crate") shows me your RB for
+that, am I good to assume that this one isn't a blocker?
+
+> 
+> > Please also note that in the most common case (one driver per module) we don't
+> > see any of this anyway.
+> 
+> True, but someone has to review and most importantly, maintain, this
+> glue code.
+> 
+> > Just like the C macro module_pci_driver(), Rust drivers can use the
+> > `module_pci_driver!` macro.
+> > 
+> > Example from Nova:
+> > 
+> > ```
+> >     kernel::module_pci_driver! {
+> >         // The driver type that implements the corresponding probe() and
+> >         // remove() driver callbacks.
+> >         type: NovaDriver,
+> >         name: "Nova",
+> >         author: "Danilo Krummrich",
+> >         description: "Nova GPU driver",
+> >         license: "GPL v2",
+> >     }
+> > ```
+> 
+> As I said when you implemented this fun macro, don't do this yet.
+> 
+> We added these "helper" macros WAY late in the development cycle of the
+> driver model, AFTER we were sure we got other parts right.  There is no
+> need to attempt to implement all of what you can do in C today in Rust,
+> in fact, I would argue that we don't want to do that, just to make
+> things simpler to review the glue code, which is the most important part
+> here to get right!
+
+We're not reinventing the wheel here, we stick to the architecture the kernel
+already has.
+
+However, I understand that not starting with this macro directly makes it easier
+for you to see what's going on. I can introduce the macro in a separate patch to
+make it more obvious what's going on.
+
+> 
+> Changing drivers later, to take advantage of code savings like this
+> macro can be done then, not just yet.  Let's get this understood and
+> right first, no need to be tricky or complex.
+> 
+> And, as I hinted at before, I don't think we should be doing this at all
+> just yet either.  I still think a small "C shim" layer to wrap the
+> struct pci driver up and pass the calls to the rust portion of the
+> module is better to start with, it both saves you time and energy so
+> that you can work on what you really want to do (i.e. a driver in rust)
+> and not have to worry about the c bindings as that's the "tricky" part
+> that is stopping you from getting your driver work done.
+
+I strongly disagree here. As explained above, it just bubbles up, this approach
+would just make me end up having to write a lot of the code from the
+abstractions in the driver.
+
+However, it would indeed safe me time and energy to do just that. But that isn't
+really what I want. I also don't want to write a driver in Rust *only*.
+
+And I also don't really think that you want people, who commit to work hard to
+get things right, to just take the shortcut and create some random mess buried
+in a driver. :)
+
+What I actually want is to get to a solid foundation for Rust drivers in
+general, since I'm convinced that this provides a lot of value beyond the scope
+of a single driver.
+
+Since you've brought the topic up a few times, I am also willing to maintain
+those abstractions if this is a concern. Maybe one day the corresponding
+maintainers are comfortable enough and this isn't needed anymore, but at least
+until then, I'm happy to help out.
+
+> 
+> After all, it's not the pci driver model code that is usually the tricky
+> bits to verify in C, it's the whole rest of the mess.  Stick with a
+> small C file, with just the pci driver structure and device ids, and
+> then instantiate your rust stuff when probe() is called, and clean up
+> when release() is called.
+
+Again, this really bubbles up.
+
+What do we pass to Rust probe() function? A raw struct pci_dev pointer or the
+proper PCI device abstraction?
+
+How do we implement I/O memory mappings for PCI bars without PCI / I/O
+abstraction?
+
+How do we perform (boundary checked) I/O memory reads / writes without `Io`
+abstraction?
+
+How do we handle the lifetime of resources without `Devres` abstraction?
+
+How do we (properly) implement a DRM device registration abstraction without
+`Devres`?
+
+Luckily we already got the `Firmware` and `Device` abstraction in place. :)
+
+> 
+> I can provide an example if needed.
+
+If you do so, please don't stop at the probe() boundary, please continue to the
+point where the Nova stub driver is. It really does just enough to show / proove
+that the abstractions tie together nicely. But it should be enough to see that
+you end up with either (1), (2) or (3) from above.
+
+> 
+> thanks,
+> 
+> greg k-h
+> 
 
