@@ -1,185 +1,93 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B02941AAE30
-	for <rust-for-linux@vger.kernel.org>; Thu, 20 Jun 2024 11:10:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 171231ACE9D
+	for <rust-for-linux@vger.kernel.org>; Thu, 20 Jun 2024 12:56:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718881806; cv=none; b=rmb0r+TwN0fzteMi/4jYdyo3I/5/6i6V96K59xMmUXD0N7FQOfpt5L/egVMZJQC6JjGetW8bmt12h3ZxBunwZNRgJrQSQKeyTgeuPxIkCJXlhWvnf1mdUR/pJ3WL4mxmsgkHaxAMNxZd2JeCBpTda17aECcQUpWK5A4Zi+ItEBE=
+	t=1718888166; cv=none; b=EADCNw1G3bSn//tcVM/wPWbLYUNXp5AMQxjEaUYcnuEo7PCl8OyMhg/eBry/lm1oE60NWzKWSxWMysgdYIJ2VFQ2ktDlqcwZZCwMSlJMxYsxam8pSDMEb/1vylfWcwxF6J+rD4NPJh3awVO3s2s3AtGDcdPRqsyNSSudIOvk8x0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718881806; c=relaxed/simple;
-	bh=fjIoyLutiqUfKxBUpky93Pe7mU64/kE4jZSsWuFL0cs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 In-Reply-To:Content-Type:Content-Disposition; b=hfF+1/y3DZjqfm8U1TN2amFkn45JiLlBSI2PwXsDisvHoSnQeZEW6yQPdeJM7wwvK0VtO5FYecWB+2g2yr8/HSWLZASMxC15ls9MJ9Qo7CbTtUINaGO1JaJGkAT9IIM/dYfBuQA7IlERWfB7Op2gLOIYbwTIniAvLMxd1NBYad4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=J2A3TSx9; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1718888166; c=relaxed/simple;
+	bh=ateVPGwZWRqWgrzEePkU8GYxba0F7RUIaMPla2FOLzY=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=UwxtSizkzhU8ULye929QuDZdOdJJwViSr9gJUB4QndUnNd20NaIlqJUpp7GTTZo1DXABxuuuf48/6WeJMEw7sBiYVeTCYBM9pAbkYy2oypDMWasdljsl47Ihec8EeQBHBr/3ESvb6LZqWl/nmEpeSHzwK3fwTOhqR/Oh1Y/0bsg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=tdKYfe7x; arc=none smtp.client-ip=209.85.215.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="J2A3TSx9"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1718881803;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=j94HKKNLZdh9dITeBbXgdoYL8Fm7iRtd8iIrtfpWm7o=;
-	b=J2A3TSx9Ep0H7DOSjpUycUgY83aXh2StmRLgbDIuUuTe84tJxhR0wOcPQkGZLVv1QuA03c
-	kTDneaPKTrSMxYVoRneXxGM+9f4j/nke2RMsDjrJ4qAl23pdbyeWqCfA5As81PCEr0oRYq
-	jmtXZMASgkOPl9CikL/ho+m/Sb7iMU0=
-Received: from mail-lf1-f72.google.com (mail-lf1-f72.google.com
- [209.85.167.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-653-Ov863r2-NnGt4nktEXh1zA-1; Thu, 20 Jun 2024 07:10:02 -0400
-X-MC-Unique: Ov863r2-NnGt4nktEXh1zA-1
-Received: by mail-lf1-f72.google.com with SMTP id 2adb3069b0e04-52cc6bdf698so644299e87.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 20 Jun 2024 04:10:01 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718881800; x=1719486600;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="tdKYfe7x"
+Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-6f799fc5af3so90274a12.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 20 Jun 2024 05:56:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1718888164; x=1719492964; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=j94HKKNLZdh9dITeBbXgdoYL8Fm7iRtd8iIrtfpWm7o=;
-        b=g8CEvExynWnS10M5bEEN56t1TjjGnxoSwkCKudfClOl1yynp1LWJmvJ9ujktKn/SJQ
-         o8wePkwLu6lCNmBws2pa/E6buy+SQSu9Acwe4/Jc6G1wwrRLFnbK6o8LRgKThfYuMsah
-         VE6NQ2k+Jm44TW53VcpqLIsD5tH1i4fo1GYWDvcmJJytTqrFXDYuMJriaD9rQ1SLIGV2
-         yncEQA9gZckLiluvl3zKnKndb1iQQ0VXNtjkML6wa//RgeAXH14OVtSeAp8h0WTwWYPn
-         SY74Dk3TrtPWJ5eiQTyIF9szc3hI4VmwmO8ANocXIwxUcK5OnbVNW45ofK2WQfO8HZl+
-         mEjg==
-X-Forwarded-Encrypted: i=1; AJvYcCU53e/TxCw+U9M+FiscoEmFno7PoobkTVF766U4VsPDFDQzRNEavRu10MBfOALTLNoYasSUcwcwXfbCIeeB1LTT6DTc/hYumFc1oEqG7aA=
-X-Gm-Message-State: AOJu0Yyh2sQKrWPNVWioQ8Ftyxvv2xDL5yMb50DOoJHkiZgKJ6zM+THS
-	zfDchxeYiSvAxMCryjLi0NPEOn3zJJiHvy8bLZSliJNVnHfm7PjY/D5qP1E9mob1C1vVLshxdqk
-	BB3Oa86GebhKRhGPka7JJcD8MKivZ1UVTu8/mb09S2A6q+0MQbeIe9h5HsP4Pjutu
-X-Received: by 2002:a05:6512:2309:b0:52c:9906:fa33 with SMTP id 2adb3069b0e04-52ccaa885ddmr4484219e87.43.1718881800054;
-        Thu, 20 Jun 2024 04:10:00 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFKYO/OJsiuoxGtopx4SVBBkDAH3hoecb89O6oPnar7s+vD4vlzD4TqI6QPjh899vPhPykpPQ==
-X-Received: by 2002:a05:6512:2309:b0:52c:9906:fa33 with SMTP id 2adb3069b0e04-52ccaa885ddmr4484200e87.43.1718881799652;
-        Thu, 20 Jun 2024 04:09:59 -0700 (PDT)
-Received: from pollux ([2a02:810d:4b3f:ee94:abf:b8ff:feee:998b])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4247d0ca0afsm21583415e9.25.2024.06.20.04.09.57
+        bh=e5St0ktoDMEqWPkouwya5YeNzIQyT2jMo5H1z1O9YFw=;
+        b=tdKYfe7xNp7H+LTKjrMGpQgqu0Zb1Jrs6amdi7oUtLg8JgVCdct2d6QWdfMoe8M/7l
+         yFOnXwpBMTiSdXWWsOXqB+8QeI9mVp8PdtSW3fR+kuT1Z6bex51ns0cZu+xGlmHn6ktf
+         5Gqf9KGTGdgfJ3vxcMqs2SsrJUvtKgkXcRkFRnuybbuffO6sx2Dww5D9ZQuVckzX5Pfv
+         ogYqnhm2BrBuLvtllgIDywMdXNsjIOcKGZ20wUA2vHh7xeJQPm6CY/2LDT9RH085i+WH
+         k2f8NTG9r7+M1dMmgsehhqFHJWdde5/79mZLK7rzo1R5xtaqGzfscCI2HNDipY1Jn2/2
+         JQEA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718888164; x=1719492964;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=e5St0ktoDMEqWPkouwya5YeNzIQyT2jMo5H1z1O9YFw=;
+        b=s+j4EDVrNAUu4KaceMHprcr6cuXACIF7ux6grZThnmzmjs2h4G23yMmYS/lSYfkyAZ
+         QSc8SzoN25+ChLgLinl6FzZFDZa+jWI8CX9puVGCsUHuZhx09SzWdJQmBJvyX17szdjR
+         YSK9prGMZDO6f1G5pHA3x7bmtW2Q/9LesY3T5wyCOu0Z/qfID8Nwj85JPNrGAYOxFajp
+         i3Jr/y9ERju2Oy0iSBjUZ1MJfla0gpBkCv2QNR3HZ7E8FXMT+xTPNkmkPgtlfKmAsoXJ
+         fCbD9Lg+3BA/DIVbuDSX6TxKuiKurZEoE0uqV7qekfcUbhQvl+MQKGxbyJtEWOcDcEUj
+         8AFw==
+X-Forwarded-Encrypted: i=1; AJvYcCXe1oj/NGqxddkeiZ62QH0FCYN0nQQmhptwx6jVIihYpTzRNLB0oSm/Q6ZiMmVXF38go7TkiqCiaXyiEq6Rno3g4lO5A/qS+GpyeWqDP+Y=
+X-Gm-Message-State: AOJu0YzxKLphV6xtvmaUKKYwg2QQ//aK3HSZuLkIvxL/kZg4BxTCpiT0
+	Xv7mVeDQl4rxavopCLfp8jM/yRAa+9IjoKZkfiBAfFzn1F8v1UZpbJEVvMeUxUo=
+X-Google-Smtp-Source: AGHT+IF5S0Ljn2maa2dnbZdtaRiMlVn954LGvI/2QWQL52Y/NiRCwRjwjJjG+fkms6qwgwCF9cVu0A==
+X-Received: by 2002:a05:6a00:2da8:b0:704:173c:5111 with SMTP id d2e1a72fcca58-70629cdba7bmr5533386b3a.3.1718888164151;
+        Thu, 20 Jun 2024 05:56:04 -0700 (PDT)
+Received: from [127.0.0.1] ([198.8.77.157])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-705ccb8eeb4sm12207576b3a.205.2024.06.20.05.56.02
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 20 Jun 2024 04:09:58 -0700 (PDT)
-Date: Thu, 20 Jun 2024 13:09:56 +0200
-From: Danilo Krummrich <dakr@redhat.com>
-To: Viresh Kumar <viresh.kumar@linaro.org>
-Cc: gregkh@linuxfoundation.org, rafael@kernel.org, bhelgaas@google.com,
-	ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me, a.hindborg@samsung.com,
-	aliceryhl@google.com, airlied@gmail.com, fujita.tomonori@gmail.com,
-	lina@asahilina.net, pstanner@redhat.com, ajanulgu@redhat.com,
-	lyude@redhat.com, robh@kernel.org, daniel.almeida@collabora.com,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-pci@vger.kernel.org,
-	Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
-	Vincent Guittot <vincent.guittot@linaro.org>
-Subject: Re: [PATCH v2 00/10] Device / Driver and PCI Rust abstractions
-Message-ID: <ZnQOBIQPvB8xQ88r@pollux>
-References: <20240618234025.15036-1-dakr@redhat.com>
- <20240619120407.o7qh6jlld76j5luu@vireshk-i7>
- <ZnLQxZjtsmDJb4I1@pollux>
- <20240620100556.xsehtd7ii25rtn7k@vireshk-i7>
+        Thu, 20 Jun 2024 05:56:03 -0700 (PDT)
+From: Jens Axboe <axboe@kernel.dk>
+To: "linux-block @ vger . kernel . org" <linux-block@vger.kernel.org>, 
+ Andreas Hindborg <nmi@metaspace.dk>
+Cc: Christoph Hellwig <hch@lst.de>, Miguel Ojeda <ojeda@kernel.org>, 
+ rust-for-linux@vger.kernel.org, Andreas Hindborg <a.hindborg@samsung.com>
+In-Reply-To: <20240620085721.1218296-1-nmi@metaspace.dk>
+References: <20240620085721.1218296-1-nmi@metaspace.dk>
+Subject: Re: [PATCH] rust: block: do not use removed queue flag API
+Message-Id: <171888816288.139187.2534771851579551640.b4-ty@kernel.dk>
+Date: Thu, 20 Jun 2024 06:56:02 -0600
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20240620100556.xsehtd7ii25rtn7k@vireshk-i7>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.0
 
-On Thu, Jun 20, 2024 at 03:35:56PM +0530, Viresh Kumar wrote:
-> On 19-06-24, 14:36, Danilo Krummrich wrote:
-> > If you want to split `cpufreq::Registration` in `new()` and `register()`, you
-> > probably want to pass the registration object to `Devres` in `register()`
-> > instead.
-> > 
-> > However, I wouldn't recommend splitting it up (unless you absolutely have to),
-> > it's way cleaner (and probably less racy) if things are registered once the
-> > registration is created.
+
+On Thu, 20 Jun 2024 10:57:21 +0200, Andreas Hindborg wrote:
+> `blk_queue_flag_set` and `blk_queue_flag_clear` was removed in favor of a
+> new API. This caused a build error for Rust block device abstractions.
+> Thus, use the new feature passing API instead of the old removed API.
 > 
-> > The PCI abstraction did not need to change for that, since it uses the
-> > generalized `driver::Registration`, which is handled by the `Module` structure
-> > instead.
-> > 
-> > However, staging/dev also contains the `drm::drv::Registration` type [1], which
-> > in principle does the same thing as `cpufreq::Registration` just for a DRM
-> > device.
-> > 
-> > If you're looking for an example driver making use of this, please have a look
-> > at Nova [1].
 > 
-> Thanks for the pointers Danilo.
-> 
-> There is more to it now and I still don't know what's the best way
-> forward. :(
-> 
-> Devres will probably work well with the frameworks that provide a bus,
-> where a device and driver are matched and probe/remove are called.
-> Obviously Devres needs a struct device, whose probing/removal can
-> allocate/free resources.
 
-Indeed, but please note that this was the case before as well. When we had
-`device::Data` with a `Revokable<T>` for Registrations this revokable was
-revoked through the `DeviceRemoval` trait when the driver was unbound from the
-device.
+Applied, thanks!
 
-> 
-> The CPUFreq framework is a bit different. There is no bus, device or
-> driver there. The device for the framework is the CPU device, but we
-> don't (can't) really bind a struct driver to it. There are more layers
-> in the kernel which use the CPU devices directly, like cpuidle, etc.
-> And so the CPU device isn't really private to the cpufreq/cpuidle
-> frameworks.
+[1/1] rust: block: do not use removed queue flag API
+      commit: 5ddb88f22eb97218d9295e69c39e0ff7cc64e09c
 
-If there is no bus, device or driver, then those abstractions aren't for your
-use case. Those are abstractions around the device / driver core.
+Best regards,
+-- 
+Jens Axboe
 
-> 
-> Most of the cpufreq drivers register with the cpufreq core from their
-> module_init() function, and unregister from module_exit(). There is no
-> probe/remove() callbacks available. Some drivers though have a
-> platform device/driver model implemented over an imaginary platform
-> device, a hack implemented to get them working because of special
-> requirements (one of them is to allow defer probing to work). The
-> driver I am implementing, cpufreq-dt, also has one such platform
-> device which is created at runtime. But there will be others without a
-> platform device.
-> 
-> The point is that the Rust cpufreq core can't do the Devres stuff
-> itself and it can't expect a struct device to be made available to it
-> by the driver. Some cpufreq drivers will have a platform device, some
-> won't.
 
-That seems to be purely a design question for cpufreq drivers then.
-
-What prevents you from always creating a corresponding platform device?
-
-If you really want some drivers to bypass the device / driver model (not sure
-if that's a good idea though), you need separate abstractions for that.
-
-> 
-> One way to make this whole work is to reintroduce the Data part, just
-> for cpufreq core, but I really don't want to do it.
-
-That doesn't help you either. As mentioned above, `device::Data` was supposed to
-receive a callback (`DeviceRemoval`) from the underlying driver (platform_driver
-in your case) on device detach to revoke the registration.
-
-By using `Devres` instead, nothing changes semantically, but it makes the
-resulting code cleaner.
-
-> What else can be done ?
-
-Think about what you want the lifetime of your cpufreq registration to be.
-
-Currently, it seems you want to do both, bind it to probe() / remove(), in case
-the driver is implemented as platform_driver, and to module_init() /
-module_exit(), in case the device / driver model is bypassed.
-
-> 
-> -- 
-> viresh
-> 
 
