@@ -1,31 +1,65 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 270591AED5A;
-	Thu, 20 Jun 2024 15:11:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FD1F1B143D
+	for <rust-for-linux@vger.kernel.org>; Thu, 20 Jun 2024 16:10:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718896307; cv=none; b=Y9V0UFsK9RJxXqMDFMaFh4oTjWljUE+9fCSF8MKWIuSTj0NFuYr5wkAH5hjp939ZJpGdRYQVfHS2eHXlah9Le90xTIXQvTt4iKe1Rm64jzGtkZNwEhnJzMStP/FnlS/8TarsdwRJTslZcCOKEX8N8wrr3HxR15kheNHXnEJLSyY=
+	t=1718899814; cv=none; b=mcFwFyBlM5Z+reVsjKr0AZdoD+vj+DEC1eX31fL3KX2kO0wwW0vt7hC1Sm7Htzd88Wx63okhkVt5NVYFVwgO1/5y5c/1VvkqB7y3F0O2B35ucfER9L2/we5/D6Go/KUQb5qLjWbTkpgJatkJz+9eXypxTnrTNe110Ggsdq2R/Ys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718896307; c=relaxed/simple;
-	bh=BQJCcQtirxB2NsQ9DEZ7h6l2NY6z1Y7N7Zei18H96NA=;
+	s=arc-20240116; t=1718899814; c=relaxed/simple;
+	bh=ssSMczIhe71muC2Ge+dwgnfPO/j9QwLwj7JhCu3oUzA=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WNifMgGvUUbU1epflmNps6dXT6Pxvt0nG4ZVwT8/2lwZCXlt0yco80jyPbnqgH1jczL9EU4LP7hgeXo5g/SNVnD0Ue/KkE/9xuoAFUUiIeSaoQ8Wz5oBsqyqx2qhpp4f56vN4Wwm+md02EWCC3yHzJFfsPztqnpeYR3QRCGixK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pm4w85L1; arc=none smtp.client-ip=10.30.226.201
+	 In-Reply-To:Content-Type:Content-Disposition; b=o+k7H+mZxLczIyL4SZBSBKHqtl1BqYd6iyNZB1M45dSlwlPQrpmnrlLJTsdqnKxneZhX2xzJZDIObE/mY2lp8eavz4+BKrcE4dUFoFFkP6C0nPtrLHI+4av6fICnt0NDfoDn+XlcS8sNOKZcNl2DSf01OU9um+bgaO5e+fVJBjo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Rmt/2x/H; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pm4w85L1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2828AC2BD10;
-	Thu, 20 Jun 2024 15:11:46 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1718896306;
-	bh=BQJCcQtirxB2NsQ9DEZ7h6l2NY6z1Y7N7Zei18H96NA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=pm4w85L1UGEkJWoArD+dGELBdp3Fz2jkqrARACgDuB954rSkvT7sqEqrPx82yRvnA
-	 A4Aj7j95BEwuCtgHHJMwbEqQTE6K0A66rqEPwWhsUgopEpoK2r1IjFZJ1riQda1t2X
-	 GxWqs7ZyqjOSHr/dZvdghRN2y14Pew6nOC+Ngxd4=
-Date: Thu, 20 Jun 2024 17:11:43 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Danilo Krummrich <dakr@redhat.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Rmt/2x/H"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1718899811;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=JWEIbolo6Iwem2kYP/7UWqPpNHLzHJcoF74xqzSRPHU=;
+	b=Rmt/2x/HTlBGHiAb4xTd66kafkMIdDwp6D/mjGoDJ2JacvlodvvWrxg/j6ljN+orCuXiDv
+	Yv0pj5m/s/6+VBonQxaieT6p5F6gWM6MSeIq92n2tKNhcvtRhEpkXBLz0dhbXtl9uholbc
+	1Xjxa4436RdN+N4pWfXPJJW8JE4fmjU=
+Received: from mail-lj1-f199.google.com (mail-lj1-f199.google.com
+ [209.85.208.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-466-WPNkbGYqMc-RnFXk4FNx-g-1; Thu, 20 Jun 2024 12:10:10 -0400
+X-MC-Unique: WPNkbGYqMc-RnFXk4FNx-g-1
+Received: by mail-lj1-f199.google.com with SMTP id 38308e7fff4ca-2ec308d6f53so8953251fa.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 20 Jun 2024 09:10:09 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1718899809; x=1719504609;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JWEIbolo6Iwem2kYP/7UWqPpNHLzHJcoF74xqzSRPHU=;
+        b=TZBayrhv1x4c8RWPc0I/FzYQ6b0CmoYMVgoIUESqLxINL0RYnYcVFvEeoKHI4DKL19
+         g6eBZuztHkYAxqvsefHbAn1D5tMSZer6LnlRiL08+eipR0S1B0pZfh7YXDDaU+HSrSE8
+         ZHrAAP3Z1tvJI1CXysvpKjGP4F5Yx7HsmsJUknvoLK5DbU5OvOW/o58ykLu5bFpFIqTJ
+         3nJUw6kNhTT7yvzS2RSqukr0U2fevNzqvdpC2vuxCHRd/dLdjlZl09j9Hfxv1k8PGper
+         gt304BKOQeNwAcTgqyCBMrbpNfp2KTJciRUbORp86DsvxgUVXUZqcXUN/Z+im1VDTECx
+         EYhA==
+X-Forwarded-Encrypted: i=1; AJvYcCXQCiASdF82tXqF38nq/QUbr3RviCcd/2iluG6YzQ/tVfb+gYOyAWMHDqZoBUJc1rakk3a4p7/ljYOcdxE6glxh3fvfNKlHN0vtg3RlAfg=
+X-Gm-Message-State: AOJu0Yx32v2Vi0AataxZQ5n5uyoNX9V9j8W36jHEqbBWo7ydS94Fjvbv
+	Z3bnm9hm7uQSeACVRer2ta36ysvDHqnKxAo67/OJmJnzHU2HOpR/pw56Po3hb6rS3+vUrOPJg2B
+	tXTcH8K+xq5wHRdmf0fgN2IgTx+KjhWeZm9k2g6hMs9ls3V9cobBNxHgBSLbeIJ3h
+X-Received: by 2002:a2e:9c04:0:b0:2ec:4399:9c0f with SMTP id 38308e7fff4ca-2ec4399a2b0mr23102341fa.0.1718899808747;
+        Thu, 20 Jun 2024 09:10:08 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGqT2XLxCu5eI2DOyMEtopS2O39oKnD5e98TK9RmyDbH3ZDUd9YDTErMjogmKKv4i+QXKnhpQ==
+X-Received: by 2002:a2e:9c04:0:b0:2ec:4399:9c0f with SMTP id 38308e7fff4ca-2ec4399a2b0mr23102001fa.0.1718899808264;
+        Thu, 20 Jun 2024 09:10:08 -0700 (PDT)
+Received: from cassiopeiae ([2a02:810d:4b3f:ee94:642:1aff:fe31:a19f])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4247d1e390bsm30844945e9.35.2024.06.20.09.10.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 20 Jun 2024 09:10:07 -0700 (PDT)
+Date: Thu, 20 Jun 2024 18:10:05 +0200
+From: Danilo Krummrich <dakr@redhat.com>
+To: Greg KH <gregkh@linuxfoundation.org>
 Cc: rafael@kernel.org, bhelgaas@google.com, ojeda@kernel.org,
 	alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com,
 	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
@@ -34,267 +68,117 @@ Cc: rafael@kernel.org, bhelgaas@google.com, ojeda@kernel.org,
 	ajanulgu@redhat.com, lyude@redhat.com, robh@kernel.org,
 	daniel.almeida@collabora.com, rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org
-Subject: Re: [PATCH v2 09/10] rust: pci: add basic PCI device / driver
- abstractions
-Message-ID: <2024062011-property-hypnotist-e652@gregkh>
+Subject: Re: [PATCH v2 01/10] rust: pass module name to `Module::init`
+Message-ID: <ZnRUXdMaFJydAn__@cassiopeiae>
 References: <20240618234025.15036-1-dakr@redhat.com>
- <20240618234025.15036-10-dakr@redhat.com>
+ <20240618234025.15036-2-dakr@redhat.com>
+ <2024062038-backroom-crunchy-d4c9@gregkh>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+In-Reply-To: <2024062038-backroom-crunchy-d4c9@gregkh>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240618234025.15036-10-dakr@redhat.com>
 
-On Wed, Jun 19, 2024 at 01:39:55AM +0200, Danilo Krummrich wrote:
-> +/// Abstraction for bindings::pci_device_id.
-> +#[derive(Clone, Copy)]
-> +pub struct DeviceId {
-> +    /// Vendor ID
-> +    pub vendor: u32,
-> +    /// Device ID
-> +    pub device: u32,
-> +    /// Subsystem vendor ID
-> +    pub subvendor: u32,
-> +    /// Subsystem device ID
-> +    pub subdevice: u32,
-> +    /// Device class and subclass
-> +    pub class: u32,
-> +    /// Limit which sub-fields of the class
-> +    pub class_mask: u32,
-> +}
+On Thu, Jun 20, 2024 at 04:19:48PM +0200, Greg KH wrote:
+> On Wed, Jun 19, 2024 at 01:39:47AM +0200, Danilo Krummrich wrote:
+> > In a subsequent patch we introduce the `Registration` abstraction used
+> > to register driver structures. Some subsystems require the module name on
+> > driver registration (e.g. PCI in __pci_register_driver()), hence pass
+> > the module name to `Module::init`.
+> 
+> I understand the need/want here, but it feels odd that you have to
+> change anything to do it.
+> 
+> > 
+> > Signed-off-by: Danilo Krummrich <dakr@redhat.com>
+> > ---
+> >  rust/kernel/lib.rs           | 14 ++++++++++----
+> >  rust/kernel/net/phy.rs       |  2 +-
+> >  rust/macros/module.rs        |  3 ++-
+> >  samples/rust/rust_minimal.rs |  2 +-
+> >  samples/rust/rust_print.rs   |  2 +-
+> >  5 files changed, 15 insertions(+), 8 deletions(-)
+> > 
+> > diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> > index a791702b4fee..5af00e072a58 100644
+> > --- a/rust/kernel/lib.rs
+> > +++ b/rust/kernel/lib.rs
+> > @@ -71,7 +71,7 @@ pub trait Module: Sized + Sync + Send {
+> >      /// should do.
+> >      ///
+> >      /// Equivalent to the `module_init` macro in the C API.
+> > -    fn init(module: &'static ThisModule) -> error::Result<Self>;
+> > +    fn init(name: &'static str::CStr, module: &'static ThisModule) -> error::Result<Self>;
+> 
+> Why can't the name come directly from the build system?  Why must it be
+> passed into the init function of the module "class"?  What is it going
+> to do with it?
 
-Note, this is exported to userspace, why can't you use the C structure
-that's already defined for you?  This is going to get tricky over time
-for the different busses, please use what is already there.
+The name does come from the build system, that's where `Module::init` gets it
+from.
 
-And question, how are you guaranteeing the memory layout of this
-structure here?  Will rust always do this with no holes and no
-re-arranging?
+> 
+> A PCI, or other bus, driver "knows" it's name already by virtue of the
+> build system, so it can pass that string into whatever function needs
 
-> +impl DeviceId {
-> +    const PCI_ANY_ID: u32 = !0;
-> +
-> +    /// PCI_DEVICE macro.
-> +    pub const fn new(vendor: u32, device: u32) -> Self {
-> +        Self {
-> +            vendor,
-> +            device,
-> +            subvendor: DeviceId::PCI_ANY_ID,
-> +            subdevice: DeviceId::PCI_ANY_ID,
-> +            class: 0,
-> +            class_mask: 0,
-> +        }
-> +    }
-> +
-> +    /// PCI_DEVICE_CLASS macro.
-> +    pub const fn with_class(class: u32, class_mask: u32) -> Self {
-> +        Self {
-> +            vendor: DeviceId::PCI_ANY_ID,
-> +            device: DeviceId::PCI_ANY_ID,
-> +            subvendor: DeviceId::PCI_ANY_ID,
-> +            subdevice: DeviceId::PCI_ANY_ID,
-> +            class,
-> +            class_mask,
-> +        }
-> +    }
+Let's take pci_register_driver() as example.
 
-Why just these 2 subsets of the normal PCI_DEVICE* macros?
+```
+#define pci_register_driver(driver)		\
+	__pci_register_driver(driver, THIS_MODULE, KBUILD_MODNAME)
+```
 
-> +
-> +    /// PCI_DEVICE_ID macro.
-> +    pub const fn to_rawid(&self, offset: isize) -> bindings::pci_device_id {
+In C drivers this works because (1) it's a macro and (2) it's called directly
+from the driver code.
 
-PCI_DEVICE_ID is defined to be "0x02" in pci_regs.h, I don't think you
-want that duplication here, right?
+In Rust, for very good reasons, we have abstractions for C APIs, hence the
+actual call to __pci_register_driver() does not come from code within the
+module, but from the PCI Rust abstraction `Module::init` calls into instead.
 
-> +        bindings::pci_device_id {
-> +            vendor: self.vendor,
-> +            device: self.device,
-> +            subvendor: self.subvendor,
-> +            subdevice: self.subdevice,
-> +            class: self.class,
-> +            class_mask: self.class_mask,
-> +            driver_data: offset as _,
-> +            override_only: 0,
-> +        }
-> +    }
-> +}
-> +
-> +// SAFETY: `ZERO` is all zeroed-out and `to_rawid` stores `offset` in `pci_device_id::driver_data`.
-> +unsafe impl RawDeviceId for DeviceId {
-> +    type RawType = bindings::pci_device_id;
-> +
-> +    const ZERO: Self::RawType = bindings::pci_device_id {
-> +        vendor: 0,
-> +        device: 0,
-> +        subvendor: 0,
-> +        subdevice: 0,
-> +        class: 0,
-> +        class_mask: 0,
-> +        driver_data: 0,
-> +        override_only: 0,
+Consequently, we have to pass things through. This also isn't new, please note
+that the current code already does the same thing: `Module::init` (without this
+patch) is already declared as
 
-This feels rough, why can't the whole memory chunk be set to 0 for any
-non-initialized values?  What happens if a new value gets added to the C
-side, how will this work here?
+`fn init(module: &'static ThisModule) -> error::Result<Self>`
 
-> +    };
-> +}
-> +
-> +/// Define a const pci device id table
-> +///
-> +/// # Examples
-> +///
-> +/// See [`Driver`]
-> +///
-> +#[macro_export]
-> +macro_rules! define_pci_id_table {
-> +    ($data_type:ty, $($t:tt)*) => {
-> +        type IdInfo = $data_type;
-> +        const ID_TABLE: $crate::device_id::IdTable<'static, $crate::pci::DeviceId, $data_type> = {
-> +            $crate::define_id_array!(ARRAY, $crate::pci::DeviceId, $data_type, $($t)* );
-> +            ARRAY.as_table()
-> +        };
-> +    };
-> +}
-> +pub use define_pci_id_table;
-> +
-> +/// The PCI driver trait.
-> +///
-> +/// # Example
-> +///
-> +///```
-> +/// # use kernel::{bindings, define_pci_id_table, pci, sync::Arc};
-> +///
-> +/// struct MyDriver;
-> +/// struct MyDeviceData;
-> +///
-> +/// impl pci::Driver for MyDriver {
-> +///     type Data = Arc<MyDeviceData>;
-> +///
-> +///     define_pci_id_table! {
-> +///         (),
-> +///         [ (pci::DeviceId::new(bindings::PCI_VENDOR_ID_REDHAT,
-> +///                               bindings::PCI_ANY_ID as u32),
-> +///            None)
-> +///         ]
-> +///     }
-> +///
-> +///     fn probe(
-> +///         _pdev: &mut pci::Device,
-> +///         _id_info: Option<&Self::IdInfo>
-> +///     ) -> Result<Self::Data> {
-> +///         Err(ENODEV)
-> +///     }
-> +///
-> +///     fn remove(_data: &Self::Data) {
-> +///     }
-> +/// }
-> +///```
-> +/// Drivers must implement this trait in order to get a PCI driver registered. Please refer to the
-> +/// `Adapter` documentation for an example.
-> +pub trait Driver {
-> +    /// Data stored on device by driver.
-> +    ///
-> +    /// Corresponds to the data set or retrieved via the kernel's
-> +    /// `pci_{set,get}_drvdata()` functions.
-> +    ///
-> +    /// Require that `Data` implements `ForeignOwnable`. We guarantee to
-> +    /// never move the underlying wrapped data structure.
-> +    ///
-> +    /// TODO: Use associated_type_defaults once stabilized:
-> +    ///
-> +    /// `type Data: ForeignOwnable = ();`
-> +    type Data: ForeignOwnable;
+passing through `ThisModule` for the exact same reason.
 
-Does this mean this all can be 'static' in memory and never dynamically
-allocated?  If so, good, if not, why not?
+Please also note that in the most common case (one driver per module) we don't
+see any of this anyway.
 
-> +
-> +    /// The type holding information about each device id supported by the driver.
-> +    ///
-> +    /// TODO: Use associated_type_defaults once stabilized:
-> +    ///
-> +    /// type IdInfo: 'static = ();
-> +    type IdInfo: 'static;
+Just like the C macro module_pci_driver(), Rust drivers can use the
+`module_pci_driver!` macro.
 
-What does static mean here?
+Example from Nova:
 
-> +
-> +    /// The table of device ids supported by the driver.
-> +    const ID_TABLE: IdTable<'static, DeviceId, Self::IdInfo>;
-> +
-> +    /// PCI driver probe.
-> +    ///
-> +    /// Called when a new platform device is added or discovered.
+```
+    kernel::module_pci_driver! {
+        // The driver type that implements the corresponding probe() and
+        // remove() driver callbacks.
+        type: NovaDriver,
+        name: "Nova",
+        author: "Danilo Krummrich",
+        description: "Nova GPU driver",
+        license: "GPL v2",
+    }
+```
 
-This is not a platform device
+> that, but the module init function itself does NOT need that.
+> 
+> So I fail to understand why we need to burden ALL module init functions
+> with this, when only a very very very tiny subset of all drivers will
+> ever need to know this, and even then, they don't need to know it at
+> init module time, they know it at build time and it will be a static
+> string at that point, it will not be coming in through an init call.
+> 
+> thanks,
+> 
+> greg k-h
+> 
 
-> +    /// Implementers should attempt to initialize the device here.
-> +    fn probe(dev: &mut Device, id: Option<&Self::IdInfo>) -> Result<Self::Data>;
-> +
-> +    /// PCI driver remove.
-> +    ///
-> +    /// Called when a platform device is removed.
-
-This is not a platform device.
-
-> +    /// Implementers should prepare the device for complete removal here.
-> +    fn remove(data: &Self::Data);
-
-No suspend?  No resume?  No shutdown?  only probe/remove?  Ok, baby
-steps are nice :)
-
-
-> +}
-> +
-> +/// The PCI device representation.
-> +///
-> +/// A PCI device is based on an always reference counted `device:Device` instance. Cloning a PCI
-> +/// device, hence, also increments the base device' reference count.
-> +#[derive(Clone)]
-> +pub struct Device(ARef<device::Device>);
-> +
-> +impl Device {
-> +    /// Create a PCI Device instance from an existing `device::Device`.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// `dev` must be an `ARef<device::Device>` whose underlying `bindings::device` is a member of
-> +    /// a `bindings::pci_dev`.
-> +    pub unsafe fn from_dev(dev: ARef<device::Device>) -> Self {
-> +        Self(dev)
-> +    }
-> +
-> +    fn as_raw(&self) -> *mut bindings::pci_dev {
-> +        // SAFETY: Guaranteed by the type invaraints.
-> +        unsafe { container_of!(self.0.as_raw(), bindings::pci_dev, dev) as _ }
-> +    }
-> +
-> +    /// Enable the Device's memory.
-> +    pub fn enable_device_mem(&self) -> Result {
-> +        // SAFETY: Safe by the type invariants.
-> +        let ret = unsafe { bindings::pci_enable_device_mem(self.as_raw()) };
-> +        if ret != 0 {
-> +            Err(Error::from_errno(ret))
-> +        } else {
-> +            Ok(())
-> +        }
-> +    }
-> +
-> +    /// Set the Device's master.
-> +    pub fn set_master(&self) {
-> +        // SAFETY: Safe by the type invariants.
-> +        unsafe { bindings::pci_set_master(self.as_raw()) };
-> +    }
-
-Why just these 2 functions?  Just an example, or you don't need anything
-else yet?
-
-thanks,
-
-greg k-h
