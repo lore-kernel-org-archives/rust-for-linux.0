@@ -1,219 +1,201 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f202.google.com (mail-yb1-f202.google.com [209.85.219.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4E7C16F295
-	for <rust-for-linux@vger.kernel.org>; Fri, 21 Jun 2024 09:43:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 307F374416
+	for <rust-for-linux@vger.kernel.org>; Fri, 21 Jun 2024 10:35:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718963022; cv=none; b=ppitxXf4UcG7V8gDb2Ojc7LksZFUsPckKaORaTC4BBIUVY7lfHLcNlOpog5elwYjk6HMrYfF8By7HFt7wHNiBcYhdOWPFA2Cb9XHsUMbv6ydjikCOG+LJ7gz9O6NXMLpCKN/Kknwa13CVCgeCIpXKvXYfq+H9cz/1qM0CSQygT0=
+	t=1718966134; cv=none; b=Qj/JeCzjA3DMETZ7k639mTo5sV3z95MV7sPhD6SISRzD+7FP1KJkLpPimZRIeSmdHenF/4dyoTtdwXcNfV2sAh2/y2NUWTfsyOB6vflpASuUIAegySK3H6wPXzI9Hp7Cwxhh5Zez4TlutTXTqe/Rn2P9hpiZh3kZig7VU/DKyT4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718963022; c=relaxed/simple;
-	bh=dOu7TKpD65Qn91FhP+3ezNvvdaK37n0H64MukY+aZBs=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BThQROI8gIVha5KbAGIhMTv/iDNp8lhO13GO3QehQ87jnzmC1D6AqaFEeWPgXcvAfpWq8/yU1tydg3dhMfszU2CoPd/zsHORklxu+kmPwGBdTjpXTMlM/A2NTemYeDXIIEqUH10lxHILK6hNDIL4Eo7LDewh8Shq1XMf3JR/V9w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OpW740uO; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1718966134; c=relaxed/simple;
+	bh=3Lw7KdJjlLxunIjzSI5anXQ+XVW7oO6tvpp6EHXDDcw=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=Ny6bc1QqCIllxYk1aL6OuJLAvOnENWoiTYDF+p8rJgqJXXGlOPkAvijPpTwCzzAHK2Gz1EQpoDOgPfEGH46HsIg1+y5yF9E7Q4Nld2osIQFUgxEktxBXGpLxMMNGcERsCnRSUCvhSE77F/OsqgJgANY9cR3wcKNxDRkTKxLrXow=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=U10Mn5DP; arc=none smtp.client-ip=209.85.219.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OpW740uO"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1718963019;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=dOu7TKpD65Qn91FhP+3ezNvvdaK37n0H64MukY+aZBs=;
-	b=OpW740uOPpYyvCTz2Q0IjwVxxvyOr6sNuIBxjznAmhDCJ/BTkbYydieWGW1m+kyZxOIzsD
-	fkh7QALhV16Yn20rdwPynp1S92BhlwMUMCMB9dgUrXT5DGnbXIUB39Qe3I7Oz+aqiJsFw5
-	a6VMBC8OMDoH80Cdmq4EzqshOUIQcBc=
-Received: from mail-wr1-f69.google.com (mail-wr1-f69.google.com
- [209.85.221.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-483-QwD8xfjKMqOmx7bxKxhnWQ-1; Fri, 21 Jun 2024 05:43:38 -0400
-X-MC-Unique: QwD8xfjKMqOmx7bxKxhnWQ-1
-Received: by mail-wr1-f69.google.com with SMTP id ffacd0b85a97d-36333c6b9c7so290240f8f.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 21 Jun 2024 02:43:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="U10Mn5DP"
+Received: by mail-yb1-f202.google.com with SMTP id 3f1490d57ef6-e023e936ac4so3364163276.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 21 Jun 2024 03:35:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1718966132; x=1719570932; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=3eABDz1M5CfNPOmLh6hSg0SPvosrOCJFcrFqSGbIDiw=;
+        b=U10Mn5DP/knA//qUIxdPEjlg+owwParo2KwSXMZKGG9im7+2K/PE9oee8nqGHp/6Hz
+         27yUO5cOLFLcCLu837OgEPv1SSPSWGYAm/Qytw7UmHBgsBg6OSqP70NGseNtBXBBjHzb
+         uT5xqmqGLgOOLVtwlM12YLMJOKaKXdVFY7XLn3mHvEQUgKKI8KskiFoXK0r2VBPNceV3
+         i57yKgVkwuw8AIU6ixsWuGteC+oLRdzQ+8ya7WlbiLMlKZBNzRogTY0GFMnlo1xvtK2/
+         xQGDaHzPq7N5wKDSqPM/R0x6wk07hoguTjP+ekp2KANgGHhD0sAhorTJ3Q53YqEg4gtZ
+         h8Eg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718963017; x=1719567817;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+        d=1e100.net; s=20230601; t=1718966132; x=1719570932;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=dOu7TKpD65Qn91FhP+3ezNvvdaK37n0H64MukY+aZBs=;
-        b=unJp/p5kC1NI616XubQNhgKbnwThbx5z+T4ULtm7DyH/I6/z1yzZ6AZ1/lfSxG3Fbw
-         AHbjuaAglfkPeOyE5BrM2BrB7adhP5AUqJ2awjJ3abcGS6slTIl4Ar4ETnOtDuK/icT/
-         Wfm/eO9mZHzQCOR3cRJN2gJTSPuVgsBPuw4bDJNvIRHwSVVsGCeSivawkgXuHC7okWAA
-         4hXrKETkhPvajquNuGh+j01hfEel/QXwKXBBaxU+yJSa6WO+OM06vrZK9zeakdci2o5A
-         y3TFb7DsEpuF5VrCiCohGhpE2VehFtySHcfSXDXkSa/t33ipUFdlXHLr4YI2oxRuScUT
-         fc4A==
-X-Forwarded-Encrypted: i=1; AJvYcCVZMesKlqWilZ+NRfQrzWDIOENGnguziWmPNB1aGL5DjCSKuFWYNP1EZEJJqJ9k1eS8S6VTVEELJ+LMT1ACUq1xh307zOr1gV9Dw9nZjGc=
-X-Gm-Message-State: AOJu0Yw1/A8UH0pq193qKgDAFfVyBdcHrWpyyBJY2Gum976U/4/+WPyi
-	RzSRjtlZzqDILxe2j8y1kKl0WB8+V2xZxxhRkM2qfwHKhXt1/KerlcX0obPmgeY7sytYAbmv9S9
-	T3UySAE1ynm9grFMUeQwoJqyOmhumd0+95oXRDExg6aKnvYKxR5eEbVhkqmoU8A2L
-X-Received: by 2002:a05:600c:1c8b:b0:423:146b:36f8 with SMTP id 5b1f17b1804b1-42478e41349mr46698975e9.4.1718963017060;
-        Fri, 21 Jun 2024 02:43:37 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFZy81YPJtm/RjjImN0bEGbtNnfnO0rKFhNc/jBgxq3caLP+I9REwIpO9tZ1V0UMa7wvG04DA==
-X-Received: by 2002:a05:600c:1c8b:b0:423:146b:36f8 with SMTP id 5b1f17b1804b1-42478e41349mr46698725e9.4.1718963016540;
-        Fri, 21 Jun 2024 02:43:36 -0700 (PDT)
-Received: from pstanner-thinkpadt14sgen1.remote.csb (nat-pool-muc-t.redhat.com. [149.14.88.26])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-424817a99fbsm19971705e9.16.2024.06.21.02.43.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 21 Jun 2024 02:43:36 -0700 (PDT)
-Message-ID: <a43dc0512194042d762bf5bb5f1396d41fef5bce.camel@redhat.com>
-Subject: Re: [PATCH v2 07/10] rust: add `io::Io` base type
-From: Philipp Stanner <pstanner@redhat.com>
-To: Greg KH <gregkh@linuxfoundation.org>, Danilo Krummrich <dakr@redhat.com>
-Cc: rafael@kernel.org, bhelgaas@google.com, ojeda@kernel.org, 
- alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com,
- gary@garyguo.net,  bjorn3_gh@protonmail.com, benno.lossin@proton.me,
- a.hindborg@samsung.com,  aliceryhl@google.com, airlied@gmail.com,
- fujita.tomonori@gmail.com,  lina@asahilina.net, ajanulgu@redhat.com,
- lyude@redhat.com, robh@kernel.org,  daniel.almeida@collabora.com,
- rust-for-linux@vger.kernel.org,  linux-kernel@vger.kernel.org,
- linux-pci@vger.kernel.org
-Date: Fri, 21 Jun 2024 11:43:34 +0200
-In-Reply-To: <2024062040-wannabe-composer-91bc@gregkh>
-References: <20240618234025.15036-1-dakr@redhat.com>
-	 <20240618234025.15036-8-dakr@redhat.com>
-	 <2024062040-wannabe-composer-91bc@gregkh>
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38)
+        bh=3eABDz1M5CfNPOmLh6hSg0SPvosrOCJFcrFqSGbIDiw=;
+        b=fgCqZSz51I1e4Br6xY2eVOLemOJCbOOZ5Y7Fk/DuIRPdtYE0hTLSkXDtbBo/28ymGE
+         Y1v1qf+8Zms0WoTJ1XYwhp0Xbw70wGTjryz6YKDeqEQe+z7Sk0d2WEmZ8yG3YXF3QFD9
+         HqeUVgGFfpzazi8rNSz2/FLBbNP6o4/VlDADAiAS+YhU8spt1sf5qOwK+4/Gkof/NCAq
+         L/0GUxttYkJLukyK0x2N2tUoxPPTDJFde7i96eCgSt3XV3RGKw3jsnYA6LbW1AuqSAWz
+         js8+qtpuL2Qo+e47hhH3LU35q8r2nWDoVLXXCFfU8r65KqnY51m0m13HUBOLUzl/laro
+         H5rQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWI9HNeuLUwYg0LJl++FMCFhpQOwkIh4MAsegCbItl2RZYhICm5GeD+ClgCAOiup+YzKkOMNZrjUXimlDCsKudzIgdVtqJb4hn0e7LHiGE=
+X-Gm-Message-State: AOJu0YzGBvI/pjJYfgAe5XZkKT5IKCnPbU2b2pj25Zy5HKm2E6+1SZqf
+	A0216hq8mgYItao0lW8OVXmYciJS5zDoK5E8AG7lfL3A3mCENjVBEHxJIAXw8bs5SNdVhFiKstq
+	eS5jlNqM7KgEqkw==
+X-Google-Smtp-Source: AGHT+IGgj+LrDRDzSB/jQ/HSB/gzIfKHF378aY4D7NhVMRl0uS5JczfBNVnpd/4RAl+dYYs7Da80IKv0McjFgVE=
+X-Received: from aliceryhl2.c.googlers.com ([fda3:e722:ac3:cc00:68:949d:c0a8:572])
+ (user=aliceryhl job=sendgmr) by 2002:a05:6902:18cd:b0:df7:b717:10c2 with SMTP
+ id 3f1490d57ef6-e02be0f145dmr1819814276.2.1718966132063; Fri, 21 Jun 2024
+ 03:35:32 -0700 (PDT)
+Date: Fri, 21 Jun 2024 10:35:25 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAG1XdWYC/23MQQ6CMBCF4auYWVvTKbSoK+9hXLQwwCRKSUsaD
+ eHuFlaSuHwv+f4ZIgWmCNfDDIESR/ZDHsXxAHVvh44EN3mDkqqURhoxBVvT6HmYRIGE2l0klRV
+ CBmOglt9b7P7Iu+c4+fDZ2gnX928moZDCaI1GVa7V6G6d992TTrV/wdpJ6sei3FmVbWvJ2eaMr tB6Z5dl+QKHNDdx4QAAAA==
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4153; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=3Lw7KdJjlLxunIjzSI5anXQ+XVW7oO6tvpp6EHXDDcw=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBmdVdvongHF5FFp5wmjddlI2qC3Ap5SiseOB5gM
+ Sk4/3H4CxKJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZnVXbwAKCRAEWL7uWMY5
+ RpOLEACX9A90/BXzUnKyX5BwP3ZRcJpcLCLaVnC8JiSjYlvMqd35lorsftDj7hPH7jY+ATnpnEi
+ 24PuJvxNBGkk0rpkbbaRWfjMd4KA10TymYiCVC9y04ik3UmgD1oFibL5GNDlR8bDzm+3ko60Jqb
+ o5NFc8bDq6o61K4jGF3uZ/JEzhyAcF+Rf7MwcXa8ZWsSGrqBZQoROA0crek13qaYB811HUD3ATg
+ JJ/RZGbFY09jhTw73hlMZkBOvh1rFmW/kkc0C5zZH2d6GfZlWzvDR49d/mrt/1PxuifDWMA7zCs
+ T4gSvHRRAoJfyUPCRM0KTGO+1NN80jKQ78tA8ZDwJxJdwki6zClbWrLdLsPwiqMf74GO8iKUlkC
+ 2oFo4MowrkIyEbZ+dyh6/DApUSTMnc73BXuWywAqj4Tqc+1B6MbNeBPRxwqmOhR1t2SakhXtZFk
+ EgnDq2NJZEB6J2Y9G+HcWBkuXIfKA/SW0g7AssYNrhN/wvobPoeGRPIEIPYOB7IVpHtToGpXieI
+ utzENuqHKDLsOmZOM2bdgOF7TSRc1s0/wyJvSnGshpqOQhSu4QJim7regTWp6dEvzWy4NxnBh6v
+ IyOZb+Um0A7f3V2XVDxLdSITSvtpDYbi/lY5capaomYzFWnQPXkyp1WKC/hQLTGnVAZhJJJb0yB SLnjc6FRSMdG0KQ==
+X-Mailer: b4 0.13-dev-26615
+Message-ID: <20240621-tracepoint-v3-0-9e44eeea2b85@google.com>
+Subject: [PATCH v3 0/2] Tracepoints and static branch in Rust
+From: Alice Ryhl <aliceryhl@google.com>
+To: Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Josh Poimboeuf <jpoimboe@kernel.org>, Jason Baron <jbaron@akamai.com>, 
+	Ard Biesheuvel <ardb@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@samsung.com>
+Cc: linux-trace-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Thu, 2024-06-20 at 16:53 +0200, Greg KH wrote:
-> On Wed, Jun 19, 2024 at 01:39:53AM +0200, Danilo Krummrich wrote:
-> > I/O memory is typically either mapped through direct calls to
-> > ioremap()
-> > or subsystem / bus specific ones such as pci_iomap().
-> >=20
-> > Even though subsystem / bus specific functions to map I/O memory
-> > are
-> > based on ioremap() / iounmap() it is not desirable to re-implement
-> > them
-> > in Rust.
->=20
-> Why not?
+An important part of a production ready Linux kernel driver is
+tracepoints. So to write production ready Linux kernel drivers in Rust,
+we must be able to call tracepoints from Rust code. This patch series
+adds support for calling tracepoints declared in C from Rust.
 
-Because you'd then up reimplementing all that logic that the C code
-already provides. In the worst case that could lead to you effectively
-reimplemting the subsystem instead of wrapping it. And that's obviously
-uncool because you'd then have two of them (besides, the community in
-general rightfully pushes back against reimplementing stuff; see the
-attempts to provide redundant Rust drivers in the past).
+To use the tracepoint support, you must:
 
-The C code already takes care of figuring out region ranges and all
-that, and it's battle hardened.
+1. Declare the tracepoint in a C header file as usual.
 
-The main point of Rust is to make things safer; so if that can be
-achieved without rewrite, as is the case with the presented container
-solution, that's the way to go.
+2. Add #define CREATE_RUST_TRACE_POINTS next to your
+   #define CREATE_TRACE_POINTS.
 
->=20
-> > Instead, implement a base type for I/O mapped memory, which
-> > generically
-> > provides the corresponding accessors, such as `Io::readb` or
-> > `Io:try_readb`.
->=20
-> It provides a subset of the existing accessors, one you might want to
-> trim down for now, see below...
->=20
-> > +/* io.h */
-> > +u8 rust_helper_readb(const volatile void __iomem *addr)
-> > +{
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return readb(addr);
-> > +}
-> > +EXPORT_SYMBOL_GPL(rust_helper_readb);
->=20
-> <snip>
->=20
-> You provide wrappers for a subset of what io.h provides, why that
-> specific subset?
->=20
-> Why not just add what you need, when you need it?=C2=A0 I doubt you need
-> all
-> of these, and odds are you will need more.
->=20
+2. Make sure that the header file is visible to bindgen.
 
-That was written by me as a first play set to test. Nova itself
-currently reads only 8 byte from a PCI BAR, so we could indeed drop
-everything but readq() for now and add things subsequently later, as
-you suggest.
+3. Use the declare_trace! macro in your Rust code to generate Rust
+   functions that call into the tracepoint.
 
+For example, the kernel has a tracepoint called `sched_kthread_stop`. It
+is declared like this:
 
+	TRACE_EVENT(sched_kthread_stop,
+		TP_PROTO(struct task_struct *t),
+		TP_ARGS(t),
+		TP_STRUCT__entry(
+			__array(	char,	comm,	TASK_COMM_LEN	)
+			__field(	pid_t,	pid			)
+		),
+		TP_fast_assign(
+			memcpy(__entry->comm, t->comm, TASK_COMM_LEN);
+			__entry->pid	= t->pid;
+		),
+		TP_printk("comm=%s pid=%d", __entry->comm, __entry->pid)
+	);
 
-> > +u32 rust_helper_readl_relaxed(const volatile void __iomem *addr)
-> > +{
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return readl_relaxed(addr);
-> > +}
-> > +EXPORT_SYMBOL_GPL(rust_helper_readl_relaxed);
->=20
-> I know everyone complains about wrapper functions around inline
-> functions, so I'll just say it again, this is horrid.=C2=A0 And it's goin=
-g
-> to
-> hurt performance, so any rust code people write is not on a level
-> playing field here.
->=20
-> Your call, but ick...
+To call the above tracepoint from Rust code, you must first ensure that
+the Rust helper for the tracepoint is generated. To do this, you would
+modify kernel/sched/core.c by adding #define CREATE_RUST_TRACE_POINTS.
 
-Well, can anyone think of another way to do it?
+Next, you would include include/trace/events/sched.h in
+rust/bindings/bindings_helper.h so that the exported C functions are
+visible to Rust, and then you would declare the tracepoint in Rust:
 
->=20
-> > +#ifdef CONFIG_64BIT
-> > +u64 rust_helper_readq_relaxed(const volatile void __iomem *addr)
-> > +{
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0return readq_relaxed(addr);
-> > +}
-> > +EXPORT_SYMBOL_GPL(rust_helper_readq_relaxed);
-> > +#endif
->=20
-> Rust works on 32bit targets in the kernel now?
+	declare_trace! {
+	    fn sched_kthread_stop(task: *mut task_struct);
+	}
 
-Ahm, afaik not. That's some relic. Let's address that with your subset
-comment from above.
+This will define an inline Rust function that checks the static key,
+calling into rust_do_trace_##name if the tracepoint is active. Since
+these tracepoints often take raw pointers as arguments, it may be
+convenient to wrap it in a safe wrapper:
 
->=20
-> > +macro_rules! define_read {
-> > +=C2=A0=C2=A0=C2=A0 ($(#[$attr:meta])* $name:ident, $try_name:ident,
-> > $type_name:ty) =3D> {
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /// Read IO data from a giv=
-en offset known at compile
-> > time.
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 ///
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /// Bound checks are perfor=
-med on compile time, hence if
-> > the offset is not known at compile
-> > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0 /// time, the build will fa=
-il.
->=20
-> offsets aren't know at compile time for many implementations, as it
-> could be a dynamically allocated memory range.=C2=A0 How is this going to
-> work for that?=C2=A0 Heck, how does this work for DT-defined memory range=
-s
-> today?
+	mod raw {
+	    declare_trace! {
+	        fn sched_kthread_stop(task: *mut task_struct);
+	    }
+	}
+	
+	#[inline]
+	pub fn trace_sched_kthread_stop(task: &Task) {
+	    // SAFETY: The pointer to `task` is valid.
+	    unsafe { raw::sched_kthread_stop(task.as_raw()) }
+	}
 
-The macro below will take care of those where it's only knowable at
-runtime I think.
+A future expansion of the tracepoint support could generate these safe
+versions automatically, but that is left as future work for now.
 
-Rust has this feature (called "const generic") that can be used for
-APIs where ranges which are known at compile time, so the compiler can
-check all the parameters at that point. That has been judged to be
-positive because errors with the range handling become visible before
-the kernel runs and because it gives some performance advantages.
+This is intended for use in the Rust Binder driver, which was originally
+sent as an RFC [1]. The RFC did not include tracepoint support, but you
+can see how it will be used in Rust Binder at [2]. The author has
+verified that the tracepoint support works on Android devices.
 
+This implementation implements support for static keys in Rust so that
+the actual static branch happens in the Rust object file. However, the
+__DO_TRACE body remains in C code. See v1 for an implementation where
+__DO_TRACE is also implemented in Rust.
 
-P.
+Link: https://lore.kernel.org/rust-for-linux/20231101-rust-binder-v1-0-08ba9197f637@google.com/ [1]
+Link: https://r.android.com/3119993 [2]
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+Changes in v3:
+- Support for Rust static_key on loongarch64 and riscv64.
+- Avoid failing compilation on architectures that are missing Rust
+  static_key support when the archtectures does not actually use it.
+- Link to v2: https://lore.kernel.org/r/20240610-tracepoint-v2-0-faebad81b355@google.com
 
->=20
-> thanks,
->=20
-> greg k-h
->=20
+Changes in v2:
+- Call into C code for __DO_TRACE.
+- Drop static_call patch, as it is no longer needed.
+- Link to v1: https://lore.kernel.org/r/20240606-tracepoint-v1-0-6551627bf51b@google.com
+
+---
+Alice Ryhl (2):
+      rust: add static_key_false
+      rust: add tracepoint support
+
+ include/linux/tracepoint.h      |  18 ++++-
+ include/trace/define_trace.h    |   7 ++
+ rust/bindings/bindings_helper.h |   1 +
+ rust/kernel/lib.rs              |   2 +
+ rust/kernel/static_key.rs       | 143 ++++++++++++++++++++++++++++++++++++++++
+ rust/kernel/tracepoint.rs       |  47 +++++++++++++
+ scripts/Makefile.build          |   2 +-
+ 7 files changed, 218 insertions(+), 2 deletions(-)
+---
+base-commit: 1613e604df0cd359cf2a7fbd9be7a0bcfacfabd0
+change-id: 20240606-tracepoint-31e15b90e471
+
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
 
