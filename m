@@ -1,114 +1,270 @@
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 172FA17167B
-	for <rust-for-linux@vger.kernel.org>; Fri, 21 Jun 2024 10:38:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4C8A172BC7
+	for <rust-for-linux@vger.kernel.org>; Fri, 21 Jun 2024 11:47:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718966317; cv=none; b=Kj/mYPYBblHzEUFgKzLjI1V3S/02uvyIfQnPBKe97jTIBNStM4G18uPn6ZfJUOrIz+w1OKji9X2kxCqtO6Hrdr1p63oqyaobK3V8TzGiPdsmaGOiOEMXCBiLl6Pf/TAtF7iV/cSkzxFTwjB2FeEJx+qq+ZhZPkhcXagszz1RAcc=
+	t=1718970459; cv=none; b=TiQsQveyZ++xvy4FrMQWcu6J806Q7TyELmr2/iYRjatB3O/UeewNI/Wh3kUy7GLwkpuVXLLEviFRpwzXJInM0oXyNU1aMQdCO1AFcq/o+sTAR6Gz8PxAyag88kTFbf75LE5SfW0hoFBkpBONgdGyRiYms1Wx6ktDueCQmNOpxRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718966317; c=relaxed/simple;
-	bh=WTJ0KG5tYdhhPPGpfmG62gp49W7qhiVbW9dawR3CcTE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ii9Q4XDcNpw0NBeyniyVvSa2bvlN40ZN5fuemKUtuI65WHjeiKNS0Ve2rqUcXD5Kml1eeX8UdPl1+RsbW9Hcv8Q6z4n6o3BqlOpn58jCsnR4ILAqyPjBROQ2vVW0PJBzg9B/Fi9UXuvMqG7Xlcnw2jkrFrsWRg9ZaWNbVzANlDk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=I3udThls; arc=none smtp.client-ip=209.85.221.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1718970459; c=relaxed/simple;
+	bh=BlGbgmoF+iZ4BHtGoLltAMguabDdtH20E6K3YI6aJHo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 In-Reply-To:Content-Type:Content-Disposition; b=BYKrHtwwHgGl8n/ZHwnS/5PY8/W85wVSOv8Lk2L7zU68q/jTL5htPYAUwNp6dGfCQ3f1eCSD/WLhpntwDszrLR9QG3cBX7TpRAsFEpic7ocymZ4Ifr8D8y0K2ySqMKOmsvNPVkXxCD4fFOFGIqCJH4Ul1GOwFCAEDx8yYYi6cII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TATO6wJn; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="I3udThls"
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-362f62ae4c5so1079994f8f.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 21 Jun 2024 03:38:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1718966314; x=1719571114; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=44ZpRvpfFDERBn9Dks1/mP2gSSkjphom+K+EdkVXitM=;
-        b=I3udThlsQtQ2YjDq9atbqobDTGJ1volpRkp9VT7nWkPV4K+MiRSpUnsSx4lfFnT5Iw
-         jkjOqKxHlKQtGeSDWWYZlcpUkeHqjtDckHDSLTl/vJ91P8Wuycj6VkkeKuNnBmXg4Y4u
-         +1O0rclTfVrVudevE0lJrewlXLKRXdsm6F6lTD+flXJnUyCqPF+QBEbkfeO7xbmdWqpW
-         UHWHS+gPbde6KHozXg+nJdXx41xPx7bTSyfwVniy/glwniqX0Erg7mNmTfh0q+P3PPpE
-         NthxUVizX0lvdmNBrujRRGlC5IoJ8f6/O4bNHUrgIRvRlbzhNxhDQ1GkH4qlRO2Lw/b7
-         RKVg==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TATO6wJn"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1718970456;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=cbVc+Fc7RR7j8FqltSlekZqJ6xYlP8sXLN3JMfS3Tbg=;
+	b=TATO6wJnAGwDEomJ53gEoTEZJ0gfvJxbwbb3LDBt3o8mhezltGrQk/gBFprSQLOczE3xTz
+	Nuq80gcbpURykX7YBarugK5297AfXa4RWM3btWuGdCdgd/ZrRopktmFK5dysahwR6nmXKi
+	+0UWy50x11vDzgYOTxeHzZcLJDuWuAc=
+Received: from mail-lj1-f198.google.com (mail-lj1-f198.google.com
+ [209.85.208.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-354--81QHWqOPC2zOcQHNGk2hA-1; Fri, 21 Jun 2024 07:47:33 -0400
+X-MC-Unique: -81QHWqOPC2zOcQHNGk2hA-1
+Received: by mail-lj1-f198.google.com with SMTP id 38308e7fff4ca-2ec3d6c2cf1so15945791fa.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 21 Jun 2024 04:47:33 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718966314; x=1719571114;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=44ZpRvpfFDERBn9Dks1/mP2gSSkjphom+K+EdkVXitM=;
-        b=VO7y0XSsg8RLkXyMl0WRPcnSLBHMOtkoTzBTkIONDLiK4MQuk7sa8uKgL5UMJz1Hfj
-         Hp0tA/+KAF0c8MnTb76XT5a06i/bHHLchSJdGyDcsKsJq801vlIN6P5npwf+npMxP2tH
-         TrCNVwCkb48+p4MQmaFko4ImKye7qFEoFUnesUXGCE5qAmYhznOCsA5h4b9kuGShJqLF
-         7Wvs+881R9aL9f08zW7yYht8TXtz22ohyZb3yZzE1vpEd3Nx4PdVzwUJW/Y+XNxYCbEq
-         b48ouyHufAEza1j3f1wTJJBb2zAOb19x6GCKjPeTcguxXby1kLatCcmwhAKLJW/iJH01
-         TVFw==
-X-Forwarded-Encrypted: i=1; AJvYcCVUFmHHopbnvS3aFZH46Tt9R8TN9BzOdgNJrBW5etZowhd9hQJDcQgo82r4Tpz7i1T+KeD37AbJe4xvmDTHgSsUqI3P8m1rUO/CTOmGo5E=
-X-Gm-Message-State: AOJu0YzGqc2sRJAyD3hgVxDvFaZi2yUVYfwSTzKQ5el2qAIWXH1MGoAP
-	Wx9t5RhPd0veI8Bi+N0MUZNXjWXWtsmuahfTKs9OvslMEGqOgeTe7gqmKS/6tcEh0FEtV2mofuN
-	Xrr0LiMNs2x3i8z3uYOnQ1BSdK0OH9XMY0FL+
-X-Google-Smtp-Source: AGHT+IHayn/UTVkcWmt4aexOdjYrU9ksdoexbcJhXjXZONtcnkNGjtekAv/BumbuGkdej+U3QP9aLzN4qBHFXpFkuUc=
-X-Received: by 2002:a05:6000:1284:b0:360:8c88:ab82 with SMTP id
- ffacd0b85a97d-3630191c24dmr7727188f8f.30.1718966314110; Fri, 21 Jun 2024
- 03:38:34 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1718970452; x=1719575252;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=cbVc+Fc7RR7j8FqltSlekZqJ6xYlP8sXLN3JMfS3Tbg=;
+        b=WYUHNK3hUfjzzwjIkzc/omlTmFlXGhdSl6EfCWSR7560CbbM7ypm9l7AebjuLnNfqf
+         J+GEFwPe8vHTkxPlFwvWfYiuo/oIaGehcvXxsbdNYmH8ozTkNdBE0BajyxsmSDVYBb++
+         qz53qlVXBlcQpx/efL/M65ErxdGdR20zVYhPYrwGCHMjRJmbve+7sr2dngCKOzF+f5Xb
+         ambTqp9sbYHTrQjqO8HRt/EOBIHA/NvY39zz7v+/aWm6EciPgIQzvh+ELbj3j/EQ7YqR
+         s4CWVKm8GBbQSkPDhdMQMGxcL5DjD7Ofv7DsJg5F7bBj2g3bIOQW555MopIbXOmgVY7H
+         izDw==
+X-Forwarded-Encrypted: i=1; AJvYcCVCBuU1uwopdqEKXrlU8sKb06Dmq+IYpzFZIAdtVor6m+g1LWZiHRDq1RC8iTIQaznKiV6uoAM+avPVl9jFJduZ2VJmBhT6ztP8sweatro=
+X-Gm-Message-State: AOJu0YwEkxKySR0D2O4HkM5tq9hnY6l1X9ITdhodRzTPxjusNzAO/tcB
+	0tpI2c+F9a9kXzYvuHuXKltBkbk5sh4UhGAZNu/Nt3Him3bJbR7DCqz1cdvOC94D2XjJQ0U6tbK
+	wpll15MbeIWOdK9jSeN4n08WTLu+gnojT34awyQ/tHp4lxo4SQgjOLM+gKlZXmPSi
+X-Received: by 2002:a2e:7d0a:0:b0:2ec:2a57:aee2 with SMTP id 38308e7fff4ca-2ec3cffe7b8mr52756861fa.52.1718970452005;
+        Fri, 21 Jun 2024 04:47:32 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IH95rXTqYwnXmHJHpILxoA4ZTURqCUFz0fuke2FBfMjWBqCo6+Tqeqn2pVQiB4JtM9QOqiOKA==
+X-Received: by 2002:a2e:7d0a:0:b0:2ec:2a57:aee2 with SMTP id 38308e7fff4ca-2ec3cffe7b8mr52756551fa.52.1718970451527;
+        Fri, 21 Jun 2024 04:47:31 -0700 (PDT)
+Received: from pollux ([2a02:810d:4b3f:ee94:abf:b8ff:feee:998b])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-366389b85a2sm1496611f8f.42.2024.06.21.04.47.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 21 Jun 2024 04:47:30 -0700 (PDT)
+Date: Fri, 21 Jun 2024 13:47:27 +0200
+From: Danilo Krummrich <dakr@redhat.com>
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Philipp Stanner <pstanner@redhat.com>, rafael@kernel.org,
+	bhelgaas@google.com, ojeda@kernel.org, alex.gaynor@gmail.com,
+	wedsonaf@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@samsung.com, aliceryhl@google.com, airlied@gmail.com,
+	fujita.tomonori@gmail.com, lina@asahilina.net, ajanulgu@redhat.com,
+	lyude@redhat.com, robh@kernel.org, daniel.almeida@collabora.com,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-pci@vger.kernel.org
+Subject: Re: [PATCH v2 07/10] rust: add `io::Io` base type
+Message-ID: <ZnVoT4xJXtCDWixz@pollux>
+References: <20240618234025.15036-1-dakr@redhat.com>
+ <20240618234025.15036-8-dakr@redhat.com>
+ <2024062040-wannabe-composer-91bc@gregkh>
+ <a43dc0512194042d762bf5bb5f1396d41fef5bce.camel@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240610-tracepoint-v2-0-faebad81b355@google.com>
- <20240610-tracepoint-v2-1-faebad81b355@google.com> <20240612-cottage-revision-9842e7e22070@spud>
-In-Reply-To: <20240612-cottage-revision-9842e7e22070@spud>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Fri, 21 Jun 2024 12:38:21 +0200
-Message-ID: <CAH5fLgg2v1jL8uFBK3mEMW-mPydBj1eRT6je8YGtHyNF48JCfA@mail.gmail.com>
-Subject: Re: [PATCH v2 1/2] rust: add static_key_false
-To: Conor Dooley <conor@kernel.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Josh Poimboeuf <jpoimboe@kernel.org>, Jason Baron <jbaron@akamai.com>, 
-	Ard Biesheuvel <ardb@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	linux-trace-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+In-Reply-To: <a43dc0512194042d762bf5bb5f1396d41fef5bce.camel@redhat.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jun 12, 2024 at 5:03=E2=80=AFPM Conor Dooley <conor@kernel.org> wro=
-te:
->
-> On Mon, Jun 10, 2024 at 02:01:04PM +0000, Alice Ryhl wrote:
-> > Add just enough support for static key so that we can use it from
-> > tracepoints. Tracepoints rely on `static_key_false` even though it is
-> > deprecated, so we add the same functionality to Rust.
-> >
-> > It is not possible to use the existing C implementation of
-> > arch_static_branch because it passes the argument `key` to inline
-> > assembly as an 'i' parameter, so any attempt to add a C helper for this
-> > function will fail to compile because the value of `key` must be known
-> > at compile-time.
-> >
-> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
->
-> > +#[cfg(target_arch =3D "x86_64")]
->
-> > +#[cfg(target_arch =3D "aarch64")]
->
-> This patch breaks the build on riscv (and I assume loongarch):
->
-> error[E0432]: unresolved import `_static_key_false`
-> --> /stuff/linux/rust/kernel/static_key.rs:87:10
-> |
-> 87 | pub use {_static_key_false, static_key_false};
-> |          ^^^^^^^^^^^^^^^^^ no external crate `_static_key_false`
->
-> Cheers,
-> Conor.
+On Fri, Jun 21, 2024 at 11:43:34AM +0200, Philipp Stanner wrote:
 
-Thank you. Fixed in v3.
-https://lore.kernel.org/all/20240621-tracepoint-v3-0-9e44eeea2b85@google.co=
-m/
+Please find a few additions below.
 
-Alice
+But as mentioned, please let us sort out [1] first.
+
+[1] https://lore.kernel.org/lkml/ZnSeAZu3IMA4fR8P@cassiopeiae/
+
+> On Thu, 2024-06-20 at 16:53 +0200, Greg KH wrote:
+> > On Wed, Jun 19, 2024 at 01:39:53AM +0200, Danilo Krummrich wrote:
+> > > I/O memory is typically either mapped through direct calls to
+> > > ioremap()
+> > > or subsystem / bus specific ones such as pci_iomap().
+> > > 
+> > > Even though subsystem / bus specific functions to map I/O memory
+> > > are
+> > > based on ioremap() / iounmap() it is not desirable to re-implement
+> > > them
+> > > in Rust.
+> > 
+> > Why not?
+> 
+> Because you'd then up reimplementing all that logic that the C code
+> already provides. In the worst case that could lead to you effectively
+> reimplemting the subsystem instead of wrapping it. And that's obviously
+> uncool because you'd then have two of them (besides, the community in
+> general rightfully pushes back against reimplementing stuff; see the
+> attempts to provide redundant Rust drivers in the past).
+> 
+> The C code already takes care of figuring out region ranges and all
+> that, and it's battle hardened.
+
+To add an example, instead of reimplementing things like pci_iomap() we use
+`Io` as base type providing the accrssors like readl() and let the resource
+implement the mapping parts, such as `pci::Bar`.
+
+> 
+> The main point of Rust is to make things safer; so if that can be
+> achieved without rewrite, as is the case with the presented container
+> solution, that's the way to go.
+> 
+> > 
+> > > Instead, implement a base type for I/O mapped memory, which
+> > > generically
+> > > provides the corresponding accessors, such as `Io::readb` or
+> > > `Io:try_readb`.
+> > 
+> > It provides a subset of the existing accessors, one you might want to
+> > trim down for now, see below...
+> > 
+> > > +/* io.h */
+> > > +u8 rust_helper_readb(const volatile void __iomem *addr)
+> > > +{
+> > > +       return readb(addr);
+> > > +}
+> > > +EXPORT_SYMBOL_GPL(rust_helper_readb);
+> > 
+> > <snip>
+> > 
+> > You provide wrappers for a subset of what io.h provides, why that
+> > specific subset?
+> > 
+> > Why not just add what you need, when you need it?  I doubt you need
+> > all
+> > of these, and odds are you will need more.
+> > 
+> 
+> That was written by me as a first play set to test. Nova itself
+> currently reads only 8 byte from a PCI BAR, so we could indeed drop
+> everything but readq() for now and add things subsequently later, as
+> you suggest.
+
+I think it is reasonable to start with the most common accessors
+{read,write}{b,w,l,q and maybe their relaxed variants.
+
+We generate them through the `define_read!` and `define_write!` macros anyways
+and the only difference between all the variants is only the size type (u8, u16,
+etc.) we pass to the macro.
+
+> 
+> 
+> 
+> > > +u32 rust_helper_readl_relaxed(const volatile void __iomem *addr)
+> > > +{
+> > > +       return readl_relaxed(addr);
+> > > +}
+> > > +EXPORT_SYMBOL_GPL(rust_helper_readl_relaxed);
+> > 
+> > I know everyone complains about wrapper functions around inline
+> > functions, so I'll just say it again, this is horrid.  And it's going
+> > to
+> > hurt performance, so any rust code people write is not on a level
+> > playing field here.
+> > 
+> > Your call, but ick...
+> 
+> Well, can anyone think of another way to do it?
+> 
+> > 
+> > > +#ifdef CONFIG_64BIT
+> > > +u64 rust_helper_readq_relaxed(const volatile void __iomem *addr)
+> > > +{
+> > > +       return readq_relaxed(addr);
+> > > +}
+> > > +EXPORT_SYMBOL_GPL(rust_helper_readq_relaxed);
+> > > +#endif
+> > 
+> > Rust works on 32bit targets in the kernel now?
+> 
+> Ahm, afaik not. That's some relic. Let's address that with your subset
+> comment from above.
+
+I think we should keep this guard; readq() implementations in the arch code have
+this guard as well.
+
+Should we ever add a 32bit target for Rust we also don't want this to break.
+
+> 
+> > 
+> > > +macro_rules! define_read {
+> > > +    ($(#[$attr:meta])* $name:ident, $try_name:ident,
+> > > $type_name:ty) => {
+> > > +        /// Read IO data from a given offset known at compile
+> > > time.
+> > > +        ///
+> > > +        /// Bound checks are performed on compile time, hence if
+> > > the offset is not known at compile
+> > > +        /// time, the build will fail.
+> > 
+> > offsets aren't know at compile time for many implementations, as it
+> > could be a dynamically allocated memory range.  How is this going to
+> > work for that?  Heck, how does this work for DT-defined memory ranges
+> > today?
+> 
+> The macro below will take care of those where it's only knowable at
+> runtime I think.
+> 
+> Rust has this feature (called "const generic") that can be used for
+> APIs where ranges which are known at compile time, so the compiler can
+> check all the parameters at that point. That has been judged to be
+> positive because errors with the range handling become visible before
+> the kernel runs and because it gives some performance advantages.
+
+Let's add an exammple based on `pci::Bar` here.
+
+As a driver you can optionally map a `pci::Bar` with an additional `SIZE`
+constant, e.g.
+
+```
+let bar = pdev.iomap_region_sized::<0x1000>(0)?;
+```
+
+This call only succeeds of the actual bar size is *at least* 4k. Subsequent
+calls to, let's say, `bar.readl(0x10)` can boundary check things on compile
+time, such that `bar.readl(0x1000)` would fail on compile time.
+
+This is useful when a driver knows the minum required / expected size of this
+memory region.
+
+Alternatively, a driver cann always fall back to a runtime check, e.g.
+
+```
+let bar = pdev.iomap_region(0)?;
+let val = bar.try_readl(0x1000)?;
+```
+
+- Danilo
+
+> 
+> 
+> P.
+> 
+> > 
+> > thanks,
+> > 
+> > greg k-h
+> > 
+> 
+
