@@ -1,87 +1,63 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E56AF5EE80;
-	Sat, 22 Jun 2024 21:56:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 913C0757E0;
+	Sat, 22 Jun 2024 22:42:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719093367; cv=none; b=VbB4nDJ/ky1IiqT2Px1VobuARzXyN74HSDaQW6nBrjE9HkGBNAafJS+QIluoWlh1YStY8wvcjJjh7aJIApv2ND0Tr2te0fxOrmkYVdAbQjZFokrMAsP/3+sag+GO8levN1lZOPDODBTnSojL1A6iKmxdvUHMPB0Z7OnlU/zqAqw=
+	t=1719096124; cv=none; b=OSvsw57SuUCSbI05MqwnY6dcXA1w0T8VnDEEcE4bn3BsQ2Tqc/ulP0UkUyZI581kgiXagDw9hu1B05X+Gpvkl+oOk1bMQ8wC7RzMnm40fYKK2fRaLgCnhs+Gx9kgazmH9OTufi+z8MyDVHao3OuLxoXUpVX3LCvqjofk0RcMJHI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719093367; c=relaxed/simple;
-	bh=sf98jSdXelohYzpNFAkZ2dct/moamDBOc/lFtl2cWJo=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=m6QU0eZ6LVEpWs+fjQZRmh5plULZ+YOoXr1EncJirymyNFtXqBzFAugozybcIaoW7+h8GftIrIjrbLXdbTn+Bq0w7xNNg3wY1DaM0z0zZV7oPC89g/l1DwF9WiAkNQpAqHaqIOrt2hh3CayGcZTt2OHVQIpahwAhq18DXsK5/80=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OivEMamj; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1719096124; c=relaxed/simple;
+	bh=EvkD4OfgkyPKDN5ZtMQSaWXlm0oSJRU057X4EFQlBLM=;
+	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=YjSAp6RIOvanmR4D7zROm5ys5Glg5kFbwB9eYWRdYGEpE3dPhhMhCkiC++njmXN1XqyNWc0M50gBfOC11PdzWKk4PI2a/OcivatrvAeWIyNL7O+TIjGiRxZ0P/GqkJyM3G+/2rV7VX1RUNA5WSH95wjP+zHV3qGNUjc6R8gXs3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=H0DygJhy; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OivEMamj"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FCB1C3277B;
-	Sat, 22 Jun 2024 21:56:03 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="H0DygJhy"
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 09668C3277B;
+	Sat, 22 Jun 2024 22:42:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719093366;
-	bh=sf98jSdXelohYzpNFAkZ2dct/moamDBOc/lFtl2cWJo=;
-	h=From:To:Cc:Subject:Date:From;
-	b=OivEMamjoZx3r3dCQaicsY+uUmMZxfLQ1Rz89s3I6skgavz/PNjMn71DXa1DAmaqM
-	 h2TR9WqAp3zY0Jj26vdaD6bMAin0jTd7QZxQr3rYrgTE+WzBupHtv0IGtQ14gXfxNB
-	 3Wd4S2KwWBMeZ/Du71CX4of1qez7Jd26JvfTjBJBzvH4D8PpQADZxYMFXRdsv6gGPY
-	 /jJyMjKOOKIQhpK/bft0CxvIckiIs5uHu4MoRHStTqHt45T2g9KkeIyFyk9MQeHrM7
-	 KO/td4q9jTrKl4TDvmTHg4jpMUJJUfdWyHe2H5+UQOdacXizss7XwbDSdvjifE08qy
-	 tDZEUWG/WpOnQ==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [GIT PULL] Rust fixes for 6.10
-Date: Sat, 22 Jun 2024 23:55:18 +0200
-Message-ID: <20240622215518.198080-1-ojeda@kernel.org>
+	s=k20201202; t=1719096124;
+	bh=EvkD4OfgkyPKDN5ZtMQSaWXlm0oSJRU057X4EFQlBLM=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=H0DygJhyGmINoJChIk9MgyR29POlgkxOUX/dbf+My5Pp1enkOdtUI6F95go0SS+Af
+	 T92NmQO7WHx6YlfB1O4B2CwqNc+jg2KfllISlpqfAlP/hsOi8qfIFt0ZH3vHni4Wcx
+	 +Bq6s5gs6mWuIuVoercdi4IpdoDNP0Dc8X6373S+OrgKJIEgNRxoLJR/W3+Pvbdh2O
+	 A1yRjsQrVAiZcLsspiBLMG0+GrSJICjZONmNrKC3h9w7n2yAftYORdLW5oH2LJiEVh
+	 j2/ABximpI37m5K4cgBitGm95dYn0gPJCZlVSqciz7xw37ssiwTeAvu8IlrTseSQtD
+	 OSEDbtXQ5r+6A==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id F1B69C43619;
+	Sat, 22 Jun 2024 22:42:03 +0000 (UTC)
+Subject: Re: [GIT PULL] Rust fixes for 6.10
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <20240622215518.198080-1-ojeda@kernel.org>
+References: <20240622215518.198080-1-ojeda@kernel.org>
+X-PR-Tracked-List-Id: <rust-for-linux.vger.kernel.org>
+X-PR-Tracked-Message-Id: <20240622215518.198080-1-ojeda@kernel.org>
+X-PR-Tracked-Remote: https://github.com/Rust-for-Linux/linux.git tags/rust-fixes-6.10
+X-PR-Tracked-Commit-Id: a126eca844353360ebafa9088d22865cb8e022e3
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 5f583a3162ffd9f7999af76b8ab634ce2dac9f90
+Message-Id: <171909612397.10621.3557477494621826003.pr-tracker-bot@kernel.org>
+Date: Sat, 22 Jun 2024 22:42:03 +0000
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, Miguel Ojeda <ojeda@kernel.org>, Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
 
-Hi Linus,
+The pull request you sent on Sat, 22 Jun 2024 23:55:18 +0200:
 
-Please pull this fix for Rust.
+> https://github.com/Rust-for-Linux/linux.git tags/rust-fixes-6.10
 
-It has been in linux-next for more than a week.
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/5f583a3162ffd9f7999af76b8ab634ce2dac9f90
 
-No conflicts expected. No changes to the C side.
+Thank you!
 
-Thanks!
-
-Cheers,
-Miguel
-
-The following changes since commit 83a7eefedc9b56fe7bfeff13b6c7356688ffa670:
-
-  Linux 6.10-rc3 (2024-06-09 14:19:43 -0700)
-
-are available in the Git repository at:
-
-  https://github.com/Rust-for-Linux/linux.git tags/rust-fixes-6.10
-
-for you to fetch changes up to a126eca844353360ebafa9088d22865cb8e022e3:
-
-  rust: avoid unused import warning in `rusttest` (2024-06-11 23:33:28 +0200)
-
-----------------------------------------------------------------
-Rust fixes for v6.10
-
- - Avoid unused import warning in 'rusttest'.
-
-----------------------------------------------------------------
-Miguel Ojeda (1):
-      rust: avoid unused import warning in `rusttest`
-
- rust/kernel/alloc/vec_ext.rs | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
