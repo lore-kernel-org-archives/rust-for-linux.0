@@ -1,181 +1,87 @@
-Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48521152515
-	for <rust-for-linux@vger.kernel.org>; Fri, 21 Jun 2024 12:52:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E56AF5EE80;
+	Sat, 22 Jun 2024 21:56:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1718974347; cv=none; b=T7EuUV/WyyN+EYhKuTXgrhRlf1pGkmAXbjnKbtT2t+cql8gWNOoSp3P7y19d3vyZGY4wOIXtdaBfNGj/zznj9faKungVvme82LFC/DVgOzw7Yu/DtocUegv+coqkXuR8GTVCm7v6kHwBnbZ3Tn5Wnki2qvSJgDI5sly+1Lb4fnI=
+	t=1719093367; cv=none; b=VbB4nDJ/ky1IiqT2Px1VobuARzXyN74HSDaQW6nBrjE9HkGBNAafJS+QIluoWlh1YStY8wvcjJjh7aJIApv2ND0Tr2te0fxOrmkYVdAbQjZFokrMAsP/3+sag+GO8levN1lZOPDODBTnSojL1A6iKmxdvUHMPB0Z7OnlU/zqAqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1718974347; c=relaxed/simple;
-	bh=9ExI3HMc8dpikZS14KdMf2VTfo2Gm4D9Du3Ad8hswa0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iTVnU3sDkTykUd7Oxq3NGXt6Yk3C5/SCnRr+zf3lq/zET3LBp1WCmfvA6vrZP7QC6by+xzfkh96SZfqAGv+cBdONPxCWXt4KM5kGwQIbiqtorEa2blrc++pw/P0JE3Mya6MIW+lz7NusrJ6C5dNYB96ZgO0Nkr+kgkQsQUgmcw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dTwxAVVv; arc=none smtp.client-ip=209.85.215.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1719093367; c=relaxed/simple;
+	bh=sf98jSdXelohYzpNFAkZ2dct/moamDBOc/lFtl2cWJo=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=m6QU0eZ6LVEpWs+fjQZRmh5plULZ+YOoXr1EncJirymyNFtXqBzFAugozybcIaoW7+h8GftIrIjrbLXdbTn+Bq0w7xNNg3wY1DaM0z0zZV7oPC89g/l1DwF9WiAkNQpAqHaqIOrt2hh3CayGcZTt2OHVQIpahwAhq18DXsK5/80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OivEMamj; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dTwxAVVv"
-Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-6c53a315c6eso1436541a12.3
-        for <rust-for-linux@vger.kernel.org>; Fri, 21 Jun 2024 05:52:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1718974345; x=1719579145; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jFikssrTKZjRo9rjV6X1YnKRcFeJcrLtumLLhBthri8=;
-        b=dTwxAVVvG50novP6VF9UJ4zxxi3/kn2Qm/RuCRSGH6hF9+fGk4+lxd8Ts1FqPzm3dc
-         TNLnGhqmv7uchPdWDS+dM1lZLxaOCbBdW6WgnygnPxblfrgdo5IChA51HTkI12IQG/is
-         0h2Gqx5pNlccTuls0xwhHYtRZVbuRRItSow1ThOoQrT3C0jLepMAzKHEOwuLpgAtX3uk
-         5crDRly5mSLFxUu1smW6B66qa7qBAyp4f+iJozeZdpCj8VSXKe6egAOQni4qEPPAveLq
-         ZvGVrcaVu9Y7Vc8vCW22gO7E3O8DFODHFhyvtY/CjokQF9o4iBjPzsBf29maRwj6MZcy
-         dv3g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1718974345; x=1719579145;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=jFikssrTKZjRo9rjV6X1YnKRcFeJcrLtumLLhBthri8=;
-        b=AkUZ8IQ509zFCr/9K1y0JGwLqf2VlsFyeTPACQHGugXSBk5ybFiwVlNWdsZlgxZmXw
-         OB74iBGh58vGUMoqV+/fiDWB4y4KdPm9aeNXeHeC3XdFmc0kLCX7dhCaJNbPVDIgMCvv
-         PpKEdITGIZnJLJWov6bCFlY8MpHLZGgCJ/+cR029YHTk4a3Hri2Wvj1m+GXcBhcheyXd
-         XSgtlR7Y7mPOuyyEnFAIWBQtWYOpqjHrIWhrf4rV1uL++htEqkIrYsptQBtBledhgSMj
-         WCeC3ZUFDk9Md+t5sBSWC95g3jdsH7ipWhmN/odrrXr0uH6baUcXSIq46+i7wHivdJjS
-         FfWA==
-X-Forwarded-Encrypted: i=1; AJvYcCX2d6aORu0HWyPUh8n+ZAaru8TdF8cO30hXRkruhtPcHpmQcoudpsrIDfocCciyVGLjuAovSentbEOisswq4JMz131H2R9orXY9upKL2pg=
-X-Gm-Message-State: AOJu0YwX/E8kicx+V6RTilEnk8LneA64Vo4Am9joIMBrgjGT8z011nGj
-	zf/oGSJ1utH3I0KhhN9kwHdch73jic42A0EVJAFjiqrlBVRmS8vEiIQkQD7n1oVY/JiE3/Vw5w1
-	ws/Ra18sb3e+LotGq3S/cG8hFDUURKQOvIvr4
-X-Google-Smtp-Source: AGHT+IHLbxh5gnZYE3Ij3eJIOL1ReH1iHe0C7faIKhDLxkg3+UYsqYWbYf6Q8dpYIbAjVW26QeLxKyYtHQr3AWRtJa0=
-X-Received: by 2002:a05:6a20:7283:b0:1af:bd03:3222 with SMTP id
- adf61e73a8af0-1bcbb5f75cbmr9905522637.45.1718974345162; Fri, 21 Jun 2024
- 05:52:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OivEMamj"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FCB1C3277B;
+	Sat, 22 Jun 2024 21:56:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1719093366;
+	bh=sf98jSdXelohYzpNFAkZ2dct/moamDBOc/lFtl2cWJo=;
+	h=From:To:Cc:Subject:Date:From;
+	b=OivEMamjoZx3r3dCQaicsY+uUmMZxfLQ1Rz89s3I6skgavz/PNjMn71DXa1DAmaqM
+	 h2TR9WqAp3zY0Jj26vdaD6bMAin0jTd7QZxQr3rYrgTE+WzBupHtv0IGtQ14gXfxNB
+	 3Wd4S2KwWBMeZ/Du71CX4of1qez7Jd26JvfTjBJBzvH4D8PpQADZxYMFXRdsv6gGPY
+	 /jJyMjKOOKIQhpK/bft0CxvIckiIs5uHu4MoRHStTqHt45T2g9KkeIyFyk9MQeHrM7
+	 KO/td4q9jTrKl4TDvmTHg4jpMUJJUfdWyHe2H5+UQOdacXizss7XwbDSdvjifE08qy
+	 tDZEUWG/WpOnQ==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [GIT PULL] Rust fixes for 6.10
+Date: Sat, 22 Jun 2024 23:55:18 +0200
+Message-ID: <20240622215518.198080-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240621-tracepoint-v3-0-9e44eeea2b85@google.com> <20240621-tracepoint-v3-2-9e44eeea2b85@google.com>
-In-Reply-To: <20240621-tracepoint-v3-2-9e44eeea2b85@google.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Fri, 21 Jun 2024 14:52:10 +0200
-Message-ID: <CAH5fLghb6oVkgy3ckf=dUk9S4VdCeWin+yDBW1ffBoxu=HqBKw@mail.gmail.com>
-Subject: Re: [PATCH v3 2/2] rust: add tracepoint support
-To: Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Josh Poimboeuf <jpoimboe@kernel.org>, Jason Baron <jbaron@akamai.com>, 
-	Ard Biesheuvel <ardb@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>
-Cc: linux-trace-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Fri, Jun 21, 2024 at 12:35=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> =
-wrote:
->
-> Make it possible to have Rust code call into tracepoints defined by C
-> code. It is still required that the tracepoint is declared in a C
-> header, and that this header is included in the input to bindgen.
->
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
->  include/linux/tracepoint.h      | 18 +++++++++++++++-
->  include/trace/define_trace.h    |  7 ++++++
->  rust/bindings/bindings_helper.h |  1 +
->  rust/kernel/lib.rs              |  1 +
->  rust/kernel/tracepoint.rs       | 47 +++++++++++++++++++++++++++++++++++=
-++++++
->  5 files changed, 73 insertions(+), 1 deletion(-)
->
-> diff --git a/include/linux/tracepoint.h b/include/linux/tracepoint.h
-> index 689b6d71590e..d82af4d77c9f 100644
-> --- a/include/linux/tracepoint.h
-> +++ b/include/linux/tracepoint.h
-> @@ -238,6 +238,20 @@ static inline struct tracepoint *tracepoint_ptr_dere=
-f(tracepoint_ptr_t *p)
->  #define __DECLARE_TRACE_RCU(name, proto, args, cond)
->  #endif
->
-> +/*
-> + * Declare an exported function that Rust code can call to trigger this
-> + * tracepoint. This function does not include the static branch; that is=
- done
-> + * in Rust to avoid a function call when the tracepoint is disabled.
-> + */
-> +#define DEFINE_RUST_DO_TRACE(name, proto, args)
-> +#define DEFINE_RUST_DO_TRACE_REAL(name, proto, args)                   \
-> +       notrace void rust_do_trace_##name(proto)                        \
-> +       {                                                               \
-> +               __DO_TRACE(name,                                        \
-> +                       TP_ARGS(args),                                  \
-> +                       cpu_online(raw_smp_processor_id()), 0);         \
-> +       }
-> +
->  /*
->   * Make sure the alignment of the structure in the __tracepoints section=
- will
->   * not add unwanted padding between the beginning of the section and the
-> @@ -253,6 +267,7 @@ static inline struct tracepoint *tracepoint_ptr_deref=
-(tracepoint_ptr_t *p)
->         extern int __traceiter_##name(data_proto);                      \
->         DECLARE_STATIC_CALL(tp_func_##name, __traceiter_##name);        \
->         extern struct tracepoint __tracepoint_##name;                   \
-> +       extern void rust_do_trace_##name(proto);                        \
->         static inline void trace_##name(proto)                          \
->         {                                                               \
->                 if (static_key_false(&__tracepoint_##name.key))         \
-> @@ -337,7 +352,8 @@ static inline struct tracepoint *tracepoint_ptr_deref=
-(tracepoint_ptr_t *p)
->         void __probestub_##_name(void *__data, proto)                   \
->         {                                                               \
->         }                                                               \
-> -       DEFINE_STATIC_CALL(tp_func_##_name, __traceiter_##_name);
-> +       DEFINE_STATIC_CALL(tp_func_##_name, __traceiter_##_name);       \
-> +       DEFINE_RUST_DO_TRACE(_name, TP_PROTO(proto), TP_ARGS(args))
->
->  #define DEFINE_TRACE(name, proto, args)                \
->         DEFINE_TRACE_FN(name, NULL, NULL, PARAMS(proto), PARAMS(args));
-> diff --git a/include/trace/define_trace.h b/include/trace/define_trace.h
-> index 00723935dcc7..b47cc036acba 100644
-> --- a/include/trace/define_trace.h
-> +++ b/include/trace/define_trace.h
-> @@ -72,6 +72,13 @@
->  #define DECLARE_TRACE(name, proto, args)       \
->         DEFINE_TRACE(name, PARAMS(proto), PARAMS(args))
->
-> +/* If requested, create helpers for calling these tracepoints from Rust.=
- */
-> +#ifdef CREATE_RUST_TRACE_POINTS
-> +#undef DEFINE_RUST_DO_TRACE
-> +#define DEFINE_RUST_DO_TRACE(name, proto, args)        \
-> +       DEFINE_RUST_DO_TRACE_REAL(name, PARAMS(proto), PARAMS(args))
-> +#endif
-> +
->  #undef TRACE_INCLUDE
->  #undef __TRACE_INCLUDE
->
-> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_hel=
-per.h
+Hi Linus,
 
-Hmm, I tried using the support where I have both events and hooks:
+Please pull this fix for Rust.
 
-#define CREATE_TRACE_POINTS
-#define CREATE_RUST_TRACE_POINTS
-#include <trace/hooks/rust_binder.h>
-#include <trace/events/rust_binder.h>
+It has been in linux-next for more than a week.
 
-But it's not really working. Initially I thought that it's because I
-need to undef DEFINE_RUST_DO_TRACE at the end of this file, but even
-when I added that, I still get this error:
+No conflicts expected. No changes to the C side.
 
-    error: redefinition of 'str__rust_binder__trace_system_name'
+Thanks!
 
-Is the Rust support missing something, or is the answer just that you
-can't have two files of the same name like this? Or am I doing
-something else wrong?
+Cheers,
+Miguel
 
-Alice
+The following changes since commit 83a7eefedc9b56fe7bfeff13b6c7356688ffa670:
+
+  Linux 6.10-rc3 (2024-06-09 14:19:43 -0700)
+
+are available in the Git repository at:
+
+  https://github.com/Rust-for-Linux/linux.git tags/rust-fixes-6.10
+
+for you to fetch changes up to a126eca844353360ebafa9088d22865cb8e022e3:
+
+  rust: avoid unused import warning in `rusttest` (2024-06-11 23:33:28 +0200)
+
+----------------------------------------------------------------
+Rust fixes for v6.10
+
+ - Avoid unused import warning in 'rusttest'.
+
+----------------------------------------------------------------
+Miguel Ojeda (1):
+      rust: avoid unused import warning in `rusttest`
+
+ rust/kernel/alloc/vec_ext.rs | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
