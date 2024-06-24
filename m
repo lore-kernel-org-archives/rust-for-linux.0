@@ -1,212 +1,95 @@
-Received: from mail-io1-f41.google.com (mail-io1-f41.google.com [209.85.166.41])
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB157179AA;
-	Mon, 24 Jun 2024 03:04:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C64933A8D2
+	for <rust-for-linux@vger.kernel.org>; Mon, 24 Jun 2024 08:32:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719198274; cv=none; b=G+IZGdmtfMq4Ljodi2boHk1J3eQJf9Xo/te8w8RU6ui6DnN3iurKQMGNJ8WLUWIh4qZZy+F6ftEdfuPR6Dfttpbuaa1u54BuK3mhm1DQVN6fQDUGQxcIKYFDpHu2cypiPJoNGVehjlLl0fqDVwPR4ZRg/XXh3jsJNsfJ1HevRs0=
+	t=1719217971; cv=none; b=aF/57PhIK9ZNRgBFriXsAr+aiOhTZAwdYd2+f/SS2WVEKFcOCUtBmAUZUBirKcag4cscOIUsmszA/BE/hMLFtRdLh4vno9SDUJjDxJ2XaYc8GP5jq6jqewJq1YMriZYgfeFVL3FnpSPMStdQcKr1aLguiUmnpllGeTxOhvEcI5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719198274; c=relaxed/simple;
-	bh=3lWWzsvgBJXGWIoXBlvl5SoXy4eJAfKs4q5RVI2wRdA=;
-	h=From:To:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bugn4DOx6aAzKdQFD9jl10T6G08Uc4saBe6Kcro26ksXxtcroLP2oBopf3FVN2q0l+6B/3GSwbfDcwpzVERu1amn2CWR1qc0oFYVqi2Jwmtl+0Q9ZPFEjOpQUiABDghBLDab7T/WIQDzE/j/5rnNz0LnL82j8A9rTf70ew90CJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JIy+u9cg; arc=none smtp.client-ip=209.85.166.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1719217971; c=relaxed/simple;
+	bh=91kCvRf6U070uqcc0kpaGohQwSZ5TCT2Z+sMB0QGgTg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=LSUIOtepAQMYsblyKNJ6jxjY5g75iNcXI2r3NkjkcfP4yVI44Ps+dNYcvfn1jw8fUkHvT3C6SjgyKrJRLdHgTBy9gMC3n+wf11y2qmxcfY/t5rco80OaXWnoN8CG0Hx4A3/IHS5qVn0OSckoR5weE1WPZuOwErQ4cqFALuE+3tc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DIva3t9d; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JIy+u9cg"
-Received: by mail-io1-f41.google.com with SMTP id ca18e2360f4ac-7eec09cc7f6so151522139f.0;
-        Sun, 23 Jun 2024 20:04:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DIva3t9d"
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4218008c613so33565585e9.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 24 Jun 2024 01:32:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1719198272; x=1719803072; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=wVanSzZDCxDOZwLyh1W7UweDgQIq9wukQur2GJC15Ak=;
-        b=JIy+u9cg7YBulWurmQs6FRvDgKh16dUn8C9DTVuWIrTF6v5iZGFfUwLy1/XO2uGRg/
-         4rsF31vN16Ve8NnA9r65BBmG8tbHj6A5TcLZWZRfokOyV5WKoku3/Uvo3Bf/VBEvRQPZ
-         b1hKJwJbhs3N5kXLdp18QnLQ1KVR4mTjiMXoukyLObQ5/vOL/k89f36SRxI9dWiTcRN9
-         1hh+UZ8MjY9P/1L3w2bzwMGxvsYTD8twPBmGOh9MK8ZplR72CAvp+kGfYSkxIVKeB84s
-         vqhNc/DLNXAWvviVEe6W3IJ2JsvaWN29OAPW3DHA1nmoyox8HKMg3VCJrqNG+JRsNHX8
-         BH8w==
+        d=google.com; s=20230601; t=1719217968; x=1719822768; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=91kCvRf6U070uqcc0kpaGohQwSZ5TCT2Z+sMB0QGgTg=;
+        b=DIva3t9dG+E1gYVdlWHy+7nFIigj+Utl45lfi1ZhaY6Ji67WM+L+5WHYhchZUJ+lfH
+         jmiVQ7OoGRxBi6fwtE88lVqE2sDcG+ScKCoNHX3ZwoT6iTAPrtRSrmVHN0F8d68I/MiG
+         vxBXcIgCe6zXlkUQjhVw0ZPb+J3KBhJtSJxn9RfGLrQSqCRTDze4sEvwXuOXSWAUFe0W
+         5vZJ9uHN8cow8+4NbPV+f2qllHnkEZmxBlq1HOzbN5EvHEjaqBQCuPmXjGf6Xz6Moeal
+         dYDKzMmTaXhA/PIjCPflTNxfRkbUEEIv/g15dTqjw5jyLQLZuqOIU8Oa9/NUymY7sR8W
+         ScuA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719198272; x=1719803072;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1719217968; x=1719822768;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=wVanSzZDCxDOZwLyh1W7UweDgQIq9wukQur2GJC15Ak=;
-        b=nuEwxAkgBQblCFvbL6KGivj1cTkBl1DvijP+1IpT6A1dHTlaEj11IenPHXLGq8cOyF
-         gZGiO0NhsyWRFt5WpmBs9Ao8shjmfZ6precBC9Q+Xc2frET9ogzLvNkt580cc+YnduBO
-         507tSAnILt1JRXv0/+DwwXVxNke5SeGkJOTUrDaOBwVYeUbncq1fHnF3V9QXKNoJnXuK
-         SBbShp8IekzH81aVaZOnHaUuUyXgPxuLJAlw6M7itlM9VJeNj+rLWlJdctkxl9IEkZI4
-         TdvRIqqmlPXYnaS9yyQ9Tam8M1HV9h/HO1ttTN79M38ZugrZ5mFY19fAKV6iqOsLKMSj
-         dNKg==
-X-Forwarded-Encrypted: i=1; AJvYcCUHeNSpcdopJ+87iGDKqG8xN1D9KgmBmyOdgPF0B/7Rq8UrLAxstOJHtsXP2dZt9uaNHp1OhM5i9Nb6+YzFES351jwrtIpMVb5xlw1ABLag4HkSxYoHeZLWAIwubPo2vSP5xNlDO1gP/hdGLVM=
-X-Gm-Message-State: AOJu0YxrbArL/T9uqwdaTNdhEboZSF2UClIzqQGn4mGcz5DavVag2ZBi
-	NGJjOo4R3Id59n+fYndKWe5tY2UJRHXV4TOm28/JgyI6d3FSSSgSwMo8d07T
-X-Google-Smtp-Source: AGHT+IFOCgXtmU1/lMIFPdlku5fVa9Y3JBThRuPD6d69g582ODfVFo9vS2fwrmuLtPoEEWPAN11IPw==
-X-Received: by 2002:a05:6602:3f8a:b0:7f1:3ad1:2341 with SMTP id ca18e2360f4ac-7f3a13db517mr526287839f.7.1719198271899;
-        Sun, 23 Jun 2024 20:04:31 -0700 (PDT)
-Received: from localhost.localdomain (h135-131-130-199.ashwwi.broadband.dynamic.tds.net. [135.131.130.199])
-        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4b9ea0957c0sm1045476173.131.2024.06.23.20.04.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 23 Jun 2024 20:04:31 -0700 (PDT)
-From: "Ethan D. Twardy" <ethan.twardy@gmail.com>
-To: Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-	"Ethan D. Twardy" <ethan.twardy@gmail.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Aswin Unnikrishnan <aswinunni01@gmail.com>,
-	rust-for-linux@vger.kernel.org (open list:RUST),
-	linux-kernel@vger.kernel.org (open list)
-Subject: [PATCH 4/4] rust: macros: Enable the rest of the tests
-Date: Sun, 23 Jun 2024 22:03:06 -0500
-Message-ID: <20240624030327.90301-5-ethan.twardy@gmail.com>
-X-Mailer: git-send-email 2.44.2
-In-Reply-To: <20240624030327.90301-1-ethan.twardy@gmail.com>
-References: <20240624030327.90301-1-ethan.twardy@gmail.com>
+        bh=91kCvRf6U070uqcc0kpaGohQwSZ5TCT2Z+sMB0QGgTg=;
+        b=l2f04Oxz4J2jHCUcKMi5+21vjAGt46gNbn8VOVSJfpJLbF+XSfBN6FC5Gk1uNOwzpQ
+         lmdjadmAsYcGOnkGvsxiEqSmz/24QFD2TwWE7AQnySG+Uyxuk9Vmf0EI+NEHO5ZWDwVw
+         kSq7MX1O5SCHqLsUvuK54qWU1ydgBSluAHAFVmazkZCPUoe7wYIdWdgfpMW9ppYxLpH3
+         9l6cyTbPBnp2n8dXODHyPoYl7KmVVn9GmZWVI04RG5t/DA9GSPrixB14DETK4em/R6OS
+         /VZ30I3lbCKlhlgAqPLNyZd//EkWxqgJJgdJHkn+2t6BLMNrCSG6R1h8Why52pbeELKI
+         DT/g==
+X-Forwarded-Encrypted: i=1; AJvYcCXr3VKDXb+jiQ0zCDrevd7LQc/h8K1gFaS6YhpMIbNMFF+VW77HWXLEO49KiQTGRdQEfM9DfPoetkFtlLcppPMGQITKoKaH53bPliKNTzs=
+X-Gm-Message-State: AOJu0Yy1Zje+RW4rgTyA/MVMccJJA5tGCkMzbLyNXAlL8YPQ+5GxQMmF
+	cdWW2ETecg/h311+wE8G6tgJTso2vWQpnfJnfk+cTVjxM32C9A12J+liYYYChfa50T8E8BEDfrb
+	1XRFfxpEtw8ZcaxXafruo4V4jGVRJr/ZmpFu6
+X-Google-Smtp-Source: AGHT+IFn76On24MNlNofBDrWjme9ZSj4M+IQh4Lbkedj9Mocpw7shk0nv7U0/Z7EFsaFthtTUZmaHvUnEM/C7IpsJig=
+X-Received: by 2002:a5d:6985:0:b0:35f:2364:f1d9 with SMTP id
+ ffacd0b85a97d-366e96567b8mr2202375f8f.61.1719217967872; Mon, 24 Jun 2024
+ 01:32:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20240624030327.90301-1-ethan.twardy@gmail.com> <20240624030327.90301-3-ethan.twardy@gmail.com>
+In-Reply-To: <20240624030327.90301-3-ethan.twardy@gmail.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Mon, 24 Jun 2024 10:32:35 +0200
+Message-ID: <CAH5fLghDZdt57SShnzUx_ZeBquqm-3fah3CK9YAwMYHAJdteQw@mail.gmail.com>
+Subject: Re: [PATCH 2/4] rust: Enable test for macros::module
+To: "Ethan D. Twardy" <ethan.twardy@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Trevor Gross <tmgross@umich.edu>, 
+	Aswin Unnikrishnan <aswinunni01@gmail.com>, "open list:RUST" <rust-for-linux@vger.kernel.org>, 
+	open list <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Now that the rusttest target for the macros crate is compiled with the
-kernel crate as a dependency, the rest of the rustdoc tests can be
-enabled.
+On Mon, Jun 24, 2024 at 5:04=E2=80=AFAM Ethan D. Twardy <ethan.twardy@gmail=
+.com> wrote:
+>
+> Previously, this test was ignored due to a missing necessary dependency
+> on the `kernel` crate.
+>
+> Signed-off-by: Ethan D. Twardy <ethan.twardy@gmail.com>
 
-Signed-off-by: Ethan D. Twardy <ethan.twardy@gmail.com>
+It may be worth to call out in the commit message that you are
+changing what the example does. (But the change is good - this form of
+kernel parameters were never upstreamed.)
 
-diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
-index 8afed8facb21..6d764099563b 100644
---- a/rust/macros/lib.rs
-+++ b/rust/macros/lib.rs
-@@ -102,7 +102,9 @@ pub fn module(ts: TokenStream) -> TokenStream {
- ///
- /// # Examples
- ///
--/// ```ignore
-+/// ```rust
-+/// # #[macro_use] extern crate macros;
-+/// # #[macro_use] extern crate kernel;
- /// use kernel::error::VTABLE_DEFAULT_ERROR;
- /// use kernel::prelude::*;
- ///
-@@ -147,12 +149,28 @@ pub fn vtable(attr: TokenStream, ts: TokenStream) -> TokenStream {
- ///
- /// # Examples
- ///
--/// ```ignore
--/// use kernel::macro::concat_idents;
-+/// ```rust
-+/// # const binder_driver_return_protocol_BR_OK: u32 = 0;
-+/// # const binder_driver_return_protocol_BR_ERROR: u32 = 1;
-+/// # const binder_driver_return_protocol_BR_TRANSACTION: u32 = 2;
-+/// # const binder_driver_return_protocol_BR_REPLY: u32 = 3;
-+/// # const binder_driver_return_protocol_BR_DEAD_REPLY: u32 = 4;
-+/// # const binder_driver_return_protocol_BR_TRANSACTION_COMPLETE: u32 = 5;
-+/// # const binder_driver_return_protocol_BR_INCREFS: u32 = 6;
-+/// # const binder_driver_return_protocol_BR_ACQUIRE: u32 = 7;
-+/// # const binder_driver_return_protocol_BR_RELEASE: u32 = 8;
-+/// # const binder_driver_return_protocol_BR_DECREFS: u32 = 9;
-+/// # const binder_driver_return_protocol_BR_NOOP: u32 = 10;
-+/// # const binder_driver_return_protocol_BR_SPAWN_LOOPER: u32 = 11;
-+/// # const binder_driver_return_protocol_BR_DEAD_BINDER: u32 = 12;
-+/// # const binder_driver_return_protocol_BR_CLEAR_DEATH_NOTIFICATION_DONE: u32 = 13;
-+/// # const binder_driver_return_protocol_BR_FAILED_REPLY: u32 = 14;
-+///
-+/// use kernel::macros::concat_idents;
- ///
- /// macro_rules! pub_no_prefix {
- ///     ($prefix:ident, $($newname:ident),+) => {
--///         $(pub(crate) const $newname: u32 = kernel::macros::concat_idents!($prefix, $newname);)+
-+///         $(pub(crate) const $newname: u32 = concat_idents!($prefix, $newname);)+
- ///     };
- /// }
- ///
-@@ -198,8 +216,9 @@ pub fn concat_idents(ts: TokenStream) -> TokenStream {
- ///
- /// # Examples
- ///
--/// ```rust,ignore
--/// #[pin_data]
-+/// ```rust
-+/// # use std::{sync::Mutex, process::Command};
-+/// #[kernel::macros::pin_data]
- /// struct DriverData {
- ///     #[pin]
- ///     queue: Mutex<Vec<Command>>,
-@@ -207,7 +226,15 @@ pub fn concat_idents(ts: TokenStream) -> TokenStream {
- /// }
- /// ```
- ///
--/// ```rust,ignore
-+/// ```rust
-+/// # use std::{sync::Mutex, process::Command};
-+/// # use core::pin::Pin;
-+/// # pub struct Info;
-+/// # mod bindings {
-+/// #     pub unsafe fn destroy_info(_ptr: *mut super::Info) {}
-+/// # }
-+/// use kernel::macros::{pin_data, pinned_drop};
-+///
- /// #[pin_data(PinnedDrop)]
- /// struct DriverData {
- ///     #[pin]
-@@ -222,6 +249,8 @@ pub fn concat_idents(ts: TokenStream) -> TokenStream {
- ///         unsafe { bindings::destroy_info(self.raw_info) };
- ///     }
- /// }
-+///
-+/// # fn main() {}
- /// ```
- ///
- /// [`pin_init!`]: ../kernel/macro.pin_init.html
-@@ -237,13 +266,20 @@ pub fn pin_data(inner: TokenStream, item: TokenStream) -> TokenStream {
- ///
- /// # Examples
- ///
--/// ```rust,ignore
-+/// ```rust
-+/// # use macros::{pin_data, pinned_drop};
-+/// # use std::{sync::Mutex, process::Command};
-+/// # use core::pin::Pin;
-+/// # mod bindings {
-+/// #     pub struct Info;
-+/// #     pub unsafe fn destroy_info(_ptr: *mut Info) {}
-+/// # }
- /// #[pin_data(PinnedDrop)]
- /// struct DriverData {
- ///     #[pin]
- ///     queue: Mutex<Vec<Command>>,
- ///     buf: Box<[u8; 1024 * 1024]>,
--///     raw_info: *mut Info,
-+///     raw_info: *mut bindings::Info,
- /// }
- ///
- /// #[pinned_drop]
-@@ -408,7 +444,9 @@ pub fn paste(input: TokenStream) -> TokenStream {
- ///
- /// # Examples
- ///
--/// ```rust,ignore
-+/// ```rust
-+/// use kernel::macros::Zeroable;
-+///
- /// #[derive(Zeroable)]
- /// pub struct DriverData {
- ///     id: i64,
--- 
-2.44.2
+With the commit message updated:
 
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+
+Oh, also, you don't want an empty line between } and `# fn main() {}`
+as it will show up as a weird empty line at the end of the example.
+
+Alice
