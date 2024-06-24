@@ -1,175 +1,228 @@
-Received: from mail-lf1-f73.google.com (mail-lf1-f73.google.com [209.85.167.73])
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 554C65FEED
-	for <rust-for-linux@vger.kernel.org>; Mon, 24 Jun 2024 08:43:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 845D03EA7B
+	for <rust-for-linux@vger.kernel.org>; Mon, 24 Jun 2024 08:47:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719218629; cv=none; b=MdFt/OUHNYEP27sfAQLrSxw6bU0c3FQeVYWB3HL2lSdfFesCdURGA/I3ch+31Q4zrjXNZGo73a1HP2mzaj2S8vxN5GJHnYb+cAlpZ7wmnLjzXblAgkMPnQBwFCcIiS0Hn9N8s3pLXvWbOwyUVldX2u1I8tzF0xnKpK7qHdI1UrQ=
+	t=1719218878; cv=none; b=eiV/gEgH0V7nZUJshWBMiL5PYfPBJwqxh1xwBeyZnx24aP+mcu49Xwuhy9xJZk70wCbdKW3dATLkYsuy7+vnK7kg8AkIkrCQ+MgK0taYqQmHE0KV4itrdVIUzlxx//izBeqNGJd8DXjTC1VycaEc8WKZD1FgzA5nZhBLG7lidVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719218629; c=relaxed/simple;
-	bh=fXHVD3G4w62BhkUqfzkmP2hT2Hb8iYR9K+kqcqeZ2LI=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=LFd4Y+kqLZaOmgye792DNJyQEyMeQ+u1derCSRGdGlZJ8+QzFNHWlRODcB2hj3NdWzMnAZp2x1LM9oJoj2RB7sE+8wY27gllfZcH6MDAU/iroTkkPVBWW+pZ/OiDt3Viu+jbJWBn2xPRkaE6YKRQSyXJZa2HO8neAd2nxA4AnrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=aOyZE1+G; arc=none smtp.client-ip=209.85.167.73
+	s=arc-20240116; t=1719218878; c=relaxed/simple;
+	bh=i3kZDMLWLd96gDc9K4Y6EHHzzcKLPUDlc3MNH5wNmtk=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=fWpFsC1WMgfEboF4TyR9NBLp29v5eHhEpK3FuOpkJmp+gTzw9cHj/45PvqLo4ZIyrMh7T2ShU9LdvmmXkJxj5NZfSbxhTtZuVcODrNxd6Wc+Etu6T33xPWS5cAFcwHHWGSRhmS1mCZ68IsHyvOlfnXx5F/irWWp1NYZRqMJMg1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=x66/RpTL; arc=none smtp.client-ip=209.85.221.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="aOyZE1+G"
-Received: by mail-lf1-f73.google.com with SMTP id 2adb3069b0e04-52ce324c204so845275e87.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 24 Jun 2024 01:43:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="x66/RpTL"
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-3620ee2cdf7so2577919f8f.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 24 Jun 2024 01:47:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1719218622; x=1719823422; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=7DImZLITJOUwBPCplCl17cwIdvOncIJOaqDc09+dtO4=;
-        b=aOyZE1+GASMqvOvkHHXdgwG5GG5kSv5AuTxzhzQM9AM1wRCOGGtAP0gOzfneSp96yD
-         PL/02sQXpi/YKDOmlevOz2B/dXypRgIeb2xB4A0YlA1n3ZJZWKSy1lcYg7ChEllLFn2e
-         ZtYnjX/YvOx/eMUCv6pYx0tfaQnRbF4b9fZrAe/F/uya3LEFX/rLImBItikG0OXUSPAC
-         I4dXVsnSj9JtGz0v/GvocjVPER/2PShvHs61LDJDKF/x8qa/laRBiBXIQTnyd0sD6HUR
-         kYig1IUltqdCp1HVw8ySJemo4WTXCQEEbziXxlcRaQbB61wWz293V1OH4vFP0gwX0HNt
-         pxGQ==
+        d=google.com; s=20230601; t=1719218875; x=1719823675; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vELzHvwfYhfgaQfS4TW87Hdwhf+qF89/1wZ285PgAPE=;
+        b=x66/RpTLtnZEYxHRs5gMA+kOCWSNEHg4AjtC9fmhbjLx6bFdctvioj09EH5xeI7E0y
+         SJa2Zf/X9NGyS+A5qsAfxV7o6NJhZk7ixwe0Rr02miAo0is47o2PH/s5Y1NLsMc64jAT
+         tqT7ZUkScQF0COHiQdh4rslyN03aaRgIkbVbgim/1phKZ9knqD65N1GdTzudW0fhqUYj
+         jc9QtrbQBvnMgxhwWfShFAxKRSg5ElKVm24u3SHP1Wn7JAq9+IRq5dc8aOl6kBR79xnN
+         OGBamLvgBQHQNbcywPKPfTQWDlN1QMAbX7mStns3uLHABUFzgLW0EiPYTjXI0IBylaSD
+         ddeA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719218622; x=1719823422;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7DImZLITJOUwBPCplCl17cwIdvOncIJOaqDc09+dtO4=;
-        b=lJx2FkTeooawlGf8j9aqYf2uZM7DOogIZbcmRy98TvcmPcVgYk9HwKmmSbDXVjQsRa
-         QHON2wOrw8qAMJ92ZUZn8ubnwLsmKxemED8I3FRLHjmqJGBlgDKuyZwwrVcvMbsBM9tB
-         BHpAXQCd0rix9IGanCi2Y73+WRS09lMwQkc4yr7tQPPO/wM2ehiGjmAnLNxv5vrFkhht
-         T3RaSJZp+vKZDm0HsPzt4xYpZasFsM72mA01bylMff1rNeFC7Ai2m7T5N9FF6og2Tl/c
-         KwOBvkvysmMZTAfTglYOod2jvxxQLYaDdRneRUeXFUkXLD0qPPaswkL66UJzNWG7y+E8
-         i47Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXhOyaZBwFMF7xboqnyRYhGB/iPbSGh7qtckprXelxbgUY1+NGf7vszsOwWmfb3gk+jTnt/is1pGmQ6IrZQfmOJGsaWqz6jg23UGRpWpTE=
-X-Gm-Message-State: AOJu0Yw/bZimd5Nj7FtQS9rbdeuxjj+Yt39k3eM8rZejfSET5XRzY9zF
-	zzj6/nIPnoAUHy447csP+0/QBFbdpPThJxp7VzKvXrwKqBuQIYsNAxz2UA3vRpZOJoqBeFF0xP1
-	lW7VDUXviY//C5Q==
-X-Google-Smtp-Source: AGHT+IFl7qaSAOzizMYkp+fnl41uvHppZeW94zgECtz+BVyjTWEAYbcTEF31TK+qXZBRAu84hM+CxGAORIag4LM=
-X-Received: from aliceryhl2.c.googlers.com ([fda3:e722:ac3:cc00:68:949d:c0a8:572])
- (user=aliceryhl job=sendgmr) by 2002:a05:6512:2581:b0:51c:47e4:2608 with SMTP
- id 2adb3069b0e04-52ce17fd192mr3392e87.0.1719218622173; Mon, 24 Jun 2024
- 01:43:42 -0700 (PDT)
-Date: Mon, 24 Jun 2024 08:43:31 +0000
-In-Reply-To: <20240624030327.90301-4-ethan.twardy@gmail.com>
+        d=1e100.net; s=20230601; t=1719218875; x=1719823675;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=vELzHvwfYhfgaQfS4TW87Hdwhf+qF89/1wZ285PgAPE=;
+        b=s28nBDCl3ElER3LmS8RF0IjvWvMoytGwm4YCwtTfYLXRcFSR2RQzTk4QS026LmrXBW
+         KeBCdBzb7gqDIw87l/6VXn5Ga6NGojrPRVlm+qeJ4Mxi7YO/nhsumQhpzIOuBDAFQqrY
+         +ot9pnTOLikUGKvg2h4CkJCqHiyKP1QbJ09gwx1rRnnvVydk5cRKW+J/aURNX4JsTSrF
+         qhlt8dlM5LtZ20eisP0Vx4L3TnjsTVC1OgHR0PiNl1MOQuzlQYnUP4cWrfaiyV2EjYmR
+         /TUp6ggJJm0JAziJ0ot1V+JFxsMFUc4Uq5yx4m08twOW0x4C2jJhHJtFaFw043Z/yryp
+         3KsA==
+X-Forwarded-Encrypted: i=1; AJvYcCXPDGrSdt2+DHPhSJbmIIeFE00S83ymPYOpLn++o8dDVlEGcu5cJgICFjaQH4MwZ5FSJxB+hcQdeXlhfs2RoXeXlYsqkSiSu7HPQTJijO4=
+X-Gm-Message-State: AOJu0YyS/k9JOBdoR+gb3bMo54uGKE5XWZi4yzo1BFHGUXY1yLjGntAc
+	jzjIJvR5oJnz+b7uZ2i9BA/iS8BKm6i8mMNr6YsKnf6YJBapKv75w6WyrJAGY/mW5b2oBPcmgpi
+	9PmIrtIAJd7CydICQJAS2dqWA+G4Wn+MDphqV
+X-Google-Smtp-Source: AGHT+IE9V99OcnVY2w5i3sRLtVONVJbuxlBrAVus/aJjTnXSg4b3TawmnAI8iMfxGKRXFJX0BoKOdvzCDWniQrAdAjY=
+X-Received: by 2002:a5d:58fa:0:b0:35f:1b73:1d83 with SMTP id
+ ffacd0b85a97d-366e7a08ba5mr3371333f8f.4.1719218874677; Mon, 24 Jun 2024
+ 01:47:54 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20240624030327.90301-4-ethan.twardy@gmail.com>
-X-Mailer: git-send-email 2.45.2.741.gdbec12cfda-goog
-Message-ID: <20240624084331.2864993-1-aliceryhl@google.com>
-Subject: Re: [PATCH 3/4] rust: macros: Enable use from macro_rules!
+MIME-Version: 1.0
+References: <20240624030327.90301-1-ethan.twardy@gmail.com> <20240624030327.90301-5-ethan.twardy@gmail.com>
+In-Reply-To: <20240624030327.90301-5-ethan.twardy@gmail.com>
 From: Alice Ryhl <aliceryhl@google.com>
-To: ethan.twardy@gmail.com
-Cc: a.hindborg@samsung.com, alex.gaynor@gmail.com, aliceryhl@google.com, 
-	aswinunni01@gmail.com, benno.lossin@proton.me, bjorn3_gh@protonmail.com, 
-	boqun.feng@gmail.com, gary@garyguo.net, linux-kernel@vger.kernel.org, 
-	ojeda@kernel.org, rust-for-linux@vger.kernel.org, tmgross@umich.edu, 
-	wedsonaf@gmail.com, yakoyoku@gmail.com
-Content-Type: text/plain; charset="utf-8"
+Date: Mon, 24 Jun 2024 10:47:43 +0200
+Message-ID: <CAH5fLgjgMxZ5S-wLqu6pOz=HzrV6qJGe5N=2rrYNvo3uVPbVbA@mail.gmail.com>
+Subject: Re: [PATCH 4/4] rust: macros: Enable the rest of the tests
+To: "Ethan D. Twardy" <ethan.twardy@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Trevor Gross <tmgross@umich.edu>, 
+	Aswin Unnikrishnan <aswinunni01@gmail.com>, "open list:RUST" <rust-for-linux@vger.kernel.org>, 
+	open list <linux-kernel@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Ethan D. Twardy <ethan.twardy@gmail.com> writes:
-> According to the rustdoc for the proc_macro crate[1], tokens captured
-> from a "macro variable" (e.g. from within macro_rules!) may be delimited
-> by invisible tokens and be contained within a proc_macro::Group.
-> Previously, this scenario was not handled by macros::paste, which caused
-> a proc-macro panic when the corresponding tests are enabled. Enable the
-> tests, and handle this case by making macros::paste::concat recursive.
-
-The actual change looks good to me.
-
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-
-However, I have a bunch of formatting nits:
-
-> [1]: https://doc.rust-lang.org/stable/proc_macro/enum.Delimiter.html
-> 
+On Mon, Jun 24, 2024 at 5:04=E2=80=AFAM Ethan D. Twardy <ethan.twardy@gmail=
+.com> wrote:
+>
+> Now that the rusttest target for the macros crate is compiled with the
+> kernel crate as a dependency, the rest of the rustdoc tests can be
+> enabled.
+>
 > Signed-off-by: Ethan D. Twardy <ethan.twardy@gmail.com>
-
-Normally this would be formatted as:
-
-Link: https://doc.rust-lang.org/stable/proc_macro/enum.Delimiter.html [1]
-Signed-off-by: Ethan D. Twardy <ethan.twardy@gmail.com>
-
+>
 > diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
-> index d8bd34c0ba89..8afed8facb21 100644
+> index 8afed8facb21..6d764099563b 100644
 > --- a/rust/macros/lib.rs
 > +++ b/rust/macros/lib.rs
-> @@ -269,12 +269,26 @@ pub fn pinned_drop(args: TokenStream, input: TokenStream) -> TokenStream {
+> @@ -102,7 +102,9 @@ pub fn module(ts: TokenStream) -> TokenStream {
 >  ///
->  /// # Example
->  ///
-> -/// ```ignore
-> -/// use kernel::macro::paste;
-> +/// ```
-> +/// # const binder_driver_return_protocol_BR_OK: u32 = 0;
-> +/// # const binder_driver_return_protocol_BR_ERROR: u32 = 1;
-> +/// # const binder_driver_return_protocol_BR_TRANSACTION: u32 = 2;
-> +/// # const binder_driver_return_protocol_BR_REPLY: u32 = 3;
-> +/// # const binder_driver_return_protocol_BR_DEAD_REPLY: u32 = 4;
-> +/// # const binder_driver_return_protocol_BR_TRANSACTION_COMPLETE: u32 = 5;
-> +/// # const binder_driver_return_protocol_BR_INCREFS: u32 = 6;
-> +/// # const binder_driver_return_protocol_BR_ACQUIRE: u32 = 7;
-> +/// # const binder_driver_return_protocol_BR_RELEASE: u32 = 8;
-> +/// # const binder_driver_return_protocol_BR_DECREFS: u32 = 9;
-> +/// # const binder_driver_return_protocol_BR_NOOP: u32 = 10;
-> +/// # const binder_driver_return_protocol_BR_SPAWN_LOOPER: u32 = 11;
-> +/// # const binder_driver_return_protocol_BR_DEAD_BINDER: u32 = 12;
-> +/// # const binder_driver_return_protocol_BR_CLEAR_DEATH_NOTIFICATION_DONE: u32 = 13;
-> +/// # const binder_driver_return_protocol_BR_FAILED_REPLY: u32 = 14;
->  ///
->  /// macro_rules! pub_no_prefix {
->  ///     ($prefix:ident, $($newname:ident),+) => {
-
-There's a non-hidden empty line between the last constant and
-`macro_rules! pub_no_prefix`. You should either hide the empty line or
-get rid of it, because it will look weird when the example is rendered.
-
-> -///         paste! {
-> +///         kernel::macros::paste! {
-
-Another option would be to keep the import so that the empty line
-separates the import from the macro declaration.
-
->  ///             $(pub(crate) const $newname: u32 = [<$prefix $newname>];)+
->  ///         }
->  ///     };
-> @@ -313,13 +327,29 @@ pub fn pinned_drop(args: TokenStream, input: TokenStream) -> TokenStream {
->  /// * `lower`: change the identifier to lower case.
->  /// * `upper`: change the identifier to upper case.
+>  /// # Examples
 >  ///
 > -/// ```ignore
-> -/// use kernel::macro::paste;
 > +/// ```rust
-> +/// # const binder_driver_return_protocol_BR_OK: u32 = 0;
-> +/// # const binder_driver_return_protocol_BR_ERROR: u32 = 1;
-> +/// # const binder_driver_return_protocol_BR_TRANSACTION: u32 = 2;
-> +/// # const binder_driver_return_protocol_BR_REPLY: u32 = 3;
-> +/// # const binder_driver_return_protocol_BR_DEAD_REPLY: u32 = 4;
-> +/// # const binder_driver_return_protocol_BR_TRANSACTION_COMPLETE: u32 = 5;
-> +/// # const binder_driver_return_protocol_BR_INCREFS: u32 = 6;
-> +/// # const binder_driver_return_protocol_BR_ACQUIRE: u32 = 7;
-> +/// # const binder_driver_return_protocol_BR_RELEASE: u32 = 8;
-> +/// # const binder_driver_return_protocol_BR_DECREFS: u32 = 9;
-> +/// # const binder_driver_return_protocol_BR_NOOP: u32 = 10;
-> +/// # const binder_driver_return_protocol_BR_SPAWN_LOOPER: u32 = 11;
-> +/// # const binder_driver_return_protocol_BR_DEAD_BINDER: u32 = 12;
-> +/// # const binder_driver_return_protocol_BR_CLEAR_DEATH_NOTIFICATION_DONE: u32 = 13;
-> +/// # const binder_driver_return_protocol_BR_FAILED_REPLY: u32 = 14;
+> +/// # #[macro_use] extern crate macros;
+> +/// # #[macro_use] extern crate kernel;
+
+You also added these lines in patch 2, but you did not make them hidden the=
+re.
+
+>  /// use kernel::error::VTABLE_DEFAULT_ERROR;
+>  /// use kernel::prelude::*;
+>  ///
+> @@ -147,12 +149,28 @@ pub fn vtable(attr: TokenStream, ts: TokenStream) -=
+> TokenStream {
+>  ///
+>  /// # Examples
+>  ///
+> -/// ```ignore
+> -/// use kernel::macro::concat_idents;
+> +/// ```rust
+> +/// # const binder_driver_return_protocol_BR_OK: u32 =3D 0;
+> +/// # const binder_driver_return_protocol_BR_ERROR: u32 =3D 1;
+> +/// # const binder_driver_return_protocol_BR_TRANSACTION: u32 =3D 2;
+> +/// # const binder_driver_return_protocol_BR_REPLY: u32 =3D 3;
+> +/// # const binder_driver_return_protocol_BR_DEAD_REPLY: u32 =3D 4;
+> +/// # const binder_driver_return_protocol_BR_TRANSACTION_COMPLETE: u32 =
+=3D 5;
+> +/// # const binder_driver_return_protocol_BR_INCREFS: u32 =3D 6;
+> +/// # const binder_driver_return_protocol_BR_ACQUIRE: u32 =3D 7;
+> +/// # const binder_driver_return_protocol_BR_RELEASE: u32 =3D 8;
+> +/// # const binder_driver_return_protocol_BR_DECREFS: u32 =3D 9;
+> +/// # const binder_driver_return_protocol_BR_NOOP: u32 =3D 10;
+> +/// # const binder_driver_return_protocol_BR_SPAWN_LOOPER: u32 =3D 11;
+> +/// # const binder_driver_return_protocol_BR_DEAD_BINDER: u32 =3D 12;
+> +/// # const binder_driver_return_protocol_BR_CLEAR_DEATH_NOTIFICATION_DO=
+NE: u32 =3D 13;
+> +/// # const binder_driver_return_protocol_BR_FAILED_REPLY: u32 =3D 14;
+> +///
+> +/// use kernel::macros::concat_idents;
+
+The empty line above this import should probably be removed to improve
+how this is rendered.
+
 >  ///
 >  /// macro_rules! pub_no_prefix {
->  ///     ($prefix:ident, $($newname:ident),+) => {
+>  ///     ($prefix:ident, $($newname:ident),+) =3D> {
+> -///         $(pub(crate) const $newname: u32 =3D kernel::macros::concat_=
+idents!($prefix, $newname);)+
+> +///         $(pub(crate) const $newname: u32 =3D concat_idents!($prefix,=
+ $newname);)+
+>  ///     };
+>  /// }
+>  ///
+> @@ -198,8 +216,9 @@ pub fn concat_idents(ts: TokenStream) -> TokenStream =
+{
+>  ///
+>  /// # Examples
+>  ///
+> -/// ```rust,ignore
+> -/// #[pin_data]
+> +/// ```rust
+> +/// # use std::{sync::Mutex, process::Command};
+> +/// #[kernel::macros::pin_data]
+>  /// struct DriverData {
 
-Same here.
+I'm pretty sure `#[pin_data]` is in our prelude and doesn't need an
+import in normal code. If it needs an import in the test, then please
+add a hidden import rather than using the full path.
 
->  ///         kernel::macros::paste! {
-> -///             $(pub(crate) const fn [<$newname:lower:span>]: u32 = [<$prefix $newname:span>];)+
-> +///             $(pub(crate) const fn [<$newname:lower:span>]() -> u32 {
-> +///             [<$prefix $newname:span>]
-> +///             })+
-
-I would probably indent [<$prefix $newname:span>] one more time.
-
-Alice
+>  ///     #[pin]
+>  ///     queue: Mutex<Vec<Command>>,
+> @@ -207,7 +226,15 @@ pub fn concat_idents(ts: TokenStream) -> TokenStream=
+ {
+>  /// }
+>  /// ```
+>  ///
+> -/// ```rust,ignore
+> +/// ```rust
+> +/// # use std::{sync::Mutex, process::Command};
+> +/// # use core::pin::Pin;
+> +/// # pub struct Info;
+> +/// # mod bindings {
+> +/// #     pub unsafe fn destroy_info(_ptr: *mut super::Info) {}
+> +/// # }
+> +/// use kernel::macros::{pin_data, pinned_drop};
+> +///
+>  /// #[pin_data(PinnedDrop)]
+>  /// struct DriverData {
+>  ///     #[pin]
+> @@ -222,6 +249,8 @@ pub fn concat_idents(ts: TokenStream) -> TokenStream =
+{
+>  ///         unsafe { bindings::destroy_info(self.raw_info) };
+>  ///     }
+>  /// }
+> +///
+> +/// # fn main() {}
+>  /// ```
+>  ///
+>  /// [`pin_init!`]: ../kernel/macro.pin_init.html
+> @@ -237,13 +266,20 @@ pub fn pin_data(inner: TokenStream, item: TokenStre=
+am) -> TokenStream {
+>  ///
+>  /// # Examples
+>  ///
+> -/// ```rust,ignore
+> +/// ```rust
+> +/// # use macros::{pin_data, pinned_drop};
+> +/// # use std::{sync::Mutex, process::Command};
+> +/// # use core::pin::Pin;
+> +/// # mod bindings {
+> +/// #     pub struct Info;
+> +/// #     pub unsafe fn destroy_info(_ptr: *mut Info) {}
+> +/// # }
+>  /// #[pin_data(PinnedDrop)]
+>  /// struct DriverData {
+>  ///     #[pin]
+>  ///     queue: Mutex<Vec<Command>>,
+>  ///     buf: Box<[u8; 1024 * 1024]>,
+> -///     raw_info: *mut Info,
+> +///     raw_info: *mut bindings::Info,
+>  /// }
+>  ///
+>  /// #[pinned_drop]
+> @@ -408,7 +444,9 @@ pub fn paste(input: TokenStream) -> TokenStream {
+>  ///
+>  /// # Examples
+>  ///
+> -/// ```rust,ignore
+> +/// ```rust
+> +/// use kernel::macros::Zeroable;
+> +///
+>  /// #[derive(Zeroable)]
+>  /// pub struct DriverData {
+>  ///     id: i64,
+> --
+> 2.44.2
+>
