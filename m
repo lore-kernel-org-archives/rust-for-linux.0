@@ -1,140 +1,189 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84B9B1422CC;
-	Mon, 24 Jun 2024 13:59:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02C521A0B18
+	for <rust-for-linux@vger.kernel.org>; Mon, 24 Jun 2024 21:47:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719237569; cv=none; b=WrRNIo1RokwBvTwlaAVAbEfY90RMvse05b2dnr4NQXI2mO5B9PYUWS7CzPIIjugYUZQyJAADGmoOsGLEDlYQ1Qn+mML/U3DthcXdvi0agHMeT7RsUJwlQO/VPRUTlv33QIdQqVHwAuTaJ3YrzjCTv4cFkzWPI0rLLi+Q5RIUV3c=
+	t=1719265629; cv=none; b=VoT2nzgWb2vVlPxr5AlXyCecZ4ulE3xLp1lAZGn2KHnDt9yRzjnS42XX0A+7Gqr7DiMX4r/LxBJKXIvWZMG99Uo967ma9u0dLjrL9VYse7iM3rmtufLjmnOqZV+wKoy7M9U8FppzbGBxXtYERSHhY8cbC8xvyc4Z9oGk791+p88=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719237569; c=relaxed/simple;
-	bh=PHz9ID1AbaX4jCuzpUPTNRNnsrvk3q9VXc4Hy7Zq2wI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=r2wQmn0OAl9+At8WC8rNTKRxIhUI0hsuBBcLnw34IdJyojod07GcYzMTaugEWGW7gHHdFymPqAPhTj1alZyi4pU7U3/oFDa8v6Mrfaf6qdojDoTGTYNJNm2BGZAlOFfweRt6pq8kfGeyoU7o638lK9h+ql7Gqgy0LRVlOSqJ4JM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BONS/dmo; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1719265629; c=relaxed/simple;
+	bh=1uVEUqdRcUo/rJ5R+c++NPkM94ZB+DuQFRakCKBJoYE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Content-Type; b=TxgwxnA0WlBQX6u3W9HbKCPg7Ob2yxv8wn9K0YKht6IIEOO3gy6celmgI263rq486XbHH62QMlo62KdXIPX7kiGtQAXWUmmKd1cLyor0YS1az2soPuBrpH6E2QjhkvU646Uei0J7QdWPjekVeWT7cSle/kTMsInc6uWEaXeAYTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=p6MrxJ+j; arc=none smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BONS/dmo"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 987FAC2BBFC;
-	Mon, 24 Jun 2024 13:59:24 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719237569;
-	bh=PHz9ID1AbaX4jCuzpUPTNRNnsrvk3q9VXc4Hy7Zq2wI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=BONS/dmo3sQIsRz+JgJu2D4HwU01CZjlWkts2blz3K7Dyv0vPd26HCtvgDz7t3YnF
-	 vmpf2jllVI8Gwj7wQ8zp+JnnMt1K2qXkuxHNXpfPgMZmTLWlK4wOrHF8jNM0csdY+S
-	 h00BJGGjeuQKXKS6wRiHzy4MRHO3hfAjx12drCQL4yfrgZDiDRN6jr9Pz5syCOXsQ9
-	 LJI8ky4fFLc1DkTUqqOYfMgechyYA5d6aoy+UnvtL5+AQYRKvF/4Xh4geDx8vPaCl3
-	 PTiuvc4/3nCLDwLLFREF66bHsHrypTmm12p1ZEfpqQm1ryOrPIAxwvAgrRdw7e33mD
-	 cVXqEhyw0rldQ==
-Date: Mon, 24 Jun 2024 14:59:21 +0100
-From: Will Deacon <will@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Jamie.Cunliffe@arm.com, a.hindborg@samsung.com, alex.gaynor@gmail.com,
-	ardb@kernel.org, benno.lossin@proton.me, bjorn3_gh@protonmail.com,
-	boqun.feng@gmail.com, broonie@kernel.org, catalin.marinas@arm.com,
-	gary@garyguo.net, keescook@chromium.org, kernel@valentinobst.de,
-	linux-arm-kernel@lists.infradead.org, linux-kbuild@vger.kernel.org,
-	linux-kernel@vger.kernel.org, mark.rutland@arm.com,
-	masahiroy@kernel.org, maz@kernel.org,
-	miguel.ojeda.sandonis@gmail.com, nathan@kernel.org,
-	ndesaulniers@google.com, nicolas@fjasle.eu, ojeda@kernel.org,
-	rust-for-linux@vger.kernel.org, samitolvanen@google.com,
-	wedsonaf@gmail.com
-Subject: Re: [PATCH v2] rust: add flags for shadow call stack sanitizer
-Message-ID: <20240624135921.GC8616@willie-the-truck>
-References: <20240409103120.GA22557@willie-the-truck>
- <20240430110925.1064685-1-aliceryhl@google.com>
- <20240604142941.GD20384@willie-the-truck>
- <CAH5fLgimyYmS33EPEQb6R5Lrmkzv+0GNRE7NQwhfEaJFqb4OYQ@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="p6MrxJ+j"
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-1f70ec6ff8bso27195ad.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 24 Jun 2024 14:47:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1719265627; x=1719870427; darn=vger.kernel.org;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ryU5o2yVn1i6Iaousq7WSn7w6bux8oEB7sHmGtnV9uI=;
+        b=p6MrxJ+jFadwPQYB2bHJdf5etvquPE/wVv4H4PFnScMPuSlB/CVYR2Ud654BOpa0Xn
+         2dWTZ6vAIagU9M+Zs7ET+mXeOXs9Bwb24fZgEkIM7IS6hnqGvuLpmxoy96S6gQOPkG7v
+         Q2GtoHE3/KQ7ReSiMrIyysU64VRv7V93DpwMnL09085nDIbe+jNu93pyTry0RJiDWztD
+         aaMXEAWPODT4HfQSga2PE6Tp76pHDBiy1rZHDgk8IH+x2iVh6Pg3HNI4YJyvhSVa8MOM
+         nUXBzleVL1gYSPi2hxDU6r7dh7OQ65FJvubVyMeGTulzvYngqMNPyuKL7CPwI7QuqGok
+         KohA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719265627; x=1719870427;
+        h=content-transfer-encoding:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ryU5o2yVn1i6Iaousq7WSn7w6bux8oEB7sHmGtnV9uI=;
+        b=Q/V+lWSWSzhG+YbVI/J4jkwA+undc3PIUGoxJmg2XUtxIReC3qF3XaFkQhPkX+sHEi
+         LI1L24/nsVZGuMn9nWmZUEmny7NFK4kVAx7Xj7K5ybuml/YwLnPSW87gygmfDN2B2JGS
+         hGHnqM7UvAtjOV+dY5+apRNzObvoL/BnDVGqVwcnw5UyywRV1EgcPG8/xwltukz3+PS3
+         oBeDhrLPE6xDmCQK6d/Ti9hFMQL7y+ryoZaAiKE6eXXDv3YWeZzTCk+vpPQjVQASy/1J
+         dk+Nd/xcHqkmP7Rg0wk18e/F44olrbpKSuf+tGudF4K2PmvxtIXSgqWZF7pPQeuU+WIH
+         U6fA==
+X-Forwarded-Encrypted: i=1; AJvYcCXk1gGQGAgBljjezeOKGu2Fa+JoOOT34QHvkZza84hWSTvbkBGwVqX+X1cDW56LZ6BX130xkKqdeoVycF+gqX04O0niDaWRzGzZfzlne1o=
+X-Gm-Message-State: AOJu0Yzhpu3qaGZEMJcsBAL739ttzjPSAalcjjTRjAictzLdRcmmmHHz
+	hhMQmRCrJDrAzoX88i9zXjQ3YNmhw2/MTwX/5vPlL+je8+Xar8ODW2pLD3RGfm7PHMQfUfuL1ah
+	KJdznGjDsbgWH88Kp0vMUsivXhDnGSsF704mN
+X-Google-Smtp-Source: AGHT+IEJrMsRDVKc4wpx0FBdMJnJosYDDYfqfwciz733n6udVWvghsvDjxQCFEC37EnR/1LLitbb/jf7rxP7dJ9fEkQ=
+X-Received: by 2002:a17:902:bd47:b0:1f7:1c96:d2e8 with SMTP id
+ d9443c01a7336-1fa68fb23efmr1044215ad.10.1719265626724; Mon, 24 Jun 2024
+ 14:47:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAH5fLgimyYmS33EPEQb6R5Lrmkzv+0GNRE7NQwhfEaJFqb4OYQ@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+References: <20240613233122.3564730-1-irogers@google.com>
+In-Reply-To: <20240613233122.3564730-1-irogers@google.com>
+From: Ian Rogers <irogers@google.com>
+Date: Mon, 24 Jun 2024 14:46:54 -0700
+Message-ID: <CAP-5=fWZDZWvrysEzL7H2kAXNBhFd3=kcmz1N=W+HgwGPsBPDg@mail.gmail.com>
+Subject: Re: [PATCH v3 0/8] Refactor perf python module build
+To: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, 
+	Alexander Shishkin <alexander.shishkin@linux.intel.com>, Jiri Olsa <jolsa@kernel.org>, 
+	Ian Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, 
+	Kan Liang <kan.liang@linux.intel.com>, John Garry <john.g.garry@oracle.com>, 
+	Will Deacon <will@kernel.org>, James Clark <james.clark@arm.com>, 
+	Mike Leach <mike.leach@linaro.org>, Leo Yan <leo.yan@linux.dev>, Guo Ren <guoren@kernel.org>, 
+	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Albert Ou <aou@eecs.berkeley.edu>, Suzuki K Poulose <suzuki.poulose@arm.com>, 
+	Yicong Yang <yangyicong@hisilicon.com>, Jonathan Cameron <jonathan.cameron@huawei.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Alice Ryhl <aliceryhl@google.com>, Nick Terrell <terrelln@fb.com>, 
+	Ravi Bangoria <ravi.bangoria@amd.com>, Kees Cook <keescook@chromium.org>, 
+	Andrei Vagin <avagin@google.com>, Athira Jajeev <atrajeev@linux.vnet.ibm.com>, 
+	Oliver Upton <oliver.upton@linux.dev>, Ze Gao <zegao2021@gmail.com>, 
+	linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org, 
+	linux-riscv@lists.infradead.org, coresight@lists.linaro.org, 
+	rust-for-linux@vger.kernel.org, bpf@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Alice,
+On Thu, Jun 13, 2024 at 4:31=E2=80=AFPM Ian Rogers <irogers@google.com> wro=
+te:
+>
+> Refactor the perf python module build to instead of building C files
+> it links libraries. To support this make static libraries for tests,
+> ui, util and pmu-events. Doing this allows fewer functions to be
+> stubbed out, importantly parse_events is no longer stubbed out which
+> will improve the ability to work with heterogeneous cores.
+>
+> By not building .c files for the python module and for the build of
+> perf, this should also help build times.
+>
+> Patch 1 adds '*.a' cleanup to the clean target.
+>
+> Patches 2 to 6 add static libraries for existing parts of the perf
+> build.
+>
+> Patch 7 adds the python build using libraries rather than C source
+> files.
+>
+> Patch 8 cleans up the python dependencies and removes the no longer
+> needed python-ext-sources.
+>
+> v3: Add missed xtensa directory for the util build. Remove adding the
+>     arch directory to perf-y as it creates an empty object file that
+>     breaks with GCC and LTO.
+> v2: Add '*.a' cleanup to clean target. Add reviewed-by James Clark.
 
-On Tue, Jun 04, 2024 at 04:53:16PM +0200, Alice Ryhl wrote:
-> On Tue, Jun 4, 2024 at 4:29 PM Will Deacon <will@kernel.org> wrote:
-> > On Tue, Apr 30, 2024 at 11:09:25AM +0000, Alice Ryhl wrote:
-> > > Will Deacon <will@kernel.org> wrote:
-> > > > On Tue, Mar 05, 2024 at 01:14:19PM +0100, Miguel Ojeda wrote:
-> > > >> Otherwise partially reverting to the `target.json` approach sounds good too.
-> > > >>
-> > > >> I added the `-Zuse-sync-unwind=n` to the list at
-> > > >> https://github.com/Rust-for-Linux/linux/issues/2. Given the default is
-> > > >> what we want, I have put it in the "Good to have" section.
-> > > >
-> > > > I think we have time to do this properly, like we did for the clang
-> > > > enablement a few years ago. In hindsight, avoiding hacks for the early
-> > > > toolchains back then was a really good idea because it meant we could
-> > > > rely on a solid baseline set of compiler features from the start.
-> > > >
-> > > > So, please can we fix this in rustc and just have SCS dependent on that?
-> > >
-> > > Just to keep you in the loop, I've posted a PR to make rustc recognize
-> > > the reserve-x18 target feature, so that the -Ctarget-feature=+reserve-x18
-> > > flag stops emitting a warning.
-> > >
-> > > This should be sufficient for adding support for CONFIG_DYNAMIC_SCS.
-> > >
-> > > You can find it here:
-> > > https://github.com/rust-lang/rust/pull/124323
-> > >
-> > > As for non-dynamic SCS, I plan to tackle that after the PR is merged.
-> > > See the "Future possibilities" section in the linked PR for more info on
-> > > that.
-> >
-> > Thanks for persevering with this, Alice. I read the pull request above,
-> > but it looks like you went with:
-> >
-> > https://github.com/rust-lang/rust/pull/124655
-> >
-> > instead, which was merged (hurrah!). Do we need anything else?
-> 
-> Yeah, it took a while, but I've managed to get a -Zfixed-x18 flag in.
-> It will be available starting with Rust 1.80, which will be released
-> on the 25th of July.
+Ping.
 
-Great, thank you!
+Thanks,
+Ian
 
-> A few things:
-> 
-> 1. The -Zsanitizer=shadow-call-stack flag still doesn't work because
-> the compiler thinks that the target doesn't support it. I'll fix this
-> eventually, but at least CONFIG_DYNAMIC_SCS works now.
-> 
-> 2. I haven't convinced the Rust maintainers that -Zfixed-x18 is the
-> way to go long term (flags starting with -Z are unstable and may
-> change). Some of the maintainers want to instead add a x18-available
-> target feature (that is, the inverse of the current reserve-x18 target
-> feature), that you can disable with -Ctarget-feature=-x18-available.
-> 
-> And a few questions for you:
-> 
-> By the time support for 1.80 goes in, we are probably supporting more
-> than one Rust compiler. For pre-1.80 compilers, should we fall back to
-> -Ctarget-feature=+reserve-x18 (which emits a warning, but works), or
-> fail compilation?
-
-I think we should just prevent the Kconfig option from being enabled if
-the toolchain doesn't give us what we need. So there's no need to fail
-compilation, but SCS =n. See how e.g. CONFIG_ARM64_BTI_KERNEL depends on
-CONFIG_CC_HAS_BRANCH_PROT_PAC_RET_BTI.
-
-> Similarly, we should probably submit a fix to the stable branches so
-> that SCS+Rust doesn't silently break in a hard-to-debug way. Do you
-> prefer a backport with -Ctarget-feature=+reserve-x18 or one that fails
-> compilation?
-
-As above, I think we should disable the feature in those cases.
-
-Make sense?
-
-Will
+> Ian Rogers (8):
+>   perf build: Add '*.a' to clean targets
+>   perf ui: Make ui its own library
+>   perf pmu-events: Make pmu-events a library
+>   perf test: Make tests its own library
+>   perf bench: Make bench its own library
+>   perf util: Make util its own library
+>   perf python: Switch module to linking libraries from building source
+>   perf python: Clean up build dependencies
+>
+>  tools/perf/Build                              |  14 +-
+>  tools/perf/Makefile.config                    |   5 +
+>  tools/perf/Makefile.perf                      |  83 +++-
+>  tools/perf/arch/Build                         |   5 +-
+>  tools/perf/arch/arm/Build                     |   4 +-
+>  tools/perf/arch/arm/tests/Build               |   8 +-
+>  tools/perf/arch/arm/util/Build                |  10 +-
+>  tools/perf/arch/arm64/Build                   |   4 +-
+>  tools/perf/arch/arm64/tests/Build             |   8 +-
+>  tools/perf/arch/arm64/util/Build              |  20 +-
+>  tools/perf/arch/csky/Build                    |   2 +-
+>  tools/perf/arch/csky/util/Build               |   6 +-
+>  tools/perf/arch/loongarch/Build               |   2 +-
+>  tools/perf/arch/loongarch/util/Build          |   8 +-
+>  tools/perf/arch/mips/Build                    |   2 +-
+>  tools/perf/arch/mips/util/Build               |   6 +-
+>  tools/perf/arch/powerpc/Build                 |   4 +-
+>  tools/perf/arch/powerpc/tests/Build           |   6 +-
+>  tools/perf/arch/powerpc/util/Build            |  24 +-
+>  tools/perf/arch/riscv/Build                   |   2 +-
+>  tools/perf/arch/riscv/util/Build              |   8 +-
+>  tools/perf/arch/s390/Build                    |   2 +-
+>  tools/perf/arch/s390/util/Build               |  16 +-
+>  tools/perf/arch/sh/Build                      |   2 +-
+>  tools/perf/arch/sh/util/Build                 |   2 +-
+>  tools/perf/arch/sparc/Build                   |   2 +-
+>  tools/perf/arch/sparc/util/Build              |   2 +-
+>  tools/perf/arch/x86/Build                     |   6 +-
+>  tools/perf/arch/x86/tests/Build               |  20 +-
+>  tools/perf/arch/x86/util/Build                |  42 +-
+>  tools/perf/arch/xtensa/Build                  |   2 +-
+>  tools/perf/bench/Build                        |  46 +-
+>  tools/perf/scripts/Build                      |   4 +-
+>  tools/perf/scripts/perl/Perf-Trace-Util/Build |   2 +-
+>  .../perf/scripts/python/Perf-Trace-Util/Build |   2 +-
+>  tools/perf/tests/Build                        | 140 +++----
+>  tools/perf/tests/workloads/Build              |  12 +-
+>  tools/perf/ui/Build                           |  18 +-
+>  tools/perf/ui/browsers/Build                  |  14 +-
+>  tools/perf/ui/tui/Build                       |   8 +-
+>  tools/perf/util/Build                         | 394 +++++++++---------
+>  tools/perf/util/arm-spe-decoder/Build         |   2 +-
+>  tools/perf/util/cs-etm-decoder/Build          |   2 +-
+>  tools/perf/util/hisi-ptt-decoder/Build        |   2 +-
+>  tools/perf/util/intel-pt-decoder/Build        |   2 +-
+>  tools/perf/util/perf-regs-arch/Build          |  18 +-
+>  tools/perf/util/python-ext-sources            |  53 ---
+>  tools/perf/util/python.c                      | 271 +++++-------
+>  tools/perf/util/scripting-engines/Build       |   4 +-
+>  tools/perf/util/setup.py                      |  33 +-
+>  50 files changed, 625 insertions(+), 729 deletions(-)
+>  delete mode 100644 tools/perf/util/python-ext-sources
+>
+> --
+> 2.45.2.627.g7a2c4fd464-goog
+>
