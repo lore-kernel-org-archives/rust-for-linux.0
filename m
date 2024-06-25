@@ -1,120 +1,122 @@
-Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C1141095B
-	for <rust-for-linux@vger.kernel.org>; Tue, 25 Jun 2024 10:59:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A307B158A23;
+	Tue, 25 Jun 2024 12:24:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719313177; cv=none; b=e0TXMymQfY7bljcLOLiD/UJjwT2/UAcKf5WJsb2afqTzWmejXxPV3+pOj/cgFZEuvRclxZobO263i5g3EfPivaDg0TnvKGcUZWRSE3H5j+s4xm4IsVPuToWpQQlN7NhnhXa47fvTmVyeqQk94itRjHKlLfClakHXLMNaaRzcUw0=
+	t=1719318255; cv=none; b=mKOiYqug7vbTW5ETDRHhYg5+XGH+Q04OPwsnRatWBTdE7uyV2g5TqTL8HoAM5RWNXTPvuHW2s1RmUr+LQQ50dZPoHjjdMn7QDSVOPL8aXwjl9ii/TiwB/x1KBkMW+TIUPwgE/9Xc54K6bPgFtnCGSvhE+YfV7EPTAJBMknRnuyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719313177; c=relaxed/simple;
-	bh=lS6ZzIyA3oNbhwFhi747Z/Q7sqPWYutQ9EFInl96aPE=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=ODpDu9vagywwUC+oBcrgz+/Apj54QZbxBp+YsrERFYD8OCGrBdLq9iWyw1802SI5blBNG571CpBAJFFFWZYt6rcXIWEvr5TcIOSLi/j8EtpAcb1vSft3+7vzyNf/Og696pGSMdKSLoa9kMsSx4dXA6SqIDv/T9t/T39bILPix5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk; spf=none smtp.mailfrom=metaspace.dk; dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b=bkLoWZUo; arc=none smtp.client-ip=209.85.218.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=metaspace.dk
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b="bkLoWZUo"
-Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-a725d756d41so248770366b.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 25 Jun 2024 03:59:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=metaspace-dk.20230601.gappssmtp.com; s=20230601; t=1719313174; x=1719917974; darn=vger.kernel.org;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:from:to:cc:subject:date:message-id:reply-to;
-        bh=GIKlAQmoOg25cYHG9vFy5f/Rq74IjJJuVh/PhSpJzXI=;
-        b=bkLoWZUoOKQ9UHVdVRpkMWfMT0phpxClzjG0HYDY5qgS37X+sQxblfk/FwBzIk+RX2
-         2DpJqjhMTY08jEOqYI9gVgpofiAy48u4+x2k90QwazIv4XdJbT7V1V3otblLRvxfXbth
-         kKGColXPgL6Y6rKIiPElfdCVswKQldDPwUVGydusv+fDYr9B/AejqxqKHE1IbHDmP9hu
-         S5huPKIuxUR3fzJ0a/qx7YglEpWvxVxWbRyqHyOWwGV0cEWxdx6oSAaN1eG7laa89OCi
-         /foFoM6vP07smrAltj12OCV98EpnzkpHEo0KxrKESO6lTjeqTKhDV1YxL+IHOpOH5iUV
-         4Ddg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719313174; x=1719917974;
-        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
-         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=GIKlAQmoOg25cYHG9vFy5f/Rq74IjJJuVh/PhSpJzXI=;
-        b=eUFFZ/8CcpJ4clkBqm2zweaPeeuq1Hfzx2GHRPz1cdVVI88RKKi1wEgjxcWm3gsoWc
-         g9zhvXtaGbCNNLQgxwTbKEnKhfMb9fLcsBEjCD+foGqNdPvzzvFKCRQN4wA+/C/2G1rL
-         OiZpKcY3/L9zTcRkDAiu8A5uqdJPkH6/cviyeEGYYtFWYZ9nvjtiqPLhVQR2+5o8XY1c
-         ykECsAkxEkEq0ZLfTAIV7ZLDG6uRsegb22druDjVutI998VB5m+n/6Ts/wIZO4aPrsj9
-         8URIYlv7vO/0uvCxp25mOHsDcJkPWfAAaEZsmwyva48gKUMyfrljiAZrjB7Eum217W37
-         LKdA==
-X-Forwarded-Encrypted: i=1; AJvYcCX2fgdXLfgFgazDHB/RQpsUuDnDI8YgmEhulisVBay+X/euCR9Cr3iumMd9fWY0C08RlUNowMor/Qim7svpy5nANP3+baUK5+4MQLybwKw=
-X-Gm-Message-State: AOJu0YyUthymcxqD3viZ0iF94Lzd2wVBNscYLQd+eDd8QhUtLVzhX7wo
-	Qeui0/rkxvY2ydz1PSoG2Yq+jf+jl1zXeHYeIlfFGwo8GJjc4DwQL9QBPwk8Dc4=
-X-Google-Smtp-Source: AGHT+IEE2Iu1qYKOZCpHug50kXCaLoAfzlnzKDJxNZSjGlNOc+Pt6AUUN+WtSi84pdVmVnNB8Rjk1g==
-X-Received: by 2002:a17:906:57cb:b0:a6f:e3e4:e0b6 with SMTP id a640c23a62f3a-a700e70884emr689926266b.27.1719313174154;
-        Tue, 25 Jun 2024 03:59:34 -0700 (PDT)
-Received: from localhost ([79.142.230.34])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-57d303da3edsm5812269a12.2.2024.06.25.03.59.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Jun 2024 03:59:33 -0700 (PDT)
-From: Andreas Hindborg <nmi@metaspace.dk>
-To: Danilo Krummrich <dakr@redhat.com>
-Cc: gregkh@linuxfoundation.org,  rafael@kernel.org,  bhelgaas@google.com,
-  ojeda@kernel.org,  alex.gaynor@gmail.com,  wedsonaf@gmail.com,
-  boqun.feng@gmail.com,  gary@garyguo.net,  bjorn3_gh@protonmail.com,
-  benno.lossin@proton.me,  a.hindborg@samsung.com,  aliceryhl@google.com,
-  airlied@gmail.com,  fujita.tomonori@gmail.com,  lina@asahilina.net,
-  pstanner@redhat.com,  ajanulgu@redhat.com,  lyude@redhat.com,
-  robh@kernel.org,  daniel.almeida@collabora.com,
-  rust-for-linux@vger.kernel.org,  linux-kernel@vger.kernel.org,
-  linux-pci@vger.kernel.org
-Subject: Re: [PATCH v2 07/10] rust: add `io::Io` base type
-In-Reply-To: <20240618234025.15036-8-dakr@redhat.com> (Danilo Krummrich's
-	message of "Wed, 19 Jun 2024 01:39:53 +0200")
-References: <20240618234025.15036-1-dakr@redhat.com>
-	<20240618234025.15036-8-dakr@redhat.com>
-Date: Tue, 25 Jun 2024 12:59:24 +0200
-Message-ID: <87zfr9guer.fsf@metaspace.dk>
+	s=arc-20240116; t=1719318255; c=relaxed/simple;
+	bh=xWkRfjXbcQV976odVJL6jnfAgd/Ex17HQpOdk8g38nQ=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LhAv6+IWGHvJfyOzEvFBC2QWqK0wJukAfzbH3Wb4rzLh4tNm007cqWSgw67HjpHuoJbFGFMWFtnsgeTOQEEkeK9M3587koEDrnewdqXOorciD0fgbA7R5D2mMOeQi7LbUisZV8GVIidYpUylVqIDXJqhOAPncoU86Yinkn+ZA/s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 7923C339;
+	Tue, 25 Jun 2024 05:24:36 -0700 (PDT)
+Received: from [192.168.1.100] (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 6CD783F766;
+	Tue, 25 Jun 2024 05:24:05 -0700 (PDT)
+Message-ID: <1fdf637d-3571-4145-8008-f2b5f8fc8bca@arm.com>
+Date: Tue, 25 Jun 2024 13:24:06 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3 7/8] perf python: Switch module to linking libraries
+ from building source
+To: Namhyung Kim <namhyung@kernel.org>, Ian Rogers <irogers@google.com>
+Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
+ Arnaldo Carvalho de Melo <acme@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>,
+ Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+ Jiri Olsa <jolsa@kernel.org>, Adrian Hunter <adrian.hunter@intel.com>,
+ Kan Liang <kan.liang@linux.intel.com>, John Garry <john.g.garry@oracle.com>,
+ Will Deacon <will@kernel.org>, Mike Leach <mike.leach@linaro.org>,
+ Leo Yan <leo.yan@linux.dev>, Guo Ren <guoren@kernel.org>,
+ Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
+ <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Suzuki K Poulose <suzuki.poulose@arm.com>,
+ Yicong Yang <yangyicong@hisilicon.com>,
+ Jonathan Cameron <jonathan.cameron@huawei.com>,
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng
+ <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl
+ <aliceryhl@google.com>, Nick Terrell <terrelln@fb.com>,
+ Ravi Bangoria <ravi.bangoria@amd.com>, Kees Cook <keescook@chromium.org>,
+ Andrei Vagin <avagin@google.com>, Athira Jajeev
+ <atrajeev@linux.vnet.ibm.com>, Oliver Upton <oliver.upton@linux.dev>,
+ Ze Gao <zegao2021@gmail.com>, linux-kernel@vger.kernel.org,
+ linux-perf-users@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ linux-csky@vger.kernel.org, linux-riscv@lists.infradead.org,
+ coresight@lists.linaro.org, rust-for-linux@vger.kernel.org,
+ bpf@vger.kernel.org
+References: <20240613233122.3564730-1-irogers@google.com>
+ <20240613233122.3564730-8-irogers@google.com> <Znnyi2IPC79jMd9y@google.com>
+Content-Language: en-US
+From: James Clark <james.clark@arm.com>
+In-Reply-To: <Znnyi2IPC79jMd9y@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi Danilo,
-
-Danilo Krummrich <dakr@redhat.com> writes:
-
-[...]
-
-> +
-> +macro_rules! define_write {
-> +    ($(#[$attr:meta])* $name:ident, $try_name:ident, $type_name:ty) => {
-> +        /// Write IO data from a given offset known at compile time.
-> +        ///
-> +        /// Bound checks are performed on compile time, hence if the offset is not known at compile
-> +        /// time, the build will fail.
-> +        $(#[$attr])*
-> +        #[inline]
-> +        pub fn $name(&self, value: $type_name, offset: usize) {
-> +            let addr = self.io_addr_assert::<$type_name>(offset);
-> +
-> +            unsafe { bindings::$name(value, addr as _, ) }
-> +        }
-> +
-> +        /// Write IO data from a given offset.
-> +        ///
-> +        /// Bound checks are performed on runtime, it fails if the offset (plus the type size) is
-> +        /// out of bounds.
-> +        $(#[$attr])*
-> +        pub fn $try_name(&self, value: $type_name, offset: usize) -> Result {
-> +            let addr = self.io_addr::<$type_name>(offset)?;
-> +
-> +            unsafe { bindings::$name(value, addr as _) }
-> +            Ok(())
-> +        }
-> +    };
-> +}
-> +
-
-I am curious why we do not need `&mut self` to write to this memory? Is
-it OK to race on these writes?
 
 
-Best regards,
-Andreas
+On 24/06/2024 23:26, Namhyung Kim wrote:
+> On Thu, Jun 13, 2024 at 04:31:21PM -0700, Ian Rogers wrote:
+>> setup.py was building most perf sources causing setup.py to mimic the
+>> Makefile logic as well as flex/bison code to be stubbed out, due to
+>> complexity building. By using libraries fewer functions are stubbed
+>> out, the build is faster and the Makefile logic is reused which should
+>> simplify updating. The libraries are passed through LDFLAGS to avoid
+>> complexity in python.
+>>
+>> Force the -fPIC flag for libbpf.a to ensure it is suitable for linking
+>> into the perf python module.
+>>
+>> Signed-off-by: Ian Rogers <irogers@google.com>
+>> Reviewed-by: James Clark <james.clark@arm.com>
+>> ---
+>>  tools/perf/Makefile.config |   5 +
+>>  tools/perf/Makefile.perf   |   6 +-
+>>  tools/perf/util/python.c   | 271 ++++++++++++++-----------------------
+>>  tools/perf/util/setup.py   |  33 +----
+>>  4 files changed, 110 insertions(+), 205 deletions(-)
+>>
+>> diff --git a/tools/perf/Makefile.config b/tools/perf/Makefile.config
+>> index 7f1e016a9253..639be696f597 100644
+>> --- a/tools/perf/Makefile.config
+>> +++ b/tools/perf/Makefile.config
+>> @@ -910,6 +910,11 @@ else
+>>           endif
+>>           CFLAGS += -DHAVE_LIBPYTHON_SUPPORT
+>>           $(call detected,CONFIG_LIBPYTHON)
+>> +	 ifeq ($(filter -fPIC,$(CFLAGS)),)
+> 
+> Nitpick: mixed TAB and SPACEs.
+> 
+> 
+>> +           # Building a shared library requires position independent code.
+>> +           CFLAGS += -fPIC
+>> +           CXXFLAGS += -fPIC
+>> +         endif
+> 
+> 
+> I'm curious if it's ok for static libraries too..
+> 
+> Thanks,
+> Namhyung
+> 
+
+I think I tested the whole set with a static build so it should be ok.
+
+> 
+>>        endif
+>>      endif
+>>    endif
