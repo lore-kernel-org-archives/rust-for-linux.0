@@ -1,67 +1,67 @@
-Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
+Received: from mail-oi1-f180.google.com (mail-oi1-f180.google.com [209.85.167.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63B0771750;
-	Tue, 25 Jun 2024 19:50:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD96E16F0F4;
+	Tue, 25 Jun 2024 21:11:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719345045; cv=none; b=SlXyf1N+mAP/+3MVIz6rgRCydk5382G2IpEcgbmX7NIR6bzd5Kh5i9XvUqRpjvwIZMiBACVLK0yEZqbXRT0M7SD3vUCb4BDWKYES/7n5SEbiRsQfxsSYgJzn9rvb5wRJ+Ya7zxBdZTsNmajJ30IdrsVVgEGZbQMYoMxtQgc47PQ=
+	t=1719349915; cv=none; b=qtaL1aGIv2fSsz9poaIntux31fRJoy9e5RNvvLpGmE0/9f8iQ8fSZPy4VMn/Ql4kVSq+kppzsK16vPjmeyXYwDXkp0sf9Z4jwgs6HNNgbBd/BAsvpK6l6lvxmpTVBEWT9PHuYpDggNjXYLwykcqhGzQ9LTB4e+UOtc5nxM1Coc4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719345045; c=relaxed/simple;
-	bh=5qaZBAkSL3htea4GvYsaZHEsqCQw8CFx+a9ZsUMYLtA=;
+	s=arc-20240116; t=1719349915; c=relaxed/simple;
+	bh=mSzr+ocilC/6cTw/lJmP+RY5zeDuek96htoYIOKFow0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aJc+cUxpLVE9uSlMofrfXf5hx/QShN+7+R/9A0SZSHrw48UTFJRXOxRHHmxIQSsRInxTFg1G4Ypjt3rAFLY3i79HLOVZhPz5o23Rjy+q8hh8pWMLiRQSgGar9njvkMTkLsl3eH7MrGEj2UG4PMP9qtIOJdt/a9HQWgYSf9N0llY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NQirVh3h; arc=none smtp.client-ip=209.85.222.172
+	 Content-Type:Content-Disposition:In-Reply-To; b=bdfYluxEH1/bLdTNH/7ZNRJAkxgyZs+LMJbNCuUmR8GUFgDkFeRVo+gAjc22msd6flRqbVhh2gRF4F97vCIwMoON+C5moO1rXyYHehDUFdLq0hsmPbIPcs3BX929kMAKckbrrBYoVNBI3t6dBg1J4DEKSR+6wqFkqOuaMIX1vG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CVySmlm0; arc=none smtp.client-ip=209.85.167.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NQirVh3h"
-Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-79c0e7ec66dso60839685a.1;
-        Tue, 25 Jun 2024 12:50:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CVySmlm0"
+Received: by mail-oi1-f180.google.com with SMTP id 5614622812f47-3d55cfebcc5so440909b6e.2;
+        Tue, 25 Jun 2024 14:11:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1719345043; x=1719949843; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1719349913; x=1719954713; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=xyBKhLBfSgwfcLqDDYC6LWcs0BGTCyPmis5F6gsF3wE=;
-        b=NQirVh3hiBWIwxSg8M7oiaEvD8cF7C2vfKvh0GS2M2H1FJ6vidvVSGOFTjjilNCdu3
-         aBFnPnnCMMc/9AhlmJsJhs/kKE6E/W/G2y3C4jUBQarQfBS25gey8nREs+TxfuMejUVT
-         Jjc+DCCf1LRsRHCIpOi8yJp/KCI2iNHuNkyGsZTevaMe05cBg5o74KL3Djfue2ZzAZUs
-         rLwLDxMrsgGXA0FfUpTB69Pii9zJ+RiSKVkamayDFalcIDy3gm7BGpZ/DjQqqFEetw+Q
-         tse5L7kugjIGKIECBsotbjcAiBZfeUXsbQug0tTeN/wialED55M2m4NRIjvFc5cyggap
-         4w1g==
+        bh=0HvqzW2oM9L4jphH3y37Iwy7iI8bpvxZoFRboe3629w=;
+        b=CVySmlm0VgfItimURWpTbpmtUCT8D7BkqNqQ0rUvQxErfduALNBLfEuMLtHYNt4UCZ
+         hl3TqYiJmaJ63/tkyZOQC5MDIj8FhZao6f8j0kkU2SHEt3kzXDDVn+5v9Y8zm7WOwLS1
+         G5jE6Br1bBZWXZuZvASfb0320PxzgR6cfb+dW+J8mC/tFoln+eOtBBlXpDGI0f/kBlP8
+         lz7Id5/oSMw3GlHtwVf95/V9YIKI1q4BMcOJjsgYsWUyJJg7ceSEvmjbrafbnowN/S1Z
+         aAheKDgDLdhnH3r9O/y4BccV28mNIkE69igp4XT45VPfvUKO+izC6AxghuhvwPTo9Py/
+         7nQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719345043; x=1719949843;
+        d=1e100.net; s=20230601; t=1719349913; x=1719954713;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=xyBKhLBfSgwfcLqDDYC6LWcs0BGTCyPmis5F6gsF3wE=;
-        b=TZNNVwIe5ut+pk3i7bFOsNyIDqpbov2WYQKCtLwP6jseeKNJ30IDyQW37XNwFSjeq2
-         0PxVoJyh+oju2SyT73QcpqBAMfjn28QT0IoR4MlBKnFwYlrRUh/ECb7dzjNX7RSEv/ni
-         iCKH143O+HpnauD2HDEqJfuft2FkoFeIWZL5U5s0isoBv0hlp0+r3wRztztTA5Fc1fhj
-         Kb9KGq9mC+GLLcq4XWsQEvh5gd/TR0iZJxvRGrcu0iQN6HbfxrRISVZBU5G+PE8f7ici
-         7W0Yk+nkvbM0QZLW4xeyeLUStLl2OeeWoom9oEJqgFWA75JnDfLc+9ZUIRmJD3RspnGI
-         BIMw==
-X-Forwarded-Encrypted: i=1; AJvYcCUfVM9B7b1kG9MpoyZMu96EC9Nujc/xtwCvb1uLqSeHApN4mFvT5KXn6WjfVWkel6+Jbt6UW4dYLr0r0IwIM27bmsblquGGONPlqbixS7yYO8idsOfDIGkLeq6kfjFE5iqbnYx7jbPqxA+3Ics=
-X-Gm-Message-State: AOJu0YzLcY1l10RvAjBj5PdZpu1Kh1p/csM/bZP3M2KU7zRngSPHQY0p
-	T5qxk7nHOIuaUyOy3PQr/ylygTXUTJml+xEv3/OtMppOOSYmQGld
-X-Google-Smtp-Source: AGHT+IFshickO8pFKsc280+bfYieTeHUvWakKNVfcLCERSnKS+7f80j9ltMrAaF2fdRzq0RpDKw+SQ==
-X-Received: by 2002:a05:620a:170c:b0:795:4c20:5f9e with SMTP id af79cd13be357-79be47a4291mr876293485a.53.1719345043231;
-        Tue, 25 Jun 2024 12:50:43 -0700 (PDT)
-Received: from fauth2-smtp.messagingengine.com (fauth2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-79c0ab69643sm64767285a.114.2024.06.25.12.50.42
+        bh=0HvqzW2oM9L4jphH3y37Iwy7iI8bpvxZoFRboe3629w=;
+        b=hmC6VCqBYyNDUNopnf4UGrP+1h0nPnuoWwmhVfWuYRZ4bzBtTdXkz+BjHivYn2YlRO
+         TBs5wIv8t4Amxmyg5SPMeJi958gG+evwVHoeHSIAKYsqWytnYRz91EoUK+ohFZa5xSHg
+         q/tJQ+mtBSX0rodS4BVqSI4XORMripoAwSZg7lHoqFImCo9984/QLHBXFU3GuHDHcxdt
+         ROkJPsYfoPMnp84voKPEmck6WhjDYC96DA35OxddOjYOagXS5GcGvhtC/veeouoaiQIa
+         R6YFcQTug9hpqcqV7MXtfUB4Svy2Lfu4wccVLrTfJUm87TZhQJOCeZq4jX0H/S6vQMql
+         2zlQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXEbW4Sj/M6HOv0qzPCJdvWJd4HT4XSYoctFw6GgFK4CdJ5iGBVAQt4jDK4Z0u91xjS9211v7x+C7LSZHFXbFibDdWCO/D3/2fxqg+A/2f4JIGC7N7eUyc0yNJlT0voEugT30w1wbIBGJxx35M=
+X-Gm-Message-State: AOJu0YymK4zQ2FNo1QDAH0ZJF4sJPzcxdHIKhSFhNTY2WtIObMIjUkCO
+	bRl9D9Ko5Qvra7xPQU8hOhK7IdbnybjYo1ElYuZ/lEAKYNgTyMbv
+X-Google-Smtp-Source: AGHT+IHnXeQxvPhwtqGL6CpITVXxkyw12DFJYrQkVfsG+ZQ5d4GYbmzqimTrd0mAvCv0VtMPfDzR5g==
+X-Received: by 2002:a05:6808:1787:b0:3d5:2c01:9df6 with SMTP id 5614622812f47-3d5459643f2mr9509926b6e.15.1719349912879;
+        Tue, 25 Jun 2024 14:11:52 -0700 (PDT)
+Received: from fauth1-smtp.messagingengine.com (fauth1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-44501893592sm6216931cf.37.2024.06.25.14.11.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 25 Jun 2024 12:50:42 -0700 (PDT)
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-	by mailfauth.nyi.internal (Postfix) with ESMTP id C512A1200068;
-	Tue, 25 Jun 2024 15:50:41 -0400 (EDT)
+        Tue, 25 Jun 2024 14:11:52 -0700 (PDT)
+Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
+	by mailfauth.nyi.internal (Postfix) with ESMTP id 5B1331200043;
+	Tue, 25 Jun 2024 17:11:51 -0400 (EDT)
 Received: from mailfrontend1 ([10.202.2.162])
-  by compute4.internal (MEProxy); Tue, 25 Jun 2024 15:50:41 -0400
-X-ME-Sender: <xms:kR97ZmMutlVyrnvbhfEr4Thn3UKaRBdVkU73VF96aHnObTgVRhPgJg>
-    <xme:kR97Zk_OeBGYWkvjY_P_kJioS_-Aaw6yzDiKluDOVQ0jtOkMYkX8q3JE4Z2zLI7Di
-    OFUflL0QyAVPh1WGQ>
-X-ME-Received: <xmr:kR97ZtQp_6MC4iMXex0X02rhhgaNoYxoX84P9eKRxK_pWytF-U8jvd4YteuKjA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrtddtgdduuddtucetufdoteggodetrfdotf
+  by compute1.internal (MEProxy); Tue, 25 Jun 2024 17:11:51 -0400
+X-ME-Sender: <xms:lzJ7Zip2ZAlCHbim4IyDzr9NuqllasSgY21DYUfmjBInI18P56QGuA>
+    <xme:lzJ7ZgoonuT6u48YzwfVYbXyxWtuT59uZ6bN0bpUg1mqoU9LOdeVvYS8Z5o3_uSCl
+    nj4UpLFED27tRBFlw>
+X-ME-Received: <xmr:lzJ7ZnNg6PumoF62GQ1TjHxSH87xitYV3XsSrWYuS96Rl9wPN3HDS_tsrCTBJQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrtddtgdduvdehucetufdoteggodetrfdotf
     fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
     uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
     cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhu
@@ -71,15 +71,15 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrtddtgdduuddtucetufdoteggod
     gsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdei
     gedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfih
     igmhgvrdhnrghmvg
-X-ME-Proxy: <xmx:kR97ZmuzjL_3nXQI7VWwesijZkdCRibUSn_16SCa8eG3cjYs9u0LzQ>
-    <xmx:kR97ZudKAmUP5PJkCH5QTwGG5n0ivJ25kJWXeGokdTZcqASSEEvJDw>
-    <xmx:kR97Zq0KIPHWeyGRxANcymuyk3XZjNbuDCxz5NdR3B1Bqv4DlgKxbQ>
-    <xmx:kR97Zi-LVcRa2KNvGSFwPGP8zEUsXIBF1TtGK6pErf9lQ8hz8B369Q>
-    <xmx:kR97Zt9JfY1vqiRmjEUGIFOc4Ytws7Lws6FLw0iXlSAazdTxXWYIpjdp>
+X-ME-Proxy: <xmx:lzJ7Zh7Pf_GC78n23xSJjwWNyw1Msk9FuYcZi04uDI5n42glFQB2gw>
+    <xmx:lzJ7Zh7oa9ftKTZUCqKySGh_btV1hf9vlogb8ic7fXBcKt1KroFOOQ>
+    <xmx:lzJ7ZhhlCyw8tLIJ0_9PPf2AG6ocdQdPuHS37ORToxUNdCoGxj99yw>
+    <xmx:lzJ7Zr4sa3KBF_Q4GA0yvLaqTag0cVI_MAyDbroS0Fianh5PF739jg>
+    <xmx:lzJ7ZsKNrQ3Smn_G4oX8bAPXFRO-yq_4O5n3CHuHcqFVbJ8ZNAn7uCZV>
 Feedback-ID: iad51458e:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 25 Jun 2024 15:50:41 -0400 (EDT)
-Date: Tue, 25 Jun 2024 12:50:04 -0700
+ 25 Jun 2024 17:11:50 -0400 (EDT)
+Date: Tue, 25 Jun 2024 14:11:13 -0700
 From: Boqun Feng <boqun.feng@gmail.com>
 To: Matt Gilbride <mattgilbride@google.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
@@ -100,7 +100,7 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
 	Michel Lespinasse <michel@lespinasse.org>,
 	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH v5 5/6] rust: rbtree: add `RBTreeCursor`
-Message-ID: <ZnsfbNNYCOm_4jeJ@boqun-archlinux>
+Message-ID: <ZnsycdnqbdOSMSt5@boqun-archlinux>
 References: <20240606-b4-rbtree-v5-0-96fe1a0e97c0@google.com>
  <20240606-b4-rbtree-v5-5-96fe1a0e97c0@google.com>
 Precedence: bulk
@@ -117,47 +117,38 @@ On Thu, Jun 06, 2024 at 02:50:08PM +0000, Matt Gilbride wrote:
 [...]
 > +impl<'a, K, V> RBTreeCursor<'a, K, V> {
 [...]
-> +    /// SAFETY:
-> +    /// - `node` must be a valid pointer to a node in an [`RBTree`].
-> +    /// - The caller has immutable access to `node` for the duration of 'a.
-> +    unsafe fn to_key_value(node: *mut bindings::rb_node) -> (&'a K, &'a V) {
+> +    fn get_neighbor_raw(&self, direction: Direction) -> Option<*mut bindings::rb_node> {
 
-I think the function sigurature should be:
+I'd suggest we avoid Option<*mut T> as hard as possible, because it
+prevents niche optimization (i.e. the size of Option<*mut ..> above is
+16 on a 64 bit system). Could you make it return a
+Option<NonNull<bindings::rb_node> instead?
 
-    unsafe fn to_key_value<'b>(node: *mut bindings::rb_node) -> (&'b K, &'b V)
+(I think we can also make RBTreeCursor::current as a
+NonNull<bindings::rb_node>, but that might be too much, althought that
+won't hurt)
 
-right? At least it's more clear to me. Ditto for the other two functions
-below.
+> +        // SAFETY: `self.current` is valid by the type invariants.
+> +        let neighbor = unsafe {
+> +            match direction {
+> +                Direction::Prev => bindings::rb_prev(self.current),
+> +                Direction::Next => bindings::rb_next(self.current),
+> +            }
+> +        };
+> +
+> +        if neighbor.is_null() {
+> +            return None;
+> +        }
+> +
+> +        Some(neighbor)
 
-> +        // SAFETY: the caller guarantees that `node` is a valid pointer in an `RBTree`.
-> +        let (k, v) = unsafe { Self::to_key_value_raw(node) };
-> +        // SAFETY: the caller guarantees immutable access to `node`.
-> +        (k, unsafe { &*v })
+with Option<NonNull<bindings::rb_node>>, you can implement this as:
+
+	NonNull::new(neighbor)
+
+Regards,
+Boqun
+
 > +    }
 > +
-> +    /// SAFETY:
-> +    /// - `node` must be a valid pointer to a node in an [`RBTree`].
-> +    /// - The caller has mutable access to `node` for the duration of 'a.
-> +    unsafe fn to_key_value_mut(node: *mut bindings::rb_node) -> (&'a K, &'a mut V) {
-> +        // SAFETY: the caller guarantees that `node` is a valid pointer in an `RBTree`.
-> +        let (k, v) = unsafe { Self::to_key_value_raw(node) };
-> +        // SAFETY: the caller guarantees mutable access to `node`.
-> +        (k, unsafe { &mut *v })
-> +    }
-> +
-> +    /// SAFETY:
-> +    /// - `node` must be a valid pointer to a node in an [`RBTree`].
-> +    /// - The caller has immutable access to the key for the duration of 'a.
-> +    unsafe fn to_key_value_raw(node: *mut bindings::rb_node) -> (&'a K, *mut V) {
-> +        // SAFETY: By the type invariant of `Self`, all non-null `rb_node` pointers stored in `self`
-> +        // point to the links field of `Node<K, V>` objects.
-> +        let this = unsafe { container_of!(node, Node<K, V>, links) }.cast_mut();
-> +        // SAFETY: The passed `node` is the current node or a non-null neighbor,
-> +        // thus `this` is valid by the type invariants.
-> +        let k = unsafe { &(*this).key };
-> +        // SAFETY: The passed `node` is the current node or a non-null neighbor,
-> +        // thus `this` is valid by the type invariants.
-> +        let v = unsafe { addr_of_mut!((*this).value) };
-> +        (k, v)
-> +    }
 [...]
