@@ -1,127 +1,142 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF35E17BCC;
-	Mon, 24 Jun 2024 22:26:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E70614A4F0
+	for <rust-for-linux@vger.kernel.org>; Tue, 25 Jun 2024 10:59:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719267983; cv=none; b=GVheupaHmJ0NYJt3ftQ0uuVkduApM4hshuwYEEx0vg8OSlqcCj9LZ6AcZpFB/5Cl1xkxIIVJD+pP2TPeAV9vAki7EzDw78e8ElDb/I+OxY22QNy6wN+moqO1zlKnSL9a1sKOWMAVkmNH1jJu0gNPbBfTJBZh4LGcwnPlp5ZCd58=
+	t=1719313176; cv=none; b=gNIQIcmG4KLfGHGleMvsyRw2icMTJE1Q7WOCgn7Wgm2CpMTnlb+94KrtjdBzTVY2CywKZOk35oR9F4ZvZtQBn2y9rJuk62AOrlRkCuEknI24IEvkrZtIxaAdVbDHXlnQTyowGgXEGsD2scGDYozBJ37f2XF9Rr+Y8kFrWxMrIRE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719267983; c=relaxed/simple;
-	bh=A1zw7pChb50vCYHTi+cKNPAO0Oryfwi6Z4lff+lI6Js=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SKAGX2JCTjOIoQXSUTtYynY3NkgNtQ/DFoafOModyF6Fqlc+qkWwOEdWvUAtVBqv+uDcF/A4+2rcERIEU1FER/Sqkv0xoOqUTrEQ+9GPzC1aG0gZa5JnAMxMZp66FIQ4N4whPQ/xhtDu+OftdxbuzeYzD/hfgUDZ9RXlh31q5yM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RmN/u75H; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1719313176; c=relaxed/simple;
+	bh=fVPF6QJF7rG/F5OUgasWuukloGcuPijewbPTH7NCyZs=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=Q2XcEWt3F3XACNzCrk7UH1gEJQDoQ/5nKqrvDoVVxlnCVCkQ/0gUuumb6RLku1KroyPKMnxaEW0iTo1kYyGZmAmvLNG3QIirj3P2FRCbicnUJx5pwh0nLmuhBBDwOrzz1cCw6y6iLj/aJOe5BxfbLoPto6EO2lJ/1XRE2jEXHvs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk; spf=none smtp.mailfrom=metaspace.dk; dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b=ILQLJ/3l; arc=none smtp.client-ip=209.85.208.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=metaspace.dk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RmN/u75H"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFAECC2BBFC;
-	Mon, 24 Jun 2024 22:26:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719267982;
-	bh=A1zw7pChb50vCYHTi+cKNPAO0Oryfwi6Z4lff+lI6Js=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=RmN/u75HA1sFMpeGPdJhkl4iIpVo2QC3mcj4pV3sSro9zUXSg77efg3iJbqMAgsva
-	 e2eLM/YOePlu2m1GZRn17m/S1YU3iOvZAYvmUcCV8oZwNzTgE194CKbUQKvz6/2ANQ
-	 F8IUUTej+bXUYcut+Ihvlv2di7ARhVVTb06R/XFMS+S+6WuKAuqmqpcBG6yeQTdIlb
-	 M/rXFi6XnrPpCOabmhSZBP8sx5LHAf5mYRT9YivXxIcvXZ5Niz1JGKDmyncJerdOUk
-	 G+MECTVMOxUllUNDbx260XaCoth/cIZmho3/G3JBlmxTNJ54cG+acw5a+nB/73TKk6
-	 L3pS82Zv27FWQ==
-Date: Mon, 24 Jun 2024 15:26:19 -0700
-From: Namhyung Kim <namhyung@kernel.org>
-To: Ian Rogers <irogers@google.com>
-Cc: Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
-	Arnaldo Carvalho de Melo <acme@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Alexander Shishkin <alexander.shishkin@linux.intel.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Kan Liang <kan.liang@linux.intel.com>,
-	John Garry <john.g.garry@oracle.com>, Will Deacon <will@kernel.org>,
-	James Clark <james.clark@arm.com>,
-	Mike Leach <mike.leach@linaro.org>, Leo Yan <leo.yan@linux.dev>,
-	Guo Ren <guoren@kernel.org>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Yicong Yang <yangyicong@hisilicon.com>,
-	Jonathan Cameron <jonathan.cameron@huawei.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>, Nick Terrell <terrelln@fb.com>,
-	Ravi Bangoria <ravi.bangoria@amd.com>,
-	Kees Cook <keescook@chromium.org>, Andrei Vagin <avagin@google.com>,
-	Athira Jajeev <atrajeev@linux.vnet.ibm.com>,
-	Oliver Upton <oliver.upton@linux.dev>, Ze Gao <zegao2021@gmail.com>,
-	linux-kernel@vger.kernel.org, linux-perf-users@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org, linux-csky@vger.kernel.org,
-	linux-riscv@lists.infradead.org, coresight@lists.linaro.org,
-	rust-for-linux@vger.kernel.org, bpf@vger.kernel.org
-Subject: Re: [PATCH v3 7/8] perf python: Switch module to linking libraries
- from building source
-Message-ID: <Znnyi2IPC79jMd9y@google.com>
-References: <20240613233122.3564730-1-irogers@google.com>
- <20240613233122.3564730-8-irogers@google.com>
+	dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b="ILQLJ/3l"
+Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-2ebe40673e8so58006601fa.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 25 Jun 2024 03:59:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=metaspace-dk.20230601.gappssmtp.com; s=20230601; t=1719313172; x=1719917972; darn=vger.kernel.org;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=7HK8CBgC+NsQrNpK+KFLlGL2gTcxTEEhi40E3k/R3Wk=;
+        b=ILQLJ/3lR1YkL/m7S7M7lLKD8EF+7VQkMHMXKO1OBpqJ5nw2M44saogXfx0XENEa8u
+         Rt7W9cQ0PoEWnDwgwE7UYQRQnD2elF1Z6spLrBsaUFUoHbBM78wYmX9N1cvtpKpmdz5O
+         sTkSq/a2sOXOjtIeN0P7WymgLpqhje3vnmq+eb76aLeM3KBvZ4PlFvnAsZWLhmhZO9SS
+         mftTeJRFxmPo6A+MPjJ5uBf7aXr+wrrnEB7+8gpTPYQuHdf9UGl+WTnqazfBmE1dL/n+
+         f+MsHN8BVw6zaZ1wlITCtCdjHPAsK4e5nA19UZECaCSTMHZY/w5HbG81Ue48Uf16j/Ys
+         bM7A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719313172; x=1719917972;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=7HK8CBgC+NsQrNpK+KFLlGL2gTcxTEEhi40E3k/R3Wk=;
+        b=eQ/ITu1Dq9obcotXvTKJsgodFhmL7x21C81BiMqM1v8wdhMaaRv4hAskrDARsHYD1G
+         wPoju4TDLuR8q8kHHqAZpFe018woVMwYqWpESNtNb3ZnHdQz4hGMbWdLkBt7pYhXIhG/
+         HR3DtAKugl2E64FdPRA5QPU/hY1F2rSO8BS+OCmgd0Gdhq0nfCHyz+pEUNCcmbKQqmlY
+         S+//l+/Ce8y6Z7j2sz6+iGLUY7+sWlmsbvDJD4ktbOVRf0hZig/z1OYzfDMaE9GkPKNP
+         M17m7GspYlPP5d5CGHOXTXqKxyHtsNImzHV3r3Abi6xTm82j8jZcsCFhyoEduXsY5OoF
+         0pzA==
+X-Forwarded-Encrypted: i=1; AJvYcCViMNJI8YgEdlUFUyfOcdN6U/3CD7XaeULftyNtAd1UZBBm8mW+6VuIpxN8MVSAdo/wGwwICGuFkx8+QsoGmTSly/kORTNa3VCj1ZI0/aU=
+X-Gm-Message-State: AOJu0YymlYlTU9MeMvzU58MclwQtFoZqCjoNGr+itL2J2epMDZnu4uuZ
+	AnBvmVxvx3Wsu1f9xP0x85KxG5pGR7PaGMF5qI6y4jZmktZV8etgHXFsFvTBcG8=
+X-Google-Smtp-Source: AGHT+IE53M3V8Uidqoa3yk8+4qXuwt/bTpN6kGnKnf/lTZX0PwppewDi+ZCmXMrjqzvhU+9ZupI4Sw==
+X-Received: by 2002:a2e:9684:0:b0:2ec:403e:631a with SMTP id 38308e7fff4ca-2ec5b36b135mr44323041fa.8.1719313171978;
+        Tue, 25 Jun 2024 03:59:31 -0700 (PDT)
+Received: from localhost ([79.142.230.34])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-57d3040ee6bsm5730751a12.28.2024.06.25.03.59.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 25 Jun 2024 03:59:30 -0700 (PDT)
+From: Andreas Hindborg <nmi@metaspace.dk>
+To: Danilo Krummrich <dakr@redhat.com>
+Cc: gregkh@linuxfoundation.org,  rafael@kernel.org,  bhelgaas@google.com,
+  ojeda@kernel.org,  alex.gaynor@gmail.com,  wedsonaf@gmail.com,
+  boqun.feng@gmail.com,  gary@garyguo.net,  bjorn3_gh@protonmail.com,
+  benno.lossin@proton.me,  a.hindborg@samsung.com,  aliceryhl@google.com,
+  airlied@gmail.com,  fujita.tomonori@gmail.com,  lina@asahilina.net,
+  pstanner@redhat.com,  ajanulgu@redhat.com,  lyude@redhat.com,
+  robh@kernel.org,  daniel.almeida@collabora.com,
+  rust-for-linux@vger.kernel.org,  linux-kernel@vger.kernel.org,
+  linux-pci@vger.kernel.org
+Subject: Re: [PATCH v2 09/10] rust: pci: add basic PCI device / driver
+ abstractions
+In-Reply-To: <20240618234025.15036-10-dakr@redhat.com> (Danilo Krummrich's
+	message of "Wed, 19 Jun 2024 01:39:55 +0200")
+References: <20240618234025.15036-1-dakr@redhat.com>
+	<20240618234025.15036-10-dakr@redhat.com>
+Date: Tue, 25 Jun 2024 12:53:48 +0200
+Message-ID: <877cedi98j.fsf@metaspace.dk>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240613233122.3564730-8-irogers@google.com>
+Content-Type: text/plain
 
-On Thu, Jun 13, 2024 at 04:31:21PM -0700, Ian Rogers wrote:
-> setup.py was building most perf sources causing setup.py to mimic the
-> Makefile logic as well as flex/bison code to be stubbed out, due to
-> complexity building. By using libraries fewer functions are stubbed
-> out, the build is faster and the Makefile logic is reused which should
-> simplify updating. The libraries are passed through LDFLAGS to avoid
-> complexity in python.
-> 
-> Force the -fPIC flag for libbpf.a to ensure it is suitable for linking
-> into the perf python module.
-> 
-> Signed-off-by: Ian Rogers <irogers@google.com>
-> Reviewed-by: James Clark <james.clark@arm.com>
-> ---
->  tools/perf/Makefile.config |   5 +
->  tools/perf/Makefile.perf   |   6 +-
->  tools/perf/util/python.c   | 271 ++++++++++++++-----------------------
->  tools/perf/util/setup.py   |  33 +----
->  4 files changed, 110 insertions(+), 205 deletions(-)
-> 
-> diff --git a/tools/perf/Makefile.config b/tools/perf/Makefile.config
-> index 7f1e016a9253..639be696f597 100644
-> --- a/tools/perf/Makefile.config
-> +++ b/tools/perf/Makefile.config
-> @@ -910,6 +910,11 @@ else
->           endif
->           CFLAGS += -DHAVE_LIBPYTHON_SUPPORT
->           $(call detected,CONFIG_LIBPYTHON)
-> +	 ifeq ($(filter -fPIC,$(CFLAGS)),)
+Hi Danilo,
 
-Nitpick: mixed TAB and SPACEs.
+Thanks for working on this. I just finished rebasing the Rust NVMe
+driver on these patches, and I have just one observation for now.
 
+Danilo Krummrich <dakr@redhat.com> writes:
 
-> +           # Building a shared library requires position independent code.
-> +           CFLAGS += -fPIC
-> +           CXXFLAGS += -fPIC
-> +         endif
+[...]
 
+> +pub trait Driver {
+> +    /// Data stored on device by driver.
+> +    ///
+> +    /// Corresponds to the data set or retrieved via the kernel's
+> +    /// `pci_{set,get}_drvdata()` functions.
+> +    ///
+> +    /// Require that `Data` implements `ForeignOwnable`. We guarantee to
+> +    /// never move the underlying wrapped data structure.
+> +    ///
+> +    /// TODO: Use associated_type_defaults once stabilized:
+> +    ///
+> +    /// `type Data: ForeignOwnable = ();`
+> +    type Data: ForeignOwnable;
+> +
+> +    /// The type holding information about each device id supported by the driver.
+> +    ///
+> +    /// TODO: Use associated_type_defaults once stabilized:
+> +    ///
+> +    /// type IdInfo: 'static = ();
+> +    type IdInfo: 'static;
+> +
+> +    /// The table of device ids supported by the driver.
+> +    const ID_TABLE: IdTable<'static, DeviceId, Self::IdInfo>;
+> +
+> +    /// PCI driver probe.
+> +    ///
+> +    /// Called when a new platform device is added or discovered.
+> +    /// Implementers should attempt to initialize the device here.
+> +    fn probe(dev: &mut Device, id: Option<&Self::IdInfo>) -> Result<Self::Data>;
 
-I'm curious if it's ok for static libraries too..
-
-Thanks,
-Namhyung
+Since you changed the `Device` representation to be basically an `ARef`,
+the `&mut` makes no sense. I think we should either pass by value or
+immutable reference.
 
 
->        endif
->      endif
->    endif
+Best regards,
+Andreas
+
+
+> +
+> +    /// PCI driver remove.
+> +    ///
+> +    /// Called when a platform device is removed.
+> +    /// Implementers should prepare the device for complete removal here.
+> +    fn remove(data: &Self::Data);
+> +}
+> +
+> +/// The PCI device representation.
+> +///
+> +/// A PCI device is based on an always reference counted `device:Device` instance. Cloning a PCI
+> +/// device, hence, also increments the base device' reference count.
+> +#[derive(Clone)]
+> +pub struct Device(ARef<device::Device>);
+> +
