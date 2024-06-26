@@ -1,57 +1,57 @@
-Received: from mail-io1-f49.google.com (mail-io1-f49.google.com [209.85.166.49])
+Received: from mail-io1-f41.google.com (mail-io1-f41.google.com [209.85.166.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 768F319409E;
-	Wed, 26 Jun 2024 23:05:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A6B117F500;
+	Wed, 26 Jun 2024 23:08:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719443138; cv=none; b=jR6CyVxCgOZeKkWGq5yN4grVIzR/b0aqAwTuuRiEAbmR0WQMaBG2POx2zAC8DxSlCEqIP7/FAmorXUH/ItLKgewXDVotApspcvJkP2GV90q1xoPb4h6I2igv0xCLuGOyrWWHUidM/8iZF0nEtogzQug9fh/kgJuizXSiwoW1yMc=
+	t=1719443331; cv=none; b=UaqlHMPAe4bAWCMAV+92wV4WkBtQ3AQMvKplTom8IEwXDjrcCcQhoPKjHHQ7NkAGUXqNcTWW82xYArAJMI4/cbV+nLm22gKA9UXnjPx4+Xlf+giNWPp13zYdw1GHL8oUG7JoqP3m1cJNBYszOIrBqTn2iGpb21lFtEG5slJFT/k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719443138; c=relaxed/simple;
-	bh=jVXjFJo4/Hla9uGL97V8BAnKgwBZCr/pIAk8uiQ0ufU=;
+	s=arc-20240116; t=1719443331; c=relaxed/simple;
+	bh=XttEmu+mRYXZoOSAExgXXBGNXMhJYkQq60EN3tyDTM8=;
 	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=oWCQNtfe9Cdfy4p0U/1txwLh139n69OslbuqCovLAe8N51jBbhvCofzBbMisT5UQYj0HnBJ0Qrs3M+9nueGmrf/MlnGED0uZNRxy55+eqUm24Cikf3qk/KjLdill6izOvZJkjodEg+0QQ0QQr/WX17a15fEazKbT3VeQoRH7LiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DjNsUUaV; arc=none smtp.client-ip=209.85.166.49
+	 References:In-Reply-To; b=eRhX9GOSPaTk5/4SJh5OgArSkKL6XH1dGrDp0pi5KcLNHfX6N86MOeyuZeWL0iuugbvX/9/F4lJd8E9YKSoCSjVli6J/wyhN0eNpZNltx8Npzzir5fprXVZnMrz4Z2uZ/A2RvUNwsqseVlQve+3YjpKkowiLqtL2q1SrxBzW/os=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=cUB3AAmf; arc=none smtp.client-ip=209.85.166.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DjNsUUaV"
-Received: by mail-io1-f49.google.com with SMTP id ca18e2360f4ac-7f3ca6869e8so69649739f.3;
-        Wed, 26 Jun 2024 16:05:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="cUB3AAmf"
+Received: by mail-io1-f41.google.com with SMTP id ca18e2360f4ac-7eec09cc7f6so293206939f.0;
+        Wed, 26 Jun 2024 16:08:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1719443136; x=1720047936; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1719443329; x=1720048129; darn=vger.kernel.org;
         h=in-reply-to:references:to:from:subject:cc:message-id:date
          :content-transfer-encoding:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=jVXjFJo4/Hla9uGL97V8BAnKgwBZCr/pIAk8uiQ0ufU=;
-        b=DjNsUUaV509Eym5ING32Kpi/X7ybM8oIuM7icehqin/KubwdRD55LMbzuQNVf+Llxc
-         Gq8TS61EuXmXwoTsYcVzRnKi59Wnj3ireQNT1c3Ds4KwrbIsQl8klfAcxWt1QP4m3O1J
-         bM3uy2BI8z52HJuj/7mSy83JertBXC6NrhZWVC77vQDxfI0dViM1H09WC4x+d27oipSR
-         6vLhGAGbgFijelgFFybQgKcUAokl3MxMdP6rogr/s62He0uGHwCVTwviUQ8ifeXYdV8S
-         GkdXDtLiNeYfgL7oOWoxihTbNyYZnrembAncTSewsOILmiQaTRMc0Fpw0JtfqBd5//Km
-         P1Lg==
+        bh=XttEmu+mRYXZoOSAExgXXBGNXMhJYkQq60EN3tyDTM8=;
+        b=cUB3AAmfz5ZKJtvZGwiFQvAmtp523KaVws+IpMYUFl6EVtzK5ZbNeSKov3neSoDgAa
+         JOtlH0fzm7ergI+ZcHojLXvE0V0ZMbhxdWL06G9/Wggxu1Yyxfku5OFwYhYiK7aZfAhe
+         zgMmMIDYyNv9SFyhKXMJDPk2VMuh48apbWfXBphqvoqfz630CD/LrdRDPK4p8RMDY51v
+         cm/8geP0PabRcj5bymuX4e+kKPmMHYeBfodBHVpXxhjoZOYpdxoSBfqROrj32hrsCdIp
+         J7sJ9EKpfBiI/RGiO3tytUI2kuWG4EuwGhqSXw2tb15VU2QU1AslHofLFRtyjfMII5nt
+         HRJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719443136; x=1720047936;
+        d=1e100.net; s=20230601; t=1719443329; x=1720048129;
         h=in-reply-to:references:to:from:subject:cc:message-id:date
          :content-transfer-encoding:mime-version:x-gm-message-state:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=jVXjFJo4/Hla9uGL97V8BAnKgwBZCr/pIAk8uiQ0ufU=;
-        b=LUuNmpKQ2ngO3NuyhlffDvSD+Bv10mBRgrHQ1BFXFEM6+ndKpsMRXNDImLbDhUgnh6
-         lPicpLqsGSKyUcIZ4oLZ2kf5OG0ZzaYnsdSqodyk/ch0ZdVh//lgitvY/BupZjtbhnwJ
-         QX1fqzdRwBQTspzE2IrPH+J4dsaBNHAu2cR+6EjoQwWz5NoVWiJAfazO9Ke9ktQQcMjE
-         p+Iou3X1FwTzFkVzyIkVW/15c54CTknURxorGg3u2a9tylSD37fo321OMNVYjwr3XqEn
-         UBqox35yEdRbVoloSemjlLX2BOJkGLwXwDg+P63ncgz8eopCL50c6VyEqkZt9Psv4szB
-         8Jhw==
-X-Forwarded-Encrypted: i=1; AJvYcCWljRN18bwvB4GGzTASjrJ88UaP2b8z3UakbJM5VEtR51rTch2k84PEPXiEDLnkOoM2XPSbdkhT/bB8syEESnUvzrKjmAABO/1oVrTDpJjd4QXLLhCP1x9BnOTLBxGDxZTG1PHQMuDMW+8PW1w=
-X-Gm-Message-State: AOJu0YyxxQ1zVZCb/kJI6ClGb+zSFbZhWZt+AGrQ0Kt+xuJmrIZ1M3Eb
-	ACVwd7DKmyF7BU+kY9CYy6ebpoxjMrWQXnxKXERc8LYzio8nC2Fd
-X-Google-Smtp-Source: AGHT+IHxB9l5av8Bx0kfv3foIdkebE7MTO93/hxxyc6mc7fKbsRxLP+xrogJhr3js/bSJTDlVihjSA==
-X-Received: by 2002:a05:6602:6c11:b0:7eb:b188:1c96 with SMTP id ca18e2360f4ac-7f3a74da8f3mr1495360639f.5.1719443136282;
-        Wed, 26 Jun 2024 16:05:36 -0700 (PDT)
+        bh=XttEmu+mRYXZoOSAExgXXBGNXMhJYkQq60EN3tyDTM8=;
+        b=gFhJ8iqC47R2yv80ptITBXkqvS/s19Y9jjLCcg4qmyT3fHmBihe4uFJTKs+hLUPhqY
+         kTNlBgExEyG1SyPhqLru31q3PeFIzFKK6jnA4XN2+qQabLIe2dCNUVaEX31jY1IuhMLE
+         ADPxPx9yeh/tIJSiSLx/rLsnJCinkpsuwUwoeB7+K2Mp3mRl/c/I4LSXi+SGMgowHjsS
+         4Dpjpn2KaBW9spXQlqQa1RbcV5JehD2pJaRZi5XyJE3pvBzCou3i9oHUm4FReKiazo2n
+         +ctu2aloF9f/HtpHs2EdqFHpWvUKpXCe7oFxVLMRbOPGML2WMffId2YFrbONAQdDoyo+
+         d1nQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVV1RxU9CR0ztgruA3YA/RaeFVF+Ix/XTEGGPzZWj5xUf/VtqYPIeA0+5Hc96JQUcRVds/VN47oWkhL1iTW47AqK/LgFsiUIZHhtWTZdWVw75K7jv0GcnDdD6a3iVKmInVz13nukKTQa586GXk=
+X-Gm-Message-State: AOJu0Yy2OUpJ5QbvyCtzUbNKPQYjYOsfUROWe+CHfmGEKljrKW3Nygm1
+	q4epEYfEJek4aLMe32Qj9fgx4DCRLNzEHksgP+2l+Nt4COg5+u0H
+X-Google-Smtp-Source: AGHT+IF/bwZtPc1w+pfzlkRmt37Cy5RrGDawSx+LJn4vUsvGuApxlVM0WX2q9+eH0nVx4jrdCWn3LA==
+X-Received: by 2002:a05:6602:6b0d:b0:7eb:6f43:a5d2 with SMTP id ca18e2360f4ac-7f3a13db1a1mr1548840639f.6.1719443329089;
+        Wed, 26 Jun 2024 16:08:49 -0700 (PDT)
 Received: from localhost (h135-131-130-199.ashwwi.broadband.dynamic.tds.net. [135.131.130.199])
-        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4bb6649d850sm37306173.51.2024.06.26.16.05.35
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4bb6649e552sm39182173.54.2024.06.26.16.08.47
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 26 Jun 2024 16:05:35 -0700 (PDT)
+        Wed, 26 Jun 2024 16:08:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -60,38 +60,49 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
 Content-Type: text/plain; charset=UTF-8
-Date: Wed, 26 Jun 2024 18:05:34 -0500
-Message-Id: <D2ABPZ1ZUV95.1GDPY1XYSGCM@gmail.com>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Wedson Almeida Filho" <wedsonaf@gmail.com>,
- "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <benno.lossin@proton.me>, "Andreas Hindborg" <a.hindborg@samsung.com>,
- "Martin Rodriguez Reboredo" <yakoyoku@gmail.com>, "Trevor Gross"
- <tmgross@umich.edu>, "Aswin Unnikrishnan" <aswinunni01@gmail.com>, "open
- list:RUST" <rust-for-linux@vger.kernel.org>, "open list"
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 2/4] rust: Enable test for macros::module
+Date: Wed, 26 Jun 2024 18:08:47 -0500
+Message-Id: <D2ABSFPMRNP9.LYEVA0EZAD07@gmail.com>
+Cc: <a.hindborg@samsung.com>, <alex.gaynor@gmail.com>,
+ <aswinunni01@gmail.com>, <benno.lossin@proton.me>,
+ <bjorn3_gh@protonmail.com>, <boqun.feng@gmail.com>, <gary@garyguo.net>,
+ <linux-kernel@vger.kernel.org>, <ojeda@kernel.org>,
+ <rust-for-linux@vger.kernel.org>, <tmgross@umich.edu>,
+ <wedsonaf@gmail.com>, <yakoyoku@gmail.com>
+Subject: Re: [PATCH 3/4] rust: macros: Enable use from macro_rules!
 From: "Ethan D. Twardy" <ethan.twardy@gmail.com>
 To: "Alice Ryhl" <aliceryhl@google.com>
 X-Mailer: aerc 9999
-References: <20240624030327.90301-1-ethan.twardy@gmail.com>
- <20240624030327.90301-3-ethan.twardy@gmail.com>
- <CAH5fLghDZdt57SShnzUx_ZeBquqm-3fah3CK9YAwMYHAJdteQw@mail.gmail.com>
-In-Reply-To: <CAH5fLghDZdt57SShnzUx_ZeBquqm-3fah3CK9YAwMYHAJdteQw@mail.gmail.com>
+References: <20240624030327.90301-4-ethan.twardy@gmail.com>
+ <20240624084331.2864993-1-aliceryhl@google.com>
+In-Reply-To: <20240624084331.2864993-1-aliceryhl@google.com>
 
-On Mon Jun 24, 2024 at 3:32 AM CDT, Alice Ryhl wrote:
-> It may be worth to call out in the commit message that you are
-> changing what the example does. (But the change is good - this form of
-> kernel parameters were never upstreamed.)
->
-> With the commit message updated:
+On Mon Jun 24, 2024 at 3:43 AM CDT, Alice Ryhl wrote:
+> The actual change looks good to me.
 >
 > Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 >
-> Oh, also, you don't want an empty line between } and `# fn main() {}`
-> as it will show up as a weird empty line at the end of the example.
+
+Thank you!
+
+> Normally this would be formatted as:
+>
+> Link: https://doc.rust-lang.org/stable/proc_macro/enum.Delimiter.html [1]
+> Signed-off-by: Ethan D. Twardy <ethan.twardy@gmail.com>
+
+Ah, thank you for informing me on this :).
+
+> There's a non-hidden empty line between the last constant and
+> `macro_rules! pub_no_prefix`. You should either hide the empty line or
+> get rid of it, because it will look weird when the example is rendered.
+>
+>
+> Another option would be to keep the import so that the empty line
+> separates the import from the macro declaration.
+
+Done! (And the one other identical one, as well).
+
+> I would probably indent [<$prefix $newname:span>] one more time.
 >
 > Alice
 
-I have these changes made locally and will send with v2. Thank you!
+Done, as well. As with PATCH 2/4, these will ship with v2.
