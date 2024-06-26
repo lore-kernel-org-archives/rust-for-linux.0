@@ -1,69 +1,97 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f49.google.com (mail-io1-f49.google.com [209.85.166.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0781118FC85;
-	Wed, 26 Jun 2024 18:43:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 768F319409E;
+	Wed, 26 Jun 2024 23:05:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719427398; cv=none; b=F5f6maByOAseQDUvHS28WPy7vBsU0qCC0AKozG6Rf38MLNhARzArY5c34qgZBxO294Q3KMqtGr6VraozIea0UoTUGtjKnk1wfj+3iK7SWk2NRiXLauAreK+xD4Ir7tuog6B+6/o8JjqRM/PSNR+HSXbv6lLTKLOVFnxc4c5NnAA=
+	t=1719443138; cv=none; b=jR6CyVxCgOZeKkWGq5yN4grVIzR/b0aqAwTuuRiEAbmR0WQMaBG2POx2zAC8DxSlCEqIP7/FAmorXUH/ItLKgewXDVotApspcvJkP2GV90q1xoPb4h6I2igv0xCLuGOyrWWHUidM/8iZF0nEtogzQug9fh/kgJuizXSiwoW1yMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719427398; c=relaxed/simple;
-	bh=le/+nw/Qzup/+krmq6I3s9Mx1o6B4hej1yo/g5Nb2f4=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=f/52ROgF55y9F0X3BDFEomc1eqawSs6VTA+VcNKxcracZeMNxIB0+kGEHiezJfW1uPsQcz/AA5Bk+VTw91LlttkW0KDWrsBIlHiRJotXXK2deybKJXpWPTs/uXCbvQ3VP9PLVQGRGzfvOe3eRF71p6v9I/WoEmLupYsX+h9s8gc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 350F6C116B1;
-	Wed, 26 Jun 2024 18:43:15 +0000 (UTC)
-Date: Wed, 26 Jun 2024 14:43:13 -0400
-From: Steven Rostedt <rostedt@goodmis.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Masami Hiramatsu
- <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
- Peter Zijlstra <peterz@infradead.org>, Josh Poimboeuf
- <jpoimboe@kernel.org>, Jason Baron <jbaron@akamai.com>, Ard Biesheuvel
- <ardb@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor
- <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Gary
- Guo <gary@garyguo.net>, =?UTF-8?B?QmrDtnJu?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas
- Hindborg <a.hindborg@samsung.com>, linux-trace-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3 2/2] rust: add tracepoint support
-Message-ID: <20240626144313.3f1e8277@rorschach.local.home>
-In-Reply-To: <CAH5fLgiG5hdh1JJgjH94E=ZwJo6ERkuZUFDpkrrJ6ErQhTvCrg@mail.gmail.com>
-References: <20240621-tracepoint-v3-0-9e44eeea2b85@google.com>
-	<20240621-tracepoint-v3-2-9e44eeea2b85@google.com>
-	<CAH5fLghb6oVkgy3ckf=dUk9S4VdCeWin+yDBW1ffBoxu=HqBKw@mail.gmail.com>
-	<ZnsIJ6ejNX_dAc8f@boqun-archlinux>
-	<CAH5fLgiG5hdh1JJgjH94E=ZwJo6ERkuZUFDpkrrJ6ErQhTvCrg@mail.gmail.com>
-X-Mailer: Claws Mail 3.17.8 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1719443138; c=relaxed/simple;
+	bh=jVXjFJo4/Hla9uGL97V8BAnKgwBZCr/pIAk8uiQ0ufU=;
+	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
+	 References:In-Reply-To; b=oWCQNtfe9Cdfy4p0U/1txwLh139n69OslbuqCovLAe8N51jBbhvCofzBbMisT5UQYj0HnBJ0Qrs3M+9nueGmrf/MlnGED0uZNRxy55+eqUm24Cikf3qk/KjLdill6izOvZJkjodEg+0QQ0QQr/WX17a15fEazKbT3VeQoRH7LiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DjNsUUaV; arc=none smtp.client-ip=209.85.166.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DjNsUUaV"
+Received: by mail-io1-f49.google.com with SMTP id ca18e2360f4ac-7f3ca6869e8so69649739f.3;
+        Wed, 26 Jun 2024 16:05:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1719443136; x=1720047936; darn=vger.kernel.org;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jVXjFJo4/Hla9uGL97V8BAnKgwBZCr/pIAk8uiQ0ufU=;
+        b=DjNsUUaV509Eym5ING32Kpi/X7ybM8oIuM7icehqin/KubwdRD55LMbzuQNVf+Llxc
+         Gq8TS61EuXmXwoTsYcVzRnKi59Wnj3ireQNT1c3Ds4KwrbIsQl8klfAcxWt1QP4m3O1J
+         bM3uy2BI8z52HJuj/7mSy83JertBXC6NrhZWVC77vQDxfI0dViM1H09WC4x+d27oipSR
+         6vLhGAGbgFijelgFFybQgKcUAokl3MxMdP6rogr/s62He0uGHwCVTwviUQ8ifeXYdV8S
+         GkdXDtLiNeYfgL7oOWoxihTbNyYZnrembAncTSewsOILmiQaTRMc0Fpw0JtfqBd5//Km
+         P1Lg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719443136; x=1720047936;
+        h=in-reply-to:references:to:from:subject:cc:message-id:date
+         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=jVXjFJo4/Hla9uGL97V8BAnKgwBZCr/pIAk8uiQ0ufU=;
+        b=LUuNmpKQ2ngO3NuyhlffDvSD+Bv10mBRgrHQ1BFXFEM6+ndKpsMRXNDImLbDhUgnh6
+         lPicpLqsGSKyUcIZ4oLZ2kf5OG0ZzaYnsdSqodyk/ch0ZdVh//lgitvY/BupZjtbhnwJ
+         QX1fqzdRwBQTspzE2IrPH+J4dsaBNHAu2cR+6EjoQwWz5NoVWiJAfazO9Ke9ktQQcMjE
+         p+Iou3X1FwTzFkVzyIkVW/15c54CTknURxorGg3u2a9tylSD37fo321OMNVYjwr3XqEn
+         UBqox35yEdRbVoloSemjlLX2BOJkGLwXwDg+P63ncgz8eopCL50c6VyEqkZt9Psv4szB
+         8Jhw==
+X-Forwarded-Encrypted: i=1; AJvYcCWljRN18bwvB4GGzTASjrJ88UaP2b8z3UakbJM5VEtR51rTch2k84PEPXiEDLnkOoM2XPSbdkhT/bB8syEESnUvzrKjmAABO/1oVrTDpJjd4QXLLhCP1x9BnOTLBxGDxZTG1PHQMuDMW+8PW1w=
+X-Gm-Message-State: AOJu0YyxxQ1zVZCb/kJI6ClGb+zSFbZhWZt+AGrQ0Kt+xuJmrIZ1M3Eb
+	ACVwd7DKmyF7BU+kY9CYy6ebpoxjMrWQXnxKXERc8LYzio8nC2Fd
+X-Google-Smtp-Source: AGHT+IHxB9l5av8Bx0kfv3foIdkebE7MTO93/hxxyc6mc7fKbsRxLP+xrogJhr3js/bSJTDlVihjSA==
+X-Received: by 2002:a05:6602:6c11:b0:7eb:b188:1c96 with SMTP id ca18e2360f4ac-7f3a74da8f3mr1495360639f.5.1719443136282;
+        Wed, 26 Jun 2024 16:05:36 -0700 (PDT)
+Received: from localhost (h135-131-130-199.ashwwi.broadband.dynamic.tds.net. [135.131.130.199])
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4bb6649d850sm37306173.51.2024.06.26.16.05.35
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 26 Jun 2024 16:05:35 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date: Wed, 26 Jun 2024 18:05:34 -0500
+Message-Id: <D2ABPZ1ZUV95.1GDPY1XYSGCM@gmail.com>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
+ <alex.gaynor@gmail.com>, "Wedson Almeida Filho" <wedsonaf@gmail.com>,
+ "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
+ <benno.lossin@proton.me>, "Andreas Hindborg" <a.hindborg@samsung.com>,
+ "Martin Rodriguez Reboredo" <yakoyoku@gmail.com>, "Trevor Gross"
+ <tmgross@umich.edu>, "Aswin Unnikrishnan" <aswinunni01@gmail.com>, "open
+ list:RUST" <rust-for-linux@vger.kernel.org>, "open list"
+ <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 2/4] rust: Enable test for macros::module
+From: "Ethan D. Twardy" <ethan.twardy@gmail.com>
+To: "Alice Ryhl" <aliceryhl@google.com>
+X-Mailer: aerc 9999
+References: <20240624030327.90301-1-ethan.twardy@gmail.com>
+ <20240624030327.90301-3-ethan.twardy@gmail.com>
+ <CAH5fLghDZdt57SShnzUx_ZeBquqm-3fah3CK9YAwMYHAJdteQw@mail.gmail.com>
+In-Reply-To: <CAH5fLghDZdt57SShnzUx_ZeBquqm-3fah3CK9YAwMYHAJdteQw@mail.gmail.com>
 
-On Wed, 26 Jun 2024 10:48:23 +0200
-Alice Ryhl <aliceryhl@google.com> wrote:
+On Mon Jun 24, 2024 at 3:32 AM CDT, Alice Ryhl wrote:
+> It may be worth to call out in the commit message that you are
+> changing what the example does. (But the change is good - this form of
+> kernel parameters were never upstreamed.)
+>
+> With the commit message updated:
+>
+> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+>
+> Oh, also, you don't want an empty line between } and `# fn main() {}`
+> as it will show up as a weird empty line at the end of the example.
+>
+> Alice
 
-> >
-> > Because your hooks/rust_binder.h and events/rust_binder.h use the same
-> > TRACE_SYSTEM name? Could you try something like:
-> >
-> >         #define TRACE_SYSTEM rust_binder_hook
-> >
-> > in your hooks/rust_binder.h?  
-> 
-> I was able to get it to work by moving the includes into two different
-> .c files. I don't think changing TRACE_SYSTEM works because it must
-> match the filename.
-
-Try to use:
-
- #define TRACE_SYSTEM_VAR rust_binder_hook_other_name
-
-in one. Then that is used as the variable for that file.
-
--- Steve
+I have these changes made locally and will send with v2. Thank you!
