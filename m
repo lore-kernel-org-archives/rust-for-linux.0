@@ -1,167 +1,124 @@
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F595153814
-	for <rust-for-linux@vger.kernel.org>; Fri, 28 Jun 2024 09:06:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4405313FD9C
+	for <rust-for-linux@vger.kernel.org>; Fri, 28 Jun 2024 09:12:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719565622; cv=none; b=mSZT4jzxodTRBlSkzrVNTBiELkVuRHGI3IqovZ6Tx/QpXlfu6x0jk4tJ/lE+hODjFBn5KzjSefA8xr806Hl4XQmtoZtrto/hl5mwN1ynnB9M6GtFITml+slxDCNZP/S14DsgB6Rp2fAsA4dLacw2pYq8uRhFHF7h9qnwWfMP6Ac=
+	t=1719565932; cv=none; b=VWE7N88MpcH0me6+BVn2xboa16xy5kUFAO34RWBaCXaeC8utqYOJOtQwjx3hThcPpzRhiXbxLK/3uRU0BV32a7GJOPdbvP77voZ1EMUkV2MmshlqCUcgXFn7J2GTBCOqrHzrGQVDQz6IhUN16NVsI8fKiGzaZpRUgbsdNPYnMDs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719565622; c=relaxed/simple;
-	bh=6lILPXsSnuRcIB/1aRICDr7E5gU8xTfXClxW1Kv+tcQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BEuFOVcDK40/A+UH08zCEOs0TCyCfj7ps1DXxE4kJyWsxduYu4C6Iek1B3zQCnhtmyi4YLnipI+Q7U2SB/Y8hjLTdAP3vXk1PuZtItqIJef2DpvlKawo8Fx4sKK4SwLYnt4UaR83C0inNdCp+Kr40f0ULRA7F/VAVfCtlDMs+3w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=3tt+TQqm; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1719565932; c=relaxed/simple;
+	bh=PCo0ch/K5cV4qtz92YLrZCNpDJeKxdLKbj4Byj/RJr8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mgOSniMdz1JpubIBYtmxC5ne4H1wCeB7TvVT7hWDRhQfhhURCRwVf4UHr4bYxLd4Uq3ijrBmQJ6ni9aQDTwzz4r5XHzK0htY15aFKyfnlt9weBNyrzYQPQrtlCuN0szJqssyUCIiCtGU/18AnZ5T38MHYX4xQYfZhQvMP8v9VGA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk; spf=none smtp.mailfrom=metaspace.dk; dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b=DKUCg4il; arc=none smtp.client-ip=209.85.128.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=metaspace.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=metaspace.dk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3tt+TQqm"
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-424720e73e1so3233665e9.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 28 Jun 2024 02:06:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=metaspace-dk.20230601.gappssmtp.com header.i=@metaspace-dk.20230601.gappssmtp.com header.b="DKUCg4il"
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-42564316479so2842365e9.2
+        for <rust-for-linux@vger.kernel.org>; Fri, 28 Jun 2024 02:12:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1719565618; x=1720170418; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=E9XuEmOGKQmnl44REDZJmwUjYzwybPJMiDqkTMARv5k=;
-        b=3tt+TQqm9H+hvHvRw7ccI2Oo6nQXQQE9yu9wC+Q+iSLf5Zc0iE2Bl912zkjMiBJnqk
-         VWRSr3ymgsntgvf3zCENLNYs5XAdQq5SmQ6v7mRQ7CAUVxS5mrVLxD1OQj66s5JP9XLu
-         UoHlmpyacSOr+/mwdjricc6g5hm+F6B0Iink9vuz9c6ThNtwiJ3Hs//S2uSrYveRAQv9
-         QnkrYMAyav1DT0mnEWhc8Coj1ULXG9D/ioYzCtxZgTADvJ3C08NHX+KozSURWF3i6AZN
-         K7x0EgCE7OeiRmDcV2vv01fOp8F64tP9WkdX19MnAi5U++lBU/8x6POmbHubaOrveG4G
-         aShg==
+        d=metaspace-dk.20230601.gappssmtp.com; s=20230601; t=1719565927; x=1720170727; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=gReKHraiJioXX+0nn2hR0b48w9MDTmOAPv5i1yeBpkk=;
+        b=DKUCg4il16O7BGG8uXtWYThS5s8xrdxu66xEUmb6Ov7FoUB+P6sfsMzpyZGQriZQ/t
+         VuYnA8WlfIhzJQ/mmX+C3OBZ/kcsj/D4XBea5u7zdwgYut9eQC171zHcm4Tc+3vW10MD
+         22hegD8yeZsXFFv5lQn+tueNLfcILSiy1RqnI4miLkdCcB0A8ofBVLP6Be6mm5XiFZBH
+         Rns89d5KETNf6LXUHCgXXZzLRZC6tl7lVFTBykBt+yD11lWWLqJG8fPRq11nuRknEW2Y
+         TFvM8jveFNBA1VoLozUUfZGWFuq50CNxF96Gz/wTdDrOwJWIs3R1HBPwcTIGnZodnTqO
+         KtJg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719565618; x=1720170418;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=E9XuEmOGKQmnl44REDZJmwUjYzwybPJMiDqkTMARv5k=;
-        b=dkNX75t/jhbhRGrpJphLs4DN0LT5YYicA3C0+yY1ql7d/cCt3fKe2oaJw0PO+d//LK
-         licGdlIolFxpW8azV6pFLkluU6MqBQsNgBhbQ+boHQBj8JhYSsOmNCXnRoDaFx8C47Zf
-         v5B2IQsqmSlCck1B4UsaF+PXANGh3gxoPtDVwEuPC4u7t7bVffkXcCVcL8lfINUrRV12
-         46PmkaKZM+/WcPLCrva9uI7toSekLouKchADbtukUAx5r/oBqPAO9bJoA51NGAPFGIsl
-         4Wp0LVZI98oGpBm+5L80IrmuH5Cl/qNvxb40/Jn94IBc71XD6JuqT6bAZsLvDjQn/ltD
-         8VOA==
-X-Forwarded-Encrypted: i=1; AJvYcCWaOY53IDgtaBhAh7ZBGCKnO4U+GVOI77osVz/6a3j9QCUwdCkyElBYr6S1taFeST5f6TuU6QpgRrX4XFeMB/ZYs9eyUGirQhngDgVB+i4=
-X-Gm-Message-State: AOJu0Yx/LYyTtyr9RyE3w9+jL+bN13B0YfOb6l6xzjwlE1bMg+48aVxM
-	Hh0QmSEYMw7L1Vt6mf+D9UIjEx9GH9sDr34SAMIWzwMIELsROPDxIVBHq4RY9uugdwExGObS6+E
-	Ya3HlW8PxiZ8VT9rO8FgsTuh1jxMuOi0Zxazd
-X-Google-Smtp-Source: AGHT+IH7t15ZxEn2LETHAyDOXDZSewj9x0ofxPVWbHBdCjBgMBIveOKBhoflOM22vJXoMJ9CySG9QwFCPP9ol/FJosc=
-X-Received: by 2002:a05:6000:dcd:b0:35f:1c34:adfc with SMTP id
- ffacd0b85a97d-366e96bf06bmr10949760f8f.67.1719565618293; Fri, 28 Jun 2024
- 02:06:58 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1719565927; x=1720170727;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=gReKHraiJioXX+0nn2hR0b48w9MDTmOAPv5i1yeBpkk=;
+        b=n8dYRBDqHdDaKZyjeXcAX35lYlqNyYbbPB4iAbi9cikfhFwIczMezBWefJrL3F46pC
+         0nd2Hs6FzXJoMem8ZRzMS1X3wESt6iiHWMxeWk1KfiC4F1l99YYfnyEd+EYDNGhhbhwt
+         xtXi0wWj8GPw2a3HpA9NoWKVXh0SixsQjLK+QzpLJncLF+MTEGIByC/O11ZySFTOxlGf
+         HCEqaNQynerYefwAZPVlFpMCcgwoKgv3OadVIVbA/Kvrzkm8Hl0g9oCEQXl6ky0Ic1jt
+         3nMW6lUU/m2Y3WcgWTcXnrSuoxpGRGkb7AfnHFK4Uzi+AaRpr9GFHPFJ1HSnijt44565
+         1POQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXEyQ4MHrEApwCODvipq0haFwdR0KUSPL4g6LQ26hNc/+V55s3f/4E3aI20ZgK+b0VZCiexVvM+Qu4Ro9v1Ql07gouBQ16Q7mvrPHdD4PQ=
+X-Gm-Message-State: AOJu0YyfMyi1AhKLOV37eqWbtDno4ieWDuGZn25X7wHQYMSCksC4NXLS
+	53aKxdRYML83aUeID8sbrmLUQnjEsdBLCrwj6iRy3tzaP35DdGouCPxBwd+0mfM=
+X-Google-Smtp-Source: AGHT+IH1BQ1L9JwoTn32tEYpbdOBhXvNVZ8PPxOwy/tYMxfMbTMsDdU3wz6CM8jY4UqVEfbTMZgUrQ==
+X-Received: by 2002:a05:600c:2153:b0:424:ad2a:1055 with SMTP id 5b1f17b1804b1-424ad2a10aamr62544065e9.15.1719565927312;
+        Fri, 28 Jun 2024 02:12:07 -0700 (PDT)
+Received: from localhost ([147.161.155.79])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4256af38a0asm26506765e9.1.2024.06.28.02.12.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 28 Jun 2024 02:12:06 -0700 (PDT)
+From: Andreas Hindborg <nmi@metaspace.dk>
+To: Jens Axboe <axboe@kernel.dk>,
+	"linux-block @ vger . kernel . org" <linux-block@vger.kernel.org>
+Cc: Christoph Hellwig <hch@lst.de>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	rust-for-linux@vger.kernel.org,
+	Andreas Hindborg <a.hindborg@samsung.com>
+Subject: [PATCH] rust: block: fix generated bindings after refactoring of features
+Date: Fri, 28 Jun 2024 11:11:52 +0200
+Message-ID: <20240628091152.2185241-1-nmi@metaspace.dk>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240619192131.do.115-kees@kernel.org> <20240619193357.1333772-4-kees@kernel.org>
- <cc301463-da43-4991-b001-d92521384253@suse.cz> <202406201147.8152CECFF@keescook>
- <1917c5a5-62af-4017-8cd0-80446d9f35d3@suse.cz> <Zn5LqMlnbuSMx7H3@Boquns-Mac-mini.home>
- <c5934f76-3ce8-466e-80d1-c56ebb5a158e@suse.cz>
-In-Reply-To: <c5934f76-3ce8-466e-80d1-c56ebb5a158e@suse.cz>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Fri, 28 Jun 2024 11:06:45 +0200
-Message-ID: <CAH5fLggjrbdUuT-H-5vbQfMazjRDpp2+k3=YhPyS17ezEqxwcw@mail.gmail.com>
-Subject: Re: [PATCH v5 4/6] mm/slab: Introduce kmem_buckets_create() and family
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Kees Cook <kees@kernel.org>, 
-	"GONG, Ruiqi" <gongruiqi@huaweicloud.com>, Christoph Lameter <cl@linux.com>, 
-	Pekka Enberg <penberg@kernel.org>, David Rientjes <rientjes@google.com>, 
-	Joonsoo Kim <iamjoonsoo.kim@lge.com>, jvoisin <julien.voisin@dustri.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Hyeonggon Yoo <42.hyeyoo@gmail.com>, Xiu Jianfeng <xiujianfeng@huawei.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Kent Overstreet <kent.overstreet@linux.dev>, 
-	Jann Horn <jannh@google.com>, Matteo Rizzo <matteorizzo@google.com>, Thomas Graf <tgraf@suug.ch>, 
-	Herbert Xu <herbert@gondor.apana.org.au>, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-hardening@vger.kernel.org, netdev@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1205; i=a.hindborg@samsung.com;
+ h=from:subject; bh=FI75m/0Mm0ozDMrFAxnTU/YHbJfNFGdUEoZhhb7aZ7I=;
+ b=LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgpvd0o0bkFGdEFwTDlrQTBEQUFvQjRiZ2FQb
+ mtvWTNjQnl5WmlBR1orZmhhTUl4bnVuWVJqWktIQ28rY291ZE5FClJwTURjMFF2eWFVb0xRMnpO
+ am1EOVlrQ013UUFBUW9BSFJZaEJCTEIrVWRXdjN3cUZkYkFFdUc0R2o1NUtHTjMKQlFKbWZuNFd
+ BQW9KRU9HNEdqNTVLR04zWWVzUUFLOFpuczBFRVNYQkRVQVp6b2dLZElLWU5raFlkS0M3K2hrbA
+ pNenVmSnNWcHdodDBGVmhvVkl6SHdkM2hadzVGVndNMWVmY21SRG5yZWNVd1FQMWYvb2NYK21zd
+ Vg4MGVyOERICmR5M2V0QStNNVlESGhadElyT2QzdEcyTmFrTFgveTRVYUZRTW1INnN2WjNXZ1ZK
+ eEpweGxZZUtuTmRhWldhWXYKbWNDa2ZhVWd4dFNwQit3R3d3enVBVThZVFJrc2JFaUtMcDQwd1l
+ uMWNld3JjaS9nbE95RFZpOU1va0ttZG9VSQp3UVhyTnZLcWdKZmJGa1JDSDNCRjdHSysxSXJ5bm
+ RadDViUWR3eWRFbGpOZ1k1U1I3aVhrV0QwWVMxVTNLdEZPCkZLQnk0aENaWEFaZFlXdzN1dXdEd
+ 2MwaVNONTEvc25Vek1NdFRFbUpweDFrekpSWkFNWTVJTHNiZ3k2NlVoemgKL2IyL20wNlc4bGJt
+ YmdaNk9WYkNQQkUrRlhiMm5KTjVnUlJoQVJGRVdOMWxCeVFFVXpWZ0RNRGJaK1FoZVAvTwpEL3h
+ vWUVjLzFvam9kSG96UjgyTThFTGJFMTdaeWJNeHQ3L0s5TGdhT1ozL1Nybk5GTlFFbnRhNkpTL2
+ dBMXZRCkt0bHpyd1MyRDhDdXNsM01VeGtwSXFERlYzSk4vbVdnQXA1OFAyRlA3NU5OWVhSRVZGM
+ FlYcFN0aEo5Qmg4RXIKOXBmamxpSG9PMzdXZThISURzdVFLcDk0a3ZrUm1Ma2U1SHE4aTEwT2pz
+ dE9iNXUxakRlbHhvTlNwcExPQUUrbApSbkNZNi8wZ2dkeFRXeThJNWRXeUxVNmNPWVhyaERiM05
+ yWjFhSmxnMCtBRllmYi9zVkVOc2toczRscEJqWWVXCkVoamw3Q1FpWUxrZGVRPT0KPW1najUKLS 0tLS1FTkQgUEdQIE1FU1NBR0UtLS0tLQo=
+X-Developer-Key: i=a.hindborg@samsung.com; a=openpgp; fpr=3108C10F46872E248D1FB221376EB100563EF7A7
+Content-Transfer-Encoding: 8bit
 
-On Fri, Jun 28, 2024 at 10:40=E2=80=AFAM Vlastimil Babka <vbabka@suse.cz> w=
-rote:
->
-> On 6/28/24 7:35 AM, Boqun Feng wrote:
-> > On Thu, Jun 20, 2024 at 10:43:39PM +0200, Vlastimil Babka wrote:
-> >> On 6/20/24 8:54 PM, Kees Cook wrote:
-> >> > On Thu, Jun 20, 2024 at 03:56:27PM +0200, Vlastimil Babka wrote:
-> >> >> > @@ -549,6 +549,11 @@ void *kmem_cache_alloc_lru_noprof(struct kme=
-m_cache *s, struct list_lru *lru,
-> >> >> >
-> >> >> >  void kmem_cache_free(struct kmem_cache *s, void *objp);
-> >> >> >
-> >> >> > +kmem_buckets *kmem_buckets_create(const char *name, unsigned int=
- align,
-> >> >> > +                                 slab_flags_t flags,
-> >> >> > +                                 unsigned int useroffset, unsign=
-ed int usersize,
-> >> >> > +                                 void (*ctor)(void *));
-> >> >>
-> >> >> I'd drop the ctor, I can't imagine how it would be used with variab=
-le-sized
-> >> >> allocations.
-> >> >
-> >> > I've kept it because for "kmalloc wrapper" APIs, e.g. devm_kmalloc()=
-,
-> >> > there is some "housekeeping" that gets done explicitly right now tha=
-t I
-> >> > think would be better served by using a ctor in the future. These AP=
-Is
-> >> > are variable-sized, but have a fixed size header, so they have a
-> >> > "minimum size" that the ctor can still operate on, etc.
-> >> >
-> >> >> Probably also "align" doesn't make much sense since we're just
-> >> >> copying the kmalloc cache sizes and its implicit alignment of any
-> >> >> power-of-two allocations.
-> >> >
-> >> > Yeah, that's probably true. I kept it since I wanted to mirror
-> >> > kmem_cache_create() to make this API more familiar looking.
-> >>
-> >> Rust people were asking about kmalloc alignment (but I forgot the deta=
-ils)
-> >
-> > It was me! The ask is whether we can specify the alignment for the
-> > allocation API, for example, requesting a size=3D96 and align=3D32 memo=
-ry,
-> > or the allocation API could do a "best alignment", for example,
-> > allocating a size=3D96 will give a align=3D32 memory. As far as I
-> > understand, kmalloc() doesn't support this.
->
-> Hm yeah we only have guarantees for power-or-2 allocations.
->
-> >> so maybe this could be useful for them? CC rust-for-linux.
-> >>
-> >
-> > I took a quick look as what kmem_buckets is, and seems to me that align
-> > doesn't make sense here (and probably not useful in Rust as well)
-> > because a kmem_buckets is a set of kmem_caches, each has its own object
-> > size, making them share the same alignment is probably not what you
-> > want. But I could be missing something.
->
-> How flexible do you need those alignments to be? Besides the power-of-two
-> guarantees, we currently have only two odd sizes with 96 and 192. If thos=
-e
-> were guaranteed to be aligned 32 bytes, would that be sufficient? Also do
-> you ever allocate anything smaller than 32 bytes then?
->
-> To summarize, if Rust's requirements can be summarized by some rules and
-> it's not completely ad-hoc per-allocation alignment requirement (or if it
-> is, does it have an upper bound?) we could perhaps figure out the creatio=
-n
-> of rust-specific kmem_buckets to give it what's needed?
+From: Andreas Hindborg <a.hindborg@samsung.com>
 
-Rust's allocator API can take any size and alignment as long as:
+Block device features and flags were refactored from `enum` to `#define`.
+This broke Rust binding generation. This patch fixes the binding
+generation.
 
-1. The alignment is a power of two.
-2. The size is non-zero.
-3. When you round up the size to the next multiple of the alignment,
-then it must not overflow the signed type isize / ssize_t.
+Fixes: fcf865e357f8 ("block: convert features and flags to __bitwise types")
+Signed-off-by: Andreas Hindborg <a.hindborg@samsung.com>
+---
+ rust/bindings/bindings_helper.h | 2 ++
+ 1 file changed, 2 insertions(+)
 
-What happens right now is that when Rust wants an allocation with a
-higher alignment than ARCH_SLAB_MINALIGN, then it will increase size
-until it becomes a power of two so that the power-of-two guarantee
-gives a properly aligned allocation.
+diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+index 84f601d7068e..6deee85a29c8 100644
+--- a/rust/bindings/bindings_helper.h
++++ b/rust/bindings/bindings_helper.h
+@@ -9,6 +9,7 @@
+ #include <kunit/test.h>
+ #include <linux/blk_types.h>
+ #include <linux/blk-mq.h>
++#include <linux/blkdev.h>
+ #include <linux/errname.h>
+ #include <linux/ethtool.h>
+ #include <linux/jiffies.h>
+@@ -28,3 +29,4 @@ const gfp_t RUST_CONST_HELPER_GFP_KERNEL = GFP_KERNEL;
+ const gfp_t RUST_CONST_HELPER_GFP_KERNEL_ACCOUNT = GFP_KERNEL_ACCOUNT;
+ const gfp_t RUST_CONST_HELPER_GFP_NOWAIT = GFP_NOWAIT;
+ const gfp_t RUST_CONST_HELPER___GFP_ZERO = __GFP_ZERO;
++const blk_features_t RUST_CONST_HELPER_BLK_FEAT_ROTATIONAL = BLK_FEAT_ROTATIONAL;
 
-Alice
+base-commit: 9c6e1f8702d51f233402d1aac96cdde8c6bf2877
+-- 
+2.45.2
+
