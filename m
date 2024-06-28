@@ -1,66 +1,95 @@
-Received: from gimli.kloenk.de (gimli.kloenk.de [49.12.72.200])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oa1-f41.google.com (mail-oa1-f41.google.com [209.85.160.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06CC1D27E;
-	Fri, 28 Jun 2024 19:05:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.12.72.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B10CC7CF25
+	for <rust-for-linux@vger.kernel.org>; Fri, 28 Jun 2024 20:36:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719601543; cv=none; b=GRAmZtAuYd3ZybOSi916WPjfnuDGxmH25SpEYaB5JVRGzkZPN1zA9dklVptDaut/Zk8t4+n19Vora7gwjAQ7fFDjGyM2HQyixETjJ4YPdLiA1n3FaUKtRPtdFIkuz1c22ggF7eiMZRPvL9RU5mRbAAp7npPzmlKLfQBv+7oPZmg=
+	t=1719606970; cv=none; b=s/w8kFPgv47ns19NrGHwj0RM05ckldEIXC6xvbetSLlToZv+Fugtujptbz+KTntGxM+/EVx04/qgxro7nEFHLdOnVhRalwSj9Y+8uYZMea8WOPkfn9wJu+FrVAL2BGM/lawXfMN/xRauJdUtvenskf9/4tvtcN87eJgw/TV+LGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719601543; c=relaxed/simple;
-	bh=dh4pMsSHJ0VE/SuGxQIQ1tXjHqDJcjcOdDwNBCGSjAk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NtUvJpFd8SyXb8Vcwr4axYADQLb9TAdGYd8OXWAzivbZKK9EPzWmc7kbtXxW+x3UjAUHmUJ33zib6IOLMzfs1BJ25YVXl3bqqD2G+XCKS3UcZXrwK9NZUpuWxDFQSB9Xcwf9xaIvO3rQTjbgAL/eXXu1NHOgVyLDLVStxvRlrQk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev; spf=pass smtp.mailfrom=kloenk.dev; dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b=iKrdH93O; arc=none smtp.client-ip=49.12.72.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kloenk.dev
+	s=arc-20240116; t=1719606970; c=relaxed/simple;
+	bh=yrYs3zAVNq2kwCVGuRx1pSvpf151YbkI4EAnWLUAmvw=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=SvcJKkpqKW7a7MJFzU+mFE7+QhdVy0NxvIEGc25MbSszc4zGddJygXxgf1nw54FazMvhGHA2RmrfERH8lKnVdwxarvZ/UPl1YSP7JkW2v1ytL02BeWmZ7iUUU1p9r/HI9WigWQ1NR8Ofj4OmKhJIZAZcCN98qL3MQX/PviJs3qE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=O5YfIGGo; arc=none smtp.client-ip=209.85.160.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b="iKrdH93O"
-From: Finn Behrens <me@kloenk.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kloenk.dev; s=mail;
-	t=1719601528; bh=dh4pMsSHJ0VE/SuGxQIQ1tXjHqDJcjcOdDwNBCGSjAk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=iKrdH93OT4IbK6VXcXrM3AIeDOGS0myc62WrqdZqPMgcGolEZiXPemyAmZRuRA8mC
-	 bWgdOOV9IwnO9CC9BLGGoRfDCT+bj3c0epn7gWvD8pAGj6WaZTokmEiwKC6FfG8rW/
-	 ZWWeJri5nf6o2V6yd242Q0UjoiqwCKuIhImjG3js=
-To: John Hubbard <jhubbard@nvidia.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Greg KH <greg@kroah.com>,
- Masahiro Yamada <masahiroy@kernel.org>,
- Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>,
- linux-kbuild@vger.kernel.org, rust-for-linux@vger.kernel.org,
- LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v3 2/2] Makefile: improve comment documentation for the
- rust-analyzer target
-Date: Fri, 28 Jun 2024 21:05:26 +0200
-Message-ID: <23596EED-9730-4D0E-BD54-FB4CBE78ED95@kloenk.dev>
-In-Reply-To: <20240628004356.1384486-3-jhubbard@nvidia.com>
-References: <20240628004356.1384486-1-jhubbard@nvidia.com>
- <20240628004356.1384486-3-jhubbard@nvidia.com>
+	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="O5YfIGGo"
+Received: by mail-oa1-f41.google.com with SMTP id 586e51a60fabf-254925e6472so107168fac.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 28 Jun 2024 13:36:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1719606968; x=1720211768; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=HXjPL4lzWlI7eeaad+faprpE9Kk5VhEtAm4oytxFR08=;
+        b=O5YfIGGoOxcS1H9S8k3UzhlwKY9VjUGLVXPsjyV+cX0Sl7P6Q7hEytSI3Uar0Drb9x
+         gCwCM8CJf4WXz+gxU9Af0Rbc31/Q07GIgszhEg1ywjN9Uy9xhqwIATdKfMIKMA+zGFwS
+         LWLSN6jHlyCdQc5lOmbJc3bXMmeChJxoGeRXwvVgz4E9/OxOS/cw50FRSZinkzSE9AJV
+         PxMIws9jtS0P/9FmLhu58q/BL3RCFPPUeMev15gsH73NBM4Y5PSqBwaohqS5n4Ac/E0r
+         xms4vy7YXqe2qLZxKg1wTUl3nLRRjoM2wRV2B4f1245nKsSerEpfEwRaqyN9x3nG4dpr
+         SNdQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719606968; x=1720211768;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=HXjPL4lzWlI7eeaad+faprpE9Kk5VhEtAm4oytxFR08=;
+        b=W82qluugAMf8/eDgd+rwWFMr0dVxRc0+Vw0tVPjwxvrirfAhqrpujcrx6dQ3xM7gcv
+         rNIy9yyJMKKcjIxWQQLErirW31OsKmhM+oGruPUGMIkWPtyjSOuyI7AsHJ1NZO1QtXQN
+         wIj4tukB2CD2NrEJHdLsx8FLl7nd8KjlShF8oD+ks7P5FETfRXCJiPpTyJVMtipAPNl3
+         pTYrY6BvVwdNJ0yfB3NfPoKjBK1junvsSEmHrsx0wQNlp7VwtIZZ2tPydyC7r0/Lit/U
+         LM0yC+HyE5FxmjVY2VFR2Kb/qUUlezxepZglAfUc5dY3nMiSpbWDAmtPTGsij+dWtcNP
+         lxPw==
+X-Forwarded-Encrypted: i=1; AJvYcCWJtLGKnef7vjfUH6j88ZDiB5wjSjqxP9pFf9WcE9KUzg+zYGMQIeD/cymlezYmUC66ZrVhY+zCt18khVWNO6c4U27mSqVNvJhFi9ABMsk=
+X-Gm-Message-State: AOJu0YwLeTYZsW+Dga/UbHUMRvkzY0/f572d2J14D5XE5uAMfJcsWvjf
+	wUJd6EXoho6ushA+ft1Y02iKq44DZoVuF4gNEjTus5ZUUtGyVQ+TBUOs/xj0TppuJIYVM7kYc6X
+	+X9k=
+X-Google-Smtp-Source: AGHT+IHjfrwNSbJ4RZgns/gNJ6BkxPazhuod6QRaKqFrsMPvegUYFHfIEbIG1j06uuW36wHeHnLcTg==
+X-Received: by 2002:a4a:dc90:0:b0:5c4:24e0:26cd with SMTP id 006d021491bc7-5c424e02941mr2735657eaf.1.1719606967865;
+        Fri, 28 Jun 2024 13:36:07 -0700 (PDT)
+Received: from [127.0.0.1] ([96.43.243.2])
+        by smtp.gmail.com with ESMTPSA id 006d021491bc7-5c4149c37c4sm367003eaf.42.2024.06.28.13.36.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 28 Jun 2024 13:36:07 -0700 (PDT)
+From: Jens Axboe <axboe@kernel.dk>
+To: "linux-block @ vger . kernel . org" <linux-block@vger.kernel.org>, 
+ Andreas Hindborg <nmi@metaspace.dk>
+Cc: Christoph Hellwig <hch@lst.de>, Miguel Ojeda <ojeda@kernel.org>, 
+ rust-for-linux@vger.kernel.org, Andreas Hindborg <a.hindborg@samsung.com>
+In-Reply-To: <20240628091152.2185241-1-nmi@metaspace.dk>
+References: <20240628091152.2185241-1-nmi@metaspace.dk>
+Subject: Re: [PATCH] rust: block: fix generated bindings after refactoring
+ of features
+Message-Id: <171960696681.897195.304829009055681051.b4-ty@kernel.dk>
+Date: Fri, 28 Jun 2024 14:36:06 -0600
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.0
+
+
+On Fri, 28 Jun 2024 11:11:52 +0200, Andreas Hindborg wrote:
+> Block device features and flags were refactored from `enum` to `#define`.
+> This broke Rust binding generation. This patch fixes the binding
+> generation.
+> 
+> 
+
+Applied, thanks!
+
+[1/1] rust: block: fix generated bindings after refactoring of features
+      commit: 5b026e34120766408e76ba19a0e33a9dc996f9f0
+
+Best regards,
+-- 
+Jens Axboe
 
 
 
-On 28 Jun 2024, at 2:43, John Hubbard wrote:
-
-> Replace the cryptic phrase ("IDE support targets") that initially
-> appears to be about how to support old hard drives, with a few sentences
-> that explain what "make rust-analyzer" provides.
->
-> Cc: Alice Ryhl <aliceryhl@google.com>
-> Cc: Finn Behrens <me@kloenk.dev>
-> Acked-by: Miguel Ojeda <ojeda@kernel.org>
-> Signed-off-by: John Hubbard <jhubbard@nvidia.com>
-
-Reviewed-by: Finn Behrens <me@kloenk.dev>
