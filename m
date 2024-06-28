@@ -1,201 +1,182 @@
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2063.outbound.protection.outlook.com [40.107.237.63])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vs1-f41.google.com (mail-vs1-f41.google.com [209.85.217.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47BFBDDBD;
-	Fri, 28 Jun 2024 00:44:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.237.63
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719535459; cv=fail; b=nwCaqv/8I61gqleZAQKcq0Tx6n2ppfMfN80b+BNyb2x/SKCbsb3OT+S+ycETzxx9qdGeaqZZpPoAxldezzo3uRLqFQLFv2eXYKam1X0hATMPY6I3ot/ftIMcKlev0+/dbDS8ZxTDmm2NuNgPCixv6l5cBxyLtM8OBf8HUhgeQo4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719535459; c=relaxed/simple;
-	bh=v/inXYvnpPInfYnYh+5q01dhkZeWZJZr008Tvq7qVo4=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=S1H0x0w3Mp5H9yH/M8RCpaTgUT+uPsDPWWkok3scEGy/MF/JjwIJ/d+HdbjtBIFPDDinv2Eo+E4Li5+Xqp3TwcDEflxUhMT4tZ9jRBIOyNtFb627bJMAfZyPpd5C8SzF+l5vOURBr3+/Z54EniNKB9xqYhuFzW97Zu5YdNNtqtk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=eHI0h/WX; arc=fail smtp.client-ip=40.107.237.63
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E462249F5;
+	Fri, 28 Jun 2024 05:35:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.41
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1719552945; cv=none; b=urvDHG9w8mXkyXNQhblNKpa6dWHT5DXbk3grQxPtxNnko/t2QbUcMC+dLjTmZ/bX0hTjUKMijDHZ2R/giUtUufoARtIwp//jq3X0xJZsxRDO9dMTMth0rSigYC/M0kzoJgLf2J/fcBOnlBpFW60aCUKNngFBsvQnQ+/0/03VOmI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1719552945; c=relaxed/simple;
+	bh=IlQ4xRDR9vSYKjMYL2WxDtkD3cu6REFBuu+GLyGSAG4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=orfF7QYy/lDaBT6SxP+TqkEXLng2ITZNs83uPaMuk/8+ltECjMd6U5VWTTkd5R+TSfe0DFrQ69tdF8Uw6s7oAsO+uXh8j86lgSQNGaPy5Vk7kp+JGTJ/xVlz0nnjXuaF4Fobd2nRrhS67ulOFkxHFoSSSOSGz1ZzXNmil54/kEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XJqSI7u9; arc=none smtp.client-ip=209.85.217.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="eHI0h/WX"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=koM4WlIwGlF26VdKJSbDk3xNvLyJKzsblC3iSR/bABymt7wIse4u3m2s6X6Qw/s+xaDgNUHw/hDe/kQ0HdOazR6waVMHjnJa8EYNY844bNcKJY64P3MFabp9aLR4qX/BCDrWFGc05duk4imbH0MGBjTebKdkxF0w+MElvu2fafeK+kKpuqWsVSGO2h1bxafWtDqc/6/16uavtDYMvhcqn6ikKbBO8bstJBsuozGJFU4eTHQngNQMxu9KXO3RZCzG7l6ZAZwd4KMl92fZgcPXcTERywlfHcrQ+gDtYvN11pUkh5DAn5zC4lKYNCNKoCS4pE/hoVi/RGuMvVxszfw2Kg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=b8N7hoFYXWoj4Xp9dw1TreVFCrqgSWmdnVzWTgl3ulM=;
- b=Oxs6gBZeNG+nY1u+34AYxLI/Q9ASgFfyRLO7SBzuuzhigp/9L+m7UHpbgTUM+F6gI6noF9xcLHot8/Iho1nvQgTJw2/p+ulTEGOqQAMl7HHl9xSeGdJL9oIbkiDVxLH2k2UA+huOakyTulvp3Zkah2QIrwGNH2OptnFjFSJIhNVHoVMLdd68H52+nA1s0mp8a/8d1z34XXEDgpcSP8TtJXFcNMRsyDYbYrmth6c04iupY03SPJfObLuCO1+0F8cNs9YzCfN0APoXXMDeOBDOMMQkkCfg8caWpmxQirm4oLLZzYJsEAGnhtogJd/hGxjJtMBWO1zVWPjHxgy+eODsfQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=nvidia.com; dmarc=pass action=none header.from=nvidia.com;
- dkim=pass header.d=nvidia.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=b8N7hoFYXWoj4Xp9dw1TreVFCrqgSWmdnVzWTgl3ulM=;
- b=eHI0h/WXUmxH9/nzJPPQhVmKDMMaAps8lIsevudC1AtLcIybp7uxGC12h8PmTpXowDShJFPwi2rw4/CQvRsL1IdcgittTAeZqBNOVPy0o3f1gmkCFiT2VLaAYjjYwNqZe3cZqUdgBpgH6qACiqkKAF+vC1O3cbHTOJH01oNdEg4I77+D66K/3zR0vx3d54PAzMlE1ApIXgKr8100nrwOmoE7nxcMipyidqTIBtvSfdV2EKkJRLVV+ahoSpVlv2iCnkCbLO3yMD/FN/owTv8xGboi2KNKIOsnhvPnSoU2uBYG7X/yc4WEyRLG7eg/er6bUl21eyw1crwpy+jgKyjNLg==
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=nvidia.com;
-Received: from BY5PR12MB4130.namprd12.prod.outlook.com (2603:10b6:a03:20b::16)
- by PH0PR12MB8126.namprd12.prod.outlook.com (2603:10b6:510:299::20) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7719.26; Fri, 28 Jun
- 2024 00:44:03 +0000
-Received: from BY5PR12MB4130.namprd12.prod.outlook.com
- ([fe80::2cf4:5198:354a:cd07]) by BY5PR12MB4130.namprd12.prod.outlook.com
- ([fe80::2cf4:5198:354a:cd07%4]) with mapi id 15.20.7719.022; Fri, 28 Jun 2024
- 00:44:03 +0000
-From: John Hubbard <jhubbard@nvidia.com>
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Greg KH <greg@kroah.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nicolas@fjasle.eu>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Finn Behrens <me@kloenk.dev>,
-	linux-kbuild@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	LKML <linux-kernel@vger.kernel.org>,
-	John Hubbard <jhubbard@nvidia.com>
-Subject: [PATCH v3 1/2] Makefile: rust-analyzer target: better error handling
-Date: Thu, 27 Jun 2024 17:43:55 -0700
-Message-ID: <20240628004356.1384486-2-jhubbard@nvidia.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240628004356.1384486-1-jhubbard@nvidia.com>
-References: <20240628004356.1384486-1-jhubbard@nvidia.com>
-X-NVConfidentiality: public
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: SJ0PR13CA0070.namprd13.prod.outlook.com
- (2603:10b6:a03:2c4::15) To BY5PR12MB4130.namprd12.prod.outlook.com
- (2603:10b6:a03:20b::16)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XJqSI7u9"
+Received: by mail-vs1-f41.google.com with SMTP id ada2fe7eead31-48f5b8cde8cso70213137.2;
+        Thu, 27 Jun 2024 22:35:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1719552943; x=1720157743; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=BD+z54TW9IfkYnjMzOI9a5At2j/hB/YpkVnnQF4DGJY=;
+        b=XJqSI7u9OcCdxdkubtMM7TnEjllGxVVhHvmNdzPOYgOW5Y29YjWKDG/4MJmjYaCHUE
+         z0/SdtiW1srpWZb/v1sw0JP55ddjKJq24H4hAxS2X/ieOCKZpnkrj2I8QS/4SsG41Ik8
+         WhA1e6fbFjV/eBYcohw+tuHWOs6AfJM1/XVWcoAJZaiqcplD7TeujO1fRAdF3Bki961i
+         XTx+3nq9+dpMtxYH9QBgdRjGUNjueor8+GK5y9vnkNBON+kjeOskN8BoT4aKk/jeAEMr
+         L7UK+3isCIjMjt04Vs84DJual1kJgwhfHwH8VqbkotHU7VfI+Jv11dgdwVp7mcMIV6d4
+         AEuA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719552943; x=1720157743;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=BD+z54TW9IfkYnjMzOI9a5At2j/hB/YpkVnnQF4DGJY=;
+        b=a1G1rsPewqRvMy7pshRuLnD4FYG7hKBulFrh4nWX+zeszIfUUoem6MA52z6WOuM7Fd
+         qw11BHivSPuHeaUtp6VlIwchnPU8Gs8k15nz8vdUHPDSYgwigaktcUZY7eyXPZQpvboK
+         QovTBJ+VpmJMLdZdNr6kVUAMdXAu9PpggfYEkEuKoU7b2PfUoMQAuCwaCgU4sJec+PYB
+         dsf29utnvOy7TeoMr5v2RMcwN349xxAVzCy9dk0fk/aY6QafYNJhG2OtXIpNPDAr4nld
+         dHGo/xj5nj4CHyJerG8uVtznMGWxi6DRm567V16qPkY6f5u+oFMurVS1IUMyFEQ5kJyC
+         /5Cg==
+X-Forwarded-Encrypted: i=1; AJvYcCWUgXEqsBal73R7/HlNWLOksAfBxsapEoQJqSuJSQlci85WvkRkA3KXhdvL9OjYB5bfLKG9KkWQKE4i0KjrRLFWFUb0Ra7vsgvKZBz+hz3vDpsK0iI2Xd5Wio9HDuo7FvR0xyONIeYPk4LQFVwEM/JOeUW0KAXDEX0iDJlbBvlq4A358I62wyomcodieen8+NxIXm/GRGHk0edXM+LlK06CP8sBx44=
+X-Gm-Message-State: AOJu0YyUDsxyD6Yl1M6e743kUi8lnt//iR62aEk00T5V53wEQqgdgOYA
+	YrtVdCfw0Etx1q/IQ3QjnfIyDEu2yhD/EAQ8jORKyD0D9nWv67ZB
+X-Google-Smtp-Source: AGHT+IGghsZyTtJONCT4wuQZ86eZ7o7Mbz4W7tvHc+RnW+oKueDx7rXUJ8zzubnuKDPNXOVbgLb+UQ==
+X-Received: by 2002:a05:6102:3585:b0:48f:6581:c16c with SMTP id ada2fe7eead31-48f6581c945mr15269960137.6.1719552942915;
+        Thu, 27 Jun 2024 22:35:42 -0700 (PDT)
+Received: from fauth1-smtp.messagingengine.com (fauth1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-79d69302057sm44472385a.100.2024.06.27.22.35.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 27 Jun 2024 22:35:39 -0700 (PDT)
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
+	by mailfauth.nyi.internal (Postfix) with ESMTP id EA24F1200068;
+	Fri, 28 Jun 2024 01:35:37 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute2.internal (MEProxy); Fri, 28 Jun 2024 01:35:37 -0400
+X-ME-Sender: <xms:qUt-ZmqaHNsCY2ddke710YaM0kHbtOeTvROhMLDkFljAY8kJyWCFgA>
+    <xme:qUt-ZkoXl4v7y-i9DgBt5BfK6akRpGb3_Swe22ybFRdURUKgep28o3nfuG-UazxU3
+    z7vMHdb8DN4R7SdYg>
+X-ME-Received: <xmr:qUt-ZrO-2clO789RFIEUsgbABcBZgAoBl_e63DaPSacY6BZILQ1fKGoy3g>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrtdehgddutddtucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhu
+    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
+    htthgvrhhnpeehudfgudffffetuedtvdehueevledvhfelleeivedtgeeuhfegueeviedu
+    ffeivdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    gsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdei
+    gedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfih
+    igmhgvrdhnrghmvg
+X-ME-Proxy: <xmx:qUt-Zl5w8t43AsFIWsJa-NUmwY_FS7MDCGZSCItXjjLnbYwgUg_6CQ>
+    <xmx:qUt-Zl4QGhUHpmK463Dj9yiRePg2XjDSDMSDQX4xhmCSO_dy8GLfEA>
+    <xmx:qUt-ZlgIXIJvZSu1xj0PWO77UyYnlYyLj2zoZUqVO_WHNMsViaPdMA>
+    <xmx:qUt-Zv4ubKSy75dLhfdDogpBhQQGP5NOZzCsb0cYkQKaGTDfvbUSLw>
+    <xmx:qUt-ZgIDIdN3blAFpx8Bn6eNZrsWDKn09NV2o4P90W4cLiaFbST6-E1U>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 28 Jun 2024 01:35:37 -0400 (EDT)
+Date: Thu, 27 Jun 2024 22:35:36 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: Kees Cook <kees@kernel.org>, "GONG, Ruiqi" <gongruiqi@huaweicloud.com>,
+	Christoph Lameter <cl@linux.com>, Pekka Enberg <penberg@kernel.org>,
+	David Rientjes <rientjes@google.com>,
+	Joonsoo Kim <iamjoonsoo.kim@lge.com>,
+	jvoisin <julien.voisin@dustri.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Hyeonggon Yoo <42.hyeyoo@gmail.com>,
+	Xiu Jianfeng <xiujianfeng@huawei.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Kent Overstreet <kent.overstreet@linux.dev>,
+	Jann Horn <jannh@google.com>, Matteo Rizzo <matteorizzo@google.com>,
+	Thomas Graf <tgraf@suug.ch>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	linux-hardening@vger.kernel.org, netdev@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v5 4/6] mm/slab: Introduce kmem_buckets_create() and
+ family
+Message-ID: <Zn5LqMlnbuSMx7H3@Boquns-Mac-mini.home>
+References: <20240619192131.do.115-kees@kernel.org>
+ <20240619193357.1333772-4-kees@kernel.org>
+ <cc301463-da43-4991-b001-d92521384253@suse.cz>
+ <202406201147.8152CECFF@keescook>
+ <1917c5a5-62af-4017-8cd0-80446d9f35d3@suse.cz>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BY5PR12MB4130:EE_|PH0PR12MB8126:EE_
-X-MS-Office365-Filtering-Correlation-Id: 5ca7803b-c687-4222-d04e-08dc970b684e
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7416014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?+3xxJ1nvGcl6ozf9jOC9Hri17gQLeBMWcC2XfHs1V5+TkqnYT/jUSRQw0Ktw?=
- =?us-ascii?Q?ypPJ+4Mwk4KDlnP9sK+X7VEtDVbV8IVoF2vjn2m8NpoERwEufRZkvgDyyQ+6?=
- =?us-ascii?Q?qnMrvh0nwqPgAHehuMNCMc1+ywL2DE0pvyI44vrslk2VqOfU5VJfzFLz+N/T?=
- =?us-ascii?Q?GbD09zn8C8UnUR9Te0sqHuHNsy4hc4nvhHXksy8b1hVSvgUl2Gf8l4I1cWxm?=
- =?us-ascii?Q?IOfK6gnblwlFRB7gcrOGpo8zCSTyVWS+Wc8q+m7wzEJYtfryAH5b4dI/Zvwr?=
- =?us-ascii?Q?UfbTi9p2CPoBsfSdATZrr/Izf1Zj+wpIsiijW9M5S7UyrA4+XGRCIP4S3dBv?=
- =?us-ascii?Q?SwBnh1k3qgbXhbJ6A8IWFRvffZ3UGDbxcz5s+9m2Th0TFL/WH+Qn8LcjTDpX?=
- =?us-ascii?Q?rKdTytwk2WvASa4YfZjcAyrPckIrltyStuWJVaHeRlUe6iqEWq3osSUr3nm3?=
- =?us-ascii?Q?a2Qw/mxYiHOvB8DfzA9/2hV6m5vsDqlHRS8X2XLP5R4mxqZNtc3VAl3/FM45?=
- =?us-ascii?Q?YWiottwNR27CwdrKzgDRFdTdva7syTpwiaVsnBVLGFY6XOFsdgzg6sBEHE+j?=
- =?us-ascii?Q?m7QONi0HJI0tQubrmfzfJJQOA/83NZJAnhR5KsBqaGG7X0faQExXKCu5CVSW?=
- =?us-ascii?Q?KtV+2318eWhcu3NRKIaCQjr5yCjNcZwHdFJI+Pvg363HsaeAySY3v9u/r2UY?=
- =?us-ascii?Q?46jkWApQ35R8VdTdw+/MoEoPbDGme8U3T527deiJuCOJu2jI7eDSryGxzC0y?=
- =?us-ascii?Q?WNYafU60JwMA4UCnwpUVMDk2/uWW4hb9a7nmCI1EL4N+fTJ6pR+V5+2kN6vx?=
- =?us-ascii?Q?nfPOwIgkcWwejjbzM/mAlaK+LkW0EDgA8uZaRGC/Ow9564uil1bUE3Ml1AU2?=
- =?us-ascii?Q?Ck+0HumzuzCIxL81xBqvxE/ppWKvW9HznK6BNZ+/g4K5fQJPX3cC410EQ+xB?=
- =?us-ascii?Q?M34pInqSMFZMEqtEvG7ZToNkO0EqURk0t0MgjhgVxxlL+Hb1y7fZj7SyEFHO?=
- =?us-ascii?Q?vexOqom49KPg1DvjM4ZEclURBWUrNT5RLVoTeFqpC/W596RAOSBBgJs6wBwl?=
- =?us-ascii?Q?s30A3O7Rmlte40lwvMaIlmSMJSMBzVJS8o5rttkUilojnlyMCCb8XlWCHpZs?=
- =?us-ascii?Q?vlUVx3vBY4aL9fZButOeCUmuYWrqjH6Qb7o7UIzrsORSKjST3NZ75braicHP?=
- =?us-ascii?Q?iD6+qUg+UWP1UskMY4nSN5ja4xSdZ6S78+CQKcL575qTR0b5OAcT1v+C97in?=
- =?us-ascii?Q?LTGGTAKwPJZ0U3fKCV/VdF4fzBvhhGYZKWNZ+Y2xc0JRLtsGW4SIL1EPduCH?=
- =?us-ascii?Q?FOksMJ9ELD9+NFHC9QqMjB7jKmBt7rgGSjX4r64UGu/sIw=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:BY5PR12MB4130.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?d0Zs/e3ef1SZmBvH/nS8iz7YetrwNyGG6NY42iOoPy0SVbUJze8vucUVQaPW?=
- =?us-ascii?Q?I/P5x5sIr3cd7M6oTanbYxVXDohFWt5TFIu+08KHtnCA14QOezBk2bIctgzm?=
- =?us-ascii?Q?I+Ni53W8EDwt5I+n5cZCPitTNZlE4uR5tpRcBNk8cp9jc5wtmxvuUH1FD3Ld?=
- =?us-ascii?Q?84QKIselc5guDGfVAZhuwXDVyQJyNJrGM92W4vSLSGYe+8XyaRhd9JZRxDd5?=
- =?us-ascii?Q?BjmUD1ARasp+C/SMcj0OEhLCckXojOJwp15tvPfoEWiq695nPuW61YiAGNjc?=
- =?us-ascii?Q?qukxxQXFhaSn9jWxk7sgR0qYQTmv6dQ675/4c3DA7vKY+dpYIO+I6dUOODfu?=
- =?us-ascii?Q?0brCpHFAtn0+AI0wL4QBgYPaw7Cp0NLPYF33JxRP6wjNuO11lObfrGFAoiWh?=
- =?us-ascii?Q?yahuQ/JEB0QTT68Q2dyBJPG2CVSUSIDz+gvCvieq8lH+AgWbEVoZjhcq4j5v?=
- =?us-ascii?Q?nVrdHWkFD/64xWrN135ue7aWuj+m3HMVUYl8KwcBcVeTAYu/PxN8vHve7uqw?=
- =?us-ascii?Q?zU3F3K6WXTG9yUc6NUREnsG5YOkdswbx42Pndv3yhaGPZZD+VuB8eu3rAXjr?=
- =?us-ascii?Q?aBSd4O2pEJqa8gPGqy6to3ZWt5g7X/eVkU1yNyTX5FHUC5p6iB7xI3DVIbPq?=
- =?us-ascii?Q?2hWzf8fK5ogFLBHYivszyGTovVCZTdw1mCYIX33E92n7r2TK3OsTh60d1EbW?=
- =?us-ascii?Q?6r425NcfJ2IqeDdiIxVxDdux+Y+YAgoF2F7qGpD8k1zdTuayzcacKPu8dVKB?=
- =?us-ascii?Q?fLOs7dgAqE+n0tgXxA8Cy3XCbrd9Ht6J5D7vHOqQ0RUSstSHSCzIbUxUMHOn?=
- =?us-ascii?Q?bU08qdFTW7nekWjgYgquCk6LdF2oRjafXmEEkcKAnHUWCExTZVhp7829/8Jw?=
- =?us-ascii?Q?Jta0hd9XYvLfKGhD2pyQ2sNSqug7cA0TqqToZrkpfURKYlvFAXbWp88ICJC5?=
- =?us-ascii?Q?tt8HsLdohHRjsIpDf/8Wi5GLtvAbxfWsojktZ9hurZSpSY3KdbjXNMSKASZ3?=
- =?us-ascii?Q?voQcrYw8cWBD8yQJLpNYnJ74oPxoiUndWb01dkkDR1VHmTpeNKzIzaae3qnv?=
- =?us-ascii?Q?3Tff4KXfAEZStbZA/EqCbVqd4O/lS9l5Wi1wEsib+yhG3gXjesgFAjGz192N?=
- =?us-ascii?Q?L80lJa0wZddmX1XYg3aDUCMlJl48NoUyBaWf76jpz1hFGg1XLpNmtMZgN8RJ?=
- =?us-ascii?Q?EUNifM56baGwDhz5dCtBJI6wJwKDX6WR4YnYVkMYIIok+f/lmaYiKf+r3T7s?=
- =?us-ascii?Q?O6XdMDHrtImMYtgZxIrKqvO5QByehv7n32NqGM+3C3PcKe9Jt5ySMQLSFoNy?=
- =?us-ascii?Q?7JtcIT8GtaaV8ASYl7E05xWgU0Q9SSqHckirUgoU9RC2AHaIpIrilGHaKq8k?=
- =?us-ascii?Q?WpNECXX5/Ku/xO0epUkM8qGmTYo47ZUgVTTfIJGAm/AaXyMDEHeEnt5bwCVG?=
- =?us-ascii?Q?bT6Vtvmm0xPjUZzIxRHI0kidDGX29m/J5v0kzPnpAJM4wDqhbP3j/8OTgF7h?=
- =?us-ascii?Q?E07fXe2TXSlvY8LMLQv4qUOGeZRWRxlylO9OLsLtW1iTG0cBHl6lMSHQjIvs?=
- =?us-ascii?Q?p2GT6gAgnac9or49rpL5/Ugrgx/nKOE7jF2kaGVo?=
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 5ca7803b-c687-4222-d04e-08dc970b684e
-X-MS-Exchange-CrossTenant-AuthSource: BY5PR12MB4130.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 28 Jun 2024 00:44:03.0881
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 7tgazDyTPZ/XrKRtzKpUVy4I1CVi79PcovBrmHYSaeaeu+09VBM++pMjQKkwQSoQTwmRnc0iTmRCJJtDJHd59w==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR12MB8126
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <1917c5a5-62af-4017-8cd0-80446d9f35d3@suse.cz>
 
-1) Provide a better error message for the "Rust not available" case.
-Without this patch, one gets various misleading messages, such as:
+On Thu, Jun 20, 2024 at 10:43:39PM +0200, Vlastimil Babka wrote:
+> On 6/20/24 8:54 PM, Kees Cook wrote:
+> > On Thu, Jun 20, 2024 at 03:56:27PM +0200, Vlastimil Babka wrote:
+> >> > @@ -549,6 +549,11 @@ void *kmem_cache_alloc_lru_noprof(struct kmem_cache *s, struct list_lru *lru,
+> >> >  
+> >> >  void kmem_cache_free(struct kmem_cache *s, void *objp);
+> >> >  
+> >> > +kmem_buckets *kmem_buckets_create(const char *name, unsigned int align,
+> >> > +				  slab_flags_t flags,
+> >> > +				  unsigned int useroffset, unsigned int usersize,
+> >> > +				  void (*ctor)(void *));
+> >> 
+> >> I'd drop the ctor, I can't imagine how it would be used with variable-sized
+> >> allocations.
+> > 
+> > I've kept it because for "kmalloc wrapper" APIs, e.g. devm_kmalloc(),
+> > there is some "housekeeping" that gets done explicitly right now that I
+> > think would be better served by using a ctor in the future. These APIs
+> > are variable-sized, but have a fixed size header, so they have a
+> > "minimum size" that the ctor can still operate on, etc.
+> > 
+> >> Probably also "align" doesn't make much sense since we're just
+> >> copying the kmalloc cache sizes and its implicit alignment of any
+> >> power-of-two allocations.
+> > 
+> > Yeah, that's probably true. I kept it since I wanted to mirror
+> > kmem_cache_create() to make this API more familiar looking.
+> 
+> Rust people were asking about kmalloc alignment (but I forgot the details)
 
-    "No rule to make target 'rust-analyzer'"
+It was me! The ask is whether we can specify the alignment for the
+allocation API, for example, requesting a size=96 and align=32 memory,
+or the allocation API could do a "best alignment", for example,
+allocating a size=96 will give a align=32 memory. As far as I
+understand, kmalloc() doesn't support this.
 
-Instead, run scripts/rust_is_available.sh directly, as a prerequisite,
-and let that script report the cause of any problems, as well as
-providing a link to the documentation. Thanks to Miguel Ojeda for the
-idea of just letting rust_is_available.sh report its results directly.
+> so maybe this could be useful for them? CC rust-for-linux.
+> 
 
-The new output in the failure case looks like this:
+I took a quick look as what kmem_buckets is, and seems to me that align
+doesn't make sense here (and probably not useful in Rust as well)
+because a kmem_buckets is a set of kmem_caches, each has its own object
+size, making them share the same alignment is probably not what you
+want. But I could be missing something.
 
-$ make rust-analyzer
-***
-*** Rust compiler 'rustc' could not be found.
-***
-***
-*** Please see Documentation/rust/quick-start.rst for details
-*** on how to set up the Rust support.
-***
-make[1]: *** [/kernel_work/linux-github/Makefile:1975: rust-analyzer] Error 1
-make: *** [Makefile:240: __sub-make] Error 2
+Regards,
+Boqun
 
-Acked-by: Miguel Ojeda <ojeda@kernel.org>
-Reviewed-by: Finn Behrens <me@kloenk.dev>
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-Tested-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: John Hubbard <jhubbard@nvidia.com>
----
- Makefile | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/Makefile b/Makefile
-index 4d36f943b3b1..204e9be0e010 100644
---- a/Makefile
-+++ b/Makefile
-@@ -1970,6 +1970,7 @@ tags TAGS cscope gtags: FORCE
- # IDE support targets
- PHONY += rust-analyzer
- rust-analyzer:
-+	$(Q)$(CONFIG_SHELL) $(srctree)/scripts/rust_is_available.sh
- 	$(Q)$(MAKE) $(build)=rust $@
- 
- # Script to generate missing namespace dependencies
--- 
-2.45.2
-
+> >> I don't think any current kmalloc user would
+> >> suddenly need either of those as you convert it to buckets, and definitely
+> >> not any user converted automatically by the code tagging.
+> > 
+> > Right, it's not needed for either the explicit users nor the future
+> > automatic users. But since these arguments are available internally,
+> > there seems to be future utility,  it's not fast path, and it made things
+> > feel like the existing API, I'd kind of like to keep it.
+> > 
+> > But all that said, if you really don't want it, then sure I can drop
+> > those arguments. Adding them back in the future shouldn't be too
+> > much churn.
+> 
+> I guess we can keep it then.
+> 
