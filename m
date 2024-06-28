@@ -1,273 +1,229 @@
-Received: from mail-lf1-f74.google.com (mail-lf1-f74.google.com [209.85.167.74])
+Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6ADF1BF319
-	for <rust-for-linux@vger.kernel.org>; Fri, 28 Jun 2024 13:24:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9DAA1BF31A
+	for <rust-for-linux@vger.kernel.org>; Fri, 28 Jun 2024 14:57:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719581054; cv=none; b=bYPbm5NHiZMsHK/nLdjo/v86V85EW5rkdJsOFg1bZHXiLOMXu5krGEAzQM1uzSJErkI9SolVsS8Cm4WfJHqqI+giDYDhCuL14vE1UuGOniw3az66/XQOAd8E/pfDu09FLz8c2bsh2D5ae4rwLna47xVM8SLq3QNLsWsy5raT0Ak=
+	t=1719586669; cv=none; b=Fkt/yKNd1gf8AiWECffS1J7/Ort4KSiAAdT4Bh8Oggx65qj8FqdwCtjNPrzQxMaGUZJzu3ojo6rzbQUvR0fIhYzaUiOAlpjUkZKgnoG7pXTPReuW6s8wUhkNKbwlh5qDZ+CRNpG7+AEESZDQnd61qH2GolhtGq7xg+5FT0RjM+4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719581054; c=relaxed/simple;
-	bh=v/CwpANb/enEE59VpWuqO+vG2Bs6iq8UapwpRJZ9hQA=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=oL/fDqsyZiweGP4HyBav181f9dxFgTJ/pxd+cw1xkdEqAXKivocxeGSo9Rq3eolk6ZyraPj08gS5SDgMTrzOQmprhxcm38aOwzXs9dcJaOXdTq/4dVEH9kqfKOnETsh5mezL6Y0i7rozbXagaMIXqP1M7sSZwS00DMoCBcA+x1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=mhCPbRl+; arc=none smtp.client-ip=209.85.167.74
+	s=arc-20240116; t=1719586669; c=relaxed/simple;
+	bh=M3YIVmz5boCkvi0mnE4L1CziPuvjOFE5n9nrA82sjnw=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=iktZZ0/M17zhO/CAmH7tqCjQD0qasAFhJc6zRtWWFh8ZikskzX5U4WAZsh9ytkqd7KrMHhuDPwzbuzr0Otgx/0oRmg7aHHnfWIayNhH/9zsdqtNQ8rlBBlnuP0tQFebriKOzFjrYsLLgTYZ1QNPJhFsMw29PKfsc0kAnxgiUbcM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vuGeR8kB; arc=none smtp.client-ip=209.85.128.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="mhCPbRl+"
-Received: by mail-lf1-f74.google.com with SMTP id 2adb3069b0e04-52e6e454663so757280e87.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 28 Jun 2024 06:24:12 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vuGeR8kB"
+Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-64b9800b377so2737057b3.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 28 Jun 2024 07:57:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1719581051; x=1720185851; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=969O3CWF12Jm+ipcoNEWf7U/TfwGyBpHNp6wtcZC710=;
-        b=mhCPbRl+Q865Z4rS0BVo2alLn8Ijd2NW7qi0Ohjy9K/4NCPei3/bDQ959AisXBRXac
-         67guRJeMdwLpM1La3/1LJHLYHtZ7RS+rz1WM+IPhhTenJEr1MMSbwB4euciSv1b+n2Tt
-         oikN3iEiWBlCegO26ysEbjcEKDGvpDYrqLfT8xVklH3sjCcWvCKiFgmmoNNUjLp4IWUp
-         jJgcHqESwe3n2ugC1xbVqsThkku4iMjHxG/UEO/S6bvI+dR/LrdNyV6QEpTn/vjzzphh
-         ginY2lcAaZg/FF216qEwZsvYzOiwUA3m1X83yU8IyfHsXmkSn0+9cBoLMLQzgeqbEJnV
-         R82A==
+        d=google.com; s=20230601; t=1719586666; x=1720191466; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=NA8HRtt4OeyTIYVrVVw99oYidbVN1cJjouXWxEI7IuA=;
+        b=vuGeR8kBEYJjlLob1BajpQUo+rAAHA9NFcCQ2CXn+aDRRDeISc2w4lY73gxRe2bXLe
+         QzEy49/TQ0kXgzWRhYAHPNnsvwP0J93XstSBZhcCZ4HnKGEqHoDqIE4CRBJPmpO2GHrf
+         dpNWNDbArDJIuz3tTJsFawleuPjEMb/NPq3M+7pdk8SfSKtWVxYFdqIp2D3xFSs2LCE8
+         cWzxJGGTdfr9RNRiuce5E9ghO8wvOfcD0vKcbNSA3MuZP3POEWaD9DlFCBd6Gt5V0k2H
+         FIJMJCTiaSfKCmmg+KXYcyWyaDgev0qjpLKgtSoAceY2ZNr1tZKtU0O3o8k5hWl0UuGt
+         /t2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719581051; x=1720185851;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=969O3CWF12Jm+ipcoNEWf7U/TfwGyBpHNp6wtcZC710=;
-        b=c2vBHJWzvr+JykAq5kZYKkqWo518Dp9CiHunaJRKvLBcT+N1Xazmr2uwM4uAuRXtpg
-         vNQ41UG0ZFgdysrLNgdsT9xMC9W/vmDvFXAyi1FSlyHGSK7QZ9OZz4J/6+iCf5kND+tn
-         o0QU2yY42ZoGcS7YBzUKQ5mbccZ0MMxisuUhrW0qhrlxTJIs8fQtPZtOOAFVeG5rU7Yr
-         2E/ClBsMaPVEUmJZwR4FYEJdx8mzT8nVOEXgjWML5dIijw3TgRgaZR24bfCQ3xF6UvuJ
-         D4oyFar9Liivuhpag7IEoyd6DNXRJSNzVchqbBm7UeNHB+jVnQJ9Cr17y99LX7MbsmC9
-         ThgA==
-X-Forwarded-Encrypted: i=1; AJvYcCXX0IAFRci0vWyDipI3rhEwEsll/3avZZtYUgXE+8U+8kFzhua0gfUFZLHj28nSGwF42VqyBW2HSrpclpDGkddtqW1xaQGxhojn5a2eHSU=
-X-Gm-Message-State: AOJu0Yxzt2UywM2xdIP3KzIvke6tS5G6aAdZ5yo2krU1DPkeOw0IibWQ
-	VpdptWqm3dGByiy02ex/f0UViIo0jTwyFsLpBPG8lWhMDMsBosjEo2A/ka2HTkGxCQqiZKUKNWD
-	PlTTN4hkI5OXUfA==
-X-Google-Smtp-Source: AGHT+IHOuhMH8lCZyqgPZo0IUCZguSKcNbXCdaWjj3cdEvBVq1Q+0LN7WSNqoq7E7NvkH+V+nQUqXL0VRBCHifE=
+        d=1e100.net; s=20230601; t=1719586666; x=1720191466;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=NA8HRtt4OeyTIYVrVVw99oYidbVN1cJjouXWxEI7IuA=;
+        b=OjPuNxa07xvynmdYjW75ua1Ry30z2BhHkURj6jW42zoPyHfaxwIAPSE0OmIjGxL3gb
+         sXJ4Zbo3OdbdIPoRMjpv/xhp43lnbG3176/xVUoxr68MpQVvoCxjUHwHdU07BbjcKSUw
+         4Y4XB7Zd2kesV3yESEqdiuJwA2TXhnINHRkfurPI5LoITzVHzkxPsHsbobQSth/LhDzZ
+         iTPQE+bCz4Hh6lr+zKBCGPIz6uGE2E1bLYTgkgK5WUBfkWmqxkB94XB4DqtwdyPndw10
+         8tt7h3XwOSv7Vew5CL+pnheDSkiuRpJoyTSyVaWvdJqfJP9aAAnOripcTNCRJqIT/goV
+         uWWg==
+X-Forwarded-Encrypted: i=1; AJvYcCVBc+Gy7RRlZos6mB+L+fr0hj/MTcz4hnRnnfGG7KtTTtPIAqd1o6ojEImKBxXVSp0oy+CCmU0FHTEBGEsl9wgjQ5U4DJHZOZv0SXEGsno=
+X-Gm-Message-State: AOJu0YxumqUj7egwjPqbrpRvjPf34uc4OGNVm0uCEbTAdL/3BbPiDjzW
+	2BEZkCBsLRuP9AwT3JsKzX9xG8nL1IEd7mUgTPUnNh5wDQbiWtfae1oJcebPU8OjnwuAfXBk1Ps
+	t0aaoxYuKqn7/7Q==
+X-Google-Smtp-Source: AGHT+IE+eDmpLmhKs501YYhrpAk6zg+yW4a6qnT/SvB2OB1cKFo2A6iIj7oJWlC5W10VD6MHC8kEGeWBSLCfFvQ=
 X-Received: from aliceryhl2.c.googlers.com ([fda3:e722:ac3:cc00:68:949d:c0a8:572])
- (user=aliceryhl job=sendgmr) by 2002:a05:6512:3e28:b0:52c:7f96:81d1 with SMTP
- id 2adb3069b0e04-52ce061ab41mr20614e87.6.1719581050857; Fri, 28 Jun 2024
- 06:24:10 -0700 (PDT)
-Date: Fri, 28 Jun 2024 13:23:32 +0000
-In-Reply-To: <20240628-tracepoint-v4-0-353d523a9c15@google.com>
+ (user=aliceryhl job=sendgmr) by 2002:a05:6902:f12:b0:e03:5e58:489b with SMTP
+ id 3f1490d57ef6-e035e585039mr10750276.3.1719586666015; Fri, 28 Jun 2024
+ 07:57:46 -0700 (PDT)
+Date: Fri, 28 Jun 2024 14:57:13 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20240628-tracepoint-v4-0-353d523a9c15@google.com>
+X-B4-Tracking: v=1; b=H4sIAEnPfmYC/2XQTWrDMBAF4KsErauiGf1OV71H6EKWJUfgRsUuJ
+ iX47pUDwRHeCJ7ge8zMnc1xynFmH6c7m+KS51yuNdi3EwsXfx0iz33NDAVKAJTcjzlEnvIYuUb
+ dkYvOW1Ssgp8ppnx7lJ2/ar7k+bdMf4/uBbbfZw291izABU8OfIouWDTwOZQyjPE9lG+29Sy4W
+ xSmsVitTwZsED31pA5WPq0SAK6xsloypDqTSDsRDlbttj6NVdvMgQIKJ4yR3cHqV9vuq7eZpXX OWCcF6oM1u9VgG2uq7erdfeoDdWQbu67rPyzbBv3RAQAA
 X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5954; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=v/CwpANb/enEE59VpWuqO+vG2Bs6iq8UapwpRJZ9hQA=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBmfrlxFoRsS4nKuM5f791HMS0zaizWUN/GuWPSF
- 5DmAsQIie+JAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZn65cQAKCRAEWL7uWMY5
- Rnn4D/9tLGOpO3gm1Mdg7+V3aBKPndVvoDIfPVKiSkD+ATgpOSjsralpHwXujxhx1IqP3lYgOdz
- F4tE/qK42GPiG2qOTjpSpJDaMSQfw1d9ndqFJp3KG71VnpHJGL3k4nwnKr4SGu5BoznL6eyv+wX
- GMjXIqpL1Aml+w5cF+MMfEs4FjjCVM/HRlpM4z5A/gCBUEAQqixk+LexC5R/qvVJJYOxiqTALFu
- idNa0gDOJwenzkvtOUM8hu1iBrNFC9/7BtwnCQ6dY14wy+j1zXRNORSmO4KK7TqxLuqtVRpBRm+
- +ZFo3ePJ2Cv3ppirCqmoxPx2ntkTkPSMtU32nFAWBumNIIUDyH+gG/XFzLYK3nFLghDsB8WjPpZ
- FpJDBtbmHzuGz4yQU3sNeN6piB8QumLbHKi3cHoLdujMGDkno25gVUSRCXe7h70q0g1x2RlEmjg
- sFElazH5qpsztWiLuPlFMNPJo7W6iijAV0RGTCLtTYg+NNrInG+xze+KV4I/vuK6GiZkTbR4X21
- YDrhSxVEt4S5Kv0bycWgW7FOOGIlWo7tDcn61JvMW8f9acRFHeVsKElIdbwzOnt1ThoUpvUbw7I
- HwsSEBS9BKACnoLcUCP1aDFTlZqDkmUTMcefFdHWM/6jPz92m7LbDPq2vWSCFmM2u/rum1QCrjY 6gmxPd34WQQHtZA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5663; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=M3YIVmz5boCkvi0mnE4L1CziPuvjOFE5n9nrA82sjnw=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBmfs9RxbKPPfzciPL6lpJcTc5NeEvkMayauk+9U
+ jwlGw5zYyKJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZn7PUQAKCRAEWL7uWMY5
+ RnNND/46YpaiCkKy5HD29LASC74h6d55rWtDSiLCMcXo0fX2xZd/D4ivN/E6elk7JGOAMjjx3F4
+ 2HLLeGAVwiET4UyYaKJz9pHHBpoli5lVjCNoz0THr199QV7Ue5AVPPxo5SeyH6ICGKHuLVGMgWp
+ TsoPMtNLvkPCXF25VYs5TZ8QR+UC4ztHAMU10IUm4oYmYyxhMcHRicFMO87rwyqTFM0jNMUnoC6
+ LmwkYyHMk0GQdgETumIOiCk1KV4eMDbxaRSTp4WipJxzWxnLmpVcfi5CIc20YK0lfNs9EV6kvhn
+ 8pmpy+mRf89w6jZneQNAQRCZ1MLpxjc6WHBGeCJT93rVvqs0KLniN2jroPzWudOZONpR0wMpeJS
+ w7yqjkIBpB/lBGUDO1E6rOiwiNT4Maf8o419xn3cis6UcEgEFg6DzmuNFzklzXM+dktEE4JGC82
+ TXBSsghD3HVUTmv+taSHsvUnSpn6k+elntzLgFfZzmFCP/xjJmxpL0GJCqhrgyxBy4oKO11v/Ba
+ CX580/7Zmb+e3jwe+NoP6ZbagEDJ5DGlzpzDgGGT5ydcMnYQ3C+b3Ju9hxocJYSGfllkn9Jh3Yt
+ WHLliehyLwojSTwTx4+Ytv0Qb3rYWChIAoK7cveItNYShF/DN6iBfOKSDwmG36d+7TyVjYBqyuJ r+jOWevz77R690g==
 X-Mailer: b4 0.13-dev-26615
-Message-ID: <20240628-tracepoint-v4-2-353d523a9c15@google.com>
-Subject: [PATCH v4 2/2] rust: add tracepoint support
+Message-ID: <20240628-alice-file-v7-0-4d701f6335f3@google.com>
+Subject: [PATCH v7 0/8] File abstractions needed by Rust Binder
 From: Alice Ryhl <aliceryhl@google.com>
-To: Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Josh Poimboeuf <jpoimboe@kernel.org>, Jason Baron <jbaron@akamai.com>, 
-	Ard Biesheuvel <ardb@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@samsung.com>
-Cc: linux-trace-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, linux-arch@vger.kernel.org, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, "Peter Zijlstra (Intel)" <peterz@infradaed.org>, 
-	Sean Christopherson <seanjc@google.com>, Uros Bizjak <ubizjak@gmail.com>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>, 
-	Oliver Upton <oliver.upton@linux.dev>, Mark Rutland <mark.rutland@arm.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Fuad Tabba <tabba@google.com>, 
-	linux-arm-kernel@lists.infradead.org, 
-	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Albert Ou <aou@eecs.berkeley.edu>, Anup Patel <apatel@ventanamicro.com>, 
-	Andrew Jones <ajones@ventanamicro.com>, Alexandre Ghiti <alexghiti@rivosinc.com>, 
-	Conor Dooley <conor.dooley@microchip.com>, Samuel Holland <samuel.holland@sifive.com>, 
-	linux-riscv@lists.infradead.org, Huacai Chen <chenhuacai@kernel.org>, 
-	WANG Xuerui <kernel@xen0n.name>, Bibo Mao <maobibo@loongson.cn>, 
-	Tiezhu Yang <yangtiezhu@loongson.cn>, Andrew Morton <akpm@linux-foundation.org>, 
-	Tianrui Zhao <zhaotianrui@loongson.cn>, loongarch@lists.linux.dev, 
-	Alice Ryhl <aliceryhl@google.com>
+	Andreas Hindborg <a.hindborg@samsung.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"=?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
+	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
+	Suren Baghdasaryan <surenb@google.com>
+Cc: Dan Williams <dan.j.williams@intel.com>, Kees Cook <keescook@chromium.org>, 
+	Matthew Wilcox <willy@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, Daniel Xu <dxu@dxuuu.xyz>, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>
 Content-Type: text/plain; charset="utf-8"
 
-Make it possible to have Rust code call into tracepoints defined by C
-code. It is still required that the tracepoint is declared in a C
-header, and that this header is included in the input to bindgen.
+This patchset contains the file abstractions needed by the Rust
+implementation of the Binder driver.
+
+Please see the Rust Binder RFC for usage examples:
+https://lore.kernel.org/rust-for-linux/20231101-rust-binder-v1-0-08ba9197f637@google.com/
+
+Users of "rust: types: add `NotThreadSafe`":
+	[PATCH 5/9] rust: file: add `FileDescriptorReservation`
+
+Users of "rust: task: add `Task::current_raw`":
+	[PATCH 7/9] rust: file: add `Kuid` wrapper
+	[PATCH 8/9] rust: file: add `DeferredFdCloser`
+
+Users of "rust: file: add Rust abstraction for `struct file`":
+	[PATCH RFC 02/20] rust_binder: add binderfs support to Rust binder
+	[PATCH RFC 03/20] rust_binder: add threading support
+
+Users of "rust: cred: add Rust abstraction for `struct cred`":
+	[PATCH RFC 05/20] rust_binder: add nodes and context managers
+	[PATCH RFC 06/20] rust_binder: add oneway transactions
+	[PATCH RFC 11/20] rust_binder: send nodes in transaction
+	[PATCH RFC 13/20] rust_binder: add BINDER_TYPE_FD support
+
+Users of "rust: security: add abstraction for secctx":
+	[PATCH RFC 06/20] rust_binder: add oneway transactions
+
+Users of "rust: file: add `FileDescriptorReservation`":
+	[PATCH RFC 13/20] rust_binder: add BINDER_TYPE_FD support
+	[PATCH RFC 14/20] rust_binder: add BINDER_TYPE_FDA support
+
+Users of "rust: file: add `Kuid` wrapper":
+	[PATCH RFC 05/20] rust_binder: add nodes and context managers
+	[PATCH RFC 06/20] rust_binder: add oneway transactions
+
+Users of "rust: file: add abstraction for `poll_table`":
+	[PATCH RFC 07/20] rust_binder: add epoll support
+
+This patchset has some uses of read_volatile in place of READ_ONCE.
+Please see the following rfc for context on this:
+https://lore.kernel.org/all/20231025195339.1431894-1-boqun.feng@gmail.com/
 
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
- include/linux/tracepoint.h      | 18 +++++++++++++++-
- include/trace/define_trace.h    | 12 +++++++++++
- rust/bindings/bindings_helper.h |  1 +
- rust/kernel/lib.rs              |  1 +
- rust/kernel/tracepoint.rs       | 47 +++++++++++++++++++++++++++++++++++++++++
- 5 files changed, 78 insertions(+), 1 deletion(-)
+Changes in v7:
+- Replace file sharing modes with File / LocalFile.
+- Link to v6: https://lore.kernel.org/r/20240517-alice-file-v6-0-b25bafdc9b97@google.com
 
-diff --git a/include/linux/tracepoint.h b/include/linux/tracepoint.h
-index 689b6d71590e..d82af4d77c9f 100644
---- a/include/linux/tracepoint.h
-+++ b/include/linux/tracepoint.h
-@@ -238,6 +238,20 @@ static inline struct tracepoint *tracepoint_ptr_deref(tracepoint_ptr_t *p)
- #define __DECLARE_TRACE_RCU(name, proto, args, cond)
- #endif
- 
-+/*
-+ * Declare an exported function that Rust code can call to trigger this
-+ * tracepoint. This function does not include the static branch; that is done
-+ * in Rust to avoid a function call when the tracepoint is disabled.
-+ */
-+#define DEFINE_RUST_DO_TRACE(name, proto, args)
-+#define DEFINE_RUST_DO_TRACE_REAL(name, proto, args)			\
-+	notrace void rust_do_trace_##name(proto)			\
-+	{								\
-+		__DO_TRACE(name,					\
-+			TP_ARGS(args),					\
-+			cpu_online(raw_smp_processor_id()), 0);		\
-+	}
-+
- /*
-  * Make sure the alignment of the structure in the __tracepoints section will
-  * not add unwanted padding between the beginning of the section and the
-@@ -253,6 +267,7 @@ static inline struct tracepoint *tracepoint_ptr_deref(tracepoint_ptr_t *p)
- 	extern int __traceiter_##name(data_proto);			\
- 	DECLARE_STATIC_CALL(tp_func_##name, __traceiter_##name);	\
- 	extern struct tracepoint __tracepoint_##name;			\
-+	extern void rust_do_trace_##name(proto);			\
- 	static inline void trace_##name(proto)				\
- 	{								\
- 		if (static_key_false(&__tracepoint_##name.key))		\
-@@ -337,7 +352,8 @@ static inline struct tracepoint *tracepoint_ptr_deref(tracepoint_ptr_t *p)
- 	void __probestub_##_name(void *__data, proto)			\
- 	{								\
- 	}								\
--	DEFINE_STATIC_CALL(tp_func_##_name, __traceiter_##_name);
-+	DEFINE_STATIC_CALL(tp_func_##_name, __traceiter_##_name);	\
-+	DEFINE_RUST_DO_TRACE(_name, TP_PROTO(proto), TP_ARGS(args))
- 
- #define DEFINE_TRACE(name, proto, args)		\
- 	DEFINE_TRACE_FN(name, NULL, NULL, PARAMS(proto), PARAMS(args));
-diff --git a/include/trace/define_trace.h b/include/trace/define_trace.h
-index 00723935dcc7..08ed5ce63a96 100644
---- a/include/trace/define_trace.h
-+++ b/include/trace/define_trace.h
-@@ -72,6 +72,13 @@
- #define DECLARE_TRACE(name, proto, args)	\
- 	DEFINE_TRACE(name, PARAMS(proto), PARAMS(args))
- 
-+/* If requested, create helpers for calling these tracepoints from Rust. */
-+#ifdef CREATE_RUST_TRACE_POINTS
-+#undef DEFINE_RUST_DO_TRACE
-+#define DEFINE_RUST_DO_TRACE(name, proto, args)	\
-+	DEFINE_RUST_DO_TRACE_REAL(name, PARAMS(proto), PARAMS(args))
-+#endif
-+
- #undef TRACE_INCLUDE
- #undef __TRACE_INCLUDE
- 
-@@ -129,6 +136,11 @@
- # undef UNDEF_TRACE_INCLUDE_PATH
- #endif
- 
-+#ifdef CREATE_RUST_TRACE_POINTS
-+# undef DEFINE_RUST_DO_TRACE
-+# define DEFINE_RUST_DO_TRACE(name, proto, args)
-+#endif
-+
- /* We may be processing more files */
- #define CREATE_TRACE_POINTS
- 
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index ddb5644d4fd9..d442f9ccfc2c 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -15,6 +15,7 @@
- #include <linux/refcount.h>
- #include <linux/sched.h>
- #include <linux/slab.h>
-+#include <linux/tracepoint.h>
- #include <linux/wait.h>
- #include <linux/workqueue.h>
- 
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index fffd4e1dd1c1..9ae90eb69020 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -46,6 +46,7 @@
- pub mod sync;
- pub mod task;
- pub mod time;
-+pub mod tracepoint;
- pub mod types;
- pub mod workqueue;
- 
-diff --git a/rust/kernel/tracepoint.rs b/rust/kernel/tracepoint.rs
-new file mode 100644
-index 000000000000..1005f09e0330
---- /dev/null
-+++ b/rust/kernel/tracepoint.rs
-@@ -0,0 +1,47 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+// Copyright (C) 2024 Google LLC.
-+
-+//! Logic for tracepoints.
-+
-+/// Declare the Rust entry point for a tracepoint.
-+#[macro_export]
-+macro_rules! declare_trace {
-+    ($($(#[$attr:meta])* $pub:vis fn $name:ident($($argname:ident : $argtyp:ty),* $(,)?);)*) => {$(
-+        $( #[$attr] )*
-+        #[inline(always)]
-+        $pub unsafe fn $name($($argname : $argtyp),*) {
-+            #[cfg(CONFIG_TRACEPOINTS)]
-+            {
-+                use $crate::bindings::*;
-+
-+                // SAFETY: It's always okay to query the static key for a tracepoint.
-+                let should_trace = unsafe {
-+                    $crate::macros::paste! {
-+                        $crate::static_key::static_key_false!(
-+                            [< __tracepoint_ $name >],
-+                            $crate::bindings::tracepoint,
-+                            key
-+                        )
-+                    }
-+                };
-+
-+                if should_trace {
-+                    $crate::macros::paste! {
-+                        // SAFETY: The caller guarantees that it is okay to call this tracepoint.
-+                        unsafe { [< rust_do_trace_ $name >]($($argname),*) };
-+                    }
-+                }
-+            }
-+
-+            #[cfg(not(CONFIG_TRACEPOINTS))]
-+            {
-+                // If tracepoints are disabled, insert a trivial use of each argument
-+                // to avoid unused argument warnings.
-+                $( let _unused = $argname; )*
-+            }
-+        }
-+    )*}
-+}
-+
-+pub use declare_trace;
+Changes in v6:
+- Introduce file sharing modes.
+- Rewrite most documentation for `struct file` wrapper.
+- Drop `DeferredFdCloser`. It will be sent later when it can be placed
+  somewhere where only Rust Binder can use it.
+- Rebase on top of rust-next: 97ab3e8eec0c ("rust: alloc: fix dangling pointer in VecExt<T>::reserve()")
+- Link to v5: https://lore.kernel.org/r/20240209-alice-file-v5-0-a37886783025@google.com
 
+Changes in v5:
+- Pass a null pointer to task_tgid_nr_ns.
+- Fix some typos and other formatting issues.
+- Add Reviewed-by where appropriate.
+- Link to v4: https://lore.kernel.org/r/20240202-alice-file-v4-0-fc9c2080663b@google.com
+
+Changes in v4:
+- Moved the two really simple patches to the beginning of the patchset.
+- Update Send safety comments.
+- Use srctree relative links.
+- Mention that `Credential::euid` is immutable.
+- Update some safety comments to mention the invariant on Self.
+- Use new name for close_fd_get_file.
+- Move safety comments on DeferredFdCloser around and be more explicit
+  about how many refcounts we own.
+- Reword safety comments related to _qproc.
+- Add Reviewed-by where appropriate.
+- Link to v3: https://lore.kernel.org/r/20240118-alice-file-v3-0-9694b6f9580c@google.com
+
+Changes in v3:
+- Completely rewrite comments about refcounting in the first patch.
+  - And add a note to the documentation in fs/file.c.
+- Discuss speculation gadgets in commit message for the Kuid wrapper.
+- Introduce NotThreadSafe and Task::current_raw patches and use them in
+  later patches.
+- Improve safety comments in DeferredFdCloser.
+- Some other minor changes.
+- Link to v2: https://lore.kernel.org/r/20231206-alice-file-v2-0-af617c0d9d94@google.com
+
+Changes in v2:
+- Update various docs and safety comments.
+- Rename method names to match the C name.
+- Use ordinary read instead of READ_ONCE in File::cred.
+- Changed null check in secctx.
+- Add type alias for PhantomData in FileDescriptorReservation.
+- Use Kuid::from_raw in Kuid::current_euid.
+- Make DeferredFdCloser fallible if it is unable to schedule a task
+  work. And also schedule the task work *before* closing the file.
+- Moved PollCondVar to rust/kernel/sync.
+- Updated PollCondVar to use wake_up_pollfree.
+- Link to v1: https://lore.kernel.org/all/20231129-alice-file-v1-0-f81afe8c7261@google.com/
+
+Link to RFC:
+https://lore.kernel.org/all/20230720152820.3566078-1-aliceryhl@google.com/
+
+---
+Alice Ryhl (5):
+      rust: types: add `NotThreadSafe`
+      rust: task: add `Task::current_raw`
+      rust: security: add abstraction for secctx
+      rust: file: add `Kuid` wrapper
+      rust: file: add abstraction for `poll_table`
+
+Wedson Almeida Filho (3):
+      rust: file: add Rust abstraction for `struct file`
+      rust: cred: add Rust abstraction for `struct cred`
+      rust: file: add `FileDescriptorReservation`
+
+ fs/file.c                       |   7 +
+ rust/bindings/bindings_helper.h |   6 +
+ rust/helpers.c                  |  86 ++++++++
+ rust/kernel/cred.rs             |  83 ++++++++
+ rust/kernel/file.rs             | 459 ++++++++++++++++++++++++++++++++++++++++
+ rust/kernel/lib.rs              |   3 +
+ rust/kernel/security.rs         |  72 +++++++
+ rust/kernel/sync.rs             |   1 +
+ rust/kernel/sync/lock.rs        |  13 +-
+ rust/kernel/sync/poll.rs        | 119 +++++++++++
+ rust/kernel/task.rs             |  91 +++++++-
+ rust/kernel/types.rs            |  26 +++
+ 12 files changed, 954 insertions(+), 12 deletions(-)
+---
+base-commit: 1613e604df0cd359cf2a7fbd9be7a0bcfacfabd0
+change-id: 20231123-alice-file-525b98e8a724
+
+Best regards,
 -- 
-2.45.2.803.g4e1b14247a-goog
+Alice Ryhl <aliceryhl@google.com>
 
