@@ -1,165 +1,93 @@
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AECB4152530
-	for <rust-for-linux@vger.kernel.org>; Fri, 28 Jun 2024 09:34:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C74F92139A8;
+	Fri, 28 Jun 2024 10:48:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719567291; cv=none; b=I0feA0XuXzS/j1jYvK96VW8UrzzyhXKlzy15I9e3ynmo+8WTyv2NE36tpB1/VGG+QWl83dyDakmA3E3xxKXiQsm4qEvb4/hzjNi3n6fucZuWdpkhxaRUTLQY9KBKwnTM+Je0n26JbtEZS7WcWd3nKIyohHHcS7gel6A66SZ69/A=
+	t=1719571734; cv=none; b=BPtQX0EGi+sk+atKlW7tJo/4QWIzrRannc6KUspjSrjMjwVF8sIIRpoO0o9NimN/rt9TGG/gdx2F/+MO17NUMidT/YAP2HaYBETR7Ndnj54guzWBuXjv22Imc6mtlmAIyWCshrPFKGTTL2lUlp6HU1qESlMt9SJnV8KgfqCac4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719567291; c=relaxed/simple;
-	bh=mVgpkGZeEUIJG9UJ4SJVmxmneMeKnT/4EHHpcMGGZ2U=;
+	s=arc-20240116; t=1719571734; c=relaxed/simple;
+	bh=Op2EZDW7bEpEd1g89RuuVLQ70Z2yr1cScl8+vTX5zaA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=er6TGkSZuh+w3u5cV2QK3lBB/ullegXhFW1ErygpWpymrmrZpd8v0Dc/wsTNJ+1Tsj88OHgWdi7cNGN8AXiK6+alYNnDvb7Rsa2fWJwXdH6u/QaPvMv2AZvCWjWtGQXR6pzuUdmqNx2910KZKpMvvOFuyePQ0YmOALbBKU+RXao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=0jEGxzm9; arc=none smtp.client-ip=209.85.128.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=We+FvKzb1IwKTdSg1erpnup5DI72jGBOuPf5T8+WegY5w0OEUPxu6A8RsNEcO2wDdFYvGKND4oAbzUpN2LrJ5+KXUKFXTkKcrtd1Km5TAJJqpnphX18G6VkO0eRzBgX77ybzQ+5Q36jOpVI+iZO0fUd5b8TPpMb0rJpK0BwXxz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZgsZ7Fj9; arc=none smtp.client-ip=209.85.216.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="0jEGxzm9"
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-424acfff613so4484785e9.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 28 Jun 2024 02:34:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZgsZ7Fj9"
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-2c92d00059eso240200a91.3;
+        Fri, 28 Jun 2024 03:48:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1719567288; x=1720172088; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1719571732; x=1720176532; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=R5Gyzd0KEYojFlORA9Zt8V98aCcTYQ8VgOMnEXwuyS0=;
-        b=0jEGxzm9bjV7qzwpsbLi/sY/bku21UXzhP846PPiz3H7hFYF4Q/cErPNFDbeJmGcbW
-         RzeySL5v8Q/vBMEAB8IQe6Oy7Wm7K6hwHewCnUBeRVbxQwEGzK8rE76ztohLnOmlQYqc
-         g5dY7JdMaZsMrJESPO+MhLQ8HDr9C4DSani1tsHd2PSxsvzgnXEPKcb1EwSCuDco6qmH
-         HWT/R2Yjn+fTIK47svur0u+p1G8xgJq8y0YroZVtrNGLYukVoX9Wi+uQKV0OomaVDM6u
-         yb98FQP9rZ54aoRIv0tn1YFWp1dDQhEZba1Gry3Wss1f6oBNJUOeck4JiuhZbP2KRzKU
-         wUQw==
+        bh=Op2EZDW7bEpEd1g89RuuVLQ70Z2yr1cScl8+vTX5zaA=;
+        b=ZgsZ7Fj9gYsfDzwWkJb/SBPKLP+USvaQUx1xqVOBa+OosiQxmBylVn62WfQua761OY
+         lwMAixVKCY+h+I3puc8KsAD5/n+VLBBDFWnCd71Ynxl+QV35vw1NS1k1DhDi5pOn+tBk
+         3c+lI3pkwBp6QWIzb05Y1zr4nZ3nml4Bs9FjtSqWMOLVeSrrOq6eDh6gk66TmnhMkMIA
+         J8rSw9Q5JA6/yBI8QMCm2KJVmkTLP15h88sLVa5u2OW3wkgehUVK5dC63PUxgHMea5DN
+         HEOns0LiMt/soFi9Hgrzlz7PwK01xYusbvkHFDpHlzFVFG2A0ds0jyHAnaL+qafWO/38
+         haGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719567288; x=1720172088;
+        d=1e100.net; s=20230601; t=1719571732; x=1720176532;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=R5Gyzd0KEYojFlORA9Zt8V98aCcTYQ8VgOMnEXwuyS0=;
-        b=b1vrL7kaA9jim3V0WF8SinxOsgY5OImeYdcHGqRZEv+7GsTRBn5X8mfOCdP9eIWXMu
-         BhR61CHCd9M9mv4h7l6NcLCfjcaTwHA4r6A0f4/grmVLlrf6GroWL9cey2t+K+P+BbaE
-         yybgQZ14vJH6psk7dNUVEZImu+BCkrbsGG55JJJRXi2NrU9JhKMf3wymNWohuUL1t3/2
-         7kIX2b3wkS48+3Uh0dqxxTNPOJF72iobmENHC+wsKxZaGNvM35CjPc+mXgZttPzZa5lu
-         TEMVzMdgVk/DGbpXwaTgJo5FMrCkFlnEcqw78+O1DmYxPT1oJ8VfJM75nNFtV/6Qa9DP
-         gYuw==
-X-Forwarded-Encrypted: i=1; AJvYcCXwkhlt6J/xfe48LXHNCnixmyhN2HQ8K7/xROAn4nminhn3XfWdGFIJrMU//GswNdXCoC/71ynvCx+Bbt/8PJ8lOuuFSG4tP1X7ce1ofAY=
-X-Gm-Message-State: AOJu0YzOtxo4HepPiFUCH4Jyt18ow8vAEsUB+1+xYghG+yP+nVT9sXMf
-	FyloPpIXrqkoQfiCIwOH/3TA1ftcxmanMV09jGXM9walkCXhDfwLpqTDXDs8TnTddfB7d/Bxsf2
-	s268EyqTFVp1aVEGif8wKmGvmz9cSlx4/K58g
-X-Google-Smtp-Source: AGHT+IHkMX5345OLYcmRT3XnelwwzbNOLPwlwqhS2DVYP+oCW1ISdTPYj99BI+fmIoO/MdYp0rp3L25a15KF4hw0UuA=
-X-Received: by 2002:a05:600c:1c1e:b0:425:692d:c72d with SMTP id
- 5b1f17b1804b1-425692dd443mr23095585e9.32.1719567287924; Fri, 28 Jun 2024
- 02:34:47 -0700 (PDT)
+        bh=Op2EZDW7bEpEd1g89RuuVLQ70Z2yr1cScl8+vTX5zaA=;
+        b=VYDBhtBQ7w9vf+ytV2nsi9044JvL6HhbnqeAPs9qwQJDEeEIWX7kPhXVLsLjtMsCxu
+         Uk8t+FOhFDx1fD9T5ibrbS75ZUO4Jq7+3XFcKs8gyCSNsVUS9zg2bLS+b5sY+mXLQDoH
+         aNjBFJGP80CIFx+MOsMHylaMGdLS1J6Wn3YJra7QTEJNfAv9tomXN4PVM9QuY/U/rWyw
+         vFa5hfUkDxoxG26AKQoNHVvd9xJO1GwwlOVD9l/Qz+jFryQaEf2xx/SltYCx0rdFHWIU
+         dRDJUOiljWUAByCcTELS7TF4rz7Xu5lYC50SX5RgigKM1FNjzPgoXClexDMQvueTWLe7
+         bOkg==
+X-Forwarded-Encrypted: i=1; AJvYcCXcaDrlE5GWwybdp2igFgGY7VPwHHLScBctFVtzxsdJG31sv5cAOojeyxvLAy3Axs4jOo5oxrzvVQCKA2UYmzTd12HB5GmTAlU6v81efaAQxOPqkm7QNgB9m+eUxAJ5CIDmXTgPNJu8hKgzfQ==
+X-Gm-Message-State: AOJu0Yy/JfHWG7x7kbwSv6K83htpbiyjey/38bvgAVmvTD5ElgXZvQhn
+	8jj/WWuD1Yu8BlRbUguuQBpzmqL+srPZQTMyLlHZbVmZ896biy2ddRGMu12lVeHlBjyPJ0KyPwT
+	akbjC8cgzVz+p2etwKgGqef0scRI=
+X-Google-Smtp-Source: AGHT+IEnlPA3unm2hvL+8/Nw2bpDU3oCs8qNUA5UJKm6KDDlJWlJGO0dUH5ShuIfEibra/czyTvMZPQBQryLqwL1c4Y=
+X-Received: by 2002:a17:90a:ea95:b0:2c8:fc52:6a11 with SMTP id
+ 98e67ed59e1d1-2c8fc526c13mr3612337a91.36.1719571731964; Fri, 28 Jun 2024
+ 03:48:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240619192131.do.115-kees@kernel.org> <20240619193357.1333772-4-kees@kernel.org>
- <cc301463-da43-4991-b001-d92521384253@suse.cz> <202406201147.8152CECFF@keescook>
- <1917c5a5-62af-4017-8cd0-80446d9f35d3@suse.cz> <Zn5LqMlnbuSMx7H3@Boquns-Mac-mini.home>
- <c5934f76-3ce8-466e-80d1-c56ebb5a158e@suse.cz> <CAH5fLggjrbdUuT-H-5vbQfMazjRDpp2+k3=YhPyS17ezEqxwcw@mail.gmail.com>
- <c45eb0c9-21b9-4e29-a9d8-f3044c77822e@suse.cz>
-In-Reply-To: <c45eb0c9-21b9-4e29-a9d8-f3044c77822e@suse.cz>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Fri, 28 Jun 2024 11:34:35 +0200
-Message-ID: <CAH5fLghsZRemYUwVvhk77o6y1foqnCeDzW4WZv6ScEWna2+_jw@mail.gmail.com>
-Subject: Re: [PATCH v5 4/6] mm/slab: Introduce kmem_buckets_create() and family
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Kees Cook <kees@kernel.org>, 
-	"GONG, Ruiqi" <gongruiqi@huaweicloud.com>, Christoph Lameter <cl@linux.com>, 
-	Pekka Enberg <penberg@kernel.org>, David Rientjes <rientjes@google.com>, 
-	Joonsoo Kim <iamjoonsoo.kim@lge.com>, jvoisin <julien.voisin@dustri.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Hyeonggon Yoo <42.hyeyoo@gmail.com>, Xiu Jianfeng <xiujianfeng@huawei.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Kent Overstreet <kent.overstreet@linux.dev>, 
-	Jann Horn <jannh@google.com>, Matteo Rizzo <matteorizzo@google.com>, Thomas Graf <tgraf@suug.ch>, 
-	Herbert Xu <herbert@gondor.apana.org.au>, linux-kernel@vger.kernel.org, 
-	linux-mm@kvack.org, linux-hardening@vger.kernel.org, netdev@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
+References: <20240628091152.2185241-1-nmi@metaspace.dk>
+In-Reply-To: <20240628091152.2185241-1-nmi@metaspace.dk>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 28 Jun 2024 12:48:39 +0200
+Message-ID: <CANiq72n--xSedbAmZD=LUD1AxM+aUbByVzMgXXgYQnP9JeQFdQ@mail.gmail.com>
+Subject: Re: [PATCH] rust: block: fix generated bindings after refactoring of features
+To: Andreas Hindborg <nmi@metaspace.dk>
+Cc: Jens Axboe <axboe@kernel.dk>, 
+	"linux-block @ vger . kernel . org" <linux-block@vger.kernel.org>, Christoph Hellwig <hch@lst.de>, 
+	Miguel Ojeda <ojeda@kernel.org>, rust-for-linux@vger.kernel.org, 
+	Andreas Hindborg <a.hindborg@samsung.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jun 28, 2024 at 11:17=E2=80=AFAM Vlastimil Babka <vbabka@suse.cz> w=
-rote:
+On Fri, Jun 28, 2024 at 11:12=E2=80=AFAM Andreas Hindborg <nmi@metaspace.dk=
+> wrote:
 >
-> On 6/28/24 11:06 AM, Alice Ryhl wrote:
-> >> >>
-> >> >
-> >> > I took a quick look as what kmem_buckets is, and seems to me that al=
-ign
-> >> > doesn't make sense here (and probably not useful in Rust as well)
-> >> > because a kmem_buckets is a set of kmem_caches, each has its own obj=
-ect
-> >> > size, making them share the same alignment is probably not what you
-> >> > want. But I could be missing something.
-> >>
-> >> How flexible do you need those alignments to be? Besides the power-of-=
-two
-> >> guarantees, we currently have only two odd sizes with 96 and 192. If t=
-hose
-> >> were guaranteed to be aligned 32 bytes, would that be sufficient? Also=
- do
-> >> you ever allocate anything smaller than 32 bytes then?
-> >>
-> >> To summarize, if Rust's requirements can be summarized by some rules a=
-nd
-> >> it's not completely ad-hoc per-allocation alignment requirement (or if=
- it
-> >> is, does it have an upper bound?) we could perhaps figure out the crea=
-tion
-> >> of rust-specific kmem_buckets to give it what's needed?
-> >
-> > Rust's allocator API can take any size and alignment as long as:
-> >
-> > 1. The alignment is a power of two.
-> > 2. The size is non-zero.
-> > 3. When you round up the size to the next multiple of the alignment,
-> > then it must not overflow the signed type isize / ssize_t.
-> >
-> > What happens right now is that when Rust wants an allocation with a
-> > higher alignment than ARCH_SLAB_MINALIGN, then it will increase size
-> > until it becomes a power of two so that the power-of-two guarantee
-> > gives a properly aligned allocation.
+> From: Andreas Hindborg <a.hindborg@samsung.com>
 >
-> So am I correct thinking that, if the cache of size 96 bytes guaranteed a
-> 32byte alignment, and 192 bytes guaranteed 64byte alignment, and the rest=
- of
-> sizes with the already guaranteed power-of-two alignment, then on rust si=
-de
-> you would only have to round up sizes to the next multiples of the aligne=
-mnt
-> (rule 3 above) and that would be sufficient?
->  Abstracting from the specific sizes of 96 and 192, the guarantee on kmal=
-loc
-> side would have to be - guarantee alignment to the largest power-of-two
-> divisor of the size. Does that sound right?
+> Block device features and flags were refactored from `enum` to `#define`.
+> This broke Rust binding generation. This patch fixes the binding
+> generation.
 >
-> Then I think we could have some flag for kmem_buckets creation that would=
- do
-> the right thing.
+> Fixes: fcf865e357f8 ("block: convert features and flags to __bitwise type=
+s")
+> Signed-off-by: Andreas Hindborg <a.hindborg@samsung.com>
 
-If kmalloc/krealloc guarantee that an allocation is aligned according
-to the largest power-of-two divisor of the size, then the Rust
-allocator would definitely be simplified as we would not longer need
-this part:
+I saw this failure too in next-20240627, so:
 
-if layout.align() > bindings::ARCH_SLAB_MINALIGN {
-    // The alignment requirement exceeds the slab guarantee, thus try
-to enlarge the size
-    // to use the "power-of-two" size/alignment guarantee (see
-comments in `kmalloc()` for
-    // more information).
-    //
-    // Note that `layout.size()` (after padding) is guaranteed to be a
-multiple of
-    // `layout.align()`, so `next_power_of_two` gives enough alignment
-guarantee.
-    size =3D size.next_power_of_two();
-}
+Acked-by: Miguel Ojeda <ojeda@kernel.org>
 
-We would only need to keep the part that rounds up the size to a
-multiple of the alignment.
+Thanks!
 
-Alice
+Cheers,
+Miguel
