@@ -1,237 +1,155 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-4319.protonmail.ch (mail-4319.protonmail.ch [185.70.43.19])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64F3616EC0F;
-	Mon,  1 Jul 2024 18:37:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09B5816CD15;
+	Mon,  1 Jul 2024 19:48:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719859068; cv=none; b=WgnXuhEtd3Uf6w62Ong+NRRvxVbizq2ztFKxuCr1k1uyAI+O7eyMndafClBPmgl6FzAlFnqnqmx07wlTsp81asZBWsEH9lGUtPRpJS6x3zASUrJ3/CdPtreHa2C4JC9j9gdpXX1/qNdG2HF2po3F6UuDll9RBWmYnOgOjQcqrGM=
+	t=1719863340; cv=none; b=uv9agPHmVhq7GOSoJx5w99FipD5cmxvIabJv0F7BNJj0BEUFsRQxldlOudhy1nktHRNi3zSFrqOOPwzCrIekwJJ9hH1xl80pz9AlxNPzpEbBeqwLHON5KcFbbpM5ub+xkkHft2T0h2KfWRAmfblvIUhB3FEIVEsJX7UjdQTHWFc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719859068; c=relaxed/simple;
-	bh=AOrqewpmo3+XMOPNv8O3XmSJfqYus/NPWk7kj+7SfIM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lROtEcios58SvxIMm15HJWXtm0AFL/iKv+t/4IH3DgDwoMqbXzVK7zJM+sJSt/tGxT6cAWvtqIKWjUrbR/DZon/PQBnQUsQFHLmjFKjuxqZ46JfzHSTX8tBltLSvY1NKor4roZyp9IA2uBpMmPxMFFGNfHq7/jIgBmYzpt1vGuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=B+IGRoqX; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1719863340; c=relaxed/simple;
+	bh=MaqieYH112oPeJZK27+SKMAD5jIe1kLvdOEPP39gHfg=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=o5WvkOnTAzKw4wQPnsxIKKfIvnXgt9/9IsmC0ELjfPGZf0NPnUwqnQpkrANBa8ScfJZu3aBcwdcVuKFN9BSgXg5CWeK7XQesRxg5xyGevcBjE2pSn5Xxp0wY11DEET9YvKIamkTrPPTc9YDhIttqfS9s/Lg1ObLXcEWe+HUVm6Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=rqbkAqSV; arc=none smtp.client-ip=185.70.43.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="B+IGRoqX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80560C32781;
-	Mon,  1 Jul 2024 18:37:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1719859068;
-	bh=AOrqewpmo3+XMOPNv8O3XmSJfqYus/NPWk7kj+7SfIM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B+IGRoqXbOqjfzM3t6kEYMadiwnbMJQ8J/igQBEqS1MPRwhrMDjygFhKkjFtdID2C
-	 sarxRKfJeexmt45ww1XF4AqqH/EgLNNrrz2qfXf/vwNEhbuU8PWkBQH3GCtfDZKpoH
-	 To2ku5h2susyntctwh98HmUISl8ZGl0g53206t9IET/4ghGf2zMNZeuxwpP9lYQatl
-	 UjvXs7BDewmQcHm2JW3ytVbWiQ5ZibqpsP/edubE9ipXWDfbqIHSU+hWjUU8HDY3dd
-	 olm4qwALzvksdTQljYoAI40I5omT8jF67N0BzZaIHMOzp5nMbPwfHPNVWL7+fUlbqv
-	 e/HTj6YPjjHfA==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: Miguel Ojeda <ojeda@kernel.org>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Alex Gaynor <alex.gaynor@gmail.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	patches@lists.linux.dev,
-	Jan Alexander Steffens <heftig@archlinux.org>,
-	=?UTF-8?q?Johannes=20L=C3=B6thberg?= <johannes@kyriasis.com>,
-	=?UTF-8?q?Fabian=20Gr=C3=BCnbichler?= <debian@fabian.gruenbichler.email>,
-	Josh Stone <jistone@redhat.com>,
-	Randy Barlow <randy@electronsweatshop.com>,
-	Anna Figueiredo Gomes <navi@vlhl.dev>,
-	Matoro Mahri <matoro_gentoo@matoro.tk>,
-	Ryan Scheel <ryan.havvy@gmail.com>,
-	figsoda <figsoda@pm.me>,
-	=?UTF-8?q?J=C3=B6rg=20Thalheim?= <joerg@thalheim.io>,
-	Theodore Ni <43ngvg@masqt.com>,
-	Winter <nixos@winter.cafe>,
-	William Brown <wbrown@suse.de>,
-	Xiaoguang Wang <xiaoguang.wang@suse.com>,
-	Andrea Righi <andrea.righi@canonical.com>,
-	Zixing Liu <zixing.liu@canonical.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	workflows@vger.kernel.org,
-	linux-doc@vger.kernel.org
-Subject: [PATCH 13/13] docs: rust: quick-start: add section on Linux distributions
-Date: Mon,  1 Jul 2024 20:36:23 +0200
-Message-ID: <20240701183625.665574-14-ojeda@kernel.org>
-In-Reply-To: <20240701183625.665574-1-ojeda@kernel.org>
-References: <20240701183625.665574-1-ojeda@kernel.org>
+	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="rqbkAqSV"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+	s=protonmail3; t=1719863330; x=1720122530;
+	bh=K3c5EVsP0XfpFZ6X22wj/d/TUh2Dx07pnTyKDliG6wk=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=rqbkAqSVEfeyiJjiC9gdSvdjHlygJUzG6NJclDbYW2It8FHDKHlq8fO+KBdss6ERu
+	 n+BtJijDqskNyN/rPuV1Wo2W/PlNr1f3AWVXu0JDyXzwpNStculXOj3Z75BeXrU30c
+	 LArwtlH/x0CC+DpN2+RaLNlErLPVDqS42JmmZvdP3thzt4szVMUxA66V+nn+rH5nQ1
+	 9Bc83w4RqAT8zGHhxz1OO0w7p/SRzPFqoOWTgJ4LMR7zr33uVQufx09soAG+4KseJe
+	 CZDxg/9tBTj6vU56RePRd7mCY88BR5cz5AkemrAh/LMTWhd4e2N3qHPSeiE8S0RNiC
+	 GA9Zgommdc+QA==
+Date: Mon, 01 Jul 2024 19:48:46 +0000
+To: Miguel Ojeda <ojeda@kernel.org>
+From: =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
+Cc: Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, patches@lists.linux.dev, Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, linux-kbuild@vger.kernel.org
+Subject: Re: [PATCH 04/13] rust: relax most deny-level lints to warnings
+Message-ID: <WGFMwMlEU5xZ0Gz_9eqp_ATSk4UiloYSjxQi3JpxZsPQK_HU5S0RYxvLO9KXJEkADsKWKmtDfRYdpAkLrUpprgS2tbo-vIKfAW6Inc-Lhxc=@protonmail.com>
+In-Reply-To: <20240701183625.665574-5-ojeda@kernel.org>
+References: <20240701183625.665574-1-ojeda@kernel.org> <20240701183625.665574-5-ojeda@kernel.org>
+Feedback-ID: 27884398:user:proton
+X-Pm-Message-ID: 1420cc18cd1b73203510a1b88c89f56411879ff1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Now that we are starting to support several Rust compiler and `bindgen`
-versions, there is a good chance some Linux distributions work out of
-the box.
+On Monday, July 1st, 2024 at 20:36, Miguel Ojeda <ojeda@kernel.org> wrote:
 
-Thus, provide some instructions on how to set the toolchain up for a
-few major Linux distributions. This simplifies the setup users need to
-build the kernel.
+> Since we are starting to support several Rust toolchains, lints (includin=
+g
+> Clippy ones) now may behave differently and lint groups may include
+> new lints.
+>=20
+> Therefore, to maximize the chances a given version works, relax some
+> deny-level lints to warnings. It may also make our lives a bit easier
+> while developing new code or refactoring.
+>=20
+> To be clear, the requirements for in-tree code are still the same, since
+> Rust code still needs to be warning-free (patches should be clean under
+> `WERROR=3Dy`) and the set of lints is not changed.
+>=20
+> `unsafe_op_in_unsafe_fn` is left unmodified, i.e. as an error, since
+> 1) it is simple enough that it should not have false positives (unlike
+> e.g. `rust_2018_idioms`'s `explicit_outlives_requirements`) and 2) it is
+> becoming the default in the language (warn-by-default in Rust 2024 [1] an=
+d
+> ideally an error later on) and thus it should also be very well tested.
+>=20
+> Link: https://github.com/rust-lang/rust/pull/112038 [1]
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> ---
+>  Makefile      | 22 +++++++++++-----------
+>  rust/Makefile |  4 ++--
+>  2 files changed, 13 insertions(+), 13 deletions(-)
+>=20
+> diff --git a/Makefile b/Makefile
+> index 4d36f943b3b1..056176a55d63 100644
+> --- a/Makefile
+> +++ b/Makefile
+> @@ -461,17 +461,17 @@ KBUILD_USERLDFLAGS :=3D $(USERLDFLAGS)
+>  # host programs.
+>  export rust_common_flags :=3D --edition=3D2021 \
+>  =09=09=09    -Zbinary_dep_depinfo=3Dy \
+> -=09=09=09    -Dunsafe_op_in_unsafe_fn -Drust_2018_idioms \
+> -=09=09=09    -Dunreachable_pub -Dnon_ascii_idents \
+> +=09=09=09    -Dunsafe_op_in_unsafe_fn -Wrust_2018_idioms \
+> +=09=09=09    -Wunreachable_pub -Wnon_ascii_idents \
 
-In addition, add an introduction to the document so that it is easier
-to understand its structure. We may want to reorganize it or split it
-in the future, but I wanted to focus this commit on the new information
-added about each particular distribution.
+Maybe also keep non_ascii_idents as error? It shouldn't have any false posi=
+tives.
 
-Finally, remove the `rustup`'s components mention in `changes.rst` since
-users do not need it if they install the toolchain via the distributions
-(and anyway it was too detailed for that main document).
+>  =09=09=09    -Wmissing_docs \
+> -=09=09=09    -Drustdoc::missing_crate_level_docs \
+> -=09=09=09    -Dclippy::correctness -Dclippy::style \
+> -=09=09=09    -Dclippy::suspicious -Dclippy::complexity \
+> -=09=09=09    -Dclippy::perf \
+> -=09=09=09    -Dclippy::let_unit_value -Dclippy::mut_mut \
+> -=09=09=09    -Dclippy::needless_bitwise_bool \
+> -=09=09=09    -Dclippy::needless_continue \
+> -=09=09=09    -Dclippy::no_mangle_with_rust_abi \
+> +=09=09=09    -Wrustdoc::missing_crate_level_docs \
+> +=09=09=09    -Wclippy::correctness -Wclippy::style \
+> +=09=09=09    -Wclippy::suspicious -Wclippy::complexity \
+> +=09=09=09    -Wclippy::perf \
+> +=09=09=09    -Wclippy::let_unit_value -Wclippy::mut_mut \
+> +=09=09=09    -Wclippy::needless_bitwise_bool \
+> +=09=09=09    -Wclippy::needless_continue \
+> +=09=09=09    -Wclippy::no_mangle_with_rust_abi \
+>  =09=09=09    -Wclippy::dbg_macro
+>=20
+>  KBUILD_HOSTCFLAGS   :=3D $(KBUILD_USERHOSTCFLAGS) $(HOST_LFS_CFLAGS) $(H=
+OSTCFLAGS)
+> @@ -573,7 +573,7 @@ KBUILD_RUSTFLAGS :=3D $(rust_common_flags) \
+>  =09=09    -Csymbol-mangling-version=3Dv0 \
+>  =09=09    -Crelocation-model=3Dstatic \
+>  =09=09    -Zfunction-sections=3Dn \
+> -=09=09    -Dclippy::float_arithmetic
+> +=09=09    -Wclippy::float_arithmetic
+>=20
+>  KBUILD_AFLAGS_KERNEL :=3D
+>  KBUILD_CFLAGS_KERNEL :=3D
+> diff --git a/rust/Makefile b/rust/Makefile
+> index f70d5e244fee..4c03e53d3084 100644
+> --- a/rust/Makefile
+> +++ b/rust/Makefile
+> @@ -421,7 +421,7 @@ ifneq ($(or $(CONFIG_ARM64),$(and $(CONFIG_RISCV),$(C=
+ONFIG_64BIT))),)
+>  endif
+>=20
+>  $(obj)/core.o: private skip_clippy =3D 1
+> -$(obj)/core.o: private skip_flags =3D -Dunreachable_pub
+> +$(obj)/core.o: private skip_flags =3D -Wunreachable_pub
+>  $(obj)/core.o: private rustc_objcopy =3D $(foreach sym,$(redirect-intrin=
+sics),--redefine-sym $(sym)=3D__rust$(sym))
+>  $(obj)/core.o: private rustc_target_flags =3D $(core-cfgs)
+>  $(obj)/core.o: $(RUST_LIB_SRC)/core/src/lib.rs FORCE
+> @@ -435,7 +435,7 @@ $(obj)/compiler_builtins.o: $(src)/compiler_builtins.=
+rs $(obj)/core.o FORCE
+>  =09+$(call if_changed_dep,rustc_library)
+>=20
+>  $(obj)/alloc.o: private skip_clippy =3D 1
+> -$(obj)/alloc.o: private skip_flags =3D -Dunreachable_pub
+> +$(obj)/alloc.o: private skip_flags =3D -Wunreachable_pub
+>  $(obj)/alloc.o: private rustc_target_flags =3D $(alloc-cfgs)
+>  $(obj)/alloc.o: $(RUST_LIB_SRC)/alloc/src/lib.rs $(obj)/compiler_builtin=
+s.o FORCE
+>  =09+$(call if_changed_dep,rustc_library)
+> --
+> 2.45.2
 
-Cc: Jan Alexander Steffens <heftig@archlinux.org>
-Cc: Johannes Löthberg <johannes@kyriasis.com>
-Cc: Fabian Grünbichler <debian@fabian.gruenbichler.email>
-Cc: Josh Stone <jistone@redhat.com>
-Cc: Randy Barlow <randy@electronsweatshop.com>
-Cc: Anna (navi) Figueiredo Gomes <navi@vlhl.dev>
-Cc: Matoro Mahri <matoro_gentoo@matoro.tk>
-Cc: Ryan Scheel <ryan.havvy@gmail.com>
-Cc: figsoda <figsoda@pm.me>
-Cc: Jörg Thalheim <joerg@thalheim.io>
-Cc: Theodore Ni <43ngvg@masqt.com>
-Cc: Winter <nixos@winter.cafe>
-Cc: William Brown <wbrown@suse.de>
-Cc: Xiaoguang Wang <xiaoguang.wang@suse.com>
-Cc: Andrea Righi <andrea.righi@canonical.com>
-Cc: Zixing Liu <zixing.liu@canonical.com>
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
----
-Note that openSUSE Tumbleweed is adding the Rust standard library source
-code, `rustfmt` and Clippy, so we may be able to drop that small note in
-their section in a few days (possibly before this gets applied) --
-thanks William!
-
- Documentation/process/changes.rst  |  5 --
- Documentation/rust/quick-start.rst | 83 ++++++++++++++++++++++++++++--
- 2 files changed, 78 insertions(+), 10 deletions(-)
-
-diff --git a/Documentation/process/changes.rst b/Documentation/process/changes.rst
-index 0d0b7120792b..0ce96ae2588c 100644
---- a/Documentation/process/changes.rst
-+++ b/Documentation/process/changes.rst
-@@ -90,11 +90,6 @@ Rust (optional)
- 
- A recent version of the Rust compiler is required.
- 
--Each Rust toolchain comes with several "components", some of which are required
--(like ``rustc``) and some that are optional. The ``rust-src`` component (which
--is optional) needs to be installed to build the kernel. Other components are
--useful for developing.
--
- Please see Documentation/rust/quick-start.rst for instructions on how to
- satisfy the build requirements of Rust support. In particular, the ``Makefile``
- target ``rustavailable`` is useful to check why the Rust toolchain may not
-diff --git a/Documentation/rust/quick-start.rst b/Documentation/rust/quick-start.rst
-index f624b913ff89..65a34a9a7089 100644
---- a/Documentation/rust/quick-start.rst
-+++ b/Documentation/rust/quick-start.rst
-@@ -5,17 +5,90 @@ Quick Start
- 
- This document describes how to get started with kernel development in Rust.
- 
-+There are a few ways to install a Rust toolchain needed for kernel development.
-+A simple way is to use the packages from your Linux distribution if they are
-+suitable -- the first section below explains this approach. An advantage of this
-+approach is that, typically, the distribution will match the LLVM used by Rust
-+and Clang.
-+
-+Alternatively, the next two "Requirements" sections explain each component and
-+how to install them through ``rustup``, the standalone installers from Rust
-+and/or building them.
-+
-+The rest of the document explains other aspects on how to get started.
-+
-+
-+Distributions
-+-------------
-+
-+Arch Linux
-+**********
-+
-+Arch Linux provides recent Rust releases and thus it should generally work out
-+of the box, e.g.::
-+
-+	pacman -S rust rust-src rust-bindgen
-+
-+
-+Debian
-+******
-+
-+Debian Unstable (Sid), outside of the freeze period, provides recent Rust
-+release and thus it should generally work out of the box, e.g.::
-+
-+	apt install rustc rust-src bindgen rustfmt rust-clippy
-+
-+
-+Fedora Linux
-+************
-+
-+Fedora Linux provides recent Rust releases and thus it should generally work out
-+of the box, e.g.::
-+
-+	dnf install rust rust-src bindgen-cli rustfmt clippy
-+
-+
-+Gentoo Linux
-+************
-+
-+Gentoo Linux (and especially the testing branch) provides recent Rust releases
-+and thus it should generally work out of the box, e.g.::
-+
-+	USE='rust-src rustfmt clippy' emerge dev-lang/rust dev-util/bindgen
-+
-+``LIBCLANG_PATH`` may need to be set.
-+
-+
-+Nix
-+***
-+
-+Nix (unstable channel) provides recent Rust releases and thus it should
-+generally work out of the box, e.g.::
-+
-+	{ pkgs ? import <nixpkgs> {} }:
-+	pkgs.mkShell {
-+	  nativeBuildInputs = with pkgs; [ rustc rust-bindgen rustfmt clippy ];
-+	  RUST_LIB_SRC = "${pkgs.rust.packages.stable.rustPlatform.rustLibSrc}";
-+	}
-+
-+
-+openSUSE
-+********
-+
-+openSUSE Tumbleweed provides recent Rust releases and thus it should generally
-+work out of the box, e.g.::
-+
-+	zypper install rust rust-bindgen clang
-+
-+The Rust standard library source code, ``rustfmt`` and Clippy are not packaged
-+(yet), thus currently they need to be installed separately.
-+
- 
- Requirements: Building
- ----------------------
- 
- This section explains how to fetch the tools needed for building.
- 
--Some of these requirements might be available from Linux distributions
--under names like ``rustc``, ``rust-src``, ``rust-bindgen``, etc. However,
--at the time of writing, they are likely not to be recent enough unless
--the distribution tracks the latest releases.
--
- To easily check whether the requirements are met, the following target
- can be used::
- 
--- 
-2.45.2
-
+Cheers,
+Bjorn
