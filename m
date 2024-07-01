@@ -1,425 +1,99 @@
-Received: from mail-yb1-f179.google.com (mail-yb1-f179.google.com [209.85.219.179])
+Received: from mail-io1-f45.google.com (mail-io1-f45.google.com [209.85.166.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C252C2BB0D
-	for <rust-for-linux@vger.kernel.org>; Sun, 30 Jun 2024 06:00:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 659A013D53D;
+	Mon,  1 Jul 2024 11:27:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719727223; cv=none; b=ofz0o6vTXZ3fBtYPrhXW/xOk4D1e5JKOh5+JzB4Pk7DsWF9LUnc2Pjz81xGOuBY+bCXApRLQxAJxcrqNemwo5wsddcSuG3wPkCCIKHopQvkWgtbyRWnMrox5YxQYtmDvvg3XS+antCIFX+FrRJb+pUyZ4LGhQC7fwMSewVrEP8A=
+	t=1719833253; cv=none; b=cGKn9UyvOU+0RtNylzwO7XfcZb47JMrn9TEoibnWteRq4+LzY04GJoRVNvmia/9J3bGd4qwmiSivMoM828OfyxieFKVfII1tWadsawThmDhEVhzycBrfhTJr9xDlXdjZ48HvjCmBHG9dW6l4lk4FrheGHmZbaaVZ63cL2IfnmUM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719727223; c=relaxed/simple;
-	bh=tQkrBNfZsOwLqSWgWSlipr86F48Z0svj3Vr5OZUb7y4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FD/S/vVt3lzcjV25DB5W4VrboIUm2h9n8/4a33cVHl62etJWOQzVQqkbve3hsXXhU1JPy5m9f+B6SMyNtusP6tiQMUOm/5wDJzsPTVYvXOpH9OeL8DGGdG6QQ/jFYqM7mXFmjgoHT2zkiMzslqXDT1jh5BznypS4jxoPnWJjSnI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hev.cc; spf=pass smtp.mailfrom=hev.cc; dkim=pass (2048-bit key) header.d=hev-cc.20230601.gappssmtp.com header.i=@hev-cc.20230601.gappssmtp.com header.b=ilvdZp3h; arc=none smtp.client-ip=209.85.219.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hev.cc
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hev.cc
+	s=arc-20240116; t=1719833253; c=relaxed/simple;
+	bh=MiE+t/Qy7mTvW/UJKwZYIqpcyNeA4NT5zBhuLcSvdtU=;
+	h=From:To:Subject:Date:Message-ID:MIME-Version; b=s3xDM3ngiyvAVJFuz88JcCV8N2AedrgkZFYw/yazj107+fRO1QxEwFGHjwwm81qYJEAvvaulvZhR2RKIHjHziQ5FB7Pv9db9FjXcaK/jP0Xe5eufi5wZdNNGsAsK8hZfHt+UcTOt+skP0c0US4fkLUPR+Bn51jIwNb6y28FapiQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aNRvU9RA; arc=none smtp.client-ip=209.85.166.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=hev-cc.20230601.gappssmtp.com header.i=@hev-cc.20230601.gappssmtp.com header.b="ilvdZp3h"
-Received: by mail-yb1-f179.google.com with SMTP id 3f1490d57ef6-e035dc23a21so1708776276.0
-        for <rust-for-linux@vger.kernel.org>; Sat, 29 Jun 2024 23:00:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aNRvU9RA"
+Received: by mail-io1-f45.google.com with SMTP id ca18e2360f4ac-7f3d6785665so94286939f.1;
+        Mon, 01 Jul 2024 04:27:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=hev-cc.20230601.gappssmtp.com; s=20230601; t=1719727220; x=1720332020; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8Z+HcQF7Z+hkJPUz7jNlFlAo56pnj1GWbfXdC8hq/RY=;
-        b=ilvdZp3h3HcW9NZGDwQ9UxVB1FvggDeml5PLE4NKg/oLagONSarxbXeDupRzV01IK9
-         Y9ztu2CaDuGJT6/G0uzfijq7lhzLt1hCe5oc8K+OhOyVxeuMp6EgTD3IKLZbDzdIvwUd
-         /0Qa2gxVpi1lnju7ptpF/1vIcHLaQ4zKoi4Jo1opjvbVBoLRyMzsDxq1g36qCDAhpl1j
-         8DaFdXaWtZg2Bj6PR7pyDq2Ktfn2EjwRoyP51dTAt5Yj9uvT+v2BOx5YxNkZMyOghhG8
-         PnreAWG77kJiVnQZ/t3Cx7j/s9sUO0XS/I5fOpnqYmJHID5yITCPmZIQsa1bcoB4eADX
-         XD5g==
+        d=gmail.com; s=20230601; t=1719833251; x=1720438051; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=N33ic0hVrQ47JNPqyZI6N613/A1ho/xocad/pxtq+J0=;
+        b=aNRvU9RAMwhIm+74wK4rluPFXOZybkHxAL/8neHeeBe4+nBNIz66uPD/OPUOkN4cEE
+         Qmmnvmwgfrco4FAZ5UsKtQ+pMdHX65lttLGmupe+21pSZzkuWhRVi32Q3MG3G7Z7325L
+         wIbIhqIVihDqgHBFfKviMZC/ZCywysbSs1Hr7Hft5gTLy9M4QZ6nn7nz1eAlXOlv02uc
+         HB/NSeWx/B+hwlgSg/qhMXFk+4Yww46KBKuPJPkF+LoVnDkTMFpMygCw4XxISdmGzvRh
+         PQChbKzOK7fjUo87GF/4Ic00TR2OYQT6o50Rxkp4FV+sn3o5BIERfrNrKhcVUD+O4ZMs
+         SzRQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719727220; x=1720332020;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8Z+HcQF7Z+hkJPUz7jNlFlAo56pnj1GWbfXdC8hq/RY=;
-        b=mUCtBs3h3zBKXoveslVPjDAtOqVY2q41QsV/8pwMLKzdUqVoNPlsTMCSwlGXYkyma5
-         /wNMpPjTzSucfmwKScBEbluRCPBInvljwVBkuTeAzPwVHgcsxUL5YUnYE3daUDc9AE/x
-         ZnyUn67bJpxcgAgFDqxd35fY7BR0YjHbC4aN8f1+lECtLEtfY4IZongOXDmpB0/wNZrr
-         2gtNH5/EsGSmgaOfagBrmpyN3TvB2z+QJqoXV3JXAi30xUhwKxeLHV5fs42T0+0w6zuM
-         Tz+TC0JYakYLTxTJFjQ6syd4/7j1SRIusKjdMx9azbz24oWkMHbTQ8DAa+MmQTUQ0wyn
-         N7Ng==
-X-Forwarded-Encrypted: i=1; AJvYcCWwi+bQ+6RuGX53dPnnX9X8VuAxzCMTtuUINPmwlTUYALwWlvpCYQOlI6aii4Osu5glwZPgW+CuSPYVskxgvbZKYspZ/Lyqdj9VCM3++G4=
-X-Gm-Message-State: AOJu0YyjFQFW7jTuREb2poASwXL7DUjQa0ILwdZknibhFSL7U0dZ2rV2
-	WH6aLT5l12l4WuhtgMz3Su1xiz0Q97lcpp29amut0BD6hGZ4Wn+VoVRQE+n76Ws45czsOV6V1cu
-	zXCDH6MKLr/0ztLNz/GLdgjWM2nnvNGDu9fmV6g==
-X-Google-Smtp-Source: AGHT+IGa/J8SobAVMgZOGPow3jjMohMft7k0t0CJ7I1qGMmuVdGvPtInQVQQZhlJQRKSx2WFdG8uA8+wzb8seMm1cE8=
-X-Received: by 2002:a25:860e:0:b0:e02:6fe6:ec55 with SMTP id
- 3f1490d57ef6-e036eb27eebmr2255709276.17.1719727219444; Sat, 29 Jun 2024
- 23:00:19 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1719833251; x=1720438051;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:to
+         :from:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=N33ic0hVrQ47JNPqyZI6N613/A1ho/xocad/pxtq+J0=;
+        b=ivEDxACU2mL1YyikVmOilRxaVcBbcVN2TszQvEsah5ANSnKvZIlD46aKzUMlT0QkpF
+         o5Y5JByf+odnVRuI3q0bU5t/OIWXf7AaV5zqlM/ZORd3a0xZUq2YQ+X9Vs2ZEQLaQQ9c
+         Ztp40yiWA4y/qOPhVBAmYmA7rU5rslEiFAVAK4hqnPqK8WyoFx5fU/uYd5BOdCcw1BIP
+         1RBr8CMVPvjXW+FFzN7IYRvRozzs5J6jCMXqDUFKZeQljNglmq73CQJSd/25s0SYDH+z
+         q6S8p5dUsM6GeEaRoRI0LBwyyziVaf3Qtu+bJjV6UCYz6EV2/5yzcTMBZlLeQ9h+WNmm
+         pYZw==
+X-Forwarded-Encrypted: i=1; AJvYcCULewcX9uDBICKOWQimmuA+R9133hjv3OUu3eFhmcvjv9mSUhQQ9emiFhOqN8i1qdLVhEqcpBVky3BQ0YQ5oF9ttF0zrSr5LhQ+xgrIfrDH0AOXDAP7RbVuUFJTJ3s2olJy/nSIMP+gUCLfbM0=
+X-Gm-Message-State: AOJu0Yz2j0/ZYpazklBN9l5K23IIToprQVAmbWoh9IusP3Obftyc0mtb
+	nHuOBHRS8ORm7/EeDz7SZFF9AKK/WOF77wZj2goTfZcsI1cj3U2v
+X-Google-Smtp-Source: AGHT+IGElsOEdy1buV/bEtFs7g4vLLosB7qQ/q9Xcw9NwcsuJ7Si/vEtp+iTGcjdsPf8hgiUzGYIaw==
+X-Received: by 2002:a05:6602:2358:b0:7f6:369f:262c with SMTP id ca18e2360f4ac-7f6369f328bmr461928039f.10.1719833251388;
+        Mon, 01 Jul 2024 04:27:31 -0700 (PDT)
+Received: from localhost.localdomain (h135-131-130-199.ashwwi.broadband.dynamic.tds.net. [135.131.130.199])
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4bb73e062e3sm2087317173.75.2024.07.01.04.27.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 01 Jul 2024 04:27:30 -0700 (PDT)
+From: "Ethan D. Twardy" <ethan.twardy@gmail.com>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+	"Ethan D. Twardy" <ethan.twardy@gmail.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Aswin Unnikrishnan <aswinunni01@gmail.com>,
+	rust-for-linux@vger.kernel.org (open list:RUST),
+	linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH v2 0/4] Enable rustdoc tests for the macros crate
+Date: Mon,  1 Jul 2024 06:24:22 -0500
+Message-ID: <20240701112448.28638-1-ethan.twardy@gmail.com>
+X-Mailer: git-send-email 2.44.2
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240628-tracepoint-v4-0-353d523a9c15@google.com> <20240628-tracepoint-v4-1-353d523a9c15@google.com>
-In-Reply-To: <20240628-tracepoint-v4-1-353d523a9c15@google.com>
-From: hev <r@hev.cc>
-Date: Sun, 30 Jun 2024 14:00:08 +0800
-Message-ID: <CAHirt9iXiQHT-WsKVamyNY8-nw-Xddrc3xO05k6mM-9xtjSgPw@mail.gmail.com>
-Subject: Re: [PATCH v4 1/2] rust: add static_key_false
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Josh Poimboeuf <jpoimboe@kernel.org>, Jason Baron <jbaron@akamai.com>, 
-	Ard Biesheuvel <ardb@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	linux-trace-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, linux-arch@vger.kernel.org, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, "Peter Zijlstra (Intel)" <peterz@infradaed.org>, 
-	Sean Christopherson <seanjc@google.com>, Uros Bizjak <ubizjak@gmail.com>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>, 
-	Oliver Upton <oliver.upton@linux.dev>, Mark Rutland <mark.rutland@arm.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Fuad Tabba <tabba@google.com>, 
-	linux-arm-kernel@lists.infradead.org, 
-	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Albert Ou <aou@eecs.berkeley.edu>, Anup Patel <apatel@ventanamicro.com>, 
-	Andrew Jones <ajones@ventanamicro.com>, Alexandre Ghiti <alexghiti@rivosinc.com>, 
-	Conor Dooley <conor.dooley@microchip.com>, Samuel Holland <samuel.holland@sifive.com>, 
-	linux-riscv@lists.infradead.org, Huacai Chen <chenhuacai@kernel.org>, 
-	WANG Xuerui <kernel@xen0n.name>, Bibo Mao <maobibo@loongson.cn>, 
-	Tiezhu Yang <yangtiezhu@loongson.cn>, Andrew Morton <akpm@linux-foundation.org>, 
-	Tianrui Zhao <zhaotianrui@loongson.cn>, loongarch@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Hi Alice
+Changes from v1:
+ - Resolve a duplicate kbuild rule identified by the test robot
+ - Fix a number of formatting issues in the tests
 
-On Fri, Jun 28, 2024 at 9:24=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
-rote:
->
-> Add just enough support for static key so that we can use it from
-> tracepoints. Tracepoints rely on `static_key_false` even though it is
-> deprecated, so we add the same functionality to Rust.
->
-> It is not possible to use the existing C implementation of
-> arch_static_branch because it passes the argument `key` to inline
-> assembly as an 'i' parameter, so any attempt to add a C helper for this
-> function will fail to compile because the value of `key` must be known
-> at compile-time.
->
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
->  rust/kernel/arch/arm64/jump_label.rs     | 34 ++++++++++++++++++++++++++=
-++
->  rust/kernel/arch/loongarch/jump_label.rs | 35 ++++++++++++++++++++++++++=
-+++
->  rust/kernel/arch/mod.rs                  | 24 ++++++++++++++++++++
->  rust/kernel/arch/riscv/jump_label.rs     | 38 ++++++++++++++++++++++++++=
-++++++
->  rust/kernel/arch/x86/jump_label.rs       | 35 ++++++++++++++++++++++++++=
-+++
->  rust/kernel/lib.rs                       |  2 ++
->  rust/kernel/static_key.rs                | 32 ++++++++++++++++++++++++++=
-+
->  scripts/Makefile.build                   |  2 +-
->  8 files changed, 201 insertions(+), 1 deletion(-)
->
-> diff --git a/rust/kernel/arch/arm64/jump_label.rs b/rust/kernel/arch/arm6=
-4/jump_label.rs
-> new file mode 100644
-> index 000000000000..5eede2245718
-> --- /dev/null
-> +++ b/rust/kernel/arch/arm64/jump_label.rs
-> @@ -0,0 +1,34 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +// Copyright (C) 2024 Google LLC.
-> +
-> +//! Arm64 Rust implementation of jump_label.h
-> +
-> +/// arm64 implementation of arch_static_branch
-> +#[macro_export]
-> +#[cfg(target_arch =3D "aarch64")]
-> +macro_rules! arch_static_branch {
-> +    ($key:path, $keytyp:ty, $field:ident, $branch:expr) =3D> {'my_label:=
- {
-> +        core::arch::asm!(
-> +            r#"
-> +            1: nop
-> +
-> +            .pushsection __jump_table,  "aw"
-> +            .align 3
-> +            .long 1b - ., {0} - .
-> +            .quad {1} + {2} + {3} - .
-> +            .popsection
-> +            "#,
-> +            label {
-> +                break 'my_label true;
-> +            },
-> +            sym $key,
-> +            const ::core::mem::offset_of!($keytyp, $field),
-> +            const $crate::arch::bool_to_int($branch),
-> +        );
-> +
-> +        break 'my_label false;
-> +    }};
-> +}
-> +
-> +pub use arch_static_branch;
-> diff --git a/rust/kernel/arch/loongarch/jump_label.rs b/rust/kernel/arch/=
-loongarch/jump_label.rs
-> new file mode 100644
-> index 000000000000..8d31318aeb11
-> --- /dev/null
-> +++ b/rust/kernel/arch/loongarch/jump_label.rs
-> @@ -0,0 +1,35 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +// Copyright (C) 2024 Google LLC.
-> +
-> +//! Loongarch Rust implementation of jump_label.h
-> +
-> +/// loongarch implementation of arch_static_branch
-> +#[doc(hidden)]
-> +#[macro_export]
-> +#[cfg(target_arch =3D "loongarch64")]
-> +macro_rules! arch_static_branch {
-> +    ($key:path, $keytyp:ty, $field:ident, $branch:expr) =3D> {'my_label:=
- {
-> +        core::arch::asm!(
-> +            r#"
-> +            1: nop
-> +
-> +            .pushsection __jump_table,  "aw"
-> +            .align 3
-> +            .long 1b - ., {0} - .
-> +            .quad {1} + {2} + {3} - .
-> +            .popsection
-> +            "#,
-> +            label {
-> +                break 'my_label true;
-> +            },
-> +            sym $key,
-> +            const ::core::mem::offset_of!($keytyp, $field),
-> +            const $crate::arch::bool_to_int($branch),
-> +        );
-> +
-> +        break 'my_label false;
-> +    }};
-> +}
+Ethan D. Twardy (4):
+  kbuild: rust: Expand rusttest target for macros
+  rust: Enable test for macros::module
+  rust: macros: Enable use from macro_rules!
+  rust: macros: Enable the rest of the tests
 
-I have tested these patches on LoongArch and it works as expected.
+ rust/Makefile        |  29 ++++++++--
+ rust/macros/lib.rs   | 126 ++++++++++++++++++++++++++++++++-----------
+ rust/macros/paste.rs |  15 ++++--
+ 3 files changed, 132 insertions(+), 38 deletions(-)
 
-Tested-by: WANG Rui <wangrui@loongson.cn>
 
-Thanks,
--Rui
+base-commit: a126eca844353360ebafa9088d22865cb8e022e3
+-- 
+2.44.2
 
-> +
-> +pub use arch_static_branch;
-> diff --git a/rust/kernel/arch/mod.rs b/rust/kernel/arch/mod.rs
-> new file mode 100644
-> index 000000000000..14271d2530e9
-> --- /dev/null
-> +++ b/rust/kernel/arch/mod.rs
-> @@ -0,0 +1,24 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +// Copyright (C) 2024 Google LLC.
-> +
-> +//! Architecture specific code.
-> +
-> +#[cfg_attr(target_arch =3D "aarch64", path =3D "arm64")]
-> +#[cfg_attr(target_arch =3D "x86_64", path =3D "x86")]
-> +#[cfg_attr(target_arch =3D "loongarch64", path =3D "loongarch")]
-> +#[cfg_attr(target_arch =3D "riscv64", path =3D "riscv")]
-> +mod inner {
-> +    pub mod jump_label;
-> +}
-> +
-> +pub use self::inner::*;
-> +
-> +/// A helper used by inline assembly to pass a boolean to as a `const` p=
-arameter.
-> +///
-> +/// Using this function instead of a cast lets you assert that the input=
- is a boolean, rather than
-> +/// some other type that can be cast to an integer.
-> +#[doc(hidden)]
-> +pub const fn bool_to_int(b: bool) -> i32 {
-> +    b as i32
-> +}
-> diff --git a/rust/kernel/arch/riscv/jump_label.rs b/rust/kernel/arch/risc=
-v/jump_label.rs
-> new file mode 100644
-> index 000000000000..2672e0c6f033
-> --- /dev/null
-> +++ b/rust/kernel/arch/riscv/jump_label.rs
-> @@ -0,0 +1,38 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +// Copyright (C) 2024 Google LLC.
-> +
-> +//! RiscV Rust implementation of jump_label.h
-> +
-> +/// riscv implementation of arch_static_branch
-> +#[macro_export]
-> +#[cfg(target_arch =3D "riscv64")]
-> +macro_rules! arch_static_branch {
-> +    ($key:path, $keytyp:ty, $field:ident, $branch:expr) =3D> {'my_label:=
- {
-> +        core::arch::asm!(
-> +            r#"
-> +            .align  2
-> +            .option push
-> +            .option norelax
-> +            .option norvc
-> +            1: nop
-> +            .option pop
-> +            .pushsection __jump_table,  "aw"
-> +            .align 3
-> +            .long 1b - ., {0} - .
-> +            .dword {1} + {2} + {3} - .
-> +            .popsection
-> +            "#,
-> +            label {
-> +                break 'my_label true;
-> +            },
-> +            sym $key,
-> +            const ::core::mem::offset_of!($keytyp, $field),
-> +            const $crate::arch::bool_to_int($branch),
-> +        );
-> +
-> +        break 'my_label false;
-> +    }};
-> +}
-> +
-> +pub use arch_static_branch;
-> diff --git a/rust/kernel/arch/x86/jump_label.rs b/rust/kernel/arch/x86/ju=
-mp_label.rs
-> new file mode 100644
-> index 000000000000..383bed273c50
-> --- /dev/null
-> +++ b/rust/kernel/arch/x86/jump_label.rs
-> @@ -0,0 +1,35 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +// Copyright (C) 2024 Google LLC.
-> +
-> +//! X86 Rust implementation of jump_label.h
-> +
-> +/// x86 implementation of arch_static_branch
-> +#[macro_export]
-> +#[cfg(target_arch =3D "x86_64")]
-> +macro_rules! arch_static_branch {
-> +    ($key:path, $keytyp:ty, $field:ident, $branch:expr) =3D> {'my_label:=
- {
-> +        core::arch::asm!(
-> +            r#"
-> +            1: .byte 0x0f,0x1f,0x44,0x00,0x00
-> +
-> +            .pushsection __jump_table,  "aw"
-> +            .balign 8
-> +            .long 1b - .
-> +            .long {0} - .
-> +            .quad {1} + {2} + {3} - .
-> +            .popsection
-> +            "#,
-> +            label {
-> +                break 'my_label true;
-> +            },
-> +            sym $key,
-> +            const ::core::mem::offset_of!($keytyp, $field),
-> +            const $crate::arch::bool_to_int($branch),
-> +        );
-> +
-> +        break 'my_label false;
-> +    }};
-> +}
-> +
-> +pub use arch_static_branch;
-> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> index fbd91a48ff8b..fffd4e1dd1c1 100644
-> --- a/rust/kernel/lib.rs
-> +++ b/rust/kernel/lib.rs
-> @@ -27,6 +27,7 @@
->  extern crate self as kernel;
->
->  pub mod alloc;
-> +pub mod arch;
->  mod build_assert;
->  pub mod error;
->  pub mod init;
-> @@ -38,6 +39,7 @@
->  pub mod prelude;
->  pub mod print;
->  mod static_assert;
-> +pub mod static_key;
->  #[doc(hidden)]
->  pub mod std_vendor;
->  pub mod str;
-> diff --git a/rust/kernel/static_key.rs b/rust/kernel/static_key.rs
-> new file mode 100644
-> index 000000000000..32cf027ef091
-> --- /dev/null
-> +++ b/rust/kernel/static_key.rs
-> @@ -0,0 +1,32 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +// Copyright (C) 2024 Google LLC.
-> +
-> +//! Logic for static keys.
-> +
-> +use crate::bindings::*;
-> +
-> +/// Branch based on a static key.
-> +///
-> +/// Takes three arguments:
-> +///
-> +/// * `key` - the path to the static variable containing the `static_key=
-`.
-> +/// * `keytyp` - the type of `key`.
-> +/// * `field` - the name of the field of `key` that contains the `static=
-_key`.
-> +#[macro_export]
-> +macro_rules! static_key_false {
-> +    ($key:path, $keytyp:ty, $field:ident) =3D> {{
-> +        // Assert that `$key` has type `$keytyp` and that `$key.$field` =
-has type `static_key`.
-> +        //
-> +        // SAFETY: We know that `$key` is a static because otherwise the=
- inline assembly will not
-> +        // compile. The raw pointers created in this block are in-bounds=
- of `$key`.
-> +        static _TY_ASSERT: () =3D unsafe {
-> +            let key: *const $keytyp =3D ::core::ptr::addr_of!($key);
-> +            let _: *const $crate::bindings::static_key =3D ::core::ptr::=
-addr_of!((*key).$field);
-> +        };
-> +
-> +        $crate::arch::jump_label::arch_static_branch! { $key, $keytyp, $=
-field, false }
-> +    }};
-> +}
-> +
-> +pub use static_key_false;
-> diff --git a/scripts/Makefile.build b/scripts/Makefile.build
-> index efacca63c897..60197c1c063f 100644
-> --- a/scripts/Makefile.build
-> +++ b/scripts/Makefile.build
-> @@ -263,7 +263,7 @@ $(obj)/%.lst: $(obj)/%.c FORCE
->  # Compile Rust sources (.rs)
->  # ----------------------------------------------------------------------=
------
->
-> -rust_allowed_features :=3D new_uninit
-> +rust_allowed_features :=3D asm_const,asm_goto,new_uninit
->
->  # `--out-dir` is required to avoid temporaries being created by `rustc` =
-in the
->  # current working directory, which may be not accessible in the out-of-t=
-ree
->
-> --
-> 2.45.2.803.g4e1b14247a-goog
->
->
