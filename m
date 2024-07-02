@@ -1,93 +1,141 @@
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-0301.mail-europe.com (mail-0301.mail-europe.com [188.165.51.139])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42CD1171657;
-	Mon,  1 Jul 2024 21:58:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 601916F06A;
+	Tue,  2 Jul 2024 06:25:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=188.165.51.139
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719871113; cv=none; b=vGOARLzt8upmCLDBSL7t/xSFZl0ZGFNZUsYhL9f+ZuQFa9ROyvOqO4LXllKBD045rb7YKoNG6ApF7eHDaouddCKtbsbzbECvZcIHO6z4Qy5SrfoRtKNpYY4StzljQU3ZZPW4iW6bJ1/h6XPO3DheHkAJYu6sBWiTSOtuBRgXsis=
+	t=1719901516; cv=none; b=O8dON7o+QKm+Kz+0RtUVS0tj+swVH9jc3t6rZiizk7XrhYD8GtrqNPacJR6HmhEQuDUA4lNKAmDO93kksagRUYh48awlCgqmoc+9PUTUpQ6NQsslfw4FowjcmHBy2dPL9Suy/2ab9dl6y7TFp5yS6BkNNhrH8u2F63ItUwixNfU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719871113; c=relaxed/simple;
-	bh=tlQGRW1IcR2XLrHRJ5fJHNgvknF+VsqTTtXrxqai0CA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=GIvb7XCExxnJMHvjrP5itxnDqHd1yNlie7YY7rYYBX5KRoDDoMn8dTzW+wIO+FpcBmMVUFm9GILaOQWcNoX7vGfxY/GzWv95RrMe1+/zlW/TsbXSE0FFSPSZb1A/8iWW2V10EMtKyvyp/9jb1ubqJQs1tYYR31VL6bMIcgG7uQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b+7cEjw/; arc=none smtp.client-ip=209.85.216.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1719901516; c=relaxed/simple;
+	bh=d7jmQn3cQKTbDmIwjhlKxQJjbtiLywWBTewUHIeU2cY=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=iUyHDYW23nJYfAt0QFIFDC7+VC/fabUChN77xor26RZpLqmvfMJyZsVbjegCKWoojaVCewYUkunxkrcFgZ/kDVDTzwKAtQLg0R4ANKBIS8Qct+bg1vqUA7m3XCvy7bWnTj+jUNvC0WQHD19E5oRAnhvfhlr998m4lnjv4LpAlxk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=W96gFTsV; arc=none smtp.client-ip=188.165.51.139
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b+7cEjw/"
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-2c70c372755so2310496a91.1;
-        Mon, 01 Jul 2024 14:58:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1719871112; x=1720475912; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=tlQGRW1IcR2XLrHRJ5fJHNgvknF+VsqTTtXrxqai0CA=;
-        b=b+7cEjw/dpKYqA+NWkYx59gEVc5ZX3cCTMVnTpGvNsPi2tMG4gnov85cX9qaKQJYaP
-         1WZIyJ+xwgT3DGrZCMlrr2ULTMMlV3olMd1ceUrO6Gcg6KWhTTWDYUjDBxq//FnGSGXq
-         t+dsaxdA0FkUdTCkCIOLheXhGC7tURsn9EtJoUsoJA+XpOZXP/+HHK7sEl0DGVx3U/57
-         FKzLBp1aUJRgd9+TMuS0o2ZsHOtqrbl5jr1q290ciCEFYiC7EpWR848XYa3doaPW65lO
-         +tNvuUdZJ+wkjOzP8JZSFWom+O31dvSOzDApSRTEcWHigBqaQgXsCBMNrYza0yiE/yug
-         4Z7A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719871112; x=1720475912;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=tlQGRW1IcR2XLrHRJ5fJHNgvknF+VsqTTtXrxqai0CA=;
-        b=Oj4CR8e10Nu3tN/GU9nAr+fcW7tCyBZSjrRi8z5nFT/hCV06CnOroPrQC3keHdozXE
-         OLezA54bmtf6VJAhL4Wf5XwjVkgRIRZxafsju0IxqXzpjQ+n79HC9UYDoZwhP/vF131Q
-         ZqoqwDjk+2ofei0v+quLntSqXE1Ok1XCr88Mq64iz0XBxc4mAFDCDL2S/Z30/XBWFEhc
-         bRFoVy/i6NVm9b9lDbsul35OfYB7s9nQwNLbrGi34h5KewcMgcX0+6W2IJcs++Yi1rL5
-         pmmpanbjV+OAQjV5wKVHEW2xxf7GljbNGnaYyoHFHZDRh5Q2ZUvPbi4tLwvc9i4HvZRW
-         SnpQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWX2uY61oG21Ti/CpxP0zAXZcYmFW0P/jzQPO9ndsjnF+w1rdDvZwlkVFM9qTWCx8JIsn5DN93TaJrtPECFO1CMPdiMSVo1mzHVqp3MKR8TfwPboUuKcHgIaZO4SR+nbOaJicuxMkzEOMk4ThI=
-X-Gm-Message-State: AOJu0YzLtbtpRRoqtXUAsETj0jFxTkcKGJ9kG1s0syBBG/3+BGJerB8W
-	eERHgWjANVZo7rP4HwxeMG4csgRVzGr7mxjgU55g+boQ7pGpAf/KShBmNK8Jy4AW/nJoWFcbefO
-	5txMXUqbpwD7hmjm5Upy//k1ktkw=
-X-Google-Smtp-Source: AGHT+IFrP259sfZ8yGRxwucM+31Wr6lNtpD3kv0GbUgMjP0oJ5e5qH0ThJSRx/+w2HTAmQtLrbU7L6R2M0upQgm0mj0=
-X-Received: by 2002:a17:90a:5890:b0:2c8:5cb7:54e5 with SMTP id
- 98e67ed59e1d1-2c93d79abaemr3418146a91.32.1719871111661; Mon, 01 Jul 2024
- 14:58:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="W96gFTsV"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1719901504; x=1720160704;
+	bh=ViRBjlbD8T+ejB+NOEPHsNS/Xejpr+JGkmJCTZcRKRM=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=W96gFTsVdPuMZBI2efwM/mLbKkDInLhNk7WNOUVDnaHYRba7PTr4IziNDstaJPpWw
+	 x2fwWTpsmuuDUgT6OKYByhgEbbhKnwSgDvAD8VIYuo5wS5aaW3sOjhcEC/JxQ2h0N7
+	 T2eMT6uS0q+VMXR6y4ACFDblkCp6fgQWux/jUpy8/DYseJmY3oOBMIB0j8Znn7pfvu
+	 4BIbuWfSgov8Ckk2MAut9aDgQs08tnoRH2FRZaks28KhQoVcZoG0JW4t2ptLel0LYe
+	 vzNGhAcVtP+quAX6DMXHyn5TEoZTRcO2Br3m9tb1De9D0kM+WKHE4loaMOxE44qGNZ
+	 9RuppLPlvCxmQ==
+Date: Tue, 02 Jul 2024 06:25:02 +0000
+To: Miguel Ojeda <ojeda@kernel.org>, Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, patches@lists.linux.dev
+Subject: Re: [PATCH 00/13] Support several Rust toolchain versions
+Message-ID: <4fa15761-7cab-4463-a2ff-717256c67d76@proton.me>
+In-Reply-To: <20240701183625.665574-1-ojeda@kernel.org>
+References: <20240701183625.665574-1-ojeda@kernel.org>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: 2e9bc08aec290fbcb180ad6148608273607df319
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240701183625.665574-1-ojeda@kernel.org> <20240701183625.665574-3-ojeda@kernel.org>
- <ap7u5hpgfdzYgTkobIleYc0uolBIsAVbq56CwMJG6k4x57wXeEtu4fpLpgSOvQtbJHvB6D0J1wlBaqDV-xt2owlVejhfABUv_ivILyJ2J9o=@protonmail.com>
-In-Reply-To: <ap7u5hpgfdzYgTkobIleYc0uolBIsAVbq56CwMJG6k4x57wXeEtu4fpLpgSOvQtbJHvB6D0J1wlBaqDV-xt2owlVejhfABUv_ivILyJ2J9o=@protonmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 1 Jul 2024 23:58:20 +0200
-Message-ID: <CANiq72kMaPm2OsGb3o0VUtdoMhSUoo8QEsCFzVjYFtCThvNJ1w@mail.gmail.com>
-Subject: Re: [PATCH 02/13] rust: init: simplify from `map_err` to `inspect_err`
-To: =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jul 1, 2024 at 10:05=E2=80=AFPM Bj=C3=B6rn Roy Baron
-<bjorn3_gh@protonmail.com> wrote:
->
-> The formatting here is a bit weird. I would have expected the ) ending th=
-e inspect_err call to be placed on a new line given that the unsafe block i=
-sn't placed on the same line as the start of the inspect_err call either. T=
-his seems to be a case where rustfmt mostly gives up on formatting. If I de=
-indent the comment and unsafe block rustfmt will keep it that way and if I =
-add a trailing space to the inspect_err line it will keep it and emit an er=
-ror that it left behind trailing whitespace. Maybe add a block around the c=
-omment and unsafe block to make rustfmt work again?
+On 01.07.24 20:36, Miguel Ojeda wrote:
+> Hi all,
+>=20
+> It is time to start supporting several Rust toolchain versions and thus
+> establish a minimum Rust compiler and `bindgen` version.
+>=20
+> For the Rust compiler, we will start with a window of two stable
+> releases, and widen it over time. This series keeps the minimum where
+> it is (1.78.0), but adds support for the recently released 1.79.0.
+>=20
+> This should already be enough for kernel developers in distributions that
+> provide recent Rust compiler versions routinely, such as Arch Linux,
+> Debian Unstable (outside the freeze period), Fedora Linux, Gentoo
+> Linux (especially the testing channel), Nix (unstable) and openSUSE
+> Tumbleweed. A documentation adds the instructions for each of them.
+>=20
+> In addition, Rust for Linux is now being built-tested in Rust's
+> pre-merge CI. That is, every change that is attempting to land into the
+> Rust compiler is tested against the kernel, and it is merged only if it
+> passes -- thanks to the Rust project for that!
+>=20
+> Thus, with the pre-merge CI in place, both projects hope to avoid
+> unintentional changes to Rust that break the kernel. This means that,
+> in general, apart from intentional changes on their side (that we will
+> need to workaround conditionally on our side), the upcoming Rust compiler
+> versions should generally work.
+>=20
+> For instance, currently, the beta (1.80.0) and nightly (1.81.0) branches
+> work as well.
+>=20
+> Similarly, we kept the minimum as it is for `bindgen`. `bindgen` is also
+> adding the kernel to its CI -- thanks!
+>=20
+> Cheers,
+> Miguel
+>=20
+>=20
+> Miguel Ojeda (13):
+>   rust: macros: indent list item in `paste!`'s docs
+>   rust: init: simplify from `map_err` to `inspect_err`
+>   rust: allow `dead_code` for never constructed bindings
+>   rust: relax most deny-level lints to warnings
+>   rust: simplify Clippy warning flags set
+>   rust: start supporting several compiler versions
+>   rust: warn about `bindgen` versions 0.66.0 and 0.66.1
+>   rust: work around `bindgen` 0.69.0 issue
+>   rust: avoid assuming a particular `bindgen` build
+>   rust: start supporting several `bindgen` versions
+>   kbuild: rust: add `rustc-version` support
+>   rust: support the new `-Zub-checks` flag
+>   docs: rust: quick-start: add section on Linux distributions
+>=20
+>  Documentation/process/changes.rst  |   9 +--
+>  Documentation/rust/quick-start.rst | 118 +++++++++++++++++++++++------
+>  Makefile                           |  29 +++----
+>  init/Kconfig                       |  11 ++-
+>  lib/Kconfig.debug                  |  18 +++++
+>  rust/Makefile                      |   4 +-
+>  rust/bindings/lib.rs               |   1 +
+>  rust/kernel/init.rs                |  12 +--
+>  rust/macros/lib.rs                 |   2 +-
+>  rust/uapi/lib.rs                   |   1 +
+>  scripts/Kconfig.include            |   6 ++
+>  scripts/Makefile.compiler          |   4 +
+>  scripts/rust_is_available.sh       |  20 ++---
+>  scripts/rust_is_available_test.py  |  40 +++++-----
+>  scripts/rustc-version.sh           |  52 +++++++++++++
+>  15 files changed, 238 insertions(+), 89 deletions(-)
+>  create mode 100755 scripts/rustc-version.sh
+>=20
+>=20
+> base-commit: f2661062f16b2de5d7b6a5c42a9a5c96326b8454
+> --
+> 2.45.2
 
-Benno: any preference here? Or even open coding it.
+I applied the series and successfully ran the kunit tests on nixos.
+I tried the following rust versions via fenix:
+- rustc 1.78.0 (9b00956e5 2024-04-29)
+- rustc 1.79.0 (129f3b996 2024-06-10)
+- 1.80.0-beta.4 (64a1fe671 2024-06-21)
+- 1.81.0-nightly (6868c831a 2024-06-30)
 
-Thanks Bj=C3=B6rn!
+My bindgen version is 0.69.4.
 
+Everything worked as expected :)
+
+Tested-by: Benno Lossin <benno.lossin@proton.me>
+
+---
 Cheers,
-Miguel
+Benno
+
