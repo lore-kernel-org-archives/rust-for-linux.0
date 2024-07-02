@@ -1,241 +1,139 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F0B71BD032;
-	Tue,  2 Jul 2024 15:58:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0373715B104
+	for <rust-for-linux@vger.kernel.org>; Tue,  2 Jul 2024 16:41:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719935891; cv=none; b=osdOsHK+JySHRLY4Zyf1l3ftDAuHKhay5S6m9iqmSXhRkjU2Wsx2dalYRiKSmyF7uRncuj83Y6rq+0vRF2yru+5HUmRBrDS04r3tEIZODLm6my9I2JSS2v5yuxP62vzvWDUvCN2/oE/GCkaenGAzUFGjRn0uQfGCsvOIoX4pplw=
+	t=1719938476; cv=none; b=BmO3Lcl5Ri4tdYAI2Ji6mJ8t5S18mL3ug8XVjc0BqrLG/iksR4macMzvhhrKRIhShIWJ4FmWxO2bF2G7aPmtc6EqXeSnWY3KZ9wjJ4jAR7EmuegqYAi2TjTDsoU5AzEladsKOc+4rkffUC/osCVf/fqMIhOYSiC+aHGYDSml24A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719935891; c=relaxed/simple;
-	bh=BNA7h2+hbaCtPD6zTsd/1n30CL75PtZV8rfutIRexK0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=u016thBYF5Nyl31VHnX2kuFu0LHr98Z1bPP63KlLnm81Qdz2w4SMrhLtQg/ZwUOeuPtSs3wtvqkBD/6ne4DVFiIIFtLYUa5y+UBDQqYWXnt7Q3xXAyGY2OHb52hZmRtL1nIKiWQCKnMi5UR294tbJ7iyH1OqMI2cTnkHZzoohVw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=1x1+B5V6; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=vr79WnWh; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=V3TCk0Rl; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=WiGNbOPw; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+	s=arc-20240116; t=1719938476; c=relaxed/simple;
+	bh=hrR1qTpjCYxMI+tohq1SLUm7xMaux6bit4k4/AiVhD8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=B/VxcvE09igKUy2kjjm+2lwRHvI0smkBBiyZwmbPdZVMVAIW+QGp5GgaSUW4iNdzlAIwqFLNap8RlGwGYS6G2fiDAaGQ35cZGNK062IYR8e+6OlOeFv1FtV8SSw714DQvRjukOd1ihxxL6MGtd8ati+pW2PBdMVOw5F+rH6S0Co=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=2ZwC0uHY; arc=none smtp.client-ip=209.85.221.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="1x1+B5V6";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="vr79WnWh";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="V3TCk0Rl";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="WiGNbOPw"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 00B2D21AE7;
-	Tue,  2 Jul 2024 15:58:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1719935886; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=ZUXJa6qZ1Z85tU8NRRhDqffNTAJHYAKpnrU2JbYigmg=;
-	b=1x1+B5V6VO16gcDXPWruRSuHy3ASUQ6OSGNwuHaQw9msV3aqKnchPiCWPrX2nCX2CuFE75
-	Dr2XDPshXdKkFZJZcw6v1lLoQblUazWtL2ZvXZscf9MipEteKJ5mb4vCiaG/aYG23CQTIz
-	W/4gHll3tNhH1mpUELQr2wB7k0bY2vs=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1719935886;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=ZUXJa6qZ1Z85tU8NRRhDqffNTAJHYAKpnrU2JbYigmg=;
-	b=vr79WnWh0OSe6gXYBRvDNQRwvXU8g6rMVkZ0jLdrYUtZvrY7laWbG58dOYscFWzoyzqpVd
-	repYS55oqSmRzMAg==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=V3TCk0Rl;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=WiGNbOPw
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1719935885; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=ZUXJa6qZ1Z85tU8NRRhDqffNTAJHYAKpnrU2JbYigmg=;
-	b=V3TCk0RlMSZAidW1rWOKh+fkjzUw7oFfX43T0DbAZnER/9hIC303LYKs4LW7f1GQa1VqPV
-	6A02cVf+RaQ7rO1CI+1z6mI6zIBsb9MQDzlG/B0qpbAH3rZp/njh2w2tQ0/EvwtE0/kbSF
-	Krw8tjEWELO8q2WWU+55yZTjPvxzwBg=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1719935885;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=ZUXJa6qZ1Z85tU8NRRhDqffNTAJHYAKpnrU2JbYigmg=;
-	b=WiGNbOPwwF9Jv0WQ7/9zyFt/L3g2WIE+q1uxP8+CVW4+J/xWVCSqyhzOEKi1/sWfS/LNdn
-	eS3/uG3wB+dU68BA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id DDD0613A9A;
-	Tue,  2 Jul 2024 15:58:04 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id G7rNNYwjhGZSMQAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Tue, 02 Jul 2024 15:58:04 +0000
-From: Vlastimil Babka <vbabka@suse.cz>
-To: linux-mm@kvack.org,
-	David Rientjes <rientjes@google.com>,
-	Christoph Lameter <cl@linux.com>
-Cc: Hyeonggon Yoo <42.hyeyoo@gmail.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Kees Cook <keescook@chromium.org>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	patches@lists.linux.dev,
-	Vlastimil Babka <vbabka@suse.cz>
-Subject: [PATCH] mm, slab: extend kmalloc() alignment for non power-of-two sizes
-Date: Tue,  2 Jul 2024 17:58:01 +0200
-Message-ID: <20240702155800.166503-2-vbabka@suse.cz>
-X-Mailer: git-send-email 2.45.2
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="2ZwC0uHY"
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-3636c572257so3231224f8f.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 02 Jul 2024 09:41:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1719938472; x=1720543272; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cdEhN7egg4GTetScTgi2yWO5StQG3EhkGlVLI6a6mXM=;
+        b=2ZwC0uHYeX72VO1qiFU2tepv2F8WMmRJpVQbVqBQU9cY3r5y3fsmzcX93MAFXcR5eh
+         SFdtUT2vCeD++x3Awykj6c2j/325AI7ThJ8Kfkm6KL9F93AEFe6K4WSop/C8Gvdsydls
+         RLzmWwc+QTSrtVQPm7d2gUS5miGXCtxlQrUVs8WCK4OdF3J1rd1+z/gsAAxJZ87dQpYY
+         tgMcQc3sDUelGNJOBpka4N6/oe3F45XiFWnZSzWqnpceGMBFqLhL+XdzIF3uBQDyVYw2
+         h2AA8k1scUvw8vKgapSNjFyor7tClhofkgcgZdsrJdlfhLN8LeAkT8VAr92TAlhqi3rR
+         kKHg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719938472; x=1720543272;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=cdEhN7egg4GTetScTgi2yWO5StQG3EhkGlVLI6a6mXM=;
+        b=ZbOmXRDKaIjt+k2W5G+TFat2foUph1a+FK5+pPjjZZd6CqYrI3XSMjNPwG7b8+m+4o
+         rr16LznU8ONdn+9wnxhcFWuviKbkzKpq6hTzpav7LnYSAXYutqN3e2TFtpTkNb1Y8yuP
+         sNJLaHyqBbW/NJUny9qqMNu7nsHh/uJ+d47Sp2SVpcXRdnmy+jabyoFqDd9dA2uAeX2M
+         938CwY28TPM+J1e4olcUACsKNRMRe5oWH5sabNdAFs1vpgD521CPcvwrWkIwUBQ33f+j
+         4hKt/rm2qqCZi1lbtOamPhccobzyoEYJGi+vt2rpOuOWowtAeGTNzTMdd2Ug0elmVHLi
+         WGgg==
+X-Forwarded-Encrypted: i=1; AJvYcCVJo24PG7gvHZHDagXWBZPclO/uKm/PCvhNsKrpz7RTQHx/hIs31h9wONa+3rUcCAgQ3jveS+HpCQpNCuBCE5cybKSFo0PS6pFcin9IO/g=
+X-Gm-Message-State: AOJu0Yyc4YC0gRCirz1w9lwjNPvamn/g1zju25MGI/k2ozn6oGNe3/ZC
+	yIpD1Qt9uAL1JAeqQntCqUp7SHs6C2aOKsSy0zSUl0xBBXpENnQYKTZE/wuwjfrFDwlTMj4MSvm
+	8QQhL5DDJagMDsYjkX6LzjPAs8M8nqw8ZCEF6
+X-Google-Smtp-Source: AGHT+IHmYsZn/Vy3aZXo1dvsiv+ZReJUZGbhaq1QATW22XsOqABArbPhv8Sbvt3RE2ym1iLvf5P0H4DKXuYSyJ0kisU=
+X-Received: by 2002:a5d:5889:0:b0:366:eba0:8d8c with SMTP id
+ ffacd0b85a97d-36775724976mr8558555f8f.54.1719938472236; Tue, 02 Jul 2024
+ 09:41:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Rspamd-Queue-Id: 00B2D21AE7
-X-Spam-Score: -1.51
-X-Spam-Level: 
-X-Spam-Flag: NO
-X-Spamd-Result: default: False [-1.51 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_MISSING_CHARSET(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email,suse.cz:dkim,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	RCVD_COUNT_TWO(0.00)[2];
-	DKIM_TRACE(0.00)[suse.cz:+];
-	FREEMAIL_CC(0.00)[gmail.com,linux.dev,chromium.org,google.com,vger.kernel.org,lists.linux.dev,suse.cz];
-	RCVD_TLS_ALL(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com]
-X-Rspamd-Action: no action
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+References: <20240702155800.166503-2-vbabka@suse.cz>
+In-Reply-To: <20240702155800.166503-2-vbabka@suse.cz>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Tue, 2 Jul 2024 18:40:59 +0200
+Message-ID: <CAH5fLgj=uOktnNCEm+npBh8LLbYUEO8uO30YUBsLS-iK+BKQJQ@mail.gmail.com>
+Subject: Re: [PATCH] mm, slab: extend kmalloc() alignment for non power-of-two sizes
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: linux-mm@kvack.org, David Rientjes <rientjes@google.com>, 
+	Christoph Lameter <cl@linux.com>, Hyeonggon Yoo <42.hyeyoo@gmail.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Kees Cook <keescook@chromium.org>, 
+	Boqun Feng <boqun.feng@gmail.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Slab allocators have been guaranteeing natural alignment for
-power-of-two sizes since commit 59bb47985c1d ("mm, sl[aou]b: guarantee
-natural alignment for kmalloc(power-of-two)"), while any other sizes are
-aligned only to ARCH_KMALLOC_MINALIGN bytes.
+On Tue, Jul 2, 2024 at 5:58=E2=80=AFPM Vlastimil Babka <vbabka@suse.cz> wro=
+te:
+>
+> Slab allocators have been guaranteeing natural alignment for
+> power-of-two sizes since commit 59bb47985c1d ("mm, sl[aou]b: guarantee
+> natural alignment for kmalloc(power-of-two)"), while any other sizes are
+> aligned only to ARCH_KMALLOC_MINALIGN bytes.
+>
+> Rust's allocator API specifies size and alignment per allocation, which
+> have to satisfy the following rules, per Alice Ryhl [1]:
+>
+>   1. The alignment is a power of two.
+>   2. The size is non-zero.
+>   3. When you round up the size to the next multiple of the alignment,
+>      then it must not overflow the signed type isize / ssize_t.
+>
+> In order to map this to kmalloc()'s guarantees, some requested
+> allocation sizes have to be enlarged to the next power-of-two size [2].
+> For example, an allocation of size 96 and alignment of 32 will be
+> enlarged to an allocation of size 128, because the existing kmalloc-96
+> bucket doesn't guarantee alignent above ARCH_KMALLOC_MINALIGN. Without
+> slab debugging active, the layout of the kmalloc-96 slabs however
+> naturally aligns the objects to 32 bytes, so extending the size to 128
+> bytes is wasteful.
+>
+> To improve the situation we can extend the kmalloc() alignment
+> guarantees in a way that
+>
+> 1) doesn't change the current slab layout (and thus does not increase
+>    internal fragmentation) when slab debugging is not active
+> 2) reduces waste in the Rust allocator use case
+> 3) is a superset of the current guarantee for power-of-two sizes.
+>
+> The extended guarantee is that alignment is at least the largest
+> power-of-two divisor of the requested size. For power-of-two sizes the
+> largest divisor is the size itself, but let's keep this case documented
+> separately for clarity.
+>
+> For current kmalloc size buckets, it means kmalloc-96 will guarantee
+> alignment of 32 bytes and kmalloc-196 will guarantee 64 bytes.
+>
+> This covers the rules 1 and 2 above of Rust's API as long as the size is
+> a multiple of the alignment. The Rust layer should now only need to
+> round up the size to the next multiple if it isn't, while enforcing the
+> rule 3.
+>
+> Implementation-wise, this changes the alignment calculation in
+> create_boot_cache(). While at it also do the calulation only for caches
+> with the SLAB_KMALLOC flag, because the function is also used to create
+> the initial kmem_cache and kmem_cache_node caches, where no alignment
+> guarantee is necessary.
+>
+> Link: https://lore.kernel.org/all/CAH5fLggjrbdUuT-H-5vbQfMazjRDpp2%2Bk3%3=
+DYhPyS17ezEqxwcw@mail.gmail.com/ [1]
+> Link: https://lore.kernel.org/all/CAH5fLghsZRemYUwVvhk77o6y1foqnCeDzW4WZv=
+6ScEWna2+_jw@mail.gmail.com/ [2]
+> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
 
-Rust's allocator API specifies size and alignment per allocation, which
-have to satisfy the following rules, per Alice Ryhl [1]:
+Thanks!
 
-  1. The alignment is a power of two.
-  2. The size is non-zero.
-  3. When you round up the size to the next multiple of the alignment,
-     then it must not overflow the signed type isize / ssize_t.
+Since this change is motivated by Rust, why not also include the Rust
+change in this patch? You would need to remove the if inside
+krealloc_aligned in rust/kernel/alloc/allocator.rs and update the
+comments.
 
-In order to map this to kmalloc()'s guarantees, some requested
-allocation sizes have to be enlarged to the next power-of-two size [2].
-For example, an allocation of size 96 and alignment of 32 will be
-enlarged to an allocation of size 128, because the existing kmalloc-96
-bucket doesn't guarantee alignent above ARCH_KMALLOC_MINALIGN. Without
-slab debugging active, the layout of the kmalloc-96 slabs however
-naturally aligns the objects to 32 bytes, so extending the size to 128
-bytes is wasteful.
-
-To improve the situation we can extend the kmalloc() alignment
-guarantees in a way that
-
-1) doesn't change the current slab layout (and thus does not increase
-   internal fragmentation) when slab debugging is not active
-2) reduces waste in the Rust allocator use case
-3) is a superset of the current guarantee for power-of-two sizes.
-
-The extended guarantee is that alignment is at least the largest
-power-of-two divisor of the requested size. For power-of-two sizes the
-largest divisor is the size itself, but let's keep this case documented
-separately for clarity.
-
-For current kmalloc size buckets, it means kmalloc-96 will guarantee
-alignment of 32 bytes and kmalloc-196 will guarantee 64 bytes.
-
-This covers the rules 1 and 2 above of Rust's API as long as the size is
-a multiple of the alignment. The Rust layer should now only need to
-round up the size to the next multiple if it isn't, while enforcing the
-rule 3.
-
-Implementation-wise, this changes the alignment calculation in
-create_boot_cache(). While at it also do the calulation only for caches
-with the SLAB_KMALLOC flag, because the function is also used to create
-the initial kmem_cache and kmem_cache_node caches, where no alignment
-guarantee is necessary.
-
-Link: https://lore.kernel.org/all/CAH5fLggjrbdUuT-H-5vbQfMazjRDpp2%2Bk3%3DYhPyS17ezEqxwcw@mail.gmail.com/ [1]
-Link: https://lore.kernel.org/all/CAH5fLghsZRemYUwVvhk77o6y1foqnCeDzW4WZv6ScEWna2+_jw@mail.gmail.com/ [2]
-Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
----
- Documentation/core-api/memory-allocation.rst | 6 ++++--
- include/linux/slab.h                         | 3 ++-
- mm/slab_common.c                             | 9 +++++----
- 3 files changed, 11 insertions(+), 7 deletions(-)
-
-diff --git a/Documentation/core-api/memory-allocation.rst b/Documentation/core-api/memory-allocation.rst
-index 1c58d883b273..8b84eb4bdae7 100644
---- a/Documentation/core-api/memory-allocation.rst
-+++ b/Documentation/core-api/memory-allocation.rst
-@@ -144,8 +144,10 @@ configuration, but it is a good practice to use `kmalloc` for objects
- smaller than page size.
- 
- The address of a chunk allocated with `kmalloc` is aligned to at least
--ARCH_KMALLOC_MINALIGN bytes.  For sizes which are a power of two, the
--alignment is also guaranteed to be at least the respective size.
-+ARCH_KMALLOC_MINALIGN bytes. For sizes which are a power of two, the
-+alignment is also guaranteed to be at least the respective size. For other
-+sizes, the alignment is guaranteed to be at least the largest power-of-two
-+divisor of the size.
- 
- Chunks allocated with kmalloc() can be resized with krealloc(). Similarly
- to kmalloc_array(): a helper for resizing arrays is provided in the form of
-diff --git a/include/linux/slab.h b/include/linux/slab.h
-index ed6bee5ec2b6..640cea6e6323 100644
---- a/include/linux/slab.h
-+++ b/include/linux/slab.h
-@@ -604,7 +604,8 @@ void *__kmalloc_large_node_noprof(size_t size, gfp_t flags, int node)
-  *
-  * The allocated object address is aligned to at least ARCH_KMALLOC_MINALIGN
-  * bytes. For @size of power of two bytes, the alignment is also guaranteed
-- * to be at least to the size.
-+ * to be at least to the size. For other sizes, the alignment is guaranteed to
-+ * be at least the largest power-of-two divisor of @size.
-  *
-  * The @flags argument may be one of the GFP flags defined at
-  * include/linux/gfp_types.h and described at
-diff --git a/mm/slab_common.c b/mm/slab_common.c
-index 1560a1546bb1..7272ef7bc55f 100644
---- a/mm/slab_common.c
-+++ b/mm/slab_common.c
-@@ -617,11 +617,12 @@ void __init create_boot_cache(struct kmem_cache *s, const char *name,
- 	s->size = s->object_size = size;
- 
- 	/*
--	 * For power of two sizes, guarantee natural alignment for kmalloc
--	 * caches, regardless of SL*B debugging options.
-+	 * kmalloc caches guarantee alignment of at least the largest
-+	 * power-of-two divisor of the size. For power-of-two sizes,
-+	 * it is the size itself.
- 	 */
--	if (is_power_of_2(size))
--		align = max(align, size);
-+	if (flags & SLAB_KMALLOC)
-+		align = max(align, 1U << (ffs(size) - 1));
- 	s->align = calculate_alignment(flags, align, size);
- 
- #ifdef CONFIG_HARDENED_USERCOPY
--- 
-2.45.2
-
+Alice
