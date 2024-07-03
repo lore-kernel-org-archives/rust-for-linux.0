@@ -1,376 +1,259 @@
-Received: from mail-ot1-f51.google.com (mail-ot1-f51.google.com [209.85.210.51])
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F01A713D8B3
-	for <rust-for-linux@vger.kernel.org>; Wed,  3 Jul 2024 07:31:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A11641386DA
+	for <rust-for-linux@vger.kernel.org>; Wed,  3 Jul 2024 08:12:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719991876; cv=none; b=txf7UHFogP5shnqOqwGazMexn+QLdOCMIPCXNmCqG+jB8lDRdLTDlH+oBeYhe93pzeYq6idii/v/FyAxw8e4XhWCAnW9JZVHVVKDUFnb5ghm56qxZfeyJiADZIVd2XY7A5RLgeR6p5kceFQFX8vJQjmQV+z7sqM0orrk+BTurnc=
+	t=1719994343; cv=none; b=SAf8izVMvvFTO62O1WiuWsKfssRjBa2UQ5Jq7lQQjf5iHl/nIHYMM79eIepGyLLV7OEsyHsjGw3nhDUkX9Hocr9xQjylEhLD44/AJ+ZHgj8p96ZA8D+GcJq9QmA7iQ47c8Wx3/vXNuf1EQyQmxL5zF4EL+xuF+07/oHagrgRGjo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719991876; c=relaxed/simple;
-	bh=m4XniaMihLd8qlHJenTfcjOxaFkup1FyvaUGHn+pk8M=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=PXwA6BfC9MZ8fUsCIOql3Ir7v+R/Xsc7j+KpAw8fB+hiR2QmXFQWx9HjcahQgrAJjJNWL6D55SVuct0DJYujUTdVtLmCSqbXvLlHSgc/a57vK3p0P0ozW5hLOQULLz363R03Ol7Y/PaymnXQOU1+xWmbpIcvJIyo6Rb0ymOTOfk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=lO5ALY/o; arc=none smtp.client-ip=209.85.210.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1719994343; c=relaxed/simple;
+	bh=urfNG6+cHLdQJrrRl7mWdBtS/y3l6Djk40r2tdEqB2g=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PWlQqq8tTGFGkaphBJC4YdULgIJWbv8p3nLS3p2EFkNNy6B2jN7dyd9qP1cpdh289hgWBmpYi7Rabp3iEIdzwb9Y3ef4h297xnrLs1l7hgAzshDF4O+VuGHJ0DGk7R1PQmN0leyqNGl2k+/A5K93tkhKdPrYHPKuW3crbUZVOD8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gGjqcfbH; arc=none smtp.client-ip=209.85.221.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="lO5ALY/o"
-Received: by mail-ot1-f51.google.com with SMTP id 46e09a7af769-700d3ffc28cso2890710a34.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 03 Jul 2024 00:31:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gGjqcfbH"
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-36796bbf687so40532f8f.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 03 Jul 2024 01:12:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1719991873; x=1720596673; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=google.com; s=20230601; t=1719994340; x=1720599140; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=L48fOb2APX+YOqtqYC3BeSMU2cmish3fGmpJ70CUgSU=;
-        b=lO5ALY/o/O58aoq6Yis5PfejMuhhSpC4/e7F23Q3GjJJv+W/Teh6OmEc8TTTuSKYxo
-         hDQ6D+mh+zKdAOgZayPFohIYojcTxgL2cNacpDa/qnf7Xdp0lQVZ/NfC64MlZgA6z1S9
-         ht7eqgn6Z4QPf6gNBRsiW0asK0/iockIvVYDNez+CtoJOBojnO0Caiuvdte+wzVplwXw
-         NPnmz6smws9VGPVu/UAwDvUz8pGVx+hIi0UYjVXKT/oUdIFaVo8LjaUvdsMCSysjk7jo
-         cV6xLRDmV29Yw7ubtxFsMMG38HNHyuqMie93orh4X4rS9gc25jQXY/ktoquyPRBUp7jK
-         dVCA==
+        bh=EYZQ6hvzbyuQ9dkJY/vs/6RIOJzsf5Qm2425goUaxvE=;
+        b=gGjqcfbHIuQGYfJD2ltM0g3eywILo1xpx2hq+h7YAYl66GY8sNJwN6bNCu2Ey9yI+o
+         kCMol7euVcD7jxXbaADkPjRri/ILmtGg5kezr/RsVg4UKmOHmJDp5ln8A3f5OLy5F4LO
+         KkomPGLRVmW+viH+s5OAeaid7oKUqi/s1b8/LND8/+8WYoF7nzWvTNQbLfBM9TnuBI+m
+         YruHKebMlnt6uWBykpzgxsHiDkMk8dYihA7MZh6w7034BQ/gDesJqdHbydy/NkPrK1Ff
+         k0mzA6F3D2WaKnThLnFGLNcVtUz7+nhaNb4kX8MPlNVNIL6XoZ9xCK26L7x5i1ZwS6pO
+         W/vw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1719991873; x=1720596673;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1719994340; x=1720599140;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=L48fOb2APX+YOqtqYC3BeSMU2cmish3fGmpJ70CUgSU=;
-        b=Qb2s3uKlrSr2z4KF2a6MkGkNxuW4snArsgk1KtDgv03N/u4Mo650+LwHG5kgSHBmyt
-         eG1CeViLFVC4IEV+T9MtZngm/JN1WZjy1vVdsY3kLt/kVc707G1xXpgeQP5NwO8gvY2E
-         SAQ8sMN19R5DfgrcYfpupIEJPXWPN8Si5BPOOXjjbPV7z1m29taU4I28I9doUd+XPA+R
-         Ne96dDRKLB4WHjAEZJem72f9ZLwtmnuS0LdVuMiCT6/KSD0RQ7h0n5EfugnBAciAOsT3
-         aSYr0pHU33VgJ0WuKFsu0u63C46ctFYNQq+d/bdqHD0xc5EqwRSa6TQixq2EUGKukjpv
-         JXuQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUJ3BCMlktzR0K5aegtUZLfjs+p/odtgnqyw9trcIds43Qc7O5NW1b/IZu411qNglCWflIf93OFsl2Ykfj1hE16dhiSAT2s7/649MNwgq0=
-X-Gm-Message-State: AOJu0YzEORNoXRRMajSMOPDqMFzsM++ZCbEju3QYJH4fjKwLMSq1tRyW
-	smmifMVMw3RLotSzq4vXDVggH1CWeINV5j/J0U4e9fm1rt+iZJ5HeuLUSyTtRtk=
-X-Google-Smtp-Source: AGHT+IFms6h8jZorNAQzSh3CJhe/oYnjzyhvKstmwlguqvNIql3wjHi+rQlxPQbcAx1zxn62PoX2LQ==
-X-Received: by 2002:a05:6808:1b2b:b0:3d2:2a62:3fdf with SMTP id 5614622812f47-3d6b4de2294mr12115665b6e.54.1719991872555;
-        Wed, 03 Jul 2024 00:31:12 -0700 (PDT)
-Received: from localhost ([122.172.82.13])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-708043b708fsm10029525b3a.147.2024.07.03.00.31.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Jul 2024 00:31:12 -0700 (PDT)
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>
-Cc: linux-pm@vger.kernel.org,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Stephen Boyd <sboyd@kernel.org>,
-	Nishanth Menon <nm@ti.com>,
-	rust-for-linux@vger.kernel.org,
-	Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
-	Erik Schilling <erik.schilling@linaro.org>,
-	=?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
-	Joakim Bech <joakim.bech@linaro.org>,
-	Rob Herring <robh@kernel.org>,
-	linux-kernel@vger.kernel.org
-Subject: [RFC PATCH V3 8/8] cpufreq: Add Rust based cpufreq-dt driver
-Date: Wed,  3 Jul 2024 12:44:33 +0530
-Message-Id: <b7df0c75cc07a451243b554fb2272c91cbe42dfe.1719990273.git.viresh.kumar@linaro.org>
-X-Mailer: git-send-email 2.31.1.272.g89b43f80a514
-In-Reply-To: <cover.1719990273.git.viresh.kumar@linaro.org>
-References: <cover.1719990273.git.viresh.kumar@linaro.org>
+        bh=EYZQ6hvzbyuQ9dkJY/vs/6RIOJzsf5Qm2425goUaxvE=;
+        b=EL7dorXJgOBmJRhCeHVvaiJco0bw80bzW26HaTemKeeKs/x/sD7jULNdlEMMAq1zx4
+         P9fL7D9/3f051v2wTERA/cgEtb/be3gqbmOiwU0GT3uKHgznnMjwOo94jeGIKBS++p0x
+         S/BGsgrAQE2UTi8yn7Efv4LojW5x2DJ3vFHmHFS8Cd+2DX/QxUyqjN9Jolc7Uf40oGYh
+         1Jq2CsezXjhfn3P3woL7uHBcLpShobA8mCkvxtKIaNuFIPySrgV4kPhk0tJqQKlhfASO
+         8c1DCpG/XixYbT3DF8RcMwIxkq3BXO5biNxPRHdsTFXBEsTL5BpM+nO6IksxfpRb7fbJ
+         AASA==
+X-Forwarded-Encrypted: i=1; AJvYcCXWHJfmyan79SjSViuNmkQ0kVyEa6AgKAUs+yYo840Nscg2nt+d+CQ14kkDtUDZ5Z8ZKD8pXXqgQDoSac+DN6YBEp7e/HBBpt3WpFH0AYo=
+X-Gm-Message-State: AOJu0YyLiglMYEi/CkAiJG+ntx6T5rZqQQo50I8zke6uOsp5pJGZFPOT
+	b4gIHQ6xZCMqek8sIrn4aLaANQaKC7S72NbV0/G4OuOg6r+wWs7DgytHXeEOJ8id367k7ijqg7L
+	9fCDSBKtRZiWKqqwPL53tt4Rxm9z+j5G+Fu4U
+X-Google-Smtp-Source: AGHT+IEICDH5BfKPspvMCdmvkvvtMFo63HbRNY8nyE4K1FX/Ysrh7tFANjRp15gsI9lcNyfLPvRWNd79Gsa/BRnUtVg=
+X-Received: by 2002:adf:f510:0:b0:35f:2366:12c5 with SMTP id
+ ffacd0b85a97d-367756aade1mr7017890f8f.23.1719994339769; Wed, 03 Jul 2024
+ 01:12:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20240703072520.45837-2-vbabka@suse.cz>
+In-Reply-To: <20240703072520.45837-2-vbabka@suse.cz>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Wed, 3 Jul 2024 10:12:07 +0200
+Message-ID: <CAH5fLgj9HKT2NsuR6pL6y9aARtkJ26KGkyWHQ2Rzw3baC0onDQ@mail.gmail.com>
+Subject: Re: [PATCH v2] slab, rust: extend kmalloc() alignment guarantees to
+ remove Rust padding
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: linux-mm@kvack.org, David Rientjes <rientjes@google.com>, 
+	Christoph Lameter <cl@linux.com>, Hyeonggon Yoo <42.hyeyoo@gmail.com>, 
+	Roman Gushchin <roman.gushchin@linux.dev>, Kees Cook <keescook@chromium.org>, 
+	Boqun Feng <boqun.feng@gmail.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-This commit adds a Rust based cpufreq-dt driver, which covers most of
-the functionality of the existing C based driver. Only a handful of
-things are left, like fetching platform data from cpufreq-dt-platdev.c.
+On Wed, Jul 3, 2024 at 9:25=E2=80=AFAM Vlastimil Babka <vbabka@suse.cz> wro=
+te:
+>
+> Slab allocators have been guaranteeing natural alignment for
+> power-of-two sizes since commit 59bb47985c1d ("mm, sl[aou]b: guarantee
+> natural alignment for kmalloc(power-of-two)"), while any other sizes are
+> guaranteed to be aligned only to ARCH_KMALLOC_MINALIGN bytes (although
+> in practice are aligned more than that in non-debug scenarios).
+>
+> Rust's allocator API specifies size and alignment per allocation, which
+> have to satisfy the following rules, per Alice Ryhl [1]:
+>
+>   1. The alignment is a power of two.
+>   2. The size is non-zero.
+>   3. When you round up the size to the next multiple of the alignment,
+>      then it must not overflow the signed type isize / ssize_t.
+>
+> In order to map this to kmalloc()'s guarantees, some requested
+> allocation sizes have to be padded to the next power-of-two size [2].
+> For example, an allocation of size 96 and alignment of 32 will be padded
+> to an allocation of size 128, because the existing kmalloc-96 bucket
+> doesn't guarantee alignent above ARCH_KMALLOC_MINALIGN. Without slab
+> debugging active, the layout of the kmalloc-96 slabs however naturally
+> align the objects to 32 bytes, so extending the size to 128 bytes is
+> wasteful.
+>
+> To improve the situation we can extend the kmalloc() alignment
+> guarantees in a way that
+>
+> 1) doesn't change the current slab layout (and thus does not increase
+>    internal fragmentation) when slab debugging is not active
+> 2) reduces waste in the Rust allocator use case
+> 3) is a superset of the current guarantee for power-of-two sizes.
+>
+> The extended guarantee is that alignment is at least the largest
+> power-of-two divisor of the requested size. For power-of-two sizes the
+> largest divisor is the size itself, but let's keep this case documented
+> separately for clarity.
+>
+> For current kmalloc size buckets, it means kmalloc-96 will guarantee
+> alignment of 32 bytes and kmalloc-196 will guarantee 64 bytes.
+>
+> This covers the rules 1 and 2 above of Rust's API as long as the size is
+> a multiple of the alignment. The Rust layer should now only need to
+> round up the size to the next multiple if it isn't, while enforcing the
+> rule 3.
+>
+> Implementation-wise, this changes the alignment calculation in
+> create_boot_cache(). While at it also do the calulation only for caches
+> with the SLAB_KMALLOC flag, because the function is also used to create
+> the initial kmem_cache and kmem_cache_node caches, where no alignment
+> guarantee is necessary.
+>
+> In the Rust allocator's krealloc_aligned(), remove the code that padded
+> sizes to the next power of two (suggested by Alice Ryhl) as it's no
+> longer necessary with the new guarantees.
+>
+> Reported-by: Alice Ryhl <aliceryhl@google.com>
+> Reported-by: Boqun Feng <boqun.feng@gmail.com>
+> Link: https://lore.kernel.org/all/CAH5fLggjrbdUuT-H-5vbQfMazjRDpp2%2Bk3%3=
+DYhPyS17ezEqxwcw@mail.gmail.com/ [1]
+> Link: https://lore.kernel.org/all/CAH5fLghsZRemYUwVvhk77o6y1foqnCeDzW4WZv=
+6ScEWna2+_jw@mail.gmail.com/ [2]
+> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+> Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+> Acked-by: Roman Gushchin <roman.gushchin@linux.dev>
 
-This is tested with the help of QEMU for now and switching of
-frequencies work as expected.
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
----
- drivers/cpufreq/Kconfig        |  12 ++
- drivers/cpufreq/Makefile       |   1 +
- drivers/cpufreq/rcpufreq_dt.rs | 225 +++++++++++++++++++++++++++++++++
- 3 files changed, 238 insertions(+)
- create mode 100644 drivers/cpufreq/rcpufreq_dt.rs
+> ---
+> v2: - add Rust side change as suggested by Alice, also thanks Boqun for f=
+ixups
+> - clarify that the alignment already existed (unless debugging) but was
+>   not guaranteed, so there's no extra fragmentation in slab
+> - add r-b, a-b thanks tO Boqun and Roman
+>
+> If it's fine with Rust folks, I can put this in the slab.git tree.
+>
+>  Documentation/core-api/memory-allocation.rst |  6 ++++--
+>  include/linux/slab.h                         |  3 ++-
+>  mm/slab_common.c                             |  9 +++++----
+>  rust/kernel/alloc/allocator.rs               | 19 ++++++-------------
+>  4 files changed, 17 insertions(+), 20 deletions(-)
+>
+> diff --git a/Documentation/core-api/memory-allocation.rst b/Documentation=
+/core-api/memory-allocation.rst
+> index 1c58d883b273..8b84eb4bdae7 100644
+> --- a/Documentation/core-api/memory-allocation.rst
+> +++ b/Documentation/core-api/memory-allocation.rst
+> @@ -144,8 +144,10 @@ configuration, but it is a good practice to use `kma=
+lloc` for objects
+>  smaller than page size.
+>
+>  The address of a chunk allocated with `kmalloc` is aligned to at least
+> -ARCH_KMALLOC_MINALIGN bytes.  For sizes which are a power of two, the
+> -alignment is also guaranteed to be at least the respective size.
+> +ARCH_KMALLOC_MINALIGN bytes. For sizes which are a power of two, the
+> +alignment is also guaranteed to be at least the respective size. For oth=
+er
+> +sizes, the alignment is guaranteed to be at least the largest power-of-t=
+wo
+> +divisor of the size.
+>
+>  Chunks allocated with kmalloc() can be resized with krealloc(). Similarl=
+y
+>  to kmalloc_array(): a helper for resizing arrays is provided in the form=
+ of
+> diff --git a/include/linux/slab.h b/include/linux/slab.h
+> index ed6bee5ec2b6..640cea6e6323 100644
+> --- a/include/linux/slab.h
+> +++ b/include/linux/slab.h
+> @@ -604,7 +604,8 @@ void *__kmalloc_large_node_noprof(size_t size, gfp_t =
+flags, int node)
+>   *
+>   * The allocated object address is aligned to at least ARCH_KMALLOC_MINA=
+LIGN
+>   * bytes. For @size of power of two bytes, the alignment is also guarant=
+eed
+> - * to be at least to the size.
+> + * to be at least to the size. For other sizes, the alignment is guarant=
+eed to
+> + * be at least the largest power-of-two divisor of @size.
+>   *
+>   * The @flags argument may be one of the GFP flags defined at
+>   * include/linux/gfp_types.h and described at
+> diff --git a/mm/slab_common.c b/mm/slab_common.c
+> index 1560a1546bb1..7272ef7bc55f 100644
+> --- a/mm/slab_common.c
+> +++ b/mm/slab_common.c
+> @@ -617,11 +617,12 @@ void __init create_boot_cache(struct kmem_cache *s,=
+ const char *name,
+>         s->size =3D s->object_size =3D size;
+>
+>         /*
+> -        * For power of two sizes, guarantee natural alignment for kmallo=
+c
+> -        * caches, regardless of SL*B debugging options.
+> +        * kmalloc caches guarantee alignment of at least the largest
+> +        * power-of-two divisor of the size. For power-of-two sizes,
+> +        * it is the size itself.
+>          */
+> -       if (is_power_of_2(size))
+> -               align =3D max(align, size);
+> +       if (flags & SLAB_KMALLOC)
+> +               align =3D max(align, 1U << (ffs(size) - 1));
+>         s->align =3D calculate_alignment(flags, align, size);
+>
+>  #ifdef CONFIG_HARDENED_USERCOPY
+> diff --git a/rust/kernel/alloc/allocator.rs b/rust/kernel/alloc/allocator=
+.rs
+> index 229642960cd1..e6ea601f38c6 100644
+> --- a/rust/kernel/alloc/allocator.rs
+> +++ b/rust/kernel/alloc/allocator.rs
+> @@ -18,23 +18,16 @@ pub(crate) unsafe fn krealloc_aligned(ptr: *mut u8, n=
+ew_layout: Layout, flags: F
+>      // Customized layouts from `Layout::from_size_align()` can have size=
+ < align, so pad first.
+>      let layout =3D new_layout.pad_to_align();
+>
+> -    let mut size =3D layout.size();
+> -
+> -    if layout.align() > bindings::ARCH_SLAB_MINALIGN {
+> -        // The alignment requirement exceeds the slab guarantee, thus tr=
+y to enlarge the size
+> -        // to use the "power-of-two" size/alignment guarantee (see comme=
+nts in `kmalloc()` for
+> -        // more information).
+> -        //
+> -        // Note that `layout.size()` (after padding) is guaranteed to be=
+ a multiple of
+> -        // `layout.align()`, so `next_power_of_two` gives enough alignme=
+nt guarantee.
+> -        size =3D size.next_power_of_two();
+> -    }
+> +    // Note that `layout.size()` (after padding) is guaranteed to be a m=
+ultiple of `layout.align()`
+> +    // which together with the slab guarantees means the `krealloc` will=
+ return a properly aligned
+> +    // object (see comments in `kmalloc()` for more information).
+> +    let size =3D layout.size();
 
-diff --git a/drivers/cpufreq/Kconfig b/drivers/cpufreq/Kconfig
-index 94e55c40970a..eb9359bd3c5c 100644
---- a/drivers/cpufreq/Kconfig
-+++ b/drivers/cpufreq/Kconfig
-@@ -217,6 +217,18 @@ config CPUFREQ_DT
- 
- 	  If in doubt, say N.
- 
-+config CPUFREQ_DT_RUST
-+	tristate "Rust based Generic DT based cpufreq driver"
-+	depends on HAVE_CLK && OF && RUST
-+	select CPUFREQ_DT_PLATDEV
-+	select PM_OPP
-+	help
-+	  This adds a Rust based generic DT based cpufreq driver for frequency
-+	  management.  It supports both uniprocessor (UP) and symmetric
-+	  multiprocessor (SMP) systems.
-+
-+	  If in doubt, say N.
-+
- config CPUFREQ_DT_PLATDEV
- 	tristate "Generic DT based cpufreq platdev driver"
- 	depends on OF
-diff --git a/drivers/cpufreq/Makefile b/drivers/cpufreq/Makefile
-index 8d141c71b016..4981d908b803 100644
---- a/drivers/cpufreq/Makefile
-+++ b/drivers/cpufreq/Makefile
-@@ -15,6 +15,7 @@ obj-$(CONFIG_CPU_FREQ_GOV_COMMON)		+= cpufreq_governor.o
- obj-$(CONFIG_CPU_FREQ_GOV_ATTR_SET)	+= cpufreq_governor_attr_set.o
- 
- obj-$(CONFIG_CPUFREQ_DT)		+= cpufreq-dt.o
-+obj-$(CONFIG_CPUFREQ_DT_RUST)		+= rcpufreq_dt.o
- obj-$(CONFIG_CPUFREQ_DT_PLATDEV)	+= cpufreq-dt-platdev.o
- 
- # Traces
-diff --git a/drivers/cpufreq/rcpufreq_dt.rs b/drivers/cpufreq/rcpufreq_dt.rs
-new file mode 100644
-index 000000000000..652458e7a3b9
---- /dev/null
-+++ b/drivers/cpufreq/rcpufreq_dt.rs
-@@ -0,0 +1,225 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Rust based implementation of the cpufreq-dt driver.
-+
-+use core::format_args;
-+
-+use kernel::{
-+    b_str, c_str, clk, cpufreq, cpumask::Cpumask, define_of_id_table, device::Device,
-+    error::code::*, fmt, macros::vtable, module_platform_driver, of, opp, platform, prelude::*,
-+    str::CString, sync::Arc,
-+};
-+
-+// Finds exact supply name from the OF node.
-+fn find_supply_name_exact(np: &of::DeviceNode, name: &str) -> Option<CString> {
-+    let name_cstr = CString::try_from_fmt(fmt!("{}-supply", name)).ok()?;
-+
-+    np.find_property(&name_cstr).ok()?;
-+    CString::try_from_fmt(fmt!("{}", name)).ok()
-+}
-+
-+// Finds supply name for the CPU from DT.
-+fn find_supply_names(dev: &Device, cpu: u32) -> Option<Vec<CString>> {
-+    let np = of::DeviceNode::from_dev(dev).ok()?;
-+
-+    // Try "cpu0" for older DTs.
-+    let name = match cpu {
-+        0 => find_supply_name_exact(&np, "cpu0"),
-+        _ => None,
-+    }
-+    .or(find_supply_name_exact(&np, "cpu"))?;
-+
-+    let mut list = Vec::with_capacity(1, GFP_KERNEL).ok()?;
-+    list.push(name, GFP_KERNEL).ok()?;
-+
-+    Some(list)
-+}
-+
-+// Represents the cpufreq dt device.
-+struct CPUFreqDTDevice {
-+    opp_table: opp::Table,
-+    freq_table: opp::FreqTable,
-+    #[allow(dead_code)]
-+    mask: Cpumask,
-+    #[allow(dead_code)]
-+    token: Option<opp::ConfigToken>,
-+    #[allow(dead_code)]
-+    clk: clk::Clk,
-+}
-+
-+struct CPUFreqDTDriver;
-+
-+#[vtable]
-+impl opp::ConfigOps for CPUFreqDTDriver {}
-+
-+#[vtable]
-+impl cpufreq::Driver for CPUFreqDTDriver {
-+    type Data = ();
-+    type PData = Arc<CPUFreqDTDevice>;
-+
-+    fn init(policy: &mut cpufreq::Policy) -> Result<Self::PData> {
-+        let cpu = policy.cpu();
-+        let dev = Device::from_cpu(cpu)?;
-+        let mut mask = Cpumask::new()?;
-+
-+        mask.set(cpu);
-+
-+        let token = match find_supply_names(&dev, cpu) {
-+            Some(names) => Some(
-+                opp::Config::<Self>::new()
-+                    .set_regulator_names(names)?
-+                    .set(&dev)?,
-+            ),
-+            _ => None,
-+        };
-+
-+        // Get OPP-sharing information from "operating-points-v2" bindings.
-+        let fallback = match opp::Table::of_sharing_cpus(&dev, &mut mask) {
-+            Ok(_) => false,
-+            Err(e) => {
-+                if e != ENOENT {
-+                    return Err(e);
-+                }
-+
-+                // "operating-points-v2" not supported. If the platform hasn't
-+                // set sharing CPUs, fallback to all CPUs share the `Policy`
-+                // for backward compatibility.
-+                opp::Table::sharing_cpus(&dev, &mut mask).is_err()
-+            }
-+        };
-+
-+        // Initialize OPP tables for all policy cpus.
-+        //
-+        // For platforms not using "operating-points-v2" bindings, we do this
-+        // before updating policy cpus. Otherwise, we will end up creating
-+        // duplicate OPPs for the CPUs.
-+        //
-+        // OPPs might be populated at runtime, don't fail for error here unless
-+        // it is -EPROBE_DEFER.
-+        let mut opp_table = match opp::Table::from_of_cpumask(&dev, &mask) {
-+            Ok(table) => table,
-+            Err(e) => {
-+                if e == EPROBE_DEFER {
-+                    return Err(e);
-+                }
-+
-+                // The table is added dynamically ?
-+                opp::Table::from_dev(&dev)?
-+            }
-+        };
-+
-+        // The OPP table must be initialized, statically or dynamically, by this point.
-+        opp_table.opp_count()?;
-+
-+        // Set sharing cpus for fallback scenario.
-+        if fallback {
-+            mask.set_all();
-+            opp_table.set_sharing_cpus(&mask)?;
-+        }
-+
-+        let mut transition_latency = opp_table.max_transition_latency() as u32;
-+        if transition_latency == 0 {
-+            transition_latency = cpufreq::ETERNAL_LATENCY;
-+        }
-+
-+        let freq_table = opp_table.to_cpufreq_table()?;
-+        let clk = policy
-+            .set_freq_table(freq_table.table())
-+            .set_dvfs_possible_from_any_cpu()
-+            .set_suspend_freq((opp_table.suspend_freq() / 1000) as u32)
-+            .set_transition_latency(transition_latency)
-+            .set_clk(&dev, None)?;
-+
-+        mask.copy(policy.cpus());
-+
-+        Ok(Arc::new(
-+            CPUFreqDTDevice {
-+                opp_table,
-+                freq_table,
-+                mask,
-+                token,
-+                clk,
-+            },
-+            GFP_KERNEL,
-+        )?)
-+    }
-+
-+    fn exit(_policy: &mut cpufreq::Policy, _data: Option<Self::PData>) -> Result<()> {
-+        Ok(())
-+    }
-+
-+    fn online(_policy: &mut cpufreq::Policy) -> Result<()> {
-+        // We did light-weight tear down earlier, nothing to do here.
-+        Ok(())
-+    }
-+
-+    fn offline(_policy: &mut cpufreq::Policy) -> Result<()> {
-+        // Preserve policy->data and don't free resources on light-weight
-+        // tear down.
-+        Ok(())
-+    }
-+
-+    fn suspend(policy: &mut cpufreq::Policy) -> Result<()> {
-+        policy.generic_suspend()
-+    }
-+
-+    fn verify(data: &mut cpufreq::PolicyData) -> Result<()> {
-+        data.generic_verify()
-+    }
-+
-+    fn target_index(policy: &mut cpufreq::Policy, index: u32) -> Result<()> {
-+        let data = match policy.data::<Self::PData>() {
-+            Some(data) => data,
-+            None => return Err(ENOENT),
-+        };
-+
-+        let freq = data.freq_table.freq(index.try_into().unwrap())? as u64;
-+        data.opp_table.set_rate(freq * 1000)
-+    }
-+
-+    fn get(policy: &mut cpufreq::Policy) -> Result<u32> {
-+        policy.generic_get()
-+    }
-+
-+    fn set_boost(_policy: &mut cpufreq::Policy, _state: i32) -> Result<()> {
-+        Ok(())
-+    }
-+
-+    fn register_em(policy: &mut cpufreq::Policy) {
-+        policy.register_em_opp()
-+    }
-+}
-+
-+type DeviceData = Box<cpufreq::Registration<CPUFreqDTDriver>>;
-+
-+impl platform::Driver for CPUFreqDTDriver {
-+    type Data = Arc<DeviceData>;
-+
-+    define_of_id_table! {(), [
-+        (of::DeviceId(b_str!("operating-points-v2")), None),
-+    ]}
-+
-+    fn probe(_dev: &mut platform::Device, _id_info: Option<&Self::IdInfo>) -> Result<Self::Data> {
-+        let drv = Arc::new(
-+            cpufreq::Registration::<CPUFreqDTDriver>::register(
-+                c_str!("cpufreq-dt"),
-+                (),
-+                cpufreq::flags::NEED_INITIAL_FREQ_CHECK | cpufreq::flags::IS_COOLING_DEV,
-+                true,
-+            )?,
-+            GFP_KERNEL,
-+        )?;
-+
-+        pr_info!("CPUFreq DT driver registered\n");
-+
-+        Ok(drv)
-+    }
-+}
-+
-+module_platform_driver! {
-+    type: CPUFreqDTDriver,
-+    name: "cpufreq_dt",
-+    author: "Viresh Kumar <viresh.kumar@linaro.org>",
-+    description: "Generic CPUFreq DT driver",
-+    license: "GPL v2",
-+}
--- 
-2.31.1.272.g89b43f80a514
+The size is a multiple of the alignment due to the `pad_to_align` call
+above, which rounds up the size to ensure that this is the case.
 
+Alice
