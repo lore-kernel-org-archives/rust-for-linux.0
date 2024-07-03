@@ -1,74 +1,102 @@
-Received: from mail-4018.proton.ch (mail-4018.proton.ch [185.70.40.18])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1D914778E;
-	Wed,  3 Jul 2024 18:29:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.18
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60454136678;
+	Wed,  3 Jul 2024 20:28:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720031357; cv=none; b=cfC64FxjN5ggelJ8QgfCoTPgApJcmYjAenO2gGLCvxFEXZSvFN4VjkgPJaHk9esO7e0YSySIP4FE8fgvVs0m1mycxvxisvYU5rcv9yBe+eFHgr0hV6bqOB5vSykpzq9HyL7/i4qv+/AJwt6lgaQEFgqVretxC49zVdGXU02vttI=
+	t=1720038519; cv=none; b=SqLn0V9d5+M4lcPP70clq3JmxE77EwpzjZEJ6E1efSg/0Vp64D9NO3t32xDBhyj60chSZPVdTvW6sBcNOAIygqlc9HRcpsr9MZGwmIRzfzkfAHy3UrznxtLIDJ4/uZb4Olq8Kaxz4zkUg7sJhRjmWjoIbwEhVjefZFWWIuSWMQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720031357; c=relaxed/simple;
-	bh=L3NcVxEzp5nQ+zMdZm1I8lzij8qXeXyjjQ5F2gqLdxo=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=syQsOuSJ5nv62BnB22kU/whtyOrBXgAymapqfirzKfi1dUfGfad5NCbCiGggJsiG7UP9HVtPEF+3gjZebmDPyomph2p0UqRCccfFAzx6Lx64puHlUbvxrvf2yIMJD6O6A/k1/Wa2/xcNa+j8+jlXOY5IhHjHGRlUp8LUQDTs61g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=metaspace.dk; spf=pass smtp.mailfrom=metaspace.dk; dkim=pass (2048-bit key) header.d=metaspace.dk header.i=@metaspace.dk header.b=hZqOvw4C; arc=none smtp.client-ip=185.70.40.18
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=metaspace.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=metaspace.dk
+	s=arc-20240116; t=1720038519; c=relaxed/simple;
+	bh=rWOY/eZHQ6NmW7nwT3ZK+FVd8KVqf6h8wNDPai7bkt8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=haUe80xRSfL2Wg/enH9mUVgT/5/zhLYnhDv58KMIbqYrcOOcGW0Mcu+/AWLfLhvNheNUpdowRJD++tUK+DKxx27kkXoyUG5/0VjB4fcnGRi02QvUUITOt18J4yM4LEFilvyn4Vhu4FsSl4Rgrk9v/mQQvtIG57AUPMUFq2GeNf4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BW4YyhxP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=metaspace.dk header.i=@metaspace.dk header.b="hZqOvw4C"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=metaspace.dk;
-	s=protonmail; t=1720031346; x=1720290546;
-	bh=L3NcVxEzp5nQ+zMdZm1I8lzij8qXeXyjjQ5F2gqLdxo=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=hZqOvw4CIHvkRdDkrAH9bxLznrjrViPUamKEtIiq+lresBwXhY5AQ1qoU1+PJ+Ai1
-	 qF5Th2gj6114phfrjYL1mRmWtGlPJw8ZXAobejJaQiuM5aRLH1w7tRy++vs/xG4Z+X
-	 CaROtuntJqF6ztjpGWXjwW8S/MBsrFK9Uud0/RBJfYA6vNJ3424gJq1yFq3kvUy1Sd
-	 5UiB7bjR2/P2vpCqSTiCeYFojAvnWkSQm3p6wckFYpohZjUiCQA3lNoMu4uY9EIxJ6
-	 DarSTn1bf/QW/itvAlTogVg+QjLXSMnOnJrZGMwYOv0xJofMdT+LAzRPm9o7RA1cmt
-	 6wyy6H0VZcxxA==
-Date: Wed, 03 Jul 2024 18:29:02 +0000
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-From: Andreas Hindborg <nmi@metaspace.dk>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, patches@lists.linux.dev
-Subject: Re: [PATCH 00/13] Support several Rust toolchain versions
-Message-ID: <875xtm8h3s.fsf@metaspace.dk>
-In-Reply-To: <CANiq72nPyZJL7TA5wXT__wKp3z5Eoue=RB_Yphh+NCe_AkRpGA@mail.gmail.com>
-References: <87a5iy8jlm.fsf@metaspace.dk> <CANiq72nPyZJL7TA5wXT__wKp3z5Eoue=RB_Yphh+NCe_AkRpGA@mail.gmail.com>
-Feedback-ID: 113830118:user:proton
-X-Pm-Message-ID: cc9662937d5efc6765c4103eeebf592912e06793
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BW4YyhxP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD64FC2BD10;
+	Wed,  3 Jul 2024 20:28:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1720038518;
+	bh=rWOY/eZHQ6NmW7nwT3ZK+FVd8KVqf6h8wNDPai7bkt8=;
+	h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
+	b=BW4YyhxPLFzfu81I5dST6ulSzXWgpJu2KCnP4Iw+8bLOXS7wdQSYotQCs8rzcD3/Q
+	 vb+cn3KEsgIg6IXXKBElT22JcGij+Iqn6DMfIV3C+Ar/+EPQGo1p7N6tjzI6IlhcV9
+	 zOAS6ZZNQlcLWPB2WgJP6maKJ2Lk91Fk6tIe42gxoHtaG52p/uh/LH+fQ3W1t7+k0F
+	 heOcYOlRaV9uIQy5dvHA1LQyrf2WCBvPueVIGD/miZbmxrPaCz2t6LapUW2xA2NB1u
+	 5Xxb+PW9JTP2Ha9PCUHyjsCdeeL59hI9+N1dDbLa34bCec4Qk3WaL2R8f5oJ8kbPwy
+	 hSmTTJXrozlFw==
+Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
+	id 4F5D3CE0BC3; Wed,  3 Jul 2024 13:28:38 -0700 (PDT)
+Date: Wed, 3 Jul 2024 13:28:38 -0700
+From: "Paul E. McKenney" <paulmck@kernel.org>
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: linux-kernel@vger.kernel.org, lkmm@lists.linux.dev,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Andrea Parri <parri.andrea@gmail.com>,
+	Will Deacon <will@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	David Howells <dhowells@redhat.com>,
+	Jade Alglave <j.alglave@ucl.ac.uk>,
+	Luc Maranget <luc.maranget@inria.fr>,
+	Akira Yokosawa <akiyks@gmail.com>,
+	Daniel Lustig <dlustig@nvidia.com>,
+	Joel Fernandes <joel@joelfernandes.org>, linux-arch@vger.kernel.org,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org,
+	Jonas Oberhauser <jonas.oberhauser@huaweicloud.com>,
+	Hernan Ponce de Leon <hernan.poncedeleon@huaweicloud.com>,
+	Puranjay Mohan <puranjay@kernel.org>
+Subject: Re: [PATCH] MAINTAINERS: Add the dedicated maillist info for LKMM
+Message-ID: <eb163e7c-6c1a-4691-bf23-c8603d4d426b@paulmck-laptop>
+Reply-To: paulmck@kernel.org
+References: <20240703162616.78278-1-boqun.feng@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240703162616.78278-1-boqun.feng@gmail.com>
 
-"Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com> writes:
+On Wed, Jul 03, 2024 at 09:26:16AM -0700, Boqun Feng wrote:
+> A dedicated mail list is created for Linux kernel memory model
+> discussion, and this could help more people to track down memory model
+> related discussion, since oftentimes memory model discussions would
+> involve a broader audience. Hence add the list information into the
+> maintainers entry of LKMM.
+> 
+> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
 
-> On Wed, Jul 3, 2024 at 7:35=E2=80=AFPM Andreas Hindborg <nmi@metaspace.dk=
-> wrote:
->>
->> Maybe because I am on v6.9?
->
-> Yeah, you need https://lore.kernel.org/rust-for-linux/20240401212303.5373=
-55-4-ojeda@kernel.org/
-> -- please see the "## LLVM's data layout" section in the commit
-> message.
+Queued for v6.12, thank you!
 
-I applied it to the rnull tree based on v6.10-rc3 [1] and ran some tests
-with rustc 1.78.0 and 1.79.0 without encountering any problems.
+							Thanx, Paul
 
-
-Tested-by: Andreas Hindborg <a.hindborg@samsung.com>
-
-
-Best regards,
-Andreas
-
-
-[1] https://github.com/metaspace/linux/tree/rnull-v6.10-rc3
-
+> ---
+>  MAINTAINERS | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 3f2047082073..a77bd8a49cd9 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -12796,6 +12796,7 @@ R:	Daniel Lustig <dlustig@nvidia.com>
+>  R:	Joel Fernandes <joel@joelfernandes.org>
+>  L:	linux-kernel@vger.kernel.org
+>  L:	linux-arch@vger.kernel.org
+> +L:	lkmm@lists.linux.dev
+>  S:	Supported
+>  T:	git git://git.kernel.org/pub/scm/linux/kernel/git/paulmck/linux-rcu.git dev
+>  F:	Documentation/atomic_bitops.txt
+> -- 
+> 2.39.3 (Apple Git-146)
+> 
