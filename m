@@ -1,137 +1,74 @@
-Received: from mail-oi1-f182.google.com (mail-oi1-f182.google.com [209.85.167.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-0201.mail-europe.com (mail-0201.mail-europe.com [51.77.79.158])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA24B2BD19;
-	Wed,  3 Jul 2024 16:26:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1FE418309B;
+	Wed,  3 Jul 2024 17:20:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.77.79.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720023989; cv=none; b=MEGOkkUoqJmQNnTvgj++Y0afX6DrA8Cd2rR/l8XE/XSYH12BVKD0H5GQT8yWyzPVZu4PkCwAdJ8j5AYF5m6Ql0ftnBFr//vjkVMjxzz3wC0zzm0yPfaRePhgTOSrLwR9pTP1i1EnK6bVQlEJkOjdHoudA7Pqm1TOpKOkXtLU7Dg=
+	t=1720027261; cv=none; b=jDWEdfv7pypxUIKtwQVPFfR4vwpXRdM9slAlCs68CP2TAPQ7+PdrrTs0N/sFd6TvWMQ68aVR98ZHmF5UetqDP3cbIS3L/O3BjorZvn13tmlK1xHsJgt3AEOa8HW23pRPX6fvyV0CVyvUPcnrOqVa7t1xs7nbTntI6Kxsjc/o5fk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720023989; c=relaxed/simple;
-	bh=Uk8SKD6gxWX0gT+33jY2Nt6NqxCDIB3Pn7INT3sy8k4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=f+CBnR8Xm3/00UKW3/lNKNXJC4PD99MpI6EWrpe3Q+eyC94dBUapgO3zlrRTh+BsMXpLhs8fM5ps46uw4Lv2rbsHB7+oNR+AXV9UAOlUV28cbxmx0T89TXyzzqzjj8bM+Zg07Zussg/Ufk5KpKadz5tuoyWXRlHSyPJky/teMVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ugox9121; arc=none smtp.client-ip=209.85.167.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1720027261; c=relaxed/simple;
+	bh=PMZ8fXfFqcesgh4os0cEpNSLQicO4IEGRrW58SumQa8=;
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=AIHPBGQL0C17+3I0FdhB+SvNxvOE0LpV2b85c3m9fESPTrmPopj7hjF/w909ELCxKbfuq8kAGaWcs+aQnoeQ9IdEQz000H9HfFoQb/C2w4Z36O1DmO08B6/qyheshNUfoyvnMcLNqpVfxrxTLjYF3VR2WSVNpJLxp7Hr6ESifTk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=metaspace.dk; spf=pass smtp.mailfrom=metaspace.dk; dkim=pass (2048-bit key) header.d=metaspace.dk header.i=@metaspace.dk header.b=T17HPMPY; arc=none smtp.client-ip=51.77.79.158
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=metaspace.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=metaspace.dk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ugox9121"
-Received: by mail-oi1-f182.google.com with SMTP id 5614622812f47-3d853305abfso585154b6e.2;
-        Wed, 03 Jul 2024 09:26:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1720023987; x=1720628787; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:feedback-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=f3L4z7hSroOuwsuipXwj/IN76KXKnPgl4yK5C8eJ7Ok=;
-        b=Ugox9121ITGG06AZ5J8ejhKmFJAGcWs8TNsKBMW/e7rjcb498Por6bHvSdLs9crNhp
-         /oJdhIYm8LcljfpBio5hBqHbjdcPCX4LOCIRfmfgW0b3NKEisbt0G3kA/HYjKu1C3D30
-         ef79+AKkgUFtkRY+SA7Eu5BE3hA8+um5mrgBT+Tnmijkz0apj3mif1m+WrOcw8SNhWsX
-         4a6KdRoHBezjtu8W1WThHR14HHFTKyCdo7VG6+06FpvdLfN13OqjaWUDVkY847dujSGe
-         taDeAOz116asm9pcQM/5DwFKWbuSMrPy9+uU5VB8UPFfT0UqdIFBLqYikXcqBsjYAr4N
-         Wujg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720023987; x=1720628787;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:feedback-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=f3L4z7hSroOuwsuipXwj/IN76KXKnPgl4yK5C8eJ7Ok=;
-        b=RFnoZgdODKnv5G2xxLYMXUCKi4ZIQOXbCk1CIj6oBrrTyC3eH1i5HUJQmFQwLSMo2D
-         dzGLyDfyRhisWwYADFhdHpdhtOthg/Cq5hzFPBAcvdr2AH2zbDyV8UPKzD+LtZkUezHg
-         rzJn21rU3jdsQZBBoHCImFr7yU0TRQd0kqVNbR/EWcqB4VbeNZWAljZ0Khq/35fWmam+
-         Qh2Ahv+0Mpr+CqF7NaDio9Y+FYucHVl2X8hdQFti01kOuXu/dl7hiqMfBlMS78DTUxxj
-         ifyRJJsVuvdute1/5FWGaCxZpt8RraaaeH9IK/hira+fNgRshLZjUknuX7Io/SaQt/+p
-         BTyQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXF/1MthfG9W82ulHKWhwEHG4tWhfS0NgNDqp6YP5NCO8dtB/SFw2pxkiNzrvvX3Ztfh32xozI3RWL2gTbl70z0XBL9Aj3rghRs3ZAf8oFVT4NA4+gklGb8GShQ5/p+5RN2b748G0MdCrWJ
-X-Gm-Message-State: AOJu0YwRxfNYVph4nmM4umtlnLcBm+lEtXiVa4H8Y69O72tu/BuiTyF9
-	d6iLCiH+1yYTVhSHF9Zatrk5S5mfrbOemFGQ81VkO2sYA92RUNml
-X-Google-Smtp-Source: AGHT+IEyVyUiYLLSoPl2liXg/YKC21xisWvxAX/7YL0rN+iIfSsx5LzU/hQHjBPpSvLWLIFXEE4mEQ==
-X-Received: by 2002:a05:6808:bd5:b0:3d5:6413:2138 with SMTP id 5614622812f47-3d6b2d189afmr15501833b6e.12.1720023986849;
-        Wed, 03 Jul 2024 09:26:26 -0700 (PDT)
-Received: from fauth2-smtp.messagingengine.com (fauth2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6b5df21b3cdsm9456786d6.113.2024.07.03.09.26.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Jul 2024 09:26:26 -0700 (PDT)
-Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-	by mailfauth.nyi.internal (Postfix) with ESMTP id 9674F1200068;
-	Wed,  3 Jul 2024 12:26:25 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute4.internal (MEProxy); Wed, 03 Jul 2024 12:26:25 -0400
-X-ME-Sender: <xms:sXuFZl2oKkz-zL6Ff7EvTfz2YDiqa29wEVmyslPRc_caHM_uqWGdpQ>
-    <xme:sXuFZsFZH-Xhlfgt17QEYCsTEub_LCrSKNxzKqSFZVwVd6FhxSn_khEY-h7KIoYIU
-    9HyNjvSTadnrUuzAA>
-X-ME-Received: <xmr:sXuFZl71SMwi_Q_mo39A6gFtUXidUC1RFzFx1E5JIKp7dIttb-4DPIIl_g>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrudejgdellecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpefhvfevufffkffoggfgsedtkeertdertddtnecuhfhrohhmpeeuohhquhhnucfh
-    vghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrthhtvg
-    hrnhepgeegueekgefhvedukedtveejhefhkeffveeufeduiedvleetledtkeehjefgieev
-    necuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpedtne
-    curfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghr
-    shhonhgrlhhithihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvg
-    hngheppehgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvg
-X-ME-Proxy: <xmx:sXuFZi1ZDoNFjIUOhyABWuvJsFbPxrDLJAeUw9dx_c3dQ3cCvTH0Eg>
-    <xmx:sXuFZoEq-ih8SkLyfJWOWivzU7-hDlU4REhE2mxbjGdcEMscrV5Keg>
-    <xmx:sXuFZj-bhsLF9QFw537JwzotNRaLSjb62ObxpjLfX25fz7hzHX7AvA>
-    <xmx:sXuFZllFfPXhIip0CG5K1qEr2E0SCqj2YsE6z6u6UYFnwXh0LVOPaA>
-    <xmx:sXuFZsFJ9FAZ152dnxITOtxpnhoqE0G5i3HlzeLHGkw0uaTWa1D0Qgu_>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 3 Jul 2024 12:26:25 -0400 (EDT)
-From: Boqun Feng <boqun.feng@gmail.com>
-To: linux-kernel@vger.kernel.org,
-	lkmm@lists.linux.dev
-Cc: Alan Stern <stern@rowland.harvard.edu>,
-	Andrea Parri <parri.andrea@gmail.com>,	Will Deacon <will@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,	Boqun Feng <boqun.feng@gmail.com>,
-	Nicholas Piggin <npiggin@gmail.com>,	David Howells <dhowells@redhat.com>,
-	Jade Alglave <j.alglave@ucl.ac.uk>,	Luc Maranget <luc.maranget@inria.fr>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Akira Yokosawa <akiyks@gmail.com>,	Daniel Lustig <dlustig@nvidia.com>,
-	Joel Fernandes <joel@joelfernandes.org>,	linux-arch@vger.kernel.org,
-	Miguel Ojeda <ojeda@kernel.org>,	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>,	rust-for-linux@vger.kernel.org,
-	Jonas Oberhauser <jonas.oberhauser@huaweicloud.com>,
-	Hernan Ponce de Leon <hernan.poncedeleon@huaweicloud.com>,
-	Puranjay Mohan <puranjay@kernel.org>
-Subject: [PATCH] MAINTAINERS: Add the dedicated maillist info for LKMM
-Date: Wed,  3 Jul 2024 09:26:16 -0700
-Message-Id: <20240703162616.78278-1-boqun.feng@gmail.com>
-X-Mailer: git-send-email 2.39.3 (Apple Git-146)
+	dkim=pass (2048-bit key) header.d=metaspace.dk header.i=@metaspace.dk header.b="T17HPMPY"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=metaspace.dk;
+	s=protonmail; t=1720027243; x=1720286443;
+	bh=ndDGJ5uXrO4sGpkfcf5wznWFZi4Q7sy1VDuTcL5Kfro=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=T17HPMPYGDYS9yM7ZcV0UBuiTcwJVUuq7V6Juxt/NEvEJQW29YcPTdfs+oKQ6jt+2
+	 1zA7jrKPpg2Ig+P+YyRMIkexstlNFnXJ/5D95ENZhLQQOr17yKj33RTbpK2N4aTt6F
+	 q9PUCdp04UKuCcwbLurE0Q3ym1JaRlSqTAInXDaCrqHWEZzKiG63A8UIuJVlkBm9au
+	 DH7DhmvuNHbfoeZ2yCNAtuyJrEgVyLffU/4P0XDhypEm8npkFxri336xC8hV0M3B0i
+	 78Ex0hFUm8+MMEhg1CwECLvGSOFDNrd4aW+pfPqDzIpU9sT7wCKK3jctuaIRXIalza
+	 q3ZKg9uiD+pBg==
+Date: Wed, 03 Jul 2024 17:20:37 +0000
+To: Miguel Ojeda <ojeda@kernel.org>
+From: Andreas Hindborg <nmi@metaspace.dk>
+Cc: Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, patches@lists.linux.dev, Jonathan Corbet <corbet@lwn.net>, workflows@vger.kernel.org, linux-doc@vger.kernel.org
+Subject: Re: [PATCH 06/13] rust: start supporting several compiler versions
+Message-ID: <87ed8a8ka3.fsf@metaspace.dk>
+Feedback-ID: 113830118:user:proton
+X-Pm-Message-ID: cb700748314eafeccfd6719d4fa10cbf2e19f93c
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-A dedicated mail list is created for Linux kernel memory model
-discussion, and this could help more people to track down memory model
-related discussion, since oftentimes memory model discussions would
-involve a broader audience. Hence add the list information into the
-maintainers entry of LKMM.
+Miguel Ojeda <ojeda@kernel.org> writes:
 
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
----
- MAINTAINERS | 1 +
- 1 file changed, 1 insertion(+)
+[...]
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 3f2047082073..a77bd8a49cd9 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -12796,6 +12796,7 @@ R:	Daniel Lustig <dlustig@nvidia.com>
- R:	Joel Fernandes <joel@joelfernandes.org>
- L:	linux-kernel@vger.kernel.org
- L:	linux-arch@vger.kernel.org
-+L:	lkmm@lists.linux.dev
- S:	Supported
- T:	git git://git.kernel.org/pub/scm/linux/kernel/git/paulmck/linux-rcu.git dev
- F:	Documentation/atomic_bitops.txt
--- 
-2.39.3 (Apple Git-146)
+> diff --git a/scripts/rust_is_available.sh b/scripts/rust_is_available.sh
+> index 117018946b57..67cb900124cc 100755
+> --- a/scripts/rust_is_available.sh
+> +++ b/scripts/rust_is_available.sh
+> @@ -117,14 +117,6 @@ if [ "$rust_compiler_cversion" -lt "$rust_compiler_m=
+in_cversion" ]; then
+>  =09echo >&2 "***"
+>  =09exit 1
+>  fi
+> -if [ "$rust_compiler_cversion" -gt "$rust_compiler_min_cversion" ]; then
+> -=09echo >&2 "***"
+> -=09echo >&2 "*** Rust compiler '$RUSTC' is too new. This may or may not =
+work."
+> -=09echo >&2 "***   Your version:     $rust_compiler_version"
+> -=09echo >&2 "***   Expected version: $rust_compiler_min_version"
+> -=09echo >&2 "***"
+> -=09warning=3D1
+> -fi
+
+This does not set a max version. Will older versions of the kernel
+always compile with newer releases of `rustc`?
+
+Best regards,
+Andreas
 
