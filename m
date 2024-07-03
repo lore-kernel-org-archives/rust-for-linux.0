@@ -1,86 +1,83 @@
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
+Received: from mail-oi1-f174.google.com (mail-oi1-f174.google.com [209.85.167.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95C64135A6F;
-	Wed,  3 Jul 2024 07:25:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 807C332C8B
+	for <rust-for-linux@vger.kernel.org>; Wed,  3 Jul 2024 07:30:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1719991534; cv=none; b=sDywpCWjcPRkNItiS9VbqtpTYdxfdK1fI+uQObYPO/QaYOhYWC1ceKpMZbHtIq+vuZ4s3WMY2zOlcWbyyqoL/sgyiWfLfftHYt1vz5Fe13pSdtgqRkZlADEYO4G9QNz6KdrbzzgO3euJuxxrI88LMEp7hk3ejRR6i3DbMJ4vAo4=
+	t=1719991846; cv=none; b=RbqS7qgBV58Qe18+iCEepZ4nQEKVBhXUwrAD4SlK3BrXergZtMphH4BkM3I0l6ilZth0VAFfuB2XW9iWO7hTwJbbnGcuN5ZTlWoypC0pRHVazCz6NaYHrGKyRJLa+O9zFHkfz8lOyjE/AzxuuKz2r97qLOgr05sTUHrwn2ZAnIo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1719991534; c=relaxed/simple;
-	bh=ZSLBHEHKKA793GTvFH6W/MHlx8oKyLVncU5l0DeXxRI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=KR512ExcsA6nYjTQshWDKlyXFy6IYjXQAurirIiM9aYz+sOmGk+F8UfW55AIt124nz00eZDsdo6ODy3uIG13iyucaQnAlqadNW62iu8WLnaNsNrA5xvOOqo66m6MOz6zxy7TQ8MqJuEOmJpT2cDdco7YDyRVkEbgmGxfVAm506E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=o1awERoN; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=0MS5+Bmr; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=o1awERoN; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=0MS5+Bmr; arc=none smtp.client-ip=195.135.223.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+	s=arc-20240116; t=1719991846; c=relaxed/simple;
+	bh=oZYcvFZ7As80ohieZdjCQTQp3MfgLDla5R2j6Hq+kf4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=hUj3wLZCeWNqSR+Xxdij3Dea68zCXs2gb0cMWvYHqHtwYquDEHu4JWHqehhfxSZBxOZY/KMV9HVXCPbu3b/tXTBIJ2A466YuRe7Dut5mNI5xQKhAqbzIa/50z4h89oQAWyJhd0K90BD8YrD/s/MLDaD/MkmxIGILhf8KeVwpOVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=MBUtLZ/x; arc=none smtp.client-ip=209.85.167.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="o1awERoN";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="0MS5+Bmr";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="o1awERoN";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="0MS5+Bmr"
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out2.suse.de (Postfix) with ESMTPS id 21AB81FC84;
-	Wed,  3 Jul 2024 07:25:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1719991525; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=kH5792dO8jlMERftjnrjLzOnrCxaNxD4wMDDSAQ35CY=;
-	b=o1awERoNq1ycynNcRHOcmhCqqJPnTZA6XBpKYcwZc45L/4BRGLnUBZnjTd/PVm3s3QlxYe
-	EosRzfH2yl0oPgCt3Z59fu8ey+CuLo3ZS6Zr815uUMkR1cGXTOA1I2FsQk4vUKR79/Vgoa
-	tBkkueH7doT/BHts+Yh0o5K/YlARamw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1719991525;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=kH5792dO8jlMERftjnrjLzOnrCxaNxD4wMDDSAQ35CY=;
-	b=0MS5+BmrfeG8qTzWVSTfn0mzWElY1nlfuTLzYYahYviNAwo/qEWksTn5O5PY6br9WsJqBG
-	YBsq5y2+j9tdFTDQ==
-Authentication-Results: smtp-out2.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1719991525; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=kH5792dO8jlMERftjnrjLzOnrCxaNxD4wMDDSAQ35CY=;
-	b=o1awERoNq1ycynNcRHOcmhCqqJPnTZA6XBpKYcwZc45L/4BRGLnUBZnjTd/PVm3s3QlxYe
-	EosRzfH2yl0oPgCt3Z59fu8ey+CuLo3ZS6Zr815uUMkR1cGXTOA1I2FsQk4vUKR79/Vgoa
-	tBkkueH7doT/BHts+Yh0o5K/YlARamw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1719991525;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:  content-transfer-encoding:content-transfer-encoding;
-	bh=kH5792dO8jlMERftjnrjLzOnrCxaNxD4wMDDSAQ35CY=;
-	b=0MS5+BmrfeG8qTzWVSTfn0mzWElY1nlfuTLzYYahYviNAwo/qEWksTn5O5PY6br9WsJqBG
-	YBsq5y2+j9tdFTDQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 09A4813974;
-	Wed,  3 Jul 2024 07:25:25 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id RiEDAuX8hGZKLgAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Wed, 03 Jul 2024 07:25:25 +0000
-From: Vlastimil Babka <vbabka@suse.cz>
-To: linux-mm@kvack.org,
-	David Rientjes <rientjes@google.com>,
-	Christoph Lameter <cl@linux.com>
-Cc: Hyeonggon Yoo <42.hyeyoo@gmail.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Kees Cook <keescook@chromium.org>,
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="MBUtLZ/x"
+Received: by mail-oi1-f174.google.com with SMTP id 5614622812f47-3d55f198f1eso2474059b6e.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 03 Jul 2024 00:30:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1719991843; x=1720596643; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=MZIEVlk+UkNAqnX2wpUNniG3hQvOJEhSruLUcJglBqY=;
+        b=MBUtLZ/xn9HYmMKgFT4tes9cJbuhMugaG5r2uH+0DrxbiG9jgIo9B4cjn2yvwtSyVO
+         2XnVH+flNX1LVYzIknmUsHos6ejdq5zE3M1IpBzit1NxgSxkLF173tkkWXJD7EVwpGhC
+         Bg0z9sXbZf/yQew8nQwEpN4+8dPMFZ+3A94E6RPp8EpAEl42y5Xt97BysGj+aw5DiMHE
+         P3sT5Q3WunV/y1/tr/UAwR0/OUk9Mc0QNSCh/oIf9iHzPGErZEFWhyXyB4fxai436wbE
+         fS5ufh3xRsJnT6CTMkZZ4YnaHbmojtyMMBZphZvV7sK5XiwRO32xjJYlR7f6aKknYkyB
+         ss1w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1719991843; x=1720596643;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=MZIEVlk+UkNAqnX2wpUNniG3hQvOJEhSruLUcJglBqY=;
+        b=t4xzkZoGTJAGaP6Qb+5dxj/1xh22enzFyA2Vj9macckh9wyPAeNH0uMFu2ubGej1A1
+         exomVVvF4w+/U+SCeIrf/Cq5rR1ND9gmN2RO8C+/cwkppZIhL9cQZiHHhxOb7dGHRQXd
+         e29WA0lso18BpC0J1dW/5uYvjBwjJE2RabkJMEURyyK9KsbaHmtNEUbPQe0j27PROtfl
+         FCw+Teh9EchPGzDAsNbKAUYYROU/HrX/5zDZgM26+2jeeEdTy9FddbKV7tSSKdBSwPm8
+         0QM394s0gM4xw4Skwj0FmGAt7ts7AiVEJ7XbybbdFXTnoqMz60hkm7k9iw6JJvSquvz3
+         LYIA==
+X-Forwarded-Encrypted: i=1; AJvYcCUeKpJKE9AIjvyipJBIU1hVHsG22GTsI8S/MagAfLGc4LvhjEpA5wDhmy3V3JcS3Su//Mj03En45JZkQZJEfgJ9uqdRYG/l1MB+MZmA+RM=
+X-Gm-Message-State: AOJu0YxEND9DboYKy9qaSSEAeyHWzOurKu93HT601t82eWfxjq2Fa0Ec
+	buvQjAiWELfJvQmU+rKaL7/EePRVv98kfYIzHONJiYay+kDGYeihSUStnG2Fz38=
+X-Google-Smtp-Source: AGHT+IEJLAIWsUinHPjVKyb8d+XMIc7IndPbH5xlUDWwh8Z4IkshorjmgwkDUcVsSqsOAzPzpTQ9sg==
+X-Received: by 2002:a05:6808:1823:b0:3d6:2f50:5517 with SMTP id 5614622812f47-3d6b2b24e68mr14703941b6e.1.1719991842923;
+        Wed, 03 Jul 2024 00:30:42 -0700 (PDT)
+Received: from localhost ([122.172.82.13])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-708044b0b61sm10057686b3a.176.2024.07.03.00.30.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 03 Jul 2024 00:30:42 -0700 (PDT)
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
 	Alice Ryhl <aliceryhl@google.com>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
 	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>
+Cc: linux-pm@vger.kernel.org,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Nishanth Menon <nm@ti.com>,
 	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	patches@lists.linux.dev,
-	Vlastimil Babka <vbabka@suse.cz>
-Subject: [PATCH v2] slab, rust: extend kmalloc() alignment guarantees to remove Rust padding
-Date: Wed,  3 Jul 2024 09:25:21 +0200
-Message-ID: <20240703072520.45837-2-vbabka@suse.cz>
-X-Mailer: git-send-email 2.45.2
+	Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+	Erik Schilling <erik.schilling@linaro.org>,
+	=?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+	Joakim Bech <joakim.bech@linaro.org>,
+	Rob Herring <robh@kernel.org>,
+	linux-kernel@vger.kernel.org
+Subject: [RFC PATCH V3 0/8] Rust bindings for cpufreq and OPP core + sample driver
+Date: Wed,  3 Jul 2024 12:44:25 +0530
+Message-Id: <cover.1719990273.git.viresh.kumar@linaro.org>
+X-Mailer: git-send-email 2.31.1.272.g89b43f80a514
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -88,195 +85,82 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Score: -1.29
-X-Spam-Level: 
-X-Spam-Flag: NO
-X-Spamd-Result: default: False [-1.29 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	MID_CONTAINS_FROM(1.00)[];
-	NEURAL_HAM_LONG(-0.99)[-0.985];
-	R_MISSING_CHARSET(0.50)[];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo,suse.cz:email];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	TAGGED_RCPT(0.00)[];
-	ARC_NA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[12];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_CC(0.00)[gmail.com,linux.dev,chromium.org,google.com,vger.kernel.org,lists.linux.dev,suse.cz];
-	RCVD_TLS_ALL(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	TO_DN_SOME(0.00)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com]
 
-Slab allocators have been guaranteeing natural alignment for
-power-of-two sizes since commit 59bb47985c1d ("mm, sl[aou]b: guarantee
-natural alignment for kmalloc(power-of-two)"), while any other sizes are
-guaranteed to be aligned only to ARCH_KMALLOC_MINALIGN bytes (although
-in practice are aligned more than that in non-debug scenarios).
+Hello,
 
-Rust's allocator API specifies size and alignment per allocation, which
-have to satisfy the following rules, per Alice Ryhl [1]:
+This RFC adds initial rust bindings for two subsystems, cpufreq and operating
+performance points (OPP). The bindings are provided for most of the interface
+these subsystems expose.
 
-  1. The alignment is a power of two.
-  2. The size is non-zero.
-  3. When you round up the size to the next multiple of the alignment,
-     then it must not overflow the signed type isize / ssize_t.
+This series also provides a sample cpufreq driver rcpufreq-dt, which is a
+duplicate of the merged cpufreq-dt driver (A generic platform agnostic device
+tree based cpufreq driver) used on most of the ARM platforms.
 
-In order to map this to kmalloc()'s guarantees, some requested
-allocation sizes have to be padded to the next power-of-two size [2].
-For example, an allocation of size 96 and alignment of 32 will be padded
-to an allocation of size 128, because the existing kmalloc-96 bucket
-doesn't guarantee alignent above ARCH_KMALLOC_MINALIGN. Without slab
-debugging active, the layout of the kmalloc-96 slabs however naturally
-align the objects to 32 bytes, so extending the size to 128 bytes is
-wasteful.
+This is tested with the help of QEMU for now and frequency transitions, various
+configurations, driver binding/unbinding work as expected. No performance
+measurement is done with this.
 
-To improve the situation we can extend the kmalloc() alignment
-guarantees in a way that
+These patches (along with few other dependencies) are pushed here for anyone to
+give them a try:
 
-1) doesn't change the current slab layout (and thus does not increase
-   internal fragmentation) when slab debugging is not active
-2) reduces waste in the Rust allocator use case
-3) is a superset of the current guarantee for power-of-two sizes.
+git://git.kernel.org/pub/scm/linux/kernel/git/vireshk/linux.git rust/cpufreq-dt
 
-The extended guarantee is that alignment is at least the largest
-power-of-two divisor of the requested size. For power-of-two sizes the
-largest divisor is the size itself, but let's keep this case documented
-separately for clarity.
 
-For current kmalloc size buckets, it means kmalloc-96 will guarantee
-alignment of 32 bytes and kmalloc-196 will guarantee 64 bytes.
+This depends on basic bindings for few other modules: device/driver, platform
+driver, OF, clk, and cpumask. I am not looking to upstream a full fledged
+support for them yet.
 
-This covers the rules 1 and 2 above of Rust's API as long as the size is
-a multiple of the alignment. The Rust layer should now only need to
-round up the size to the next multiple if it isn't, while enforcing the
-rule 3.
+Based on staging/rust-device from the Rust tree (which is based over v6.10-rc1).
 
-Implementation-wise, this changes the alignment calculation in
-create_boot_cache(). While at it also do the calulation only for caches
-with the SLAB_KMALLOC flag, because the function is also used to create
-the initial kmem_cache and kmem_cache_node caches, where no alignment
-guarantee is necessary.
+V2->V3:
+- Rebased on latest rust-device changes, which removed `Data` and so few changes
+  were required to make it work.
+- use srctree links (Alice Ryhl).
+- Various changes the OPP creation APIs, new APIs: from_raw_opp() and
+  from_raw_opp_owned() (Alice Ryhl).
+- Inline as_raw() helpers (Alice Ryhl).
+- Add new interface (`OPP::Token`) for dynamically created OPPs.
+- Add Reviewed-by tag from Manos.
+- Modified/simplified cpufreq registration structure / method a bit.
 
-In the Rust allocator's krealloc_aligned(), remove the code that padded
-sizes to the next power of two (suggested by Alice Ryhl) as it's no
-longer necessary with the new guarantees.
+V1->V2:
+- Create and use separate bindings for OF, clk, cpumask, etc (not included in
+  this patchset but pushed to the above branch). This helped removing direct
+  calls from the driver.
+- Fix wrong usage of Pinning + Vec.
+- Use Token for OPP Config.
+- Use Opaque, transparent and Aref for few structures.
+- Broken down into smaller patches to make it easy for reviewers.
+- Based over staging/rust-device.
 
-Reported-by: Alice Ryhl <aliceryhl@google.com>
-Reported-by: Boqun Feng <boqun.feng@gmail.com>
-Link: https://lore.kernel.org/all/CAH5fLggjrbdUuT-H-5vbQfMazjRDpp2%2Bk3%3DYhPyS17ezEqxwcw@mail.gmail.com/ [1]
-Link: https://lore.kernel.org/all/CAH5fLghsZRemYUwVvhk77o6y1foqnCeDzW4WZv6ScEWna2+_jw@mail.gmail.com/ [2]
-Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
-Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
-Acked-by: Roman Gushchin <roman.gushchin@linux.dev>
----
-v2: - add Rust side change as suggested by Alice, also thanks Boqun for fixups
-- clarify that the alignment already existed (unless debugging) but was
-  not guaranteed, so there's no extra fragmentation in slab
-- add r-b, a-b thanks tO Boqun and Roman
+Thanks.
 
-If it's fine with Rust folks, I can put this in the slab.git tree.
 
- Documentation/core-api/memory-allocation.rst |  6 ++++--
- include/linux/slab.h                         |  3 ++-
- mm/slab_common.c                             |  9 +++++----
- rust/kernel/alloc/allocator.rs               | 19 ++++++-------------
- 4 files changed, 17 insertions(+), 20 deletions(-)
+*** BLURB HERE ***
 
-diff --git a/Documentation/core-api/memory-allocation.rst b/Documentation/core-api/memory-allocation.rst
-index 1c58d883b273..8b84eb4bdae7 100644
---- a/Documentation/core-api/memory-allocation.rst
-+++ b/Documentation/core-api/memory-allocation.rst
-@@ -144,8 +144,10 @@ configuration, but it is a good practice to use `kmalloc` for objects
- smaller than page size.
- 
- The address of a chunk allocated with `kmalloc` is aligned to at least
--ARCH_KMALLOC_MINALIGN bytes.  For sizes which are a power of two, the
--alignment is also guaranteed to be at least the respective size.
-+ARCH_KMALLOC_MINALIGN bytes. For sizes which are a power of two, the
-+alignment is also guaranteed to be at least the respective size. For other
-+sizes, the alignment is guaranteed to be at least the largest power-of-two
-+divisor of the size.
- 
- Chunks allocated with kmalloc() can be resized with krealloc(). Similarly
- to kmalloc_array(): a helper for resizing arrays is provided in the form of
-diff --git a/include/linux/slab.h b/include/linux/slab.h
-index ed6bee5ec2b6..640cea6e6323 100644
---- a/include/linux/slab.h
-+++ b/include/linux/slab.h
-@@ -604,7 +604,8 @@ void *__kmalloc_large_node_noprof(size_t size, gfp_t flags, int node)
-  *
-  * The allocated object address is aligned to at least ARCH_KMALLOC_MINALIGN
-  * bytes. For @size of power of two bytes, the alignment is also guaranteed
-- * to be at least to the size.
-+ * to be at least to the size. For other sizes, the alignment is guaranteed to
-+ * be at least the largest power-of-two divisor of @size.
-  *
-  * The @flags argument may be one of the GFP flags defined at
-  * include/linux/gfp_types.h and described at
-diff --git a/mm/slab_common.c b/mm/slab_common.c
-index 1560a1546bb1..7272ef7bc55f 100644
---- a/mm/slab_common.c
-+++ b/mm/slab_common.c
-@@ -617,11 +617,12 @@ void __init create_boot_cache(struct kmem_cache *s, const char *name,
- 	s->size = s->object_size = size;
- 
- 	/*
--	 * For power of two sizes, guarantee natural alignment for kmalloc
--	 * caches, regardless of SL*B debugging options.
-+	 * kmalloc caches guarantee alignment of at least the largest
-+	 * power-of-two divisor of the size. For power-of-two sizes,
-+	 * it is the size itself.
- 	 */
--	if (is_power_of_2(size))
--		align = max(align, size);
-+	if (flags & SLAB_KMALLOC)
-+		align = max(align, 1U << (ffs(size) - 1));
- 	s->align = calculate_alignment(flags, align, size);
- 
- #ifdef CONFIG_HARDENED_USERCOPY
-diff --git a/rust/kernel/alloc/allocator.rs b/rust/kernel/alloc/allocator.rs
-index 229642960cd1..e6ea601f38c6 100644
---- a/rust/kernel/alloc/allocator.rs
-+++ b/rust/kernel/alloc/allocator.rs
-@@ -18,23 +18,16 @@ pub(crate) unsafe fn krealloc_aligned(ptr: *mut u8, new_layout: Layout, flags: F
-     // Customized layouts from `Layout::from_size_align()` can have size < align, so pad first.
-     let layout = new_layout.pad_to_align();
- 
--    let mut size = layout.size();
--
--    if layout.align() > bindings::ARCH_SLAB_MINALIGN {
--        // The alignment requirement exceeds the slab guarantee, thus try to enlarge the size
--        // to use the "power-of-two" size/alignment guarantee (see comments in `kmalloc()` for
--        // more information).
--        //
--        // Note that `layout.size()` (after padding) is guaranteed to be a multiple of
--        // `layout.align()`, so `next_power_of_two` gives enough alignment guarantee.
--        size = size.next_power_of_two();
--    }
-+    // Note that `layout.size()` (after padding) is guaranteed to be a multiple of `layout.align()`
-+    // which together with the slab guarantees means the `krealloc` will return a properly aligned
-+    // object (see comments in `kmalloc()` for more information).
-+    let size = layout.size();
- 
-     // SAFETY:
-     // - `ptr` is either null or a pointer returned from a previous `k{re}alloc()` by the
-     //   function safety requirement.
--    // - `size` is greater than 0 since it's either a `layout.size()` (which cannot be zero
--    //   according to the function safety requirement) or a result from `next_power_of_two()`.
-+    // - `size` is greater than 0 since it's from `layout.size()` (which cannot be zero according
-+    //   to the function safety requirement)
-     unsafe { bindings::krealloc(ptr as *const core::ffi::c_void, size, flags.0) as *mut u8 }
- }
- 
+Viresh Kumar (8):
+  rust: Add initial bindings for OPP framework
+  rust: Extend OPP bindings for the OPP table
+  rust: Extend OPP bindings for the configuration options
+  rust: Add initial bindings for cpufreq framework
+  rust: Extend cpufreq bindings for policy and driver ops
+  rust: Extend cpufreq bindings for driver registration
+  rust: Extend OPP bindings with CPU frequency table
+  cpufreq: Add Rust based cpufreq-dt driver
+
+ drivers/cpufreq/Kconfig         |   12 +
+ drivers/cpufreq/Makefile        |    1 +
+ drivers/cpufreq/rcpufreq_dt.rs  |  225 +++++++
+ rust/bindings/bindings_helper.h |    2 +
+ rust/helpers.c                  |   15 +
+ rust/kernel/cpufreq.rs          | 1041 +++++++++++++++++++++++++++++++
+ rust/kernel/lib.rs              |    4 +
+ rust/kernel/opp.rs              |  918 +++++++++++++++++++++++++++
+ 8 files changed, 2218 insertions(+)
+ create mode 100644 drivers/cpufreq/rcpufreq_dt.rs
+ create mode 100644 rust/kernel/cpufreq.rs
+ create mode 100644 rust/kernel/opp.rs
+
 -- 
-2.45.2
+2.31.1.272.g89b43f80a514
 
