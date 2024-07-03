@@ -1,196 +1,111 @@
-Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EFF0181B8C;
-	Wed,  3 Jul 2024 15:34:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 578D6181BA8
+	for <rust-for-linux@vger.kernel.org>; Wed,  3 Jul 2024 15:44:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720020901; cv=none; b=bqm2VjzSyuFd6d0X6lFj9YWHWJjODDizLQ1oPZrFUbHlvfVGOe+oq/CIowiKAx2ROa1KxH1xj7PD99Dvirn5eOiiwTkCcA0F8mPoTCB6+K0Lltw8GbrcjTUaCQRADREpOhRIQkzFeUM5BJhkrlkNYOMr0m9csRzCTY5JKJ4d3zA=
+	t=1720021473; cv=none; b=IvaKBhQZQdfAK4TH0TBxH0nI3i1u0bw5bpGhDhH2jmYs9Bv7ErRNIIEje5LMtQAsVkryHoD0XZIieELHRAHSdIfnmaAfHOwZyjCSj3Lr4uiLh+3tQimVUvOrumUwoSgPxwMn0OU53za4KmNXZ14AltrPDvoZ1niXQRm7XCKKV00=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720020901; c=relaxed/simple;
-	bh=WoXjh+ypt7zasFF+jb9rD3vMfTVDYAqnKxgrqLWK2PE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KNYNVSosdNRJ+2ky78YpjDFewrDGpKOXdxgNcswSjPkML8Hg4j9N0H3THkF6QoQmKTJCSsnU7g/cQXFr1st1VUMRbfgA9fjWFFYczp4bCUbx9gbvAKufSH/SUmP5zTgAts7s4VbkIj0PWbtEO8xGwHCkOUQHgRpeoI7j4Or1VuE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=InE0LzIp; arc=none smtp.client-ip=209.85.222.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1720021473; c=relaxed/simple;
+	bh=M9eUlAni9FkUNboMsSyX0Mz7X9vOCnEmjMuBMJuBZDs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=IU7skyNhTuOJzKTL/T3nF/AC1gYiPCgJvIS8IcQ5+MFIlpWFmeIPDmXUnWuhNbnAtOrL7wMeIzg3y5tjEExmZ1TnHV/sBOqUHplYcAIK/Dono3pVv5ikCZZ+ZlxGwNFwI7N1NS7qiOkEQM7DGQXO9fzf8bhmrkz4cF2mG0Vceiw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WYzV02hi; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="InE0LzIp"
-Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-79c056a7d4eso324181785a.2;
-        Wed, 03 Jul 2024 08:34:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1720020898; x=1720625698; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=x/l9NCWIE0l4Bx+XrdXwTpflR2LutCCCxUOf/LMelxo=;
-        b=InE0LzIpza2ZgMh9M2YaFaUduzO8Vpo3UsvAfnDYNYQb45XtApSbseKOtnLbUA5PvH
-         ovD4Fp/1nIzQElU0/3/9t4zj9bAfQZ+9gWPBOIsA/NqZLo/B3Ou/q7j5NGKYH19Eitxd
-         RumuYu+s/AKxlJ3KfU/y/maq9/VBtpIF1rIiznqaBmoouO86jYo1SzhZLbr/d38PPzJo
-         OYP4gfM39yVfCcMZ0gwttk8z6QHgdFhP/U8imUKIGo2bwTXspUxdy3MKIu7ONFWTnjGs
-         x+hCFkJHCFqisoEbQeQKOw11c0viD37/xG2EH6UHYMT1J/5JignLpY/wVhQqemMU5qrv
-         BkNA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720020898; x=1720625698;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=x/l9NCWIE0l4Bx+XrdXwTpflR2LutCCCxUOf/LMelxo=;
-        b=th1L2yK387iY70hCS5SJnmAVSyJ9AOMRH0EAftCcmvjNoVrr+uoL2uv/oKiGfEvVAr
-         jHMWXKKWiD9KNHwFNU4PTb2v4GuWupGwC1a1ygxld6WB5IhZG3p/5+ecmsLxwwWnBU//
-         Swhhyx2+4aSQJqvXE3NpUAPbcOoP5gvuva2DQtIBdJVxLTwV+O+QMyrbkyVdtA4gahAi
-         wR4oLc+mGTMrsF91s0hYSZgzusvCVNrEj5FWNBk7t03Qu7eI0KPLPk1WuuAZrkfdq73+
-         d34cr4oedBODhmwgn+kUxpjHkvb2I/zTCekq79ULOWNLXJqxn4wiPFoLw03ljbZ1AAL4
-         Eh8w==
-X-Forwarded-Encrypted: i=1; AJvYcCVwWGchL0LJmnLaIfQnPhNQMbvnsXNOs9+dRPfrSnOfpQTgLkP+HvBQpoCpCkhyU8twN2UjzsWMhnJb5cvVdNVMDYjkxHzxLO9EbIJWV3Vh4ArCWfprm2TF8KBkChgE5dJcehAfvJEAWwVyaYW1xUQdtBoVPdHqyxEaoKd1aOVzmJCJpW7I1g==
-X-Gm-Message-State: AOJu0YwWChpflNT+kziy7foxsWmmQBwO1oxNfp2o5wbNNL/MgrI6z5Yx
-	Oij8laVjUMXA1PnoogAutCKAOeghuCkYa0oT5kRWkcXA1f8xZotH
-X-Google-Smtp-Source: AGHT+IEO4d2+aOnQArZ0S0ETV0kECHeJ9pw9DdLn3G4dWl2YLKyImfiX01E+IK2AhKyvjtzb/1cuCA==
-X-Received: by 2002:ad4:5d49:0:b0:6b5:de1e:4bc1 with SMTP id 6a1803df08f44-6b5de1e4df1mr37812496d6.51.1720020898517;
-        Wed, 03 Jul 2024 08:34:58 -0700 (PDT)
-Received: from fauth2-smtp.messagingengine.com (fauth2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6b5e3d4b56csm4534756d6.48.2024.07.03.08.34.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 03 Jul 2024 08:34:57 -0700 (PDT)
-Received: from compute7.internal (compute7.nyi.internal [10.202.2.48])
-	by mailfauth.nyi.internal (Postfix) with ESMTP id 244211200043;
-	Wed,  3 Jul 2024 11:34:57 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute7.internal (MEProxy); Wed, 03 Jul 2024 11:34:57 -0400
-X-ME-Sender: <xms:oW-FZjiKjNwbtqpKpce0t7OUID3NoJS9L5vePjOeg6UX4whTG3YH7Q>
-    <xme:oW-FZgBGm2-keJLkSXRoYqpwmfXO_4u60M3TwaI4hdRpC0YSUi6ijx57lQQ0zZ21E
-    8s1UpbVpr5y2-1q2Q>
-X-ME-Received: <xmr:oW-FZjEmYYWtndaJ7WpAG141qzt9Wu-EQKvbeOKNER3tMkOhkKkaQbNBsQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrudejgdeltdcutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpeffhffvvefukfhfgggtugfgjgesthekredttddtudenucfhrhhomhepuehoqhhu
-    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
-    htthgvrhhnpedtuedtveethfdugfejieetleekteekgeeguefhvedvteeljeelteehhffh
-    ieetffenucffohhmrghinheptggrshhtrdgrshenucevlhhushhtvghrufhiiigvpedtne
-    curfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghr
-    shhonhgrlhhithihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvg
-    hngheppehgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvg
-X-ME-Proxy: <xmx:oW-FZgS1vAodjsg-AiSVHGVlUnwX5eeNDGhBHIXHEX6ILo_GI9F4tQ>
-    <xmx:oW-FZgxv7rDfADyfXu9HSStSXn_BeRp6ZYFCMfXfmZSsdVr6bLViMg>
-    <xmx:oW-FZm6sQNUNo7NQ9Cr-q8TOVusgKy9Yz4ubNw6RMtRwoO7cd5v6fQ>
-    <xmx:oW-FZlzQebP0q8E4d-OfhD29xYWX6oQn6Qv1mdfdNOFqVHhlPk6oiw>
-    <xmx:oW-FZggskcFHT1Oa_tFVHo1ZR_NEvvBsLZNdlHjVcevbDmsXaxh7SJ6d>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 3 Jul 2024 11:34:56 -0400 (EDT)
-Date: Wed, 3 Jul 2024 08:34:55 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Viresh Kumar <viresh.kumar@linaro.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WYzV02hi"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1720021471;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=s2erXypPFS96oGxgCOnNdx6e4GIHP7kCcJ5ryjq/x4k=;
+	b=WYzV02hijLUB/7JiOMYszQoDnHm2JT09KYxTW7RE4FDl9635uAkgqSaRwVZoSyl+I/sp8J
+	HTix1XLnzgqcTh1A+113EYo4lRdUHlbh2u3iB1Tk47lX7ULDemCHayNESYweWkXKCNmXul
+	mSL68gxafKJj40GHRHG2wUwIH2wff7I=
+Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-577-wbBm45VNMgidjIZZQ62NHw-1; Wed,
+ 03 Jul 2024 11:44:26 -0400
+X-MC-Unique: wbBm45VNMgidjIZZQ62NHw-1
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id D06DE1954206;
+	Wed,  3 Jul 2024 15:44:22 +0000 (UTC)
+Received: from hydra.redhat.com (unknown [10.39.193.208])
+	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 599BD1955BC0;
+	Wed,  3 Jul 2024 15:44:17 +0000 (UTC)
+From: Jocelyn Falempe <jfalempe@redhat.com>
+To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Daniel Vetter <daniel@ffwll.ch>,
 	Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
 	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
 	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	"Bjorn Roy Baron" <bjorn3_gh@protonmail.com>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>, linux-pm@vger.kernel.org,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Stephen Boyd <sboyd@kernel.org>, Nishanth Menon <nm@ti.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	linux-kernel@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
 	rust-for-linux@vger.kernel.org,
-	Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
-	Erik Schilling <erik.schilling@linaro.org>,
-	Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
-	Joakim Bech <joakim.bech@linaro.org>, Rob Herring <robh@kernel.org>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH V3 1/8] rust: Add initial bindings for OPP framework
-Message-ID: <ZoVvn0QCSR8y4HQJ@Boquns-Mac-mini.home>
-References: <cover.1719990273.git.viresh.kumar@linaro.org>
- <fe8e9a96b29122876346fc98a6a9ede7e4f28707.1719990273.git.viresh.kumar@linaro.org>
+	Danilo Krummrich <dakr@redhat.com>
+Cc: Jocelyn Falempe <jfalempe@redhat.com>
+Subject: [PATCH 0/4] drm/panic: Add a qr_code panic screen
+Date: Wed,  3 Jul 2024 17:33:57 +0200
+Message-ID: <20240703154309.426867-1-jfalempe@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <fe8e9a96b29122876346fc98a6a9ede7e4f28707.1719990273.git.viresh.kumar@linaro.org>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
 
-Hi Viresh,
+This series adds a new panic screen, with the kmsg data embedded in a QR-code.
 
-On Wed, Jul 03, 2024 at 12:44:26PM +0530, Viresh Kumar wrote:
-> This commit adds initial Rust bindings for the Operating performance
-> points (OPP) core. This adds bindings for `struct dev_pm_opp` and
-> `struct dev_pm_opp_data` to begin with.
-> 
-> Reviewed-by: Manos Pitsidianakis <manos.pitsidianakis@linaro.org>
-> Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
-> ---
-[...]
-> +
-> +/// Operating performance point (OPP).
-> +///
-> +/// # Invariants
-> +///
-> +/// The pointer stored in `Self` is non-null and valid for the lifetime of the ARef instance. In
-> +/// particular, the ARef instance owns an increment on underlying object´s reference count.
+The main advantage of QR-code, is that you can copy/paste the debug data to a bug report.
 
-Since you use `ARef` pattern now, you may want to rewrite this
-"invariants".
+The QR-code encoder is written in rust, and is very specific to drm_panic.
+The reason is that it is called in a panic handler, and thus can't allocate memory, or use locking.
+The rust code uses a few rust core API, and provides only two C entry points.
+There is no particular reason to do it in rust, I just wanted to learn rust, and see if it can work in the kernel.
 
-> +#[repr(transparent)]
-> +pub struct OPP(Opaque<bindings::dev_pm_opp>);
-> +
-> +// SAFETY: `OPP` only holds a pointer to a C OPP, which is safe to be used from any thread.
-> +unsafe impl Send for OPP {}
-> +
-> +// SAFETY: `OPP` only holds a pointer to a C OPP, references to which are safe to be used from any
-> +// thread.
-> +unsafe impl Sync for OPP {}
-> +
+If you want to see what it looks like, I've put a few screenshots here:
+https://github.com/kdj0c/panic_report/issues/1
 
-Same for the above safety comments, as they are still based on the old
-implementation.
+-- 
 
-> +// SAFETY: The type invariants guarantee that [`OPP`] is always refcounted.
-> +unsafe impl AlwaysRefCounted for OPP {
-> +    fn inc_ref(&self) {
-> +        // SAFETY: The existence of a shared reference means that the refcount is nonzero.
-> +        unsafe { bindings::dev_pm_opp_get(self.0.get()) };
-> +    }
-> +
-> +    unsafe fn dec_ref(obj: ptr::NonNull<Self>) {
-> +        // SAFETY: The safety requirements guarantee that the refcount is nonzero.
-> +        unsafe { bindings::dev_pm_opp_put(obj.cast().as_ptr()) }
-> +    }
-> +}
-> +
-> +impl OPP {
-[...]
-> +
-> +impl Drop for OPP {
+Jocelyn
 
-I don't think you need the `drop` implementation here, since it should
-be already handled by `impl AlwaysRefCounted`, could you try to a doc
-test for this? Something like:
 
-	let opp: ARef<OPP> = <from a raw dev_pm_opp ponter whose refcount is 1>
-	drop(opp);
+Jocelyn Falempe (4):
+  drm/panic: Add integer scaling to blit()
+  drm/rect: add drm_rect_overlap()
+  drm/panic: simplify logo handling
+  drm/panic: Add a qr_code panic screen
 
-IIUC, this will result double-free with the current implementation.
+ drivers/gpu/drm/Kconfig         |  29 +
+ drivers/gpu/drm/Makefile        |   1 +
+ drivers/gpu/drm/drm_drv.c       |   3 +
+ drivers/gpu/drm/drm_panic.c     | 338 +++++++++--
+ drivers/gpu/drm/drm_panic_qr.rs | 989 ++++++++++++++++++++++++++++++++
+ include/drm/drm_panic.h         |   4 +
+ include/drm/drm_rect.h          |  15 +
+ 7 files changed, 1340 insertions(+), 39 deletions(-)
+ create mode 100644 drivers/gpu/drm/drm_panic_qr.rs
 
-Overall, `OPP` is now representing to the actual device instead of the
-pointer to the device, so the `drop` function won't need to handle the
-refcounting.
 
-Regards,
-Boqun
+base-commit: 3f5ea7ed705e8effe9cfabf912e769ccb6b7d389
+-- 
+2.45.2
 
-> +    fn drop(&mut self) {
-> +        // SAFETY: The safety requirements guarantee that the refcount is nonzero.
-> +        unsafe { bindings::dev_pm_opp_put(self.as_raw()) }
-> +    }
-> +}
-> -- 
-> 2.31.1.272.g89b43f80a514
-> 
