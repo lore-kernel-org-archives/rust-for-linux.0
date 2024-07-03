@@ -1,142 +1,88 @@
-Received: from mail-4323.proton.ch (mail-4323.proton.ch [185.70.43.23])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32B18183086
-	for <rust-for-linux@vger.kernel.org>; Wed,  3 Jul 2024 17:35:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.23
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F251018411C;
+	Wed,  3 Jul 2024 17:40:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720028120; cv=none; b=F5FLH55GJb4P8Dd+GgRXirj4OJX98Et9URD8QqOnF2l+BQDE3Ooj9ambvSFeoCP+jSB9LlNW4FNzudpKQ2fV0zLN/w964U12cBYrjBlDMUjHWtacURh+Iobd5FzncP/u79wgncK1Yiwjvli+izQJOsldPUrlsrUbVcQ7U0/KiQQ=
+	t=1720028451; cv=none; b=txKP94jFgi8JpeKGRSvZ5c++DB1JJJ5ECbqokQWvjQ5LT4hqC99YpxPUa6i/QE7gAnD5uDP21L16eRwVzBDN0RHt+6Am3Oa5iPVCZE5CckV+q21CMukj7wJxdPhPBfu9qLLTzXwOW6DXNYz4U0BwW8/adbdDveBomWsj5Kzo+HQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720028120; c=relaxed/simple;
-	bh=TmV9z1ND2wapaoce+nMP1vO1mkuNVwGThZes7xbSuPw=;
-	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=JkFK4vUyXRpAuhLDwaG6LyXL0/UDsRAO7MwvwrXhrDbHdW4qit1p30Y3WFfbIFQVNcpmMC+Z1nFrGAvaAuHNUYqe0HanrkoqVcGPj5L3hVa+W6WwG+AU+QNNnoWuwcr7pIPMemdxEfYjoNdszexCNamAe1T4gd0KPql23jiWVg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=metaspace.dk; spf=pass smtp.mailfrom=metaspace.dk; dkim=pass (2048-bit key) header.d=metaspace.dk header.i=@metaspace.dk header.b=AWEb8G1d; arc=none smtp.client-ip=185.70.43.23
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=metaspace.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=metaspace.dk
+	s=arc-20240116; t=1720028451; c=relaxed/simple;
+	bh=wex0WKk5BhdokWgF9E4s/kjdWipRk4923QEoWYHdIBI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=irBWpAwZPWZwrcke15qktINdr7j3Do+4ds1PhKkJHZSVLANpN9ZTBSoKKTZdS9b+jm46ad9VtLzXfsmP4k9rFTRKK/CMPRg5SpHgdCyaICYciOBM8Md8+ED4D7cx1Uk/Cw3KKCMdz9x30vqf4STDXIwg7XsG72piBgUYxAbn0Cg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b0s3S3kg; arc=none smtp.client-ip=209.85.216.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=metaspace.dk header.i=@metaspace.dk header.b="AWEb8G1d"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=metaspace.dk;
-	s=protonmail; t=1720028115; x=1720287315;
-	bh=gniYypZ3LP7QAPnNrXZK2ZYj2l0EPUwDaXbCV7MZwL0=;
-	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
-	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
-	b=AWEb8G1dKw2A6g/Ke2AkSiMEfa6pzWIalqov0scU5XmrYZRMA7RDk9L7zRvAmkVVT
-	 FWQ56RAFQg+7KNbUoYji/lqAiGjS+E7xbZ0kb2OnlPVRBZHxV/vLpJ53RHMn1HAHi0
-	 R3ieGdz9zZDRlV/ihEbiCWbEajeAsMs0VJ2OWIUb+b+o5naetMO5Nn0roea2eb8QB7
-	 tESuFjehiu4lTA782IFQeXUdLapa0a3AeAQLqOU/xUecUNIPdThh01f5ID0Yuv4d+o
-	 J526+iYpsK+OlsrOSvcx8Y/SBuZ2n3MBknO+elpKx8ltkJsa0llcwJzKLhP5wCitu+
-	 I3X3LxdpCu9QA==
-Date: Wed, 03 Jul 2024 17:35:09 +0000
-To: Miguel Ojeda <ojeda@kernel.org>
-From: Andreas Hindborg <nmi@metaspace.dk>
-Cc: Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, patches@lists.linux.dev
-Subject: Re: [PATCH 00/13] Support several Rust toolchain versions
-Message-ID: <87a5iy8jlm.fsf@metaspace.dk>
-Feedback-ID: 113830118:user:proton
-X-Pm-Message-ID: add2598dfefaf55cc1fdb6f02e421deba54a5cdc
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b0s3S3kg"
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-2c983d8bdc7so494664a91.0;
+        Wed, 03 Jul 2024 10:40:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1720028449; x=1720633249; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wex0WKk5BhdokWgF9E4s/kjdWipRk4923QEoWYHdIBI=;
+        b=b0s3S3kgbXa2YKXGZRqPPEU6+2WfpO2yapV0PZTrK4zrkpYahG8FOcBWAjq1hfWR1S
+         YCECkU0NurIyHyNcMHRcwx+z6RJdkY4PgQGWHtUxKBCvl/H9EM+u/meBG94bIsm622SB
+         qiyoZVkwtRjMRLESS3f95cVIeyCq9JiKJGlokMGe3fw91ZhhpePq/N4KbGHFsAK7Q0Wm
+         t7fQffS+zmVOHTxMunmGVj4NdcMsU3+WAwiS/Qo8Hhhb9iFJxiKR5DxSVlUYLvaLzN4B
+         ulsR2zLLP5GhlLNeE6SASvGYhW46VsQilERLP2tNtCpROIhnBi953Jcyx2YS7MYKj5oN
+         ZgEA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1720028449; x=1720633249;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=wex0WKk5BhdokWgF9E4s/kjdWipRk4923QEoWYHdIBI=;
+        b=u/vwgEbQUm/IR6XjdIKBFc39hCKLnhBu/ZIyo94ghTuD4hHknoIAv4rt24yH+Oi2Sj
+         eWcYC2fq3ZARf6XLG+kNGbOVFYcsEVKUx9QsOPK14PfC3xLXOZabL9QKjPMz+QM12E6Q
+         qVSps+RriEl8KkTYtSgVwGiGnOMU5qwKP3Qtn9ZiksDizKMk/fXDIpRKArHy2P3NdfLg
+         aCuDDhwd3FTRGt+nFklstiDxwDPSxDkKOM2rVCUrPbUYB+GWId6m4QwUammSLlYdP6dW
+         bYjDtAkxGWnBOJ/i1DgNUiLsCnNkykFjh8p01HO5MpsjMx0ec0kuBN8jA/XFMVDx1mPb
+         6zwA==
+X-Forwarded-Encrypted: i=1; AJvYcCWtJng8mHeFC6kuekjKG91zgh+7gLI9yh1JKUsrz4I39b/NQxGchGc03vucNFz5Hai6H+ETHhtuf32nP7QxV4WpvdELL+IlX9+4CphsQAXImCmNpFp0eoHODVdiqeV6i8fpTusMciySZCeflkw=
+X-Gm-Message-State: AOJu0Yw2l8iokUQqloU/lCTZ0AeWW05lWmp8GQnA3InOt1RAllSXp3O5
+	6xe1JgfjnOvA/8UOuuX8O9Q+1vHRSNmhi1Fuo1MvCZD9uIRxetVJD+SwKRgqzxrP6FAjWbmS732
+	dSL6bqsS9utdPxRt7E6y3I9J6uIg=
+X-Google-Smtp-Source: AGHT+IHnHwx7IyZ+IzlqzxWdkn4wR99KOWTN8jBuurLTZmQaR3qi3+Z7MUlwkpOnAOop3N9MbKy0n0WLIu0QPmbUo+s=
+X-Received: by 2002:a17:90a:fd8a:b0:2c9:83f3:1291 with SMTP id
+ 98e67ed59e1d1-2c983f3130dmr1320549a91.34.1720028449186; Wed, 03 Jul 2024
+ 10:40:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <87a5iy8jlm.fsf@metaspace.dk>
+In-Reply-To: <87a5iy8jlm.fsf@metaspace.dk>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 3 Jul 2024 19:40:37 +0200
+Message-ID: <CANiq72nPyZJL7TA5wXT__wKp3z5Eoue=RB_Yphh+NCe_AkRpGA@mail.gmail.com>
+Subject: Re: [PATCH 00/13] Support several Rust toolchain versions
+To: Andreas Hindborg <nmi@metaspace.dk>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-
-Hi Miguel,
-
-Miguel Ojeda <ojeda@kernel.org> writes:
-
-> Hi all,
+On Wed, Jul 3, 2024 at 7:35=E2=80=AFPM Andreas Hindborg <nmi@metaspace.dk> =
+wrote:
 >
-> It is time to start supporting several Rust toolchain versions and thus
-> establish a minimum Rust compiler and `bindgen` version.
->
-> For the Rust compiler, we will start with a window of two stable
-> releases, and widen it over time. This series keeps the minimum where
-> it is (1.78.0), but adds support for the recently released 1.79.0.
->
-> This should already be enough for kernel developers in distributions that
-> provide recent Rust compiler versions routinely, such as Arch Linux,
-> Debian Unstable (outside the freeze period), Fedora Linux, Gentoo
-> Linux (especially the testing channel), Nix (unstable) and openSUSE
-> Tumbleweed. A documentation adds the instructions for each of them.
->
-> In addition, Rust for Linux is now being built-tested in Rust's
-> pre-merge CI. That is, every change that is attempting to land into the
-> Rust compiler is tested against the kernel, and it is merged only if it
-> passes -- thanks to the Rust project for that!
->
-> Thus, with the pre-merge CI in place, both projects hope to avoid
-> unintentional changes to Rust that break the kernel. This means that,
-> in general, apart from intentional changes on their side (that we will
-> need to workaround conditionally on our side), the upcoming Rust compiler
-> versions should generally work.
->
-> For instance, currently, the beta (1.80.0) and nightly (1.81.0) branches
-> work as well.
->
-> Similarly, we kept the minimum as it is for `bindgen`. `bindgen` is also
-> adding the kernel to its CI -- thanks!
->
-> Cheers,
-> Miguel
->
+> Maybe because I am on v6.9?
 
-Applied the series to [1], based on v6.9:
+Yeah, you need https://lore.kernel.org/rust-for-linux/20240401212303.537355=
+-4-ojeda@kernel.org/
+-- please see the "## LLVM's data layout" section in the commit
+message.
 
-rustup override set --path ../rnull-v6.9-build 1.76.0
-make O=3D../rnull-v6.9-build LLVM=3D1
+Thanks for giving it a try!
 
-Builds fine.
-
-rustup override set --path ../rnull-v6.9-build 1.79.0
-make O=3D../rnull-v6.9-build LLVM=3D1
-
-make[1]: Entering directory '/home/aeh/src/linux-rust/rnull-v6.9-build'
-  GEN     Makefile
-mkdir -p /home/aeh/src/linux-rust/rnull-v6.9-build/tools/objtool && make O=
-=3D/home/aeh/src/linux-rust/rnull-v6.9-build subdir=3Dtools/objtool --no-pr=
-int-directory -C objtool
-  CALL    /home/aeh/src/linux-rust/rnull-v6.9/scripts/checksyscalls.sh
-  INSTALL libsubcmd_headers
-  RUSTC L rust/core.o
-error: data-layout for target `target-12379853866016577623`, `e-m:e-p270:32=
-:32-p271:32:32-p272:64:64-i64:64-f80:128-n8:16:32:64-S128`, differs from LL=
-VM target's `x86_64-linux-gnu` default layout, `e-m:e-p270:32:32-p271:32:32=
--p272:64:64-i64:64-i128:128-f80:128-n8:16:32:64-S128`
-
-error: aborting due to 1 previous error
-
-make[3]: *** [/home/aeh/src/linux-rust/rnull-v6.9/rust/Makefile:461: rust/c=
-ore.o] Error 1
-make[2]: *** [/home/aeh/src/linux-rust/rnull-v6.9/Makefile:1206: prepare] E=
-rror 2
-make[1]: *** [/home/aeh/src/linux-rust/rnull-v6.9/Makefile:240: __sub-make]=
- Error 2
-make[1]: Leaving directory '/home/aeh/src/linux-rust/rnull-v6.9-build'
-make: *** [Makefile:240: __sub-make] Error 2
-error: Recipe `lo` failed with exit code 2
-
-
-rm ../rnull-v6.9-build/rust
-make O=3D../rnull-v6.9-build LLVM=3D1
-
-same result.
-
-rm ../rnull-v6.9-build/rust
-<configure>
-make O=3D../rnull-v6.9-build LLVM=3D1
-
-same result.
-
-Maybe because I am on v6.9?
-
-
-Best regards,
-Andreas
-
-
-[1] https://github.com/metaspace/linux/tree/rnull-v6.9
-
+Cheers,
+Miguel
