@@ -1,88 +1,71 @@
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B7F217F51A;
-	Wed,  3 Jul 2024 11:05:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E4DC13DDD3;
+	Wed,  3 Jul 2024 12:32:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720004755; cv=none; b=Sq+m+xopqvB0zfKhtsOyX2wlI6dlDB65ha0SQ01YtWeIQt6OGldrnDmGJlatZBXNQtwZ+nhjyO7mCv6IRzgez5ncmBYZNYu+wLDNf0r5C8NBNjYIXFKSMa9/daY+K8EZro6LqKgP6KZI0sl7CS54qqchkOCjzl+D9wMstbxnhUE=
+	t=1720009962; cv=none; b=sacQPE+7B8BRlQmPdeWljEVFliTHs2NvxuoIfZDXOjr4vS4wChsHJ7mpt+kpoy+06R9UCtIU80F2CSlkqVyLnJffhLPyt7B74Tj9lXMxR6pC6ZXUMOvEmO91snMPhdkE9JMkeTxsuh80KomI9Ohes9GlRLLSgZr5tbSrtX7b+cE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720004755; c=relaxed/simple;
-	bh=Nt6ZuaCko+BArRXXU7JkXLT2e8uK2t+eKVQDm+MzM0c=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=r7TD7wTA9dXspNTUx95qjCvgYqV7rxLLXbDD6bvWcpjhc6SSO6P8tBcvzkS23zkY+R5Fo0RdXzd6D/DQ2gSWrGG0qrqwlDvABsm8jY0RWSAlieyzTXE2JLx15oq+rH4MomzGNtBQUjGg/M0WoDv8aUwHUgtZz4rv2//fhjGQkO0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [112.22.233.190])
-	by gateway (Coremail) with SMTP id _____8Cx_vCPMIVmaX8AAA--.1818S3;
-	Wed, 03 Jul 2024 19:05:51 +0800 (CST)
-Received: from lvm.. (unknown [112.22.233.190])
-	by localhost.localdomain (Coremail) with SMTP id AQAAf8DxfceMMIVmHIU5AA--.3488S2;
-	Wed, 03 Jul 2024 19:05:50 +0800 (CST)
-From: WANG Rui <wangrui@loongson.cn>
-To: Huacai Chen <chenhuacai@kernel.org>
-Cc: WANG Xuerui <kernel@xen0n.name>,
-	Xi Ruoyao <xry111@xry111.site>,
-	Xuefeng Li <lixuefeng@loongson.cn>,
-	loongarch@lists.linux.dev,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	loongson-kernel@lists.loongnix.cn,
-	WANG Rui <wangrui@loongson.cn>
-Subject: [PATCH] LoongArch: rust: Use rustc option -Zdirect-access-external-data
-Date: Wed,  3 Jul 2024 19:06:24 +0800
-Message-ID: <20240703110624.1301830-1-wangrui@loongson.cn>
-X-Mailer: git-send-email 2.45.2
+	s=arc-20240116; t=1720009962; c=relaxed/simple;
+	bh=DM2p1NLEURC4vLbJ5fwuFCXuX68Fky+XI6wY4XFaVX0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bfMG/DFpL40QEaY54/ngWZv5xojvSEIW2L+UO6EWzF/Ot1dB3snpOSV3vKEiQR9QEObccGGI3/dQgL3uhXcBawBNhtXqkHtxGsIqdX3M2KbNxdIkUXqrOCCqw/kqiosPwbEJ2nrbN+d9cf08mLMPDelO8v3hKbtaUfU/7kWd0vw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=YvkQuW3L; arc=none smtp.client-ip=90.155.50.34
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="YvkQuW3L"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=oT5x1BRWHTtzs46y9z/r4KPl8eY01NHj5LtX0weEUsU=; b=YvkQuW3Lm0b+RSxW/Xoecnk0Qu
+	uZ3X45bqmwnp4DA0U7dVT1o3AgXZne0noNpO93taN1QZ1aMWDQPXkUtxPqVeCZvJeXvedrHuv+WZv
+	akvAS19XK68yfun94SHwJmM/053nrjWFAbnM1JcsGRhtLKUcsMT4KZeKI1L3rUzAkAmdVqvyPwpNv
+	hPKxj+cbiHXcaH8fr7/XTvLBwjeHsO0+s7WoHLyRju0ooQE6WwIzbO60a8z3FdqNX317UURQKjAxR
+	9Hshsz64HQqZec1xGS6cnWUo1nUO6UUiMfz+EZ8ZvzPhGTabB79ly4yX9Hvi2xhShGqUO9OTFvO0u
+	mh1L9b1g==;
+Received: from willy by casper.infradead.org with local (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1sOzA0-00000001otM-0HqV;
+	Wed, 03 Jul 2024 12:32:32 +0000
+Date: Wed, 3 Jul 2024 13:32:31 +0100
+From: Matthew Wilcox <willy@infradead.org>
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: linux-mm@kvack.org, David Rientjes <rientjes@google.com>,
+	Christoph Lameter <cl@linux.com>,
+	Hyeonggon Yoo <42.hyeyoo@gmail.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Kees Cook <keescook@chromium.org>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Boqun Feng <boqun.feng@gmail.com>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev
+Subject: Re: [PATCH v2] slab, rust: extend kmalloc() alignment guarantees to
+ remove Rust padding
+Message-ID: <ZoVE34S2fOyUdZYg@casper.infradead.org>
+References: <20240703072520.45837-2-vbabka@suse.cz>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:AQAAf8DxfceMMIVmHIU5AA--.3488S2
-X-CM-SenderInfo: pzdqw2txl6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBj9xXoWruF48WF1rJFyrJr48Ww15trc_yoWkCrX_Wa
-	13Jw48Ka1rWrs0va15Zr1rGrn7C348JF4fZF1vqr9xJryYgry5trZrGw1fZrnaq3y2grs5
-	GF4xZasrZr1UtosvyTuYvTs0mTUanT9S1TB71UUUUUDqnTZGkaVYY2UrUUUUj1kv1TuYvT
-	s0mT0YCTnIWjqI5I8CrVACY4xI64kE6c02F40Ex7xfYxn0WfASr-VFAUDa7-sFnT9fnUUI
-	cSsGvfJTRUUUb7kYFVCjjxCrM7AC8VAFwI0_Jr0_Gr1l1xkIjI8I6I8E6xAIw20EY4v20x
-	vaj40_Wr0E3s1l1IIY67AEw4v_Jrv_JF1l8cAvFVAK0II2c7xJM28CjxkF64kEwVA0rcxS
-	w2x7M28EF7xvwVC0I7IYx2IY67AKxVWUJVWUCwA2z4x0Y4vE2Ix0cI8IcVCY1x0267AKxV
-	WUJVW8JwA2z4x0Y4vEx4A2jsIE14v26r4UJVWxJr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
-	6F4UJVW0owAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYIkI8VC2zVCFFI0UMc
-	02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0I7IYx2IY67AKxVWUXVWUAwAv7VC2z280aVAF
-	wI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI48JMxAIw28IcxkI7V
-	AKI48JMxC20s026xCaFVCjc4AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCj
-	r7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6x
-	IIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAI
-	w20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x
-	0267AKxVWUJVW8JbIYCTnIWIevJa73UjIFyTuYvjxU7_MaUUUUU
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240703072520.45837-2-vbabka@suse.cz>
 
--Zdirect-access-external-data is a new Rust compiler option added
-in Rust 1.78, which we use to optimize the access of external data
-in the Linux kernel's Rust code. This patch modifies the Rust code
-in vmlinux to directly access externa data, using PC-REL instead of
-GOT. However, Rust code whithin modules is constrained by the PC-REL
-addressing range and is explicitly set to use an indirect method.
+On Wed, Jul 03, 2024 at 09:25:21AM +0200, Vlastimil Babka wrote:
+> -	if (is_power_of_2(size))
+> -		align = max(align, size);
+> +	if (flags & SLAB_KMALLOC)
+> +		align = max(align, 1U << (ffs(size) - 1));
 
-Signed-off-by: WANG Rui <wangrui@loongson.cn>
----
- arch/loongarch/Makefile | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+hmm ... maybe this would be faster:
 
-diff --git a/arch/loongarch/Makefile b/arch/loongarch/Makefile
-index 8674e7e24c4a..ae3f80622f4c 100644
---- a/arch/loongarch/Makefile
-+++ b/arch/loongarch/Makefile
-@@ -105,7 +105,8 @@ KBUILD_CFLAGS			+= -fno-jump-tables
- endif
- 
- KBUILD_RUSTFLAGS		+= --target=loongarch64-unknown-none-softfloat
--KBUILD_RUSTFLAGS_MODULE		+= -Crelocation-model=pic
-+KBUILD_RUSTFLAGS_KERNEL		+= -Zdirect-access-external-data=yes
-+KBUILD_RUSTFLAGS_MODULE		+= -Zdirect-access-external-data=no
- 
- ifeq ($(CONFIG_RELOCATABLE),y)
- KBUILD_CFLAGS_KERNEL		+= -fPIE
--- 
-2.45.2
+	if (flags & SLAB_KMALLOC) {
+		u32 tmp = size & (size - 1);
+		align = max(align, size - tmp);
+	}
 
+(if size is 2^n, tmp is 0.  otherwise, tmp is size with the lowest bit
+clear, so size-tmp is the largest POT that divides size evenly)
