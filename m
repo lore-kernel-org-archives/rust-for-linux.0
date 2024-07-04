@@ -1,167 +1,147 @@
-Received: from mail-lf1-f74.google.com (mail-lf1-f74.google.com [209.85.167.74])
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 809621B1436
-	for <rust-for-linux@vger.kernel.org>; Thu,  4 Jul 2024 15:08:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 526C01B1201
+	for <rust-for-linux@vger.kernel.org>; Thu,  4 Jul 2024 15:20:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720105726; cv=none; b=efQzqcuR0pnzokFtClSYVTWHS3ena0WqvncRNOzYNh91/Frj2IfCH1a0uN/GbOhBrEDmh0nwHS8+hfdc4EDM/KKhjYK5RoNvK21owfzP+AbvLW6LCBzqLRP6K0IgDvFZrGSzR4Q1QE3rp4sGtIab041NcLU3lwNaX2+ugxHl/Lc=
+	t=1720106431; cv=none; b=POti5wQqH+HbDkcwpA/3SK9AzOl3/FgS0xxB3I4Hl/Aoc4DKL0abc/p/dJSt7qM12dKpJ/IYsEPXc7helrxmkuclt+znYNi8bIUhAUqje0CxCwXuUtPX2hVJmjn0pmad4TnGQGmAbx1c7jm4vn2F9gdSbtBGUFsrpnogmy437MY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720105726; c=relaxed/simple;
-	bh=JuGBj/G53huERAYmOEJ7zt/Eif/6HD+856XFNofQJEM=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=V+BnWZugLxcKUbUY1QJIYEyoFJRT882Cmt5HnHinkWGf4dGU5J5u04A7E7Yi9O9EYhx10qqMtHt+48QAdCwWfbquZ07rLJQn8U11/dxdcyCjrkgL4QfVAVAIGeJQ/LUngOQ7+EyLpMdgk5u5RR94LDOBkKTkjITT7eV2sBy57oI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qUanNB8F; arc=none smtp.client-ip=209.85.167.74
+	s=arc-20240116; t=1720106431; c=relaxed/simple;
+	bh=/PizTQVDlkIyNELY350ZONH8Gfc08NYf27/JwjBxgRI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mQ8YUdQHCL0LcKvX7OrUE9euaSWCWRJNXmwFeT7bEYvEUNKOvWKY/1PMSQ7OvAHI8V1bbpytirz7CnCAJnEARpKLvko4S60yMB5S6nd1+ROX6hBWcSIRc4Wi85nc4tf4rjxQB6kCrWJAEpEq5blSaBpCTbTwyEIVu0kx+ZZpTLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Fu1hIWQC; arc=none smtp.client-ip=209.85.214.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qUanNB8F"
-Received: by mail-lf1-f74.google.com with SMTP id 2adb3069b0e04-52ea3c7dfdcso47090e87.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 04 Jul 2024 08:08:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Fu1hIWQC"
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-1faad2f1967so13899635ad.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 04 Jul 2024 08:20:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1720105723; x=1720710523; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Bz+EbBDOjmeMrGJd8QmvR0upRYw2Fmi/0lt2+1YTdQg=;
-        b=qUanNB8FSRpjUgMYUq/bDi4zOvdNrV/FFLd0qI/16Z+lRVp+4CBXd4zkkax3SW2RgA
-         P5xtrdUtzaOICzkrXeR3B6qt6soMxZgxDNzDFeIBZ7o2lawQdtK6kl6bgSSQr862Ua2R
-         kOe+8vc+L8OPTC6LPKBwdTN0AS4SykBB8LRLU4U6pT/nPMUz2uY5eyD+a+Hqe2vmEUyU
-         y/NYuVvJolfNUZB3ighoW4hLHjpp+VroPu+VONwEOmDC0Lg2IOeisaGNZNS8DvJlPbMo
-         bG8TxJ+7/ew3N6xp2Jg34NYRkLTfkFEkTEyY9s6upK4F6bRB0wt3bBMb0tl1NbP7l0j5
-         Iyxw==
+        d=google.com; s=20230601; t=1720106429; x=1720711229; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=wMtQ8G7gYG0PtXSm+9oSte5ras/tptARhMk8vAyTBpM=;
+        b=Fu1hIWQC/Sh/lpNuKEDxDoKokku3Y7aOEw1EuiIfNAFF3DTgfpsDw0pYkpgzopT6Xt
+         7UECkjZaO5+TPym0K8iv7eoNWcZrmT9O5jfpKVGSkISRGVKggSoes7aGcev7nTsp9gA8
+         fPXKDpkUfOp7Txy04cbUv9T5KDpQ6JLfrObHuQYnVGXn5kpt3jiphDkj0hnbapEDZFpr
+         6ncJvtDOLQAtaBAZhDLGfZmSg0jeGVZD4R3WFlFeJwXmbQtYWUfYHfN8G7RG2/KTM16i
+         Fh8SjLY45v6AX/qx64phLWH/9KLyYu1+/8RZwyMDiRV+Z9dffxfFgA+787OpAisg5HaL
+         k1xQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720105723; x=1720710523;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Bz+EbBDOjmeMrGJd8QmvR0upRYw2Fmi/0lt2+1YTdQg=;
-        b=JOWRVLPjRblKnpf2j5bCf7Yuut/sFvg6D5TO+8+yKGZv7Vj+Id7ktvYYkhMHFmUzzX
-         AY0KMfbddgfNR33+TyIaIkalSX+8W6mB1QxbqwtJyTqQV5ZmsDa8/2F8mD53a9QH1dQ9
-         tMDQb9F01RyKVdr5d4By7kvfBwUwqR+IvC17cMs+iwOGtDGrp1fkrh+J6jvhNeGeD2K3
-         rPdosM4JVucjoasFKCMwD8ihM6DVHZ3b++dQTWJTwyFwlOkLuzUeRiyDgl8kqwcSe0vz
-         EzLZhc1E2N3TqFpccNItweyszohQRKSiprdF8PhmAuL8voRQ2JJDwbianPUPjb/Omc48
-         YDLA==
-X-Forwarded-Encrypted: i=1; AJvYcCUwUkEwV/MC4Aa5EkjDgsZs/vuCrBZBqm74g39fAVfTrKPXCDH6+6ULUculjnpMIWyKfIoZSyDJkWS/BH8FdHBseQ5KFzkDz5bPmMq+0N4=
-X-Gm-Message-State: AOJu0Yw83y5a4aTE9PVTfSsslSgVd2Eq6rBKl9/ifi9YyviXDv8LDFbV
-	exzvDcSRkzsakgA+4Pm/OB85zCMpVv6NrSReOiicMpQUYoe8TXjZIC5VrtbXasajlEyrQeivjgI
-	TqmVsku7aJ0F0Kw==
-X-Google-Smtp-Source: AGHT+IE03aDhat/nctBL3TSUjtF7n0/BH4Iv3XWnyA2/KfN0iRZTIP1nm3dzjP2dil5/BZGhl8862qWvC2IkeAc=
-X-Received: from aliceryhl2.c.googlers.com ([fda3:e722:ac3:cc00:68:949d:c0a8:572])
- (user=aliceryhl job=sendgmr) by 2002:ac2:51c5:0:b0:52c:7f96:81d1 with SMTP id
- 2adb3069b0e04-52ea063536dmr1741e87.6.1720105722612; Thu, 04 Jul 2024 08:08:42
- -0700 (PDT)
-Date: Thu, 04 Jul 2024 15:07:58 +0000
-In-Reply-To: <20240704-shadow-call-stack-v3-0-d11c7a6ebe30@google.com>
+        d=1e100.net; s=20230601; t=1720106429; x=1720711229;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wMtQ8G7gYG0PtXSm+9oSte5ras/tptARhMk8vAyTBpM=;
+        b=MWsPOgN+nbZdnpfTK7HoyLrK4K/0NhxA3kceFS5r0GnnHSSmPhKFD02g2CVlnwPe3k
+         7YomdpJCF+swrlabk892ZSSLelEDPwZQuDf4vVzGYRZ6pBrV9Fbh1txXx/VvBcO0mr/M
+         HB5VGB13S7Iv735enqejFwPJsGWMbQfX42coR0NVlBNz+nAUit1Y9wy/hVAwi+0H2SNQ
+         +3QdgQ9Am2rKvWRSANVwrwVmYfgHooRYGejl0GR4TtzN5z5Ul87k4bc1GmZ4deQ0otZw
+         XEV9abTsiNDaEPS2W3/iQaDWAarwzJt6zGAJT4eQiJoSGdQgbhQ/SbDM4PmH3KMNj+u3
+         1a4g==
+X-Forwarded-Encrypted: i=1; AJvYcCWybHq3BAAGGESy0Z3obw0b70D+eoCsVWoh0qKtPFd5EFgzAXK6H1jRkrKT0cjF5ITVnjwH54BpUkEObHw+H0s5qUd+fELRar6ZJe7eQMo=
+X-Gm-Message-State: AOJu0YwpsUsxfyHaomfLcCGX6q+oz1bXS+R3bGthhGfmFQyhyZr6Hjy5
+	sNB8XiNCS6Haoa7BisguqX6EIufDh+SivbamD9AJ/ZpXAsaZAivzEcSXw17A5Q==
+X-Google-Smtp-Source: AGHT+IGCoEg+2iwgq2yFecGonukG4K9qxoer7A69funkZsv0Vc/pIw4JkTQQWYN93RAWKE9BO0pBlQ==
+X-Received: by 2002:a17:902:dacd:b0:1fa:1a78:b5a9 with SMTP id d9443c01a7336-1fb3700ccffmr27138855ad.3.1720106429108;
+        Thu, 04 Jul 2024 08:20:29 -0700 (PDT)
+Received: from google.com (201.215.168.34.bc.googleusercontent.com. [34.168.215.201])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1fac15388bdsm124081885ad.168.2024.07.04.08.20.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 04 Jul 2024 08:20:28 -0700 (PDT)
+Date: Thu, 4 Jul 2024 15:20:24 +0000
+From: Carlos Llamas <cmllamas@google.com>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Jason Baron <jbaron@akamai.com>, Ard Biesheuvel <ardb@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	linux-trace-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+	linux-arch@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradaed.org>,
+	Sean Christopherson <seanjc@google.com>,
+	Uros Bizjak <ubizjak@gmail.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Ryan Roberts <ryan.roberts@arm.com>, Fuad Tabba <tabba@google.com>,
+	linux-arm-kernel@lists.infradead.org,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Anup Patel <apatel@ventanamicro.com>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Samuel Holland <samuel.holland@sifive.com>,
+	linux-riscv@lists.infradead.org,
+	Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>, Bibo Mao <maobibo@loongson.cn>,
+	Tiezhu Yang <yangtiezhu@loongson.cn>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Tianrui Zhao <zhaotianrui@loongson.cn>, loongarch@lists.linux.dev
+Subject: Re: [PATCH v4 2/2] rust: add tracepoint support
+Message-ID: <Zoa9uMODCjTfM741@google.com>
+References: <20240628-tracepoint-v4-0-353d523a9c15@google.com>
+ <20240628-tracepoint-v4-2-353d523a9c15@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20240704-shadow-call-stack-v3-0-d11c7a6ebe30@google.com>
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2683; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=JuGBj/G53huERAYmOEJ7zt/Eif/6HD+856XFNofQJEM=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBmhrrxeD87TT9nOZdZlSkM9Ug38Lq8pSNUKPjWV
- S8NfW1wCauJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZoa68QAKCRAEWL7uWMY5
- RuclEACRYz+o0orQSxwv7q+/d5rq3VqoTqZslfFT+l8/uynAxKQaS04uT9n0J3p20m905uf+kbA
- jyxYAe8B1qxiRcLwgxRbrHbKCHdch+xHTn/Qr2mV9q3bNPwwM79X3rvjaVOVhYkRL5JtYZMUuLq
- Z1BsoS7Nb89E01i8mTQhua3kOSrs3sjneafcmOushtO6IJxXiznFxXssUNaHctx4rHNQIvi94Bs
- RsNZ950OQZjq9mPNFZ6ZPetrlDGFFcM9Fiy3o8QwzLQUsSJ+zb8FgN6bBnucaHg1EVplZQzYj/y
- UHd6j4p9PzDXvWho+jfoV3LVuKBFkmyB8wfGYWbAoAIgKsPef5TSHKErkmKV4Cd7MsSe6JeVE4j
- NR0qFvEw9zjxUG3Mt8tYEoSpG5XTFwdqd+cpZCn+cScG+F2olTofTbx+f81TS45rrQ58EsHhZyu
- AHDBIVcrQ5x39H5d0RZMLPOStirm749G3soSpvBZo6+zYk8lxPaRmOZwuDn+EapYreKrtLFEcKY
- rLsd87PNhxDelvB35f8h8er05euI9yQSbucbYlJCE2kOmqRJ/VBdNFoBRaMb+9B7/M+ppoxPTq2
- OhnZJy1a3hf5nYwjnjqWSOpL1i50mUIrWLxSw+zmnVzGFQfWaqywlsFX2HbImPn9kPkvibqf+A9 7v/oXvrs1CicloQ==
-X-Mailer: b4 0.13-dev-26615
-Message-ID: <20240704-shadow-call-stack-v3-2-d11c7a6ebe30@google.com>
-Subject: [PATCH v3 2/2] rust: add flags for shadow call stack sanitizer
-From: Alice Ryhl <aliceryhl@google.com>
-To: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
-	Jamie Cunliffe <Jamie.Cunliffe@arm.com>, Sami Tolvanen <samitolvanen@google.com>
-Cc: Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
-	Nicolas Schier <nicolas@fjasle.eu>, Ard Biesheuvel <ardb@kernel.org>, Marc Zyngier <maz@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, Mark Brown <broonie@kernel.org>, 
-	Nick Desaulniers <ndesaulniers@google.com>, Kees Cook <keescook@chromium.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@samsung.com>, Valentin Obst <kernel@valentinobst.de>, 
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, rust-for-linux@vger.kernel.org, 
-	Alice Ryhl <aliceryhl@google.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240628-tracepoint-v4-2-353d523a9c15@google.com>
 
-As of rustc 1.80.0, the Rust compiler supports the -Zfixed-x18 flag, so
-we can now use Rust with the shadow call stack sanitizer.
+On Fri, Jun 28, 2024 at 01:23:32PM +0000, Alice Ryhl wrote:
+> Make it possible to have Rust code call into tracepoints defined by C
+> code. It is still required that the tracepoint is declared in a C
+> header, and that this header is included in the input to bindgen.
+> 
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> ---
+>  include/linux/tracepoint.h      | 18 +++++++++++++++-
+>  include/trace/define_trace.h    | 12 +++++++++++
+>  rust/bindings/bindings_helper.h |  1 +
+>  rust/kernel/lib.rs              |  1 +
+>  rust/kernel/tracepoint.rs       | 47 +++++++++++++++++++++++++++++++++++++++++
+>  5 files changed, 78 insertions(+), 1 deletion(-)
+> 
+> diff --git a/include/linux/tracepoint.h b/include/linux/tracepoint.h
+> index 689b6d71590e..d82af4d77c9f 100644
+> --- a/include/linux/tracepoint.h
+> +++ b/include/linux/tracepoint.h
+> @@ -238,6 +238,20 @@ static inline struct tracepoint *tracepoint_ptr_deref(tracepoint_ptr_t *p)
+>  #define __DECLARE_TRACE_RCU(name, proto, args, cond)
+>  #endif
+>  
+> +/*
+> + * Declare an exported function that Rust code can call to trigger this
+> + * tracepoint. This function does not include the static branch; that is done
+> + * in Rust to avoid a function call when the tracepoint is disabled.
+> + */
+> +#define DEFINE_RUST_DO_TRACE(name, proto, args)
+> +#define DEFINE_RUST_DO_TRACE_REAL(name, proto, args)			\
+nit: IMO using a __* prefix would be a better option to describe the
+internal use of the macro instead of the _REAL suffix.
 
-On older versions of Rust, it is possible to use shadow call stack by
-passing -Ctarget-feature=+reserve-x18 instead of -Zfixed-x18. However,
-this flag emits a warning, so this patch does not add support for that.
+Other than that, this patch looks good to me:
 
-Currently, the compiler thinks that the aarch64-unknown-none target
-doesn't support -Zsanitizer=shadow-call-stack, so the build will fail if
-you enable shadow call stack in non-dynamic mode. See [2] for the
-feature request to add this. Kconfig is not configured to reject this
-configuration because that leads to cyclic Kconfig rules.
-
-Link: https://github.com/rust-lang/rust/issues/121972 [1]
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
- Makefile            | 1 +
- arch/Kconfig        | 2 +-
- arch/arm64/Makefile | 3 +++
- 3 files changed, 5 insertions(+), 1 deletion(-)
-
-diff --git a/Makefile b/Makefile
-index c11a10c8e710..4ae741601a1c 100644
---- a/Makefile
-+++ b/Makefile
-@@ -945,6 +945,7 @@ ifdef CONFIG_SHADOW_CALL_STACK
- ifndef CONFIG_DYNAMIC_SCS
- CC_FLAGS_SCS	:= -fsanitize=shadow-call-stack
- KBUILD_CFLAGS	+= $(CC_FLAGS_SCS)
-+KBUILD_RUSTFLAGS += -Zsanitizer=shadow-call-stack
- endif
- export CC_FLAGS_SCS
- endif
-diff --git a/arch/Kconfig b/arch/Kconfig
-index 238448a9cb71..5a6e296df5e6 100644
---- a/arch/Kconfig
-+++ b/arch/Kconfig
-@@ -690,7 +690,7 @@ config SHADOW_CALL_STACK
- 	bool "Shadow Call Stack"
- 	depends on ARCH_SUPPORTS_SHADOW_CALL_STACK
- 	depends on DYNAMIC_FTRACE_WITH_ARGS || DYNAMIC_FTRACE_WITH_REGS || !FUNCTION_GRAPH_TRACER
--	depends on !RUST
-+	depends on !RUST || RUSTC_VERSION >= 108000
- 	depends on MMU
- 	help
- 	  This option enables the compiler's Shadow Call Stack, which
-diff --git a/arch/arm64/Makefile b/arch/arm64/Makefile
-index 3f0f35fd5bb7..bbf313ddd700 100644
---- a/arch/arm64/Makefile
-+++ b/arch/arm64/Makefile
-@@ -57,9 +57,11 @@ KBUILD_AFLAGS	+= $(call cc-option,-mabi=lp64)
- ifneq ($(CONFIG_UNWIND_TABLES),y)
- KBUILD_CFLAGS	+= -fno-asynchronous-unwind-tables -fno-unwind-tables
- KBUILD_AFLAGS	+= -fno-asynchronous-unwind-tables -fno-unwind-tables
-+KBUILD_RUSTFLAGS += -Cforce-unwind-tables=n
- else
- KBUILD_CFLAGS	+= -fasynchronous-unwind-tables
- KBUILD_AFLAGS	+= -fasynchronous-unwind-tables
-+KBUILD_RUSTFLAGS += -Cforce-unwind-tables=y -Zuse-sync-unwind=n
- endif
- 
- ifeq ($(CONFIG_STACKPROTECTOR_PER_TASK),y)
-@@ -114,6 +116,7 @@ endif
- 
- ifeq ($(CONFIG_SHADOW_CALL_STACK), y)
- KBUILD_CFLAGS	+= -ffixed-x18
-+KBUILD_RUSTFLAGS += -Zfixed-x18
- endif
- 
- ifeq ($(CONFIG_CPU_BIG_ENDIAN), y)
-
--- 
-2.45.2.803.g4e1b14247a-goog
-
+Reviewed-by: Carlos Llamas <cmllamas@google.com>
