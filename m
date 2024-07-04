@@ -1,96 +1,98 @@
-Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5E041A2555
-	for <rust-for-linux@vger.kernel.org>; Thu,  4 Jul 2024 09:38:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 983121A2555
+	for <rust-for-linux@vger.kernel.org>; Thu,  4 Jul 2024 09:44:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720085890; cv=none; b=RALf5WJ1DCMBlDHDPIuI1DRJzmDgPopuuYteimpxEg42QDka6kB9re3viSQmmTmcnYFH1zNCKovrjMAPzirKmT0hIpsB+7I+vpge40ZeUbrh5AAsb0MEKSNC2WxpWNxfQwmL055CjGCZl4XYJGiH/Uu2zTwZSTB4YZnRwZKyU+4=
+	t=1720086252; cv=none; b=DIZksAO1zroeS+KzOzqDPbGin36cpBXSWxWqcwRBYRObUebMcaZwDFNMQ1sNTANFhUhaOaV8uBSE8lsBw6WpxCRWZ//RsBBpaMAMnbRR6/MpntTCrbS+/t5SH8IR4HXpc95usSOX6YSdj0ZVElZOPFU9O7Ykt/8lAX2IId4Inis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720085890; c=relaxed/simple;
-	bh=B61Ndz/Y+22Ue4UGWv4+nbcIEIQi+VpzgZKgjVAJvzU=;
+	s=arc-20240116; t=1720086252; c=relaxed/simple;
+	bh=dk+wFAAxzFlxFRhvYGEMtW6ex0h+UMnZSX0of1HiOzc=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dCO2Iafs/RphfvRIqShvP4BSLxloy/ijIgGokkL8tpfOaYOt6RbnY7xeDAizVM908qulYDW4+WkctGhf0/kKXc02SCGsJ79wRlEjSblj+IXcwLfsKoaRi0J970YajSbYAAG6R7i7m++ln9+QOqbpMDuoa4e0L8Y9hnP9jShn3sU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=eym81bar; arc=none smtp.client-ip=209.85.128.49
+	 To:Cc:Content-Type; b=oMJcE7l30qZ2lTLRpbpx7Nwrspzk5a+BDTnjCbSgpsKbDLnEc+evQHWiPZhLPabvUyPpKfWMwS+cHZC3hMomCknquUzavYGtxpiKiHAl1UoW6bVVapLgoDMGXCpxuFoxfUc7OCOnDjOuSW0OSsOwN/uDvHlVisdMNOlKm229j6o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=0pFUhzUt; arc=none smtp.client-ip=209.85.221.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="eym81bar"
-Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-4256742f67fso2776995e9.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 04 Jul 2024 02:38:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="0pFUhzUt"
+Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-36798e62aeeso289977f8f.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 04 Jul 2024 02:44:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1720085887; x=1720690687; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1720086249; x=1720691049; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=B61Ndz/Y+22Ue4UGWv4+nbcIEIQi+VpzgZKgjVAJvzU=;
-        b=eym81bar6JP18wEX50i6iHsHNMEBhsQMlagQM1y6+zurejJkEbqzOniEP25w1SnWYv
-         JRStVrnu253gDQCggvWRoYNs1b6O5DJg4MyW3e2oAPBiNpQdRfRAQWKA6F+VruKitVk7
-         bLunWSgnI6nrw7IdwK9MzOfn6Yd5PYVKt+CXre/Ek738QRd4I1xPbXMJ5aKeYrjSIRTF
-         PWkT277+MDhYD8h5P1LR7nBeCu3uWyMtzRpQRsHGrE1TLh0MQVJ7wPpZbvIAbMJ8/AQ6
-         ZaRLWw2O6ADr6Lx8Ci4CvOCdNlNdQZw1xUplPencGaaWtv4AiAb+n7K9SGMLZVefMyn+
-         fAWA==
+        bh=HvzTuVt39up2RUUfOe0HZx5iigIXte9+AUW4YcuUCq0=;
+        b=0pFUhzUtvDOi+nh4ULm6flveyENHY2PdxLtr7UCc03uw32wJfrbLl7QEX6Y1WgB+6o
+         5l/u3erj1HraOA6j+l1aF/ReWiAMrR99KjgBZPOepH5Df4XsaL2hqC9JF28ti2dOxhfW
+         ussj2Jx5SLU8ZtOyheRgt0hsnS9qdk1/y4iXjBIe+ZyG3rhD07TKjLiNcHtHQDBO5KrA
+         nWF9wuHx6IFR+rYiQgvEDeWpCChjAEThmdqA8bJa1y6iJSHBHL0ORGdPnFIpYMBAfLLN
+         ckyl1lcWix+2pLVT6M7Hh+OTN4cfjrjxnqBN4L4Rgsri8WXdgah64XU67XL9onAyORin
+         RX4A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720085887; x=1720690687;
+        d=1e100.net; s=20230601; t=1720086249; x=1720691049;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=B61Ndz/Y+22Ue4UGWv4+nbcIEIQi+VpzgZKgjVAJvzU=;
-        b=M2TNaia1EK3Zhtzej8nl2jR2fMa21zIx0HDlPKrEt8GQuMkRl4TrE9vbeoLP+Tzhqa
-         y85EC5zPQemE1PnsKUMzpzBDaEH6m+pkr9TeJuWpgfJ635ftFF6sxYLoGSsNk3eNzLCP
-         lusHQ4OQ8/LOqxkFSzZrZsWBGbEtz6jpjn/5hDsnaElNaBkeTl+0qrpP9NAfpUvgvjba
-         vqihTpPEXIjWJteUrxPc4hEfxCtWI7aePbKdVSWxZFHRg5n6MrNwRxoteyROcOVMHWOt
-         9f4tDi+tdna2Tq92Hah8WP99bDTketDfosAMYsPQwKDOo24huoOWncF/otQeEeZI8dqN
-         5hRw==
-X-Forwarded-Encrypted: i=1; AJvYcCV1blMgBBdk7uMHpPoGCUbjW3IZJmI8eMRYczVlfQ5ROv3Xgz/xEJa2cg7FcCsiN2YS3Fe7tONnSEyHVvjeGEk8MvVV2q7rvkZCZllgOQw=
-X-Gm-Message-State: AOJu0YyZxOergWCW5sJhT3KhYuFcOfVRdplJPfnVsrCT6G6+tn9UGpzC
-	EGV45wgC86MbyqrnBfGgh1fw7XuuMZvQAEpHRhWzQcvm7qgjUiORdkG4jNh4MrvhiDyd6lsj7O5
-	baGS1qVCuTjDIZe8Qyg+9uCTCZsk6Zel11QoH
-X-Google-Smtp-Source: AGHT+IE3csL2P+Oa1bm2MMKxJf3sdfNwLRB7vTutviF9jHId7ofiRmfWJCeXK5ZIB/EESpULmX6hfWO8Mr00zUiietA=
-X-Received: by 2002:a05:600c:887:b0:425:7784:56e8 with SMTP id
- 5b1f17b1804b1-4264a4319f9mr7152035e9.28.1720085886954; Thu, 04 Jul 2024
- 02:38:06 -0700 (PDT)
+        bh=HvzTuVt39up2RUUfOe0HZx5iigIXte9+AUW4YcuUCq0=;
+        b=pb0HeD0yyYGiJuX4Rz9rSssbU4pUYje7e2de/LG42NA6EpE5YBk/izrQWMMvQ4bt8t
+         l8qJCgOBdiA81fXpa/6IpudSmmZYfA6w6icgYOoU1h+Z2hu/6bzqTHBf+auKSj75k0he
+         mk+rfT1PGRvV2J+S0BbZJl77r/9IErJ3oyak74NlEcGn8WEA+zulYDMK96GhyeVQz81l
+         6ieR6zKYh25Inojf8rqVn0y8LYAapVqlEDkzmffgNFkGYMmh3Nq7ElqTZQ0sHBf+xb/R
+         J0c0ePBVIgx+xGqtjEvsWyJHra8SW1pUqZGENajngybzVgeisQCcvyw3jkLaogN1C0nd
+         Yf8Q==
+X-Forwarded-Encrypted: i=1; AJvYcCX9DXzhvfckNgBzJ6yqN0Gbsij9mN4xdPqJ53XygX6QMOAuMGT/ffyOPaaTwa5NiDsx8AsvrcMaKlCz7y15WO7xElKBZP/W9DT8B6b6kVM=
+X-Gm-Message-State: AOJu0Yxxp0KsmrcOITz+2HimTuGNiDHy6mTAygEDaG9QOJvKCAWEPguf
+	ay/+GFn5fV8JiacKpCgZBm4+QZJHXfY9ToVHDIvvcZ2G5PFvthRieTbw+eiSgW2C/G3uORepcDz
+	AvIrhtZ/itvZNPDO4VPXdsHbvF5GYbCKVEN6V
+X-Google-Smtp-Source: AGHT+IGb9eo4t/vxZACIZaVuEGp2lzXcsQoCskAiDIEz+dcrviPMlT3S5JshhkT4009iDwhrxI1dmRfpXX6zg3NKHgs=
+X-Received: by 2002:adf:e50f:0:b0:367:9224:9620 with SMTP id
+ ffacd0b85a97d-3679dd3114dmr877061f8f.3.1720086248822; Thu, 04 Jul 2024
+ 02:44:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240703154309.426867-5-jfalempe@redhat.com> <20240704091109.1453809-1-aliceryhl@google.com>
- <2024070407-pregnancy-hazing-add9@gregkh>
-In-Reply-To: <2024070407-pregnancy-hazing-add9@gregkh>
+References: <20240701112448.28638-1-ethan.twardy@gmail.com> <20240701112448.28638-5-ethan.twardy@gmail.com>
+In-Reply-To: <20240701112448.28638-5-ethan.twardy@gmail.com>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 4 Jul 2024 11:37:55 +0200
-Message-ID: <CAH5fLghobuv39Pv5gUrieridzHg5ouAESCOdXGWcjAe=yx1U+A@mail.gmail.com>
-Subject: Re: [PATCH 4/4] drm/panic: Add a qr_code panic screen
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: jfalempe@redhat.com, a.hindborg@samsung.com, airlied@gmail.com, 
-	alex.gaynor@gmail.com, benno.lossin@proton.me, bjorn3_gh@protonmail.com, 
-	boqun.feng@gmail.com, dakr@redhat.com, daniel@ffwll.ch, 
-	dri-devel@lists.freedesktop.org, gary@garyguo.net, 
-	linux-kernel@vger.kernel.org, maarten.lankhorst@linux.intel.com, 
-	mripard@kernel.org, ojeda@kernel.org, rust-for-linux@vger.kernel.org, 
-	tzimmermann@suse.de, wedsonaf@gmail.com
+Date: Thu, 4 Jul 2024 11:43:56 +0200
+Message-ID: <CAH5fLgi5HdoPzJHZUrS7r3wdQ6GheJDbzGRGKZpk9oC=U6SdHA@mail.gmail.com>
+Subject: Re: [PATCH v2 4/4] rust: macros: Enable the rest of the tests
+To: "Ethan D. Twardy" <ethan.twardy@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Trevor Gross <tmgross@umich.edu>, 
+	Aswin Unnikrishnan <aswinunni01@gmail.com>, "open list:RUST" <rust-for-linux@vger.kernel.org>, 
+	open list <linux-kernel@vger.kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jul 4, 2024 at 11:28=E2=80=AFAM Greg KH <gregkh@linuxfoundation.org=
-> wrote:
+On Mon, Jul 1, 2024 at 1:28=E2=80=AFPM Ethan D. Twardy <ethan.twardy@gmail.=
+com> wrote:
 >
-> On Thu, Jul 04, 2024 at 09:11:09AM +0000, Alice Ryhl wrote:
-> > As long as the above requirements are satisfied, calling
-> > `drm_panic_qr_generate` should never cause memory unsafety, so this is
-> > an appropriate list of safety requirements.
-> >
-> > (You also require that `data_len <=3D data_size`, but if this is violat=
-ed
-> > you get a kernel panic which isn't a memory safety problem, so it does
-> > not need to be listed in the safety requirements.)
+> Now that the rusttest target for the macros crate is compiled with the
+> kernel crate as a dependency, the rest of the rustdoc tests can be
+> enabled.
 >
-> Panicing while trying to print out a panic message is not a good idea,
-> so enforcing this would be nice :)
+> Signed-off-by: Ethan D. Twardy <ethan.twardy@gmail.com>
 
-I guess it would make sense to have an if that verifies that `data_len
-<=3D data_size` at the top of drm_panic_qr_generate.
+I would drop the newline before `fn main()` here:
 
-Alice
+> @@ -221,6 +248,8 @@ pub fn concat_idents(ts: TokenStream) -> TokenStream =
+{
+>  ///         unsafe { bindings::destroy_info(self.raw_info) };
+>  ///     }
+>  /// }
+> +///
+> +/// # fn main() {}
+>  /// ```
+
+Otherwise LGTM.
+
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
