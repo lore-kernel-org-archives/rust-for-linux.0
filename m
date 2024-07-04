@@ -1,104 +1,123 @@
-Received: from mail-io1-f53.google.com (mail-io1-f53.google.com [209.85.166.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from gimli.kloenk.de (gimli.kloenk.de [49.12.72.200])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5C1D1AED4D;
-	Thu,  4 Jul 2024 14:49:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C4401B1423;
+	Thu,  4 Jul 2024 14:51:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.12.72.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720104581; cv=none; b=klbAiE2QvsGrd4Zk0hQFGvLKfKnaQYAI0LSSNtqWmtsoEp75pkrV21LhoMdeNA6E8Nx41+BPvz/aPtgSkv5fT8ukw8B7mxX775W02HkvNms4+MXBMlIHHxI8NC2h88IhBKJjdHvCz/9JPP9T/utyziG6TlvnbhtqwB18AnO7iEI=
+	t=1720104683; cv=none; b=clCPlwg7S+a1c52dXabZOcOdF/Vc3KrOf1iwZ9CoRKwGJHDeCTsNgw2aGnl2GU79vkC11rHuc7Nf1dJI7Dy7awoHa1Q+sDslA6Jh5FlfCKBf5gmKt7QhdkdSzQsAOH5oxsoWK5sU0738CBnQf0vSzu+663WHPX4JUtGUXHpzwU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720104581; c=relaxed/simple;
-	bh=HCvzRU2gmTS43NcPlyVLIG4vzhdNbCCX02+kykA663Y=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Cc:Subject:From:To:
-	 References:In-Reply-To; b=lzcn1UlY7c8HqXxDk+sofsf7T6EdY0vY76CVtv5BpZ5EXCEadrUyynnfulIXjX/OAN4gRu02VNMaIrz/3PVTplMrAdlmZXqyqr4892unt3wtbvf1xB3pr9IN1J3ovh2zqlPQU5MfojaRnAga265M3qadEEt3Xcjt4/a/5l6nuBc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J12EmzOu; arc=none smtp.client-ip=209.85.166.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1720104683; c=relaxed/simple;
+	bh=2WqPkYgcVOcJUdXrWzG9JEthQgFD3JbhnjuLk3fLfxs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=sTJ42QVNbydDMMP6mm4myu/zAjjTO45vDeNX7zniyvIT5mwZBikkXPEBemWa7qMUMdFGX/wVdJ4Q0BKEDoMnOP2kK+Q8hBx5UH3KRwaz1nDnGQ1wMmaCwIRkSOyjdcNieAm18emf0Y7Uj27xJeCPjKW2DjQVnnmQKLBO1aytB8k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev; spf=pass smtp.mailfrom=kloenk.dev; dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b=e4L7QNOl; arc=none smtp.client-ip=49.12.72.200
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kloenk.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J12EmzOu"
-Received: by mail-io1-f53.google.com with SMTP id ca18e2360f4ac-7ebde93bf79so31802839f.1;
-        Thu, 04 Jul 2024 07:49:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1720104579; x=1720709379; darn=vger.kernel.org;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=m5/x9BIXdamN8j2ST+bFmCo6TlWHOZ2pjyOOGU4DZFc=;
-        b=J12EmzOuqpfcpn91GDWGhpv9YX5EKG3GhtD+l0+ZEnHuxP/hU9bv7mjTvkDoBLc98c
-         P/tof5vg70AGxDQIsBGTAjED99KwXZmITAR7qs2xKNcrf/TN2MMuWBE5UCDvLzA2UoBT
-         CievPAlhUkD8aGerCNNmo0hbkZpoiEUcR4sX/lUuhnEpCN2Gg702TESIt8yL91Co/HHx
-         1rra01Q9CK0K/0LOr4qrcVg+QxynBEIXOKYukpndsxt+N2CAMcTM4p/+BV149/fMitYC
-         Bl3Qp/+5qsQWcFp6zv/bHz5RTnNNokXVdmZMo3JzydQn0JiR0WT9Y+EbcbOGy8x3Wpm+
-         2DFA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720104579; x=1720709379;
-        h=in-reply-to:references:to:from:subject:cc:message-id:date
-         :content-transfer-encoding:mime-version:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=m5/x9BIXdamN8j2ST+bFmCo6TlWHOZ2pjyOOGU4DZFc=;
-        b=WHm/s2z2BT2CVA+YgFta0+EbodHPJzEM7Pg1Rji9bpItDTQWeiJSLtlr3AHOy2j6xE
-         gjjlXSBxrN/OoYjCf+KAhig8cG3jnm2UIdcFJB2V6BUyp+tJmeWsl3fEV5tQte0CYLca
-         dDw7bc4vsvNwykFcaKiKj/c3hbB1JbeQ0Z/RWa0fKo832+YrJfL4eI4cZQmtjf2rhuCn
-         /T9PbFhxDgCW5D9YEtCgSdjCwSC5X6vfEAe5fwMjzqQNOVXbvJ9a4mrsWi/A5qOORpn1
-         3c+vBlBc4H8J9dv02Y/VPRBX45AUSgMEB+T+69MqHIc2onXl10KX6Ow4yBrBVbx0uFW1
-         7Drg==
-X-Forwarded-Encrypted: i=1; AJvYcCUyzgq7+WA4vy6tiSFrtaCP2uz6ubkcNHL8zXpP+IOMAJcC1XXHmRz6jGdAexx1FvN1HdaDX2k2TVeAY4JUAQmMa5EhafRfYcQRxE/7bccKR40822ziwDsVOB5EpBt1inQaBD2AuDuFr2X4lHE=
-X-Gm-Message-State: AOJu0YyMbbDUfX5hY+6eywpolrDVSR/sbMb82Gb6dEeFW8VtDt8OJ/+r
-	B3oJzpd53dFz3QgbrRr1uL+Fn977gFOkVqBtFWZFOuBOBWCDfxBz
-X-Google-Smtp-Source: AGHT+IE2UB4OSVUHRO+wwA9S84I5E6eB5EQe/fFnclT/F6F9xsbwkVTzoGFxppYoateZ+4lcF/gbvQ==
-X-Received: by 2002:a5d:87c1:0:b0:7f6:4eec:cade with SMTP id ca18e2360f4ac-7f66deafb2cmr214652439f.8.1720104578815;
-        Thu, 04 Jul 2024 07:49:38 -0700 (PDT)
-Received: from localhost (h135-131-130-199.ashwwi.broadband.dynamic.tds.net. [135.131.130.199])
-        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4bb742bc2d8sm3989898173.144.2024.07.04.07.49.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 04 Jul 2024 07:49:38 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b="e4L7QNOl"
+From: Finn Behrens <me@kloenk.dev>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kloenk.dev; s=mail;
+	t=1720104678; bh=t4JaQy2kQjDTbqKgYKRhRdtwRxztZ6aV2QZFu9HiWgM=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References;
+	b=e4L7QNOlDf/MoEMzF61XrdYId+yPePTPGMsJdcs/xao5aluG+Hn/AcIYQLXNhSTWy
+	 /473IiL4L0oA8bfdXQsQH3g7NNThQCLj5YdjhBZZgGQB30ALWXr2S6TwR0qLgZELIe
+	 sjxWClV2odnwlyRi+oOuowL+d6xG+IcM59Z74634=
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Wedson Almeida Filho <wedsonaf@gmail.com>,
+ Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ patches@lists.linux.dev
+Subject: Re: [PATCH 08/13] rust: work around `bindgen` 0.69.0 issue
+Date: Thu, 04 Jul 2024 16:51:17 +0200
+Message-ID: <D672AA56-460F-44C5-A73C-E99D36F86078@kloenk.dev>
+In-Reply-To: <20240701183625.665574-9-ojeda@kernel.org>
+References: <20240701183625.665574-1-ojeda@kernel.org>
+ <20240701183625.665574-9-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
+Content-Type: text/plain
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Thu, 04 Jul 2024 09:49:37 -0500
-Message-Id: <D2GU6M1F3QN4.31TYYGTCNHJ9F@gmail.com>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>, "Alex Gaynor"
- <alex.gaynor@gmail.com>, "Wedson Almeida Filho" <wedsonaf@gmail.com>,
- "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "Benno Lossin"
- <benno.lossin@proton.me>, "Andreas Hindborg" <a.hindborg@samsung.com>,
- "Martin Rodriguez Reboredo" <yakoyoku@gmail.com>, "Trevor Gross"
- <tmgross@umich.edu>, "Aswin Unnikrishnan" <aswinunni01@gmail.com>, "open
- list:RUST" <rust-for-linux@vger.kernel.org>, "open list"
- <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 4/4] rust: macros: Enable the rest of the tests
-From: "Ethan D. Twardy" <ethan.twardy@gmail.com>
-To: "Alice Ryhl" <aliceryhl@google.com>
-X-Mailer: aerc 9999
-References: <20240701112448.28638-1-ethan.twardy@gmail.com>
- <20240701112448.28638-5-ethan.twardy@gmail.com>
- <CAH5fLgi5HdoPzJHZUrS7r3wdQ6GheJDbzGRGKZpk9oC=U6SdHA@mail.gmail.com>
-In-Reply-To: <CAH5fLgi5HdoPzJHZUrS7r3wdQ6GheJDbzGRGKZpk9oC=U6SdHA@mail.gmail.com>
 
-On Thu Jul 4, 2024 at 4:43 AM CDT, Alice Ryhl wrote:
-> On Mon, Jul 1, 2024 at 1:28=E2=80=AFPM Ethan D. Twardy <ethan.twardy@gmai=
-l.com> wrote:
-> >
-> > Now that the rusttest target for the macros crate is compiled with the
-> > kernel crate as a dependency, the rest of the rustdoc tests can be
-> > enabled.
-> >
-> > Signed-off-by: Ethan D. Twardy <ethan.twardy@gmail.com>
->
-> I would drop the newline before `fn main()` here:
->
-> > @@ -221,6 +248,8 @@ pub fn concat_idents(ts: TokenStream) -> TokenStrea=
-m {
-> >  ///         unsafe { bindings::destroy_info(self.raw_info) };
-> >  ///     }
-> >  /// }
-> > +///
-> > +/// # fn main() {}
-> >  /// ```
 
-So close! v3 incoming :). Thank you for your review!
+
+On 1 Jul 2024, at 20:36, Miguel Ojeda wrote:
+
+> `bindgen` 0.69.0 contains a bug: `--version` does not work without
+> providing a header [1]:
+>
+>     error: the following required arguments were not provided:
+>       <HEADER>
+>
+>     Usage: bindgen <FLAGS> <OPTIONS> <HEADER> -- <CLANG_ARGS>...
+>
+> Thus, in preparation for supporting several `bindgen` versions, work
+> around the issue by passing a dummy argument.
+>
+> Include a comment so that we can remove the workaround in the future.
+>
+> Link: https://github.com/rust-lang/rust-bindgen/pull/2678 [1]
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+
+Reviewed-by: Finn Behrens <me@kloenk.dev>
+
+> ---
+>  init/Kconfig                 | 5 ++++-
+>  scripts/rust_is_available.sh | 6 +++++-
+>  2 files changed, 9 insertions(+), 2 deletions(-)
+>
+> diff --git a/init/Kconfig b/init/Kconfig
+> index febdea2afc3b..94e20d3b99d4 100644
+> --- a/init/Kconfig
+> +++ b/init/Kconfig
+> @@ -1928,7 +1928,10 @@ config RUSTC_VERSION_TEXT
+>  config BINDGEN_VERSION_TEXT
+>  	string
+>  	depends on RUST
+> -	default $(shell,command -v $(BINDGEN) >/dev/null 2>&1 && $(BINDGEN) -=
+-version || echo n)
+> +	# The dummy parameter `workaround-for-0.69.0` is required to support =
+0.69.0
+> +	# (https://github.com/rust-lang/rust-bindgen/pull/2678). It can be re=
+moved when
+> +	# the minimum version is upgraded past that (0.69.1 already fixed the=
+ issue).
+> +	default $(shell,command -v $(BINDGEN) >/dev/null 2>&1 && $(BINDGEN) -=
+-version workaround-for-0.69.0 || echo n)
+>
+>  #
+>  # Place an empty function call at each tracepoint site. Can be
+> diff --git a/scripts/rust_is_available.sh b/scripts/rust_is_available.s=
+h
+> index 33bbd01ffe51..cfda8157dce9 100755
+> --- a/scripts/rust_is_available.sh
+> +++ b/scripts/rust_is_available.sh
+> @@ -121,8 +121,12 @@ fi
+>  # Check that the Rust bindings generator is suitable.
+>  #
+>  # Non-stable and distributions' versions may have a version suffix, e.=
+g. `-dev`.
+> +#
+> +# The dummy parameter `workaround-for-0.69.0` is required to support 0=
+=2E69.0
+> +# (https://github.com/rust-lang/rust-bindgen/pull/2678). It can be rem=
+oved when
+> +# the minimum version is upgraded past that (0.69.1 already fixed the =
+issue).
+>  rust_bindings_generator_output=3D$( \
+> -	LC_ALL=3DC "$BINDGEN" --version 2>/dev/null
+> +	LC_ALL=3DC "$BINDGEN" --version workaround-for-0.69.0 2>/dev/null
+>  ) || rust_bindings_generator_code=3D$?
+>  if [ -n "$rust_bindings_generator_code" ]; then
+>  	echo >&2 "***"
+> -- =
+
+> 2.45.2
