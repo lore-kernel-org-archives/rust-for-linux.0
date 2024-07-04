@@ -1,28 +1,28 @@
 Received: from gimli.kloenk.de (gimli.kloenk.de [49.12.72.200])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A1B71AED3B;
-	Thu,  4 Jul 2024 14:26:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72E761AED35;
+	Thu,  4 Jul 2024 14:30:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.12.72.200
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720103172; cv=none; b=Ivra6ZQwl5LVFADNNWDZ0ydS+tO3SLaR9hPpkgz16zvPwaFqkSMQhNxtqsBIys9F3x5TAlemxX0Iyyo4PlogHfCgtc7WRoNH+JgEBKcdwCKLULpitaOn/BClIqWR02mDrNVhu6yOAqncLOxAhE3vX00+7VBWZVuLjXGjV+YN8U4=
+	t=1720103449; cv=none; b=VQ+CVrnKhFJmyiaWGpPaMFYSe1yRba24KDy1452H+XP+hqlbA3AwAzpi/Wdrr/5U1idFRk6meY8cYK83Pk8fq53Z0Y5Z/+LmzHqHGupwTc38xRMDfA5qnSu8ImzYqyH3jXycPG5TkT9JL50OExOMcCaM+EyL1VNj8jdiT3gngC0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720103172; c=relaxed/simple;
-	bh=uWs+KI/NnNRYahU8cZs7MxLdZZhTS8AEn/oPUiUEj8E=;
+	s=arc-20240116; t=1720103449; c=relaxed/simple;
+	bh=/YfCTdnQGm2e8OteT+w3ZReS3qKp7v0iVq6bSYgaw8Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LFCNLKiaBDK2ZseokGf/Wv+8i68aSg6K6lQ7ayvo8y2HAkKQVzwcuCoNsegKCcoAswQdmOtdSNeGZSKv2XtanynZqlvVnQx2zU8qfkV5DPxIQMP2FWcE5cVnYjJ4SxC3L4Z2hCzcz9fay6yjeV2TDWE2kdWzzys6qx0gDNgEBos=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev; spf=pass smtp.mailfrom=kloenk.dev; dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b=Wvpig7nN; arc=none smtp.client-ip=49.12.72.200
+	 MIME-Version:Content-Type; b=BAMd+Nk6W7BFe/F8zAtUgnGZwJEey6EhObs3Mm3YAoFPDurpQbUYB6eR9vJucEwDGqxpgPYm/Lp1UtuAxBF3ko24f+6GQPKeJvxs30KK9YxELzFVSoNww6aec4fg0Fy8Te55gwIcoaptG18xGYBTWnkfN83wOnQ62X6j6GXAEVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev; spf=pass smtp.mailfrom=kloenk.dev; dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b=RESvNLgk; arc=none smtp.client-ip=49.12.72.200
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kloenk.dev
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b="Wvpig7nN"
+	dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b="RESvNLgk"
 From: Finn Behrens <me@kloenk.dev>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kloenk.dev; s=mail;
-	t=1720103160; bh=klEyNORmTUCopsPqwvQ4SusCT6WUx2UKJes8fXdkRVM=;
+	t=1720103444; bh=K5wwMCMBuM9kqaDI2K/jUVHFm330IHcLZCFjZvDmBOw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=Wvpig7nN4lrs7VsYh/M3O45Lg3AnmUcPuxZQYexSIJck67xx6x0BQcdxk8qs6WGav
-	 1s6gBDc5m3Go3ZRPEMuQ7zT5gVdMu16xsruZyW5X9ndKUxnn0BVE4gZcLYZxK7XFLY
-	 5/Gh4axfm8Wnm3dfBkZY2zORWBqxFN6ifcOhbDRQ=
+	b=RESvNLgkzNEYWo0uOI7+z0PK3dxr+TJM5aPbh52iMnWb3y9EWWePhSC67u0MN5iDV
+	 o7hkNVkdGYfaL6guLXM8S6j0FW4ijvF2NV8afoS9VsuOA2PKMAWMWIkSjDUsB4nYEB
+	 ncFgKDYVdfYz8jAViMHzeu9zMcb7PRQ7GMDCg7UE=
 To: Miguel Ojeda <ojeda@kernel.org>
 Cc: Wedson Almeida Filho <wedsonaf@gmail.com>,
  Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
@@ -32,12 +32,13 @@ Cc: Wedson Almeida Filho <wedsonaf@gmail.com>,
  Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>,
  rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
  patches@lists.linux.dev
-Subject: Re: [PATCH 01/13] rust: macros: indent list item in `paste!`'s docs
-Date: Thu, 04 Jul 2024 16:25:58 +0200
-Message-ID: <E3504594-6CD3-4D12-B0DA-92B032CD73AA@kloenk.dev>
-In-Reply-To: <20240701183625.665574-2-ojeda@kernel.org>
+Subject: Re: [PATCH 03/13] rust: allow `dead_code` for never constructed
+ bindings
+Date: Thu, 04 Jul 2024 16:30:43 +0200
+Message-ID: <B8FF33D5-07E4-433A-AB35-EAE83265595B@kloenk.dev>
+In-Reply-To: <20240701183625.665574-4-ojeda@kernel.org>
 References: <20240701183625.665574-1-ojeda@kernel.org>
- <20240701183625.665574-2-ojeda@kernel.org>
+ <20240701183625.665574-4-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -45,69 +46,71 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain
-Content-Transfer-Encoding: quoted-printable
 
 
 
 On 1 Jul 2024, at 20:36, Miguel Ojeda wrote:
 
-> A new style lint, `doc_lazy_continuation` [1], has been introduced in t=
-he
-> upcoming Rust 1.80 (currently in beta), which detects missing indentati=
-on
-> in code documentation.
+> Starting with the upcoming Rust 1.80.0 (since upstream commit 35130d7233e9
+> ("Detect pub structs never constructed and unused associated constants
+> in traits")), the `dead_code` pass detects more cases, which triggers
+> in the `bindings` crate:
 >
-> We have one such case:
->
->     error: doc list item missing indentation
->     --> rust/macros/lib.rs:315:5
+>     warning: struct `boot_params` is never constructed
+>         --> rust/bindings/bindings_generated.rs:10684:12
 >         |
->     315 | /// default the span of the `[< >]` group is used.
->         |     ^
+>     10684 | pub struct boot_params {
+>         |            ^^^^^^^^^^^
 >         |
->         =3D help: if this is supposed to be its own paragraph, add a bl=
-ank line
->         =3D help: for further information visit https://rust-lang.githu=
-b.io/rust-clippy/master/index.html#doc_lazy_continuation
->         =3D note: `-D clippy::doc-lazy-continuation` implied by `-D cli=
-ppy::style`
->         =3D help: to override `-D clippy::style` add `#[allow(clippy::d=
-oc_lazy_continuation)]`
->     help: indent this line
+>         = note: `#[warn(dead_code)]` on by default
+>
+> As well as in the `uapi` one:
+>
+>     warning: struct `boot_params` is never constructed
+>         --> rust/uapi/uapi_generated.rs:10392:12
 >         |
->     315 | ///   default the span of the `[< >]` group is used.
->         |     ++
+>     10392 | pub struct boot_params {
+>         |            ^^^^^^^^^^^
+>         |
+>         = note: `#[warn(dead_code)]` on by default
 >
-> While the rendering of the docs by `rustdoc` is not affected, we apply
-> this kind of indentation elsewhere since it looks better.
+> These are all expected, since we do not use all the structs in the
+> bindings that `bindgen` generates from the C headers.
 >
-> Thus clean it up.
+> Therefore, allow them.
 >
-> Link: https://rust-lang.github.io/rust-clippy/master/index.html#/doc_la=
-zy_continuation [1]
 > Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
 Reviewed-by: Finn Behrens <me@kloenk.dev>
 
 > ---
->  rust/macros/lib.rs | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  rust/bindings/lib.rs | 1 +
+>  rust/uapi/lib.rs     | 1 +
+>  2 files changed, 2 insertions(+)
 >
-> diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
-> index 520eae5fd792..05d976b3c09a 100644
-> --- a/rust/macros/lib.rs
-> +++ b/rust/macros/lib.rs
-> @@ -312,7 +312,7 @@ pub fn pinned_drop(args: TokenStream, input: TokenS=
-tream) -> TokenStream {
->  ///
->  /// Currently supported modifiers are:
->  /// * `span`: change the span of concatenated identifier to the span o=
-f the specified token. By
-> -/// default the span of the `[< >]` group is used.
-> +///   default the span of the `[< >]` group is used.
->  /// * `lower`: change the identifier to lower case.
->  /// * `upper`: change the identifier to upper case.
->  ///
-> -- =
-
+> diff --git a/rust/bindings/lib.rs b/rust/bindings/lib.rs
+> index 40ddaee50d8b..93a1a3fc97bc 100644
+> --- a/rust/bindings/lib.rs
+> +++ b/rust/bindings/lib.rs
+> @@ -24,6 +24,7 @@
+>      unsafe_op_in_unsafe_fn
+>  )]
+>
+> +#[allow(dead_code)]
+>  mod bindings_raw {
+>      // Use glob import here to expose all helpers.
+>      // Symbols defined within the module will take precedence to the glob import.
+> diff --git a/rust/uapi/lib.rs b/rust/uapi/lib.rs
+> index 0caad902ba40..80a00260e3e7 100644
+> --- a/rust/uapi/lib.rs
+> +++ b/rust/uapi/lib.rs
+> @@ -14,6 +14,7 @@
+>  #![cfg_attr(test, allow(unsafe_op_in_unsafe_fn))]
+>  #![allow(
+>      clippy::all,
+> +    dead_code,
+>      missing_docs,
+>      non_camel_case_types,
+>      non_upper_case_globals,
+> -- 
 > 2.45.2
