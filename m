@@ -1,80 +1,80 @@
-Received: from mail-lf1-f73.google.com (mail-lf1-f73.google.com [209.85.167.73])
+Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 833C327452
-	for <rust-for-linux@vger.kernel.org>; Thu,  4 Jul 2024 15:08:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6BB71B1206
+	for <rust-for-linux@vger.kernel.org>; Thu,  4 Jul 2024 15:08:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720105720; cv=none; b=DrxEJo48Ef/K/3T5KJywi+B+zoAJDil6J0Qze00fbJnE9HJ/nvXQdDMk4QJ78NJ/ORlPbogM67QT2qVWwnkdIe3bsp7lat9dEQre1ac2hIn31Zu0VmAWIdDvypjwN2dPkk8JerkJY/4wIwP9q5WPxCPRhqLSGY1I4SJpgsDvE1c=
+	t=1720105722; cv=none; b=VjWzISzx5pjBh4FiC8G+nldmAUL6ULxqGbDiFYPCDls5fL1F2Cbw+u36T+9Cn9Ft0b6D9ADwqRi6TFBd8KKZ4OK8T3p93g+ZWISxXmFkH5kBgHlU1NuklcekDOPFDXXXdXeSwk1FP+W4N4fG3HEr0R4FQ0D1+odAyo5jvdiXLuI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720105720; c=relaxed/simple;
-	bh=sMZ9BbO9POf0tBvc7/nZ7J8+lUS3pL+EDqabjAFyEGA=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=C/O/+c+k8XgtW/E7FsPv4r16PvW6/Weojdpx2Dv/DKJRIfn1ls974jyW7p+HVFAnETBhtdqoMa5npkorUp6OfM5dwrw3GSH2Rv5TzQriDUv2fFHXuuhdSU6As+wy2q5tWpSgZPi/u4A+k0lb86LS4avAFYB2A+xuipWYdX4hte4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lDkdNpUZ; arc=none smtp.client-ip=209.85.167.73
+	s=arc-20240116; t=1720105722; c=relaxed/simple;
+	bh=QPeVUrgaEZ8qmuC1e4Q7Ja32koHMoz2tK0lcoaVyWDQ=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=toSBRrfwyxCjLeT4S2fYvPvIZIHwBcs4dk5a2Fpc2RBTVOlqllfIdCRuGB5YcHkphxm6CoqQvjEjxD2UGgDjDNRK5dJTV55jhSrQ6NXlpF+BsF+lMDpz3HZ+aBuhZ1vUEi0asLQiETM56zrEFRYhmhwIvyMQtBLOuXeErUj8P3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=h1RjvkK7; arc=none smtp.client-ip=209.85.128.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lDkdNpUZ"
-Received: by mail-lf1-f73.google.com with SMTP id 2adb3069b0e04-52ea249d1c9so524927e87.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 04 Jul 2024 08:08:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="h1RjvkK7"
+Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-64b49f4232eso11069007b3.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 04 Jul 2024 08:08:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1720105717; x=1720710517; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=PzSiEWHDqLOxuRxN/UEdGAy5HCuRwVDWD6Rf7lJYZNs=;
-        b=lDkdNpUZl1h9N1KrH/8pwiZa9TYAwq8gQlzxdU9ebzTwa5aTaDlcjVfRL/7eEfQUnY
-         4V4Da5WnUlUbnRqX/MnRG/9+gfnrSbUMK9dundHO4zjAb+b9g9UFasSVHyDzyxQ2sEGj
-         x1cR3OcB5p5pMX+soVmyOIhV9fh6GIZWms6UGPlCCJteAtWJPrVUAmu+LF0hTEYbr+Ak
-         +AefQt6JRtwXr3iinrYw6ounTMU6bj19Lvj/4ujSMOkJZ1e1jObEcF+EaYhB247VZiR2
-         q/2xsOHt5s56ZRFcCwLB95dwOjfA0DLq2tU5apXYQipkMT2V5QNsEspupKuCu9UR9/MX
-         OEJw==
+        d=google.com; s=20230601; t=1720105720; x=1720710520; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=SAGA5ww7PBaqsKtz9jWie7SRiEUO1154T36qXbEcKNY=;
+        b=h1RjvkK7SoPg+6yjB1cz/oe1wsCjhgojFZuB6hpEoFKWvv7+lVlG3bwcNR3fmdUCPL
+         JqJ6lr/+DR1m0A7mRDnc2xeWHwBvzt0vCm2kl+S8N7nDspowCXfqc4bqrpiMqfP11rsI
+         mdHul5RMPfjTtd9sHai6aPoFAfXKHL9RqqftPdjq/McAkfY1vxOXhycanTy5XvDYCv18
+         21HmeQpZqPRSnAbwvUESFwo2LBQYUHqGCQ8vVdQT7KY1t/dpk4pefNdokVQYvGaPWtBa
+         YRrCincAZMQX6KcqMrwtFmjXigMgNfN9Jdt3B7QGM+sHOiDD9sKEYYZotKic4DruMb2s
+         SW0w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720105717; x=1720710517;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=PzSiEWHDqLOxuRxN/UEdGAy5HCuRwVDWD6Rf7lJYZNs=;
-        b=O4WjqMxA/2t9037zv9d9bXai3BsXT06jgh/0NiXpKeBclimsw6tnm81yav/tOJoKUX
-         7FZOpaiWLmPcR0jyGHh2Ln2lqwuQw7vkcHIh5+aCEoyCqLIrmVvPc8bKj5Wmq+ETs06H
-         lAsYS9MxBgNHxVKWRAirUbs1x+4yBLYKc8+1hME0q3Y30ncF9drciofANzMJDQvZv2UQ
-         Lz/1BB07iUKBjaCcF9KJnLXNjl3nl52M6FCWgmPe2TZK1T8oGxGn0FBTYaL4c+SnFg1p
-         FER0cJyPigo8k8PbWv57WB6Hzr660FoU6ye4OtAr3HzrR7DweErY7sL6JOeYhxznfjLp
-         +uuQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXo+ogVQaaIxQA8LJn5vJz1T3YqBq7RtvV6p73Z7FG5cd+2pnlOAHXNGlnmdH2KivJUp0yozlIpX1Kf0ku3fFNJG4j7B3tXHzm8z2l2FMI=
-X-Gm-Message-State: AOJu0YxlBmXSzYU9yKFOYK3vEH+4r9Yh58mdI/N+g7VetyTWT5F7vDJN
-	KR9i8xluVqe6lFYQ+eAFlhkzYv8KGOTBnVd+4WBmv+RHkiRvSvd+AS706YCcd0dXQx/qjmGnix5
-	gzMcYeWhch2SzyQ==
-X-Google-Smtp-Source: AGHT+IGtMjqJqbGdpeG6XkBOWWWAlxExMeckibL1JE2gb3ke1OrLZH6Wihub3zA9InePK7NnkTcNpv4TI7hjN1k=
+        d=1e100.net; s=20230601; t=1720105720; x=1720710520;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=SAGA5ww7PBaqsKtz9jWie7SRiEUO1154T36qXbEcKNY=;
+        b=MgAlVuZkEQJUHcYseJJYDc5Sj/kMCkGrp54XtQ1jDpcIGO+ue0OCc7Bg842QKA5YLv
+         ZqmyT1QG7M1nukaZCN609T4Q6NJEaaN7q0Z7FlWfEAq00dB0cmGN2s4xK0giZ13QSCmf
+         5vtQzG0G8RZcms3XfQ4skG/YP28pXY3qcCw8rLhQ0/9t7NBb60DudeVPcJLvwtxGbXjQ
+         o0EguY4knHyx8ioHM1o4RlZM6hfCAiT+qQ1ar9eVIsl+2Im6ceuQOof1K7+//ptWMAUi
+         FKtgyZtf1tr+O3+/1RX9cBtYmlOpW/Q+cN6X+1h0QmAasxKtlnIz8gd9K0f4tHP8ODVq
+         A1fQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUPBwuxu1XAkPOSGa5g8fSCHrwuI0vjLGhkQ5mKVCA858kMngGKHRa+vkj9q6bohfNp6QlhpElDNmyaV2ku1Q12TeuVBloCdkqHS5vigxI=
+X-Gm-Message-State: AOJu0YzAUoa3AA5BETwFL7to6bdN4d8u/xVqYaSBesHX46qKzYRBO5dZ
+	1dtAPPRqcTJv2nqHzJYAVuzzuf33yi1rPRg3L56zo1o2ZV6NsPQE1+/ABk1RzW1JGTKFvwSRsH9
+	eFrkcWB068DKQ8w==
+X-Google-Smtp-Source: AGHT+IH9VR4RffY5ScSTYKGpVKwBEYexOCB2n8xGn6gRVku1k17axUw8NVFzJcK+jQWO+R5Xkyy9mMm5f3/pfeo=
 X-Received: from aliceryhl2.c.googlers.com ([fda3:e722:ac3:cc00:68:949d:c0a8:572])
- (user=aliceryhl job=sendgmr) by 2002:ac2:5591:0:b0:52c:98ad:2aa5 with SMTP id
- 2adb3069b0e04-52ea064e605mr1667e87.6.1720105716416; Thu, 04 Jul 2024 08:08:36
- -0700 (PDT)
-Date: Thu, 04 Jul 2024 15:07:56 +0000
+ (user=aliceryhl job=sendgmr) by 2002:a05:690c:6ac1:b0:62f:1f63:ae4f with SMTP
+ id 00721157ae682-652d52257fdmr189047b3.1.1720105719836; Thu, 04 Jul 2024
+ 08:08:39 -0700 (PDT)
+Date: Thu, 04 Jul 2024 15:07:57 +0000
+In-Reply-To: <20240704-shadow-call-stack-v3-0-d11c7a6ebe30@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAMy6hmYC/33NTQrCMBCG4auUrI3kry115T3ExThJ2mBtJClRK
- bm7aVcK4vL9YJ5ZSDTBmUgO1UKCSS46P5WQu4rgAFNvqNOliWBCMckUjQNo/6AI40jjDHilHfK
- uBSUbrjtS7u7BWPfczNO59ODi7MNre5H4uv7TEqecWlbXBqxiIPDYe9+PZo/+RlYuiU+i/kWIQ mB7USCt0g1vvoic8xuC2nZt9gAAAA==
+References: <20240704-shadow-call-stack-v3-0-d11c7a6ebe30@google.com>
 X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1410; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=sMZ9BbO9POf0tBvc7/nZ7J8+lUS3pL+EDqabjAFyEGA=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBmhrrQpdWqyMX89InGD0RlfLUysaEpa7+2hl//G
- kdBemCumWeJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZoa60AAKCRAEWL7uWMY5
- Rvw9EACPiiNQuSaMz/hjO2blKrzq/IMx9mVL8aL7cKVQhf430WCkmYCgMh3LhQIXho1N0DQwSVS
- sCNasAs46lHK1C8u0DLQ+mt5L5w1qHva84IH6EkoObATW8dsrdsfD2HQFUl7bHT+eiZpG0/kXN7
- c5TMsg28LcPy08LVC/+VL7d9cBYgrIcsPPjAdrSwBM7JbZnNqaA03+DACaLC64i6fV/ha6y5JIH
- RMf4STxvpoPO3+u/RSu6OBlEUqXRSbaP4uHjcX/OJi1pX/Rq9gYgDcSEy5KEvpM/XzsVRphzovq
- dhzUegofv0TeAjPsALcJ18R8FEIVZZodrA8QtYYY2JbdY+7Bay0bwbpraebWgCanapAOjrUnWlo
- vmRNs5CIMhSSVPx2keaXZsB5nHm8YXglsxnkE2kAL1zRNxxrCFvd//g1Gx5jzC53k4NgkRqnfM4
- w/5+ezAAEby55UDdYyHiEZpVB576xTWcAfB9d6s5Jtm+sfc7B/rYw3zZ8wfKyPuyi/zEZv4aCWo
- xFGKWJLskPIDh56G8RJuqrGiJldPT+j61FD2XE3LPoJeEd+eim9e0xMXTE+OdcfO2gvbyAUvNML
- HWTDNsd4FduQ6JJHJqF8MO9vdzNmRxf64+ZWlk86WB3SFQzxazGAF6LP0hBIW+BmD1ohzb3/MNy xQKwHHQ9NwXMucg==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1257; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=QPeVUrgaEZ8qmuC1e4Q7Ja32koHMoz2tK0lcoaVyWDQ=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBmhrrwg1l3+ZOI9jUnEe2Ion3jAzyudZf+KalrV
+ Er782CNi0+JAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZoa68AAKCRAEWL7uWMY5
+ RuMYD/44sZG6ccdUiVJPsf3WNFs8QZDVkyvHrlDdZvFrnjTE+0I+ej6cAW8aEFxmQoaZqxeeXpx
+ SDRqfb2Sz1Uj2ib1iSeVDyCwjoWh3E5+1Lm4upvweGFhYBYthF+y+CWYDs6CyGgNeZ5Dy3422dw
+ GGz52J6La0cXE4+6QWpi2Zq3TViMm78qa+5CbpWhBVC2DBosxiS8R8cnOLRPBCPlEQHf9nQuztI
+ K6dGHGRWsgz6rDq3i698LIG3yDdfIfJkB0cHAP6PvVi2MAFk/iA9XT9Keeuybof6jGr+s0/52UB
+ o0WYgva8Rjn906xSBQGzKXw7MUiYKfsXHhNGUEaYr37nQpsjsIZz8OC7/gd9V+DqSuZw1PD7ygK
+ MM7KZd4Xsog/XkFbddNNOIFhTCDBFRXT+oi+hnAHgZahBSOms2QKjLMXEkGP6HT9kkV8yeyQVm8
+ JJnLJPKLU7exs/BQS+F8CpwV/Yq9PCpWoPeHS0Kw7mHx3tyrRdYjY1qOFgYRXYo7TrLD1EPilIk
+ 2qGi0OpfdvxyMVB2TerIT9qB4HmCsVUOoJ5t8JLxYQYVWHKlxpLDe915CBgx6jbkV5XWZEArDex
+ LoxSzqQgKQeaHG5yS3FUOagePEZONfPqAFgK7i4ixwbAkDT871Ax5JVgV7phRM+l/2NeBgkZlu4 9RLIicJGiY7+IIA==
 X-Mailer: b4 0.13-dev-26615
-Message-ID: <20240704-shadow-call-stack-v3-0-d11c7a6ebe30@google.com>
-Subject: [PATCH v3 0/2] Rust and the shadow call stack sanitizer
+Message-ID: <20240704-shadow-call-stack-v3-1-d11c7a6ebe30@google.com>
+Subject: [PATCH v3 1/2] rust: SHADOW_CALL_STACK is incompatible with Rust
 From: Alice Ryhl <aliceryhl@google.com>
 To: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
 	Jamie Cunliffe <Jamie.Cunliffe@arm.com>, Sami Tolvanen <samitolvanen@google.com>
@@ -91,42 +91,38 @@ Cc: Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org
 	Alice Ryhl <aliceryhl@google.com>, stable@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-This patch series makes it possible to use Rust together with the shadow
-call stack sanitizer. The first patch is intended to be backported to
-ensure that people don't try to use SCS with Rust on older kernel
-versions. The second patch makes it possible to use Rust with the shadow
-call stack sanitizer.
+When using the shadow call stack sanitizer, all code must be compiled
+with the -ffixed-x18 flag, but this flag is not currently being passed
+to Rust. This results in crashes that are extremely difficult to debug.
 
-The second patch in this series doesn't make sense without [1], though
-it doesn't break the build if [1] is missing.
+To ensure that nobody else has to go through the same debugging session
+that I had to, prevent configurations that enable both SHADOW_CALL_STACK
+and RUST.
 
-Link: https://lore.kernel.org/rust-for-linux/20240701183625.665574-12-ojeda@kernel.org/ [1]
+It is rather common for people to backport 724a75ac9542 ("arm64: rust:
+Enable Rust support for AArch64"), so I recommend applying this fix all
+the way back to 6.1.
+
+Cc: <stable@vger.kernel.org> # 6.1 and later
+Fixes: 724a75ac9542 ("arm64: rust: Enable Rust support for AArch64")
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
-Changes in v3:
-- Use -Zfixed-x18.
-- Add logic to reject unsupported rustc versions.
-- Also include a fix to be backported.
-- Link to v2: https://lore.kernel.org/rust-for-linux/20240305-shadow-call-stack-v2-1-c7b4a3f4d616@google.com/
+ arch/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-Changes in v2:
-- Add -Cforce-unwind-tables flag.
-- Link to v1: https://lore.kernel.org/rust-for-linux/20240304-shadow-call-stack-v1-1-f055eaf40a2c@google.com/
+diff --git a/arch/Kconfig b/arch/Kconfig
+index 975dd22a2dbd..238448a9cb71 100644
+--- a/arch/Kconfig
++++ b/arch/Kconfig
+@@ -690,6 +690,7 @@ config SHADOW_CALL_STACK
+ 	bool "Shadow Call Stack"
+ 	depends on ARCH_SUPPORTS_SHADOW_CALL_STACK
+ 	depends on DYNAMIC_FTRACE_WITH_ARGS || DYNAMIC_FTRACE_WITH_REGS || !FUNCTION_GRAPH_TRACER
++	depends on !RUST
+ 	depends on MMU
+ 	help
+ 	  This option enables the compiler's Shadow Call Stack, which
 
----
-Alice Ryhl (2):
-      rust: SHADOW_CALL_STACK is incompatible with Rust
-      rust: add flags for shadow call stack sanitizer
-
- Makefile            | 1 +
- arch/Kconfig        | 1 +
- arch/arm64/Makefile | 3 +++
- 3 files changed, 5 insertions(+)
----
-base-commit: 83b1e6e4170cf96b2a7c49070dd43749649f454e
-change-id: 20240304-shadow-call-stack-9c197a4361d9
-
-Best regards,
 -- 
-Alice Ryhl <aliceryhl@google.com>
+2.45.2.803.g4e1b14247a-goog
 
