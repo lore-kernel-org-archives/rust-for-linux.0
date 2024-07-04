@@ -1,219 +1,190 @@
-Received: from mail-4027.protonmail.ch (mail-4027.protonmail.ch [185.70.40.27])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8347F1AE87F
-	for <rust-for-linux@vger.kernel.org>; Thu,  4 Jul 2024 15:55:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.27
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB6701B374F;
+	Thu,  4 Jul 2024 16:39:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720108554; cv=none; b=DgToX5vCYhf3OqGBVPFi9e7sfgvxljgVpMEzvEPt12oLetCmfmG1FKujY81YIyhGp495Khivg+1DM0kaWJn8wwaKy15e6korTjJjndUtLnRyfQCsCYQ+GEImAXbx9e128CPekMSXV7qfsmlFfCC4nI0Fuh8HzXIlvFNeevONmgc=
+	t=1720111151; cv=none; b=q9O05syLJ/k1TsjwrBD73qZtFK4IB+yo9mipKtIn+qpk/OHpOSbH27k80/dPNNqM1/kYgi8I5fI6w/G46/AhFvOMWZQIIkgL5ndJeBW9M70NznWdLJrlEvDry5FWlT4haetaqlQLoPBAMEy3DfvFIRqs+r4OpFNxjn3rZeNpHZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720108554; c=relaxed/simple;
-	bh=NQBXm07UgisIZcKAKlLXrr/ih/lhjv1PKO0rzT0aANo=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=RHFDIzomNV0MX7TJRUeLrNnulyYm+Ajh88sIBCMl5oG4Z4jQv4BoJF8pdyyE5Vn2CyLXMuHlEfJJsAwgKGKLapEh+VnaZooNx84UvOtahl6WAQAV8KeRyAfgCmrCcCSs1FgtWV0WzcxdyuJin0BUVOl2uzIt/xNz6qojduue5FY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=s37utGms; arc=none smtp.client-ip=185.70.40.27
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
+	s=arc-20240116; t=1720111151; c=relaxed/simple;
+	bh=Bs5sRfDrSxaaIvkIerZLN3dXVAr5INLyWGwt4rreui8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lRNYDasCHLMPfXPWIaoo63LFTibSETVicLn3fBO6cWocuijEid75B+X7bm7KEU5TCVL5RltbYDW7dn10GmAcJBTHyp1EwOScmf46ZXing5jdLtVlcgKf8MOBt3B/TICFzttNZO7fZFlBTHUrA4KBX9n6rPGil5pS8pOm/7rsUXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WNI0T/Pf; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="s37utGms"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-	s=protonmail3; t=1720108544; x=1720367744;
-	bh=Vf4EBtRpfOHSJIVm4HDyh243ysNrpJBCZq4+gPHvMd4=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=s37utGmsss6uYVMBve8RQDmW6zdTAvNMYJlSxy08MuzSzWOiDQfQtzHFfK24z6aaN
-	 00NDFx/gVvZO3EBvPgrZ/8A4K3h8QS16ekEZDoOfFqMdoCZ0SGoUZLcPsD5ZEs1HMf
-	 SO8wkm0IL/qLTqUsPzh/mZk1LHV5rOviwESptHlO3iBoorud4FwMz4oEjQkuqQHZMC
-	 73yBxgM35/Me6HNOKXdQ0g6bZ97BhOQkQzb4eWu/FttbmfzU4NpaHM2E96B6pOi6U7
-	 TxCUhzSf0o6xxJuyKCVReGiIk4hB9LnX5LHdfE3v1QKvVSSvwP/vT1Og0splqw2CZi
-	 6MNivvW0e4jVg==
-Date: Thu, 04 Jul 2024 15:55:37 +0000
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WNI0T/Pf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEF8EC4AF0E;
+	Thu,  4 Jul 2024 16:39:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1720111151;
+	bh=Bs5sRfDrSxaaIvkIerZLN3dXVAr5INLyWGwt4rreui8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=WNI0T/Pffc6B3iSRMiZPlG8zDplMPuzvnoqo0GJ334XC5B2XgSX031T6dBiIB7fuv
+	 eCAhTZmTJvoPNopI0xgqtjIPCOBhvjQHSCjQkfpDk5ONQMxD2McfzTsFjK6BBS+COs
+	 opCHlYojwbsYmhXsaDZUrfnPC5xX1Y364/AYT7PvYCq6O3bBhsLdVBzNrGJENi+Wth
+	 K0jocA5kxTwj15uVdaZp7gJ8h408lZMfqOiLZlUuO3AYbL8u4P7J5CGouOdL+HDR8h
+	 WXpVmafGFur+LmEx6Z1Q/MvOHSDWJvJZ2l+xWLIo0CVFWvX7NRDxskKvr7/Zwykx3a
+	 Kd9asDK6i+/lA==
+Date: Thu, 4 Jul 2024 09:39:08 -0700
+From: Nathan Chancellor <nathan@kernel.org>
 To: Alice Ryhl <aliceryhl@google.com>
-From: =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, Peter Zijlstra <peterz@infradead.org>, Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?utf-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>, Dan Williams <dan.j.williams@intel.com>, Kees Cook <keescook@chromium.org>, Matthew Wilcox <willy@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, Daniel Xu <dxu@dxuuu.xyz>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org, Trevor Gross <tmgross@umich.edu>, Martin Rodriguez
-	Reboredo <yakoyoku@gmail.com>
-Subject: Re: [PATCH v7 1/8] rust: types: add `NotThreadSafe`
-Message-ID: <0GQUdWtJ1sJSw0JSoR4NqDUt9vO2S3G9Y2JqaHX_8BW5O0FB3lfHXwC1mbYNgSBh4t1MIFFyocJGyKUgB7CnJsZK_TvRnL1R61TOsLV1gb0=@protonmail.com>
-In-Reply-To: <20240628-alice-file-v7-1-4d701f6335f3@google.com>
-References: <20240628-alice-file-v7-0-4d701f6335f3@google.com> <20240628-alice-file-v7-1-4d701f6335f3@google.com>
-Feedback-ID: 27884398:user:proton
-X-Pm-Message-ID: a9fcff4144967cc27072678e1f6fdc577680704a
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>,
+	Jamie Cunliffe <Jamie.Cunliffe@arm.com>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nicolas Schier <nicolas@fjasle.eu>,
+	Ard Biesheuvel <ardb@kernel.org>, Marc Zyngier <maz@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mark Brown <broonie@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Kees Cook <keescook@chromium.org>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Valentin Obst <kernel@valentinobst.de>,
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v3 2/2] rust: add flags for shadow call stack sanitizer
+Message-ID: <20240704163908.GA1394865@thelio-3990X>
+References: <20240704-shadow-call-stack-v3-0-d11c7a6ebe30@google.com>
+ <20240704-shadow-call-stack-v3-2-d11c7a6ebe30@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240704-shadow-call-stack-v3-2-d11c7a6ebe30@google.com>
 
-> This introduces a new marker type for types that shouldn't be thread
-> safe. By adding a field of this type to a struct, it becomes non-Send
-> and non-Sync, which means that it cannot be accessed in any way from
-> threads other than the one it was created on.
->=20
-> This is useful for APIs that require globals such as `current` to remain
-> constant while the value exists.
->=20
-> We update two existing users in the Kernel to use this helper:
->=20
->  * `Task::current()` - moving the return type of this value to a
->    different thread would not be safe as you can no longer be guaranteed
->    that the `current` pointer remains valid.
->  * Lock guards. Mutexes and spinlocks should be unlocked on the same
->    thread as where they were locked, so we enforce this using the Send
->    trait.
->=20
-> There are also additional users in later patches of this patchset. See
-> [1] and [2] for the discussion that led to the introduction of this
-> patch.
->=20
-> Link: https://lore.kernel.org/all/nFDPJFnzE9Q5cqY7FwSMByRH2OAn_BpI4H53NQf=
-WIlN6I2qfmAqnkp2wRqn0XjMO65OyZY4h6P4K2nAGKJpAOSzksYXaiAK_FoH_8QbgBI4=3D@pro=
-ton.me/ [1]
-> Link: https://lore.kernel.org/all/nFDPJFnzE9Q5cqY7FwSMByRH2OAn_BpI4H53NQf=
-WIlN6I2qfmAqnkp2wRqn0XjMO65OyZY4h6P4K2nAGKJpAOSzksYXaiAK_FoH_8QbgBI4=3D@pro=
-ton.me/ [2]
-> Suggested-by: Benno Lossin <benno.lossin@proton.me>
-> Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-> Reviewed-by: Trevor Gross <tmgross@umich.edu>
-> Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+Hi Alice,
+
+On Thu, Jul 04, 2024 at 03:07:58PM +0000, Alice Ryhl wrote:
+> As of rustc 1.80.0, the Rust compiler supports the -Zfixed-x18 flag, so
+> we can now use Rust with the shadow call stack sanitizer.
+> 
+> On older versions of Rust, it is possible to use shadow call stack by
+> passing -Ctarget-feature=+reserve-x18 instead of -Zfixed-x18. However,
+> this flag emits a warning, so this patch does not add support for that.
+> 
+> Currently, the compiler thinks that the aarch64-unknown-none target
+> doesn't support -Zsanitizer=shadow-call-stack, so the build will fail if
+> you enable shadow call stack in non-dynamic mode. See [2] for the
+
+                                                        ^ this should be [1]?
+
+> feature request to add this. Kconfig is not configured to reject this
+> configuration because that leads to cyclic Kconfig rules.
+
+While it probably does not matter much given Rust for Linux is still "in
+the works", I think it would be good to avoid these build failures.
+Perhaps something like this could work (which basically just forces on
+UNWIND_PATCH_PAC_INTO_SCS when Rust is enabled).
+
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index 5d91259ee7b5..a9f08a2bd1c6 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -89,7 +89,7 @@ config ARM64
+ 	select ARCH_SUPPORTS_DEBUG_PAGEALLOC
+ 	select ARCH_SUPPORTS_HUGETLBFS
+ 	select ARCH_SUPPORTS_MEMORY_FAILURE
+-	select ARCH_SUPPORTS_SHADOW_CALL_STACK if CC_HAVE_SHADOW_CALL_STACK
++	select ARCH_SUPPORTS_SHADOW_CALL_STACK if CC_HAVE_SHADOW_CALL_STACK && (!RUST || CAN_UNWIND_PATCH_PAC_INTO_SCS)
+ 	select ARCH_SUPPORTS_LTO_CLANG if CPU_LITTLE_ENDIAN
+ 	select ARCH_SUPPORTS_LTO_CLANG_THIN
+ 	select ARCH_SUPPORTS_CFI_CLANG
+@@ -2262,12 +2262,16 @@ config STACKPROTECTOR_PER_TASK
+ 	def_bool y
+ 	depends on STACKPROTECTOR && CC_HAVE_STACKPROTECTOR_SYSREG
+ 
+-config UNWIND_PATCH_PAC_INTO_SCS
+-	bool "Enable shadow call stack dynamically using code patching"
++config CAN_UNWIND_PATCH_PAC_INTO_SCS
++	def_bool y
+ 	# needs Clang with https://github.com/llvm/llvm-project/commit/de07cde67b5d205d58690be012106022aea6d2b3 incorporated
+ 	depends on CC_IS_CLANG && CLANG_VERSION >= 150000
+ 	depends on ARM64_PTR_AUTH_KERNEL && CC_HAS_BRANCH_PROT_PAC_RET
+-	depends on SHADOW_CALL_STACK
++
++config UNWIND_PATCH_PAC_INTO_SCS
++	bool "Enable shadow call stack dynamically using code patching" if !RUST
++	depends on SHADOW_CALL_STACK && CAN_UNWIND_PATCH_PAC_INTO_SCS
++	default y if RUST
+ 	select UNWIND_TABLES
+ 	select DYNAMIC_SCS
+ 
+
+Otherwise, it might be good to wait to enable this until [1] is
+addressed, but I don't really feel that strongly about it.
+
+From a Kconfig/Kbuild perspective, the rest of the patch seems fine.
+
+> Link: https://github.com/rust-lang/rust/issues/121972 [1]
 > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 > ---
->  rust/kernel/sync/lock.rs | 13 +++++++++----
->  rust/kernel/task.rs      | 10 ++++++----
->  rust/kernel/types.rs     | 18 ++++++++++++++++++
->  3 files changed, 33 insertions(+), 8 deletions(-)
->=20
-> diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
-> index f6c34ca4d819..d6e9bab114b8 100644
-> --- a/rust/kernel/sync/lock.rs
-> +++ b/rust/kernel/sync/lock.rs
-> @@ -6,8 +6,13 @@
->  //! spinlocks, raw spinlocks) to be provided with minimal effort.
->=20
->  use super::LockClassKey;
-> -use crate::{init::PinInit, pin_init, str::CStr, types::Opaque, types::Sc=
-opeGuard};
-> -use core::{cell::UnsafeCell, marker::PhantomData, marker::PhantomPinned}=
-;
-> +use crate::{
-> +    init::PinInit,
-> +    pin_init,
-> +    str::CStr,
-> +    types::{NotThreadSafe, Opaque, ScopeGuard},
-> +};
-> +use core::{cell::UnsafeCell, marker::PhantomPinned};
->  use macros::pin_data;
->=20
->  pub mod mutex;
-> @@ -139,7 +144,7 @@ pub fn lock(&self) -> Guard<'_, T, B> {
->  pub struct Guard<'a, T: ?Sized, B: Backend> {
->      pub(crate) lock: &'a Lock<T, B>,
->      pub(crate) state: B::GuardState,
-> -    _not_send: PhantomData<*mut ()>,
-> +    _not_send: NotThreadSafe,
->  }
->=20
->  // SAFETY: `Guard` is sync when the data protected by the lock is also s=
-ync.
-> @@ -191,7 +196,7 @@ pub(crate) unsafe fn new(lock: &'a Lock<T, B>, state:=
- B::GuardState) -> Self {
->          Self {
->              lock,
->              state,
-> -            _not_send: PhantomData,
-> +            _not_send: NotThreadSafe,
->          }
->      }
->  }
-> diff --git a/rust/kernel/task.rs b/rust/kernel/task.rs
-> index 55dff7e088bf..278c623de0c6 100644
-> --- a/rust/kernel/task.rs
-> +++ b/rust/kernel/task.rs
-> @@ -4,10 +4,12 @@
->  //!
->  //! C header: [`include/linux/sched.h`](srctree/include/linux/sched.h).
->=20
-> -use crate::types::Opaque;
-> +use crate::{
-> +    bindings,
-> +    types::{NotThreadSafe, Opaque},
-> +};
->  use core::{
->      ffi::{c_int, c_long, c_uint},
-> -    marker::PhantomData,
->      ops::Deref,
->      ptr,
->  };
-> @@ -106,7 +108,7 @@ impl Task {
->      pub unsafe fn current() -> impl Deref<Target =3D Task> {
->          struct TaskRef<'a> {
->              task: &'a Task,
-> -            _not_send: PhantomData<*mut ()>,
-> +            _not_send: NotThreadSafe,
->          }
->=20
->          impl Deref for TaskRef<'_> {
-> @@ -125,7 +127,7 @@ fn deref(&self) -> &Self::Target {
->              // that `TaskRef` is not `Send`, we know it cannot be transf=
-erred to another thread
->              // (where it could potentially outlive the caller).
->              task: unsafe { &*ptr.cast() },
-> -            _not_send: PhantomData,
-> +            _not_send: NotThreadSafe,
->          }
->      }
->=20
-> diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
-> index 2e7c9008621f..93734677cfe7 100644
-> --- a/rust/kernel/types.rs
-> +++ b/rust/kernel/types.rs
-> @@ -409,3 +409,21 @@ pub enum Either<L, R> {
->      /// Constructs an instance of [`Either`] containing a value of type =
-`R`.
->      Right(R),
->  }
-> +
-> +/// Zero-sized type to mark types not [`Send`].
-> +///
-> +/// Add this type as a field to your struct if your type should not be s=
-ent to a different task.
-> +/// Since [`Send`] is an auto trait, adding a single field that is `!Sen=
-d` will ensure that the
-> +/// whole type is `!Send`.
-> +///
-> +/// If a type is `!Send` it is impossible to give control over an instan=
-ce of the type to another
-> +/// task. This is useful to include in types that store or reference tas=
-k-local information. A file
-> +/// descriptor is an example of such task-local information.
-> +pub type NotThreadSafe =3D PhantomData<*mut ()>;
-
-This also makes the type not Sync. For mutex guards it should be fine to
-be Sync if the wrapped type is Sync. Mutex guards not being Sync is
-pre-existing, so not something to fix in this patch. NotThreadSafe should
-probably document that it also markes a type as not Sync though.
-
-(For those not familiar with the difference, Send indicates that ownership
-of a value can be transferred to another thread, while Sync indicates that
-a value can be accessed from another thread through a shared reference,
-but not necessarily dropped from said thread.)
-
-Having a dedicated type for this makes things clearer.
-
-Reviewed-by: Bj=C3=B6rn Roy Baron <bjorn3_gh@protonmail.com>
-with the docs updated to mention Sync.
-
-> +
-> +/// Used to construct instances of type [`NotThreadSafe`] similar to how=
- `PhantomData` is
-> +/// constructed.
-> +///
-> +/// [`NotThreadSafe`]: type@NotThreadSafe
-> +#[allow(non_upper_case_globals)]
-> +pub const NotThreadSafe: NotThreadSafe =3D PhantomData;
->=20
-> --
+>  Makefile            | 1 +
+>  arch/Kconfig        | 2 +-
+>  arch/arm64/Makefile | 3 +++
+>  3 files changed, 5 insertions(+), 1 deletion(-)
+> 
+> diff --git a/Makefile b/Makefile
+> index c11a10c8e710..4ae741601a1c 100644
+> --- a/Makefile
+> +++ b/Makefile
+> @@ -945,6 +945,7 @@ ifdef CONFIG_SHADOW_CALL_STACK
+>  ifndef CONFIG_DYNAMIC_SCS
+>  CC_FLAGS_SCS	:= -fsanitize=shadow-call-stack
+>  KBUILD_CFLAGS	+= $(CC_FLAGS_SCS)
+> +KBUILD_RUSTFLAGS += -Zsanitizer=shadow-call-stack
+>  endif
+>  export CC_FLAGS_SCS
+>  endif
+> diff --git a/arch/Kconfig b/arch/Kconfig
+> index 238448a9cb71..5a6e296df5e6 100644
+> --- a/arch/Kconfig
+> +++ b/arch/Kconfig
+> @@ -690,7 +690,7 @@ config SHADOW_CALL_STACK
+>  	bool "Shadow Call Stack"
+>  	depends on ARCH_SUPPORTS_SHADOW_CALL_STACK
+>  	depends on DYNAMIC_FTRACE_WITH_ARGS || DYNAMIC_FTRACE_WITH_REGS || !FUNCTION_GRAPH_TRACER
+> -	depends on !RUST
+> +	depends on !RUST || RUSTC_VERSION >= 108000
+>  	depends on MMU
+>  	help
+>  	  This option enables the compiler's Shadow Call Stack, which
+> diff --git a/arch/arm64/Makefile b/arch/arm64/Makefile
+> index 3f0f35fd5bb7..bbf313ddd700 100644
+> --- a/arch/arm64/Makefile
+> +++ b/arch/arm64/Makefile
+> @@ -57,9 +57,11 @@ KBUILD_AFLAGS	+= $(call cc-option,-mabi=lp64)
+>  ifneq ($(CONFIG_UNWIND_TABLES),y)
+>  KBUILD_CFLAGS	+= -fno-asynchronous-unwind-tables -fno-unwind-tables
+>  KBUILD_AFLAGS	+= -fno-asynchronous-unwind-tables -fno-unwind-tables
+> +KBUILD_RUSTFLAGS += -Cforce-unwind-tables=n
+>  else
+>  KBUILD_CFLAGS	+= -fasynchronous-unwind-tables
+>  KBUILD_AFLAGS	+= -fasynchronous-unwind-tables
+> +KBUILD_RUSTFLAGS += -Cforce-unwind-tables=y -Zuse-sync-unwind=n
+>  endif
+>  
+>  ifeq ($(CONFIG_STACKPROTECTOR_PER_TASK),y)
+> @@ -114,6 +116,7 @@ endif
+>  
+>  ifeq ($(CONFIG_SHADOW_CALL_STACK), y)
+>  KBUILD_CFLAGS	+= -ffixed-x18
+> +KBUILD_RUSTFLAGS += -Zfixed-x18
+>  endif
+>  
+>  ifeq ($(CONFIG_CPU_BIG_ENDIAN), y)
+> 
+> -- 
 > 2.45.2.803.g4e1b14247a-goog
+> 
