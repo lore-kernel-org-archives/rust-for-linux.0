@@ -1,63 +1,63 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 339B81CFD60
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D83331CFD43
 	for <rust-for-linux@vger.kernel.org>; Thu,  4 Jul 2024 17:09:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720112976; cv=none; b=to+WOYui/aP7iks3EuiZYlqkcQ9Nj1vlz/YxDzafzuav7kgd5Lt80F5jAgSbtacGK4DHv59p1eznLt56hFojzeuMKd2khVjLZpGEzQfTR9EbL6LoA9O+JZ2W7rHpfu3reCXQiTdYqh2iNO1GRL1KKlEQgzIhiGMeyFP4iMG6Ba0=
+	t=1720112977; cv=none; b=DFGapiycGiWJm0L55aIKR3lCeKiGSBsS6YVW1SIGTP7pWPHW9S/eQbvsZQmmDU5t4Km3vg243fcKC8px3THIInSYe8ZeD5Hrvjw6+6sBUoKgXXeLusORbh+F+dX+y5nG/I5QnopkRUehIqEkjAusVgiX0IQ6+Ck6N2NqDCMGOyo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720112976; c=relaxed/simple;
-	bh=p0HGLvz39MagYLHLnfr1oEDeeFWEr8ljFaHWqx1Mx/4=;
+	s=arc-20240116; t=1720112977; c=relaxed/simple;
+	bh=cvsHu/vJjyAxWbz9+KjaSEX/C/NPmn7UBj8A7wCyhI8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZzL8aPBiVFaybPYVgAoV3zKJg0TxtYe1wL7IKsXlEzi1/Do3axzHkBKJ/laU/clTU13+k42vHhBDyeCc6CoGgomGt1kMc3itZX9MBBZ4Dw6EcM56aVwUy/pamj5q6TYG02mB5pzC5ORKDXzleLkoepPEkRxq7QjNRI3wac+Kmc0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=O4+nkH4k; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:Content-Type; b=mqiGJwPJ9JNv6urhClYGKkRtoFDvwxcWx1z6+LEx0lNjEwdBzZjDk+7bStBJ17/iX11VFVQHhHow5XlEysJeoAAZU1o78xGxSXyakLPN1JhKehvTWhUXdFhrEH1BYjZgOsHS3wqcSssyqwBxsEAf7NPX4urJznWp5ADi/XKa+3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Z+HK4wVC; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="O4+nkH4k"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Z+HK4wVC"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1720112972;
+	s=mimecast20190719; t=1720112974;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=hONGpcUApGTU4b0CZyPLQC6URu9ThOSHp+V60iJ0Myw=;
-	b=O4+nkH4k2TmfrToUMkiPByOEv+z+1DgzSZdlaJMds1AJdN6w7DCRzIHZyDbWjqSR/VNaT/
-	JxCRLXij/UOvq4MNFDLXeAtfYj01c01WJtzECcaYPnlaPO6aM15jCq+cSXjZxRIrsgGOL7
-	fY0Z3io9/jB+U64WZePDM9/Opl2Tqek=
-Received: from mail-lf1-f71.google.com (mail-lf1-f71.google.com
- [209.85.167.71]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=9cZ2nwTd2aT7nnbRR2poBKjvcKIKwkNp4GrT7R6rP9E=;
+	b=Z+HK4wVCtN7/ckm7C/hJ4fol41pOqbRbwqLa+/1vjJz+WIS0I+Pp1fcPPey0nfuP2v8B6i
+	CAuJ5tq2joqJKE7F/1LTXYKEMV+OBZE3853aY2Waawi5apO05CfMOVCgof2vg/BG1zxulO
+	yU96Ff8HkvsEbSpNmmxM4hKybXJuUds=
+Received: from mail-ed1-f70.google.com (mail-ed1-f70.google.com
+ [209.85.208.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-38-xa9YTp-IM3CWl_Ojv4IttQ-1; Thu, 04 Jul 2024 13:09:28 -0400
-X-MC-Unique: xa9YTp-IM3CWl_Ojv4IttQ-1
-Received: by mail-lf1-f71.google.com with SMTP id 2adb3069b0e04-52e9557e312so779838e87.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 04 Jul 2024 10:09:28 -0700 (PDT)
+ us-mta-67-xtVs7AXZM-SRleMl1G9EuA-1; Thu, 04 Jul 2024 13:09:32 -0400
+X-MC-Unique: xtVs7AXZM-SRleMl1G9EuA-1
+Received: by mail-ed1-f70.google.com with SMTP id 4fb4d7f45d1cf-58b92b79a46so2590036a12.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 04 Jul 2024 10:09:32 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720112967; x=1720717767;
+        d=1e100.net; s=20230601; t=1720112971; x=1720717771;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=hONGpcUApGTU4b0CZyPLQC6URu9ThOSHp+V60iJ0Myw=;
-        b=FnxGDaFfoYegBDugLDaf23a4po/Mf8y/atBdwN9bvjvctg2TdhmlX/BoQMApNVCxX4
-         S+H02k+MkrT/BluvbNZumh6k7SnIuScI/tSAffuz3Ja2wGQQax3okngDyyCkFl2PHWeM
-         aCseJkZlX1wIMbUyjax5B019Cv4W/eF0j0Q6p/OD+o08nukP+T6v0Mb9mNWHZmXMPoVf
-         41rRO+yyt/BSxNOAxSo63/zw+MG2KhO3o6nzFEe87dqbDVe2LEOF6Nm5KiSatPlL3/JW
-         d+P1b4tmvEsjujB6kfaH0H9+iiQaMVavXPNGNtK2UkvmjQWYrnY7JQiUm/rcJmZxotLU
-         8Z0A==
-X-Forwarded-Encrypted: i=1; AJvYcCXfnWs0CshDCOOQFNr5BpCRMyGSr87eeKNPnx+pRqTBz/e3+H1IPVsL6KHJR7RtxFGM9Lb2GOMo7ETlXnX58c3qKvDDyANTU380C70RL4M=
-X-Gm-Message-State: AOJu0Yy40mQ7yH6ZGKp8fGJNH/mS16E8IGGg4+wWzhSEaSteN1NPUZIx
-	Z9OSVwmU/o2BWYXBbjkCHa3cCf76nlo4DjLHNE1dbYlD2bT6ItUyR2B186+jzEWtzGy5384DGmk
-	8IJQKU8QN+xm2nJCxHNrySfhVcDlZFyo8cbiRLhHWG3qxlDCLc5h5GE49TJGn8MSZ
-X-Received: by 2002:a05:6512:466:b0:52e:7684:a385 with SMTP id 2adb3069b0e04-52ea06e5329mr1615799e87.52.1720112967319;
-        Thu, 04 Jul 2024 10:09:27 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHNkphbX7wDz7FOEWh9y4mJC6b0DinFkiDszVdH52GQKQkvJI8z95H8cNwAYSlHgH0L4utJhA==
-X-Received: by 2002:a05:6512:466:b0:52e:7684:a385 with SMTP id 2adb3069b0e04-52ea06e5329mr1615776e87.52.1720112966875;
-        Thu, 04 Jul 2024 10:09:26 -0700 (PDT)
+        bh=9cZ2nwTd2aT7nnbRR2poBKjvcKIKwkNp4GrT7R6rP9E=;
+        b=Hc9Gkuzz0tdkdw1m+2GWx93o4p2O1XcnhY9LGOq2ieMMJzoo+fHIbYmwxSUTeI7QiK
+         Cu+max0fvYEFZyeJ7ful6tX0OqoLVi8WC/WziixHyQQxQr83XTnbfveqdwUnW+pAxh5+
+         sQXenlAZr78Jf5MAwTjNgwBZMAgN0gJpT1atch2js3mg9CxkoDTW4MFPix+nAwWpIrHe
+         djSDvizdSvD3CBzQQaeiGLZbUMr+JRJnynOrBH0OMW4eHtFZHuwwhqQjihUArDzfR+JC
+         qyd/hywf834qY7Z0d5RQROUy9sla10/QIWowB/OPy7CUvnVHEPVYw0zTOszmSp2c38Kv
+         QmTw==
+X-Forwarded-Encrypted: i=1; AJvYcCWI9P321wektD5Y6htZuTcrACyPRXbO6QsMYT93aB+FfeJe04dk3mtRCfrmHPzV4joQL0GHAGeC8RRP/V+m9xyn3unfrXlTxoa8uc0Tmg0=
+X-Gm-Message-State: AOJu0YzUFGKVqiDeToik7sZ+g8x5gvjTactg3hx8/45ilvgA1JE3X7js
+	3GT30y4CXSckMfbLKWAbX0yk1qaGyngU1kudZcw5hfY03qS2d+rU5ipd/7AIF9xgQQwcrfFMDBH
+	KXj913qBTY+wLRj1IaXsf8+tYOnhZwRZw4IiInFdVnX5tRLnwVeRMBj+jcpHfxJur
+X-Received: by 2002:a17:906:81d4:b0:a6f:dbd1:b493 with SMTP id a640c23a62f3a-a77bd99f2f5mr165474266b.7.1720112971552;
+        Thu, 04 Jul 2024 10:09:31 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF6h/9S2N8JV3CbfoPhW779ld7L7IuWfJVjGNYBSoxtWjpKcgyMQgQsbtRu2lLBX8zQvOkalA==
+X-Received: by 2002:a17:906:81d4:b0:a6f:dbd1:b493 with SMTP id a640c23a62f3a-a77bd99f2f5mr165471166b.7.1720112971168;
+        Thu, 04 Jul 2024 10:09:31 -0700 (PDT)
 Received: from cassiopeiae.. ([2a02:810d:4b3f:ee94:642:1aff:fe31:a19f])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4264a1d5100sm31134025e9.4.2024.07.04.10.09.25
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a77c0dff4a5sm43957366b.27.2024.07.04.10.09.29
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Jul 2024 10:09:26 -0700 (PDT)
+        Thu, 04 Jul 2024 10:09:30 -0700 (PDT)
 From: Danilo Krummrich <dakr@redhat.com>
 To: ojeda@kernel.org,
 	alex.gaynor@gmail.com,
@@ -83,9 +83,9 @@ Cc: daniel.almeida@collabora.com,
 	linux-kernel@vger.kernel.org,
 	rust-for-linux@vger.kernel.org,
 	Danilo Krummrich <dakr@redhat.com>
-Subject: [PATCH 18/20] rust: error: use `core::alloc::LayoutError`
-Date: Thu,  4 Jul 2024 19:06:46 +0200
-Message-ID: <20240704170738.3621-19-dakr@redhat.com>
+Subject: [PATCH 19/20] rust: str: test: replace `alloc::format`
+Date: Thu,  4 Jul 2024 19:06:47 +0200
+Message-ID: <20240704170738.3621-20-dakr@redhat.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240704170738.3621-1-dakr@redhat.com>
 References: <20240704170738.3621-1-dakr@redhat.com>
@@ -100,27 +100,149 @@ X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset="US-ASCII"; x-default=true
 
-Use `core::alloc::LayoutError` instead of `alloc::alloc::LayoutError` in
-preparation to get rid of Rust's alloc crate.
+The current implementation of tests in str.rs use `format!` to format
+strings for comparison, which, internally, creates a new `String`.
+
+In order to prepare for getting rid of Rust's alloc crate, we have to
+cut this dependency. Instead, we could implement `format!` for
+`CString`, however `CString` uses `KVec` and hence the kernel
+allocators, which can't be used for tests run in userspace.
+
+Instead, implement `fmt_assert_eq`, which formats strings into a stack
+allocated buffer for comparison with a `&str`.
 
 Signed-off-by: Danilo Krummrich <dakr@redhat.com>
 ---
- rust/kernel/error.rs | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ rust/kernel/str.rs | 66 ++++++++++++++++++++++++++++++++--------------
+ 1 file changed, 46 insertions(+), 20 deletions(-)
 
-diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
-index 55280ae9fe40..20306588bc9e 100644
---- a/rust/kernel/error.rs
-+++ b/rust/kernel/error.rs
-@@ -6,7 +6,7 @@
+diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
+index 0b6ffbade521..539be40754f4 100644
+--- a/rust/kernel/str.rs
++++ b/rust/kernel/str.rs
+@@ -523,7 +523,6 @@ macro_rules! c_str {
+ #[cfg(test)]
+ mod tests {
+     use super::*;
+-    use alloc::format;
  
- use crate::{alloc::AllocError, str::CStr};
+     const ALL_ASCII_CHARS: &'static str =
+         "\\x01\\x02\\x03\\x04\\x05\\x06\\x07\\x08\\x09\\x0a\\x0b\\x0c\\x0d\\x0e\\x0f\
+@@ -539,6 +538,33 @@ mod tests {
+         \\xe0\\xe1\\xe2\\xe3\\xe4\\xe5\\xe6\\xe7\\xe8\\xe9\\xea\\xeb\\xec\\xed\\xee\\xef\
+         \\xf0\\xf1\\xf2\\xf3\\xf4\\xf5\\xf6\\xf7\\xf8\\xf9\\xfa\\xfb\\xfc\\xfd\\xfe\\xff";
  
--use alloc::alloc::LayoutError;
-+use core::alloc::LayoutError;
++    fn format_into_buf<'a>(args: fmt::Arguments<'_>, buf: &'a mut [u8]) -> Result<&'a str, Error> {
++        let mut f = RawFormatter::new();
++        f.write_fmt(args)?;
++        let size = f.bytes_written();
++
++        assert!(buf.len() >= size);
++
++        // SAFETY: `buf` has at least a size of `size` bytes and is valid for writes.
++        let mut f = unsafe { Formatter::from_buffer(buf.as_mut_ptr(), size) };
++        f.write_fmt(args)?;
++
++        Ok(core::str::from_utf8(&buf[0..size])?)
++    }
++
++    macro_rules! fmt_assert_eq {
++        ($str:expr, $($f:tt)*) => ({
++            let mut buf = [0_u8; ALL_ASCII_CHARS.len()];
++
++            let s = match format_into_buf(kernel::fmt!($($f)*), &mut buf) {
++                Ok(s) => s,
++                Err(_) => panic!("Could not format into buffer."),
++            };
++
++            assert_eq!($str, s);
++        })
++    }
++
+     #[test]
+     fn test_cstr_to_str() {
+         let good_bytes = b"\xf0\x9f\xa6\x80\0";
+@@ -566,13 +592,13 @@ fn test_cstr_as_str_unchecked() {
+     #[test]
+     fn test_cstr_display() {
+         let hello_world = CStr::from_bytes_with_nul(b"hello, world!\0").unwrap();
+-        assert_eq!(format!("{}", hello_world), "hello, world!");
++        fmt_assert_eq!("hello, world!", "{}", hello_world);
+         let non_printables = CStr::from_bytes_with_nul(b"\x01\x09\x0a\0").unwrap();
+-        assert_eq!(format!("{}", non_printables), "\\x01\\x09\\x0a");
++        fmt_assert_eq!("\\x01\\x09\\x0a", "{}", non_printables);
+         let non_ascii = CStr::from_bytes_with_nul(b"d\xe9j\xe0 vu\0").unwrap();
+-        assert_eq!(format!("{}", non_ascii), "d\\xe9j\\xe0 vu");
++        fmt_assert_eq!("d\\xe9j\\xe0 vu", "{}", non_ascii);
+         let good_bytes = CStr::from_bytes_with_nul(b"\xf0\x9f\xa6\x80\0").unwrap();
+-        assert_eq!(format!("{}", good_bytes), "\\xf0\\x9f\\xa6\\x80");
++        fmt_assert_eq!("\\xf0\\x9f\\xa6\\x80", "{}", good_bytes);
+     }
  
- use core::fmt;
- use core::num::TryFromIntError;
+     #[test]
+@@ -583,47 +609,47 @@ fn test_cstr_display_all_bytes() {
+             bytes[i as usize] = i.wrapping_add(1);
+         }
+         let cstr = CStr::from_bytes_with_nul(&bytes).unwrap();
+-        assert_eq!(format!("{}", cstr), ALL_ASCII_CHARS);
++        fmt_assert_eq!(ALL_ASCII_CHARS, "{}", cstr);
+     }
+ 
+     #[test]
+     fn test_cstr_debug() {
+         let hello_world = CStr::from_bytes_with_nul(b"hello, world!\0").unwrap();
+-        assert_eq!(format!("{:?}", hello_world), "\"hello, world!\"");
++        fmt_assert_eq!("\"hello, world!\"", "{:?}", hello_world);
+         let non_printables = CStr::from_bytes_with_nul(b"\x01\x09\x0a\0").unwrap();
+-        assert_eq!(format!("{:?}", non_printables), "\"\\x01\\x09\\x0a\"");
++        fmt_assert_eq!("\"\\x01\\x09\\x0a\"", "{:?}", non_printables);
+         let non_ascii = CStr::from_bytes_with_nul(b"d\xe9j\xe0 vu\0").unwrap();
+-        assert_eq!(format!("{:?}", non_ascii), "\"d\\xe9j\\xe0 vu\"");
++        fmt_assert_eq!("\"d\\xe9j\\xe0 vu\"", "{:?}", non_ascii);
+         let good_bytes = CStr::from_bytes_with_nul(b"\xf0\x9f\xa6\x80\0").unwrap();
+-        assert_eq!(format!("{:?}", good_bytes), "\"\\xf0\\x9f\\xa6\\x80\"");
++        fmt_assert_eq!("\"\\xf0\\x9f\\xa6\\x80\"", "{:?}", good_bytes);
+     }
+ 
+     #[test]
+     fn test_bstr_display() {
+         let hello_world = BStr::from_bytes(b"hello, world!");
+-        assert_eq!(format!("{}", hello_world), "hello, world!");
++        fmt_assert_eq!("hello, world!", "{}", hello_world);
+         let escapes = BStr::from_bytes(b"_\t_\n_\r_\\_\'_\"_");
+-        assert_eq!(format!("{}", escapes), "_\\t_\\n_\\r_\\_'_\"_");
++        fmt_assert_eq!("_\\t_\\n_\\r_\\_'_\"_", "{}", escapes);
+         let others = BStr::from_bytes(b"\x01");
+-        assert_eq!(format!("{}", others), "\\x01");
++        fmt_assert_eq!("\\x01", "{}", others);
+         let non_ascii = BStr::from_bytes(b"d\xe9j\xe0 vu");
+-        assert_eq!(format!("{}", non_ascii), "d\\xe9j\\xe0 vu");
++        fmt_assert_eq!("d\\xe9j\\xe0 vu", "{}", non_ascii);
+         let good_bytes = BStr::from_bytes(b"\xf0\x9f\xa6\x80");
+-        assert_eq!(format!("{}", good_bytes), "\\xf0\\x9f\\xa6\\x80");
++        fmt_assert_eq!("\\xf0\\x9f\\xa6\\x80", "{}", good_bytes);
+     }
+ 
+     #[test]
+     fn test_bstr_debug() {
+         let hello_world = BStr::from_bytes(b"hello, world!");
+-        assert_eq!(format!("{:?}", hello_world), "\"hello, world!\"");
++        fmt_assert_eq!("\"hello, world!\"", "{:?}", hello_world);
+         let escapes = BStr::from_bytes(b"_\t_\n_\r_\\_\'_\"_");
+-        assert_eq!(format!("{:?}", escapes), "\"_\\t_\\n_\\r_\\\\_'_\\\"_\"");
++        fmt_assert_eq!("\"_\\t_\\n_\\r_\\\\_'_\\\"_\"", "{:?}", escapes);
+         let others = BStr::from_bytes(b"\x01");
+-        assert_eq!(format!("{:?}", others), "\"\\x01\"");
++        fmt_assert_eq!("\"\\x01\"", "{:?}", others);
+         let non_ascii = BStr::from_bytes(b"d\xe9j\xe0 vu");
+-        assert_eq!(format!("{:?}", non_ascii), "\"d\\xe9j\\xe0 vu\"");
++        fmt_assert_eq!("\"d\\xe9j\\xe0 vu\"", "{:?}", non_ascii);
+         let good_bytes = BStr::from_bytes(b"\xf0\x9f\xa6\x80");
+-        assert_eq!(format!("{:?}", good_bytes), "\"\\xf0\\x9f\\xa6\\x80\"");
++        fmt_assert_eq!("\"\\xf0\\x9f\\xa6\\x80\"", "{:?}", good_bytes);
+     }
+ }
+ 
 -- 
 2.45.2
 
