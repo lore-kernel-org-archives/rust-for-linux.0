@@ -1,63 +1,63 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5EFB1C2DC5
-	for <rust-for-linux@vger.kernel.org>; Thu,  4 Jul 2024 17:09:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBA881B47CD
+	for <rust-for-linux@vger.kernel.org>; Thu,  4 Jul 2024 17:09:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720112948; cv=none; b=ZnONX+tmE7vqMQrVA9B6icI/7n2iei/1Dw2NL/EYg7tMleN2PgpyFMfwB7tlDNEElSUoEU6xU8D6aADMEfNo3WZ4lMR6szlQgm60VSDV/+SFJTokgjlDeSeL8piGYZQSgFMj6y1WxZ1XPHf1MPcZ8MlmmGoTw5ADOLaSy6AbI3U=
+	t=1720112955; cv=none; b=W6VFYY6hsFOCVGNhecfOLwCDszayUZumDlcQ6+VaRrnRfIclGCAQjxGS4Ke5C1oCZyPM9AII5E2QLgH6S/qstBMlHAFeKbaPQImd1hPu/88VJEHaA6i8B9GKwEmInAEwX2cWT28oGahTwsgA42EjGyfLvfEfBDm7/aHkrOI5ttg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720112948; c=relaxed/simple;
-	bh=o87Q6nrhXq+2epNBXh/xEE5xjiGWYWfou9Wo5ZW6Mxg=;
+	s=arc-20240116; t=1720112955; c=relaxed/simple;
+	bh=CPyHMERj1twQjcjGyBr1Olj39ha/kHj+F1ifWXerf6I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=C1kWG0nfjZSKpm9GVokMQstnfnQ8vG3ul/OLh1UAGDpl2kOhSgXm5WqoKcoQmrLr8QMJLzku7mOSNWFCsvuvm+D0cQ7P8QannSjKTam+yWwF2NczVhhmA4f89j/gKhI9bKrSuQRiBGePQ9SF7Eg2hAbfxi9zkEkJftWcC0HBg6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RUXTnZW7; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:Content-Type; b=naEfBOg/IlYYhsvJTqOACUd7F6JTOLzdnEj4wU0lLhvcRRn9DMSv+qrfVKmOfcMpdYDZNE8h1dZw5bx9EUdPwwpA27DCU/AnrEyjP2Xr7CXgpksQ13q16vryFvnlcwfoLt/zPWQZaI+CHqAgJ+W4F9Nuk/crxl7V1RBO6fKiIbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=MgdWjznC; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RUXTnZW7"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="MgdWjznC"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1720112945;
+	s=mimecast20190719; t=1720112953;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=IsEZYPUnJUrFTc5sYGJG2HQ1b8hAp+MrWs9/jDi7WD8=;
-	b=RUXTnZW71fhhWzl8BcDwccrU6jIEky1TBpJbUua89CIcYWdYAqtHwJ15w/Q1WaYoNDdZ3P
-	0UZGw0i90q/R6yqnR5l1CjSYLe8AIR73szD0+2tXkUyjsQpZgYDd1lJFpRR7X3b0g4AExx
-	+0rINpThdlDLKNs6egrWyzqEKjX69J8=
-Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
- [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=fpg1faBr5ekWLp/A+ticofxlpAUVrowaMF9N+c1VH5Y=;
+	b=MgdWjznCTbf1hkY4QL0OQClZbxH8eGXUCsadWY/JK9Zlb6Pe9MQHBbP7cDj2TN/Z+XDmST
+	Cjo7rhQAHJonLy+gBbGLHX/8Lt27WYNEWWRzpLmKFGCz3W+duXBgj+LyPlqFx23lGzrflM
+	9pu8Wq7xz7V3U70nGmh47ITAjUfoxx8=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-450-f88lLknfPzKvIN5mzlCTpg-1; Thu, 04 Jul 2024 13:09:04 -0400
-X-MC-Unique: f88lLknfPzKvIN5mzlCTpg-1
-Received: by mail-lf1-f69.google.com with SMTP id 2adb3069b0e04-52e98693f43so836753e87.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 04 Jul 2024 10:09:04 -0700 (PDT)
+ us-mta-671-1-vG63pyOiOEmKOvSwIGog-1; Thu, 04 Jul 2024 13:09:12 -0400
+X-MC-Unique: 1-vG63pyOiOEmKOvSwIGog-1
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-4256569a4faso10627465e9.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 04 Jul 2024 10:09:11 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720112943; x=1720717743;
+        d=1e100.net; s=20230601; t=1720112951; x=1720717751;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=IsEZYPUnJUrFTc5sYGJG2HQ1b8hAp+MrWs9/jDi7WD8=;
-        b=i5XREsPbyKLwQxboLto3r+FyZk9PvA+jwT7EWmLvt79iGi63jDymjjaB3PU05uv4b/
-         3AfEjqf6+QbpdR6OAAbuBxcAjdPwY3HlApWc/GuqDpDeO2GEOEAEwoU4D0UgDG0OAbGs
-         13GTuRRsa8IH8roWL4IzUXXwAw7Iykje5xoJRYk3i6HVXwYguefknhhMKvHTfRHLKIrN
-         QKyRewEr5ZmXX+PCSff1eFeccTApoL0z94p8shU2g9ue6kWXax4lfm6xNp0NS6SOM+ry
-         XghIXD4R6hlpN3rKlAJUmQsBGmSFqGd0YoSuif/F0cEtKsXh2z611BGlsUa2Av5mhRSn
-         xU8w==
-X-Forwarded-Encrypted: i=1; AJvYcCVx9eWsyiMcirGU5f07/+IqUYCU3hJwcBhXON//TZhdBkhAWN5LkpPfkSIO+Li1geeS5mDOjuuoOSPdAX9m4CMC9duHKM7HHt8SJKAK00U=
-X-Gm-Message-State: AOJu0YxMWoMdEADovMC7esZ7Hx7+tVWdQ5AjtQABVURMqXGHA03Aiols
-	at7giVNNUp8QPJsNAC7Jv79T5bLPM4Tw7A53jqv4SJ4E8Yb7bWjqT2iJ/dWbaNK9AmpYGYWNFcY
-	6pkM/ORYfMldYamrwpd2FoTCHWVF1jav/waMkm3yvUFtHcKPhehArOVkTm6WxaGe2
-X-Received: by 2002:a19:7501:0:b0:52c:c9cd:ebc3 with SMTP id 2adb3069b0e04-52ea06e3e43mr1409951e87.63.1720112942715;
-        Thu, 04 Jul 2024 10:09:02 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHHEaZYFSL8J5jp11qG3WtnRhMrCxosPHJENTXOj/vhYDA1OWkwhTMXpmw5imfcG5/3gGCmgw==
-X-Received: by 2002:a19:7501:0:b0:52c:c9cd:ebc3 with SMTP id 2adb3069b0e04-52ea06e3e43mr1409919e87.63.1720112942319;
-        Thu, 04 Jul 2024 10:09:02 -0700 (PDT)
+        bh=fpg1faBr5ekWLp/A+ticofxlpAUVrowaMF9N+c1VH5Y=;
+        b=Vv7zy8cI+BBFEbtIlzXst/sJOpNvqv9wZSqIpoQXMXTcC+YtfvtTozil1ZL0Q3g8nl
+         0J6CRPqKfGSS2OxssSlxIXvcLFqcUuycbxAan8KhPA/5nDvFC9gsaNnTNDH9v5srpMG+
+         B9bsqf9Xce/iq1nbPDGPn6KjrYFxJchXLPbT3mNVt+jYO84AwjQfQbn96OqAPI8t4at6
+         tK7WM/1KEL6kS/fNVy2hfHWMbv9oumEyuPDWk54Fdlp8TjjSFORKu5yU1whtmN+of1TM
+         C4XFn+9HDFBModBVw/D39OTQ1evMm5hpuFfM+0EB2xWw6Dfwtc4JGhLMegiNBlwOspjg
+         ru/A==
+X-Forwarded-Encrypted: i=1; AJvYcCW9wES5bVEtMhr2eGdMfbDuaMiVkHnTAAhga36O/qDApHRnbADAXvfmJBVPxNalNCYhG1zDpMRvPI7WY9C4WLPEZ2QCM1pda/pQEKfFVII=
+X-Gm-Message-State: AOJu0Yw6D7243Y5zvzHJNs67cugzgHneBtIoCTOwrD9tzwBbB0Hd93T5
+	g2mwlah2kaWz0eiRpU2j7EpcJrfHa0G74CPJyQVwpfWfiyOEpHgXj7IRVFyjPbMcxN1RtZMGS5x
+	QBamMKlYlZxJ2SApNKAEF9peD5EzIVczyPKn19C3ftpdOde/IKyH6ICjcKjjJrbJk
+X-Received: by 2002:a05:600c:3547:b0:425:7aa7:e490 with SMTP id 5b1f17b1804b1-4264b0c50ecmr19778945e9.3.1720112950787;
+        Thu, 04 Jul 2024 10:09:10 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFKM4G6SCFeJEZtSOhy82Z2Ed8yGmNU3aqSb//nIUjwTmhfzTkmvAH30VJp4ZwrSb2S0rxzfA==
+X-Received: by 2002:a05:600c:3547:b0:425:7aa7:e490 with SMTP id 5b1f17b1804b1-4264b0c50ecmr19778665e9.3.1720112950454;
+        Thu, 04 Jul 2024 10:09:10 -0700 (PDT)
 Received: from cassiopeiae.. ([2a02:810d:4b3f:ee94:642:1aff:fe31:a19f])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-367a5a31a1asm301302f8f.7.2024.07.04.10.09.00
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4264a1d165bsm31228875e9.4.2024.07.04.10.09.09
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 04 Jul 2024 10:09:01 -0700 (PDT)
+        Thu, 04 Jul 2024 10:09:09 -0700 (PDT)
 From: Danilo Krummrich <dakr@redhat.com>
 To: ojeda@kernel.org,
 	alex.gaynor@gmail.com,
@@ -83,9 +83,9 @@ Cc: daniel.almeida@collabora.com,
 	linux-kernel@vger.kernel.org,
 	rust-for-linux@vger.kernel.org,
 	Danilo Krummrich <dakr@redhat.com>
-Subject: [PATCH 12/20] rust: alloc: remove `BoxExt` extension
-Date: Thu,  4 Jul 2024 19:06:40 +0200
-Message-ID: <20240704170738.3621-13-dakr@redhat.com>
+Subject: [PATCH 14/20] rust: alloc: implement `IntoIterator` for `KVec`
+Date: Thu,  4 Jul 2024 19:06:42 +0200
+Message-ID: <20240704170738.3621-15-dakr@redhat.com>
 X-Mailer: git-send-email 2.45.2
 In-Reply-To: <20240704170738.3621-1-dakr@redhat.com>
 References: <20240704170738.3621-1-dakr@redhat.com>
@@ -100,222 +100,228 @@ X-Mimecast-Originator: redhat.com
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain; charset="US-ASCII"; x-default=true
 
-Now that all existing `Box` users were moved to `KBox`, remove the
-`BoxExt` extension.
+Implement `IntoIterator` for `KVec`, `KVec`'s `IntoIter` type, as well
+as `Iterator` for `IntoIter`.
+
+`KVec::into_iter` disassembles the `KVec` into its raw parts;
+additionally, `IntoIter` keeps track of a separate pointer, which is
+incremented correspondingsly as the iterator advances, while the length,
+or the count of elements, is decremented.
+
+This also means that `IntoIter` takes the ownership of the backing
+buffer and is responsible to drop the remaining elements and free the
+backing buffer, if it's dropped.
 
 Signed-off-by: Danilo Krummrich <dakr@redhat.com>
 ---
- rust/kernel/alloc.rs         |  1 -
- rust/kernel/alloc/box_ext.rs | 51 ------------------------------------
- rust/kernel/init.rs          | 34 +-----------------------
- rust/kernel/lib.rs           |  1 -
- rust/kernel/prelude.rs       |  4 +--
- rust/kernel/types.rs         | 23 ----------------
- 6 files changed, 3 insertions(+), 111 deletions(-)
- delete mode 100644 rust/kernel/alloc/box_ext.rs
+ rust/kernel/alloc.rs      |   1 +
+ rust/kernel/alloc/kvec.rs | 177 +++++++++++++++++++++++++++++++++++++-
+ 2 files changed, 177 insertions(+), 1 deletion(-)
 
 diff --git a/rust/kernel/alloc.rs b/rust/kernel/alloc.rs
-index ff90cefad0ea..882a65212653 100644
+index 3a0195d23bb4..e6a5d65e0c48 100644
 --- a/rust/kernel/alloc.rs
 +++ b/rust/kernel/alloc.rs
-@@ -4,7 +4,6 @@
+@@ -15,6 +15,7 @@
+ pub use self::allocator_test as allocator;
  
- #[cfg(not(any(test, testlib)))]
- pub mod allocator;
--pub mod box_ext;
- pub mod kbox;
- pub mod vec_ext;
+ pub use self::kbox::KBox;
++pub use self::kvec::IntoIter;
+ pub use self::kvec::KVec;
  
-diff --git a/rust/kernel/alloc/box_ext.rs b/rust/kernel/alloc/box_ext.rs
-deleted file mode 100644
-index 1aeae02c147e..000000000000
---- a/rust/kernel/alloc/box_ext.rs
-+++ /dev/null
-@@ -1,51 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0
--
--//! Extensions to [`Box`] for fallible allocations.
--
--use super::{AllocError, Flags};
--use alloc::boxed::Box;
--use core::mem::MaybeUninit;
--
--/// Extensions to [`Box`].
--pub trait BoxExt<T>: Sized {
--    /// Allocates a new box.
--    ///
--    /// The allocation may fail, in which case an error is returned.
--    fn new(x: T, flags: Flags) -> Result<Self, AllocError>;
--
--    /// Allocates a new uninitialised box.
--    ///
--    /// The allocation may fail, in which case an error is returned.
--    fn new_uninit(flags: Flags) -> Result<Box<MaybeUninit<T>>, AllocError>;
--}
--
--impl<T> BoxExt<T> for Box<T> {
--    fn new(x: T, flags: Flags) -> Result<Self, AllocError> {
--        let b = <Self as BoxExt<_>>::new_uninit(flags)?;
--        Ok(Box::write(b, x))
--    }
--
--    #[cfg(any(test, testlib))]
--    fn new_uninit(_flags: Flags) -> Result<Box<MaybeUninit<T>>, AllocError> {
--        Ok(Box::new_uninit())
--    }
--
--    #[cfg(not(any(test, testlib)))]
--    fn new_uninit(flags: Flags) -> Result<Box<MaybeUninit<T>>, AllocError> {
--        let ptr = if core::mem::size_of::<MaybeUninit<T>>() == 0 {
--            core::ptr::NonNull::dangling()
--        } else {
--            let alloc: &dyn super::Allocator = &super::allocator::Kmalloc;
--            let layout = core::alloc::Layout::new::<MaybeUninit<T>>();
--
--            // SAFETY: Memory is being allocated (first arg is null). The only other source of
--            // safety issues is sleeping on atomic context, which is addressed by klint. Lastly,
--            // the type is not a SZT (checked above).
--            alloc.alloc(layout, flags)?.cast()
--        };
--
--        // SAFETY: For non-zero-sized types, we allocate above using the global allocator. For
--        // zero-sized types, we use `NonNull::dangling`.
--        Ok(unsafe { Box::from_raw(ptr.as_ptr()) })
--    }
--}
-diff --git a/rust/kernel/init.rs b/rust/kernel/init.rs
-index b386bafd5f95..f59f502c3e0b 100644
---- a/rust/kernel/init.rs
-+++ b/rust/kernel/init.rs
-@@ -212,12 +212,11 @@
- //! [`pin_init!`]: crate::pin_init!
- 
- use crate::{
--    alloc::{box_ext::BoxExt, AllocError, Flags, KBox},
-+    alloc::{AllocError, Flags, KBox},
-     error::{self, Error},
-     sync::UniqueArc,
-     types::{Opaque, ScopeGuard},
+ /// Indicates an allocation error.
+diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
+index 7ec898657832..ece48930966e 100644
+--- a/rust/kernel/alloc/kvec.rs
++++ b/rust/kernel/alloc/kvec.rs
+@@ -11,7 +11,9 @@
+     ops::DerefMut,
+     ops::Index,
+     ops::IndexMut,
+-    ptr, slice,
++    ptr,
++    ptr::NonNull,
++    slice,
+     slice::SliceIndex,
  };
--use alloc::boxed::Box;
- use core::{
-     cell::UnsafeCell,
-     convert::Infallible,
-@@ -590,7 +589,6 @@ macro_rules! pin_init {
- /// # Examples
- ///
- /// ```rust
--/// # #![feature(new_uninit)]
- /// use kernel::{alloc::KBox, init::{self, PinInit}, error::Error};
- /// #[pin_data]
- /// struct BigBuf {
-@@ -1155,36 +1153,6 @@ fn init<E>(init: impl Init<T, E>, flags: Flags) -> error::Result<Self>
-     }
- }
  
--impl<T> InPlaceInit<T> for Box<T> {
--    #[inline]
--    fn try_pin_init<E>(init: impl PinInit<T, E>, flags: Flags) -> Result<Pin<Self>, E>
--    where
--        E: From<AllocError>,
--    {
--        let mut this = <Box<_> as BoxExt<_>>::new_uninit(flags)?;
--        let slot = this.as_mut_ptr();
--        // SAFETY: When init errors/panics, slot will get deallocated but not dropped,
--        // slot is valid and will not be moved, because we pin it later.
--        unsafe { init.__pinned_init(slot)? };
--        // SAFETY: All fields have been initialized.
--        Ok(unsafe { this.assume_init() }.into())
--    }
--
--    #[inline]
--    fn try_init<E>(init: impl Init<T, E>, flags: Flags) -> Result<Self, E>
--    where
--        E: From<AllocError>,
--    {
--        let mut this = <Box<_> as BoxExt<_>>::new_uninit(flags)?;
--        let slot = this.as_mut_ptr();
--        // SAFETY: When init errors/panics, slot will get deallocated but not dropped,
--        // slot is valid.
--        unsafe { init.__init(slot)? };
--        // SAFETY: All fields have been initialized.
--        Ok(unsafe { this.assume_init() })
--    }
--}
--
- impl<T> InPlaceInit<T> for KBox<T> {
-     #[inline]
-     fn try_pin_init<E>(init: impl PinInit<T, E>, flags: Flags) -> Result<Pin<Self>, E>
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index fbd91a48ff8b..f119bbde955b 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -14,7 +14,6 @@
- #![no_std]
- #![feature(coerce_unsized)]
- #![feature(dispatch_from_dyn)]
--#![feature(new_uninit)]
- #![feature(receiver_trait)]
- #![feature(unsize)]
- 
-diff --git a/rust/kernel/prelude.rs b/rust/kernel/prelude.rs
-index d75c14234133..20112233d750 100644
---- a/rust/kernel/prelude.rs
-+++ b/rust/kernel/prelude.rs
-@@ -14,10 +14,10 @@
- #[doc(no_inline)]
- pub use core::pin::Pin;
- 
--pub use crate::alloc::{box_ext::BoxExt, flags::*, vec_ext::VecExt, KBox};
-+pub use crate::alloc::{flags::*, vec_ext::VecExt, KBox};
- 
- #[doc(no_inline)]
--pub use alloc::{boxed::Box, vec::Vec};
-+pub use alloc::vec::Vec;
- 
- #[doc(no_inline)]
- pub use macros::{module, pin_data, pinned_drop, vtable, Zeroable};
-diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
-index 939ec27c584d..0b2a3ce538a6 100644
---- a/rust/kernel/types.rs
-+++ b/rust/kernel/types.rs
-@@ -4,7 +4,6 @@
- 
- use crate::alloc::KBox;
- use crate::init::{self, PinInit};
--use alloc::boxed::Box;
- use core::{
-     cell::UnsafeCell,
-     marker::{PhantomData, PhantomPinned},
-@@ -68,28 +67,6 @@ unsafe fn try_from_foreign(ptr: *const core::ffi::c_void) -> Option<Self> {
-     }
- }
- 
--impl<T: 'static> ForeignOwnable for Box<T> {
--    type Borrowed<'a> = &'a T;
--
--    fn into_foreign(self) -> *const core::ffi::c_void {
--        Box::into_raw(self) as _
--    }
--
--    unsafe fn borrow<'a>(ptr: *const core::ffi::c_void) -> &'a T {
--        // SAFETY: The safety requirements for this function ensure that the object is still alive,
--        // so it is safe to dereference the raw pointer.
--        // The safety requirements of `from_foreign` also ensure that the object remains alive for
--        // the lifetime of the returned value.
--        unsafe { &*ptr.cast() }
--    }
--
--    unsafe fn from_foreign(ptr: *const core::ffi::c_void) -> Self {
--        // SAFETY: The safety requirements of this function ensure that `ptr` comes from a previous
--        // call to `Self::into_foreign`.
--        unsafe { Box::from_raw(ptr as _) }
--    }
--}
--
- impl<T: 'static> ForeignOwnable for KBox<T> {
-     type Borrowed<'a> = &'a T;
- 
+@@ -603,3 +605,176 @@ fn eq(&self, other: &$rhs) -> bool { self[..] == other[..] }
+ __impl_slice_eq! { [A: Allocator] [T], KVec<U, A> }
+ __impl_slice_eq! { [A: Allocator, const N: usize] KVec<T, A>, [U; N] }
+ __impl_slice_eq! { [A: Allocator, const N: usize] KVec<T, A>, &[U; N] }
++
++impl<'a, T, A> IntoIterator for &'a KVec<T, A>
++where
++    A: Allocator,
++{
++    type Item = &'a T;
++    type IntoIter = slice::Iter<'a, T>;
++
++    fn into_iter(self) -> Self::IntoIter {
++        self.iter()
++    }
++}
++
++impl<'a, T, A: Allocator> IntoIterator for &'a mut KVec<T, A>
++where
++    A: Allocator,
++{
++    type Item = &'a mut T;
++    type IntoIter = slice::IterMut<'a, T>;
++
++    fn into_iter(self) -> Self::IntoIter {
++        self.iter_mut()
++    }
++}
++
++/// An iterator that moves out of a vector.
++///
++/// This `struct` is created by the `into_iter` method on [`KVec`] (provided by the [`IntoIterator`]
++/// trait).
++///
++/// # Examples
++///
++/// ```
++/// let v = kernel::kvec![0, 1, 2]?;
++/// let iter: kernel::alloc::IntoIter<_> = v.into_iter();
++///
++/// # Ok::<(), Error>(())
++/// ```
++pub struct IntoIter<T, A: Allocator = Kmalloc> {
++    ptr: *mut T,
++    buf: NonNull<T>,
++    len: usize,
++    cap: usize,
++    alloc: A,
++}
++
++impl<T, A> IntoIter<T, A>
++where
++    A: Allocator,
++{
++    fn as_raw_mut_slice(&mut self) -> *mut [T] {
++        ptr::slice_from_raw_parts_mut(self.ptr, self.len)
++    }
++}
++
++impl<T, A> Iterator for IntoIter<T, A>
++where
++    A: Allocator,
++{
++    type Item = T;
++
++    /// # Examples
++    ///
++    /// ```
++    /// let v = kernel::kvec![1, 2, 3]?;
++    /// let mut it = v.into_iter();
++    ///
++    /// assert_eq!(it.next(), Some(1));
++    /// assert_eq!(it.next(), Some(2));
++    /// assert_eq!(it.next(), Some(3));
++    /// assert_eq!(it.next(), None);
++    ///
++    /// # Ok::<(), Error>(())
++    /// ```
++    fn next(&mut self) -> Option<T> {
++        if self.len == 0 {
++            return None;
++        }
++
++        let ptr = self.ptr;
++        if !KVec::<T>::is_zst() {
++            // SAFETY: We can't overflow; `end` is guaranteed to mark the end of the buffer.
++            unsafe { self.ptr = self.ptr.add(1) };
++        } else {
++            // For ZST `ptr` has to stay where it is to remain aligned, so we just reduce `self.len`
++            // by 1.
++        }
++        self.len -= 1;
++
++        // SAFETY: `ptr` is guaranteed to point at a valid element within the buffer.
++        Some(unsafe { ptr.read() })
++    }
++
++    /// # Examples
++    ///
++    /// ```
++    /// use kernel::alloc::KVec;
++    ///
++    /// let v: KVec<u32, _> = kernel::kvec![1, 2, 3]?;
++    /// let mut iter = v.into_iter();
++    /// let size = iter.size_hint().0;
++    ///
++    /// iter.next();
++    /// assert_eq!(iter.size_hint().0, size - 1);
++    ///
++    /// iter.next();
++    /// assert_eq!(iter.size_hint().0, size - 2);
++    ///
++    /// iter.next();
++    /// assert_eq!(iter.size_hint().0, size - 3);
++    ///
++    /// # Ok::<(), Error>(())
++    /// ```
++    fn size_hint(&self) -> (usize, Option<usize>) {
++        (self.len, Some(self.len))
++    }
++}
++
++impl<T, A> Drop for IntoIter<T, A>
++where
++    A: Allocator,
++{
++    fn drop(&mut self) {
++        // SAFETY: Drop the remaining vector's elements in place, before we free the backing
++        // memory.
++        unsafe { ptr::drop_in_place(self.as_raw_mut_slice()) };
++
++        // If `cap == 0` we never allocated any memory in the first place.
++        if self.cap != 0 {
++            // SAFETY: `self.buf` was previously allocated with `self.alloc`.
++            unsafe { self.alloc.free(self.buf.as_ptr().cast()) };
++        }
++    }
++}
++
++impl<T, A> IntoIterator for KVec<T, A>
++where
++    A: Allocator,
++{
++    type Item = T;
++    type IntoIter = IntoIter<T, A>;
++
++    /// Creates a consuming iterator, that is, one that moves each value out of
++    /// the vector (from start to end). The vector cannot be used after calling
++    /// this.
++    ///
++    /// # Examples
++    ///
++    /// ```
++    /// let v = kernel::kvec![1, 2]?;
++    /// let mut v_iter = v.into_iter();
++    ///
++    /// let first_element: Option<u32> = v_iter.next();
++    ///
++    /// assert_eq!(first_element, Some(1));
++    /// assert_eq!(v_iter.next(), Some(2));
++    /// assert_eq!(v_iter.next(), None);
++    ///
++    /// # Ok::<(), Error>(())
++    /// ```
++    #[inline]
++    fn into_iter(self) -> Self::IntoIter {
++        let (ptr, len, cap, alloc) = self.into_raw_parts_alloc();
++
++        IntoIter {
++            ptr,
++            buf: unsafe { NonNull::new_unchecked(ptr) },
++            len,
++            cap,
++            alloc,
++        }
++    }
++}
 -- 
 2.45.2
 
