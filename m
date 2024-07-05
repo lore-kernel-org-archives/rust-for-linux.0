@@ -1,109 +1,83 @@
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C311A149DE4;
-	Fri,  5 Jul 2024 13:46:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BF98146A69
+	for <rust-for-linux@vger.kernel.org>; Fri,  5 Jul 2024 14:22:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720187209; cv=none; b=HHUB7s3SZnII3YZG2PgIXC0/UDKmMVpXPkn7Ls9X7pUPs78ICYh1p0xPjOIozDnRs3YOf3ROQwfcFtU9y0Lg0On4f/Wj4BqueMNtmoO3XtO0Ij0MyoNCA4vTha3aP/xIzoiHfE2weF/VJavRFahtf0Av3rgcN0JjUIhaOhcoatI=
+	t=1720189356; cv=none; b=F5LQMmk8qD0G6bHqV4nN2Kx9tAM+5671wQtt8FPqNmeKyrGm6t0oVXfzNB9PUnAlRaMJne7zP52GgLkqSm2QbnysyyQY0RPbsXOnV1C0cpQV0OazADWz7v0AG7UVvfV71mPJUvLBQwpN5ElzYWp483xx+4CmippAw7GXUX2IR+0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720187209; c=relaxed/simple;
-	bh=l+1Y1+caxhVchzhr4BCyG+RAbZ2ux/UMlynAtjvAZC0=;
+	s=arc-20240116; t=1720189356; c=relaxed/simple;
+	bh=3rwrtLRFCQwEkRjEY4+oBw2kAJzfJEM9ShCTifzrp4c=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=gVqiMySFTL6qzFoVALmwXzSNSdZVW9GA0H6gfdcvj1my8ReBBxmJbozkPnXUlTpxumK2QO/Vn9gaX5XPGrTQCDdXw7uh96suwct4wDCIpHxZRCP557uPIWMLXNqVro0DLM9oMtmdRx/r7ZnKGduveQ1VtVY96hpTjLDCaBqHkLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=AmV1Fl1n; arc=none smtp.client-ip=209.85.216.45
+	 To:Cc:Content-Type; b=HVfyWuZzu6+4VhDFRASixbuyulMhKsrTxZ5D9hH5HZS1J5IYZ+sL8UnsKEOuP8/a+9zpYtG7m51ivFyzDCVVF9mPdVkieiuERAFVVhTUNnn1Brp2Nq9eK488XjmZulN2z+5Slyjbveo6AfY+opezcBdb/iTH2zkLVuXR+L5bOiE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=m6YdnEGV; arc=none smtp.client-ip=209.85.215.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="AmV1Fl1n"
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-2c8e422c40cso1077504a91.2;
-        Fri, 05 Jul 2024 06:46:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="m6YdnEGV"
+Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-710437d0affso1046614a12.3
+        for <rust-for-linux@vger.kernel.org>; Fri, 05 Jul 2024 07:22:35 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1720187207; x=1720792007; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1720189355; x=1720794155; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=l+1Y1+caxhVchzhr4BCyG+RAbZ2ux/UMlynAtjvAZC0=;
-        b=AmV1Fl1nwcrV8oELAiQx/rij0+1/82Ra3n4cNRQsdFMwBZLbbUU/WG/CzRZwfdkj9Y
-         ju70Ws0JNaOjncBJ+EdOEjKXE8WhepY7/t8DwHN4NsAaDBn6iJ1aC23GUYDscFDuOw7h
-         4yvGwLSMFt0gzO2mhDSF5LSiVTFvVCXx4Ji7W5I9oqbDps/zx/6k553NZq8r7BuOwAXv
-         eIlFpUaCuDXxIKcTXyR8nijqxZ1FwOeY/N3Vw2/NmJ5dGFPXy/ugYWSFANKC6pgiYF2K
-         O5r8DisXjpoo5Az8hiUZmHzRzlIFHPRD3XzKzWfqxwLG5meMDfkvq1s9VC7K/z/hBjfV
-         imXg==
+        bh=3rwrtLRFCQwEkRjEY4+oBw2kAJzfJEM9ShCTifzrp4c=;
+        b=m6YdnEGVWnxuQ0k6/eEz2eXwVG3OQf/urqCsCim12KOT/GPa5/gUd8kVL0QxgyZpFA
+         GPVc5dHCpJYVkkfhjpaZ82P0OWAtLZqUPY7Gi+DhhDeSzZDT5G2O8cPlxl2FmvP9RkZi
+         iMS9e79KyvsA8X04yC37QCGtg7JPLmk1Ya/aHXRzHbdSkAXVNU4jZv7x620MNhVDseqN
+         38vGaqzYtzUpB/waMuIJ5aSDZJyRWDcSKC2dopjHaUuBH+JRHfODV4KvcaFYo+ul1LiW
+         vSgqQ9tFCQk4cXWI/ahCAvfbN4PYJ+pX7fLmUwx0u1cCjOTQJkloKY+pqF3aAns4RX9G
+         W5uA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720187207; x=1720792007;
+        d=1e100.net; s=20230601; t=1720189355; x=1720794155;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=l+1Y1+caxhVchzhr4BCyG+RAbZ2ux/UMlynAtjvAZC0=;
-        b=l9GDcPEG1vCkboMlc3/E7SPqHrk1lzh2ufygI8OPg3kzcRs34Vp6nDJrjmxp9XCvkY
-         lyQ5CdDeXyV4cQorsVZrhcpopARFVyThg0cC//1Hfm+G/A/Ot9vED36KIq0T+iuj7RF9
-         widploej1/e28mcQHnvZ9ZE6Tx2NNay1lzEMInIH8rZefnWNeL4oqOAQfWIz5V/SwSnw
-         iXTYfQb2MHOuq5cuAwDV3aBu1F6qFDOLlo7fkb7h8eas3rHN+AbdbiU28ZjvX+pxMWas
-         eF7HZtAxBJc9zmv287Tc+QCtidaKlet4CkaChjSkCz79LNhqnFwSoWxkQn7Fj4v7XBxt
-         hDvw==
-X-Forwarded-Encrypted: i=1; AJvYcCVZd+Dfnkl1KiE2subm962X6togtSO2oKKARglLkL0PNEyEjfEjTQhMM37ZkN8eXKl8+MsREtRxPqxatFqZx6SXn9h7USEqtglKg4DgLBxnlJ8NBZ8C0qY3uEnXLGiczSXgKDDcp3GsHQ6pFlxa7cTxneulWai6pEhgzTc7JDu7gJvDYsnHJsI/5QWBkG09UC1GAqXcpOi06GkrjU6PBxg9WBY=
-X-Gm-Message-State: AOJu0YwzGqZjwnJl9Hv6Paf53WoQDnsnPSIBZ5P/gh4oTkIdGBnlrD+2
-	vEE0t8JZiCbLIcdL8qqPqDOWF98gscLW6NNudwn1W1Nar7KxQtA8o9tzz3b8S4LLX8THtuNnrE7
-	Z1Z/WK6+XH7mKx91aLpeYwTNCNOY=
-X-Google-Smtp-Source: AGHT+IGn9pRs0VGDTMIiD7gHdJZujUU/p8nn7qMARSQbH4hdHR+SWMvpQUQdYXZvJ5a7xvLZzY8hKk5A4Nt/5wtWCgc=
-X-Received: by 2002:a17:90a:d795:b0:2c8:f3b4:425 with SMTP id
- 98e67ed59e1d1-2c99c6a3198mr3417780a91.23.1720187207178; Fri, 05 Jul 2024
- 06:46:47 -0700 (PDT)
+        bh=3rwrtLRFCQwEkRjEY4+oBw2kAJzfJEM9ShCTifzrp4c=;
+        b=qgEL4pqCXug3jPfz9xiM6fQTuIfaPpS7Cm5A9KDlGJgiin8xAh9EKMDmWqJVEZ69km
+         Cic3tM8sr2HAQ4qg9gINMR0mDfsFvormAZfNwQ4BA6B0ehiuxCARVbh3OygD/Zn74bq+
+         030yxZHohW4N7ZmDUFXixRHXeJGyZeyqyNPCpGbBOHY7jYGVJcf0/vjV1KSnlMa9TrKU
+         8On0dKKttapDxx6r5INZMUE6qmE76wbayfKLjqA/hU4hgQCH69C8RuAdK7mm8TYWR/K1
+         ACvy4gM3WQiVjLSexNtE1SYz+3ZYzo0Ujb0TsqXLFeyO3rx1misqXrnVAVNrHjEhH9jK
+         mXzg==
+X-Gm-Message-State: AOJu0YxAzX6y4UyXA4jTKZTENdWFM3fJMRGfCLmzLKkk0SgOCK9LFWkR
+	dVHc0QBABVHGmO1TxB6vunq4Aoan8DwgdJs6L+NgsiXiBn9uJhWCnQfBDSUvrG6kvV5b6Lpj0DT
+	PettT1Vwf9IYp4nEHjhitzNM5g189gnUf+Uw=
+X-Google-Smtp-Source: AGHT+IF2ll/fQbyf5CxxZesc9GA7mUj5qiqhImFDypPN/MpQTwc3LZXN9+iHU6HLhP43DOUB/OPZW35SRf7y+61P0OY=
+X-Received: by 2002:a05:6a20:734c:b0:1bd:2c36:afd4 with SMTP id
+ adf61e73a8af0-1c0cc73af94mr5476853637.2.1720189354812; Fri, 05 Jul 2024
+ 07:22:34 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240701183625.665574-1-ojeda@kernel.org> <20240701183625.665574-14-ojeda@kernel.org>
- <ZoeQVYda-AZN6PYy@gpd> <2qwdfogh6jd5uixxjzlagmtfvnykk3x4ztqrn4j2v6qoref5rx@ooj6gq27bq4z>
- <CANiq72n6bYt0AKNxad2+gjwHKQ1RiDxAbjm-2u20L8TcSZE-9Q@mail.gmail.com> <huatx5giw7r357zeecxngkqboiq3lfqndjjrcivxllurqpjvbi@4y5ejgwxhztm>
-In-Reply-To: <huatx5giw7r357zeecxngkqboiq3lfqndjjrcivxllurqpjvbi@4y5ejgwxhztm>
+References: <20240501123548.51769-1-fujita.tomonori@gmail.com>
+ <20240508.081144.1308480380091479358.fujita.tomonori@gmail.com>
+ <CANiq72nHkadpMt9wMTm+BJ5Up-EG6ymay68qi+56nv9uLXXcgg@mail.gmail.com>
+ <20240509.085826.1793889118157877475.fujita.tomonori@gmail.com> <CANiq72kJQp_GHnr2cD7e8s5CJ=Sawz9ad_QVFrUxqDUppe4FNw@mail.gmail.com>
+In-Reply-To: <CANiq72kJQp_GHnr2cD7e8s5CJ=Sawz9ad_QVFrUxqDUppe4FNw@mail.gmail.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 5 Jul 2024 15:46:35 +0200
-Message-ID: <CANiq72=A-PZ6LoUiVQuOvN2hMVvd5pJ42OKPW61FXNrnYU+WBg@mail.gmail.com>
-Subject: Re: [PATCH 13/13] docs: rust: quick-start: add section on Linux distributions
-To: =?UTF-8?Q?Fabian_Gr=C3=BCnbichler?= <debian@fabian.gruenbichler.email>
-Cc: Andrea Righi <righi.andrea@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev, 
-	Jan Alexander Steffens <heftig@archlinux.org>, =?UTF-8?Q?Johannes_L=C3=B6thberg?= <johannes@kyriasis.com>, 
-	Josh Stone <jistone@redhat.com>, Randy Barlow <randy@electronsweatshop.com>, 
-	Anna Figueiredo Gomes <navi@vlhl.dev>, Matoro Mahri <matoro_gentoo@matoro.tk>, 
-	Ryan Scheel <ryan.havvy@gmail.com>, figsoda <figsoda@pm.me>, 
-	=?UTF-8?Q?J=C3=B6rg_Thalheim?= <joerg@thalheim.io>, 
-	Theodore Ni <43ngvg@masqt.com>, Winter <nixos@winter.cafe>, William Brown <wbrown@suse.de>, 
-	Xiaoguang Wang <xiaoguang.wang@suse.com>, Zixing Liu <zixing.liu@canonical.com>, 
-	Jonathan Corbet <corbet@lwn.net>, workflows@vger.kernel.org, linux-doc@vger.kernel.org
+Date: Fri, 5 Jul 2024 16:22:23 +0200
+Message-ID: <CANiq72n4q-LLaUUd2AcJwPzMfB5B4nLEk39xunbERADL9Ma+Mw@mail.gmail.com>
+Subject: Re: [PATCH v2] rust: add 'firmware' field support to module! macro
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, benno.lossin@proton.me
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jul 5, 2024 at 3:09=E2=80=AFPM Fabian Gr=C3=BCnbichler
-<debian@fabian.gruenbichler.email> wrote:
+On Sun, May 12, 2024 at 6:53=E2=80=AFPM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
 >
-> right now it is updated whenever its rdeps (firefox and chromium in
-> stable) need newer versions. once e.g. a stable Debian kernel has
-> similar requirements, I guess the same would apply there. I am not sure
-> upstream kernel development on Debian stable would be enough of an
-> argument to update it (or provide similar packages), but I am not a
-> member of the teams that would make that decision.
+> Thanks for confirming. If netdev wants to apply QT2025 for 6.11, they
+> could perhaps carry this patch with our Acked-by -- it seems simple
+> enough. Another option is creating a branch and merge it in both trees
+> if needed.
 
-That is reasonable.
-
-> as discussed off-list, -backports might be a better place for providing
-> more recent toolchain packages on Debian stable, and independent from
-> this thread, I have pondered providing them there in the past already.
-> backports would only ship one version as well though, and at most the
-> one in testing (so it would also be affected by the freeze period, just
-> like unstable and testing).
-
-I imagine that could be useful for some (kernel or not) developers on
-stable, even with the freeze period.
+Tomonori: Any update on this? Will they take it?
 
 Thanks!
 
