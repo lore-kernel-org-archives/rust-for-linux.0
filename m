@@ -1,82 +1,84 @@
-Received: from mail-pl1-f176.google.com (mail-pl1-f176.google.com [209.85.214.176])
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D1141BC43
-	for <rust-for-linux@vger.kernel.org>; Fri,  5 Jul 2024 14:58:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C32A816C688
+	for <rust-for-linux@vger.kernel.org>; Fri,  5 Jul 2024 15:06:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720191489; cv=none; b=V3XGWQCVXwytOLKKS8p7PFdLMxtQIgcrEgpwXque1nTih/hDKXt7Nuc3Zy5xGxR/jXnciHi+g6HXO1dJ9UP7gLhoWbzEtE+59rNdKD9hsRaAeq8GGRm8+fXrtrhf3M2xJI3uvFjfu8ToJE/qbCYsPtjP5pUxrMUKNWyfbuIy0tk=
+	t=1720191985; cv=none; b=CoJjWMKyxFRQ11z7TwFig7fYDi/pJ74Em9G7NI76eFBGkDoVgOPcKgU0/RvRBWLlFhTEFminh3oumSuxrEu4ZeUWp8fIivieHgZCBUj73ZBhsCgor6F4zVzftGAtEhWB/FJQRWgn49OpRgPgIEFsK55mjl1njJoWDGYrem6SENg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720191489; c=relaxed/simple;
-	bh=pJi0syy/6B+VhD62la2dwtUr9ItV+Tl/+hW2IPrmXLo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JWvm94NNW4W68xzGrKC6Q6TiGrLSBtK0vtZKWhmT5vRKgbg2PyxcaGduMB+b6+SO7CfVFT8Jm/jtRD4kOsRAH6T0dCTdPPy3+kILphej5qWD/EppJEwgU7TTQ0VukT0NCs6ZOWqz39CKyEHgF+WhlMGf6IQdPZ7/oWgd79T9rz8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N+qnLFTI; arc=none smtp.client-ip=209.85.214.176
+	s=arc-20240116; t=1720191985; c=relaxed/simple;
+	bh=WPx+mrNBoVg+1Q2NIC0QE8QWxmF6FXSj2u0HipDRSFo=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=psuO6vBNSr4mufFMDJjWxRYKi/0fr5LQuBCGZmcBwOp+hRfcpgQYgAY3ivGYfcWd16u7rEdmOzVavZunNuY6BPKVMSpcYQpepr8/mJvnHMmIVJvNtbhVLEJrK6HGeagtYMA3AaCXyPmc/knQFV006J5oRCCCDA16NXU02WVQ2zU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kpxjxfXz; arc=none smtp.client-ip=209.85.214.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N+qnLFTI"
-Received: by mail-pl1-f176.google.com with SMTP id d9443c01a7336-1fb3cf78fcaso9526165ad.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 05 Jul 2024 07:58:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kpxjxfXz"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-1fafb9df923so788305ad.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 05 Jul 2024 08:06:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1720191487; x=1720796287; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=pJi0syy/6B+VhD62la2dwtUr9ItV+Tl/+hW2IPrmXLo=;
-        b=N+qnLFTI12OD5rdGZmguqABKRqM/aHeT2H9Xxyq7K/iIznIgUlfZjUB7cCt3J5L4wR
-         465GArPmfzjv8Xsx3LbJ82mHYy8dQqi+wrmm2sp+GpvF7+oJMNPhQgoZ6ovGuKHI1dC9
-         zSAQLbenFl9W3Ski68gJF7+kJosCs9OK6pRM9vTiof4cBgtbZUC3w8Z9rXYVcr+psHAd
-         dC+7p/k4VTWr2vahfD8FZ/mm5RWU50p27jWrCs189IjsvmDvNc+/fyrSFzMAAeSeLCBw
-         +rcXJeV102t2Jy9jdzg9+ACChb4LujxHY5GUwriLVbVYAlTVyRVRBkn+OfCgu1uqj0MO
-         zx1w==
+        d=gmail.com; s=20230601; t=1720191983; x=1720796783; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=WPx+mrNBoVg+1Q2NIC0QE8QWxmF6FXSj2u0HipDRSFo=;
+        b=kpxjxfXzg/59i2ctA5fjSWHzovODh8QR7NmBBJH4rytrRXb24qMElSC9b79MvADx8C
+         nBQxCXLxa1Rf6uF1UPI4URU0qsj36ZlcLF4r6zpXvbWDnAEU3//wr7z5KUV87Wb1sdCZ
+         rVIoAaATq8kuMINYvUd2Ngm/OSQMDhiEcycJmjbr5c+CTWOQqzVs5nALNZYHa/PtS1kw
+         EYTPWMp7hVXYUed8x+Mwr5w7UM0SEQ4aGqmFTiI534CCOpGoU6NAA7PgqaFx4KpAECs3
+         zViQUeH3mdvJChkMSuwVATU3H9zeMBkJ+OG5r8+iSoTNop0/UP5pnf5/q4lxXWyvvFrP
+         Jz4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720191487; x=1720796287;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=pJi0syy/6B+VhD62la2dwtUr9ItV+Tl/+hW2IPrmXLo=;
-        b=I105oDKOEwNpofwCyNHerCMKIO2mUfRYalLuNvWzsCYQPGpJhr9Ll5Re2Cui06J/F+
-         2KeagM3wA4D/yc0jXEJoa/POFAEPnMGcksoPg3V9XnyM7yIH5SImf2dtSQJ61onFSQPW
-         xGi1mEIR4yIAwO1RYoqgSRmV87z36m3wAxmkvM25R0mtlkO7RtcRduuf6num12uRms6Q
-         IzukybJ8XCGN/zxKUDzUc2rp1YwlRwHXpHNIBrqCdpjsGXR0KMPtXpzluABaN3kMSCrd
-         GuK+eJyB32NGw18Y6Yz0/IUPyOuxfAsKEfozyIuc4PegDROum1NHE+xrNvD+P8mATvG3
-         QSrA==
-X-Gm-Message-State: AOJu0Yx8HOAq6iGO+ZAu0KQiHKIOabRaexd0KU1aGfl0EAj3DJc/jGzm
-	/N/hwUk/4K3KqqBKkYfm1oUHag1/TW+lujjZa+wo2WBWG+P6fWfQtomPVo2Eo3pzOJo7Vv5sRRr
-	STvNoQK4jvT9WT4swNvLIdGlsOPg=
-X-Google-Smtp-Source: AGHT+IFYT5xeDo89mDAJw7S/10QANxqACYHhydfl6/7kOfxb6w7k9CqzFnGhBNNpwjHQwezq2PPuuY9tm5F7hUkKXmw=
-X-Received: by 2002:a17:90b:4b07:b0:2c9:cbdd:acd with SMTP id
- 98e67ed59e1d1-2c9cbdd1224mr374646a91.35.1720191487571; Fri, 05 Jul 2024
- 07:58:07 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1720191983; x=1720796783;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=WPx+mrNBoVg+1Q2NIC0QE8QWxmF6FXSj2u0HipDRSFo=;
+        b=uQ2t8uddPFs0j1BVys3a7/p7+o+M1DVPdTEaz44+wbfwsD/3dPwAhZkpT5lEIf56oS
+         RlgXIz+aCCngGXV+yo6EMrBAPFhpOTqVcfz9Nnw3B3ptefgpPTyDSBCqlLeu/gvY3JzG
+         02VJcp8KcJVQqhUiPdTLr7/pXOqU9cm4HgQ6CZMxifTXy3tWEUqLV3X/UvIeq+xt6WNX
+         IKEbkQQgn+ierfew5OVFlL0llv+702v/5mHRREmE6dr9p6oBgmtH+epEWNJeaPBtRn7Q
+         Md6IimIHYlgF9wWDcZ3fPHTCa8f6F3HSDRPiy2rSFip2wFTX6Ba/U0tTJrVnJswEe6ep
+         xi/g==
+X-Forwarded-Encrypted: i=1; AJvYcCXjfSFojAsQlJCtjAbkItrXO1Z9P03ujTIw5+G8+d9njxmoNyokVohAHfnsvV8WQjw+1BjrMU1esnXoNCSdeFA5AKe33rf/T/FrsiXKdns=
+X-Gm-Message-State: AOJu0Yxq816Z+LIlR+3HCcavGg80t0d+71VrbD1fjmguvMQX9Pwrc5If
+	vli73n+tp1qvE9a4ZA/KeDmKAM3vr8KNThDWKOvkuUc+bU2rlXuQJM4YIA==
+X-Google-Smtp-Source: AGHT+IEz1HU49pgtvQSHmjvI4hkU+GV+Mv+s3J7mmoxqLmMwORv6JJGpBIKtpKetaBi71P+pd50+wg==
+X-Received: by 2002:a17:90a:fa84:b0:2c9:7a37:62ab with SMTP id 98e67ed59e1d1-2c99c6c61e1mr4690969a91.4.1720191982977;
+        Fri, 05 Jul 2024 08:06:22 -0700 (PDT)
+Received: from localhost (p5199240-ipxg23801hodogaya.kanagawa.ocn.ne.jp. [180.11.99.240])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2c99aa1a24fsm3493002a91.53.2024.07.05.08.06.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 05 Jul 2024 08:06:22 -0700 (PDT)
+Date: Sat, 06 Jul 2024 00:06:13 +0900 (JST)
+Message-Id: <20240706.000613.1077107015108533626.fujita.tomonori@gmail.com>
+To: miguel.ojeda.sandonis@gmail.com
+Cc: fujita.tomonori@gmail.com, rust-for-linux@vger.kernel.org,
+ benno.lossin@proton.me
+Subject: Re: [PATCH v2] rust: add 'firmware' field support to module! macro
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <CANiq72kk9=3ppHB0OhXktPN-jvfSNR9=KGJ6Bp43+1rjgFoY6w@mail.gmail.com>
+References: <CANiq72n4q-LLaUUd2AcJwPzMfB5B4nLEk39xunbERADL9Ma+Mw@mail.gmail.com>
+	<20240705.234423.2088694847041637488.fujita.tomonori@gmail.com>
+	<CANiq72kk9=3ppHB0OhXktPN-jvfSNR9=KGJ6Bp43+1rjgFoY6w@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240509.085826.1793889118157877475.fujita.tomonori@gmail.com>
- <CANiq72kJQp_GHnr2cD7e8s5CJ=Sawz9ad_QVFrUxqDUppe4FNw@mail.gmail.com>
- <CANiq72n4q-LLaUUd2AcJwPzMfB5B4nLEk39xunbERADL9Ma+Mw@mail.gmail.com> <20240705.234423.2088694847041637488.fujita.tomonori@gmail.com>
-In-Reply-To: <20240705.234423.2088694847041637488.fujita.tomonori@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 5 Jul 2024 16:57:55 +0200
-Message-ID: <CANiq72kk9=3ppHB0OhXktPN-jvfSNR9=KGJ6Bp43+1rjgFoY6w@mail.gmail.com>
-Subject: Re: [PATCH v2] rust: add 'firmware' field support to module! macro
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, benno.lossin@proton.me
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=utf-8
+Content-Transfer-Encoding: base64
 
-On Fri, Jul 5, 2024 at 4:44=E2=80=AFPM FUJITA Tomonori
-<fujita.tomonori@gmail.com> wrote:
->
-> Please merge this patch via rust tree for 6.11-rc1.
-
-Thanks for the quick reply!
-
-Then I assume they will not take anything depending on this one this
-cycle then, i.e. I will not create a branch.
-
-Cheers,
-Miguel
+T24gRnJpLCA1IEp1bCAyMDI0IDE2OjU3OjU1ICswMjAwDQpNaWd1ZWwgT2plZGEgPG1pZ3VlbC5v
+amVkYS5zYW5kb25pc0BnbWFpbC5jb20+IHdyb3RlOg0KDQo+IE9uIEZyaSwgSnVsIDUsIDIwMjQg
+YXQgNDo0NOKAr1BNIEZVSklUQSBUb21vbm9yaQ0KPiA8ZnVqaXRhLnRvbW9ub3JpQGdtYWlsLmNv
+bT4gd3JvdGU6DQo+Pg0KPj4gUGxlYXNlIG1lcmdlIHRoaXMgcGF0Y2ggdmlhIHJ1c3QgdHJlZSBm
+b3IgNi4xMS1yYzEuDQo+IA0KPiBUaGFua3MgZm9yIHRoZSBxdWljayByZXBseSENCj4gDQo+IFRo
+ZW4gSSBhc3N1bWUgdGhleSB3aWxsIG5vdCB0YWtlIGFueXRoaW5nIGRlcGVuZGluZyBvbiB0aGlz
+IG9uZSB0aGlzDQo+IGN5Y2xlIHRoZW4sIGkuZS4gSSB3aWxsIG5vdCBjcmVhdGUgYSBicmFuY2gu
+DQoNClllcywgbm90aGluZyBkZXBlbmRpbmcgb24gdGhpcyBwYXRjaCB3aWxsIGJlIG1lcmdlZCB2
+aWEgbmV0ZGV2IGZvcg0KNi4xMS1yYzEuIFNvIHlvdSBjYW4gc2ltcGx5IG1lcmdlIHRoaXMgdmlh
+IHJ1c3QgdHJlZSB3aXRob3V0IGFueSBleHRyYQ0KY2FyZS4NCg0KVGhhbmtzIQ0K
