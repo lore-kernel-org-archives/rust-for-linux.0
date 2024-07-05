@@ -1,115 +1,257 @@
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A4691442F6;
-	Fri,  5 Jul 2024 10:50:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EC5E149C50
+	for <rust-for-linux@vger.kernel.org>; Fri,  5 Jul 2024 11:02:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720176649; cv=none; b=lEC3qBdWXn4Xkw8QEZ9Ig3Trut8bLpE2YgHhrBxJDEB3rgGMcCoCkA2H5IkXqIQVcHHRd9Y41Hw8K2yDk1g27iARREy9Z3LUPGVWraDq8v1VDhFQCtP254lYvdIFB1RCX97OXXDELy5tM4lmsqMcyrXRdX4xAiKA76XLFNIyLg0=
+	t=1720177354; cv=none; b=i712wnLGOKQDNds9tjbbS/JBIwiEkPz7AG/ubu50IGRK8Ai/WpJQIp323JIrkAyvlAzfGSfOpoGk2TiKSbyF3kAB6PdlNkw0kJRepAMMcK8IuN/DMx5eO1d0V9PpGDt2wrZD4HmJR5uuinMGb6tFXZUNtt7o3bi6sfR+4ow8tPQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720176649; c=relaxed/simple;
-	bh=mazd6SlQGoT23PxSsQCYr3vhjvCyYL5J03ptC8NDxKc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=d6/rxFoMcekKt/W8REf4ooWpCyoh+Bi2gi154izXPpy4wEJCGyAed+xb6FM/SACzFe3SAqgUHmFyZ+ngXsMDnP/3CCrSFznjUUnpR3CDTL7jZRuT5QmYAugMl9fwn/En7D7AnmdSQzDDJ5Y7GyjAhZPAIOM3WsBjGRFxbzBHJfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RlezHObB; arc=none smtp.client-ip=209.85.216.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1720177354; c=relaxed/simple;
+	bh=S7Om4GQ30fztSBIh/w1AFY6W2F2OWAuCWAmODzJ3pS4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=IwsmI2LV2ZMz0nGZlPsdDiIocx6Uyc1NGF4MJS5v5jM24anWPfXDd8wQ0iCjvwhXoNLr2AyIse/BZOEU/B4EjsmUu8/n6Z8MbXVjk1HyPsOxnQqAhZjFzICeeDRTSt8oJuWHmYGY/8k0x4SVlETea2VeYMnRPrBuetb7/PNzpQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=xNy3X87O; arc=none smtp.client-ip=209.85.210.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RlezHObB"
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-2c967e21888so1031505a91.1;
-        Fri, 05 Jul 2024 03:50:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="xNy3X87O"
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-70b04cb28acso859894b3a.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 05 Jul 2024 04:02:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1720176647; x=1720781447; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mazd6SlQGoT23PxSsQCYr3vhjvCyYL5J03ptC8NDxKc=;
-        b=RlezHObBXV3tRrKtR6sZAg+CxfCtPDcCJYtm1Dym6EB/qdnU0ftgEs7TdjyD23QpNe
-         7E6YwcXfpiYydCCoeWynT1tg0gYZl7gR+WRw9sRnk7lUcMGDat07tuMYzOoMBKKdGT9q
-         vrfy+T4Q3jz19oXK3BnTH3DutOJYPBO1HJWgRxgV5MYQ5iX+I4ZPcsOKTWnEeK5vptX3
-         OhCErv8bMaNVF6Rg0G9RrlkdhZJGWeAII7TowypfSyaEBt6h5nkagYnS58ANij3VW2HV
-         3RQKQ0CfKd0JmyL4fCDVT23Gncuk2NjlDD9NS4ISzizCo5vokinRqzFiSEnrZ7G4N3Vq
-         Wbtw==
+        d=linaro.org; s=google; t=1720177352; x=1720782152; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=f92fjw8JYMT1dRrD53VjhAAntEQwgMhVvh6//opJzE8=;
+        b=xNy3X87OrauY7Bu6xLPpMPYKCNZvtVIkC+XZvIMK+UMjyUsAKcp4Won6TSlC+o9rfa
+         f2ctiZcNg1cUd16zC1ouhfxWRxMcInzUvqdnVJBER/4qoWWms/h4+rKS1Gw8BuBjpOUx
+         ghwqgzyOMaSK63zDn4rYF8ET72oL/c/FSEJQFX7Y32SNYWCGIEk/yY+0GvuYwoaeFC4D
+         MgkXXcnYdwjlvSDtl9/9YtSx6JS7bBvq3Rb7NkR9o04Ur+NYv1ISU+g2ROhHsRIIjOkh
+         URZ3WUhJhKDis9s5qBbH3o5ceY0jYxgc815QZ9WJ3+YhmUQJRON93diW4vU+zWjExBac
+         ZH5A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720176647; x=1720781447;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=mazd6SlQGoT23PxSsQCYr3vhjvCyYL5J03ptC8NDxKc=;
-        b=FmaqsZF8ynpAdyq3JUlOgJMictrtD7GdtKU4jdtedpd/5UjnGmQyhtNVwm0uK2VgHg
-         CNvHk9FLkLofBIaPjPHcLXBSU0DvatS9ulTzM0+bNK3jKqU0yhHSv6hMg+EEGKgvBptj
-         CXXOY/uLMEH2dJDgk32qf22C4Jh3wDBO0FcbL59khy7vtvLUf67SDbZbZMEwq7bhiE08
-         3o4aJC4OoPRXblM4XiTNAc+dcqsHGjBBdtp6V1Twu+Fq6RVsMOA+cp3cndq6Igd33X8X
-         ylhkF6WaGpiV8jY6bPgSAN1Dy+B+b85MQBsb1ucqc6qH3u3PRWxtndfoEwrTqJSHbLzR
-         HzUQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWmNxUkcpDYLWuM3zhmH6Y1v3lFE9+7k34sHnHDYj5vETlL9O/OKfSJX2mNsmpyl27Vn81z15KWXkYSCM7dgz2Q/x7LlEWSv3seE/9zcTazsnJwt5OBB2OWQuqnqXzCBMP7z5g3LU89guvzfGdTPloJqRw9aGQh5wr+nS8iAq/bTvoR1ofJ2KH9Madvlhi6ezgUcmZrcbgfajQLwdk4eJhj7Go=
-X-Gm-Message-State: AOJu0Yw1AkMS6WmTRFJNpUXrPX7aG4XjgrPKPbAmMAY/RdFXkdWS+1S1
-	3lVnkUeTRGqYjz9MapNxR3zM1L5Wv23rdWpXqDVKB+GAbsxIgBhhGRf2RqkhSbs7Vn0OBgLFIa2
-	0f9JIlpLXL0wKUaK9khnJgBTC8sI=
-X-Google-Smtp-Source: AGHT+IHrLSGcmR0Qvqbpf7FgUVqM+8MTahzuf5TtCI/rZDagwTn9kJDSpqaExb+OjYYeAL9Q9cwiQ0mvi6kNes3PHWU=
-X-Received: by 2002:a17:90a:e005:b0:2c7:e24d:f695 with SMTP id
- 98e67ed59e1d1-2c99c53b396mr3069966a91.12.1720176647373; Fri, 05 Jul 2024
- 03:50:47 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1720177352; x=1720782152;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=f92fjw8JYMT1dRrD53VjhAAntEQwgMhVvh6//opJzE8=;
+        b=gAELb0E9/gpwI3EJn/nM43QuvvHN9kYpvSRBZSbTA3TJE3BUN+pBpXZHwosDYjqSWn
+         amiF79pVHRhF9aGM7NoBTdNTu9L6l9J0ZjNY315foJrv2Y1ndYAeyRJzOrD8Byz+j0lL
+         JQysUqslJQ3yp1Y/fo5nMsqig+4pnOUHylS1MW6+nG9S5J4B4CZWD/LMqCs+fj42IabD
+         9ckHrcbsT8Hamsno42IM3W0kz7/kaN5JwxPfVrnMsus4W+c4LBCARn0z6r/K1mhfru7v
+         swau0Cxvs7RdJu47HQ7mktOBENIbb5YyFJaJHgttAAFPSeFkn4EtV43qeWYQ5pocOZJD
+         13eA==
+X-Forwarded-Encrypted: i=1; AJvYcCWG2IZ732vf+/dCHMRBP+BGabg1lZj4wZC6Q0G9bdBIlChSHLkwjo1g4sTUt/QVxaXYIzhAsXa9L3enGdWrigfyx2SMJPqfSBiZtYOFw6E=
+X-Gm-Message-State: AOJu0Yx2Zv8XquXlTEBbCTwJ6Nl0Bb2I6J8c0lnlrLtzOXEDhocs7vvV
+	nZkNQW7ms7Lg3gZtOdv8AUhaVv+O9YgJnvvji3ic+0QgSRn+s1SunoHzog1Ygys=
+X-Google-Smtp-Source: AGHT+IGn1rhycWvEt5pEiJxdXzjK4S9Y8JJLU4mSVvnpE1+Y+yvmX3R8Ee/LOSlG8/Svf+b05wC0wA==
+X-Received: by 2002:a62:f205:0:b0:70a:ef84:7683 with SMTP id d2e1a72fcca58-70b01980885mr6239722b3a.1.1720177351516;
+        Fri, 05 Jul 2024 04:02:31 -0700 (PDT)
+Received: from localhost ([122.172.82.13])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-70afffefeafsm2805087b3a.207.2024.07.05.04.02.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 05 Jul 2024 04:02:30 -0700 (PDT)
+Date: Fri, 5 Jul 2024 16:32:28 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>, linux-pm@vger.kernel.org,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Stephen Boyd <sboyd@kernel.org>, Nishanth Menon <nm@ti.com>,
+	rust-for-linux@vger.kernel.org,
+	Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+	Erik Schilling <erik.schilling@linaro.org>,
+	Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
+	Joakim Bech <joakim.bech@linaro.org>, Rob Herring <robh@kernel.org>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH V3 1/8] rust: Add initial bindings for OPP framework
+Message-ID: <20240705110228.qqhhynbwwuwpcdeo@vireshk-i7>
+References: <cover.1719990273.git.viresh.kumar@linaro.org>
+ <fe8e9a96b29122876346fc98a6a9ede7e4f28707.1719990273.git.viresh.kumar@linaro.org>
+ <ZoVvn0QCSR8y4HQJ@Boquns-Mac-mini.home>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240701183625.665574-1-ojeda@kernel.org> <20240701183625.665574-14-ojeda@kernel.org>
- <ZoeQVYda-AZN6PYy@gpd>
-In-Reply-To: <ZoeQVYda-AZN6PYy@gpd>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 5 Jul 2024 12:50:35 +0200
-Message-ID: <CANiq72==+YBoQDBwEVuncY+ygeTkQPEbK00yBCPN3YWVk1L9XA@mail.gmail.com>
-Subject: Re: [PATCH 13/13] docs: rust: quick-start: add section on Linux distributions
-To: Andrea Righi <righi.andrea@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev, 
-	Jan Alexander Steffens <heftig@archlinux.org>, =?UTF-8?Q?Johannes_L=C3=B6thberg?= <johannes@kyriasis.com>, 
-	=?UTF-8?Q?Fabian_Gr=C3=BCnbichler?= <debian@fabian.gruenbichler.email>, 
-	Josh Stone <jistone@redhat.com>, Randy Barlow <randy@electronsweatshop.com>, 
-	Anna Figueiredo Gomes <navi@vlhl.dev>, Matoro Mahri <matoro_gentoo@matoro.tk>, 
-	Ryan Scheel <ryan.havvy@gmail.com>, figsoda <figsoda@pm.me>, 
-	=?UTF-8?Q?J=C3=B6rg_Thalheim?= <joerg@thalheim.io>, 
-	Theodore Ni <43ngvg@masqt.com>, Winter <nixos@winter.cafe>, William Brown <wbrown@suse.de>, 
-	Xiaoguang Wang <xiaoguang.wang@suse.com>, Zixing Liu <zixing.liu@canonical.com>, 
-	Jonathan Corbet <corbet@lwn.net>, workflows@vger.kernel.org, linux-doc@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ZoVvn0QCSR8y4HQJ@Boquns-Mac-mini.home>
 
-On Fri, Jul 5, 2024 at 8:19=E2=80=AFAM Andrea Righi <righi.andrea@gmail.com=
-> wrote:
->
-> This implicitly covers Ubuntu, since packages are sync'ed with Debian.
+Hi Boqun,
 
-Do you mean the names (i.e. command) is the same, or that the newer
-versions from e.g. Sid can be used in Ubuntu? If the latter, that
-would be definitely worth adding, yeah -- is that supported / expected
-to work?
+On 03-07-24, 08:34, Boqun Feng wrote:
+> On Wed, Jul 03, 2024 at 12:44:26PM +0530, Viresh Kumar wrote:
+> > +/// Operating performance point (OPP).
+> > +///
+> > +/// # Invariants
+> > +///
+> > +/// The pointer stored in `Self` is non-null and valid for the lifetime of the ARef instance. In
+> > +/// particular, the ARef instance owns an increment on underlying object´s reference count.
+> 
+> Since you use `ARef` pattern now, you may want to rewrite this
+> "invariants".
 
-> In addition to that Ubuntu also provides versioned packages (such as
-> rustc-1.74, bindgen-0.65, etc.), so in case of special requirements
-> (e.g., older kernels) users should be able to install the required
-> version(s) using the packages provided by the distro.
->
-> Maybe it's worth mentioning as a little note, so that users are aware of
-> these extra packages.
+I copied it from the device's documentation. What all details should I
+be writing here ? A link to some other implementation would be useful.
 
-I thought about adding a section for Ubuntu to mention those -- so far
-I only added the distributions/commands that were likely to work with
-the versions supported by the kernel, with the idea of expand later as
-time passes. So I didn't add the versioned ones since the latest is
-1.76, so it wouldn't work for the current kernel.
+> > +impl Drop for OPP {
+> 
+> I don't think you need the `drop` implementation here, since it should
+> be already handled by `impl AlwaysRefCounted`,
 
-But it may be useful to state it nevertheless, since some people may
-only look at the latest docs. (Or perhaps Ubuntu can add Rust 1.79? :)
+Right.
 
-Thanks!
+> could you try to a doc
+> test for this? Something like:
+> 
+> 	let opp: ARef<OPP> = <from a raw dev_pm_opp ponter whose refcount is 1>
+> 	drop(opp);
 
-Cheers,
-Miguel
+I now tested it with a kernel test to see what's going on internally
+
+> IIUC, this will result double-free with the current implementation.
+
+Quite the opposite actually. I am getting double get and a single put :)
+
+Thanks a lot for pointing me to this direction as I have found that my
+implementation was incorrect. This is how I understand it, I can be
+wrong since I am okayish with Rust:
+
+- What's getting returned from `from_raw_opp/from_raw_opp_owned` is a
+  reference: `<&'a Self>`.
+
+- Since this is a reference, when it gets out of scope, nothing
+  happens. i.e. the `drop()` fn of `struct OPP` never gets called for
+  the OPP object, as there is no real OPP object, but just a
+  reference.
+
+- When this gets converted to an `ARef` object (implicit typecasting),
+  we increment the count. And when that gets dropped, we decrement it.
+  But Apart from an `ARef` object, only the reference to the OPP gets
+  dropped and hence again, drop() doesn't get called.
+
+- The important part here is that `from_raw_opp()` shouldn't be
+  incrementing the refcount, as drop() will never get called. And
+  since we reach here from the C implementation, the OPP will remain
+  valid for the function call.
+
+- On the other hand, I can't return <&'a Self> from
+  from_raw_opp_owned() anymore. In this case the OPP core has already
+  incremented the refcount of the OPP (while it searched the OPP on
+  behalf of the Rust code). Whatever is returned here, must drop the
+  refcount when it goes out of scope. Also the returned OPP reference
+  can live for a longer period of time in this case, since the call
+  originates from the Rust side. So, it needs to be an explicit
+  conversion to ARef which won't increment the refcount, but just
+  decrement when the ARef gets out of scope.
+
+Here is the diff that I need:
+
+diff --git a/rust/kernel/opp.rs b/rust/kernel/opp.rs
+index aaf220e6aeac..a99950b4d835 100644
+--- a/rust/kernel/opp.rs
++++ b/rust/kernel/opp.rs
+@@ -692,7 +692,7 @@ pub fn opp_from_freq(
+         })?;
+ 
+         // SAFETY: The `ptr` is guaranteed by the C code to be valid.
+-        Ok(unsafe { OPP::from_raw_opp_owned(ptr)?.into() })
++        unsafe { OPP::from_raw_opp_owned(ptr) }
+     }
+ 
+     /// Finds OPP based on level.
+@@ -718,7 +718,7 @@ pub fn opp_from_level(&self, mut level: u32, stype: SearchType) -> Result<ARef<O
+         })?;
+ 
+         // SAFETY: The `ptr` is guaranteed by the C code to be valid.
+-        Ok(unsafe { OPP::from_raw_opp_owned(ptr)?.into() })
++        unsafe { OPP::from_raw_opp_owned(ptr) }
+     }
+ 
+     /// Finds OPP based on bandwidth.
+@@ -743,7 +743,7 @@ pub fn opp_from_bw(&self, mut bw: u32, index: i32, stype: SearchType) -> Result<
+         })?;
+ 
+         // SAFETY: The `ptr` is guaranteed by the C code to be valid.
+-        Ok(unsafe { OPP::from_raw_opp_owned(ptr)?.into() })
++        unsafe { OPP::from_raw_opp_owned(ptr) }
+     }
+ 
+     /// Enable the OPP.
+@@ -834,31 +834,33 @@ unsafe fn dec_ref(obj: ptr::NonNull<Self>) {
+ }
+ 
+ impl OPP {
+-    /// Creates a reference to a [`OPP`] from a valid pointer.
++    /// Creates an owned reference to a [`OPP`] from a valid pointer.
+     ///
+     /// # Safety
+     ///
+-    /// The caller must ensure that `ptr` is valid and remains valid for the lifetime of the
+-    /// returned [`OPP`] reference.
+-    pub unsafe fn from_raw_opp_owned<'a>(ptr: *mut bindings::dev_pm_opp) -> Result<&'a Self> {
+-        // SAFETY: The caller guarantees that the pointer is not dangling
+-        // and stays valid for the duration of 'a. The cast is okay because
+-        // `OPP` is `repr(transparent)`.
+-        Ok(unsafe { &*ptr.cast() })
++    /// The caller must ensure that `ptr` is valid and OPP's refcount is incremented. The refcount
++    /// will be decremented by `dec_ref` when the ARef object is dropped.
++    pub unsafe fn from_raw_opp_owned(ptr: *mut bindings::dev_pm_opp) -> Result<ARef<Self>> {
++        let ptr = ptr::NonNull::new(ptr).ok_or(ENODEV)?;
++
++        // SAFETY: The safety requirements guarantee the validity of the pointer.
++        //
++        // INVARIANT: The refcount is already incremented by the C API that returned the pointer,
++        // and we pass ownership of the refcount to the new `ARef<OPP>`.
++        Ok(unsafe { ARef::from_raw(ptr.cast()) })
+     }
+ 
+     /// Creates a reference to a [`OPP`] from a valid pointer.
+     ///
+     /// # Safety
+     ///
+-    /// The caller must ensure that `ptr` is valid and remains valid for the lifetime of the
+-    /// returned [`OPP`] reference.
++    /// The caller must ensure that `ptr` is valid and remains valid for the duration of 'a. The
++    /// refcount is not updated by the Rust API unless the returned reference is converted to an
++    /// ARef object.
+     pub unsafe fn from_raw_opp<'a>(ptr: *mut bindings::dev_pm_opp) -> Result<&'a Self> {
+-        let opp = unsafe { Self::from_raw_opp_owned(ptr) }?;
+-
+-        // Take an extra reference to the OPP since the caller didn't take it.
+-        opp.inc_ref();
+-        Ok(opp)
++        // SAFETY: The caller guarantees that the pointer is not dangling and stays valid for the
++        // duration of 'a. The cast is okay because `OPP` is `repr(transparent)`.
++        Ok(unsafe { &*ptr.cast() })
+     }
+ 
+     #[inline]
+@@ -910,10 +912,3 @@ pub fn is_turbo(&self) -> bool {
+         unsafe { bindings::dev_pm_opp_is_turbo(self.as_raw()) }
+     }
+ }
+-
+-impl Drop for OPP {
+-    fn drop(&mut self) {
+-        // SAFETY: The safety requirements guarantee that the refcount is nonzero.
+-        unsafe { bindings::dev_pm_opp_put(self.as_raw()) }
+-    }
+-}
+
+Makes sense ?
+
+-- 
+viresh
