@@ -1,111 +1,245 @@
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AAFC17FE;
-	Sat,  6 Jul 2024 12:40:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53B024689;
+	Sat,  6 Jul 2024 13:17:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720269634; cv=none; b=cMqicoHBNXT6SlbBipOPVuE8fnRID87V55xwDHQtHcf06gOiQIT1QbAWRrxS/Ckb8nT2ekOoZl4IgXb5gU/OMCu3U7fg/2Iij2h0JB70De1UHudsyNs3zRLcy3JgZQUVKoDXmUV2lOtJ5iM2whW0RwkKMIL+zJ2hbXRd8GoQx1Y=
+	t=1720271849; cv=none; b=GT/OMXw8lUsY4D85AlJyhCsiHKkmLkfubWQ3vf9hiNpf6XctXm6YEsuHkFUr2WYvbguKC60TUjLTANOuoM+NBLotOvTMDVWxz0W8PPfXz3G8qA9U3Dj+wsDBCN4pvnoaumfCNZCUxdXKCqY58NKMt/ZItEvxjK9VUk4b2TXHRh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720269634; c=relaxed/simple;
-	bh=j3UTqJfzsjIWbMszseeWkbC4a6y7kzVbRtpw0k1TAaw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jYMvNoFyvuPrD7oslpUyCHS/kroljaSZl+wMB/l3Mee4dkj03T/XFYpYSXt+oqBfHmF6KveFa5R8OEoazOiNt7tALGjrCsrb8l+MI20EcEiEw4gtEIc6u0tVsqXoFXB0NbKnpcNAM0tMTpI1BjDZGWSgpnmmqxTOA8OB4bxYRsE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IgNUMCLo; arc=none smtp.client-ip=209.85.216.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1720271849; c=relaxed/simple;
+	bh=pMQLgWXUUWUAcKGKTvjEGo2+7LQpB4vTwVyoEBfH2tY=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=UkX0EmOTnwe/S3Rqcu5h1CcEZTl/RPDTZKD8Q73R0bgZYcpVgIjCEOgnp4b4wJArOuZTmR9T0a3A4mFhRiozGU9J6wHgYzbGa+Yn4BnkiJ/gYzXQnE45DGsTB4Ju2WLLvZoutO4EsIBh7WjlAY7nHh9K/UAXERoGJV/OMb2uVuA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=bsQGwG6C; arc=none smtp.client-ip=185.70.40.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IgNUMCLo"
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-2c980b55741so1601165a91.2;
-        Sat, 06 Jul 2024 05:40:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1720269633; x=1720874433; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=j3UTqJfzsjIWbMszseeWkbC4a6y7kzVbRtpw0k1TAaw=;
-        b=IgNUMCLolStdz5tvGRtzkq7p/sfTJ+VvuIBKzhZxRTUGo8CBwlxx3CDS+Zi3LJqp2R
-         SfdAEP0borCE6DfFOb/TG2I6qtyso1zM6+0dAeZ505b2/a5Zmuc0LoolTHRrPaChwwjF
-         FWJ9ByZZFP0dK2TB51r++q5A1X4GtAJSQ9v2OPxWWIWdZ7AtZ3R75awVD6KBeVxZKwun
-         nsS4N4Zg34UoTYuNFBSXkeKrA05kvmdcZYBMQ/GuHk/NhYhERHzOd6q/0DhAfIXdCJGS
-         10j7mi60X5ZygrNm4wwlJgRxWUqr0oksVOz5Lccxf2w7Sh76YS7tNTCcnvoqyLRVpGWf
-         w6kA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720269633; x=1720874433;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=j3UTqJfzsjIWbMszseeWkbC4a6y7kzVbRtpw0k1TAaw=;
-        b=G01n3oYl9cE4FFffTEm+Y/Q2WqBNoOlvXfxwrNOKxds6usDW4vGV1Y55a8/902Znsa
-         S5d6Hk32VEVrbDWKQ0PhydVcAKfNPPZbSodXepLkSANAVrxH1CAjNo+HmsWH+4bGeMYi
-         wAZAbnjBp6yeEw6SB1sFK5cmBtkW+3yl+y4S4o+lHO1fSaRXhBtst6O8SPiUEVLdkDFq
-         YG23bk8tR/N1aAGM7q6TM2Go2EvZY5YYgF3yNq8gmjsSfj/BZ0la5P/8Oe1TpNVC+9f0
-         sv8qExqQL2IMe/4NI3OBANBsIj22RD0LlmtY5WA7DHqsh0KrzeK6uZAfpgmgihT0DgmA
-         wf3Q==
-X-Forwarded-Encrypted: i=1; AJvYcCU1qIv/30b+nM5bS+Bp5M9pN87UtAZ7Qi1Xl964a7p8rjnMRXoI3GZ+Vh3nHV6wABM7WU7b0GIsYvIBACHaw6Q+rgb4iHcSwFvym1fqDyklkFULCFcw1E/GzqSDok4AQOuKwNPRgQJEMkGJaT0=
-X-Gm-Message-State: AOJu0Yxu6GZaDUMp2Bo03KJsDX0eEOiiEKval/C6QdrGSCAKT3JS1MWC
-	SnuxKOi57eSah4DzTJXFOTjlaQIUCuPi3qcSqfRsdmLu83Ntw9PU3ZivYwQBqHnJvGVyg6y4foR
-	l5DwjYMov9MXOfS85xbNi1MHtt0Y=
-X-Google-Smtp-Source: AGHT+IGscmRNCPQPnGzlGQ4cn3OcoVG7q9GXhLRUHvJ7+NtJpAaDf3rsefSkGv35h79b1xfdIsoV/Lo+y6Z8Q5uipyw=
-X-Received: by 2002:a17:90a:d811:b0:2c9:887e:46de with SMTP id
- 98e67ed59e1d1-2c99c6aeff0mr4370632a91.12.1720269632639; Sat, 06 Jul 2024
- 05:40:32 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="bsQGwG6C"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1720271845; x=1720531045;
+	bh=J2SLCWi/cOCEUrc6au+4ffzQRV6ykGZST0O878MKXZc=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=bsQGwG6CdvT08BjAAX72dAa+EDd1sSGqXLHZvyVGXtoOsdiDS4005vxtBewpIBOjx
+	 uoCrwkH0Q8sC55qrJpb3XJNR7SRJ+nu9D6aaWh9873A3QdndT4QZtaiLclS4tZcZWK
+	 qgbePpJnjF9hMP4qYivO8WoR4ZfXHaELSHUMolkbemxVYoBJynHUOT0QF+pVZz2zzx
+	 nAb6pI6FnLymBIKpNkkvAXzolMftooxHJ3Ufds2iJ6Yyw7jtM9NSYlF2zknx8qbA4X
+	 gkfqZ2tMx2Ahct9gndrHJeIfB1wv5Q1XdttNhjywuQh/3EacN5P7x4r7LqTGiyqCkm
+	 7EB7NgDllZeVA==
+Date: Sat, 06 Jul 2024 13:17:19 +0000
+To: Danilo Krummrich <dakr@redhat.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@samsung.com, aliceryhl@google.com, daniel.almeida@collabora.com, faith.ekstrand@collabora.com, boris.brezillon@collabora.com, lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com, acurrid@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com, ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH 01/20] rust: alloc: add `Allocator` trait
+Message-ID: <2c322b00-20f8-4102-9f3b-edab0c0907b9@proton.me>
+In-Reply-To: <ZoklB7aLyc90kWPT@pollux.localdomain>
+References: <20240704170738.3621-1-dakr@redhat.com> <20240704170738.3621-2-dakr@redhat.com> <37d87244-fbef-414c-a726-60839b305040@proton.me> <ZoklB7aLyc90kWPT@pollux.localdomain>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: 3947ba9fb484c06126e658095a623c4bee782b03
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240704170738.3621-1-dakr@redhat.com> <20240704170738.3621-10-dakr@redhat.com>
- <fa6d6c0a-17eb-4280-baa3-df5f97e58497@proton.me>
-In-Reply-To: <fa6d6c0a-17eb-4280-baa3-df5f97e58497@proton.me>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sat, 6 Jul 2024 14:40:20 +0200
-Message-ID: <CANiq72kmppYpNNjP=0eqHx60ixjgoL4oW_ux1HVwM6vrCRFztw@mail.gmail.com>
-Subject: Re: [PATCH 09/20] rust: types: implement `Unique<T>`
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Danilo Krummrich <dakr@redhat.com>, ojeda@kernel.org, alex.gaynor@gmail.com, 
-	wedsonaf@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
-	bjorn3_gh@protonmail.com, a.hindborg@samsung.com, aliceryhl@google.com, 
-	daniel.almeida@collabora.com, faith.ekstrand@collabora.com, 
-	boris.brezillon@collabora.com, lina@asahilina.net, mcanal@igalia.com, 
-	zhiw@nvidia.com, acurrid@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com, 
-	airlied@redhat.com, ajanulgu@redhat.com, lyude@redhat.com, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Jul 6, 2024 at 12:59=E2=80=AFPM Benno Lossin <benno.lossin@proton.m=
-e> wrote:
->
-> The `Unique` from std is special, in the sense that the Rust compiler
-> will emit the `noalias` LLVM attribute.
->
-> This gives std's `Box` type a possible performance advantage (IIRC Gary
-> had a compiler explorer example that showed different instruction
-> count).
+On 06.07.24 13:05, Danilo Krummrich wrote:
+> On Sat, Jul 06, 2024 at 10:33:49AM +0000, Benno Lossin wrote:
+>> On 04.07.24 19:06, Danilo Krummrich wrote:
+>>> +pub unsafe trait Allocator {
+>>> +    /// Allocate memory based on `layout` and `flags`.
+>>> +    ///
+>>> +    /// On success, returns a buffer represented as `NonNull<[u8]>` th=
+at satisfies the size an
+>>
+>> typo "an" -> "and"
+>>
+>>> +    /// alignment requirements of layout, but may exceed the requested=
+ size.
+>>
+>> Also if it may exceed the size, then I wouldn't call that "satisfies the
+>> size [...] requirements".
+>=20
+> Do you have a better proposal? To me "satisfies or exceeds" sounds reason=
+able.
 
-The example in question: https://godbolt.org/z/n93vePqMj -- there is
-one less memory load.
+I think "satisfies the layout constraints (i.e. minimum size and
+alignment as specified by `layout`)" would be better.
 
-One can also easily craft examples where the compiler e.g. removes an
-entire loop: https://godbolt.org/z/c8ncbdKMe
+>>> +    ///
+>>> +    /// This function is equivalent to `realloc` when called with a NU=
+LL pointer and an `old_size`
+>>> +    /// of `0`.
+>>
+>> This is only true for the default implementation and could be
+>> overridden, since it is not a requirement of implementing this trait to
+>> keep it this way. I would remove this sentence.
+>=20
+> I could add a bit more generic description and say that for the default i=
+mpl
+> "This function is eq..."?
+>=20
+>>
+>>> +    fn alloc(&self, layout: Layout, flags: Flags) -> Result<NonNull<[u=
+8]>, AllocError> {
+>>
+>> Instead of using the `Flags` type from the alloc module, we should have
+>> an associated `Flags` type in this trait.
+>=20
+> What does this give us?
 
-But, of course, it depends on whether we will actually encounter these
-situations in real code, as you say. It could also be that today we
-don't find any relevant benefit, but there may exist situations later
-(perhaps because we have more code, or perhaps because codegen
-backends change).
+1. IIRC not all flags can be used with every allocator (or do not have
+   an effect) and it would be best if only the working ones are allowed.
+2. that way the design is more flexible and could be upstreamed more
+   easily.
 
-From a quick look, there are still quite a few open issues about the
-exact properties of `Box` and `Unique`, including whether `Box` has a
-derefencability requirement
-(https://github.com/rust-lang/unsafe-code-guidelines/issues/145).
+>> Similarly, it might also be a good idea to let the implementer specify a
+>> custom error type.
+>=20
+> Same here, why?
 
-What properties would we want, today, from our `Box` types, if we
-could pick any? Should we have several kinds of `Box`es if there is no
-unique answer? Is it worth diverging from the standard one(s) in
-either direction (i.e. more invariants or less)?
+In this case the argument is weaker, but it could allow us to implement
+an allocator with `Error =3D Infallible`, to statically guarantee
+allocation (e.g. when using GFP_ATOMIC). But at the moment there is no
+user.
 
+>>> +        // SAFETY: Passing a NULL pointer to `realloc` is valid by it'=
+s safety requirements and asks
+>>> +        // for a new memory allocation.
+>>> +        unsafe { self.realloc(ptr::null_mut(), 0, layout, flags) }
+>>> +    }
+>>> +
+>>> +    /// Re-allocate an existing memory allocation to satisfy the reque=
+sted `layout`. If the
+>>> +    /// requested size is zero, `realloc` behaves equivalent to `free`=
+.
+>>
+>> This is not guaranteed by the implementation.
+>=20
+> Not sure what exactly you mean? Is it about "satisfy" again?
+
+If the requested size is zero, the implementation could also leak the
+memory, nothing prevents me from implementing such an Allocator.
+
+>>> +    ///
+>>> +    /// If the requested size is larger than `old_size`, a successful =
+call to `realloc` guarantees
+>>> +    /// that the new or grown buffer has at least `Layout::size` bytes=
+, but may also be larger.
+>>> +    ///
+>>> +    /// If the requested size is smaller than `old_size`, `realloc` ma=
+y or may not shrink the
+>>> +    /// buffer; this is implementation specific to the allocator.
+>>> +    ///
+>>> +    /// On allocation failure, the existing buffer, if any, remains va=
+lid.
+>>> +    ///
+>>> +    /// The buffer is represented as `NonNull<[u8]>`.
+>>> +    ///
+>>> +    /// # Safety
+>>> +    ///
+>>> +    /// `ptr` must point to an existing and valid memory allocation cr=
+eated by this allocator
+>>> +    /// instance of a size of at least `old_size`.
+>>> +    ///
+>>> +    /// Additionally, `ptr` is allowed to be a NULL pointer; in this c=
+ase a new memory allocation is
+>>> +    /// created.
+>>> +    unsafe fn realloc(
+>>> +        &self,
+>>> +        ptr: *mut u8,
+>>> +        old_size: usize,
+>>
+>> Why not request the old layout like the std Allocator's grow/shrink
+>> functions do?
+>=20
+> Because we only care about the size that needs to be preserved when growi=
+ng the
+> buffer. The `alignment` field of `Layout` would be wasted.
+
+In the std Allocator they specified an old layout. This is probably
+because of the following: if `Layout` is ever extended to hold another
+property that would need to be updated, the signatures are already
+correct.
+In our case we could change it tree-wide, so I guess we could fix that
+issue when it comes up.
+
+>>> +        layout: Layout,
+>>> +        flags: Flags,
+>>> +    ) -> Result<NonNull<[u8]>, AllocError>;
+>>> +
+>>> +    /// Free an existing memory allocation.
+>>> +    ///
+>>> +    /// # Safety
+>>> +    ///
+>>> +    /// `ptr` must point to an existing and valid memory allocation cr=
+eated by this `Allocator`
+>>> +    /// instance.
+>>> +    unsafe fn free(&self, ptr: *mut u8) {
+>>
+>> `ptr` should be `NonNull<u8>`.
+>=20
+> Creating a `NonNull` from a raw pointer is an extra operation for any use=
+r of
+> `free` and given that all `free` functions in the kernel accept a NULL po=
+inter,
+> I think there is not much value in making this `NonNull`.
+
+I don't think that this argument holds for Rust though. For example,
+`KBox` contains a `Unique` that contains a `NonNull`, so freeing could
+just be done with `free(self.0.0)`.
+
+>>> +        // SAFETY: `ptr` is guaranteed to be previously allocated with=
+ this `Allocator` or NULL.
+>>> +        // Calling `realloc` with a buffer size of zero, frees the buf=
+fer `ptr` points to.
+>>> +        let _ =3D unsafe { self.realloc(ptr, 0, Layout::new::<()>(), F=
+lags(0)) };
+>>
+>> Why does the implementer have to guarantee this?
+>=20
+> Who else can guarantee this?
+
+Only the implementer yes. But they are not forced to do this i.e.
+nothing in the safety requirements of `Allocator` prevents me from doing
+a no-op on reallocating to a zero size.
+
+>>> +    }
+>>> +}
+>>> --
+>>> 2.45.2
+>>>
+>>
+>> More general questions:
+>> - are there functions in the kernel to efficiently allocate zeroed
+>>   memory? In that case, the Allocator trait should also have methods
+>>   that do that (with a iterating default impl).
+>=20
+> We do this with GFP flags. In particular, you can pass GFP_ZERO to `alloc=
+` and
+> `realloc` to get zeroed memory. Hence, I think having dedicated functions=
+ that
+> just do "flags | GFP_ZERO" would not add much value.
+
+Ah right, no in that case, we don't need it.
+
+>> - I am not sure putting everything into the single realloc function is a
+>>   good idea, I like the grow/shrink methods of the std allocator. Is
+>>   there a reason aside from concentrating the impl to go for only a
+>>   single realloc function?
+>=20
+> Yes, `krealloc()` already provides exactly the described behaviour. See t=
+he
+> implementation of `Kmalloc`.
+
+But `kvmalloc` does not and neither does `vmalloc`. I would prefer
+multiple smaller functions over one big one in this case.
+
+---
 Cheers,
-Miguel
+Benno
+
