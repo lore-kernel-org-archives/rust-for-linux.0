@@ -1,43 +1,43 @@
-Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
+Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69AF3482D3
-	for <rust-for-linux@vger.kernel.org>; Sat,  6 Jul 2024 13:21:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E82BD26AC2
+	for <rust-for-linux@vger.kernel.org>; Sat,  6 Jul 2024 13:37:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720272108; cv=none; b=qaOZK2Pxe+B+4ynEqewyLJ7OD1YBExDfJFkuZMTjtBiyWXnag9eFBfaDfzw4qRwlbT4ibcwHb706gZqrFmK4rUaSoJdHvvF75DUjX4fa4Kjko01134zgEBxcAwK6We4BuniMr/AEIoPyYBd6iVaQF/uiysvIPPsclXP08y1N/gg=
+	t=1720273032; cv=none; b=NrR7W+untO4Xq2uTK0pkmBGYiVm3yZR0PrgSg1Ke+9T/Btc/OCeofperD+/WQTpG8Z3bfAhW3mPJYaYb6QDApR5xhgnmxyZc0+gY9bJpONB3BxPt6nUuCSSuucCY096iwagHO25uCV7Zlbo14/uMrmiNjsn3d72aM/Y3da/zB+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720272108; c=relaxed/simple;
-	bh=E/Z+a0IYTlrM9p8N8UthGlV27pBUcXL9wofd/V7P/Gc=;
+	s=arc-20240116; t=1720273032; c=relaxed/simple;
+	bh=8bbFZu23/5jdizCrZRROK4kbwKE6vi88QMD+ov8p68k=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dlmuCZiuiaxzOCOjdmr974OZWpgHhdHVRbU7Sw3sV75f5/McaV1WM+gJNIAE641Dryae9iCjBFF2WmLxw+fmGfK/klim1lls5UVup6KYnzWQDN0Py4s7SmZucBVvQ8A/GLgmM5XZz/FT0wmTBmgJX+EnAoJhj4RUTaV4KbHy70c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=JRDXe+Bh; arc=none smtp.client-ip=185.70.40.131
+	 MIME-Version:Content-Type; b=pnK9R+p84QCx0VlhZfsmdw25GLNQ5vNj7JSCUo1v9vzAOb9RMGtdech2wV1J9E6w/AJBT39KNOREb/o8w6C9hCA9CpNxziUMAgUVgYIzK1Ogr7Z1saFoQ5I717Lv9djJok1dfb4dCDJlxm7Bd0Qg5xqwuWkpWHGV7kmMB3rt5d8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=UV2BfYOw; arc=none smtp.client-ip=185.70.40.133
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="JRDXe+Bh"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="UV2BfYOw"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1720272103; x=1720531303;
-	bh=s36rjgEJmVqwWLnrEohDXjmHZsXgc7KAt+lY3+9Djrc=;
+	s=protonmail; t=1720273027; x=1720532227;
+	bh=8bbFZu23/5jdizCrZRROK4kbwKE6vi88QMD+ov8p68k=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=JRDXe+BhlK8YYpRfjMILF0mOIbsRV8uXH3eRgcn+SoUOXeNaY44MMhNESfegm7HLN
-	 Eu3z3EEB9w+rEFkt/FXOO7pl4OeCA86pe0Y/FbmaWjCG2KBhsBauJ3Wk51HKilhjWv
-	 wRh/lGFy936H20pVQxA2aIYafGwpOHkRC3zTE+uqtnYPPXndFkI/C/RFxlpw4hCi7+
-	 t3YyfeZ2weK23nBg7lKjxsUWhAoK+zsf2A20iYE7SAEYb/K60KwuuPsTMRmYY48YMI
-	 1794vLJYMrEFVwjFQJj/kY6+v3h5uXVF3iFzOX1RvL3dZW50fA4rWDkKP49/fU0oxr
-	 GYhTnRAXwZ9cA==
-Date: Sat, 06 Jul 2024 13:21:39 +0000
-To: Danilo Krummrich <dakr@redhat.com>
+	b=UV2BfYOwIUWgDaGkt7M/cQTDyMC6sxX/AaIi/yaSCrTAbmXH/ORFJWB2pVIclIifa
+	 qiwAmPOm7H4vbfXh3xpSfyNufUotu82ePOEcGCHYKaCfrBLvBxJa23d312cKetLHMj
+	 bjGJsd2Y2vNt7P5SWTOF8G+nxyy6AQy7V00dI6385EJhiMHsWxSMyaa1ovgrrZVhyq
+	 dz/+r6/8I7YzewGjwVtJITEiDKjqEN/DQjJxc/8t/IrSl4rBrED9Y9EYlMcT/denF/
+	 6YL49lgUBgx2gqtvUd3zi1Eyu7BPAAd678dOXLMFWPGZYhma83FAJGkSSHBL4h4bre
+	 +U8DTRm9h9UPw==
+Date: Sat, 06 Jul 2024 13:37:02 +0000
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@samsung.com, aliceryhl@google.com, daniel.almeida@collabora.com, faith.ekstrand@collabora.com, boris.brezillon@collabora.com, lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com, acurrid@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com, ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 07/20] rust: alloc: implement `Vmalloc` allocator
-Message-ID: <796b50c4-0824-4b9f-97f9-750f34096ed6@proton.me>
-In-Reply-To: <Zokm6M48WunoEohV@pollux.localdomain>
-References: <20240704170738.3621-1-dakr@redhat.com> <20240704170738.3621-8-dakr@redhat.com> <596c6446-eca4-46a8-91c5-e71e92c61062@proton.me> <Zokm6M48WunoEohV@pollux.localdomain>
+Cc: Danilo Krummrich <dakr@redhat.com>, ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@samsung.com, aliceryhl@google.com, daniel.almeida@collabora.com, faith.ekstrand@collabora.com, boris.brezillon@collabora.com, lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com, acurrid@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com, ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH 09/20] rust: types: implement `Unique<T>`
+Message-ID: <8bfd9934-6227-4584-a11c-3f3c881b7fac@proton.me>
+In-Reply-To: <CANiq72kmppYpNNjP=0eqHx60ixjgoL4oW_ux1HVwM6vrCRFztw@mail.gmail.com>
+References: <20240704170738.3621-1-dakr@redhat.com> <20240704170738.3621-10-dakr@redhat.com> <fa6d6c0a-17eb-4280-baa3-df5f97e58497@proton.me> <CANiq72kmppYpNNjP=0eqHx60ixjgoL4oW_ux1HVwM6vrCRFztw@mail.gmail.com>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 2ea57d4981e071ba6a4f70d52c4ec6ea648f6785
+X-Pm-Message-ID: 841b547db5830159ab57150eda5cc997ce745fc1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,85 +47,52 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On 06.07.24 13:13, Danilo Krummrich wrote:
-> On Sat, Jul 06, 2024 at 10:41:28AM +0000, Benno Lossin wrote:
->> On 04.07.24 19:06, Danilo Krummrich wrote:
->>> @@ -112,6 +118,55 @@ unsafe fn alloc_zeroed(&self, layout: Layout) -> *=
-mut u8 {
->>>      }
->>>  }
->>>
->>> +unsafe impl Allocator for Vmalloc {
->>> +    unsafe fn realloc(
->>> +        &self,
->>> +        src: *mut u8,
->>> +        old_size: usize,
->>> +        layout: Layout,
->>> +        flags: Flags,
->>> +    ) -> Result<NonNull<[u8]>, AllocError> {
->>> +        let mut size =3D aligned_size(layout);
->>> +
->>> +        let dst =3D if size =3D=3D 0 {
->>> +            // SAFETY: `src` is guaranteed to be previously allocated =
-with this `Allocator` or NULL.
->>> +            unsafe { bindings::vfree(src.cast()) };
->>> +            NonNull::dangling()
->>> +        } else if size <=3D old_size {
->>> +            size =3D old_size;
->>> +            NonNull::new(src).ok_or(AllocError)?
->>> +        } else {
->>> +            // SAFETY: `src` is guaranteed to point to valid memory wi=
-th a size of at least
->>> +            // `old_size`, which was previously allocated with this `A=
-llocator` or NULL.
->>> +            let dst =3D unsafe { bindings::__vmalloc_noprof(size as u6=
-4, flags.0) };
->>> +
->>> +            // Validate that we actually allocated the requested memor=
-y.
->>> +            let dst =3D NonNull::new(dst.cast()).ok_or(AllocError)?;
->>> +
->>> +            if !src.is_null() {
->>> +                // SAFETY: `src` is guaranteed to point to valid memor=
-y with a size of at least
->>> +                // `old_size`; `dst` is guaranteed to point to valid m=
-emory with a size of at least
->>> +                // `size`.
->>> +                unsafe {
->>> +                    core::ptr::copy_nonoverlapping(
->>> +                        src,
->>> +                        dst.as_ptr(),
->>> +                        core::cmp::min(old_size, size),
->>> +                    )
->>> +                };
->>> +
->>> +                // SAFETY: `src` is guaranteed to be previously alloca=
-ted with this `Allocator` or
->>> +                // NULL.
->>> +                unsafe { bindings::vfree(src.cast()) }
->>> +            }
->>> +
->>> +            dst
->>> +        };
+On 06.07.24 14:40, Miguel Ojeda wrote:
+> On Sat, Jul 6, 2024 at 12:59=E2=80=AFPM Benno Lossin <benno.lossin@proton=
+.me> wrote:
 >>
->> If we had not a single realloc, but shrink/grow/free/alloc, then we
->> would not need these checks here, I personally would prefer that, what
->> do you guys think?
+>> The `Unique` from std is special, in the sense that the Rust compiler
+>> will emit the `noalias` LLVM attribute.
+>>
+>> This gives std's `Box` type a possible performance advantage (IIRC Gary
+>> had a compiler explorer example that showed different instruction
+>> count).
 >=20
-> Yeah, but look at `Kmalloc`, you'd have these checks in `Kmalloc`'s shrin=
-k/grow
-> functions instead, since `krealloc()` already behaves this way.
+> The example in question: https://godbolt.org/z/n93vePqMj -- there is
+> one less memory load.
+>=20
+> One can also easily craft examples where the compiler e.g. removes an
+> entire loop: https://godbolt.org/z/c8ncbdKMe
+>=20
+> But, of course, it depends on whether we will actually encounter these
+> situations in real code, as you say. It could also be that today we
+> don't find any relevant benefit, but there may exist situations later
+> (perhaps because we have more code, or perhaps because codegen
+> backends change).
 
-In the kmalloc case you would have different instantiations, no checks.
-IIUC for freeing you would do `krealloc(ptr, 0, flags)`.
+It would be a good idea to ask the Rust folks if they could give us a
+unique type that does what we need.
 
-> Personally, I don't see much value in `shrink` and `grow`. I think
-> implementations end up calling into some `realloc` with either `new < old=
-` or
-> `new > old` anyway.
+> From a quick look, there are still quite a few open issues about the
+> exact properties of `Box` and `Unique`, including whether `Box` has a
+> derefencability requirement
+> (https://github.com/rust-lang/unsafe-code-guidelines/issues/145).
 
-I think a `resize` would make more sense. In general, splitting
-resizing, creating and freeing makes sense to me.
+Yes, this is why I wasn't sure if we could do the workaround I
+mentioned. My guess is that it doesn't work or that at least it isn't
+supported (i.e. could change at any point).
+
+> What properties would we want, today, from our `Box` types, if we
+> could pick any? Should we have several kinds of `Box`es if there is no
+> unique answer? Is it worth diverging from the standard one(s) in
+> either direction (i.e. more invariants or less)?
+
+I would expect that `Box<T>` behaves like `&mut T` except that it owns
+the memory.
+
+For starters we probably want this "normal" Box. If we get a unique
+pointer type, then we can introduce more, but I don't think we need that
+at the moment.
 
 ---
 Cheers,
