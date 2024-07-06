@@ -1,180 +1,111 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 814E877102
-	for <rust-for-linux@vger.kernel.org>; Sat,  6 Jul 2024 11:13:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AAFC17FE;
+	Sat,  6 Jul 2024 12:40:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720264433; cv=none; b=l9lZkrMDSg/GdPz+foyMY2kVpxXsUNElr+Xmh7/TfWnADfFf1QHpkd3NW0yKxPtpQJe8Xp3y4rJFNRyzqTXOAhsGvaCuRIUVsP0lrAmVGzlfBnEkYJjjEZ4WxS+wNm1sl2epc9vK9guc8nShBCv1qcAyqnS0yj/JDJRVBBf3SqE=
+	t=1720269634; cv=none; b=cMqicoHBNXT6SlbBipOPVuE8fnRID87V55xwDHQtHcf06gOiQIT1QbAWRrxS/Ckb8nT2ekOoZl4IgXb5gU/OMCu3U7fg/2Iij2h0JB70De1UHudsyNs3zRLcy3JgZQUVKoDXmUV2lOtJ5iM2whW0RwkKMIL+zJ2hbXRd8GoQx1Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720264433; c=relaxed/simple;
-	bh=xwPo/8yNRDZw9B0/2bqVanEnQ9fyVSXpmnx0NEjQuFE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 In-Reply-To:Content-Type:Content-Disposition; b=k+nZf3Aklk/r6Gkm94t9U4ZdF90nrmVI4ZokiStz/oavRT011sINKtDwkLmtPfwnDdcKZCK6htNrug7ENZeZadFmJf5I8+Rm/xGEiKJAwtyGa/n/UzA48zS1GKCf76DiYzJJRjrdVMe41+Wk7R+rveu1CybOsgEliMRlPJs1ASw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=VgU8qung; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1720269634; c=relaxed/simple;
+	bh=j3UTqJfzsjIWbMszseeWkbC4a6y7kzVbRtpw0k1TAaw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jYMvNoFyvuPrD7oslpUyCHS/kroljaSZl+wMB/l3Mee4dkj03T/XFYpYSXt+oqBfHmF6KveFa5R8OEoazOiNt7tALGjrCsrb8l+MI20EcEiEw4gtEIc6u0tVsqXoFXB0NbKnpcNAM0tMTpI1BjDZGWSgpnmmqxTOA8OB4bxYRsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IgNUMCLo; arc=none smtp.client-ip=209.85.216.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="VgU8qung"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1720264430;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=9Pc+ghM1IGnVK60OdMJPrFWjFdR/3X7MPMFaJLrjd08=;
-	b=VgU8qungVMpCuCcr1RLxnRSSM9uOYUgf9Zl/XaK1wrFbojUOWgeXqYw66km6HUrIGuBJbs
-	kVIwTOcZSEdvnvH+RpnYWkeel8hoPCDYHKOT0iBVrrddyBYr02Efn8JGqp7b6NoEk302IE
-	aXz0iTbmH5TVXH9XZm8CzQb4RqySFoY=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-507-k9WaNQ7gMPmw3uSXfrqJHw-1; Sat, 06 Jul 2024 07:13:48 -0400
-X-MC-Unique: k9WaNQ7gMPmw3uSXfrqJHw-1
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-36792df120fso1795509f8f.1
-        for <rust-for-linux@vger.kernel.org>; Sat, 06 Jul 2024 04:13:48 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720264427; x=1720869227;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IgNUMCLo"
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-2c980b55741so1601165a91.2;
+        Sat, 06 Jul 2024 05:40:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1720269633; x=1720874433; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=9Pc+ghM1IGnVK60OdMJPrFWjFdR/3X7MPMFaJLrjd08=;
-        b=PO687rt1/jms7YrVkeDJVCjX9NViAL/+gDxwkZIZLCobWf/ZgWTAbn0D702oNoBqmW
-         Bl4tgTZ41u4tc1MOCuukHvon4PDbSq1Q7J7U7lP4ZfbW+hRrWvTO3Wtok2Kr6zrBNlWD
-         BrvgN9w1Zq9EtkvuV0Kdlfex23esGer6sikiV+hVGYpVNb3L61viNZG5Pa221289bcGK
-         tbbWGMK/Sw7JLFgMeIBzRL67tJgwg2csK/HNFuAvBuvDAEE2lNnbx5IdAnRM+0vsho3B
-         cXhLWGZPrkaBPVO8vntVacS+lizk2fVPreA5a/RQ4Y1TbXrVsbwWy1IPrC8bK75clc3x
-         l9SQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWgWlBhUJcxMeH43tMfWndxH2ECwxxUwNrMhUztB6MBB1K5kNOFFSTMv9h1PBX5dngQFEJLW1fnq3LwxaOQe9AzS6rh68YK8dCA6kkdaE0=
-X-Gm-Message-State: AOJu0Ywfc5E/x7PSUQTXcPCs6MGFv8phZ5xTouQsmfhzWaZqOOzqYali
-	knuEG1sYeYBDy/SbGV2eMjUcHsA4mE0wgv4xqSVY2hDllBIe1WknVZksuO8WLjQLV0Xhc5A6QXl
-	jlgq433LTFiYFr2zWGLihvoY9DE3mlZT2nNvQ1mYkYc5ex5Twph5uJJhzS6IW6nTC
-X-Received: by 2002:adf:e248:0:b0:367:88e8:fed1 with SMTP id ffacd0b85a97d-3679dd27817mr4098119f8f.25.1720264427178;
-        Sat, 06 Jul 2024 04:13:47 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGk/gWmNdk0i/OIcjict+BJuPcLjlkZaZen7ujO3zcNrCw23lTLaMsPr7sHVxgvuMFi/ABCCQ==
-X-Received: by 2002:adf:e248:0:b0:367:88e8:fed1 with SMTP id ffacd0b85a97d-3679dd27817mr4098091f8f.25.1720264426784;
-        Sat, 06 Jul 2024 04:13:46 -0700 (PDT)
-Received: from pollux.localdomain ([2a02:810d:4b3f:ee94:701e:8fb8:a84f:6308])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4264a2ca62bsm93272425e9.35.2024.07.06.04.13.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 06 Jul 2024 04:13:46 -0700 (PDT)
-Date: Sat, 6 Jul 2024 13:13:44 +0200
-From: Danilo Krummrich <dakr@redhat.com>
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
-	a.hindborg@samsung.com, aliceryhl@google.com,
-	daniel.almeida@collabora.com, faith.ekstrand@collabora.com,
-	boris.brezillon@collabora.com, lina@asahilina.net,
-	mcanal@igalia.com, zhiw@nvidia.com, acurrid@nvidia.com,
-	cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com,
-	ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 07/20] rust: alloc: implement `Vmalloc` allocator
-Message-ID: <Zokm6M48WunoEohV@pollux.localdomain>
-References: <20240704170738.3621-1-dakr@redhat.com>
- <20240704170738.3621-8-dakr@redhat.com>
- <596c6446-eca4-46a8-91c5-e71e92c61062@proton.me>
+        bh=j3UTqJfzsjIWbMszseeWkbC4a6y7kzVbRtpw0k1TAaw=;
+        b=IgNUMCLolStdz5tvGRtzkq7p/sfTJ+VvuIBKzhZxRTUGo8CBwlxx3CDS+Zi3LJqp2R
+         SfdAEP0borCE6DfFOb/TG2I6qtyso1zM6+0dAeZ505b2/a5Zmuc0LoolTHRrPaChwwjF
+         FWJ9ByZZFP0dK2TB51r++q5A1X4GtAJSQ9v2OPxWWIWdZ7AtZ3R75awVD6KBeVxZKwun
+         nsS4N4Zg34UoTYuNFBSXkeKrA05kvmdcZYBMQ/GuHk/NhYhERHzOd6q/0DhAfIXdCJGS
+         10j7mi60X5ZygrNm4wwlJgRxWUqr0oksVOz5Lccxf2w7Sh76YS7tNTCcnvoqyLRVpGWf
+         w6kA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1720269633; x=1720874433;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=j3UTqJfzsjIWbMszseeWkbC4a6y7kzVbRtpw0k1TAaw=;
+        b=G01n3oYl9cE4FFffTEm+Y/Q2WqBNoOlvXfxwrNOKxds6usDW4vGV1Y55a8/902Znsa
+         S5d6Hk32VEVrbDWKQ0PhydVcAKfNPPZbSodXepLkSANAVrxH1CAjNo+HmsWH+4bGeMYi
+         wAZAbnjBp6yeEw6SB1sFK5cmBtkW+3yl+y4S4o+lHO1fSaRXhBtst6O8SPiUEVLdkDFq
+         YG23bk8tR/N1aAGM7q6TM2Go2EvZY5YYgF3yNq8gmjsSfj/BZ0la5P/8Oe1TpNVC+9f0
+         sv8qExqQL2IMe/4NI3OBANBsIj22RD0LlmtY5WA7DHqsh0KrzeK6uZAfpgmgihT0DgmA
+         wf3Q==
+X-Forwarded-Encrypted: i=1; AJvYcCU1qIv/30b+nM5bS+Bp5M9pN87UtAZ7Qi1Xl964a7p8rjnMRXoI3GZ+Vh3nHV6wABM7WU7b0GIsYvIBACHaw6Q+rgb4iHcSwFvym1fqDyklkFULCFcw1E/GzqSDok4AQOuKwNPRgQJEMkGJaT0=
+X-Gm-Message-State: AOJu0Yxu6GZaDUMp2Bo03KJsDX0eEOiiEKval/C6QdrGSCAKT3JS1MWC
+	SnuxKOi57eSah4DzTJXFOTjlaQIUCuPi3qcSqfRsdmLu83Ntw9PU3ZivYwQBqHnJvGVyg6y4foR
+	l5DwjYMov9MXOfS85xbNi1MHtt0Y=
+X-Google-Smtp-Source: AGHT+IGscmRNCPQPnGzlGQ4cn3OcoVG7q9GXhLRUHvJ7+NtJpAaDf3rsefSkGv35h79b1xfdIsoV/Lo+y6Z8Q5uipyw=
+X-Received: by 2002:a17:90a:d811:b0:2c9:887e:46de with SMTP id
+ 98e67ed59e1d1-2c99c6aeff0mr4370632a91.12.1720269632639; Sat, 06 Jul 2024
+ 05:40:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <596c6446-eca4-46a8-91c5-e71e92c61062@proton.me>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+References: <20240704170738.3621-1-dakr@redhat.com> <20240704170738.3621-10-dakr@redhat.com>
+ <fa6d6c0a-17eb-4280-baa3-df5f97e58497@proton.me>
+In-Reply-To: <fa6d6c0a-17eb-4280-baa3-df5f97e58497@proton.me>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sat, 6 Jul 2024 14:40:20 +0200
+Message-ID: <CANiq72kmppYpNNjP=0eqHx60ixjgoL4oW_ux1HVwM6vrCRFztw@mail.gmail.com>
+Subject: Re: [PATCH 09/20] rust: types: implement `Unique<T>`
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Danilo Krummrich <dakr@redhat.com>, ojeda@kernel.org, alex.gaynor@gmail.com, 
+	wedsonaf@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, a.hindborg@samsung.com, aliceryhl@google.com, 
+	daniel.almeida@collabora.com, faith.ekstrand@collabora.com, 
+	boris.brezillon@collabora.com, lina@asahilina.net, mcanal@igalia.com, 
+	zhiw@nvidia.com, acurrid@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com, 
+	airlied@redhat.com, ajanulgu@redhat.com, lyude@redhat.com, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, Jul 06, 2024 at 10:41:28AM +0000, Benno Lossin wrote:
-> On 04.07.24 19:06, Danilo Krummrich wrote:
-> > @@ -112,6 +118,55 @@ unsafe fn alloc_zeroed(&self, layout: Layout) -> *mut u8 {
-> >      }
-> >  }
-> > 
-> > +unsafe impl Allocator for Vmalloc {
-> > +    unsafe fn realloc(
-> > +        &self,
-> > +        src: *mut u8,
-> > +        old_size: usize,
-> > +        layout: Layout,
-> > +        flags: Flags,
-> > +    ) -> Result<NonNull<[u8]>, AllocError> {
-> > +        let mut size = aligned_size(layout);
-> > +
-> > +        let dst = if size == 0 {
-> > +            // SAFETY: `src` is guaranteed to be previously allocated with this `Allocator` or NULL.
-> > +            unsafe { bindings::vfree(src.cast()) };
-> > +            NonNull::dangling()
-> > +        } else if size <= old_size {
-> > +            size = old_size;
-> > +            NonNull::new(src).ok_or(AllocError)?
-> > +        } else {
-> > +            // SAFETY: `src` is guaranteed to point to valid memory with a size of at least
-> > +            // `old_size`, which was previously allocated with this `Allocator` or NULL.
-> > +            let dst = unsafe { bindings::__vmalloc_noprof(size as u64, flags.0) };
-> > +
-> > +            // Validate that we actually allocated the requested memory.
-> > +            let dst = NonNull::new(dst.cast()).ok_or(AllocError)?;
-> > +
-> > +            if !src.is_null() {
-> > +                // SAFETY: `src` is guaranteed to point to valid memory with a size of at least
-> > +                // `old_size`; `dst` is guaranteed to point to valid memory with a size of at least
-> > +                // `size`.
-> > +                unsafe {
-> > +                    core::ptr::copy_nonoverlapping(
-> > +                        src,
-> > +                        dst.as_ptr(),
-> > +                        core::cmp::min(old_size, size),
-> > +                    )
-> > +                };
-> > +
-> > +                // SAFETY: `src` is guaranteed to be previously allocated with this `Allocator` or
-> > +                // NULL.
-> > +                unsafe { bindings::vfree(src.cast()) }
-> > +            }
-> > +
-> > +            dst
-> > +        };
-> 
-> If we had not a single realloc, but shrink/grow/free/alloc, then we
-> would not need these checks here, I personally would prefer that, what
-> do you guys think? 
+On Sat, Jul 6, 2024 at 12:59=E2=80=AFPM Benno Lossin <benno.lossin@proton.m=
+e> wrote:
+>
+> The `Unique` from std is special, in the sense that the Rust compiler
+> will emit the `noalias` LLVM attribute.
+>
+> This gives std's `Box` type a possible performance advantage (IIRC Gary
+> had a compiler explorer example that showed different instruction
+> count).
 
-Yeah, but look at `Kmalloc`, you'd have these checks in `Kmalloc`'s shrink/grow
-functions instead, since `krealloc()` already behaves this way.
+The example in question: https://godbolt.org/z/n93vePqMj -- there is
+one less memory load.
 
-Personally, I don't see much value in `shrink` and `grow`. I think
-implementations end up calling into some `realloc` with either `new < old` or
-`new > old` anyway.
+One can also easily craft examples where the compiler e.g. removes an
+entire loop: https://godbolt.org/z/c8ncbdKMe
 
-> 
-> ---
-> Cheers,
-> Benno
-> 
-> > +
-> > +        Ok(NonNull::slice_from_raw_parts(dst, size))
-> > +    }
-> > +}
-> > +
-> >  #[global_allocator]
-> >  static ALLOCATOR: Kmalloc = Kmalloc;
-> > 
-> > diff --git a/rust/kernel/alloc/allocator_test.rs b/rust/kernel/alloc/allocator_test.rs
-> > index 3a0abe65491d..b2d7db492ba6 100644
-> > --- a/rust/kernel/alloc/allocator_test.rs
-> > +++ b/rust/kernel/alloc/allocator_test.rs
-> > @@ -7,6 +7,7 @@
-> >  use core::ptr::NonNull;
-> > 
-> >  pub struct Kmalloc;
-> > +pub type Vmalloc = Kmalloc;
-> > 
-> >  unsafe impl Allocator for Kmalloc {
-> >      unsafe fn realloc(
-> > --
-> > 2.45.2
-> > 
-> 
+But, of course, it depends on whether we will actually encounter these
+situations in real code, as you say. It could also be that today we
+don't find any relevant benefit, but there may exist situations later
+(perhaps because we have more code, or perhaps because codegen
+backends change).
 
+From a quick look, there are still quite a few open issues about the
+exact properties of `Box` and `Unique`, including whether `Box` has a
+derefencability requirement
+(https://github.com/rust-lang/unsafe-code-guidelines/issues/145).
+
+What properties would we want, today, from our `Box` types, if we
+could pick any? Should we have several kinds of `Box`es if there is no
+unique answer? Is it worth diverging from the standard one(s) in
+either direction (i.e. more invariants or less)?
+
+Cheers,
+Miguel
