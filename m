@@ -1,175 +1,273 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D447312A16C
-	for <rust-for-linux@vger.kernel.org>; Sat,  6 Jul 2024 15:16:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 905D8C8E1;
+	Sat,  6 Jul 2024 17:08:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720279002; cv=none; b=WYffVjydIpQPFjlYlqGyUo2GFH6ACbLT2264iJcFIRnclZs4ENji5VjkT/DgBgrY/oo9zhXrbKTS/TyxJpUy4mxI4UoyiL1Eq7sCdwC5P3v2JFWpjALZbH6422nmcBjTygwxxJ2urf5EaLFfovcVpLW9vN5QygbvFmePTYCe7ic=
+	t=1720285718; cv=none; b=lHh6SxsflOWmLXw4dPI4UP14BDn7C3k5BQ3Eqs1KnREsNvYGMjTEMomi4ZeC5Dq8Nz5U7nOFuZe+yxhG99skGgA8WQDb8Ohw0ROQXUjuvs+9jsbCQVIaxYpESlG7+XVd/YJnUs3QRfBdcUHqOAnQPKwEorqL18MdCwdY4i9h5yk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720279002; c=relaxed/simple;
-	bh=V8xKziIWvw+z7yiIc3EtT3gOTGIXEMHhjqqvEppRrXc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 In-Reply-To:Content-Type:Content-Disposition; b=q9dl8IujMz/JnOyewd7iwaLRhfK7Yg/OS5LFH6MntV5btl3DUaYcIKcM9TLXaWI0Q67duqZoxV8lDxectqHrx5s4FeY4hvkl5GkzsFSJa6vdX3RQqw7fnuEoy3rWDIwjJB5CCoCzf1DoDc+Sdx8jkXa3xD52taKbgx2XJwC7NVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FvOZ78AU; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1720285718; c=relaxed/simple;
+	bh=YVYwmjJQsFDS+/AJGerBDH2OI18Kty9wvVpIO/WbQb0=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=iwLZ/ys+eyEz1L6M3LrkOoxWizyjqqg+ydgU6PmPLPE5ZFEU4V1nj8bzkYyngSx0qySvvoKIJ6peMlZbdBMVlqgYRlJ/Vo81i+t2nvfirgJO5Q+8uTO+NrtT99yaqNUg7Q79+GvChMeRQo+fXpdC0spsZX5whUej9VE4Xc5PjBo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=i7wUGTiJ; arc=none smtp.client-ip=185.70.40.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FvOZ78AU"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1720278999;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=R7m3OsbObA3XsltJe97nQ6y2kpIXDhS9/pjgnJGh+oo=;
-	b=FvOZ78AU7cBujBtxi662MkXDPOzpxZmXJ4RztlDfB+n0r80FfEziZuJRkgvzYEZ+SEMTVs
-	D7pe97F+tRPeGQ2W4C0Wy1+XkOpBr66bw5BxhR0lU9qszD4To00qsg4nXX2iRUiSa8li1t
-	ZGh/rIozml+TIT3Xm9E77aQyL3QuPRk=
-Received: from mail-wr1-f70.google.com (mail-wr1-f70.google.com
- [209.85.221.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-84-EGgY7UEeOlWdDXHZBV_b3w-1; Sat, 06 Jul 2024 11:16:38 -0400
-X-MC-Unique: EGgY7UEeOlWdDXHZBV_b3w-1
-Received: by mail-wr1-f70.google.com with SMTP id ffacd0b85a97d-36794fcfdd6so1307342f8f.3
-        for <rust-for-linux@vger.kernel.org>; Sat, 06 Jul 2024 08:16:38 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720278997; x=1720883797;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=R7m3OsbObA3XsltJe97nQ6y2kpIXDhS9/pjgnJGh+oo=;
-        b=E+xGcxWQ4IWPKyjJG1VY4aiien/5ivl7FhE8lLdkQ/qL1gQ1VqPG+lZVccOubPImPD
-         wBAglbf9UP01i9tFIraMclDQhc83YQ69wHyJoQBRkOJlOK/S9Go7VeBpFiG5wzPhSkNK
-         bgivq7WcrAv6XqJKVMMgDhuZr19AO+rdOT/lUB4phNhlaElpXZSz7BW1RmTL6gAinsn4
-         DCNwM1l6RORvRivvNXm+x9/ANX/CHrYDGpcZGMop27ze390cRHcH7U2tNdJZraOJpdQi
-         Bbbx0bI6oCUHZwMVthifKuwMsoGDXLD/a6mPre8z1V9yv7m6tCjocHQCWI8Wk/asfdhz
-         bWNw==
-X-Forwarded-Encrypted: i=1; AJvYcCVqpSh/uaVeI1rJ2IXPuJ1zX0tLnxsq0Jeu4KN4NGGhtZCXohPXfI2WA/boYfmKBMpagqYpFwGCC1O2d6o2WYG3TkOfPbxZJRxh1vYwK94=
-X-Gm-Message-State: AOJu0YzHBpGTi4craZddUloJSNqpSjHw0agk5woJyXvQ7UcX5rgYar1s
-	ApIyCF1LpGNhpbKfzw2PamOEGKA59NsOecbtMLmwpkQeSUSXdwT55IhMb5GX/jTOjxLa/GPiBm+
-	i0KhjKZeTBv7vhKHba3GMGdTvRs/3paA9LujlIdMurHUoIs2h1u8uPOtbTUet1Tk2
-X-Received: by 2002:a5d:56ce:0:b0:367:83e9:b4a5 with SMTP id ffacd0b85a97d-3679dd652fcmr4832295f8f.49.1720278997261;
-        Sat, 06 Jul 2024 08:16:37 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHafTnjFM5kZgi7HFwiFktMu0O4vCTp/tC4spHajbb7STT0WS9kIOsUlPmPs+jwkyFOOdkfyQ==
-X-Received: by 2002:a5d:56ce:0:b0:367:83e9:b4a5 with SMTP id ffacd0b85a97d-3679dd652fcmr4832271f8f.49.1720278996838;
-        Sat, 06 Jul 2024 08:16:36 -0700 (PDT)
-Received: from pollux.localdomain ([2a02:810d:4b3f:ee94:701e:8fb8:a84f:6308])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-36797e5d97bsm7901940f8f.92.2024.07.06.08.16.35
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 06 Jul 2024 08:16:36 -0700 (PDT)
-Date: Sat, 6 Jul 2024 17:16:35 +0200
-From: Danilo Krummrich <dakr@redhat.com>
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
-	a.hindborg@samsung.com, aliceryhl@google.com,
-	daniel.almeida@collabora.com, faith.ekstrand@collabora.com,
-	boris.brezillon@collabora.com, lina@asahilina.net,
-	mcanal@igalia.com, zhiw@nvidia.com, acurrid@nvidia.com,
-	cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com,
-	ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 07/20] rust: alloc: implement `Vmalloc` allocator
-Message-ID: <Zolf08nsj/rx6RXe@pollux.localdomain>
-References: <20240704170738.3621-1-dakr@redhat.com>
- <20240704170738.3621-8-dakr@redhat.com>
- <596c6446-eca4-46a8-91c5-e71e92c61062@proton.me>
- <Zokm6M48WunoEohV@pollux.localdomain>
- <796b50c4-0824-4b9f-97f9-750f34096ed6@proton.me>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="i7wUGTiJ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=vbqa6ovzqjfitn4fueqk25whzi.protonmail; t=1720285711; x=1720544911;
+	bh=OFZvvFzBv8jODnO/TSNLuq8SNJy61p4LUEc/kevAEok=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=i7wUGTiJNXuCBxeXE6vKjR8x3htton4EKWMFdQz6JympSh9WUWUrVzxSO1c5sRVc/
+	 qzqTdkP8qQZ9f09NalaI63UeKpgRwzzTEywYiZXvOGIb35aq220C2lvjEHjB+tczKX
+	 4ioumphiLgvyeC+fF1czWIkARdJcf8J/N459PN12XiVQf2Ov0edg5uQePcV/881AAp
+	 UcbMpEUhIYN6CkUWsKtMs0DjqiG03ByXQx/6Sol8s5C1yYjmFN53C+bhh9q1XRDLrI
+	 bAYjXnSEvYLlZzM3wA7yYMeX1xxtZKyoz8LvfeK4boPG+ae2R5Sueqe5hHxDfNJKaI
+	 W6jBOhAEF7blA==
+Date: Sat, 06 Jul 2024 17:08:26 +0000
+To: Danilo Krummrich <dakr@redhat.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@samsung.com, aliceryhl@google.com, daniel.almeida@collabora.com, faith.ekstrand@collabora.com, boris.brezillon@collabora.com, lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com, acurrid@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com, ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH 01/20] rust: alloc: add `Allocator` trait
+Message-ID: <50cec075-04f4-4267-8d19-1b498a9f51bf@proton.me>
+In-Reply-To: <ZolerSMkVl0C4yfF@pollux.localdomain>
+References: <20240704170738.3621-1-dakr@redhat.com> <20240704170738.3621-2-dakr@redhat.com> <37d87244-fbef-414c-a726-60839b305040@proton.me> <ZoklB7aLyc90kWPT@pollux.localdomain> <2c322b00-20f8-4102-9f3b-edab0c0907b9@proton.me> <ZolerSMkVl0C4yfF@pollux.localdomain>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: a279f52ef1706d27a0662c0fd8cd9eba6f14da67
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <796b50c4-0824-4b9f-97f9-750f34096ed6@proton.me>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Sat, Jul 06, 2024 at 01:21:39PM +0000, Benno Lossin wrote:
-> On 06.07.24 13:13, Danilo Krummrich wrote:
-> > On Sat, Jul 06, 2024 at 10:41:28AM +0000, Benno Lossin wrote:
-> >> On 04.07.24 19:06, Danilo Krummrich wrote:
-> >>> @@ -112,6 +118,55 @@ unsafe fn alloc_zeroed(&self, layout: Layout) -> *mut u8 {
-> >>>      }
-> >>>  }
-> >>>
-> >>> +unsafe impl Allocator for Vmalloc {
-> >>> +    unsafe fn realloc(
-> >>> +        &self,
-> >>> +        src: *mut u8,
-> >>> +        old_size: usize,
-> >>> +        layout: Layout,
-> >>> +        flags: Flags,
-> >>> +    ) -> Result<NonNull<[u8]>, AllocError> {
-> >>> +        let mut size = aligned_size(layout);
-> >>> +
-> >>> +        let dst = if size == 0 {
-> >>> +            // SAFETY: `src` is guaranteed to be previously allocated with this `Allocator` or NULL.
-> >>> +            unsafe { bindings::vfree(src.cast()) };
-> >>> +            NonNull::dangling()
-> >>> +        } else if size <= old_size {
-> >>> +            size = old_size;
-> >>> +            NonNull::new(src).ok_or(AllocError)?
-> >>> +        } else {
-> >>> +            // SAFETY: `src` is guaranteed to point to valid memory with a size of at least
-> >>> +            // `old_size`, which was previously allocated with this `Allocator` or NULL.
-> >>> +            let dst = unsafe { bindings::__vmalloc_noprof(size as u64, flags.0) };
-> >>> +
-> >>> +            // Validate that we actually allocated the requested memory.
-> >>> +            let dst = NonNull::new(dst.cast()).ok_or(AllocError)?;
-> >>> +
-> >>> +            if !src.is_null() {
-> >>> +                // SAFETY: `src` is guaranteed to point to valid memory with a size of at least
-> >>> +                // `old_size`; `dst` is guaranteed to point to valid memory with a size of at least
-> >>> +                // `size`.
-> >>> +                unsafe {
-> >>> +                    core::ptr::copy_nonoverlapping(
-> >>> +                        src,
-> >>> +                        dst.as_ptr(),
-> >>> +                        core::cmp::min(old_size, size),
-> >>> +                    )
-> >>> +                };
-> >>> +
-> >>> +                // SAFETY: `src` is guaranteed to be previously allocated with this `Allocator` or
-> >>> +                // NULL.
-> >>> +                unsafe { bindings::vfree(src.cast()) }
-> >>> +            }
-> >>> +
-> >>> +            dst
-> >>> +        };
-> >>
-> >> If we had not a single realloc, but shrink/grow/free/alloc, then we
-> >> would not need these checks here, I personally would prefer that, what
-> >> do you guys think?
-> > 
-> > Yeah, but look at `Kmalloc`, you'd have these checks in `Kmalloc`'s shrink/grow
-> > functions instead, since `krealloc()` already behaves this way.
-> 
-> In the kmalloc case you would have different instantiations, no checks.
-> IIUC for freeing you would do `krealloc(ptr, 0, flags)`.
+On 06.07.24 17:11, Danilo Krummrich wrote:
+> On Sat, Jul 06, 2024 at 01:17:19PM +0000, Benno Lossin wrote:
+>> On 06.07.24 13:05, Danilo Krummrich wrote:
+>>> On Sat, Jul 06, 2024 at 10:33:49AM +0000, Benno Lossin wrote:
+>>>> Similarly, it might also be a good idea to let the implementer specify=
+ a
+>>>> custom error type.
+>>>
+>>> Same here, why?
+>>
+>> In this case the argument is weaker, but it could allow us to implement
+>> an allocator with `Error =3D Infallible`, to statically guarantee
+>> allocation (e.g. when using GFP_ATOMIC). But at the moment there is no
+>> user.
+>=20
+> GFP_ATOMIC can fail, I guess you mean __GFP_NOFAIL.
+>=20
+> Not really sure how this would work other than with separate `alloc_nofai=
+l` and
+> `realloc_nofail` functions?
 
-We can't allow to shrink on a `grow` call and we can't allow to grow on a
-`shrink` call, so we have to do the checks there before we call into krealloc().
+You could have an Allocator that always enables __GFP_NOFAIL, so the
+error type could be Infallible. But this doesn't seem that useful at the
+moment, so keep the AllocError as is.
 
-Unless, we say that passing stupid arguments to `grow` can actually shrink and
-vice versa, but then we can just keep `realloc`, right?
+>>>>> +        // SAFETY: Passing a NULL pointer to `realloc` is valid by i=
+t's safety requirements and asks
+>>>>> +        // for a new memory allocation.
+>>>>> +        unsafe { self.realloc(ptr::null_mut(), 0, layout, flags) }
+>>>>> +    }
+>>>>> +
+>>>>> +    /// Re-allocate an existing memory allocation to satisfy the req=
+uested `layout`. If the
+>>>>> +    /// requested size is zero, `realloc` behaves equivalent to `fre=
+e`.
+>>>>
+>>>> This is not guaranteed by the implementation.
+>>>
+>>> Not sure what exactly you mean? Is it about "satisfy" again?
+>>
+>> If the requested size is zero, the implementation could also leak the
+>> memory, nothing prevents me from implementing such an Allocator.
+>=20
+> Well, hopefully the documentation stating that `realloc` must be implemen=
+ted
+> this exact way prevents you from doing otherwise. :-)
+>=20
+> Please let me know if I need to document this in a different way if it's =
+not
+> sufficient as it is.
 
-> 
-> > Personally, I don't see much value in `shrink` and `grow`. I think
-> > implementations end up calling into some `realloc` with either `new < old` or
-> > `new > old` anyway.
-> 
-> I think a `resize` would make more sense. In general, splitting
-> resizing, creating and freeing makes sense to me.
+It should be part of the safety requirements of the Allocator trait.
 
-Please see the other mail thread.
+>>>>> +    ///
+>>>>> +    /// If the requested size is larger than `old_size`, a successfu=
+l call to `realloc` guarantees
+>>>>> +    /// that the new or grown buffer has at least `Layout::size` byt=
+es, but may also be larger.
+>>>>> +    ///
+>>>>> +    /// If the requested size is smaller than `old_size`, `realloc` =
+may or may not shrink the
+>>>>> +    /// buffer; this is implementation specific to the allocator.
+>>>>> +    ///
+>>>>> +    /// On allocation failure, the existing buffer, if any, remains =
+valid.
+>>>>> +    ///
+>>>>> +    /// The buffer is represented as `NonNull<[u8]>`.
+>>>>> +    ///
+>>>>> +    /// # Safety
+>>>>> +    ///
+>>>>> +    /// `ptr` must point to an existing and valid memory allocation =
+created by this allocator
+>>>>> +    /// instance of a size of at least `old_size`.
+>>>>> +    ///
+>>>>> +    /// Additionally, `ptr` is allowed to be a NULL pointer; in this=
+ case a new memory allocation is
+>>>>> +    /// created.
+>>>>> +    unsafe fn realloc(
+>>>>> +        &self,
+>>>>> +        ptr: *mut u8,
+>>>>> +        old_size: usize,
+>>>>
+>>>> Why not request the old layout like the std Allocator's grow/shrink
+>>>> functions do?
+>>>
+>>> Because we only care about the size that needs to be preserved when gro=
+wing the
+>>> buffer. The `alignment` field of `Layout` would be wasted.
+>>
+>> In the std Allocator they specified an old layout. This is probably
+>> because of the following: if `Layout` is ever extended to hold another
+>> property that would need to be updated, the signatures are already
+>> correct.
+>> In our case we could change it tree-wide, so I guess we could fix that
+>> issue when it comes up.
+>=20
+> Yes, I think so too.
+>=20
+>>
+>>>>> +        layout: Layout,
+>>>>> +        flags: Flags,
+>>>>> +    ) -> Result<NonNull<[u8]>, AllocError>;
+>>>>> +
+>>>>> +    /// Free an existing memory allocation.
+>>>>> +    ///
+>>>>> +    /// # Safety
+>>>>> +    ///
+>>>>> +    /// `ptr` must point to an existing and valid memory allocation =
+created by this `Allocator`
+>>>>> +    /// instance.
+>>>>> +    unsafe fn free(&self, ptr: *mut u8) {
+>>>>
+>>>> `ptr` should be `NonNull<u8>`.
+>>>
+>>> Creating a `NonNull` from a raw pointer is an extra operation for any u=
+ser of
+>>> `free` and given that all `free` functions in the kernel accept a NULL =
+pointer,
+>>> I think there is not much value in making this `NonNull`.
+>>
+>> I don't think that this argument holds for Rust though. For example,
+>> `KBox` contains a `Unique` that contains a `NonNull`, so freeing could
+>> just be done with `free(self.0.0)`.
+>=20
+> Agreed, we can indeed make it a `&NonNull<u8>`. However, I find this a bi=
+t
 
-> 
-> ---
-> Cheers,
-> Benno
-> 
+I think you mean `NonNull<u8>`, right?
+
+> inconsistent with the signature of `realloc`.
+>=20
+> Should we go with separate `shrink` / `grow`, `free` could be implemented=
+ as
+> shrinking to zero and allowing a NULL pointer makes not much sense.
+>=20
+> But as mentioned, I'm not yet seeing the benefit of having `realloc` spli=
+t into
+> `grow` and `shrink`.
+
+I would not split it into grow/shrink. I am not sure what exactly would
+be best here, but here is what I am trying to achieve:
+- people should strongly prefer alloc/free over realloc,
+- calling realloc with zero size should not signify freeing the memory,
+  but rather resizing the allocation to 0. E.g. because a buffer now
+  decides to hold zero elements (in this case, the size should be a
+  variable that just happens to be zero).
+- calling realloc with a null pointer should not be necessary, since
+  `alloc` exists.
+
+This is to improve readability of code, or do you find
+
+    realloc(ptr, 0, Layout::new::<()>(), Flags(0))
+
+more readable than
+   =20
+    free(ptr)
+
+>>>>> +        // SAFETY: `ptr` is guaranteed to be previously allocated wi=
+th this `Allocator` or NULL.
+>>>>> +        // Calling `realloc` with a buffer size of zero, frees the b=
+uffer `ptr` points to.
+>>>>> +        let _ =3D unsafe { self.realloc(ptr, 0, Layout::new::<()>(),=
+ Flags(0)) };
+>>>>
+>>>> Why does the implementer have to guarantee this?
+>>>
+>>> Who else can guarantee this?
+>>
+>> Only the implementer yes. But they are not forced to do this i.e.
+>> nothing in the safety requirements of `Allocator` prevents me from doing
+>> a no-op on reallocating to a zero size.
+>=20
+> Ah, I see now, this is the same as your comment on the documentation of
+> `realloc`. So, this indeed just about missing a safety comment.
+>=20
+>>
+>>>>> +    }
+>>>>> +}
+>>>>> --
+>>>>> 2.45.2
+>>>>>
+>>>>
+>>>> More general questions:
+>>>> - are there functions in the kernel to efficiently allocate zeroed
+>>>>   memory? In that case, the Allocator trait should also have methods
+>>>>   that do that (with a iterating default impl).
+>>>
+>>> We do this with GFP flags. In particular, you can pass GFP_ZERO to `all=
+oc` and
+>>> `realloc` to get zeroed memory. Hence, I think having dedicated functio=
+ns that
+>>> just do "flags | GFP_ZERO" would not add much value.
+>>
+>> Ah right, no in that case, we don't need it.
+>>
+>>>> - I am not sure putting everything into the single realloc function is=
+ a
+>>>>   good idea, I like the grow/shrink methods of the std allocator. Is
+>>>>   there a reason aside from concentrating the impl to go for only a
+>>>>   single realloc function?
+>>>
+>>> Yes, `krealloc()` already provides exactly the described behaviour. See=
+ the
+>>> implementation of `Kmalloc`.
+>>
+>> But `kvmalloc` does not and neither does `vmalloc`. I would prefer
+>> multiple smaller functions over one big one in this case.
+>=20
+> What I forsee is that:
+>=20
+>   - `alloc` becomes a `grow` from zero.
+>   - `free` becomes a `shrink` to zero.
+>   - `grow` and `shrink` become a `realloc` alias,
+>      because they're almost the same
+>=20
+> Wouldn't this just put us were we already are, effectively?
+
+We could have a NonNull parameter for realloc and discourage calling
+realloc for freeing.
+
+---
+Cheers,
+Benno
 
