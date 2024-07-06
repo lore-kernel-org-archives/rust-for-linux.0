@@ -1,43 +1,43 @@
-Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
+Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53B024689;
-	Sat,  6 Jul 2024 13:17:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69AF3482D3
+	for <rust-for-linux@vger.kernel.org>; Sat,  6 Jul 2024 13:21:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720271849; cv=none; b=GT/OMXw8lUsY4D85AlJyhCsiHKkmLkfubWQ3vf9hiNpf6XctXm6YEsuHkFUr2WYvbguKC60TUjLTANOuoM+NBLotOvTMDVWxz0W8PPfXz3G8qA9U3Dj+wsDBCN4pvnoaumfCNZCUxdXKCqY58NKMt/ZItEvxjK9VUk4b2TXHRh8=
+	t=1720272108; cv=none; b=qaOZK2Pxe+B+4ynEqewyLJ7OD1YBExDfJFkuZMTjtBiyWXnag9eFBfaDfzw4qRwlbT4ibcwHb706gZqrFmK4rUaSoJdHvvF75DUjX4fa4Kjko01134zgEBxcAwK6We4BuniMr/AEIoPyYBd6iVaQF/uiysvIPPsclXP08y1N/gg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720271849; c=relaxed/simple;
-	bh=pMQLgWXUUWUAcKGKTvjEGo2+7LQpB4vTwVyoEBfH2tY=;
+	s=arc-20240116; t=1720272108; c=relaxed/simple;
+	bh=E/Z+a0IYTlrM9p8N8UthGlV27pBUcXL9wofd/V7P/Gc=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UkX0EmOTnwe/S3Rqcu5h1CcEZTl/RPDTZKD8Q73R0bgZYcpVgIjCEOgnp4b4wJArOuZTmR9T0a3A4mFhRiozGU9J6wHgYzbGa+Yn4BnkiJ/gYzXQnE45DGsTB4Ju2WLLvZoutO4EsIBh7WjlAY7nHh9K/UAXERoGJV/OMb2uVuA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=bsQGwG6C; arc=none smtp.client-ip=185.70.40.133
+	 MIME-Version:Content-Type; b=dlmuCZiuiaxzOCOjdmr974OZWpgHhdHVRbU7Sw3sV75f5/McaV1WM+gJNIAE641Dryae9iCjBFF2WmLxw+fmGfK/klim1lls5UVup6KYnzWQDN0Py4s7SmZucBVvQ8A/GLgmM5XZz/FT0wmTBmgJX+EnAoJhj4RUTaV4KbHy70c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=JRDXe+Bh; arc=none smtp.client-ip=185.70.40.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="bsQGwG6C"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="JRDXe+Bh"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1720271845; x=1720531045;
-	bh=J2SLCWi/cOCEUrc6au+4ffzQRV6ykGZST0O878MKXZc=;
+	s=protonmail; t=1720272103; x=1720531303;
+	bh=s36rjgEJmVqwWLnrEohDXjmHZsXgc7KAt+lY3+9Djrc=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=bsQGwG6CdvT08BjAAX72dAa+EDd1sSGqXLHZvyVGXtoOsdiDS4005vxtBewpIBOjx
-	 uoCrwkH0Q8sC55qrJpb3XJNR7SRJ+nu9D6aaWh9873A3QdndT4QZtaiLclS4tZcZWK
-	 qgbePpJnjF9hMP4qYivO8WoR4ZfXHaELSHUMolkbemxVYoBJynHUOT0QF+pVZz2zzx
-	 nAb6pI6FnLymBIKpNkkvAXzolMftooxHJ3Ufds2iJ6Yyw7jtM9NSYlF2zknx8qbA4X
-	 gkfqZ2tMx2Ahct9gndrHJeIfB1wv5Q1XdttNhjywuQh/3EacN5P7x4r7LqTGiyqCkm
-	 7EB7NgDllZeVA==
-Date: Sat, 06 Jul 2024 13:17:19 +0000
+	b=JRDXe+BhlK8YYpRfjMILF0mOIbsRV8uXH3eRgcn+SoUOXeNaY44MMhNESfegm7HLN
+	 Eu3z3EEB9w+rEFkt/FXOO7pl4OeCA86pe0Y/FbmaWjCG2KBhsBauJ3Wk51HKilhjWv
+	 wRh/lGFy936H20pVQxA2aIYafGwpOHkRC3zTE+uqtnYPPXndFkI/C/RFxlpw4hCi7+
+	 t3YyfeZ2weK23nBg7lKjxsUWhAoK+zsf2A20iYE7SAEYb/K60KwuuPsTMRmYY48YMI
+	 1794vLJYMrEFVwjFQJj/kY6+v3h5uXVF3iFzOX1RvL3dZW50fA4rWDkKP49/fU0oxr
+	 GYhTnRAXwZ9cA==
+Date: Sat, 06 Jul 2024 13:21:39 +0000
 To: Danilo Krummrich <dakr@redhat.com>
 From: Benno Lossin <benno.lossin@proton.me>
 Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@samsung.com, aliceryhl@google.com, daniel.almeida@collabora.com, faith.ekstrand@collabora.com, boris.brezillon@collabora.com, lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com, acurrid@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com, ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 01/20] rust: alloc: add `Allocator` trait
-Message-ID: <2c322b00-20f8-4102-9f3b-edab0c0907b9@proton.me>
-In-Reply-To: <ZoklB7aLyc90kWPT@pollux.localdomain>
-References: <20240704170738.3621-1-dakr@redhat.com> <20240704170738.3621-2-dakr@redhat.com> <37d87244-fbef-414c-a726-60839b305040@proton.me> <ZoklB7aLyc90kWPT@pollux.localdomain>
+Subject: Re: [PATCH 07/20] rust: alloc: implement `Vmalloc` allocator
+Message-ID: <796b50c4-0824-4b9f-97f9-750f34096ed6@proton.me>
+In-Reply-To: <Zokm6M48WunoEohV@pollux.localdomain>
+References: <20240704170738.3621-1-dakr@redhat.com> <20240704170738.3621-8-dakr@redhat.com> <596c6446-eca4-46a8-91c5-e71e92c61062@proton.me> <Zokm6M48WunoEohV@pollux.localdomain>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 3947ba9fb484c06126e658095a623c4bee782b03
+X-Pm-Message-ID: 2ea57d4981e071ba6a4f70d52c4ec6ea648f6785
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,197 +47,85 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On 06.07.24 13:05, Danilo Krummrich wrote:
-> On Sat, Jul 06, 2024 at 10:33:49AM +0000, Benno Lossin wrote:
+On 06.07.24 13:13, Danilo Krummrich wrote:
+> On Sat, Jul 06, 2024 at 10:41:28AM +0000, Benno Lossin wrote:
 >> On 04.07.24 19:06, Danilo Krummrich wrote:
->>> +pub unsafe trait Allocator {
->>> +    /// Allocate memory based on `layout` and `flags`.
->>> +    ///
->>> +    /// On success, returns a buffer represented as `NonNull<[u8]>` th=
-at satisfies the size an
->>
->> typo "an" -> "and"
->>
->>> +    /// alignment requirements of layout, but may exceed the requested=
- size.
->>
->> Also if it may exceed the size, then I wouldn't call that "satisfies the
->> size [...] requirements".
->=20
-> Do you have a better proposal? To me "satisfies or exceeds" sounds reason=
-able.
-
-I think "satisfies the layout constraints (i.e. minimum size and
-alignment as specified by `layout`)" would be better.
-
->>> +    ///
->>> +    /// This function is equivalent to `realloc` when called with a NU=
-LL pointer and an `old_size`
->>> +    /// of `0`.
->>
->> This is only true for the default implementation and could be
->> overridden, since it is not a requirement of implementing this trait to
->> keep it this way. I would remove this sentence.
->=20
-> I could add a bit more generic description and say that for the default i=
-mpl
-> "This function is eq..."?
->=20
->>
->>> +    fn alloc(&self, layout: Layout, flags: Flags) -> Result<NonNull<[u=
-8]>, AllocError> {
->>
->> Instead of using the `Flags` type from the alloc module, we should have
->> an associated `Flags` type in this trait.
->=20
-> What does this give us?
-
-1. IIRC not all flags can be used with every allocator (or do not have
-   an effect) and it would be best if only the working ones are allowed.
-2. that way the design is more flexible and could be upstreamed more
-   easily.
-
->> Similarly, it might also be a good idea to let the implementer specify a
->> custom error type.
->=20
-> Same here, why?
-
-In this case the argument is weaker, but it could allow us to implement
-an allocator with `Error =3D Infallible`, to statically guarantee
-allocation (e.g. when using GFP_ATOMIC). But at the moment there is no
-user.
-
->>> +        // SAFETY: Passing a NULL pointer to `realloc` is valid by it'=
-s safety requirements and asks
->>> +        // for a new memory allocation.
->>> +        unsafe { self.realloc(ptr::null_mut(), 0, layout, flags) }
->>> +    }
->>> +
->>> +    /// Re-allocate an existing memory allocation to satisfy the reque=
-sted `layout`. If the
->>> +    /// requested size is zero, `realloc` behaves equivalent to `free`=
-.
->>
->> This is not guaranteed by the implementation.
->=20
-> Not sure what exactly you mean? Is it about "satisfy" again?
-
-If the requested size is zero, the implementation could also leak the
-memory, nothing prevents me from implementing such an Allocator.
-
->>> +    ///
->>> +    /// If the requested size is larger than `old_size`, a successful =
-call to `realloc` guarantees
->>> +    /// that the new or grown buffer has at least `Layout::size` bytes=
-, but may also be larger.
->>> +    ///
->>> +    /// If the requested size is smaller than `old_size`, `realloc` ma=
-y or may not shrink the
->>> +    /// buffer; this is implementation specific to the allocator.
->>> +    ///
->>> +    /// On allocation failure, the existing buffer, if any, remains va=
-lid.
->>> +    ///
->>> +    /// The buffer is represented as `NonNull<[u8]>`.
->>> +    ///
->>> +    /// # Safety
->>> +    ///
->>> +    /// `ptr` must point to an existing and valid memory allocation cr=
-eated by this allocator
->>> +    /// instance of a size of at least `old_size`.
->>> +    ///
->>> +    /// Additionally, `ptr` is allowed to be a NULL pointer; in this c=
-ase a new memory allocation is
->>> +    /// created.
+>>> @@ -112,6 +118,55 @@ unsafe fn alloc_zeroed(&self, layout: Layout) -> *=
+mut u8 {
+>>>      }
+>>>  }
+>>>
+>>> +unsafe impl Allocator for Vmalloc {
 >>> +    unsafe fn realloc(
 >>> +        &self,
->>> +        ptr: *mut u8,
+>>> +        src: *mut u8,
 >>> +        old_size: usize,
->>
->> Why not request the old layout like the std Allocator's grow/shrink
->> functions do?
->=20
-> Because we only care about the size that needs to be preserved when growi=
-ng the
-> buffer. The `alignment` field of `Layout` would be wasted.
-
-In the std Allocator they specified an old layout. This is probably
-because of the following: if `Layout` is ever extended to hold another
-property that would need to be updated, the signatures are already
-correct.
-In our case we could change it tree-wide, so I guess we could fix that
-issue when it comes up.
-
 >>> +        layout: Layout,
 >>> +        flags: Flags,
->>> +    ) -> Result<NonNull<[u8]>, AllocError>;
+>>> +    ) -> Result<NonNull<[u8]>, AllocError> {
+>>> +        let mut size =3D aligned_size(layout);
 >>> +
->>> +    /// Free an existing memory allocation.
->>> +    ///
->>> +    /// # Safety
->>> +    ///
->>> +    /// `ptr` must point to an existing and valid memory allocation cr=
-eated by this `Allocator`
->>> +    /// instance.
->>> +    unsafe fn free(&self, ptr: *mut u8) {
+>>> +        let dst =3D if size =3D=3D 0 {
+>>> +            // SAFETY: `src` is guaranteed to be previously allocated =
+with this `Allocator` or NULL.
+>>> +            unsafe { bindings::vfree(src.cast()) };
+>>> +            NonNull::dangling()
+>>> +        } else if size <=3D old_size {
+>>> +            size =3D old_size;
+>>> +            NonNull::new(src).ok_or(AllocError)?
+>>> +        } else {
+>>> +            // SAFETY: `src` is guaranteed to point to valid memory wi=
+th a size of at least
+>>> +            // `old_size`, which was previously allocated with this `A=
+llocator` or NULL.
+>>> +            let dst =3D unsafe { bindings::__vmalloc_noprof(size as u6=
+4, flags.0) };
+>>> +
+>>> +            // Validate that we actually allocated the requested memor=
+y.
+>>> +            let dst =3D NonNull::new(dst.cast()).ok_or(AllocError)?;
+>>> +
+>>> +            if !src.is_null() {
+>>> +                // SAFETY: `src` is guaranteed to point to valid memor=
+y with a size of at least
+>>> +                // `old_size`; `dst` is guaranteed to point to valid m=
+emory with a size of at least
+>>> +                // `size`.
+>>> +                unsafe {
+>>> +                    core::ptr::copy_nonoverlapping(
+>>> +                        src,
+>>> +                        dst.as_ptr(),
+>>> +                        core::cmp::min(old_size, size),
+>>> +                    )
+>>> +                };
+>>> +
+>>> +                // SAFETY: `src` is guaranteed to be previously alloca=
+ted with this `Allocator` or
+>>> +                // NULL.
+>>> +                unsafe { bindings::vfree(src.cast()) }
+>>> +            }
+>>> +
+>>> +            dst
+>>> +        };
 >>
->> `ptr` should be `NonNull<u8>`.
+>> If we had not a single realloc, but shrink/grow/free/alloc, then we
+>> would not need these checks here, I personally would prefer that, what
+>> do you guys think?
 >=20
-> Creating a `NonNull` from a raw pointer is an extra operation for any use=
-r of
-> `free` and given that all `free` functions in the kernel accept a NULL po=
-inter,
-> I think there is not much value in making this `NonNull`.
+> Yeah, but look at `Kmalloc`, you'd have these checks in `Kmalloc`'s shrin=
+k/grow
+> functions instead, since `krealloc()` already behaves this way.
 
-I don't think that this argument holds for Rust though. For example,
-`KBox` contains a `Unique` that contains a `NonNull`, so freeing could
-just be done with `free(self.0.0)`.
+In the kmalloc case you would have different instantiations, no checks.
+IIUC for freeing you would do `krealloc(ptr, 0, flags)`.
 
->>> +        // SAFETY: `ptr` is guaranteed to be previously allocated with=
- this `Allocator` or NULL.
->>> +        // Calling `realloc` with a buffer size of zero, frees the buf=
-fer `ptr` points to.
->>> +        let _ =3D unsafe { self.realloc(ptr, 0, Layout::new::<()>(), F=
-lags(0)) };
->>
->> Why does the implementer have to guarantee this?
->=20
-> Who else can guarantee this?
+> Personally, I don't see much value in `shrink` and `grow`. I think
+> implementations end up calling into some `realloc` with either `new < old=
+` or
+> `new > old` anyway.
 
-Only the implementer yes. But they are not forced to do this i.e.
-nothing in the safety requirements of `Allocator` prevents me from doing
-a no-op on reallocating to a zero size.
-
->>> +    }
->>> +}
->>> --
->>> 2.45.2
->>>
->>
->> More general questions:
->> - are there functions in the kernel to efficiently allocate zeroed
->>   memory? In that case, the Allocator trait should also have methods
->>   that do that (with a iterating default impl).
->=20
-> We do this with GFP flags. In particular, you can pass GFP_ZERO to `alloc=
-` and
-> `realloc` to get zeroed memory. Hence, I think having dedicated functions=
- that
-> just do "flags | GFP_ZERO" would not add much value.
-
-Ah right, no in that case, we don't need it.
-
->> - I am not sure putting everything into the single realloc function is a
->>   good idea, I like the grow/shrink methods of the std allocator. Is
->>   there a reason aside from concentrating the impl to go for only a
->>   single realloc function?
->=20
-> Yes, `krealloc()` already provides exactly the described behaviour. See t=
-he
-> implementation of `Kmalloc`.
-
-But `kvmalloc` does not and neither does `vmalloc`. I would prefer
-multiple smaller functions over one big one in this case.
+I think a `resize` would make more sense. In general, splitting
+resizing, creating and freeing makes sense to me.
 
 ---
 Cheers,
