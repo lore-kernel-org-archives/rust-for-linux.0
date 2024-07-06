@@ -1,108 +1,229 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79982BA4D;
-	Sat,  6 Jul 2024 04:00:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E0786FE21
+	for <rust-for-linux@vger.kernel.org>; Sat,  6 Jul 2024 10:34:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720238433; cv=none; b=SIexvU+jc29vYnMoOSv/JJPKn/DlJsn1G0R/Bgn5autVVR9xmHLSRfpIB47q07uZSy9YEmhm21GWFqpDBh5Ubgw2KyQJCuYnkt6nc01XotLE4p9BzVa/rqTOk8zTQ/brLmueh+MpihhPCRLBoiMsNed0+l1Fc/y++1UTRBcyveA=
+	t=1720262045; cv=none; b=s90ihcizzuY3FGSJIrSqf4oMxvSO3HHXimb/bOkFblqpKmngxp9ZwdyXc6HnYVHg09jX1KgBjgeD48uXhwDi533U11+FNOrZYl+RC/M170fNnDW/ul0+SlM1r8wdnwVvp0tURQUsbcrMRO51Lm+dSncnOVeSf2YwYzT1ZoZxTUQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720238433; c=relaxed/simple;
-	bh=tL0HpoCPbOh7JohmFkRuaLDytaWHjSmVWu8yOhp2tq4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ngdc09wHXU/DFDDp8C4jNXIcWvCWH91JO+Z1GZEcVVQyZLyiJ8dUl3ntr5rgq0AvxVDGYiKWRv80xSlqoNhkLX16/SUu3e8Hamyn49dzHJhAkV84gdCXIlhK1eL31VlObtVJCvHp2exYwRMhfteCEKllAg5jxr9yBH5Azz7WU5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=c3wu35Pe; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1720262045; c=relaxed/simple;
+	bh=pKmz2MSXbsXY1TVYCOFk40qxUqMYq2ihZ17VzYmJj74=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=CiffbVn2AtY48P7ovesOa5EV4ME2h6k4+IZfSDvSjDst7l+ugdc7EGFzNqtRcDP60BvdpdvvdzIhaqIH4Y9+HCz4zcWQyOeCIasIraLNY9XA3gHcxEIhwfx99/sKHnaj5+GspHIRq4LTvXCcbGSDeR9l5xJ4/LdActmWMf/03pQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=OB+Aflby; arc=none smtp.client-ip=185.70.40.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="c3wu35Pe"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1720238431; x=1751774431;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=tL0HpoCPbOh7JohmFkRuaLDytaWHjSmVWu8yOhp2tq4=;
-  b=c3wu35PeG1rICJ6calmq9NMxVGGhNd/c20n3bAOmN7oU0YN30m7wjTLf
-   G1zKr5+xMTbJQyjj7zU+Gg78bju0TFmNQYm0g4o00cz3NAO6fLC0+xSeo
-   GVMeaMdQZE8FRaJ8clvxY3uUNbCP2aeUPZ9GI/kiRWgRNfu98YK9v+O6I
-   oO4/eXmb2mr5VuyB2Rp7p1xfJ1fMgcqberJzB8b2ZNASIR3PnHQjQnrq4
-   c82vOrsVDz8EX4CqB7ennDzYnt2mh9JaiXehHjFufloGlLCEL9e+BNjAs
-   illiL+2owX2jsuWsR6ByJ/o0sA+QkJpNW+bzqMDIkAbB9yLMEsH8A8StA
-   w==;
-X-CSE-ConnectionGUID: jH3I1mC0TUGU5O0+s2K0+A==
-X-CSE-MsgGUID: 7Gy2eNB1RbqiAbnHIgMTnw==
-X-IronPort-AV: E=McAfee;i="6700,10204,11123"; a="28910667"
-X-IronPort-AV: E=Sophos;i="6.09,186,1716274800"; 
-   d="scan'208";a="28910667"
-Received: from fmviesa009.fm.intel.com ([10.60.135.149])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Jul 2024 21:00:30 -0700
-X-CSE-ConnectionGUID: MMc13cwyT/2G7WFvgxK13Q==
-X-CSE-MsgGUID: QWHHvSaNSyuuVw2zi3Rw9g==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,186,1716274800"; 
-   d="scan'208";a="47004640"
-Received: from lkp-server01.sh.intel.com (HELO 68891e0c336b) ([10.239.97.150])
-  by fmviesa009.fm.intel.com with ESMTP; 05 Jul 2024 21:00:25 -0700
-Received: from kbuild by 68891e0c336b with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sPwb1-000THw-18;
-	Sat, 06 Jul 2024 04:00:23 +0000
-Date: Sat, 6 Jul 2024 11:59:33 +0800
-From: kernel test robot <lkp@intel.com>
-To: Danilo Krummrich <dakr@redhat.com>, ojeda@kernel.org,
-	alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	a.hindborg@samsung.com, aliceryhl@google.com
-Cc: oe-kbuild-all@lists.linux.dev, daniel.almeida@collabora.com,
-	faith.ekstrand@collabora.com, boris.brezillon@collabora.com,
-	lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com,
-	acurrid@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com,
-	airlied@redhat.com, ajanulgu@redhat.com, lyude@redhat.com,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	Danilo Krummrich <dakr@redhat.com>
-Subject: Re: [PATCH 20/20] kbuild: rust: remove the `alloc` crate
-Message-ID: <202407061152.YNTsL28i-lkp@intel.com>
-References: <20240704170738.3621-21-dakr@redhat.com>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="OB+Aflby"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1720262035; x=1720521235;
+	bh=eV2kqn2oW0bpvGpk8bMOJksVw0Q08ALVrHBIpfM92Vo=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=OB+AflbyK2jD1nUL4txPo7amN/5ubcw/iziZEfcZL/t1h+fUX5jNWxy/eB8BS0Vmn
+	 PllL8+tNcB22V6s0FW58sjfZH7qUYw/waIpk2Z8+r2eh9zdnOM/XZ8h7L4IQAXpucu
+	 xYtCUiWYzRrejhj7CtG4xgvVximR8oTzshoLHyBZEbki5n/VCrUyvpgCsl+38u4osp
+	 qAlPwBp5FLfXrEXIuovCVsMm40uVky8e5aajR+blggzsi9TEoG0qv6lVqU/oUfFkoP
+	 0fmVDqurkHeoJ6YJc6Rz4XSqGHT8XPoosQ4cFysGvwdY6DM+IrqkFd8PWZvnw8Q5CC
+	 7wp/FBLRHPi/w==
+Date: Sat, 06 Jul 2024 10:33:49 +0000
+To: Danilo Krummrich <dakr@redhat.com>, ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@samsung.com, aliceryhl@google.com
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: daniel.almeida@collabora.com, faith.ekstrand@collabora.com, boris.brezillon@collabora.com, lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com, acurrid@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com, ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH 01/20] rust: alloc: add `Allocator` trait
+Message-ID: <37d87244-fbef-414c-a726-60839b305040@proton.me>
+In-Reply-To: <20240704170738.3621-2-dakr@redhat.com>
+References: <20240704170738.3621-1-dakr@redhat.com> <20240704170738.3621-2-dakr@redhat.com>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: 20d835e43020bd428b00f8fd1af6b48b1aba063f
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240704170738.3621-21-dakr@redhat.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Hi Danilo,
+On 04.07.24 19:06, Danilo Krummrich wrote:
+> Add a kernel specific `Allocator` trait, that in contrast to the one in
+> Rust's core library doesn't require unstable features and supports GFP
+> flags.
+>=20
+> Subsequent patches add the following trait implementors: `Kmalloc`,
+> `Vmalloc` and `KVmalloc`.
+>=20
+> Signed-off-by: Danilo Krummrich <dakr@redhat.com>
+> ---
+>  rust/kernel/alloc.rs | 73 ++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 73 insertions(+)
+>=20
+> diff --git a/rust/kernel/alloc.rs b/rust/kernel/alloc.rs
+> index 531b5e471cb1..462e00982510 100644
+> --- a/rust/kernel/alloc.rs
+> +++ b/rust/kernel/alloc.rs
+> @@ -11,6 +11,7 @@
+>  /// Indicates an allocation error.
+>  #[derive(Copy, Clone, PartialEq, Eq, Debug)]
+>  pub struct AllocError;
+> +use core::{alloc::Layout, ptr, ptr::NonNull};
+>=20
+>  /// Flags to be used when allocating memory.
+>  ///
+> @@ -71,3 +72,75 @@ pub mod flags {
+>      /// small allocations.
+>      pub const GFP_NOWAIT: Flags =3D Flags(bindings::GFP_NOWAIT);
+>  }
+> +
+> +/// The kernel's [`Allocator`] trait.
+> +///
+> +/// An implementation of [`Allocator`] can allocate, re-allocate and fre=
+e memory buffer described
+> +/// via [`Layout`].
+> +///
+> +/// [`Allocator`] is designed to be implemented on ZSTs; its safety requ=
+irements to not allow for
+> +/// keeping a state throughout an instance.
 
-kernel test robot noticed the following build warnings:
+Why do the functions take `&self` if it is forbidden to have state? I
+would remove the receiver in that case.
 
-[auto build test WARNING on 1613e604df0cd359cf2a7fbd9be7a0bcfacfabd0]
+> +///
+> +/// # Safety
+> +///
+> +/// Memory returned from an allocator must point to a valid memory buffe=
+r and remain valid until
+> +/// its explicitly freed.
+> +///
+> +/// Copying, cloning, or moving the allocator must not invalidate memory=
+ blocks returned from this
+> +/// allocator. A copied, cloned or even new allocator of the same type m=
+ust behave like the same
+> +/// allocator, and any pointer to a memory buffer which is currently all=
+ocated may be passed to any
+> +/// other method of the allocator.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Danilo-Krummrich/rust-alloc-add-Allocator-trait/20240705-155308
-base:   1613e604df0cd359cf2a7fbd9be7a0bcfacfabd0
-patch link:    https://lore.kernel.org/r/20240704170738.3621-21-dakr%40redhat.com
-patch subject: [PATCH 20/20] kbuild: rust: remove the `alloc` crate
-config: x86_64-rhel-8.3-rust (https://download.01.org/0day-ci/archive/20240706/202407061152.YNTsL28i-lkp@intel.com/config)
-compiler: clang version 18.1.5 (https://github.com/llvm/llvm-project 617a15a9eac96088ae5e9134248d8236e34b91b1)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240706/202407061152.YNTsL28i-lkp@intel.com/reproduce)
+If you provide no receiver methods, then I think we can remove this
+requirement.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202407061152.YNTsL28i-lkp@intel.com/
+> +pub unsafe trait Allocator {
+> +    /// Allocate memory based on `layout` and `flags`.
+> +    ///
+> +    /// On success, returns a buffer represented as `NonNull<[u8]>` that=
+ satisfies the size an
 
-All warnings (new ones prefixed by >>):
+typo "an" -> "and"
 
->> warning: unresolved link to `alloc`
-   --> rust/kernel/alloc.rs:3:25
-   |
-   3 | //! Extensions to the [`alloc`] crate.
-   |                         ^^^^^ no item named `alloc` in scope
-   |
-   = help: to escape `[` and `]` characters, add '' before them like `[` or `]`
-   = note: `#[warn(rustdoc::broken_intra_doc_links)]` on by default
+> +    /// alignment requirements of layout, but may exceed the requested s=
+ize.
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Also if it may exceed the size, then I wouldn't call that "satisfies the
+size [...] requirements".
+
+> +    ///
+> +    /// This function is equivalent to `realloc` when called with a NULL=
+ pointer and an `old_size`
+> +    /// of `0`.
+
+This is only true for the default implementation and could be
+overridden, since it is not a requirement of implementing this trait to
+keep it this way. I would remove this sentence.
+
+> +    fn alloc(&self, layout: Layout, flags: Flags) -> Result<NonNull<[u8]=
+>, AllocError> {
+
+Instead of using the `Flags` type from the alloc module, we should have
+an associated `Flags` type in this trait.
+
+Similarly, it might also be a good idea to let the implementer specify a
+custom error type.
+
+> +        // SAFETY: Passing a NULL pointer to `realloc` is valid by it's =
+safety requirements and asks
+> +        // for a new memory allocation.
+> +        unsafe { self.realloc(ptr::null_mut(), 0, layout, flags) }
+> +    }
+> +
+> +    /// Re-allocate an existing memory allocation to satisfy the request=
+ed `layout`. If the
+> +    /// requested size is zero, `realloc` behaves equivalent to `free`.
+
+This is not guaranteed by the implementation.
+
+> +    ///
+> +    /// If the requested size is larger than `old_size`, a successful ca=
+ll to `realloc` guarantees
+> +    /// that the new or grown buffer has at least `Layout::size` bytes, =
+but may also be larger.
+> +    ///
+> +    /// If the requested size is smaller than `old_size`, `realloc` may =
+or may not shrink the
+> +    /// buffer; this is implementation specific to the allocator.
+> +    ///
+> +    /// On allocation failure, the existing buffer, if any, remains vali=
+d.
+> +    ///
+> +    /// The buffer is represented as `NonNull<[u8]>`.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// `ptr` must point to an existing and valid memory allocation crea=
+ted by this allocator
+> +    /// instance of a size of at least `old_size`.
+> +    ///
+> +    /// Additionally, `ptr` is allowed to be a NULL pointer; in this cas=
+e a new memory allocation is
+> +    /// created.
+> +    unsafe fn realloc(
+> +        &self,
+> +        ptr: *mut u8,
+> +        old_size: usize,
+
+Why not request the old layout like the std Allocator's grow/shrink
+functions do?
+
+> +        layout: Layout,
+> +        flags: Flags,
+> +    ) -> Result<NonNull<[u8]>, AllocError>;
+> +
+> +    /// Free an existing memory allocation.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// `ptr` must point to an existing and valid memory allocation crea=
+ted by this `Allocator`
+> +    /// instance.
+> +    unsafe fn free(&self, ptr: *mut u8) {
+
+`ptr` should be `NonNull<u8>`.
+
+> +        // SAFETY: `ptr` is guaranteed to be previously allocated with t=
+his `Allocator` or NULL.
+> +        // Calling `realloc` with a buffer size of zero, frees the buffe=
+r `ptr` points to.
+> +        let _ =3D unsafe { self.realloc(ptr, 0, Layout::new::<()>(), Fla=
+gs(0)) };
+
+Why does the implementer have to guarantee this?
+
+> +    }
+> +}
+> --
+> 2.45.2
+>=20
+
+More general questions:
+- are there functions in the kernel to efficiently allocate zeroed
+  memory? In that case, the Allocator trait should also have methods
+  that do that (with a iterating default impl).
+- I am not sure putting everything into the single realloc function is a
+  good idea, I like the grow/shrink methods of the std allocator. Is
+  there a reason aside from concentrating the impl to go for only a
+  single realloc function?
+
+---
+Cheers,
+Benno
+
