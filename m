@@ -1,67 +1,67 @@
-Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6766A12E75;
-	Mon,  8 Jul 2024 21:16:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FF0714900C;
+	Mon,  8 Jul 2024 21:29:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720473371; cv=none; b=TK1ba2slEjDx3L99L4KV6pdmDOblHqeX2H4LUs4vCnFoZFCRFLB7WcKYZCzCkosQ/CzFYGeR4zKlulDJ1q9BgigsO+WNRyJ+Lnuy0nhaLcu7dTvSMv/NgTbN8eUbDtHgQssfxFhNvngAqWK9f1HAuGh0EEjkK4g4s5JT/Ln7mi8=
+	t=1720474157; cv=none; b=XMe2PrXGWKdd2DFEYw/lLcrdEUgrXL+cy4W7ndFgbSt6T7lG2Ghw7Z75CakUzNHLN3QqOttoSwhmng99Bf2JT/M0/GfW6rKeTk3Qc4brxN3TP6FG+PHNcAF0hlWkDDYVx1F1q68KzzslnDkaLoOdWkaL6v0aaMQagKyZv9SkhiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720473371; c=relaxed/simple;
-	bh=VH8tKY8HIgy0R/VaatE6NX0uuriJv+k4IsFvPZEoIdc=;
+	s=arc-20240116; t=1720474157; c=relaxed/simple;
+	bh=xeBNkjWne9In5zATuo6T4QppMdz0GTE1KgR0eO+Y9tc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=j5JZ8zTcOr53UsLif4HPwrQf3q3mT+89oZYkZt/bxVbFNBDXY0/Pkzo51F6Ru4bqMR3A4Jda0tv6jZc9oMRtyVUiNmOHJaUKL3vf16gv3S39pa49Dx1vO8s9cLw2UX49gF/8C0hYAaW5AS/OtIurZG/G8J6MAGZcrqHAfHBC6pM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jj86IJEN; arc=none smtp.client-ip=209.85.160.169
+	 Content-Type:Content-Disposition:In-Reply-To; b=CL1st/5nAVltDPdfDulrFszmTGTUWUY5X7qwao+EH8PUSu64YWc5IuOYuiN9z2i/0cP7aVtyyVWqwy9qRZrHPd6lIApjSli91rrv/jmVMLXTVOoO1HliXBRdQ3YVadKLVctCd5qYGrHDA3Cj5UM8j+77tkpFtBq9au0Ho4miF48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=b0pc0Vv7; arc=none smtp.client-ip=209.85.222.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jj86IJEN"
-Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-447e2f35af4so9497241cf.0;
-        Mon, 08 Jul 2024 14:16:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="b0pc0Vv7"
+Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-79f178e62d1so48358585a.1;
+        Mon, 08 Jul 2024 14:29:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1720473369; x=1721078169; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1720474155; x=1721078955; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=KpXpHV4wzuVc816SuKjPkuf7FlW2BEjL44243S4NidM=;
-        b=jj86IJENC8EVh4XH6jbT87BY+DfndXbb13rLcyak0rtF/jZzSeHcixx0KQRvRP0+TT
-         Npk2cvTrs6PPI7FEt0ShT4RjH1pxsovrnofsuylCDqVrE4r87+FOzjfOhv9xng/6MqbT
-         6WFGc/iwNlpSDGEy8Xh8Thh2/mFGeClR6gPVN67TZfAJgO9UYQL9nz2iEI+gqC28vgwi
-         NoOz0Wt/L+zORO/kScjW+HmeCSPwnIwVglwOzejKNDKacEjcQu5PbSBk8b8j52gzygl1
-         wFWiB3fh0uyZr0A8qydMXDtE//BZYRZrFp1bm/5gvo+UHNdljd5ySiDnybdmsle4KV57
-         4u2g==
+        bh=GPXeqS144wag80EgyVBckCNnTJy8NLX4sL/P+F5UtVU=;
+        b=b0pc0Vv7GhD6MM/W62cqOtJFL55qJk/c6tqpNsYGQxKwxVwpRzBmgoPVpkxavBSvHo
+         jYA8Ckct1tZLAmxqnrqaCqfgCActZSEedfyIIx2D7pi6qIi0+DWqg9poR5yGsHDsT9jA
+         MzgUlNEolclPcldugSKF+O/bUxRDBunKomWqhxabJPXRcDjdfx8ypq/v196caI/Ny3hp
+         iVcsf50LF/eDHfEsdgfVPxNBBi1BV800gHW15fgfZJ5Cpuu4QrzqNCLK83yycnEszSyO
+         3m+nW185ackazDgo4MN8w1A//9dRjjRBSHOuOatAcEUqQWxJFnrPhAgEJcBKY1NjdXo7
+         A8Ow==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720473369; x=1721078169;
+        d=1e100.net; s=20230601; t=1720474155; x=1721078955;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=KpXpHV4wzuVc816SuKjPkuf7FlW2BEjL44243S4NidM=;
-        b=lZcIUil/C9oMkrtGPflK+kvcK5BqEkbskRfrI7ugQIODM/H7uq2Lom2L+ERt/BtpAl
-         hUmxDk562956Y6hlepRfL/rdCmM7gNn6NrO9+deWVDGQ8A5gA1tOB6idcxhnyeHWWSyQ
-         zAhQRrBOyZfNm7bSuRbzR0zsg4cWxJYQU1GU7vNFJ1Kw/vEEAfT36mpkyDKF//Erj0vh
-         XW9Uo4bRu3HNYViDKxWvkp7bnA84ZoN+pziJ2VpV3GcfGlQ5jlkMD9279O9Gcbqlzgkj
-         X7mWOQ/hGPXSEz5hUogH4Q76vG73pfyHcpLgkp0lTf2p5imtaBSVyqlfqCMRTltnuX/h
-         oTcQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV3BxULsZTXvM1Ivvm5QTh1gCnJZDtjYer28VnoPbOgDheOOTmUeTRQzX6rOSLhKtk/3lKWkRpQHgXXElbgk7gh6FSHSsFz+gczHL1CPtcBPCVK+MUVXxReMycqee/pXe5MbGTkZkyP+ChoxYY=
-X-Gm-Message-State: AOJu0YzizQVkgYReujYWZcZ2QO0pxjseftK9Ncz6uXon3DcrEv3w6zLc
-	IXuMpruN0ltdJiRLoLisePYBrECD6rLeq5kRDJGnd08KpekOlxQQ
-X-Google-Smtp-Source: AGHT+IGh7YmOKTjpBvaBK1AGC/5oiF772oYJB8sAOU/Zlh+Uuf+FIRHXwIXOBVsYWryoPw0PjSD6KQ==
-X-Received: by 2002:a05:622a:1995:b0:447:e58e:a881 with SMTP id d75a77b69052e-447fa8a6833mr10763051cf.30.1720473369217;
-        Mon, 08 Jul 2024 14:16:09 -0700 (PDT)
+        bh=GPXeqS144wag80EgyVBckCNnTJy8NLX4sL/P+F5UtVU=;
+        b=s3Ouz7y6VNZammkayJDlG4w35i8SW0pDz52s7mvIqLZFs9yvjP+/HLFaUMOzbSlD0k
+         LrwZGqstzzrT+7SpOC8eRoZPJJWMtTjtRDbpoTgiaJCj0nlC7nD/ezkyyBKExgbwnnxt
+         k9HNQQxRFNYDQEKtyJ2GZfI29fU8r66uKizgQi0Y+iVcU8rCR8un76f2ML54oAdVXPlz
+         p24918lrovmgsGb7gz01ixMO29Z9lLHhf0EDhITEoRnWMwLPOp9KlMLwM7h8iBAmZnmR
+         xyNQGNNbaPGLE8LwsMV4ahM71GBjzt67rFs7C9OeLlIm950p+PcDgdRmd5ZCP+zXflnY
+         2kbg==
+X-Forwarded-Encrypted: i=1; AJvYcCWYZJbLqllqu6wghA477O8nqq+ordgFWVyyISX5q3umeu5pd5uv66y+RAvspka8SvT1Fu47j9zF9rhsGJUx5RI3TgJqjZW4CB/lB4HNoleq90fc6MLW/u7o1GdvGAuhSqFhRkGjusNVQTZP2Rc=
+X-Gm-Message-State: AOJu0YyRz48oSZ67f5VEcjf/naiapd/tuoBH0d7ZXad+gfWjcGOn7g7z
+	4xU96Slry7XSXd5FOy9dPoc15m/b1OS6YiyI8n8mc0hAfpbX/cGk
+X-Google-Smtp-Source: AGHT+IFS9NsuzsGdab4p/3fKlkLxhvMyIlGAEERWcNCT3Os54UNxt4pMHNWm9FNNaThLz1S3V/AepQ==
+X-Received: by 2002:a05:620a:2147:b0:79d:6579:8853 with SMTP id af79cd13be357-79f19adc8eemr72408185a.73.1720474154891;
+        Mon, 08 Jul 2024 14:29:14 -0700 (PDT)
 Received: from fauth2-smtp.messagingengine.com (fauth2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-447f9b26c9dsm3282771cf.14.2024.07.08.14.16.08
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-79f190ab741sm29330385a.118.2024.07.08.14.29.14
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Jul 2024 14:16:08 -0700 (PDT)
+        Mon, 08 Jul 2024 14:29:14 -0700 (PDT)
 Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
-	by mailfauth.nyi.internal (Postfix) with ESMTP id E25011200085;
-	Mon,  8 Jul 2024 17:16:07 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute4.internal (MEProxy); Mon, 08 Jul 2024 17:16:07 -0400
-X-ME-Sender: <xms:FleMZjLQkDZdJPL0m2xLNlh46qFskrb7jOzkQaCg9vpr9lLT767YgQ>
-    <xme:FleMZnKtw-gsMBXn30_POEHRPabRFZCVFOuOmVqRaodq1GVcuAOOB7GWjj1akl280
-    vXFMXWCIsr_b9UYDQ>
-X-ME-Received: <xmr:FleMZrudnaHc2tfY8Nysn-T5kbkuWmMXEBKB_MZHwzgkboNXkoz4X9bS9d4>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdejgdduheelucetufdoteggodetrfdotf
+	by mailfauth.nyi.internal (Postfix) with ESMTP id E37F0120006D;
+	Mon,  8 Jul 2024 17:29:13 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute4.internal (MEProxy); Mon, 08 Jul 2024 17:29:13 -0400
+X-ME-Sender: <xms:KFqMZvJuhiAup1oMPf5IYocfG-irCqZGfdnVIVKFCXuspeoQXPJ2BA>
+    <xme:KFqMZjLF-At4HG-Gwz37ATAFcJ869Q6OpwY16o0hI412ormbnOFGoQt83mudQB8JG
+    3VRcRtKOCGQXVvlYw>
+X-ME-Received: <xmr:KFqMZns6j7du0fAKGHkR0D5TXimuhZ7hAju7klx7EeXuA5zh1bNp8vLPHyZzXw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdejgdduiedvucetufdoteggodetrfdotf
     fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
     uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
     cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhu
@@ -71,15 +71,15 @@ X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdejgdduheelucetufdoteggod
     eptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhh
     phgvrhhsohhnrghlihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunh
     drfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgv
-X-ME-Proxy: <xmx:FleMZsaWGUPOwY0iUwtmN_tPs4Dvi0jdZSEn8_xh9kr5bp36N0VhVA>
-    <xmx:FleMZqbaJn7LxDjXgZ7G1EqSrJdmZr-zxiIlMlNYTh81UXbjAgp06g>
-    <xmx:FleMZgDZ6qQG44w8WFaRCWpqfNCIf27rcMRSRFzTkyJFxhPEUHsrLQ>
-    <xmx:FleMZob2kbWYA9jZFJJKi0h6RqCQ3ilOK_o56QrLRi9GNEreMqAqkA>
-    <xmx:F1eMZuon2_JJMV2aFPcJLmh1yce5GpjstY6fIaOllAPqWFs3xzEmxFB5>
+X-ME-Proxy: <xmx:KFqMZobUza5O8zuG6UkLeI6-GTVjESTnvIP2lA2WZ_0uSMrfTANLew>
+    <xmx:KFqMZmalX7YAhicWnch-wCWh8lGm2Cmb4PU7be1bpVEuXvVpLrY_Jw>
+    <xmx:KFqMZsCsQQSB46gp9q0BRLAG7c9WfXDhp8hhs_QpWh5_kConqJSY4Q>
+    <xmx:KFqMZkafyASu7OiivRezW3-Dvt2Jio6HqV8dsebHJbNdnbVRaOGd1A>
+    <xmx:KVqMZqqBvdmWF7T4Boe8hGgOafyvTECXgd3yJEnhwD4ty2c-qwTcNtH9>
 Feedback-ID: iad51458e:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 8 Jul 2024 17:16:06 -0400 (EDT)
-Date: Mon, 8 Jul 2024 14:14:50 -0700
+ 8 Jul 2024 17:29:12 -0400 (EDT)
+Date: Mon, 8 Jul 2024 14:27:55 -0700
 From: Boqun Feng <boqun.feng@gmail.com>
 To: Benno Lossin <benno.lossin@proton.me>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
@@ -89,9 +89,10 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
 	Andreas Hindborg <a.hindborg@samsung.com>,
 	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] rust: kernel: add `drop_contents` to `BoxExt`
-Message-ID: <ZoxWyr3fL8GkyOAR@boqun-archlinux>
+Subject: Re: [PATCH v2 2/2] rust: init: add `write_[pin_]init` functions
+Message-ID: <ZoxZ261bwtWCj8fn@boqun-archlinux>
 References: <20240708205325.1275473-1-benno.lossin@proton.me>
+ <20240708205325.1275473-2-benno.lossin@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -100,81 +101,161 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240708205325.1275473-1-benno.lossin@proton.me>
+In-Reply-To: <20240708205325.1275473-2-benno.lossin@proton.me>
 
-On Mon, Jul 08, 2024 at 08:53:38PM +0000, Benno Lossin wrote:
-> Sometimes (see [1]) it is necessary to drop the value inside of a
-> `Box<T>`, but retain the allocation. For example to reuse the allocation
-> in the future.
-> Introduce a new function `drop_contents` that turns a `Box<T>` into
-> `Box<MaybeUninit<T>>` by dropping the value.
+On Mon, Jul 08, 2024 at 08:53:46PM +0000, Benno Lossin wrote:
+> Sometimes it is necessary to split allocation and initialization into
+> two steps. One such situation is when reusing existing allocations
+> obtained via `Box::drop_contents`. See [1] for an example.
+> In order to support this use case add `write_[pin_]init` functions to the
+> pin-init API. These functions operate on already allocated smart
+> pointers that wrap `MaybeUninit<T>`.
 > 
 > Signed-off-by: Benno Lossin <benno.lossin@proton.me>
-> Link: https://lore.kernel.org/rust-for-linux/20240418-b4-rbtree-v3-5-323e134390ce@google.com/ [1]
-> ---
->  rust/kernel/alloc/box_ext.rs | 21 +++++++++++++++++++++
->  1 file changed, 21 insertions(+)
-> 
-> diff --git a/rust/kernel/alloc/box_ext.rs b/rust/kernel/alloc/box_ext.rs
-> index cdbb5ad166d9..6cf79f96d6c7 100644
-> --- a/rust/kernel/alloc/box_ext.rs
-> +++ b/rust/kernel/alloc/box_ext.rs
-> @@ -5,6 +5,7 @@
->  use super::{AllocError, Flags};
->  use alloc::boxed::Box;
->  use core::mem::MaybeUninit;
-> +use core::ptr;
->  use core::result::Result;
->  
->  /// Extensions to [`Box`].
-> @@ -18,6 +19,18 @@ pub trait BoxExt<T>: Sized {
->      ///
->      /// The allocation may fail, in which case an error is returned.
->      fn new_uninit(flags: Flags) -> Result<Box<MaybeUninit<T>>, AllocError>;
-> +
-> +    /// Drops the contents, but keeps the allocation.
-> +    ///
-> +    /// # Examples
-> +    ///
-> +    /// ```
-> +    /// let value = Box::new([0; 32], flags::GFP_KERNEL)
-> +    /// let value = value.drop_contents();
-> +    /// // Now we can re-use `value`:
-> +    /// Box::write(value, [1; 32]);
-> +    /// ```
-> +    fn drop_contents(self) -> Box<MaybeUninit<T>>;
->  }
->  
->  impl<T> BoxExt<T> for Box<T> {
-> @@ -54,4 +67,12 @@ fn new_uninit(flags: Flags) -> Result<Box<MaybeUninit<T>>, AllocError> {
->          // zero-sized types, we use `NonNull::dangling`.
->          Ok(unsafe { Box::from_raw(ptr) })
->      }
-> +
-> +    fn drop_contents(self) -> Box<MaybeUninit<T>> {
-> +        let ptr = Box::into_raw(self);
-> +        // SAFETY: `ptr` is valid, because it came from `Box::into_raw`.
-> +        unsafe { ptr::drop_in_place(ptr) };
-> +        // SAFETY: `ptr` is valid, because it came from `Box::into_raw`.
-
-Maybe add
-
-	// And `ptr.cast()` is a valid pointer to `MaybeUninit<T>`,
-	// since `MaybeUninit<T>` and `T` has the same layout.
-
-?
-
-> +        unsafe { Box::from_raw(ptr.cast()) }
-> +    }
-
-With the above or similar:
 
 Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
 
 Regards,
 Boqun
 
+> Link: https://lore.kernel.org/rust-for-linux/f026532f-8594-4f18-9aa5-57ad3f5bc592@proton.me/ [1]
+> ---
+>  rust/kernel/init.rs    | 84 ++++++++++++++++++++++++++++++------------
+>  rust/kernel/prelude.rs |  2 +-
+>  2 files changed, 61 insertions(+), 25 deletions(-)
+> 
+> diff --git a/rust/kernel/init.rs b/rust/kernel/init.rs
+> index 9608f2bd2211..35c4d9b75a97 100644
+> --- a/rust/kernel/init.rs
+> +++ b/rust/kernel/init.rs
+> @@ -1159,13 +1159,7 @@ fn try_pin_init<E>(init: impl PinInit<T, E>, flags: Flags) -> Result<Pin<Self>,
+>      where
+>          E: From<AllocError>,
+>      {
+> -        let mut this = <Box<_> as BoxExt<_>>::new_uninit(flags)?;
+> -        let slot = this.as_mut_ptr();
+> -        // SAFETY: When init errors/panics, slot will get deallocated but not dropped,
+> -        // slot is valid and will not be moved, because we pin it later.
+> -        unsafe { init.__pinned_init(slot)? };
+> -        // SAFETY: All fields have been initialized.
+> -        Ok(unsafe { this.assume_init() }.into())
+> +        <Box<_> as BoxExt<_>>::new_uninit(flags)?.write_pin_init(init)
+>      }
+>  
+>      #[inline]
+> @@ -1173,13 +1167,7 @@ fn try_init<E>(init: impl Init<T, E>, flags: Flags) -> Result<Self, E>
+>      where
+>          E: From<AllocError>,
+>      {
+> -        let mut this = <Box<_> as BoxExt<_>>::new_uninit(flags)?;
+> -        let slot = this.as_mut_ptr();
+> -        // SAFETY: When init errors/panics, slot will get deallocated but not dropped,
+> -        // slot is valid.
+> -        unsafe { init.__init(slot)? };
+> -        // SAFETY: All fields have been initialized.
+> -        Ok(unsafe { this.assume_init() })
+> +        <Box<_> as BoxExt<_>>::new_uninit(flags)?.write_init(init)
+>      }
 >  }
+>  
+> @@ -1189,13 +1177,7 @@ fn try_pin_init<E>(init: impl PinInit<T, E>, flags: Flags) -> Result<Pin<Self>,
+>      where
+>          E: From<AllocError>,
+>      {
+> -        let mut this = UniqueArc::new_uninit(flags)?;
+> -        let slot = this.as_mut_ptr();
+> -        // SAFETY: When init errors/panics, slot will get deallocated but not dropped,
+> -        // slot is valid and will not be moved, because we pin it later.
+> -        unsafe { init.__pinned_init(slot)? };
+> -        // SAFETY: All fields have been initialized.
+> -        Ok(unsafe { this.assume_init() }.into())
+> +        UniqueArc::new_uninit(flags)?.write_pin_init(init)
+>      }
+>  
+>      #[inline]
+> @@ -1203,13 +1185,67 @@ fn try_init<E>(init: impl Init<T, E>, flags: Flags) -> Result<Self, E>
+>      where
+>          E: From<AllocError>,
+>      {
+> -        let mut this = UniqueArc::new_uninit(flags)?;
+> -        let slot = this.as_mut_ptr();
+> +        UniqueArc::new_uninit(flags)?.write_init(init)
+> +    }
+> +}
+> +
+> +/// Smart pointer containing uninitialized memory and that can write a value.
+> +pub trait InPlaceWrite<T> {
+> +    /// The type `Self` turns into when the contents are initialized.
+> +    type Initialized;
+> +
+> +    /// Use the given initializer to write a value into `self`.
+> +    ///
+> +    /// Does not drop the current value and considers it as uninitialized memory.
+> +    fn write_init<E>(self, init: impl Init<T, E>) -> Result<Self::Initialized, E>;
+> +
+> +    /// Use the given pin-initializer to write a value into `self`.
+> +    ///
+> +    /// Does not drop the current value and considers it as uninitialized memory.
+> +    fn write_pin_init<E>(self, init: impl PinInit<T, E>) -> Result<Pin<Self::Initialized>, E>;
+> +}
+> +
+> +impl<T> InPlaceWrite<T> for Box<MaybeUninit<T>> {
+> +    type Initialized = Box<T>;
+> +
+> +    fn write_init<E>(mut self, init: impl Init<T, E>) -> Result<Self::Initialized, E> {
+> +        let slot = self.as_mut_ptr();
+>          // SAFETY: When init errors/panics, slot will get deallocated but not dropped,
+>          // slot is valid.
+>          unsafe { init.__init(slot)? };
+>          // SAFETY: All fields have been initialized.
+> -        Ok(unsafe { this.assume_init() })
+> +        Ok(unsafe { self.assume_init() })
+> +    }
+> +
+> +    fn write_pin_init<E>(mut self, init: impl PinInit<T, E>) -> Result<Pin<Self::Initialized>, E> {
+> +        let slot = self.as_mut_ptr();
+> +        // SAFETY: When init errors/panics, slot will get deallocated but not dropped,
+> +        // slot is valid and will not be moved, because we pin it later.
+> +        unsafe { init.__pinned_init(slot)? };
+> +        // SAFETY: All fields have been initialized.
+> +        Ok(unsafe { self.assume_init() }.into())
+> +    }
+> +}
+> +
+> +impl<T> InPlaceWrite<T> for UniqueArc<MaybeUninit<T>> {
+> +    type Initialized = UniqueArc<T>;
+> +
+> +    fn write_init<E>(mut self, init: impl Init<T, E>) -> Result<Self::Initialized, E> {
+> +        let slot = self.as_mut_ptr();
+> +        // SAFETY: When init errors/panics, slot will get deallocated but not dropped,
+> +        // slot is valid.
+> +        unsafe { init.__init(slot)? };
+> +        // SAFETY: All fields have been initialized.
+> +        Ok(unsafe { self.assume_init() })
+> +    }
+> +
+> +    fn write_pin_init<E>(mut self, init: impl PinInit<T, E>) -> Result<Pin<Self::Initialized>, E> {
+> +        let slot = self.as_mut_ptr();
+> +        // SAFETY: When init errors/panics, slot will get deallocated but not dropped,
+> +        // slot is valid and will not be moved, because we pin it later.
+> +        unsafe { init.__pinned_init(slot)? };
+> +        // SAFETY: All fields have been initialized.
+> +        Ok(unsafe { self.assume_init() }.into())
+>      }
+>  }
+>  
+> diff --git a/rust/kernel/prelude.rs b/rust/kernel/prelude.rs
+> index b37a0b3180fb..4571daec0961 100644
+> --- a/rust/kernel/prelude.rs
+> +++ b/rust/kernel/prelude.rs
+> @@ -37,6 +37,6 @@
+>  
+>  pub use super::{str::CStr, ThisModule};
+>  
+> -pub use super::init::{InPlaceInit, Init, PinInit};
+> +pub use super::init::{InPlaceInit, InPlaceWrite, Init, PinInit};
+>  
+>  pub use super::current;
 > -- 
 > 2.44.0
 > 
