@@ -1,127 +1,119 @@
-Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
+Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 596CD3CF63
-	for <rust-for-linux@vger.kernel.org>; Mon,  8 Jul 2024 22:22:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 419E3152786;
+	Mon,  8 Jul 2024 23:07:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720477336; cv=none; b=lj1Czc+ZhCX3E+6PwNvUitrFaFgN4j9lUrDXSYfAqoAe3eBnyQ93nmqNAfn7fTUk+Ziy3Vr1L5t6bhtRSQ1VEB2KIRfrGH7t30I6W3own/fTUSkTKOj9LC/quklgGd1CmuTqUp63iR5912MkEatobYNJgb6Yhv0ZIvXWwaJ+9Io=
+	t=1720480075; cv=none; b=cCdlPv+VaMcMMMcuUIV9h8HZgZcn4h/yKbg4DOleAO8q/BvPVcVz1YeGW1URy82Q4Yzn7kPbanWPYfleafL+qmVw4J2uKAEG+gOBUbQu+zB+3+dkGyiEmOQFi761wh7hUXy4fFZDtsXn+2a19lqv+Z5R/DqpLY/jd6VGW1TJL0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720477336; c=relaxed/simple;
-	bh=/klr4pal0zQ+qkbOyt3Sy9bpPlhmD8yV7byDM6Ourbw=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=VV+I8Aua1Tzz4tUi2QaNdg2M2uE2KAqnqjSEB/N5y7tNDJY2UTCFmtPA41D3Rlwzl4brQG3PJ/OI/vkAvBJ9mn3WkpnUc2e1i5MalFR3+OVGCWkpt+9o9lo37qaDHN73EQyfJlUGJtHDfebFHmfWFBhpiGFs0kh/kCIUfuMmfQ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GNerUHl0; arc=none smtp.client-ip=209.85.208.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+	s=arc-20240116; t=1720480075; c=relaxed/simple;
+	bh=H8CSN4/T3nQXfh1+RA+MR9bjuKS8ZJ2QJ6XUMZc8/pY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bAnFyLPe1LyAvVwjsjxTEz5zqdGrTtLUDzACe9I0gdJ/58YlIUPWvyx5qaAuY2drENdiabiwJDBTz279LhIyz9z896VOgQUZJjC4Hlvt1P4fFta5mpmZzDMt8WthwpiR9d+p2S+gQstJ4JIffGYSqOU/1uOBRFl9inGrcqYTJAY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VqHiSSEW; arc=none smtp.client-ip=209.85.216.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GNerUHl0"
-Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-2ee91d9cb71so41854071fa.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 08 Jul 2024 15:22:14 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VqHiSSEW"
+Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-2c96187b3d1so2540066a91.3;
+        Mon, 08 Jul 2024 16:07:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1720477332; x=1721082132; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=/klr4pal0zQ+qkbOyt3Sy9bpPlhmD8yV7byDM6Ourbw=;
-        b=GNerUHl0ajDjvWkF7YbwA/1JVXWRZTevJXGf0HtD50JNLXrKRjzDmv+XwkjTBnyL88
-         aplr2xXXl03B0EP2KnQ/tcex9Dyxd5h4E3UvXGnA0T21oC2vMRdpPb3hV4aiGZ8gm7OX
-         6/xVjHuPBQUC7K5gth3BNnkoYgqTK5iyabdY8=
+        d=gmail.com; s=20230601; t=1720480073; x=1721084873; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=NkkjqlkKsOnXHPkz5QEsrE7yBqoT/wiu44Pa237OHw0=;
+        b=VqHiSSEWvyTiPUmNN+Uh7HozjL4euM3i4Bm8fMERmUg2YHnwk702dpGww5DscqNqmU
+         V3B5Osvd7+mPynl15Mjywxhq7N2DWXs/g2g8W97aTHD/P+6FUKvxaDGLz8IxKBqgclRs
+         Eb1RaBE7gWTz/copWQihG4zsIwjSo5zMsw4szVix1dhR9u7470+tjAWBGk/DPhIoO03i
+         /hbBcxi7Os9hdrwbLViWeKqGR7sRUIIqZgSZLHsjEqzP4t2lhtYGxKsm65x9AAuH2sRU
+         zc8+B3yRppzZIZBkGgctIGy2B7XkgRIAg99O6AsVuJcT7/dcCX7m8zDESZeWcvY9zycy
+         S6Eg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720477332; x=1721082132;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=/klr4pal0zQ+qkbOyt3Sy9bpPlhmD8yV7byDM6Ourbw=;
-        b=U4TVyJVrJdt30HgILMELahhnGt22ujzsjH5lP3ODeqpKkVXbzU7HcImXj00leqVezv
-         mKAMuaujRblRQNpLbXVkL/+b+zaEyNTr4nT2M9VCBPimb4JCKW0bpN1KNZobUX8wMuva
-         1vor2LHnkpkR3bhyv2v0/w9xe5lrUwMGoD4C0kzRvhGw4/95SOkcM5l9jRF11Lt2HPSG
-         DRmsz15edxO9k/PmDQXLOguQSeeDfvTSIJGyi11aby6ojQAp/ytkxmP8yKGZS3ZXT+jW
-         xYHRwNBW2TGuq7nulNB3S+2jcelY3bcHbR6/1T+YC+8zYSPc+VCry5d1U2BZDNPZUIEu
-         44kQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXECjfHOeZ4XSDKC6jn6R0DkUpEDrvZ6AbB6KBBk8ZLDIHIj6kePWKuP80fKzY9TrnPx55ET/jOpIAoFdyv9NP4yi5szUeFaKlpgG2zf1M=
-X-Gm-Message-State: AOJu0YwufZYGQVKZwt5MXDjcPl4qiXIHkdHrTitfDObt8J4ixXcbTnDq
-	NR4l8FvTtIFkva1nkoekRVc2qulwAX62HwmmehFXp7lIx8UKXogprKsldbTeHG4=
-X-Google-Smtp-Source: AGHT+IFII0Z4k5zO4+WVg6UOmIJTwUe1aRNvrkRm8kXkSN7SHLYkIk+Hq6VsR3UW4MiC3Amoj70LAw==
-X-Received: by 2002:a2e:9807:0:b0:2ee:7b93:5209 with SMTP id 38308e7fff4ca-2eeb318ab22mr4721111fa.45.1720477331537;
-        Mon, 08 Jul 2024 15:22:11 -0700 (PDT)
-Received: from ?IPv6:2001:8b0:aba:5f3c:6c1e:b1f8:4156:8a30? ([2001:8b0:aba:5f3c:6c1e:b1f8:4156:8a30])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2eeb3488b35sm527791fa.128.2024.07.08.15.22.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Jul 2024 15:22:11 -0700 (PDT)
-Message-ID: <141a4ba7c3645594de636985d3300f3914a160f1.camel@linuxfoundation.org>
-Subject: Re: [Automated-testing] Plumbers Testing MC potential topic:
- specialised toolchains
-From: Richard Purdie <richard.purdie@linuxfoundation.org>
-To: gtucker@gtucker.io, Nick Desaulniers <ndesaulniers@google.com>, Miguel
- Ojeda <ojeda@kernel.org>, Alexei Starovoitov <ast@kernel.org>, Arnd
- Bergmann <arnd@arndb.de>
-Cc: llvm@lists.linux.dev, rust-for-linux@vger.kernel.org,
- yurinnick@meta.com,  bpf@vger.kernel.org, Sasha Levin <sashal@kernel.org>,
- Shuah Khan <skhan@linuxfoundation.org>,
- automated-testing@lists.yoctoproject.org
-Date: Mon, 08 Jul 2024 23:22:09 +0100
-In-Reply-To: <f80acb84-1d98-44d3-84b7-d976de77d8ce@gtucker.io>
-References: <f80acb84-1d98-44d3-84b7-d976de77d8ce@gtucker.io>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.52.0-1build2 
+        d=1e100.net; s=20230601; t=1720480073; x=1721084873;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=NkkjqlkKsOnXHPkz5QEsrE7yBqoT/wiu44Pa237OHw0=;
+        b=w+z0pjQy2aCHA0cvjROgO1UniL7UqQo1NHQjLP9pBvyFP0TFuUYd1cVp6qHISrcuks
+         mID5Rg4AtQ+Ilhmvk0+Ri28Yv5wgI3bPjGsE4KrNnPxuIo5v6n8ojeS6m/ATF9hmS9Zy
+         OyeoGbH+/gGHIZBRSdwfkbPCoj8gFRcLIdTKUVAmzvU0VU7/AHLrqEjYoOrvJW0T2MgH
+         AkdMq5r0LuKj54HXuZ1KIYG5Z2OsKA/KTah+Qhbj2kKgV7Ydbwz+qbgsQ7mcvJKMTRin
+         EOx8zeyZVp097rnkm99axfal/gn/+9WfmrvYfl4xbzhZ0hfjKchu6pu+pOIkzHSwjdBa
+         INZQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXD7BIJO4AbaFSp77mmIit5Mq11NQPb0IF4xs0nb2Zi08yf8qovf8GiuStyyBiEv4kTsEpiYThfCwZf/spwZHXQ0SFlUXojFZ0mniG0VStQZHtr2agz1Livzsw8oCyRrgUcsew=
+X-Gm-Message-State: AOJu0Yzz38iQofZ7CiBbT5rpl485fPlvnpqZpYTITL7miEq2+k+oC+6g
+	GKapu6nieYxM3siMRrcoSD94ybwy0yC3wYqcSs6KqvpygrR+n8VhXh6r1PGXlDyxoP51OAX63Jy
+	Dvb+E1CbkfA/vShQ/aaTRZWwM4+0=
+X-Google-Smtp-Source: AGHT+IGCbxoTKZ4bOpJ0NuQ44hnBKOxxfPu1MixKOmIoyzvzOz5POT6RBTncFKN+6XooqZ0a78zMqu/soFwu9eCbIz8=
+X-Received: by 2002:a17:90b:1018:b0:2c9:8b33:3195 with SMTP id
+ 98e67ed59e1d1-2ca35bdfce6mr914225a91.4.1720480073380; Mon, 08 Jul 2024
+ 16:07:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+References: <f80acb84-1d98-44d3-84b7-d976de77d8ce@gtucker.io>
+In-Reply-To: <f80acb84-1d98-44d3-84b7-d976de77d8ce@gtucker.io>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 9 Jul 2024 01:07:41 +0200
+Message-ID: <CANiq72mgTiOsnnLUP-JewoFsScV668WstP0bP2Lj+LGxd7L3sg@mail.gmail.com>
+Subject: Re: Plumbers Testing MC potential topic: specialised toolchains
+To: Guillaume Tucker <gtucker@gtucker.io>
+Cc: Nick Desaulniers <ndesaulniers@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alexei Starovoitov <ast@kernel.org>, Arnd Bergmann <arnd@arndb.de>, llvm@lists.linux.dev, 
+	rust-for-linux@vger.kernel.org, yurinnick@meta.com, bpf@vger.kernel.org, 
+	Sasha Levin <sashal@kernel.org>, Shuah Khan <skhan@linuxfoundation.org>, 
+	automated-testing@lists.yoctoproject.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 2024-07-09 at 00:10 +0200, Guillaume Tucker via
-lists.yoctoproject.org wrote:
-> Based on these assumptions, the issue is about reproducibility -
-> yet alone setting up a toolchain that can build the code at all.
-> For an automated system to cover these use-cases, or for any
-> developer wanting to work on these particular areas of the
-> kernel, having the ability to reliably build it in a reproducible
-> way using a reference toolchain adds a lot of value.=C2=A0 It means
-> better quality control, less scope for errors and unexpected
-> behaviour with different code paths being executed or built
-> differently.
->=20
+Hi Guillaume, all,
+
+A couple of comments on the Rust bits for context.
+
+On Tue, Jul 9, 2024 at 12:10=E2=80=AFAM Guillaume Tucker <gtucker@gtucker.i=
+o> wrote:
+>
+> Then Rust support in the kernel is still work-in-progress, so the
+> rustc compiler version has to closely follow the kernel revision.
+
+I wouldn't say the reason is that the support in the kernel is
+work-in-progress, but rather that `rustc` does not have all the
+features the kernel needs (and "stable").
+
+In any case, the version pinning will soon be over -- we are likely
+going to have a minimum in v6.11:
+
+    https://lore.kernel.org/rust-for-linux/20240701183625.665574-1-ojeda@ke=
+rnel.org/
+
+We are starting small, but it is already enough to cover the major
+rolling distributions: Arch, Fedora, Debian Sid (outside the freeze
+period) and perhaps Testing too, Gentoo, Nix unstable, openSUSE
+Slowroll and Tumbleweed...
+
+So, for some distributions, the Rust toolchain for the kernel can
+already be directly from the distribution. So maybe it doesn't count
+as "specialised" anymore? (at least for some distributions)
+
+Of course, I know that you include cutting-edge too :)
+
 > The current state of the art are the kernel.org toolchains:
->=20
-> =C2=A0 https://mirrors.edge.kernel.org/pub/tools/
->=20
+>
+>   https://mirrors.edge.kernel.org/pub/tools/
+>
 > These are for LLVM and cross-compilers, and they already solve a
-> large part of the issue described above.=C2=A0 However, they don't
+> large part of the issue described above.  However, they don't
 > include Rust (yet), and all the dependencies need to be installed
 > manually which can have a significant impact on the build
-> result (gcc, binutils...).=C2=A0 One step further are the Linaro
-> TuxMake Docker images[2] which got some very recent blog
-> coverage[3].=C2=A0 The issues then are that not all the toolchains are
-> necessarily available in Docker images, they're tailored to
-> TuxMake use-cases, and I'm not sure to which extent upstream
-> kernel maintainers rely on them.
->=20
->=20
-> Now, I might have missed some other important aspects so please
-> correct me if this reasoning seems flawed in any way.=C2=A0 I have
-> however seen how hard it can be for automated systems to build
-> kernels correctly and in a way that developers can reproduce, so
-> this is no trivial issue.=C2=A0 Then for the Testing MC, I would be
-> very interested to hear whether people feel it would be
-> beneficial to work towards a more exhaustive solution supported
-> upstream: kernel.org Docker images or something close such as
-> Dockerfiles in Git or another type of images with all the
-> dependencies included.=C2=A0 How does that sound?
 
-Sadly I can't be at plumbers however I wanted to mention that Yocto
-Project's SDKs are effectively standalone toolchains. They can be
-configured to contain all their dependencies and whatever tools are
-desirable (e.g. git, python etc.), are fully reproducible, installable
-at any location and we have working rust compilers in the SDKs if
-configured to include them.
+Rust is there thanks to Nathan! :) Please see:
 
-I just want to make sure people know that capability exists!
+    https://mirrors.edge.kernel.org/pub/tools/llvm/rust/
 
 Cheers,
-
-Richard
-
+Miguel
