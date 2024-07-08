@@ -1,72 +1,220 @@
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8516BA29;
-	Mon,  8 Jul 2024 20:37:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CF3638FA5
+	for <rust-for-linux@vger.kernel.org>; Mon,  8 Jul 2024 20:53:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720471074; cv=none; b=g7tqSON6cNFxpSS8WiAOE9B8YHJfBeAa4qVZxQislP3XUw4EsjJju4X74dBJWE1ba2JHkvYQKQ3GqJjJbovZQcNd6E67O/kayUUheh1fSM/8NEM6+/ZEvXHfNLSdwOu81wrN+TNvk/O5up1N5FE28U2RvlWQG3XsIfTfSOWV1gw=
+	t=1720472033; cv=none; b=hOIRSgYGBKq+Ik3bSN4VXAOPHKKC4+OHpdanZYP9DL7gnyD5bEuapKWhM8g7OwKq5TOdHblW5TV50rEJ2cbvHlcgmQz2vSKpMqy/u4YenRv7q9HFsFQYa/WeE4wT+6tFB9vkVRkOyAFyJxVJrWM8kDo80gRPqCGi7VePaznjxfA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720471074; c=relaxed/simple;
-	bh=mo4uIm8yE7RrfkHDvUCvGxDtl0e9GHqXF0pg0kMkkWM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Xn79ND2qIYHlCc2H5vPkd4vZAl3gzApLWy/PCLAlmSMK30tSo59u8BBgwQbxQrID6VlpEKYhFqkmZPTPQL/0cEBH7XOtlZLmCjQDLSdXLuvC+DMrKyMqkwAVUHWmmxo2UYY/hLwEFrH9GIAGOAvm7tRLTvP1BR9xdWik7jaDljw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=av0MUt9N; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=kernel.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1720472033; c=relaxed/simple;
+	bh=M50r1p+wX+D8O/Gj9/J9aTnngzd/9LCvtljgGPuAQps=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=DdI6Nep4zNqmK4Ed+vgp8Y/KZQn58P7q+kEMUj9gvG4Ql5/XN/UKAl1uquZ2OGj9nas7uFlb/Qe+uohDTwvvf9J7bYbPJak5KWOR27pzKdxgvn2UZYriKdSphfqhEDq+c8pGKMgvKPb5Df2PUFZa7UIKBtD4b3coAXk0CR29YY0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=Dk+AQc69; arc=none smtp.client-ip=185.70.43.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="av0MUt9N"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=bEIonm8o3Z//EQ4oEDJ3E4tPRrv5MLDelE43erip8lc=; b=av0MUt9NkaEABUi+JvBsD3Yw8i
-	+zFK3QP5oYo23xmQfM7HfGMUvZdQqJ2u6/yum4OXxCthC/4EWU0jNhUnY3U5FYsVRXLll1ZbQa6Bm
-	1EhwZVsAzds4A3b8YUM5LKUlIlJAVjmlgsNeq3tEpq6eyEB8OA5boQw1KsNkoWOMGx++3ZOqRE0Kn
-	Hz9m2QjpAJjHnTUzjkVK3f97s1Tev8VXzn6SDV2loGz8TfpdwEq02AF/g5jP5MYDIglXt1kcSez/g
-	uSCrtPFHJHKi5yZoxXKyptTgXWr4H6Z8f0wkAsQNzfncNm28kMv4MLPkOsyRUMZV0hZY5xg93PnzR
-	i+KBa6Xw==;
-Received: from mcgrof by bombadil.infradead.org with local (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sQv7P-00000004zCW-1Qg4;
-	Mon, 08 Jul 2024 20:37:51 +0000
-Date: Mon, 8 Jul 2024 13:37:51 -0700
-From: Luis Chamberlain <mcgrof@kernel.org>
-To: Danilo Krummrich <dakr@redhat.com>
-Cc: russ.weight@linux.dev, gregkh@linuxfoundation.org,
-	chrisi.schrefl@gmail.com, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, Gary Guo <gary@garyguo.net>
-Subject: Re: [PATCH v2 2/2] firmware_loader: fix soundness issue in
- `request_internal`
-Message-ID: <ZoxOHxHze2ynJS-q@bombadil.infradead.org>
-References: <20240708200724.3203-1-dakr@redhat.com>
- <20240708200724.3203-2-dakr@redhat.com>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="Dk+AQc69"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=bqbxzyfywbabng7dcfeap4poum.protonmail; t=1720472029; x=1720731229;
+	bh=Ya6tGpyaUQLdXjSguh1J6q5GTPWFH0r0g0wkmTrbCiA=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=Dk+AQc692Me/3mqQ6qrOs3hnrzRvDh80+ZcL9F2dtmEZzx9YZhBye1mdFPqG2ya9t
+	 i768IQWN87nSFOfjNSUQ81fa0MCsum1iDjwoLvyFLMLQVKOqPDoPRa1hXLMc1XFFP2
+	 nLRYGGPJ6SyLUwTw9s4RqoO/ZM0AE/2rUp0alG3PaAS2nWEAGezqhdQH6XQFD/iIsH
+	 iMNMhB1m6j+y9rvpBo+FSgQfgHp+wp1JUJeNO9Ixh0oU+rwDC1jzNFB7DkxnrxoxiF
+	 YPhCNuk3k3Vrj4DNDVivT4GXfIN9/CgbxE0om0OtBEcOv+EVVL+r0Hdjb185C7Jsz6
+	 b23kC7+VZTddQ==
+Date: Mon, 08 Jul 2024 20:53:46 +0000
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v2 2/2] rust: init: add `write_[pin_]init` functions
+Message-ID: <20240708205325.1275473-2-benno.lossin@proton.me>
+In-Reply-To: <20240708205325.1275473-1-benno.lossin@proton.me>
+References: <20240708205325.1275473-1-benno.lossin@proton.me>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: 6389381ecf3d1c44981fa7e9970a6c93895262d5
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240708200724.3203-2-dakr@redhat.com>
-Sender: Luis Chamberlain <mcgrof@infradead.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jul 08, 2024 at 10:07:21PM +0200, Danilo Krummrich wrote:
-> `request_internal` must be called with one of the following function
-> pointers: request_firmware(), firmware_request_nowarn(),
-> firmware_request_platform() or request_firmware_direct().
-> 
-> The previous `FwFunc` alias did not guarantee this, which is unsound.
-> 
-> In order to fix this up, implement `FwFunc` as new type with a
-> corresponding type invariant.
-> 
-> Reported-by: Gary Guo <gary@garyguo.net>
-> Closes: https://lore.kernel.org/lkml/20240620143611.7995e0bb@eugeo/
-> Signed-off-by: Danilo Krummrich <dakr@redhat.com>
+Sometimes it is necessary to split allocation and initialization into
+two steps. One such situation is when reusing existing allocations
+obtained via `Box::drop_contents`. See [1] for an example.
+In order to support this use case add `write_[pin_]init` functions to the
+pin-init API. These functions operate on already allocated smart
+pointers that wrap `MaybeUninit<T>`.
 
-While you're at it, can you go ahead and extend out selftest coverage
-for the firmware_loader so we can test Rust too? Could these issues
-have been caught with a selftest? If not why not?
+Signed-off-by: Benno Lossin <benno.lossin@proton.me>
+Link: https://lore.kernel.org/rust-for-linux/f026532f-8594-4f18-9aa5-57ad3f=
+5bc592@proton.me/ [1]
+---
+ rust/kernel/init.rs    | 84 ++++++++++++++++++++++++++++++------------
+ rust/kernel/prelude.rs |  2 +-
+ 2 files changed, 61 insertions(+), 25 deletions(-)
 
-  Luis
+diff --git a/rust/kernel/init.rs b/rust/kernel/init.rs
+index 9608f2bd2211..35c4d9b75a97 100644
+--- a/rust/kernel/init.rs
++++ b/rust/kernel/init.rs
+@@ -1159,13 +1159,7 @@ fn try_pin_init<E>(init: impl PinInit<T, E>, flags: =
+Flags) -> Result<Pin<Self>,
+     where
+         E: From<AllocError>,
+     {
+-        let mut this =3D <Box<_> as BoxExt<_>>::new_uninit(flags)?;
+-        let slot =3D this.as_mut_ptr();
+-        // SAFETY: When init errors/panics, slot will get deallocated but =
+not dropped,
+-        // slot is valid and will not be moved, because we pin it later.
+-        unsafe { init.__pinned_init(slot)? };
+-        // SAFETY: All fields have been initialized.
+-        Ok(unsafe { this.assume_init() }.into())
++        <Box<_> as BoxExt<_>>::new_uninit(flags)?.write_pin_init(init)
+     }
+=20
+     #[inline]
+@@ -1173,13 +1167,7 @@ fn try_init<E>(init: impl Init<T, E>, flags: Flags) =
+-> Result<Self, E>
+     where
+         E: From<AllocError>,
+     {
+-        let mut this =3D <Box<_> as BoxExt<_>>::new_uninit(flags)?;
+-        let slot =3D this.as_mut_ptr();
+-        // SAFETY: When init errors/panics, slot will get deallocated but =
+not dropped,
+-        // slot is valid.
+-        unsafe { init.__init(slot)? };
+-        // SAFETY: All fields have been initialized.
+-        Ok(unsafe { this.assume_init() })
++        <Box<_> as BoxExt<_>>::new_uninit(flags)?.write_init(init)
+     }
+ }
+=20
+@@ -1189,13 +1177,7 @@ fn try_pin_init<E>(init: impl PinInit<T, E>, flags: =
+Flags) -> Result<Pin<Self>,
+     where
+         E: From<AllocError>,
+     {
+-        let mut this =3D UniqueArc::new_uninit(flags)?;
+-        let slot =3D this.as_mut_ptr();
+-        // SAFETY: When init errors/panics, slot will get deallocated but =
+not dropped,
+-        // slot is valid and will not be moved, because we pin it later.
+-        unsafe { init.__pinned_init(slot)? };
+-        // SAFETY: All fields have been initialized.
+-        Ok(unsafe { this.assume_init() }.into())
++        UniqueArc::new_uninit(flags)?.write_pin_init(init)
+     }
+=20
+     #[inline]
+@@ -1203,13 +1185,67 @@ fn try_init<E>(init: impl Init<T, E>, flags: Flags)=
+ -> Result<Self, E>
+     where
+         E: From<AllocError>,
+     {
+-        let mut this =3D UniqueArc::new_uninit(flags)?;
+-        let slot =3D this.as_mut_ptr();
++        UniqueArc::new_uninit(flags)?.write_init(init)
++    }
++}
++
++/// Smart pointer containing uninitialized memory and that can write a val=
+ue.
++pub trait InPlaceWrite<T> {
++    /// The type `Self` turns into when the contents are initialized.
++    type Initialized;
++
++    /// Use the given initializer to write a value into `self`.
++    ///
++    /// Does not drop the current value and considers it as uninitialized =
+memory.
++    fn write_init<E>(self, init: impl Init<T, E>) -> Result<Self::Initiali=
+zed, E>;
++
++    /// Use the given pin-initializer to write a value into `self`.
++    ///
++    /// Does not drop the current value and considers it as uninitialized =
+memory.
++    fn write_pin_init<E>(self, init: impl PinInit<T, E>) -> Result<Pin<Sel=
+f::Initialized>, E>;
++}
++
++impl<T> InPlaceWrite<T> for Box<MaybeUninit<T>> {
++    type Initialized =3D Box<T>;
++
++    fn write_init<E>(mut self, init: impl Init<T, E>) -> Result<Self::Init=
+ialized, E> {
++        let slot =3D self.as_mut_ptr();
+         // SAFETY: When init errors/panics, slot will get deallocated but =
+not dropped,
+         // slot is valid.
+         unsafe { init.__init(slot)? };
+         // SAFETY: All fields have been initialized.
+-        Ok(unsafe { this.assume_init() })
++        Ok(unsafe { self.assume_init() })
++    }
++
++    fn write_pin_init<E>(mut self, init: impl PinInit<T, E>) -> Result<Pin=
+<Self::Initialized>, E> {
++        let slot =3D self.as_mut_ptr();
++        // SAFETY: When init errors/panics, slot will get deallocated but =
+not dropped,
++        // slot is valid and will not be moved, because we pin it later.
++        unsafe { init.__pinned_init(slot)? };
++        // SAFETY: All fields have been initialized.
++        Ok(unsafe { self.assume_init() }.into())
++    }
++}
++
++impl<T> InPlaceWrite<T> for UniqueArc<MaybeUninit<T>> {
++    type Initialized =3D UniqueArc<T>;
++
++    fn write_init<E>(mut self, init: impl Init<T, E>) -> Result<Self::Init=
+ialized, E> {
++        let slot =3D self.as_mut_ptr();
++        // SAFETY: When init errors/panics, slot will get deallocated but =
+not dropped,
++        // slot is valid.
++        unsafe { init.__init(slot)? };
++        // SAFETY: All fields have been initialized.
++        Ok(unsafe { self.assume_init() })
++    }
++
++    fn write_pin_init<E>(mut self, init: impl PinInit<T, E>) -> Result<Pin=
+<Self::Initialized>, E> {
++        let slot =3D self.as_mut_ptr();
++        // SAFETY: When init errors/panics, slot will get deallocated but =
+not dropped,
++        // slot is valid and will not be moved, because we pin it later.
++        unsafe { init.__pinned_init(slot)? };
++        // SAFETY: All fields have been initialized.
++        Ok(unsafe { self.assume_init() }.into())
+     }
+ }
+=20
+diff --git a/rust/kernel/prelude.rs b/rust/kernel/prelude.rs
+index b37a0b3180fb..4571daec0961 100644
+--- a/rust/kernel/prelude.rs
++++ b/rust/kernel/prelude.rs
+@@ -37,6 +37,6 @@
+=20
+ pub use super::{str::CStr, ThisModule};
+=20
+-pub use super::init::{InPlaceInit, Init, PinInit};
++pub use super::init::{InPlaceInit, InPlaceWrite, Init, PinInit};
+=20
+ pub use super::current;
+--=20
+2.44.0
+
+
