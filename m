@@ -1,172 +1,136 @@
-Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DF185674E;
-	Mon,  8 Jul 2024 22:12:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 230F6150989;
+	Mon,  8 Jul 2024 22:16:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720476779; cv=none; b=fwL7XLn36I6puAHZPpYXVI+Q+Sp4XCX88mK4ikAnH+psYsMtSUZCbX5GD5jgnBzkX7cJE7kFDOc6DYD28P0kyN9cLyyip8EdBvXL3OJTFyA9sQQmNjH/LoDsVpVmU+xfj9gMOaUrwRr1fSK6arNuIjWzMgvZQdctxr7xkFb47j0=
+	t=1720477001; cv=none; b=KuAKKz7qNFwq4n2E65nH/XX51ncoHRvGrKadWARHqvl3qEozv8X6bsfTqGwyLnIJnHPfKzB/1lhSypdgBCsAtFh/p9B8b4VhvPdmrcSCAjfh/ZoGzQsJD0q5BJNd7JT/fVso6XskWGwIWezieyaebankYsLKXleXBPM41iOe3J4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720476779; c=relaxed/simple;
-	bh=4n1Vc9tXg+YIewhgBSUCESwYVFBpDzFDKw3KRl/z55s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=N9PRg8a68vMp2wP8/dBZRGMEAX+MK8N16y9ehqW2fSk72JUpiYx8GMJi+ZkBMIQFrMrMs/RH9sXzxbG5687X2CKfqiXeqFeegzsOQDl3/CwrrS23ixhM9tLKAl+u7xCmWW+9oyDJ1ZX7WvnMqOK6D+yZdcH+EKSCd3q5QdS37gA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J6c9A7LX; arc=none smtp.client-ip=209.85.222.175
+	s=arc-20240116; t=1720477001; c=relaxed/simple;
+	bh=r85fh6KcSliTflOSzKO4M7DtwEKxSywoyBFcV+rFY7M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uGSyz/y+ZDk3N2hYnsihTluXyj+3tEfyPwGE2rUkfgKycYc1ZxfK+I6GEvrGN3GdndxrIYGjwzjl+dnn4VRA4pYr3LHcBss6YyyeKI/v/s/a2wDivPgy4y2G/j9ao8ZZeY3/eDYsdM9/awLHZLJktei2m4MDinp+STibG7TtXF8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VwIHuMN3; arc=none smtp.client-ip=209.85.218.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J6c9A7LX"
-Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-79f0c08aa45so127984385a.0;
-        Mon, 08 Jul 2024 15:12:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VwIHuMN3"
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-a77e2f51496so303944066b.0;
+        Mon, 08 Jul 2024 15:16:39 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1720476777; x=1721081577; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dAOsl3qu4A6KcPFJBGEr5mKU1d6JWC06nIXsQ3Qf2RE=;
-        b=J6c9A7LXYBkqDd9TS26+l8B+XRlDWF2P8cgXPomW8RVd83q+mr1lE0HKWv/7ZHt317
-         qxIIx5XzRSLOQUt3Lyj5es+qyLyWTo7mJ+oFtYTyTGljo3ek9xTIQw9geVzOgH2ha6qP
-         BVjPZc1p7d9rAYxcxjbctZ5nPJeamCqcLimcMkMJAvrr9JM+9EZrLuMujqg0lq0r+/Wy
-         tZWRMVKOLduQnUfs33MV/4clqHe/PWAJGoAmsTiFx+AwXcr9GGWA5CFngAc1MEiaf4WZ
-         J2O+tHnWDw7+VSo/8Whihubd/1Z0F56L5XPFvjxl4JmuK1TTBjs4sA2OhS4/IF0i3nqe
-         CHtQ==
+        d=gmail.com; s=20230601; t=1720476998; x=1721081798; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=R8IPZEgNUUiuogNfAHnJPTqt9cHkFDPDkD4qrjFJewc=;
+        b=VwIHuMN3ZsyQQVQtdD3poa0TT6gd1bO6xcjEeB3GZuPns6J3Yrf/ymDx5hG6vhcRTV
+         +lwOXEWQ5ov1fJUK1c3Dx3v01XQ4u4Uxlz8mLKAIJ+CP1xbQmfV30fWPHYW0RZW16p0K
+         +4lZW7s6ISqrjLZH1bTo76qKbjQfzQKgNhUpNxjWRwyk2okkMnUjU/WNwtxscpAMI0At
+         vkRYF5ZnkS9Wck1vNJ2n+qPqc98Jz9P6QUmgcBOw5ENYZd/6yvOvNWmXMbJ8M/6gnhkW
+         x0daJw/AQD2TrzILjviKasx3mKdl6wkLrZ8QcRWWCO5hJb5dKKDjcTVuHGKbLGPCuluS
+         3S4g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720476777; x=1721081577;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=dAOsl3qu4A6KcPFJBGEr5mKU1d6JWC06nIXsQ3Qf2RE=;
-        b=POfiLR78u29HzkDWfSRXptPb4nNWQ9kzFBGuWMOV9+lR1XwWuJqsfHEJM4h/zAk9U8
-         h4RypOLYx4AV6Q0YX/KMAotennnJFzhfV0t70Q3+knBsCl2uhJUnwRKHs/xXBbAz4j6T
-         wCIGG8nCzpKjaKicWp9ncUalI6STDl8MrouF+6NMgbdwuqGoh32ZZ+SDejjT7HnOFxyx
-         zvgmZM1kGB7H625D5+1Tq8pHxBmTYde2FW6Cr0NnEXUcY0Z8B13oUD/tGpPCyeBATdfw
-         DkwqjaZHdRjXUyi3M5plTGm80+IezZFfNHOMyhXkqxOkD0OjmmaNQXcDnAVMbreT4kJO
-         5O4Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXd7dbVRV2U/C/NJGUe6L9CKc/F6dvLGlVYLY9yB8ZcvJ4S5vClrsG1mqk/OGZutnHSRxUH85NLBYVa3jmA8Nf1z3a1dP8NEqHzvAbW1L77XzWhI9MvplMLg4I+TxzYICsz633bSZ2RihL5wa4=
-X-Gm-Message-State: AOJu0YzVerKzTYRSI+eurSXuXDeiAW90vhpLQl4p6ZKYTRCwaM99GWIs
-	yJOqDiLSmYUJol8YDNf2ZWv3NOmt0x60J7Ko1Fc65ipsGj76CfsL
-X-Google-Smtp-Source: AGHT+IFF6zvtjUtSil3YQCaVuVBNZbAuGL+crIdVkcP96QT4wqN0NXECjqWbfVLB7+eaHeRG9plJbg==
-X-Received: by 2002:a05:620a:2989:b0:79f:e70:ceef with SMTP id af79cd13be357-79f19a78e07mr121230785a.44.1720476776921;
-        Mon, 08 Jul 2024 15:12:56 -0700 (PDT)
-Received: from fauth2-smtp.messagingengine.com (fauth2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-447f9b3d293sm3736921cf.25.2024.07.08.15.12.55
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Jul 2024 15:12:56 -0700 (PDT)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailfauth.nyi.internal (Postfix) with ESMTP id CE84D1200071;
-	Mon,  8 Jul 2024 17:53:30 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute5.internal (MEProxy); Mon, 08 Jul 2024 17:53:30 -0400
-X-ME-Sender: <xms:2V-MZtrSqomAxyL4CFJRZ2BVZ4Tgj_7x_raReQGwWxpHzCvf_0l-QQ>
-    <xme:2V-MZvq-Gcyb2lTQBEHuy3v1r6L08KGYajEzj_0Aaj_vA78QVhdCSyxbNljvCNYPj
-    kwFlAfN1IFZCstj3Q>
-X-ME-Received: <xmr:2V-MZqNEY9qAhysLdO1gmbetpsqRwNk1Mf-L6r1sXb4v6lHxF88dHJeTsXzmkg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdekgddtfecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhn
-    ucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrth
-    htvghrnhephfetvdfgtdeukedvkeeiteeiteejieehvdetheduudejvdektdekfeegvddv
-    hedtnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpe
-    dtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhp
-    vghrshhonhgrlhhithihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrd
-    hfvghngheppehgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvg
-X-ME-Proxy: <xmx:2V-MZo4XFhEo3ZnDNGXr8xeZmGHOgFcHbGJqM-I465jpCJ3Pft4pQg>
-    <xmx:2V-MZs5fvTaXVRFyaUZyjnfMNyCigoCgWRpzuLjii7HETn2ixdJ9RQ>
-    <xmx:2V-MZgh7g-ku1Ejh7KILunmEQOouq0peDGZfQO9ULjcSAsXSmGvorw>
-    <xmx:2V-MZu4jgls2Q4ESYghYIeJELgWSeZvAhER6QJjIVnjnF0NTaG-fOQ>
-    <xmx:2l-MZjLtyW62YwbYJ1PWv7-qwbbuHcWirAf7zder1u3sCuceX6qkoJqz>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 8 Jul 2024 17:53:29 -0400 (EDT)
-Date: Mon, 8 Jul 2024 14:52:13 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] rust: kernel: add `drop_contents` to `BoxExt`
-Message-ID: <Zoxfjfl9Izaz2Wtj@boqun-archlinux>
-References: <20240708205325.1275473-1-benno.lossin@proton.me>
- <ZoxWyr3fL8GkyOAR@boqun-archlinux>
+        d=1e100.net; s=20230601; t=1720476998; x=1721081798;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=R8IPZEgNUUiuogNfAHnJPTqt9cHkFDPDkD4qrjFJewc=;
+        b=Fo9Lx3RI0buQYV0l3GBaZnZwj0sdEbVVj+DQid8l46VflPdbVAtJREsBpHBYH9tIWc
+         N3uuDFuAbldTuDvRGzyVAg5jaUapKlVnLhA4V6qjXH83h7zXKNoauTe3xyRnJLpGAj4m
+         kA3VIPccQJRsZqXYorKEfYjmFC/kqDoiSpj4IBvQUsbWE9oRToxlgkCb4sLMzTuMkUIn
+         rnQcvWYtqK0zTHuaZMOBtF6qAEg9G0BEmAtENJWjM3T8UAsNgvsQEpqDM1U2dUV5MEmq
+         V+t9XcSfMBxF6kwJofnBThXw+z1j2TzUW9yncRumtdaUhK7o5SNxXOl+8SusXNAnLE/p
+         ya2A==
+X-Forwarded-Encrypted: i=1; AJvYcCWQGgEKDK4n4yQYepkamtLPv6kTxbmUFMGbTtFe28OCektOmhTT+RYax3LSD2ECIb6AOB7HmhuGuaLA/FN1nxsfipw65SIeFribWlLRSPU=
+X-Gm-Message-State: AOJu0Yxe44vy07JsmvjAXDuQ+CnFHMpACHXYn9Cq+pCp9/MK0C+OE7h6
+	K9cO3qohjBQ179vDkUHqg1jhQuo+bZky5T5hVNzVTx0V0Re8XuRv
+X-Google-Smtp-Source: AGHT+IFqwfJfwY/dv7As6iUWdwfMCxHRyvXfl1tVUAm0TZEUjxj1gCdbeXAQKa5H6Txwc8uvvmBsJg==
+X-Received: by 2002:a17:907:7e94:b0:a77:a529:4457 with SMTP id a640c23a62f3a-a780b6b3611mr71153766b.25.1720476998163;
+        Mon, 08 Jul 2024 15:16:38 -0700 (PDT)
+Received: from ?IPV6:2001:871:22a:68fd::1ad1? ([2001:871:22a:68fd::1ad1])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a780a86ec75sm25885366b.191.2024.07.08.15.16.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 08 Jul 2024 15:16:37 -0700 (PDT)
+Message-ID: <12a986aa-3fed-4686-b5bc-99cbe446cca6@gmail.com>
+Date: Tue, 9 Jul 2024 00:16:30 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZoxWyr3fL8GkyOAR@boqun-archlinux>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 2/2] firmware_loader: fix soundness issue in
+ `request_internal`
+To: Danilo Krummrich <dakr@redhat.com>, mcgrof@kernel.org,
+ russ.weight@linux.dev, gregkh@linuxfoundation.org
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ Gary Guo <gary@garyguo.net>
+References: <20240708200724.3203-1-dakr@redhat.com>
+ <20240708200724.3203-2-dakr@redhat.com>
+Content-Language: en-US
+From: Christian Schrefl <chrisi.schrefl@gmail.com>
+In-Reply-To: <20240708200724.3203-2-dakr@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Jul 08, 2024 at 02:14:50PM -0700, Boqun Feng wrote:
-> On Mon, Jul 08, 2024 at 08:53:38PM +0000, Benno Lossin wrote:
-> > Sometimes (see [1]) it is necessary to drop the value inside of a
-> > `Box<T>`, but retain the allocation. For example to reuse the allocation
-> > in the future.
-> > Introduce a new function `drop_contents` that turns a `Box<T>` into
-> > `Box<MaybeUninit<T>>` by dropping the value.
-> > 
-> > Signed-off-by: Benno Lossin <benno.lossin@proton.me>
-> > Link: https://lore.kernel.org/rust-for-linux/20240418-b4-rbtree-v3-5-323e134390ce@google.com/ [1]
-> > ---
-> >  rust/kernel/alloc/box_ext.rs | 21 +++++++++++++++++++++
-> >  1 file changed, 21 insertions(+)
-> > 
-> > diff --git a/rust/kernel/alloc/box_ext.rs b/rust/kernel/alloc/box_ext.rs
-> > index cdbb5ad166d9..6cf79f96d6c7 100644
-> > --- a/rust/kernel/alloc/box_ext.rs
-> > +++ b/rust/kernel/alloc/box_ext.rs
-> > @@ -5,6 +5,7 @@
-> >  use super::{AllocError, Flags};
-> >  use alloc::boxed::Box;
-> >  use core::mem::MaybeUninit;
-> > +use core::ptr;
-> >  use core::result::Result;
-> >  
-> >  /// Extensions to [`Box`].
-> > @@ -18,6 +19,18 @@ pub trait BoxExt<T>: Sized {
-> >      ///
-> >      /// The allocation may fail, in which case an error is returned.
-> >      fn new_uninit(flags: Flags) -> Result<Box<MaybeUninit<T>>, AllocError>;
-> > +
-> > +    /// Drops the contents, but keeps the allocation.
-> > +    ///
+Greetings
 
-(I spoke too soon ;-))
+On 08.07.24 10:07 PM, Danilo Krummrich wrote:
+> `request_internal` must be called with one of the following function
+> pointers: request_firmware(), firmware_request_nowarn(),
+> firmware_request_platform() or request_firmware_direct().
+> 
+> The previous `FwFunc` alias did not guarantee this, which is unsound.
+> 
+> In order to fix this up, implement `FwFunc` as new type with a
+> corresponding type invariant.
+> 
+> Reported-by: Gary Guo <gary@garyguo.net>
+> Closes: https://lore.kernel.org/lkml/20240620143611.7995e0bb@eugeo/
+> Signed-off-by: Danilo Krummrich <dakr@redhat.com>
+> ---
+> v2:
+>   - provide method for each wrapped `FwFunc` (Christian)> ---
+>  rust/kernel/firmware.rs | 27 ++++++++++++++++++++-------
+>  1 file changed, 20 insertions(+), 7 deletions(-)
+> 
+> diff --git a/rust/kernel/firmware.rs b/rust/kernel/firmware.rs
+> index 106a928a535e..2ba03af9f036 100644
+> --- a/rust/kernel/firmware.rs
+> +++ b/rust/kernel/firmware.rs
+> @@ -7,10 +7,23 @@
+>  use crate::{bindings, device::Device, error::Error, error::Result, str::CStr};
+>  use core::ptr::NonNull;
+>  
+> -// One of the following: `bindings::request_firmware`, `bindings::firmware_request_nowarn`,
+> -// `firmware_request_platform`, `bindings::request_firmware_direct`
+> -type FwFunc =
+> -    unsafe extern "C" fn(*mut *const bindings::firmware, *const i8, *mut bindings::device) -> i32;
+> +/// # Invariants
+> +///
+> +/// One of the following: `bindings::request_firmware`, `bindings::firmware_request_nowarn`,
+> +/// `bindings::firmware_request_platform`, `bindings::request_firmware_direct`.
+> +struct FwFunc(
+> +    unsafe extern "C" fn(*mut *const bindings::firmware, *const i8, *mut bindings::device) -> i32,
+> +);
+> +
+> +impl FwFunc {
+> +    fn request() -> Self {
+> +        Self(bindings::request_firmware)
+> +    }
+> +
+> +    fn request_nowarn() -> Self {
+> +        Self(bindings::firmware_request_nowarn)
+> +    }
 
-> > +    /// # Examples
-> > +    ///
-> > +    /// ```
+I'm not sure if we should have a comment here that describes how the invariant is fulfilled.
 
-need a `use` here:
+In this case its not too bad since the Invariants are described just a few lines above, so:
 
-	use kernel::alloc::{flags, box_ext::BoxExt};
+Reviewed-by: Christian Schrefl <chrisi.schrefl@gmail.com>
 
-> > +    /// let value = Box::new([0; 32], flags::GFP_KERNEL)
 
-missing a '?' and a ';' at the end of this line.
-
-> > +    /// let value = value.drop_contents();
-> > +    /// // Now we can re-use `value`:
-> > +    /// Box::write(value, [1; 32]);
-
-Need a line:
-
-	# Ok::<(), Error>(())
-
-here.
-> > +    /// ```
-> > +    fn drop_contents(self) -> Box<MaybeUninit<T>>;
-> >  }
-> >  
-[...]
-
-I queued this patch in rust-dev with these fixes applied, FYI.
-
-Regards,
-Boqun
+Cheers,
+Christian
