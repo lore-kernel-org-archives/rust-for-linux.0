@@ -1,136 +1,127 @@
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
+Received: from mail-lj1-f175.google.com (mail-lj1-f175.google.com [209.85.208.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 230F6150989;
-	Mon,  8 Jul 2024 22:16:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 596CD3CF63
+	for <rust-for-linux@vger.kernel.org>; Mon,  8 Jul 2024 22:22:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720477001; cv=none; b=KuAKKz7qNFwq4n2E65nH/XX51ncoHRvGrKadWARHqvl3qEozv8X6bsfTqGwyLnIJnHPfKzB/1lhSypdgBCsAtFh/p9B8b4VhvPdmrcSCAjfh/ZoGzQsJD0q5BJNd7JT/fVso6XskWGwIWezieyaebankYsLKXleXBPM41iOe3J4=
+	t=1720477336; cv=none; b=lj1Czc+ZhCX3E+6PwNvUitrFaFgN4j9lUrDXSYfAqoAe3eBnyQ93nmqNAfn7fTUk+Ziy3Vr1L5t6bhtRSQ1VEB2KIRfrGH7t30I6W3own/fTUSkTKOj9LC/quklgGd1CmuTqUp63iR5912MkEatobYNJgb6Yhv0ZIvXWwaJ+9Io=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720477001; c=relaxed/simple;
-	bh=r85fh6KcSliTflOSzKO4M7DtwEKxSywoyBFcV+rFY7M=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=uGSyz/y+ZDk3N2hYnsihTluXyj+3tEfyPwGE2rUkfgKycYc1ZxfK+I6GEvrGN3GdndxrIYGjwzjl+dnn4VRA4pYr3LHcBss6YyyeKI/v/s/a2wDivPgy4y2G/j9ao8ZZeY3/eDYsdM9/awLHZLJktei2m4MDinp+STibG7TtXF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VwIHuMN3; arc=none smtp.client-ip=209.85.218.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1720477336; c=relaxed/simple;
+	bh=/klr4pal0zQ+qkbOyt3Sy9bpPlhmD8yV7byDM6Ourbw=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=VV+I8Aua1Tzz4tUi2QaNdg2M2uE2KAqnqjSEB/N5y7tNDJY2UTCFmtPA41D3Rlwzl4brQG3PJ/OI/vkAvBJ9mn3WkpnUc2e1i5MalFR3+OVGCWkpt+9o9lo37qaDHN73EQyfJlUGJtHDfebFHmfWFBhpiGFs0kh/kCIUfuMmfQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GNerUHl0; arc=none smtp.client-ip=209.85.208.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linuxfoundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VwIHuMN3"
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-a77e2f51496so303944066b.0;
-        Mon, 08 Jul 2024 15:16:39 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GNerUHl0"
+Received: by mail-lj1-f175.google.com with SMTP id 38308e7fff4ca-2ee91d9cb71so41854071fa.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 08 Jul 2024 15:22:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1720476998; x=1721081798; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=R8IPZEgNUUiuogNfAHnJPTqt9cHkFDPDkD4qrjFJewc=;
-        b=VwIHuMN3ZsyQQVQtdD3poa0TT6gd1bO6xcjEeB3GZuPns6J3Yrf/ymDx5hG6vhcRTV
-         +lwOXEWQ5ov1fJUK1c3Dx3v01XQ4u4Uxlz8mLKAIJ+CP1xbQmfV30fWPHYW0RZW16p0K
-         +4lZW7s6ISqrjLZH1bTo76qKbjQfzQKgNhUpNxjWRwyk2okkMnUjU/WNwtxscpAMI0At
-         vkRYF5ZnkS9Wck1vNJ2n+qPqc98Jz9P6QUmgcBOw5ENYZd/6yvOvNWmXMbJ8M/6gnhkW
-         x0daJw/AQD2TrzILjviKasx3mKdl6wkLrZ8QcRWWCO5hJb5dKKDjcTVuHGKbLGPCuluS
-         3S4g==
+        d=linuxfoundation.org; s=google; t=1720477332; x=1721082132; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=/klr4pal0zQ+qkbOyt3Sy9bpPlhmD8yV7byDM6Ourbw=;
+        b=GNerUHl0ajDjvWkF7YbwA/1JVXWRZTevJXGf0HtD50JNLXrKRjzDmv+XwkjTBnyL88
+         aplr2xXXl03B0EP2KnQ/tcex9Dyxd5h4E3UvXGnA0T21oC2vMRdpPb3hV4aiGZ8gm7OX
+         6/xVjHuPBQUC7K5gth3BNnkoYgqTK5iyabdY8=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720476998; x=1721081798;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=R8IPZEgNUUiuogNfAHnJPTqt9cHkFDPDkD4qrjFJewc=;
-        b=Fo9Lx3RI0buQYV0l3GBaZnZwj0sdEbVVj+DQid8l46VflPdbVAtJREsBpHBYH9tIWc
-         N3uuDFuAbldTuDvRGzyVAg5jaUapKlVnLhA4V6qjXH83h7zXKNoauTe3xyRnJLpGAj4m
-         kA3VIPccQJRsZqXYorKEfYjmFC/kqDoiSpj4IBvQUsbWE9oRToxlgkCb4sLMzTuMkUIn
-         rnQcvWYtqK0zTHuaZMOBtF6qAEg9G0BEmAtENJWjM3T8UAsNgvsQEpqDM1U2dUV5MEmq
-         V+t9XcSfMBxF6kwJofnBThXw+z1j2TzUW9yncRumtdaUhK7o5SNxXOl+8SusXNAnLE/p
-         ya2A==
-X-Forwarded-Encrypted: i=1; AJvYcCWQGgEKDK4n4yQYepkamtLPv6kTxbmUFMGbTtFe28OCektOmhTT+RYax3LSD2ECIb6AOB7HmhuGuaLA/FN1nxsfipw65SIeFribWlLRSPU=
-X-Gm-Message-State: AOJu0Yxe44vy07JsmvjAXDuQ+CnFHMpACHXYn9Cq+pCp9/MK0C+OE7h6
-	K9cO3qohjBQ179vDkUHqg1jhQuo+bZky5T5hVNzVTx0V0Re8XuRv
-X-Google-Smtp-Source: AGHT+IFqwfJfwY/dv7As6iUWdwfMCxHRyvXfl1tVUAm0TZEUjxj1gCdbeXAQKa5H6Txwc8uvvmBsJg==
-X-Received: by 2002:a17:907:7e94:b0:a77:a529:4457 with SMTP id a640c23a62f3a-a780b6b3611mr71153766b.25.1720476998163;
-        Mon, 08 Jul 2024 15:16:38 -0700 (PDT)
-Received: from ?IPV6:2001:871:22a:68fd::1ad1? ([2001:871:22a:68fd::1ad1])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a780a86ec75sm25885366b.191.2024.07.08.15.16.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 08 Jul 2024 15:16:37 -0700 (PDT)
-Message-ID: <12a986aa-3fed-4686-b5bc-99cbe446cca6@gmail.com>
-Date: Tue, 9 Jul 2024 00:16:30 +0200
+        d=1e100.net; s=20230601; t=1720477332; x=1721082132;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=/klr4pal0zQ+qkbOyt3Sy9bpPlhmD8yV7byDM6Ourbw=;
+        b=U4TVyJVrJdt30HgILMELahhnGt22ujzsjH5lP3ODeqpKkVXbzU7HcImXj00leqVezv
+         mKAMuaujRblRQNpLbXVkL/+b+zaEyNTr4nT2M9VCBPimb4JCKW0bpN1KNZobUX8wMuva
+         1vor2LHnkpkR3bhyv2v0/w9xe5lrUwMGoD4C0kzRvhGw4/95SOkcM5l9jRF11Lt2HPSG
+         DRmsz15edxO9k/PmDQXLOguQSeeDfvTSIJGyi11aby6ojQAp/ytkxmP8yKGZS3ZXT+jW
+         xYHRwNBW2TGuq7nulNB3S+2jcelY3bcHbR6/1T+YC+8zYSPc+VCry5d1U2BZDNPZUIEu
+         44kQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXECjfHOeZ4XSDKC6jn6R0DkUpEDrvZ6AbB6KBBk8ZLDIHIj6kePWKuP80fKzY9TrnPx55ET/jOpIAoFdyv9NP4yi5szUeFaKlpgG2zf1M=
+X-Gm-Message-State: AOJu0YwufZYGQVKZwt5MXDjcPl4qiXIHkdHrTitfDObt8J4ixXcbTnDq
+	NR4l8FvTtIFkva1nkoekRVc2qulwAX62HwmmehFXp7lIx8UKXogprKsldbTeHG4=
+X-Google-Smtp-Source: AGHT+IFII0Z4k5zO4+WVg6UOmIJTwUe1aRNvrkRm8kXkSN7SHLYkIk+Hq6VsR3UW4MiC3Amoj70LAw==
+X-Received: by 2002:a2e:9807:0:b0:2ee:7b93:5209 with SMTP id 38308e7fff4ca-2eeb318ab22mr4721111fa.45.1720477331537;
+        Mon, 08 Jul 2024 15:22:11 -0700 (PDT)
+Received: from ?IPv6:2001:8b0:aba:5f3c:6c1e:b1f8:4156:8a30? ([2001:8b0:aba:5f3c:6c1e:b1f8:4156:8a30])
+        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2eeb3488b35sm527791fa.128.2024.07.08.15.22.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 08 Jul 2024 15:22:11 -0700 (PDT)
+Message-ID: <141a4ba7c3645594de636985d3300f3914a160f1.camel@linuxfoundation.org>
+Subject: Re: [Automated-testing] Plumbers Testing MC potential topic:
+ specialised toolchains
+From: Richard Purdie <richard.purdie@linuxfoundation.org>
+To: gtucker@gtucker.io, Nick Desaulniers <ndesaulniers@google.com>, Miguel
+ Ojeda <ojeda@kernel.org>, Alexei Starovoitov <ast@kernel.org>, Arnd
+ Bergmann <arnd@arndb.de>
+Cc: llvm@lists.linux.dev, rust-for-linux@vger.kernel.org,
+ yurinnick@meta.com,  bpf@vger.kernel.org, Sasha Levin <sashal@kernel.org>,
+ Shuah Khan <skhan@linuxfoundation.org>,
+ automated-testing@lists.yoctoproject.org
+Date: Mon, 08 Jul 2024 23:22:09 +0100
+In-Reply-To: <f80acb84-1d98-44d3-84b7-d976de77d8ce@gtucker.io>
+References: <f80acb84-1d98-44d3-84b7-d976de77d8ce@gtucker.io>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.0-1build2 
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 2/2] firmware_loader: fix soundness issue in
- `request_internal`
-To: Danilo Krummrich <dakr@redhat.com>, mcgrof@kernel.org,
- russ.weight@linux.dev, gregkh@linuxfoundation.org
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
- Gary Guo <gary@garyguo.net>
-References: <20240708200724.3203-1-dakr@redhat.com>
- <20240708200724.3203-2-dakr@redhat.com>
-Content-Language: en-US
-From: Christian Schrefl <chrisi.schrefl@gmail.com>
-In-Reply-To: <20240708200724.3203-2-dakr@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
 
-Greetings
+On Tue, 2024-07-09 at 00:10 +0200, Guillaume Tucker via
+lists.yoctoproject.org wrote:
+> Based on these assumptions, the issue is about reproducibility -
+> yet alone setting up a toolchain that can build the code at all.
+> For an automated system to cover these use-cases, or for any
+> developer wanting to work on these particular areas of the
+> kernel, having the ability to reliably build it in a reproducible
+> way using a reference toolchain adds a lot of value.=C2=A0 It means
+> better quality control, less scope for errors and unexpected
+> behaviour with different code paths being executed or built
+> differently.
+>=20
+> The current state of the art are the kernel.org toolchains:
+>=20
+> =C2=A0 https://mirrors.edge.kernel.org/pub/tools/
+>=20
+> These are for LLVM and cross-compilers, and they already solve a
+> large part of the issue described above.=C2=A0 However, they don't
+> include Rust (yet), and all the dependencies need to be installed
+> manually which can have a significant impact on the build
+> result (gcc, binutils...).=C2=A0 One step further are the Linaro
+> TuxMake Docker images[2] which got some very recent blog
+> coverage[3].=C2=A0 The issues then are that not all the toolchains are
+> necessarily available in Docker images, they're tailored to
+> TuxMake use-cases, and I'm not sure to which extent upstream
+> kernel maintainers rely on them.
+>=20
+>=20
+> Now, I might have missed some other important aspects so please
+> correct me if this reasoning seems flawed in any way.=C2=A0 I have
+> however seen how hard it can be for automated systems to build
+> kernels correctly and in a way that developers can reproduce, so
+> this is no trivial issue.=C2=A0 Then for the Testing MC, I would be
+> very interested to hear whether people feel it would be
+> beneficial to work towards a more exhaustive solution supported
+> upstream: kernel.org Docker images or something close such as
+> Dockerfiles in Git or another type of images with all the
+> dependencies included.=C2=A0 How does that sound?
 
-On 08.07.24 10:07 PM, Danilo Krummrich wrote:
-> `request_internal` must be called with one of the following function
-> pointers: request_firmware(), firmware_request_nowarn(),
-> firmware_request_platform() or request_firmware_direct().
-> 
-> The previous `FwFunc` alias did not guarantee this, which is unsound.
-> 
-> In order to fix this up, implement `FwFunc` as new type with a
-> corresponding type invariant.
-> 
-> Reported-by: Gary Guo <gary@garyguo.net>
-> Closes: https://lore.kernel.org/lkml/20240620143611.7995e0bb@eugeo/
-> Signed-off-by: Danilo Krummrich <dakr@redhat.com>
-> ---
-> v2:
->   - provide method for each wrapped `FwFunc` (Christian)> ---
->  rust/kernel/firmware.rs | 27 ++++++++++++++++++++-------
->  1 file changed, 20 insertions(+), 7 deletions(-)
-> 
-> diff --git a/rust/kernel/firmware.rs b/rust/kernel/firmware.rs
-> index 106a928a535e..2ba03af9f036 100644
-> --- a/rust/kernel/firmware.rs
-> +++ b/rust/kernel/firmware.rs
-> @@ -7,10 +7,23 @@
->  use crate::{bindings, device::Device, error::Error, error::Result, str::CStr};
->  use core::ptr::NonNull;
->  
-> -// One of the following: `bindings::request_firmware`, `bindings::firmware_request_nowarn`,
-> -// `firmware_request_platform`, `bindings::request_firmware_direct`
-> -type FwFunc =
-> -    unsafe extern "C" fn(*mut *const bindings::firmware, *const i8, *mut bindings::device) -> i32;
-> +/// # Invariants
-> +///
-> +/// One of the following: `bindings::request_firmware`, `bindings::firmware_request_nowarn`,
-> +/// `bindings::firmware_request_platform`, `bindings::request_firmware_direct`.
-> +struct FwFunc(
-> +    unsafe extern "C" fn(*mut *const bindings::firmware, *const i8, *mut bindings::device) -> i32,
-> +);
-> +
-> +impl FwFunc {
-> +    fn request() -> Self {
-> +        Self(bindings::request_firmware)
-> +    }
-> +
-> +    fn request_nowarn() -> Self {
-> +        Self(bindings::firmware_request_nowarn)
-> +    }
+Sadly I can't be at plumbers however I wanted to mention that Yocto
+Project's SDKs are effectively standalone toolchains. They can be
+configured to contain all their dependencies and whatever tools are
+desirable (e.g. git, python etc.), are fully reproducible, installable
+at any location and we have working rust compilers in the SDKs if
+configured to include them.
 
-I'm not sure if we should have a comment here that describes how the invariant is fulfilled.
-
-In this case its not too bad since the Invariants are described just a few lines above, so:
-
-Reviewed-by: Christian Schrefl <chrisi.schrefl@gmail.com>
-
+I just want to make sure people know that capability exists!
 
 Cheers,
-Christian
+
+Richard
+
