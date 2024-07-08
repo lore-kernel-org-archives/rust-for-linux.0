@@ -1,218 +1,105 @@
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f172.google.com (mail-oi1-f172.google.com [209.85.167.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B9531864C;
-	Mon,  8 Jul 2024 08:12:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63EA28C06;
+	Mon,  8 Jul 2024 09:07:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720426371; cv=none; b=HDdlBsTYSAbM392Y/SNH/M3+0l5NnKCd/lkhbP2S72uCXZDghD5iLTEhpRlB2qU82ueymuRj4sm7dx8brwXKKc5U2zcWr2h4VM0cMkjOuQfB9oe7kZ19Qpcx/2hbgx/xXGlGC1PrDeR/VsCB5iBrmobsLtvH+MEz+nfPxfoYPOg=
+	t=1720429622; cv=none; b=LeA5ENOHr+VaFpzUDHP5oIvFkictGl3VdQoNjhy5j/niy+BsCUHBOjYSBj2Dsr9nmRnhJpDZ5d1uYXEf6lpouVp/9wGyGTMBv4Yv+vNHKvZDJ0wY1yydXbmx+HvSCYKUG/+0uFqlKTk27Wwi9yhRUCkUubpqvX0UX5T0ufMNxK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720426371; c=relaxed/simple;
-	bh=XQe62ZyTOEoRiduvusCL/q8/fQjihKu6X4uLszViecE=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Esgz1st4lcchpiL9fdVrgkTsnovFACN/Z8me/uNaaCYU0u1DvWGPxLeCH1VxeRQexTWzTNjcZLjN5bcUMbDnpdr2EkuUDuF8/C7BjMytzMMUYHRSw7teS34NfTLkVDFlPafM70Wxbo4hjaGUg/RI529gNLb8xzVs2D/x5I2UYMw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=Uy8IWMaf; arc=none smtp.client-ip=185.70.43.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1720429622; c=relaxed/simple;
+	bh=mV1LipK/FuGq7j+gzyLCLNXhEfHp8ZALbfN4s0sw87w=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Us273fE4ihRgd/QfiVi6jn3hBlxrxdxqaogDHLFR5iM+b7H77VO53Lyo3p88Pje0oU2BrmowbDbCooLdbeHZd+dTCe2gdBOAvMsrF+TW3wp2nJQh6RfacAPCwj8PTN9VedMnd8cqzjV8KR6ZgiFFFoWvbBjTmxd5zcFYAt4nYfA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M448UVm2; arc=none smtp.client-ip=209.85.167.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="Uy8IWMaf"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1720426361; x=1720685561;
-	bh=L+zTwXfvHIAolDRxRlsyaU2fxyf/8YP3cmYvff3qA98=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=Uy8IWMaf14rIx+VTvzaKEKtxmFg/nEAqPAF5x3ASxk862EiUP+U9z6U4/Dxt+5W8T
-	 nPqwb4RgmXTa652gXd86/lmot5AD3maRbj4QMGN0F1OW2CSEKRjCfoWkkGyfX5FZgZ
-	 mP+LczrxDnIEqtvW60zUB80+M7MeDNF1AwseC1pSZ+FWDdpte7LpKpiaP+yR+iuHpE
-	 nZ4WSH6K/6PG7yuCuNOMaFXDBwopJ4aoff/M8qJ1eIYmUxdqGgnt3JXaZ/5T6vksEa
-	 XWP/vuaUXhcn63bUufn/kohCQIMMYeBfkkdKRBp+jkQrA4V2r3lySxux4aYWS1Egkr
-	 HifaRM1WXqJrQ==
-Date: Mon, 08 Jul 2024 08:12:34 +0000
-To: Danilo Krummrich <dakr@redhat.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@samsung.com, aliceryhl@google.com, daniel.almeida@collabora.com, faith.ekstrand@collabora.com, boris.brezillon@collabora.com, lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com, acurrid@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com, ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 01/20] rust: alloc: add `Allocator` trait
-Message-ID: <5197ac37-ab92-4d99-a2e1-82d1cd9dc7e7@proton.me>
-In-Reply-To: <ZomRT_PQHVMVQ_RY@cassiopeiae>
-References: <20240704170738.3621-1-dakr@redhat.com> <20240704170738.3621-2-dakr@redhat.com> <37d87244-fbef-414c-a726-60839b305040@proton.me> <ZoklB7aLyc90kWPT@pollux.localdomain> <2c322b00-20f8-4102-9f3b-edab0c0907b9@proton.me> <ZolerSMkVl0C4yfF@pollux.localdomain> <50cec075-04f4-4267-8d19-1b498a9f51bf@proton.me> <ZomRT_PQHVMVQ_RY@cassiopeiae>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 970b5d08fd1eca9213c31b16e372ed5847539a46
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M448UVm2"
+Received: by mail-oi1-f172.google.com with SMTP id 5614622812f47-3d9272287easo1007101b6e.2;
+        Mon, 08 Jul 2024 02:07:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1720429620; x=1721034420; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=sszcVanAVKdYYqxBnbm3QO7r8vp/tfxRsbR3NwzhhxM=;
+        b=M448UVm2Y0/nI3SQ6es5axXPKsSv10P9jTQ+6aizWNjomeTe/cUd5RfIsj1lNkI7D/
+         IKMdGB6UGjwuzr4gDCNUMRLHHKBWc1nZ7fzYlwYVS511Uh3yirbOtGRmv/6j9O4a49gT
+         5ssytXWxsuo0P6G3MGvLVXs6gzig9i8Iw7NRT5G/hZ07nwctvRbToS9eDLWS2TYHio4o
+         Zdve+7UhClQ3TB9JMHc6yVg9+f07lub/i0lcxjTFUWE9/pzbmWSsFaxChYMoqejgzolM
+         arS2M9Ew9Vvp8KNKsXZ0JOOHtdWFnDuq95A6Yoate6pXyodz3j2+7vxU03ufGcQf5dzg
+         7BAg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1720429620; x=1721034420;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=sszcVanAVKdYYqxBnbm3QO7r8vp/tfxRsbR3NwzhhxM=;
+        b=hz+GCPlbFPf1iwYmwwXMQ/+TmCABS0zZ+xegJG9FWUI/OQQaAgJdZEgo5ErTm71e6c
+         xPP840Xo58qIgrsCZnS2s2Pxy1WRCAmKjXwFjBHdS9LfPc+fnrRRoXqeI2ChmlqZijUk
+         AJJXk+bCK3ueHIAFFsTj82shmv7JHMfVKLFL2x5AlDE9xcqz42fuZnAwQIl/4+9Q26HM
+         TDL605Hk7h6Q22Ds/+mReRXkYjFtR8iPxDh4WOF6ovrHjI/S+U0rMPvVLcOf75t0YiFJ
+         s1sAfJfzyxpfB20rF0Mg61mXxadDgyKYaP1vvGup9s6QEigAGVFY6YfWbF9LkBXwxei4
+         sNAw==
+X-Forwarded-Encrypted: i=1; AJvYcCUYslzf8Ubs4zWrHLvZ3i71mswXagbFSbLQzzBUAjJfYPnA/mBbIrH0yCxsD27NT/dVlk5U/AFgH4hCD2tqOXDhcUTrvqxP1RLTDFojeA4=
+X-Gm-Message-State: AOJu0YyU5XSxzVp7WAjAfDi2DicfKa/FCRfQzOwV6L9jgEw65osYUkxS
+	vSDpMzlvCscEWeeOwBtVVBU6F2UuF5UT17JZmX2v0c5xVbsXfod/0zP+hQld
+X-Google-Smtp-Source: AGHT+IGCkR3C+3ZBC987fOhuAC48dnbIyUz8o1kUcoAFt73gHT0rqnuvtcV3On4BM4WUJy/9+DhKuQ==
+X-Received: by 2002:a05:6808:120d:b0:3d2:1cca:77ad with SMTP id 5614622812f47-3d914c62a65mr14638845b6e.13.1720429620393;
+        Mon, 08 Jul 2024 02:07:00 -0700 (PDT)
+Received: from my-computer.lan (c-98-39-68-68.hsd1.tx.comcast.net. [98.39.68.68])
+        by smtp.googlemail.com with ESMTPSA id 5614622812f47-3d62fa4164csm3720563b6e.46.2024.07.08.02.06.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 08 Jul 2024 02:07:00 -0700 (PDT)
+From: Andrew Ballance <andrewjballance@gmail.com>
+To: linux-kernel@vger.kernel.org
+Cc: linux-kernel-mentees@lists.linuxfoundation.org,
+	skhan@linuxfoundation.org,
+	mcgrof@kernel.org,
+	russ.weight@linux.dev,
+	dakr@redhat.com,
+	ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	wedsonaf@gmail.com,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me,
+	a.hindborg@samsung.com,
+	aliceryhl@google.com,
+	rust-for-linux@vger.kernel.org,
+	Andrew Ballance <andrewjballance@gmail.com>
+Subject: [PATCH] rust: firmware: fix invalid rustdoc link
+Date: Mon,  8 Jul 2024 04:06:15 -0500
+Message-ID: <20240708090615.2267476-1-andrewjballance@gmail.com>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On 06.07.24 20:47, Danilo Krummrich wrote:
-> On Sat, Jul 06, 2024 at 05:08:26PM +0000, Benno Lossin wrote:
->> On 06.07.24 17:11, Danilo Krummrich wrote:
->>> On Sat, Jul 06, 2024 at 01:17:19PM +0000, Benno Lossin wrote:
->>>> On 06.07.24 13:05, Danilo Krummrich wrote:
->>>>>>> +        layout: Layout,
->>>>>>> +        flags: Flags,
->>>>>>> +    ) -> Result<NonNull<[u8]>, AllocError>;
->>>>>>> +
->>>>>>> +    /// Free an existing memory allocation.
->>>>>>> +    ///
->>>>>>> +    /// # Safety
->>>>>>> +    ///
->>>>>>> +    /// `ptr` must point to an existing and valid memory allocatio=
-n created by this `Allocator`
->>>>>>> +    /// instance.
->>>>>>> +    unsafe fn free(&self, ptr: *mut u8) {
->>>>>>
->>>>>> `ptr` should be `NonNull<u8>`.
->>>>>
->>>>> Creating a `NonNull` from a raw pointer is an extra operation for any=
- user of
->>>>> `free` and given that all `free` functions in the kernel accept a NUL=
-L pointer,
->>>>> I think there is not much value in making this `NonNull`.
->>>>
->>>> I don't think that this argument holds for Rust though. For example,
->>>> `KBox` contains a `Unique` that contains a `NonNull`, so freeing could
->>>> just be done with `free(self.0.0)`.
->>>
->>> Agreed, we can indeed make it a `&NonNull<u8>`. However, I find this a =
-bit
->>
->> I think you mean `NonNull<u8>`, right?
->=20
-> Yes, but I still don't see how that improves things, e.g. in `Drop` of
-> `KVec`:
->=20
-> `A::free(self.ptr.to_non_null().cast())`
->=20
-> vs.
->=20
-> `A::free(self.as_mut_ptr().cast())`
->=20
-> I'm not against this change, but I don't see how this makes things better=
-.
+rustdoc generates a link to a nonexistent file because of a extra quote
 
-Ah you still need to convert the `Unique<T>` to a pointer...
-But we could have a trait that allows that conversion. Additionally, we
-could get rid of the cast if we made the function generic.
-
->>> inconsistent with the signature of `realloc`.
->>>
->>> Should we go with separate `shrink` / `grow`, `free` could be implement=
-ed as
->>> shrinking to zero and allowing a NULL pointer makes not much sense.
->>>
->>> But as mentioned, I'm not yet seeing the benefit of having `realloc` sp=
-lit into
->>> `grow` and `shrink`.
->>
->> I would not split it into grow/shrink. I am not sure what exactly would
->> be best here, but here is what I am trying to achieve:
->> - people should strongly prefer alloc/free over realloc,
->=20
-> I agree; the functions for that are there: `Allocator::alloc` and
-> `Allocator::free`.
->=20
-> `KBox` uses both of them, `KVec` instead, for obvious reasons, uses
-> `Allocator::realloc` directly to grow from zero and `Allocator::free`.
->=20
->> - calling realloc with zero size should not signify freeing the memory,
->>   but rather resizing the allocation to 0. E.g. because a buffer now
->>   decides to hold zero elements (in this case, the size should be a
->>   variable that just happens to be zero).
->=20
-> If a buffer is forced to a new size of zero, isn't that effectively a fre=
-e?
-
-I would argue that they are different, since you get a pointer back that
-points to an allocation of zero size. A vector of size zero still keeps
-around a (dangling) pointer.
-You also can free a zero sized allocation (it's a no-op), but you must
-not free an allocation twice.
-
-> At least that's exactly what the kernel does, if we ask krealloc() to res=
-ize to
-> zero it will free the memory and return ZERO_SIZE_PTR.
-
-Not every allocator behaves like krealloc, in your patch, both vmalloc
-and kvmalloc are implemented with `if`s to check for the various special
-cases.
-
-> So, what exactly would you want `realloc` to do when a size of zero is pa=
-ssed
-> in?
-
-I don't want to change the behavior, I want to prevent people from using
-it unnecessarily.
-
->> - calling realloc with a null pointer should not be necessary, since
->>   `alloc` exists.
->=20
-> But `alloc` calls `realloc` with a NULL pointer to allocate new memory.
->=20
-> Let's take `Kmalloc` as example, surely I could implement `alloc` by call=
-ing
-> into kmalloc() instead. But then we'd have to implement `alloc` for all
-> allocators, instead of having a generic `alloc`.
-
-My intuition is telling me that I don't like that you can pass null to
-realloc. I can't put my finger on exactly why that is, maybe because
-there isn't actually any argument here or maybe there is. I'd like to
-hear other people's opinion.
-
-> And I wonder what's the point given that `realloc` with a NULL pointer al=
-ready
-> does this naturally? Besides that, it comes in handy when we want to allo=
-cate
-> memory for data structures that grow from zero, such as `KVec`.
-
-You can just `alloc` with size zero and then call `realloc` with the
-pointer that you got. I don't see how this would be a problem.
-
->> This is to improve readability of code, or do you find
->>
->>     realloc(ptr, 0, Layout::new::<()>(), Flags(0))
->>
->> more readable than
->>
->>     free(ptr)
->=20
-> No, but that's not what users of allocators would do. They'd just call `f=
-ree`,
-> as I do in `KBox` and `KVec`.
-
-I agree that we have to free the memory when supplying a zero size, but
-I don't like adding additional features to `realloc`.
-
-Conceptually, I see an allocator like this:
-
-    pub trait Allocator {
-        type Flags;
-        type Allocation;
-        type Error;
-   =20
-        fn alloc(layout: Layout, flags: Self::Flags) -> Result<Self::Alloca=
-tion, Self::Error>;
-   =20
-        fn realloc(
-            alloc: Self::Allocation,
-            old: Layout,
-            new: Layout,
-            flags: Self::Flags,
-        ) -> Result<Self::Allocation, (Self::Allocation, Self::Error)>;
-   =20
-        fn free(alloc: Self::Allocation);
-    }
-
-I.e. to reallocate something, you first have to have something
-allocated.
-
-For some reason if we use `Option<NonNull<u8>>` instead of `*mut u8`, I
-have a better feeling, but that might be worse for ergonomics...
-
+Signed-off-by: Andrew Ballance <andrewjballance@gmail.com>
 ---
-Cheers,
-Benno
+ rust/kernel/firmware.rs | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/rust/kernel/firmware.rs b/rust/kernel/firmware.rs
+index 386c8fb44785..763d7cbefab5 100644
+--- a/rust/kernel/firmware.rs
++++ b/rust/kernel/firmware.rs
+@@ -2,7 +2,7 @@
+ 
+ //! Firmware abstraction
+ //!
+-//! C header: [`include/linux/firmware.h`](srctree/include/linux/firmware.h")
++//! C header: [`include/linux/firmware.h`](srctree/include/linux/firmware.h)
+ 
+ use crate::{bindings, device::Device, error::Error, error::Result, str::CStr};
+ use core::ptr::NonNull;
+-- 
+2.45.2
 
