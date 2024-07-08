@@ -1,93 +1,98 @@
-Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
+Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 418037E56C;
-	Mon,  8 Jul 2024 11:57:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70C45145344;
+	Mon,  8 Jul 2024 17:53:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720439825; cv=none; b=L6coU52yyjRNm7JQGDObJ2kDomzgoY50n9kagzYIQqs6fqfSERlHOpaxpbCY1zfFZL9f+yqmD1BfBXCS3iQ4wbMpTQklCSgCQl1BoInsk63Ivxw9GPGWW//R08Y11afu+keUopfgqEUBDPoofvJtMV3J7j3TEsrftqrnh4kDA18=
+	t=1720461195; cv=none; b=t643CV0cgbKuJ9N6b/i+godCq57VyD6fP8jDTqUqC5LFm463aQ4qUNIJ5prUeDOSV93t17cogPqkg7rHvSMgIav9mbs3fUHq1YDk9bghalthKk/vldP34RZo35s3aRYFxvz3qmTcvsWOOAJHomSSzuagTrhuZNWlxaH3S0o6LJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720439825; c=relaxed/simple;
-	bh=SUIMCgaacRO0cSlQoird0ishcpaQlxLRaKsUM24BmkA=;
+	s=arc-20240116; t=1720461195; c=relaxed/simple;
+	bh=iOLaAKGVBNBu76WR45/Ccdjddni/NIVquIog/WJvECg=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TOHa3nb8mvXh8x3lhIb7ZJvBzW8f7G7BRdww0ZRsz202uUiza1nbimXl4TTG9FGRLytgexshZGvXLsMHy12lTDlXOf+VyMyhhGIIw445vQtU658F2KP5yHeLO9wrRxtvVx505at2Q8qcOeQtHdzFQXNW2mUlSwqaBz/cTfFIdsg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CkBgPe6m; arc=none smtp.client-ip=209.85.215.171
+	 To:Cc:Content-Type; b=LKtOLqnQVKSfPEZto4vDzpjModMzEm7mULZsFJ45Feci/YWeVpJRbAJSLwZCHaqgHg0jp8B1npuSmpATIqX66S3wuGpU7bqqL9FgJqbfZUoeeny6FE9Em8BYhlBsyB74yme6e17Pd4gerg6S12G15KRBrHwtoreyyNnFQySPtKI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GctH8zc0; arc=none smtp.client-ip=209.85.167.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CkBgPe6m"
-Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-7276c331f78so3141575a12.0;
-        Mon, 08 Jul 2024 04:57:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GctH8zc0"
+Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-52e98087e32so4693134e87.2;
+        Mon, 08 Jul 2024 10:53:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1720439823; x=1721044623; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1720461192; x=1721065992; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=SUIMCgaacRO0cSlQoird0ishcpaQlxLRaKsUM24BmkA=;
-        b=CkBgPe6mnBunUTNdctD5PXAAir+dvzp5kPcA89u+KfYYruo205NzOAX/swHhaJVnTy
-         2g6RAv4Tyi74zQqlxzJaXZ5clYIEubu4l+DV9EZzsXkL4huPypJEuZ6DmDwYXL5OxrpW
-         xokO2D3JQ4SAdkh2TD7YnZIcu53lZDA6lWkq9H8mANEn3bgFt3OtSufcaTjcGKxjJMvZ
-         mHyc2u4wgll62e+JesJNt98SEsfQwElPbNWhofBgxF9MpYRm3056fIQhdFG0V3QJr6x/
-         KV0JxyDg+n9C9Uy3HXW62JRWFxRVXPL/ZbA8L/+XOMD1zVjHDG9jPCA0pcIh+Dw9G2uR
-         wmcw==
+        bh=iOLaAKGVBNBu76WR45/Ccdjddni/NIVquIog/WJvECg=;
+        b=GctH8zc0USblV9J1ov+1BEREUepGoaJHbJLMUGpOGjFOEU85qFUwCUYS1B4g9roV3F
+         iLYsK6n2oXXLbMqFGJ65O89cdGVHymXByQQGZX4yd9l3Esflx9xvaM7cRKXG1Fn22q5z
+         Yk/E1AsUhtcNeyr1Gfcz1Wm1v3tP0UBLX+ZXK9ziQeaBg2Uj8jxG4r/WZMgzzbdNkcUZ
+         c9gY2e6UwbyYovLsVyB0o1aySihmoeG7jpx8E6pMMiTYOcrl9NSesW9Ml7SjPk3PrSIN
+         GOihkxJI974n0fEOSgXo2O2mxa5eNzQTmN2JNAZ/ZHzDHETGWnmZw5ag1C8gLhCX0/5H
+         Th1w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720439823; x=1721044623;
+        d=1e100.net; s=20230601; t=1720461192; x=1721065992;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=SUIMCgaacRO0cSlQoird0ishcpaQlxLRaKsUM24BmkA=;
-        b=aOs80VKFnLtZA8a2ykyXvXBWHpjXmHB8agy8/DY1YdPw/JoVlg2/9gv+0Jc6n8PJiF
-         ztSPSAAjrfP/HxQm96ymuRM2623wU5MmHLR678Psy+d1z1skH82UW3Er3zvNeAEx24n5
-         bxsafbKWjqH9tv46/7bCKVt7jxmNG4ov7iEkbi5MEejY5pPY9sQWr+GEVn1wq6Xc1paT
-         gaiy7fho6Hj+Ta2s2wqxMG+4BiHqe6SWPkX9TtTJS3SiMBZQA5n0xhIV57bku6Y8KSyE
-         To5RPWxehDdtHpWZqgV4NEk4SuV4nuH2upiYYNw7kyXhKSfO5ntiNx28ABtDToKKVEP7
-         3XhQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVciSdGiuiejH6sYHUmHm8jGs/XzNZ7g23kmfZcUZTl+AK1qvaKAdFMOYaoiaHXnFWTBBr3Et7q3pwiKjWpgDyK4fDagDXMe++HTGr0xYtGTP8zdJXvJHaXHeGLDA1gp+3rkpDdR5n3ISEaPY8=
-X-Gm-Message-State: AOJu0Yx/YzkKfddQEUldWLe1JfbP7egbfxTVXD/gffEByRExKr3e1wC8
-	srCqeWeCCMHt3VTSBchABMzt2xp3KNK6/nJqzxT9yCA7SYm74nZTI6W4p4GulLGp1qicby2HScX
-	VFHUzokXt4oGFblL8NYKN2gUDUAs=
-X-Google-Smtp-Source: AGHT+IEcG2yYYSggHwDRwPEuj3eNKhu048mkWdz+/GOOQznG2lh2nwbizm5Pru/c0We9zgHyuv2NeWm2UWwzGuBpyYg=
-X-Received: by 2002:a17:90a:d190:b0:2ab:8324:1b47 with SMTP id
- 98e67ed59e1d1-2c99f381a14mr17271344a91.15.1720439823359; Mon, 08 Jul 2024
- 04:57:03 -0700 (PDT)
+        bh=iOLaAKGVBNBu76WR45/Ccdjddni/NIVquIog/WJvECg=;
+        b=bpSrl+AISecg8psGLd9e93Bhiozy1Ofm1k9GN/ZaG3Ka4xfHlinZrsl8KjSbhrh/FH
+         kn10CmCQuTeF+BB2Vy3qroola5bVTXiMlrlLNMVc26N96HF7sR8fhjsSH5tEiK2Z2bzN
+         ziG3nbQ6lZpw2fhu1bL1MSq82ljiFCRDODIvaxgoiPlSp6WZtMAQ4zA54ujjIas+HK+5
+         Qp7TrLySoX6yWr14fMxiqt06RxprS7cQRW4IrJri73vPnRQpz7rZUciEVcbQLgJnrred
+         bANb29gwfUigQocmckll/6O3C4QY+cpPjnqsfx7rLGEClzQb43O4snt0sVbjkSxIq//O
+         9fHA==
+X-Forwarded-Encrypted: i=1; AJvYcCUCKEx9U0a3gcWHEPwKZdtUSfR2ezJuFPjmJ8TVIlFuDrW+FW3zcVsFGoVdvp8d3atCE312LK+qS9CH6+F2XzE6LHb+OPGL9UFrKPkp1hVtMbPj5tEZUxnRqhy3lieIolF8jacPPL3jHYeBViY=
+X-Gm-Message-State: AOJu0YyWiSRvfR9alj/aAL1rKg3Vt0atZRIqNN7JkaVSvMIKUqbhbpPn
+	k0jluc3PG90RCs/ZmsM5oPZnnShs8fwiS505zY1mY7ITf6rKp+hOKfGYfK1VhzmTZ94Z9jPFNW6
+	oeZV7d3IXm+wLQgwRJ4pggsiIXKU=
+X-Google-Smtp-Source: AGHT+IG6OxwJnPlRecfs0gLI9tl8froTvbIEsUoz11AIQoqRN2W4OAbu0Ma5H0uhfPLdp3GnATqEA7zPVA+NU+bUB6o=
+X-Received: by 2002:a05:6512:6d3:b0:52e:a008:8f41 with SMTP id
+ 2adb3069b0e04-52eb99916damr62580e87.25.1720461191362; Mon, 08 Jul 2024
+ 10:53:11 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240708090615.2267476-1-andrewjballance@gmail.com>
- <CANiq72mB3hA6GeN2XSqRpV4m+rCbr2+NLHgmfpphjm1Wo1wBBw@mail.gmail.com> <ZovMt7AHJdiGEobg@pollux>
-In-Reply-To: <ZovMt7AHJdiGEobg@pollux>
+References: <20240703110624.1301830-1-wangrui@loongson.cn>
+In-Reply-To: <20240703110624.1301830-1-wangrui@loongson.cn>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 8 Jul 2024 13:56:49 +0200
-Message-ID: <CANiq72=6LSGwRsc+deE+U8H=mdgFisrKEPOYgVkZfHhGm8hwog@mail.gmail.com>
-Subject: Re: [PATCH] rust: firmware: fix invalid rustdoc link
-To: Danilo Krummrich <dakr@redhat.com>
-Cc: Andrew Ballance <andrewjballance@gmail.com>, linux-kernel@vger.kernel.org, 
-	gregkh@linuxfoundation.org, linux-kernel-mentees@lists.linuxfoundation.org, 
-	skhan@linuxfoundation.org, mcgrof@kernel.org, russ.weight@linux.dev, 
-	ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, 
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
-	benno.lossin@proton.me, a.hindborg@samsung.com, aliceryhl@google.com, 
-	rust-for-linux@vger.kernel.org
+Date: Mon, 8 Jul 2024 19:52:44 +0200
+Message-ID: <CANiq72m35W=8V77Rcu7MKw29EXEFq102tOL_Myyx1UvMuJYUBA@mail.gmail.com>
+Subject: Re: [PATCH] LoongArch: rust: Use rustc option -Zdirect-access-external-data
+To: WANG Rui <wangrui@loongson.cn>
+Cc: Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, 
+	Xi Ruoyao <xry111@xry111.site>, Xuefeng Li <lixuefeng@loongson.cn>, loongarch@lists.linux.dev, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	loongson-kernel@lists.loongnix.cn
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Jul 8, 2024 at 1:25=E2=80=AFPM Danilo Krummrich <dakr@redhat.com> w=
-rote:
+On Wed, Jul 3, 2024 at 1:24=E2=80=AFPM WANG Rui <wangrui@loongson.cn> wrote=
+:
 >
-> Firmware and device abstractions were merged in driver-core-next.
+> -Zdirect-access-external-data is a new Rust compiler option added
+> in Rust 1.78, which we use to optimize the access of external data
+> in the Linux kernel's Rust code. This patch modifies the Rust code
+> in vmlinux to directly access externa data, using PC-REL instead of
+> GOT. However, Rust code whithin modules is constrained by the PC-REL
+> addressing range and is explicitly set to use an indirect method.
+>
+> Signed-off-by: WANG Rui <wangrui@loongson.cn>
 
-Indeed, you are right -- then:
+I have created a tracking issue for this in
+https://github.com/rust-lang/rust/issues/127488 since there was only
+the MCP, I hope that helps.
 
-Fixes: de6582833db0 ("rust: add firmware abstractions")
-
-And with the commit message fixed:
+I also added it to our #2 list of unstable features -- please feel
+free to ping me in the future if you add others that you will need in
+the kernel, I am happy to add the entry even before you send the patch
+to the kernel in order to track things (in fact, even if it is not
+implemented we can still track it in the other lists).
 
 Acked-by: Miguel Ojeda <ojeda@kernel.org>
-
-Thanks!
 
 Cheers,
 Miguel
