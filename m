@@ -1,175 +1,218 @@
-Received: from mail-ed1-f41.google.com (mail-ed1-f41.google.com [209.85.208.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA1E7F51B;
-	Sun,  7 Jul 2024 20:57:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B9531864C;
+	Mon,  8 Jul 2024 08:12:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720385856; cv=none; b=J3LfJUDE7A5b/YJodtFuxccTFQ/+1jiAiSkVvDwU4A9LMz0SvSwyFMHA4fWwS8JqMl2egppofDSleqP2gOTrs0f+6+wvi/bShGbtVM+IdxrglCFe8NY3R0c/UaNBfiueuaIe+F5NGq3VmK8sQxjzMBLAWw00J1yNbLV3hycBZk4=
+	t=1720426371; cv=none; b=HDdlBsTYSAbM392Y/SNH/M3+0l5NnKCd/lkhbP2S72uCXZDghD5iLTEhpRlB2qU82ueymuRj4sm7dx8brwXKKc5U2zcWr2h4VM0cMkjOuQfB9oe7kZ19Qpcx/2hbgx/xXGlGC1PrDeR/VsCB5iBrmobsLtvH+MEz+nfPxfoYPOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720385856; c=relaxed/simple;
-	bh=ff/TEO8b5EQqT8C9q2SHDDj+bLmKMDMJgn55WuNzLUg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TfCmnBIn+ozwXDpAW4cVoglDkcXRsL0LVHSRMqWPVnm3zX6c9npA7T5o4oAqclOmlcQmidefCEu6PGLedhvmozXtIidOWREoF06r5xVsUslaLZQHg8uxfzwmg0JYLaNFLHOVCi2Uv3oHgCdvCFYYoA7olIGp5eGNT1USIOkKfW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EGHktWEw; arc=none smtp.client-ip=209.85.208.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1720426371; c=relaxed/simple;
+	bh=XQe62ZyTOEoRiduvusCL/q8/fQjihKu6X4uLszViecE=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Esgz1st4lcchpiL9fdVrgkTsnovFACN/Z8me/uNaaCYU0u1DvWGPxLeCH1VxeRQexTWzTNjcZLjN5bcUMbDnpdr2EkuUDuF8/C7BjMytzMMUYHRSw7teS34NfTLkVDFlPafM70Wxbo4hjaGUg/RI529gNLb8xzVs2D/x5I2UYMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=Uy8IWMaf; arc=none smtp.client-ip=185.70.43.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EGHktWEw"
-Received: by mail-ed1-f41.google.com with SMTP id 4fb4d7f45d1cf-58bac81f39bso3724495a12.2;
-        Sun, 07 Jul 2024 13:57:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1720385853; x=1720990653; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=1QpJG+Kuls5EcalWj8r5uH8ccKjZ8ExXvX8fWy6I7rU=;
-        b=EGHktWEwyhzyANhw32h85zkXBFy8Xx7eN7jPwhJnwxB7qxopczCKTNvFMQAv3paBzp
-         646b1B/I3oVpywonjDT40VWU7ZsikSnKkWpGysQ4de2Ozpe69xhcFOj4Ch1tHHcuyZMQ
-         F6dU6LZMSnkQzr0uRyCg4Z3U4BOm/SV2QfqqYs53O93GpALlACmUY/2kywDlkuBayR+Z
-         3F+syeETQU/37tkX4GXYLAWttlKouSFUzBUhbi2iC4AfJ5HAJ+410QHg3Bu1yAzGdn/H
-         J+WJ/TicI2wzhxFP/d7cQjFFt19e5HsYm6Ogr/lBk2DkXFuzoxWX/96YncEV8mguVgM7
-         jV1g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720385853; x=1720990653;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=1QpJG+Kuls5EcalWj8r5uH8ccKjZ8ExXvX8fWy6I7rU=;
-        b=eNACLXlCh1uR50KH57WXvJ9L4KRMNZZ6usBa8nu9TzGASByEgKDkcn5j6FSNNEEdCh
-         tZlq4xSkD1swu/Hnc3VRRfM1VN3B5aZFghhUdsnYutiRTDy96icmTL1tCR1vHxUJzlga
-         ihAbWtDW9NzDY2RiT4LCSqJwboN2Uu9xqXQmin1cONUyWNdiPjVni0oEhGTggfYCI2KS
-         RjJsp/h0MQGzrv0GIg7kHZXP/X6hGs/wj80xnQ/obC73VsoQmYyijONTYZC6l5w5Jzwy
-         qFcsn5YyUTV63a6yGOwsoQY+Rc9bToeQ6M3xOuwVWBG96ISAreqAQQvnbiMVDlvmbqD4
-         ptDg==
-X-Forwarded-Encrypted: i=1; AJvYcCXRr8y3slPxZnZZeNp2OeYMvOf/72admGL4RGeHUoiXUTrUTM1eQn4t7Wx/x86zX4ZYKaUZndVVMe3fOnN8DbcolYQnKxx+AGOTA2acJio=
-X-Gm-Message-State: AOJu0YzR0/uqoMmqNCEwSHkesb1UNgGuX7jInFiC6lBhaiB3a5C0y+Ij
-	4ojoTdukhh8NrawJaQIUOwzP5eh1KUzLCJbmU8CSPzrnYL5vrmEzXHdDX2PA
-X-Google-Smtp-Source: AGHT+IFEDn34ECRtayyCySyBsaVRdY0XvlpgJqc3PYvc6gu/k4TmIHAnfMYTgM6VFZrAujWxcF75xg==
-X-Received: by 2002:a05:6402:13d5:b0:58b:73f4:2ed with SMTP id 4fb4d7f45d1cf-58e5b4aede0mr6385563a12.35.1720385852624;
-        Sun, 07 Jul 2024 13:57:32 -0700 (PDT)
-Received: from [10.5.1.156] (62-47-157-183.adsl.highway.telekom.at. [62.47.157.183])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-58614f3d74dsm11975137a12.90.2024.07.07.13.57.31
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sun, 07 Jul 2024 13:57:32 -0700 (PDT)
-Message-ID: <dd56a9d9-08fe-4bd4-83e2-dfdc44f8c637@gmail.com>
-Date: Sun, 7 Jul 2024 22:57:31 +0200
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="Uy8IWMaf"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1720426361; x=1720685561;
+	bh=L+zTwXfvHIAolDRxRlsyaU2fxyf/8YP3cmYvff3qA98=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=Uy8IWMaf14rIx+VTvzaKEKtxmFg/nEAqPAF5x3ASxk862EiUP+U9z6U4/Dxt+5W8T
+	 nPqwb4RgmXTa652gXd86/lmot5AD3maRbj4QMGN0F1OW2CSEKRjCfoWkkGyfX5FZgZ
+	 mP+LczrxDnIEqtvW60zUB80+M7MeDNF1AwseC1pSZ+FWDdpte7LpKpiaP+yR+iuHpE
+	 nZ4WSH6K/6PG7yuCuNOMaFXDBwopJ4aoff/M8qJ1eIYmUxdqGgnt3JXaZ/5T6vksEa
+	 XWP/vuaUXhcn63bUufn/kohCQIMMYeBfkkdKRBp+jkQrA4V2r3lySxux4aYWS1Egkr
+	 HifaRM1WXqJrQ==
+Date: Mon, 08 Jul 2024 08:12:34 +0000
+To: Danilo Krummrich <dakr@redhat.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@samsung.com, aliceryhl@google.com, daniel.almeida@collabora.com, faith.ekstrand@collabora.com, boris.brezillon@collabora.com, lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com, acurrid@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com, ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH 01/20] rust: alloc: add `Allocator` trait
+Message-ID: <5197ac37-ab92-4d99-a2e1-82d1cd9dc7e7@proton.me>
+In-Reply-To: <ZomRT_PQHVMVQ_RY@cassiopeiae>
+References: <20240704170738.3621-1-dakr@redhat.com> <20240704170738.3621-2-dakr@redhat.com> <37d87244-fbef-414c-a726-60839b305040@proton.me> <ZoklB7aLyc90kWPT@pollux.localdomain> <2c322b00-20f8-4102-9f3b-edab0c0907b9@proton.me> <ZolerSMkVl0C4yfF@pollux.localdomain> <50cec075-04f4-4267-8d19-1b498a9f51bf@proton.me> <ZomRT_PQHVMVQ_RY@cassiopeiae>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: 970b5d08fd1eca9213c31b16e372ed5847539a46
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 2/2] firmware_loader: fix soundness issue in
- `request_internal`
-To: Danilo Krummrich <dakr@redhat.com>, mcgrof@kernel.org,
- russ.weight@linux.dev, gregkh@linuxfoundation.org
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
- Gary Guo <gary@garyguo.net>, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20240707003835.69090-1-dakr@redhat.com>
- <20240707003835.69090-2-dakr@redhat.com>
-Content-Language: en-US
-From: Christian Schrefl <chrisi.schrefl@gmail.com>
-In-Reply-To: <20240707003835.69090-2-dakr@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Greetings.
+On 06.07.24 20:47, Danilo Krummrich wrote:
+> On Sat, Jul 06, 2024 at 05:08:26PM +0000, Benno Lossin wrote:
+>> On 06.07.24 17:11, Danilo Krummrich wrote:
+>>> On Sat, Jul 06, 2024 at 01:17:19PM +0000, Benno Lossin wrote:
+>>>> On 06.07.24 13:05, Danilo Krummrich wrote:
+>>>>>>> +        layout: Layout,
+>>>>>>> +        flags: Flags,
+>>>>>>> +    ) -> Result<NonNull<[u8]>, AllocError>;
+>>>>>>> +
+>>>>>>> +    /// Free an existing memory allocation.
+>>>>>>> +    ///
+>>>>>>> +    /// # Safety
+>>>>>>> +    ///
+>>>>>>> +    /// `ptr` must point to an existing and valid memory allocatio=
+n created by this `Allocator`
+>>>>>>> +    /// instance.
+>>>>>>> +    unsafe fn free(&self, ptr: *mut u8) {
+>>>>>>
+>>>>>> `ptr` should be `NonNull<u8>`.
+>>>>>
+>>>>> Creating a `NonNull` from a raw pointer is an extra operation for any=
+ user of
+>>>>> `free` and given that all `free` functions in the kernel accept a NUL=
+L pointer,
+>>>>> I think there is not much value in making this `NonNull`.
+>>>>
+>>>> I don't think that this argument holds for Rust though. For example,
+>>>> `KBox` contains a `Unique` that contains a `NonNull`, so freeing could
+>>>> just be done with `free(self.0.0)`.
+>>>
+>>> Agreed, we can indeed make it a `&NonNull<u8>`. However, I find this a =
+bit
+>>
+>> I think you mean `NonNull<u8>`, right?
+>=20
+> Yes, but I still don't see how that improves things, e.g. in `Drop` of
+> `KVec`:
+>=20
+> `A::free(self.ptr.to_non_null().cast())`
+>=20
+> vs.
+>=20
+> `A::free(self.as_mut_ptr().cast())`
+>=20
+> I'm not against this change, but I don't see how this makes things better=
+.
 
-On 07.07.24 2:38 AM, Danilo Krummrich wrote:
-> `request_internal` must be called with one of the following function
-> pointers: request_firmware(), firmware_request_nowarn(),
-> firmware_request_platform() or request_firmware_direct().
-> 
-> The previous `FwFunc` alias did not guarantee this, which is unsound.
-> 
-> In order to fix this up, implement `FwFunc` as new type with a
-> corresponding type invariant and unsafe `new` function.
-> 
-> Reported-by: Gary Guo <gary@garyguo.net>
-> Closes: https://lore.kernel.org/lkml/20240620143611.7995e0bb@eugeo/
-> Signed-off-by: Danilo Krummrich <dakr@redhat.com>
-> ---
->  rust/kernel/firmware.rs | 32 ++++++++++++++++++++++++++------
->  1 file changed, 26 insertions(+), 6 deletions(-)
-> 
-> diff --git a/rust/kernel/firmware.rs b/rust/kernel/firmware.rs
-> index 106a928a535e..d765ecc85d38 100644
-> --- a/rust/kernel/firmware.rs
-> +++ b/rust/kernel/firmware.rs
-> @@ -7,11 +7,24 @@
->  use crate::{bindings, device::Device, error::Error, error::Result, str::CStr};
->  use core::ptr::NonNull;
->  
-> -// One of the following: `bindings::request_firmware`, `bindings::firmware_request_nowarn`,
-> -// `firmware_request_platform`, `bindings::request_firmware_direct`
-> -type FwFunc =
-> +type RawFwFunc =
->      unsafe extern "C" fn(*mut *const bindings::firmware, *const i8, *mut bindings::device) -> i32;
->  
-> +/// # Invariants
-> +///
-> +/// One of the following: `bindings::request_firmware`, `bindings::firmware_request_nowarn`,
-> +/// `firmware_request_platform`, `bindings::request_firmware_direct`
-> +struct FwFunc(RawFwFunc);
-> +
-> +impl FwFunc {
-> +    /// # Safety
-> +    ///
-> +    /// Must be one of the functions listed in the type invariants.
-> +    unsafe fn from_raw(func: RawFwFunc) -> Self {
-> +        Self(func)
-> +    }
-Why not write methods that construct each possible FwFunc?
-That way the code that needs to know abut this invariant is only inside a single impl block.
-Something like:
-impl FwFunc {
-    fn request_firmware() -> Self {
-        // # Safety
-        // As per the Type Invariant `bindings::request_firmware` is a valid vaule.
-    	FwFunc(bindings::request_firmware)
+Ah you still need to convert the `Unique<T>` to a pointer...
+But we could have a trait that allows that conversion. Additionally, we
+could get rid of the cast if we made the function generic.
+
+>>> inconsistent with the signature of `realloc`.
+>>>
+>>> Should we go with separate `shrink` / `grow`, `free` could be implement=
+ed as
+>>> shrinking to zero and allowing a NULL pointer makes not much sense.
+>>>
+>>> But as mentioned, I'm not yet seeing the benefit of having `realloc` sp=
+lit into
+>>> `grow` and `shrink`.
+>>
+>> I would not split it into grow/shrink. I am not sure what exactly would
+>> be best here, but here is what I am trying to achieve:
+>> - people should strongly prefer alloc/free over realloc,
+>=20
+> I agree; the functions for that are there: `Allocator::alloc` and
+> `Allocator::free`.
+>=20
+> `KBox` uses both of them, `KVec` instead, for obvious reasons, uses
+> `Allocator::realloc` directly to grow from zero and `Allocator::free`.
+>=20
+>> - calling realloc with zero size should not signify freeing the memory,
+>>   but rather resizing the allocation to 0. E.g. because a buffer now
+>>   decides to hold zero elements (in this case, the size should be a
+>>   variable that just happens to be zero).
+>=20
+> If a buffer is forced to a new size of zero, isn't that effectively a fre=
+e?
+
+I would argue that they are different, since you get a pointer back that
+points to an allocation of zero size. A vector of size zero still keeps
+around a (dangling) pointer.
+You also can free a zero sized allocation (it's a no-op), but you must
+not free an allocation twice.
+
+> At least that's exactly what the kernel does, if we ask krealloc() to res=
+ize to
+> zero it will free the memory and return ZERO_SIZE_PTR.
+
+Not every allocator behaves like krealloc, in your patch, both vmalloc
+and kvmalloc are implemented with `if`s to check for the various special
+cases.
+
+> So, what exactly would you want `realloc` to do when a size of zero is pa=
+ssed
+> in?
+
+I don't want to change the behavior, I want to prevent people from using
+it unnecessarily.
+
+>> - calling realloc with a null pointer should not be necessary, since
+>>   `alloc` exists.
+>=20
+> But `alloc` calls `realloc` with a NULL pointer to allocate new memory.
+>=20
+> Let's take `Kmalloc` as example, surely I could implement `alloc` by call=
+ing
+> into kmalloc() instead. But then we'd have to implement `alloc` for all
+> allocators, instead of having a generic `alloc`.
+
+My intuition is telling me that I don't like that you can pass null to
+realloc. I can't put my finger on exactly why that is, maybe because
+there isn't actually any argument here or maybe there is. I'd like to
+hear other people's opinion.
+
+> And I wonder what's the point given that `realloc` with a NULL pointer al=
+ready
+> does this naturally? Besides that, it comes in handy when we want to allo=
+cate
+> memory for data structures that grow from zero, such as `KVec`.
+
+You can just `alloc` with size zero and then call `realloc` with the
+pointer that you got. I don't see how this would be a problem.
+
+>> This is to improve readability of code, or do you find
+>>
+>>     realloc(ptr, 0, Layout::new::<()>(), Flags(0))
+>>
+>> more readable than
+>>
+>>     free(ptr)
+>=20
+> No, but that's not what users of allocators would do. They'd just call `f=
+ree`,
+> as I do in `KBox` and `KVec`.
+
+I agree that we have to free the memory when supplying a zero size, but
+I don't like adding additional features to `realloc`.
+
+Conceptually, I see an allocator like this:
+
+    pub trait Allocator {
+        type Flags;
+        type Allocation;
+        type Error;
+   =20
+        fn alloc(layout: Layout, flags: Self::Flags) -> Result<Self::Alloca=
+tion, Self::Error>;
+   =20
+        fn realloc(
+            alloc: Self::Allocation,
+            old: Layout,
+            new: Layout,
+            flags: Self::Flags,
+        ) -> Result<Self::Allocation, (Self::Allocation, Self::Error)>;
+   =20
+        fn free(alloc: Self::Allocation);
     }
-}
 
-> +}
-> +
->  /// Abstraction around a C `struct firmware`.
->  ///
->  /// This is a simple abstraction around the C firmware API. Just like with the C API, firmware can
-> @@ -48,7 +61,7 @@ fn request_internal(name: &CStr, dev: &Device, func: FwFunc) -> Result<Self> {
->  
->          // SAFETY: `pfw` is a valid pointer to a NULL initialized `bindings::firmware` pointer.
->          // `name` and `dev` are valid as by their type invariants.
-> -        let ret = unsafe { func(pfw as _, name.as_char_ptr(), dev.as_raw()) };
-> +        let ret = unsafe { func.0(pfw as _, name.as_char_ptr(), dev.as_raw()) };
->          if ret != 0 {
->              return Err(Error::from_errno(ret));
->          }
-> @@ -60,13 +73,20 @@ fn request_internal(name: &CStr, dev: &Device, func: FwFunc) -> Result<Self> {
->  
->      /// Send a firmware request and wait for it. See also `bindings::request_firmware`.
->      pub fn request(name: &CStr, dev: &Device) -> Result<Self> {
-> -        Self::request_internal(name, dev, bindings::request_firmware)
-> +        // SAFETY: `bindings::request_firmware` is valid by the safety requirement of `FwFunc`.
-> +        let func = unsafe { FwFunc::from_raw(bindings::request_firmware) };
-> +
-> +        Self::request_internal(name, dev, func)
->      }
->  
->      /// Send a request for an optional firmware module. See also
->      /// `bindings::firmware_request_nowarn`.
->      pub fn request_nowarn(name: &CStr, dev: &Device) -> Result<Self> {
-> -        Self::request_internal(name, dev, bindings::firmware_request_nowarn)
-> +        // SAFETY: `bindings::firmware_request_nowarn` is valid by the safety requirement of
-> +        // `FwFunc::new`.
-> +        let func = unsafe { FwFunc::from_raw(bindings::firmware_request_nowarn) };
-> +
-> +        Self::request_internal(name, dev, func)
->      }
->  
->      fn as_raw(&self) -> *mut bindings::firmware {
+I.e. to reallocate something, you first have to have something
+allocated.
 
+For some reason if we use `Option<NonNull<u8>>` instead of `*mut u8`, I
+have a better feeling, but that might be worse for ergonomics...
+
+---
 Cheers,
-Christian
+Benno
+
