@@ -1,110 +1,186 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E48E80624
-	for <rust-for-linux@vger.kernel.org>; Mon,  8 Jul 2024 11:25:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F83E7D3F0
+	for <rust-for-linux@vger.kernel.org>; Mon,  8 Jul 2024 11:28:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720437952; cv=none; b=hc4vw08sPIy8YpJEOTu8rasya5EtXAN/G7iiG57kzgVpheXDo/0NW6ePkAZt+MASNmHPQALicxe4PDx3WoOeefQNYvfScXb0Z0IESH4DIcYWqNDjcE3suHBxyhRVfIvUJaCHp1sYkTs5yZ1nZujSGvmD2jT5KfTkCISMEasrGMQ=
+	t=1720438129; cv=none; b=JjCgEmfuIZE3GenIomLSM7vrB04AfHM3Y5qRLAqeUhi0AS0XZ04hbe+ANHMYCyut/cTe+KHMD9EaLzo6MiIzOAMPkhnhQmq5Pqw+g1J+9gTvyTEvFI9fAWriXvR6H+hqFqpZpDl7AMOizpLrwkVIAs8maNz6sd8+/RI3b01krjs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720437952; c=relaxed/simple;
-	bh=iKpwXvhbB0qXDjkBNWkywakk5y4ndG5jn1tceNaYV8c=;
+	s=arc-20240116; t=1720438129; c=relaxed/simple;
+	bh=YLEz2nxMe8+wpWlmygRPdtARH+mr6uUxXFx2jMYYd8s=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 In-Reply-To:Content-Type:Content-Disposition; b=rYP/pusSQyzyFtk4/S5Oanrtfn+CQWEBgf53LiZBPdj97rJej7LJSo8wMxGEfRJaKojZkSGF7/CQSaFSbe0iChcGAabnucggKL1RV0JYyZtEbFKnBjc2Bxf0D0biqzJGg+HjZc5ahF4swWie5drB8vyD1/knT1zTFpL6KnvWm9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cYatXQ5b; arc=none smtp.client-ip=170.10.133.124
+	 In-Reply-To:Content-Type:Content-Disposition; b=E2f6L232cA+Yog+lX+95MIKwps7IyMD6fvlSYGMEgFXYK0chWhgaSbxo8cdw8W1krpk2oXGPkOpLYhGvgSSSM7cVT6Pi03DIasjUaPwg2GbirqgDRGrOFyxLJveAAus7Wg3nwxmS7GlkCpldTKOG4o4Ay2c8vYi33wUxo/F7jno=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BhM/1KHn; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cYatXQ5b"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BhM/1KHn"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1720437949;
+	s=mimecast20190719; t=1720438127;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=rxDEKjje7ewX3dmdPxps0vgNGDNpfSpWeAQAGsyxyvw=;
-	b=cYatXQ5bounifFgmAZm4rkzbj6GPRwP5q3aSHNh8jEdRvwIdtzkDU3ckHiz99/X8ctAb9v
-	8KTb+rCvz4bSDSaOG9efDD4pu/G3Cg85kXSxUFBjaWB9iz9pA937fPUlqxRhnXWdZEldgH
-	yWS3IEeStpatAJHPcVQi86Q+4D50x0U=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=ggF5ejO/txQzvQN281lQIDXsDHvIvFc8LKda5u6H7Cw=;
+	b=BhM/1KHnvmuLy8fe5dh1RNe152bGZvExkY9PLV3vQZMWTinbrpCV2xhu4ntXTMZGVSZwQQ
+	b7Yl5QhGJIB8RoWuC7eu0rejQCq7t72/154njQTnGt+KJ8sPznQvfmDPkkHykVjGdYkPaw
+	DShNMppb9dNcvKEQb3Mp2yEX0aWPWp0=
+Received: from mail-lj1-f200.google.com (mail-lj1-f200.google.com
+ [209.85.208.200]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-696-u5sA0aIsNRKdjCj4rMOTzg-1; Mon, 08 Jul 2024 07:25:47 -0400
-X-MC-Unique: u5sA0aIsNRKdjCj4rMOTzg-1
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-426683d9c4bso6281135e9.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 08 Jul 2024 04:25:46 -0700 (PDT)
+ us-mta-7-mCHIK3WvPT227pOJb0otoQ-1; Mon, 08 Jul 2024 07:28:46 -0400
+X-MC-Unique: mCHIK3WvPT227pOJb0otoQ-1
+Received: by mail-lj1-f200.google.com with SMTP id 38308e7fff4ca-2ee890f0cecso41004051fa.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 08 Jul 2024 04:28:46 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720437946; x=1721042746;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=rxDEKjje7ewX3dmdPxps0vgNGDNpfSpWeAQAGsyxyvw=;
-        b=CScBYd09tlJ5mSwH962uktgR4uQnn0EYeEd6fx0SlMGQ4AST1ztt2fk6u/3vD3jUUg
-         G03v2v48Foye8HdVRy9pqcaHpYgjO8+lViYXX+QAePblgGTkYeb8bUkMJZuysKncTCCA
-         cVjK1yOUuI2L/mxhilwBNX7cHeRIC/3xpysP/3vXNYh+Sd99bUwZbWbs2HftS6I92qnZ
-         YKeKOYHLCUZElsOIf23K/Q6e235XTF7L5VKHBBkm5Ar6rhQO3+oakFE6kuLQ2QjIjp5F
-         vMrTJO+GHEfXWRfo2Icv1REGZY+pKdZ+06hwyeZp6D2GtfcNy67/F3K8KgT+O/aqzUsB
-         gzvg==
-X-Forwarded-Encrypted: i=1; AJvYcCWlqr8H2au5BLc0lMh3Oc564KPtR2G14De5s6jIevUiDVTUgfyRdZsZb73PrBjgaJCrenBoeUS/k4hJN+ssBAW4TEq/LLVc8o37Gjdx2qE=
-X-Gm-Message-State: AOJu0YyavpWsyimTW7Uwvj5GoCyR628p/KawEbyJr2boEsu4eu9hrBH+
-	cw4/qENTE+kk1vp1E6oWV+dWAbu0GXCqMdVGPSgAx2hjQ/y9rv29xso2Drz6FQ9KIZGY/40ggwX
-	B/kazpyj/sUaL6aHeul2uXWil1pOnI9c5BkxMk0J5nJJ5Y7TcGD1hRE0OP4zpVmcT
-X-Received: by 2002:a05:600c:5493:b0:426:6ee7:c05a with SMTP id 5b1f17b1804b1-4266ee7c253mr768395e9.15.1720437945918;
-        Mon, 08 Jul 2024 04:25:45 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFleDfM0VAI2FqOfDLpFDYDHHTu1E1XX5kKYuAnqPX8YzewfdIeXDRmz5P8FtyDaahi97NdSQ==
-X-Received: by 2002:a05:600c:5493:b0:426:6ee7:c05a with SMTP id 5b1f17b1804b1-4266ee7c253mr768125e9.15.1720437945583;
-        Mon, 08 Jul 2024 04:25:45 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1720438125; x=1721042925;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ggF5ejO/txQzvQN281lQIDXsDHvIvFc8LKda5u6H7Cw=;
+        b=DSOpifpgZqzrk8o7Alvh1Km7R6lBuqV5gcLDp0cz0f/GyG6Gs8nSq8Cr8iJQrGprBI
+         S2eB6k5RublQwbhKNZtvuJtNPHtMqXLUuYxL8V1IACdGsF7nRY7CYiaHPfS/29t0dY0I
+         0kvB3YvN/EZ12HiTABrCXomdw+qH2yKy4d9e9GJciyxVbnzS2DZ4yNw4ALVhvdZrTBcA
+         u3FHu5ETlmXV55FwHi4Kp79xvscQ60yHWKWGUI+22FbQ8oZRfRmMW7A0mE4N5PjUN395
+         FtY9t8J6r7VWRMwqT0KdlUe8NuYE5g6+acKE8QeV2atmBKSZLY8IOheb3OkLlCkXybAC
+         Hfjw==
+X-Forwarded-Encrypted: i=1; AJvYcCWH7ITxRTM19w0rFi+v3fYnbO4KK+iNEOGy1sqqkwcYdXwweqTGdjIlXqjvUYWh5gFPYbBEr2hXl8cVFzBcWnIWQmZQjB2N5Y+gBNdLno4=
+X-Gm-Message-State: AOJu0YyJ7ao3X5Gt8/ss8OQ4dlILDQcOqgg8UfmD9zY20LJ+8/ULQeOI
+	Aeko7s0cjoIY/ZL15LxRQF6cpR+Wzynao38wh6EQ/D7r4ccg/s7jrha/BTC5Pd/J7meeg/Q46pH
+	drszCKZ614Q2g5XsNoRIiBR1IXZ4PlnXq+kvmTwqZ+CFDJECxYLU8b2ZN65YiXyXT
+X-Received: by 2002:a2e:818d:0:b0:2ee:8777:f86b with SMTP id 38308e7fff4ca-2ee8edd3edbmr75131691fa.35.1720438124878;
+        Mon, 08 Jul 2024 04:28:44 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHH1Nsdje5001n1qOWAw4XX9RASw+K0ZvlbBfsk3SL/6HvLcu8zL4MIKOBiacj2ApWr0nCz3Q==
+X-Received: by 2002:a2e:818d:0:b0:2ee:8777:f86b with SMTP id 38308e7fff4ca-2ee8edd3edbmr75131551fa.35.1720438124455;
+        Mon, 08 Jul 2024 04:28:44 -0700 (PDT)
 Received: from pollux ([2a02:810d:4b3f:ee94:abf:b8ff:feee:998b])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4264a1dda61sm162052725e9.19.2024.07.08.04.25.44
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4264a2518f9sm162467895e9.31.2024.07.08.04.28.43
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 08 Jul 2024 04:25:45 -0700 (PDT)
-Date: Mon, 8 Jul 2024 13:25:43 +0200
+        Mon, 08 Jul 2024 04:28:44 -0700 (PDT)
+Date: Mon, 8 Jul 2024 13:28:42 +0200
 From: Danilo Krummrich <dakr@redhat.com>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Andrew Ballance <andrewjballance@gmail.com>,
-	linux-kernel@vger.kernel.org, gregkh@linuxfoundation.org,
-	linux-kernel-mentees@lists.linuxfoundation.org,
-	skhan@linuxfoundation.org, mcgrof@kernel.org, russ.weight@linux.dev,
-	ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me, a.hindborg@samsung.com,
-	aliceryhl@google.com, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH] rust: firmware: fix invalid rustdoc link
-Message-ID: <ZovMt7AHJdiGEobg@pollux>
-References: <20240708090615.2267476-1-andrewjballance@gmail.com>
- <CANiq72mB3hA6GeN2XSqRpV4m+rCbr2+NLHgmfpphjm1Wo1wBBw@mail.gmail.com>
+To: Christian Schrefl <chrisi.schrefl@gmail.com>
+Cc: mcgrof@kernel.org, russ.weight@linux.dev, gregkh@linuxfoundation.org,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	Gary Guo <gary@garyguo.net>
+Subject: Re: [PATCH 2/2] firmware_loader: fix soundness issue in
+ `request_internal`
+Message-ID: <ZovNap1NBusREw_-@pollux>
+References: <20240707003835.69090-1-dakr@redhat.com>
+ <20240707003835.69090-2-dakr@redhat.com>
+ <dd56a9d9-08fe-4bd4-83e2-dfdc44f8c637@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <CANiq72mB3hA6GeN2XSqRpV4m+rCbr2+NLHgmfpphjm1Wo1wBBw@mail.gmail.com>
+In-Reply-To: <dd56a9d9-08fe-4bd4-83e2-dfdc44f8c637@gmail.com>
 X-Mimecast-Spam-Score: 0
 X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
 
-On Mon, Jul 08, 2024 at 11:16:34AM +0200, Miguel Ojeda wrote:
-> On Mon, Jul 8, 2024 at 11:07 AM Andrew Ballance
-> <andrewjballance@gmail.com> wrote:
-> >
-> > rustdoc generates a link to a nonexistent file because of a extra quote
-> >
-> > Signed-off-by: Andrew Ballance <andrewjballance@gmail.com>
+On Sun, Jul 07, 2024 at 10:57:31PM +0200, Christian Schrefl wrote:
+> Greetings.
 > 
-> Thanks for the patch!
-> 
-> I guess this is meant for staging/rust-device, but I think this should
-> be a review comment here:
+> On 07.07.24 2:38 AM, Danilo Krummrich wrote:
+> > `request_internal` must be called with one of the following function
+> > pointers: request_firmware(), firmware_request_nowarn(),
+> > firmware_request_platform() or request_firmware_direct().
+> > 
+> > The previous `FwFunc` alias did not guarantee this, which is unsound.
+> > 
+> > In order to fix this up, implement `FwFunc` as new type with a
+> > corresponding type invariant and unsafe `new` function.
+> > 
+> > Reported-by: Gary Guo <gary@garyguo.net>
+> > Closes: https://lore.kernel.org/lkml/20240620143611.7995e0bb@eugeo/
+> > Signed-off-by: Danilo Krummrich <dakr@redhat.com>
+> > ---
+> >  rust/kernel/firmware.rs | 32 ++++++++++++++++++++++++++------
+> >  1 file changed, 26 insertions(+), 6 deletions(-)
+> > 
+> > diff --git a/rust/kernel/firmware.rs b/rust/kernel/firmware.rs
+> > index 106a928a535e..d765ecc85d38 100644
+> > --- a/rust/kernel/firmware.rs
+> > +++ b/rust/kernel/firmware.rs
+> > @@ -7,11 +7,24 @@
+> >  use crate::{bindings, device::Device, error::Error, error::Result, str::CStr};
+> >  use core::ptr::NonNull;
+> >  
+> > -// One of the following: `bindings::request_firmware`, `bindings::firmware_request_nowarn`,
+> > -// `firmware_request_platform`, `bindings::request_firmware_direct`
+> > -type FwFunc =
+> > +type RawFwFunc =
+> >      unsafe extern "C" fn(*mut *const bindings::firmware, *const i8, *mut bindings::device) -> i32;
+> >  
+> > +/// # Invariants
+> > +///
+> > +/// One of the following: `bindings::request_firmware`, `bindings::firmware_request_nowarn`,
+> > +/// `firmware_request_platform`, `bindings::request_firmware_direct`
+> > +struct FwFunc(RawFwFunc);
+> > +
+> > +impl FwFunc {
+> > +    /// # Safety
+> > +    ///
+> > +    /// Must be one of the functions listed in the type invariants.
+> > +    unsafe fn from_raw(func: RawFwFunc) -> Self {
+> > +        Self(func)
+> > +    }
+> Why not write methods that construct each possible FwFunc?
 
-Firmware and device abstractions were merged in driver-core-next.
+Thanks, this is a good idea indeed, will send a v2.
 
+> That way the code that needs to know abut this invariant is only inside a single impl block.
+> Something like:
+> impl FwFunc {
+>     fn request_firmware() -> Self {
+>         // # Safety
+>         // As per the Type Invariant `bindings::request_firmware` is a valid vaule.
+>     	FwFunc(bindings::request_firmware)
+>     }
+> }
 > 
->     https://lore.kernel.org/rust-for-linux/20240618154841.6716-3-dakr@redhat.com/
+> > +}
+> > +
+> >  /// Abstraction around a C `struct firmware`.
+> >  ///
+> >  /// This is a simple abstraction around the C firmware API. Just like with the C API, firmware can
+> > @@ -48,7 +61,7 @@ fn request_internal(name: &CStr, dev: &Device, func: FwFunc) -> Result<Self> {
+> >  
+> >          // SAFETY: `pfw` is a valid pointer to a NULL initialized `bindings::firmware` pointer.
+> >          // `name` and `dev` are valid as by their type invariants.
+> > -        let ret = unsafe { func(pfw as _, name.as_char_ptr(), dev.as_raw()) };
+> > +        let ret = unsafe { func.0(pfw as _, name.as_char_ptr(), dev.as_raw()) };
+> >          if ret != 0 {
+> >              return Err(Error::from_errno(ret));
+> >          }
+> > @@ -60,13 +73,20 @@ fn request_internal(name: &CStr, dev: &Device, func: FwFunc) -> Result<Self> {
+> >  
+> >      /// Send a firmware request and wait for it. See also `bindings::request_firmware`.
+> >      pub fn request(name: &CStr, dev: &Device) -> Result<Self> {
+> > -        Self::request_internal(name, dev, bindings::request_firmware)
+> > +        // SAFETY: `bindings::request_firmware` is valid by the safety requirement of `FwFunc`.
+> > +        let func = unsafe { FwFunc::from_raw(bindings::request_firmware) };
+> > +
+> > +        Self::request_internal(name, dev, func)
+> >      }
+> >  
+> >      /// Send a request for an optional firmware module. See also
+> >      /// `bindings::firmware_request_nowarn`.
+> >      pub fn request_nowarn(name: &CStr, dev: &Device) -> Result<Self> {
+> > -        Self::request_internal(name, dev, bindings::firmware_request_nowarn)
+> > +        // SAFETY: `bindings::firmware_request_nowarn` is valid by the safety requirement of
+> > +        // `FwFunc::new`.
+> > +        let func = unsafe { FwFunc::from_raw(bindings::firmware_request_nowarn) };
+> > +
+> > +        Self::request_internal(name, dev, func)
+> >      }
+> >  
+> >      fn as_raw(&self) -> *mut bindings::firmware {
 > 
 > Cheers,
-> Miguel
+> Christian
 > 
 
