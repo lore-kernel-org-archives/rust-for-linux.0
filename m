@@ -1,132 +1,172 @@
-Received: from relay9-d.mail.gandi.net (relay9-d.mail.gandi.net [217.70.183.199])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEB8214D718;
-	Mon,  8 Jul 2024 22:10:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DF185674E;
+	Mon,  8 Jul 2024 22:12:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720476657; cv=none; b=D1Z1a3MH5I0tBTYSVSC8thFTxx1/GkArCPzVXI8aQOJB0gww9ZXZ8xvn2XqB55NYL0LKNxJlKV0XEmz6sq6OqkQeFfp7Wx8GbpTe3wG7c1977fmbtapG8T26oN/g6PYVsMV1wDkSiDW8BlX6aHOLhWZvlsYMN2RzRcGN2utQt8U=
+	t=1720476779; cv=none; b=fwL7XLn36I6puAHZPpYXVI+Q+Sp4XCX88mK4ikAnH+psYsMtSUZCbX5GD5jgnBzkX7cJE7kFDOc6DYD28P0kyN9cLyyip8EdBvXL3OJTFyA9sQQmNjH/LoDsVpVmU+xfj9gMOaUrwRr1fSK6arNuIjWzMgvZQdctxr7xkFb47j0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720476657; c=relaxed/simple;
-	bh=5UsUObC0/KKWIMavGDA73Hj3cvjxYkOVXJo+CQyzx7E=;
-	h=Message-ID:Date:MIME-Version:To:Cc:From:Subject:Content-Type; b=CzP74cJvk7Dppu4VttwboLArg4oJQDbRybXDg+Q5RDhRtWdb66ct+0DmaRAVFqrDzTA5wiNfoY9n566T0dYXfqNukT0M3cEhT2ZQQIG+mYggeA9mlI8XxrJJpbTe/kzUu4f6E8IDUwsnBggRty4UgClhUg0MkSZhcfVb3kbh3gQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gtucker.io; spf=pass smtp.mailfrom=gtucker.io; dkim=pass (2048-bit key) header.d=gtucker.io header.i=@gtucker.io header.b=Up0O9Dca; arc=none smtp.client-ip=217.70.183.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gtucker.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gtucker.io
+	s=arc-20240116; t=1720476779; c=relaxed/simple;
+	bh=4n1Vc9tXg+YIewhgBSUCESwYVFBpDzFDKw3KRl/z55s=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=N9PRg8a68vMp2wP8/dBZRGMEAX+MK8N16y9ehqW2fSk72JUpiYx8GMJi+ZkBMIQFrMrMs/RH9sXzxbG5687X2CKfqiXeqFeegzsOQDl3/CwrrS23ixhM9tLKAl+u7xCmWW+9oyDJ1ZX7WvnMqOK6D+yZdcH+EKSCd3q5QdS37gA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=J6c9A7LX; arc=none smtp.client-ip=209.85.222.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gtucker.io header.i=@gtucker.io header.b="Up0O9Dca"
-Received: by mail.gandi.net (Postfix) with ESMTPSA id B4DF6FF804;
-	Mon,  8 Jul 2024 22:10:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gtucker.io; s=gm1;
-	t=1720476652;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=oZ5wzEZQjhyCIlXR6z+QZsZFscm+l+6h9ZCxJ7SE/p0=;
-	b=Up0O9DcaKTvMJZe1gWWIRVs5IJRtFv5NNVU+BdsCl3BAtQVcMdOrE9o2/NQ7FcVXWZK9U/
-	IkOgTCMIhSJRNrnxAIW1mBM/PRiE/g39v54E5cmwMn650GoobrLuVXqxyRlSJB/smtwQTj
-	tkgYUQMNi9IVhB/A2UjNuWSBE8r4C8jzx86ztJcT1y7BQW/QY9sDaiAYzabm4+f17EKuoW
-	LbrJK6S2+8oGmUozwXLWf01arZVXl8z/yKgP1kPhg4fDRewzPh2RmKwk8o1FyvEn1zoI2R
-	qyHbeVwwpJ4ibzvPFqe2kWiVCnE7ZwGaVoObP4XG8T5M2J2LNNcdwsv5soUa6A==
-Message-ID: <f80acb84-1d98-44d3-84b7-d976de77d8ce@gtucker.io>
-Date: Tue, 9 Jul 2024 00:10:51 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="J6c9A7LX"
+Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-79f0c08aa45so127984385a.0;
+        Mon, 08 Jul 2024 15:12:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1720476777; x=1721081577; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=dAOsl3qu4A6KcPFJBGEr5mKU1d6JWC06nIXsQ3Qf2RE=;
+        b=J6c9A7LXYBkqDd9TS26+l8B+XRlDWF2P8cgXPomW8RVd83q+mr1lE0HKWv/7ZHt317
+         qxIIx5XzRSLOQUt3Lyj5es+qyLyWTo7mJ+oFtYTyTGljo3ek9xTIQw9geVzOgH2ha6qP
+         BVjPZc1p7d9rAYxcxjbctZ5nPJeamCqcLimcMkMJAvrr9JM+9EZrLuMujqg0lq0r+/Wy
+         tZWRMVKOLduQnUfs33MV/4clqHe/PWAJGoAmsTiFx+AwXcr9GGWA5CFngAc1MEiaf4WZ
+         J2O+tHnWDw7+VSo/8Whihubd/1Z0F56L5XPFvjxl4JmuK1TTBjs4sA2OhS4/IF0i3nqe
+         CHtQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1720476777; x=1721081577;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=dAOsl3qu4A6KcPFJBGEr5mKU1d6JWC06nIXsQ3Qf2RE=;
+        b=POfiLR78u29HzkDWfSRXptPb4nNWQ9kzFBGuWMOV9+lR1XwWuJqsfHEJM4h/zAk9U8
+         h4RypOLYx4AV6Q0YX/KMAotennnJFzhfV0t70Q3+knBsCl2uhJUnwRKHs/xXBbAz4j6T
+         wCIGG8nCzpKjaKicWp9ncUalI6STDl8MrouF+6NMgbdwuqGoh32ZZ+SDejjT7HnOFxyx
+         zvgmZM1kGB7H625D5+1Tq8pHxBmTYde2FW6Cr0NnEXUcY0Z8B13oUD/tGpPCyeBATdfw
+         DkwqjaZHdRjXUyi3M5plTGm80+IezZFfNHOMyhXkqxOkD0OjmmaNQXcDnAVMbreT4kJO
+         5O4Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXd7dbVRV2U/C/NJGUe6L9CKc/F6dvLGlVYLY9yB8ZcvJ4S5vClrsG1mqk/OGZutnHSRxUH85NLBYVa3jmA8Nf1z3a1dP8NEqHzvAbW1L77XzWhI9MvplMLg4I+TxzYICsz633bSZ2RihL5wa4=
+X-Gm-Message-State: AOJu0YzVerKzTYRSI+eurSXuXDeiAW90vhpLQl4p6ZKYTRCwaM99GWIs
+	yJOqDiLSmYUJol8YDNf2ZWv3NOmt0x60J7Ko1Fc65ipsGj76CfsL
+X-Google-Smtp-Source: AGHT+IFF6zvtjUtSil3YQCaVuVBNZbAuGL+crIdVkcP96QT4wqN0NXECjqWbfVLB7+eaHeRG9plJbg==
+X-Received: by 2002:a05:620a:2989:b0:79f:e70:ceef with SMTP id af79cd13be357-79f19a78e07mr121230785a.44.1720476776921;
+        Mon, 08 Jul 2024 15:12:56 -0700 (PDT)
+Received: from fauth2-smtp.messagingengine.com (fauth2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-447f9b3d293sm3736921cf.25.2024.07.08.15.12.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 08 Jul 2024 15:12:56 -0700 (PDT)
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+	by mailfauth.nyi.internal (Postfix) with ESMTP id CE84D1200071;
+	Mon,  8 Jul 2024 17:53:30 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute5.internal (MEProxy); Mon, 08 Jul 2024 17:53:30 -0400
+X-ME-Sender: <xms:2V-MZtrSqomAxyL4CFJRZ2BVZ4Tgj_7x_raReQGwWxpHzCvf_0l-QQ>
+    <xme:2V-MZvq-Gcyb2lTQBEHuy3v1r6L08KGYajEzj_0Aaj_vA78QVhdCSyxbNljvCNYPj
+    kwFlAfN1IFZCstj3Q>
+X-ME-Received: <xmr:2V-MZqNEY9qAhysLdO1gmbetpsqRwNk1Mf-L6r1sXb4v6lHxF88dHJeTsXzmkg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrvdekgddtfecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhn
+    ucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrth
+    htvghrnhephfetvdfgtdeukedvkeeiteeiteejieehvdetheduudejvdektdekfeegvddv
+    hedtnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenucevlhhushhtvghrufhiiigvpe
+    dtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhp
+    vghrshhonhgrlhhithihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrd
+    hfvghngheppehgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvg
+X-ME-Proxy: <xmx:2V-MZo4XFhEo3ZnDNGXr8xeZmGHOgFcHbGJqM-I465jpCJ3Pft4pQg>
+    <xmx:2V-MZs5fvTaXVRFyaUZyjnfMNyCigoCgWRpzuLjii7HETn2ixdJ9RQ>
+    <xmx:2V-MZgh7g-ku1Ejh7KILunmEQOouq0peDGZfQO9ULjcSAsXSmGvorw>
+    <xmx:2V-MZu4jgls2Q4ESYghYIeJELgWSeZvAhER6QJjIVnjnF0NTaG-fOQ>
+    <xmx:2l-MZjLtyW62YwbYJ1PWv7-qwbbuHcWirAf7zder1u3sCuceX6qkoJqz>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 8 Jul 2024 17:53:29 -0400 (EDT)
+Date: Mon, 8 Jul 2024 14:52:13 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] rust: kernel: add `drop_contents` to `BoxExt`
+Message-ID: <Zoxfjfl9Izaz2Wtj@boqun-archlinux>
+References: <20240708205325.1275473-1-benno.lossin@proton.me>
+ <ZoxWyr3fL8GkyOAR@boqun-archlinux>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Content-Language: en-GB
-To: Nick Desaulniers <ndesaulniers@google.com>,
- Miguel Ojeda <ojeda@kernel.org>, Alexei Starovoitov <ast@kernel.org>,
- Arnd Bergmann <arnd@arndb.de>
-Cc: llvm@lists.linux.dev, rust-for-linux@vger.kernel.org, yurinnick@meta.com,
- bpf@vger.kernel.org, Sasha Levin <sashal@kernel.org>,
- Shuah Khan <skhan@linuxfoundation.org>,
- automated-testing@lists.yoctoproject.org
-From: Guillaume Tucker <gtucker@gtucker.io>
-Organization: gtucker.io
-Subject: Plumbers Testing MC potential topic: specialised toolchains
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-GND-Sasl: gtucker@gtucker.io
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZoxWyr3fL8GkyOAR@boqun-archlinux>
 
-Hello,
+On Mon, Jul 08, 2024 at 02:14:50PM -0700, Boqun Feng wrote:
+> On Mon, Jul 08, 2024 at 08:53:38PM +0000, Benno Lossin wrote:
+> > Sometimes (see [1]) it is necessary to drop the value inside of a
+> > `Box<T>`, but retain the allocation. For example to reuse the allocation
+> > in the future.
+> > Introduce a new function `drop_contents` that turns a `Box<T>` into
+> > `Box<MaybeUninit<T>>` by dropping the value.
+> > 
+> > Signed-off-by: Benno Lossin <benno.lossin@proton.me>
+> > Link: https://lore.kernel.org/rust-for-linux/20240418-b4-rbtree-v3-5-323e134390ce@google.com/ [1]
+> > ---
+> >  rust/kernel/alloc/box_ext.rs | 21 +++++++++++++++++++++
+> >  1 file changed, 21 insertions(+)
+> > 
+> > diff --git a/rust/kernel/alloc/box_ext.rs b/rust/kernel/alloc/box_ext.rs
+> > index cdbb5ad166d9..6cf79f96d6c7 100644
+> > --- a/rust/kernel/alloc/box_ext.rs
+> > +++ b/rust/kernel/alloc/box_ext.rs
+> > @@ -5,6 +5,7 @@
+> >  use super::{AllocError, Flags};
+> >  use alloc::boxed::Box;
+> >  use core::mem::MaybeUninit;
+> > +use core::ptr;
+> >  use core::result::Result;
+> >  
+> >  /// Extensions to [`Box`].
+> > @@ -18,6 +19,18 @@ pub trait BoxExt<T>: Sized {
+> >      ///
+> >      /// The allocation may fail, in which case an error is returned.
+> >      fn new_uninit(flags: Flags) -> Result<Box<MaybeUninit<T>>, AllocError>;
+> > +
+> > +    /// Drops the contents, but keeps the allocation.
+> > +    ///
 
-While exchanging a few ideas with others around the Testing
-micro-conference[1] for Plumbers 2024, and based on some older
-discussions, one key issue which seems to be common to several
-subsystems is how to manage specialised toolchains.
+(I spoke too soon ;-))
 
-By "specialised", I mean the ones that can't easily be installed
-via major Linux distros or other packaging systems.  Say, if a
-specific compiler revision is required with particular compiler
-flags in order to build certain parts of the kernel - and maybe
-even a particular compiler to build the toolchain itself.
+> > +    /// # Examples
+> > +    ///
+> > +    /// ```
 
-LLVM / Clang-Built-Linux used to be in this category, and I
-believe it's still the case to some extent for linux-next
-although a minimal LLVM version has now been supported in
-mainline for a few years.
+need a `use` here:
 
-A more critical example is eBPF, which I believe still requires a
-cutting-edge version of LLVM.  For example, this is why bpf tests
-are not enabled by default in kselftest.
+	use kernel::alloc::{flags, box_ext::BoxExt};
 
-Then Rust support in the kernel is still work-in-progress, so the
-rustc compiler version has to closely follow the kernel revision.
-Add to this other alternative ways to build Rust code using
-rustc_codegen_gcc and native Rust support in GCC.
+> > +    /// let value = Box::new([0; 32], flags::GFP_KERNEL)
 
-The list can probably be extended with things like nolibc and
-unusual cross-compiler toolchains, although I guess they're also
-less commonly used.  And I guess GCC support has otherwise been
-pretty stable since maybe the v2.6.x days but there might still
-be special cases too.  Performance and optimizations is another
-factor to take into consideration.
+missing a '?' and a ';' at the end of this line.
 
+> > +    /// let value = value.drop_contents();
+> > +    /// // Now we can re-use `value`:
+> > +    /// Box::write(value, [1; 32]);
 
-Based on these assumptions, the issue is about reproducibility -
-yet alone setting up a toolchain that can build the code at all.
-For an automated system to cover these use-cases, or for any
-developer wanting to work on these particular areas of the
-kernel, having the ability to reliably build it in a reproducible
-way using a reference toolchain adds a lot of value.  It means
-better quality control, less scope for errors and unexpected
-behaviour with different code paths being executed or built
-differently.
+Need a line:
 
-The current state of the art are the kernel.org toolchains:
+	# Ok::<(), Error>(())
 
-  https://mirrors.edge.kernel.org/pub/tools/
+here.
+> > +    /// ```
+> > +    fn drop_contents(self) -> Box<MaybeUninit<T>>;
+> >  }
+> >  
+[...]
 
-These are for LLVM and cross-compilers, and they already solve a
-large part of the issue described above.  However, they don't
-include Rust (yet), and all the dependencies need to be installed
-manually which can have a significant impact on the build
-result (gcc, binutils...).  One step further are the Linaro
-TuxMake Docker images[2] which got some very recent blog
-coverage[3].  The issues then are that not all the toolchains are
-necessarily available in Docker images, they're tailored to
-TuxMake use-cases, and I'm not sure to which extent upstream
-kernel maintainers rely on them.
+I queued this patch in rust-dev with these fixes applied, FYI.
 
-
-Now, I might have missed some other important aspects so please
-correct me if this reasoning seems flawed in any way.  I have
-however seen how hard it can be for automated systems to build
-kernels correctly and in a way that developers can reproduce, so
-this is no trivial issue.  Then for the Testing MC, I would be
-very interested to hear whether people feel it would be
-beneficial to work towards a more exhaustive solution supported
-upstream: kernel.org Docker images or something close such as
-Dockerfiles in Git or another type of images with all the
-dependencies included.  How does that sound?
-
-Thanks,
-Guillaume
-
-[1] https://lpc.events/event/18/contributions/1665/
-[2] https://hub.docker.com/u/tuxmake
-[3] https://www.linaro.org/blog/tuxmake-building-linux-with-kernel-org-toolchains/
+Regards,
+Boqun
