@@ -1,99 +1,87 @@
-Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C615F12C478;
-	Tue,  9 Jul 2024 07:55:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15A57146D7D
+	for <rust-for-linux@vger.kernel.org>; Tue,  9 Jul 2024 07:58:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720511733; cv=none; b=el63hsDKV81tSN5pjbEY79pSeSwnt5bAmS8SJdRrszG5CvGtg2/ePYiaSVKb88ac/ecW42/g44jKf27dPXnsDgaJdthepci2c7KHKwdMuFR2DKeY+WdXpKAq//LTmGojI76YpSITghDa0lwC4UDGeOFOLF2rjdhXvL07z6j5dnY=
+	t=1720511940; cv=none; b=bRDbobXm+8Lxxy/jR53pzK7uKeIY0/1Qx/xk6rT7Fyd3MaoUyxWWiYg2fnGATYXHxNidZgpz77ksKqK2LQfnZXrwO5/QSMNMnb5V6+pCMEDjOHa8zr+EDsdKulFWXXEJrHpSX3dE3zlKKtEka8U2IdWH4AHK0OpfCme85ZnWlWQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720511733; c=relaxed/simple;
-	bh=YzvYfGmfAcSYTrnLdb6YghFGvOuva+jojEq/hwMLN68=;
+	s=arc-20240116; t=1720511940; c=relaxed/simple;
+	bh=j8ro3NEFcgtDzgZAdOZgTMMR9ff+cXMjffDa4cE51Bs=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LkbvDHIgyUaMyq6lvoUvX8IItZ4yo1IxP5dTWAilDZB0R+NLVdERRtCUhdjOrqkvkXVS51cb1asmZAZGVOknH5TV9QS9gOgk5P2EBh1kzCQ4zsfv+hiysn/B2GT8dzJcIJxPjG4E1gay6xFZc5hDtjbfxHxqfu0B4MJ/i7sjHCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RoHlAIDp; arc=none smtp.client-ip=209.85.215.177
+	 To:Cc:Content-Type; b=oMDNDfp5HVC7e+Mx5aAYNPnOEQqqFe9xMgju5gqU0m6o8NKCFdFh917rrHXP7vhAxfszjt30ygWRw2LIMO2Yb0y4wZfeK8cLOU8ZYa56o8trbttsn/h2fxEACvAKmjQeTD5vRC9JHC0HTFh53egzmkBJ9KNi0eAw3c3sO7IZM0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iHEQqHPe; arc=none smtp.client-ip=209.85.216.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RoHlAIDp"
-Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-707040e3018so3151453a12.1;
-        Tue, 09 Jul 2024 00:55:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iHEQqHPe"
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-2c96170d23eso2860743a91.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 09 Jul 2024 00:58:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1720511730; x=1721116530; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1720511935; x=1721116735; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=YzvYfGmfAcSYTrnLdb6YghFGvOuva+jojEq/hwMLN68=;
-        b=RoHlAIDpy8DoiphmP5GU39+vnLNyRIvlyvN/OV4+NyL8Dj1FkbTbGmh4V1Eu1vxRJN
-         uq5wYXg7nlVSm41qhJn1vae7vJUpUG0KhYz3AnHU2cxe1L/qgA2iu7sRdQN2zjdWpKQU
-         848x6BzQMN3oke9DBrHfdpszTbKeCBTEyBACq10AeCJpklBfYiy29Hjdx1XrsvzIB8tq
-         SuuZDwJTN3259J63yk5yRXOKIjTdVjVPt+xCqF29aGurAGiMdpCd2gAHVLM+ANZlW3vC
-         41m8XzV0eB/X96f1spkJYs0AXCZtJrkthDPz9hlhGgNneFEiIz7aZ5M/k7VoHf3z0laG
-         XCzQ==
+        bh=j8ro3NEFcgtDzgZAdOZgTMMR9ff+cXMjffDa4cE51Bs=;
+        b=iHEQqHPeAMQuOWLBTRz6tdFjCk98ksOEq/QAt3P64l/JmLHfEZDzxT/cMe6c4bDzX4
+         fo+enVh30QqHrH7Wa5pQmAo/2/f9W9w/TUtJB55YW/Q0UbQ8ol9d1jrH39bbZBf+dzPf
+         zwy+gfVp5EG84GMLj4FQD8QiFd6sqydPmpX7vbwIA6ByxKMinhZZZlN9pYveJCoPhM47
+         W3AJIHn1c1y0fOJrTbMtyw8x4BCVv6H9jfynYR7LZGGmC598dsqChkdNVu1LVm6JhymK
+         mm8jpKgB38HhJcn5l7v9GqOBhc4+jWdkLFf4PqbyIjz8D5CYrrhwVxAO9rFCzV64t+JW
+         CueA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720511730; x=1721116530;
+        d=1e100.net; s=20230601; t=1720511935; x=1721116735;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=YzvYfGmfAcSYTrnLdb6YghFGvOuva+jojEq/hwMLN68=;
-        b=YU7BZroIWEhsdOfKmDhd5ZonDtHjzPN3tWnHMNMcX57tMEeFC5s0bSFAgyx7Ak/3Ag
-         ynBmEydMT/ckeVISmR9iyDz1djRfMTn2auRDFP8Sra7AACqDdCFgXjGosBMSevk+flpr
-         Oqo46EQ7/Lee7M5KBsGpkFU7dPc3zNfRFVT7KtfxrJB1hqnhukErUiNOD65mdh8kWgQL
-         ffrcNNJ0Yjr5UNy3AjvsWk2PBREQBgjcRu50mjqQgS0CSlYANe1cDKe/nMO/GIicQnOr
-         YsoLv+NIa3eWST0zBymuU01ibSV5kPfCZhfs7xfsCuPKu1AS5aOdslvIn6/pfTYFrOg1
-         f1Iw==
-X-Forwarded-Encrypted: i=1; AJvYcCVUleZtOynDWYWNgxorKKhxfnZ/KMwlNcI7V/MsVcZT8DCGHKFKh0IwNyITD6V9yowqSvv1qbxfYSJoyx0LislWuXBhgOeNcG+BMC3GvU+bE2QtAd3KxXdN0JrBmqDuMbr1N0JoNA3msIzAfdI=
-X-Gm-Message-State: AOJu0YwWL9GI01isllBdQyzAEr7/lMWin9T9LEW4cG8huAOPEGvmIBlu
-	9yEj4vMKLk4Q+gryPg8lDGXpyXH0M2cyBtdfexVJ6gqk5bpKw+0OQfYA8OCL8VOq/sNSvdFr1c5
-	/kVpZxG8H5Z67C296nu6RgZLa5UQ=
-X-Google-Smtp-Source: AGHT+IEPkJ7kX8DP6xXn1hqgjitAHhqA1vLoNVaXSl0RLERC8TNfjOKtWnm7ZTa/2tCJN+5SgSAPu9kP6iKo39EEFF8=
-X-Received: by 2002:a05:6a20:4321:b0:1c0:eec6:85ea with SMTP id
- adf61e73a8af0-1c2981ff8bemr2187647637.12.1720511730113; Tue, 09 Jul 2024
- 00:55:30 -0700 (PDT)
+        bh=j8ro3NEFcgtDzgZAdOZgTMMR9ff+cXMjffDa4cE51Bs=;
+        b=B9KccOOzyvZaQGsXHrPQ4VL4XqO8B+twgdotDUQ30omIbAKKfpBGbHGrKgcVrE3zSq
+         ZwjyK2dfgIQ4uYD5/VL+Wf95xqaSvGOENS63r9p30Ex1an3cSfTFX6kvwcnEeOPn3inJ
+         vIzWOoBPEs4pcJJlNcKkU8ArAHSI3sZJE+tPDi9BVAztqQJ6QLA0D51P0qvaRCvyFFin
+         IryYnOy41OqheVwwVS2KEdWOxPxJCE9F2lI80FqAnNTCg4HFuoDR8qqm/AAz/AvcxB4w
+         lT0vnOLMQKkeFeYzAehqKuLeUcXbg0oQUj/FpNm8K2xJSHYCh7VXCv5dItpiYkRhwGTA
+         nNUg==
+X-Gm-Message-State: AOJu0Yzn5TkS58CnD9bTmJYO8zkMuKk/HL1z9vMR4iH8+unP7P59zcNE
+	st4QlvnNKfRtt27kHeaYBruQx91pbzvK84egGAPKPoZ/sbrTAPHPi2iXMqRXKcGeAiynoToDaxW
+	CTwkgczxdLwG3GIk8+JpJluB/iIk=
+X-Google-Smtp-Source: AGHT+IHJNJt1G/Dv1mfPWgivouRIv1R/E8K8VhDl0rOBT7Dv1iZ9VuVGwQzDCtQfx94otcno0JGyNF/WSsGz1nrDgbE=
+X-Received: by 2002:a17:90a:af84:b0:2c8:85c:750b with SMTP id
+ 98e67ed59e1d1-2ca35d3b852mr1808112a91.34.1720511935301; Tue, 09 Jul 2024
+ 00:58:55 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240607-highmem-v1-1-d18c5ca4072f@google.com>
-In-Reply-To: <20240607-highmem-v1-1-d18c5ca4072f@google.com>
+References: <20240610122332.3858571-1-dirk.behme@de.bosch.com>
+In-Reply-To: <20240610122332.3858571-1-dirk.behme@de.bosch.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 9 Jul 2024 09:55:18 +0200
-Message-ID: <CANiq72kO2rpPBf0Gxfqmt7cUMMsrH9kx0==63rthwXQD3fgAqw@mail.gmail.com>
-Subject: Re: [PATCH] rust: alloc: add __GFP_HIGHMEM flag
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
-	Al Viro <viro@zeniv.linux.org.uk>, Andrew Morton <akpm@linux-foundation.org>, 
-	Kees Cook <keescook@chromium.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, linux-mm@kvack.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Date: Tue, 9 Jul 2024 09:58:43 +0200
+Message-ID: <CANiq72n7Aa0hoRNufKuFngbhhcP6k9eGOG2rFVw8r82NijCzWQ@mail.gmail.com>
+Subject: Re: [PATCH v2] docs: rust: no_std is used
+To: Dirk Behme <dirk.behme@de.bosch.com>
+Cc: rust-for-linux@vger.kernel.org, Trevor Gross <tmgross@umich.edu>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jun 7, 2024 at 10:23=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> w=
-rote:
+On Mon, Jun 10, 2024 at 2:24=E2=80=AFPM Dirk Behme <dirk.behme@de.bosch.com=
+> wrote:
 >
-> Make it possible to allocate memory that doesn't need to mapped into the
-> kernel's address space. This flag is useful together with
-> Page::alloc_page [1].
+> Using the #![no_std] attribute in the Rust kernel support is different
+> to the default Rust usage. Mention this in the Documentation.
 >
-> Rust Binder needs this for the memory that holds incoming transactions
-> for each process. Each process will have a few megabytes of memory
-> allocated with this flag, which is mapped into the process using
-> vm_insert_page. When the kernel copies data for an incoming transaction
-> into a process's memory region, it will use kmap_local_page to
-> temporarily map pages that are being modified. There is no need for them
-> to take up address space in the kernel when the kernel is not writing an
-> incoming transaction into the page.
->
-> Link: https://lore.kernel.org/all/20240528-alice-mm-v7-4-78222c31b8f4@goo=
-gle.com/ [1]
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> Signed-off-by: Dirk Behme <dirk.behme@de.bosch.com>
 
-Applied to `rust-next`, thanks!
+Perhaps we could eventually mention why in some cases it is not needed
+(we automatically add it as a crate attribute for e.g. drivers, and I
+plan to do so for others too later on), i.e. developers do not need to
+care in most cases.
+
+Applied to `rust-next` -- thanks!
+
+[ Avoided breaking links in two lines. - Miguel ]
 
 Cheers,
 Miguel
