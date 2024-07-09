@@ -1,334 +1,107 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 144EB15099B
-	for <rust-for-linux@vger.kernel.org>; Tue,  9 Jul 2024 10:15:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9763A208B0
+	for <rust-for-linux@vger.kernel.org>; Tue,  9 Jul 2024 11:02:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720520143; cv=none; b=tIT5QcMGGkNNuxh3XO5e1bdt7lnnzsX/JkIT3d0WRIC4JYqcU015+pop+C8TzggyjBorFvQR30mAwg9Cj1/CBKmyiGbBM0ggKSkw7rMcOvqDzsz9pHM/w1SV7UzVEWdld2L2tB2g2zzs+bQyRT6rXld31Y9oR6lW8ogwwPL2SPg=
+	t=1720522969; cv=none; b=Amnc7nTfQAd5nT0/+ZxXWTM0PkKCFKdhPwVtzwVL2cYbec33HxE1VOEBQofcvHhmBaLcW1QeeDpNne54J9V5T/tNwno2jZyq+pyL5rVGFuI3eahAE4GiBHIUnuuSUMRMdp/kDL0bq7mtxsSYsd8CkvyY2aBEUgMiPUdbagJvQ4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720520143; c=relaxed/simple;
-	bh=W6+npMvjOev0trZ/YakeBsyrVuLcjlbQuplVB6oJDLw=;
+	s=arc-20240116; t=1720522969; c=relaxed/simple;
+	bh=ICwC8hHB4nssKkN75Qlzvd8rIcpX9ZQoWm9Hdqy5DwE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 In-Reply-To:Content-Type:Content-Disposition; b=bezDhL4hIHwVDQ93BHLHCY+tX3xwwHAP6+xtKPJcg1vi6bw7ZuYM8iXR/tTAcYh3QOH3SWa04K0UP7MLd4eUX7IIV6BJ7tTNU3AW9fyqX9Jokhoy7wUL3BAG4EEYkAv9oXsYdL0ul+afOcY2jZi2C3wyMPJPlS0Tl5zjr5NQpjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=e+O2tbGn; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=MJkeUK54l+u/fSH13o4oBW7ouJbChWRZO6M64GbqK4YtCQCIJPO7iV4Ee/YK23EcdM05sdI8wWwbuUa93dJR94+v0K9zpatfBHcYzJ9iDN1wvmUiXYWqGNU/FTa//PEl3P02epbJ3U+De1d0SBhx7o3QeQFQvaNOFonoulFdaqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=tOAOMrxm; arc=none smtp.client-ip=209.85.210.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="e+O2tbGn"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1720520140;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Y0LI2aiTo8SDPbgwOywHY37YXWVm6ke5JwTsOKYTO7s=;
-	b=e+O2tbGnuphlpEbY1BlRFkK5BBdZHUlBevYsFHeWOeXQ5ta53bEz8COERT2ZFdruPDmSil
-	2gXhLBlQpFY5u5KAMtr7mQDEziDuI7TolueWlloMH8T86ArIGEnwFbVukXL+azx8e/JamS
-	bdEzuB3ZLecKBwagVdtW/VGb4k/BPiA=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-330-d7hxL6k7NSyzEgRCO4LYVw-1; Tue, 09 Jul 2024 06:15:36 -0400
-X-MC-Unique: d7hxL6k7NSyzEgRCO4LYVw-1
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-4265464ddc9so20399475e9.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 09 Jul 2024 03:15:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="tOAOMrxm"
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-70af0684c2bso3049664b3a.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 09 Jul 2024 04:02:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1720522968; x=1721127768; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=yz8rqRMqOY683u5fU+cnnte1WW97jEHEhVYRD53PDio=;
+        b=tOAOMrxmF5SX9/yidFT9l3oQFPMmITisdEw0c3YjacAvBaG4OwL32ijQGjOnU4tScA
+         loK0ASFvIfha/dDCuOCQj6Hj/fVeAjpoGLPdHHUHYvBkG2Kr5FRmefmd8CUe5/rQZ3XC
+         kjR/7HQuMuD1uzpIiX0NW64A3E7kkdkOYJS+F7PKXOo5fJs9TX+fNzVeBVh5sKBCBfuq
+         5uzEWpnI61a4f0qdHO6hnDA35m3vFd28VdVyRaQZc8cycXWcFfAMS3Ac6Wog94+v5eBb
+         VyjNFC/xBaaZzMl7YOe/9ryJ3QOOBju2zUgCSc0iMlbdtBpnxmeKL8kEL+reOMeXTUvw
+         vfNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720520135; x=1721124935;
+        d=1e100.net; s=20230601; t=1720522968; x=1721127768;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Y0LI2aiTo8SDPbgwOywHY37YXWVm6ke5JwTsOKYTO7s=;
-        b=NP85zqcR6i1MKbeqBAkD+GksE9e+dG/ruR76xFP/CN6jD9uIYfkU6/umnXRk6qhLJD
-         ubGLw6shpFyc6E6N2KRkcdgkiAHaipOMRRGPO1WIBlKhUx2HC0Yv6zNPzbNc6k/n0YbB
-         3C7i+sjro4e09s2aRNS8kzIqoa+KVPk4Kz5kTFl6tkGYdRscM/zkJ0AVWxi0O4hlCOVJ
-         QIkZC7dUV6pJKIZE/2fbFZFQaJEDkXfzN+moXcfV2pCBRB6sG17Gb1EerV0t5L0HBazG
-         L8yWVolvJUE6BsX8RaCtGghPWhwi/zbx5t1zrOBHdhzdcwwrmVTwWvHNRPXbc9AXsr0B
-         S+JA==
-X-Forwarded-Encrypted: i=1; AJvYcCWC0LIb0nVB7J6kMP0YVO6312MM6FLycAL6BpGvlOIMI/9crv0BwRbC+KKagf7KNpT4x1mdX62woGtg8AuHUNHbwYA0c/OZuXAmKSpayVo=
-X-Gm-Message-State: AOJu0Yz++NwFZ1gaPzD98IqPQjyecJ+dgHCDe22/4rRBsXa+pg3DWxdu
-	Ar6ytlinlcxmQBMz1TbM1ihMgwVfm1yf1HsXzhUeQj1ZhdEIC5AlO5IVPwMap39h9Nb/I2+My08
-	XKemKBCTsO8y//2zV5vH3itVajNyDJgUDIyKKacst6F0d3avMc+brLLMe8QQkI0EW
-X-Received: by 2002:a05:600c:12c5:b0:424:7871:2e9e with SMTP id 5b1f17b1804b1-426722d4ac2mr13267565e9.6.1720520135512;
-        Tue, 09 Jul 2024 03:15:35 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFQ5U/jFQWevQZpnHxNvHI789HGlPw9htIpqg38lT8vTSEmBTaidxwWELmF+uEaYUa8NvwnQQ==
-X-Received: by 2002:a05:600c:12c5:b0:424:7871:2e9e with SMTP id 5b1f17b1804b1-426722d4ac2mr13267285e9.6.1720520135058;
-        Tue, 09 Jul 2024 03:15:35 -0700 (PDT)
-Received: from pollux ([2a02:810d:4b3f:ee94:abf:b8ff:feee:998b])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4266f7420cesm33763395e9.46.2024.07.09.03.15.33
+        bh=yz8rqRMqOY683u5fU+cnnte1WW97jEHEhVYRD53PDio=;
+        b=d1VXmsjPkagTiTvfXNU3If59sIFVLoVenOMJiFgeAI9gQLSF0uIPnt2cWYZulxRiFB
+         yu28lfTu3bOEMMo/5LRK2zv+SkrnXmxu+a9Pwg58kvVvUUlRvmyimXAG1BgULmXl8h46
+         InmW07c1N13loKRZdtSkMLQWn+hN5bT9WpCr+T7mvkGMwtlYjoVk/9MaDQ3vCE9/qWxF
+         IpnLRl8fnk69lZrsL1MhjaISR1yNnGqgfN4iUq21qsrRAQumLifn4+9Wq6RDh1jbxSiW
+         +ckS8Kk8aM6eJBq/2sATh2GYvdw0+1rcdn0EM8hkKMxYRnhAQssXpFfFI0JBNvUR4D0/
+         vqTQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWi9jx8pIk3U+GvA31GrK+jRwlb9clzATWHIzNenVs8UXePhn/msDB8zTccb66adCuG6rVeHfaibqQ2jE5BNACuZXjElE9A40c1K4Gqre8=
+X-Gm-Message-State: AOJu0Yyzf16ebEBr24v2JwEMeJqfne+CjInEC5+MZ82F+rN101Z2HGLR
+	yq9uQdc9BaMG5SN8HqfQpvtjlpfEpmtRsDk54NHExVsMzoQmvTNJovSOHajKfrA=
+X-Google-Smtp-Source: AGHT+IEnZeyyy+JNipf3YeCIVNiI2S39fnrN1eQJ+5u6wVxKp7TogZLRs6I2FcH4SNfru3myy0T1dQ==
+X-Received: by 2002:a05:6a00:1d0e:b0:706:6cb2:ed17 with SMTP id d2e1a72fcca58-70b435220f9mr2429638b3a.2.1720522967959;
+        Tue, 09 Jul 2024 04:02:47 -0700 (PDT)
+Received: from localhost ([122.172.84.129])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-70b438c0996sm1513827b3a.60.2024.07.09.04.02.47
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Jul 2024 03:15:34 -0700 (PDT)
-Date: Tue, 9 Jul 2024 12:15:32 +0200
-From: Danilo Krummrich <dakr@redhat.com>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: rafael@kernel.org, bhelgaas@google.com, ojeda@kernel.org,
-	alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	a.hindborg@samsung.com, aliceryhl@google.com, airlied@gmail.com,
-	fujita.tomonori@gmail.com, lina@asahilina.net, pstanner@redhat.com,
-	ajanulgu@redhat.com, lyude@redhat.com, robh@kernel.org,
-	daniel.almeida@collabora.com, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org
-Subject: Re: [PATCH v2 01/10] rust: pass module name to `Module::init`
-Message-ID: <Zo0NxOJUEO-gvxVr@pollux>
-References: <20240618234025.15036-1-dakr@redhat.com>
- <20240618234025.15036-2-dakr@redhat.com>
- <2024062038-backroom-crunchy-d4c9@gregkh>
- <ZnRUXdMaFJydAn__@cassiopeiae>
- <2024062010-change-clubhouse-b16c@gregkh>
- <ZnSeAZu3IMA4fR8P@cassiopeiae>
+        Tue, 09 Jul 2024 04:02:47 -0700 (PDT)
+Date: Tue, 9 Jul 2024 16:32:45 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>, linux-pm@vger.kernel.org,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Stephen Boyd <sboyd@kernel.org>, Nishanth Menon <nm@ti.com>,
+	rust-for-linux@vger.kernel.org,
+	Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+	Erik Schilling <erik.schilling@linaro.org>,
+	Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
+	Joakim Bech <joakim.bech@linaro.org>, Rob Herring <robh@kernel.org>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH V3 1/8] rust: Add initial bindings for OPP framework
+Message-ID: <20240709110245.o73xnrj6jsvz2v2w@vireshk-i7>
+References: <cover.1719990273.git.viresh.kumar@linaro.org>
+ <fe8e9a96b29122876346fc98a6a9ede7e4f28707.1719990273.git.viresh.kumar@linaro.org>
+ <ZoVvn0QCSR8y4HQJ@Boquns-Mac-mini.home>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <ZnSeAZu3IMA4fR8P@cassiopeiae>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <ZoVvn0QCSR8y4HQJ@Boquns-Mac-mini.home>
 
-On Thu, Jun 20, 2024 at 11:24:17PM +0200, Danilo Krummrich wrote:
+On 03-07-24, 08:34, Boqun Feng wrote:
+> On Wed, Jul 03, 2024 at 12:44:26PM +0530, Viresh Kumar wrote:
+> > +// SAFETY: `OPP` only holds a pointer to a C OPP, which is safe to be used from any thread.
+> > +unsafe impl Send for OPP {}
+> > +
+> > +// SAFETY: `OPP` only holds a pointer to a C OPP, references to which are safe to be used from any
+> > +// thread.
+> > +unsafe impl Sync for OPP {}
+> > +
+> 
+> Same for the above safety comments, as they are still based on the old
+> implementation.
 
-Just another kind reminder on this one. :)
+Do I still need to change these ? Since we aren't always using ARef
+now.
 
-> On Thu, Jun 20, 2024 at 06:36:08PM +0200, Greg KH wrote:
-> > On Thu, Jun 20, 2024 at 06:10:05PM +0200, Danilo Krummrich wrote:
-> > > On Thu, Jun 20, 2024 at 04:19:48PM +0200, Greg KH wrote:
-> > > > On Wed, Jun 19, 2024 at 01:39:47AM +0200, Danilo Krummrich wrote:
-> > > > > In a subsequent patch we introduce the `Registration` abstraction used
-> > > > > to register driver structures. Some subsystems require the module name on
-> > > > > driver registration (e.g. PCI in __pci_register_driver()), hence pass
-> > > > > the module name to `Module::init`.
-> > > > 
-> > > > I understand the need/want here, but it feels odd that you have to
-> > > > change anything to do it.
-> > > > 
-> > > > > 
-> > > > > Signed-off-by: Danilo Krummrich <dakr@redhat.com>
-> > > > > ---
-> > > > >  rust/kernel/lib.rs           | 14 ++++++++++----
-> > > > >  rust/kernel/net/phy.rs       |  2 +-
-> > > > >  rust/macros/module.rs        |  3 ++-
-> > > > >  samples/rust/rust_minimal.rs |  2 +-
-> > > > >  samples/rust/rust_print.rs   |  2 +-
-> > > > >  5 files changed, 15 insertions(+), 8 deletions(-)
-> > > > > 
-> > > > > diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> > > > > index a791702b4fee..5af00e072a58 100644
-> > > > > --- a/rust/kernel/lib.rs
-> > > > > +++ b/rust/kernel/lib.rs
-> > > > > @@ -71,7 +71,7 @@ pub trait Module: Sized + Sync + Send {
-> > > > >      /// should do.
-> > > > >      ///
-> > > > >      /// Equivalent to the `module_init` macro in the C API.
-> > > > > -    fn init(module: &'static ThisModule) -> error::Result<Self>;
-> > > > > +    fn init(name: &'static str::CStr, module: &'static ThisModule) -> error::Result<Self>;
-> > > > 
-> > > > Why can't the name come directly from the build system?  Why must it be
-> > > > passed into the init function of the module "class"?  What is it going
-> > > > to do with it?
-> > > 
-> > > The name does come from the build system, that's where `Module::init` gets it
-> > > from.
-> > > 
-> > > > 
-> > > > A PCI, or other bus, driver "knows" it's name already by virtue of the
-> > > > build system, so it can pass that string into whatever function needs
-> > > 
-> > > Let's take pci_register_driver() as example.
-> > > 
-> > > ```
-> > > #define pci_register_driver(driver)		\
-> > > 	__pci_register_driver(driver, THIS_MODULE, KBUILD_MODNAME)
-> > > ```
-> > > 
-> > > In C drivers this works because (1) it's a macro and (2) it's called directly
-> > > from the driver code.
-> > > 
-> > > In Rust, for very good reasons, we have abstractions for C APIs, hence the
-> > > actual call to __pci_register_driver() does not come from code within the
-> > > module, but from the PCI Rust abstraction `Module::init` calls into instead.
-> > 
-> > I don't understand those reasons, sorry.
-> 
-> Ok, good you point this out. We should definitely discuss this point then and
-> build some consensus around it.
-> 
-> I propose to focus on this point first and follow up with the discussion of the
-> rest of the series afterwards.
-> 
-> Let me explain why I am convinced that it's very important to have abstractions
-> in place in general and from the get-go.
-> 
-> In general, having abstractions for C APIs is the foundation of being able to
-> make use of a lot of advantages Rust has to offer.
-> 
-> The most obvious one are all the safety aspects. For instance, with an
-> abstraction we have to get exactly one piece of code right in terms of pointer
-> validity, lifetimes, type safety, API semantics, etc. and in all other places
-> (e.g. drivers) we get the compiler to check those things for us through the
-> abstraction.
-> 
-> Now, the abstraction can be buggy or insufficient and hence there is no absolute
-> safety guarantee. *But*, if we get this one thing right, there is nothing a
-> driver can mess up by itself trying to do stupid things anymore.
-> 
-> If we just call the C code instead we have to get it right everywhere instead.
-> 
-> Now, you could approach this top-down instead and argue that we could at least
-> benefit from Rust for the driver specific parts.
-> 
-> Unfortunately, this doesn't really work out either. Also driver specific code is
-> typically (very) closely connected to kernel APIs. If you want to use the safety
-> aspects of Rust for the driver specific parts you inevitably end up writing
-> abstractions for the C APIs in your driver.
-> 
-> There are basically three options you can end up with:
-> 
-> (1) An abstraction for the C API within your driver that is actually generic
->     for every driver, and hence shouldn't be there.
-> (2) Your driver specific code is full of raw pointers and `unsafe {}` calls,
->     which in the end just means that you ended up baking the abstraction into
->     your driver specific code.
-> (3) You ignore everything, put everything in a huge `unsafe {}` block and
->     compile C code with the Rust compiler. (Admittedly, maybe slightly
->     overstated, but not that far off either.)
-> 
-> The latter is also the reason why it doesn't make sense to only have
-> abstractions for some things, but not for other.
-> 
-> If an abstraction for B is based on A, but we don't start with A, then B ends up
-> implementing (at least partially) the abstraction for A as well. For instance,
-> if we don't implement `driver::Registration` then the PCI abstractions (and
-> platform, usb, etc.) have to implement it.
-> 
-> It really comes down to the point that it just bubbles up. We really have to do
-> this bottom-up, otherwise we just end up moving those abstractions up, layer by
-> layer, where they don't belong to and we re-implement them over and over again.
-> 
-> > 
-> > > Consequently, we have to pass things through. This also isn't new, please note
-> > > that the current code already does the same thing: `Module::init` (without this
-> > > patch) is already declared as
-> > > 
-> > > `fn init(module: &'static ThisModule) -> error::Result<Self>`
-> > > passing through `ThisModule` for the exact same reason.
-> > 
-> > Yeah, and I never quite understood that either :)
-> 
-> Since commit 247b365dc8dc ("rust: add `kernel` crate") shows me your RB for
-> that, am I good to assume that this one isn't a blocker?
-> 
-> > 
-> > > Please also note that in the most common case (one driver per module) we don't
-> > > see any of this anyway.
-> > 
-> > True, but someone has to review and most importantly, maintain, this
-> > glue code.
-> > 
-> > > Just like the C macro module_pci_driver(), Rust drivers can use the
-> > > `module_pci_driver!` macro.
-> > > 
-> > > Example from Nova:
-> > > 
-> > > ```
-> > >     kernel::module_pci_driver! {
-> > >         // The driver type that implements the corresponding probe() and
-> > >         // remove() driver callbacks.
-> > >         type: NovaDriver,
-> > >         name: "Nova",
-> > >         author: "Danilo Krummrich",
-> > >         description: "Nova GPU driver",
-> > >         license: "GPL v2",
-> > >     }
-> > > ```
-> > 
-> > As I said when you implemented this fun macro, don't do this yet.
-> > 
-> > We added these "helper" macros WAY late in the development cycle of the
-> > driver model, AFTER we were sure we got other parts right.  There is no
-> > need to attempt to implement all of what you can do in C today in Rust,
-> > in fact, I would argue that we don't want to do that, just to make
-> > things simpler to review the glue code, which is the most important part
-> > here to get right!
-> 
-> We're not reinventing the wheel here, we stick to the architecture the kernel
-> already has.
-> 
-> However, I understand that not starting with this macro directly makes it easier
-> for you to see what's going on. I can introduce the macro in a separate patch to
-> make it more obvious what's going on.
-> 
-> > 
-> > Changing drivers later, to take advantage of code savings like this
-> > macro can be done then, not just yet.  Let's get this understood and
-> > right first, no need to be tricky or complex.
-> > 
-> > And, as I hinted at before, I don't think we should be doing this at all
-> > just yet either.  I still think a small "C shim" layer to wrap the
-> > struct pci driver up and pass the calls to the rust portion of the
-> > module is better to start with, it both saves you time and energy so
-> > that you can work on what you really want to do (i.e. a driver in rust)
-> > and not have to worry about the c bindings as that's the "tricky" part
-> > that is stopping you from getting your driver work done.
-> 
-> I strongly disagree here. As explained above, it just bubbles up, this approach
-> would just make me end up having to write a lot of the code from the
-> abstractions in the driver.
-> 
-> However, it would indeed safe me time and energy to do just that. But that isn't
-> really what I want. I also don't want to write a driver in Rust *only*.
-> 
-> And I also don't really think that you want people, who commit to work hard to
-> get things right, to just take the shortcut and create some random mess buried
-> in a driver. :)
-> 
-> What I actually want is to get to a solid foundation for Rust drivers in
-> general, since I'm convinced that this provides a lot of value beyond the scope
-> of a single driver.
-> 
-> Since you've brought the topic up a few times, I am also willing to maintain
-> those abstractions if this is a concern. Maybe one day the corresponding
-> maintainers are comfortable enough and this isn't needed anymore, but at least
-> until then, I'm happy to help out.
-> 
-> > 
-> > After all, it's not the pci driver model code that is usually the tricky
-> > bits to verify in C, it's the whole rest of the mess.  Stick with a
-> > small C file, with just the pci driver structure and device ids, and
-> > then instantiate your rust stuff when probe() is called, and clean up
-> > when release() is called.
-> 
-> Again, this really bubbles up.
-> 
-> What do we pass to Rust probe() function? A raw struct pci_dev pointer or the
-> proper PCI device abstraction?
-> 
-> How do we implement I/O memory mappings for PCI bars without PCI / I/O
-> abstraction?
-> 
-> How do we perform (boundary checked) I/O memory reads / writes without `Io`
-> abstraction?
-> 
-> How do we handle the lifetime of resources without `Devres` abstraction?
-> 
-> How do we (properly) implement a DRM device registration abstraction without
-> `Devres`?
-> 
-> Luckily we already got the `Firmware` and `Device` abstraction in place. :)
-> 
-> > 
-> > I can provide an example if needed.
-> 
-> If you do so, please don't stop at the probe() boundary, please continue to the
-> point where the Nova stub driver is. It really does just enough to show / proove
-> that the abstractions tie together nicely. But it should be enough to see that
-> you end up with either (1), (2) or (3) from above.
-> 
-> > 
-> > thanks,
-> > 
-> > greg k-h
-> > 
-
+-- 
+viresh
