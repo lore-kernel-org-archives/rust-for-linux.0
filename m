@@ -1,81 +1,99 @@
-Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AA7F14B953;
-	Tue,  9 Jul 2024 07:53:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C615F12C478;
+	Tue,  9 Jul 2024 07:55:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720511598; cv=none; b=cVajDFHHyxDHxD6/zkjQROu6G6VMaYdwBfishwRz/I8GRc9mgES3lFPzaQTTbEK6zU+c9V71OGRuuZfntTkXyLfyQDwxIDQHMmPY0sJEBhjpuftlC5yFL0O1ruu9fF/39pOYr4+u6aETAw4uUSZhHtR58bhD9PNgCtyRUhMrxw0=
+	t=1720511733; cv=none; b=el63hsDKV81tSN5pjbEY79pSeSwnt5bAmS8SJdRrszG5CvGtg2/ePYiaSVKb88ac/ecW42/g44jKf27dPXnsDgaJdthepci2c7KHKwdMuFR2DKeY+WdXpKAq//LTmGojI76YpSITghDa0lwC4UDGeOFOLF2rjdhXvL07z6j5dnY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720511598; c=relaxed/simple;
-	bh=WL22tWo76BWT65KwutB+1xbSc5DFUkHPdjYuOrTOH8s=;
+	s=arc-20240116; t=1720511733; c=relaxed/simple;
+	bh=YzvYfGmfAcSYTrnLdb6YghFGvOuva+jojEq/hwMLN68=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Iwk236RkgNgl3Va/JNaPZ4E2nWHEAmAoDEZcBYYU8V6F/4ox/XgFNXgEAUhvyW4viGESYiPZVYdKH+DF8/iY29kveLBNZretxjuvZV7B7socJyiB98geXGi0rA2NPd+g/8DsNYjCfFBEljNVPnyXlpxMU98HCu/vXvIcZo2p9Kg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GX+HUnte; arc=none smtp.client-ip=209.85.215.169
+	 To:Cc:Content-Type; b=LkbvDHIgyUaMyq6lvoUvX8IItZ4yo1IxP5dTWAilDZB0R+NLVdERRtCUhdjOrqkvkXVS51cb1asmZAZGVOknH5TV9QS9gOgk5P2EBh1kzCQ4zsfv+hiysn/B2GT8dzJcIJxPjG4E1gay6xFZc5hDtjbfxHxqfu0B4MJ/i7sjHCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RoHlAIDp; arc=none smtp.client-ip=209.85.215.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GX+HUnte"
-Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-6bce380eb96so2607460a12.0;
-        Tue, 09 Jul 2024 00:53:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RoHlAIDp"
+Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-707040e3018so3151453a12.1;
+        Tue, 09 Jul 2024 00:55:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1720511596; x=1721116396; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1720511730; x=1721116530; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=WL22tWo76BWT65KwutB+1xbSc5DFUkHPdjYuOrTOH8s=;
-        b=GX+HUntehSdaVUCCeevzlQUtwVDqWYQNNku18aq/q0/8NBXDA0AYuRdDBw/Ogo2a+o
-         /Ti8nMok2B/+j74+aJhe5Fu+jh1yHBXnwugheBJmrOaYkejcU+0hmL2bA5/1gBayNYL7
-         J+Rt+fNqUYwNwBRLmBENda89XWDIfIIye6IuKyRUQfBNmIjfaMI27XSrBjtAPH02RbbM
-         Vodwwu2FIS/8t/yR+phatI18aRjtYDLd339Ve4IR+BFe7xTQ78LE9jh2E0Z9Iono/FTT
-         RRpPdIScY7/rzJJjL6+4O1ynwh5co5UEPBXySTK0/+QsUMc3ojG/YnyQmoRZm6eDXt8f
-         uPJw==
+        bh=YzvYfGmfAcSYTrnLdb6YghFGvOuva+jojEq/hwMLN68=;
+        b=RoHlAIDpy8DoiphmP5GU39+vnLNyRIvlyvN/OV4+NyL8Dj1FkbTbGmh4V1Eu1vxRJN
+         uq5wYXg7nlVSm41qhJn1vae7vJUpUG0KhYz3AnHU2cxe1L/qgA2iu7sRdQN2zjdWpKQU
+         848x6BzQMN3oke9DBrHfdpszTbKeCBTEyBACq10AeCJpklBfYiy29Hjdx1XrsvzIB8tq
+         SuuZDwJTN3259J63yk5yRXOKIjTdVjVPt+xCqF29aGurAGiMdpCd2gAHVLM+ANZlW3vC
+         41m8XzV0eB/X96f1spkJYs0AXCZtJrkthDPz9hlhGgNneFEiIz7aZ5M/k7VoHf3z0laG
+         XCzQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720511596; x=1721116396;
+        d=1e100.net; s=20230601; t=1720511730; x=1721116530;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=WL22tWo76BWT65KwutB+1xbSc5DFUkHPdjYuOrTOH8s=;
-        b=u1CEPL9QS6elYK9WNtg5q5lNiNaLLgUnreFlYBPaGdLolOP+Y3efC4FwugNjHfjYs3
-         zyA2JaZOq6k0X4lhDSSWeOMSConi5E+QMei3WnxfeCtdStMPh4GHIn88RgPaYXync9w4
-         BlHDXxx8BkLDDBTlvk+t/97oAjmhWd4x7JukvaFzWVovcXNxn5t02Zya3AXiWfqtXR9r
-         t2UO+M3sKkmopejfl04U0AuzGXeJnq1CSbex55HT88deko/cglmqtnruMWGNJX4PrT1o
-         7374jmp/CodaPf7d5TsS26cJ7QyjjXrS/iaWylPHuuM6m1iIQ3YNpSg7X6jPLxXl3DGE
-         iNpQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW63vQ+qrhGwhOFRb0dAWsEcGg16NXBkbjHi1noj7J1ePzq0EcUUzIE8NpRleahFikQZk9WTPyy8xKahlwUzjjC5hYiDLbXuOtscXyWgzwCwtmAByvcONOemgKEe34J7y4O1Vnfkah/FcvKUnQ=
-X-Gm-Message-State: AOJu0Yzddzvdc9gVPianLfR0Exqx/EHHsejs0EEK6irHn3pd7U9oLe/A
-	+qOL9bMJK5y5EEmRlqHI7739VaNck0Tnuj9JshkoeDsd9ILY2kdSk+tsm23vD/ucVF8wlttcET0
-	wbP14b1+8apn5XIA9+KfeyLXMbP6Swv3X
-X-Google-Smtp-Source: AGHT+IHdWDw9UdaaXy/Z7v8pfOYL798N0YW8rQD1Bhqk0iolkyAOuJVTMcEbL3Q5tWEHY5nmkUKA22P8obNbE55vdW0=
-X-Received: by 2002:a05:6a20:3d8a:b0:1c2:912f:ca70 with SMTP id
- adf61e73a8af0-1c2984cf0c0mr1628798637.42.1720511596600; Tue, 09 Jul 2024
- 00:53:16 -0700 (PDT)
+        bh=YzvYfGmfAcSYTrnLdb6YghFGvOuva+jojEq/hwMLN68=;
+        b=YU7BZroIWEhsdOfKmDhd5ZonDtHjzPN3tWnHMNMcX57tMEeFC5s0bSFAgyx7Ak/3Ag
+         ynBmEydMT/ckeVISmR9iyDz1djRfMTn2auRDFP8Sra7AACqDdCFgXjGosBMSevk+flpr
+         Oqo46EQ7/Lee7M5KBsGpkFU7dPc3zNfRFVT7KtfxrJB1hqnhukErUiNOD65mdh8kWgQL
+         ffrcNNJ0Yjr5UNy3AjvsWk2PBREQBgjcRu50mjqQgS0CSlYANe1cDKe/nMO/GIicQnOr
+         YsoLv+NIa3eWST0zBymuU01ibSV5kPfCZhfs7xfsCuPKu1AS5aOdslvIn6/pfTYFrOg1
+         f1Iw==
+X-Forwarded-Encrypted: i=1; AJvYcCVUleZtOynDWYWNgxorKKhxfnZ/KMwlNcI7V/MsVcZT8DCGHKFKh0IwNyITD6V9yowqSvv1qbxfYSJoyx0LislWuXBhgOeNcG+BMC3GvU+bE2QtAd3KxXdN0JrBmqDuMbr1N0JoNA3msIzAfdI=
+X-Gm-Message-State: AOJu0YwWL9GI01isllBdQyzAEr7/lMWin9T9LEW4cG8huAOPEGvmIBlu
+	9yEj4vMKLk4Q+gryPg8lDGXpyXH0M2cyBtdfexVJ6gqk5bpKw+0OQfYA8OCL8VOq/sNSvdFr1c5
+	/kVpZxG8H5Z67C296nu6RgZLa5UQ=
+X-Google-Smtp-Source: AGHT+IEPkJ7kX8DP6xXn1hqgjitAHhqA1vLoNVaXSl0RLERC8TNfjOKtWnm7ZTa/2tCJN+5SgSAPu9kP6iKo39EEFF8=
+X-Received: by 2002:a05:6a20:4321:b0:1c0:eec6:85ea with SMTP id
+ adf61e73a8af0-1c2981ff8bemr2187647637.12.1720511730113; Tue, 09 Jul 2024
+ 00:55:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240529083452.779865-1-aliceryhl@google.com>
-In-Reply-To: <20240529083452.779865-1-aliceryhl@google.com>
+References: <20240607-highmem-v1-1-d18c5ca4072f@google.com>
+In-Reply-To: <20240607-highmem-v1-1-d18c5ca4072f@google.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 9 Jul 2024 09:53:03 +0200
-Message-ID: <CANiq72m0=Fmz8yq6r4Xp-xd3eN+CGsnyApkFjNxjO4H6p2RxNg@mail.gmail.com>
-Subject: Re: [PATCH] rust: alloc: fix typo in docs for GFP_NOWAIT
+Date: Tue, 9 Jul 2024 09:55:18 +0200
+Message-ID: <CANiq72kO2rpPBf0Gxfqmt7cUMMsrH9kx0==63rthwXQD3fgAqw@mail.gmail.com>
+Subject: Re: [PATCH] rust: alloc: add __GFP_HIGHMEM flag
 To: Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+Cc: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
+	Al Viro <viro@zeniv.linux.org.uk>, Andrew Morton <akpm@linux-foundation.org>, 
+	Kees Cook <keescook@chromium.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, May 29, 2024 at 10:34=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> =
-wrote:
+On Fri, Jun 7, 2024 at 10:23=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> w=
+rote:
 >
-> Fix a typo in alloc.rs by replacing Ror with For.
+> Make it possible to allocate memory that doesn't need to mapped into the
+> kernel's address space. This flag is useful together with
+> Page::alloc_page [1].
 >
+> Rust Binder needs this for the memory that holds incoming transactions
+> for each process. Each process will have a few megabytes of memory
+> allocated with this flag, which is mapped into the process using
+> vm_insert_page. When the kernel copies data for an incoming transaction
+> into a process's memory region, it will use kmap_local_page to
+> temporarily map pages that are being modified. There is no need for them
+> to take up address space in the kernel when the kernel is not writing an
+> incoming transaction into the page.
+>
+> Link: https://lore.kernel.org/all/20240528-alice-mm-v7-4-78222c31b8f4@goo=
+gle.com/ [1]
 > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
-Applied to `rust-next` -- thanks!
+Applied to `rust-next`, thanks!
 
 Cheers,
 Miguel
