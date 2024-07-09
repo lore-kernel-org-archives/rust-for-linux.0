@@ -1,196 +1,75 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-4022.proton.ch (mail-4022.proton.ch [185.70.40.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20B1C63A;
-	Tue,  9 Jul 2024 05:30:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B7715339D;
+	Tue,  9 Jul 2024 06:00:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720503034; cv=none; b=C672Ip5xi3IvDTSzXPTaPXjmvLnCIa6WOAbGh5nB7H5QMB83U218Uw++aqB6utlUOBlrj4aJu16RPvxf8iGrZ8XbmfY4JIqI8cJBsH7tvW+upjJ9wcFL1rWM2eOrAYBKWpSxe6lbybYEHAlqNJ9MhXQhsMr7NH7khSiy6ghVq+g=
+	t=1720504862; cv=none; b=meUDSy+QNCSBU/txq5+q/++liXntw+p6er9rBKT0axHQ6qpkvtsdARbuOm5OhxhJm3NIxuQe0vVWlX84cwJ1beK/HFdyAiuPb1SDi4q6o56qWvoGppQQysbuk+9uo08oCZu1NapZxuf2fm/xrseDkZJAifQ/XUz7YrIsHi5kMXw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720503034; c=relaxed/simple;
-	bh=3v5wbcP0hZPdO4H71xPWdtsCXwN4cSEbDdTpxtfZxbc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GLVTnwlMfMjmw+M+Uh7TuTCVFYwCyIrTxOOo51/Y3UeQodnzYEWd4IaG/7oT1dIku3y91BXs49pCm1epnRKsjEPafi8UsEK4Ec+Fn5mRyWwbgvqTa07UWQJwZWQ/kXMUM0Z0sUyEtlB3/A1n++pq3WoRanrhGCIGkPXBBEtLPCk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sWrGFqI+; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1720504862; c=relaxed/simple;
+	bh=cjVkguTcrkVE0w6ZweMJZaUA2qKicyJLz9aNAlqZy/s=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=P2m/2SkMae2r2kGpvoOeyqqOFr+df+vTm6+2jVBnaQvPp1c7JyzUENVtcEgj6vh3vnhMYKVrNX2MruQPFofCXfOHnftRQBWoyPp6/6cVEb2Ozcm5WujvNo56Cpm1FBPCtQJubuRbx/Apf7zQgNax6ABxQUAHs2vj9uW8QddPKJg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=metaspace.dk; spf=pass smtp.mailfrom=metaspace.dk; dkim=pass (2048-bit key) header.d=metaspace.dk header.i=@metaspace.dk header.b=hYf6tc9x; arc=none smtp.client-ip=185.70.40.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=metaspace.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=metaspace.dk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sWrGFqI+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1ED3C4AF07;
-	Tue,  9 Jul 2024 05:30:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1720503033;
-	bh=3v5wbcP0hZPdO4H71xPWdtsCXwN4cSEbDdTpxtfZxbc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=sWrGFqI+R41C2LlSVz0Bz3IJXyX0qmmOMlUWtw+s84NUrvt+zLC8aT5v4ves3coeO
-	 hly5Q5XmqSRWKVV0PDqtQrkDFEqKcDmLreiwvucLkjgA3Y8GHgMi2qlD6F4W4/Cuwi
-	 b1fKbzkHDhPVQ72AjQIqM4cu/5l8CBK5abH3pl3EKwQsVE7K65qKJGsIELXvx6J/j9
-	 g2nC2n/NbaSRT/mkAO4IDsFzL6cVBX0Vgjd6luFC3FxGVZ72XJaTEbayOQDVGzaWsU
-	 Y7OoRFdmm5/5WhaA7EOiWd7bMOgBEBPnPdpmh8UdJsahZdUfx3Vo7asSrpNYgxbUER
-	 udg46dZi1lqgQ==
-Date: Mon, 8 Jul 2024 22:30:31 -0700
-From: Nathan Chancellor <nathan@kernel.org>
-To: Guillaume Tucker <gtucker@gtucker.io>
-Cc: Nick Desaulniers <ndesaulniers@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>, Arnd Bergmann <arnd@arndb.de>,
-	llvm@lists.linux.dev, rust-for-linux@vger.kernel.org,
-	yurinnick@meta.com, bpf@vger.kernel.org,
-	Sasha Levin <sashal@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
-	automated-testing@lists.yoctoproject.org
-Subject: Re: Plumbers Testing MC potential topic: specialised toolchains
-Message-ID: <20240709053031.GB2120498@thelio-3990X>
-References: <f80acb84-1d98-44d3-84b7-d976de77d8ce@gtucker.io>
+	dkim=pass (2048-bit key) header.d=metaspace.dk header.i=@metaspace.dk header.b="hYf6tc9x"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=metaspace.dk;
+	s=protonmail; t=1720504850; x=1720764050;
+	bh=cjVkguTcrkVE0w6ZweMJZaUA2qKicyJLz9aNAlqZy/s=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=hYf6tc9xTv2o7Jcsj1oMmEWl8mDIoi/vtJFOlI4ahYFWAak1iIpw/krhldw7uqyy4
+	 l8bAxEDOyHIZQ5UJtQvI2BZFZjy2Om26+8gxljRYUb91y9D3nZ4XPPeaEM9y0wYje2
+	 dtR3nta8PXiIA0ATqkxDnMZKRn8LhoUBLhyUhzmzwgp+ZiyY7o71TWdW2i9tLKScm5
+	 cjeQnCnC8XYQh2lncb4X0QjpbBSrdpk3pGjqTl0Qev3xOgvMmT49UQpCBSMqH1CDmS
+	 cMoHel0ALnKZckHjzjYT3Eh+CL8tNNtm49QM4L/nLzUkq4FmKZG6H1Mt4O9f9C5TFI
+	 uE8teoa66jrXQ==
+Date: Tue, 09 Jul 2024 06:00:46 +0000
+To: Luis Chamberlain <mcgrof@kernel.org>
+From: nmi <nmi@metaspace.dk>
+Cc: Miguel Ojeda <ojeda@kernel.org>, rust-for-linux@vger.kernel.org, linux-modules@vger.kernel.org, linux-kernel@vger.kernel.org, Andreas Hindborg <a.hindborg@samsung.com>, Adam Bratschi-Kaye <ark.email@gmail.com>, Sami Tolvanen <samitolvanen@google.com>
+Subject: Re: [PATCH] rust: add `module_params` macro
+Message-ID: <LHGWBNSEDaOsx4BbADR1pZYqPV0KKhVaJ1Qvwe9h4UPeERRAA4s1DTIsnFR5rpHBGa6uIG1tU_4hTBXgjAc5BNwNqo0Rg_kOx2W_y0EUy_I=@metaspace.dk>
+In-Reply-To: <ZoxdRjpy2hRndqmc@bombadil.infradead.org>
+References: <20240705111455.142790-1-nmi@metaspace.dk> <ZoxdRjpy2hRndqmc@bombadil.infradead.org>
+Feedback-ID: 113830118:user:proton
+X-Pm-Message-ID: 27bf84e35fba8303395607499fdd21e54b7c4836
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <f80acb84-1d98-44d3-84b7-d976de77d8ce@gtucker.io>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Hi Guillaume,
+Hi Luis,
 
-On Tue, Jul 09, 2024 at 12:10:51AM +0200, Guillaume Tucker wrote:
-> While exchanging a few ideas with others around the Testing
-> micro-conference[1] for Plumbers 2024, and based on some older
-> discussions, one key issue which seems to be common to several
-> subsystems is how to manage specialised toolchains.
-> 
-> By "specialised", I mean the ones that can't easily be installed
-> via major Linux distros or other packaging systems.  Say, if a
-> specific compiler revision is required with particular compiler
-> flags in order to build certain parts of the kernel - and maybe
-> even a particular compiler to build the toolchain itself.
+On Monday, July 8th, 2024 at 23:42, Luis Chamberlain <mcgrof@kernel.org> wr=
+ote:
 
-I am having trouble understanding this paragraph, or maybe what it is
-getting after? While certain features in the kernel may require support
-from the compiler/toolchain (such as LTO or CFI), they should not be
-required. Perhaps you are talking about the selftests but I think that
-is distinctly different from the kernel itself. Is there a different (or
-perhaps tangible) situation that you have encounted or envision?
+> I'm starting to feel the same way about modules, but modules requires
+> more work than the firmware loader. And since I also know Andreas has
+> already a lot on his plate, I'm at a cross roads. My above request for
+> the firmware loader made sense to the person working on the firmware
+> loader changes, but who would help on the modules side of things? And
+> does this request make sense to help scale?
+>
+> The rationale here is that a rust binding means commitment then also
+> from fresh blood to help co-maintain review C / Rust for exising code
+> when there is will / desire to collaborate from an existing C maintainer.
+>
+> I realize this may be a lot to ask, but I think this is one of the
+> responsible ways to ask to scale here.
 
-> LLVM / Clang-Built-Linux used to be in this category, and I
-> believe it's still the case to some extent for linux-next
-> although a minimal LLVM version has now been supported in
-> mainline for a few years.
+I am not sure I am the right person for the task, because as you say, I hav=
+e a lot on my plate. But perhaps lets schedule a call so I can get a sense =
+of the required effort.=20
 
-Yes, we committed to a minimum version a few years ago. We have had to
-bump it twice for various reasons since then but I have tried to be
-fairly methodical about selecting a version that should be available
-enough. Has that caused problems?
+Best regards,
+Andreas
 
-> A more critical example is eBPF, which I believe still requires a
-> cutting-edge version of LLVM.  For example, this is why bpf tests
-> are not enabled by default in kselftest.
-
-This sounds like something to bring up to the BPF folks, has anyone
-interacted with them to discuss this situation and see if stabilization
-for the sake of testing is possible?
-
-> Based on these assumptions, the issue is about reproducibility -
-> yet alone setting up a toolchain that can build the code at all.
-> For an automated system to cover these use-cases, or for any
-> developer wanting to work on these particular areas of the
-> kernel, having the ability to reliably build it in a reproducible
-> way using a reference toolchain adds a lot of value.  It means
-> better quality control, less scope for errors and unexpected
-> behaviour with different code paths being executed or built
-> differently.
-> 
-> The current state of the art are the kernel.org toolchains:
-> 
->   https://mirrors.edge.kernel.org/pub/tools/
-> 
-> These are for LLVM and cross-compilers, and they already solve a
-> large part of the issue described above.  However, they don't
-> include Rust (yet), and all the dependencies need to be installed
-
-As Miguel pointed out in a side thread, there are some Rust toolchains
-available:
-
-https://lore.kernel.org/rust-for-linux/CANiq72mYRkmRffFjNLWd4_Bws5nEyTYvm3xroT-hoDiWMqUOTA@mail.gmail.com/
-
-I will try to make those more discoverable from the LLVM folder.
-
-> manually which can have a significant impact on the build
-> result (gcc, binutils...).  One step further are the Linaro
-
-I have considered trying to statically compile LLVM (we started the
-effort some time ago but I have not been able to get back to it) but
-honestly, the xz disaster made me worry about building a static
-toolchain with a potentially vulnerable dependency, either necessitating
-removing the toolchain or rebuilding it.
-
-FWIW, I don't think the list of dependencies for the LLVM toolchain is
-too long. In fact, it appears they are all installed in a default Fedora
-image.
-
-> TuxMake Docker images[2] which got some very recent blog
-> coverage[3].  The issues then are that not all the toolchains are
-
-Ah, interesting, I did not realize that there was a blog post, that is
-cool!
-
-> necessarily available in Docker images, they're tailored to
-> TuxMake use-cases, and I'm not sure to which extent upstream
-> kernel maintainers rely on them.
-
-FWIW, the general vibe I get from kernel maintainers is most are pretty
-old school. I know some that use tuxmake but I suspect most probably
-just use their own scripts and wrappers that they have developed over
-the years. Part of the reason I made the toolchains as tarballs is so
-that all a maintainer has to do is install it to somewhere on the hard
-drive then they can just use LLVM=<prefix>/bin/ to use it.
-
-> Now, I might have missed some other important aspects so please
-> correct me if this reasoning seems flawed in any way.  I have
-> however seen how hard it can be for automated systems to build
-> kernels correctly and in a way that developers can reproduce, so
-> this is no trivial issue.  Then for the Testing MC, I would be
-
-Right, I think reproducibility and ease of setup/use is really
-important.
-
-> very interested to hear whether people feel it would be
-> beneficial to work towards a more exhaustive solution supported
-> upstream: kernel.org Docker images or something close such as
-> Dockerfiles in Git or another type of images with all the
-> dependencies included.  How does that sound?
-
-A few thoughts around this:
-
-Having first party Dockerfiles could be useful but how would they be
-used? Perhaps building a kernel in such a container could be plumbed
-into Kbuild, such that the container manager could be invoked to build
-the image if it does not exist then build the kernel in that image? This
-might be a lofty idea but it would remove a lot of the friction of using
-containers to build the kernel so that more people would adopt it?
-
-Another aspect of this is discoverability. I think a big problem with a
-project like TuxMake is that while it is developed for the kernel
-community, it is not a first party project, so without word of mouth,
-there is not a great way for other people to hear about it.
-
-I think it would be a good idea to try and solicit feedback from the
-greater kernel community at large to ensure that whatever solution is
-decided on will work for both testing systems and
-developers/maintainers. I think that a first party solution for having a
-consistent and easy to set up/work with build environment has been
-needed for some time but unfortunately, I am not sure how much
-discussion around this problem has happened directly with those folks.
-
-> [1] https://lpc.events/event/18/contributions/1665/
-> [2] https://hub.docker.com/u/tuxmake
-> [3] https://www.linaro.org/blog/tuxmake-building-linux-with-kernel-org-toolchains/
-
-As an aside, consider using me as a point of contact for anything
-ClangBuiltLinux related instead of Nick going forward, he has stepped
-away to focus on LLVM libc for the immediate future.
-
-Thanks a lot for bring up this topic. I think it is important to work on
-and I look forward to talking through this at Plumbers.
-
-Cheers,
-Nathan
