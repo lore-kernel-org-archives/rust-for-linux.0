@@ -1,107 +1,163 @@
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9763A208B0
-	for <rust-for-linux@vger.kernel.org>; Tue,  9 Jul 2024 11:02:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DA9E156C62
+	for <rust-for-linux@vger.kernel.org>; Tue,  9 Jul 2024 12:02:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720522969; cv=none; b=Amnc7nTfQAd5nT0/+ZxXWTM0PkKCFKdhPwVtzwVL2cYbec33HxE1VOEBQofcvHhmBaLcW1QeeDpNne54J9V5T/tNwno2jZyq+pyL5rVGFuI3eahAE4GiBHIUnuuSUMRMdp/kDL0bq7mtxsSYsd8CkvyY2aBEUgMiPUdbagJvQ4g=
+	t=1720526568; cv=none; b=axqCtBCmSitTDEWVvzczlsK90XsLczDIEqC50PgZi1kASsSBGn3mfd0YI+0Nc1zdVtHhXG+tVSUzyyk3GRd5w6M5XBgjZfUHsLduKjxzFYNuVYOAaEF9byKvdXZ+E4VR4HFO6vSChCN3Ul0dJfG4h1SjoiCXNq0uY5vMY3N6eIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720522969; c=relaxed/simple;
-	bh=ICwC8hHB4nssKkN75Qlzvd8rIcpX9ZQoWm9Hdqy5DwE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MJkeUK54l+u/fSH13o4oBW7ouJbChWRZO6M64GbqK4YtCQCIJPO7iV4Ee/YK23EcdM05sdI8wWwbuUa93dJR94+v0K9zpatfBHcYzJ9iDN1wvmUiXYWqGNU/FTa//PEl3P02epbJ3U+De1d0SBhx7o3QeQFQvaNOFonoulFdaqs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=tOAOMrxm; arc=none smtp.client-ip=209.85.210.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1720526568; c=relaxed/simple;
+	bh=GPEKrnIfXI200uTTi3YvU/7kaTjsuMuRW1oNuL96hNg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=RBC2/8LHTnpRZwx2eFylkJ2LKWQ9tmqBwtj2HPx1EcedTYTP0YtMCPRyIOOCc06wVsmFjeAGhgsFranQy+hgl5aq3fylt8GXsC2bZbjINRGMh7vDtFA5sflBf1eJmzwQg7N2usWnilzmXMpjZ0WzisRqlSaqDeL2HjEnYBhs/2E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=TQM19XKZ; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="tOAOMrxm"
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-70af0684c2bso3049664b3a.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 09 Jul 2024 04:02:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1720522968; x=1721127768; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=yz8rqRMqOY683u5fU+cnnte1WW97jEHEhVYRD53PDio=;
-        b=tOAOMrxmF5SX9/yidFT9l3oQFPMmITisdEw0c3YjacAvBaG4OwL32ijQGjOnU4tScA
-         loK0ASFvIfha/dDCuOCQj6Hj/fVeAjpoGLPdHHUHYvBkG2Kr5FRmefmd8CUe5/rQZ3XC
-         kjR/7HQuMuD1uzpIiX0NW64A3E7kkdkOYJS+F7PKXOo5fJs9TX+fNzVeBVh5sKBCBfuq
-         5uzEWpnI61a4f0qdHO6hnDA35m3vFd28VdVyRaQZc8cycXWcFfAMS3Ac6Wog94+v5eBb
-         VyjNFC/xBaaZzMl7YOe/9ryJ3QOOBju2zUgCSc0iMlbdtBpnxmeKL8kEL+reOMeXTUvw
-         vfNA==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="TQM19XKZ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1720526566;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=dy4YRqqLNlf0j0FOWn3tiz8LkZrh0YUIypGbDuzRZ3A=;
+	b=TQM19XKZ2L2u6NjO+J56FGQ9Mw+Qn4IfG/ubr9P6mQxsGi7wiXlEQG8vnNKecB0WFhghxJ
+	sc9m64zQGucd6OlzpVh2G+15AuHMw6J2YPP36p1VtRcge+SX1AZyMB/pOdxcz+etAkl6U4
+	bA4uFuP1j42ETehsayptfVvLBfdeXgc=
+Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
+ [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-9-pbBawkgeNfa1nAENXH04sg-1; Tue, 09 Jul 2024 08:02:42 -0400
+X-MC-Unique: pbBawkgeNfa1nAENXH04sg-1
+Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-427261986c0so2208675e9.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 09 Jul 2024 05:02:42 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720522968; x=1721127768;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yz8rqRMqOY683u5fU+cnnte1WW97jEHEhVYRD53PDio=;
-        b=d1VXmsjPkagTiTvfXNU3If59sIFVLoVenOMJiFgeAI9gQLSF0uIPnt2cWYZulxRiFB
-         yu28lfTu3bOEMMo/5LRK2zv+SkrnXmxu+a9Pwg58kvVvUUlRvmyimXAG1BgULmXl8h46
-         InmW07c1N13loKRZdtSkMLQWn+hN5bT9WpCr+T7mvkGMwtlYjoVk/9MaDQ3vCE9/qWxF
-         IpnLRl8fnk69lZrsL1MhjaISR1yNnGqgfN4iUq21qsrRAQumLifn4+9Wq6RDh1jbxSiW
-         +ckS8Kk8aM6eJBq/2sATh2GYvdw0+1rcdn0EM8hkKMxYRnhAQssXpFfFI0JBNvUR4D0/
-         vqTQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWi9jx8pIk3U+GvA31GrK+jRwlb9clzATWHIzNenVs8UXePhn/msDB8zTccb66adCuG6rVeHfaibqQ2jE5BNACuZXjElE9A40c1K4Gqre8=
-X-Gm-Message-State: AOJu0Yyzf16ebEBr24v2JwEMeJqfne+CjInEC5+MZ82F+rN101Z2HGLR
-	yq9uQdc9BaMG5SN8HqfQpvtjlpfEpmtRsDk54NHExVsMzoQmvTNJovSOHajKfrA=
-X-Google-Smtp-Source: AGHT+IEnZeyyy+JNipf3YeCIVNiI2S39fnrN1eQJ+5u6wVxKp7TogZLRs6I2FcH4SNfru3myy0T1dQ==
-X-Received: by 2002:a05:6a00:1d0e:b0:706:6cb2:ed17 with SMTP id d2e1a72fcca58-70b435220f9mr2429638b3a.2.1720522967959;
-        Tue, 09 Jul 2024 04:02:47 -0700 (PDT)
-Received: from localhost ([122.172.84.129])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-70b438c0996sm1513827b3a.60.2024.07.09.04.02.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Jul 2024 04:02:47 -0700 (PDT)
-Date: Tue, 9 Jul 2024 16:32:45 +0530
-From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>, linux-pm@vger.kernel.org,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Stephen Boyd <sboyd@kernel.org>, Nishanth Menon <nm@ti.com>,
-	rust-for-linux@vger.kernel.org,
-	Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
-	Erik Schilling <erik.schilling@linaro.org>,
-	Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
-	Joakim Bech <joakim.bech@linaro.org>, Rob Herring <robh@kernel.org>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH V3 1/8] rust: Add initial bindings for OPP framework
-Message-ID: <20240709110245.o73xnrj6jsvz2v2w@vireshk-i7>
-References: <cover.1719990273.git.viresh.kumar@linaro.org>
- <fe8e9a96b29122876346fc98a6a9ede7e4f28707.1719990273.git.viresh.kumar@linaro.org>
- <ZoVvn0QCSR8y4HQJ@Boquns-Mac-mini.home>
+        d=1e100.net; s=20230601; t=1720526561; x=1721131361;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=dy4YRqqLNlf0j0FOWn3tiz8LkZrh0YUIypGbDuzRZ3A=;
+        b=g4uTcp2VZslR00lAsPfQ22Yp/lD4xVviqf4zlm5EtCHITae91Xrb0EcbtpS9BbXSAy
+         9HQT7xaTwupHVtigbOrHgVwz43sj/oANJsOfmzzFVMZfUTVH7LOUBLGskah9QhdgWTjH
+         oaE4zb0LgF4XJ+N6IyhMaK+g3P/5X1gVLwEG7Tu8xeJsXXllpXJ0PyL1gjIjCen7jEDD
+         v4pate0vk1JbOc8K43lAZtTKNZkhXA1hkp0uKwjyIm1UgJexeU91p0NaBvwoGlRdOA9Z
+         8AGOoq6gs3s5EqdusIa/uvT7GIxI78VWQO58jWpye7AdyoV0lXMyKLV80h3p8tpy02Ys
+         XGlw==
+X-Forwarded-Encrypted: i=1; AJvYcCWRLMAivBNIv5svKALJI7AJmmgKiumYOPeQNJWg1UeihSHunPXh8aKhMYxV0rnVgF2xEjKR7G3cPss5zhSH/sHEy/NrA96WT/4yjWkY7Kg=
+X-Gm-Message-State: AOJu0YyxmZa3cVf0pVEMfbBXf98zuz/Q3tOSSf6Om9ccpG2jpPivPhiO
+	/qkAyZuRs2ffaiM0KkET1tbhpukZvpd5Mz04LZY7j9nl74uiYiLaKVQC0dLQ+fuO4Us0rev3myP
+	ghWS5wDV8y938mVNoIq6ys7bs8X8taNnw7nby4Xnp89ueO2Lcc7a0LP9jA2prhEHMQd7irKviCE
+	U=
+X-Received: by 2002:a05:600c:3226:b0:426:59ec:17a9 with SMTP id 5b1f17b1804b1-426707d7c9fmr16596785e9.22.1720526561304;
+        Tue, 09 Jul 2024 05:02:41 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFSrbJt0jJlRogPAw/bQ1qZ0Lbp/49hLv8AiWFs4Pgl2/5UBg3dAYp6ZylEW9+XrxlA+vNo9w==
+X-Received: by 2002:a05:600c:3226:b0:426:59ec:17a9 with SMTP id 5b1f17b1804b1-426707d7c9fmr16596635e9.22.1720526560952;
+        Tue, 09 Jul 2024 05:02:40 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:c:37e0:ced3:55bd:f454:e722? ([2a01:e0a:c:37e0:ced3:55bd:f454:e722])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-367cde7deeasm2422525f8f.8.2024.07.09.05.02.39
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 09 Jul 2024 05:02:40 -0700 (PDT)
+Message-ID: <48cb6b5e-3685-4661-9183-080e25348892@redhat.com>
+Date: Tue, 9 Jul 2024 14:02:39 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZoVvn0QCSR8y4HQJ@Boquns-Mac-mini.home>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 4/4] drm/panic: Add a qr_code panic screen
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng
+ <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ Bjorn Roy Baron <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl
+ <aliceryhl@google.com>, linux-kernel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
+ Danilo Krummrich <dakr@redhat.com>
+References: <20240709084458.158659-1-jfalempe@redhat.com>
+ <20240709084458.158659-5-jfalempe@redhat.com>
+ <2024070951-tall-effective-c916@gregkh>
+ <2024070947-exorcism-purchase-2f28@gregkh>
+ <acd5c505-f058-46e7-9d92-620dea41d707@redhat.com>
+ <2024070944-follow-crazy-ff95@gregkh>
+From: Jocelyn Falempe <jfalempe@redhat.com>
+In-Reply-To: <2024070944-follow-crazy-ff95@gregkh>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US, fr
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On 03-07-24, 08:34, Boqun Feng wrote:
-> On Wed, Jul 03, 2024 at 12:44:26PM +0530, Viresh Kumar wrote:
-> > +// SAFETY: `OPP` only holds a pointer to a C OPP, which is safe to be used from any thread.
-> > +unsafe impl Send for OPP {}
-> > +
-> > +// SAFETY: `OPP` only holds a pointer to a C OPP, references to which are safe to be used from any
-> > +// thread.
-> > +unsafe impl Sync for OPP {}
-> > +
+
+
+On 09/07/2024 12:12, Greg KH wrote:
+> On Tue, Jul 09, 2024 at 12:04:02PM +0200, Jocelyn Falempe wrote:
+>>
+>>
+>> On 09/07/2024 11:12, Greg KH wrote:
+>>> On Tue, Jul 09, 2024 at 11:11:35AM +0200, Greg KH wrote:
+>>>> On Tue, Jul 09, 2024 at 10:40:10AM +0200, Jocelyn Falempe wrote:
+>>>>> +config DRM_PANIC_SCREEN_QR_CODE_URL
+>>>>> +	string "Base url of the QR code in the panic screen"
+>>>>> +	depends on DRM_PANIC_SCREEN_QR_CODE
+>>>>> +	help
+>>>>> +	  This option sets the base url to report the kernel panic. If it's set
+>>>>> +	  the qr code will contain the url and the kmsg compressed with zlib as
+>>>>> +	  url parameter. If it's empty, the qr code will contain the kmsg as
+>>>>> +	  uncompressed text only.
+>>>>
+>>>> meta-comment, should we by default do this on a kernel.org domain so
+>>>> that no specific distro has to worry about hosing this type of web
+>>>> service?
+>>>
+>>> Also, do you have the backend source for this to show how anyone can
+>>> host it themselves as well?  We can't add features to the kernel that no
+>>> one but closed-source implementations will use for obvious reasons.
+>>
+>> I've made a proof of concept backend here:
+>> https://github.com/kdj0c/panic_report/
+>>
+>> And the javascript to decode the kmsg trace is here (under MIT licence):
+>> https://github.com/kdj0c/panic_report/blob/main/docs/panic_report.js
 > 
-> Same for the above safety comments, as they are still based on the old
-> implementation.
+> SPDX lines are your friend, you might want to look into that for this
+> stuff :)
 
-Do I still need to change these ? Since we aren't always using ARef
-now.
+Sure, I've added the SPDX header for this file.
+> 
+>> It uses the pako js library to uncompress the zlib data, which is also under
+>> MIT/Zlib licence https://github.com/nodeca/pako/
+> 
+> Great, can you put that in the Kconfig help area for this option in your
+> next version?
+
+Yes, I will add a link to the panic_report github project.
+> 
+>> If kernel.org want to host a default service for that, that would be great.
+>> It can be linked with https://bugzilla.kernel.org to easily create a bug, or
+>> look for similar bugs.
+> 
+> Someone should at least propose it if this is going to be an option that
+> the kernel supports.
+
+I hope someone will volunteer to do that, as I'm not really into web 
+development. Also it's a bit early, drm panic is quite new, and needs 
+more driver support to be really useful.
+> thanks,
+> 
+> greg k-h
+> 
+
 
 -- 
-viresh
+
+Jocelyn
+
