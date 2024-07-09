@@ -1,55 +1,55 @@
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B503C155C93;
-	Tue,  9 Jul 2024 09:41:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 257EE1553BB
+	for <rust-for-linux@vger.kernel.org>; Tue,  9 Jul 2024 09:41:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720518081; cv=none; b=tcqF/m43PsDbzZlz3bgF0gVO2l7YLxI3pO8i0SyeH4/IM/sDaKdNOg+mjJSdGUXsMtKnYesJH7fpFGvpdnLcB9JORpgtDKIqu+TUZwGVGt5ykuGVafNahIS87pjzNRgatPFerRDB+ROS6B0d18kFV1QwPfdah7VVNhI1blH2PYM=
+	t=1720518106; cv=none; b=FOuMC9E9+11buBFJfFFvK9BFJ5l3webRI6ZdmEoGr7WXGy5SsfsIZFkosGn96rbDrwTdc0P7W+E0IkQX0ov2Qwz8qZqqfrbmoYqC7JbNiSuLvQrb6vYpqLkOn2EZRMDBWGEU8ycnyYyOeKI8+x+e0h1qUF9mft93dTAXvhrCE1E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720518081; c=relaxed/simple;
-	bh=6/8m5t3tBJG+vQHucRBM2B3L/XB592V14euivKILF9w=;
+	s=arc-20240116; t=1720518106; c=relaxed/simple;
+	bh=OVic1D3bXJjoJN/kiWr29pgPclMVMHNBoDKkoGJHFJE=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=h07UjGTDjz4R5beyT1jr9w/nqe6rMFdHmuyVOTagIm9dl2wNSfSCqP/c+noEzQ0G1FaU6WvkQosD/KFo0IexxhPGNmb+Q8otwKFvKCfDElZaJDWg6E6zTaL6gTrbdb2JJzctBiqERvQ5ZIfWlVvizDfQcmGjfosCqVh2MuAbb6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iGjg0Ce0; arc=none smtp.client-ip=209.85.216.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=aiP0n2sle07ZDMDHFOyYouhIwLtx5y6YOImYQE2g97jK7bbmjxYSJOtBDYWwsjZXJEz7Ju8PQJhQJEx3ogztv7JagS6bW6PHDO8aOjSMjmET2CgwzAfXU+RVghqJjvtHagw1fVtQkTtG0EP5oQAQSMqXpitmiAsvQviYxIrq5O4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wO+81jDc; arc=none smtp.client-ip=209.85.221.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iGjg0Ce0"
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-2c927152b4bso3332892a91.2;
-        Tue, 09 Jul 2024 02:41:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wO+81jDc"
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-367ab76d5e1so1215003f8f.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 09 Jul 2024 02:41:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1720518079; x=1721122879; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1720518102; x=1721122902; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=oVroGXjljN7UKU/yhFIYpLiSd6PbIzKS4cUQFOHvuWw=;
-        b=iGjg0Ce0P/9yEInGqudsvhaCU6JRtqUtUaTY7qecXQsa6++ODQ15F8BPa38hRmihMx
-         kB6Z37QP58SdtpNYf4YuFvUuUwgSKifHMzgYhH/OULQEsvUTLRXljclspxr146S52oXd
-         3QGUnYS5ssSkvo+qJbh9Ag/kPmmTeAEV/BxiyyHf4oGE6pGfFlTXZCP8IUgE3woYzVqW
-         po+xUadHAUtSS4eQ/YiOSSfvyF97GCrSd93xoin8N7Mgip6cb5+Vt95HWjiaSypJmH2Q
-         hthc/rDZD3haDnJfjsV1nO4ccUDkTeM2jzuJsrBXU6ooVTsdFsyciEELGrKyw34sJ8x3
-         Ix+A==
+        bh=IAZt8GtzurYosVReDcWXFfiP8YdX7GkjA3wsNUYSUA0=;
+        b=wO+81jDc9w7jaUVRsGwUO9/7JXRG7ElA29JVWKj2Y5GYKLxRdUJNR1hpngLVv1/OQh
+         uxHJda2hlv0bHweM7RygxPTToM+LJnt+itmErAY7yosrm3piTOG9istwV2eImlzO3zeL
+         VAkFZDVwOBk+io9/VlgZH98v/Ui8AV0cRHQ6F7C+FnCdWacpp1VG3vj9p6rPR7aNGW6J
+         uUwkCPH/tWTK1ligS5PjBCbns/DCD9LdKNvlXPJSqxSqcTlgQiG/QtUj2y0O7AGRXEmK
+         HBGJqOnhGt5FEXkjSxe1VbfjFR+V8DolgYfHdX+tfwTveTaSqQZVjmrqi4r4Rz6+yiaj
+         TxRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720518079; x=1721122879;
+        d=1e100.net; s=20230601; t=1720518102; x=1721122902;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=oVroGXjljN7UKU/yhFIYpLiSd6PbIzKS4cUQFOHvuWw=;
-        b=RwqhyYJByh8kpd5vhqNp7pNt1t6B9oUvLJ+AnTm90Ps69ELSPLjSw0MB3oNiCnUjM4
-         4C8/NQeGhUYA52vUvgA291SCBXsX0XKUtJDWsNunoqFUo2pYBvK0tXSaPd4TuWm/hfdh
-         IdW4o3IySYt+rsIcUempp5svEJ4LuB2aNCNZ5JPbzvgOR2yUxquxdb7KkWSlJXY1Al8i
-         ULHtW3Y5Fd/w4/1lbjMO4zQklSLiGfkPmbIjWH5wdsv4hdkKWT549e7iowNtKfxrm5Bt
-         1ZXoQfyQPomn5IeNYQa9vplSzwN4DR/nOT735NfFgdMSbzfewOeurzjIQzp1bkS6SHCc
-         uU1A==
-X-Forwarded-Encrypted: i=1; AJvYcCUZajYMN0TMAJMzMFcONmANW2JiUtyQK4WmW2tP+G4B40IRUW/obkuZNYJREJ+7SU35lggWnuXPp+enIJLUul95oSSX+xT4cXf9I4WqjqeWtqMfPB75b5N7O4doFRpFMDqoZ6vYlGCaSDZJa5k=
-X-Gm-Message-State: AOJu0YxxvoI7DGIsz2D9M1ofT7FIXmEgvzg8k4dYYO15PRk8vQS8DHwY
-	HWbu+XDPlHJZB1EEXurftGv2Fv7CqVId0p9BnfJ4HMTw9/4/KJn6YTyTEvu3FeQVtFUIQASWYCF
-	NG4y+WMCOnYxwwVX1n2nRrxf0ugs=
-X-Google-Smtp-Source: AGHT+IF8ZjDYhseE4Khi5hh3/IVLxfQ67v9J2c5cotmB0Lq+rDdIDmRbQdZ5yWgqnTKcX7faKxVbS2/+f/aXqcOR3ns=
-X-Received: by 2002:a17:90b:1e05:b0:2c8:1f30:4e04 with SMTP id
- 98e67ed59e1d1-2ca35d48f74mr1921776a91.36.1720518079028; Tue, 09 Jul 2024
- 02:41:19 -0700 (PDT)
+        bh=IAZt8GtzurYosVReDcWXFfiP8YdX7GkjA3wsNUYSUA0=;
+        b=VdBVcxbd80X3iiwRgyp9zzNgaMCSRBELiv/kHeMv9dPBhPE+nhB+YLzUHH/JxReuYG
+         wYCJb+eonJdqyMbZ7pR17Bemd6mWrqBFEvdtCjzhLXbL27IzqDDPZOVlwn7z5nvLBZEA
+         mtUggZgZ9jw7sWuODXNL2nUXwb9vq/8BA2wN4IUn4f1WkXYP+bR+W13ovpy33oPTbxEm
+         n6blYqhZefEoRGdvvP5QyrU7nhJtnn4Iob7Jh/ONNbBoy3cXvr5iQQ175thLwzG9iO0Y
+         U5YP1F7qUCILMay+gZU9JymcCsEkANQtyC3fCCV9U1fqFb0QO91B84w6Vsyf4995rLUv
+         cWrw==
+X-Forwarded-Encrypted: i=1; AJvYcCUhNuQJCSjhiSa52SVd19Ty2NDOxawvnB8CVfidFtm+q7aNnuTugmSN/1C/SzxWCjYRdz8ybGyvlHNYF5NSl5VRa5QXIRVkBGeK/9f5l94=
+X-Gm-Message-State: AOJu0YxfCjt8L1U/CcPdw6NelHujqmg30d6Qd8BD5Zy1U1thoEaDTpwC
+	6tkEYoOhnqb3fO770+KCBHksGEaukXzJehbNSwmoEkes1u2DrKpyb7loHpYqNfkzAufaaTQTGM5
+	N2xjkw6WOpswRrya2D/FMMiG7S/Mu/M5kcdoE
+X-Google-Smtp-Source: AGHT+IGR9yHQ5VjkQb02n11rV5m/nD2z1+GzQbrI8bQfIRwcFNZ5ZAorDCFB5Yu93sLbwZrEWDDYx07QGU+HUmU2sGI=
+X-Received: by 2002:adf:fecc:0:b0:362:40cd:1bc with SMTP id
+ ffacd0b85a97d-367cea73537mr1228764f8f.24.1720518102260; Tue, 09 Jul 2024
+ 02:41:42 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -58,9 +58,9 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20240709084458.158659-1-jfalempe@redhat.com> <20240709084458.158659-5-jfalempe@redhat.com>
 In-Reply-To: <20240709084458.158659-5-jfalempe@redhat.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 9 Jul 2024 11:41:06 +0200
-Message-ID: <CANiq72kS2fAgRnR8yNfpN69tMG+UPfgfytaA8sE=tYH+OQ_L6A@mail.gmail.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Tue, 9 Jul 2024 11:41:29 +0200
+Message-ID: <CAH5fLgh5fb_NYUNPPXYepJg=pbmHAb+-+sOrCxc0n=fiNjTFTw@mail.gmail.com>
 Subject: Re: [PATCH v2 4/4] drm/panic: Add a qr_code panic screen
 To: Jocelyn Falempe <jfalempe@redhat.com>
 Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
@@ -68,130 +68,43 @@ Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripar
 	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	Bjorn Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, 
-	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
-	rust-for-linux@vger.kernel.org, Danilo Krummrich <dakr@redhat.com>
+	Andreas Hindborg <a.hindborg@samsung.com>, linux-kernel@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, 
+	Danilo Krummrich <dakr@redhat.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-
-Hi Jocelyn,
-
-A quick docs-only review of the Rust side (some of these apply in
-several cases -- I just wanted to give an overview for you to
-consider).
 
 On Tue, Jul 9, 2024 at 10:45=E2=80=AFAM Jocelyn Falempe <jfalempe@redhat.co=
 m> wrote:
 >
-> +//! This is a simple qr encoder for DRM panic.
-> +//!
-> +//! Due to the Panic constraint, it doesn't allocate memory and does all
+> This patch adds a new panic screen, with a QR code and the kmsg data
+> embedded.
+> If DRM_PANIC_SCREEN_QR_CODE_URL is set, then the kmsg data will be
+> compressed with zlib and encoded as a numerical segment, and appended
+> to the url as a url parameter. This allows to save space, and put
+> about ~7500 bytes of kmsg data, in a V40 QR code.
+> Linux distributions can customize the url, and put a web frontend to
+> directly open a bug report with the kmsg data.
+>
+> Otherwise the kmsg data will be encoded as binary segment (ie raw
+> ascii) and only a maximum of 2953 bytes of kmsg data will be
+> available in the QR code.
+>
+> You can also limit the QR code size with DRM_PANIC_SCREEN_QR_VERSION.
+>
+> v2:
+>  * Rewrite the rust comments with Markdown (Alice Ryhl)
+>  * Mark drm_panic_qr_generate() as unsafe (Alice Ryhl)
+>  * Use CStr directly, and remove the call to as_str_unchecked()
+>    (Alice Ryhl)
+>  * Add a check for data_len <=3D data_size (Greg KH)
+>
+> Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
 
-Perhaps clarify "Panic constraint" here?
-
-> +//! the work on the stack or on the provided buffers. For
-> +//! simplification, it only supports Low error correction, and apply the
-
-"applies"?
-
-> +//! first mask (checkboard). It will draw the smallest QRcode that can
-
-"QR code"? "QR-code"?
-
-In other places "QR-code" is used -- it would be ideal to be
-consistent. (Although, isn't the common spelling "QR code"?)
-
-> +//! contain the string passed as parameter. To get the most compact
-> +//! QR-code, the start of the url is encoded as binary, and the
-
-Probably "URL".
-
-> +//! compressed kmsg is encoded as numeric.
-> +//!
-> +//! The binary data must be a valid url parameter, so the easiest way is
-> +//! to use base64 encoding. But this waste 25% of data space, so the
-
-"wastes"
-
-> +//! whole stack trace won't fit in the QR-Code. So instead it encodes
-> +//! every 13bits of input into 4 decimal digits, and then use the
-
-"uses"
-
-> +//! efficient numeric encoding, that encode 3 decimal digits into
-> +//! 10bits. This makes 39bits of compressed data into 12 decimal digits,
-> +//! into 40bits in the QR-Code, so wasting only 2.5%. And numbers are
-> +//! valid url parameter, so the website can do the reverse, to get the
-
-"And the numbers are valid URL parameters"?
-
-> +//! Inspired by this 3 projects, all under MIT license:
-
-"these"
-
-> +// Generator polynomials for QR Code, only those that are needed for Low=
- quality
-
-If possible, please remember to use periods at the end for both
-comments and docs. It is very pedantic, but if possible we would like
-to try to be consistent across subsystems on how the documentation
-looks etc. If everything looks the same, it is also easy to
-remember/check how to do it for new files and so on.
-
-> +/// QRCode parameter for Low quality ECC:
-> +/// - Error Correction polynomial
-> +/// - Number of blocks in group 1
-> +/// - Number of blocks in group 2
-> +/// - Block size in group 1
-> +/// (Block size in group 2 is one more than group 1)
-
-We typically leave a newline after a list.
-
-> +    // Return the smallest QR Version than can hold these segments
-> +    fn from_segments(segments: &[&Segment<'_>]) -> Option<Version> {
-
-Should be docs, even if private? i.e. `///`?
-
-Also third person and period.
-
-> +// padding bytes
-> +const PADDING: [u8; 2] =3D [236, 17];
-
-`///`?
-
-> +/// get the next 13 bits of data, starting at specified offset (in bits)
-
-Please capitalize.
-
-> +        // b is 20 at max (bit_off <=3D 7 and size <=3D 13)
-
-Please use Markdown for comments too.
-
-> +/// EncodedMsg will hold the data to be put in the QR-Code, with correct=
- segment
-> +/// encoding, padding, and Error Code Correction.
-
-Missing newline? In addition, for the title (i.e. first paragraph), we
-try to keep it short/simple, e.g. you could perhaps say something
-like:
-
-    /// Data to be put in the QR code (with correct segment encoding,
-padding, and error code correction).
-
-> +/// QrImage
-> +///
-> +/// A QR-Code image, encoded as a linear binary framebuffer.
-
-Please remove the title -- the second paragraph should be the title.
-
-> +/// Max width is 177 for V40 QR code, so u8 is enough for coordinate.
-
-`u8`
+[...]
 
 > +/// drm_panic_qr_generate()
-
-You can remove this title.
-
+> +///
 > +/// C entry point for the rust QR Code generator.
 > +///
 > +/// Write the QR code image in the data buffer, and return the qrcode si=
@@ -200,11 +113,22 @@ ze, or 0
 > +///
 > +/// * `url` The base url of the QR code. It will be encoded as Binary se=
 gment.
-
-Typically we would write a colon. after the key, e.g.
-
-    /// * `url`: the base URL of the QR code.
-
+> +/// * `data` A pointer to the binary data, to be encoded. if url is NULL=
+, it
+> +///    will be encoded as binary segment, otherwise it will be encoded
+> +///    efficiently as a numeric segment, and appended to the url.
+> +/// * `data_len` Length of the data, that needs to be encoded.
+> +/// * `data_size` Size of data buffer, it should be at least 4071 bytes =
+to hold
+> +///    a V40 QR-code. It will then be overwritten with the QR-code image=
+.
+> +/// * `tmp` A temporary buffer that the QR-code encoder will use, to wri=
+te the
+> +///    segments and ECC.
+> +/// * `tmp_size` Size of the temporary buffer, it must be at least 3706 =
+bytes
+> +///    long for V40.
+> +///
 > +/// # Safety
 > +///
 > +/// * `url` must be null or point at a nul-terminated string.
@@ -213,23 +137,78 @@ Typically we would write a colon. after the key, e.g.
 > +/// * `data_len` must be less than `data_size`.
 > +/// * `tmp` must be valid for reading and writing for `tmp_size` bytes.
 
-It would be nice to mention for which duration these need to hold,
-e.g. the call or something else.
+You don't allow data_len =3D=3D data_size?
 
+> +#[no_mangle]
+> +pub unsafe extern "C" fn drm_panic_qr_generate(
+> +    url: *const i8,
+> +    data: *mut u8,
+> +    data_len: usize,
+> +    data_size: usize,
+> +    tmp: *mut u8,
+> +    tmp_size: usize,
+> +) -> u8 {
+> +    if data_size <=3D 4071 || tmp_size <=3D 3706 || data_len > data_size=
+ {
+> +        return 0;
+> +    }
+
+Since you explicitly check the data_len, it does not *need* to be a
+safety requirement (but it can be). Even if it's wrong, violating the
+requirement does not lead to memory safety.
+
+> +    // Safety: data must be a valid pointer for reading and writing data=
+_size bytes.
+> +    let data_slice: &mut [u8] =3D unsafe { core::slice::from_raw_parts_m=
+ut(data, data_size) };
+> +    // Safety: tmp must be a valid pointer for reading and writing tmp_s=
+ize bytes.
+> +    let tmp_slice: &mut [u8] =3D unsafe { core::slice::from_raw_parts_mu=
+t(tmp, tmp_size) };
+
+These safety comments explain why these calls are dangerous, but
+that's not what safety comments should do. They should explain why
+this particular call is okay. In this case, it's because the caller of
+drm_panic_qr_generate must follow the documented safety requirements
+of the current function. The wording could look like this:
+
+// SAFETY: Due to the safety requirements on this function, the caller
+ensures that tmp is a valid pointer for reading and writing tmp_size
+bytes.
+
+The wording is not much different, but it's an important distinction.
+
+(Also, safety comments are written SAFETY: not Safety:)
+
+> +    if url.is_null() {
+> +        match EncodedMsg::new(&[&Segment::Binary(&data_slice[0..data_len=
+])], tmp_slice) {
+> +            None =3D> 0,
+> +            Some(em) =3D> {
+> +                let qr_image =3D QrImage::new(&em, data_slice);
+> +                qr_image.width
+> +            }
+> +        }
+> +    } else {
 > +        // Safety: url must be a valid pointer to a nul-terminated strin=
 g.
+> +        let url_cstr: &CStr =3D unsafe { CStr::from_char_ptr(url) };
 
-Please use the `// SAFETY: ` prefix instead, since it is how we tag
-these (i.e. differently from from the `# Safety` section).
+// SAFETY: The caller ensures that url is a valid pointer to a
+nul-terminated string.
 
-> +/// * `version` QR code version, between 1-40.
+> +        let segments =3D &[
+> +            &Segment::Binary(url_cstr.as_bytes()),
+> +            &Segment::Numeric(&data_slice[0..data_len]),
+> +        ];
+> +        match EncodedMsg::new(segments, tmp_slice) {
+> +            None =3D> 0,
+> +            Some(em) =3D> {
+> +                let qr_image =3D QrImage::new(&em, data_slice);
+> +                qr_image.width
+> +            }
+> +        }
+> +    }
+> +}
 
-If something like this happens to be used in several places, you may
-want to consider using transparent newtypes for them. This would allow
-you to avoid having to document each use point and it would enrich the
-signatures.
-
-Thanks!
-
-Cheers,
-Miguel
+Alice
