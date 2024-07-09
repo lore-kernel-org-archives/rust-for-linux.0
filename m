@@ -1,96 +1,117 @@
-Received: from mail-ua1-f53.google.com (mail-ua1-f53.google.com [209.85.222.53])
+Received: from mail-ot1-f41.google.com (mail-ot1-f41.google.com [209.85.210.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B440394
-	for <rust-for-linux@vger.kernel.org>; Tue,  9 Jul 2024 00:10:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEC5A10FA;
+	Tue,  9 Jul 2024 00:45:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720483848; cv=none; b=twxtQ8d39vp3bH0DsTtIQHKtirYR622dZzRt0jUyA+T69AZ0ict+wWxs9RQ3Ng4Ndqeb94dKGVoprGZ+PAdJs98FBYeDmQSMyyfVM3G0Q554BR52PTZ+4a6Z9jnLgc5RPL9oflTpIRXtQIAhBlhIWC7x7z7MPdRi8nSADDlyj6Q=
+	t=1720485949; cv=none; b=YJs5O6oPQ0YrpEZWLNR4Q9FkYEWHyuFUqtYHtNFBfoPTNOC5dLW9zUPcO9SMdbbGNw84W5PmYswNEJSZZkAncf6++CkGgmn1VlcrK5CbSA6tVoOP2YEp/iqvhqSEFAgpcLP/jyde3ksGi2mQvhizPOIkyoZc/5eidMSXxBJ85lM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720483848; c=relaxed/simple;
-	bh=U7gv5IWk94daaO00MsgQ3RJYOtUskNt3YZ6I6/q3710=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BWwylZQbZSugGjNOjjLk7po1ihiycK4XiCTs/tVwS+MWPHXRrmFlwhnafnAWoIBVr3LIy3knpqWa8IxbmdJHCDQgdMKx8/VE1Fw9y76UijIY88uKpqdyH/An85jxBrS9hnz3shVr8Utsd1lqgJOCQ+QRUjKXGP2cRcWMjIQTczg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WzWL12RT; arc=none smtp.client-ip=209.85.222.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1720485949; c=relaxed/simple;
+	bh=yVpmdenWty9VmRTaqVs7JI1s/mmytLE9QKXnW4wz6IA=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=tl032WZYQ8VozQLJx+6S4kqadPloFpNFEihQ3Sxf6tmiHz68/CFssSaD/hMZ2tZZ/bk+ocdie3JJ/e8R+SzzESr+MjwmX3ew4mpL0FHLnucir2nD7xRs0eLyWbvnccgR/5cofq2GIy3LhAKozd+9UgXjRCtZYik/8wenaybeVvU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=erFUEDlK; arc=none smtp.client-ip=209.85.210.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WzWL12RT"
-Received: by mail-ua1-f53.google.com with SMTP id a1e0cc1a2514c-80fbfeecca1so943641241.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 08 Jul 2024 17:10:46 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="erFUEDlK"
+Received: by mail-ot1-f41.google.com with SMTP id 46e09a7af769-7036b87752dso883810a34.2;
+        Mon, 08 Jul 2024 17:45:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1720483846; x=1721088646; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1720485947; x=1721090747; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=U7gv5IWk94daaO00MsgQ3RJYOtUskNt3YZ6I6/q3710=;
-        b=WzWL12RTbq+2Ffc3Vv9QWMRCHlvlbUsSO90F/2gjWI2idGnk/E7Ah/rkfk26oh4H4V
-         VsZXrjXrtEiLxSec6DrXrb2lZOIFsJ0e3NNeLbopkEPZgtkrANjPvara/VNgppLd1K5S
-         NOOYSAqTh00ASmpkB9QwLAgtJBBHE1YqkbKs231ylcELhL1KYIirowFOaghdYztpERMU
-         5SbJMJinJR89wTIPQCyTgkQY+Snih3NKVC3+x0cr/97NflYnP4kyC5GNkqCa1wpEZmkS
-         g1be7+oEiKHrSaTdDtTccKdXbJYVYGdhjQPy1Rs5MKpdO8XZyYh9ZgPNI9YjnB2L3xKy
-         nBdw==
+        bh=q9iPtF9JSiTmGcnXmpNXmV6InuM1mMBUZC3N3YyhPMc=;
+        b=erFUEDlKhRpsK9XXmOaVLp6Tei7G20+S7eIMJg6+R9D4+vQhdGliQtWPyPVmx2a/gc
+         IGHiLcm4FmPxj0d3XzIGXh+zNGckPkHSVW6OScnBevLNs0PaTXML6+wjxj8EcC7etniu
+         JBY8u26g40qLFxgLiUu/CD/m1viKRcB9GtH5WpTGz0M2G3cH39FBQd0+r0OlPLYJkjfJ
+         W2s24etw84j6n0tVG68yoVVDA/klv/44coeB+Nib8lVY3YvU0U0y+9jlJaSWboCBSW+l
+         GCJW3tZqCzMUtgM6MsJe7LaTIPL9MvYxBEHmn/+qtJj7jcf1Eo+RoPcf6gAr5C9vcEPz
+         jvdQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720483846; x=1721088646;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1720485947; x=1721090747;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=U7gv5IWk94daaO00MsgQ3RJYOtUskNt3YZ6I6/q3710=;
-        b=Bf9wX2tcVD90V2vOudhWsEehASq0U84mksIyn69rFhOy0wvS0YSgciIGP0GwhUomXH
-         wVeFvtZtSiKKPXnmy2dPlJmAIEzfpnNNnYxZa0FD5yYBwsaE3o8oPHqGRdcVePpqeetq
-         4jSMdD0+Y5KM1fer8ZZwQ1GQdyFVdKp8BRwNkWfDgisWL+Xmu6yB5Ecr+MPUMoDPS0fa
-         VV/uy92Itdrd/LPBuvs8exOiwaBsk2TaXaeo3b3uNiRRvQPwVlLP29ZEcAZs4X2Gxqpi
-         M3JU/xRCDg+WQrTUdyQLLbM9xRI9EtXoJMhLwqnCICQPr6r+fpA2Xo1znR6SdwMZp9xh
-         DOKg==
-X-Forwarded-Encrypted: i=1; AJvYcCW4iCd2jCpx0hFrKbWoMm93eAvK2NMFBvqy1mdyBfJ0LWlMla9LyMeltFVUQ2um1kNpXML+vC2p3Dmc3HpQYreGEJCsSjmi6rfIZNqRy9A=
-X-Gm-Message-State: AOJu0YxqiAJ90+/WZ91Saw9/3PmJr711xhG9KxgY1lfq10BAux5LFrWs
-	VL+SVvN4co2t7QkPDaTxww1+Iw1n4qtdrnD8xKesN7SU+o+7pL2VMQQJP5hL/0Bbh5FYbKemcmn
-	i4xK6dv+fE/8s71T6pdtYoxzrU+RtPvELzOPJ
-X-Google-Smtp-Source: AGHT+IHyCX7gkCO+NqTBzhVYM7TVH/DGTpigPO9y1Ay4QULiTrQ5FhAlGT+5uGCJX3mSvf99tSbeIBg97AF47w8qHMU=
-X-Received: by 2002:a05:6102:38c9:b0:48f:e68d:c1a7 with SMTP id
- ada2fe7eead31-490321b37bamr1062532137.23.1720483845647; Mon, 08 Jul 2024
- 17:10:45 -0700 (PDT)
+        bh=q9iPtF9JSiTmGcnXmpNXmV6InuM1mMBUZC3N3YyhPMc=;
+        b=ndDn9d32qrv5L+DTqOooSnGl+06AFeWfyDsRaSdtSHIwhUwPP+36Wf3DuYyUpJhqH/
+         SPoANTumAWxBteXlKAjKghI6K71hVv3GewHqldBVMYpU8XDEHjMcKzj5z//nn8pmv16D
+         f5ngio7xhXG3ZvpmyQ2c7LsyWECvuCww3MU3jOG2ML0sHgzixn/L8U6Q1v7rtSUVACvm
+         XCeNv2oUmaiLhY2xu9fOuWMDnO0SXsKqAM7MVB+8bdZtGHqWqy/jnm0F3yBl4sFE+43R
+         /WrjAJJPghvF9T4QwQ/zba+0ITOp0Hjke+ovrU5hPqQbkazz7sARhRkz2y8CuOgfOuHL
+         b6wQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUs06d4MJDzpDesh4uuP/AOuJC9OkLtTAKjwEC3gaGsE+3LrvLmVZesihEd2pHmEvgatdSqqpy3n3whVNKNyw3Wd0tb2Imi/nseXgODShkW7aiIn+Y29Zmwq7RG4fdgWBzmJhJ6t1TuGYzllOI=
+X-Gm-Message-State: AOJu0YyHboU+yZ7iPe84AV6uE7jVosexjt72rB85ELuX+UggiTYvceT9
+	4HvDMY7nrIa9qiG8LgdBhU0DecyMkZp3G1EeHFdnCMaUAier4Goj
+X-Google-Smtp-Source: AGHT+IGG1Ld6V99SNEvuuuZYWfNfTXQ3dsVI4Y2qI2ZXJjfOBhOEzhq/DHbMG1KQ5AaHayz4uRoQDQ==
+X-Received: by 2002:a05:6830:1d7:b0:703:6496:b9ab with SMTP id 46e09a7af769-70375a06f35mr1332946a34.7.1720485946711;
+        Mon, 08 Jul 2024 17:45:46 -0700 (PDT)
+Received: from my-computer.. ([2600:1700:e42:d53f:19e4:45d8:10e5:471e])
+        by smtp.googlemail.com with ESMTPSA id 46e09a7af769-70374f6b5easm231026a34.14.2024.07.08.17.45.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 08 Jul 2024 17:45:46 -0700 (PDT)
+From: Andrew Ballance <andrewjballance@gmail.com>
+To: miguel.ojeda.sandonis@gmail.com
+Cc: a.hindborg@samsung.com,
+	alex.gaynor@gmail.com,
+	aliceryhl@google.com,
+	andrewjballance@gmail.com,
+	benno.lossin@proton.me,
+	bjorn3_gh@protonmail.com,
+	boqun.feng@gmail.com,
+	dakr@redhat.com,
+	gary@garyguo.net,
+	gregkh@linuxfoundation.org,
+	linux-kernel-mentees@lists.linuxfoundation.org,
+	linux-kernel@vger.kernel.org,
+	mcgrof@kernel.org,
+	ojeda@kernel.org,
+	russ.weight@linux.dev,
+	rust-for-linux@vger.kernel.org,
+	skhan@linuxfoundation.org,
+	wedsonaf@gmail.com
+Subject: [PATCH v2] rust: firmware: fix invalid rustdoc link
+Date: Mon,  8 Jul 2024 19:44:26 -0500
+Message-ID: <20240709004426.44854-1-andrewjballance@gmail.com>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <CANiq72=6LSGwRsc+deE+U8H=mdgFisrKEPOYgVkZfHhGm8hwog@mail.gmail.com>
+References: <CANiq72=6LSGwRsc+deE+U8H=mdgFisrKEPOYgVkZfHhGm8hwog@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240704-shadow-call-stack-v3-0-d11c7a6ebe30@google.com>
- <20240704-shadow-call-stack-v3-2-d11c7a6ebe30@google.com> <20240704-unless-cache-8a971c244348@spud>
-In-Reply-To: <20240704-unless-cache-8a971c244348@spud>
-From: Sami Tolvanen <samitolvanen@google.com>
-Date: Mon, 8 Jul 2024 17:10:09 -0700
-Message-ID: <CABCJKufJz5Wu5ivbEuUFHJd8qk0M-W=WQDCOe-pR6w=4=YyEag@mail.gmail.com>
-Subject: Re: [PATCH v3 2/2] rust: add flags for shadow call stack sanitizer
-To: Conor Dooley <conor@kernel.org>
-Cc: Alice Ryhl <aliceryhl@google.com>, Catalin Marinas <catalin.marinas@arm.com>, 
-	Will Deacon <will@kernel.org>, Jamie Cunliffe <Jamie.Cunliffe@arm.com>, 
-	Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
-	Nicolas Schier <nicolas@fjasle.eu>, Ard Biesheuvel <ardb@kernel.org>, Marc Zyngier <maz@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, Mark Brown <broonie@kernel.org>, 
-	Nick Desaulniers <ndesaulniers@google.com>, Kees Cook <keescook@chromium.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Valentin Obst <kernel@valentinobst.de>, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Thu, Jul 4, 2024 at 10:17=E2=80=AFAM Conor Dooley <conor@kernel.org> wro=
-te:
->
-> For these security related options, like CFI_CLANG or RANDSTRUCT, I'm
-> inclined to say that RUST is actually what should grow the depends on.
-> That way it'll be RUST that gets silently disabled in configs when patch
-> 1 gets backported (where it is mostly useless anyway) rather than SCS
-> nor will it disable SCS when someone enables RUST in their config,
-> instead it'd be a conscious choice.
+remove an extra quote from the doc comment so that rustdoc
+no longer genertes a link to a nonexistent file.
 
-I agree, we shouldn't silently disable hardening features when Rust is enab=
-led.
+Signed-off-by: Andrew Ballance <andrewjballance@gmail.com>
+Reviewed-by: Danilo Krummrich <dakr@redhat.com>
+Acked-by: Miguel Ojeda <ojeda@kernel.org>
+Fixes: de6582833db0 ("rust: add firmware abstractions")
+---
+v1 -> v2: updated commit message
 
-Sami
+ rust/kernel/firmware.rs | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/rust/kernel/firmware.rs b/rust/kernel/firmware.rs
+index 386c8fb44785..763d7cbefab5 100644
+--- a/rust/kernel/firmware.rs
++++ b/rust/kernel/firmware.rs
+@@ -2,7 +2,7 @@
+ 
+ //! Firmware abstraction
+ //!
+-//! C header: [`include/linux/firmware.h`](srctree/include/linux/firmware.h")
++//! C header: [`include/linux/firmware.h`](srctree/include/linux/firmware.h)
+ 
+ use crate::{bindings, device::Device, error::Error, error::Result, str::CStr};
+ use core::ptr::NonNull;
+-- 
+2.45.2
+
