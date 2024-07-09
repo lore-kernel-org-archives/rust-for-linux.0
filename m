@@ -1,80 +1,131 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 575B6143752;
-	Tue,  9 Jul 2024 08:27:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E43F712FB37
+	for <rust-for-linux@vger.kernel.org>; Tue,  9 Jul 2024 08:45:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720513633; cv=none; b=fO632M2+WLcaP0tvzzqCbgi0NVuFbJ0KneRAbfL0jKhnIMQUBJqDR5zcrX38rW1nIyzASBwI1EQy02x2DcREE2U495T05AttI4OujEM6re9oBEuKj93ols1LdtQ5mKLGoOvEedFAuApTEZ7UogyAN4ulHzEcHmNqA4RGzdymYzM=
+	t=1720514742; cv=none; b=M7C9dwFT+8Y5ZTzI9p+LXgiGA6ELyLdgvXfmouF0pQIjxi+/gIKrHhrXQcZnp4OAQTjc/pOz5eKQxvs3438tiVoRO5wYM8dEkZmlTepM4B6kOXUM0bvprVnxLUu/aqrypaScUBi1zmJ/0BMwX1F6EWMohSrD7KomslQp+Z6c8YI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720513633; c=relaxed/simple;
-	bh=8swVpidJ5ergHaUtyYa0T5Ao4WQQVKO8d3kfW7RqCAw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=A3s2vjr3rZ7Wu5ZRo73htv0rlbO53yc6gu13WVYr69La6uTBpxtF07/cRi6qlrM0FjJ+ruozZzZ52+XxOZcb+eyZXGPh9b6kNqC/AB641oF1Nj1src84bHX8FBZE8N3EGLFLj2BLVmO+iflgiG9nO+ZR+uSI9DPUvliE1uEKPw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MKs58uMT; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1720514742; c=relaxed/simple;
+	bh=D+Ma0qaFK7l8xKrUMdTCCNtv+nT7BjIA0QA3zjbGE+M=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=EUMRGRzOSrhwX6bFAkzZ1+fynihfMsxUkI247AlNEb7ZHXp3G7zu8L06GL6mQQZCPL/E4gLLBFhyyiCHqbGkOQ25lmpyh4lYfCFBevX6D8lm3PVHdwOuNuxLRwPTVWi1NVmAVIDnnidcvtUwAziMqwksxqObDwA/Y80w+5HYnc0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=FRjn6nvj; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MKs58uMT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7963CC3277B;
-	Tue,  9 Jul 2024 08:27:12 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720513632;
-	bh=8swVpidJ5ergHaUtyYa0T5Ao4WQQVKO8d3kfW7RqCAw=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=MKs58uMTimJSNukbLWZVm36D1otxy9BBGzP/Gob20xKl25WDcspRBnkP4N2py/S2S
-	 X7NY9l4aN4axsk2IoB5jvqmW4SXmP3lcd5b+oyvO3NjG659aBjUBnv/eiZE98rxHHY
-	 YOsSyPUoaa/ItFlU+AIle/K1xTdXgvs23G2qEWDw=
-Date: Tue, 9 Jul 2024 10:27:09 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: nmi <nmi@metaspace.dk>
-Cc: Luis Chamberlain <mcgrof@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
-	rust-for-linux@vger.kernel.org, linux-modules@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="FRjn6nvj"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1720514739;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=0frVolVqICIByf5Si0QYc0zMajNKduQXQ0wYd9/EsUE=;
+	b=FRjn6nvjTIDWMNH04znYUqWp7NmTxNOw5hqAsA05z1rD/kKbrF6OiR1pfAXIaAYTMheLh0
+	k6Dmj8MUtfeldx2D7/X2hCpfNg3Q0eWyTL0ALla7Z9nvLW4Gc3Jf0EkpPOVvuzgioS3P+V
+	uVo+XD8+PBHL+AKgekcZ1XuIjpINk+I=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-151-SWfmqhNzMxip0D90k3uomg-1; Tue,
+ 09 Jul 2024 04:45:35 -0400
+X-MC-Unique: SWfmqhNzMxip0D90k3uomg-1
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 61FF81955BD0;
+	Tue,  9 Jul 2024 08:45:33 +0000 (UTC)
+Received: from hydra.redhat.com (unknown [10.39.193.246])
+	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 36BED195605A;
+	Tue,  9 Jul 2024 08:45:27 +0000 (UTC)
+From: Jocelyn Falempe <jfalempe@redhat.com>
+To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	"Bjorn Roy Baron" <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@samsung.com>,
-	Adam Bratschi-Kaye <ark.email@gmail.com>,
-	Sami Tolvanen <samitolvanen@google.com>
-Subject: Re: [PATCH] rust: add `module_params` macro
-Message-ID: <2024070924-darkening-knee-bfef@gregkh>
-References: <20240705111455.142790-1-nmi@metaspace.dk>
- <ZoxdRjpy2hRndqmc@bombadil.infradead.org>
- <LHGWBNSEDaOsx4BbADR1pZYqPV0KKhVaJ1Qvwe9h4UPeERRAA4s1DTIsnFR5rpHBGa6uIG1tU_4hTBXgjAc5BNwNqo0Rg_kOx2W_y0EUy_I=@metaspace.dk>
+	Alice Ryhl <aliceryhl@google.com>,
+	linux-kernel@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	rust-for-linux@vger.kernel.org,
+	Danilo Krummrich <dakr@redhat.com>
+Cc: Jocelyn Falempe <jfalempe@redhat.com>
+Subject: [PATCH v2 2/4] drm/rect: add drm_rect_overlap()
+Date: Tue,  9 Jul 2024 10:40:08 +0200
+Message-ID: <20240709084458.158659-3-jfalempe@redhat.com>
+In-Reply-To: <20240709084458.158659-1-jfalempe@redhat.com>
+References: <20240709084458.158659-1-jfalempe@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <LHGWBNSEDaOsx4BbADR1pZYqPV0KKhVaJ1Qvwe9h4UPeERRAA4s1DTIsnFR5rpHBGa6uIG1tU_4hTBXgjAc5BNwNqo0Rg_kOx2W_y0EUy_I=@metaspace.dk>
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
 
-On Tue, Jul 09, 2024 at 06:00:46AM +0000, nmi wrote:
-> Hi Luis,
-> 
-> On Monday, July 8th, 2024 at 23:42, Luis Chamberlain <mcgrof@kernel.org> wrote:
-> 
-> > I'm starting to feel the same way about modules, but modules requires
-> > more work than the firmware loader. And since I also know Andreas has
-> > already a lot on his plate, I'm at a cross roads. My above request for
-> > the firmware loader made sense to the person working on the firmware
-> > loader changes, but who would help on the modules side of things? And
-> > does this request make sense to help scale?
-> >
-> > The rationale here is that a rust binding means commitment then also
-> > from fresh blood to help co-maintain review C / Rust for exising code
-> > when there is will / desire to collaborate from an existing C maintainer.
-> >
-> > I realize this may be a lot to ask, but I think this is one of the
-> > responsible ways to ask to scale here.
-> 
-> I am not sure I am the right person for the task, because as you say,
-> I have a lot on my plate. But perhaps lets schedule a call so I can
-> get a sense of the required effort. 
+Check if two rectangles overlap.
+It's a bit similar to drm_rect_intersect() but this won't modify
+the rectangle.
+Simplifies a bit drm_panic.
 
-Kernel development is done through emails, not calls :)
+Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
+---
+ drivers/gpu/drm/drm_panic.c |  3 +--
+ include/drm/drm_rect.h      | 15 +++++++++++++++
+ 2 files changed, 16 insertions(+), 2 deletions(-)
 
-If a submitter isn't willing to maintain the code they submit, then it
-should be rejected as maintance is the most important part.
+diff --git a/drivers/gpu/drm/drm_panic.c b/drivers/gpu/drm/drm_panic.c
+index fb8c823b7c00..9e06609e1799 100644
+--- a/drivers/gpu/drm/drm_panic.c
++++ b/drivers/gpu/drm/drm_panic.c
+@@ -522,8 +522,7 @@ static void draw_panic_static_user(struct drm_scanout_buffer *sb)
+ 	/* Fill with the background color, and draw text on top */
+ 	drm_panic_fill(sb, &r_screen, bg_color);
+ 
+-	if ((r_msg.x1 >= logo_width || r_msg.y1 >= logo_height) &&
+-	    logo_width <= sb->width && logo_height <= sb->height) {
++	if (!drm_rect_overlap(&r_logo, &r_msg)) {
+ 		if (logo_mono)
+ 			drm_panic_blit(sb, &r_logo, logo_mono->data, DIV_ROUND_UP(logo_width, 8),
+ 				       fg_color);
+diff --git a/include/drm/drm_rect.h b/include/drm/drm_rect.h
+index 73fcb899a01d..7bafde747d56 100644
+--- a/include/drm/drm_rect.h
++++ b/include/drm/drm_rect.h
+@@ -238,6 +238,21 @@ static inline void drm_rect_fp_to_int(struct drm_rect *dst,
+ 		      drm_rect_height(src) >> 16);
+ }
+ 
++/**
++ * drm_rect_overlap - Check if two rectangles overlap
++ * @r1: first rectangle
++ * @r2: second rectangle
++ *
++ * RETURNS:
++ * %true if the rectangles overlap, %false otherwise.
++ */
++static inline bool drm_rect_overlap(const struct drm_rect *r1,
++				    const struct drm_rect *r2)
++{
++	return (r1->x2 > r2->x1 && r2->x2 > r1->x1 &&
++		r1->y2 > r2->y1 && r2->y2 > r1->y1);
++}
++
+ bool drm_rect_intersect(struct drm_rect *r, const struct drm_rect *clip);
+ bool drm_rect_clip_scaled(struct drm_rect *src, struct drm_rect *dst,
+ 			  const struct drm_rect *clip);
+-- 
+2.45.2
 
-Sorry,
-
-greg k-h
