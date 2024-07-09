@@ -1,102 +1,235 @@
-Received: from mail-4022.proton.ch (mail-4022.proton.ch [185.70.40.22])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E6BC155A21
-	for <rust-for-linux@vger.kernel.org>; Tue,  9 Jul 2024 09:25:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B503C155C93;
+	Tue,  9 Jul 2024 09:41:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720517143; cv=none; b=Pjevuzyny0AmDo9mtxjYLYXMMNyJTPL/eRMYOIaXDm3uL8XTNBTowva4Id1VDbbRQmaIcPUzGBBDWKZf2HK25W0BTisZZIPv4poHiowFJFADWCAtfm7ZtEv4Xg4r6cpW1NbtXXzKmf8TQcjIl4RzoPE5Bbwmx1njiVdoBxiK+7M=
+	t=1720518081; cv=none; b=tcqF/m43PsDbzZlz3bgF0gVO2l7YLxI3pO8i0SyeH4/IM/sDaKdNOg+mjJSdGUXsMtKnYesJH7fpFGvpdnLcB9JORpgtDKIqu+TUZwGVGt5ykuGVafNahIS87pjzNRgatPFerRDB+ROS6B0d18kFV1QwPfdah7VVNhI1blH2PYM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720517143; c=relaxed/simple;
-	bh=CbggQywMclYItKuSRcDiI3tcqHQqBDwiC81LnGPVLKg=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=qJwizLEyQ9NnT2yOW7ElcFuQJYZu6Y+V3pkIcgrZO34MMZmFSg3eeUJ5f2RNIcTD5DqBW8HIsPnPTkrfdqAQknljXMUZLmij5BJpoXn4HpA2YoV7wTM7ZTdg7p0W+Rh77K7bpADbihllMenN7VMC9BtbdWwGF2zCH9U1E+HX7m4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=metaspace.dk; spf=pass smtp.mailfrom=metaspace.dk; dkim=pass (2048-bit key) header.d=metaspace.dk header.i=@metaspace.dk header.b=Sv/NxuLn; arc=none smtp.client-ip=185.70.40.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=metaspace.dk
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=metaspace.dk
+	s=arc-20240116; t=1720518081; c=relaxed/simple;
+	bh=6/8m5t3tBJG+vQHucRBM2B3L/XB592V14euivKILF9w=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=h07UjGTDjz4R5beyT1jr9w/nqe6rMFdHmuyVOTagIm9dl2wNSfSCqP/c+noEzQ0G1FaU6WvkQosD/KFo0IexxhPGNmb+Q8otwKFvKCfDElZaJDWg6E6zTaL6gTrbdb2JJzctBiqERvQ5ZIfWlVvizDfQcmGjfosCqVh2MuAbb6I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iGjg0Ce0; arc=none smtp.client-ip=209.85.216.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=metaspace.dk header.i=@metaspace.dk header.b="Sv/NxuLn"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=metaspace.dk;
-	s=protonmail; t=1720517137; x=1720776337;
-	bh=CbggQywMclYItKuSRcDiI3tcqHQqBDwiC81LnGPVLKg=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=Sv/NxuLnup4HHc1ufAj6dGVSs7s+DPf7SXYovOqdg0AAeb3MMb5L/Ajb3ol8GziV5
-	 mgtETAZ9zk+yUcYhckiI5Ou/hj+cfXGUF4nsMc92EZJhoEFDwI7GSKTQbO1NWAaaU4
-	 KPBEh+lOuRkMjXoMl4ZezCD8n5K/NJgMQtIolM76Uo8VNiqKP8IreexEdrPR/oQHi/
-	 rBleJNlkYGzt3GDl30Yxu9f6xuVfHEpJxq4urE04SJnLF+b9L4xKiwRqy7UnOnLn4J
-	 jvUIR9Cz6axcC85MkCflf4eFlKY8TCYi8310kyZcsQXipXs87m5dq7LyHKeG0D1hGi
-	 DoCj7Aot4/zMQ==
-Date: Tue, 09 Jul 2024 09:25:35 +0000
-To: Greg KH <gregkh@linuxfoundation.org>
-From: nmi <nmi@metaspace.dk>
-Cc: Luis Chamberlain <mcgrof@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, rust-for-linux@vger.kernel.org, linux-modules@vger.kernel.org, linux-kernel@vger.kernel.org, Andreas Hindborg <a.hindborg@samsung.com>, Adam Bratschi-Kaye <ark.email@gmail.com>, Sami Tolvanen <samitolvanen@google.com>
-Subject: Re: [PATCH] rust: add `module_params` macro
-Message-ID: <WayJa_6KjKqqYlkPyVKr-HT2LOGIBgTfNucynbLdrUPm_JusRDoLJGRpOqcUPO2OVWEQDRAqFYBj9vhK8E_NOU66bfE2TK3DgNuxEhQedRc=@metaspace.dk>
-In-Reply-To: <2024070924-darkening-knee-bfef@gregkh>
-References: <20240705111455.142790-1-nmi@metaspace.dk> <ZoxdRjpy2hRndqmc@bombadil.infradead.org> <LHGWBNSEDaOsx4BbADR1pZYqPV0KKhVaJ1Qvwe9h4UPeERRAA4s1DTIsnFR5rpHBGa6uIG1tU_4hTBXgjAc5BNwNqo0Rg_kOx2W_y0EUy_I=@metaspace.dk> <2024070924-darkening-knee-bfef@gregkh>
-Feedback-ID: 113830118:user:proton
-X-Pm-Message-ID: 39e6b85eabb777531f448c0a05d95b4b0ed5c28d
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iGjg0Ce0"
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-2c927152b4bso3332892a91.2;
+        Tue, 09 Jul 2024 02:41:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1720518079; x=1721122879; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=oVroGXjljN7UKU/yhFIYpLiSd6PbIzKS4cUQFOHvuWw=;
+        b=iGjg0Ce0P/9yEInGqudsvhaCU6JRtqUtUaTY7qecXQsa6++ODQ15F8BPa38hRmihMx
+         kB6Z37QP58SdtpNYf4YuFvUuUwgSKifHMzgYhH/OULQEsvUTLRXljclspxr146S52oXd
+         3QGUnYS5ssSkvo+qJbh9Ag/kPmmTeAEV/BxiyyHf4oGE6pGfFlTXZCP8IUgE3woYzVqW
+         po+xUadHAUtSS4eQ/YiOSSfvyF97GCrSd93xoin8N7Mgip6cb5+Vt95HWjiaSypJmH2Q
+         hthc/rDZD3haDnJfjsV1nO4ccUDkTeM2jzuJsrBXU6ooVTsdFsyciEELGrKyw34sJ8x3
+         Ix+A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1720518079; x=1721122879;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=oVroGXjljN7UKU/yhFIYpLiSd6PbIzKS4cUQFOHvuWw=;
+        b=RwqhyYJByh8kpd5vhqNp7pNt1t6B9oUvLJ+AnTm90Ps69ELSPLjSw0MB3oNiCnUjM4
+         4C8/NQeGhUYA52vUvgA291SCBXsX0XKUtJDWsNunoqFUo2pYBvK0tXSaPd4TuWm/hfdh
+         IdW4o3IySYt+rsIcUempp5svEJ4LuB2aNCNZ5JPbzvgOR2yUxquxdb7KkWSlJXY1Al8i
+         ULHtW3Y5Fd/w4/1lbjMO4zQklSLiGfkPmbIjWH5wdsv4hdkKWT549e7iowNtKfxrm5Bt
+         1ZXoQfyQPomn5IeNYQa9vplSzwN4DR/nOT735NfFgdMSbzfewOeurzjIQzp1bkS6SHCc
+         uU1A==
+X-Forwarded-Encrypted: i=1; AJvYcCUZajYMN0TMAJMzMFcONmANW2JiUtyQK4WmW2tP+G4B40IRUW/obkuZNYJREJ+7SU35lggWnuXPp+enIJLUul95oSSX+xT4cXf9I4WqjqeWtqMfPB75b5N7O4doFRpFMDqoZ6vYlGCaSDZJa5k=
+X-Gm-Message-State: AOJu0YxxvoI7DGIsz2D9M1ofT7FIXmEgvzg8k4dYYO15PRk8vQS8DHwY
+	HWbu+XDPlHJZB1EEXurftGv2Fv7CqVId0p9BnfJ4HMTw9/4/KJn6YTyTEvu3FeQVtFUIQASWYCF
+	NG4y+WMCOnYxwwVX1n2nRrxf0ugs=
+X-Google-Smtp-Source: AGHT+IF8ZjDYhseE4Khi5hh3/IVLxfQ67v9J2c5cotmB0Lq+rDdIDmRbQdZ5yWgqnTKcX7faKxVbS2/+f/aXqcOR3ns=
+X-Received: by 2002:a17:90b:1e05:b0:2c8:1f30:4e04 with SMTP id
+ 98e67ed59e1d1-2ca35d48f74mr1921776a91.36.1720518079028; Tue, 09 Jul 2024
+ 02:41:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20240709084458.158659-1-jfalempe@redhat.com> <20240709084458.158659-5-jfalempe@redhat.com>
+In-Reply-To: <20240709084458.158659-5-jfalempe@redhat.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 9 Jul 2024 11:41:06 +0200
+Message-ID: <CANiq72kS2fAgRnR8yNfpN69tMG+UPfgfytaA8sE=tYH+OQ_L6A@mail.gmail.com>
+Subject: Re: [PATCH v2 4/4] drm/panic: Add a qr_code panic screen
+To: Jocelyn Falempe <jfalempe@redhat.com>
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>, 
+	Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	Bjorn Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, 
+	linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	rust-for-linux@vger.kernel.org, Danilo Krummrich <dakr@redhat.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
+Hi Jocelyn,
 
-Hi Greg,
+A quick docs-only review of the Rust side (some of these apply in
+several cases -- I just wanted to give an overview for you to
+consider).
 
+On Tue, Jul 9, 2024 at 10:45=E2=80=AFAM Jocelyn Falempe <jfalempe@redhat.co=
+m> wrote:
+>
+> +//! This is a simple qr encoder for DRM panic.
+> +//!
+> +//! Due to the Panic constraint, it doesn't allocate memory and does all
 
-On Tuesday, 9 July 2024 at 10:27, Greg KH <gregkh@linuxfoundation.org> wrot=
-e:
+Perhaps clarify "Panic constraint" here?
 
+> +//! the work on the stack or on the provided buffers. For
+> +//! simplification, it only supports Low error correction, and apply the
 
-> On Tue, Jul 09, 2024 at 06:00:46AM +0000, nmi wrote:
->=20
-> > Hi Luis,
-> >=20
-> > On Monday, July 8th, 2024 at 23:42, Luis Chamberlain mcgrof@kernel.org =
-wrote:
-> >=20
-> > > I'm starting to feel the same way about modules, but modules requires
-> > > more work than the firmware loader. And since I also know Andreas has
-> > > already a lot on his plate, I'm at a cross roads. My above request fo=
-r
-> > > the firmware loader made sense to the person working on the firmware
-> > > loader changes, but who would help on the modules side of things? And
-> > > does this request make sense to help scale?
-> > >=20
-> > > The rationale here is that a rust binding means commitment then also
-> > > from fresh blood to help co-maintain review C / Rust for exising code
-> > > when there is will / desire to collaborate from an existing C maintai=
-ner.
-> > >=20
-> > > I realize this may be a lot to ask, but I think this is one of the
-> > > responsible ways to ask to scale here.
-> >=20
-> > I am not sure I am the right person for the task, because as you say,
-> > I have a lot on my plate. But perhaps lets schedule a call so I can
-> > get a sense of the required effort.
->=20
->=20
-> Kernel development is done through emails, not calls :)
+"applies"?
 
-This is such a confusing statement to me. Of course people are using video =
-calls and even meeting up in real life, to discuss matters of kernel develo=
-pment and communicate technical details? Perhaps you could clarify a bit mo=
-re what you are trying to communicate?
+> +//! first mask (checkboard). It will draw the smallest QRcode that can
 
->=20
-> If a submitter isn't willing to maintain the code they submit, then it
-> should be rejected as maintance is the most important part.
+"QR code"? "QR-code"?
 
-Unless I misunderstand something, Luis requests is about the C code that is=
- already in the kernel, not the code I submitted now. Of course I will main=
-tain the code I submit, if required.
+In other places "QR-code" is used -- it would be ideal to be
+consistent. (Although, isn't the common spelling "QR code"?)
 
-Best regards,
-Andreas
+> +//! contain the string passed as parameter. To get the most compact
+> +//! QR-code, the start of the url is encoded as binary, and the
+
+Probably "URL".
+
+> +//! compressed kmsg is encoded as numeric.
+> +//!
+> +//! The binary data must be a valid url parameter, so the easiest way is
+> +//! to use base64 encoding. But this waste 25% of data space, so the
+
+"wastes"
+
+> +//! whole stack trace won't fit in the QR-Code. So instead it encodes
+> +//! every 13bits of input into 4 decimal digits, and then use the
+
+"uses"
+
+> +//! efficient numeric encoding, that encode 3 decimal digits into
+> +//! 10bits. This makes 39bits of compressed data into 12 decimal digits,
+> +//! into 40bits in the QR-Code, so wasting only 2.5%. And numbers are
+> +//! valid url parameter, so the website can do the reverse, to get the
+
+"And the numbers are valid URL parameters"?
+
+> +//! Inspired by this 3 projects, all under MIT license:
+
+"these"
+
+> +// Generator polynomials for QR Code, only those that are needed for Low=
+ quality
+
+If possible, please remember to use periods at the end for both
+comments and docs. It is very pedantic, but if possible we would like
+to try to be consistent across subsystems on how the documentation
+looks etc. If everything looks the same, it is also easy to
+remember/check how to do it for new files and so on.
+
+> +/// QRCode parameter for Low quality ECC:
+> +/// - Error Correction polynomial
+> +/// - Number of blocks in group 1
+> +/// - Number of blocks in group 2
+> +/// - Block size in group 1
+> +/// (Block size in group 2 is one more than group 1)
+
+We typically leave a newline after a list.
+
+> +    // Return the smallest QR Version than can hold these segments
+> +    fn from_segments(segments: &[&Segment<'_>]) -> Option<Version> {
+
+Should be docs, even if private? i.e. `///`?
+
+Also third person and period.
+
+> +// padding bytes
+> +const PADDING: [u8; 2] =3D [236, 17];
+
+`///`?
+
+> +/// get the next 13 bits of data, starting at specified offset (in bits)
+
+Please capitalize.
+
+> +        // b is 20 at max (bit_off <=3D 7 and size <=3D 13)
+
+Please use Markdown for comments too.
+
+> +/// EncodedMsg will hold the data to be put in the QR-Code, with correct=
+ segment
+> +/// encoding, padding, and Error Code Correction.
+
+Missing newline? In addition, for the title (i.e. first paragraph), we
+try to keep it short/simple, e.g. you could perhaps say something
+like:
+
+    /// Data to be put in the QR code (with correct segment encoding,
+padding, and error code correction).
+
+> +/// QrImage
+> +///
+> +/// A QR-Code image, encoded as a linear binary framebuffer.
+
+Please remove the title -- the second paragraph should be the title.
+
+> +/// Max width is 177 for V40 QR code, so u8 is enough for coordinate.
+
+`u8`
+
+> +/// drm_panic_qr_generate()
+
+You can remove this title.
+
+> +/// C entry point for the rust QR Code generator.
+> +///
+> +/// Write the QR code image in the data buffer, and return the qrcode si=
+ze, or 0
+> +/// if the data doesn't fit in a QR code.
+> +///
+> +/// * `url` The base url of the QR code. It will be encoded as Binary se=
+gment.
+
+Typically we would write a colon. after the key, e.g.
+
+    /// * `url`: the base URL of the QR code.
+
+> +/// # Safety
+> +///
+> +/// * `url` must be null or point at a nul-terminated string.
+> +/// * `data` must be valid for reading and writing for `data_size` bytes=
+.
+> +/// * `data_len` must be less than `data_size`.
+> +/// * `tmp` must be valid for reading and writing for `tmp_size` bytes.
+
+It would be nice to mention for which duration these need to hold,
+e.g. the call or something else.
+
+> +        // Safety: url must be a valid pointer to a nul-terminated strin=
+g.
+
+Please use the `// SAFETY: ` prefix instead, since it is how we tag
+these (i.e. differently from from the `# Safety` section).
+
+> +/// * `version` QR code version, between 1-40.
+
+If something like this happens to be used in several places, you may
+want to consider using transparent newtypes for them. This would allow
+you to avoid having to document each use point and it would enrich the
+signatures.
+
+Thanks!
+
+Cheers,
+Miguel
