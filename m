@@ -1,97 +1,119 @@
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B28C11D556;
-	Tue,  9 Jul 2024 08:00:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A657152515;
+	Tue,  9 Jul 2024 08:02:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720512020; cv=none; b=ESxG4HIjnwe+PZ+gV5maoqFV52JQoo3kPgA5CJNtEYvBKNUsBOunVZJPKVsVc6iGoooCaNJoSt6MF6vFowvEos99RjiU7jdQiPkWz8nAbIclT1IXmrb9CKQShQwMCY59qRyhdO1TO0GDoAZDk+DSQ8e+ngwCMvbg89x962eEjMk=
+	t=1720512165; cv=none; b=JLdN3yjcmCnURbiHuMp+X2qEP4SQuH65Vc7EgjTsoyYuWKmuMQpIXxA3CJtOQlhBCOtXPgpjce2KwfRcMlSGxOh1GVlpfuO5rjA36EPA966Zy9RaHKbi0niLUArFyN5n9MpYkao+WebyRybviv2QAOEI679mAprpdfHr2sx9qzI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720512020; c=relaxed/simple;
-	bh=2Z9frzwd0NBvTHBORtTb5ApRHghWV79ysmsb1TaQVJc=;
+	s=arc-20240116; t=1720512165; c=relaxed/simple;
+	bh=+vBaRI03edLB5xWMveAjscYshlkoOpIt+pkMK8Ze/QI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uJ6Yu7q2pH6Dwjd4lHV2+kVPr7bRihYiSl/cu/yU7RDoSmHAM6fBXPiWmWGZfmndDSWCQCyDO23qvzUnPCJwZP1z3UtKmWSfmxDU/EpjGElu5d2YZRuvbOu4dM1yzUksLTayviZfmPhYkaH4UOGJ+djO383fWrETVRgfz4LMs9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aeeDMRcg; arc=none smtp.client-ip=209.85.216.45
+	 To:Cc:Content-Type; b=U82mshogCHHqav5OeTXjUHO3cPxtY1tsErMbM5WIqP9vBCKXzt+JUVqW9zJdFBp9cWllUQFrkWnSR/zS73EcDQi5y0BQOktI6C34hjXW3RW06QbZAr6I7Mkm5owxd30NhOoONnsKU6CqGUAM7QINkQ5YAdMScPpMd4PcSubftW0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N8XqFns4; arc=none smtp.client-ip=209.85.215.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aeeDMRcg"
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-2c961b5f215so2763325a91.0;
-        Tue, 09 Jul 2024 01:00:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N8XqFns4"
+Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-7611b6a617cso2924282a12.3;
+        Tue, 09 Jul 2024 01:02:44 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1720512019; x=1721116819; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1720512164; x=1721116964; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=rHr6GCIr04Zg+ukzGcMwjVGN5QUCU4bpuoKoDkmBEnY=;
-        b=aeeDMRcgSCcvohZSbDN8q1opB8XKhTOTe20B5fTNBgTnrzS8h/2fCK1vK1WR+E0TL/
-         iBTR5dpe4pNE29x2zG2Clvhm2b+NWzHdAV19zVWoEhxIWX2l3j1QvtMA9qC0SGuOkSJ1
-         zq7h76q/sD9NKb0krx/pKNGLee0LdOqkQB3c5dZNHM2TKt6PFNaKYjm3CNwuOjC3da/X
-         DsDGqAhIZrP2J6KayjdRkEKMdWz0t7cq64WhuqIuNvm5OpP5eP9SCnU5TYyEvZu2dpvp
-         cBmPSmUeoYNXDn82heb4d6kDSPzabn3uMK9n2TQzyTxfp9IlXbt1fnFCv4wRGsVXff3d
-         fiFA==
+        bh=saVEdMntiEIairw273nwNBQX/lPMGFlUAdIrJqbTXIM=;
+        b=N8XqFns4WVOAxPvPHsOWOaftWP+4LDZqd+EmfZ5ERGmrtpfm42fJ25rcqY/UWpZlvT
+         Ze30UC8G6+HPIQt64+H0vM8Ueb4w+2hDpFzRCvb0vQGww3q9vcjfHrqa5+q6uwWektTY
+         AeKzXqXr7mn+opCYWZ5SKkbHtqmnGzcVnIdQxRahUQ8VKgVywKZ/dneHKN96VTE44Mr2
+         4l00M8/pb0u2O9/zhIhUFVLQKRY/JbcLtUp9S8DIEkEJTIJLtnQ9/a0SepHShh6ddrCG
+         zjS+2njiquFjoNN+roFrNnVqmuUQfk5UULeYjEYkYiQngKyjL5f2sppTm56jvvUMr5L0
+         GKRw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720512019; x=1721116819;
+        d=1e100.net; s=20230601; t=1720512164; x=1721116964;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=rHr6GCIr04Zg+ukzGcMwjVGN5QUCU4bpuoKoDkmBEnY=;
-        b=Z4FKZbrMVIj/kMpNEX4MIbSwIbhi6rZgkOwwNplel98uBIgNipOmvPycjroT/ChEUe
-         BNVU8gELeGIUf/ltnwHM0Gm0BfSPbPNaxXv0lhVyvlzmuyDt19YfFdbdnV5EjaFzYw6Q
-         VI8YJni2ZNO0j7E4Fpgm0VaQgEFGnsr72oYmneG01fOMHiZ8+bREN0tMQRfyxML4dV3l
-         RoY7WPMzMrXnr6BjUEK7Fm/k6qIttBfRQ1J81/jTLuGIm3xV/LPWG3vCO+oME3YUSdNx
-         JVbvinjBovAFiNW6BbSbm0lQwDKkplqGxYL2hJGeOCTmQ8C37dqKSw9Z7YDXROGCCdPc
-         4+PQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVcQe/+JWsw+IntosrnJ+Tj0IOJbDLuAG5giJ6JZxmhs9jAFbOSNEqT+HWNpjJFHVu+7xui3eqPQrfSvItws6yAryyAra1rbioFxmPYPpthBd1zq6tr2Zd3AlqpxkizvOr3sTvj/rmcLnDs+TFqXNRAYp6x3djopa//iUHEYUKBPYueldy0uvM5eJs=
-X-Gm-Message-State: AOJu0YzjwrRkIr27vqFbfM4/InYdy/gotj3b9VXk/dyVXfpEs/jOSY7y
-	q3KwjSq3H330eScBNEGeFiXcx0aDFYiMleebOftWdiHoSfcA6nMCbJlY2rpWaypiG4oxsSpIVFj
-	nykA+yjr9DeaZSUF4voWAWn8329k=
-X-Google-Smtp-Source: AGHT+IHPXDx5t+AzSiO3uMf1vO7103wf/cZhQX6ucziXqlj811yqZ+a9d4SMo+EC8Zj65vZ5J9pEAWuHXCw7V74ZRn0=
-X-Received: by 2002:a17:90a:c387:b0:2c9:784b:4a49 with SMTP id
- 98e67ed59e1d1-2ca35d3db04mr1489354a91.38.1720512019034; Tue, 09 Jul 2024
- 01:00:19 -0700 (PDT)
+        bh=saVEdMntiEIairw273nwNBQX/lPMGFlUAdIrJqbTXIM=;
+        b=sH8tWn+37ML7x9HGUtJric7Cv1HVrO4bppmVb2Zk+leDFYGv1xr1ZIAaG8J2vvohlD
+         bruGpeSi/aFsI0WOXpCz+x8uhAhtTVsBe4L2/jyUdgTXbjDA+eQRLy+hxoVrxLoX08UC
+         jG4DRQlbhcG91MNqwpJlPgP902eB+ULM4GAeAuVyhXvRjjlWr2wFspyg8qQmESW4AFUf
+         PIsTM5aqTYIS6TqNA00dKVExr/9psEEN/LKq23oo7k4Weo9mJQyuZ2eWwFc1VqcZ7IRO
+         tZJW7OLEDln87AOQhiDhwVQDJ31HBA2RSL83ummVSnOZtMciJNVrOLc6xJ5JWhUUFvpt
+         K/vQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUUsmDvwbRi6nffM4TgRqwN7AIoGJwO4M2utI4a5h12YM8VasbniqdaoxPSnscS1dPSOO5LtBJkhDjnEZWKWyMjCzQOscqaJ4wj453CLXY5tookibyCICTg2oc/YmG0jDKaqoZFjyhdlV1uQtE=
+X-Gm-Message-State: AOJu0Yw83jf/IO43/awIVc/dUVkAZsESaNZxjjGeaMnoP7a5ce234ajP
+	FrtOW4rW1JUjpw4bvpsCQUGjdtblTft4X7aQwWCK9pKKqWwaxDAHOwYIBigJfCIJndTXrOCXnaY
+	+VyyAKgJ45e+0Ep+q9wskB3NY+UU=
+X-Google-Smtp-Source: AGHT+IEPaWXpA6bmFKESHiOBiuFGzYAxm69W6WWM8L1uIfwQ+XFOV2DF++TdJgb0DyDbfC7rvCdAhc7gcrok6IqEFcA=
+X-Received: by 2002:a05:6a20:e609:b0:1c2:8e3f:a5c with SMTP id
+ adf61e73a8af0-1c29825044emr1612336637.35.1720512163784; Tue, 09 Jul 2024
+ 01:02:43 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240628004356.1384486-1-jhubbard@nvidia.com>
-In-Reply-To: <20240628004356.1384486-1-jhubbard@nvidia.com>
+References: <20240528-alice-mm-v7-0-78222c31b8f4@google.com>
+In-Reply-To: <20240528-alice-mm-v7-0-78222c31b8f4@google.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 9 Jul 2024 10:00:06 +0200
-Message-ID: <CANiq72kEBCx=6Wab=0dSVkXeoYsR-=pYv7CA=8wJgVOxqwkiDQ@mail.gmail.com>
-Subject: Re: [PATCH v3 0/2] Makefile: rust-analyzer better error handling, documentation
-To: John Hubbard <jhubbard@nvidia.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Greg KH <greg@kroah.com>, 
-	Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
-	Nicolas Schier <nicolas@fjasle.eu>, Alex Gaynor <alex.gaynor@gmail.com>, 
+Date: Tue, 9 Jul 2024 10:02:32 +0200
+Message-ID: <CANiq72ka=tMDHq3S2N0dkzj0DBje+kdz0nFtaQZ9RHC0rbii0g@mail.gmail.com>
+Subject: Re: [PATCH v7 0/4] Memory management patches needed by Rust Binder
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
+	Al Viro <viro@zeniv.linux.org.uk>, Andrew Morton <akpm@linux-foundation.org>, 
+	Kees Cook <keescook@chromium.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, Finn Behrens <me@kloenk.dev>, linux-kbuild@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
+	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
+	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Arnd Bergmann <arnd@arndb.de>, Trevor Gross <tmgross@umich.edu>, 
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Christian Brauner <brauner@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jun 28, 2024 at 2:44=E2=80=AFAM John Hubbard <jhubbard@nvidia.com> =
-wrote:
+On Tue, May 28, 2024 at 4:58=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
+rote:
 >
-> Changes since v2:
+> This patchset contains some abstractions needed by the Rust
+> implementation of the Binder driver for passing data between userspace,
+> kernelspace, and directly into other processes.
 >
-> 1) Used wording suggested by Miguel Ojeda (thanks!) for the
->    documentation patch.
+> These abstractions do not exactly match what was included in the Rust
+> Binder RFC - I have made various improvements and simplifications since
+> then. Nonetheless, please see the Rust Binder RFC [1] to get an
+> understanding for how this will be used:
 >
-> 2) Added review, testing, ack tags.
+> Users of "rust: add userspace pointers"
+>      and "rust: add typed accessors for userspace pointers":
+>         rust_binder: add binderfs support to Rust binder
+>         rust_binder: add threading support
+>         rust_binder: add nodes and context managers
+>         rust_binder: add oneway transactions
+>         rust_binder: add death notifications
+>         rust_binder: send nodes in transactions
+>         rust_binder: add BINDER_TYPE_PTR support
+>         rust_binder: add BINDER_TYPE_FDA support
+>         rust_binder: add process freezing
 >
-> Finn Behrens, thanks for your reviews, and please note that out of an
-> excess of caution, I've only applied your reviewed-by tag to patch 2/2.
-> For patch 1/2, the wording changed a lot after you reviewed it, so I
-> couldn't quite convince myself that the review was still fair to claim.
+> Users of "rust: add abstraction for `struct page`":
+>         rust_binder: add oneway transactions
+>         rust_binder: add vma shrinker
+>
+> Links: https://lore.kernel.org/rust-for-linux/20231101-rust-binder-v1-0-0=
+8ba9197f637@google.com/ [1]
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
-Applied to `rust-next` -- thanks!
+Applied to `rust-next` -- thanks everyone!
 
-[ Reworded title. - Miguel ]
+[ Wrapped docs to 100 and added a few intra-doc links. - Miguel ]
+[ Fixed typos and added a few intra-doc links. - Miguel ]
 
 Cheers,
 Miguel
