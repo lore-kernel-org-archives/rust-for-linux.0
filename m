@@ -1,29 +1,29 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 905BC146016;
-	Tue,  9 Jul 2024 09:11:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 479AE42058;
+	Tue,  9 Jul 2024 09:12:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720516298; cv=none; b=YDua6iAylZ+2qFtwuE6b8BHruvrRNuSVT/+gYHY3NY9BaQH+JxpOo1TlLPMPpWvgZjaIq5HktOptewvWjwTVO07EW+stuDFOta6MgE1q0PoaTSMzZztzeYknA6N4jTlfxln9erqSPeEgZm5umWQwCZfxb+c0+m1WxnN9rDGASkk=
+	t=1720516347; cv=none; b=JBdE2py5rEYy0xndyV30OAHD+sWr8MRbJYI45Rh3GkpvMpgMp9gQqmo4DbI48GLpjWkmj27JOhSBRj9hnvBT98asYUtWjEAXzdeTHwSzi+4eJZ+E2UacJDZBENBxx9/t0aIB1XZUF5VAoW1uadoojIxbtg1/KtDHC8tBq2lurfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720516298; c=relaxed/simple;
-	bh=bF04r8LuquU/qir0aCll9+NDJrFTCzvu0tF1oglQD78=;
+	s=arc-20240116; t=1720516347; c=relaxed/simple;
+	bh=b/0wVpcZTr4G/VUEJ8mNFiEeZSUCxOw/iFz5OcDVYKs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=YgXYYx8bcHgqrrhYxIPyHwZw2Xc0/GZtzEhJTW615oZ/4zaIyMfS38Akt41XXYHr7KFqfJf0IU39fFdbn5kHH9jhoCBkQ9NPgv/kHzlmdlkIchVJtcEql2a0tPJPIT+7ynhc97cNsAxv6BeyGrpTnNgW+B4M5HE+pbiRyzPUomM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ms/nfM4W; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=Gqhe+F7+IvuH9BC5rCBM7yKoxGfTJPGNcWIfMK87Op/h27bZms3p/CVE35wfT2RShBuHd3wQQ3WNNYCG1IwTTilN3YSJhVItZm0tM/bwGLfDqjh7s9TlFrmwightOuvLeeC3+PXVZC9f2ddnpCsZDZLvWs5Cddpjs6grTeQSazg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zO3HIz6D; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ms/nfM4W"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D1BEC3277B;
-	Tue,  9 Jul 2024 09:11:37 +0000 (UTC)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zO3HIz6D"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47920C3277B;
+	Tue,  9 Jul 2024 09:12:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720516298;
-	bh=bF04r8LuquU/qir0aCll9+NDJrFTCzvu0tF1oglQD78=;
+	s=korg; t=1720516346;
+	bh=b/0wVpcZTr4G/VUEJ8mNFiEeZSUCxOw/iFz5OcDVYKs=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Ms/nfM4Wxk8p5OGqAW6f8WdhgRTO9uLKNrF812GfyLcaO2s4aAXI2r1tC2P6vRjj/
-	 xdrWu3TDW4yyvZsCvtkJdY+hilXEPP5fPcy4ea6oVeQOCRpXTs2xnFCZsk1YEq7X17
-	 6Cc0ici7NOLuyh/tqjqK0+xDXxWdYzGtzz7cKkKs=
-Date: Tue, 9 Jul 2024 11:11:34 +0200
+	b=zO3HIz6D3go5oKHNJHNNgsd7NduYEFclnADP6yQ27XoOjKG3IGYM40qB570CIR2x4
+	 YopSTiPZvfzl10XahTyOPVmXgSIWvmjmIm1MY+3ouUhMaxA2HCLbkoOmAxj2zCcYm5
+	 q33KgL5SMJYfvmhvn8APX/bJVe0yUK232fwDXfIs=
+Date: Tue, 9 Jul 2024 11:12:23 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
 To: Jocelyn Falempe <jfalempe@redhat.com>
 Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
@@ -41,9 +41,10 @@ Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
 	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
 	Danilo Krummrich <dakr@redhat.com>
 Subject: Re: [PATCH v2 4/4] drm/panic: Add a qr_code panic screen
-Message-ID: <2024070951-tall-effective-c916@gregkh>
+Message-ID: <2024070947-exorcism-purchase-2f28@gregkh>
 References: <20240709084458.158659-1-jfalempe@redhat.com>
  <20240709084458.158659-5-jfalempe@redhat.com>
+ <2024070951-tall-effective-c916@gregkh>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -52,21 +53,26 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240709084458.158659-5-jfalempe@redhat.com>
+In-Reply-To: <2024070951-tall-effective-c916@gregkh>
 
-On Tue, Jul 09, 2024 at 10:40:10AM +0200, Jocelyn Falempe wrote:
-> +config DRM_PANIC_SCREEN_QR_CODE_URL
-> +	string "Base url of the QR code in the panic screen"
-> +	depends on DRM_PANIC_SCREEN_QR_CODE
-> +	help
-> +	  This option sets the base url to report the kernel panic. If it's set
-> +	  the qr code will contain the url and the kmsg compressed with zlib as
-> +	  url parameter. If it's empty, the qr code will contain the kmsg as
-> +	  uncompressed text only.
+On Tue, Jul 09, 2024 at 11:11:35AM +0200, Greg KH wrote:
+> On Tue, Jul 09, 2024 at 10:40:10AM +0200, Jocelyn Falempe wrote:
+> > +config DRM_PANIC_SCREEN_QR_CODE_URL
+> > +	string "Base url of the QR code in the panic screen"
+> > +	depends on DRM_PANIC_SCREEN_QR_CODE
+> > +	help
+> > +	  This option sets the base url to report the kernel panic. If it's set
+> > +	  the qr code will contain the url and the kmsg compressed with zlib as
+> > +	  url parameter. If it's empty, the qr code will contain the kmsg as
+> > +	  uncompressed text only.
+> 
+> meta-comment, should we by default do this on a kernel.org domain so
+> that no specific distro has to worry about hosing this type of web
+> service?
 
-meta-comment, should we by default do this on a kernel.org domain so
-that no specific distro has to worry about hosing this type of web
-service?
+Also, do you have the backend source for this to show how anyone can
+host it themselves as well?  We can't add features to the kernel that no
+one but closed-source implementations will use for obvious reasons.
 
 thanks,
 
