@@ -1,96 +1,81 @@
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 676B814C582;
-	Tue,  9 Jul 2024 07:52:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AA7F14B953;
+	Tue,  9 Jul 2024 07:53:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720511552; cv=none; b=GgQNBZH4raq1xCe4N8BWTvXL4BZhkckTbUOicgC557Lub6TRRIspk6v6KdrKKRgq1uNuHg0NqLCaJWVJ79p70p0MbeHtWeAtwhgSGN5mH7tQwROo7m+UHLtMzHAysHlh13GEaMaBXXBIQDT2hCPYrLa6XR0Pgv9zT3jg4T4+bTs=
+	t=1720511598; cv=none; b=cVajDFHHyxDHxD6/zkjQROu6G6VMaYdwBfishwRz/I8GRc9mgES3lFPzaQTTbEK6zU+c9V71OGRuuZfntTkXyLfyQDwxIDQHMmPY0sJEBhjpuftlC5yFL0O1ruu9fF/39pOYr4+u6aETAw4uUSZhHtR58bhD9PNgCtyRUhMrxw0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720511552; c=relaxed/simple;
-	bh=4huwY83Cip/KiWjo4Fuer9HzRe1argLs9dYsNwYiwCk=;
+	s=arc-20240116; t=1720511598; c=relaxed/simple;
+	bh=WL22tWo76BWT65KwutB+1xbSc5DFUkHPdjYuOrTOH8s=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=SZ51QqCn7jtzKfcUTLgoDDmQtzM/sX+DtU751bd2GC4GBGvKLoeAbRMQO5EeStlO/HyJraj/FZrbyHWRZCxsrMjqcA88uAnVMT8OBF1EBTrLmsWrvVInHg2sKSZiZ+He1cyie2FoH738PhoWi+3bSDl1Ei/X1ylfJcdQyNMklHs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OTsCVGJj; arc=none smtp.client-ip=209.85.214.182
+	 To:Cc:Content-Type; b=Iwk236RkgNgl3Va/JNaPZ4E2nWHEAmAoDEZcBYYU8V6F/4ox/XgFNXgEAUhvyW4viGESYiPZVYdKH+DF8/iY29kveLBNZretxjuvZV7B7socJyiB98geXGi0rA2NPd+g/8DsNYjCfFBEljNVPnyXlpxMU98HCu/vXvIcZo2p9Kg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GX+HUnte; arc=none smtp.client-ip=209.85.215.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OTsCVGJj"
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-1fb3cf78fa6so26694475ad.1;
-        Tue, 09 Jul 2024 00:52:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GX+HUnte"
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-6bce380eb96so2607460a12.0;
+        Tue, 09 Jul 2024 00:53:17 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1720511551; x=1721116351; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1720511596; x=1721116396; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=4huwY83Cip/KiWjo4Fuer9HzRe1argLs9dYsNwYiwCk=;
-        b=OTsCVGJj8R7nQBFuypASYjXya3L+KwpY1Z5LowwHXA4LyMgekLrudzZheYulEgkjg7
-         b6la9qU0W78xkZpSonEMTtdW3Lo/dWhATnSNs+jPDX/ewRNt7vBd7ivvBYRs6FZQyQUw
-         Cpxb+FxXPCB2MnZCYnzr+d4A9jip3N/GatSX/aZ/N1VoJ+kEYj20dusFLXZAwIV7iF/h
-         vh9H4snDNo27XeHbq8i0fClPAKpzLZ+Yfc/qtMdOxwfJNktM7XXbbUYYNydCjOSaogYc
-         zHhC81W3KAEGDp0tp/Te8ITsysL0pDoPUIZDpGnmY904k8RCUARMKg93ktWgnwhCXNsq
-         orlg==
+        bh=WL22tWo76BWT65KwutB+1xbSc5DFUkHPdjYuOrTOH8s=;
+        b=GX+HUntehSdaVUCCeevzlQUtwVDqWYQNNku18aq/q0/8NBXDA0AYuRdDBw/Ogo2a+o
+         /Ti8nMok2B/+j74+aJhe5Fu+jh1yHBXnwugheBJmrOaYkejcU+0hmL2bA5/1gBayNYL7
+         J+Rt+fNqUYwNwBRLmBENda89XWDIfIIye6IuKyRUQfBNmIjfaMI27XSrBjtAPH02RbbM
+         Vodwwu2FIS/8t/yR+phatI18aRjtYDLd339Ve4IR+BFe7xTQ78LE9jh2E0Z9Iono/FTT
+         RRpPdIScY7/rzJJjL6+4O1ynwh5co5UEPBXySTK0/+QsUMc3ojG/YnyQmoRZm6eDXt8f
+         uPJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720511551; x=1721116351;
+        d=1e100.net; s=20230601; t=1720511596; x=1721116396;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=4huwY83Cip/KiWjo4Fuer9HzRe1argLs9dYsNwYiwCk=;
-        b=wQ/NNlSl5+IVLSWCwPjpVyEnK900HFANe6Eu7VuV2vnvuuraFxSM2VQYjIQKgiIY7z
-         AeYpNNuWmMrYUWPB6sgb3l1uCDB7s74Acil+S1ovIP4O6ByN/rLsqEoHNpxRzu0f4HVg
-         Emz6bzX0r9gpzwiT+8Z9X5hUuhV/KKK3mmhPlKKlTm/UnyYLFjx6m5oRazWvzFpDJYhW
-         +SGjY5OFl98r1LjkOZRXSNB8m/2Z9aTarrp7qhbeJYOUl7i0FMwU+NS8oW8qQ2rTuVI5
-         Atmrdp4F2K/3FNEq7tbmsxKkSQWEGAq9dMlNtCJWoj5slmiUA9hB0XUjgGq3oWI6QNLe
-         3chQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXWFdw3w/uQI8B9If/fA3JILg1lwVP2r3tyHE8wfnrhCDRjTi2HcLug33QdONny03KdX5Dei7/j6wVIyPYGloEEcC9MJuEZaY3qUDn09dEBNPPsIUgyJtS8re9YheI55wC+gn49eAg7AS0Nen1+zyPxKGFBhpFeoCWOYxgs8VEqCZsx8JneYRIGzzo=
-X-Gm-Message-State: AOJu0YwN2zOJcRe6ZRdCwxSpsPcBUocxpPAl40pKoPSJYvu+fJB0gXpR
-	QE8U94FeR/4KMIuPc2fsaGPIA38p9QALOlnyIfFAiNixhkVvU7bjt+WWsUnTjUv/lBhrip9hYYo
-	qceN2oPBEhfhY+E9uzboiZdjWtNM=
-X-Google-Smtp-Source: AGHT+IEsiTEi2w47DuEz12pAyq/B0P5SMlLRpynlMjhW49xEuBs4PU0+67uU2G5y8PKx5VM+2zmkAZyJH+aqcKZ2NZA=
-X-Received: by 2002:a17:90b:5384:b0:2c9:6ccc:2fbb with SMTP id
- 98e67ed59e1d1-2ca35c6cad8mr1496604a91.24.1720511550658; Tue, 09 Jul 2024
- 00:52:30 -0700 (PDT)
+        bh=WL22tWo76BWT65KwutB+1xbSc5DFUkHPdjYuOrTOH8s=;
+        b=u1CEPL9QS6elYK9WNtg5q5lNiNaLLgUnreFlYBPaGdLolOP+Y3efC4FwugNjHfjYs3
+         zyA2JaZOq6k0X4lhDSSWeOMSConi5E+QMei3WnxfeCtdStMPh4GHIn88RgPaYXync9w4
+         BlHDXxx8BkLDDBTlvk+t/97oAjmhWd4x7JukvaFzWVovcXNxn5t02Zya3AXiWfqtXR9r
+         t2UO+M3sKkmopejfl04U0AuzGXeJnq1CSbex55HT88deko/cglmqtnruMWGNJX4PrT1o
+         7374jmp/CodaPf7d5TsS26cJ7QyjjXrS/iaWylPHuuM6m1iIQ3YNpSg7X6jPLxXl3DGE
+         iNpQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW63vQ+qrhGwhOFRb0dAWsEcGg16NXBkbjHi1noj7J1ePzq0EcUUzIE8NpRleahFikQZk9WTPyy8xKahlwUzjjC5hYiDLbXuOtscXyWgzwCwtmAByvcONOemgKEe34J7y4O1Vnfkah/FcvKUnQ=
+X-Gm-Message-State: AOJu0Yzddzvdc9gVPianLfR0Exqx/EHHsejs0EEK6irHn3pd7U9oLe/A
+	+qOL9bMJK5y5EEmRlqHI7739VaNck0Tnuj9JshkoeDsd9ILY2kdSk+tsm23vD/ucVF8wlttcET0
+	wbP14b1+8apn5XIA9+KfeyLXMbP6Swv3X
+X-Google-Smtp-Source: AGHT+IHdWDw9UdaaXy/Z7v8pfOYL798N0YW8rQD1Bhqk0iolkyAOuJVTMcEbL3Q5tWEHY5nmkUKA22P8obNbE55vdW0=
+X-Received: by 2002:a05:6a20:3d8a:b0:1c2:912f:ca70 with SMTP id
+ adf61e73a8af0-1c2984cf0c0mr1628798637.42.1720511596600; Tue, 09 Jul 2024
+ 00:53:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240528163502.411600-1-ojeda@kernel.org>
-In-Reply-To: <20240528163502.411600-1-ojeda@kernel.org>
+References: <20240529083452.779865-1-aliceryhl@google.com>
+In-Reply-To: <20240529083452.779865-1-aliceryhl@google.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 9 Jul 2024 09:52:18 +0200
-Message-ID: <CANiq72=FUyYgv0Ng__A4GYh=dxpDD7FF=Fr9_pdo_HRithuAFg@mail.gmail.com>
-Subject: Re: [PATCH] kbuild: rust: remove now-unneeded `rusttest` custom
- sysroot handling
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Masahiro Yamada <masahiroy@kernel.org>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Nathan Chancellor <nathan@kernel.org>, 
-	Nicolas Schier <nicolas@fjasle.eu>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, linux-kbuild@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	patches@lists.linux.dev
+Date: Tue, 9 Jul 2024 09:53:03 +0200
+Message-ID: <CANiq72m0=Fmz8yq6r4Xp-xd3eN+CGsnyApkFjNxjO4H6p2RxNg@mail.gmail.com>
+Subject: Re: [PATCH] rust: alloc: fix typo in docs for GFP_NOWAIT
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, May 28, 2024 at 6:35=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
-te:
+On Wed, May 29, 2024 at 10:34=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> =
+wrote:
 >
-> Since we dropped our custom `alloc` in commit 9d0441bab775 ("rust: alloc:
-> remove our fork of the `alloc` crate"), there is no need anymore to keep
-> the custom sysroot hack.
+> Fix a typo in alloc.rs by replacing Ror with For.
 >
-> Thus delete it, which makes the target way simpler and faster too.
->
-> This also means we are not using Cargo for anything at the moment,
-> and that no download is required anymore, so update the main `Makefile`
-> and the documentation accordingly.
->
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
-Applied to `rust-next`.
+Applied to `rust-next` -- thanks!
 
 Cheers,
 Miguel
