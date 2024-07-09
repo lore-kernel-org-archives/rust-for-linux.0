@@ -1,121 +1,148 @@
 Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4217514D705
-	for <rust-for-linux@vger.kernel.org>; Tue,  9 Jul 2024 09:46:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D32B515575F
+	for <rust-for-linux@vger.kernel.org>; Tue,  9 Jul 2024 09:51:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720518410; cv=none; b=iCvVEPh8tUACB3by7RE8AjJPguuYP4JsVs6PFdUaRp9Jzczr6nwW2ef+BScS4PaxS1l51NSCFRQ+9ipS2wP3lRUzfio7z8OiNZnXgckNzOOXlIrACkPXYuWMfBd+nOCzn9jgM28pBKpqHEvY3yp4Q80FdTXl+2I6c8t7czwvTbk=
+	t=1720518705; cv=none; b=PP7tSZHdZoa//GXwiDrLLJ95HIt3C6jhaffwRfIAtnW9mKhlSCuEIdx7+I05n4FPl8z1rXEqu6quLyy641KzGAN69DZZrG3hWEgL1V4LU/7fvMtl7FcYGN7jd1+dTMmmAMjZblfkbI5DQJ3Y5zLxoj71v/UQEX3oDNHHneHCU0w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720518410; c=relaxed/simple;
-	bh=eCQQDFY8hVymXwxKp1QUQeYKDxSsetFoWDv41bgZWKw=;
+	s=arc-20240116; t=1720518705; c=relaxed/simple;
+	bh=4XuEKNFSFuGP1kN6L/yXHwpYHIvQcGA6Ng+fKkoMgZQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UEpXCqIOPIgYx18M2yMwVQSJIhMwCUdUx/pWZPx/hOyxny3QXOExEyWCaTkE4/V+K7kli/okg3JSflD5vqIAjuZfu+855HbkdKR3/jrANLnwOzHWeEdUtbNm0/5SXv6gMFfmFfCVRYJelQ6Rpw9IHvSG/xl4JQCQrPaPgzjVPJY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Q5TI4TJJ; arc=none smtp.client-ip=209.85.221.52
+	 To:Cc:Content-Type; b=drm0WrIZSy/CV8r7Q9VSThCHdoSk/1dPJNnMYiQl2xunDVF6ewXgxYCSTvFpI6LYf9i/pGVYRju78uNTD68ITt3KDz9vbqLl5brfUzwfee9kcM5Ua8AV+cnAhY0F5brdBPc4Mp3eMVfiE7MN2qpbTBEGQayWnDVInirZZW4Mxl8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=yyb5N2ir; arc=none smtp.client-ip=209.85.221.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Q5TI4TJJ"
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-367940c57ddso3248039f8f.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 09 Jul 2024 02:46:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="yyb5N2ir"
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-367a23462e6so3049903f8f.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 09 Jul 2024 02:51:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1720518407; x=1721123207; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1720518701; x=1721123501; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=kAl22PofvTioHWfNt+bF1Jl2BsmrDxNKveilF7T4GJg=;
-        b=Q5TI4TJJPfT9bqIXr+lPrwz7V5Za4GRxc4NhyGxzc5g9TwPpb+ne9WJn6PHu8U3tZL
-         H1obsd85mEaSLKu3Wsjgzjbf6WjTRdx4s71PjMfPWo0KFMy3a1sNbVt9ibuRkqWYaTE+
-         JBDFeb9CG2x5AUyS9jnPUBS9Kuq7KV+zHOXXhiGfJxLsxz6S1PhXYEQlgXE7q5I1mfOm
-         zp0U/HZai/8Xju4cV6cZSkqMYHzTaLPKnLjtDoSwx9EqX2AYqAj1Mnfc2OP3yPhakDfd
-         5obGbXT4uXXYFxUp3e3/P5eFkqL0Uv7e/95M1ksbNJI3YZljAUEJEB/Y7HfFTZeWKuqd
-         TOqQ==
+        bh=WX06ye1J6PdkCSj3zoT0ZMNvrT9EtWcEE/YdxpESa/0=;
+        b=yyb5N2irZdWL3EoE/fIxaNNT+g4AhZsV/eqyI6APYMd0IowCK/M66I8riz3A8WhD+M
+         4UrQuId8DH2+iFO8yDPIVbtMD8HPuL0CsssOgj5xTGDZv622hrZ+s/PmVakOChIK2Akc
+         wOf/6KACM1FexWKMRxBZoWgJ6zewOf6IbW8GFuJLAuKtKK/7c2xF7sENofscC8/REOQ7
+         uqgNF8OiX5qaTxkqYWIQZDFQVxJFSXQuccBiBtNK2lLnr4nDz25Vhc1tTyXOm/RbwSfL
+         /rbphmMJqNuFa01G+LYr2QntPPTB66B8p5SI/hrKFindXOXoxNqIJsouQP4/IInMd0Yl
+         7eAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720518407; x=1721123207;
+        d=1e100.net; s=20230601; t=1720518701; x=1721123501;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=kAl22PofvTioHWfNt+bF1Jl2BsmrDxNKveilF7T4GJg=;
-        b=MWqgVKhHeOiZ840bZZI/KHYk/pSejS8zKMyAndggRVPA/3gesiDxqIPx4OC3qizVAa
-         SMfJPM032T9vURxXdwdwdV4uQM1H4wX+hI5sQxPhWZ92sqhUjEcT69/REGPq4cKyEN68
-         hpilImft4uUJU0Z0AuCsOcFAMhlJEn9eHMq5dZtZPPyRgaiz5381Ky+X8rac/9wC8Sfn
-         wzInsytipmjNYxPiLOD2ClaVcu2RYkLySn5X6N+YSFN3ZvM2ligLrvZLnNzQgLPgXabe
-         kkbEKcLZ1FxhnsrMFhoovmd4mV+3zXXU7qG/6iZjJr9jbBaDzuQtHiRhC8ZcM3oWXL78
-         7Ogw==
-X-Forwarded-Encrypted: i=1; AJvYcCVvxmqw2VcIbQtDj+rb8KQb5LM1lHLh7h000IXftFwxL3xfCqI2NSr0EdACVwMR9HD3YM2I2oYD3y6mhz1yra24JxIhq4t5TJ5oM0e+i5w=
-X-Gm-Message-State: AOJu0Ywf/FE9eGNNeYNkkePOV3z4COA0BEeEk5+eqldGePlPf3sD2b7K
-	7bOnhDyznfX3K86tVWX2bX0hbVJHM+cRFBcsNQXvT+IDDL1UkuWxmn0ccQdfqGIgYYT/iyAve3W
-	AIyj5E/KHw5m2S3jvrCK4Xt4ENjNC/otgfBPk
-X-Google-Smtp-Source: AGHT+IFlHTSp/MVSEbMZitGmqh6j910gE+cVPG5i5gaBlx/eMJDN2xZthp+2hnjGAc7uIFJk4Z+rinA4ANAty8nqf8s=
-X-Received: by 2002:adf:fe4d:0:b0:360:7812:6abc with SMTP id
- ffacd0b85a97d-367ceadb1edmr1187247f8f.60.1720518407332; Tue, 09 Jul 2024
- 02:46:47 -0700 (PDT)
+        bh=WX06ye1J6PdkCSj3zoT0ZMNvrT9EtWcEE/YdxpESa/0=;
+        b=cDI2pxALe11xkT4+KsxhBJpmhJNh25cbo+gXdGul/l8ZGVk4AAPAF43NRFNgZSEb/o
+         LprRFpG0cWcmcMPAtJORk928i8Kz7YfVEOIAkXX8+WR+6oMF2pzhcQeM8elRN/CURxVI
+         gzEA2DX2tTqsyRHRzdgdMwQ/w9pM3mTj8/S7I1b8DvYmGBfhRma+dwgx4zMB+/MtvHTn
+         5ufKYGAYkr6Y6UpfXTXfLTFAhqbJSFsu01pUC883KYt/qGIgYxVWJ2cjJly1Kvzewfzl
+         tbsT0WZ315kyzbKYcu0FEIPZYg8uHZ5XDcu0HEh0FzoU+ryUYLUBCdDzfqqbVq85MwUY
+         78Gg==
+X-Forwarded-Encrypted: i=1; AJvYcCV0u8/Hp3wRfaiANFKUvi/37OkHWbJL8D3V080PClsXP9qlWQ5tMlY8QjkSwteR9FE+9yu/MYAafgXLU5sy50KSlsesTCAGEurULQBwxoQ=
+X-Gm-Message-State: AOJu0Yx41FwmIXIU4tm8z4VYifShvo2dGMxML75FmmFfufzZyaabpQ+y
+	nlmhId3Z+RVh0ByYiIbbkRinhngBIFvYrG/hZL+oJeb6+kqwQyiIzmnZ0u7le0FWKjayk/VZhjL
+	hLcPrlpc4FPdcbIVY3odlxK4AxVm8daSpVsWv
+X-Google-Smtp-Source: AGHT+IEEa+ZOMuIVJB/R8kPUjfwxKMD1OHTTc3Vy0AHpNhSOsKMUU0Dz5ToEd38VyMlsqy8uUowwm6nPboz2Ks1ZR7c=
+X-Received: by 2002:a5d:6da9:0:b0:367:88c2:bcfc with SMTP id
+ ffacd0b85a97d-367cea46beamr1873409f8f.1.1720518701008; Tue, 09 Jul 2024
+ 02:51:41 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240528-alice-mm-v7-0-78222c31b8f4@google.com> <CANiq72ka=tMDHq3S2N0dkzj0DBje+kdz0nFtaQZ9RHC0rbii0g@mail.gmail.com>
-In-Reply-To: <CANiq72ka=tMDHq3S2N0dkzj0DBje+kdz0nFtaQZ9RHC0rbii0g@mail.gmail.com>
+References: <20240704-shadow-call-stack-v3-0-d11c7a6ebe30@google.com>
+ <20240704-shadow-call-stack-v3-2-d11c7a6ebe30@google.com> <20240704-unless-cache-8a971c244348@spud>
+In-Reply-To: <20240704-unless-cache-8a971c244348@spud>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 9 Jul 2024 11:46:35 +0200
-Message-ID: <CAH5fLggUcj=qne9uO8O=OGZgcwbhKMAJKpPe_s6Nd2Bbd+45JQ@mail.gmail.com>
-Subject: Re: [PATCH v7 0/4] Memory management patches needed by Rust Binder
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>, 
-	Al Viro <viro@zeniv.linux.org.uk>, Andrew Morton <akpm@linux-foundation.org>, 
-	Kees Cook <keescook@chromium.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+Date: Tue, 9 Jul 2024 11:51:28 +0200
+Message-ID: <CAH5fLgh850oUinnGS=1A47Es11qc9OL+Kw_6d-_Lvx7jcQmj=A@mail.gmail.com>
+Subject: Re: [PATCH v3 2/2] rust: add flags for shadow call stack sanitizer
+To: Conor Dooley <conor@kernel.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Jamie Cunliffe <Jamie.Cunliffe@arm.com>, Sami Tolvanen <samitolvanen@google.com>, 
+	Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
+	Nicolas Schier <nicolas@fjasle.eu>, Ard Biesheuvel <ardb@kernel.org>, Marc Zyngier <maz@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, Mark Brown <broonie@kernel.org>, 
+	Nick Desaulniers <ndesaulniers@google.com>, Kees Cook <keescook@chromium.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
-	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
-	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Arnd Bergmann <arnd@arndb.de>, Trevor Gross <tmgross@umich.edu>, 
-	linux-mm@kvack.org, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, Christian Brauner <brauner@kernel.org>
+	Valentin Obst <kernel@valentinobst.de>, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jul 9, 2024 at 10:02=E2=80=AFAM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
+On Thu, Jul 4, 2024 at 7:17=E2=80=AFPM Conor Dooley <conor@kernel.org> wrot=
+e:
 >
-> On Tue, May 28, 2024 at 4:58=E2=80=AFPM Alice Ryhl <aliceryhl@google.com>=
- wrote:
+> On Thu, Jul 04, 2024 at 03:07:58PM +0000, Alice Ryhl wrote:
+> > As of rustc 1.80.0, the Rust compiler supports the -Zfixed-x18 flag, so
+> > we can now use Rust with the shadow call stack sanitizer.
 > >
-> > This patchset contains some abstractions needed by the Rust
-> > implementation of the Binder driver for passing data between userspace,
-> > kernelspace, and directly into other processes.
+> > On older versions of Rust, it is possible to use shadow call stack by
+> > passing -Ctarget-feature=3D+reserve-x18 instead of -Zfixed-x18. However=
+,
+> > this flag emits a warning, so this patch does not add support for that.
 > >
-> > These abstractions do not exactly match what was included in the Rust
-> > Binder RFC - I have made various improvements and simplifications since
-> > then. Nonetheless, please see the Rust Binder RFC [1] to get an
-> > understanding for how this will be used:
+> > Currently, the compiler thinks that the aarch64-unknown-none target
+> > doesn't support -Zsanitizer=3Dshadow-call-stack, so the build will fail=
+ if
+> > you enable shadow call stack in non-dynamic mode. See [2] for the
+> > feature request to add this. Kconfig is not configured to reject this
+> > configuration because that leads to cyclic Kconfig rules.
 > >
-> > Users of "rust: add userspace pointers"
-> >      and "rust: add typed accessors for userspace pointers":
-> >         rust_binder: add binderfs support to Rust binder
-> >         rust_binder: add threading support
-> >         rust_binder: add nodes and context managers
-> >         rust_binder: add oneway transactions
-> >         rust_binder: add death notifications
-> >         rust_binder: send nodes in transactions
-> >         rust_binder: add BINDER_TYPE_PTR support
-> >         rust_binder: add BINDER_TYPE_FDA support
-> >         rust_binder: add process freezing
-> >
-> > Users of "rust: add abstraction for `struct page`":
-> >         rust_binder: add oneway transactions
-> >         rust_binder: add vma shrinker
-> >
-> > Links: https://lore.kernel.org/rust-for-linux/20231101-rust-binder-v1-0=
--08ba9197f637@google.com/ [1]
+> > Link: https://github.com/rust-lang/rust/issues/121972 [1]
 > > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> > ---
+> >  Makefile            | 1 +
+> >  arch/Kconfig        | 2 +-
+> >  arch/arm64/Makefile | 3 +++
+> >  3 files changed, 5 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/Makefile b/Makefile
+> > index c11a10c8e710..4ae741601a1c 100644
+> > --- a/Makefile
+> > +++ b/Makefile
+> > @@ -945,6 +945,7 @@ ifdef CONFIG_SHADOW_CALL_STACK
+> >  ifndef CONFIG_DYNAMIC_SCS
+> >  CC_FLAGS_SCS :=3D -fsanitize=3Dshadow-call-stack
+> >  KBUILD_CFLAGS        +=3D $(CC_FLAGS_SCS)
+> > +KBUILD_RUSTFLAGS +=3D -Zsanitizer=3Dshadow-call-stack
+> >  endif
+> >  export CC_FLAGS_SCS
+> >  endif
+> > diff --git a/arch/Kconfig b/arch/Kconfig
+> > index 238448a9cb71..5a6e296df5e6 100644
+> > --- a/arch/Kconfig
+> > +++ b/arch/Kconfig
+> > @@ -690,7 +690,7 @@ config SHADOW_CALL_STACK
+> >       bool "Shadow Call Stack"
+> >       depends on ARCH_SUPPORTS_SHADOW_CALL_STACK
+> >       depends on DYNAMIC_FTRACE_WITH_ARGS || DYNAMIC_FTRACE_WITH_REGS |=
+| !FUNCTION_GRAPH_TRACER
+> > -     depends on !RUST
+> > +     depends on !RUST || RUSTC_VERSION >=3D 108000
+> >       depends on MMU
+> >       help
+> >         This option enables the compiler's Shadow Call Stack, which
 >
-> Applied to `rust-next` -- thanks everyone!
->
-> [ Wrapped docs to 100 and added a few intra-doc links. - Miguel ]
-> [ Fixed typos and added a few intra-doc links. - Miguel ]
+> For these security related options, like CFI_CLANG or RANDSTRUCT, I'm
+> inclined to say that RUST is actually what should grow the depends on.
+> That way it'll be RUST that gets silently disabled in configs when patch
+> 1 gets backported (where it is mostly useless anyway) rather than SCS
+> nor will it disable SCS when someone enables RUST in their config,
+> instead it'd be a conscious choice.
 
-Thanks, LGTM.
+Okay, I'll make that change. I suspect this will also break the
+Kconfig cycle mentioned in the commit message. Thanks for the
+suggestion!
+
+Alice
