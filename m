@@ -1,79 +1,102 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-4022.proton.ch (mail-4022.proton.ch [185.70.40.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 479AE42058;
-	Tue,  9 Jul 2024 09:12:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E6BC155A21
+	for <rust-for-linux@vger.kernel.org>; Tue,  9 Jul 2024 09:25:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720516347; cv=none; b=JBdE2py5rEYy0xndyV30OAHD+sWr8MRbJYI45Rh3GkpvMpgMp9gQqmo4DbI48GLpjWkmj27JOhSBRj9hnvBT98asYUtWjEAXzdeTHwSzi+4eJZ+E2UacJDZBENBxx9/t0aIB1XZUF5VAoW1uadoojIxbtg1/KtDHC8tBq2lurfQ=
+	t=1720517143; cv=none; b=Pjevuzyny0AmDo9mtxjYLYXMMNyJTPL/eRMYOIaXDm3uL8XTNBTowva4Id1VDbbRQmaIcPUzGBBDWKZf2HK25W0BTisZZIPv4poHiowFJFADWCAtfm7ZtEv4Xg4r6cpW1NbtXXzKmf8TQcjIl4RzoPE5Bbwmx1njiVdoBxiK+7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720516347; c=relaxed/simple;
-	bh=b/0wVpcZTr4G/VUEJ8mNFiEeZSUCxOw/iFz5OcDVYKs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Gqhe+F7+IvuH9BC5rCBM7yKoxGfTJPGNcWIfMK87Op/h27bZms3p/CVE35wfT2RShBuHd3wQQ3WNNYCG1IwTTilN3YSJhVItZm0tM/bwGLfDqjh7s9TlFrmwightOuvLeeC3+PXVZC9f2ddnpCsZDZLvWs5Cddpjs6grTeQSazg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zO3HIz6D; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1720517143; c=relaxed/simple;
+	bh=CbggQywMclYItKuSRcDiI3tcqHQqBDwiC81LnGPVLKg=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=qJwizLEyQ9NnT2yOW7ElcFuQJYZu6Y+V3pkIcgrZO34MMZmFSg3eeUJ5f2RNIcTD5DqBW8HIsPnPTkrfdqAQknljXMUZLmij5BJpoXn4HpA2YoV7wTM7ZTdg7p0W+Rh77K7bpADbihllMenN7VMC9BtbdWwGF2zCH9U1E+HX7m4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=metaspace.dk; spf=pass smtp.mailfrom=metaspace.dk; dkim=pass (2048-bit key) header.d=metaspace.dk header.i=@metaspace.dk header.b=Sv/NxuLn; arc=none smtp.client-ip=185.70.40.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=metaspace.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=metaspace.dk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zO3HIz6D"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47920C3277B;
-	Tue,  9 Jul 2024 09:12:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720516346;
-	bh=b/0wVpcZTr4G/VUEJ8mNFiEeZSUCxOw/iFz5OcDVYKs=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=zO3HIz6D3go5oKHNJHNNgsd7NduYEFclnADP6yQ27XoOjKG3IGYM40qB570CIR2x4
-	 YopSTiPZvfzl10XahTyOPVmXgSIWvmjmIm1MY+3ouUhMaxA2HCLbkoOmAxj2zCcYm5
-	 q33KgL5SMJYfvmhvn8APX/bJVe0yUK232fwDXfIs=
-Date: Tue, 9 Jul 2024 11:12:23 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Jocelyn Falempe <jfalempe@redhat.com>
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	Bjorn Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>, linux-kernel@vger.kernel.org,
-	dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
-	Danilo Krummrich <dakr@redhat.com>
-Subject: Re: [PATCH v2 4/4] drm/panic: Add a qr_code panic screen
-Message-ID: <2024070947-exorcism-purchase-2f28@gregkh>
-References: <20240709084458.158659-1-jfalempe@redhat.com>
- <20240709084458.158659-5-jfalempe@redhat.com>
- <2024070951-tall-effective-c916@gregkh>
+	dkim=pass (2048-bit key) header.d=metaspace.dk header.i=@metaspace.dk header.b="Sv/NxuLn"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=metaspace.dk;
+	s=protonmail; t=1720517137; x=1720776337;
+	bh=CbggQywMclYItKuSRcDiI3tcqHQqBDwiC81LnGPVLKg=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=Sv/NxuLnup4HHc1ufAj6dGVSs7s+DPf7SXYovOqdg0AAeb3MMb5L/Ajb3ol8GziV5
+	 mgtETAZ9zk+yUcYhckiI5Ou/hj+cfXGUF4nsMc92EZJhoEFDwI7GSKTQbO1NWAaaU4
+	 KPBEh+lOuRkMjXoMl4ZezCD8n5K/NJgMQtIolM76Uo8VNiqKP8IreexEdrPR/oQHi/
+	 rBleJNlkYGzt3GDl30Yxu9f6xuVfHEpJxq4urE04SJnLF+b9L4xKiwRqy7UnOnLn4J
+	 jvUIR9Cz6axcC85MkCflf4eFlKY8TCYi8310kyZcsQXipXs87m5dq7LyHKeG0D1hGi
+	 DoCj7Aot4/zMQ==
+Date: Tue, 09 Jul 2024 09:25:35 +0000
+To: Greg KH <gregkh@linuxfoundation.org>
+From: nmi <nmi@metaspace.dk>
+Cc: Luis Chamberlain <mcgrof@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, rust-for-linux@vger.kernel.org, linux-modules@vger.kernel.org, linux-kernel@vger.kernel.org, Andreas Hindborg <a.hindborg@samsung.com>, Adam Bratschi-Kaye <ark.email@gmail.com>, Sami Tolvanen <samitolvanen@google.com>
+Subject: Re: [PATCH] rust: add `module_params` macro
+Message-ID: <WayJa_6KjKqqYlkPyVKr-HT2LOGIBgTfNucynbLdrUPm_JusRDoLJGRpOqcUPO2OVWEQDRAqFYBj9vhK8E_NOU66bfE2TK3DgNuxEhQedRc=@metaspace.dk>
+In-Reply-To: <2024070924-darkening-knee-bfef@gregkh>
+References: <20240705111455.142790-1-nmi@metaspace.dk> <ZoxdRjpy2hRndqmc@bombadil.infradead.org> <LHGWBNSEDaOsx4BbADR1pZYqPV0KKhVaJ1Qvwe9h4UPeERRAA4s1DTIsnFR5rpHBGa6uIG1tU_4hTBXgjAc5BNwNqo0Rg_kOx2W_y0EUy_I=@metaspace.dk> <2024070924-darkening-knee-bfef@gregkh>
+Feedback-ID: 113830118:user:proton
+X-Pm-Message-ID: 39e6b85eabb777531f448c0a05d95b4b0ed5c28d
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2024070951-tall-effective-c916@gregkh>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jul 09, 2024 at 11:11:35AM +0200, Greg KH wrote:
-> On Tue, Jul 09, 2024 at 10:40:10AM +0200, Jocelyn Falempe wrote:
-> > +config DRM_PANIC_SCREEN_QR_CODE_URL
-> > +	string "Base url of the QR code in the panic screen"
-> > +	depends on DRM_PANIC_SCREEN_QR_CODE
-> > +	help
-> > +	  This option sets the base url to report the kernel panic. If it's set
-> > +	  the qr code will contain the url and the kmsg compressed with zlib as
-> > +	  url parameter. If it's empty, the qr code will contain the kmsg as
-> > +	  uncompressed text only.
-> 
-> meta-comment, should we by default do this on a kernel.org domain so
-> that no specific distro has to worry about hosing this type of web
-> service?
 
-Also, do you have the backend source for this to show how anyone can
-host it themselves as well?  We can't add features to the kernel that no
-one but closed-source implementations will use for obvious reasons.
+Hi Greg,
 
-thanks,
 
-greg k-h
+On Tuesday, 9 July 2024 at 10:27, Greg KH <gregkh@linuxfoundation.org> wrot=
+e:
+
+
+> On Tue, Jul 09, 2024 at 06:00:46AM +0000, nmi wrote:
+>=20
+> > Hi Luis,
+> >=20
+> > On Monday, July 8th, 2024 at 23:42, Luis Chamberlain mcgrof@kernel.org =
+wrote:
+> >=20
+> > > I'm starting to feel the same way about modules, but modules requires
+> > > more work than the firmware loader. And since I also know Andreas has
+> > > already a lot on his plate, I'm at a cross roads. My above request fo=
+r
+> > > the firmware loader made sense to the person working on the firmware
+> > > loader changes, but who would help on the modules side of things? And
+> > > does this request make sense to help scale?
+> > >=20
+> > > The rationale here is that a rust binding means commitment then also
+> > > from fresh blood to help co-maintain review C / Rust for exising code
+> > > when there is will / desire to collaborate from an existing C maintai=
+ner.
+> > >=20
+> > > I realize this may be a lot to ask, but I think this is one of the
+> > > responsible ways to ask to scale here.
+> >=20
+> > I am not sure I am the right person for the task, because as you say,
+> > I have a lot on my plate. But perhaps lets schedule a call so I can
+> > get a sense of the required effort.
+>=20
+>=20
+> Kernel development is done through emails, not calls :)
+
+This is such a confusing statement to me. Of course people are using video =
+calls and even meeting up in real life, to discuss matters of kernel develo=
+pment and communicate technical details? Perhaps you could clarify a bit mo=
+re what you are trying to communicate?
+
+>=20
+> If a submitter isn't willing to maintain the code they submit, then it
+> should be rejected as maintance is the most important part.
+
+Unless I misunderstand something, Luis requests is about the C code that is=
+ already in the kernel, not the code I submitted now. Of course I will main=
+tain the code I submit, if required.
+
+Best regards,
+Andreas
