@@ -1,65 +1,65 @@
-Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8972883A06
-	for <rust-for-linux@vger.kernel.org>; Wed, 10 Jul 2024 07:36:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71E5917E45D
+	for <rust-for-linux@vger.kernel.org>; Wed, 10 Jul 2024 08:56:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720596988; cv=none; b=GhrRz2BedJpeFy3Y3YuZaGWDvtYoFBtW0fRwgwaveudrPxI+PdLAlEzm8DUvLOiFvxeKmV4itYq4vISlk5Q05m21dtBeZS+iEhNL3ImbjB8wHdhV6gWCWPHTMyqyWSeBCvw7uftL/jyE9NxzN0A1LEUDetvNQBbaWm3yb0Fpviw=
+	t=1720601817; cv=none; b=GBwsqjN507LagXoEy3IRueoZbgsrH7h9jjfzmJyLye3fAO+nuS067rRHaqXI6hOLMg7OsbfHGj+vZa90Vc7WAnJQq8q/vB7ikHufw/2S5Lebaf7gi+6A6bZTmlfM+NZwxrsOlEb8IR2FvtwR2JmGWEAZhWR9yH7+TmzCX++4KCo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720596988; c=relaxed/simple;
-	bh=AXDTQiOUe+sk2xVyvNXQw8kniv5/H1hlzYclQjp88nQ=;
+	s=arc-20240116; t=1720601817; c=relaxed/simple;
+	bh=3Q0FUOtutHaqhRnuNFkCtC2MR/nRZK3/RbDrWmaE24g=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=caoL3D0I2SR9mv2n+qiM1ybnih1ypGoVMDlmwwIhmhORYrYhbHsNjKUPtbH9tFZmtUQHah+7HRuKfJvx9EXpy1XBiRCil87lXam3CKybMAoluSvpiodCUmnmczVjPEiph6WVyCALbkrCP5oqjTnhtO+X4LhR2WppRFViNnHAr4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=b+cXkk9n; arc=none smtp.client-ip=209.85.210.180
+	 Content-Type:Content-Disposition:In-Reply-To; b=h6wlVtEkSgz8y8rUPkSE1GymtFIWxvp78BHQbE23A3iEHoGqTP8rJHrU4WpEqYe7tnuyPMeXzLfsFrOUkN7Ryt6Bq5Sz4f0Prhz4ez/Ir2AcY/5g+cTvwhVSVL/fyx3PIG7att1iNvuCUWPLv4uq65mU/FJ5AQBUK8oOyamW2qk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=h05QYKA2; arc=none smtp.client-ip=209.85.214.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="b+cXkk9n"
-Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-70b4267ccfcso1731015b3a.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 10 Jul 2024 00:36:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="h05QYKA2"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-1fb472eacf4so26239765ad.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 10 Jul 2024 01:56:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1720596987; x=1721201787; darn=vger.kernel.org;
+        d=linaro.org; s=google; t=1720601816; x=1721206616; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ib7gCSaVLlpxg25S4ZxyQLMvzlSiQ7LEAEKDAEqbxxI=;
-        b=b+cXkk9nlTvsQncBuLaPLoRiXQvjttPTvw/139tAfsFpkiasxmTZm/kbVnniGszKmI
-         PKw+SA6GDJey2aQp229at7e7bJDuGfdKeKUErt+Haw0CXKHMBzmzTwDWSaTr4koif/An
-         7QGYuii0oOwH9yqEZn/z8W7Jqp32pvH1yD1r97PapdBSzu4oC0225hfHiEfCUtaL22KE
-         JpIJ01SRy80snehVqjg3S2rugAuGwqyHdzKcdZ81IAh9jlUj0gax7DEzDOeFmbgoGzDz
-         J55BIx7Ol5OTNiqGgavb7tUX6sqkuP0yH0QT+E6Pq95ib4VdxAXzAX1XFzblMpRCXHlw
-         IshQ==
+        bh=IBRUpPu0VPQIPvE2nK8BuSgJ8l83VNDUH/RgQpIaWCI=;
+        b=h05QYKA2V92nHOCcfQtvJQoxJFjvEOprAVzygrWap8dlLLwFt7YOuvqbPFmmSR7B4e
+         j+epieavb0A12+TmXZGpEeDHoSLoG5jxJ5AvoEsYIAnKOxmHpvl7aziKolKT6xhCS/5/
+         sND4OMtoMvcmC8X85EJe/vdF2F1BRyp90/PSnNm03cTmzXn+1s8oDXbn3Ov+q9AyNYvg
+         C4aVbb5LAbPi3TYNX5iDjfT9NFfxT/rnuyDccpzRqBaelghUYUQbrfJ03W+/8Takb36r
+         fd3lZW2tnX3jijep/+XogmZI6feKz7/LyORv4ZEHNXSyH28ZPExUkQ8s8dA3dx2ai8qM
+         cxKA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720596987; x=1721201787;
+        d=1e100.net; s=20230601; t=1720601816; x=1721206616;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ib7gCSaVLlpxg25S4ZxyQLMvzlSiQ7LEAEKDAEqbxxI=;
-        b=lswO6ZrYTfibPHR5C4DDf8RTXs61ewCFKAdEMRqxl+TNfAW8tJvw5tVUwmqM63hYGe
-         dJY0XP/Y0BnH8PPacTQle2VI/8of0RzkPXsY78kuiD7ZEmc2m22ahBpe+6GhQz177pae
-         kUPsAzFy3yx+SQtART781jRJkhrASaeku2ahHgam7g1VXCCEDkxWKk9tUKe2i8vZ+EFY
-         D3rjdMfYCqI2gcqQxD4xG5fgMkXYlXlcLlYq20rpzO2x2YGRh36qE6EbVGLtCOVUINDy
-         HdtcsHnACwtMCOX7nEVp/psvQybitHL58NZaR0e8yOdwF4CnPaJZOlC3j+pHxG2HfhfR
-         YTag==
-X-Forwarded-Encrypted: i=1; AJvYcCXFo0auYVLdVKdo4v0qsJ1djRnuMRKBD5wkqzbEkXnGYAwOPA82qLKzF5lJnlbTrJWSDpKyJu/uRQ8FFif7yCMewF5xAqOpsK59kEqfQtw=
-X-Gm-Message-State: AOJu0YwnNB9SOBYW1u26rtEZ9SQ6sA+bDl7NkwrlqHoPF67UJtYpS7Hp
-	FYY+A1ggTZLJKatgZJ2pbUueNF844f+9aLDJtQHbONsdYaKzDtuW/KrUM/kiE5U=
-X-Google-Smtp-Source: AGHT+IHg433AhW7OnnB4QmPzublPxbiEIgkyNA0iz+B1GaI1iSou2hECJs1ftjC8msq7230tW5DcQg==
-X-Received: by 2002:a05:6a00:1251:b0:706:700c:7864 with SMTP id d2e1a72fcca58-70b4351fde0mr6327577b3a.4.1720596986761;
-        Wed, 10 Jul 2024 00:36:26 -0700 (PDT)
+        bh=IBRUpPu0VPQIPvE2nK8BuSgJ8l83VNDUH/RgQpIaWCI=;
+        b=jyoY5yBB9Sk5ViDNuUDH/AL9H4xA7yNI2B5cYH7lvzFs2D5HhBpH1sTJivlgwf2uFO
+         hvuyCgt4ngNBgI31KvTzgm/GnP6cIMnEsGsx5w7OWFK8F2GpyrE068DGlqL8djdKGpss
+         gkM39C7/EhB4e7W2KaGpbgmtD7yIyWH7gFiyWbU/5205GkyfKkR+8rGqco9eEoybb6uU
+         rQDymtqhwYP36kLVmW87sKAP5kcz3xWsx60A4yL+M7prqQ5WM+bNaRxo8m34dhDpMefD
+         429rNwYMbBJjL4/C16O763QtupPANrILKSCzVfYlDyswtQz+7m85oTIZhr4aVf/axdBg
+         peUw==
+X-Forwarded-Encrypted: i=1; AJvYcCWZfySv9BuEmTUxatu1fp1IYqWybLQymYxPdsYkAWxBdEWx78SgvX/+7q5T6Fa/mfwEhJRLvR+g7B+JqqVaj7MuFahXQui12RSM0TuzTB0=
+X-Gm-Message-State: AOJu0Yzkw/G88GGIO1c1L3azD9FT2vIisg7XCpHX3PKhYtwYxRj33A1P
+	wsWkEhKd9bFlRP3rJdYVmSATgG+kHjWLjE/2aoRqtnaEja8ASif0iqOBjJVTMfQ=
+X-Google-Smtp-Source: AGHT+IEVB8tOcTvVkQMKYUorCO7nrunLCIRVS0MNQOClkyaYDOIHlwMfGp0zUV38Ne6qCbyn25fBsg==
+X-Received: by 2002:a17:902:ec8a:b0:1f7:1b97:e91f with SMTP id d9443c01a7336-1fbb6d3e8ebmr42132875ad.26.1720601815731;
+        Wed, 10 Jul 2024 01:56:55 -0700 (PDT)
 Received: from localhost ([122.172.84.129])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-70b439b9afbsm3065996b3a.191.2024.07.10.00.36.25
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1fbb6a122cfsm29737245ad.5.2024.07.10.01.56.54
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Jul 2024 00:36:26 -0700 (PDT)
-Date: Wed, 10 Jul 2024 13:06:23 +0530
+        Wed, 10 Jul 2024 01:56:54 -0700 (PDT)
+Date: Wed, 10 Jul 2024 14:26:52 +0530
 From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Boqun Feng <boqun.feng@gmail.com>
+To: Danilo Krummrich <dakr@redhat.com>
 Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
 	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
 	Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
 	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
 	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@samsung.com>,
@@ -72,13 +72,11 @@ Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
 	Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
 	Joakim Bech <joakim.bech@linaro.org>, Rob Herring <robh@kernel.org>,
 	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH V3 1/8] rust: Add initial bindings for OPP framework
-Message-ID: <20240710073623.qdxatsqvumkguabp@vireshk-i7>
+Subject: Re: [RFC PATCH V3 8/8] cpufreq: Add Rust based cpufreq-dt driver
+Message-ID: <20240710085652.zu7ntnv4gmy7zr2i@vireshk-i7>
 References: <cover.1719990273.git.viresh.kumar@linaro.org>
- <fe8e9a96b29122876346fc98a6a9ede7e4f28707.1719990273.git.viresh.kumar@linaro.org>
- <ZoVvn0QCSR8y4HQJ@Boquns-Mac-mini.home>
- <20240709110245.o73xnrj6jsvz2v2w@vireshk-i7>
- <Zo13PB-fZ8B9WEYy@boqun-archlinux>
+ <b7df0c75cc07a451243b554fb2272c91cbe42dfe.1719990273.git.viresh.kumar@linaro.org>
+ <f0016987-4288-4adf-954d-665b35ae1bf1@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -87,32 +85,34 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Zo13PB-fZ8B9WEYy@boqun-archlinux>
+In-Reply-To: <f0016987-4288-4adf-954d-665b35ae1bf1@redhat.com>
 
-On 09-07-24, 10:45, Boqun Feng wrote:
-> On Tue, Jul 09, 2024 at 04:32:45PM +0530, Viresh Kumar wrote:
-> > On 03-07-24, 08:34, Boqun Feng wrote:
-> > > On Wed, Jul 03, 2024 at 12:44:26PM +0530, Viresh Kumar wrote:
-> > > > +// SAFETY: `OPP` only holds a pointer to a C OPP, which is safe to be used from any thread.
-> > > > +unsafe impl Send for OPP {}
-> > > > +
-> > > > +// SAFETY: `OPP` only holds a pointer to a C OPP, references to which are safe to be used from any
-> > > > +// thread.
-> > > > +unsafe impl Sync for OPP {}
-> > > > +
-> > > 
-> > > Same for the above safety comments, as they are still based on the old
-> > > implementation.
-> > 
-> > Do I still need to change these ? Since we aren't always using ARef
-> > now.
-> > 
+On 05-07-24, 13:32, Danilo Krummrich wrote:
+> On 7/3/24 09:14, Viresh Kumar wrote:
+> > +    fn probe(_dev: &mut platform::Device, _id_info: Option<&Self::IdInfo>) -> Result<Self::Data> {
+> > +        let drv = Arc::new(
+> > +            cpufreq::Registration::<CPUFreqDTDriver>::register(
+> > +                c_str!("cpufreq-dt"),
+> > +                (),
+> > +                cpufreq::flags::NEED_INITIAL_FREQ_CHECK | cpufreq::flags::IS_COOLING_DEV,
+> > +                true,
+> > +            )?,
+> > +            GFP_KERNEL,
+> > +        )?;
 > 
-> Correct, you will still need to change these. You're welcome to submit
-> a draft version here and I can help take a look before you send out a
-> whole new version, if you prefer that way.
+> Putting the `cpufreq::Registration` into `Arc<DeviceData>` is unsafe from a
+> lifetime point of view. Nothing prevents this `Arc` to out-live the
+> `platform::Driver`.
 
-I am not entirely sure what the change must be like that :)
+Hmm, the platform driver layer (in Rust) should guarantee that the
+data will be freed from the driver removal path. Isn't it ?
+
+> Instead, you should wrap `cpufreq::Registration` into `Devres`. See
+> `drm::drv::Registration` for an example [1].
+> 
+> [1] https://gitlab.freedesktop.org/drm/nova/-/blob/nova-next/rust/kernel/drm/drv.rs?ref_type=heads#L173
+
+I can convert to that too, will do it anyway.
 
 -- 
 viresh
