@@ -1,29 +1,29 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 473C8194120;
-	Wed, 10 Jul 2024 14:02:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4123419346A;
+	Wed, 10 Jul 2024 14:10:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720620128; cv=none; b=hmNyqM+DqmyI9X6E4hUpK+VNKZM7uLnMcHo49AXvaxf6ryeMrWNmIVHXGVpBjnctjojwqtMve2rki3pkqCjsFKAL9QhxlfOoqnF0ovwj3B4S2ypCCid76wdu3w8TeSRpzH4rPiD+tFhNzzbZ7z1pdZZPEeE4eoiI6U2ts8/cJQU=
+	t=1720620643; cv=none; b=eB26ueZXhR1YgwwSYu3DIO6q6AhZPiCbN+JVjk0pxC4GPcKWhxjnStqviyiHj3JDYK//Vg8x8dESNREkxBFs7U/auHVQZUZLKpjtbTXs6L+VUUd2Lpr6G8UzvNXwfx5ajdFfXViDEtFlMT8fNXdlVYZwRi2LZ565JvT/N4UVBu0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720620128; c=relaxed/simple;
-	bh=Vk9b2kG3gcfI2no+6grdIB3azydt/9VYwwKWqhPtfGY=;
+	s=arc-20240116; t=1720620643; c=relaxed/simple;
+	bh=nDTy8rPWM2cyZ0nmnNV1tC8bbKmApbzgWSzmCTAq4gw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=unpKF8bXwCknLvCwQu0nkOpKa0ZBxEH12ffxLFSm/rqIvjLWye351JTbo4/3IcDwRvmZN2IgP2HfNxCw2QN0fNCdnW4eaBZ8LkHch23ktFbPX7oEOo4i2mYg/fcEiOyTlTJU68kKmUYQQIKfTMoX78y6KtUBiabNXi9qbPcbk6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tSmIFejt; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=Gw+6SNtoMBkQRUv7FqEnX3i3YMY1Gj6LVkX22AXC6FjN5LXtJHgfL1GhusLIps/2355s0v8VgJ+vnQ3KsH/IwdIpxgs9bHMR07k+YDLk94hEiQPm7DRxal+vjsSQbjpYibkMrj0FcQJxML8IjXc2Sq9iHk+66jjRIZL7kxrMlLQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JAxcEy7C; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tSmIFejt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D6DBC32786;
-	Wed, 10 Jul 2024 14:02:07 +0000 (UTC)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JAxcEy7C"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31FAFC32781;
+	Wed, 10 Jul 2024 14:10:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1720620127;
-	bh=Vk9b2kG3gcfI2no+6grdIB3azydt/9VYwwKWqhPtfGY=;
+	s=korg; t=1720620642;
+	bh=nDTy8rPWM2cyZ0nmnNV1tC8bbKmApbzgWSzmCTAq4gw=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tSmIFejtjeH7oRSYasreIrxIjw2X/f/EHS/XZJXRDf5pUqsHthV11iFlFF1M1LOOV
-	 BZT31Oj+VKGAFqv5C9cXpv0fcwPTegjQzOiXP7zVfkF6S7ch12o4IKrNxU5aVGEw+C
-	 yLF+OPKy+BXJz9YnRfU/NbZZdxfON8BFWLfwyssQ=
-Date: Wed, 10 Jul 2024 16:02:04 +0200
+	b=JAxcEy7CxmTqyvvy3ArzfYyP8035acIouQ67LSfrd3qEoUlreswixmuhOBvq9egi0
+	 OW40zZOrUQ+9rC51WW87KPZ188bp1YBpqP5I4HX0JPYn0f/flG9LblKRtlR6Rb7j+K
+	 fbt2+J1pECTgx9Ic0OvGqstXS4yDxgn0CSRu65fc=
+Date: Wed, 10 Jul 2024 16:10:40 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
 To: Danilo Krummrich <dakr@redhat.com>
 Cc: rafael@kernel.org, bhelgaas@google.com, ojeda@kernel.org,
@@ -34,14 +34,12 @@ Cc: rafael@kernel.org, bhelgaas@google.com, ojeda@kernel.org,
 	ajanulgu@redhat.com, lyude@redhat.com, robh@kernel.org,
 	daniel.almeida@collabora.com, rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org
-Subject: Re: [PATCH v2 01/10] rust: pass module name to `Module::init`
-Message-ID: <2024071046-gaining-gave-b38f@gregkh>
+Subject: Re: [PATCH v2 02/10] rust: implement generic driver registration
+Message-ID: <2024071052-bunion-kinswoman-6577@gregkh>
 References: <20240618234025.15036-1-dakr@redhat.com>
- <20240618234025.15036-2-dakr@redhat.com>
- <2024062038-backroom-crunchy-d4c9@gregkh>
- <ZnRUXdMaFJydAn__@cassiopeiae>
- <2024062010-change-clubhouse-b16c@gregkh>
- <ZnSeAZu3IMA4fR8P@cassiopeiae>
+ <20240618234025.15036-3-dakr@redhat.com>
+ <2024062025-wrecking-utilize-30cf@gregkh>
+ <ZnRjCnvtPBhEatt_@cassiopeiae>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -50,275 +48,200 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZnSeAZu3IMA4fR8P@cassiopeiae>
+In-Reply-To: <ZnRjCnvtPBhEatt_@cassiopeiae>
 
-On Thu, Jun 20, 2024 at 11:24:17PM +0200, Danilo Krummrich wrote:
-> On Thu, Jun 20, 2024 at 06:36:08PM +0200, Greg KH wrote:
-> > On Thu, Jun 20, 2024 at 06:10:05PM +0200, Danilo Krummrich wrote:
-> > > On Thu, Jun 20, 2024 at 04:19:48PM +0200, Greg KH wrote:
-> > > > On Wed, Jun 19, 2024 at 01:39:47AM +0200, Danilo Krummrich wrote:
-> > > > > In a subsequent patch we introduce the `Registration` abstraction used
-> > > > > to register driver structures. Some subsystems require the module name on
-> > > > > driver registration (e.g. PCI in __pci_register_driver()), hence pass
-> > > > > the module name to `Module::init`.
-> > > > 
-> > > > I understand the need/want here, but it feels odd that you have to
-> > > > change anything to do it.
-> > > > 
-> > > > > 
-> > > > > Signed-off-by: Danilo Krummrich <dakr@redhat.com>
-> > > > > ---
-> > > > >  rust/kernel/lib.rs           | 14 ++++++++++----
-> > > > >  rust/kernel/net/phy.rs       |  2 +-
-> > > > >  rust/macros/module.rs        |  3 ++-
-> > > > >  samples/rust/rust_minimal.rs |  2 +-
-> > > > >  samples/rust/rust_print.rs   |  2 +-
-> > > > >  5 files changed, 15 insertions(+), 8 deletions(-)
-> > > > > 
-> > > > > diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> > > > > index a791702b4fee..5af00e072a58 100644
-> > > > > --- a/rust/kernel/lib.rs
-> > > > > +++ b/rust/kernel/lib.rs
-> > > > > @@ -71,7 +71,7 @@ pub trait Module: Sized + Sync + Send {
-> > > > >      /// should do.
-> > > > >      ///
-> > > > >      /// Equivalent to the `module_init` macro in the C API.
-> > > > > -    fn init(module: &'static ThisModule) -> error::Result<Self>;
-> > > > > +    fn init(name: &'static str::CStr, module: &'static ThisModule) -> error::Result<Self>;
-> > > > 
-> > > > Why can't the name come directly from the build system?  Why must it be
-> > > > passed into the init function of the module "class"?  What is it going
-> > > > to do with it?
-> > > 
-> > > The name does come from the build system, that's where `Module::init` gets it
-> > > from.
-> > > 
-> > > > 
-> > > > A PCI, or other bus, driver "knows" it's name already by virtue of the
-> > > > build system, so it can pass that string into whatever function needs
-> > > 
-> > > Let's take pci_register_driver() as example.
-> > > 
-> > > ```
-> > > #define pci_register_driver(driver)		\
-> > > 	__pci_register_driver(driver, THIS_MODULE, KBUILD_MODNAME)
-> > > ```
-> > > 
-> > > In C drivers this works because (1) it's a macro and (2) it's called directly
-> > > from the driver code.
-> > > 
-> > > In Rust, for very good reasons, we have abstractions for C APIs, hence the
-> > > actual call to __pci_register_driver() does not come from code within the
-> > > module, but from the PCI Rust abstraction `Module::init` calls into instead.
+On Thu, Jun 20, 2024 at 07:12:42PM +0200, Danilo Krummrich wrote:
+> On Thu, Jun 20, 2024 at 04:28:23PM +0200, Greg KH wrote:
+> > On Wed, Jun 19, 2024 at 01:39:48AM +0200, Danilo Krummrich wrote:
+> > > Implement the generic `Registration` type and the `DriverOps` trait.
 > > 
-> > I don't understand those reasons, sorry.
-> 
-> Ok, good you point this out. We should definitely discuss this point then and
-> build some consensus around it.
-> 
-> I propose to focus on this point first and follow up with the discussion of the
-> rest of the series afterwards.
-> 
-> Let me explain why I am convinced that it's very important to have abstractions
-> in place in general and from the get-go.
-> 
-> In general, having abstractions for C APIs is the foundation of being able to
-> make use of a lot of advantages Rust has to offer.
-> 
-> The most obvious one are all the safety aspects. For instance, with an
-> abstraction we have to get exactly one piece of code right in terms of pointer
-> validity, lifetimes, type safety, API semantics, etc. and in all other places
-> (e.g. drivers) we get the compiler to check those things for us through the
-> abstraction.
-> 
-> Now, the abstraction can be buggy or insufficient and hence there is no absolute
-> safety guarantee. *But*, if we get this one thing right, there is nothing a
-> driver can mess up by itself trying to do stupid things anymore.
-> 
-> If we just call the C code instead we have to get it right everywhere instead.
-
-I too want a pony.  But unfortunatly you are shaving a yak here instead :)
-
-I'm not saying to call C code from rust, I'm saying call rust code from
-C.
-
-Have a "normal" pci_driver structure with C functions that THEN call
-into the rust code that you want to implement them, with a pointer to
-the proper structure.  That gives you everything that you really want
-here, EXCEPT you don't have to build the whole tower of drivers and
-busses and the like.
-
-> Now, you could approach this top-down instead and argue that we could at least
-> benefit from Rust for the driver specific parts.
-> 
-> Unfortunately, this doesn't really work out either. Also driver specific code is
-> typically (very) closely connected to kernel APIs. If you want to use the safety
-> aspects of Rust for the driver specific parts you inevitably end up writing
-> abstractions for the C APIs in your driver.
-> 
-> There are basically three options you can end up with:
-> 
-> (1) An abstraction for the C API within your driver that is actually generic
->     for every driver, and hence shouldn't be there.
-> (2) Your driver specific code is full of raw pointers and `unsafe {}` calls,
->     which in the end just means that you ended up baking the abstraction into
->     your driver specific code.
-> (3) You ignore everything, put everything in a huge `unsafe {}` block and
->     compile C code with the Rust compiler. (Admittedly, maybe slightly
->     overstated, but not that far off either.)
-> 
-> The latter is also the reason why it doesn't make sense to only have
-> abstractions for some things, but not for other.
-> 
-> If an abstraction for B is based on A, but we don't start with A, then B ends up
-> implementing (at least partially) the abstraction for A as well. For instance,
-> if we don't implement `driver::Registration` then the PCI abstractions (and
-> platform, usb, etc.) have to implement it.
-> 
-> It really comes down to the point that it just bubbles up. We really have to do
-> this bottom-up, otherwise we just end up moving those abstractions up, layer by
-> layer, where they don't belong to and we re-implement them over and over again.
-
-I think we are talking past each other.
-
-Here is an example .c file that you can use today for your "implement a
-PCI driver in rust" wish in a mere 34 lines of .c code:
-
-------------------------------------------------------------------------
-// SPDX-License-Identifier: GPL-2.0-only
-#include <linux/module.h>
-#include <linux/pci.h>
-#include "my_pci_rust_bindings.h"
-
-#define PCI_DEVICE_ID_FOO		0x0f00
-#define PCI_VENDOR_ID_FOO		0x0f00
-
-static int probe(struct pci_dev *pdev, const struct pci_device_id *ent)
-{
-	return my_rust_probe(pdev);
-}
-
-static void remove(struct pci_dev *pdev)
-{
-	my_rust_remove(pdev);
-}
-
-static const struct pci_device_id pci_ids[] = {
-	{PCI_DEVICE(PCI_VENDOR_ID_FOO, PCI_DEVICE_ID_FOO)},
-	{}
-};
-MODULE_DEVICE_TABLE(pci, pci_ids);
-
-static struct pci_driver my_rust_pci_driver = {
-	.name = "my_pci_rust_driver",
-	.id_table = pci_ids,
-	.probe = probe,
-	.remove = remove,
-};
-module_pci_driver(my_rust_pci_driver);
-
-MODULE_DESCRIPTION("Driver for my fancy PCI device");
-MODULE_LICENSE("GPL v2");
-------------------------------------------------------------------------
-
-Now, all you have to do is provide a my_rust_probe() and
-my_rust_remove() call in your rust code, and handle the conversion of a
-struct pci_dev to whatever you want to use (which you had to do anyway),
-and you are set!
-
-That .c code above is "obviously" correct, and much simpler and worlds
-easier for all of us to understand instead of the huge .rs files that
-this patch series was attempting to implement.
-
-You have to draw the c/rust line somewhere, you all seem to be wanting
-to draw that line at "no .c in my module at all!" and I'm saying "put 34
-lines of .c in your module and you will save a LOT of headache now."
-
-All of the "real" work you want to do for your driver is behind the
-probe/remove callbacks (ok, add a suspend/resume as well, forgot that),
-and stop worrying about all of the bindings and other mess to tie into
-the driver model for a specific bus type and the lunacy that the device
-id mess was.
-
-In short, KEEP IT SIMPLE!
-
-Then, after we are comfortable with stuff like the above, slowly think
-about moving the line back a bit more, if you really even need to.  But
-why would you need to?  Only reason I can think of is if you wanted to
-write an entire bus in rust, and for right now, I would strongly suggest
-anyone not attempt that.
-
-The "joy" of writing a driver in rust is that a driver consumes from
-EVERYWHERE in the kernel (as you well know.)  Having to write bindings
-and mappings for EVERYTHING all at once, when all you really want to do
-is implement the logic between probe/remove is rough, I'm sorry.  I'm
-suggesting that you stop at the above line for now, which should make
-your life easier as the .c code is obviously correct, and anything you
-do in the rust side is your problem, not mine as a bus maintainer :)
-
-> > Changing drivers later, to take advantage of code savings like this
-> > macro can be done then, not just yet.  Let's get this understood and
-> > right first, no need to be tricky or complex.
+> > I don't think this is needed, more below...
 > > 
-> > And, as I hinted at before, I don't think we should be doing this at all
-> > just yet either.  I still think a small "C shim" layer to wrap the
-> > struct pci driver up and pass the calls to the rust portion of the
-> > module is better to start with, it both saves you time and energy so
-> > that you can work on what you really want to do (i.e. a driver in rust)
-> > and not have to worry about the c bindings as that's the "tricky" part
-> > that is stopping you from getting your driver work done.
+> > > The `Registration` structure is the common type that represents a driver
+> > > registration and is typically bound to the lifetime of a module. However,
+> > > it doesn't implement actual calls to the kernel's driver core to register
+> > > drivers itself.
+> > 
+> > But that's not what normally happens, more below...
 > 
-> I strongly disagree here. As explained above, it just bubbles up, this approach
-> would just make me end up having to write a lot of the code from the
-> abstractions in the driver.
+> I can't find below a paragraph that seems related to this, hence I reply here.
+> 
+> The above is just different wording for: A driver is typically registered in
+> module_init() and unregistered in module_exit().
+> 
+> Isn't that what happens normally?
 
-See above, you cut out all of the .rs files you submitted in this series
-and can probably just add one to map a pci_device and away you go.
+Yes, but it's nothing we have ever used in the kernel before.  You are
+defining new terms in some places, and renaming existing ones in others,
+which is going to do nothing but confuse us all.
 
-> What I actually want is to get to a solid foundation for Rust drivers in
-> general, since I'm convinced that this provides a lot of value beyond the scope
-> of a single driver.
+I don't see why you need a "registration" structure here when no .c
+driver ever does.  You just have a module init/exit call and go from
+there.  Why not stick with that?
 
-I don't see what not needing the above 35+ lines of .c code provides a
-value for at all, EXCEPT we now need to maintain a lot more code
-overall.
+> > > Instead the `DriverOps` trait is provided to subsystems, which have to
+> > > implement `DriverOps::register` and `DrvierOps::unregister`. Subsystems
+> > > have to provide an implementation for both of those methods where the
+> > > subsystem specific variants to register / unregister a driver have to
+> > > implemented.
+> > 
+> > So you are saying this should be something that a "bus" would do?
+> > Please be explicit as to what you mean by "subsystem" here.
+> 
+> Yes, I agree it's more precise to say that this should be implemented by a bus
+> (e.g. PCI). I can reword this one.
 
-> What do we pass to Rust probe() function? A raw struct pci_dev pointer or the
-> proper PCI device abstraction?
+Wording matters.
 
-See above.
+> > > For instance, the PCI subsystem would call __pci_register_driver() from
+> > > `DriverOps::register` and pci_unregister_driver() from
+> > > `DrvierOps::unregister`.
+> > 
+> > So this is a BusOps, or more in general, a "subsystem" if it's not a
+> > bus (i.e. it's a class).  Note, we used to use the term "subsystem" a
+> > very long time ago but got rid of them in the driver core, let's not
+> > bring it back unless we REALLY know we want it this time.
+> > 
+> > So why isn't this just a BusOps?
+> 
+> I think it's really about perspective. Generally speaking, when a driver is
+> registered it gets added to a bus through bus_add_driver(). Now, one could argue
+> that the "register" operation is a bus operation, since something gets
+> registered on the bus, but one could also argue that it's a driver operation,
+> since a driver is registered on something.
+> 
+> Consequently, I think it's neither wrong to call this one `BusOps` nor is it
+> wrong to call it `DriverOps`.
+> 
+> I still think `DriverOps` is more appropriate, since here we're looking at it
+> from the perspective of the driver.
 
-> How do we implement I/O memory mappings for PCI bars without PCI / I/O
-> abstraction?
+Stick with the same terms we have today please.  These are specific bus
+operations.  Some drivers implement multiple bus operations within them
+as they can handle multiple bus types.  Keep the same names we have
+today, it will save maintaining this for the next 40+ years easier.
 
-Call the .c functions you have today.
+> In the end we call it as `driver.register()` instead of `bus.register()`. For
+> instance, in the PCI implementation of it, we call __pci_register_driver() from
+> `DriverOps::register`.
 
-> How do we perform (boundary checked) I/O memory reads / writes without `Io`
-> abstraction?
+You are registering with a bus, stick with that term please.
 
-Do you really need/want that?  If so, ok, but I think you are going to
-run into big issues with dynamic ranges that I didn't see answered on
-those patches, but I could be totally wrong.
+> > > +/// The [`DriverOps`] trait serves as generic interface for subsystems (e.g., PCI, Platform, Amba,
+> > > +/// etc.) to privide the corresponding subsystem specific implementation to register / unregister a
+> > > +/// driver of the particular type (`RegType`).
+> > > +///
+> > > +/// For instance, the PCI subsystem would set `RegType` to `bindings::pci_driver` and call
+> > > +/// `bindings::__pci_register_driver` from `DriverOps::register` and
+> > > +/// `bindings::pci_unregister_driver` from `DriverOps::unregister`.
+> > > +pub trait DriverOps {
+> > > +    /// The type that holds information about the registration. This is typically a struct defined
+> > > +    /// by the C portion of the kernel.
+> > > +    type RegType: Default;
+> > > +
+> > > +    /// Registers a driver.
+> > > +    ///
+> > > +    /// # Safety
+> > > +    ///
+> > > +    /// `reg` must point to valid, initialised, and writable memory. It may be modified by this
+> > > +    /// function to hold registration state.
+> > > +    ///
+> > > +    /// On success, `reg` must remain pinned and valid until the matching call to
+> > > +    /// [`DriverOps::unregister`].
+> > > +    fn register(
+> > > +        reg: &mut Self::RegType,
+> > > +        name: &'static CStr,
+> > > +        module: &'static ThisModule,
+> > > +    ) -> Result;
+> > > +
+> > > +    /// Unregisters a driver previously registered with [`DriverOps::register`].
+> > > +    ///
+> > > +    /// # Safety
+> > > +    ///
+> > > +    /// `reg` must point to valid writable memory, initialised by a previous successful call to
+> > > +    /// [`DriverOps::register`].
+> > > +    fn unregister(reg: &mut Self::RegType);
+> > > +}
+> > 
+> > So you are getting into what a bus wants/needs to support here, why is
+> > register/unregister the "big" things to be implemented first?  Why not
+> > just map the current register/unregister bus functions to a bus-specific
+> > trait for now?  And then, if you think it really should be generic, we
+> 
+> A bus specific trait would not add any value. The whole point if a trait is to
+> represent a generic interface. It basically describes the functionality we
+> expect from a certain category of types.
+> 
+> In this case we know that every driver can be registered and unregistered, hence
+> we can define a generic trait that every bus specific driver structure, e.g. PCI
+> driver, has to implement.
 
-Again, one step at a time please, not the whole yak.
+So this is a generic trait that all drivers of all bus types must do?
+Ick, no, don't make this so generic it's impossible to unwind.
 
-> How do we handle the lifetime of resources without `Devres` abstraction?
+Make things specific FIRST.  Then implement a second one.  Then a third
+one.  And THEN see what you can make generic, before then it's going to
+be hard and a mess.
 
-We have this question on the .c side as well.  Please work with the
-people who are working to solve that there as it hits everyone.
+Stick with specifics first, you can always make them more generic later.
 
-> How do we (properly) implement a DRM device registration abstraction without
-> `Devres`?
+> > can make it that way then.  I don't see why this needs to be generic now
+> > as you aren't implementing a bus in rust at this point in time, right?
+> 
+> With the above tait (or interface) we now can have a generic `Registration` that
+> calls `T::register` and `T::unregister` and works for all driver types (PCI,
+> platform, etc.). Otherwise we'd need a `pci::Registration`, a
+> `platform::Registration` etc. and copy-paste the below code for all of them.
 
-No idea, drm is huge :)
+Good, copy/paste to start with and then if it gets messy on the third
+implementation, THEN we can think about unifying them.
 
-That being said, I think you can implement it above as the lifetime of
-your device lives between probe and remove.  After remove is gone, all
-of your resources HAVE to be freed, so do that in your driver.
+I'm going to argue that registering with a pci bus is VERY different
+than registering with the platform bus, or a USB bus, which, if you look
+at the kernel today, is why those are different functions!  Only in the
+driver core is the unified portions.  Don't attempt to make the rust
+code generic and then have it split back out, and THEN have it become
+generic afterward.  That's an odd way to do things, please don't.
 
-> Luckily we already got the `Firmware` and `Device` abstraction in place. :)
+> > > +
+> > > +/// A [`Registration`] is a generic type that represents the registration of some driver type (e.g.
+> > > +/// `bindings::pci_driver`). Therefore a [`Registration`] is initialized with some type that
+> > > +/// implements the [`DriverOps`] trait, such that the generic `T::register` and `T::unregister`
+> > > +/// calls result in the subsystem specific registration calls.
+> > > +///
+> > > +///Once the `Registration` structure is dropped, the driver is unregistered.
+> > > +#[pin_data(PinnedDrop)]
+> > > +pub struct Registration<T: DriverOps> {
+> > > +    #[pin]
+> > > +    reg: Opaque<T::RegType>,
+> > > +}
+> > > +
+> > > +// SAFETY: `Registration` has no fields or methods accessible via `&Registration`, so it is safe to
+> > > +// share references to it with multiple threads as nothing can be done.
+> > > +unsafe impl<T: DriverOps> Sync for Registration<T> {}
+> > > +
+> > > +// SAFETY: Both registration and unregistration are implemented in C and safe to be performed from
+> > > +// any thread, so `Registration` is `Send`.
+> > > +unsafe impl<T: DriverOps> Send for Registration<T> {}
+> > > +
+> > > +impl<T: DriverOps> Registration<T> {
+> > > +    /// Creates a new instance of the registration object.
+> > > +    pub fn new(name: &'static CStr, module: &'static ThisModule) -> impl PinInit<Self, Error> {
+> > 
+> > Drivers have modules, not busses.  So you are registering a driver with
+> > a bus here, it's not something that a driver itself implements as you
+> > have named here.
+> 
+> We are registering a driver on bus here, see the below `T::register` call, this
+> one ends up in __pci_register_driver() or __platform_driver_register(), etc. Hence
+> we need the module and the module name.
 
-Baby steps :)
+Again, let's be specific first, make things generic later.  Why do you
+need/want a trait at all when you have only 1 bus type in the whole
+kernel?
+
+Keep it simple, make it so obvious that I would be foolish to reject it.
+Right now, it's so complex and generic that I feel foolish accepting it.
 
 thanks,
 
