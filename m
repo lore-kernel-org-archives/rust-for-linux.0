@@ -1,182 +1,118 @@
-Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
+Received: from mail-pf1-f180.google.com (mail-pf1-f180.google.com [209.85.210.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6370557880
-	for <rust-for-linux@vger.kernel.org>; Wed, 10 Jul 2024 07:30:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8972883A06
+	for <rust-for-linux@vger.kernel.org>; Wed, 10 Jul 2024 07:36:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720596655; cv=none; b=bY/Z2t2PQdtjlN2GOMtPzhNC89GTkUGHdJ+/vbMMtu/i+tZtNOLBDha5rt8MTlRT7LuTIIgwGud+KxyVk8s6rqXtAP9LT/HeLn+9gP1cnxq4wXEUASeeyhgs1oAJD6LVbSZFrCg6vmk77VBEcLaFvgJQLZHC0gj5fwPHQIwe2UU=
+	t=1720596988; cv=none; b=GhrRz2BedJpeFy3Y3YuZaGWDvtYoFBtW0fRwgwaveudrPxI+PdLAlEzm8DUvLOiFvxeKmV4itYq4vISlk5Q05m21dtBeZS+iEhNL3ImbjB8wHdhV6gWCWPHTMyqyWSeBCvw7uftL/jyE9NxzN0A1LEUDetvNQBbaWm3yb0Fpviw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720596655; c=relaxed/simple;
-	bh=bg11X0+ouhSXutIZH+FX0laaIoy8Fd6IAGYyDkPoOmg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=k64jSzPUWKrCUXdk8UpQBMo8V+nt2BOXwMoMQGrk9+P1xuKXDDutyhX4Yb3o8vPqzTLtdS1UqJ42SsOxcw7n/u32nQY0issN/x3iIulnJeczyAtAl8TsvHSDTLbiaQZoUAcQPXQWyAJ2so22SvE1hCNfvKRdn48pcJ6Sqn+zViI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=dJCiLAhd; arc=none smtp.client-ip=209.85.218.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1720596988; c=relaxed/simple;
+	bh=AXDTQiOUe+sk2xVyvNXQw8kniv5/H1hlzYclQjp88nQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=caoL3D0I2SR9mv2n+qiM1ybnih1ypGoVMDlmwwIhmhORYrYhbHsNjKUPtbH9tFZmtUQHah+7HRuKfJvx9EXpy1XBiRCil87lXam3CKybMAoluSvpiodCUmnmczVjPEiph6WVyCALbkrCP5oqjTnhtO+X4LhR2WppRFViNnHAr4w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=b+cXkk9n; arc=none smtp.client-ip=209.85.210.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="dJCiLAhd"
-Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-a6265d3ba8fso547847966b.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 10 Jul 2024 00:30:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="b+cXkk9n"
+Received: by mail-pf1-f180.google.com with SMTP id d2e1a72fcca58-70b4267ccfcso1731015b3a.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 10 Jul 2024 00:36:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1720596652; x=1721201452; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=BE/oQZmZGmjJjHSOCOGHNHHe0sV17vr1YpR/41Jzb5g=;
-        b=dJCiLAhd/2MRdbJWp59ir8VhnLVuK+eiZYL4Bb/vRADJi74iKHszneGBh0sliGvTxr
-         K/SJ72GSlzwYqH6wc4kUgVjYptXtWBsPcKHzWasteD4RPNaloPxQJvVrZ/oHyzNv5fm5
-         Ysq7+aQbcwtE2r0EhoQKmv+nb/OFGTohmFkk+MemWnsiwzyJeuBAUPsGpKsqXM5hOqyv
-         mFzLh/K+v/dMAn2MV2W7vtQw2HgZMa0DKphGC3pTuAlL+lo8UL67TblHD2BBHlQrmdcI
-         4//b90OGCk0KZUbbPIdpi91EWjNDLqXedO5Vpv8klLofrYYemNMTd19Nbn2M/Oz/oMkj
-         V7Cg==
+        d=linaro.org; s=google; t=1720596987; x=1721201787; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=ib7gCSaVLlpxg25S4ZxyQLMvzlSiQ7LEAEKDAEqbxxI=;
+        b=b+cXkk9nlTvsQncBuLaPLoRiXQvjttPTvw/139tAfsFpkiasxmTZm/kbVnniGszKmI
+         PKw+SA6GDJey2aQp229at7e7bJDuGfdKeKUErt+Haw0CXKHMBzmzTwDWSaTr4koif/An
+         7QGYuii0oOwH9yqEZn/z8W7Jqp32pvH1yD1r97PapdBSzu4oC0225hfHiEfCUtaL22KE
+         JpIJ01SRy80snehVqjg3S2rugAuGwqyHdzKcdZ81IAh9jlUj0gax7DEzDOeFmbgoGzDz
+         J55BIx7Ol5OTNiqGgavb7tUX6sqkuP0yH0QT+E6Pq95ib4VdxAXzAX1XFzblMpRCXHlw
+         IshQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720596652; x=1721201452;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=BE/oQZmZGmjJjHSOCOGHNHHe0sV17vr1YpR/41Jzb5g=;
-        b=lm97rXGgKDDlbr4/DcgFC1TohDwhgkaoPfAlMlpEDSHiQVNVVkOdfyWLsaeMBDdgvH
-         tsmMxnGiX8QA7ZjgJsgxnO0JhFaL1LN9WDq4CTlKjIyDN6hu0cWBRkteUVTYBW/2EqOP
-         3o3xKIiovZ5xc1Km3ICxWMQVK+5d/R4HMxoQ00tBJOcO2kRRluWUcapdsuRrZsHBWnuW
-         jZY+9e+nDD26x51fkEVQwMrkvX+1cZZzjAa9TficAUqcnfCXMOJg4Oy8aiZgzlEheyCl
-         o8//N1THdsZVrxYR3eB9o6MY1Bg+0o/+H+FeNNUo8W0bgBIEkNR6ElycHb0GpCin5jUC
-         w6Ng==
-X-Forwarded-Encrypted: i=1; AJvYcCUEAywgeyhz/sgFGC7HvACxnKgJPBK7IevnfWSmb9qAFl2tUP7lNQhfG05Pkl1yLvt6iNE7AcWO9jWjUqMGBP4RHBYTcviPw4SVV+YZE8M=
-X-Gm-Message-State: AOJu0YyDqEo13BEPL0vj8Fqz7eCqo9WPYxJ9Htf/26w2g7DlbfxImTVO
-	7Gx3/NWkc3G2blh0JGnnKiLQPXf1Il3erfqw6mAuBodTzrvl1qKd9JYc8fX+KaQ=
-X-Google-Smtp-Source: AGHT+IFC1z/bjrfqmHUH7re49LUgUD3hZ7k7PnkWdvTpsNEn2b9WWeiNWttRMRVU89UAnO150KlFSA==
-X-Received: by 2002:a17:907:2da1:b0:a71:ddb8:9394 with SMTP id a640c23a62f3a-a780b6fe3e7mr424621466b.40.1720596651593;
-        Wed, 10 Jul 2024 00:30:51 -0700 (PDT)
-Received: from [10.100.51.161] ([193.86.92.181])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a780a871f2fsm135117366b.202.2024.07.10.00.30.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 10 Jul 2024 00:30:51 -0700 (PDT)
-Message-ID: <0b2697fd-7ab4-469f-83a6-ec9ebc701ba0@suse.com>
-Date: Wed, 10 Jul 2024 09:30:49 +0200
+        d=1e100.net; s=20230601; t=1720596987; x=1721201787;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ib7gCSaVLlpxg25S4ZxyQLMvzlSiQ7LEAEKDAEqbxxI=;
+        b=lswO6ZrYTfibPHR5C4DDf8RTXs61ewCFKAdEMRqxl+TNfAW8tJvw5tVUwmqM63hYGe
+         dJY0XP/Y0BnH8PPacTQle2VI/8of0RzkPXsY78kuiD7ZEmc2m22ahBpe+6GhQz177pae
+         kUPsAzFy3yx+SQtART781jRJkhrASaeku2ahHgam7g1VXCCEDkxWKk9tUKe2i8vZ+EFY
+         D3rjdMfYCqI2gcqQxD4xG5fgMkXYlXlcLlYq20rpzO2x2YGRh36qE6EbVGLtCOVUINDy
+         HdtcsHnACwtMCOX7nEVp/psvQybitHL58NZaR0e8yOdwF4CnPaJZOlC3j+pHxG2HfhfR
+         YTag==
+X-Forwarded-Encrypted: i=1; AJvYcCXFo0auYVLdVKdo4v0qsJ1djRnuMRKBD5wkqzbEkXnGYAwOPA82qLKzF5lJnlbTrJWSDpKyJu/uRQ8FFif7yCMewF5xAqOpsK59kEqfQtw=
+X-Gm-Message-State: AOJu0YwnNB9SOBYW1u26rtEZ9SQ6sA+bDl7NkwrlqHoPF67UJtYpS7Hp
+	FYY+A1ggTZLJKatgZJ2pbUueNF844f+9aLDJtQHbONsdYaKzDtuW/KrUM/kiE5U=
+X-Google-Smtp-Source: AGHT+IHg433AhW7OnnB4QmPzublPxbiEIgkyNA0iz+B1GaI1iSou2hECJs1ftjC8msq7230tW5DcQg==
+X-Received: by 2002:a05:6a00:1251:b0:706:700c:7864 with SMTP id d2e1a72fcca58-70b4351fde0mr6327577b3a.4.1720596986761;
+        Wed, 10 Jul 2024 00:36:26 -0700 (PDT)
+Received: from localhost ([122.172.84.129])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-70b439b9afbsm3065996b3a.191.2024.07.10.00.36.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 10 Jul 2024 00:36:26 -0700 (PDT)
+Date: Wed, 10 Jul 2024 13:06:23 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>, linux-pm@vger.kernel.org,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Stephen Boyd <sboyd@kernel.org>, Nishanth Menon <nm@ti.com>,
+	rust-for-linux@vger.kernel.org,
+	Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+	Erik Schilling <erik.schilling@linaro.org>,
+	Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
+	Joakim Bech <joakim.bech@linaro.org>, Rob Herring <robh@kernel.org>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH V3 1/8] rust: Add initial bindings for OPP framework
+Message-ID: <20240710073623.qdxatsqvumkguabp@vireshk-i7>
+References: <cover.1719990273.git.viresh.kumar@linaro.org>
+ <fe8e9a96b29122876346fc98a6a9ede7e4f28707.1719990273.git.viresh.kumar@linaro.org>
+ <ZoVvn0QCSR8y4HQJ@Boquns-Mac-mini.home>
+ <20240709110245.o73xnrj6jsvz2v2w@vireshk-i7>
+ <Zo13PB-fZ8B9WEYy@boqun-archlinux>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/15] Implement MODVERSIONS for Rust
-Content-Language: en-US
-To: Sami Tolvanen <samitolvanen@google.com>
-Cc: Masahiro Yamada <masahiroy@kernel.org>,
- Luis Chamberlain <mcgrof@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Matthew Maurer <mmaurer@google.com>, Alex Gaynor <alex.gaynor@gmail.com>,
- Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>,
- linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-modules@vger.kernel.org, rust-for-linux@vger.kernel.org
-References: <20240617175818.58219-17-samitolvanen@google.com>
-From: Petr Pavlu <petr.pavlu@suse.com>
-In-Reply-To: <20240617175818.58219-17-samitolvanen@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <Zo13PB-fZ8B9WEYy@boqun-archlinux>
 
-On 6/17/24 19:58, Sami Tolvanen wrote:
-> Hi folks,
+On 09-07-24, 10:45, Boqun Feng wrote:
+> On Tue, Jul 09, 2024 at 04:32:45PM +0530, Viresh Kumar wrote:
+> > On 03-07-24, 08:34, Boqun Feng wrote:
+> > > On Wed, Jul 03, 2024 at 12:44:26PM +0530, Viresh Kumar wrote:
+> > > > +// SAFETY: `OPP` only holds a pointer to a C OPP, which is safe to be used from any thread.
+> > > > +unsafe impl Send for OPP {}
+> > > > +
+> > > > +// SAFETY: `OPP` only holds a pointer to a C OPP, references to which are safe to be used from any
+> > > > +// thread.
+> > > > +unsafe impl Sync for OPP {}
+> > > > +
+> > > 
+> > > Same for the above safety comments, as they are still based on the old
+> > > implementation.
+> > 
+> > Do I still need to change these ? Since we aren't always using ARef
+> > now.
+> > 
 > 
-> This series implements CONFIG_MODVERSIONS for Rust, an important
-> feature for distributions like Android that want to ship Rust
-> kernel modules, and depend on modversions to help ensure module ABI
-> compatibility.
+> Correct, you will still need to change these. You're welcome to submit
+> a draft version here and I can help take a look before you send out a
+> whole new version, if you prefer that way.
 
-Thanks for working on this. Below is some feedback with my (open)SUSE
-hat on, although it should be quite general.
+I am not entirely sure what the change must be like that :)
 
-> There have been earlier proposals [1][2] that would allow Rust
-> modules to coexist with modversions, but none that actually implement
-> symbol versioning. Unlike C, Rust source code doesn't have sufficient
-> information about the final ABI, as the compiler has considerable
-> freedom in adjusting structure layout for improved performance [3],
-> for example, which makes using a source code parser like genksyms
-> a non-starter. Based on Matt's suggestion and previous feedback
-> from maintainers, this series uses DWARF debugging information for
-> computing versions. DWARF is an established and relatively stable
-> format, which includes all the necessary ABI details, and adding a
-> CONFIG_DEBUG_INFO dependency for Rust symbol versioning seems like a
-> reasonable trade-off.
-
-Using the DWARF data makes sense to me. Distribution kernels are
-normally built with debuginfo because one has to be able to debug them
-later, unsurprisingly. Besides that, one now typically wants to use BPF
-together with built-in BTF data (CONFIG_DEBUG_INFO_BTF), which also
-requires building the kernel with debuginfo.
-
-I would however keep in mind that producing all DWARF data has some
-cost. From a quick test, an x86_64-defconfig build is ~30% slower for me
-with CONFIG_DEBUG_INFO=y. The current genksyms tool allows to have
-debuginfo disabled when backporting some patches and consequently have
-a quicker feedback whether modversions changed. This option would
-disappear with gendwarfksyms but I think it is acceptable.
-
-> 
-> The first 12 patches of this series add a small tool for computing
-> symbol versions from DWARF, called gendwarfksyms. When passed a list
-> of exported symbols, the tool generates an expanded type string
-> for each symbol, and computes symbol CRCs similarly to genksyms.
-> gendwarfksyms is written in C and uses libdw to process DWARF, mainly
-> because of the existing support for C host tools that use elfutils
-> (e.g., objtool).
-
-In addition to calculating CRCs of exported symbols, genksyms has other
-features which I think are important.
-
-Firstly, the genksyms tool has a human-readable storage format for input
-data used in the calculation of symbol CRCs. Setting the make variable
-KBUILD_SYMTYPES enables dumping this data and storing it in *.symtypes
-files.
-
-When a developer later modifies the kernel and wants to check if some
-symbols have changed, they can take these files and feed them as
-*.symref back to genksyms. This allows the tool to provide an actual
-reason why some symbols have changed, instead of just printing that
-their CRCs are different.
-
-Is there any plan to add the same functionality to gendwarfksyms, or do
-you envison that people will use libabigail, Symbol-Type Graph, or
-another tool for making this type of comparison?
-
-Secondly, when distributions want to maintain stable kABI, they need to
-be able to deal with patch backports that add new members to structures.
-One common approach is to have placeholders in important structures
-which can be later replaced by the new members as needed. __GENKSYMS__
-ifdefs are then used at the C source level to hide these kABI-compatible
-changes from genksyms.
-
-Gendwarfksyms works on the resulting binary and so using such ifdefs
-wouldn't work. Instead, I suspect that what is required is a mechanism
-to tell the tool that a given change is ok, probably by allowing to
-specify some map from the original definition to the new one.
-
-Is there a plan to implement something like this, or how could it be
-addressed?
-
-> Another compatibility issue is fitting the extremely long mangled
-> Rust symbol names into struct modversion_info, which can only hold
-> 55-character names (on 64-bit systems). Previous proposals suggested
-> changing the structure to support longer names, but the conclusion was
-> that we cannot break userspace tools that parse the version table.
-> 
-> The next two patches of the series implement support for hashed
-> symbol names in struct modversion_info, where names longer than 55
-> characters are hashed, and the hash is stored in the name field. To
-> avoid breaking userspace tools, the binary hash is prefixed with a
-> null-terminated string containing the name of the hash function. While
-> userspace tools can later be updated to potentially produce more
-> useful information about the long symbols, this allows them to
-> continue working in the meantime.
-
-I think this approach with hashed names is quite complex. I'd personally
-be also in favor of having a new section with variable-length strings to
-store the names of imported symbols. As yet another alternative, it
-should be also possible to refer directly into .symtab/.strtab to avoid
-duplicating the names, but I suspect it would be non-trivial to
-implement.
-
-Cheers,
-Petr
+-- 
+viresh
