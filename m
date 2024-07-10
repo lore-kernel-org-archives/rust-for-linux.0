@@ -1,295 +1,182 @@
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+Received: from mail-ej1-f54.google.com (mail-ej1-f54.google.com [209.85.218.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6A7B28683;
-	Wed, 10 Jul 2024 03:26:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6370557880
+	for <rust-for-linux@vger.kernel.org>; Wed, 10 Jul 2024 07:30:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720581975; cv=none; b=FKeVFbPgjrEJ+569fAwssmDo+kD/KwQ6ifwrWTOvTebwqdCr7NGuthrvA1C4bAaPRqem90PIxK7FQ6UljdEwn3ING0vM2lmlsjSrFBhK2Af8Uhw19t+txE1WnrYKnuZMaHWewXdx2oEqHBSgxPwPS0PYqEb2egHR56ufITfUVFg=
+	t=1720596655; cv=none; b=bY/Z2t2PQdtjlN2GOMtPzhNC89GTkUGHdJ+/vbMMtu/i+tZtNOLBDha5rt8MTlRT7LuTIIgwGud+KxyVk8s6rqXtAP9LT/HeLn+9gP1cnxq4wXEUASeeyhgs1oAJD6LVbSZFrCg6vmk77VBEcLaFvgJQLZHC0gj5fwPHQIwe2UU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720581975; c=relaxed/simple;
-	bh=66/xON+hb2Qf5vVQk4X/r72CH1q0IpJHIkAkAdmH1Ug=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=ZXbwvfI+h4Q86WzFP6b8WtGxeY91Q7D/3vuOC7wmv4OilsL3wfBWilGnEbTuTKpFBQBcq8lhGnRXd3HFR5czX68lmyGBIlwfxtayEpSXMFrIZ4mtFQNCKMHGyKJg1h6824xMV/4NIEhhty3saxLOZVsDtbzwGeUsxMbtu4trRZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KO4IEtsW; arc=none smtp.client-ip=209.85.160.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1720596655; c=relaxed/simple;
+	bh=bg11X0+ouhSXutIZH+FX0laaIoy8Fd6IAGYyDkPoOmg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=k64jSzPUWKrCUXdk8UpQBMo8V+nt2BOXwMoMQGrk9+P1xuKXDDutyhX4Yb3o8vPqzTLtdS1UqJ42SsOxcw7n/u32nQY0issN/x3iIulnJeczyAtAl8TsvHSDTLbiaQZoUAcQPXQWyAJ2so22SvE1hCNfvKRdn48pcJ6Sqn+zViI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=dJCiLAhd; arc=none smtp.client-ip=209.85.218.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KO4IEtsW"
-Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-447d5376923so21886861cf.2;
-        Tue, 09 Jul 2024 20:26:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="dJCiLAhd"
+Received: by mail-ej1-f54.google.com with SMTP id a640c23a62f3a-a6265d3ba8fso547847966b.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 10 Jul 2024 00:30:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1720581972; x=1721186772; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:feedback-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=sfUqp+KEKp+iEpCVS+30hZiv3NZrSiROYXcYZoJxi08=;
-        b=KO4IEtsWLXY7NSaffjmyELcyJQwojvG57dBvWn16hIpQcJ2JrEpqLGmSATfNgM6nJ7
-         YPz/kGgdQvhpG7SstzmVIFURSm1hsTHQLsxjSmmvfqlF42KATLuIGvWQgcYN9vmz+j0B
-         yUICvOPwzaTXR3iPH5gTq5D2LqN1aNJX1lzZTY0MmcxtrpH6LZF6Ri3sBJzkPSW20TP0
-         SE1mtdLuUzZcHZPD0XwXkNZzRPbrvA+YbcPtId1cRvd7Pkasl30hFhHaVJd/BNzUBJE9
-         k14PSr9jcZu769EH0XKQLCQecZRO+4MP4MJ2knWh3RJHaCiRcc5xd1LY+YM4dyxxLbeZ
-         zn2A==
+        d=suse.com; s=google; t=1720596652; x=1721201452; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=BE/oQZmZGmjJjHSOCOGHNHHe0sV17vr1YpR/41Jzb5g=;
+        b=dJCiLAhd/2MRdbJWp59ir8VhnLVuK+eiZYL4Bb/vRADJi74iKHszneGBh0sliGvTxr
+         K/SJ72GSlzwYqH6wc4kUgVjYptXtWBsPcKHzWasteD4RPNaloPxQJvVrZ/oHyzNv5fm5
+         Ysq7+aQbcwtE2r0EhoQKmv+nb/OFGTohmFkk+MemWnsiwzyJeuBAUPsGpKsqXM5hOqyv
+         mFzLh/K+v/dMAn2MV2W7vtQw2HgZMa0DKphGC3pTuAlL+lo8UL67TblHD2BBHlQrmdcI
+         4//b90OGCk0KZUbbPIdpi91EWjNDLqXedO5Vpv8klLofrYYemNMTd19Nbn2M/Oz/oMkj
+         V7Cg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720581972; x=1721186772;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:feedback-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sfUqp+KEKp+iEpCVS+30hZiv3NZrSiROYXcYZoJxi08=;
-        b=KCAF+k8RUFka9R0+DGypWB/QJmNKQXIi9coyWxe5cQPL43Es/4rO4LT0a4hb6LOU4T
-         /NanghYI1jwvC/U9yjzZGQ/cCfYq1j7rn5FM6M7B292srjidUaOOW+JVUMZ8EB3B0utH
-         pIxGSU0uFshAS0JBEVxpHjHyNYdcFsZQaqbenVfTB/mcTyWuc2Gi37fusW50vqbjNo/z
-         4heh6Y5wQ/zEi5Z7jb5XDOMxJDP0RToulc51iu5XItl9ToExdoXlDgu4dyP48U/LJeCE
-         ncPBmj3FehtqMXkoZ3T2NecUFxl2VyLHCu6AtGfnZ35SE5d1XXaUuKu8n5Yrx3gP/h8x
-         8wVQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVmgNseOUeXwOWgIrPGNSPWumy6cxXS6qHKRjfcOoC48M91/FaBt3WBYoLt6n/l4mA2t2prPVW6Ihu+lnSccYsNkZSK71NWAZeGfBvBzJ5O5RT+LY2oFO6aImdL9vgiBzOXWJGKlA86
-X-Gm-Message-State: AOJu0YyXKcDaxx2y6qxpjfCQtDs4Vip85bJJ+5HyFpPaKSIAbiAvQjoC
-	c+a1qOQQsu+Jtf4hn21CROUMImd4a9nosNqafoHvL65YIQhb8zWq
-X-Google-Smtp-Source: AGHT+IHt+gtkNMoenXtzeqHEHKoTMcGMdaiq6T3o6v3P4TP5Q3MvauRfLjBJbP9wznjIu4GO08B9qg==
-X-Received: by 2002:ac8:5784:0:b0:447:e48d:f067 with SMTP id d75a77b69052e-447fa85373bmr50692531cf.14.1720581972335;
-        Tue, 09 Jul 2024 20:26:12 -0700 (PDT)
-Received: from fauth1-smtp.messagingengine.com (fauth1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-447f9bd224esm16403731cf.62.2024.07.09.20.26.11
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 09 Jul 2024 20:26:11 -0700 (PDT)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailfauth.nyi.internal (Postfix) with ESMTP id 1B28F1200043;
-	Tue,  9 Jul 2024 23:26:11 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute5.internal (MEProxy); Tue, 09 Jul 2024 23:26:11 -0400
-X-ME-Sender: <xms:Uf-NZkQSO9KFc8b2bEQ6A7gAhIO026ouNKcLsHpSuZgabVXgWHTmMg>
-    <xme:Uf-NZhz7NazEJMkc50obAW5kCPBHYWS24LELP8fOQOTo7ABrZ7MA4m_UAWn8JY055
-    FSSuTU8gLQUyWCCUw>
-X-ME-Received: <xmr:Uf-NZh1rx49BBKq2otOmZFV7NogHbiRGuhEGzZ5vcF15l6hSA8QG7hw2ZEo6xg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrfedtgdejudcutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpefhvfevufffkffoggfgsedtkeertdertddtnecuhfhrohhmpeeuohhquhhnucfh
-    vghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrthhtvg
-    hrnhepkeejueelvedujeefveegvdeukeetkeeileehhefghfeuhfetudeufffhudejgfdu
-    necuffhomhgrihhnpehkvghrnhgvlhdrohhrghdpihhnshhtrghntggvrdhinhdprghspg
-    hpthhrrdgsrghrpdhgvghtrdgsrghrnecuvehluhhsthgvrhfuihiivgeptdenucfrrghr
-    rghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrg
-    hlihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeep
-    ghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgv
-X-ME-Proxy: <xmx:Uv-NZoAVxIuoON6D9NdO9MsvD5QLNylEXtRA1CATJloZxKgQjEjEGg>
-    <xmx:Uv-NZtjrEbzHV-F9PZ612RmsTrvENcJ0Vt26HxF_eFUbub-L13mMPA>
-    <xmx:Uv-NZkoXjGltpn4N1jo0zKcttdikO3bqE31ZplzSe_2g2rAre8b6BQ>
-    <xmx:Uv-NZgj4Z-RMSJox_7OVUjdeuyuzVOdtYh5WjWvQqXGyHmBCKbBlBw>
-    <xmx:U_-NZkSYLElYzcP_j9L-b__9SZK8rD-cc0ydSAOHsMEQ_Q_pUrSGOWE6>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 9 Jul 2024 23:26:09 -0400 (EDT)
-From: Boqun Feng <boqun.feng@gmail.com>
-To: rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-doc@vger.kernel.org
-Cc: Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Danilo Krummrich <dakr@redhat.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	gregkh@linuxfoundation.org
-Subject: [RFC PATCH] rust: types: Add explanation for ARef pattern
-Date: Tue,  9 Jul 2024 20:24:47 -0700
-Message-ID: <20240710032447.2161189-1-boqun.feng@gmail.com>
-X-Mailer: git-send-email 2.45.2
+        d=1e100.net; s=20230601; t=1720596652; x=1721201452;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=BE/oQZmZGmjJjHSOCOGHNHHe0sV17vr1YpR/41Jzb5g=;
+        b=lm97rXGgKDDlbr4/DcgFC1TohDwhgkaoPfAlMlpEDSHiQVNVVkOdfyWLsaeMBDdgvH
+         tsmMxnGiX8QA7ZjgJsgxnO0JhFaL1LN9WDq4CTlKjIyDN6hu0cWBRkteUVTYBW/2EqOP
+         3o3xKIiovZ5xc1Km3ICxWMQVK+5d/R4HMxoQ00tBJOcO2kRRluWUcapdsuRrZsHBWnuW
+         jZY+9e+nDD26x51fkEVQwMrkvX+1cZZzjAa9TficAUqcnfCXMOJg4Oy8aiZgzlEheyCl
+         o8//N1THdsZVrxYR3eB9o6MY1Bg+0o/+H+FeNNUo8W0bgBIEkNR6ElycHb0GpCin5jUC
+         w6Ng==
+X-Forwarded-Encrypted: i=1; AJvYcCUEAywgeyhz/sgFGC7HvACxnKgJPBK7IevnfWSmb9qAFl2tUP7lNQhfG05Pkl1yLvt6iNE7AcWO9jWjUqMGBP4RHBYTcviPw4SVV+YZE8M=
+X-Gm-Message-State: AOJu0YyDqEo13BEPL0vj8Fqz7eCqo9WPYxJ9Htf/26w2g7DlbfxImTVO
+	7Gx3/NWkc3G2blh0JGnnKiLQPXf1Il3erfqw6mAuBodTzrvl1qKd9JYc8fX+KaQ=
+X-Google-Smtp-Source: AGHT+IFC1z/bjrfqmHUH7re49LUgUD3hZ7k7PnkWdvTpsNEn2b9WWeiNWttRMRVU89UAnO150KlFSA==
+X-Received: by 2002:a17:907:2da1:b0:a71:ddb8:9394 with SMTP id a640c23a62f3a-a780b6fe3e7mr424621466b.40.1720596651593;
+        Wed, 10 Jul 2024 00:30:51 -0700 (PDT)
+Received: from [10.100.51.161] ([193.86.92.181])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a780a871f2fsm135117366b.202.2024.07.10.00.30.50
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 10 Jul 2024 00:30:51 -0700 (PDT)
+Message-ID: <0b2697fd-7ab4-469f-83a6-ec9ebc701ba0@suse.com>
+Date: Wed, 10 Jul 2024 09:30:49 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 00/15] Implement MODVERSIONS for Rust
+Content-Language: en-US
+To: Sami Tolvanen <samitolvanen@google.com>
+Cc: Masahiro Yamada <masahiroy@kernel.org>,
+ Luis Chamberlain <mcgrof@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Matthew Maurer <mmaurer@google.com>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>,
+ linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-modules@vger.kernel.org, rust-for-linux@vger.kernel.org
+References: <20240617175818.58219-17-samitolvanen@google.com>
+From: Petr Pavlu <petr.pavlu@suse.com>
+In-Reply-To: <20240617175818.58219-17-samitolvanen@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-As the usage of `ARef` and `AlwaysRefCounted` is growing, it makes sense
-to add explanation of the "ARef pattern" to cover the most "DO" and "DO
-NOT" cases when wrapping a self-refcounted C type.
+On 6/17/24 19:58, Sami Tolvanen wrote:
+> Hi folks,
+> 
+> This series implements CONFIG_MODVERSIONS for Rust, an important
+> feature for distributions like Android that want to ship Rust
+> kernel modules, and depend on modversions to help ensure module ABI
+> compatibility.
 
-Hence an "ARef pattern" section is added in the documentation of `ARef`.
+Thanks for working on this. Below is some feedback with my (open)SUSE
+hat on, although it should be quite general.
 
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
----
-This is motivated by:
+> There have been earlier proposals [1][2] that would allow Rust
+> modules to coexist with modversions, but none that actually implement
+> symbol versioning. Unlike C, Rust source code doesn't have sufficient
+> information about the final ABI, as the compiler has considerable
+> freedom in adjusting structure layout for improved performance [3],
+> for example, which makes using a source code parser like genksyms
+> a non-starter. Based on Matt's suggestion and previous feedback
+> from maintainers, this series uses DWARF debugging information for
+> computing versions. DWARF is an established and relatively stable
+> format, which includes all the necessary ABI details, and adding a
+> CONFIG_DEBUG_INFO dependency for Rust symbol versioning seems like a
+> reasonable trade-off.
 
-	https://lore.kernel.org/rust-for-linux/20240705110228.qqhhynbwwuwpcdeo@vireshk-i7/
+Using the DWARF data makes sense to me. Distribution kernels are
+normally built with debuginfo because one has to be able to debug them
+later, unsurprisingly. Besides that, one now typically wants to use BPF
+together with built-in BTF data (CONFIG_DEBUG_INFO_BTF), which also
+requires building the kernel with debuginfo.
 
- rust/kernel/types.rs | 156 +++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 156 insertions(+)
+I would however keep in mind that producing all DWARF data has some
+cost. From a quick test, an x86_64-defconfig build is ~30% slower for me
+with CONFIG_DEBUG_INFO=y. The current genksyms tool allows to have
+debuginfo disabled when backporting some patches and consequently have
+a quicker feedback whether modversions changed. This option would
+disappear with gendwarfksyms but I think it is acceptable.
 
-diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
-index bd189d646adb..70fdc780882e 100644
---- a/rust/kernel/types.rs
-+++ b/rust/kernel/types.rs
-@@ -329,6 +329,162 @@ pub unsafe trait AlwaysRefCounted {
- ///
- /// The pointer stored in `ptr` is non-null and valid for the lifetime of the [`ARef`] instance. In
- /// particular, the [`ARef`] instance owns an increment on the underlying object's reference count.
-+///
-+/// # [`ARef`] pattern
-+///
-+/// "[`ARef`] pattern" is preferred when wrapping a C struct which has its own refcounting
-+/// mechanism, because it decouples the operations on the object itself (usually via a `&Foo`) vs the
-+/// operations on a pointer to the object (usually via an `ARef<Foo>`). For example, given a `struct
-+/// foo` defined in C, which has its own refcounting operations `get_foo()` and `put_foo()`. Without
-+/// "[`ARef`] pattern", i.e. **bad case**:
-+///
-+/// ```ignore
-+/// pub struct Foo(NonNull<foo>);
-+///
-+/// impl Foo {
-+///     // An operation on the pointer.
-+///     pub unsafe fn from_ptr(ptr: *mut foo) -> Self {
-+///         // Note that whether `get_foo()` is needed here depends on the exact semantics of
-+///         // `from_ptr()`: is it creating a new reference, or it continues using the caller's
-+///         // reference?
-+///         unsafe { get_foo(ptr); }
-+///
-+///         unsafe { Foo(NonNull::new_unchecked(foo)) }
-+///     }
-+///
-+///     // An operation on the object.
-+///     pub fn get_bar(&self) -> Bar {
-+///         unsafe { (*foo.0.as_ptr()).bar }
-+///     }
-+/// }
-+///
-+/// // Plus `impl Clone` and `impl Drop` are also needed to implement manually.
-+/// impl Clone for Foo {
-+///     fn clone(&self) -> Self {
-+///         unsafe { get_foo(self.0.as_ptr()); }
-+///
-+///         Foo(self.0)
-+///     }
-+/// }
-+///
-+/// impl Drop for Foo {
-+///     fn drop(&mut self) {
-+///         unsafe { put_foo(self.0.as_ptr()); }
-+///     }
-+/// }
-+/// ```
-+///
-+/// In this case, it's hard to tell whether `Foo` represent an object of `foo` or a pointer to
-+/// `foo`.
-+///
-+/// However, if using [`ARef`] pattern, `foo` can be wrapped as follow:
-+///
-+/// ```ignore
-+/// /// Note: `Opaque` is needed in most cases since there usually exist C operations on
-+/// /// `struct foo *`, and `#[repr(transparent)]` is needed for the safety of converting a `*mut
-+/// /// foo` to a `*mut Foo`
-+/// #[repr(transparent)]
-+/// pub struct Foo(Opaque<foo>);
-+///
-+/// impl Foo {
-+///     pub fn get_bar(&self) -> Bar {
-+///         // SAFETY: `self.0.get()` is a valid pointer.
-+///         //
-+///         // Note: Usually extra safety comments are needed here to explain why accessing `.bar`
-+///         // doesn't race with C side. Most cases are either calling a C function, which has its
-+///         // own concurrent access protection, or holding a lock.
-+///         unsafe { (*self.0.get()).bar }
-+///     }
-+/// }
-+/// ```
-+///
-+/// ## Avoid `impl AlwaysRefCounted` if unnecesarry
-+///
-+/// If Rust code doesn't touch the part where the object lifetimes of `foo` are maintained, `impl
-+/// AlwaysRefCounted` can be temporarily avoided: it can always be added later as an extension of
-+/// the functionality of the Rust code. This is usually the case for callbacks where the object
-+/// lifetimes are already maintained by a framework. In such a case, an `unsafe` `fn(*mut foo) ->
-+/// &Foo` function usually suffices:
-+///
-+/// ```ignore
-+/// impl Foo {
-+///     /// # Safety
-+///     ///
-+///     /// `ptr` has to be a valid pointer to `foo` for the entire lifetime `'a'.
-+///     pub unsafe fn as_ref<'a>(ptr: *mut foo) -> &'a Self {
-+///         // SAFETY: Per function safety requirement, reborrow is valid.
-+///         unsafe { &*ptr.cast() }
-+///     }
-+/// }
-+/// ```
-+///
-+/// ## Type invariants of `impl AlwaysRefCounted`
-+///
-+/// Types that `impl AlwaysRefCounted` usually needs an invariant to describe why the type can meet
-+/// the safety requirement of `AlwaysRefCounted`, e.g.
-+///
-+/// ```ignore
-+/// /// # Invariants:
-+/// ///
-+/// /// Instances of this type are always refcounted, that is, a call to `get_foo` ensures that the
-+/// /// allocation remains valid at least until the matching call to `put_foo`.
-+/// #[repr(transparent)]
-+/// pub struct Foo(Opaque<foo>);
-+///
-+/// // SAFETY: `Foo` is always ref-counted per type invariants.
-+/// unsafe impl AlwaysRefCounted for Foo {
-+///     fn inc_ref(&self) {
-+///         // SAFETY: `self.0.get()` is a valid pointer and per type invariants, the existence of
-+///         // `&self` means it has a non-zero reference count.
-+///         unsafe { get_foo(self.0.get()); }
-+///     }
-+///
-+///     unsafe dec_ref(obj: NonNull<Self>) {
-+///         // SAFETY: The refcount of `obj` is non-zero per function safety requirement, and the
-+///         // cast is OK since `foo` is transparent to `Foo`.
-+///         unsafe { put_foo(obj.cast()); }
-+///     }
-+/// }
-+/// ```
-+///
-+/// After `impl AlwaysRefCounted for foo`, `clone()` (`get_foo()`) and `drop()` (`put_foo()`)  are
-+/// available to `ARef<Foo>` thanks to the generic implementation.
-+///
-+/// ## `ARef<Self>` vs `&Self`
-+///
-+/// For an `impl AlwaysRefCounted` type, `ARef<Self>` represents an owner of one reference count,
-+/// e.g.
-+///
-+/// ```ignore
-+/// impl Foo {
-+///     /// Gets a ref-counted reference of [`Self`].
-+///     ///
-+///     /// # Safety
-+///     ///
-+///     /// - `ptr` must be a valid pointer to `foo` with at least one reference count.
-+///     pub unsafe fn from_ptr(ptr: *mut foo) -> ARef<Self> {
-+///         // SAFETY: `ptr` is a valid pointer per function safety requirement. The cast is OK
-+///         // since `foo` is transparent to `Foo`.
-+///         //
-+///         // Note: `.into()` here increases the reference count, so the returned value has its own
-+///         // reference count.
-+///         unsafe { &*(ptr.cast::<Foo>()) }.into()
-+///     }
-+/// }
-+/// ```
-+///
-+/// Another function that returns an `ARef<Self>` but with a different semantics is
-+/// [`ARef::from_raw`]: it takes away the refcount of the input pointer, i.e. no refcount
-+/// incrementation inside the function.
-+///
-+/// However `&Self` represents a reference to the object, and the lifetime of the **reference** is
-+/// known at compile-time. E.g. the `Foo::as_ref()` above.
-+///
-+/// ## `impl Drop` of an `impl AlwaysRefCounted` should not touch the refcount
-+///
-+/// [`ARef`] descreases the refcount automatically (in [`ARef::drop`]) when it goes out of the
-+/// scope, therefore there's no need to `impl Drop` for the type of objects (e.g. `Foo`) to decrease
-+/// the refcount.
- pub struct ARef<T: AlwaysRefCounted> {
-     ptr: NonNull<T>,
-     _p: PhantomData<T>,
--- 
-2.45.2
+> 
+> The first 12 patches of this series add a small tool for computing
+> symbol versions from DWARF, called gendwarfksyms. When passed a list
+> of exported symbols, the tool generates an expanded type string
+> for each symbol, and computes symbol CRCs similarly to genksyms.
+> gendwarfksyms is written in C and uses libdw to process DWARF, mainly
+> because of the existing support for C host tools that use elfutils
+> (e.g., objtool).
 
+In addition to calculating CRCs of exported symbols, genksyms has other
+features which I think are important.
+
+Firstly, the genksyms tool has a human-readable storage format for input
+data used in the calculation of symbol CRCs. Setting the make variable
+KBUILD_SYMTYPES enables dumping this data and storing it in *.symtypes
+files.
+
+When a developer later modifies the kernel and wants to check if some
+symbols have changed, they can take these files and feed them as
+*.symref back to genksyms. This allows the tool to provide an actual
+reason why some symbols have changed, instead of just printing that
+their CRCs are different.
+
+Is there any plan to add the same functionality to gendwarfksyms, or do
+you envison that people will use libabigail, Symbol-Type Graph, or
+another tool for making this type of comparison?
+
+Secondly, when distributions want to maintain stable kABI, they need to
+be able to deal with patch backports that add new members to structures.
+One common approach is to have placeholders in important structures
+which can be later replaced by the new members as needed. __GENKSYMS__
+ifdefs are then used at the C source level to hide these kABI-compatible
+changes from genksyms.
+
+Gendwarfksyms works on the resulting binary and so using such ifdefs
+wouldn't work. Instead, I suspect that what is required is a mechanism
+to tell the tool that a given change is ok, probably by allowing to
+specify some map from the original definition to the new one.
+
+Is there a plan to implement something like this, or how could it be
+addressed?
+
+> Another compatibility issue is fitting the extremely long mangled
+> Rust symbol names into struct modversion_info, which can only hold
+> 55-character names (on 64-bit systems). Previous proposals suggested
+> changing the structure to support longer names, but the conclusion was
+> that we cannot break userspace tools that parse the version table.
+> 
+> The next two patches of the series implement support for hashed
+> symbol names in struct modversion_info, where names longer than 55
+> characters are hashed, and the hash is stored in the name field. To
+> avoid breaking userspace tools, the binary hash is prefixed with a
+> null-terminated string containing the name of the hash function. While
+> userspace tools can later be updated to potentially produce more
+> useful information about the long symbols, this allows them to
+> continue working in the meantime.
+
+I think this approach with hashed names is quite complex. I'd personally
+be also in favor of having a new section with variable-length strings to
+store the names of imported symbols. As yet another alternative, it
+should be also possible to refer directly into .symtab/.strtab to avoid
+duplicating the names, but I suspect it would be non-trivial to
+implement.
+
+Cheers,
+Petr
