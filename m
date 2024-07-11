@@ -1,285 +1,142 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2023F9CD
-	for <rust-for-linux@vger.kernel.org>; Thu, 11 Jul 2024 02:06:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA9467E574
+	for <rust-for-linux@vger.kernel.org>; Thu, 11 Jul 2024 06:06:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720663603; cv=none; b=pSyvnKFqp0evjKbL0F89FUJZrEuUDWufRV5r/3l9OTTxadxTKhV9UBetPdiiXjTOWlKMltmQxpKEfRJLP5ZsW/o9wSYELrfMpZW32jV4O07MgMpVjaCG72NXuiCMKoBtpWR+g291lEn0nI7UebEsUmq8HIoBwAGtwT10dxzLTzU=
+	t=1720677967; cv=none; b=NptvvSHEnP8yRe9CC4Hwh0d01WEZ4osTx0CIDp5Y7fdU3VRG4Mzw06kTSfQQmGumfS530RocciyZkSqRVtlQH89a0M+kAgQBsgpsGXmyCzMjmPkCykJ1T2rYjpT4FB2q+1tggv0gCYsFM72SRer+WK/NuK5UPfsvJX07K9rVKsg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720663603; c=relaxed/simple;
-	bh=pJyHRJDFncPPTGOMQDSJyJR4PDpISzhTeqHtdLZeCR4=;
+	s=arc-20240116; t=1720677967; c=relaxed/simple;
+	bh=Pct07P2cTZvGxvW7F2GXSza3Mvzjb0y516idEyqvNVM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 In-Reply-To:Content-Type:Content-Disposition; b=AkME9LywNcyZBYV6TTmufHFA/iM50w91HaQftPh9MRrz0VhLLSplQAbXnvPa5tFAnjCtqz3XO8UuhshV5XyPY0CTGPFREsM1+1nJ9YSEXHEX6VG0APKrYjFgsOYxixBhffPOE8tudEaEkT66zUu7eIg0fYTT3yJ9Fhw8h7KG5rY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BVDaQuYG; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=myPCoTYpCMIM3F84XoJ1iJntITdAJnbSycawlMg9kRyF3Co3tzIH1pUuJ2+kg7x1QOhnQ3AfXo4RWv1X3rPmenWA4FxQnf+0hBuAxJVFgbsq4uOTDfNcA08Yl1UPy+dvMWcoRAYnhUf8NeoBff5pNlwYvAsp/x+RXeioGbzVSbY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=AUVHatp8; arc=none smtp.client-ip=209.85.216.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BVDaQuYG"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1720663600;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gcJ+bhwHv55iisJI251dNo25fMgIA/xRWTiXDkq/ZHQ=;
-	b=BVDaQuYGnpMRvMZNj1axHdRHXNQiG73rZTFWWwyTHcDzNXA+v7CuBpQB1fm7jJqhUMkap4
-	ZUIA7AKI8gBmKz468HLWaTEK8/3SMFPFCNszia39pAAwyb4IcwCvWIetiEvoF5syfKnr7A
-	F+QYH0TaBYgoyT/t/0ApmxDtj3nHFD8=
-Received: from mail-ej1-f71.google.com (mail-ej1-f71.google.com
- [209.85.218.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-668-D_2sgEsXNWi2wb5IeQwkcg-1; Wed, 10 Jul 2024 22:06:39 -0400
-X-MC-Unique: D_2sgEsXNWi2wb5IeQwkcg-1
-Received: by mail-ej1-f71.google.com with SMTP id a640c23a62f3a-a77c85826fdso43697066b.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 10 Jul 2024 19:06:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="AUVHatp8"
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-2c5362c7c0bso423883a91.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 10 Jul 2024 23:06:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1720677965; x=1721282765; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=G1naGOzRkLRpp7KZwz3L99c4a5Zz60/yAipmQv8kxf0=;
+        b=AUVHatp8vF5gYWwK7526wGdxIPpkALAZEMDYWToA4vF544UtTUi74jWaPIdQ1g9DPO
+         pXNgvOD556DCuLqIYmyx4ryXxemvk5JIokhoqW5+5+spST9uOHDjhmq0Wht24YNxYy4H
+         3aPFEyqabzkry67W2RxBhndVTL5ecwW+z+iuCmRyApyD3cWaOnBZQRQM1dnTrzGg1WQJ
+         +VsDP2/qTo9iYDDHE2Hlh8vucEjwshP1gFAfs3boRv9ycPxNPw/ffgrwdtZ8xxG6gVUW
+         DyACbPE9oreHJbJ1X+duzTHNc/TJy427YHK3/EkGGnQ2T24fJSSxKxbPVtznV5pM7ypi
+         aAAQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720663598; x=1721268398;
+        d=1e100.net; s=20230601; t=1720677965; x=1721282765;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=gcJ+bhwHv55iisJI251dNo25fMgIA/xRWTiXDkq/ZHQ=;
-        b=eQigr3yucYMbLe6lvAXNcORwjskVeB2ck2VYbHSZzHfm3vd3GShSN7glAQnda9OgDI
-         c638fZQgN+/vRxYKVoGfTiw9P6++k24X2MLgdW40jKAIEcYkKUSwYHpGSsFj82qBcTRQ
-         4K+YA9+8ALrKIni3uMO6YCm4DUl3JxJRS161frI4RBQJPZUxTGczyAAZU3k4ABCUMe/E
-         RW3BZfK9+JQP8fkEoABGe4LaphXzDP4J6GFKowI8kum5c5ijp2d/BytxRfiYXc0xR50x
-         T1Y9Aq1C6xUot2yFHQFyAIitRwY1oLlXgy8m9vgMkEvCmhraETrGmuJUYJUb7HhEcmPT
-         b11w==
-X-Forwarded-Encrypted: i=1; AJvYcCUDVrq/u1/OvJ/HhjW3A1uLha59VBEu/o/KheVqia3/NJzvY96fIsqtUgrsma/I9vY2PJNVBsc/4t/0RdWmiEE98wnQh6SovfVsQ4ZZwhk=
-X-Gm-Message-State: AOJu0YzfySPkyEhxTgI4ud1L+ugTz85Ic29FgJo33glkVrb/wavvZQ4z
-	tf/kru3EfMFWW8hK+0xq3xcaBSDq1L0DYvf0qjljazfLEuY4E1h2jXI4hU/WQ/cWU4NMC8d6wpM
-	PIGC+YHTDDgncvk5k4R3cKLS6GiSALwe+ytL/BJ1tQ1jZjiB2Mupw8Pa01Eu2FU35
-X-Received: by 2002:a17:906:245a:b0:a77:cbe5:413d with SMTP id a640c23a62f3a-a780b688a51mr485391966b.6.1720663597974;
-        Wed, 10 Jul 2024 19:06:37 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEIGxch+yWX7RBH3S75Tadyo+mN5FVAEvp1K/XMHtNfD9634tiEoeb73S5vShoe4GvzAAaCcA==
-X-Received: by 2002:a17:906:245a:b0:a77:cbe5:413d with SMTP id a640c23a62f3a-a780b688a51mr485389666b.6.1720663597631;
-        Wed, 10 Jul 2024 19:06:37 -0700 (PDT)
-Received: from pollux ([2a02:810d:4b3f:ee94:abf:b8ff:feee:998b])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a797f300b05sm92729666b.134.2024.07.10.19.06.36
+        bh=G1naGOzRkLRpp7KZwz3L99c4a5Zz60/yAipmQv8kxf0=;
+        b=wmvJ2zrJsHvvjeExYYztxFMmf7MYZ63D4d+cEyvGa9znx0MtjwnWSM63ICiFvsntR5
+         30sZayBuqwAq2rcFalFrAFHBzfyt+Dsi2nHFuDHEVWFXw81xKDicvgSFDkDX6MLyw0pM
+         T77rH9ZlyAUbPRq9n7n6/m/b+PPzqkJWBPx2dFMJzB//DjXSu0Yhw8oSx9nIAc/HKPjK
+         ogA73p9XncLNsP2JiWXUoEEFnVzRhq0rpQqv02nM+ysRdmvjW57G3e9hSYXVLZJ5j8IZ
+         Kx/VdFaVmw/qlmozMp5ePAnIla2ZX6oisq1PxLXG5Gnq7NhGqzHOv5RS+LL5o4sM0O3X
+         +6cQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXzHfW2G0Y20aVFuwMHXsqi+77GeRhBrNjCn/pJjvv01zuoQ1aETa5j6us9GqRg60rpPriVd2EAipacaQ9t21YawUTW6DFb+P0CDi8YFec=
+X-Gm-Message-State: AOJu0Yx/ySTUYnICQqMD/7B3+pEbFM+Xqeghk6CmAZ1KD93BgHYZUdwx
+	KNpfHsnrcgAGGmdvTaZsflMfQ5BEau4iJUKT4sWbVL5iI+RrPHAvtxgLoieBY3A=
+X-Google-Smtp-Source: AGHT+IHKIRAKhiyYiKLP0CQNpVmFEZVj0D+u79CNLoPp13J4mrQM8iSlQeqWiA0KS/IHQxTYeT1Glw==
+X-Received: by 2002:a17:90a:c7c9:b0:2c9:718c:73e with SMTP id 98e67ed59e1d1-2ca35c79e3emr6122202a91.29.1720677965084;
+        Wed, 10 Jul 2024 23:06:05 -0700 (PDT)
+Received: from localhost ([122.172.84.129])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2c99a951741sm13039837a91.15.2024.07.10.23.06.03
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Jul 2024 19:06:37 -0700 (PDT)
-Date: Thu, 11 Jul 2024 04:06:35 +0200
-From: Danilo Krummrich <dakr@redhat.com>
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: rafael@kernel.org, bhelgaas@google.com, ojeda@kernel.org,
-	alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	a.hindborg@samsung.com, aliceryhl@google.com, airlied@gmail.com,
-	fujita.tomonori@gmail.com, lina@asahilina.net, pstanner@redhat.com,
-	ajanulgu@redhat.com, lyude@redhat.com, robh@kernel.org,
-	daniel.almeida@collabora.com, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-pci@vger.kernel.org
-Subject: Re: [PATCH v2 02/10] rust: implement generic driver registration
-Message-ID: <Zo8-K7vKECn0X9cR@pollux>
-References: <20240618234025.15036-1-dakr@redhat.com>
- <20240618234025.15036-3-dakr@redhat.com>
- <2024062025-wrecking-utilize-30cf@gregkh>
- <ZnRjCnvtPBhEatt_@cassiopeiae>
- <2024071052-bunion-kinswoman-6577@gregkh>
+        Wed, 10 Jul 2024 23:06:04 -0700 (PDT)
+Date: Thu, 11 Jul 2024 11:36:01 +0530
+From: Viresh Kumar <viresh.kumar@linaro.org>
+To: Alice Ryhl <aliceryhl@google.com>, Boqun Feng <boqun.feng@gmail.com>,
+	Danilo Krummrich <dakr@redhat.com>
+Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>, linux-pm@vger.kernel.org,
+	Vincent Guittot <vincent.guittot@linaro.org>,
+	Stephen Boyd <sboyd@kernel.org>, Nishanth Menon <nm@ti.com>,
+	rust-for-linux@vger.kernel.org,
+	Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+	Erik Schilling <erik.schilling@linaro.org>,
+	Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
+	Joakim Bech <joakim.bech@linaro.org>, Rob Herring <robh@kernel.org>,
+	linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH V3 8/8] cpufreq: Add Rust based cpufreq-dt driver
+Message-ID: <20240711060601.fmnttgqhbh2pitzj@vireshk-i7>
+References: <cover.1719990273.git.viresh.kumar@linaro.org>
+ <b7df0c75cc07a451243b554fb2272c91cbe42dfe.1719990273.git.viresh.kumar@linaro.org>
+ <f0016987-4288-4adf-954d-665b35ae1bf1@redhat.com>
+ <20240710085652.zu7ntnv4gmy7zr2i@vireshk-i7>
+ <Zo6oqfFX-TNIeaIC@pollux>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <2024071052-bunion-kinswoman-6577@gregkh>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
+In-Reply-To: <Zo6oqfFX-TNIeaIC@pollux>
 
-(Please read my reply to Patch 1 first)
+On 10-07-24, 17:28, Danilo Krummrich wrote:
+> No, the platform driver layer will only guarantee that it decreses the reference
+> count of the `Arc` by one, that doesn't guarantee a free. If something else
+> still holds a reference to the `Arc` it will keep the `Registration` alive,
+> unless it's wrapped by `Devres`.
 
-On Wed, Jul 10, 2024 at 04:10:40PM +0200, Greg KH wrote:
-> On Thu, Jun 20, 2024 at 07:12:42PM +0200, Danilo Krummrich wrote:
-> > On Thu, Jun 20, 2024 at 04:28:23PM +0200, Greg KH wrote:
-> > > On Wed, Jun 19, 2024 at 01:39:48AM +0200, Danilo Krummrich wrote:
-> > > > Implement the generic `Registration` type and the `DriverOps` trait.
-> > > 
-> > > I don't think this is needed, more below...
-> > > 
-> > > > The `Registration` structure is the common type that represents a driver
-> > > > registration and is typically bound to the lifetime of a module. However,
-> > > > it doesn't implement actual calls to the kernel's driver core to register
-> > > > drivers itself.
-> > > 
-> > > But that's not what normally happens, more below...
-> > 
-> > I can't find below a paragraph that seems related to this, hence I reply here.
-> > 
-> > The above is just different wording for: A driver is typically registered in
-> > module_init() and unregistered in module_exit().
-> > 
-> > Isn't that what happens normally?
-> 
-> Yes, but it's nothing we have ever used in the kernel before.  You are
-> defining new terms in some places, and renaming existing ones in others,
-> which is going to do nothing but confuse us all.
+I see. Thanks.
 
-We're not renaming anything, but...
+There is one problem that I haven't found a solution to yet. If I make
+the following change to the driver:
 
-New terms, yes, because it's new structures that aren't needed in C, but in
-Rust. Why do we need those things in Rust, but not in C you may ask.
+diff --git a/drivers/cpufreq/rcpufreq_dt.rs b/drivers/cpufreq/rcpufreq_dt.rs
+index 315adca2a747..052ea2db095a 100644
+--- a/drivers/cpufreq/rcpufreq_dt.rs
++++ b/drivers/cpufreq/rcpufreq_dt.rs
+@@ -236,7 +236,7 @@ fn probe(dev: &mut platform::Device, _id_info: Option<&Self::IdInfo>) -> Result<
 
-Let me try to explain it while trying to clarify what the `Registration` and
-`DriverOps` types are actually used for, as promised in my reply to Patch 1.
+ module_platform_driver! {
+     type: CPUFreqDTDriver,
+-    name: "cpufreq_dt",
++    name: "cpufreq-dt",
+     author: "Viresh Kumar <viresh.kumar@linaro.org>",
+     description: "Generic CPUFreq DT driver",
+     license: "GPL v2",
 
-The first misunderstanding may be that they abstract something in drivers/base/,
-but that's not the case. In fact, those are not abstractions around C
-structures themselfes. Think of them as small helpers to implement driver
-abstractions in general (e.g. PCI, platform, etc.), which is why they are in a
-file named driver.rs.
+then I get this error:
 
-Now, what are `DriverOps`? It's just an interface that asks the implementer of
-the interface to implement a register() and an unregister() function. PCI
-obviously does implement this as pci_register_driver() and
-pci_unregister_driver().
+  CLIPPY     drivers/cpufreq/rcpufreq_dt.o
+error: expected one of `:`, `;`, or `=`, found `-`
+   --> /mnt/ssd/all/work/repos/kernel/linux/drivers/cpufreq/rcpufreq_dt.rs:237:1
+    |
+237 | / module_platform_driver! {
+238 | |     type: CPUFreqDTDriver,
+239 | |     name: "cpufreq-dt",
+240 | |     author: "Viresh Kumar <viresh.kumar@linaro.org>",
+241 | |     description: "Generic CPUFreq DT driver",
+242 | |     license: "GPL v2",
+243 | | }
+    | |_^ expected one of `:`, `;`, or `=`
+    |
+    = note: this error originates in the macro
+    `$crate::prelude::module` which comes from the expansion of the
+    macro `module_platform_driver` (in Nightly builds, run with -Z
+    macro-backtrace for more info)
 
-Having that said, I agree with you that `DriverOps` is a bad name, I think it
-should be `RegistrationOps` instead - it represents the operations to register()
-and unregister() a driver. I will use this name in the following instead, it is
-less confusing.
 
-In terms of what a `Registration` does and why we need this in Rust, but not in
-C it is easiest to see from an example with some inline comments:
+And because of that I had to change the name of the platform device
+too in the existing kernel.
 
-```
-struct MyDriver;
-
-impl pci::Driver for MyDriver {
-	define_pci_id_table! {
-		bindings::PCI_VENDOR_ID_FOO, bindings::PCI_ANY_ID,
-		None,
-	}
-
-	fn probe(dev: ARef<pci::Device>) {}
-	fn remove() {}
-}
-
-struct MyModule {
-	// `pci::RegOps` is the PCI implementation of `RegistrationOps`, i.e.
-	// `pci::Ops::register()` calls pci_register_driver() and 
-	// `pci::Ops::unregister()` calls pci_unregister_driver().
-	//
-	// `pci::RegOps` also creates the `struct pci_dev` setting probe() to
-	// `MyDriver::probe` and remove() to `MyDriver::remove()`.
-	reg: Registration<pci::RegOps<MyDriver>>,
-}
-
-impl kernel::Moduke for MyModule {
-fn init(name: &'static CStr, module: &'static ThisModule) -> Result<Self> {
-		Ok(MyModule {
-			reg: Registration::<pci::RegOps<MyDriver>>::new(name, module),
-		})
-	}
-}
-```
-
-This code is equivalent to the following C code:
-
-```
-static int probe(struct pci_dev *pdev, const struct pci_device_id *ent) {}
-
-static void remove(struct pci_dev *pdev) {}
-
-static struct pci_driver my_pci_driver {
-	.name = "my_driver",
-	.id_table = pci_ids,
-	.probe = probe,
-	.remove = remove,
-};
-
-static int __init my_module_init(void)
-{
-	pci_register_driver(my_pci_driver);
-}
-module_init(my_module_init);
-
-static void __exit my_module_exit(void)
-{
-	pci_unregister_driver(my_pci_driver();
-}
-module_exit(my_module_exit);
-```
-
-You may have noticed that the Rust code doesn't need `Module::exit` at all. And
-the reason is the `Registration` type.
-
-`Registration` is implemented as:
-
-```
-struct Registration<T: RegistrationOps> {
-	// In the example above `T::DriverType` is struct pci_dev.
-	drv: T::DriverType,
-}
-
-impl<T: RegistrationOps> Registration<T> {
-	pub fn new(name: &'static Cstr, module &'static ThisModule) -> Self {
-		// SAFETY: `T::DriverType` is a C type (e.g. struct pci_dev) and
-		// can be zero initialized.
-		// This is a bit simplified, to not bloat the example with
-		// pinning.
-		let drv: T::DriverType = unsafe { core::mem::zeroed() };
-
-		// In this example, this calls `pci::RegOps::register`, which
-		// initializes the struct pci_dev and calls
-		// pci_register_driver().
-		T::register(drv, name, module);
-	}
-}
-
-impl<T: RegistrationOps> Drop for Registration<T> {
-	fn drop(&mut self) {
-		// This calls pci_unregister_driver() on the struct pci_dev
-		// stored in `self.drv`.
-		T::unregister(self.drv);
-	}
-}
-```
-
-As you can see, once the `Registration` goes out of scope the driver is
-automatically unregistered due to the drop() implementation, which is why we
-don't need `Module::exit`. 
-
-This also answers why we need a `Registration` structure in Rust, but not in C.
-Rust uses different programming paradigms than C, and it uses type
-representations with `Drop` traits to clean things up, rather than relying on
-the user of the API doing it manually.
-
-I really hope this explanation and example helps and contributes to progress.
-As you can see I really put a lot of effort and dedication into this work.
-
-- Danilo
-
---
-
-Just for completeness, please find the relevant parts of `pci::RegOps` below.
-
-```
-impl<T: Driver> driver::DriverOps for Adapter<T> {
-	type DriverType = bindings::pci_driver;
-
-	fn register(
-		pdrv: &mut bindings::pci_driver,
-		name: &'static CStr,
-		module: &'static ThisModule,
-	) -> Result {
-		pdrv.name = name.as_char_ptr();
-		pdrv.probe = Some(Self::probe_callback);
-		pdrv.remove = Some(Self::remove_callback);
-		pdrv.id_table = T::ID_TABLE.as_ref();
-
-		// SAFETY: `pdrv` is guaranteed to be a valid `RegType`.
-		to_result(unsafe {
-			bindings::__pci_register_driver(pdrv as _, module.0, name.as_char_ptr())
-		})
-	}
-
-	fn unregister(pdrv: &mut Self::RegType) {
-		// SAFETY: `pdrv` is guaranteed to be a valid `DriverType`.
-		unsafe { bindings::pci_unregister_driver(pdrv) }
-	}
-}
-```
-
-(cutting the rest of the mail, since everything else is covered already)
-
+-- 
+viresh
