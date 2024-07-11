@@ -1,72 +1,65 @@
-Received: from flow1-smtp.messagingengine.com (flow1-smtp.messagingengine.com [103.168.172.136])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F0AC5477A;
-	Thu, 11 Jul 2024 14:37:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.136
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4412116CD13
+	for <rust-for-linux@vger.kernel.org>; Thu, 11 Jul 2024 16:12:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720708679; cv=none; b=iZOgy5A+YZIODoRqaa0L/U1AFeSyr5lvkbX8Y++J4usDs7EPyrXELKyMmqc76obH42FWD9Ya9YGP8BfpiZ+uHQO7fpZbxVE7p57YuMIEvxyYPZ09dd1CIYfN/QEjXc/k8YrEwTzfzuP+uMvdQuDeziEPphBgJGznmq1r4w/XOPQ=
+	t=1720714336; cv=none; b=SnwBFtY6jJt4YKujXmdXRq84UyztGWP+4/3bx4UJj31O54oWcAOLh6pRw96PSGkHBppid48r7LHj9Rq0kLdaLD1jfoMXzf8UMyzFuFGcw0QPAPBvsrIU3CcSz26uGvD6m/bHbYE7IfMFsQQ2NiZaN5WTVsEYJWNCB76diEauhS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720708679; c=relaxed/simple;
-	bh=iNVbhMguS2HYaKK3MnkVYZ1VXSkQ0ZvHqjgflY/bde0=;
+	s=arc-20240116; t=1720714336; c=relaxed/simple;
+	bh=xSv/pAElyqabmJkJ/UvEKYZHt7PFzhtbXS0sLNGobLs=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EIsWlrRXNqdJdeJuofjZG1DCFJTy3x0rJ1Yu/Bb0gRTvnfA4811s9brOj5nTQcil08NooBG7jt30MMWrWz4HIn3+06L+t/Ay80a07GyIE4HE14mknQHDAqgd3cQ7z3eQkk3mCWUGUXeY6gG4JX0z0Q4EkV+qC7DhIAd40pvY6bk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=DLbZ8yXa; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=sJBa4ZQ0; arc=none smtp.client-ip=103.168.172.136
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
+	 In-Reply-To:Content-Type:Content-Disposition; b=Hklc3jbZjXEO5KuiD4WiWle0Z3jbZ0ZLkhaCqs+xD5nJObmtP1MD1sy4utHycOK2w3W/y68WDI8sa3Zzx6+6yRpamFDJOq0202BvqO5aL4vXNOq5qeSRr/E/e+g1z1wo5ficlpQgYGcwmtgywQmLH6wvC682RN+neKCuGsseUkI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WCagrrnJ; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="DLbZ8yXa";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="sJBa4ZQ0"
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-	by mailflow.nyi.internal (Postfix) with ESMTP id 6924B200586;
-	Thu, 11 Jul 2024 10:37:56 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute2.internal (MEProxy); Thu, 11 Jul 2024 10:37:56 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm2; t=1720708676; x=1720715876; bh=MHNUEi//5T
-	c8gQAhWcjzeuCFJZyiEQUy0WrAOU3472A=; b=DLbZ8yXaw/nlzgYebuB1dUd2xb
-	5O9ikBiDp9soXNYmF155/ZIg2+71dOLmXuTNCCf/F+eNoz6rwNhxscXAZj0aTKUc
-	13B43g4HOYlW6WpASMpL/gk5okUt+7LEyWbhK6av/cdIrAkMoAsWZHsNhhw+ZePb
-	4Q/TtOj3wr2HUg90trivjIYDuZ4cXL+gXFM/7QG6rMwfF+bzEuYvU5ZMXAp1eZPq
-	uC9V5JtwqtNfRe+uYwcnqN9kxSP9cIyYowGdADbCeDyOxjbmksOvnANq/OBZvjYr
-	mjDuPRXT1VHpLGr1BO89dwXfhry0+oqNgUeJrj4h2khqGGTA1xPi9f0PFW7g==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm2; t=1720708676; x=1720715876; bh=MHNUEi//5Tc8gQAhWcjzeuCFJZyi
-	EQUy0WrAOU3472A=; b=sJBa4ZQ0juIuK4XS0hhMb0rCrtrnGO+gwTvHjL63NNbH
-	Zr2pIVKDA2nQcw2JJX6GJW1lNJmWRf+ygoEar1aXibAN0Mpo5b2uzceUudeqeKwj
-	Grv/2ozcq4Cg1ToG0hWN2GDYOTegRj9tSX0Iav96NuKoZx3v5zbpN5PbBxR4S3hh
-	HW/Mmxw5xqkUwzNZd8RrNb1F8jCxMeUIEm5f8oiqo1DPxkHj9fV4f8XivF/MCADC
-	7lg9CHmj7NMbgl/3TLOHejD2YEI8bTV4QPaZjsVPCGxma9zMtHojX0mMcq6bJc4c
-	C1EU0TMck878PkSBCT8Qvg68YNlyPX+GVSCtUJRgtQ==
-X-ME-Sender: <xms:Q-6PZm2yt0kPy9qqFOagAYKbnUZR8yYMJeSwNGTgHGUa0-0iH5SXyQ>
-    <xme:Q-6PZpEC97fYGgDX9jf8aC1WQmZ5N2cJ_4hz7YioIkM_Q_6OR1xyazP-uDyWoBZbr
-    r0ZjPRnDmhOpQ>
-X-ME-Received: <xmr:Q-6PZu61hlOsZfMPS_WT5B8TLKIZNAGQR7fBx5Z23g6dXTUImVurN8FzgDaZLmgkCyWkqfdFbPxO4qrapBLllJ9g6MlTL7aM-FlX-w>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrfeeggdejlecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefirhgvghcu
-    mffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeehgedvve
-    dvleejuefgtdduudfhkeeltdeihfevjeekjeeuhfdtueefhffgheekteenucevlhhushht
-    vghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehgrhgvgheskhhrohgrhh
-    drtghomh
-X-ME-Proxy: <xmx:Q-6PZn22GvhbBwdt_5fr9mE4XLT4BONT3pev5To9aeCEG27jVmi0Mg>
-    <xmx:Q-6PZpHF04BKyJTl4Sm6TbvFP4nmhIU40iXBFsf8saEcYKuvTPktpA>
-    <xmx:Q-6PZg8BPn7mFNgeQ8M_5qbw0LM2E-_Udjlx-gMSWNmGezzucHuE-w>
-    <xmx:Q-6PZul-y-O9GPL03_6wybzpVfKO5dn9KyWquyrRVNNnxzwBsUvRhw>
-    <xmx:RO6PZqSDKmxeqX5ugiQalak2jXlKw5eBWFirl9_69IAn1JCze6LER7_i>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 11 Jul 2024 10:37:54 -0400 (EDT)
-Date: Thu, 11 Jul 2024 16:37:50 +0200
-From: Greg KH <greg@kroah.com>
-To: Danilo Krummrich <dakr@redhat.com>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WCagrrnJ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1720714334;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=jGp0x2KyrISOhdhVBMxGIYQs/iAq5rAVU04UXibc0EE=;
+	b=WCagrrnJID41JcLzSu9QSTyJyY7StUaMOOf+Wyho0cc1yNeyEU07n+PC2C183pGHg7m5Sl
+	oY1uBaoth+8y0qpkZeBUzQwu8bhcOdpmNLdUHWEdovebr0zKsCmvHl4YRq9U+64dM7bfP3
+	aPR4pVuqvSITNHfnqXshrKEjB6dDSQ0=
+Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
+ [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-398-rBbCtEHdPyC4ZNUE71D8wA-1; Thu, 11 Jul 2024 12:12:12 -0400
+X-MC-Unique: rBbCtEHdPyC4ZNUE71D8wA-1
+Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4264dc624a5so6184945e9.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 11 Jul 2024 09:12:12 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1720714332; x=1721319132;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jGp0x2KyrISOhdhVBMxGIYQs/iAq5rAVU04UXibc0EE=;
+        b=sr/ccc6X1Nb6cEonQOUXGXurA0IlwRJI5AKzZ9trIdHSWrfRFua7vz77LmXYzxtDTC
+         7VAyWTTztmvozj7tP1yfI+MMaSHAKMFXGXdMb4OEU5xMQ2Kt9t/FIvf9gZhNFvPpeAnO
+         OCnBuYfQRzRingKEHojNKscwDouGttldoHxRyPQNSDIKyXYXK0l3EBsnzmqzsCXg/44z
+         9bnY5YWStLC0ooSNmJGdqnbeTJzKCYiYTi39MootKZXg/i7wwUVzm4ozvfXxzMwh4tsE
+         vFsrVy2tdfHXViATvB3LKgjR07tVONwKFTNXHbOIZmjS1t4P+qf+oktDZX/hlaPpV3Sh
+         6G8g==
+X-Forwarded-Encrypted: i=1; AJvYcCUAmWdurHGlKUu7iO2GlL6z7KSHVrvKtEbat5jhFH6cRO5dOwsMIQRRucN+TsPZfNeSLZ4MEdsV7oi0tIy7zN4yrhIv2lvvS6bp6OjsR84=
+X-Gm-Message-State: AOJu0Yw8d15g4VY9lAup/QZbu4jo1Ry6XVPzydY2ilml6Qt+2gcwmPfA
+	rDHCKcEgcKyBFQ7rjzA88R2DF9BMcyFI2Lk49Nl8jNm/+vrhXWO8HDmX8lXgNnU2aPs69fdFmHP
+	RqtBjYofo5Nq1wosHmYSDrKPpi+raAuAkR2Z11VY/3gxJ1fE8cy4H/mTr9i5qSwGM
+X-Received: by 2002:adf:cd8b:0:b0:367:99fd:d7b8 with SMTP id ffacd0b85a97d-367cea965a1mr5399157f8f.35.1720714331747;
+        Thu, 11 Jul 2024 09:12:11 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEk9MfL1t+xrZwkJ0qJ3kx9NSKMMHVhwHWXaLexst1iGqnCx78rqRXhjzLmuuqO7RJ/+QTB1g==
+X-Received: by 2002:adf:cd8b:0:b0:367:99fd:d7b8 with SMTP id ffacd0b85a97d-367cea965a1mr5399140f8f.35.1720714331381;
+        Thu, 11 Jul 2024 09:12:11 -0700 (PDT)
+Received: from pollux ([2a02:810d:4b3f:ee94:abf:b8ff:feee:998b])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-367cde84907sm8138566f8f.43.2024.07.11.09.12.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 11 Jul 2024 09:12:10 -0700 (PDT)
+Date: Thu, 11 Jul 2024 18:12:08 +0200
+From: Danilo Krummrich <dakr@redhat.com>
+To: Greg KH <greg@kroah.com>
 Cc: Viresh Kumar <viresh.kumar@linaro.org>,
 	"Rafael J. Wysocki" <rafael@kernel.org>,
 	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
@@ -87,38 +80,71 @@ Cc: Viresh Kumar <viresh.kumar@linaro.org>,
 	Joakim Bech <joakim.bech@linaro.org>, Rob Herring <robh@kernel.org>,
 	linux-kernel@vger.kernel.org
 Subject: Re: [PATCH V4 8/8] cpufreq: Add Rust based cpufreq-dt driver
-Message-ID: <2024071122-escargot-treadmill-6e9a@gregkh>
+Message-ID: <ZpAEWAzETnrVI-cs@pollux>
 References: <cover.1720680252.git.viresh.kumar@linaro.org>
  <b1601c1dbdf68a4b812fcfaf73f3b5dea67f2025.1720680252.git.viresh.kumar@linaro.org>
  <Zo-3QIPbhBsv8EjB@pollux>
  <20240711130802.vk7af6zd4um3b2cm@vireshk-i7>
  <Zo_cW57i_GMlmYV-@pollux>
+ <2024071122-escargot-treadmill-6e9a@gregkh>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+In-Reply-To: <2024071122-escargot-treadmill-6e9a@gregkh>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Zo_cW57i_GMlmYV-@pollux>
 
-On Thu, Jul 11, 2024 at 03:21:31PM +0200, Danilo Krummrich wrote:
-> (2) You require drivers to always implement a "dummy" struct platform_device,
-> there is platform_device_register_simple() for that purpose.
+On Thu, Jul 11, 2024 at 04:37:50PM +0200, Greg KH wrote:
+> On Thu, Jul 11, 2024 at 03:21:31PM +0200, Danilo Krummrich wrote:
+> > (2) You require drivers to always implement a "dummy" struct platform_device,
+> > there is platform_device_register_simple() for that purpose.
+> 
+> No, NEVER do that.  platform devices are only for real platform devices,
+> do not abuse that interface any more than it already is.
 
-No, NEVER do that.  platform devices are only for real platform devices,
-do not abuse that interface any more than it already is.
+I thought we're talking about cases like [1] or [2], but please correct me if
+those are considered abusing the platform bus as well.
 
-> I think (2) is the preferred option.
+(Those drivers read the CPU OF nodes, instead of OF nodes that represent a
+separate device.)
 
-No, not at all, sorry.
+[1] https://elixir.bootlin.com/linux/latest/source/drivers/cpuidle/cpuidle-riscv-sbi.c#L586
+[2] https://elixir.bootlin.com/linux/latest/source/drivers/cpuidle/cpuidle-psci.c#L441
 
-Use a real device, you have one somewhere that relates to this hardware,
-otherwise you aren't controlling anything and then you can use a virtual
-device.
+> 
+> > I think (2) is the preferred option.
+> 
+> No, not at all, sorry.
+> 
+> Use a real device, you have one somewhere that relates to this hardware,
+> otherwise you aren't controlling anything and then you can use a virtual
+> device.
 
-Again, do NOT abuse the platform subsystem.  It's one reason I am loath
-to even want to allow rust bindings to it.
+Of course we should stick to a real device if there is one, I didn't meant to
+say anything else.
 
-greg k-h
+But since it came up now, some virtual drivers still require a parent device.
+
+For instance, in DRM we have vGEM [3] and vKMS [4], that use
+platform_device_register_simple() for this purpose.
+
+What should they use instead? I'm happy to fix things up if required.
+
+[3] https://elixir.bootlin.com/linux/latest/source/drivers/gpu/drm/vgem/vgem_drv.c
+[4] https://elixir.bootlin.com/linux/latest/source/drivers/gpu/drm/vkms/vkms_drv.c
+
+> 
+> Again, do NOT abuse the platform subsystem.  It's one reason I am loath
+> to even want to allow rust bindings to it.
+
+How is that related to Rust?
+
+> 
+> greg k-h
+> 
+
