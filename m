@@ -1,142 +1,171 @@
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+Received: from mail-il1-f182.google.com (mail-il1-f182.google.com [209.85.166.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA9467E574
-	for <rust-for-linux@vger.kernel.org>; Thu, 11 Jul 2024 06:06:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA76912F37B
+	for <rust-for-linux@vger.kernel.org>; Thu, 11 Jul 2024 06:58:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720677967; cv=none; b=NptvvSHEnP8yRe9CC4Hwh0d01WEZ4osTx0CIDp5Y7fdU3VRG4Mzw06kTSfQQmGumfS530RocciyZkSqRVtlQH89a0M+kAgQBsgpsGXmyCzMjmPkCykJ1T2rYjpT4FB2q+1tggv0gCYsFM72SRer+WK/NuK5UPfsvJX07K9rVKsg=
+	t=1720681090; cv=none; b=XZ/INVa8FjYgL+fEBGBSoS7q3x3AKuz9mVbYv12Adu5+5v7bXnXJ43SY4k4LJqdhXvLsKRx2Nnr7G5QhRFrtDgE8EYo3BiDyOdrmIeP3ipkmFIb41NtwPNc2um25tnFVxZmwI7ijx9ZuOoriwKcrEVpHjnPgvwi6etcyHZ8VQU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720677967; c=relaxed/simple;
-	bh=Pct07P2cTZvGxvW7F2GXSza3Mvzjb0y516idEyqvNVM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=myPCoTYpCMIM3F84XoJ1iJntITdAJnbSycawlMg9kRyF3Co3tzIH1pUuJ2+kg7x1QOhnQ3AfXo4RWv1X3rPmenWA4FxQnf+0hBuAxJVFgbsq4uOTDfNcA08Yl1UPy+dvMWcoRAYnhUf8NeoBff5pNlwYvAsp/x+RXeioGbzVSbY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=AUVHatp8; arc=none smtp.client-ip=209.85.216.41
+	s=arc-20240116; t=1720681090; c=relaxed/simple;
+	bh=VbV8n5fZKF1PMujDojYs/OiGZSy1hDuq9GQMWoMh+Jc=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=R38pqmtrhdiDL8qIsJJAFEBg6KTAF+hevTjCoEiUaBBJbk6izorS7JNZAgPbacxblMx8/Dm7VVptAcVsXrvN2OOmbvfxs6fSQxhVXg8wwC1yVd80MIQQAgkR4OkfdfhXHsKcaxMRux/z6k5jaYwIbJej3dVjzNvfqrU7h5BWaSU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=IM/wf5EM; arc=none smtp.client-ip=209.85.166.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="AUVHatp8"
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-2c5362c7c0bso423883a91.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 10 Jul 2024 23:06:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="IM/wf5EM"
+Received: by mail-il1-f182.google.com with SMTP id e9e14a558f8ab-38abd30a1c9so2088295ab.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 10 Jul 2024 23:58:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1720677965; x=1721282765; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=G1naGOzRkLRpp7KZwz3L99c4a5Zz60/yAipmQv8kxf0=;
-        b=AUVHatp8vF5gYWwK7526wGdxIPpkALAZEMDYWToA4vF544UtTUi74jWaPIdQ1g9DPO
-         pXNgvOD556DCuLqIYmyx4ryXxemvk5JIokhoqW5+5+spST9uOHDjhmq0Wht24YNxYy4H
-         3aPFEyqabzkry67W2RxBhndVTL5ecwW+z+iuCmRyApyD3cWaOnBZQRQM1dnTrzGg1WQJ
-         +VsDP2/qTo9iYDDHE2Hlh8vucEjwshP1gFAfs3boRv9ycPxNPw/ffgrwdtZ8xxG6gVUW
-         DyACbPE9oreHJbJ1X+duzTHNc/TJy427YHK3/EkGGnQ2T24fJSSxKxbPVtznV5pM7ypi
-         aAAQ==
+        d=linaro.org; s=google; t=1720681088; x=1721285888; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=3toptsoMNGxVTtM8r/mDQ2GtXlGc7pzgPc/YT1pqslQ=;
+        b=IM/wf5EMmAoO9oHbApzt6focoFfXdTQjxe0s3ftmSe7eFqJEBQvikG5qkPA422n+ia
+         SbpR94Adeohn32qdh9WzAwyOb2ejwbKQI/LE/mk77bMxgPcUcVIYwNvAnzwRKcdfQ146
+         u6cELK8XUmv+rm99G7+VGSZqXYN43o21M61R7q6GhCazqpyfDfR8Scr8pkRlLrr/d+JD
+         fG/X+cLDL1YddHWbsJdv80TYf+Kr3LGN8yRpdtfPSKHaHo4fjVTaFBak1x9Qgo7Yfa23
+         oTMUiJqMnOW1tbt0XFXWSV+Qq8EqORLpiu/cBxlX9/EJEmXcnK1tHMCHiOXrd1G5U01E
+         CVwA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720677965; x=1721282765;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=G1naGOzRkLRpp7KZwz3L99c4a5Zz60/yAipmQv8kxf0=;
-        b=wmvJ2zrJsHvvjeExYYztxFMmf7MYZ63D4d+cEyvGa9znx0MtjwnWSM63ICiFvsntR5
-         30sZayBuqwAq2rcFalFrAFHBzfyt+Dsi2nHFuDHEVWFXw81xKDicvgSFDkDX6MLyw0pM
-         T77rH9ZlyAUbPRq9n7n6/m/b+PPzqkJWBPx2dFMJzB//DjXSu0Yhw8oSx9nIAc/HKPjK
-         ogA73p9XncLNsP2JiWXUoEEFnVzRhq0rpQqv02nM+ysRdmvjW57G3e9hSYXVLZJ5j8IZ
-         Kx/VdFaVmw/qlmozMp5ePAnIla2ZX6oisq1PxLXG5Gnq7NhGqzHOv5RS+LL5o4sM0O3X
-         +6cQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXzHfW2G0Y20aVFuwMHXsqi+77GeRhBrNjCn/pJjvv01zuoQ1aETa5j6us9GqRg60rpPriVd2EAipacaQ9t21YawUTW6DFb+P0CDi8YFec=
-X-Gm-Message-State: AOJu0Yx/ySTUYnICQqMD/7B3+pEbFM+Xqeghk6CmAZ1KD93BgHYZUdwx
-	KNpfHsnrcgAGGmdvTaZsflMfQ5BEau4iJUKT4sWbVL5iI+RrPHAvtxgLoieBY3A=
-X-Google-Smtp-Source: AGHT+IHKIRAKhiyYiKLP0CQNpVmFEZVj0D+u79CNLoPp13J4mrQM8iSlQeqWiA0KS/IHQxTYeT1Glw==
-X-Received: by 2002:a17:90a:c7c9:b0:2c9:718c:73e with SMTP id 98e67ed59e1d1-2ca35c79e3emr6122202a91.29.1720677965084;
-        Wed, 10 Jul 2024 23:06:05 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1720681088; x=1721285888;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=3toptsoMNGxVTtM8r/mDQ2GtXlGc7pzgPc/YT1pqslQ=;
+        b=LgTwaRBIgAk116MZcYtR3AIEi1IzJFHWKJtwM5bny538ladscZAh/LipVSiyfuyAhY
+         pOv+Hp5drfsd6QDOcB9RiiRx/cx7aSw4XHULrjh4JJltjMzmY07eJgEjKEU3WR/UaDxI
+         sFWBiwI4q0tPeFE7e53H3Wt1opT4Xide2wwohxlTl0P8wvc/mUQsckTjpzrorVhenTi9
+         xxqZ4tl0HHotbdUY5Wizu9fm/v6pXAGYtChAMgUUYLBuUMrH2sMni3KWzojo2mrQsHGW
+         1pmV6xn1CiZCxTqy8vwDLmHiN1MW0GHmXGF/3fBtI+BPxXmDQlIhUZPFDvxt06pP/Q1d
+         z9ZA==
+X-Forwarded-Encrypted: i=1; AJvYcCW+Uk4Uu3iksASWkpG/fIYbLT+jzUpQSEFFhYMnzxKIu6rusJi4UDJnJLkR/bXGkef7pk8PQOu5zslE9Sdd9o3WPID2xl0TGTMJ+OqVPuQ=
+X-Gm-Message-State: AOJu0Yz3UskkjfFth/GmRWgsNyFt94Jodjjz5fVhhrmjbYnkc30a5mkc
+	maYu/H1KWLb6/dwQEV9sI7l6NR0tkYYs4xz47OgSGGWPhQKcwu2xrAAlhqeII3c=
+X-Google-Smtp-Source: AGHT+IFS9ttr8vgB5L0xprzERmk0Pue4prYYOP61KK6nfcxE5tq8k4JxtA3/ILvDMV75gLXHgwZFEw==
+X-Received: by 2002:a05:6e02:1d16:b0:382:e06a:6a88 with SMTP id e9e14a558f8ab-38a57ad8d4amr97756245ab.10.1720681087811;
+        Wed, 10 Jul 2024 23:58:07 -0700 (PDT)
 Received: from localhost ([122.172.84.129])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2c99a951741sm13039837a91.15.2024.07.10.23.06.03
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-70b4389abb6sm5103343b3a.18.2024.07.10.23.58.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 10 Jul 2024 23:06:04 -0700 (PDT)
-Date: Thu, 11 Jul 2024 11:36:01 +0530
+        Wed, 10 Jul 2024 23:58:06 -0700 (PDT)
 From: Viresh Kumar <viresh.kumar@linaro.org>
-To: Alice Ryhl <aliceryhl@google.com>, Boqun Feng <boqun.feng@gmail.com>,
-	Danilo Krummrich <dakr@redhat.com>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>,
+To: "Rafael J. Wysocki" <rafael@kernel.org>,
 	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
+	Danilo Krummrich <dakr@redhat.com>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
 	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>, linux-pm@vger.kernel.org,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>
+Cc: linux-pm@vger.kernel.org,
 	Vincent Guittot <vincent.guittot@linaro.org>,
-	Stephen Boyd <sboyd@kernel.org>, Nishanth Menon <nm@ti.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Nishanth Menon <nm@ti.com>,
 	rust-for-linux@vger.kernel.org,
 	Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
 	Erik Schilling <erik.schilling@linaro.org>,
-	Alex =?utf-8?Q?Benn=C3=A9e?= <alex.bennee@linaro.org>,
-	Joakim Bech <joakim.bech@linaro.org>, Rob Herring <robh@kernel.org>,
+	=?UTF-8?q?Alex=20Benn=C3=A9e?= <alex.bennee@linaro.org>,
+	Joakim Bech <joakim.bech@linaro.org>,
+	Rob Herring <robh@kernel.org>,
 	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH V3 8/8] cpufreq: Add Rust based cpufreq-dt driver
-Message-ID: <20240711060601.fmnttgqhbh2pitzj@vireshk-i7>
-References: <cover.1719990273.git.viresh.kumar@linaro.org>
- <b7df0c75cc07a451243b554fb2272c91cbe42dfe.1719990273.git.viresh.kumar@linaro.org>
- <f0016987-4288-4adf-954d-665b35ae1bf1@redhat.com>
- <20240710085652.zu7ntnv4gmy7zr2i@vireshk-i7>
- <Zo6oqfFX-TNIeaIC@pollux>
+Subject: [PATCH V4 0/8] Rust bindings for cpufreq and OPP core + sample driver
+Date: Thu, 11 Jul 2024 12:27:42 +0530
+Message-Id: <cover.1720680252.git.viresh.kumar@linaro.org>
+X-Mailer: git-send-email 2.31.1.272.g89b43f80a514
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Zo6oqfFX-TNIeaIC@pollux>
+Content-Transfer-Encoding: 8bit
 
-On 10-07-24, 17:28, Danilo Krummrich wrote:
-> No, the platform driver layer will only guarantee that it decreses the reference
-> count of the `Arc` by one, that doesn't guarantee a free. If something else
-> still holds a reference to the `Arc` it will keep the `Registration` alive,
-> unless it's wrapped by `Devres`.
+Hello,
 
-I see. Thanks.
+This adds initial rust bindings for two subsystems, cpufreq and operating
+performance points (OPP). The bindings are provided for most of the interface
+these subsystems expose.
 
-There is one problem that I haven't found a solution to yet. If I make
-the following change to the driver:
+This series also provides a sample cpufreq driver rcpufreq-dt, which is a
+duplicate of the merged cpufreq-dt driver (A generic platform agnostic device
+tree based cpufreq driver) used on most of the ARM platforms.
 
-diff --git a/drivers/cpufreq/rcpufreq_dt.rs b/drivers/cpufreq/rcpufreq_dt.rs
-index 315adca2a747..052ea2db095a 100644
---- a/drivers/cpufreq/rcpufreq_dt.rs
-+++ b/drivers/cpufreq/rcpufreq_dt.rs
-@@ -236,7 +236,7 @@ fn probe(dev: &mut platform::Device, _id_info: Option<&Self::IdInfo>) -> Result<
+This is tested with the help of QEMU for now and frequency transitions, various
+configurations, driver binding/unbinding work as expected. No performance
+measurement is done with this.
 
- module_platform_driver! {
-     type: CPUFreqDTDriver,
--    name: "cpufreq_dt",
-+    name: "cpufreq-dt",
-     author: "Viresh Kumar <viresh.kumar@linaro.org>",
-     description: "Generic CPUFreq DT driver",
-     license: "GPL v2",
+These patches (along with few other dependencies) are pushed here for anyone to
+give them a try:
 
-then I get this error:
-
-  CLIPPY     drivers/cpufreq/rcpufreq_dt.o
-error: expected one of `:`, `;`, or `=`, found `-`
-   --> /mnt/ssd/all/work/repos/kernel/linux/drivers/cpufreq/rcpufreq_dt.rs:237:1
-    |
-237 | / module_platform_driver! {
-238 | |     type: CPUFreqDTDriver,
-239 | |     name: "cpufreq-dt",
-240 | |     author: "Viresh Kumar <viresh.kumar@linaro.org>",
-241 | |     description: "Generic CPUFreq DT driver",
-242 | |     license: "GPL v2",
-243 | | }
-    | |_^ expected one of `:`, `;`, or `=`
-    |
-    = note: this error originates in the macro
-    `$crate::prelude::module` which comes from the expansion of the
-    macro `module_platform_driver` (in Nightly builds, run with -Z
-    macro-backtrace for more info)
+git://git.kernel.org/pub/scm/linux/kernel/git/vireshk/linux.git rust/cpufreq-dt
 
 
-And because of that I had to change the name of the platform device
-too in the existing kernel.
+This depends on basic bindings for few other modules: device/driver, platform
+driver, OF, clk, and cpumask. I am not looking to upstream support for them yet.
+
+Based on staging/rust-device from the Rust tree (which is based over v6.10-rc1).
+
+V3->V4:
+- Fix bugs with freeing of OPP structure. Dropped the Drop routine and fixed
+  reference counting.
+- Registration object of the cpufreq core is modified a bit to remove the
+  registered field, and few other cleanups.
+- Use Devres for instead of platform data.
+- Improve SAFETY comments.
+
+V2->V3:
+- Rebased on latest rust-device changes, which removed `Data` and so few changes
+  were required to make it work.
+- use srctree links (Alice Ryhl).
+- Various changes the OPP creation APIs, new APIs: from_raw_opp() and
+  from_raw_opp_owned() (Alice Ryhl).
+- Inline as_raw() helpers (Alice Ryhl).
+- Add new interface (`OPP::Token`) for dynamically created OPPs.
+- Add Reviewed-by tag from Manos.
+- Modified/simplified cpufreq registration structure / method a bit.
+
+V1->V2:
+- Create and use separate bindings for OF, clk, cpumask, etc (not included in
+  this patchset but pushed to the above branch). This helped removing direct
+  calls from the driver.
+- Fix wrong usage of Pinning + Vec.
+- Use Token for OPP Config.
+- Use Opaque, transparent and Aref for few structures.
+- Broken down into smaller patches to make it easy for reviewers.
+- Based over staging/rust-device.
+
+Thanks.
+
+Viresh Kumar (8):
+  rust: Add initial bindings for OPP framework
+  rust: Extend OPP bindings for the OPP table
+  rust: Extend OPP bindings for the configuration options
+  rust: Add initial bindings for cpufreq framework
+  rust: Extend cpufreq bindings for policy and driver ops
+  rust: Extend cpufreq bindings for driver registration
+  rust: Extend OPP bindings with CPU frequency table
+  cpufreq: Add Rust based cpufreq-dt driver
+
+ drivers/cpufreq/Kconfig         |   12 +
+ drivers/cpufreq/Makefile        |    1 +
+ drivers/cpufreq/rcpufreq_dt.rs  |  222 +++++++
+ rust/bindings/bindings_helper.h |    2 +
+ rust/helpers.c                  |   15 +
+ rust/kernel/cpufreq.rs          | 1023 +++++++++++++++++++++++++++++++
+ rust/kernel/lib.rs              |    4 +
+ rust/kernel/opp.rs              |  925 ++++++++++++++++++++++++++++
+ 8 files changed, 2204 insertions(+)
+ create mode 100644 drivers/cpufreq/rcpufreq_dt.rs
+ create mode 100644 rust/kernel/cpufreq.rs
+ create mode 100644 rust/kernel/opp.rs
 
 -- 
-viresh
+2.31.1.272.g89b43f80a514
+
