@@ -1,150 +1,142 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f202.google.com (mail-yb1-f202.google.com [209.85.219.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4412116CD13
-	for <rust-for-linux@vger.kernel.org>; Thu, 11 Jul 2024 16:12:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F08B167265
+	for <rust-for-linux@vger.kernel.org>; Thu, 11 Jul 2024 16:21:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720714336; cv=none; b=SnwBFtY6jJt4YKujXmdXRq84UyztGWP+4/3bx4UJj31O54oWcAOLh6pRw96PSGkHBppid48r7LHj9Rq0kLdaLD1jfoMXzf8UMyzFuFGcw0QPAPBvsrIU3CcSz26uGvD6m/bHbYE7IfMFsQQ2NiZaN5WTVsEYJWNCB76diEauhS8=
+	t=1720714871; cv=none; b=Xhf+15/mme9oERBGlFgX5/EMhUkvNKKa5LxRRT9vXKwdkXHVUsmjlbZ54UydjRuGGCU5OFVVJN2ekSVDRhwP8rd7G6C433O1uZNMks5aTc0D9kBh7JjC2VuMkJMeEkXmJDO9fqM+7Mxu5Qh+naphqVV2WQysg1BIJ6bZ3kaebMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720714336; c=relaxed/simple;
-	bh=xSv/pAElyqabmJkJ/UvEKYZHt7PFzhtbXS0sLNGobLs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 In-Reply-To:Content-Type:Content-Disposition; b=Hklc3jbZjXEO5KuiD4WiWle0Z3jbZ0ZLkhaCqs+xD5nJObmtP1MD1sy4utHycOK2w3W/y68WDI8sa3Zzx6+6yRpamFDJOq0202BvqO5aL4vXNOq5qeSRr/E/e+g1z1wo5ficlpQgYGcwmtgywQmLH6wvC682RN+neKCuGsseUkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=WCagrrnJ; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1720714871; c=relaxed/simple;
+	bh=l4drfiF/RmBw22akhuvPKaORF8RgC3jLRDuFcvLUeL8=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=jgxQEwhX6DtyGqzob1j2B8GSsOEJjZWsIBrneBt8ID1WscwCyTiW1E/x5XtOEkzvLD3n2zrwfofQcJY0xPOn3iUGDX0s47JxMgJrgbxxTAU17VgB1YBu6EFH6Op4BRNrt0nL45V0ZjgkUqzyDdFboc/WqSPypbsCqAIq9WPU7vQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--mattgilbride.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cUYzuRwa; arc=none smtp.client-ip=209.85.219.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--mattgilbride.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="WCagrrnJ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1720714334;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=jGp0x2KyrISOhdhVBMxGIYQs/iAq5rAVU04UXibc0EE=;
-	b=WCagrrnJID41JcLzSu9QSTyJyY7StUaMOOf+Wyho0cc1yNeyEU07n+PC2C183pGHg7m5Sl
-	oY1uBaoth+8y0qpkZeBUzQwu8bhcOdpmNLdUHWEdovebr0zKsCmvHl4YRq9U+64dM7bfP3
-	aPR4pVuqvSITNHfnqXshrKEjB6dDSQ0=
-Received: from mail-wm1-f70.google.com (mail-wm1-f70.google.com
- [209.85.128.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-398-rBbCtEHdPyC4ZNUE71D8wA-1; Thu, 11 Jul 2024 12:12:12 -0400
-X-MC-Unique: rBbCtEHdPyC4ZNUE71D8wA-1
-Received: by mail-wm1-f70.google.com with SMTP id 5b1f17b1804b1-4264dc624a5so6184945e9.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 11 Jul 2024 09:12:12 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cUYzuRwa"
+Received: by mail-yb1-f202.google.com with SMTP id 3f1490d57ef6-dfa7a8147c3so1876571276.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 11 Jul 2024 09:21:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1720714869; x=1721319669; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=tdAfz6F1LxB1SVILBmz3im7GucsBrJFjA6wosQSGALA=;
+        b=cUYzuRwa0xSek8kqHb+eRLvj99vKB9FJyTsFq9DhB6TMquvOvBwDJfxlzMscZuvG//
+         +y/z2Od9AMvsneriWYKQmpF4bLbu1FoEvZK8wIQLUWzCMfvlv+w4h1S6QtKKx44FbLWJ
+         t0VItBxJXmXCusWkNekzkIK2i2oOIhml+NpFvKMX3/sQwRdwflVSnabjTwU+ba3yOnc1
+         jWp/DmXPw7kLiLfJo/VtQngz57fV2zFrAaLQLRStAeoulUoPF6g5ifoa1OsICrq3nxCK
+         gxTjkJk27ZqsgBQffkhPuN1u6Z6HV+IQCVRsSDQwSqC+snA8MKa3SACfCw8jazGG32tE
+         x8zQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720714332; x=1721319132;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=jGp0x2KyrISOhdhVBMxGIYQs/iAq5rAVU04UXibc0EE=;
-        b=sr/ccc6X1Nb6cEonQOUXGXurA0IlwRJI5AKzZ9trIdHSWrfRFua7vz77LmXYzxtDTC
-         7VAyWTTztmvozj7tP1yfI+MMaSHAKMFXGXdMb4OEU5xMQ2Kt9t/FIvf9gZhNFvPpeAnO
-         OCnBuYfQRzRingKEHojNKscwDouGttldoHxRyPQNSDIKyXYXK0l3EBsnzmqzsCXg/44z
-         9bnY5YWStLC0ooSNmJGdqnbeTJzKCYiYTi39MootKZXg/i7wwUVzm4ozvfXxzMwh4tsE
-         vFsrVy2tdfHXViATvB3LKgjR07tVONwKFTNXHbOIZmjS1t4P+qf+oktDZX/hlaPpV3Sh
-         6G8g==
-X-Forwarded-Encrypted: i=1; AJvYcCUAmWdurHGlKUu7iO2GlL6z7KSHVrvKtEbat5jhFH6cRO5dOwsMIQRRucN+TsPZfNeSLZ4MEdsV7oi0tIy7zN4yrhIv2lvvS6bp6OjsR84=
-X-Gm-Message-State: AOJu0Yw8d15g4VY9lAup/QZbu4jo1Ry6XVPzydY2ilml6Qt+2gcwmPfA
-	rDHCKcEgcKyBFQ7rjzA88R2DF9BMcyFI2Lk49Nl8jNm/+vrhXWO8HDmX8lXgNnU2aPs69fdFmHP
-	RqtBjYofo5Nq1wosHmYSDrKPpi+raAuAkR2Z11VY/3gxJ1fE8cy4H/mTr9i5qSwGM
-X-Received: by 2002:adf:cd8b:0:b0:367:99fd:d7b8 with SMTP id ffacd0b85a97d-367cea965a1mr5399157f8f.35.1720714331747;
-        Thu, 11 Jul 2024 09:12:11 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEk9MfL1t+xrZwkJ0qJ3kx9NSKMMHVhwHWXaLexst1iGqnCx78rqRXhjzLmuuqO7RJ/+QTB1g==
-X-Received: by 2002:adf:cd8b:0:b0:367:99fd:d7b8 with SMTP id ffacd0b85a97d-367cea965a1mr5399140f8f.35.1720714331381;
-        Thu, 11 Jul 2024 09:12:11 -0700 (PDT)
-Received: from pollux ([2a02:810d:4b3f:ee94:abf:b8ff:feee:998b])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-367cde84907sm8138566f8f.43.2024.07.11.09.12.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 11 Jul 2024 09:12:10 -0700 (PDT)
-Date: Thu, 11 Jul 2024 18:12:08 +0200
-From: Danilo Krummrich <dakr@redhat.com>
-To: Greg KH <greg@kroah.com>
-Cc: Viresh Kumar <viresh.kumar@linaro.org>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>, linux-pm@vger.kernel.org,
-	Vincent Guittot <vincent.guittot@linaro.org>,
-	Stephen Boyd <sboyd@kernel.org>, Nishanth Menon <nm@ti.com>,
-	rust-for-linux@vger.kernel.org,
-	Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
-	Erik Schilling <erik.schilling@linaro.org>,
-	Alex =?iso-8859-1?Q?Benn=E9e?= <alex.bennee@linaro.org>,
-	Joakim Bech <joakim.bech@linaro.org>, Rob Herring <robh@kernel.org>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH V4 8/8] cpufreq: Add Rust based cpufreq-dt driver
-Message-ID: <ZpAEWAzETnrVI-cs@pollux>
-References: <cover.1720680252.git.viresh.kumar@linaro.org>
- <b1601c1dbdf68a4b812fcfaf73f3b5dea67f2025.1720680252.git.viresh.kumar@linaro.org>
- <Zo-3QIPbhBsv8EjB@pollux>
- <20240711130802.vk7af6zd4um3b2cm@vireshk-i7>
- <Zo_cW57i_GMlmYV-@pollux>
- <2024071122-escargot-treadmill-6e9a@gregkh>
+        d=1e100.net; s=20230601; t=1720714869; x=1721319669;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=tdAfz6F1LxB1SVILBmz3im7GucsBrJFjA6wosQSGALA=;
+        b=nUR1QdcES6VBTa1hlbvrAAzmD9O0NWoaTkkTCnN+C+RGN/OQmLUmHqHmIa8tts7vv/
+         V3MO6rNLf0o7CXFmjUYjBbJz4E/DUrS+rMtpStUPqlOpMhtCqR+lrUvehAsjBK4Zgnye
+         RaNM8q26j2rvujgwD8JPAqZDSQsI9o732W3PgugCx+MSMxujvxxM4dkxLBlSLG+WD4mA
+         1KE1S1C148j+volqwtLY6a+FdjWuDUzaknSOM6SoEJdvjazqX+kmgRAhBIYWajGV4zwd
+         wyNe5AzL8aQq+q7IoDCxPELv5wvPNbi1c0TqUlrHhSmdcBRrfyTpru5s6Z60TDer42xo
+         kA8g==
+X-Forwarded-Encrypted: i=1; AJvYcCUbnNYQsGebsJZZ8Y/tr2Lft11hDtmegsfLyk3q9ntR3YErtAZSq3XWFIFsdgvW5RFKylFFHJs8HzrCJcXQYlk+n+lmEMgXNU43h4Ub9v0=
+X-Gm-Message-State: AOJu0YwefQJE4hSZZZfnRIvzEIp/r6fseBW+8OBGEAMaAAhIZCiQLb1C
+	9eFpdfnEMQuBbaANBYqX1RLV9wSrSHyoF8C3Wn5NIffYIGDtElxWGCpab+IBLR98hPuq8H4JOXv
+	niIU8nIozamF3z2Dy13tjzBllEA==
+X-Google-Smtp-Source: AGHT+IFSs76JHmM2LmXNg32ck/ZKUQAWtLq3qigWNXo0ZTjrIc0iQb/8PWxfHMJzU/PwDwBuVbLVyBlgavSzN3LzrU8=
+X-Received: from mattgilbride.c.googlers.com ([fda3:e722:ac3:cc00:2b:7d90:c0a8:2ac5])
+ (user=mattgilbride job=sendgmr) by 2002:a05:6902:200e:b0:e03:a2f7:71d with
+ SMTP id 3f1490d57ef6-e041af3f7edmr322987276.0.1720714869205; Thu, 11 Jul 2024
+ 09:21:09 -0700 (PDT)
+Date: Thu, 11 Jul 2024 16:20:57 +0000
+In-Reply-To: <20240711-b4-rbtree-v6-0-14bef1a8cdba@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-In-Reply-To: <2024071122-escargot-treadmill-6e9a@gregkh>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Mime-Version: 1.0
+References: <20240711-b4-rbtree-v6-0-14bef1a8cdba@google.com>
+X-Mailer: b4 0.13.0
+Message-ID: <20240711-b4-rbtree-v6-1-14bef1a8cdba@google.com>
+Subject: [PATCH v6 1/6] rust: kernel: add `drop_contents` to `BoxExt`
+From: Matt Gilbride <mattgilbride@google.com>
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"=?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
+	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Christian Brauner <brauner@kernel.org>
+Cc: Rob Landley <rob@landley.net>, Davidlohr Bueso <dave@stgolabs.net>, 
+	Michel Lespinasse <michel@lespinasse.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Matt Gilbride <mattgilbride@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Thu, Jul 11, 2024 at 04:37:50PM +0200, Greg KH wrote:
-> On Thu, Jul 11, 2024 at 03:21:31PM +0200, Danilo Krummrich wrote:
-> > (2) You require drivers to always implement a "dummy" struct platform_device,
-> > there is platform_device_register_simple() for that purpose.
-> 
-> No, NEVER do that.  platform devices are only for real platform devices,
-> do not abuse that interface any more than it already is.
+From: Benno Lossin <benno.lossin@proton.me>
 
-I thought we're talking about cases like [1] or [2], but please correct me if
-those are considered abusing the platform bus as well.
+Sometimes (see [1]) it is necessary to drop the value inside of a
+`Box<T>`, but retain the allocation. For example to reuse the allocation
+in the future.
+Introduce a new function `drop_contents` that turns a `Box<T>` into
+`Box<MaybeUninit<T>>` by dropping the value.
 
-(Those drivers read the CPU OF nodes, instead of OF nodes that represent a
-separate device.)
+Signed-off-by: Benno Lossin <benno.lossin@proton.me>
+Link: https://lore.kernel.org/rust-for-linux/20240418-b4-rbtree-v3-5-323e134390ce@google.com/ [1]
+---
+ rust/kernel/alloc/box_ext.rs | 24 +++++++++++++++++++++++-
+ 1 file changed, 23 insertions(+), 1 deletion(-)
 
-[1] https://elixir.bootlin.com/linux/latest/source/drivers/cpuidle/cpuidle-riscv-sbi.c#L586
-[2] https://elixir.bootlin.com/linux/latest/source/drivers/cpuidle/cpuidle-psci.c#L441
+diff --git a/rust/kernel/alloc/box_ext.rs b/rust/kernel/alloc/box_ext.rs
+index 829cb1c1cf9e..557895db4f48 100644
+--- a/rust/kernel/alloc/box_ext.rs
++++ b/rust/kernel/alloc/box_ext.rs
+@@ -4,7 +4,7 @@
+ 
+ use super::{AllocError, Flags};
+ use alloc::boxed::Box;
+-use core::mem::MaybeUninit;
++use core::{mem::MaybeUninit, ptr};
+ 
+ /// Extensions to [`Box`].
+ pub trait BoxExt<T>: Sized {
+@@ -17,6 +17,20 @@ pub trait BoxExt<T>: Sized {
+     ///
+     /// The allocation may fail, in which case an error is returned.
+     fn new_uninit(flags: Flags) -> Result<Box<MaybeUninit<T>>, AllocError>;
++
++    /// Drops the contents, but keeps the allocation.
++    ///
++    /// # Examples
++    ///
++    /// ```
++    /// use kernel::alloc::flags;
++    ///
++    /// let value = Box::new([0; 32], flags::GFP_KERNEL);
++    /// let value = value.unwrap().drop_contents();
++    /// // Now we can re-use `value`:
++    /// Box::write(value, [1; 32]);
++    /// ```
++    fn drop_contents(self) -> Box<MaybeUninit<T>>;
+ }
+ 
+ impl<T> BoxExt<T> for Box<T> {
+@@ -53,4 +67,12 @@ fn new_uninit(flags: Flags) -> Result<Box<MaybeUninit<T>>, AllocError> {
+         // zero-sized types, we use `NonNull::dangling`.
+         Ok(unsafe { Box::from_raw(ptr) })
+     }
++
++    fn drop_contents(self) -> Box<MaybeUninit<T>> {
++        let ptr = Box::into_raw(self);
++        // SAFETY: `ptr` is valid, because it came from `Box::into_raw`.
++        unsafe { ptr::drop_in_place(ptr) };
++        // SAFETY: `ptr` is valid, because it came from `Box::into_raw`.
++        unsafe { Box::from_raw(ptr.cast()) }
++    }
+ }
 
-> 
-> > I think (2) is the preferred option.
-> 
-> No, not at all, sorry.
-> 
-> Use a real device, you have one somewhere that relates to this hardware,
-> otherwise you aren't controlling anything and then you can use a virtual
-> device.
-
-Of course we should stick to a real device if there is one, I didn't meant to
-say anything else.
-
-But since it came up now, some virtual drivers still require a parent device.
-
-For instance, in DRM we have vGEM [3] and vKMS [4], that use
-platform_device_register_simple() for this purpose.
-
-What should they use instead? I'm happy to fix things up if required.
-
-[3] https://elixir.bootlin.com/linux/latest/source/drivers/gpu/drm/vgem/vgem_drv.c
-[4] https://elixir.bootlin.com/linux/latest/source/drivers/gpu/drm/vkms/vkms_drv.c
-
-> 
-> Again, do NOT abuse the platform subsystem.  It's one reason I am loath
-> to even want to allow rust bindings to it.
-
-How is that related to Rust?
-
-> 
-> greg k-h
-> 
+-- 
+2.45.2.803.g4e1b14247a-goog
 
