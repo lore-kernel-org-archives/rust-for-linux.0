@@ -1,107 +1,88 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88C46EAC7
-	for <rust-for-linux@vger.kernel.org>; Fri, 12 Jul 2024 14:53:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEFC6171E73;
+	Fri, 12 Jul 2024 15:13:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720796033; cv=none; b=h4zplXFW/+qiLAjKo8Uk2WI/2jqWRveTVUzojH05scyn+cQYdDWOAl5KJafEVufm081V3eXCTcG1zvkOJROVjuAuNpZ5X9TjRr6km4VmSBVWmNGQMMk58qkIyhCzQU32/lyshoOgT2PDdGgaTlSDZJMJv2E+v1oAJ5y7k04XY9c=
+	t=1720797216; cv=none; b=YijjXJwu2lzY4B3QOlxDppCa215EvzO5G3ebEm/ZgWgyxON5mhi6iiZ0O+QfcIBQWF/Uabz7WDLusze5g0YZ921cZMyUE3ETU0E7ST7uFiOKBV4DqM1zpZR5gs5nkVTJcVdOJy0MTlTmUYIqZBf+X26eryAfDwkPQce8SNN0YHI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720796033; c=relaxed/simple;
-	bh=S19hFP5H0m8SmZvLLDNz6EKsg9QbZl78HGkcE4LnDdE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 In-Reply-To:Content-Type:Content-Disposition; b=NNLqpMhi4tHFK9bkQw86uOMKgm6dV6jZmU190kMS1thM3JG9FV1J5+23xYNhJ8KVXxUB/qzgAgPNSSM/mX5ijY3ipIarblH2KgP/FLq+8V+pnMaUZIOrxPbNW5CpMNSiHNXKRHjjbcKVNYmRA1M8uaFqrjv9i1JJ2JeF7Rk7ALA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=e3knj9zw; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1720797216; c=relaxed/simple;
+	bh=MnzR0VjdJ5NoBmz1xLLAIhcfaMNgCeiuxKwyJbWLlEo=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=f69BuxvnfxGqoITy3O+DUR5q2njwKCjLkck+tZo2FYHlfYKY60M8y4vtgJCsbTXMMQcFyWA/oITVmZCgZc+OcNAasAqUvxvCPykpIDbMKTGEFlnYnb7pLzBfUlfGsYekFZbWkqr+weBJzLxNncKFX17gX7l2w8YxLQJ0zzb1lPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=0+K/iYoW; arc=none smtp.client-ip=46.235.227.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="e3knj9zw"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1720796030;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=H03nXr4hza2PKemh9fjDZhk1nYAQUKJ0uHQmzsJryOY=;
-	b=e3knj9zweYzkyqag16b+dtMkfb4CeQzdiIV9W5sQ01q4TgPTodcT/PeMh1T29hwTnxhwEK
-	zt3/Qdd4n2GPh2r6DAc3MFvRtfZU3UM3u8xYUN/P9+KXc3auNPbeke1l8E8j710ek+vGYu
-	+yVlQgTu+I2OKevlRYDZ9OPqJ81ALCw=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-352-3_mBrs22Ob-NXfhxne8UPA-1; Fri, 12 Jul 2024 10:53:49 -0400
-X-MC-Unique: 3_mBrs22Ob-NXfhxne8UPA-1
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-367990b4beeso1184487f8f.2
-        for <rust-for-linux@vger.kernel.org>; Fri, 12 Jul 2024 07:53:49 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720796028; x=1721400828;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=H03nXr4hza2PKemh9fjDZhk1nYAQUKJ0uHQmzsJryOY=;
-        b=FNZWR7pryLeZEVlOpnKWCfyxA+o+mmJHT+HPwRYgqIDYx/661N6f0NWwd5vxzavL4l
-         rDvNFKy5SpNU5nQUzD3ELV8HXMW31n/UKCj/s6x5EvU8UC42fTjH6fzQnO0/7I9jf6Fg
-         yTWsKAAEdB9LliUdr/ICKXIibAYbvq6RetVm7T06XKxX/x5y3RlwCxch9WdS4IoDIlNs
-         AMsojAgEXb6MJQQycCPgFHf5POVRMYP//BXvsHEFgFMC6kiQ1GxewV4eAPGeOeJ2KYJl
-         Vk0XIT8eRfQEKs5Ytn3UZqIsKs/BAYyduJdW5DkLkQiBLe9VXyM9o8UWJSQolgKwFJuJ
-         aCHQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVVJK50eu9/t8ud1VyrB6PHY5SkfTAuhRBOk0RJa8xiy31kQSXWJCZEGsoPt5kK7d2eWHdaOmBv+VKAZHeDeHDyUFql9JpENWNakfpguDE=
-X-Gm-Message-State: AOJu0YyhJHTzaa091wBhm8SD/d8KI9IwXsFWU2R8XPgOqKfp57hFF0wE
-	jq7Z1xa52pDQabLeipSCEFFSrvZVnZ8HiVhQV4SUQbYNFHkUOibT4U3pbNDQKqJ8v5Lw2KKO6Qd
-	nUDGuwB4XtGORTQ49Ku8gW536McfQjkMIse7rUQJg8/32RuzFk56E7mDauJpUsH9g
-X-Received: by 2002:a05:6000:d82:b0:367:96c5:ae70 with SMTP id ffacd0b85a97d-367cea91ff7mr7290428f8f.31.1720796028053;
-        Fri, 12 Jul 2024 07:53:48 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGiO0uAs6JxUgrGSU2IZ4WL5eybEQVI96YsUpsBbrQEUNfgqnCbo/oj/8KRpKxRv5+wT8B4bQ==
-X-Received: by 2002:a05:6000:d82:b0:367:96c5:ae70 with SMTP id ffacd0b85a97d-367cea91ff7mr7290404f8f.31.1720796027710;
-        Fri, 12 Jul 2024 07:53:47 -0700 (PDT)
-Received: from cassiopeiae ([2a02:810d:4b3f:ee94:a4d3:4896:56d4:f050])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-367cde7df48sm10448458f8f.1.2024.07.12.07.53.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 12 Jul 2024 07:53:47 -0700 (PDT)
-Date: Fri, 12 Jul 2024 16:53:45 +0200
-From: Danilo Krummrich <dakr@redhat.com>
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: Steven Price <steven.price@arm.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>, ojeda@kernel.org,
-	lyude@redhat.com, robh@kernel.org, lina@asahilina.net,
-	mcanal@igalia.com, airlied@gmail.com,
-	rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [RFC PATCH] drm: panthor: add dev_coredumpv support
-Message-ID: <ZpFDeajsuVONbSYJ@cassiopeiae>
-References: <20240710225011.275153-1-daniel.almeida@collabora.com>
- <fe84a028-01a8-4987-b1b7-141fb76d263c@arm.com>
- <4344B22F-D859-4C64-A351-69FFB5208362@collabora.com>
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="0+K/iYoW"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1720797212;
+	bh=MnzR0VjdJ5NoBmz1xLLAIhcfaMNgCeiuxKwyJbWLlEo=;
+	h=Subject:From:In-Reply-To:Date:Cc:References:To:From;
+	b=0+K/iYoW68JAOflPcuy9TwjDOY5gFuRs08GQ7ZhxZCUZQfNvA5gu3AE4peaZhvqsj
+	 4ahC/HaLLhZjZKGja1SO/7MXctzd6i1lU5dcEpG69vZe1h2mcSbc4lhRgrtrhgZimE
+	 RnYybGCq0zZx/ShTchOJflUXReep6P+UJ5mZEatRdWkeSNMP3Li+HJ7N8iUdb5gmdB
+	 Sl2ox1fXBkDWcvD2TjbIdliXkCjxTYCQo1z36XyXY62sW6aHjC4JItDiLB173CV1qe
+	 Ld1uhRY9pJwC3GvM1ayCTuVC3TI3lVJblnrP0BS+ittNtDUkCIk3nKCjIEgLH+bDM+
+	 lJ85rLPZfHNwQ==
+Received: from smtpclient.apple (cola.collaboradmins.com [IPv6:2a01:4f8:1c1c:5717::1])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	(Authenticated sender: dwlsalmeida)
+	by madrid.collaboradmins.com (Postfix) with ESMTPSA id 250E93780844;
+	Fri, 12 Jul 2024 15:13:28 +0000 (UTC)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-In-Reply-To: <4344B22F-D859-4C64-A351-69FFB5208362@collabora.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.600.62\))
+Subject: Re: [RFC PATCH] drm: panthor: add dev_coredumpv support
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <ZpFDeajsuVONbSYJ@cassiopeiae>
+Date: Fri, 12 Jul 2024 12:13:15 -0300
+Cc: Steven Price <steven.price@arm.com>,
+ Wedson Almeida Filho <wedsonaf@gmail.com>,
+ ojeda@kernel.org,
+ lyude@redhat.com,
+ robh@kernel.org,
+ lina@asahilina.net,
+ mcanal@igalia.com,
+ airlied@gmail.com,
+ rust-for-linux@vger.kernel.org,
+ dri-devel@lists.freedesktop.org,
+ linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <0A0C1EFC-29A1-4D73-8B02-CC1C693D6A7A@collabora.com>
+References: <20240710225011.275153-1-daniel.almeida@collabora.com>
+ <fe84a028-01a8-4987-b1b7-141fb76d263c@arm.com>
+ <4344B22F-D859-4C64-A351-69FFB5208362@collabora.com>
+ <ZpFDeajsuVONbSYJ@cassiopeiae>
+To: Danilo Krummrich <dakr@redhat.com>
+X-Mailer: Apple Mail (2.3774.600.62)
 
-On Fri, Jul 12, 2024 at 11:35:25AM -0300, Daniel Almeida wrote:
-> Hi Steven, thanks for the review!
-> 
-> > 
-> > This is defining the ABI to userspace and as such we'd need a way of
-> > exporting this for userspace tools to use. The C approach is a header in
-> > include/uabi. I'd also suggest making it obvious this enum can't be
-> > rearranged (e.g. a comment, or assigning specific numbers). There's also
-> > some ABI below which needs exporting in some way, along with some
-> > documentation (comments may be sufficient) explaining how e.g.
-> > header_size works.
-> > 
-> 
-> I will defer this topic to others in the Rust for Linux community. I think this is the first time this scenario comes up in Rust code?
-> 
-> FYI I am working on a tool in Mesa to decode the dump [0]. Since the tool is also written in Rust, and given the RFC nature of this patch, I just copied and pasted things for now, including panthor_regs.rs.
-> 
-> IMHO, the solution here is to use cbindgen to automatically generate a C header to place in include/uapi. This will ensure that the header is in sync with the Rust code. I will do that in v2.
 
-You could also just define those structures in a C header directly and use it
-from Rust, can't you?
+
+> On 12 Jul 2024, at 11:53, Danilo Krummrich <dakr@redhat.com> wrote:
+>=20
+> You could also just define those structures in a C header directly and =
+use it
+> from Rust, can't you?
+>=20
+
+
+Sure, I am open to any approach here. Although this looks a bit reversed =
+to me.
+
+i.e.: why should I declare these structs in a separate language and =
+file, and then use them in Rust through bindgen? Sounds clunky.
+
+Right now, they are declared right next to where they are used in the =
+code, i.e.: in the same Rust file. And so long as they=E2=80=99re =
+#[repr(C)] we know that an equivalent C version can generated by =
+cbindgen.
+
 
