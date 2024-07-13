@@ -1,98 +1,93 @@
-Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AA342F2B;
-	Sat, 13 Jul 2024 01:00:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 288141EA85;
+	Sat, 13 Jul 2024 08:17:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720832452; cv=none; b=A1dVwt5+juF7td1LM6BN08c5ur3rTlTfZziJ3hkP7OCEJ5eo3L34vFSiuOYHtSoEPGAUPXktkh3kmiXSZBQ2ULztbXlTwS1oWFZXX341Zns/tn8O3mE+3G2KJUUuwsYpa21pF3ek4ruHpHiiy/N62yyCmFsLmqBYAUWomNQjPtQ=
+	t=1720858638; cv=none; b=AVGzHF2llGlV639yYBje0pR51EJxN3XYqmgXYUW55thTyXj4j0BZUv5JeUpOfvKmuSUwyyfT8BJZkT2ZojA4OPVDW0SzcExDlOarpfeDlP74M+jz1CYe1wXqOByeM6Cb8XdZ30yUIIfB2spQyNLI/gSZKysNZK39yAKPCqNIagw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720832452; c=relaxed/simple;
-	bh=w/mpt+RlfSL8Dp/1of7ZO8A1RTwC9qamUzbz96QfUWs=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=aPDrnIKmYRld8td7TQnkKBMMv0fZr7Fc1LKAWFkq+MRd0ru+quUlbfCQ5pH0ZdZsCa57N3cnk2jYcF13s4tufp7+tct3qCpl17W25d0Alb4vc50fpJnDZ5e81tJHWDaRCwScfF9zSrFU3/f7rOFP45fYh18wJEQenIa5IBnvVMU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=OrSyoQ3N; arc=none smtp.client-ip=46.235.227.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1720858638; c=relaxed/simple;
+	bh=vuTDpjOknZIP3OPJBIYnYVOkq2l4rHcKJCw+bFO9yU8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=E7f3ypFsOQiO4PcG9d2olaglv0V2ARzCaDfr1h122P8pcAJdyBODOKqDXSeqx2OEPnejbfk1mkGP597pV6pHGKSJ3Nu6ITEIc6mTihx2DptnPEd8K/K6QWn4spLK6naJxN+6VE201Y04h7tOHKkx7R1PQptXDY/8rpZ5pRkcSjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Osjjk4yj; arc=none smtp.client-ip=209.85.216.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="OrSyoQ3N"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1720832443;
-	bh=w/mpt+RlfSL8Dp/1of7ZO8A1RTwC9qamUzbz96QfUWs=;
-	h=Subject:From:In-Reply-To:Date:Cc:References:To:From;
-	b=OrSyoQ3NfLGmrie4sOHpBxx9p3cghk74+ESentpuMhw+yGNSHVb6cBsmY5DsY4DPj
-	 PMrXhlo+Kf0tyxjdJoRWkDH/gUZkt5B8LVWCuELq46AfrgZElBdSu2SNHckle4d3/h
-	 3VHwSFfO3gB0ge0YnzAiX15gdqnopDsLTmS4siArj/iwHWswYrc4RqQB9z8rKSa4IW
-	 iKfmChdjXiAikCxHo6HAZbCd29/5JDJUCe0vnA158VN9Iw4foSfL/909q6BjTSjo8v
-	 beQmi03fyNWcnmHhBwJph1yk/0uVXx7eoGynEWyrwhToCTybFk/4owNVIIb8OIaiRS
-	 QATaV3FBhT+MA==
-Received: from smtpclient.apple (cola.collaboradmins.com [195.201.22.229])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	(Authenticated sender: dwlsalmeida)
-	by madrid.collaboradmins.com (Postfix) with ESMTPSA id 581E837813B9;
-	Sat, 13 Jul 2024 01:00:39 +0000 (UTC)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Osjjk4yj"
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-2c964f5a037so2043551a91.0;
+        Sat, 13 Jul 2024 01:17:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1720858636; x=1721463436; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=vuTDpjOknZIP3OPJBIYnYVOkq2l4rHcKJCw+bFO9yU8=;
+        b=Osjjk4yjBqt9do5FgRuJ0ktxPUHrHjUW/aKjQO7X8cvAESTlKu3+LxFScfU/RtZS+h
+         c1QkV3LQNVBxnSQDxeaaqSiZUm1bmeF5zpxIKw9ez2HtkA8v9RTepRgtg3pxKtiauevG
+         w5Kb7qNybPC3F7oArlu1mdXM8GV5x87W/xijA6YvQkbDGXiXbVLS5T03GcAMvr1+YyyM
+         PW7vdsPJrQvUO3cpNDhTGgf62G2CzwWPmXF8e0SMZrgRqfwunD1xdBrguxuZOcPwPKyY
+         675fLhRjqiDHKI5qMsVhUXXOEjy6eoPO8nnSIWYcsf17GS5PEqu0X0pJHVkFnfu/+VkS
+         n1Cg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1720858636; x=1721463436;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=vuTDpjOknZIP3OPJBIYnYVOkq2l4rHcKJCw+bFO9yU8=;
+        b=svK0MoM5vXwdcCOZKuuNOli4H3u/owdMHa9OTw+iiNWWSZyNde31Re5hAOn38xp1tZ
+         gFEKxczRy4IaUBYwEfC+ktz1JvyRSDDlB4lJrALjZLkKyF6yukcCpkE8sckTBIpmtR03
+         UZcChWau5OvFaURqrLCvjuiYb6aMQeutacM7DH1uY4gJrOC24M6DMC47YAdWwACRrxZg
+         8KV5Yts8LvmO7SCQPOBOxI0zavu+hTvk9sv81UdByVDHq4z6B0t57ZDuh84gofVO9Yxo
+         rDXajO/FZtCmU0tkDnQSh2y+tvDbTMplSyegBmOOcVuaM+ahREQO9RJk7F4XWZTMVYpb
+         O0ZA==
+X-Forwarded-Encrypted: i=1; AJvYcCXQpqg42cndKDukq61uHliHQaPSmEDpxM4QwBLK3LpPK35eJKEjxgU29Ker2n7h+b2AVCT9Ki1MWuZKe0pMipQWNxSxuSnPrarmOqTd+H4zKXML9+7qJmW1sMhbfMrQ47QxvSfCpys9l/9qyy0=
+X-Gm-Message-State: AOJu0Yzl54/MzSrRKGzY7a5OzQ8VAEkOlBW8A8k7dJas8PUKx56GRKsY
+	iqmWhhpkFm8dDmQdb0z4O6/tdGuxnW3N4J4a95z1ObmT7dIOS2FQTsoJIzcu4hvu1E2d0uzKh2U
+	q7+xtff6Ykh3/jwin935OxJLnFl8=
+X-Google-Smtp-Source: AGHT+IG2cm8kzFCASH5FbYxr2z1a1YaZfkV2ynwONRqoxeKn7KGsSrpsEXY6g7FXnyh4IWb1I3jo/N2wLeVEGq+V/uU=
+X-Received: by 2002:a17:90b:1c10:b0:2c7:b11b:e327 with SMTP id
+ 98e67ed59e1d1-2ca35d8606dmr10280290a91.44.1720858636218; Sat, 13 Jul 2024
+ 01:17:16 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.600.62\))
-Subject: Re: [RFC PATCH] drm: panthor: add dev_coredumpv support
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <CAPM=9twNU3Wm02zCqzipSt4mDU3UUF5AyVycpBkPTGqv7fwPAQ@mail.gmail.com>
-Date: Fri, 12 Jul 2024 22:00:26 -0300
-Cc: Danilo Krummrich <dakr@redhat.com>,
- Steven Price <steven.price@arm.com>,
- Wedson Almeida Filho <wedsonaf@gmail.com>,
- ojeda@kernel.org,
- lyude@redhat.com,
- robh@kernel.org,
- lina@asahilina.net,
- mcanal@igalia.com,
- rust-for-linux@vger.kernel.org,
- dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <76D10179-FC78-4563-93CD-0528E3420D45@collabora.com>
+MIME-Version: 1.0
 References: <20240710225011.275153-1-daniel.almeida@collabora.com>
- <fe84a028-01a8-4987-b1b7-141fb76d263c@arm.com>
- <4344B22F-D859-4C64-A351-69FFB5208362@collabora.com>
- <ZpFDeajsuVONbSYJ@cassiopeiae>
- <0A0C1EFC-29A1-4D73-8B02-CC1C693D6A7A@collabora.com>
- <ZpFMmAEdqo1dhj0s@cassiopeiae>
- <CAPM=9twNU3Wm02zCqzipSt4mDU3UUF5AyVycpBkPTGqv7fwPAQ@mail.gmail.com>
+ <fe84a028-01a8-4987-b1b7-141fb76d263c@arm.com> <4344B22F-D859-4C64-A351-69FFB5208362@collabora.com>
+ <ZpFDeajsuVONbSYJ@cassiopeiae> <0A0C1EFC-29A1-4D73-8B02-CC1C693D6A7A@collabora.com>
+ <ZpFMmAEdqo1dhj0s@cassiopeiae> <CAPM=9twNU3Wm02zCqzipSt4mDU3UUF5AyVycpBkPTGqv7fwPAQ@mail.gmail.com>
+In-Reply-To: <CAPM=9twNU3Wm02zCqzipSt4mDU3UUF5AyVycpBkPTGqv7fwPAQ@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sat, 13 Jul 2024 10:17:03 +0200
+Message-ID: <CANiq72=J=RVRy+f8+B=Eb_J6sNBsGqvBT8-io-m+VqJNgZRnkw@mail.gmail.com>
+Subject: Re: [RFC PATCH] drm: panthor: add dev_coredumpv support
 To: Dave Airlie <airlied@gmail.com>
-X-Mailer: Apple Mail (2.3774.600.62)
+Cc: Danilo Krummrich <dakr@redhat.com>, Daniel Almeida <daniel.almeida@collabora.com>, 
+	Steven Price <steven.price@arm.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, ojeda@kernel.org, 
+	lyude@redhat.com, robh@kernel.org, lina@asahilina.net, mcanal@igalia.com, 
+	rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Dave,
-
->=20
+On Sat, Jul 13, 2024 at 2:48=E2=80=AFAM Dave Airlie <airlied@gmail.com> wro=
+te:
+>
 > I think I'm on the uapi should remain in C for now, we define uapi
 > types with the kernel types and we have downstream tools to scan and
 > parse them to deal with alignments and padding (I know FEX relies on
 > it), so I think we should be bindgen from uapi headers into rust for
 > now. There might be a future where this changes, but that isn't now
 > and I definitely don't want to mix C and rust uapi in one driver.
->=20
-> Dave.
 
-Yeah, once this was mentioned:
+Agreed, I think with what you say here (changes required to external
+tooling), even if the generation was done by `rustc` itself and
+guaranteed to be stable, it would still be impractical at this point
+in time.
 
-> How do we (easily) verify that changes in the Rust code don't break =
-the uAPI by
-> due to leading to changes in the generated header files?
->=20
-> Do we have guarantees that future releases of cbindgen can't break =
-anything?
-
-
-I realized that there would be issues with my original approach.
-
-> I think I'm on the uapi should remain in C for now
-
-No worries, I will fix this in v2.
-
-=E2=80=94 Daniel=
+Cheers,
+Miguel
