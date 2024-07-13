@@ -1,124 +1,117 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from relay2-d.mail.gandi.net (relay2-d.mail.gandi.net [217.70.183.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63B60132114
-	for <rust-for-linux@vger.kernel.org>; Sat, 13 Jul 2024 14:50:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 320C61B28D;
+	Sat, 13 Jul 2024 21:25:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.70.183.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1720882203; cv=none; b=EstCcRvKZJwvexkZhpcOkrQiFwOhCdpyFqPSmTPdYKr3b/qyu48HZAw8Q3doYX1Hq/UY7BwDPfOGCwtindqzNoj1+56MX6/l1KHvlWihgDCpUHR0RqrYJAWWzT96KqFWeNzAzv3+2vo61FyBujneDWQ2BN6tkWR8LxnxxxewvWI=
+	t=1720905938; cv=none; b=EwzH5KkYeb1ViMA4h/S2NqI3aF7KyBGI57ZyGEamGkb4NRBxbnRCe62GNKil1gzdK6AvY64R+LU9Xn4nbBUhKARxJ2SgxDwVWeEWQujM7ZL49ma0u6sZIsDAIQ6STliNPV9J4eq5ZACLgRqB1Xj5ImjD04z7FoAEjYV2XrCxmXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1720882203; c=relaxed/simple;
-	bh=lvDrQV56tBUXKpSUYxbx5CkTdDccFytAphDjQRZAsLA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 In-Reply-To:Content-Type:Content-Disposition; b=oyJKhhePXaTegSvcOZoo+oIFJKciY9E6czBvubm4Xv4IpwHgrldcd2qkOwL9ZHrn3y4jju6mmFmI8rm+jinjd49oc2+W+XR0VO+rOTwd76RDOoZhFlHG++M6HRoAC8s70k18VmdZ/3767VJYoiGmmzJeyd4gwQ//hbDbVrreDy4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Ip3tOvD8; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1720905938; c=relaxed/simple;
+	bh=ri7Wmc2d4XDZpPrGlBZhDc5B+IGRkiA04hklPX/XNUM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gw6dOWVb5GIAIu1hUIFiUsXzmZ4qG3tLFNhwmgsqSsGLogZz2AZO/QVvA2fE1pPejV1i4MEwgW/y00DYkuwHD2vbKsZvH+9ajgfTN6/vBXw7dh7nJeDJpVHr4DJgUBqBWwB3j3eBfUZi+teUbRRTRc8brDS22VOzJ1bx0WzxDY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gtucker.io; spf=pass smtp.mailfrom=gtucker.io; dkim=pass (2048-bit key) header.d=gtucker.io header.i=@gtucker.io header.b=JfMaPYD9; arc=none smtp.client-ip=217.70.183.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gtucker.io
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gtucker.io
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Ip3tOvD8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1720882200;
+	dkim=pass (2048-bit key) header.d=gtucker.io header.i=@gtucker.io header.b="JfMaPYD9"
+Received: by mail.gandi.net (Postfix) with ESMTPSA id 2F22D40002;
+	Sat, 13 Jul 2024 21:25:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gtucker.io; s=gm1;
+	t=1720905927;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=a4AbNjpp4hqCHzZOlyISRcLeMmOnjyeu6DKbsQlyQtA=;
-	b=Ip3tOvD8pDIRJ9pmtPtv68IIMIA/8wxIaI24IWGL2cuNtq/WPxvvtxWztV55i6wsSNuAVw
-	Y8FVV4x7z3qtkuenlG0k4GxonlqqFqgvFDG3RaerYsB1Rx7otF3WgA7plpIOxnPDOAOqYG
-	PhJRPIdewwsrsyn91DcKSLMqqXAVifw=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-338-Zpf2cZbdNc6IPVlWlqX-HQ-1; Sat, 13 Jul 2024 10:49:56 -0400
-X-MC-Unique: Zpf2cZbdNc6IPVlWlqX-HQ-1
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-42666ed2d5fso18988585e9.3
-        for <rust-for-linux@vger.kernel.org>; Sat, 13 Jul 2024 07:49:56 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1720882195; x=1721486995;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=a4AbNjpp4hqCHzZOlyISRcLeMmOnjyeu6DKbsQlyQtA=;
-        b=aJ6OGGZDcg3EO27aasZADg28DrQxukp728CB1vHdmom5tgGl+T3j4XNjXCz5bvIcY0
-         NXNWtNi7qvDMPQrK+E26b7U6FNH8Df9krX+FpZhABw3J8g1XnBbJVGCKpp9axA5stwUd
-         TiAJ8gdEU+9FKz+EcqVaBodxfaNFZZzU4pBhHzegtfYMDk6/TEyhX39NgI54WcTFfCyc
-         fuCDv/K2dxyIH21It5gTj0GYFjwOoWpyXdRkg8mI3Og/aXEcDIPF4kUmMXfI+u/NA415
-         MXpzc26cWsAp/ggwXYuIrZ54r+Hf/b04nT66wQeSgeaEOugrlN8uo7c3+NlsSTzCme92
-         GR0w==
-X-Forwarded-Encrypted: i=1; AJvYcCW60HI6E7Sxd0la86qaHZ7vWbuLXIWf/0BTnuhGaDoPMgYjxBcj18Z8K9m4t3ZpKKrKC9HdwKLveSRwCHawP1kRBVBaUfGfrER2mzYCZTQ=
-X-Gm-Message-State: AOJu0YyIM/zzt4HwS7vY3CAVwPTTOMlq3+8wemTL0NwzPlkhaePlzngX
-	N9xIv8ttLxdaK8cNLQZZINznRA6pBhUjC1tSSPC/2ImE17kmKRHxuanSdZ1t6HiGOPRTNN2LyRy
-	LHaUgt93WEqsNo/f2NIrOHs2cc+kkwAKq2d7lHbWywncE6RmPS+abIgI0AWBvOZ+s
-X-Received: by 2002:a05:600c:6d8f:b0:426:6f0e:a60 with SMTP id 5b1f17b1804b1-426707e2ffdmr97349215e9.17.1720882195395;
-        Sat, 13 Jul 2024 07:49:55 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHYybzB01yKZQiOWZSW/pi8k9FrEkZ863yhN5Xt/4doo+hsXQoxYA/zL09HPsKtMFVmYmKhRQ==
-X-Received: by 2002:a05:600c:6d8f:b0:426:6f0e:a60 with SMTP id 5b1f17b1804b1-426707e2ffdmr97348925e9.17.1720882194772;
-        Sat, 13 Jul 2024 07:49:54 -0700 (PDT)
-Received: from pollux.localdomain ([2a02:810d:4b3f:ee94:2522:59b5:3360:91e1])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-427a63449fcsm21716525e9.29.2024.07.13.07.49.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 13 Jul 2024 07:49:54 -0700 (PDT)
-Date: Sat, 13 Jul 2024 16:49:52 +0200
-From: Danilo Krummrich <dakr@redhat.com>
-To: gregkh@linuxfoundation.org
-Cc: miguel.ojeda.sandonis@gmail.com, a.hindborg@samsung.com,
-	alex.gaynor@gmail.com, aliceryhl@google.com, benno.lossin@proton.me,
-	bjorn3_gh@protonmail.com, boqun.feng@gmail.com, gary@garyguo.net,
-	andrewjballance@gmail.com,
-	linux-kernel-mentees@lists.linuxfoundation.org,
-	linux-kernel@vger.kernel.org, mcgrof@kernel.org, ojeda@kernel.org,
-	russ.weight@linux.dev, rust-for-linux@vger.kernel.org,
-	skhan@linuxfoundation.org, wedsonaf@gmail.com
-Subject: Re: [PATCH v2] rust: firmware: fix invalid rustdoc link
-Message-ID: <ZpKUEKHh6gK7SODR@pollux.localdomain>
-References: <CANiq72=6LSGwRsc+deE+U8H=mdgFisrKEPOYgVkZfHhGm8hwog@mail.gmail.com>
- <20240709004426.44854-1-andrewjballance@gmail.com>
+	bh=eAGGW19rH40uPtJv5EREDlDHWbR0oXa+b8CqEV1Kpd4=;
+	b=JfMaPYD9fBuKaccUEcaF5s12S3MtGXFXRBNtzJFJV7lmIYXhymJrXQSx8UWvrQkGlw1Pe8
+	9jMna9WHWucBbwsdHsI975FWaQFupbvcL5aeezgk5hP7lMObC4owtAgI/G/EHRc1MqG9NP
+	mRCxDgVUk2o8uXIOpnR/Colhq9VpQQJcahRLitTopOm1cwfP6bFhzsmEbG5oh55rYIIKdV
+	E0qWoFNQ2vmDvKjuoJigJyMdhmGtbHDRIqN7U/yVknkSROncRFEHISb8swzKhIjPNBsFa/
+	TLZ4UjVdTO79Y6Cil4ETKhIBPMVGlwKMpKsRhKu8yugmJtfNrEF7K3+oWrrRnA==
+Message-ID: <0bcb07c8-8722-4224-a7e1-233e25369e2f@gtucker.io>
+Date: Sat, 13 Jul 2024 23:25:25 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-In-Reply-To: <20240709004426.44854-1-andrewjballance@gmail.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: Plumbers Testing MC potential topic: specialised toolchains
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Nick Desaulniers <ndesaulniers@google.com>,
+ Miguel Ojeda <ojeda@kernel.org>, Alexei Starovoitov <ast@kernel.org>,
+ Arnd Bergmann <arnd@arndb.de>, llvm@lists.linux.dev,
+ rust-for-linux@vger.kernel.org, yurinnick@meta.com, bpf@vger.kernel.org,
+ Sasha Levin <sashal@kernel.org>, Shuah Khan <skhan@linuxfoundation.org>,
+ automated-testing@lists.yoctoproject.org
+References: <f80acb84-1d98-44d3-84b7-d976de77d8ce@gtucker.io>
+ <CANiq72mgTiOsnnLUP-JewoFsScV668WstP0bP2Lj+LGxd7L3sg@mail.gmail.com>
+Content-Language: en-GB
+From: Guillaume Tucker <gtucker@gtucker.io>
+Organization: gtucker.io
+In-Reply-To: <CANiq72mgTiOsnnLUP-JewoFsScV668WstP0bP2Lj+LGxd7L3sg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: gtucker@gtucker.io
 
-Hi Greg,
+Hi Miguel,
 
-On Mon, Jul 08, 2024 at 07:44:26PM -0500, Andrew Ballance wrote:
-> remove an extra quote from the doc comment so that rustdoc
-> no longer genertes a link to a nonexistent file.
+On 09/07/2024 01:07, Miguel Ojeda wrote:
+> Hi Guillaume, all,
 > 
-> Signed-off-by: Andrew Ballance <andrewjballance@gmail.com>
-> Reviewed-by: Danilo Krummrich <dakr@redhat.com>
-> Acked-by: Miguel Ojeda <ojeda@kernel.org>
-> Fixes: de6582833db0 ("rust: add firmware abstractions")
-
-Can you please pick this one up?
-
-- Danilo
-
-> ---
-> v1 -> v2: updated commit message
+> A couple of comments on the Rust bits for context.
 > 
->  rust/kernel/firmware.rs | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+> On Tue, Jul 9, 2024 at 12:10 AM Guillaume Tucker <gtucker@gtucker.io> wrote:
+>>
+>> Then Rust support in the kernel is still work-in-progress, so the
+>> rustc compiler version has to closely follow the kernel revision.
 > 
-> diff --git a/rust/kernel/firmware.rs b/rust/kernel/firmware.rs
-> index 386c8fb44785..763d7cbefab5 100644
-> --- a/rust/kernel/firmware.rs
-> +++ b/rust/kernel/firmware.rs
-> @@ -2,7 +2,7 @@
->  
->  //! Firmware abstraction
->  //!
-> -//! C header: [`include/linux/firmware.h`](srctree/include/linux/firmware.h")
-> +//! C header: [`include/linux/firmware.h`](srctree/include/linux/firmware.h)
->  
->  use crate::{bindings, device::Device, error::Error, error::Result, str::CStr};
->  use core::ptr::NonNull;
-> -- 
-> 2.45.2
+> I wouldn't say the reason is that the support in the kernel is
+> work-in-progress, but rather that `rustc` does not have all the
+> features the kernel needs (and "stable").
 > 
+> In any case, the version pinning will soon be over -- we are likely
+> going to have a minimum in v6.11:
+> 
+>     https://lore.kernel.org/rust-for-linux/20240701183625.665574-1-ojeda@kernel.org/
+> 
+> We are starting small, but it is already enough to cover the major
+> rolling distributions: Arch, Fedora, Debian Sid (outside the freeze
+> period) and perhaps Testing too, Gentoo, Nix unstable, openSUSE
+> Slowroll and Tumbleweed...
+> 
+> So, for some distributions, the Rust toolchain for the kernel can
+> already be directly from the distribution. So maybe it doesn't count
+> as "specialised" anymore? (at least for some distributions)
+> 
+> Of course, I know that you include cutting-edge too :)
+
+Ah that's great news.  And yes I think it's still "specialised"
+if you want to build linux-next or rust-for-linux using the
+cutting-edge rustc with extra features.
+
+So instead of always requiring the latest rustc, it would now
+have a range of versions with a minimum supported in mainline.
+
+>> The current state of the art are the kernel.org toolchains:
+>>
+>>   https://mirrors.edge.kernel.org/pub/tools/
+>>
+>> These are for LLVM and cross-compilers, and they already solve a
+>> large part of the issue described above.  However, they don't
+>> include Rust (yet), and all the dependencies need to be installed
+>> manually which can have a significant impact on the build
+> 
+> Rust is there thanks to Nathan! :) Please see:
+> 
+>     https://mirrors.edge.kernel.org/pub/tools/llvm/rust/
+
+Of course, sorry I think it's the second time I make the mistake
+in a month of not looking one level down under llvm...  Nice!
+
+Thanks,
+Guillaume
 
