@@ -1,196 +1,229 @@
-Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f45.google.com (mail-ua1-f45.google.com [209.85.222.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D6884655F;
-	Mon, 15 Jul 2024 17:06:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C796F481D5
+	for <rust-for-linux@vger.kernel.org>; Mon, 15 Jul 2024 20:40:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721063169; cv=none; b=XJU/svh+4/r8FxXGBrK/dWqX1brbkK7zoKAYg/YvPjniWyGMsTvizAE0fTJtDqEdeMsR+di4zzr4DWcfl0w8Y7p8OL2FQb3jg5cWDBvEJ7K6XcXBzGI/fsRuOyPap+UR7uktLU9pBANcB9yCjKe0SD2QJYyVmS5DKbmO5dCAqJg=
+	t=1721076039; cv=none; b=HK6015qFjXBityF2XVwcwXS8uWvZCL8ZCG4ONJ/ba9uf9whG3gMTxu/u+DQj8hIaGrY2yhV+MThNHiOkZsvovW6WjkhSXGCxyJ3L9D1M9IYkrSayuvrfIBBEa+ulMtKuxcAsokXpgNhV4KPKUYJ/qT2VYCVGTaP07r7KUoSS31k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721063169; c=relaxed/simple;
-	bh=MTzvTzAoatx0Q48KY1FTPa7YgzLwWXSImXnZ/96XLmY=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=oQwgxQw+aNylYascDKgN1tqu8hPHyNTbAtTsR7ERc2MLgoTC5n/vsa8OzlADSexZQNsAvUaQeUWViQ5hWPTubvFnusyhLMdFv6IKHU6HbDPbHVzYwWfD74S7vCbF/K+3AOdngBWkbY8a2nbG439svfnEUQevk+QL7qOpTYb4YqQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=IPabq0Aj; arc=none smtp.client-ip=46.235.227.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	s=arc-20240116; t=1721076039; c=relaxed/simple;
+	bh=oSy7pWCF/gI0rY02+WvHWDsxr8vczHoYLSUS5+7+31E=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=pH4laxktxmgBgJS7F4vDVWWSyq6QqrsfEWK8LmhOIC2yJjymYDZep2pItkbkp5e6qUP0gmBwqR+OvfLmS672lfMfwJns1/cF+6rFGFEkrxDbpVe3kQKeeGlzl//KsNZePrPDOG9wIOvOUZie07/jmUJiXjFcqWtFaLprAAxAloY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=yPWPewEk; arc=none smtp.client-ip=209.85.222.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="IPabq0Aj"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1721063166;
-	bh=MTzvTzAoatx0Q48KY1FTPa7YgzLwWXSImXnZ/96XLmY=;
-	h=Subject:From:In-Reply-To:Date:Cc:References:To:From;
-	b=IPabq0AjwORpneio+GIUvHaQSCAGrJxwa4XH0288QESrg/JDPfdvTcw0TIUoWZ+zh
-	 V5N3dU3vYbTpiOWgFuvvW+xi+p5Vttwj3LZAonH6q34e0XPPf8JyeBMxc+UJZOLzVw
-	 Kkbto8N2n9zDuxcu4Ds59NUVCVGXADRu58SbzVTkC1A+fxjyDI5IN2BZwaQHbYU0KW
-	 vZkOwKM7pVie7w36ao5c/3TipklCyhDNrI2XOUi5WUBvWQpsxcvZKoKca3r7c/VQMx
-	 xgqyd9e0ZaTO95kUmMtXsz9uLcEhkAh44XdJIT/BgNSBMn2F45vwYrrHCBNNNb7+bn
-	 juoK9dOvmCyQA==
-Received: from smtpclient.apple (cola.collaboradmins.com [195.201.22.229])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	(Authenticated sender: dwlsalmeida)
-	by madrid.collaboradmins.com (Postfix) with ESMTPSA id 7E4A23782193;
-	Mon, 15 Jul 2024 17:06:02 +0000 (UTC)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="yPWPewEk"
+Received: by mail-ua1-f45.google.com with SMTP id a1e0cc1a2514c-81179185d4fso1507543241.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 15 Jul 2024 13:40:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1721076037; x=1721680837; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=eS0BTNSokaMY/dxoDgKw9rrLuSVkHGouvH7zTfa5F8Y=;
+        b=yPWPewEk2HIlUxcXck4BYGsGLeEMtdjG/EihbfhLtN8JPK+hD0B68i4exYg49Aa26L
+         1vFb5XolTRkvGVoBmN8xNYfC1zKFGp5pRfL2vaZwIJ9aHFtFTn37cpL7vzcWIHwFyJdT
+         gh5832lBw1fToUNWEOnIplLZKHKxuSXv2VPGZLVBKtZssq8Vb45aJ6XpLtEeUNPH4CKW
+         GKiB2fp3baFbcoiukYQHFfWTXTGyTrTYBhLNXVbbm3Dw7MpAPpn6imESgM46TfhkSYCj
+         485aFPbNVDgkdHdCH1TZMRRJ7hzFWjv5GAF3vTmTILyxWrT9ReqTZIhzR+CWtqCs4CWL
+         8w2A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1721076037; x=1721680837;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=eS0BTNSokaMY/dxoDgKw9rrLuSVkHGouvH7zTfa5F8Y=;
+        b=cP14Q8EhOhETWRpw7LlmRbZO5Hi2bX4vR4vK2Y/y4QJbpTs4AI2lTztUHN5kApOlW7
+         HdaQLWuBV5LHjvmT0Exda1Xau28lYy1RCEViRIWy7XhOijY8AWeS0QLD02JLiCv68uld
+         5hEid/j1t72csP397Oh2UWoRDEcjyvjHpdq81hzt1KyuDfMgE/ModfLne0q6cvm+aqVL
+         LGeOGRVLPqNvBg6yn9ZRzQqh3IreTnD3a1zmg65O7O5w/bBcNwwkQsj7KEOng8mM5Apg
+         kveDo6+NsQFlFk5V9ifly3P6J0APZPLxo30zxiaFvpPyan4ZGKV8bFJov5CnRK9T4O3R
+         0wmg==
+X-Forwarded-Encrypted: i=1; AJvYcCVOjSYq2jeOCK+iZ1T5GGhn5IK2LtTJpZa1WQ6zt/yBJaCQgDkuRYS4EP7zfPkc55Vqn0ZS7lSBsGeyZ6sfQ9wOWPd9cl/s5w9qNdutdiM=
+X-Gm-Message-State: AOJu0YyrORBykAww1iU3AZntGpx8wVlipczV0FjdzgTsVLdvGdXJ6ZTW
+	M6kJatTnbW/4EQiTWlJeaRKTWfTNxnOBvX89zZtLP9rcXrDFtF37yZHjz8pwWsmdftR1OSC1V+o
+	yWuCgZiSDN72w1yg0RbWaJUg4IsSsIicNZmdP
+X-Google-Smtp-Source: AGHT+IEielVS1o0SbsVVS78wRgd1TDMQT3A8qiYKcy98d6bE9prj7+6YJzc5lzzm8j0RfdvdKEkpi5wqVYxF4RpD0X4=
+X-Received: by 2002:a05:6102:3c88:b0:48f:e86c:5e1d with SMTP id
+ ada2fe7eead31-4914c4defeemr201499137.9.1721076036510; Mon, 15 Jul 2024
+ 13:40:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.600.62\))
-Subject: Re: [RFC PATCH] drm: panthor: add dev_coredumpv support
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <ZpTl-uUbzmvHGMEH@phenom.ffwll.local>
-Date: Mon, 15 Jul 2024 14:05:49 -0300
-Cc: Danilo Krummrich <dakr@redhat.com>,
- Wedson Almeida Filho <wedsonaf@gmail.com>,
- ojeda@kernel.org,
- lyude@redhat.com,
- robh@kernel.org,
- lina@asahilina.net,
- mcanal@igalia.com,
- airlied@gmail.com,
- "daniel@ffwll.ch" <daniel@ffwll.ch>,
- rust-for-linux@vger.kernel.org,
- dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org
+MIME-Version: 1.0
+References: <20240617175818.58219-17-samitolvanen@google.com> <0b2697fd-7ab4-469f-83a6-ec9ebc701ba0@suse.com>
+In-Reply-To: <0b2697fd-7ab4-469f-83a6-ec9ebc701ba0@suse.com>
+From: Sami Tolvanen <samitolvanen@google.com>
+Date: Mon, 15 Jul 2024 20:39:59 +0000
+Message-ID: <CABCJKueGRBdFfGW-cvOvqxc-a85GpxtwPmLdE_1RiAkNLrEg+g@mail.gmail.com>
+Subject: Re: [PATCH 00/15] Implement MODVERSIONS for Rust
+To: Petr Pavlu <petr.pavlu@suse.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Masahiro Yamada <masahiroy@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Matthew Maurer <mmaurer@google.com>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-modules@vger.kernel.org, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <89FFB898-120A-431E-9B18-4D08AFAEFBFD@collabora.com>
-References: <20240710225011.275153-1-daniel.almeida@collabora.com>
- <d7719653-f270-493d-ac42-6a1291eb7dc0@redhat.com>
- <ZpTl-uUbzmvHGMEH@phenom.ffwll.local>
-To: Daniel Vetter <daniel.vetter@ffwll.ch>
-X-Mailer: Apple Mail (2.3774.600.62)
 
-Hi Sima!
+Hi Petr,
 
+On Wed, Jul 10, 2024 at 7:30=E2=80=AFAM Petr Pavlu <petr.pavlu@suse.com> wr=
+ote:
+>
+> On 6/17/24 19:58, Sami Tolvanen wrote:
+> > Hi folks,
+> >
+> > This series implements CONFIG_MODVERSIONS for Rust, an important
+> > feature for distributions like Android that want to ship Rust
+> > kernel modules, and depend on modversions to help ensure module ABI
+> > compatibility.
+>
+> Thanks for working on this. Below is some feedback with my (open)SUSE
+> hat on, although it should be quite general.
 
->=20
-> Yeah I'm not sure a partially converted driver where the main driver =
-is
-> still C really works, that pretty much has to throw out all the type
-> safety in the interfaces.
->=20
-> What I think might work is if such partial drivers register as full =
-rust
-> drivers, and then largely delegate the implementation to their =
-existing C
-> code with a big "safety: trust me, the C side is bug free" comment =
-since
-> it's all going to be unsafe :-)
->=20
-> It would still be a big change, since all the driver's callbacks need =
-to
-> switch from container_of to upcast to their driver structure to some =
-small
-> rust shim (most likely, I didn't try this out) to get at the driver =
-parts
-> on the C side. And I think you also need a small function to downcast =
-to
-> the drm base class. But that should be all largely mechanical.
->=20
-> More freely allowing to mix&match is imo going to be endless pains. We
-> kinda tried that with the atomic conversion helpers for legacy kms
-> drivers, and the impendance mismatch was just endless amounts of very
-> subtle pain. Rust will exacerbate this, because it encodes semantics =
-into
-> the types and interfaces. And that was with just one set of helpers, =
-for
-> rust we'll likely need a custom one for each driver that's partially
-> written in rust.
-> -Sima
->=20
+Great, thanks for taking a look!
 
-I humbly disagree here.
+> > There have been earlier proposals [1][2] that would allow Rust
+> > modules to coexist with modversions, but none that actually implement
+> > symbol versioning. Unlike C, Rust source code doesn't have sufficient
+> > information about the final ABI, as the compiler has considerable
+> > freedom in adjusting structure layout for improved performance [3],
+> > for example, which makes using a source code parser like genksyms
+> > a non-starter. Based on Matt's suggestion and previous feedback
+> > from maintainers, this series uses DWARF debugging information for
+> > computing versions. DWARF is an established and relatively stable
+> > format, which includes all the necessary ABI details, and adding a
+> > CONFIG_DEBUG_INFO dependency for Rust symbol versioning seems like a
+> > reasonable trade-off.
+>
+> Using the DWARF data makes sense to me. Distribution kernels are
+> normally built with debuginfo because one has to be able to debug them
+> later, unsurprisingly. Besides that, one now typically wants to use BPF
+> together with built-in BTF data (CONFIG_DEBUG_INFO_BTF), which also
+> requires building the kernel with debuginfo.
+>
+> I would however keep in mind that producing all DWARF data has some
+> cost. From a quick test, an x86_64-defconfig build is ~30% slower for me
+> with CONFIG_DEBUG_INFO=3Dy. The current genksyms tool allows to have
+> debuginfo disabled when backporting some patches and consequently have
+> a quicker feedback whether modversions changed. This option would
+> disappear with gendwarfksyms but I think it is acceptable.
 
-I know this is a bit tangential, but earlier this year I converted a =
-bunch of codec libraries to Rust in v4l2. That worked just fine with the =
-C codec drivers. There were no regressions as per our test tools.
+Yes, this matches my benchmarks too. Presumably folks who care about
+build times and are not interested in debugging information or Rust
+support would prefer genksyms instead. I'm planning to turn this into
+a Kconfig choice in the next version.
 
-The main idea is that you isolate all unsafety to a single point: so =
-long as the C code upholds the safety guarantees when calling into Rust, =
-the Rust layer will be safe. This is just the same logic used in unsafe =
-blocks in Rust itself, nothing new really.
+> > The first 12 patches of this series add a small tool for computing
+> > symbol versions from DWARF, called gendwarfksyms. When passed a list
+> > of exported symbols, the tool generates an expanded type string
+> > for each symbol, and computes symbol CRCs similarly to genksyms.
+> > gendwarfksyms is written in C and uses libdw to process DWARF, mainly
+> > because of the existing support for C host tools that use elfutils
+> > (e.g., objtool).
+>
+> In addition to calculating CRCs of exported symbols, genksyms has other
+> features which I think are important.
+>
+> Firstly, the genksyms tool has a human-readable storage format for input
+> data used in the calculation of symbol CRCs. Setting the make variable
+> KBUILD_SYMTYPES enables dumping this data and storing it in *.symtypes
+> files.
+>
+> When a developer later modifies the kernel and wants to check if some
+> symbols have changed, they can take these files and feed them as
+> *.symref back to genksyms. This allows the tool to provide an actual
+> reason why some symbols have changed, instead of just printing that
+> their CRCs are different.
+>
+> Is there any plan to add the same functionality to gendwarfksyms, or do
+> you envison that people will use libabigail, Symbol-Type Graph, or
+> another tool for making this type of comparison?
 
-This is not unlike what is going on here, for example:
+gendwarfksyms also uses human-readable input for the CRC calculations,
+and it prints out the input strings with the --debug option. I plan to
+hook this up to KBUILD_SYMTYPES in v2. It should be convenient enough
+to simply compare the pretty-printed output with diff, so I'm not sure
+if a built-in comparison option is needed. Any other DWARF analysis
+tool can be used to spot the differences too, as you mentioned.
 
+> Secondly, when distributions want to maintain stable kABI, they need to
+> be able to deal with patch backports that add new members to structures.
+> One common approach is to have placeholders in important structures
+> which can be later replaced by the new members as needed. __GENKSYMS__
+> ifdefs are then used at the C source level to hide these kABI-compatible
+> changes from genksyms.
+>
+> Gendwarfksyms works on the resulting binary and so using such ifdefs
+> wouldn't work. Instead, I suspect that what is required is a mechanism
+> to tell the tool that a given change is ok, probably by allowing to
+> specify some map from the original definition to the new one.
+>
+> Is there a plan to implement something like this, or how could it be
+> addressed?
 
-```
-+unsafe extern "C" fn open_callback<T: BaseDriverObject<U>, U: =
-BaseObject>(
-+ raw_obj: *mut bindings::drm_gem_object,
-+ raw_file: *mut bindings::drm_file,
-+) -> core::ffi::c_int {
-+ // SAFETY: The pointer we got has to be valid.
-+ let file =3D unsafe {
-+ file::File::<<<U as IntoGEMObject>::Driver as =
-drv::Driver>::File>::from_raw(raw_file)
-+ };
-+ let obj =3D
-+ <<<U as IntoGEMObject>::Driver as drv::Driver>::Object as =
-IntoGEMObject>::from_gem_obj(
-+ raw_obj,
-+ );
-+
-+ // SAFETY: from_gem_obj() returns a valid pointer as long as the type =
-is
-+ // correct and the raw_obj we got is valid.
-+ match T::open(unsafe { &*obj }, &file) {
-+ Err(e) =3D> e.to_errno(),
-+ Ok(()) =3D> 0,
-+ }
-+}
-```
+That's a great question. Here's what Android uses currently to
+maintain a stable kABI, I assume you're doing something similar?
 
-We have to trust that the kernel is passing in a valid pointer. By the =
-same token, we can choose to trust drivers if we so desire.
+https://android.googlesource.com/kernel/common/+/refs/heads/android15-6.6/i=
+nclude/linux/android_kabi.h
 
-> that pretty much has to throw out all the type
-> safety in the interfaces.
+If using unions here is acceptable to everyone, a simple solution
+would be to use a known name prefix for the reserved members and teach
+gendwarfksyms to only print out the original type for the replaced
+ones. For example:
 
-Can you expand on that?
+The initial placeholder:
 
-In particular, I believe that we should ideally be able to convert from =
-a C "struct Foo * " to a Rust =E2=80=9CFooRef" for types whose lifetimes =
-are managed either by the kernel itself or by a C driver. In practical =
-terms, this has run into the issues we=E2=80=99ve been discussing in =
-this thread, but there may be solutions e.g.:
+    u8 __kabi_reserved_1[8];
 
-> One thing that comes to my mindis , you could probably create some =
-driver specific
-> "dummy" types to satisfy the type generics of the types you want to =
-use. Not sure
-> how well this works out though.
+After replacement:
 
-I haven=E2=80=99t thought of anything yet - which is why I haven=E2=80=99t=
- replied. OTOH, IIRC, Faith seems to have something in mind that can =
-work with the current abstractions, so I am waiting on her reply.
+    union {
+            u64 new_member;
+            struct {
+                    u8 __kabi_reserved_1[8];
+            };
+    }
 
+Here gendwarfksyms would see the __kabi_reserved prefix and only use
+u8 [8] for the CRC calculation. Does this sound reasonable?
 
-> What I think might work is if such partial drivers register as full =
-rust
-> drivers, and then largely delegate the implementation to their =
-existing C
-> code with a big "safety: trust me, the C side is bug free" comment =
-since
-> it's all going to be unsafe :-)
+Greg, I know you've been dealing with this for a long time, any thoughts?
 
-> with a big "safety: trust me, the C side is bug free" comment since =
-it's all going to be unsafe :-)
+> > Another compatibility issue is fitting the extremely long mangled
+> > Rust symbol names into struct modversion_info, which can only hold
+> > 55-character names (on 64-bit systems). Previous proposals suggested
+> > changing the structure to support longer names, but the conclusion was
+> > that we cannot break userspace tools that parse the version table.
+> >
+> > The next two patches of the series implement support for hashed
+> > symbol names in struct modversion_info, where names longer than 55
+> > characters are hashed, and the hash is stored in the name field. To
+> > avoid breaking userspace tools, the binary hash is prefixed with a
+> > null-terminated string containing the name of the hash function. While
+> > userspace tools can later be updated to potentially produce more
+> > useful information about the long symbols, this allows them to
+> > continue working in the meantime.
+>
+> I think this approach with hashed names is quite complex. I'd personally
+> be also in favor of having a new section with variable-length strings to
+> store the names of imported symbols. As yet another alternative, it
+> should be also possible to refer directly into .symtab/.strtab to avoid
+> duplicating the names, but I suspect it would be non-trivial to
+> implement.
 
-This is what I want too :) but I can=E2=80=99t see how your proposed =
-approach is better, at least at a cursory glance. It is a much bigger =
-change, though, which is a clear drawback.
+Thanks for the feedback. I think for the next version we'll look into
+reviving the relevant bits of Matt's previous patch series, which
+implemented a new section that supports variable-length names:
 
-> And that was with just one set of helpers, for
-> rust we'll likely need a custom one for each driver that's partially
-> written in rust.
+https://lore.kernel.org/lkml/CAGSQo03R+HYcX2JJDSm7LA8V370s_3hrbTBc2s51Pp9nx=
+WTz5w@mail.gmail.com/
 
-That=E2=80=99s exactly what I am trying to avoid. In other words, I want =
-to find a way to use the same abstractions and the same APIs so that we =
-do not run precisely into that problem.
-
-=E2=80=94 Daniel
-
+Sami
