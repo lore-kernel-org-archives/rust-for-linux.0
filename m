@@ -1,213 +1,196 @@
-Received: from mail-qv1-f65.google.com (mail-qv1-f65.google.com [209.85.219.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E04721CD3F;
-	Mon, 15 Jul 2024 16:15:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D6884655F;
+	Mon, 15 Jul 2024 17:06:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721060134; cv=none; b=iFPZHZP9CMqcxysObzatxvMi6uRbzLL+BlmWxdIAzbO3v3ZeWtEtBzbpmoO1OcXC7angdk0iddVPS6PnL49cvml0RJT3RMXx0YsjBq3wJazTkVqzUKn9awT3r9BKL4SRtMDNOVrRxtL6qjC4yyKBQVAeACmD9hucVjBXCNA8fJI=
+	t=1721063169; cv=none; b=XJU/svh+4/r8FxXGBrK/dWqX1brbkK7zoKAYg/YvPjniWyGMsTvizAE0fTJtDqEdeMsR+di4zzr4DWcfl0w8Y7p8OL2FQb3jg5cWDBvEJ7K6XcXBzGI/fsRuOyPap+UR7uktLU9pBANcB9yCjKe0SD2QJYyVmS5DKbmO5dCAqJg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721060134; c=relaxed/simple;
-	bh=MNcH4FQYV6xUFbte1qhFhl/P8o5Nh+WNSfGIeuyORq8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Pkj3fEtoGexUhVKPtggR5WPM5wKPq68MhGVPgXFOOtC4OzfaU4vIKuacnR1jtnT6hsl4cY+i31PJeaTh1xmUyqWmKFtK6yDGJMgAr77lIaybCxBbV3Y65eC7VtQH4ibtjye+EBNIugHSvuyUGixPuCrDsS6VPq8dGppLuPqAr5Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eL3c5aee; arc=none smtp.client-ip=209.85.219.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1721063169; c=relaxed/simple;
+	bh=MTzvTzAoatx0Q48KY1FTPa7YgzLwWXSImXnZ/96XLmY=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=oQwgxQw+aNylYascDKgN1tqu8hPHyNTbAtTsR7ERc2MLgoTC5n/vsa8OzlADSexZQNsAvUaQeUWViQ5hWPTubvFnusyhLMdFv6IKHU6HbDPbHVzYwWfD74S7vCbF/K+3AOdngBWkbY8a2nbG439svfnEUQevk+QL7qOpTYb4YqQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=IPabq0Aj; arc=none smtp.client-ip=46.235.227.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eL3c5aee"
-Received: by mail-qv1-f65.google.com with SMTP id 6a1803df08f44-6b5def3916bso26929446d6.3;
-        Mon, 15 Jul 2024 09:15:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1721060131; x=1721664931; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=B86oylWeQ/+rBCNttrbAo/LkztHTkh3FQpXO6sNcI50=;
-        b=eL3c5aeeoIMeXrahv3kWnG6Naa8F53YPMXaZklAhS7Dxmh1vYGvGsvBLdho8SotvTx
-         ytFPDiFmedUGmFx7ijTbg15GVvXKK5UgkQi6AOjdiga6DCZ5kfkCkK1QgawNqjBhPTo9
-         b+y+USuQNp/tRs6Mxu7wvnq77Nby3az1zg3mlARdfr9vi2UGSm43QCfxG4zbkbeklSqB
-         /zqBDlqA4oNJiakSTs2YGdSoGVZ19CAnCgtBxA2pYUICOrK1of7wxgXmXJGmTWHSDnpy
-         zP8Y+Se3ovU42xB+UIHwU1jfIGTN5PB2hMF7EUFX1K3Oaw3jwvSfHeaG2vTDRUC3YfcR
-         f1Xw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721060131; x=1721664931;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from
-         :content-language:references:cc:to:subject:user-agent:mime-version
-         :date:message-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=B86oylWeQ/+rBCNttrbAo/LkztHTkh3FQpXO6sNcI50=;
-        b=Qmz6V/bY88mzgnrGEkwyF5H3BtSoA0LRaX7Q0KQ3kQUfrXijIN/PoXEVqzTBlmc1c3
-         cjU/F68y7ud5xOCgdJTkwNJ2FBydjfg2Md/wJDhhIsEwmd12srz7vYiFcBsYGowilBmm
-         +hu4XERHoRlx/AffFXzHP593EWkROxZb9ZZ3/YcvPc6AgaZz3v39K+ecPi/oChSjz+GV
-         jwBpSCeYurDDiO4qXTBG8ghZmxazYiewOjF0ebnrpsboVDhSWX0bBTp39sRHtnVo8x8/
-         gNzwVbMXzJzVvFNIjSMWPGdhrwa/H/Sn2s1h8DL5l8YtcWwoZQw5ea4Vw10KeiCeoqkb
-         BZog==
-X-Forwarded-Encrypted: i=1; AJvYcCVc31DpVziF1UWUtchpj0f2ADw9GyqBB6xgeuzZ+hpKdVEOJYj7z/fV//Pbc76bndVUN/zWOd/8T1U3y+mXi9tVjg2hrG0LFiV8P1mf/38k+ximde+RKixgDemQsjZN4TgXEKQat+062ZwzEGwwZPKrFD7spBu3tJ13EhddIdw4yzn256/CcYvxClb/PKe+EBggnkxm9Kw2jyLuCw5KxLKlGGXWSOM=
-X-Gm-Message-State: AOJu0YyRBU2F+1j8LM9WPtrvTZrtUBixPrVUEyfKKUUq8aW+xEvQZnzs
-	CbLuEApH3qXaLQQ5vZUKiJsN20ZPXuKeMXwfne9/NVto2UOyck8w
-X-Google-Smtp-Source: AGHT+IHT78LgI19wps2RLAxgCax2XEyj6SW9H06cyh7CoTL43upSi0hM42iNIXeFEbo/SBCPg4jFxg==
-X-Received: by 2002:a05:6214:29e1:b0:6b0:8e1d:f720 with SMTP id 6a1803df08f44-6b77df2b7ddmr1305126d6.59.1721060130683;
-        Mon, 15 Jul 2024 09:15:30 -0700 (PDT)
-Received: from [192.168.158.7] ([207.35.255.94])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6b7733ee169sm11594636d6.26.2024.07.15.09.15.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 15 Jul 2024 09:15:30 -0700 (PDT)
-Message-ID: <be2586e2-8d85-426e-975d-6f57da4ccf75@gmail.com>
-Date: Mon, 15 Jul 2024 18:15:28 +0200
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="IPabq0Aj"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1721063166;
+	bh=MTzvTzAoatx0Q48KY1FTPa7YgzLwWXSImXnZ/96XLmY=;
+	h=Subject:From:In-Reply-To:Date:Cc:References:To:From;
+	b=IPabq0AjwORpneio+GIUvHaQSCAGrJxwa4XH0288QESrg/JDPfdvTcw0TIUoWZ+zh
+	 V5N3dU3vYbTpiOWgFuvvW+xi+p5Vttwj3LZAonH6q34e0XPPf8JyeBMxc+UJZOLzVw
+	 Kkbto8N2n9zDuxcu4Ds59NUVCVGXADRu58SbzVTkC1A+fxjyDI5IN2BZwaQHbYU0KW
+	 vZkOwKM7pVie7w36ao5c/3TipklCyhDNrI2XOUi5WUBvWQpsxcvZKoKca3r7c/VQMx
+	 xgqyd9e0ZaTO95kUmMtXsz9uLcEhkAh44XdJIT/BgNSBMn2F45vwYrrHCBNNNb7+bn
+	 juoK9dOvmCyQA==
+Received: from smtpclient.apple (cola.collaboradmins.com [195.201.22.229])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	(Authenticated sender: dwlsalmeida)
+	by madrid.collaboradmins.com (Postfix) with ESMTPSA id 7E4A23782193;
+	Mon, 15 Jul 2024 17:06:02 +0000 (UTC)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] rust: str: Use `core::CStr`, remove the custom `CStr`
- implementation
-To: =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng
- <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl
- <aliceryhl@google.com>, Brendan Higgins <brendan.higgins@linux.dev>,
- David Gow <davidgow@google.com>, Rae Moar <rmoar@google.com>,
- FUJITA Tomonori <fujita.tomonori@gmail.com>, Trevor Gross
- <tmgross@umich.edu>, Nathan Chancellor <nathan@kernel.org>,
- Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling
- <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
- Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Finn Behrens
- <me@kloenk.dev>, Manmohan Shukla <manmshuk@gmail.com>,
- Valentin Obst <kernel@valentinobst.de>,
- Laine Taffin Altman <alexanderaltman@me.com>,
- Danilo Krummrich <dakr@redhat.com>, Yutaro Ohno <yutaro.ono.418@gmail.com>,
- Tiago Lam <tiagolam@gmail.com>, Charalampos Mitrodimas
- <charmitro@posteo.net>, Ben Gooding <ben.gooding.dev@gmail.com>,
- Roland Xu <mu001999@outlook.com>, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-kselftest@vger.kernel.org,
- kunit-dev@googlegroups.com, netdev@vger.kernel.org, llvm@lists.linux.dev
-References: <20240714160238.238708-1-vadorovsky@gmail.com>
- <S-L4QE4MFYzY1ba0fdkJYuAVIkZHxxYB6Jk9XPFuo3ZdbvNxtfN_mCFc5oNPfTu2X17vvyPUStAviAUAzeKlCGxwRM-VbC4aPUGBGtDQCcU=@protonmail.com>
- <df092baf-03a5-4b4a-ab8b-ee7a5677c172@gmail.com>
- <T4cW5BFYytkMlTR5e2C2FfFJ5Z8P5XPw5dEsTQ2V-hoAo5yZkeYLSU3GvVCTH1Ga3f-mbPvEKZxOEWT7E1-xWu4EDE6-jCoQj3If-qCKCHA=@protonmail.com>
-Content-Language: en-US
-From: Michal Rostecki <vadorovsky@gmail.com>
-Autocrypt: addr=vadorovsky@gmail.com; keydata=
- xsBNBGYJcUEBCAD3ciAzHQ8NElYQtsiPZ9NjsR7ttfihe0FM+PDT+6cChjFLQ8qO/1zEL5mh
- YaLbkjitrIYARhmo3lRDq3+G4L5+gRVExm9Rd98PcQy2P9F8shxI/msC50i1Fb9N4D0pP8Hx
- hhZ/or+2mbokZh8Qc9RdjynXRXAezhOFN4+0L2jkN7fjTO1IArl+TirXx+cvhQUbwKyyJlGL
- Kldvue2EqU4maZ+KIUs5di3kZgDPLILzvBqX9TLtwEMAkNY1uMCKK+C2aihap19OjoK0qOYj
- IahVHjqGL+Mb/Ga7jxMGr2TFeQEcwIgvdRiVVLtu+uiaRKqULGokBL3l9gprtBZWdLq7ABEB
- AAHNJk1pY2hhbCBSb3N0ZWNraSA8dmFkb3JvdnNreUBnbWFpbC5jb20+wsCXBBMBCABBFiEE
- 3RZt3oLrB5kpFLy14qU49yah1xEFAmYJdCQCGwMFCQHhM4AFCwkIBwICIgIGFQoJCAsCBBYC
- AwECHgcCF4AACgkQ4qU49yah1xFuDQf+NE2Oy6zF+uVh3vtidkfacCSMnu1QxojJHB8C1/Ep
- g4JU5hPcG9hC+HrMs5/Hqs7DOike9bZjhpEmnW4DIeI7Wy3t1Qf7A8EOzS0nrMgbX8TnkEon
- zMBBqiNp3VVVcltRJtc58xMP8K3yu6Ty2Q8e6GWdL5bqDr9gshb+vWu8inh5CullsGRJFJl0
- BfSdDKAbpH3NdEoWnL4JvFphpouh2vhd/ScvfNAQcuyBn3cbCyQdjNTgRVBkBNDEYCaWLVqP
- r4IU0JNjgk+cTLbyFmgn2++bWoIICGrAeWGruSpl7UGJ2PdJokWI9zp5UqSCezejDS53yhkU
- GsCrF7LrTceB6c7ATQRmCXFBAQgA2yrqjTKvL7VJKi/NNcpQ7EvAEm6omO+O4wQltdpybaxe
- mbLT0vZTH6rjZba28ixZmFHtwOjzNNtabmb4uK+nxs0BkVBpRvJNJ0LM1ydGYZQ46Sbvr1dE
- 7yWDkkG1CjmXYGd5I2iqx+ATbdrtzDGWLsvDXd/yEaO9dxAR+LqGOg1HdgE9Hhmuv8BRYSCL
- vnXaMA7Orq9oAmu+Q5q9TT3aZGMdBFdcoUNSVPX82uIYXjDaXj0Del8tluAHLf3oV7ZXEgOx
- c6OpRY3+8Pr9//UtfoaHNOjoKFNyPaIUf5U1+E9J0UoDm8m1usrwnghg6yRyPhczhCOvbYNL
- hQ6TiImvowARAQABwsB8BBgBCAAmFiEE3RZt3oLrB5kpFLy14qU49yah1xEFAmYJcUECGwwF
- CQHhM4AACgkQ4qU49yah1xHetgf9FpI4Y+okwFRIqRa6WJ8jhz6us+oYKedftr313NwerUB5
- 8nnhK0YWkZWZMuu5B4LCMiv71Ugqlc7ahBy5sQx/acRPe+NiYpwiN/pWrv7njaA6evDieXL8
- jc3j+xy4fsi861BWJXaurWQtLMXyHBUmdJ+StU7tscYTPe4fN1fdkBh0SreZxLfvp/+SMRQk
- g9PmXb1BMZdw8gWghPAbYg5bfCzXF9iZp4bmjuCENfwG4zmnYJzR6uTI0reqECo6Ee7NjOQ7
- qKy29wW+kVnEjX481iCEUmqKHEaQB08Ueb45If09fThw1baHLAk6bFk5cabMtD3JbWEifa6M
- RS+eXZNwwQ==
-In-Reply-To: <T4cW5BFYytkMlTR5e2C2FfFJ5Z8P5XPw5dEsTQ2V-hoAo5yZkeYLSU3GvVCTH1Ga3f-mbPvEKZxOEWT7E1-xWu4EDE6-jCoQj3If-qCKCHA=@protonmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.600.62\))
+Subject: Re: [RFC PATCH] drm: panthor: add dev_coredumpv support
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <ZpTl-uUbzmvHGMEH@phenom.ffwll.local>
+Date: Mon, 15 Jul 2024 14:05:49 -0300
+Cc: Danilo Krummrich <dakr@redhat.com>,
+ Wedson Almeida Filho <wedsonaf@gmail.com>,
+ ojeda@kernel.org,
+ lyude@redhat.com,
+ robh@kernel.org,
+ lina@asahilina.net,
+ mcanal@igalia.com,
+ airlied@gmail.com,
+ "daniel@ffwll.ch" <daniel@ffwll.ch>,
+ rust-for-linux@vger.kernel.org,
+ dri-devel@lists.freedesktop.org,
+ linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <89FFB898-120A-431E-9B18-4D08AFAEFBFD@collabora.com>
+References: <20240710225011.275153-1-daniel.almeida@collabora.com>
+ <d7719653-f270-493d-ac42-6a1291eb7dc0@redhat.com>
+ <ZpTl-uUbzmvHGMEH@phenom.ffwll.local>
+To: Daniel Vetter <daniel.vetter@ffwll.ch>
+X-Mailer: Apple Mail (2.3774.600.62)
 
-On 15.07.24 17:56, Björn Roy Baron wrote:
-> On Monday, July 15th, 2024 at 17:46, Michal Rostecki <vadorovsky@gmail.com> wrote:
-> 
->> On 14.07.24 19:01, Björn Roy Baron wrote:
->>> On Sunday, July 14th, 2024 at 18:02, Michal Rostecki <vadorovsky@gmail.com> wrote:
->>>
->>>> `CStr` became a part of `core` library in Rust 1.75, therefore there is
->>>> no need to keep the custom implementation.
->>>>
->>>> `core::CStr` behaves generally the same as the removed implementation,
->>>> with the following differences:
->>>>
->>>> - It does not implement `Display` (but implements `Debug`).
->>>> - It does not provide `from_bytes_with_nul_unchecked_mut` method.
->>>>     - It was used only in `DerefMut` implementation for `CString`. This
->>>>       change replaces it with a manual cast to `&mut CStr`.
->>>>     - Otherwise, having such a method is not really desirable. `CStr` is
->>>>       a reference type
->>>>       or `str` are usually not supposed to be modified.
->>>> - It has `as_ptr()` method instead of `as_char_ptr()`, which also returns
->>>>     `*const c_char`.
->>>>
->>>> Rust also introduces C literals (`c""`), so the `c_str` macro is removed
->>>> here as well.
->>>>
->>>> Signed-off-by: Michal Rostecki <vadorovsky@gmail.com>
->>>> ---
->>>>    rust/kernel/error.rs        |   7 +-
->>>>    rust/kernel/init.rs         |   8 +-
->>>>    rust/kernel/kunit.rs        |  16 +-
->>>>    rust/kernel/net/phy.rs      |   2 +-
->>>>    rust/kernel/prelude.rs      |   4 +-
->>>>    rust/kernel/str.rs          | 490 +-----------------------------------
->>>>    rust/kernel/sync.rs         |  13 +-
->>>>    rust/kernel/sync/condvar.rs |   5 +-
->>>>    rust/kernel/sync/lock.rs    |   6 +-
->>>>    rust/kernel/workqueue.rs    |  10 +-
->>>>    scripts/rustdoc_test_gen.rs |   4 +-
->>>>    11 files changed, 57 insertions(+), 508 deletions(-)
->>>>
->>>
->>> [snip]
->>>
->>>> diff --git a/rust/kernel/init.rs b/rust/kernel/init.rs
->>>> index 68605b633e73..af0017e56c0e 100644
->>>> --- a/rust/kernel/init.rs
->>>> +++ b/rust/kernel/init.rs
->>>> @@ -46,7 +46,7 @@
->>>>    //! }
->>>>    //!
->>>>    //! let foo = pin_init!(Foo {
->>>> -//!     a <- new_mutex!(42, "Foo::a"),
->>>> +//!     a <- new_mutex!(42, c"Foo::a"),
->>>
->>> That we need a CStr here seems a bit of an internal implementation detail. Maybe
->>> keep accepting a regular string literal and converting it to a CStr internally?
->>> If others think what you have here is fine, I don't it mind all that much though.
->>>
->>
->> The names passed to `new_mutex`, `new_condvar`, `new_spinlock` etc. are
->> immediately passed in the FFI calls (`__mutex_init`,
->> `__init_waitqueue_head`, `__spin_lock_init`) [0][1][2]. In fact, I don't
->> see any internal usage, where using Rust &str would be beneficial. Am I
->> missing something?
->>
->> Converting a &str to &CStr inside `Mutex::new` or `CondVar::new` would
->> require allocating a new buffer, larger by 1, to include the nul byte.
->> Doing that for every new mutex or condvar seems a bit wasteful to me.
-> 
-> The names passed to `new_mutex!` and such are literals known at
-> compile time. This means we can keep adding the nul terminator at
-> compile time without allocating any extra buffer. Basically just
-> adapting the current implementation of `optional_name!` to produce an
-> `core::ffi::&CStr` rather than a `kernel::str::CStr` from a regular
-> string literal is enough to avoid having to explicitly use C string
-> literals in those macro invocations. This way users don't need to
-> know that internally an `&CStr` is used.
-> 
+Hi Sima!
 
-OK, good point, I can indeed handle that in `optional_name!`.
 
->>
->> [0]
->> https://github.com/Rust-for-Linux/linux/blob/b1263411112305acf2af728728591465becb45b0/rust/kernel/sync/lock/mutex.rs#L104
->> [1]
->> https://github.com/Rust-for-Linux/linux/blob/b1263411112305acf2af728728591465becb45b0/rust/kernel/sync/condvar.rs#L111
->> [2]
->> https://github.com/Rust-for-Linux/linux/blob/b1263411112305acf2af728728591465becb45b0/rust/kernel/sync/lock/spinlock.rs#L103
-> 
-> [snip]
+>=20
+> Yeah I'm not sure a partially converted driver where the main driver =
+is
+> still C really works, that pretty much has to throw out all the type
+> safety in the interfaces.
+>=20
+> What I think might work is if such partial drivers register as full =
+rust
+> drivers, and then largely delegate the implementation to their =
+existing C
+> code with a big "safety: trust me, the C side is bug free" comment =
+since
+> it's all going to be unsafe :-)
+>=20
+> It would still be a big change, since all the driver's callbacks need =
+to
+> switch from container_of to upcast to their driver structure to some =
+small
+> rust shim (most likely, I didn't try this out) to get at the driver =
+parts
+> on the C side. And I think you also need a small function to downcast =
+to
+> the drm base class. But that should be all largely mechanical.
+>=20
+> More freely allowing to mix&match is imo going to be endless pains. We
+> kinda tried that with the atomic conversion helpers for legacy kms
+> drivers, and the impendance mismatch was just endless amounts of very
+> subtle pain. Rust will exacerbate this, because it encodes semantics =
+into
+> the types and interfaces. And that was with just one set of helpers, =
+for
+> rust we'll likely need a custom one for each driver that's partially
+> written in rust.
+> -Sima
+>=20
+
+I humbly disagree here.
+
+I know this is a bit tangential, but earlier this year I converted a =
+bunch of codec libraries to Rust in v4l2. That worked just fine with the =
+C codec drivers. There were no regressions as per our test tools.
+
+The main idea is that you isolate all unsafety to a single point: so =
+long as the C code upholds the safety guarantees when calling into Rust, =
+the Rust layer will be safe. This is just the same logic used in unsafe =
+blocks in Rust itself, nothing new really.
+
+This is not unlike what is going on here, for example:
+
+
+```
++unsafe extern "C" fn open_callback<T: BaseDriverObject<U>, U: =
+BaseObject>(
++ raw_obj: *mut bindings::drm_gem_object,
++ raw_file: *mut bindings::drm_file,
++) -> core::ffi::c_int {
++ // SAFETY: The pointer we got has to be valid.
++ let file =3D unsafe {
++ file::File::<<<U as IntoGEMObject>::Driver as =
+drv::Driver>::File>::from_raw(raw_file)
++ };
++ let obj =3D
++ <<<U as IntoGEMObject>::Driver as drv::Driver>::Object as =
+IntoGEMObject>::from_gem_obj(
++ raw_obj,
++ );
++
++ // SAFETY: from_gem_obj() returns a valid pointer as long as the type =
+is
++ // correct and the raw_obj we got is valid.
++ match T::open(unsafe { &*obj }, &file) {
++ Err(e) =3D> e.to_errno(),
++ Ok(()) =3D> 0,
++ }
++}
+```
+
+We have to trust that the kernel is passing in a valid pointer. By the =
+same token, we can choose to trust drivers if we so desire.
+
+> that pretty much has to throw out all the type
+> safety in the interfaces.
+
+Can you expand on that?
+
+In particular, I believe that we should ideally be able to convert from =
+a C "struct Foo * " to a Rust =E2=80=9CFooRef" for types whose lifetimes =
+are managed either by the kernel itself or by a C driver. In practical =
+terms, this has run into the issues we=E2=80=99ve been discussing in =
+this thread, but there may be solutions e.g.:
+
+> One thing that comes to my mindis , you could probably create some =
+driver specific
+> "dummy" types to satisfy the type generics of the types you want to =
+use. Not sure
+> how well this works out though.
+
+I haven=E2=80=99t thought of anything yet - which is why I haven=E2=80=99t=
+ replied. OTOH, IIRC, Faith seems to have something in mind that can =
+work with the current abstractions, so I am waiting on her reply.
+
+
+> What I think might work is if such partial drivers register as full =
+rust
+> drivers, and then largely delegate the implementation to their =
+existing C
+> code with a big "safety: trust me, the C side is bug free" comment =
+since
+> it's all going to be unsafe :-)
+
+> with a big "safety: trust me, the C side is bug free" comment since =
+it's all going to be unsafe :-)
+
+This is what I want too :) but I can=E2=80=99t see how your proposed =
+approach is better, at least at a cursory glance. It is a much bigger =
+change, though, which is a clear drawback.
+
+> And that was with just one set of helpers, for
+> rust we'll likely need a custom one for each driver that's partially
+> written in rust.
+
+That=E2=80=99s exactly what I am trying to avoid. In other words, I want =
+to find a way to use the same abstractions and the same APIs so that we =
+do not run precisely into that problem.
+
+=E2=80=94 Daniel
+
