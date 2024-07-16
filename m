@@ -1,153 +1,269 @@
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A398D364A4;
-	Tue, 16 Jul 2024 07:44:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24B8F196438
+	for <rust-for-linux@vger.kernel.org>; Tue, 16 Jul 2024 09:25:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721115901; cv=none; b=uRO7OzaEnPfosw+eJKEKqX4PsI5DlcMcuRCKzadyFFSGIB/bgI+I9Z+9bElYfs5s38zwzKjgy9MN7JIsbmwUa6Z8dBYNQ2JtEdfGbzhmg68re0xAwszpO5YaTKpFnbK9DrYxOhlR4KgDiVhq7a2FdEpAYaYuO1kJh8276AJLjBU=
+	t=1721121931; cv=none; b=dwumjt6dNCyV8ZkKjZL8klMy2qTGaJL1cuHIdbzFssYdL8OKwHLSTLAa00XFOxBN9nYO7235lnGR0XTtcSSYC+pM/Rjh5K8aP3LHU9Rc0eBN7anyL06obzLx4jwp2YzkeU6/RsMgJHq9Lk9O7t6JRlEet9UW/i8X+CNefdU63G0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721115901; c=relaxed/simple;
-	bh=LhvDWCz+qUg7uLWIVZVAd05xhIPqDLC5aQEUa5TAj/c=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lKLfISJUucSdnYMkdyBetrgOCWGezqzFyyIyMmGv4MArvEAbSL5mZ4SQYrFYG65Rj96+pWMo4XbhT7UBeW2sZmebeMtzdSOKIwJpxIRNyEOiqJBgkAxrTxJdXESX60mSgoLfA6eePjQNtmOg6EH9UtIeTvG1ErfjDnIsYcmDXEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ks+5ixS7; arc=none smtp.client-ip=209.85.215.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1721121931; c=relaxed/simple;
+	bh=N5yTNttJ311Vt/2wANWpnoTPIiRTEBk6Ti979TJPBHc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=OMdwXB3f2xO9viIhVvSlwFmhrfkRlqVDa3JO9r5KmPx5/lWSPtJBek2sisduN4gVTKEH7idyZQc/L+c6yc90g+fPBnR04kCdH2CxZhBRKqFP8mnlSX2a97ZSoY3JC0bIqUQF1zxv9kFhy8OU3Y89DRnHD/R8ciBygeMsN6zWoNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch; spf=none smtp.mailfrom=ffwll.ch; dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b=fMWpcdC2; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ffwll.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ks+5ixS7"
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-79110d8e459so1171964a12.0;
-        Tue, 16 Jul 2024 00:44:59 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b="fMWpcdC2"
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-42666a5d33dso4610415e9.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 16 Jul 2024 02:25:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1721115899; x=1721720699; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DbCWXGRuvzHfZO2VrOM/qCgFYRHsmheQfUlw+5FY2Pc=;
-        b=ks+5ixS7YShCohAwbHfLUL/AzfzwU0C25etVnqZ4X2m/wkQ8PSex+SlGYLnKaW3HXp
-         wqcn2oWvIl2z4QKZ+HZrMluQ4HRqrE/vFRf7GBApPjEk+6bcELnZsNmxSGnxLZV1WSsH
-         Wp7I43471Jus6WvBiVVwNpQwcnVg/Pzwm+n7RmwClVFrqpkxa3EJ4yQbCLlh9l9IFB5h
-         xC+p/SL4McMxUt2HOCe9VfTy9sZ/EbbS3bTgcXhiUSvnay+f1hoUb0gtQUGmTOea6l++
-         G86n8gmyWUgnIoHF1G3SYefIRqmzPDvvc4SzCzNMD0pcr2b5yoVQf/6M6lN1S2nuZ9OC
-         nggQ==
+        d=ffwll.ch; s=google; t=1721121927; x=1721726727; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:mail-followup-to:message-id:subject:cc:to
+         :from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=PAjijZ3Ouy+myoSPyM0kcvwYwcmbq9gcUJaNSuUkTuU=;
+        b=fMWpcdC2r7SNxIpQma0kVtUWL9vNTMeHj4aHi5hNBdpYCqJWw3w+/g9VZVCnGeEUUa
+         jOmDpEiG56D8VsrHHRY+CoNxfz6dsNduYVi5ntCyy80P6vyfnuqUsk7uibIyvIYoJvVm
+         XAbUVCohZZdaizQDyMmor6rrRYgJPt/4ZxuEg=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721115899; x=1721720699;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=DbCWXGRuvzHfZO2VrOM/qCgFYRHsmheQfUlw+5FY2Pc=;
-        b=okF4Nk1TNRI13K6VFZNYWFX0jI4UiDWgNS4rbdl7bbvpQFGEjdNACWPw+2o3VO2HUz
-         bNfSMEDSfSI2hvHJ1m3XglpVo04anD+gxNoYN42eAo6XDu9PLtN4aUJj8QIhmLEtsSae
-         EPp4h9ZU271pJq+lwbd+6ZDtHA3PFcSUcgjYnpaqJf2hhKjTZSbt5oFT/er0OPC9/noU
-         zV6i63mrRZXrmIz/FogPSkLkO9Fh2jjWdCJ1uUiTatMbIB4ZlTa0g5lqup5j5is5uv1e
-         7ZgZVQucfmGJlwpy3Ntat4+iG5jhIVu1lMmYmY1LLPpykckU84rFaqsNgKKa7wcyh9F6
-         +k9A==
-X-Forwarded-Encrypted: i=1; AJvYcCVf0pOqWcPoUFb7uiIEEeqL9ZcNipmN9eC2DGYI0QMJvT437B0DuN1h5LMS5VO7lcT2Xl4RHSQbcNhkvX/QbeXN/R8JnXeCic5OaWwwroGxYCWMLOsCW27G0rSqgPMxI+gjKCjKrDgFbylIdCKyLE45TAsV9yTpTTxiajnI71ACiFccoxe+ZvHQNh4RQejNwgL+roUxVtjH1KwEmq0F90WS0i8xFHs=
-X-Gm-Message-State: AOJu0YxN+RN1Mk7N9KUe42m7rsyP39tPB1esDGsIUo1fwjxqKwMSlpTg
-	2LVWFrzTKn4wAzHgQrEizXUxfYsRMFI0X642dqK2juDRAFElpoLFRUj417ehlfPYsrvTnFeMlbN
-	uXK5BI9XSefMxOAEnGbqUlbBWUV4=
-X-Google-Smtp-Source: AGHT+IHKJ4A/6L2tAH7elOzCsqesMbEdr+mBHlIAhQKeuGXL0JGbvM+BD5UNGVOtYhJwy9ZQIVoEqnE6Pzw8x3iWzrA=
-X-Received: by 2002:a05:6a20:72a2:b0:1c0:f5be:a3ca with SMTP id
- adf61e73a8af0-1c3f124b1bdmr1554068637.30.1721115898766; Tue, 16 Jul 2024
- 00:44:58 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1721121927; x=1721726727;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:mail-followup-to:message-id:subject:cc:to
+         :from:date:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=PAjijZ3Ouy+myoSPyM0kcvwYwcmbq9gcUJaNSuUkTuU=;
+        b=hz9a+Nj212ZKQCZHhvOfKohc1z0Ypw8cLNWn4XWU3CD8KvO06FqP87XhHrnhygt+oB
+         JIb/G5w8ojw98832KkKkOujToNqAq4olXMT83F8LYgalOdZvTTVQyGQW3iVy5wMJJOfP
+         sA0UY0gESwkLCHcDDyNWU9KtZuOvCLeJeyyqOPOd0oD3hZs+4Pa7kICB3mhS8JVicXkp
+         o5FV2W5nyjClTakcj0ksh+tyj4KN6lehQp4MXBnK6ctDrYRix8Hi1xfzp0FA1ae40zxb
+         RAnnehsNlFSdy0iszLeMQ+7tIAjHx0iezgp38eOH9/0+IBycUPWMJCPDZ6Us3lJhvR8d
+         QeXA==
+X-Forwarded-Encrypted: i=1; AJvYcCWU+qvpggamJRiX0+2lW7gI2S2aXaoycdi3YIwQuTa4fjvjHRXJsJrG98gCq1dc96MVe3y4Z2jF1q4JphZRrEJ1s1MP4Xwy+C3/qoANTes=
+X-Gm-Message-State: AOJu0Yz0YiQj+SZ6UUGzfRRIdRAs8k1i3kBazWGlG8RXpAbI3Uf9dkPh
+	flkqGSr9v6NYCDlC424ISrGL2Be+0e3El1soAQ95sV5riZRtGe7sUb/FVMJZwy8=
+X-Google-Smtp-Source: AGHT+IFGay76S/3XJ06wP8GTTOttfNCnYDciDC1gYt+NRZJcRu6rSafrrt9JDknFijALbCOHSZVL+A==
+X-Received: by 2002:a05:600c:46d5:b0:424:8b08:26aa with SMTP id 5b1f17b1804b1-427b8a40e58mr9435005e9.3.1721121927154;
+        Tue, 16 Jul 2024 02:25:27 -0700 (PDT)
+Received: from phenom.ffwll.local ([2a02:168:57f4:0:efd0:b9e5:5ae6:c2fa])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4279f27877dsm148597605e9.26.2024.07.16.02.25.26
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 16 Jul 2024 02:25:26 -0700 (PDT)
+Date: Tue, 16 Jul 2024 11:25:24 +0200
+From: Daniel Vetter <daniel.vetter@ffwll.ch>
+To: Daniel Almeida <daniel.almeida@collabora.com>
+Cc: Daniel Vetter <daniel.vetter@ffwll.ch>,
+	Danilo Krummrich <dakr@redhat.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>, ojeda@kernel.org,
+	lyude@redhat.com, robh@kernel.org, lina@asahilina.net,
+	mcanal@igalia.com, airlied@gmail.com,
+	"daniel@ffwll.ch" <daniel@ffwll.ch>, rust-for-linux@vger.kernel.org,
+	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH] drm: panthor: add dev_coredumpv support
+Message-ID: <ZpY8hI6nJyubiR3s@phenom.ffwll.local>
+Mail-Followup-To: Daniel Almeida <daniel.almeida@collabora.com>,
+	Danilo Krummrich <dakr@redhat.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>, ojeda@kernel.org,
+	lyude@redhat.com, robh@kernel.org, lina@asahilina.net,
+	mcanal@igalia.com, airlied@gmail.com,
+	rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	linux-kernel@vger.kernel.org
+References: <20240710225011.275153-1-daniel.almeida@collabora.com>
+ <d7719653-f270-493d-ac42-6a1291eb7dc0@redhat.com>
+ <ZpTl-uUbzmvHGMEH@phenom.ffwll.local>
+ <89FFB898-120A-431E-9B18-4D08AFAEFBFD@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240714160238.238708-1-vadorovsky@gmail.com> <CANiq72=kchSt5XjAJRVgNWG-iNXbc2E64ojwsQYnB2pshULK1Q@mail.gmail.com>
- <52676577-372c-4a7f-aace-4cf100f93bfb@gmail.com>
-In-Reply-To: <52676577-372c-4a7f-aace-4cf100f93bfb@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 16 Jul 2024 09:44:46 +0200
-Message-ID: <CANiq72nbbtNp4vGGHkXVSgSW+WU=5Z9uGRO_LLg7+ezTqrZ_tQ@mail.gmail.com>
-Subject: Re: [PATCH] rust: str: Use `core::CStr`, remove the custom `CStr` implementation
-To: Michal Rostecki <vadorovsky@gmail.com>, Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, 
-	Brendan Higgins <brendan.higgins@linux.dev>, David Gow <davidgow@google.com>, 
-	Rae Moar <rmoar@google.com>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
-	Trevor Gross <tmgross@umich.edu>, Nathan Chancellor <nathan@kernel.org>, 
-	Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, 
-	Finn Behrens <me@kloenk.dev>, Manmohan Shukla <manmshuk@gmail.com>, 
-	Valentin Obst <kernel@valentinobst.de>, Laine Taffin Altman <alexanderaltman@me.com>, 
-	Danilo Krummrich <dakr@redhat.com>, Yutaro Ohno <yutaro.ono.418@gmail.com>, 
-	Tiago Lam <tiagolam@gmail.com>, Charalampos Mitrodimas <charmitro@posteo.net>, 
-	Ben Gooding <ben.gooding.dev@gmail.com>, Roland Xu <mu001999@outlook.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, 
-	netdev@vger.kernel.org, llvm@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <89FFB898-120A-431E-9B18-4D08AFAEFBFD@collabora.com>
+X-Operating-System: Linux phenom 6.9.7-amd64 
 
-On Mon, Jul 15, 2024 at 6:12=E2=80=AFPM Michal Rostecki <vadorovsky@gmail.c=
-om> wrote:
+On Mon, Jul 15, 2024 at 02:05:49PM -0300, Daniel Almeida wrote:
+> Hi Sima!
+> 
+> 
+> > 
+> > Yeah I'm not sure a partially converted driver where the main driver is
+> > still C really works, that pretty much has to throw out all the type
+> > safety in the interfaces.
+> > 
+> > What I think might work is if such partial drivers register as full rust
+> > drivers, and then largely delegate the implementation to their existing C
+> > code with a big "safety: trust me, the C side is bug free" comment since
+> > it's all going to be unsafe :-)
+> > 
+> > It would still be a big change, since all the driver's callbacks need to
+> > switch from container_of to upcast to their driver structure to some small
+> > rust shim (most likely, I didn't try this out) to get at the driver parts
+> > on the C side. And I think you also need a small function to downcast to
+> > the drm base class. But that should be all largely mechanical.
+> > 
+> > More freely allowing to mix&match is imo going to be endless pains. We
+> > kinda tried that with the atomic conversion helpers for legacy kms
+> > drivers, and the impendance mismatch was just endless amounts of very
+> > subtle pain. Rust will exacerbate this, because it encodes semantics into
+> > the types and interfaces. And that was with just one set of helpers, for
+> > rust we'll likely need a custom one for each driver that's partially
+> > written in rust.
+> > -Sima
+> > 
+> 
+> I humbly disagree here.
+> 
+> I know this is a bit tangential, but earlier this year I converted a
+> bunch of codec libraries to Rust in v4l2. That worked just fine with the
+> C codec drivers. There were no regressions as per our test tools.
+> 
+> The main idea is that you isolate all unsafety to a single point: so
+> long as the C code upholds the safety guarantees when calling into Rust,
+> the Rust layer will be safe. This is just the same logic used in unsafe
+> blocks in Rust itself, nothing new really.
+> 
+> This is not unlike what is going on here, for example:
+> 
+> 
+> ```
+> +unsafe extern "C" fn open_callback<T: BaseDriverObject<U>, U: BaseObject>(
+> + raw_obj: *mut bindings::drm_gem_object,
+> + raw_file: *mut bindings::drm_file,
+> +) -> core::ffi::c_int {
+> + // SAFETY: The pointer we got has to be valid.
+> + let file = unsafe {
+> + file::File::<<<U as IntoGEMObject>::Driver as drv::Driver>::File>::from_raw(raw_file)
+> + };
+> + let obj =
+> + <<<U as IntoGEMObject>::Driver as drv::Driver>::Object as IntoGEMObject>::from_gem_obj(
+> + raw_obj,
+> + );
+> +
+> + // SAFETY: from_gem_obj() returns a valid pointer as long as the type is
+> + // correct and the raw_obj we got is valid.
+> + match T::open(unsafe { &*obj }, &file) {
+> + Err(e) => e.to_errno(),
+> + Ok(()) => 0,
+> + }
+> +}
+> ```
+> 
+> We have to trust that the kernel is passing in a valid pointer. By the same token, we can choose to trust drivers if we so desire.
+> 
+> > that pretty much has to throw out all the type
+> > safety in the interfaces.
+> 
+> Can you expand on that?
+
+Essentially what you've run into, in a pure rust driver we assume that
+everything is living in the rust world. In a partial conversion you might
+want to freely convert GEMObject back&forth, but everything else
+(drm_file, drm_device, ...) is still living in the pure C world. I think
+there's roughly three solutions to this:
+
+- we allow this on the rust side, but that means the associated
+  types/generics go away. We drop a lot of enforced type safety for pure
+  rust drivers.
+
+- we don't allow this. Your mixed driver is screwed.
+
+- we allow this for specific functions, with a pinky finger promise that
+  those rust functions will not look at any of the associated types. From
+  my experience these kind of in-between worlds functions are really
+  brittle and a pain, e.g. rust-native driver people might accidentally
+  change the code to again assume a drv::Driver exists, or people don't
+  want to touch the code because it's too risky, or we're forced to
+  implement stuff in C instead of rust more than necessary.
+ 
+> In particular, I believe that we should ideally be able to convert from
+> a C "struct Foo * " to a Rust “FooRef" for types whose lifetimes are
+> managed either by the kernel itself or by a C driver. In practical
+> terms, this has run into the issues we’ve been discussing in this
+> thread, but there may be solutions e.g.:
+> 
+> > One thing that comes to my mindis , you could probably create some driver specific
+> > "dummy" types to satisfy the type generics of the types you want to use. Not sure
+> > how well this works out though.
+> 
+> I haven’t thought of anything yet - which is why I haven’t replied.
+> OTOH, IIRC, Faith seems to have something in mind that can work with the
+> current abstractions, so I am waiting on her reply.
+
+This might work, but I see issue here anywhere where the rust abstraction
+adds a few things of its own to the rust side type, and not just a type
+abstraction that compiles completely away and you're only left with the C
+struct in the compiled code. And at least for kms some of the ideas we've
+tossed around will do this. And once we have that, any dummy types we
+invent to pretend-wrap the pure C types for rust will be just plain wrong.
+
+And then you have the brittleness of that mixed world approach, which I
+don't think will end well.
+
+> > What I think might work is if such partial drivers register as full rust
+> > drivers, and then largely delegate the implementation to their existing C
+> > code with a big "safety: trust me, the C side is bug free" comment since
+> > it's all going to be unsafe :-)
+> 
+> > with a big "safety: trust me, the C side is bug free" comment since it's all going to be unsafe :-)
+> 
+> This is what I want too :) but I can’t see how your proposed approach is
+> better, at least at a cursory glance. It is a much bigger change,
+> though, which is a clear drawback.
 >
-> @@ -71,11 +75,11 @@ macro_rules! kunit_assert {
->                   //
->                   // This mimics KUnit's failed assertion format.
->                   $crate::kunit::err(format_args!(
-> -                    "    # {}: ASSERTION FAILED at {FILE}:{LINE}\n",
-> +                    "    # {:?}: ASSERTION FAILED at {FILE:?}:{LINE:?}\n=
-",
->                       $name
->                   ));
->                   $crate::kunit::err(format_args!(
-> -                    "    Expected {CONDITION} to be true, but is false\n=
-"
-> +                    "    Expected {CONDITION:?} to be true, but is false=
-\n"
->                   ));
->
-> The only practical difference in switching from `Display` to `Debug`
-> here is that the fallback kunit error messages are going to include
-> quotation marks around conditions, files and lines.
+> > And that was with just one set of helpers, for
+> > rust we'll likely need a custom one for each driver that's partially
+> > written in rust.
+> 
+> That’s exactly what I am trying to avoid. In other words, I want to find
+> a way to use the same abstractions and the same APIs so that we do not
+> run precisely into that problem.
 
-That is a fairly important difference -- the messages are intended to
-match the C KUnit ones.
+So an idea that just crossed my mind how we can do the 3rd option at least
+somewhat cleanly:
 
-Especially the file:line notation -- I don't think a user would expect
-to have quotes there (regardless of KUnit).
+- we limit this to thin rust wrappers around C functions, where it's
+  really obvious there's no assumptions that any of the other rust
+  abstractions are used.
 
-In general, even if we didn't need it right now, I think it is
-something we will need sooner or later.
+- we add a new MixedGEMObject, which ditches all the type safety stuff and
+  associated types, and use that for these limited wrappers. Those are
+  obviously convertible between C and rust side in both directions,
+  allowing mixed driver code to use them.
 
-> wording. My general point is that I've never seen `&mut str` being
-> exposed in any core/std API to the external user, mutation usually
-> implies usage of an owned String.
+- these MixedGEMObject types also ensure that the rust wrappers cannot
+  make assumptions about what the other driver structures are, so we
+  enlist the compiler to help us catch issues.
 
-Not sure what you mean by exposed, but even if `&mut str`'s methods do
-not count (used via `String`), there is also
-`from_utf8_unchecked_mut()` that returns one, which is essentially the
-same idea as what we had here.
+- to avoid having to duplicate all these functions, we can toss in a Deref
+  trait so that you can use an IntoGEMObject instead with these functions,
+  meaning you can seamlessly coerce from the pure rust driver to the mixed
+  driver types, but not the other way round.
 
-So I am not sure about the "The rule of Rust std" part in the new
-commit messages. And, to be clear, while the Rust standard library is
-a good reference to look into, sometimes we want/need to do things
-differently anyway (which is not really the case here given
-`from_utf8_unchecked_mut()`, I would say).
+This still means that eventually you need to do the big jump and switch
+over the main driver/device to rust, but you can start out with little
+pieces here&there. And that existing driver rust code should not need any
+change when you do the big switch.
 
-In this case, regardless of the standard library, personally I would
-have preferred to have a non-public function, but still have it (and
-properly documented), rather than open code the `unsafe` block with
-the casts.
+And on the safety side we also don't make any compromises, pure rust
+drivers still can use all the type constraints that make sense to enforce
+api rules. And mixed drivers wont accidentally call into rust code that
+doesn't cope with the mixed world.
 
-> I think the best solution would be leaving `c_str` macro for that. The
-> reason why I removed it is that the GitHub issue[0] mentions its
-> removal. But for that case, I think it makes sense to leave it. What do
-> you think?
+Mixed drivers still rely on "trust me, these types match" internally, but
+there's really nothing we can do about that. Unless you do a full
+conversion, in which case the rust abstractions provide that guarantee.
 
-Perhaps the issue was only taking into account the C string literal
-case? Benno may know more.
+And with the Deref it also should not make the pure rust driver
+abstraction more verbose or have any other impact on them.
 
-Generally speaking, replacing a clean line with a bigger `unsafe`
-block is something to be avoided.
+Entirely untested, so might be complete nonsense :-)
 
-Maybe a `c_stringify!` is what we need :)
-
-Cheers,
-Miguel
+Cheers, Sima
+-- 
+Daniel Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch
