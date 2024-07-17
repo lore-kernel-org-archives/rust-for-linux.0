@@ -1,55 +1,55 @@
-Received: from mail-vk1-f195.google.com (mail-vk1-f195.google.com [209.85.221.195])
+Received: from mail-qk1-f196.google.com (mail-qk1-f196.google.com [209.85.222.196])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36D2917FAB0;
-	Wed, 17 Jul 2024 15:40:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B66C1EA8F;
+	Wed, 17 Jul 2024 16:08:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.196
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721230829; cv=none; b=SOV5EIWMb+stf7aKQDMwp03Hs/V8CKN32YeoX/4uKi+4DsBofylloJLdNy+DBXU1qvgxJqCyDaTvGnoopzdgHUs3Y7D3nDUyxRddMrUMZ23K8nLdpWTfah4NcwcBjUK7dErCvqWq8a8THncOE7tCzptkx+GF/Uix73JuuWHoAqE=
+	t=1721232497; cv=none; b=YrV+jzXSNb/xQmsoDhM0z61TloQUM7klSeSXpfsCY98MmB3DzF1BJVRz/VJXYsQ988HeLZZJCj4457TlF828yyfBQ49d4eh2CTKI4jWh3FCMo2TVUNjaBHOYLss3rzxt6yfU0geEyIJQxwliEW2IDLnFux2B/j08JfnYk5CzG7U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721230829; c=relaxed/simple;
-	bh=is1YWpl7TRr0l7UhKSonItW/SWxniRR+JQFjYYGnoQI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=AJMSjfxRkZ12gXDX7a4uW98WJtvVRn0nkjpySxiG7CfNLb5V60ZtmmBlIHhRHQBPQSKkm/qDeFtFi0QjQwhGKjbs6lBddzjXpw9YamujEzRGQBiZC6Z3ZRqEj3fD9wL9m0iy2VR+MWZkQobBGuvBQidvMF1QJ00bUR9ACPjgZN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nUguHZp0; arc=none smtp.client-ip=209.85.221.195
+	s=arc-20240116; t=1721232497; c=relaxed/simple;
+	bh=Cir7PtBkqzprUyh4dRpZbI26ZL3zh8JUq4cPuo59FSI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=abA9fMyrvJhN5nk1KFRdFsYjm8ffp/f7bjmaaiCGXp7ylYXbc0adok1OC0BHv5eANtYbS9To9VEM1ilJUZFl9KOHETDUEMZ1cAuYc+Z8gKjg/MfmAqK7oMt5b3ndIt1jB6MXLwnU4kk7rUNNC06fuc2u1Wa9vKXtYKjxxgxuQCI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=f2mZbO/4; arc=none smtp.client-ip=209.85.222.196
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nUguHZp0"
-Received: by mail-vk1-f195.google.com with SMTP id 71dfb90a1353d-4f48434d70cso544467e0c.0;
-        Wed, 17 Jul 2024 08:40:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="f2mZbO/4"
+Received: by mail-qk1-f196.google.com with SMTP id af79cd13be357-79ef72bb8c8so333566885a.2;
+        Wed, 17 Jul 2024 09:08:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1721230826; x=1721835626; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1721232494; x=1721837294; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=RL4ywAQXNi22nYJfFKuAfQJc1XZJc+G2TU8z6d+82uc=;
-        b=nUguHZp02m3bFmzbeSA3s8aiEMfYoOzcJNL3VQr7mk1Bx2TFGSfk1ZQDMztPe+jO6G
-         4fsz9w8PosE/DEFnIYfNyItAl2GNq30slCKtdacwRUuKcjJqtrQRoBUMDrgOnkKLDn2h
-         Aq2oJ9PFyPbk4L3bjHySSZ5bFE+0YkgeokFhG9/CxCSHa863tHC9H02plwbk308uZIYk
-         tSikWQzxsKSlAUyOZi0uE0S+I5Ovl/kom44N7Ftu4DIzo/P89SdGGG44vMkDSzwJ8ICO
-         uJNuzXOl+imhdFEK0uL5DXsZRsl5WCgYmSA9uD1gV17+14OaHmdBRCIYrJCgqm+Ha/tw
-         LTKQ==
+        bh=IkScJAcru/K6RBR8z1rhsYI4LkcE4Lk5k0sY93k1JvI=;
+        b=f2mZbO/4rX5kJ2N1S5WcSjghAil8Ho0gLqXZV1kKCfAam4xa+dlk804OX5Yx6BCAPm
+         NxCDRoFWin3lGhNda+hXVGc9I7PEDq3E2lmtkxnyhqJiffTeGoWX8mhMASAb/4EJ7Lok
+         ORZ2zRIZPjjy5QkNZOlAd8jSvZ3GJr6bxx7QVcniXWNDAKLHbyvzQ/GedGYcTpSNiKXn
+         Q8HgwcM177Nu9W0pYbEpXiBLhqPEhFc6kymU+ZjI7FpdbVf0vLpo79iQ+Usc1E6tDCSv
+         98gmuRolo1Muy9Pfw0g69JNuX8I9z/pwnqhWpu/1cpNm+5sNkOAeJ7BdL5qobQXDKsau
+         xryA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721230826; x=1721835626;
+        d=1e100.net; s=20230601; t=1721232494; x=1721837294;
         h=content-transfer-encoding:mime-version:message-id:date:subject:cc
          :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=RL4ywAQXNi22nYJfFKuAfQJc1XZJc+G2TU8z6d+82uc=;
-        b=shxUyu0PIYYhRUsYBrOfIv0E4F1UvB6snHkH1Kvyzns2K/n9281RMve126aYQXWDnP
-         B0QlNScgUbomUhvn4OboMEquWn0VDU+QKKRfhtiXftsXh8tOAgBHF/w1CpxQeifzeTkn
-         W4dDgT7IXEGaXYYlYXazj5iW92MRZX6SOr/zff3Fj4hlt4dkHD9gWoLJH6/LGDFO7ni+
-         o44ovmR29UnNPHdemXnfC3w5VkTsgRo8PuE40r4lB2yr+CauWW7YKfJ9AmuybhoV/lIl
-         YW2JisCpLqx4+e+pYt46TZxC0DY8/k5H0wynurd0v2kjObJCvmYoR4g0m6f9TtWTZ0za
-         Hs/A==
-X-Forwarded-Encrypted: i=1; AJvYcCXbYOxhfpPUKtMt3xQSPyrNfdF/NuE7YKc3UV4WPECSMBbQz8mzBSWvBvnTTGtUM3xJMSM7OPBws2jIsdO2l3DXsXIqiyqOelt7LWlnkDMOP0MoZGAPPN9sKjRYYXQeFxrOdoutRScCJEkX/4/KKA4efMOBwj+4tt/NAYTlSUMB8ALT7amS7WRRlySp1FmNRNuQR359HuuOKPF8ti//Z6hcCLk226I=
-X-Gm-Message-State: AOJu0YxTSD14FmMT0+b+QlC5fV8nDRNC0D0jx+XK8ZsXPaDNA2YMMEeg
-	oLrmb/YfVEH2kDYT9DQspj0FlwPml9GtFJ0pXjQf4sQKbX5Yr4ux
-X-Google-Smtp-Source: AGHT+IGiFAGag8Kil3twyZdVpfOELQsmc6QwGzGDhDmlAAgxCZBFftfIRY0BQdE1kq6HPfxLxoZ94Q==
-X-Received: by 2002:a05:6122:551:b0:4ef:65b6:f3b5 with SMTP id 71dfb90a1353d-4f4df89f3f0mr2771604e0c.10.1721230825302;
-        Wed, 17 Jul 2024 08:40:25 -0700 (PDT)
+        bh=IkScJAcru/K6RBR8z1rhsYI4LkcE4Lk5k0sY93k1JvI=;
+        b=OX731DROipY3zfWq4g3gbH9rFErNixvx5fzGtt0oXuQbMBd5EvFLyMApQRnQlzkzk7
+         jCwHdzKlEXRwb2iceBVYt4F4oJvSmn03vBHmeOLZ3ZO9pU/AEiGU7ZDCDmhjtJHG9gZ7
+         8P/GqnbF5IO5h3G7mAvJAdjRCRJylfP7+GAhlW2HMOpyDcR+WOSGkrzRUJsb3h111hja
+         5KsvRtayqWtBm7dL1zhSj4GnJqoYuFcJIkQKJaQnzX0EoYMLVE4Iw0UeqX1b2enFVtSc
+         1NiKfLyY98GYJPKxUcY0/OGAA8Uyiaary0vQER0zTbbWE0ns3FFnRRpfsTJgTaOnYfy1
+         keRQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXC/L+i8QjrMuWers8lHIg3k3XXYeL4uMmDxNfZf8tLFvr2tTfIEd4SMtETHkXHSKpJ2Wu/Tp7VoySaRfi4K5fKzO/yCQeRGQfHQFYv3MtMXDJItM2jLm9YKb9AYP/zlB1Cz5KZ0MqHXyMp8KFeUGUtdKtuZP9FNgnmem7UfPX10YwDcxLKx7lY/p4HveLiXJ/CSUV73evxbAmiIf+sUFzpQW9dbM4=
+X-Gm-Message-State: AOJu0YzkNItIUO0FiYj8oEJSCDkT6F3i8WtJ6pRuFJhpOzPlOVKaDWmf
+	gASqkzuDRG2ijazx+fOaaeSfsPflaMy770tQK0yi5r+PzQ8CM0hd
+X-Google-Smtp-Source: AGHT+IGcN+VCFWsaaiUtnuIb1FQICj4w40IwZqFmqW91Hq3zR6vaQ1zM3WZO8d79zDZSZ5nRDs7taQ==
+X-Received: by 2002:a05:620a:2905:b0:79f:a32:a69d with SMTP id af79cd13be357-7a1874f6815mr227712885a.58.1721232493700;
+        Wed, 17 Jul 2024 09:08:13 -0700 (PDT)
 Received: from vadorovsky-macbookpro.. ([207.35.255.94])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-44f5b837300sm48475441cf.65.2024.07.17.08.40.23
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7a160c63880sm417253585a.72.2024.07.17.09.08.11
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 17 Jul 2024 08:40:24 -0700 (PDT)
+        Wed, 17 Jul 2024 09:08:12 -0700 (PDT)
 From: Michal Rostecki <vadorovsky@gmail.com>
 To: 
 Cc: Michal Rostecki <vadorovsky@gmail.com>,
@@ -72,14 +72,14 @@ Cc: Michal Rostecki <vadorovsky@gmail.com>,
 	Bill Wendling <morbo@google.com>,
 	Justin Stitt <justinstitt@google.com>,
 	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-	Valentin Obst <kernel@valentinobst.de>,
 	Manmohan Shukla <manmshuk@gmail.com>,
+	Valentin Obst <kernel@valentinobst.de>,
 	Yutaro Ohno <yutaro.ono.418@gmail.com>,
 	Danilo Krummrich <dakr@redhat.com>,
-	Tiago Lam <tiagolam@gmail.com>,
 	Charalampos Mitrodimas <charmitro@posteo.net>,
 	Ben Gooding <ben.gooding.dev@gmail.com>,
 	Tejun Heo <tj@kernel.org>,
+	Nell Shamrell-Harrington <nells@linux.microsoft.com>,
 	Roland Xu <mu001999@outlook.com>,
 	rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
@@ -87,9 +87,9 @@ Cc: Michal Rostecki <vadorovsky@gmail.com>,
 	kunit-dev@googlegroups.com,
 	netdev@vger.kernel.org,
 	llvm@lists.linux.dev
-Subject: [PATCH v4] rust: str: Use `core::CStr`, remove the custom `CStr` implementation
-Date: Wed, 17 Jul 2024 17:31:51 +0200
-Message-ID: <20240717153213.112908-2-vadorovsky@gmail.com>
+Subject: [PATCH v5] rust: str: Use `core::CStr`, remove the custom `CStr` implementation
+Date: Wed, 17 Jul 2024 18:03:23 +0200
+Message-ID: <20240717160339.146371-2-vadorovsky@gmail.com>
 X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -148,16 +148,19 @@ v3 -> v4:
   which might be useful and is going to prevent manual, unsafe casts.
 - Fix a typo (s/preffered/prefered/).
 
+v4 -> v5:
+- Keep the `test_cstr_display*` unit tests.
+
  rust/kernel/error.rs        |   7 +-
  rust/kernel/kunit.rs        |  18 +-
  rust/kernel/net/phy.rs      |   2 +-
  rust/kernel/prelude.rs      |   4 +-
- rust/kernel/str.rs          | 492 +++++-------------------------------
+ rust/kernel/str.rs          | 501 ++++++------------------------------
  rust/kernel/sync/condvar.rs |   5 +-
  rust/kernel/sync/lock.rs    |   6 +-
  rust/kernel/workqueue.rs    |   2 +-
  scripts/rustdoc_test_gen.rs |   4 +-
- 9 files changed, 88 insertions(+), 452 deletions(-)
+ 9 files changed, 111 insertions(+), 438 deletions(-)
 
 diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
 index 55280ae9fe40..18808b29604d 100644
@@ -284,7 +287,7 @@ index b37a0b3180fb..b0969ca78f10 100644
  pub use super::init::{InPlaceInit, Init, PinInit};
  
 diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
-index bb8d4f41475b..ec220a760d89 100644
+index bb8d4f41475b..f1acaa377694 100644
 --- a/rust/kernel/str.rs
 +++ b/rust/kernel/str.rs
 @@ -4,8 +4,9 @@
@@ -678,11 +681,11 @@ index bb8d4f41475b..ec220a760d89 100644
 -        self.as_ref()
 -    }
 -}
--
--impl Index<ops::RangeFrom<usize>> for CStr {
--    type Output = CStr;
 +    fn display(&self) -> CStrDisplay<'_>;
  
+-impl Index<ops::RangeFrom<usize>> for CStr {
+-    type Output = CStr;
+-
 -    #[inline]
 -    fn index(&self, index: ops::RangeFrom<usize>) -> &Self::Output {
 -        // Delegate bounds checking to slice.
@@ -715,7 +718,7 @@ index bb8d4f41475b..ec220a760d89 100644
 -
 -mod private {
 -    use core::ops;
--
+ 
 -    // Marker trait for index types that can be forward to `BStr`.
 -    pub trait CStrIndex {}
 -
@@ -731,7 +734,7 @@ index bb8d4f41475b..ec220a760d89 100644
 -    BStr: Index<Idx>,
 -{
 -    type Output = <BStr as Index<Idx>>::Output;
- 
+-
 -    #[inline]
 -    fn index(&self, index: Idx) -> &Self::Output {
 -        &self.as_ref()[index]
@@ -768,24 +771,10 @@ index bb8d4f41475b..ec220a760d89 100644
              Ok(v) => v,
              Err(_) => panic!("string contains interior NUL"),
          };
-@@ -526,79 +239,6 @@ mod tests {
-     use super::*;
-     use alloc::format;
+@@ -540,65 +253,6 @@ mod tests {
+         \\xe0\\xe1\\xe2\\xe3\\xe4\\xe5\\xe6\\xe7\\xe8\\xe9\\xea\\xeb\\xec\\xed\\xee\\xef\
+         \\xf0\\xf1\\xf2\\xf3\\xf4\\xf5\\xf6\\xf7\\xf8\\xf9\\xfa\\xfb\\xfc\\xfd\\xfe\\xff";
  
--    const ALL_ASCII_CHARS: &'static str =
--        "\\x01\\x02\\x03\\x04\\x05\\x06\\x07\\x08\\x09\\x0a\\x0b\\x0c\\x0d\\x0e\\x0f\
--        \\x10\\x11\\x12\\x13\\x14\\x15\\x16\\x17\\x18\\x19\\x1a\\x1b\\x1c\\x1d\\x1e\\x1f \
--        !\"#$%&'()*+,-./0123456789:;<=>?@\
--        ABCDEFGHIJKLMNOPQRSTUVWXYZ[\\]^_`abcdefghijklmnopqrstuvwxyz{|}~\\x7f\
--        \\x80\\x81\\x82\\x83\\x84\\x85\\x86\\x87\\x88\\x89\\x8a\\x8b\\x8c\\x8d\\x8e\\x8f\
--        \\x90\\x91\\x92\\x93\\x94\\x95\\x96\\x97\\x98\\x99\\x9a\\x9b\\x9c\\x9d\\x9e\\x9f\
--        \\xa0\\xa1\\xa2\\xa3\\xa4\\xa5\\xa6\\xa7\\xa8\\xa9\\xaa\\xab\\xac\\xad\\xae\\xaf\
--        \\xb0\\xb1\\xb2\\xb3\\xb4\\xb5\\xb6\\xb7\\xb8\\xb9\\xba\\xbb\\xbc\\xbd\\xbe\\xbf\
--        \\xc0\\xc1\\xc2\\xc3\\xc4\\xc5\\xc6\\xc7\\xc8\\xc9\\xca\\xcb\\xcc\\xcd\\xce\\xcf\
--        \\xd0\\xd1\\xd2\\xd3\\xd4\\xd5\\xd6\\xd7\\xd8\\xd9\\xda\\xdb\\xdc\\xdd\\xde\\xdf\
--        \\xe0\\xe1\\xe2\\xe3\\xe4\\xe5\\xe6\\xe7\\xe8\\xe9\\xea\\xeb\\xec\\xed\\xee\\xef\
--        \\xf0\\xf1\\xf2\\xf3\\xf4\\xf5\\xf6\\xf7\\xf8\\xf9\\xfa\\xfb\\xfc\\xfd\\xfe\\xff";
--
 -    #[test]
 -    fn test_cstr_to_str() {
 -        let good_bytes = b"\xf0\x9f\xa6\x80\0";
@@ -848,7 +837,37 @@ index bb8d4f41475b..ec220a760d89 100644
      #[test]
      fn test_bstr_display() {
          let hello_world = BStr::from_bytes(b"hello, world!");
-@@ -779,11 +419,11 @@ fn write_str(&mut self, s: &str) -> fmt::Result {
+@@ -626,6 +280,29 @@ fn test_bstr_debug() {
+         let good_bytes = BStr::from_bytes(b"\xf0\x9f\xa6\x80");
+         assert_eq!(format!("{:?}", good_bytes), "\"\\xf0\\x9f\\xa6\\x80\"");
+     }
++
++    #[test]
++    fn test_cstr_display() {
++        let hello_world = CStr::from_bytes_with_nul(b"hello, world!\0").unwrap();
++        assert_eq!(format!("{}", hello_world.display()), "hello, world!");
++        let non_printables = CStr::from_bytes_with_nul(b"\x01\x09\x0a\0").unwrap();
++        assert_eq!(format!("{}", non_printables.display()), "\\x01\\x09\\x0a");
++        let non_ascii = CStr::from_bytes_with_nul(b"d\xe9j\xe0 vu\0").unwrap();
++        assert_eq!(format!("{}", non_ascii.display()), "d\\xe9j\\xe0 vu");
++        let good_bytes = CStr::from_bytes_with_nul(b"\xf0\x9f\xa6\x80\0").unwrap();
++        assert_eq!(format!("{}", good_bytes.display()), "\\xf0\\x9f\\xa6\\x80");
++    }
++
++    #[test]
++    fn test_cstr_display_all_bytes() {
++        let mut bytes: [u8; 256] = [0; 256];
++        // fill `bytes` with [1..=255] + [0]
++        for i in u8::MIN..=u8::MAX {
++            bytes[i as usize] = i.wrapping_add(1);
++        }
++        let cstr = CStr::from_bytes_with_nul(&bytes).unwrap();
++        assert_eq!(format!("{}", cstr.display()), ALL_ASCII_CHARS);
++    }
+ }
+ 
+ /// Allows formatting of [`fmt::Arguments`] into a raw buffer.
+@@ -779,11 +456,11 @@ fn write_str(&mut self, s: &str) -> fmt::Result {
  /// use kernel::{str::CString, fmt};
  ///
  /// let s = CString::try_from_fmt(fmt!("{}{}{}", "abc", 10, 20)).unwrap();
@@ -862,7 +881,7 @@ index bb8d4f41475b..ec220a760d89 100644
  ///
  /// // This fails because it has an embedded `NUL` byte.
  /// let s = CString::try_from_fmt(fmt!("a\0b{}", 123));
-@@ -838,21 +478,13 @@ fn deref(&self) -> &Self::Target {
+@@ -838,21 +515,13 @@ fn deref(&self) -> &Self::Target {
      }
  }
  
