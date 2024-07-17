@@ -1,108 +1,123 @@
-Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02AA53D3BF;
-	Wed, 17 Jul 2024 08:52:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 483A53D0AD
+	for <rust-for-linux@vger.kernel.org>; Wed, 17 Jul 2024 14:26:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721206336; cv=none; b=e5uAl3LSKCtc4GmYXkpILN0HoLXQW+1MFwMa1cQi2cCymjFoS/F9ahuGYv6GfrVusRXLO7UeBVbqIM544EGbi1rMEHr559k6eSf6HebJNBfgT2So65LOHnAB0oWgPTJ5tzw2eiyhXXyadiYdZSmRmmqDEVovhgvKulCQM0EVQRQ=
+	t=1721226421; cv=none; b=bgOwHMWtOpriZs7As1DkPY4zRYgCFaIOJkZWvFYF5Rh0pH1WMLLXTdHZRZdVsc/RvGpvcELQs/YsSCP/C4zPH8KSJfrNlxrT4c5YDe+NBl4TUXJgIOKbXKrDgc9eFsag8BQl+B75zUJEnjaoXAwIroDMC0+9h8/Oannp7jtZtAY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721206336; c=relaxed/simple;
-	bh=DhT2MVW6V/NGu+EkOUuOHwSOeb8p+64GEUOYF7DLdf4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=oJEiPVbIAGqwKqKaVfDw/fpYH6Ix0dssZLhD/n6vjabvnDC8ZpTB20xmox03wbjO15Rt05n+ThIGgicvyjvuRsYlMEKgKDpWLtYhF4gGdK76Ho7rUmJCwjNJruFjsds3whc/zfp8Gd8sk4IVZAR/AO1uIRmtHXwkdBBV/tyJhq4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bF9hiSgl; arc=none smtp.client-ip=209.85.215.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1721226421; c=relaxed/simple;
+	bh=0i6fn924b1sQyq3LyxwRWcGfMfN2caTpNiccz8aCfgQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=LZzdC/1EnGvP0tYbXqcf1WumgDkCa1gyAiZisZe8KLHH5BWndBlxsMikzKUX4g/U4JtYKfzFkfYq+grZtmw2zVRMQGENs87eS3m+qEKHrD9Ki6F3BDlAAOjSt96Wi+KCJ0Hcu3xCr25gMPri23kqaEVdnAK3tlN/MSiFz90N4OQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=J7eSZjtb; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bF9hiSgl"
-Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-795d2aa4ba4so1267547a12.3;
-        Wed, 17 Jul 2024 01:52:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1721206334; x=1721811134; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=CfExU3AoDWpSz6bhW/C38P2ws0pP6aVCMH89wjyqRZc=;
-        b=bF9hiSglhNZ9SDWBpkXk+gvtz0Lq2L+CDcB5QKLTJl275oer1VWpmLAXrq0hkJII+S
-         1BbOQxGNTj1SJbSho4C9lPFytx7EHCyavFiDXGOfwZz2nMm0AGStDcMUAIuA1nUk+Fdf
-         1Jy94j2qob0Z79YFrpZyGHTSD+hj8voJ5EiWGqEe9wzlmVuEGkNm5wJZseL/4kIl5toJ
-         O+dQDiEmWCdrQBs6f/MAM1+aCh424UZvOBu2fo6vXom5TugqwYfWpglK9NSWgFGoVzyD
-         qsVgTvwWKduMMAyaUSyNwJ39l0z+d4SuwZRTSXgRiv7na132T/trix6XWZvu+NZrGYXs
-         cJsA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721206334; x=1721811134;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=CfExU3AoDWpSz6bhW/C38P2ws0pP6aVCMH89wjyqRZc=;
-        b=F3O3v4Risr+Z1J7+/qVSf5fQm4HiteemRO9yvY7+HNcHTmIfmcRPDnooOoiWlqpJC0
-         pCerhD67yn6hF+VL0nhbrYmHo7xnH0DDc+pcWSrGON5UMx3pOx6juLb/3Il9X3LMdon3
-         /m130i96IQwa5a42bc6J6d5Ul715SBEU7g3P7NZPZPZg2ig8qew3tc0/QbLm+uH+E02W
-         64UxlJ3MZuf2VBj0IIVtVnsfULIlgenahwEbyFDqaiPs8LpKLCqIHOJEZNkdkqP2Cj0S
-         iIw+wYFhSkm5qvozmniCV3vIIrT9JTGWVnC5/3IZn9R/NqgTDNXONiZ7iCR4QRh6p9Yg
-         8/Pw==
-X-Forwarded-Encrypted: i=1; AJvYcCXu6q7byKpGTpyB6Na5LvyngE26l4HJ2MAgP9P5jyldlaCU/zHL1WhNJ+6bPHU6C2xW3FbpJzW02u16NhRk2Z/yefLjp8qSR6rZ4fRPkcN6w9hNnuIyhnO5mwsV4oHtz0r25Cf2m4Y6Bquz78Y=
-X-Gm-Message-State: AOJu0Yy+aa5i7wctkNAnesdePDMMM1nGojj9WO24U9IQKZDptF5PynI5
-	ortBZrpNwDrTEuS+cstbp8XSWQqlJaEWxwYlzB1bBOUWUJ5vKbqt5YlomHmtFd+0iDH4tex6dH0
-	1ioS7Qb1vmCgXor1Jl5RjCP6jClyHZTwS
-X-Google-Smtp-Source: AGHT+IFJycnzEM2+SeKpBRzOLBXMWZqQ4DXLGye2aBQccdmWkkaEhULFCP7ytIFJJWtNIiuEF0qy0nVMMoeoejupyJU=
-X-Received: by 2002:a05:6300:4041:b0:1c2:9969:60e3 with SMTP id
- adf61e73a8af0-1c3fdd545c4mr918165637.55.1721206334147; Wed, 17 Jul 2024
- 01:52:14 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="J7eSZjtb"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1721226419;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=03pe0yiUKP1H7BUwfos0BSDGWIzjAknzzyfMZUSQG+U=;
+	b=J7eSZjtb65d6pOT7dD0C4p7n7UR1ONBaEDosMo+xQOrDNAayFJCdZldoX5Put+lyy0y2OL
+	XwrLzB/lLhMkWDfqBkC9ckZ7mlTeyOlyMPsikII9k5WOM/g8jd/E/OXv+HRJ5P0RqrmbKi
+	BierLwSz/b82n7cKVmvC9RopP70ER9A=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-16-rYjpjYsQNXmcYKerrJqy_g-1; Wed,
+ 17 Jul 2024 10:26:56 -0400
+X-MC-Unique: rYjpjYsQNXmcYKerrJqy_g-1
+Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9AC071955D50;
+	Wed, 17 Jul 2024 14:26:53 +0000 (UTC)
+Received: from hydra.redhat.com (unknown [10.39.194.18])
+	by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 309AC1955D42;
+	Wed, 17 Jul 2024 14:26:47 +0000 (UTC)
+From: Jocelyn Falempe <jfalempe@redhat.com>
+To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	"Bjorn Roy Baron" <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	linux-kernel@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	rust-for-linux@vger.kernel.org,
+	Danilo Krummrich <dakr@redhat.com>
+Cc: Jocelyn Falempe <jfalempe@redhat.com>
+Subject: [PATCH v4 0/4] drm/panic: Add a QR code panic screen
+Date: Wed, 17 Jul 2024 16:24:47 +0200
+Message-ID: <20240717142644.1106060-1-jfalempe@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240717034801.262343-1-alexmantel93@mailbox.org>
-In-Reply-To: <20240717034801.262343-1-alexmantel93@mailbox.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 17 Jul 2024 10:52:02 +0200
-Message-ID: <CANiq72mwTq4m-u0QO2tdF5Z8++xnepgtG_dALwq7ar5JOkwuVg@mail.gmail.com>
-Subject: Re: My first patch: Implement InPlaceInit for Arc
-To: alexmantel93@mailbox.org
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, 
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
-	benno.lossin@proton.me, a.hindborg@samsung.com, aliceryhl@google.com, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
 
-On Wed, Jul 17, 2024 at 5:48=E2=80=AFAM <alexmantel93@mailbox.org> wrote:
->
-> This is my very first patch for Linux. I have lifted my arms up, placed m=
-y hands on my head, and tensed my non-existent abs. Punch as hard as you ca=
-n! =F0=9F=99=82 I am happy to receive any feedback or critique, especially =
-regarding whether these are the correct mailing lists for the patch.
->
-> Over the past few weeks, I have read a lot of the kernel documentation. H=
-owever, if I missed any crucial parts, please just point me to the chapters=
- I need to read, particularly concerning the mailing list part.
+This series adds a new panic screen, with the kmsg data embedded in a QR code.
 
-They are the correct mailing lists :)
+The main advantage of QR code, is that you can copy/paste the debug data to a bug report.
 
-A few notes and nits:
+The QR code encoder is written in rust, and is very specific to drm panic.
+The reason is that it is called in a panic handler, and thus can't allocate memory, or use locking.
+The rust code uses a few rust core API, and provides only two C entry points.
+There is no particular reason to do it in rust, I just wanted to learn rust, and see if it can work in the kernel.
 
-  - I think this email you sent is intended to be the cover letter of
-    the other patch. Typically, you would generate your cover letter with
-    `git format-patch`, which follows some conventions, and then fill it.
+If you want to see what it looks like, I've put a few screenshots here:
+https://github.com/kdj0c/panic_report/issues/1
 
-    However, for a single patch, you can just put this text below the
-    `---` line (i.e. before the diffstat), and that will not get committed
-    into the repository.
+v2:
+ * Rewrite the rust comments with Markdown (Alice Ryhl)
+ * Mark drm_panic_qr_generate() as unsafe (Alice Ryhl)
+ * Use CStr directly, and remove the call to as_str_unchecked()
+   (Alice Ryhl)
+ * Add a check for data_len <= data_size (Greg KH)
 
-  - Your email's From does not have your name, which is why Git decided
-    to add From to the body.
+v3:
+ * Fix all rust comments (typo, punctuation) (Miguel Ojeda)
+ * Change the wording of safety comments (Alice Ryhl)
+ * Add a link to the javascript decoder in the Kconfig (Greg KH)
+ * Fix data_size and tmp_size check in drm_panic_qr_generate()
+ 
+ v4:
+ * Fix the logic to find next line and skip the '\n' (Alice Ryhl)
+ * Remove __LOG_PREFIX as it's not used (Alice Ryhl)
 
-  - Commits are prefixed with the subsystem/area/... You can take a
-    look at other changes in the vicinity to get a feeling for what to
-    write.
+Jocelyn Falempe (4):
+  drm/panic: Add integer scaling to blit()
+  drm/rect: Add drm_rect_overlap()
+  drm/panic: Simplify logo handling
+  drm/panic: Add a QR code panic screen
 
-  - No need for an empty line between Link and Signed-off-by.
+ drivers/gpu/drm/Kconfig         |   31 +
+ drivers/gpu/drm/Makefile        |    1 +
+ drivers/gpu/drm/drm_drv.c       |    3 +
+ drivers/gpu/drm/drm_panic.c     |  340 +++++++++--
+ drivers/gpu/drm/drm_panic_qr.rs | 1003 +++++++++++++++++++++++++++++++
+ include/drm/drm_panic.h         |    4 +
+ include/drm/drm_rect.h          |   15 +
+ 7 files changed, 1358 insertions(+), 39 deletions(-)
+ create mode 100644 drivers/gpu/drm/drm_panic_qr.rs
 
-I hope that helps, thanks for the patch, and welcome!
 
-Cheers,
-Miguel
+base-commit: e1a261ba599eec97e1c5c7760d5c3698fc24e6a6
+-- 
+2.45.2
+
