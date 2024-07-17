@@ -1,169 +1,118 @@
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCD5F6EB7D;
-	Wed, 17 Jul 2024 22:13:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4CC2E770E1;
+	Wed, 17 Jul 2024 22:25:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721254395; cv=none; b=igPAUDYpHSSyEHEwJp/+MiCd2RyjTtzZqQBEdMwQ3J8KDWdv9oFRSKI/6MizGHOHY8LKhA6OLf8JQoXpFe8pvvlgpEJxZyTkAp+N9vLbv3uFcA3vTr77PlHUfvRZtnHxzwmTQHBzqLM4iBaf62Fn9q/GPnbS1d27jzW7NIuc3KY=
+	t=1721255118; cv=none; b=BwSAUgZ4PYHUyp8FoBjtuGimCsDR2tIfHEvJegt0irgmxY7rWwXLNfoa2qWjOuwp+A9aXr1WuJD/fQFPjEHpP8TxclCgOa8+d2ZTbWPmmOxte6s80MsGEAo77LLGNFnJmHmsiho49+ozsAC8P+laEOc1nzALq9biAMaiTLxJnqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721254395; c=relaxed/simple;
-	bh=SzS73QiMWiEvVE+b2kR/L9XlmDBOUmYyziDiW39xuTI=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=STt6Xa+MJXuAoY7HtciKqgNjJLow4K1/Z2go+2ZWDr5nAtCzAd38+8rQ16NTL9k0uYFNspwgkxk5kNATqmThjZEBXOv2Fvm6tZDmwnpyM35f4F7kz79lbl5Idjf8GIkUpTcicWl2XIen+52W0a657EP/e4xcko3IQDxgbytwueI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=h+Nynthh; arc=none smtp.client-ip=185.70.43.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1721255118; c=relaxed/simple;
+	bh=OH7w4hEU9ChwjQWvmRyr95FS1DYgivolB3TlsPr5q2g=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=piAbhj7Got71o4y8ctuKmKLPGbwvF36PXr5SfYCKmYyHrWuqsj1Ab3PN2aHVD7NwtR5NChSy6TO7xIby2wjjFlfTek3V1QSAy/YGiM2FcK0xH+QODe/tUL2N7WSznOR1R8N5ck4yyAkClgMYm/HpTIlIHVqehyVvhAlPpSnpGy0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sVb1qGaN; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="h+Nynthh"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=mqb22iym45enpg4fxdy2ivo4ta.protonmail; t=1721254388; x=1721513588;
-	bh=9nFMx1FKFdNLaHQF61hemh/G8y0CQiLx5SxJJKIyYVw=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=h+NynthhFVzd3zVECZ3wv2HCOt5XD+hfbpOXkypP/60ILgy7jiMbPcq8EEGguiqcZ
-	 s02I9zXoWiRi2D8S5Fpa+N0Aa26s4iTuf40rrpMQo3TIowWoPnj1AuC4IjgfAWllH4
-	 QN1ewS7DmMR6F85g2t1wByapCalmt0CbFuqKpkYK+/4i9i7ra4cixYR6NmiQFRntWM
-	 2ChO6bDIOpWJViNuEp5hlhiqTkwirlF3fFzxnCruhipiqd6RnylClnnkzK3knNuTus
-	 QZKuhqOvZeFran0w4LiVG+PTD5niOxQ8gx0WCkwyoHl5IiBcerWIns+3WcMPVKMmCG
-	 Z6ISFy+rZbe7Q==
-Date: Wed, 17 Jul 2024 22:13:01 +0000
-To: Jonathan Corbet <corbet@lwn.net>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: [RFC PATCH 5/5] doc: rust: safety standard: add justifications
-Message-ID: <20240717221133.459589-6-benno.lossin@proton.me>
-In-Reply-To: <20240717221133.459589-1-benno.lossin@proton.me>
-References: <20240717221133.459589-1-benno.lossin@proton.me>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 73d5a838551154c1c13817a2765de1d74e91bed0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sVb1qGaN"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB6C3C2BD10;
+	Wed, 17 Jul 2024 22:25:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1721255117;
+	bh=OH7w4hEU9ChwjQWvmRyr95FS1DYgivolB3TlsPr5q2g=;
+	h=From:To:Cc:Subject:Date:From;
+	b=sVb1qGaNdjANFyXnfEpOeB+aGu0hyTo1BiSu7LkDmNq0K+fNX97TjKF13kvYElFVP
+	 IZcWC1NnBW50uLWI1Ge5ViB1d/nU3IINis5Pz3gqbzJdZtayMsMz/lHywchCfbCx0N
+	 IfX8LpbJZQNLGoz/XXxeRuYWMgcKWri/tfq7OnfpL6tg+k57GtI4JK/UCSV3wjOtzd
+	 3cx4IiHjdcQ3B3he81CVrZOTBvYMEDU375wxcyZsEpYWj49wSPLaRovN9NwWj1MCfr
+	 tixPHXgf58WKAXnSfxdDk68DJ1UMiorFjLo1R2J30zKe8KhATBzHlxbrIr6RjYhhZc
+	 ossw8PjcbNA+A==
+From: Danilo Krummrich <dakr@kernel.org>
+To: cl@linux.com,
+	penberg@kernel.org,
+	rientjes@google.com,
+	iamjoonsoo.kim@lge.com,
+	akpm@linux-foundation.org,
+	vbabka@suse.cz,
+	roman.gushchin@linux.dev,
+	42.hyeyoo@gmail.com,
+	urezki@gmail.com,
+	hch@infradead.org,
+	kees@kernel.org,
+	ojeda@kernel.org,
+	wedsonaf@gmail.com,
+	mhocko@kernel.org,
+	mpe@ellerman.id.au,
+	chandan.babu@oracle.com,
+	christian.koenig@amd.com
+Cc: linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org,
+	rust-for-linux@vger.kernel.org,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH 0/2] Align kvrealloc() with krealloc()
+Date: Thu, 18 Jul 2024 00:24:00 +0200
+Message-ID: <20240717222427.2211-1-dakr@kernel.org>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Add standardized justifications that are used to justify the safety
-requirements.
+Hi,
 
-Signed-off-by: Benno Lossin <benno.lossin@proton.me>
----
- Documentation/rust/safety-standard/index.rst  |  5 +++
- .../rust/safety-standard/justifications.rst   | 40 +++++++++++++++++++
- 2 files changed, 45 insertions(+)
- create mode 100644 Documentation/rust/safety-standard/justifications.rst
+Besides the obvious (and desired) difference between krealloc() and kvrealloc(),
+there is some inconsistency in their function signatures and behavior:
 
-diff --git a/Documentation/rust/safety-standard/index.rst b/Documentation/r=
-ust/safety-standard/index.rst
-index 2ef82d7dfbd8..db62ad01ebe0 100644
---- a/Documentation/rust/safety-standard/index.rst
-+++ b/Documentation/rust/safety-standard/index.rst
-@@ -191,6 +191,8 @@ block. For example::
-=20
- In this case it is more readable to not split the block into multiple part=
-s.
-=20
-+See justifications.rst for a full list of standardized justifications.
-+
- ``unsafe`` Traits
- -----------------
-=20
-@@ -225,6 +227,8 @@ similarly to :ref:`unsafe-Blocks`::
-     // SAFETY: <justification>
-     unsafe impl Foo for Bar {}
-=20
-+See justifications.rst for a full list of standardized justifications.
-+
- Guarantees
- =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-=20
-@@ -267,6 +271,7 @@ Further Pages
-    guarantee
-    type-invariants
-    requirements
-+   justifications
-=20
- .. only::  subproject and html
-=20
-diff --git a/Documentation/rust/safety-standard/justifications.rst b/Docume=
-ntation/rust/safety-standard/justifications.rst
-new file mode 100644
-index 000000000000..72b6943f3d40
---- /dev/null
-+++ b/Documentation/rust/safety-standard/justifications.rst
-@@ -0,0 +1,40 @@
-+.. SPDX-License-Identifier: GPL-2.0
-+.. highlight:: rust
-+
-+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-+Justifications
-+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-+
-+Since there are so many different safety-requirements.rst, there are also =
-many different ways to
-+justify them.
-+
-+Justifications are listed in an unordered markdown list in the ``SAFETY`` =
-comments on ``unsafe``
-+blocks and ``unsafe impl``. The order and elements of the list must match =
-the list present in the
-+``# Safety`` section on the respective ``unsafe`` item (e.g. the function =
-or the trait).
-+
-+Common Justifications
-+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-+
-+In order to use the justifications from the table below, first repeat the =
-safety requirement and
-+then write ``by <justification>`` where justification is from the table be=
-low.
-+If you need the conjunction of multiple justifications, then you just inte=
-rsperse them with "and".
-+
-+The term "goal safety requirement" is referring to the requirement that yo=
-u are trying to justify.
-+
-++---------------------------+---------------------------------------------=
--------------------------+
-+| Syntax                    | Meaning/Justified Safety Requirement        =
-                         |
-++=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D+
-+| function requirements     | The goal safety requirement is provided by t=
-he surrounding function, |
-+|                           | as it also has it (or a stronger statement) =
-as a safety requirement. |
-++---------------------------+---------------------------------------------=
--------------------------+
-+| type invariant of ``T``   | The given safety requirement is provided by =
-the type invariant of    |
-+|                           | ``T``, as it also has it (or a stronger stat=
-ement) as a type         |
-+|                           | invariant.                                  =
-                         |
-++---------------------------+---------------------------------------------=
--------------------------+
-+| reference validity        | When turning a (mutable) reference into a po=
-inter, that pointer will |
-+|                           | be valid for reads (and writes).            =
-                         |
-++---------------------------+---------------------------------------------=
--------------------------+
-+| function guarantee of     | The goal safety requirement is provided by t=
-he called function       |
-+| ``$function``             | ``$function``, as it has it (or a stronger s=
-tatement) listed as a    |
-+|                           | :doc:`guarantee <guarantee>`.               =
-                         |
-++---------------------------+---------------------------------------------=
--------------------------+
---=20
-2.45.1
+ - krealloc() frees the memory when the requested size is zero, whereas
+   kvrealloc() simply returns a pointer to the existing allocation.
 
+ - krealloc() behaves like kmalloc() if a NULL pointer is passed, whereas
+   kvrealloc() does not accept a NULL pointer at all and, if passed, would fault
+   instead.
+
+ - krealloc() is self-contained, whereas kvrealloc() relies on the caller to
+   provide the size of the previous allocation.
+
+Inconsistent behavior throughout allocation APIs is error prone, hence make
+kvrealloc() behave like krealloc(), which seems superior in all mentioned
+aspects.
+
+In order to be able to get rid of kvrealloc()'s oldsize parameter, introduce
+vrealloc() and make use of it in kvrealloc().
+
+Making use of vrealloc() in kvrealloc() also provides oppertunities to grow (and
+shrink) allocations more efficiently. For instance, vrealloc() could be
+optimized to extend the existing allocation if there is enough contiguous space
+left in the virtual address space at the end of the existing allocation.
+
+Besides the above, those functions are required by Rust's allocator abstractons
+[1] (rework based on this series in [2]). With `Vec` or `KVec` respectively,
+potentially growing (and shrinking) data structures are rather common.
+
+The patches of this series can also be found in [3].
+
+[1] https://lore.kernel.org/lkml/20240704170738.3621-1-dakr@redhat.com/
+[2] https://git.kernel.org/pub/scm/linux/kernel/git/dakr/linux.git/log/?h=rust/mm
+[3] https://git.kernel.org/pub/scm/linux/kernel/git/dakr/linux.git/log/?h=mm/krealloc
+
+Danilo Krummrich (2):
+  mm: vmalloc: implement vrealloc()
+  mm: kvmalloc: align kvrealloc() with krealloc()
+
+ arch/powerpc/platforms/pseries/papr-vpd.c |  5 +-
+ drivers/gpu/drm/drm_exec.c                |  3 +-
+ fs/xfs/xfs_log_recover.c                  |  2 +-
+ include/linux/slab.h                      |  3 +-
+ include/linux/vmalloc.h                   |  4 ++
+ kernel/resource.c                         |  3 +-
+ lib/fortify_kunit.c                       |  3 +-
+ mm/util.c                                 | 72 ++++++++++++++++-------
+ mm/vmalloc.c                              | 58 ++++++++++++++++++
+ 9 files changed, 118 insertions(+), 35 deletions(-)
+
+
+base-commit: 51835949dda3783d4639cfa74ce13a3c9829de00
+-- 
+2.45.2
 
