@@ -1,43 +1,39 @@
-Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBCFF28DD1
-	for <rust-for-linux@vger.kernel.org>; Wed, 17 Jul 2024 19:54:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D7402BCF7;
+	Wed, 17 Jul 2024 22:12:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721246066; cv=none; b=Bjax52BoldK+Gdw8b+RkDGCdO7oB5jlRvBNDC+6tYA33NkQfxSxIcIEsCvBzy5crFkKJgzO/ZLlrQ/6aWNCwAcTO1PTCwC54Rdxm2hpqtcRKiRIJSNwm66nbci8D2nu1YQN+yKg9rTPtBEOkf/Q4otK2B+Kwl5wIEhSGne4fY4g=
+	t=1721254354; cv=none; b=gfLWAg6njriAmz2JmC4BLUJH03O8Z/pbJEMg5I8ub8nVtTkytxdq9vqZ5hpR4WVI/om/cToZiqzajFgduIGJtZNvZEme19GbbCXrqw7yfBTTo9lmP4/vn+k6uHC0cI5vGFoj+w9Q7zSdf+69zwPn1O7Exlni5yS5pYl6FP3unKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721246066; c=relaxed/simple;
-	bh=0s0SddSeTuGrJ1laxk/JMS46syAuIUDRNFG+AKO22BA=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=onhB+AMEnZCLfT4iJAsq17XHC3XTwSrQk0Ju5q4qOExbiJiuGEyn0RXyFN2s3rBaz7m74o7hemuo9vAdkQ0dgAMkF9D28jJQkCiPUcZxa3qSo2WmxFjdWzlWFE/9lBBZa7j6umCvRHLseEZcGopnCgNfDuggKVYTnl0WHoViNOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=h8bCcZk1; arc=none smtp.client-ip=185.70.40.131
+	s=arc-20240116; t=1721254354; c=relaxed/simple;
+	bh=kS4OGQtw2cUO3ktnl5K0TWYCJ+yM1dUyR77OvKKiA0E=;
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=UwOGY1rsqP8ejmqh/QmXe/n8k0tklTrl9ylWS2/dYvoMxu6fNXX2hd1ZLielxlgAOw6U8D1ONCdlbwQRzpnWOSCgM//NnNA4VnJTsbyRPNwGgMD6WINR6RaNMccSyJW4TRc2/ZwsjIiYxw91JeN5mVu1dz7FVlfSAB/mORrIVKo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=EnxVSMSd; arc=none smtp.client-ip=185.70.43.22
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="h8bCcZk1"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="EnxVSMSd"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1721246062; x=1721505262;
-	bh=e5x3kmpFuQF+/sLbsGqQ7KQCx1e2yyOtsQpsFj0qtZY=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=h8bCcZk1DS1/EHyD7JH5n8Av/DHN6OyBiRcuBjmlaL7EiXmyIIKBgYTxXwhjhVbVC
-	 1UUYqHu3gsP9UPu2Zm//HJJgmIGAsU3RmK75+5fgvbiTqMQVDLoFXiGa2+zHjA4P2d
-	 FF47mxYYOWgZ14imiTqawgxDDL60RxQMTsOjqtkPCnvYopJJWrm7fAuvgC+eBPgZr5
-	 vBSoZekUmtSKNKRDv9SQWp88YzJ5gxPGZ1KWfZ0v29pRhMJl2t1Ng5cA7ZxiTreuWC
-	 X0a1Jzcj2emuTSM68NWkK2ts3BBojST5C+3V0stYlqKNb3/pvgdVTG2xPDYBQv8Zv8
-	 D8k9SZYJf6bgA==
-Date: Wed, 17 Jul 2024 19:54:14 +0000
-To: Boqun Feng <boqun.feng@gmail.com>
+	s=3xahdcz46fbs5avt2xdlmxh6wu.protonmail; t=1721254349; x=1721513549;
+	bh=vWJ831e142vfCDH2rjzZdcl7BIbENMaOr44f0vM34iE=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=EnxVSMSdZt096mApZR+jP2QoXu/HRatYFhlMpklevFZu+L+JtSM03FaAMgNMtzVJu
+	 CUCVOSUGO06y8jtSGsPo9uu7tN+YRPajdK6oROtPtAnS/E47YG9LST1IYtEIkBILMo
+	 Wdh9nGgqn/uC+y6SQVPmlw987WuTc2GayuYqznXsBGmbzZXcHegjHmPeq61zlMe5Ae
+	 9/+03lW29qpU6nNG05HxpCTrp9WhAFOsilbMM4A6/6rWu3RN2r0gy8ZPGLiRwbFRSg
+	 +HAW+eiBXpoRFtri8TJSmmuClvrV4fpJoefmjnd/yQqBrCkRpMtBnfBAxB9cgcO9U6
+	 wGLjU6NM1UrVw==
+Date: Wed, 17 Jul 2024 22:12:24 +0000
+To: Jonathan Corbet <corbet@lwn.net>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 1/2] rust: kernel: add `drop_contents` to `BoxExt`
-Message-ID: <323ad3d0-e478-4ed9-875c-335ced829afd@proton.me>
-In-Reply-To: <Zoxfjfl9Izaz2Wtj@boqun-archlinux>
-References: <20240708205325.1275473-1-benno.lossin@proton.me> <ZoxWyr3fL8GkyOAR@boqun-archlinux> <Zoxfjfl9Izaz2Wtj@boqun-archlinux>
+Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: [RFC PATCH 0/5] Introduce the Rust Safety Standard
+Message-ID: <20240717221133.459589-1-benno.lossin@proton.me>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 5a16a5dd66736c6e7adbc740079b5efdfd16af58
+X-Pm-Message-ID: 66aab4dfcb8f5367d81c68150dcc6de6a394f0ec
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,83 +43,52 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On 08.07.24 23:52, Boqun Feng wrote:
-> On Mon, Jul 08, 2024 at 02:14:50PM -0700, Boqun Feng wrote:
->> On Mon, Jul 08, 2024 at 08:53:38PM +0000, Benno Lossin wrote:
->>> Sometimes (see [1]) it is necessary to drop the value inside of a
->>> `Box<T>`, but retain the allocation. For example to reuse the allocatio=
-n
->>> in the future.
->>> Introduce a new function `drop_contents` that turns a `Box<T>` into
->>> `Box<MaybeUninit<T>>` by dropping the value.
->>>
->>> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
->>> Link: https://lore.kernel.org/rust-for-linux/20240418-b4-rbtree-v3-5-32=
-3e134390ce@google.com/ [1]
->>> ---
->>>  rust/kernel/alloc/box_ext.rs | 21 +++++++++++++++++++++
->>>  1 file changed, 21 insertions(+)
->>>
->>> diff --git a/rust/kernel/alloc/box_ext.rs b/rust/kernel/alloc/box_ext.r=
-s
->>> index cdbb5ad166d9..6cf79f96d6c7 100644
->>> --- a/rust/kernel/alloc/box_ext.rs
->>> +++ b/rust/kernel/alloc/box_ext.rs
->>> @@ -5,6 +5,7 @@
->>>  use super::{AllocError, Flags};
->>>  use alloc::boxed::Box;
->>>  use core::mem::MaybeUninit;
->>> +use core::ptr;
->>>  use core::result::Result;
->>>
->>>  /// Extensions to [`Box`].
->>> @@ -18,6 +19,18 @@ pub trait BoxExt<T>: Sized {
->>>      ///
->>>      /// The allocation may fail, in which case an error is returned.
->>>      fn new_uninit(flags: Flags) -> Result<Box<MaybeUninit<T>>, AllocEr=
-ror>;
->>> +
->>> +    /// Drops the contents, but keeps the allocation.
->>> +    ///
->=20
-> (I spoke too soon ;-))
->=20
->>> +    /// # Examples
->>> +    ///
->>> +    /// ```
->=20
-> need a `use` here:
->=20
-> =09use kernel::alloc::{flags, box_ext::BoxExt};
+`unsafe` Rust code in the kernel is required to have safety
+documentation. This is to ensure the correctness of `unsafe` code and is
+thus very important.
+However, at this point in time there does not exist a standard way of
+writing safety documentation. This leads to confusion, as authors
+struggle to find the right way to convey their desired intentions.
+Readers similarly struggle with correctly interpreting the=20
+documentation; it's the wild west.
 
-Oops, should have checked that.
+To alleviate this issue and to raise the quality of safety
+documentation, this patch series introduces a standard way of writing
+safety documentation.
 
->>> +    /// let value =3D Box::new([0; 32], flags::GFP_KERNEL)
->=20
-> missing a '?' and a ';' at the end of this line.
->=20
->>> +    /// let value =3D value.drop_contents();
->>> +    /// // Now we can re-use `value`:
->>> +    /// Box::write(value, [1; 32]);
->=20
-> Need a line:
->=20
-> =09# Ok::<(), Error>(())
->=20
-> here.
->>> +    /// ```
->>> +    fn drop_contents(self) -> Box<MaybeUninit<T>>;
->>>  }
->>>
-> [...]
->=20
-> I queued this patch in rust-dev with these fixes applied, FYI.
+Because creating a standard for every possible requirement is a tall
+task, this series starts off very small. I hope to start more
+discussion, in order to find the best form of safety documentation for
+the kernel.
+Please do not hesitate to give any kind of comment. I could benefit
+especially from improvements to the visual look of the documentation, as
+this is my first time writing Sphinx documentation. For example, I am
+not satisfied with how the tables renders in HTML.
 
-Thanks!
+Benno Lossin (5):
+  doc: rust: create safety standard
+  doc: rust: safety standard: add examples
+  doc: rust: safety standard: add guarantees and type invariants
+  doc: rust: safety standard: add safety requirements
+  doc: rust: safety standard: add justifications
 
-@Miguel, when you take this, then apply the fixes that Boqun suggested.
+ Documentation/rust/general-information.rst    |   1 +
+ Documentation/rust/index.rst                  |   1 +
+ .../rust/safety-standard/examples.rst         |  70 +++++
+ .../rust/safety-standard/guarantee.rst        |   7 +
+ Documentation/rust/safety-standard/index.rst  | 281 ++++++++++++++++++
+ .../rust/safety-standard/justifications.rst   |  40 +++
+ .../rust/safety-standard/requirements.rst     |  80 +++++
+ .../rust/safety-standard/type-invariants.rst  |  18 ++
+ 8 files changed, 498 insertions(+)
+ create mode 100644 Documentation/rust/safety-standard/examples.rst
+ create mode 100644 Documentation/rust/safety-standard/guarantee.rst
+ create mode 100644 Documentation/rust/safety-standard/index.rst
+ create mode 100644 Documentation/rust/safety-standard/justifications.rst
+ create mode 100644 Documentation/rust/safety-standard/requirements.rst
+ create mode 100644 Documentation/rust/safety-standard/type-invariants.rst
 
----
-Cheers,
-Benno
+--=20
+2.45.1
+
 
