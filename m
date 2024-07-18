@@ -1,84 +1,46 @@
-Received: from fout8-smtp.messagingengine.com (fout8-smtp.messagingengine.com [103.168.172.151])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42C8D1B86CC;
-	Thu, 18 Jul 2024 04:45:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C908712D745;
+	Thu, 18 Jul 2024 11:43:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721277931; cv=none; b=s6DHb4i5t1r4TWs0TjEu3NuLIKXyStttUmxx/EcM/a3i/06YlV65xSyMzP9ZyJi8BIOf+dOmjAtM+Ngf0RNqy9zdFwTM02oTHxwNyoZlXFE2Jgn/ciGBysDFu93nhI7Y51cB6g+Y8hulyrO6a24bvWmjF3dXpmHRwnWyHxuQnsA=
+	t=1721303034; cv=none; b=bG0jKRUStH8W5Ra+6mTNcyjupCztiGjazoBelzRW3CtAog3JCSEbL6IXPt4ml7S/oT9EC416rA1exAc/pSQOG9q2u+z7iqYrRxQ+SC5msfxfx87uEU3JuFw6tkmSLgIqFGckN1OmtFJwxriNbr2V3FroFsU0taMkVnh677MFKHM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721277931; c=relaxed/simple;
-	bh=BRy2bM2IKgR8xgKYEPIAFK1X2XFkO/8SAl9n4X17KO0=;
+	s=arc-20240116; t=1721303034; c=relaxed/simple;
+	bh=j9ZM4sgimbHCwOKSnNzbQnPlbO19lzIBOmXEFXAmSnQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AdYK6QO4x53KFhlwNE6uoX1N0A3ji5Ic9kn0BFaymTI/J6u9W+63hoAcCWY682ZmbJe+pbbVcbKbx04R/iyCszz/Rq5ZZxhlTHio8j8vDRMQMUWSc8vV4Lc2TutK0MmMdhz52DvuCzvuKseFQ4JtJZfqaPD+lJcivYfrAlINgAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=rz5PMYiA; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=GDfepS6T; arc=none smtp.client-ip=103.168.172.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=PU/1XBwtKa9NcK0ErWGO4BzPr9o8CVaYT9MzY5thysBhwi7vFDcWDh3dkDkBnWQrEwG5pG1vm2ypH8rHwPT/zVan4RuPMEmn0IuWfaKzHGmVdRV5a6N2Ue9ZpX3LtKZbN5HltbjF7aCZDXKytHw4sYZne+QRwQ5b0vxoPWBeZTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OlnHvgg7; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="rz5PMYiA";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="GDfepS6T"
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-	by mailfout.nyi.internal (Postfix) with ESMTP id 2487C13801DB;
-	Thu, 18 Jul 2024 00:45:28 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute2.internal (MEProxy); Thu, 18 Jul 2024 00:45:28 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm2; t=1721277928; x=1721364328; bh=q31G4O/MNO
-	/gOgnqYp7t4bFpYnaYCryDFvme9kOpRlQ=; b=rz5PMYiAx9gdb5JmmrWiMasRKm
-	RXWQl7ofwbxlQkKC9lQVd6jwNynJQaPbGIazP2IEbqSJU+ZgkaHThX+uO2kZXPjL
-	DV8pvhQOVy20F8cKgJpYWvgQl0rzUq68G7wOKBucUY0J3HHv93ltCUpij2ngdzy1
-	09n1xch3pw+y0EOP3VSyB/dunj3GKLzVkC9zH4Faq8E/AZtre4Qac2jym19jRKH8
-	pOo4n67KXyHDhjRF7Ksx/CDrpQg8JcvqvMe0UYQ2T1ZsoYSZOr5muBDO7HhGM+0/
-	P6akGMP+uzCFeCMrYUkmfHgueSJSrWcoo6qRnMKKdThxPJ3hTlpTLpTBEXUw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm2; t=1721277928; x=1721364328; bh=q31G4O/MNO/gOgnqYp7t4bFpYnaY
-	CryDFvme9kOpRlQ=; b=GDfepS6T5SU3Eg2qItsMD6uvuVs29UEk/Sw7vxXW44DW
-	57KD9U/Gep2PyApBioxNs7ZNhvLelJe7grRr9tYpTa7x4dA1aRZYbzUoxQGj91am
-	ODE/mfHgyii4tjLjrPww2Pi8wEPycF2hXvO39/ysQDvVb304qaRGyJNg6NeRoBao
-	MISoHxY5u4mzACW5xhmM3jUph6VNwwR4EesNpDBlM0CSFu/UHy/9bTL5DnIG1s+g
-	0ZHq983SLYmqgo7rIROwV9hMDtEa9pMtUaaKngGQAUqZFwJTjioahyL0Y8lAggIT
-	F+tq7fCsFWr8bhzu1mnu9JYbnUmq1F7vtiLAscV1IQ==
-X-ME-Sender: <xms:5p2YZsGGLTtRbUfcYLdlfNtjtr_Ftr8FMFIFVyfVV8aogdtdaFriSA>
-    <xme:5p2YZlXiVfnHz9OEu_GK8HzGfcJ-FXk2E3Ly9wE5TEGIGZudDfgxPqMhrcWfHG0Gp
-    rcC7sdt-rO_bA>
-X-ME-Received: <xmr:5p2YZmIUpqZRbM9LA_n0gcXd3B1gXv4CYmOxR7G-vkdyVtMuzX2uJ4igWkg01sigW8Dod13z-DjVcbI0MPVxezzMZbEFJ2K4SVRXxA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrgeekgdeklecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefirhgvghcu
-    mffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeehgedvve
-    dvleejuefgtdduudfhkeeltdeihfevjeekjeeuhfdtueefhffgheekteenucevlhhushht
-    vghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehgrhgvgheskhhrohgrhh
-    drtghomh
-X-ME-Proxy: <xmx:5p2YZuElQjbhjKsZ4ISAkFU9vqrMNlYPtfsRJ_-q6TMo_CISxxqbQg>
-    <xmx:5p2YZiUL4s22Z8m3VLoc-5A9GnN3UyTurBc3qO-sK_opm59LIph9wQ>
-    <xmx:5p2YZhOZRJwiQUHqprmcuyLaSojz4A6OvVIbIl0-r4VBhXDmuWWa3A>
-    <xmx:5p2YZp3Q3TRUZ9_IyQlYuNxg2wfWQZE0OTgsqXdgtQ5YJeBhyaz0cg>
-    <xmx:6J2YZlrldnw_5lQB5_Fe1cLzKDcEtgM6XPNJidTpWW3g6W6mKv9AGukV>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 18 Jul 2024 00:45:25 -0400 (EDT)
-Date: Thu, 18 Jul 2024 06:45:24 +0200
-From: Greg KH <greg@kroah.com>
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Jonathan Corbet <corbet@lwn.net>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [RFC PATCH 1/5] doc: rust: create safety standard
-Message-ID: <2024071845-neuron-figure-2e26@gregkh>
-References: <20240717221133.459589-1-benno.lossin@proton.me>
- <20240717221133.459589-2-benno.lossin@proton.me>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OlnHvgg7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FAFFC116B1;
+	Thu, 18 Jul 2024 11:43:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1721303034;
+	bh=j9ZM4sgimbHCwOKSnNzbQnPlbO19lzIBOmXEFXAmSnQ=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=OlnHvgg7IhAplaec55DHHogreodz3snoybUI8HGsD6Y2AX0c5c0YiPTbHAdKn/gv9
+	 Mnsw9q0T2OD31mYN231jIB0nqFMwuIGuuG+CE3mjF0Fz3wUUivANeJwAZkAfqDVtRM
+	 DpphTzSuVLwIJGSDqPg6Gvu60XqSYpePH1+2t8scTSFKkjriIfP0GQ7FmZHvRBSFC3
+	 9RukZp7VQIi48hQjjyr6C37785Yuwde20Wj0eFj7uRZF8QXzpta/ebSjOl3qXVhaId
+	 /KoisvMi9PVwgjlVPYsUnr2300x8D8utnnGUFpTtKXbUB+Bzo7zU31cvvzD27DVyjK
+	 Qhk08nEJGnMUw==
+Date: Thu, 18 Jul 2024 13:43:47 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Christoph Hellwig <hch@infradead.org>
+Cc: cl@linux.com, penberg@kernel.org, rientjes@google.com,
+	iamjoonsoo.kim@lge.com, akpm@linux-foundation.org, vbabka@suse.cz,
+	roman.gushchin@linux.dev, 42.hyeyoo@gmail.com, urezki@gmail.com,
+	kees@kernel.org, ojeda@kernel.org, wedsonaf@gmail.com,
+	mhocko@kernel.org, mpe@ellerman.id.au, chandan.babu@oracle.com,
+	christian.koenig@amd.com, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH 1/2] mm: vmalloc: implement vrealloc()
+Message-ID: <Zpj_8-ICVU_mLg0M@pollux>
+References: <20240717222427.2211-1-dakr@kernel.org>
+ <20240717222427.2211-2-dakr@kernel.org>
+ <ZpiJDdqhDlAb8n6T@infradead.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -87,17 +49,70 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240717221133.459589-2-benno.lossin@proton.me>
+In-Reply-To: <ZpiJDdqhDlAb8n6T@infradead.org>
 
-On Wed, Jul 17, 2024 at 10:12:29PM +0000, Benno Lossin wrote:
-> +Because unsoundness issues have the potential for allowing safe code to experience UB, they are
-> +treated similarly to actual bugs with UB. Their fixes should also be included in the  stable tree.
+On Wed, Jul 17, 2024 at 08:16:29PM -0700, Christoph Hellwig wrote:
+> On Thu, Jul 18, 2024 at 12:24:01AM +0200, Danilo Krummrich wrote:
+> > +extern void * __must_check vrealloc_noprof(const void *p, size_t size,
+> > +					   gfp_t flags) __realloc_size(2);
+> 
+> No need for the extern here.
+> 
+> It would also help readability a bit to keep the __realloc_size on a
+> separate like, aka:
+> 
+> void *__must_check vrealloc_noprof(const void *p, size_t size, gfp_t flags)
+> 		__realloc_size(2);
 
-Odd extra space before "stable".
+Sure, will change that.
 
-Also, link to the stable kernel rules here when you reference "stable
-tree"?  That will explain what you mean here.
+> 
+> > +	if (size <= old_size) {
+> > +		/* TODO: Can we optimize and shrink the allocation? What would
+> > +		 * be a good metric for when to shrink the vm_area?
+> > +		 */
+> 
+> Kernel comment style is to keep the
+> 
+> 		/*
+> 
+> on a line of it's own.
 
-thanks,
+I think it differs a bit throughout subsystems - will change.
 
-greg k-h
+
+> A realloc that doesn't shrink is a bit pointless.
+
+Indeed - the idea was to mostly clean up kvrealloc() in this series first and
+implement proper shrinking and growing in a subsequent one. Does that make
+sense?
+
+> The same heuristics as for krealloc should probably apply
+> here, adjust to the fact that we always deal with whole pages.
+
+Sounds reasonable, but are there any? In __do_krealloc() if ks > new_size we
+only call into kasan_krealloc() to poison things and return the original
+pointer. Do I miss anything?
+
+> 
+> 
+> > +	/* TODO: Can we optimize and extend the existing allocation if we have
+> > +	 * enough contiguous space left in the virtual address space?
+> > +	 */
+> 
+> I don't understand this comment.
+
+I meant to say that we could optimze by allocating additional pages and map them
+at the end of the existing allocation, if there is enough space in the VA space.
+
+If that doesn't work, we can still allocate additional pages and remap
+everything.
+
+> 
+> > +EXPORT_SYMBOL(vrealloc_noprof);
+> 
+> New interfaces should be EXPORT_SYMBOL_GPL.  That being said for this
+> to be added an exported we'll need an actual user to start with anyway.
+
+Besides kvrealloc(), the Rust abstractions will be a user soon, but for that we
+probably don't need the export either. I will remove it for now.
