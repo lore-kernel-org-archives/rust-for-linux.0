@@ -1,82 +1,264 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41C4012DD88;
-	Thu, 18 Jul 2024 11:45:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2385427448
+	for <rust-for-linux@vger.kernel.org>; Thu, 18 Jul 2024 12:20:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721303119; cv=none; b=Gbn9AylKndR5ZwTZGiXEgYqCC1khC6IWLK2AWcklf1QCPiVuYghMqiPDZaq0zAXbiDJ2XTkL43qQwjTfkoANvJRttmSmk/rHvsGksfyp3MSqP0KNA++nGAiswA9ofOEDu+aHjxmklN8ptj7QRbGL+xmcn7gxKeu6KB1dWfCwuGc=
+	t=1721305232; cv=none; b=ZlAirxDdsCM2qhjb1L7f9fSvV85VBbXl+Bbj/hu8ifmhrLM8YVsUBJ8JrbGAiR3jHGMjm289D8u/peSPrDqS2C304fSB4KvnyLh9Yot7TLzBx31KQNn6RuzWgFT1zdeNNQRn4t89LVQ+Li0IW9L03nTv12DuJU2znOCp8kXwSuc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721303119; c=relaxed/simple;
-	bh=6dDkmxqvJY8h61QecQ5gJGkM7Qx9fiJB6j7R5iGc7TU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oCe6h7lxfcOfwSuOidc+aNtER6DFMK7UFGDldtYGfXHErY0om0/KGLgLhafM22s7p6u0jAB5DxCc7AZ6m1o7GAzhr6l54t41eCeaikazjsXitmoqoSsB3NqKRTHUekWZJgU3WfX7rqJJvgJa8ypKxOxg5TtHMpbxbiFw87gsPgA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hAZWFU+5; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1721305232; c=relaxed/simple;
+	bh=wbKJhMIleA8lfTJZrvt/KjGa8g+uwTZDE+I13K98uQc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=MqwkrMxbeDkhGoLbgPCkeTUwDMPXuYYCKOhLRnc2WzeTddiMJvShUwYOhKC6tBeX9eqVjpJXxtPaqXbknKt5oOAF60qkp3bNhp5ccQHPhyoa4KOGsVzkPOX/CkNj40HOCNea51LBnPyS+OM47oIPbsXaoRQYLN/dAcUS6m849SM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=xmMWVg/S; arc=none smtp.client-ip=209.85.221.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hAZWFU+5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B72AAC116B1;
-	Thu, 18 Jul 2024 11:45:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721303118;
-	bh=6dDkmxqvJY8h61QecQ5gJGkM7Qx9fiJB6j7R5iGc7TU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hAZWFU+5O9a3urAw6D6eH506PIDqNsVSfC9vYYllWtzOOOipRvFCyQRAmfO3RGLzR
-	 EapBZ+yFliVUUQJ6ypC1xJaCoEZ8hM4Z4bgdB6k2uQ6DbEKK02beSf5xaiscmqMLb9
-	 3qaSOftrgSs7pPf0y18DxDE5Ls9I3d2qFyOuXgrWgVwwj50HTN4Ew5dwiks8sfxo+J
-	 E8+4Zvtf/d7SGJIkVXRyIGz7/wNXnvyWmecRkBAi5DVpOzEujLToxcSGrGbjavlWlc
-	 wwdSu/oTKdBqNeaW4XURZg6IfXMOmKHULCMH1pAk9kh4KDv0LgQlW2CBuMcFQCS57x
-	 3boscUjlhGk3Q==
-Date: Thu, 18 Jul 2024 13:45:11 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Christoph Hellwig <hch@infradead.org>
-Cc: cl@linux.com, penberg@kernel.org, rientjes@google.com,
-	iamjoonsoo.kim@lge.com, akpm@linux-foundation.org, vbabka@suse.cz,
-	roman.gushchin@linux.dev, 42.hyeyoo@gmail.com, urezki@gmail.com,
-	kees@kernel.org, ojeda@kernel.org, wedsonaf@gmail.com,
-	mhocko@kernel.org, mpe@ellerman.id.au, chandan.babu@oracle.com,
-	christian.koenig@amd.com, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 2/2] mm: kvmalloc: align kvrealloc() with krealloc()
-Message-ID: <ZpkARwEkp70YMVzf@pollux>
-References: <20240717222427.2211-1-dakr@kernel.org>
- <20240717222427.2211-3-dakr@kernel.org>
- <ZpiJvj1_rKodpVSt@infradead.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="xmMWVg/S"
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-368313809a4so980180f8f.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 18 Jul 2024 05:20:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1721305228; x=1721910028; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=EcnNlnLKzSsTcE/GmmIB9OL2PzwcGV5Vix9M/mA0UzY=;
+        b=xmMWVg/S0eBCWPDQ6lt3Ew6m1j9Mv4bcIYk4PLiqG/Bm/o9fivBIpP/cZNbYH9k7Jl
+         ivsfYo1rAuuJaWRaww39m7F3v5RxYY7DHbxCMgn4w6x35+3xpexzNTwN0l06PptQQrLG
+         H4DuKae4UiWSpHK3jetocD6PY3gblWdFThjZQxukozHZ1wbccV/pMY2OhZAt45JBFdyX
+         bYtwa9dzV16k5MS+pTyon9joUYLT5AcWCJuBs1PEMIqyVICudOhQ33Qyp5cBNMoCCsbn
+         UzgR2m4qD1EiPRJHcfpdJWKxPcASDfRwtPBrLm7vP/63koAonNDMEQfgUD3n29C+2yqS
+         3nAw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1721305228; x=1721910028;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=EcnNlnLKzSsTcE/GmmIB9OL2PzwcGV5Vix9M/mA0UzY=;
+        b=Q5S70m6FV85yx0kioZytD3GkepAfJrrMkHVpgLLPx0Zez0Twnwp8jgVHuriV+mRUy+
+         FO57klYmmFBsmmUEM9ZKQoikBF8E1xwlR4Y7fyNLugxQga1GDC390HV0JF8EBzdtfSAk
+         mEbeRoYLNd8rzJZ3EvIIySyDV0G6eiLZ/TDDTXHITcqW/guahwhNX0XNK8DMyd7RX5U5
+         u7kcUhM3NlCPEev9Ynwh5sSfG5Mh9fT8gr+N9xfa0T24Q/yoRJalF03vxq245i7Hn5qw
+         6+XWUFA7RWvzJxKda8aR6p1B0XP5DmPmJYEqz7il2+JQHIbx8BYYj6lHje1C9WViKaVT
+         2HcA==
+X-Forwarded-Encrypted: i=1; AJvYcCXqygefZa4uHJsCio0DqQfooMQ+OwOmWBJaFcrt4GdotKi8exKs+QhRN6aViOpyeAzJT9Gv+5M50bw4VsKtN5a6QYYVgudFEhbS+pIEeWI=
+X-Gm-Message-State: AOJu0YxPrqDO0DgHr8AZ02wX9UK4uKtGJ3KeP13n94MOifVSowv64L10
+	Th9Y4Yju/zMqlVa3m1j2kM5EynkqtgMla74WZa7tioKBPARQiFyn73LT0CiG4ZsQPfdIE+GfTq8
+	yDQNWDH7BzTBUhZWlxc15SB3VERgvvGuHMQfQ
+X-Google-Smtp-Source: AGHT+IFq9duOgNwQLu0gkyGvUZVw6R86dCETUZhi16vwKrj+wkGzq6dSMDkpbgZJuOSq82x7jRHC/sgftwOXxXrFgmI=
+X-Received: by 2002:adf:cd8d:0:b0:368:6bb:f79e with SMTP id
+ ffacd0b85a97d-3684b378746mr1969552f8f.4.1721305228089; Thu, 18 Jul 2024
+ 05:20:28 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <ZpiJvj1_rKodpVSt@infradead.org>
+References: <20240717221133.459589-1-benno.lossin@proton.me> <20240717221133.459589-2-benno.lossin@proton.me>
+In-Reply-To: <20240717221133.459589-2-benno.lossin@proton.me>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Thu, 18 Jul 2024 14:20:15 +0200
+Message-ID: <CAH5fLgg0O=t2T2MQH2hvm4eZnCOa_NffzRw=XZPi9+7+=XsmRg@mail.gmail.com>
+Subject: Re: [RFC PATCH 1/5] doc: rust: create safety standard
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Jonathan Corbet <corbet@lwn.net>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jul 17, 2024 at 08:19:26PM -0700, Christoph Hellwig wrote:
-> > +extern void *kvrealloc_noprof(const void *p, size_t size, gfp_t flags) __realloc_size(2);
-> 
-> Please drop the extern while you're at it and move the __realloc_size
-> attribute to a separate line.
+On Thu, Jul 18, 2024 at 12:12=E2=80=AFAM Benno Lossin <benno.lossin@proton.=
+me> wrote:
+> +Soundness
+> +=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> +
+> +``unsafe`` operations (e.g. ``unsafe`` functions, dereferencing raw poin=
+ters etc.) have certain
+> +conditions that need to be fulfilled in order for the operation to not b=
+e UB.
+> +To evaluate if the ``unsafe`` code usage is correct, one needs to consid=
+er the API that wraps said
+> +``unsafe`` code. If under all possible safe uses of the API, the conditi=
+ons for the ``unsafe``
+> +operation are fulfilled, the API is *sound*. Otherwise it is *unsound*. =
+Here is a simple example::
+> +
+> +    pub struct Data {
+> +        a: usize,
+> +    }
+> +
+> +    pub fn access_a(data: *mut Data) -> usize {
+> +        unsafe { (*data).a }
+> +    }
+> +
+> +    fn main() {
+> +        let mut d =3D Data { a: 42 };
+> +        println!("{}", access_a(&mut d));
+> +    }
+> +
+> +While this example has no UB, the function ``access_a`` is unsound. This=
+ is because one could just
+> +write the following safe usage::
+> +
+> +    println!("{}", access_a(core::ptr::null_mut()));
+> +
+> +And this would result in a dereference of a null pointer.
+> +
+> +In its essence, a sound API means that if someone only writes safe code,=
+ they can never encounter UB
+> +even if they call safe code that calls ``unsafe`` code behind the scenes=
+.
 
-Will do.
+I think this section on soundness could be more clear. You never
+really give a definition for what soundness is; you just jump into an
+example immediately.
 
-> 
-> > +static gfp_t to_kmalloc_flags(gfp_t flags, size_t size)
-> > +{
-> > +	if (size > PAGE_SIZE) {
-> > +		flags |= __GFP_NOWARN;
-> > +
-> > +		if (!(flags & __GFP_RETRY_MAYFAIL))
-> > +			flags |= __GFP_NORETRY;
-> > +
-> > +		/* nofail semantic is implemented by the vmalloc fallback */
-> > +		flags &= ~__GFP_NOFAIL;
-> > +	}
-> > +
-> > +	return flags;
-> 
-> The name for this function sounds a bit odd.  Maybe kmalloc_gfp_adjust
-> instead?  Also the comment explaining these flags tweaks should move
-> from the caller to this function.
+It may be nice to talk about how a sound API must prevent memory
+safety issues, even if the safe code required to do so is silly or
+unrealistic. Doing so is necessary to maintain the "safe code never
+has memory safety bugs" guarantee.
 
-kmalloc_gfp_adjust() sounds good to me. I will rename it and move the comment
-up.
+> +Because unsoundness issues have the potential for allowing safe code to =
+experience UB, they are
+> +treated similarly to actual bugs with UB. Their fixes should also be inc=
+luded in the  stable tree.
+> +
+> +Safety Documentation
+> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+> +
+> +After trying to minimize and remove as much ``unsafe`` code as possible,=
+ there still is some left.
+> +This is because some things are just not possible in only safe code. Thi=
+s last part of ``unsafe``
+> +code must still be correct. Helping with that is the safety documentatio=
+n: it meticulously documents
+> +the various requirements and justifications for every line of ``unsafe``=
+ code. That way it can be
+> +ensured that all ``unsafe`` code is sound without anyone needing to know=
+ the whole kernel at once.
+> +The gist of the idea is this: every ``unsafe`` operation documents its r=
+equirements and every
+> +location that uses an ``unsafe`` operation documents for every requireme=
+nt a justification why they
+> +are fulfilled. If now all requirements and justifications are correct, t=
+hen there can only be sound
+> +``unsafe`` code.
+> +
+> +The ``unsafe`` keywords has two different meanings depending on the cont=
+ext it is used in:
+> +
+> +* granting access to an unchecked operation,
+> +* declaring that something is an unchecked operation.
+> +
+> +In both cases we have to add safety documentation. In the first case, we=
+ have to justify why we can
+> +always guarantee that the requirements of the unchecked operation are fu=
+lfilled. In the second case,
+> +we have to list the requirements that have to be fulfilled for the opera=
+tion to be sound.
+> +
+> +In the following sections we will go over each location where ``unsafe``=
+ can be used.
+> +
+> +.. _unsafe-Functions:
+> +
+> +``unsafe`` Functions
+> +--------------------
+> +
+> +``unsafe`` on function declarations is used to state that this function =
+has special requirements
+> +that callers have to ensure when calling the function::
+> +
+> +    unsafe fn foo() {
+> +        // ...
+> +    }
+> +
+> +These requirements are called the safety requirements of the function. T=
+hese requirements can take
+> +any shape and range from simple requirements like "``ptr_arg`` is valid"=
+ (``ptr_arg`` refers to some
+> +argument with the type matching ``*mut T`` or ``*const T``) to more comp=
+lex requirements like
+> +"``ptr`` must be valid, point to a ``NUL``-terminated C string, and it m=
+ust be valid for at least
+> +``'a``. While the returned value is alive, the memory at ``ptr`` must no=
+t be mutated.".
+> +
+> +The safety requirements have to be documented in the so called safety se=
+ction::
+> +
+> +    /// <oneline description of the function>
+> +    ///
+> +    /// <full description of the function>
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// <safety requirements>
+> +    unsafe fn foo() {
+> +        // ...
+> +    }
+
+I would love to see a proper example here.
+
+> +.. _unsafe-Blocks:
+> +
+> +``unsafe`` Blocks
+> +-----------------
+> +
+> +``unsafe`` code blocks are used to call ``unsafe`` functions and perform=
+ built-in ``unsafe``
+> +operations such as dereferencing a raw pointer::
+> +
+> +    unsafe { foo() };
+> +
+> +In order to ensure that all safety requirements of ``unsafe`` operations=
+ are upheld, a safety
+> +comment is mandatory for all ``unsafe`` blocks. This safety comment need=
+s to provide a correct
+> +justification for every safety requirements of every operation within th=
+e block::
+> +
+> +    // SAFETY: <justifications>
+> +    unsafe { foo() };
+
+I think it is worth explicitly pointing out that the safety comment
+must explain why the preconditions are satisfied, *not* what the
+preconditions are. It's a really really common mistake to mix up
+these, and it probably even makes sense to include two examples
+showing the difference.
+
+> +For transparency it is best practice to have only a single ``unsafe`` op=
+eration per ``unsafe``
+> +block, since then it is more clear what the justifications are trying to=
+ justify. Safe operations
+> +should not be included in the block, since it adds confusion as to which=
+ operation is the ``unsafe``
+> +one. In certain cases however it makes it easier to understand if there =
+is only a single ``unsafe``
+> +block. For example::
+> +
+> +    // SAFETY: `ptr` is valid for writes.
+> +    unsafe {
+> +        (*ptr).field1 =3D 42;
+> +        (*ptr).field2 =3D 24;
+> +        (*ptr).field3 =3D 2442;
+> +    }
+> +
+> +In this case it is more readable to not split the block into multiple pa=
+rts.
+
+It would be nice with an example of a completely normal safety comment
+example. Also would be nice to call out that the semicolon goes
+outside the unsafe block to improve formatting, when it's a single
+operation.
+
+It would also be nice with an example that shows how to reference the
+safety requirements of the current function. (That is, an example that
+combines unsafe fn with unsafe block.)
+
+Alice
