@@ -1,264 +1,111 @@
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+Received: from mail-oi1-f171.google.com (mail-oi1-f171.google.com [209.85.167.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2385427448
-	for <rust-for-linux@vger.kernel.org>; Thu, 18 Jul 2024 12:20:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 227D4143C46
+	for <rust-for-linux@vger.kernel.org>; Thu, 18 Jul 2024 17:04:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721305232; cv=none; b=ZlAirxDdsCM2qhjb1L7f9fSvV85VBbXl+Bbj/hu8ifmhrLM8YVsUBJ8JrbGAiR3jHGMjm289D8u/peSPrDqS2C304fSB4KvnyLh9Yot7TLzBx31KQNn6RuzWgFT1zdeNNQRn4t89LVQ+Li0IW9L03nTv12DuJU2znOCp8kXwSuc=
+	t=1721322283; cv=none; b=LeUzL7MwcP/mdszf0H5VJCbkGwIkn5Hmt18v9MIy/WYQN2ErHDMxprWyxqK/Jq0ZyGbDHBQMbIBGwgXLrgQLTvjmsDwa8hIKsEwBs0x4WMGAmkv35CvRRLS07u81k/LXNgaDukfmpuIvKp4g6Lup23EuZRgYTDQKiB3IyQQweWg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721305232; c=relaxed/simple;
-	bh=wbKJhMIleA8lfTJZrvt/KjGa8g+uwTZDE+I13K98uQc=;
+	s=arc-20240116; t=1721322283; c=relaxed/simple;
+	bh=Q5l85LSxlzarv0e/wsuT6GgEgROmNHrRY2SW6McNCM4=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=MqwkrMxbeDkhGoLbgPCkeTUwDMPXuYYCKOhLRnc2WzeTddiMJvShUwYOhKC6tBeX9eqVjpJXxtPaqXbknKt5oOAF60qkp3bNhp5ccQHPhyoa4KOGsVzkPOX/CkNj40HOCNea51LBnPyS+OM47oIPbsXaoRQYLN/dAcUS6m849SM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=xmMWVg/S; arc=none smtp.client-ip=209.85.221.46
+	 To:Cc:Content-Type; b=p+Y7LWPg3D8BKopDEJbuEYVNWAmfq98AlrRIy5cTOj0wL3h9lt8pTpbwRFxeexZjZEgI0NbcrKdDPHSlGSRVDnS3ECieUkLd9fkyZ6zzFWcVGqUS4xNjSVuH+5LM+5oRkcEX64/F571Q9Ny2BlUMDpVVIHBaQIorGILqPyDSjd8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Q6KLQOJz; arc=none smtp.client-ip=209.85.167.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="xmMWVg/S"
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-368313809a4so980180f8f.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 18 Jul 2024 05:20:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Q6KLQOJz"
+Received: by mail-oi1-f171.google.com with SMTP id 5614622812f47-3d9306100b5so644997b6e.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 18 Jul 2024 10:04:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1721305228; x=1721910028; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1721322281; x=1721927081; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=EcnNlnLKzSsTcE/GmmIB9OL2PzwcGV5Vix9M/mA0UzY=;
-        b=xmMWVg/S0eBCWPDQ6lt3Ew6m1j9Mv4bcIYk4PLiqG/Bm/o9fivBIpP/cZNbYH9k7Jl
-         ivsfYo1rAuuJaWRaww39m7F3v5RxYY7DHbxCMgn4w6x35+3xpexzNTwN0l06PptQQrLG
-         H4DuKae4UiWSpHK3jetocD6PY3gblWdFThjZQxukozHZ1wbccV/pMY2OhZAt45JBFdyX
-         bYtwa9dzV16k5MS+pTyon9joUYLT5AcWCJuBs1PEMIqyVICudOhQ33Qyp5cBNMoCCsbn
-         UzgR2m4qD1EiPRJHcfpdJWKxPcASDfRwtPBrLm7vP/63koAonNDMEQfgUD3n29C+2yqS
-         3nAw==
+        bh=JOgcBJksqQYR241Dn4n/+No1mkroFi9eeKK4SWqcpU0=;
+        b=Q6KLQOJzW4zT7O74d75Re2GYPQvBpYQeaUSviMoJ5JIOKsjrAPbfZp4vy3223ukf0M
+         aHqItwre0L2VUfx7UE+oRuDGQ/LaHmSmZ1FZ6mV6jkDZjfLjaOg80elTSGnJPzqiQ9bX
+         ejWMIB5xfexQIaZje1JYTtTjDK4Kp3ywppYFZAp6f2rv42V54lk5dYqyNVr9yxbRssN3
+         soQClxZQhSEARsWdqhnAn2uuzCeNS5V7XDYP0k0b9/ERryPNdNhvw3WWy+aLJF3GEHAf
+         RnJTczRHl/chGOqoJqsal/rC4SI0zaSqzubu1y24rsd17iDugN7qFL1I4wwrr8gSzlS+
+         xSJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721305228; x=1721910028;
+        d=1e100.net; s=20230601; t=1721322281; x=1721927081;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=EcnNlnLKzSsTcE/GmmIB9OL2PzwcGV5Vix9M/mA0UzY=;
-        b=Q5S70m6FV85yx0kioZytD3GkepAfJrrMkHVpgLLPx0Zez0Twnwp8jgVHuriV+mRUy+
-         FO57klYmmFBsmmUEM9ZKQoikBF8E1xwlR4Y7fyNLugxQga1GDC390HV0JF8EBzdtfSAk
-         mEbeRoYLNd8rzJZ3EvIIySyDV0G6eiLZ/TDDTXHITcqW/guahwhNX0XNK8DMyd7RX5U5
-         u7kcUhM3NlCPEev9Ynwh5sSfG5Mh9fT8gr+N9xfa0T24Q/yoRJalF03vxq245i7Hn5qw
-         6+XWUFA7RWvzJxKda8aR6p1B0XP5DmPmJYEqz7il2+JQHIbx8BYYj6lHje1C9WViKaVT
-         2HcA==
-X-Forwarded-Encrypted: i=1; AJvYcCXqygefZa4uHJsCio0DqQfooMQ+OwOmWBJaFcrt4GdotKi8exKs+QhRN6aViOpyeAzJT9Gv+5M50bw4VsKtN5a6QYYVgudFEhbS+pIEeWI=
-X-Gm-Message-State: AOJu0YxPrqDO0DgHr8AZ02wX9UK4uKtGJ3KeP13n94MOifVSowv64L10
-	Th9Y4Yju/zMqlVa3m1j2kM5EynkqtgMla74WZa7tioKBPARQiFyn73LT0CiG4ZsQPfdIE+GfTq8
-	yDQNWDH7BzTBUhZWlxc15SB3VERgvvGuHMQfQ
-X-Google-Smtp-Source: AGHT+IFq9duOgNwQLu0gkyGvUZVw6R86dCETUZhi16vwKrj+wkGzq6dSMDkpbgZJuOSq82x7jRHC/sgftwOXxXrFgmI=
-X-Received: by 2002:adf:cd8d:0:b0:368:6bb:f79e with SMTP id
- ffacd0b85a97d-3684b378746mr1969552f8f.4.1721305228089; Thu, 18 Jul 2024
- 05:20:28 -0700 (PDT)
+        bh=JOgcBJksqQYR241Dn4n/+No1mkroFi9eeKK4SWqcpU0=;
+        b=VbFP+jj1cKmBPyCPp7n9rG5+PeUUV9yhLDnxlzSmq+lo+FBfbI9dd7PackLaBgpBI1
+         K/j/N8V6e4hZUb4CMs3YhPxz1oSZuIyHm5ROB8IMwotBCI6SXQaWUZ5j6qdF2FlpyxAP
+         DZoVzF7Km2v+8Z0yCMQkfhI9sAnGFglG/W1PJNZHW6cKGrAOcWXFG8YikvZSTURndVHa
+         POU/u+CtWbilwz5GoNRQtB2aMIA6pmws6fQ/5n3HWafs0RnI3WfeNrt87hFfN4DD6R6V
+         8HOad1V0GmpLXg4RJ9PEnRSbekSh2mIHeNNlsdoiPNkD0VaEE7+UlNr59NSX7h6uF3Vp
+         A9xA==
+X-Forwarded-Encrypted: i=1; AJvYcCUZzfq3lLZxzkKgSLoLouNKDCCvYPLRualSVNjUN180tjOCka3Inb29ud8+QSHhv0UDmKOcPMwFNknSPJ3zJUWZoA4Cmy90eyYe/KI1snM=
+X-Gm-Message-State: AOJu0YzgBMg3QNPuVBxT9G1HZnVo1ZIcShC9yaI+VfmasdIAd/yuaLoy
+	ieIY0Pf8KS1rscr01MqvUSMrhaUMRmijH3leLFaQg/To4Yw30dEEHneT6+UMwMf5NPVlI0jf/VP
+	DNqttullRG2IdaVr4aP32R3kcEqGMmatBTean
+X-Google-Smtp-Source: AGHT+IHIjTmrI0jCAyNcsSfQ/y+ZsFVwJ3tTLOnIWk9Nqrpd4EM2Zs/gnSMu+UZt19FSyCyBQnLBilyB7oVArCtO9gQ=
+X-Received: by 2002:a05:6808:14d2:b0:3d9:385d:8754 with SMTP id
+ 5614622812f47-3dad77941a9mr4154254b6e.47.1721322280726; Thu, 18 Jul 2024
+ 10:04:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240717221133.459589-1-benno.lossin@proton.me> <20240717221133.459589-2-benno.lossin@proton.me>
-In-Reply-To: <20240717221133.459589-2-benno.lossin@proton.me>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 18 Jul 2024 14:20:15 +0200
-Message-ID: <CAH5fLgg0O=t2T2MQH2hvm4eZnCOa_NffzRw=XZPi9+7+=XsmRg@mail.gmail.com>
-Subject: Re: [RFC PATCH 1/5] doc: rust: create safety standard
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Jonathan Corbet <corbet@lwn.net>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@samsung.com>, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+References: <20240617175818.58219-17-samitolvanen@google.com>
+ <0b2697fd-7ab4-469f-83a6-ec9ebc701ba0@suse.com> <CABCJKueGRBdFfGW-cvOvqxc-a85GpxtwPmLdE_1RiAkNLrEg+g@mail.gmail.com>
+ <2024071643-washcloth-patronize-ce6b@gregkh>
+In-Reply-To: <2024071643-washcloth-patronize-ce6b@gregkh>
+From: Sami Tolvanen <samitolvanen@google.com>
+Date: Thu, 18 Jul 2024 10:04:02 -0700
+Message-ID: <CABCJKuc5FRn2STrmg1zR_xXrvuTnFp+m6GudRN1O4bMr8YWKeQ@mail.gmail.com>
+Subject: Re: [PATCH 00/15] Implement MODVERSIONS for Rust
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Petr Pavlu <petr.pavlu@suse.com>, Masahiro Yamada <masahiroy@kernel.org>, 
+	Luis Chamberlain <mcgrof@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Matthew Maurer <mmaurer@google.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jul 18, 2024 at 12:12=E2=80=AFAM Benno Lossin <benno.lossin@proton.=
-me> wrote:
-> +Soundness
-> +=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> +
-> +``unsafe`` operations (e.g. ``unsafe`` functions, dereferencing raw poin=
-ters etc.) have certain
-> +conditions that need to be fulfilled in order for the operation to not b=
-e UB.
-> +To evaluate if the ``unsafe`` code usage is correct, one needs to consid=
-er the API that wraps said
-> +``unsafe`` code. If under all possible safe uses of the API, the conditi=
-ons for the ``unsafe``
-> +operation are fulfilled, the API is *sound*. Otherwise it is *unsound*. =
-Here is a simple example::
-> +
-> +    pub struct Data {
-> +        a: usize,
-> +    }
-> +
-> +    pub fn access_a(data: *mut Data) -> usize {
-> +        unsafe { (*data).a }
-> +    }
-> +
-> +    fn main() {
-> +        let mut d =3D Data { a: 42 };
-> +        println!("{}", access_a(&mut d));
-> +    }
-> +
-> +While this example has no UB, the function ``access_a`` is unsound. This=
- is because one could just
-> +write the following safe usage::
-> +
-> +    println!("{}", access_a(core::ptr::null_mut()));
-> +
-> +And this would result in a dereference of a null pointer.
-> +
-> +In its essence, a sound API means that if someone only writes safe code,=
- they can never encounter UB
-> +even if they call safe code that calls ``unsafe`` code behind the scenes=
-.
+On Tue, Jul 16, 2024 at 12:12=E2=80=AFAM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> > After replacement:
+> >
+> >     union {
+> >             u64 new_member;
+> >             struct {
+> >                     u8 __kabi_reserved_1[8];
+> >             };
+> >     }
+>
+> Note, such a thing would only be for the distros that want it, you can
+> add support for this to the tool, but there is no need for any
+> __kabi_reserved fields in mainline.
 
-I think this section on soundness could be more clear. You never
-really give a definition for what soundness is; you just jump into an
-example immediately.
+Sure. I assume modversions are primarily useful for distros, so I just
+want to make sure this scheme can handle all the common issues as
+well.
 
-It may be nice to talk about how a sound API must prevent memory
-safety issues, even if the safe code required to do so is silly or
-unrealistic. Doing so is necessary to maintain the "safe code never
-has memory safety bugs" guarantee.
+> > Greg, I know you've been dealing with this for a long time, any thought=
+s?
+>
+> It's a good start, yes.  Also watch out for when structures go from
+> "anonymous" to "fully described" when new #include lines get added to
+> files.  The current tooling has issues with that, so we need to use
+> __GENKSYMS__ #ifdef lines in some places to keep crc generation stable.
+> Don't know if dwarf output would be susceptible to the same issues with
+> that or not, but you should check.
 
-> +Because unsoundness issues have the potential for allowing safe code to =
-experience UB, they are
-> +treated similarly to actual bugs with UB. Their fixes should also be inc=
-luded in the  stable tree.
-> +
-> +Safety Documentation
-> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
-> +
-> +After trying to minimize and remove as much ``unsafe`` code as possible,=
- there still is some left.
-> +This is because some things are just not possible in only safe code. Thi=
-s last part of ``unsafe``
-> +code must still be correct. Helping with that is the safety documentatio=
-n: it meticulously documents
-> +the various requirements and justifications for every line of ``unsafe``=
- code. That way it can be
-> +ensured that all ``unsafe`` code is sound without anyone needing to know=
- the whole kernel at once.
-> +The gist of the idea is this: every ``unsafe`` operation documents its r=
-equirements and every
-> +location that uses an ``unsafe`` operation documents for every requireme=
-nt a justification why they
-> +are fulfilled. If now all requirements and justifications are correct, t=
-hen there can only be sound
-> +``unsafe`` code.
-> +
-> +The ``unsafe`` keywords has two different meanings depending on the cont=
-ext it is used in:
-> +
-> +* granting access to an unchecked operation,
-> +* declaring that something is an unchecked operation.
-> +
-> +In both cases we have to add safety documentation. In the first case, we=
- have to justify why we can
-> +always guarantee that the requirements of the unchecked operation are fu=
-lfilled. In the second case,
-> +we have to list the requirements that have to be fulfilled for the opera=
-tion to be sound.
-> +
-> +In the following sections we will go over each location where ``unsafe``=
- can be used.
-> +
-> +.. _unsafe-Functions:
-> +
-> +``unsafe`` Functions
-> +--------------------
-> +
-> +``unsafe`` on function declarations is used to state that this function =
-has special requirements
-> +that callers have to ensure when calling the function::
-> +
-> +    unsafe fn foo() {
-> +        // ...
-> +    }
-> +
-> +These requirements are called the safety requirements of the function. T=
-hese requirements can take
-> +any shape and range from simple requirements like "``ptr_arg`` is valid"=
- (``ptr_arg`` refers to some
-> +argument with the type matching ``*mut T`` or ``*const T``) to more comp=
-lex requirements like
-> +"``ptr`` must be valid, point to a ``NUL``-terminated C string, and it m=
-ust be valid for at least
-> +``'a``. While the returned value is alive, the memory at ``ptr`` must no=
-t be mutated.".
-> +
-> +The safety requirements have to be documented in the so called safety se=
-ction::
-> +
-> +    /// <oneline description of the function>
-> +    ///
-> +    /// <full description of the function>
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// <safety requirements>
-> +    unsafe fn foo() {
-> +        // ...
-> +    }
+That's a great point. DWARF output has the exact same problem if a
+structure declaration later becomes a definition, but I think we can
+come up with a solution for this issue too in v2.
 
-I would love to see a proper example here.
-
-> +.. _unsafe-Blocks:
-> +
-> +``unsafe`` Blocks
-> +-----------------
-> +
-> +``unsafe`` code blocks are used to call ``unsafe`` functions and perform=
- built-in ``unsafe``
-> +operations such as dereferencing a raw pointer::
-> +
-> +    unsafe { foo() };
-> +
-> +In order to ensure that all safety requirements of ``unsafe`` operations=
- are upheld, a safety
-> +comment is mandatory for all ``unsafe`` blocks. This safety comment need=
-s to provide a correct
-> +justification for every safety requirements of every operation within th=
-e block::
-> +
-> +    // SAFETY: <justifications>
-> +    unsafe { foo() };
-
-I think it is worth explicitly pointing out that the safety comment
-must explain why the preconditions are satisfied, *not* what the
-preconditions are. It's a really really common mistake to mix up
-these, and it probably even makes sense to include two examples
-showing the difference.
-
-> +For transparency it is best practice to have only a single ``unsafe`` op=
-eration per ``unsafe``
-> +block, since then it is more clear what the justifications are trying to=
- justify. Safe operations
-> +should not be included in the block, since it adds confusion as to which=
- operation is the ``unsafe``
-> +one. In certain cases however it makes it easier to understand if there =
-is only a single ``unsafe``
-> +block. For example::
-> +
-> +    // SAFETY: `ptr` is valid for writes.
-> +    unsafe {
-> +        (*ptr).field1 =3D 42;
-> +        (*ptr).field2 =3D 24;
-> +        (*ptr).field3 =3D 2442;
-> +    }
-> +
-> +In this case it is more readable to not split the block into multiple pa=
-rts.
-
-It would be nice with an example of a completely normal safety comment
-example. Also would be nice to call out that the semicolon goes
-outside the unsafe block to improve formatting, when it's a single
-operation.
-
-It would also be nice with an example that shows how to reference the
-safety requirements of the current function. (That is, an example that
-combines unsafe fn with unsafe block.)
-
-Alice
+Sami
