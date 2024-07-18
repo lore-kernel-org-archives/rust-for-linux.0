@@ -1,49 +1,84 @@
-Received: from bombadil.infradead.org (bombadil.infradead.org [198.137.202.133])
+Received: from fout8-smtp.messagingengine.com (fout8-smtp.messagingengine.com [103.168.172.151])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23C5D10FA;
-	Thu, 18 Jul 2024 03:19:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.137.202.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42C8D1B86CC;
+	Thu, 18 Jul 2024 04:45:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721272773; cv=none; b=hO6/YabkyopMXsOx4lRlm1AhdyXUW+ZdgcrkvCjllrfvnNQph7JEhut+omAK7TEowcB0yrQ/kQJdMwDvmWYmLb5VUNZ7jbe5kGG85wJQzqhkoTzJm5aWZSkqvTdgn+YygYBZYw64xd+bFjSKsRQquq1qPC5dBYJ3x+VrwJ0Uk5c=
+	t=1721277931; cv=none; b=s6DHb4i5t1r4TWs0TjEu3NuLIKXyStttUmxx/EcM/a3i/06YlV65xSyMzP9ZyJi8BIOf+dOmjAtM+Ngf0RNqy9zdFwTM02oTHxwNyoZlXFE2Jgn/ciGBysDFu93nhI7Y51cB6g+Y8hulyrO6a24bvWmjF3dXpmHRwnWyHxuQnsA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721272773; c=relaxed/simple;
-	bh=tXruxjgAXXRBLUq1EkRrqyOOCz8QYRXKeMCznTc40C8=;
+	s=arc-20240116; t=1721277931; c=relaxed/simple;
+	bh=BRy2bM2IKgR8xgKYEPIAFK1X2XFkO/8SAl9n4X17KO0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KE5Ft1DZNGKO1zpBq8cUivyVyB0ix8XJXGIxTBReNiOW1YoHtmN/7dt7+OZNOwKb6wNETfnr9UaDMsudRlWJFVqINir7Fxp8JXn4BWKOuPWc5L5MhE0VdMJ2VQjUi4EXREaLZqB/BhHuXTgsJ6ZpX6EHbAkdn3GwDfw4TZZGz2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=ouvqrdYy; arc=none smtp.client-ip=198.137.202.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=bombadil.srs.infradead.org
+	 Content-Type:Content-Disposition:In-Reply-To; b=AdYK6QO4x53KFhlwNE6uoX1N0A3ji5Ic9kn0BFaymTI/J6u9W+63hoAcCWY682ZmbJe+pbbVcbKbx04R/iyCszz/Rq5ZZxhlTHio8j8vDRMQMUWSc8vV4Lc2TutK0MmMdhz52DvuCzvuKseFQ4JtJZfqaPD+lJcivYfrAlINgAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=rz5PMYiA; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=GDfepS6T; arc=none smtp.client-ip=103.168.172.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="ouvqrdYy"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
-	:References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=/LTPAcX/ZdjGkJwMuB2EgBlggsZFjsN2rKA6eaMLSE8=; b=ouvqrdYykFU+bNpobimR6tPIcb
-	8NVCZ3LzwWqCgBwgzE5KcKF6vi++xgF+5VFZaPkj2K5xCbUC/PQCfsuOG3cXOWdEUzJG49cKQmljT
-	ucgMwNZILMaMifaz0Z38PZbDjiWbtXt6r4sr3ZggLYUh2/t+IdI4VEkPDJ1Z1Yc1E8OSWI7ts8vG5
-	E+vRVLGgdr4NHWg4o53/RRR7y46J/tDfh+VnVW14E42kYPJAdU0TnkgbZw/VF5ZBxAWLpAO/mBClu
-	jfupGLl2SauTXBANww59ennqTdZiqq2lPcCHPnj7O+CtyWZ6+pDEDDiiLqqRy3nNYzj6QFMh2NOLF
-	LD70kLfw==;
-Received: from hch by bombadil.infradead.org with local (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sUHfy-0000000Fbpe-1eTd;
-	Thu, 18 Jul 2024 03:19:26 +0000
-Date: Wed, 17 Jul 2024 20:19:26 -0700
-From: Christoph Hellwig <hch@infradead.org>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: cl@linux.com, penberg@kernel.org, rientjes@google.com,
-	iamjoonsoo.kim@lge.com, akpm@linux-foundation.org, vbabka@suse.cz,
-	roman.gushchin@linux.dev, 42.hyeyoo@gmail.com, urezki@gmail.com,
-	hch@infradead.org, kees@kernel.org, ojeda@kernel.org,
-	wedsonaf@gmail.com, mhocko@kernel.org, mpe@ellerman.id.au,
-	chandan.babu@oracle.com, christian.koenig@amd.com,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 2/2] mm: kvmalloc: align kvrealloc() with krealloc()
-Message-ID: <ZpiJvj1_rKodpVSt@infradead.org>
-References: <20240717222427.2211-1-dakr@kernel.org>
- <20240717222427.2211-3-dakr@kernel.org>
+	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="rz5PMYiA";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="GDfepS6T"
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
+	by mailfout.nyi.internal (Postfix) with ESMTP id 2487C13801DB;
+	Thu, 18 Jul 2024 00:45:28 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute2.internal (MEProxy); Thu, 18 Jul 2024 00:45:28 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm2; t=1721277928; x=1721364328; bh=q31G4O/MNO
+	/gOgnqYp7t4bFpYnaYCryDFvme9kOpRlQ=; b=rz5PMYiAx9gdb5JmmrWiMasRKm
+	RXWQl7ofwbxlQkKC9lQVd6jwNynJQaPbGIazP2IEbqSJU+ZgkaHThX+uO2kZXPjL
+	DV8pvhQOVy20F8cKgJpYWvgQl0rzUq68G7wOKBucUY0J3HHv93ltCUpij2ngdzy1
+	09n1xch3pw+y0EOP3VSyB/dunj3GKLzVkC9zH4Faq8E/AZtre4Qac2jym19jRKH8
+	pOo4n67KXyHDhjRF7Ksx/CDrpQg8JcvqvMe0UYQ2T1ZsoYSZOr5muBDO7HhGM+0/
+	P6akGMP+uzCFeCMrYUkmfHgueSJSrWcoo6qRnMKKdThxPJ3hTlpTLpTBEXUw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm2; t=1721277928; x=1721364328; bh=q31G4O/MNO/gOgnqYp7t4bFpYnaY
+	CryDFvme9kOpRlQ=; b=GDfepS6T5SU3Eg2qItsMD6uvuVs29UEk/Sw7vxXW44DW
+	57KD9U/Gep2PyApBioxNs7ZNhvLelJe7grRr9tYpTa7x4dA1aRZYbzUoxQGj91am
+	ODE/mfHgyii4tjLjrPww2Pi8wEPycF2hXvO39/ysQDvVb304qaRGyJNg6NeRoBao
+	MISoHxY5u4mzACW5xhmM3jUph6VNwwR4EesNpDBlM0CSFu/UHy/9bTL5DnIG1s+g
+	0ZHq983SLYmqgo7rIROwV9hMDtEa9pMtUaaKngGQAUqZFwJTjioahyL0Y8lAggIT
+	F+tq7fCsFWr8bhzu1mnu9JYbnUmq1F7vtiLAscV1IQ==
+X-ME-Sender: <xms:5p2YZsGGLTtRbUfcYLdlfNtjtr_Ftr8FMFIFVyfVV8aogdtdaFriSA>
+    <xme:5p2YZlXiVfnHz9OEu_GK8HzGfcJ-FXk2E3Ly9wE5TEGIGZudDfgxPqMhrcWfHG0Gp
+    rcC7sdt-rO_bA>
+X-ME-Received: <xmr:5p2YZmIUpqZRbM9LA_n0gcXd3B1gXv4CYmOxR7G-vkdyVtMuzX2uJ4igWkg01sigW8Dod13z-DjVcbI0MPVxezzMZbEFJ2K4SVRXxA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrgeekgdeklecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefirhgvghcu
+    mffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeehgedvve
+    dvleejuefgtdduudfhkeeltdeihfevjeekjeeuhfdtueefhffgheekteenucevlhhushht
+    vghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehgrhgvgheskhhrohgrhh
+    drtghomh
+X-ME-Proxy: <xmx:5p2YZuElQjbhjKsZ4ISAkFU9vqrMNlYPtfsRJ_-q6TMo_CISxxqbQg>
+    <xmx:5p2YZiUL4s22Z8m3VLoc-5A9GnN3UyTurBc3qO-sK_opm59LIph9wQ>
+    <xmx:5p2YZhOZRJwiQUHqprmcuyLaSojz4A6OvVIbIl0-r4VBhXDmuWWa3A>
+    <xmx:5p2YZp3Q3TRUZ9_IyQlYuNxg2wfWQZE0OTgsqXdgtQ5YJeBhyaz0cg>
+    <xmx:6J2YZlrldnw_5lQB5_Fe1cLzKDcEtgM6XPNJidTpWW3g6W6mKv9AGukV>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 18 Jul 2024 00:45:25 -0400 (EDT)
+Date: Thu, 18 Jul 2024 06:45:24 +0200
+From: Greg KH <greg@kroah.com>
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Jonathan Corbet <corbet@lwn.net>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [RFC PATCH 1/5] doc: rust: create safety standard
+Message-ID: <2024071845-neuron-figure-2e26@gregkh>
+References: <20240717221133.459589-1-benno.lossin@proton.me>
+ <20240717221133.459589-2-benno.lossin@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -52,29 +87,17 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240717222427.2211-3-dakr@kernel.org>
-X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+In-Reply-To: <20240717221133.459589-2-benno.lossin@proton.me>
 
-> +extern void *kvrealloc_noprof(const void *p, size_t size, gfp_t flags) __realloc_size(2);
+On Wed, Jul 17, 2024 at 10:12:29PM +0000, Benno Lossin wrote:
+> +Because unsoundness issues have the potential for allowing safe code to experience UB, they are
+> +treated similarly to actual bugs with UB. Their fixes should also be included in the  stable tree.
 
-Please drop the extern while you're at it and move the __realloc_size
-attribute to a separate line.
+Odd extra space before "stable".
 
-> +static gfp_t to_kmalloc_flags(gfp_t flags, size_t size)
-> +{
-> +	if (size > PAGE_SIZE) {
-> +		flags |= __GFP_NOWARN;
-> +
-> +		if (!(flags & __GFP_RETRY_MAYFAIL))
-> +			flags |= __GFP_NORETRY;
-> +
-> +		/* nofail semantic is implemented by the vmalloc fallback */
-> +		flags &= ~__GFP_NOFAIL;
-> +	}
-> +
-> +	return flags;
+Also, link to the stable kernel rules here when you reference "stable
+tree"?  That will explain what you mean here.
 
-The name for this function sounds a bit odd.  Maybe kmalloc_gfp_adjust
-instead?  Also the comment explaining these flags tweaks should move
-from the caller to this function.
+thanks,
 
+greg k-h
