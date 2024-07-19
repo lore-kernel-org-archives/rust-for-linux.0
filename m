@@ -1,57 +1,37 @@
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C3FA2AF12;
-	Fri, 19 Jul 2024 16:28:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A69D1B86D9;
+	Fri, 19 Jul 2024 16:36:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721406500; cv=none; b=IjTq5o6n66ORRDP9pBOki1nT/v9ki1wXX+h1eJIeYMSX6Iahvwq5BArOg6w/TxMpr92LqHXd1GSpk/V4Lyc6wJzeYiRnMe8ngI1GnZkL4TS6Cp546pCLBHmOBIk75esN4Z9C4fNFItPRbFXTAORQw+jY+Kz7z11d8xeiJ7h8gdQ=
+	t=1721407011; cv=none; b=Lixji7Izk7R4I/IF8Ksb2qG/KErygxu3Oh69r77Vq6tnOS4SwK8aIfZT3TrDt0WCqfeHYT/I8KfYDYibk8PNy2jNQa8RAbL21IHDz8g7mV3fnh6h5EON+Kvn8Xc5lA04K3J08vUzM3oJjPEfFdPNF+VIvp1yBHz57szlbgV1k8U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721406500; c=relaxed/simple;
-	bh=ex1rU7vF9CwFi1ojZJgaEL8x2pgCvZSEMkfjUO4d1ec=;
+	s=arc-20240116; t=1721407011; c=relaxed/simple;
+	bh=ViAOgDbqOJgSD3XNJ+MZa5I9UegRL4khnice5Z8aE88=;
 	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=aKR3h6jANrgmo3YvuuDZlnfO7HwSgwObcNd2nO2cDsppF+LTr4mTgAWZwMZ8ZuPQp4BEvCLd39mNf1volSnm8Ie2WSawO4cmjQpH2Zl2wTtOzofpROLXE22ZGjp7VJ61Zhaq5PFGngtbtSIA6tgyNct1CHWPXOKMupqxeu3zWKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Zm+Hod46; arc=none smtp.client-ip=209.85.210.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 Message-Id:References:To; b=YyxnRVFh+J6hwHr6oKLlAewNnqtrqptYtII/3fsdh70QLOYuC+9LScYrdIRTmBhUyrVMjAII4OFGEk7MOsXHILf+GbZyzL61KWuPGFaWneDvDXNHlJ2pycsV4Q8ALk3VVQjFvYLA6edUn1QWdOW4MOAAgnacXIfFUpPSsrgv1Zc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=RhmkLl0g; arc=none smtp.client-ip=46.235.227.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Zm+Hod46"
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-70af3d9169bso824432b3a.1;
-        Fri, 19 Jul 2024 09:28:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1721406498; x=1722011298; darn=vger.kernel.org;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mBxdc8htTVNTdgwXFOVSXYK26L43hc2ApkbvbhVjMfA=;
-        b=Zm+Hod46+9ZIidrssItGSDC5rykorQhB4LDWZf6OaDg5gi1rfbJMi5dczR5gfJv3JO
-         hxG3P/oDiQJoc7LZXyKYO2l6gvl7+2aN4aydLWVJ+rs2yR/DnkzgeWGutCwSz2EGGik/
-         uLOdtQjvbF7ph3xe8rpOR+NnbUBgskxQJ/wK6+hXjgLn9E1CjTe9zuMjeHpa8hyvFWWW
-         3ySQlIKllBbTpkM5K1WOdgAVVNLXkZd39z5F45aJCODegkcOL2vJ1S5D4x94suAuFvVs
-         GMGpcVviXp3SXmdGp4RLy4QNc0NjVYK/XYoRHoRFv1+UFogFdlBit83cSd40GEdiPrGq
-         LVbQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721406498; x=1722011298;
-        h=to:references:message-id:content-transfer-encoding:cc:date
-         :in-reply-to:from:subject:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=mBxdc8htTVNTdgwXFOVSXYK26L43hc2ApkbvbhVjMfA=;
-        b=cKB5Zf6yWjgA+TTRl5Mcj39cTjxKLU+bZuyZBWkaeyfuAyZLd3nBEpxICcnNUgJdAK
-         pIMuf5aWsuXlJy4A11UiaaGW0fHgMw1cPY2Zuh6hATZG25WlTlpLPgf1htZnZO/RrSq4
-         EXwvn49ZZn2XehhTs5AzYd+HVf636uLTW2uDp7y3gmnhwbDrHtKhnCSuXw1LzPwU6iyo
-         mq/tK8jazO/Yd3dPl3C5H+zIyfcvy9SiTgBRvtcYK4ItKv9SkP/vBjluOfMxDIQwv0YD
-         ZSmM0GAioT5S/miQ8sf8BCL/s5OnW7KSQa0IzIiLDogO3y4A11OI5zGgrwhdci6GEC9I
-         QfyQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWIvcqX/NnGdqP/0Dw/2x+4eOAVWDHnoPqu5U/eyczpdUNZPekrjv28AKpKoIpgfTL+NMNJLoxGTn97ZKDx/KNHOHsVO+7OAR2pKrgAjdwFZX+vuHohklnOM9WBJqVG0pItad3rNuJNKigAZ21SGR4Xi8CbrpBDYxtaEhHXlqKaHW1F/e4Q9EU=
-X-Gm-Message-State: AOJu0YzXEWEB8E/XVw5/lHFygxH+K/d0YIsNJaRTFj89aXj1QrMHJONj
-	a+wWzjT0thKXmfH4qheBul0Fo01v3Fx29I88kK1gfC3nrLxzr+9F
-X-Google-Smtp-Source: AGHT+IFPbEeCxCkDDDmHRTe46oZyTKacN+m1a4EVDNJ8zRsbZmcUO5ydpSycRE43Wxng9n1rdrSPSg==
-X-Received: by 2002:a05:6a20:1595:b0:1c3:b102:bdfb with SMTP id adf61e73a8af0-1c42299ec6cmr583123637.43.1721406497939;
-        Fri, 19 Jul 2024 09:28:17 -0700 (PDT)
-Received: from smtpclient.apple ([2804:431:c7e4:b76c:70bb:7589:2029:7c05])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2cb772c2160sm3069852a91.8.2024.07.19.09.28.14
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Fri, 19 Jul 2024 09:28:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="RhmkLl0g"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1721407008;
+	bh=ViAOgDbqOJgSD3XNJ+MZa5I9UegRL4khnice5Z8aE88=;
+	h=Subject:From:In-Reply-To:Date:Cc:References:To:From;
+	b=RhmkLl0gSTVCFVG/G6swUlsffFRzMEybo8Pt86DkA3AUXxOXZ9HbMaZhdoAfdkx7m
+	 QaqtUa2Vy1zG0FLvMEOUxDuRdDR85zktW2H0rg396oMo7qplcR8mNrEJXXVqutb1wp
+	 Qe2en0tAyzlQLgmZPsn+X3TECFQBG85SuwNac1mSEYT/XqOmHCUIm1CWWVh5Dyui6A
+	 K0w7M4/uCnelD/RF1LATyByZsaKjJs5XNeR1GtJ/WdDVWdbXgllmNkYn8gIRSul/x0
+	 PtBiBFPfzzZscbc+Gn3t3/PhN1MudEXnHEna3GFEmKM1OlxKc1RaP9GmVfhH+bRkJi
+	 7IvetuZWDIKug==
+Received: from smtpclient.apple (cola.collaboradmins.com [195.201.22.229])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	(Authenticated sender: dwlsalmeida)
+	by madrid.collaboradmins.com (Postfix) with ESMTPSA id 2B76637813D3;
+	Fri, 19 Jul 2024 16:36:43 +0000 (UTC)
 Content-Type: text/plain;
 	charset=utf-8
 Precedence: bulk
@@ -61,9 +41,9 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.600.62\))
 Subject: Re: [RFC PATCH 2/5] doc: rust: safety standard: add examples
-From: Daniel Almeida <dwlsalmeida@gmail.com>
+From: Daniel Almeida <daniel.almeida@collabora.com>
 In-Reply-To: <20240717221133.459589-3-benno.lossin@proton.me>
-Date: Fri, 19 Jul 2024 13:28:02 -0300
+Date: Fri, 19 Jul 2024 13:36:31 -0300
 Cc: Jonathan Corbet <corbet@lwn.net>,
  Miguel Ojeda <ojeda@kernel.org>,
  Alex Gaynor <alex.gaynor@gmail.com>,
@@ -77,11 +57,17 @@ Cc: Jonathan Corbet <corbet@lwn.net>,
  linux-kernel@vger.kernel.org,
  rust-for-linux@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <FD292228-0AA1-465C-B373-E982F612FA27@gmail.com>
+Message-Id: <B0E3D539-2D29-4BB4-9CB7-98672F590A57@collabora.com>
 References: <20240717221133.459589-1-benno.lossin@proton.me>
  <20240717221133.459589-3-benno.lossin@proton.me>
 To: Benno Lossin <benno.lossin@proton.me>
 X-Mailer: Apple Mail (2.3774.600.62)
+
+Sorry, ended up replying to this using my personal email.
+
+Sending it again.
+
+=E2=80=94=E2=80=94=E2=80=94=E2=80=94=E2=80=94
 
 Hi Benno,
 
@@ -188,82 +174,5 @@ its lifetime.
 I find this paragraph a bit confusing. Maybe this can be clarified a bit =
 further?
 
-> diff --git a/Documentation/rust/safety-standard/index.rst =
-b/Documentation/rust/safety-standard/index.rst
-> index 1cbc8d3dea04..bebebda06831 100644
-> --- a/Documentation/rust/safety-standard/index.rst
-> +++ b/Documentation/rust/safety-standard/index.rst
-> @@ -92,21 +92,28 @@ And this would result in a dereference of a null =
-pointer.
-> In its essence, a sound API means that if someone only writes safe =
-code, they can never encounter UB
-> even if they call safe code that calls ``unsafe`` code behind the =
-scenes.
->=20
-> +For more examples of unsound code see examples.rst.
-> +
-> Because unsoundness issues have the potential for allowing safe code =
-to experience UB, they are
-> -treated similarly to actual bugs with UB. Their fixes should also be =
-included in the  stable tree.
-> +treated similarly to real UB. Their fixes should also be included in =
-the stable tree.
->=20
-> Safety Documentation
-> =3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->=20
-> -After trying to minimize and remove as much ``unsafe`` code as =
-possible, there still is some left.
-> -This is because some things are just not possible in only safe code. =
-This last part of ``unsafe``
-> -code must still be correct. Helping with that is the safety =
-documentation: it meticulously documents
-> -the various requirements and justifications for every line of =
-``unsafe`` code. That way it can be
-> -ensured that all ``unsafe`` code is sound without anyone needing to =
-know the whole kernel at once.
-> +No matter how hard one tries to remove ``unsafe`` code, it is =
-impossible to completely get rid of it
-> +in the Kernel. There are things that are impossible for safe code. =
-For example interacting with the
-> +C side. So one can never be completely sure that there are no memory =
-issues lurking somewhere.
-> +
-> +This is where safety documentation helps: it meticulously documents =
-the various requirements and
-> +justifications for every line of ``unsafe`` code. That way the risk =
-of writing unsound ``unsafe``
-> +code is reduced drastically.
-> +
-> The gist of the idea is this: every ``unsafe`` operation documents its =
-requirements and every
-> location that uses an ``unsafe`` operation documents for every =
-requirement a justification why they
-> are fulfilled. If now all requirements and justifications are correct, =
-then there can only be sound
-> -``unsafe`` code.
-> +``unsafe`` code. Reducing the global problem of correctness of the =
-whole kernel to the correctness
-> +of each and every ``unsafe`` code block makes it a local problem. =
-Local problems are a lot easier to
-> +handle, since each instance can be fixed/reviewed independently.
->=20
-> The ``unsafe`` keywords has two different meanings depending on the =
-context it is used in:
->=20
-> @@ -238,6 +245,8 @@ Further Pages
-> .. toctree::
->    :maxdepth: 1
->=20
-> +   examples
-> +
-> .. only::  subproject and html
->=20
->    Indices
-> --=20
-> 2.45.1
->=20
->=20
 
-=E2=80=94 Daniel
-
+=E2=80=94 Daniel=
