@@ -1,150 +1,245 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mout-p-103.mailbox.org (mout-p-103.mailbox.org [80.241.56.161])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78E50383AE;
-	Fri, 19 Jul 2024 19:20:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0187C147C8B;
+	Fri, 19 Jul 2024 19:22:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.161
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721416827; cv=none; b=P3j7p/4dozfCdGXb9r95JZm8NFd6wyJj6rMo3mmcNzrY7fmUKc7tskqbA4d3YhFqp/7KwNRsiVNQptBW1GW+i9aAjADF1SJZ76yVXGAvIsWctWN7Q+SHXOW2OgN8nYGiPTPtx9b+l8pg5qFHM8jndaarruJMaC73ApthxZKkqG4=
+	t=1721416984; cv=none; b=tTaGl8yEMjWq0R454Chej3aJMUVhA1nHV4lKZM+AGyIHOm4o2486WT969+jFOwvbJ+Xkfmfcr5RLDwDVSYRxUqUHBqRIHv46AgkglgtB0LXT9JorLAdlZzboxNz2DS8w1vHPEyrAcmF+5s4q2CPRbX2SWGBxl0faX1QjU94mE/A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721416827; c=relaxed/simple;
-	bh=CEWqSygAKH9ACrMNsXOlxzuZ9KSCSifLeDh3gU6Y12Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=C75kQi3txAjrLa+ac8CzAOK3AXOgvv7he4J16nd0AQFldrO6FUArAK/hRVU+nNN8H9WwYE1jtwX/DFgs/T3h3gCzDFK7KetSXFFn3G3r41TaGfc1Z7jGGZyinn/ezSNlG+pDtGeyXKdvpMZ8rRV1mj0RmPmc590HIOg2nq/vSQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nQBQbope; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1721416984; c=relaxed/simple;
+	bh=FiB1k7ZW2L9qvrbLzTajYumpfEgNj1qVPCi/WpVMsWA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=SgifNhl5tv9u8ZYrgaGAurPw9lax5lFRCrEWEiO6DqwlrO5t9csjz2mnFLq1+vQSKMqukgFp5gwYNT4mv+XV9FhFXDtH2SaPB+YCR+r0AE6UymScFuduuT04pmZ870FZ4inP6fiInUsK9ZR/64C+ijB3UiA2HWYDlibgw2Q3iwU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=i8vsH30t; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=evmpP3uX; arc=none smtp.client-ip=80.241.56.161
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nQBQbope"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A3B5C32782;
-	Fri, 19 Jul 2024 19:20:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721416827;
-	bh=CEWqSygAKH9ACrMNsXOlxzuZ9KSCSifLeDh3gU6Y12Q=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nQBQbope4oCHits71W7SPkK0aF3yHcjBzdufqlJPKdJtLIAAl+Us0f8oXc2dV9jwH
-	 2RDyAZ4W6v1ADQkIXWpgrQsW/52YCVGaiFKXcFF0K0dM2lLxuRh0ua0JaXXNDd5Hu1
-	 ErDRBhggUZqyMIdJI1UL5qRf2WAUpgcDNntJOM7eJTgVryfs4punZ80SpGnnMeBCUi
-	 YdH4Clnxf1QhdQ1CPE9YVKb2NHP7LG8lTacfopnVQOS0j9hHerxTsJWcCALW9UN66J
-	 Y5m2u9hiCIOxuZ3GRpkAGlIEFxUZ6jUDbWNJdDBSw3vc0m9u2jqjU+mKn1Ewa+GAMM
-	 S5vPsrqMMjsNw==
-Date: Fri, 19 Jul 2024 21:20:15 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: Benno Lossin <benno.lossin@proton.me>, Jonathan Corbet <corbet@lwn.net>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [RFC PATCH 1/5] doc: rust: create safety standard
-Message-ID: <Zpq8b0I2kYeAh2qm@pollux>
-References: <20240717221133.459589-1-benno.lossin@proton.me>
- <20240717221133.459589-2-benno.lossin@proton.me>
- <99DF6A0F-BAE9-4341-8B42-6C1F1C69E2C6@collabora.com>
- <ZpqeEywGic4nIEL8@pollux>
- <5E1B12C1-1ACD-4A26-AC89-CC32327B51F5@collabora.com>
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="i8vsH30t";
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="evmpP3uX"
+Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:b231:465::202])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-103.mailbox.org (Postfix) with ESMTPS id 4WQfhW6Stwz9sQr;
+	Fri, 19 Jul 2024 21:22:51 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1721416971;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=3ZBvqEenjInpmNIAA4ZKnr+Ec9cxwQRrsbC7X+M+5qI=;
+	b=i8vsH30t6DkZEvleP99CmjQVlNZmGUZGnH+C0xxD5LFR70fsoYFFkX3J2p+cNpA3M7gaTL
+	R4xiM2uvUj02Q6bHhj0eYFAPncPIUklZ5A6Lc8V7z/OVnn4fjgZ+PZsUReib0RnalQEkM9
+	uf+PcdlVpcwg8f5jfmptTI9IFARv0UtMJfFCIJwA5GTMtHmg22jKqO6dxgcVSZXi9ZZ5A/
+	Opj71W+noBjq0t6ymvNA18YiZqPLJa4kkEn8+TyLLsXA8J6YrUV1UviqtMt/9gB0X/lyjl
+	4iSXlc63zWTOyemv+ls/y9VGsWmQwDIFf0aw5atNVp6GOxTssAPyRwDBH1/rsA==
+From: Alex Mantel <alexmantel93@mailbox.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1721416969;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=3ZBvqEenjInpmNIAA4ZKnr+Ec9cxwQRrsbC7X+M+5qI=;
+	b=evmpP3uXBOsM6t88c8+aLBSLPO+BW4YJGC3NcOa+scgXsKibMs14SZxBYGN25oYHKcXWif
+	Db504sZFobJn33B8Rcb6nXVfUFlW9fH6v/G7V2Bl6XEbGfAuLXyFpgHAGbtv8+SmfCktxm
+	Moon17GAI89meOPkV+Y0+jwZ/KMaYFwltnnvaSMcmWAkn1Vt2E5YsqCtxZiBZkfFUlEmpE
+	J/VRJB796Rbb56Z4k+Vi8TPgfrgND+eCQl2yU1dZeo1qzZTKNT11b6sbQBwmXI1n4llPpQ
+	y+ghuZtpWxXSEPCnYK5Jar/drQUFj9CiWvzGvEHXtToMIGfF1WoUkfCtPTf5Tw==
+To: ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	wedsonaf@gmail.com,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me,
+	a.hindborg@samsung.com,
+	aliceryhl@google.com,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Alex Mantel <alexmantel93@mailbox.org>
+Subject: [PATCH v2] rust: Implement the smart pointer `InPlaceInit` for `Arc`
+Date: Fri, 19 Jul 2024 12:22:34 -0700
+Message-Id: <20240719192234.330341-1-alexmantel93@mailbox.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <5E1B12C1-1ACD-4A26-AC89-CC32327B51F5@collabora.com>
+X-MBO-RS-ID: 939419403be119f10dd
+X-MBO-RS-META: 4u8x7ejxx5skkou8wmhfr9d4uugg59zi
+X-Rspamd-Queue-Id: 4WQfhW6Stwz9sQr
 
-On Fri, Jul 19, 2024 at 03:09:09PM -0300, Daniel Almeida wrote:
-> Hi Danilo,
-> 
-> 
-> > 
-> > We can easily build abstractions that ensure that the address a driver is trying
-> > to access is mapped properly, such that you can't have accidential out-of-bound
-> > accesses.
-> > 
-> > Those can be implemented by the corresponding subsystem / bus that the resource
-> > originates from.
-> > 
-> > In fact, we already have abstractions for that on the way, a generic I/O
-> > abstraction [1] as base implementation and a specific abstraction for PCI bars
-> > [2].
-> > 
-> > Of course, if the MMIO region comes from let's say the device tree, we still
-> > have to assume that the information in the DT is correct, but the driver does
-> > not need unsafe code for this.
-> > 
-> > [1] https://lore.kernel.org/rust-for-linux/20240618234025.15036-8-dakr@redhat.com/
-> > [2] https://lore.kernel.org/rust-for-linux/20240618234025.15036-11-dakr@redhat.com/
-> > 
-> 
-> Thanks for pointing that out. So from this:
-> 
-> +impl<const SIZE: usize> Io<SIZE> {
-> + ///
-> + ///
-> + /// # Safety
-> + ///
-> + /// Callers must ensure that `addr` is the start of a valid I/O mapped memory region of size
-> + /// `maxsize`.
-> + pub unsafe fn new(addr: usize, maxsize: usize) -> Result<Self> {
-> + if maxsize < SIZE {
-> + return Err(EINVAL);
-> + }
-> +
-> + Ok(Self { addr, maxsize })
-> + }
-> 
-> It looks like one can do this:
-> 
-> let io = unsafe { Io::new(<some address>, <some size>)? }; 
-> let value = io.readb(<some offset>)?;
-> 
-> Where <some address> has already been mapped for <some size> at an earlier point?
+For pinned and unpinned initialization of structs, a trait named
+`InPlaceInit` exists for uniform access. `Arc` did not implement
+`InPlaceInit` yet, although the functions already existed. The main
+reason for that, was that the trait itself returned a `Pin<Self>`. The
+`Arc` implementation of the kernel is already implicitly pinned.
 
-Yes, but (at least for full Rust drivers) this shouldn't be called by the driver
-directly, but the corresponding subsystem / bus should provide a `Devres`
-wrapped `Io` instance, like the PCI abstraction in [2] does.
+To enable `Arc` to implement `InPlaceInit` and to have uniform access,
+for in-place and pinned in-place initialization, an associated type is
+introduced for `InPlaceInit`. The new implementation of `InPlaceInit`
+for `Arc` sets `Arc` as the associated type. Older implementations use
+an explicit `Pin<T>` as the associated type. The implemented methods for
+`Arc` are mostly moved from a direct implementation on `Arc`. There
+should be no user impact. The implementation for `ListArc` is omitted,
+because it is not merged yet.
 
-Example:
+Link: https://github.com/Rust-for-Linux/linux/issues/1079
+Signed-off-by: Alex Mantel <alexmantel93@mailbox.org>
+---
+Hello again!
 
-```
-// Get a `Devres` managed PCI bar mapping
-let bar: Devres<pci::Bar> = pdev.iomap_region(0);
+This is the 2nd version of my very first patch. In comparison to the
+first version, this version changes the format of the commit
+message only, as suggested by Miguel Ojeda. Thank you for taking the
+time. Any further feedback is more than welcome!
 
-let reg = bar.try_readl(0x42)?;
-```
-You can also let the driver assert that the requested resource must have a
-minimum size:
+v1: 
+  * https://lore.kernel.org/rust-for-linux/20240717034801.262343-2-alexmantel93@mailbox.org/
 
-```
-// Only succeeds if the PCI bar has at least a size of 0x1000
-let bar = pdev.iomap_region_size::<0x1000>(0);
+v2: 
+  * remove the `From:` from the patch.
+  * add the prefix `rust: ` to the subject.
+  * Remove the empty line between `Link` and `Signed-off-by`.
 
-// Note: `readl` does not need to return a `Result`, since the boundary checks
-// can be done on compile time due to the driver specified minimal mapping size.
-let reg = bar.readl(0x42);
-```
 
-> 
-> That’s fine, as I said, if an abstraction makes sense, I have nothing
-> against it. My point is more that we shouldn’t enact a blanket ban on
-> 'unsafe' in drivers because corner cases do exist. But it’s good to know that this
-> particular example I gave does not apply.
-> 
-> 
-> >> 
-> >> If a driver is written partially in Rust, and partially in C, and it gets a
-> >> pointer to some kcalloc’d memory in C, should It be forbidden to use unsafe
-> >> in order to build a slice from that pointer? How can you possibly design a
-> >> general abstraction for something that is, essentially, a driver-internal API?
-> > 
-> > That sounds perfectly valid to me.
-> > 
-> 
-> 
-> — Daniel
-> 
-> 
+ rust/kernel/init.rs     | 37 +++++++++++++++++++++++++++++++++----
+ rust/kernel/sync/arc.rs | 25 ++-----------------------
+ 2 files changed, 35 insertions(+), 27 deletions(-)
+
+diff --git a/rust/kernel/init.rs b/rust/kernel/init.rs
+index 68605b633..46f50cf12 100644
+--- a/rust/kernel/init.rs
++++ b/rust/kernel/init.rs
+@@ -213,6 +213,7 @@
+ use crate::{
+     alloc::{box_ext::BoxExt, AllocError, Flags},
+     error::{self, Error},
++    sync::Arc,
+     sync::UniqueArc,
+     types::{Opaque, ScopeGuard},
+ };
+@@ -1112,11 +1113,15 @@ unsafe fn __pinned_init(self, slot: *mut T) -> Result<(), E> {
+ 
+ /// Smart pointer that can initialize memory in-place.
+ pub trait InPlaceInit<T>: Sized {
++    /// A type might be pinned implicitly. An addtional `Pin<ImplicitlyPinned>` is useless. In
++    /// doubt, the type can just be set to `Pin<Self>`.
++    type PinnedResult;
++
+     /// Use the given pin-initializer to pin-initialize a `T` inside of a new smart pointer of this
+     /// type.
+     ///
+     /// If `T: !Unpin` it will not be able to move afterwards.
+-    fn try_pin_init<E>(init: impl PinInit<T, E>, flags: Flags) -> Result<Pin<Self>, E>
++    fn try_pin_init<E>(init: impl PinInit<T, E>, flags: Flags) -> Result<Self::PinnedResult, E>
+     where
+         E: From<AllocError>;
+ 
+@@ -1124,7 +1129,7 @@ fn try_pin_init<E>(init: impl PinInit<T, E>, flags: Flags) -> Result<Pin<Self>,
+     /// type.
+     ///
+     /// If `T: !Unpin` it will not be able to move afterwards.
+-    fn pin_init<E>(init: impl PinInit<T, E>, flags: Flags) -> error::Result<Pin<Self>>
++    fn pin_init<E>(init: impl PinInit<T, E>, flags: Flags) -> error::Result<Self::PinnedResult>
+     where
+         Error: From<E>,
+     {
+@@ -1153,9 +1158,31 @@ fn init<E>(init: impl Init<T, E>, flags: Flags) -> error::Result<Self>
+     }
+ }
+ 
++impl<T> InPlaceInit<T> for Arc<T> {
++    type PinnedResult = Self;
++
++    #[inline]
++    fn try_pin_init<E>(init: impl PinInit<T, E>, flags: Flags) -> Result<Self::PinnedResult, E>
++    where
++        E: From<AllocError>,
++    {
++        UniqueArc::try_pin_init(init, flags).map(|u| u.into())
++    }
++
++    #[inline]
++    fn try_init<E>(init: impl Init<T, E>, flags: Flags) -> Result<Self, E>
++    where
++        E: From<AllocError>,
++    {
++        UniqueArc::try_init(init, flags).map(|u| u.into())
++    }
++}
++
+ impl<T> InPlaceInit<T> for Box<T> {
++    type PinnedResult = Pin<Self>;
++
+     #[inline]
+-    fn try_pin_init<E>(init: impl PinInit<T, E>, flags: Flags) -> Result<Pin<Self>, E>
++    fn try_pin_init<E>(init: impl PinInit<T, E>, flags: Flags) -> Result<Self::PinnedResult, E>
+     where
+         E: From<AllocError>,
+     {
+@@ -1184,8 +1211,10 @@ fn try_init<E>(init: impl Init<T, E>, flags: Flags) -> Result<Self, E>
+ }
+ 
+ impl<T> InPlaceInit<T> for UniqueArc<T> {
++    type PinnedResult = Pin<Self>;
++
+     #[inline]
+-    fn try_pin_init<E>(init: impl PinInit<T, E>, flags: Flags) -> Result<Pin<Self>, E>
++    fn try_pin_init<E>(init: impl PinInit<T, E>, flags: Flags) -> Result<Self::PinnedResult, E>
+     where
+         E: From<AllocError>,
+     {
+diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
+index 3673496c2..3021f30fd 100644
+--- a/rust/kernel/sync/arc.rs
++++ b/rust/kernel/sync/arc.rs
+@@ -12,12 +12,13 @@
+ //! 2. It does not support weak references, which allows it to be half the size.
+ //! 3. It saturates the reference count instead of aborting when it goes over a threshold.
+ //! 4. It does not provide a `get_mut` method, so the ref counted object is pinned.
++//! 5. The object in [`Arc`] is pinned implicitly.
+ //!
+ //! [`Arc`]: https://doc.rust-lang.org/std/sync/struct.Arc.html
+ 
+ use crate::{
+     alloc::{box_ext::BoxExt, AllocError, Flags},
+-    error::{self, Error},
++    bindings,
+     init::{self, InPlaceInit, Init, PinInit},
+     try_init,
+     types::{ForeignOwnable, Opaque},
+@@ -209,28 +210,6 @@ pub fn new(contents: T, flags: Flags) -> Result<Self, AllocError> {
+         // `Arc` object.
+         Ok(unsafe { Self::from_inner(Box::leak(inner).into()) })
+     }
+-
+-    /// Use the given initializer to in-place initialize a `T`.
+-    ///
+-    /// If `T: !Unpin` it will not be able to move afterwards.
+-    #[inline]
+-    pub fn pin_init<E>(init: impl PinInit<T, E>, flags: Flags) -> error::Result<Self>
+-    where
+-        Error: From<E>,
+-    {
+-        UniqueArc::pin_init(init, flags).map(|u| u.into())
+-    }
+-
+-    /// Use the given initializer to in-place initialize a `T`.
+-    ///
+-    /// This is equivalent to [`Arc<T>::pin_init`], since an [`Arc`] is always pinned.
+-    #[inline]
+-    pub fn init<E>(init: impl Init<T, E>, flags: Flags) -> error::Result<Self>
+-    where
+-        Error: From<E>,
+-    {
+-        UniqueArc::init(init, flags).map(|u| u.into())
+-    }
+ }
+ 
+ impl<T: ?Sized> Arc<T> {
+-- 
+2.39.2
+
