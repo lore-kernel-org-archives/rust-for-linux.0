@@ -1,140 +1,150 @@
-Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ACB21465B7;
-	Fri, 19 Jul 2024 18:50:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78E50383AE;
+	Fri, 19 Jul 2024 19:20:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721415059; cv=none; b=RCiUtJrCpnbrowAFkoT4ZZbWZawST1rSTWian1ygEKqDZvpntRYR6wNNgulMpTo5yMwfIoODH3nV9Ogtw06C77ApTwwV0x+jJXLmc24O8FqBRO/Qaku+HBdnF1bOVjTsTHCeKoeEC7ZRrNLNPU/VzCAPk45BTJLJBYDMfXxl1k0=
+	t=1721416827; cv=none; b=P3j7p/4dozfCdGXb9r95JZm8NFd6wyJj6rMo3mmcNzrY7fmUKc7tskqbA4d3YhFqp/7KwNRsiVNQptBW1GW+i9aAjADF1SJZ76yVXGAvIsWctWN7Q+SHXOW2OgN8nYGiPTPtx9b+l8pg5qFHM8jndaarruJMaC73ApthxZKkqG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721415059; c=relaxed/simple;
-	bh=Ee9ro+8W2ACQUh4oM+H8UjzP/GPKGir4IM61B80FmYw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=sWw/FgozCpYLpsxVTxDp8ZVOjovGjJRe+nkOcwFbsB1pf49flr6qnYOrjUSLq/EhxMHT7DDgK1dQDtplttqJ2LMKWLtB/h6+UUpoF2+K0Pon/FFXblStrgtjBVWVS/3483DfsM2AKMEtUfnCxySB/tlptX5KconTph8iNYDZHow=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fG05yJP0; arc=none smtp.client-ip=209.85.216.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1721416827; c=relaxed/simple;
+	bh=CEWqSygAKH9ACrMNsXOlxzuZ9KSCSifLeDh3gU6Y12Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=C75kQi3txAjrLa+ac8CzAOK3AXOgvv7he4J16nd0AQFldrO6FUArAK/hRVU+nNN8H9WwYE1jtwX/DFgs/T3h3gCzDFK7KetSXFFn3G3r41TaGfc1Z7jGGZyinn/ezSNlG+pDtGeyXKdvpMZ8rRV1mj0RmPmc590HIOg2nq/vSQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nQBQbope; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fG05yJP0"
-Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-2cb4c584029so1174563a91.3;
-        Fri, 19 Jul 2024 11:50:58 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1721415058; x=1722019858; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=RAEv+MGhyDj802ZNnZVlhgfJ7rM5mroogx7bWE9X/x4=;
-        b=fG05yJP0GBXcFl+lgsGDE0haIeiL+JIS43RKgzQt5ppejpU5r+qRYXj/ZyJT7G9A+G
-         m5vMN+LrmNsF1fS8so0EqTKIpgiXE9ZqUDdLNooKXgSxdb4JsMF2jDUjeFWvkbfXPQkd
-         7xCjpLLCc0z0PlYRmi10ZdSoD8DS7GBE+YQJ8vrxc55UHLf6miN4jy7mQjFtiJbKZU0l
-         Rb2nKETISWa7e+NE0kizCAz47brAbiX8ZnHFLMYHBf+5bZJ+Ao5X0T5V0p92hZN7JeuM
-         2PIM4p3Zr50PJ3jxG7ehdNfmcXLb/6d+xtdC72Vm5+n/d9EDsracFh2+QZkwgF/ozMKe
-         /rzw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721415058; x=1722019858;
-        h=content-transfer-encoding:in-reply-to:from:references:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=RAEv+MGhyDj802ZNnZVlhgfJ7rM5mroogx7bWE9X/x4=;
-        b=jAOsCTNQCgyMgjB92VpKgXPT7C8SUWFpJubClmIxULfAW0D5SUz1PDIxI7W0BX4qsY
-         3AyY/93/6D3RplnTuHFeNYqbggVSYorh6HD4OJCBHqwiL7qcMQVSVH7OFir9fMf+FzbS
-         tAWHz9mogZExxD/jatAB5/wtw7G7EoaMUA7fgM762JT1+uX3deL0RYZKkO9e/MbdtfrR
-         rxYaXpKUmFyXbi1y/xfaJn1c90HbzHGz+I7VprUdbktoFF2tgTVfGT/9I3e3v0mW6856
-         TIrqcDSD8Vemn79OpeJOcEEHyXFEWxgWOI1s2/OJ13Ls3w/FugOzNr9CtzLm8nQBa7Vn
-         yDdw==
-X-Forwarded-Encrypted: i=1; AJvYcCXhe0FMrwQgpHDbQxCtFHOtvE6krEWoGUO1HMeGxnPhN3nP3AQEyZsw8Zk5zbEQGcA+UY/ACqw4MnauDRdknZcFRIxVSODbiGseXT6+yDjPhEMbhkPph3oWFpDERcJETZM47A4KJR64LpaNOfw=
-X-Gm-Message-State: AOJu0Yyg4Txs/3jI7Hr0wcOlLf7gEQXVL3IooCErmxjSl49eX5LwtSUu
-	rPh4wC1N7jHwQzIpEyaOGH/jzOvwMpoI56Aibeysd0cWk4em7Zr5
-X-Google-Smtp-Source: AGHT+IGbL5E/MFEgPWn06cYckxokoAX5eI4e0D2YJL6S5zac/xTsDRmKykBaYUraPNM6HMn49Mj4Qg==
-X-Received: by 2002:a17:90a:fd0d:b0:2cb:5134:562a with SMTP id 98e67ed59e1d1-2cb5246a16bmr6746195a91.7.1721415057638;
-        Fri, 19 Jul 2024 11:50:57 -0700 (PDT)
-Received: from [192.168.179.119] ([131.107.174.134])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2cb7750688esm3143801a91.37.2024.07.19.11.50.56
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 19 Jul 2024 11:50:57 -0700 (PDT)
-Message-ID: <0bad8507-22f3-38d2-5724-0aa6433990cc@gmail.com>
-Date: Fri, 19 Jul 2024 11:50:55 -0700
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nQBQbope"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A3B5C32782;
+	Fri, 19 Jul 2024 19:20:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1721416827;
+	bh=CEWqSygAKH9ACrMNsXOlxzuZ9KSCSifLeDh3gU6Y12Q=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=nQBQbope4oCHits71W7SPkK0aF3yHcjBzdufqlJPKdJtLIAAl+Us0f8oXc2dV9jwH
+	 2RDyAZ4W6v1ADQkIXWpgrQsW/52YCVGaiFKXcFF0K0dM2lLxuRh0ua0JaXXNDd5Hu1
+	 ErDRBhggUZqyMIdJI1UL5qRf2WAUpgcDNntJOM7eJTgVryfs4punZ80SpGnnMeBCUi
+	 YdH4Clnxf1QhdQ1CPE9YVKb2NHP7LG8lTacfopnVQOS0j9hHerxTsJWcCALW9UN66J
+	 Y5m2u9hiCIOxuZ3GRpkAGlIEFxUZ6jUDbWNJdDBSw3vc0m9u2jqjU+mKn1Ewa+GAMM
+	 S5vPsrqMMjsNw==
+Date: Fri, 19 Jul 2024 21:20:15 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Daniel Almeida <daniel.almeida@collabora.com>
+Cc: Benno Lossin <benno.lossin@proton.me>, Jonathan Corbet <corbet@lwn.net>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [RFC PATCH 1/5] doc: rust: create safety standard
+Message-ID: <Zpq8b0I2kYeAh2qm@pollux>
+References: <20240717221133.459589-1-benno.lossin@proton.me>
+ <20240717221133.459589-2-benno.lossin@proton.me>
+ <99DF6A0F-BAE9-4341-8B42-6C1F1C69E2C6@collabora.com>
+ <ZpqeEywGic4nIEL8@pollux>
+ <5E1B12C1-1ACD-4A26-AC89-CC32327B51F5@collabora.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.1
-Subject: Re: [PATCH v4 0/4] drm/panic: Add a QR code panic screen
-Content-Language: en-US
-To: Jocelyn Falempe <jfalempe@redhat.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng
- <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- Bjorn Roy Baron <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl
- <aliceryhl@google.com>, linux-kernel@vger.kernel.org,
- dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
- Danilo Krummrich <dakr@redhat.com>
-References: <20240717142644.1106060-1-jfalempe@redhat.com>
-From: Mitchell Levy <levymitchell0@gmail.com>
-In-Reply-To: <20240717142644.1106060-1-jfalempe@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <5E1B12C1-1ACD-4A26-AC89-CC32327B51F5@collabora.com>
 
-I am trying to test this patchset on my setup, but I cannot get it 
-working. In case it's relevant, I'm running under HyperV. Any 
-troubleshooting steps/suggestions would definitely be appreciated.
+On Fri, Jul 19, 2024 at 03:09:09PM -0300, Daniel Almeida wrote:
+> Hi Danilo,
+> 
+> 
+> > 
+> > We can easily build abstractions that ensure that the address a driver is trying
+> > to access is mapped properly, such that you can't have accidential out-of-bound
+> > accesses.
+> > 
+> > Those can be implemented by the corresponding subsystem / bus that the resource
+> > originates from.
+> > 
+> > In fact, we already have abstractions for that on the way, a generic I/O
+> > abstraction [1] as base implementation and a specific abstraction for PCI bars
+> > [2].
+> > 
+> > Of course, if the MMIO region comes from let's say the device tree, we still
+> > have to assume that the information in the DT is correct, but the driver does
+> > not need unsafe code for this.
+> > 
+> > [1] https://lore.kernel.org/rust-for-linux/20240618234025.15036-8-dakr@redhat.com/
+> > [2] https://lore.kernel.org/rust-for-linux/20240618234025.15036-11-dakr@redhat.com/
+> > 
+> 
+> Thanks for pointing that out. So from this:
+> 
+> +impl<const SIZE: usize> Io<SIZE> {
+> + ///
+> + ///
+> + /// # Safety
+> + ///
+> + /// Callers must ensure that `addr` is the start of a valid I/O mapped memory region of size
+> + /// `maxsize`.
+> + pub unsafe fn new(addr: usize, maxsize: usize) -> Result<Self> {
+> + if maxsize < SIZE {
+> + return Err(EINVAL);
+> + }
+> +
+> + Ok(Self { addr, maxsize })
+> + }
+> 
+> It looks like one can do this:
+> 
+> let io = unsafe { Io::new(<some address>, <some size>)? }; 
+> let value = io.readb(<some offset>)?;
+> 
+> Where <some address> has already been mapped for <some size> at an earlier point?
 
-Thanks!
-Mitchell
+Yes, but (at least for full Rust drivers) this shouldn't be called by the driver
+directly, but the corresponding subsystem / bus should provide a `Devres`
+wrapped `Io` instance, like the PCI abstraction in [2] does.
 
-On 7/17/2024 7:24 AM, Jocelyn Falempe wrote:
-> This series adds a new panic screen, with the kmsg data embedded in a QR code.
->
-> The main advantage of QR code, is that you can copy/paste the debug data to a bug report.
->
-> The QR code encoder is written in rust, and is very specific to drm panic.
-> The reason is that it is called in a panic handler, and thus can't allocate memory, or use locking.
-> The rust code uses a few rust core API, and provides only two C entry points.
-> There is no particular reason to do it in rust, I just wanted to learn rust, and see if it can work in the kernel.
->
-> If you want to see what it looks like, I've put a few screenshots here:
-> https://github.com/kdj0c/panic_report/issues/1
->
-> v2:
->   * Rewrite the rust comments with Markdown (Alice Ryhl)
->   * Mark drm_panic_qr_generate() as unsafe (Alice Ryhl)
->   * Use CStr directly, and remove the call to as_str_unchecked()
->     (Alice Ryhl)
->   * Add a check for data_len <= data_size (Greg KH)
->
-> v3:
->   * Fix all rust comments (typo, punctuation) (Miguel Ojeda)
->   * Change the wording of safety comments (Alice Ryhl)
->   * Add a link to the javascript decoder in the Kconfig (Greg KH)
->   * Fix data_size and tmp_size check in drm_panic_qr_generate()
->   
->   v4:
->   * Fix the logic to find next line and skip the '\n' (Alice Ryhl)
->   * Remove __LOG_PREFIX as it's not used (Alice Ryhl)
->
-> Jocelyn Falempe (4):
->    drm/panic: Add integer scaling to blit()
->    drm/rect: Add drm_rect_overlap()
->    drm/panic: Simplify logo handling
->    drm/panic: Add a QR code panic screen
->
->   drivers/gpu/drm/Kconfig         |   31 +
->   drivers/gpu/drm/Makefile        |    1 +
->   drivers/gpu/drm/drm_drv.c       |    3 +
->   drivers/gpu/drm/drm_panic.c     |  340 +++++++++--
->   drivers/gpu/drm/drm_panic_qr.rs | 1003 +++++++++++++++++++++++++++++++
->   include/drm/drm_panic.h         |    4 +
->   include/drm/drm_rect.h          |   15 +
->   7 files changed, 1358 insertions(+), 39 deletions(-)
->   create mode 100644 drivers/gpu/drm/drm_panic_qr.rs
->
->
-> base-commit: e1a261ba599eec97e1c5c7760d5c3698fc24e6a6
+Example:
+
+```
+// Get a `Devres` managed PCI bar mapping
+let bar: Devres<pci::Bar> = pdev.iomap_region(0);
+
+let reg = bar.try_readl(0x42)?;
+```
+You can also let the driver assert that the requested resource must have a
+minimum size:
+
+```
+// Only succeeds if the PCI bar has at least a size of 0x1000
+let bar = pdev.iomap_region_size::<0x1000>(0);
+
+// Note: `readl` does not need to return a `Result`, since the boundary checks
+// can be done on compile time due to the driver specified minimal mapping size.
+let reg = bar.readl(0x42);
+```
+
+> 
+> That’s fine, as I said, if an abstraction makes sense, I have nothing
+> against it. My point is more that we shouldn’t enact a blanket ban on
+> 'unsafe' in drivers because corner cases do exist. But it’s good to know that this
+> particular example I gave does not apply.
+> 
+> 
+> >> 
+> >> If a driver is written partially in Rust, and partially in C, and it gets a
+> >> pointer to some kcalloc’d memory in C, should It be forbidden to use unsafe
+> >> in order to build a slice from that pointer? How can you possibly design a
+> >> general abstraction for something that is, essentially, a driver-internal API?
+> > 
+> > That sounds perfectly valid to me.
+> > 
+> 
+> 
+> — Daniel
+> 
+> 
