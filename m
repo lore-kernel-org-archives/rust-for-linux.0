@@ -1,178 +1,93 @@
-Received: from mail-qt1-f173.google.com (mail-qt1-f173.google.com [209.85.160.173])
+Received: from mail-ej1-f49.google.com (mail-ej1-f49.google.com [209.85.218.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83ED22F34;
-	Fri, 19 Jul 2024 22:11:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35F981803D;
+	Sat, 20 Jul 2024 07:45:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721427088; cv=none; b=G+QYbGS2pHDEfpwWe5/CibOUecacqwA+jK3ekB26dBh+9XimA1oTbTbcrr6QThm4lXrl/Zb5iUQ7DWB4KBMQpl5jKJHoYqzLdmeSragEI9v1j/UojAZNF9NL9eo4amm6+QuY9SqoZz+80nnaS/+/RQur2Xxkl4uIDfTrsao8tvo=
+	t=1721461524; cv=none; b=prEyN9xQFNN/BiYSH2pKcisLJ431PEYOpPluYYJD/ldlqVzFstInc58pEN4LWcLd7/h2U5DRHIjR/ewnuHBYC9VpiFXgGyaPDESg/CaAZuasDV0JGWP7yyJTt3zBFbJon7YsLNQ2lLYKMHwWpkXU02UzL/xe4yzsfAGsHyTJF44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721427088; c=relaxed/simple;
-	bh=Df5z69t5rqrcj737YIlolgTEgSamCOwnn/GgviPWEP0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jy9hMPFf/4WaNRtPx4f0XUZX6/91+691gTcEtmdGPSPV4KFAJZfAUkYlIC+b8RfgIlYOwmdNK4PI5UWoVpylwhgczJbcpPAO7zWQ0jrVneDMjJj/+bp3FRYjUiqrbBpTKhRH9uanqVFxAwWdokPyWen17ISvz5e0h8YrAumSu/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Y4GDCv74; arc=none smtp.client-ip=209.85.160.173
+	s=arc-20240116; t=1721461524; c=relaxed/simple;
+	bh=8XW/4jDCJCDtE1xXESYvd0/J50ZJZ0+gnWMSeQm0LPo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=SIKj/b6WKPRc+jPjXiuutEPhuZ4tqcRdBeGo8k4ADkRSQEVk7QK92EPyy9i9cspomdiPH+ZnKyc011OKH9bGgLwBEtuQDdD0wqFREINlYgg4OIXm/XJcpAQBXRsYDNfh8zZxVgjCi4s1BtsVDfqXFceqAwE9RRsGErDwX4dKRdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KcwLmjhj; arc=none smtp.client-ip=209.85.218.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Y4GDCv74"
-Received: by mail-qt1-f173.google.com with SMTP id d75a77b69052e-44931d9eda6so16413031cf.1;
-        Fri, 19 Jul 2024 15:11:26 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KcwLmjhj"
+Received: by mail-ej1-f49.google.com with SMTP id a640c23a62f3a-a6fd513f18bso269535366b.3;
+        Sat, 20 Jul 2024 00:45:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1721427085; x=1722031885; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=is7AE/oz5HH85AcIf3p3it/BmyM/HCEmpoggDJba/ko=;
-        b=Y4GDCv74v9ENs61e1ABN4cU40ZcBgdWb8a9jR9GLLalhHQBLSU2siJghQx0XcSXfpS
-         59kka4aEl1CyZRBOnLS46Xq6hqG8wq0vBgyqjwWlxhqubGvXMqgwmz0MJhFxFsZaQ8HJ
-         q0WmhNXOfblqsqoaI7s1MDQ+sccXd9AN06f3bZILrZ5kV4VbsoJEw7xcpW/PTOFUyGYQ
-         wSghcOfLwnQ+qA61bZgG9rRKfZp4TLJ3l1gc1rYrnhWqX8dZD4rkODbJzoSKGXO3IXVp
-         djuQRjNUil6oo5UvrwiBnGwsHULL9jhq0x+MtwSvm+fMz3B0A9Ah2BaWEBUZNP0Bh30W
-         DYtA==
+        d=gmail.com; s=20230601; t=1721461521; x=1722066321; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=qN6YI/mufEzKuPLBazpeYZo/dW8SXxQZjAJtniz+IpA=;
+        b=KcwLmjhjrBtC5pFXGeB6av9oWz9cb5PvMzczsGxeAgfUMrJ60F9XKKyc8DTb/zvMcL
+         VQCm5FJjUD3Cc3Dpxo7jT6IAMrtxh8P43Zrc5hm/TfS8+2yY3YxAJ+sCBm9lYLwWJAb6
+         6dGu3Qx/7TfDiIM1ZJu6ioSo4X8mNvOl44dF4N0NLXQ008lb9auj9XxD3BeZwwumxiZP
+         zFOqGHLM8qpOLn4XJbNtIwyXwRdL1D5oAos7iQi9wol6Mpwe3f+0KEXJwF8ZKN5Tgjw7
+         /zcRuvWdDWtIizlyugzNSr6iawKLs02+J3BGaCFbXOOfD74/Db3HGetbvyItvUspaXAP
+         8dTg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721427085; x=1722031885;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=is7AE/oz5HH85AcIf3p3it/BmyM/HCEmpoggDJba/ko=;
-        b=u+/aX2WgkjSBbT7VWkwkLXaNbseFeTZ90fdkgfizML765CVlT7tDLBKj6ZE50lA/+7
-         kjAona97U+tkjJPupYUiNjNeB5HgJd74bDl6zMVtyYmqbMmqMfcYfwMv1o4gXac36E/a
-         Lx3TJ85Iyg2YZhPm7uRT5Qbw1OQq79G8maMnSpAKstGI4IP5MBvcVeTzIQYZnyEkirud
-         lFr0wgv/vtsIVJDmiA99kjXMO9qCFvZxnjc0BUAj2Coqcg6kLP702ZT6wb4+eFiYjLSZ
-         InJGSRXfcBr9KURFf/aPvXg40pG1BZUWBbjL4C8Bl9Ppn89D/b/aeyFIx+jDXDxkxRls
-         so8g==
-X-Forwarded-Encrypted: i=1; AJvYcCWUM5AUwft5k/IY/AgmvP3FdzCH5XosptsknbUHWLmZZKo0SNbs6O9Hngxqm1MJpz2Oi7Pm/y57nfpPS/YRkTnatHoEDo3qT8FWcAMbqMJjDFtuDVoxDnaRxMoxsbUKt5DaDjkzjxS0URc0FD53WAyPbewkebJwi5JHjXREbS9TzlzECMA9+PM=
-X-Gm-Message-State: AOJu0YzQU+4t3HHdqVv3zSjUgAAW4+54Bj6JY46qnIHG8eERwiSnA9F+
-	dmi3bBIv9p/VWJk+qD27hXiXk0TbsS+3e6QQH3Tk8g9KSlzftUrv
-X-Google-Smtp-Source: AGHT+IHUcxuwiKpvCkVk5Jy8Gp70QUTxnNKLP/kmtEVjpXE4cl0szvzqjLm2RWE2Q32A21Em53sp4w==
-X-Received: by 2002:a05:622a:18a8:b0:447:e6f9:f61c with SMTP id d75a77b69052e-44f96afa31emr105219371cf.22.1721427085240;
-        Fri, 19 Jul 2024 15:11:25 -0700 (PDT)
-Received: from fauth2-smtp.messagingengine.com (fauth2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6b7acb0972csm12042136d6.136.2024.07.19.15.11.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 19 Jul 2024 15:11:24 -0700 (PDT)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailfauth.nyi.internal (Postfix) with ESMTP id 7CAEB1200079;
-	Fri, 19 Jul 2024 18:11:21 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute5.internal (MEProxy); Fri, 19 Jul 2024 18:11:21 -0400
-X-ME-Sender: <xms:ieSaZnQCbGGbtItZ8FvLbiIs2qZHpF6NNeHw5gnGpGJUXkR1uojXSA>
-    <xme:ieSaZoxfF6ieoDK-3JTe9rFOiuCEgcMvBe5W7LCTkhgHkCzyZVWZcvhtg3-RRduVr
-    Bk-akCBvXRGGv1ZqQ>
-X-ME-Received: <xmr:ieSaZs3OOwZCaLOdlAxkOVpxq5Kmgfby9MBr7g4L-Zcr5bR4E78jUXtAsfA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrhedvgddtkecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhn
-    ucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrth
-    htvghrnhepleehtdeugfejkefgvedvkedvjedtudffgffhuddugeffkedutdfffeegteel
-    leffnecuffhomhgrihhnpeiiuhhlihhptghhrghtrdgtohhmpdhgihhthhhusgdrtghomh
-    dprhhushhtqdhlrghnghdrohhrghenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgr
-    mhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlh
-    hithihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehg
-    mhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvg
-X-ME-Proxy: <xmx:ieSaZnCnIhMgbyy9hZw7Zvui2ox5C2gj4hc9kZJFdYe5Z7OPby3AZw>
-    <xmx:ieSaZgivs_-tAWwglp8iGrQP7ViSiFtW25pT0eaEedVHqiHG4RWReA>
-    <xmx:ieSaZrpSCRvGokcjj4lqvBR4ICVYklnc7vSboJpJ-8CGuwLMnDEtYA>
-    <xmx:ieSaZrjmYOXfC36BFs_Ds9pyv1XZkjxjatS_nFYz79Bf2bUHE9OZiA>
-    <xmx:ieSaZjRZ3AMN5at-7tyOjDf1z0yhCcgAfLBfsYoYQA0kWxz7u9JSf2qT>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 19 Jul 2024 18:11:20 -0400 (EDT)
-Date: Fri, 19 Jul 2024 15:11:11 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Jonathan Corbet <corbet@lwn.net>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>, linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	lkmm@lists.linux.dev
-Subject: Re: [RFC PATCH 1/5] doc: rust: create safety standard
-Message-ID: <Zprkf4FrBXgYmtgg@boqun-archlinux>
-References: <20240717221133.459589-1-benno.lossin@proton.me>
- <20240717221133.459589-2-benno.lossin@proton.me>
+        d=1e100.net; s=20230601; t=1721461521; x=1722066321;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=qN6YI/mufEzKuPLBazpeYZo/dW8SXxQZjAJtniz+IpA=;
+        b=U2V3d7Gzm7u+R5InxPN6OnfGFd7KIBC/xGO6Yo5+GWwdce4etPMJhv8ZbY0YOaZj7N
+         +bL9/952scHsjHTRGh6PgDcN93tPnHKGAkLC+CH8YGQ7wRt1MpuwTGNi4nH6gw1I1/+O
+         jcRLhn6k5O0dfQRn1/kAm1YE5iIjv1BYX1Qr6WPaegeW8svKaHJsAbWB1nfLJL9OT4hv
+         d2LF1WN49DHTRjArWtYCK6bH8cTK9ZZp1WQs5BbT2mEu9n3OE9hTpppFKpF7jAdbfpE2
+         t51HOcpUAc2OPUpP+zdOrrQ62CTJw/JiHMo4clvWZ7pyY+1D3LOfCqGy9Jjob9HaCKwb
+         Y+ZQ==
+X-Forwarded-Encrypted: i=1; AJvYcCV/xiBk1DPV6lQqCUuUR78ALxaQ4m1mTa4MZ7HDbe6PU5gLs6LcrRw+NOg0YMz4gvMMj7VaVzPpFsOzSt5+zMOhUkDUf+EvHd5Mhusmxw4yB0HScIM0TH9a33KbAr2fwHXcz/I9jcJ2ayVgxjc=
+X-Gm-Message-State: AOJu0YyxLT3IUhLB5e9QsPSTax/dbuNL2l0efuRexg2t3iGb4DEFVVJc
+	mhaRlUjw7+EQ9kzlpoZmOLN15yIyYWXO3HSD8T8xyIV1Juw1V0oV
+X-Google-Smtp-Source: AGHT+IGabo+bK6dL8EdeNMO/dvceqTDyfjXr1xvifW3j+MUVt690CTNjcvjc+ty08SL16KjFjVvDZQ==
+X-Received: by 2002:a17:906:ad6:b0:a75:4723:b3b8 with SMTP id a640c23a62f3a-a7a01192d03mr631833966b.29.1721461521301;
+        Sat, 20 Jul 2024 00:45:21 -0700 (PDT)
+Received: from ?IPV6:2003:df:bf21:aa00:8a2b:1fe0:49c5:d2e5? (p200300dfbf21aa008a2b1fe049c5d2e5.dip0.t-ipconnect.de. [2003:df:bf21:aa00:8a2b:1fe0:49c5:d2e5])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a7a3c7b6bb3sm124882466b.56.2024.07.20.00.45.20
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 20 Jul 2024 00:45:20 -0700 (PDT)
+Message-ID: <81473f82-0c7d-4f0a-85cb-fae4ef2013df@gmail.com>
+Date: Sat, 20 Jul 2024 09:45:19 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 1/5] doc: rust: create safety standard
+To: Benno Lossin <benno.lossin@proton.me>, Jonathan Corbet <corbet@lwn.net>,
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng
+ <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>
+Cc: linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org
+References: <20240717221133.459589-1-benno.lossin@proton.me>
+ <20240717221133.459589-2-benno.lossin@proton.me>
+Content-Language: de-AT-frami, en-US
+From: Dirk Behme <dirk.behme@gmail.com>
 In-Reply-To: <20240717221133.459589-2-benno.lossin@proton.me>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
 Hi Benno,
 
-On Wed, Jul 17, 2024 at 10:12:29PM +0000, Benno Lossin wrote:
-[...]
-> @@ -0,0 +1,246 @@
-> +.. SPDX-License-Identifier: GPL-2.0
-> +.. highlight:: rust
-> +
-> +====================
-> +Rust Safety Standard
-> +====================
-> +
-> +Safe Rust code cannot have memory related bugs. This is a guarantee by the Rust compiler. Of course
-> +it is not without caveats: no compiler bugs, no bugs in the specification etc. But the possibly most
-> +important caveat is that of ``unsafe`` code. ``unsafe`` code needs to follow certain rules in order
-> +for safe code to enjoy the no-memory-bugs privilege. A simple example of such a rule is that
-> +references must be valid for the duration of their lifetime. If any rule is violated, it can lead
+Am 18.07.24 um 00:12 schrieb Benno Lossin:
+...
 > +to undefined behavior even in safe code! The term undefined behavior in Rust has a lot stricter
 > +meaning than in C or C++: UB in Rust is totally forbidden. In C one might rely on the compiler
-> +implementation to ensure correct code generation, but that is not the case for Rust. You can read
 
-I don't disagree with your intention here (i.e. we should seek for
-UB-free program), however, during the discussion on memory model, I got
-response like in [1]:
+Just a minor formal thing: An abbreviation should be introduced (in 
+brackets) before using it the first time. So I would propose:
 
-	... they are technically wrong (violating the C standard), but
-	practically well-tested. (and then above I added that there's
-	good reasons for why they don't go wrong: volatile compilation
-	strategies and reordering constraints relating volatile, inline
-	asm, and non-atomics make it so that this almost 'has to' work,
-	I think.)
+"... undefined behavior (UB)  ..."
 
-which suggests that we should rely on the compiler implementation to
-ensure the "correct" code generation.
-
-Basically, since LKMM relies on a few things that C standard dosen't
-say, e.g. votatile accesses on certain types are atomic, behaviors of
-asm blocks, dependencies. Let alone we have data_race() where for
-example, the diagnostic code accesses the shared variable out of the
-core synchronization design.
-
-All of the above is difficult to implement purely UB-free in Rust IIUC.
-Of course you could argue the ideal way is to teach Rust how to model
-these useful operations/patterns as non-UBs, but that's a relatively
-high task:
-
-	Or do we want to go well beyond what happens in C, and actually
-	define a memory model that both has the performance
-	characteristics required by Linux, and can be defined precisely
-	as a language-level graph-based (or ideally operational)
-	concurrency memory model? This is a monumental task and a large
-	open problem, and should not be on the list of blocking issues
-	for anything that needs to get done in the next 5 years. ;)
-
-from Ralf [2].
-
-Again, I don't want to rely on compiler's behaviors on UBs, it's just
-the langauge is not ready for some jobs and programmers have to be
-"creative".
-
-Regards,
-Boqun
-
-[1]: https://rust-lang.zulipchat.com/#narrow/stream/136281-t-opsem/topic/.E2.9C.94.20Rust.20and.20the.20Linux.20Kernel.20Memory.20Model/near/422193212	
-[2]: https://github.com/rust-lang/unsafe-code-guidelines/issues/348#issuecomment-1221376388
-
-> +more about UB in Rust
-> +`here <https://doc.rust-lang.org/reference/behavior-considered-undefined.html>`_.
-> +
-[...]
+Dirk
