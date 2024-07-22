@@ -1,59 +1,65 @@
-Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F9C64204F
-	for <rust-for-linux@vger.kernel.org>; Mon, 22 Jul 2024 08:20:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05C3116A399
+	for <rust-for-linux@vger.kernel.org>; Mon, 22 Jul 2024 08:53:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721636448; cv=none; b=uVhILi2fa72U50YaBarE/zVzQ435GCTS30Oaqyq4UrFQDm3CbyMZHhwAwiZPWYtrhzwDInCKR/0fCh9W4cYb8MngQc+EuP/LbJfFYjriUnysrfAt8S6/ijZ9Z2q/Btj1kfKDnWV0zIfLbuzChYrpeu0emXWAUBvmnViFwKYvMcs=
+	t=1721638391; cv=none; b=B9WnqdNzh0YML90KEiCaXeWuyIxggBvzXerNB4guHq6sIYk8r8YbJ6SYvjVEa1mM0Nt0sdmqAOwm6imkTA9NNqJsLhVecku4hSV+XupmTYp5U/HOxQVnRKkamDQ9xkADwQP1nOy+c0CBQzlKz+Wl5tW1RxytlnVQNUAAEnL2L+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721636448; c=relaxed/simple;
-	bh=Gc9GfiVqIOW6AG0XYb6oTsaSrqIXqslUw+R/1OUGG6w=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=c7RjygrtmPMRhwTP037m2b3AZ1xOG7xLfKRjHbgI0KplUJvcK1nEHnwjgLpGJ4jehf8BldC7PI1uDlwNetfQ0YebdKVe0+LmpluEmtrl/5x+oODw/5KPwLIV/htSCVhPZN9W3+SvA1af6g01n5XclNDyHiPdmrYlf9HuJiE4960=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=eMbxl77Q; arc=none smtp.client-ip=209.85.208.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1721638391; c=relaxed/simple;
+	bh=Bog4r9e4a8HTt0tdJ7Ud1DKFn+y5jKu+1ziEoOqlgG0=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=f3KvljSIPf0qRlV4klz3nK9I2E7QnKMYv7F7hhDwqcTLeDyTuZfWB/ygbajv202YvZSaj9nkrDIoCyKI4pUVaKIU2lPF0jnWlAx5Pm25DiVxOJPToFy0EuP36oYXEkCluIuD48yqyUvchkNl66TWEe6WRoEAfzSGZI7KyAcwqGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=b4bfZZ0N; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="eMbxl77Q"
-Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-2ee920b0781so46516911fa.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 22 Jul 2024 01:20:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1721636444; x=1722241244; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=7VgB/lccVac6zBTZqqHsKy16+19WVuie2nqQLn2rSGc=;
-        b=eMbxl77QZ2yzU12J8h9FCuAGPolVsKbzqdYDefpmeMvmjTi4c4GRaD+9403M/UOOjn
-         Vqp6xDnljVdeXE+XBq6W0xV5UwiBLrzTdWML0g9X0QR1mYLMJaM4zyxviPdt/0Nkt6Ox
-         CmneRS4Pfzk9yM5y/3swgm7PF1q8Cxfp87bJonNGsKul7j6AvrIYAQIm+5xXjCZTZ45j
-         lAG3TVHY9e3Ene205cFv/Ecas4lEXGSaC4FnF2gZKOY5n9eCnbOUa4rQsvYbDxdowNg/
-         fvoFacFbhVUrOIpQ/Vmt2sw8z+2ioorBVEh8EbpMTGlfS6Xeox+5xdowKszps5WFmlOa
-         r7gQ==
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="b4bfZZ0N"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1721638388;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=RxI9qiM4lzIxZVwtwjzIK8T0OrMcooauWHayA/UpE+g=;
+	b=b4bfZZ0NYCpyAr/BB0sA73fQPkUxAOkKj0PSjmtzsOZrjc/DqLG5xSkrzfRVcJ4kvHl0Gc
+	5/zFFdo99z4FU//xdUHw2E3WDIQcmW871v5fUgj7wgUR4VMcw9SmQAyGEPkbYKbIb5Znnv
+	xhRP2MWbO7Ck2S6F1r8y/gW/252gZP0=
+Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
+ [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-645-01hq8bNbOu23PHeMtnvLoA-1; Mon, 22 Jul 2024 04:53:04 -0400
+X-MC-Unique: 01hq8bNbOu23PHeMtnvLoA-1
+Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-427df7b6879so11269245e9.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 22 Jul 2024 01:53:04 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721636444; x=1722241244;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1721638384; x=1722243184;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7VgB/lccVac6zBTZqqHsKy16+19WVuie2nqQLn2rSGc=;
-        b=OixzePRe7ZpU1yjHgZO7a7G0EGHxcSjoLTGEFZ/czxgfs34w9KPRO18Ehh7HBS6eVn
-         91vJ3Stwnm10Qz/8Nqr7u62QRfSGa3znGrQLU13nPcD/y1hENTEJQm3EDb0MLYU45kIm
-         h6LW8LM9GrcGHgsu8oC0Ufr4Y9FCUoy4AVVNe3N2qoIzDMeD8KuCFZhnOati93ibRTeA
-         5fbcLiMqlCkBLPWCQ3mokNzJmCjohHnK2kF2KxSoQIZuISvc/FjlXZj9/gHuIOuuWfwo
-         rlomK7zACSlLmWk22EgRhsVWpCQ0bAr9Nl4N3UShc0gqD0gsvAKKNCfNTr/hu+P7SngA
-         6uNw==
-X-Forwarded-Encrypted: i=1; AJvYcCVUrZNmww/lhOLWLNRoTgddlbkD637RcS4GkPmtyu5SuzUeWrpq/WWWHrqo2xQBhLY3TK8HwEbbQigvCrAYdHeonDajTogeNSHnz+D+TIs=
-X-Gm-Message-State: AOJu0Yz4IGKvHtI6uqh4Xff5UTiatVKMI5rjkF/l/yVSi7IzS/pMrC73
-	yiT6HA15o4PBfSVqY1M7OIyc/5AdKJ+MXd+dKmYjB5k6OXhEsZhhhlzMD2BWAxI=
-X-Google-Smtp-Source: AGHT+IFZ2Q+AkcV37TqF+QsvZ6J2I6gHwlMwj3NTq7zlAw3SR5/ehvU6L+ZpDtObyjgWCJAuX4BG7Q==
-X-Received: by 2002:a2e:2d12:0:b0:2ef:1f68:eae1 with SMTP id 38308e7fff4ca-2ef1f68ebe1mr34682991fa.17.1721636444239;
-        Mon, 22 Jul 2024 01:20:44 -0700 (PDT)
-Received: from [10.100.51.161] ([193.86.92.181])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2cb76a46dfcsm3186370a91.0.2024.07.22.01.20.38
+        bh=RxI9qiM4lzIxZVwtwjzIK8T0OrMcooauWHayA/UpE+g=;
+        b=eyyd0JyPfbAV9KAM/D4RtXKsCwPN1rLB7zpdq634gXzKadOf6co9hVyLwHF4NycyKL
+         qFTgSROjQdnfY3TiRgFBlmBap4xv85Wao1FXNS7F8zxqVs1zoNQhz7+QHpGPO3mgNmYm
+         3aFLufzlTWtJt1HjRoSOS85gNLBOwdk84UMuPiBn3DJ5K7O6/QE+D0gMCw6oqdxBvKO1
+         JGK3shRiVO8CTZUBPryfwgkysN3XQ7SSPVCOI0X9U/s+1p5vtqA21dBREZcU+SRfKg8F
+         4gzVh20MYjnLKfkXxM5iFCtssJ3SYBscr8mFxWHp3J/hh/mi4JjJrxFKiUneVGKSURVh
+         Uttw==
+X-Forwarded-Encrypted: i=1; AJvYcCUuV2BLJ65jGHf69fojDlTHuPJhK7YX/4b+HB7+TU753UH4y8gSESyraes41FTSaf2gAmYiJpQIgu3lT7xehP/hzn16oPJSdXYcrPUbAoM=
+X-Gm-Message-State: AOJu0YybkWt46lVpGBpqMgI8thjckU6PWTVvXKjiQYj23m3bSRVI5VhT
+	T6hAE8ZyG7/eJabpINIFgNtx5MJQcxrFD05VWe+91TobcwHfVTEKqeEmSHJHetk8dRFKhj4vQ0i
+	CnhquW0pqFM0hCU1FTfHTRkDy6SSqzwLSmicwzLhhhcZm4xxv790XdZCAFN9MPAkC
+X-Received: by 2002:a05:600c:3553:b0:426:6765:d6b0 with SMTP id 5b1f17b1804b1-427dc51d30amr38064635e9.15.1721638383823;
+        Mon, 22 Jul 2024 01:53:03 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGQt0t4NSssP8bkkisHsnA8tLq8Iv91Jr480NjPHTYPZZEWC+ZnVhrLtxhOJzzrDG86YKQ7uw==
+X-Received: by 2002:a05:600c:3553:b0:426:6765:d6b0 with SMTP id 5b1f17b1804b1-427dc51d30amr38064325e9.15.1721638383386;
+        Mon, 22 Jul 2024 01:53:03 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:d5:a000:d3ea:62cf:3052:fac6? ([2a01:e0a:d5:a000:d3ea:62cf:3052:fac6])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-427d2a63c8dsm146615265e9.20.2024.07.22.01.53.02
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 22 Jul 2024 01:20:43 -0700 (PDT)
-Message-ID: <00714a65-953f-4885-9229-1990543c4154@suse.com>
-Date: Mon, 22 Jul 2024 10:20:34 +0200
+        Mon, 22 Jul 2024 01:53:02 -0700 (PDT)
+Message-ID: <8803e15d-3531-4384-b641-25845176ded5@redhat.com>
+Date: Mon, 22 Jul 2024 10:53:00 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -61,170 +67,123 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 00/15] Implement MODVERSIONS for Rust
-Content-Language: en-US
-To: Sami Tolvanen <samitolvanen@google.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Masahiro Yamada <masahiroy@kernel.org>, Luis Chamberlain
- <mcgrof@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
- Matthew Maurer <mmaurer@google.com>, Alex Gaynor <alex.gaynor@gmail.com>,
- Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>,
- linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-modules@vger.kernel.org, rust-for-linux@vger.kernel.org
-References: <20240617175818.58219-17-samitolvanen@google.com>
- <0b2697fd-7ab4-469f-83a6-ec9ebc701ba0@suse.com>
- <CABCJKueGRBdFfGW-cvOvqxc-a85GpxtwPmLdE_1RiAkNLrEg+g@mail.gmail.com>
-From: Petr Pavlu <petr.pavlu@suse.com>
-In-Reply-To: <CABCJKueGRBdFfGW-cvOvqxc-a85GpxtwPmLdE_1RiAkNLrEg+g@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
+Subject: Re: [PATCH v4 0/4] drm/panic: Add a QR code panic screen
+To: Mitchell Levy <levymitchell0@gmail.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
+ David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng
+ <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ Bjorn Roy Baron <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl
+ <aliceryhl@google.com>, linux-kernel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
+ Danilo Krummrich <dakr@redhat.com>
+References: <20240717142644.1106060-1-jfalempe@redhat.com>
+ <0bad8507-22f3-38d2-5724-0aa6433990cc@gmail.com>
+From: Jocelyn Falempe <jfalempe@redhat.com>
+In-Reply-To: <0bad8507-22f3-38d2-5724-0aa6433990cc@gmail.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US, fr
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
 
-On 7/15/24 22:39, Sami Tolvanen wrote:
-> On Wed, Jul 10, 2024 at 7:30 AM Petr Pavlu <petr.pavlu@suse.com> wrote:
->> On 6/17/24 19:58, Sami Tolvanen wrote:
->>> The first 12 patches of this series add a small tool for computing
->>> symbol versions from DWARF, called gendwarfksyms. When passed a list
->>> of exported symbols, the tool generates an expanded type string
->>> for each symbol, and computes symbol CRCs similarly to genksyms.
->>> gendwarfksyms is written in C and uses libdw to process DWARF, mainly
->>> because of the existing support for C host tools that use elfutils
->>> (e.g., objtool).
+On 19/07/2024 20:50, Mitchell Levy wrote:
+> I am trying to test this patchset on my setup, but I cannot get it 
+> working. In case it's relevant, I'm running under HyperV. Any 
+> troubleshooting steps/suggestions would definitely be appreciated.
+
+First, make sure you have this in your .config:
+CONFIG_RUST=y
+CONFIG_DRM_SIMPLEDRM=y
+CONFIG_SYSFB_SIMPLEFB=y
+CONFIG_DRM_PANIC=y
+CONFIG_DRM_PANIC_FOREGROUND_COLOR=0xffffff
+CONFIG_DRM_PANIC_BACKGROUND_COLOR=0x000000
+CONFIG_DRM_PANIC_DEBUG=y
+CONFIG_DRM_PANIC_SCREEN="qr_code"
+CONFIG_DRM_PANIC_SCREEN_QR_CODE=y
+
+drm_panic is only supported by a few drivers. The easiest way to test, 
+is to use the simpledrm driver, that should work on all EFI or BIOS 
+based system.
+To check the drm driver in use, run:
+sudo udevadm info -a -n /dev/dri/card0 | grep DRIVER
+
+If it's not simpledrm, you should blacklist it, and make sure you boot 
+with simpledrm.
+
+and then you can run:
+echo 1 > /sys/kernel/debug/dri/0/drm_panic_plane_0
+
+On a side note, looking at the hyperv drm driver, it should be easy to 
+add drm_panic support for it. I will look into that when I get some time.
+
+Best regards,
+
+-- 
+
+Jocelyn
+
+> 
+> Thanks!
+> Mitchell
+> 
+> On 7/17/2024 7:24 AM, Jocelyn Falempe wrote:
+>> This series adds a new panic screen, with the kmsg data embedded in a 
+>> QR code.
 >>
->> In addition to calculating CRCs of exported symbols, genksyms has other
->> features which I think are important.
+>> The main advantage of QR code, is that you can copy/paste the debug 
+>> data to a bug report.
 >>
->> Firstly, the genksyms tool has a human-readable storage format for input
->> data used in the calculation of symbol CRCs. Setting the make variable
->> KBUILD_SYMTYPES enables dumping this data and storing it in *.symtypes
->> files.
+>> The QR code encoder is written in rust, and is very specific to drm 
+>> panic.
+>> The reason is that it is called in a panic handler, and thus can't 
+>> allocate memory, or use locking.
+>> The rust code uses a few rust core API, and provides only two C entry 
+>> points.
+>> There is no particular reason to do it in rust, I just wanted to learn 
+>> rust, and see if it can work in the kernel.
 >>
->> When a developer later modifies the kernel and wants to check if some
->> symbols have changed, they can take these files and feed them as
->> *.symref back to genksyms. This allows the tool to provide an actual
->> reason why some symbols have changed, instead of just printing that
->> their CRCs are different.
+>> If you want to see what it looks like, I've put a few screenshots here:
+>> https://github.com/kdj0c/panic_report/issues/1
 >>
->> Is there any plan to add the same functionality to gendwarfksyms, or do
->> you envison that people will use libabigail, Symbol-Type Graph, or
->> another tool for making this type of comparison?
-> 
-> gendwarfksyms also uses human-readable input for the CRC calculations,
-> and it prints out the input strings with the --debug option. I plan to
-> hook this up to KBUILD_SYMTYPES in v2. It should be convenient enough
-> to simply compare the pretty-printed output with diff, so I'm not sure
-> if a built-in comparison option is needed. Any other DWARF analysis
-> tool can be used to spot the differences too, as you mentioned.
-
-From my perspective, I'm okay if gendwarfksyms doesn't provide
-functionality to compare a new object file with its reference symtypes
-file.
-
-As mentioned, genksyms has this functionality but I actually think the
-way it works is not ideal. Its design is to operate on one compilation
-unit at the time. This has the advantage that a comparison of each file
-is performed in parallel during the build, simply because of the make
-job system. On the other hand, it has two problems.
-
-The first one is that genksyms doesn't provide a comparison of the
-kernel as a whole. This means that the tool gives rather scattered and
-duplicated output about changed structs in the build log. Ideally, one
-would like to see a single compact report about what changed at the end
-of the build.
-
-The second problem is the handling of symtypes files. This data is large
-and if one wants to store them in a Git repository together with the
-kernel source, it is advisable to first compress/consolidate it in some
-way. This is trivial because these files typically contain many
-duplicates. However, the issue is that to feed the data back to
-genksyms, they need to be unpacked during each build which can take some
-time.
-
-I think a better approach is to have a tool that can be given
-a consolidated symtypes file as one input and can compare it with all
-new symtypes files produced during a kernel build. An example of a tool
-that takes this approach is the kabi Python script in UEK [1].
-
-A few months ago, I also started working on a tool inspired by this
-script. The goal is to have similar functionality but hopefully with
-a much faster implementation. Hence, this tool is written in a compiled
-language (Rust at the moment) and should also become multi-threaded. I'm
-hoping to find some time to make progress on it and make the code
-public. It could later be added to the upstream kernel to replace the
-comparison functionality implemented by genksyms, if there is interest.
-
-So as mentioned, I'm fine if gendwarfksyms doesn't have this
-functionality. However, for distributions that rely on the symtypes
-format, I'd be interested in having gendwarfksyms output its dump data
-in this format as well.
-
-For example, instead of producing:
-
-gendwarfksyms: process_exported_symbols: _some_mangled_func_name (@ XYZ)
-subprogram(
-   [formal parameters...]
-)
--> structure_type core::result::Result<(), core::fmt::Error> {
-   [a description of the structure...]
-};
-
-.. the output could be something like this:
-
-S#'core::result::Result<(), core::fmt::Error>' structure_type core::result::Result<(), core::fmt::Error> { [a description of the structure...] }
-_some_mangled_func_name subprogram _some_mangled_func_name ( [formal parameters...] ) -> S#'core::result::Result<(), core::fmt::Error>'
-
->> Secondly, when distributions want to maintain stable kABI, they need to
->> be able to deal with patch backports that add new members to structures.
->> One common approach is to have placeholders in important structures
->> which can be later replaced by the new members as needed. __GENKSYMS__
->> ifdefs are then used at the C source level to hide these kABI-compatible
->> changes from genksyms.
+>> v2:
+>>   * Rewrite the rust comments with Markdown (Alice Ryhl)
+>>   * Mark drm_panic_qr_generate() as unsafe (Alice Ryhl)
+>>   * Use CStr directly, and remove the call to as_str_unchecked()
+>>     (Alice Ryhl)
+>>   * Add a check for data_len <= data_size (Greg KH)
 >>
->> Gendwarfksyms works on the resulting binary and so using such ifdefs
->> wouldn't work. Instead, I suspect that what is required is a mechanism
->> to tell the tool that a given change is ok, probably by allowing to
->> specify some map from the original definition to the new one.
+>> v3:
+>>   * Fix all rust comments (typo, punctuation) (Miguel Ojeda)
+>>   * Change the wording of safety comments (Alice Ryhl)
+>>   * Add a link to the javascript decoder in the Kconfig (Greg KH)
+>>   * Fix data_size and tmp_size check in drm_panic_qr_generate()
+>>   v4:
+>>   * Fix the logic to find next line and skip the '\n' (Alice Ryhl)
+>>   * Remove __LOG_PREFIX as it's not used (Alice Ryhl)
 >>
->> Is there a plan to implement something like this, or how could it be
->> addressed?
+>> Jocelyn Falempe (4):
+>>    drm/panic: Add integer scaling to blit()
+>>    drm/rect: Add drm_rect_overlap()
+>>    drm/panic: Simplify logo handling
+>>    drm/panic: Add a QR code panic screen
+>>
+>>   drivers/gpu/drm/Kconfig         |   31 +
+>>   drivers/gpu/drm/Makefile        |    1 +
+>>   drivers/gpu/drm/drm_drv.c       |    3 +
+>>   drivers/gpu/drm/drm_panic.c     |  340 +++++++++--
+>>   drivers/gpu/drm/drm_panic_qr.rs | 1003 +++++++++++++++++++++++++++++++
+>>   include/drm/drm_panic.h         |    4 +
+>>   include/drm/drm_rect.h          |   15 +
+>>   7 files changed, 1358 insertions(+), 39 deletions(-)
+>>   create mode 100644 drivers/gpu/drm/drm_panic_qr.rs
+>>
+>>
+>> base-commit: e1a261ba599eec97e1c5c7760d5c3698fc24e6a6
 > 
-> That's a great question. Here's what Android uses currently to
-> maintain a stable kABI, I assume you're doing something similar?
 
-Correct, (open)SUSE kernels have placeholders in likely-to-change
-structs which can be used for new members. Or if no placeholder is
-present, it might be necessary to place a new member in a gap (padding)
-in the struct layout.
-
-> 
-> https://android.googlesource.com/kernel/common/+/refs/heads/android15-6.6/include/linux/android_kabi.h
-> 
-> If using unions here is acceptable to everyone, a simple solution
-> would be to use a known name prefix for the reserved members and teach
-> gendwarfksyms to only print out the original type for the replaced
-> ones. For example:
-> 
-> The initial placeholder:
-> 
->     u8 __kabi_reserved_1[8];
-> 
-> After replacement:
-> 
->     union {
->             u64 new_member;
->             struct {
->                     u8 __kabi_reserved_1[8];
->             };
->     }
-> 
-> Here gendwarfksyms would see the __kabi_reserved prefix and only use
-> u8 [8] for the CRC calculation. Does this sound reasonable?
-
-I like this idea. I think it's good that the necessary kABI information
-about an updated member can be expressed at the source code level in
-place of the actual change, and it isn't needed to feed additional input
-to the tool.
-
-[1] https://github.com/oracle/linux-uek/blob/dbdd7f3611cb03e607e156834497dd2767103530/uek-rpm/tools/kabi
-
-Thanks,
-Petr
