@@ -1,98 +1,146 @@
-Received: from mail-lj1-f169.google.com (mail-lj1-f169.google.com [209.85.208.169])
+Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6B3D153BF0;
-	Tue, 23 Jul 2024 15:54:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A57A614EC61
+	for <rust-for-linux@vger.kernel.org>; Tue, 23 Jul 2024 16:01:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721750076; cv=none; b=jU4dccdV1g6FbrFGdd7U+lyHftbj7Xg91Q1+cj/z/sd6fcY+7a4YuaoRANnXzv1AydwQiE+XC30PpwOhjszdQNCoAUKuetdijnuYP74WXlfF230Cy4UXjrafoTQbr2H4YTm2n6K7Snw5hfpMB+DzrWtKlzkeuw36GQNEMzl7r9A=
+	t=1721750501; cv=none; b=oIQL9Fmhern5gmEESXFpRup9cGgCDblqDiL8GUBxxmVezcu7dOq3FvmMbOAJyt4/jutd/LyPDaJ04c3pp8K7jpAEZtYFGk3PowpF2gUVXraTlJ6S6FVYf5zwlLe8ygQBM8qq7gtEhIzObP0qASrfMhxATMU6u3Uqbs7akHyxrjM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721750076; c=relaxed/simple;
-	bh=FKFKtr/hJ7Um8vWOR5g2yMg7qzkrQwQ6jKd2dq5sfbk=;
-	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=XIzf+iJ2oN7aZjVx1fqGEJL4ROQO3wxOEnt2soViu3kjP94FmKXeziFjM+WjBzlaVmKRq50f1eq9O80+Z5rTF7gq1QuWdqiw5jGB8IXnlMp1QFzRSt86V+SJDVjB8i+1U2dkd7BBWuKTsL9mF2mve9Q//fQH/AgKIW2FMzWkInI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZjmklzQ1; arc=none smtp.client-ip=209.85.208.169
+	s=arc-20240116; t=1721750501; c=relaxed/simple;
+	bh=Udo5u1NGcABRv9IYPg6aGyjzgCj3Iz+oX735pdKCt1I=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=RfEaVw0QiNHN8rL3h1Rgx9eGP9imjfCUPfsnxoYEJl6eTIpxu6i7cFeWcAF7f5rp0RT3D9WUs1o9MyLOd6g98ZTodSFjP02GvN+jNyNG4qbVzZUBgToVl13GmqSTxih3zCXIG443zqsbUPaFrXMkTYUJIeiE+nl+et3EiV9oUjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=D7ThDNQs; arc=none smtp.client-ip=209.85.215.177
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZjmklzQ1"
-Received: by mail-lj1-f169.google.com with SMTP id 38308e7fff4ca-2ebe40673e8so70651811fa.3;
-        Tue, 23 Jul 2024 08:54:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D7ThDNQs"
+Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-75ee39f1ffbso665399a12.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 23 Jul 2024 09:01:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1721750073; x=1722354873; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=hN5MWX/60s+ZgUnHG8u9ko8tdnOJvIZCPJKPPu7gqQc=;
-        b=ZjmklzQ1LHQJhWqILGIOCSbIVI5mMiuJRDjATQ9WjuYJrXDEA1DUyxn0+OaPJ7KvvW
-         zC+5EneHQO4QIgh5XBAERq4ooCQ4U1TnMfpoFoG0UhADP4WQoQCZ9kRuxW9Rufq7sdNb
-         VfS2FsQoHCqnwWyI1HrrD3zwkkM/Wm3D9/Lwr3mXMs90mAfN/LRsSCdXs/L+F2z1ZPVs
-         VFfNC4/R6SCZJI8t7m3v+v126XwHNX8s6folnS/Dv8Z9PCCKodq/ceS55sUphwZUc97u
-         4aC2yjqXhyvLnDmVSgx5Nu3PdQz9UUdzG+K4Te72ec5Coy87hiiQoJ11nRGsRvDOoEZ/
-         qskQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721750073; x=1722354873;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1721750496; x=1722355296; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=hN5MWX/60s+ZgUnHG8u9ko8tdnOJvIZCPJKPPu7gqQc=;
-        b=qYAwklAr6F4g2KaV1Fp3fYms0A4iTDA3hk86FmT2JsiyzFZ1o7F7ZxhhFBXxS2CHhO
-         a2L0B29MPtkjo9fqdFMWsCVkEIgm+sLSFqjXBXRxchpVJMsS9tqbeWIl7EQc8pt2i8RS
-         rUvV60hKB+K2upVRUCC9bo+nPqdGV4WIrqNwvNGK+SccEc1CGVFREwu2uAFcvMRcE5vN
-         V1bbFcoqTpR9l/W7ArzdVSQ8x21i9/MrDLRNjm4LUAtHHaU8CqVPk8bD3KYUBw1czMv0
-         3ynLSjuB11zGJh0Qfm1Y1+BLBVPSXI8AZZ4iemc7pYmXyQPZp1Xeqy6CRKOYZ2DzpQoS
-         /1tg==
-X-Forwarded-Encrypted: i=1; AJvYcCX252icoXP9uKx+fQfWR4pxK9bdInImleafdqvtsBTrq+N/zOMdriq7Lmi3nZ5lzzuE390vuoV+JGqrm4vwsL/iWmEee+VechieJCIkwKaPNZbl5wCwNFBuf7ei2Vtfr8e3/Mkz2aqg+84qqQQ=
-X-Gm-Message-State: AOJu0Yw1MUjWAK5bJk7E1Tu3jPzWHhMJRISKjJdqJAGNPMTVk6y6hgeX
-	mw8Gp0rRHzxZw1orSBuV5uhK8x2onBUEjsfRZwnbyHPvtddrk407Xl4CEbm/
-X-Google-Smtp-Source: AGHT+IG1Ejxe4WLjGMg0aa+mr7riiCjVtx4+0iTNKzxSFLR8rPR6ORx4FmZpAVke8WypnQJxQr7A2w==
-X-Received: by 2002:a2e:998d:0:b0:2ef:2e8b:1802 with SMTP id 38308e7fff4ca-2f02b98c5bdmr2037711fa.31.1721750072345;
-        Tue, 23 Jul 2024 08:54:32 -0700 (PDT)
-Received: from pc636 (host-90-233-213-186.mobileonline.telia.com. [90.233.213.186])
-        by smtp.gmail.com with ESMTPSA id 38308e7fff4ca-2ef0fcfebc0sm15995001fa.102.2024.07.23.08.54.30
+        bh=Udo5u1NGcABRv9IYPg6aGyjzgCj3Iz+oX735pdKCt1I=;
+        b=D7ThDNQsshNJyRKRs0ky+THEQ+N5WbTyYoTwkpVAVZekl9jKTLvcgKiAxTgjuMScG8
+         XGIq+s/L9jDG3fSdu1SCMkaVLqNBrxjMiFpZULN/W9ffs7jku6v4pti2lCnTm9de0rEj
+         WVt+ps49eXnL3EPgJi5w4DzjYpN39sTjQs7neP3mVMtX82eSr11DXg6xBXkQPJxqfeAp
+         tmYD7UtbJAq9mSJmpii25hQAvUUrKxtm64/Uj3rYLGPLn3X90hU9mexIMdCuBLrV/92J
+         6JdLXWvpPLesLfmEgjT2YfF829GhtsMkgj2nAJ77bRoJcw3p4XbriNj8DN5GOTWwqP8m
+         Ko9g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1721750496; x=1722355296;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Udo5u1NGcABRv9IYPg6aGyjzgCj3Iz+oX735pdKCt1I=;
+        b=Wg2J6g6tHG2N/9SwrPIjlLcJVomB78BxFGOM3CF9oZ6gnBYbbvfu2rLxvJ0Zano/7Y
+         wOfGK+T08FPIbih+/64sr8gUAU2RfJe54pvx5qHQYIEWhTSlZdAdpRe8ASAT2I/SHwBB
+         pY/r9QjkWDkuZeA93zf1EawyM5zmnO+cFQwZs7ljYDNKoZhEY8J3qPXgkDywwUamvZxF
+         Y86jglUO4qnB7pRybDp64lHle3nKJvAbrchU1dxwHXQKlrbYk8jZ6xJvgJJHJQT1cSwK
+         Gs7xiMcYMcL/VmDMOkjLp/aswrgj71FOvjYADTH1p3Pe9xAyVfPSzDKbx0H/rNIBVR61
+         rEGg==
+X-Forwarded-Encrypted: i=1; AJvYcCUkWIP79U6qt92+bVlFauMwEq4ynEbHVHQDFyWqicy/Oct8YKOenKI8XubS9eLoqORP3YOnwzXCHbL/qbzcBmKxJSPaxpSi34Fp5D48B8E=
+X-Gm-Message-State: AOJu0YxMDBGkLexcJfEiOBHOJDX81VSOtJyBFPOgR2AVJ6RPXI7IY7Wq
+	zzk/IRdnK+ITV12zgVqFprAnvsdFyRAl83kmAE3pJTCJ3Fyom0iR
+X-Google-Smtp-Source: AGHT+IEYFX8at8icxprSP3ewE2YiFZJvUL92RDXpmUX4z59Bd6p+IYCeb83Vfx7v7qiRVJAdcGhaYQ==
+X-Received: by 2002:a17:90b:3d81:b0:2c3:cc6:636e with SMTP id 98e67ed59e1d1-2cd85c906f1mr3178873a91.2.1721750495479;
+        Tue, 23 Jul 2024 09:01:35 -0700 (PDT)
+Received: from localhost.localdomain ([2401:4900:1f30:240e:92d6:592a:7ca:c3f9])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2cb7750688esm10292865a91.37.2024.07.23.09.01.31
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Jul 2024 08:54:31 -0700 (PDT)
-From: Uladzislau Rezki <urezki@gmail.com>
-X-Google-Original-From: Uladzislau Rezki <urezki@pc636>
-Date: Tue, 23 Jul 2024 17:54:28 +0200
-To: Christoph Hellwig <hch@infradead.org>
-Cc: Uladzislau Rezki <urezki@gmail.com>, Danilo Krummrich <dakr@kernel.org>,
-	cl@linux.com, penberg@kernel.org, rientjes@google.com,
-	iamjoonsoo.kim@lge.com, akpm@linux-foundation.org, vbabka@suse.cz,
-	roman.gushchin@linux.dev, 42.hyeyoo@gmail.com, kees@kernel.org,
-	ojeda@kernel.org, wedsonaf@gmail.com, mhocko@kernel.org,
-	mpe@ellerman.id.au, chandan.babu@oracle.com,
-	christian.koenig@amd.com, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 1/2] mm: vmalloc: implement vrealloc()
-Message-ID: <Zp_SNMaCBzonjpcO@pc636>
-References: <20240717222427.2211-1-dakr@kernel.org>
- <20240717222427.2211-2-dakr@kernel.org>
- <Zp-T4F42tk_aKKc-@pc636>
- <Zp-z2IWwGtIH9O4p@infradead.org>
+        Tue, 23 Jul 2024 09:01:35 -0700 (PDT)
+From: Sarthak Singh <sarthak.singh99@gmail.com>
+To: miguel.ojeda.sandonis@gmail.com
+Cc: a.hindborg@samsung.com,
+	alex.gaynor@gmail.com,
+	aliceryhl@google.com,
+	benno.lossin@proton.me,
+	bjorn3_gh@protonmail.com,
+	boqun.feng@gmail.com,
+	dirk.behme@de.bosch.com,
+	gary@garyguo.net,
+	lukas.wirth@ferrous-systems.com,
+	ojeda@kernel.org,
+	rust-for-linux@vger.kernel.org,
+	sarthak.singh99@gmail.com,
+	ss269@uw.edu,
+	wedsonaf@gmail.com
+Subject: Re: [PATCH v2] rust: Support latest version of `rust-analyzer`
+Date: Tue, 23 Jul 2024 21:31:28 +0530
+Message-ID: <20240723160128.3259768-1-sarthak.singh99@gmail.com>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <CANiq72keKdr7ZhufjdeM3g0tgDo80nk2NNBN5SBSepHry-LaQQ@mail.gmail.com>
+References: <CANiq72keKdr7ZhufjdeM3g0tgDo80nk2NNBN5SBSepHry-LaQQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Zp-z2IWwGtIH9O4p@infradead.org>
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jul 23, 2024 at 06:44:56AM -0700, Christoph Hellwig wrote:
-> On Tue, Jul 23, 2024 at 01:28:32PM +0200, Uladzislau Rezki wrote:
-> > Concurrent vfree() will lead to use-after-free. Either add a comment
-> > that a user is responsible for not using vrealloc()/vfree() on the same
-> > pointer concurrently or use find_unlink_vmap_area() which might be more
-> > complex when it comes to design of the vrealloc().
-> 
-> You can never use *free concurrently with *realloc.  I guess it doesn't
-> hurt to clearly document that, but other than that we should not try
-> to cater to that use pattern at all.
->
-Agree, i mentioned that as a first option. I think, it is enough to document that.
+Hello Miguel,
 
-Thanks!
+Thank you for reviewing. How do you send replies? To send this one I
+am writing a text file manually to look like the generated patch
+file that I emailed earlier. Is that the best way?
 
---
-Uladzislau Rezki
+I don't have access to the ss269@uw.edu email anymore.
+
+Should I resend the patch with the fixed email address? Afaik there is
+no way to update a patch, let me know if that is possible. I can also
+add the missing Tested-by tag in the new version of the patch.
+
+In the PR [1] the ability to guess the sysroot based on the sysroot_src
+was removed. That is why every version of rust-analyzer after this PR
+fails with the current config generation system. rust-analyzer needs to
+know the sysroot so that it can find its proc-macro server.
+
+> From a quick look, the `sysroot` key has existed in rust-analyzer
+> since 2022 (189521a4db6e), but undocumented. Then it got documented in
+> 2023 (5da14237eb29). So I am not sure what "`sysroot` over
+> `sysroot_src`" means (and the current docs are not very clear on what
+> each does and their intended interactions, e.g. what happens if one
+> specifies `sysroot_src` but not `sysroot`, or the other way around?
+> Should `sysroot_src` be relative to `sysroot` like the default?)
+
+sysroot need to point to the root location of the toolchain. This
+contains the rust core and std library the compiler will link against.
+It also contains the rustc and cargo for that toolchain.
+
+sysroot_src need to point to the root location of the rust library. It
+contains the source code of the core / std / alloc crates. I think for
+our purposes it need to be a subset of the sysroot since we install rust
+using rustup. If someone installs it in a manner where the source code
+does not live in a sub directory of the sysroot path then they will have
+to set it to that.
+I think the main invariant that we need to uphold between them is that
+the built libraries in sysroot and the source code in sysroot_src belong
+to the same built of rust.
+
+> Anyway, we are passing the paths for `core` etc. in `crates`, and we
+> don't have a custom `alloc` anymore, so I wonder if we should either
+> delete both keys (or however one disables auto-search) or delete the
+> crates in `crates` and let the sysroot logic find them.
+
+I think it will always need a `sysroot` key as it needs to know that
+to find the proc-macro server. I don't think there is a way to specify
+the version of rust in a `rust-project.json` other than specifying the
+`sysroot` [2].
+
+> Just to confirm, does this make it work for distribution and
+> `rustup`-using installs?
+
+Yes this should work with every setup. The `sysroot_src` that
+rust-analyzer is internally generating is the same. The `sysroot`
+that rust-analyzer was generating earlier is also defined to be
+the same in this version.
+
+Thank you,
+Sarthak
+
+[1] https://github.com/rust-lang/rust-analyzer/pull/17287/files#diff-53e4b6b2c1ff2465d8abd50db160753199426fd788ddcad925752e0838e28de2L367-L374
+[2] https://rust-analyzer.github.io/manual.html#non-cargo-based-projects
