@@ -1,55 +1,55 @@
 Received: from mail-yb1-f202.google.com (mail-yb1-f202.google.com [209.85.219.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1EDAB14F10E
-	for <rust-for-linux@vger.kernel.org>; Tue, 23 Jul 2024 08:23:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CE6414F9DC
+	for <rust-for-linux@vger.kernel.org>; Tue, 23 Jul 2024 08:23:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721722995; cv=none; b=fhjK6cMN4uRhX24zFFI692IthXUerLkBC6FPp4RVUYtHYU39ZdLGNrCqF+0oDKIIgtNz0B5tLL9HCSdQ54e35HFzTEwShA8EVVNo/OsCf45qhRIBLTZpD6Mk5Q311ehDsn9q7SgWWZCGJcH2nuT8SzTohVOgH9d2poQ65eaq9hE=
+	t=1721722998; cv=none; b=A5Bj/QzCxrilNR/zb8Nky1CkbPmpMB4JDazsFEU6RKhqbtU/WnOH14ATjbYAEurbL6Nkxb+wu3BMXPGMa3zYsQx9l2ytIHnb7CFk4KWYqkrtR7le2kRQwuL8yTCqEYBAjHyDfYSZ+KqQnUKGVQe/qop+kn6BHwpeUo+is4i9ju0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721722995; c=relaxed/simple;
-	bh=yg75c+W1eHmcUh6XQTFsaiSkN/WH/Yg42MPoMls94XQ=;
+	s=arc-20240116; t=1721722998; c=relaxed/simple;
+	bh=DGiNcxmXnBX8XeaW9TQmBXqeb7hhSkPo8/+cGCJC2TY=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=M1Re5HVqKJJ/JZULL6nTy1H35hWS897RLGOUWJAMwijJXHkg07c4V4qTP2PWxuf0yoEosmyfOO0FT8Ly2j1/UlHbGEo03ChSOUXtzqXuru4uafo5gEuYVwiogzQ98TVt8XiS3LrHHaMkIYiyuwXhSTP8VmkheHuvGYmXYmHrljc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=3h9C3zWK; arc=none smtp.client-ip=209.85.219.202
+	 To:Cc:Content-Type; b=VCaTP68GpMCZ0DnlGVK1eSuOyVM/V4MrbeEMmCow7BmH/08943pPVxgLnW8FnuxZfb0C8neHEVl9ofVjBdZyjLjk2n3jn8RaBC1Rtvtaj1EXG7KddncTtvUKy8YgftNMHOuODl8N42r/nrF2p5wjCTEcK4ufoLshbcMEqVISC2U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XSLKxPPS; arc=none smtp.client-ip=209.85.219.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3h9C3zWK"
-Received: by mail-yb1-f202.google.com with SMTP id 3f1490d57ef6-e05eae12defso9943042276.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 23 Jul 2024 01:23:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XSLKxPPS"
+Received: by mail-yb1-f202.google.com with SMTP id 3f1490d57ef6-e05ec8921fdso11210922276.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 23 Jul 2024 01:23:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1721722993; x=1722327793; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1721722996; x=1722327796; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=tcZ7Zm5VQO7GwdFeiWI47MTbabJd70KzY1xKEHxQP9c=;
-        b=3h9C3zWKs+WHtNIkHLGKhx6TZ0sA41x78DdtLhfcum+3HGWq2NumGb0CKBlQm6Zouv
-         Uz26hTbSInXWVDKH7Usx6M9nzZDCb8LLIDfQnVp+iMPQNTQ1f/hDbrZ9C6llLaYjcWeX
-         KoE4AiJ2CRvq1m1jJXPRSJrpQdbdNd0a6CXBnZy1vEOxNG6wOJaYIZ7xsFQ4msLQ4I/q
-         4W42p/Ft3LMggcPk8V56Tymj8dnoNKS4+vP+kuEPm7C5D4FZAtjQpreg+Ra8YVP8OR/y
-         q7m2cRrrLUXHAaerYrTrSxPhWTFubePBR7GIoTxTKkZpe9XgY+0Vhp4PbraN7WfEsNaC
-         gbxw==
+        bh=29r0gIPhUnZ5mBg155qsbH5Qt/QtLWdfTj/Q5hfndv8=;
+        b=XSLKxPPSWL4z77pewFKUxWmDmH2KJuQnJmGl+5H06oWMF6fVGm0/07YZi3qWPvrnX+
+         DXdX/+DehgsE31BmjVi8YdYzIxw+6jPoHAQNyjLeA/x++SNBppKVsu4BlhozO6/2xEen
+         Zc6FockSsuM4uqpGRwB38XZFxJ4EavKfdqw+yQ/GH5IVd4BWc7P50bxbbtfUnFKK1afk
+         P5VsRw9NwRZQl8q3wMPtSkMG3I8JcmOsn6h74D+2Jkgg69Nouhz7+e057IlBgFkCIOoi
+         Yby8Bzyt/7mYwpN+CZvU1VsFwKC6lVwT4UVXzjgXhMZXn045CqQ6ltKlQKBpnSzgtyy7
+         w7Nw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721722993; x=1722327793;
+        d=1e100.net; s=20230601; t=1721722996; x=1722327796;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=tcZ7Zm5VQO7GwdFeiWI47MTbabJd70KzY1xKEHxQP9c=;
-        b=rgbG38cmf3LlHolXg4XL/P6xWzPiaMfDjro1vURi3+iC26eebQsusbjUNA+XxGT2/H
-         87nchPw2vJ3hKdyKa8dfP7xzKcY6KPYHiYiJQpqS2/If6A44QceS0WCJLuvgjnorX2Dr
-         AAt1Sktw3u1rYkvMZrOmMx5SEBTGmnUZoxBogUEcfOaBuwmVvf7FeT73wIw8piTrblH7
-         6SK92ZNwniyscZBSSRIYgQdY/pKFvv9fZXD29Q53WmBdN5dCpBcYbV/mTi1VwC2dd2je
-         9cdN7RkGfv1ZlYiXgFeAM2Pps2p/iAkFkdwMks4iGzRaZyM4k1Z6pq2v4yYd8FqURxTA
-         gg8Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXXOqG5opkCHrVj3SAV7FO1UDC3Oc5gqmwr9gyQavRw7foTcKUibU2wXeE3D5ww17BD4ViCQhhh6JcMNDgMktHxTv0nuRszN+IEyoWOJeU=
-X-Gm-Message-State: AOJu0Ywav4q4KaDOagqKvEFSJxhK8/R12cYEWajVCfDfQi59Dy0LM40s
-	sky66pDNlSZ+4ArVfxXe0u3rYNXAan/HsjxxqLmx7DxDehFUeJsaPoNzmWxjk4JGpdfh8ODdVJG
-	fsgQGy0mxLtGK7w==
-X-Google-Smtp-Source: AGHT+IFcZBOUuldUyrZ/nC+GBhKsp/SOAJzssCONhYZVZO8dbhxu3yXfTLnyzNLBTT8kWbI+6xhmwkg9vxIdC1s=
+        bh=29r0gIPhUnZ5mBg155qsbH5Qt/QtLWdfTj/Q5hfndv8=;
+        b=Jb3lBLDV+wjn70Frs6mv+BW6thqLVMm1WamABkboqrAvAZGIUT0o0OfEZyrhtpDT3S
+         NsQ3gz38Rkc/R/GBEJ8VNwn4wmeYiDiZ6WCmvF6AciRSPVLPGtCi/W5a/YyU508/P/bQ
+         HU9/0M7A4lOUmYmwfWkyQ5wnkv5HfK8OjI2XPaRrNBc4mIB7/PEIZaSp4P3s9VCB8jD6
+         ZkvgEk3S8f+9LxsxPJiIZiPywOIVifYBrnJO8wEsP2BqsVNA/IIWctrc07L0ny6w3Ddk
+         FOKXX5JojxwQ66sdS0yGtjsVj18Tl35VgHGvmGc0BXK8TByvL5rLyWVu413IvANFqmgT
+         J61Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXsYPlXUlf7UcT/8UmTe1gj8ByJCFD0iZqcNqBu+T4RbZuxKAvVHHR0UbfnQsXpZs5fN8Ya6XwD4hyuVdMQ5F76El9jYVzdNUK+GphrSVg=
+X-Gm-Message-State: AOJu0YwFvu078OVDcSS/1ScRjDUfakcpUGw7lAxWDlZnKrWxGLUoev3P
+	fKAMbgB4wdDJiQyQCOohLZKq4YxOABYvSNEEN8fEDf6o6FZqM5hrjiZ2mR23qznhlPgymV3dzr0
+	cR0uYx4Bez2mXCg==
+X-Google-Smtp-Source: AGHT+IEORvPmcAry+mHuiowBlcK1a5jUA94sbmV2u66xPv16mNcweTtcSgMGB+a3ZAMoz2oR3mgOLF1mDnSqRBM=
 X-Received: from aliceryhl2.c.googlers.com ([fda3:e722:ac3:cc00:68:949d:c0a8:572])
- (user=aliceryhl job=sendgmr) by 2002:a05:6902:2b8e:b0:dfa:ff27:db9 with SMTP
- id 3f1490d57ef6-e08b989f5fdmr100844276.5.1721722993142; Tue, 23 Jul 2024
- 01:23:13 -0700 (PDT)
-Date: Tue, 23 Jul 2024 08:22:08 +0000
+ (user=aliceryhl job=sendgmr) by 2002:a25:8007:0:b0:e08:664c:dd1f with SMTP id
+ 3f1490d57ef6-e087045b23dmr26333276.12.1721722995934; Tue, 23 Jul 2024
+ 01:23:15 -0700 (PDT)
+Date: Tue, 23 Jul 2024 08:22:09 +0000
 In-Reply-To: <20240723-linked-list-v3-0-89db92c7dbf4@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -59,22 +59,22 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20240723-linked-list-v3-0-89db92c7dbf4@google.com>
 X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5027; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=yg75c+W1eHmcUh6XQTFsaiSkN/WH/Yg42MPoMls94XQ=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBmn2hVY5aMLZp4Cjqm6xBxmRD+EmxL3JcQWyPuC
- ZstqJMWmQuJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZp9oVQAKCRAEWL7uWMY5
- RvzjD/9maKEceIFrHCcotW18lHOJMHwE5uxCMbRD++60fWoosLMEY27NaPRda+G5QOFJGlaRQAu
- 55tFklAIQzLQfnnGAt30e4xagsbvhwV2oTam3zVfV/iylrxIwghHuWE1GzgIiJo4tIHDHCuj9yy
- k3neTOYs6SIzCX6Jfls//scpJzCfmLpku5nnKPMzQKSTDggHL1Ua1+qsfbeH0PhnfC9RvR0Ihip
- lAPOx/Nv1e3/+UT2RJF2H1pZV7GpWYQOK9xXTHPP2iB/T0srqej/mBtdXwD682XDIKPkDYx1QUh
- mc/dJyC0Yj2vSo+lSWoCpEyVQtF+GAZ3haBGbXwQIE+PBprso13FF2WnQU9fGz6BNpZSEz2yxYD
- DIOOLZUVQ8df8exSH38n719SoDK2LL24sR6nKaJzVjER+CvnwVX6eRpS2k3aOFnFXwBqcVdOwE4
- 4QTE1p0bd2Hev50lOERKSkI63XLpoNG2NRX7bhfdYiqLt3WGxU8xynuXm/Hw0fKzlQF9uic6eOD
- govnO6fbRKnbgjNBUFS02QHU51HvGHfiJxgkLgtx/2hh6KMNahJMDtnqzHfnhBV5dqqJi7LCywu
- hFfFGLYfyRC7vWUSmNo88v+d1THgQJKXadl1nmSwIEtZ4LqBSpolbj73iOYrlhJTic62faVnJiV arFAqNHIbsyZZwA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5335; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=DGiNcxmXnBX8XeaW9TQmBXqeb7hhSkPo8/+cGCJC2TY=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBmn2hWHg2ZCJ1/EurYZ0A7P8kK1WXe4nRKxBbRm
+ lAcFUe9Nx6JAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZp9oVgAKCRAEWL7uWMY5
+ RrKdD/43jX1KVxMIuuvSWTNjwbZzJ8ks8rU6pLxe5r1N3qgjP9/jEYTZfn+5bp8eMJr6Ym4mned
+ ECCI+N6Mh44A/MPNIka2JsyVK3urZNj+PAwp9yyDb9DscJUiEtozN71jrLGepAk82QSmAgP907T
+ 3ke84jwLNV18qsTaap6XRf5Z9/XtaCAHTfbbr83vjjEkFUlqao/OnqhB6/DsLIZe0tXe3Png+nR
+ 928INYXcNPPipzkPTDei+bt/hMSdgEMRgG/srv0oehSawgUDJgw7sscLSqHV+SHYx/u9vJ2BKk0
+ cNqEyNtEfmYPQjusrt/wwfkG26GRtMBz5qq+rd9sPSIJOiDB7Mh1ye3USz7GuXPeZT024eeaFzX
+ uzDozFxNFJNHXcvlwWplHdn5SohePyEH5JcNDT/j6DAuvQdYEvUhRpg2SePyGvVN4QTQfO5kIRZ
+ 1T0ykWHYqi3dJkHO8w6rDSxqHQ44P6BBl71WquWx5hD1qmz3iJHf10f2eyfgpDoNkiP8pVCJQcl
+ un2oY/OTk2VUNDcrePXVzes7IT1AOnalveDgsaE97iMhcgrGQ2gE/hax3VqjkMnMCB/iveLlAST
+ PwlY8HQntsgm42mgmpYnKrUbAIOZqC+muGjO1CXMS9Hq6ohg3O9dKExaMMURlvptGGYgZKuTPqR X2BqtcFi6RlQUpQ==
 X-Mailer: b4 0.13-dev-26615
-Message-ID: <20240723-linked-list-v3-7-89db92c7dbf4@google.com>
-Subject: [PATCH v3 07/10] rust: list: add iterators
+Message-ID: <20240723-linked-list-v3-8-89db92c7dbf4@google.com>
+Subject: [PATCH v3 08/10] rust: list: add cursor
 From: Alice Ryhl <aliceryhl@google.com>
 To: Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
 Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
@@ -88,144 +88,139 @@ Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.co
 	Kees Cook <kees@kernel.org>
 Content-Type: text/plain; charset="utf-8"
 
-Rust Binder has lists containing stuff such as all contexts or all
-processes, and sometimes needs to iterate over them. This patch enables
-Rust Binder to do that using a normal for loop.
+The cursor is very similar to the list iterator, but it has one
+important feature that the iterator doesn't: it can be used to remove
+items from the linked list.
 
-The iterator returns the ArcBorrow type, so it is possible to grab a
-refcount to values while iterating.
+This feature cannot be added to the iterator because the references you
+get from the iterator are considered borrows of the original list,
+rather than borrows of the iterator. This means that there's no way to
+prevent code like this:
+
+let item = iter.next();
+iter.remove();
+use(item);
+
+If `iter` was a cursor instead of an iterator, then `item` will be
+considered a borrow of `iter`. Since `remove` destroys `iter`, this
+means that the borrow-checker will prevent uses of `item` after the call
+to `remove`.
+
+So there is a trade-off between supporting use in traditional for loops,
+and supporting removal of elements as you iterate. Iterators and cursors
+represents two different choices on that spectrum.
+
+Rust Binder needs cursors for the list of death notifications that a
+process is currently handling. When userspace tells Binder that it has
+finished processing the death notification, Binder will iterate the list
+to search for the relevant item and remove it.
 
 Reviewed-by: Benno Lossin <benno.lossin@proton.me>
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
- rust/kernel/list.rs | 102 ++++++++++++++++++++++++++++++++++++++++++++++++++++
- 1 file changed, 102 insertions(+)
+ rust/kernel/list.rs | 82 +++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 82 insertions(+)
 
 diff --git a/rust/kernel/list.rs b/rust/kernel/list.rs
-index d3f8e38d9ff4..e320da063c07 100644
+index e320da063c07..f36e17369382 100644
 --- a/rust/kernel/list.rs
 +++ b/rust/kernel/list.rs
-@@ -5,7 +5,9 @@
- //! A linked list implementation.
- 
- use crate::init::PinInit;
-+use crate::sync::ArcBorrow;
- use crate::types::Opaque;
-+use core::iter::{DoubleEndedIterator, FusedIterator};
- use core::marker::PhantomData;
- use core::ptr;
- 
-@@ -436,6 +438,17 @@ pub fn push_all_back(&mut self, other: &mut List<T, ID>) {
-         // INVARIANT: The other list is now empty, so update its pointer.
+@@ -439,6 +439,20 @@ pub fn push_all_back(&mut self, other: &mut List<T, ID>) {
          other.first = ptr::null_mut();
      }
-+
-+    /// Creates an iterator over the list.
-+    pub fn iter(&self) -> Iter<'_, T, ID> {
-+        // INVARIANT: If the list is empty, both pointers are null. Otherwise, both pointers point
-+        // at the first element of the same list.
-+        Iter {
-+            current: self.first,
-+            stop: self.first,
-+            _ty: PhantomData,
+ 
++    /// Returns a cursor to the first element of the list.
++    ///
++    /// If the list is empty, this returns `None`.
++    pub fn cursor_front(&mut self) -> Option<Cursor<'_, T, ID>> {
++        if self.first.is_null() {
++            None
++        } else {
++            Some(Cursor {
++                current: self.first,
++                list: self,
++            })
 +        }
 +    }
- }
- 
- impl<T: ?Sized + ListItem<ID>, const ID: u64> Default for List<T, ID> {
-@@ -451,3 +464,92 @@ fn drop(&mut self) {
-         }
++
+     /// Creates an iterator over the list.
+     pub fn iter(&self) -> Iter<'_, T, ID> {
+         // INVARIANT: If the list is empty, both pointers are null. Otherwise, both pointers point
+@@ -513,6 +527,74 @@ fn next(&mut self) -> Option<ArcBorrow<'a, T>> {
      }
  }
-+
-+/// An iterator over a [`List`].
+ 
++/// A cursor into a [`List`].
 +///
 +/// # Invariants
 +///
-+/// * There must be a [`List`] that is immutably borrowed for the duration of `'a`.
-+/// * The `current` pointer is null or points at a value in that [`List`].
-+/// * The `stop` pointer is equal to the `first` field of that [`List`].
-+#[derive(Clone)]
-+pub struct Iter<'a, T: ?Sized + ListItem<ID>, const ID: u64 = 0> {
++/// The `current` pointer points a value in `list`.
++pub struct Cursor<'a, T: ?Sized + ListItem<ID>, const ID: u64 = 0> {
 +    current: *mut ListLinksFields,
-+    stop: *mut ListLinksFields,
-+    _ty: PhantomData<&'a ListArc<T, ID>>,
++    list: &'a mut List<T, ID>,
 +}
 +
-+impl<'a, T: ?Sized + ListItem<ID>, const ID: u64> Iterator for Iter<'a, T, ID> {
-+    type Item = ArcBorrow<'a, T>;
-+
-+    fn next(&mut self) -> Option<ArcBorrow<'a, T>> {
-+        if self.current.is_null() {
-+            return None;
-+        }
-+
-+        let current = self.current;
-+
-+        // SAFETY: We just checked that `current` is not null, so it is in a list, and hence not
-+        // dangling. There's no race because the iterator holds an immutable borrow to the list.
-+        let next = unsafe { (*current).next };
-+        // INVARIANT: If `current` was the last element of the list, then this updates it to null.
-+        // Otherwise, we update it to the next element.
-+        self.current = if next != self.stop {
-+            next
-+        } else {
-+            ptr::null_mut()
-+        };
-+
-+        // SAFETY: The `current` pointer points at a value in the list.
-+        let item = unsafe { T::view_value(ListLinks::from_fields(current)) };
++impl<'a, T: ?Sized + ListItem<ID>, const ID: u64> Cursor<'a, T, ID> {
++    /// Access the current element of this cursor.
++    pub fn current(&self) -> ArcBorrow<'_, T> {
++        // SAFETY: The `current` pointer points a value in the list.
++        let me = unsafe { T::view_value(ListLinks::from_fields(self.current)) };
 +        // SAFETY:
 +        // * All values in a list are stored in an `Arc`.
 +        // * The value cannot be removed from the list for the duration of the lifetime annotated
 +        //   on the returned `ArcBorrow`, because removing it from the list would require mutable
-+        //   access to the list. However, the `ArcBorrow` is annotated with the iterator's
-+        //   lifetime, and the list is immutably borrowed for that lifetime.
-+        // * Values in a list never have a `UniqueArc` reference.
-+        Some(unsafe { ArcBorrow::from_raw(item) })
++        //   access to the cursor or the list. However, the `ArcBorrow` holds an immutable borrow
++        //   on the cursor, which in turn holds a mutable borrow on the list, so any such
++        //   mutable access requires first releasing the immutable borrow on the cursor.
++        // * Values in a list never have a `UniqueArc` reference, because the list has a `ListArc`
++        //   reference, and `UniqueArc` references must be unique.
++        unsafe { ArcBorrow::from_raw(me) }
++    }
++
++    /// Move the cursor to the next element.
++    pub fn next(self) -> Option<Cursor<'a, T, ID>> {
++        // SAFETY: The `current` field is always in a list.
++        let next = unsafe { (*self.current).next };
++
++        if next == self.list.first {
++            None
++        } else {
++            // INVARIANT: Since `self.current` is in the `list`, its `next` pointer is also in the
++            // `list`.
++            Some(Cursor {
++                current: next,
++                list: self.list,
++            })
++        }
++    }
++
++    /// Move the cursor to the previous element.
++    pub fn prev(self) -> Option<Cursor<'a, T, ID>> {
++        // SAFETY: The `current` field is always in a list.
++        let prev = unsafe { (*self.current).prev };
++
++        if self.current == self.list.first {
++            None
++        } else {
++            // INVARIANT: Since `self.current` is in the `list`, its `prev` pointer is also in the
++            // `list`.
++            Some(Cursor {
++                current: prev,
++                list: self.list,
++            })
++        }
++    }
++
++    /// Remove the current element from the list.
++    pub fn remove(self) -> ListArc<T, ID> {
++        // SAFETY: The `current` pointer always points at a member of the list.
++        unsafe { self.list.remove_internal(self.current) }
 +    }
 +}
 +
-+impl<'a, T: ?Sized + ListItem<ID>, const ID: u64> FusedIterator for Iter<'a, T, ID> {}
-+
-+impl<'a, T: ?Sized + ListItem<ID>, const ID: u64> IntoIterator for &'a List<T, ID> {
-+    type IntoIter = Iter<'a, T, ID>;
-+    type Item = ArcBorrow<'a, T>;
-+
-+    fn into_iter(self) -> Iter<'a, T, ID> {
-+        self.iter()
-+    }
-+}
-+
-+/// An owning iterator into a [`List`].
-+pub struct IntoIter<T: ?Sized + ListItem<ID>, const ID: u64 = 0> {
-+    list: List<T, ID>,
-+}
-+
-+impl<T: ?Sized + ListItem<ID>, const ID: u64> Iterator for IntoIter<T, ID> {
-+    type Item = ListArc<T, ID>;
-+
-+    fn next(&mut self) -> Option<ListArc<T, ID>> {
-+        self.list.pop_front()
-+    }
-+}
-+
-+impl<T: ?Sized + ListItem<ID>, const ID: u64> FusedIterator for IntoIter<T, ID> {}
-+
-+impl<T: ?Sized + ListItem<ID>, const ID: u64> DoubleEndedIterator for IntoIter<T, ID> {
-+    fn next_back(&mut self) -> Option<ListArc<T, ID>> {
-+        self.list.pop_back()
-+    }
-+}
-+
-+impl<T: ?Sized + ListItem<ID>, const ID: u64> IntoIterator for List<T, ID> {
-+    type IntoIter = IntoIter<T, ID>;
-+    type Item = ListArc<T, ID>;
-+
-+    fn into_iter(self) -> IntoIter<T, ID> {
-+        IntoIter { list: self }
-+    }
-+}
+ impl<'a, T: ?Sized + ListItem<ID>, const ID: u64> FusedIterator for Iter<'a, T, ID> {}
+ 
+ impl<'a, T: ?Sized + ListItem<ID>, const ID: u64> IntoIterator for &'a List<T, ID> {
 
 -- 
 2.45.2.1089.g2a221341d9-goog
