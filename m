@@ -1,168 +1,194 @@
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7334913BC18
-	for <rust-for-linux@vger.kernel.org>; Tue, 23 Jul 2024 17:35:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E38013B5B4;
+	Tue, 23 Jul 2024 18:10:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721756124; cv=none; b=TTPvQPhdcOMgkWIh7MTho65Wyo40eJgHEwaqlJsFVsVtDoI6DBB5IErqpKRnJ1UZQQfPbNzxpV1ElPuB7TbaK3S/y04k2E6UsD8CTrCYeFX/vdk2yBLe1r6OdJwWuc+3j7QNgmFhPaJEoG1IYOBK2qwivpJSkUVIGcwXijfvINw=
+	t=1721758253; cv=none; b=rFM5p/TLtJMSoMDqP6GTEDrMD4h7EMk+aSqo3laZs0Xz5f6e8D4bV1qNB7uqLjmjRBzjpS4IuKfGOmR+COIJrsodUjRPqMwtkaU+TJYemoqF4GD/DIl4ZFfU4ORfgs4Ip4R03zh9iiCRIWnmFWy8gkboXaJG+PZcihiNOSNV3Sc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721756124; c=relaxed/simple;
-	bh=3DvYARRXrNHCRE4+wCEBoFwuEi+ssduATf7ejjj3Ki4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BEBUmNNLF36Ro8DP3faIJEDRPBuEUokW3fAwqP9koEQsv+SBHpq5in1ltyXCgZ7oLOmPs7ghDoQVqy4s6PboB8rY+WK5/OMmm1wgytdX7AV3xeQnV85yNwKLfwpr9QoEfnr3tQPxIMiGtfyWPNrpjVcGcuTE2aLfuvWi9ZgDE2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fO2o8u7G; arc=none smtp.client-ip=209.85.215.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1721758253; c=relaxed/simple;
+	bh=ki5xi3wh309ewAEmvFrHMp8ZsNfUwPpdMts9frlaya8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=c/5djHt5ooPu5fD/YJ6EV1ljcYKdhLoPSesNYGX8CNquvDeJWyxZl4r1UY8Kpfy8P3OMLMYsigIDRarkHVGljlh3VPxR4AbEa3dBOrhjZOkP1JIUMM9/czrbhdk3w5ujz85jQAlXgxjDbLitLxfr76uvd5DdyVgnNlBFqXZsAPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mgmy56LJ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fO2o8u7G"
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-7a1843b4cdbso699765a12.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 23 Jul 2024 10:35:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1721756123; x=1722360923; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2pQs24u7lXINpEUgCwSlMrNjSQW+RBH84lkSbZj66JI=;
-        b=fO2o8u7G/0WzweaZtesXDkZ4H9VAkmz2OiF1nw8uaqSixBkFjECxAN1LVsZ8eZenyj
-         WSzyAlzork+7qPoggI/fNvZZ9ur1RiJLI03QAAC5vOkd4Q34PbQd+GUGOJoFy2BYNlID
-         eJXMEbNf2RHxL4QOu+tbFmDQNCvGcIOmOEPqhXO4DbiejXBEIGdUnjHWXi/RbLMvxvIu
-         xB418hDEFU8A6FuQxnUd5VDrx+WjJ26QPmGunpo0Z9xxrWs4NVS7SXhytT1IxDfWFuPV
-         T5fBAYDgcsgARZh379GsWIejdsMuI/I94ONyP4tp6chkArrVkj4ofylJi28B3XEoacVY
-         XVGQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721756123; x=1722360923;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=2pQs24u7lXINpEUgCwSlMrNjSQW+RBH84lkSbZj66JI=;
-        b=Tn4nwK3kZQbUReUBGgj8mkGZ6lilfNjhIK1xkNSJURmpG/qNxOL/L2VfhzwjLbzFK0
-         uChBIyG65ZQvo33re8sqX9KHC8Cbod/hDzSve6p6AlwtDyD+7zKSanON+xojNvxx5fDo
-         NGx/YWi7ohzesVJxGyeK9vShPMUkq3YkvjbGCMwdaKq4Tl8W1+BUhiXH49Qg7q2QY3Cf
-         Zli6kKULdapFX/wfGx+Qiajl3+zmSdbijyIxoMWPLrwIug2goflExl8E5d3yQ9zDVr1z
-         ug2jJv6tphOYRZ+u1Mmw/MvXC8wZDTkGChn+rJJt61RohBuVSqqVqR7BEjIKVbCuqi7G
-         8p7A==
-X-Forwarded-Encrypted: i=1; AJvYcCVa5YmhVK8K7hImLM0ttBRHUtpJ3QcBX73yFBWnV2obpvxkX37kLtaumPo536vVs9562wg+JgNnuWb5U/AY6TupRWcBwtyHGvEmESMq5rc=
-X-Gm-Message-State: AOJu0YyTzoCQSvH8WvbDQaoxpaMdRXwh2ts41qWk3kOjt3UI6uENIK1S
-	vwwCZ6Tm6ogToh+34u73B6w/zwTxUcDKGbGxaY9wtA830D31M0oi01/Wg651xaiNLK6z8MEFUZT
-	KUXZdN3HNpSv/42hhIIoCaJif8nM=
-X-Google-Smtp-Source: AGHT+IEm9Z/muJ9sdjcMsX6xQ6EWBLyor2Xroq38WlkvPd5c8kCQnto3d4uS0qorxudecUSG34ykzGWrlXNbN/8IvZc=
-X-Received: by 2002:a17:90b:4f88:b0:2c8:538d:95b7 with SMTP id
- 98e67ed59e1d1-2cd274a8c48mr6856185a91.32.1721756122585; Tue, 23 Jul 2024
- 10:35:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mgmy56LJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13310C4AF09;
+	Tue, 23 Jul 2024 18:10:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1721758253;
+	bh=ki5xi3wh309ewAEmvFrHMp8ZsNfUwPpdMts9frlaya8=;
+	h=From:To:Cc:Subject:Date:From;
+	b=mgmy56LJp97CUmhcB329aE9XUHwKBkmDtwij09R2LbuKlj+gBKG9zIFzHZkdsoZXL
+	 JUcsnCBgpliWD6Hj9VoQJ/+yJiZylAmIykvtzIXbVvjt9XET5mdGBibKSMAqns783F
+	 LnpxzQFZTzZBqgjwp4maGofG0exKc/6gn+P9Il2kIVpy4DBOl5fkwgSZ87jd2c3Bxu
+	 OkVvoyNVQflbtb9F3jfLC3Dn6Wub+l9TWALhoV1AskwZH0TXohxSarBNnLcSO8s1on
+	 6yt+g/C7txLZD0BKH5V6FDkTP4Kzn+p4UUAvlXP/+jT2eQKuXEEYcIT+A5nJQCDNyt
+	 lhZu9ySAcoCbw==
+From: Danilo Krummrich <dakr@kernel.org>
+To: ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	wedsonaf@gmail.com,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me,
+	a.hindborg@samsung.com,
+	aliceryhl@google.com,
+	akpm@linux-foundation.org
+Cc: daniel.almeida@collabora.com,
+	faith.ekstrand@collabora.com,
+	boris.brezillon@collabora.com,
+	lina@asahilina.net,
+	mcanal@igalia.com,
+	zhiw@nvidia.com,
+	acurrid@nvidia.com,
+	cjia@nvidia.com,
+	jhubbard@nvidia.com,
+	airlied@redhat.com,
+	ajanulgu@redhat.com,
+	lyude@redhat.com,
+	linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-mm@kvack.org,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH v2 00/23] Generic `Allocator` support for Rust
+Date: Tue, 23 Jul 2024 20:09:49 +0200
+Message-ID: <20240723181024.21168-1-dakr@kernel.org>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CANiq72keKdr7ZhufjdeM3g0tgDo80nk2NNBN5SBSepHry-LaQQ@mail.gmail.com>
- <20240723160128.3259768-1-sarthak.singh99@gmail.com>
-In-Reply-To: <20240723160128.3259768-1-sarthak.singh99@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 23 Jul 2024 19:35:10 +0200
-Message-ID: <CANiq72n4CWe=sTMo5MU7boPtjO0oGcjffd0tD8OFXzzCvmJaMg@mail.gmail.com>
-Subject: Re: [PATCH v2] rust: Support latest version of `rust-analyzer`
-To: Sarthak Singh <sarthak.singh99@gmail.com>
-Cc: a.hindborg@samsung.com, alex.gaynor@gmail.com, aliceryhl@google.com, 
-	benno.lossin@proton.me, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, 
-	dirk.behme@de.bosch.com, gary@garyguo.net, lukas.wirth@ferrous-systems.com, 
-	ojeda@kernel.org, rust-for-linux@vger.kernel.org, ss269@uw.edu, 
-	wedsonaf@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Tue, Jul 23, 2024 at 6:01=E2=80=AFPM Sarthak Singh <sarthak.singh99@gmai=
-l.com> wrote:
->
-> Thank you for reviewing. How do you send replies? To send this one I
-> am writing a text file manually to look like the generated patch
-> file that I emailed earlier. Is that the best way?
+Hi,
 
-Unless I am sending patches, I typically just reply using the normal
-Gmail web UI. :)
+This patch series adds generic kernel allocator support for Rust, which so far
+is limited to `kmalloc` allocations.
 
-> I don't have access to the ss269@uw.edu email anymore.
->
-> Should I resend the patch with the fixed email address? Afaik there is
-> no way to update a patch, let me know if that is possible. I can also
-> add the missing Tested-by tag in the new version of the patch.
+In order to abstain from (re-)adding unstable Rust features to the kernel, this
+patch series does not extend the `Allocator` trait from Rust's `alloc` crate,
+nor does it extend the `BoxExt` and `VecExt` extensions.
 
-You can just send a new version, no worries!
+Instead, this series introduces a kernel specific `Allocator` trait, which is
+implemented by the `Kmalloc`, `Vmalloc` and `KVmalloc` allocators, also
+implemented in the context of this series.
 
-> In the PR [1] the ability to guess the sysroot based on the sysroot_src
-> was removed. That is why every version of rust-analyzer after this PR
-> fails with the current config generation system. rust-analyzer needs to
-> know the sysroot so that it can find its proc-macro server.
+As a consequence we need our own kernel `Box<T, A>` and `Vec<T, A>` types.
+Additionally, this series adds the following type aliases:
 
-That makes sense -- thanks for taking a look. It is indeed a hack what
-they had there :)
+```
+pub type KBox<T> = Box<T, Kmalloc>;
+pub type VBox<T> = Box<T, Vmalloc>;
+pub type KVBox<T> = Box<T, KVmalloc>;
 
-Please add that information to the commit message (and possibly
-include your link in a "Link: https://...... [1]" tag).
 
-It would be nice if the rust-analyzer docs said what is the
-intention/expectation here, even if the current implementation does X
-or Y.
+pub type KVec<T> = Vec<T, Kmalloc>;
+pub type VVec<T> = Vec<T, Vmalloc>;
+pub type KVVec<T> = Vec<T, KVmalloc>;
+```
 
-> sysroot need to point to the root location of the toolchain. This
-> contains the rust core and std library the compiler will link against.
-> It also contains the rustc and cargo for that toolchain.
+With that, we can start using the kernel `Box` and `Vec` types throughout the
+tree and remove the now obolete extensions `BoxExt` and `VecExt`.
 
-For instance, for this one, from rust-analyzer's docs alone, it sounds
-like it is required, but it is optional, and it does not say what
-happens in that case.
+For a final cleanup, this series removes the last minor dependencies to Rust's
+`alloc` crate and removes it from the entire kernel build.
 
-> sysroot_src need to point to the root location of the rust library. It
+The series ensures not to break the `rusttest` make target by implementing the
+`allocator_test` module providing a stub implementation for all kernel
+`Allocator`s.
 
-I am not sure -- does it? i.e. the docs seem to claim it is not always need=
-ed:
+This patch series passes all KUnit tests, including the ones added by this
+series. Additionally, the tests were run with `kmemleak` and `KASAN` enabled,
+without any issues.
 
-    /// By default, this is `lib/rustlib/src/rust/library`
-    /// relative to the sysroot.
+This series is based in [1], which just hit -mm/mm-unstable, and is also
+available in [2].
 
-and:
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/dakr/linux.git/log/?h=mm/krealloc
+[2] https://git.kernel.org/pub/scm/linux/kernel/git/dakr/linux.git/log/?h=rust/mm
 
-    /// if you omit this path, you can specify sysroot
-    /// dependencies yourself and, for example, have
-    /// several different "sysroots" in one graph of
-    /// crates.
+Changes in v2:
+  - preserve `impl GlobalAlloc for Kmalloc` and remove it at the end (Benno)
+  - remove `&self` parameter from all `Allocator` functions (Benno)
+  - various documentation fixes for `Allocator` (Benno)
+  - use `NonNull<u8>` for `Allocator::free` and `Option<NonNull<u8>>` for
+    `Allocator::realloc` (Benno)
+  - fix leak of `IntoIter` in `Vec::collect` (Boqun)
+  - always realloc (try to shrink) in `Vec::collect`, it's up the the
+    `Allocator` to provide a heuristic whether it makes sense to actually shrink
+  - rename `KBox<T, A>` -> `Box<T, A>` and `KVec<T, A>` -> `Vec<T, A>` and
+    provide type aliases `KBox<T>`, `VBox<T>`, `KVBox<T>`, etc.
+    - This allows for much cleaner code and, in combination with removing
+      `&self` parameters from `Allocator`s, gets us rid of the need for
+      `Box::new` and `Box::new_alloc` and all other "_alloc" postfixed
+      functions.
+    - Before: `KBox::new_alloc(foo, Vmalloc)?`
+    - After:  `VBox::new(foo)?`, which resolves to
+              `Box::<Foo,  Vmalloc>::new(foo)?;
 
-So it sounds like one can just give the `sysroot`, like you do in your
-patch. I guess you may have meant "if given, it needs to point to that
-particular path"?
+Danilo Krummrich (23):
+  rust: alloc: add `Allocator` trait
+  rust: alloc: separate `aligned_size` from `krealloc_aligned`
+  rust: alloc: rename `KernelAllocator` to `Kmalloc`
+  rust: alloc: implement `Allocator` for `Kmalloc`
+  rust: alloc: add module `allocator_test`
+  rust: alloc: implement `Vmalloc` allocator
+  rust: alloc: implement `KVmalloc` allocator
+  rust: types: implement `Unique<T>`
+  rust: alloc: implement kernel `Box`
+  rust: treewide: switch to our kernel `Box` type
+  rust: alloc: remove `BoxExt` extension
+  rust: alloc: add `Box` to prelude
+  rust: alloc: import kernel `Box` type in types.rs
+  rust: alloc: implement kernel `Vec` type
+  rust: alloc: implement `IntoIterator` for `Vec`
+  rust: alloc: implement `collect` for `IntoIter`
+  rust: treewide: switch to the kernel `Vec` type
+  rust: alloc: remove `VecExt` extension
+  rust: alloc: add `Vec` to prelude
+  rust: alloc: remove `GlobalAlloc` and `krealloc_aligned`
+  rust: error: use `core::alloc::LayoutError`
+  rust: str: test: replace `alloc::format`
+  kbuild: rust: remove the `alloc` crate
 
-Anyway, in your patch, you are still passing both (which makes sense,
-given `RUST_LIB_SRC`), but you are not setting `sysroot_src`.
+ rust/Makefile                       |  44 +-
+ rust/exports.c                      |   1 -
+ rust/helpers.c                      |  15 +
+ rust/kernel/alloc.rs                |  99 +++-
+ rust/kernel/alloc/allocator.rs      | 147 +++--
+ rust/kernel/alloc/allocator_test.rs |  23 +
+ rust/kernel/alloc/box_ext.rs        |  56 --
+ rust/kernel/alloc/kbox.rs           | 344 ++++++++++++
+ rust/kernel/alloc/kvec.rs           | 831 ++++++++++++++++++++++++++++
+ rust/kernel/alloc/vec_ext.rs        | 185 -------
+ rust/kernel/error.rs                |   2 +-
+ rust/kernel/init.rs                 |  49 +-
+ rust/kernel/init/__internal.rs      |   2 +-
+ rust/kernel/lib.rs                  |   1 -
+ rust/kernel/prelude.rs              |   5 +-
+ rust/kernel/str.rs                  |  78 ++-
+ rust/kernel/sync/arc.rs             |  17 +-
+ rust/kernel/sync/condvar.rs         |   4 +-
+ rust/kernel/sync/lock/mutex.rs      |   2 +-
+ rust/kernel/sync/lock/spinlock.rs   |   2 +-
+ rust/kernel/sync/locked_by.rs       |   2 +-
+ rust/kernel/types.rs                | 192 ++++++-
+ rust/kernel/workqueue.rs            |  20 +-
+ samples/rust/rust_minimal.rs        |   4 +-
+ scripts/Makefile.build              |   7 +-
+ 25 files changed, 1713 insertions(+), 419 deletions(-)
+ create mode 100644 rust/kernel/alloc/allocator_test.rs
+ delete mode 100644 rust/kernel/alloc/box_ext.rs
+ create mode 100644 rust/kernel/alloc/kbox.rs
+ create mode 100644 rust/kernel/alloc/kvec.rs
+ delete mode 100644 rust/kernel/alloc/vec_ext.rs
 
-So I assume things could break (or be confusing) if someone provides
-(intentionally) a `RUST_LIB_SRC` that is different than the one in the
-actual sysroot, no?
 
-> our purposes it need to be a subset of the sysroot since we install rust
-> using rustup. If someone installs it in a manner where the source code
+base-commit: d270beaca6818349b2aed7e6034b800a777087cc
+-- 
+2.45.2
 
-Just to clarify: not everybody installs things via `rustup`, and we
-also support Linux distributions' toolchains
-(https://lore.kernel.org/rust-for-linux/20240709160615.998336-14-ojeda@kern=
-el.org/),
-kernel.org's LLVM+Rust combined toolchain tarballs
-(https://mirrors.edge.kernel.org/pub/tools/llvm/rust/), as well as
-Rust's standalone installers
-(https://forge.rust-lang.org/infra/other-installation-methods.html#standalo=
-ne-installers).
-
-> Yes this should work with every setup. The `sysroot_src` that
-> rust-analyzer is internally generating is the same. The `sysroot`
-> that rust-analyzer was generating earlier is also defined to be
-> the same in this version.
-
-By internally generating, do you mean in e.g. the debug output of
-rust-analyzer or similar?
-
-We should double-check that it works for "common" setups.
-
-Thanks for getting to the root of all this!
-
-Cheers,
-Miguel
