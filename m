@@ -1,230 +1,221 @@
-Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR03-VI1-obe.outbound.protection.outlook.com (mail-vi1eur03on2060.outbound.protection.outlook.com [40.107.103.60])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B94031509BD
-	for <rust-for-linux@vger.kernel.org>; Tue, 23 Jul 2024 08:23:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.202
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721723005; cv=none; b=rQsJVqYTX6RDOGfBFYj5u+I0wwFS25wdqngSE0u1HVub2F5AqUsl3wd8VIJWJ/8Q7UPGHTg4yK8qVMJ55ZBwONxr3Oz3w26Bddrnt87HFQLJ9KW+XmP6k6sqKMESdaJ+M42hsbF/dapH8b1BPLvvsyGnLVOOWlrdQ2FicDYD5V4=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721723005; c=relaxed/simple;
-	bh=P4GJjcMR46AtcXwSMbkn2ALRqne3SCIpIm1LC96k388=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Ppb0MlIG9UrBkNvA5STPi/IvcADrABBh8t5chUvPFRS6x79YxHaeZSPAwz4SIzh5yr1mZsXHzB5L8Bt9eM2II+RCat7Lc5gTloLhK0AEL+Ff1SUle3hDvBxJbAX8/d45kjur/teT4XCfUpjNMO6/o3xBXzfIWOff7UbX2OVzKbM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=2rDqSbyY; arc=none smtp.client-ip=209.85.128.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17DD614D28C
+	for <rust-for-linux@vger.kernel.org>; Tue, 23 Jul 2024 08:55:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.103.60
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1721724911; cv=fail; b=F1UMk7yeFqkfqJ0b88NB/jqfBPEXcYM6dXwbf0y4coNg97wTjdKWPMEOtHNf7+qxTvA7eqnHVAHrQ6MsegeNPqTQBknMHKITE5y2efmUvihzgQRj4w+ZZHAyViUBpILvBEL657P54MqUi1y+8MI8MyouznGi+EXVzrnhI5PpF6s=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1721724911; c=relaxed/simple;
+	bh=R29jyIXTiVyL1XIzRhTUjTKIxyQdNm6xy4saxq13WY8=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=j9IcWdVtmCZ993JEYIdAlP8rjzXBIPQVeCeJZuIh323ZnrZietCWWQJNS+2jzY/8rhZ3pODtqxN26t5jRplOX4/WSFBf9OCaUQVaHqQtulWWI0nNOFWmOQdrqc2Jj2rfId/x00vg1T9cwL1VB5KUPC6bad/5BiJ8TczGHhpNbAg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com; spf=pass smtp.mailfrom=de.bosch.com; dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b=rrrbj5jG; arc=fail smtp.client-ip=40.107.103.60
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.bosch.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="2rDqSbyY"
-Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-65bbd01d146so145091207b3.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 23 Jul 2024 01:23:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1721723003; x=1722327803; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=AhyYYDQfkjp32gHrK6fI251ZMph8ENPohnNmRiSfKnI=;
-        b=2rDqSbyYf5AVuu/NZSLEKXJsHg1yfuaVPhQ0/TgjjygW5SeTStxntpdiAq/aBV2p0d
-         PRORgu4/v3KAQwHt3U4N3c22EC0mlQuLSUA1XD+3voAJO1LgYyNH3PvIBp4jyDqQL1Ab
-         38FkUm5GlQCwvGdSWVhdiTObFTuYksSDgTYEWxTBFWLA6xtuJW3DTdInqDyxWug0B3hT
-         csjx9JL0xHVydNzs5xHhIlJPuF/5wsLSTVgKybll2BorffsNHFUU4TLwVYydZXrdUm4T
-         KfsmOJvAwp0ZjougSIuQeaZOGOIE0f0st7kmEGaB9F1XcwHBOLL+ZJPxd2k8QEAOrqqX
-         Tztg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721723003; x=1722327803;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=AhyYYDQfkjp32gHrK6fI251ZMph8ENPohnNmRiSfKnI=;
-        b=fboK1Nr4DxTaUDNSFhC4gNVn7qoEwMqBARLgdcpSJU+Bb21MUHhXxi49ba/p+8Rv9q
-         Tz01anLqmWj9V+SGWsWJyfUYUGFwi+tA58P4FRPgf/qZa6fi48xoHxSypWkfWXbLrr0s
-         ixBlVBRPbyChwGL9ybKFHB6VcKF5TW9QVoTURtToS28VlOFCWCCyyzL+99d104YT0xK5
-         YlGlv7S4HopdHQq1mjtE+kOHh1BYXMrrDWnYFrOIpTfZAfFYs690DftuUwlNEcr5QAed
-         /awsekKz7xbCW8Uxl3yLwiut/79zj8puFfKgpsJ6qN4nhLVFdGz0KAFHO02jS07cLOfc
-         ubAQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUzJZfaULws31CZr85zAaJGkcDVME6N689NyIjl0hxXgXP6JY4I1sZFURocMxBLj8vnQJyJlFfTJM51GfTNcJucAlkxwpRO+pnQbYMV5Wc=
-X-Gm-Message-State: AOJu0YytiQVQZi4IIA/DbjSwyuJyiyM+flwELd+FGaQnCaF13oWEOtmg
-	gMepI0MzR2LZ8zzknqMB8PSsUbiUe7oGBJsXwvYXMk5YfL07CmKEMQsHf9TekLZfVvmfmvzMD3R
-	qGSauNsV2K0OT7Q==
-X-Google-Smtp-Source: AGHT+IG6G5H67c/ash+4uWHilLseAkYsYekJmisvjTIJQ8aoyq3aBo73QFuP5o3PZ0zTuW7kBoiyNL11XTmW814=
-X-Received: from aliceryhl2.c.googlers.com ([fda3:e722:ac3:cc00:68:949d:c0a8:572])
- (user=aliceryhl job=sendgmr) by 2002:a05:6902:c06:b0:e08:6e2c:69da with SMTP
- id 3f1490d57ef6-e086fe5929amr33578276.1.1721723002720; Tue, 23 Jul 2024
- 01:23:22 -0700 (PDT)
-Date: Tue, 23 Jul 2024 08:22:11 +0000
-In-Reply-To: <20240723-linked-list-v3-0-89db92c7dbf4@google.com>
+	dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b="rrrbj5jG"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=aHM3lLIATfCFUG+4XqMu3Aki3xPgV8CurYRk1mUmPvKsNDhkMZ6EuTifGal470edXe9JAkerjdIC44nQtbfwkDUhdOJtiVu2YTHWJzr7NDJTbm8LIys1vrPTFETV2pcmz37KNeB8MamABMeGPU0UBNYJquiYCMDhPUpf+FOzitla9NATNs7oRqNWuwf7+l/9EhZgcxhP0Oet80EVhJvrCqOuFBjHdPDxWcoR1bU6v2lgYRJlfb1vKC64H+bA1ivpE80MEAAZASMHVMrLP/YVOxQMuaYRP/kozqncjHRqh2gSe9bndU158sG1kbT7sylCBwBw0+rZYgMfS1Vbge+V5g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=c7OCcXvIrutBun+mvtYKxT6xjKUFIdz+hRejomERheE=;
+ b=EXVjqwLjwIQEOA7xZPGx+pa+P/2lBe9jbejgY1UuEw4vWMwsiq1weJLDaOHUWmey+Z3IS8ylSVbOz467qjw0qwAxnEKzkQoX+ux90N8g86YepLWB7aetc1u3CG/HBCyIAMR4HWHTJMBQNDIRYiEzFk1fiOswptitEJlSrzMIwDwl+re9jGuk2LajO4+nF3fLRf7A5LuptMjvlHlJA7G+d1KClW8EpRQSg0l+axpGpTEn9x8vSVE7TshixyK0YQeTvRS5AwIz4SprKjxROPhg+oxWj153dv9E+dJDgszTsD4J/yakUN/Ol2MkVaw7Go6jAyPCipYWlgypezxPd0BY4Q==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=temperror (sender ip
+ is 139.15.153.205) smtp.rcpttodomain=gmail.com smtp.mailfrom=de.bosch.com;
+ dmarc=temperror action=none header.from=de.bosch.com; dkim=none (message not
+ signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=de.bosch.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=c7OCcXvIrutBun+mvtYKxT6xjKUFIdz+hRejomERheE=;
+ b=rrrbj5jGTDo2MMqWpNinuEQJ+fJatkhTl9hmSBGg1ekvly6Iwj6nvI9SdM1tmGv6vA1BEY9mU1JwaQKAaSceNa13DHUodQBRXAUxaXTrsJqAmqB4trzxWfufG74EnN4Dr4WAsfAuRYKesQ2uxJHCe95oCJXgRn/udpRDOFuhaVgnv8aYx48jvYYwzqh7aaa5/pFWTa/a0n2oDqW3wBAu5uSoSU36uW6Ac5z8KQ9UzW/mKM+2eS8yDmMimGmB5NClEZ5S4cpoZTSva90K/3lgh+fVCl6cUW8mKvEpHxbwtZ6Tcsn1uL1+IX3lSR8Di0tXRlq/3hGmiWYOYyOoHe0j4A==
+Received: from DU2PR04CA0214.eurprd04.prod.outlook.com (2603:10a6:10:2b1::9)
+ by AS5PR10MB8101.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:672::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7784.18; Tue, 23 Jul
+ 2024 08:55:03 +0000
+Received: from DU2PEPF0001E9C2.eurprd03.prod.outlook.com
+ (2603:10a6:10:2b1:cafe::cb) by DU2PR04CA0214.outlook.office365.com
+ (2603:10a6:10:2b1::9) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7784.16 via Frontend
+ Transport; Tue, 23 Jul 2024 08:55:02 +0000
+X-MS-Exchange-Authentication-Results: spf=temperror (sender IP is
+ 139.15.153.205) smtp.mailfrom=de.bosch.com; dkim=none (message not signed)
+ header.d=none;dmarc=temperror action=none header.from=de.bosch.com;
+Received-SPF: TempError (protection.outlook.com: error in processing during
+ lookup of de.bosch.com: DNS Timeout)
+Received: from eop.bosch-org.com (139.15.153.205) by
+ DU2PEPF0001E9C2.mail.protection.outlook.com (10.167.8.71) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7784.11 via Frontend Transport; Tue, 23 Jul 2024 08:55:01 +0000
+Received: from FE-EXCAS2001.de.bosch.com (10.139.217.200) by eop.bosch-org.com
+ (139.15.153.205) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 23 Jul
+ 2024 10:55:01 +0200
+Received: from [10.34.219.93] (10.139.217.196) by FE-EXCAS2001.de.bosch.com
+ (10.139.217.200) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Tue, 23 Jul
+ 2024 10:55:00 +0200
+Message-ID: <b5e9c551-589f-4f2a-9e38-a98a4acf4c35@de.bosch.com>
+Date: Tue, 23 Jul 2024 10:54:53 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20240723-linked-list-v3-0-89db92c7dbf4@google.com>
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5347; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=P4GJjcMR46AtcXwSMbkn2ALRqne3SCIpIm1LC96k388=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBmn2hXo1PmAC+q0DYNGOd2yWV7fxwZJyktK3qhC
- coxfhbBK4eJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZp9oVwAKCRAEWL7uWMY5
- RkTeEACq8mdJD5GbaeydqlsUqAWawFtAlK6l7GVNEoK8QnEmTFNaMmdXYa5vYTu8xyesOXilNjk
- WwgVa8HBdg5j6hx9dJLEeIpmzh3Q97hy9CQQqQyRRQRJ9Z4VpEGRJRTycjfaKzJ56HRGcWNT2rL
- wMUHFwTdEpeYq/GlzdWe6SL+3HpqeP0O3JODB4+e0PaB1oHcCBA10CHOvYCaI8EwJVy6ogXGMvM
- dsjlztvnUU4txnkXZuioHELL/b076czFo5sZdJR+Sd2G9Prn7gi0fh0YD1VIq/gHaz0PyFM9MpD
- sicSM6S1AKbf89y7iZuLLcp1Bgv4i1fJUmHcy3CDhnfNdDt/1Sb9N7zydNfpBLx6mZReP8zh0Xs
- Ocm5L8olFGQusZVhDGAEMydJxNmqFyDGpl1+zKNU1A5XsIyN0ANHdjIJjX7gYGTz/xcAYURhimf
- GA9kWJjBvL4/A5n8doAGG/eXyiUZI4ukSJteBEqOISMt3GIF7iQv4J58wRZOZqzQ+oo/Av66NHE
- 4Xl1yCYl4C2OqVLETWm71aIJTfWLuGCbEhH6UMdMMrImU6AMdvn5F7f5CzvTqVfL82XZvVvQxu/
- sP7LyVpLs8+m71NyvXtnv9SNbi5U4iAu32Ka5zinQ8Z9ncC4naU6DqTx3WkjLibRy29IzovVt6q bIe6EbWfbFI6bWQ==
-X-Mailer: b4 0.13-dev-26615
-Message-ID: <20240723-linked-list-v3-10-89db92c7dbf4@google.com>
-Subject: [PATCH v3 10/10] rust: list: add ListArcField
-From: Alice Ryhl <aliceryhl@google.com>
-To: Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@samsung.com>, Marco Elver <elver@google.com>, Coly Li <colyli@suse.de>, 
-	Paolo Abeni <pabeni@redhat.com>, Pierre Gondois <pierre.gondois@arm.com>, 
-	Ingo Molnar <mingo@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Wei Yang <richard.weiyang@gmail.com>, 
-	Matthew Wilcox <willy@infradead.org>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>, 
-	Kees Cook <kees@kernel.org>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] rust: Support latest version of `rust-anayzer`
+To: Sarthak Singh <sarthak.singh99@gmail.com>, Miguel Ojeda
+	<ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho
+	<wedsonaf@gmail.com>
+CC: Sarthak Singh <ss269@uw.edu>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo
+	<gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+	<bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, "Andreas
+ Hindborg" <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>,
+	<rust-for-linux@vger.kernel.org>
+References: <20240719080709.1804899-1-ss269@uw.edu>
+Content-Language: en-US
+From: Dirk Behme <dirk.behme@de.bosch.com>
+In-Reply-To: <20240719080709.1804899-1-ss269@uw.edu>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DU2PEPF0001E9C2:EE_|AS5PR10MB8101:EE_
+X-MS-Office365-Filtering-Correlation-Id: 141d9a87-43a2-4885-050f-08dcaaf5235c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|36860700013|376014|82310400026|7416014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?ekNCVTROTG83MDRSblZxNXJMM0JUdnB4VHFSTGtZWndEOWZ3cVY4SmZwNkRT?=
+ =?utf-8?B?aiswMndPNGltbm1iYUsrU2J2dHMvQWt6SVNXQmV3b201UXJzR1pXL05Kcy9S?=
+ =?utf-8?B?UDc1RVorNGdkQ0hxZGNOS1dNK1Bzcmd5MTZsSDE0SStzUXljOUU3UXJhcFpw?=
+ =?utf-8?B?Y3BWdzAwK3dJcHVIMTR3MGsyamFtUFE4RXpYcE9VeGk0MW1ITWtOUmRFcmVC?=
+ =?utf-8?B?b3ZTbWJXRG5jWjI4Q0h5Tm1wS25GV0t1U0xOQ0ZtM0dtbnVDMHBUN0tIbDZq?=
+ =?utf-8?B?bkROd2J0NHRqU3BHVU5rOTd2MkI4Q2krbjFCV0poUGI2RE5vSDgwOHdqUW9B?=
+ =?utf-8?B?N0E5VWFCMVY2b2pBR2k0UVJVVC9FVGZVeFF3cFhMR0xvcWlERVczN3Awd3k5?=
+ =?utf-8?B?aENDQUI4bmhWSnpEMk03U1F5UzJNbFNYWUpCSUZXZzBQZGVGbTNxWFJWeU5i?=
+ =?utf-8?B?SUs1UTdDc1VUQUtEOFRteVc3RjYyWW5lWFV2TVNCN3lLYkl6MnpwNTlqZmV2?=
+ =?utf-8?B?d1hYc3hyaXpjYkJVbGNnNVI3YmJJTUR0YkpxUStjeUUreG5sQlIxNkp6ZFZB?=
+ =?utf-8?B?dUg3WWxGY2tNaWFndElzTWZEUXI2Sys2UUM4MXJKeWdsREVWRlBiRml0aVUw?=
+ =?utf-8?B?VGUwZFVJQ2lHTkJOMjlJeGRVTmVKaTRKa3NuWGZDUTRqR2RWcGQ2a09MSWNy?=
+ =?utf-8?B?cmgzOVNlVXc0TTkzblNiemJoTDd0ZlpjdzRHVDlXRG5sTnBYaEVUK0lzeFUz?=
+ =?utf-8?B?U3pJeXIxMkJGb0o2VlFpUEhqZmJ2WFFZdHdFSkhEUE9IcVhiMzZJd3NhYVFq?=
+ =?utf-8?B?TmxmQkQ1UG1lZmVOK2JBS3Z1aDRpRUloM0lnRFFoOS9oanNTOE0zSWJPYW9n?=
+ =?utf-8?B?WXZkQ3VqWW9tWDZzZmpnQUYvR1N6TkVncm1BNTZnTzgrcFgyUmNXaHRZUjZS?=
+ =?utf-8?B?T2VaZ1NialNKVkJUWnFzYXhlaWNDTTFkb240Zm9Pd2hLUFFDakhVNkk3ekE1?=
+ =?utf-8?B?by9HM2JnQzQwYTJFbTA1dlN3UXNuSEkweTB5VXVZaWF1MHBCRDBxM3I3WnEv?=
+ =?utf-8?B?d2o2cmhSNWdqZkNhamtCNWRhY05SRFAwQWJRWTBiWXRUZnNKZW1GRU5hUGNp?=
+ =?utf-8?B?Z2lxcFE3NkhZRC80NXdGVUcwdk5ST2k2cG5uTXZUczlhK252cEt6YXFXYmpa?=
+ =?utf-8?B?dE1jQ2NySWExUTV1RVY2d3YrZXl0bE90Nm5UZG5taFFPekczVFNjTzI3ZXpH?=
+ =?utf-8?B?V2JRZjJFczJGTlI0RzBMaUk3UzBZMDI5RGU0NTEwUXFBaGd4RnV3MmpOYkVS?=
+ =?utf-8?B?Zk40VzdLMWFKTmw0NHBtSkF5bkJGTDNacGR5cE9wdGxGUUZLV0tBbkdKMWdM?=
+ =?utf-8?B?dlUreUVIbktTSVlFb2ZFcXU2eVFQRllMLzVPaFYxVENGcEsyTTBjRC9zUzBk?=
+ =?utf-8?B?RGxkcnUvRWs3UHUvRk9sTE9MWm0xeG9zb2lSdHdaMnZNcFZPeUc4cTVCYUZS?=
+ =?utf-8?B?azhlSjM3UnFIQVY5UytnYUxSM25Ca3cvVkNCWWQ2YkdCVXpGWElNMnVMZTNF?=
+ =?utf-8?B?bnpxUU5qcHRhaEdiblBKL2FLK2lJSjVjN2Evc2xsTUdETW01NW8rOFRjWisy?=
+ =?utf-8?B?QmpaT011UENlcWNDT3RvVE0vaDc3NTdjeUpuc3BXYmJ1Nk1VTlNYcEtuMFZ0?=
+ =?utf-8?B?L2h3cU1hZjdEb2ZjZzhjWFM3eEs0SHF4OWhWMGNVRWZZeVZHS0ZpTlFQNHBv?=
+ =?utf-8?B?TzYySFJyTXFObnRkNDlUTGhhaU5pcVIyTWY3VW5VQkEra1pOdDdqL1NQbnY3?=
+ =?utf-8?B?Z2d5b1N6emFaTmpoSGUvd3VJWU0wSC85WHZGcThZZDEyNVJydEFuR1JUcGI4?=
+ =?utf-8?B?d0UvaDEwOUNyNHZUeXVTOXFlemF0ZER2YzVyYVNjRzBGbzRWR1l5eXJGM0xi?=
+ =?utf-8?Q?UynO2xzVFVw5jMG5gBePwm8BSubcaFKl?=
+X-Forefront-Antispam-Report:
+	CIP:139.15.153.205;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eop.bosch-org.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(36860700013)(376014)(82310400026)(7416014);DIR:OUT;SFP:1101;
+X-OriginatorOrg: de.bosch.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Jul 2024 08:55:01.5772
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 141d9a87-43a2-4885-050f-08dcaaf5235c
+X-MS-Exchange-CrossTenant-Id: 0ae51e19-07c8-4e4b-bb6d-648ee58410f4
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0ae51e19-07c8-4e4b-bb6d-648ee58410f4;Ip=[139.15.153.205];Helo=[eop.bosch-org.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DU2PEPF0001E9C2.eurprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS5PR10MB8101
 
-One way to explain what `ListArc` does is that it controls exclusive
-access to the prev/next pointer field in a refcounted object. The
-feature of having a special reference to a refcounted object with
-exclusive access to specific fields is useful for other things, so
-provide a general utility for that.
+On 19.07.2024 10:07, Sarthak Singh wrote:
+> Sets the `sysroot` field in rust-project.json which is now needed in
+> newer versions of rust-anaylzer instead of the `sysroot_src` field.
 
-This is used by Rust Binder to keep track of which processes have a
-reference to a given node. This involves an object for each process/node
-pair, that is referenced by both the process and the node. For some
-fields in this object, only the process's reference needs to access
-them (and it needs mutable access), so Binder uses a ListArc to give the
-process's reference exclusive access.
+Here and in the subject there are typos in 'analyzer';)
 
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
- rust/kernel/list.rs           |  3 ++
- rust/kernel/list/arc_field.rs | 96 +++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 99 insertions(+)
+subject: rust-anayzer -> rust-analyzer
 
-diff --git a/rust/kernel/list.rs b/rust/kernel/list.rs
-index f61b19c145db..e8031bb3a94a 100644
---- a/rust/kernel/list.rs
-+++ b/rust/kernel/list.rs
-@@ -23,6 +23,9 @@
-     impl_list_arc_safe, AtomicListArcTracker, ListArc, ListArcSafe, TryNewListArc,
- };
- 
-+mod arc_field;
-+pub use self::arc_field::{define_list_arc_field_getter, ListArcField};
-+
- /// A linked list.
- ///
- /// All elements in this linked list will be [`ListArc`] references to the value. Since a value can
-diff --git a/rust/kernel/list/arc_field.rs b/rust/kernel/list/arc_field.rs
-new file mode 100644
-index 000000000000..2330f673427a
---- /dev/null
-+++ b/rust/kernel/list/arc_field.rs
-@@ -0,0 +1,96 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+// Copyright (C) 2024 Google LLC.
-+
-+//! A field that is exclusively owned by a [`ListArc`].
-+//!
-+//! This can be used to have reference counted struct where one of the reference counted pointers
-+//! has exclusive access to a field of the struct.
-+//!
-+//! [`ListArc`]: crate::list::ListArc
-+
-+use core::cell::UnsafeCell;
-+
-+/// A field owned by a specific [`ListArc`].
-+///
-+/// [`ListArc`]: crate::list::ListArc
-+pub struct ListArcField<T, const ID: u64 = 0> {
-+    value: UnsafeCell<T>,
-+}
-+
-+// SAFETY: If the inner type is thread-safe, then it's also okay for `ListArc` to be thread-safe.
-+unsafe impl<T: Send + Sync, const ID: u64> Send for ListArcField<T, ID> {}
-+// SAFETY: If the inner type is thread-safe, then it's also okay for `ListArc` to be thread-safe.
-+unsafe impl<T: Send + Sync, const ID: u64> Sync for ListArcField<T, ID> {}
-+
-+impl<T, const ID: u64> ListArcField<T, ID> {
-+    /// Creates a new `ListArcField`.
-+    pub fn new(value: T) -> Self {
-+        Self {
-+            value: UnsafeCell::new(value),
-+        }
-+    }
-+
-+    /// Access the value when we have exclusive access to the `ListArcField`.
-+    ///
-+    /// This allows access to the field using an `UniqueArc` instead of a `ListArc`.
-+    pub fn get_mut(&mut self) -> &mut T {
-+        self.value.get_mut()
-+    }
-+
-+    /// Unsafely assert that you have shared access to the `ListArc` for this field.
-+    ///
-+    /// # Safety
-+    ///
-+    /// The caller must have shared access to the `ListArc<ID>` containing the struct with this
-+    /// field for the duration of the returned reference.
-+    pub unsafe fn assert_ref(&self) -> &T {
-+        // SAFETY: The caller has shared access to the `ListArc`, so they also have shared access
-+        // to this field.
-+        unsafe { &*self.value.get() }
-+    }
-+
-+    /// Unsafely assert that you have mutable access to the `ListArc` for this field.
-+    ///
-+    /// # Safety
-+    ///
-+    /// The caller must have mutable access to the `ListArc<ID>` containing the struct with this
-+    /// field for the duration of the returned reference.
-+    #[allow(clippy::mut_from_ref)]
-+    pub unsafe fn assert_mut(&self) -> &mut T {
-+        // SAFETY: The caller has exclusive access to the `ListArc`, so they also have exclusive
-+        // access to this field.
-+        unsafe { &mut *self.value.get() }
-+    }
-+}
-+
-+/// Defines getters for a [`ListArcField`].
-+#[macro_export]
-+macro_rules! define_list_arc_field_getter {
-+    ($pub:vis fn $name:ident(&self $(<$id:tt>)?) -> &$typ:ty { $field:ident }
-+     $($rest:tt)*
-+    ) => {
-+        $pub fn $name<'a>(self: &'a $crate::list::ListArc<Self $(, $id)?>) -> &'a $typ {
-+            let field = &(&**self).$field;
-+            // SAFETY: We have a shared reference to the `ListArc`.
-+            unsafe { $crate::list::ListArcField::<$typ $(, $id)?>::assert_ref(field) }
-+        }
-+
-+        $crate::list::define_list_arc_field_getter!($($rest)*);
-+    };
-+
-+    ($pub:vis fn $name:ident(&mut self $(<$id:tt>)?) -> &mut $typ:ty { $field:ident }
-+     $($rest:tt)*
-+    ) => {
-+        $pub fn $name<'a>(self: &'a mut $crate::list::ListArc<Self $(, $id)?>) -> &'a mut $typ {
-+            let field = &(&**self).$field;
-+            // SAFETY: We have a mutable reference to the `ListArc`.
-+            unsafe { $crate::list::ListArcField::<$typ $(, $id)?>::assert_mut(field) }
-+        }
-+
-+        $crate::list::define_list_arc_field_getter!($($rest)*);
-+    };
-+
-+    () => {};
-+}
-+pub use define_list_arc_field_getter;
+here: rust-anaylzer -> rust-analyzer
 
--- 
-2.45.2.1089.g2a221341d9-goog
+> `sysroot` over `sysroot_src` has been working since rust 1.74.0 (which
+> was released on Nov 16, 2023). Since we are going to target rust 1.78.0
+> going forward we should set `sysroot` to support all currently used and
+> future versions of rust-analyzer.
+> 
+> Code editors like VS Code try to use the latest version of rust-analyzer
+> (which is updated every week) instead of the version of rust-analyzer
+> that comes with the rustup toolchain (which is updated every six weeks
+> along with the rust version).
+> 
+> Without this change rust-analyzer is breaking for anyone using VS Code.
+> 
+> Signed-off-by: Sarthak Singh <ss269@uw.edu>
+
+I don't understand much of this, but having rust-analyzer reporting an 
+error about sysroot something in VS Code without this what is gone with 
+this change, let me add my
+
+Tested-by: Dirk Behme <dirk.behme@de.bosch.com>
+
+Thanks
+
+Dirk
+
+
+> ---
+>   rust/Makefile                     | 2 +-
+>   scripts/generate_rust_analyzer.py | 6 +++++-
+>   2 files changed, 6 insertions(+), 2 deletions(-)
+> 
+> diff --git a/rust/Makefile b/rust/Makefile
+> index bf05e65365da..e3d0ba099b18 100644
+> --- a/rust/Makefile
+> +++ b/rust/Makefile
+> @@ -350,7 +350,7 @@ rust-analyzer:
+>   	$(Q)$(srctree)/scripts/generate_rust_analyzer.py \
+>   		--cfgs='core=$(core-cfgs)' --cfgs='alloc=$(alloc-cfgs)' \
+>   		$(realpath $(srctree)) $(realpath $(objtree)) \
+> -		$(RUST_LIB_SRC) $(KBUILD_EXTMOD) > \
+> +		$(rustc_sysroot) $(RUST_LIB_SRC) $(KBUILD_EXTMOD) > \
+>   		$(if $(KBUILD_EXTMOD),$(extmod_prefix),$(objtree))/rust-project.json
+>   
+>   redirect-intrinsics = \
+> diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_analyzer.py
+> index f270c7b0cf34..8529c3940136 100755
+> --- a/scripts/generate_rust_analyzer.py
+> +++ b/scripts/generate_rust_analyzer.py
+> @@ -145,6 +145,7 @@ def main():
+>       parser.add_argument('--cfgs', action='append', default=[])
+>       parser.add_argument("srctree", type=pathlib.Path)
+>       parser.add_argument("objtree", type=pathlib.Path)
+> +    parser.add_argument("sysroot", type=pathlib.Path)
+>       parser.add_argument("sysroot_src", type=pathlib.Path)
+>       parser.add_argument("exttree", type=pathlib.Path, nargs="?")
+>       args = parser.parse_args()
+> @@ -154,9 +155,12 @@ def main():
+>           level=logging.INFO if args.verbose else logging.WARNING
+>       )
+>   
+> +    # Making sure that the sysroot and sysroot_src belong to the same toolchain
+> +    assert args.sysroot in args.sysroot_src.parents
+> +
+>       rust_project = {
+>           "crates": generate_crates(args.srctree, args.objtree, args.sysroot_src, args.exttree, args.cfgs),
+> -        "sysroot_src": str(args.sysroot_src),
+> +        "sysroot": str(args.sysroot),
+>       }
+>   
+>       json.dump(rust_project, sys.stdout, sort_keys=True, indent=4)
 
