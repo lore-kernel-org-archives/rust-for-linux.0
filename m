@@ -1,94 +1,362 @@
-Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CA3A22EE8
-	for <rust-for-linux@vger.kernel.org>; Tue, 23 Jul 2024 09:15:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DDDA14A4C1
+	for <rust-for-linux@vger.kernel.org>; Tue, 23 Jul 2024 09:44:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721726140; cv=none; b=noO3CKjsAtfYhWlp7UOJ2bDw2i/l7ic5riYutEBtN1xpDHJpkbal/+/AgURZdYuQ/8K5SoMR7mcGrxYB4IfOprz+1sKGugrfwCUwia63V/3tRe4Hy5HiyAg9v4ZC3NMHnStcsk3v/WXGxGhKJqdtNDFPA3Pursn1hih83lMb+30=
+	t=1721727892; cv=none; b=u6g4TwFAroXyK9pq3G138P9kV2Z7Ao87kUJrBKyS1e46+nXp7U6eetoBYHzzO4O2xf6lbdMHQhvS0cP+Xiu8VAiUZnPJ7ajQssGs9PTdLlP2bGaGRNtL7bpdCmjgb6DF7KkroKWEGnZhjGaltS3mnEjDIv9AFBc5K+qImAqD1Ok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721726140; c=relaxed/simple;
-	bh=UeoKgLuiGBLt7clh3EHbFnak0jUQWM6xKW91Vn0DzZo=;
+	s=arc-20240116; t=1721727892; c=relaxed/simple;
+	bh=aMm+/vBCa2nfKNzbPCjYipfCfv9RO2VvBOBUyPBJrt4=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tEL5R7lFGM0jQHVqEs0+rGUs3Xnq/lVkmNtRPi6COCSz/pYghVFuh4L3iTZi5A6+P9KoR/rzxka00qu8ceVHz4cV6hEp+1sKg8nPJ+lm0tNLomNPsMD1jSRY0e1h4eaErMQ6wPLtAyeBfue22EoUZ3obc0kuSqOkFImxWvJjFu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MCkgNb9G; arc=none smtp.client-ip=209.85.221.48
+	 To:Cc:Content-Type; b=CBpwXZ6n0HI9DbhA0dIch9NZQRXh87P5p3Q4G1ZkFCpf1Ip2SSp4f1SV44e9193d6L0t2seVhoOLq69itkmbMvmZjiBBFkSA65UvN6Fd3hTNFdhE5yYtwkxwv0DIhbicAs8Bf4XuKas3tpnssQ6rwjUjFddau6OmMhyoCz7z/mU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=x+ngtoCJ; arc=none smtp.client-ip=209.85.221.50
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MCkgNb9G"
-Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-367940c57ddso2717323f8f.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 23 Jul 2024 02:15:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="x+ngtoCJ"
+Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-3685a5e7d3cso2959782f8f.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 23 Jul 2024 02:44:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1721726138; x=1722330938; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1721727888; x=1722332688; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=UeoKgLuiGBLt7clh3EHbFnak0jUQWM6xKW91Vn0DzZo=;
-        b=MCkgNb9GvlNP7SwwpwsrRzRKVoRODTqiKoU4EFSO9KA9l6iIaIqiIRXhAKw0j5K6L8
-         0CkGFEJa5WYF69k86jNciLGbMI8jon4zn620z68PEelcoRynx7gZnRgDKPxhSojXZc3u
-         DGzrz67jJosGqESBI/Y2/us601mIdHSJadrtVgVcIGjzHB31bDH+AslMlRaQt9eBxyfs
-         0YrGXCPmVJ8EBcclr4d73co8fK6BLJaPJMAui+nmqYnFyZ+ht1XT7spJmua9rx7pK/AB
-         evojlAWRzymb2MP5yc/OKRdj3KENk/AZ7QB39WHqPY8NvzCWJ4aRkkbAC/+8hpNZAwnE
-         C1TQ==
+        bh=i/KGo/nVokiLj3bv4/tLBnmvbHMqPE0HJyTsoIo4zfw=;
+        b=x+ngtoCJN0uTD6jfXgqECs+X/Cxkf+GaX01sDGPrQNMoq6MpE7vbus8/x1r/Lt+eed
+         q2VLcTd7Ou9w3/4apAq2GQa35CPQtDFsT8obF/PjAAgPr7rcoXVk/RjdPZ4OxkVcv1Mj
+         OIX5nulpyuFahigcySoLORIeXAwUnmywgDAAMqj8SnkkSwaLuD7AgBd+mROqi+FXm4QG
+         7coaDTGwtWYWYJbiYD0FGKB7dK8fH2tlVTdSJIOYSMXo+ahDCn8LFYDyPmy+7DJ3LrWk
+         qxLOakTOgURTPIQtDv0wsbxZQ9RqMjbO9Vy/8/N7cXhgEVPMvm97dtUPjC/j4/zVqDbH
+         nxtw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721726138; x=1722330938;
+        d=1e100.net; s=20230601; t=1721727888; x=1722332688;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=UeoKgLuiGBLt7clh3EHbFnak0jUQWM6xKW91Vn0DzZo=;
-        b=OS7txDuS+lqUrTdQNibOSB+HIjSeAPkKmsPhL76f95TR5i4Gfe/0Tj/NaHMLA17ObK
-         4u+P5B5GgKbJjDpOEQWnia4kKmgKKQS/jw8DuQpmAiuTmt6w57pUMPh2zMgqNFeZMiJ9
-         uKFviWWeOAzIzIBmVxb7OiYrH4ijR0A34uX5PYs2kViVlHmElZbZ0XFOKHl/hFYSg1cX
-         4FosdqPfoYvsQLFri6swHcrgiNBdcW2GWBDzk3AV1HJHpAtUIfYLF6d4CECnDDUu890v
-         uM2DQ5tYBt0Xy8p8J155WRiPgsX+cVuYU7IEWC7xMLpQ615+pgIIVWP5wjd+WHPtCZyi
-         Emyw==
-X-Forwarded-Encrypted: i=1; AJvYcCVUCdWU4540hMxzHWIhXgXk8eVu5QiGouX1z9udkG71GVH0HrgNms+EUGOxSBiw8kxCoKh25uYuutxLBmYry/e7bQUknElXQdpN5IspRWQ=
-X-Gm-Message-State: AOJu0YxRIVBYHf8M3EgWgZt1cInbSyeTdz3++jqgU2cdoloOTJFmrv67
-	SzRaVETMqHPjivliUuBgskxJ4KuNbyCRD5cDLxm0ccZALWHnTzYyvGJxY2I6y1euVKnu01EPlNn
-	Wa2+RRQPJCT40oh40U+O4phSqNZgM0B8Qp5bk
-X-Google-Smtp-Source: AGHT+IHA9MnCfP0s2Vkd21JStygGnWcgLAvV7aVLxLyDLsv453hcAk/4iObIjQRQq648iR/A4OVxND2W0CGkZHxBhTA=
-X-Received: by 2002:adf:e6c9:0:b0:369:b7e3:4983 with SMTP id
- ffacd0b85a97d-369bae01bdemr6548783f8f.1.1721726137514; Tue, 23 Jul 2024
- 02:15:37 -0700 (PDT)
+        bh=i/KGo/nVokiLj3bv4/tLBnmvbHMqPE0HJyTsoIo4zfw=;
+        b=ovUJHuyzsIajX2RJhesouX2E/FA6rhYVYkiNlo5jhDOr0CDF9iHn2PtAafur/zWxHm
+         2errWPr4rxVKWEeKXkb1tJkudKKJ+3QPQ7KHL41x0ZONE9fdbq9QiOYsLFwHgksPMGQH
+         9ftKIBOOOZouCQvez+itmxdibF+iomByo2Ck1nZWN/gvWYjU9hAK2M0VIkmbYhzT5H3N
+         qb31VCGsZzKhdgfUF1bsPZMiLuopeDXzb+EpyFTk42jtkB8pdU0ZKKNPcy5fvaP0pykZ
+         FpBH2ACf32Kfke5/MKco3Lvo7spMepyIUpDXzZBOzLpTIgyA6PSiWtDCdRrqMtxdpPd+
+         aBAQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUh4vu3kSF51PlCkYAPM/UkPTPCu9Z4xZrWqR8YZj1ETI2LieRM5UaIj9n6IC01tJTeGBIM/IFVzqJLdJ4674zk8ARWVChEtNfDEEBLP40=
+X-Gm-Message-State: AOJu0YyjWKggz+w4KtJpraIwgGaueGyJvTshIPMBwQLSn/A8vlzxPWfA
+	W9y1wifqdkcNXswy6wsstfn/v7FFd/Yl39I8+xABM/LgPG+vDIxuLcz0j8GnQotgwwehvRPzhlX
+	LJRhj5fDeJov/EBiYvwmSvGO3GQ9njlWD7elt
+X-Google-Smtp-Source: AGHT+IFAQeSU/jPRzeYXkossBf87PWhdJTQULqPwlsmoUuAWDas/9AqxJWvANUh4GzlM1DAGcI5ypu0vpfgG9WksGz8=
+X-Received: by 2002:a5d:460f:0:b0:366:e7b5:3b49 with SMTP id
+ ffacd0b85a97d-369dee68242mr1645414f8f.54.1721727887880; Tue, 23 Jul 2024
+ 02:44:47 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240711-b4-rbtree-v6-0-14bef1a8cdba@google.com> <20240711-b4-rbtree-v6-1-14bef1a8cdba@google.com>
-In-Reply-To: <20240711-b4-rbtree-v6-1-14bef1a8cdba@google.com>
+References: <20240710225011.275153-1-daniel.almeida@collabora.com>
+ <fe84a028-01a8-4987-b1b7-141fb76d263c@arm.com> <4344B22F-D859-4C64-A351-69FFB5208362@collabora.com>
+ <edda856e-3102-495a-8cc6-b79f5f114833@arm.com>
+In-Reply-To: <edda856e-3102-495a-8cc6-b79f5f114833@arm.com>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 23 Jul 2024 11:15:25 +0200
-Message-ID: <CAH5fLggtbe0kjA-Wz4mi66MCLLczaC0MfyAc9S3xw6tQfoXw4Q@mail.gmail.com>
-Subject: Re: [PATCH v6 1/6] rust: kernel: add `drop_contents` to `BoxExt`
-To: Matt Gilbride <mattgilbride@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
-	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
-	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Christian Brauner <brauner@kernel.org>, Rob Landley <rob@landley.net>, 
-	Davidlohr Bueso <dave@stgolabs.net>, Michel Lespinasse <michel@lespinasse.org>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Tue, 23 Jul 2024 11:44:34 +0200
+Message-ID: <CAH5fLghSoYY6_RfQhShUvbJyx-cPU=0A2ipg-pm-9FdSyHf-yQ@mail.gmail.com>
+Subject: Re: [RFC PATCH] drm: panthor: add dev_coredumpv support
+To: Steven Price <steven.price@arm.com>
+Cc: Daniel Almeida <daniel.almeida@collabora.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, ojeda@kernel.org, 
+	Danilo Krummrich <dakr@redhat.com>, lyude@redhat.com, robh@kernel.org, lina@asahilina.net, 
+	mcanal@igalia.com, airlied@gmail.com, rust-for-linux@vger.kernel.org, 
+	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jul 11, 2024 at 6:21=E2=80=AFPM Matt Gilbride <mattgilbride@google.=
-com> wrote:
+On Mon, Jul 15, 2024 at 11:12=E2=80=AFAM Steven Price <steven.price@arm.com=
+> wrote:
+> >>> +
+> >>> +pub(crate) const GPU_ID: GpuRegister =3D GpuRegister(0x0);
+> >>> +pub(crate) const fn gpu_arch_major(x: u64) -> GpuRegister {
+> >>> +    GpuRegister((x) >> 28)
+> >>> +}
+> >>> +pub(crate) const fn gpu_arch_minor(x: u64) -> GpuRegister {
+> >>> +    GpuRegister((x) & genmask(27, 24) >> 24)
+> >>> +}
+> >>> +pub(crate) const fn gpu_arch_rev(x: u64) -> GpuRegister {
+> >>> +    GpuRegister((x) & genmask(23, 20) >> 20)
+> >>> +}
+> >>> +pub(crate) const fn gpu_prod_major(x: u64) -> GpuRegister {
+> >>> +    GpuRegister((x) & genmask(19, 16) >> 16)
+> >>> +}
+> >>> +pub(crate) const fn gpu_ver_major(x: u64) -> GpuRegister {
+> >>> +    GpuRegister((x) & genmask(15, 12) >> 12)
+> >>> +}
+> >>> +pub(crate) const fn gpu_ver_minor(x: u64) -> GpuRegister {
+> >>> +    GpuRegister((x) & genmask(11, 4) >> 4)
+> >>> +}
+> >>> +pub(crate) const fn gpu_ver_status(x: u64) -> GpuRegister {
+> >>> +    GpuRegister(x & genmask(3, 0))
+> >>> +}
+> >>> +pub(crate) const GPU_L2_FEATURES: GpuRegister =3D GpuRegister(0x4);
+> >>> +pub(crate) const fn gpu_l2_features_line_size(x: u64) -> GpuRegister=
+ {
+> >>> +    GpuRegister(1 << ((x) & genmask(7, 0)))
+> >>> +}
+> >>> +pub(crate) const GPU_CORE_FEATURES: GpuRegister =3D GpuRegister(0x8)=
+;
+> >>> +pub(crate) const GPU_TILER_FEATURES: GpuRegister =3D GpuRegister(0xc=
+);
+> >>> +pub(crate) const GPU_MEM_FEATURES: GpuRegister =3D GpuRegister(0x10)=
+;
+> >>> +pub(crate) const GROUPS_L2_COHERENT: GpuRegister =3D GpuRegister(bit=
+(0));
+> >>> +pub(crate) const GPU_MMU_FEATURES: GpuRegister =3D GpuRegister(0x14)=
+;
+> >>> +pub(crate) const fn gpu_mmu_features_va_bits(x: u64) -> GpuRegister =
+{
+> >>> +    GpuRegister((x) & genmask(7, 0))
+> >>> +}
+> >>> +pub(crate) const fn gpu_mmu_features_pa_bits(x: u64) -> GpuRegister =
+{
+> >>> +    GpuRegister(((x) >> 8) & genmask(7, 0))
+> >>> +}
+> >>> +pub(crate) const GPU_AS_PRESENT: GpuRegister =3D GpuRegister(0x18);
+> >>> +pub(crate) const GPU_CSF_ID: GpuRegister =3D GpuRegister(0x1c);
+> >>> +pub(crate) const GPU_INT_RAWSTAT: GpuRegister =3D GpuRegister(0x20);
+> >>> +pub(crate) const GPU_INT_CLEAR: GpuRegister =3D GpuRegister(0x24);
+> >>> +pub(crate) const GPU_INT_MASK: GpuRegister =3D GpuRegister(0x28);
+> >>> +pub(crate) const GPU_INT_STAT: GpuRegister =3D GpuRegister(0x2c);
+> >>> +pub(crate) const GPU_IRQ_FAULT: GpuRegister =3D GpuRegister(bit(0));
+> >>> +pub(crate) const GPU_IRQ_PROTM_FAULT: GpuRegister =3D GpuRegister(bi=
+t(1));
+> >>> +pub(crate) const GPU_IRQ_RESET_COMPLETED: GpuRegister =3D GpuRegiste=
+r(bit(8));
+> >>> +pub(crate) const GPU_IRQ_POWER_CHANGED: GpuRegister =3D GpuRegister(=
+bit(9));
+> >>> +pub(crate) const GPU_IRQ_POWER_CHANGED_ALL: GpuRegister =3D GpuRegis=
+ter(bit(10));
+> >>> +pub(crate) const GPU_IRQ_CLEAN_CACHES_COMPLETED: GpuRegister =3D Gpu=
+Register(bit(17));
+> >>> +pub(crate) const GPU_IRQ_DOORBELL_MIRROR: GpuRegister =3D GpuRegiste=
+r(bit(18));
+> >>> +pub(crate) const GPU_IRQ_MCU_STATUS_CHANGED: GpuRegister =3D GpuRegi=
+ster(bit(19));
+> >>> +pub(crate) const GPU_CMD: GpuRegister =3D GpuRegister(0x30);
+> >>> +const fn gpu_cmd_def(ty: u64, payload: u64) -> u64 {
+> >>> +    (ty) | ((payload) << 8)
+> >>> +}
+> >>> +pub(crate) const fn gpu_soft_reset() -> GpuRegister {
+> >>> +    GpuRegister(gpu_cmd_def(1, 1))
+> >>> +}
+> >>> +pub(crate) const fn gpu_hard_reset() -> GpuRegister {
+> >>> +    GpuRegister(gpu_cmd_def(1, 2))
+> >>> +}
+> >>> +pub(crate) const CACHE_CLEAN: GpuRegister =3D GpuRegister(bit(0));
+> >>> +pub(crate) const CACHE_INV: GpuRegister =3D GpuRegister(bit(1));
+> >>> +pub(crate) const GPU_STATUS: GpuRegister =3D GpuRegister(0x34);
+> >>> +pub(crate) const GPU_STATUS_ACTIVE: GpuRegister =3D GpuRegister(bit(=
+0));
+> >>> +pub(crate) const GPU_STATUS_PWR_ACTIVE: GpuRegister =3D GpuRegister(=
+bit(1));
+> >>> +pub(crate) const GPU_STATUS_PAGE_FAULT: GpuRegister =3D GpuRegister(=
+bit(4));
+> >>> +pub(crate) const GPU_STATUS_PROTM_ACTIVE: GpuRegister =3D GpuRegiste=
+r(bit(7));
+> >>> +pub(crate) const GPU_STATUS_DBG_ENABLED: GpuRegister =3D GpuRegister=
+(bit(8));
+> >>> +pub(crate) const GPU_FAULT_STATUS: GpuRegister =3D GpuRegister(0x3c)=
+;
+> >>> +pub(crate) const GPU_FAULT_ADDR_LO: GpuRegister =3D GpuRegister(0x40=
+);
+> >>> +pub(crate) const GPU_FAULT_ADDR_HI: GpuRegister =3D GpuRegister(0x44=
+);
+> >>> +pub(crate) const GPU_PWR_KEY: GpuRegister =3D GpuRegister(0x50);
+> >>> +pub(crate) const GPU_PWR_KEY_UNLOCK: GpuRegister =3D GpuRegister(0x2=
+968a819);
+> >>> +pub(crate) const GPU_PWR_OVERRIDE0: GpuRegister =3D GpuRegister(0x54=
+);
+> >>> +pub(crate) const GPU_PWR_OVERRIDE1: GpuRegister =3D GpuRegister(0x58=
+);
+> >>> +pub(crate) const GPU_TIMESTAMP_OFFSET_LO: GpuRegister =3D GpuRegiste=
+r(0x88);
+> >>> +pub(crate) const GPU_TIMESTAMP_OFFSET_HI: GpuRegister =3D GpuRegiste=
+r(0x8c);
+> >>> +pub(crate) const GPU_CYCLE_COUNT_LO: GpuRegister =3D GpuRegister(0x9=
+0);
+> >>> +pub(crate) const GPU_CYCLE_COUNT_HI: GpuRegister =3D GpuRegister(0x9=
+4);
+> >>> +pub(crate) const GPU_TIMESTAMP_LO: GpuRegister =3D GpuRegister(0x98)=
+;
+> >>> +pub(crate) const GPU_TIMESTAMP_HI: GpuRegister =3D GpuRegister(0x9c)=
+;
+> >>> +pub(crate) const GPU_THREAD_MAX_THREADS: GpuRegister =3D GpuRegister=
+(0xa0);
+> >>> +pub(crate) const GPU_THREAD_MAX_WORKGROUP_SIZE: GpuRegister =3D GpuR=
+egister(0xa4);
+> >>> +pub(crate) const GPU_THREAD_MAX_BARRIER_SIZE: GpuRegister =3D GpuReg=
+ister(0xa8);
+> >>> +pub(crate) const GPU_THREAD_FEATURES: GpuRegister =3D GpuRegister(0x=
+ac);
+> >>> +pub(crate) const fn gpu_texture_features(n: u64) -> GpuRegister {
+> >>> +    GpuRegister(0xB0 + ((n) * 4))
+> >>> +}
+> >>> +pub(crate) const GPU_SHADER_PRESENT_LO: GpuRegister =3D GpuRegister(=
+0x100);
+> >>> +pub(crate) const GPU_SHADER_PRESENT_HI: GpuRegister =3D GpuRegister(=
+0x104);
+> >>> +pub(crate) const GPU_TILER_PRESENT_LO: GpuRegister =3D GpuRegister(0=
+x110);
+> >>> +pub(crate) const GPU_TILER_PRESENT_HI: GpuRegister =3D GpuRegister(0=
+x114);
+> >>> +pub(crate) const GPU_L2_PRESENT_LO: GpuRegister =3D GpuRegister(0x12=
+0);
+> >>> +pub(crate) const GPU_L2_PRESENT_HI: GpuRegister =3D GpuRegister(0x12=
+4);
+> >>> +pub(crate) const SHADER_READY_LO: GpuRegister =3D GpuRegister(0x140)=
+;
+> >>> +pub(crate) const SHADER_READY_HI: GpuRegister =3D GpuRegister(0x144)=
+;
+> >>> +pub(crate) const TILER_READY_LO: GpuRegister =3D GpuRegister(0x150);
+> >>> +pub(crate) const TILER_READY_HI: GpuRegister =3D GpuRegister(0x154);
+> >>> +pub(crate) const L2_READY_LO: GpuRegister =3D GpuRegister(0x160);
+> >>> +pub(crate) const L2_READY_HI: GpuRegister =3D GpuRegister(0x164);
+> >>> +pub(crate) const SHADER_PWRON_LO: GpuRegister =3D GpuRegister(0x180)=
+;
+> >>> +pub(crate) const SHADER_PWRON_HI: GpuRegister =3D GpuRegister(0x184)=
+;
+> >>> +pub(crate) const TILER_PWRON_LO: GpuRegister =3D GpuRegister(0x190);
+> >>> +pub(crate) const TILER_PWRON_HI: GpuRegister =3D GpuRegister(0x194);
+> >>> +pub(crate) const L2_PWRON_LO: GpuRegister =3D GpuRegister(0x1a0);
+> >>> +pub(crate) const L2_PWRON_HI: GpuRegister =3D GpuRegister(0x1a4);
+> >>> +pub(crate) const SHADER_PWROFF_LO: GpuRegister =3D GpuRegister(0x1c0=
+);
+> >>> +pub(crate) const SHADER_PWROFF_HI: GpuRegister =3D GpuRegister(0x1c4=
+);
+> >>> +pub(crate) const TILER_PWROFF_LO: GpuRegister =3D GpuRegister(0x1d0)=
+;
+> >>> +pub(crate) const TILER_PWROFF_HI: GpuRegister =3D GpuRegister(0x1d4)=
+;
+> >>> +pub(crate) const L2_PWROFF_LO: GpuRegister =3D GpuRegister(0x1e0);
+> >>> +pub(crate) const L2_PWROFF_HI: GpuRegister =3D GpuRegister(0x1e4);
+> >>> +pub(crate) const SHADER_PWRTRANS_LO: GpuRegister =3D GpuRegister(0x2=
+00);
+> >>> +pub(crate) const SHADER_PWRTRANS_HI: GpuRegister =3D GpuRegister(0x2=
+04);
+> >>> +pub(crate) const TILER_PWRTRANS_LO: GpuRegister =3D GpuRegister(0x21=
+0);
+> >>> +pub(crate) const TILER_PWRTRANS_HI: GpuRegister =3D GpuRegister(0x21=
+4);
+> >>> +pub(crate) const L2_PWRTRANS_LO: GpuRegister =3D GpuRegister(0x220);
+> >>> +pub(crate) const L2_PWRTRANS_HI: GpuRegister =3D GpuRegister(0x224);
+> >>> +pub(crate) const SHADER_PWRACTIVE_LO: GpuRegister =3D GpuRegister(0x=
+240);
+> >>> +pub(crate) const SHADER_PWRACTIVE_HI: GpuRegister =3D GpuRegister(0x=
+244);
+> >>> +pub(crate) const TILER_PWRACTIVE_LO: GpuRegister =3D GpuRegister(0x2=
+50);
+> >>> +pub(crate) const TILER_PWRACTIVE_HI: GpuRegister =3D GpuRegister(0x2=
+54);
+> >>> +pub(crate) const L2_PWRACTIVE_LO: GpuRegister =3D GpuRegister(0x260)=
+;
+> >>> +pub(crate) const L2_PWRACTIVE_HI: GpuRegister =3D GpuRegister(0x264)=
+;
+> >>> +pub(crate) const GPU_REVID: GpuRegister =3D GpuRegister(0x280);
+> >>> +pub(crate) const GPU_COHERENCY_FEATURES: GpuRegister =3D GpuRegister=
+(0x300);
+> >>> +pub(crate) const GPU_COHERENCY_PROTOCOL: GpuRegister =3D GpuRegister=
+(0x304);
+> >>> +pub(crate) const GPU_COHERENCY_ACE: GpuRegister =3D GpuRegister(0);
+> >>> +pub(crate) const GPU_COHERENCY_ACE_LITE: GpuRegister =3D GpuRegister=
+(1);
+> >>> +pub(crate) const GPU_COHERENCY_NONE: GpuRegister =3D GpuRegister(31)=
+;
+> >>> +pub(crate) const MCU_CONTROL: GpuRegister =3D GpuRegister(0x700);
+> >>> +pub(crate) const MCU_CONTROL_ENABLE: GpuRegister =3D GpuRegister(1);
+> >>> +pub(crate) const MCU_CONTROL_AUTO: GpuRegister =3D GpuRegister(2);
+> >>> +pub(crate) const MCU_CONTROL_DISABLE: GpuRegister =3D GpuRegister(0)=
+;
+> >>
+> >> From this I presume it was scripted. These MCU_CONTROL_xxx defines are
+> >> not GPU registers but values for the GPU registers. We might need to
+> >> make changes to the C header to make it easier to convert to Rust. Or
+> >> indeed generate both the C and Rust headers from a common source.
+> >>
+> >> Generally looks reasonable, although as it stands this would of course
+> >> be a much smaller patch in plain C ;) It would look better if you spli=
+t
+> >> the Rust-enabling parts from the actual new code. I also think there
+> >> needs to be a little more thought into what registers are useful to du=
+mp
+> >> and some documentation on the dump format.
+> >>
+> >> Na=C3=AFve Rust question: there are a bunch of unwrap() calls in the c=
+ode
+> >> which to my C-trained brain look like BUG_ON()s - and in C I'd be
+> >> complaining about them. What is the Rust style here? AFAICT they are a=
+ll
+> >> valid (they should never panic) but it makes me uneasy when I'm readin=
+g
+> >> the code.
+> >>
+> >> Steve
+> >>
+> >
+> > Yeah, the unwraps() have to go. I didn=E2=80=99t give much thought to e=
+rror handling here.
+> >
+> > Although, as you pointed out, most of these should never panic, unless =
+the size of the dump was miscomputed.
+> >
+> > What do you suggest instead? I guess that printing a warning and then r=
+eturning from panthor_core_dump() would be a good course of action. I don=
+=E2=80=99t think there=E2=80=99s a Rust equivalent to WARN_ONCE, though.
 >
-> From: Benno Lossin <benno.lossin@proton.me>
+> In C I'd be handling at least the allocation failures and returning
+> errors up the stack - most likely with some sort of WARN_ON() or similar
+> (because these are 'should never happen' programming bugs - but trivial
+> to recover from).
 >
-> Sometimes (see [1]) it is necessary to drop the value inside of a
-> `Box<T>`, but retain the allocation. For example to reuse the allocation
-> in the future.
-> Introduce a new function `drop_contents` that turns a `Box<T>` into
-> `Box<MaybeUninit<T>>` by dropping the value.
->
-> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
-> Link: https://lore.kernel.org/rust-for-linux/20240418-b4-rbtree-v3-5-323e=
-134390ce@google.com/ [1]
+> For the try_from(size).unwrap() type cases, I've no idea to be honest -
+> Ideally they would be compile time checks. I've very little clue about
+> Rust but on the surface it looks like you've got the wrong type because
+> it's checking that things don't overflow when changing type. Of course
+> the standard C approach is to just do the type conversion and pretend
+> you're sure that an overflow can never happen ;)
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Rust has infallible conversions (called from instead of try_from) for
+the cases where the conversion is infallible. Some thoughts on the
+various examples:
+
+if isize::try_from(size).unwrap() =3D=3D isize::MAX {
+    return Err(EINVAL);
+}
+This is saying:
+* If size is exactly isize::MAX, then return EINVAL.
+* If size is greater than isize::MAX, then BUG.
+It should probably instead be:
+if size >=3D isize::MAX as usize {
+    return Err(EINVAL);
+}
+
+bindings::__vmalloc_noprof(size.try_into().unwrap(), ...)
+This should probably have handling for size being too big, but I guess
+it will go away when this code uses the Rust vmalloc wrappers.
+
+alloc.alloc_header(HeaderType::Registers, sz.try_into().unwrap());
+Change alloc_header to take an usize instead of u32. Then the cast goes awa=
+y.
+
+bos.push(bo, GFP_KERNEL).unwrap();
+The error isn't possible because the vector is pre-allocated, but we
+can still handle it by returning ENOMEM.
+
+> In particular for alloc<T>() - core::mem::size_of::<T>() is returning a
+> value (of type usize) which is then being converted to isize. A C
+> programmer wouldn't have any qualms about assigning a sizeof() into an
+> int, even though theorectically that could overflow if the structure was
+> massive. But this should really be a compile time check as it's clearly
+> dead code at runtime.
+>
+> Steve
+>
+>
