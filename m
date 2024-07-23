@@ -1,73 +1,72 @@
-Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
+Received: from mail-lf1-f52.google.com (mail-lf1-f52.google.com [209.85.167.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CF0114E2E3
-	for <rust-for-linux@vger.kernel.org>; Tue, 23 Jul 2024 10:55:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CFA715383E;
+	Tue, 23 Jul 2024 11:28:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721732150; cv=none; b=r2OiWO2MOlOue02C+UkI5a28UhfMUhhraK4pGkFDjOkQwEYDSJSrQCGgQa7P6116U7KIZjGX6V540vjBtUX/hTriaSaClVEzIqfemvWW1ppDTJTfjn3BULRquIEfZVa28/UAv1BbRNL+YNBAf8hP5oKpQEVGWjWRzIH3i94c43g=
+	t=1721734120; cv=none; b=pmC41royW/CxL5mdNc16kLXzu0PnAv72E2ywJouzWoWl2MD23llqoGdKJ4Dys2YC6f79myaBLQfxxPsZOS9UqjNYi9AmmaeXgH3d/xUYhVeIdz4Yx1u0kBqLlMn2ET832hVboOauRLt3xf1D1U6J5fALhzJsn6/ks+kodIT0a3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721732150; c=relaxed/simple;
-	bh=qbgHZWjhOWkvRT4sxDgzHnN4j1pNIGBs0utjpq/oJ6k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=fWSKF85gkG8n9X2i9sSx161EbghJQWHGxD2z4kJk2iFE4YBwmzu+jXCdd8UYlAZU3+JfdVqsg5q3WfKN38XnLeKDtUAETcrVZ23DyCUBO2w+Q754Irf2n7OiRe4a03upJMEMEBSOH5u7f+cSe/gfcqzQ6LO/Ljbm3xVKICfKXr0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=YYcLCW0C; arc=none smtp.client-ip=209.85.208.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1721734120; c=relaxed/simple;
+	bh=zw4gLjcUkHuXvmEncRda0Xcv2/SJZchQsLo5PoVzXNg=;
+	h=From:Date:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HyRu/PUfRC4KxxSAIBsTTBMHi5fzjlkgzlloZJljTNG0RXSaeWKxyiQBI3ccatR427D6z1nAgXD4vy/iLtn9tu7yUPwOy72SLX0oWoSfT8PHvrWnZspkD4INNvGmydzWEgtF6HTDqU3neOJ7+5S0DSVdpGChOpVzJQSo9SvM+ms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IO6Qlm+A; arc=none smtp.client-ip=209.85.167.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="YYcLCW0C"
-Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-5a3458bf858so3813736a12.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 23 Jul 2024 03:55:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IO6Qlm+A"
+Received: by mail-lf1-f52.google.com with SMTP id 2adb3069b0e04-52f04b4abdcso1686604e87.2;
+        Tue, 23 Jul 2024 04:28:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1721732147; x=1722336947; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1721734116; x=1722338916; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=pe9A/KmjRfnSqmJTo8amFeX5jdsHC7+ce4ctbtBqkTM=;
-        b=YYcLCW0C9TsDdVwHEkqsEyhTY1ZEpHncwHp5OzuN8Lw/suMIegv8BcuSE1WIbU8EXM
-         4V9E+kf0Fzcnhk79xT95Ss8juRZ+pNHamE6coU39w1a6yDqAdr2jgjkgqNsLoC+FmH/j
-         +H+e0rnFzZfRc7TR/V9rhFENsM7ICYnk+N3LCgwXx9f9KP9zsuifhF28kf9g/0twB3Hu
-         BwGDOY4EMPLDipJimy1WzkF7ospuKvgwiCKB+hQpUyl4F2KP4oEwPefMtfaG7An0o1bD
-         VNaLGtwfzPmv/92v8X65Q3777KsY0vcLwF3pwI8DCm+1Bj68Dq2LVQD8WgqqXDMH5Vrg
-         4f1Q==
+         :subject:cc:to:date:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=abrqLpr2mYE+mftzGkLINKPIi/aoImy+3XxL7lJcnew=;
+        b=IO6Qlm+A4+W38LhyZpxu+5moeVRtMcSA1FU9pcbcgxksY2zxoEqYDZA9li6UXRbW7I
+         m4psOajkt747uniSMJ5XuTKFkNsqKQBi0qA5QdromBI3bKYWPqHaGhpGW20Z0sv9gfGU
+         mTldm465nLARe/pJ1z3Ha0zBtIJUfbt+vySw1v/oqRSF4B1CVF0mp14dnP/8uHJDJgg0
+         zKQTe+U55OyVw9Os+s/wf7wz4EClNA/Ipeq0Nb7+sOb7lVJKBxvlIeOhb7K6kK6boof8
+         LBqNoTy20tlfnxzKloQu8hg51A/G7xtbH2HMB5Jv5wrd9Q6DK9rwnfHxcL7FH2MobBRS
+         h2kg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721732147; x=1722336947;
+        d=1e100.net; s=20230601; t=1721734116; x=1722338916;
         h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :subject:cc:to:date:from:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=pe9A/KmjRfnSqmJTo8amFeX5jdsHC7+ce4ctbtBqkTM=;
-        b=U9v/WyesaOKjDheQfwkf3rpsNsmEQe5O+VMT2fJxINLtbrgFj9iqN5MRjFK0MKQeRD
-         NRMCH+CDMWBKO38qWn/kZdiMLVvtEeIJmO7wG4C/0PaH/nBEmHV3o+GPoLK6VkAzFSg4
-         n4InplfQ20nxpz3+Ha6DjGVSnkHSOejII2bBzrgW+mMxdOT/mn2627nsy1uXsJTKsPhA
-         sThTxfthGj8/Qe8SsVx1QF8YmNFvAlKmhvZWbBY2pEO2P0C42EMij+Cbgv2VW7jcmzb4
-         38fTlcAgjdMMpZ3dvb7Jmu0ZW5eXJ2ukBFFmdV5fnMIWFW1swbiwLnDJiSym0cjb8Jbz
-         3qjQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWs2vo6ivJwkCwpES/BX2O91yi4j2TG6tpCXXaJW2rcWL0emJPijarhQYCg/hbQhp3j6ZE9+sABQ72qBnZ6Nl1CoGW0Yk0+onswfK+QK58=
-X-Gm-Message-State: AOJu0YyCcYfLcCIiYnvWyPxCJ93P0eOtneELih1EZh2c7VXl0ZTBfqwf
-	hH07JDtxYGIAq+pxaB86F+Er/lqRROwjZqj7LWtl+rOOekK0+ysvd65DBU0j0BM=
-X-Google-Smtp-Source: AGHT+IFnu1CtSD7NI8cX8oy1/s1fO3b09mRCXmn4chmnOxeVXYHzEOoS0aY4v6bJfNvEOu6l0cBSsg==
-X-Received: by 2002:a50:c316:0:b0:5a2:d411:89fa with SMTP id 4fb4d7f45d1cf-5a47b3ce4c4mr5373936a12.36.1721732146651;
-        Tue, 23 Jul 2024 03:55:46 -0700 (PDT)
-Received: from localhost (109-81-94-157.rct.o2.cz. [109.81.94.157])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5a30c9beccesm7307633a12.96.2024.07.23.03.55.46
+        bh=abrqLpr2mYE+mftzGkLINKPIi/aoImy+3XxL7lJcnew=;
+        b=xRi60SuGAh89tDHu31YomREvUzj0Eq+Glg+vJcNqdM9obNebLYvwW5htAixDviFbEq
+         H/7uQ5LPP/kXsgWSUyTc3CdAJaDCaxk2G72OdFsj0IheamXvnU0eueguMpEMfUm4Lf81
+         nqNda3UrInnoeJHp9ukqQGoaedKX3JoAZY5tBXILStS39+eqm99mdrB1SgTU6n4vAi93
+         nqXmdZI15e4xrgPOtOeMKtVKW4NSHAdQGlhAxdaaVaZI8hCtTzC09q0ExaX+oULdNhSv
+         o2k5PGCadpFpbmApNuwkH1Ma0Lr+8YJtB57OOfyaz8fTqxSeRwuPQqZUk0DDLX1lbphA
+         CKCw==
+X-Forwarded-Encrypted: i=1; AJvYcCUh5dwBvwBd5UDR65PA5jKHacvqFJtTbuPOR5jzptXUuoTjnDfqYHvhEa1H8MRAqRIKHGZdtxOMcqt4/g4Z49028pvUU1+8nvkApv9475eK3b6NupzAQHUDGb58Zlx3lJPhZ+NfUqgR/b6wjNw=
+X-Gm-Message-State: AOJu0Yw3dmL/QuIOsGtEP2oKg/pWOU1uwPMIXgnicvV0FObk7gfTyYiZ
+	ySXVZt5OxvJmdlniwVGf62IGAM31QXNPeJ5QPue6CqS8UXmQBJ7v
+X-Google-Smtp-Source: AGHT+IE6SmKJeYRCd6J8eMwqSuZsAeG1RkElKxi9pM8+aTJA2/sss1iQnaWtymJXnMTtbLebBahEYg==
+X-Received: by 2002:a05:6512:3d1a:b0:52e:7684:a385 with SMTP id 2adb3069b0e04-52efb7e8f75mr6226245e87.52.1721734116088;
+        Tue, 23 Jul 2024 04:28:36 -0700 (PDT)
+Received: from pc636 (host-90-233-197-231.mobileonline.telia.com. [90.233.197.231])
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-52efa73423csm1235399e87.102.2024.07.23.04.28.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Jul 2024 03:55:46 -0700 (PDT)
-Date: Tue, 23 Jul 2024 12:55:45 +0200
-From: Michal Hocko <mhocko@suse.com>
+        Tue, 23 Jul 2024 04:28:35 -0700 (PDT)
+From: Uladzislau Rezki <urezki@gmail.com>
+X-Google-Original-From: Uladzislau Rezki <urezki@pc636>
+Date: Tue, 23 Jul 2024 13:28:32 +0200
 To: Danilo Krummrich <dakr@kernel.org>
 Cc: cl@linux.com, penberg@kernel.org, rientjes@google.com,
 	iamjoonsoo.kim@lge.com, akpm@linux-foundation.org, vbabka@suse.cz,
 	roman.gushchin@linux.dev, 42.hyeyoo@gmail.com, urezki@gmail.com,
 	hch@infradead.org, kees@kernel.org, ojeda@kernel.org,
-	wedsonaf@gmail.com, mpe@ellerman.id.au, chandan.babu@oracle.com,
-	christian.koenig@amd.com, maz@kernel.org, oliver.upton@linux.dev,
+	wedsonaf@gmail.com, mhocko@kernel.org, mpe@ellerman.id.au,
+	chandan.babu@oracle.com, christian.koenig@amd.com,
 	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
 	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] mm: kvmalloc: align kvrealloc() with krealloc()
-Message-ID: <Zp-MMcf1xUgqtFGS@tiehlicka>
-References: <20240722163111.4766-1-dakr@kernel.org>
- <20240722163111.4766-3-dakr@kernel.org>
- <Zp9gtelmvzN5tfpS@tiehlicka>
- <Zp-JCWCPbDLkzRVw@pollux>
+Subject: Re: [PATCH 1/2] mm: vmalloc: implement vrealloc()
+Message-ID: <Zp-T4F42tk_aKKc-@pc636>
+References: <20240717222427.2211-1-dakr@kernel.org>
+ <20240717222427.2211-2-dakr@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -76,91 +75,84 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Zp-JCWCPbDLkzRVw@pollux>
+In-Reply-To: <20240717222427.2211-2-dakr@kernel.org>
 
-On Tue 23-07-24 12:42:17, Danilo Krummrich wrote:
-> On Tue, Jul 23, 2024 at 09:50:13AM +0200, Michal Hocko wrote:
-> > On Mon 22-07-24 18:29:24, Danilo Krummrich wrote:
-[...]
-> > > Besides that, implementing kvrealloc() by making use of krealloc() and
-> > > vrealloc() provides oppertunities to grow (and shrink) allocations more
-> > > efficiently. For instance, vrealloc() can be optimized to allocate and
-> > > map additional pages to grow the allocation or unmap and free unused
-> > > pages to shrink the allocation.
-> > 
-> > This seems like a change that is independent on the above and should be
-> > a patch on its own.
+On Thu, Jul 18, 2024 at 12:24:01AM +0200, Danilo Krummrich wrote:
+> Implement vrealloc() analogous to krealloc().
 > 
-> The optimizations you mean? Yes, I intend to do this in a separate series. For
-> now, I put TODOs in vrealloc.
-
-No I mean, that the change of the signature and semantic should be done along with
-update to callers and the new implementation of the function itself
-should be done in its own patch.
-
-[...]
-> > > +void *kvrealloc_noprof(const void *p, size_t size, gfp_t flags)
-> > >  {
-> > > -	void *newp;
-> > > +	void *n;
-> > > +
-> > 
-> > 	if (!size && p) {
-> > 		kvfree(p);
-> > 		return NULL;
-> > 	}
-> > 
-> > would make this code flow slightly easier to read because the freeing
-> > path would be shared for all compbinations IMO.
+> Currently, krealloc() requires the caller to pass the size of the
+> previous memory allocation, which, instead, should be self-contained.
 > 
-> Personally, I like it without. For me the simplicity comes from directing things
-> to either krealloc() or vrealloc(). But I'd be open to change it however.
-
-I would really prefer to have it there because it makes the follow up
-code easier.
-
-> > > +	if (is_vmalloc_addr(p))
-> > > +		return vrealloc_noprof(p, size, flags);
-> > > +
-> > > +	n = krealloc_noprof(p, size, kmalloc_gfp_adjust(flags, size));
-> > > +	if (!n) {
-> > > +		/* We failed to krealloc(), fall back to kvmalloc(). */
-> > > +		n = kvmalloc_noprof(size, flags);
-> > 
-> > Why don't you simply use vrealloc_noprof here?
+> We attempt to fix this in a subsequent patch which, in order to do so,
+> requires vrealloc().
 > 
-> We could do that, but we'd also need to do the same checks kvmalloc() does, i.e.
+> Besides that, we need realloc() functions for kernel allocators in Rust
+> too. With `Vec` or `KVec` respectively, potentially growing (and
+> shrinking) data structures are rather common.
 > 
-> 	/*
-> 	 * It doesn't really make sense to fallback to vmalloc for sub page
-> 	 * requests
-> 	 */
-> 	if (ret || size <= PAGE_SIZE)
-> 		return ret;
-
-With the early !size && p check we wouldn't right?
-
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> ---
+>  include/linux/vmalloc.h |  4 +++
+>  mm/vmalloc.c            | 58 +++++++++++++++++++++++++++++++++++++++++
+>  2 files changed, 62 insertions(+)
 > 
-> 	/* non-sleeping allocations are not supported by vmalloc */
-> 	if (!gfpflags_allow_blocking(flags))
-> 		return NULL;
-> 
-> 	/* Don't even allow crazy sizes */
-> 	if (unlikely(size > INT_MAX)) {
-> 		WARN_ON_ONCE(!(flags & __GFP_NOWARN));
-> 		return NULL;
-> 	}
+> diff --git a/include/linux/vmalloc.h b/include/linux/vmalloc.h
+> index e4a631ec430b..9ff0a8e5c323 100644
+> --- a/include/linux/vmalloc.h
+> +++ b/include/linux/vmalloc.h
+> @@ -189,6 +189,10 @@ extern void *__vcalloc_noprof(size_t n, size_t size, gfp_t flags) __alloc_size(1
+>  extern void *vcalloc_noprof(size_t n, size_t size) __alloc_size(1, 2);
+>  #define vcalloc(...)		alloc_hooks(vcalloc_noprof(__VA_ARGS__))
+>  
+> +extern void * __must_check vrealloc_noprof(const void *p, size_t size,
+> +					   gfp_t flags) __realloc_size(2);
+> +#define vrealloc(...)		alloc_hooks(vrealloc_noprof(__VA_ARGS__))
+> +
+>  extern void vfree(const void *addr);
+>  extern void vfree_atomic(const void *addr);
+>  
+> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> index e34ea860153f..4ec949ac9d9d 100644
+> --- a/mm/vmalloc.c
+> +++ b/mm/vmalloc.c
+> @@ -4036,6 +4036,64 @@ void *vzalloc_node_noprof(unsigned long size, int node)
+>  }
+>  EXPORT_SYMBOL(vzalloc_node_noprof);
+>  
+> +/**
+> + * vrealloc - reallocate virtually contiguous memory; contents remain unchanged
+> + * @p: object to reallocate memory for
+> + * @size: the size to reallocate
+> + * @flags: the flags for the page level allocator
+> + *
+> + * The contents of the object pointed to are preserved up to the lesser of the
+> + * new and old size (__GFP_ZERO flag is effectively ignored).
+> + *
+> + * If @p is %NULL, vrealloc() behaves exactly like vmalloc(). If @size is 0 and
+> + * @p is not a %NULL pointer, the object pointed to is freed.
+> + *
+> + * Return: pointer to the allocated memory; %NULL if @size is zero or in case of
+> + *         failure
+> + */
+> +void *vrealloc_noprof(const void *p, size_t size, gfp_t flags)
+> +{
+> +	size_t old_size = 0;
+> +	void *n;
+> +
+> +	if (!size) {
+> +		vfree(p);
+> +		return NULL;
+> +	}
+> +
+> +	if (p) {
+> +		struct vm_struct *vm;
+> +
+> +		vm = find_vm_area(p);
+>
+Concurrent vfree() will lead to use-after-free. Either add a comment
+that a user is responsible for not using vrealloc()/vfree() on the same
+pointer concurrently or use find_unlink_vmap_area() which might be more
+complex when it comes to design of the vrealloc().
 
-I do not see why kvrealloc should have different set of constrains than
-vrealloc in this regards.
-
-> Does the kmalloc() retry through kvmalloc() hurt us enough to do that? This
-> should only ever happen when we switch from a kmalloc buffer to a vmalloc
-> buffer, which we only do once, we never switch back.
-
-This is effectively open coding part of vrealloc without any good
-reason. Please get rid of that.
-
--- 
-Michal Hocko
-SUSE Labs
+--
+Uladzislau Rezki
