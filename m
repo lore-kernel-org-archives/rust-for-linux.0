@@ -1,146 +1,115 @@
-Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A57A614EC61
-	for <rust-for-linux@vger.kernel.org>; Tue, 23 Jul 2024 16:01:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3E6A156C6C;
+	Tue, 23 Jul 2024 16:06:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721750501; cv=none; b=oIQL9Fmhern5gmEESXFpRup9cGgCDblqDiL8GUBxxmVezcu7dOq3FvmMbOAJyt4/jutd/LyPDaJ04c3pp8K7jpAEZtYFGk3PowpF2gUVXraTlJ6S6FVYf5zwlLe8ygQBM8qq7gtEhIzObP0qASrfMhxATMU6u3Uqbs7akHyxrjM=
+	t=1721750808; cv=none; b=tIC2Gnv/0jzfXtxn1kOXoie/0qdc8+C5nBOy+q8ZD/B8EC4PH9DmFRKMLIM4tztU1QAmkxgpdEQcwuGq16fGr8/Vo4yBUHrWS4ioAkUMhb7U+be6glEbK8MbtQK99GpiNF9oCJZNrEhs8mpezAJmFoE6hG/ZPqxq17w03I4hLww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721750501; c=relaxed/simple;
-	bh=Udo5u1NGcABRv9IYPg6aGyjzgCj3Iz+oX735pdKCt1I=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RfEaVw0QiNHN8rL3h1Rgx9eGP9imjfCUPfsnxoYEJl6eTIpxu6i7cFeWcAF7f5rp0RT3D9WUs1o9MyLOd6g98ZTodSFjP02GvN+jNyNG4qbVzZUBgToVl13GmqSTxih3zCXIG443zqsbUPaFrXMkTYUJIeiE+nl+et3EiV9oUjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=D7ThDNQs; arc=none smtp.client-ip=209.85.215.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1721750808; c=relaxed/simple;
+	bh=7ywyqkkF5MqKA00APXlJ4HjoUAu4Qg1q3SKV80O1gZw=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=kELcCD+PpAIkbELNlwpr/U8vTLv3NYA459qvntXHn8PIb6fEZYQcAXzTNYowdT/Ld7CFyi/jR/XMJe03zJfo9L6cLCe3C5v3mGbpMLxBizEzZNMmc2ey2AVnAVxIEWYtHzTLIPwsy3UcmKneS2Vi8GtmIXsa1ppBZz0TtQGOKP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=U8Hx6A/S; arc=none smtp.client-ip=46.235.227.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D7ThDNQs"
-Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-75ee39f1ffbso665399a12.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 23 Jul 2024 09:01:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1721750496; x=1722355296; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Udo5u1NGcABRv9IYPg6aGyjzgCj3Iz+oX735pdKCt1I=;
-        b=D7ThDNQsshNJyRKRs0ky+THEQ+N5WbTyYoTwkpVAVZekl9jKTLvcgKiAxTgjuMScG8
-         XGIq+s/L9jDG3fSdu1SCMkaVLqNBrxjMiFpZULN/W9ffs7jku6v4pti2lCnTm9de0rEj
-         WVt+ps49eXnL3EPgJi5w4DzjYpN39sTjQs7neP3mVMtX82eSr11DXg6xBXkQPJxqfeAp
-         tmYD7UtbJAq9mSJmpii25hQAvUUrKxtm64/Uj3rYLGPLn3X90hU9mexIMdCuBLrV/92J
-         6JdLXWvpPLesLfmEgjT2YfF829GhtsMkgj2nAJ77bRoJcw3p4XbriNj8DN5GOTWwqP8m
-         Ko9g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721750496; x=1722355296;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Udo5u1NGcABRv9IYPg6aGyjzgCj3Iz+oX735pdKCt1I=;
-        b=Wg2J6g6tHG2N/9SwrPIjlLcJVomB78BxFGOM3CF9oZ6gnBYbbvfu2rLxvJ0Zano/7Y
-         wOfGK+T08FPIbih+/64sr8gUAU2RfJe54pvx5qHQYIEWhTSlZdAdpRe8ASAT2I/SHwBB
-         pY/r9QjkWDkuZeA93zf1EawyM5zmnO+cFQwZs7ljYDNKoZhEY8J3qPXgkDywwUamvZxF
-         Y86jglUO4qnB7pRybDp64lHle3nKJvAbrchU1dxwHXQKlrbYk8jZ6xJvgJJHJQT1cSwK
-         Gs7xiMcYMcL/VmDMOkjLp/aswrgj71FOvjYADTH1p3Pe9xAyVfPSzDKbx0H/rNIBVR61
-         rEGg==
-X-Forwarded-Encrypted: i=1; AJvYcCUkWIP79U6qt92+bVlFauMwEq4ynEbHVHQDFyWqicy/Oct8YKOenKI8XubS9eLoqORP3YOnwzXCHbL/qbzcBmKxJSPaxpSi34Fp5D48B8E=
-X-Gm-Message-State: AOJu0YxMDBGkLexcJfEiOBHOJDX81VSOtJyBFPOgR2AVJ6RPXI7IY7Wq
-	zzk/IRdnK+ITV12zgVqFprAnvsdFyRAl83kmAE3pJTCJ3Fyom0iR
-X-Google-Smtp-Source: AGHT+IEYFX8at8icxprSP3ewE2YiFZJvUL92RDXpmUX4z59Bd6p+IYCeb83Vfx7v7qiRVJAdcGhaYQ==
-X-Received: by 2002:a17:90b:3d81:b0:2c3:cc6:636e with SMTP id 98e67ed59e1d1-2cd85c906f1mr3178873a91.2.1721750495479;
-        Tue, 23 Jul 2024 09:01:35 -0700 (PDT)
-Received: from localhost.localdomain ([2401:4900:1f30:240e:92d6:592a:7ca:c3f9])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2cb7750688esm10292865a91.37.2024.07.23.09.01.31
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 23 Jul 2024 09:01:35 -0700 (PDT)
-From: Sarthak Singh <sarthak.singh99@gmail.com>
-To: miguel.ojeda.sandonis@gmail.com
-Cc: a.hindborg@samsung.com,
-	alex.gaynor@gmail.com,
-	aliceryhl@google.com,
-	benno.lossin@proton.me,
-	bjorn3_gh@protonmail.com,
-	boqun.feng@gmail.com,
-	dirk.behme@de.bosch.com,
-	gary@garyguo.net,
-	lukas.wirth@ferrous-systems.com,
-	ojeda@kernel.org,
-	rust-for-linux@vger.kernel.org,
-	sarthak.singh99@gmail.com,
-	ss269@uw.edu,
-	wedsonaf@gmail.com
-Subject: Re: [PATCH v2] rust: Support latest version of `rust-analyzer`
-Date: Tue, 23 Jul 2024 21:31:28 +0530
-Message-ID: <20240723160128.3259768-1-sarthak.singh99@gmail.com>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <CANiq72keKdr7ZhufjdeM3g0tgDo80nk2NNBN5SBSepHry-LaQQ@mail.gmail.com>
-References: <CANiq72keKdr7ZhufjdeM3g0tgDo80nk2NNBN5SBSepHry-LaQQ@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="U8Hx6A/S"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1721750804;
+	bh=7ywyqkkF5MqKA00APXlJ4HjoUAu4Qg1q3SKV80O1gZw=;
+	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+	b=U8Hx6A/SoskBj3aYoyWmsy797rA3qThdPClB/SD4Tj583SBwF9s7P2vfR4UGlyULr
+	 OxKNwWb1g4kvM0ixW1L96RHj1a9suG6QYvonJhTVgLSehhOLXY1m+ZKSDSr26Vkgvm
+	 rcdkTN43AeB3yemf2ZaTeiyv4tu24gXZBCE9sJbRV2DvbPjn0NfmGDVpu+W0bUSSta
+	 Yt8bAYeYWkL2qmQnUf9/1U6mml3OdQGGrlmhI5p2Z0+8MftudQRcfx/JqUemX9gckL
+	 OAhiUbQ7bO2jn/gFHaNJ8hJoyjzV06tzqrDl9FpQpetOplXmKpbkQgAXSeBQaJrJ5Y
+	 fUxIWvt8uBuWw==
+Received: from localhost (cola.collaboradmins.com [195.201.22.229])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	(Authenticated sender: bbrezillon)
+	by madrid.collaboradmins.com (Postfix) with ESMTPSA id 0197C37804D4;
+	Tue, 23 Jul 2024 16:06:43 +0000 (UTC)
+Date: Tue, 23 Jul 2024 18:06:42 +0200
+From: Boris Brezillon <boris.brezillon@collabora.com>
+To: Steven Price <steven.price@arm.com>
+Cc: Daniel Almeida <daniel.almeida@collabora.com>, Wedson Almeida Filho
+ <wedsonaf@gmail.com>, ojeda@kernel.org, Danilo Krummrich <dakr@redhat.com>,
+ lyude@redhat.com, robh@kernel.org, lina@asahilina.net, mcanal@igalia.com,
+ airlied@gmail.com, rust-for-linux@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
+Subject: Re: [RFC PATCH] drm: panthor: add dev_coredumpv support
+Message-ID: <20240723180642.73502856@collabora.com>
+In-Reply-To: <edda856e-3102-495a-8cc6-b79f5f114833@arm.com>
+References: <20240710225011.275153-1-daniel.almeida@collabora.com>
+	<fe84a028-01a8-4987-b1b7-141fb76d263c@arm.com>
+	<4344B22F-D859-4C64-A351-69FFB5208362@collabora.com>
+	<edda856e-3102-495a-8cc6-b79f5f114833@arm.com>
+Organization: Collabora
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.41; x86_64-redhat-linux-gnu)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
 
-Hello Miguel,
+Hi Steve,
 
-Thank you for reviewing. How do you send replies? To send this one I
-am writing a text file manually to look like the generated patch
-file that I emailed earlier. Is that the best way?
+On Mon, 15 Jul 2024 10:12:16 +0100
+Steven Price <steven.price@arm.com> wrote:
 
-I don't have access to the ss269@uw.edu email anymore.
+> I note it also shows that the "panthor_regs.rs" would ideally be shared.
+> For arm64 we have been moving to generating system register descriptions
+> from a text source (see arch/arm64/tools/sysreg) - I'm wondering whether
+> something similar is needed for Panthor to generate both C and Rust
+> headers? Although perhaps that's overkill, sysregs are certainly
+> somewhat more complex.
 
-Should I resend the patch with the fixed email address? Afaik there is
-no way to update a patch, let me know if that is possible. I can also
-add the missing Tested-by tag in the new version of the patch.
+Just had a long discussion with Daniel regarding this panthor_regs.rs
+auto-generation, and, while I agree this is something we'd rather do if
+we intend to maintain the C and rust code base forever, I'm not
+entirely convinced this is super useful here because:
 
-In the PR [1] the ability to guess the sysroot based on the sysroot_src
-was removed. That is why every version of rust-analyzer after this PR
-fails with the current config generation system. rust-analyzer needs to
-know the sysroot so that it can find its proc-macro server.
+1. the C code base is meant to be entirely replaced by a rust driver.
+Of course, that's not going to happen overnight, so maybe it'd be worth
+having this autogen script but...
 
-> From a quick look, the `sysroot` key has existed in rust-analyzer
-> since 2022 (189521a4db6e), but undocumented. Then it got documented in
-> 2023 (5da14237eb29). So I am not sure what "`sysroot` over
-> `sysroot_src`" means (and the current docs are not very clear on what
-> each does and their intended interactions, e.g. what happens if one
-> specifies `sysroot_src` but not `sysroot`, or the other way around?
-> Should `sysroot_src` be relative to `sysroot` like the default?)
+2. the set of register and register fields seems to be pretty stable.
+We might have a few things to update to support v11, v12, etc, but it
+doesn't look like the layout will suddenly become completely different.
 
-sysroot need to point to the root location of the toolchain. This
-contains the rust core and std library the compiler will link against.
-It also contains the rustc and cargo for that toolchain.
+3. the number of registers and fields is somewhat reasonable, which
+means we should be able to catch mistakes during review. And in case
+one slip through, it's not the end of the world either because this
+stays internal to the kernel driver. We'll either figure it out when
+rust-ifying panthor components, or that simply means the register is
+not used and the mistake is harmless until the register starts being
+used
 
-sysroot_src need to point to the root location of the rust library. It
-contains the source code of the core / std / alloc crates. I think for
-our purposes it need to be a subset of the sysroot since we install rust
-using rustup. If someone installs it in a manner where the source code
-does not live in a sub directory of the sysroot path then they will have
-to set it to that.
-I think the main invariant that we need to uphold between them is that
-the built libraries in sysroot and the source code in sysroot_src belong
-to the same built of rust.
+4. we're still unclear on how GPU registers should be exposed in rust,
+so any script we develop is likely to require heavy changes every time
+we change our mind
 
-> Anyway, we are passing the paths for `core` etc. in `crates`, and we
-> don't have a custom `alloc` anymore, so I wonder if we should either
-> delete both keys (or however one disables auto-search) or delete the
-> crates in `crates` and let the sysroot logic find them.
+For all these reasons, I think I'd prefer to have Daniel focus on a
+proper rust abstraction to expose GPU registers and fields the rust-way,
+rather than have him spend days/weeks on a script that is likely to be
+used a couple times (if not less) before the driver is entirely
+rewritten in rust. I guess the only interesting aspect remaining after
+the conversion is done is conciseness of register definitions if we
+were using some sort of descriptive format that gets converted to rust
+code, but it comes at the cost of maintaining this script. I'd probably
+have a completely different opinion if the Mali register layout was a
+moving target, but it doesn't seem to be the case.
 
-I think it will always need a `sysroot` key as it needs to know that
-to find the proc-macro server. I don't think there is a way to specify
-the version of rust in a `rust-project.json` other than specifying the
-`sysroot` [2].
+FYI, Daniel has a python script parsing panthor_regs.h and generating
+panthor_regs.rs out of it which he can share if you're interested.
 
-> Just to confirm, does this make it work for distribution and
-> `rustup`-using installs?
+Regards,
 
-Yes this should work with every setup. The `sysroot_src` that
-rust-analyzer is internally generating is the same. The `sysroot`
-that rust-analyzer was generating earlier is also defined to be
-the same in this version.
-
-Thank you,
-Sarthak
-
-[1] https://github.com/rust-lang/rust-analyzer/pull/17287/files#diff-53e4b6b2c1ff2465d8abd50db160753199426fd788ddcad925752e0838e28de2L367-L374
-[2] https://rust-analyzer.github.io/manual.html#non-cargo-based-projects
+Boris 
