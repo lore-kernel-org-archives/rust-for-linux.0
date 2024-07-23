@@ -1,55 +1,55 @@
-Received: from mail-lf1-f73.google.com (mail-lf1-f73.google.com [209.85.167.73])
+Received: from mail-lj1-f201.google.com (mail-lj1-f201.google.com [209.85.208.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46C5414D6E6
-	for <rust-for-linux@vger.kernel.org>; Tue, 23 Jul 2024 08:23:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 609E414D711
+	for <rust-for-linux@vger.kernel.org>; Tue, 23 Jul 2024 08:23:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721722984; cv=none; b=O5pWdBADCtQv7X6RaoSwtRIZ/EgKSSg576p6Eeb8ITXOPkqVYj1HHjxhYSCtAKrkkinEoW0UpuY0BDfLxwB+/YfFDSgbTLWBS21SowRHtrVXpysOXHRVV3DmdeqQwJS3jXD6g4gKzcaGqNTdt7m+WroV86kjk2lR6vsjbbfYXUk=
+	t=1721722987; cv=none; b=B8gKXWP1KAowYRMf8e05/+7rD/HbM9XkOhQOV7F7VtZeQ5kkJiCBykfhEg8guLkI7y1qc7lZvQCzm5x5+RkSesFn/MQQ5NsnJNe+pUQT9g2GWBE9A/S8n2NlDwxiiMqwCoS8iU1Y5Cvj6zK6k8emvhelsUUiXLRJnvPGZkWN16Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721722984; c=relaxed/simple;
-	bh=Y1Woy0osPcWK5Kmhig4YRqu/zdNjMvINHCw3OpMj+9o=;
+	s=arc-20240116; t=1721722987; c=relaxed/simple;
+	bh=UuGb6O3+CicGgR1jFURxIdmSwe0z9XIKmsa42luz5sM=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=KZk1JnApSFkgprJQkcf8RTRK7RgXxeBdw6zisd//tAswlkL+KdQSKS35PmtzE6F+nrzx9rC0eTLk3qDVBo0VwEiSQW2sQgnhj+eZ4wceuWBwofg2fSdl/ylQ47ukLEUJhtVrkhIOvGNmY0BcpXnRvozf9ESWoFUfzZYflHlaxEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=h69b0fUS; arc=none smtp.client-ip=209.85.167.73
+	 To:Cc:Content-Type; b=qFjpK7+PmStSwPnuqADdsxWXzTKkci/Gi4YOOqqsqMXUA6+o7lmjKVI4ALxF9mimrPLSHa6l1n0aZxwOXfYgPR+zS4Melt/Kxw3hGAPfqokWoEmJGk3Z1kbsNK6s5KZ/uJrG/AjSbKH+LzNcUr/ns8XfgBVRSodVuXbRXGI7b14=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RIOmf+hu; arc=none smtp.client-ip=209.85.208.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="h69b0fUS"
-Received: by mail-lf1-f73.google.com with SMTP id 2adb3069b0e04-52eff760f37so2973328e87.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 23 Jul 2024 01:23:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RIOmf+hu"
+Received: by mail-lj1-f201.google.com with SMTP id 38308e7fff4ca-2ef23ec8dcfso24835261fa.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 23 Jul 2024 01:23:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1721722980; x=1722327780; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1721722983; x=1722327783; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=tHDHsWSYgO+1s3W4ChtXMwSAFNaQ/mfNYkx1n2oQLCo=;
-        b=h69b0fUSvK0UCNMLMAcJAK9R8nJaquPRnKNDMSHGA3j9mm8tTqh9oPkfvehOpXvmqJ
-         +ULivbQ5YxLhjN/KjtQ1d8wnRCji9kHTk+/QcTF9x1vQ0eJ5Z/tTToDEix92lNVrAlvF
-         JLGBX5plyOdKm0jSplkkVyk6wlc7V8DU7jm0sNJWrDY15pfDmtVUYe8VAfNfOUYUEYmQ
-         bmK9B4ANKsF7LPSXlGhA0PhFUXRBDGnKb2ypdmGzrjZv81nd4v0TaelyC8CcO7tthA8r
-         2Uap4aQ3u8ZdSct3zLdlR0oApb7IXGf8WF701YELP7j9gy/IklNsQI+iiCbd5pEADGN3
-         w6jQ==
+        bh=NSC5xvhbZTJxyrCczhAEUBkZy+WsSQNfzVek8UHbQHo=;
+        b=RIOmf+hu/IR6HCto2mEbMtchb3GNZOWIJikWPUPFUZLYtU6Wcfjuhhj6vX7wtxCty2
+         iVwFcEWLTId6S9jK0M374RpSowWV/B0lmRyXsM9XTlP5mbMLf/LcTuI+YWkiZQ7+/wFd
+         h+x7m2cK1yM7L7P2IaUBLoOXIXWj2wOKa6gZiMUmH6P3U50hlpglk6G9+uM4k5bYCeIk
+         8BH4ofjY85QXuSeiM3dWAhaOTtvU7v9ODfa59uNcdiamfkDED3MDTEvPpejYfiPPwCfu
+         pJ1qqG+Ap3pi6yWDi8EmZCYleNZTzgAFAbxT4d6fdaSzukc6FWdyQzdNHjgVwtpc6NtO
+         VV1w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721722980; x=1722327780;
+        d=1e100.net; s=20230601; t=1721722983; x=1722327783;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=tHDHsWSYgO+1s3W4ChtXMwSAFNaQ/mfNYkx1n2oQLCo=;
-        b=Ayt5EXODKVX+6gTBzAhXFDy1oDy6gnjesOSNJBLUBiSV6LTyQofRC/ZoZJ4JlB4iJh
-         pAmJ8lqq05fExlBDq4d3JxkDuSOpCJF6RUlYyplVINHyZoulQtte0HAMo1LaEsTeANch
-         UFZ5M1IOMp55ZjVgSmYopo1G2VmD00K5QNHkW4A7f9R95w7Wg2hrFxFrtV/lXOKVG+2O
-         zPkh1a+dLYXDmVku38v5SA3HVIEg7pi90pbw3oZ2nvLGrbi6pS4VZR8k96IdXHclqCxS
-         U5ozu/W5AL1O3CbrNQmYvlceT63T1z9fxAAKDEhi420uCF9ZZEAcVDrT+J431Xj0usfC
-         jgsg==
-X-Forwarded-Encrypted: i=1; AJvYcCUBQiuou0GlWrw63GUCJOPtBVpnGkTubG+S8oh7gE9y34FPFiVMy9hKEcikd1n8IjUyrQK4K3XHwFRjLFBd1svDqwjBlCoUuwResLzYuHE=
-X-Gm-Message-State: AOJu0YxZvfeH1Yj6qUO0WVAUAydq0hr0v6nVQ9k30BZyjrxSBg6KymUo
-	aR8Fp1wGctAcnmJxlMCYuriB6TigliyONLm0zgIBhy+co3oFBS/DL6E8kBO8reopZ+7mjguvt9L
-	lYJsrsHE5bSB/tw==
-X-Google-Smtp-Source: AGHT+IFNKKI2GTN02KrPRt5I6wTM/q05wiWB4MWiYbz7ant2rLVvn5VAbuvtigwsIHeBNgM33lyRTIMZ15/6YBI=
+        bh=NSC5xvhbZTJxyrCczhAEUBkZy+WsSQNfzVek8UHbQHo=;
+        b=QfzpWrfb1REn3SKE2cL3WjBYjZML0Y7BpLbf4QGLU3pWhMW927sRbb8JuqMni9p78O
+         +pBqb6gyy4lQ//P4R36E0Iv2+j3mQm/JuL3JEbcRESOnZ7zacMJvwq3mxiP/+9lc0WDj
+         lK+SdUkXvS0oR3IvQ0fop8cjxCr4IBu0cm7lu0iQuYM7vKrWRZtHZyVs7hkLvYlmqzx1
+         jWIHOe31v3f7FSABL/mRKY+svDpW2ODc/zzyKvqkzkvezE3bBVbvkdJRkNpDXJo39bgm
+         FM1wkyS0Cjv7dr/Is1K3vfYNbw6wYqoaV/iIG6oWeECmky49N/wbOosgdy0NOLPg5NH5
+         9ttg==
+X-Forwarded-Encrypted: i=1; AJvYcCXdQ4Msq2ZVv7jWg730Ws20cZD3jIJ8jUjFFAPC/nzur+VG/CbD6F5YnRDMox56whX4fd2iv4Kq5WXwW70r08eLDPq/cKoCa1KEyOO++OA=
+X-Gm-Message-State: AOJu0YzQlBMaQQE+sKHthC6AW4VQvUHRWlD9HjaHh9XHvzgl1KZZRUds
+	tZHVjqiMW0mGHtxatZrXFxzCkNh3p+lx7TQ8fG9fzqQ9KCh1/PQqhIVqknHOM/+cjc7qRhVjpDo
+	wi9dFfOsXGcO1kQ==
+X-Google-Smtp-Source: AGHT+IGFga6vKO4UbX5LF+DHLWLeuoKVJRWbTO3jngPxrxHzKVLwzO4KrhUfVJrX9g2BGGOKNoHyrsQJW94aD2A=
 X-Received: from aliceryhl2.c.googlers.com ([fda3:e722:ac3:cc00:68:949d:c0a8:572])
- (user=aliceryhl job=sendgmr) by 2002:a19:6a16:0:b0:52d:b097:e11b with SMTP id
- 2adb3069b0e04-52fc4048d80mr3071e87.4.1721722980615; Tue, 23 Jul 2024 01:23:00
+ (user=aliceryhl job=sendgmr) by 2002:a2e:97d2:0:b0:2ef:2308:a8f8 with SMTP id
+ 38308e7fff4ca-2f01eab8f33mr28131fa.3.1721722983398; Tue, 23 Jul 2024 01:23:03
  -0700 (PDT)
-Date: Tue, 23 Jul 2024 08:22:04 +0000
+Date: Tue, 23 Jul 2024 08:22:05 +0000
 In-Reply-To: <20240723-linked-list-v3-0-89db92c7dbf4@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -59,22 +59,22 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20240723-linked-list-v3-0-89db92c7dbf4@google.com>
 X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=10712; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=Y1Woy0osPcWK5Kmhig4YRqu/zdNjMvINHCw3OpMj+9o=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBmn2hTYfhI4Q2pTIs40yDSDZFa7QSD3UpCd3i1F
- CVTdmlMGBSJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZp9oUwAKCRAEWL7uWMY5
- RlN6D/43lUX4lRCSiaJw1cbtbwxtpS6dJzfBj1Jm5DG8PNGdjnm8/pTR6aDFmZyjQv9widpD4ik
- OnCRrH3hps0ldhe2hy4g8GcQEHMVmJQILMdW2k9Gu6LYYpMzfDtBJDZaP/AB/nQlgKafLFvIo/p
- 1kmM+kKKxRpQz7VJo/HhUS3x3pwCev711Sm4SwO2EE3MOWVd6cpdBhq3rAX+Oo7/oYOKMz0kwu1
- 4l5Tpzw8tU2UPmwRpPn5xSZOy1OtmDJZFdGMGl20RtS0rPA8OFWnjxwXEPzU7COWJBM6pPAEWD0
- GUyDAKpge+4iVZv1hwACoG6Hgatpp++Za22sYMEflGe2zmfAyUA2r4N4MLUk0Sag+dlKp9cfRks
- kPquhwWISbG+grDtq1SlTJB5fPC1k3c9gMnuUrKnpP1D8OJdvw82DMXzl4+m37zXKrvgESvGhfy
- EHP7ofuTZZ0nYu2uXBFyaqAQhl5lGQqSD0+JDLN8ynXohknXNgDDlqycvHTSLGEBcAb24HfUujK
- flqiuLyntQoaoS1Y9bCcONH7J1eGA+aCBIc0omtP09pltVmg/DqpzdLCF5TUp8uEtVrN5Aaowdw
- kUE0OJVnGviVGDtF0n0TYQmLlg+Up8mmoKMZ2OnCpYa1MubG3HJGe9iiuknRB48jGAxuytODeIl 1kVISIjaaqC8Yww==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5924; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=UuGb6O3+CicGgR1jFURxIdmSwe0z9XIKmsa42luz5sM=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBmn2hTRbkqpsFwnVQKNEr5/qhfC38vwGN6BeSEW
+ 5jKwfwvqxmJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZp9oUwAKCRAEWL7uWMY5
+ RrCgEACsfXrKLDL7MQrYr53otFLMkVld6REhp0SDSelAOrupk4IW4ZpInTkdY162j3zATfaSkMo
+ Gg1V6jwX2E+p0LcFBuavtwwgdSB1b4WyEjsOWgCdEsIswh3etWVCtwwNq02jUif3C+HIdIoF4jb
+ OOlYjr4rV69QDUmoILa5CPwFnn8TwgiXk96d3EpTTOu96r72iU5nfAYIKiHI64XrTNJ9DMuVCre
+ DoLvHVxVJXBXubGFLdMpK37IVdpzInWZ0czHJWEOnZRZXkjxtnPc/gM/N8jWM0aJEH9aHOSMH7C
+ uSnMh/ZEkObEI7QyLEMIqnha06sSOhOp1oeZviTm9/plp0esI2YVHcZFcONrgnMpqZdu0s1x4BL
+ KKDvkAwqTlgNUzMpS5R8dTcmGo2K7mqr91eUuaN76yxlizfWPYH0H80tjDG/hOsNChsDQeHn3jJ
+ efe4AJYN2J0QgTBoNJqalj6WIFV4LrqekbIsOECRL/3TtoL9I3ef4bj2SdV7i9fwFfYSTB9ulih
+ X3toNgR4cz+nYqZAWROJFwpBHwv7+YQsrpENK7kdNev64CHvbPVDIzLHPCKr+4GeW0Lmm9KQ/RL
+ a5XlwuA/2WU/nfpDaMHmMplnw46TqK56RhvHxve+Nf48shf3XNu+GDklpJy+0F2c5/JKvt4Ujs5 neibA+rAP7+4qoA==
 X-Mailer: b4 0.13-dev-26615
-Message-ID: <20240723-linked-list-v3-3-89db92c7dbf4@google.com>
-Subject: [PATCH v3 03/10] rust: list: add tracking for ListArc
+Message-ID: <20240723-linked-list-v3-4-89db92c7dbf4@google.com>
+Subject: [PATCH v3 04/10] rust: list: add struct with prev/next pointers
 From: Alice Ryhl <aliceryhl@google.com>
 To: Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
 Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
@@ -88,258 +88,153 @@ Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.co
 	Kees Cook <kees@kernel.org>
 Content-Type: text/plain; charset="utf-8"
 
-Add the ability to track whether a ListArc exists for a given value,
-allowing for the creation of ListArcs without going through UniqueArc.
+Define the ListLinks struct, which wraps the prev/next pointers that
+will be used to insert values into a List in a future patch. Also
+define the ListItem trait, which is implemented by structs that have a
+ListLinks field.
 
-The `impl_list_arc_safe!` macro is extended with a `tracked_by` strategy
-that defers the tracking of ListArcs to a field of the struct.
-Additionally, the AtomicListArcTracker type is introduced, which can
-track whether a ListArc exists using an atomic. By deferring the
-tracking to a field of type AtomicListArcTracker, structs gain the
-ability to create ListArcs without going through a UniqueArc.
-
-Rust Binder uses this for some objects where we want to be able to
-insert them into a linked list at any time. Using the
-AtomicListArcTracker, we are able to check whether an item is already in
-the list, and if not, we can create a `ListArc` and push it.
-
-The macro has the ability to defer the tracking of ListArcs to a field,
-using whatever strategy that field has. Since we don't add any
-strategies other than AtomicListArcTracker, another similar option would
-be to hard-code that the field should be an AtomicListArcTracker.
-However, Rust Binder has a case where the AtomicListArcTracker is not
-stored directly in the struct, but in a sub-struct. Furthermore, the
-outer struct is generic:
-
-struct Wrapper<T: ?Sized> {
-    links: ListLinks,
-    inner: T,
-}
-
-Here, the Wrapper struct implements ListArcSafe with `tracked_by inner`,
-and then the various types used with `inner` also uses the macro to
-implement ListArcSafe. Some of them use the untracked strategy, and some
-of them use tracked_by with an AtomicListArcTracker. This way, Wrapper
-just inherits whichever choice `inner` has made.
+The ListItem trait provides four different methods that are all
+essentially container_of or the reverse of container_of. Two of them are
+used before inserting/after removing an item from the list, and the two
+others are used when looking at a value without changing whether it is
+in a list. This distinction is introduced because it is needed for the
+patch that adds support for heterogeneous lists, which are implemented
+by adding a third pointer field with a fat pointer to the full struct.
+When inserting into the heterogeneous list, the pointer-to-self is
+updated to have the right vtable, and the container_of operation is
+implemented by just returning that pointer instead of using the real
+container_of operation.
 
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
- rust/kernel/list.rs     |   4 +-
- rust/kernel/list/arc.rs | 162 +++++++++++++++++++++++++++++++++++++++++++++++-
- 2 files changed, 163 insertions(+), 3 deletions(-)
+ rust/kernel/list.rs | 115 ++++++++++++++++++++++++++++++++++++++++++++++++++++
+ 1 file changed, 115 insertions(+)
 
 diff --git a/rust/kernel/list.rs b/rust/kernel/list.rs
-index fb16ea43b2ba..c5caa0f6105c 100644
+index c5caa0f6105c..63e6f6a47964 100644
 --- a/rust/kernel/list.rs
 +++ b/rust/kernel/list.rs
-@@ -5,4 +5,6 @@
+@@ -4,7 +4,122 @@
+ 
  //! A linked list implementation.
  
++use crate::init::PinInit;
++use crate::types::Opaque;
++use core::ptr;
++
  mod arc;
--pub use self::arc::{impl_list_arc_safe, ListArc, ListArcSafe};
-+pub use self::arc::{
-+    impl_list_arc_safe, AtomicListArcTracker, ListArc, ListArcSafe, TryNewListArc,
-+};
-diff --git a/rust/kernel/list/arc.rs b/rust/kernel/list/arc.rs
-index 3b7072e58256..97bd9d52b5cf 100644
---- a/rust/kernel/list/arc.rs
-+++ b/rust/kernel/list/arc.rs
-@@ -7,9 +7,10 @@
- use crate::alloc::{AllocError, Flags};
- use crate::prelude::*;
- use crate::sync::{Arc, ArcBorrow, UniqueArc};
--use core::marker::Unsize;
-+use core::marker::{PhantomPinned, Unsize};
- use core::ops::Deref;
- use core::pin::Pin;
-+use core::sync::atomic::{AtomicBool, Ordering};
- 
- /// Declares that this type has some way to ensure that there is exactly one `ListArc` instance for
- /// this id.
-@@ -47,9 +48,30 @@ pub trait ListArcSafe<const ID: u64 = 0> {
-     unsafe fn on_drop_list_arc(&self);
- }
- 
-+/// Declares that this type is able to safely attempt to create `ListArc`s at any time.
+ pub use self::arc::{
+     impl_list_arc_safe, AtomicListArcTracker, ListArc, ListArcSafe, TryNewListArc,
+ };
++
++/// Implemented by types where a [`ListArc<Self>`] can be inserted into a `List`.
 +///
 +/// # Safety
 +///
-+/// Implementers must ensure that `try_new_list_arc` does not return `true` if a `ListArc` already
-+/// exists.
-+pub unsafe trait TryNewListArc<const ID: u64 = 0>: ListArcSafe<ID> {
-+    /// Attempts to convert an `Arc<Self>` into an `ListArc<Self>`. Returns `true` if the
-+    /// conversion was successful.
-+    fn try_new_list_arc(&self) -> bool;
++/// Implementers must ensure that they provide the guarantees documented on methods provided by
++/// this trait.
++///
++/// [`ListArc<Self>`]: ListArc
++pub unsafe trait ListItem<const ID: u64 = 0>: ListArcSafe<ID> {
++    /// Views the [`ListLinks`] for this value.
++    ///
++    /// # Guarantees
++    ///
++    /// If there is a previous call to `prepare_to_insert` and there is no call to `post_remove`
++    /// since the most recent such call, then this returns the same pointer as the one returned by
++    /// the most recent call to `prepare_to_insert`.
++    ///
++    /// Otherwise, the returned pointer points at a read-only [`ListLinks`] with two null pointers.
++    ///
++    /// # Safety
++    ///
++    /// The provided pointer must point at a valid value. (It need not be in an `Arc`.)
++    unsafe fn view_links(me: *const Self) -> *mut ListLinks<ID>;
++
++    /// View the full value given its [`ListLinks`] field.
++    ///
++    /// Can only be used when the value is in a list.
++    ///
++    /// # Guarantees
++    ///
++    /// * Returns the same pointer as the one passed to the most recent call to `prepare_to_insert`.
++    /// * The returned pointer is valid until the next call to `post_remove`.
++    ///
++    /// # Safety
++    ///
++    /// * The provided pointer must originate from the most recent call to `prepare_to_insert`, or
++    ///   from a call to `view_links` that happened after the most recent call to
++    ///   `prepare_to_insert`.
++    /// * Since the most recent call to `prepare_to_insert`, the `post_remove` method must not have
++    ///   been called.
++    unsafe fn view_value(me: *mut ListLinks<ID>) -> *const Self;
++
++    /// This is called when an item is inserted into a `List`.
++    ///
++    /// # Guarantees
++    ///
++    /// The caller is granted exclusive access to the returned [`ListLinks`] until `post_remove` is
++    /// called.
++    ///
++    /// # Safety
++    ///
++    /// * The provided pointer must point at a valid value in an [`Arc`].
++    /// * Calls to `prepare_to_insert` and `post_remove` on the same value must alternate.
++    /// * The caller must own the [`ListArc`] for this value.
++    /// * The caller must not give up ownership of the [`ListArc`] unless `post_remove` has been
++    ///   called after this call to `prepare_to_insert`.
++    ///
++    /// [`Arc`]: crate::sync::Arc
++    unsafe fn prepare_to_insert(me: *const Self) -> *mut ListLinks<ID>;
++
++    /// This undoes a previous call to `prepare_to_insert`.
++    ///
++    /// # Guarantees
++    ///
++    /// The returned pointer is the pointer that was originally passed to `prepare_to_insert`.
++    ///
++    /// # Safety
++    ///
++    /// The provided pointer must be the pointer returned by the most recent call to
++    /// `prepare_to_insert`.
++    unsafe fn post_remove(me: *mut ListLinks<ID>) -> *const Self;
 +}
 +
- /// Declares that this type supports [`ListArc`].
- ///
--/// When using this macro, it will only be possible to create a [`ListArc`] from a [`UniqueArc`].
-+/// This macro supports a few different strategies for implementing the tracking inside the type:
++#[repr(C)]
++#[derive(Copy, Clone)]
++struct ListLinksFields {
++    next: *mut ListLinksFields,
++    prev: *mut ListLinksFields,
++}
++
++/// The prev/next pointers for an item in a linked list.
 +///
-+/// * The `untracked` strategy does not actually keep track of whether a [`ListArc`] exists. When
-+///   using this strategy, the only way to create a [`ListArc`] is using a [`UniqueArc`].
-+/// * The `tracked_by` strategy defers the tracking to a field of the struct. The user much specify
-+///   which field to defer the tracking to. The field must implement [`ListArcSafe`].
++/// # Invariants
 +///
-+/// The `tracked_by` strategy is usually used by deferring to a field of type
-+/// [`AtomicListArcTracker`]. However, it is also possible to defer the tracking to another struct
-+/// using also using this macro.
- #[macro_export]
- macro_rules! impl_list_arc_safe {
-     (impl$({$($generics:tt)*})? ListArcSafe<$num:tt> for $t:ty { untracked; } $($rest:tt)*) => {
-@@ -60,6 +82,39 @@ unsafe fn on_drop_list_arc(&self) {}
-         $crate::list::impl_list_arc_safe! { $($rest)* }
-     };
- 
-+    (impl$({$($generics:tt)*})? ListArcSafe<$num:tt> for $t:ty {
-+        tracked_by $field:ident : $fty:ty;
-+    } $($rest:tt)*) => {
-+        impl$(<$($generics)*>)? $crate::list::ListArcSafe<$num> for $t {
-+            unsafe fn on_create_list_arc_from_unique(self: ::core::pin::Pin<&mut Self>) {
-+                $crate::assert_pinned!($t, $field, $fty, inline);
-+
-+                // SAFETY: This field is structurally pinned as per the above assertion.
-+                let field = unsafe {
-+                    ::core::pin::Pin::map_unchecked_mut(self, |me| &mut me.$field)
-+                };
-+                // SAFETY: The caller promises that there is no `ListArc`.
-+                unsafe {
-+                    <$fty as $crate::list::ListArcSafe<$num>>::on_create_list_arc_from_unique(field)
-+                };
-+            }
-+            unsafe fn on_drop_list_arc(&self) {
-+                // SAFETY: The caller promises that there is no `ListArc` reference, and also
-+                // promises that the tracking thinks there is a `ListArc` reference.
-+                unsafe { <$fty as $crate::list::ListArcSafe<$num>>::on_drop_list_arc(&self.$field) };
-+            }
-+        }
-+        unsafe impl$(<$($generics)*>)? $crate::list::TryNewListArc<$num> for $t
-+        where
-+            $fty: TryNewListArc<$num>,
-+        {
-+            fn try_new_list_arc(&self) -> bool {
-+                <$fty as $crate::list::TryNewListArc<$num>>::try_new_list_arc(&self.$field)
-+            }
-+        }
-+        $crate::list::impl_list_arc_safe! { $($rest)* }
-+    };
-+
-     () => {};
- }
- pub use impl_list_arc_safe;
-@@ -201,6 +256,52 @@ pub fn pair_from_pin_unique<const ID2: u64>(
-         }
-     }
- 
-+    /// Try to create a new `ListArc`.
-+    ///
-+    /// This fails if this value already has a `ListArc`.
-+    pub fn try_from_arc(arc: Arc<T>) -> Result<Self, Arc<T>>
-+    where
-+        T: TryNewListArc<ID>,
-+    {
-+        if arc.try_new_list_arc() {
-+            // SAFETY: The `try_new_list_arc` method returned true, so the tracking now thinks that
-+            // a `ListArc` exists, so we can create one.
-+            Ok(unsafe { Self::transmute_from_arc(arc) })
-+        } else {
-+            Err(arc)
-+        }
-+    }
-+
-+    /// Try to create a new `ListArc`.
-+    ///
-+    /// This fails if this value already has a `ListArc`.
-+    pub fn try_from_arc_borrow(arc: ArcBorrow<'_, T>) -> Option<Self>
-+    where
-+        T: TryNewListArc<ID>,
-+    {
-+        if arc.try_new_list_arc() {
-+            // SAFETY: The `try_new_list_arc` method returned true, so the tracking now thinks that
-+            // a `ListArc` exists, so we can create one.
-+            Some(unsafe { Self::transmute_from_arc(Arc::from(arc)) })
-+        } else {
-+            None
-+        }
-+    }
-+
-+    /// Try to create a new `ListArc`.
-+    ///
-+    /// If it's not possible to create a new `ListArc`, then the `Arc` is dropped. This will never
-+    /// run the destructor of the value.
-+    pub fn try_from_arc_or_drop(arc: Arc<T>) -> Option<Self>
-+    where
-+        T: TryNewListArc<ID>,
-+    {
-+        match Self::try_from_arc(arc) {
-+            Ok(list_arc) => Some(list_arc),
-+            Err(arc) => Arc::into_unique_or_drop(arc).map(Self::from),
-+        }
-+    }
-+
-     /// Transmutes an [`Arc`] into a `ListArc` without updating the tracking inside `T`.
-     ///
-     /// # Safety
-@@ -346,3 +447,60 @@ impl<T, U, const ID: u64> core::ops::DispatchFromDyn<ListArc<U, ID>> for ListArc
-     U: ListArcSafe<ID> + ?Sized,
- {
- }
-+
-+/// A utility for tracking whether a [`ListArc`] exists using an atomic.
-+///
-+/// # Invariant
-+///
-+/// If the boolean is `false`, then there is no [`ListArc`] for this value.
++/// The fields are null if and only if this item is not in a list.
 +#[repr(transparent)]
-+pub struct AtomicListArcTracker<const ID: u64 = 0> {
-+    inner: AtomicBool,
-+    _pin: PhantomPinned,
++pub struct ListLinks<const ID: u64 = 0> {
++    #[allow(dead_code)]
++    inner: Opaque<ListLinksFields>,
 +}
 +
-+impl<const ID: u64> AtomicListArcTracker<ID> {
++// SAFETY: The next/prev fields of a ListLinks can be moved across thread boundaries.
++unsafe impl<const ID: u64> Send for ListLinks<ID> {}
++// SAFETY: The type is opaque so immutable references to a ListLinks are useless. Therefore, it's
++// okay to have immutable access to a ListLinks from several threads at once.
++unsafe impl<const ID: u64> Sync for ListLinks<ID> {}
++
++impl<const ID: u64> ListLinks<ID> {
 +    /// Creates a new initializer for this type.
 +    pub fn new() -> impl PinInit<Self> {
 +        // INVARIANT: Pin-init initializers can't be used on an existing `Arc`, so this value will
 +        // not be constructed in an `Arc` that already has a `ListArc`.
-+        Self {
-+            inner: AtomicBool::new(false),
-+            _pin: PhantomPinned,
++        ListLinks {
++            inner: Opaque::new(ListLinksFields {
++                prev: ptr::null_mut(),
++                next: ptr::null_mut(),
++            }),
 +        }
-+    }
-+
-+    fn project_inner(self: Pin<&mut Self>) -> &mut AtomicBool {
-+        // SAFETY: The `inner` field is not structurally pinned, so we may obtain a mutable
-+        // reference to it even if we only have a pinned reference to `self`.
-+        unsafe { &mut Pin::into_inner_unchecked(self).inner }
-+    }
-+}
-+
-+impl<const ID: u64> ListArcSafe<ID> for AtomicListArcTracker<ID> {
-+    unsafe fn on_create_list_arc_from_unique(self: Pin<&mut Self>) {
-+        // INVARIANT: We just created a ListArc, so the boolean should be true.
-+        *self.project_inner().get_mut() = true;
-+    }
-+
-+    unsafe fn on_drop_list_arc(&self) {
-+        // INVARIANT: We just dropped a ListArc, so the boolean should be false.
-+        self.inner.store(false, Ordering::Release);
-+    }
-+}
-+
-+// SAFETY: If this method returns `true`, then by the type invariant there is no `ListArc` before
-+// this call, so it is okay to create a new `ListArc`.
-+//
-+// The acquire ordering will synchronize with the release store from the destruction of any
-+// previous `ListArc`, so if there was a previous `ListArc`, then the destruction of the previous
-+// `ListArc` happens-before the creation of the new `ListArc`.
-+unsafe impl<const ID: u64> TryNewListArc<ID> for AtomicListArcTracker<ID> {
-+    fn try_new_list_arc(&self) -> bool {
-+        // INVARIANT: If this method returns true, then the boolean used to be false, and is no
-+        // longer false, so it is okay for the caller to create a new [`ListArc`].
-+        self.inner
-+            .compare_exchange(false, true, Ordering::Acquire, Ordering::Relaxed)
-+            .is_ok()
 +    }
 +}
 
