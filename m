@@ -1,92 +1,123 @@
-Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF97215A86A;
-	Wed, 24 Jul 2024 14:38:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95C1B158DA7;
+	Wed, 24 Jul 2024 16:15:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721831912; cv=none; b=H2Yjyxn8HJBeDm+fm4smTRMLA6fFwWCoeFiUltOXdtwqHlpZLFcPE513e7fF7a4tXtrJ9Ry1K5QRJcCbnz1VuW1xTxyJuHSb2gYhch54Xt4ddE+7R6hozdYqwQQ23F53QOJ8/inNYwakdk83O7SDPWBT9gKExFVJ2UU3iZVDkZU=
+	t=1721837716; cv=none; b=Y+mLajvMGTJen2QSmtNHhe+Ij/w0H0jAeV1XMdf0gprF7y4cxLPeIUIFTQUicOcLX+iLiQ5RFlJF3V2YUocgxuKIfhI3tEk7OcG/dfZVhv4Ch8ihKowIe+quCXgth1K9N76to1vqvz70jv5oQnqtDE0nLcAJWhYZjCg62ITqLac=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721831912; c=relaxed/simple;
-	bh=l9XbFL29fFYp113Wob6+1cBWchT/C8JVCwn7KnQn2Og=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VvwBu5BSin3B5CyWzULA3xHpCrraL7EVBG8V737uGswIPA01uvf6zj9IkCHcWo/OKTH7z4tdImr1wl6gdEW7/ehmLvv9LIDi0DSv8OwKhT1YGCTrV99o27vWiuwSBc+1YF0ZRTLz//2OgfCTwSsFe+SknPubMEdfxETeGHTYt8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PxYuNVMQ; arc=none smtp.client-ip=209.85.215.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1721837716; c=relaxed/simple;
+	bh=8M3qjziEkK6RAO+75p2nb4kN9+Ujgr+tBOEusNCKTV8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=H3HN3dnXJa3acHfdUPMFrFYtk5bwEwcaVLnfS0aAoYpnUcQRxP3/d1ZtiEx1m7ykyTxDqkn2JeAugFxI/bd4OPPyjCS9Nonq/8/Mjw0b9NTvcAacXiRpbVZvHkKw7+sKdK8OYjzS/pTwdZSDHiwfT4Xc1TzaLMaacNbR0toHyso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=FlVLHRe5; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PxYuNVMQ"
-Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-7a1d48e0a5fso1236851a12.3;
-        Wed, 24 Jul 2024 07:38:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1721831910; x=1722436710; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=h5YfGNIlsO/NNcdOXqpqBk0T6w1npLT4dQ3KtAyVFgQ=;
-        b=PxYuNVMQrWn46rluwHbYfz812DdWggZwLCZJVCliOqRfzSNol1bLt9Widv2WxNUIZT
-         zmkWP4guqWPdSmqxb+h2twhxjkoFYWSecE0apBpM+sk2LWZPt9ils5KOtoRHReVpFGcP
-         Ry8cc6ivX6ZJuHJv+csgNl8ceVsAAIxnoDYpa6P4FJFKS3KX+V8xJK4pO3CsAJf5ZpMC
-         8sDhy/xhG0uRNfpfi3jjfLOBLHWyzlWwK3drSEVe0/xewnx7o4MX7JSeiXHkg2+ovj/R
-         sp6x9EcYDEGKJZ9UI5LkjqM5nyA8EUdLgboqaCOGf8bzDpMVYrbX1+W8pl64kUHaaOlm
-         4QpA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721831910; x=1722436710;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=h5YfGNIlsO/NNcdOXqpqBk0T6w1npLT4dQ3KtAyVFgQ=;
-        b=SDk3Vnghvj6hf/IB3SWGQycHR/uMy5Nf3fsJ+X3A7u16CE3aBNH0/5ze3ZWcluWdku
-         pdR/7MQyLCfO6neRZQcr1XRIaiHoS9iL/USMsSLNLM8xhdd0jRT6LX+hab9kvDO1yDPj
-         VvbPfSvwRZOsdhQGhJDocmgKw/GNuEcLK6RPuqyS8OD85NnZdN4c4Ru+56ZXJ/bJg1tu
-         Owyv4LHK/mN9luXGSoPPmHrmMEWTOXRRwnAxpyzqGxQcic/JZrotU/1sQ3r5ttbVpPpQ
-         nDm6IJBPA/CV/cGvQSqXNSqkfmuIO3iJL6KmGFxicGzgvEWFjD3zVHfO6qKJxMT4VOe7
-         eUrg==
-X-Forwarded-Encrypted: i=1; AJvYcCW7IEWhMQUOo8Zk3ODrGG8vFS5HZL522h6B/jx87o/kYU0HWIifa1/006vkJXCjyn2d394uo0m+elU12AKf9NqXP7RV4qtaWw0rW6MeEs5k9Pf5t1xSSG6j62ajVM0MVXTchw+5MPPX3UKlGGI=
-X-Gm-Message-State: AOJu0Yx28NlOEX6ZBMB7mh0VOnSUg1OFWow42QKfIgE/gdrxYUlzucYD
-	wwFa1+wYJCc+AlVBokZ9r+n9AIpXBCfwc8/ux+4l0xybLhjSLbMNBtg3pMK65Y1EESeNiSOy+rf
-	YRay/wrsXDY8AdX031wmj506PjqI=
-X-Google-Smtp-Source: AGHT+IHkhoNnAUc5XxPmutCwvMdnvpdALQYON+aoV564xC4ii1mPdF6qwNMOsDonPZyJGvSXrQCgN6VolR2UrakMRW4=
-X-Received: by 2002:a17:90a:ca86:b0:2cb:4b88:2aaf with SMTP id
- 98e67ed59e1d1-2cdb513f24cmr2794532a91.12.1721831909978; Wed, 24 Jul 2024
- 07:38:29 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="FlVLHRe5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7041AC32781;
+	Wed, 24 Jul 2024 16:15:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1721837716;
+	bh=8M3qjziEkK6RAO+75p2nb4kN9+Ujgr+tBOEusNCKTV8=;
+	h=From:To:Cc:Subject:Date:From;
+	b=FlVLHRe59YHkx4tbO6Y8QuEwXnbAXcenjTrbEw+w6A77CmxgaLm6cApR+go0XNoqd
+	 zmvKg6OIjYAFqTvpm0++9kXLqjzuZlKtLdqq9q+ldXD0SIyqEC+i4sWku5ZrsAzRkD
+	 HMjpTIhEoDo1tHRdNWGnkA44Y1MfH4yQmSJaYohYNGug/gjJ300aPnq1pFTrtEmy0j
+	 Gcndq0rFG8u7uzbIHzw5siyh2kJFRnTLXXiAaSq/qDuy+VvYS2XxaT53RrmMsOjt1I
+	 mzebKG2bXK22zaKt04+BfSScquf6seeIDOszccpTtFNrWE4agkjP9yyMDNKAqQUT2X
+	 9PT1VmmwMOQgg==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Josh Poimboeuf <jpoimboe@kernel.org>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Masahiro Yamada <masahiroy@kernel.org>
+Cc: x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nicolas@fjasle.eu>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	patches@lists.linux.dev,
+	linux-kbuild@vger.kernel.org
+Subject: [PATCH v2 0/6] Rust: support `CPU_MITIGATIONS` and enable `objtool`
+Date: Wed, 24 Jul 2024 18:14:53 +0200
+Message-ID: <20240724161501.1319115-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240710225011.275153-1-daniel.almeida@collabora.com>
- <fe84a028-01a8-4987-b1b7-141fb76d263c@arm.com> <4344B22F-D859-4C64-A351-69FFB5208362@collabora.com>
- <edda856e-3102-495a-8cc6-b79f5f114833@arm.com> <20240723180642.73502856@collabora.com>
- <6ce8fd12-b175-4a8f-8ea9-6221a555b69c@arm.com> <CAL_Jsq+Dr5zO5MKEGq0dW9SuTuawaJMhHziFd73Ef_S1zbOkXw@mail.gmail.com>
- <6b60a83d-8416-4cf8-b373-dc3c697c788a@arm.com>
-In-Reply-To: <6b60a83d-8416-4cf8-b373-dc3c697c788a@arm.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 24 Jul 2024 16:38:17 +0200
-Message-ID: <CANiq72=AFLogwowqhi-hwYT1UcnQ+6kidg2Ni-Q0vStKK5wuSw@mail.gmail.com>
-Subject: Re: [RFC PATCH] drm: panthor: add dev_coredumpv support
-To: Steven Price <steven.price@arm.com>
-Cc: Rob Herring <robh@kernel.org>, Boris Brezillon <boris.brezillon@collabora.com>, 
-	Daniel Almeida <daniel.almeida@collabora.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, ojeda@kernel.org, 
-	Danilo Krummrich <dakr@redhat.com>, lyude@redhat.com, lina@asahilina.net, mcanal@igalia.com, 
-	airlied@gmail.com, rust-for-linux@vger.kernel.org, 
-	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jul 24, 2024 at 3:54=E2=80=AFPM Steven Price <steven.price@arm.com>=
- wrote:
->
-> I'd be quite keen for the "fork" to live in the upstream kernel. My
-> preference is for the two drivers to sit side-by-side. I'm not sure
-> whether that's a common view though.
+Hi,
 
-It is supposed to be against the usual rules/guidelines, but we asked
-since it came up a few times, and it can be done if you (as
-maintainers) are OK with it. We have some notes about it here:
+This is an updated series to the CPU mitigations support for Rust. It
+also has the patch to enable `objtool`, so that we can start running it
+for Rust.
 
-    https://rust-for-linux.com/rust-reference-drivers
+It would be nice to get this applied soon, so that we start being
+warning-free (since we already get warnings under IBT builds via
+`vmlinux.o`). I am happy to take it through the Rust tree if the x86 and
+objtool maintainers give an Acked-by, or through any of the other trees,
+as you prefer. Otherwise, I think at this point we would need to make
+Rust exclusive to the mitigations, which isn't great.
+
+With this series, again, x86_64 is warning-free with `objtool` enabled. I
+tested `-O2`/`-Os` and the Rust versions we support under `-O2` (mainly
+for the `noreturn` patch, which uses heuristics), as well as IBT vs. no
+IBT (i.e.  running on individual object files vs. in `vmlinux`). I also
+did an arm64 build.
+
+Testing is very welcome for this one!
 
 Cheers,
 Miguel
+
+v2:
+  - Add patch to enable `objtool` for Rust.
+
+  - Add patch to list `noreturn` Rust functions (via heuristics) to avoid
+    warnings related to that.
+
+  - Make the `RETHUNK` patch not an RFC since the Rust compiler has
+  support for
+    it now.
+
+  - Update the names of the migitation config symbols, given the changes
+  at e.g.
+    commit 7b75782ffd82 ("x86/bugs: Rename CONFIG_MITIGATION_SLS =>
+    CONFIG_MITIGATION_SLS").
+
+Miguel Ojeda (6):
+  rust: module: add static pointer to `{init,cleanup}_module()`
+  x86/rust: support MITIGATION_RETPOLINE
+  x86/rust: support MITIGATION_RETHUNK
+  x86/rust: support MITIGATION_SLS
+  objtool: list `noreturn` Rust functions
+  objtool/kbuild/rust: enable objtool for Rust
+
+ arch/x86/Makefile               |  7 ++++++-
+ rust/Makefile                   | 22 ++++++++++++--------
+ rust/macros/module.rs           | 12 +++++++++++
+ scripts/Makefile.build          |  9 +++++++--
+ scripts/generate_rust_target.rs | 15 ++++++++++++++
+ tools/objtool/check.c           | 36 ++++++++++++++++++++++++++++++++-
+ tools/objtool/noreturns.h       |  2 ++
+ 7 files changed, 91 insertions(+), 12 deletions(-)
+
+
+base-commit: b1263411112305acf2af728728591465becb45b0
+--
+2.45.2
