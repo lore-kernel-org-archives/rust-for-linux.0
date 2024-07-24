@@ -1,169 +1,181 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+Received: from mail-vs1-f46.google.com (mail-vs1-f46.google.com [209.85.217.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B771200B7
-	for <rust-for-linux@vger.kernel.org>; Wed, 24 Jul 2024 17:27:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C4591BF38;
+	Wed, 24 Jul 2024 17:44:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721842053; cv=none; b=LoVcxN0zHSB/36I0OJWKaFlH9vyfP9gjmXCQ95rTC8W7iao4A9mxuBsqYW9SZ+JIpiQ2eO8neiOek1261VU/S7cvWGipUcFHy/KNzvtdBkFK2PbuszVbKC7o6mRWsVv47RLiUtPei/fc3Mlp6ICOCeAuxbm2l51KAxrXYi/IdMk=
+	t=1721843092; cv=none; b=MlDF6Bp/r/ckUaSv5mGTK0OAkgJ6rQusjNmoSVnWqBD4uMg3wEYkOEOyHc0MWTkCBcIAFp3HGsn2gdeBsR1SI5xKIDMs5EUAQskvIF1cCJf39qtTakfdlSmEWMD/yvEPjcWfaM5NpDKEn80kVnWfkQIxT6d7+gC/kFjj1YlPc4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721842053; c=relaxed/simple;
-	bh=NqX6h19VxBNufDMeq3W8poIkWd2I7rPJt/SYIqfP0zI=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CxahWJ2S7upBZwY9odOIht9Bl8Ebu5EQ2ybFNwvcEsd5BcQmKDeHwEHmTqlNG5qOFXal++XQ//EXl+MN9THxjpMdN56nTdJlsTWLA4huSeCQrSwBgEcWEnfSHjfAd7kkDblS3xxPSZHWlSAzkipcibZyi0jcrkY7JLew8gkAB1M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RFvbsP65; arc=none smtp.client-ip=209.85.214.174
+	s=arc-20240116; t=1721843092; c=relaxed/simple;
+	bh=aifeDb/Yogov3ZSX/f6KbSjmSKuyb27jNzsI0ncmPs4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bMycDx0t2R3BMbAF3f96SMFVvWyH7Y8ZWRmKNJ3r+ReGPAWvUgDF0SPHa0szkN0cb8KitwNSgyouflzbz65K5s0yw69VbhNguYXbEcWe77vbjYhRDflSaiI+FcueMhpzLzXubtNyXrcvUJkowqfz+X9AYLV/QsUvE7q0PXB/GDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=at2+RSxA; arc=none smtp.client-ip=209.85.217.46
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RFvbsP65"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-1fd6ed7688cso45135ad.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 24 Jul 2024 10:27:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="at2+RSxA"
+Received: by mail-vs1-f46.google.com with SMTP id ada2fe7eead31-492aae5fde6so10931137.1;
+        Wed, 24 Jul 2024 10:44:50 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1721842051; x=1722446851; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=fzB9PMD8PcKaAYm8dE+5bJuLCxFtOflIEOEAQ3Z7ELE=;
-        b=RFvbsP65+feZvqLu2Sv6AFNMd60VtZksOx3/g0z77IMHopY460NvO5xCL1N2WPkFVI
-         vyVl/LioM4I462+3KbhvbwF061cQDsbs7mq0qgIBYy8qQJ9CI50FlPj9HzhCkc1BYOET
-         w1mfk/WTZvcAEqysiLbLNJSg+9LN0zlL+m2i7HT2Kb+w7/aK1FxT4OlM7i6fgUUiSZho
-         KIQKxatBM0YG+3MwcDI9HUN++MulSCf7qTWW0NRTsLLO1+OVuplADNkKEHoTB/Fawg2A
-         yFiBpwMua4a5rQ6yaJ3BwUDQRUt42bU/FVHgjIxl+E2m0iDdQi6hK9samJLI18k/bp1g
-         djyA==
+        d=gmail.com; s=20230601; t=1721843090; x=1722447890; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=zbrjmf6eGFou/2U8th1K6YoDJkNPkKQdQpS9YXkclb4=;
+        b=at2+RSxA2pJUYZ2loyhu27RCckJM7owvsHLnw16YnzG0UsnE4cdA6gCOA4ikXHXEGP
+         zBzEfjIuZbsQZZ416Q+4ms6MVlA+D1DDiBP3B+sOfUlURlmb6jTucd61PBY03DtKCzU6
+         Euz4s50nq9gg/zfV3pGv9xNRu+0yAtfPY66c0a124sTYOSsIXFVB2YXBNfIKjzuVIp/n
+         HaTy7wXlUTePOna+LaPRB6v5OrByE0MMNqLnasX+WCMSYR3gyo7eNxskZNAdj7rVaj+f
+         YDvo5vkK2QXOSCdW2QPrGadSyGnb9Tl9BdDd56Nq6dHfxPMbt7QbRRvT5fo7r/fgYBXw
+         HGQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721842051; x=1722446851;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=fzB9PMD8PcKaAYm8dE+5bJuLCxFtOflIEOEAQ3Z7ELE=;
-        b=UOG7BtCCl5U++h9jWFsyfK8t65gvv6yVuq63MjU2Sqo77g+FOMIWZQFA2aj0CjaxbG
-         K/uZFHiiVaQXcyyNrX6HyvOS1+H7qO2+cb+ztHWzUK80wal9SXtOlWtt8+JXsXWF1kKp
-         FiirjFH+DBZKgd52JZ1mT0Ubb3sC2CZWTeQEH3WSEWAA8fFm4BJgmUvlmK4xpfghEpAu
-         lPQ8TAii1NxcEvi0Em3rbRHZFqEuJghmz232qzj1XA+buSC3JlisLZQKbEcEc+NmP39A
-         zdWTmTG6NpAzFhPlYXdlZODC7mvIifDX6grCaY3pmasNmsWU3Ii4s+BQ0MuUvzFiVIz0
-         EehA==
-X-Forwarded-Encrypted: i=1; AJvYcCVA0IH8oQr5SQnpUCijOj/ZkwpDYK95BQSHYliIu8lShi/daTx+vXtr44M7XQAJ18/xBH6B6YysZvFkiZY+PdXhJZSIOXaKBx5sMXXObLY=
-X-Gm-Message-State: AOJu0YzUhtilTQJZS+geHHk2bqtIJ+7SLHMv7u8f6Xdi2FIeU5WDIkN2
-	rDCigW2pykllkd/3MXXFXh/yZIw9fqnEAiAvHJiytfIHqg+YJlxI
-X-Google-Smtp-Source: AGHT+IHk7aJ2xO3ATyIJgfGAgU/xbJ+JV6Syyi8MLllme0NGlokCB7sVPGrqJpPDZNCmQ6/VsUYY+w==
-X-Received: by 2002:a17:902:e88a:b0:1fb:8cab:ccc9 with SMTP id d9443c01a7336-1fed38da4f7mr2878055ad.45.1721842051183;
-        Wed, 24 Jul 2024 10:27:31 -0700 (PDT)
-Received: from localhost.localdomain ([2401:4900:1f30:240e:92d6:592a:7ca:c3f9])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1fd6f3181f4sm97452625ad.163.2024.07.24.10.27.27
+        d=1e100.net; s=20230601; t=1721843090; x=1722447890;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=zbrjmf6eGFou/2U8th1K6YoDJkNPkKQdQpS9YXkclb4=;
+        b=sbMzxN2iPTKSBzrq6u9uSDezgnLMY3cbBv0jxPx/RwWCabwLcyk/V1Mhm5DhRF96r4
+         yefvvZ6P8IosLm2BkQEp8gUECxkPb+QCFJtK9aUITbekoHtLVrkNyfbLY000VSWRgG7X
+         u5u5wBgxFfaG2eyQKJS3T/sDz+piZOZl7ohc6T4beBzQbWEmDNgnMTi1SQPBFG9spU2E
+         Q8wX5H9Tes6kA7ync7N/+4Vq+nqSr0+9Tla4iW5McNqdQJUVbhvtS6/Etx93AqgmpgFG
+         QVFGNElmCrwPmggQr7rFZV97vIwy8sJ0NBZr1cY9UYMuP+riXJcmpDZvN67vGW7A7G2i
+         RlDA==
+X-Forwarded-Encrypted: i=1; AJvYcCWRE3O1QbA4GM8BBIdSMvl3kHS/hTV28WiRdoc/klQKbTevkkRY72oDkW1Yh9LVjKZGs0fDVz3wN8izxa8V5bfXPwTUEWB/t9uF+ppMujfz9cuMLjG+JeCgAqcXpS8S77A/sNKxDe9n
+X-Gm-Message-State: AOJu0YyF/75mZqnt116a5sRfMTUZzYt2revQqDff0eVsvtJ+zW77ibYE
+	nbIqkXpaA9s9rZUuNfvot/DD4Aqi355jVTuYiMe6BTZ9ik4HJgCH
+X-Google-Smtp-Source: AGHT+IGuDRAbnvZl9A9YCnE8gbnPETn8+UwCvPY/YvlzRxM14j+R+Co3qVJw26odstXnN2DYPghpnQ==
+X-Received: by 2002:a05:6102:4b86:b0:492:980c:f53 with SMTP id ada2fe7eead31-493d652e520mr506495137.20.1721843090046;
+        Wed, 24 Jul 2024 10:44:50 -0700 (PDT)
+Received: from fauth1-smtp.messagingengine.com (fauth1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7a198fbfa73sm597681585a.30.2024.07.24.10.44.48
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 24 Jul 2024 10:27:30 -0700 (PDT)
-From: Sarthak Singh <sarthak.singh99@gmail.com>
-To: Miguel Ojeda <ojeda@kernel.org>,
+        Wed, 24 Jul 2024 10:44:49 -0700 (PDT)
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+	by mailfauth.nyi.internal (Postfix) with ESMTP id 1FB7F1200066;
+	Wed, 24 Jul 2024 13:44:48 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute3.internal (MEProxy); Wed, 24 Jul 2024 13:44:48 -0400
+X-ME-Sender: <xms:kD2hZmHj2kPZ80qycDR9Z4HQKqegxA4-vPP2Jmn5-HFER6A_OJ_gyQ>
+    <xme:kD2hZnUS3o9KelVEEhHIs83x7LdTiJnJI774jeS1yyFcjAGthc6Yyav5DRCgSakRd
+    YNl9AI8E0aSZQDg-A>
+X-ME-Received: <xmr:kD2hZgJSXzdjBXemV_ch5LFF1OwbOOV9QWnZCfLgJSChyZaIkxE8wmm05RW77Q>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddriedugdduudejucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhu
+    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
+    htthgvrhhnpeehudfgudffffetuedtvdehueevledvhfelleeivedtgeeuhfegueeviedu
+    ffeivdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    gsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdei
+    gedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfih
+    igmhgvrdhnrghmvgdpnhgspghrtghpthhtoheptd
+X-ME-Proxy: <xmx:kD2hZgEj_9FGKEmwgPtPDGdYlMXJdwnM1GUfwEZbEAUWtcI7g2oBsg>
+    <xmx:kD2hZsWRRAI_Js-PaHP2qjAIKqPK8ISMSYh2DcBfZM4kZNfAoeelIw>
+    <xmx:kD2hZjOrq0pwPucAtidTH3I_YoWq62hQMRd1yR-xANESoXttUZJN6g>
+    <xmx:kD2hZj1IiYbIFhrV2Fk8heqzKT_4Uyw8ESThCES9JgNwHJrLpqg3sw>
+    <xmx:kD2hZtVcRyb19j7BLinz6hq4uiK8J8QvgqA56A89RLtG17ZKpSFSjGGK>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 24 Jul 2024 13:44:47 -0400 (EDT)
+Date: Wed, 24 Jul 2024 10:44:23 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-doc@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>
-Cc: Sarthak Singh <sarthak.singh99@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
 	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	rust-for-linux@vger.kernel.org,
-	Dirk Behme <dirk.behme@de.bosch.com>
-Subject: [PATCH v3] rust: Support latest version of `rust-analyzer`
-Date: Wed, 24 Jul 2024 22:57:06 +0530
-Message-ID: <20240724172713.899399-1-sarthak.singh99@gmail.com>
-X-Mailer: git-send-email 2.45.2
+	Jonathan Corbet <corbet@lwn.net>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Danilo Krummrich <dakr@redhat.com>,
+	Trevor Gross <tmgross@umich.edu>, gregkh@linuxfoundation.org
+Subject: Re: [RFC PATCH] rust: types: Add explanation for ARef pattern
+Message-ID: <ZqE9dzfNrE3Xg3tV@boqun-archlinux>
+References: <20240710032447.2161189-1-boqun.feng@gmail.com>
+ <CAH5fLgjat2Y6RT957BhdOjJHt7rPs0DvZYC6JZ+pHFiP=yDNgA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAH5fLgjat2Y6RT957BhdOjJHt7rPs0DvZYC6JZ+pHFiP=yDNgA@mail.gmail.com>
 
-Sets the `sysroot` field in rust-project.json which is now needed in
-newer versions of rust-analyzer instead of the `sysroot_src` field.
+On Tue, Jul 23, 2024 at 11:14:29AM +0200, Alice Ryhl wrote:
+[...]
+> > +/// ## `ARef<Self>` vs `&Self`
+> > +///
+> > +/// For an `impl AlwaysRefCounted` type, `ARef<Self>` represents an owner of one reference count,
+> > +/// e.g.
+> > +///
+> > +/// ```ignore
+> > +/// impl Foo {
+> > +///     /// Gets a ref-counted reference of [`Self`].
+> > +///     ///
+> > +///     /// # Safety
+> > +///     ///
+> > +///     /// - `ptr` must be a valid pointer to `foo` with at least one reference count.
+> > +///     pub unsafe fn from_ptr(ptr: *mut foo) -> ARef<Self> {
+> > +///         // SAFETY: `ptr` is a valid pointer per function safety requirement. The cast is OK
+> > +///         // since `foo` is transparent to `Foo`.
+> > +///         //
+> > +///         // Note: `.into()` here increases the reference count, so the returned value has its own
+> > +///         // reference count.
+> > +///         unsafe { &*(ptr.cast::<Foo>()) }.into()
 
-Till [1] `rust-analyzer` used to guess the `sysroot` based on the
-`sysroot_src` at [2]. Now `sysroot` is a required parameter for a
-`rust-project.json` file. It is required because `rust-analyzer`
-need it to find the proc-macro server [3].
+So I did use the `&Self` -> `ARef<Self>` conversion here,
 
-In the current version of `rust-analyzer` the `sysroot_src` is only used
-to include the inbuilt library crates (std, core, alloc, etc) [4]. Since
-we already specify the core library to be included in the
-`rust-project.json` we don't need to define the `sysroot_src`.
+> > +///     }
+> > +/// }
+> > +/// ```
+> > +///
+> > +/// Another function that returns an `ARef<Self>` but with a different semantics is
+> > +/// [`ARef::from_raw`]: it takes away the refcount of the input pointer, i.e. no refcount
+> > +/// incrementation inside the function.
+> > +///
 
-Code editors like VS Code try to use the latest version of rust-analyzer
-(which is updated every week) instead of the version of rust-analyzer
-that comes with the rustup toolchain (which is updated every six weeks
-along with the rust version).
+and mentioned the difference between .into() and `ARef::from_raw()`.
 
-Without this change `rust-analyzer` is breaking for anyone using VS Code.
-As they are getting the latest version of `rust-analyzer` with the
-changes made in [1].
+> > +/// However `&Self` represents a reference to the object, and the lifetime of the **reference** is
+> > +/// known at compile-time. E.g. the `Foo::as_ref()` above.
+> > +///
+> > +/// ## `impl Drop` of an `impl AlwaysRefCounted` should not touch the refcount
+> > +///
+> > +/// [`ARef`] descreases the refcount automatically (in [`ARef::drop`]) when it goes out of the
+> > +/// scope, therefore there's no need to `impl Drop` for the type of objects (e.g. `Foo`) to decrease
+> > +/// the refcount.
+> >  pub struct ARef<T: AlwaysRefCounted> {
+> >      ptr: NonNull<T>,
+> >      _p: PhantomData<T>,
+> > --
+> > 2.45.2
+> >
+> 
+> I think this is missing some basic information related to `&Self` ->
+> `ARef<Self>` conversions. We should explain that these conversions are
+> possible, and that you usually don't want `raw_ptr` -> `ARef<Self>` to
+> increment the refcount - instead provide a `raw_ptr` -> `&Self` and
+> convert the `&Self` to `ARef<Self>`.
+> 
 
-`rust-analyzer` will also start breaking for other developers as they
-update thier rust version (assuming that also updates the rust-analyzer
-version on their system).
+I could be more explicit on this, but could there be a case where a `T`
+only wants to return `ARef<T>` as a public API? In other words, the
+author of `T` doesn't want to expose an `-> &T` function, therefore a
+`-> ARef<T>` function makes more sense? If all the users of `T` want to
+operate on an `ARef<T>` other than `&T`, I think it makes sense, right?
 
-This patch should work with every setup as there is no more guess work
-being done by `rust-analyzer`.
+Overall, I feel like we don't necessarily make a preference between
+`->&Self` and `->ARef<Self>` functions here, since it's up to the users'
+design?
 
-Link: https://github.com/rust-lang/rust-analyzer/pull/17287 [1]
-Link: https://github.com/rust-lang/rust-analyzer/blob/f372a8a1176ff8dd5f45ab2ddd45f3530db0374f/crates/project-model/src/workspace.rs#L367-L374 [2]
-Link: https://github.com/rust-lang/rust-analyzer/blob/eeb192b79aeac47b40add66347022af17a74fbaf/crates/project-model/src/sysroot.rs#L180-L192 [3]
-Link: https://github.com/search?q=repo%3AVeykril%2Frust-analyzer%20src_root()&type=code [4]
+Regards,
+Boqun
 
-Tested-by: Dirk Behme <dirk.behme@de.bosch.com>
-Signed-off-by: Sarthak Singh <sarthak.singh99@gmail.com>
----
-Hello,
-
-This version contains more a more detailed justification for this patch.
-Also fixes some issues with using the wrong email amoung others.
-
-Previous Version:
-  v2: Fixed typos
-  v1: Initial patch
-
- rust/Makefile                     | 2 +-
- scripts/generate_rust_analyzer.py | 6 +++++-
- 2 files changed, 6 insertions(+), 2 deletions(-)
-
-diff --git a/rust/Makefile b/rust/Makefile
-index bf05e65365da..e3d0ba099b18 100644
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -350,7 +350,7 @@ rust-analyzer:
- 	$(Q)$(srctree)/scripts/generate_rust_analyzer.py \
- 		--cfgs='core=$(core-cfgs)' --cfgs='alloc=$(alloc-cfgs)' \
- 		$(realpath $(srctree)) $(realpath $(objtree)) \
--		$(RUST_LIB_SRC) $(KBUILD_EXTMOD) > \
-+		$(rustc_sysroot) $(RUST_LIB_SRC) $(KBUILD_EXTMOD) > \
- 		$(if $(KBUILD_EXTMOD),$(extmod_prefix),$(objtree))/rust-project.json
- 
- redirect-intrinsics = \
-diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_analyzer.py
-index f270c7b0cf34..8529c3940136 100755
---- a/scripts/generate_rust_analyzer.py
-+++ b/scripts/generate_rust_analyzer.py
-@@ -145,6 +145,7 @@ def main():
-     parser.add_argument('--cfgs', action='append', default=[])
-     parser.add_argument("srctree", type=pathlib.Path)
-     parser.add_argument("objtree", type=pathlib.Path)
-+    parser.add_argument("sysroot", type=pathlib.Path)
-     parser.add_argument("sysroot_src", type=pathlib.Path)
-     parser.add_argument("exttree", type=pathlib.Path, nargs="?")
-     args = parser.parse_args()
-@@ -154,9 +155,12 @@ def main():
-         level=logging.INFO if args.verbose else logging.WARNING
-     )
- 
-+    # Making sure that the sysroot and sysroot_src belong to the same toolchain
-+    assert args.sysroot in args.sysroot_src.parents
-+
-     rust_project = {
-         "crates": generate_crates(args.srctree, args.objtree, args.sysroot_src, args.exttree, args.cfgs),
--        "sysroot_src": str(args.sysroot_src),
-+        "sysroot": str(args.sysroot),
-     }
- 
-     json.dump(rust_project, sys.stdout, sort_keys=True, indent=4)
--- 
-2.45.2
-
+> Alice
