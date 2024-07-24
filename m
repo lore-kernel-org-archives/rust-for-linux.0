@@ -1,127 +1,181 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77E127A141
-	for <rust-for-linux@vger.kernel.org>; Wed, 24 Jul 2024 07:54:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 353E114F13D;
+	Wed, 24 Jul 2024 08:59:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721807663; cv=none; b=BotXTlXXVH8bZQ2q0ZcwW5+0qMk29xKP3z/kuBmY8YhYLJqASExpkEfoAUCbbqcEHzR19Cujw9McCZkVmg2vOGEgHe9QPp3awfzVeT8vb3y/P/LYwWC85FpqNvUOyEYrkP77L/q4VEYOJAw+GV9zGQ0o08Ut0feYJKfirhyXfmk=
+	t=1721811584; cv=none; b=sPtnq2aT3BIkodC5x731I7D8dQhbDko3aJJ004qgnNwZy8BwXpnWqxo5LRdEv9mAxImZbWvuZyJ0Ipw7xME/xQbHzzPwhY7u1TMTALwyLDLg3MyOjoNYixWbSx8BXElJLRDsPOX6cIqvzlQcObLomDN6DQTmQVUmJjYwc7wnEnM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721807663; c=relaxed/simple;
-	bh=dlbwVmlV4kAH2y8j1e1QEL5vNf3y7X73db9D+Vqr7mM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=e2qfQ/8weQh6YZREHR5kCj/Hr+kpE6I5abGhF3KggSnLoM3FEvgs2SSj4z72FmcPXO6geH0Ox/LyjMe9vzyYbzzBjn7SgBv8IYXZp22bcg0rqCzwdSePcSuchIoByxvUV9JLPZdvtdaHUBiOJgkYLo5r50Dm+3teIOi2hraYBYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=AlcZHdey; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="AlcZHdey"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1721807660;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=PHg0Ef8smficbOkuW7WJsl35HKf6Jokhkg4l/gaxSKk=;
-	b=AlcZHdeyKANp9UlgbhOoHTRGYeC6wtSLxf3Y2cukYIXxlW4dBIYDRSu77d2UihBJhiYD2l
-	mR3gPoxFbIW9hbZOsB1oaKTKnZzjejEzAXQ7j0CNAfGfYH5Bxd4O/VgNSYN++5Gtzr0Ulx
-	u2cXntflr1CfOtjADNSjG8vVKQrKxOg=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-607-95lhK-JBPrWh-MkaGO2akg-1; Wed,
- 24 Jul 2024 03:52:51 -0400
-X-MC-Unique: 95lhK-JBPrWh-MkaGO2akg-1
-Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5682A1955F06;
-	Wed, 24 Jul 2024 07:52:48 +0000 (UTC)
-Received: from hydra.redhat.com (unknown [10.39.192.4])
-	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 210241955D44;
-	Wed, 24 Jul 2024 07:52:41 +0000 (UTC)
-From: Jocelyn Falempe <jfalempe@redhat.com>
-To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	David Airlie <airlied@gmail.com>,
-	Daniel Vetter <daniel@ffwll.ch>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	"Bjorn Roy Baron" <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	linux-kernel@vger.kernel.org,
-	dri-devel@lists.freedesktop.org,
-	rust-for-linux@vger.kernel.org,
-	Danilo Krummrich <dakr@redhat.com>
-Cc: Jocelyn Falempe <jfalempe@redhat.com>
-Subject: [PATCH v5 0/4] drm/panic: Add a QR code panic screen
-Date: Wed, 24 Jul 2024 09:48:41 +0200
-Message-ID: <20240724075227.541245-1-jfalempe@redhat.com>
+	s=arc-20240116; t=1721811584; c=relaxed/simple;
+	bh=84krezNfaed07pycfK7kJruhngKR7Lk5WgHSxAD8UsA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=mpQmeEVwvWMl2MsdRRciXZT7gF8zrAtasI6+Bp1oWU246bvlg58yKJZIH7yc4MbJNnMfrfN1BiNQA8A0fVDFNbtEeyQe62S8HMRgKKWqvWRv2yDdz9KvfHe0KWJu2EU2aHhilczdEPX6cHlSBOTuHXfWcp7/Yuq6CsoR/S4kd50=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id EB542106F;
+	Wed, 24 Jul 2024 02:00:06 -0700 (PDT)
+Received: from [10.57.44.253] (unknown [10.57.44.253])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id ECA103F5A1;
+	Wed, 24 Jul 2024 01:59:38 -0700 (PDT)
+Message-ID: <6ce8fd12-b175-4a8f-8ea9-6221a555b69c@arm.com>
+Date: Wed, 24 Jul 2024 09:59:36 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH] drm: panthor: add dev_coredumpv support
+To: Boris Brezillon <boris.brezillon@collabora.com>
+Cc: Daniel Almeida <daniel.almeida@collabora.com>,
+ Wedson Almeida Filho <wedsonaf@gmail.com>, ojeda@kernel.org,
+ Danilo Krummrich <dakr@redhat.com>, lyude@redhat.com, robh@kernel.org,
+ lina@asahilina.net, mcanal@igalia.com, airlied@gmail.com,
+ rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org,
+ linux-kernel@vger.kernel.org
+References: <20240710225011.275153-1-daniel.almeida@collabora.com>
+ <fe84a028-01a8-4987-b1b7-141fb76d263c@arm.com>
+ <4344B22F-D859-4C64-A351-69FFB5208362@collabora.com>
+ <edda856e-3102-495a-8cc6-b79f5f114833@arm.com>
+ <20240723180642.73502856@collabora.com>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <20240723180642.73502856@collabora.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-This series adds a new panic screen, with the kmsg data embedded in a QR code.
+Hi Boris,
 
-The main advantage of QR code, is that you can copy/paste the debug data to a bug report.
+On 23/07/2024 17:06, Boris Brezillon wrote:
+> Hi Steve,
+> 
+> On Mon, 15 Jul 2024 10:12:16 +0100
+> Steven Price <steven.price@arm.com> wrote:
+> 
+>> I note it also shows that the "panthor_regs.rs" would ideally be shared.
+>> For arm64 we have been moving to generating system register descriptions
+>> from a text source (see arch/arm64/tools/sysreg) - I'm wondering whether
+>> something similar is needed for Panthor to generate both C and Rust
+>> headers? Although perhaps that's overkill, sysregs are certainly
+>> somewhat more complex.
+> 
+> Just had a long discussion with Daniel regarding this panthor_regs.rs
+> auto-generation, and, while I agree this is something we'd rather do if
+> we intend to maintain the C and rust code base forever, I'm not
+> entirely convinced this is super useful here because:
 
-The QR code encoder is written in rust, and is very specific to drm panic.
-The reason is that it is called in a panic handler, and thus can't allocate memory, or use locking.
-The rust code uses a few rust core API, and provides only two C entry points.
-There is no particular reason to do it in rust, I just wanted to learn rust, and see if it can work in the kernel.
+So I think we need some more alignment on how the 'Rustification'
+(oxidation?) of the driver is going to happen.
 
-If you want to see what it looks like, I've put a few screenshots here:
-https://github.com/kdj0c/panic_report/issues/1
+My understanding was that the intention was to effectively start a
+completely separate driver (I call it "Rustthor" here) with the view
+that it would eventually replace (the C) Panthor. Rustthor would be
+written by taking the C driver and incrementally converting parts to
+Rust, but as a separate code base so that 'global' refactoring can be
+done when necessary without risking the stability of Panthor. Then once
+Rustthor is feature complete the Panthor driver can be dropped.
+Obviously we'd keep the UABI the same to avoid user space having to care.
 
-v2:
- * Rewrite the rust comments with Markdown (Alice Ryhl)
- * Mark drm_panic_qr_generate() as unsafe (Alice Ryhl)
- * Use CStr directly, and remove the call to as_str_unchecked()
-   (Alice Ryhl)
- * Add a check for data_len <= data_size (Greg KH)
+I may have got the wrong impression - and I'm certainly not saying the
+above is how we have to do it. But I think we need to go into it with
+open-eyes if we're proposing a creeping Rust implementation upstream of
+the main Mali driver. That approach will make ensuring stability harder
+and will make the bar for implementing large refactors higher (we'd need
+significantly more review and testing for each change to ensure there
+are no regressions).
 
-v3:
- * Fix all rust comments (typo, punctuation) (Miguel Ojeda)
- * Change the wording of safety comments (Alice Ryhl)
- * Add a link to the javascript decoder in the Kconfig (Greg KH)
- * Fix data_size and tmp_size check in drm_panic_qr_generate()
+> 1. the C code base is meant to be entirely replaced by a rust driver.
+> Of course, that's not going to happen overnight, so maybe it'd be worth
+> having this autogen script but...
 
-v4:
- * Fix the logic to find next line and skip the '\n' (Alic Ryhl)
- * Remove __LOG_PREFIX as it's not used (Alice Ryhl)
+Just to put my cards on the table. I'm not completely convinced a Rust
+driver is necessarily an improvement, and I saw this as more of an
+experiment - let's see what a Rust driver looks like and then we can
+decide which is preferable. I'd like to be "proved wrong" and be shown a
+Rust driver which is much cleaner and easier to work with, but I still
+need convincing ;)
 
-v5:
- * Move drm_panic_[init|exit]() prototype to drm_crtc_internal.h
-   (Daniel Vetter)
+> 2. the set of register and register fields seems to be pretty stable.
+> We might have a few things to update to support v11, v12, etc, but it
+> doesn't look like the layout will suddenly become completely different.
 
-Jocelyn Falempe (4):
-  drm/panic: Add integer scaling to blit()
-  drm/rect: Add drm_rect_overlap()
-  drm/panic: Simplify logo handling
-  drm/panic: Add a QR code panic screen
+Yes, if we ever had a major change to registers we'd probably also want
+a new driver.
 
- drivers/gpu/drm/Kconfig             |   31 +
- drivers/gpu/drm/Makefile            |    1 +
- drivers/gpu/drm/drm_crtc_internal.h |    4 +
- drivers/gpu/drm/drm_drv.c           |    3 +
- drivers/gpu/drm/drm_panic.c         |  340 +++++++--
- drivers/gpu/drm/drm_panic_qr.rs     | 1003 +++++++++++++++++++++++++++
- include/drm/drm_rect.h              |   15 +
- 7 files changed, 1358 insertions(+), 39 deletions(-)
- create mode 100644 drivers/gpu/drm/drm_panic_qr.rs
+> 3. the number of registers and fields is somewhat reasonable, which
+> means we should be able to catch mistakes during review. And in case
+> one slip through, it's not the end of the world either because this
+> stays internal to the kernel driver. We'll either figure it out when
+> rust-ifying panthor components, or that simply means the register is
+> not used and the mistake is harmless until the register starts being
+> used
 
+So I think this depends on whether we want a "complete" set of registers
+in Rust. If we're just going to add registers when needed then fair
+enough, we can review the new registers against the C header (and/or the
+specs) to check they look correct. I'd really prefer not to merge a load
+of wrong Rust code which isn't used.
 
-base-commit: 19cc4b7d75b52df2b4fbb76428a6b0dda3d248bc
--- 
-2.45.2
+> 4. we're still unclear on how GPU registers should be exposed in rust,
+> so any script we develop is likely to require heavy changes every time
+> we change our mind
+
+This is the real crux of the matter to my mind. We don't actually know
+what we want in Rust, so we can't write the Rust. At the moment Daniel
+has generated (broken) Rust from the C. The benefit of that is that the
+script can be tweaked to generate a different form in the future if needed.
+
+Having a better source format such that the auto-generation can produce
+correct headers means that the Rust representation can change over time.
+There's even the possibility of improving the C. Specifically if the
+constants for the register values were specified better they could be
+type checked to ensure they are used with the correct register - I see
+Daniel has thought about this for Rust, it's also possible in C
+(although admittedly somewhat clunky).
+
+> For all these reasons, I think I'd prefer to have Daniel focus on a
+> proper rust abstraction to expose GPU registers and fields the rust-way,
+> rather than have him spend days/weeks on a script that is likely to be
+> used a couple times (if not less) before the driver is entirely
+> rewritten in rust. I guess the only interesting aspect remaining after
+> the conversion is done is conciseness of register definitions if we
+> were using some sort of descriptive format that gets converted to rust
+> code, but it comes at the cost of maintaining this script. I'd probably
+> have a completely different opinion if the Mali register layout was a
+> moving target, but it doesn't seem to be the case.
+
+That's fine - but if we're not generating the register definitions, then
+the Rust files need to be hand modified. I.e. fine to start with a quick
+hack of generating the skeleton (once), but then we (all) throw away the
+script and review it like a hand-written file. What Daniel posted as
+obviously machine generated as it had been confused by the (ambiguous) C
+file.
+
+But to me this conflicts with the statement that "we're still unclear on
+how GPU registers should be exposed in rust" - which implies that a
+script could be useful to make the future refactors easier.
+
+> FYI, Daniel has a python script parsing panthor_regs.h and generating
+> panthor_regs.rs out of it which he can share if you're interested.
+
+Thanks for sharing this Daniel. I think this demonstrates that the C
+source (at least as it currently stands) isn't a great input format.
+AFAICT we have two options:
+
+a) Improve the import format: either fix the C source to make it easier
+to parse, or better introduce a new format which can generate both Rust
+and C. Something along the lines of the arm64 sysreg format.
+
+b) Don't generate either the C or Rust headers. Hand-write the Rust so
+that it's idiomatic (and correct!). The review of the Rust headers will
+need to be more careful, but is probably quicker than reviewing/agreeing
+on a script. The major downside is if the Rust side is going to be
+refactored (possibly multiple times) as the changes could be a pain to
+review.
+
+I really don't mind which, but I do mind if we don't pick an option ;)
+
+Steve
 
