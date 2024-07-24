@@ -1,100 +1,91 @@
-Received: from mout.kundenserver.de (mout.kundenserver.de [212.227.126.130])
+Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3791F134DE;
-	Wed, 24 Jul 2024 14:20:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.126.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EECAC134DE;
+	Wed, 24 Jul 2024 14:27:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721830805; cv=none; b=ArFaXjqGW3RgSPgP9Xgp5KBkZ8aW/xS23Ys+NQcrBuk4XcYIGVBKBDrcdUmAZ20aICg9JlEojjN4SJcGXT+sNzBBDnkZ6i1OGc9M2mHt8tgeMO/k1bkfnaG9wmyufhgK/hwDl3K5hYIfS6guNmJY4buQi8F4F2SkSUSWf31IQqU=
+	t=1721831281; cv=none; b=i7dA30PM/YnY1DEc5+2BywurqSWcmjOom1NFkMd7x7fsfjjLPJ3A1JmkTXW7A7taYDVINCkLy56qD7X4EUa9MhbSXjG7GNvjNDW6vu1gj9Q6lpmRLFMCV3cslzIVw1K03C9PL0Ld3zm9PIYP7iAS3S/bwUAoJFH/ZZz82lqCd90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721830805; c=relaxed/simple;
-	bh=nduDyf2mVkpF0BlMR/ZRgIDySlcytzfUVo4agrG7pkk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=goYCO1hd7bI9VmysQj69E7uclAn/+aSwP9mIUfNz/6pkIGVvH3+rBadIlgegjYGbIphmWpF7Kg+9kW4CoE8NnIxqk8ZadyPuudVZf+MoluPw7+tteXU5f5u61k7SqjK6DRORoqFolELiwibXX4qlzEVZzmGFMP0/ypFIK1T/i0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=valentinobst.de; spf=pass smtp.mailfrom=valentinobst.de; dkim=pass (2048-bit key) header.d=valentinobst.de header.i=kernel@valentinobst.de header.b=ljto731+; arc=none smtp.client-ip=212.227.126.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=valentinobst.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=valentinobst.de
+	s=arc-20240116; t=1721831281; c=relaxed/simple;
+	bh=zJ3NyoiJsV3IvrPUmwyZbhqENJB71DAFnSh0D4rXbCs=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=IHwsaYnNaXptjZyXhMUvLLtg7LkAp+3SDWrbPyYI2RiPk+sF7woR6AGhEIAYYfc1X4K1SF0EhVTjY6usGBVvys89a5wI/FkclrZYefRSytKt4tvmI1kfKMV5WjUR/lXzGcq1uhAlaPai14395rr5sFfRfDsyjM1w3jEPTXRN6i0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=EgsqkOJb; arc=none smtp.client-ip=46.235.227.194
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=valentinobst.de header.i=kernel@valentinobst.de header.b="ljto731+"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=valentinobst.de;
-	s=s1-ionos; t=1721830772; x=1722435572; i=kernel@valentinobst.de;
-	bh=TMTfYWXz/lWprUxH5gsNGWYkVZFiwdN4scbxDLAk3i8=;
-	h=X-UI-Sender-Class:From:To:Cc:Subject:Date:Message-ID:In-Reply-To:
-	 References:MIME-Version:cc:content-transfer-encoding:content-type:
-	 date:from:message-id:mime-version:reply-to:subject:to;
-	b=ljto731+GNzYIE4Erea5pH4JNAlHOsQC2bHNyPispyUv4w88gHIiPFmr7DXrki5t
-	 sfbBD2WqbqQjXT2Vdqbr3J9HYioChQMHontLWDhCZMRhApQLm2F1h8KzaK8oLSeXb
-	 DF/7HHmlKFVcTlETHlNGOOse1pxUhtGlQBsKnixOzZknJIIeXLrRS93Elvn5JVaqG
-	 Wehs6ImnEYjdVugZyRUpjz5ReEwhHpai9sG3K8elG+sNRiiuAQJOBOFja0zTt0VIL
-	 sp6QP2ZuT7Di8pZj3w4RzDxNBMgm9V1Z2m5kbZkpgWFELlRDMFmWmWM1x43Mz2x00
-	 +qEQO85zc7aI+2q4Pw==
-X-UI-Sender-Class: 55c96926-9e95-11ee-ae09-1f7a4046a0f6
-Received: from archbook.guest.fkie.fraunhofer.de ([129.233.182.128]) by
- mrelayeu.kundenserver.de (mreue009 [213.165.67.97]) with ESMTPSA (Nemesis) id
- 1MF39M-1sUT6K0z5E-002t0d; Wed, 24 Jul 2024 16:19:32 +0200
-From: Valentin Obst <kernel@valentinobst.de>
-To: alexmantel93@mailbox.org
-Cc: a.hindborg@samsung.com,
-	alex.gaynor@gmail.com,
-	aliceryhl@google.com,
-	benno.lossin@proton.me,
-	bjorn3_gh@protonmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	linux-kernel@vger.kernel.org,
-	ojeda@kernel.org,
-	rust-for-linux@vger.kernel.org,
-	wedsonaf@gmail.com
-Subject: Re: [PATCH v2] rust: Implement the smart pointer `InPlaceInit` for `Arc`
-Date: Wed, 24 Jul 2024 16:19:27 +0200
-Message-ID: <20240724141927.8232-1-kernel@valentinobst.de>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240719192234.330341-1-alexmantel93@mailbox.org>
-References: <20240719192234.330341-1-alexmantel93@mailbox.org>
+	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="EgsqkOJb"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+	s=mail; t=1721831278;
+	bh=zJ3NyoiJsV3IvrPUmwyZbhqENJB71DAFnSh0D4rXbCs=;
+	h=Subject:From:In-Reply-To:Date:Cc:References:To:From;
+	b=EgsqkOJbNbE0RLaxYENLsuIakCPpc7evdDAJ64qCXrca4k42YMpsG6LNsiFJCtan7
+	 DVKkdh3kv6epe8b1ylnXxrtRmBtGJZ82FiPmiCmHIpe+FCQVtYGgwtiy8FHAi2+b+o
+	 njZqIQa9k/ORZxuKmtBfLnj55jn3IqQiC6zbGIi/YfvewDU+YQnzSXSzJ0wViMx3qx
+	 rvU3tolFqVXrfjxT/wxMwnrWZphgYi0jhf6ruHH4bg/6qkESrgr5VFlo+nsR5qCnpT
+	 qJOQSMFcTRRUx0+8IcwqPQZPED6yCbbRgH/i30ctzy0dy0j0FoxwNiesBl/uFKY2yY
+	 95aPBLNcJ6mcQ==
+Received: from smtpclient.apple (cola.collaboradmins.com [195.201.22.229])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	(Authenticated sender: dwlsalmeida)
+	by madrid.collaboradmins.com (Postfix) with ESMTPSA id 413E43780C11;
+	Wed, 24 Jul 2024 14:27:54 +0000 (UTC)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-Provags-ID: V03:K1:D6IlgZA0q+aRZgcfTT4F6NENMPE8lXcPzKcX3NZ6ZcWCUYcuQmp
- VQ56BXGWUZiV1utEvPSBaPQdxUuJnx9ZWovyBJJedJGBM6tnxOFBU99rhIOddmUHgwi83yy
- CrP5/83dvhSqAwh5IovaKBMuacr8Kxg+pA8EIY90jRIhcclr8/35kAGdh1sJkwZ78Ry6fDt
- GRFghKHplAkPJWgaA6KFg==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:40b+vTKip3I=;9tyIQlsFSwVpKAzkQg57ryTi/nf
- frN6nO78DmCZlx4xqgyH92xxApPIzCMdTlcPF4MaHs+AFHL+ZqQxeeCts/kDzn6fmmNRZb9Av
- ktqTkFcXNonJ+t/B/e7CckrWv+3WmdIyTYO8ae4HI9k39K50SM9iBa/7hyQ6brWiPNs/CBSgE
- tRVfMl0KkFCmJQekBJoGKH7Z/yvead1CgWbZap/tS6WxrhADljoz7nf/34jogodZjLnsqJv60
- nMtMyVoXtBOKgD7sIlU0bz6dU5P2HiYF/mOLE2nmJ2ZuUJCdMo9USCQe3rDtq7aVOmLpX5pFE
- pwItF547yoKH2HzUhdHd1vPkAU0+Ld91mJZ6/lP8jMj9ImlDXreX/lwly89MSAUkSaKkvyw2y
- Jq4hbotCyYDoOBnEacpSDmccdKj5WQWGaYxDe2k+n/6t6s3rHHxyY8s+NZCXwPZmF6TnlbyDj
- eo5+YZdht9GsRlJIRlkEv34YkIWXmEZGQjc4WP8qVO8LIU+gbtUkj8w6lhTongrPFMQ9Oi1mT
- syg0u8uwCUNSa4SXFLFWXo9S5IED27Mh6KI1o2WXE6bVyVszdqympkAvsw+RieZRYaKUIE4Ys
- NYbtjm1+/Olg4OH48gXbQYnXHNHgpNMtvwHkztVj12W6DeXKLJIuVRnyJWnvEcwqqlZclCsIY
- xVSLZcZKPR/Hfc3iJz/yEJYI6LCABB9XRTOVg40MD5QBGI8LSG2c9b30sn+2HYM7+mIDoDsdU
- dZ02ADwxkNcp1LXUp1QTLqY+Hx0he90/g==
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.600.62\))
+Subject: Re: [RFC PATCH] drm: panthor: add dev_coredumpv support
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <6b60a83d-8416-4cf8-b373-dc3c697c788a@arm.com>
+Date: Wed, 24 Jul 2024 11:27:40 -0300
+Cc: Rob Herring <robh@kernel.org>,
+ Boris Brezillon <boris.brezillon@collabora.com>,
+ Wedson Almeida Filho <wedsonaf@gmail.com>,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Danilo Krummrich <dakr@redhat.com>,
+ Lyude Paul <lyude@redhat.com>,
+ Asahi Lina <lina@asahilina.net>,
+ =?utf-8?Q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>,
+ David Airlie <airlied@gmail.com>,
+ rust-for-linux@vger.kernel.org,
+ dri-devel@lists.freedesktop.org,
+ linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: quoted-printable
+Message-Id: <1CF0978E-344C-4EC9-A221-4F19EBA4B988@collabora.com>
+References: <20240710225011.275153-1-daniel.almeida@collabora.com>
+ <fe84a028-01a8-4987-b1b7-141fb76d263c@arm.com>
+ <4344B22F-D859-4C64-A351-69FFB5208362@collabora.com>
+ <edda856e-3102-495a-8cc6-b79f5f114833@arm.com>
+ <20240723180642.73502856@collabora.com>
+ <6ce8fd12-b175-4a8f-8ea9-6221a555b69c@arm.com>
+ <CAL_Jsq+Dr5zO5MKEGq0dW9SuTuawaJMhHziFd73Ef_S1zbOkXw@mail.gmail.com>
+ <6b60a83d-8416-4cf8-b373-dc3c697c788a@arm.com>
+To: Steven Price <steven.price@arm.com>
+X-Mailer: Apple Mail (2.3774.600.62)
 
-[snip]
+Hi Steven!
 
-> @@ -1112,11 +1113,15 @@ unsafe fn __pinned_init(self, slot: *mut T) -> Result<(), E> {
->
->  /// Smart pointer that can initialize memory in-place.
->  pub trait InPlaceInit<T>: Sized {
-> +    /// A type might be pinned implicitly. An addtional `Pin<ImplicitlyPinned>` is useless. In
-> +    /// doubt, the type can just be set to `Pin<Self>`.
-> +    type PinnedResult;
-> +
+> On 24 Jul 2024, at 10:54, Steven Price <steven.price@arm.com> wrote:
+>=20
+> [1] Although I have to admit for a debugging feature like devcoredump
+> there might well be pressure to implement this in C as well purely so
+> that customer issues can be debugged=E2=80=A6
 
-[snip]
+FYI: I picked devcoredump because it was self-contained enough that I
+could make a proof-of-concept and get the discussion started. I think
+that, at least from this point of view, it has been successful, even if =
+we
+decide against a partial Rust driver! :)
 
-nit: Typo 's/addtional/additional'
+I was informed early on that delaying a debugging feature until the
+abstractions were merged would be a problem. Don=E2=80=99t worry: I can =
+rewrite
+the kernel part in C, that would indeed be a very small patch.=20
 
-Apart from that, I think "When in doubt, ..." or "If in doubt, ..." are
-more common choices than "In doubt, ...". But that's a question of style so
-feel free to ignore this comment.
-
-Rest looks good to me.
-
-	Best
-	Valentin
+=E2=80=94 Daniel=
