@@ -1,63 +1,42 @@
-Received: from madrid.collaboradmins.com (madrid.collaboradmins.com [46.235.227.194])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EECAC134DE;
-	Wed, 24 Jul 2024 14:27:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=46.235.227.194
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4621A2D030;
+	Wed, 24 Jul 2024 14:35:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721831281; cv=none; b=i7dA30PM/YnY1DEc5+2BywurqSWcmjOom1NFkMd7x7fsfjjLPJ3A1JmkTXW7A7taYDVINCkLy56qD7X4EUa9MhbSXjG7GNvjNDW6vu1gj9Q6lpmRLFMCV3cslzIVw1K03C9PL0Ld3zm9PIYP7iAS3S/bwUAoJFH/ZZz82lqCd90=
+	t=1721831746; cv=none; b=MgjKt39Pyz0/4GxfLiVZiWcg2Aq53p01pYEeR80J9hStZXP9TbuBO7w6JuGBfJpajF/Cc1YN6dloRydSyZAk+wTR5G51AX4WXK7DfFwhvBUWw00ihq5EFqPbvYwPk89v3WBoBCJmfAA8NVlFlw8iF/tDALoD2w1hlwneLJxtLXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721831281; c=relaxed/simple;
-	bh=zJ3NyoiJsV3IvrPUmwyZbhqENJB71DAFnSh0D4rXbCs=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=IHwsaYnNaXptjZyXhMUvLLtg7LkAp+3SDWrbPyYI2RiPk+sF7woR6AGhEIAYYfc1X4K1SF0EhVTjY6usGBVvys89a5wI/FkclrZYefRSytKt4tvmI1kfKMV5WjUR/lXzGcq1uhAlaPai14395rr5sFfRfDsyjM1w3jEPTXRN6i0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=EgsqkOJb; arc=none smtp.client-ip=46.235.227.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="EgsqkOJb"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1721831278;
-	bh=zJ3NyoiJsV3IvrPUmwyZbhqENJB71DAFnSh0D4rXbCs=;
-	h=Subject:From:In-Reply-To:Date:Cc:References:To:From;
-	b=EgsqkOJbNbE0RLaxYENLsuIakCPpc7evdDAJ64qCXrca4k42YMpsG6LNsiFJCtan7
-	 DVKkdh3kv6epe8b1ylnXxrtRmBtGJZ82FiPmiCmHIpe+FCQVtYGgwtiy8FHAi2+b+o
-	 njZqIQa9k/ORZxuKmtBfLnj55jn3IqQiC6zbGIi/YfvewDU+YQnzSXSzJ0wViMx3qx
-	 rvU3tolFqVXrfjxT/wxMwnrWZphgYi0jhf6ruHH4bg/6qkESrgr5VFlo+nsR5qCnpT
-	 qJOQSMFcTRRUx0+8IcwqPQZPED6yCbbRgH/i30ctzy0dy0j0FoxwNiesBl/uFKY2yY
-	 95aPBLNcJ6mcQ==
-Received: from smtpclient.apple (cola.collaboradmins.com [195.201.22.229])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	(Authenticated sender: dwlsalmeida)
-	by madrid.collaboradmins.com (Postfix) with ESMTPSA id 413E43780C11;
-	Wed, 24 Jul 2024 14:27:54 +0000 (UTC)
-Content-Type: text/plain;
-	charset=utf-8
+	s=arc-20240116; t=1721831746; c=relaxed/simple;
+	bh=LwwOw1AlNJTo8GqoEQmTYOtHMBJNfExRitQaWurXlm4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=J2n9LcQqNN2pwdXl3Mic2lfaB/DEG5TodV/yflG6yMWURVQqf4tGoVBIviPfnM8x/bZIRXqwFk2zfOHen84zJHgU/HtRvHHCLIRugdNAvDxwv6gov7AArAvsfQS8gazAkZpHX9cnYwJQ4amJlyXAfpFIbnMfx3xBTYd/wfhm/5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 16F73106F;
+	Wed, 24 Jul 2024 07:36:10 -0700 (PDT)
+Received: from [10.57.44.253] (unknown [10.57.44.253])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 0B2E63F5A1;
+	Wed, 24 Jul 2024 07:35:41 -0700 (PDT)
+Message-ID: <bba61792-a098-4ce0-81c4-e73b7dda3b79@arm.com>
+Date: Wed, 24 Jul 2024 15:35:39 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.600.62\))
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
 Subject: Re: [RFC PATCH] drm: panthor: add dev_coredumpv support
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <6b60a83d-8416-4cf8-b373-dc3c697c788a@arm.com>
-Date: Wed, 24 Jul 2024 11:27:40 -0300
+To: Daniel Almeida <daniel.almeida@collabora.com>
 Cc: Rob Herring <robh@kernel.org>,
  Boris Brezillon <boris.brezillon@collabora.com>,
- Wedson Almeida Filho <wedsonaf@gmail.com>,
- Miguel Ojeda <ojeda@kernel.org>,
- Danilo Krummrich <dakr@redhat.com>,
- Lyude Paul <lyude@redhat.com>,
- Asahi Lina <lina@asahilina.net>,
- =?utf-8?Q?Ma=C3=ADra_Canal?= <mcanal@igalia.com>,
- David Airlie <airlied@gmail.com>,
- rust-for-linux@vger.kernel.org,
- dri-devel@lists.freedesktop.org,
+ Wedson Almeida Filho <wedsonaf@gmail.com>, Miguel Ojeda <ojeda@kernel.org>,
+ Danilo Krummrich <dakr@redhat.com>, Lyude Paul <lyude@redhat.com>,
+ Asahi Lina <lina@asahilina.net>, =?UTF-8?Q?Ma=C3=ADra_Canal?=
+ <mcanal@igalia.com>, David Airlie <airlied@gmail.com>,
+ rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org,
  linux-kernel@vger.kernel.org
-Content-Transfer-Encoding: quoted-printable
-Message-Id: <1CF0978E-344C-4EC9-A221-4F19EBA4B988@collabora.com>
 References: <20240710225011.275153-1-daniel.almeida@collabora.com>
  <fe84a028-01a8-4987-b1b7-141fb76d263c@arm.com>
  <4344B22F-D859-4C64-A351-69FFB5208362@collabora.com>
@@ -66,26 +45,38 @@ References: <20240710225011.275153-1-daniel.almeida@collabora.com>
  <6ce8fd12-b175-4a8f-8ea9-6221a555b69c@arm.com>
  <CAL_Jsq+Dr5zO5MKEGq0dW9SuTuawaJMhHziFd73Ef_S1zbOkXw@mail.gmail.com>
  <6b60a83d-8416-4cf8-b373-dc3c697c788a@arm.com>
-To: Steven Price <steven.price@arm.com>
-X-Mailer: Apple Mail (2.3774.600.62)
+ <1CF0978E-344C-4EC9-A221-4F19EBA4B988@collabora.com>
+From: Steven Price <steven.price@arm.com>
+Content-Language: en-GB
+In-Reply-To: <1CF0978E-344C-4EC9-A221-4F19EBA4B988@collabora.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-Hi Steven!
+On 24/07/2024 15:27, Daniel Almeida wrote:
+> Hi Steven!
+> 
+>> On 24 Jul 2024, at 10:54, Steven Price <steven.price@arm.com> wrote:
+>>
+>> [1] Although I have to admit for a debugging feature like devcoredump
+>> there might well be pressure to implement this in C as well purely so
+>> that customer issues can be debugged…
+> 
+> FYI: I picked devcoredump because it was self-contained enough that I
+> could make a proof-of-concept and get the discussion started. I think
+> that, at least from this point of view, it has been successful, even if we
+> decide against a partial Rust driver! :)
 
-> On 24 Jul 2024, at 10:54, Steven Price <steven.price@arm.com> wrote:
->=20
-> [1] Although I have to admit for a debugging feature like devcoredump
-> there might well be pressure to implement this in C as well purely so
-> that customer issues can be debugged=E2=80=A6
+Indeed, thanks for posting this! It's provoked a good discussion.
 
-FYI: I picked devcoredump because it was self-contained enough that I
-could make a proof-of-concept and get the discussion started. I think
-that, at least from this point of view, it has been successful, even if =
-we
-decide against a partial Rust driver! :)
+> I was informed early on that delaying a debugging feature until the
+> abstractions were merged would be a problem. Don’t worry: I can rewrite
+> the kernel part in C, that would indeed be a very small patch. 
 
-I was informed early on that delaying a debugging feature until the
-abstractions were merged would be a problem. Don=E2=80=99t worry: I can =
-rewrite
-the kernel part in C, that would indeed be a very small patch.=20
+I'll leave that for you to decide. There's definitely nothing blocking a
+patch like this in C, but equally I'm not aware of anyone desperate for
+this support yet.
 
-=E2=80=94 Daniel=
+Thanks,
+
+Steve
+
