@@ -1,174 +1,111 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ot1-f51.google.com (mail-ot1-f51.google.com [209.85.210.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 495B0171BB;
-	Wed, 24 Jul 2024 16:15:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE98F15E5BB
+	for <rust-for-linux@vger.kernel.org>; Wed, 24 Jul 2024 17:05:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721837754; cv=none; b=VdzOfs9YBGH+LY0VgbcwnPQcH5PgVeB/dLWsfzO5lTij2TXrQCHDx/DmFKk+QVeXqZCZDjRcOhgkKxjFLh2fKC9kicUIk+nkJ9XuZtMglNJ4FecTSnMW3+UJLXRmGGOPvta2eQHs6lJFji0Ut68FGe9FHGArG6hTQ1jANAZwh2k=
+	t=1721840705; cv=none; b=O47+Fcv8CcO4wKAysLo95S1I0hxs7e476/yPWDHXiWLnUfWCGSDX0xqxlA7e22CP3agaSkgPA8V/IG18IwLOi0MYLBI6cOp5uu6i+zX9MSIZWgI8laZka+vdl4tknFnexf7zUzY9t7a+AmSFCvjNVlyh7Pcrf+5QD+FRzJj0D7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721837754; c=relaxed/simple;
-	bh=0/hiCSUjGonwjymNGnxXjWCGKGZIBkbETFeLBJg2AN8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iw80zdnRyEr42JVPJypXS/3+Pf5TIQ4IeywzKzGx4z8ECFQ3Ju106WPEhluYGYhhpGu60JAJ5wa6A7y++wsBei86LRotVL2dGCNP26KTxwHeHN2Jt7J0Rn/DXUPn+oB93wpJFL5Ydh8dHC9StT6xpXuSUIFY1aE7uUWOzS9Zou0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iIWbnI13; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1721840705; c=relaxed/simple;
+	bh=2Bz9LEUG5IRIBnqaD+mw+y/DTHSwXPPuolZ57c8CUOs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=JAclyO/uT9AmBFinVbKU6ykV6yeo2wUSp/Q79blMHA8YgePPyYkDxRunW5veNZ5Px/MnWJT2run4cZzuRHr4eeYplCk7gHzwDPWiEywt/icpm7JyT9C51sU763ZShmYU/Jhk5bec1K1nIVAWS5JM0TWosXi/nZIQalmucAnBhEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZTdDl021; arc=none smtp.client-ip=209.85.210.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iIWbnI13"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CD69C32781;
-	Wed, 24 Jul 2024 16:15:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721837753;
-	bh=0/hiCSUjGonwjymNGnxXjWCGKGZIBkbETFeLBJg2AN8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iIWbnI13o1EbyQjHmgIKaEm6OVbaYGHQybD2hbT9SGXPbrUlYXjRKib2SOre07brC
-	 7FrP0/HqIXgkAVIePValSU28CTaHDG2thvXooKBFllGJzNqqz/Cuu3SszdRubRsLQK
-	 BxJK6LLjASoJmsdeuBC0lkJbpz6RJ8REESmzSjdMr1WFuWmzbCTrIGrpMIGBMxmVVe
-	 2oK/F7AwbtMZ0x62QWB4tSGFn8/62xvhn3rHut44Csdy8JAawBJJvKYxHylWq8C/Gj
-	 91TCEDg6mVCCBvyzHtR3rhQkxAQdWHbR/At5euryV4eIML4QJeaTSEs1OaITZ2QcZV
-	 dAE1n2Mb18T1Q==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: Josh Poimboeuf <jpoimboe@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	Masahiro Yamada <masahiroy@kernel.org>
-Cc: x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nicolas@fjasle.eu>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	patches@lists.linux.dev,
-	linux-kbuild@vger.kernel.org
-Subject: [PATCH v2 6/6] objtool/kbuild/rust: enable objtool for Rust
-Date: Wed, 24 Jul 2024 18:14:59 +0200
-Message-ID: <20240724161501.1319115-7-ojeda@kernel.org>
-In-Reply-To: <20240724161501.1319115-1-ojeda@kernel.org>
-References: <20240724161501.1319115-1-ojeda@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZTdDl021"
+Received: by mail-ot1-f51.google.com with SMTP id 46e09a7af769-7037a208ff5so3987835a34.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 24 Jul 2024 10:05:03 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1721840703; x=1722445503; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2Bz9LEUG5IRIBnqaD+mw+y/DTHSwXPPuolZ57c8CUOs=;
+        b=ZTdDl0218icOzhXRxV8PNDcWewDcWDJg/7il0MJhV1wyoQFYzwubnpxXYSpPN7wLHK
+         lGRJflvoiynVCfiEXmhbWj3UGmPXd4sKCjfSDUDvLoGklojFsfYWulGVqKbN2eoJ1XE5
+         vrtayUVzRaAx199NcSPQJvC76x9UbDxEeyN5BvOpBx57vCCv0yBjUM3cyQlKDmMQ2UdX
+         jhn78hxdiJHy6sY0iRFa9P3T2za4KzTm8/YWIt4i+1MIzX0bRIzVi/Vj5qbLVOppapDp
+         uD1Pm49HmdFh2YfLkxnZwAgOgnSjEy3qaZEZK+N9aC3Kaaf35Yy50r/bpYZwfk4xKH0S
+         A6sg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1721840703; x=1722445503;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2Bz9LEUG5IRIBnqaD+mw+y/DTHSwXPPuolZ57c8CUOs=;
+        b=p0/zXexQsNJUSFpdjraHMcAw9Q/zodQEPHRd+JNiawUBw1AOKM9E/mRNaRIJRAhkD5
+         SCDLil6tWwPaR3VQZQO4PoeRsK2Zo54pC1m7x4AQ1QNBaJPdfWECqOtfFjD4gqaaswLc
+         odRMu1NUBWz8GlxJEVFxlys23kCXPk2ZSUksDP5UvjvncN7/UZTHdNdLZm8uMrtw5VyK
+         5isNAQhEyUSXwi47O8YAROPgsGNlyIcPoLKYBN8gpcQCRaAMmYcQqlxVl5ciGvR2OlPP
+         vN9gb3Q4ErsCCej46yF6x56fnH0qOheBwZXAM4rxRII8T+TFsqUDWfSPtQ0H+aaCSH6Q
+         G/SQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVHTA1vn9Y1apsiZU0ihb3k1Ikqv2dC0fIL5GiYwfhB6YK7TcePb4dFekxmGHsK+sZ38hj6mZv9vUUaYzlIm/INDV08O2+tYNFQ88rx0KA=
+X-Gm-Message-State: AOJu0Yy0CPV502heY5JAApCJgE9PS9zpEe//rwlaxWJszTy43hbeCl2N
+	mB9XM6sBjoV6r1jachctzqsIHt1wAiqhd8kkJB5YOs2AXFenLgQly6yjGEVfu5W6frNMCpTtllo
+	IN+URPk2Vke2lEivgs1cuS/sZf0DtKIxRrKe/Hs8zIelhyqbGwQ==
+X-Google-Smtp-Source: AGHT+IH5qu5Pd8+Wc1JJyMKIDTSnImI5ORd+5pnxuYabMb0yDNFZtWUMGOB1Qib+k8k3GVaD7dTdh2/YBJzda258UN4=
+X-Received: by 2002:a05:6830:6005:b0:703:67f8:9b3b with SMTP id
+ 46e09a7af769-7092e77b710mr418087a34.30.1721840702560; Wed, 24 Jul 2024
+ 10:05:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20240705111455.142790-1-nmi@metaspace.dk> <ZoxdRjpy2hRndqmc@bombadil.infradead.org>
+ <CANiq72=VU+PHfkiq8HokfeCEKvQoeBiUaB76XbW6s3f2zYmEtA@mail.gmail.com> <ZplNxxXS3RLULeI6@bombadil.infradead.org>
+In-Reply-To: <ZplNxxXS3RLULeI6@bombadil.infradead.org>
+From: Sami Tolvanen <samitolvanen@google.com>
+Date: Wed, 24 Jul 2024 17:04:25 +0000
+Message-ID: <CABCJKud=dfBKaCSqW2NbDCiN=EX0hGxkZ7H+dCd5mK_9NbwBVw@mail.gmail.com>
+Subject: Re: [PATCH] rust: add `module_params` macro
+To: Luis Chamberlain <mcgrof@kernel.org>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, 
+	Kris Van Hees <kris.van.hees@oracle.com>, Andreas Hindborg <nmi@metaspace.dk>, 
+	Miguel Ojeda <ojeda@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-modules@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Andreas Hindborg <a.hindborg@samsung.com>, Adam Bratschi-Kaye <ark.email@gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Now that we should be `objtool`-warning free, enable `objtool` for
-Rust too.
+Hi Luis,
 
-Before this patch series, we were already getting warnings under e.g. IBT
-builds, since those would see Rust code via `vmlinux`.
+On Thu, Jul 18, 2024 at 5:15=E2=80=AFPM Luis Chamberlain <mcgrof@kernel.org=
+> wrote:
+>
+> On Tue, Jul 09, 2024 at 12:08:16PM +0200, Miguel Ojeda wrote:
+> > On Mon, Jul 8, 2024 at 11:42=E2=80=AFPM Luis Chamberlain <mcgrof@kernel=
+.org> wrote:
+> > >
+> > > The rationale here is that a rust binding means commitment then also
+> > > from fresh blood to help co-maintain review C / Rust for exising code
+> > > when there is will / desire to collaborate from an existing C maintai=
+ner.
+> > >
+> > > I realize this may be a lot to ask, but I think this is one of the
+> > > responsible ways to ask to scale here.
+> >
+> > But, yes, I think Rust is a great opportunity to get new
+> > co-maintainers, as well as getting new developers involved with kernel
+> > maintenance in general, which could help with other issues too.
+>
+> Great well then my preference is to not have Rust bindings for modules
+> unless the Rust community can commit to not only a co-maintianer for
+> both C And Rust but also commit to not ditching the role; if a C/Rust
+> co-maintainer gets hits by a bus the Rust community would strive to
+> look for someone else to step in. This would proactively help with
+> upstream responsibilities understood by companies who hire developers
+> in this context. It is why I brought up Andreas's work, I already know
+> he has a lot of work to do and responsibilities. If not Andreas, who else
+> can step up to help with this, Sami?
 
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
----
- rust/Makefile          | 22 ++++++++++++++--------
- scripts/Makefile.build |  9 +++++++--
- 2 files changed, 21 insertions(+), 10 deletions(-)
+I agree, having a co-maintainer from the Rust community sounds like a
+good idea. It would be great if someone actually working on the
+bindings could step up, but if there are no other volunteers, I can
+certainly help with this.
 
-diff --git a/rust/Makefile b/rust/Makefile
-index bf05e65365da..1756238b641d 100644
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -344,7 +344,8 @@ quiet_cmd_rustc_library = $(if $(skip_clippy),RUSTC,$(RUSTC_OR_CLIPPY_QUIET)) L
- 		--crate-type rlib -L$(objtree)/$(obj) \
- 		--crate-name $(patsubst %.o,%,$(notdir $@)) $< \
- 		--sysroot=/dev/null \
--	$(if $(rustc_objcopy),;$(OBJCOPY) $(rustc_objcopy) $@)
-+	$(if $(rustc_objcopy),;$(OBJCOPY) $(rustc_objcopy) $@) \
-+	$(cmd_objtool)
- 
- rust-analyzer:
- 	$(Q)$(srctree)/scripts/generate_rust_analyzer.py \
-@@ -366,44 +367,49 @@ ifneq ($(or $(CONFIG_ARM64),$(and $(CONFIG_RISCV),$(CONFIG_64BIT))),)
- 		__ashlti3 __lshrti3
- endif
- 
-+define rule_rustc_library
-+	$(call cmd_and_fixdep,rustc_library)
-+	$(call cmd,gen_objtooldep)
-+endef
-+
- $(obj)/core.o: private skip_clippy = 1
- $(obj)/core.o: private skip_flags = -Wunreachable_pub
- $(obj)/core.o: private rustc_objcopy = $(foreach sym,$(redirect-intrinsics),--redefine-sym $(sym)=__rust$(sym))
- $(obj)/core.o: private rustc_target_flags = $(core-cfgs)
- $(obj)/core.o: $(RUST_LIB_SRC)/core/src/lib.rs FORCE
--	+$(call if_changed_dep,rustc_library)
-+	+$(call if_changed_rule,rustc_library)
- ifdef CONFIG_X86_64
- $(obj)/core.o: scripts/target.json
- endif
- 
- $(obj)/compiler_builtins.o: private rustc_objcopy = -w -W '__*'
- $(obj)/compiler_builtins.o: $(src)/compiler_builtins.rs $(obj)/core.o FORCE
--	+$(call if_changed_dep,rustc_library)
-+	+$(call if_changed_rule,rustc_library)
- 
- $(obj)/alloc.o: private skip_clippy = 1
- $(obj)/alloc.o: private skip_flags = -Wunreachable_pub
- $(obj)/alloc.o: private rustc_target_flags = $(alloc-cfgs)
- $(obj)/alloc.o: $(RUST_LIB_SRC)/alloc/src/lib.rs $(obj)/compiler_builtins.o FORCE
--	+$(call if_changed_dep,rustc_library)
-+	+$(call if_changed_rule,rustc_library)
- 
- $(obj)/build_error.o: $(src)/build_error.rs $(obj)/compiler_builtins.o FORCE
--	+$(call if_changed_dep,rustc_library)
-+	+$(call if_changed_rule,rustc_library)
- 
- $(obj)/bindings.o: $(src)/bindings/lib.rs \
-     $(obj)/compiler_builtins.o \
-     $(obj)/bindings/bindings_generated.rs \
-     $(obj)/bindings/bindings_helpers_generated.rs FORCE
--	+$(call if_changed_dep,rustc_library)
-+	+$(call if_changed_rule,rustc_library)
- 
- $(obj)/uapi.o: $(src)/uapi/lib.rs \
-     $(obj)/compiler_builtins.o \
-     $(obj)/uapi/uapi_generated.rs FORCE
--	+$(call if_changed_dep,rustc_library)
-+	+$(call if_changed_rule,rustc_library)
- 
- $(obj)/kernel.o: private rustc_target_flags = --extern alloc \
-     --extern build_error --extern macros --extern bindings --extern uapi
- $(obj)/kernel.o: $(src)/kernel/lib.rs $(obj)/alloc.o $(obj)/build_error.o \
-     $(obj)/libmacros.so $(obj)/bindings.o $(obj)/uapi.o FORCE
--	+$(call if_changed_dep,rustc_library)
-+	+$(call if_changed_rule,rustc_library)
- 
- endif # CONFIG_RUST
-diff --git a/scripts/Makefile.build b/scripts/Makefile.build
-index efacca63c897..72b1232b1f7d 100644
---- a/scripts/Makefile.build
-+++ b/scripts/Makefile.build
-@@ -288,10 +288,15 @@ rust_common_cmd = \
- # would not match each other.
- 
- quiet_cmd_rustc_o_rs = $(RUSTC_OR_CLIPPY_QUIET) $(quiet_modtag) $@
--      cmd_rustc_o_rs = $(rust_common_cmd) --emit=obj=$@ $<
-+      cmd_rustc_o_rs = $(rust_common_cmd) --emit=obj=$@ $< $(cmd_objtool)
-+
-+define rule_rustc_o_rs
-+	$(call cmd_and_fixdep,rustc_o_rs)
-+	$(call cmd,gen_objtooldep)
-+endef
- 
- $(obj)/%.o: $(obj)/%.rs FORCE
--	+$(call if_changed_dep,rustc_o_rs)
-+	+$(call if_changed_rule,rustc_o_rs)
- 
- quiet_cmd_rustc_rsi_rs = $(RUSTC_OR_CLIPPY_QUIET) $(quiet_modtag) $@
-       cmd_rustc_rsi_rs = \
--- 
-2.45.2
-
+Sami
