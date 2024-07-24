@@ -1,43 +1,43 @@
 Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C32013A41D
-	for <rust-for-linux@vger.kernel.org>; Wed, 24 Jul 2024 21:52:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A10C2127E0D;
+	Wed, 24 Jul 2024 22:01:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.134
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721857929; cv=none; b=O5xkjbi66i7EsMj7WFHm5E/rzUDt6Qav411lameAKP7IqQDPUlHe+FQlVOBVY96THiVCuvcIJ0nmSGsFKOypJtE/PEQyRdKOjWyMAtdxyl192+FMzHRI/RAQ7x1N0d0u32iYR+HiwfZ3+UAzthmTvmgjMqumRlIMnk2ymarqKKQ=
+	t=1721858520; cv=none; b=KTfnfKoxsq9rsy4NuZlVXBUFgCVkql5fsT/isiYHULXr12BCagDVswTgkaezyFEBf1llLV1C19pTG5/NwC65k/Zpgs9B746QDGAoZXvGv9AMI4uH0WZOcfLmW1SN/mlMnCQM0E5SxhKYFEsa/mzmY3l8hrvNJ5Z2FkadzwbOXVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721857929; c=relaxed/simple;
-	bh=oEOmOlfz6CpQP8CwygJ/qQgE6bITPukNt50FQUhP2N8=;
+	s=arc-20240116; t=1721858520; c=relaxed/simple;
+	bh=S1Dcl/aj7zeooOV/7eVXDKXqAlXYLBYJEg/YcpAH2to=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=B+5Eo0naXUmTFD2BQFZmAxzChbEjegxz3ebTOGW/UQyTx9Mldki9d+ktplyDmfHlCPrdTIO8dF1QE63PshyoNn2uJd3CbIbpnw0Edg3I+2uggHbX5mKFtny0VB2VsdIWD9cETvBMpGmIGBCvVX1pibZpJ9N2OfoGvMEccFDcV6Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=f690Mp/H; arc=none smtp.client-ip=185.70.40.134
+	 MIME-Version:Content-Type; b=OyKjvlGf4k3dmhHsES73CKSfpPwKERujE8nTB7qquTpz4L4/sx/YEpWEpJ2ePC3zy35DNVua0SDofJubrE4YiQ0H6fOpkEb1ykemxYugO91+hQGgAigb5yaCYiS2ZPyAZIg+PNBzv/0GGztl8CeoX0/SZcWvqhU8MCPfpjGFa5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=Epg7dnUZ; arc=none smtp.client-ip=185.70.40.134
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="f690Mp/H"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="Epg7dnUZ"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1721857924; x=1722117124;
-	bh=9wT9nGk/Kl4gZK0Tax5hk03ECjrHn3Gb2YCLJm9dH3M=;
+	s=protonmail; t=1721858516; x=1722117716;
+	bh=S1Dcl/aj7zeooOV/7eVXDKXqAlXYLBYJEg/YcpAH2to=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=f690Mp/HqT5J3u5HaDV08jrxv8C/kMBNcWHBh51benkj26V9zDr5FEZIi8Er6gOW0
-	 aVbQSNlkLGegZu9RoGuv+hosNnTKiENbyC/js6rE5aWJYtAD2hg6pD5BRhC+M+mZBE
-	 mRWhmSXDgbEeN0dal1v/tiEr9hbvgOdVW1c28qYy8prkG03iYTHn+QA+EnM+aELZp1
-	 aSg0Cbdae0xTP5/peyYM97iutSGteAU6l1Efc97G7R3toarBivkNrx/1vjlunbeXBT
-	 eCK2g4/jHZ0ojc8MHz2ap1jfeqglC+drOxqzOgTp9kOGBW1VesIsVYwqEVCV6XSwfT
-	 dzJYzhoCTIzAg==
-Date: Wed, 24 Jul 2024 21:51:57 +0000
-To: Miguel Ojeda <ojeda@kernel.org>, Josh Poimboeuf <jpoimboe@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, Masahiro Yamada <masahiroy@kernel.org>
+	b=Epg7dnUZFy+76QXsfAVXA0aewFnEPWvyDMjsY3f0N8gY2Jo8kQGqEBNQflK1VEICN
+	 v/Kz10R+eP2AoELNOn967z8aTkt2en1w2b2FWp3dcaNIlFpbmoFHRUB2USylc7ljNJ
+	 zI6Lo+pfgrrkISW7YiatFSJmDBhwG2pFQcruLrbJgEpD2J9o510XuFKu+SXCsvTqOa
+	 EDP4gYPNuauU0tPyhI6toUHx2YsZZbD16WThSUZdGbgsEPD3GepjENErN7iVuqD+A9
+	 yRot9TW6o1otDBVPzL34weZJNj1TM5jFMRuSUBpAMw14oBMXyI+y6LM0xChx+4+v20
+	 Pkc3IGH9VTsnQ==
+Date: Wed, 24 Jul 2024 22:01:50 +0000
+To: Boqun Feng <boqun.feng@gmail.com>
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, patches@lists.linux.dev, linux-kbuild@vger.kernel.org
-Subject: Re: [PATCH v2 0/6] Rust: support `CPU_MITIGATIONS` and enable `objtool`
-Message-ID: <e51f3b91-690d-4b72-9841-75a61684777d@proton.me>
-In-Reply-To: <20240724161501.1319115-1-ojeda@kernel.org>
-References: <20240724161501.1319115-1-ojeda@kernel.org>
+Cc: Jonathan Corbet <corbet@lwn.net>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, lkmm@lists.linux.dev
+Subject: Re: [RFC PATCH 1/5] doc: rust: create safety standard
+Message-ID: <289d66fb-a698-4d3b-b809-0e3305199a2c@proton.me>
+In-Reply-To: <Zprkf4FrBXgYmtgg@boqun-archlinux>
+References: <20240717221133.459589-1-benno.lossin@proton.me> <20240717221133.459589-2-benno.lossin@proton.me> <Zprkf4FrBXgYmtgg@boqun-archlinux>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 6af68a83f926bf6d26972ff1532292b9d003c3a4
+X-Pm-Message-ID: dc87c75b1e7cfa0abb30624c92582fc9d58573a0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,75 +47,113 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On 24.07.24 18:14, Miguel Ojeda wrote:
-> Hi,
+On 20.07.24 00:11, Boqun Feng wrote:
+> Hi Benno,
 >=20
-> This is an updated series to the CPU mitigations support for Rust. It
-> also has the patch to enable `objtool`, so that we can start running it
-> for Rust.
+> On Wed, Jul 17, 2024 at 10:12:29PM +0000, Benno Lossin wrote:
+> [...]
+>> @@ -0,0 +1,246 @@
+>> +.. SPDX-License-Identifier: GPL-2.0
+>> +.. highlight:: rust
+>> +
+>> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>> +Rust Safety Standard
+>> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
+>> +
+>> +Safe Rust code cannot have memory related bugs. This is a guarantee by =
+the Rust compiler. Of course
+>> +it is not without caveats: no compiler bugs, no bugs in the specificati=
+on etc. But the possibly most
+>> +important caveat is that of ``unsafe`` code. ``unsafe`` code needs to f=
+ollow certain rules in order
+>> +for safe code to enjoy the no-memory-bugs privilege. A simple example o=
+f such a rule is that
+>> +references must be valid for the duration of their lifetime. If any rul=
+e is violated, it can lead
+>> +to undefined behavior even in safe code! The term undefined behavior in=
+ Rust has a lot stricter
+>> +meaning than in C or C++: UB in Rust is totally forbidden. In C one mig=
+ht rely on the compiler
+>> +implementation to ensure correct code generation, but that is not the c=
+ase for Rust. You can read
 >=20
-> It would be nice to get this applied soon, so that we start being
-> warning-free (since we already get warnings under IBT builds via
-> `vmlinux.o`). I am happy to take it through the Rust tree if the x86 and
-> objtool maintainers give an Acked-by, or through any of the other trees,
-> as you prefer. Otherwise, I think at this point we would need to make
-> Rust exclusive to the mitigations, which isn't great.
+> I don't disagree with your intention here (i.e. we should seek for
+> UB-free program), however, during the discussion on memory model, I got
+> response like in [1]:
 >=20
-> With this series, again, x86_64 is warning-free with `objtool` enabled. I
-> tested `-O2`/`-Os` and the Rust versions we support under `-O2` (mainly
-> for the `noreturn` patch, which uses heuristics), as well as IBT vs. no
-> IBT (i.e.  running on individual object files vs. in `vmlinux`). I also
-> did an arm64 build.
+> =09... they are technically wrong (violating the C standard), but
+> =09practically well-tested. (and then above I added that there's
+> =09good reasons for why they don't go wrong: volatile compilation
+> =09strategies and reordering constraints relating volatile, inline
+> =09asm, and non-atomics make it so that this almost 'has to' work,
+> =09I think.)
 >=20
-> Testing is very welcome for this one!
->=20
-> Cheers,
-> Miguel
->=20
-> v2:
->   - Add patch to enable `objtool` for Rust.
->=20
->   - Add patch to list `noreturn` Rust functions (via heuristics) to avoid
->     warnings related to that.
->=20
->   - Make the `RETHUNK` patch not an RFC since the Rust compiler has
->   support for
->     it now.
->=20
->   - Update the names of the migitation config symbols, given the changes
->   at e.g.
->     commit 7b75782ffd82 ("x86/bugs: Rename CONFIG_MITIGATION_SLS =3D>
->     CONFIG_MITIGATION_SLS").
->=20
-> Miguel Ojeda (6):
->   rust: module: add static pointer to `{init,cleanup}_module()`
->   x86/rust: support MITIGATION_RETPOLINE
->   x86/rust: support MITIGATION_RETHUNK
->   x86/rust: support MITIGATION_SLS
->   objtool: list `noreturn` Rust functions
->   objtool/kbuild/rust: enable objtool for Rust
->=20
->  arch/x86/Makefile               |  7 ++++++-
->  rust/Makefile                   | 22 ++++++++++++--------
->  rust/macros/module.rs           | 12 +++++++++++
->  scripts/Makefile.build          |  9 +++++++--
->  scripts/generate_rust_target.rs | 15 ++++++++++++++
->  tools/objtool/check.c           | 36 ++++++++++++++++++++++++++++++++-
->  tools/objtool/noreturns.h       |  2 ++
->  7 files changed, 91 insertions(+), 12 deletions(-)
->=20
->=20
-> base-commit: b1263411112305acf2af728728591465becb45b0
-> --
-> 2.45.2
->=20
+> which suggests that we should rely on the compiler implementation to
+> ensure the "correct" code generation.
 
-I tested this series with a config that produces the objtool warnings on
-b126341 and it worked flawlessly. I also tried `-O2` and `-Os`:
+I disagree, why can't we get the specification to specify what we need?
+I would rather have a compiler and standard that are in sync and give us
+what we need, than have a standard that says we aren't allowed to do X,
+but compilers still allow you to do X. I don't understand why this is
+the case for C (I would bet this is is because of history/legacy).
 
-Tested-by: Benno Lossin <benno.lossin@proton.me>
+> Basically, since LKMM relies on a few things that C standard dosen't
+> say, e.g. votatile accesses on certain types are atomic, behaviors of
+> asm blocks, dependencies. Let alone we have data_race() where for
+> example, the diagnostic code accesses the shared variable out of the
+> core synchronization design.
+>=20
+> All of the above is difficult to implement purely UB-free in Rust IIUC.
+> Of course you could argue the ideal way is to teach Rust how to model
+> these useful operations/patterns as non-UBs, but that's a relatively
+> high task:
+>=20
+> =09Or do we want to go well beyond what happens in C, and actually
+> =09define a memory model that both has the performance
+> =09characteristics required by Linux, and can be defined precisely
+> =09as a language-level graph-based (or ideally operational)
+> =09concurrency memory model? This is a monumental task and a large
+> =09open problem, and should not be on the list of blocking issues
+> =09for anything that needs to get done in the next 5 years. ;)
+>=20
+> from Ralf [2].
+>=20
+> Again, I don't want to rely on compiler's behaviors on UBs, it's just
+> the langauge is not ready for some jobs and programmers have to be
+> "creative".
+
+I think this is something that we need to very carefully evaluate on a
+case-by-case basis. I think that with Rust we have a clean slate and can
+try from the beginning to ensure that there is no
+compiler-but-not-specification behavior that we rely upon. AFAIK the
+Rust standard moves quicker than the C standard, so we might be able to
+influence it more easily.
+
+So what I am trying to say is: let UB be an actually useful term of
+forbidden behavior. If you want to convince me otherwise, I think we
+should talk specifics and not in this general way, since "sometimes UB
+is actually ok" is something that I don't want to accept in Rust as a
+general statement. If we have an exception, it should have a damn good
+reason to be an exception and then still I don't like it one bit. Can't
+we just ask the Rust folks to implement some compiler magic for us that
+achieves what we need without relying one some weird compiler quirk?
 
 ---
 Cheers,
 Benno
+
+> Regards,
+> Boqun
+>=20
+> [1]: https://rust-lang.zulipchat.com/#narrow/stream/136281-t-opsem/topic/=
+.E2.9C.94.20Rust.20and.20the.20Linux.20Kernel.20Memory.20Model/near/4221932=
+12
+> [2]: https://github.com/rust-lang/unsafe-code-guidelines/issues/348#issue=
+comment-1221376388
+>=20
+>> +more about UB in Rust
+>> +`here <https://doc.rust-lang.org/reference/behavior-considered-undefine=
+d.html>`_.
+>> +
+> [...]
 
