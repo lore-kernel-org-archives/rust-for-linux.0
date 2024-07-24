@@ -1,68 +1,210 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A16F713C3F5;
-	Tue, 23 Jul 2024 18:56:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09AE161FF0
+	for <rust-for-linux@vger.kernel.org>; Wed, 24 Jul 2024 07:53:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721761014; cv=none; b=DzXY5xQKP625kEtELQr23O+VP8pFvin2D2Y9arQI56eWdDThvyjPbQsCLw+3QLOy4p3WV+DPzyWlts5ysRqolUzKyq7JB5hz0S12niOKEbGW4yuyzNLLL1VZIsC2IE7VMphLe86i8rrpfMBtgOMuVg0+i4+EOwBec2VSVNVi3G4=
+	t=1721807587; cv=none; b=S1ElHmV/I2KgUKFhnuIpGLDPH+ERUHSGpRWOiDYTAgdfQ/zr3+doRqQbXrjwhzWpl2iZA7JGDXl9XL8fNC7cIv1xciRnkY91qO93A7Kds1KZ/PeDcuVyIaAYxdUOCckwu1NYw8v5ccY0K0BwzQ2vzwagdQLIISvT5orV8Ugeees=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721761014; c=relaxed/simple;
-	bh=9xDIG+5djq1SZxXsgPZ7tEvUAZb128DiJUneX51wHQ0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OXfunBe8JnxA7Jggcodi78WGCC3K4uh4mbefxaRjSIkMoAvwEEw8biGN8IU2q0ULEmgzwbhd8v0W0tQv5dMtYKdRh8O1s9rTZgP/QP0gv37UuO+L8WBf3ibCoeflZDxSc4XKd8RrB2a6s5TBdTpubmKI256od8GM+MI+ZPy4hpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SW4TP8Z2; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1721807587; c=relaxed/simple;
+	bh=PN6XHbt7qUOy1FJqXqPZnfK/BTFGVqGCVzNA4IQc6Fk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=UvCs4qqOiBddMF2SnOZAfO5vQwoznzBhKPSfevCWArbaVHvtMOtU/TKXnBzXTEvJlv9s8cqn9CA5nLOHOnAX9+JcUJuUSwyOjTcpaLEUp9rgulc4p04+5S+4HzAIzW29YbE4pRtf0YIdRUyBhWuUcZx7WUxu29eS3SZFYsmfS/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=L1O+spRP; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SW4TP8Z2"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1928DC4AF09;
-	Tue, 23 Jul 2024 18:56:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721761014;
-	bh=9xDIG+5djq1SZxXsgPZ7tEvUAZb128DiJUneX51wHQ0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=SW4TP8Z2Oymu/eM3j+cijfcvWL4Cuo/SNCM1jWXdAIsUH+7m0anz2O/CWleNLZkk3
-	 B4js9jfDnkt0VOhJmikfY9AivmEtZmPAqGJqxj5r4PYOW4fqGK49/ua7ayWWZ08uiX
-	 lTo7ssnI9HeMXYoDhrwpOamuGmcq3nBJ9L6VPC/M/px+/vg8mXHV9vgvtYkJj7fFCD
-	 p3S3RMvsDy75TgKyoqEtvofBbw0hiYv86yGrMRIi8IXICzFRS7BW6n8Go8NDNJnEbu
-	 ZBs6wfp0Y48xtaIfccT9gqbKOxbugayw8ASIpkSzgh5Noq5q+bGiLk6FJtfPOlGXKi
-	 +LpuR/AnGZ38Q==
-Date: Tue, 23 Jul 2024 20:56:47 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Michal Hocko <mhocko@suse.com>
-Cc: cl@linux.com, penberg@kernel.org, rientjes@google.com,
-	iamjoonsoo.kim@lge.com, akpm@linux-foundation.org, vbabka@suse.cz,
-	roman.gushchin@linux.dev, 42.hyeyoo@gmail.com, urezki@gmail.com,
-	hch@infradead.org, kees@kernel.org, ojeda@kernel.org,
-	wedsonaf@gmail.com, mpe@ellerman.id.au, chandan.babu@oracle.com,
-	christian.koenig@amd.com, maz@kernel.org, oliver.upton@linux.dev,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v2 0/2] Align kvrealloc() with krealloc()
-Message-ID: <Zp_87x-PgtnZ3A-n@pollux>
-References: <20240722163111.4766-1-dakr@kernel.org>
- <Zp_8XVdxHLtf203L@tiehlicka>
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="L1O+spRP"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1721807584;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=wow2DOZEOdRXjdtqLL8h4gRN0xm65cnUGcVv4lm1nN8=;
+	b=L1O+spRPFts745/mPw8QVjC+mSruNsuFlZXFC/JuuXMOrungiw7yzMwmJZ6j/JPoLi0j/p
+	mwXFPPI68e90wBj47M89yQX9fID9esE3lh+TjEVEBU17O4qqKqGaVIlSMH7KoPIkhJZ/V+
+	t8Kgqf516V+9dvhNN6svntD8yXY4Ff0=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-85-Rc-3qBeWMMSO4XO0kHsccw-1; Wed,
+ 24 Jul 2024 03:52:57 -0400
+X-MC-Unique: Rc-3qBeWMMSO4XO0kHsccw-1
+Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1EB0319560BF;
+	Wed, 24 Jul 2024 07:52:54 +0000 (UTC)
+Received: from hydra.redhat.com (unknown [10.39.192.4])
+	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id CB5651955D45;
+	Wed, 24 Jul 2024 07:52:48 +0000 (UTC)
+From: Jocelyn Falempe <jfalempe@redhat.com>
+To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Daniel Vetter <daniel@ffwll.ch>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	"Bjorn Roy Baron" <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	linux-kernel@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	rust-for-linux@vger.kernel.org,
+	Danilo Krummrich <dakr@redhat.com>
+Cc: Jocelyn Falempe <jfalempe@redhat.com>
+Subject: [PATCH v5 1/4] drm/panic: Add integer scaling to blit()
+Date: Wed, 24 Jul 2024 09:48:42 +0200
+Message-ID: <20240724075227.541245-2-jfalempe@redhat.com>
+In-Reply-To: <20240724075227.541245-1-jfalempe@redhat.com>
+References: <20240724075227.541245-1-jfalempe@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Zp_8XVdxHLtf203L@tiehlicka>
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
 
-On Tue, Jul 23, 2024 at 08:54:21PM +0200, Michal Hocko wrote:
-> To both patches:
-> Acked-by: Michal Hocko <mhocko@suse.com>
-> 
-> Sorry, I was a bit dense today.
+Add a parameter to the blit function, to upscale the image.
+This is necessary to draw a QR code, otherwise, the pixels are
+usually too small to be readable by most QR code reader.
+It can also be used later for drawing fonts on high DPI display.
 
-No worries, thanks for reviewing!
+Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
+---
+ drivers/gpu/drm/drm_panic.c | 33 +++++++++++++++++++--------------
+ 1 file changed, 19 insertions(+), 14 deletions(-)
 
-- Danilo
+diff --git a/drivers/gpu/drm/drm_panic.c b/drivers/gpu/drm/drm_panic.c
+index 072752b658f0..940e25949fd5 100644
+--- a/drivers/gpu/drm/drm_panic.c
++++ b/drivers/gpu/drm/drm_panic.c
+@@ -251,20 +251,20 @@ static bool drm_panic_is_pixel_fg(const u8 *sbuf8, unsigned int spitch, int x, i
+ static void drm_panic_blit16(struct iosys_map *dmap, unsigned int dpitch,
+ 			     const u8 *sbuf8, unsigned int spitch,
+ 			     unsigned int height, unsigned int width,
+-			     u16 fg16)
++			     unsigned int scale, u16 fg16)
+ {
+ 	unsigned int y, x;
+ 
+ 	for (y = 0; y < height; y++)
+ 		for (x = 0; x < width; x++)
+-			if (drm_panic_is_pixel_fg(sbuf8, spitch, x, y))
++			if (drm_panic_is_pixel_fg(sbuf8, spitch, x / scale, y / scale))
+ 				iosys_map_wr(dmap, y * dpitch + x * sizeof(u16), u16, fg16);
+ }
+ 
+ static void drm_panic_blit24(struct iosys_map *dmap, unsigned int dpitch,
+ 			     const u8 *sbuf8, unsigned int spitch,
+ 			     unsigned int height, unsigned int width,
+-			     u32 fg32)
++			     unsigned int scale, u32 fg32)
+ {
+ 	unsigned int y, x;
+ 
+@@ -272,7 +272,7 @@ static void drm_panic_blit24(struct iosys_map *dmap, unsigned int dpitch,
+ 		for (x = 0; x < width; x++) {
+ 			u32 off = y * dpitch + x * 3;
+ 
+-			if (drm_panic_is_pixel_fg(sbuf8, spitch, x, y)) {
++			if (drm_panic_is_pixel_fg(sbuf8, spitch, x / scale, y / scale)) {
+ 				/* write blue-green-red to output in little endianness */
+ 				iosys_map_wr(dmap, off, u8, (fg32 & 0x000000FF) >> 0);
+ 				iosys_map_wr(dmap, off + 1, u8, (fg32 & 0x0000FF00) >> 8);
+@@ -285,24 +285,25 @@ static void drm_panic_blit24(struct iosys_map *dmap, unsigned int dpitch,
+ static void drm_panic_blit32(struct iosys_map *dmap, unsigned int dpitch,
+ 			     const u8 *sbuf8, unsigned int spitch,
+ 			     unsigned int height, unsigned int width,
+-			     u32 fg32)
++			     unsigned int scale, u32 fg32)
+ {
+ 	unsigned int y, x;
+ 
+ 	for (y = 0; y < height; y++)
+ 		for (x = 0; x < width; x++)
+-			if (drm_panic_is_pixel_fg(sbuf8, spitch, x, y))
++			if (drm_panic_is_pixel_fg(sbuf8, spitch, x / scale, y / scale))
+ 				iosys_map_wr(dmap, y * dpitch + x * sizeof(u32), u32, fg32);
+ }
+ 
+ static void drm_panic_blit_pixel(struct drm_scanout_buffer *sb, struct drm_rect *clip,
+-				 const u8 *sbuf8, unsigned int spitch, u32 fg_color)
++				 const u8 *sbuf8, unsigned int spitch, unsigned int scale,
++				 u32 fg_color)
+ {
+ 	unsigned int y, x;
+ 
+ 	for (y = 0; y < drm_rect_height(clip); y++)
+ 		for (x = 0; x < drm_rect_width(clip); x++)
+-			if (drm_panic_is_pixel_fg(sbuf8, spitch, x, y))
++			if (drm_panic_is_pixel_fg(sbuf8, spitch, x / scale, y / scale))
+ 				sb->set_pixel(sb, clip->x1 + x, clip->y1 + y, fg_color);
+ }
+ 
+@@ -312,18 +313,22 @@ static void drm_panic_blit_pixel(struct drm_scanout_buffer *sb, struct drm_rect
+  * @clip: destination rectangle
+  * @sbuf8: source buffer, in monochrome format, 8 pixels per byte.
+  * @spitch: source pitch in bytes
++ * @scale: integer scale, source buffer is scale time smaller than destination
++ *         rectangle
+  * @fg_color: foreground color, in destination format
+  *
+  * This can be used to draw a font character, which is a monochrome image, to a
+  * framebuffer in other supported format.
+  */
+ static void drm_panic_blit(struct drm_scanout_buffer *sb, struct drm_rect *clip,
+-			   const u8 *sbuf8, unsigned int spitch, u32 fg_color)
++			   const u8 *sbuf8, unsigned int spitch,
++			   unsigned int scale, u32 fg_color)
++
+ {
+ 	struct iosys_map map;
+ 
+ 	if (sb->set_pixel)
+-		return drm_panic_blit_pixel(sb, clip, sbuf8, spitch, fg_color);
++		return drm_panic_blit_pixel(sb, clip, sbuf8, spitch, scale, fg_color);
+ 
+ 	map = sb->map[0];
+ 	iosys_map_incr(&map, clip->y1 * sb->pitch[0] + clip->x1 * sb->format->cpp[0]);
+@@ -331,15 +336,15 @@ static void drm_panic_blit(struct drm_scanout_buffer *sb, struct drm_rect *clip,
+ 	switch (sb->format->cpp[0]) {
+ 	case 2:
+ 		drm_panic_blit16(&map, sb->pitch[0], sbuf8, spitch,
+-				 drm_rect_height(clip), drm_rect_width(clip), fg_color);
++				 drm_rect_height(clip), drm_rect_width(clip), scale, fg_color);
+ 	break;
+ 	case 3:
+ 		drm_panic_blit24(&map, sb->pitch[0], sbuf8, spitch,
+-				 drm_rect_height(clip), drm_rect_width(clip), fg_color);
++				 drm_rect_height(clip), drm_rect_width(clip), scale, fg_color);
+ 	break;
+ 	case 4:
+ 		drm_panic_blit32(&map, sb->pitch[0], sbuf8, spitch,
+-				 drm_rect_height(clip), drm_rect_width(clip), fg_color);
++				 drm_rect_height(clip), drm_rect_width(clip), scale, fg_color);
+ 	break;
+ 	default:
+ 		WARN_ONCE(1, "Can't blit with pixel width %d\n", sb->format->cpp[0]);
+@@ -479,7 +484,7 @@ static void draw_txt_rectangle(struct drm_scanout_buffer *sb,
+ 		for (j = 0; j < line_len; j++) {
+ 			src = get_char_bitmap(font, msg[i].txt[j], font_pitch);
+ 			rec.x2 = rec.x1 + font->width;
+-			drm_panic_blit(sb, &rec, src, font_pitch, color);
++			drm_panic_blit(sb, &rec, src, font_pitch, 1, color);
+ 			rec.x1 += font->width;
+ 		}
+ 	}
+-- 
+2.45.2
 
-> 
-> -- 
-> Michal Hocko
-> SUSE Labs
-> 
