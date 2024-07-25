@@ -1,159 +1,232 @@
-Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A10C2127E0D;
-	Wed, 24 Jul 2024 22:01:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.134
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 941C063A9;
+	Thu, 25 Jul 2024 01:33:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721858520; cv=none; b=KTfnfKoxsq9rsy4NuZlVXBUFgCVkql5fsT/isiYHULXr12BCagDVswTgkaezyFEBf1llLV1C19pTG5/NwC65k/Zpgs9B746QDGAoZXvGv9AMI4uH0WZOcfLmW1SN/mlMnCQM0E5SxhKYFEsa/mzmY3l8hrvNJ5Z2FkadzwbOXVY=
+	t=1721871195; cv=none; b=j4wLANvzBjSaU4r3KYVzSyyo90e9tcFGo0pth9xQK6RyqLquA3pNdim5X3N9yuN0fYzKxPoRrhAnWo4iU/Rwav5x+UFbPnxCvgfS8VUIwzABz8KygD4Fh9E5pqe9mvUvWEdyhpUlF87PQjhA+3+eV5EDo2Dir9RfQXmSWT/acuE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721858520; c=relaxed/simple;
-	bh=S1Dcl/aj7zeooOV/7eVXDKXqAlXYLBYJEg/YcpAH2to=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OyKjvlGf4k3dmhHsES73CKSfpPwKERujE8nTB7qquTpz4L4/sx/YEpWEpJ2ePC3zy35DNVua0SDofJubrE4YiQ0H6fOpkEb1ykemxYugO91+hQGgAigb5yaCYiS2ZPyAZIg+PNBzv/0GGztl8CeoX0/SZcWvqhU8MCPfpjGFa5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=Epg7dnUZ; arc=none smtp.client-ip=185.70.40.134
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1721871195; c=relaxed/simple;
+	bh=1nim2j8M0Yrs0+ovLhARcsZmGWpL0I38dTS9kWUc5qY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XAjmTVkNbMp5fju1ck9zmRPR+Tm+2vIvsLK7jwO4x7epHFtxk8IMPsgIVDIcDj9pK2hcejPS7C2oXr/J/QPqun7YO4JaxV/0CKxKbYNA5fo3dESxvfAa3HwCmbnH7OG114egcovrOSFaQL31w5vxme1mlZk6HX47rov0oZLx0Uk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MGdaW9B/; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="Epg7dnUZ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1721858516; x=1722117716;
-	bh=S1Dcl/aj7zeooOV/7eVXDKXqAlXYLBYJEg/YcpAH2to=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=Epg7dnUZFy+76QXsfAVXA0aewFnEPWvyDMjsY3f0N8gY2Jo8kQGqEBNQflK1VEICN
-	 v/Kz10R+eP2AoELNOn967z8aTkt2en1w2b2FWp3dcaNIlFpbmoFHRUB2USylc7ljNJ
-	 zI6Lo+pfgrrkISW7YiatFSJmDBhwG2pFQcruLrbJgEpD2J9o510XuFKu+SXCsvTqOa
-	 EDP4gYPNuauU0tPyhI6toUHx2YsZZbD16WThSUZdGbgsEPD3GepjENErN7iVuqD+A9
-	 yRot9TW6o1otDBVPzL34weZJNj1TM5jFMRuSUBpAMw14oBMXyI+y6LM0xChx+4+v20
-	 Pkc3IGH9VTsnQ==
-Date: Wed, 24 Jul 2024 22:01:50 +0000
-To: Boqun Feng <boqun.feng@gmail.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Jonathan Corbet <corbet@lwn.net>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, lkmm@lists.linux.dev
-Subject: Re: [RFC PATCH 1/5] doc: rust: create safety standard
-Message-ID: <289d66fb-a698-4d3b-b809-0e3305199a2c@proton.me>
-In-Reply-To: <Zprkf4FrBXgYmtgg@boqun-archlinux>
-References: <20240717221133.459589-1-benno.lossin@proton.me> <20240717221133.459589-2-benno.lossin@proton.me> <Zprkf4FrBXgYmtgg@boqun-archlinux>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: dc87c75b1e7cfa0abb30624c92582fc9d58573a0
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MGdaW9B/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EC2CC32781;
+	Thu, 25 Jul 2024 01:33:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1721871195;
+	bh=1nim2j8M0Yrs0+ovLhARcsZmGWpL0I38dTS9kWUc5qY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=MGdaW9B/JyElUwCITobjSzYQCrtnkGd0vcwO75HD57Cvg3pzBb1lwZCqwWS6mqFQL
+	 Ab6awp3AJ+C8KCzIey5NRQOPjCJFyrnrviwwhgin0l/CyYW8SQAvFzTB9EAxB+us56
+	 7lT1gcsEjzINxVilbzmpgtI2hr0SCTnEVrpszELMkRVOCeO4V4CaFBrCa+ZMrh06eG
+	 V9cDf7rkiCipy1Pw7RijZVSvCa77loEzWk4LjJVECgB00TGNE62EIAJ7Nl5XEemxvS
+	 dwfG8adtOA0GtQV3/qOarAsXziVkg6g7zy7f6AbK+qpWcKV2whLRf0ugw0EvPMUomH
+	 hIcsau0v3sIrw==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Niko Matsakis <niko@alum.mit.edu>,
+	Sid Askary <saskary@futurewei.com>,
+	=?UTF-8?q?Emilio=20Cobos=20=C3=81lvarez?= <emilio@crisal.io>
+Subject: [GIT PULL] Rust for 6.11
+Date: Thu, 25 Jul 2024 03:32:44 +0200
+Message-ID: <20240725013244.69532-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On 20.07.24 00:11, Boqun Feng wrote:
-> Hi Benno,
->=20
-> On Wed, Jul 17, 2024 at 10:12:29PM +0000, Benno Lossin wrote:
-> [...]
->> @@ -0,0 +1,246 @@
->> +.. SPDX-License-Identifier: GPL-2.0
->> +.. highlight:: rust
->> +
->> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->> +Rust Safety Standard
->> +=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D
->> +
->> +Safe Rust code cannot have memory related bugs. This is a guarantee by =
-the Rust compiler. Of course
->> +it is not without caveats: no compiler bugs, no bugs in the specificati=
-on etc. But the possibly most
->> +important caveat is that of ``unsafe`` code. ``unsafe`` code needs to f=
-ollow certain rules in order
->> +for safe code to enjoy the no-memory-bugs privilege. A simple example o=
-f such a rule is that
->> +references must be valid for the duration of their lifetime. If any rul=
-e is violated, it can lead
->> +to undefined behavior even in safe code! The term undefined behavior in=
- Rust has a lot stricter
->> +meaning than in C or C++: UB in Rust is totally forbidden. In C one mig=
-ht rely on the compiler
->> +implementation to ensure correct code generation, but that is not the c=
-ase for Rust. You can read
->=20
-> I don't disagree with your intention here (i.e. we should seek for
-> UB-free program), however, during the discussion on memory model, I got
-> response like in [1]:
->=20
-> =09... they are technically wrong (violating the C standard), but
-> =09practically well-tested. (and then above I added that there's
-> =09good reasons for why they don't go wrong: volatile compilation
-> =09strategies and reordering constraints relating volatile, inline
-> =09asm, and non-atomics make it so that this almost 'has to' work,
-> =09I think.)
->=20
-> which suggests that we should rely on the compiler implementation to
-> ensure the "correct" code generation.
+Hi Linus,
 
-I disagree, why can't we get the specification to specify what we need?
-I would rather have a compiler and standard that are in sync and give us
-what we need, than have a standard that says we aren't allowed to do X,
-but compilers still allow you to do X. I don't understand why this is
-the case for C (I would bet this is is because of history/legacy).
+This is the next round of the Rust support.
 
-> Basically, since LKMM relies on a few things that C standard dosen't
-> say, e.g. votatile accesses on certain types are atomic, behaviors of
-> asm blocks, dependencies. Let alone we have data_race() where for
-> example, the diagnostic code accesses the shared variable out of the
-> core synchronization design.
->=20
-> All of the above is difficult to implement purely UB-free in Rust IIUC.
-> Of course you could argue the ideal way is to teach Rust how to model
-> these useful operations/patterns as non-UBs, but that's a relatively
-> high task:
->=20
-> =09Or do we want to go well beyond what happens in C, and actually
-> =09define a memory model that both has the performance
-> =09characteristics required by Linux, and can be defined precisely
-> =09as a language-level graph-based (or ideally operational)
-> =09concurrency memory model? This is a monumental task and a large
-> =09open problem, and should not be on the list of blocking issues
-> =09for anything that needs to get done in the next 5 years. ;)
->=20
-> from Ralf [2].
->=20
-> Again, I don't want to rely on compiler's behaviors on UBs, it's just
-> the langauge is not ready for some jobs and programmers have to be
-> "creative".
+Later than usual, but all the commits have been in linux-next for about
+2 weeks.
 
-I think this is something that we need to very carefully evaluate on a
-case-by-case basis. I think that with Rust we have a clean slate and can
-try from the beginning to ensure that there is no
-compiler-but-not-specification behavior that we rely upon. AFAIK the
-Rust standard moves quicker than the C standard, so we might be able to
-influence it more easily.
+A trivial conflict with the block pull you already merged expected
+(resolved in linux -next). In addition, there is a small change to the
+C side from Arnd that akpm ack'ed.
 
-So what I am trying to say is: let UB be an actually useful term of
-forbidden behavior. If you want to convince me otherwise, I think we
-should talk specifics and not in this general way, since "sometimes UB
-is actually ok" is something that I don't want to accept in Rust as a
-general statement. If we have an exception, it should have a damn good
-reason to be an exception and then still I don't like it one bit. Can't
-we just ask the Rust folks to implement some compiler magic for us that
-achieves what we need without relying one some weird compiler quirk?
+Please pull for v6.11 -- thanks!
 
----
 Cheers,
-Benno
+Miguel
 
-> Regards,
-> Boqun
->=20
-> [1]: https://rust-lang.zulipchat.com/#narrow/stream/136281-t-opsem/topic/=
-.E2.9C.94.20Rust.20and.20the.20Linux.20Kernel.20Memory.20Model/near/4221932=
-12
-> [2]: https://github.com/rust-lang/unsafe-code-guidelines/issues/348#issue=
-comment-1221376388
->=20
->> +more about UB in Rust
->> +`here <https://doc.rust-lang.org/reference/behavior-considered-undefine=
-d.html>`_.
->> +
-> [...]
+The following changes since commit 256abd8e550ce977b728be79a74e1729438b4948:
 
+  Linux 6.10-rc7 (2024-07-07 14:23:46 -0700)
+
+are available in the Git repository at:
+
+  https://github.com/Rust-for-Linux/linux.git tags/rust-6.11
+
+for you to fetch changes up to b1263411112305acf2af728728591465becb45b0:
+
+  docs: rust: quick-start: add section on Linux distributions (2024-07-10 10:29:55 +0200)
+
+----------------------------------------------------------------
+Rust changes for v6.11
+
+The highlight is the establishment of a minimum version for the Rust
+toolchain, including 'rustc' (and bundled tools) and 'bindgen'.
+
+The initial minimum will be the pinned version we currently have, i.e.
+we are just widening the allowed versions. That covers 3 stable Rust
+releases: 1.78.0, 1.79.0, 1.80.0 (getting released tomorrow), plus beta,
+plus nightly.
+
+This should already be enough for kernel developers in distributions
+that provide recent Rust compiler versions routinely, such as Arch
+Linux, Debian Unstable (outside the freeze period), Fedora Linux,
+Gentoo Linux (especially the testing channel), Nix (unstable) and
+openSUSE Slowroll and Tumbleweed.
+
+In addition, the kernel is now being built-tested by Rust's pre-merge
+CI. That is, every change that is attempting to land into the Rust
+compiler is tested against the kernel, and it is merged only if it
+passes. Similarly, the bindgen tool has agreed to build the kernel in
+their CI too.
+
+Thus, with the pre-merge CI in place, both projects hope to avoid
+unintentional changes to Rust that break the kernel. This means that,
+in general, apart from intentional changes on their side (that we
+will need to workaround conditionally on our side), the upcoming Rust
+compiler versions should generally work.
+
+In addition, the Rust project has proposed getting the kernel into
+stable Rust (at least solving the main blockers) as one of its three
+flagship goals for 2024H2 [1].
+
+I would like to thank Niko, Sid, Emilio et al. for their help promoting
+the collaboration between Rust and the kernel.
+
+[1] https://rust-lang.github.io/rust-project-goals/2024h2/index.html#flagship-goals
+
+Toolchain and infrastructure:
+
+ - Support several Rust toolchain versions.
+
+ - Support several bindgen versions.
+
+ - Remove 'cargo' requirement and simplify 'rusttest', thanks to 'alloc'
+   having been dropped last cycle.
+
+ - Provide proper error reporting for the 'rust-analyzer' target.
+
+'kernel' crate:
+
+ - Add 'uaccess' module with a safe userspace pointers abstraction.
+
+ - Add 'page' module with a 'struct page' abstraction.
+
+ - Support more complex generics in workqueue's 'impl_has_work!' macro.
+
+'macros' crate:
+
+ - Add 'firmware' field support to the 'module!' macro.
+
+ - Improve 'module!' macro documentation.
+
+Documentation:
+
+ - Provide instructions on what packages should be installed to build
+   the kernel in some popular Linux distributions.
+
+ - Introduce the new kernel.org LLVM+Rust toolchains.
+
+ - Explain '#[no_std]'.
+
+And a few other small bits.
+
+----------------------------------------------------------------
+Alice Ryhl (4):
+      rust: alloc: fix typo in docs for GFP_NOWAIT
+      rust: alloc: add __GFP_HIGHMEM flag
+      rust: uaccess: add typed accessors for userspace pointers
+      rust: add abstraction for `struct page`
+
+Arnd Bergmann (1):
+      uaccess: always export _copy_[from|to]_user with CONFIG_RUST
+
+Aswin Unnikrishnan (2):
+      rust: add example for `alias` argument in `module` macro documentation
+      rust: fix datatype in docs for `module` macro arguments
+
+Dirk Behme (1):
+      docs: rust: no_std is used
+
+FUJITA Tomonori (1):
+      rust: add 'firmware' field support to module! macro
+
+John Hubbard (2):
+      kbuild: rust-analyzer: better error handling
+      kbuild: rust-analyzer: improve comment documentation
+
+Miguel Ojeda (12):
+      kbuild: rust: remove now-unneeded `rusttest` custom sysroot handling
+      rust: macros: indent list item in `paste!`'s docs
+      rust: init: simplify from `map_err` to `inspect_err`
+      rust: allow `dead_code` for never constructed bindings
+      rust: relax most deny-level lints to warnings
+      rust: simplify Clippy warning flags set
+      rust: start supporting several compiler versions
+      rust: avoid assuming a particular `bindgen` build
+      rust: work around `bindgen` 0.69.0 issue
+      rust: start supporting several `bindgen` versions
+      rust: warn about `bindgen` versions 0.66.0 and 0.66.1
+      docs: rust: quick-start: add section on Linux distributions
+
+Nathan Chancellor (1):
+      docs: rust: introduce the new kernel.org LLVM+Rust toolchains
+
+Roland Xu (1):
+      rust: kernel: make impl_has_work compatible with more generics
+
+Wedson Almeida Filho (1):
+      rust: uaccess: add userspace pointers
+
+ Documentation/process/changes.rst          |   9 +-
+ Documentation/rust/general-information.rst |   8 +
+ Documentation/rust/quick-start.rst         | 143 +++++++----
+ Documentation/rust/testing.rst             |   5 +-
+ Makefile                                   |  30 +--
+ include/linux/uaccess.h                    |  46 ++--
+ init/Kconfig                               |   5 +-
+ lib/usercopy.c                             |  30 +--
+ rust/Makefile                              |  74 +-----
+ rust/bindings/bindings_helper.h            |   2 +
+ rust/bindings/lib.rs                       |   1 +
+ rust/helpers.c                             |  34 +++
+ rust/kernel/alloc.rs                       |  17 +-
+ rust/kernel/init.rs                        |  13 +-
+ rust/kernel/lib.rs                         |   2 +
+ rust/kernel/page.rs                        | 250 +++++++++++++++++++
+ rust/kernel/types.rs                       |  64 +++++
+ rust/kernel/uaccess.rs                     | 388 +++++++++++++++++++++++++++++
+ rust/kernel/workqueue.rs                   |  16 +-
+ rust/macros/lib.rs                         |  45 +++-
+ rust/macros/module.rs                      |  18 +-
+ rust/uapi/lib.rs                           |   1 +
+ scripts/rust_is_available.sh               |  33 +--
+ scripts/rust_is_available_bindgen_0_66.h   |   2 +
+ scripts/rust_is_available_test.py          |  59 +++--
+ 25 files changed, 1059 insertions(+), 236 deletions(-)
+ create mode 100644 rust/kernel/page.rs
+ create mode 100644 rust/kernel/uaccess.rs
+ create mode 100644 scripts/rust_is_available_bindgen_0_66.h
