@@ -1,232 +1,107 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fhigh5-smtp.messagingengine.com (fhigh5-smtp.messagingengine.com [103.168.172.156])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 941C063A9;
-	Thu, 25 Jul 2024 01:33:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD1A218C3B;
+	Thu, 25 Jul 2024 04:57:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.156
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721871195; cv=none; b=j4wLANvzBjSaU4r3KYVzSyyo90e9tcFGo0pth9xQK6RyqLquA3pNdim5X3N9yuN0fYzKxPoRrhAnWo4iU/Rwav5x+UFbPnxCvgfS8VUIwzABz8KygD4Fh9E5pqe9mvUvWEdyhpUlF87PQjhA+3+eV5EDo2Dir9RfQXmSWT/acuE=
+	t=1721883452; cv=none; b=Dlb0QrnP/bb3SEml22P5kuO9XYyHJig089WVTsjgq0aB4j3BpnfyiXv5J9iSVVkyFwAASGqk3x2EfbBtACwPSfjyk8tfIb/Df73tZY6g94DYVOjUHrTyjJ9k/jGMX6xcDn4anliX1K/k/D0h0edbNlhMS2QyrISZDayOiJ7cS0Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721871195; c=relaxed/simple;
-	bh=1nim2j8M0Yrs0+ovLhARcsZmGWpL0I38dTS9kWUc5qY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=XAjmTVkNbMp5fju1ck9zmRPR+Tm+2vIvsLK7jwO4x7epHFtxk8IMPsgIVDIcDj9pK2hcejPS7C2oXr/J/QPqun7YO4JaxV/0CKxKbYNA5fo3dESxvfAa3HwCmbnH7OG114egcovrOSFaQL31w5vxme1mlZk6HX47rov0oZLx0Uk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MGdaW9B/; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1721883452; c=relaxed/simple;
+	bh=xszbH4goRWt0jsIYgEVr6nI8BiA9BMuNpDGdYj7KD3k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=HGu1x5kOZ4hNLp2GoICV1RRphYHKy7uLp8l7GdB1DAFz+Ns0zYHpgoHVbytMGfyUWhSITSgCToSvq/VjXW25LyKV9hvAQ1CSRlWK061Cllpmw37moHr7N/ohN7VtXUIdQW539YgzWqoLid/C131+gsKJJHcKCPAUOvXcSH3gAj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=iwDNzkFS; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=P+POIIER; arc=none smtp.client-ip=103.168.172.156
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MGdaW9B/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EC2CC32781;
-	Thu, 25 Jul 2024 01:33:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721871195;
-	bh=1nim2j8M0Yrs0+ovLhARcsZmGWpL0I38dTS9kWUc5qY=;
-	h=From:To:Cc:Subject:Date:From;
-	b=MGdaW9B/JyElUwCITobjSzYQCrtnkGd0vcwO75HD57Cvg3pzBb1lwZCqwWS6mqFQL
-	 Ab6awp3AJ+C8KCzIey5NRQOPjCJFyrnrviwwhgin0l/CyYW8SQAvFzTB9EAxB+us56
-	 7lT1gcsEjzINxVilbzmpgtI2hr0SCTnEVrpszELMkRVOCeO4V4CaFBrCa+ZMrh06eG
-	 V9cDf7rkiCipy1Pw7RijZVSvCa77loEzWk4LjJVECgB00TGNE62EIAJ7Nl5XEemxvS
-	 dwfG8adtOA0GtQV3/qOarAsXziVkg6g7zy7f6AbK+qpWcKV2whLRf0ugw0EvPMUomH
-	 hIcsau0v3sIrw==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="iwDNzkFS";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="P+POIIER"
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+	by mailfhigh.nyi.internal (Postfix) with ESMTP id BD2881140233;
+	Thu, 25 Jul 2024 00:57:28 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute3.internal (MEProxy); Thu, 25 Jul 2024 00:57:28 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm3; t=1721883448; x=1721969848; bh=ae2g/tIS5v
+	FUeEA0eBPcpC3xiZh+tD43rM1GfoFOZ5A=; b=iwDNzkFS78DR5gXbT+GXUpBXT5
+	rnubgiO365GLlfPaQnkUYn2F8MThsyIwnjsLIORY2JZ07OyEmbBRatDw1pQeRzSq
+	nlytT8mf48QcKBweBfrr/H/VKbZDC39pJyxDbRn3/f4mWdqTnds+6Zg92C+l5T1y
+	hHR0m41FjUQYYr88ktsHoEGFkqfudv+mzx5bW/ZWK41HYyBdnMyuzNJk/2bchC5y
+	ZJ5ElQD/bkle5L6wJGDb2hdgQvWzTGpZ9VHkGgo04TQuiGHFtcV9ndhccfYbK2jE
+	HtcZRJifK94ifvgyowFmWZCXIK8IRVQgGhU/6YtHnILksAi2AKJTt11v40WA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm3; t=1721883448; x=1721969848; bh=ae2g/tIS5vFUeEA0eBPcpC3xiZh+
+	tD43rM1GfoFOZ5A=; b=P+POIIER7sxpl+rseT8YRBmJU0KPMuqeka2m4fck6fXv
+	Gdg7F1Waac1LoI3PBerXgADxX6eNdb03C2XqBQjMOtCkyBqMpBC0sSDp9OhRfQ5y
+	GDETq0dlvJfyvw4WLTUEziU4pBTIfpnu/tpA3GVkpBHgg0xGIQ1Jg69+MMKyyGUN
+	Mz6qKDFNY0I/fUeRV6hevyc+ANK3D6fxHpVPkvvji1Uzghu2trUhEKCcGjNEwN4n
+	z3EiGvJ+S3tGNXNPcG2eVd2/6NMoGMQaVHh0nTo/dSq0gCrEzMW4wOLjdv0NH0bD
+	dUzO2jSJ1/xFmCtZqbiHQ8Uag2wYWWnkzwtX5+WKlQ==
+X-ME-Sender: <xms:ONuhZoW5UmMiW2sG-P8a8yq3fxL2oUGxtTVMq1LD-KgKRXvR5m49HQ>
+    <xme:ONuhZsmXeEFre-99sNVzKiGQZc9a4QeXpZCFZdy_HY-SVb-pvWzdinXanPsEhJ0iA
+    ZzmT069lcio_g>
+X-ME-Received: <xmr:ONuhZsaOY2sI-Mj_cyMC4Gp6Vdy-aDBbu06ag8IbnLZshcTI6P7NAXaVDBRUIKd26n8TuZf-Ju9tp3zlqyvQ-9hjwtjMcDxX25vEdw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddriedvgdeludcutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpefirhgvghcu
+    mffjuceoghhrvghgsehkrhhorghhrdgtohhmqeenucggtffrrghtthgvrhhnpeehgedvve
+    dvleejuefgtdduudfhkeeltdeihfevjeekjeeuhfdtueefhffgheekteenucevlhhushht
+    vghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehgrhgvgheskhhrohgrhh
+    drtghomhdpnhgspghrtghpthhtoheptd
+X-ME-Proxy: <xmx:ONuhZnUaFcM5At6qe-Tcx9aCFOQjhQ56MoFCuoMMq8mP8NFjuiZwFQ>
+    <xmx:ONuhZikm4RuI4ACwZMGKwy-yTof4vy_6cFy_2QZ1Ervl5ffhzm8v0A>
+    <xmx:ONuhZsex2GNuk6PUbDOhtIhn5L8wAymgfdc2igTUnjTn0ZodBbKeQA>
+    <xmx:ONuhZkENDhvl2jA4omr-AbF7W38PP_472A5QhKZM7R9XmG5JxN0Ahg>
+    <xmx:ONuhZl7S0-IAPBxLIQB_Jt4nkfFHE4NQ2wVsW7yEZAhQYoIdbfU_TqeZ>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 25 Jul 2024 00:57:27 -0400 (EDT)
+Date: Thu, 25 Jul 2024 06:57:25 +0200
+From: Greg KH <greg@kroah.com>
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Jonathan Corbet <corbet@lwn.net>, Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Niko Matsakis <niko@alum.mit.edu>,
-	Sid Askary <saskary@futurewei.com>,
-	=?UTF-8?q?Emilio=20Cobos=20=C3=81lvarez?= <emilio@crisal.io>
-Subject: [GIT PULL] Rust for 6.11
-Date: Thu, 25 Jul 2024 03:32:44 +0200
-Message-ID: <20240725013244.69532-1-ojeda@kernel.org>
+	Alice Ryhl <aliceryhl@google.com>, linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [RFC PATCH 1/5] doc: rust: create safety standard
+Message-ID: <2024072520-yogurt-zoology-3c5f@gregkh>
+References: <20240717221133.459589-1-benno.lossin@proton.me>
+ <20240717221133.459589-2-benno.lossin@proton.me>
+ <2024071845-neuron-figure-2e26@gregkh>
+ <59ebc5f2-7d58-49f5-83f1-c954705f3953@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <59ebc5f2-7d58-49f5-83f1-c954705f3953@proton.me>
 
-Hi Linus,
+On Wed, Jul 24, 2024 at 07:13:08PM +0000, Benno Lossin wrote:
+> On 18.07.24 06:45, Greg KH wrote:
+> > On Wed, Jul 17, 2024 at 10:12:29PM +0000, Benno Lossin wrote:
+> >> +Because unsoundness issues have the potential for allowing safe code to experience UB, they are
+> >> +treated similarly to actual bugs with UB. Their fixes should also be included in the  stable tree.
+> > 
+> > Odd extra space before "stable".
+> > 
+> > Also, link to the stable kernel rules here when you reference "stable
+> > tree"?  That will explain what you mean here.
+> 
+> Sure will add it, do you mean Documentation/process/stable-kernel-rules.rst?
 
-This is the next round of the Rust support.
-
-Later than usual, but all the commits have been in linux-next for about
-2 weeks.
-
-A trivial conflict with the block pull you already merged expected
-(resolved in linux -next). In addition, there is a small change to the
-C side from Arnd that akpm ack'ed.
-
-Please pull for v6.11 -- thanks!
-
-Cheers,
-Miguel
-
-The following changes since commit 256abd8e550ce977b728be79a74e1729438b4948:
-
-  Linux 6.10-rc7 (2024-07-07 14:23:46 -0700)
-
-are available in the Git repository at:
-
-  https://github.com/Rust-for-Linux/linux.git tags/rust-6.11
-
-for you to fetch changes up to b1263411112305acf2af728728591465becb45b0:
-
-  docs: rust: quick-start: add section on Linux distributions (2024-07-10 10:29:55 +0200)
-
-----------------------------------------------------------------
-Rust changes for v6.11
-
-The highlight is the establishment of a minimum version for the Rust
-toolchain, including 'rustc' (and bundled tools) and 'bindgen'.
-
-The initial minimum will be the pinned version we currently have, i.e.
-we are just widening the allowed versions. That covers 3 stable Rust
-releases: 1.78.0, 1.79.0, 1.80.0 (getting released tomorrow), plus beta,
-plus nightly.
-
-This should already be enough for kernel developers in distributions
-that provide recent Rust compiler versions routinely, such as Arch
-Linux, Debian Unstable (outside the freeze period), Fedora Linux,
-Gentoo Linux (especially the testing channel), Nix (unstable) and
-openSUSE Slowroll and Tumbleweed.
-
-In addition, the kernel is now being built-tested by Rust's pre-merge
-CI. That is, every change that is attempting to land into the Rust
-compiler is tested against the kernel, and it is merged only if it
-passes. Similarly, the bindgen tool has agreed to build the kernel in
-their CI too.
-
-Thus, with the pre-merge CI in place, both projects hope to avoid
-unintentional changes to Rust that break the kernel. This means that,
-in general, apart from intentional changes on their side (that we
-will need to workaround conditionally on our side), the upcoming Rust
-compiler versions should generally work.
-
-In addition, the Rust project has proposed getting the kernel into
-stable Rust (at least solving the main blockers) as one of its three
-flagship goals for 2024H2 [1].
-
-I would like to thank Niko, Sid, Emilio et al. for their help promoting
-the collaboration between Rust and the kernel.
-
-[1] https://rust-lang.github.io/rust-project-goals/2024h2/index.html#flagship-goals
-
-Toolchain and infrastructure:
-
- - Support several Rust toolchain versions.
-
- - Support several bindgen versions.
-
- - Remove 'cargo' requirement and simplify 'rusttest', thanks to 'alloc'
-   having been dropped last cycle.
-
- - Provide proper error reporting for the 'rust-analyzer' target.
-
-'kernel' crate:
-
- - Add 'uaccess' module with a safe userspace pointers abstraction.
-
- - Add 'page' module with a 'struct page' abstraction.
-
- - Support more complex generics in workqueue's 'impl_has_work!' macro.
-
-'macros' crate:
-
- - Add 'firmware' field support to the 'module!' macro.
-
- - Improve 'module!' macro documentation.
-
-Documentation:
-
- - Provide instructions on what packages should be installed to build
-   the kernel in some popular Linux distributions.
-
- - Introduce the new kernel.org LLVM+Rust toolchains.
-
- - Explain '#[no_std]'.
-
-And a few other small bits.
-
-----------------------------------------------------------------
-Alice Ryhl (4):
-      rust: alloc: fix typo in docs for GFP_NOWAIT
-      rust: alloc: add __GFP_HIGHMEM flag
-      rust: uaccess: add typed accessors for userspace pointers
-      rust: add abstraction for `struct page`
-
-Arnd Bergmann (1):
-      uaccess: always export _copy_[from|to]_user with CONFIG_RUST
-
-Aswin Unnikrishnan (2):
-      rust: add example for `alias` argument in `module` macro documentation
-      rust: fix datatype in docs for `module` macro arguments
-
-Dirk Behme (1):
-      docs: rust: no_std is used
-
-FUJITA Tomonori (1):
-      rust: add 'firmware' field support to module! macro
-
-John Hubbard (2):
-      kbuild: rust-analyzer: better error handling
-      kbuild: rust-analyzer: improve comment documentation
-
-Miguel Ojeda (12):
-      kbuild: rust: remove now-unneeded `rusttest` custom sysroot handling
-      rust: macros: indent list item in `paste!`'s docs
-      rust: init: simplify from `map_err` to `inspect_err`
-      rust: allow `dead_code` for never constructed bindings
-      rust: relax most deny-level lints to warnings
-      rust: simplify Clippy warning flags set
-      rust: start supporting several compiler versions
-      rust: avoid assuming a particular `bindgen` build
-      rust: work around `bindgen` 0.69.0 issue
-      rust: start supporting several `bindgen` versions
-      rust: warn about `bindgen` versions 0.66.0 and 0.66.1
-      docs: rust: quick-start: add section on Linux distributions
-
-Nathan Chancellor (1):
-      docs: rust: introduce the new kernel.org LLVM+Rust toolchains
-
-Roland Xu (1):
-      rust: kernel: make impl_has_work compatible with more generics
-
-Wedson Almeida Filho (1):
-      rust: uaccess: add userspace pointers
-
- Documentation/process/changes.rst          |   9 +-
- Documentation/rust/general-information.rst |   8 +
- Documentation/rust/quick-start.rst         | 143 +++++++----
- Documentation/rust/testing.rst             |   5 +-
- Makefile                                   |  30 +--
- include/linux/uaccess.h                    |  46 ++--
- init/Kconfig                               |   5 +-
- lib/usercopy.c                             |  30 +--
- rust/Makefile                              |  74 +-----
- rust/bindings/bindings_helper.h            |   2 +
- rust/bindings/lib.rs                       |   1 +
- rust/helpers.c                             |  34 +++
- rust/kernel/alloc.rs                       |  17 +-
- rust/kernel/init.rs                        |  13 +-
- rust/kernel/lib.rs                         |   2 +
- rust/kernel/page.rs                        | 250 +++++++++++++++++++
- rust/kernel/types.rs                       |  64 +++++
- rust/kernel/uaccess.rs                     | 388 +++++++++++++++++++++++++++++
- rust/kernel/workqueue.rs                   |  16 +-
- rust/macros/lib.rs                         |  45 +++-
- rust/macros/module.rs                      |  18 +-
- rust/uapi/lib.rs                           |   1 +
- scripts/rust_is_available.sh               |  33 +--
- scripts/rust_is_available_bindgen_0_66.h   |   2 +
- scripts/rust_is_available_test.py          |  59 +++--
- 25 files changed, 1059 insertions(+), 236 deletions(-)
- create mode 100644 rust/kernel/page.rs
- create mode 100644 rust/kernel/uaccess.rs
- create mode 100644 scripts/rust_is_available_bindgen_0_66.h
+Yes please.
