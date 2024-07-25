@@ -1,115 +1,110 @@
-Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26A683DBB7;
-	Thu, 25 Jul 2024 07:47:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D25918306B;
+	Thu, 25 Jul 2024 08:34:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721893649; cv=none; b=Cjujx3FL1+q8/wWwyuZxuswrQESE++y2X+6JV0P10ueXdz4ZiEd107X8rojkUb4hu/KbcEA6kswdjChb+1CwN3Xhoa3M5bvHfsvy3J0nB1NA/mEzUOgN0+CHfdslUYdvgz7uIunKiM7Rjz3r5gneA/HvqG7EDEdDnkpNzBrTKD8=
+	t=1721896461; cv=none; b=pOlnXxlgRsr+9vB+kRsTkKkTYlqCGXfuasxfHORwjHgR884jIAZoTZaW3lGPK2D8qhMKgwZHdlWrjmfmYlYV3kiubM7O57Va9TkJtHWMK+OxZnducVOEwlDQA33VOPGuVxyhxtNMifhivy4nXYEH2v9gl8mYKfzn+4ZOFQf+hKc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721893649; c=relaxed/simple;
-	bh=90friIihxzKBTsqDhvI/fTTRt+OmJpdawPIgELGbaME=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XStpQyKGNmyLXV6A+sKdxS7YGb+6nUmZs6ybDzs08VIAQf72pc5DOAqk+kHP61kQTMg/tGnj0QUBnCGpFaftI9N+aoh6jNzpZxwHArK/imAiQzl8f4hnqhCCIdxq1lo+ltRX4/Zhl/Aw1QVAlnaMcZAmwvCg5T8Ut5ws+rpNL+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=dGSchshJ; arc=none smtp.client-ip=185.70.40.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1721896461; c=relaxed/simple;
+	bh=CYUCSCiQT6qMGLB1JGeosw7d/cfIvnQ6FkH4y6K83xU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=A38DDquCwGj1EZ62ystR2hpKfhf0M/EDE8Cdii8g03lWGW3Xtrx+3/0VtQyCKTyVf9DqpixpWm/4cmSd5zWYQ4T1GOW60bnZzTB+SeY2HmCdmUO3Dzv2ZvDlbIPm5GgCC5x0VN0u8Uq1cQgjkJHg/u8jigdrQuQsmMoqFzvhztI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=Sn+bn/RV; arc=none smtp.client-ip=90.155.92.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="dGSchshJ"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1721893643; x=1722152843;
-	bh=miXt3IUXrmvbifOm8Nduijv7QdZ3CVgFQEo0EfymG6k=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=dGSchshJcFstBX2rDHy97as7r5bAMsyTwON7GxqFLBC9StlIWCYx5pn0B4enu40mb
-	 mKrb8tA/kuyS42vZjJvjMkUIMR4Cc3eTvpOmdJEer45Sx02wV9MefzXUZNmROwGB7U
-	 OnE/lo8xuLpoXt6Z4Q1ZLqa9ja84NJvIW+CpMPFS9TDDeE3SmReVqugIf8NQxW6yHp
-	 XSFd4xYOHlZcnWBaQ2+TitySvvMgFBQCahtTEwZk5XfQ74GF4tgIURrW4rqwyCStV6
-	 femjnLIOmnRFNUMeSZIepysP4dKJaqIJsBsiKFM1/8JD83ht+UpoZw/29Sk0mIh8iK
-	 NirgaJ3W9/A/g==
-Date: Thu, 25 Jul 2024 07:47:17 +0000
-To: Daniel Almeida <daniel.almeida@collabora.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Jonathan Corbet <corbet@lwn.net>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [RFC PATCH 2/5] doc: rust: safety standard: add examples
-Message-ID: <37d7b08d-f37a-45ff-9993-08fa7ed87443@proton.me>
-In-Reply-To: <B0E3D539-2D29-4BB4-9CB7-98672F590A57@collabora.com>
-References: <20240717221133.459589-1-benno.lossin@proton.me> <20240717221133.459589-3-benno.lossin@proton.me> <B0E3D539-2D29-4BB4-9CB7-98672F590A57@collabora.com>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 3da799b47d578a798619681f8a39d94fbb8240bb
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Sn+bn/RV"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=xwTaVS9IfoHYCFep7H/k6tGK/UXSddcW1U+BOJy+gcg=; b=Sn+bn/RVOIJrm5WNdtSg/ucRDJ
+	teM7hWACXY6wg8bCIpoTEIcWmM7wi1Zu7G+n2QNjjBIbkwtkW4vlWlh7w7MB8MtmdwZccAxDTuFLj
+	H66D71fcZNGI/sPd5ivUq+O4Qeeg9I0TvXId9H9Du2LsiU6hdOSKa2rG0RfBVSP3c3fqqDvStqx+9
+	C5Ta/JoUASoEsV223N7XaHxfNvmIFGNzt5tYVBzvgk5qs/l/Y2I2wm1n0FkZ4xg0uUlKLAa6xZwI+
+	sssPqAQiCF5qh34GXP3JaV9ryHh1/cJ8aA9nIAQkPxiu6lxSxQuMYP+p9ASMc/0y74bAiBEpOGES9
+	ioOeHa0Q==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1sWtvA-00000003yHl-14ck;
+	Thu, 25 Jul 2024 08:33:56 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 44C1D300310; Thu, 25 Jul 2024 10:33:55 +0200 (CEST)
+Date: Thu, 25 Jul 2024 10:33:55 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Gary Guo <gary@garyguo.net>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Josh Poimboeuf <jpoimboe@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	Masahiro Yamada <masahiroy@kernel.org>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nicolas@fjasle.eu>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev
+Subject: Re: [PATCH v2 5/6] objtool: list `noreturn` Rust functions
+Message-ID: <20240725083355.GD13387@noisy.programming.kicks-ass.net>
+References: <20240724161501.1319115-1-ojeda@kernel.org>
+ <20240724161501.1319115-6-ojeda@kernel.org>
+ <20240724203549.2db3e36f.gary@garyguo.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240724203549.2db3e36f.gary@garyguo.net>
 
-On 19.07.24 18:36, Daniel Almeida wrote:
->> On 17 Jul 2024, at 19:12, Benno Lossin <benno.lossin@proton.me> wrote:
->> +Sound ``unsafe`` Code
->> +---------------------
->> +
->> +The Importance of the API Boundary
->> +**********************************
->> +
->> +Is the following API sound?::
->> +
->> +    fn foo(r: &mut u32) {
->> +        let ptr: *mut u32 =3D r;
->> +        let val;
->> +        unsafe {
->> +            val =3D *ptr;
->> +            *ptr =3D 0;
->> +        }
->> +    }
->> +
->> +It better be sound, but one could argue that it is unsound, since one c=
-ould replace the ptr
->> +initialization by ``ptr =3D core::ptr::null_mut()``::
->> +
->> +    fn foo(r: &mut u32) {
->> +        let ptr: *mut u32 =3D core::ptr::null_mut();
->> +        let val;
->> +        unsafe {
->> +            val =3D *ptr;
->> +            *ptr =3D 0;
->> +        }
->> +    }
->> +
->> +But this modification is not allowed, since it goes beyond the API boun=
-dary of ``foo``. This way
->> +any ``unsafe`` code that relies on surrounding safe code could be shown=
- to be unsound. Instead one
->> +should only consider safe code using the API, in this case, there is no=
- way to make the code
->> +incorrect, since a reference is always valid to dereference during its =
-lifetime.
->=20
-> I find this paragraph a bit confusing. Maybe this can be clarified a bit =
-further?
+On Wed, Jul 24, 2024 at 08:35:49PM +0100, Gary Guo wrote:
+> > @@ -202,10 +216,30 @@ static bool __dead_end_function(struct objtool_file *file, struct symbol *func,
+> >  	if (!func)
+> >  		return false;
+> > 
+> > -	if (func->bind == STB_GLOBAL || func->bind == STB_WEAK)
+> > +	if (func->bind == STB_GLOBAL || func->bind == STB_WEAK) {
+> > +		/*
+> > +		 * Rust standard library functions.
+> > +		 *
+> > +		 * These are just heuristics -- we do not control the precise symbol
+> > +		 * name, due to the crate disambiguators (which depend on the compiler)
+> > +		 * as well as changes to the source code itself between versions.
+> > +		 */
+> > +		if (!strncmp(func->name, "_R", 2) &&
+> > +		    (str_ends_with(func->name, "_4core6option13unwrap_failed")			||
+> > +		     str_ends_with(func->name, "_4core6result13unwrap_failed")			||
+> > +		     str_ends_with(func->name, "_4core9panicking5panic")			||
+> > +		     str_ends_with(func->name, "_4core9panicking9panic_fmt")			||
+> > +		     str_ends_with(func->name, "_4core9panicking14panic_explicit")		||
+> > +		     str_ends_with(func->name, "_4core9panicking18panic_bounds_check")		||
+> > +		     strstr(func->name, "_4core9panicking11panic_const24panic_const_")		||
+> > +		     (strstr(func->name, "_4core5slice5index24slice_") &&
+> > +		      str_ends_with(func->name, "_fail"))))
+> > +			return true;
+> > +
 
-I will try to rephrase this, tell me if it helps. When checking if an
-API is sound, you are not allowed to change the code behind the API.
-That is because `unsafe` code often relies on the surrounding safe code
-to work properly. In the example above, safe code ensures that the raw
-pointer `ptr` is valid. This is OK (and also very necessary), since we
-expect people to be *aware* of the `unsafe` block and thus more
-carefully review the changes in surrounding safe code. If you have safe
-code that only interfaces with other safe code you don't need to be this
-careful.
+Perhaps add a helper function: is_rust_noreturn() or somesuch.
 
-Note that this heavily depends on where you put the API boundary. In our
-case, we generally have this boundary: driver code <-> `kernel` crate.
-But if your driver requires very specific helper code that does not fit
-into the `kernel` crate, then you might also have an API boundary there.
+> I wonder if we should use dwarf for this. There's DW_AT_noreturn which
+> tells us exactly what we want. This would also remove the need for the
+> hardcoded C symbol list. I do recognise that debug info is not required
+> for objtool though...
 
-If it doesn't help, then it would great to get some more detailed
-questions which part(s) you need help with.
+I think the slightly longer term plan here was to have noreturn.h
+generated from a DWARF build but still included verbatim in the objtool
+source, such that it works even on regular builds.
 
----
-Cheers,
-Benno
+(and can be augmented where the compilers are being 'funny')
 
+It's just that nobody has had time to implement this... you fancy giving
+this a stab?
