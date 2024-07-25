@@ -1,76 +1,102 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CF84381C8;
-	Thu, 25 Jul 2024 17:47:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97B1719DF77
+	for <rust-for-linux@vger.kernel.org>; Thu, 25 Jul 2024 18:06:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721929648; cv=none; b=XPi5cVGibqudvCqG9P2C+Rw/IGXRj0Bh5op+e89zHNZJqx56ktccfCxTPJxOiHJscIxfnFkCLCVmS6gCNkKdHu4fIasTrSWRI6NarI92MOVYFtccFKza7UpK9VZWinHeDo1LBfyab2qNgk8+VZaRAyLyvBahJRTdN6iEtFlwjtI=
+	t=1721930775; cv=none; b=D9N/Bqxfs9EmVRioiuWjVCNLoqzKfZ405AypH7s+jrcqgVZZVOSPInvva9Jx/ZR12Tnt/l73X0OeqCUF3rotQ9zWAtWdKxm3zSn54GJupRHivI4JJCKU+b7GJgxW8ZLQY131jKQEWqDvHMDM825qtLmcaZuZJyOCidgjNMhLpnA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721929648; c=relaxed/simple;
-	bh=brGtcMltNc5qyVro7QoNysIIShWxU3siffgKjgWUwjk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cE3nRk607gg5cuyaXvX/mhymYvdTJZhH5byplE+Of6jUTk0QfoXYyz8FUDJMClN2vos2DbIUhbbnPaUyflCz7pJL/oEzm/c41GYCeevtd8KmLG+ElxpT6W9GbfT7wohvg3mkkFtxmqqrgbRhCysXYbNF01gc8InVaU9UOM7HrGE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=L3xz1gwD; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1721930775; c=relaxed/simple;
+	bh=dPR++PvUoyCPmtYZdQ7LKhGBEs9H2po/2npLkA6LiAg=;
+	h=Date:To:From:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=EJCam7MMc/+aFx+PL2aZM93UU14fxIFUhXbo6DiLJy0eahlYK8iYzFaysHsG3RxOT8qhs0WgLqA0K0QyK7XkVF0SPEQ4i17fSiI0j/4Fuw0byymG75uFTjHIR+PTGac25O7j7SUryv5Ukb+PzWlCGL/gHKtvRLHgd9EAN1Ym/94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=Ppard+I/; arc=none smtp.client-ip=185.70.40.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="L3xz1gwD"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03F5CC32782;
-	Thu, 25 Jul 2024 17:47:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721929648;
-	bh=brGtcMltNc5qyVro7QoNysIIShWxU3siffgKjgWUwjk=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L3xz1gwDOOO5vZFDO+s0upF8qVfCQKyggUdqbRVP+e+AqWB8jltx3m+dICiPROAV+
-	 yh824BEe3mPEZ5N5zmgFBs9pQ4PkJVTicOOW5HesfpMOO6s0ouGXWyFshfs7betdJg
-	 xknBzZQNfHZknZ5ejt9H09pr9rxyIlCh90wOOZq17JJVD2lMOh3xQn+iNH+GDZfQre
-	 mzavMShTcOmEuRcs2gPdq7Nq0mPH4exsKRQJWRIKFQt5Bp57HKDboQezsrb5Dyev8z
-	 r6vJ6FDLB48hn4oROBP5RoLq50HhFr7mfR/7dIqrdqyaz+kBNrO/2IHNa/NS6tv4pl
-	 QLc9XmfzP+oYg==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: gary@garyguo.net
-Cc: a.hindborg@samsung.com,
-	alex.gaynor@gmail.com,
-	aliceryhl@google.com,
-	benno.lossin@proton.me,
-	bjorn3_gh@protonmail.com,
-	boqun.feng@gmail.com,
-	bp@alien8.de,
-	dave.hansen@linux.intel.com,
-	hpa@zytor.com,
-	jpoimboe@kernel.org,
-	linux-kernel@vger.kernel.org,
-	masahiroy@kernel.org,
-	mingo@redhat.com,
-	nathan@kernel.org,
-	nicolas@fjasle.eu,
-	ojeda@kernel.org,
-	patches@lists.linux.dev,
-	peterz@infradead.org,
-	rust-for-linux@vger.kernel.org,
-	tglx@linutronix.de,
-	wedsonaf@gmail.com,
-	x86@kernel.org
-Subject: Re: Re: [PATCH v2 1/6] rust: module: add static pointer to `{init,cleanup}_module()`
-Date: Thu, 25 Jul 2024 19:47:13 +0200
-Message-ID: <20240725174713.103150-1-ojeda@kernel.org>
-In-Reply-To: <20240724204649.7de3ffed.gary@garyguo.net>
-References: <20240724204649.7de3ffed.gary@garyguo.net>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="Ppard+I/"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1721930771; x=1722189971;
+	bh=v1XSfOC46SQD5J7rzSfoiVRwNcJgL8NSNBFuFhZJcM4=;
+	h=Date:To:From:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=Ppard+I/1RXQyHNfh5sqm6pMuNzjFOU1Rs1HSv5P2qlxOXaOxVOF7GO4PCR70qvXN
+	 tGtfMlaF+cGN6BmX/ODBRYABaIHYDa/NwBazJhT4lb4Dp/WSBHDJ/us2tQTJf2+yCC
+	 yUZFObvleQpPfLTFfgYK8y8wikGwrf3HLPGOAMeZqfbdehv0xZPZ0YaO+cVyyNu4wY
+	 c8MVd18BexLv2TVMn7ZSiI5wkiS20Q2W83bYJDsSMr0Nw95dRVFdTAORtj1FtJoOAW
+	 HL7yT0J8/9qjg8T49vReWZ3BtGj0977sVo3GLVgYoA4v9flfdbcMp7iYZwNk54ycs8
+	 3jSxacxQWhvMw==
+Date: Thu, 25 Jul 2024 18:06:06 +0000
+To: Alex Mantel <alexmantel93@mailbox.org>, ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@samsung.com, aliceryhl@google.com, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+From: Benno Lossin <benno.lossin@proton.me>
+Subject: Re: [PATCH v2] rust: Implement the smart pointer `InPlaceInit` for `Arc`
+Message-ID: <27dad59c-ba8a-43c4-a288-870cf29fa131@proton.me>
+In-Reply-To: <20240719192234.330341-1-alexmantel93@mailbox.org>
+References: <20240719192234.330341-1-alexmantel93@mailbox.org>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: 8bedcef49daeb2c7699dc9d626a3c03a5b899e97
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, 24 Jul 2024 20:46:49 +0100 Gary Guo <gary@garyguo.net> wrote:
->
-> Should this be in section `.discard.addressable` instead?
+On 19.07.24 21:22, Alex Mantel wrote:
+> diff --git a/rust/kernel/init.rs b/rust/kernel/init.rs
+> index 68605b633..46f50cf12 100644
+> --- a/rust/kernel/init.rs
+> +++ b/rust/kernel/init.rs
+> @@ -213,6 +213,7 @@
+>  use crate::{
+>      alloc::{box_ext::BoxExt, AllocError, Flags},
+>      error::{self, Error},
+> +    sync::Arc,
+>      sync::UniqueArc,
+>      types::{Opaque, ScopeGuard},
+>  };
+> @@ -1112,11 +1113,15 @@ unsafe fn __pinned_init(self, slot: *mut T) -> Re=
+sult<(), E> {
+>=20
+>  /// Smart pointer that can initialize memory in-place.
+>  pub trait InPlaceInit<T>: Sized {
+> +    /// A type might be pinned implicitly. An addtional `Pin<ImplicitlyP=
+inned>` is useless. In
+> +    /// doubt, the type can just be set to `Pin<Self>`.
 
-No, we need to mimic the call to `___ADDRESSABLE()` (i.e. the one with
-3 underscores, not 2), which passes `__{init,exit}data`.
+This comment should better describe the purpose of this associated type,
+the first line could be "Pinned version of `Self`" then (with an empty
+line in between) you could write more explanatory stuff. I would also
+rephrase what you have above, for example: "If a type already implicitly
+pins its pointee, `Pin<Self>` is unnecessary. In this case use `Self`,
+otherwise just use `Pin<Self>`.".
 
-By the way, thanks for the reviews Gary!
+> +    type PinnedResult;
 
+I don't really like the name for this, since it is not a result. What do
+you think of `PinnedSelf`?
+
+Otherwise this looks good!
+
+---
 Cheers,
-Miguel
+Benno
+
+> +
+>      /// Use the given pin-initializer to pin-initialize a `T` inside of =
+a new smart pointer of this
+>      /// type.
+>      ///
+>      /// If `T: !Unpin` it will not be able to move afterwards.
+> -    fn try_pin_init<E>(init: impl PinInit<T, E>, flags: Flags) -> Result=
+<Pin<Self>, E>
+> +    fn try_pin_init<E>(init: impl PinInit<T, E>, flags: Flags) -> Result=
+<Self::PinnedResult, E>
+>      where
+>          E: From<AllocError>;
+>=20
+
