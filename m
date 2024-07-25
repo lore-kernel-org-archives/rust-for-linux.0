@@ -1,95 +1,81 @@
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0377713AA36;
-	Thu, 25 Jul 2024 09:53:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15751198A2E;
+	Thu, 25 Jul 2024 11:42:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721901241; cv=none; b=YHEI91GfcGbOaT++PKgrISm0aeDaeRIfJE/DJ/8ZHZPY2iPtZWt56Q/y0mXKIm8lavvblZV21GJU6h0E7z60+ORsB1N3fqczp3SgBR6znu08DS/aHA7Z6d06IxBrH9X9I6+NdKfPUDBsFBFDrSKwwok6+7G2JopHbAfjOBQNhVw=
+	t=1721907771; cv=none; b=MgfgyJgwMjXBr6YqWTmSGJy4DSH6gt3dFuRoFIlHbtBg8kJja9WjGGxj148h2Ou54XjOSQjIyUbSDskmlur/FGwA19KrcyGdB15lR8c8uOYpjq8LtbSS67ih8PPiaXFYwqZgimJTYw5uAlViCHx1WZDv4dwEBrBqcSq0KQdPdbA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721901241; c=relaxed/simple;
-	bh=vSW6nap/LLM1u8M4rcd+ljLXNqWVV429u9e9s/OZH8w=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XPV5VifI0ADEqfPPc1SM+FX31r2juyBmCvail3f7pOQQ7M21A1Dz8SyuEg8X8q3p1ZfgHYkpjWvJRyA+T2Emxn/gryLg+zaJbnCacziRMX3yHGr+sFEFQEnoH6n/I/jPd+14TN2WdJE5vIA1LZ40aEdtAzFzsIOZXIrHQYDHY2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hhzaWYcA; arc=none smtp.client-ip=209.85.210.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hhzaWYcA"
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-70d138e06e3so622219b3a.2;
-        Thu, 25 Jul 2024 02:53:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1721901239; x=1722506039; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vSW6nap/LLM1u8M4rcd+ljLXNqWVV429u9e9s/OZH8w=;
-        b=hhzaWYcAEJn00jdJ8sdP4YdQL7NKXcJnEAbMWu7p3xB9QG6ZX7DKATEzfKcZalroYR
-         E3r64DgvluL17LWwELCVQRHfoVcozSBZLFA1wuy4KsTH+uKqkHZaVEP1zhkuzcUD5UY/
-         jvLIHABUBVCI/1KZWssqMgoq1WT3zKOzAT7NfBTAwXlS24PIbxIER7GATwMNE1dOPsGm
-         ugkXJqHex16OXoYRyNzFbLg+gTTOM2BqO54mHM3Dq5Xe2kGJZtMFG6qFqEPWg/37zU5o
-         Li3VJyZW1/tMxWPXWyW7qmd4lmlPata6t2WYsdTvuZr3wdLOZzXoxblVI6HgL2Tg0/zQ
-         cXRA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721901239; x=1722506039;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=vSW6nap/LLM1u8M4rcd+ljLXNqWVV429u9e9s/OZH8w=;
-        b=BffFH9dEvOLE9lWh6fFknkzoArVcl5eJ74U9wFXN36SzdWmOcZDOwb2SF0ST8sfWhO
-         xK5szZMZTuNP/YQXJh1iTvHJnAlGrnY02yqJX0R5fgskB8HHnV5+GSsBt+cMu5KqZZSW
-         vT5GVDk9YaJ1vu117CRTpM17shz4yquOdJkdT3I+kKR7gIsmpa5WI+T5V9s+wtsYCNQk
-         k9gaLB22PnTAnkApJoe9wculSzv1/AC02fNa7nOXbVsbxGkQjxCewkB2UnPponBuf9hc
-         eAOzjfox3Jxfgdtd4crivoMcczSu6E1JG3yFLi2w4muDeZjv4b+d3roLEVFUI8rtq0oU
-         HZRw==
-X-Forwarded-Encrypted: i=1; AJvYcCVu2g5y4U4EnUx28+b/nd+N0+3yFQhnd1oxRDj+5QywBGDtik4p8mr9aBOmwY09KXrlN09mA6V6krbellNKPlurvc5UumvQT3zSipXuHaZYQto5sHtt6WZBVObj0+jGtpFqnbEN9tGwJ7weKAAHS2hUvmxANsrOZaW13NKhrZzLFOv6SQgPnST6hBI=
-X-Gm-Message-State: AOJu0YynOE8QZIXfZiNlBR44DkZf046VzguqQreeofEoQLPRToZ5DZ1P
-	zJOp+cZRW7bzVc/4Lqmlpm2gBUURvrGDSpbXAuqeOdyOwTVOodMRjzxJgkCTfnJYRs1K+o1SxsJ
-	xNYqdsF0M5voRhT/4XcFj4QrLTK0=
-X-Google-Smtp-Source: AGHT+IFbiQ1IXRG1NhZZZm4Tze6bWl7R6efpC801avvuhU8GxSoCB2LAvGFLfv5GxuroQt/KFwaKLZvWVx9chw7uKtY=
-X-Received: by 2002:a05:6a00:1ac7:b0:705:97b3:4605 with SMTP id
- d2e1a72fcca58-70eae98fd23mr1499310b3a.25.1721901239298; Thu, 25 Jul 2024
- 02:53:59 -0700 (PDT)
+	s=arc-20240116; t=1721907771; c=relaxed/simple;
+	bh=3xZ/hS9kV76RHBlISvMxIh19+LpfwBY/WqoQTCTyoAY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=sPNRwFl6UUpocLSNMv/+Nha7ae7HUojEjwKrTvpzXBcD1imwEb58KWn4p4hKSN33kytu7h1h4NVY54hnMmc/lEOPstyl2B7qlmJKBqcwp7wUr9RMb5K1n9iG+4QP3DYkw4Ut4efyR8mfMOefWh3ai1fDz9KfZ+GAY5yTnss9ZN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=foss.arm.com; spf=none smtp.mailfrom=foss.arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=foss.arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=foss.arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id A9BFB1007;
+	Thu, 25 Jul 2024 04:43:13 -0700 (PDT)
+Received: from [10.1.196.44] (unknown [10.1.196.44])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 8D16E3F5A1;
+	Thu, 25 Jul 2024 04:42:46 -0700 (PDT)
+Message-ID: <68f0fdfc-8bc2-462d-9d0d-4d0ad41c6811@foss.arm.com>
+Date: Thu, 25 Jul 2024 12:42:44 +0100
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240724161501.1319115-1-ojeda@kernel.org> <20240725083836.GE13387@noisy.programming.kicks-ass.net>
-In-Reply-To: <20240725083836.GE13387@noisy.programming.kicks-ass.net>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 25 Jul 2024 11:53:47 +0200
-Message-ID: <CANiq72nNost2vaCd9Ev5hraFRJvV7ae8aWS0O1q5KGWu1h8yjQ@mail.gmail.com>
-Subject: Re: [PATCH v2 0/6] Rust: support `CPU_MITIGATIONS` and enable `objtool`
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Josh Poimboeuf <jpoimboe@kernel.org>, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, Masahiro Yamada <masahiroy@kernel.org>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kbuild@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH] drm: panthor: add dev_coredumpv support
+To: Steven Price <steven.price@arm.com>, Rob Herring <robh@kernel.org>,
+ Boris Brezillon <boris.brezillon@collabora.com>,
+ Daniel Almeida <daniel.almeida@collabora.com>
+Cc: Wedson Almeida Filho <wedsonaf@gmail.com>, ojeda@kernel.org,
+ Danilo Krummrich <dakr@redhat.com>, lyude@redhat.com, lina@asahilina.net,
+ mcanal@igalia.com, airlied@gmail.com, rust-for-linux@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
+References: <20240710225011.275153-1-daniel.almeida@collabora.com>
+ <fe84a028-01a8-4987-b1b7-141fb76d263c@arm.com>
+ <4344B22F-D859-4C64-A351-69FFB5208362@collabora.com>
+ <edda856e-3102-495a-8cc6-b79f5f114833@arm.com>
+ <20240723180642.73502856@collabora.com>
+ <6ce8fd12-b175-4a8f-8ea9-6221a555b69c@arm.com>
+ <CAL_Jsq+Dr5zO5MKEGq0dW9SuTuawaJMhHziFd73Ef_S1zbOkXw@mail.gmail.com>
+ <6b60a83d-8416-4cf8-b373-dc3c697c788a@arm.com>
+Content-Language: en-US
+From: Carsten Haitzler <carsten.haitzler@foss.arm.com>
+Organization: Arm Ltd.
+In-Reply-To: <6b60a83d-8416-4cf8-b373-dc3c697c788a@arm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, Jul 25, 2024 at 10:38=E2=80=AFAM Peter Zijlstra <peterz@infradead.o=
-rg> wrote:
->
-> W00t :-)
->
-> Aside from a small niggle about maybe doing a helper function for those
-> Rust runtime things, I don't see anything objectionable here.
->
-> Thanks!
 
-Thanks for taking a look that quick, Peter, I appreciate it.
+>> We did discuss this, but I've come to the conclusion that's the wrong
+>> approach. Converting is going to need to track kernel closely as there
+>> are lots of dependencies with the various rust abstractions needed. If
+>> we just copy over the C driver, that's an invitation to diverge and
+>> accumulate technical debt. The advice to upstreaming things is never
+>> go work on a fork for a couple of years and come back with a huge pile
+>> of code to upstream. I don't think this situation is any different. If
+>> there's a path to do it in small pieces, we should take it.
+> 
+> I'd be quite keen for the "fork" to live in the upstream kernel. My
+> preference is for the two drivers to sit side-by-side. I'm not sure
+> whether that's a common view though.
 
-Happy to move that to a helper.
+I agree that a panthor.rs should to exist side by side with the C for 
+some time. I guess it's going to be in the order of a year or so (or 
+maybe more) and not a few weeks, so keeping the C and Rust in sync will 
+be important.
 
-Cheers,
-Miguel
+My take is that such drivers probably belong in non-mainline dev trees 
+until they settle a bit, are at least fully functional and we're down to 
+arguing finer details. Especially since the other Rust infra they depend 
+on not mainline yet either.
+
+Given that, my opinion is this patch probably needs to be originally in 
+C then with a rust idiomatic port in the in-progress rust rewrite, or 
+there needs to be a lot more effort to building the right panthor layers 
+such as better register abstractions for example as part of this which 
+certainly will raise the workload to get this in.
