@@ -1,128 +1,238 @@
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 174453C3C;
-	Thu, 25 Jul 2024 11:45:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
+Received: from mail-yb1-f202.google.com (mail-yb1-f202.google.com [209.85.219.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B602619D06D
+	for <rust-for-linux@vger.kernel.org>; Thu, 25 Jul 2024 14:27:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721907914; cv=none; b=MHegGEbNTWEhfSKZI26WXKLnpBolk6EnkNutyABFlHFp59qpnE5E60x9tXgIuml2bbyXyfF7GMjzvjzCF9oZLOFfdSbMKeuK+VhcGQdrkDiPlHZPJdLsOhKPc8CoIV9g9js87ZwMFgw7O22T3+/So1rTtsWPhWLoyA/tVkvdLNo=
+	t=1721917665; cv=none; b=BL/zyH25tiO2PL5gqvm+uB22MeomQuJdHRlFkPBXhSMEmb/a5xyIYUh9k4RH74UvL+NHV0/Vh0fiNEQF3W0ZjY6CaQ9fAz4jnL/c1aGBJ5tgxiDm9/WjhTMtAreEniDqr+JIO2d5uO5cspP/RLOrCvGPhzHGH5Mhv6FjNVae+tI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721907914; c=relaxed/simple;
-	bh=82HUmzeqarD4KrIPXNsJ7gdikxRUHGCc9rvH7hg483g=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=VTo7Bmenl1LJg8Q/MDCzxYNcsX6u8WFMq43QzhhluMhmPuHhTjjDRCaLUy4FjAQWBQRafMdqVeO8WrmSKoK6h3VQ4aaSWppTIzKkVDdqRTuOpFlmbDt6sX1O3HBHNAokegHJg4SI2vvZ2koN9W5mXhHDOYCTr206S1asyhgoU2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=foss.arm.com; spf=none smtp.mailfrom=foss.arm.com; arc=none smtp.client-ip=217.140.110.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=foss.arm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=foss.arm.com
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id B4DA21476;
-	Thu, 25 Jul 2024 04:45:37 -0700 (PDT)
-Received: from [10.1.196.44] (unknown [10.1.196.44])
-	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id D22093F5A1;
-	Thu, 25 Jul 2024 04:45:08 -0700 (PDT)
-Message-ID: <3db15f74-2f48-4a43-9a2f-27b54c22dbf1@foss.arm.com>
-Date: Thu, 25 Jul 2024 12:45:07 +0100
+	s=arc-20240116; t=1721917665; c=relaxed/simple;
+	bh=7Ty2jd7XS19f8jweVbNXl/I8ZxDPi9ZE32hd5VUkXV0=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=hN+WmT2+xWUi71mrtC01YVQsg2lsKcVSXeBuAnBvOUi72rL7NVKslD/Fxy596W/eyism8bMTOmlJyHt0kPVPAuuNb3W9UCKuUFrkwTypEiEdAn+aaXweEUSGDFPi/GAUlVXw7ux9JOYODFz0iiRJOJ6gQt5RM/TK3MvwRc+yohc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QVFNNCjt; arc=none smtp.client-ip=209.85.219.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="QVFNNCjt"
+Received: by mail-yb1-f202.google.com with SMTP id 3f1490d57ef6-e08bc29c584so1547030276.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 25 Jul 2024 07:27:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1721917663; x=1722522463; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=FmMvEDTUM7SJGjPHPt8xAPFAtJI/4JVS81vyFcmWnms=;
+        b=QVFNNCjtzgzxqAmdpGXDziQM8DcvP73OulELfwK75xTUsb3kbxABB9+a49/thP2yhO
+         aSHMkI/cEW1ZmxbUkma03YrXJm04DdiqcharclU4J9hLzTncAa3Lf5wiQKYlw6CeBJKH
+         JlrDD0sSMVST09q4n5aOKP+Da2LxNTx9E3I467TiSsI5ELImUpfuJkLW85sb/k2u9WuG
+         BJGHsWDdW1+mBHcSg2kbt1LfEw+OCDfXZIuIccOezk2KGgmasmh5+pzieU0c3TyiZFGt
+         ySednpT1XHQDn1TWUgvYL5a854NwRmvkgJawjjQT0OghzrZW2Twm8kjZHN1y311qbOhG
+         i2dg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1721917663; x=1722522463;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=FmMvEDTUM7SJGjPHPt8xAPFAtJI/4JVS81vyFcmWnms=;
+        b=aTrj131h4djPBtOVIPjLo7ywzPmAYoVe+X+FY1Fjh2h2zRwzNxxwHc4/kdH22g7aE2
+         BLqzBwYz3WVSXyvbJZDck9dxYiym7inuEO5l0OIVl/BGjW0aG5wxbSHXbkkvnFWiqsHx
+         9uD6kNjMbc0ZLDP3uZwK79ViHkmIHaB29XvRb1GqogwLrj7h+4+IqJ5x/hmQqvw8LIKW
+         wsxoHpP6MgxwBbOq4NO30uEjw+cSxMNUe940PHntinYAXHSa/eMqd16vY2tqLoPnF2GU
+         Wrk7k+byDwZbeQCH95JaXVRgm1w8h9z73mfPkrcRS4LmW+5JXE1eLcD9zqVrZQ0yLsWo
+         Thgw==
+X-Forwarded-Encrypted: i=1; AJvYcCUQ3r4doFeWiZ09e/UdgXXCiCeAii4lJbm7bl/CCXQz5P+eYCuSlF5NozVJ5iFHEkucvN4+4r5GDBOXZn29vnpRpeQlzJTTV7KtbBR9958=
+X-Gm-Message-State: AOJu0Yzk1aIHgEiR0ZYTw/mnXfMPF8y7N6xKkIUr12c9AOowneGxdWuI
+	WGRpI0MTI1uTkPCd/geQG6wzzk3BQwetz+3uQQeNx7Sr6n8XNztOuyUjYJd44A55vuXq5rTlqTE
+	QvrLKhRlot8fpWw==
+X-Google-Smtp-Source: AGHT+IHIyIby8/kbfXWmuAvlBrV0aU944PjZD5psJRwSOEPT31ufxVnHeTHQaIv5R/bBugq+xOrQHsRPjUPFZTw=
+X-Received: from aliceryhl2.c.googlers.com ([fda3:e722:ac3:cc00:68:949d:c0a8:572])
+ (user=aliceryhl job=sendgmr) by 2002:a05:6902:1542:b0:e08:5554:b2be with SMTP
+ id 3f1490d57ef6-e0b246d7917mr4492276.9.1721917662576; Thu, 25 Jul 2024
+ 07:27:42 -0700 (PDT)
+Date: Thu, 25 Jul 2024 14:27:33 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH] drm: panthor: add dev_coredumpv support
-To: Boris Brezillon <boris.brezillon@collabora.com>,
- Steven Price <steven.price@arm.com>
-Cc: Daniel Almeida <daniel.almeida@collabora.com>,
- Wedson Almeida Filho <wedsonaf@gmail.com>, ojeda@kernel.org,
- Danilo Krummrich <dakr@redhat.com>, lyude@redhat.com, robh@kernel.org,
- lina@asahilina.net, mcanal@igalia.com, airlied@gmail.com,
- rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org,
- linux-kernel@vger.kernel.org
-References: <20240710225011.275153-1-daniel.almeida@collabora.com>
- <fe84a028-01a8-4987-b1b7-141fb76d263c@arm.com>
- <4344B22F-D859-4C64-A351-69FFB5208362@collabora.com>
- <edda856e-3102-495a-8cc6-b79f5f114833@arm.com>
- <20240723180642.73502856@collabora.com>
-Content-Language: en-US
-From: Carsten Haitzler <carsten.haitzler@foss.arm.com>
-Organization: Arm Ltd.
-In-Reply-To: <20240723180642.73502856@collabora.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIANVgomYC/2XQwWrEIBAG4FdZPNfijDqOPfU9Sg/GaFbYbkpSQ
+ suSd69ZWLKSi/AL38/M3MScppJm8Xa6iSktZS7jtQZ+OYl4DtchydLXLFChBkAtw6XEJHO5JGn
+ Rdp4TB4dGVPA9pVx+72UfnzWfy/wzTn/37gW230eNf65ZQCqZGUJOHB0SvA/jOFzSaxy/xNaz4
+ G5RUWOx2pAJXFS97705WP2wRgFwY3W1nrzpKHvLKh6s2W19Gmu2maOPqFgR6e5g7bNt97XbzNo xk2Ot0B4s7daCayxV29W7h9xH33l3sG63hO2+rlrTOwWZtLZZN3Zd138xO/BRDQIAAA==
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6039; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=7Ty2jd7XS19f8jweVbNXl/I8ZxDPi9ZE32hd5VUkXV0=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBmomDWNt7ibPDJ1eL1PPHozS6mf+hTCblcGVjCN
+ MQ+GzuFmBOJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZqJg1gAKCRAEWL7uWMY5
+ RtHfD/9VMrneoaL4q+y0LfbWz4/+qwBauIBE2Txq7IhR1unzqyiAyozxTbKgthIEoLOvrcILz7E
+ NBizvZVMi+ROmGe+V5xn946G54EKFXTxP82npQBQ6G879LmQpGgAzgKvLfHcOqHf0u8XKAgeS9v
+ V3WOoDpvgEIygZtydbMDVb/pYvJUgkwdyA/IpnEKyWFf766HPuqibQso49iAvUrgoZJhjOfr2SE
+ 0VlvG4M8HYmWsQUvM/48YXKvh6cgAynt1apQ5D2RtqEuYNJ+sr6o4ULmDcKCWdj2i5fL/NToLiZ
+ LTpnCJ31N9LNeBzBUibG78XK/6YuXhEbSzAZvLlGVf6orof+xdJcYGbjqGxqry8laOy56ZdH4kr
+ /eIsRKBbLfr9d0VvGV4MAs5u9WQ7NlDqtX3ZPpB7xAPcUrutWjNvP9eIKOEYxnbJG+FyaAVOwAH
+ 0DcYSEeECgI+HHiicPwh6DUtRPb1Jn+dHFpTZRNresQ24Q18IvxPUfiINJTStGjjU63O6zPRKJh
+ W7hXQiPgSLxUGSYW7LvnNjzhk6qE7Aez+OLPrGjGt8f61Gc09C7SZF+RrkQCma6Y7VkZYYei+/e
+ gsStscz1LmBk3dEygUTMtsyrhaNrszG4D7OqncyFJtSjXqBhvF3fkE0Ehxpb+wcshFmVdM7K1Au hBRqOCp60xtcjrQ==
+X-Mailer: b4 0.13-dev-26615
+Message-ID: <20240725-alice-file-v8-0-55a2e80deaa8@google.com>
+Subject: [PATCH v8 0/8] File abstractions needed by Rust Binder
+From: Alice Ryhl <aliceryhl@google.com>
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"=?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
+	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
+	Suren Baghdasaryan <surenb@google.com>
+Cc: Dan Williams <dan.j.williams@intel.com>, Matthew Wilcox <willy@infradead.org>, 
+	Thomas Gleixner <tglx@linutronix.de>, Daniel Xu <dxu@dxuuu.xyz>, 
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	Alice Ryhl <aliceryhl@google.com>, Kees Cook <kees@kernel.org>
+Content-Type: text/plain; charset="utf-8"
 
+This patchset contains the file abstractions needed by the Rust
+implementation of the Binder driver.
 
+Please see the Rust Binder RFC for usage examples:
+https://lore.kernel.org/rust-for-linux/20231101-rust-binder-v1-0-08ba9197f637@google.com/
 
-On 7/23/24 5:06 PM, Boris Brezillon wrote:
-> Hi Steve,
-> 
-> On Mon, 15 Jul 2024 10:12:16 +0100
-> Steven Price <steven.price@arm.com> wrote:
-> 
->> I note it also shows that the "panthor_regs.rs" would ideally be shared.
->> For arm64 we have been moving to generating system register descriptions
->> from a text source (see arch/arm64/tools/sysreg) - I'm wondering whether
->> something similar is needed for Panthor to generate both C and Rust
->> headers? Although perhaps that's overkill, sysregs are certainly
->> somewhat more complex.
-> 
-> Just had a long discussion with Daniel regarding this panthor_regs.rs
-> auto-generation, and, while I agree this is something we'd rather do if
-> we intend to maintain the C and rust code base forever, I'm not
-> entirely convinced this is super useful here because:
-> 
-> 1. the C code base is meant to be entirely replaced by a rust driver.
-> Of course, that's not going to happen overnight, so maybe it'd be worth
-> having this autogen script but...
-> 
-> 2. the set of register and register fields seems to be pretty stable.
-> We might have a few things to update to support v11, v12, etc, but it
-> doesn't look like the layout will suddenly become completely different.
-> 
-> 3. the number of registers and fields is somewhat reasonable, which
-> means we should be able to catch mistakes during review. And in case
-> one slip through, it's not the end of the world either because this
-> stays internal to the kernel driver. We'll either figure it out when
-> rust-ifying panthor components, or that simply means the register is
-> not used and the mistake is harmless until the register starts being
-> used
-> 
-> 4. we're still unclear on how GPU registers should be exposed in rust,
-> so any script we develop is likely to require heavy changes every time
-> we change our mind
+Users of "rust: types: add `NotThreadSafe`":
+	[PATCH 5/9] rust: file: add `FileDescriptorReservation`
 
-You have a good point. A script sounds nice, but given the restricted 
-domain size, it maybe better to be manually maintained. Given that I 
-also think the right way to access registers is to do it as safely as 
-possible.
+Users of "rust: task: add `Task::current_raw`":
+	[PATCH 7/9] rust: file: add `Kuid` wrapper
+	[PATCH 8/9] rust: file: add `DeferredFdCloser`
 
-So a gpu_write() or gpu_read() are "unsafe" in that you can write 
-invalid values to a just about anything in C. If we're trying to harden 
-drivers like panthor and make it "impossible" to do the wrong thing, 
-then IMHO for example MCU_CONTROL should be abstracted so I can ONLY 
-write MCU_CONTROL_* values that are for that register and nothing else 
-in Rust. This should fail at compile time if I ever write something 
-invalid to a register, and I can't write to anything but a known/exposed 
-register.
+Users of "rust: file: add Rust abstraction for `struct file`":
+	[PATCH RFC 02/20] rust_binder: add binderfs support to Rust binder
+	[PATCH RFC 03/20] rust_binder: add threading support
 
-Interestingly the C code could also abstract the same way and at least 
-produce warnings too and become safer. It may be useful to mimic the 
-design pattern there to keep panthor.rs and panthor.c in sync more easily?
+Users of "rust: cred: add Rust abstraction for `struct cred`":
+	[PATCH RFC 05/20] rust_binder: add nodes and context managers
+	[PATCH RFC 06/20] rust_binder: add oneway transactions
+	[PATCH RFC 11/20] rust_binder: send nodes in transaction
+	[PATCH RFC 13/20] rust_binder: add BINDER_TYPE_FD support
 
-So my opinion would be to try get the maximum value from Rust and have 
-things like proper register abstractions that are definitely safe.
+Users of "rust: security: add abstraction for secctx":
+	[PATCH RFC 06/20] rust_binder: add oneway transactions
 
-> For all these reasons, I think I'd prefer to have Daniel focus on a
-> proper rust abstraction to expose GPU registers and fields the rust-way,
-> rather than have him spend days/weeks on a script that is likely to be
-> used a couple times (if not less) before the driver is entirely
-> rewritten in rust. I guess the only interesting aspect remaining after
-> the conversion is done is conciseness of register definitions if we
-> were using some sort of descriptive format that gets converted to rust
-> code, but it comes at the cost of maintaining this script. I'd probably
-> have a completely different opinion if the Mali register layout was a
-> moving target, but it doesn't seem to be the case.
-> 
-> FYI, Daniel has a python script parsing panthor_regs.h and generating
-> panthor_regs.rs out of it which he can share if you're interested.
-> 
-> Regards,
-> 
-> Boris
+Users of "rust: file: add `FileDescriptorReservation`":
+	[PATCH RFC 13/20] rust_binder: add BINDER_TYPE_FD support
+	[PATCH RFC 14/20] rust_binder: add BINDER_TYPE_FDA support
+
+Users of "rust: file: add `Kuid` wrapper":
+	[PATCH RFC 05/20] rust_binder: add nodes and context managers
+	[PATCH RFC 06/20] rust_binder: add oneway transactions
+
+Users of "rust: file: add abstraction for `poll_table`":
+	[PATCH RFC 07/20] rust_binder: add epoll support
+
+This patchset has some uses of read_volatile in place of READ_ONCE.
+Please see the following rfc for context on this:
+https://lore.kernel.org/all/20231025195339.1431894-1-boqun.feng@gmail.com/
+
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+Changes in v8:
+- Rename File::from_ptr to File::from_raw_file.
+- Mention that NotThreadSafe also affects Sync.
+- Fix copyright lines.
+- Move rust/kernel/file.rs to rust/kernel/fs/file.rs to reduce conflicts
+  with Wedson's vfs patches.
+- Link to v7: https://lore.kernel.org/r/20240628-alice-file-v7-0-4d701f6335f3@google.com
+
+Changes in v7:
+- Replace file sharing modes with File / LocalFile.
+- Link to v6: https://lore.kernel.org/r/20240517-alice-file-v6-0-b25bafdc9b97@google.com
+
+Changes in v6:
+- Introduce file sharing modes.
+- Rewrite most documentation for `struct file` wrapper.
+- Drop `DeferredFdCloser`. It will be sent later when it can be placed
+  somewhere where only Rust Binder can use it.
+- Rebase on top of rust-next: 97ab3e8eec0c ("rust: alloc: fix dangling pointer in VecExt<T>::reserve()")
+- Link to v5: https://lore.kernel.org/r/20240209-alice-file-v5-0-a37886783025@google.com
+
+Changes in v5:
+- Pass a null pointer to task_tgid_nr_ns.
+- Fix some typos and other formatting issues.
+- Add Reviewed-by where appropriate.
+- Link to v4: https://lore.kernel.org/r/20240202-alice-file-v4-0-fc9c2080663b@google.com
+
+Changes in v4:
+- Moved the two really simple patches to the beginning of the patchset.
+- Update Send safety comments.
+- Use srctree relative links.
+- Mention that `Credential::euid` is immutable.
+- Update some safety comments to mention the invariant on Self.
+- Use new name for close_fd_get_file.
+- Move safety comments on DeferredFdCloser around and be more explicit
+  about how many refcounts we own.
+- Reword safety comments related to _qproc.
+- Add Reviewed-by where appropriate.
+- Link to v3: https://lore.kernel.org/r/20240118-alice-file-v3-0-9694b6f9580c@google.com
+
+Changes in v3:
+- Completely rewrite comments about refcounting in the first patch.
+  - And add a note to the documentation in fs/file.c.
+- Discuss speculation gadgets in commit message for the Kuid wrapper.
+- Introduce NotThreadSafe and Task::current_raw patches and use them in
+  later patches.
+- Improve safety comments in DeferredFdCloser.
+- Some other minor changes.
+- Link to v2: https://lore.kernel.org/r/20231206-alice-file-v2-0-af617c0d9d94@google.com
+
+Changes in v2:
+- Update various docs and safety comments.
+- Rename method names to match the C name.
+- Use ordinary read instead of READ_ONCE in File::cred.
+- Changed null check in secctx.
+- Add type alias for PhantomData in FileDescriptorReservation.
+- Use Kuid::from_raw in Kuid::current_euid.
+- Make DeferredFdCloser fallible if it is unable to schedule a task
+  work. And also schedule the task work *before* closing the file.
+- Moved PollCondVar to rust/kernel/sync.
+- Updated PollCondVar to use wake_up_pollfree.
+- Link to v1: https://lore.kernel.org/all/20231129-alice-file-v1-0-f81afe8c7261@google.com/
+
+Link to RFC:
+https://lore.kernel.org/all/20230720152820.3566078-1-aliceryhl@google.com/
+
+---
+Alice Ryhl (5):
+      rust: types: add `NotThreadSafe`
+      rust: task: add `Task::current_raw`
+      rust: security: add abstraction for secctx
+      rust: file: add `Kuid` wrapper
+      rust: file: add abstraction for `poll_table`
+
+Wedson Almeida Filho (3):
+      rust: file: add Rust abstraction for `struct file`
+      rust: cred: add Rust abstraction for `struct cred`
+      rust: file: add `FileDescriptorReservation`
+
+ fs/file.c                       |   7 +
+ rust/bindings/bindings_helper.h |   6 +
+ rust/helpers.c                  |  86 ++++++++
+ rust/kernel/cred.rs             |  85 ++++++++
+ rust/kernel/fs.rs               |   8 +
+ rust/kernel/fs/file.rs          | 461 ++++++++++++++++++++++++++++++++++++++++
+ rust/kernel/lib.rs              |   3 +
+ rust/kernel/security.rs         |  74 +++++++
+ rust/kernel/sync.rs             |   1 +
+ rust/kernel/sync/lock.rs        |  13 +-
+ rust/kernel/sync/poll.rs        | 121 +++++++++++
+ rust/kernel/task.rs             |  91 +++++++-
+ rust/kernel/types.rs            |  29 +++
+ 13 files changed, 973 insertions(+), 12 deletions(-)
+---
+base-commit: b1263411112305acf2af728728591465becb45b0
+change-id: 20231123-alice-file-525b98e8a724
+
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
+
