@@ -1,76 +1,323 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6418F20EB;
-	Thu, 25 Jul 2024 18:46:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B082429405
+	for <rust-for-linux@vger.kernel.org>; Thu, 25 Jul 2024 18:52:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721933218; cv=none; b=mUFi5GIMpVXDxHQgtWHKmYUM2pTVVfIEt+zM0Bo0nsOL1ld7GgsIOJoy9ijl98xUjZE9cMvmwCiP9K5zUj5Je3VvEW/X+EmR46YS1k8AfXlSunEoE9bxi8WjG6c83/VgevQxf+ihoLX6PHTEchu5dCMFa1TIehYAZMX1QHuSmVE=
+	t=1721933526; cv=none; b=XsHY7MG37bFI6M29MbHLphj/XLVcVBkJZkLbE+9+aBe1x4FCMTOUTV1pzW5j0xS1AJVfOALbdwimF5o58PUYTJIOlcTT53zOl7QuUcK/PH5o77xaNa0XQpR6NChgELEv5SRasscOfufpsaP6+8zJvJmOk5BPv7Yb3ByuNsL6edU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721933218; c=relaxed/simple;
-	bh=CanL8tlTTbXxjanDdzzQH1XD8iuK5CGAU8dVuUCdHNM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rNzOZ3QmCuwGqwzaanNVWZCk2Cn0VMLRd6MHX8vaoOutRJqiJF6TuI1CptPSj1v4mL6TbKxud20qIRNq7EcYhoPjDB2knKWtrpXpJU1OuAd8fNE2iE7eM2YPpuSBC3Oi31XRS39KxpbKwPchldnejQE6ky9F/eM/Of7b5Ao7sl8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AtLd+06c; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1721933526; c=relaxed/simple;
+	bh=x5Q/vqQivDUshKWSSQsKeEPW9Hi9EddcG25YvAeNxWg=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=sS3BVsysP65DgGdj7SzcGM5ll27U3mrv9tuuuxrKrs0ekfbyznbbTGQ3e+Eb3rfSwzhR/3oRazCTBx0RY1wevjp5zA04HpcR9nTUvtMe11TEt91TlvTaUcsO6YAW5RfkQQgYheVi+Wwa6U2qaVgRpgc4i15s2EAwHjFMJBzdr4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=J12IDo0r; arc=none smtp.client-ip=185.70.40.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AtLd+06c"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1E6CC116B1;
-	Thu, 25 Jul 2024 18:46:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1721933218;
-	bh=CanL8tlTTbXxjanDdzzQH1XD8iuK5CGAU8dVuUCdHNM=;
-	h=From:To:Cc:Subject:Date:From;
-	b=AtLd+06czQgj8D2G0JD1wrOO9L5/WwM7hhGNKtU6jNsCj3UmIaAHI6oS/CuYPq4Lg
-	 IpXiOYe3+S2INUYumrhbcjaS5KOwnFyfY8g0nKIQrsHD/H8mLbfh3gg0xZPq5XJTcq
-	 YHSR5rt2M1DyIgtQxds3PjizgQqhYWWdoVlJTfx7einVEDd8gapZAMJ1WFMSmZXWK1
-	 wRV/GYkY0LZOcWxKULnL3RVn28SDxKR0T8AKLet25H4n/wtM4EUKW7Om0OKf3WbOkQ
-	 n57s5GoaI/zkHyz6KfcY5G3f5XFbPhHTmp+XGJhikcj/V4D3h2XuCErvt4Q3tu5lZ2
-	 X3/McmTfcZZ3g==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: Miguel Ojeda <ojeda@kernel.org>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Alex Gaynor <alex.gaynor@gmail.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	patches@lists.linux.dev
-Subject: [PATCH] rust: macros: indent list item in `module!`'s docs
-Date: Thu, 25 Jul 2024 20:46:44 +0200
-Message-ID: <20240725184644.135185-1-ojeda@kernel.org>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="J12IDo0r"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1721933522; x=1722192722;
+	bh=2/iHL9RDUaFm8LFQlEZRxYfxCLwC3hkGSlCmcbv2QwU=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=J12IDo0rtDuUOnv+9qJKuDBNGs0XZ1SA2KwTPCozDTVfsPG20Abj61JqRRQb85mio
+	 JzsFBbSe7WRQBZDVaNhU1wkEDfKRvufu6C2RtLIuzfGgktaeTNNSjGS4DfGm21FATP
+	 /kXsrgDEkenaYQAGHs3d4gvX97w0DCSFGsY1JGvW0BWRTomiWqq7yEiOSuRFkx8a1Z
+	 foIFhyABGGmrdXDhmOf+MZeU4s5QHYFdUsWYvsJrXEx/NfUaQtaV8vMvN+4Hgx3LD5
+	 OVek2zOriXvfn4T8+RgQ8OA1qaElZ7alAedc4pV+gRgb1PBDX5JLO1zwo54zhYfSNq
+	 VhwP5rEo+uB5g==
+Date: Thu, 25 Jul 2024 18:51:56 +0000
+To: Boqun Feng <boqun.feng@gmail.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Jonathan Corbet <corbet@lwn.net>, Viresh Kumar <viresh.kumar@linaro.org>, Danilo Krummrich <dakr@redhat.com>, Trevor Gross <tmgross@umich.edu>, gregkh@linuxfoundation.org
+Subject: Re: [RFC PATCH] rust: types: Add explanation for ARef pattern
+Message-ID: <ef9c98ea-b8ce-4017-9db8-177731996513@proton.me>
+In-Reply-To: <20240710032447.2161189-1-boqun.feng@gmail.com>
+References: <20240710032447.2161189-1-boqun.feng@gmail.com>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: 60bbb0953f2d803181d5422728035a11970ee060
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Like commit e516211f615f ("rust: macros: indent list item in `paste!`'s
-docs"), but for `module!`.
+On 10.07.24 05:24, Boqun Feng wrote:
+> As the usage of `ARef` and `AlwaysRefCounted` is growing, it makes sense
+> to add explanation of the "ARef pattern" to cover the most "DO" and "DO
+> NOT" cases when wrapping a self-refcounted C type.
+>=20
+> Hence an "ARef pattern" section is added in the documentation of `ARef`.
+>=20
+> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+> ---
+> This is motivated by:
+>=20
+> =09https://lore.kernel.org/rust-for-linux/20240705110228.qqhhynbwwuwpcdeo=
+@vireshk-i7/
+>=20
+>  rust/kernel/types.rs | 156 +++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 156 insertions(+)
+>=20
+> diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
+> index bd189d646adb..70fdc780882e 100644
+> --- a/rust/kernel/types.rs
+> +++ b/rust/kernel/types.rs
+> @@ -329,6 +329,162 @@ pub unsafe trait AlwaysRefCounted {
+>  ///
+>  /// The pointer stored in `ptr` is non-null and valid for the lifetime o=
+f the [`ARef`] instance. In
+>  /// particular, the [`ARef`] instance owns an increment on the underlyin=
+g object's reference count.
+> +///
+> +/// # [`ARef`] pattern
+> +///
+> +/// "[`ARef`] pattern" is preferred when wrapping a C struct which has i=
+ts own refcounting
 
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+I would have written "[...] struct which is reference-counted, because
+[...]", is there a specific reason you wrote "its own"?
+
+> +/// mechanism, because it decouples the operations on the object itself =
+(usually via a `&Foo`) vs the
+> +/// operations on a pointer to the object (usually via an `ARef<Foo>`). =
+For example, given a `struct
+
+Not exactly sure I understand your point here, what exactly is the
+advantage of decoupling the operations?
+In my mind the following points are the advantages of using `ARef`:
+(1) prevents having to implement multiple abstractions for a single C
+    object: say there is a `struct foo` that is both used via reference
+    counting and by-value on the stack. Without `ARef`, we would have to
+    write two abstractions, one for each use-case. With `ARef`, we can
+    have one `Foo` that can be wrapped with `ARef` to represent a
+    reference-counted object.
+(2) `ARef<T>` always represents a reference counted object, so it helps
+    with understanding the code. If you read `Foo`, you cannot be sure
+    if it is heap or stack allocated.
+(3) generalizes common code of reference-counted objects (ie avoiding
+    code duplication) and concentration of `unsafe` code.
+
+In my opinion (1) is the most important, then (2). And (3) is a nice
+bonus. If you agree with the list above (maybe you also have additional
+advantages of `ARef`?) then it would be great if you could also add them
+somewhere here.
+
+> +/// foo` defined in C, which has its own refcounting operations `get_foo=
+()` and `put_foo()`. Without
+> +/// "[`ARef`] pattern", i.e. **bad case**:
+
+Instead of "bad case" I would have written "i.e. you want to avoid this:".
+
+> +///
+> +/// ```ignore
+> +/// pub struct Foo(NonNull<foo>);
+> +///
+> +/// impl Foo {
+> +///     // An operation on the pointer.
+> +///     pub unsafe fn from_ptr(ptr: *mut foo) -> Self {
+> +///         // Note that whether `get_foo()` is needed here depends on t=
+he exact semantics of
+> +///         // `from_ptr()`: is it creating a new reference, or it conti=
+nues using the caller's
+> +///         // reference?
+> +///         unsafe { get_foo(ptr); }
+> +///
+> +///         unsafe { Foo(NonNull::new_unchecked(foo)) }
+> +///     }
+> +///
+> +///     // An operation on the object.
+> +///     pub fn get_bar(&self) -> Bar {
+> +///         unsafe { (*foo.0.as_ptr()).bar }
+> +///     }
+> +/// }
+> +///
+> +/// // Plus `impl Clone` and `impl Drop` are also needed to implement ma=
+nually.
+> +/// impl Clone for Foo {
+> +///     fn clone(&self) -> Self {
+> +///         unsafe { get_foo(self.0.as_ptr()); }
+> +///
+> +///         Foo(self.0)
+> +///     }
+> +/// }
+> +///
+> +/// impl Drop for Foo {
+> +///     fn drop(&mut self) {
+> +///         unsafe { put_foo(self.0.as_ptr()); }
+> +///     }
+> +/// }
+> +/// ```
+> +///
+> +/// In this case, it's hard to tell whether `Foo` represent an object of=
+ `foo` or a pointer to
+> +/// `foo`.
+> +///
+> +/// However, if using [`ARef`] pattern, `foo` can be wrapped as follow:
+> +///
+> +/// ```ignore
+> +/// /// Note: `Opaque` is needed in most cases since there usually exist=
+ C operations on
+
+I would disagree for the reason that `Opaque` is needed. You need it if
+the `foo` eg contains a bool, since C might just write a nonsense
+integer which would then result in immediate UB in Rust.
+Other reasons might be that certain bytes of `foo` are written to by
+other threads, even though on the Rust side we have `&mut Foo` (eg a
+`mutex`).
+
+> +/// /// `struct foo *`, and `#[repr(transparent)]` is needed for the saf=
+ety of converting a `*mut
+> +/// /// foo` to a `*mut Foo`
+> +/// #[repr(transparent)]
+> +/// pub struct Foo(Opaque<foo>);
+> +///
+> +/// impl Foo {
+> +///     pub fn get_bar(&self) -> Bar {
+> +///         // SAFETY: `self.0.get()` is a valid pointer.
+> +///         //
+> +///         // Note: Usually extra safety comments are needed here to ex=
+plain why accessing `.bar`
+> +///         // doesn't race with C side. Most cases are either calling a=
+ C function, which has its
+> +///         // own concurrent access protection, or holding a lock.
+> +///         unsafe { (*self.0.get()).bar }
+> +///     }
+> +/// }
+> +/// ```
+> +///
+> +/// ## Avoid `impl AlwaysRefCounted` if unnecesarry
+
+I would move this section below the next one.
+
+> +///
+> +/// If Rust code doesn't touch the part where the object lifetimes of `f=
+oo` are maintained, `impl
+> +/// AlwaysRefCounted` can be temporarily avoided: it can always be added=
+ later as an extension of
+> +/// the functionality of the Rust code. This is usually the case for cal=
+lbacks where the object
+> +/// lifetimes are already maintained by a framework. In such a case, an =
+`unsafe` `fn(*mut foo) ->
+> +/// &Foo` function usually suffices:
+> +///
+> +/// ```ignore
+> +/// impl Foo {
+> +///     /// # Safety
+> +///     ///
+> +///     /// `ptr` has to be a valid pointer to `foo` for the entire life=
+time `'a'.
+> +///     pub unsafe fn as_ref<'a>(ptr: *mut foo) -> &'a Self {
+> +///         // SAFETY: Per function safety requirement, reborrow is vali=
+d.
+> +///         unsafe { &*ptr.cast() }
+> +///     }
+> +/// }
+> +/// ```
+> +///
+> +/// ## Type invariants of `impl AlwaysRefCounted`
+
+I think you should first show how the example looks like with `ARef` and
+then talk about type invariants.
+
+> +///
+> +/// Types that `impl AlwaysRefCounted` usually needs an invariant to des=
+cribe why the type can meet
+> +/// the safety requirement of `AlwaysRefCounted`, e.g.
+> +///
+> +/// ```ignore
+> +/// /// # Invariants:
+> +/// ///
+> +/// /// Instances of this type are always refcounted, that is, a call to=
+ `get_foo` ensures that the
+> +/// /// allocation remains valid at least until the matching call to `pu=
+t_foo`.
+> +/// #[repr(transparent)]
+> +/// pub struct Foo(Opaque<foo>);
+> +///
+> +/// // SAFETY: `Foo` is always ref-counted per type invariants.
+> +/// unsafe impl AlwaysRefCounted for Foo {
+> +///     fn inc_ref(&self) {
+> +///         // SAFETY: `self.0.get()` is a valid pointer and per type in=
+variants, the existence of
+> +///         // `&self` means it has a non-zero reference count.
+> +///         unsafe { get_foo(self.0.get()); }
+> +///     }
+> +///
+> +///     unsafe dec_ref(obj: NonNull<Self>) {
+> +///         // SAFETY: The refcount of `obj` is non-zero per function sa=
+fety requirement, and the
+> +///         // cast is OK since `foo` is transparent to `Foo`.
+> +///         unsafe { put_foo(obj.cast()); }
+> +///     }
+> +/// }
+> +/// ```
+> +///
+> +/// After `impl AlwaysRefCounted for foo`, `clone()` (`get_foo()`) and `=
+drop()` (`put_foo()`)  are
+
+Typo: it should be `impl AlwaysRefCounted for Foo`.
+
 ---
- rust/macros/lib.rs | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Cheers,
+Benno
 
-diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
-index 159e75292970..5be0cb9db3ee 100644
---- a/rust/macros/lib.rs
-+++ b/rust/macros/lib.rs
-@@ -94,7 +94,7 @@
- ///   - `license`: ASCII string literal of the license of the kernel module (required).
- ///   - `alias`: array of ASCII string literals of the alias names of the kernel module.
- ///   - `firmware`: array of ASCII string literals of the firmware files of
--/// the kernel module.
-+///     the kernel module.
- #[proc_macro]
- pub fn module(ts: TokenStream) -> TokenStream {
-     module::module(ts)
+> +/// available to `ARef<Foo>` thanks to the generic implementation.
+> +///
+> +/// ## `ARef<Self>` vs `&Self`
+> +///
+> +/// For an `impl AlwaysRefCounted` type, `ARef<Self>` represents an owne=
+r of one reference count,
+> +/// e.g.
+> +///
+> +/// ```ignore
+> +/// impl Foo {
+> +///     /// Gets a ref-counted reference of [`Self`].
+> +///     ///
+> +///     /// # Safety
+> +///     ///
+> +///     /// - `ptr` must be a valid pointer to `foo` with at least one r=
+eference count.
+> +///     pub unsafe fn from_ptr(ptr: *mut foo) -> ARef<Self> {
+> +///         // SAFETY: `ptr` is a valid pointer per function safety requ=
+irement. The cast is OK
+> +///         // since `foo` is transparent to `Foo`.
+> +///         //
+> +///         // Note: `.into()` here increases the reference count, so th=
+e returned value has its own
+> +///         // reference count.
+> +///         unsafe { &*(ptr.cast::<Foo>()) }.into()
+> +///     }
+> +/// }
+> +/// ```
+> +///
+> +/// Another function that returns an `ARef<Self>` but with a different s=
+emantics is
+> +/// [`ARef::from_raw`]: it takes away the refcount of the input pointer,=
+ i.e. no refcount
+> +/// incrementation inside the function.
+> +///
+> +/// However `&Self` represents a reference to the object, and the lifeti=
+me of the **reference** is
+> +/// known at compile-time. E.g. the `Foo::as_ref()` above.
+> +///
+> +/// ## `impl Drop` of an `impl AlwaysRefCounted` should not touch the re=
+fcount
+> +///
+> +/// [`ARef`] descreases the refcount automatically (in [`ARef::drop`]) w=
+hen it goes out of the
+> +/// scope, therefore there's no need to `impl Drop` for the type of obje=
+cts (e.g. `Foo`) to decrease
+> +/// the refcount.
+>  pub struct ARef<T: AlwaysRefCounted> {
+>      ptr: NonNull<T>,
+>      _p: PhantomData<T>,
+> --
+> 2.45.2
+>=20
 
-base-commit: b1263411112305acf2af728728591465becb45b0
---
-2.45.2
