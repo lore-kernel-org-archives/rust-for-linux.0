@@ -1,81 +1,81 @@
 Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF62DB673;
-	Fri, 26 Jul 2024 14:37:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 785451F94A;
+	Fri, 26 Jul 2024 14:39:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722004667; cv=none; b=JkD00m9QzIpVm+cJJDg7dOa17v6Mnqv9+MzNunpsg5aS7tUBbmLq37Wg/M2RlHEw7eLqSNU6E6kpIAavZHg3oRTJynURnJAfbIuceDSkvqSYHsuAyBgHcu9h3b3P6EZSXiFhtcbmlVmPdM2FDMbcPXKIycORD6ucr1XBJFtmh4A=
+	t=1722004743; cv=none; b=E0UYIMZEmCJO6ssmF0OFpfFLVhCb1NpACQ4Em2s2Ig9zI2wQQvtEASjCMjGPOVV9jaPGW11giZpVyiYvgON7+Su8llLfTjB2m+FU6ObkMiKqpT95c8D+xlDU3Prq8Ys2J7fhmMlLkHJyXdV+6nVX+HR88iWwjIApq7nhGynYejc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722004667; c=relaxed/simple;
-	bh=VZNvAGZq8E3p2gY3vTlVwUNj8c6Gyl+7uavTVoXR8m0=;
+	s=arc-20240116; t=1722004743; c=relaxed/simple;
+	bh=UtXz4WTaen1Pzcq/FSdo/p1LGUZ00Lh2i1DDQW0yjRc=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=eFmoTaenWilgkhmJe+fbhGTQYh1I6uBngS/GcbNAY43CJMJqBN9B93Gnjaj8d5kX/setI8yTpVXYzvjVpPyQZ7Jcoq2onRLCJyjI14rC4+x7qmJByx2+zLpsNwnMXViox04BnoTg0OhNOK+LzpNB2dvLNeHP0YU09Bs9QR21spo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=sDGVddtq; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=VzUMy3X5; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=sDGVddtq; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=VzUMy3X5; arc=none smtp.client-ip=195.135.223.130
+	 In-Reply-To:Content-Type; b=JgcQlwlcs6kJYhfSR03aPdrQ920H815arz06/tVLCt7ELk/2ca7tDmoJFwxvsHwR3TwZLD7WdtUxYlfYMVJEouWO1a6oVEgU92RcF7Ajen1Dy9uTLSqcNy7+n26wVshHN/RNodScDgiC3UMBFj6QTnG6tNoGt9ymhSndai0JPnc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=iOmBZb+h; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=M75cpE8N; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=iOmBZb+h; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=M75cpE8N; arc=none smtp.client-ip=195.135.223.130
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="sDGVddtq";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="VzUMy3X5";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="sDGVddtq";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="VzUMy3X5"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="iOmBZb+h";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="M75cpE8N";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="iOmBZb+h";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="M75cpE8N"
 Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id BA7DE21BE8;
-	Fri, 26 Jul 2024 14:37:43 +0000 (UTC)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 8B64A21A6E;
+	Fri, 26 Jul 2024 14:38:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1722004663; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1722004739; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=D/ZXFeDHRiVyFLhDMqSiqUvemIGxOsAvpWKuKmrc5Gs=;
-	b=sDGVddtqhoPymeOD79sCENo7Z9kM9h+gv5grVeo88H7AddRAM+yWHa86cCwD+ian3NYO52
-	dWeF7FY6i7A7M+o9tHnBLDZCoQGRoi1qHLOY/CI9iI/xgvdWf7WGgthK+sBiQ8ONGG5JB/
-	dTrs71mEPnSi058zzReAaPly4GwQYYs=
+	bh=2NriU7HmuC3T/mq0xwJ/B+pA1O1DYQGmxmvikHh2lhk=;
+	b=iOmBZb+hienSXihK6WG7tgPqDXDibywKH3Nju5+E+QJRzn8eaWkASSwSiOMlJCcTpvw/Ma
+	4jJDP53jKNnQxTQHlcUKfALZhw5TePn9EewqqPOkusEXJlx5b9Tm0Tl1axzpJ4pUEpAi6I
+	ZQNEZv/3AjlYcpXntYUY5Igi69zh530=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1722004663;
+	s=susede2_ed25519; t=1722004739;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=D/ZXFeDHRiVyFLhDMqSiqUvemIGxOsAvpWKuKmrc5Gs=;
-	b=VzUMy3X58/Y4nCjVPd5UnYdSEt+RjNzZEkXWOaJ+umhD5kCH4gsJpIG5VHF9G1SRlA9Mng
-	sL1znJCOWdEryLDg==
+	bh=2NriU7HmuC3T/mq0xwJ/B+pA1O1DYQGmxmvikHh2lhk=;
+	b=M75cpE8Nz9F3vaxvJMWlZlAgcJ4cY7pWV4sUHCHsnx8IzKyvQURQBu0M+yp+kvCQ9BnUFV
+	+M15luHTG2hXzaBw==
 Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=sDGVddtq;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=VzUMy3X5
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=iOmBZb+h;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=M75cpE8N
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1722004663; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	t=1722004739; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=D/ZXFeDHRiVyFLhDMqSiqUvemIGxOsAvpWKuKmrc5Gs=;
-	b=sDGVddtqhoPymeOD79sCENo7Z9kM9h+gv5grVeo88H7AddRAM+yWHa86cCwD+ian3NYO52
-	dWeF7FY6i7A7M+o9tHnBLDZCoQGRoi1qHLOY/CI9iI/xgvdWf7WGgthK+sBiQ8ONGG5JB/
-	dTrs71mEPnSi058zzReAaPly4GwQYYs=
+	bh=2NriU7HmuC3T/mq0xwJ/B+pA1O1DYQGmxmvikHh2lhk=;
+	b=iOmBZb+hienSXihK6WG7tgPqDXDibywKH3Nju5+E+QJRzn8eaWkASSwSiOMlJCcTpvw/Ma
+	4jJDP53jKNnQxTQHlcUKfALZhw5TePn9EewqqPOkusEXJlx5b9Tm0Tl1axzpJ4pUEpAi6I
+	ZQNEZv/3AjlYcpXntYUY5Igi69zh530=
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1722004663;
+	s=susede2_ed25519; t=1722004739;
 	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
 	 mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=D/ZXFeDHRiVyFLhDMqSiqUvemIGxOsAvpWKuKmrc5Gs=;
-	b=VzUMy3X58/Y4nCjVPd5UnYdSEt+RjNzZEkXWOaJ+umhD5kCH4gsJpIG5VHF9G1SRlA9Mng
-	sL1znJCOWdEryLDg==
+	bh=2NriU7HmuC3T/mq0xwJ/B+pA1O1DYQGmxmvikHh2lhk=;
+	b=M75cpE8Nz9F3vaxvJMWlZlAgcJ4cY7pWV4sUHCHsnx8IzKyvQURQBu0M+yp+kvCQ9BnUFV
+	+M15luHTG2hXzaBw==
 Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 8CEDC138A7;
-	Fri, 26 Jul 2024 14:37:43 +0000 (UTC)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 5D20E138A7;
+	Fri, 26 Jul 2024 14:38:59 +0000 (UTC)
 Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
 	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id ep/FIbe0o2Z/IgAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Fri, 26 Jul 2024 14:37:43 +0000
-Message-ID: <07491799-9753-4fc9-b642-6d7d7d9575aa@suse.cz>
-Date: Fri, 26 Jul 2024 16:37:43 +0200
+	id ELRpFgO1o2bcIgAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Fri, 26 Jul 2024 14:38:59 +0000
+Message-ID: <6ff1f0d8-1483-49ce-a02a-3c4f3d664fa7@suse.cz>
+Date: Fri, 26 Jul 2024 16:38:59 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -83,7 +83,7 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] mm: vmalloc: implement vrealloc()
+Subject: Re: [PATCH v2 2/2] mm: kvmalloc: align kvrealloc() with krealloc()
 Content-Language: en-US
 To: Danilo Krummrich <dakr@kernel.org>, cl@linux.com, penberg@kernel.org,
  rientjes@google.com, iamjoonsoo.kim@lge.com, akpm@linux-foundation.org,
@@ -94,7 +94,7 @@ To: Danilo Krummrich <dakr@kernel.org>, cl@linux.com, penberg@kernel.org,
 Cc: linux-kernel@vger.kernel.org, linux-mm@kvack.org,
  rust-for-linux@vger.kernel.org
 References: <20240722163111.4766-1-dakr@kernel.org>
- <20240722163111.4766-2-dakr@kernel.org>
+ <20240722163111.4766-3-dakr@kernel.org>
 From: Vlastimil Babka <vbabka@suse.cz>
 Autocrypt: addr=vbabka@suse.cz; keydata=
  xsFNBFZdmxYBEADsw/SiUSjB0dM+vSh95UkgcHjzEVBlby/Fg+g42O7LAEkCYXi/vvq31JTB
@@ -135,13 +135,17 @@ Autocrypt: addr=vbabka@suse.cz; keydata=
  w9XOLH1IIWh7RURU7G1iOfEfmImFeC3cbbS73LQEFGe1urxvIH5K/7vX+FkNcr9ujwWuPE9b
  1C2o4i/yZPLXIVy387EjA6GZMqvQUFuSTs/GeBcv0NjIQi8867H3uLjz+mQy63fAitsDwLmR
  EP+ylKVEKb0Q2A==
-In-Reply-To: <20240722163111.4766-2-dakr@kernel.org>
+In-Reply-To: <20240722163111.4766-3-dakr@kernel.org>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: 8B64A21A6E
+X-Spam-Score: -2.80
 X-Spam-Level: 
-X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Spam-Flag: NO
 X-Spamd-Result: default: False [-2.80 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
+	BAYES_HAM(-3.00)[99.99%];
 	SUSPICIOUS_RECIPS(1.50)[];
 	NEURAL_HAM_LONG(-1.00)[-1.000];
 	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
@@ -166,109 +170,35 @@ X-Spamd-Result: default: False [-2.80 / 50.00];
 	TO_MATCH_ENVRCPT_ALL(0.00)[];
 	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
 	DKIM_TRACE(0.00)[suse.cz:+]
-X-Rspamd-Action: no action
-X-Spam-Flag: NO
-X-Spam-Score: -2.80
-X-Rspamd-Queue-Id: BA7DE21BE8
 
 On 7/22/24 6:29 PM, Danilo Krummrich wrote:
-> Implement vrealloc() analogous to krealloc().
+> Besides the obvious (and desired) difference between krealloc() and
+> kvrealloc(), there is some inconsistency in their function signatures
+> and behavior:
 > 
-> Currently, krealloc() requires the caller to pass the size of the
-> previous memory allocation, which, instead, should be self-contained.
+>  - krealloc() frees the memory when the requested size is zero, whereas
+>    kvrealloc() simply returns a pointer to the existing allocation.
 > 
-> We attempt to fix this in a subsequent patch which, in order to do so,
-> requires vrealloc().
+>  - krealloc() behaves like kmalloc() if a NULL pointer is passed, whereas
+>    kvrealloc() does not accept a NULL pointer at all and, if passed,
+>    would fault instead.
 > 
-> Besides that, we need realloc() functions for kernel allocators in Rust
-> too. With `Vec` or `KVec` respectively, potentially growing (and
-> shrinking) data structures are rather common.
+>  - krealloc() is self-contained, whereas kvrealloc() relies on the caller
+>    to provide the size of the previous allocation.
+> 
+> Inconsistent behavior throughout allocation APIs is error prone, hence make
+> kvrealloc() behave like krealloc(), which seems superior in all mentioned
+> aspects.
+> 
+> Besides that, implementing kvrealloc() by making use of krealloc() and
+> vrealloc() provides oppertunities to grow (and shrink) allocations more
+> efficiently. For instance, vrealloc() can be optimized to allocate and
+> map additional pages to grow the allocation or unmap and free unused
+> pages to shrink the allocation.
 > 
 > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 
 Acked-by: Vlastimil Babka <vbabka@suse.cz>
 
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -4037,6 +4037,65 @@ void *vzalloc_node_noprof(unsigned long size, int node)
->  }
->  EXPORT_SYMBOL(vzalloc_node_noprof);
->  
-> +/**
-> + * vrealloc - reallocate virtually contiguous memory; contents remain unchanged
-> + * @p: object to reallocate memory for
-> + * @size: the size to reallocate
-> + * @flags: the flags for the page level allocator
-> + *
-> + * The contents of the object pointed to are preserved up to the lesser of the
-> + * new and old size (__GFP_ZERO flag is effectively ignored).
-
-Well, technically not correct as we don't shrink. Get 8 pages, kvrealloc to
-4 pages, kvrealloc back to 8 and the last 4 are not zeroed. But it's not
-new, kvrealloc() did the same before patch 2/2.
-
-But it's also fundamentally not true for krealloc(), or kvrealloc()
-switching from a kmalloc to valloc. ksize() returns the size of the kmalloc
-bucket, we don't know what was the exact prior allocation size. Worse, we
-started poisoning the padding in debug configurations, so even a
-kmalloc(__GFP_ZERO) followed by krealloc(__GFP_ZERO) can give you unexpected
-poison now...
-
-I guess we should just document __GFP_ZERO is not honored at all for
-realloc, and maybe start even warning :/ Hopefully nobody relies on that.
-
-> + *
-> + * If @p is %NULL, vrealloc() behaves exactly like vmalloc(). If @size is 0 and
-> + * @p is not a %NULL pointer, the object pointed to is freed.
-> + *
-> + * Return: pointer to the allocated memory; %NULL if @size is zero or in case of
-> + *         failure
-> + */
-> +void *vrealloc_noprof(const void *p, size_t size, gfp_t flags)
-> +{
-> +	size_t old_size = 0;
-> +	void *n;
-> +
-> +	if (!size) {
-> +		vfree(p);
-> +		return NULL;
-> +	}
-> +
-> +	if (p) {
-> +		struct vm_struct *vm;
-> +
-> +		vm = find_vm_area(p);
-> +		if (unlikely(!vm)) {
-> +			WARN(1, "Trying to vrealloc() nonexistent vm area (%p)\n", p);
-> +			return NULL;
-> +		}
-> +
-> +		old_size = get_vm_area_size(vm);
-> +	}
-> +
-> +	if (size <= old_size) {
-> +		/*
-> +		 * TODO: Shrink the vm_area, i.e. unmap and free unused pages.
-> +		 * What would be a good heuristic for when to shrink the
-> +		 * vm_area?
-> +		 */
-> +		return (void *)p;
-> +	}
-> +
-> +	/* TODO: Grow the vm_area, i.e. allocate and map additional pages. */
-> +	n = __vmalloc_noprof(size, flags);
-> +	if (!n)
-> +		return NULL;
-> +
-> +	if (p) {
-> +		memcpy(n, p, old_size);
-> +		vfree(p);
-> +	}
-> +
-> +	return n;
-> +}
-> +
->  #if defined(CONFIG_64BIT) && defined(CONFIG_ZONE_DMA32)
->  #define GFP_VMALLOC32 (GFP_DMA32 | GFP_KERNEL)
->  #elif defined(CONFIG_64BIT) && defined(CONFIG_ZONE_DMA)
+with same caveat about the __GFP_ZERO comment on kvrealloc_noprof()
 
