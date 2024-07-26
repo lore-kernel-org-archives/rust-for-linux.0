@@ -1,43 +1,43 @@
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A941FA2A;
-	Fri, 26 Jul 2024 07:23:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E89A3C30
+	for <rust-for-linux@vger.kernel.org>; Fri, 26 Jul 2024 07:41:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.134
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721978596; cv=none; b=Y45+Zu1OKY9VaNITszw6NAkJrZymWIj+0rH/8hL+blaS1fqzay8OTpGc1RfIMET6tyxJ9jbvQ/235o0P8G7qZ92e7Dr8hTGQ94k5mmNxnfqayT8h+knuKt9ElvBvXW5FQ3jCDFZg0EVIdqNeOY6M+OZ3GN4QtxiUSwCchyfLJ9E=
+	t=1721979668; cv=none; b=MA5gpnq6txQRLQ4dWzOMyAoMxIVt51Wsi+jdkFzUGhXFOYFEzidS/GUYLhJ1Axj44kjUDflasZxmc/AeFGcS/20JXRQuBOUf9LW5tB0AXQ089XorfWkHtPCv4OQB+XuiJ8Cu9FfP3jYWPFJD5adsEuIjwFSwO8mmGYRkBP4zO14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721978596; c=relaxed/simple;
-	bh=/HSVDOvX35VxeQgw/Ror3T/qSi+sW+BQlem4nb87F9M=;
+	s=arc-20240116; t=1721979668; c=relaxed/simple;
+	bh=I70QW6hpY+jLdfy5HkEgw5Gl1NKikX5wbk22K6+C/eQ=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BlOuTLxLus0EX636Ngcfb9qrmxrQuDaeRP7J/1R3JncbzipE+zpHDd1MNQzVzf6OR5RPQ2WALm3/QtAf5NDdcQCLu4pnE6fzVOclegIAWw45DDWStCM1Mr/2XMfDhHOt5HQK1Ozx859jiKYkr25QvM9CpoQyFInep7nlevayIkE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=gWB9JoTo; arc=none smtp.client-ip=185.70.43.22
+	 MIME-Version:Content-Type; b=UYnDfpWB2j/tIPPVMPxqPgn0cc7qyx9SDg1sHZZJgqthIpIDWTbHOj2vjIrhzz7mivAcDJyjme+MaWtFB7+8LwPKHUOQrbEQserz/HEVyxecwfMm/meYCKoQa0zpELFW5wGIJlj8fx6Cf9KYtUCF5vCVrfUd0oFH3FduFCEY4qk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=cBR5Dq8P; arc=none smtp.client-ip=185.70.40.134
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="gWB9JoTo"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="cBR5Dq8P"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1721978591; x=1722237791;
-	bh=sTO8VOoESIExkdWO+kUm0Zi8HVb8pOSPklEylD50mzQ=;
+	s=protonmail; t=1721979664; x=1722238864;
+	bh=nuNNEuDtKjzAbgP3yLhd9hSlLZ1VjY9HwALtq8R4bIs=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=gWB9JoToQXyMOgx1FHrCaLQjXl5AaGneELD7ruYiJwKB8vp33ckF8b8vo4XJIjVRs
-	 TCCKjtk3Z+KwSyiosp46oYDZhz0OgMTr4NmvBwgtPJt62Kxs69zgQDRVtCFgBuHwgf
-	 sxr3oiS/eN+U/6G+u1Cb/lJL6fH8tx94B68FknuuDqVVfQN9rDWANaY7ad/wKNfMBH
-	 cOUrf61jjTv5mdZEXzfFhHqWGvC2bTjuQZdQZYZJQzc5JCWtZiuUDfkWwGkkI7CTkA
-	 Cq2Kfy2OhFB7S2m+CGgwaPpKF4kpXrdVezHJnipMbbr94zKVK2FHJrNopxmIMUWuHH
-	 4+fIENefoA/xQ==
-Date: Fri, 26 Jul 2024 07:23:07 +0000
+	b=cBR5Dq8P7o5mkS9xOC4P/s/vArJK0fYrmVvGA30eEvSd20DfFODGSr+0lglaWhpaI
+	 ZhLfR+R0o+LeNhP2k1hkDEk7e5YQeVfdsaSzXbheCZNUlfAXULhRBAASCxyFAyrHGh
+	 1sfH9w0FOnX4Iz6GjhtSRyZX2VSXuHr9dR382dSj3tXUqg5xKrLng5KbL7gKmLxBdP
+	 VGWLxEsa735t/EtQQLRCuBsG2n7qP2gTe3ah2dCQ47jBZXTOhgSkzzw3ak4ueq7rK4
+	 YekLlrWbcYZOT9nrL+awjnEM8zC0Cmzoyom2Cj6QNi2gIryz+d/hZZMivkRtg6ul9/
+	 if0j/0K+dnQjQ==
+Date: Fri, 26 Jul 2024 07:40:59 +0000
 To: Lyude Paul <lyude@redhat.com>, rust-for-linux@vger.kernel.org
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: Danilo Krummrich <dakr@redhat.com>, airlied@redhat.com, Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, FUJITA Tomonori <fujita.tomonori@gmail.com>, Aakash Sen Sharma <aakashsensharma@gmail.com>, Valentin Obst <kernel@valentinobst.de>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/3] rust: Introduce irq module
-Message-ID: <b1190e12-f3a6-41cb-a925-ee011650ed60@proton.me>
-In-Reply-To: <20240725222822.1784931-2-lyude@redhat.com>
-References: <20240725222822.1784931-1-lyude@redhat.com> <20240725222822.1784931-2-lyude@redhat.com>
+Cc: Danilo Krummrich <dakr@redhat.com>, airlied@redhat.com, Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Valentin Obst <kernel@valentinobst.de>, Trevor Gross <tmgross@umich.edu>, Ben Gooding <ben.gooding.dev@gmail.com>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/3] rust: sync: Introduce LockContainer trait
+Message-ID: <59515c1e-d1f4-47c3-a201-d2b0824f948b@proton.me>
+In-Reply-To: <20240725222822.1784931-3-lyude@redhat.com>
+References: <20240725222822.1784931-1-lyude@redhat.com> <20240725222822.1784931-3-lyude@redhat.com>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 757d4963eeb7c111d075df476ee5b4813c8c4e7a
+X-Pm-Message-ID: 8520140208c81d9550b798ed5e0975a1d64dec95
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -48,190 +48,145 @@ Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
 On 26.07.24 00:27, Lyude Paul wrote:
-> This introduces a module for dealing with interrupt-disabled contexts,
-> including the ability to enable and disable interrupts
-> (with_irqs_disabled()) - along with the ability to annotate functions as
-> expecting that IRQs are already disabled on the local CPU.
+> We want to be able to use spinlocks in no-interrupt contexts, but our
+> current `Lock` infrastructure doesn't allow for the ability to pass
+> arguments when acquiring a lock - meaning that there would be no way for =
+us
+> to verify interrupts are disabled before granting a lock since we have
+> nowhere to pass an `IrqGuard`.
+>=20
+> It doesn't particularly made sense for us to add the ability to pass such
+> an argument either: this would technically work, but then we would have t=
+o
+> pass empty units as arguments on all of the many locks that are not grabb=
+ed
+> under interrupts. As a result, we go with a slightly nicer solution:
+
+I think there is a solution that would allow us to have both[1]:
+1. Add a new associated type to `Backend` called `Context`.
+2. Add a new parameter to `Backend::lock`: `ctx: Self::Context`.
+3. Add a new function to `Lock<T: ?Sized, B: Backend>`:
+   `lock_with(&self, ctx: B::Context)` that delegates to `B::lock`.
+4. Reimplement `Lock::lock` in terms of `Lock::lock_with`, by
+   constraining the function to only be callable if
+   `B::Context: Default` holds (and then using `Default::default()` as
+   the value).
+
+This way people can still use `lock()` as usual, but we can also have
+`lock_with(irq)` for locks that require it.
+
+[1]: I think I saw this kind of a pattern first from Wedson in the
+context of passing default allocation flags.
+
+> introducing a trait for types which can contain a lock of a specific type=
+:
+> LockContainer. This means we can still use locks implemented on top of
+> other lock types in types such as `LockedBy` - as we convert `LockedBy` t=
+o
+> begin using `LockContainer` internally and implement the trait for all
+> existing lock types.
+
+
 >=20
 > Signed-off-by: Lyude Paul <lyude@redhat.com>
 > ---
->  rust/helpers.c     | 14 +++++++++
->  rust/kernel/irq.rs | 74 ++++++++++++++++++++++++++++++++++++++++++++++
->  rust/kernel/lib.rs |  1 +
->  3 files changed, 89 insertions(+)
->  create mode 100644 rust/kernel/irq.rs
+>  rust/kernel/sync.rs           |  1 +
+>  rust/kernel/sync/lock.rs      | 20 ++++++++++++++++++++
+>  rust/kernel/sync/locked_by.rs | 11 +++++++++--
+>  3 files changed, 30 insertions(+), 2 deletions(-)
 >=20
-> diff --git a/rust/helpers.c b/rust/helpers.c
-> index 87ed0a5b60990..12ac32de820b5 100644
-> --- a/rust/helpers.c
-> +++ b/rust/helpers.c
-> @@ -69,6 +69,20 @@ void rust_helper_spin_unlock(spinlock_t *lock)
+> diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
+> index 0ab20975a3b5d..14a79ebbb42d5 100644
+> --- a/rust/kernel/sync.rs
+> +++ b/rust/kernel/sync.rs
+> @@ -16,6 +16,7 @@
+>  pub use condvar::{new_condvar, CondVar, CondVarTimeoutResult};
+>  pub use lock::mutex::{new_mutex, Mutex};
+>  pub use lock::spinlock::{new_spinlock, SpinLock};
+> +pub use lock::LockContainer;
+>  pub use locked_by::LockedBy;
+>=20
+>  /// Represents a lockdep class. It's a wrapper around C's `lock_class_ke=
+y`.
+> diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
+> index f6c34ca4d819f..bbd0a7465cae3 100644
+> --- a/rust/kernel/sync/lock.rs
+> +++ b/rust/kernel/sync/lock.rs
+> @@ -195,3 +195,23 @@ pub(crate) unsafe fn new(lock: &'a Lock<T, B>, state=
+: B::GuardState) -> Self {
+>          }
+>      }
 >  }
->  EXPORT_SYMBOL_GPL(rust_helper_spin_unlock);
->=20
-> +unsigned long rust_helper_local_irq_save(void) {
-> +=09unsigned long flags;
 > +
-> +=09local_irq_save(flags);
-> +
-> +=09return flags;
-> +}
-> +EXPORT_SYMBOL_GPL(rust_helper_local_irq_save);
-> +
-> +void rust_helper_local_irq_restore(unsigned long flags) {
-> +=09local_irq_restore(flags);
-> +}
-> +EXPORT_SYMBOL_GPL(rust_helper_local_irq_restore);
-> +
->  void rust_helper_init_wait(struct wait_queue_entry *wq_entry)
->  {
->  =09init_wait(wq_entry);
-> diff --git a/rust/kernel/irq.rs b/rust/kernel/irq.rs
-> new file mode 100644
-> index 0000000000000..8a540bd6123f7
-> --- /dev/null
-> +++ b/rust/kernel/irq.rs
-> @@ -0,0 +1,74 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! Interrupt controls
-> +//!
-> +//! This module allows Rust code to control processor interrupts. [`with=
-_irqs_disabled()`] may be
-> +//! used for nested disables of interrupts, whereas [`IrqDisabled`] can =
-be used for annotating code
-> +//! that requires that interrupts already be disabled.
-> +
-> +use bindings;
-> +use core::marker::*;
-> +
-> +/// A guarantee that IRQs are disabled on this CPU
-> +///
-> +/// An [`IrqDisabled`] represents a guarantee that interrupts will remai=
-n disabled on the current CPU
-> +/// until the lifetime of the object ends. However, it does not disable =
-or enable interrupts on its
-> +/// own - see [`with_irqs_disabled()`] for that.
-> +///
-> +/// This object has no cost at runtime (TODO: =E2=80=A6except if whateve=
-r kernel compile-time option that
-> +/// would assert IRQs are enabled or not is enabled - in which case we s=
-hould actually verify that
-> +/// they're enabled).
-> +///
-> +/// # Examples
-> +///
-> +/// If you want to ensure that a function may only be invoked within con=
-texts where interrupts are
-> +/// disabled, you can do so by requiring that a reference to this type b=
-e passed. You can also
-> +/// create this type using unsafe code in order to indicate that it's kn=
-own that interrupts are
-> +/// already disabled on this CPU
-> +///
-> +/// ```
-> +/// use kernel::irq::{IrqDisabled, disable_irqs};
-> +///
-> +/// // Requiring interrupts be disabled to call a function
-> +/// fn dont_interrupt_me(_irq: &IrqDisabled<'_>) { }
-
-I would expect the function to take `IrqDisabled` by value instead of by
-reference.
-
-> +///
-> +/// // Disabling interrupts. They'll be re-enabled once this closure com=
-pletes.
-> +/// disable_irqs(|irq| dont_interrupt_me(&irq));
-
-Because then you don't need a borrow (`&`) here.
-
-> +/// ```
-> +pub struct IrqDisabled<'a>(PhantomData<&'a ()>);
-
-You would also need to `#[derive(Clone, Copy)]` and since we're at it, I
-would also add `Debug, Ord, Eq, PartialOrd, PartialEq, Hash`.
-The last ones are important if we want to have structs that can only
-exist while IRQs are disabled. I don't know if that makes sense, but I
-think it's fine to add the derives now.
-
-Another thing, I am wondering if we want this to be invariant over the
-lifetime, I don't have a good reason, but I still think we should
-consider it.
-
-> +
-> +impl<'a> IrqDisabled<'a> {
-> +    /// Create a new [`IrqDisabled`] without disabling interrupts
-> +    ///
-> +    /// If debug assertions are enabled, this function will check that i=
-nterrupts are disabled.
-> +    /// Otherwise, it has no cost at runtime.
-
-I don't see a check in the function below.
-
+> +/// A trait implemented by any type which contains a [`Lock`] with a spe=
+cific [`Backend`].
+> +pub trait LockContainer<T: ?Sized, B: Backend> {
+> +    /// Returns an immutable reference to the lock
 > +    ///
 > +    /// # Safety
 > +    ///
-> +    /// This function must only be called in contexts where it is alread=
-y known that interrupts have
-> +    /// been disabled for the current CPU, as the user is making a promi=
-se that they will remain
-> +    /// disabled at least until this [`IrqDisabled`] is dropped.
-> +    pub unsafe fn new() -> Self {
-> +        Self(PhantomData)
-> +    }
+> +    /// Since this returns a reference to the contained [`Lock`] without=
+ going through the
+> +    /// [`LockContainer`] implementor, it cannot be guaranteed that it i=
+s safe to acquire
+> +    /// this lock. Thus the caller must promise not to attempt to use th=
+e returned immutable
+> +    /// reference to attempt to grab the underlying lock without ensurin=
+g whatever guarantees the
+> +    /// [`LockContainer`] implementor's interface enforces.
 
-What about adding a function here (taking `self` or `&self`, it doesn't
-matter if you derived `Copy`) that checks if IRQs are disabled when
-debug assertions are on?
-
-> +}
-> +
-> +/// Run the closure `cb` with interrupts disabled on the local CPU.
-> +///
-> +/// Interrupts will be re-enabled once the closure returns. If interrupt=
-s were already disabled on
-> +/// this CPU, this is a no-op.
-> +#[inline]
-> +pub fn with_irqs_disabled<T, F>(cb: F) -> T
-> +where
-> +    F: FnOnce(IrqDisabled<'_>) -> T,
-> +{
-> +    // SAFETY: FFI call with no special requirements
-
-I vaguely remember that there were some problems with sleeping in IRQ
-disabled contexts, is that me just misremembering (eg confusing it with
-atomic context), or do we need to watch out for that?
-Because if that is the case, then we would need to use klint.
-
-> +    let flags =3D unsafe { bindings::local_irq_save() };
-> +
-> +    let ret =3D cb(IrqDisabled(PhantomData));
-> +
-> +    // SAFETY: `flags` comes from our previous call to local_irq_save
-> +    unsafe { bindings::local_irq_restore(flags) };
-
-Just to make sure, this function only enables interrupts, if they were
-enabled before the call to `local_irq_save` above, right?
+This safety requirement is rather unclear to me, there isn't really a
+good place to put the `LockContainer` requirements when implementing
+this trait.
+I also don't understand the use-case where a lock can only be acquired
+in certain circumstances, do you have an example?
 
 ---
 Cheers,
 Benno
 
-> +
-> +    ret
+> +    unsafe fn get_lock_ref(&self) -> &Lock<T, B>;
 > +}
-> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> index e6b7d3a80bbce..37835ccd51087 100644
-> --- a/rust/kernel/lib.rs
-> +++ b/rust/kernel/lib.rs
-> @@ -36,6 +36,7 @@
->  pub mod firmware;
->  pub mod init;
->  pub mod ioctl;
-> +pub mod irq;
->  #[cfg(CONFIG_KUNIT)]
->  pub mod kunit;
->  #[cfg(CONFIG_NET)]
+> +
+> +impl<T: ?Sized, B: Backend> LockContainer<T, B> for Lock<T, B> {
+> +    unsafe fn get_lock_ref(&self) -> &Lock<T, B> {
+> +        &self
+> +    }
+> +}
+> diff --git a/rust/kernel/sync/locked_by.rs b/rust/kernel/sync/locked_by.r=
+s
+> index babc731bd5f62..d16d89fe74e0b 100644
+> --- a/rust/kernel/sync/locked_by.rs
+> +++ b/rust/kernel/sync/locked_by.rs
+> @@ -95,13 +95,20 @@ impl<T, U> LockedBy<T, U> {
+>      /// data becomes inaccessible; if another instance of the owner is a=
+llocated *on the same
+>      /// memory location*, the data becomes accessible again: none of thi=
+s affects memory safety
+>      /// because in any case at most one thread (or CPU) can access the p=
+rotected data at a time.
+> -    pub fn new<B: Backend>(owner: &Lock<U, B>, data: T) -> Self {
+> +    pub fn new<B, L>(owner: &L, data: T) -> Self
+> +    where
+> +        B: Backend,
+> +        L: super::LockContainer<U, B>,
+> +    {
+>          build_assert!(
+>              size_of::<Lock<U, B>>() > 0,
+>              "The lock type cannot be a ZST because it may be impossible =
+to distinguish instances"
+>          );
+>          Self {
+> -            owner: owner.data.get(),
+> +            // SAFETY: We never directly acquire the lock through this r=
+eference, we simply use it
+> +            // to ensure that a `Guard` the user provides us to access t=
+his container's contents
+> +            // belongs to the same lock that owns this data
+> +            owner: unsafe { owner.get_lock_ref() }.data.get(),
+>              data: UnsafeCell::new(data),
+>          }
+>      }
 > --
 > 2.45.2
 >=20
