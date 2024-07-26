@@ -1,64 +1,64 @@
 Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FD22282E2
-	for <rust-for-linux@vger.kernel.org>; Fri, 26 Jul 2024 17:45:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C146C3BBC2
+	for <rust-for-linux@vger.kernel.org>; Fri, 26 Jul 2024 17:52:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722015937; cv=none; b=d6mTPEVMtL+QLdeLCoFaXzmwHVoivJFe5WtqQEVdQVSmRtbJ8LW/wZ3Hb8YZAlBRlxHg2HFCrglCspipnH0hUEUoU8v9Rtq9hpQphTneVKZbJ6xlOasPVfIg9cKHEhFUKI4Zpbh7IYeBCUOux6x9j1+q9Pu/2blRinYHcjE5ZLI=
+	t=1722016360; cv=none; b=jZNqlM5O2d0wBcioins6McH7KjFZlSDZUE13Q7BIft4Bl/a5cWUz6srZuNinqgU75qMgpvq4pWnDDr3Qp0oBiNBAjJNbN7N/qVQRzq/4S3spvyhqmzndgUuX+5jsM/U+AiPQXhO/cCrFFD0x4x6Zf6VpFgRuptLj0lnxu0fVojg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722015937; c=relaxed/simple;
-	bh=jrNRFC8dsxEX1BOGPsh6IioXzcx07rJdUSG8xE3cPPE=;
+	s=arc-20240116; t=1722016360; c=relaxed/simple;
+	bh=5v5lhmjFV4c+ZIRbf7IQeqm1zp2KKx0mB0Mhrk+WdLw=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VpMRBih48cKgmKzzeOml3i/HET3l5131Ar8PRmyB3fcV2Gl/P8tIIBW6VcPmaTdiWzeJn24AwneKFQ5baVcrnTNlYu/IaRv9H4QGiDP6DtwjheNLDNN16izT3Jouw9lIZ/rT/QaxXyTuqRUabRjShIvOdi+SqF3vFPCqZE/79nw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=OZO8KNOd; arc=none smtp.client-ip=170.10.129.124
+	 MIME-Version:Content-Type; b=pULmWnsP9AbfzauNJsC8dVkdygtM7X/zC5F6FrZL7iY7aSmI+gR+y/JtBYT2FwPE2LJlGUy9L6bnUaDJXoFlv7zGdJk8q5sVo3Bw7JSy4LM4oZFuVflc2wP/Ti1G13WwifbBb2b3PXHW0B0vh5g09EBiyDCTIZtwbBVTw2eQPPw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=HX7ZclRC; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="OZO8KNOd"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="HX7ZclRC"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1722015935;
+	s=mimecast20190719; t=1722016357;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=jrNRFC8dsxEX1BOGPsh6IioXzcx07rJdUSG8xE3cPPE=;
-	b=OZO8KNOdxlHiJ2vEHasXZwMKiHZQHFonLHBxlJKQUY+5bCHcSutn6T+zt6Tzo3DaKX/8/H
-	TQH/J5oP/EfdRtA66tO8Vh4J86tkTw13ruVygKPU6Arfps3plkuu3vqFq5jHLMe+4qkccJ
-	hd/M0ABYM7Qp39y9IDXAPctt6FIg3Nc=
-Received: from mail-qt1-f198.google.com (mail-qt1-f198.google.com
- [209.85.160.198]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=00GWmbxcDh5oLX6E/eKE1MjHl7OiAtnsc/boHQGh4iY=;
+	b=HX7ZclRCToRGsORLm8eMF1zyLNMHNe/t98pNfXffsQL5GvTpZNYog/4F2Ndpk8sW46TaKR
+	2laA0CNgkrBGzhRuo0zZbP0eMZCnJfK4fsmjBmjr1QMElrxJykMySJdK9GmXr97j+U97q9
+	Sv4L6K1ZhCgZe58IhO+j4hY6yGYOCuU=
+Received: from mail-yw1-f199.google.com (mail-yw1-f199.google.com
+ [209.85.128.199]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-551-hmRWOy0hPqWS-KvCh6j1EQ-1; Fri, 26 Jul 2024 13:45:31 -0400
-X-MC-Unique: hmRWOy0hPqWS-KvCh6j1EQ-1
-Received: by mail-qt1-f198.google.com with SMTP id d75a77b69052e-44febfb1ae4so12463031cf.2
-        for <rust-for-linux@vger.kernel.org>; Fri, 26 Jul 2024 10:45:31 -0700 (PDT)
+ us-mta-681-ErPVgARlMfizG_H39k2MKg-1; Fri, 26 Jul 2024 13:52:34 -0400
+X-MC-Unique: ErPVgARlMfizG_H39k2MKg-1
+Received: by mail-yw1-f199.google.com with SMTP id 00721157ae682-650fccfd1dfso53896947b3.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 26 Jul 2024 10:52:34 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722015931; x=1722620731;
+        d=1e100.net; s=20230601; t=1722016354; x=1722621154;
         h=mime-version:user-agent:content-transfer-encoding:organization
          :references:in-reply-to:date:cc:to:from:subject:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=p2lwZX+3Fn3ITbWASgQaM6YcbpFYMnKAVS8H7htr604=;
-        b=B39gQCSaSmdW1V4DzApomffhjbSMDnlhR1VH/TvJeTotKcplp2K8gBOUHR9j2EEn4t
-         P1qmFrNJGLv9ADBiRXF4W1RGUDZBmxDQEOEbbajP1DCbai2wyJK0WgYRZsYKWELH7TNr
-         1ZiC69THNvkxeGPurB4q1DHLhRSc/I21xQOIhn5Xg8yfw+hi0gahke+5NzXG6AjlRxqd
-         cx1ul2BnhTq7yKQrLCjFl2YYJx7mEFqZwmtdKQl4XbTd4rjgV97HQnAugvwdyrIkW53U
-         vM+rrjXi2yvInH+ATolBwAwSP4XPAhslL7wAAIPGjxkDiNoyPiT9xXca4HEEnj4qvvWs
-         NKDw==
-X-Gm-Message-State: AOJu0YwjYOwWKNf1qzNyM6xO9Md53nq+DAvKM1wVoG2zH3EQcj/i1cqe
-	s4N0fauxDZR+p72za7b9B/8bqR9iByjMv2wt1qbY9RibdOrACWmythCDVkTFSs8thRkOlbkpSBx
-	N/kY2IzXSkq7fEYA6Xts7tsjep+mYxwDG7PBgriMbWTXnEqGiBFiJrPuChOBs6+5y
-X-Received: by 2002:ad4:5c4c:0:b0:6b7:a7c3:ff5a with SMTP id 6a1803df08f44-6bb55a17e3cmr6889696d6.14.1722015931139;
-        Fri, 26 Jul 2024 10:45:31 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHVKEkRvoH44Vo4dBnYcBYW1KorK2aLbFDq1L8llqFEONXNJxK/YqGqjM/lJeyEBRUGRgNtCg==
-X-Received: by 2002:ad4:5c4c:0:b0:6b7:a7c3:ff5a with SMTP id 6a1803df08f44-6bb55a17e3cmr6889536d6.14.1722015930805;
-        Fri, 26 Jul 2024 10:45:30 -0700 (PDT)
+        bh=00GWmbxcDh5oLX6E/eKE1MjHl7OiAtnsc/boHQGh4iY=;
+        b=TURBaXFfT+o1scPGsSWRBVljI3VLRKauyhIajMD0lmhiqbNr6jQASprc68m9Ufl0Yb
+         vr8BO1xEI8DTz69GwrmfzbqYsEhLOiV69vMo/bjR9a8qNqIaBSYeIaUSAmhbcbvxP5ne
+         KqEuGbMY0nSTMsW+tnt5BHyIV7TFPz6ki6IvdB2iaoTJ6Y6TQueVrRVxifS4fW9sRrBs
+         61dX17Mpodr7A8gDaZz0dpozOuEjtHbBSOt29YSwKI1vyaJOTg7H4/G09VKfp8bYP6WQ
+         1QxAiZNQmQ/XQSUKQ7nwUkXpLifwyXoBdoiwAs96oWZw0+R3qix24UIwXwk6qbgXa4dq
+         jX6g==
+X-Gm-Message-State: AOJu0Yz6DJd6COQjNd/Kua90wHei+ZEQiP3nbT0hLvNuZ9QI60HAjqKx
+	UJEqznsctjhrlhQ47QIKcvM4wJ64IRzZ41k+VDKg84PqPDh7VYJ++waf+1ibN9eZ+91DLfwXolA
+	L+V1y8xBY4J9BzOswRMmWs9qu+vgbgo2O4blk8W6DTe0XG64Gd2IbZAnxnB8HStvF
+X-Received: by 2002:a05:6902:1029:b0:e08:7607:bbf3 with SMTP id 3f1490d57ef6-e0b544f4af6mr695214276.34.1722016354026;
+        Fri, 26 Jul 2024 10:52:34 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEAZ4HO3cLNJJhLSmodv/1Ky3xE28AIOlmjPqotf4ZXI8ZdIv/9kWuK6jvtRIpJGuA5h1XdjA==
+X-Received: by 2002:a05:6902:1029:b0:e08:7607:bbf3 with SMTP id 3f1490d57ef6-e0b544f4af6mr695192276.34.1722016353708;
+        Fri, 26 Jul 2024 10:52:33 -0700 (PDT)
 Received: from emerald.lyude.net ([2600:4040:5c4c:a000::feb])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6bb3f91a8cfsm18407316d6.60.2024.07.26.10.45.29
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7a1d73ea980sm196380185a.59.2024.07.26.10.52.32
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Jul 2024 10:45:30 -0700 (PDT)
-Message-ID: <349c43bad501c39b31e6296ce40728254e24e264.camel@redhat.com>
-Subject: Re: [PATCH 1/3] rust: Introduce irq module
+        Fri, 26 Jul 2024 10:52:32 -0700 (PDT)
+Message-ID: <bb77b1a783025036bc682466b7a9fdd56030761f.camel@redhat.com>
+Subject: Re: [PATCH 0/3] rust: Add irq abstraction, IrqSpinLock
 From: Lyude Paul <lyude@redhat.com>
 To: Greg KH <gregkh@linuxfoundation.org>
 Cc: rust-for-linux@vger.kernel.org, Danilo Krummrich <dakr@redhat.com>, 
@@ -69,15 +69,11 @@ Cc: rust-for-linux@vger.kernel.org, Danilo Krummrich <dakr@redhat.com>,
  Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
  =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin
  <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, Alice
- Ryhl <aliceryhl@google.com>, Martin Rodriguez Reboredo
- <yakoyoku@gmail.com>, FUJITA Tomonori <fujita.tomonori@gmail.com>, Aakash
- Sen Sharma <aakashsensharma@gmail.com>, Valentin Obst
- <kernel@valentinobst.de>, open list <linux-kernel@vger.kernel.org>
-Date: Fri, 26 Jul 2024 13:45:29 -0400
-In-Reply-To: <2024072609-oncoming-scrunch-97cc@gregkh>
+ Ryhl <aliceryhl@google.com>
+Date: Fri, 26 Jul 2024 13:52:31 -0400
+In-Reply-To: <2024072626-bluff-remark-3827@gregkh>
 References: <20240725222822.1784931-1-lyude@redhat.com>
-	 <20240725222822.1784931-2-lyude@redhat.com>
-	 <2024072609-oncoming-scrunch-97cc@gregkh>
+	 <2024072626-bluff-remark-3827@gregkh>
 Organization: Red Hat Inc.
 User-Agent: Evolution 3.52.2 (3.52.2-1.fc40)
 Precedence: bulk
@@ -92,30 +88,33 @@ Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
 On Fri, 2024-07-26 at 07:39 +0200, Greg KH wrote:
-> On Thu, Jul 25, 2024 at 06:27:50PM -0400, Lyude Paul wrote:
-> > +unsigned long rust_helper_local_irq_save(void) {
+> On Thu, Jul 25, 2024 at 06:27:49PM -0400, Lyude Paul wrote:
+> > This adds a simple interface for disabling and enabling CPUs, along wit=
+h
+> > the ability to mark a function as expecting interrupts be disabled -
+> > along with adding bindings for spin_lock_irqsave/spin_lock_irqrestore()=
+.
 >=20
-> Nit, the '{' goes on the next line for a function declaration in C.
-> checkpatch.pl should have caught this, right?
+> Do you have some example code that actually uses this?  Without that,
+> it's hard, if not impossible, to review it to see how it works and if it
+> works properly.
 
-Ah yes - I will make sure to remember to run make checkpatch, this is the
-first time I've sent a kernel patch that wasn't for C so it slipped my mind=
- by
-mistake when trying to figure out all of the style checkers I needed to run
-for rust patches.
+Yes - currently the=C2=A0project I've been working on to come up with rust =
+KMS
+bindings for the kernel uses it:
 
->=20
-> > +=09unsigned long flags;
-> > +
-> > +=09local_irq_save(flags);
-> > +
-> > +=09return flags;
-> > +}
-> > +EXPORT_SYMBOL_GPL(rust_helper_local_irq_save);
-> > +
-> > +void rust_helper_local_irq_restore(unsigned long flags) {
->=20
-> Same here.
+https://gitlab.freedesktop.org/lyudess/linux/-/blob/rvkms-wip/drivers/gpu/d=
+rm/rvkms/crtc.rs
+
+I will make sure to mention it in future versions of this patch series. FWI=
+W
+as well: if we have some sort of way of writing unit tests for this in rust
+I'd be happy to write some as well. It's probably going to take a while bef=
+ore
+rvkms gets upstream, and I'd like to make sure that all of the dependencies=
+ it
+needs get a chance for feedback as early as possible.
+
 >=20
 > thanks,
 >=20
