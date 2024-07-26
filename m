@@ -1,122 +1,189 @@
-Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f201.google.com (mail-yb1-f201.google.com [209.85.219.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A9536F2F8
-	for <rust-for-linux@vger.kernel.org>; Fri, 26 Jul 2024 19:39:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.134
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36CFE2D05D
+	for <rust-for-linux@vger.kernel.org>; Fri, 26 Jul 2024 19:57:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722022777; cv=none; b=YHQzt4ujUR1V/ug4KK1mjmP0L8seJ/hhHJGLspiUsPiefE4U5BtcpGT00AeNGUD/SpHq0gBOOe83VohDDUtOS9tU/r17JhGRanaOcy2wzGCYr9J/oz1RLtnRStnOOU5TEoKKfOggtp7awQNsMQnd36Up9Ky9H7uYcy7d/XFbhsI=
+	t=1722023872; cv=none; b=jyZJeh5wNnIASJsn9NJ0mo38dmwEpo+ebc5QygEFwxL0np0Av2Ya+hPWwMjFUlZ6Gp9WU4JWzLEUZaog6JCRon7Fd3QEoi7qdYSOR/Rc/FVY/+YHMwSoxydJUaHTlNcLkIGuWwcTJUo8bpxj1DY4Bnz5k6kg5LIpbtf+o5AHtlQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722022777; c=relaxed/simple;
-	bh=62U4+bWig64bnMLO3oPXd0vpFUKH0MjnH+RQce02Spg=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Q/F5f+4hGGbDDYkFBo3gVlSUYrKncPu31LwRUXLFW5gIeLMjWETk4lesmG8arebkQ+Dfc5HEnijrFPE1C+hX3RqseoI7XH2MqVe6fWcrJf4GL/qAdEl3sl85j6dCamtEZMOU27BqWbfKLKf3qBNrbQwKwNjGlEAq2eolSDNzt+w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=AMjGAgxN; arc=none smtp.client-ip=185.70.40.134
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1722023872; c=relaxed/simple;
+	bh=E77E5mIDGm4qZh6PUHc4KUGKQRSehUq8Cs/FFyDQ1Oo=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=e+wQEyuxSHidKFF1PpPSlBfcpDXT3pzDKtKI/3T7J51b/fktcdP8rToPlRpunvDcTLvOCdm48iQsTuSXYHPcX5BgEhJVjDGO2TC5qPOgEcNJ8PPEdTFoZ1YbAl8zwW3BNvNTE30QQYQm4TQ3+YJdBC78KW2NWsTW0jn9LIzU3/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--mattgilbride.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KilrkHnF; arc=none smtp.client-ip=209.85.219.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--mattgilbride.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="AMjGAgxN"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1722022769; x=1722281969;
-	bh=0UXYH9oIE8hMaPimIJfwDFmAOj+/BaOEDEyDFmRuGrw=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=AMjGAgxNil5H8pPfQqLQYdVbQBP+Of+xPSPCzjWxf7wHSmfrudJY1TsOr3J6xXKOO
-	 kEjiJJnDdH5umJaKfguzzicJ0/YIan9/tgDLh0nnx9ovdcAIhOXjObyVe9TgIKIqI6
-	 5MNPiGbTD0T9QtXAjfthKT6zl3yuSuliFKTb+jZD3DoHSgRxsz59ZoI2JcDBL36SNm
-	 Y421hk1wQFJiTvVAxOs0Rz/GhGzvmApRtghOx1FwONYyImqlCvGmwceOrqCEHNo19J
-	 sJnAoztSLULZdV/BZNXwgnf+9IvLBFmoM4rH42I8OXGw67Y1Jbq6YwDn7TZMigzQCP
-	 rcKFQxJVYYqSw==
-Date: Fri, 26 Jul 2024 19:39:21 +0000
-To: Lyude Paul <lyude@redhat.com>, rust-for-linux@vger.kernel.org
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Danilo Krummrich <dakr@redhat.com>, airlied@redhat.com, Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, FUJITA Tomonori <fujita.tomonori@gmail.com>, Aakash Sen Sharma <aakashsensharma@gmail.com>, Valentin Obst <kernel@valentinobst.de>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/3] rust: Introduce irq module
-Message-ID: <6e13df3f-6132-43c3-aaba-98b9b9ddd48e@proton.me>
-In-Reply-To: <27110c6b7d4674e1003417fc8b5a03bde1eed4ef.camel@redhat.com>
-References: <20240725222822.1784931-1-lyude@redhat.com> <20240725222822.1784931-2-lyude@redhat.com> <b1190e12-f3a6-41cb-a925-ee011650ed60@proton.me> <27110c6b7d4674e1003417fc8b5a03bde1eed4ef.camel@redhat.com>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 84e4c3cf0f199084a01cd46c693fdb89e5ff0a82
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KilrkHnF"
+Received: by mail-yb1-f201.google.com with SMTP id 3f1490d57ef6-e0335450936so123420276.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 26 Jul 2024 12:57:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1722023870; x=1722628670; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=mXPPzh2U9G8T92DAUFjg+1YE0kXQrDKqkwKIOH4C0JU=;
+        b=KilrkHnFvuOE4IXvCU85aAZqA27YXM12gEdSt8cAaHqfaAlfaSLQ4v0lWg5pt204Fl
+         Af+1xIVJacHLTHezQB16JbCa1D8jPtj7UOQpsjFWb0sKwAo7BRV8YC+ZAkj3yAAFIMCV
+         OV0gDo92yOa4mH+8HtaLonXoco8/r1FZKvYQfwHg82u5P4M6kNMLyoWEHYiZEaO4B+tm
+         mx4UeyuYhqN8UBBS2RE/urKDTml4PsMOXbu/kvezgWaGmCA2RW2mnO/DJ3I/oQXOhJHr
+         2NF+mgJDzJ/V1i2EvoZxjvSDUWSdG8YoGosNIWLBWY0gLXIL1DLlD2LfZ5HJJv2BQ1cV
+         iciw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722023870; x=1722628670;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=mXPPzh2U9G8T92DAUFjg+1YE0kXQrDKqkwKIOH4C0JU=;
+        b=tEUEqR0NWMYwjeRbmN8IjiA2Gt45ws+vOsccJixx6a8tL7Uf+zPxy3CXuWV4eRfYs7
+         lWeE2ijDVziz/fFWtQaavNoVSz/cJorPpA4nlThrPukpX+YNoqRn/hClrTlmo9u/OQ67
+         UbK41Z7LrDGBARaP+edP6vVodNtf5YocvWIE2nX5ah4AhthvUoOr4U5+fVknw8Cu9gLo
+         Xp8tcekrQzmN1PmYYC9ZGt9Skga5oVpQIwfKWqhioyg64qw6dujwB4cXJjgPQSKzqrzz
+         BbTNrDkNNenBxQqMPDGz0D5qboNUAmuUzUEF4eYkOpxX1lsx/7iLLapS7UY+F89JVsGT
+         wENg==
+X-Forwarded-Encrypted: i=1; AJvYcCX4S9pas3PRuRJUHzOoaaF38e1gOVK9PO4jk99zHI+kPZlIj1wmlDlN06AohjfBCJMw/OSQiwx7Y2tfIxR8g95iQzlvYVwnrrnz5xWur/w=
+X-Gm-Message-State: AOJu0Yxgr418Lah9QSKzFZ4OUdtNRfWSHIsRJyNuzS611a5n2CCT3Y33
+	JCNgncBDTXdrc/SH3n5vGHDvsFZxZvvEE/o0rhygr1yY1ox8KrVAusDUlyYbPpr3WTfH5tWpbSl
+	oisDDcA3SZ5vmJc9ePbJ0peUqMg==
+X-Google-Smtp-Source: AGHT+IFPGPT/M8BEQbpd+ttAfK5/o/1pOjgp3eJsKQiL8LivITx72gX3hiImgLkRZQrhcm1s+Le5kIuoaxUkRMF2ed4=
+X-Received: from mattgilbride.c.googlers.com ([fda3:e722:ac3:cc00:2b:7d90:c0a8:2ac5])
+ (user=mattgilbride job=sendgmr) by 2002:a05:6902:2b8f:b0:e03:5b06:6db2 with
+ SMTP id 3f1490d57ef6-e0b543b7dbcmr1369276.3.1722023870069; Fri, 26 Jul 2024
+ 12:57:50 -0700 (PDT)
+Date: Fri, 26 Jul 2024 19:57:39 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIALP/o2YC/23QwW7DIAwG4FepOI/JxoQkO+09ph2AmBRpKxWpo
+ k1V3n3QS6iy42/5+yX7LhbOkRfxdrqLzGtcYrqU0L+chD/by8wyTiULBYpQQSedltndMrO0zqE
+ FNAEsiLJ/zRziz6Pr47Pkc1xuKf8+qles09qi4bllRQlyHDsmZqbBw/uc0vzFrz59i1qzqobi2
+ FJVKDhEstYRwXSgtFONQ0upUFLESJpG8HygeqcGqKW6UhhY02SsC/5Au5aalnb1VhO4/I3H/p9 bzU57xJaaQlE7DmgHPzn7RLdt+wPyj+QiygEAAA==
+X-Mailer: b4 0.13.0
+Message-ID: <20240726-b4-rbtree-v7-0-aee88caaf97c@google.com>
+Subject: [PATCH v7 0/6] Red-black tree abstraction needed by Rust Binder
+From: Matt Gilbride <mattgilbride@google.com>
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	"=?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
+	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Christian Brauner <brauner@kernel.org>
+Cc: Rob Landley <rob@landley.net>, Davidlohr Bueso <dave@stgolabs.net>, 
+	Michel Lespinasse <michel@lespinasse.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Matt Gilbride <mattgilbride@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On 26.07.24 20:18, Lyude Paul wrote:
-> On Fri, 2024-07-26 at 07:23 +0000, Benno Lossin wrote:
->> On 26.07.24 00:27, Lyude Paul wrote:
->>> +}
->>> +
->>> +/// Run the closure `cb` with interrupts disabled on the local CPU.
->>> +///
->>> +/// Interrupts will be re-enabled once the closure returns. If interru=
-pts were already disabled on
->>> +/// this CPU, this is a no-op.
->>> +#[inline]
->>> +pub fn with_irqs_disabled<T, F>(cb: F) -> T
->>> +where
->>> +    F: FnOnce(IrqDisabled<'_>) -> T,
->>> +{
->>> +    // SAFETY: FFI call with no special requirements
->>
->> I vaguely remember that there were some problems with sleeping in IRQ
->> disabled contexts, is that me just misremembering (eg confusing it with
->> atomic context), or do we need to watch out for that?
->=20
-> You're correct - sleeping isn't allowed in no-irq contexts.
->=20
->> Because if that is the case, then we would need to use klint.
->=20
-> Ok - I've never used klint before but I'm happy to look into it and try t=
-o
-> implement something for it.
+This patchset contains the red-black tree abstractions needed by the Rust
+implementation of the Binder driver.
 
-I am not 100% up to date, last time I heard Gary (the maintainer/author
-of klint) talk about it, I remember that it wasn't fully ready for this
-stuff. Don't know if this has changed in the meantime.
-I don't think this is anything that you can do much, since it's rather
-complex, so I will just ping Gary on the status.
+Binder driver benefits from O(log n) search/insertion/deletion of
+key/value mappings in various places, including `process.rs` and
+`range_alloc.rs`.  In `range_alloc.rs`, the ability to store and
+search by a generic key type is also useful.
 
-> FWIW too: I assume we would still want klint anyway, but I think it's at =
-least
-> worth mentioning the kernel does have a compile option for WARNing on sle=
-eps
-> in sleepless contexts
+Please see the Rust Binder RFC for usage examples [1]. Note that
+the `container_of` macro is currently used only by `rbtree` itself.
 
-So the plan always was to not make it a hard error. Essentially instead
-of having `unsafe` littered al over the place when you switch context,
-klint would ensure (like the borrow checker for ownership) that
-everything is fine.
+Users of "rust: rbtree: add red-black tree implementation backed by the C version"
+    [PATCH RFC 03/20] rust_binder: add threading support
+    [PATCH RFC 05/20] rust_binder: add nodes and context managers
+    [PATCH RFC 06/20] rust_binder: add oneway transactions
 
->>> +    let flags =3D unsafe { bindings::local_irq_save() };
->>> +
->>> +    let ret =3D cb(IrqDisabled(PhantomData));
->>> +
->>> +    // SAFETY: `flags` comes from our previous call to local_irq_save
->>> +    unsafe { bindings::local_irq_restore(flags) };
->>
->> Just to make sure, this function only enables interrupts, if they were
->> enabled before the call to `local_irq_save` above, right?
->=20
-> Correct - `local_irq_save()` only saves the CPU's current IRQ flags. So i=
-f
-> interrupts were already disabled in the context we call `local_irq_save()=
-`, we
-> end up restoring the same IRQ-disabled flags on the processor when we get=
- to
-> `local_irq_restore()`. This is also why the closure interface for this is
-> necessary - to ensure that nested interrupt flag saves are always undone =
-in
-> the reverse order to ensure this assumption always holds.
+Users of "rust: rbtree: add iterator"
+    [PATCH RFC 17/20] rust_binder: add oneway spam detection
 
-Thanks, that was exactly what I assumed.
+Users of "rust: rbtree: add mutable iterator"
+    [PATCH RFC 06/20] rust_binder: add oneway transactions
+
+Users of "rust: rbtree: add `RBTreeCursor`"
+    [PATCH RFC 06/20] rust_binder: add oneway transactions
+
+Users of "rust: rbtree: add RBTree::entry"
+    Not used in the original RFC, but introduced after further
+    code review.  See: https://r.android.com/2849906
+
+The Rust Binder RFC addresses the upstream deprecation of red-black
+tree. Quoted here for convenience:
+
+"This RFC uses the kernel's red-black tree for key/value mappings, but we
+are aware that the red-black tree is deprecated. We did this to make the
+performance comparison more fair, since C binder also uses rbtree for
+this. We intend to replace these with XArrays instead. That said, we
+don't think that XArray is a good fit for the range allocator, and we
+propose to continue using the red-black tree for the range allocator."
+
+Link: https://lore.kernel.org/rust-for-linux/20231101-rust-binder-v1-0-08ba9197f637@google.com/ [1]
+Signed-off-by: Matt Gilbride <mattgilbride@google.com>
+---
+Changes in v7:
+- make `RawVacantEntry.rbtree` a raw pointer like
+  `RawVacantEntry.child_field_of_parent`, since the latter can
+  technically point at a field of the former. We prefer that the
+  implementation be explicit about the safety guarantees of both because
+  of the relationship between them.
+- Link to v6: https://lore.kernel.org/r/20240711-b4-rbtree-v6-0-14bef1a8cdba@google.com
+
+Changes in v6:
+- Minimize usage of `*mut bindings::rb_node`, replacing with
+  `NonNull<bindings::rb_node>`. Specifically, changing
+  `RBTreeCursor.current` to be `NonNull<bindings::rb_node>` and updating
+  the corresponding functions.
+- Update `RBTreeCursor:to_key_value` helpers to have their own lifetime
+  (they are not instance methods, using a different lifetime than that
+  of the `impl` block they are in makes things more clear.
+- Fix misplaced semicolon in `cursor_lower_bound`.
+- Link to v5: https://lore.kernel.org/r/20240606-b4-rbtree-v5-0-96fe1a0e97c0@google.com
+
+Changes in v5:
+- Used `Box::write` in `RBTreeNodeReservation::into_node`, removing
+  unnecessary `unsafe` blocks.
+- Updated `RBTreeCursor::remove_current` to return the removed node.
+- Link to v4: https://lore.kernel.org/r/20240603-b4-rbtree-v4-0-308e43d6abfc@google.com
+
+Changes in v4:
+- rebased onto the tip of rust-for-linux/rust-next (97ab3e8eec0ce79d9e265e6c9e4c480492180409)
+- addressed comments from draft PR on GitHub: https://github.com/Rust-for-Linux/linux/pull/1081
+- Link to v3: https://lore.kernel.org/r/20240418-b4-rbtree-v3-0-323e134390ce@google.com
+
+Changes in v3:
+- Address various feedback re: SAFETY and INVARIANT comments from v2.
+- Update variable naming and add detailed comments for the `RBTree::insert` (later moved to
+  `RBTree::raw_entry`) implementation.
+- Link to v2: https://lore.kernel.org/r/20240219-b4-rbtree-v2-0-0b113aab330d@google.com
+
+Changes in v2:
+- Update documentation link to the C header file
+- Use `core::convert::Infallible` in try_reserve_node
+- Link to v1: https://lore.kernel.org/r/20240205-b4-rbtree-v1-0-995e3eee38c0@google.com
 
 ---
-Cheers,
-Benno
+Alice Ryhl (1):
+      rust: rbtree: add `RBTree::entry`
+
+Benno Lossin (1):
+      rust: kernel: add `drop_contents` to `BoxExt`
+
+Matt Gilbride (1):
+      rust: rbtree: add `RBTreeCursor`
+
+Wedson Almeida Filho (3):
+      rust: rbtree: add red-black tree implementation backed by the C version
+      rust: rbtree: add iterator
+      rust: rbtree: add mutable iterator
+
+ rust/helpers.c               |    7 +
+ rust/kernel/alloc/box_ext.rs |   24 +-
+ rust/kernel/lib.rs           |    1 +
+ rust/kernel/rbtree.rs        | 1290 ++++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 1321 insertions(+), 1 deletion(-)
+---
+base-commit: 97ab3e8eec0ce79d9e265e6c9e4c480492180409
+change-id: 20231205-b4-rbtree-abb1a016f0a0
+
+Best regards,
+-- 
+Matt Gilbride <mattgilbride@google.com>
 
