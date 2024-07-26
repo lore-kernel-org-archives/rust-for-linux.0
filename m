@@ -1,29 +1,29 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE43AA34;
-	Fri, 26 Jul 2024 05:39:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC7C61CA9E
+	for <rust-for-linux@vger.kernel.org>; Fri, 26 Jul 2024 05:40:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721972365; cv=none; b=JEw0q3RDW7OrWxJdDPUFmcxHJ2yMpO2CfwTpVxa1+o2Uh/lack1aaM3nD93gntLIxo/Q7L+SGF7b2gzqMn1zqnEy2OpHIp/I6QxThDsEUxh+izvahFx2hQkqDDWIawOvsd2QJlMEvnrctlpSloap8HHKUlo7lWTU7nvU48MM/mU=
+	t=1721972403; cv=none; b=htkOj5HX1gE0c3wORAV6aC3fISL6hvIkeX9gfZ74QL65EjePr9Vb4qMF9YuajgZZ6J1sSpAYru/oJHL9KmbNZEMijDzwAy8x/mD8XJlUIfGxEZ8o2TLKrTn0l4OJDEh6wTnEb7c6wWQj68h9QCPgBbjriMH2paCVHZRQMslWVnU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721972365; c=relaxed/simple;
-	bh=JRVYVNBUG+zgdWMbHTC0PsFOiJ7UtAmU7KEE7HY0g7w=;
+	s=arc-20240116; t=1721972403; c=relaxed/simple;
+	bh=7XMdm/Da+oOfsQjBluWDRxPs+D6Kq1TXoxX38VoxNT8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JkMCXOFgHm0LUTZvFKGqA2zrxbpSMLamiNUhlZBULceGiKpD1dpytaXiQSQvqkyIAYq53S/0CmSklgAItSA1Z66d3+kZp/pkaWq6oUxUo7cFgJqIOE+cR2k1qYM3f/2VXkCVn/Vqpd/gXkTAssa47Nql60ORiFpgt17bKvXeG7U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xq4meg/A; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=U+5Jj4fkSrUnydFHIfrAjncttDg5ZnL2v9s6E7eAqHJKiKmCmFLQNcll+KFUrbwkXnemS7HPi9kboiKcRCQNaILBG5AS4DYCLRmEoQoiPEvltJ9wcYmqKU+/6MKRTbK83mSrcH4kIvTBEYs4FttCdnyeSnx2Ly3tSccNjS6DrPE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NwmwQN3c; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xq4meg/A"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8810C32782;
-	Fri, 26 Jul 2024 05:39:24 +0000 (UTC)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NwmwQN3c"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC818C32782;
+	Fri, 26 Jul 2024 05:40:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1721972365;
-	bh=JRVYVNBUG+zgdWMbHTC0PsFOiJ7UtAmU7KEE7HY0g7w=;
+	s=korg; t=1721972402;
+	bh=7XMdm/Da+oOfsQjBluWDRxPs+D6Kq1TXoxX38VoxNT8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=xq4meg/Acb2ZTdSB1geTsbaLOae9gExpapRqPMDUDl8+Aodg/amZaivlLKCutQrjH
-	 yJx0fKxC5b90Ie/GQ3S5tXrFlnttKxDkvKFlPWXKVsuR3D/C8ET0xp/hNUyAAMrSri
-	 V/ranR4gZ8OyA3+qI0MZ/PelGy/829foydYwNTTc=
-Date: Fri, 26 Jul 2024 07:39:22 +0200
+	b=NwmwQN3cFQZdRpjkSx4FBMFxFhcvWnG7bxCpQLAAo7lfVgMaCR9CQBn1CqA7pHmZM
+	 CWYZGxRDrzjA0oO2ywVsfumR9kG0tZhQRd2Y54wCkowFMM7HCON9+VffVQlkGcHZbh
+	 soq6I/TRTIxmWGkf5kmvDqXna8b1WyBaT1rfzpOs=
+Date: Fri, 26 Jul 2024 07:39:59 +0200
 From: Greg KH <gregkh@linuxfoundation.org>
 To: Lyude Paul <lyude@redhat.com>
 Cc: rust-for-linux@vger.kernel.org, Danilo Krummrich <dakr@redhat.com>,
@@ -37,16 +37,10 @@ Cc: rust-for-linux@vger.kernel.org, Danilo Krummrich <dakr@redhat.com>,
 	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Aakash Sen Sharma <aakashsensharma@gmail.com>,
-	Valentin Obst <kernel@valentinobst.de>,
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 1/3] rust: Introduce irq module
-Message-ID: <2024072609-oncoming-scrunch-97cc@gregkh>
+	Alice Ryhl <aliceryhl@google.com>
+Subject: Re: [PATCH 0/3] rust: Add irq abstraction, IrqSpinLock
+Message-ID: <2024072626-bluff-remark-3827@gregkh>
 References: <20240725222822.1784931-1-lyude@redhat.com>
- <20240725222822.1784931-2-lyude@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -55,25 +49,16 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240725222822.1784931-2-lyude@redhat.com>
+In-Reply-To: <20240725222822.1784931-1-lyude@redhat.com>
 
-On Thu, Jul 25, 2024 at 06:27:50PM -0400, Lyude Paul wrote:
-> +unsigned long rust_helper_local_irq_save(void) {
+On Thu, Jul 25, 2024 at 06:27:49PM -0400, Lyude Paul wrote:
+> This adds a simple interface for disabling and enabling CPUs, along with
+> the ability to mark a function as expecting interrupts be disabled -
+> along with adding bindings for spin_lock_irqsave/spin_lock_irqrestore().
 
-Nit, the '{' goes on the next line for a function declaration in C.
-checkpatch.pl should have caught this, right?
-
-> +	unsigned long flags;
-> +
-> +	local_irq_save(flags);
-> +
-> +	return flags;
-> +}
-> +EXPORT_SYMBOL_GPL(rust_helper_local_irq_save);
-> +
-> +void rust_helper_local_irq_restore(unsigned long flags) {
-
-Same here.
+Do you have some example code that actually uses this?  Without that,
+it's hard, if not impossible, to review it to see how it works and if it
+works properly.
 
 thanks,
 
