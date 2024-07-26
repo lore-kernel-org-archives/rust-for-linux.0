@@ -1,82 +1,80 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 917A539879
-	for <rust-for-linux@vger.kernel.org>; Fri, 26 Jul 2024 18:29:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4B3A2C190
+	for <rust-for-linux@vger.kernel.org>; Fri, 26 Jul 2024 18:47:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722018548; cv=none; b=Zq4HeqzF/Ov9C2NqtPlfgZrXEHZk0xrzfOEUSQzRkh6eyiDknSxeATTpqUtMjEAGVeq1AI5ak1JErrU6qEyuiwPt4uPuu+lbN3LNrqS61hQR5cfIeNlEpmhTDF4QHn+3owm38c81Jt/8rbqsJ8zYlKio41KqLxnJTSD6dFEyKzU=
+	t=1722019666; cv=none; b=ZmxYsFLU4xRRIlSeBRJp95CFpuLNxumXYzd3QtzuxMnbwEddCez0KVtm89eJkq2fVqtxvtyZ3dqlrUEo7wGSha0dn34qIxLquMOVKFNkzUBg0rZ9er+7kltBMYovPWYUFV0WJ06g3I7lm8wcfyzle0VudKuJKxxveP43ccqpMJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722018548; c=relaxed/simple;
-	bh=kxGsx2tOkxmtKIcKwHysTJNibeB0eIUr+sZXexZQCf8=;
+	s=arc-20240116; t=1722019666; c=relaxed/simple;
+	bh=YbbEhQ4TNhjGnJfujWFt/+JAYzOrbNpfxrQ3peWIPYk=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JjmvWxPp/Ip5+Dtp+yNvXSZQkUwM38coKlVe9MkEafG2ZSfcDxZD3LwMHfrxD3+Bfu/fxe29g3ZSVsG759N8SW/dqy6w02SRwXkMfcKOtzYaOIKxPbBJkIA/gf7n+xEcdwifCwLowmcBcIPlE/JoxQAiEw3DG+WIDH4xYPEaO0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SoiL017w; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:Content-Type; b=ZpoNYR6+jrGb2LCa6EBmNzvcgKhUpAoPNwMol3IuIQFAHEu7O3x/d0tkFsO2UgOtcGUQp9wAO2uIXhOm7qU4mVEk/lY8/sYhaieS7SGqbyst8Ha7ghExCH4u36t5r47MdGy2rr/+yPW3DWgrQi7X+q7KWQ6dDckYRf10g44HGjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Op5kg0b1; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SoiL017w"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Op5kg0b1"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1722018545;
+	s=mimecast20190719; t=1722019663;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=kxGsx2tOkxmtKIcKwHysTJNibeB0eIUr+sZXexZQCf8=;
-	b=SoiL017wdi9YnPxlU0xUWteyXlXuDBg2RpQ9aQ/vM5WcB8doXiyidKfBBTuzC5PX16TIdd
-	RDwQCHOAAt5TC5v75W+SZSgqLTNY8GEjZuKcz1lTnkvq7klQceCwSFEW7oNYVkXxJzl19u
-	BhwAWigWrrqtb5z9EOERi65Vj0YNNyA=
-Received: from mail-vk1-f199.google.com (mail-vk1-f199.google.com
- [209.85.221.199]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=etEJEU0Efr/XoEaPrkR8ahBhiJERR97TgBDJl/9ecH4=;
+	b=Op5kg0b1ndb+sS6qH8Qpjk9sIQv/llxwuc2nR13KuSTwrFE+V7BT34nmreyUtOrY2LTb7v
+	rrtM2NOQ3sRzjuBQqva7gQi9mbqVl2UVY/i/Tu+2rxx6xa0eWC0rg4N1K7TMxFkSJN/oed
+	OL6Hh5iX6RPl1pNtiLzT5GmWbBjgN8Y=
+Received: from mail-ot1-f70.google.com (mail-ot1-f70.google.com
+ [209.85.210.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-362-m76N51VNNP--u90slWXB3w-1; Fri, 26 Jul 2024 14:29:04 -0400
-X-MC-Unique: m76N51VNNP--u90slWXB3w-1
-Received: by mail-vk1-f199.google.com with SMTP id 71dfb90a1353d-4f517c74105so278066e0c.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 26 Jul 2024 11:29:04 -0700 (PDT)
+ us-mta-363-zM7qIAZnN4qmr0y-SCACcQ-1; Fri, 26 Jul 2024 14:47:41 -0400
+X-MC-Unique: zM7qIAZnN4qmr0y-SCACcQ-1
+Received: by mail-ot1-f70.google.com with SMTP id 46e09a7af769-709334cc7f1so1202309a34.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 26 Jul 2024 11:47:41 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722018543; x=1722623343;
+        d=1e100.net; s=20230601; t=1722019660; x=1722624460;
         h=mime-version:user-agent:content-transfer-encoding:organization
          :references:in-reply-to:date:cc:to:from:subject:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=kxGsx2tOkxmtKIcKwHysTJNibeB0eIUr+sZXexZQCf8=;
-        b=hOny76i9bkCcAED5gL8HhKNSu2j4wBlZVzp+amLX88krqmbnEdJbP7PgcpQrHXEujh
-         pwkddwuA4m/6+FegSC20uGUO2W/QoMSdn07JL6Iwpe06zc7svGArebh8umKJmBfODeUx
-         rY8NmNqNp18rpdSsJf0B13NykeKhfzDP9b1AIvIeN59Vk6g7ynZyDsYhGDYC/SfH6Mfn
-         Eawz9+W8lE10NJ8MdSz81FzhY8HdeSp6oQno+8PCqkX+g6vgc8r3CJER1XOyjBExNcv8
-         dRZ3bv6V2X6d6rOcE96fsTJ7iluANYW/A01teJ/R3OtsA/uixek+TB8rHu5kt7l6AgKy
-         ogYg==
-X-Gm-Message-State: AOJu0Yysuv+p5Vx/FaZiOWNC1W767TAWSP3iCZJCVC8FFu6edhSASPee
-	zrfwrdfoWfW5XWGcsJdyPccVCqf1R2+SE68obX1EFPw1jLcMkUpX4qsp410VP/KRFep1l8jYu1+
-	KA+q1nybg0WtcM12H+3LClc6AIvMBSv8xPCYOk9ihyBtF3BA/pXi5uPShWGXdqSNM
-X-Received: by 2002:a05:6122:3b1c:b0:4f5:2a41:d10e with SMTP id 71dfb90a1353d-4f6e697f845mr282233e0c.10.1722018543506;
-        Fri, 26 Jul 2024 11:29:03 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IE7C+LG6GjNU+yMcIq/5AtNOIiFUTq8frzF1JJ2htgqM72zT40UTwM3+tMQudIYCYw/eBoXhw==
-X-Received: by 2002:a05:6122:3b1c:b0:4f5:2a41:d10e with SMTP id 71dfb90a1353d-4f6e697f845mr282207e0c.10.1722018543176;
-        Fri, 26 Jul 2024 11:29:03 -0700 (PDT)
+        bh=etEJEU0Efr/XoEaPrkR8ahBhiJERR97TgBDJl/9ecH4=;
+        b=OszjwEd0jsEyU98dKauuRl7UXWllVdzm7OuaagpGhW2/v2PmnY09SRBaRMorWd80+T
+         9FGzreMtG/825RMJArnEcVcdIkJOxB1f4VaElL9LmyMzaZqmkelDdn/KytFRBebgqhmq
+         33ySmtcVvRrla/eZ1bagNBKvPXrzqdHRPXk/ZWseWVoTouU523GPDUgVv08kOoptK1jJ
+         GlPfDPpEqr1umRdYSeesoFsQAnGdf6UMdr1Ka627rx6ij+qxBEqfy5jDgF2d5D8OTKJb
+         IweQ+VcoWAlO1VNucM3QjvIxkc2ujpteU1knMU88NzFPQMTtRFbR/wjrfyepQe78kmRK
+         ToIg==
+X-Gm-Message-State: AOJu0YyE7z82x+taixOQUfbdoV7HU1qOxKVLB/kLOlCPFEPAY8nXkmFN
+	UrrUdDdKR/rBlfswfMReJs+BuC54u9S6SNSjRKayDS9lPfn93IdQcghy3rBhxWUkZg4zsJ6MtCR
+	qOybzRCPfJx7XmbTkGLK5iYOXSElzuQKYobC7AndBpsUjG9gmNbMPyoQMHbsGEt0U
+X-Received: by 2002:a05:6830:6705:b0:709:41c2:5104 with SMTP id 46e09a7af769-70941c25535mr163150a34.8.1722019660588;
+        Fri, 26 Jul 2024 11:47:40 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGgnCmIYR5SM3zsSSZvfM1rPn4T/2XUljbQGCEZr23RQkqvjVAhchDR/XFE0C92Psy5bjy0tg==
+X-Received: by 2002:a05:6830:6705:b0:709:41c2:5104 with SMTP id 46e09a7af769-70941c25535mr163129a34.8.1722019660264;
+        Fri, 26 Jul 2024 11:47:40 -0700 (PDT)
 Received: from emerald.lyude.net ([2600:4040:5c4c:a000::feb])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-44fe8123b5bsm15358021cf.11.2024.07.26.11.29.02
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7a1d74469e7sm203024485a.120.2024.07.26.11.47.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Jul 2024 11:29:02 -0700 (PDT)
-Message-ID: <cd077b6506b8adc0fdb2b661f4ebfbc9e5286345.camel@redhat.com>
-Subject: Re: [PATCH 3/3] rust: sync: Add IrqSpinLock
+        Fri, 26 Jul 2024 11:47:39 -0700 (PDT)
+Message-ID: <ec425d71bb3a30710376c9d1c72df0006f8905d4.camel@redhat.com>
+Subject: Re: [PATCH 0/3] rust: Add irq abstraction, IrqSpinLock
 From: Lyude Paul <lyude@redhat.com>
-To: Peter Zijlstra <peterz@infradead.org>
+To: Greg KH <gregkh@linuxfoundation.org>
 Cc: rust-for-linux@vger.kernel.org, Danilo Krummrich <dakr@redhat.com>, 
  airlied@redhat.com, Ingo Molnar <mingo@redhat.com>, Will Deacon
- <will@kernel.org>,  Waiman Long <longman@redhat.com>, Miguel Ojeda
- <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,  Wedson Almeida
- Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo
- <gary@garyguo.net>, =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas
- Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>,
- Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Trevor Gross
- <tmgross@umich.edu>, Valentin Obst <kernel@valentinobst.de>, open list
- <linux-kernel@vger.kernel.org>
-Date: Fri, 26 Jul 2024 14:29:01 -0400
-In-Reply-To: <20240726074845.GM13387@noisy.programming.kicks-ass.net>
+ <will@kernel.org>,  Waiman Long <longman@redhat.com>, Peter Zijlstra
+ <peterz@infradead.org>, Miguel Ojeda <ojeda@kernel.org>,  Alex Gaynor
+ <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun
+ Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin
+ <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, Alice
+ Ryhl <aliceryhl@google.com>
+Date: Fri, 26 Jul 2024 14:47:38 -0400
+In-Reply-To: <bb77b1a783025036bc682466b7a9fdd56030761f.camel@redhat.com>
 References: <20240725222822.1784931-1-lyude@redhat.com>
-	 <20240725222822.1784931-4-lyude@redhat.com>
-	 <20240726074845.GM13387@noisy.programming.kicks-ass.net>
+	 <2024072626-bluff-remark-3827@gregkh>
+	 <bb77b1a783025036bc682466b7a9fdd56030761f.camel@redhat.com>
 Organization: Red Hat Inc.
 User-Agent: Evolution 3.52.2 (3.52.2-1.fc40)
 Precedence: bulk
@@ -90,24 +88,50 @@ X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, 2024-07-26 at 09:48 +0200, Peter Zijlstra wrote:
-> On Thu, Jul 25, 2024 at 06:27:52PM -0400, Lyude Paul wrote:
-> > A variant of SpinLock that is expected to be used in noirq contexts, an=
-d
-> > thus requires that the user provide an kernel::irq::IrqDisabled to prov=
+On Fri, 2024-07-26 at 13:52 -0400, Lyude Paul wrote:
+> On Fri, 2024-07-26 at 07:39 +0200, Greg KH wrote:
+> > On Thu, Jul 25, 2024 at 06:27:49PM -0400, Lyude Paul wrote:
+> > > This adds a simple interface for disabling and enabling CPUs, along w=
+ith
+> > > the ability to mark a function as expecting interrupts be disabled -
+> > > along with adding bindings for spin_lock_irqsave/spin_lock_irqrestore=
+().
+> >=20
+> > Do you have some example code that actually uses this?  Without that,
+> > it's hard, if not impossible, to review it to see how it works and if i=
+t
+> > works properly.
+>=20
+> Yes - currently the=C2=A0project I've been working on to come up with rus=
+t KMS
+> bindings for the kernel uses it:
+>=20
+> https://gitlab.freedesktop.org/lyudess/linux/-/blob/rvkms-wip/drivers/gpu=
+/drm/rvkms/crtc.rs
+>=20
+> I will make sure to mention it in future versions of this patch series. F=
+WIW
+> as well: if we have some sort of way of writing unit tests for this in ru=
+st
+> I'd be happy to write some as well. It's probably going to take a while b=
+efore
+> rvkms gets upstream, and I'd like to make sure that all of the dependenci=
+es it
+> needs get a chance for feedback as early as possible.
+
+A heads up - I didn't realize that the rustdocs in the kernel actually -do-
+get run in unit tests, so actually all of the code examples in the
+documentation should be working examples if I understand correctly. I will
+also keep this mind in the future and make sure to actually run all of thes=
 e
-> > they are in such a context upon lock acquisition. This is the rust
-> > equivalent of spin_lock_irqsave()/spin_lock_irqrestore().
->=20
-> So aside from the horrendous camel-case thing, why are you naming this
-> thing the wrong way around? Shouldn't it be SpinLockIrq rather than
-> IrqSpinLock? Or possibly even SpinLockIrqSave?
->=20
-> Randomly changing the names of things isn't going to make it any easier
-> for people to use this stuff.
+:)
 
-Yeah you're probably right - I'll fix this on the next iteration
-
+>=20
+> >=20
+> > thanks,
+> >=20
+> > greg k-h
+> >=20
 >=20
 
 --=20
