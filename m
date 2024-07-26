@@ -1,258 +1,186 @@
-Received: from mail-oo1-f49.google.com (mail-oo1-f49.google.com [209.85.161.49])
+Received: from mail-oo1-f51.google.com (mail-oo1-f51.google.com [209.85.161.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1E2524205;
-	Fri, 26 Jul 2024 20:46:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13CFF5674E
+	for <rust-for-linux@vger.kernel.org>; Fri, 26 Jul 2024 21:06:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722026779; cv=none; b=eOSg5YZOXW9nH0CD9TkprEYyGCp0tfFgDZT4esIUZx9l5W3lqe8mYznNqnw2cZttk694AP+VVo3MjVrsccANBcIG4y45ZcbuYma1GUhgSjiKmiU62JlwySBSiCyktwpKxMaohEddRICyuGPSDLP69irdg/QplARJh4PHQVeQkfE=
+	t=1722027962; cv=none; b=oXeN7HHTGwopLKgIXSXU/tftDSB0AFg3OenglICsRXFi+rVkwEfvUVclED+EjRBeRMrIbP62d+/JhjyYguGbfgylB+/GilmIdu9UIAap72lMC6ckeWX4WW+2ukYiO4cRtEWBddF89/6S3cZn53K9zeIHDYeszYQGLxNQuiLxNJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722026779; c=relaxed/simple;
-	bh=f9qO9Rn2Uv7ovrigWpLllbYPBkKULIErG/qEpgFC7H4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lr6qWd7jV5MWyWMNNiRHX7jsKJUuckCHAoOPSUG1Zb3OYy6odnZmeNwcRdwKGE8yXBc1o4WZLxxKXB8DaKj9jGQqCsGC2pd30I+MsHuoZDm1eRB82JVcvw5IRwc1Jh5DSWBc5rxR0Pc2FejEPybe931rIqXMA86Bu2BwxMqfqwk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=E5tlPxze; arc=none smtp.client-ip=209.85.161.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1722027962; c=relaxed/simple;
+	bh=7m1g6Y9PmgQZrshJ6w1fDE+ejH8mNXDvgc4AnljHtLw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Y6/XDyXxY0uLMOHjMdEfgLDvysm2yWY3rh/Bo4gy8cRND/M0Dgp82Cn98Mgd1IwlR4WrtGSujxgHWGpyU4Yk7KrZp8sKa9sdRioQGnFYgG3LIvXxlYiu1n+d0NjtgpW8QS1a0cHNTNO0pZgO4fJF5CH3OQbNk/p8OMNz0CfK4Yk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sBUqpHNy; arc=none smtp.client-ip=209.85.161.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="E5tlPxze"
-Received: by mail-oo1-f49.google.com with SMTP id 006d021491bc7-5d5aecbe0a9so814196eaf.1;
-        Fri, 26 Jul 2024 13:46:17 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sBUqpHNy"
+Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-5d5bc93e09dso838637eaf.3
+        for <rust-for-linux@vger.kernel.org>; Fri, 26 Jul 2024 14:06:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1722026776; x=1722631576; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+        d=google.com; s=20230601; t=1722027960; x=1722632760; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=cF1c8neFTt1VPx0ppHccxu/q8NvWgl5cUeRvDaUlvaI=;
-        b=E5tlPxzeyK22y+72G98Q8JTxapC9feFbCChEXwnb4vF8EPz3AygDBcOOQB6OBxYnhf
-         YkaKNjQECBLml2PC70QgibNX1F4/peiu59UFavI0EsZBh+ePwYiIb+rgM7pBKnVl7AiS
-         rlrod3CL7BGAZcSB0WRRDjqoIWPU/nSv6BlhhpYx3Oxu71L1pIx0E+/Oha+iPtXpTSdV
-         4xzYGzwb41kOm6GuGaIiIvnaaJaWspgt/74lI/lXi2FvlMbKbeNhBPHHpq17bCQBfq7d
-         InN10LkpDyqUYLZfR0KOtIdpMQFmIE/ZXLZzDPwzWsTKRJCzkFkI0/8Ivw1y2QLSpYfd
-         bmwQ==
+        bh=S4dFsz1ZUiiVPLP2/oVmM76j2Zw+Q0kRIKFNpgfUvZ8=;
+        b=sBUqpHNyagTcb/pWt5M9eLZiQmj47YN26k30tn3ooi9tRBN/TNjLLf0p2vqgM0qpDN
+         Pihb3UZk1afagApVgqw1o4SUqMdWHxuguxrzA5IGb5WpE2FbFs28DbPZGwBtZLmwnOKI
+         rzpcZdk54sJQjCsa9JTIE3s0mObLj4t6F14c5s9K2B3XR4sIx3iY/bT3BCCf5AMjdRsG
+         B9axh4+lpASCZHQopUGvazAQucA211t7a4GNjUwu+YuAVEiTAHUstawOhLlDt000EJen
+         91k6WeRmvNNS5+zpTPMF4/nSachn48Ut4QBMVFxfIucBC08nyM0QFzrHByeAfBHAxIzw
+         ++XQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722026776; x=1722631576;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1722027960; x=1722632760;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=cF1c8neFTt1VPx0ppHccxu/q8NvWgl5cUeRvDaUlvaI=;
-        b=ZiJQuiP0jn+PqSeNGz2F/WFL+Ui82fy965LfX4vv/ERRInpseXxyhoKTqSRYtqQIfb
-         iRWZfp5skSeNdqePmoII8UtR8TVXGMcwVyHw/tKi+EVxUzGUUkvKaSt7Gmxcra/UCKo5
-         Oo9dv7UstfDWiZ3mxc9mH8nIQhAS+yUyFaMqEZ4ZjdZzF5Y33rHRkS1o2Qqqu8nO9KUM
-         +I4J95CX1hSpr7yX/RHY/dy0II+ApPsyd6jweNS/y+4j+rex/UzYCy81lILb8SgSSoOw
-         s2GFqCDDsc6JGYyW1IwYaudsahnnXYObtWqyFkCNQQGEykoEG0PcFp7pFSinPadsrx//
-         fP1g==
-X-Forwarded-Encrypted: i=1; AJvYcCXSJ9Fq4wcS1DGj8nYQqN2H/UzM/gdKuQ86YwzNuHbze2LOSUBiITEEI0F80+wJJykXGrWl/Yn9/U1bezxX4IIt5OaMbuByeNM1BoWGHZ3IvSTZ5n4OyAOg4TerORc3DJzG9bV4FGZqbJg41xE=
-X-Gm-Message-State: AOJu0YwhF0+hpLxQCeMGvIv9zFawhNdt2Cl4mtN/jdBb8wX8PiBCkxQg
-	Q2+4UCNmPRm35CBctDqneBaydyrDH6qdgUaBH+tjTzFA6bGvIrnV
-X-Google-Smtp-Source: AGHT+IEYW3lScmUtRluZGt6bNQJq343utiMw3Q48Pnz0Q3CTpLt7Lq8PPeplmXxiQ/N4N2q8UTEzsw==
-X-Received: by 2002:a05:6358:c022:b0:1ad:a25:a6d8 with SMTP id e5c5f4694b2df-1adcdba1001mr100762855d.27.1722026776392;
-        Fri, 26 Jul 2024 13:46:16 -0700 (PDT)
-Received: from fauth2-smtp.messagingengine.com (fauth2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6bb3fa950a3sm20005946d6.90.2024.07.26.13.46.15
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Jul 2024 13:46:15 -0700 (PDT)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-	by mailfauth.nyi.internal (Postfix) with ESMTP id EE15C1200070;
-	Fri, 26 Jul 2024 16:46:14 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute6.internal (MEProxy); Fri, 26 Jul 2024 16:46:14 -0400
-X-ME-Sender: <xms:FgukZhNclUwQWNlwVd7oRcQ9kTtvkSHHQzt2VK7v5qwSFi2l4u0kUg>
-    <xme:FgukZj9iy2-8JvVLRjfUfWJV7jcwis38tMvrUuLTG7QvWEmKO3Bqb3SitNCYzTjhv
-    gdIy5KHlPXtS3r8TQ>
-X-ME-Received: <xmr:FgukZgTHUX9MGr6jogds0tYQp8YpGMoHL4VE4qXCLczto492bU2k343FiPA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrieehgdduheeiucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhu
-    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
-    htthgvrhhnpeehgeevvdeivedvfedvuddtffegfeetgeetheeftdeggeegfeffjedufedu
-    tefhtdenucffohhmrghinheprghnughrohhiugdrtghomhdpkhgvrhhnvghlrdhorhhgpd
-    hgihhthhhusgdrtghomhenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgr
-    ihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqd
-    eiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhl
-    rdgtohhmsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtoheptd
-X-ME-Proxy: <xmx:FgukZtvAMuOdDDTKShWG0D3FQHi_g7zpHjwojf5H8fzISBRVTIca_g>
-    <xmx:FgukZpejCEZ9hLkWyzSMHyxTC9s0LTQxA9XaIztICd8qHFwUlNOGSw>
-    <xmx:FgukZp3twdYaTPuiKs2BFX9A-DiPL7eC40cbR886onfYHJeLEDAVfA>
-    <xmx:FgukZl_LZlGj3fE6wGG6HtluTxb9gywpLKtFAhY1YFDJG5IkPVjVcw>
-    <xmx:FgukZk--wOmqEeAJGMU0hePqb3q3CGmZgI8q0_ThoP9ryJCviI3cJ8vN>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 26 Jul 2024 16:46:14 -0400 (EDT)
-Date: Fri, 26 Jul 2024 13:45:43 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Matt Gilbride <mattgilbride@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
-	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>,
-	Joel Fernandes <joel@joelfernandes.org>,
-	Carlos Llamas <cmllamas@google.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Rob Landley <rob@landley.net>, Davidlohr Bueso <dave@stgolabs.net>,
-	Michel Lespinasse <michel@lespinasse.org>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v7 0/6] Red-black tree abstraction needed by Rust Binder
-Message-ID: <ZqQK92Mj09a0ocDY@boqun-archlinux>
-References: <20240726-b4-rbtree-v7-0-aee88caaf97c@google.com>
+        bh=S4dFsz1ZUiiVPLP2/oVmM76j2Zw+Q0kRIKFNpgfUvZ8=;
+        b=qWY6fryRDmpS0MFIRqTR7cfs2QCs00/XQGiVPAmJFeA9eIR1OO/aHvamQqibBapj7h
+         86GO6xwhFj6g2Ty4MmOEKn8t0TlS0RRcWEtyaOAGHft8FNNZuxg9Vg8TwdW7P6K5dlN4
+         h5fatReebej993VxVqrvYvpfpLwFo6ShwGvgaJmn/0ra6q5H8l1179pq79DXefGqQKfs
+         USXDGuX6KTQ8LBp/+RqR+X9CKsNbiJjg+nOK8IlQqK32HWt/sgbpNlIu0fy4hn7zJ4Np
+         lm/sUTpRdZdm2arVVlEkqUHzA02JYv3eDQLyNOYTnuFLxm+8EOBXLPe8NR3cI/dbyv1T
+         O6hA==
+X-Forwarded-Encrypted: i=1; AJvYcCVRi4gtArGQMnI7z5o7gI6LosZrc/bGPOVj0xB+EbW2H5ut65v0+CURWcVOsvBA2eHtKcvKrslNsMpKM0KWKRD4Q3q5K77/RhqGYzuf7kA=
+X-Gm-Message-State: AOJu0Yw0s/EsFBi7DAfMWTH0HtkcgI669bh1KSmYyHN3LLs3aHWb4p5n
+	UwKC37zixegJMCJ3nU1wZJIbvuorVm7guzHToofLnv5EVDq+nap5LGp+v696K2Dr78J9eETvexC
+	e7rBGirxqE2JZZFgFWarO342WODYIs+5ObL1f
+X-Google-Smtp-Source: AGHT+IG1GLCWxWGHnjyRbfSvDoWYCQGDNo4SQoda4isgd4Dc8NBikla8Kh6LKbsjYVUmp44NQu2vB1l6jw1VOSKTmeE=
+X-Received: by 2002:a05:6358:52c7:b0:1a6:b009:503a with SMTP id
+ e5c5f4694b2df-1adc0695563mr115620755d.4.1722027959728; Fri, 26 Jul 2024
+ 14:05:59 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240726-b4-rbtree-v7-0-aee88caaf97c@google.com>
+References: <20240617175818.58219-17-samitolvanen@google.com>
+ <0b2697fd-7ab4-469f-83a6-ec9ebc701ba0@suse.com> <CABCJKueGRBdFfGW-cvOvqxc-a85GpxtwPmLdE_1RiAkNLrEg+g@mail.gmail.com>
+ <00714a65-953f-4885-9229-1990543c4154@suse.com>
+In-Reply-To: <00714a65-953f-4885-9229-1990543c4154@suse.com>
+From: Sami Tolvanen <samitolvanen@google.com>
+Date: Fri, 26 Jul 2024 21:05:22 +0000
+Message-ID: <CABCJKucj7zjc4=EiFdSnzNDBvQmaWBBt_KJsTq1ybp=Vegp5eQ@mail.gmail.com>
+Subject: Re: [PATCH 00/15] Implement MODVERSIONS for Rust
+To: Petr Pavlu <petr.pavlu@suse.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Masahiro Yamada <masahiroy@kernel.org>, 
+	Luis Chamberlain <mcgrof@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Matthew Maurer <mmaurer@google.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jul 26, 2024 at 07:57:39PM +0000, Matt Gilbride wrote:
-> This patchset contains the red-black tree abstractions needed by the Rust
-> implementation of the Binder driver.
-> 
-> Binder driver benefits from O(log n) search/insertion/deletion of
-> key/value mappings in various places, including `process.rs` and
-> `range_alloc.rs`.  In `range_alloc.rs`, the ability to store and
-> search by a generic key type is also useful.
-> 
-> Please see the Rust Binder RFC for usage examples [1]. Note that
-> the `container_of` macro is currently used only by `rbtree` itself.
-> 
-> Users of "rust: rbtree: add red-black tree implementation backed by the C version"
->     [PATCH RFC 03/20] rust_binder: add threading support
->     [PATCH RFC 05/20] rust_binder: add nodes and context managers
->     [PATCH RFC 06/20] rust_binder: add oneway transactions
-> 
-> Users of "rust: rbtree: add iterator"
->     [PATCH RFC 17/20] rust_binder: add oneway spam detection
-> 
-> Users of "rust: rbtree: add mutable iterator"
->     [PATCH RFC 06/20] rust_binder: add oneway transactions
-> 
-> Users of "rust: rbtree: add `RBTreeCursor`"
->     [PATCH RFC 06/20] rust_binder: add oneway transactions
-> 
-> Users of "rust: rbtree: add RBTree::entry"
->     Not used in the original RFC, but introduced after further
->     code review.  See: https://r.android.com/2849906
-> 
-> The Rust Binder RFC addresses the upstream deprecation of red-black
-> tree. Quoted here for convenience:
-> 
-> "This RFC uses the kernel's red-black tree for key/value mappings, but we
-> are aware that the red-black tree is deprecated. We did this to make the
-> performance comparison more fair, since C binder also uses rbtree for
-> this. We intend to replace these with XArrays instead. That said, we
-> don't think that XArray is a good fit for the range allocator, and we
-> propose to continue using the red-black tree for the range allocator."
-> 
-> Link: https://lore.kernel.org/rust-for-linux/20231101-rust-binder-v1-0-08ba9197f637@google.com/ [1]
-> Signed-off-by: Matt Gilbride <mattgilbride@google.com>
+Hi Petr,
 
-Thanks! For patch #5, there is a small style issue, which can be fixed
-by:
+On Mon, Jul 22, 2024 at 8:20=E2=80=AFAM Petr Pavlu <petr.pavlu@suse.com> wr=
+ote:
+>
+> From my perspective, I'm okay if gendwarfksyms doesn't provide
+> functionality to compare a new object file with its reference symtypes
+> file.
+>
+> As mentioned, genksyms has this functionality but I actually think the
+> way it works is not ideal. Its design is to operate on one compilation
+> unit at the time. This has the advantage that a comparison of each file
+> is performed in parallel during the build, simply because of the make
+> job system. On the other hand, it has two problems.
+>
+> The first one is that genksyms doesn't provide a comparison of the
+> kernel as a whole. This means that the tool gives rather scattered and
+> duplicated output about changed structs in the build log. Ideally, one
+> would like to see a single compact report about what changed at the end
+> of the build.
 
-diff --git a/rust/kernel/rbtree.rs b/rust/kernel/rbtree.rs
-index f6d5162e46f5..96fd45f9dc52 100644
---- a/rust/kernel/rbtree.rs
-+++ b/rust/kernel/rbtree.rs
-@@ -465,9 +465,7 @@ pub fn cursor_lower_bound(&mut self, key: &K) -> Option<RBTreeCursor<'_, K, V>>
-             }
-         }
- 
--        let Some(best) = best_match else {
--            return None;
--        };
-+        let best = best_match?;
- 
-         // SAFETY: `best` is a non-null node so it is valid by the type invariants.
-         let links = unsafe { addr_of_mut!((*best.as_ptr()).links) };
+Sure, that makes sense. Android uses STG for this, which might be
+useful to other folks too:
 
-with that, for the whole series:
+https://android.googlesource.com/platform/external/stg/
+https://android.googlesource.com/platform/external/stg/+/refs/heads/main/do=
+c/stgdiff.md#output-formats
 
-Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+> A few months ago, I also started working on a tool inspired by this
+> script. The goal is to have similar functionality but hopefully with
+> a much faster implementation. Hence, this tool is written in a compiled
+> language (Rust at the moment) and should also become multi-threaded. I'm
+> hoping to find some time to make progress on it and make the code
+> public. It could later be added to the upstream kernel to replace the
+> comparison functionality implemented by genksyms, if there is interest.
+>
+> So as mentioned, I'm fine if gendwarfksyms doesn't have this
+> functionality. However, for distributions that rely on the symtypes
+> format, I'd be interested in having gendwarfksyms output its dump data
+> in this format as well.
 
-I also put this on rust-dev branch for my own testing purpose (with the
-above fix applied, and using Benno's version of patch #1 since it's
-already in rust-dev).
+We can definitely tweak the output format, but I'm not sure if making
+it fully compatible with the genksyms symtypes format is feasible,
+especially for Rust code. I also intentionally decided to use DWARF
+tag names in the output instead of shorthands like s# etc. to make it
+a bit more readable.
 
-Regards,
-Boqun
+> For example, instead of producing:
+>
+> gendwarfksyms: process_exported_symbols: _some_mangled_func_name (@ XYZ)
+> subprogram(
+>    [formal parameters...]
+> )
+> -> structure_type core::result::Result<(), core::fmt::Error> {
+>    [a description of the structure...]
+> };
+>
+> .. the output could be something like this:
+>
+> S#'core::result::Result<(), core::fmt::Error>' structure_type core::resul=
+t::Result<(), core::fmt::Error> { [a description of the structure...] }
+> _some_mangled_func_name subprogram _some_mangled_func_name ( [formal para=
+meters...] ) -> S#'core::result::Result<(), core::fmt::Error>'
 
-> ---
-> Changes in v7:
-> - make `RawVacantEntry.rbtree` a raw pointer like
->   `RawVacantEntry.child_field_of_parent`, since the latter can
->   technically point at a field of the former. We prefer that the
->   implementation be explicit about the safety guarantees of both because
->   of the relationship between them.
-> - Link to v6: https://lore.kernel.org/r/20240711-b4-rbtree-v6-0-14bef1a8cdba@google.com
-> 
-> Changes in v6:
-> - Minimize usage of `*mut bindings::rb_node`, replacing with
->   `NonNull<bindings::rb_node>`. Specifically, changing
->   `RBTreeCursor.current` to be `NonNull<bindings::rb_node>` and updating
->   the corresponding functions.
-> - Update `RBTreeCursor:to_key_value` helpers to have their own lifetime
->   (they are not instance methods, using a different lifetime than that
->   of the `impl` block they are in makes things more clear.
-> - Fix misplaced semicolon in `cursor_lower_bound`.
-> - Link to v5: https://lore.kernel.org/r/20240606-b4-rbtree-v5-0-96fe1a0e97c0@google.com
-> 
-> Changes in v5:
-> - Used `Box::write` in `RBTreeNodeReservation::into_node`, removing
->   unnecessary `unsafe` blocks.
-> - Updated `RBTreeCursor::remove_current` to return the removed node.
-> - Link to v4: https://lore.kernel.org/r/20240603-b4-rbtree-v4-0-308e43d6abfc@google.com
-> 
-> Changes in v4:
-> - rebased onto the tip of rust-for-linux/rust-next (97ab3e8eec0ce79d9e265e6c9e4c480492180409)
-> - addressed comments from draft PR on GitHub: https://github.com/Rust-for-Linux/linux/pull/1081
-> - Link to v3: https://lore.kernel.org/r/20240418-b4-rbtree-v3-0-323e134390ce@google.com
-> 
-> Changes in v3:
-> - Address various feedback re: SAFETY and INVARIANT comments from v2.
-> - Update variable naming and add detailed comments for the `RBTree::insert` (later moved to
->   `RBTree::raw_entry`) implementation.
-> - Link to v2: https://lore.kernel.org/r/20240219-b4-rbtree-v2-0-0b113aab330d@google.com
-> 
-> Changes in v2:
-> - Update documentation link to the C header file
-> - Use `core::convert::Infallible` in try_reserve_node
-> - Link to v1: https://lore.kernel.org/r/20240205-b4-rbtree-v1-0-995e3eee38c0@google.com
-> 
-> ---
-> Alice Ryhl (1):
->       rust: rbtree: add `RBTree::entry`
-> 
-> Benno Lossin (1):
->       rust: kernel: add `drop_contents` to `BoxExt`
-> 
-> Matt Gilbride (1):
->       rust: rbtree: add `RBTreeCursor`
-> 
-> Wedson Almeida Filho (3):
->       rust: rbtree: add red-black tree implementation backed by the C version
->       rust: rbtree: add iterator
->       rust: rbtree: add mutable iterator
-> 
->  rust/helpers.c               |    7 +
->  rust/kernel/alloc/box_ext.rs |   24 +-
->  rust/kernel/lib.rs           |    1 +
->  rust/kernel/rbtree.rs        | 1290 ++++++++++++++++++++++++++++++++++++++++++
->  4 files changed, 1321 insertions(+), 1 deletion(-)
-> ---
-> base-commit: 97ab3e8eec0ce79d9e265e6c9e4c480492180409
-> change-id: 20231205-b4-rbtree-abb1a016f0a0
-> 
-> Best regards,
-> -- 
-> Matt Gilbride <mattgilbride@google.com>
-> 
+This wouldn't be enough to make the output format compatible with
+symtypes though. genksyms basically produces a simple key-value pair
+database while gendwarfksyms currently outputs the fully expanded type
+string for each symbol. If you need the tool to produce a type
+database, it might also be worth discussing if we should use a bit
+less ad hoc format in that case.
+
+One more thing to note about the current --debug output is that it
+directly correlates with the debugging information and thus may not
+contain all aliases. For example, the Rust compiler deduplicates
+identical function implementations (e.g. Deref::deref and
+DerefMut::deref_mut etc.), but only one of the symbol names appears in
+DWARF. We use symbol addresses to print out #SYMVERs also for the
+aliases, but they don't show up in the debugging output right now.
+
+> > If using unions here is acceptable to everyone, a simple solution
+> > would be to use a known name prefix for the reserved members and teach
+> > gendwarfksyms to only print out the original type for the replaced
+> > ones. For example:
+> >
+> > The initial placeholder:
+> >
+> >     u8 __kabi_reserved_1[8];
+> >
+> > After replacement:
+> >
+> >     union {
+> >             u64 new_member;
+> >             struct {
+> >                     u8 __kabi_reserved_1[8];
+> >             };
+> >     }
+> >
+> > Here gendwarfksyms would see the __kabi_reserved prefix and only use
+> > u8 [8] for the CRC calculation. Does this sound reasonable?
+>
+> I like this idea. I think it's good that the necessary kABI information
+> about an updated member can be expressed at the source code level in
+> place of the actual change, and it isn't needed to feed additional input
+> to the tool.
+
+OK, cool. I agree that being able to specify these details in source
+code is much cleaner. I'll add an implementation for this, and for the
+definition visibility issue Greg mentioned in v2.
+
+Sami
