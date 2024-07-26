@@ -1,112 +1,99 @@
-Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
+Received: from mail-pl1-f170.google.com (mail-pl1-f170.google.com [209.85.214.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89087176FCF
-	for <rust-for-linux@vger.kernel.org>; Fri, 26 Jul 2024 11:05:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F3E917B428;
+	Fri, 26 Jul 2024 12:36:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721991961; cv=none; b=ULnt0gbCn70wtPyjaF2Hak4qdPcB53BbanxTf1CkEXtjKJEQ5ZugZfDIgoUFU/8TOCwNf+lsol/+c5LUP88uB7d9bglpR/dyfO1+Y7pLduLd9avqGvm1dKktCsxbV8M0Mjp80wZ2xWeDSScbfyoInyQD22S79tZC7hKk/61miGc=
+	t=1721997404; cv=none; b=nlLR3sPh6p8KldBRrLH4HrMWJWRmxnVlXA8RxU8FmpjB+lu4PG4rpaoNvPwWE7CVCoDzo2ob3U2mZtg6JgVc6fiqtjV+Kac9eVEWogJQuV4tG83Wxt9yFUupbPnMo4AN/gghQ32ZdvP2zPC1kpIEiq4W4k/i0COUwyea2dErNNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721991961; c=relaxed/simple;
-	bh=/sVicTNfY3cet1chvNxxWo/ZPwMTD06+KwNxAx+VxkI=;
+	s=arc-20240116; t=1721997404; c=relaxed/simple;
+	bh=1zWDRWp+paDjK/r/9N7qgoFAesuhA/2QMW3EwgwYqcg=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=dak659dcBRJtGCJjkpxq81Gn43Lc2JWcIcvDdiRMldUVoxd3h9E/LVnWfQrEPTTJUaB8JPrr1Gf2v6YSPgVAcH6HGU/Dvqe99nrAK+SL52znJ00n4DX4insJTij0GbKLv6WmlxAsnNDUtz+VESBy0LLtx+MGgTwHn8Pq08qPvHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=jpsvj+1Q; arc=none smtp.client-ip=209.85.128.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=umich.edu
+	 To:Cc:Content-Type; b=Z6dLn8+VvpIE6AB+DRvcJGhKAtQm4pW0StpxkwPxuIk3D2F/Ic/Q0fhSVBoSYrCdQT4Zuabv1w6WLPmt4H62H1E2r8RhAkg1YsPlIuf6uiJxEvVKEk+qTwq7/B/RxxGswo8n266XKMDABxbs/a4T0g0caAkxT4DowTsvsAN2Lag=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GfGXioFc; arc=none smtp.client-ip=209.85.214.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="jpsvj+1Q"
-Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-66ca5e8cc51so23417117b3.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 26 Jul 2024 04:05:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GfGXioFc"
+Received: by mail-pl1-f170.google.com with SMTP id d9443c01a7336-1fc587361b6so5393235ad.2;
+        Fri, 26 Jul 2024 05:36:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=umich.edu; s=google-2016-06-03; t=1721991958; x=1722596758; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1721997402; x=1722602202; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=7hckkNbMLOcuR+z008FLIKbuIPv1ZZE1XmBUhRiJCWk=;
-        b=jpsvj+1QqfrU6RpxUyaUnk1qKTfifCukpkVum9XzEwhCZ1D70uT5FVBCZJNE4cS2iq
-         1EJIF8a2ydTNl6kP6wAYgMQSD+hAyvtj7vvUBfzkNi0k43kEuiZwFFzDhQsFcKFKbKtz
-         c3SAmoerVJLYxJjuzVYWlQKVlyxzJDFyaTxHiv3b0Eqrcb3UYrRy2HgTjXXPJcgLZkF3
-         K7f28y00uJfJuY0TKAjrkPEMQRMcOD0ERvfIfzB6xFxnJoB7+/QfnBS2qPwiOz0GTIT5
-         GLeNz8yXGxdRyQsG7Pcl00xzTNjrfQqZ/72Ag3cOUj/kaH13xy/mSGPJ+9b2xvt0ys49
-         M5TA==
+        bh=1zWDRWp+paDjK/r/9N7qgoFAesuhA/2QMW3EwgwYqcg=;
+        b=GfGXioFctx7+yPViCkHs9jyE+okbW4RPqB8XAzsJon7Q8s8IRxMZCTf7s9EStDNX/6
+         cyLVjAQcdgzTc2MuWDhKUHGhebL/F9yuOx1VaTvQ481sjKuUOsRHHxRwhzCqtoUU+1De
+         ln8XoBH8nC197TcPpIQKB+K9sKWdVhMab3djHyniTt0UHvynqeB8MUNbEPHCNKkG3R/v
+         g5WVZwHO+xBAdgiqHxDIn4e/9ZwCbLn300kJbCtYZQ4o4kCZtdJrb+duxqe5LLnSjNQX
+         FUsDdmc9MUMPcp9vwIhmHkir6oQ7OK/74hr9t7iLsChLKM5Z0HbPGmRriVbu/F/QPlch
+         Jc5Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721991958; x=1722596758;
+        d=1e100.net; s=20230601; t=1721997402; x=1722602202;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=7hckkNbMLOcuR+z008FLIKbuIPv1ZZE1XmBUhRiJCWk=;
-        b=GivKRPe6jSkXUr0w5dOeq3ZXH+jFiZjXbkHB2AcK2BVrcshMvwqXH4Qr95hoGq/k1Z
-         FCV5RvtQF92Q3uoFlvVgAy8NXkY68Wgsdg9GwGDxlO5/Omqr4/hTWz7x5qyLRarxNJ8w
-         yjPe0kZo9baFjdHJvmzJtitGsFHMwPmFnSU8/GAHENFOipyv8eKEktTX0GSdvPmQk4B4
-         mlHXsO+SSKwMse+wb772wzcpAKxc8J3M8/Vu0i0vERVuHp63SOvPZgiOxdM9DBHG358F
-         XglUyruxdRaSH6d4GnNS8SmZF9QgGDAdKn3INYdz385Y6hkAGn1b/sS2rL+OPrRy7407
-         KFBQ==
-X-Forwarded-Encrypted: i=1; AJvYcCU6HpI9bljbQO1yVdABKUr2+b2iHGqFz0/D7X5kBoVcHEqkHeEQn2UMPbHjB7OUFPTA2vWF7Qs8V8SFNr/eaEuL8Zoptl1o1CTQYZnxS9I=
-X-Gm-Message-State: AOJu0Yxo1GsfD7GnUuKBTHQzCsOerRrtr8mAzma21g9Tq+pyTfaAb4by
-	OsvCwCAfTiwDhsjia1kI+LyQhvAmjyPD0uxeerjT0TUQw1wFp/yRP0KRbNWkW6XOqHgo75F8Awc
-	ohY/R4yB6l5Ekb5ji7iEx0KfJb146666BXSUVOA==
-X-Google-Smtp-Source: AGHT+IH9Is6Tym8XF86g8B+5uO9SsdZqfsnltWUtIJEd/+7smiIsMguxwMrcSPqNtyBKCgcvokKKDTSPDuMXdsI3m8U=
-X-Received: by 2002:a0d:cd45:0:b0:651:79ee:d14b with SMTP id
- 00721157ae682-675ba704897mr56298307b3.29.1721991958488; Fri, 26 Jul 2024
- 04:05:58 -0700 (PDT)
+        bh=1zWDRWp+paDjK/r/9N7qgoFAesuhA/2QMW3EwgwYqcg=;
+        b=XcAEqGkp4XrR26+iVeHVgKznyXNwDKqQcr9qSHIvhtsEqu7J0lKChV1E3LE7f4PcAY
+         BZhy7lUcH7Im6wsdGqZMLiqkYTNiPb/o0seUPn3ZEUTLUNg0YQjybFLY591pmuqQeWCn
+         oqSWRDeISJsXdEEXa5UolMVsGvOp0RN/izQlQHb6+W2hqmcDEKMEKc1aUBKGcs/zUK6y
+         gk9EcN51fxdz/VzUzLQQXRrE2MwvVkkCykvp72zpEI4yJw7381/EKx6i138wvii+ZMAG
+         MYFOb5z/4dgjUUbBA3NSxF6zqbyVIcZ8HBvpiG+LTfVuV+grgrkaAkhCfwZlR3hQ23+L
+         g5sg==
+X-Forwarded-Encrypted: i=1; AJvYcCXbQ9dpi45lDA5oOn2DfZO3eqXFLMCMYLpNROapmRT34qaBTSA1clvWu9yWOnAmWP24R3CvzD88v4xG1oc7tkC3jfLVxL3h99br5po4BnjdlA3GLGiwX+milZP/tNobRf+hnYU/KiquV7QNftWC+cJPXO/b27wKLJrhS9ib+y7d7+Y3wm0uMVAPBM4=
+X-Gm-Message-State: AOJu0YxrylFGUGnk974sFCPr3mdv6LKQLDdf111lgRgWD73k7ZCMbsol
+	bTDZJSSkkwEqwTCgTE5gPL42zTgjfMTlV20v5UC49px3iJPTFG/1Mjmzn5s6+sUBdZ7ZNrkxErl
+	JEbEgrp0MfPrqmPzxKkXztaUjdr0=
+X-Google-Smtp-Source: AGHT+IHt4VEqTzpVq8r5CzvzfWANcuIs631ikOmdea7VFGcamFNux9yi9tHxpM7rdXBU4AZ90s8oyeHEh8iuSzasv6Q=
+X-Received: by 2002:a17:90a:1fc8:b0:2c9:57a4:a8c4 with SMTP id
+ 98e67ed59e1d1-2cf2ebb9251mr5312268a91.42.1721997402182; Fri, 26 Jul 2024
+ 05:36:42 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240725184644.135185-1-ojeda@kernel.org>
-In-Reply-To: <20240725184644.135185-1-ojeda@kernel.org>
-From: Trevor Gross <tmgross@umich.edu>
-Date: Fri, 26 Jul 2024 07:05:47 -0400
-Message-ID: <CALNs47sFD_GqhXNa7v+eC=O96A+SpPm4QtZ3=GbSxZ4zkTm3Zg@mail.gmail.com>
-Subject: Re: [PATCH] rust: macros: indent list item in `module!`'s docs
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+References: <20240725232126.1996981-1-mmaurer@google.com> <20240725232126.1996981-3-mmaurer@google.com>
+ <CA+fCnZdwRcdOig0u-D0vnFz937hRufTQOpCqGiMeo5B+-1iRVA@mail.gmail.com> <CACT4Y+Y+XmdNervhF5WAEyVwprJ32m7Pd8FF2fKy3K9FiTpJtQ@mail.gmail.com>
+In-Reply-To: <CACT4Y+Y+XmdNervhF5WAEyVwprJ32m7Pd8FF2fKy3K9FiTpJtQ@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 26 Jul 2024 14:36:30 +0200
+Message-ID: <CANiq72kb0df5k-8njjNgfFFVj7Cfx-uiTSEtMt5Cbb8f3DkjWg@mail.gmail.com>
+Subject: Re: [PATCH 2/2] kbuild: rust: Enable KASAN support
+To: Dmitry Vyukov <dvyukov@google.com>
+Cc: Andrey Konovalov <andreyknvl@gmail.com>, Matthew Maurer <mmaurer@google.com>, 
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>, Masahiro Yamada <masahiroy@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Nathan Chancellor <nathan@kernel.org>, 
+	Alexander Potapenko <glider@google.com>, Vincenzo Frascino <vincenzo.frascino@arm.com>, 
+	Nicolas Schier <nicolas@fjasle.eu>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev
+	Alice Ryhl <aliceryhl@google.com>, Nick Desaulniers <ndesaulniers@google.com>, 
+	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, kasan-dev@googlegroups.com, 
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, llvm@lists.linux.dev, 
+	Brendan Higgins <brendanhiggins@google.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jul 25, 2024 at 2:47=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
-te:
+On Fri, Jul 26, 2024 at 12:23=E2=80=AFPM Dmitry Vyukov <dvyukov@google.com>=
+ wrote:
 >
-> Like commit e516211f615f ("rust: macros: indent list item in `paste!`'s
-> docs"), but for `module!`.
+> This is great, thanks, Matthew!
 >
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-> ---
->  rust/macros/lib.rs | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
-> index 159e75292970..5be0cb9db3ee 100644
-> --- a/rust/macros/lib.rs
-> +++ b/rust/macros/lib.rs
-> @@ -94,7 +94,7 @@
->  ///   - `license`: ASCII string literal of the license of the kernel mod=
-ule (required).
->  ///   - `alias`: array of ASCII string literals of the alias names of th=
-e kernel module.
->  ///   - `firmware`: array of ASCII string literals of the firmware files=
- of
-> -/// the kernel module.
-> +///     the kernel module.
->  #[proc_macro]
->  pub fn module(ts: TokenStream) -> TokenStream {
->      module::module(ts)
->
-> base-commit: b1263411112305acf2af728728591465becb45b0
-> --
-> 2.45.2
+> Does Rust support KUnit tests?
+> It would be good to add at least a simple positive test similar to the
+> existing ones so that the support does not get rotten soon.
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/m=
+m/kasan/kasan_test.c
 
+Yeah, we have Rust doctests converted into KUnit tests, as well as
+upcoming `#[test]`s support (also handled as KUnit tests). For this, I
+assume the latter would make more sense, but we have to merge it.
 
-Not much needing review here, but
-
-Reviewed-by: Trevor Gross <tmgross@umich.edu>
-
-:)
+Cheers,
+Miguel
