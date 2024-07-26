@@ -1,78 +1,318 @@
-Received: from casper.infradead.org (casper.infradead.org [90.155.50.34])
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88C5717625C;
-	Fri, 26 Jul 2024 07:49:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.50.34
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7E63176258
+	for <rust-for-linux@vger.kernel.org>; Fri, 26 Jul 2024 08:11:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721980146; cv=none; b=Xzs9mG+UWZvuSG41uENCY6Qhj1MXA3S2GCWNqi5oVlBrJwx5ObAs2pwxE5wS61+BOy0hsJAlOzT1AoOodOEXbmw0G86q50YCS/YdBWJBrG2ZK2s2tYfHs4lyWGJIw9Re2nLylOcx4fSNOHr8r0yGEVexxyYj31DE1hOwZMWadxw=
+	t=1721981471; cv=none; b=fKRNuATSNqYw6thKF0yZRe1M1fYZgUVRrcOCKeYdYJcMOWia14I3HPPT+ft3ikdmBmHtvRISoMc+zpfU5uui7sKtZ7eVmg6vPQKYVrjTizJetMWti0uX5TScQSLKMCKEIBBhe+Yldix8cJ4LE285UTw1qZhLEoURmhPhSrbItMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721980146; c=relaxed/simple;
-	bh=3/xlK+MDuuXcM29JL1BSwi8O9iw8VaAS3ThguDSBFyU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=MAXu9Ug+hYa6hERLliHP+5yohzJIptXRVdz2FSATnFePRypuezm9kCI0lZn+syCu1k2DGEL+IfFZlg2CnZJk6qjaeQhnuySPMIYuaWFdZlzTOpPBX/zGp6qSThbOdBrLyKmxdAw4ejPZ/VhLPWTdkoTlji5qM/W6cm/5am+8fco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=XNW3Tzgj; arc=none smtp.client-ip=90.155.50.34
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1721981471; c=relaxed/simple;
+	bh=nWpeU9EYIexqET5NVIy7I+Ieuy25samgl8Nt5DW/UaE=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Q6YfkOi6qaxf1bxloqapTxFngloraDUTo8PjOL8vfWNqunDAPJk32lsXEvsI9+5BZ6NqnKD0nZsJJGIHrEoNaA/lC3r5FagV/jnTYOPBWhlJJ8LbqWWws2QD9okYmU7zZZq2mX7c7ocG/C2ceVmkLH/a2Mv7MElp0jE17QaGVoc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=TlLy6pTi; arc=none smtp.client-ip=185.70.43.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="XNW3Tzgj"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=casper.20170209; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=3/xlK+MDuuXcM29JL1BSwi8O9iw8VaAS3ThguDSBFyU=; b=XNW3TzgjeyYb/S7ecNzDiGyUgH
-	hmFBNNkPkWE4PJgoc7uxsLUdjGVHjr1Im6gAxdt5QfdKMTUY1ppyQuK2/wXSjMNX+RgojxKEQmdBB
-	qQfA5f2hZS1C6M8/hMr609eDqlCKPFB3tt/K/WjU0VSMfeYTp4yhlB/pBgXJaHdlhd+SD2Z1d0pc5
-	YyBCvlsxDyjREhbGapZsVp5D6mpOMl8VoZ/V6+Vk6QQ7rbtr6Hbge8+4DwzSgRseXyTHNPRQ+tukK
-	Qb3dFAqf2DNWhVIc/WFrR32NP7e3dZEfZqfSIDo6L1Mn1Z/ml8WKZSRqFktjsvi+0Uw+xUUgF/lH4
-	yDLaUB2w==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-	by casper.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sXFh0-00000009wS0-3RIj;
-	Fri, 26 Jul 2024 07:48:46 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id A94DB30068B; Fri, 26 Jul 2024 09:48:45 +0200 (CEST)
-Date: Fri, 26 Jul 2024 09:48:45 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Lyude Paul <lyude@redhat.com>
-Cc: rust-for-linux@vger.kernel.org, Danilo Krummrich <dakr@redhat.com>,
-	airlied@redhat.com, Ingo Molnar <mingo@redhat.com>,
-	Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Valentin Obst <kernel@valentinobst.de>,
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 3/3] rust: sync: Add IrqSpinLock
-Message-ID: <20240726074845.GM13387@noisy.programming.kicks-ass.net>
-References: <20240725222822.1784931-1-lyude@redhat.com>
- <20240725222822.1784931-4-lyude@redhat.com>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="TlLy6pTi"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1721981463; x=1722240663;
+	bh=Tb0bny82xw3N+xnAGMVpo1hM7rDm1n5+a9liM28zCuw=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=TlLy6pTi5sm5nCahQ0gIP4yk5KAf7jnvliUr9AFllJT9uPlAjgDd+bcaIxUh1CuhM
+	 +zX4hcau5TXNEWrUN0XcesR/ZfxWda0uYJq03z5Tc6eBM3xrqOKtUIHlTYLZ+MnIY9
+	 uKybJ+q/dxbKasr5C18nS4zPxx6vymFpilRfFujJuCZb45O4oUn2KRQh+rqJW/ueDi
+	 bp1/HaMOPchxX9ZTxmr9VeDNu5YG8o7hYb/eXlmyf8Df2vfw4Kgq6oyjnhAcx+NMRc
+	 EjRCdYgB2EsyCHUO/HQhVWFrW7ayoxCradonct5ezsI7VFkzztQJiYyxnjm6W83xNR
+	 7e1jO+kkH2bAg==
+Date: Fri, 26 Jul 2024 08:10:58 +0000
+To: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH] rust: mm: add abstractions for mm_struct and vm_area_struct
+Message-ID: <3bf6bfdc-84af-442a-acec-a58f023d1164@proton.me>
+In-Reply-To: <20240723-vma-v1-1-32ad5a0118ee@google.com>
+References: <20240723-vma-v1-1-32ad5a0118ee@google.com>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: a645426bb3ef230cdfb577940ac1e8add4755bc6
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240725222822.1784931-4-lyude@redhat.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jul 25, 2024 at 06:27:52PM -0400, Lyude Paul wrote:
-> A variant of SpinLock that is expected to be used in noirq contexts, and
-> thus requires that the user provide an kernel::irq::IrqDisabled to prove
-> they are in such a context upon lock acquisition. This is the rust
-> equivalent of spin_lock_irqsave()/spin_lock_irqrestore().
+On 23.07.24 16:32, Alice Ryhl wrote:
+> This is a follow-up to the page abstractions [1] that were recently
+> merged in 6.11. Rust Binder will need these abstractions to manipulate
+> the vma in its implementation of the mmap fop on the Binder file.
+>=20
+> The ARef wrapper is not used for mm_struct because there are several
+> different types of refcounts.
 
-So aside from the horrendous camel-case thing, why are you naming this
-thing the wrong way around? Shouldn't it be SpinLockIrq rather than
-IrqSpinLock? Or possibly even SpinLockIrqSave?
+I am confused, why can't you use the `ARef` wrapper for the different
+types that you create below?
 
-Randomly changing the names of things isn't going to make it any easier
-for people to use this stuff.
+> This patch is based on Wedson's implementation on the old rust branch,
+> but has been changed significantly. All mistakes are Alice's.
+>=20
+> Link: https://lore.kernel.org/r/20240528-alice-mm-v7-4-78222c31b8f4@googl=
+e.com [1]
+> Co-developed-by: Wedson Almeida Filho <wedsonaf@gmail.com>
+> Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> ---
+>  rust/helpers.c         |  49 ++++++++++
+>  rust/kernel/lib.rs     |   1 +
+>  rust/kernel/mm.rs      | 259 +++++++++++++++++++++++++++++++++++++++++++=
+++++++
+>  rust/kernel/mm/virt.rs | 193 ++++++++++++++++++++++++++++++++++++
+>  4 files changed, 502 insertions(+)
+>=20
+> diff --git a/rust/helpers.c b/rust/helpers.c
+> index 305f0577fae9..9aa5150ebe26 100644
+> --- a/rust/helpers.c
+> +++ b/rust/helpers.c
+> @@ -199,6 +199,55 @@ rust_helper_krealloc(const void *objp, size_t new_si=
+ze, gfp_t flags)
+>  }
+>  EXPORT_SYMBOL_GPL(rust_helper_krealloc);
+>=20
+> +void rust_helper_mmgrab(struct mm_struct *mm)
+> +{
+> +=09mmgrab(mm);
+> +}
+> +EXPORT_SYMBOL_GPL(rust_helper_mmgrab);
+> +
+> +void rust_helper_mmdrop(struct mm_struct *mm)
+> +{
+> +=09mmdrop(mm);
+> +}
+> +EXPORT_SYMBOL_GPL(rust_helper_mmdrop);
+> +
+> +bool rust_helper_mmget_not_zero(struct mm_struct *mm)
+> +{
+> +=09return mmget_not_zero(mm);
+> +}
+> +EXPORT_SYMBOL_GPL(rust_helper_mmget_not_zero);
+> +
+> +bool rust_helper_mmap_read_trylock(struct mm_struct *mm)
+> +{
+> +=09return mmap_read_trylock(mm);
+> +}
+> +EXPORT_SYMBOL_GPL(rust_helper_mmap_read_trylock);
+> +
+> +void rust_helper_mmap_read_unlock(struct mm_struct *mm)
+> +{
+> +=09mmap_read_unlock(mm);
+> +}
+> +EXPORT_SYMBOL_GPL(rust_helper_mmap_read_unlock);
+> +
+> +void rust_helper_mmap_write_lock(struct mm_struct *mm)
+> +{
+> +=09mmap_write_lock(mm);
+> +}
+> +EXPORT_SYMBOL_GPL(rust_helper_mmap_write_lock);
+> +
+> +void rust_helper_mmap_write_unlock(struct mm_struct *mm)
+> +{
+> +=09mmap_write_unlock(mm);
+> +}
+> +EXPORT_SYMBOL_GPL(rust_helper_mmap_write_unlock);
+> +
+> +struct vm_area_struct *rust_helper_vma_lookup(struct mm_struct *mm,
+> +=09=09=09=09=09      unsigned long addr)
+> +{
+> +=09return vma_lookup(mm, addr);
+> +}
+> +EXPORT_SYMBOL_GPL(rust_helper_vma_lookup);
+> +
+>  /*
+>   * `bindgen` binds the C `size_t` type as the Rust `usize` type, so we c=
+an
+>   * use it in contexts where Rust expects a `usize` like slice (array) in=
+dices.
+> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> index 5d310e79485f..3cbc4cf847a2 100644
+> --- a/rust/kernel/lib.rs
+> +++ b/rust/kernel/lib.rs
+> @@ -33,6 +33,7 @@
+>  pub mod ioctl;
+>  #[cfg(CONFIG_KUNIT)]
+>  pub mod kunit;
+> +pub mod mm;
+>  #[cfg(CONFIG_NET)]
+>  pub mod net;
+>  pub mod page;
+> diff --git a/rust/kernel/mm.rs b/rust/kernel/mm.rs
+> new file mode 100644
+> index 000000000000..7fa1e2431944
+> --- /dev/null
+> +++ b/rust/kernel/mm.rs
+> @@ -0,0 +1,259 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +// Copyright (C) 2024 Google LLC.
+> +
+> +//! Memory management.
+> +//!
+> +//! C header: [`include/linux/mm.h`](../../../../include/linux/mm.h)
+> +
+> +use crate::bindings;
+> +
+> +use core::{marker::PhantomData, mem::ManuallyDrop, ptr::NonNull};
+> +
+> +pub mod virt;
+> +
+> +/// A smart pointer that references a `struct mm` and owns an `mmgrab` r=
+efcount.
+> +///
+> +/// # Invariants
+> +///
+> +/// An `MmGrab` owns an `mmgrab` refcount to the inner `struct mm_struct=
+`.
+
+You also need that `mm` is a valid pointer.
+
+> +pub struct MmGrab {
+> +    mm: NonNull<bindings::mm_struct>,
+> +}
+> +
+> +impl MmGrab {
+> +    /// Call `mmgrab` on `current.mm`.
+> +    #[inline]
+> +    pub fn mmgrab_current() -> Option<Self> {
+> +        // SAFETY: It's safe to get the `mm` field from current.
+> +        let mm =3D unsafe {
+> +            let current =3D bindings::get_current();
+> +            (*current).mm
+> +        };
+> +
+> +        let mm =3D NonNull::new(mm)?;
+> +
+> +        // SAFETY: We just checked that `mm` is not null.
+> +        unsafe { bindings::mmgrab(mm.as_ptr()) };
+> +
+> +        // INVARIANT: We just created an `mmgrab` refcount.
+> +        Some(Self { mm })
+> +    }
+> +
+> +    /// Check whether this vma is associated with this mm.
+> +    #[inline]
+> +    pub fn is_same_mm(&self, area: &virt::Area) -> bool {
+> +        // SAFETY: The `vm_mm` field of the area is immutable, so we can=
+ read it without
+> +        // synchronization.
+> +        let vm_mm =3D unsafe { (*area.as_ptr()).vm_mm };
+> +
+> +        vm_mm =3D=3D self.mm.as_ptr()
+> +    }
+> +
+> +    /// Calls `mmget_not_zero` and returns a handle if it succeeds.
+> +    #[inline]
+> +    pub fn mmget_not_zero(&self) -> Option<MmGet> {
+> +        // SAFETY: We know that `mm` is still valid since we hold an `mm=
+grab` refcount.
+> +        let success =3D unsafe { bindings::mmget_not_zero(self.mm.as_ptr=
+()) };
+> +
+> +        if success {
+> +            Some(MmGet { mm: self.mm })
+> +        } else {
+> +            None
+> +        }
+> +    }
+> +}
+> +
+> +// SAFETY: It is safe to call `mmdrop` on another thread than where `mmg=
+rab` was called.
+> +unsafe impl Send for MmGrab {}
+> +// SAFETY: All methods on this struct are safe to call in parallel from =
+several threads.
+> +unsafe impl Sync for MmGrab {}
+> +
+> +impl Drop for MmGrab {
+> +    #[inline]
+> +    fn drop(&mut self) {
+> +        // SAFETY: This gives up an `mmgrab` refcount to a valid `struct=
+ mm_struct`.
+> +        // INVARIANT: We own an `mmgrab` refcount, so we can give it up.
+
+This INVARIANT comment seems out of place and the SAFETY comment should
+probably be "By the type invariant of `Self`, we own an `mmgrab`
+refcount and `self.mm` is valid.".
+
+> +        unsafe { bindings::mmdrop(self.mm.as_ptr()) };
+> +    }
+> +}
+> +
+> +/// A smart pointer that references a `struct mm` and owns an `mmget` re=
+fcount.
+> +///
+> +/// Values of this type are created using [`MmGrab::mmget_not_zero`].
+> +///
+> +/// # Invariants
+> +///
+> +/// An `MmGet` owns an `mmget` refcount to the inner `struct mm_struct`.
+
+Ditto with the valid pointer here and below.
+
+> +pub struct MmGet {
+> +    mm: NonNull<bindings::mm_struct>,
+> +}
+> +
+> +impl MmGet {
+> +    /// Lock the mmap read lock.
+> +    #[inline]
+> +    pub fn mmap_write_lock(&self) -> MmapWriteLock<'_> {
+> +        // SAFETY: The pointer is valid since we hold a refcount.
+> +        unsafe { bindings::mmap_write_lock(self.mm.as_ptr()) };
+> +
+> +        // INVARIANT: We just acquired the write lock, so we can transfe=
+r to this guard.
+> +        //
+> +        // The signature of this function ensures that the `MmapWriteLoc=
+k` will not outlive this
+> +        // `mmget` refcount.
+> +        MmapWriteLock {
+> +            mm: self.mm,
+> +            _lifetime: PhantomData,
+> +        }
+> +    }
+> +
+> +    /// When dropping this refcount, use `mmput_async` instead of `mmput=
+`.
+
+I don't get this comment.
+
+> +    #[inline]
+> +    pub fn use_async_put(self) -> MmGetAsync {
+> +        // Disable destructor of `self`.
+> +        let me =3D ManuallyDrop::new(self);
+> +
+> +        MmGetAsync { mm: me.mm }
+> +    }
+> +}
+> +
+> +impl Drop for MmGet {
+> +    #[inline]
+> +    fn drop(&mut self) {
+> +        // SAFETY: We acquired a refcount when creating this object.
+
+You can just copy-paste the SAFETY comment from above (if you don't use
+the `ARef` pattern). Ditto below.
+
+---
+Cheers,
+Benno
+
+> +        unsafe { bindings::mmput(self.mm.as_ptr()) };
+> +    }
+> +}
+> +
+
