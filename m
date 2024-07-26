@@ -1,114 +1,112 @@
-Received: from mail-yw1-f169.google.com (mail-yw1-f169.google.com [209.85.128.169])
+Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02ABF176FCF
-	for <rust-for-linux@vger.kernel.org>; Fri, 26 Jul 2024 10:50:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89087176FCF
+	for <rust-for-linux@vger.kernel.org>; Fri, 26 Jul 2024 11:05:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1721991023; cv=none; b=UtcW6BqITmHonv1LVzy4j0uE4vahZheEkoI3s1qCaAWYCgiwYz8fzvpfNO8PC38pbPa6s3Zr3/GJHEs2M4fewSXWAec7vAxgrvYBVv1SDmHWMIVvp2BxXy7f4/LDyHaBen/dB/M3P7o/emb+rJSV57I89rLdEHeQBrOwWvW/B+Y=
+	t=1721991961; cv=none; b=ULnt0gbCn70wtPyjaF2Hak4qdPcB53BbanxTf1CkEXtjKJEQ5ZugZfDIgoUFU/8TOCwNf+lsol/+c5LUP88uB7d9bglpR/dyfO1+Y7pLduLd9avqGvm1dKktCsxbV8M0Mjp80wZ2xWeDSScbfyoInyQD22S79tZC7hKk/61miGc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1721991023; c=relaxed/simple;
-	bh=Qy8S0UY4uIlSRFDIwsZ+rC2quK33qj3MJXVi7bEiuII=;
+	s=arc-20240116; t=1721991961; c=relaxed/simple;
+	bh=/sVicTNfY3cet1chvNxxWo/ZPwMTD06+KwNxAx+VxkI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YSir0d06AA/OlVNP1YdQQpynjE7SE4lcuI2basLZnARcojwb33oizMSDWwns0H3aIUMNwnAPoKGdFm1ybT5/WmGH9oQOT0CmLCZh8SdbvsrDrp2ToOA6UnX+e8QKF05SQXvaIo8OPBJzWm3payEt9X13g6DFxciSyoql12PSMkE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=mWIdU0EU; arc=none smtp.client-ip=209.85.128.169
+	 To:Cc:Content-Type; b=dak659dcBRJtGCJjkpxq81Gn43Lc2JWcIcvDdiRMldUVoxd3h9E/LVnWfQrEPTTJUaB8JPrr1Gf2v6YSPgVAcH6HGU/Dvqe99nrAK+SL52znJ00n4DX4insJTij0GbKLv6WmlxAsnNDUtz+VESBy0LLtx+MGgTwHn8Pq08qPvHk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=jpsvj+1Q; arc=none smtp.client-ip=209.85.128.171
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=umich.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="mWIdU0EU"
-Received: by mail-yw1-f169.google.com with SMTP id 00721157ae682-6512866fa87so19231277b3.2
-        for <rust-for-linux@vger.kernel.org>; Fri, 26 Jul 2024 03:50:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="jpsvj+1Q"
+Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-66ca5e8cc51so23417117b3.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 26 Jul 2024 04:05:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=umich.edu; s=google-2016-06-03; t=1721991020; x=1722595820; darn=vger.kernel.org;
+        d=umich.edu; s=google-2016-06-03; t=1721991958; x=1722596758; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ijK4BB9NKjijkhh0VtXecMEZ79Tn/oYyKmCGMg2L0/I=;
-        b=mWIdU0EUNgSWpO3tME669YSUkwWfzfIFeFsyviCuA/5JG5zRcTmL21CGIvA3vzAcQh
-         B9YCAOe5cjmgXMFrPBiWYRT0vDOKB5Q+Q+rG1OVaerLkDauBV2Rpz26gtNu5p3bWwyR6
-         hpZ7wY5FtMn/DWtii7cjQtq6zr4xMjaTp49nFIVK/aaaEj2jKv9Y1XBnzKMM8BM1x+Vn
-         J8S6vWQ3PRJqlKSpaGt5KOiFl/VQPl6rVJLCjHNIHeI9eaTBjLEQ2QxAL/xX5cB1H8Or
-         TJpYL9UxhdAGke0GtsHGLHRVytUZ+xHPZ0/1TktPTzq2ZZUpGsWO16rN4bI5xiOP98wn
-         N27g==
+        bh=7hckkNbMLOcuR+z008FLIKbuIPv1ZZE1XmBUhRiJCWk=;
+        b=jpsvj+1QqfrU6RpxUyaUnk1qKTfifCukpkVum9XzEwhCZ1D70uT5FVBCZJNE4cS2iq
+         1EJIF8a2ydTNl6kP6wAYgMQSD+hAyvtj7vvUBfzkNi0k43kEuiZwFFzDhQsFcKFKbKtz
+         c3SAmoerVJLYxJjuzVYWlQKVlyxzJDFyaTxHiv3b0Eqrcb3UYrRy2HgTjXXPJcgLZkF3
+         K7f28y00uJfJuY0TKAjrkPEMQRMcOD0ERvfIfzB6xFxnJoB7+/QfnBS2qPwiOz0GTIT5
+         GLeNz8yXGxdRyQsG7Pcl00xzTNjrfQqZ/72Ag3cOUj/kaH13xy/mSGPJ+9b2xvt0ys49
+         M5TA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1721991020; x=1722595820;
+        d=1e100.net; s=20230601; t=1721991958; x=1722596758;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ijK4BB9NKjijkhh0VtXecMEZ79Tn/oYyKmCGMg2L0/I=;
-        b=rtxklIEuLw+2ZVWm/pOkIu/5iQsQDfze9kVe4seE4PTL0sIJ5X6E7jziMwLi5rHVBo
-         7nx+G9ebeaNPi3q8ifWSK9bLyqRXH8ewn3xO2KjFrAHEfo1a/8/ePMGjoRy6TYpkMJ1X
-         ii2UVHLJGOV1BLkKxDOaCJoLseKs2o4Qa4MhCkz94dzylQNIAeeQPKmYG6CWbrx7jZ7d
-         1e9T923ndXQIYoKoRN65FXK/qhgy+l7HoTp0aLLk8JIsC46bje9P2vl2zHxprd81u9sK
-         iypW2T1MCJIk9xoaWrQ4wR33QUlVatkMdAbzbQ/9nIE+99ZRwLNqHNT2rq680nev3DNW
-         tr3Q==
-X-Gm-Message-State: AOJu0Ywsz0oo1l6PKymRC3Pj656V7LanfBCI7IryqKiG5w5340gIiCvG
-	o/X08fWrFBl64iPbvYI9HEFjkAWky3OFW2WwYQ2Ryc5C0yUywVcFSeq57kGm7ReKWFpyhXxsGsX
-	kQ8wDK6Q5N5teiaPQjn0vpTgVWS7RgVWW9sYUNA==
-X-Google-Smtp-Source: AGHT+IEWE09yjy7H1uIdWPeLlwZTh0X3VDPs+EgGH4tRVC/pHE868SOJEKdot/CKNhvGzq2wMS1HXdoizMsUwu4GvRI=
-X-Received: by 2002:a81:844c:0:b0:632:7161:d16c with SMTP id
- 00721157ae682-67514c47c13mr60677927b3.28.1721991019965; Fri, 26 Jul 2024
- 03:50:19 -0700 (PDT)
+        bh=7hckkNbMLOcuR+z008FLIKbuIPv1ZZE1XmBUhRiJCWk=;
+        b=GivKRPe6jSkXUr0w5dOeq3ZXH+jFiZjXbkHB2AcK2BVrcshMvwqXH4Qr95hoGq/k1Z
+         FCV5RvtQF92Q3uoFlvVgAy8NXkY68Wgsdg9GwGDxlO5/Omqr4/hTWz7x5qyLRarxNJ8w
+         yjPe0kZo9baFjdHJvmzJtitGsFHMwPmFnSU8/GAHENFOipyv8eKEktTX0GSdvPmQk4B4
+         mlHXsO+SSKwMse+wb772wzcpAKxc8J3M8/Vu0i0vERVuHp63SOvPZgiOxdM9DBHG358F
+         XglUyruxdRaSH6d4GnNS8SmZF9QgGDAdKn3INYdz385Y6hkAGn1b/sS2rL+OPrRy7407
+         KFBQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU6HpI9bljbQO1yVdABKUr2+b2iHGqFz0/D7X5kBoVcHEqkHeEQn2UMPbHjB7OUFPTA2vWF7Qs8V8SFNr/eaEuL8Zoptl1o1CTQYZnxS9I=
+X-Gm-Message-State: AOJu0Yxo1GsfD7GnUuKBTHQzCsOerRrtr8mAzma21g9Tq+pyTfaAb4by
+	OsvCwCAfTiwDhsjia1kI+LyQhvAmjyPD0uxeerjT0TUQw1wFp/yRP0KRbNWkW6XOqHgo75F8Awc
+	ohY/R4yB6l5Ekb5ji7iEx0KfJb146666BXSUVOA==
+X-Google-Smtp-Source: AGHT+IH9Is6Tym8XF86g8B+5uO9SsdZqfsnltWUtIJEd/+7smiIsMguxwMrcSPqNtyBKCgcvokKKDTSPDuMXdsI3m8U=
+X-Received: by 2002:a0d:cd45:0:b0:651:79ee:d14b with SMTP id
+ 00721157ae682-675ba704897mr56298307b3.29.1721991958488; Fri, 26 Jul 2024
+ 04:05:58 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240725222822.1784931-1-lyude@redhat.com>
-In-Reply-To: <20240725222822.1784931-1-lyude@redhat.com>
+References: <20240725184644.135185-1-ojeda@kernel.org>
+In-Reply-To: <20240725184644.135185-1-ojeda@kernel.org>
 From: Trevor Gross <tmgross@umich.edu>
-Date: Fri, 26 Jul 2024 06:50:08 -0400
-Message-ID: <CALNs47shY_e8Zc_OQqOThwAwHUjk5-MAzwJvxqm=Xj5T7YD75w@mail.gmail.com>
-Subject: Re: [PATCH 0/3] rust: Add irq abstraction, IrqSpinLock
-To: Lyude Paul <lyude@redhat.com>
-Cc: rust-for-linux@vger.kernel.org, Danilo Krummrich <dakr@redhat.com>, airlied@redhat.com, 
-	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+Date: Fri, 26 Jul 2024 07:05:47 -0400
+Message-ID: <CALNs47sFD_GqhXNa7v+eC=O96A+SpPm4QtZ3=GbSxZ4zkTm3Zg@mail.gmail.com>
+Subject: Re: [PATCH] rust: macros: indent list item in `module!`'s docs
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>
+	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jul 25, 2024 at 6:28=E2=80=AFPM Lyude Paul <lyude@redhat.com> wrote=
-:
+On Thu, Jul 25, 2024 at 2:47=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
+te:
 >
-> This adds a simple interface for disabling and enabling CPUs, along with
-> the ability to mark a function as expecting interrupts be disabled -
-> along with adding bindings for spin_lock_irqsave/spin_lock_irqrestore().
+> Like commit e516211f615f ("rust: macros: indent list item in `paste!`'s
+> docs"), but for `module!`.
 >
-> Lyude Paul (3):
->   rust: Introduce irq module
->   rust: sync: Introduce LockContainer trait
->   rust: sync: Add IrqSpinLock
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> ---
+>  rust/macros/lib.rs | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 >
->  rust/helpers.c                    |  14 +++++
->  rust/kernel/irq.rs                |  74 ++++++++++++++++++++++
->  rust/kernel/lib.rs                |   1 +
->  rust/kernel/sync.rs               |   3 +-
->  rust/kernel/sync/lock.rs          |  20 ++++++
->  rust/kernel/sync/lock/spinlock.rs | 101 ++++++++++++++++++++++++++++++
->  rust/kernel/sync/locked_by.rs     |  11 +++-
->  7 files changed, 221 insertions(+), 3 deletions(-)
->  create mode 100644 rust/kernel/irq.rs
+> diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
+> index 159e75292970..5be0cb9db3ee 100644
+> --- a/rust/macros/lib.rs
+> +++ b/rust/macros/lib.rs
+> @@ -94,7 +94,7 @@
+>  ///   - `license`: ASCII string literal of the license of the kernel mod=
+ule (required).
+>  ///   - `alias`: array of ASCII string literals of the alias names of th=
+e kernel module.
+>  ///   - `firmware`: array of ASCII string literals of the firmware files=
+ of
+> -/// the kernel module.
+> +///     the kernel module.
+>  #[proc_macro]
+>  pub fn module(ts: TokenStream) -> TokenStream {
+>      module::module(ts)
 >
+> base-commit: b1263411112305acf2af728728591465becb45b0
 > --
 > 2.45.2
 
-For reference, this is a pattern common in embedded rust. Example at [1].
 
-Summary of how it works: anything that must be called in a critical
-section takes a token. A function that creates a critical section
-provides the token. It needs to do this in a way that the token can't
-escape the CS, so typically it takes a function argument (start CS ->
-call inner function with token -> end CS).
+Not much needing review here, but
 
-(This means nothing at runtime, it's just to ensure at compile time
-that IRQs are properly handled where required).
+Reviewed-by: Trevor Gross <tmgross@umich.edu>
 
-- Trevor
-
-[1]: https://docs.rs/critical-section/latest/critical_section/index.html
+:)
