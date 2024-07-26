@@ -1,186 +1,126 @@
-Received: from mail-oo1-f51.google.com (mail-oo1-f51.google.com [209.85.161.51])
+Received: from mail-qk1-f170.google.com (mail-qk1-f170.google.com [209.85.222.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13CFF5674E
-	for <rust-for-linux@vger.kernel.org>; Fri, 26 Jul 2024 21:06:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5129F1CA80;
+	Fri, 26 Jul 2024 21:22:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722027962; cv=none; b=oXeN7HHTGwopLKgIXSXU/tftDSB0AFg3OenglICsRXFi+rVkwEfvUVclED+EjRBeRMrIbP62d+/JhjyYguGbfgylB+/GilmIdu9UIAap72lMC6ckeWX4WW+2ukYiO4cRtEWBddF89/6S3cZn53K9zeIHDYeszYQGLxNQuiLxNJQ=
+	t=1722028928; cv=none; b=KE0C3aAbFn7Wx6Gksu/JwZGx7wOEuIOfgBqDzbLcPnK1fBvECeoewT42e9uc2BNUSj5LmVtXrjme2bpx9UhyHEUal2/Q3FB2KUWVYZyzzD+VYGXV8uoLxaX9ID+XPf0GRI38eMuLMYPpkGHfkGo8k1MHFY8/jsGGREf/IQmYS4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722027962; c=relaxed/simple;
-	bh=7m1g6Y9PmgQZrshJ6w1fDE+ejH8mNXDvgc4AnljHtLw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Y6/XDyXxY0uLMOHjMdEfgLDvysm2yWY3rh/Bo4gy8cRND/M0Dgp82Cn98Mgd1IwlR4WrtGSujxgHWGpyU4Yk7KrZp8sKa9sdRioQGnFYgG3LIvXxlYiu1n+d0NjtgpW8QS1a0cHNTNO0pZgO4fJF5CH3OQbNk/p8OMNz0CfK4Yk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=sBUqpHNy; arc=none smtp.client-ip=209.85.161.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1722028928; c=relaxed/simple;
+	bh=dswZpf/9e633T5v81dQQpqW5+Z74wVdsMxvf79HhdjE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PxKRFODX8FYdJ+w1ZWHYLwAO7+JjOybrYxN16uPOyioKo4sWFtEGxnBSze8Fwr8dx2UXd/i3l4fZZauwqxQNsKxGMvpWm4jGoY+LAnnBKfY0O9Us03vWaeL3Lht7mHbZYX1UZbzI77uJie68TJB3G2bSnXD+PCnP2Ewgx/TVwtk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kzx47l72; arc=none smtp.client-ip=209.85.222.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="sBUqpHNy"
-Received: by mail-oo1-f51.google.com with SMTP id 006d021491bc7-5d5bc93e09dso838637eaf.3
-        for <rust-for-linux@vger.kernel.org>; Fri, 26 Jul 2024 14:06:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kzx47l72"
+Received: by mail-qk1-f170.google.com with SMTP id af79cd13be357-7a1d024f775so74083385a.2;
+        Fri, 26 Jul 2024 14:22:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1722027960; x=1722632760; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1722028926; x=1722633726; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=S4dFsz1ZUiiVPLP2/oVmM76j2Zw+Q0kRIKFNpgfUvZ8=;
-        b=sBUqpHNyagTcb/pWt5M9eLZiQmj47YN26k30tn3ooi9tRBN/TNjLLf0p2vqgM0qpDN
-         Pihb3UZk1afagApVgqw1o4SUqMdWHxuguxrzA5IGb5WpE2FbFs28DbPZGwBtZLmwnOKI
-         rzpcZdk54sJQjCsa9JTIE3s0mObLj4t6F14c5s9K2B3XR4sIx3iY/bT3BCCf5AMjdRsG
-         B9axh4+lpASCZHQopUGvazAQucA211t7a4GNjUwu+YuAVEiTAHUstawOhLlDt000EJen
-         91k6WeRmvNNS5+zpTPMF4/nSachn48Ut4QBMVFxfIucBC08nyM0QFzrHByeAfBHAxIzw
-         ++XQ==
+        bh=dswZpf/9e633T5v81dQQpqW5+Z74wVdsMxvf79HhdjE=;
+        b=kzx47l72Vg5mTmsJA5m3OTbUKy7GDrURgS4xHVgP1siXzN2R4FA1VbdMQZwC/q9MWA
+         CdFncVv2ksG2DqFetsq/QBYXtcr5Tb/K4lwUHXBj6nshPQSfts+KgVADCY1+sWvF02nP
+         vD/yKJXfv8y2CqAuts/ONvVmlQKswaE5q0ljaY5eI3ep5vEBBESVVJlcr6rggd6xcJIm
+         RDvjWqDu2BPAL3ZeHudURK+2x3S4awK13Z/HASqf3v+Nf+xZuVHQWJzkluBT3V7Yu+J4
+         /mGQBUN59wioS6nAXTUcutwoQacDFoQ1/192YW8Y+5Y7vFI6inEzMECitmOZq7VHzx+d
+         bRmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722027960; x=1722632760;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1722028926; x=1722633726;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=S4dFsz1ZUiiVPLP2/oVmM76j2Zw+Q0kRIKFNpgfUvZ8=;
-        b=qWY6fryRDmpS0MFIRqTR7cfs2QCs00/XQGiVPAmJFeA9eIR1OO/aHvamQqibBapj7h
-         86GO6xwhFj6g2Ty4MmOEKn8t0TlS0RRcWEtyaOAGHft8FNNZuxg9Vg8TwdW7P6K5dlN4
-         h5fatReebej993VxVqrvYvpfpLwFo6ShwGvgaJmn/0ra6q5H8l1179pq79DXefGqQKfs
-         USXDGuX6KTQ8LBp/+RqR+X9CKsNbiJjg+nOK8IlQqK32HWt/sgbpNlIu0fy4hn7zJ4Np
-         lm/sUTpRdZdm2arVVlEkqUHzA02JYv3eDQLyNOYTnuFLxm+8EOBXLPe8NR3cI/dbyv1T
-         O6hA==
-X-Forwarded-Encrypted: i=1; AJvYcCVRi4gtArGQMnI7z5o7gI6LosZrc/bGPOVj0xB+EbW2H5ut65v0+CURWcVOsvBA2eHtKcvKrslNsMpKM0KWKRD4Q3q5K77/RhqGYzuf7kA=
-X-Gm-Message-State: AOJu0Yw0s/EsFBi7DAfMWTH0HtkcgI669bh1KSmYyHN3LLs3aHWb4p5n
-	UwKC37zixegJMCJ3nU1wZJIbvuorVm7guzHToofLnv5EVDq+nap5LGp+v696K2Dr78J9eETvexC
-	e7rBGirxqE2JZZFgFWarO342WODYIs+5ObL1f
-X-Google-Smtp-Source: AGHT+IG1GLCWxWGHnjyRbfSvDoWYCQGDNo4SQoda4isgd4Dc8NBikla8Kh6LKbsjYVUmp44NQu2vB1l6jw1VOSKTmeE=
-X-Received: by 2002:a05:6358:52c7:b0:1a6:b009:503a with SMTP id
- e5c5f4694b2df-1adc0695563mr115620755d.4.1722027959728; Fri, 26 Jul 2024
- 14:05:59 -0700 (PDT)
+        bh=dswZpf/9e633T5v81dQQpqW5+Z74wVdsMxvf79HhdjE=;
+        b=JrONu4spUzetSS9IxCKizzd7KLM3XLXY7iUNwDw2f84PBbAEYwOv/RywzJnMhFgcYN
+         SiynW7LbVWMsbh2/YGC2Fl/CthWOhFqp3mn2ZlgwKdjdLPdSY+inqK2LLLjOkdR+Oa6k
+         z5TeaFbJylQq7Odnuz5Yl5fNuuhBAaFxbcKVVOEn9IaPjYidpTXTJZKHwjLpzxkr7wHE
+         uRviTpYmKx/iS14qtvstobtRafCIj/MJtuLc8EenyaHKhJZaptyMfHYU7YR4vqV6io2f
+         KJEUvBeOxlz2VN+dz8hfwYpvbuTvYMIpC6ERbJe3qYUBmzcuzu1gjrU5yR1iZ4BdSDQt
+         gcNw==
+X-Forwarded-Encrypted: i=1; AJvYcCWMszQSorihDKA413/6jSigxqlRJufvpWAP7kEh8RTHQhFSWaAAVmO0fL/BGIFP3VNWMsIIkxnwrFKxIy0Kx7xXv4YhWxO6UJV6YDFn
+X-Gm-Message-State: AOJu0YyUNxEHQdAYfnugt7bQwdq6IoeUrJRjdE5RFS1FJwQF8bEyZyM+
+	9wFpr8khwk+KVjhWnOII0HroQURMQqGq5ICvNaMmHuraK5Scezfk
+X-Google-Smtp-Source: AGHT+IFKvhPkRAq3qkDLqMSjOP4G6cm2nMSXnju0lI13K8rG6BVr2mhwMK+M/+43WxIrRPKhQ7qqUQ==
+X-Received: by 2002:a05:620a:bcd:b0:79f:baf:ed0f with SMTP id af79cd13be357-7a1e5247b82mr102466185a.23.1722028926107;
+        Fri, 26 Jul 2024 14:22:06 -0700 (PDT)
+Received: from fauth2-smtp.messagingengine.com (fauth2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7a1d7446afdsm211113785a.113.2024.07.26.14.22.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 26 Jul 2024 14:22:05 -0700 (PDT)
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+	by mailfauth.nyi.internal (Postfix) with ESMTP id F130C1200069;
+	Fri, 26 Jul 2024 17:22:03 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute4.internal (MEProxy); Fri, 26 Jul 2024 17:22:03 -0400
+X-ME-Sender: <xms:exOkZmVnHNzG1RKQQ-Hg4Lp0MldrC_dekC-4-uu8RUavPM4hKqzLiw>
+    <xme:exOkZingDmzF5QRcybV8zQ-IUb-a2emyK-FSSRI1coBy0tDcxyX7p0x8xah8Tgz29
+    teEGAMOSZ8oZylPqg>
+X-ME-Received: <xmr:exOkZqaf5oqHNjzLKSd8Eu8eAmlv-fpSpEwluTgqHHyPQTMta0UGXoF-8K2NaQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrieehgdduieefucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhu
+    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
+    htthgvrhhnpeehudfgudffffetuedtvdehueevledvhfelleeivedtgeeuhfegueeviedu
+    ffeivdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    gsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdei
+    gedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfih
+    igmhgvrdhnrghmvgdpnhgspghrtghpthhtoheptd
+X-ME-Proxy: <xmx:exOkZtWJjL3Tshrs3LKCwrn3LBApaXDI-b5IRdWDm7BqGas2EGxuRg>
+    <xmx:exOkZgnSS_sKWe7oICUfgVzKmI7X3oJMSIF5D35seg5NLPD3iztOAg>
+    <xmx:exOkZicgLw0wTAvxwQ_TnbF05kFbL9SJC6n5DzwIuz-hteRj1cnkeQ>
+    <xmx:exOkZiFMhdw1Uym7PlOnN10Vcj8prqyvKkU82j30WYhb1GF2Tn16jw>
+    <xmx:exOkZuncQ3wWCoSNS4yU_HMOL3j38izlEbbE_UIY9kWfPSVsDPJP6xJw>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 26 Jul 2024 17:22:03 -0400 (EDT)
+Date: Fri, 26 Jul 2024 14:21:33 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Lyude Paul <lyude@redhat.com>
+Cc: rust-for-linux@vger.kernel.org, Danilo Krummrich <dakr@redhat.com>,
+	airlied@redhat.com, Ingo Molnar <mingo@redhat.com>,
+	Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>,
+	Aakash Sen Sharma <aakashsensharma@gmail.com>,
+	Valentin Obst <kernel@valentinobst.de>,
+	open list <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH 1/3] rust: Introduce irq module
+Message-ID: <ZqQTXUl4w6LRPqLh@boqun-archlinux>
+References: <20240725222822.1784931-1-lyude@redhat.com>
+ <20240725222822.1784931-2-lyude@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240617175818.58219-17-samitolvanen@google.com>
- <0b2697fd-7ab4-469f-83a6-ec9ebc701ba0@suse.com> <CABCJKueGRBdFfGW-cvOvqxc-a85GpxtwPmLdE_1RiAkNLrEg+g@mail.gmail.com>
- <00714a65-953f-4885-9229-1990543c4154@suse.com>
-In-Reply-To: <00714a65-953f-4885-9229-1990543c4154@suse.com>
-From: Sami Tolvanen <samitolvanen@google.com>
-Date: Fri, 26 Jul 2024 21:05:22 +0000
-Message-ID: <CABCJKucj7zjc4=EiFdSnzNDBvQmaWBBt_KJsTq1ybp=Vegp5eQ@mail.gmail.com>
-Subject: Re: [PATCH 00/15] Implement MODVERSIONS for Rust
-To: Petr Pavlu <petr.pavlu@suse.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Masahiro Yamada <masahiroy@kernel.org>, 
-	Luis Chamberlain <mcgrof@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Matthew Maurer <mmaurer@google.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240725222822.1784931-2-lyude@redhat.com>
 
-Hi Petr,
+On Thu, Jul 25, 2024 at 06:27:50PM -0400, Lyude Paul wrote:
+[...]
+> +pub struct IrqDisabled<'a>(PhantomData<&'a ()>);
 
-On Mon, Jul 22, 2024 at 8:20=E2=80=AFAM Petr Pavlu <petr.pavlu@suse.com> wr=
-ote:
->
-> From my perspective, I'm okay if gendwarfksyms doesn't provide
-> functionality to compare a new object file with its reference symtypes
-> file.
->
-> As mentioned, genksyms has this functionality but I actually think the
-> way it works is not ideal. Its design is to operate on one compilation
-> unit at the time. This has the advantage that a comparison of each file
-> is performed in parallel during the build, simply because of the make
-> job system. On the other hand, it has two problems.
->
-> The first one is that genksyms doesn't provide a comparison of the
-> kernel as a whole. This means that the tool gives rather scattered and
-> duplicated output about changed structs in the build log. Ideally, one
-> would like to see a single compact report about what changed at the end
-> of the build.
+I think you need to make this type !Send and !Sync (because you are
+going to make it Copy). Otherwise, you will be able to pass the irq
+disabled token to another thread on a different CPU which doesn't have
+irq disabled.
 
-Sure, that makes sense. Android uses STG for this, which might be
-useful to other folks too:
-
-https://android.googlesource.com/platform/external/stg/
-https://android.googlesource.com/platform/external/stg/+/refs/heads/main/do=
-c/stgdiff.md#output-formats
-
-> A few months ago, I also started working on a tool inspired by this
-> script. The goal is to have similar functionality but hopefully with
-> a much faster implementation. Hence, this tool is written in a compiled
-> language (Rust at the moment) and should also become multi-threaded. I'm
-> hoping to find some time to make progress on it and make the code
-> public. It could later be added to the upstream kernel to replace the
-> comparison functionality implemented by genksyms, if there is interest.
->
-> So as mentioned, I'm fine if gendwarfksyms doesn't have this
-> functionality. However, for distributions that rely on the symtypes
-> format, I'd be interested in having gendwarfksyms output its dump data
-> in this format as well.
-
-We can definitely tweak the output format, but I'm not sure if making
-it fully compatible with the genksyms symtypes format is feasible,
-especially for Rust code. I also intentionally decided to use DWARF
-tag names in the output instead of shorthands like s# etc. to make it
-a bit more readable.
-
-> For example, instead of producing:
->
-> gendwarfksyms: process_exported_symbols: _some_mangled_func_name (@ XYZ)
-> subprogram(
->    [formal parameters...]
-> )
-> -> structure_type core::result::Result<(), core::fmt::Error> {
->    [a description of the structure...]
-> };
->
-> .. the output could be something like this:
->
-> S#'core::result::Result<(), core::fmt::Error>' structure_type core::resul=
-t::Result<(), core::fmt::Error> { [a description of the structure...] }
-> _some_mangled_func_name subprogram _some_mangled_func_name ( [formal para=
-meters...] ) -> S#'core::result::Result<(), core::fmt::Error>'
-
-This wouldn't be enough to make the output format compatible with
-symtypes though. genksyms basically produces a simple key-value pair
-database while gendwarfksyms currently outputs the fully expanded type
-string for each symbol. If you need the tool to produce a type
-database, it might also be worth discussing if we should use a bit
-less ad hoc format in that case.
-
-One more thing to note about the current --debug output is that it
-directly correlates with the debugging information and thus may not
-contain all aliases. For example, the Rust compiler deduplicates
-identical function implementations (e.g. Deref::deref and
-DerefMut::deref_mut etc.), but only one of the symbol names appears in
-DWARF. We use symbol addresses to print out #SYMVERs also for the
-aliases, but they don't show up in the debugging output right now.
-
-> > If using unions here is acceptable to everyone, a simple solution
-> > would be to use a known name prefix for the reserved members and teach
-> > gendwarfksyms to only print out the original type for the replaced
-> > ones. For example:
-> >
-> > The initial placeholder:
-> >
-> >     u8 __kabi_reserved_1[8];
-> >
-> > After replacement:
-> >
-> >     union {
-> >             u64 new_member;
-> >             struct {
-> >                     u8 __kabi_reserved_1[8];
-> >             };
-> >     }
-> >
-> > Here gendwarfksyms would see the __kabi_reserved prefix and only use
-> > u8 [8] for the CRC calculation. Does this sound reasonable?
->
-> I like this idea. I think it's good that the necessary kABI information
-> about an updated member can be expressed at the source code level in
-> place of the actual change, and it isn't needed to feed additional input
-> to the tool.
-
-OK, cool. I agree that being able to specify these details in source
-code is much cleaner. I'll add an implementation for this, and for the
-definition visibility issue Greg mentioned in v2.
-
-Sami
+Regards,
+Boqun
