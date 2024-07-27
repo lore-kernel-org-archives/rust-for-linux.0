@@ -1,122 +1,107 @@
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 118B24CB37;
-	Sat, 27 Jul 2024 11:21:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45C454C9B;
+	Sat, 27 Jul 2024 14:03:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722079293; cv=none; b=hCbxi4u2rtiEUEpdR4yaaBYrmlaigX3MvKu6ViJ1Qg1+1RYMmyzCkgIKMZTspTVplKh2ZxEx2HoIQYVxUhgIhwFpL79Q0KqXYToXlmQOqpa4y8sedMR1AlF1Tvd9FuG5lTdvGbQorgbMW3Dy4gHu5wyAUQJgE2z3uGcJaQkd5O4=
+	t=1722088986; cv=none; b=h+LRyIe59ioQcSVGjstDg0Ka+Z5x4pzxeVQWcSu2vvVuTexBvusYlZNhmFh4iPxxzgFScR3VepDKQcQdm1R6cU2+cf7+KRK/B4FxOuSW70uaDEZZX/mwkhPrVrbsi3Ape9+w7/23yX+ahtRvWr7Ov4IM7HXs7VNj9+cc/ZW+MY0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722079293; c=relaxed/simple;
-	bh=Np9BXsfpZ4ED8CIWS5ZU5lyVIGmxSf2WKXevqzEFx4s=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Mq/lHkgcz9vjQ+v4toRGEuAnMGz7EpbvucBc7iiR3jGtTVDTBQDJpzr1yo63q/xfUFQzXNdoErQynfalV3C098TyOTJyT23xtJrAXnspRQuVnki5hHsBaeLNhd3AtxZG7mFGkuZKqq2YNnhbYfmk8lPHl4TNVYJs60vPMs2euN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=nMeV99EI; arc=none smtp.client-ip=198.175.65.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1722088986; c=relaxed/simple;
+	bh=JlnARo1+2U7ZszBtmY5wjUSRQZ/RtDlKPPT+ppYwIw8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PlQOLOvvyw+UopWpORvF+aHMfC4lORPWOXDa3LUBiHZJbqB4hIIR/eFzztex8h8np0sRHVYnKSw3HW3DZ9wttuK38bB6jt6r413zJetpk+CiWDeJlahfp8Jef8bTEcJKhk96H3TIXKQ1+ftcvcefm6/FmkFIsiExwEj1kOq4ouY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=X7HA93Qu; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="nMeV99EI"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1722079291; x=1753615291;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=Np9BXsfpZ4ED8CIWS5ZU5lyVIGmxSf2WKXevqzEFx4s=;
-  b=nMeV99EIfyCjf7mO0bDqM5qrjGX13uaIBLWnaTOwaMqyEAkNNHERKdzG
-   2D1sVjw7s/UbRoM3B19Uj6U/hAIy/0q10Hi+z1QAYsioor49U7EHXuvIk
-   YlRcMcHO/Gkhy3yxgqOUzCyhW1NA7dwcuH9HGECnpR2v1+50jNts89owe
-   yhlwpSR9z2C/0QgMpQJARNDFtUk4RGEis6KKvNL65JPf0dckSg+Vtzk/e
-   f8lrdIyZQc/LwdITo7VenxYWBBKFw48jsm7WNTJu5Ci4Qv4ccON45mEt3
-   2UfbH9SUmJ+uF/Lp711i+1IJLLyMnlKptLw/WsVICRLky5ZwcbRX66GOk
-   w==;
-X-CSE-ConnectionGUID: FuNlzBKfR2qf03hgYgEEOA==
-X-CSE-MsgGUID: 8N64uqquRqq6lUfDLrRtbQ==
-X-IronPort-AV: E=McAfee;i="6700,10204,11145"; a="31259288"
-X-IronPort-AV: E=Sophos;i="6.09,241,1716274800"; 
-   d="scan'208";a="31259288"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Jul 2024 04:21:31 -0700
-X-CSE-ConnectionGUID: uMFzfeUtQD+UFOZTZFeGgw==
-X-CSE-MsgGUID: dwocBO3IR5yf8fF7fPZ1IQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.09,241,1716274800"; 
-   d="scan'208";a="58315801"
-Received: from lkp-server01.sh.intel.com (HELO 68891e0c336b) ([10.239.97.150])
-  by orviesa003.jf.intel.com with ESMTP; 27 Jul 2024 04:21:26 -0700
-Received: from kbuild by 68891e0c336b with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1sXfUI-000ptc-2e;
-	Sat, 27 Jul 2024 11:21:22 +0000
-Date: Sat, 27 Jul 2024 19:21:09 +0800
-From: kernel test robot <lkp@intel.com>
-To: Lyude Paul <lyude@redhat.com>, rust-for-linux@vger.kernel.org
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Danilo Krummrich <dakr@redhat.com>, airlied@redhat.com,
-	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
-	Waiman Long <longman@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Valentin Obst <kernel@valentinobst.de>,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 3/3] rust: sync: Add IrqSpinLock
-Message-ID: <202407271842.ujYe0mc0-lkp@intel.com>
-References: <20240725222822.1784931-4-lyude@redhat.com>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="X7HA93Qu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F34FDC32781;
+	Sat, 27 Jul 2024 14:03:04 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1722088985;
+	bh=JlnARo1+2U7ZszBtmY5wjUSRQZ/RtDlKPPT+ppYwIw8=;
+	h=From:To:Cc:Subject:Date:From;
+	b=X7HA93QuqjeF6WxmFyecnL5Gunp+TQuk+NEAoJeU6jJ3UkYGq/5Jt8+64P1/aTgfK
+	 WvCyuN8EuYC2VAk029XG7zLoFsI9irgk/Xavh12J4UyLbn8pJueLCNV0wsaoi9JrfW
+	 uK4U1O6b05HB4ve027W9TYHSQIyjcCpelDZvZbkQwG7VAi7yfNutR96Vf0EKivZk+Y
+	 o2AhhYpxjzceJQsmRf8BmOe5R60u8RxmIaCfu1mRbX6hFMwTCiF4ivI6a5QhmZ8VY4
+	 fuVrvXOeOU8daW0cnSxgJJnzJiBQssLFHVoo6tP5fQW3EmtaZec+w0ORjStcco4CQI
+	 T6Dn1h7tJbsqw==
+From: Masahiro Yamada <masahiroy@kernel.org>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	rust-for-linux@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	Masahiro Yamada <masahiroy@kernel.org>
+Subject: [PATCH 1/2] rust: suppress error messages from CONFIG_{RUSTC,BINDGEN}_VERSION_TEXT
+Date: Sat, 27 Jul 2024 23:02:59 +0900
+Message-ID: <20240727140302.1806011-1-masahiroy@kernel.org>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240725222822.1784931-4-lyude@redhat.com>
+Content-Transfer-Encoding: 8bit
 
-Hi Lyude,
+While this is a somewhat unusual case, I encountered odd error messages
+when I ran Kconfig in a foreign architecture chroot.
 
-kernel test robot noticed the following build errors:
+  $ make allmodconfig
+  sh: 1: rustc: not found
+  sh: 1: bindgen: not found
+  #
+  # configuration written to .config
+  #
 
-[auto build test ERROR on next-20240725]
-[also build test ERROR on linus/master v6.10]
-[cannot apply to rust/rust-next v6.10 v6.10-rc7 v6.10-rc6]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+The successful execution of 'command -v rustc' does not necessarily mean
+that 'rustc --version' will succeed.
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Lyude-Paul/rust-Introduce-irq-module/20240726-064926
-base:   next-20240725
-patch link:    https://lore.kernel.org/r/20240725222822.1784931-4-lyude%40redhat.com
-patch subject: [PATCH 3/3] rust: sync: Add IrqSpinLock
-config: x86_64-rhel-8.3-rust (https://download.01.org/0day-ci/archive/20240727/202407271842.ujYe0mc0-lkp@intel.com/config)
-compiler: clang version 18.1.5 (https://github.com/llvm/llvm-project 617a15a9eac96088ae5e9134248d8236e34b91b1)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240727/202407271842.ujYe0mc0-lkp@intel.com/reproduce)
+  $ sh -c 'command -v rustc'
+  /home/masahiro/.cargo/bin/rustc
+  $ sh -c 'rustc --version'
+  sh: 1: rustc: not found
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202407271842.ujYe0mc0-lkp@intel.com/
+Here, 'rustc' is built for x86, and I ran it in an arm64 system.
 
-All errors (new ones prefixed by >>):
+The current code:
 
->> error: mismatched closing delimiter: `)`
-   --> rust/doctests_kernel_generated.rs:4097:34
-   |
-   4097 | let b = with_irqs_disabled(|irq| {
-   |                           -      ^ unclosed delimiter
-   |                           |
-   |                           closing delimiter possibly meant for this
-   ...
-   4100 | );
-   | ^ mismatched closing delimiter
+  command -v $(RUSTC) >/dev/null 2>&1 && $(RUSTC) --version || echo n
 
+can be turned into:
+
+  command -v $(RUSTC) >/dev/null 2>&1 && $(RUSTC) --version 2>/dev/null || echo n
+
+However, I did not understand the necessity of 'command -v $(RUSTC)'.
+
+I simplified it to:
+
+  $(RUSTC) --version 2>/dev/null || echo n
+
+Fixes: 2f7ab1267dc9 ("Kbuild: add Rust support")
+Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+---
+
+ init/Kconfig | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/init/Kconfig b/init/Kconfig
+index c41260ffe99a..466849f9f1b9 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -1919,12 +1919,12 @@ config RUST
+ config RUSTC_VERSION_TEXT
+ 	string
+ 	depends on RUST
+-	default $(shell,command -v $(RUSTC) >/dev/null 2>&1 && $(RUSTC) --version || echo n)
++	default $(shell,$(RUSTC) --version 2>/dev/null || echo n)
+ 
+ config BINDGEN_VERSION_TEXT
+ 	string
+ 	depends on RUST
+-	default $(shell,command -v $(BINDGEN) >/dev/null 2>&1 && $(BINDGEN) --version || echo n)
++	default $(shell,$(BINDGEN) --version 2>/dev/null || echo n)
+ 
+ #
+ # Place an empty function call at each tracepoint site. Can be
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.43.0
+
