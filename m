@@ -1,157 +1,249 @@
-Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [80.241.56.151])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 75A9111C83;
-	Fri, 26 Jul 2024 21:41:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31588469D;
+	Sat, 27 Jul 2024 04:25:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=80.241.56.151
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722030089; cv=none; b=WXf2p34lNqnd3aI+e2mLYw2EGwOQhcmj1AZkq0Mvo9y74hMWoKuft3U8A466q49zeoBap8U8xo9J5hnDpe6qn5zeRF8Rg2qpmF3B1c/Szw1H46Eum6y1qbGvDG2YdOa6RhVxldu2Tlm/OrtdDJIVd6nI50DbL0rbfbeza0mSSVM=
+	t=1722054304; cv=none; b=EOX+OfBsqdQS9gt2/izUOjtJlAtgqsgjuMl8o1Thg3nl5i15oX+LLdTeRlTSNVFjnpphej9lQkIcaTjLNdxsdWm4aYXK7Z91t+q3cIROISajLfNSn5Ni5Ga8M+lDMestY9rMvquDSfKFdohERlUxxsnaiPcc3OjDQetMeX2/hWE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722030089; c=relaxed/simple;
-	bh=KflkFDmEqXqpbaBRjC6/jLBVdsSA4DBaVaH/HMeyBOw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Ryp07mgTm/YDbKXz/Vdzj9MScFJh01iYm3BHzs5Y1u2AIMFifl9f7AEGCZ4hGgECKBIL5s2SxGBpTyJeWdR4+I6pjixvm0YKmb7D3Zv1JC74b5MhvzbwqjWXQwBVyHmV9hEsdvwhsBI9iBMhffR/341EVfPJpMKcQKdgDAgUZic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LduuHISb; arc=none smtp.client-ip=209.85.222.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1722054304; c=relaxed/simple;
+	bh=BLWshaB639I9Y4xfgfqbX+op5Cc0PweVm+o28FZzsjs=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=K6Cyk0FUkX21wRFvlBphKr85ab6Au4/O8HIlVCxMUl6DJ2KFmQ0HwPN/nLZrGK073LNTJPIB5Zy/n+0uzYF9pzHHrfDzK+hCB/LsJfqluLIgUaOXNLdF3fZ3G3dUkD/XbSgd3ygsU8u2wyVp7permC2DCIVnDfysbx9ajb2Q4Hs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org; spf=pass smtp.mailfrom=mailbox.org; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=VIxLzRiv; dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b=NrxW8npn; arc=none smtp.client-ip=80.241.56.151
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mailbox.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mailbox.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LduuHISb"
-Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-79f19f19059so70010485a.0;
-        Fri, 26 Jul 2024 14:41:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1722030087; x=1722634887; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zeQ2uA4KQaQ5BFYzBQC3DI/Kd0HVQEyWRWUcs7oTDN4=;
-        b=LduuHISbxzkdCQ/oimO+3ZEbVsRFsLMrnvpnk+f/y5HtCNy6SpA1rdRyJBcX6BQE9X
-         fPxiCWvz1OXANqDV0JB7x5wGze5HB9GHiwQC972Brf01NRgv2FZydJuli5vVPs94VZnt
-         LeKsAEhcqo+ezRpzTqd2UEt3F4D4EitKM7FxOwAt5JhkhCCzfn7aXzEAuA78+twpum7I
-         6H/SLvIzbjeuOZvhkEG3RwK2e1Rc5s9cq9GqEqqu+VPBfdU4WKgBPcsl2mhPXmFBI2Ra
-         +c+9ZXAvxHu4AGQ00QnSItnjeELIEV829Ge3cqFFomYjoSOjgEC0xtnHjBeiw+LZ1Y/1
-         CQSQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722030087; x=1722634887;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=zeQ2uA4KQaQ5BFYzBQC3DI/Kd0HVQEyWRWUcs7oTDN4=;
-        b=vNoN5JlLMYzaJTabhQnYumlATpHpeK5MOOh9ahqO74tdczi9xUavAnrpCiJe2B1NbC
-         j3Gbg0ixSTeLdRnf4HzI5rISzLXlTGyirdvwPOXtIfJOGZdl2QJcj9mBa1bt/ZA67itM
-         DPpKcWJ+sCNgEa3emTV4g9m6rQP6odVPJGQMUMvYZeiwV5sjwFCnlOnol/AKxH+1SaPH
-         U1p9MmVtOByEGD2Z+iecXbiAY1TIKLem8wvRAK/w+4NIox92s7wxJBXWJ28Mb5C2XFva
-         /Qdw+1D26M7H65aKadozFClW2Rxkh/wB7Pq2VuVlKNKS228qAJZnyNl9f7UcI2A7gjAx
-         oBgw==
-X-Forwarded-Encrypted: i=1; AJvYcCWmaCBBAFvODRnFUpQk1Ss6zpx6Y9d+LYvnnenojxtfBGNiN4+7/uA7rxDCVhRrcx0oJ3PZWWAcyxEmUgwTZ4AulSzTIms1xJS84GR1ZGXyMjI4FBuUbEgT9TlVFf+cwP2YmUXFBxKPM2qlhcs=
-X-Gm-Message-State: AOJu0YzkKXp4Xf+Du0Q4TfqVkmGylNPaFNYNSzhu0Ie7IvBfnAQ3OhZV
-	6dodAsHfm/zcw0X6KZWXMbL+pod4cXkIXCvFVVNbOHpkX/XeNF+L
-X-Google-Smtp-Source: AGHT+IFUtU9EuixsWuONM5tPmh1qxpsrsQEsvRyap3iWVEMhlQg6pEqF2eNnGN5F3TkJZ4TdviwHnQ==
-X-Received: by 2002:a05:6214:248e:b0:6b7:a4c0:9694 with SMTP id 6a1803df08f44-6bb5599f04fmr14682216d6.4.1722030087314;
-        Fri, 26 Jul 2024 14:41:27 -0700 (PDT)
-Received: from fauth2-smtp.messagingengine.com (fauth2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6bb3f943a30sm20277756d6.74.2024.07.26.14.41.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 26 Jul 2024 14:41:26 -0700 (PDT)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-	by mailfauth.nyi.internal (Postfix) with ESMTP id 841D71200069;
-	Fri, 26 Jul 2024 17:41:25 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute5.internal (MEProxy); Fri, 26 Jul 2024 17:41:25 -0400
-X-ME-Sender: <xms:BRikZmdWObPjR5RWDg4HN7zHRfEU-quc0zMwv5dltX8VD4Ky3HyJMg>
-    <xme:BRikZgNw9BM38hdeT1xH2lRfXEoSJ5T_B5W7qfvZtgSrDr9OwTiTAaLl4PgDBs8am
-    8lilugu3IQyRygN7g>
-X-ME-Received: <xmr:BRikZni72u_PtmrSRTKSrFv5cUa9ZdVi86BBhVjBB0YwwBA5Y3DbMCnvsaZxXQ>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrieeigddtvdcutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhn
-    ucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrth
-    htvghrnhepjeeihfdtuedvgedvtddufffggeefhefgtdeivdevveelvefhkeehffdtkeei
-    hedvnecuffhomhgrihhnpehruhhsthdqlhgrnhhgrdhorhhgnecuvehluhhsthgvrhfuih
-    iivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghu
-    thhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqh
-    hunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgt
-    phhtthhopedt
-X-ME-Proxy: <xmx:BRikZj8OE8ya2k4VEEv5QWLUK3nCwaj-kkuE0wt3tmYksmDIbCKG8g>
-    <xmx:BRikZitvQQP1wC_D96S9n32ryASNIEWqkJhC0_E_84mG6-aJ9DkeGQ>
-    <xmx:BRikZqGTR3O7o_AydiN8oxikzTq7Xz74Kzy7BGfJhkO8aygVv8528w>
-    <xmx:BRikZhMTJo16aHgo6918PKVZ3uxKu-jAfJGertZZWdBDrp1YedpnCA>
-    <xmx:BRikZvP9jWYbQA_qhl_EakHQOEJYFHdVrFj1CHTpRyIAYkmy3Ivow8o2>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 26 Jul 2024 17:41:25 -0400 (EDT)
-Date: Fri, 26 Jul 2024 14:40:54 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Lyude Paul <lyude@redhat.com>, rust-for-linux@vger.kernel.org,
-	Danilo Krummrich <dakr@redhat.com>, airlied@redhat.com,
-	Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>,
-	Waiman Long <longman@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Aakash Sen Sharma <aakashsensharma@gmail.com>,
-	Valentin Obst <kernel@valentinobst.de>,
-	open list <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH 1/3] rust: Introduce irq module
-Message-ID: <ZqQX5hPb3yha2opu@boqun-archlinux>
-References: <20240725222822.1784931-1-lyude@redhat.com>
- <20240725222822.1784931-2-lyude@redhat.com>
- <ZqQTXUl4w6LRPqLh@boqun-archlinux>
- <e46d6e12-144f-47fe-9db4-d7d04914f265@proton.me>
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="VIxLzRiv";
+	dkim=pass (2048-bit key) header.d=mailbox.org header.i=@mailbox.org header.b="NrxW8npn"
+Received: from smtp2.mailbox.org (smtp2.mailbox.org [10.196.197.2])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4WWBNq2W2Tz9t4V;
+	Sat, 27 Jul 2024 06:24:59 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1722054299;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=EvFDlAT6bSm4ZK0YHHMjAx+yZbFsKsUM3J2C8BY88GQ=;
+	b=VIxLzRiv6nDqZ9+HET6Qb/I6YY5gRgjkF8Uz2kxj6UfKpZj+qtbcGJQhyMqBpO7brpug1q
+	Lo1bsAWXe+29OnvnhdUld6ssD9n+kvcLm6MZPUheVN7WNLT/BSRrkbPrELqIA/t/3jmbf8
+	S+p+O7hs/DX/rfzlXlUMsZLzgsnBC5rCp8Y3tBL60VUR+vHqbw0fss2rTjS6JbzvmYA77+
+	nJL01Yxyu5mSe9PU2sqhZw60Z+VLta768si6DtDEMQOQYfOwpu9S2ZAIDQnW6NQFgWGMmi
+	y6N18rmYE8MK9iDOIVEKLbCEWdkOhsEIK55IiunfhiX4lzwGAR5jM06W2ZkRrg==
+From: Alex Mantel <alexmantel93@mailbox.org>
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailbox.org; s=mail20150812;
+	t=1722054297;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=EvFDlAT6bSm4ZK0YHHMjAx+yZbFsKsUM3J2C8BY88GQ=;
+	b=NrxW8npnUgj8knIJF2G9wB9Y5OmTdjtEDLlhAQ4R2gTY2BuBdKhrPdpImnWopcsXunLfwt
+	jHcuzs2KO55t0FXtPhycc5SURb3FxfYK8uiTn+AAztsyUN8uuCHv0RwGJ+l7p97/m+qEYE
+	5aubczqstLNqVnCfq8hexOxcyCAZwhmD226IIZotPXvcv60btMaIg6O5+6CYgX2Ow1nuKx
+	+Sm617SYVWtXEYICxUwMExvs3k3YQOdI/dTLOM7P5yOFisaG/o3xi2O5rRzTZNSugw2DNM
+	ljUGSCCpSb2oe8EKJ3jDN6SbXO8XQJdozQHImAe2q7ppje/ri6VrGv4xPyH7HQ==
+To: ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	wedsonaf@gmail.com,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me,
+	a.hindborg@samsung.com,
+	aliceryhl@google.com,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Alex Mantel <alexmantel93@mailbox.org>
+Subject: [PATCH v3] rust: Implement the smart pointer `InPlaceInit` for `Arc`
+Date: Fri, 26 Jul 2024 21:24:42 -0700
+Message-Id: <20240727042442.682109-1-alexmantel93@mailbox.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <e46d6e12-144f-47fe-9db4-d7d04914f265@proton.me>
+Content-Transfer-Encoding: 8bit
+X-MBO-RS-ID: 87cdbe66921b1de3be3
+X-MBO-RS-META: qjf8jnorw5ggqd48bj7idagiqpn3xom8
 
-On Fri, Jul 26, 2024 at 09:30:00PM +0000, Benno Lossin wrote:
-> On 26.07.24 23:21, Boqun Feng wrote:
-> > On Thu, Jul 25, 2024 at 06:27:50PM -0400, Lyude Paul wrote:
-> > [...]
-> >> +pub struct IrqDisabled<'a>(PhantomData<&'a ()>);
-> > 
-> > I think you need to make this type !Send and !Sync (because you are
-> > going to make it Copy). Otherwise, you will be able to pass the irq
-> > disabled token to another thread on a different CPU which doesn't have
-> > irq disabled.
-> 
-> Oh yeah this is a good catch! (although it should not matter at the
-> moment, see the end of the note below)
-> 
-> Just a note: it is not because of making it Copy, this problem already
-> exists in the current implementation. One could have sent the reference
+For pinned and unpinned initialization of structs, a trait named
+`InPlaceInit` exists for uniform access. `Arc` did not implement
+`InPlaceInit` yet, although the functions already existed. The main
+reason for that, was that the trait itself returned a `Pin<Self>`. The
+`Arc` implementation of the kernel is already implicitly pinned.
 
-Ah, you're right. I was thinking ahead, i.e. dont_interrupt_me() takes a
-`IrqDisabled` instead of a `&IrqDisabled`. But it comes along with the
-deal of making `IrqDisabled` `Copy` ;-)
+To enable `Arc` to implement `InPlaceInit` and to have uniform access,
+for in-place and pinned in-place initialization, an associated type is
+introduced for `InPlaceInit`. The new implementation of `InPlaceInit`
+for `Arc` sets `Arc` as the associated type. Older implementations use
+an explicit `Pin<T>` as the associated type. The implemented methods for
+`Arc` are mostly moved from a direct implementation on `Arc`. There
+should be no user impact. The implementation for `ListArc` is omitted,
+because it is not merged yet.
 
-> to a different thread using a "scoped spawn"-esque function [1]. IIRC we
-> currently do not have such a function, but it should be possible to
-> later add such a function. (and it is much more accurate to make this
+Link: https://github.com/Rust-for-Linux/linux/issues/1079
+Signed-off-by: Alex Mantel <alexmantel93@mailbox.org>
+---
+Hello again!
 
-Yes, scoped spawned timers and works will be very useful, because they
-can use stacks for the data structures.
+This is the 3rd version of my very first patch. I applied the
+suggestions on the 2nd submission. Thank you again for your feedback,
+looking for more!
 
-Regards,
-Boqun
+v1: 
+  * https://lore.kernel.org/rust-for-linux/20240717034801.262343-2-alexmantel93@mailbox.org/
 
-> type not be thread safe)
-> 
-> [1]: https://doc.rust-lang.org/std/thread/struct.Scope.html#method.spawn
-> 
-> ---
-> Cheers,
-> Benno
-> 
+v2: 
+  * remove the `From:` from the patch.
+  * add the prefix `rust: ` to the subject.
+  * Remove the empty line between `Link` and `Signed-off-by`.
+  * https://lore.kernel.org/all/20240719192234.330341-1-alexmantel93@mailbox.org/
+
+v3:
+  * Rename PinnedResult to PinnedSelf
+  * Adjust documentation for PinnedSelf
+
+ rust/kernel/init.rs     | 39 +++++++++++++++++++++++++++++++++++----
+ rust/kernel/sync/arc.rs | 25 ++-----------------------
+ 2 files changed, 37 insertions(+), 27 deletions(-)
+
+diff --git a/rust/kernel/init.rs b/rust/kernel/init.rs
+index 68605b633..fa5f182fe 100644
+--- a/rust/kernel/init.rs
++++ b/rust/kernel/init.rs
+@@ -213,6 +213,7 @@
+ use crate::{
+     alloc::{box_ext::BoxExt, AllocError, Flags},
+     error::{self, Error},
++    sync::Arc,
+     sync::UniqueArc,
+     types::{Opaque, ScopeGuard},
+ };
+@@ -1112,11 +1113,17 @@ unsafe fn __pinned_init(self, slot: *mut T) -> Result<(), E> {
+ 
+ /// Smart pointer that can initialize memory in-place.
+ pub trait InPlaceInit<T>: Sized {
++    /// Pinned version of Rusts `Self`.
++    ///
++    /// If a type already implicitly pins its pointee, `Pin<Self>` is unnecessary. In this case use
++    /// `Self`, otherwise just use `Pin<Self>`.
++    type PinnedSelf;
++
+     /// Use the given pin-initializer to pin-initialize a `T` inside of a new smart pointer of this
+     /// type.
+     ///
+     /// If `T: !Unpin` it will not be able to move afterwards.
+-    fn try_pin_init<E>(init: impl PinInit<T, E>, flags: Flags) -> Result<Pin<Self>, E>
++    fn try_pin_init<E>(init: impl PinInit<T, E>, flags: Flags) -> Result<Self::PinnedSelf, E>
+     where
+         E: From<AllocError>;
+ 
+@@ -1124,7 +1131,7 @@ fn try_pin_init<E>(init: impl PinInit<T, E>, flags: Flags) -> Result<Pin<Self>,
+     /// type.
+     ///
+     /// If `T: !Unpin` it will not be able to move afterwards.
+-    fn pin_init<E>(init: impl PinInit<T, E>, flags: Flags) -> error::Result<Pin<Self>>
++    fn pin_init<E>(init: impl PinInit<T, E>, flags: Flags) -> error::Result<Self::PinnedSelf>
+     where
+         Error: From<E>,
+     {
+@@ -1153,9 +1160,31 @@ fn init<E>(init: impl Init<T, E>, flags: Flags) -> error::Result<Self>
+     }
+ }
+ 
++impl<T> InPlaceInit<T> for Arc<T> {
++    type PinnedSelf = Self;
++
++    #[inline]
++    fn try_pin_init<E>(init: impl PinInit<T, E>, flags: Flags) -> Result<Self::PinnedSelf, E>
++    where
++        E: From<AllocError>,
++    {
++        UniqueArc::try_pin_init(init, flags).map(|u| u.into())
++    }
++
++    #[inline]
++    fn try_init<E>(init: impl Init<T, E>, flags: Flags) -> Result<Self, E>
++    where
++        E: From<AllocError>,
++    {
++        UniqueArc::try_init(init, flags).map(|u| u.into())
++    }
++}
++
+ impl<T> InPlaceInit<T> for Box<T> {
++    type PinnedSelf = Pin<Self>;
++
+     #[inline]
+-    fn try_pin_init<E>(init: impl PinInit<T, E>, flags: Flags) -> Result<Pin<Self>, E>
++    fn try_pin_init<E>(init: impl PinInit<T, E>, flags: Flags) -> Result<Self::PinnedSelf, E>
+     where
+         E: From<AllocError>,
+     {
+@@ -1184,8 +1213,10 @@ fn try_init<E>(init: impl Init<T, E>, flags: Flags) -> Result<Self, E>
+ }
+ 
+ impl<T> InPlaceInit<T> for UniqueArc<T> {
++    type PinnedSelf = Pin<Self>;
++
+     #[inline]
+-    fn try_pin_init<E>(init: impl PinInit<T, E>, flags: Flags) -> Result<Pin<Self>, E>
++    fn try_pin_init<E>(init: impl PinInit<T, E>, flags: Flags) -> Result<Self::PinnedSelf, E>
+     where
+         E: From<AllocError>,
+     {
+diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
+index 3673496c2..3021f30fd 100644
+--- a/rust/kernel/sync/arc.rs
++++ b/rust/kernel/sync/arc.rs
+@@ -12,12 +12,13 @@
+ //! 2. It does not support weak references, which allows it to be half the size.
+ //! 3. It saturates the reference count instead of aborting when it goes over a threshold.
+ //! 4. It does not provide a `get_mut` method, so the ref counted object is pinned.
++//! 5. The object in [`Arc`] is pinned implicitly.
+ //!
+ //! [`Arc`]: https://doc.rust-lang.org/std/sync/struct.Arc.html
+ 
+ use crate::{
+     alloc::{box_ext::BoxExt, AllocError, Flags},
+-    error::{self, Error},
++    bindings,
+     init::{self, InPlaceInit, Init, PinInit},
+     try_init,
+     types::{ForeignOwnable, Opaque},
+@@ -209,28 +210,6 @@ pub fn new(contents: T, flags: Flags) -> Result<Self, AllocError> {
+         // `Arc` object.
+         Ok(unsafe { Self::from_inner(Box::leak(inner).into()) })
+     }
+-
+-    /// Use the given initializer to in-place initialize a `T`.
+-    ///
+-    /// If `T: !Unpin` it will not be able to move afterwards.
+-    #[inline]
+-    pub fn pin_init<E>(init: impl PinInit<T, E>, flags: Flags) -> error::Result<Self>
+-    where
+-        Error: From<E>,
+-    {
+-        UniqueArc::pin_init(init, flags).map(|u| u.into())
+-    }
+-
+-    /// Use the given initializer to in-place initialize a `T`.
+-    ///
+-    /// This is equivalent to [`Arc<T>::pin_init`], since an [`Arc`] is always pinned.
+-    #[inline]
+-    pub fn init<E>(init: impl Init<T, E>, flags: Flags) -> error::Result<Self>
+-    where
+-        Error: From<E>,
+-    {
+-        UniqueArc::init(init, flags).map(|u| u.into())
+-    }
+ }
+ 
+ impl<T: ?Sized> Arc<T> {
+-- 
+2.39.2
+
