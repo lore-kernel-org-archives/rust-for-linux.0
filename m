@@ -1,251 +1,199 @@
-Received: from mail-ed1-f50.google.com (mail-ed1-f50.google.com [209.85.208.50])
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D89C31448C6;
-	Mon, 29 Jul 2024 09:58:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 001A5266A7
+	for <rust-for-linux@vger.kernel.org>; Mon, 29 Jul 2024 11:31:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722247100; cv=none; b=rm0Y+zbZ0k8Z0M2KayrRbcAeK+E84OgfSYNGZXDYPqpg7cJ5yLZ2VjNKqVrKCJDor8yNI5L2/Dqm7v5zBr2liPZzS/yXJVSeCXcVjQexVNkNgoz7csJ8/bJ+VXoyY59wHCkqc+2aEu1aqtf2CUEZmplBW7sCfbp4LkuKIyb2w4E=
+	t=1722252719; cv=none; b=t/yX+mEzqwOIzfwINSVP+5On2FomI+F54JYIF9zBxd2Go3IK7C09Ld9dr/nMNcKoe1N9tjFdEE5UUJ8nYpyATzOpOoPhOh6DYV/3u91u7fKj/qbdc1Usys1aCw9uSKMxkAWqh5g4Rf0n3uw3mmWEHsJMbam+rsE8Yp6qDS+6AeM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722247100; c=relaxed/simple;
-	bh=3ZnQW3G376KGdLA9NvoQAlRC0iQCpALCsYgLYY95FBQ=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=M6DHSWpwWEuMrSkmlcSchArPFpQAQpFyZ19GNfHKD/28J89LB4XnHO3/iR24hoZrgzqCbFuNDY/yZstK7fdBEiZLzhOak7uqh2bUGUG8CaBPB2TpVfoofarEivjcRbjxmKOuDiZZPAVb+E5df6LIJ5mFkdGX5/Rhl8+fUotjY1A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KNHu3sb7; arc=none smtp.client-ip=209.85.208.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1722252719; c=relaxed/simple;
+	bh=zRgsRQ0uomO17T2PCctDUFhNXglR9MEaJiFaxSxCTxw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Z5ub+HwhY3cQ9EYbVbi3vmZZRC8lCDWWVf3KHaDzKdip/ym/fmfWHWIH/mcv3XB2wsfiOejipP03acl7bQAR3MCg36P7Hluh3UGVtOlZt3kKKem/oNJg2nzAthsjoyTtdGBNZo8N/k3hJWgtSegT3M3jU4WRRLhQNLaTEaIZ3RE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=s8sulLsr; arc=none smtp.client-ip=209.85.128.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KNHu3sb7"
-Received: by mail-ed1-f50.google.com with SMTP id 4fb4d7f45d1cf-5af6a1afa63so2751417a12.0;
-        Mon, 29 Jul 2024 02:58:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="s8sulLsr"
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4280c493719so14142385e9.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 29 Jul 2024 04:31:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1722247097; x=1722851897; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=s0C7vN/0GQE6CVzJx8SRnXrV4ZQXWzrPWijllSXnWlg=;
-        b=KNHu3sb7/bTZWW5jD21S51yo7d5ok6gStMlWE0p6dqNdSJkuawnaj07trTBSf4su72
-         27yLN+Tvl9RKxgQR3CdLFvu9pjH0Fh4Hh22i99BxONySLYNHAdIIm3AQx+wSIq5XY57P
-         mJrb2RDjgl40KtPYcKmgMqidrmvfZ4EmdS1q64OjGxsI2DM/ZvJzwsDKtg3Iqt41VXB2
-         dKwBqK7xQ67oB1ITAt6/eA3EEB7KEqZ5h0DdytrEC+53QJEP2/2YapSb3QYw/LPvgiEX
-         Pvj6Q4uvqb35HXTUuSpxdKQRq9FotiTHxgS8WeMcgzeP3+umJJbzsR8Lg6KJYvtO7z5/
-         K7eg==
+        d=google.com; s=20230601; t=1722252716; x=1722857516; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=gew36eeAUPQsBQz3aIc1k+AkxIEKTKyXQHEOw/2/kNA=;
+        b=s8sulLsrI12fjIk01X08P8K/nBsSH3/3VQL0IPkRH9Sa1menEmvcvjdTIkE6s4Cy/c
+         +NgNjczH9hLcCxWMxMxQ3KITYbt9YhhKayxmPzCOuMrlCEuxbIqpvPOTdB4N+wt9687y
+         lxZBVPVuE9kzwGFxkruEjf7zjrLzo3xi6kfqSOcuDjUn+a8Gdjw5b34XH8wi4brxHwXB
+         d4bT3aPPIyk6IfuqQMQk7UNfme1MW7uz/7J8JXObKaLSXDRFovA7ax+3u5dzA1mtSXfD
+         9LYbBkTdwdVJJAqF4pyotMbL7168xtHvz7iPJDa7zpfbzqubLK4U21TFK2F46nCrOGLx
+         ALHA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722247097; x=1722851897;
-        h=content-transfer-encoding:in-reply-to:content-language:references
-         :cc:to:from:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=s0C7vN/0GQE6CVzJx8SRnXrV4ZQXWzrPWijllSXnWlg=;
-        b=B9iies+h1QShvnghkAOmZziY4KL7EMlBshATgmXQKOPycu3WtMOX9lQSAMGZqEHRtc
-         NGDJ1A1lMybVpIWABwr946LdStJazEQGW9qxVzLPRZzIHxlmumIO5n4FJH05LOR4Q4wx
-         uVau2pD87TRdpW/2n++N3u5CvJ8BC83rz5oGk+kLxq9lrDpZDiTHxnjlHQZeRQP2R5ab
-         CaYUzeU0ATBOPAOi5EQU7wn6dfKWkTrIkFuxSi5Z1pteFOf66NrMyQeKKcPHV0VuqLJ9
-         cKGX3klTp0eX6FCfpMgVXbgXb2UTG6gV6vb+ENr1DCh2mz+HrezLnkvYouLTWkiQYzr0
-         eTCg==
-X-Forwarded-Encrypted: i=1; AJvYcCXm8T3wtMRJSyfMMAhGikmR8XjIt1FVU3CvzeBpP+4wI6+9QxzCtPQsSsAvFFr+PfLstDTBvdJR0PRRDfFoW6xgm9BfLsOxXwFxH+aw/hE=
-X-Gm-Message-State: AOJu0YzN+hIvfBg5QyJrrBS2abRPCz8UvqFellkE5B87C5XA0RbKhI9B
-	3NY+EXCREjD1Dv/EBv+e9nwKTwfXJ3F8U035iRyGMgKSoZkzrLDN5lA7p0Vb
-X-Google-Smtp-Source: AGHT+IGgKmfThrWFbCPtIXIL7Y46QvI/M2HNG0lq/TnBLEYMgdEIIiGGiu9+y4y5DeOHudisyXKBUQ==
-X-Received: by 2002:a05:6402:5190:b0:5aa:32bb:161 with SMTP id 4fb4d7f45d1cf-5b021f0c55cmr5465600a12.22.1722247096558;
-        Mon, 29 Jul 2024 02:58:16 -0700 (PDT)
-Received: from ?IPV6:2001:871:22a:50e2::2000? ([2001:871:22a:50e2::2000])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5ac631b044csm5520143a12.19.2024.07.29.02.58.15
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 29 Jul 2024 02:58:16 -0700 (PDT)
-Message-ID: <fc3e956c-4f0d-4705-8429-2b7c50e335ce@gmail.com>
-Date: Mon, 29 Jul 2024 11:58:14 +0200
+        d=1e100.net; s=20230601; t=1722252716; x=1722857516;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=gew36eeAUPQsBQz3aIc1k+AkxIEKTKyXQHEOw/2/kNA=;
+        b=aq1RKhkk4uVZdPqGAvDMZhFRoPFn6dcQoTTXhfvwtQc1FyPvPMbiAICMoFieOm4rwa
+         2Su86/u1NBEaNEdhCHXj+/ysjfxAzSkZ858U2zQK997t5QRfdAFl5+jdZzobD0tgzVHm
+         KrlVumP3bwIJQLDM68F8smv0REMulvOp7NSnmJtEor4RZ4B6MZpcRuFfWLe8uEAS39Kg
+         7vmWroEyQazgSc86v70ntbIPwvOH17d8ZqBpheI16xTX7LhCoi2lQv1Uae3k7klvb+ac
+         iJxeMVa899o3A8dkk5uxEi18DwwbMiKIGp87cNvAJB0GRIeSl7KXND+mJXNJP0KL0qXs
+         7w2w==
+X-Forwarded-Encrypted: i=1; AJvYcCUIcD/n5rs4nExPq2WKojKscTwNWoIzBVpangI4xpumnqYNsui4tYyjTHM8uEYgx0oiaBWIkjVTg77sX1KCBmlh+GFn1BzqUNhMHfiheUo=
+X-Gm-Message-State: AOJu0Yyf/uuYQqCGhoKpdyZIezaLzcOKoBmyYYBmT2VGUKFIg8FGgAIY
+	zHgWCwJbQ1qHFgS56NkAEk6m4ApoUP9c3jtw8NNbohDDWOrBaXuOawstSfwh6TTapqWbGrr0qrN
+	T095bTscNnomDibkDST9q/B5Vzx5+u5xscwfv9fzTcNnaXi74yWXSXsQ=
+X-Google-Smtp-Source: AGHT+IHyxXa3qdLSuWKtrceeju8KVNs7tJYBxhJbpA2HDpL6vJr06mNsJv89cYL46cEm3z2rJP3RgYJXmPhoKde9JXE=
+X-Received: by 2002:adf:e045:0:b0:369:c6ec:27d5 with SMTP id
+ ffacd0b85a97d-36b5cf24914mr4571139f8f.30.1722252716042; Mon, 29 Jul 2024
+ 04:31:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] arm: rust: Enable Rust support for ARMv7
-From: Christian Schrefl <chrisi.schrefl@gmail.com>
-To: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- rust-for-linux@vger.kernel.org
-Cc: Miguel Ojeda <ojeda@kernel.org>, Jamie Cunliffe <Jamie.Cunliffe@arm.com>,
- Sven Van Asbroeck <thesven73@gmail.com>,
- Geert Stappers <stappers@stappers.nl>, Andrew Lunn <andrew@lunn.ch>
-References: <2dbd1491-149d-443c-9802-75786a6a3b73@gmail.com>
-Content-Language: en-US
-In-Reply-To: <2dbd1491-149d-443c-9802-75786a6a3b73@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+References: <20240710032447.2161189-1-boqun.feng@gmail.com>
+ <CAH5fLgjat2Y6RT957BhdOjJHt7rPs0DvZYC6JZ+pHFiP=yDNgA@mail.gmail.com>
+ <ZqE9dzfNrE3Xg3tV@boqun-archlinux> <bcdd74f3-d0c0-4366-976a-5a935081a704@proton.me>
+ <ZqK1l05zcCwGforV@boqun-archlinux> <beaf1fa3-eebe-443c-bc51-abd9348a411d@proton.me>
+ <ZqOyMbi7xl67UfjY@Boquns-Mac-mini.home> <81ceeca9-8ae5-4a82-9a46-f47767e60f75@proton.me>
+ <ZqO9j1dCiHm3r-pz@Boquns-Mac-mini.home> <8641453e-664d-4290-b9bc-4a2567ddc3fe@proton.me>
+ <ZqPMpNNq0Q0S-M2P@cassiopeiae>
+In-Reply-To: <ZqPMpNNq0Q0S-M2P@cassiopeiae>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Mon, 29 Jul 2024 13:31:44 +0200
+Message-ID: <CAH5fLgijqHoKrWmHBb+FQntPDgR2qA_r4y0gyib21AHU+mscNw@mail.gmail.com>
+Subject: Re: [RFC PATCH] rust: types: Add explanation for ARef pattern
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Benno Lossin <benno.lossin@proton.me>, Boqun Feng <boqun.feng@gmail.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-doc@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, Jonathan Corbet <corbet@lwn.net>, 
+	Viresh Kumar <viresh.kumar@linaro.org>, Danilo Krummrich <dakr@redhat.com>, 
+	Trevor Gross <tmgross@umich.edu>, gregkh@linuxfoundation.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
+On Fri, Jul 26, 2024 at 6:20=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> =
+wrote:
+>
+> On Fri, Jul 26, 2024 at 03:54:37PM +0000, Benno Lossin wrote:
+> > On 26.07.24 17:15, Boqun Feng wrote:
+> > > On Fri, Jul 26, 2024 at 02:42:36PM +0000, Benno Lossin wrote:
+> > >> On 26.07.24 16:26, Boqun Feng wrote:
+> > >>> On Fri, Jul 26, 2024 at 01:43:38PM +0000, Benno Lossin wrote:
+> > >>> [...]
+> > >>>>>>
+> > >>>>>> You can always get a `&T` from `ARef<T>`, since it implements `D=
+eref`.
+> > >>>>>>
+> > >>>>>
+> > >>>>> Yeah, but this is unrelated. I was talking about that API provide=
+rs can
+> > >>>>> decide whether they want to only provide a `raw_ptr` -> `ARef<Sel=
+f>` if
+> > >>>>> they don't need to provide a `raw_ptr` -> `&Self`.
+> > >>>>>
+> > >>>>>>> Overall, I feel like we don't necessarily make a preference bet=
+ween
+> > >>>>>>> `->&Self` and `->ARef<Self>` functions here, since it's up to t=
+he users'
+> > >>>>>>> design?
+> > >>>>>>
+> > >>>>>> I would argue that there should be a clear preference for functi=
+ons
+> > >>>>>> returning `&Self` when possible (ie there is a parameter that th=
+e
+> > >>>>>
+> > >>>>> If "possible" also means there's going to be `raw_ptr` -> `&Self`
+> > >>>>> function (as the same publicity level) anyway, then agreed. In ot=
+her
+> > >>>>> words, if the users only need the `raw_ptr` -> `ARef<Self>`
+> > >>>>> functionality, we don't want to force people to provide a `raw_pt=
+r` ->
+> > >>>>> `&Self` just because, right?
+> > >>>>
+> > >>>> I see... I am having a hard time coming up with an example where u=
+sers
+> > >>>> would exclusively want `ARef<Self>` though... What do you have in =
+mind?
+> > >>>> Normally types wrapped by `ARef` have `&self` methods.
+> > >>>>
+> > >>>
+> > >>> Having `&self` methods doesn't mean the necessarity of a `raw_ptr` =
+->
+> > >>> `&Self` function, for example, a `Foo` is wrapped as follow:
+> > >>>
+> > >>>   struct Foo(Opaque<foo>);
+> > >>>   impl Foo {
+> > >>>       pub fn bar(&self) -> Bar { ... }
+> > >>>       pub unsafe fn get_foo(ptr: *mut foo) -> ARef<Foo> { ... }
+> > >>>   }
+> > >>>
+> > >>> in this case, the abstration provider may not want user to get a
+> > >>> `raw_ptr` -> `&Self` function, so no need to have it.
+> > >>
+> > >> I don't understand this, why would the abstraction provider do that?=
+ The
+> > >
+> > > Because no user really needs to convert a `raw_ptr` to a `&Self` whos=
+e
+> > > lifetime is limited to a scope?
+> >
+> > What if you have this:
+> >
+> >     unsafe extern "C" fn called_from_c_via_vtable(foo: *mut bindings::f=
+oo) {
+> >         // SAFETY: ...
+> >         let foo =3D unsafe { Foo::from_raw(foo) };
+> >         foo.bar();
+> >     }
+> >
+> > In this case, there is no need to take a refcount on `foo`.
+> >
+> > > Why do we provide a function if no one needs and the solely purpose i=
+s
+> > > to just avoid providing another function?
+> >
+> > I don't think that there should be a lot of calls to that function
+> > anyways and thus I don't think there is value in providing two function=
+s
+> > for almost the same behavior. Since one can be derived by the other, I
+> > would go for only implementing the first one.
+>
+> I don't think there should be a rule saying that we can't provide a wrapp=
+er
+> function for deriving an `ARef<T>`. `Device` is a good example:
+>
+> `let dev: ARef<Device> =3D unsafe { Device::from_raw(raw_dev) }.into();`
+>
+> vs.
+>
+> `let dev =3D unsafe { Device::get(raw_dev) };`
+>
+> To me personally, the latter looks quite a bit cleaner.
+>
+> Besides that, I think every kernel engineer (even without Rust background=
+) will
+> be able to decode the meaning of this call. And if we get the chance to m=
+ake
+> things obvious to everyone *without* the need to make a compromise, we sh=
+ould
+> clearly take it.
 
-Greetings,
+I think I've come around on this question. I think it's fine to have
+raw_ptr->ARef methods that increment the refcount, but we should make
+a naming convention clear. I propose:
 
-Friendly Ping :)
+* Functions named things like from_raw_file or from_raw_mm do not
+increment the refcount.
+* Functions named things like get_file or or mmget do increment the
+refcount, just like the C function of the same name.
 
-This has been on the mailing list for quite some time with only a few responses.
-
-Please let me know if something is needed from my side (like rebasing or wanted changes).
-
-Cheers
-Christian
-
-
-On 17.06.24 6:03 PM, Christian Schrefl wrote:
-> This commit allows building ARMv7 kernels with Rust support.
-> 
-> The rust core library expects some __eabi_... functions
-> that are not implemented in the kernel.
-> Those functions are some float operations and __aeabi_uldivmod.
-> For now those are implemented with define_panicking_intrinsics!.
-> 
-> This is based on the code by Sven Van Asbroeck from the original
-> rust branch and inspired by the AArch64 version by Jamie Cunliffe.
-> 
-> I have tested the rust samples and a custom simple MMIO module
-> on hardware (De1SoC FPGA + Arm A9 CPU).
-> 
-> This only includes support for ARMv7, but supporting other
-> sub-architectures in the future should be as simple as setting 
-> the correct rustc target.
-> 
-> Signed-off-by: Christian Schrefl <chrisi.schrefl@gmail.com>
-> ---
-> Changes since V1 [1]:
-> - Removed unrelated whitespace change.
-> - Added target name to panic message in scripts/generate_rust_target.rs.
-> - Fixed the comment in rust/bindgen_parameters.
-> 
-> 
-> [1]: https://lore.kernel.org/rust-for-linux/4e0f5932-c7bc-4878-862c-1186cbecd71d@gmail.com 
-> --
->  Documentation/rust/arch-support.rst |  1 +
->  arch/arm/Kconfig                    |  1 +
->  arch/arm/Makefile                   |  1 +
->  rust/Makefile                       |  8 ++++++++
->  rust/bindgen_parameters             |  4 ++++
->  rust/compiler_builtins.rs           | 24 ++++++++++++++++++++++++
->  scripts/generate_rust_target.rs     |  4 +++-
->  7 files changed, 42 insertions(+), 1 deletion(-)
-> 
-> diff --git a/Documentation/rust/arch-support.rst b/Documentation/rust/arch-support.rst
-> index b13e19d84744..4bf5205f526d 100644
-> --- a/Documentation/rust/arch-support.rst
-> +++ b/Documentation/rust/arch-support.rst
-> @@ -15,6 +15,7 @@ support corresponds to ``S`` values in the ``MAINTAINERS`` file.
->  =============  ================  ==============================================
->  Architecture   Level of support  Constraints
->  =============  ================  ==============================================
-> +``arm``        Maintained        ARMv7 Little Endian only.
->  ``arm64``      Maintained        Little Endian only.
->  ``loongarch``  Maintained        \-
->  ``riscv``      Maintained        ``riscv64`` only.
-> diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-> index ee5115252aac..f07149fe078b 100644
-> --- a/arch/arm/Kconfig
-> +++ b/arch/arm/Kconfig
-> @@ -126,6 +126,7 @@ config ARM
->  	select MMU_GATHER_RCU_TABLE_FREE if SMP && ARM_LPAE
->  	select HAVE_REGS_AND_STACK_ACCESS_API
->  	select HAVE_RSEQ
-> +	select HAVE_RUST if CPU_LITTLE_ENDIAN && CPU_32v7
->  	select HAVE_STACKPROTECTOR
->  	select HAVE_SYSCALL_TRACEPOINTS
->  	select HAVE_UID16
-> diff --git a/arch/arm/Makefile b/arch/arm/Makefile
-> index 71afdd98ddf2..9cc10e32e8be 100644
-> --- a/arch/arm/Makefile
-> +++ b/arch/arm/Makefile
-> @@ -150,6 +150,7 @@ endif
->  KBUILD_CPPFLAGS	+=$(cpp-y)
->  KBUILD_CFLAGS	+=$(CFLAGS_ABI) $(CFLAGS_ISA) $(arch-y) $(tune-y) $(call cc-option,-mshort-load-bytes,$(call cc-option,-malignment-traps,)) -msoft-float -Uarm
->  KBUILD_AFLAGS	+=$(CFLAGS_ABI) $(AFLAGS_ISA) -Wa,$(arch-y) $(tune-y) -include asm/unified.h -msoft-float
-> +KBUILD_RUSTFLAGS += --target=arm-unknown-linux-gnueabi
->  
->  CHECKFLAGS	+= -D__arm__
->  
-> diff --git a/rust/Makefile b/rust/Makefile
-> index f70d5e244fee..8214a6f378e3 100644
-> --- a/rust/Makefile
-> +++ b/rust/Makefile
-> @@ -287,6 +287,7 @@ bindgen_skip_c_flags := -mno-fp-ret-in-387 -mpreferred-stack-boundary=% \
->  # Derived from `scripts/Makefile.clang`.
->  BINDGEN_TARGET_x86	:= x86_64-linux-gnu
->  BINDGEN_TARGET_arm64	:= aarch64-linux-gnu
-> +BINDGEN_TARGET_arm	:= arm-linux-gnueabi
->  BINDGEN_TARGET		:= $(BINDGEN_TARGET_$(SRCARCH))
->  
->  # All warnings are inhibited since GCC builds are very experimental,
-> @@ -413,6 +414,13 @@ redirect-intrinsics = \
->  	__muloti4 __multi3 \
->  	__udivmodti4 __udivti3 __umodti3
->  
-> +ifdef CONFIG_ARM
-> +	# Add eabi initrinsics for ARM 32-bit
-> +	redirect-intrinsics += \
-> +		__aeabi_fadd __aeabi_fmul __aeabi_fcmpeq __aeabi_fcmple __aeabi_fcmplt __aeabi_fcmpun \
-> +		__aeabi_dadd __aeabi_dmul __aeabi_dcmple __aeabi_dcmplt __aeabi_dcmpun \
-> +		__aeabi_uldivmod
-> +endif
->  ifneq ($(or $(CONFIG_ARM64),$(and $(CONFIG_RISCV),$(CONFIG_64BIT))),)
->  	# These intrinsics are defined for ARM64 and RISCV64
->  	redirect-intrinsics += \
-> diff --git a/rust/bindgen_parameters b/rust/bindgen_parameters
-> index a721d466bee4..83f28ae4bb2b 100644
-> --- a/rust/bindgen_parameters
-> +++ b/rust/bindgen_parameters
-> @@ -24,3 +24,7 @@
->  # These functions use the `__preserve_most` calling convention, which neither bindgen
->  # nor Rust currently understand, and which Clang currently declares to be unstable.
->  --blocklist-function __list_.*_report
-> +
-> +# Depending on how the architecture defines `ARCH_SLAB_MINALIGN`, `bindgen` might generate a binding.
-> +# Disable this here as there is a `const` item that will always be generated in `bindings_helper.h`
-> +--blocklist-item ARCH_SLAB_MINALIGN
-> diff --git a/rust/compiler_builtins.rs b/rust/compiler_builtins.rs
-> index bba2922c6ef7..c37142b16a45 100644
-> --- a/rust/compiler_builtins.rs
-> +++ b/rust/compiler_builtins.rs
-> @@ -70,5 +70,29 @@ pub extern "C" fn $ident() {
->      __umodti3,
->  });
->  
-> +#[cfg(target_arch = "arm")]
-> +define_panicking_intrinsics!("`f32` should not be used", {
-> +    __aeabi_fadd,
-> +    __aeabi_fmul,
-> +    __aeabi_fcmpeq,
-> +    __aeabi_fcmple,
-> +    __aeabi_fcmplt,
-> +    __aeabi_fcmpun,
-> +});
-> +
-> +#[cfg(target_arch = "arm")]
-> +define_panicking_intrinsics!("`f64` should not be used", {
-> +    __aeabi_dadd,
-> +    __aeabi_dmul,
-> +    __aeabi_dcmple,
-> +    __aeabi_dcmplt,
-> +    __aeabi_dcmpun,
-> +});
-> +
-> +#[cfg(target_arch = "arm")]
-> +define_panicking_intrinsics!("`u64` division/modulo should not be used", {
-> +    __aeabi_uldivmod,
-> +});
-> +
->  // NOTE: if you are adding a new intrinsic here, you should also add it to
->  // `redirect-intrinsics` in `rust/Makefile`.
-> diff --git a/scripts/generate_rust_target.rs b/scripts/generate_rust_target.rs
-> index 641b713a033a..c3a6058fdf30 100644
-> --- a/scripts/generate_rust_target.rs
-> +++ b/scripts/generate_rust_target.rs
-> @@ -148,7 +148,9 @@ fn main() {
->      let mut ts = TargetSpec::new();
->  
->      // `llvm-target`s are taken from `scripts/Makefile.clang`.
-> -    if cfg.has("ARM64") {
-> +    if cfg.has("ARM") {
-> +        panic!("arm uses the builtin rustc arm-unknown-linux-gnueabi target");
-> +    } else if cfg.has("ARM64") {
->          panic!("arm64 uses the builtin rustc aarch64-unknown-none target");
->      } else if cfg.has("RISCV") {
->          if cfg.has("64BIT") {
-> 
-> base-commit: 1613e604df0cd359cf2a7fbd9be7a0bcfacfabd0
+Alice
