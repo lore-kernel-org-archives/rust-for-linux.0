@@ -1,87 +1,137 @@
-Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
+Received: from mail-yb1-f201.google.com (mail-yb1-f201.google.com [209.85.219.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B102148304;
-	Mon, 29 Jul 2024 12:47:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52BD714A4F5
+	for <rust-for-linux@vger.kernel.org>; Mon, 29 Jul 2024 14:22:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722257246; cv=none; b=jt2YCJ5ZvQ17aidNLIHiRqc1r9HK0T7AF8mE11TLQY2T0SL7P3oAZ1jMpTJUeXODUqm6Y5Honh2fjVIler93v15/mUHD4jnqqpr3gVFb3B01+WRZKzgP+sdUFf501dBdpNglm48ewmVX6L64Capzs/u0SFD4joigFO+ej5NTDcU=
+	t=1722262977; cv=none; b=WV2Hk3/lTSuS8/GwJ5s1eCKZPLrpRFRf/bdDLJRscfuh+AmrDC/AyS53k/bKVaAATdpT9dIBqE1zgvI3pxU6iw78Ni4iI2YIvpNd1xP+yXEcbzAUTodrrkRuv95Bu0LNLVEB3AXeOWV/SFDgnUEw2gCeUFvIa++mAsuR6q3i0Hk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722257246; c=relaxed/simple;
-	bh=xybrMFv0tLvK9ZzP0ZErhnNVRB+K6vPelKBUKtae6+Q=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nuyanB79jf0mJwqyVP2BGJhF8BJNqNEAmy7e6hyikQBdnoZ6Gxr7Kv4Y6wOMlwkMGe21v0vr9kJ4/4bWGNy/mE89Qj7AxeFrpaFdHLJh5xVbCSwVE9zIZQv+5Wa9x+Z+fJT/d1eBRJ1DHFwuk4MmD0tXScXa6Fe+xqfpGxG7QI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=e9KPuP6U; arc=none smtp.client-ip=209.85.210.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1722262977; c=relaxed/simple;
+	bh=2yHObFkJeb9NEav9vRlfQtesacysurvHNX3D+BY5baw=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=fQ21F3b/2HV6oH1cLLSNFuIaJoFhK3ApwpVYbYtWiECFZW9gz8Ay5uv3tvJrKg0VFfaxcidF+aDoaSsJvo3mz9gnSEOeTDhwnKNNc4NbGSZDW7UMcnfr2G4GOTVCIUR7gBuLjYcghFNkxVlb7CZuct8+wssbhUK+W4y+H8Ybgs0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cXNIqzwI; arc=none smtp.client-ip=209.85.219.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="e9KPuP6U"
-Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-70eb0ae23e4so2107243b3a.0;
-        Mon, 29 Jul 2024 05:47:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cXNIqzwI"
+Received: by mail-yb1-f201.google.com with SMTP id 3f1490d57ef6-e02a4de4f4eso4467358276.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 29 Jul 2024 07:22:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1722257245; x=1722862045; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xybrMFv0tLvK9ZzP0ZErhnNVRB+K6vPelKBUKtae6+Q=;
-        b=e9KPuP6UK97o/mvniq0J18Dkb329OQCzQEBQoyrhuc/jkBhX7vRFottfKHk1KTJKVU
-         ARVm+xSlJ37ueIsHza3x+uSu79fugA6+cnlqwsJV8h9IeGdaDe+cxFV7XwWjBdjF8ZAY
-         AUFUfdqlJnDEgjnD8Ee9Kychtit+FM7YrjyRh+GRMnqKi3v4H70IOfdz+alLOAzlwy9E
-         yyakVOfO/WlquySuUuYzxAoI+8uxe1bdgpyxCOrHK1w1bA0iKAGQppXoKAmzh7Fv9T5W
-         LCOIV3XRzL3ANyLrGY+Fucff8bJ4Ty8r6Ncjx2zKiSsIXLJfDv06Xff8+qrUtaVSmNMY
-         5nww==
+        d=google.com; s=20230601; t=1722262975; x=1722867775; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=9DpUuNFRf2+mlmUFGNhBkhPfCr6X6cUQBVac6+mnEhY=;
+        b=cXNIqzwIiwENKxHXS7CcAIwZp8Nm+rSA50HMYtg1GCSzx2YO/GkGWgXwcT69OFxUXF
+         4JT3aSXrOniV/puAyHAOsLXxA+QLP4d3TubUpGNbRrns2QoTOa/P5HmItJwOl9V9EpBc
+         U4/s8P79zZkf+rB4G5xFgN+j+XZjBmsQuqsrCDFijBqoKAp1Ih+gAd3rruQ08P26j0lH
+         nNAq1apOXKykUfwS3B2NajpJSQA6ttKtqGiaiKELhxTH9zVxCOYeFib2UBtzYdGMFuLY
+         RVCkOByACQ58dTMo9kngi3/RLu8j7Y3Tqu0FlZiFXZimPt/leDGk87WMFuugIUQ5PvZ7
+         e7DA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722257245; x=1722862045;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=xybrMFv0tLvK9ZzP0ZErhnNVRB+K6vPelKBUKtae6+Q=;
-        b=ZyZYtP5NedgdCdc/3jNigUHBop0Se15JmWRud3vASyuv41ML6uQw/5njs+6haP6Wg3
-         YzINJK8dS1RZYjMeuXT3ybbQiA2b2R+NLUV95kyb53kypWwrN3G7b9CHoiTtSHMLDoBw
-         vfyYD915qK+c3peV0uuK2pKLvxKCwg4pRnxgHI8bSBrGTzsQnXWIQHioNzM4demS6wFl
-         g24lMzwoz7b1DMCDjYL1kIjUTA0A6JaWcdYMsZGtgehGSZ8aNBx2TcgkztAG719bDRYX
-         h2ur7P+nBnrtNX1JDEynROk9UHDhHMYPZ0g0FPIr0okaiFMlftBqPgdHMKIHuf/TK4/c
-         FfdQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWNP8Ax+oBDDoB/5f5Y7sejfM4qMZcV42pePzfXp11ez3Ay+0eovtta1F9aRkFiJqp1lRSe8d+XZjZ4lHAxn4pLZHRkv40LnAO0TSTIpVWn8nT5idAFKk0VtckyrrhOs3VjgyXqdu8O6aD5FUw=
-X-Gm-Message-State: AOJu0Yx6R9m4ufUWEdgYg0bVpYYvOPvmIX1o9dxL1Y2J1o6MuILDg7Rh
-	lXpRX9ugmUXrsTHuCBVqjo/AiBdsYE1MAHwNgfKO8nLqjzyfNzfllgKcKWK1jNoKlvg+Bcvx85N
-	EOIP6TMUQRbQrXxLVB9u4CgW+IDI=
-X-Google-Smtp-Source: AGHT+IEnmV87/lZZE/9HhfyMADvh6qBGRtFi0cyC1KcMUMEI73XyuibiYqA3Ia9nZODzBMO7wFPNvBfiyCXyd9IAf1Q=
-X-Received: by 2002:a05:6a21:788e:b0:1c4:23f1:114 with SMTP id
- adf61e73a8af0-1c4a12aeaf0mr6026445637.20.1722257244884; Mon, 29 Jul 2024
- 05:47:24 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1722262975; x=1722867775;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=9DpUuNFRf2+mlmUFGNhBkhPfCr6X6cUQBVac6+mnEhY=;
+        b=ZGaChGLXlxQkvlXPeFH75LTz0ZZ9B9+GPxnmFrgKjlNu+Laj0hWflT+yVfIlGBM82J
+         pq0R9QtHDHoIXgSk2jtrNMc7QQI+ghxbJ+b41Ewlo3WGKAGaFx5CGaBKFezQEzBGMds3
+         L/7toShmj2LRFtv5Va+IkzRlIAZqKt0+VNUyUBHxPYAqQ8Yae+3LXf9oLTT6YLmZjo8+
+         S0hKpKkNYk/ZR4g5LXUtu+of9TLvFOweR9KwvlXRuocSTdLfZgSOwPl8N6nNfZ6lWLG6
+         2v0zxh9gII4xxqpybs1jm/7Nl56Y27Exe4s1xJpKQaBKYUTnlznR5IhtDXG/NsXsteF8
+         8S3A==
+X-Forwarded-Encrypted: i=1; AJvYcCWlZcuS5N2rQOmbwllrhxHpcQo/+2TMu0/wjF2zdoYyoceH00sMDMnXCYQi8iuxckHaw+4hAJhlLvutPu7ks3O3p+mzfQwMKtoeoxE3hj8=
+X-Gm-Message-State: AOJu0YyQy919em565ZhbNUqQVOAaZ4G8HXtseDkUcE0P1MHVBTnoHe5v
+	P34OS0SNybll7hEUzD2hJNr3i+R4+kcT+AazhtL6v2vT3Es7E9FebQYzniQYe6Ib4WUa+6ZeasW
+	3AtDC+KYivncyMA==
+X-Google-Smtp-Source: AGHT+IHfm2z3cnxf5rBSU2H+Uri2dnZaiTSIEU2LtrOMYhl6ATkrl7+v9uMdvMFxQmpUJEdl57Dg5BT1CgybIUk=
+X-Received: from aliceryhl2.c.googlers.com ([fda3:e722:ac3:cc00:68:949d:c0a8:572])
+ (user=aliceryhl job=sendgmr) by 2002:a05:6902:c04:b0:e0b:6a6a:e82 with SMTP
+ id 3f1490d57ef6-e0b6a6a11c0mr10938276.2.1722262975188; Mon, 29 Jul 2024
+ 07:22:55 -0700 (PDT)
+Date: Mon, 29 Jul 2024 14:22:48 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240725184644.135185-1-ojeda@kernel.org> <CALNs47sFD_GqhXNa7v+eC=O96A+SpPm4QtZ3=GbSxZ4zkTm3Zg@mail.gmail.com>
-In-Reply-To: <CALNs47sFD_GqhXNa7v+eC=O96A+SpPm4QtZ3=GbSxZ4zkTm3Zg@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 29 Jul 2024 14:47:11 +0200
-Message-ID: <CANiq72k1H_LzugFju23UdNEzcYHV5xaqVSL2Xan__Jiyvi-_Mg@mail.gmail.com>
-Subject: Re: [PATCH] rust: macros: indent list item in `module!`'s docs
-To: Trevor Gross <tmgross@umich.edu>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIALilp2YC/33OzQ6CMAzA8VchO1uzLyB48j2Mh7IVWERmGEEN4
+ d0dXNRIPP6b9NdOLFDvKLBDMrGeRhec72LoXcJMg11N4GxsJrnUXHENoUHr72CwbSEMaC5QGFH
+ kqFUmbMHi3q2nyj1W83SO3bgw+P65nhjFMv2njQIEVDxNCSvNUZpj7X3d0t74K1u4UX4S6RYhI 2HyUqOqtM1E9kOoN5Fvf6GAgxXC5JhRSYp/EfM8vwB4HGVLOQEAAA==
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1592; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=2yHObFkJeb9NEav9vRlfQtesacysurvHNX3D+BY5baw=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBmp6W6s4LF7RmNmh8S6tgM6zU7PrBFJ6NKJRNNB
+ raevcnq3BOJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZqelugAKCRAEWL7uWMY5
+ RjNyEACHO3fz7GpCUYlcQp0AFizoXymbKkd/k8ZmfkQ9lYve29IWgplrTHgvWCO6fCSpdZrVqwp
+ Syiw68Lpk0GYHZj8ijTXdmuC74aKI5mi7dBu5IaKNBN6psmHOJZ3VQMyAng2W1bbEFPc7iWB6Lo
+ 1l7ZjqkyR9zCLRFMufytLMz1+7W5DF5bgpfAhvCa5q1SoKYwnlPFPulGOyazvriUkX5x6V833Pw
+ VHRRBvhhBv+5eCh88pjV7mJqr6DOgMrFNKOjPyQtVc7PytmICMg8vrCNfR+d+tjB11BAYMLNTn+
+ qdyCGg/I6AY8SdAcWKLN8xJ7euXxOWpVNKYsNoltAphFMIEAaSuk4Da2UziFzocsFif/ZeXeewo
+ vqTCNFtYgW+rTA1H+KN1DkdpdHE4J10fVEZAEfbjb2/SCpgJPHQJLvd8v+N+dSpLEVMwvuaovtg
+ wOqvu6ab9W/wESJpscxJ1GtwP92wPUmp3w8obGUFonivqTdu8vvrI+HN+7/0jtYpgb1RvTZ1faE
+ RSGq84BdUekyGVwbNVawI3mVA+gQxc9aevQ+Oy2bFs3StiR6HCAdSXbEmEk1c31oXKlxUNW5+RC
+ 3OW3JgXuFHzzwBfrZ4EuXtZ2hZ4QiQ1qZ/cw+nFwMQBOi0iYgM2xIZf30Wg4piY08GOYDyvh5Ku zIl6rzmu8xMs5rA==
+X-Mailer: b4 0.13-dev-26615
+Message-ID: <20240729-shadow-call-stack-v4-0-2a664b082ea4@google.com>
+Subject: [PATCH v4 0/2] Rust and the shadow call stack sanitizer
+From: Alice Ryhl <aliceryhl@google.com>
+To: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Jamie Cunliffe <Jamie.Cunliffe@arm.com>, Sami Tolvanen <samitolvanen@google.com>, 
+	Nathan Chancellor <nathan@kernel.org>, Conor Dooley <conor@kernel.org>
+Cc: Masahiro Yamada <masahiroy@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, 
+	Ard Biesheuvel <ardb@kernel.org>, Marc Zyngier <maz@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
+	Mark Brown <broonie@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, Valentin Obst <kernel@valentinobst.de>, 
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, rust-for-linux@vger.kernel.org, 
+	Alice Ryhl <aliceryhl@google.com>, Kees Cook <kees@kernel.org>, stable@vger.kernel.org
+Content-Type: text/plain; charset="utf-8"
 
-On Fri, Jul 26, 2024 at 1:06=E2=80=AFPM Trevor Gross <tmgross@umich.edu> wr=
-ote:
->
-> Not much needing review here, but
->
-> Reviewed-by: Trevor Gross <tmgross@umich.edu>
+This patch series makes it possible to use Rust together with the shadow
+call stack sanitizer. The first patch is intended to be backported to
+ensure that people don't try to use SCS with Rust on older kernel
+versions. The second patch makes it possible to use Rust with the shadow
+call stack sanitizer.
 
-Thanks Trevor :)
+The second patch in this series depends on the next version of [1],
+which Miguel will send soon.
 
-Applied to `rust-fixes`.
+Link: https://lore.kernel.org/rust-for-linux/20240709160615.998336-12-ojeda@kernel.org/ [1]
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+Changes in v4:
+- Move `depends on` to CONFIG_RUST.
+- Rewrite commit messages to include more context.
+- Link to v3: https://lore.kernel.org/r/20240704-shadow-call-stack-v3-0-d11c7a6ebe30@google.com
 
-Cheers,
-Miguel
+Changes in v3:
+- Use -Zfixed-x18.
+- Add logic to reject unsupported rustc versions.
+- Also include a fix to be backported.
+- Link to v2: https://lore.kernel.org/rust-for-linux/20240305-shadow-call-stack-v2-1-c7b4a3f4d616@google.com/
+
+Changes in v2:
+- Add -Cforce-unwind-tables flag.
+- Link to v1: https://lore.kernel.org/rust-for-linux/20240304-shadow-call-stack-v1-1-f055eaf40a2c@google.com/
+
+---
+Alice Ryhl (2):
+      rust: SHADOW_CALL_STACK is incompatible with Rust
+      rust: support for shadow call stack sanitizer
+
+ Makefile            | 1 +
+ arch/arm64/Makefile | 3 +++
+ init/Kconfig        | 1 +
+ 3 files changed, 5 insertions(+)
+---
+base-commit: 9cde54ad2f7ac3cf84f65df605570c5a00afc82f
+change-id: 20240304-shadow-call-stack-9c197a4361d9
+
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
+
