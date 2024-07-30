@@ -1,101 +1,104 @@
-Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08D431A76C5;
-	Tue, 30 Jul 2024 18:02:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33CE017D8BB
+	for <rust-for-linux@vger.kernel.org>; Tue, 30 Jul 2024 18:06:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722362525; cv=none; b=QacLl/iW6MJ4DIMc+GkvVghjUENnmZQ+JBRN/lnH6rZ1jOLGigdZDLxgBZOr6f/0b4OyZFZiMGFwvmfv3R187K8/1GH53qVPDaMkDC1bVDhJbIAWUN5VWnLWx6CS/4gQhhDQ+pM9Jnh54nmBD/Qtg1EsuB7ahSM2yeDUpLwtOxo=
+	t=1722362790; cv=none; b=uuq+Z5CDYQl9oNtxqTTMdN8V8btawEjA/YzghJuj8ly6UlurvIIYm4oU+FBtGSU4HpzCynaVilajxwHFJHpGQQYKyLIfQUsnxWIzbC34csSK4BAhfgXY/qzVwOkgHjpaLZglXxwA5r+5ZuP2ZOSeIs8hSftm0fmzPxtrYg0fKTQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722362525; c=relaxed/simple;
-	bh=ULp7y4GWoskop3RWki2ayWDlyJ5T6BTGYFMwxFFrnWQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Dr+3/FMHY2912Zl1lC0JjTa2VbY2zaiR5POOODrMOdXlV3QP73D5Vswm6tg/8tzAwcnb+dLcFV4ULoA5dyTnz62dKqv9B4VPLFcZ26qKPf3piOEvC208lvDpAR66bStRun6hd/0P+LQL4iOxhHg5/9VRF7oGZ8FsIkTEUeIIKCc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=XeiZJ+8S; arc=none smtp.client-ip=209.85.210.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1722362790; c=relaxed/simple;
+	bh=IfON4uBqEKOf2xcMASP8BDONDtL4WQ0cJawE3iEfHRI=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=p6Qesk+2W0dRoy7coeFz6fz1MMXLY0TeBkDB8SE4MouDqCPb5nNppqEuXSBcEMhjzWuBSXfRKH2Xht7t+ywPYuFt0Y0V93oqhwXP4Y8vCAQxK0zpD56lY33c6O7+IqWcYqQ8Dn6mq+b07hLq+7gQtGGIBtgzZ7HF8XuTS06GLJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=mlCg+bct; arc=none smtp.client-ip=185.70.40.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="XeiZJ+8S"
-Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-70d162eef54so3282832b3a.3;
-        Tue, 30 Jul 2024 11:02:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1722362523; x=1722967323; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ULp7y4GWoskop3RWki2ayWDlyJ5T6BTGYFMwxFFrnWQ=;
-        b=XeiZJ+8SlG1AG/Q5oStYMIfjwu1QJ2YVGJ8OckuvA2GfKBKuDXVPgtnHP/bAQvluRr
-         P5RYil/azMg06LGGVr2RfdLeklMD1wBWbRnnhakuOpwSN9c/xWOIuphHEO5IcDBjFTq8
-         NcAbGdfV1icWrSvussb38sEiafvJvqg/s2JithsjpAcZ3tYN4Rojqg4k/+a6uVoAu9la
-         tIZeWKmhALuveRB3V+WDC2YW4DaYmGNVm9qEbUqe/q7odq/tFC8x3Q8QSepgJZXAM7fj
-         RgN/0oc6vMYl9jhk7swgj4aH9gHTrfiNJODjYgYh//TlkMhIVj3iPpfPBjseBNp6gQ6G
-         2SRw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722362523; x=1722967323;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ULp7y4GWoskop3RWki2ayWDlyJ5T6BTGYFMwxFFrnWQ=;
-        b=IOcHnbKL220/xQU0Iw0HLrre0HMk+ymk28vcd8Uludnlo25jYyEmkVKko81eZOhoFa
-         Asb2eOvlKGTc6ASObJj7SPbFb8t1uTfxX7C3h5Qa5sZQyhaYrCi2NusEjkm50dp6uchC
-         8HNQyyXozB0b6dRgxHwma9ldtp0QwvJOTzC4iy4J8IANCZeZwykdixF9e47g41yS4DWE
-         UsySOyis3AW5oC0N2xBr1J1t5uPrWStbLBZhQqrT6cL/DlWAdmir+h18pGq0mTDJ1ro5
-         6NPoe7Limaylwg6Re+y/5uiCbVdr+fyJ4TjN2xCs1i1gUABZahwYzF56TFMZuoxq0ohr
-         31fw==
-X-Forwarded-Encrypted: i=1; AJvYcCVG9SQdyp6VgTrlZEJZITGfnnl1y9UIa0hweyuYeXjHwtarS45fx6yRAs1JfnctEem/1VlLXo/qrm1x9HBtSrbLztWfwxDtj+6BSuFEXqSd0Td5mprvV/XDaemWWT99lgpafk+1Fwe4hNParRfiZzUnfXY+EjAxG+6jJgUJODlNUvjGBAnUdXjTtJ8=
-X-Gm-Message-State: AOJu0Ywk60wU4emS5Rnmzf0ZfdtO2BU6wOZa6AkxDSWI548rSlZS/FiM
-	sj9ynn/erPKbth+KBmAxgZdOfTz38xXwQae9/ZspBoAoEdXpxC/thVMqhSNH+MDwnKKvPi65/gE
-	3Zby+ulr8tu34ZURXsdGx1hI+E7s=
-X-Google-Smtp-Source: AGHT+IGDmVQt1Fus+cwmFaBdY9cpZKWwvwP87LzYj5bAA7EM66N/DKsi03ldCaXroC2ZDlnb13RI5XFd+X0BKqVdNv0=
-X-Received: by 2002:a05:6a20:734c:b0:1c4:a30a:c819 with SMTP id
- adf61e73a8af0-1c4a30acbdbmr9477886637.21.1722362523262; Tue, 30 Jul 2024
- 11:02:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="mlCg+bct"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1722362786; x=1722621986;
+	bh=mP8pPR7V7GOEbvgnQ3Hkpe5+bVYgYFu8/oCcIpUDYGY=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=mlCg+bctF5dxmG58f3kM8tbwGVBPxm9/xZlgY1XUEkCPSvWCKa6gjZLRI0b9MgHhx
+	 dsBEMt7RtV1zCo+ks8HO/eQRN+YEct4mRYtxAgKsMMRfBCI11OJmtNYYnlyhZNm0Gh
+	 ZTJuXEgFzojCNJk7rxTEXpCppQV/zyouyo6NZEsi7/bHrZDkiZT3ZWBhqSwdTdhDHB
+	 mFyVBw/kP0Cud63CH4kE8ZS0MCXb3wbVmGO7km0kvGEjoXpXDV+nxn/YpXPtqcHlj2
+	 JBp2FfuvS8GTjQ47+gNU1h70yWIs8PnAHp7c26kpxwaoHZoGNMK6ijMBxGC2sb0xN3
+	 ktVuyabmio5eg==
+Date: Tue, 30 Jul 2024 18:06:20 +0000
+To: Alice Ryhl <aliceryhl@google.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: implement ForeignOwnable for Pin<Box<T>>
+Message-ID: <6cfa426b-4ffe-41bc-9de5-ba7c7c70d610@proton.me>
+In-Reply-To: <CAH5fLghN8L4cJsRuH-eqU4E5GaTJRUhw0cAStjHAj1RNJA-vhg@mail.gmail.com>
+References: <20240730-foreign-ownable-pin-box-v1-1-b1d70cdae541@google.com> <5c49f604-34c1-414f-bf9a-92837c6e07b3@proton.me> <CAH5fLghN8L4cJsRuH-eqU4E5GaTJRUhw0cAStjHAj1RNJA-vhg@mail.gmail.com>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: 65c413bde632019c722f6d70d12b0831868560f6
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240730-kcfi-v1-0-bbb948752a30@google.com> <20240730-kcfi-v1-1-bbb948752a30@google.com>
- <CANiq72nxq0gnCXbQfFiZ4jErLptR8juyNzv1mKL_MEyWyDQdWA@mail.gmail.com> <CAH5fLgi6OPLGNztKeM7pD3v7_NG6SrPrhXi8H0tFn6Rx-eVgcw@mail.gmail.com>
-In-Reply-To: <CAH5fLgi6OPLGNztKeM7pD3v7_NG6SrPrhXi8H0tFn6Rx-eVgcw@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 30 Jul 2024 20:01:51 +0200
-Message-ID: <CANiq72mJF5PYU-BCShpgH-jMVetJG2PjDypexPCKnqrxHToKJw@mail.gmail.com>
-Subject: Re: [PATCH 1/2] cfi: add CONFIG_CFI_ICALL_NORMALIZE_INTEGERS
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
-	Nicolas Schier <nicolas@fjasle.eu>, Sami Tolvanen <samitolvanen@google.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, Kees Cook <kees@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Matthew Maurer <mmaurer@google.com>, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jul 30, 2024 at 6:10=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
-rote:
->
-> I'm adding this flag to make the bringup process for RUST easier.
->
-> I'm working on enabling RUST in a new branch. We're eventually going
-> to have both RUST and CFI_ICALL_NORMALIZE_INTEGERS enabled in our
-> build, but the path to getting there is complex and we would like to
-> turn on CFI_ICALL_NORMALIZE_INTEGERS first, and then turn on RUST
-> later. Both options are non-trivial to turn on and I want to
-> disentangle them.
+On 30.07.24 19:50, Alice Ryhl wrote:
+> On Tue, Jul 30, 2024 at 7:14=E2=80=AFPM Benno Lossin <benno.lossin@proton=
+.me> wrote:
+>>
+>> On 30.07.24 15:06, Alice Ryhl wrote:
+>>> @@ -89,6 +90,32 @@ unsafe fn from_foreign(ptr: *const core::ffi::c_void=
+) -> Self {
+>>>      }
+>>>  }
+>>>
+>>> +impl<T: 'static> ForeignOwnable for Pin<Box<T>> {
+>>> +    type Borrowed<'a> =3D Pin<&'a T>;
+>>> +
+>>> +    fn into_foreign(self) -> *const core::ffi::c_void {
+>>> +        // SAFETY: We are still treating the box as pinned.
+>>
+>> I don't think that we have the guarantee that the pointee at the pointer
+>> that is returned by `into_foreign` is not moved.
+>=20
+> That doesn't seem like the kind of thing we need a guarantee for.
+> Rather, unless we give anyone a guarantee that dereferencing it is
+> okay, it seems reasonable to assume that it won't be dereferenced.
+> Right now, it's just an opaque pointer, so C really shouldn't be
+> touching it. We already implement the trait for Arc which is also
+> pinned and also doesn't even point at a value of type T.
 
-Would it be useful for other users/distros to do that two-stage
-approach as well?
+Hmm, I don't have any rational concerns with this, but it doesn't _feel_
+right...
 
-In other words, if the intended end state is that everybody should
-enable this if Rust is enabled, and nobody should enable it if they
-don't care about Rust, then we should add this only if you think
-others will also need to do this step by step. The option or commit
-message could ideally explain more about this need/use case.
+When I replace the return type by `OpaquePtr(*const core::ffi::c_void)`
+that is `repr(transparent)` I don't feel like this is a problem any
+more.
+So I guess your argument is fine.
 
+I think it shouldn't hurt to add this to the docs, will send a patch for
+that. Anyways,
+
+Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+
+>> AFAIU `ForeignOwnable` is used to store these pointers in C structures
+>> and never to actually access the value behind the returned pointer. So
+>> we could add the requirement to `into_foreign` (thus making it `unsafe`)
+>> that the pointer should not be dereferenced/used aside from `borrow` and
+>> `from_foreign`. Otherwise I don't see how the call below can be OK.
+>> What do you think?
+>=20
+> Dereferencing the void pointer is unsafe in itself, so I don't see why
+> `into_foreign` has to be unsafe too.
+
+Oh yes, you are right.
+
+---
 Cheers,
-Miguel
+Benno
+
