@@ -1,99 +1,129 @@
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF1B438B;
-	Tue, 30 Jul 2024 22:33:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 947DF168489
+	for <rust-for-linux@vger.kernel.org>; Tue, 30 Jul 2024 22:44:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722378785; cv=none; b=GF3BZQcR4bS02jLkR/zuEiCShg93gNnBxaYC61A4uW/vPvscKWNqcBomOQnypP6Y2POJt008vli7B6/+y/h6+ZJsQYzL4DO+AjUHyQaVgMGmrCAi6i9Q9Af4Fg4wmqXMA16BNbxiDAdIseKSjRvWfxArKV/oTG/4tDmXjuH9B6I=
+	t=1722379445; cv=none; b=QfmMW4aotwF7VzzBsj2VAhp7atSDUpd0HXvQFfP5U6OFuoxPKmTR9nNPz3Dm5OFd2hP21PzKifYsrTaN8X9s2b5Krm+LiYIdOCrZuIL+Dj9g8lclHW9MEkwMAhEkArx0RgwYMiVcci2h61oiz2hhthAn3ODqlVUphhKeZcurk3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722378785; c=relaxed/simple;
-	bh=4KyrR7IBFroJVL6n5U1GngfyCCWFp7LmRr5KSEnFCjk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IXqhuB0IBv93OFdd3MbTK6VjcnZy6v4C+Z8XSh+qN8sq3OQpPE7CQCchNUP5BZJyqPb8UE+u469102qgKBgFEuKSLcHZEfheoX+Pq4m+Foj/MqB12FltmXi0rhr/QsyqZXtBo0qw+1TV9MpwS1YBfmI0q1o6bWOZ+n1pR/dtXHI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=k0eobpUe; arc=none smtp.client-ip=209.85.216.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1722379445; c=relaxed/simple;
+	bh=TaOuQjCmRa/f2uxkkHdwn9N7dLnJsN/fT8I8JS34eio=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=M53CMosncU5rLfCo0OBUHZfmOCQHvQ3iAwQ0CEQEqEHviFyNLU8FjKDxrco8RaLrFkbwWb/d8PHqOfyRYUOU46s66Sfvpu4qODrQYGfOPYktxh/XhsUvcybAxx/3BwW3Vr2UWNCAZUu1Wz74Mi7/2HFNuML5rb5FI6Ip4KGHJmE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--mmaurer.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hGqHKUu4; arc=none smtp.client-ip=209.85.128.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--mmaurer.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="k0eobpUe"
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-2cdadce1a57so3341773a91.2;
-        Tue, 30 Jul 2024 15:33:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hGqHKUu4"
+Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-6698f11853aso88250397b3.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 30 Jul 2024 15:44:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1722378783; x=1722983583; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=6/KILlL1Tc4x1X/M530YMHjk8qNUj5A9ozgEiMjiu+s=;
-        b=k0eobpUe2racFdh2iZxouIUbFJuCB9hF9zP59MD8vYQJu8zcy4llkFLXPwW3EiRi4w
-         2K6gFYAY9vOgs3weQNFK3XFp75TCTElCZCv2NiQi83NZyo2qQ0P8c4orS5FVTx5VEOZi
-         sIJNcgav3skoNGJF83R+45Vb0U7KMS9FezURAWy2eOB7L53i3RyMbUu4YByGn1UPm9d0
-         7+mxw6lyJPamoKBb/hBnOCYPGBacR/LUBwfpSZeaxCfToSd/hlUmYU9Icr42c24AYTwd
-         eQTD941Vz4n5APJZJl7ysIkS5/JJCFfL9Bo+vhL2Zp5WQwFBTG5sRmb3qVJzImBv8dnA
-         t56A==
+        d=google.com; s=20230601; t=1722379442; x=1722984242; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=6rLogURdEUgVuohDxoI/z6kah3N3XGw4tvUvw1JX3Aw=;
+        b=hGqHKUu4DhlzNKOt4QElOwBtNHNEEcu8v1WCw/unTr0dnZOsiru52Kwsopo3jMvdMb
+         /5Bk6ggTv4Z3hy60UW92YnFsO8rM3V0rbfzp1H+fwjM+Er4JbpSTqfDUsz542TbKbzYv
+         j7CT+Dd0ahz0Hl1ccpj7PQuQUKpAuVyQN3g7M5Qjz9yJNtXiPWP7hZPIFcPytLhiVh3d
+         AlDMl1YVc+lEzjIM5GZEV9k9IG4nAI6lHpVuUllM4VwzIHDtOiAiO+UnU+tRXrU0mOWW
+         IlRRdDqdqZdgA1RYdwybkwxw1gy3BmEvf61Kjeg6LvXiRxjn4llcbmkpJwroI69kjyOh
+         RcuQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722378783; x=1722983583;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=6/KILlL1Tc4x1X/M530YMHjk8qNUj5A9ozgEiMjiu+s=;
-        b=SD4Vqxk7xsv42SHAIVF16ueSJ5RCin5qPbUcIbdwVER3+EICSo/Uq2XGr3kzLKreNR
-         nO5jFHOtzfSiFg7gBBjcyjn/xZNSSD8PmVMmuvTtIZJGpzVV9tDdWAkuAUb/wDKvjTIf
-         D5a6lcqPeqfRY7pFsH/xLIOjLV2DQ/ZrASexkm+/u6rCis1LEFl9ASK04YBOdt+kyLRg
-         XjdoqD5qqh8sxozxHaslk7QHDWDNh+wHfgmX9qrK8HYy9Cx0i6xeTK1+ahMgcploYoPf
-         PFEZJ7Oop2inLvk9zrGBhEKXb+rGuFgP6kyY13I+6wDPo/H9H2TslKD94de2qpppAR7W
-         lC8w==
-X-Forwarded-Encrypted: i=1; AJvYcCW7s32uND2XGWTr2GROMNdIYu/6Xy2QHT3i6hbWJwwPlzG1u49Ub8FwIHXeCSsfA5ltN98Zi7wSlUe3MPRDXfa5iACP+BXQC4jRpGVHPdmND7hC/3fp3KdCcJnJs5rLN2n5FOUgbbpfq/qD9aA=
-X-Gm-Message-State: AOJu0Yy1JgpY2/w0MUg5PIy/4sS+HHWcXTvuvlfW2F3cHPXKSH3a3QF4
-	gGXoM9Y1qYhEnumA0g2C2MrqLntfcaCz3m+U5Bn/6ZGgt9fLi5NT
-X-Google-Smtp-Source: AGHT+IFdV1/gP8EJPMtyj+owOMo5lX+sPiezN2WkqrqktYYE1JaS/XVJCZLCNnLEnOGFfXinqt1YoQ==
-X-Received: by 2002:a17:90b:b83:b0:2c8:7897:eb46 with SMTP id 98e67ed59e1d1-2cf7e831814mr10242028a91.37.1722378782857;
-        Tue, 30 Jul 2024 15:33:02 -0700 (PDT)
-Received: from Gatlins-MacBook-Pro.local ([131.252.51.123])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2cf28c7b0b3sm11382488a91.15.2024.07.30.15.33.02
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 30 Jul 2024 15:33:02 -0700 (PDT)
-Date: Tue, 30 Jul 2024 15:33:01 -0700
-From: Gatlin Newhouse <gatlin.newhouse@gmail.com>
-To: Gary Guo <gary@garyguo.net>
-Cc: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, =?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Matthew Maurer <mmaurer@google.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: support arrays in target JSON
-Message-ID: <smaafae5mqjcxm65rddnsayhsvwb6kd2joj3mfghskmtzspwzc@d5wg2its6jac>
-References: <20240730-target-json-arrays-v1-1-2b376fd0ecf4@google.com>
- <20240730105646.1aa7ac07@eugeo>
+        d=1e100.net; s=20230601; t=1722379442; x=1722984242;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=6rLogURdEUgVuohDxoI/z6kah3N3XGw4tvUvw1JX3Aw=;
+        b=BBZzJ/co4sKY3H9t6L6WyQ6jpS0l63zDUslHfgZt+L+w1szRQz+l+Kqbc88im516jJ
+         2GkD/noTFcbVom5/7y9pEhuUGPpvhzomQv7LdmHo7xCkDVwu5QLaVb+AtMNxlmu8rc6M
+         kGJR8weitcyD/+MATJ/Wd89tTF720MKMx7k/y+bEX0ez5odDj6+eKzata9d3klahs7PI
+         x67IihZxCSLDEy1EJbpfJ5KrNi+7XP4pFJ9PZN94E0pMQwavRvCxLXYohZus3VwGGoxj
+         Wr08nUn3R9mfSx+zGsC/FV7ZBP31Qn9AcQj+GHNZXj+UUWRckVsunvjecu6ibZooKmTB
+         hJQA==
+X-Gm-Message-State: AOJu0Yz6Hi2m+3rjArz5+OVK4vDAXgHqVIPIozxFFzINZ8GX2RcKHd0w
+	hvHyrA9r2BP09h/+WrL+Q0IrN3POBKsskVsfgXDmXsdMmYaJcsJSQLP3QCs2f1r0+IHarhWNkCE
+	uJH+s5A==
+X-Google-Smtp-Source: AGHT+IGOvkaxnFruP/oROarFKnoqnlXkVf92ieXY1PpWplaN9r3BDmqn6TBprHl1KdZxogiiCKrITwBcRyre
+X-Received: from anyblade.c.googlers.com ([fda3:e722:ac3:cc00:20:ed76:c0a8:1791])
+ (user=mmaurer job=sendgmr) by 2002:a81:b04b:0:b0:65c:4528:d91c with SMTP id
+ 00721157ae682-67a004a28b7mr1818107b3.0.1722379442636; Tue, 30 Jul 2024
+ 15:44:02 -0700 (PDT)
+Date: Tue, 30 Jul 2024 22:43:50 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240730105646.1aa7ac07@eugeo>
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.46.0.rc1.232.g9752f9e123-goog
+Message-ID: <20240730224350.4039790-1-mmaurer@google.com>
+Subject: [PATCH] pahole: Apply CU-level filters early in loading
+From: Matthew Maurer <mmaurer@google.com>
+To: acme@kernel.org
+Cc: rust-for-linux@vger.kernel.org, dwarves@vger.kernel.org, 
+	aliceryhl@google.com, Matthew Maurer <mmaurer@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Tue, Jul 30, 2024 at 10:56:46AM UTC, Gary Guo wrote:
-> On Tue, 30 Jul 2024 09:26:24 +0000
-> Alice Ryhl <aliceryhl@google.com> wrote:
-> 
-> > From: Matthew Maurer <mmaurer@google.com>
-> > 
-> > Some configuration options such as the supported sanitizer list are
-> > arrays. To support using Rust with sanitizers on x86, we must update the
-> > target.json generator to support this case.
-> > 
-> > The Push trait is removed in favor of the From trait because the Push
-> > trait doesn't work well in the nested case where you are not really
-> > pushing values to a TargetSpec.
-> > 
-> > Signed-off-by: Matthew Maurer <mmaurer@google.com>
-> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> 
-> Reviewed-by: Gary Guo <gary@garyguo.net>
+Without this, even with `--lang_exclude=rust` set, running on `vmlinux`
+with `CONFIG_RUST` enabled will lead to errors like:
+die__process_function: tag not supported 0x2f (template_type_parameter)!
+because the filtering doesn't happen until finalization, but unsupported
+tags are reported during loading.
 
-Tested-by: Gatlin Newhouse <gatlin.newhouse@gmail.com>
+As an added bonus, this should speed up processing of large objects with
+filtered CUs, as their details will no longer be walked.
 
-> > ---
-> >  scripts/generate_rust_target.rs | 82 +++++++++++++++++++++------------
-> >  1 file changed, 53 insertions(+), 29 deletions(-)
+Signed-off-by: Matthew Maurer <mmaurer@google.com>
+---
+ dwarf_loader.c | 10 ++++++++++
+ dwarves.h      |  1 +
+ pahole.c       |  1 +
+ 3 files changed, 12 insertions(+)
+
+diff --git a/dwarf_loader.c b/dwarf_loader.c
+index b832c93..c48dfef 100644
+--- a/dwarf_loader.c
++++ b/dwarf_loader.c
+@@ -2854,6 +2854,16 @@ static int die__process(Dwarf_Die *die, struct cu *cu, struct conf_load *conf)
+ 
+ 	cu->language = attr_numeric(die, DW_AT_language);
+ 
++	if (conf->early_cu_filter)
++		cu = (conf->early_cu_filter)(cu);
++
++	/*
++	 * If we filtered this CU out, we still want to keep iterating, but
++	 * there's no need to walk the rest of the CU info.
++	 */
++	if (cu == NULL)
++		return DWARF_CB_OK;
++
+ 	if (dwarf_child(die, &child) == 0) {
+ 		int err = die__process_unit(&child, cu, conf);
+ 		if (err)
+diff --git a/dwarves.h b/dwarves.h
+index f5ae79f..92d102b 100644
+--- a/dwarves.h
++++ b/dwarves.h
+@@ -72,6 +72,7 @@ struct conf_load {
+ 	enum load_steal_kind	(*steal)(struct cu *cu,
+ 					 struct conf_load *conf,
+ 					 void *thr_data);
++	struct cu *		(*early_cu_filter)(struct cu *cu);
+ 	int			(*thread_exit)(struct conf_load *conf, void *thr_data);
+ 	void			*cookie;
+ 	char			*format_path;
+diff --git a/pahole.c b/pahole.c
+index 954498d..937b0a1 100644
+--- a/pahole.c
++++ b/pahole.c
+@@ -3765,6 +3765,7 @@ int main(int argc, char *argv[])
+ 	memset(tab, ' ', sizeof(tab) - 1);
+ 
+ 	conf_load.steal = pahole_stealer;
++	conf_load.early_cu_filter = cu__filter;
+ 	conf_load.thread_exit = pahole_thread_exit;
+ 
+ 	if (conf_load.reproducible_build) {
+-- 
+2.46.0.rc1.232.g9752f9e123-goog
+
