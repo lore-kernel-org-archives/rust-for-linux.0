@@ -1,79 +1,80 @@
 Received: from mail-yb1-f202.google.com (mail-yb1-f202.google.com [209.85.219.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D13E6194C8C
-	for <rust-for-linux@vger.kernel.org>; Tue, 30 Jul 2024 09:40:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACE2C195980
+	for <rust-for-linux@vger.kernel.org>; Tue, 30 Jul 2024 09:40:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722332445; cv=none; b=eesGSi4Qat6DyNFN9Z+7/bgK1Lxykwddv3rRhF8ub6NAi+NYRqEXLbQd7wop6IAI2NxOYmXQAJG/rKFXBwOQ07Bd8BpHcKBhazIbLu3C2Q09T4Bje8hzejT3/CCj30lb7zVXJwI0G4Ofv9AoTxcdTn10V2MxowUzpYWsMx7HSHA=
+	t=1722332448; cv=none; b=C2jRqWYw2s3lt9b9e7VvHNDn+hiDwvclxEAdIJQB0G6WKljXZUWA00+UNudk9Rt9WJJEIM3laP4JiL0JCJDcSKd6ZphX84hQXQCMYJj+cz0e0IbkY/u8PAPSFuoxcE4fXpSRFbQGHcY08J+B1OsvPPo5+/qX0BVAJa9l+7HCHNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722332445; c=relaxed/simple;
-	bh=z6AMQsvLXODLg+pFFWql7FTeV2LVKue/By3e3mHikHE=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=cSlvGsH1poRKoS8hLAHNI2nGi63dzm96zN62ihWvF6YrAxYRQDipSOa4bRs1WqpTqyeBIH9LbGZOQmzHwraIBeYvdRzg/ykglu09ATHgAwYzS725tMurI0DFUCwitUpUdOJ9EoY4BgKnTLnVy9VEqMwkkai3Vl8Gvi8vrSXdb4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Y4d+S3x7; arc=none smtp.client-ip=209.85.219.202
+	s=arc-20240116; t=1722332448; c=relaxed/simple;
+	bh=7YHmb9jGZmvIWu1aRF5iNNN4rEzoWDuNyyrN1IKoRpM=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=LrAuE9l97jwOkens7bpUEB5BN2M93JWOmHz4qJRXx5gXNTdYxbDdYrmOv33n4ECeFInYZ8Q/fEgkEUer+XCBOHPbJtoltkYEVpyrb9AeQK3K/odZkzOcyOMQoax2B0OUX3gSfKlu9TScX6rSAje5xSSMq7B5vW+/A3GXX+mJFdA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=t9trdFsy; arc=none smtp.client-ip=209.85.219.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Y4d+S3x7"
-Received: by mail-yb1-f202.google.com with SMTP id 3f1490d57ef6-e0879957a99so6121559276.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 30 Jul 2024 02:40:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="t9trdFsy"
+Received: by mail-yb1-f202.google.com with SMTP id 3f1490d57ef6-dc691f1f83aso2161911276.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 30 Jul 2024 02:40:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1722332443; x=1722937243; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=gS5NAG/xp+5gIQFFz9RUi98/oCWDc4GVmPVVB519uaQ=;
-        b=Y4d+S3x7MrIhnRi7AlLb5cFkDkqNAHjmp6nb+ZMTnLvJyoLHvZlyk9UV83iDSNUbcs
-         KJoIYSmvfU+EVM//jv/1lvueSmz7DJTvgRiIPXy14JQpKxDTtRJ3XEDcAaS1p2dycX19
-         Lp6NzLU+yQOMPsfFJIJT7OVIjMomJuo3h2D8yydBQuhpwHyIOoSYGMvXLKXeWLqkF1Rg
-         sSqc+xp/3TcU2m2UfCqxnTW7YLKfh8So/bSlQxLt5iZKJCkhKDHAktHyJWlvp2q3x0Vp
-         xQkxM/LrUiaLFXjP2yItOZWFTXtaw47TxXDygQChZzCznn5yO98Tk+PVfrIXlmyQcZwK
-         78PA==
+        d=google.com; s=20230601; t=1722332446; x=1722937246; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=J8Td6HujSfnTR7+C9G8g6IKWq+fs5qnV821bV3RrEPE=;
+        b=t9trdFsygKyuIWxCOMovOAqUm23secgOmnYTM6tN/OhNNXzTQlVlmA3FbOlWDS/kR8
+         c8afFesMcxfsVXFGEgA2HfUwx+igTRwSPwvntWKFVaEOPI/xWcHvnOlmeyBwvPL0dVSS
+         glivTR/FNevvp2OxdiUDgoBJM5hl/YCinclX9rC7rn0xvbpp6mZ8IspxXCmJgkaMishK
+         TwyFliEriCdQpzegm67zajUePtb3s2kU9yvxri36BBehuPnwaGgN1AE4a7uJs4rfV6oz
+         6E1d8AAPtSpGTM0dss24AlB994fILP07Nqc58WtQ4V0e0yJHZgv3mvXyD+aHjzNJlaED
+         H8DA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722332443; x=1722937243;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=gS5NAG/xp+5gIQFFz9RUi98/oCWDc4GVmPVVB519uaQ=;
-        b=l88zHN2a9SIVg6DJeLjUlGU6S790+l3SGIetd+aZWah3esJ3SuUDeEa8eN0gIsixkk
-         y1zsrfvdI2Vmro1IF8mEM1V5xdGRSK2eRfuXO/0YzRUdey34MnxlaeXOsv6xgtCtafsi
-         e/6bygNY9PkGd24xHb9onsY/1Jilx/qKliIKplDIT4ootH1mGW9cstm3dPblSJG3wY+O
-         ByJblc8XRL1LgezC+EZcKwfHdp/rv7aY/43xxhamv9N6O1khyZZHAw/ogxki73NnJWXG
-         kc32TFCUcBtyPrVH4rJur7HRWC1w1xC3LIF4JYa0VKcE1pQ7aDcu41/hfaB5izFwlswh
-         2zOA==
-X-Forwarded-Encrypted: i=1; AJvYcCUt5i9VTlVTbKdYSuFYWNxeC1E2yuZmScR16H/GTCuuOkVsNSW51+u714rIqK6ldzhfHLVS7GfmVw9vIGmL0sXn/+8mbd2qnjMas7erR7k=
-X-Gm-Message-State: AOJu0YyiIYM1GQ2CXDQvOZj6UHNBvQWBbILV6nzmf9hjgRBI8XMSL14O
-	+TQRol8WqT7Ghuhv9uj6T/3tyiRFPXbwdA0f0rH+l28kwp5dpQ5TjVeOsK0rAQNRziga6u52V4P
-	/b4HBE1rDMsvDcQ==
-X-Google-Smtp-Source: AGHT+IG7qRLJEdvzuUk1cU0Hd/aciEvRihM2ezORcoZuOe/k9BC6vaOeX8Kq6q9sv7zNW5IYjU1d4dGctLx6EX0=
+        d=1e100.net; s=20230601; t=1722332446; x=1722937246;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=J8Td6HujSfnTR7+C9G8g6IKWq+fs5qnV821bV3RrEPE=;
+        b=oBt8QniauoKl8ZAxqHGaUMULyD02q3+2XCMeJw1mCDYttES1nbJzskQni2RzIjG6uX
+         PnM5mCyfh2aD9N5ERj/EV5C/9GWekCopCPbfUbnVdXur1BKEtNx5dr8GlF1Uqv5HsmGC
+         duJAQdyHEb8vHzw3aVmfwWmKMOqu0F0Le7qnQclcXYQe+NiddEtyoJSBNLxvDRVNpDG5
+         WEE2b3YAnY22nOe85W8PtDfVHJOvDjtUMB7ja5vYoiiyP7+h+70KM1kCWkzTMSot7zci
+         BZXKVqwkX7nndTRHFBucd1pmO/rJih0rylEtTm49s+TXE9vkzIDgUH6JW/o/l6bO5tA/
+         uvLw==
+X-Forwarded-Encrypted: i=1; AJvYcCXsxIVlfMPaJYlkZFc+LhoBy+/ecnhE00NF6H4ijpdHBC0mvmWU4N/7hhoRJGpcQNqznb9kJeu3pEP0zbryFbQVYe0BS0uGqjRwblbXiCE=
+X-Gm-Message-State: AOJu0Yzli67tmg6I/l8m7wH5MirsewbmUtigzjIaqub/V458mZVKjF6P
+	SOrRJkCHP1+SoGiuPBhLJoBjBYm67yG81KC3DLH0HCLVcCKH+7BSeY4fIw2CVY4stDPHcu7lRgz
+	P8sO7wVturUs63w==
+X-Google-Smtp-Source: AGHT+IE6jg07sVWkqr6Qt1V4IXfH/ANYM7osvTs52atrqfRQdA5lHoIeNZhgbp6S4L8dsFH6cFO+sMRP/GmNY08=
 X-Received: from aliceryhl2.c.googlers.com ([fda3:e722:ac3:cc00:68:949d:c0a8:572])
- (user=aliceryhl job=sendgmr) by 2002:a05:6902:c0e:b0:e05:afa1:9c91 with SMTP
- id 3f1490d57ef6-e0b543c014fmr17243276.2.1722332442725; Tue, 30 Jul 2024
- 02:40:42 -0700 (PDT)
-Date: Tue, 30 Jul 2024 09:40:10 +0000
+ (user=aliceryhl job=sendgmr) by 2002:a25:4a88:0:b0:e0b:2dfe:d74b with SMTP id
+ 3f1490d57ef6-e0b9dc506bemr9864276.0.1722332445615; Tue, 30 Jul 2024 02:40:45
+ -0700 (PDT)
+Date: Tue, 30 Jul 2024 09:40:11 +0000
+In-Reply-To: <20240730-kcfi-v1-0-bbb948752a30@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAPq0qGYC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
- vPSU3UzU4B8JSMDIxMDcyNT3ezktEzdZFNLIwtLi1SjpLQkJaDSgqLUtMwKsDHRsbW1ABweSid WAAAA
+References: <20240730-kcfi-v1-0-bbb948752a30@google.com>
 X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1111; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=z6AMQsvLXODLg+pFFWql7FTeV2LVKue/By3e3mHikHE=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBmqLT/DlXPvLrNiN9RW7CHa+JUKbZ8WpU9oawxa
- rBXINc5ExKJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZqi0/wAKCRAEWL7uWMY5
- RifMD/9S9iChYHZ4DJJm411uHpuWsB1EOpo1ysk8eYxa7ATNAbHYYO43Nq9NSWk4IqmW0N9/LvY
- 1FVKvuieTZjiFl1MadCOEjxs5fn0wv7FOv4ONkq3gmu4Io0X02PR2a1R41Eyg+9I6FJj4Tt9rbM
- GfPgmL72NxrK2DwxLdfSt+jiAex3megb/Dn4jM8iMgfFb+nJBQOPN3Nqh0jbNjmTWbU3ARvV1k/
- MLDYCkP56vrb8ihRT0TroqIKD/v19BoJqEgVqMnXX/zIKUdHXRgmtIwheMKkZKJ9sXDvsLY1nj1
- xHpWQt2buoPo4zOedf0ly+gcAFUAFoDOU5r7mOsTnBZM0soDJIOuqO6hq2c2wDq4n5AGpJLPjNG
- iVG5edF+gvTNbo880EUp7PwSSVu0emeVCul6+DJSBEcnGiSkoKY9vYHH+ZqNiGeyDabYxSSE6he
- k5GtNCs6SnRTLsWRohtpEPHPja68cl8tuX6aQZOiz+oYgVVJuSjYsiY60oiLFtGhtM549DUxAV6
- AUpo+2txYCvo2a/79q1YghQCMadxNKikcSsZk+vjrivB+EZmw8IOYkfvdhMJ7RT+5DXvgQgGMGv
- cz54JGXnpLJYc4MUDP32bckFXU5vx7zXhikQoahrSqRXKIN234ZIaCya6b4r8ELXDGEj0QLIK9U vv8RhnWsX+Jx/gA==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2050; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=7YHmb9jGZmvIWu1aRF5iNNN4rEzoWDuNyyrN1IKoRpM=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBmqLUWrBNe4B7klgMLcy4x93JJVPbaiQ4DefqYn
+ 7+rSpMXge+JAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZqi1FgAKCRAEWL7uWMY5
+ RvFZD/9nX0/syePOspS0BC42PIuc8PiXeSLJZ+0oRdk4I4EUiKXF9zoeCP4JNr3TRfITt8pD4va
+ cW5U8khsht7ik+YLZLh4I4Y0i2dcAK8qMQsfEqa4j4vp/+CTBvkISRznaiEbjJAyf1dpbNLdc/U
+ 4KAOlMDO5yhpX2If0MrToDVolt9j3pjnJ2iPKEdrwUGjep7RLiX5HDn66vR1ErhSRBPRUArmC0t
+ OasWlqEhkbWodtlGXKRqtbAq4R1baO8Fm/farzfIXT91sSqiImalL1qBb7gweMIru5/jkTeTcbt
+ cl7Slkt0an6/FRTTpP5o4QAUly4EEfXe7HMYwsZIlzyzMwBgwF+cTW99LSV+ce2xPXYC9Zmvv7A
+ LuxUZtzzLxodVDn+TKet5BL05c4WqtJEG0dv9J0MQYRyVahdN9D0fl5IDtauGKIm71Z7posej4n
+ gjQAlXjD2v7KjdxeM0zBzGtmkIqNoJKczMBRySkG9zIl7dBVq6C9tV7B8xlf3EHrIdRbd3A5tOO
+ rWpz3JXr9GOQFe0tdsZNocnyOlBjjXSOMtM5IBScISJiXZ1LOfORS04S7hTCoEoSLXe+4Pl2FKp
+ mEVXRg4sp5T8pH7uklezW4tI6uUBorPExDxR5Kk/hhUvdDe1H54PsHBjpUQPT9rsbVP1TdWWuO9 2AVbut6tNZWCzOQ==
 X-Mailer: b4 0.13-dev-26615
-Message-ID: <20240730-kcfi-v1-0-bbb948752a30@google.com>
-Subject: [PATCH 0/2] Rust KCFI support
+Message-ID: <20240730-kcfi-v1-1-bbb948752a30@google.com>
+Subject: [PATCH 1/2] cfi: add CONFIG_CFI_ICALL_NORMALIZE_INTEGERS
 From: Alice Ryhl <aliceryhl@google.com>
 To: Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
 	Nicolas Schier <nicolas@fjasle.eu>, Sami Tolvanen <samitolvanen@google.com>, 
@@ -86,34 +87,64 @@ Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.co
 	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="utf-8"
 
-The control flow integrity (kCFI) sanitizer is an important sanitizer
-that is often used in production. This patch series makes it possible to
-use kCFI and Rust together.
+Introduce a Kconfig option for enabling the experimental option to
+normalize integer types. This ensures that integer types of the same
+size and signedness are considered compatible by the Control Flow
+Integrity sanitizer.
 
-The second patch in this series depends on the next version of [1],
-which Miguel will send soon. It also depends on [2].
+This option exists for compatibility with Rust, as C and Rust do not
+have the same set of integer types. There are cases where C has two
+different integer types of the same size and alignment, but Rust only
+has one integer type of that size and alignment. When Rust calls into
+C functions using such types in their signature, this results in CFI
+failures.
 
-Link: https://lore.kernel.org/r/20240709160615.998336-12-ojeda@kernel.org [1]
-Link: https://lore.kernel.org/r/20240730-target-json-arrays-v1-1-2b376fd0ecf4@google.com [2]
+This patch introduces a dedicated option for this because it is
+undesirable to have CONFIG_RUST affect CC_FLAGS in this way.
+
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
-Alice Ryhl (1):
-      cfi: add CONFIG_CFI_ICALL_NORMALIZE_INTEGERS
+ Makefile     |  3 +++
+ arch/Kconfig | 11 +++++++++++
+ 2 files changed, 14 insertions(+)
 
-Matthew Maurer (1):
-      rust: cfi: add support for CFI_CLANG with Rust
+diff --git a/Makefile b/Makefile
+index 2b5f9f098b6f..484c6900337e 100644
+--- a/Makefile
++++ b/Makefile
+@@ -952,6 +952,9 @@ endif
+ 
+ ifdef CONFIG_CFI_CLANG
+ CC_FLAGS_CFI	:= -fsanitize=kcfi
++ifdef CONFIG_CFI_ICALL_NORMALIZE_INTEGERS
++	CC_FLAGS_CFI	+= -fsanitize-cfi-icall-experimental-normalize-integers
++endif
+ KBUILD_CFLAGS	+= $(CC_FLAGS_CFI)
+ export CC_FLAGS_CFI
+ endif
+diff --git a/arch/Kconfig b/arch/Kconfig
+index 975dd22a2dbd..f6ecb15cb8ba 100644
+--- a/arch/Kconfig
++++ b/arch/Kconfig
+@@ -826,6 +826,17 @@ config CFI_CLANG
+ 
+ 	    https://clang.llvm.org/docs/ControlFlowIntegrity.html
+ 
++config CFI_ICALL_NORMALIZE_INTEGERS
++	bool "Normalize CFI tags for integers"
++	depends on CFI_CLANG
++	depends on $(cc-option,-fsanitize=kcfi -fsanitize-cfi-icall-experimental-normalize-integers)
++	help
++	  This option normalizes the CFI tags for integer types so that all
++	  integer types of the same size and signedness receive the same CFI
++	  tag.
++
++	  This option is necessary for using CFI with Rust. If unsure, say N.
++
+ config CFI_PERMISSIVE
+ 	bool "Use CFI in permissive mode"
+ 	depends on CFI_CLANG
 
- Makefile                        | 10 ++++++++++
- arch/Kconfig                    | 11 +++++++++++
- init/Kconfig                    |  2 +-
- rust/Makefile                   |  2 +-
- scripts/generate_rust_target.rs |  1 +
- 5 files changed, 24 insertions(+), 2 deletions(-)
----
-base-commit: 8718bc07faa6ddf4f7335a12e4cdd4ffc796bbd8
-change-id: 20240725-kcfi-c592898e2bfb
-
-Best regards,
 -- 
-Alice Ryhl <aliceryhl@google.com>
+2.46.0.rc1.232.g9752f9e123-goog
 
