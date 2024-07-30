@@ -1,90 +1,109 @@
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADDA51A76BE;
-	Tue, 30 Jul 2024 17:29:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AA6F1A76C9
+	for <rust-for-linux@vger.kernel.org>; Tue, 30 Jul 2024 17:50:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722360556; cv=none; b=nFfxL+0bYVgk6kBaAB3DHqHWTaycmW466ytP7pXOre8naS+ZzKrokom13GF3FnkaOhawtXZXtVXkSRjZgdwJVzphqdgp4RSxRSoe+MhriQxYpC1eqqgkCrmpHVsQ2DeISszVREFoK8USJimxpLE1IVoAMZpc4z1g6VwTOgNtej0=
+	t=1722361817; cv=none; b=sPl6ckeOCiA+OHtkW2+5xTz/evx0TtTHr46cEgC8l706Rrzki5/wgT044E+hb1wx5wwAqGvf9I5nFLlXGPG3Y6RmpCiPC1LSdrnaasKjBaiMQ43shVtlg9jmMg8jxYjwfJ02oAyj7FRY9+cs7L1RHvChFDIaLTj0cJyYsD3tnY0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722360556; c=relaxed/simple;
-	bh=GjlOMBAG3NQG0ljYfJguk2Akgzj/vQe/Tx1QnoDiCK0=;
+	s=arc-20240116; t=1722361817; c=relaxed/simple;
+	bh=HnW2Kl+zYUctRJgaoTxa4ZKiXQis0V3yPPsOxmHpVRw=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uQLoz3d85CE5cSI3ztbnWP/VHJ4i2ORYF8oBoLkc9QiHTerURGSUaXXAO8Cw/aOQAkr2XK24jFkEC3X43W6eZLAXF/t5MO8MJi5M14rN+TYZX/FYz8vsB8+BM3o/LtPQUnMjxWtWj9nOS5Ue6brFmj/gL2YDrO79EOxAjMGHEGc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LFuI62Xo; arc=none smtp.client-ip=209.85.215.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=fC6Rjt/PZd27qmEDD7/hTMKldNLRNP0wP509VGTiBEaZmfT9vAsLDZSUtJfk35SFPooYDiEFLX0jGUo/TD1+HnYvEQ2gDI4B0ZrfQ9fbbycpxc+vWgbF69A2h1ce/QmrcM+2B3d0QwCCG9X28QXf+EiAb13p36pOMI1MHfkxrIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=AMMiqV+S; arc=none smtp.client-ip=209.85.221.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LFuI62Xo"
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-75a6c290528so3147045a12.1;
-        Tue, 30 Jul 2024 10:29:14 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="AMMiqV+S"
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-3686b554cfcso2417454f8f.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 30 Jul 2024 10:50:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1722360554; x=1722965354; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1722361814; x=1722966614; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=GjlOMBAG3NQG0ljYfJguk2Akgzj/vQe/Tx1QnoDiCK0=;
-        b=LFuI62Xok3zLmEYmoBahNgW3J0jIL0MfslM4hxMaIU8Ivkqg7CvSnpwLTmeUPypcL0
-         HmZ/ZaHsTDGlB+KgMkdGUez4WPfLeDVl31AmGP/BPJE/dZcN8D65qDMSxX4+Amlua2ZB
-         Lmr95pdla0Eyzp0LL/cZcjTX7GMq0SuJjVzOHRN4CrwrnM+g+YGSk5Pw4wSRM807F4VB
-         S6rkd06yi0+FWDzF2EvObEtmFIwfQNaKL8Wk1dRq0DHsAci7cUZLXQmtOUxBaUpXbAU/
-         7mooQGZ8+ebHjDf0dtPM5PSRMKj5fpEoGE4VtQZUr+oOA0Lo7RT9OHPGV5Dy0cfJKc8p
-         66vQ==
+        bh=KaixBjhs4jCi/zylYr7SZw+axaxCC0UI+AlndDH5c6A=;
+        b=AMMiqV+Sgl32yCRor+OgrAmc+re5HKEba6j7OvBY5hCWl6+LKcmBYoaDIeQpvO75Ci
+         eN65SUCLyk9jsdNWD5Tm2mAIIASPsIYmPtqfXXAt1rRP2JwdeoMhcHatEBfDrULHG3bd
+         iFrlZPkflDXTWBYXXLiBv9LWrdAO38Uiivqu7stLCtibKnuji8qDPtZM5J0nNvkD+cKh
+         4nGe+cdZ9diHV6HbsbAn6Y5/5Uur8W5x7XzzvQbJEJDCJBXDq8JOBUAlJMXmITR0Cjka
+         mtZzWS+kGgcpGkAfcb2g3EtTa2qYJBD67+D8iySqBtYBdkqUMwZn7GeXF3WoAYUUQBTC
+         XLOg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722360554; x=1722965354;
+        d=1e100.net; s=20230601; t=1722361814; x=1722966614;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=GjlOMBAG3NQG0ljYfJguk2Akgzj/vQe/Tx1QnoDiCK0=;
-        b=mgPF8hypoDr9+gFN+ZAogCbWvHrnR5d4nC9gDzvpmm2f6ASeNSFRdKcekeXKfRaZqU
-         Jc+WPWj9B9SjQY1n2hb8B6OW+xzFEtQYuHvvA1tOzQzRQ6BOjrBA6oVAqg8+qgu+rejO
-         6MA46UfGnic4yTIe1hkPrgLIO6MIZAxqvvDG818Ab/zKWPxGDzFdOyGkd559pc9OMSkb
-         yCWEx2BuFvRHblSHSjkrVfu/AdeJphL7qn9v15gnEzpN6cqW0m6C66OIlVbsSYUHYLqw
-         u3JhtTc1R85NY6ITqmJbIoEhC92frUatkIJLyxdjh++sT20Jw8rV1zQRR7B/HNFot6Fd
-         P7kA==
-X-Forwarded-Encrypted: i=1; AJvYcCU8bBl5OPKbONJd89qnD0MJTcwzMjE3akppppV+EhkrKYsa+qfSswY1H5MDAG7JpKYpZ+JUqtgNxIBa3oOvNkqQinLqjctsKBWpmtB+kpRHmOe7vJ7rA29rwfY0vyBg7Rgs1WzbV6ICTLmdQw0RcSPm9KzSPGINCVyxjb1nnOJJ1gTEQv8P4X4/h08=
-X-Gm-Message-State: AOJu0YwGRqZHPyibJ7fgMKhOJWAChM6hKUcfC6dEpDlToVP7E6RI6tfH
-	WbKWSRhxsd4GjvBF60arWbasuIFbEW1XSUgZ89eMIzuHpWQgD91VyB42Nb0/vPyPspRid0SPpy1
-	vsrkIaCnGqxDB59QZK/Zfe/O0kBM=
-X-Google-Smtp-Source: AGHT+IFhRfa36mEODzNwgucOaonXWYtImLvUNBLghEHAYnCAws9ajlDQJTWh2FqXMOlQ7Yu+3ZvmM1kDokO4hRmoCnU=
-X-Received: by 2002:a17:90a:5601:b0:2c9:57a4:a8c4 with SMTP id
- 98e67ed59e1d1-2cf7e730999mr9716749a91.42.1722360553918; Tue, 30 Jul 2024
- 10:29:13 -0700 (PDT)
+        bh=KaixBjhs4jCi/zylYr7SZw+axaxCC0UI+AlndDH5c6A=;
+        b=mSj6bqn8+IacMQWnFk8xcWhNcPJ8MUXyJIwz6yuKPqoqKXJfFDzp9AsnhbxHULccQU
+         G+135YsVo2vSavDFP4XkgP0qYV6lqMngtIF14FkmLf3w4TEiYBF6iTKR1K/FDlpxSCDY
+         w5UtJw3f+gfA32awpHE4MIyUtAEPKFP7UGESV/9knfhRV9GmACjOLQSN7TxaINoQ2LzW
+         pS71xPgl52Wp1v3LfgfnLegX/XKPzrTCp5Iux2wlZJDZPIdTY/Nypuq8vsF7erC6L2DT
+         mWVBVTs7BhYHTwP0HjWk+7M8qHHQn6hU8uCRSXSCMOdOYDFESgbnhGKioGzyi/n9vvDK
+         Kl1Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVlXXDfEQpWhv3kEIfETkCjGqDMaG9jYgRDY07T5Y6AQPbA4WWFUf8dQvHl7qPMcQE+/fgkN3RjmcqYmio0FGU8j6Lh2hexpM9HMEUfylo=
+X-Gm-Message-State: AOJu0Yxtvz4/IV88wTGB6T2LA5k/LPiUtiNXUKRxUUAcCNh83fFCT3bT
+	wiXJsS002QiMcSzOik2V0ek3fmlINrTPfr6hPv3LYspOhhSv3cTjBhB/RVWzjh5L7pt6rU6IQfI
+	4kNx8NCiDyPeEXoVrAPWCWtQO+AURFVMW1tMr
+X-Google-Smtp-Source: AGHT+IE/WqXVNH2NYL9VIjihSbVxG8lSSeijhgIZzc3e3qo0pbHOQ5rnbbgjDeHIZgABFJ/sv4CQsz8A/6GYxBxhxzU=
+X-Received: by 2002:adf:ec45:0:b0:368:5a32:f5bc with SMTP id
+ ffacd0b85a97d-36b5d08a846mr7272588f8f.38.1722361813353; Tue, 30 Jul 2024
+ 10:50:13 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240730-kcfi-v1-0-bbb948752a30@google.com> <20240730-kcfi-v1-2-bbb948752a30@google.com>
- <CANiq72mshrgXJLw+AZ+ovfhZXjYYfgQLdyYdW_v0FmdWdEjvbg@mail.gmail.com> <CAH5fLghu8Gy8copyBgcBknMN7GaikhYZb57M0Ye2_xANW6YzoQ@mail.gmail.com>
-In-Reply-To: <CAH5fLghu8Gy8copyBgcBknMN7GaikhYZb57M0Ye2_xANW6YzoQ@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 30 Jul 2024 19:29:02 +0200
-Message-ID: <CANiq72m7dup--to6gxCfjhgY3hk1iV=UD8hqJfT5=kWkwo_MaA@mail.gmail.com>
-Subject: Re: [PATCH 2/2] rust: cfi: add support for CFI_CLANG with Rust
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
-	Nicolas Schier <nicolas@fjasle.eu>, Sami Tolvanen <samitolvanen@google.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, Kees Cook <kees@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+References: <20240730-foreign-ownable-pin-box-v1-1-b1d70cdae541@google.com> <5c49f604-34c1-414f-bf9a-92837c6e07b3@proton.me>
+In-Reply-To: <5c49f604-34c1-414f-bf9a-92837c6e07b3@proton.me>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Tue, 30 Jul 2024 19:50:01 +0200
+Message-ID: <CAH5fLghN8L4cJsRuH-eqU4E5GaTJRUhw0cAStjHAj1RNJA-vhg@mail.gmail.com>
+Subject: Re: [PATCH] rust: implement ForeignOwnable for Pin<Box<T>>
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Matthew Maurer <mmaurer@google.com>, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+	Andreas Hindborg <a.hindborg@samsung.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jul 30, 2024 at 6:44=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
-rote:
+On Tue, Jul 30, 2024 at 7:14=E2=80=AFPM Benno Lossin <benno.lossin@proton.m=
+e> wrote:
 >
-> Hmm. It seems like the existing variables containing rustc flags just
-> use RUST not RUSTC in the name?
+> On 30.07.24 15:06, Alice Ryhl wrote:
+> > @@ -89,6 +90,32 @@ unsafe fn from_foreign(ptr: *const core::ffi::c_void=
+) -> Self {
+> >      }
+> >  }
+> >
+> > +impl<T: 'static> ForeignOwnable for Pin<Box<T>> {
+> > +    type Borrowed<'a> =3D Pin<&'a T>;
+> > +
+> > +    fn into_foreign(self) -> *const core::ffi::c_void {
+> > +        // SAFETY: We are still treating the box as pinned.
+>
+> I don't think that we have the guarantee that the pointee at the pointer
+> that is returned by `into_foreign` is not moved.
 
-If you mean things like RUSTFLAGS, it was because the C side uses
-CFLAGS, but for the equivalent of CC_FLAGS or CLANG_FLAGS, I would say
-it should be RUSTC_FLAGS.
+That doesn't seem like the kind of thing we need a guarantee for.
+Rather, unless we give anyone a guarantee that dereferencing it is
+okay, it seems reasonable to assume that it won't be dereferenced.
+Right now, it's just an opaque pointer, so C really shouldn't be
+touching it. We already implement the trait for Arc which is also
+pinned and also doesn't even point at a value of type T.
 
-Cheers,
-Miguel
+> AFAIU `ForeignOwnable` is used to store these pointers in C structures
+> and never to actually access the value behind the returned pointer. So
+> we could add the requirement to `into_foreign` (thus making it `unsafe`)
+> that the pointer should not be dereferenced/used aside from `borrow` and
+> `from_foreign`. Otherwise I don't see how the call below can be OK.
+> What do you think?
+
+Dereferencing the void pointer is unsafe in itself, so I don't see why
+`into_foreign` has to be unsafe too.
+
+Alice
