@@ -1,129 +1,146 @@
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F201518C91B;
-	Tue, 30 Jul 2024 20:36:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D38B1AA3EF;
+	Tue, 30 Jul 2024 21:55:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722371791; cv=none; b=ozDX4PIIGQ+TZk5s7bJCOgUIxWOPvwH6ui9bvEmA/SU/RMSOKJzjeq3/8fVawqVwwkBrYWMdWGHVKAm3YXiQSOjWa1n428BJ2evYVK2BdOdAXFyQNhKTLS0u/q/ftsb5+rFioeejlXygIIr94SfK20h5coLhODT57ovhONhOUPA=
+	t=1722376525; cv=none; b=JENSdqPB7PhzSdObW6hwzx1o7HvjjTvpA/mQahcuNI3mEYvYD+vASQzENcwvkHdLW8SGs6oYXd5VpPIV/P8GxFMItd30us7kdUQEmQZ9U4F7zoCW2vTddE0T1UgbyHe6fF6Sa3BuJsD+OqXR1YqEypWg2Nkf57PXWOKm1VglyPs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722371791; c=relaxed/simple;
-	bh=qdHVnfTVo3nO7tmMxskdGFwLlxMv/CAQsC4rHemx2xs=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=AZHypqyDXdxuHfgHpPIBW9I1lPygXhYsOFmu86xlPdTO4vofBhjX5nlnxp8QjtZtC6BmASOqJ4E+AX9jXmlCJ5bxCre+PS0cS3xubfarJO7PQckSWEYBc+v2AFyfLpf72r4Hx3iGOxD2KFKXCLpm0vCgnMTu1A3OyoPJKBXXQp8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IuaWIpk3; arc=none smtp.client-ip=209.85.167.49
+	s=arc-20240116; t=1722376525; c=relaxed/simple;
+	bh=Ankki9c5Nlra5Z3QRBiC2olumoXZIRU8bFDSLITPQAw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bXATpANezQXwtTF073mfR07SFMR4375+1jbYU27gGDJnRn0fJoz+VH+q/Erm3lSx3m18gB5pvfsvYfb4V6o5u1b4AiFrXnI/w4jyWLyGvdinlGxLly7RiqYyeQC5HCC5dJdmdarjcF2+WZ/ok0vh2std3ErnUmDDJwdypRB8Rp0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZeB44vP3; arc=none smtp.client-ip=209.85.222.180
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IuaWIpk3"
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-52efa16aad9so7518638e87.0;
-        Tue, 30 Jul 2024 13:36:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZeB44vP3"
+Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-7a1d984ed52so290442985a.0;
+        Tue, 30 Jul 2024 14:55:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1722371786; x=1722976586; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=4/XjNzJXCdNL6KqxYNrTp89XVp9cZX4iiagSBchs6TI=;
-        b=IuaWIpk3d3ANSIAM9zvr3z76TCa88Q9MByIlZtmGxOblaX2ta6z4FcD4I+DOnSY0Bc
-         AzhEfVaSSyo3Vsl2BNgaNpPnlDrqZ6lwTSCkyyFLiNNQnbzBkuRCywjHWG9Cbj8BPALp
-         JrYg/m2oekGEWnqpFGXb/80Q6qk+wWQtNyJuyaWolLcK2meezX0Sklv6RKw0dKSds8e6
-         NZbw02/XPzjG9GIENIIJkVbnbqYNWEALthl4CA2aHeCQvEs2McV1MBSj/vPCl6pwj4pV
-         f2Te63d1R4bl8tEnszv47MUF7bhZdMEHVfDrpEOKnY6a+Y19ONT2fVz9objUuci9L2xj
-         +Cng==
+        d=gmail.com; s=20230601; t=1722376522; x=1722981322; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=57yoPOGG3zQRJF2US/SjGCckh/jSh9bDasAjmkC87kU=;
+        b=ZeB44vP3yuLYODTog8hUmi47cMk3NmL3gKs19sBKFG7bbrVC25+3nio5y0OeJT0rbk
+         dem99hrO8JLA5B1rm4EjIBNBhhxdd5308d/BIIhW5dYgIka098fCOTwbYNTOuFnbxTF0
+         uUARPzASOAD1rokNcky1e06KZXCOOG1btM6JbJhsnVI4kQXAIgFD9f+KTNZR2yx9S0kY
+         1OuZiAp4aTnKK8sQfBBiG0USFGi1XpxKmGReRO3xpZ84RKtdU66Po5pNE3aPTsWQ9piK
+         yVF1oh0oo/DbP4/2ozfeUW4c+HGdO6bzNHzQDKk0hmIjuqaSWju75nF8e0km5QrR4MtO
+         cHnQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722371786; x=1722976586;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4/XjNzJXCdNL6KqxYNrTp89XVp9cZX4iiagSBchs6TI=;
-        b=E6b+d+xNV6A+JH1207kh0hhmXDuNrPaGj7TA8ffVK0rvLulTa23xWveEX1d8z9DkO3
-         u8QFU8iUa7PyMTJCF5kdu11OL0lEXyR0SAO6DchsQcl4MeoqfGBRvqRedynjkf3L2rEN
-         rS7Q/s7Z8IXGoAlNSuBMVi53ZLd5svw3+6Kc8pqorwQSQCcHFzPEpA9IUh6LX9Ze1DM8
-         T+pbQRjE25sNCZVn1ravT+34Rl+ANE4mOdV+upkCm6NVK7r6DP8cw0lSrByGy4dYm2WT
-         ArQDU7uYMINezJiJAI+nr5O15I2IGie3Zfnl8NdpnIMxx6JuD4XUjwMb7RCvFt/fm5hu
-         kYQg==
-X-Forwarded-Encrypted: i=1; AJvYcCX1grBrQHVpyxp3mGzBpmU0C81NtOqhUP7SUhaCjLC2pcJa5oDc7ZqP2IlK6P8VKSyvX6gQ7w+SaRA7nTNbDnc=@vger.kernel.org, AJvYcCXiU+Qkpq4WNvO1Tl8TeRahdCxhMKPQ2DBYkjNOdM2FFjlbYxSP3Ib3B75fNXuiR6cVbCOwWxuCEX9leow=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwZSWk5gfTpsn+f9SDU7X8HsTU7ARJ0oBFhAZ0H6iBEyQ9T/eUP
-	PeoY5JA2zink5x0K4CPPKWfhOFZtf3372tFhckACMKxIjkBrpx0a
-X-Google-Smtp-Source: AGHT+IGjxqEwMyxNk7pArNZMq5rayC8VDXVdhCT5ysxA8xd9d9WxB01PKTakbhgRZbhikgwYVzY5YA==
-X-Received: by 2002:a05:6512:340e:b0:530:aeea:27e1 with SMTP id 2adb3069b0e04-530aeea2b52mr407616e87.50.1722371785722;
-        Tue, 30 Jul 2024 13:36:25 -0700 (PDT)
-Received: from ?IPV6:2001:871:22a:50e2::1ad1? ([2001:871:22a:50e2::1ad1])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5ac64eb3ab8sm7769941a12.71.2024.07.30.13.36.24
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 30 Jul 2024 13:36:25 -0700 (PDT)
-Message-ID: <14053c9c-0318-4422-bfa4-739966f8e214@gmail.com>
-Date: Tue, 30 Jul 2024 22:36:23 +0200
+        d=1e100.net; s=20230601; t=1722376522; x=1722981322;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=57yoPOGG3zQRJF2US/SjGCckh/jSh9bDasAjmkC87kU=;
+        b=tNABRjC1sr1YYh6xc7cg64gkM+qrebrBIm2ooLUlkQvw8lBrmKK6B+xWs4+h+xQ7Yb
+         mYyHo66tXBsDlwK4W3YaVASF/vlgYbNeSg+/KlhdFZ8uZLB7Ycxb+y2kC+brdHhvowdz
+         0MwJEOu4WYAYToT8dR60tg0FxkZxzspQPDnp1E6sYNQX+F9qfuuwtQtvcFQ4O8r5mH5q
+         /08fx/6aYMjBgB1buoVFR6Maksf/mFWNSdyM7++5dK01EHSg9dW3PqpQs9gMNNu8vBRk
+         ZjhMqns2r8yLJl0qfTpO1/B7vYvoHrEZHMU28aV+XXU30U4Uig0tbDljIjLHD2wF0qTE
+         uvdQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVxatS0j3xVxqcigldqKNoQaUQGJ2sWR0ONvCwGmHXNksIknMED23xeno5xnh1zAN6Vgq2bJoA7g2NNPi+GCug=@vger.kernel.org, AJvYcCX7o5enNBHW2+O3il2c9DR/U45Lm732GBbMCcWNbTh1uWe7AwFLRyf4WujsqP7hgX+FaWcbBsEd1KtyuHw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyhB8uIJAVu/wIQI0V/84d6LZ0EWzvH0I/MIO6SH96eNzNBWxA6
+	cUU/o4IUYRrlW9OBO7PQ8qcm/BgY91AgbF1l6M6DNTuNbsm7ph02
+X-Google-Smtp-Source: AGHT+IGQn1Bn0sLDlLyLtjs5GZpbNKODLyk6ukLIhagXWDmYsvu0xpevCUuRnXun51mNo5nS8EuYVg==
+X-Received: by 2002:a05:620a:460d:b0:79f:e9a:5ae5 with SMTP id af79cd13be357-7a1e52ff4fbmr1382272685a.60.1722376522366;
+        Tue, 30 Jul 2024 14:55:22 -0700 (PDT)
+Received: from fauth1-smtp.messagingengine.com (fauth1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7a1d73b6153sm684020485a.49.2024.07.30.14.55.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 30 Jul 2024 14:55:21 -0700 (PDT)
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+	by mailfauth.nyi.internal (Postfix) with ESMTP id 545AA1200066;
+	Tue, 30 Jul 2024 17:55:20 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute3.internal (MEProxy); Tue, 30 Jul 2024 17:55:20 -0400
+X-ME-Sender: <xms:SGGpZj_0-Ygse_5BbrVZPa4ROjQ5rZ78sv-7cn-X8m0HzIxkicTJqQ>
+    <xme:SGGpZvu05_dEqzwclTDz32WOHaVdoEB4yUnaH6DjRblROVXSOZgiMkvvcduUdU1Y2
+    xGwGHCljiUd0NUTxw>
+X-ME-Received: <xmr:SGGpZhDpBTOA3XPimdmd476sv9nFGVvGxTHTqMFCKw31dS-sE-2egeTzQLnOtQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrjeehgddtgecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhn
+    ucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrth
+    htvghrnhephedugfduffffteeutddvheeuveelvdfhleelieevtdeguefhgeeuveeiudff
+    iedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsg
+    hoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieeg
+    qddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigi
+    hmvgdrnhgrmhgvpdhnsggprhgtphhtthhopedt
+X-ME-Proxy: <xmx:SGGpZvcHjAiOlm0sExpljiqrde8OXYRdVUnW2ThTOyWjBIx80ATFTw>
+    <xmx:SGGpZoMSvzibtVtYBL8agzaeHrf1kn404Jr2bPtcxg7wQ2SlN2M6Jw>
+    <xmx:SGGpZhkwp_9sVnFDwWtlr_r7QRsUIh--aABVvhKoNye1o5GuYFtuLQ>
+    <xmx:SGGpZiuCD4dAahf9UyRD70arN8UnuH0weAYo7p_Pw5rm46FUZDqH9g>
+    <xmx:SGGpZivb4cILb8cLkQfk-rPmNT-iQXFjyUUMvtI8qJawPB8g3egWyXdt>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 30 Jul 2024 17:55:19 -0400 (EDT)
+Date: Tue, 30 Jul 2024 14:54:36 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Matt Gilbride <mattgilbride@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
+	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>,
+	Joel Fernandes <joel@joelfernandes.org>,
+	Carlos Llamas <cmllamas@google.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Rob Landley <rob@landley.net>, Davidlohr Bueso <dave@stgolabs.net>,
+	Michel Lespinasse <michel@lespinasse.org>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v8 2/6] rust: rbtree: add red-black tree implementation
+ backed by the C version
+Message-ID: <ZqlhHD_Qvei0zamr@boqun-archlinux>
+References: <20240727-b4-rbtree-v8-0-951600ada434@google.com>
+ <20240727-b4-rbtree-v8-2-951600ada434@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] rust: error: allow `useless_conversion` for 32-bit builds
-To: Miguel Ojeda <ojeda@kernel.org>, Wedson Almeida Filho
- <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>,
- Russell King <linux@armlinux.org.uk>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl
- <aliceryhl@google.com>, Jamie Cunliffe <Jamie.Cunliffe@arm.com>,
- Sven Van Asbroeck <thesven73@gmail.com>,
- linux-arm-kernel@lists.infradead.org, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, patches@lists.linux.dev
-References: <20240730155702.1110144-1-ojeda@kernel.org>
-Content-Language: en-US
-From: Christian Schrefl <chrisi.schrefl@gmail.com>
-In-Reply-To: <20240730155702.1110144-1-ojeda@kernel.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240727-b4-rbtree-v8-2-951600ada434@google.com>
 
-On 30.07.24 5:57 PM, Miguel Ojeda wrote:
-> For the new Rust support for 32-bit arm [1], Clippy warns:
-> 
->     error: useless conversion to the same type: `i32`
->        --> rust/kernel/error.rs:139:36
->         |
->     139 |         unsafe { bindings::ERR_PTR(self.0.into()) as *mut _ }
->         |                                    ^^^^^^^^^^^^^ help: consider removing `.into()`: `self.0`
->         |
->         = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#useless_conversion
->         = note: `-D clippy::useless-conversion` implied by `-D warnings`
->         = help: to override `-D warnings` add `#[allow(clippy::useless_conversion)]`
-> 
-> The `self.0.into()` converts an `c_int` into `ERR_PTR`'s parameter
-> which is a `c_long`. Thus, both types are `i32` in 32-bit. Therefore,
-> allow it for those architectures.
-> 
-> Link: https://lore.kernel.org/rust-for-linux/2dbd1491-149d-443c-9802-75786a6a3b73@gmail.com/ [1]
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-> ---
->  rust/kernel/error.rs | 5 ++++-
->  1 file changed, 4 insertions(+), 1 deletion(-)
-> 
-> diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
-> index 145f5c397009..6f1587a2524e 100644
-> --- a/rust/kernel/error.rs
-> +++ b/rust/kernel/error.rs
-> @@ -135,8 +135,11 @@ pub(crate) fn to_blk_status(self) -> bindings::blk_status_t {
->      /// Returns the error encoded as a pointer.
->      #[allow(dead_code)]
->      pub(crate) fn to_ptr<T>(self) -> *mut T {
-> +        #[cfg_attr(target_pointer_width = "32", allow(clippy::useless_conversion))]
->          // SAFETY: `self.0` is a valid error due to its invariant.
-> -        unsafe { bindings::ERR_PTR(self.0.into()) as *mut _ }
-> +        unsafe {
-> +            bindings::ERR_PTR(self.0.into()) as *mut _
-> +        }
->      }
->  
->      /// Returns a string representing the error, if one exists.
-> 
-> base-commit: 8400291e289ee6b2bf9779ff1c83a291501f017b
-Seems good to me.
+On Sat, Jul 27, 2024 at 08:30:47PM +0000, Matt Gilbride wrote:
+[...]
+> +/// A memory reservation for a red-black tree node.
+> +///
+> +///
+> +/// It contains the memory needed to hold a node that can be inserted into a red-black tree. One
+> +/// can be obtained by directly allocating it ([`RBTreeNodeReservation::new`]).
+> +pub struct RBTreeNodeReservation<K, V> {
+> +    node: Box<MaybeUninit<Node<K, V>>>,
+> +}
+> +
+> +impl<K, V> RBTreeNodeReservation<K, V> {
+> +    /// Allocates memory for a node to be eventually initialised and inserted into the tree via a
+> +    /// call to [`RBTree::insert`].
+> +    pub fn new(flags: Flags) -> Result<RBTreeNodeReservation<K, V>> {
+> +        Ok(RBTreeNodeReservation {
+> +            node: Box::new_uninit(flags)?,
 
-If I create another version of the arm support I'll include this there, otherwise:
+This will cause a rusttest error, although I'm not sure whether we want
+to keep doing <Box<_> as BoxExt<_>>::new_uninit() to shutdown this kind
+of errors since we are going to have our own alloc mod.
 
-Reviewd-by: Christian Schrefl <chrisi.schrefl@gmail.com>
+Regards,
+Boqun
+
+> +        })
+> +    }
+> +}
+> +
+[...]
