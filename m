@@ -1,321 +1,151 @@
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Received: from mail-yb1-f201.google.com (mail-yb1-f201.google.com [209.85.219.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BD5386AEE;
-	Tue, 30 Jul 2024 12:13:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 603C019307B
+	for <rust-for-linux@vger.kernel.org>; Tue, 30 Jul 2024 13:06:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722341636; cv=none; b=A8rc3NPfJ3nDMkGKzo98+1/p8+VLCmjE+YUd7+kxHwfGEnn2wbX3FbJOM6YdYPbNM9fHy43D1UWtf4kQdZzuNFIrWgr683UYV3D1CgoVChbPFWZShkspNvI3Q4NnH0/9Kli9ZLw5PcijEP2Yc542ErUcFznWVwDaXZk5MJqkiyI=
+	t=1722344800; cv=none; b=UWJJENkKhco2j7pFkiOx1DVJgDSxDlTgidxF7aIEkwgnUNqyqO4rgjnmiQcz73TKTSO5SDPowy8UiixvWHTwMt1dYo4nYJ8fCsKw3FFvmX9j767XY/N+EsauiP49WOqCAx7JPE7jKsykwSbCcfIMtLUHQIcwJnmhaT6ZDu23DIs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722341636; c=relaxed/simple;
-	bh=1jRg2NRTSWVd96OmIZv36gokoNbld1xheExgrUbnqdw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=i/VjyEVsYoEB3MGRxZaMj3t7jdlcuoKHtLirSZRomNNqXLUhxQPt7RCwInIV+Zy6JRn8VgTo9rmvWClOEWW2geQYgenwMUZU4qfeN8fYocJwtf8plalqlVDZEvWHVBzeu3mSrBkz3UPxQn5Sc/IjysyKZFPYNPyHI81+fHlSbzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=nQELhS7V; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=pAiSiIfD; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=nQELhS7V; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=pAiSiIfD; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+	s=arc-20240116; t=1722344800; c=relaxed/simple;
+	bh=jEounkARTWSXuP9TGoR+2S+iU6PCZFgHt6WY+kyo3Tg=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=iydIP+/fLYpCcohObT4Eaas3Z6XFNQPC73msAdrKd74cZtaK7UjtlSmtwXU982+Uk5u3hTof519HWTVGIUchCM0VXLaX1TB4FxMvNtqBLqsQ/pqN+pbW1q7NHfG6jY0A7uDlkMZvX2GxR9tStygAPC5weNFIIzxOTZrp76n5rI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=kybJt7r8; arc=none smtp.client-ip=209.85.219.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="nQELhS7V";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="pAiSiIfD";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="nQELhS7V";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="pAiSiIfD"
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 1AB1021B58;
-	Tue, 30 Jul 2024 12:13:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1722341632; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gewwiAOFBIXgHIYvN7XPN/gKtcFdzSUlsLbeW58038k=;
-	b=nQELhS7VM9k84VEeCedz18z7o+EETrYlL1210oVlQ7XP+8ww/9UD/I0hA4zOi2aIrStyKr
-	fwdsI78ZYRNAVNSdGgDEoMHQRNv9oukmA3bBLcB3kB1ewjTd4zmZtvChcEvtCLa8DFFWGV
-	Sqgfn9S+fCVYpER8DbbCPQmgi4+5LoY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1722341632;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gewwiAOFBIXgHIYvN7XPN/gKtcFdzSUlsLbeW58038k=;
-	b=pAiSiIfDTAA5VkfUga9ln8d+qH4wUBmsxdKruDkA6zMtkWA6FjPSiiNqSOoPlLFKZy1h8T
-	orQ3NP0UT+7hxuAQ==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=nQELhS7V;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=pAiSiIfD
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1722341632; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gewwiAOFBIXgHIYvN7XPN/gKtcFdzSUlsLbeW58038k=;
-	b=nQELhS7VM9k84VEeCedz18z7o+EETrYlL1210oVlQ7XP+8ww/9UD/I0hA4zOi2aIrStyKr
-	fwdsI78ZYRNAVNSdGgDEoMHQRNv9oukmA3bBLcB3kB1ewjTd4zmZtvChcEvtCLa8DFFWGV
-	Sqgfn9S+fCVYpER8DbbCPQmgi4+5LoY=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1722341632;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=gewwiAOFBIXgHIYvN7XPN/gKtcFdzSUlsLbeW58038k=;
-	b=pAiSiIfDTAA5VkfUga9ln8d+qH4wUBmsxdKruDkA6zMtkWA6FjPSiiNqSOoPlLFKZy1h8T
-	orQ3NP0UT+7hxuAQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E62A213297;
-	Tue, 30 Jul 2024 12:13:51 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id dfH1N//YqGZMRAAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Tue, 30 Jul 2024 12:13:51 +0000
-Message-ID: <44fa564b-9c8f-4ac2-bce3-f6d2c99b73b7@suse.cz>
-Date: Tue, 30 Jul 2024 14:15:34 +0200
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="kybJt7r8"
+Received: by mail-yb1-f201.google.com with SMTP id 3f1490d57ef6-e0baf2a2ed1so153416276.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 30 Jul 2024 06:06:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1722344798; x=1722949598; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=LpK9lTVBIoGCidPfD5yJsiZKmR1svodGEUYQV6xMuaU=;
+        b=kybJt7r8H8E96x0H9WiDTicUI+oAFTwdEgtv5I82U2VWP61pRUTwp/5f339EeRVNf5
+         +Xc1xXQxZIqByqvOgzW6x1hb82RfmJytTCJo1H026ApSWPfLFRDXSRyA1eeKhGwRkYuQ
+         kIlNrediDKInfu6YZd29NeMcoqr1EVOp0m9cT4pNe0jcAD1cXG0AMdpNudXtnzfYhyw4
+         ptwoZ/QWZ8uWhod73qALT+bnbB9Tt+AC2J4doJe6K7R0Z9RYY8hC8jaeLbSluzXIHpy0
+         LHLq8qo+747Ix8lO1RYDPomupMfIfBoZ+vO6uWFhIpFeMcHZtSQCNOhRdOSg6+MlBUi7
+         mobw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722344798; x=1722949598;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=LpK9lTVBIoGCidPfD5yJsiZKmR1svodGEUYQV6xMuaU=;
+        b=pU7janZk+Z7MCFjYUrPrfXAGfmJ9+2Q1H8iKojaN9D+BJGTzC1d/5ozAUDW06/uU8n
+         A0/M9UBsfXxZ8WMTJ++d9GnFK5HOvJO62ax0uWgWuWaQVw3kdt+eJ0ZIBQE8CO/hsUxy
+         kftwVh+hGMdUeAF7sTWEpKEbje2pDb6YDIxguGWHWqGMXmClvbuZErp3n/WgEehLEayX
+         sDljc1sV5lo2O83sPcNfmaYY1HyV0NsQG2PilZBpC33+6WqP02f1IhNgdNr7Z6hT6aru
+         LTU2A1OaZqwDfGncJSO9K00pyAmBZBcSJ12G6cBnWN0ywoMm5AH+Brjk+qVFFWtaTBoz
+         5A4w==
+X-Forwarded-Encrypted: i=1; AJvYcCUaa2KALfVf09a9jq2iIPPk6ci3CDAjlS0XDAk5Fw2rQCfSitHXN6xi7jMtm9yUt3G4kfiy02OYZool/BHIvzPINK+F/nYDOTf2McOdGZY=
+X-Gm-Message-State: AOJu0YyI01VQ9prFG7uO+2umTNlaG96tLcCzdX/8EpX6O4Uo+gRjyP6B
+	wDbAU1JHSlwd/qYPbu79q5SqFZOGM+CXf/MJO7yg+nB5sPlc788mK34DLvdiKc4BnHP5Z2Rr0zg
+	w1ohwvLIY/88KRw==
+X-Google-Smtp-Source: AGHT+IGSTd2Faw/xxTTIOFcjZU6XoSywzCymMkcL6RSxc1cWkvGesZw83sqTekVWN+hk1GX/DwF4g1RUgZ89YD0=
+X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:35bd])
+ (user=aliceryhl job=sendgmr) by 2002:a05:6902:707:b0:e05:a1df:5644 with SMTP
+ id 3f1490d57ef6-e0b9e101779mr28879276.2.1722344798181; Tue, 30 Jul 2024
+ 06:06:38 -0700 (PDT)
+Date: Tue, 30 Jul 2024 13:06:32 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/2] mm: vmalloc: implement vrealloc()
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: cl@linux.com, penberg@kernel.org, rientjes@google.com,
- iamjoonsoo.kim@lge.com, akpm@linux-foundation.org, roman.gushchin@linux.dev,
- 42.hyeyoo@gmail.com, urezki@gmail.com, hch@infradead.org, kees@kernel.org,
- ojeda@kernel.org, wedsonaf@gmail.com, mhocko@kernel.org, mpe@ellerman.id.au,
- chandan.babu@oracle.com, christian.koenig@amd.com, maz@kernel.org,
- oliver.upton@linux.dev, linux-kernel@vger.kernel.org, linux-mm@kvack.org,
- rust-for-linux@vger.kernel.org, Feng Tang <feng.tang@intel.com>,
- kasan-dev <kasan-dev@googlegroups.com>
-References: <20240722163111.4766-1-dakr@kernel.org>
- <20240722163111.4766-2-dakr@kernel.org>
- <07491799-9753-4fc9-b642-6d7d7d9575aa@suse.cz> <ZqQBjjtPXeErPsva@cassiopeiae>
- <ZqfomPVr7PadY8Et@cassiopeiae> <ZqhDXkFNaN_Cx11e@cassiopeiae>
-From: Vlastimil Babka <vbabka@suse.cz>
-Content-Language: en-US
-In-Reply-To: <ZqhDXkFNaN_Cx11e@cassiopeiae>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: 1AB1021B58
-X-Spam-Score: -2.80
-X-Spam-Level: 
-X-Spam-Flag: NO
-X-Spamd-Result: default: False [-2.80 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	SUSPICIOUS_RECIPS(1.50)[];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	MIME_GOOD(-0.10)[text/plain];
-	XM_UA_NO_VERSION(0.01)[];
-	MX_GOOD(-0.01)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	FUZZY_BLOCKED(0.00)[rspamd.com];
-	ARC_NA(0.00)[];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	RCPT_COUNT_TWELVE(0.00)[24];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[linux.com,kernel.org,google.com,lge.com,linux-foundation.org,linux.dev,gmail.com,infradead.org,ellerman.id.au,oracle.com,amd.com,vger.kernel.org,kvack.org,intel.com,googlegroups.com];
-	RCVD_TLS_ALL(0.00)[];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	RCVD_COUNT_TWO(0.00)[2];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	TAGGED_RCPT(0.00)[];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	DKIM_TRACE(0.00)[suse.cz:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:email,suse.cz:dkim,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo]
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAFflqGYC/x3MTQqAIBBA4avErBuwH5G6SrQoG2sgxlAoQbp70
+ vJbvJchUmCKMFYZAt0c2UtBU1dgj0V2Qt6KoVVtr0yn0PlAvAv6R5b1JLxYcPUJdaOtM4MajLF Q6iuQ4/Sfp/l9P2hCtGVpAAAA
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2220; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=jEounkARTWSXuP9TGoR+2S+iU6PCZFgHt6WY+kyo3Tg=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBmqOVZaPfq/TmW8akkNQvdByFITNP/lMpGaX6Zx
+ JhrqcG47RSJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZqjlWQAKCRAEWL7uWMY5
+ RiBqEACwAHfImZQ54ckAVJtY5E9fGjzziUgR4Gd9ZthH66+Z5UOeLhcesS9HPsqg4xydZG/eyic
+ yQCmPBqQWnfhtEFnyG1fbukZEp2OBESnuk+Ekl8ohEKN2tvG7Gw9yOBHuqyNsZzG7riYWWn25bZ
+ EvsbQLN8EKWvBkq+1XSATeQs64TMP/2m0gHHpoRizoVn2JnmJqlfckknB6umXmtJuAJUWcG4KpQ
+ 2najbjqBjtBxgnccklGhlHYcMcHMTfhi09kbWYsfb8umxH5KfMQfD/9l2m5LAeMHm8OB+iMjJiU
+ c68aKE52janaL8/oQMM7As+4bMNEmW44mLcvfh3bvAMRV+urM8FLIjME2LyPV0QFEGRU4+UJYrg
+ E3x8LPcgK1Y7DlmtEmDc9gxdHP+uFuWrJCV6Y3SLco7QvENs5Z0TwWT9Nzes04PxWPpKXeJBqqp
+ Nage0XOU2YC/eN/L3XzXUWT6wWQfi4hvjFuAw9Qy5lcpXjRPKfwQm9GkekXSdaBe5Bo9+Gpay7+
+ DKhlZtpoX31taLcQHuGKmFiERb1jCR/NcSF6yYgl+h4WGPhVufweDV6eaowfE1TNfbYTUAA0BnZ
+ eGJ1pLgurxVWwSAIvj9TZhV1oFfZdK/lVt9GMLVI+h+nwE4qZVO4gcRd1SC/IW1LlM4oCkof7Xe NLIB1AZE2VtVayQ==
+X-Mailer: b4 0.13.0
+Message-ID: <20240730-foreign-ownable-pin-box-v1-1-b1d70cdae541@google.com>
+Subject: [PATCH] rust: implement ForeignOwnable for Pin<Box<T>>
+From: Alice Ryhl <aliceryhl@google.com>
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On 7/30/24 3:35 AM, Danilo Krummrich wrote:
-> On Mon, Jul 29, 2024 at 09:08:16PM +0200, Danilo Krummrich wrote:
->> On Fri, Jul 26, 2024 at 10:05:47PM +0200, Danilo Krummrich wrote:
->>> On Fri, Jul 26, 2024 at 04:37:43PM +0200, Vlastimil Babka wrote:
->>>> On 7/22/24 6:29 PM, Danilo Krummrich wrote:
->>>>> Implement vrealloc() analogous to krealloc().
->>>>>
->>>>> Currently, krealloc() requires the caller to pass the size of the
->>>>> previous memory allocation, which, instead, should be self-contained.
->>>>>
->>>>> We attempt to fix this in a subsequent patch which, in order to do so,
->>>>> requires vrealloc().
->>>>>
->>>>> Besides that, we need realloc() functions for kernel allocators in Rust
->>>>> too. With `Vec` or `KVec` respectively, potentially growing (and
->>>>> shrinking) data structures are rather common.
->>>>>
->>>>> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
->>>>
->>>> Acked-by: Vlastimil Babka <vbabka@suse.cz>
->>>>
->>>>> --- a/mm/vmalloc.c
->>>>> +++ b/mm/vmalloc.c
->>>>> @@ -4037,6 +4037,65 @@ void *vzalloc_node_noprof(unsigned long size, int node)
->>>>>  }
->>>>>  EXPORT_SYMBOL(vzalloc_node_noprof);
->>>>>  
->>>>> +/**
->>>>> + * vrealloc - reallocate virtually contiguous memory; contents remain unchanged
->>>>> + * @p: object to reallocate memory for
->>>>> + * @size: the size to reallocate
->>>>> + * @flags: the flags for the page level allocator
->>>>> + *
->>>>> + * The contents of the object pointed to are preserved up to the lesser of the
->>>>> + * new and old size (__GFP_ZERO flag is effectively ignored).
->>>>
->>>> Well, technically not correct as we don't shrink. Get 8 pages, kvrealloc to
->>>> 4 pages, kvrealloc back to 8 and the last 4 are not zeroed. But it's not
->>>> new, kvrealloc() did the same before patch 2/2.
->>>
->>> Taking it (too) literal, it's not wrong. The contents of the object pointed to
->>> are indeed preserved up to the lesser of the new and old size. It's just that
->>> the rest may be "preserved" as well.
->>>
->>> I work on implementing shrink and grow for vrealloc(). In the meantime I think
->>> we could probably just memset() spare memory to zero.
->>
->> Probably, this was a bad idea. Even with shrinking implemented we'd need to
->> memset() potential spare memory of the last page to zero, when new_size <
->> old_size.
->>
->> Analogously, the same would be true for krealloc() buckets. That's probably not
->> worth it.
+We already implement ForeignOwnable for Box<T>, but it may be useful to
+store pinned data in a ForeignOwnable container. This patch makes that
+possible.
 
-I think it could remove unexpected bad surprises with the API so why not
-do it.
+This will be used together with upcoming miscdev abstractions, which
+Binder will use when binderfs is disabled.
 
->> I think we should indeed just document that __GFP_ZERO doesn't work for
->> re-allocating memory and start to warn about it. As already mentioned, I think
->> we should at least gurantee that *realloc(NULL, size, flags | __GFP_ZERO) is
->> valid, i.e. WARN_ON(p && flags & __GFP_ZERO).
-> 
-> Maybe I spoke a bit to soon with this last paragraph. I think continuously
-> gowing something with __GFP_ZERO is a legitimate use case. I just did a quick
-> grep for users of krealloc() with __GFP_ZERO and found 18 matches.
-> 
-> So, I think, at least for now, we should instead document that __GFP_ZERO is
-> only fully honored when the buffer is grown continuously (without intermediate
-> shrinking) and __GFP_ZERO is supplied in every iteration.
-> 
-> In case I miss something here, and not even this case is safe, it looks like
-> we have 18 broken users of krealloc().
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+ rust/kernel/types.rs | 27 +++++++++++++++++++++++++++
+ 1 file changed, 27 insertions(+)
 
-+CC Feng Tang
+diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
+index bd189d646adb..132ca1113083 100644
+--- a/rust/kernel/types.rs
++++ b/rust/kernel/types.rs
+@@ -9,6 +9,7 @@
+     marker::{PhantomData, PhantomPinned},
+     mem::MaybeUninit,
+     ops::{Deref, DerefMut},
++    pin::Pin,
+     ptr::NonNull,
+ };
+ 
+@@ -89,6 +90,32 @@ unsafe fn from_foreign(ptr: *const core::ffi::c_void) -> Self {
+     }
+ }
+ 
++impl<T: 'static> ForeignOwnable for Pin<Box<T>> {
++    type Borrowed<'a> = Pin<&'a T>;
++
++    fn into_foreign(self) -> *const core::ffi::c_void {
++        // SAFETY: We are still treating the box as pinned.
++        Box::into_raw(unsafe { Pin::into_inner_unchecked(self) }) as _
++    }
++
++    unsafe fn borrow<'a>(ptr: *const core::ffi::c_void) -> Pin<&'a T> {
++        // SAFETY: The safety requirements for this function ensure that the object is still alive,
++        // so it is safe to dereference the raw pointer.
++        // The safety requirements of `from_foreign` also ensure that the object remains alive for
++        // the lifetime of the returned value.
++        let r = unsafe { &*ptr.cast() };
++
++        // SAFETY: This pointer originates from a `Pin<Box<T>>`.
++        unsafe { Pin::new_unchecked(r) }
++    }
++
++    unsafe fn from_foreign(ptr: *const core::ffi::c_void) -> Self {
++        // SAFETY: The safety requirements of this function ensure that `ptr` comes from a previous
++        // call to `Self::into_foreign`.
++        unsafe { Pin::new_unchecked(Box::from_raw(ptr as _)) }
++    }
++}
++
+ impl ForeignOwnable for () {
+     type Borrowed<'a> = ();
+ 
 
-Let's say we kmalloc(56, __GFP_ZERO), we get an object from kmalloc-64
-cache. Since commit 946fa0dbf2d89 ("mm/slub: extend redzone check to
-extra allocated kmalloc space than requested") and preceding commits, if
-slub_debug is enabled (red zoning or user tracking), only the 56 bytes
-will be zeroed. The rest will be either unknown garbage, or redzone.
+---
+base-commit: 8400291e289ee6b2bf9779ff1c83a291501f017b
+change-id: 20240730-foreign-ownable-pin-box-515cf790977c
 
-Then we might e.g. krealloc(120) and get a kmalloc-128 object and 64
-bytes (result of ksize()) will be copied, including the garbage/redzone.
-I think it's fixable because when we do this in slub_debug, we also
-store the original size in the metadata, so we could read it back and
-adjust how many bytes are copied.
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
 
-Then we could guarantee that if __GFP_ZERO is used consistently on
-initial kmalloc() and on krealloc() and the user doesn't corrupt the
-extra space themselves (which is a bug anyway that the redzoning is
-supposed to catch) all will be fine.
-
-There might be also KASAN side to this, I see poison_kmalloc_redzone()
-is also redzoning the area between requested size and cache's object_size?
-
->>
->>>
->>> nommu would still uses krealloc() though...
->>>
->>>>
->>>> But it's also fundamentally not true for krealloc(), or kvrealloc()
->>>> switching from a kmalloc to valloc. ksize() returns the size of the kmalloc
->>>> bucket, we don't know what was the exact prior allocation size.
->>>
->>> Probably a stupid question, but can't we just zero the full bucket initially and
->>> make sure to memset() spare memory in the bucket to zero when krealloc() is
->>> called with new_size < ksize()?
->>>
->>>> Worse, we
->>>> started poisoning the padding in debug configurations, so even a
->>>> kmalloc(__GFP_ZERO) followed by krealloc(__GFP_ZERO) can give you unexpected
->>>> poison now...
->>>
->>> As in writing magics directly to the spare memory in the bucket? Which would
->>> then also be copied over to a new buffer in __do_krealloc()?
->>>
->>>>
->>>> I guess we should just document __GFP_ZERO is not honored at all for
->>>> realloc, and maybe start even warning :/ Hopefully nobody relies on that.
->>>
->>> I think it'd be great to make __GFP_ZERO work in all cases. However, if that's
->>> really not possible, I'd prefer if we could at least gurantee that
->>> *realloc(NULL, size, flags | __GFP_ZERO) is a valid call, i.e.
->>> WARN_ON(p && flags & __GFP_ZERO).
->>>
->>>>
->>>>> + *
->>>>> + * If @p is %NULL, vrealloc() behaves exactly like vmalloc(). If @size is 0 and
->>>>> + * @p is not a %NULL pointer, the object pointed to is freed.
->>>>> + *
->>>>> + * Return: pointer to the allocated memory; %NULL if @size is zero or in case of
->>>>> + *         failure
->>>>> + */
->>>>> +void *vrealloc_noprof(const void *p, size_t size, gfp_t flags)
->>>>> +{
->>>>> +	size_t old_size = 0;
->>>>> +	void *n;
->>>>> +
->>>>> +	if (!size) {
->>>>> +		vfree(p);
->>>>> +		return NULL;
->>>>> +	}
->>>>> +
->>>>> +	if (p) {
->>>>> +		struct vm_struct *vm;
->>>>> +
->>>>> +		vm = find_vm_area(p);
->>>>> +		if (unlikely(!vm)) {
->>>>> +			WARN(1, "Trying to vrealloc() nonexistent vm area (%p)\n", p);
->>>>> +			return NULL;
->>>>> +		}
->>>>> +
->>>>> +		old_size = get_vm_area_size(vm);
->>>>> +	}
->>>>> +
->>>>> +	if (size <= old_size) {
->>>>> +		/*
->>>>> +		 * TODO: Shrink the vm_area, i.e. unmap and free unused pages.
->>>>> +		 * What would be a good heuristic for when to shrink the
->>>>> +		 * vm_area?
->>>>> +		 */
->>>>> +		return (void *)p;
->>>>> +	}
->>>>> +
->>>>> +	/* TODO: Grow the vm_area, i.e. allocate and map additional pages. */
->>>>> +	n = __vmalloc_noprof(size, flags);
->>>>> +	if (!n)
->>>>> +		return NULL;
->>>>> +
->>>>> +	if (p) {
->>>>> +		memcpy(n, p, old_size);
->>>>> +		vfree(p);
->>>>> +	}
->>>>> +
->>>>> +	return n;
->>>>> +}
->>>>> +
->>>>>  #if defined(CONFIG_64BIT) && defined(CONFIG_ZONE_DMA32)
->>>>>  #define GFP_VMALLOC32 (GFP_DMA32 | GFP_KERNEL)
->>>>>  #elif defined(CONFIG_64BIT) && defined(CONFIG_ZONE_DMA)
->>>>
