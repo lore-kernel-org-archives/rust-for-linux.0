@@ -1,233 +1,99 @@
-Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B396014B07E
-	for <rust-for-linux@vger.kernel.org>; Tue, 30 Jul 2024 18:37:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C671218CBF9;
+	Tue, 30 Jul 2024 20:22:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722364637; cv=none; b=CfoKne+N7dl+S7l61+Zx+Ky5wQ8W2Sl+Bp8iXORJuL0xIj8VaHUWYM6K5WwTrrzKppCkeugkxer17vH58Nth9x4jqDXvcKAUYWQU6DT1g5BCczElygrljk+BAMIDi2UYoQYLLhofRdz601FwyGL3MCiZKKwJfZC/A+7smpG948A=
+	t=1722370976; cv=none; b=rNpEZlneRBxw8hlXCYVGQe//TIFl2p+FEm9UsXToKJniWAJO4bxlyfYGChmN0U9Zx0VA8NjQke00BM0AphKGJiHZPg7SDramsO6WEliATjnTg+YCP89rybh50xzwGWQAA4Mk51if+wXM1AVvr6DS23H+WBYVSC3gjlvbmqICiHI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722364637; c=relaxed/simple;
-	bh=FWHoaka0YcBdOZsa+TFaE5PxkJUctI/50mek4bbCdv4=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Im5lkZvKb7ELhNLuwOSUZs4EQwrPtbzDT0V/poAH9E1MeRDoYijZCAzwvs7Yl8tLlXce2UTkUqvgP2dJhhCVjREPtu1j9vcktgorgYURrfJQBZlM6iZaU1qh6T75WZjo++t/mhAJ2nvTuGt2q/zUQk0HdinIM1sVQ/ZZz1jmuWk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=hhnXRvYP; arc=none smtp.client-ip=185.70.40.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1722370976; c=relaxed/simple;
+	bh=qgIM6c6I7ActKGrTkv0LUY7kFUEtEmpH3NypCwcOYbI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RiEcNDCsRc1OOnnYtCqNQrCbRxC9weJo09mLCrXyiWoPX7dPgnQcvcHXDq206V35gUAb9c6vsK7aycT2IIMIV6UpTmrlai3VIJR26xMmDet4uwbjSbN6iLrMbDZ+pArk/x+YDrgi2jrAvnbtuSVVi2FiiCkXUu/WODOsfTPuC5o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NuyD+pJZ; arc=none smtp.client-ip=209.85.215.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="hhnXRvYP"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1722364632; x=1722623832;
-	bh=+vUfzUTV6ECXtEhzuiHcq10NNoZ0aUeyonhn6MPajjM=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=hhnXRvYPdwDJm0sDMSAlhzBaKPObPYjaqs256POG7Vu+inSDOYGJ5sWjPeoNOgL+z
-	 x2hjtSWbC+0gA+DcIkioo4E7fSgIDq/SVcI/Hwe2Tl9CcmISZGK2B3OafQHEJ0NGMK
-	 spDZayA36Lay7Qq3MjsxKK9UdOVxfTH1EY0EY/3qjqEozz5d7v4n32LWuEImV931C4
-	 +iSOLqdUI+OoR+J3YFRP7sQBlaDAJ7qsU6uit0AoVfai8VCfKP95u1g6qjME5/FPhB
-	 Q3biHra3qLPCt5MM7X4ihF0DTq3rwu9h+9+sjdqXoM1zMLvGYaw2npsmIq0yL22yPm
-	 Mm5H66ps5ZZ3w==
-Date: Tue, 30 Jul 2024 18:37:07 +0000
-To: Alice Ryhl <aliceryhl@google.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Matthew Wilcox <willy@infradead.org>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v2] rust: mm: add abstractions for mm_struct and vm_area_struct
-Message-ID: <87034744-5d9b-4ac6-bc36-a54aa32eafb2@proton.me>
-In-Reply-To: <CAH5fLgg1DR2mLDvP6J=+Zp-OJWHfL-hXdZ3HioueXF=rg9yN9w@mail.gmail.com>
-References: <20240727-vma-v2-1-ab3e5927dc3a@google.com> <3ffd4742-7a84-434d-ad0d-962f302b977a@proton.me> <CAH5fLgg1DR2mLDvP6J=+Zp-OJWHfL-hXdZ3HioueXF=rg9yN9w@mail.gmail.com>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 0bad8e60e31edf27af4145b663e083c67d2abd79
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NuyD+pJZ"
+Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-7a263f6439eso2828656a12.3;
+        Tue, 30 Jul 2024 13:22:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1722370974; x=1722975774; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qgIM6c6I7ActKGrTkv0LUY7kFUEtEmpH3NypCwcOYbI=;
+        b=NuyD+pJZZiwe/nDPxhbU+06l9PD2+4u6zRl4If9ecw7njvKGbVjeviKVnIcRBaA8pP
+         2p9FlTrEl3cK60lxqgQK/hDUsjdD+XkqVdT3y5R/tX+CxFi/rbIJH9qnUkkhDJusuTMo
+         Vesk3cy8Rfsl3bLz7WxgiJojmXc7bzmrDPGukJ2OH/LYal9KBAgFDn4buItsW6uYRqAz
+         5P69Bk3bRZ6Yd/h7m5dhOcbsON4zLUIMhm5qfyO1qXcrV/HnssbmeZ9Le/vmy6VVX9Vw
+         VHSGTfqCl4SjA6BuZqqEJMnGpckiKoH6dtBj8eac6essgH1Cyi4/YsOs9Hh7SuG/gEvP
+         jQlw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722370974; x=1722975774;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=qgIM6c6I7ActKGrTkv0LUY7kFUEtEmpH3NypCwcOYbI=;
+        b=hfw37Bc4Pxmv2ql8QPXrJ8sDDvuDteprYJiUNA2V64Hi0mK6miKfu4SttwCRmrt44f
+         XGUySPIVd9JLUfyyWeYwmPWYzV+YWm2X9RUkvFoGUQT4SvW29FnsoaJxmy+9JlCznOJg
+         XjRYw0cWSeP/rIO9L/DgUAzYcCGS68Z7lbmgrXWVXnw20aYT1CBw25E9j3C0n9cQRLD9
+         7AXamo0/8ZZvZBEFQvfS8wfkNJmsR6S7Lh/iEIu0usriP4xBs36y5rivJr7vaxueah7q
+         OlP2h0bDG5wx8FwQbrOjYCiPhJhwFseqXcqLt7iQgV7sW8Ko9NQmThKlH8o8hMmJHonq
+         aj7g==
+X-Forwarded-Encrypted: i=1; AJvYcCVLxA0hvSqhCpApqGa52ZChgpeJ5OoLu0tBza4Kf4Qzhc0BK4YYeTIdQ/0ECB8HmDovG2X5l4s7QZ8h7MMIh1wj9WfYKerQaYFQWV8T3/PcFLf+BkMYGDxEu494TeRZ8BJzo3lw6atJoLlBT34=
+X-Gm-Message-State: AOJu0YyY4+Vk7NsAgQ5RvqUC+1BuhQ1w5HUA9dEfajYo8wZslsu3WyyZ
+	EmJ4AX30Wpw1/jf29DPp/K7DHmPe9OMQ6GRNfzL53vA+XmVHdr0aQVi4CV5tQau28FXW07UoUQG
+	UKwhnBPo9a1DOFBQJCPU56azPHcM=
+X-Google-Smtp-Source: AGHT+IHCzS/rd7b1oz4vmEzbNtTxafJlsZS84UjHMW+33i7wxde9VAxzqRvvwyZppvHikLIMBEJEM7F0XUjrbhZBkok=
+X-Received: by 2002:a17:90b:2248:b0:2c9:74f2:3b24 with SMTP id
+ 98e67ed59e1d1-2cf7e1eda57mr10326001a91.12.1722370973899; Tue, 30 Jul 2024
+ 13:22:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20240730155702.1110144-1-ojeda@kernel.org> <CAH5fLgj-0EsVjh8xdV1mXZBXPxKGnwUa8-R+Bg1eyjh0Gh_BWg@mail.gmail.com>
+In-Reply-To: <CAH5fLgj-0EsVjh8xdV1mXZBXPxKGnwUa8-R+Bg1eyjh0Gh_BWg@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 30 Jul 2024 22:22:41 +0200
+Message-ID: <CANiq72==6_Km_UYWaxxWw4gLS0g5yK5dQYvq+2xGTQvmm4aHyA@mail.gmail.com>
+Subject: Re: [PATCH] rust: error: allow `useless_conversion` for 32-bit builds
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Russell King <linux@armlinux.org.uk>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Christian Schrefl <chrisi.schrefl@gmail.com>, Jamie Cunliffe <Jamie.Cunliffe@arm.com>, 
+	Sven Van Asbroeck <thesven73@gmail.com>, linux-arm-kernel@lists.infradead.org, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	patches@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On 30.07.24 12:57, Alice Ryhl wrote:
-> On Mon, Jul 29, 2024 at 6:13=E2=80=AFPM Benno Lossin <benno.lossin@proton=
-.me> wrote:
->> On 27.07.24 11:03, Alice Ryhl wrote:
->>> +/// Equivalent to `ARef<MmWithUser>` but uses `mmput_async` in destruc=
-tor.
->>> +///
->>> +/// The destructor of this type will never sleep.
->>> +///
->>> +/// # Invariants
->>> +///
->>> +/// `inner` points to a valid `mm_struct` and the `ARefMmWithUserAsync=
-` owns an `mmget` refcount.
->>> +pub struct ARefMmWithUserAsync {
->>> +    inner: NonNull<bindings::mm_struct>,
->>
->> I am confused, why doesn't `mm: MM` work here? I.e. also allow usage of
->> `ARef<MmWithUserAsync>`.
->=20
-> We could do that, but I don't know how much sense it makes. With Mm
-> and MmWithUser there's a legitimate distinction between them that
-> makes sense regardless of whether it's behind an ARef or &. But with
-> the `mmput_async` case, the distinction only makes sense for ARef
-> pointers, and &MmWithUser and &MmWithUserAsync would be 100%
-> interchangeable.
->=20
-> That is to say, this is a property of the pointer, not the pointee. I
-> don't think it makes sense semantically to have it be a wrapper around
-> MmWithUser.
+On Tue, Jul 30, 2024 at 7:55=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
+rote:
+>
+> The formatting here is a bit weird. Perhaps we should swap the cfg and
+> the comment?
 
-Hmm, I don't think that is a problem. We have `ARef` for the following
-reasons (quoting myself from the ARef pattern thread):
-(1) prevents having to implement multiple abstractions for a single C
-    object: say there is a `struct foo` that is both used via reference
-    counting and by-value on the stack. Without `ARef`, we would have to
-    write two abstractions, one for each use-case. With `ARef`, we can
-    have one `Foo` that can be wrapped with `ARef` to represent a
-    reference-counted object.
-(2) `ARef<T>` always represents a reference counted object, so it helps
-    with understanding the code. If you read `Foo`, you cannot be sure
-    if it is heap or stack allocated.
-(3) generalizes common code of reference-counted objects (ie avoiding
-    code duplication) and concentration of `unsafe` code.
+Yeah, I don't like it either -- I reflexively did it because in the
+safety series I am sending, there was a case where it would not notice
+the `// SAFETY` comment if an attribute was placed afterwards.
 
-If you don't use `ARef`, you
-- have to implement `Deref`, `Drop`, `From<ARef<_>>` manually,
-- have a rather ugly name,
-- don't benefit from the three points above.
+But for blocks like this works fine, so it is not needed here, so we
+can change it, even we may need to be inconsistent in a few places
+about this, at least until it is fixed (assuming it is indeed a false
+positive).
 
-I don't really see a downside to just using `ARef` in this case.
+I created an issue in Clippy about it:
+https://github.com/rust-lang/rust-clippy/issues/13189.
 
->> Another approach might be to have the function on `MmWithUser`:
->>
->>     fn put_async(this: ARef<Self>)
->>
->> Or do you need it to be done on drop?
->=20
-> This needs to happen in drop so that use of the question mark
-> operation doesn't suddenly result in sleep-in-atomic-ctx bugs.
->=20
->>> +}
->>> +
->>> +// Make all `Mm` methods available on `MmWithUser`.
->>> +impl Deref for MmWithUser {
->>> +    type Target =3D Mm;
->>> +
->>> +    #[inline]
->>> +    fn deref(&self) -> &Mm {
->>> +        &self.mm
->>> +    }
->>
->> Does it really make sense to expose every function? E.g.
->> `mmget_not_zero` would always succeed, right?
->=20
-> I don't think it's a problem. Right now it exposes mmget_not_zero,
-> is_same_mm, and as_raw. The only one where it doesn't make much sense
-> is mmget_not_zero, but I don't think it hurts either.
->=20
->>> +}
->>> +
->>> +// These methods are safe to call even if `mm_users` is zero.
->>
->> [...]
->>
->>> diff --git a/rust/kernel/mm/virt.rs b/rust/kernel/mm/virt.rs
->>> new file mode 100644
->>> index 000000000000..2e97ef1eac58
->>> --- /dev/null
->>> +++ b/rust/kernel/mm/virt.rs
->>> @@ -0,0 +1,199 @@
->>> +// SPDX-License-Identifier: GPL-2.0
->>> +
->>> +// Copyright (C) 2024 Google LLC.
->>> +
->>> +//! Virtual memory.
->>> +
->>> +use crate::{
->>> +    bindings,
->>> +    error::{to_result, Result},
->>> +    page::Page,
->>> +    types::Opaque,
->>> +};
->>> +
->>> +/// A wrapper for the kernel's `struct vm_area_struct`.
->>> +///
->>> +/// It represents an area of virtual memory.
->>> +#[repr(transparent)]
->>> +pub struct VmArea {
->>> +    vma: Opaque<bindings::vm_area_struct>,
->>> +}
->>> +
->>> +impl VmArea {
->>> +    /// Access a virtual memory area given a raw pointer.
->>> +    ///
->>> +    /// # Safety
->>> +    ///
->>> +    /// Callers must ensure that `vma` is valid for the duration of 'a=
-, with shared access. The
->>> +    /// caller must ensure that using the pointer for immutable operat=
-ions is okay.
->>
->> Nothing here states that the pointee is not allowed to be changed,
->> unless you mean that by "shared access" which would not match my
->> definition.
->=20
-> How about this?
->=20
-> Callers must ensure that:
-> * `vma` is valid for the duration of 'a.
-> * the caller holds the mmap read lock for 'a.
->=20
-> And `from_raw_vma_mut` would instead require the caller to hold the
-> mmap write lock.
+Thanks!
 
-SGTM.
-
->>> +    #[inline]
->>> +    pub unsafe fn from_raw_vma<'a>(vma: *const bindings::vm_area_struc=
-t) -> &'a Self {
->>> +        // SAFETY: The caller ensures that the pointer is valid.
->>> +        unsafe { &*vma.cast() }
->>> +    }
->>> +
->>> +    /// Access a virtual memory area given a raw pointer.
->>> +    ///
->>> +    /// # Safety
->>> +    ///
->>> +    /// Callers must ensure that `vma` is valid for the duration of 'a=
-, with exclusive access. The
->>> +    /// caller must ensure that using the pointer for immutable and mu=
-table operations is okay.
->>> +    #[inline]
->>> +    pub unsafe fn from_raw_vma_mut<'a>(vma: *mut bindings::vm_area_str=
-uct) -> &'a mut Self {
->>> +        // SAFETY: The caller ensures that the pointer is valid.
->>> +        unsafe { &mut *vma.cast() }
->>> +    }
->>> +
->>> +    /// Returns a raw pointer to this area.
->>> +    #[inline]
->>> +    pub fn as_ptr(&self) -> *mut bindings::vm_area_struct {
->>> +        self.vma.get()
->>> +    }
->>> +
->>> +    /// Returns the flags associated with the virtual memory area.
->>> +    ///
->>> +    /// The possible flags are a combination of the constants in [`fla=
-gs`].
->>> +    #[inline]
->>> +    pub fn flags(&self) -> usize {
->>> +        // SAFETY: The pointer is valid since self is a reference. The=
- field is valid for reading
->>> +        // given a shared reference.
->>
->> Why is the field not changed from the C side? Is this part readonly?
->=20
-> Because we hold the mmap read lock. (or the write lock)
-
-Oh, then it would be good to have it be an invariant.
-
----
 Cheers,
-Benno
-
+Miguel
