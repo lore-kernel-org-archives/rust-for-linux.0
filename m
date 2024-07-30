@@ -1,137 +1,110 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ua1-f41.google.com (mail-ua1-f41.google.com [209.85.222.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 031921974FE;
-	Tue, 30 Jul 2024 14:32:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F4A61A38D7
+	for <rust-for-linux@vger.kernel.org>; Tue, 30 Jul 2024 15:19:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722349948; cv=none; b=WSPfWFeQ1K6qEJ6NKNlM6pHuR7GJbb1r584mrndXLiqgjvn/P2vCfNR/gAb5KYToSVSdvxFdLAFFMT0ou6eLA1cOAlyxALdDrK2w5z3AtN+22ukm2uhf00+eC3FXb+WCNcPG/2Hbc7+TA8k+1K3m2xpuNCDPmjypDzIe/19F8GM=
+	t=1722352794; cv=none; b=P8F5uWGlN6gobke4nhVcZOn/uyg1rNhdLAAaOM1Qu09w+l+nePk3anN+u6jF22/5GnYXHUiDuXx2C6q7uyTKd2LPHT2T8zzkJQ+ZHgWJ2D6KdgKM2lsZgRoX5SHd1VA5hjo1pmeugJr0OiqC2ug0EGkwxQlK++iGczRiKCWGwww=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722349948; c=relaxed/simple;
-	bh=+j4R5RoszZQrj25E4WFcSoCqS39W7IfpQDj+BrchEnI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Xs8zMY5IxBekh9PHuodxuQDqiZnINHATM0NQZvR/LaGvpGdIPoto7kgdmFjviWksS32b2CPHdSTYgvT/Iq956R/ONFQ6qGRgrV9BqZds+qJ1gdjmam/xSNiRvkshMJv2WRpcB5Y0UmbLWzPUne/L0yHSS03Q0lcNwHrHuxdSnTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=APhoxjyX; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1722352794; c=relaxed/simple;
+	bh=2B8WwI7Cb180r9Sb7Hq5sHlqUuB8r+N3bxW/DWxf/vU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=AOoXouEOsnEEz+JQsdODUSE0KmU+lkGZNVXH0b0ChIc0yffos7+VvS27z9sJwTdpYFWDu8CSd7aQAWenXzO6aEouZ1NRdU1WBaC954GlbEE6YPEDFb9UTWGhuncQJ779eRizXrLiQGpGpsDnbvZUzKTEK3kV2Vn1ocPKdJ/ZeFM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KNr9Bg/9; arc=none smtp.client-ip=209.85.222.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="APhoxjyX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E04DBC32782;
-	Tue, 30 Jul 2024 14:32:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722349947;
-	bh=+j4R5RoszZQrj25E4WFcSoCqS39W7IfpQDj+BrchEnI=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=APhoxjyXBcQaSHoDLpSBG95xMCA8HtFHOS/tMTPaW8kEhRrD9GiLM6/G3ZP4zlDVc
-	 5mL25FjCiET/oFIcsvSubRCN1HTeMVB9RtO9XvF9XhbhhLGDB78bwwz2KstOeATE2I
-	 zOqdUgcsPeP+E7NSs1KPTXZmh7b6FhXjfGxTPniTC5M9q/YRHx7hg2fV6fsw8yk3Qh
-	 d/FGM9S7x/iROKN26sK3St5itFXVIhRCCiWUe3wMQCLhIJwiBb9C5JDyIgVVu2fXH5
-	 uYBU/VdInqGpfU1CoAVaXcZGLkRmT59XD8Qvv//yJcvimDPmGSw4PbJLpuWPQ1Cigi
-	 QRki53DuJDYIg==
-Date: Tue, 30 Jul 2024 16:32:19 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Vlastimil Babka <vbabka@suse.cz>
-Cc: cl@linux.com, penberg@kernel.org, rientjes@google.com,
-	iamjoonsoo.kim@lge.com, akpm@linux-foundation.org,
-	roman.gushchin@linux.dev, 42.hyeyoo@gmail.com, urezki@gmail.com,
-	hch@infradead.org, kees@kernel.org, ojeda@kernel.org,
-	wedsonaf@gmail.com, mhocko@kernel.org, mpe@ellerman.id.au,
-	chandan.babu@oracle.com, christian.koenig@amd.com, maz@kernel.org,
-	oliver.upton@linux.dev, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, rust-for-linux@vger.kernel.org,
-	Feng Tang <feng.tang@intel.com>,
-	kasan-dev <kasan-dev@googlegroups.com>
-Subject: Re: [PATCH v2 1/2] mm: vmalloc: implement vrealloc()
-Message-ID: <Zqj5cyBCSu8bxsLJ@pollux>
-References: <20240722163111.4766-1-dakr@kernel.org>
- <20240722163111.4766-2-dakr@kernel.org>
- <07491799-9753-4fc9-b642-6d7d7d9575aa@suse.cz>
- <ZqQBjjtPXeErPsva@cassiopeiae>
- <ZqfomPVr7PadY8Et@cassiopeiae>
- <ZqhDXkFNaN_Cx11e@cassiopeiae>
- <44fa564b-9c8f-4ac2-bce3-f6d2c99b73b7@suse.cz>
- <ZqjnR4Wxzf-ciUGW@pollux>
- <d0234a41-811e-40a7-b239-e51b35862adc@suse.cz>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KNr9Bg/9"
+Received: by mail-ua1-f41.google.com with SMTP id a1e0cc1a2514c-8318b4d9539so1191941241.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 30 Jul 2024 08:19:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1722352792; x=1722957592; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2B8WwI7Cb180r9Sb7Hq5sHlqUuB8r+N3bxW/DWxf/vU=;
+        b=KNr9Bg/9rl79pMS1k1B2JDeNc86fwCxIVYV5+xVYkTVsYmZzaha6SIFRmPeUYGxgyi
+         N6h7r5UAd7zW7JMG2oi9PH5xjGAjuvhAuk7VDB5IcvxriDzAPU/Vu/P/k5wdPnhX5o4f
+         E6lXshJm8xUslzpUVBr1ZIIjRNV9ysMyqW5uS5JfUtdhk6Qq226VIqnE5LBnE9Xs4CsY
+         lq+MGp0OW3L1xnqAlA0B273Y57RoRCT1ukyjFEk9KOaNU2AQCR1cx3Ma0sgoES/XCEb4
+         l5YRVd95KrIa2NvrqFXgqBBln1VIONnXAUssxkdHHGxN0y+rDWZf5OP+/s6/2wUSdn5l
+         KGGA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722352792; x=1722957592;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2B8WwI7Cb180r9Sb7Hq5sHlqUuB8r+N3bxW/DWxf/vU=;
+        b=Sn5EjMfkGHiV0TUV2PNq+rst2U21esMI71e7z8ijTBwOjhseBJW/6g330DpDVgKpd5
+         pBdiYlT8RilW9D2Wi1RI2a39lUPMC4sTskrYM04W2DLP8MMEw1+D4jk4jxdujn45VQ3l
+         1RXkijdhm0/A59T3V5Q/cZXLcLlk2G1n+zuOKcIxhw1K+zsWyq41JH4VXzoVIvRFo9q9
+         I5WkWoeEPQJvo40CLvwVgTNX4TuAbshDU/CpUMtZYOEyKtsdXHKwThuFligW+pU0+aAP
+         +RaXqFTlemK1Q/bUlQNbO3jCQoQcbJQlGHCX8W6I8DYwWBByBkNOA8mnKUIj2WhrCzVs
+         JDuQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVEGlOooAfkVaM3EzBpqHb6QLtroYOzJMdW+RcKC1rIKI85Vevv80HREHxU6A0bei+PLSmleycAnBIlpQnpx2gwlgxjeu6p9toG5QCpspo=
+X-Gm-Message-State: AOJu0YwEhVlj5IhGqsf1cbgeBRA7XNps5Tb3h36WX4O6oz5LgZAgGiyp
+	EFamnXrFVwaMjffQYEetHsaEhEG+fZfWAPfx4C5HuGMVSVIZ9MXohiY9dVeLJvZ2volhiSnZODd
+	9orLfiBtMUM+Cq/YVboN6YoBcg9X4PUVZblCD
+X-Google-Smtp-Source: AGHT+IFYWl0B6ozqGp9/4MappOQC0WeCJttsu9HV93WtvH7H37A+U1SNe41tpi9Z7+Ch7vETcUsz4gucQAkyakUjzhY=
+X-Received: by 2002:a05:6122:1828:b0:4f5:27ac:ce6e with SMTP id
+ 71dfb90a1353d-4f6e68ef18bmr12317085e0c.7.1722352791754; Tue, 30 Jul 2024
+ 08:19:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d0234a41-811e-40a7-b239-e51b35862adc@suse.cz>
+References: <20240730-kcfi-v1-0-bbb948752a30@google.com> <20240730-kcfi-v1-1-bbb948752a30@google.com>
+ <20240730102856.GJ33588@noisy.programming.kicks-ass.net>
+In-Reply-To: <20240730102856.GJ33588@noisy.programming.kicks-ass.net>
+From: Sami Tolvanen <samitolvanen@google.com>
+Date: Tue, 30 Jul 2024 08:19:13 -0700
+Message-ID: <CABCJKuc8ue1y7WBPo3YRRoDeGUFpRon4at=Wa1rQjrXzOGpt9w@mail.gmail.com>
+Subject: Re: [PATCH 1/2] cfi: add CONFIG_CFI_ICALL_NORMALIZE_INTEGERS
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Alice Ryhl <aliceryhl@google.com>, Masahiro Yamada <masahiroy@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, Miguel Ojeda <ojeda@kernel.org>, 
+	Kees Cook <kees@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Matthew Maurer <mmaurer@google.com>, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jul 30, 2024 at 03:58:25PM +0200, Vlastimil Babka wrote:
-> On 7/30/24 3:14 PM, Danilo Krummrich wrote:
-> > On Tue, Jul 30, 2024 at 02:15:34PM +0200, Vlastimil Babka wrote:
-> >> On 7/30/24 3:35 AM, Danilo Krummrich wrote:
-> >>> On Mon, Jul 29, 2024 at 09:08:16PM +0200, Danilo Krummrich wrote:
-> >>>> On Fri, Jul 26, 2024 at 10:05:47PM +0200, Danilo Krummrich wrote:
-> >>>>> On Fri, Jul 26, 2024 at 04:37:43PM +0200, Vlastimil Babka wrote:
-> >>>>>> On 7/22/24 6:29 PM, Danilo Krummrich wrote:
-> >>>>>>> Implement vrealloc() analogous to krealloc().
-> >>>>>>>
-> >>>>>>> Currently, krealloc() requires the caller to pass the size of the
-> >>>>>>> previous memory allocation, which, instead, should be self-contained.
-> >>>>>>>
-> >>>>>>> We attempt to fix this in a subsequent patch which, in order to do so,
-> >>>>>>> requires vrealloc().
-> >>>>>>>
-> >>>>>>> Besides that, we need realloc() functions for kernel allocators in Rust
-> >>>>>>> too. With `Vec` or `KVec` respectively, potentially growing (and
-> >>>>>>> shrinking) data structures are rather common.
-> >>>>>>>
-> >>>>>>> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-> >>>>>>
-> >>>>>> Acked-by: Vlastimil Babka <vbabka@suse.cz>
-> >>>>>>
-> >>>>>>> --- a/mm/vmalloc.c
-> >>>>>>> +++ b/mm/vmalloc.c
-> >>>>>>> @@ -4037,6 +4037,65 @@ void *vzalloc_node_noprof(unsigned long size, int node)
-> >>>>>>>  }
-> >>>>>>>  EXPORT_SYMBOL(vzalloc_node_noprof);
-> >>>>>>>  
-> >>>>>>> +/**
-> >>>>>>> + * vrealloc - reallocate virtually contiguous memory; contents remain unchanged
-> >>>>>>> + * @p: object to reallocate memory for
-> >>>>>>> + * @size: the size to reallocate
-> >>>>>>> + * @flags: the flags for the page level allocator
-> >>>>>>> + *
-> >>>>>>> + * The contents of the object pointed to are preserved up to the lesser of the
-> >>>>>>> + * new and old size (__GFP_ZERO flag is effectively ignored).
-> >>>>>>
-> >>>>>> Well, technically not correct as we don't shrink. Get 8 pages, kvrealloc to
-> >>>>>> 4 pages, kvrealloc back to 8 and the last 4 are not zeroed. But it's not
-> >>>>>> new, kvrealloc() did the same before patch 2/2.
-> >>>>>
-> >>>>> Taking it (too) literal, it's not wrong. The contents of the object pointed to
-> >>>>> are indeed preserved up to the lesser of the new and old size. It's just that
-> >>>>> the rest may be "preserved" as well.
-> >>>>>
-> >>>>> I work on implementing shrink and grow for vrealloc(). In the meantime I think
-> >>>>> we could probably just memset() spare memory to zero.
-> >>>>
-> >>>> Probably, this was a bad idea. Even with shrinking implemented we'd need to
-> >>>> memset() potential spare memory of the last page to zero, when new_size <
-> >>>> old_size.
-> >>>>
-> >>>> Analogously, the same would be true for krealloc() buckets. That's probably not
-> >>>> worth it.
-> >>
-> >> I think it could remove unexpected bad surprises with the API so why not
-> >> do it.
-> > 
-> > We'd either need to do it *every* time we shrink an allocation on spec, or we
-> > only do it when shrinking with __GFP_ZERO flag set, which might be a bit
-> > counter-intuitive.
-> 
-> I don't think it is that much counterintuitive.
-> 
-> > If we do it, I'd probably vote for the latter semantics. While it sounds more
-> > error prone, it's less wasteful and enough to cover the most common case where
-> > the actual *realloc() call is always with the same parameters, but a changing
-> > size.
-> 
-> Yeah. Or with hardening enabled (init_on_alloc) it could be done always.
-> 
+On Tue, Jul 30, 2024 at 3:29=E2=80=AFAM Peter Zijlstra <peterz@infradead.or=
+g> wrote:
+>
+> On Tue, Jul 30, 2024 at 09:40:11AM +0000, Alice Ryhl wrote:
+> > Introduce a Kconfig option for enabling the experimental option to
+> > normalize integer types. This ensures that integer types of the same
+> > size and signedness are considered compatible by the Control Flow
+> > Integrity sanitizer.
+> >
+> > This option exists for compatibility with Rust, as C and Rust do not
+> > have the same set of integer types. There are cases where C has two
+> > different integer types of the same size and alignment, but Rust only
+> > has one integer type of that size and alignment. When Rust calls into
+> > C functions using such types in their signature, this results in CFI
+> > failures.
+> >
+> > This patch introduces a dedicated option for this because it is
+> > undesirable to have CONFIG_RUST affect CC_FLAGS in this way.
+>
+> To be clear, any code compiled with this is incompatible with code
+> compiled without this, as the function signatures will differ, right?
+>
+> Specifically, it will map things like 'unsigned long long' and 'unsigned
+> long' -- which are both u64 on LP64 targets to the same 'type', right?
+>
+> I suppose it has been decided the security impact of this change is
+> minimal?
 
-Ok, sounds good. Will go with that then.
+I looked into this last year, and integer normalization reduced the
+number of unique type hashes in the kernel by ~1%, which should be
+fine.
+
+Sami
