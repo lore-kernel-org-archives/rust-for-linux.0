@@ -1,100 +1,99 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42B221A2C20;
-	Tue, 30 Jul 2024 15:57:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C0261D47D6;
+	Tue, 30 Jul 2024 16:01:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722355054; cv=none; b=OAly4eNiJqlWqEqy368KYAqiTRSpEjDKw++B2bUDn56tcQW5856UhgysD/OG/QP8YZVTX0WUu+ln3neXLIPJ9qbd0E2Gv1k18cnMcPTp9dQtQzi1ntavcditY/P94nBt43NJnNzJYvGMQnqBVyKQmVAcr/vKfNTEIVkLG0IbelE=
+	t=1722355269; cv=none; b=MQzmSBDOXxGrwHQddVJMgpPrWtOc/PyM5R5498te9I5u6J5PY+jHzrCw/0TSguADIIsxO+pMcHin+Z7l1e4uEkhNrTS/SYCE0Q1PFxoSWIlhm9Ym7ukejM8MdSbrAb80aJR9ewaHwzE9TMXCFfnMHjH7YbPIvWx157Ucfw5nXyc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722355054; c=relaxed/simple;
-	bh=49nCfpBcPYDlmJkZCymASY+VJ8tTSgBlWvAgS2mBsYg=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Ltq6Ysvx2/QVJUZoJSxMGCDfwKf9viKHVaYokfzAoMIFucsgRwzS8mvTwpe6JGZoFt1hAg8i9lqTMLFQE02OCPp+Vr8JOy6+RutLLYoyXmK2EKPoujiXKOLoEZWBja8NH9kF8OwCT4CjwGDbn5/7TN92NqJVOBP3q5cWLoGRGMM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eIpFsmvy; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1722355269; c=relaxed/simple;
+	bh=5mJ+Fa4YzBMtPcYUMnapDzZwmYYhDCSsbLcmmj09iAU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=GOtyYa0/jAPmdR5pv7AZNhj4htO2LrKUQ63e7iI5xksdGhm7avvj3qMAxgWn6TdEa7eH34+BFa267abLcTV3AONXGWN8+XiO+5n3U1hmdpWyMtlIM2W63iFokPU5yC6Isw9XERB0VMKmcaCNoATc5ezdou/ZErbwDOuCBFkrLms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=l9vUOZDb; arc=none smtp.client-ip=209.85.215.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eIpFsmvy"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD443C4AF0A;
-	Tue, 30 Jul 2024 15:57:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722355053;
-	bh=49nCfpBcPYDlmJkZCymASY+VJ8tTSgBlWvAgS2mBsYg=;
-	h=From:To:Cc:Subject:Date:From;
-	b=eIpFsmvy4dtDIE8UwA7Tw4X3Nj9Ytd60ybQYhMYgSFNV5Wf6TOnnPJ2fAh0TZmgut
-	 Hy9cgmuEObvgo+eoCz/dsDBfn3XSvbu2QD9ZmwxsXe5plqO8TlDC05dwE+7uhTnbNb
-	 Tb42RDSpGOBEtivwJlpP4m/lHaYY15pUIhuoGxwxGHRNuLVFQowR3WZBp14hSs6Fva
-	 +4PTtVxoTWo7irjknDbvpwY/xBsm8/MByXLAWVoAKrzZZe4KdKB69BXRCqMI6/OIgw
-	 VChMGvchkBTwGRbJSRWoPEjKsckhG2a21lcJYz66SlcG7ypDw3C9xYZALGmV7M1jHn
-	 mojn9YMS7N9Eg==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: Miguel Ojeda <ojeda@kernel.org>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Russell King <linux@armlinux.org.uk>
-Cc: Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Christian Schrefl <chrisi.schrefl@gmail.com>,
-	Jamie Cunliffe <Jamie.Cunliffe@arm.com>,
-	Sven Van Asbroeck <thesven73@gmail.com>,
-	linux-arm-kernel@lists.infradead.org,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	patches@lists.linux.dev
-Subject: [PATCH] rust: error: allow `useless_conversion` for 32-bit builds
-Date: Tue, 30 Jul 2024 17:57:02 +0200
-Message-ID: <20240730155702.1110144-1-ojeda@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="l9vUOZDb"
+Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-6e7b121be30so2923635a12.1;
+        Tue, 30 Jul 2024 09:01:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1722355267; x=1722960067; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+azbU4dkx1METlOrhJvWgMM3asJHtz8a8gQtdOLtu74=;
+        b=l9vUOZDbhXYMs9bDmERxoFT8icZB+k2Aah+e0aJyrvSr/kROVStRBzMLoKaNsbHzT8
+         8y2ZogF+1HoTg0HUssfzrOLMYkqDeYe/msVJKhXZxFA0wLr9O8CNZZgTe7anS30ihao6
+         AHJK0ooe929oA8x3Nz4f+P/dUJJSwUHBLUFHd+FrJn4hddikTgm7ZPM8wYV69aG+Zpcr
+         u/GYwxQg01fpbDi+6s3BZVOELIOdMnLFit0Lj/G/xQ9k0ksb8AwZiE21vXRD/5R/sHxR
+         /m8+Lj4Mm+obAnkQcs/mV6vwlfTSjXosc4asQadjGQ+/ggKnSaR1tlNmR1N8bv6KsEj8
+         xjKA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722355267; x=1722960067;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=+azbU4dkx1METlOrhJvWgMM3asJHtz8a8gQtdOLtu74=;
+        b=U7YcdxcNShVC3kklyL9LOFOJlr6qo4HQCJzeHFVXC6wAllWTg4UzsT4lGDl4R7F9Y5
+         CFTWtVwDI6rbJQuoCroeCEqse1VyOze0rEyCaVHoPOlSs5TOMH3QTCeDPi5/BAZ4UycF
+         6+MmOhWXSXaBZYsboS0fLpAskkxgieS3zAH1Y8/8AhIS+geUjarqprtE8DiMaEgiIcvd
+         tKjWMlBDwgMZk9GOeLqhLdtoqRqVt4tFk1BzYfWeezT3IpuObeGjNovvDRt1VNRXV7IL
+         ntQrH/+prymr043YgL8se/9twsEUw6xwNoTSOjq9XxuvdRZ3+UePclymg2CrBqsHW31w
+         a5OA==
+X-Forwarded-Encrypted: i=1; AJvYcCV+L3V2Gj0Y2iuTzh4uDJz9Q3QQIsmn4SB7T/l1hbhZ/HyEUHtLpKgHwA/JYZhi/vJBMUIDMPXQi6cdddtLApBPbbKy8PRfcvQPXhjZMl0=
+X-Gm-Message-State: AOJu0YyjmTorCzgAoY89uKr2paXNlgbibQ5diqTlR7+o4AqY3qOL6PyR
+	pWzDtkQk3amA3RsIrR7we1+rFt9i84jO2/mSZdxqXx2r2z5nSHd+xKVSfx/3jmfGbE4LOudX1W5
+	Th/QVfc8f2Noi7csE1YOvd0/f+cE=
+X-Google-Smtp-Source: AGHT+IEFkkxI26oFpF2A/eB9RELT4Cn3JAhTHtGTdkglvcvwJ5R83ZvoSfW36RRhg9WxfaGu/Milpi+Ybd4r2dfj9YI=
+X-Received: by 2002:a17:90a:17ea:b0:2c9:860c:7802 with SMTP id
+ 98e67ed59e1d1-2cf7e5b6b64mr9186733a91.28.1722355267277; Tue, 30 Jul 2024
+ 09:01:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <2dbd1491-149d-443c-9802-75786a6a3b73@gmail.com> <fc3e956c-4f0d-4705-8429-2b7c50e335ce@gmail.com>
+In-Reply-To: <fc3e956c-4f0d-4705-8429-2b7c50e335ce@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 30 Jul 2024 18:00:55 +0200
+Message-ID: <CANiq72=kAdq4TsCPvMWBwdzngeOst8g2cGzkk1DxM2yW=V4emQ@mail.gmail.com>
+Subject: Re: [PATCH v2] arm: rust: Enable Rust support for ARMv7
+To: Christian Schrefl <chrisi.schrefl@gmail.com>
+Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
+	Jamie Cunliffe <Jamie.Cunliffe@arm.com>, Sven Van Asbroeck <thesven73@gmail.com>, 
+	Geert Stappers <stappers@stappers.nl>, Andrew Lunn <andrew@lunn.ch>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-For the new Rust support for 32-bit arm [1], Clippy warns:
+On Mon, Jul 29, 2024 at 11:58=E2=80=AFAM Christian Schrefl
+<chrisi.schrefl@gmail.com> wrote:
+>
+> This has been on the mailing list for quite some time with only a few res=
+ponses.
 
-    error: useless conversion to the same type: `i32`
-       --> rust/kernel/error.rs:139:36
-        |
-    139 |         unsafe { bindings::ERR_PTR(self.0.into()) as *mut _ }
-        |                                    ^^^^^^^^^^^^^ help: consider removing `.into()`: `self.0`
-        |
-        = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#useless_conversion
-        = note: `-D clippy::useless-conversion` implied by `-D warnings`
-        = help: to override `-D warnings` add `#[allow(clippy::useless_conversion)]`
+Up to arm to take it -- if it helps, I tried the patch, including
+building, booting in QEMU, running the KUnit tests and loading the
+sample modules. Thus:
 
-The `self.0.into()` converts an `c_int` into `ERR_PTR`'s parameter
-which is a `c_long`. Thus, both types are `i32` in 32-bit. Therefore,
-allow it for those architectures.
+Acked-by: Miguel Ojeda <ojeda@kernel.org>
+Tested-by: Miguel Ojeda <ojeda@kernel.org>
 
-Link: https://lore.kernel.org/rust-for-linux/2dbd1491-149d-443c-9802-75786a6a3b73@gmail.com/ [1]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
----
- rust/kernel/error.rs | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+However, to keep our build Clippy-clean, it requires a a patch like:
 
-diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
-index 145f5c397009..6f1587a2524e 100644
---- a/rust/kernel/error.rs
-+++ b/rust/kernel/error.rs
-@@ -135,8 +135,11 @@ pub(crate) fn to_blk_status(self) -> bindings::blk_status_t {
-     /// Returns the error encoded as a pointer.
-     #[allow(dead_code)]
-     pub(crate) fn to_ptr<T>(self) -> *mut T {
-+        #[cfg_attr(target_pointer_width = "32", allow(clippy::useless_conversion))]
-         // SAFETY: `self.0` is a valid error due to its invariant.
--        unsafe { bindings::ERR_PTR(self.0.into()) as *mut _ }
-+        unsafe {
-+            bindings::ERR_PTR(self.0.into()) as *mut _
-+        }
-     }
- 
-     /// Returns a string representing the error, if one exists.
+    https://lore.kernel.org/rust-for-linux/20240730155702.1110144-1-ojeda@k=
+ernel.org/
 
-base-commit: 8400291e289ee6b2bf9779ff1c83a291501f017b
--- 
-2.46.0
+which should ideally be applied together.
 
+I hope that helps!
+
+(Nit: please avoid top-posting, see https://subspace.kernel.org/etiquette.h=
+tml)
+
+Cheers,
+Miguel
