@@ -1,104 +1,89 @@
-Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33CE017D8BB
-	for <rust-for-linux@vger.kernel.org>; Tue, 30 Jul 2024 18:06:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A3FD189902;
+	Tue, 30 Jul 2024 18:11:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722362790; cv=none; b=uuq+Z5CDYQl9oNtxqTTMdN8V8btawEjA/YzghJuj8ly6UlurvIIYm4oU+FBtGSU4HpzCynaVilajxwHFJHpGQQYKyLIfQUsnxWIzbC34csSK4BAhfgXY/qzVwOkgHjpaLZglXxwA5r+5ZuP2ZOSeIs8hSftm0fmzPxtrYg0fKTQ=
+	t=1722363081; cv=none; b=oeGse4E98rIsXemt6XztURp8ROKgC7oQvZrBw7a/zqNmWh9O3yC8WKS0j7d+xH3l/toW9GhNmEerLQvB8IL5dBMj88sOQFaVLkxl5kLwEEdzQ4vthiHjize8RtSjzNMeNyJwAtRulm3wGMohWR1E6cApWY5lfKtQpC18G+xBbCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722362790; c=relaxed/simple;
-	bh=IfON4uBqEKOf2xcMASP8BDONDtL4WQ0cJawE3iEfHRI=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=p6Qesk+2W0dRoy7coeFz6fz1MMXLY0TeBkDB8SE4MouDqCPb5nNppqEuXSBcEMhjzWuBSXfRKH2Xht7t+ywPYuFt0Y0V93oqhwXP4Y8vCAQxK0zpD56lY33c6O7+IqWcYqQ8Dn6mq+b07hLq+7gQtGGIBtgzZ7HF8XuTS06GLJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=mlCg+bct; arc=none smtp.client-ip=185.70.40.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1722363081; c=relaxed/simple;
+	bh=A2wNrw8Y+kVgeuqUhxJzhLBK1f1VJnJJRpFt64QEsOQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Z2b9NmrYQPG1uFkVXWdKfE3M6B0zHnW9/dHeG51KmGHliGWfFGDWeKF71Z1JyYXIVNK3QEfPA46TiHV2HZwJiUlMYkb0xWYyhpLB84T/d0dpU8Knoj9DM6dUr6BMY5Em1VzRHX/CEE3Hx9x8TRzAyRo6+i/dDo3cbBF5UC3obrk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GazYpZul; arc=none smtp.client-ip=209.85.215.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="mlCg+bct"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1722362786; x=1722621986;
-	bh=mP8pPR7V7GOEbvgnQ3Hkpe5+bVYgYFu8/oCcIpUDYGY=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=mlCg+bctF5dxmG58f3kM8tbwGVBPxm9/xZlgY1XUEkCPSvWCKa6gjZLRI0b9MgHhx
-	 dsBEMt7RtV1zCo+ks8HO/eQRN+YEct4mRYtxAgKsMMRfBCI11OJmtNYYnlyhZNm0Gh
-	 ZTJuXEgFzojCNJk7rxTEXpCppQV/zyouyo6NZEsi7/bHrZDkiZT3ZWBhqSwdTdhDHB
-	 mFyVBw/kP0Cud63CH4kE8ZS0MCXb3wbVmGO7km0kvGEjoXpXDV+nxn/YpXPtqcHlj2
-	 JBp2FfuvS8GTjQ47+gNU1h70yWIs8PnAHp7c26kpxwaoHZoGNMK6ijMBxGC2sb0xN3
-	 ktVuyabmio5eg==
-Date: Tue, 30 Jul 2024 18:06:20 +0000
-To: Alice Ryhl <aliceryhl@google.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: implement ForeignOwnable for Pin<Box<T>>
-Message-ID: <6cfa426b-4ffe-41bc-9de5-ba7c7c70d610@proton.me>
-In-Reply-To: <CAH5fLghN8L4cJsRuH-eqU4E5GaTJRUhw0cAStjHAj1RNJA-vhg@mail.gmail.com>
-References: <20240730-foreign-ownable-pin-box-v1-1-b1d70cdae541@google.com> <5c49f604-34c1-414f-bf9a-92837c6e07b3@proton.me> <CAH5fLghN8L4cJsRuH-eqU4E5GaTJRUhw0cAStjHAj1RNJA-vhg@mail.gmail.com>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 65c413bde632019c722f6d70d12b0831868560f6
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GazYpZul"
+Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-71871d5e087so3670179a12.1;
+        Tue, 30 Jul 2024 11:11:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1722363079; x=1722967879; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=A2wNrw8Y+kVgeuqUhxJzhLBK1f1VJnJJRpFt64QEsOQ=;
+        b=GazYpZulkpdBvccNJhgnJ5wbLRePQtP1B9wqivzr/Hxj0GVgyuVZtHxKC610fIIeL9
+         +/2vO1yGoom8XL3xtUBibmoEqTWi7Z1GrxkWnOc1iDzZ9XEYFRrPmq7BJOd0OZePlCMm
+         t8cggCdk8oqFuoleQgH8fqbZoRA1043bir5prdMio6VYXh2YbEx07kZ/yrRB++SBRRxy
+         j8OsW0eZBhyLMlHyn7R+RiyhOKllbGpNwO5dUZQrJIV2N0nyIGc6NuZBzSUODKJlV3hO
+         +Lwof355pv8ppn+2S1tUpUw62suMqFKwEWAOgglQ4CRcaiikLlKCgOyxWqEmfRSRtrUN
+         VppQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722363079; x=1722967879;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=A2wNrw8Y+kVgeuqUhxJzhLBK1f1VJnJJRpFt64QEsOQ=;
+        b=ZZsV+GIjkaNS6bYYSaW/Kt/m/TO6Ic/t6dKz4fYajiSjEb9hsax0LJRsE+jMEvAih4
+         sWsIvf8tzEKywGSIQmdwxAZMmU7dFX5tqhTXJzEk6bF/TAAIVBIRYEIYBdhdAjM37Wwl
+         Q3qf8ZooO4QZp2zBQSLU6XKOVw/nKhj81bFSR8dnQNUlTuTWiNzLvxt/8Gff1ZsuLAD0
+         3dL1jpqCXp7+Rua+IqIRF3fe/K7JMf4IXBRH9MZNTOWPigEqlcUG86YrE9V/zxiWeEFx
+         pJP9qKz6r3jEefW/ypa0/o/URhhOVx34Mn/dnXzoWpCyAQ+hSqd13i9iYUsKNP1fQ5FV
+         30IQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVq5k7EiMM0zOdZDdNoHAB3FJilDZUc2SkVaAZ3Di/Kxs6CHUTDCBHVjDObbwmk7h+w3fem4SDNumHXZuSYgP6NTgQGmj11Cf7EZ2xI6mM=
+X-Gm-Message-State: AOJu0Yx3npSAGIYfKEyxnf65I0Fd8M2zUHQzPUbvQktfkHWa/xxkxmef
+	JwhG7dl2t85Bmu3CL1pI/3nzsCRb8mbd0n0EyKBcZ10x2ZPUmoGRW2aD5rMBzqDBjTxyUHFZfdO
+	ARUWQf5TNlemWkX0yNFV4DSnzPdq/8FRf
+X-Google-Smtp-Source: AGHT+IFwd250tTkl0bTPif3xPmWM66kiLTPARQdwt5NnueFukV66C5KTa0simy3aXenh0GwQBXTrHqiAPBxugA9JXb4=
+X-Received: by 2002:a17:90b:388a:b0:2cd:ba3e:38a5 with SMTP id
+ 98e67ed59e1d1-2cf7e1facafmr12575997a91.21.1722363079377; Tue, 30 Jul 2024
+ 11:11:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <2dbd1491-149d-443c-9802-75786a6a3b73@gmail.com>
+ <fc3e956c-4f0d-4705-8429-2b7c50e335ce@gmail.com> <CANiq72=kAdq4TsCPvMWBwdzngeOst8g2cGzkk1DxM2yW=V4emQ@mail.gmail.com>
+ <d85d50d4-3f52-4440-a57a-260d7943179e@gmail.com>
+In-Reply-To: <d85d50d4-3f52-4440-a57a-260d7943179e@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 30 Jul 2024 20:11:07 +0200
+Message-ID: <CANiq72kGx=v3Q4Jpu204ZDQ4_RFuWL-myn_FvC7uAYYMf5uJ6A@mail.gmail.com>
+Subject: Re: [PATCH v2] arm: rust: Enable Rust support for ARMv7
+To: Christian Schrefl <chrisi.schrefl@gmail.com>
+Cc: linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
+	Jamie Cunliffe <Jamie.Cunliffe@arm.com>, Sven Van Asbroeck <thesven73@gmail.com>, 
+	Geert Stappers <stappers@stappers.nl>, Andrew Lunn <andrew@lunn.ch>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On 30.07.24 19:50, Alice Ryhl wrote:
-> On Tue, Jul 30, 2024 at 7:14=E2=80=AFPM Benno Lossin <benno.lossin@proton=
-.me> wrote:
->>
->> On 30.07.24 15:06, Alice Ryhl wrote:
->>> @@ -89,6 +90,32 @@ unsafe fn from_foreign(ptr: *const core::ffi::c_void=
-) -> Self {
->>>      }
->>>  }
->>>
->>> +impl<T: 'static> ForeignOwnable for Pin<Box<T>> {
->>> +    type Borrowed<'a> =3D Pin<&'a T>;
->>> +
->>> +    fn into_foreign(self) -> *const core::ffi::c_void {
->>> +        // SAFETY: We are still treating the box as pinned.
->>
->> I don't think that we have the guarantee that the pointee at the pointer
->> that is returned by `into_foreign` is not moved.
->=20
-> That doesn't seem like the kind of thing we need a guarantee for.
-> Rather, unless we give anyone a guarantee that dereferencing it is
-> okay, it seems reasonable to assume that it won't be dereferenced.
-> Right now, it's just an opaque pointer, so C really shouldn't be
-> touching it. We already implement the trait for Arc which is also
-> pinned and also doesn't even point at a value of type T.
+On Tue, Jul 30, 2024 at 6:35=E2=80=AFPM Christian Schrefl
+<chrisi.schrefl@gmail.com> wrote:
+>
+> Did you apply it on 6.11-rc1?
 
-Hmm, I don't have any rational concerns with this, but it doesn't _feel_
-right...
+Yeah.
 
-When I replace the return type by `OpaquePtr(*const core::ffi::c_void)`
-that is `repr(transparent)` I don't feel like this is a problem any
-more.
-So I guess your argument is fine.
+> I think that I ran clippy, maybe that changed between 6.10 and 6.11.
 
-I think it shouldn't hurt to add this to the docs, will send a patch for
-that. Anyways,
+It also triggers on top of v6.10-rc1 from a quick test (we had also
+this lint or similar even before we were in mainline, I think), but no
+worries, it is not a big deal :)
 
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-
->> AFAIU `ForeignOwnable` is used to store these pointers in C structures
->> and never to actually access the value behind the returned pointer. So
->> we could add the requirement to `into_foreign` (thus making it `unsafe`)
->> that the pointer should not be dereferenced/used aside from `borrow` and
->> `from_foreign`. Otherwise I don't see how the call below can be OK.
->> What do you think?
->=20
-> Dereferencing the void pointer is unsafe in itself, so I don't see why
-> `into_foreign` has to be unsafe too.
-
-Oh yes, you are right.
-
----
 Cheers,
-Benno
-
+Miguel
