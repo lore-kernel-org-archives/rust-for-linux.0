@@ -1,99 +1,129 @@
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C671218CBF9;
-	Tue, 30 Jul 2024 20:22:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F201518C91B;
+	Tue, 30 Jul 2024 20:36:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722370976; cv=none; b=rNpEZlneRBxw8hlXCYVGQe//TIFl2p+FEm9UsXToKJniWAJO4bxlyfYGChmN0U9Zx0VA8NjQke00BM0AphKGJiHZPg7SDramsO6WEliATjnTg+YCP89rybh50xzwGWQAA4Mk51if+wXM1AVvr6DS23H+WBYVSC3gjlvbmqICiHI=
+	t=1722371791; cv=none; b=ozDX4PIIGQ+TZk5s7bJCOgUIxWOPvwH6ui9bvEmA/SU/RMSOKJzjeq3/8fVawqVwwkBrYWMdWGHVKAm3YXiQSOjWa1n428BJ2evYVK2BdOdAXFyQNhKTLS0u/q/ftsb5+rFioeejlXygIIr94SfK20h5coLhODT57ovhONhOUPA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722370976; c=relaxed/simple;
-	bh=qgIM6c6I7ActKGrTkv0LUY7kFUEtEmpH3NypCwcOYbI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RiEcNDCsRc1OOnnYtCqNQrCbRxC9weJo09mLCrXyiWoPX7dPgnQcvcHXDq206V35gUAb9c6vsK7aycT2IIMIV6UpTmrlai3VIJR26xMmDet4uwbjSbN6iLrMbDZ+pArk/x+YDrgi2jrAvnbtuSVVi2FiiCkXUu/WODOsfTPuC5o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NuyD+pJZ; arc=none smtp.client-ip=209.85.215.179
+	s=arc-20240116; t=1722371791; c=relaxed/simple;
+	bh=qdHVnfTVo3nO7tmMxskdGFwLlxMv/CAQsC4rHemx2xs=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=AZHypqyDXdxuHfgHpPIBW9I1lPygXhYsOFmu86xlPdTO4vofBhjX5nlnxp8QjtZtC6BmASOqJ4E+AX9jXmlCJ5bxCre+PS0cS3xubfarJO7PQckSWEYBc+v2AFyfLpf72r4Hx3iGOxD2KFKXCLpm0vCgnMTu1A3OyoPJKBXXQp8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=IuaWIpk3; arc=none smtp.client-ip=209.85.167.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NuyD+pJZ"
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-7a263f6439eso2828656a12.3;
-        Tue, 30 Jul 2024 13:22:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="IuaWIpk3"
+Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-52efa16aad9so7518638e87.0;
+        Tue, 30 Jul 2024 13:36:27 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1722370974; x=1722975774; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qgIM6c6I7ActKGrTkv0LUY7kFUEtEmpH3NypCwcOYbI=;
-        b=NuyD+pJZZiwe/nDPxhbU+06l9PD2+4u6zRl4If9ecw7njvKGbVjeviKVnIcRBaA8pP
-         2p9FlTrEl3cK60lxqgQK/hDUsjdD+XkqVdT3y5R/tX+CxFi/rbIJH9qnUkkhDJusuTMo
-         Vesk3cy8Rfsl3bLz7WxgiJojmXc7bzmrDPGukJ2OH/LYal9KBAgFDn4buItsW6uYRqAz
-         5P69Bk3bRZ6Yd/h7m5dhOcbsON4zLUIMhm5qfyO1qXcrV/HnssbmeZ9Le/vmy6VVX9Vw
-         VHSGTfqCl4SjA6BuZqqEJMnGpckiKoH6dtBj8eac6essgH1Cyi4/YsOs9Hh7SuG/gEvP
-         jQlw==
+        d=gmail.com; s=20230601; t=1722371786; x=1722976586; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=4/XjNzJXCdNL6KqxYNrTp89XVp9cZX4iiagSBchs6TI=;
+        b=IuaWIpk3d3ANSIAM9zvr3z76TCa88Q9MByIlZtmGxOblaX2ta6z4FcD4I+DOnSY0Bc
+         AzhEfVaSSyo3Vsl2BNgaNpPnlDrqZ6lwTSCkyyFLiNNQnbzBkuRCywjHWG9Cbj8BPALp
+         JrYg/m2oekGEWnqpFGXb/80Q6qk+wWQtNyJuyaWolLcK2meezX0Sklv6RKw0dKSds8e6
+         NZbw02/XPzjG9GIENIIJkVbnbqYNWEALthl4CA2aHeCQvEs2McV1MBSj/vPCl6pwj4pV
+         f2Te63d1R4bl8tEnszv47MUF7bhZdMEHVfDrpEOKnY6a+Y19ONT2fVz9objUuci9L2xj
+         +Cng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722370974; x=1722975774;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qgIM6c6I7ActKGrTkv0LUY7kFUEtEmpH3NypCwcOYbI=;
-        b=hfw37Bc4Pxmv2ql8QPXrJ8sDDvuDteprYJiUNA2V64Hi0mK6miKfu4SttwCRmrt44f
-         XGUySPIVd9JLUfyyWeYwmPWYzV+YWm2X9RUkvFoGUQT4SvW29FnsoaJxmy+9JlCznOJg
-         XjRYw0cWSeP/rIO9L/DgUAzYcCGS68Z7lbmgrXWVXnw20aYT1CBw25E9j3C0n9cQRLD9
-         7AXamo0/8ZZvZBEFQvfS8wfkNJmsR6S7Lh/iEIu0usriP4xBs36y5rivJr7vaxueah7q
-         OlP2h0bDG5wx8FwQbrOjYCiPhJhwFseqXcqLt7iQgV7sW8Ko9NQmThKlH8o8hMmJHonq
-         aj7g==
-X-Forwarded-Encrypted: i=1; AJvYcCVLxA0hvSqhCpApqGa52ZChgpeJ5OoLu0tBza4Kf4Qzhc0BK4YYeTIdQ/0ECB8HmDovG2X5l4s7QZ8h7MMIh1wj9WfYKerQaYFQWV8T3/PcFLf+BkMYGDxEu494TeRZ8BJzo3lw6atJoLlBT34=
-X-Gm-Message-State: AOJu0YyY4+Vk7NsAgQ5RvqUC+1BuhQ1w5HUA9dEfajYo8wZslsu3WyyZ
-	EmJ4AX30Wpw1/jf29DPp/K7DHmPe9OMQ6GRNfzL53vA+XmVHdr0aQVi4CV5tQau28FXW07UoUQG
-	UKwhnBPo9a1DOFBQJCPU56azPHcM=
-X-Google-Smtp-Source: AGHT+IHCzS/rd7b1oz4vmEzbNtTxafJlsZS84UjHMW+33i7wxde9VAxzqRvvwyZppvHikLIMBEJEM7F0XUjrbhZBkok=
-X-Received: by 2002:a17:90b:2248:b0:2c9:74f2:3b24 with SMTP id
- 98e67ed59e1d1-2cf7e1eda57mr10326001a91.12.1722370973899; Tue, 30 Jul 2024
- 13:22:53 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1722371786; x=1722976586;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=4/XjNzJXCdNL6KqxYNrTp89XVp9cZX4iiagSBchs6TI=;
+        b=E6b+d+xNV6A+JH1207kh0hhmXDuNrPaGj7TA8ffVK0rvLulTa23xWveEX1d8z9DkO3
+         u8QFU8iUa7PyMTJCF5kdu11OL0lEXyR0SAO6DchsQcl4MeoqfGBRvqRedynjkf3L2rEN
+         rS7Q/s7Z8IXGoAlNSuBMVi53ZLd5svw3+6Kc8pqorwQSQCcHFzPEpA9IUh6LX9Ze1DM8
+         T+pbQRjE25sNCZVn1ravT+34Rl+ANE4mOdV+upkCm6NVK7r6DP8cw0lSrByGy4dYm2WT
+         ArQDU7uYMINezJiJAI+nr5O15I2IGie3Zfnl8NdpnIMxx6JuD4XUjwMb7RCvFt/fm5hu
+         kYQg==
+X-Forwarded-Encrypted: i=1; AJvYcCX1grBrQHVpyxp3mGzBpmU0C81NtOqhUP7SUhaCjLC2pcJa5oDc7ZqP2IlK6P8VKSyvX6gQ7w+SaRA7nTNbDnc=@vger.kernel.org, AJvYcCXiU+Qkpq4WNvO1Tl8TeRahdCxhMKPQ2DBYkjNOdM2FFjlbYxSP3Ib3B75fNXuiR6cVbCOwWxuCEX9leow=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwZSWk5gfTpsn+f9SDU7X8HsTU7ARJ0oBFhAZ0H6iBEyQ9T/eUP
+	PeoY5JA2zink5x0K4CPPKWfhOFZtf3372tFhckACMKxIjkBrpx0a
+X-Google-Smtp-Source: AGHT+IGjxqEwMyxNk7pArNZMq5rayC8VDXVdhCT5ysxA8xd9d9WxB01PKTakbhgRZbhikgwYVzY5YA==
+X-Received: by 2002:a05:6512:340e:b0:530:aeea:27e1 with SMTP id 2adb3069b0e04-530aeea2b52mr407616e87.50.1722371785722;
+        Tue, 30 Jul 2024 13:36:25 -0700 (PDT)
+Received: from ?IPV6:2001:871:22a:50e2::1ad1? ([2001:871:22a:50e2::1ad1])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5ac64eb3ab8sm7769941a12.71.2024.07.30.13.36.24
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 30 Jul 2024 13:36:25 -0700 (PDT)
+Message-ID: <14053c9c-0318-4422-bfa4-739966f8e214@gmail.com>
+Date: Tue, 30 Jul 2024 22:36:23 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240730155702.1110144-1-ojeda@kernel.org> <CAH5fLgj-0EsVjh8xdV1mXZBXPxKGnwUa8-R+Bg1eyjh0Gh_BWg@mail.gmail.com>
-In-Reply-To: <CAH5fLgj-0EsVjh8xdV1mXZBXPxKGnwUa8-R+Bg1eyjh0Gh_BWg@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 30 Jul 2024 22:22:41 +0200
-Message-ID: <CANiq72==6_Km_UYWaxxWw4gLS0g5yK5dQYvq+2xGTQvmm4aHyA@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH] rust: error: allow `useless_conversion` for 32-bit builds
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Russell King <linux@armlinux.org.uk>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Christian Schrefl <chrisi.schrefl@gmail.com>, Jamie Cunliffe <Jamie.Cunliffe@arm.com>, 
-	Sven Van Asbroeck <thesven73@gmail.com>, linux-arm-kernel@lists.infradead.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	patches@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+To: Miguel Ojeda <ojeda@kernel.org>, Wedson Almeida Filho
+ <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Russell King <linux@armlinux.org.uk>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl
+ <aliceryhl@google.com>, Jamie Cunliffe <Jamie.Cunliffe@arm.com>,
+ Sven Van Asbroeck <thesven73@gmail.com>,
+ linux-arm-kernel@lists.infradead.org, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org, patches@lists.linux.dev
+References: <20240730155702.1110144-1-ojeda@kernel.org>
+Content-Language: en-US
+From: Christian Schrefl <chrisi.schrefl@gmail.com>
+In-Reply-To: <20240730155702.1110144-1-ojeda@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Tue, Jul 30, 2024 at 7:55=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
-rote:
->
-> The formatting here is a bit weird. Perhaps we should swap the cfg and
-> the comment?
+On 30.07.24 5:57 PM, Miguel Ojeda wrote:
+> For the new Rust support for 32-bit arm [1], Clippy warns:
+> 
+>     error: useless conversion to the same type: `i32`
+>        --> rust/kernel/error.rs:139:36
+>         |
+>     139 |         unsafe { bindings::ERR_PTR(self.0.into()) as *mut _ }
+>         |                                    ^^^^^^^^^^^^^ help: consider removing `.into()`: `self.0`
+>         |
+>         = help: for further information visit https://rust-lang.github.io/rust-clippy/master/index.html#useless_conversion
+>         = note: `-D clippy::useless-conversion` implied by `-D warnings`
+>         = help: to override `-D warnings` add `#[allow(clippy::useless_conversion)]`
+> 
+> The `self.0.into()` converts an `c_int` into `ERR_PTR`'s parameter
+> which is a `c_long`. Thus, both types are `i32` in 32-bit. Therefore,
+> allow it for those architectures.
+> 
+> Link: https://lore.kernel.org/rust-for-linux/2dbd1491-149d-443c-9802-75786a6a3b73@gmail.com/ [1]
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> ---
+>  rust/kernel/error.rs | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+> 
+> diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
+> index 145f5c397009..6f1587a2524e 100644
+> --- a/rust/kernel/error.rs
+> +++ b/rust/kernel/error.rs
+> @@ -135,8 +135,11 @@ pub(crate) fn to_blk_status(self) -> bindings::blk_status_t {
+>      /// Returns the error encoded as a pointer.
+>      #[allow(dead_code)]
+>      pub(crate) fn to_ptr<T>(self) -> *mut T {
+> +        #[cfg_attr(target_pointer_width = "32", allow(clippy::useless_conversion))]
+>          // SAFETY: `self.0` is a valid error due to its invariant.
+> -        unsafe { bindings::ERR_PTR(self.0.into()) as *mut _ }
+> +        unsafe {
+> +            bindings::ERR_PTR(self.0.into()) as *mut _
+> +        }
+>      }
+>  
+>      /// Returns a string representing the error, if one exists.
+> 
+> base-commit: 8400291e289ee6b2bf9779ff1c83a291501f017b
+Seems good to me.
 
-Yeah, I don't like it either -- I reflexively did it because in the
-safety series I am sending, there was a case where it would not notice
-the `// SAFETY` comment if an attribute was placed afterwards.
+If I create another version of the arm support I'll include this there, otherwise:
 
-But for blocks like this works fine, so it is not needed here, so we
-can change it, even we may need to be inconsistent in a few places
-about this, at least until it is fixed (assuming it is indeed a false
-positive).
-
-I created an issue in Clippy about it:
-https://github.com/rust-lang/rust-clippy/issues/13189.
-
-Thanks!
-
-Cheers,
-Miguel
+Reviewd-by: Christian Schrefl <chrisi.schrefl@gmail.com>
