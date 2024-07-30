@@ -1,151 +1,257 @@
-Received: from mail-yb1-f201.google.com (mail-yb1-f201.google.com [209.85.219.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 603C019307B
-	for <rust-for-linux@vger.kernel.org>; Tue, 30 Jul 2024 13:06:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B188519E7D1;
+	Tue, 30 Jul 2024 13:14:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722344800; cv=none; b=UWJJENkKhco2j7pFkiOx1DVJgDSxDlTgidxF7aIEkwgnUNqyqO4rgjnmiQcz73TKTSO5SDPowy8UiixvWHTwMt1dYo4nYJ8fCsKw3FFvmX9j767XY/N+EsauiP49WOqCAx7JPE7jKsykwSbCcfIMtLUHQIcwJnmhaT6ZDu23DIs=
+	t=1722345295; cv=none; b=Ju7gB4QcAu5C8Fbm+eF574AZzHOBeYJnw8ER+0BSmwyMvefKFASMv+ebVBQYwDp6Osdq/mZMIATWRDuR212RMHT5iSLReDCr9Uv3hq7GPx251XgBZ/D2MIasZ4zSQr0E8PdcfTYCB81dPKuPkVZE4oC7h8kcFumtrd/9PoNZEcg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722344800; c=relaxed/simple;
-	bh=jEounkARTWSXuP9TGoR+2S+iU6PCZFgHt6WY+kyo3Tg=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=iydIP+/fLYpCcohObT4Eaas3Z6XFNQPC73msAdrKd74cZtaK7UjtlSmtwXU982+Uk5u3hTof519HWTVGIUchCM0VXLaX1TB4FxMvNtqBLqsQ/pqN+pbW1q7NHfG6jY0A7uDlkMZvX2GxR9tStygAPC5weNFIIzxOTZrp76n5rI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=kybJt7r8; arc=none smtp.client-ip=209.85.219.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1722345295; c=relaxed/simple;
+	bh=XHUplKf8leN8eySXFx5w2kpqF4LBiAT9/qcEzFQ+L7U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gh6Mj225MOJId+5XomBYXyL6kEwW27ASi99Axtgk/xXm5Ydqw8qUR77HuUzo6XvzuVxFfBAelSoGvhQ+oelXiSkjBskmSgO+R0nMNFMfx0g+EfgE6wlQj9ESrerBrA6xhLQTGvBPXFJV0MyyGSqpuC9qBVzW8khh6NzV+bJNfqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PDLf5vP9; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="kybJt7r8"
-Received: by mail-yb1-f201.google.com with SMTP id 3f1490d57ef6-e0baf2a2ed1so153416276.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 30 Jul 2024 06:06:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1722344798; x=1722949598; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=LpK9lTVBIoGCidPfD5yJsiZKmR1svodGEUYQV6xMuaU=;
-        b=kybJt7r8H8E96x0H9WiDTicUI+oAFTwdEgtv5I82U2VWP61pRUTwp/5f339EeRVNf5
-         +Xc1xXQxZIqByqvOgzW6x1hb82RfmJytTCJo1H026ApSWPfLFRDXSRyA1eeKhGwRkYuQ
-         kIlNrediDKInfu6YZd29NeMcoqr1EVOp0m9cT4pNe0jcAD1cXG0AMdpNudXtnzfYhyw4
-         ptwoZ/QWZ8uWhod73qALT+bnbB9Tt+AC2J4doJe6K7R0Z9RYY8hC8jaeLbSluzXIHpy0
-         LHLq8qo+747Ix8lO1RYDPomupMfIfBoZ+vO6uWFhIpFeMcHZtSQCNOhRdOSg6+MlBUi7
-         mobw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722344798; x=1722949598;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=LpK9lTVBIoGCidPfD5yJsiZKmR1svodGEUYQV6xMuaU=;
-        b=pU7janZk+Z7MCFjYUrPrfXAGfmJ9+2Q1H8iKojaN9D+BJGTzC1d/5ozAUDW06/uU8n
-         A0/M9UBsfXxZ8WMTJ++d9GnFK5HOvJO62ax0uWgWuWaQVw3kdt+eJ0ZIBQE8CO/hsUxy
-         kftwVh+hGMdUeAF7sTWEpKEbje2pDb6YDIxguGWHWqGMXmClvbuZErp3n/WgEehLEayX
-         sDljc1sV5lo2O83sPcNfmaYY1HyV0NsQG2PilZBpC33+6WqP02f1IhNgdNr7Z6hT6aru
-         LTU2A1OaZqwDfGncJSO9K00pyAmBZBcSJ12G6cBnWN0ywoMm5AH+Brjk+qVFFWtaTBoz
-         5A4w==
-X-Forwarded-Encrypted: i=1; AJvYcCUaa2KALfVf09a9jq2iIPPk6ci3CDAjlS0XDAk5Fw2rQCfSitHXN6xi7jMtm9yUt3G4kfiy02OYZool/BHIvzPINK+F/nYDOTf2McOdGZY=
-X-Gm-Message-State: AOJu0YyI01VQ9prFG7uO+2umTNlaG96tLcCzdX/8EpX6O4Uo+gRjyP6B
-	wDbAU1JHSlwd/qYPbu79q5SqFZOGM+CXf/MJO7yg+nB5sPlc788mK34DLvdiKc4BnHP5Z2Rr0zg
-	w1ohwvLIY/88KRw==
-X-Google-Smtp-Source: AGHT+IGSTd2Faw/xxTTIOFcjZU6XoSywzCymMkcL6RSxc1cWkvGesZw83sqTekVWN+hk1GX/DwF4g1RUgZ89YD0=
-X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:35bd])
- (user=aliceryhl job=sendgmr) by 2002:a05:6902:707:b0:e05:a1df:5644 with SMTP
- id 3f1490d57ef6-e0b9e101779mr28879276.2.1722344798181; Tue, 30 Jul 2024
- 06:06:38 -0700 (PDT)
-Date: Tue, 30 Jul 2024 13:06:32 +0000
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PDLf5vP9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80495C32782;
+	Tue, 30 Jul 2024 13:14:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1722345295;
+	bh=XHUplKf8leN8eySXFx5w2kpqF4LBiAT9/qcEzFQ+L7U=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=PDLf5vP9hkwdpxMEUoGCyZV9ZMZA4eIy5TbADgI59GB16jEo/g0Cmqg9ZUsGqAtg0
+	 fVSNlU2U7m/UCV0Mz/cfi31VJeJ8x6TJf2vIhLfRT4d7ocpzmKK5lSpG3edj1Un65h
+	 oHpJBSB9CGRqv5fX+Z56tr1d0YgK/ZVmnIZuf/LiR9dvszafiOakyBxKgQK3As5NwZ
+	 bqsyGpwyvpALAcJ+cy/KDbhhaSVKKSNk9ALGq+EUyfbQUYTfax9IH7Bq8RzV2MPfoW
+	 OzPLWCFleVSHM0x740xrWqHBDFh8fvztDnoD7lkOp1FNf+ewqf9p0Ijmh8Cnb+eFRr
+	 89Wm2JuOnh/3g==
+Date: Tue, 30 Jul 2024 15:14:47 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Vlastimil Babka <vbabka@suse.cz>
+Cc: cl@linux.com, penberg@kernel.org, rientjes@google.com,
+	iamjoonsoo.kim@lge.com, akpm@linux-foundation.org,
+	roman.gushchin@linux.dev, 42.hyeyoo@gmail.com, urezki@gmail.com,
+	hch@infradead.org, kees@kernel.org, ojeda@kernel.org,
+	wedsonaf@gmail.com, mhocko@kernel.org, mpe@ellerman.id.au,
+	chandan.babu@oracle.com, christian.koenig@amd.com, maz@kernel.org,
+	oliver.upton@linux.dev, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, rust-for-linux@vger.kernel.org,
+	Feng Tang <feng.tang@intel.com>,
+	kasan-dev <kasan-dev@googlegroups.com>
+Subject: Re: [PATCH v2 1/2] mm: vmalloc: implement vrealloc()
+Message-ID: <ZqjnR4Wxzf-ciUGW@pollux>
+References: <20240722163111.4766-1-dakr@kernel.org>
+ <20240722163111.4766-2-dakr@kernel.org>
+ <07491799-9753-4fc9-b642-6d7d7d9575aa@suse.cz>
+ <ZqQBjjtPXeErPsva@cassiopeiae>
+ <ZqfomPVr7PadY8Et@cassiopeiae>
+ <ZqhDXkFNaN_Cx11e@cassiopeiae>
+ <44fa564b-9c8f-4ac2-bce3-f6d2c99b73b7@suse.cz>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-B4-Tracking: v=1; b=H4sIAFflqGYC/x3MTQqAIBBA4avErBuwH5G6SrQoG2sgxlAoQbp70
- vJbvJchUmCKMFYZAt0c2UtBU1dgj0V2Qt6KoVVtr0yn0PlAvAv6R5b1JLxYcPUJdaOtM4MajLF Q6iuQ4/Sfp/l9P2hCtGVpAAAA
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2220; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=jEounkARTWSXuP9TGoR+2S+iU6PCZFgHt6WY+kyo3Tg=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBmqOVZaPfq/TmW8akkNQvdByFITNP/lMpGaX6Zx
- JhrqcG47RSJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZqjlWQAKCRAEWL7uWMY5
- RiBqEACwAHfImZQ54ckAVJtY5E9fGjzziUgR4Gd9ZthH66+Z5UOeLhcesS9HPsqg4xydZG/eyic
- yQCmPBqQWnfhtEFnyG1fbukZEp2OBESnuk+Ekl8ohEKN2tvG7Gw9yOBHuqyNsZzG7riYWWn25bZ
- EvsbQLN8EKWvBkq+1XSATeQs64TMP/2m0gHHpoRizoVn2JnmJqlfckknB6umXmtJuAJUWcG4KpQ
- 2najbjqBjtBxgnccklGhlHYcMcHMTfhi09kbWYsfb8umxH5KfMQfD/9l2m5LAeMHm8OB+iMjJiU
- c68aKE52janaL8/oQMM7As+4bMNEmW44mLcvfh3bvAMRV+urM8FLIjME2LyPV0QFEGRU4+UJYrg
- E3x8LPcgK1Y7DlmtEmDc9gxdHP+uFuWrJCV6Y3SLco7QvENs5Z0TwWT9Nzes04PxWPpKXeJBqqp
- Nage0XOU2YC/eN/L3XzXUWT6wWQfi4hvjFuAw9Qy5lcpXjRPKfwQm9GkekXSdaBe5Bo9+Gpay7+
- DKhlZtpoX31taLcQHuGKmFiERb1jCR/NcSF6yYgl+h4WGPhVufweDV6eaowfE1TNfbYTUAA0BnZ
- eGJ1pLgurxVWwSAIvj9TZhV1oFfZdK/lVt9GMLVI+h+nwE4qZVO4gcRd1SC/IW1LlM4oCkof7Xe NLIB1AZE2VtVayQ==
-X-Mailer: b4 0.13.0
-Message-ID: <20240730-foreign-ownable-pin-box-v1-1-b1d70cdae541@google.com>
-Subject: [PATCH] rust: implement ForeignOwnable for Pin<Box<T>>
-From: Alice Ryhl <aliceryhl@google.com>
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@samsung.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <44fa564b-9c8f-4ac2-bce3-f6d2c99b73b7@suse.cz>
 
-We already implement ForeignOwnable for Box<T>, but it may be useful to
-store pinned data in a ForeignOwnable container. This patch makes that
-possible.
+On Tue, Jul 30, 2024 at 02:15:34PM +0200, Vlastimil Babka wrote:
+> On 7/30/24 3:35 AM, Danilo Krummrich wrote:
+> > On Mon, Jul 29, 2024 at 09:08:16PM +0200, Danilo Krummrich wrote:
+> >> On Fri, Jul 26, 2024 at 10:05:47PM +0200, Danilo Krummrich wrote:
+> >>> On Fri, Jul 26, 2024 at 04:37:43PM +0200, Vlastimil Babka wrote:
+> >>>> On 7/22/24 6:29 PM, Danilo Krummrich wrote:
+> >>>>> Implement vrealloc() analogous to krealloc().
+> >>>>>
+> >>>>> Currently, krealloc() requires the caller to pass the size of the
+> >>>>> previous memory allocation, which, instead, should be self-contained.
+> >>>>>
+> >>>>> We attempt to fix this in a subsequent patch which, in order to do so,
+> >>>>> requires vrealloc().
+> >>>>>
+> >>>>> Besides that, we need realloc() functions for kernel allocators in Rust
+> >>>>> too. With `Vec` or `KVec` respectively, potentially growing (and
+> >>>>> shrinking) data structures are rather common.
+> >>>>>
+> >>>>> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> >>>>
+> >>>> Acked-by: Vlastimil Babka <vbabka@suse.cz>
+> >>>>
+> >>>>> --- a/mm/vmalloc.c
+> >>>>> +++ b/mm/vmalloc.c
+> >>>>> @@ -4037,6 +4037,65 @@ void *vzalloc_node_noprof(unsigned long size, int node)
+> >>>>>  }
+> >>>>>  EXPORT_SYMBOL(vzalloc_node_noprof);
+> >>>>>  
+> >>>>> +/**
+> >>>>> + * vrealloc - reallocate virtually contiguous memory; contents remain unchanged
+> >>>>> + * @p: object to reallocate memory for
+> >>>>> + * @size: the size to reallocate
+> >>>>> + * @flags: the flags for the page level allocator
+> >>>>> + *
+> >>>>> + * The contents of the object pointed to are preserved up to the lesser of the
+> >>>>> + * new and old size (__GFP_ZERO flag is effectively ignored).
+> >>>>
+> >>>> Well, technically not correct as we don't shrink. Get 8 pages, kvrealloc to
+> >>>> 4 pages, kvrealloc back to 8 and the last 4 are not zeroed. But it's not
+> >>>> new, kvrealloc() did the same before patch 2/2.
+> >>>
+> >>> Taking it (too) literal, it's not wrong. The contents of the object pointed to
+> >>> are indeed preserved up to the lesser of the new and old size. It's just that
+> >>> the rest may be "preserved" as well.
+> >>>
+> >>> I work on implementing shrink and grow for vrealloc(). In the meantime I think
+> >>> we could probably just memset() spare memory to zero.
+> >>
+> >> Probably, this was a bad idea. Even with shrinking implemented we'd need to
+> >> memset() potential spare memory of the last page to zero, when new_size <
+> >> old_size.
+> >>
+> >> Analogously, the same would be true for krealloc() buckets. That's probably not
+> >> worth it.
+> 
+> I think it could remove unexpected bad surprises with the API so why not
+> do it.
 
-This will be used together with upcoming miscdev abstractions, which
-Binder will use when binderfs is disabled.
+We'd either need to do it *every* time we shrink an allocation on spec, or we
+only do it when shrinking with __GFP_ZERO flag set, which might be a bit
+counter-intuitive.
 
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
- rust/kernel/types.rs | 27 +++++++++++++++++++++++++++
- 1 file changed, 27 insertions(+)
+If we do it, I'd probably vote for the latter semantics. While it sounds more
+error prone, it's less wasteful and enough to cover the most common case where
+the actual *realloc() call is always with the same parameters, but a changing
+size.
 
-diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
-index bd189d646adb..132ca1113083 100644
---- a/rust/kernel/types.rs
-+++ b/rust/kernel/types.rs
-@@ -9,6 +9,7 @@
-     marker::{PhantomData, PhantomPinned},
-     mem::MaybeUninit,
-     ops::{Deref, DerefMut},
-+    pin::Pin,
-     ptr::NonNull,
- };
- 
-@@ -89,6 +90,32 @@ unsafe fn from_foreign(ptr: *const core::ffi::c_void) -> Self {
-     }
- }
- 
-+impl<T: 'static> ForeignOwnable for Pin<Box<T>> {
-+    type Borrowed<'a> = Pin<&'a T>;
-+
-+    fn into_foreign(self) -> *const core::ffi::c_void {
-+        // SAFETY: We are still treating the box as pinned.
-+        Box::into_raw(unsafe { Pin::into_inner_unchecked(self) }) as _
-+    }
-+
-+    unsafe fn borrow<'a>(ptr: *const core::ffi::c_void) -> Pin<&'a T> {
-+        // SAFETY: The safety requirements for this function ensure that the object is still alive,
-+        // so it is safe to dereference the raw pointer.
-+        // The safety requirements of `from_foreign` also ensure that the object remains alive for
-+        // the lifetime of the returned value.
-+        let r = unsafe { &*ptr.cast() };
-+
-+        // SAFETY: This pointer originates from a `Pin<Box<T>>`.
-+        unsafe { Pin::new_unchecked(r) }
-+    }
-+
-+    unsafe fn from_foreign(ptr: *const core::ffi::c_void) -> Self {
-+        // SAFETY: The safety requirements of this function ensure that `ptr` comes from a previous
-+        // call to `Self::into_foreign`.
-+        unsafe { Pin::new_unchecked(Box::from_raw(ptr as _)) }
-+    }
-+}
-+
- impl ForeignOwnable for () {
-     type Borrowed<'a> = ();
- 
+> 
+> >> I think we should indeed just document that __GFP_ZERO doesn't work for
+> >> re-allocating memory and start to warn about it. As already mentioned, I think
+> >> we should at least gurantee that *realloc(NULL, size, flags | __GFP_ZERO) is
+> >> valid, i.e. WARN_ON(p && flags & __GFP_ZERO).
+> > 
+> > Maybe I spoke a bit to soon with this last paragraph. I think continuously
+> > gowing something with __GFP_ZERO is a legitimate use case. I just did a quick
+> > grep for users of krealloc() with __GFP_ZERO and found 18 matches.
+> > 
+> > So, I think, at least for now, we should instead document that __GFP_ZERO is
+> > only fully honored when the buffer is grown continuously (without intermediate
+> > shrinking) and __GFP_ZERO is supplied in every iteration.
+> > 
+> > In case I miss something here, and not even this case is safe, it looks like
+> > we have 18 broken users of krealloc().
+> 
+> +CC Feng Tang
+> 
+> Let's say we kmalloc(56, __GFP_ZERO), we get an object from kmalloc-64
+> cache. Since commit 946fa0dbf2d89 ("mm/slub: extend redzone check to
+> extra allocated kmalloc space than requested") and preceding commits, if
+> slub_debug is enabled (red zoning or user tracking), only the 56 bytes
+> will be zeroed. The rest will be either unknown garbage, or redzone.
+> 
+> Then we might e.g. krealloc(120) and get a kmalloc-128 object and 64
+> bytes (result of ksize()) will be copied, including the garbage/redzone.
+> I think it's fixable because when we do this in slub_debug, we also
+> store the original size in the metadata, so we could read it back and
+> adjust how many bytes are copied.
+> 
+> Then we could guarantee that if __GFP_ZERO is used consistently on
+> initial kmalloc() and on krealloc() and the user doesn't corrupt the
+> extra space themselves (which is a bug anyway that the redzoning is
+> supposed to catch) all will be fine.
 
----
-base-commit: 8400291e289ee6b2bf9779ff1c83a291501f017b
-change-id: 20240730-foreign-ownable-pin-box-515cf790977c
+Ok, so those 18 users are indeed currently broken, but only when slub_debug is
+enabled (assuming that all of those are consistently growing with __GFP_ZERO).
 
-Best regards,
--- 
-Alice Ryhl <aliceryhl@google.com>
-
+> 
+> There might be also KASAN side to this, I see poison_kmalloc_redzone()
+> is also redzoning the area between requested size and cache's object_size?
+> 
+> >>
+> >>>
+> >>> nommu would still uses krealloc() though...
+> >>>
+> >>>>
+> >>>> But it's also fundamentally not true for krealloc(), or kvrealloc()
+> >>>> switching from a kmalloc to valloc. ksize() returns the size of the kmalloc
+> >>>> bucket, we don't know what was the exact prior allocation size.
+> >>>
+> >>> Probably a stupid question, but can't we just zero the full bucket initially and
+> >>> make sure to memset() spare memory in the bucket to zero when krealloc() is
+> >>> called with new_size < ksize()?
+> >>>
+> >>>> Worse, we
+> >>>> started poisoning the padding in debug configurations, so even a
+> >>>> kmalloc(__GFP_ZERO) followed by krealloc(__GFP_ZERO) can give you unexpected
+> >>>> poison now...
+> >>>
+> >>> As in writing magics directly to the spare memory in the bucket? Which would
+> >>> then also be copied over to a new buffer in __do_krealloc()?
+> >>>
+> >>>>
+> >>>> I guess we should just document __GFP_ZERO is not honored at all for
+> >>>> realloc, and maybe start even warning :/ Hopefully nobody relies on that.
+> >>>
+> >>> I think it'd be great to make __GFP_ZERO work in all cases. However, if that's
+> >>> really not possible, I'd prefer if we could at least gurantee that
+> >>> *realloc(NULL, size, flags | __GFP_ZERO) is a valid call, i.e.
+> >>> WARN_ON(p && flags & __GFP_ZERO).
+> >>>
+> >>>>
+> >>>>> + *
+> >>>>> + * If @p is %NULL, vrealloc() behaves exactly like vmalloc(). If @size is 0 and
+> >>>>> + * @p is not a %NULL pointer, the object pointed to is freed.
+> >>>>> + *
+> >>>>> + * Return: pointer to the allocated memory; %NULL if @size is zero or in case of
+> >>>>> + *         failure
+> >>>>> + */
+> >>>>> +void *vrealloc_noprof(const void *p, size_t size, gfp_t flags)
+> >>>>> +{
+> >>>>> +	size_t old_size = 0;
+> >>>>> +	void *n;
+> >>>>> +
+> >>>>> +	if (!size) {
+> >>>>> +		vfree(p);
+> >>>>> +		return NULL;
+> >>>>> +	}
+> >>>>> +
+> >>>>> +	if (p) {
+> >>>>> +		struct vm_struct *vm;
+> >>>>> +
+> >>>>> +		vm = find_vm_area(p);
+> >>>>> +		if (unlikely(!vm)) {
+> >>>>> +			WARN(1, "Trying to vrealloc() nonexistent vm area (%p)\n", p);
+> >>>>> +			return NULL;
+> >>>>> +		}
+> >>>>> +
+> >>>>> +		old_size = get_vm_area_size(vm);
+> >>>>> +	}
+> >>>>> +
+> >>>>> +	if (size <= old_size) {
+> >>>>> +		/*
+> >>>>> +		 * TODO: Shrink the vm_area, i.e. unmap and free unused pages.
+> >>>>> +		 * What would be a good heuristic for when to shrink the
+> >>>>> +		 * vm_area?
+> >>>>> +		 */
+> >>>>> +		return (void *)p;
+> >>>>> +	}
+> >>>>> +
+> >>>>> +	/* TODO: Grow the vm_area, i.e. allocate and map additional pages. */
+> >>>>> +	n = __vmalloc_noprof(size, flags);
+> >>>>> +	if (!n)
+> >>>>> +		return NULL;
+> >>>>> +
+> >>>>> +	if (p) {
+> >>>>> +		memcpy(n, p, old_size);
+> >>>>> +		vfree(p);
+> >>>>> +	}
+> >>>>> +
+> >>>>> +	return n;
+> >>>>> +}
+> >>>>> +
+> >>>>>  #if defined(CONFIG_64BIT) && defined(CONFIG_ZONE_DMA32)
+> >>>>>  #define GFP_VMALLOC32 (GFP_DMA32 | GFP_KERNEL)
+> >>>>>  #elif defined(CONFIG_64BIT) && defined(CONFIG_ZONE_DMA)
+> >>>>
+> 
