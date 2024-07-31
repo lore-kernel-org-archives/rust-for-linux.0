@@ -1,163 +1,188 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE48E29CE1;
-	Wed, 31 Jul 2024 21:14:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE9BB1BC4E
+	for <rust-for-linux@vger.kernel.org>; Wed, 31 Jul 2024 21:34:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722460478; cv=none; b=FVZxwN0ZQLZxny1e5nBAgkePBpZEojH4/X8yu8kutUazsBijgCqUYamcugHkQQKQyCUmuZdw/Rfcnn7DWKCO5uB5mt4FHHb3TtScBSw/U2uuraY9kNmM4OtQIQO2VfFudcJ49LtiBjMnuP7JbQTdeWUw2lepmekZPKuwlVCuowI=
+	t=1722461669; cv=none; b=GH46LctQR/BKi+Ev55SX5xg5BPaX4bHtHrExutreKjcvMsiA4EoDtm/vHHylq70oGKhcFsJ3nfOY95I/g5BKZD9+QQSONh6Ceil5QuUfOwQvdVFbEzER2EysAwyp5/IKBkNyZmIZK50PNPWznH9z5fCDA8AyN9LWOY9rn6hPAII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722460478; c=relaxed/simple;
-	bh=drW2XwUE9tnOaLha3mA16TTE9bFBONbbGvjMXVAhun8=;
+	s=arc-20240116; t=1722461669; c=relaxed/simple;
+	bh=7409YPGD84DSohjrVEJAwG5xvR83yL1kGxaxMdosLHg=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=BtJ9k3/+Nex+ZdTbEIpfpidGm5iU6cWi0QAgqBMU2G5Yt/c+iGZiBHol2BJpI8y4MHWlNHYb/qPQX76sqk5rfXCwoG9XzY0UU1Xs+fq7m9PuYew8qVRTthy3C3Osngnaib0pdrdpROWUl8D+bY1AWk8w9tNGkHStn/vv1GlSe0w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=kNPbnXQM; arc=none smtp.client-ip=10.30.226.201
+	 To:Cc:Content-Type; b=RM+wWyX3oaVamWF3Z1Q1zkoKbGTcaxXVJZ+5PeX/emZyxt1Pfd/A11OSNxIt0FZBNtENPa9iQiQYZtjt+e1Y6oq0TDd+JyTBh1J+XKoYo07ybLfuuW4WsthZRSmzAe5FvnZr/boPkxH5rDWO0Okz+PxsoxOnFvkMmoUc3wWl3zU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GQu1F0BL; arc=none smtp.client-ip=209.85.128.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="kNPbnXQM"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41FF4C4AF15;
-	Wed, 31 Jul 2024 21:14:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722460478;
-	bh=drW2XwUE9tnOaLha3mA16TTE9bFBONbbGvjMXVAhun8=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=kNPbnXQMuxy0DCw2lFfWhsqOkQaJk1yoc2IiRzlf4Hyd93QdTa07sXt+WZFim0Waa
-	 Gt/HOIhcYd3Ylgh6PtnGybsEmJelKjojnb0LOI7L0j3WDcuHTMIprNyG4x1XGNBL9H
-	 P/+EkopzVa75ZHGNULZS32bzXZPXyy/wDssLp2RwFnfxQeRuD6aIwNm2aAiAmFHxDo
-	 u8Eay9IixOgqiaiOrCL3AeNLzNMpPNRfNSCJ7/NXQ4ftENbN/60ALmcJJJVhPMEI0z
-	 cqIRp0797yCM5JikO8LE1d830CuaNlBs02do7k2qGnlG+Ulut7k8lYGy5IPoE9+ljx
-	 CunMffAkI1s+g==
-Received: by mail-lj1-f182.google.com with SMTP id 38308e7fff4ca-2f03df8c8cdso15161151fa.1;
-        Wed, 31 Jul 2024 14:14:38 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCWTcre8irLrcCt9TkmwwANrgjoisicJm5azutSlTDpP/iP5DWjziIS3TYhE57xezAcmniRpfynIG71QytRzNTsjEd6w93N4J8SShrTxgFNcqTsgpDbOiQZkB2qk/M7CkkuvXIo/PHygHlTd/i71r14QttWRDOODg+nnkyR7gAuKGdfC/i3iMw==
-X-Gm-Message-State: AOJu0YzzV16okDbe8QZHJOPlUm4S3KfI/2HRnGLqHGMmr9zYYUmc4ce+
-	yBoEBGQp4l/wnerjAlYwC/OC5HxGPjoL+6SFmmbVpx/3sJXCmQEnhSVoS+kKD3k89wYtJ6LHwVe
-	qpj4/zcwU+SxXybyyC8eSG196gg==
-X-Google-Smtp-Source: AGHT+IFntK5fQOseLmw3lZrspK+PJ5SM4yHiGo7j9UlEHCg0G4UuRfMu5Sw47w8P5Ii2dknaI8L+kdJM3fLX279ubIE=
-X-Received: by 2002:a2e:a163:0:b0:2ee:8b28:96e3 with SMTP id
- 38308e7fff4ca-2f1541a9c74mr1012671fa.23.1722460475876; Wed, 31 Jul 2024
- 14:14:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GQu1F0BL"
+Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-42809d6e719so41581045e9.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 31 Jul 2024 14:34:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1722461665; x=1723066465; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Bli9lhI61IaRjVxZ6El/2TlE2JOrlJn5Lbi96Tzc1cY=;
+        b=GQu1F0BLQxTE5HrRAYdznGPthK87JO7jzNA+e0LtPBS1Xeb7WCoXTu2o2+hnzBzEUl
+         buBKc8MLsCIEA0Bjx1nzCTqT1i+hXRpUbn5iBBD2SbfwEsIe35BUVWVchgQPPD+DFajC
+         lgje4uUGsgJyywhKyYgL3ztHIrUUCdz3okoNP58tNgHhPgWtwYf9i8AxVGsRIaJgg9X8
+         CKcJQ2zOdQWlDWO3kjiYGEMSBdXzPvWGQVqYoBqIqg7REf/xE5sFBvxtZ1ndtnA7kFmX
+         qadHFbyDM1p2Ld/bexaE0vVnZucLwHYBDMHOjdX234OwQF4buenYjN+cAaHLeLST4GQT
+         nxzw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722461665; x=1723066465;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Bli9lhI61IaRjVxZ6El/2TlE2JOrlJn5Lbi96Tzc1cY=;
+        b=bOO+gpdwtN46SuDAWKJQ5ckRjTc2L4mUaB1tkFZ77lA/8DSJyAnPssBZfSOxs1DDf7
+         cGRB4MnKqCW8GNBpItKvx4ou/Oni2j/rub5xh2A3J4lOyTi1Eavj2cEI7cuCKdh3tWrs
+         wqjx4BKK7yiK44+ZS9LzO3erz1cSjyJ9g0pKv7OYa6BUJ8/8GCSmLbl694KbrNcw+BMa
+         hImYO3fl1emF2Mh7RaMnsx1lgXp3/KyumwLXnPbAwp6DK9MAWlNx2pQQOC1G4MmC+Jp1
+         cq8s70x1lUbNejC4q+lBrjVh+yV/V5ec3BAIsDk3W9F70dwvU16cOi3uE0UNiFOuOCYA
+         Kd9w==
+X-Forwarded-Encrypted: i=1; AJvYcCXVDizHZsjHXCtsYePunaFKm8gE/LoH4VFJD2feVShuqBfKtRoCSHsipmF3XXvtRFVyWsXQQJUs66EJa0xRXNBT91Oj0wPKKyu5yCW9IVA=
+X-Gm-Message-State: AOJu0YxXN8Xfx4/NL+6QK10s6vqyxvonODdsbi7XX1/tRe9MAQrFXlO1
+	T5/NdctrLOGq9SebVFhyKFTycuBMEk4lrquhkzLocDfzTyvjH8iDK9Lo2zCwFMOgDbAxtoamIHX
+	bge5cgUW+p+KamDrYopDSjFNFOBahrd8Vb+pP
+X-Google-Smtp-Source: AGHT+IEnnH7Vl1oPP/7poRoKnYi3pQkDBFhO+xnBb/MH3dLIwjkKyZ7/ziEU66uYwoK2Ox4X3gDKYbUA6wyDWgsUmeg=
+X-Received: by 2002:a05:600c:3543:b0:426:6ee7:c05a with SMTP id
+ 5b1f17b1804b1-428a9bdcd50mr4067365e9.15.1722461664765; Wed, 31 Jul 2024
+ 14:34:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <cover.1722334569.git.viresh.kumar@linaro.org> <e0df2db1caa49f15628aa18779b94899dcf37880.1722334569.git.viresh.kumar@linaro.org>
-In-Reply-To: <e0df2db1caa49f15628aa18779b94899dcf37880.1722334569.git.viresh.kumar@linaro.org>
-From: Rob Herring <robh@kernel.org>
-Date: Wed, 31 Jul 2024 15:14:23 -0600
-X-Gmail-Original-Message-ID: <CAL_Jsq+SxdPyb3qQyce7u8Ur=WCd1p+pQxJ+yJrTyS2xk3BF0w@mail.gmail.com>
-Message-ID: <CAL_Jsq+SxdPyb3qQyce7u8Ur=WCd1p+pQxJ+yJrTyS2xk3BF0w@mail.gmail.com>
-Subject: Re: [PATCH V5 8/8] cpufreq: Add Rust based cpufreq-dt driver
-To: Viresh Kumar <viresh.kumar@linaro.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, 
-	Danilo Krummrich <dakr@redhat.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+References: <20240628-tracepoint-v4-0-353d523a9c15@google.com>
+ <20240628-tracepoint-v4-1-353d523a9c15@google.com> <20240731170508.GJ33588@noisy.programming.kicks-ass.net>
+In-Reply-To: <20240731170508.GJ33588@noisy.programming.kicks-ass.net>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Wed, 31 Jul 2024 23:34:13 +0200
+Message-ID: <CAH5fLghYodekhH-1A0BWZVwgbqkWbP3WP70-us2FtHqvOqD_Hw@mail.gmail.com>
+Subject: Re: [PATCH v4 1/2] rust: add static_key_false
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Josh Poimboeuf <jpoimboe@kernel.org>, 
+	Jason Baron <jbaron@akamai.com>, Ard Biesheuvel <ardb@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, linux-pm@vger.kernel.org, 
-	Vincent Guittot <vincent.guittot@linaro.org>, Stephen Boyd <sboyd@kernel.org>, 
-	Nishanth Menon <nm@ti.com>, rust-for-linux@vger.kernel.org, 
-	Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, Erik Schilling <erik.schilling@linaro.org>, 
-	=?UTF-8?B?QWxleCBCZW5uw6ll?= <alex.bennee@linaro.org>, 
-	Joakim Bech <joakim.bech@linaro.org>, linux-kernel@vger.kernel.org
+	linux-trace-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, linux-arch@vger.kernel.org, 
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, "Peter Zijlstra (Intel)" <peterz@infradaed.org>, 
+	Sean Christopherson <seanjc@google.com>, Uros Bizjak <ubizjak@gmail.com>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>, 
+	Oliver Upton <oliver.upton@linux.dev>, Mark Rutland <mark.rutland@arm.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Fuad Tabba <tabba@google.com>, 
+	linux-arm-kernel@lists.infradead.org, 
+	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Albert Ou <aou@eecs.berkeley.edu>, Anup Patel <apatel@ventanamicro.com>, 
+	Andrew Jones <ajones@ventanamicro.com>, Alexandre Ghiti <alexghiti@rivosinc.com>, 
+	Conor Dooley <conor.dooley@microchip.com>, Samuel Holland <samuel.holland@sifive.com>, 
+	linux-riscv@lists.infradead.org, Huacai Chen <chenhuacai@kernel.org>, 
+	WANG Xuerui <kernel@xen0n.name>, Bibo Mao <maobibo@loongson.cn>, 
+	Tiezhu Yang <yangtiezhu@loongson.cn>, Andrew Morton <akpm@linux-foundation.org>, 
+	Tianrui Zhao <zhaotianrui@loongson.cn>, loongarch@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Jul 30, 2024 at 4:27=E2=80=AFAM Viresh Kumar <viresh.kumar@linaro.o=
-rg> wrote:
+On Wed, Jul 31, 2024 at 7:05=E2=80=AFPM Peter Zijlstra <peterz@infradead.or=
+g> wrote:
 >
-> This commit adds a Rust based cpufreq-dt driver, which covers most of
-> the functionality of the existing C based driver. Only a handful of
-> things are left, like fetching platform data from cpufreq-dt-platdev.c.
+> On Fri, Jun 28, 2024 at 01:23:31PM +0000, Alice Ryhl wrote:
 >
-> This is tested with the help of QEMU for now and switching of
-> frequencies work as expected.
+> >  rust/kernel/arch/arm64/jump_label.rs     | 34 ++++++++++++++++++++++++=
+++++
+> >  rust/kernel/arch/loongarch/jump_label.rs | 35 ++++++++++++++++++++++++=
++++++
+> >  rust/kernel/arch/mod.rs                  | 24 ++++++++++++++++++++
+> >  rust/kernel/arch/riscv/jump_label.rs     | 38 ++++++++++++++++++++++++=
+++++++++
+> >  rust/kernel/arch/x86/jump_label.rs       | 35 ++++++++++++++++++++++++=
++++++
+> >  rust/kernel/lib.rs                       |  2 ++
+> >  rust/kernel/static_key.rs                | 32 ++++++++++++++++++++++++=
++++
+> >  scripts/Makefile.build                   |  2 +-
+> >  8 files changed, 201 insertions(+), 1 deletion(-)
 >
-> Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
-> ---
->  drivers/cpufreq/Kconfig        |  12 ++
->  drivers/cpufreq/Makefile       |   1 +
->  drivers/cpufreq/rcpufreq_dt.rs | 221 +++++++++++++++++++++++++++++++++
->  3 files changed, 234 insertions(+)
->  create mode 100644 drivers/cpufreq/rcpufreq_dt.rs
+> So I really find the amount of duplicated asm offensive. Is is far too
+> easy for any of this to get out of sync.
 >
-> diff --git a/drivers/cpufreq/Kconfig b/drivers/cpufreq/Kconfig
-> index 94e55c40970a..eb9359bd3c5c 100644
-> --- a/drivers/cpufreq/Kconfig
-> +++ b/drivers/cpufreq/Kconfig
-> @@ -217,6 +217,18 @@ config CPUFREQ_DT
+> > diff --git a/rust/kernel/arch/x86/jump_label.rs b/rust/kernel/arch/x86/=
+jump_label.rs
+> > new file mode 100644
+> > index 000000000000..383bed273c50
+> > --- /dev/null
+> > +++ b/rust/kernel/arch/x86/jump_label.rs
+> > @@ -0,0 +1,35 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +
+> > +// Copyright (C) 2024 Google LLC.
+> > +
+> > +//! X86 Rust implementation of jump_label.h
+> > +
+> > +/// x86 implementation of arch_static_branch
+> > +#[macro_export]
+> > +#[cfg(target_arch =3D "x86_64")]
+> > +macro_rules! arch_static_branch {
+> > +    ($key:path, $keytyp:ty, $field:ident, $branch:expr) =3D> {'my_labe=
+l: {
+> > +        core::arch::asm!(
+> > +            r#"
+> > +            1: .byte 0x0f,0x1f,0x44,0x00,0x00
+> > +
+> > +            .pushsection __jump_table,  "aw"
+> > +            .balign 8
+> > +            .long 1b - .
+> > +            .long {0} - .
+> > +            .quad {1} + {2} + {3} - .
+> > +            .popsection
+> > +            "#,
+> > +            label {
+> > +                break 'my_label true;
+> > +            },
+> > +            sym $key,
+> > +            const ::core::mem::offset_of!($keytyp, $field),
+> > +            const $crate::arch::bool_to_int($branch),
+> > +        );
+> > +
+> > +        break 'my_label false;
+> > +    }};
+> > +}
 >
->           If in doubt, say N.
+> Note that this uses the forced 5 byte version, and not the dynamic sized
+> one. On top of that it hard-codes the nop5 string :/
 >
-> +config CPUFREQ_DT_RUST
-> +       tristate "Rust based Generic DT based cpufreq driver"
-> +       depends on HAVE_CLK && OF && RUST
-> +       select CPUFREQ_DT_PLATDEV
-> +       select PM_OPP
-> +       help
-> +         This adds a Rust based generic DT based cpufreq driver for freq=
-uency
-> +         management.  It supports both uniprocessor (UP) and symmetric
-> +         multiprocessor (SMP) systems.
-> +
-> +         If in doubt, say N.
-> +
->  config CPUFREQ_DT_PLATDEV
->         tristate "Generic DT based cpufreq platdev driver"
->         depends on OF
-> diff --git a/drivers/cpufreq/Makefile b/drivers/cpufreq/Makefile
-> index 8d141c71b016..4981d908b803 100644
-> --- a/drivers/cpufreq/Makefile
-> +++ b/drivers/cpufreq/Makefile
-> @@ -15,6 +15,7 @@ obj-$(CONFIG_CPU_FREQ_GOV_COMMON)             +=3D cpuf=
-req_governor.o
->  obj-$(CONFIG_CPU_FREQ_GOV_ATTR_SET)    +=3D cpufreq_governor_attr_set.o
->
->  obj-$(CONFIG_CPUFREQ_DT)               +=3D cpufreq-dt.o
-> +obj-$(CONFIG_CPUFREQ_DT_RUST)          +=3D rcpufreq_dt.o
->  obj-$(CONFIG_CPUFREQ_DT_PLATDEV)       +=3D cpufreq-dt-platdev.o
->
->  # Traces
-> diff --git a/drivers/cpufreq/rcpufreq_dt.rs b/drivers/cpufreq/rcpufreq_dt=
-.rs
-> new file mode 100644
-> index 000000000000..9204d92d3eec
-> --- /dev/null
-> +++ b/drivers/cpufreq/rcpufreq_dt.rs
-> @@ -0,0 +1,221 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! Rust based implementation of the cpufreq-dt driver.
-> +
-> +use core::format_args;
-> +
-> +use kernel::{
-> +    b_str, c_str, clk, cpufreq, cpumask::Cpumask, define_of_id_table, de=
-vice::Device,
-> +    error::code::*, fmt, macros::vtable, module_platform_driver, of, opp=
-, platform, prelude::*,
-> +    str::CString, sync::Arc,
-> +};
-> +
-> +// Finds exact supply name from the OF node.
-> +fn find_supply_name_exact(np: &of::DeviceNode, name: &str) -> Option<CSt=
-ring> {
-> +    let name_cstr =3D CString::try_from_fmt(fmt!("{}-supply", name)).ok(=
-)?;
-> +
-> +    np.find_property(&name_cstr).ok()?;
+> Please work harder to not have to duplicate stuff like this.
 
-We don't want anything in Rust based on of_find_property() which this
-is. That function assumes a device node and its properties are never
-freed which is no longer a valid assumption (since OF_DYNAMIC and then
-overlays). There's some work starting to address that, and my plan is
-using of_find_property() on dynamic nodes will start warning. The
-of_property_* API mostly avoids that issue (string types are an issue)
-.
+I really didn't want to duplicate it, but it's very hard to find a
+performant alternative. Is there any way we could accept duplication
+only in the cases where an 'i' parameter is used? I don't have the
+choice of using a Rust helper for 'i' parameters.
 
-Also, it's probably the device property API we want to build Rust
-bindings on top of rather than DT and ACPI. OTOH, the device property
-API may be missing some features needed with OPP bindings.
+Perhaps one option could be to put the Rust code inside jump_label.h
+and have the header file evaluate to either C or Rust depending on the
+value of some #ifdefs?
 
-Rob
+#ifndef RUST_ASM
+/* existing C code goes here */
+#endif
+#ifdef RUST_ASM
+// rust code goes here
+#endif
+
+That way the duplication is all in a single file. It would also avoid
+the need for duplicating the nop5 string, as the Rust case is still
+going through the C preprocessor and can use the existing #define.
+
+I'm also open to other alternatives. But I don't have infinite
+resources to drive major language changes.
+
+Alice
