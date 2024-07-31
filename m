@@ -1,91 +1,79 @@
-Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD0BF1798C;
-	Wed, 31 Jul 2024 08:32:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 153581A76CE
+	for <rust-for-linux@vger.kernel.org>; Wed, 31 Jul 2024 08:33:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722414733; cv=none; b=ngJ3aMNJFIYltoF92D1karCppXPGrZ2YdhYG3iKfKs6+Na8vfHB695tAxWkcJeaSe1wWlCtCttxH1+sHDoQLG2j8d1dpcE1o81KOlb6NzsjCzC8i/NyEw8BMOWSH+XGF8GSlX4tPcyPdDPYEsv3QD6ST3/K3k8BM4is11B6ANkA=
+	t=1722414822; cv=none; b=PKWZ8rXJm/7q76LvLxzdeT3/unCxRTAnQ5PBxUHb0/lrdUbNPu7Bc0wDoSJEL0M85UtWI6KoEX35ikXNyaTWbjDQQkGH2+Ag/Fx3eypnwBuMWGtqnTML0SNKD9Mm7iiVHh08+z1WUEXCE+XRfyDM92sldk6d4mKW99E+3BydMi8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722414733; c=relaxed/simple;
-	bh=zwBc+7j1gOA4RZxN95Rhd67uNlCz6saAi/ghZlnCYt0=;
+	s=arc-20240116; t=1722414822; c=relaxed/simple;
+	bh=BnZlSJDT13BF/AQaE8D41cQwd2ylQWg/2e7Wx+5OkfY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ajLOCrlMycpl7v1L677zxX/xTtjWr5x27brm62DN0FEEImDBIYCyTxRqiCWKjIYSuhDX1ySpRXrE/0uF34nPM7qMZ1GCMqXMFboTnFZJFF0UW3X2XyiKN1tzqvTv/pVaczqWcXmkjts+XYdVxteWssPbXA1oodCh6E3nhz36+dI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PWpV01Ls; arc=none smtp.client-ip=209.85.215.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=hf0agiz6BWoJsBDeYorZuVQ+5j+IGsEK5ZVvT1SkJ6uaXo2yI8uH7+CQo/1clTFgZnoNmkFXTB6qinzJD+88ZV31Y5AZ4gr/zHKO/Xb1D7wy2HZr96a6LEOrlrTY+zKRcz1CSLBf9OlEz3t4ri77QghGwmZ2N/kk+wCsOVB0x/A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SkskTveO; arc=none smtp.client-ip=209.85.221.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PWpV01Ls"
-Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-7afd1aeac83so611035a12.0;
-        Wed, 31 Jul 2024 01:32:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SkskTveO"
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-3685a5e7d3cso3079023f8f.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 31 Jul 2024 01:33:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1722414731; x=1723019531; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1722414819; x=1723019619; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=iL+G1y8BebAmWAL7Z1uTpjezb81fXhMCih8TdXof3zU=;
-        b=PWpV01LsDjqTHhYDx+v0eiSQM44CdQzwi25gQgUruln3biLvbx6D+tTyPXv1iEUj8q
-         bIKR69/ujbqReyubeDfO10EZPQkDU2zum3y8KqspD7PkLWGI0f5Uj0SQaDF/IInX6+PT
-         pre08CNevkvYEk4FONLsZxhQB9lwdEIcC+gI3X4vnSm6lXTuV7kSazGdaWYaP5eqkGoN
-         ncQMGxGALiS2gt70cRchhN8V0PrI0UAs6AYkur4xsYXX8MbbJ3hePhLpfL+Dry18N3J3
-         YO6HzJtbqWvpGPP9UhuNEIXB5Bz79sV4pS5RBOOh1shlTPo1/3IA7bxIPll6TNp6put9
-         NcNQ==
+        bh=BnZlSJDT13BF/AQaE8D41cQwd2ylQWg/2e7Wx+5OkfY=;
+        b=SkskTveOUHZ6NHngkBr2S4zZs2T8YRSdd1GP4ir7SIL1sNy0O2+O8ncaa5lo2Ygz4d
+         r6bccViMYtWWwZ+a6LcKp7otom/7JSjAg9xY4kFWZWhukZC1puTLIusJXHaco/oHWQLu
+         6rzd+SlxdKZoTkBrv6wTyg715o3JCmDlohJfT8EAPLjvWvLuRECCCGwT5GprQPOoHLLv
+         KocM/38zgXKtTJ4uvHP4NzlHqmw/dCt8jsuItlmsCX3Qh9tadYTKX4TKjZKH9wP3Afrg
+         LJFXTrg87Qj6Xoe0cb+Ij4ak+4iyV37hYDWhpcReplz1UDTqEW3Z3onH0/RlpSt3TcaD
+         DjrA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722414731; x=1723019531;
+        d=1e100.net; s=20230601; t=1722414819; x=1723019619;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=iL+G1y8BebAmWAL7Z1uTpjezb81fXhMCih8TdXof3zU=;
-        b=lSPr9n8qqKuvtAOkoEDFG0eu7cY5TCO6dQ1P8aSFtK0SRkpYZOeNgh79a97KpFI0lD
-         WxQo3/fIurezO5rIREYb0eOnGeke6SuUPIotbvHTAaXbYyHXDaqGwa4kzocCBYY87daj
-         URShi3W8GO3T1ekOTMSIuKZsT7V8Xz5dfMcfUkDVXcSasGeRFVaOvzDlUO6kmbilt3nJ
-         lQs1xUFCBlOmAOjbrUsAge/s9s6V4f4ExzS6s2d7HePFZKQnOn7LAseDgBOA3aQLdp2C
-         UmPehG6SAnm/92tJCyYN9e5tvs7FAe/UDf4kTq4a3zEvp30Om1ol/m8ZocCcRkod6jFr
-         bZmQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUva36hjxiJ0O7z/Okfss3cJs8hnxjaNTOp/K30gYuYjTW49ViW5fqD4Y1uXMRd/XSZrd3fbnpVNpRMyHi9oY2G5wyKZ0w0qxlhsWPF
-X-Gm-Message-State: AOJu0YygdfdyqXULZmilzx6hz1nXeMqkxu6ZP1EZ//SpLNVff2xzE9s0
-	OwxnpCVn2Auc6bMFpiYTTJvh7M2gciIhfJ+N8EkJLyTYtujDBV046uGG/Kikt7GiA7Hb83R8gak
-	snSO28v1rhp73+pdWJ0rbKs2IKqbDvclUj1Q=
-X-Google-Smtp-Source: AGHT+IFLifyxPwPs2V/mWl8Q/lMkHvc/4jKMKDeqHYBr/em7bPkFfz3c/JwkPmtAwbt0Mx9a1loSf9CNfX1otqlHP/8=
-X-Received: by 2002:a17:90b:78b:b0:2cb:4c30:51bd with SMTP id
- 98e67ed59e1d1-2cfcab35c67mr7433852a91.19.1722414730959; Wed, 31 Jul 2024
- 01:32:10 -0700 (PDT)
+        bh=BnZlSJDT13BF/AQaE8D41cQwd2ylQWg/2e7Wx+5OkfY=;
+        b=JWtxo0KtqzRllKkpk/TEaIZ+JBP5un3H3wX5IvLF2DouIGVul8tWo3sHnaAcWDZ2TD
+         N6RVqYbAfOcwkyVhqSaUqEjytyy/QG5UuKHE/KFIQ8QVmY38Zgdr4zYHbclKKhCMwY0r
+         u89NuXt9vO3s9AKnuUFIiJnSu4VHAnP8jFe27ACud4jvR8KG7xX0mcOJXiPojQvXunng
+         SGriMyaukbei+d7SNmTeoqik0uBEQKu5g2vQliKzuyHpNp/zWBvUkPCFRMCliARVMnso
+         hJ/8Pla30u5Jdo8tSlKIIygKuNYBtyiVHscxqK+s2uzLLzA5iTobpeDiWnUoCSnWcNb0
+         UOqA==
+X-Forwarded-Encrypted: i=1; AJvYcCWNqjwz3IftIAhUF6kVSLogn+zjQ7LoniSN598Zd3+9LbMahFH/m0Lx46RLqt6Wd0lIGbKhtMIDyLi5X8D3Mu7E1tw0f8F3PE+CDAm9lSI=
+X-Gm-Message-State: AOJu0Yx0jaWVycYT/lhXqtiJqVpPe/RPYBaQw+l8I3okxgTmhgAjgRdz
+	MvRDlaeaWI7qHOng34qsBJGfB/UI43ps/hKStKkkCtajS80jvhJArp5t1XfC8k8FRbACyEe2ZXk
+	yOQrXUyqgeCUC7KumMinv3kj1yMCeuq5ydUWu
+X-Google-Smtp-Source: AGHT+IEOPSFZehJ4N+U9mXeYBFSf/90MywPIzf/okvTbG8RbnfAdjDHuC2bUBAJGaeMoFbbkP9pPL4jBpOu5oUPMs/c=
+X-Received: by 2002:a05:6000:18ae:b0:367:8a2f:a6dc with SMTP id
+ ffacd0b85a97d-36b5d353adbmr10926566f8f.44.1722414819015; Wed, 31 Jul 2024
+ 01:33:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240731032030.2847151-1-neal@gompa.dev>
-In-Reply-To: <20240731032030.2847151-1-neal@gompa.dev>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 31 Jul 2024 10:31:58 +0200
-Message-ID: <CANiq72nXN-pkHAG6A19JrjiL-uKpem_-8GN8RhiVgc+sKJN6wA@mail.gmail.com>
-Subject: Re: [PATCH] init/Kconfig: Only block on RANDSTRUCT for RUST
-To: Neal Gompa <neal@gompa.dev>
-Cc: rust-for-linux@vger.kernel.org, asahi@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
-	Hector Martin <marcan@marcan.st>, Janne Grunau <j@jannau.net>, Asahi Lina <lina@asahilina.net>
+References: <20240731042136.201327-1-fujita.tomonori@gmail.com> <20240731042136.201327-2-fujita.tomonori@gmail.com>
+In-Reply-To: <20240731042136.201327-2-fujita.tomonori@gmail.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Wed, 31 Jul 2024 10:33:23 +0200
+Message-ID: <CAH5fLgjvGQiwTPvCiC9MsgKKHh+Xeyp=VvGyp_MykbLnor4tMA@mail.gmail.com>
+Subject: Re: [PATCH net-next v2 1/6] rust: sizes: add commonly used constants
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, andrew@lunn.ch, 
+	tmgross@umich.edu, miguel.ojeda.sandonis@gmail.com, benno.lossin@proton.me
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jul 31, 2024 at 5:21=E2=80=AFAM Neal Gompa <neal@gompa.dev> wrote:
+On Wed, Jul 31, 2024 at 6:22=E2=80=AFAM FUJITA Tomonori
+<fujita.tomonori@gmail.com> wrote:
 >
-> When enabling Rust in the kernel, we only need to block on the
-> RANDSTRUCT feature and GCC plugin. The rest of the GCC plugins
-> are reasonably safe to enable.
+> Add rust equivalent to include/linux/sizes.h, makes code more
+> readable. This adds only SZ_*K, which mostly used.
+>
+> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
-Yeah, only that one is what we had initially years ago, and then we
-went the easy route since anyway the mixed builds are best effort at
-the moment and GCC plugins could possibly be going away anyway.
-
-Did you test it with the other GCC plugins enabled etc.?
-
-> +       depends on RANDSTRUCT_NONE
-
-Also, why is this changed?
-
-Thanks!
-
-Cheers,
-Miguel
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
