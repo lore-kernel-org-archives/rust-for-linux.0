@@ -1,271 +1,199 @@
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4451F1C69A
-	for <rust-for-linux@vger.kernel.org>; Wed, 31 Jul 2024 20:17:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1F2116C437;
+	Wed, 31 Jul 2024 20:46:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722457040; cv=none; b=FSqYsFNufH7Etwt68FMEq35LXhUttWnrSs7MnM6F/+4/HqnjI/bVUUsgVqgWW+Hwb8SQburpJOivUs9vWEomckORL3zZWuFlc3loJTPpDX22xhuTosKZzIhyAEnzVfJcpccdBfAGlCJdkw7rvuK3myP5hLSYrQl/39NOvlvVciE=
+	t=1722458784; cv=none; b=J3eeY+kHRnDpPn8oeic4IF4DzNnvJdXN97lZBBMVJ3Ahl9oNgiu+qzBUnTH0QTKl2UUmDj9WWA5yrpxkQgTCYj+5pLY787tHj9Luc0dQlXe9yIgXSv5kaSzSYJ2gKRiWl7kqsmF4T6KMX2KuF/6uwq/L26brPU27E9GwLFtsQuM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722457040; c=relaxed/simple;
-	bh=rtPReYgUCOMcmx4myo8PVnbSVrj8vp20QDkHXW5qH0E=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZQebOuGcYSBBqS/EPfThBgztODJeUftsd0tnM468xgj6GAlHn1ax2BHHP7N42WD7j6QcWVlkiKzI5m3Hfzg48Mqw3seaKirVPL8kz4y/eqZQEFws5PqBpApxPU/GwRcSZgZozUXfScANDTP4LAcMXD9+3v0Wm4iAgRgBfeR2Sxw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=hh/i3Lwm; arc=none smtp.client-ip=185.70.43.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="hh/i3Lwm"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1722457035; x=1722716235;
-	bh=kf2q8momx2ZD5HVKaMvEvPSC4bck0pCQ/m0sAo85WOg=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=hh/i3Lwm+GAtM9uR1ixhQDYNrqceUi5px1y/FctTwUalK8gi9CLqNnk/iD/YNsQRj
-	 hWym0O20/DOhqtw/XxkhykXFph6ryxVcCg312fvs/FVzTU+FbjQ6i5GKa8bwrMZgqm
-	 ZlHZjkYsDNgk81q5j7YjEwYq3pVz5vWkQnlEjJ5b/u7xXLoVELMOCzU+qxSg9V4nM2
-	 mOBWUHZQ7udNjiQyvtTCCTOINnOCkitP+wfmN4a5ERr1X/j8sygbRNUZ5gnwrZ6rVa
-	 +oAK1vGFQmTJn7o9FzMtWN/8Fsp/s38XHk3Uw1SQRRuPfZ/S88Ht9XREXnSO7nrTlm
-	 4dD6QGS8HtkBA==
-Date: Wed, 31 Jul 2024 20:17:09 +0000
-To: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Marco Elver <elver@google.com>, Coly Li <colyli@suse.de>, Paolo Abeni <pabeni@redhat.com>, Pierre Gondois <pierre.gondois@arm.com>, Ingo Molnar <mingo@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Wei Yang <richard.weiyang@gmail.com>, Matthew Wilcox <willy@infradead.org>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, Kees Cook <kees@kernel.org>
-Subject: Re: [PATCH v3 05/10] rust: list: add macro for implementing ListItem
-Message-ID: <e6a57401-7b44-4ba5-ba9a-7948e5f7c7a1@proton.me>
-In-Reply-To: <20240723-linked-list-v3-5-89db92c7dbf4@google.com>
-References: <20240723-linked-list-v3-0-89db92c7dbf4@google.com> <20240723-linked-list-v3-5-89db92c7dbf4@google.com>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: e356b171cb6342f75d19d8892a66e00bf5fcd4d8
+	s=arc-20240116; t=1722458784; c=relaxed/simple;
+	bh=AeVukmohV3Ul5Z/K/N7ywFHY6KRlSp5fj3lgsbIeS84=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=X+XSax6Md5uAqF+9xXebnuGzvoqrP7E/N3Q/Ey4xQ3vlO/j8JwzzRTzi9f7xoANoSeX9Pt6u+a2Ogg5CZDZngyBLgQwpdleKr6LBhAM83Ex1C+dgt+/Ea+HeKeasSSXB1mnrLe9PfF/O2s7NIIxSZpIeVG+JK+vGMkt1EiMm1Fs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gompa.dev; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.160.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gompa.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-44fe9aa3bfaso36606111cf.0;
+        Wed, 31 Jul 2024 13:46:22 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722458781; x=1723063581;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=t/EX/MdkSUl5MjV12TxYf7t+yruPrf+xB5I7T7z+p84=;
+        b=myoZw0WcpKgZQiQb9weOCoLzq7mbYJTH4sIoMpyQeVEDotc4W5xOqp9weVIcwcclb2
+         6mhlh4/kg3RvcnnwFhJ9j/opjH0HxZZemwydxfT9pHJhgzbBM67YpfRDvDCmP2vy9zbU
+         HGPDmnaC9cVO5fpEN9YJKrDupsCjad8dCPZuGJQ32NOWhZVhe2y5PUWzaZ5P1Q9DPTCX
+         uE3Z+2wH5xc1UWXzFOCKrcyFqSlYLZZQhFb63R4Ng3WvGc4TBjrWviNZnb9CbcAdf4gR
+         cVoHD0koikV8EnEzxu0m6w4mZYnFfUyeqWBxcWoQXVrFJlGueVeXcpoPhzWXowobhXMO
+         QJIQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUHjnAjThn+yI2ZXAahR/eurNJLCZ9HvCf1k0oED7mjUYp9ArjI+i29gNPzzEoqJ8/U8x3VTyspPSQX/hw03iby2epbOrLrKMZyluJVV4ktgU3noF+oCr6pVA9WHtSbtZUWHIR0unGwhlTvml0yLw9Vn0ZJCq86hS/apqRYx9ejce3KQ6IlHSJi6n3nGFipnbJuKbHZXdKhlemxEaGXI+yMAFYnhwZdM68i
+X-Gm-Message-State: AOJu0YxVAcuvvp+byDGQYIdHNp+k2g6Jse8KveD7/yWaer71CAZ+lVby
+	yW+AtPCte+QvW1nR8JmWXR/Uqdson7c6lpMSICLMv4avf1WTRoQe
+X-Google-Smtp-Source: AGHT+IEhWj/vQ8WTQj+u43hJfEmFz+FLsoDhgrSx+TsivhnOhOZQAV5+0NUOqpY72YTh3UQU3fOyMA==
+X-Received: by 2002:ac8:5d55:0:b0:446:5aac:ca7f with SMTP id d75a77b69052e-451567a382dmr6959181cf.22.1722458781529;
+        Wed, 31 Jul 2024 13:46:21 -0700 (PDT)
+Received: from skuld-framework.localnet ([32.221.37.233])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-44fe812350bsm63120971cf.9.2024.07.31.13.46.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 31 Jul 2024 13:46:20 -0700 (PDT)
+From: Neal Gompa <neal@gompa.dev>
+To: Petr Pavlu <petr.pavlu@suse.com>, Sami Tolvanen <samitolvanen@google.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Masahiro Yamada <masahiroy@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>,
+ Miguel Ojeda <ojeda@kernel.org>, Matthew Maurer <mmaurer@google.com>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>,
+ linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-modules@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ Asahi Linux <asahi@lists.linux.dev>, Hector Martin <marcan@marcan.st>,
+ Janne Grunau <j@jannau.net>
+Subject: Re: [PATCH 00/15] Implement MODVERSIONS for Rust
+Date: Wed, 31 Jul 2024 16:46:18 -0400
+Message-ID: <8578805.OV4Wx5bFTl@skuld-framework>
+In-Reply-To:
+ <CABCJKucj7zjc4=EiFdSnzNDBvQmaWBBt_KJsTq1ybp=Vegp5eQ@mail.gmail.com>
+References:
+ <20240617175818.58219-17-samitolvanen@google.com>
+ <00714a65-953f-4885-9229-1990543c4154@suse.com>
+ <CABCJKucj7zjc4=EiFdSnzNDBvQmaWBBt_KJsTq1ybp=Vegp5eQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
 
-On 23.07.24 10:22, Alice Ryhl wrote:
-> diff --git a/rust/kernel/list/impl_list_item_mod.rs b/rust/kernel/list/im=
-pl_list_item_mod.rs
-> new file mode 100644
-> index 000000000000..9b1947371c63
-> --- /dev/null
-> +++ b/rust/kernel/list/impl_list_item_mod.rs
-> @@ -0,0 +1,139 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +// Copyright (C) 2024 Google LLC.
-> +
-> +//! Helpers for implementing list traits safely.
-> +
-> +use crate::list::ListLinks;
-> +
-> +/// Declares that this type has a `ListLinks<ID>` field at a fixed offse=
-t.
-> +///
-> +/// This trait is only used to help implement `ListItem` safely. If `Lis=
-tItem` is implemented
-> +/// manually, then this trait is not needed.
-
-Can you reference the `impl_has_list_links!` macro here to guide the
-user to the safe version?
-
-> +///
-> +/// # Safety
-> +///
-> +/// All values of this type must have a `ListLinks<ID>` field at the giv=
-en offset.
-> +///
-> +/// The implementation of `raw_get_list_links` must not be changed.
-> +pub unsafe trait HasListLinks<const ID: u64 =3D 0> {
-> +    /// The offset of the `ListLinks` field.
-> +    const OFFSET: usize;
-> +
-> +    /// Returns a pointer to the [`ListLinks<T, ID>`] field.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// The provided pointer must point at a valid struct of type `Self`=
-.
-> +    ///
-> +    /// [`ListLinks<T, ID>`]: ListLinks
-> +    // We don't really need this method, but it's necessary for the impl=
-ementation of
-> +    // `impl_has_work!` to be correct.
-
-Stale comment (this has nothing to do with `impl_has_work!`).
-
-> +    #[inline]
-> +    unsafe fn raw_get_list_links(ptr: *mut Self) -> *mut ListLinks<ID> {
-> +        // SAFETY: The caller promises that the pointer is valid. The im=
-plementer promises that the
-> +        // `OFFSET` constant is correct.
-> +        unsafe { (ptr as *mut u8).add(Self::OFFSET) as *mut ListLinks<ID=
-> }
-> +    }
-> +}
-> +
-> +/// Implements the [`HasListLinks`] trait for the given type.
-> +#[macro_export]
-> +macro_rules! impl_has_list_links {
-> +    ($(impl$(<$($implarg:ident),*>)?
-> +       HasListLinks$(<$id:tt>)?
-> +       for $self:ident $(<$($selfarg:ty),*>)?
-> +       { self$(.$field:ident)* }
-> +    )*) =3D> {$(
-> +        // SAFETY: The implementation of `raw_get_list_links` only compi=
-les if the field has the
-> +        // right type.
-> +        //
-> +        // The implementation of `raw_get_list_links` is not changed sin=
-ce the `addr_of_mut!` macro
-> +        // is equivalent to the pointer offset operation in the trait de=
-finition.
-> +        unsafe impl$(<$($implarg),*>)? $crate::list::HasListLinks$(<$id>=
-)? for
-> +            $self $(<$($selfarg),*>)?
-> +        {
-> +            const OFFSET: usize =3D ::core::mem::offset_of!(Self, $($fie=
-ld).*) as usize;
-> +
-> +            #[inline]
-> +            unsafe fn raw_get_list_links(ptr: *mut Self) -> *mut $crate:=
-:list::ListLinks$(<$id>)? {
-> +                // SAFETY: The caller promises that the pointer is not d=
-angling. We know that this
-> +                // expression doesn't follow any pointers, as the `offse=
-t_of!` invocation above
-> +                // would otherwise not compile.
-> +                unsafe { ::core::ptr::addr_of_mut!((*ptr)$(.$field)*) }
-> +            }
-> +        }
-> +    )*};
-> +}
-> +pub use impl_has_list_links;
-> +
-> +/// Implements the [`ListItem`] trait for the given type.
-> +///
-> +/// Assumes that the type implements [`HasListLinks`].
-
-I would write "Requires", since "Assumes" sounds as if it isn't checked.
-
-Can you also reference the `impl_has_list_links!` macro here to guide
-the user to the safe version?
-
-> +///
-> +/// [`ListItem`]: crate::list::ListItem
-> +#[macro_export]
-> +macro_rules! impl_list_item {
-> +    (
-> +        impl$({$($generics:tt)*})? ListItem<$num:tt> for $t:ty {
-> +            using ListLinks;
-> +        } $($rest:tt)*
-> +    ) =3D> {
-> +        // SAFETY: See GUARANTEES comment on each method.
-> +        unsafe impl$(<$($generics)*>)? $crate::list::ListItem<$num> for =
-$t {
-> +            // GUARANTEES:
-> +            // * This returns the same pointer as `prepare_to_insert` be=
-cause `prepare_to_insert`
-> +            //   is implemented in terms of `view_links`.
-> +            // * By the type invariants of `ListLinks`, the `ListLinks` =
-has two null pointers when
-> +            //   this value is not in a list.
-> +            unsafe fn view_links(me: *const Self) -> *mut $crate::list::=
-ListLinks<$num> {
-> +                // SAFETY: The caller guarantees that `me` points at a v=
-alid value of type `Self`.
-> +                unsafe {
-> +                    <Self as $crate::list::HasListLinks<$num>>::raw_get_=
-list_links(me.cast_mut())
-> +                }
-> +            }
-> +
-> +            // GUARANTEES:
-> +            // * `me` originates from the most recent call to `prepare_t=
-o_insert`, which just added
-> +            //   `offset` to the pointer passed to `prepare_to_insert`. =
-This method subtracts
-> +            //   `offset` from `me` so it returns the pointer originally=
- passed to
-> +            //   `prepare_to_insert`.
-> +            // * The pointer remains valid until the next call to `post_=
-remove` because the caller
-> +            //   of the most recent call to `prepare_to_insert` promised=
- to retain ownership of the
-> +            //   `ListArc` containing `Self` until the next call to `pos=
-t_remove`. The value cannot
-> +            //   be destroyed while a `ListArc` reference exists.
-> +            unsafe fn view_value(me: *mut $crate::list::ListLinks<$num>)=
- -> *const Self {
-> +                let offset =3D <Self as $crate::list::HasListLinks<$num>=
->::OFFSET;
-> +                // SAFETY: `me` originates from the most recent call to =
-`prepare_to_insert`, so it
-> +                // points at the field at offset `offset` in a value of =
-type `Self`. Thus,
-> +                // subtracting `offset` from `me` is still in-bounds of =
-the allocation.
-> +                unsafe { (me as *const u8).sub(offset) as *const Self }
-> +            }
-> +
-> +            // GUARANTEES:
-> +            // This implementation of `ListItem` will not give out exclu=
-sive access to the same
-> +            // `ListLinks` several times because calls to `prepare_to_in=
-sert` and `post_remove`
-> +            // must alternate and exclusive access is given up when `pos=
-t_remove` is called.
-> +            //
-> +            // Other invocations of `impl_list_item!` also cannot give o=
-ut exclusive access to the
-> +            // same `ListLinks` because you can only implement `ListItem=
-` once for each value of
-> +            // `ID`, and the `ListLinks` fields only work with the speci=
-fied `ID`.
-> +            unsafe fn prepare_to_insert(me: *const Self) -> *mut $crate:=
-:list::ListLinks<$num> {
-> +                // SAFETY: The caller promises that `me` points at a val=
-id value.
-> +                unsafe { <Self as $crate::list::ListItem<$num>>::view_li=
-nks(me) }
-> +            }
-> +
-> +            // GUARANTEES:
-> +            // The first guarantee of `view_value` is exactly what `post=
-_remove` guarantees.
-> +            unsafe fn post_remove(me: *mut $crate::list::ListLinks<$num>=
-) -> *const Self {
-> +                // SAFETY: This violates the safety requirement that `po=
-st_remove` has not been
-> +                // called since the most recent call to `prepare_to_inse=
-rt`, but that is okay
-> +                // because the concrete implementation of `view_value` a=
-bove does not rely on that
-> +                // requirement anywhere except for its second guarantee,=
- and we don't need its
-> +                // second guarantee.
-
-I don't like the "this isn't correct, but if you look closely at the
-implementations, it's fine". Do you think it would be better if you just
-copy paste the impl of `view_value`?
-
----
-Cheers,
-Benno
-
-> +                unsafe { <Self as $crate::list::ListItem<$num>>::view_va=
-lue(me) }
-> +            }
-> +        }
-> +    };
-> +}
-> +pub use impl_list_item;
+On Friday, July 26, 2024 5:05:22=E2=80=AFPM EDT Sami Tolvanen wrote:
+> Hi Petr,
 >=20
-> --
-> 2.45.2.1089.g2a221341d9-goog
+> On Mon, Jul 22, 2024 at 8:20=E2=80=AFAM Petr Pavlu <petr.pavlu@suse.com> =
+wrote:
+> > From my perspective, I'm okay if gendwarfksyms doesn't provide
+> > functionality to compare a new object file with its reference symtypes
+> > file.
+> >=20
+> > As mentioned, genksyms has this functionality but I actually think the
+> > way it works is not ideal. Its design is to operate on one compilation
+> > unit at the time. This has the advantage that a comparison of each file
+> > is performed in parallel during the build, simply because of the make
+> > job system. On the other hand, it has two problems.
+> >=20
+> > The first one is that genksyms doesn't provide a comparison of the
+> > kernel as a whole. This means that the tool gives rather scattered and
+> > duplicated output about changed structs in the build log. Ideally, one
+> > would like to see a single compact report about what changed at the end
+> > of the build.
 >=20
+> Sure, that makes sense. Android uses STG for this, which might be
+> useful to other folks too:
+>=20
+> https://android.googlesource.com/platform/external/stg/
+> https://android.googlesource.com/platform/external/stg/+/refs/heads/main/=
+doc
+> /stgdiff.md#output-formats
+> > A few months ago, I also started working on a tool inspired by this
+> > script. The goal is to have similar functionality but hopefully with
+> > a much faster implementation. Hence, this tool is written in a compiled
+> > language (Rust at the moment) and should also become multi-threaded. I'm
+> > hoping to find some time to make progress on it and make the code
+> > public. It could later be added to the upstream kernel to replace the
+> > comparison functionality implemented by genksyms, if there is interest.
+> >=20
+> > So as mentioned, I'm fine if gendwarfksyms doesn't have this
+> > functionality. However, for distributions that rely on the symtypes
+> > format, I'd be interested in having gendwarfksyms output its dump data
+> > in this format as well.
+>=20
+> We can definitely tweak the output format, but I'm not sure if making
+> it fully compatible with the genksyms symtypes format is feasible,
+> especially for Rust code. I also intentionally decided to use DWARF
+> tag names in the output instead of shorthands like s# etc. to make it
+> a bit more readable.
+>=20
+> > For example, instead of producing:
+> >=20
+> > gendwarfksyms: process_exported_symbols: _some_mangled_func_name (@ XYZ)
+> > subprogram(
+> >=20
+> >    [formal parameters...]
+> >=20
+> > )
+> > -> structure_type core::result::Result<(), core::fmt::Error> {
+> >=20
+> >    [a description of the structure...]
+> >=20
+> > };
+> >=20
+> > .. the output could be something like this:
+> >=20
+> > S#'core::result::Result<(), core::fmt::Error>' structure_type
+> > core::result::Result<(), core::fmt::Error> { [a description of the
+> > structure...] } _some_mangled_func_name subprogram
+> > _some_mangled_func_name ( [formal parameters...] ) ->
+> > S#'core::result::Result<(), core::fmt::Error>'
+> This wouldn't be enough to make the output format compatible with
+> symtypes though. genksyms basically produces a simple key-value pair
+> database while gendwarfksyms currently outputs the fully expanded type
+> string for each symbol. If you need the tool to produce a type
+> database, it might also be worth discussing if we should use a bit
+> less ad hoc format in that case.
+>=20
+> One more thing to note about the current --debug output is that it
+> directly correlates with the debugging information and thus may not
+> contain all aliases. For example, the Rust compiler deduplicates
+> identical function implementations (e.g. Deref::deref and
+> DerefMut::deref_mut etc.), but only one of the symbol names appears in
+> DWARF. We use symbol addresses to print out #SYMVERs also for the
+> aliases, but they don't show up in the debugging output right now.
+>=20
+> > > If using unions here is acceptable to everyone, a simple solution
+> > > would be to use a known name prefix for the reserved members and teach
+> > > gendwarfksyms to only print out the original type for the replaced
+> > > ones. For example:
+> > >=20
+> > > The initial placeholder:
+> > >     u8 __kabi_reserved_1[8];
+> > >=20
+> > > After replacement:
+> > >     union {
+> > >    =20
+> > >             u64 new_member;
+> > >             struct {
+> > >            =20
+> > >                     u8 __kabi_reserved_1[8];
+> > >            =20
+> > >             };
+> > >    =20
+> > >     }
+> > >=20
+> > > Here gendwarfksyms would see the __kabi_reserved prefix and only use
+> > > u8 [8] for the CRC calculation. Does this sound reasonable?
+> >=20
+> > I like this idea. I think it's good that the necessary kABI information
+> > about an updated member can be expressed at the source code level in
+> > place of the actual change, and it isn't needed to feed additional input
+> > to the tool.
+>=20
+> OK, cool. I agree that being able to specify these details in source
+> code is much cleaner. I'll add an implementation for this, and for the
+> definition visibility issue Greg mentioned in v2.
+>=20
+
+Could you please add myself, Hector, and Janne (along with the Asahi Linux=
+=20
+mailing list) to the recipients when you send the v2 patch set? We're also=
+=20
+interested in this. :)
+
+Thanks in advance!
+
+
+=2D-=20
+=E7=9C=9F=E5=AE=9F=E3=81=AF=E3=81=84=E3=81=A4=E3=82=82=E4=B8=80=E3=81=A4=EF=
+=BC=81/ Always, there's only one truth!
+
 
