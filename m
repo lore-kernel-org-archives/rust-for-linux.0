@@ -1,43 +1,44 @@
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED0C2381AD
-	for <rust-for-linux@vger.kernel.org>; Wed, 31 Jul 2024 18:41:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66D9E13C8F4
+	for <rust-for-linux@vger.kernel.org>; Wed, 31 Jul 2024 18:58:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.134
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722451308; cv=none; b=DXYnjCCVRtxw2iegncWc1f0zV3ZKWeY7c3LNyrUTGK+BJOtZymcXrSdrFUjFWVdibuuaNgBn6R7b8dArT+hGUAlSaovJNSCNuzDja4avtxVBhufJSOzMZb9MJDbQmoBE1Fsqytq5EdqWZKenRddKPho3yZz0DeWhLgHRqLxM7S8=
+	t=1722452324; cv=none; b=deJP8PhRhPb6wVSFuMxAHFAdU89c+IShT1THO7HgiwBig6CidGr0kKJYCT7n8xXaygoRwFLLs+H/ZFshf9cGeCQJ2gK3DBOYUJxYNefqcymGnyzyR30teAobolLBbJn4YTw3weP+bxvRvRKkasW9CfOakTuRZ+E43WPExP18GTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722451308; c=relaxed/simple;
-	bh=lJilw/AoVHYdYfRUwSwCjA7exwUKyo868FVxs6MJao8=;
+	s=arc-20240116; t=1722452324; c=relaxed/simple;
+	bh=Os8qowKsxDSRcPHPF/e1AaWARnryjEqWztOmIrjOGZI=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TR5BbqivnZVoNWJbT7KD/9mUBI7RT7XCRwdWv8QvoZ7L8suFeujhqRl3GLsQj07Q9gOMmkWFwMJX7kNS+tUlxPdFzTJqOnz+/KAlXvkSk3piwtvRa4L3Xdem9FbpBvfq1es4rIinlbVTU9Kb56vpI7NPmcCQ5cuEu97QPrpwyKY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=aRv7cnXn; arc=none smtp.client-ip=185.70.43.16
+	 MIME-Version:Content-Type; b=Drmf2BBzs4MoMPU7y6ZfxONBO2aPcTf6J162RfQH+lA1xk93IetdoRwDo4+8cTzSF4ZHaZdJPbBEH11UeLptv+9OkhrVJdVKv/otaAwj+rQkFbfnixvLGKIAseiQD/T7kM49OH/zwbh+TCQ355iHjTkMgO1KfzV6BbQSj/lNE1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=b1nTHKn2; arc=none smtp.client-ip=185.70.40.134
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="aRv7cnXn"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="b1nTHKn2"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1722451303; x=1722710503;
-	bh=j42rHfXMMIaRB2UIZ2G8pZNOKdDpMtFUjLRZK4Fc7YQ=;
+	s=protonmail; t=1722452314; x=1722711514;
+	bh=Ok2jcwhhpJcH2GHlECFhqT7lAO056VLfnNsP0CYcDJg=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=aRv7cnXnwMx+MADwFzWx7EPDrs0XS7Fo4WyNQN8t4Ejrnf+wGiV7WO82K4ss8euJi
-	 c15z5eWV6fRWrwdT0ufY+Uajqkp57T7Knue3H4uoowr8gEAtBGAyDQ5sAGDS6VRkQT
-	 ZcSCACYQVDyzSkgw4CvQsR6kGajgm15GLygS6zPNlv1sb/6R3beyoJ/cYFvRQ6XkeG
-	 uW6YCoQav8e1OTEzpAkTMKcD63g6GK8l7FJW0x6obz+BkNoYLY4lx0GRtGKp40kO8i
-	 9gL4LX0uiflpNGVMJNwtxogSSo1d+GrTCe9dn/fLdDN/379oUD/jBSkiseHS8N/nwc
-	 P0Y/51xokpdUw==
-Date: Wed, 31 Jul 2024 18:41:38 +0000
-To: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
+	b=b1nTHKn2T1dmR8vteP/M2sWrDZnltmVMV+WeJpQaWHdshFgouh8mtm6NWkSOyvsxv
+	 zbvWJCt5CARyolCYp8jYPTiMMC2/kamd6t1bN+hVlgjMjCiCQAFbJEnz1IMoa3ET7b
+	 dv/+gkT8NoDZWbongMdRmVuvEm5gxl2UjI9LZZyU/hVmY7z8FZclgaMloojKNlSXGl
+	 3JDlf6u0EO7lKkTxR5KncuBvKc2QYLLC9GUUqnUn8OIok9sbIj5OjDnyv1rHUrCrft
+	 30wBI2Y8WrNCEUZoxCwk/KYw5Ic9fuzfIcT71pq+GI6qDGIg08sGLP7pGBPC44S4xU
+	 28vEKBj2xRsUw==
+Date: Wed, 31 Jul 2024 18:58:28 +0000
+To: Alice Ryhl <aliceryhl@google.com>, Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Peter Zijlstra <peterz@infradead.org>, Josh Poimboeuf <jpoimboe@kernel.org>, Jason Baron <jbaron@akamai.com>, Ard Biesheuvel <ardb@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Marco Elver <elver@google.com>, Coly Li <colyli@suse.de>, Paolo Abeni <pabeni@redhat.com>, Pierre Gondois <pierre.gondois@arm.com>, Ingo Molnar <mingo@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Wei Yang <richard.weiyang@gmail.com>, Matthew Wilcox <willy@infradead.org>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, Kees Cook <kees@kernel.org>
-Subject: Re: [PATCH v3 04/10] rust: list: add struct with prev/next pointers
-Message-ID: <1b2078d8-d93b-4626-a73f-edc5616a2357@proton.me>
-In-Reply-To: <20240723-linked-list-v3-4-89db92c7dbf4@google.com>
-References: <20240723-linked-list-v3-0-89db92c7dbf4@google.com> <20240723-linked-list-v3-4-89db92c7dbf4@google.com>
+Cc: linux-trace-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, linux-arch@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, "Peter Zijlstra (Intel)" <peterz@infradaed.org>, Sean Christopherson <seanjc@google.com>, Uros Bizjak <ubizjak@gmail.com>, Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>, Mark Rutland <mark.rutland@arm.com>, Ryan Roberts <ryan.roberts@arm.com>, Fuad Tabba <tabba@google.com>, linux-arm-kernel@lists.infradead.org, Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, Anup Patel <apatel@ventanamicro.com>, Andrew Jones <ajones@ventanamicro.com>, Alexandre Ghiti
+	<alexghiti@rivosinc.com>, Conor Dooley <conor.dooley@microchip.com>, Samuel Holland <samuel.holland@sifive.com>, linux-riscv@lists.infradead.org, Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, Bibo Mao <maobibo@loongson.cn>, Tiezhu Yang <yangtiezhu@loongson.cn>, Andrew Morton <akpm@linux-foundation.org>, Tianrui Zhao <zhaotianrui@loongson.cn>, loongarch@lists.linux.dev
+Subject: Re: [PATCH v4 2/2] rust: add tracepoint support
+Message-ID: <b675e620-6a20-496a-8d23-8e184d7bde6b@proton.me>
+In-Reply-To: <20240628-tracepoint-v4-2-353d523a9c15@google.com>
+References: <20240628-tracepoint-v4-0-353d523a9c15@google.com> <20240628-tracepoint-v4-2-353d523a9c15@google.com>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 8aa0c8a898d34210a5055c792d60eb3bc6c0071d
+X-Pm-Message-ID: 8ba1730ad398f749464698fd1f1be0f27b26c0d0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,60 +48,80 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On 23.07.24 10:22, Alice Ryhl wrote:
-> +/// The prev/next pointers for an item in a linked list.
-> +///
-> +/// # Invariants
-> +///
-> +/// The fields are null if and only if this item is not in a list.
-> +#[repr(transparent)]
-> +pub struct ListLinks<const ID: u64 =3D 0> {
-> +    #[allow(dead_code)]
-> +    inner: Opaque<ListLinksFields>,
-
-Do you really need `Opaque`? Or would `UnsafeCell` be enough? (If it is
-enough and you change this, be aware that `Opaque` is `!Unpin`, so if
-you intend for `ListLinks` to also be `!Unpin`, then you need a
-`PhantomPinned`)
-
-> +}
+On 28.06.24 15:23, Alice Ryhl wrote:
+> diff --git a/rust/kernel/tracepoint.rs b/rust/kernel/tracepoint.rs
+> new file mode 100644
+> index 000000000000..1005f09e0330
+> --- /dev/null
+> +++ b/rust/kernel/tracepoint.rs
+> @@ -0,0 +1,47 @@
+> +// SPDX-License-Identifier: GPL-2.0
 > +
-> +// SAFETY: The next/prev fields of a ListLinks can be moved across threa=
-d boundaries.
+> +// Copyright (C) 2024 Google LLC.
+> +
+> +//! Logic for tracepoints.
+> +
+> +/// Declare the Rust entry point for a tracepoint.
+> +#[macro_export]
+> +macro_rules! declare_trace {
+> +    ($($(#[$attr:meta])* $pub:vis fn $name:ident($($argname:ident : $arg=
+typ:ty),* $(,)?);)*) =3D> {$(
+> +        $( #[$attr] )*
+> +        #[inline(always)]
+> +        $pub unsafe fn $name($($argname : $argtyp),*) {
+> +            #[cfg(CONFIG_TRACEPOINTS)]
+> +            {
+> +                use $crate::bindings::*;
 
-Why? This is not a justification.
+Why is this needed, can't you put this into the invocation of `paste!`?
+ie `[< $crate::bindings::__tracepoint_ $name >]`?
 
-> +unsafe impl<const ID: u64> Send for ListLinks<ID> {}
-> +// SAFETY: The type is opaque so immutable references to a ListLinks are=
- useless. Therefore, it's
-> +// okay to have immutable access to a ListLinks from several threads at =
-once.
+> +
+> +                // SAFETY: It's always okay to query the static key for =
+a tracepoint.
+> +                let should_trace =3D unsafe {
+> +                    $crate::macros::paste! {
+> +                        $crate::static_key::static_key_false!(
+> +                            [< __tracepoint_ $name >],
+> +                            $crate::bindings::tracepoint,
+> +                            key
+> +                        )
+> +                    }
+> +                };
+> +
+> +                if should_trace {
+> +                    $crate::macros::paste! {
+> +                        // SAFETY: The caller guarantees that it is okay=
+ to call this tracepoint.
 
-You don't need to argue via `Opaque`, the type doesn't expose any
-`&self` functions, so there are no functions to consider.
+Can you add this on the docs of `$name`? ie add a Safety section.
+The docs should still appear when creating them/when LSPs show them to
+you.
 
 ---
 Cheers,
 Benno
 
-> +unsafe impl<const ID: u64> Sync for ListLinks<ID> {}
+> +                        unsafe { [< rust_do_trace_ $name >]($($argname),=
+*) };
+> +                    }
+> +                }
+> +            }
 > +
-> +impl<const ID: u64> ListLinks<ID> {
-> +    /// Creates a new initializer for this type.
-> +    pub fn new() -> impl PinInit<Self> {
-> +        // INVARIANT: Pin-init initializers can't be used on an existing=
- `Arc`, so this value will
-> +        // not be constructed in an `Arc` that already has a `ListArc`.
-> +        ListLinks {
-> +            inner: Opaque::new(ListLinksFields {
-> +                prev: ptr::null_mut(),
-> +                next: ptr::null_mut(),
-> +            }),
+> +            #[cfg(not(CONFIG_TRACEPOINTS))]
+> +            {
+> +                // If tracepoints are disabled, insert a trivial use of =
+each argument
+> +                // to avoid unused argument warnings.
+> +                $( let _unused =3D $argname; )*
+> +            }
 > +        }
-> +    }
+> +    )*}
 > +}
+> +
+> +pub use declare_trace;
 >=20
 > --
-> 2.45.2.1089.g2a221341d9-goog
+> 2.45.2.803.g4e1b14247a-goog
 >=20
 
