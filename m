@@ -1,89 +1,92 @@
-Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 619701B1423;
-	Wed, 31 Jul 2024 12:57:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF7AE18C91D
+	for <rust-for-linux@vger.kernel.org>; Wed, 31 Jul 2024 13:03:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722430642; cv=none; b=UE6WhsP6rJ6T5pHFQXtQudWp7hdIXk3MtOkA/gsPe1FuneIGdP6/XR3SEZ3RqDzqcoGbwMDjZwtlvXjzEFWbMXRF3g80thVNHES3A4B4JmpYE16k6WEX5TevFz8Kd8zvrrnNC5p7szdcmRXTb8s4RbDoykv2057oCxJxiNC7ONU=
+	t=1722431022; cv=none; b=SSrsNjw2TjXK18EgdobXzStLzL5diTxQ+T9BuRNOtbasPkzOUn+6OsgCn6CIUXJNvT6gembMv/iv8HXuWHL4k0yD031B8pb/Qy7hSHdpBy3jkioygyWbUR/rwI1/zVeLk0qww7Fy/xAKdKfT+RHOf6/aacHnWCjs1rc90N/ktCM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722430642; c=relaxed/simple;
-	bh=+Ich+i88Ajk8gWGCEI+UfMM4Lpr1h3Awv2tyu/m29+Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oFwqwcONKLLy2pcTs173axX8z8gWT6bOl89Ehv8JraAPdmw6OpQiQiSRjcUUdSHzyBn1H6CiGuXjaMfV4q2t1KbFU8eVMRvsQn9jdZh3DWO2Tnj7CWftmKdqZcB6W5W4jB0oVoZr3w5SrCXMC/+2wlh59fvHYtCG81J/nCXXAA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gompa.dev; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.219.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gompa.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-6b7a3b75133so40785196d6.2;
-        Wed, 31 Jul 2024 05:57:21 -0700 (PDT)
+	s=arc-20240116; t=1722431022; c=relaxed/simple;
+	bh=QjAAO/FIRCsI79vVa0nGyyZSqRs/40H62xX39f2xrgs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=WlXvLAg9WepQyzj8MYJlgLjP/GJZva97Q22aBVgkp2un58HRSF8ub/QI+JRnxj+LIO/1LEq9wRhGBR0zeeEbSSgLAJJUVsQthXJW07xe1NmNB01HGmsilzRYWDO85/t5IfjzHkPd/ISGMOL+zFsVGdUvT8wo8w3JTCyIkjBMWiE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FlI7bfj2; arc=none smtp.client-ip=209.85.221.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FlI7bfj2"
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-36844375001so2531825f8f.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 31 Jul 2024 06:03:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1722431019; x=1723035819; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=acDkdWfVikvUG5KIhJSwDrwQHKyOzy88X5OuufZnBu8=;
+        b=FlI7bfj2h36F//M3biBkGksVUP6lIHMjg/VMBs/cOxqkO8M9wEE9Sg3EPZDhgaIg4M
+         Equ9XjLZopk+zSieO4cRyxY6tiNmb/06R4fWK5WN+FYlHNqdDNbIYXmeJuzDxZ4HuyDz
+         bLPXFS4De/nJ8Lz11hxM2Rxzy/4JQT9k4MWuCJh4nLFIPTAt3Dc7bVcFRvTXvuvZEP8D
+         rszktMtFIUB/NvrA+U20Hs2EvN1UcFEhllLN9DMvnxL1LV4N/KOTM7tqV8Q4JIvi/egW
+         JCGLF1dM4GLI78EOVcj8NR5AWdA8f6PicGyOuvQhom29SERo6Lp4ASBe9Rxy8vYK1O8q
+         /X1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722430640; x=1723035440;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=HH60pPIigszmi5NT6xUYpEZJEnXe5I5RDClaVzxrNOk=;
-        b=oJmkVIOXJniAhDlBINoAXyN4itvBp7g3QXqCqCtfTR6K8jNdpWWzgTQx/Fj6PZYPhM
-         Q3hCd+o/CmE2fj0WoDWBfdNWSbYb7KATgB3oXI/Sja8KG+kIX08uHas+zoX8x/oZO5hX
-         MvdC5+ttaUkc7v92KKLnu1fKTNuhTUoKAtqsV7mJuBW4B+FJcJZc06q7MnPPeMMk+vUC
-         PWQfzV+zwwmUIWYSCQpYVnyQHDUmgL1/4rq23M4i65vE8gp/KjkxCwEVnjF8vieAnGyd
-         fm0slE8mDCP/wqNrbgSbY/CcV+UyZC7qLbcQw3aXeoo5Wf7VeNZiaP3d2CW0si5tAfgU
-         oueA==
-X-Forwarded-Encrypted: i=1; AJvYcCV7IE1AKSP8BIxd4/iuurs00WKX90sZDYY+mnbvadIlivQNRmyUGkXrI8r8+oCtwtc/w4cwK9+hfvBHWRAVmxMu8VyxUd5tIbqhzU1q
-X-Gm-Message-State: AOJu0YzPk7J8CPf6Nm7SM+i1yZuAQ+GwzJqiLREx3UOzl+AhOirucMj9
-	AjKAumWWGTeumYEgQgeOwSusgHYT7TtBVloHsKNryi9F+3BUMtdanOlTXpfy0vM=
-X-Google-Smtp-Source: AGHT+IFY63PsDshIgYxQeoWEgGzy3bTrB04am7xVVHGqHOwT0MgQryeOj1gZ9kiV80HxtDTFEM/8mg==
-X-Received: by 2002:a05:6214:ac3:b0:6b5:238:2e42 with SMTP id 6a1803df08f44-6bb55a83bcbmr226653276d6.40.1722430639815;
-        Wed, 31 Jul 2024 05:57:19 -0700 (PDT)
-Received: from Skuld-Framework.tail03774.ts.net ([32.221.37.233])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6bb3faf8f0csm73492276d6.132.2024.07.31.05.57.18
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 31 Jul 2024 05:57:19 -0700 (PDT)
-From: Neal Gompa <neal@gompa.dev>
-To: rust-for-linux@vger.kernel.org
-Cc: asahi@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Hector Martin <marcan@marcan.st>,
-	Janne Grunau <j@jannau.net>,
-	Asahi Lina <lina@asahilina.net>,
-	Neal Gompa <neal@gompa.dev>
-Subject: [PATCH v2] init/Kconfig: Only block on RANDSTRUCT for RUST
-Date: Wed, 31 Jul 2024 08:54:28 -0400
-Message-ID: <20240731125615.3368813-1-neal@gompa.dev>
-X-Mailer: git-send-email 2.45.2
+        d=1e100.net; s=20230601; t=1722431019; x=1723035819;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=acDkdWfVikvUG5KIhJSwDrwQHKyOzy88X5OuufZnBu8=;
+        b=HQq6yc7IOV7diA5JWeHbJpCA9h3KI2+86TWhuT3XHzO3uC/OBOCBGAQ9tY6gn/hUNv
+         IHTVL+OLgUUdn4uh4m+9GgA0I3oknsKfiHs7359PONh+LySZX2Rd9eczXXKo+Hq2gLo+
+         oo+xDx696HAAoYlG1lH82qewEmjP6nSeRBTd2+LRVLCiCy5yNFGnaJMVx+fdw61L+loN
+         O4PgdHccD/Lq9Mx1Gu8TJcfspQFjfjjuYlmVc7qSL+M80/xPKg4yobTDYdmRbIEFb+sn
+         cigAcKTJo0YLbLj5yK7tqEON7yX0u6daLqqFeq1ArQCpw5wBMoeZzsdtyf2axFGIWQxI
+         Ew1g==
+X-Forwarded-Encrypted: i=1; AJvYcCVVSoAioiJ6NtpJ1K0P3KBzHrA8g5p/BgAD1EM+LYwLysEXQzis2Fh4QAN4r1PQYqwZdlul5WvCvzjbKPxN61z/sVRdTTTbDdYCgMTWD64=
+X-Gm-Message-State: AOJu0YyYppfZuEAYBCImI8bwhQRLoyQetfnlmEsC73I+nQUTOD9G510Y
+	fJIwnk7Sgls6VNG5K1eJRFfkWNO7rtwzTNvLj3D5QHCjFI/RnWmfvF2Z9ePBjBwqS3KlUUQjpbi
+	ASuQOPoqPRmGM3Ef6Gg5UebUl7LlhjMeY2lHG
+X-Google-Smtp-Source: AGHT+IG7fagQeuv9MysJufo7I4WX+exkZHcDTKFLG87ES3MG0TZVHdX0um8RINT1N6epAZ5vXGD+HN2U6R/oKFQ7yN4=
+X-Received: by 2002:adf:cd84:0:b0:368:74c0:6721 with SMTP id
+ ffacd0b85a97d-36b5d0bc9e3mr8585993f8f.38.1722431018977; Wed, 31 Jul 2024
+ 06:03:38 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20240723-linked-list-v3-0-89db92c7dbf4@google.com> <20240723-linked-list-v3-5-89db92c7dbf4@google.com>
+In-Reply-To: <20240723-linked-list-v3-5-89db92c7dbf4@google.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Wed, 31 Jul 2024 15:03:26 +0200
+Message-ID: <CAH5fLgg_6o5HTtLc7ngyRsa5gLM2Gtqm=QaBT+oaFjhdZg=O6A@mail.gmail.com>
+Subject: Re: [PATCH v3 05/10] rust: list: add macro for implementing ListItem
+To: Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Marco Elver <elver@google.com>, Coly Li <colyli@suse.de>, Paolo Abeni <pabeni@redhat.com>, 
+	Pierre Gondois <pierre.gondois@arm.com>, Ingo Molnar <mingo@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Wei Yang <richard.weiyang@gmail.com>, 
+	Matthew Wilcox <willy@infradead.org>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Kees Cook <kees@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-When enabling Rust in the kernel, we only need to block on the
-RANDSTRUCT feature and GCC plugin. The rest of the GCC plugins
-are reasonably safe to enable.
+On Tue, Jul 23, 2024 at 10:23=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> =
+wrote:
+> +#[macro_export]
+> +macro_rules! impl_list_item {
+> +    (
+> +        impl$({$($generics:tt)*})? ListItem<$num:tt> for $t:ty {
+> +            using ListLinks;
+> +        } $($rest:tt)*
 
-Signed-off-by: Neal Gompa <neal@gompa.dev>
----
-Changes in v2
-- Drop changing !RANDSTRUCT to RANDSTRUCT_NONE 
-  (they're equivalent anyway)
----
- init/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+This uses $($rest:tt)* but does not call itself at the end. This means
+that trying to use this macro with several impl blocks results in
+additional impl blocks being silently swallowed. The macro should use
+repetition properly here.
 
-diff --git a/init/Kconfig b/init/Kconfig
-index a465ea9525bd..0939486938cc 100644
---- a/init/Kconfig
-+++ b/init/Kconfig
-@@ -1900,7 +1900,7 @@ config RUST
- 	depends on RUST_IS_AVAILABLE
- 	depends on !CFI_CLANG
- 	depends on !MODVERSIONS
--	depends on !GCC_PLUGINS
-+	depends on !GCC_PLUGIN_RANDSTRUCT
- 	depends on !RANDSTRUCT
- 	depends on !DEBUG_INFO_BTF || PAHOLE_HAS_LANG_EXCLUDE
- 	help
--- 
-2.45.2
-
+Alice
