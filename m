@@ -1,154 +1,168 @@
-Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CC1D1B14F1
-	for <rust-for-linux@vger.kernel.org>; Wed, 31 Jul 2024 17:05:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85C5015E86;
+	Wed, 31 Jul 2024 17:17:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722445515; cv=none; b=WjXUf9v2zj9tfeT8RsyCTTzGbt64YOzgpjRaPjF42i4NlNefspHI26GRqkLsYRJP0GrCqlD080xSYxurs+Oby5GdkfS6M2oT29wak/CsAtl1Oi3vUjUUfZ2aNJj9vh0K1CKnBnxhoEy8/8rpqzY4NhovL3TjNjzoxOyI35yFsMQ=
+	t=1722446280; cv=none; b=Bb2nUQ20B1RXSpNVaaJvxx9L9cC6KOW3ljGlDT250DOJsivN8SbFo8oJvOT82T4q6AVZG1QRkHWGBeyxJoWBxqNiDxidnMnlztAgW15erHblied1EMWGS5m8nmzofIaCkWuf7sX80bn8+9IGqIulFEBWsHOYr6yiFCHRBE5/mQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722445515; c=relaxed/simple;
-	bh=Kvo+Qg69Lf9bUXUEg3NaEQbb4hHBPQA3suJvsVKDU/Y=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=izfuiloSXwP8VMx6JaVIKTiejL3yPQ9v0R5fspqU0kj4SuLJaQueMQ9jiCJW1laZ20EghJbIa7fWGeI5xdfs8HJV3QuykswUMNPEn5069c4374j7npaJkaCe5C+WXNT+EJPdPazCfYPmIpn8iXk7QwLdr8FLBfJDQgz5u6fTwKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=A299j2p6; arc=none smtp.client-ip=90.155.92.199
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
+	s=arc-20240116; t=1722446280; c=relaxed/simple;
+	bh=Tkxapr+WIByTqBuyO0R4QPIoo6SDCYv3XDQc5BTwP8g=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=VMCLfh6HC0C29kLIhJf/qSGOTAW9gbT+KG4Pn47cwQ7aJ2d/226xdA0lbBz5wWn1Tvr8rtyfCEsoqmXNy5elOiGuThl1L5u3c55Ma8+DMTg39w+ixMYseOSDxLpEWFk7OyyEra6fcqzB2n8FPTtzfFGu9wmFgrSh67lRMw+KIaI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=HsqajtWZ; arc=none smtp.client-ip=185.70.43.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="A299j2p6"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=loxjFiVI2FUEfLt+uJa/RoAUGOvN0EDyWPzOQRMKPYM=; b=A299j2p6C5t3QILhmGu+4OptoB
-	DEDPpwwicYTOiSmZrfN8QkSyLmvqEKKL8x4ait9egjTmsIHMFlf6sBNI9xT1f9LSOQlyBgsBhugge
-	6WMJM2OknlCd4a9bzxDTKXBemcoVPUUKVu63y34dxstuwFJB4w1keafIsm8AXP3wmyOsy47IdPmGp
-	lZ4w3WM2rUg56Mwldouc0i//33E0NB6oSP0haibnEyzdbJ/m99z4E7VVQiAnpz/VzcTIZkXEsACd8
-	fL8UwCvcq+OScm+mL8o6b+eXnfxebOqg0N73CCOWcZK2RC3Q7gPLAit+lESVUzGcPfeQwyBi63Kda
-	X/pllEsQ==;
-Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
-	by desiato.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
-	id 1sZClB-00000005GdC-0y78;
-	Wed, 31 Jul 2024 17:05:09 +0000
-Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
-	id 3BB5F300820; Wed, 31 Jul 2024 19:05:08 +0200 (CEST)
-Date: Wed, 31 Jul 2024 19:05:08 +0200
-From: Peter Zijlstra <peterz@infradead.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Steven Rostedt <rostedt@goodmis.org>,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Jason Baron <jbaron@akamai.com>, Ard Biesheuvel <ardb@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	linux-trace-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
-	linux-arch@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradaed.org>,
-	Sean Christopherson <seanjc@google.com>,
-	Uros Bizjak <ubizjak@gmail.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
-	Oliver Upton <oliver.upton@linux.dev>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Ryan Roberts <ryan.roberts@arm.com>, Fuad Tabba <tabba@google.com>,
-	linux-arm-kernel@lists.infradead.org,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Anup Patel <apatel@ventanamicro.com>,
-	Andrew Jones <ajones@ventanamicro.com>,
-	Alexandre Ghiti <alexghiti@rivosinc.com>,
-	Conor Dooley <conor.dooley@microchip.com>,
-	Samuel Holland <samuel.holland@sifive.com>,
-	linux-riscv@lists.infradead.org,
-	Huacai Chen <chenhuacai@kernel.org>,
-	WANG Xuerui <kernel@xen0n.name>, Bibo Mao <maobibo@loongson.cn>,
-	Tiezhu Yang <yangtiezhu@loongson.cn>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Tianrui Zhao <zhaotianrui@loongson.cn>, loongarch@lists.linux.dev
-Subject: Re: [PATCH v4 1/2] rust: add static_key_false
-Message-ID: <20240731170508.GJ33588@noisy.programming.kicks-ass.net>
-References: <20240628-tracepoint-v4-0-353d523a9c15@google.com>
- <20240628-tracepoint-v4-1-353d523a9c15@google.com>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="HsqajtWZ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1722446276; x=1722705476;
+	bh=yYZmVqKZ96/h9nwo0b6Z0ReIaMNU0P6ADrpHZ7NhGl0=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=HsqajtWZEi9BWQb34UWsqZLq++yGkSKzkv7jXJRFF9WsOSNUklPMrWpqL48pNBiMS
+	 uvtFE2F6I50zZpa9I8hPxva3F6W9UTO2F7GKI+JvothD/aySOt7jCIfjbcPwOLtr4r
+	 9q8R88HdvsGstiFKVfKjpD3Q246P+l9MPS3rAJQPyB9wx0K9HYGfqZa9F7hDp2CG3A
+	 KrPIjlyhL3sJfCHnyJ8Rz39i3gsi2Dyz/HS7DqrjDJ++oQc2EF+KOf00grKFjQLl9q
+	 NeakzzjNKXHfLdQQlzwY318E2a5o5JejSVmq5CuggSp4Xj1Yi+kxAL9+cMeSeK0gAR
+	 tCUW0XHzeEMVA==
+Date: Wed, 31 Jul 2024 17:17:52 +0000
+To: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Marco Elver <elver@google.com>, Coly Li <colyli@suse.de>, Paolo Abeni <pabeni@redhat.com>, Pierre Gondois <pierre.gondois@arm.com>, Ingo Molnar <mingo@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Wei Yang <richard.weiyang@gmail.com>, Matthew Wilcox <willy@infradead.org>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, Kees Cook <kees@kernel.org>
+Subject: Re: [PATCH v3 03/10] rust: list: add tracking for ListArc
+Message-ID: <95687c33-4abf-43b7-b835-e18cfae280ef@proton.me>
+In-Reply-To: <20240723-linked-list-v3-3-89db92c7dbf4@google.com>
+References: <20240723-linked-list-v3-0-89db92c7dbf4@google.com> <20240723-linked-list-v3-3-89db92c7dbf4@google.com>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: d06078fd2e66d6c42d43953e42fe35e5357da090
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240628-tracepoint-v4-1-353d523a9c15@google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Jun 28, 2024 at 01:23:31PM +0000, Alice Ryhl wrote:
+On 23.07.24 10:22, Alice Ryhl wrote:
+> @@ -47,9 +48,30 @@ pub trait ListArcSafe<const ID: u64 =3D 0> {
+>      unsafe fn on_drop_list_arc(&self);
+>  }
+>=20
+> +/// Declares that this type is able to safely attempt to create `ListArc=
+`s at any time.
+> +///
+> +/// # Safety
+> +///
+> +/// Implementers must ensure that `try_new_list_arc` does not return `tr=
+ue` if a `ListArc` already
+> +/// exists.
+> +pub unsafe trait TryNewListArc<const ID: u64 =3D 0>: ListArcSafe<ID> {
+> +    /// Attempts to convert an `Arc<Self>` into an `ListArc<Self>`. Retu=
+rns `true` if the
+> +    /// conversion was successful.
 
->  rust/kernel/arch/arm64/jump_label.rs     | 34 ++++++++++++++++++++++++++++
->  rust/kernel/arch/loongarch/jump_label.rs | 35 +++++++++++++++++++++++++++++
->  rust/kernel/arch/mod.rs                  | 24 ++++++++++++++++++++
->  rust/kernel/arch/riscv/jump_label.rs     | 38 ++++++++++++++++++++++++++++++++
->  rust/kernel/arch/x86/jump_label.rs       | 35 +++++++++++++++++++++++++++++
->  rust/kernel/lib.rs                       |  2 ++
->  rust/kernel/static_key.rs                | 32 +++++++++++++++++++++++++++
->  scripts/Makefile.build                   |  2 +-
->  8 files changed, 201 insertions(+), 1 deletion(-)
+I think this could use some more explanation. It has been a couple weeks
+since I last reviewed this, so I forgot what exactly this does and at
+first I thought that the tracking is not updated. But it actually is.
+Additionally, the safety documentation does not ensure that this
+function updates the tracking. So maybe use this?:
 
-So I really find the amount of duplicated asm offensive. Is is far too
-easy for any of this to get out of sync.
+    Attempts to convert an `Arc<Self>` into a `ListArc<Self>`.
 
-> diff --git a/rust/kernel/arch/x86/jump_label.rs b/rust/kernel/arch/x86/jump_label.rs
-> new file mode 100644
-> index 000000000000..383bed273c50
-> --- /dev/null
-> +++ b/rust/kernel/arch/x86/jump_label.rs
-> @@ -0,0 +1,35 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +// Copyright (C) 2024 Google LLC.
-> +
-> +//! X86 Rust implementation of jump_label.h
-> +
-> +/// x86 implementation of arch_static_branch
-> +#[macro_export]
-> +#[cfg(target_arch = "x86_64")]
-> +macro_rules! arch_static_branch {
-> +    ($key:path, $keytyp:ty, $field:ident, $branch:expr) => {'my_label: {
-> +        core::arch::asm!(
-> +            r#"
-> +            1: .byte 0x0f,0x1f,0x44,0x00,0x00
-> +
-> +            .pushsection __jump_table,  "aw"
-> +            .balign 8
-> +            .long 1b - .
-> +            .long {0} - .
-> +            .quad {1} + {2} + {3} - .
-> +            .popsection
-> +            "#,
-> +            label {
-> +                break 'my_label true;
-> +            },
-> +            sym $key,
-> +            const ::core::mem::offset_of!($keytyp, $field),
-> +            const $crate::arch::bool_to_int($branch),
-> +        );
-> +
-> +        break 'my_label false;
-> +    }};
+    # Guarantees
+
+    * If the return value is `true`, then there exists no `ListArc<Self, ID=
+>` pointing to this value.
+      Additionally, the tracking inside of `self` now thinks there is a `Li=
+stArc<Self, ID>`.
+
+And then add in the `Safety` section of the trait that the guarantees of
+`try_new_list_arc` need to be ensured.
+
+Just to make sure: this method must handle concurrent access, but that
+should be guaranteed if `Self: Sync`, right?
+
+> +    fn try_new_list_arc(&self) -> bool;
 > +}
+> +
+>  /// Declares that this type supports [`ListArc`].
+>  ///
+> -/// When using this macro, it will only be possible to create a [`ListAr=
+c`] from a [`UniqueArc`].
+> +/// This macro supports a few different strategies for implementing the =
+tracking inside the type:
+> +///
+> +/// * The `untracked` strategy does not actually keep track of whether a=
+ [`ListArc`] exists. When
+> +///   using this strategy, the only way to create a [`ListArc`] is using=
+ a [`UniqueArc`].
+> +/// * The `tracked_by` strategy defers the tracking to a field of the st=
+ruct. The user much specify
+> +///   which field to defer the tracking to. The field must implement [`L=
+istArcSafe`].
+> +///
+> +/// The `tracked_by` strategy is usually used by deferring to a field of=
+ type
+> +/// [`AtomicListArcTracker`]. However, it is also possible to defer the =
+tracking to another struct
+> +/// using also using this macro.
 
-Note that this uses the forced 5 byte version, and not the dynamic sized
-one. On top of that it hard-codes the nop5 string :/
+Can you add that if the field selected by the `tracked_by` strategy
+implements `TryNewListArc`, so will `$t`?
 
-Please work harder to not have to duplicate stuff like this.
+>  #[macro_export]
+>  macro_rules! impl_list_arc_safe {
+>      (impl$({$($generics:tt)*})? ListArcSafe<$num:tt> for $t:ty { untrack=
+ed; } $($rest:tt)*) =3D> {
+> @@ -60,6 +82,39 @@ unsafe fn on_drop_list_arc(&self) {}
+>          $crate::list::impl_list_arc_safe! { $($rest)* }
+>      };
 
-NAK.
+[...]
+
+> @@ -346,3 +447,60 @@ impl<T, U, const ID: u64> core::ops::DispatchFromDyn=
+<ListArc<U, ID>> for ListArc
+>      U: ListArcSafe<ID> + ?Sized,
+>  {
+>  }
+> +
+> +/// A utility for tracking whether a [`ListArc`] exists using an atomic.
+> +///
+> +/// # Invariant
+> +///
+> +/// If the boolean is `false`, then there is no [`ListArc`] for this val=
+ue.
+> +#[repr(transparent)]
+> +pub struct AtomicListArcTracker<const ID: u64 =3D 0> {
+
+I am not a fan of this long name, what about `AtomicTracker`? I could
+see this type also being used by other things that need tracking.
+
+> +    inner: AtomicBool,
+> +    _pin: PhantomPinned,
+
+Would be nice to have a comment explaining why this is needed. IIUC then
+it is needed because of the INVARIANT comment in `new()`.
+
+---
+Cheers,
+Benno
+
+> +}
+> +
+> +impl<const ID: u64> AtomicListArcTracker<ID> {
+> +    /// Creates a new initializer for this type.
+> +    pub fn new() -> impl PinInit<Self> {
+> +        // INVARIANT: Pin-init initializers can't be used on an existing=
+ `Arc`, so this value will
+> +        // not be constructed in an `Arc` that already has a `ListArc`.
+> +        Self {
+> +            inner: AtomicBool::new(false),
+> +            _pin: PhantomPinned,
+> +        }
+> +    }
 
