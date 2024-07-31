@@ -1,174 +1,112 @@
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f177.google.com (mail-qk1-f177.google.com [209.85.222.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99983611E;
-	Wed, 31 Jul 2024 14:48:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1BFE168DC
+	for <rust-for-linux@vger.kernel.org>; Wed, 31 Jul 2024 15:20:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722437331; cv=none; b=TCEzBdJv4czD4yGulk5RoUkeB9kfFLDPZUJx+OFA2vU2c5N7CmCZURTKrG76KTnxKjwETEec3vgF+Gt2cCMYCTtlyBAoQMCbDZgf2uMs/WgRCOW+0Y8aOwazApFKOpSkTyJlQQlodARxDPN0360+apjssgoXlG6TYSLDXY/eM6I=
+	t=1722439245; cv=none; b=GEBxf7uofP4uzyREmO+9bV7RJWgLJp7yllW2OBv7sx3RzlWt+0bCjmhT6mcPQ3g1CZ7LKI1LZae/wTRGU5XhFrqOvUXKWIm5oSKsSlmgYYTKZOsUhg4Y9SJMdP3GneIJvGW6aAcpQonXRktfzI/7nG7MYDHEaA1j46V39VpvR1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722437331; c=relaxed/simple;
-	bh=Vawp62FULKBA3dCF5MI+TAT+Dpj7YqVUAAoe599LNfw=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hlelE9VokXndE1imZLJwtcPkWcRyH2zmMtqzzk3EGm9I1nFQFDmRx8X1wryuo1ldjFQbIhFvcAPn4OuFchlSmg/MiE0I0kW5YsQ0QQPKVl0xUoCdIstZhEzKg6af5RKEmDTRw8TdwvPqDE9nTjMaa1YGeiNYwOvhUy1Ma48JCYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=EbxWVyvi; arc=none smtp.client-ip=185.70.43.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1722439245; c=relaxed/simple;
+	bh=qfYdDMqUz/jqJxKcOwtHxikZL32V6+EgK+68XP13ZRc=;
+	h=Date:From:To:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XJw7/QWOfm/7vqW4DtgolXNYHuYrZsFFW0/uwZzEC4hhIG0dakWxxBFPNS0JfI1Rr1v2HpXfNdsBs8HcYQiuqdUR7DNrlZGSW55BKeyPLMcg50a2MvW87Z8TOMVVj2lZS6ANQAQY5JLUGJ9CZ+qk6dUa9TFTnw/K2XjL1Xt4GvA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=L/l+2GwF; arc=none smtp.client-ip=209.85.222.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="EbxWVyvi"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1722437322; x=1722696522;
-	bh=RzXi2xAm5ag+0eW5UgNGGENUHE//qEaGWyg1913ArEw=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=EbxWVyvie+M4gw3ZApE3+GGv07WI6wtPc978p39s72PYzDMkNKMgMlGXZ/dNxaPEk
-	 8g6i31UUSxM57An6i10FBZpO4EvorwQDjITLUJDeaDqNUiRZQ1p3nCtoZOWT9tWDBy
-	 0ctuP+jv3lKToT7Zrf/pio3WRyeYVec/ZZAaOotDwFRuu0LsZhxClZ/iuXMPpQsHXq
-	 xcjmqOoYKHqI4e5HPFYAGPP5CoH3sb7xhjybizgi3srsv7OWYb0BKPfzvgDqU7OM84
-	 /133e4qeJeyS+EnLJUQY6AhqABRvh/nauZw9PKBOhorEEV1dYUf+NX+pSfuSpVd3+w
-	 j7mTx7C4Hj25Q==
-Date: Wed, 31 Jul 2024 14:48:32 +0000
-To: Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Boqun Feng <boqun.feng@gmail.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Jonathan Corbet <corbet@lwn.net>, Viresh Kumar <viresh.kumar@linaro.org>, Danilo Krummrich <dakr@redhat.com>, Trevor Gross <tmgross@umich.edu>, gregkh@linuxfoundation.org
-Subject: Re: [RFC PATCH] rust: types: Add explanation for ARef pattern
-Message-ID: <373fa545-004a-41a8-97a8-d8a7632562c2@proton.me>
-In-Reply-To: <CAH5fLgijqHoKrWmHBb+FQntPDgR2qA_r4y0gyib21AHU+mscNw@mail.gmail.com>
-References: <20240710032447.2161189-1-boqun.feng@gmail.com> <ZqK1l05zcCwGforV@boqun-archlinux> <beaf1fa3-eebe-443c-bc51-abd9348a411d@proton.me> <ZqOyMbi7xl67UfjY@Boquns-Mac-mini.home> <81ceeca9-8ae5-4a82-9a46-f47767e60f75@proton.me> <ZqO9j1dCiHm3r-pz@Boquns-Mac-mini.home> <8641453e-664d-4290-b9bc-4a2567ddc3fe@proton.me> <ZqPMpNNq0Q0S-M2P@cassiopeiae> <CAH5fLgijqHoKrWmHBb+FQntPDgR2qA_r4y0gyib21AHU+mscNw@mail.gmail.com>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 81bde7f2fb0fbe04ab82c747ad33b45df681d53c
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="L/l+2GwF"
+Received: by mail-qk1-f177.google.com with SMTP id af79cd13be357-7a1e1f6a924so358855385a.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 31 Jul 2024 08:20:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1722439242; x=1723044042; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:to:from:date:feedback-id:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Cl+f5rrbCSDOcenfXP7fpdLzRPoW6Y/PRRAimXm9yAw=;
+        b=L/l+2GwFLJCil0d3VFKncaZ+0I5sps7FXcCZezQurIvkcU0pTXkGnkqhE53FjG4nN8
+         CYoJhK3nCZXmARuwH+uXpIL1dVHZUqhOqI9ufGZIglmp4kV2WP6XcqPCmF22KZU6tCix
+         bFAbEKo2Uxz+WC5Nz42V6MtgMTJl2LCpukAuh6TlmH9hyqdIrsAD1aoI+5eEaHOaaxIz
+         a8Q+NZsmD2flxdHwGFO+sxYQ7f8Ydafh8OQ3HC27DQRqVYZC9UD71X0Se84PXW6+dwoJ
+         O+YYWydX0Wrufc+GjJVflOWFDP1wRjkMU0QpYR9poSmskzTBlT2v2U+3v2B1c5o3lA79
+         6Z1w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722439242; x=1723044042;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Cl+f5rrbCSDOcenfXP7fpdLzRPoW6Y/PRRAimXm9yAw=;
+        b=W0D4DCPJNnNubK5IhbSlidwjVxSnvP64b0AgX5wKlOCQKqmAIlTtt/POPIpqOtotoN
+         Ht4AoJp2lkEUuqFNeS4TmYRVeEW3gx6KgZeHMd9o2pzFK182GM4WMPlDTS/2CwbAJtM3
+         d+LyCh9UlUK5Q9ZfN0sqaqwMX4bd2BZnG6weU/SbIMnPS/o9wlR9Ow2XDOUluXkELt9S
+         Ex/gKFuc7YI3JmKvzv7CQFHmozq19zuks3AI4Q3U9VqIz3Du9K/yMxySMDCHQeB9wnoS
+         DYTEMw4Gzcq6YEGpPg6pkkmB9qNLOmVvRfjojciEuz7bD3D2jEMMs5pTXtaSlrMHxaB9
+         ZLVw==
+X-Gm-Message-State: AOJu0Ywh1OKXTDO77yQw/DSlcx7wPbIn9bo+qmEC/pIlqeUMsjJuZYJu
+	YShiWoL4ChVBhgCbJ5vTr9MXhQOvzDhDDMQvMlrVxiVBx7VNJe5U
+X-Google-Smtp-Source: AGHT+IFWXDUQqBWDyXd3w44MeY0dFHKK14AQoEIBB37cgWn2OfW+O8oWqmEhWpeABe/6Ko+e4yl9vw==
+X-Received: by 2002:a05:620a:4450:b0:79f:8be:e3f3 with SMTP id af79cd13be357-7a1e52cdb9amr2104837085a.50.1722439242354;
+        Wed, 31 Jul 2024 08:20:42 -0700 (PDT)
+Received: from fauth2-smtp.messagingengine.com (fauth2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-44fe814f9a6sm60949031cf.34.2024.07.31.08.20.41
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 31 Jul 2024 08:20:41 -0700 (PDT)
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+	by mailfauth.nyi.internal (Postfix) with ESMTP id 3422D1200084;
+	Wed, 31 Jul 2024 11:20:41 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute3.internal (MEProxy); Wed, 31 Jul 2024 11:20:41 -0400
+X-ME-Sender: <xms:SVaqZqRh_9ErGoR6Dy6ej26DQ3pQRpHtFUYC8BkA5ildnAnPgNeS0A>
+    <xme:SVaqZvwGnF7jRkWC0IDf2PxKyfkrZ_Ke-tSeqCZ93awH7dgj5PIvbppwmlqOh_GcN
+    SMHdA7TwnIh74MtBA>
+X-ME-Received: <xmr:SVaqZn25ZWYJBig-THfMZww8GWKrR_wv7A8AZsRxS6s2B55yuo_G3Mf4yA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrjeeigdekkecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecunecujfgurhepfffhvffukfhfgggtuggjsehttdertd
+    dttddvnecuhfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhm
+    rghilhdrtghomheqnecuggftrfgrthhtvghrnhephfetffdtlefggfehgeefffetieeuhf
+    eijeekffegveejfeffhfdttdekgeehtdehnecuffhomhgrihhnpehgohhoghhlvgdrtgho
+    mhenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsoh
+    hquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedq
+    udejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmh
+    gvrdhnrghmvgdpnhgspghrtghpthhtoheptd
+X-ME-Proxy: <xmx:SVaqZmC0FagMk5ruxZdt6ELpucFDU3jQgMHthuEVV2bGDUmLowknHw>
+    <xmx:SVaqZjjRD9b_D7FkkjDIYQ-U-iOPqhEtOy5swTuM-j1SVALeVu89Qg>
+    <xmx:SVaqZioBO0ugt0a0BjueGJxZlFxr9lSoRDjtM7tC1mwEWdkdxC6zRA>
+    <xmx:SVaqZmjMgPxGn7pOnTXB8y0DLeTaCLial83jrQ9nHD1nJwBZEEYtkw>
+    <xmx:SVaqZiRFDePGAa3pQsp6Gfe0bay423kvnyKuG3l4VOc-n4AmBXay7PEO>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 31 Jul 2024 11:20:40 -0400 (EDT)
+Date: Wed, 31 Jul 2024 08:20:38 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: rust-for-linux <rust-for-linux@vger.kernel.org>
+Subject: Open Meeting at Aug 7
+Message-ID: <ZqpWRo2M2SaTWU76@Boquns-Mac-mini.home>
+References: <CANiq72mE=-LmMg=nrMdtF6i_JUscDU6GFZgNve9xtvUs76DnwA@mail.gmail.com>
+ <ZPyqLJ62B2GZg6BA@boqun-archlinux>
+ <ZUk14802ZWGpR2iM@boqun-archlinux>
+ <Za_9bJxeyW0pddKL@boqun-archlinux>
+ <ZgHBE8yRuZ5_8Bwi@boqun-archlinux>
+ <ZlX_KOjdd65k9Jkw@boqun-archlinux>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZlX_KOjdd65k9Jkw@boqun-archlinux>
 
-On 29.07.24 13:31, Alice Ryhl wrote:
-> On Fri, Jul 26, 2024 at 6:20=E2=80=AFPM Danilo Krummrich <dakr@kernel.org=
-> wrote:
->>
->> On Fri, Jul 26, 2024 at 03:54:37PM +0000, Benno Lossin wrote:
->>> On 26.07.24 17:15, Boqun Feng wrote:
->>>> On Fri, Jul 26, 2024 at 02:42:36PM +0000, Benno Lossin wrote:
->>>>> On 26.07.24 16:26, Boqun Feng wrote:
->>>>>> On Fri, Jul 26, 2024 at 01:43:38PM +0000, Benno Lossin wrote:
->>>>>> [...]
->>>>>>>>>
->>>>>>>>> You can always get a `&T` from `ARef<T>`, since it implements `De=
-ref`.
->>>>>>>>>
->>>>>>>>
->>>>>>>> Yeah, but this is unrelated. I was talking about that API provider=
-s can
->>>>>>>> decide whether they want to only provide a `raw_ptr` -> `ARef<Self=
->` if
->>>>>>>> they don't need to provide a `raw_ptr` -> `&Self`.
->>>>>>>>
->>>>>>>>>> Overall, I feel like we don't necessarily make a preference betw=
-een
->>>>>>>>>> `->&Self` and `->ARef<Self>` functions here, since it's up to th=
-e users'
->>>>>>>>>> design?
->>>>>>>>>
->>>>>>>>> I would argue that there should be a clear preference for functio=
-ns
->>>>>>>>> returning `&Self` when possible (ie there is a parameter that the
->>>>>>>>
->>>>>>>> If "possible" also means there's going to be `raw_ptr` -> `&Self`
->>>>>>>> function (as the same publicity level) anyway, then agreed. In oth=
-er
->>>>>>>> words, if the users only need the `raw_ptr` -> `ARef<Self>`
->>>>>>>> functionality, we don't want to force people to provide a `raw_ptr=
-` ->
->>>>>>>> `&Self` just because, right?
->>>>>>>
->>>>>>> I see... I am having a hard time coming up with an example where us=
-ers
->>>>>>> would exclusively want `ARef<Self>` though... What do you have in m=
-ind?
->>>>>>> Normally types wrapped by `ARef` have `&self` methods.
->>>>>>>
->>>>>>
->>>>>> Having `&self` methods doesn't mean the necessarity of a `raw_ptr` -=
->
->>>>>> `&Self` function, for example, a `Foo` is wrapped as follow:
->>>>>>
->>>>>>   struct Foo(Opaque<foo>);
->>>>>>   impl Foo {
->>>>>>       pub fn bar(&self) -> Bar { ... }
->>>>>>       pub unsafe fn get_foo(ptr: *mut foo) -> ARef<Foo> { ... }
->>>>>>   }
->>>>>>
->>>>>> in this case, the abstration provider may not want user to get a
->>>>>> `raw_ptr` -> `&Self` function, so no need to have it.
->>>>>
->>>>> I don't understand this, why would the abstraction provider do that? =
-The
->>>>
->>>> Because no user really needs to convert a `raw_ptr` to a `&Self` whose
->>>> lifetime is limited to a scope?
->>>
->>> What if you have this:
->>>
->>>     unsafe extern "C" fn called_from_c_via_vtable(foo: *mut bindings::f=
-oo) {
->>>         // SAFETY: ...
->>>         let foo =3D unsafe { Foo::from_raw(foo) };
->>>         foo.bar();
->>>     }
->>>
->>> In this case, there is no need to take a refcount on `foo`.
->>>
->>>> Why do we provide a function if no one needs and the solely purpose is
->>>> to just avoid providing another function?
->>>
->>> I don't think that there should be a lot of calls to that function
->>> anyways and thus I don't think there is value in providing two function=
-s
->>> for almost the same behavior. Since one can be derived by the other, I
->>> would go for only implementing the first one.
->>
->> I don't think there should be a rule saying that we can't provide a wrap=
-per
->> function for deriving an `ARef<T>`. `Device` is a good example:
->>
->> `let dev: ARef<Device> =3D unsafe { Device::from_raw(raw_dev) }.into();`
->>
->> vs.
->>
->> `let dev =3D unsafe { Device::get(raw_dev) };`
->>
->> To me personally, the latter looks quite a bit cleaner.
->>
->> Besides that, I think every kernel engineer (even without Rust backgroun=
-d) will
->> be able to decode the meaning of this call. And if we get the chance to =
-make
->> things obvious to everyone *without* the need to make a compromise, we s=
-hould
->> clearly take it.
->=20
-> I think I've come around on this question. I think it's fine to have
-> raw_ptr->ARef methods that increment the refcount, but we should make
-> a naming convention clear. I propose:
->=20
-> * Functions named things like from_raw_file or from_raw_mm do not
-> increment the refcount.
-> * Functions named things like get_file or or mmget do increment the
-> refcount, just like the C function of the same name.
+Hi all,
 
-I have thought about this a bit and I think that we can try to do it. I
-like the name `Device::get` and `Device::from_raw`. I would not
-duplicate the name ie `Device::get_device` (nor would I do that with
-`from_raw`).
+Due to a schedule conflict, the open meeting of this release cycle is
+going to be at 18:00 UTC Wednesday, Aug 7th. Please join us:
 
-One of my bigger problems was the naming, so it's good to see this.
+    https://meet.google.com/vii-meij-xpw
 
----
-Cheers,
-Benno
+See you there!
 
+Regards,
+Boqun
