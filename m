@@ -1,108 +1,94 @@
-Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
+Received: from mail-pf1-f171.google.com (mail-pf1-f171.google.com [209.85.210.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4315253370;
-	Wed, 31 Jul 2024 10:18:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E87B1AAE17;
+	Wed, 31 Jul 2024 10:19:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722421135; cv=none; b=WNzT2tMOHJKTE43qDB5+e9IfqYe/6+XGJxsG59v9uuFtXXVgv2zhWbPm4rlw6pjTAurLa0agZIsWX3IU04zCS3rCA5GCo8V2e93CKsKZHP3JoptemdumsZER0MPTdVLAQ68SniDMLZGqivwPgVXUklUyRYMXXO5wP1ddiBNkR88=
+	t=1722421152; cv=none; b=bL8X1lFEkgTT/KQ7F4jMsvHa34DAp/3WYSC9KKem8906iV/hkRTBoTdc+s/77E4PUwDx3OTf41XxeXeeahpXljRQY/WVt0gnBLWt+9rHMKbJEkLVu2iGZspsje5w/X8O58PmcoOXC6SpZdr7VY1F2FLDtFh9fnKFrfsL1ItgLqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722421135; c=relaxed/simple;
-	bh=EkOTvOnnll8O5y05XMa80C3KVe4Fh7qBLRV4CFzAfw4=;
+	s=arc-20240116; t=1722421152; c=relaxed/simple;
+	bh=IrbDFwN5+nflC95mXxPaFgyCaQwIbaTJrNk5nd3i/4A=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=liEbt2DrLu38odcEcIRMdJMKRQFrLxfdDqZn0Bgkh0qFvCo3hwi3kequ9WBVXBLngjXVkLYXy/tO32fSc4yagYmsRxyOC2FdWSmGAYymxzg7419UK00oHSGvz5+PvcQc7BYDqbXp66+FuL+j8DKgGnAP9VBGmaizTGjyZqbgAB0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gompa.dev; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.218.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gompa.dev
+	 To:Cc:Content-Type; b=lN7yzqsarRgRtulI3Rv640qGiJQ4e4LUYCSx8Nb+8XKoetpyaZCOHbPQ6FvMztMvduMPU9OAcpAJXh71hSazNeiUR4SeqXROV0l9I1sifqAN9lJBU15++J0hPtbS1Mws3/yQpCPBHzqRNJCqC+7kiu0d7ASe6+IHvIPeCGI0d0k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N2fXjVam; arc=none smtp.client-ip=209.85.210.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-a7d2a9a23d9so640448166b.3;
-        Wed, 31 Jul 2024 03:18:53 -0700 (PDT)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N2fXjVam"
+Received: by mail-pf1-f171.google.com with SMTP id d2e1a72fcca58-70d333d5890so5253220b3a.0;
+        Wed, 31 Jul 2024 03:19:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1722421148; x=1723025948; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IrbDFwN5+nflC95mXxPaFgyCaQwIbaTJrNk5nd3i/4A=;
+        b=N2fXjVamP4ZWJnn/k5F5w3iVJO90oLr36OqzItQG8QWMwLXa7vu+BVPoLCZn23PHQQ
+         f8AGDwCkxH899zgV9H5rSYV+och6BHpip7rc2xcStjsy1RHqOGNKTRhRlteEKg9Lwgpw
+         qbaEcRI7LH2nc4QldpBb+tG4WRSz2gGz8IwHYBpocZ4hQnKVeAWDIzgl2o5Wcigv13fs
+         nl+yRwiAzzmoGIIzFLxQG3rPbQbYtO2Fcs51Jrzi+fqTvT9Ky/R6dPJxnBiW/ySyxfmZ
+         8DFUuaVdf7h4csfTjdKB7LJUbg1bfz7GkniQqCyVM4A+VTC9xlYByW+OdQhpG6tJi8ru
+         FeJw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722421131; x=1723025931;
+        d=1e100.net; s=20230601; t=1722421148; x=1723025948;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=AnL6/nj6QvP3RhHvWpZGJriP7Wb5iQwYQPBn96pxO+E=;
-        b=gHaIwtxIHC0tFa5OVYDxcJm7+cDpYLYWP1F0rLGH3Wy0BWZtDJe/XEVYGwIalO8awR
-         sNVS9m1GaGCrUyZrWPb+JZ+LT0pTESm4LsJmwGwbGvAtSgYNfcQY8nVWoZ6WZyMhFPD6
-         CFlre1abQF2/KuNbRrwxrX7w17sA86jjA4it1JX4O9yvOdAAiEhMQ35dCBLiQedz4cvV
-         rf2/Skvu/rii1IICuTUuIG4VgsWriyzSi/31ssRgsEyems6BjRmZlNpXBwoMbf6rDSw4
-         43caSmkdK1JNa7YZ+yW1ka0ibv/MMEF135a4A4TTXisOKoTAGV/jlNcMP+oJWg/LWHXR
-         FN7A==
-X-Forwarded-Encrypted: i=1; AJvYcCU/qnQ3jSwII8MzNXY8Tci7Msk33B4NX6WTCzOdcP1YS1Ai0ehz2U+ga59/vupMwXlTKM3dUBgA8LKe5EA6utvvSz4jT7rBljyliJei
-X-Gm-Message-State: AOJu0YwmIzDGzvfPTZBpTmK8s22+/E6WmKo1VujmCcDc7NeEDaPsX53y
-	7u7pZTIkUUnzR8CaLhCxTek0J0uP5MXBxXHzeFM51axPRe+IjRpTV1nlXStI
-X-Google-Smtp-Source: AGHT+IExUMYqCAzqeBA5y1yGW0GTeMVjHnKgtQdXD66W/TK96xUIXuV51zFr1ffPAke5Q2QzBaArrg==
-X-Received: by 2002:a17:907:9403:b0:a72:5470:1d6a with SMTP id a640c23a62f3a-a7d400cdbabmr1069164366b.35.1722421130787;
-        Wed, 31 Jul 2024 03:18:50 -0700 (PDT)
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com. [209.85.208.43])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a7acab4dec6sm750087266b.61.2024.07.31.03.18.50
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 31 Jul 2024 03:18:50 -0700 (PDT)
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-59589a9be92so8280071a12.2;
-        Wed, 31 Jul 2024 03:18:50 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUIkjJUmXR2g1G3s0i3L791qX3PM1aCAX53p5V9J/pHkA8/oy4tXgT0WjgmMDdaANONcuaiA/9CA7L/Sy7YtQ+wz2oGxeLYBRSJSGPo
-X-Received: by 2002:a50:8e52:0:b0:5a1:bac7:f98a with SMTP id
- 4fb4d7f45d1cf-5b020bc1395mr7347967a12.17.1722421130376; Wed, 31 Jul 2024
- 03:18:50 -0700 (PDT)
+        bh=IrbDFwN5+nflC95mXxPaFgyCaQwIbaTJrNk5nd3i/4A=;
+        b=vgt0vFcGM9c3gAV3Hz0p8oi4nya0PJucTmOx0RYBX/H0Dixf5lxmAk47jiD3SF5Dk3
+         X/MlrkHk3sWDG5z6bL8SYp5NkyfdGm32wOauePuer0aCn975syoQQKa2NpGMepw47Iw1
+         r17kd6c3Zm+22yMbibYyJPoaAbzcIXClvIOtMWybEqUCIA0RFWDpLLn6XA6exbWyQUKO
+         EtuSLLEAl4exVCe6EJAQhBQtv0b1I8QULsTbQIODaZjbCGujRw+RdFp9mvFZ1lPq/LKy
+         PddURpCPk7W2zoN0/v5Fy7b9S7KbB0/QZkcA9eur48DY09n70qYC2z+oivTEbxTvWokY
+         gK2Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWCS+Qs95fP9N2sHtgjKx1qg2OJbkYcx6AVAVbedjB85QDWROexSLS1kC1yq8HcwEU7rHDQtdaPI5QQzmHclS12P1UJBLdHPcTAYJNxSGKVrTAZJWklKQjeLlXzx+33ccktiWA6C7h4zh007iA=
+X-Gm-Message-State: AOJu0YyROnvxRmgG2LpGfyb+hQNevHoAwVNFcqVmImLrRtPcgOSGKOVq
+	9T1RO1fhyUQ2NnkmOJkfUxKSknwGRFQa90Gf7u8SC7UgcicMrqPwTzJkvPTGBoScrDlABCAZGUQ
+	qC4LDkP0jCtjC3pSaAWIQq4TchR0=
+X-Google-Smtp-Source: AGHT+IG4dMsc3GyfK1BUmUePUR5oFxUraaKE4OKX6zeRK44YaRukpXqY63cewo2GbfZVh3dHGP4BnK7/f+Jfhn4bCSM=
+X-Received: by 2002:a05:6a21:32a9:b0:1c0:f590:f77f with SMTP id
+ adf61e73a8af0-1c4a0e03d56mr19597958637.0.1722421147718; Wed, 31 Jul 2024
+ 03:19:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240731032030.2847151-1-neal@gompa.dev> <CANiq72nXN-pkHAG6A19JrjiL-uKpem_-8GN8RhiVgc+sKJN6wA@mail.gmail.com>
-In-Reply-To: <CANiq72nXN-pkHAG6A19JrjiL-uKpem_-8GN8RhiVgc+sKJN6wA@mail.gmail.com>
-From: Neal Gompa <neal@gompa.dev>
-Date: Wed, 31 Jul 2024 06:18:13 -0400
-X-Gmail-Original-Message-ID: <CAEg-Je_S8hAUg9Gdp7QAOxww2dvV4_OoCTV1pvxMNAAvVkQueQ@mail.gmail.com>
-Message-ID: <CAEg-Je_S8hAUg9Gdp7QAOxww2dvV4_OoCTV1pvxMNAAvVkQueQ@mail.gmail.com>
-Subject: Re: [PATCH] init/Kconfig: Only block on RANDSTRUCT for RUST
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, asahi@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
-	Hector Martin <marcan@marcan.st>, Janne Grunau <j@jannau.net>, Asahi Lina <lina@asahilina.net>
+References: <20240731034112.6060-1-zehuixu@whu.edu.cn>
+In-Reply-To: <20240731034112.6060-1-zehuixu@whu.edu.cn>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 31 Jul 2024 12:18:55 +0200
+Message-ID: <CANiq72n48BvaSNvghkEMn796u4K3_1owZqD9Gjmyk7h3R9GT+A@mail.gmail.com>
+Subject: Re: [PATCH v2] rust: Kbuild: Skip -fmin-function-alignment in bindgen flags
+To: Zehui Xu <zehuixu@whu.edu.cn>
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, 
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	benno.lossin@proton.me, a.hindborg@samsung.com, aliceryhl@google.com, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jul 31, 2024 at 4:32=E2=80=AFAM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
->
-> On Wed, Jul 31, 2024 at 5:21=E2=80=AFAM Neal Gompa <neal@gompa.dev> wrote=
+On Wed, Jul 31, 2024 at 5:41=E2=80=AFAM Zehui Xu <zehuixu@whu.edu.cn> wrote=
 :
-> >
-> > When enabling Rust in the kernel, we only need to block on the
-> > RANDSTRUCT feature and GCC plugin. The rest of the GCC plugins
-> > are reasonably safe to enable.
 >
-> Yeah, only that one is what we had initially years ago, and then we
-> went the easy route since anyway the mixed builds are best effort at
-> the moment and GCC plugins could possibly be going away anyway.
->
-> Did you test it with the other GCC plugins enabled etc.?
->
+> In addition, since -falign-functions is not used when
+> -fmin-function-alignment is available but skipped and libclang
+> supports -falign-functions, this patch adds it back to the
+> bindgen_extra_c_flags to ensure the intended function alignment
+> is maintained.
 
-When I originally wrote this patch two years ago to get things
-working, Fedora used all the GCC plugins, so I was trying to get GCC +
-Rust to work while minimizing the delta on build differences. This was
-the combination that worked. We've been carrying this patch in the
-Asahi tree for a year now. And while Fedora does not currently have
-GCC plugins enabled because it caused issues with some third-party
-modules (I think it was the NVIDIA driver, but I'm not sure), it was
-around long enough for me to know with some confidence that it was
-fine this way.
+Does it change the ABI or could change `bindgen`'s output in a way we care?
 
-> > +       depends on RANDSTRUCT_NONE
->
-> Also, why is this changed?
->
+If we do need it, then I think passing `-falign-functions` makes
+sense, since it is the only one that Clang supports and has the same
+behavior as `-fmin-function-alignment` in GCC (i.e. applies it to all
+functions).
 
-This was mostly because I wanted it to be clearer. The negation didn't
-exactly read to me the same way, but that hunk can be dropped if you want.
+If not, then it may be best to avoid unneeded complexity.
 
+Thanks!
 
-
-
-
---
-=E7=9C=9F=E5=AE=9F=E3=81=AF=E3=81=84=E3=81=A4=E3=82=82=E4=B8=80=E3=81=A4=EF=
-=BC=81/ Always, there's only one truth!
+Cheers,
+Miguel
