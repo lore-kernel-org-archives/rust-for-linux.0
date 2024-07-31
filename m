@@ -1,137 +1,128 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1A801DA32;
-	Wed, 31 Jul 2024 13:26:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from zg8tmja2lje4os43os4xodqa.icoremail.net (zg8tmja2lje4os43os4xodqa.icoremail.net [206.189.79.184])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B6531AD3EA;
+	Wed, 31 Jul 2024 13:45:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=206.189.79.184
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722432411; cv=none; b=qWy53TNW+OfuOVPTgtUm0WRktF4VJkua+JaBsg/B7ePMULvkJV2DuEgWN5K6RvPv0VhpUoVLgYK9RKfOD9d3I12sQ7KzRyYWY2+7tNoDUN58S7/RItnlQ1demrhLONwnigYBOxHfDKWr4ob0hyEEfS8YsXGZsOfQCG9qaTd7wnk=
+	t=1722433528; cv=none; b=itEemG9/g+Q80/vMELjdBo4zv70B51iuAWQJXjqkFKwOEBgWmh+nT5EWb0pnFpOqwtBQk/pBBL9GuAPy5u3eQSvkBSVxZ/umHYdf5UdY+JOoBCm/LYJiupBjn2mVDDy6w0xwWUkCKB44rdspKDv39pZPTgidJF/1l2PcrHM8Xrk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722432411; c=relaxed/simple;
-	bh=9uXypEqxAUTLJyGDeqcsSj54KvBpMVmlCUOaJvrDkBA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=lvvNf+fygg0yxI6HKSfDPWUOKVzdUUZSZ1wvvp615JwzHEuowCTYWa6QJ9oZ6tXKUCJSqYJ7pHVyg7cGYEvx+tnKdYWoOem82tiKzv63Og7c+EqKZ7CxMy0Dn7w58gXjPdbiNiW4qM0+H4umZqxIgYTMGJukpwiH0de1nuPwEJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RMyFmVs5; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1722433528; c=relaxed/simple;
+	bh=vEzDWAaQFISxk2MVHPNVs7Hdqh8O2hvbSqPnbnv0k8E=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=izchG4POVpJ8mam47likuh4i9tpWgYxoEof2x+5/ZjDy4dibnxFs3HwpBWkMoWC083E1l2AlKKVoYdgTlmZ53Dkz0BEbKG6w2Q59wrlKtwM9+vusQYtVinqH5BBYJWc7B4pfunezO+i36M+LJs9dMh60ptfvyNTXqVHvi05FvEA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=whu.edu.cn; spf=pass smtp.mailfrom=whu.edu.cn; dkim=fail (0-bit key) header.d=whu.edu.cn header.i=@whu.edu.cn header.b=bWkuyoKK reason="key not found in DNS"; arc=none smtp.client-ip=206.189.79.184
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=whu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=whu.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RMyFmVs5"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5478EC116B1;
-	Wed, 31 Jul 2024 13:26:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722432411;
-	bh=9uXypEqxAUTLJyGDeqcsSj54KvBpMVmlCUOaJvrDkBA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=RMyFmVs5x8U3C6fjpFKKApHqaSeEcLs7xyhhm0+Ws6NHDm6Kx/pd1+Up0k2qdFfV5
-	 +WAuWHJNzEX+/A/RUyGoAb6H+QhcBrWrytdTiWbx0HUmRcgsx+nk2tiQF16pa0IyhD
-	 5DXvbPUEGXviSHhAEigCpN7sceJZO7nDfxWkVLuIMXkPmFfS59QFmGRq5byVgI8Mkl
-	 K4ZeIldb0JP2Qw2G/8I3ZaXq2WDJ/g7oOGsPDKQrZywjcfLHKE2MBP4Jn/lpZrfN0I
-	 uj9NBheWjPGFUpvLD3n1rTeY4hvvXZjtfzQYgMCzHVqpIY0L+6pLiSm5C21dcZFtRq
-	 5Mes+gb5sTHDQ==
-Date: Wed, 31 Jul 2024 10:26:49 -0300
-From: Arnaldo Carvalho de Melo <acme@kernel.org>
-To: Alan Maguire <alan.maguire@oracle.com>
-Cc: Matthew Maurer <mmaurer@google.com>, rust-for-linux@vger.kernel.org,
-	dwarves@vger.kernel.org, aliceryhl@google.com
-Subject: Re: [PATCH] pahole: Apply CU-level filters early in loading
-Message-ID: <Zqo7mW3brA09hA8b@x1>
-References: <20240730224350.4039790-1-mmaurer@google.com>
- <0c0031f6-7f5b-4ec2-9804-c9d576c8302b@oracle.com>
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=whu.edu.cn header.i=@whu.edu.cn header.b="bWkuyoKK"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=whu.edu.cn; s=dkim; h=Received:Received:From:To:Cc:Subject:
+	Date:Message-ID:MIME-Version:Content-Transfer-Encoding; bh=gynHM
+	f4s1+VR8dld2tFPa35dOzHpxTGWHOttfWgBivE=; b=bWkuyoKKwCjAyq6+dMdaY
+	kZ1X5xbIhJYwH/4maoBpbhamvO36WNlBPCrPvedhIhnIaw6GlB/zpL9WnfSdajZ6
+	DWLs0/TosiBIf2EE14bj2mn6RYd6ybgcbtyZ1Hx6n8295NtgrGy7/U7B6S1AcrHA
+	zilaHc9iwzr0JBhEPFQciQ=
+Received: from whu.edu.cn (unknown [10.1.14.8])
+	by app2 (Coremail) with SMTP id Bw4BCgA3LxXrP6pmM_ITAA--.56813S2;
+	Wed, 31 Jul 2024 21:45:15 +0800 (CST)
+Received: from zehuixu-vmwarevirtualplatform.localdomain (unknown [82.130.46.207])
+	by mtasvr (Coremail) with SMTP id _____wBHal_jP6pmCXYOAA--.4925S2;
+	Wed, 31 Jul 2024 21:45:13 +0800 (CST)
+From: Zehui Xu <zehuixu@whu.edu.cn>
+To: ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	wedsonaf@gmail.com
+Cc: boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me,
+	a.hindborg@samsung.com,
+	aliceryhl@google.com,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	zehuixu@whu.edu.cn
+Subject: [PATCH v3] rust: Kbuild: Skip -fmin-function-alignment in bindgen flags
+Date: Wed, 31 Jul 2024 16:43:46 +0300
+Message-ID: <20240731134346.10630-1-zehuixu@whu.edu.cn>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <0c0031f6-7f5b-4ec2-9804-c9d576c8302b@oracle.com>
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:Bw4BCgA3LxXrP6pmM_ITAA--.56813S2
+Authentication-Results: app2; spf=neutral smtp.mail=zehuixu@whu.edu.cn
+	;
+X-Coremail-Antispam: 1UD129KBjvJXoW7AFW8KFyfGF43Xry3Cr4kJFb_yoW8Kr18pa
+	sYkFy3GayDGFWkKrs2yw4fXayj934Yqa1Uur1jgw18urZrtF1v9rZ2kF15A343Jr1rCFW5
+	ZanF9Fy3tFyUA37anT9S1TB71UUUUb7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUU9ab7Iv0xC_Zr1lb4IE77IF4wAFc2x0x2IEx4CE42xK8VAvwI8I
+	cIk0rVWrJVCq3wA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK021l84ACjcxK6xIIjx
+	v20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4UJVWxJr1l84ACjcxK
+	6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s1ln4kS14v26r
+	1q6r43M2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx1l5I8C
+	rVACY4xI64kE6c02F40Ex7xfMcIj6x8ErcxFaVAv8VW8CwAm72CE4IkC6x0Yz7v_Jr0_Gr
+	1lF7xvr2IYc2Ij64vIr41lc7CjxVAaw2AFwI0_Jw0_GFylc2xSY4AK6svPMxAIw28IcxkI
+	7VAKI48JMxAIw28IcVCjz48v1sIEY20_GF4l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1l4IxYO2
+	xFxVAFwI0_JF0_Jw1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWU
+	WwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_JF
+	I_Gr1lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWU
+	JVWUCwCI42IY6I8E87Iv67AKxVWxJVW8Jr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8Jr
+	UvcSsGvfC2KfnxnUUI43ZEXa7IUba9aDUUUUU==
+X-CM-SenderInfo: qsqrmjqqqqijqqxyq4lkxovvfxof0/1tbiAQcPA2apDkw-KwAAsT
 
-On Wed, Jul 31, 2024 at 09:57:25AM +0100, Alan Maguire wrote:
-> On 30/07/2024 23:43, Matthew Maurer wrote:
-> > Without this, even with `--lang_exclude=rust` set, running on `vmlinux`
-> > with `CONFIG_RUST` enabled will lead to errors like:
-> > die__process_function: tag not supported 0x2f (template_type_parameter)!
-> > because the filtering doesn't happen until finalization, but unsupported
-> > tags are reported during loading.
-> > 
-> > As an added bonus, this should speed up processing of large objects with
-> > filtered CUs, as their details will no longer be walked.
-> >
-> 
-> One question on this; if we are always doing early filtering like this,
-> should the explicit cu__filter() call be removed from pahole_stealer()?
+GCC 14 recently added -fmin-function-alignment option and the
+root Makefile uses it to replace -falign-functions when available.
+However, this flag can cause issues when passed to the Rust
+Makefile and affect the bindgen process. Bindgen relies on
+libclang to parse C code, and currently does not support the
+-fmin-function-alignment flag, leading to compilation failures
+when GCC 14 is used.
 
-When I saw the introduction of an extra callback to be used inside the
-dwarf_loader I thought that it would be used only for this specific
-language filtering feature, i.e. a defensive approach at implementing
-this to avoid unintended side effects of doing all filtering at that
-point, maybe some other feature somehow depends on the cu__filter()
-being called where it was so far.
+This patch addresses the issue by adding -fmin-function-alignment
+to the bindgen_skip_c_flags in rust/Makefile. This prevents the
+flag from causing compilation issues.
 
-But then it is being used for all filtering, so it seems just a way to
-reduce the patch size...
+Link: https://lore.kernel.org/linux-kbuild/20240222133500.16991-1-petr.pavlu@suse.com/
+Signed-off-by: Zehui Xu <zehuixu@whu.edu.cn>
+---
+Since -falign-functions does not affect bindgen output, we do not
+need logic to add it back to the flags. Thanks to the community's
+help, especially Miguel Ojeda. Hope this patch is free of problems
+and can be submitted smoothly : )
 
-So I'd keep the cu->early_cu_filter() but would use it only for the
-language filtering feature, wdyt?
+v1:
+* https://lore.kernel.org/all/20240730222053.37066-1-zehuixu@whu.edu.cn/
 
-- Arnaldo
+v2:
+* Added -falign-functions to bindgen_extra_c_flags when skipping 
+  -fmin-function-alignment to maintain function alignment settings in GCC 14
+* Used reasonable length and moved email content out of the commit message
+* Used "Link" tag instead of "Reference:" and removed empty lines between tags
+* Specified the base commit
+* https://lore.kernel.org/all/20240731034112.6060-1-zehuixu@whu.edu.cn/
+
+v3:
+* Removed logic from patch v2 which adds -falign-functions
+
+ rust/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/rust/Makefile b/rust/Makefile
+index 1f10f92737f2..0c8736cce64f 100644
+--- a/rust/Makefile
++++ b/rust/Makefile
+@@ -227,7 +227,7 @@ bindgen_skip_c_flags := -mno-fp-ret-in-387 -mpreferred-stack-boundary=% \
+ 	-fno-reorder-blocks -fno-allow-store-data-races -fasan-shadow-offset=% \
+ 	-fzero-call-used-regs=% -fno-stack-clash-protection \
+ 	-fno-inline-functions-called-once -fsanitize=bounds-strict \
+-	-fstrict-flex-arrays=% \
++	-fstrict-flex-arrays=% -fmin-function-alignment=% \
+ 	--param=% --param asan-%
  
-> > Signed-off-by: Matthew Maurer <mmaurer@google.com>
-> > ---
-> >  dwarf_loader.c | 10 ++++++++++
-> >  dwarves.h      |  1 +
-> >  pahole.c       |  1 +
-> >  3 files changed, 12 insertions(+)
-> > 
-> > diff --git a/dwarf_loader.c b/dwarf_loader.c
-> > index b832c93..c48dfef 100644
-> > --- a/dwarf_loader.c
-> > +++ b/dwarf_loader.c
-> > @@ -2854,6 +2854,16 @@ static int die__process(Dwarf_Die *die, struct cu *cu, struct conf_load *conf)
-> >  
-> >  	cu->language = attr_numeric(die, DW_AT_language);
-> >  
-> > +	if (conf->early_cu_filter)
-> > +		cu = (conf->early_cu_filter)(cu);
+ # Derived from `scripts/Makefile.clang`.
 
-Also we can have it more compactly as:
+base-commit: 8400291e289ee6b2bf9779ff1c83a291501f017b
+-- 
+2.45.2
 
-+	if (conf->early_cu_filter)
-+		cu = conf->early_cu_filter(cu);
-
-No?
-
-> > +
-> > +	/*
-> > +	 * If we filtered this CU out, we still want to keep iterating, but
-> > +	 * there's no need to walk the rest of the CU info.
-> > +	 */
-> > +	if (cu == NULL)
-> > +		return DWARF_CB_OK;
-> > +
-> >  	if (dwarf_child(die, &child) == 0) {
-> >  		int err = die__process_unit(&child, cu, conf);
-> >  		if (err)
-> > diff --git a/dwarves.h b/dwarves.h
-> > index f5ae79f..92d102b 100644
-> > --- a/dwarves.h
-> > +++ b/dwarves.h
-> > @@ -72,6 +72,7 @@ struct conf_load {
-> >  	enum load_steal_kind	(*steal)(struct cu *cu,
-> >  					 struct conf_load *conf,
-> >  					 void *thr_data);
-> > +	struct cu *		(*early_cu_filter)(struct cu *cu);
-> >  	int			(*thread_exit)(struct conf_load *conf, void *thr_data);
-> >  	void			*cookie;
-> >  	char			*format_path;
-> > diff --git a/pahole.c b/pahole.c
-> > index 954498d..937b0a1 100644
-> > --- a/pahole.c
-> > +++ b/pahole.c
-> > @@ -3765,6 +3765,7 @@ int main(int argc, char *argv[])
-> >  	memset(tab, ' ', sizeof(tab) - 1);
-> >  
-> >  	conf_load.steal = pahole_stealer;
-> > +	conf_load.early_cu_filter = cu__filter;
-> >  	conf_load.thread_exit = pahole_thread_exit;
-> >  
-> >  	if (conf_load.reproducible_build) {
