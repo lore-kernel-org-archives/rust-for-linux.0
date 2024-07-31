@@ -1,199 +1,141 @@
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1F2116C437;
-	Wed, 31 Jul 2024 20:46:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4747A16087B;
+	Wed, 31 Jul 2024 20:47:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722458784; cv=none; b=J3eeY+kHRnDpPn8oeic4IF4DzNnvJdXN97lZBBMVJ3Ahl9oNgiu+qzBUnTH0QTKl2UUmDj9WWA5yrpxkQgTCYj+5pLY787tHj9Luc0dQlXe9yIgXSv5kaSzSYJ2gKRiWl7kqsmF4T6KMX2KuF/6uwq/L26brPU27E9GwLFtsQuM=
+	t=1722458875; cv=none; b=fBtGToW2f5eSG9EAL71BKXzhrYXs8udNG8OYykR+zVt1rPi4Clid/Yar6twfYVAWQwN1EbUjALCpwHBKVMfO1JfqLYYZzlGZ/bbjijWIFNvGcH79/6KXdbdpfb2zpGuY7Mp3CtbOY8AI8sbA8h3AzRfxaHyIjUnoPQlz/csFksk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722458784; c=relaxed/simple;
-	bh=AeVukmohV3Ul5Z/K/N7ywFHY6KRlSp5fj3lgsbIeS84=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=X+XSax6Md5uAqF+9xXebnuGzvoqrP7E/N3Q/Ey4xQ3vlO/j8JwzzRTzi9f7xoANoSeX9Pt6u+a2Ogg5CZDZngyBLgQwpdleKr6LBhAM83Ex1C+dgt+/Ea+HeKeasSSXB1mnrLe9PfF/O2s7NIIxSZpIeVG+JK+vGMkt1EiMm1Fs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gompa.dev; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.160.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gompa.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-44fe9aa3bfaso36606111cf.0;
-        Wed, 31 Jul 2024 13:46:22 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722458781; x=1723063581;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=t/EX/MdkSUl5MjV12TxYf7t+yruPrf+xB5I7T7z+p84=;
-        b=myoZw0WcpKgZQiQb9weOCoLzq7mbYJTH4sIoMpyQeVEDotc4W5xOqp9weVIcwcclb2
-         6mhlh4/kg3RvcnnwFhJ9j/opjH0HxZZemwydxfT9pHJhgzbBM67YpfRDvDCmP2vy9zbU
-         HGPDmnaC9cVO5fpEN9YJKrDupsCjad8dCPZuGJQ32NOWhZVhe2y5PUWzaZ5P1Q9DPTCX
-         uE3Z+2wH5xc1UWXzFOCKrcyFqSlYLZZQhFb63R4Ng3WvGc4TBjrWviNZnb9CbcAdf4gR
-         cVoHD0koikV8EnEzxu0m6w4mZYnFfUyeqWBxcWoQXVrFJlGueVeXcpoPhzWXowobhXMO
-         QJIQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUHjnAjThn+yI2ZXAahR/eurNJLCZ9HvCf1k0oED7mjUYp9ArjI+i29gNPzzEoqJ8/U8x3VTyspPSQX/hw03iby2epbOrLrKMZyluJVV4ktgU3noF+oCr6pVA9WHtSbtZUWHIR0unGwhlTvml0yLw9Vn0ZJCq86hS/apqRYx9ejce3KQ6IlHSJi6n3nGFipnbJuKbHZXdKhlemxEaGXI+yMAFYnhwZdM68i
-X-Gm-Message-State: AOJu0YxVAcuvvp+byDGQYIdHNp+k2g6Jse8KveD7/yWaer71CAZ+lVby
-	yW+AtPCte+QvW1nR8JmWXR/Uqdson7c6lpMSICLMv4avf1WTRoQe
-X-Google-Smtp-Source: AGHT+IEhWj/vQ8WTQj+u43hJfEmFz+FLsoDhgrSx+TsivhnOhOZQAV5+0NUOqpY72YTh3UQU3fOyMA==
-X-Received: by 2002:ac8:5d55:0:b0:446:5aac:ca7f with SMTP id d75a77b69052e-451567a382dmr6959181cf.22.1722458781529;
-        Wed, 31 Jul 2024 13:46:21 -0700 (PDT)
-Received: from skuld-framework.localnet ([32.221.37.233])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-44fe812350bsm63120971cf.9.2024.07.31.13.46.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 31 Jul 2024 13:46:20 -0700 (PDT)
-From: Neal Gompa <neal@gompa.dev>
-To: Petr Pavlu <petr.pavlu@suse.com>, Sami Tolvanen <samitolvanen@google.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Masahiro Yamada <masahiroy@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>,
- Miguel Ojeda <ojeda@kernel.org>, Matthew Maurer <mmaurer@google.com>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>,
- linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-modules@vger.kernel.org, rust-for-linux@vger.kernel.org,
- Asahi Linux <asahi@lists.linux.dev>, Hector Martin <marcan@marcan.st>,
- Janne Grunau <j@jannau.net>
-Subject: Re: [PATCH 00/15] Implement MODVERSIONS for Rust
-Date: Wed, 31 Jul 2024 16:46:18 -0400
-Message-ID: <8578805.OV4Wx5bFTl@skuld-framework>
-In-Reply-To:
- <CABCJKucj7zjc4=EiFdSnzNDBvQmaWBBt_KJsTq1ybp=Vegp5eQ@mail.gmail.com>
-References:
- <20240617175818.58219-17-samitolvanen@google.com>
- <00714a65-953f-4885-9229-1990543c4154@suse.com>
- <CABCJKucj7zjc4=EiFdSnzNDBvQmaWBBt_KJsTq1ybp=Vegp5eQ@mail.gmail.com>
+	s=arc-20240116; t=1722458875; c=relaxed/simple;
+	bh=T+bxtDsypoLZuohvEpFnoUYBkgJSQsGGu/MQFPg+TOc=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=T7RVUYUEyKF0bo9F3th48Rdcu8ZE407k2YwAvfphHjmF/NxCeSskOqfsXKJVzzDqwPpyO4cQ/2U+ita1Arjij9VD7wFsTzKgzH4tY7zOH6+Op2mfVwmiVVIq7nr4zno1VCn7XcwW0aiykuFCU2da8haTBw4s3BOj93aGwErJqRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=TavgKwuM; arc=none smtp.client-ip=185.70.43.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="TavgKwuM"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1722458872; x=1722718072;
+	bh=pd9iNbqzsLLrheaLjTGk3cr9YXPx27FeADL9bde0lPQ=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=TavgKwuMerzXMQg9cvfC/OiJ3ceY/aNT7TA+sFCIQ+V0GtzMvyKc4S/8xSJS6UHFx
+	 wm88gNTwEl1ldmBbGVz4/K/hocbVa7J8Rl+j0RdG87nBy3XQDT/WbCEScCUZgX48IP
+	 Jmqv64m0o3+kkRluQ3LHy+PzpsXhxsWbODfBhzepAEt7S9vmgUCigKUhMrDpbr02ZT
+	 ErGuJKBP4wjJjEKlm9mVE8buvCrc0DZFDC7XEtBGmELWsimUG2nEGf7gm5uWaqGkmc
+	 4WxIgjPd5eqp4VJCyfU8yf2SYUgRBTvNiElj4aOb+apoh/quK97+rNkeumdeX7ikYj
+	 dCoQt1+hVj07g==
+Date: Wed, 31 Jul 2024 20:47:48 +0000
+To: Gary Guo <gary@garyguo.net>, Matt Gilbride <mattgilbride@google.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?utf-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>, Christian Brauner <brauner@kernel.org>, Rob Landley <rob@landley.net>, Davidlohr Bueso <dave@stgolabs.net>, Michel Lespinasse <michel@lespinasse.org>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v6 1/6] rust: kernel: add `drop_contents` to `BoxExt`
+Message-ID: <52cc1987-ec62-46dd-9d81-4afc155fe88f@proton.me>
+In-Reply-To: <20240731210206.2b56b432.gary@garyguo.net>
+References: <20240711-b4-rbtree-v6-0-14bef1a8cdba@google.com> <20240711-b4-rbtree-v6-1-14bef1a8cdba@google.com> <20240731210206.2b56b432.gary@garyguo.net>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: 7db0d0a6009e4b0532f4c4605b81b7899702302c
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="utf-8"
 
-On Friday, July 26, 2024 5:05:22=E2=80=AFPM EDT Sami Tolvanen wrote:
-> Hi Petr,
+On 31.07.24 22:02, Gary Guo wrote:
+> On Thu, 11 Jul 2024 16:20:57 +0000
+> Matt Gilbride <mattgilbride@google.com> wrote:
 >=20
-> On Mon, Jul 22, 2024 at 8:20=E2=80=AFAM Petr Pavlu <petr.pavlu@suse.com> =
-wrote:
-> > From my perspective, I'm okay if gendwarfksyms doesn't provide
-> > functionality to compare a new object file with its reference symtypes
-> > file.
-> >=20
-> > As mentioned, genksyms has this functionality but I actually think the
-> > way it works is not ideal. Its design is to operate on one compilation
-> > unit at the time. This has the advantage that a comparison of each file
-> > is performed in parallel during the build, simply because of the make
-> > job system. On the other hand, it has two problems.
-> >=20
-> > The first one is that genksyms doesn't provide a comparison of the
-> > kernel as a whole. This means that the tool gives rather scattered and
-> > duplicated output about changed structs in the build log. Ideally, one
-> > would like to see a single compact report about what changed at the end
-> > of the build.
+>> From: Benno Lossin <benno.lossin@proton.me>
+>>
+>> Sometimes (see [1]) it is necessary to drop the value inside of a
+>> `Box<T>`, but retain the allocation. For example to reuse the allocation
+>> in the future.
+>> Introduce a new function `drop_contents` that turns a `Box<T>` into
+>> `Box<MaybeUninit<T>>` by dropping the value.
+>>
+>> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
+>> Link: https://lore.kernel.org/rust-for-linux/20240418-b4-rbtree-v3-5-323=
+e134390ce@google.com/ [1]
+>> ---
+>>  rust/kernel/alloc/box_ext.rs | 24 +++++++++++++++++++++++-
+>>  1 file changed, 23 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/rust/kernel/alloc/box_ext.rs b/rust/kernel/alloc/box_ext.rs
+>> index 829cb1c1cf9e..557895db4f48 100644
+>> --- a/rust/kernel/alloc/box_ext.rs
+>> +++ b/rust/kernel/alloc/box_ext.rs
+>> @@ -4,7 +4,7 @@
+>>
+>>  use super::{AllocError, Flags};
+>>  use alloc::boxed::Box;
+>> -use core::mem::MaybeUninit;
+>> +use core::{mem::MaybeUninit, ptr};
+>>
+>>  /// Extensions to [`Box`].
+>>  pub trait BoxExt<T>: Sized {
+>> @@ -17,6 +17,20 @@ pub trait BoxExt<T>: Sized {
+>>      ///
+>>      /// The allocation may fail, in which case an error is returned.
+>>      fn new_uninit(flags: Flags) -> Result<Box<MaybeUninit<T>>, AllocErr=
+or>;
+>> +
+>> +    /// Drops the contents, but keeps the allocation.
+>> +    ///
+>> +    /// # Examples
+>> +    ///
+>> +    /// ```
+>> +    /// use kernel::alloc::flags;
+>> +    ///
+>> +    /// let value =3D Box::new([0; 32], flags::GFP_KERNEL);
+>> +    /// let value =3D value.unwrap().drop_contents();
+>> +    /// // Now we can re-use `value`:
+>> +    /// Box::write(value, [1; 32]);
+>> +    /// ```
+>> +    fn drop_contents(self) -> Box<MaybeUninit<T>>;
 >=20
-> Sure, that makes sense. Android uses STG for this, which might be
-> useful to other folks too:
->=20
-> https://android.googlesource.com/platform/external/stg/
-> https://android.googlesource.com/platform/external/stg/+/refs/heads/main/=
-doc
-> /stgdiff.md#output-formats
-> > A few months ago, I also started working on a tool inspired by this
-> > script. The goal is to have similar functionality but hopefully with
-> > a much faster implementation. Hence, this tool is written in a compiled
-> > language (Rust at the moment) and should also become multi-threaded. I'm
-> > hoping to find some time to make progress on it and make the code
-> > public. It could later be added to the upstream kernel to replace the
-> > comparison functionality implemented by genksyms, if there is interest.
-> >=20
-> > So as mentioned, I'm fine if gendwarfksyms doesn't have this
-> > functionality. However, for distributions that rely on the symtypes
-> > format, I'd be interested in having gendwarfksyms output its dump data
-> > in this format as well.
->=20
-> We can definitely tweak the output format, but I'm not sure if making
-> it fully compatible with the genksyms symtypes format is feasible,
-> especially for Rust code. I also intentionally decided to use DWARF
-> tag names in the output instead of shorthands like s# etc. to make it
-> a bit more readable.
->=20
-> > For example, instead of producing:
-> >=20
-> > gendwarfksyms: process_exported_symbols: _some_mangled_func_name (@ XYZ)
-> > subprogram(
-> >=20
-> >    [formal parameters...]
-> >=20
-> > )
-> > -> structure_type core::result::Result<(), core::fmt::Error> {
-> >=20
-> >    [a description of the structure...]
-> >=20
-> > };
-> >=20
-> > .. the output could be something like this:
-> >=20
-> > S#'core::result::Result<(), core::fmt::Error>' structure_type
-> > core::result::Result<(), core::fmt::Error> { [a description of the
-> > structure...] } _some_mangled_func_name subprogram
-> > _some_mangled_func_name ( [formal parameters...] ) ->
-> > S#'core::result::Result<(), core::fmt::Error>'
-> This wouldn't be enough to make the output format compatible with
-> symtypes though. genksyms basically produces a simple key-value pair
-> database while gendwarfksyms currently outputs the fully expanded type
-> string for each symbol. If you need the tool to produce a type
-> database, it might also be worth discussing if we should use a bit
-> less ad hoc format in that case.
->=20
-> One more thing to note about the current --debug output is that it
-> directly correlates with the debugging information and thus may not
-> contain all aliases. For example, the Rust compiler deduplicates
-> identical function implementations (e.g. Deref::deref and
-> DerefMut::deref_mut etc.), but only one of the symbol names appears in
-> DWARF. We use symbol addresses to print out #SYMVERs also for the
-> aliases, but they don't show up in the debugging output right now.
->=20
-> > > If using unions here is acceptable to everyone, a simple solution
-> > > would be to use a known name prefix for the reserved members and teach
-> > > gendwarfksyms to only print out the original type for the replaced
-> > > ones. For example:
-> > >=20
-> > > The initial placeholder:
-> > >     u8 __kabi_reserved_1[8];
-> > >=20
-> > > After replacement:
-> > >     union {
-> > >    =20
-> > >             u64 new_member;
-> > >             struct {
-> > >            =20
-> > >                     u8 __kabi_reserved_1[8];
-> > >            =20
-> > >             };
-> > >    =20
-> > >     }
-> > >=20
-> > > Here gendwarfksyms would see the __kabi_reserved prefix and only use
-> > > u8 [8] for the CRC calculation. Does this sound reasonable?
-> >=20
-> > I like this idea. I think it's good that the necessary kABI information
-> > about an updated member can be expressed at the source code level in
-> > place of the actual change, and it isn't needed to feed additional input
-> > to the tool.
->=20
-> OK, cool. I agree that being able to specify these details in source
-> code is much cleaner. I'll add an implementation for this, and for the
-> definition visibility issue Greg mentioned in v2.
->=20
+> Should this have signature `fn drop_contents(this: Self) -> ...`? Box
+> types normally don't have methods to avoid shadowing functions that the
+> pointee may have.
 
-Could you please add myself, Hector, and Janne (along with the Asahi Linux=
-=20
-mailing list) to the recipients when you send the v2 patch set? We're also=
-=20
-interested in this. :)
+Note that the newest version of this patch can be found at [1]. I agree,
+it should probably take `this: Self` instead of a `self` receiver.
 
-Thanks in advance!
+@Miguel, do you think I should send a new version with that change?
 
+[1]: https://lore.kernel.org/rust-for-linux/20240708205325.1275473-1-benno.=
+lossin@proton.me/
 
-=2D-=20
-=E7=9C=9F=E5=AE=9F=E3=81=AF=E3=81=84=E3=81=A4=E3=82=82=E4=B8=80=E3=81=A4=EF=
-=BC=81/ Always, there's only one truth!
+---
+Cheers,
+Benno
 
+>>  }
+>>
+>>  impl<T> BoxExt<T> for Box<T> {
+>> @@ -53,4 +67,12 @@ fn new_uninit(flags: Flags) -> Result<Box<MaybeUninit=
+<T>>, AllocError> {
+>>          // zero-sized types, we use `NonNull::dangling`.
+>>          Ok(unsafe { Box::from_raw(ptr) })
+>>      }
+>> +
+>> +    fn drop_contents(self) -> Box<MaybeUninit<T>> {
+>> +        let ptr =3D Box::into_raw(self);
+>> +        // SAFETY: `ptr` is valid, because it came from `Box::into_raw`=
+.
+>> +        unsafe { ptr::drop_in_place(ptr) };
+>> +        // SAFETY: `ptr` is valid, because it came from `Box::into_raw`=
+.
+>> +        unsafe { Box::from_raw(ptr.cast()) }
+>> +    }
+>>  }
+>>
+>=20
+> Best,
+> Gary
 
