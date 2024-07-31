@@ -1,104 +1,82 @@
-Received: from zg8tmja5ljk3lje4ms43mwaa.icoremail.net (zg8tmja5ljk3lje4ms43mwaa.icoremail.net [209.97.181.73])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D58E2224D7;
-	Wed, 31 Jul 2024 04:55:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.97.181.73
+Received: from mail-ot1-f49.google.com (mail-ot1-f49.google.com [209.85.210.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AE55182C3
+	for <rust-for-linux@vger.kernel.org>; Wed, 31 Jul 2024 08:00:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722401757; cv=none; b=WvMAzItfvUWkmTP728fFC23D0Io4HogXThi3qr12JO/k/6BhtCVv4aDf6AON4jUWUFsH0tlYHvHWPP/9x3Bc4227YeWf2IQ7d3JAcdO7pyF+lmQIlcM7b+kmYgmZuuRdA/DEVXMctlpHsu7taqdnqaZVp3/LxZT+iMuuoIcKaT4=
+	t=1722412830; cv=none; b=Ze+O6S2Rp4X3SMCOS735YfhYei74ulkKG/c0hKFHdbMBMJHgBAG0sN9AlvUliVf9WJqG60vE2dN2L5POEcs8Txd3jh/aXH+sJV43MXPdQxY1S/m/cwUI53ZFMMRavf1srUqiWH/V9DuHFoIUbbOiGoG4Rf/0pI4Gu0yFGJzZkbQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722401757; c=relaxed/simple;
-	bh=V0dHtxVer2moH1gvpNDCzKcbUL8qtbkqVCcMZNNeRXA=;
+	s=arc-20240116; t=1722412830; c=relaxed/simple;
+	bh=LC4kVaas2E6ye4fF9u5SOI4TTdn8Xq2lZcZsTL0WTwA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=HXW7cDyXUZMLfofeQTgX6gAhDzl9iq+H1AMPl8/CYTIcRMCUssYUvmxr4NdcsJ/EIT9LgyzC+1C8cCP5l7MQ6VhSLKNgpPr6bGhGnwq04e7Za8t0vpbddgUWRVvqg2Sc9giiJePBAspZpXphajGEuyVfpPQzn9LMT9vK8gUhNck=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=whu.edu.cn; spf=pass smtp.mailfrom=whu.edu.cn; dkim=fail (0-bit key) header.d=whu.edu.cn header.i=@whu.edu.cn header.b=Rqs+8PuD reason="key not found in DNS"; arc=none smtp.client-ip=209.97.181.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=whu.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=whu.edu.cn
+	 MIME-Version; b=K18eThF6V1yvmzwsFhsgebr/0Vc//goYug6vDIDROxOhysFZyEpRyzLHYNE6rHxxTv0u4i1Gnlmzq4d+wNeKxCS/iOXvQ1WbE6B3NX1UomGf9Y7szBd+2hQfsBIaGZCgM+5zf0j6d/evJHXV3aULxyZoHdeNzYuyBHV11PQEcFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=R2Y1T674; arc=none smtp.client-ip=209.85.210.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=whu.edu.cn header.i=@whu.edu.cn header.b="Rqs+8PuD"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="R2Y1T674"
+Received: by mail-ot1-f49.google.com with SMTP id 46e09a7af769-70940c9657dso2664305a34.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 31 Jul 2024 01:00:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=whu.edu.cn; s=dkim; h=Received:Received:From:To:Cc:Subject:
-	Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Type:
-	Content-Transfer-Encoding; bh=V0dHtxVer2moH1gvpNDCzKcbUL8qtbkqVC
-	cMZNNeRXA=; b=Rqs+8PuDpLExA8o+rbDyJ+eHteZqpJp5Lz1oQiFMdQubu27r70
-	nDnsRjWD6KbXi5bbhyLuhliuQe4sGUM4L12B3tTUdcr1SoSyJWuzTjyYW1lNh+X9
-	62KDjxNUKUDpmO6iWpFQDgnTeUSTH3QCHJkOsux/lqpv8wDCSRTPjgSVk=
-Received: from whu.edu.cn (unknown [10.1.14.8])
-	by app2 (Coremail) with SMTP id Bw4BCgCnXBLMw6lm8e8SAA--.42801S2;
-	Wed, 31 Jul 2024 12:55:40 +0800 (CST)
-Received: from zehuixu-vmwarevirtualplatform.localdomain (unknown [82.130.46.207])
-	by mtasvr (Coremail) with SMTP id _____wA35MPGw6lmtMILAA--.3809S2;
-	Wed, 31 Jul 2024 12:55:38 +0800 (CST)
-From: Zehui Xu <zehuixu@whu.edu.cn>
-To: ojeda@kernel.org
-Cc: zehuixu@whu.edu.cn,
+        d=gmail.com; s=20230601; t=1722412828; x=1723017628; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=LC4kVaas2E6ye4fF9u5SOI4TTdn8Xq2lZcZsTL0WTwA=;
+        b=R2Y1T67451CDvoTiRIyr07PkRM8L9jMmkXRaZFx0yCExJXkDN9BGVrboXjMuEbSH9R
+         pWYFKzokYEtzSUVubD3Hkib1RbaWhu25Rb66G45kMR7le8Tv0UJk8EyriYhAzXYbiifc
+         WaH38OiU5qGWrQTX4amluj79lUULkKCXuztruPWzTEdNS/6bnyw4MvksHohQFiQtw3NA
+         3GVmeSNw4+ifd7fS2WmRxwTJNXDPRo0kSSzK6lxp2q+A71sdDtCerqnUTXMifYNnW8b+
+         2z4UF4VyLYswEerXEr38PSyExlTwdzzQ8RbCFo9Y4WGSSINlY3I+LBOpnlG/mVIW6C3B
+         G+DA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722412828; x=1723017628;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=LC4kVaas2E6ye4fF9u5SOI4TTdn8Xq2lZcZsTL0WTwA=;
+        b=VOTsUGPxAfH5OPEkiUwjf3he/mVBJpXcS0z8L52WL1vZETUWqQJqeUY1f+EpPk6/J0
+         kgYb2qViGSoQwTEOOimlHKEVCibJKjw9lcXV0JDMQGSGQx3wfBAY1K6GHExUR4Xw0jJh
+         zmk0FbJQyt8G6WyIOcbcQAEX0zCmMyY9c8++cBOB+qdBn5ra+dhrCJ1LUTocNHUStLZS
+         IjXAVWOALSgJRoM2cTqYonfYqArW3MogdE3AXHN/TuipAp50VxmZoiK1HpAI2lS21Z3X
+         eiRcq19Gf8D1Y0TR+tD6fDgkh59gMb14kOiAM9wb2Yo3B1Wpeknfl2zG7GqOSzO0/uBz
+         waug==
+X-Forwarded-Encrypted: i=1; AJvYcCWsp7D48YVRfvaAglDc4y25aOT3EhwwZv8N9MeZn/9ZhezIXVD2geyFFUYFQ9mgMyoSi6WbthsiLvCsSlGTzZsqJAmzmloPbGq0ly8F2Xw=
+X-Gm-Message-State: AOJu0Ywr9yQUBsH4SJ4o8kY0UQnNBQel4hx9hciMBDws55pBuu0/gsh3
+	7LoJg4B9gL/BG8Q6+wIlijDXSc0MoIrIVKvTK0uuDaR8q7WNrBip
+X-Google-Smtp-Source: AGHT+IGI+y5qC8itjtEdOMBqE0JKivKf76s9G6L+QKR6AVhBPgmsqctb6pi8TdeBrKodCgn4oP8rkQ==
+X-Received: by 2002:a05:6830:2786:b0:709:441a:351b with SMTP id 46e09a7af769-709441a388emr14138929a34.8.1722412828297;
+        Wed, 31 Jul 2024 01:00:28 -0700 (PDT)
+Received: from localhost.localdomain ([2401:4900:1f31:5bdd:9177:d907:56aa:2044])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-70ead6e333asm9466567b3a.8.2024.07.31.01.00.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 31 Jul 2024 01:00:27 -0700 (PDT)
+From: Sarthak Singh <sarthak.singh99@gmail.com>
+To: sarthak.singh99@gmail.com
+Cc: a.hindborg@samsung.com,
+	alex.gaynor@gmail.com,
+	aliceryhl@google.com,
+	benno.lossin@proton.me,
+	bjorn3_gh@protonmail.com,
+	boqun.feng@gmail.com,
+	dirk.behme@de.bosch.com,
+	gary@garyguo.net,
+	ojeda@kernel.org,
 	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: Kbuild: Skip -fmin-function-alignment in bindgen flags
-Date: Wed, 31 Jul 2024 07:55:22 +0300
-Message-ID: <20240731045532.7779-1-zehuixu@whu.edu.cn>
-X-Mailer: git-send-email 2.45.2
-In-Reply-To: <20240730222053.37066-1-zehuixu@whu.edu.cn>
-References: <20240730222053.37066-1-zehuixu@whu.edu.cn>
+	wedsonaf@gmail.com
+Subject: Re: [PATCH v3] rust: Support latest version of `rust-analyzer`
+Date: Wed, 31 Jul 2024 13:30:21 +0530
+Message-ID: <20240731080021.195732-1-sarthak.singh99@gmail.com>
+X-Mailer: git-send-email 2.46.0
+In-Reply-To: <20240724172713.899399-1-sarthak.singh99@gmail.com>
+References: <20240724172713.899399-1-sarthak.singh99@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:Bw4BCgCnXBLMw6lm8e8SAA--.42801S2
-Authentication-Results: app2; spf=neutral smtp.mail=zehuixu@whu.edu.cn
-	;
-X-Coremail-Antispam: 1UD129KBjvJXoW7Cr13Gw47KF4rGw4kGw1xKrg_yoW8AFWrpF
-	W3KFyakws5GFn5Kr1xCr4Fva10vw1ftay5Grn0ga4kZa13WF93GrWfKr4av39rZr1fC3y2
-	qanFqFyUJ3Z5Z37anT9S1TB71UUUUUDqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUkIb7Iv0xC_Cr1lb4IE77IF4wAFc2x0x2IEx4CE42xK8VAvwI8I
-	cIk0rVWrJVCq3wA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK021l84ACjcxK6xIIjx
-	v20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4UJVW0owA2z4x0Y4vE
-	x4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oVCq3wAS0I0E0xvYzx
-	vE52x082IY62kv0487Mc804VCY07AIYIkI8VC2zVCFFI0UMc02F40EFcxC0VAKzVAqx4xG
-	6I80ewAv7VCjz48v1sIEY20_GF4lOx8S6xCaFVCjc4AY6r1j6r4UM4x0Y48IcxkI7VAKI4
-	8JMxkIecxEwVCm-wCF04k20xvY0x0EwIxGrwCF04k20xvE74AGY7Cv6cx26r4xMxC20s02
-	6xCaFVCjc4AY6r1j6r4UMxCIbckI1I0E14v26r1Y6r17MI8I3I0E5I8CrVAFwI0_Jr0_Jr
-	4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CEb7AF67AKxVWUAVWUtwCIc40Y0x0EwIxG
-	rwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8Jw
-	CI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAIcVC2z280aVAFwI0_Gr0_Cr1lIxAIcVC2
-	z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2KfnxnUUI43ZEXa7xRRJPEDUUUUU==
-X-CM-SenderInfo: qsqrmjqqqqijqqxyq4lkxovvfxof0/1tbiAQYPA2apDkweRwAAsf
 
-On 31.7.2024 2.39, Miguel Ojeda wrote:
-> On Wed, Jul 31, 2024 at 12:21 AM Zehui Xu <zehuixu@whu.edu.cn> wrote:
->>
->> GCC recently added the -fmin-function-alignment option, which will appear in GCC 14. However, this flag can cause issues when passed to the Rust Makefile and affect the bindgen process. Bindgen relies on libclang to parse C code, and currently does not support the -fmin-function-alignment flag, leading to compilation failures when GCC 14 is used.
->>
->> This patch addresses the issue by adding -fmin-function-alignment to the bindgen_skip_c_flags in rust/Makefile, ensuring it is skipped during the bindgen process. This prevents the flag from causing compilation issues and maintains compatibility with the upcoming GCC 14.
->
-> Thanks for the patch!
->
->> This is my first patch to the kernel, if there are any issues or improvements needed, please let me know. ;)
->
-> It looks OK, a couple nits are that you would normally not put this
-> line here (in the commit message), but below the --- line (which
-> means it would not go into the repository).
->
-> In addition, normally you would: wrap your commit messages to a
-> reasonable length, use scripts/checkpatch.pl to check for this and
-> other issues, use the "Link" tag instead of "Reference:", avoid
-> leaving empty lines between tags and ideally use git format-patch
-> --base to specify the base of your patch (not really needed in many
-> cases, but it is always nice to have around).
->
-> If you can try that and send a v2, that would be nice.
->
-> But apart from those nits, it seems fine -- welcome!
->
-> Cheers,
-> Miguel
-
-Thanks for your nits, Miguel! I have applied your suggestions and submitted a v2 patch:
-https://lore.kernel.org/all/20240731034112.6060-1-zehuixu@whu.edu.cn/
-
----
-Cheers,
-Zehui
-
+A polite reminder to please take a look at this patch.
