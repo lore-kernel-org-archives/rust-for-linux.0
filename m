@@ -1,115 +1,103 @@
-Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 337D41AE845
-	for <rust-for-linux@vger.kernel.org>; Wed, 31 Jul 2024 12:32:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.172
+Received: from zg8tmja2lje4os4yms4ymjma.icoremail.net (zg8tmja2lje4os4yms4ymjma.icoremail.net [206.189.21.223])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 093191B142B;
+	Wed, 31 Jul 2024 12:47:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=206.189.21.223
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722429154; cv=none; b=EPFMJ8PR+0TUpZShsLR1/QTPtj1cALBvLjF246kt1Il9laiFqDJKaaUDv4RTTc2fbZD6gsUabsyTghu3J/B4lEi0Czl8q0+LRNfldXseSz5Zi9ZaHFCflkxjOWwSBEbM8ZJcR+plzQa11k1eHr5OIEb8gkhbNFVIiqsY5ljrVYk=
+	t=1722430054; cv=none; b=cwafu2/DjfMcL4m7d0VtSRwhSyhowrs0KZ/28uGXFaB1N2LIepvRWE2yTydt6vTHfc5dM4q8uYIdjvSnac3vBfvr/QG5EySK0Pkzzh6Toe4VsLBVaf7vCUSmvvP8Gw7D+h22TNWCJ87ZrKTN82m2MB295BxV0y+IGiMlR5AMY3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722429154; c=relaxed/simple;
-	bh=MwaNTINU5yNJHsK2cvcCHlH+LXU0hr3BxeGPsxPkIUg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fSCc9jr+50CACnzi6lhdTg/gpSr573LG5eV6TG1l30Fu3VbyDk87y+huO69zJaA7PR+KAEhaAgwXIF5lf99T4YSDCF32gi3o3gUCKeguerwCcV6V7eYKCrrWj8153jIEtXlabAg5v3nH5B5C16E1hd8XkX1sw5D/J5MsTfK/Y8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GaoMDsv4; arc=none smtp.client-ip=209.85.208.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1722430054; c=relaxed/simple;
+	bh=6G+rgx/q9MXLtttq4evrxMQ72GI3w/vZ5qSXUcu+9tM=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=hENaquPw/Hf1vG9gSc+iXkx6QPDohuwGGBvND+X3koJgz53onyZpnXfMQ/BM7bFbtdxhnyqRv6Tr077pBzROlgYfZcnFU/8t1V6qHguAp4XZcThxnVn4MZ3pfw4LRfcRjQcPtPN/PRvhhyckx9y76HWdNnWPBz1qgqHDwqxvUEw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=whu.edu.cn; spf=pass smtp.mailfrom=whu.edu.cn; dkim=fail (0-bit key) header.d=whu.edu.cn header.i=@whu.edu.cn header.b=aOq9TQOh reason="key not found in DNS"; arc=none smtp.client-ip=206.189.21.223
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=whu.edu.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=whu.edu.cn
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GaoMDsv4"
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-2ef2d582e31so68748111fa.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 31 Jul 2024 05:32:32 -0700 (PDT)
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=whu.edu.cn header.i=@whu.edu.cn header.b="aOq9TQOh"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1722429151; x=1723033951; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=EJ52IHoyhMVMwGPGB7z4wpPXfYtiJoUyPXm23E4PR/Y=;
-        b=GaoMDsv4n597nZMOHMgKm2lFxKeu7Cx55dF/VsiUSX0JZ7b9dPxxayEkq/yGWKkSs9
-         xrW6ZWuSaIfbID8VL61qOAnOX/qjAPeEqjU/k6gFtJAMPxm0AyWEkciv9mjGGQ4t8w5m
-         QCvcZBnhXtWrx0Vvsqg8i/+ceb3opZ383A7PZUnJHkdTD8YAvQj6FDeeMqDibKEM4fl1
-         5Z93lRQvROs/uZRUc8P/V0M5qyEAkCNGsiwrimoa6mxESLzRyNq9CcWJsd9t8rWPHmhU
-         fs/GdbCpDubmmTJKKmSNZDdL/CDaq/XBdyYonwMi+dE6dWb5fFSFWUMUrbnsS6rzHOOY
-         oxcQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722429151; x=1723033951;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=EJ52IHoyhMVMwGPGB7z4wpPXfYtiJoUyPXm23E4PR/Y=;
-        b=RtKA637naSXwI9ostXvcjuOnUNTTdqhss1FOymro8J0mLQ8uTuhmkTBGTm88jeCpq5
-         Wq4SAX2k+mmuhazcuwT3Iruj815oU+yfL9Hy0m78OwjRPvZJlv3JesQqyBI4gP1Exed1
-         YlB1i7luYlhAwjgLUlIM7lVsDvrxMCwk10oLVyB7BHVK5Nh9Z5COjhkwdMlQYASBQot6
-         SPPL49HMlKRRlXOoPSPLxouEsmVseSvfRP3cDN5v47g9CapRksL9Y1a5BbF4a5hF9zZx
-         CVmrh3zDrbhY8f290rDyXWwCkWMAH+ySV2jFLAkod/hilA4tfEZApqv0I7O39b7xzJ6t
-         D4OQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUo2MucooG+T2nkFZKAE8iOp+CEu6Zr+B2hM0YNnJfacxf0MqIp5IuKvderL3kO/haaiwgBR6cjeKaYZ0u5vF+1EU3MlDG3E6ewu0k0n6Y=
-X-Gm-Message-State: AOJu0Yw/hwgrWQvsGhDDEPwmEfLuELGOI0g8bHmRW7RVgyrsdEZHL1fG
-	o447ARIFpdKNiANVu5WTwUfx3S08JDlv7LJY2Fp/hMxICcwb4QmKhrHrY1uLlyGf9qPB+8pmBwu
-	imE6eQMpFjCitD3myhvo1Oa1wyv/P9+3q0uOD
-X-Google-Smtp-Source: AGHT+IFtG8Fpk/KvUPSdBmnaItGH5Rs2aE8gAAgzPSnfE88Taj+503TkDbrBojim9AWUwIzOd5exXLv8Se5cqymtwu4=
-X-Received: by 2002:a2e:2281:0:b0:2ec:617b:4757 with SMTP id
- 38308e7fff4ca-2f12ee074c2mr94644591fa.13.1722429150885; Wed, 31 Jul 2024
- 05:32:30 -0700 (PDT)
+	d=whu.edu.cn; s=dkim; h=Received:Received:From:To:Cc:Subject:
+	Date:Message-ID:In-Reply-To:References:MIME-Version:Content-Type:
+	Content-Transfer-Encoding; bh=6G+rgx/q9MXLtttq4evrxMQ72GI3w/vZ5q
+	SXUcu+9tM=; b=aOq9TQOhkjWbW2A0xH1yswP3bfHpy9sezv5SmTwh0L6EZKu2gv
+	KeEkq2cFzkvvDvdhKGP1MTEf0AfOJ50VsKAZ+S3afXKI8faXjmTcHA/nxJbC0XBj
+	MrGD6lXWDSPqoL3NVNyCIdCg7crUBjN40wIe5FQBveXwKW4Wyw1DgzOhU=
+Received: from whu.edu.cn (unknown [10.1.14.8])
+	by app2 (Coremail) with SMTP id Bw4BCgCHOxFYMqpmY9UTAA--.8872S2;
+	Wed, 31 Jul 2024 20:47:20 +0800 (CST)
+Received: from zehuixu-vmwarevirtualplatform.localdomain (unknown [82.130.46.207])
+	by mtasvr (Coremail) with SMTP id _____wA35MNSMqpmficOAA--.4380S2;
+	Wed, 31 Jul 2024 20:47:19 +0800 (CST)
+From: Zehui Xu <zehuixu@whu.edu.cn>
+To: ojeda@kernel.org
+Cc: zehuixu@whu.edu.cn,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] rust: Kbuild: Skip -fmin-function-alignment in bindgen flags
+Date: Wed, 31 Jul 2024 15:47:12 +0300
+Message-ID: <20240731124713.9866-1-zehuixu@whu.edu.cn>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <CANiq72n48BvaSNvghkEMn796u4K3_1owZqD9Gjmyk7h3R9GT+A@mail.gmail.com>
+References: <CANiq72n48BvaSNvghkEMn796u4K3_1owZqD9Gjmyk7h3R9GT+A@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240731042136.201327-1-fujita.tomonori@gmail.com>
- <20240731042136.201327-3-fujita.tomonori@gmail.com> <5525a61c-01b7-4032-97ee-4997b19979ad@lunn.ch>
-In-Reply-To: <5525a61c-01b7-4032-97ee-4997b19979ad@lunn.ch>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 31 Jul 2024 14:32:18 +0200
-Message-ID: <CAH5fLggyhvEhQL_VWdd38QyFuegPY5mXY_J-jZrh9w8=WPb2Vg@mail.gmail.com>
-Subject: Re: [PATCH net-next v2 2/6] rust: net::phy support probe callback
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, tmgross@umich.edu, 
-	miguel.ojeda.sandonis@gmail.com, benno.lossin@proton.me
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:Bw4BCgCHOxFYMqpmY9UTAA--.8872S2
+Authentication-Results: app2; spf=neutral smtp.mail=zehuixu@whu.edu.cn
+	;
+X-Coremail-Antispam: 1UD129KBjvdXoWrZr43XFW7WryfWrWxJw4ruFg_yoWDKFXE9w
+	n7Xa4Ikw18Gw4UA3Z7Gw4UCF909rWvgr4UtwsIvr4agw1xZan5uFs8CasI9w18JFWfuFnI
+	kr4DZFyvkry2qjkaLaAFLSUrUUUUnb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUba8YjsxI4VWxJwAYFVCjjxCrM7CY07I20VC2zVCF04k26cxKx2IY
+	s7xG6rWj6s0DM28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI
+	8IcVAFwI0_tr0E3s1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Cr1j6rxdM28EF7xvwVC2
+	z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s0DM2kKe7AKxVWUAV
+	WUtwAS0I0E0xvYzxvE52x082IY62kv0487Mc804VCY07AIYIkI8VC2zVCFFI0UMc02F40E
+	FcxC0VAKzVAqx4xG6I80ewAv7VCjz48v1sIEY20_GF4lOx8S6xCaFVCjc4AY6r1j6r4UM4
+	x0Y48IcxkI7VAKI48JMxkF7I0En4kS14v26r126r1DMxkIecxEwVCm-wCF04k20xvY0x0E
+	wIxGrwCF04k20xvE74AGY7Cv6cx26r4xMxC20s026xCaFVCjc4AY6r1j6r4UMxCIbckI1I
+	0E14v26r126r1DMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWl
+	x4CE17CEb7AF67AKxVWUAVWUtwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r
+	1xMIIF0xvE2Ix0cI8IcVCY1x0267AKxVWUJVW8JwCI42IY6xAIw20EY4v20xvaj40_Jr0_
+	JF4lIxAIcVC2z280aVAFwI0_Gr0_Cr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcS
+	sGvfC2KfnxnUUI43ZEXa7IUUsmRUUUUUU==
+X-CM-SenderInfo: qsqrmjqqqqijqqxyq4lkxovvfxof0/1tbiAgcPA2apDkc6vAABsI
 
-On Wed, Jul 31, 2024 at 2:24=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote:
+On 7/31/24 13:18, Miguel Ojeda wrote:
+
+> On Wed, Jul 31, 2024 at 5:41 AM Zehui Xu <zehuixu@whu.edu.cn> wrote:
+>>
+>> In addition, since -falign-functions is not used when
+>> -fmin-function-alignment is available but skipped and libclang
+>> supports -falign-functions, this patch adds it back to the
+>> bindgen_extra_c_flags to ensure the intended function alignment
+>> is maintained.
 >
-> On Wed, Jul 31, 2024 at 01:21:32PM +0900, FUJITA Tomonori wrote:
-> > Support phy_driver probe callback, used to set up device-specific
-> > structures.
-> >
-> > Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-> > ---
-> >  rust/kernel/net/phy.rs | 24 ++++++++++++++++++++++++
-> >  1 file changed, 24 insertions(+)
-> >
-> > diff --git a/rust/kernel/net/phy.rs b/rust/kernel/net/phy.rs
-> > index fd40b703d224..99a142348a34 100644
-> > --- a/rust/kernel/net/phy.rs
-> > +++ b/rust/kernel/net/phy.rs
-> > @@ -338,6 +338,20 @@ impl<T: Driver> Adapter<T> {
-> >          })
-> >      }
-> >
-> > +    /// # Safety
-> > +    ///
-> > +    /// `phydev` must be passed by the corresponding callback in `phy_=
-driver`.
-> > +    unsafe extern "C" fn probe_callback(phydev: *mut bindings::phy_dev=
-ice) -> core::ffi::c_int {
-> > +        from_result(|| {
-> > +            // SAFETY: This callback is called only in contexts
-> > +            // where we can exclusively access to `phy_device`, so the=
- accessors on
-> > +            // `Device` are okay to call.
+> Does it change the ABI or could change `bindgen`'s output in a way we care?
+
+You are right, it should not change the ABI or the bindgen output in
+a way that affects us, as bindgen only generates .rs Rust bindings and,
+after comparison, the generated results are exactly the same with or
+without -falign-functions.
+
+> If we do need it, then I think passing `-falign-functions` makes
+> sense, since it is the only one that Clang supports and has the same
+> behavior as `-fmin-function-alignment` in GCC (i.e. applies it to all
+> functions).
 >
-> This one is slightly different to other callbacks. probe is called
-> without the mutex. Instead, probe is called before the device is
-> published. So the comment is correct, but given how important Rust
-> people take these SAFETY comments, maybe it should indicate it is
-> different to others?
+> If not, then it may be best to avoid unneeded complexity.
 
-Interesting. Given that we don't hold the mutex, does that mean that
-some of the methods on Device are not safe to call in this context? Or
-is there something else that makes it okay to call them despite not
-holding the mutex?
+Considering this, I will send a patch v3. Thanks!
 
-Alice
+> Thanks!
+>
+> Cheers,
+> Miguel
+
+Cheers,
+Zehui
+
