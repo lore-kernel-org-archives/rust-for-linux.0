@@ -1,141 +1,85 @@
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4747A16087B;
-	Wed, 31 Jul 2024 20:47:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AD9A482CA;
+	Wed, 31 Jul 2024 20:57:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722458875; cv=none; b=fBtGToW2f5eSG9EAL71BKXzhrYXs8udNG8OYykR+zVt1rPi4Clid/Yar6twfYVAWQwN1EbUjALCpwHBKVMfO1JfqLYYZzlGZ/bbjijWIFNvGcH79/6KXdbdpfb2zpGuY7Mp3CtbOY8AI8sbA8h3AzRfxaHyIjUnoPQlz/csFksk=
+	t=1722459426; cv=none; b=rnZrFdboSmnAhMfz6p7MHVvvt/KwOqdXzWiqkM5NSww1TA4XjT6khRQCa25+FSWGTIV3vOH7tNKSfcBj5isgu8uvTSLNh4vKPDqMYLY3488E8Gi1eOowyqV2+ggQqTmdwuJ1Q6rHNn47r0AkjUn/DB0RUBqq9pYZ5p0Knz/n07s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722458875; c=relaxed/simple;
-	bh=T+bxtDsypoLZuohvEpFnoUYBkgJSQsGGu/MQFPg+TOc=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=T7RVUYUEyKF0bo9F3th48Rdcu8ZE407k2YwAvfphHjmF/NxCeSskOqfsXKJVzzDqwPpyO4cQ/2U+ita1Arjij9VD7wFsTzKgzH4tY7zOH6+Op2mfVwmiVVIq7nr4zno1VCn7XcwW0aiykuFCU2da8haTBw4s3BOj93aGwErJqRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=TavgKwuM; arc=none smtp.client-ip=185.70.43.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1722459426; c=relaxed/simple;
+	bh=S6cIvGR5mOk2G7VAoRfOCaXFBOwMiNuDrGBl4qDM7wY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PQQe8XeZMF/l7tu5viHBaDHgqW7jDS0lVf1UenZmazyx9cVuCgQ5Yt93MUVBizaIglUaI3GsDi/244Sb+SfCQ8o3NrHkXzH/9HsxDb1ebvRtjB8o2u4bV9kfkk04bHe/3hH99y4aVbx+VRjOlndqhvDvv80DcT6y9f4/MoWzAFg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=WjH26Lyz; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="TavgKwuM"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1722458872; x=1722718072;
-	bh=pd9iNbqzsLLrheaLjTGk3cr9YXPx27FeADL9bde0lPQ=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=TavgKwuMerzXMQg9cvfC/OiJ3ceY/aNT7TA+sFCIQ+V0GtzMvyKc4S/8xSJS6UHFx
-	 wm88gNTwEl1ldmBbGVz4/K/hocbVa7J8Rl+j0RdG87nBy3XQDT/WbCEScCUZgX48IP
-	 Jmqv64m0o3+kkRluQ3LHy+PzpsXhxsWbODfBhzepAEt7S9vmgUCigKUhMrDpbr02ZT
-	 ErGuJKBP4wjJjEKlm9mVE8buvCrc0DZFDC7XEtBGmELWsimUG2nEGf7gm5uWaqGkmc
-	 4WxIgjPd5eqp4VJCyfU8yf2SYUgRBTvNiElj4aOb+apoh/quK97+rNkeumdeX7ikYj
-	 dCoQt1+hVj07g==
-Date: Wed, 31 Jul 2024 20:47:48 +0000
-To: Gary Guo <gary@garyguo.net>, Matt Gilbride <mattgilbride@google.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?utf-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>, Christian Brauner <brauner@kernel.org>, Rob Landley <rob@landley.net>, Davidlohr Bueso <dave@stgolabs.net>, Michel Lespinasse <michel@lespinasse.org>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v6 1/6] rust: kernel: add `drop_contents` to `BoxExt`
-Message-ID: <52cc1987-ec62-46dd-9d81-4afc155fe88f@proton.me>
-In-Reply-To: <20240731210206.2b56b432.gary@garyguo.net>
-References: <20240711-b4-rbtree-v6-0-14bef1a8cdba@google.com> <20240711-b4-rbtree-v6-1-14bef1a8cdba@google.com> <20240731210206.2b56b432.gary@garyguo.net>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 7db0d0a6009e4b0532f4c4605b81b7899702302c
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="WjH26Lyz"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=Z2w+dNclAsqk4wZhdlz04USVS7DM8QutvGTc2QRMkiw=; b=WjH26LyzdkyLNZWCd6RZ6aFCa5
+	5uVtFij44MxI+Fersgih1A9CSC7it3xJj1wKYMgZFyByhKZUgBfqWAM/MeHchlwq+z2V6aLnNAZQL
+	tq09tyt0GHaSku3sY0nkri9o0XLxAZ0vHw9ZBlbqPvWJn5VmUECVtLShBL2vYgLUDVyw=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1sZGNY-003iAy-5R; Wed, 31 Jul 2024 22:57:00 +0200
+Date: Wed, 31 Jul 2024 22:57:00 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, tmgross@umich.edu,
+	miguel.ojeda.sandonis@gmail.com, benno.lossin@proton.me
+Subject: Re: [PATCH net-next v2 2/6] rust: net::phy support probe callback
+Message-ID: <5055051e-b058-400f-861d-e7438bebb017@lunn.ch>
+References: <20240731042136.201327-1-fujita.tomonori@gmail.com>
+ <20240731042136.201327-3-fujita.tomonori@gmail.com>
+ <5525a61c-01b7-4032-97ee-4997b19979ad@lunn.ch>
+ <CAH5fLggyhvEhQL_VWdd38QyFuegPY5mXY_J-jZrh9w8=WPb2Vg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAH5fLggyhvEhQL_VWdd38QyFuegPY5mXY_J-jZrh9w8=WPb2Vg@mail.gmail.com>
 
-On 31.07.24 22:02, Gary Guo wrote:
-> On Thu, 11 Jul 2024 16:20:57 +0000
-> Matt Gilbride <mattgilbride@google.com> wrote:
->=20
->> From: Benno Lossin <benno.lossin@proton.me>
->>
->> Sometimes (see [1]) it is necessary to drop the value inside of a
->> `Box<T>`, but retain the allocation. For example to reuse the allocation
->> in the future.
->> Introduce a new function `drop_contents` that turns a `Box<T>` into
->> `Box<MaybeUninit<T>>` by dropping the value.
->>
->> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
->> Link: https://lore.kernel.org/rust-for-linux/20240418-b4-rbtree-v3-5-323=
-e134390ce@google.com/ [1]
->> ---
->>  rust/kernel/alloc/box_ext.rs | 24 +++++++++++++++++++++++-
->>  1 file changed, 23 insertions(+), 1 deletion(-)
->>
->> diff --git a/rust/kernel/alloc/box_ext.rs b/rust/kernel/alloc/box_ext.rs
->> index 829cb1c1cf9e..557895db4f48 100644
->> --- a/rust/kernel/alloc/box_ext.rs
->> +++ b/rust/kernel/alloc/box_ext.rs
->> @@ -4,7 +4,7 @@
->>
->>  use super::{AllocError, Flags};
->>  use alloc::boxed::Box;
->> -use core::mem::MaybeUninit;
->> +use core::{mem::MaybeUninit, ptr};
->>
->>  /// Extensions to [`Box`].
->>  pub trait BoxExt<T>: Sized {
->> @@ -17,6 +17,20 @@ pub trait BoxExt<T>: Sized {
->>      ///
->>      /// The allocation may fail, in which case an error is returned.
->>      fn new_uninit(flags: Flags) -> Result<Box<MaybeUninit<T>>, AllocErr=
-or>;
->> +
->> +    /// Drops the contents, but keeps the allocation.
->> +    ///
->> +    /// # Examples
->> +    ///
->> +    /// ```
->> +    /// use kernel::alloc::flags;
->> +    ///
->> +    /// let value =3D Box::new([0; 32], flags::GFP_KERNEL);
->> +    /// let value =3D value.unwrap().drop_contents();
->> +    /// // Now we can re-use `value`:
->> +    /// Box::write(value, [1; 32]);
->> +    /// ```
->> +    fn drop_contents(self) -> Box<MaybeUninit<T>>;
->=20
-> Should this have signature `fn drop_contents(this: Self) -> ...`? Box
-> types normally don't have methods to avoid shadowing functions that the
-> pointee may have.
+> > > +    /// `phydev` must be passed by the corresponding callback in `phy_driver`.
+> > > +    unsafe extern "C" fn probe_callback(phydev: *mut bindings::phy_device) -> core::ffi::c_int {
+> > > +        from_result(|| {
+> > > +            // SAFETY: This callback is called only in contexts
+> > > +            // where we can exclusively access to `phy_device`, so the accessors on
+> > > +            // `Device` are okay to call.
+> >
+> > This one is slightly different to other callbacks. probe is called
+> > without the mutex. Instead, probe is called before the device is
+> > published. So the comment is correct, but given how important Rust
+> > people take these SAFETY comments, maybe it should indicate it is
+> > different to others?
+> 
+> Interesting. Given that we don't hold the mutex, does that mean that
+> some of the methods on Device are not safe to call in this context? Or
+> is there something else that makes it okay to call them despite not
+> holding the mutex?
 
-Note that the newest version of this patch can be found at [1]. I agree,
-it should probably take `this: Self` instead of a `self` receiver.
+probe is always the first method called on a device driver to match it
+to a device. Traditionally, if probe fails, the device is destroyed,
+since there is no driver to drive it. probe needs to complete
+successfully before the phy_device structure is published so a MAC
+driver can reference it. If it is not published, nothing can have
+access to it, so you don't need to worry about parallel activities on
+it.
 
-@Miguel, do you think I should send a new version with that change?
+And a PHY driver does not need a probe function. Historically, probe
+was all about, can this driver drive this hardware. However, since we
+have ID registers in the hardware, we already know the driver can
+drive the hardware. So probe is now about setting up whatever needs
+setting up. For PHY drivers, there is often nothing, no local state
+needed, etc. So the probe is optional.
 
-[1]: https://lore.kernel.org/rust-for-linux/20240708205325.1275473-1-benno.=
-lossin@proton.me/
-
----
-Cheers,
-Benno
-
->>  }
->>
->>  impl<T> BoxExt<T> for Box<T> {
->> @@ -53,4 +67,12 @@ fn new_uninit(flags: Flags) -> Result<Box<MaybeUninit=
-<T>>, AllocError> {
->>          // zero-sized types, we use `NonNull::dangling`.
->>          Ok(unsafe { Box::from_raw(ptr) })
->>      }
->> +
->> +    fn drop_contents(self) -> Box<MaybeUninit<T>> {
->> +        let ptr =3D Box::into_raw(self);
->> +        // SAFETY: `ptr` is valid, because it came from `Box::into_raw`=
-.
->> +        unsafe { ptr::drop_in_place(ptr) };
->> +        // SAFETY: `ptr` is valid, because it came from `Box::into_raw`=
-.
->> +        unsafe { Box::from_raw(ptr.cast()) }
->> +    }
->>  }
->>
->=20
-> Best,
-> Gary
-
+	Andrew
