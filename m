@@ -1,54 +1,55 @@
-Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4877446DC
-	for <rust-for-linux@vger.kernel.org>; Wed, 31 Jul 2024 19:57:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02B351662F6;
+	Wed, 31 Jul 2024 20:02:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722455832; cv=none; b=K5Nh+hIPY2ZAySGupQGELmFC1LcncYk1CE6HQKcfonx8O8Aku8dU3TcfJ3cfkOzhLwMoa+8ilHg7TLfOAA6nlXTruXOQjg6ZGGXBbYOToW+fU5/0iyvndq9lSNu3AzT3lfPlCxbaCkbHNCsKar8eAujfTL+feAboYafnW1YboHY=
+	t=1722456133; cv=none; b=jcPyFv41ONntUz41qX4L910stSfvq+GYh3MmGvxcakVzU6MWuPSTp2LKFhCTy6/UD+qqOT426KZ/YAcsbza0A1O6jUich57+iC3TGld3dI72T+kMVxfpFPO8AJeZZATZbPftebwU1szEh9Tr3STYrb/PWwd3KugrhG3UfjMzn1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722455832; c=relaxed/simple;
-	bh=xqFUR2hlr0Rt/DfOJxtN0G0ZmV0JHjUDEpB0WWaRTpU=;
+	s=arc-20240116; t=1722456133; c=relaxed/simple;
+	bh=7SlmGwMnKz91Lmf0m/2cYvqVqZAlXxEkY65N5fUbO+g=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=I61fTnC9XqcTePtVfZJOmgxZivsdObzo+gystI91X3zvlikK07OFtuvJQTyLewyxn6asGp3t3bddYIe1Is3HCguUcJ08TuTKy3FjldOAM2IRmHiuR06/F1NWTpGWCB0gw4CNkclsxxfemReF8cU+qgvNWptLv7sFl4Nv+l7qxPs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=baFBnpII; arc=none smtp.client-ip=209.85.208.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=MzTXSojZKEhB9X+XrtH0tKH2pHmmV13MzyrGMThz2GCwrLE8nrpMe5c9UnYF3DOnx0kXkdOUXiTpsJSSYa/w9YrN9aUoXcTucNmSecTfiUo8Y3EcDdIftVmD/sfaGIqY5rxogj/3K/82mfnQZjKd+CQYrFf4fwvzYRiYLd5UCs0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ar86/2s+; arc=none smtp.client-ip=209.85.210.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="baFBnpII"
-Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-5a869e3e9dfso22638a12.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 31 Jul 2024 12:57:09 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ar86/2s+"
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-70d333d57cdso4419018b3a.3;
+        Wed, 31 Jul 2024 13:02:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1722455828; x=1723060628; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=xqFUR2hlr0Rt/DfOJxtN0G0ZmV0JHjUDEpB0WWaRTpU=;
-        b=baFBnpIITHdsay3T+Shzyu4Q9dseA6XOoTvg7SFMiQtfaeCUL3oo/i1IjSkmz1l6tq
-         zxdAQ++jGF75AwTvr8q3UyXwJHVq/x9dxD7YtAb1ZHm3DwpI4ZzCwZr/KxQIHsCwNaWF
-         3TmwZDj9Mes4Dx1Je1qT7/4ZBIoDdoyWzm9eSaXpOn9Op5ZC13uWl8ofB4oxKZKrUfwd
-         uQ5kOhzbroQb7OE3Fp7HAdtZ0aTaYPSH+7eX7CDrtW9EdUY2zXSp/HNHZrJuIgCm76Ze
-         rRMgLYJz9ejxbUya6OsYThBcWtj2mZSYjYYl2GSR7CPKTcHqXueK/EjtqL76X3xqeZ1N
-         Zy2Q==
+        d=gmail.com; s=20230601; t=1722456131; x=1723060931; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7SlmGwMnKz91Lmf0m/2cYvqVqZAlXxEkY65N5fUbO+g=;
+        b=Ar86/2s+4Z/jLbqsjRg+bG1cy/rvFU3P7VvyvH+xOctzfr1gglwLZn8o8TIQXjJcUc
+         9S3A8BCqVdr/ubSIGC5KGQuYCCz55Eq73yW/NnqA1avIJaYavSP7apAuE28GO4NOAEXO
+         V2t1ZkAzHo0obB4VzDkQzxwJzCw4Scum0s7iOiomi2FltXtxI9nPNwjJ8rUA4rwafipO
+         gnsRWSvVFCKvCNG+F2IbqZrf8S6jXAXLqaA9eboWRVyPdX+QB10gat9heycxXN5wMg3b
+         9AYKAUJ+N8ZRY7mEnuY/j/CLzuQcuz6RYB5XmnJVnz+NWL0BzF1LtotLod+4BiNRuBt/
+         EAVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722455828; x=1723060628;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=xqFUR2hlr0Rt/DfOJxtN0G0ZmV0JHjUDEpB0WWaRTpU=;
-        b=E3Hl0rbGc2q69IJs/PXRZpIrJvnAxPeOAr2rRLN4JaQL8entp9wDVVbUeMGvqnZWG2
-         9Pfeg7gfzrAl5CzT8/qfvZrYoiGrvifwYURa4K7RNwDAaNpQjMleuhyfFW9pfWZDEDty
-         9QR3IhZNYedbPbczQBbaUcZSSCbSRHLDuZt/nrFCrKZVQOGpnjbLJnKmJbpP+TIcGmTF
-         fPH4zowbIZhRuLxWhM3oTiWgBl1b+TeB4WYlHX+pgFMiZy6GAkjtFqrvBYGDFMlNfkxu
-         24NJP/EBWgD7YQrVcLWzuIO/HXmc5HzBYrWpfuEtbwuP/SG46z2dEEjlObVHkOTH9HsM
-         wXMg==
-X-Forwarded-Encrypted: i=1; AJvYcCWWGMW6JG8+I7PhKkk/rMMy++vbZkCtShJ4vnUw8vGayn2HUNcSwjPHOjuXMTqG47/3MIn9+KpzuYa2dYrjRjsOHRl6HQQCRHvB19/UQsg=
-X-Gm-Message-State: AOJu0YzhBGXvlLQHYUJHpoiiVEYEXsZbpQO0lYaPuTLNWqfNCMEeQXlr
-	Q1af3IiH1pjpkgXVbQdTEHO+uPra0tg1JNYwNCHfskYtkyHwQumgMeccz/72xkKFSArknzaKOb/
-	t+3uQaJdKcEFFrj98kU0ZEnziTIzhrwmebfQh
-X-Google-Smtp-Source: AGHT+IER+3B4Ti8SQlTJcNqSe6BmypSDKd6BurFI61graRZCCNQKJz0ONwaqFvJaP237gN8FbfwlFtAgMMKK02J9Hw4=
-X-Received: by 2002:a05:6402:27cd:b0:57c:c3a7:dab6 with SMTP id
- 4fb4d7f45d1cf-5b5b4a6a671mr196924a12.3.1722455827367; Wed, 31 Jul 2024
- 12:57:07 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1722456131; x=1723060931;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=7SlmGwMnKz91Lmf0m/2cYvqVqZAlXxEkY65N5fUbO+g=;
+        b=FStPKaNj0yQKv+j5oe8Q3G/dgTmJjwRomtTewffzmTl2fyaf7DGhCYLv9rFnXfQS13
+         YkCXMf5OzwnHcBq/CaAkIliPcqeHdfrgPidmB7h4eImRbWxooqC2UuRNQkUzUTxOCfsU
+         FfXXrTnB5P9p2e4rRCVCt8BfJy2q+f0xKDNXHOR2IVmgLa8/u0N9OrKDrY7R6xFD89mJ
+         BBeWrQxgTohauVB7OuI16DR6h6GagIFmJAuHNze3gw4O50mImcJqNQ5cdiUT+DXj6v1F
+         JGaMOXKQUpMQ4423XxIJwtW2ujpFa6luInhkMTu1qOaKRMiP/H1GJLDeWe7iPGEKRXjf
+         ZYXA==
+X-Forwarded-Encrypted: i=1; AJvYcCUBd8lgPCPEOcqGefqTqAbrI4G8ddqfB9KLq60kh8O41xqKfBaOJrgOIFd7P8dZvTX+iXqLmidtODTmLGZicqg=@vger.kernel.org, AJvYcCXC4bE+YQ4A89bji6bO3DoE+BqVkWUy5HJVYvQPzW08S5RUXaML8Y8k++6PRVv6bQJ4HZClBofF1PtSB9A=@vger.kernel.org
+X-Gm-Message-State: AOJu0YziTNXj8fucrrUiCXpQMQ9uiabK5yphAQ9r8fOhRu3jLDERgOeh
+	TxJ9xWtWkS8oGdFXb1mSiQO/7JNJa2bi6br1qFgpkRM/YEthlsYjPuCKdxfb9vG4TwYo/hWceXR
+	fiXFo4uEU1TxECSMuMD3h7hwF1sc=
+X-Google-Smtp-Source: AGHT+IFy4ToMxRPBs0uzRGSG1x8a3/QTj4Yr0PUJewta67MtrrJ1CFqUH3+m1MKViNdUq9kwTts5pK/LhJmwxHXrtRs=
+X-Received: by 2002:a05:6a20:4303:b0:1c4:c305:121d with SMTP id
+ adf61e73a8af0-1c68d2607cdmr632415637.39.1722456118755; Wed, 31 Jul 2024
+ 13:01:58 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -56,20 +57,28 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20240731034112.6060-1-zehuixu@whu.edu.cn> <CANiq72n48BvaSNvghkEMn796u4K3_1owZqD9Gjmyk7h3R9GT+A@mail.gmail.com>
-In-Reply-To: <CANiq72n48BvaSNvghkEMn796u4K3_1owZqD9Gjmyk7h3R9GT+A@mail.gmail.com>
-From: Matthew Maurer <mmaurer@google.com>
-Date: Wed, 31 Jul 2024 12:56:55 -0700
-Message-ID: <CAGSQo01oq+nmPFCB3bRnjcXn9fvtu8tcvjsUh55tZnyJSz6ZDg@mail.gmail.com>
+ <CAGSQo01oq+nmPFCB3bRnjcXn9fvtu8tcvjsUh55tZnyJSz6ZDg@mail.gmail.com>
+In-Reply-To: <CAGSQo01oq+nmPFCB3bRnjcXn9fvtu8tcvjsUh55tZnyJSz6ZDg@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 31 Jul 2024 22:01:46 +0200
+Message-ID: <CANiq72k3Nb5qiFhmq9MsuwWnvxjf9mygnXrdtBO1LJsH40L6Dg@mail.gmail.com>
 Subject: Re: [PATCH v2] rust: Kbuild: Skip -fmin-function-alignment in bindgen flags
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+To: Matthew Maurer <mmaurer@google.com>
 Cc: Zehui Xu <zehuixu@whu.edu.cn>, ojeda@kernel.org, alex.gaynor@gmail.com, 
 	wedsonaf@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
 	bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@samsung.com, 
 	aliceryhl@google.com, rust-for-linux@vger.kernel.org, 
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> Does it change the ABI or could change `bindgen`'s output in a way we care?
+On Wed, Jul 31, 2024 at 9:57=E2=80=AFPM Matthew Maurer <mmaurer@google.com>=
+ wrote:
 >
-This should not change the calling ABI in a way bindgen would care about;
-Those flags only control how functions are defined, not how they're used.
+> This should not change the calling ABI in a way bindgen would care about;
+> Those flags only control how functions are defined, not how they're used.
+
+Thanks Matthew for confirming. Let's go with Zehui's v3 then.
+
+Cheers,
+Miguel
