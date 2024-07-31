@@ -1,48 +1,65 @@
-Received: from zg8tmja5ljk3lje4ms43mwaa.icoremail.net (zg8tmja5ljk3lje4ms43mwaa.icoremail.net [209.97.181.73])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 148FD1758E;
-	Wed, 31 Jul 2024 03:41:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.97.181.73
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CB9F1862F;
+	Wed, 31 Jul 2024 04:22:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722397300; cv=none; b=KCiKvhy+qWafv7tNUKHlYjyXwV6mlEesv78YekpRlEqNbUP4Wb/ryJx5/GJx+AtRdUoPkdtl1tw/OCgwGkTgw60aTl3g2LHHae8ZfR129cO1UC9xxejZMW4A8Y93iqKigGJTxxOana+rFfrJFq5BPypWIqVcwpT9+RxBesQFpbs=
+	t=1722399735; cv=none; b=qCMIiLuMq3Z5zFgadlGFCuaqpmJEikdtOFSQOeMLtrJFMB3c453EOEw77FK55D9fABteSFPhLNp1uHXnpcG0dH2SF0KKQdTNSU1KzDepWi2OdmDKHHNecsnGzZcWx9W/q17zQuJI7B6GFX/DOj7FvDRtYGiLU3PnfF+NY5ACyI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722397300; c=relaxed/simple;
-	bh=lzjZl/VOtHSlkY6zSysCMvp6XITg7Ealf7nsFzpcTJA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=svds+SmspTcw7UhdHAtr0kEG5lPIIyo6Kf8Ik+lKoB+7+Lww4Na2vGFy2NdqSMPQzHcnAN7oSXpZI2gzZFSiSXWsUtii8uy3eoJDBNWd3KhSSZutvqlm2cabBYtn+6jAEhWqhcJO2hxiUNj7nNwFGxIY5MK7cJMucnGcB7zjMH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=whu.edu.cn; spf=pass smtp.mailfrom=whu.edu.cn; dkim=fail (0-bit key) header.d=whu.edu.cn header.i=@whu.edu.cn header.b=rElqWGJ6 reason="key not found in DNS"; arc=none smtp.client-ip=209.97.181.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=whu.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=whu.edu.cn
+	s=arc-20240116; t=1722399735; c=relaxed/simple;
+	bh=qeDU079LYh8OWFGqojUUzmfS0be1shKPfjdrLNWpM9w=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=KRbOM4jFAHceLwlWeCO3ZyB57smF42/3BI3oKrCQJw3dqmGB4mxVhAA743Ut+GE3t+NCmy7sM3xRIMZrnLhecqKDh12TPDDauRNZ2cA1eEt+ZzzaIWV3Jkt+pLSXvjhtOdzfZJklk6c0NrlmaxCMU76H5a0SuQRWvbhQOwV2Q8Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N76543o4; arc=none smtp.client-ip=209.85.216.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=whu.edu.cn header.i=@whu.edu.cn header.b="rElqWGJ6"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N76543o4"
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-2cb6b247db0so913465a91.2;
+        Tue, 30 Jul 2024 21:22:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=whu.edu.cn; s=dkim; h=Received:Received:From:To:Cc:Subject:
-	Date:Message-ID:MIME-Version:Content-Transfer-Encoding; bh=SGe0w
-	04NrXG0POhBZ8e5VOKgXrrmS/WG4AesW9zLv6Y=; b=rElqWGJ6oq+T2wCXIeCCf
-	hQXQJePwhAE6rBQ6DdlXDYBPFGtCmj/QJYmpvRmOHA6hxF+XE9Xrf9uNxcdnztN/
-	jydEVZrNb7reAJjFdMYwZyQJWrQEWkqCdYVZv8EMO4qwMQ1m1Nl22t/QZEgVqIzY
-	3fkjNoPPRcQOGd8qfa7v6I=
-Received: from whu.edu.cn (unknown [10.1.14.8])
-	by app2 (Coremail) with SMTP id Bw4BCgB3bhRlsqlmFs8SAA--.53786S2;
-	Wed, 31 Jul 2024 11:41:25 +0800 (CST)
-Received: from zehuixu-vmwarevirtualplatform.localdomain (unknown [82.130.46.207])
-	by mtasvr (Coremail) with SMTP id _____wAn1MNbsqlm6GcLAA--.3583S2;
-	Wed, 31 Jul 2024 11:41:20 +0800 (CST)
-From: Zehui Xu <zehuixu@whu.edu.cn>
-To: ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	wedsonaf@gmail.com
-Cc: boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me,
-	a.hindborg@samsung.com,
-	aliceryhl@google.com,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	zehuixu@whu.edu.cn
-Subject: [PATCH v2] rust: Kbuild: Skip -fmin-function-alignment in bindgen flags
-Date: Wed, 31 Jul 2024 06:41:12 +0300
-Message-ID: <20240731034112.6060-1-zehuixu@whu.edu.cn>
-X-Mailer: git-send-email 2.45.2
+        d=gmail.com; s=20230601; t=1722399733; x=1723004533; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=d2mS2/e3ojtrftx3dXd9g6HWv6C9RGRQRO2kjhQS9mA=;
+        b=N76543o4Aq4VkQ1W5wL6B+M+ED/Q0W+mN9AcjEB3rD+xAbzJAq5H36bb6M2HyA5j1h
+         qPXOFP7SObwZtOfricAtkdRuFAhBXHVpuOzVSAHL78AMegnrqZCnNE4tR0qeLJCjcglP
+         UXIJBz5iHTPNSj46UEnieMtGVhznW3/bg6kQqupH2fyVs7qZ99beseRtC8+7fHPitgsc
+         hYyh8rzT7nhea5CUt9o/fTfKSh6mWVA0UI+wuqnh/ra8rUN7Y4/PoBjCp/hl+UIllQWh
+         Z0bQwhuINoqYk/Dt+aEQuMzIZY/XWsBz7d4bauQgm7B83TXvTvV90yQtQEZad6AgtrRT
+         JARg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722399733; x=1723004533;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=d2mS2/e3ojtrftx3dXd9g6HWv6C9RGRQRO2kjhQS9mA=;
+        b=Bfjj61ItZbQLONpl0GaY7ChBKrPy47prjruObab2PawihkJWxl+m5X8kdzHDEyFE4g
+         9Qoe24PdlCi3bPzQ+lO1+zr24T+V1vuRe6kP62ZMvBqOGGW4Gsg3Yfz3zAA8sR+lt7yM
+         WFFEIS+d5M6MJvfCrG3859Q/aR6XimJp/eWKsfi1X4/d6ycSWvBzqMyqKBRrbpnuJpcj
+         NMnvtD0p7SFG9iBkMQqnXYqF0OLtThzRGSyMgDJ3uyspI3jRMKX8/ixGgSGgdEa5N52z
+         6nFyh6/13LrsjwDMbY9ohAC95X18DaDWuy4xpWQpSPlo4pqNw7GM5RG6f4H/vufuf+uY
+         IsRw==
+X-Gm-Message-State: AOJu0YwuqY9dJspf8TD8Zi1AKJwlhc+qs7o+fY/ynblVms6uzXB+d9bd
+	FpD/TlZvUJxlnDmm7cvJMAcqeUAErhdRKoeZupaX7SVOZQ8wXRL376IlIW2Y
+X-Google-Smtp-Source: AGHT+IENMZoJPj8Q5u6X+/yXP2my5AYfOEEFLbYFjvtVGtFGP3Xre3Amak5+tWJDemHhze9IIYNB9w==
+X-Received: by 2002:a17:902:e546:b0:1f2:f9b9:8796 with SMTP id d9443c01a7336-1fed6bdd93dmr122476355ad.2.1722399733186;
+        Tue, 30 Jul 2024 21:22:13 -0700 (PDT)
+Received: from rpi.. (p4456016-ipxg23001hodogaya.kanagawa.ocn.ne.jp. [153.204.172.16])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1fed7c8d376sm110815145ad.18.2024.07.30.21.22.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 30 Jul 2024 21:22:12 -0700 (PDT)
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+To: netdev@vger.kernel.org
+Cc: rust-for-linux@vger.kernel.org,
+	andrew@lunn.ch,
+	tmgross@umich.edu,
+	miguel.ojeda.sandonis@gmail.com,
+	benno.lossin@proton.me
+Subject: [PATCH net-next v2 0/6] net: phy: add Applied Micro QT2025 PHY driver
+Date: Wed, 31 Jul 2024 13:21:30 +0900
+Message-Id: <20240731042136.201327-1-fujita.tomonori@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -50,110 +67,69 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:Bw4BCgB3bhRlsqlmFs8SAA--.53786S2
-Authentication-Results: app2; spf=neutral smtp.mail=zehuixu@whu.edu.cn
-	;
-X-Coremail-Antispam: 1UD129KBjvJXoWxGr4kXr17WF1kZFWxKr43trb_yoWrXr4kpa
-	9Y9F9rGr4UJFWktws2yw4rJayava1rKF1UCr1q9w18urWDAFyvkrWI9F15K347Gr1fCFy2
-	vF429Fy5Kr1UC37anT9S1TB71UUUUb7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU92b7Iv0xC_Kw4lb4IE77IF4wAFc2x0x2IEx4CE42xK8VAvwI8I
-	cIk0rVWrJVCq3wA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK021l84ACjcxK6xIIjx
-	v20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26F4UJVW0owA2z4x0Y4vE
-	x4A2jsIE14v26rxl6s0DM28EF7xvwVC2z280aVCY1x0267AKxVW0oVCq3wAaw2AFwI0_Jw
-	0_GFyle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqjxCEc2xF0cIa020Ex4CE44I27wAqx4xG
-	64xvF2IEw4CE5I8CrVC2j2WlYx0E74AGY7Cv6cx26r4xMcvjeVCFs4IE7xkEbVWUJVW8Jw
-	ACjcxG0xvY0x0EwIxGrwCY1x0262kKe7AKxVWUtVW8ZwCY02Avz4vE-syl42xK82IYc2Ij
-	64vIr41l42xK82IY6x8ErcxFaVAv8VW8CwCFx2IqxVCFs4IE7xkEbVWUJVW8JwCFI7km07
-	C267AKxVWUtVW8ZwC20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1r
-	MI8E67AF67kF1VAFwI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUCV
-	W8JwCI42IY6xIIjxv20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j
-	6r1xMIIF0xvEx4A2jsIE14v26r4j6F4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYx
-	BIdaVFxhVjvjDU0xZFpf9x07jMXd8UUUUU=
-X-CM-SenderInfo: qsqrmjqqqqijqqxyq4lkxovvfxof0/1tbiAQcPA2apDkwYeAABsm
 
-GCC 14 recently added the -fmin-function-alignment option and the
-root Makefile uses it to replace -falign-functions when available.
-However, this flag can cause issues when passed to the Rust
-Makefile and affect the bindgen process. Bindgen relies on
-libclang to parse C code, and currently does not support the
--fmin-function-alignment flag, leading to compilation failures
-when GCC 14 is used.
+This patchset adds a PHY driver for Applied Micro Circuits Corporation
+QT2025.
 
-This patch addresses the issue by adding -fmin-function-alignment
-to the bindgen_skip_c_flags in rust/Makefile. This prevents the
-flag from causing compilation issues and maintains compatibility.
+The first patch adds Rust equivalent to include/linux/sizes.h, makes
+code more readable.
 
-In addition, since -falign-functions is not used when
--fmin-function-alignment is available but skipped and libclang
-supports -falign-functions, this patch adds it back to the
-bindgen_extra_c_flags to ensure the intended function alignment
-is maintained.
+The 2-5th patches update the PHYLIB Rust bindings. Note that 4th and
+5th patches are already reviewed by Trevor and Benno.
 
-Link: https://lore.kernel.org/linux-kbuild/20240222133500.16991-1-petr.pavlu@suse.com/
-Signed-off-by: Zehui Xu <zehuixu@whu.edu.cn>
----
-Hello again!
+QT2025 PHY support was implemented as a part of an Ethernet driver for
+Tehuti Networks TN40xx chips. Multiple vendors (DLink, Asus, Edimax,
+QNAP, etc) developed adapters based on TN40xx chips. Tehuti Networks
+went out of business and the driver wasn't merged into mainline. But
+it's still distributed with some of the hardware (and also available
+on some vendor sites).
 
-This is the second version of my patch. I discovered some issues right after
-sending the email. Since this is my first kernel patch, I was too excited.
-I will be more careful and calm during my checks next time. Compared to the
-first patch, this version includes not only changes to the format of the
-commit message (thanks to Miguel Ojeda for the patient guidance) but also
-some code changes.
+The original driver handles multiple PHY hardware (AMCC QT2025, TI
+TLK10232, Aqrate AQR105, and Marvell MV88X3120, MV88X3310, and
+MV88E2010). I divided the original driver into MAC and PHY drivers and
+implemented a QT2025 PHY driver in Rust.
 
-While preparing the second version of the patch, I realized that the root
-Makefile replaces -falign-functions with -fmin-function-alignment, and if we
-simply skip we'll lose this config. To ensure consistency, I added it back in
-bindgen_extra_c_flags. Though I am uncertain if this is a good approach.
-
-Looking for suggestions and thank you all for your time!
-
-v1:
-* https://lore.kernel.org/all/20240730222053.37066-1-zehuixu@whu.edu.cn/
+The MAC driver for Tehuti Networks TN40xx chips was already merged in
+6.11-rc1. The MAC and this PHY drivers have been tested with Edimax
+EN-9320SFP+ 10G network adapter.
 
 v2:
-* Added -falign-functions to bindgen_extra_c_flags when skipping 
-  -fmin-function-alignment to maintain function alignment settings in GCC 14
-* Used reasonable length to wrap commit messages
-* Moved email content out of the commit message
-* Used the "Link" tag instead of "Reference:" and removed empty lines between tags
-* Specified the base commit
+- add comments in accordance with the hw datasheet
+- unify C22 and C45 APIs
+- load firmware in probe callback instead of config_init
+- use firmware API
+- handle firmware endian
+- check firmware size
+- use SZ_*K constants
+- avoid confusing phy_id variable
+v1: https://lore.kernel.org/all/20240415104701.4772-1-fujita.tomonori@gmail.com/
 
- rust/Makefile | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+FUJITA Tomonori (6):
+  rust: sizes: add commonly used constants
+  rust: net::phy support probe callback
+  rust: net::phy implement AsRef<kernel::device::Device> trait
+  rust: net::phy unified read/write API for C22 and C45 registers
+  rust: net::phy unified genphy_read_status function for C22 and C45
+    registers
+  net: phy: add Applied Micro QT2025 PHY driver
 
-diff --git a/rust/Makefile b/rust/Makefile
-index 1f10f92737f2..bb21e74abd87 100644
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -227,7 +227,7 @@ bindgen_skip_c_flags := -mno-fp-ret-in-387 -mpreferred-stack-boundary=% \
- 	-fno-reorder-blocks -fno-allow-store-data-races -fasan-shadow-offset=% \
- 	-fzero-call-used-regs=% -fno-stack-clash-protection \
- 	-fno-inline-functions-called-once -fsanitize=bounds-strict \
--	-fstrict-flex-arrays=% \
-+	-fstrict-flex-arrays=% -fmin-function-alignment=% \
- 	--param=% --param asan-%
- 
- # Derived from `scripts/Makefile.clang`.
-@@ -254,6 +254,16 @@ bindgen_extra_c_flags += -enable-trivial-auto-var-init-zero-knowing-it-will-be-r
- endif
- endif
- 
-+# Starting from GCC 14, the root Makefile uses -fmin-function-alignment to replace
-+# -falign-functions, which libclang doesn't support. We skipped
-+# -fmin-function-alignment in bindgen_skip_c_flags, resulting in missing
-+# compilation flags. Therefore we add -falign-functions in bindgen_extra_c_flags
-+# to fall back and complete the alignment settings.
-+# https://lore.kernel.org/linux-kbuild/20240222133500.16991-1-petr.pavlu@suse.com/
-+ifdef CONFIG_CC_HAS_MIN_FUNCTION_ALIGNMENT
-+bindgen_extra_c_flags += -falign-functions=$(CONFIG_FUNCTION_ALIGNMENT)
-+endif
-+
- bindgen_c_flags = $(filter-out $(bindgen_skip_c_flags), $(c_flags)) \
- 	$(bindgen_extra_c_flags)
- endif
+ MAINTAINERS                      |   8 ++
+ drivers/net/phy/Kconfig          |   6 +
+ drivers/net/phy/Makefile         |   1 +
+ drivers/net/phy/ax88796b_rust.rs |   7 +-
+ drivers/net/phy/qt2025.rs        |  92 +++++++++++++
+ rust/kernel/lib.rs               |   1 +
+ rust/kernel/net/phy.rs           |  77 ++++++-----
+ rust/kernel/net/phy/reg.rs       | 219 +++++++++++++++++++++++++++++++
+ rust/kernel/sizes.rs             |  26 ++++
+ rust/uapi/uapi_helper.h          |   1 +
+ 10 files changed, 400 insertions(+), 38 deletions(-)
+ create mode 100644 drivers/net/phy/qt2025.rs
+ create mode 100644 rust/kernel/net/phy/reg.rs
+ create mode 100644 rust/kernel/sizes.rs
 
-base-commit: 8400291e289ee6b2bf9779ff1c83a291501f017b
+
+base-commit: 0a658d088cc63745528cf0ec8a2c2df0f37742d9
 -- 
-2.45.2
+2.34.1
 
