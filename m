@@ -1,108 +1,87 @@
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+Received: from mail-qv1-f44.google.com (mail-qv1-f44.google.com [209.85.219.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76B2618DF62;
-	Tue, 30 Jul 2024 23:40:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 594AC17C7C;
+	Wed, 31 Jul 2024 03:21:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722382814; cv=none; b=GwBrs64SWL8G+/DsKCOwAIhnsTjgdJ2pkhfzJPnwBrzXE8xxHwg8E3d9e9VdnuffTPPx4h1tYj9q8pfD2XtAqJfX3mT3dinFYfrz5DwVvdedDV/u0MqWVjNwyWId1lt/FnDlMmlYBSmb4f9vRW6phP3QFVn6DgsJsjJF07mevKY=
+	t=1722396116; cv=none; b=BXA1fSdwRTw4M2NmLtfvfSI7YWQY9P81boQy066nE0M9p90A3jqlMHEF77UK6c59j4VdBgBfBO7sxmB29n+yggOdcJkkslY8143Bw1VV5cFV10vP1UD84IZM1l7Bt7LROKi3Bes4Ly925hHOIU3QZjjjCJ6hTzY6+oDFm4GgEog=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722382814; c=relaxed/simple;
-	bh=KqCc1f1yF7Vn1+bUa5Vck1eK+kPtRz1y304EWghu0KI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Ag53+CcoMOrnnRH9dBhHbNWLYFADMtahRysUbd0uBqiG/HVLJUsXxsr93G0G8DDnYyW+PZrGPzVofce4iFwz8PsXmP5iLgxbWOwpSLjcOGnMbxW2RehI7AuGM1AulQjF1M0OpGlXfIeB6kEQNOyxjocB+81V8NKbls9NcZzD+lA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QRzA9AVe; arc=none smtp.client-ip=209.85.215.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+	s=arc-20240116; t=1722396116; c=relaxed/simple;
+	bh=isqzIf4s3qMUZ8My6mFhEjnaHYoieCTfWgOZR5uvZ2Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=igIXX1PW9sUqM0m9Dk+f+CqHRcvojqvUWspjCegyjhB8V51+nWfJfhUNOq7HSzHHdmws+8yiwKLQKCvR6mkDxt6Jf7b9l2XhXmZyUghLjxH0glj/QKdD4uYfgByDEURM1+u14N7Z99m26CQIMbeSeFNblEmmkFcatdwhqA8r38s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gompa.dev; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.219.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gompa.dev
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QRzA9AVe"
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-7a103ac7be3so3069450a12.3;
-        Tue, 30 Jul 2024 16:40:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1722382812; x=1722987612; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=KqCc1f1yF7Vn1+bUa5Vck1eK+kPtRz1y304EWghu0KI=;
-        b=QRzA9AVesF/Orz2V68zWXXCc7ixfE14OavSdPuQB7jUovvOpYzS1AtT+Hv0xNm0Zif
-         PYh40df7bvpqXyxTioORT6Hkv5hHJzMzOwhqcm6EjFA18vN+zGmAm+G6SY/Y4f2e9bxB
-         dd2kda55r89YXVkd+oaXNM5x/AQQV++VHFPoyNNenrN0rN/xqWY8S/pkxszIbDTqRqSJ
-         fEQtuMkXVw+JuQIx2qLjbO3UgoraarI/Dm9WxsGwKPa8JCOBav7GCwLd5nalg1h5IPX+
-         wGGXoSXPKK4ipkLNnDQs8gpHniBbAdzKk8uKzOZjZvf83vcT7QuiFV0RLMRKYOggkHIY
-         5k2Q==
+Received: by mail-qv1-f44.google.com with SMTP id 6a1803df08f44-6b797234b09so4879866d6.0;
+        Tue, 30 Jul 2024 20:21:55 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722382812; x=1722987612;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=KqCc1f1yF7Vn1+bUa5Vck1eK+kPtRz1y304EWghu0KI=;
-        b=NHSZi1bsDsmQSaM1yAfQ+Xg+HTjO/97CybueSaQKX3tK36T5QiVNyq8loBjsxP6v9Y
-         NriP8OHBT/xXIG+d/HAdhcEG3hWX77oEhV9s/IyubtLJqWkurqvIljDzHV1QQAyagWIV
-         8YRgNmsZtFIbUvcTFlIjdTOYZAwE/Em9aHi5i9ZFx+i4vYfj4Kn8pJc/f9t0+NFo6oQB
-         Wc4DHLkLWjbW9iDwlpCYtaMCVKLP1F5ceVD3O9PH/1VguFn0dddWRWkb1tyUYeLhltiJ
-         LowFQOHagRswSrwiByT1OoWDJOsf4cBXBxhqHuVe9ixInhTyZPUSRLkAwsqey7KUISSQ
-         jo2Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUnRVgNSYQxbLkDrk5VHY1DT9qXG2Z5BuBOfbKlqN8smPpH8R3AJDJWfPiTIQ7gLXfeL5Ze7CKkRDaFB1NpdijPMhx+vYsBBTeF23e5+2xsYY0nD3EGbUmfHak1XGXvLkYov+kSfqdsAAZTZ74=
-X-Gm-Message-State: AOJu0YyScWELprM5bpAbhMAJQ49BIMHR6pGNWfzlTj9Gd3HLVT8NtXB2
-	+6v7/rr/6jXtaPC6q4I8P9uHAXCibthPnPhXATtkZ77EIDz+ynpNDuw9oU6F1+YOlktSE8KZ1tb
-	aKFahnyVmLGQ2GCX4D3GAkWsCDhc=
-X-Google-Smtp-Source: AGHT+IGi9fW7M2ousMXi8rxvsyiJ/S6ohfSLIMZlr6s39Cl+CCCiGJSVnc8kUYa1Yivgt4vrvxrmWLnQRUZUEOyPEPo=
-X-Received: by 2002:a17:90b:790:b0:2c9:8189:7b4f with SMTP id
- 98e67ed59e1d1-2cf7e5c143dmr10927061a91.32.1722382811681; Tue, 30 Jul 2024
- 16:40:11 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1722396114; x=1723000914;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=c3C2/N4K1xh38THuuw6D5r1n07fbTdknI23+xK02pxo=;
+        b=nJrfUzIt6R4fNnB6UYW/QVr2mBLSXarpOPMf1u4yhNgQKpUS583EkjnDXkuTn394uw
+         JyzT7IxuIlqUmPsVQ3U9ypRpo78PaHAfxqhgqewWL+PylY2agFUxdpIimiG5lOX05KfU
+         /ZDTexx0bqNle8uaeyzKhfRxu8iWcu+8JBARUZaX3VbsMvJdhbqVVvdHxdZdwIKwH7UL
+         osQc9vcNjak3IXOc47CZRHwCWWs45wCCD0XyALJuGMr+RX5922WoL5jsnyoix77IVNyF
+         +fKt17ljvM+Nnsqpi+2M3VEn1V/vXWOw7oQj3tM2+aWCCR+QU1HVKB3x8ZsE7U3YUCIa
+         4rlw==
+X-Forwarded-Encrypted: i=1; AJvYcCXmDi/1c81Ad4rBWpkeZCQgjzZOo+DiAhdlon4tQDK9RtB0fb3YaTMiO/AlndPgX8ICy+j/gRfMPdcCpPFRvCJvga8pLansojJj7gKc
+X-Gm-Message-State: AOJu0YxLumINL3h3zmOHpl6H5+zpRB7LmESHbg0fuXQ6JC3aP8h8rBgZ
+	WuUnQcr9rntwJrzA1zHSiQx8hS7xzxTR91XcWfZ14S3Bg8YhqMaV93M6l93VMIM=
+X-Google-Smtp-Source: AGHT+IEUYKOY2SmqasPgX/XsLnQNDHFQXA+wfOnR76VGJ49T3X55xaAs2T7uWsPrw/MBb9xNPiM90Q==
+X-Received: by 2002:a05:6214:4012:b0:6b5:2bfa:edd5 with SMTP id 6a1803df08f44-6bb77fbd843mr77079556d6.17.1722396113728;
+        Tue, 30 Jul 2024 20:21:53 -0700 (PDT)
+Received: from Skuld-Framework.tail03774.ts.net ([32.221.37.233])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6bb3f93e53fsm69828856d6.70.2024.07.30.20.21.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 30 Jul 2024 20:21:53 -0700 (PDT)
+From: Neal Gompa <neal@gompa.dev>
+To: rust-for-linux@vger.kernel.org
+Cc: asahi@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Hector Martin <marcan@marcan.st>,
+	Janne Grunau <j@jannau.net>,
+	Asahi Lina <lina@asahilina.net>,
+	Neal Gompa <neal@gompa.dev>
+Subject: [PATCH] init/Kconfig: Only block on RANDSTRUCT for RUST
+Date: Tue, 30 Jul 2024 23:20:09 -0400
+Message-ID: <20240731032030.2847151-1-neal@gompa.dev>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240730222053.37066-1-zehuixu@whu.edu.cn>
-In-Reply-To: <20240730222053.37066-1-zehuixu@whu.edu.cn>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 31 Jul 2024 01:39:59 +0200
-Message-ID: <CANiq72mvdR7QKTarCS8AabyEr0wiZ9AJgXD=toHkRDmLLnu=BA@mail.gmail.com>
-Subject: Re: [PATCH] rust: Kbuild: Skip -fmin-function-alignment in bindgen flags
-To: Zehui Xu <zehuixu@whu.edu.cn>
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, 
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
-	benno.lossin@proton.me, a.hindborg@samsung.com, aliceryhl@google.com, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Wed, Jul 31, 2024 at 12:21=E2=80=AFAM Zehui Xu <zehuixu@whu.edu.cn> wrot=
-e:
->
-> GCC recently added the -fmin-function-alignment option, which will appear=
- in GCC 14. However, this flag can cause issues when passed to the Rust Mak=
-efile and affect the bindgen process. Bindgen relies on libclang to parse C=
- code, and currently does not support the -fmin-function-alignment flag, le=
-ading to compilation failures when GCC 14 is used.
->
-> This patch addresses the issue by adding -fmin-function-alignment to the =
-bindgen_skip_c_flags in rust/Makefile, ensuring it is skipped during the bi=
-ndgen process. This prevents the flag from causing compilation issues and m=
-aintains compatibility with the upcoming GCC 14.
+When enabling Rust in the kernel, we only need to block on the
+RANDSTRUCT feature and GCC plugin. The rest of the GCC plugins
+are reasonably safe to enable.
 
-Thanks for the patch!
+Signed-off-by: Neal Gompa <neal@gompa.dev>
+---
+ init/Kconfig | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-> This is my first patch to the kernel, if there are any issues or improvem=
-ents needed, please let me know. ;)
+diff --git a/init/Kconfig b/init/Kconfig
+index a465ea9525bd..ff4ecfa62569 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -1900,8 +1900,8 @@ config RUST
+ 	depends on RUST_IS_AVAILABLE
+ 	depends on !CFI_CLANG
+ 	depends on !MODVERSIONS
+-	depends on !GCC_PLUGINS
+-	depends on !RANDSTRUCT
++	depends on !GCC_PLUGIN_RANDSTRUCT
++	depends on RANDSTRUCT_NONE
+ 	depends on !DEBUG_INFO_BTF || PAHOLE_HAS_LANG_EXCLUDE
+ 	help
+ 	  Enables Rust support in the kernel.
+-- 
+2.45.2
 
-It looks OK, a couple nits are that you would normally not put this
-line here (in the commit message), but below the `---` line (which
-means it would not go into the repository).
-
-In addition, normally you would: wrap your commit messages to a
-reasonable length, use `scripts/checkpatch.pl` to check for this and
-other issues, use the "Link" tag instead of "Reference:", avoid
-leaving empty lines between tags and ideally use `git format-patch
---base` to specify the base of your patch (not really needed in many
-cases, but it is always nice to have around).
-
-If you can try that and send a v2, that would be nice.
-
-But apart from those nits, it seems fine -- welcome!
-
-Cheers,
-Miguel
