@@ -1,127 +1,75 @@
-Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f43.google.com (mail-ed1-f43.google.com [209.85.208.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66D9E13C8F4
-	for <rust-for-linux@vger.kernel.org>; Wed, 31 Jul 2024 18:58:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.134
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4877446DC
+	for <rust-for-linux@vger.kernel.org>; Wed, 31 Jul 2024 19:57:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722452324; cv=none; b=deJP8PhRhPb6wVSFuMxAHFAdU89c+IShT1THO7HgiwBig6CidGr0kKJYCT7n8xXaygoRwFLLs+H/ZFshf9cGeCQJ2gK3DBOYUJxYNefqcymGnyzyR30teAobolLBbJn4YTw3weP+bxvRvRKkasW9CfOakTuRZ+E43WPExP18GTM=
+	t=1722455832; cv=none; b=K5Nh+hIPY2ZAySGupQGELmFC1LcncYk1CE6HQKcfonx8O8Aku8dU3TcfJ3cfkOzhLwMoa+8ilHg7TLfOAA6nlXTruXOQjg6ZGGXBbYOToW+fU5/0iyvndq9lSNu3AzT3lfPlCxbaCkbHNCsKar8eAujfTL+feAboYafnW1YboHY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722452324; c=relaxed/simple;
-	bh=Os8qowKsxDSRcPHPF/e1AaWARnryjEqWztOmIrjOGZI=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Drmf2BBzs4MoMPU7y6ZfxONBO2aPcTf6J162RfQH+lA1xk93IetdoRwDo4+8cTzSF4ZHaZdJPbBEH11UeLptv+9OkhrVJdVKv/otaAwj+rQkFbfnixvLGKIAseiQD/T7kM49OH/zwbh+TCQ355iHjTkMgO1KfzV6BbQSj/lNE1s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=b1nTHKn2; arc=none smtp.client-ip=185.70.40.134
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1722455832; c=relaxed/simple;
+	bh=xqFUR2hlr0Rt/DfOJxtN0G0ZmV0JHjUDEpB0WWaRTpU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=I61fTnC9XqcTePtVfZJOmgxZivsdObzo+gystI91X3zvlikK07OFtuvJQTyLewyxn6asGp3t3bddYIe1Is3HCguUcJ08TuTKy3FjldOAM2IRmHiuR06/F1NWTpGWCB0gw4CNkclsxxfemReF8cU+qgvNWptLv7sFl4Nv+l7qxPs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=baFBnpII; arc=none smtp.client-ip=209.85.208.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="b1nTHKn2"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1722452314; x=1722711514;
-	bh=Ok2jcwhhpJcH2GHlECFhqT7lAO056VLfnNsP0CYcDJg=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=b1nTHKn2T1dmR8vteP/M2sWrDZnltmVMV+WeJpQaWHdshFgouh8mtm6NWkSOyvsxv
-	 zbvWJCt5CARyolCYp8jYPTiMMC2/kamd6t1bN+hVlgjMjCiCQAFbJEnz1IMoa3ET7b
-	 dv/+gkT8NoDZWbongMdRmVuvEm5gxl2UjI9LZZyU/hVmY7z8FZclgaMloojKNlSXGl
-	 3JDlf6u0EO7lKkTxR5KncuBvKc2QYLLC9GUUqnUn8OIok9sbIj5OjDnyv1rHUrCrft
-	 30wBI2Y8WrNCEUZoxCwk/KYw5Ic9fuzfIcT71pq+GI6qDGIg08sGLP7pGBPC44S4xU
-	 28vEKBj2xRsUw==
-Date: Wed, 31 Jul 2024 18:58:28 +0000
-To: Alice Ryhl <aliceryhl@google.com>, Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Peter Zijlstra <peterz@infradead.org>, Josh Poimboeuf <jpoimboe@kernel.org>, Jason Baron <jbaron@akamai.com>, Ard Biesheuvel <ardb@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: linux-trace-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, linux-arch@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, "Peter Zijlstra (Intel)" <peterz@infradaed.org>, Sean Christopherson <seanjc@google.com>, Uros Bizjak <ubizjak@gmail.com>, Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>, Oliver Upton <oliver.upton@linux.dev>, Mark Rutland <mark.rutland@arm.com>, Ryan Roberts <ryan.roberts@arm.com>, Fuad Tabba <tabba@google.com>, linux-arm-kernel@lists.infradead.org, Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>, Anup Patel <apatel@ventanamicro.com>, Andrew Jones <ajones@ventanamicro.com>, Alexandre Ghiti
-	<alexghiti@rivosinc.com>, Conor Dooley <conor.dooley@microchip.com>, Samuel Holland <samuel.holland@sifive.com>, linux-riscv@lists.infradead.org, Huacai Chen <chenhuacai@kernel.org>, WANG Xuerui <kernel@xen0n.name>, Bibo Mao <maobibo@loongson.cn>, Tiezhu Yang <yangtiezhu@loongson.cn>, Andrew Morton <akpm@linux-foundation.org>, Tianrui Zhao <zhaotianrui@loongson.cn>, loongarch@lists.linux.dev
-Subject: Re: [PATCH v4 2/2] rust: add tracepoint support
-Message-ID: <b675e620-6a20-496a-8d23-8e184d7bde6b@proton.me>
-In-Reply-To: <20240628-tracepoint-v4-2-353d523a9c15@google.com>
-References: <20240628-tracepoint-v4-0-353d523a9c15@google.com> <20240628-tracepoint-v4-2-353d523a9c15@google.com>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 8ba1730ad398f749464698fd1f1be0f27b26c0d0
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="baFBnpII"
+Received: by mail-ed1-f43.google.com with SMTP id 4fb4d7f45d1cf-5a869e3e9dfso22638a12.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 31 Jul 2024 12:57:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1722455828; x=1723060628; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=xqFUR2hlr0Rt/DfOJxtN0G0ZmV0JHjUDEpB0WWaRTpU=;
+        b=baFBnpIITHdsay3T+Shzyu4Q9dseA6XOoTvg7SFMiQtfaeCUL3oo/i1IjSkmz1l6tq
+         zxdAQ++jGF75AwTvr8q3UyXwJHVq/x9dxD7YtAb1ZHm3DwpI4ZzCwZr/KxQIHsCwNaWF
+         3TmwZDj9Mes4Dx1Je1qT7/4ZBIoDdoyWzm9eSaXpOn9Op5ZC13uWl8ofB4oxKZKrUfwd
+         uQ5kOhzbroQb7OE3Fp7HAdtZ0aTaYPSH+7eX7CDrtW9EdUY2zXSp/HNHZrJuIgCm76Ze
+         rRMgLYJz9ejxbUya6OsYThBcWtj2mZSYjYYl2GSR7CPKTcHqXueK/EjtqL76X3xqeZ1N
+         Zy2Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722455828; x=1723060628;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=xqFUR2hlr0Rt/DfOJxtN0G0ZmV0JHjUDEpB0WWaRTpU=;
+        b=E3Hl0rbGc2q69IJs/PXRZpIrJvnAxPeOAr2rRLN4JaQL8entp9wDVVbUeMGvqnZWG2
+         9Pfeg7gfzrAl5CzT8/qfvZrYoiGrvifwYURa4K7RNwDAaNpQjMleuhyfFW9pfWZDEDty
+         9QR3IhZNYedbPbczQBbaUcZSSCbSRHLDuZt/nrFCrKZVQOGpnjbLJnKmJbpP+TIcGmTF
+         fPH4zowbIZhRuLxWhM3oTiWgBl1b+TeB4WYlHX+pgFMiZy6GAkjtFqrvBYGDFMlNfkxu
+         24NJP/EBWgD7YQrVcLWzuIO/HXmc5HzBYrWpfuEtbwuP/SG46z2dEEjlObVHkOTH9HsM
+         wXMg==
+X-Forwarded-Encrypted: i=1; AJvYcCWWGMW6JG8+I7PhKkk/rMMy++vbZkCtShJ4vnUw8vGayn2HUNcSwjPHOjuXMTqG47/3MIn9+KpzuYa2dYrjRjsOHRl6HQQCRHvB19/UQsg=
+X-Gm-Message-State: AOJu0YzhBGXvlLQHYUJHpoiiVEYEXsZbpQO0lYaPuTLNWqfNCMEeQXlr
+	Q1af3IiH1pjpkgXVbQdTEHO+uPra0tg1JNYwNCHfskYtkyHwQumgMeccz/72xkKFSArknzaKOb/
+	t+3uQaJdKcEFFrj98kU0ZEnziTIzhrwmebfQh
+X-Google-Smtp-Source: AGHT+IER+3B4Ti8SQlTJcNqSe6BmypSDKd6BurFI61graRZCCNQKJz0ONwaqFvJaP237gN8FbfwlFtAgMMKK02J9Hw4=
+X-Received: by 2002:a05:6402:27cd:b0:57c:c3a7:dab6 with SMTP id
+ 4fb4d7f45d1cf-5b5b4a6a671mr196924a12.3.1722455827367; Wed, 31 Jul 2024
+ 12:57:07 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+References: <20240731034112.6060-1-zehuixu@whu.edu.cn> <CANiq72n48BvaSNvghkEMn796u4K3_1owZqD9Gjmyk7h3R9GT+A@mail.gmail.com>
+In-Reply-To: <CANiq72n48BvaSNvghkEMn796u4K3_1owZqD9Gjmyk7h3R9GT+A@mail.gmail.com>
+From: Matthew Maurer <mmaurer@google.com>
+Date: Wed, 31 Jul 2024 12:56:55 -0700
+Message-ID: <CAGSQo01oq+nmPFCB3bRnjcXn9fvtu8tcvjsUh55tZnyJSz6ZDg@mail.gmail.com>
+Subject: Re: [PATCH v2] rust: Kbuild: Skip -fmin-function-alignment in bindgen flags
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Zehui Xu <zehuixu@whu.edu.cn>, ojeda@kernel.org, alex.gaynor@gmail.com, 
+	wedsonaf@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@samsung.com, 
+	aliceryhl@google.com, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-On 28.06.24 15:23, Alice Ryhl wrote:
-> diff --git a/rust/kernel/tracepoint.rs b/rust/kernel/tracepoint.rs
-> new file mode 100644
-> index 000000000000..1005f09e0330
-> --- /dev/null
-> +++ b/rust/kernel/tracepoint.rs
-> @@ -0,0 +1,47 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +// Copyright (C) 2024 Google LLC.
-> +
-> +//! Logic for tracepoints.
-> +
-> +/// Declare the Rust entry point for a tracepoint.
-> +#[macro_export]
-> +macro_rules! declare_trace {
-> +    ($($(#[$attr:meta])* $pub:vis fn $name:ident($($argname:ident : $arg=
-typ:ty),* $(,)?);)*) =3D> {$(
-> +        $( #[$attr] )*
-> +        #[inline(always)]
-> +        $pub unsafe fn $name($($argname : $argtyp),*) {
-> +            #[cfg(CONFIG_TRACEPOINTS)]
-> +            {
-> +                use $crate::bindings::*;
-
-Why is this needed, can't you put this into the invocation of `paste!`?
-ie `[< $crate::bindings::__tracepoint_ $name >]`?
-
-> +
-> +                // SAFETY: It's always okay to query the static key for =
-a tracepoint.
-> +                let should_trace =3D unsafe {
-> +                    $crate::macros::paste! {
-> +                        $crate::static_key::static_key_false!(
-> +                            [< __tracepoint_ $name >],
-> +                            $crate::bindings::tracepoint,
-> +                            key
-> +                        )
-> +                    }
-> +                };
-> +
-> +                if should_trace {
-> +                    $crate::macros::paste! {
-> +                        // SAFETY: The caller guarantees that it is okay=
- to call this tracepoint.
-
-Can you add this on the docs of `$name`? ie add a Safety section.
-The docs should still appear when creating them/when LSPs show them to
-you.
-
----
-Cheers,
-Benno
-
-> +                        unsafe { [< rust_do_trace_ $name >]($($argname),=
-*) };
-> +                    }
-> +                }
-> +            }
-> +
-> +            #[cfg(not(CONFIG_TRACEPOINTS))]
-> +            {
-> +                // If tracepoints are disabled, insert a trivial use of =
-each argument
-> +                // to avoid unused argument warnings.
-> +                $( let _unused =3D $argname; )*
-> +            }
-> +        }
-> +    )*}
-> +}
-> +
-> +pub use declare_trace;
->=20
-> --
-> 2.45.2.803.g4e1b14247a-goog
->=20
-
+> Does it change the ABI or could change `bindgen`'s output in a way we care?
+>
+This should not change the calling ABI in a way bindgen would care about;
+Those flags only control how functions are defined, not how they're used.
