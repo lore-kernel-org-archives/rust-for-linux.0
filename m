@@ -1,326 +1,154 @@
-Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D4FE12E5D
-	for <rust-for-linux@vger.kernel.org>; Wed, 31 Jul 2024 16:47:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CC1D1B14F1
+	for <rust-for-linux@vger.kernel.org>; Wed, 31 Jul 2024 17:05:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722444460; cv=none; b=c9xkAonrT0/pm1gEsemDxZdjtIq2Sz4ZaquaOQ4ewziMIvI+QGPcaWzMwKAzKJpWZ3gnGg+pAW747x0OEZ0oHj9q/VJFefc+id+KWn8FBtg51XxG1kHxRcDGZn7yCvnp8kyvaOzQBVFZO4jLId2AsIwjfAa/IaN821E9SPx2/oU=
+	t=1722445515; cv=none; b=WjXUf9v2zj9tfeT8RsyCTTzGbt64YOzgpjRaPjF42i4NlNefspHI26GRqkLsYRJP0GrCqlD080xSYxurs+Oby5GdkfS6M2oT29wak/CsAtl1Oi3vUjUUfZ2aNJj9vh0K1CKnBnxhoEy8/8rpqzY4NhovL3TjNjzoxOyI35yFsMQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722444460; c=relaxed/simple;
-	bh=edgvm2Q3OZYieY5CspNnSLWxLbxk2yKGuPsYgCmOjmk=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=m4bTYpFY6s8R1IgM2QS9HdVWnD1pz+HqxC0VimMCK2EWZOtLacEMt7NiT9xReC8YjoxxrPKBqLqhvkCFzP59PFmaOnGzk1CygwJaAxO4ituatemwiBMhyZXe3/Brd0UgOMJEj+ZH8mQLxI1A6YGldi5vlJR4U8V+WDRjtCSQ5zA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=i+0frub6; arc=none smtp.client-ip=185.70.40.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1722445515; c=relaxed/simple;
+	bh=Kvo+Qg69Lf9bUXUEg3NaEQbb4hHBPQA3suJvsVKDU/Y=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=izfuiloSXwP8VMx6JaVIKTiejL3yPQ9v0R5fspqU0kj4SuLJaQueMQ9jiCJW1laZ20EghJbIa7fWGeI5xdfs8HJV3QuykswUMNPEn5069c4374j7npaJkaCe5C+WXNT+EJPdPazCfYPmIpn8iXk7QwLdr8FLBfJDQgz5u6fTwKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=A299j2p6; arc=none smtp.client-ip=90.155.92.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="i+0frub6"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=f4buewgm5nel5i5zajc23htsmm.protonmail; t=1722444455; x=1722703655;
-	bh=edOmevzsP+AiSRfaNCtnPpPP2xx1h3JfYBiL6PV3izg=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=i+0frub6IBBNbBEcMppbgPL8u/90kCNSm+tAWgx8GSq9+tqzE3dt2BzKG+Qjrnqm0
-	 WA9YgIjykf0OVQUV0fzU3w5LAfyDUOFAe2PqlpHFcu3Vq+4Yizzh0lCcS3M2rTNbV8
-	 6N3JR03yol39ft//g6kLB4ImCuX58oK4HF2x4HXgSTYlOPZ7cpLQ808hIKEDYDgy/6
-	 4t/6IuvPkiAFnw8h+wcUZ45ZgkWwojaI0S8gQkWZuFeiCN4KHpjLucTCwrNC+InwGU
-	 WFbrL9Gp4D9Lk4ZXuAlTJ/h1BG8NTrSqE4CUqrbTSpx+hN7YUE3IyMGRGQ3HaloT32
-	 xWtyZEeTjdV/g==
-Date: Wed, 31 Jul 2024 16:47:27 +0000
-To: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Marco Elver <elver@google.com>, Coly Li <colyli@suse.de>, Paolo Abeni <pabeni@redhat.com>, Pierre Gondois <pierre.gondois@arm.com>, Ingo Molnar <mingo@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Wei Yang <richard.weiyang@gmail.com>, Matthew Wilcox <willy@infradead.org>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, Kees Cook <kees@kernel.org>
-Subject: Re: [PATCH v3 02/10] rust: list: add ListArc
-Message-ID: <037f16f4-e959-4801-90b2-aafb7afcfdb6@proton.me>
-In-Reply-To: <20240723-linked-list-v3-2-89db92c7dbf4@google.com>
-References: <20240723-linked-list-v3-0-89db92c7dbf4@google.com> <20240723-linked-list-v3-2-89db92c7dbf4@google.com>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 4696937061c3af902ab0f34209c7f5ccd75e6a44
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="A299j2p6"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=loxjFiVI2FUEfLt+uJa/RoAUGOvN0EDyWPzOQRMKPYM=; b=A299j2p6C5t3QILhmGu+4OptoB
+	DEDPpwwicYTOiSmZrfN8QkSyLmvqEKKL8x4ait9egjTmsIHMFlf6sBNI9xT1f9LSOQlyBgsBhugge
+	6WMJM2OknlCd4a9bzxDTKXBemcoVPUUKVu63y34dxstuwFJB4w1keafIsm8AXP3wmyOsy47IdPmGp
+	lZ4w3WM2rUg56Mwldouc0i//33E0NB6oSP0haibnEyzdbJ/m99z4E7VVQiAnpz/VzcTIZkXEsACd8
+	fL8UwCvcq+OScm+mL8o6b+eXnfxebOqg0N73CCOWcZK2RC3Q7gPLAit+lESVUzGcPfeQwyBi63Kda
+	X/pllEsQ==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1sZClB-00000005GdC-0y78;
+	Wed, 31 Jul 2024 17:05:09 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 3BB5F300820; Wed, 31 Jul 2024 19:05:08 +0200 (CEST)
+Date: Wed, 31 Jul 2024 19:05:08 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Jason Baron <jbaron@akamai.com>, Ard Biesheuvel <ardb@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	linux-trace-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+	linux-arch@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradaed.org>,
+	Sean Christopherson <seanjc@google.com>,
+	Uros Bizjak <ubizjak@gmail.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Ryan Roberts <ryan.roberts@arm.com>, Fuad Tabba <tabba@google.com>,
+	linux-arm-kernel@lists.infradead.org,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Anup Patel <apatel@ventanamicro.com>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Samuel Holland <samuel.holland@sifive.com>,
+	linux-riscv@lists.infradead.org,
+	Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>, Bibo Mao <maobibo@loongson.cn>,
+	Tiezhu Yang <yangtiezhu@loongson.cn>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Tianrui Zhao <zhaotianrui@loongson.cn>, loongarch@lists.linux.dev
+Subject: Re: [PATCH v4 1/2] rust: add static_key_false
+Message-ID: <20240731170508.GJ33588@noisy.programming.kicks-ass.net>
+References: <20240628-tracepoint-v4-0-353d523a9c15@google.com>
+ <20240628-tracepoint-v4-1-353d523a9c15@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240628-tracepoint-v4-1-353d523a9c15@google.com>
 
-On 23.07.24 10:22, Alice Ryhl wrote:
-> The `ListArc` type can be thought of as a special reference to a
-> refcounted object that owns the permission to manipulate the
-> `next`/`prev` pointers stored in the refcounted object. By ensuring that
-> each object has only one `ListArc` reference, the owner of that
-> reference is assured exclusive access to the `next`/`prev` pointers.
-> When a `ListArc` is inserted into a `List`, the `List` takes ownership
-> of the `ListArc` reference.
->=20
-> There are various strategies for ensuring that a value has only one
-> `ListArc` reference. The simplest is to convert a `UniqueArc` into a
-> `ListArc`. However, the refcounted object could also keep track of
-> whether a `ListArc` exists using a boolean, which could allow for the
-> creation of new `ListArc` references from an `Arc` reference. Whatever
-> strategy is used, the relevant tracking is referred to as "the tracking
-> inside `T`", and the `ListArcSafe` trait (and its subtraits) are used to
-> update the tracking when a `ListArc` is created or destroyed.
->=20
-> Note that we allow the case where the tracking inside `T` thinks that a
-> `ListArc` exists, but actually, there isn't a `ListArc`. However, we do
-> not allow the opposite situation where a `ListArc` exists, but the
-> tracking thinks it doesn't. This is because the former can at most
-> result in us failing to create a `ListArc` when the operation could
-> succeed, whereas the latter can result in the creation of two `ListArc`
-> references.
+On Fri, Jun 28, 2024 at 01:23:31PM +0000, Alice Ryhl wrote:
 
-You could add at the end of this paragraph that the latter is a
-soundness issue and could lead to memory bugs, but the former cannot.
+>  rust/kernel/arch/arm64/jump_label.rs     | 34 ++++++++++++++++++++++++++++
+>  rust/kernel/arch/loongarch/jump_label.rs | 35 +++++++++++++++++++++++++++++
+>  rust/kernel/arch/mod.rs                  | 24 ++++++++++++++++++++
+>  rust/kernel/arch/riscv/jump_label.rs     | 38 ++++++++++++++++++++++++++++++++
+>  rust/kernel/arch/x86/jump_label.rs       | 35 +++++++++++++++++++++++++++++
+>  rust/kernel/lib.rs                       |  2 ++
+>  rust/kernel/static_key.rs                | 32 +++++++++++++++++++++++++++
+>  scripts/Makefile.build                   |  2 +-
+>  8 files changed, 201 insertions(+), 1 deletion(-)
 
-> This patch introduces the `impl_list_arc_safe!` macro that allows you to
-> implement `ListArcSafe` for types using the strategy where a `ListArc`
-> can only be created from a `UniqueArc`. Other strategies are introduced
-> in later patches.
+So I really find the amount of duplicated asm offensive. Is is far too
+easy for any of this to get out of sync.
 
-[...]
-
-> diff --git a/rust/kernel/list/arc.rs b/rust/kernel/list/arc.rs
+> diff --git a/rust/kernel/arch/x86/jump_label.rs b/rust/kernel/arch/x86/jump_label.rs
 > new file mode 100644
-> index 000000000000..3b7072e58256
+> index 000000000000..383bed273c50
 > --- /dev/null
-> +++ b/rust/kernel/list/arc.rs
-> @@ -0,0 +1,348 @@
+> +++ b/rust/kernel/arch/x86/jump_label.rs
+> @@ -0,0 +1,35 @@
 > +// SPDX-License-Identifier: GPL-2.0
 > +
 > +// Copyright (C) 2024 Google LLC.
 > +
-> +//! A wrapper around `Arc` for linked lists.
+> +//! X86 Rust implementation of jump_label.h
 > +
-> +use crate::alloc::{AllocError, Flags};
-> +use crate::prelude::*;
-> +use crate::sync::{Arc, ArcBorrow, UniqueArc};
-> +use core::marker::Unsize;
-> +use core::ops::Deref;
-> +use core::pin::Pin;
-> +
-> +/// Declares that this type has some way to ensure that there is exactly=
- one `ListArc` instance for
-> +/// this id.
-> +///
-> +/// Types that implement this trait should include some kind of logic fo=
-r keeping track of whether
-> +/// a [`ListArc`] exists or not. We refer to this logic as "the tracking=
- inside `T`".
-> +///
-> +/// We allow the case where the tracking inside `T` thinks that a [`List=
-Arc`] exists, but actually,
-> +/// there isn't a [`ListArc`]. However, we do not allow the opposite sit=
-uation where a [`ListArc`]
-> +/// exists, but the tracking thinks it doesn't. This is because the form=
-er can at most result in us
-> +/// failing to create a [`ListArc`] when the operation could succeed, wh=
-ereas the latter can result
-> +/// in the creation of two [`ListArc`] references.
-
-Would be good to also add it here.
-
-> +///
-> +/// A consequence of the above is that you may implement the tracking in=
-side `T` by not actually
-> +/// keeping track of anything. To do this, you always claim that a [`Lis=
-tArc`] exists, even if
-> +/// there isn't one. This implementation is allowed by the above rule, b=
-ut it means that
-> +/// [`ListArc`] references can only be created if you have ownership of =
-*all* references to the
-> +/// refcounted object, as you otherwise have no way of knowing whether a=
- [`ListArc`] exists.
-> +pub trait ListArcSafe<const ID: u64 =3D 0> {
-> +    /// Informs the tracking inside this type that it now has a [`ListAr=
-c`] reference.
-> +    ///
-> +    /// This method may be called even if the tracking inside this type =
-thinks that a `ListArc`
-> +    /// reference exists. (But only if that's not actually the case.)
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// Must not be called if a [`ListArc`] already exist for this value=
-.
-> +    unsafe fn on_create_list_arc_from_unique(self: Pin<&mut Self>);
-> +
-> +    /// Informs the tracking inside this type that there is no [`ListArc=
-`] reference anymore.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// Must only be called if there is no [`ListArc`] reference, but th=
-e tracking thinks there is.
-> +    unsafe fn on_drop_list_arc(&self);
-> +}
-> +
-> +/// Declares that this type supports [`ListArc`].
-> +///
-> +/// When using this macro, it will only be possible to create a [`ListAr=
-c`] from a [`UniqueArc`].
+> +/// x86 implementation of arch_static_branch
 > +#[macro_export]
-> +macro_rules! impl_list_arc_safe {
-> +    (impl$({$($generics:tt)*})? ListArcSafe<$num:tt> for $t:ty { untrack=
-ed; } $($rest:tt)*) =3D> {
-> +        impl$(<$($generics)*>)? $crate::list::ListArcSafe<$num> for $t {
-> +            unsafe fn on_create_list_arc_from_unique(self: ::core::pin::=
-Pin<&mut Self>) {}
-> +            unsafe fn on_drop_list_arc(&self) {}
-> +        }
-> +        $crate::list::impl_list_arc_safe! { $($rest)* }
-> +    };
+> +#[cfg(target_arch = "x86_64")]
+> +macro_rules! arch_static_branch {
+> +    ($key:path, $keytyp:ty, $field:ident, $branch:expr) => {'my_label: {
+> +        core::arch::asm!(
+> +            r#"
+> +            1: .byte 0x0f,0x1f,0x44,0x00,0x00
 > +
-> +    () =3D> {};
-> +}
-> +pub use impl_list_arc_safe;
+> +            .pushsection __jump_table,  "aw"
+> +            .balign 8
+> +            .long 1b - .
+> +            .long {0} - .
+> +            .quad {1} + {2} + {3} - .
+> +            .popsection
+> +            "#,
+> +            label {
+> +                break 'my_label true;
+> +            },
+> +            sym $key,
+> +            const ::core::mem::offset_of!($keytyp, $field),
+> +            const $crate::arch::bool_to_int($branch),
+> +        );
 > +
-> +/// A wrapper around [`Arc`] that's guaranteed unique for the given id.
-> +///
-> +/// The `ListArc` type can be thought of as a special reference to a ref=
-counted object that owns the
-> +/// permission to manipulate the `next`/`prev` pointers stored in the re=
-fcounted object. By ensuring
-> +/// that each object has only one `ListArc` reference, the owner of that=
- reference is assured
-> +/// exclusive access to the `next`/`prev` pointers. When a `ListArc` is =
-inserted into a `List`, the
-> +/// `List` takes ownership of the `ListArc` reference.
-> +///
-> +/// There are various strategies to ensuring that a value has only one `=
-ListArc` reference. The
-> +/// simplest is to convert a [`UniqueArc`] into a `ListArc`. However, th=
-e refcounted object could
-> +/// also keep track of whether a `ListArc` exists using a boolean, which=
- could allow for the
-> +/// creation of new `ListArc` references from an [`Arc`] reference. What=
-ever strategy is used, the
-> +/// relevant tracking is referred to as "the tracking inside `T`", and t=
-he [`ListArcSafe`] trait
-> +/// (and its subtraits) are used to update the tracking when a `ListArc`=
- is created or destroyed.
-> +///
-> +/// Note that we allow the case where the tracking inside `T` thinks tha=
-t a `ListArc` exists, but
-> +/// actually, there isn't a `ListArc`. However, we do not allow the oppo=
-site situation where a
-> +/// `ListArc` exists, but the tracking thinks it doesn't. This is becaus=
-e the former can at most
-> +/// result in us failing to create a `ListArc` when the operation could =
-succeed, whereas the latter
-> +/// can result in the creation of two `ListArc` references.
-> +///
-> +/// # Invariants
-> +///
-> +/// * Each reference counted object has at most one `ListArc` for each v=
-alue of `ID`.
-> +/// * The tracking inside `T` is aware that a `ListArc` reference exists=
-.
-
-I am not entirely sure where to put this, but I think it might be good
-as the first paragraph or directly after the first:
-   =20
-    While this `ListArc` is unique for the given id, there still might
-    exist normal `Arc` references to the object.
-
-Feel free to modify it (I am not really happy with "object").
-
-> +#[repr(transparent)]
-> +pub struct ListArc<T, const ID: u64 =3D 0>
-> +where
-> +    T: ListArcSafe<ID> + ?Sized,
-> +{
-> +    arc: Arc<T>,
+> +        break 'my_label false;
+> +    }};
 > +}
 
-[...]
+Note that this uses the forced 5 byte version, and not the dynamic sized
+one. On top of that it hard-codes the nop5 string :/
 
-> +    /// Transmutes an [`Arc`] into a `ListArc` without updating the trac=
-king inside `T`.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// * The value must not already have a `ListArc` reference.
-> +    /// * The tracking inside `T` must think that there is a `ListArc` r=
-eference.
-> +    #[inline]
-> +    unsafe fn transmute_from_arc(arc: Arc<T>) -> Self {
+Please work harder to not have to duplicate stuff like this.
 
-I think the name is inaccurate now, since it is no longer a transmute,
-so maybe `from_arc_unchecked`?
-
-> +        // INVARIANT: By the safety requirements, the invariants on `Lis=
-tArc` are satisfied.
-> +        Self { arc }
-> +    }
-> +
-> +    /// Transmutes a `ListArc` into an [`Arc`] without updating the trac=
-king inside `T`.
-> +    ///
-> +    /// After this call, the tracking inside `T` will still think that t=
-here is a `ListArc`
-> +    /// reference.
-> +    #[inline]
-> +    fn transmute_to_arc(self) -> Arc<T> {
-
-Maybe also change this then to be consistent, since the name `transmute`
-carries a "dangerous" feel to it, but this is actually totally safe.
-
-> +        // Use a transmute to skip destructor.
-> +        //
-> +        // SAFETY: ListArc is repr(transparent).
-> +        unsafe { core::mem::transmute(self) }
-> +    }
-
-[...]
-
-> +// This is to allow [`ListArc`] (and variants) to be used as the type of=
- `self`.
-> +impl<T, const ID: u64> core::ops::Receiver for ListArc<T, ID> where T: L=
-istArcSafe<ID> + ?Sized {}
-> +
-> +// This is to allow coercion from `ListArc<T>` to `ListArc<U>` if `T` ca=
-n be converted to the
-> +// dynamically-sized type (DST) `U`.
-> +impl<T, U, const ID: u64> core::ops::CoerceUnsized<ListArc<U, ID>> for L=
-istArc<T, ID>
-> +where
-> +    T: ListArcSafe<ID> + Unsize<U> + ?Sized,
-> +    U: ListArcSafe<ID> + ?Sized,
-> +{
-> +}
-> +
-> +// This is to allow `ListArc<U>` to be dispatched on when `ListArc<T>` c=
-an be coerced into
-> +// `ListArc<U>`.
-> +impl<T, U, const ID: u64> core::ops::DispatchFromDyn<ListArc<U, ID>> for=
- ListArc<T, ID>
-> +where
-> +    T: ListArcSafe<ID> + Unsize<U> + ?Sized,
-> +    U: ListArcSafe<ID> + ?Sized,
-> +{
-> +}
-
-Can we start using `feature(derive_smart_pointer)` on new enough
-compiler versions? (I guess you probably want it as a separate patch
-series to avoid delaying this in case it needs anything [eg the new
-build system])
-Do we need any Makefile modifications for that or could we just do
-`#[cfg_attr(compiler-is-new-enough, derive(SmartPointer))` on the struct
-and then cfg these impls away? (and what would "compiler-is-new-enough"
-be?)
-
-
-Aside from my docs nits, this looks good:
-
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-
-(feel free to discuss any changes, I am not set on the exact phrasing)
-
----
-Cheers,
-Benno
+NAK.
 
