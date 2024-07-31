@@ -1,82 +1,126 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A4771AED20;
-	Wed, 31 Jul 2024 12:24:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57CB01A7F73
+	for <rust-for-linux@vger.kernel.org>; Wed, 31 Jul 2024 12:30:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722428652; cv=none; b=IF1VTCdzUD6TyJ6LKBQjWVfgkQeDsHlM3aJ5n9/yP3WhDeXG6T/A9BJjuaM5hxxsMPGmZHMt7sF6Zd5VgygMb5j11sSnoHfSm9Dr+pfzzgQOARLkQcdXXyX64LNV5a+58QuYl9aLE6d4TCarxB3MgpglOknTkw2duBrtncGvlPo=
+	t=1722429040; cv=none; b=F0HUKnNxEPmfTbavyDLpGbNRHKwvIIlA2jhC1L0TPP8oWR8yUVCg/0mU0el75h5wonLYB4Pje2wp92boUeRqM/VB21hjMOxurwDC+ci4Vm0kSWg7ql2CJbzqXWfMokiEZShmphCzE5XU/7VSIWWn9pv55J8IwcPKUaVILiw3Lao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722428652; c=relaxed/simple;
-	bh=RiB3L5dw4J0OXROqR71bXijLFtKhnGureRDJUnnV0/A=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pjNsVZogDzp+YJ6aenH9HdHru8olSwbCFADQndsJ3hdfrECc+SiNQ5U5XAn6aloJvvkFuVdjBS1Trd19V0YWXpmLUXQZilRSUW1/6wBfceh4CP4HMvwZPyVDS6lNtBf770X0O7nZDqAzkOhFzg4+Mw55cvmggB2U4NRV2gpLKjY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=LqynyEoD; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1722429040; c=relaxed/simple;
+	bh=0GgrZWHinxvvMoGWFnmB+thda/1qbiKhQ6cZ1ZfHbZc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=LK7Om1JksxjMZsiT2nruOxVbRmJq3ISX/UQmLLsiZFABRR8km0ENzzZz66nZtL8aHtPQjtHokgrLEizoW8OuLSY0Ki2G9451eu9wE8GwKIZEnXpMq9LhUCHJv8rXIf6qXHhAEzRhkzeHQxrn3fR1M/J8YMZrHGi3UT+fJ88vAWE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Ht6psynZ; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="LqynyEoD"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=eGVau2NKOweh/r97tXcrNUlPhiUoXGML3VsyLNUSM+I=; b=LqynyEoDXCK4bv8H8awH99Zn3o
-	mvb+Wa7DTIGSbigvCqwjx/OcgY4CmCJe+wu48IzAq/5y7WmNSWVTXZ9xAleetyEyEkDnGcFnTBiHA
-	IwQFquQJjhLwW/inbbgi1n2inC3CEhHVEj102/PoLnXvMEmN+7+kgpT6ZEVr/sABYf10=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1sZ8NE-003fkm-SX; Wed, 31 Jul 2024 14:24:08 +0200
-Date: Wed, 31 Jul 2024 14:24:08 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	tmgross@umich.edu, miguel.ojeda.sandonis@gmail.com,
-	benno.lossin@proton.me
-Subject: Re: [PATCH net-next v2 2/6] rust: net::phy support probe callback
-Message-ID: <5525a61c-01b7-4032-97ee-4997b19979ad@lunn.ch>
-References: <20240731042136.201327-1-fujita.tomonori@gmail.com>
- <20240731042136.201327-3-fujita.tomonori@gmail.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Ht6psynZ"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4281d812d3eso34951875e9.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 31 Jul 2024 05:30:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1722429037; x=1723033837; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Zg+iaWLKXy+7i0/Z5ruNxOtrMiwweM8XLHk8AS+UR+A=;
+        b=Ht6psynZPYcRYURu4MWBWN2lgzrqeu3/vSNQZ/cE/rFjr5H1Na0sBbqIX/WzmxnMFe
+         Xx2GCHs3nANPBTPjFqQFZzVbYcGJAakcFHsFjsR2kTUKtwel4Fe0fV2fuHOhjT1drmWK
+         Q3MCp+/afbZbOX8PxyAx9q4xSkiDlCsSXralUP6REI5omIO/XS9e1WvDphfE/joW+wLI
+         hfAEng6H9Yao61wNos57jO+i2DV1OCs69Gse+UbFUZPpgzUfOwTJxBN0ggQiQAkPDys4
+         mG7CoqQCHow84Wfh5f/MJi0dOLz2DzlXZJKJKf5ll7mRZE+5iNcCiMA1jZ8OfEcqAogk
+         a+4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722429037; x=1723033837;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Zg+iaWLKXy+7i0/Z5ruNxOtrMiwweM8XLHk8AS+UR+A=;
+        b=CUYhrgfpOCr98Jk5HK404018TIppRcUjsdojBW4WYkJHnwpNR8yaf+8ALp3aAvnHzP
+         sEBB3vTE0FBwWpgftsujZRKNt21QQYObapFAeU/5XirjlEovTYFb9UXr4LR4BzxeQbvL
+         mHOR5RTzJuSQ0M4IQ9KaRvPTe3r9JqbG4D9xcxxnkVk9KOVhN688Zp2k2XkuQ9vPwe4U
+         qLbtsBwl4WFa/P6pPBC/WIxZjiYxA/IA6RsplchmxhFpwz+uYGznOfd+52gP/PGlS2O4
+         VwSgOfZpN9ldJ17pFBOzBK94gIE417rVAkLGmO3Zv+gjZnZDmLj+i5GB02uzXQx1XVuA
+         5fjQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWrow2pzKL/UKoADaoj0VUYxD2w3KEpodYMTttvg4YQYoFs06mDucoY5V0uKFR2jEgwItjv5FTS9Bvfs5t8rDgXSJ+kDJxljMNrYM6zrnk=
+X-Gm-Message-State: AOJu0YzKe8rYkLztVf+lsOWx56PgvOnJ2yFYaIVLkBG4eHpoVlN/b4oR
+	OYJb0qjs449ogwTIyfL8p1FgIGLB8al2Shkf0ec8NGummFT9BsCth0M3SyUXeMUmThFErhzm9Z8
+	HM6KV9oB+U9XuFe4Fy6qW17jZJRqFWg4uKXCw
+X-Google-Smtp-Source: AGHT+IHRaCMcyu+XeRk0MTgMnend7w+x774/tlOFA6HabiDQT2g8cWiepzILJJARIdOoSfYXjDPRoJjVmOlBDrRNIEM=
+X-Received: by 2002:a05:6000:1203:b0:368:6564:751b with SMTP id
+ ffacd0b85a97d-36b5d07bec5mr10703106f8f.32.1722429036248; Wed, 31 Jul 2024
+ 05:30:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240731042136.201327-3-fujita.tomonori@gmail.com>
+References: <20240731042136.201327-1-fujita.tomonori@gmail.com>
+ <20240731042136.201327-2-fujita.tomonori@gmail.com> <6749fc34-c4e0-4971-8ab8-7d39260fc9bb@lunn.ch>
+In-Reply-To: <6749fc34-c4e0-4971-8ab8-7d39260fc9bb@lunn.ch>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Wed, 31 Jul 2024 14:30:23 +0200
+Message-ID: <CAH5fLgiGAqMTL9mRA_3RXZULV06KF+FJRxYMHC5xsE_=od3Azg@mail.gmail.com>
+Subject: Re: [PATCH net-next v2 1/6] rust: sizes: add commonly used constants
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, tmgross@umich.edu, 
+	miguel.ojeda.sandonis@gmail.com, benno.lossin@proton.me
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jul 31, 2024 at 01:21:32PM +0900, FUJITA Tomonori wrote:
-> Support phy_driver probe callback, used to set up device-specific
-> structures.
-> 
-> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-> ---
->  rust/kernel/net/phy.rs | 24 ++++++++++++++++++++++++
->  1 file changed, 24 insertions(+)
-> 
-> diff --git a/rust/kernel/net/phy.rs b/rust/kernel/net/phy.rs
-> index fd40b703d224..99a142348a34 100644
-> --- a/rust/kernel/net/phy.rs
-> +++ b/rust/kernel/net/phy.rs
-> @@ -338,6 +338,20 @@ impl<T: Driver> Adapter<T> {
->          })
->      }
->  
-> +    /// # Safety
-> +    ///
-> +    /// `phydev` must be passed by the corresponding callback in `phy_driver`.
-> +    unsafe extern "C" fn probe_callback(phydev: *mut bindings::phy_device) -> core::ffi::c_int {
-> +        from_result(|| {
-> +            // SAFETY: This callback is called only in contexts
-> +            // where we can exclusively access to `phy_device`, so the accessors on
-> +            // `Device` are okay to call.
+On Wed, Jul 31, 2024 at 2:17=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote:
+>
+> On Wed, Jul 31, 2024 at 01:21:31PM +0900, FUJITA Tomonori wrote:
+> > Add rust equivalent to include/linux/sizes.h, makes code more
+> > readable. This adds only SZ_*K, which mostly used.
+> >
+> > Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> > ---
+> >  rust/kernel/lib.rs   |  1 +
+> >  rust/kernel/sizes.rs | 26 ++++++++++++++++++++++++++
+> >  2 files changed, 27 insertions(+)
+> >  create mode 100644 rust/kernel/sizes.rs
+> >
+> > diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> > index e6b7d3a80bbc..ba2ba996678d 100644
+> > --- a/rust/kernel/lib.rs
+> > +++ b/rust/kernel/lib.rs
+> > @@ -42,6 +42,7 @@
+> >  pub mod net;
+> >  pub mod prelude;
+> >  pub mod print;
+> > +pub mod sizes;
+> >  mod static_assert;
+> >  #[doc(hidden)]
+> >  pub mod std_vendor;
+> > diff --git a/rust/kernel/sizes.rs b/rust/kernel/sizes.rs
+> > new file mode 100644
+> > index 000000000000..834c343e4170
+> > --- /dev/null
+> > +++ b/rust/kernel/sizes.rs
+> > @@ -0,0 +1,26 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +
+> > +//! Commonly used sizes.
+> > +//!
+> > +//! C headers: [`include/linux/sizes.h`](srctree/include/linux/sizes.h=
+).
+> > +
+> > +/// 0x00000400
+> > +pub const SZ_1K: usize =3D bindings::SZ_1K as usize;
+>
+> 1K is 1K, independent of it being C 1K or Rust 1K. In this case, does
+> it makes sense to actually use the C header? I don't know? But the
+> Rust people seems to think this is O.K.
 
-This one is slightly different to other callbacks. probe is called
-without the mutex. Instead, probe is called before the device is
-published. So the comment is correct, but given how important Rust
-people take these SAFETY comments, maybe it should indicate it is
-different to others?
+Shrug. I don't think it really matters.
 
-	Andrew
+If using the C header required adding constants in
+rust/bindings/bindings_helper.h to actually make the constants usable
+from Rust, then I would say we should just set the constants from the
+Rust side. But in this case using the C header just works so I don't
+think it's an issue.
+
+Alice
