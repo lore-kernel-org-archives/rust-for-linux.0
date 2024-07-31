@@ -1,128 +1,174 @@
-Received: from zg8tmja2lje4os43os4xodqa.icoremail.net (zg8tmja2lje4os43os4xodqa.icoremail.net [206.189.79.184])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B6531AD3EA;
-	Wed, 31 Jul 2024 13:45:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=206.189.79.184
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99983611E;
+	Wed, 31 Jul 2024 14:48:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722433528; cv=none; b=itEemG9/g+Q80/vMELjdBo4zv70B51iuAWQJXjqkFKwOEBgWmh+nT5EWb0pnFpOqwtBQk/pBBL9GuAPy5u3eQSvkBSVxZ/umHYdf5UdY+JOoBCm/LYJiupBjn2mVDDy6w0xwWUkCKB44rdspKDv39pZPTgidJF/1l2PcrHM8Xrk=
+	t=1722437331; cv=none; b=TCEzBdJv4czD4yGulk5RoUkeB9kfFLDPZUJx+OFA2vU2c5N7CmCZURTKrG76KTnxKjwETEec3vgF+Gt2cCMYCTtlyBAoQMCbDZgf2uMs/WgRCOW+0Y8aOwazApFKOpSkTyJlQQlodARxDPN0360+apjssgoXlG6TYSLDXY/eM6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722433528; c=relaxed/simple;
-	bh=vEzDWAaQFISxk2MVHPNVs7Hdqh8O2hvbSqPnbnv0k8E=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=izchG4POVpJ8mam47likuh4i9tpWgYxoEof2x+5/ZjDy4dibnxFs3HwpBWkMoWC083E1l2AlKKVoYdgTlmZ53Dkz0BEbKG6w2Q59wrlKtwM9+vusQYtVinqH5BBYJWc7B4pfunezO+i36M+LJs9dMh60ptfvyNTXqVHvi05FvEA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=whu.edu.cn; spf=pass smtp.mailfrom=whu.edu.cn; dkim=fail (0-bit key) header.d=whu.edu.cn header.i=@whu.edu.cn header.b=bWkuyoKK reason="key not found in DNS"; arc=none smtp.client-ip=206.189.79.184
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=whu.edu.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=whu.edu.cn
+	s=arc-20240116; t=1722437331; c=relaxed/simple;
+	bh=Vawp62FULKBA3dCF5MI+TAT+Dpj7YqVUAAoe599LNfw=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=hlelE9VokXndE1imZLJwtcPkWcRyH2zmMtqzzk3EGm9I1nFQFDmRx8X1wryuo1ldjFQbIhFvcAPn4OuFchlSmg/MiE0I0kW5YsQ0QQPKVl0xUoCdIstZhEzKg6af5RKEmDTRw8TdwvPqDE9nTjMaa1YGeiNYwOvhUy1Ma48JCYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=EbxWVyvi; arc=none smtp.client-ip=185.70.43.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="key not found in DNS" (0-bit key) header.d=whu.edu.cn header.i=@whu.edu.cn header.b="bWkuyoKK"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=whu.edu.cn; s=dkim; h=Received:Received:From:To:Cc:Subject:
-	Date:Message-ID:MIME-Version:Content-Transfer-Encoding; bh=gynHM
-	f4s1+VR8dld2tFPa35dOzHpxTGWHOttfWgBivE=; b=bWkuyoKKwCjAyq6+dMdaY
-	kZ1X5xbIhJYwH/4maoBpbhamvO36WNlBPCrPvedhIhnIaw6GlB/zpL9WnfSdajZ6
-	DWLs0/TosiBIf2EE14bj2mn6RYd6ybgcbtyZ1Hx6n8295NtgrGy7/U7B6S1AcrHA
-	zilaHc9iwzr0JBhEPFQciQ=
-Received: from whu.edu.cn (unknown [10.1.14.8])
-	by app2 (Coremail) with SMTP id Bw4BCgA3LxXrP6pmM_ITAA--.56813S2;
-	Wed, 31 Jul 2024 21:45:15 +0800 (CST)
-Received: from zehuixu-vmwarevirtualplatform.localdomain (unknown [82.130.46.207])
-	by mtasvr (Coremail) with SMTP id _____wBHal_jP6pmCXYOAA--.4925S2;
-	Wed, 31 Jul 2024 21:45:13 +0800 (CST)
-From: Zehui Xu <zehuixu@whu.edu.cn>
-To: ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	wedsonaf@gmail.com
-Cc: boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me,
-	a.hindborg@samsung.com,
-	aliceryhl@google.com,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	zehuixu@whu.edu.cn
-Subject: [PATCH v3] rust: Kbuild: Skip -fmin-function-alignment in bindgen flags
-Date: Wed, 31 Jul 2024 16:43:46 +0300
-Message-ID: <20240731134346.10630-1-zehuixu@whu.edu.cn>
-X-Mailer: git-send-email 2.45.2
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="EbxWVyvi"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1722437322; x=1722696522;
+	bh=RzXi2xAm5ag+0eW5UgNGGENUHE//qEaGWyg1913ArEw=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=EbxWVyvie+M4gw3ZApE3+GGv07WI6wtPc978p39s72PYzDMkNKMgMlGXZ/dNxaPEk
+	 8g6i31UUSxM57An6i10FBZpO4EvorwQDjITLUJDeaDqNUiRZQ1p3nCtoZOWT9tWDBy
+	 0ctuP+jv3lKToT7Zrf/pio3WRyeYVec/ZZAaOotDwFRuu0LsZhxClZ/iuXMPpQsHXq
+	 xcjmqOoYKHqI4e5HPFYAGPP5CoH3sb7xhjybizgi3srsv7OWYb0BKPfzvgDqU7OM84
+	 /133e4qeJeyS+EnLJUQY6AhqABRvh/nauZw9PKBOhorEEV1dYUf+NX+pSfuSpVd3+w
+	 j7mTx7C4Hj25Q==
+Date: Wed, 31 Jul 2024 14:48:32 +0000
+To: Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Boqun Feng <boqun.feng@gmail.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, linux-doc@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Jonathan Corbet <corbet@lwn.net>, Viresh Kumar <viresh.kumar@linaro.org>, Danilo Krummrich <dakr@redhat.com>, Trevor Gross <tmgross@umich.edu>, gregkh@linuxfoundation.org
+Subject: Re: [RFC PATCH] rust: types: Add explanation for ARef pattern
+Message-ID: <373fa545-004a-41a8-97a8-d8a7632562c2@proton.me>
+In-Reply-To: <CAH5fLgijqHoKrWmHBb+FQntPDgR2qA_r4y0gyib21AHU+mscNw@mail.gmail.com>
+References: <20240710032447.2161189-1-boqun.feng@gmail.com> <ZqK1l05zcCwGforV@boqun-archlinux> <beaf1fa3-eebe-443c-bc51-abd9348a411d@proton.me> <ZqOyMbi7xl67UfjY@Boquns-Mac-mini.home> <81ceeca9-8ae5-4a82-9a46-f47767e60f75@proton.me> <ZqO9j1dCiHm3r-pz@Boquns-Mac-mini.home> <8641453e-664d-4290-b9bc-4a2567ddc3fe@proton.me> <ZqPMpNNq0Q0S-M2P@cassiopeiae> <CAH5fLgijqHoKrWmHBb+FQntPDgR2qA_r4y0gyib21AHU+mscNw@mail.gmail.com>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: 81bde7f2fb0fbe04ab82c747ad33b45df681d53c
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:Bw4BCgA3LxXrP6pmM_ITAA--.56813S2
-Authentication-Results: app2; spf=neutral smtp.mail=zehuixu@whu.edu.cn
-	;
-X-Coremail-Antispam: 1UD129KBjvJXoW7AFW8KFyfGF43Xry3Cr4kJFb_yoW8Kr18pa
-	sYkFy3GayDGFWkKrs2yw4fXayj934Yqa1Uur1jgw18urZrtF1v9rZ2kF15A343Jr1rCFW5
-	ZanF9Fy3tFyUA37anT9S1TB71UUUUb7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUU9ab7Iv0xC_Zr1lb4IE77IF4wAFc2x0x2IEx4CE42xK8VAvwI8I
-	cIk0rVWrJVCq3wA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK021l84ACjcxK6xIIjx
-	v20xvE14v26F1j6w1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4UJVWxJr1l84ACjcxK
-	6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_GcCE3s1ln4kS14v26r
-	1q6r43M2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12xvs2x26I8E6xACxx1l5I8C
-	rVACY4xI64kE6c02F40Ex7xfMcIj6x8ErcxFaVAv8VW8CwAm72CE4IkC6x0Yz7v_Jr0_Gr
-	1lF7xvr2IYc2Ij64vIr41lc7CjxVAaw2AFwI0_Jw0_GFylc2xSY4AK6svPMxAIw28IcxkI
-	7VAKI48JMxAIw28IcVCjz48v1sIEY20_GF4l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1l4IxYO2
-	xFxVAFwI0_JF0_Jw1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWU
-	WwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_JF
-	I_Gr1lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWU
-	JVWUCwCI42IY6I8E87Iv67AKxVWxJVW8Jr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8Jr
-	UvcSsGvfC2KfnxnUUI43ZEXa7IUba9aDUUUUU==
-X-CM-SenderInfo: qsqrmjqqqqijqqxyq4lkxovvfxof0/1tbiAQcPA2apDkw-KwAAsT
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-GCC 14 recently added -fmin-function-alignment option and the
-root Makefile uses it to replace -falign-functions when available.
-However, this flag can cause issues when passed to the Rust
-Makefile and affect the bindgen process. Bindgen relies on
-libclang to parse C code, and currently does not support the
--fmin-function-alignment flag, leading to compilation failures
-when GCC 14 is used.
+On 29.07.24 13:31, Alice Ryhl wrote:
+> On Fri, Jul 26, 2024 at 6:20=E2=80=AFPM Danilo Krummrich <dakr@kernel.org=
+> wrote:
+>>
+>> On Fri, Jul 26, 2024 at 03:54:37PM +0000, Benno Lossin wrote:
+>>> On 26.07.24 17:15, Boqun Feng wrote:
+>>>> On Fri, Jul 26, 2024 at 02:42:36PM +0000, Benno Lossin wrote:
+>>>>> On 26.07.24 16:26, Boqun Feng wrote:
+>>>>>> On Fri, Jul 26, 2024 at 01:43:38PM +0000, Benno Lossin wrote:
+>>>>>> [...]
+>>>>>>>>>
+>>>>>>>>> You can always get a `&T` from `ARef<T>`, since it implements `De=
+ref`.
+>>>>>>>>>
+>>>>>>>>
+>>>>>>>> Yeah, but this is unrelated. I was talking about that API provider=
+s can
+>>>>>>>> decide whether they want to only provide a `raw_ptr` -> `ARef<Self=
+>` if
+>>>>>>>> they don't need to provide a `raw_ptr` -> `&Self`.
+>>>>>>>>
+>>>>>>>>>> Overall, I feel like we don't necessarily make a preference betw=
+een
+>>>>>>>>>> `->&Self` and `->ARef<Self>` functions here, since it's up to th=
+e users'
+>>>>>>>>>> design?
+>>>>>>>>>
+>>>>>>>>> I would argue that there should be a clear preference for functio=
+ns
+>>>>>>>>> returning `&Self` when possible (ie there is a parameter that the
+>>>>>>>>
+>>>>>>>> If "possible" also means there's going to be `raw_ptr` -> `&Self`
+>>>>>>>> function (as the same publicity level) anyway, then agreed. In oth=
+er
+>>>>>>>> words, if the users only need the `raw_ptr` -> `ARef<Self>`
+>>>>>>>> functionality, we don't want to force people to provide a `raw_ptr=
+` ->
+>>>>>>>> `&Self` just because, right?
+>>>>>>>
+>>>>>>> I see... I am having a hard time coming up with an example where us=
+ers
+>>>>>>> would exclusively want `ARef<Self>` though... What do you have in m=
+ind?
+>>>>>>> Normally types wrapped by `ARef` have `&self` methods.
+>>>>>>>
+>>>>>>
+>>>>>> Having `&self` methods doesn't mean the necessarity of a `raw_ptr` -=
+>
+>>>>>> `&Self` function, for example, a `Foo` is wrapped as follow:
+>>>>>>
+>>>>>>   struct Foo(Opaque<foo>);
+>>>>>>   impl Foo {
+>>>>>>       pub fn bar(&self) -> Bar { ... }
+>>>>>>       pub unsafe fn get_foo(ptr: *mut foo) -> ARef<Foo> { ... }
+>>>>>>   }
+>>>>>>
+>>>>>> in this case, the abstration provider may not want user to get a
+>>>>>> `raw_ptr` -> `&Self` function, so no need to have it.
+>>>>>
+>>>>> I don't understand this, why would the abstraction provider do that? =
+The
+>>>>
+>>>> Because no user really needs to convert a `raw_ptr` to a `&Self` whose
+>>>> lifetime is limited to a scope?
+>>>
+>>> What if you have this:
+>>>
+>>>     unsafe extern "C" fn called_from_c_via_vtable(foo: *mut bindings::f=
+oo) {
+>>>         // SAFETY: ...
+>>>         let foo =3D unsafe { Foo::from_raw(foo) };
+>>>         foo.bar();
+>>>     }
+>>>
+>>> In this case, there is no need to take a refcount on `foo`.
+>>>
+>>>> Why do we provide a function if no one needs and the solely purpose is
+>>>> to just avoid providing another function?
+>>>
+>>> I don't think that there should be a lot of calls to that function
+>>> anyways and thus I don't think there is value in providing two function=
+s
+>>> for almost the same behavior. Since one can be derived by the other, I
+>>> would go for only implementing the first one.
+>>
+>> I don't think there should be a rule saying that we can't provide a wrap=
+per
+>> function for deriving an `ARef<T>`. `Device` is a good example:
+>>
+>> `let dev: ARef<Device> =3D unsafe { Device::from_raw(raw_dev) }.into();`
+>>
+>> vs.
+>>
+>> `let dev =3D unsafe { Device::get(raw_dev) };`
+>>
+>> To me personally, the latter looks quite a bit cleaner.
+>>
+>> Besides that, I think every kernel engineer (even without Rust backgroun=
+d) will
+>> be able to decode the meaning of this call. And if we get the chance to =
+make
+>> things obvious to everyone *without* the need to make a compromise, we s=
+hould
+>> clearly take it.
+>=20
+> I think I've come around on this question. I think it's fine to have
+> raw_ptr->ARef methods that increment the refcount, but we should make
+> a naming convention clear. I propose:
+>=20
+> * Functions named things like from_raw_file or from_raw_mm do not
+> increment the refcount.
+> * Functions named things like get_file or or mmget do increment the
+> refcount, just like the C function of the same name.
 
-This patch addresses the issue by adding -fmin-function-alignment
-to the bindgen_skip_c_flags in rust/Makefile. This prevents the
-flag from causing compilation issues.
+I have thought about this a bit and I think that we can try to do it. I
+like the name `Device::get` and `Device::from_raw`. I would not
+duplicate the name ie `Device::get_device` (nor would I do that with
+`from_raw`).
 
-Link: https://lore.kernel.org/linux-kbuild/20240222133500.16991-1-petr.pavlu@suse.com/
-Signed-off-by: Zehui Xu <zehuixu@whu.edu.cn>
+One of my bigger problems was the naming, so it's good to see this.
+
 ---
-Since -falign-functions does not affect bindgen output, we do not
-need logic to add it back to the flags. Thanks to the community's
-help, especially Miguel Ojeda. Hope this patch is free of problems
-and can be submitted smoothly : )
-
-v1:
-* https://lore.kernel.org/all/20240730222053.37066-1-zehuixu@whu.edu.cn/
-
-v2:
-* Added -falign-functions to bindgen_extra_c_flags when skipping 
-  -fmin-function-alignment to maintain function alignment settings in GCC 14
-* Used reasonable length and moved email content out of the commit message
-* Used "Link" tag instead of "Reference:" and removed empty lines between tags
-* Specified the base commit
-* https://lore.kernel.org/all/20240731034112.6060-1-zehuixu@whu.edu.cn/
-
-v3:
-* Removed logic from patch v2 which adds -falign-functions
-
- rust/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/rust/Makefile b/rust/Makefile
-index 1f10f92737f2..0c8736cce64f 100644
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -227,7 +227,7 @@ bindgen_skip_c_flags := -mno-fp-ret-in-387 -mpreferred-stack-boundary=% \
- 	-fno-reorder-blocks -fno-allow-store-data-races -fasan-shadow-offset=% \
- 	-fzero-call-used-regs=% -fno-stack-clash-protection \
- 	-fno-inline-functions-called-once -fsanitize=bounds-strict \
--	-fstrict-flex-arrays=% \
-+	-fstrict-flex-arrays=% -fmin-function-alignment=% \
- 	--param=% --param asan-%
- 
- # Derived from `scripts/Makefile.clang`.
-
-base-commit: 8400291e289ee6b2bf9779ff1c83a291501f017b
--- 
-2.45.2
+Cheers,
+Benno
 
