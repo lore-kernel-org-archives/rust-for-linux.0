@@ -1,188 +1,103 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE9BB1BC4E
-	for <rust-for-linux@vger.kernel.org>; Wed, 31 Jul 2024 21:34:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D43EF16D4DE
+	for <rust-for-linux@vger.kernel.org>; Wed, 31 Jul 2024 22:40:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722461669; cv=none; b=GH46LctQR/BKi+Ev55SX5xg5BPaX4bHtHrExutreKjcvMsiA4EoDtm/vHHylq70oGKhcFsJ3nfOY95I/g5BKZD9+QQSONh6Ceil5QuUfOwQvdVFbEzER2EysAwyp5/IKBkNyZmIZK50PNPWznH9z5fCDA8AyN9LWOY9rn6hPAII=
+	t=1722465644; cv=none; b=WWEOVmboxlS1wNoMMd2iaa0G5JxbV/8vootf34ILSMzyMsRsREThmWkRmYIcY/gNH1YZ0LKW4uGzSkXXitJx6+Ov/jvBa8t9BjKcp869Xl3dV/ijUzMhnyv76FXT/XPIjzpoE1BO9POerF0pRybPwGsQoJBDBDr7j1XKEJCtCoY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722461669; c=relaxed/simple;
-	bh=7409YPGD84DSohjrVEJAwG5xvR83yL1kGxaxMdosLHg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RM+wWyX3oaVamWF3Z1Q1zkoKbGTcaxXVJZ+5PeX/emZyxt1Pfd/A11OSNxIt0FZBNtENPa9iQiQYZtjt+e1Y6oq0TDd+JyTBh1J+XKoYo07ybLfuuW4WsthZRSmzAe5FvnZr/boPkxH5rDWO0Okz+PxsoxOnFvkMmoUc3wWl3zU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GQu1F0BL; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1722465644; c=relaxed/simple;
+	bh=AjhSFidBPRZq1Srw9h68NIR9oigsS/ykp0wCVDeUi8Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=M8LYeChNqbd/1Z1CiWTUUmeU6ibsAbjBSEwj6n1LrTEnBtSEl5g31lUmHQIXZ+0/ulN1PZKXGVZ5UF0EPUbInxWmmJ2ZgVvZ1uTUjqwa8rBnDHIb17YHfO5rUQKf1tq5t/64mP2O6a6h1gIhSrh2mGcSkvIA+GI5Hw1sF+cLw6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=eI2W6odo; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GQu1F0BL"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-42809d6e719so41581045e9.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 31 Jul 2024 14:34:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1722461665; x=1723066465; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Bli9lhI61IaRjVxZ6El/2TlE2JOrlJn5Lbi96Tzc1cY=;
-        b=GQu1F0BLQxTE5HrRAYdznGPthK87JO7jzNA+e0LtPBS1Xeb7WCoXTu2o2+hnzBzEUl
-         buBKc8MLsCIEA0Bjx1nzCTqT1i+hXRpUbn5iBBD2SbfwEsIe35BUVWVchgQPPD+DFajC
-         lgje4uUGsgJyywhKyYgL3ztHIrUUCdz3okoNP58tNgHhPgWtwYf9i8AxVGsRIaJgg9X8
-         CKcJQ2zOdQWlDWO3kjiYGEMSBdXzPvWGQVqYoBqIqg7REf/xE5sFBvxtZ1ndtnA7kFmX
-         qadHFbyDM1p2Ld/bexaE0vVnZucLwHYBDMHOjdX234OwQF4buenYjN+cAaHLeLST4GQT
-         nxzw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722461665; x=1723066465;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Bli9lhI61IaRjVxZ6El/2TlE2JOrlJn5Lbi96Tzc1cY=;
-        b=bOO+gpdwtN46SuDAWKJQ5ckRjTc2L4mUaB1tkFZ77lA/8DSJyAnPssBZfSOxs1DDf7
-         cGRB4MnKqCW8GNBpItKvx4ou/Oni2j/rub5xh2A3J4lOyTi1Eavj2cEI7cuCKdh3tWrs
-         wqjx4BKK7yiK44+ZS9LzO3erz1cSjyJ9g0pKv7OYa6BUJ8/8GCSmLbl694KbrNcw+BMa
-         hImYO3fl1emF2Mh7RaMnsx1lgXp3/KyumwLXnPbAwp6DK9MAWlNx2pQQOC1G4MmC+Jp1
-         cq8s70x1lUbNejC4q+lBrjVh+yV/V5ec3BAIsDk3W9F70dwvU16cOi3uE0UNiFOuOCYA
-         Kd9w==
-X-Forwarded-Encrypted: i=1; AJvYcCXVDizHZsjHXCtsYePunaFKm8gE/LoH4VFJD2feVShuqBfKtRoCSHsipmF3XXvtRFVyWsXQQJUs66EJa0xRXNBT91Oj0wPKKyu5yCW9IVA=
-X-Gm-Message-State: AOJu0YxXN8Xfx4/NL+6QK10s6vqyxvonODdsbi7XX1/tRe9MAQrFXlO1
-	T5/NdctrLOGq9SebVFhyKFTycuBMEk4lrquhkzLocDfzTyvjH8iDK9Lo2zCwFMOgDbAxtoamIHX
-	bge5cgUW+p+KamDrYopDSjFNFOBahrd8Vb+pP
-X-Google-Smtp-Source: AGHT+IEnnH7Vl1oPP/7poRoKnYi3pQkDBFhO+xnBb/MH3dLIwjkKyZ7/ziEU66uYwoK2Ox4X3gDKYbUA6wyDWgsUmeg=
-X-Received: by 2002:a05:600c:3543:b0:426:6ee7:c05a with SMTP id
- 5b1f17b1804b1-428a9bdcd50mr4067365e9.15.1722461664765; Wed, 31 Jul 2024
- 14:34:24 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="eI2W6odo"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1722465641;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=feV3unDPWffzca1QgmoxOQtP/5IiMxNzOuHte1VHh6c=;
+	b=eI2W6odozhyHa9bkcInosUdCzE8cErEKJ6Vhl4mWxbSZhT9WQayR6vRwSI9ApvXLX/oNBR
+	/buZpizNxwo7jdxRbvCnRAgCkZCqT1HDor6Y9Qi6Oy5x37UHjDfG+cAItzwAFpHcVFJ6gi
+	8mIHh5kvWBqx5+jFSGGBdbq7h0F2w8g=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-657-9ltlB9XHPMGy27AhbSyuXg-1; Wed,
+ 31 Jul 2024 18:40:36 -0400
+X-MC-Unique: 9ltlB9XHPMGy27AhbSyuXg-1
+Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 7157A1955D47;
+	Wed, 31 Jul 2024 22:40:34 +0000 (UTC)
+Received: from emerald.lyude.net (unknown [10.22.16.173])
+	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 44009300018D;
+	Wed, 31 Jul 2024 22:40:29 +0000 (UTC)
+From: Lyude Paul <lyude@redhat.com>
+To: rust-for-linux@vger.kernel.org
+Cc: Danilo Krummrich <dakr@redhat.com>,
+	airlied@redhat.com,
+	Ingo Molnar <mingo@redhat.com>,
+	Will Deacon <will@kernel.org>,
+	Waiman Long <longman@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>
+Subject: [PATCH v2 0/3] rust: Add irq abstraction, SpinLockIrq
+Date: Wed, 31 Jul 2024 18:35:38 -0400
+Message-ID: <20240731224027.232642-1-lyude@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240628-tracepoint-v4-0-353d523a9c15@google.com>
- <20240628-tracepoint-v4-1-353d523a9c15@google.com> <20240731170508.GJ33588@noisy.programming.kicks-ass.net>
-In-Reply-To: <20240731170508.GJ33588@noisy.programming.kicks-ass.net>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 31 Jul 2024 23:34:13 +0200
-Message-ID: <CAH5fLghYodekhH-1A0BWZVwgbqkWbP3WP70-us2FtHqvOqD_Hw@mail.gmail.com>
-Subject: Re: [PATCH v4 1/2] rust: add static_key_false
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Josh Poimboeuf <jpoimboe@kernel.org>, 
-	Jason Baron <jbaron@akamai.com>, Ard Biesheuvel <ardb@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	linux-trace-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, linux-arch@vger.kernel.org, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, "Peter Zijlstra (Intel)" <peterz@infradaed.org>, 
-	Sean Christopherson <seanjc@google.com>, Uros Bizjak <ubizjak@gmail.com>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>, 
-	Oliver Upton <oliver.upton@linux.dev>, Mark Rutland <mark.rutland@arm.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Fuad Tabba <tabba@google.com>, 
-	linux-arm-kernel@lists.infradead.org, 
-	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Albert Ou <aou@eecs.berkeley.edu>, Anup Patel <apatel@ventanamicro.com>, 
-	Andrew Jones <ajones@ventanamicro.com>, Alexandre Ghiti <alexghiti@rivosinc.com>, 
-	Conor Dooley <conor.dooley@microchip.com>, Samuel Holland <samuel.holland@sifive.com>, 
-	linux-riscv@lists.infradead.org, Huacai Chen <chenhuacai@kernel.org>, 
-	WANG Xuerui <kernel@xen0n.name>, Bibo Mao <maobibo@loongson.cn>, 
-	Tiezhu Yang <yangtiezhu@loongson.cn>, Andrew Morton <akpm@linux-foundation.org>, 
-	Tianrui Zhao <zhaotianrui@loongson.cn>, loongarch@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="US-ASCII"; x-default=true
 
-On Wed, Jul 31, 2024 at 7:05=E2=80=AFPM Peter Zijlstra <peterz@infradead.or=
-g> wrote:
->
-> On Fri, Jun 28, 2024 at 01:23:31PM +0000, Alice Ryhl wrote:
->
-> >  rust/kernel/arch/arm64/jump_label.rs     | 34 ++++++++++++++++++++++++=
-++++
-> >  rust/kernel/arch/loongarch/jump_label.rs | 35 ++++++++++++++++++++++++=
-+++++
-> >  rust/kernel/arch/mod.rs                  | 24 ++++++++++++++++++++
-> >  rust/kernel/arch/riscv/jump_label.rs     | 38 ++++++++++++++++++++++++=
-++++++++
-> >  rust/kernel/arch/x86/jump_label.rs       | 35 ++++++++++++++++++++++++=
-+++++
-> >  rust/kernel/lib.rs                       |  2 ++
-> >  rust/kernel/static_key.rs                | 32 ++++++++++++++++++++++++=
-+++
-> >  scripts/Makefile.build                   |  2 +-
-> >  8 files changed, 201 insertions(+), 1 deletion(-)
->
-> So I really find the amount of duplicated asm offensive. Is is far too
-> easy for any of this to get out of sync.
->
-> > diff --git a/rust/kernel/arch/x86/jump_label.rs b/rust/kernel/arch/x86/=
-jump_label.rs
-> > new file mode 100644
-> > index 000000000000..383bed273c50
-> > --- /dev/null
-> > +++ b/rust/kernel/arch/x86/jump_label.rs
-> > @@ -0,0 +1,35 @@
-> > +// SPDX-License-Identifier: GPL-2.0
-> > +
-> > +// Copyright (C) 2024 Google LLC.
-> > +
-> > +//! X86 Rust implementation of jump_label.h
-> > +
-> > +/// x86 implementation of arch_static_branch
-> > +#[macro_export]
-> > +#[cfg(target_arch =3D "x86_64")]
-> > +macro_rules! arch_static_branch {
-> > +    ($key:path, $keytyp:ty, $field:ident, $branch:expr) =3D> {'my_labe=
-l: {
-> > +        core::arch::asm!(
-> > +            r#"
-> > +            1: .byte 0x0f,0x1f,0x44,0x00,0x00
-> > +
-> > +            .pushsection __jump_table,  "aw"
-> > +            .balign 8
-> > +            .long 1b - .
-> > +            .long {0} - .
-> > +            .quad {1} + {2} + {3} - .
-> > +            .popsection
-> > +            "#,
-> > +            label {
-> > +                break 'my_label true;
-> > +            },
-> > +            sym $key,
-> > +            const ::core::mem::offset_of!($keytyp, $field),
-> > +            const $crate::arch::bool_to_int($branch),
-> > +        );
-> > +
-> > +        break 'my_label false;
-> > +    }};
-> > +}
->
-> Note that this uses the forced 5 byte version, and not the dynamic sized
-> one. On top of that it hard-codes the nop5 string :/
->
-> Please work harder to not have to duplicate stuff like this.
+This adds a simple interface for disabling and enabling CPUs, along with
+the ability to mark a function as expecting interrupts be disabled -
+along with adding bindings for spin_lock_irqsave/spin_lock_irqrestore().
 
-I really didn't want to duplicate it, but it's very hard to find a
-performant alternative. Is there any way we could accept duplication
-only in the cases where an 'i' parameter is used? I don't have the
-choice of using a Rust helper for 'i' parameters.
+Current example usecase (very much WIP driver) in rvkms:
 
-Perhaps one option could be to put the Rust code inside jump_label.h
-and have the header file evaluate to either C or Rust depending on the
-value of some #ifdefs?
+https://gitlab.freedesktop.org/lyudess/linux/-/commits/rvkms-example-07312024
 
-#ifndef RUST_ASM
-/* existing C code goes here */
-#endif
-#ifdef RUST_ASM
-// rust code goes here
-#endif
+specifically drivers/gpu/drm/rvkms/crtc.rs
 
-That way the duplication is all in a single file. It would also avoid
-the need for duplicating the nop5 string, as the Rust case is still
-going through the C preprocessor and can use the existing #define.
+(The kunit tests also compile)
 
-I'm also open to other alternatives. But I don't have infinite
-resources to drive major language changes.
+Lyude Paul (3):
+  rust: Introduce irq module
+  rust: sync: Introduce lock::Backend::Context
+  rust: sync: Add SpinLockIrq
 
-Alice
+ rust/helpers.c                    |  22 +++++++
+ rust/kernel/irq.rs                |  87 ++++++++++++++++++++++++
+ rust/kernel/lib.rs                |   1 +
+ rust/kernel/sync.rs               |   2 +-
+ rust/kernel/sync/lock.rs          |  17 ++++-
+ rust/kernel/sync/lock/mutex.rs    |   3 +
+ rust/kernel/sync/lock/spinlock.rs | 106 ++++++++++++++++++++++++++++++
+ 7 files changed, 235 insertions(+), 3 deletions(-)
+ create mode 100644 rust/kernel/irq.rs
+
+-- 
+2.45.2
+
