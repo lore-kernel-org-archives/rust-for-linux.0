@@ -1,182 +1,95 @@
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA65A15252D
-	for <rust-for-linux@vger.kernel.org>; Thu,  1 Aug 2024 09:39:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E4D63D97F
+	for <rust-for-linux@vger.kernel.org>; Thu,  1 Aug 2024 09:39:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722505146; cv=none; b=JP3i0j7M3NUbjzcMmZteYI3WEItM5x1IHolTM6wpapUX8MMrYAmU/WY4WvfsXdeBmsnBvfHnzIMjHKVMPGpb2MMuc+9R7zi2rOq5I+urbmqayKH6J+uETCfPi9tYa1lqvrKLZ4HCRKHnIGuMRo1tFhrbYK1y1dq0xU8v8ue4HPY=
+	t=1722505164; cv=none; b=gVXBVtwu6GF7iNBKGlchdqIkmNvz4DLSd2Y09Q547tuh4WaXef1aHYjX80mqBqr73mYCd+eE+0VCDAAdUNDqHUqYbNBQ46j9mIOhVZ6YCKnFgtQToSMU9DrPwtDfzOUoKy6Zn/ZFoGM+VQO41Hbz3u57v2PR7ucC5p6UahsVRPM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722505146; c=relaxed/simple;
-	bh=oApA0qznxaHEE4A8R8hgJNhN2ArNXKYa4oVQONhFyNE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FUHy0QPzWpB/mvXymTCp9XTbhLdWYhWZWDlOJ/xD8jt+yti05g8evfeDvEYo4hxpxcaReIVEM8gckSjLN3lb3mbvl6uOZdPradmtKJ7/ap4G4rNkHFLognZU/bYzcTXXTTA2iY/t4QPbOLKSpSUYVhJrYXGnpnK6WA2Zy5/NyXw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DM2yAlNF; arc=none smtp.client-ip=209.85.221.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1722505164; c=relaxed/simple;
+	bh=wJNXjoKe7spBjZuAKUsxtIDhy6Hdyaf+jSaSTCqsitA=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=sbdtXKLWkukjRd/rEAWToh64Uw7LKU0gwk1EU4GxSObvux+eTdFJGvO8l/nbwVrsK3qBJrroEGOBKEjKbpXXs2n7PpHwcWUii0SNdWHZqkpwxeX8maQs0gm5puYFPGzdDGK9h9Rx1A3XOGXkWBqmG7+rWezPWD8VbXB+jPCXZQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=BWad/Qgn; arc=none smtp.client-ip=185.70.43.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DM2yAlNF"
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-36844375001so3058465f8f.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 01 Aug 2024 02:39:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1722505143; x=1723109943; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=rQdGA7GJE2VgdG2QsBIACC0GGavEy5/6TiWZnrghIfE=;
-        b=DM2yAlNFOH3v32S8roDbhB1p2pIU7YJOAem6WmYFZWHbT/trYdRbAAlieV8FKu4ayH
-         qK/5kHmhGQRs48PGh2WIjyU5w8ml8AkTzrtmuhgnk+QHpU28SYAzQU56aWyzCjrKz2d1
-         QpeaPH51g8CWhYC8CnvU3WCdRnsTDNd3Q+ASuNBEnE+fBXqURUau4RO/bGd4g1YvHdvw
-         3OXjdmQh9+JrG5Cz3K1swActaHjA2TV3m4F9RdpsaEwGbpeelIfsPsZ0gIEmG/Oh81qM
-         hERu4eJNO4hc/odsmUv8c5+n1HEc2V05+AZE1ZOM2aiL0MClqLyhrVjh3J4h0zTaYVh/
-         nMww==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722505143; x=1723109943;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=rQdGA7GJE2VgdG2QsBIACC0GGavEy5/6TiWZnrghIfE=;
-        b=R49cIQ6y0gMlP/ycUuYEuwPkThUMJfO0ureVvrRpp6z4sdgsWU19gWNCTzntTukljt
-         1W2MyInMs9IBx7GTQnWYHzTLVU6oZyOFHLiMa7N/gxYKmGSlANmZhtydE9WseZx03Yj4
-         ZQUsmkEWwp3uQ2VX6rdYULsrBJhRgnu4wFq373lYWBGOO8kWrVsccSoHjkwwlaUAB2Br
-         6ixpGPqcG7RV4KuRSmCunb8Fj0Lw8v2xvPRfEVQMZk0aNOQup6LkZt3QYDHzyyvFILJ9
-         cOfgNoPjOcvWh9rOURatEXMjkY0Lhd4uZwbO4psPKCwcF2sd919xwkigzFlwxHW1aWgo
-         onEA==
-X-Forwarded-Encrypted: i=1; AJvYcCVIO9UHuvXoi8PcHF6n9YxPUFlCXZGowwGu2xx8GIdnECkAARQo2fnyTFuE0GLwXue/RlXrvvyAp9PSCgErs2PIkK7vLg4edpEsnuqLmVA=
-X-Gm-Message-State: AOJu0YzmujStTOet0KAe0J19erkeVDLpKklZu6IJKCvm8N9XEnQV9nvi
-	p7vZRslZbRnUIEueKoyG1MqJD13sX3TIM25Gzw0HkS0ngF1Sg67mW8R/SrZfko2+2hvcrzi0YV9
-	LsHNEZTAH8yn07VWfDSkSd0ddsj5bQ1+6UXg0
-X-Google-Smtp-Source: AGHT+IHNeIRKHEDLTaSlMEckCTl/havP+o8WgKH8eXCZheQ+hbQIUOGOrwY0qf/8SqbtvZCCyhr7GP8Uz0b/v6290so=
-X-Received: by 2002:a05:6000:910:b0:368:48b1:803 with SMTP id
- ffacd0b85a97d-36baacbda56mr1204853f8f.12.1722505142506; Thu, 01 Aug 2024
- 02:39:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="BWad/Qgn"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1722505160; x=1722764360;
+	bh=aSb42DAm0C7+JYepmQ/W5J5DITLlNQrvS5tJCiqAE0g=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=BWad/Qgn8A11Xm3jaTFwWsD92hfR23OtF9T23RZWWbpsHDrmRMJqBpzVUgU/jjsN9
+	 u7jwIonkbOxkTLOY99WtxFq+VbR9fJXo27nN+aITBx2ZBymrlyRWxRjq03WQRrVq1r
+	 V6Wc5rTjwOcLvLu98CfnNCKzNwseYJPHGzBCgfNsK1N7bsNxCQqg3zKzwPPb5HFonf
+	 5hd4LEpZQEYDMf1i5G4Brn/VxgvF5uLVUlmyv1ev544rEeL9PjvcOtcGFD/Ki5mcav
+	 VnEpEeMa7MDDkwz40dyK2DeuqTavgsP01E5Gmyrw+58JnI1pSZHzFYZUODwM/z9LWa
+	 xTwO57AMS8pPQ==
+Date: Thu, 01 Aug 2024 09:39:14 +0000
+To: Lyude Paul <lyude@redhat.com>, rust-for-linux@vger.kernel.org
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Danilo Krummrich <dakr@redhat.com>, airlied@redhat.com, Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>
+Subject: Re: [PATCH v2 0/3] rust: Add irq abstraction, SpinLockIrq
+Message-ID: <0e9bd869-712c-4d1e-bd60-2cc5f18c8aac@proton.me>
+In-Reply-To: <20240731224027.232642-1-lyude@redhat.com>
+References: <20240731224027.232642-1-lyude@redhat.com>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: 488dd09f2421aabc75bd0edf611a7d628c9ba3da
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240723-linked-list-v3-0-89db92c7dbf4@google.com>
- <20240723-linked-list-v3-9-89db92c7dbf4@google.com> <2b548226-e323-466d-9f6d-762f6cbb5474@proton.me>
-In-Reply-To: <2b548226-e323-466d-9f6d-762f6cbb5474@proton.me>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 1 Aug 2024 11:38:50 +0200
-Message-ID: <CAH5fLghkPgj560a2b_1oRnvuurEugT4TNj+o-fYhGsuSGpywPg@mail.gmail.com>
-Subject: Re: [PATCH v3 09/10] rust: list: support heterogeneous lists
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@samsung.com>, Marco Elver <elver@google.com>, Coly Li <colyli@suse.de>, 
-	Paolo Abeni <pabeni@redhat.com>, Pierre Gondois <pierre.gondois@arm.com>, 
-	Ingo Molnar <mingo@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Wei Yang <richard.weiyang@gmail.com>, 
-	Matthew Wilcox <willy@infradead.org>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, Kees Cook <kees@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Aug 1, 2024 at 11:24=E2=80=AFAM Benno Lossin <benno.lossin@proton.m=
-e> wrote:
->
-> On 23.07.24 10:22, Alice Ryhl wrote:
-> > @@ -181,6 +185,47 @@ unsafe fn from_fields(me: *mut ListLinksFields) ->=
- *mut Self {
-> >      }
-> >  }
-> >
-> > +/// Similar to [`ListLinks`], but also contains a pointer to the full =
-value.
-> > +///
-> > +/// This type can be used instead of [`ListLinks`] to support lists wi=
-th trait objects.
-> > +#[repr(C)]
-> > +pub struct ListLinksSelfPtr<T: ?Sized, const ID: u64 =3D 0> {
-> > +    /// The `ListLinks` field inside this value.
-> > +    ///
-> > +    /// This is public so that it can be used with `impl_has_list_link=
-s!`.
-> > +    pub inner: ListLinks<ID>,
-> > +    self_ptr: UnsafeCell<MaybeUninit<*const T>>,
->
-> Why do you need `MaybeUninit`?
+On 01.08.24 00:35, Lyude Paul wrote:
+> This adds a simple interface for disabling and enabling CPUs, along with
+> the ability to mark a function as expecting interrupts be disabled -
+> along with adding bindings for spin_lock_irqsave/spin_lock_irqrestore().
+>=20
+> Current example usecase (very much WIP driver) in rvkms:
+>=20
+> https://gitlab.freedesktop.org/lyudess/linux/-/commits/rvkms-example-0731=
+2024
+>=20
+> specifically drivers/gpu/drm/rvkms/crtc.rs
+>=20
+> (The kunit tests also compile)
+>=20
+> Lyude Paul (3):
+>   rust: Introduce irq module
+>   rust: sync: Introduce lock::Backend::Context
+>   rust: sync: Add SpinLockIrq
+>=20
+>  rust/helpers.c                    |  22 +++++++
+>  rust/kernel/irq.rs                |  87 ++++++++++++++++++++++++
+>  rust/kernel/lib.rs                |   1 +
+>  rust/kernel/sync.rs               |   2 +-
+>  rust/kernel/sync/lock.rs          |  17 ++++-
+>  rust/kernel/sync/lock/mutex.rs    |   3 +
+>  rust/kernel/sync/lock/spinlock.rs | 106 ++++++++++++++++++++++++++++++
+>  7 files changed, 235 insertions(+), 3 deletions(-)
+>  create mode 100644 rust/kernel/irq.rs
+>=20
+> --
+> 2.45.2
+>=20
 
-Right now the constructor initializes it to MaybeUninit::zeroed().
-What would you initialize it to without MaybeUninit? Remember that the
-vtable pointer in a fat pointer has strict validity requirements.
+Hi Lyude,
 
-> > +}
-> > +
-> > +// SAFETY: The fields of a ListLinksSelfPtr can be moved across thread=
- boundaries.
-> > +unsafe impl<T: ?Sized + Send, const ID: u64> Send for ListLinksSelfPtr=
-<T, ID> {}
-> > +// SAFETY: The type is opaque so immutable references to a ListLinksSe=
-lfPtr are useless. Therefore,
-> > +// it's okay to have immutable access to a ListLinks from several thre=
-ads at once.
-> > +//
-> > +// Note that `inner` being a public field does not prevent this type f=
-rom being opaque, since
-> > +// `inner` is a opaque type.
-> > +unsafe impl<T: ?Sized + Sync, const ID: u64> Sync for ListLinksSelfPtr=
-<T, ID> {}
->
-> [...]
->
-> > @@ -135,5 +178,91 @@ unsafe fn post_remove(me: *mut $crate::list::ListL=
-inks<$num>) -> *const Self {
-> >              }
-> >          }
-> >      };
-> > +
-> > +    (
-> > +        impl$({$($generics:tt)*})? ListItem<$num:tt> for $t:ty {
-> > +            using ListLinksSelfPtr;
-> > +        } $($rest:tt)*
-> > +    ) =3D> {
-> > +        // SAFETY: See GUARANTEES comment on each method.
-> > +        unsafe impl$(<$($generics)*>)? $crate::list::ListItem<$num> fo=
-r $t {
-> > +            // GUARANTEES:
-> > +            // This implementation of `ListItem` will not give out exc=
-lusive access to the same
-> > +            // `ListLinks` several times because calls to `prepare_to_=
-insert` and `post_remove`
-> > +            // must alternate and exclusive access is given up when `p=
-ost_remove` is called.
-> > +            //
-> > +            // Other invocations of `impl_list_item!` also cannot give=
- out exclusive access to the
-> > +            // same `ListLinks` because you can only implement `ListIt=
-em` once for each value of
-> > +            // `ID`, and the `ListLinks` fields only work with the spe=
-cified `ID`.
-> > +            unsafe fn prepare_to_insert(me: *const Self) -> *mut $crat=
-e::list::ListLinks<$num> {
-> > +                // SAFETY: The caller promises that `me` points at a v=
-alid value of type `Self`.
-> > +                let links_field =3D unsafe { <Self as $crate::list::Li=
-stItem<$num>>::view_links(me) };
-> > +
-> > +                let spoff =3D $crate::list::ListLinksSelfPtr::<Self, $=
-num>::LIST_LINKS_SELF_PTR_OFFSET;
-> > +                // SAFETY: The constant is equal to `offset_of!(ListLi=
-nksSelfPtr, self_ptr)`, so
-> > +                // the pointer stays in bounds of the allocation.
-> > +                let self_ptr =3D unsafe { (links_field as *const u8).a=
-dd(spoff) }
-> > +                    as *const ::core::cell::UnsafeCell<*const Self>;
->
-> A bit confused why you need to do it this way, can't you just do this?:
->
->     let links_self_field =3D links_field.cast::<$crate::list::ListLinksSe=
-lfPtr>();
->     // SAFETY: ...
->     let self_ptr =3D unsafe { ::core::ptr::addr_of_mut!((*links_self_fiel=
-d).self_ptr) };
+it would be nice if you could run `git format-patch` with `--base`. That
+way I immediately have the commit that your series applies to. (Since this
+series doesn't apply to `rust-next` for me, but it does apply to
+v6.11-rc1, so it's fine)
 
-If nothing else, the field is not public. I can't remember if there
-was another reason.
+Thanks.
 
-Alice
+---
+Cheers,
+Benno
+
