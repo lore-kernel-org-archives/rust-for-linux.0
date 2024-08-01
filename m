@@ -1,151 +1,138 @@
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 627DD172BD5
-	for <rust-for-linux@vger.kernel.org>; Thu,  1 Aug 2024 12:49:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B185A172BD5
+	for <rust-for-linux@vger.kernel.org>; Thu,  1 Aug 2024 12:51:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722516548; cv=none; b=Gza4k+rAWsuvgKLQMF0LoEA9YHg1uzVzv++49qQ4c79w3BKZX8C1nheZndSI5Lpdc7Oy0ddOQtgqSnikdpRGG+nT/VIDCxaKIfSyvLsnmyi9e3T72oxO87zkoHaaIlUr0nkIZgM6rGGl3O0hbIGB3WvvknRb/qgqC45Fyd9w0co=
+	t=1722516691; cv=none; b=fgkEAC/X74epz0Lr3vwEs1hbyZMOMAsWoaGUqI1HvzXFIsBX1N0n3s0UuL9o38+mHjHklmb81pKLnG6bkFhnfqwempUtSUaXUePcweqpfmoVoqN/wHP0dzq1jIvDalA3NMpFGbfg0Y737TIrIzV3nWya/n6ZdvO9sKfSwLp4UH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722516548; c=relaxed/simple;
-	bh=yCTTXbRTR9vcCIO49PvqbkjFhy2jjGQvDbjsg/TiMys=;
+	s=arc-20240116; t=1722516691; c=relaxed/simple;
+	bh=fSBUkzUUkWt107EAs69kOFAPLO3pyAPRIAczRvrIq5Q=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=sugNu34LoGQgPItUBqUsYUrdDOQ6aE8vsgdK2FWhvpGa1u9aK402yyzeKTSH7nG0ps2KHJYblcmesPPjcnQhztb+NorWgOP2A4hLrni1TGPo0RkPeH7S2zvf+UuvsXWOLxCXucxD5GH4h5t7MM0G0v+3pqqyPxXmKxvclYtRxns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cn69r+ue; arc=none smtp.client-ip=209.85.221.54
+	 To:Cc:Content-Type; b=sLK6duQmWXpbuzOkTGRVeMjH+SDBEVnYjPjmeFz7lAaMMGv2UQe7AxP6kTThQ0FwlzSQbOe37vOYgGR9F3ZImjGQ6uiL9LGBZBlaEKN+MHJA6G8qlv6qUZz6gdp18q9w5t/DJIuEJZZvnzVx8CJ9n1eYw758tzE/hrGFNnZ5N6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fDuouXDk; arc=none smtp.client-ip=209.85.128.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cn69r+ue"
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-367ab76d5e1so2736015f8f.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 01 Aug 2024 05:49:06 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fDuouXDk"
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-4281c164408so38468935e9.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 01 Aug 2024 05:51:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1722516545; x=1723121345; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1722516688; x=1723121488; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ivf0dedh/kNlaxhUOXBBVCs+HsDrPdQjzUTbZCof2Q8=;
-        b=cn69r+ueC1vQz3yev2U+dIp4RaJZiE0HwKwPE7IMNQasVrHaRkV3bpwjrIa7pEl3bc
-         zJeEKUeVbNRDUFPQ2l6reTMBD5uL+1/H/YE0rkeUG1eKwTwEGFBN2RJfbrHmueOsOKJW
-         TPkxThJReGgMaFIaAD62BygBMb3TthkKbeqxOW53JuefmySesXRH643ZJ1ymOXv1cqib
-         ftVbUcdYRrF4E+nkhu/6POfYpZVj06uDYl3U1hzsCW1mRMpco16t0z8yCtWyYEOmuQo6
-         SHeDAuTsZlpHfr/0/eXpVDdL318enREGeMW4noFUVEEmAxOaO+P96sr+wztWyrEnyPlf
-         ewmg==
+        bh=6QMpYiaUKnQGePeyncUAsOyGyvo4sFuaZoIKakgcqds=;
+        b=fDuouXDkFEUNSWEtlelIisa8gBO3deekZ5oIOg2n3ZOVTfZBNtC+ThQ20SzprMx7tZ
+         SplvP8QdSfmK1PHCH2tvVO74mJa6/YGBp5zZb+Zt5me4WQWPCGDd6ueJlBvTo9jW91Vd
+         nnIOesXV/nTmLx9c2FhbigsBrdqOuLXq92UfkEuKPmD4pTScjzXlOtyxLy8XKO0BL3H2
+         NsyMk/kseMN4tAoAr1u/Kfcdq9CSKLo5mAYC8Nbub6pptICtraVonmOtxiHgnh9vG1vS
+         GlZU9S8jHg/Qsn96q2R4mrQPFSqgljutl85ur/bM/usw13zyqTogIJ3NQMOLBQIvtZXv
+         mQLw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722516545; x=1723121345;
+        d=1e100.net; s=20230601; t=1722516688; x=1723121488;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ivf0dedh/kNlaxhUOXBBVCs+HsDrPdQjzUTbZCof2Q8=;
-        b=ArK1XeZkPkasXfXiFd5GJukAfHdo5xmiXOFA/4y5PufhfDvqwo2Cm4v0NkYtGExAMO
-         zezdllF59guhMiBFWxv1zbQbLCydbRouZjhyjE9Dww0kDtJ/pjykRU7qexra6U+6mrOc
-         X5qtCKr9DO1dpoeUGqc6YMKk3icm5SvN1PTgs4ocWTHVzO0Mzf5tgiyVkdaPJ5cg6W/D
-         uyrMRwzTgaD1Bv5noL5vdRNqhT6EJJuIrC7R46V7aASGwBdt5BtMPBFXPX7Sp6IW5sbh
-         ykM/3j1CFsxaFobdWtyv+QPgtVDvrGoGxMLko9grjwGJR/QwmbSeKauPHWmfCCkTGi0a
-         YMTg==
-X-Forwarded-Encrypted: i=1; AJvYcCUR4WNowGSge4hk/L9pW50ERojLVUpimG9SDR4LLamXjpAnPSmtSNTUq1v/yT/N50XMd2GBi0Wwmd2xK7ZvXolznYSQOjcbN3KHuy2JBFk=
-X-Gm-Message-State: AOJu0YxL6JpBam+V+GX6pmHoirpfv77zO6USC7OvgH7Hi1WykaVxIWIN
-	YJwsWdfxmfMc8K8P2EpbCqsWLRAIj8o/v1BC7MAAVR6WUB764TTRs7j9cqPO8kft4e11v3+OO0w
-	WWJxY8fPeK6NxrGt4OBDolUmNXBl3718oDUCy
-X-Google-Smtp-Source: AGHT+IH0DKRMGpWhTdEr+rzxMTKBlJSpQK2F/2LMQbeMHgE0zIl7LV+JvtbFFFJCC7Ib7AhMBAhLQOsWxxgbuG3YEis=
-X-Received: by 2002:a5d:5f45:0:b0:368:3b1f:fe40 with SMTP id
- ffacd0b85a97d-36baacd2ef4mr2084012f8f.20.1722516544235; Thu, 01 Aug 2024
- 05:49:04 -0700 (PDT)
+        bh=6QMpYiaUKnQGePeyncUAsOyGyvo4sFuaZoIKakgcqds=;
+        b=nqsoSwCsTD8e8w9DwoTs/4hc1UEJD9Fvt00rGbFbk/+vECJVGya5zmmtYbRx7RXs5r
+         3kAtadVFv9Q3/Br+1uVSeUK97O+fiZzkG43jLesKd5IA/JYE0vF4cP9/7Omvw/MAL8kO
+         F61+NScB2ATug6cP0zMWIQpFcLhXhJreyyyWmdsYwNK5b2ZAKxk5NXz8t1834CBGvcD/
+         oo+YXnNWFM/nsyvWrce3SvseAjdBjw8Qn2yQeqIc2lfN9VLpL4vAfTpuvISKEQ4h9q/z
+         0mwCJeFfXFEjd+wCVTYrWXO9Bz44N0LUo9Cn601dCS7BYqikQzOMIMTq+++orOARr7Ug
+         GCCQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWEobnfjiml/mC03YIl8gfZWsc4VRWiRlbrcra2JcLSK1Uqeisz4Pj1FsXgEh7ByN964fFJhESeye1/w6y6ltJio5RQjdwxGkxd5Qx+fBE=
+X-Gm-Message-State: AOJu0YygTRiXNraRPJl0EpyczGMX3PHCvt8vJGuhPmD7vunJ3Mb8KQRA
+	Vn6bsrwNEHrcx6CcSfUMb4UNCxEIa3d8DU2/uTnykVKtepR39I8Zp8v9hN/2gC70HqIfPy19g/f
+	6+uHuV+r8k9rurhdnhMdhuG14lXnCSS6E4XzO
+X-Google-Smtp-Source: AGHT+IGFMbQ6YBajivuDZ1k5rIS4yW0tNO+NYuNxc00k9ljQGThK75whHTQu91KdxYsCWAj62TVJQLL+OJJJ8D283gQ=
+X-Received: by 2002:a05:600c:46d5:b0:428:e140:88c4 with SMTP id
+ 5b1f17b1804b1-428e14088d2mr12744765e9.33.1722516687702; Thu, 01 Aug 2024
+ 05:51:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240801000641.1882-1-dakr@kernel.org> <20240801000641.1882-10-dakr@kernel.org>
- <CAH5fLggjs8t2c1GVFdQu6gULjG_oYx7299m4NedQFS+hOgFfTw@mail.gmail.com> <ZquDcoPg2CzlPbpU@pollux>
-In-Reply-To: <ZquDcoPg2CzlPbpU@pollux>
+References: <20240723-linked-list-v3-0-89db92c7dbf4@google.com>
+ <20240723-linked-list-v3-4-89db92c7dbf4@google.com> <1b2078d8-d93b-4626-a73f-edc5616a2357@proton.me>
+ <CAH5fLggKphE3f=Jv+pfXc+_qjsGBVpXw_F4fOJiAi6vNtJ5x+Q@mail.gmail.com> <5b13793c-3ec8-40c2-b0c6-e7b10883d0cb@proton.me>
+In-Reply-To: <5b13793c-3ec8-40c2-b0c6-e7b10883d0cb@proton.me>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 1 Aug 2024 14:48:52 +0200
-Message-ID: <CAH5fLghhgrM_EyCkmHSZ=VpQZSvg3Co+HHYyAU9+gssMkKGNhA@mail.gmail.com>
-Subject: Re: [PATCH v3 09/25] rust: alloc: implement kernel `Box`
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, 
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
-	benno.lossin@proton.me, a.hindborg@samsung.com, akpm@linux-foundation.org, 
-	daniel.almeida@collabora.com, faith.ekstrand@collabora.com, 
-	boris.brezillon@collabora.com, lina@asahilina.net, mcanal@igalia.com, 
-	zhiw@nvidia.com, acurrid@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com, 
-	airlied@redhat.com, ajanulgu@redhat.com, lyude@redhat.com, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-mm@kvack.org
+Date: Thu, 1 Aug 2024 14:51:16 +0200
+Message-ID: <CAH5fLgjntr81+OFxzVqvb+zL4RqHCap9LZnNxNvN_gzF8AKrRg@mail.gmail.com>
+Subject: Re: [PATCH v3 04/10] rust: list: add struct with prev/next pointers
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, Marco Elver <elver@google.com>, Coly Li <colyli@suse.de>, 
+	Paolo Abeni <pabeni@redhat.com>, Pierre Gondois <pierre.gondois@arm.com>, 
+	Ingo Molnar <mingo@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Wei Yang <richard.weiyang@gmail.com>, 
+	Matthew Wilcox <willy@infradead.org>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Kees Cook <kees@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Aug 1, 2024 at 2:45=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> w=
-rote:
+On Thu, Aug 1, 2024 at 12:45=E2=80=AFPM Benno Lossin <benno.lossin@proton.m=
+e> wrote:
 >
-> On Thu, Aug 01, 2024 at 10:55:51AM +0200, Alice Ryhl wrote:
-> > On Thu, Aug 1, 2024 at 2:07=E2=80=AFAM Danilo Krummrich <dakr@kernel.or=
-g> wrote:
-> > > +    /// Converts a `Box<T>` into a `Pin<Box<T>>`.
-> > > +    #[inline]
-> > > +    pub fn into_pin(b: Self) -> Pin<Self>
-> > > +    where
-> > > +        A: 'static,
-> > > +    {
-> > > +        // SAFETY: It's not possible to move or replace the insides =
-of a `Pin<Box<T>>` when
-> > > +        // `T: !Unpin`, so it's safe to pin it directly without any =
-additional requirements.
-> > > +        unsafe { Pin::new_unchecked(b) }
-> > > +    }
+> On 01.08.24 11:42, Alice Ryhl wrote:
+> > On Wed, Jul 31, 2024 at 8:41=E2=80=AFPM Benno Lossin <benno.lossin@prot=
+on.me> wrote:
+> >>
+> >> On 23.07.24 10:22, Alice Ryhl wrote:
+> >>> +/// The prev/next pointers for an item in a linked list.
+> >>> +///
+> >>> +/// # Invariants
+> >>> +///
+> >>> +/// The fields are null if and only if this item is not in a list.
+> >>> +#[repr(transparent)]
+> >>> +pub struct ListLinks<const ID: u64 =3D 0> {
+> >>> +    #[allow(dead_code)]
+> >>> +    inner: Opaque<ListLinksFields>,
+> >>
+> >> Do you really need `Opaque`? Or would `UnsafeCell` be enough? (If it i=
+s
+> >> enough and you change this, be aware that `Opaque` is `!Unpin`, so if
+> >> you intend for `ListLinks` to also be `!Unpin`, then you need a
+> >> `PhantomPinned`)
 > >
-> > In the standard library, this functionality is provided using the From
-> > trait rather than an inherent method. I think it makes sense to match
-> > std here.
+> > I need the `!Unpin` part for aliasing.
 >
-> I already provide `impl<T, A> From<Box<T, A>> for Pin<Box<T, A>>` in this=
- patch,
-> which just calls `Box::into_pin`.
-
-Ah, ok, I might drop into_pin and only have From, but I'm ok either way.
-
-> > > +impl<T: 'static, A> ForeignOwnable for crate::alloc::Box<T, A>
-> > > +where
-> > > +    A: Allocator,
-> > > +{
-> > > +    type Borrowed<'a> =3D &'a T;
-> > > +
-> > > +    fn into_foreign(self) -> *const core::ffi::c_void {
-> > > +        crate::alloc::Box::into_raw(self) as _
-> > > +    }
-> > > +
-> > > +    unsafe fn borrow<'a>(ptr: *const core::ffi::c_void) -> &'a T {
-> > > +        // SAFETY: The safety requirements for this function ensure =
-that the object is still alive,
-> > > +        // so it is safe to dereference the raw pointer.
-> > > +        // The safety requirements of `from_foreign` also ensure tha=
-t the object remains alive for
-> > > +        // the lifetime of the returned value.
-> > > +        unsafe { &*ptr.cast() }
-> > > +    }
-> > > +
-> > > +    unsafe fn from_foreign(ptr: *const core::ffi::c_void) -> Self {
-> > > +        // SAFETY: The safety requirements of this function ensure t=
-hat `ptr` comes from a previous
-> > > +        // call to `Self::into_foreign`.
-> > > +        unsafe { crate::alloc::Box::from_raw(ptr as _) }
-> > > +    }
-> > > +}
+> Oh good point, do you mind adding a comment for that?
+>
+> >>> +}
+> >>> +
+> >>> +// SAFETY: The next/prev fields of a ListLinks can be moved across t=
+hread boundaries.
+> >>
+> >> Why? This is not a justification.
 > >
-> > You may want to also implement ForeignOwnable for Pin<Box<T>>. See:
-> > https://lore.kernel.org/all/20240730-foreign-ownable-pin-box-v1-1-b1d70=
-cdae541@google.com/
+> > What would you say?
 >
-> Yeah, I think I've also seen another patch that it about to add a functio=
-n to
-> convert a `Box` back into uninit state.
+> While trying to come up with a safety comment I thought about the
+> following: this impl does not depend on the type that is behind the
+> pointer (ie the type containing the `ListLinks`). Thus this `ListLinks`
+> will always implement `Send` even if the pointed-to value does not.
+> What we could do (and what definitely would be correct) is this:
+> `List` can only be used with `Send` types, then we could implement
+> `Send` for `ListLinks`. But I haven't actually come up with a problem,
+> so there might a more permissive solution.
+> Do you have a use-case where you need `!Send` types in a list?
 >
-> Depending how fast you need ForeignOwnable for Pin<Box<T>>, do you prefer=
- to
-> contribute a corresponding patch to this series?
+> Here is a part of my reasoning: If the pointed-to value is `!Send`, then
+> the `List` item type must also be `!Send`. Thus all list operations take
+> place on the same thread (since the `List` will be `!Send`). Therefore
+> nobody can access the `prev`/`next` pointers from another thread.
+>
+> But this does not justify that `ListLinks` can be made `Send`. (although
+> there isn't actually a problem)
 
-It's easiest for me if you just add it to this patch of your series. I
-don't care about credit in this particular case.
+I don't think there's any reason to forbid lists with !Send types. The
+List just becomes !Send too.
 
 Alice
