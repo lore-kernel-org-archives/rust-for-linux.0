@@ -1,65 +1,65 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B5B81B4C4D
-	for <rust-for-linux@vger.kernel.org>; Thu,  1 Aug 2024 16:44:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 850EF13CFA4
+	for <rust-for-linux@vger.kernel.org>; Thu,  1 Aug 2024 16:52:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722530663; cv=none; b=rOyNrgxnIK6bq0lZ8YR6drJ9wiFMSH2sZ/2XMPI5zQaGnV4Cmop5hEjv1gfPZpV9y5BShtTAKDCHxKVhmTNnzQ2hKo3WklwJEhAC/QqWmo74YoNfi1qFulWmB8/rKHAbcAayWHsuLRnjXtT4T65aaZrypk2MArS82toIHJcWe8g=
+	t=1722531163; cv=none; b=Ihj2wYAOJTxpHlvHTGRGud1tQ1p1B07Ep7WDjFOVdUt9XJgysQ/XW/thObB6FpgyYax8agVlfVaVWE9twrwXiaK7CQDjGp3fiX3HIwEx502rKOrNKNv+zr+TuhJbda0VTvBxVd2Wm1XmsdfrixENP9TKqd8xiGR3usXaMKNUhO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722530663; c=relaxed/simple;
-	bh=hbWMXTSM/VAnLJKuE9C7HEW0Bd+5H28AoqnpRbXh+08=;
+	s=arc-20240116; t=1722531163; c=relaxed/simple;
+	bh=1XnxXMR1GZ9ZYc+iVhFwtLj7BloKjk4mmUDJE6Osq4s=;
 	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=UxEvtTXKzmH1V+HGH1cfg4wquUVghohZk7loc02WBE2D/GqdPkFaFvEdcRV38QzeVc+cMf0iafY49Aip9PNeREJVti7+xosrfqeAM2zftxfzzAiE9xg6Ffl8qcH835Sj/51W9+ovAo1gw2yviRnnLWgCgZsgiNb1FS4m5E4QaTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=UqBXL5hj; arc=none smtp.client-ip=170.10.133.124
+	 MIME-Version:Content-Type; b=MbN4f7SDfT6BXuvSEPra/xlfUOlbQK6d2Gr+HfF5qwKVhSVnV1oxAROuEpOQnRm/UHIypVjeCGNGm2tusTXsCDEE5gwowIewtqGxWJNyNtJdnBfZu7j63Rx5aXfXwNqSgrYIIRoDU1kS49Rx1v8wXYjzlHOq/2gWkUy8Lmx4eSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=c4f6GKlC; arc=none smtp.client-ip=170.10.129.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="UqBXL5hj"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="c4f6GKlC"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1722530660;
+	s=mimecast20190719; t=1722531160;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
 	 content-transfer-encoding:content-transfer-encoding:
 	 in-reply-to:in-reply-to:references:references;
-	bh=OteXfV1g7+fsGZwCb/seWTobN2hCo7Fouzb06l3IEgo=;
-	b=UqBXL5hjYiwU5ujEz9wpHSzilZL2d+BdHAfFKa4Yp1sdc/XcmMG65uFocd8TtKYWPMe0N1
-	t/Fcemr6Y520QUKnJ0pnYvFJjW32HVIDOo7RXXj7XIHY96tM9/KZ/eFk9LlC28atpAoubd
-	yy0P8AIPdmctZ39IPYZMygnYUKUFc0I=
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
- [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
+	bh=T3EWQs+VoaeaK5qLNE3hfe7maI+EWHLAKEYBENKJjbE=;
+	b=c4f6GKlCaZLx9PwB2bnVFo1q8yl0jrcUNQiPtCP7pB0viOgRuFwdM4Zu/18W1d4wwMpiXX
+	XiymSzNuO9/akYOor+5d0RVV7KNiJ/ECBozMWPn2ynmiJaazS1zc3kAwSGYIohQ2OxFrMS
+	XlRHSpmvyYVqtYVfiXu4/Aw2FMB8L98=
+Received: from mail-qv1-f70.google.com (mail-qv1-f70.google.com
+ [209.85.219.70]) by relay.mimecast.com with ESMTP with STARTTLS
  (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-580-Vkp6dP92MNy9WEAglPszhA-1; Thu, 01 Aug 2024 12:44:18 -0400
-X-MC-Unique: Vkp6dP92MNy9WEAglPszhA-1
-Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-6b7a27fcd51so85439296d6.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 01 Aug 2024 09:44:18 -0700 (PDT)
+ us-mta-397-mzofia5bMpOknXY9w9rxSA-1; Thu, 01 Aug 2024 12:52:39 -0400
+X-MC-Unique: mzofia5bMpOknXY9w9rxSA-1
+Received: by mail-qv1-f70.google.com with SMTP id 6a1803df08f44-6b7a48774e8so91413626d6.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 01 Aug 2024 09:52:39 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722530658; x=1723135458;
+        d=1e100.net; s=20230601; t=1722531159; x=1723135959;
         h=mime-version:user-agent:content-transfer-encoding:organization
          :references:in-reply-to:date:cc:to:from:subject:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=efOgBe9VyWIIOvElpJ89/7+AuXK/BjYXyKNUsF5LbBY=;
-        b=Oas4RaX/eX9g1V+Us14YV9d1mvvKlMlIk7hwSj6AiLzuvvsRM0D1ESlejE5soC3UxP
-         Nq26gZ4s0hxZ2Lq16oR2uRElhL7c2jeY3qVIPDo03PP2fYjkhb1wjRSsUf4FS2bmmmbu
-         hv1qMjWk3XgX1oLcVvyD/o4DenWJ8Tpgnfvukgb9iVOtocY3X/cByuSZG3CJb5ui4kBG
-         oXuEFCWB6gVY6phZeiJXV5ies+rcO/Fi+g2QR82LUhVPdPwzmruLZCiza70MkJ897ep1
-         hg60JtWiknb6LpsI/BYPMo0V0okQUj4LXLTl8UMon8PMTWt8gqjCssw6XgHx0GYVJHGn
-         Cg1Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVEVXr99JQA3gqX8T0qUXfLaFf9NIM1EWKPV/uNXJSMCiC49Q6xf9N2xQzdArxLzZk+oMCIIjLCkXWkOfZkofcOrWZWyd14e9dUiDD0DjY=
-X-Gm-Message-State: AOJu0YzyLJhh0RdWYwlgmbZU/tYKZjyGiB/Ye8Ssq+3gOzl3Ea9Y+BHq
-	e9uoXTbmzmqjSJDigodujlpcmpARo9T8/1KyolN4sKc37eqI0pssvhBLUy0EBpjKsm/t2tRQsh1
-	piNzM2BZMEUb+S2gIjo0XI4Axcm0r2G1JM7n8/LF0g5tH2qaaiikeiaev1FgMN1aM
-X-Received: by 2002:a05:6214:5f01:b0:6b5:3eb:6cf6 with SMTP id 6a1803df08f44-6bb98418c6cmr7223006d6.40.1722530658333;
-        Thu, 01 Aug 2024 09:44:18 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHqdh4r27xRQoyp7KGUPD8lF9/jpoojFWyboKABMCj0k3DobKWAks3OYgmBBR2/7XetVV2+rA==
-X-Received: by 2002:a05:6214:5f01:b0:6b5:3eb:6cf6 with SMTP id 6a1803df08f44-6bb98418c6cmr7222596d6.40.1722530657840;
-        Thu, 01 Aug 2024 09:44:17 -0700 (PDT)
+        bh=T3EWQs+VoaeaK5qLNE3hfe7maI+EWHLAKEYBENKJjbE=;
+        b=WXg9Y4pY9012qHLpZ4Hq7gLvaXZwmm6YceD5MGzeXe3lTHIvPP7fWW+PE9tnRBrtPr
+         l/XUgMIH/LycQhjHMhdX/aQbnMJ2042VXfaeLOA4YB2F22rC6NATS/ZKZPZJpHrhN9bi
+         O+zaH1NxxQVcjtvusOmzYCQhtwoWcLVnrdCyqfTCyLnczWEpdbOmv0WJqOB3JNnhMXbs
+         Qt+gxXrnMjlDbGCuwVz3GxFFGqi827yBMGNh8RHhzFWW+2gzTNmCN4wMkcvyz0ZwGCR3
+         AJVqhqZsdWbtDoupVcwvwrnbbkAJymG7wF/tFaLIbrBBjsdto0MViji2pUSYZi5SWRqU
+         1r/w==
+X-Forwarded-Encrypted: i=1; AJvYcCXTz2coqbTL9Or4e97oMpbP/D6z8RULUAAnbgpDj6zigjArvMIbRLOTJGuNVivNiDK0EgLY8TmclIvwRRchf9XYLjaWS/e2BDpAUvyeZLk=
+X-Gm-Message-State: AOJu0YxsJb2IOfC9iZmLNW55sfzjpmGjsUx8B3P5Q7eLdISphK/e/ZO4
+	RQSeTB3z3bZPeTLutMES+Luzijkbocc+rd+1nZcvjPVXkaSoR6KkXJHf9qK8FIZZdroOhHR2O5A
+	idotnV/wIYu7aWGSVdfQ/DAXapuIi4W1gVUL6VMyop/+PyKldgWRd8DSJ6liPMSu5
+X-Received: by 2002:a05:6214:5502:b0:6b7:b362:83cf with SMTP id 6a1803df08f44-6bb98417c15mr8269206d6.37.1722531158283;
+        Thu, 01 Aug 2024 09:52:38 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IF/nthiT2q0NW6l34Gq6ro2cPEp5pAZ86rF76kLjIfSUWY5CPdVC7v5bYSsMpxC89k0hQZyeA==
+X-Received: by 2002:a05:6214:5502:b0:6b7:b362:83cf with SMTP id 6a1803df08f44-6bb98417c15mr8268816d6.37.1722531157795;
+        Thu, 01 Aug 2024 09:52:37 -0700 (PDT)
 Received: from emerald.lyude.net ([2600:4040:5c4c:a000::c5f])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6bb99adfae0sm270996d6.87.2024.08.01.09.44.16
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6bb99a3bb75sm381086d6.70.2024.08.01.09.52.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 01 Aug 2024 09:44:17 -0700 (PDT)
-Message-ID: <0b4b86d3a2b48466efa081e9076a351aaee6970d.camel@redhat.com>
-Subject: Re: [PATCH v2 1/3] rust: Introduce irq module
+        Thu, 01 Aug 2024 09:52:37 -0700 (PDT)
+Message-ID: <5ddea0cf532432ef8adac1393fe851748c77226c.camel@redhat.com>
+Subject: Re: [PATCH v2 2/3] rust: sync: Introduce lock::Backend::Context
 From: Lyude Paul <lyude@redhat.com>
 To: Benno Lossin <benno.lossin@proton.me>, rust-for-linux@vger.kernel.org
 Cc: Danilo Krummrich <dakr@redhat.com>, airlied@redhat.com, Ingo Molnar
@@ -70,14 +70,14 @@ Cc: Danilo Krummrich <dakr@redhat.com>, airlied@redhat.com, Ingo Molnar
  <gary@garyguo.net>, =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron
  <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>,
  Alice Ryhl <aliceryhl@google.com>, Martin Rodriguez Reboredo
- <yakoyoku@gmail.com>, FUJITA Tomonori <fujita.tomonori@gmail.com>, Aakash
- Sen Sharma <aakashsensharma@gmail.com>, Valentin Obst
- <kernel@valentinobst.de>, linux-kernel@vger.kernel.org
-Date: Thu, 01 Aug 2024 12:44:16 -0400
-In-Reply-To: <fadbccec-a51e-47ff-9c96-0aab043048c8@proton.me>
+ <yakoyoku@gmail.com>, Valentin Obst <kernel@valentinobst.de>, Trevor Gross
+ <tmgross@umich.edu>, Ben Gooding <ben.gooding.dev@gmail.com>,
+ linux-kernel@vger.kernel.org
+Date: Thu, 01 Aug 2024 12:52:36 -0400
+In-Reply-To: <6a6bcf8a-8b33-4f46-b891-4a97da2b73fc@proton.me>
 References: <20240731224027.232642-1-lyude@redhat.com>
-	 <20240731224027.232642-2-lyude@redhat.com>
-	 <fadbccec-a51e-47ff-9c96-0aab043048c8@proton.me>
+	 <20240731224027.232642-3-lyude@redhat.com>
+	 <6a6bcf8a-8b33-4f46-b891-4a97da2b73fc@proton.me>
 Organization: Red Hat Inc.
 User-Agent: Evolution 3.52.2 (3.52.2-1.fc40)
 Precedence: bulk
@@ -91,255 +91,155 @@ X-Mimecast-Originator: redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, 2024-08-01 at 09:51 +0000, Benno Lossin wrote:
+On Thu, 2024-08-01 at 10:11 +0000, Benno Lossin wrote:
 > On 01.08.24 00:35, Lyude Paul wrote:
-> > This introduces a module for dealing with interrupt-disabled contexts,
-> > including the ability to enable and disable interrupts
-> > (with_irqs_disabled()) - along with the ability to annotate functions a=
-s
-> > expecting that IRQs are already disabled on the local CPU.
+> > Now that we've introduced an `IrqDisabled` token for marking contexts i=
+n
+> > which IRQs are disabled, we need a way to be able to pass it to locks t=
+hat
+> > require that IRQs are disabled. In order to continue using the
+> > `lock::Backend` type instead of inventing our own thing, we accomplish =
+this
+> > by adding the associated Context type, along with a `lock_with()` funct=
+ion
+> > that can accept a Context when acquiring a lock. To allow current users=
+ of
+> > context-less locks to keep using the normal `lock()` method, we take an
+> > example from Wedson Almeida Filho's work and add a `where T<'a>: Defaul=
+t`
+> > bound to `lock()` so that it can only be called on lock types where the
+> > context is simply a placeholder value, then re-implement it through the=
+ new
+> > `lock_with()` function.
 > >=20
-> > V2:
-> > * Actually make it so that we check whether or not we have interrupts
-> >   disabled with debug assertions
-> > * Fix issues in the documentation (added suggestions, missing periods, =
-made
-> >   sure that all rustdoc examples compile properly)
-> > * Pass IrqDisabled by value, not reference
-> > * Ensure that IrqDisabled is !Send and !Sync using
-> >   PhantomData<(&'a (), *mut ())>
-> > * Add all of the suggested derives from Benno Lossin
->=20
-> Changelogs are not recorded in the commit message, instead you can put
-> them either in the cover letter or underneath the "---" that is below
-> the tags.
-
-gotcha, too used to parts of the kernel like DRM where we don't usually car=
-e
-
->=20
 > > Signed-off-by: Lyude Paul <lyude@redhat.com>
 > > ---
->=20
-> ie here (anything that you put here will not be included in the final
-> commit message).
->=20
-> >  rust/helpers.c     | 22 ++++++++++++
-> >  rust/kernel/irq.rs | 87 ++++++++++++++++++++++++++++++++++++++++++++++
-> >  rust/kernel/lib.rs |  1 +
-> >  3 files changed, 110 insertions(+)
-> >  create mode 100644 rust/kernel/irq.rs
+> >  rust/kernel/sync/lock.rs          | 17 +++++++++++++++--
+> >  rust/kernel/sync/lock/mutex.rs    |  3 +++
+> >  rust/kernel/sync/lock/spinlock.rs |  1 +
+> >  3 files changed, 19 insertions(+), 2 deletions(-)
 > >=20
-> > diff --git a/rust/helpers.c b/rust/helpers.c
-> > index 87ed0a5b60990..b0afe14372ae3 100644
-> > --- a/rust/helpers.c
-> > +++ b/rust/helpers.c
-> > @@ -69,6 +69,28 @@ void rust_helper_spin_unlock(spinlock_t *lock)
+> > diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
+> > index f6c34ca4d819f..f3ff50c4272cf 100644
+> > --- a/rust/kernel/sync/lock.rs
+> > +++ b/rust/kernel/sync/lock.rs
+> > @@ -38,6 +38,9 @@ pub unsafe trait Backend {
+> >      /// [`unlock`]: Backend::unlock
+> >      type GuardState;
+> >=20
+> > +    /// The context which much be provided to acquire the lock.
+> > +    type Context<'a>;
+> > +
+> >      /// Initialises the lock.
+> >      ///
+> >      /// # Safety
+> > @@ -120,14 +123,24 @@ pub fn new(t: T, name: &'static CStr, key: &'stat=
+ic LockClassKey) -> impl PinIni
 > >  }
-> >  EXPORT_SYMBOL_GPL(rust_helper_spin_unlock);
 > >=20
-> > +unsigned long rust_helper_local_irq_save(void)
-> > +{
-> > +=09unsigned long flags;
-> > +
-> > +=09local_irq_save(flags);
-> > +
-> > +=09return flags;
-> > +}
-> > +EXPORT_SYMBOL_GPL(rust_helper_local_irq_save);
-> > +
-> > +void rust_helper_local_irq_restore(unsigned long flags)
-> > +{
-> > +=09local_irq_restore(flags);
-> > +}
-> > +EXPORT_SYMBOL_GPL(rust_helper_local_irq_restore);
-> > +
-> > +bool rust_helper_irqs_disabled(void)
-> > +{
-> > +=09return irqs_disabled();
-> > +}
-> > +EXPORT_SYMBOL_GPL(rust_helper_irqs_disabled);
-> > +
-> >  void rust_helper_init_wait(struct wait_queue_entry *wq_entry)
-> >  {
-> >  =09init_wait(wq_entry);
-> > diff --git a/rust/kernel/irq.rs b/rust/kernel/irq.rs
-> > new file mode 100644
-> > index 0000000000000..e50110f92f3fa
-> > --- /dev/null
-> > +++ b/rust/kernel/irq.rs
-> > @@ -0,0 +1,87 @@
-> > +// SPDX-License-Identifier: GPL-2.0
-> > +
-> > +//! Interrupt controls
-> > +//!
-> > +//! This module allows Rust code to control processor interrupts. [`wi=
-th_irqs_disabled()`] may be
-> > +//! used for nested disables of interrupts, whereas [`IrqDisabled`] ca=
-n be used for annotating code
-> > +//! that requires that interrupts already be disabled.
+> >  impl<T: ?Sized, B: Backend> Lock<T, B> {
+> > -    /// Acquires the lock and gives the caller access to the data prot=
+ected by it.
+> > -    pub fn lock(&self) -> Guard<'_, T, B> {
+> > +    /// Acquires the lock with the given context and gives the caller =
+access to the data protected
+> > +    /// by it.
+> > +    pub fn lock_with(&self, _context: B::Context<'_>) -> Guard<'_, T, =
+B> {
 >=20
-> My intuition is telling me "requires that interrupts are already
-> disabled." sounds more natural, but I might be wrong.
-
-Maybe "can be used for annotating code that requires interrupts to be
-disabled."?
-
+> Here we need to be careful, without lifetime elision, this signature is:
 >=20
+>     pub fn lock_with<'a, 'b>(&'a self, _context: B::Context<'b>) -> Guard=
+<'a, T, B>
+>=20
+> This is problematic, since with this signature you should be able to
+> create this piece of code:
+>=20
+>     let lock: SpinLockIrq =3D /* ... */
+>=20
+>     let mut guard =3D None;
+>     with_irq_disabled(|irq| guard =3D Some(lock.lock_with(irq)));
+>     // then use guard when `irq` are again enabled!
+>=20
+> So what we want the signature to be is this:
+>    =20
+>     pub fn lock_with<'a>(&'a self, _context: B::Context<'a>) -> Guard<'a,=
+ T, B>
+>=20
+> So we need to ensure that the lifetime of `context` is bound to the
+> lifetime of the guard.
+
+Gotcha
+>=20
+> >          // SAFETY: The constructor of the type calls `init`, so the ex=
+istence of the object proves
+> >          // that `init` was called.
+> >          let state =3D unsafe { B::lock(self.state.get()) };
+> >          // SAFETY: The lock was just acquired.
+> >          unsafe { Guard::new(self, state) }
+> >      }
 > > +
-> > +use bindings;
+> > +    /// Acquires the lock and gives the caller access to the data prot=
+ected by it.
+> > +    #[inline]
+> > +    pub fn lock<'a>(&'a self) -> Guard<'a, T, B>
+> > +    where
+> > +        B::Context<'a>: Default,
+> > +    {
+> > +        self.lock_with(B::Context::default())
+> > +    }
+> >  }
+> >=20
+> >  /// A lock guard.
+> > diff --git a/rust/kernel/sync/lock/mutex.rs b/rust/kernel/sync/lock/mut=
+ex.rs
+> > index 30632070ee670..327e53be4c0f4 100644
+> > --- a/rust/kernel/sync/lock/mutex.rs
+> > +++ b/rust/kernel/sync/lock/mutex.rs
+> > @@ -4,6 +4,8 @@
+> >  //!
+> >  //! This module allows Rust code to use the kernel's `struct mutex`.
+> >=20
 > > +use core::marker::*;
 > > +
-> > +/// A token that is only available in contexts where IRQs are disabled=
-.
-> > +///
-> > +/// [`IrqDisabled`] is marker made available when interrupts are not a=
-ctive. Certain functions take
-> > +/// an `IrqDisabled` in order to indicate that they may only be run in=
- IRQ-free contexts.
-> > +///
-> > +/// This is a marker type; it has no size, and is simply used as a com=
-pile-time guarantee that
-> > +/// interrupts are disabled where required.
-> > +///
-> > +/// This token can be created by [`with_irqs_disabled`]. See [`with_ir=
-qs_disabled`] for examples and
-> > +/// further information.
-> > +#[derive(Copy, Clone, Debug, Ord, Eq, PartialOrd, PartialEq, Hash)]
-> > +pub struct IrqDisabled<'a>(PhantomData<(&'a (), *mut ())>);
-> > +
-> > +impl IrqDisabled<'_> {
-> > +    /// Create a new [`IrqDisabled`] without disabling interrupts.
-> > +    ///
-> > +    /// This creates an [`IrqDisabled`] token, which can be passed to =
-functions that must be run
-> > +    /// without interrupts. If debug assertions are enabled, this func=
-tion will assert that
-> > +    /// interrupts are disabled upon creation. Otherwise, it has no si=
-ze or cost at runtime.
-> > +    ///
-> > +    /// # Panics
-> > +    ///
-> > +    /// If debug assertions are enabled, this function will panic if i=
-nterrupts are not disabled
-> > +    /// upon creation.
-> > +    ///
-> > +    /// # Safety
-> > +    ///
-> > +    /// This function must only be called in contexts where it is alre=
-ady known that interrupts have
-> > +    /// been disabled for the current CPU, as the user is making a pro=
-mise that they will remain
-> > +    /// disabled at least until this [`IrqDisabled`] is dropped.
+> >  /// Creates a [`Mutex`] initialiser with the given name and a newly-cr=
+eated lock class.
+> >  ///
+> >  /// It uses the name if one is given, otherwise it generates one based=
+ on the file name and line
+> > @@ -93,6 +95,7 @@ macro_rules! new_mutex {
+> >  unsafe impl super::Backend for MutexBackend {
+> >      type State =3D bindings::mutex;
+> >      type GuardState =3D ();
+> > +    type Context<'a> =3D PhantomData<&'a ()>;
 >=20
-> This is a bit verbose for taste, what about:
-> "Must only be called in contexts where interrupts are disabled for the
-> current CPU. Additionally they must remain disabled at least until the
-> returned value is dropped."
+> Is there any reason you chose `PhantomData` here? Why not just `()`?
 
-sgtm
-
->=20
-> Importantly the second sentence is not 100% clear from your version.
-> Feel free to take mine (with modifications).
->=20
-> > +    pub unsafe fn new() -> Self {
->=20
-> Do we need this to be public? Ie do you (or someone you know) have a
-> usecase for this? If not, then we can start with this function being
-> private and make it public when necessary.
-
-Yes - there's a few DRM callbacks, drm_crtc_funcs.{vblank_enable,
-vblank_disable, get_vblank_timestamp}, that happen with interrupts already
-disabled that will be using it:
-
-https://gitlab.freedesktop.org/lyudess/linux/-/blob/rvkms-example-07312024/=
-rust/kernel/drm/kms/vblank.rs?ref_type=3Dheads#L24
-
-It's also worth noting that if we weren't going to use this right away I th=
-ink
-it would make more sense just to add the function later instead of having i=
-t
-private, since we don't actually use this anywhere in irq.rs.
-
->=20
-> > +        // SAFETY: FFI call with no special requirements
-> > +        debug_assert!(unsafe { bindings::irqs_disabled() });
-> > +
-> > +        Self(PhantomData)
-> > +    }
-> > +}
-> > +
-> > +/// Run the closure `cb` with interrupts disabled on the local CPU.
-> > +///
-> > +/// This creates an [`IrqDisabled`] token, which can be passed to func=
-tions that must be run
-> > +/// without interrupts.
-> > +///
-> > +/// # Examples
-> > +///
-> > +/// Using [`with_irqs_disabled`] to call a function that can only be c=
-alled with interrupts
-> > +/// disabled:
-> > +///
-> > +/// ```
-> > +/// use kernel::irq::{IrqDisabled, with_irqs_disabled};
-> > +///
-> > +/// // Requiring interrupts be disabled to call a function
-> > +/// fn dont_interrupt_me(_irq: IrqDisabled<'_>) {
-> > +///     /* When this token is available, IRQs are known to be disabled=
-. Actions that rely on this
-> > +///      * can be safely performed
-> > +///      */
-> > +/// }
-> > +///
-> > +/// // Disabling interrupts. They'll be re-enabled once this closure c=
-ompletes.
-> > +/// with_irqs_disabled(|irq| dont_interrupt_me(irq));
-> > +/// ```
-> > +#[inline]
-> > +pub fn with_irqs_disabled<'a, T, F>(cb: F) -> T
-> > +where
-> > +    F: FnOnce(IrqDisabled<'a>) -> T,
->=20
-> You can use this as the signature:
->    =20
->     pub fn with_irqs_disabled<'a, T>(cb: impl FnOnce(IrqDisabled<'a>) -> =
-T) -> T
->=20
-> Not sure if we have any convention for this, but I personally think this
-> version is easier to parse.
-
-sgtm
+Oh! I think I had just naturally assumed that if an associated type had a
+lifetime declared that its contents had to use said lifetime, but I guess
+that's not actually the case :). Will fix this
 
 >=20
 > ---
 > Cheers,
 > Benno
 >=20
-> > +{
-> > +    // SAFETY: FFI call with no special requirements
-> > +    let flags =3D unsafe { bindings::local_irq_save() };
-> > +
-> > +    let ret =3D cb(IrqDisabled(PhantomData));
-> > +
-> > +    // SAFETY: `flags` comes from our previous call to local_irq_save
-> > +    unsafe { bindings::local_irq_restore(flags) };
-> > +
-> > +    ret
-> > +}
-> > diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> > index e6b7d3a80bbce..37835ccd51087 100644
-> > --- a/rust/kernel/lib.rs
-> > +++ b/rust/kernel/lib.rs
-> > @@ -36,6 +36,7 @@
-> >  pub mod firmware;
-> >  pub mod init;
-> >  pub mod ioctl;
-> > +pub mod irq;
-> >  #[cfg(CONFIG_KUNIT)]
-> >  pub mod kunit;
-> >  #[cfg(CONFIG_NET)]
+> >=20
+> >      unsafe fn init(
+> >          ptr: *mut Self::State,
+> > diff --git a/rust/kernel/sync/lock/spinlock.rs b/rust/kernel/sync/lock/=
+spinlock.rs
+> > index ea5c5bc1ce12e..8503d6e8e3de3 100644
+> > --- a/rust/kernel/sync/lock/spinlock.rs
+> > +++ b/rust/kernel/sync/lock/spinlock.rs
+> > @@ -92,6 +92,7 @@ macro_rules! new_spinlock {
+> >  unsafe impl super::Backend for SpinLockBackend {
+> >      type State =3D bindings::spinlock_t;
+> >      type GuardState =3D ();
+> > +    type Context<'a> =3D PhantomData<&'a ()>;
+> >=20
+> >      unsafe fn init(
+> >          ptr: *mut Self::State,
 > > --
 > > 2.45.2
 > >=20
