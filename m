@@ -1,231 +1,112 @@
-Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24958198A2C
-	for <rust-for-linux@vger.kernel.org>; Thu,  1 Aug 2024 14:21:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE8341A3BB0
+	for <rust-for-linux@vger.kernel.org>; Thu,  1 Aug 2024 14:25:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722522083; cv=none; b=hBPOnQPGR22j9YBLNFM9nz679rlpC0Me0cOqRwNWER1lD+koil107sRdoQT4hnT28kaCOK7jtsUY20Ffpp47NSGTEmIwdfb/ii518aIvk+wBm9mlD5I3i2GGE42YZ/zyRR6K5FvoYht6mSSz3NmGLUSTSnOrrhr8OXOWvcuLjBw=
+	t=1722522342; cv=none; b=nycsBiYyygbP6Izgiic4zujOEO+Bldy2W58JwjMzP0uMa3mxAimM74F8rWM4FZnmYzL0cve+x+bNgk7KQ4JWiovWWIx3poPn0Qd6qcWXjE+ROnPaHzzYBpIk9SHXmjVehZHXKOvKDdUtgpFyiHuhSK3fwRK/1I57SHFVwstWNVY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722522083; c=relaxed/simple;
-	bh=PfMqkfN42J4e0dqvTm5SvtF6IOoWYEeysMtd20JQ8DU=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MczLTvvIDmHuwCwDN/URDQ/ECquokvT0iDmBMoTmGrpyMPP2pcb3xB1FXnHDPqXz1pupzaD87EB1uR+/9F6m10cpunksUqSwTJoU4jyqnOne2CbjPNuYNgvpV8/zpewzhDw+C2Q4JjvsqCRC5CPOPxb3TLP9CI4+rcS1SMt6v4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=USCgwMHG; arc=none smtp.client-ip=185.70.40.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1722522342; c=relaxed/simple;
+	bh=xZVYm2alWS2dQPPSFg1bSgQYV8gHGRWp6WJy38yv+jo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=favix+LKaoaPdMDfn+oW5+2uuowEttx8pBMoQ8OVUyjioSiUvg4iASAx0H8VMdncprlbnQxBZy8aiUby5KJoqu87949n4oU0MK8ymXl/Ya4KllFuhf9+/SHGzdqgQPghGc1ix9cacc3W9XHWPrDl5gBFVATSU90mr1XoLVV/5pQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=z673j3pC; arc=none smtp.client-ip=209.85.210.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="USCgwMHG"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1722522079; x=1722781279;
-	bh=LXd8+skXHkJjJoFz+sBO8AAh+6v9cCgpMDN8fc+xS1E=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=USCgwMHGV9qDIGf5J7oBp9DRKD4fXLEFqMIqdsj5pXlPrkUBSMYCeAIJ4coOdpDC8
-	 NFnco217BvGlPDRFr14EBE7rqZ2JFp5JCYSFXK8Gwj2Eae3hZ9QQOH/wV8XLbopj/B
-	 aMYlzNZ+uJCnxilnzD/cYTjAqb8HpfWa5O81fQuxTSBNJrL1aIviHTgQm9hLG1VKas
-	 PT+2qu3hDJucyH2vqb+iXGzTXD/76qKMM3ukhLOFY1Tbhb/SqwPANM0bqKyGw936Os
-	 wTdx3BtU5x5A7EvbVfgg3Nv60O2QfwUTQy7+1G9P15UyKWjjzqjYtwILalcCgVD2jz
-	 YGas/pgZ1IQZQ==
-Date: Thu, 01 Aug 2024 14:21:13 +0000
-To: Andreas Hindborg <nmi@metaspace.dk>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Luis Chamberlain <mcgrof@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, rust-for-linux@vger.kernel.org, linux-modules@vger.kernel.org, linux-kernel@vger.kernel.org, Andreas Hindborg <a.hindborg@samsung.com>, Adam Bratschi-Kaye <ark.email@gmail.com>
-Subject: Re: [PATCH] rust: add `module_params` macro
-Message-ID: <ed2f7416-2631-411d-bb49-5a580dbf51b8@proton.me>
-In-Reply-To: <878qxgnyzd.fsf@metaspace.dk>
-References: <20240705111455.142790-1-nmi@metaspace.dk> <2838cf2e-936c-45de-bb19-af9da66fbe00@proton.me> <87plqso50o.fsf@metaspace.dk> <49cad242-7a7c-4e9e-beb7-4f9c493ce794@proton.me> <878qxgnyzd.fsf@metaspace.dk>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 39a3d6e161169e2681298c1681513f946ad3eb54
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="z673j3pC"
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-70d199fb3dfso5888468b3a.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 01 Aug 2024 07:25:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1722522340; x=1723127140; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=wMXLyrNv6gAVe2xpU5/FnQfc6WbYmugR7fD/Bg6dOs0=;
+        b=z673j3pCSQaybW3F2PCT9olIyRDw+IeX+gDhvgfJKkAVhHhwLyD+2rL7o5kRVKh1aN
+         skGKLAMZZu5wHZab5Lw2Ip6bYSqZmrggxwxrbFGWujCZ4BMuScY8OE2zc2Kpy4Cmmsxi
+         u+ULXH/RJTAFr9i3Z0fk3QHS/EtgWAahSLriLdareTSJNj4lrtBWX4W8sbos2OkI6x9e
+         tqUjQTgNZ/OZ/8xIdP2gtiDff68aRLThkgVATOQaWSVTWHNt+mCLE+//OyTzck7rXwwY
+         nYgtBs6V6GmQNEGVIZvfNrboG4lMMMBNpfVJGiVhfrFBy2GDTNObzgHhiR4naHBzFGPk
+         mFAw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722522340; x=1723127140;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=wMXLyrNv6gAVe2xpU5/FnQfc6WbYmugR7fD/Bg6dOs0=;
+        b=A5j5ch4SlhZAMzXaxEDuY5lP+mmXbpz6xWWeqcFyw6yBjr2IYyfZXU3PGKwiMbm+fT
+         ZxTJStfmljCW7hsaB3/e9li/j5atNVBMQs6sDCD3hpwuHNWCXy0asUnwOXK1ZhhDCQa3
+         FzrK575OfSB4XItomi39Pwd1epVAHGovZsX+h1O/zAOQZZdcpfEHsx4j5h0PpHXe5E7J
+         0fHbyOMXGb/0rinagrshOpKOXrbxCwUk3WNopCTpre8H5LrO2cgedXySNfBwH89QFXIK
+         hBIR7N1a3X1h3+L4Fm95su+zuZWvyj5KbywBLsgoIqYtMheMVE5GmBFt1hGcVZ/jsgJu
+         8y8w==
+X-Forwarded-Encrypted: i=1; AJvYcCUMQtiQK8iI4lqWIEYW3goQmTz3VJVVCmM83w+dBVlFHpG1lw78T10DCONBf/01jfTHgnIHonHsOs1TTGc08i75stleWPaWU1zFCttlnEI=
+X-Gm-Message-State: AOJu0Yw2wRr/MbAJZ1aHe8eOsWf0Sd0Rpxngf2ebMtlrI5doQvUPseLe
+	Gyj1bxFhpxLdbuXlarvgg0H1LYLW5SaFsjbzOJ21dUyOwiZMVCRdTiy5+ypG6cy6T2PIua7HZgG
+	ogFbiYO1c4AUm1GwxRdvB+vIa7qh3b4urTWlH
+X-Google-Smtp-Source: AGHT+IHWwdfCXSbrbEMMYZ1PpRprRVKf1JZMNsbSZ4PVV1VmDOudXf9Ktyc7oZ26GiiZCb3/7NGUglVGUheZkdgmYcw=
+X-Received: by 2002:a17:90a:f02:b0:2cd:ba3e:38a5 with SMTP id
+ 98e67ed59e1d1-2cff9469006mr410991a91.21.1722522339636; Thu, 01 Aug 2024
+ 07:25:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20240801000641.1882-1-dakr@kernel.org> <20240801000641.1882-2-dakr@kernel.org>
+ <CAH5fLgj5xf4QdDU7yWrqUjcmJw4Rqe0-UzesHLhfQRvPqAv8eA@mail.gmail.com> <Zqt_BuyoUk12m61Q@pollux>
+In-Reply-To: <Zqt_BuyoUk12m61Q@pollux>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Thu, 1 Aug 2024 16:25:25 +0200
+Message-ID: <CAH5fLgiSjwZetUm5WW9cjM8gTsCXPMB3byzKgvMRt-o_n24YKg@mail.gmail.com>
+Subject: Re: [PATCH v3 01/25] rust: alloc: add `Allocator` trait
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, 
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	benno.lossin@proton.me, a.hindborg@samsung.com, akpm@linux-foundation.org, 
+	daniel.almeida@collabora.com, faith.ekstrand@collabora.com, 
+	boris.brezillon@collabora.com, lina@asahilina.net, mcanal@igalia.com, 
+	zhiw@nvidia.com, acurrid@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com, 
+	airlied@redhat.com, ajanulgu@redhat.com, lyude@redhat.com, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On 01.08.24 15:40, Andreas Hindborg wrote:
-> "Benno Lossin" <benno.lossin@proton.me> writes:
->> On 01.08.24 13:29, Andreas Hindborg wrote:
->>> "Benno Lossin" <benno.lossin@proton.me> writes:
->>>> On 05.07.24 13:15, Andreas Hindborg wrote:
->>>>> +
->>>>> +/// Types that can be used for module parameters.
->>>>> +///
->>>>> +/// Note that displaying the type in `sysfs` will fail if
->>>>> +/// [`core::str::from_utf8`] (as implemented through the [`core::fmt=
-::Display`]
->>>>> +/// trait) writes more than [`PAGE_SIZE`] bytes (including an additi=
-onal null
->>>>> +/// terminator).
->>>>> +///
->>>>> +/// [`PAGE_SIZE`]: `bindings::PAGE_SIZE`
->>>>> +pub trait ModuleParam: core::fmt::Display + core::marker::Sized {
->>>>> +    /// The `ModuleParam` will be used by the kernel module through =
-this type.
->>>>> +    ///
->>>>> +    /// This may differ from `Self` if, for example, `Self` needs to=
- track
->>>>> +    /// ownership without exposing it or allocate extra space for ot=
-her possible
->>>>> +    /// parameter values. This is required to support string paramet=
-ers in the
->>>>> +    /// future.
->>>>> +    type Value: ?Sized;
->>>>> +
->>>>> +    /// Whether the parameter is allowed to be set without an argume=
-nt.
->>>>> +    ///
->>>>> +    /// Setting this to `true` allows the parameter to be passed wit=
-hout an
->>>>> +    /// argument (e.g. just `module.param` instead of `module.param=
-=3Dfoo`).
->>>>> +    const NOARG_ALLOWED: bool;
->>>>
->>>> I think, there is a better way of doing this. Instead of this bool, we
->>>> do the following:
->>>> 1. have a `const DEFAULT: Option<Self>`
->>>> 2. change the type of the argument of `try_from_param_arg` to
->>>>    `&'static [u8]`
->>>>
->>>> That way we don't have the weird behavior of `try_from_param_arg` that
->>>> for params that don't have a default value.
->>>
->>> Since we have no parameter types for which `NOARG_ALLOWED` is true in
->>> this patch set, it is effectively dead code. I will remove it.
->>
->> Hmm what parameters actually are optional? I looked at the old rust
->> branch and only `bool` is marked as optional. Are there others?
->>
->> If it is used commonly for custom parameters (I could imagine that Rust
->> modules have enums as parameters and specifying nothing could mean the
->> default value), then it might be a good idea to just include it now.
->> (otherwise we might forget the design later)
->=20
-> As far as I can tell from the C code, all parameters are able to have
-> the `NOARG` flag set. We get a null pointer in the callback in that
-> case.
->=20
-> If we want to handle this now, we could drop the `default` field
-> in the Rust module macro. There is no equivalent in the C macros.
-> And then use an `Option<Option<_>>` to represent the value. `None` would
-> be an unset parameter. `Some(None)` would be a parameter without a
-> value. `Some(Some(_))` would be a set parameter with a value. We could
-> probably fix the types so that only parameters with the `NOARG` flag use
-> the double option, others use a single option.
+On Thu, Aug 1, 2024 at 2:27=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> w=
+rote:
+>
+> On Thu, Aug 01, 2024 at 10:19:41AM +0200, Alice Ryhl wrote:
+> > On Thu, Aug 1, 2024 at 2:07=E2=80=AFAM Danilo Krummrich <dakr@kernel.or=
+g> wrote:
+> > > +    /// Free an existing memory allocation.
+> > > +    ///
+> > > +    /// # Safety
+> > > +    ///
+> > > +    /// `ptr` must point to an existing and valid memory allocation =
+created by this `Allocator`
+> > > +    /// instance.
+> > > +    unsafe fn free(ptr: NonNull<u8>) {
+> > > +        // SAFETY: `ptr` is guaranteed to be previously allocated wi=
+th this `Allocator` or NULL.
+> > > +        // Calling `realloc` with a buffer size of zero, frees the b=
+uffer `ptr` points to.
+> > > +        let _ =3D unsafe { Self::realloc(Some(ptr), Layout::new::<()=
+>(), Flags(0)) };
+> > > +    }
+> >
+> > At the very least, the provided implementation of `free` changes the
+> > alignment when it calls `realloc`.
+>
+> Yes, I think that's fine though. Hopefully no one attempts to use the mem=
+ory
+> anymore once `free` is being called.
 
-What did you think of my approach that I detailed above? I would like to
-avoid `Option<Option<_>>` if we can.
+Sure, but if you require the alignment to remain constant throughout
+calls to realloc, then you have to word it in a way that allows a
+different alignment when the new size is zero.
 
-> Or we could just not adopt this feature in the Rust abstractions.
-
-Depends on how common this is and if people need to use it. I think that
-what I proposed above isn't that complex, so it should be easy to
-implement.
-
->>>>> +                    param_type.to_string(),
->>>>> +                    param_ops_path(&param_type).to_string(),
->>>>> +                );
->>>>> +
->>>>> +                self.emit_param("parmtype", &param_name, &param_kern=
-el_type);
->>>>
->>>> Is the spelling intentional? "parmtype"?
->>>
->>> This is intentional. I don't think the kernel is ever parsing this, but
->>> it is parsed by the `modinfo` tool.
->>
->> Hmm, why is it not `paramtype`? Does that conflict with something?
->=20
-> You would have to take that up with the maintainer(s) of the `modinfo`
-> tool. The name is externally dictated [1].
-
-Thanks for the pointer that's what I wanted to know (is it given from
-somewhere else? or is it a name that we came up with), then it's fine :)
-
->>>>> +                            // Note: when we enable r/w parameters, =
-we need to lock here.
->>>>> +
->>>>> +                            // SAFETY: Parameters do not need to be =
-locked because they are
->>>>> +                            // read only or sysfs is not enabled.
->>>>> +                            unsafe {{
->>>>> +                                <{param_type_internal} as kernel::mo=
-dule_param::ModuleParam>::value(
->>>>> +                                    &__{name}_{param_name}_value
->>>>> +                                )
->>>>> +                            }}
->>>>> +                        }}
->>>>> +                    ",
->>>>> +                    name =3D info.name,
->>>>> +                    param_name =3D param_name,
->>>>> +                    param_type_internal =3D param_type_internal,
->>>>> +                );
->>>>> +
->>>>> +                let kparam =3D format!(
->>>>> +                    "
->>>>> +                    kernel::bindings::kernel_param__bindgen_ty_1 {{
->>>>> +                        // SAFETY: Access through the resulting poin=
-ter is
->>>>> +                        // serialized by C side and only happens bef=
-ore module
->>>>> +                        // `init` or after module `drop` is called.
->>>>> +                        arg: unsafe {{ &__{name}_{param_name}_value =
-}}
->>>>> +                            as *const _ as *mut core::ffi::c_void,
->>>>
->>>> Here you should use `addr_of[_mut]!` instead of taking a reference.
->>>
->>> This is a static initializer, so it would be evaluated in const context=
-.
->>> At that time, this is going to be the only reference to
->>> `&__{name}_{param_name}_value` which would be const. So it should be
->>> fine?
->>
->> When compiling this [1] with a sufficiently new Rust version, you will
->> get an error:
->>
->>     warning: creating a shared reference to mutable static is discourage=
-d
->>      --> src/main.rs:4:22
->>       |
->>     4 |     let x =3D unsafe { &foo };
->>       |                      ^^^^ shared reference to mutable static
->>       |
->>       =3D note: for more information, see issue #114447 <https://github.=
-com/rust-lang/rust/issues/114447>
->>       =3D note: this will be a hard error in the 2024 edition
->>       =3D note: this shared reference has lifetime `'static`, but if the=
- static ever gets mutated, or a mutable reference is created, then any furt=
-her use of this shared reference is Undefined Behavior
->>       =3D note: `#[warn(static_mut_refs)]` on by default
->>     help: use `addr_of!` instead to create a raw pointer
->>       |
->>     4 |     let x =3D unsafe { addr_of!(foo) };
->>       |                      ~~~~~~~~~~~~~
->>
->> [1]: https://play.rust-lang.org/?version=3Dstable&mode=3Ddebug&edition=
-=3D2021&gist=3Dc914a438938be6f5fc643ee277efa1d1
->>
->> So I think we should start using `addr_of!` for mutable static now.
->=20
-> Oh. Thanks for the pointer.
->=20
-> Hmm, `addr_of_mut!` still requires the unsafe block. Hopefully that goes
-> away as well with the feature you linked as well.
-
-I think that will take some time until it is gone.
-
-> This also requires `const_mut_refs`, but as I recall that is going to be
-> stabilized soon.
-
-That should only be needed if you need `addr_of_mut!`, but IIUC, you
-only need `addr_of!`, right?
-
----
-Cheers,
-Benno
-
+Alice
