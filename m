@@ -1,43 +1,49 @@
-Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42A1A1A4F30
-	for <rust-for-linux@vger.kernel.org>; Thu,  1 Aug 2024 15:29:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99E4413CA81;
+	Thu,  1 Aug 2024 15:30:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722526173; cv=none; b=HhX6lT71NZ5loLsTRIFmZOIRoHJps5NXM0NXhfwMC2/tXcVVa/WfJXlr+7zVUbQbn5inuZmVhIsYlqHDYAf2h6y4THTTzpkDUd/fasw2z+b9iB1qLHGaRVxXFm2F77+19XEDxagl3FwCJf7pjPtG5z941BdejINUehtzsepEKNI=
+	t=1722526208; cv=none; b=rMxtEAT8k2Z3SbRFENsI5GDblDXQPM/3upFG9VTS6rKK85qSfEk3yaQfoeOHrh4idgPtG/eeXgdK+nQrdU5Os5v5E43aquaZ5PnflgaRfP9b+bsLEN95jnlGvmyxefRZNKn6Qi1KbyJEmOVl18NOp7qTsHTF/P4aOXT6I9vk2FM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722526173; c=relaxed/simple;
-	bh=HCOnPqaXJWD5QUVRR2HlizPpmXk4B0IZp//1F4LRrEk=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=mjPJKQKD64Wr01CmFML2AKDJnFCqp3yvfYfLalcNVKotWMib4zF2Y2vEckH8Y+RmzBF9YH7QPOQWpAYXkZ/zFci3FYhxBxYANc53EzfqQtJ2D15rw7du2qcqSPeK7mR+5zpYczdWZc9vgB5m6I9NXUUKd51lBFafCHzhhrUxyVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=id/m5uFl; arc=none smtp.client-ip=185.70.40.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1722526208; c=relaxed/simple;
+	bh=0PQbDS0wuvLYars5FMo32gpzSiRNyt2BJDuRhnjMKBc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=BboOldYjZGvCz8XHKK1BPij8STVp46Hy3Z16vwtnTDksZiqlLGNkZbAp456JNVNYWRQlHDv+ktE4nxjE843XLMNg7UjUZZkwOQI50Qd+Jbi0/DdxG4TOAulk2S6+SPGstLF1RnYas8vQw+w2T15rr6OUtgybCdgPr6U8b4wF6H0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dXb/ZzH+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="id/m5uFl"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1722526169; x=1722785369;
-	bh=HCOnPqaXJWD5QUVRR2HlizPpmXk4B0IZp//1F4LRrEk=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=id/m5uFlPUW/5b4qXUPL3jqUvhlDA1dFqyEHKZkgiVw32HfZ0icpiK4lCnLZyq9tA
-	 mGmnrzVzkvsjJr6pXiSDIujeXxZ7IiPkcEuRm9csm+OofirV1t/BaOjryYebTuxkM9
-	 t0E908OaTvZV9SOknG6xCMy+XGivrSQmST2sNpsjkCe9hDRQWBmTB8P+LzL3eCMwq8
-	 /ztstmxvSLG9M/3Qg1YUw9RS/RzuMNWgIt9t//EVxdfVIhfaQcx4wefCCKOrX3XfHO
-	 iCScpmrUN9FNFfg2Pz08HRwZ9e9FPO7M267T0l1S3OjdCvGKIBOMo/yzk9w1aJvGzV
-	 FQKmk3CF45qqg==
-Date: Thu, 01 Aug 2024 15:29:15 +0000
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dXb/ZzH+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 533BAC4AF09;
+	Thu,  1 Aug 2024 15:30:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1722526208;
+	bh=0PQbDS0wuvLYars5FMo32gpzSiRNyt2BJDuRhnjMKBc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=dXb/ZzH+0ytsrhg6eRGvKJral/3oOCt1JVJCjYgcYnHKfgfqBV24thiE/g+Fdg7z3
+	 4ViwdfjP7GsG2zZD39PIOalW5KGPhkWJ7uoeH39FlT0ezjZG6+vbQ4X14hHVYM7lXl
+	 TiKKbY3Bj3BAkooWElV6fyOGm3dIQgbdFyQ28YeoJWxO08sJOsuIl38s1IUgi433UL
+	 iimsORy5FluP+raDPookaJafu0333TsD6yuZ1WIvBY735OMF/I24kcBvU6Z5XSkHH8
+	 ZNwCiKX5vKRLlKOzmCnkbCNKqT+vvea5j7iU846S3G0VTGzKMEQ22TFTQjF8Jee/RP
+	 OES/3Sgx520jw==
+Date: Thu, 1 Aug 2024 17:30:00 +0200
+From: Danilo Krummrich <dakr@kernel.org>
 To: Alice Ryhl <aliceryhl@google.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Matthew Wilcox <willy@infradead.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v3] rust: mm: add abstractions for mm_struct and vm_area_struct
-Message-ID: <79ce2394-25af-469f-88f1-5de31b9f48f6@proton.me>
-In-Reply-To: <CAH5fLgi__fgLnifj3ON9iNyugnUzm82VWWduO3Ds6Hz54H1ZWQ@mail.gmail.com>
-References: <20240801-vma-v3-1-db6c1c0afda9@google.com> <82e4816c-cada-46f3-bebf-882ae8ded118@proton.me> <CAH5fLgi__fgLnifj3ON9iNyugnUzm82VWWduO3Ds6Hz54H1ZWQ@mail.gmail.com>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 1f9acde3ca9b22fbb275d5a0943a3b4977e57bd5
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me, a.hindborg@samsung.com,
+	akpm@linux-foundation.org, daniel.almeida@collabora.com,
+	faith.ekstrand@collabora.com, boris.brezillon@collabora.com,
+	lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com,
+	acurrid@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com,
+	airlied@redhat.com, ajanulgu@redhat.com, lyude@redhat.com,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH v3 16/25] rust: alloc: implement `IntoIterator` for `Vec`
+Message-ID: <Zqup-PDGUe_mF2Mo@pollux>
+References: <20240801000641.1882-1-dakr@kernel.org>
+ <20240801000641.1882-17-dakr@kernel.org>
+ <CAH5fLgg+_8dpDh8A+0gW=rxXyhEF1b9za5tNapbODkKW=hjhKQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -45,32 +51,251 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAH5fLgg+_8dpDh8A+0gW=rxXyhEF1b9za5tNapbODkKW=hjhKQ@mail.gmail.com>
 
-On 01.08.24 16:37, Alice Ryhl wrote:
-> On Thu, Aug 1, 2024 at 4:02=E2=80=AFPM Benno Lossin <benno.lossin@proton.=
-me> wrote:
->> On 01.08.24 14:58, Alice Ryhl wrote:
->>> +/// A wrapper for the kernel's `struct mm_struct`.
->>> +///
->>> +/// This type is identical to `MmWithUser` except that it uses `mmput_=
-async` when dropping a
->>> +/// refcount. This means that the destructor of `ARef<MmWithUserAsync>=
-` is safe to call in atomic
->>> +/// context.
->>
->> Missing Invariants.
->=20
-> Hmm. Structs will inherit invariants from their fields, no?
+On Thu, Aug 01, 2024 at 05:07:48PM +0200, Alice Ryhl wrote:
+> On Thu, Aug 1, 2024 at 2:08 AM Danilo Krummrich <dakr@kernel.org> wrote:
+> >
+> > Implement `IntoIterator` for `Vec`, `Vec`'s `IntoIter` type, as well as
+> > `Iterator` for `IntoIter`.
+> >
+> > `Vec::into_iter` disassembles the `Vec` into its raw parts; additionally,
+> > `IntoIter` keeps track of a separate pointer, which is incremented
+> > correspondingsly as the iterator advances, while the length, or the count
+> > of elements, is decremented.
+> >
+> > This also means that `IntoIter` takes the ownership of the backing
+> > buffer and is responsible to drop the remaining elements and free the
+> > backing buffer, if it's dropped.
+> >
+> > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> > ---
+> >  rust/kernel/alloc.rs      |   1 +
+> >  rust/kernel/alloc/kvec.rs | 186 ++++++++++++++++++++++++++++++++++++++
+> >  2 files changed, 187 insertions(+)
+> >
+> > diff --git a/rust/kernel/alloc.rs b/rust/kernel/alloc.rs
+> > index bd93140f3094..f2998ad57456 100644
+> > --- a/rust/kernel/alloc.rs
+> > +++ b/rust/kernel/alloc.rs
+> > @@ -19,6 +19,7 @@
+> >  pub use self::kbox::KVBox;
+> >  pub use self::kbox::VBox;
+> >
+> > +pub use self::kvec::IntoIter;
+> >  pub use self::kvec::KVVec;
+> >  pub use self::kvec::KVec;
+> >  pub use self::kvec::VVec;
+> > diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
+> > index 04cc85f7d92c..50e7705e5686 100644
+> > --- a/rust/kernel/alloc/kvec.rs
+> > +++ b/rust/kernel/alloc/kvec.rs
+> > @@ -12,6 +12,8 @@
+> >      ops::DerefMut,
+> >      ops::Index,
+> >      ops::IndexMut,
+> > +    ptr,
+> > +    ptr::NonNull,
+> >      slice,
+> >      slice::SliceIndex,
+> >  };
+> > @@ -581,3 +583,187 @@ fn eq(&self, other: &$rhs) -> bool { self[..] == other[..] }
+> >  __impl_slice_eq! { [A: Allocator] [T], Vec<U, A> }
+> >  __impl_slice_eq! { [A: Allocator, const N: usize] Vec<T, A>, [U; N] }
+> >  __impl_slice_eq! { [A: Allocator, const N: usize] Vec<T, A>, &[U; N] }
+> > +
+> > +impl<'a, T, A> IntoIterator for &'a Vec<T, A>
+> > +where
+> > +    A: Allocator,
+> > +{
+> > +    type Item = &'a T;
+> > +    type IntoIter = slice::Iter<'a, T>;
+> > +
+> > +    fn into_iter(self) -> Self::IntoIter {
+> > +        self.iter()
+> > +    }
+> > +}
+> > +
+> > +impl<'a, T, A: Allocator> IntoIterator for &'a mut Vec<T, A>
+> > +where
+> > +    A: Allocator,
+> > +{
+> > +    type Item = &'a mut T;
+> > +    type IntoIter = slice::IterMut<'a, T>;
+> > +
+> > +    fn into_iter(self) -> Self::IntoIter {
+> > +        self.iter_mut()
+> > +    }
+> > +}
+> > +
+> > +/// An iterator that moves out of a vector.
+> > +///
+> > +/// This `struct` is created by the `into_iter` method on [`Vec`] (provided by the [`IntoIterator`]
+> > +/// trait).
+> > +///
+> > +/// # Examples
+> > +///
+> > +/// ```
+> > +/// let v = kernel::kvec![0, 1, 2]?;
+> > +/// let iter = v.into_iter();
+> > +///
+> > +/// # Ok::<(), Error>(())
+> > +/// ```
+> > +pub struct IntoIter<T, A: Allocator> {
+> > +    ptr: *mut T,
+> > +    buf: NonNull<T>,
+> > +    len: usize,
+> > +    cap: usize,
+> > +    _p: PhantomData<A>,
+> > +}
+> > +
+> > +impl<T, A> IntoIter<T, A>
+> > +where
+> > +    A: Allocator,
+> > +{
+> > +    fn as_raw_mut_slice(&mut self) -> *mut [T] {
+> > +        ptr::slice_from_raw_parts_mut(self.ptr, self.len)
+> > +    }
+> > +}
+> > +
+> > +impl<T, A> Iterator for IntoIter<T, A>
+> > +where
+> > +    A: Allocator,
+> > +{
+> > +    type Item = T;
+> > +
+> > +    /// # Examples
+> > +    ///
+> > +    /// ```
+> > +    /// let v = kernel::kvec![1, 2, 3]?;
+> > +    /// let mut it = v.into_iter();
+> > +    ///
+> > +    /// assert_eq!(it.next(), Some(1));
+> > +    /// assert_eq!(it.next(), Some(2));
+> > +    /// assert_eq!(it.next(), Some(3));
+> > +    /// assert_eq!(it.next(), None);
+> > +    ///
+> > +    /// # Ok::<(), Error>(())
+> > +    /// ```
+> > +    fn next(&mut self) -> Option<T> {
+> > +        if self.len == 0 {
+> > +            return None;
+> > +        }
+> > +
+> > +        let ptr = self.ptr;
+> > +        if !Vec::<T, A>::is_zst() {
+> > +            // SAFETY: We can't overflow; `end` is guaranteed to mark the end of the buffer.
+> > +            unsafe { self.ptr = self.ptr.add(1) };
+> > +        } else {
+> > +            // For ZST `ptr` has to stay where it is to remain aligned, so we just reduce `self.len`
+> > +            // by 1.
+> > +        }
+> > +        self.len -= 1;
+> > +
+> > +        // SAFETY: `ptr` is guaranteed to point at a valid element within the buffer.
+> > +        Some(unsafe { ptr.read() })
+> > +    }
+> > +
+> > +    /// # Examples
+> > +    ///
+> > +    /// ```
+> > +    /// let v: KVec<u32> = kernel::kvec![1, 2, 3]?;
+> > +    /// let mut iter = v.into_iter();
+> > +    /// let size = iter.size_hint().0;
+> > +    ///
+> > +    /// iter.next();
+> > +    /// assert_eq!(iter.size_hint().0, size - 1);
+> > +    ///
+> > +    /// iter.next();
+> > +    /// assert_eq!(iter.size_hint().0, size - 2);
+> > +    ///
+> > +    /// iter.next();
+> > +    /// assert_eq!(iter.size_hint().0, size - 3);
+> > +    ///
+> > +    /// # Ok::<(), Error>(())
+> > +    /// ```
+> > +    fn size_hint(&self) -> (usize, Option<usize>) {
+> > +        (self.len, Some(self.len))
+> > +    }
+> > +}
+> > +
+> > +impl<T, A> Drop for IntoIter<T, A>
+> > +where
+> > +    A: Allocator,
+> > +{
+> > +    fn drop(&mut self) {
+> > +        // SAFETY: Drop the remaining vector's elements in place, before we free the backing
+> > +        // memory.
+> > +        unsafe { ptr::drop_in_place(self.as_raw_mut_slice()) };
+> > +
+> > +        // If `cap == 0` we never allocated any memory in the first place.
+> > +        if self.cap != 0 {
+> > +            // SAFETY: `self.buf` was previously allocated with `A`.
+> > +            unsafe { A::free(self.buf.cast()) };
+> > +        }
+> 
+> Is this ok for ZST?
 
-No, usually the fields handle their invariants on their own, eg NonNull
-can only be constructed if the pointer is not null. But Refcounted
-structs are somewhat special in this regard, since you cannot construct
-them by-value. Thus if you build a new struct that contains them, then
-that also needs to be refcounted and have its own invariant to guarantee
-that the field still is refcounted.
+Yes, for ZST `self.cap` is always zero.
 
----
-Cheers,
-Benno
-
+> 
+> > +    }
+> > +}
+> > +
+> > +impl<T, A> IntoIterator for Vec<T, A>
+> > +where
+> > +    A: Allocator,
+> > +{
+> > +    type Item = T;
+> > +    type IntoIter = IntoIter<T, A>;
+> > +
+> > +    /// Creates a consuming iterator, that is, one that moves each value out of
+> > +    /// the vector (from start to end). The vector cannot be used after calling
+> > +    /// this.
+> > +    ///
+> > +    /// # Examples
+> > +    ///
+> > +    /// ```
+> > +    /// let v = kernel::kvec![1, 2]?;
+> > +    /// let mut v_iter = v.into_iter();
+> > +    ///
+> > +    /// let first_element: Option<u32> = v_iter.next();
+> > +    ///
+> > +    /// assert_eq!(first_element, Some(1));
+> > +    /// assert_eq!(v_iter.next(), Some(2));
+> > +    /// assert_eq!(v_iter.next(), None);
+> > +    ///
+> > +    /// # Ok::<(), Error>(())
+> > +    /// ```
+> > +    ///
+> > +    /// ```
+> > +    /// let v = kernel::kvec![];
+> > +    /// let mut v_iter = v.into_iter();
+> > +    ///
+> > +    /// let first_element: Option<u32> = v_iter.next();
+> > +    ///
+> > +    /// assert_eq!(first_element, None);
+> > +    ///
+> > +    /// # Ok::<(), Error>(())
+> > +    /// ```
+> > +    #[inline]
+> > +    fn into_iter(self) -> Self::IntoIter {
+> > +        let (ptr, len, cap) = self.into_raw_parts();
+> > +
+> > +        IntoIter {
+> > +            ptr,
+> > +            // SAFETY: `ptr` is either a dangling pointer or a pointer to a valid memory
+> > +            // allocation, allocated with `A`.
+> > +            buf: unsafe { NonNull::new_unchecked(ptr) },
+> > +            len,
+> > +            cap,
+> > +            _p: PhantomData::<A>,
+> > +        }
+> > +    }
+> > +}
+> > --
+> > 2.45.2
+> >
+> 
