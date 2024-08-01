@@ -1,70 +1,68 @@
-Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
+Received: from mail-oa1-f45.google.com (mail-oa1-f45.google.com [209.85.160.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6920310979;
-	Thu,  1 Aug 2024 01:22:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B405913A253;
+	Thu,  1 Aug 2024 01:55:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722475322; cv=none; b=FnuJuiEXNPwgP6vSGbYgTE2FO5n5KJ8ZkPut0MFAS+FM12tWC1V3z+DjHLWU9CmfnwVVHVWI1lJrhlY0l6nRrAZS4fhM1A5h6id23XJAJkA6nZV8QDuPx9MjkLJcLP0yW0klwjVQCm7Tq7bW8wktg6vgpz1phgCt91KAdiXN71k=
+	t=1722477356; cv=none; b=Z+E/wnXB/0VjNLEzDRDt2X8v6UX3bayMd+IBg8kTdFTzx7JDCA9fxg4a7a3EYNgYq12Q7b5spg8nX0njgoFn8mGa27HmPghv2/TMEnTvKvyo+tZ+zjEyYneJ/B2OzMzsv1A8rXtE9YJuTNhovQUunAsPR+FespAxheHWWDqWV6U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722475322; c=relaxed/simple;
-	bh=QMl40B518A1bHhCb+JtSldRX80r07t5zTPu5e9wOqb0=;
+	s=arc-20240116; t=1722477356; c=relaxed/simple;
+	bh=uHbLe+RBFmLlGtZXxZwsejz2HWhXvePnk+ZyQnjRY5I=;
 	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=aLEXpKovzavjijB5eb+WSKh8/OakyNBLzISanyazmL0Itrj9OfpSwWPxjMx25FzciaEwckrp7eHgdBomEGmn607VF/3sbKmxp5IL06G3F2bkmdIv0wXb8ZUyto7pEJOThzFLnp70NU+RzTbCXRuqkTDdqo6oUnwQbfzgaPDL2+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=k6B4RHlo; arc=none smtp.client-ip=209.85.214.179
+	 Mime-Version:Content-Type; b=hw2/KEWUaRjvBnJJ4JakrVl1Ng8cLgBFz/jGjWAZgQJ9uOLhXPuL+8pa/KgKsXRYyjqgXvnlIcRDvcX+bOXL3gu9BpIp+iGK7GO86IFGxB/DetrzQ+r8k5dS4n2fT2c9pgmQeoU69OSaSiLCARriSWQvurk155s2kEOj4nQHxs4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EQC1aiTH; arc=none smtp.client-ip=209.85.160.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="k6B4RHlo"
-Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-1fc53f91ed3so2984115ad.0;
-        Wed, 31 Jul 2024 18:22:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EQC1aiTH"
+Received: by mail-oa1-f45.google.com with SMTP id 586e51a60fabf-26456710cfdso289870fac.0;
+        Wed, 31 Jul 2024 18:55:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1722475321; x=1723080121; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1722477354; x=1723082154; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to:from
          :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=GpNgRuzmu6fNnnwXc6CBDTtU2zTgAmXlH2oDM59VNpA=;
-        b=k6B4RHlozHAUjYJmJIlYXQBN2oBrUaRz1+PdOW0PMlpmIFjP/3IS8UzFJ4vTKGhW3Z
-         jk6nwRvT3e6PKJTywN58gTpRMGWF17rNVJO2cbTwPz7r36DUpRgmMxWDO379SA4EQk8W
-         H7vI9NS3NhdFkq0f7Mx8Zh1+0BBbajRvQvkEXbRiQjV33slAbht/3PTowiYEBcK/R16t
-         0qcwqyaLVPcAfvY5ceTzP5TpfxcM4OV0tmueurW2ACrRc5jKIAmni2oozTi4kXawjbhJ
-         l3IUNuUtweorUF9sM6lyxG/4KGSEq92Cw4e9eQl8Aaw1AUemrJboIryx5Jdmpcwy2lPw
-         SW3w==
+        bh=tv+e6bMcKL54/VgxLJc8fu2XV128ccfY1/dmbY9QKIg=;
+        b=EQC1aiTHWgskWqQAv9SGglZRbVg1PgGt2Hbe/fZ15x82KLb8okPI3xK67OhiL/G06X
+         3c6eYI4+egQcB4COWHnyivZ0FxDwbLrmoGFtFxdoJlUnBXPysO3a4utaKlvmQYceRY7N
+         TWYQdQufY23IeYaB9tYXD8Bc3YypK9Yoe8Y6iW9PQBqu+Uce5M4T+xEGiMjhlc71ILVu
+         IkeKK68iaFOrpQhKnWsujlE8IrJbXAwrCKvhAPknLzAxK9ulfmNPn6PphccoKddiB80O
+         jxiYVQ4Km8GWqmTPEDErPNKr7WbQhu2XMl6b+T1MPXpCYcZVhLsL5BBMcUSRJ56+8pzn
+         RvYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722475321; x=1723080121;
+        d=1e100.net; s=20230601; t=1722477354; x=1723082154;
         h=content-transfer-encoding:mime-version:references:in-reply-to:from
          :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=GpNgRuzmu6fNnnwXc6CBDTtU2zTgAmXlH2oDM59VNpA=;
-        b=nkcgNMoBsKthlHOMrzC8bIXT6+xNaYgTc8+sUJwHtr9sPzs78GMMQ88+AOHz0mcy+J
-         360O9+e++lBDjTwfEkIDJZdfwtEMK8A3x/F7P4i46NMXn8Z+TNC7L6br5oIX4QWzw9W4
-         C8nGofcSPOOSJGpR7/kRJ3iJPPyNxHIWbYcpWHM0dcCrVLPJB+fOD/DJQ93HFRMu4w5K
-         5KN99nRF7+TfHA2BZ+swF3oP4E28fSHzLtP9bUDHwunvJalYHhJhJ3fY9BX2AC+hYESA
-         l+Sng8Qo563a/eFr4XU5WAPk5wt/XLg715GsS98vIEoA3eRvOcC0AHK5PvgvAbjFMRk+
-         2wWg==
-X-Forwarded-Encrypted: i=1; AJvYcCXnlJ8ynIz6oC/MU8nGC6QNWz4PN9Dv+1tPYAvLmPlS1bGiC6LdIXKt4iSkOoX+Xx6LXruz7f5rLXgZULgrdIgB+s4n1HNPWn76cW2PcQqIs4CgnAXe9Dw3gn0BK4XFj2vZEDHr9XQ=
-X-Gm-Message-State: AOJu0YxpcFO0/WDd31K6pmn9rX/w+uJkI9gkRuAtfrcoJ8yyOb298r9+
-	Xbk6ZEH9Z+hZpU2LEmBhDNYGYF0S6PhxXSgMhs9bbhMJb07xG2Yd
-X-Google-Smtp-Source: AGHT+IGxZAa39/oZ5SvY4JjgRduHhKnp4M6RjhwX7J7QZ1rYPwlLVOQEUIhdrRjEXFOKzS9hOmIDkg==
-X-Received: by 2002:a17:902:cec2:b0:1fd:a54e:bc41 with SMTP id d9443c01a7336-1ff4d2af358mr7859045ad.8.1722475320525;
-        Wed, 31 Jul 2024 18:22:00 -0700 (PDT)
+        bh=tv+e6bMcKL54/VgxLJc8fu2XV128ccfY1/dmbY9QKIg=;
+        b=LXnwCEMANvP34HMQyq7k9qmipn90dsDZ2zDOjAwt35wNRREK0e5u3zHg+fMH984USU
+         GuBDPQXyO6zTwEd2qbZbhIW8ruQR1GDVNLncDs7jNi06hixWKDycOvA12O4TAiNI6LTo
+         Aw0DVQSMiJE0Gi0b/R6ecLKFG91LehvzKUnpYpRW2w3jnS+1rhwvkksCqH4NcsOMlecM
+         MxBkLJgBiZN3a2h/nX8Npi6ywsqMMS8M9gafhAa1RlNYkjBZyLIaOp8O4oB8VQdxqLLT
+         j7ZgLsvP6BuvtEQXjRogqGyiyzV5kxTl5GRj1mSRwKoUdD+6ohztYN2KYSSD+zUZ8XXZ
+         0WVQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWh9NsKjR5rh0PuL7/NTOTz3oMM2UJpo4pPmJsy3GgQxZyJ4n5wToln5KyLhWDtXQe8GvbRESBM4xlG/XxnvkwHniSrR286YrgSNwxmUZk=
+X-Gm-Message-State: AOJu0Yzs/yBeENqoxe5+wAAUx00Prt9uARE3Xw8DtMacvOsB/Lj/jq3C
+	4bzKWn1QUYvbv+azQRf5g0M4/fLflZZqYHhFWgvmarGCGE1KpAkW
+X-Google-Smtp-Source: AGHT+IFqv5+X426SpUZw1goD+Qa3VU5DZNz5ABs33goVp6dslaW45gCIpdQJ/ZW7LiyWLoX/9J2F8Q==
+X-Received: by 2002:a05:6870:d208:b0:261:934:873d with SMTP id 586e51a60fabf-2687a6f3b29mr643524fac.5.1722477353480;
+        Wed, 31 Jul 2024 18:55:53 -0700 (PDT)
 Received: from localhost (p4456016-ipxg23001hodogaya.kanagawa.ocn.ne.jp. [153.204.172.16])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1fed7c8cbd5sm126933325ad.57.2024.07.31.18.21.58
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-70ead8225f4sm10886795b3a.98.2024.07.31.18.55.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 31 Jul 2024 18:22:00 -0700 (PDT)
-Date: Thu, 01 Aug 2024 10:21:46 +0900 (JST)
-Message-Id: <20240801.102146.301991981941433687.fujita.tomonori@gmail.com>
-To: aliceryhl@google.com
-Cc: andrew@lunn.ch, fujita.tomonori@gmail.com, netdev@vger.kernel.org,
- rust-for-linux@vger.kernel.org, tmgross@umich.edu,
+        Wed, 31 Jul 2024 18:55:53 -0700 (PDT)
+Date: Thu, 01 Aug 2024 10:55:39 +0900 (JST)
+Message-Id: <20240801.105539.507881194037600942.fujita.tomonori@gmail.com>
+To: tmgross@umich.edu
+Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, andrew@lunn.ch,
  miguel.ojeda.sandonis@gmail.com, benno.lossin@proton.me
-Subject: Re: [PATCH net-next v2 1/6] rust: sizes: add commonly used
- constants
+Subject: Re: [PATCH net-next v2 6/6] net: phy: add Applied Micro QT2025 PHY
+ driver
 From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <CAH5fLgiGAqMTL9mRA_3RXZULV06KF+FJRxYMHC5xsE_=od3Azg@mail.gmail.com>
-References: <20240731042136.201327-2-fujita.tomonori@gmail.com>
-	<6749fc34-c4e0-4971-8ab8-7d39260fc9bb@lunn.ch>
-	<CAH5fLgiGAqMTL9mRA_3RXZULV06KF+FJRxYMHC5xsE_=od3Azg@mail.gmail.com>
+In-Reply-To: <20240731042136.201327-7-fujita.tomonori@gmail.com>
+References: <20240731042136.201327-1-fujita.tomonori@gmail.com>
+	<20240731042136.201327-7-fujita.tomonori@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -74,29 +72,140 @@ Mime-Version: 1.0
 Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 
-On Wed, 31 Jul 2024 14:30:23 +0200
-Alice Ryhl <aliceryhl@google.com> wrote:
+Hi Trevor,
 
->> > +//! Commonly used sizes.
->> > +//!
->> > +//! C headers: [`include/linux/sizes.h`](srctree/include/linux/sizes.h).
->> > +
->> > +/// 0x00000400
->> > +pub const SZ_1K: usize = bindings::SZ_1K as usize;
->>
->> 1K is 1K, independent of it being C 1K or Rust 1K. In this case, does
->> it makes sense to actually use the C header? I don't know? But the
->> Rust people seems to think this is O.K.
-> 
-> Shrug. I don't think it really matters.
-> 
-> If using the C header required adding constants in
-> rust/bindings/bindings_helper.h to actually make the constants usable
-> from Rust, then I would say we should just set the constants from the
-> Rust side. But in this case using the C header just works so I don't
-> think it's an issue.
+On Wed, 31 Jul 2024 13:21:36 +0900
+FUJITA Tomonori <fujita.tomonori@gmail.com> wrote:
 
-Either is fine by me. I'll keep the current version if nobody has
-strong preference.
+> +impl Driver for PhyQT2025 {
+> +    const NAME: &'static CStr = c_str!("QT2025 10Gpbs SFP+");
+> +    const PHY_DEVICE_ID: phy::DeviceId = phy::DeviceId::new_with_exact_mask(0x0043A400);
+> +
+> +    fn probe(dev: &mut phy::Device) -> Result<()> {
+> +        // The hardware is configurable?
+> +        let hw_id = dev.read(C45::new(Mmd::PMAPMD, 0xd001))?;
+> +        if (hw_id >> 8) & 0xff != 0xb3 {
+> +            return Ok(());
+> +        }
+> +
+> +        // The 8051 will remain in the reset state.
+> +        dev.write(C45::new(Mmd::PMAPMD, 0xC300), 0x0000)?;
+> +        // Configure the 8051 clock frequency.
+> +        dev.write(C45::new(Mmd::PMAPMD, 0xC302), 0x0004)?;
+> +        // Non loopback mode.
+> +        dev.write(C45::new(Mmd::PMAPMD, 0xC319), 0x0038)?;
+> +        // Global control bit to select between LAN and WAN (WIS) mode.
+> +        dev.write(C45::new(Mmd::PMAPMD, 0xC31A), 0x0098)?;
+> +        dev.write(C45::new(Mmd::PCS, 0x0026), 0x0E00)?;
+> +        dev.write(C45::new(Mmd::PCS, 0x0027), 0x0893)?;
+> +        dev.write(C45::new(Mmd::PCS, 0x0028), 0xA528)?;
+> +        dev.write(C45::new(Mmd::PCS, 0x0029), 0x0003)?;
+> +        // Configure transmit and recovered clock.
+> +        dev.write(C45::new(Mmd::PMAPMD, 0xC30A), 0x06E1)?;
+> +        // The 8051 will finish the reset state.
+> +        dev.write(C45::new(Mmd::PMAPMD, 0xC300), 0x0002)?;
+> +        // The 8051 will start running from the boot ROM.
+> +        dev.write(C45::new(Mmd::PCS, 0xE854), 0x00C0)?;
 
-Thanks for the quick review!
+You said that it might be nicer to put the above in a table
+previously, I think. The following looks nicer? If so, I will use the
+table in v3.
+
+
+diff --git a/drivers/net/phy/qt2025.rs b/drivers/net/phy/qt2025.rs
+index b93472865bde..1b89495d7017 100644
+--- a/drivers/net/phy/qt2025.rs
++++ b/drivers/net/phy/qt2025.rs
+@@ -27,6 +27,27 @@
+ 
+ struct PhyQT2025;
+ 
++const QT2025_INIT_ROUTINE: &[(C45, u16)] = &[
++    // The 8051 will remain in the reset state.
++    (C45::new(Mmd::PMAPMD, 0xC300), 0x0000),
++    // Configure the 8051 clock frequency.
++    (C45::new(Mmd::PMAPMD, 0xC302), 0x0004),
++    // Non loopback mode.
++    (C45::new(Mmd::PMAPMD, 0xC319), 0x0038),
++    // Global control bit to select between LAN and WAN (WIS) mode.
++    (C45::new(Mmd::PMAPMD, 0xC31A), 0x0098),
++    (C45::new(Mmd::PCS, 0x0026), 0x0E00),
++    (C45::new(Mmd::PCS, 0x0027), 0x0893),
++    (C45::new(Mmd::PCS, 0x0028), 0xA528),
++    (C45::new(Mmd::PCS, 0x0029), 0x0003),
++    // Configure transmit and recovered clock.
++    (C45::new(Mmd::PMAPMD, 0xC30A), 0x06E1),
++    // The 8051 will finish the reset state.
++    (C45::new(Mmd::PMAPMD, 0xC300), 0x0002),
++    // The 8051 will start running from the boot ROM.
++    (C45::new(Mmd::PCS, 0xE854), 0x00C0),
++];
++
+ #[vtable]
+ impl Driver for PhyQT2025 {
+     const NAME: &'static CStr = c_str!("QT2025 10Gpbs SFP+");
+@@ -39,24 +60,9 @@ fn probe(dev: &mut phy::Device) -> Result<()> {
+             return Ok(());
+         }
+ 
+-        // The 8051 will remain in the reset state.
+-        dev.write(C45::new(Mmd::PMAPMD, 0xC300), 0x0000)?;
+-        // Configure the 8051 clock frequency.
+-        dev.write(C45::new(Mmd::PMAPMD, 0xC302), 0x0004)?;
+-        // Non loopback mode.
+-        dev.write(C45::new(Mmd::PMAPMD, 0xC319), 0x0038)?;
+-        // Global control bit to select between LAN and WAN (WIS) mode.
+-        dev.write(C45::new(Mmd::PMAPMD, 0xC31A), 0x0098)?;
+-        dev.write(C45::new(Mmd::PCS, 0x0026), 0x0E00)?;
+-        dev.write(C45::new(Mmd::PCS, 0x0027), 0x0893)?;
+-        dev.write(C45::new(Mmd::PCS, 0x0028), 0xA528)?;
+-        dev.write(C45::new(Mmd::PCS, 0x0029), 0x0003)?;
+-        // Configure transmit and recovered clock.
+-        dev.write(C45::new(Mmd::PMAPMD, 0xC30A), 0x06E1)?;
+-        // The 8051 will finish the reset state.
+-        dev.write(C45::new(Mmd::PMAPMD, 0xC300), 0x0002)?;
+-        // The 8051 will start running from the boot ROM.
+-        dev.write(C45::new(Mmd::PCS, 0xE854), 0x00C0)?;
++        for (reg, val) in QT2025_INIT_ROUTINE {
++            dev.write(*reg, *val)?;
++        }
+ 
+         let fw = Firmware::request(c_str!("qt2025-2.0.3.3.fw"), dev.as_ref())?;
+         if fw.data().len() > SZ_16K + SZ_8K {
+diff --git a/rust/kernel/net/phy/reg.rs b/rust/kernel/net/phy/reg.rs
+index 4cf47335539b..603adfd369c1 100644
+--- a/rust/kernel/net/phy/reg.rs
++++ b/rust/kernel/net/phy/reg.rs
+@@ -49,6 +49,7 @@ pub trait Register: private::Sealed {
+ }
+ 
+ /// A single MDIO clause 22 register address (5 bits).
++#[derive(Clone, Copy)]
+ pub struct C22(u8);
+ 
+ impl C22 {
+@@ -131,6 +132,7 @@ fn read_status(dev: &mut Device) -> Result<u16> {
+ }
+ 
+ /// A single MDIO clause 45 register device and address.
++#[derive(Clone, Copy)]
+ pub struct Mmd(u8);
+ 
+ impl Mmd {
+@@ -174,6 +176,7 @@ impl Mmd {
+ /// a port, then a 16-bit register address to access a location within
+ /// that device. `C45` represents this by storing a [`Mmd`] and
+ /// a register number.
++#[derive(Clone, Copy)]
+ pub struct C45 {
+     devad: Mmd,
+     regnum: u16,
+@@ -181,7 +184,7 @@ pub struct C45 {
+ 
+ impl C45 {
+     /// Creates a new instance of `C45`.
+-    pub fn new(devad: Mmd, regnum: u16) -> Self {
++    pub const fn new(devad: Mmd, regnum: u16) -> Self {
+         Self { devad, regnum }
+     }
+ }
