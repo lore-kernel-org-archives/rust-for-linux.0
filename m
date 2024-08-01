@@ -1,115 +1,248 @@
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-0201.mail-europe.com (mail-0201.mail-europe.com [51.77.79.158])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3734516C87B
-	for <rust-for-linux@vger.kernel.org>; Thu,  1 Aug 2024 09:08:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BDBB16C87B;
+	Thu,  1 Aug 2024 09:11:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.77.79.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722503287; cv=none; b=fxy9aLEc3XjP/dMbXQBsqIT1xT1/GjQnxEyj7+ocWYvAFLSVaYmNELi26Q9N1DHycAyhm6Z0tVqnAOhKWCReezhASQwH9z/nP47VrgQ9zB3BtcfgH74n+jXgJN+ojZDHDDV8LTGzHVDZ724i24FnOLyUhQkVVGnaAlXp8gqZwCo=
+	t=1722503516; cv=none; b=tJ/0A76VfStWeB2RmQrMWfcqn9uk7DeGTd+X0bLVthDbyrA0jYe06pHTntFqAaywpkfOjBvEDhMBzD+z1/NjEx+NAVro8EULvK/9zbAcJQzWUtHN6sTflXSyDR1TDDBraiaxQLgcsp1qV26UdJWbCqDg4Ojvdg5GnA7u5oQXm34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722503287; c=relaxed/simple;
-	bh=4cgHRUWZuN5GT6hqCoW/w0mG65NgGwTSE5vOByclFdE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YpDrO/7n4Mq7pAEcx0GDnByNq5IfkpziaTG4mDk+Ilmxt13iOjjEkWYAEr8wcZVWtsUAB2JisQ3f31eH6FC6DfetGEuQVDfSrG7Kf/GhBs7k0PZgh9FOrvzOCFJdIrMYNxZkwaRK0izimcSE445PDV8C6nSbKWYY0OHUwtA/5dk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=zyNAr03o; arc=none smtp.client-ip=209.85.221.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1722503516; c=relaxed/simple;
+	bh=wUrOrezRYrP4/dh2WiSRWKh4K1ZwTdQujgqtUYD4WUw=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=TxHEiOCaVofxejDWRWCUxgyvEwWIR/0CMsF+XzJPCgFrGvHwCDIR1j3jkPw/nkFvwbCe6PlEG7FPlZ2DheM3tOVSBfwGwX/DYlbW5IBOWPb2+GatMthz3ZLsnGWOLRzld9AYuOiB6SIlqWLX27S/u9CJWJpNnpaZZsrAyNdLGoc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=XWK7aPPS; arc=none smtp.client-ip=51.77.79.158
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="zyNAr03o"
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-368440b073bso1233409f8f.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 01 Aug 2024 02:08:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1722503284; x=1723108084; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ToW3KI8roAC4Do61VeULBMC1otWP2s+jWIh8BYgS1x4=;
-        b=zyNAr03oTwrQqqzYI3JeOfCdiIr91tRFJTjHUcW8+IvLtXaTZjRytIG4qdW0QknrV/
-         t6r8Ug5OH2X2pVeK93iQTdqAYo8DUZuVT6UP/4FvxH1Iv15/WSIUgJywPDSMZYMkC80z
-         GXb8lcans/LqaubexI5oWfaIYQHsSWH6YA/qKDuGX7IxS9RlqSvSh/WqmVhdv3y0Ub4E
-         9sqhHciVG5Gxx7/OudRlILfdVU4AdU+wSADkIbcj93faWmAQlPWkSsHiAZCNYrxVg1EN
-         JDCAGRefYOxQc74D2YCzJh8ehRHUKEaDZyqqejPXZRgxWq30LEbx52PQ4fbpV5V7o2Fv
-         4flA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722503284; x=1723108084;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ToW3KI8roAC4Do61VeULBMC1otWP2s+jWIh8BYgS1x4=;
-        b=TrboaFKe85Ow6SXJDPdhQ2SssTYBSXs7/pOcVpy8sKlMtPWvP4UdR75TLx3djEnzLg
-         VaM1ilg6Wtd3C+JOPw27J2zk4zS5PAPr/ZudphRnXM+ecEjBdOyjyhLsqdafSjsq0Tgu
-         9zT37LYpi496+cBky2gHHKWR0TTJiB4XXsGMK+sCmvZtZwsyhxc61bIibxlCSVothaMo
-         yZZAMXrG5bHx/lS73Jt4J3wfpzSs79QWZT3zimqiMVLuvHamSfMgWJtz4+N+5Vc/Zy6K
-         s4+Jb2eL0ZveWkATHOt12FWGwGsJG3YNEhms7zteKCStLmCvP19rzEt/2tUgJwCyFMBW
-         /dQw==
-X-Forwarded-Encrypted: i=1; AJvYcCURedHnUKc5Rp4HIlmsmuWdAj4VLTOp1uGsZu8qmH9tnqSdydgk+UU+G4HgbQlWEagqu9WYboKMGyrFSfmYOGOsr86QtykdStAtYeyo4Nw=
-X-Gm-Message-State: AOJu0YxAYwSYMPwT0XHzyz4L7ZJVV9MLOoCz3ZOjRGamwLI1EPSrc0lp
-	nsr4sO1SgxyP3dTC10oN76iI4wGTPgiyg2pxSaw5vXpdg1lfMwCVMbHc1OjnR02LSpitKeeIJoe
-	f62ES5HjJ+yKVEdmyYbkocfW87llhpg9llOp+
-X-Google-Smtp-Source: AGHT+IE4PrCeF4zEPR4QJhUj7r4nyMLXvSSgU8B5o78X0bqSZ7xJZrnWJkHxFn4cN8KAQMbCISIm+aYfv6cH83GhURU=
-X-Received: by 2002:a5d:4844:0:b0:36b:b08f:64b3 with SMTP id
- ffacd0b85a97d-36bb35d2828mr621605f8f.20.1722503284256; Thu, 01 Aug 2024
- 02:08:04 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="XWK7aPPS"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1722503509; x=1722762709;
+	bh=iZtejEgOwUEDu5fFayTCiRxlXEYx2USjuF1rBVMv5/s=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=XWK7aPPSpBTbbVlymssfjKcPtZSsRfPw952kJtGwJbUKEN/7icU8vQmFfWMuYffqc
+	 Zj+4NAU3+p9HtMex28+k60au2bc/pbh1BYtXM6yiddgPTEneA/6b49nnSLu4xJ3kLP
+	 xk/hTu+I0nYO1UjJi57ectKx5Zy2wYzPcgdtSiVIy4+twsZEImRZWuXaWiOxHgD2YA
+	 Ox3RTmLkgib1xFaW/Hz8mZvTGVmw9nbcR36QN3fb043fXrQiJMx/0UebDNNpMij9HE
+	 XNm70ngPQFlFYkHcPqwoQo0qjBWbQxM4s4nOw76mtvYRqymADrrAohTz0zjxw39Epe
+	 Mq47O58tZMeTQ==
+Date: Thu, 01 Aug 2024 09:11:43 +0000
+To: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Marco Elver <elver@google.com>, Coly Li <colyli@suse.de>, Paolo Abeni <pabeni@redhat.com>, Pierre Gondois <pierre.gondois@arm.com>, Ingo Molnar <mingo@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Wei Yang <richard.weiyang@gmail.com>, Matthew Wilcox <willy@infradead.org>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, Kees Cook <kees@kernel.org>
+Subject: Re: [PATCH v3 06/10] rust: list: add List
+Message-ID: <3e6a37d1-2460-42ce-8bc3-0b210759efa8@proton.me>
+In-Reply-To: <20240723-linked-list-v3-6-89db92c7dbf4@google.com>
+References: <20240723-linked-list-v3-0-89db92c7dbf4@google.com> <20240723-linked-list-v3-6-89db92c7dbf4@google.com>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: 8f87a6cabbbebf3d7d90fe65198a99e9076a5c4f
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240731042136.201327-1-fujita.tomonori@gmail.com>
- <20240731042136.201327-3-fujita.tomonori@gmail.com> <5525a61c-01b7-4032-97ee-4997b19979ad@lunn.ch>
- <CAH5fLggyhvEhQL_VWdd38QyFuegPY5mXY_J-jZrh9w8=WPb2Vg@mail.gmail.com> <5055051e-b058-400f-861d-e7438bebb017@lunn.ch>
-In-Reply-To: <5055051e-b058-400f-861d-e7438bebb017@lunn.ch>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 1 Aug 2024 11:07:52 +0200
-Message-ID: <CAH5fLghBvd3phRWBzayTVQWyKqBYLNw9dsYKPmMHYZ1_jaWL7g@mail.gmail.com>
-Subject: Re: [PATCH net-next v2 2/6] rust: net::phy support probe callback
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, tmgross@umich.edu, 
-	miguel.ojeda.sandonis@gmail.com, benno.lossin@proton.me
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jul 31, 2024 at 10:57=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote=
-:
->
-> > > > +    /// `phydev` must be passed by the corresponding callback in `=
-phy_driver`.
-> > > > +    unsafe extern "C" fn probe_callback(phydev: *mut bindings::phy=
-_device) -> core::ffi::c_int {
-> > > > +        from_result(|| {
-> > > > +            // SAFETY: This callback is called only in contexts
-> > > > +            // where we can exclusively access to `phy_device`, so=
- the accessors on
-> > > > +            // `Device` are okay to call.
-> > >
-> > > This one is slightly different to other callbacks. probe is called
-> > > without the mutex. Instead, probe is called before the device is
-> > > published. So the comment is correct, but given how important Rust
-> > > people take these SAFETY comments, maybe it should indicate it is
-> > > different to others?
-> >
-> > Interesting. Given that we don't hold the mutex, does that mean that
-> > some of the methods on Device are not safe to call in this context? Or
-> > is there something else that makes it okay to call them despite not
-> > holding the mutex?
->
-> probe is always the first method called on a device driver to match it
-> to a device. Traditionally, if probe fails, the device is destroyed,
-> since there is no driver to drive it. probe needs to complete
-> successfully before the phy_device structure is published so a MAC
-> driver can reference it. If it is not published, nothing can have
-> access to it, so you don't need to worry about parallel activities on
-> it.
->
-> And a PHY driver does not need a probe function. Historically, probe
-> was all about, can this driver drive this hardware. However, since we
-> have ID registers in the hardware, we already know the driver can
-> drive the hardware. So probe is now about setting up whatever needs
-> setting up. For PHY drivers, there is often nothing, no local state
-> needed, etc. So the probe is optional.
+On 23.07.24 10:22, Alice Ryhl wrote:
+> +    /// Add the provided item to the back of the list.
+> +    pub fn push_back(&mut self, item: ListArc<T, ID>) {
+> +        let raw_item =3D ListArc::into_raw(item);
+> +        // SAFETY:
+> +        // * We just got `raw_item` from a `ListArc`, so it's in an `Arc=
+`.
+> +        // * If this requirement is violated, then the previous caller o=
+f `prepare_to_insert`
+> +        //   violated the safety requirement that they can't give up own=
+ership of the `ListArc`
+> +        //   until they call `post_remove`.
 
-Makes sense. Thanks for the explanation!
+I don't like this negative phrasing, what about "Since we have ownership
+of the `ListArc`, `post_remove` must have been called after each
+previous call to `prepare_to_insert`."?
 
-Alice
+> +        // * We own the `ListArc`.
+> +        // * Removing items from this list is always done using `remove_=
+internal_inner`, which
+> +        //   calls `post_remove` before giving up ownership.
+> +        let list_links =3D unsafe { T::prepare_to_insert(raw_item) };
+> +        // SAFETY: We have not yet called `post_remove`, so `list_links`=
+ is still valid.
+> +        let item =3D unsafe { ListLinks::fields(list_links) };
+> +
+> +        if self.first.is_null() {
+> +            self.first =3D item;
+> +            // SAFETY: The caller just gave us ownership of these fields=
+.
+> +            // INVARIANT: A linked list with one item should be cyclic.
+> +            unsafe {
+> +                (*item).next =3D item;
+> +                (*item).prev =3D item;
+> +            }
+> +        } else {
+> +            let next =3D self.first;
+> +            // SAFETY: By the type invariant, this pointer is valid or n=
+ull. We just checked that
+> +            // it's not null, so it must be valid.
+> +            let prev =3D unsafe { (*next).prev };
+> +            // SAFETY: Pointers in a linked list are never dangling, and=
+ the caller just gave us
+> +            // ownership of the fields on `item`.
+> +            // INVARIANT: This correctly inserts `item` between `prev` a=
+nd `next`.
+> +            unsafe {
+> +                (*item).next =3D next;
+> +                (*item).prev =3D prev;
+> +                (*prev).next =3D item;
+> +                (*next).prev =3D item;
+> +            }
+
+You have this pattern several times, maybe make a function for this?
+
+> +        }
+> +    }
+> +
+> +    /// Add the provided item to the front of the list.
+> +    pub fn push_front(&mut self, item: ListArc<T, ID>) {
+> +        let raw_item =3D ListArc::into_raw(item);
+> +        // SAFETY:
+> +        // * We just got `raw_item` from a `ListArc`, so it's in an `Arc=
+`.
+> +        // * If this requirement is violated, then the previous caller o=
+f `prepare_to_insert`
+> +        //   violated the safety requirement that they can't give up own=
+ership of the `ListArc`
+> +        //   until they call `post_remove`.
+> +        // * We own the `ListArc`.
+> +        // * Removing items] from this list is always done using `remove=
+_internal_inner`, which
+
+Typo: "]".
+
+> +        //   calls `post_remove` before giving up ownership.
+> +        let list_links =3D unsafe { T::prepare_to_insert(raw_item) };
+> +        // SAFETY: We have not yet called `post_remove`, so `list_links`=
+ is still valid.
+> +        let item =3D unsafe { ListLinks::fields(list_links) };
+> +
+> +        if self.first.is_null() {
+> +            // SAFETY: The caller just gave us ownership of these fields=
+.
+> +            // INVARIANT: A linked list with one item should be cyclic.
+> +            unsafe {
+> +                (*item).next =3D item;
+> +                (*item).prev =3D item;
+> +            }
+> +        } else {
+> +            let next =3D self.first;
+> +            // SAFETY: We just checked that `next` is non-null.
+> +            let prev =3D unsafe { (*next).prev };
+> +            // SAFETY: Pointers in a linked list are never dangling, and=
+ the caller just gave us
+> +            // ownership of the fields on `item`.
+> +            // INVARIANT: This correctly inserts `item` between `prev` a=
+nd `next`.
+> +            unsafe {
+> +                (*item).next =3D next;
+> +                (*item).prev =3D prev;
+> +                (*prev).next =3D item;
+> +                (*next).prev =3D item;
+> +            }
+> +        }
+> +        self.first =3D item;
+> +    }
+> +
+> +    /// Removes the last item from this list.
+> +    pub fn pop_back(&mut self) -> Option<ListArc<T, ID>> {
+> +        if self.first.is_null() {
+> +            return None;
+> +        }
+> +
+> +        // SAFETY: We just checked that the list is not empty.
+
+Additionally you need the type invariant that pointers in linked lists
+are valid... This is a bit annoying, maybe in the future, we can have a
+`ValidPtr` type that we could use here instead to avoid these
+comments...
+
+> +        let last =3D unsafe { (*self.first).prev };
+> +        // SAFETY: The last item of this list is in this list.
+> +        Some(unsafe { self.remove_internal(last) })
+> +    }
+> +
+> +    /// Removes the first item from this list.
+> +    pub fn pop_front(&mut self) -> Option<ListArc<T, ID>> {
+> +        if self.first.is_null() {
+> +            return None;
+> +        }
+> +
+> +        // SAFETY: The first item of this list is in this list.
+> +        Some(unsafe { self.remove_internal(self.first) })
+> +    }
+> +
+> +    /// Removes the provided item from this list and returns it.
+> +    ///
+> +    /// This returns `None` if the item is not in the list. (Note that b=
+y the safety requirements,
+> +    /// this means that the item is not in any list.)
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// `item` must not be in a different linked list (with the same id)=
+.
+> +    pub unsafe fn remove(&mut self, item: &T) -> Option<ListArc<T, ID>> =
+{
+> +        let mut item =3D unsafe { ListLinks::fields(T::view_links(item))=
+ };
+> +        // SAFETY: The user provided a reference, and reference are neve=
+r dangling.
+> +        //
+> +        // As for why this is not a data race, there are two cases:
+> +        //
+> +        //  * If `item` is not in any list, then these fields are read-o=
+nly and null.
+> +        //  * If `item` is in this list, then we have exclusive access t=
+o these fields since we
+> +        //    have a mutable reference to the list.
+> +        //
+> +        // In either case, there's no race.
+> +        let ListLinksFields { next, prev } =3D unsafe { *item };
+> +
+> +        debug_assert_eq!(next.is_null(), prev.is_null());
+> +        if !next.is_null() {
+> +            // This is really a no-op, but this ensures that `item` is a=
+ raw pointer that was
+> +            // obtained without going through a pointer->reference->poin=
+ter conversion rountrip.
+> +            // This ensures that the list is valid under the more restri=
+ctive strict provenance
+> +            // ruleset.
+> +            //
+> +            // SAFETY: We just checked that `next` is not null, and it's=
+ not dangling by the
+> +            // list invariants.
+> +            unsafe {
+> +                debug_assert_eq!(item, (*next).prev);
+> +                item =3D (*next).prev;
+> +            }
+
+How bad do you reckon is this for performance?
+
+---
+Cheers,
+Benno
+
+> +
+> +            // SAFETY: We just checked that `item` is in a list, so the =
+caller guarantees that it
+> +            // is in this list. The pointers are in the right order.
+> +            Some(unsafe { self.remove_internal_inner(item, next, prev) }=
+)
+> +        } else {
+> +            None
+> +        }
+> +    }
+
