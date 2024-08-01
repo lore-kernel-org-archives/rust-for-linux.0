@@ -1,135 +1,212 @@
-Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7312825757
-	for <rust-for-linux@vger.kernel.org>; Thu,  1 Aug 2024 18:26:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84E191E4A6
+	for <rust-for-linux@vger.kernel.org>; Thu,  1 Aug 2024 18:34:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722536818; cv=none; b=iHFE9YxszubvH79PRA5NpkRZxqBSnjrTIo/pYZo1ID/TfOgshsg6yzTT11Ew+q9xQMMGtKZ/bQPkJAfJZLboSi5jTN9E7necphnikR8ERDoD60e+uv39sEUx48bBnlnwDtKowrslyELW1kYP9eogKPRvuZsYXJlEbLAPFB0qSeA=
+	t=1722537269; cv=none; b=c5yD/XsQRn7s2cd4fHo8D4f57R0L2nGHvIBHPbI6XH9b+fRBUgwhm6IZ2A6zmG9U87bq/uHjzPZ+G0v5Lmr2cBr6hIANIhnV/LK9WN4Bb9VN0TPhkp0EYFaGbHjj4gpOSxtZLJTOKHavsc88g2o0i4jUBF2UsNFFvHjYMsmrygk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722536818; c=relaxed/simple;
-	bh=lHbIHLFhtQNciusEsnruiPFrsux+ubJl8cotIGgu9QA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cWZDC/xz06v+fz3koh4M7B+iYhM0EGYoMEo6yU8krv5rNS43TZ2AUfRQ26EBLwxxxnOfzxoOAyktU6tMqwWcEmcGdil1qoMgT7knTddcigHzO/grF6y/1lOu32OHR7GaopUm57OiXR5jPk+S1IdXaZYqgEe8msY3ZOQlZCEbLDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rM8HMEdn; arc=none smtp.client-ip=209.85.221.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1722537269; c=relaxed/simple;
+	bh=7tR7uU8C8V1R48q51+nmPkfNTligJoSIeKz1Y7QfQLc=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=RERzULkDdh6B+ZTVgSculnv9jXaic9MhOs5uq6+IyDIUuOIN628vLDu4oO89oSg00RFv6clZP9XFU0ssgsUf/ctXyTqSVPuyzYviVVhNym8LibBtRqyIiOcKV0Q0jITr2DTD5tlb0/bkn9gScHfT6SMYMZjiaxfPrSvPTXoVdD4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=H1GgQwFZ; arc=none smtp.client-ip=185.70.43.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rM8HMEdn"
-Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-3687f8fcab5so3602690f8f.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 01 Aug 2024 11:26:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1722536815; x=1723141615; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2GkfD0g8hTHOTE05py9mAwmf1QYzZu9yR2OS6+zzI80=;
-        b=rM8HMEdn29YaHok0uYeb+av22l4a6P6iEOCn7o/LV9v4EdyOHlzN6IHGcd7CIJUX4E
-         JZP78BzADOkLTOY7VGY9mzcY9lR6uv++P+4QzVCV1NtxeUxIG0XyNC1oggfy9WKHqHnr
-         5j0ukVCpF+G0UVmRGOy318RMhnFbdGmIxT5aTPYg2vB+iIs5zRGWaOqVXQWWidujkT9n
-         p+UnahzdH7A75jfvm/FO4wxFf1spK+L7Jy9iIzi8iDGP6RIGgAXcfKIwYo4nSJLI811z
-         NJKXXEYTd53a8/xk+mV8Z6VM27AKDtUwwSE+V3jLZat1FcZ7Akz3iFDWExUDsyrIdUxd
-         MWPA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722536815; x=1723141615;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=2GkfD0g8hTHOTE05py9mAwmf1QYzZu9yR2OS6+zzI80=;
-        b=U7wtwgmoHxU1P6O+WHcAN1/Jp5OK7bPm6vjvq0o7lLw1KwJM57gdxw3ftUfQCI0ppm
-         RXe+2HzIYBpNZ14DdHKbpwHlnwJHkkonaDxKNi5r8osN9vGfyQGSweGlZGI7cUlV+Pjx
-         N6aY9gMhT/Yh62TZ6p9ybuQtGRjIo0PyL7f7fYB6CiS4O0OkSiawiED0ZRT8mYZWbXig
-         PQxUfbpY2aWre19MkJ8mFocFx/uW1ligZc/RN0t9Lr9VKmVISmyWoAJGW9wiLDyft+t6
-         2K5o6vthxsYEXSA0SqH0tCOANefP2IYiBZOVoghg2r0WjmP1BGV17+gZB/eru5ML/9qD
-         KkcA==
-X-Forwarded-Encrypted: i=1; AJvYcCVAjpJQQiwb8eniRFOfuyuyNxIpClgCIcoVCYYn/q+vCRwpgZO1Oj8tPG7B4dAk4VAEInkcyi7spxBMDZBhsjIFjVQ1OhjkRBpVKjm/bOA=
-X-Gm-Message-State: AOJu0YyQFdhSddfy8Pu8PvoLEOj7bfB7YGF5jJxy7tww2j8/a5Tj/DGn
-	7Lf5XNui/8vaX+pYSLH/fgSpipTtI65N0GlntXCmTcaOP5BtYaCdmZD8Uh5auSzadivAC85M3iZ
-	pYNeqGH0hnhW6KTdTJPA6B1ehJ4L/f7fOs5xD
-X-Google-Smtp-Source: AGHT+IGwaGkw42I/amAH0IQd6LdSV/vkI/phXZAUV/1lm1vKxK6jNhFtpwWWcpoa+ZqQDQpJUtDs/GFofzfYgLUeu2Q=
-X-Received: by 2002:adf:a356:0:b0:368:3895:67d6 with SMTP id
- ffacd0b85a97d-36bbc0cbe69mr533475f8f.20.1722536814320; Thu, 01 Aug 2024
- 11:26:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="H1GgQwFZ"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1722537262; x=1722796462;
+	bh=X0nPVtOydLuaFobnZaEPenFf+lze00gZVzjdM38Of0w=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=H1GgQwFZNjXkuS/bkqXvrX5upN/4Mwbi7qXv7e0/B0GZmPpEZLbv2CUblMz1sTCdM
+	 hM100paSsjTlN13OTcR49WPieMi//PIFO5Cj+KgP8ORjcGS88hGoM4PUqyEgMvifQC
+	 ojxE6dDmRYWkL2guBmHUL+Q0hG3UGL0XPKOgzA4VyU2mwiaArcAIYFKUMmsxmIjc+J
+	 z6Ig1UaPsvaZjug0QA7NWx5f4GlN3hh7Iz6p4qcGoALHZGD3HNi+Lf3I9f9wQGaEKZ
+	 wXJbNiV3aK7IYRX7r2/tnE4qNqEoe4O1V5wccivn5T12eKCyDXwgg+EGwggtZB/NQH
+	 rjXEW5WAebf8A==
+Date: Thu, 01 Aug 2024 18:34:17 +0000
+To: Lyude Paul <lyude@redhat.com>, rust-for-linux@vger.kernel.org
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Danilo Krummrich <dakr@redhat.com>, airlied@redhat.com, Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, FUJITA Tomonori <fujita.tomonori@gmail.com>, Aakash Sen Sharma <aakashsensharma@gmail.com>, Valentin Obst <kernel@valentinobst.de>, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 1/3] rust: Introduce irq module
+Message-ID: <461b5dc6-a286-418d-83b0-e7cb7fd7496a@proton.me>
+In-Reply-To: <0b4b86d3a2b48466efa081e9076a351aaee6970d.camel@redhat.com>
+References: <20240731224027.232642-1-lyude@redhat.com> <20240731224027.232642-2-lyude@redhat.com> <fadbccec-a51e-47ff-9c96-0aab043048c8@proton.me> <0b4b86d3a2b48466efa081e9076a351aaee6970d.camel@redhat.com>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: 9407c2d0ccc8698be61a806b6b9029868e40c83d
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240628-tracepoint-v4-0-353d523a9c15@google.com>
- <20240628-tracepoint-v4-1-353d523a9c15@google.com> <20240731170508.GJ33588@noisy.programming.kicks-ass.net>
- <CAH5fLghYodekhH-1A0BWZVwgbqkWbP3WP70-us2FtHqvOqD_Hw@mail.gmail.com> <20240801102804.GQ33588@noisy.programming.kicks-ass.net>
-In-Reply-To: <20240801102804.GQ33588@noisy.programming.kicks-ass.net>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 1 Aug 2024 20:26:42 +0200
-Message-ID: <CAH5fLgiOe1ECCwE1cwczsT13iPyymdUTbV-9ZHeDrp_OGq5FgQ@mail.gmail.com>
-Subject: Re: [PATCH v4 1/2] rust: add static_key_false
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Josh Poimboeuf <jpoimboe@kernel.org>, 
-	Jason Baron <jbaron@akamai.com>, Ard Biesheuvel <ardb@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	linux-trace-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, linux-arch@vger.kernel.org, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, "Peter Zijlstra (Intel)" <peterz@infradaed.org>, 
-	Sean Christopherson <seanjc@google.com>, Uros Bizjak <ubizjak@gmail.com>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>, 
-	Oliver Upton <oliver.upton@linux.dev>, Mark Rutland <mark.rutland@arm.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Fuad Tabba <tabba@google.com>, 
-	linux-arm-kernel@lists.infradead.org, 
-	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Albert Ou <aou@eecs.berkeley.edu>, Anup Patel <apatel@ventanamicro.com>, 
-	Andrew Jones <ajones@ventanamicro.com>, Alexandre Ghiti <alexghiti@rivosinc.com>, 
-	Conor Dooley <conor.dooley@microchip.com>, Samuel Holland <samuel.holland@sifive.com>, 
-	linux-riscv@lists.infradead.org, Huacai Chen <chenhuacai@kernel.org>, 
-	WANG Xuerui <kernel@xen0n.name>, Bibo Mao <maobibo@loongson.cn>, 
-	Tiezhu Yang <yangtiezhu@loongson.cn>, Andrew Morton <akpm@linux-foundation.org>, 
-	Tianrui Zhao <zhaotianrui@loongson.cn>, loongarch@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Aug 1, 2024 at 12:28=E2=80=AFPM Peter Zijlstra <peterz@infradead.or=
-g> wrote:
->
-> On Wed, Jul 31, 2024 at 11:34:13PM +0200, Alice Ryhl wrote:
->
-> > > Please work harder to not have to duplicate stuff like this.
-> >
-> > I really didn't want to duplicate it, but it's very hard to find a
-> > performant alternative. Is there any way we could accept duplication
-> > only in the cases where an 'i' parameter is used? I don't have the
-> > choice of using a Rust helper for 'i' parameters.
-> >
-> > Perhaps one option could be to put the Rust code inside jump_label.h
-> > and have the header file evaluate to either C or Rust depending on the
-> > value of some #ifdefs?
-> >
-> > #ifndef RUST_ASM
-> > /* existing C code goes here */
-> > #endif
-> > #ifdef RUST_ASM
-> > // rust code goes here
-> > #endif
-> >
-> > That way the duplication is all in a single file. It would also avoid
-> > the need for duplicating the nop5 string, as the Rust case is still
-> > going through the C preprocessor and can use the existing #define.
->
-> I suppose that is slightly better, but ideally you generate the whole of
-> the Rust thing from the C version. After all, Clang can already parse
-> this.
->
-> That said, with the below patch, I think you should be able to reuse the
-> JUMP_TABLE_ENTRY macro like:
->
->         JUMP_TABLE_ENTRY({0}, {1}, {2} + {3})
+On 01.08.24 18:44, Lyude Paul wrote:
+> On Thu, 2024-08-01 at 09:51 +0000, Benno Lossin wrote:
+>> On 01.08.24 00:35, Lyude Paul wrote:
+>>> diff --git a/rust/kernel/irq.rs b/rust/kernel/irq.rs
+>>> new file mode 100644
+>>> index 0000000000000..e50110f92f3fa
+>>> --- /dev/null
+>>> +++ b/rust/kernel/irq.rs
+>>> @@ -0,0 +1,87 @@
+>>> +// SPDX-License-Identifier: GPL-2.0
+>>> +
+>>> +//! Interrupt controls
+>>> +//!
+>>> +//! This module allows Rust code to control processor interrupts. [`wi=
+th_irqs_disabled()`] may be
+>>> +//! used for nested disables of interrupts, whereas [`IrqDisabled`] ca=
+n be used for annotating code
+>>> +//! that requires that interrupts already be disabled.
+>>
+>> My intuition is telling me "requires that interrupts are already
+>> disabled." sounds more natural, but I might be wrong.
+>=20
+> Maybe "can be used for annotating code that requires interrupts to be
+> disabled."?
 
-Yeah, I think this can work. I will submit a follow-up patch that
-removes the duplication soon.
+SGTM
 
-Alice
+>>> +
+>>> +use bindings;
+>>> +use core::marker::*;
+>>> +
+>>> +/// A token that is only available in contexts where IRQs are disabled=
+.
+>>> +///
+>>> +/// [`IrqDisabled`] is marker made available when interrupts are not a=
+ctive. Certain functions take
+>>> +/// an `IrqDisabled` in order to indicate that they may only be run in=
+ IRQ-free contexts.
+>>> +///
+>>> +/// This is a marker type; it has no size, and is simply used as a com=
+pile-time guarantee that
+>>> +/// interrupts are disabled where required.
+>>> +///
+>>> +/// This token can be created by [`with_irqs_disabled`]. See [`with_ir=
+qs_disabled`] for examples and
+>>> +/// further information.
+>>> +#[derive(Copy, Clone, Debug, Ord, Eq, PartialOrd, PartialEq, Hash)]
+>>> +pub struct IrqDisabled<'a>(PhantomData<(&'a (), *mut ())>);
+>>> +
+>>> +impl IrqDisabled<'_> {
+>>> +    /// Create a new [`IrqDisabled`] without disabling interrupts.
+>>> +    ///
+>>> +    /// This creates an [`IrqDisabled`] token, which can be passed to =
+functions that must be run
+>>> +    /// without interrupts. If debug assertions are enabled, this func=
+tion will assert that
+>>> +    /// interrupts are disabled upon creation. Otherwise, it has no si=
+ze or cost at runtime.
+>>> +    ///
+>>> +    /// # Panics
+>>> +    ///
+>>> +    /// If debug assertions are enabled, this function will panic if i=
+nterrupts are not disabled
+>>> +    /// upon creation.
+>>> +    ///
+>>> +    /// # Safety
+>>> +    ///
+>>> +    /// This function must only be called in contexts where it is alre=
+ady known that interrupts have
+>>> +    /// been disabled for the current CPU, as the user is making a pro=
+mise that they will remain
+>>> +    /// disabled at least until this [`IrqDisabled`] is dropped.
+>>
+>> This is a bit verbose for taste, what about:
+>> "Must only be called in contexts where interrupts are disabled for the
+>> current CPU. Additionally they must remain disabled at least until the
+>> returned value is dropped."
+>=20
+> sgtm
+>=20
+>>
+>> Importantly the second sentence is not 100% clear from your version.
+>> Feel free to take mine (with modifications).
+>>
+>>> +    pub unsafe fn new() -> Self {
+>>
+>> Do we need this to be public? Ie do you (or someone you know) have a
+>> usecase for this? If not, then we can start with this function being
+>> private and make it public when necessary.
+>=20
+> Yes - there's a few DRM callbacks, drm_crtc_funcs.{vblank_enable,
+> vblank_disable, get_vblank_timestamp}, that happen with interrupts alread=
+y
+> disabled that will be using it:
+>=20
+> https://gitlab.freedesktop.org/lyudess/linux/-/blob/rvkms-example-0731202=
+4/rust/kernel/drm/kms/vblank.rs?ref_type=3Dheads#L24
+>=20
+> It's also worth noting that if we weren't going to use this right away I =
+think
+> it would make more sense just to add the function later instead of having=
+ it
+> private, since we don't actually use this anywhere in irq.rs.
+
+I didn't want the good docs you wrote go to waste :)
+But since you have a usage, we can just keep it public.
+
+>>> +        // SAFETY: FFI call with no special requirements
+>>> +        debug_assert!(unsafe { bindings::irqs_disabled() });
+>>> +
+>>> +        Self(PhantomData)
+>>> +    }
+>>> +}
+>>> +
+>>> +/// Run the closure `cb` with interrupts disabled on the local CPU.
+>>> +///
+>>> +/// This creates an [`IrqDisabled`] token, which can be passed to func=
+tions that must be run
+>>> +/// without interrupts.
+>>> +///
+>>> +/// # Examples
+>>> +///
+>>> +/// Using [`with_irqs_disabled`] to call a function that can only be c=
+alled with interrupts
+>>> +/// disabled:
+>>> +///
+>>> +/// ```
+>>> +/// use kernel::irq::{IrqDisabled, with_irqs_disabled};
+>>> +///
+>>> +/// // Requiring interrupts be disabled to call a function
+>>> +/// fn dont_interrupt_me(_irq: IrqDisabled<'_>) {
+>>> +///     /* When this token is available, IRQs are known to be disabled=
+. Actions that rely on this
+>>> +///      * can be safely performed
+>>> +///      */
+>>> +/// }
+>>> +///
+>>> +/// // Disabling interrupts. They'll be re-enabled once this closure c=
+ompletes.
+>>> +/// with_irqs_disabled(|irq| dont_interrupt_me(irq));
+>>> +/// ```
+>>> +#[inline]
+>>> +pub fn with_irqs_disabled<'a, T, F>(cb: F) -> T
+>>> +where
+>>> +    F: FnOnce(IrqDisabled<'a>) -> T,
+>>
+>> You can use this as the signature:
+>>
+>>     pub fn with_irqs_disabled<'a, T>(cb: impl FnOnce(IrqDisabled<'a>) ->=
+ T) -> T
+>>
+>> Not sure if we have any convention for this, but I personally think this
+>> version is easier to parse.
+>=20
+> sgtm
+
+I hope that you saw my reply to myself, since what I wrote above is
+unsound.
+
+---
+Cheers,
+Benno
+
