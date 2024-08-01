@@ -1,43 +1,43 @@
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3804446A1
-	for <rust-for-linux@vger.kernel.org>; Thu,  1 Aug 2024 10:29:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 064FB187FF7
+	for <rust-for-linux@vger.kernel.org>; Thu,  1 Aug 2024 10:45:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.134
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722508193; cv=none; b=NIuFnMcx57R/DI9QXpFxJVO/kwKo1rLZAXHQFNNWmUHoo9kV9DLUEJuXodtOVdFYKyOIZ2z/Wy74MxDpsqGjAMYl/dJSBispclD5DIaHaHkN6XedFpf1LRhwylf34JqT2tFShMRdqt0n/BZimWhGbK28VOh7/u5bgN3k9ICIKBo=
+	t=1722509157; cv=none; b=G5twr5koNoNd+lJ8QPQu1KoOXbx0AJlfZ9FCP7Kpo5Ct31wv9lqwFpABAN9/S07J4xO2MbS8Uv93+QlEZ8nq/iSQ6ohK5d5QrW0X8cmVlTf/9bpJ12zg9Tusj6IB8iMisazn6+Rou0OMkRnRR1jj1UM6NzYbUYl72wosqf/RBT8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722508193; c=relaxed/simple;
-	bh=Yz4CT+Y4M+QgVTW9rq1BOcdP6f25ODI9hfH7YAIXrg0=;
+	s=arc-20240116; t=1722509157; c=relaxed/simple;
+	bh=OJkyzqx3t2GYinRJNuHGE+/bKdbTJ2jz9M4I0r0WeJA=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lA7JTjZ+Q4gsIDeG7WZ1eLmJejDGjHtulBvBOgXG4LIj2ble6tB1WB0/tQ/36+u+CGMLzistrybjoCm0uyJLanvo78nFmjBCKDUlAzLkciFSCfUBBWV+wzM/iJ4XXYpYZ+k0ALdV+FMAImGFGqlanSj61aHFiyygDN6O2cGIYuk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=WqZrOrLM; arc=none smtp.client-ip=185.70.43.16
+	 MIME-Version:Content-Type; b=egxpTTwNKQ5+/65slMDLxUxPTWb8SF2+7+bOlL79aY28yEtTWeKLht4e6ln4ZsuqUYRvC7nflwKLdEtQNBqC/Vxj1+7Sy4ylaccLBVJeF1XFF9WShDiX79svJB9dGEr8HnAaFFRgw96tXME+Ykisrmi4EauiCl+CtcM0DEpBl1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=Ni9i99QM; arc=none smtp.client-ip=185.70.40.134
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="WqZrOrLM"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="Ni9i99QM"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1722508189; x=1722767389;
-	bh=wg4LArs8pICntUnd1eHXNgaNeoOPUhTPuVWTLIAVCpQ=;
+	s=protonmail; t=1722509152; x=1722768352;
+	bh=BhLH0JV4jQRV3Mkf3cPdmRoDQ862eb/6hIEDVcpjNRs=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=WqZrOrLMSgnjwPs9tZIeuui4/M7zCj7H0az45jmY8BbdXWkwxmQ9ljZ93tGqxjaSQ
-	 DN5qbnjUM6H+/qw3bNQByQMhNS3lqyXiI++WyVQF2UbTWHDoHMxlr5QKjViiUo4A3F
-	 OLqEaIxMEkJGOCvZILFvqptGBwuivh1mspc5xO6S3YhdbD3TV+aCfcwy1GMnNU+ko/
-	 TvDP49YVdrelRuhqCqPlW67HX1wy3/e5eaZAEBVKmBcZ04b2S2OXygcoDMfAC6kZZW
-	 2h0ahjFi2Bs/H5L97S8EybqkpogIHhWEZlGKOVrwsroW1H6xHMEVYgK/nSu0y0dNFY
-	 iS/28pCbbVsMw==
-Date: Thu, 01 Aug 2024 10:29:43 +0000
-To: Lyude Paul <lyude@redhat.com>, rust-for-linux@vger.kernel.org
+	b=Ni9i99QMuHCnpBa/k4F7kX9pm1KT0JzyYWJNnUpV5GDJLkE1HMoek0a8w6Xzwj3Zm
+	 SL8q2HJFUD4+HJ8rBoriTaG4CNjz46YoC4rXq0hSySbrsKLUqOPnFEF4AdVMcrxV9I
+	 j1lC2Q1dGqpyuGpDR1w5lxR71vscA8xFVeJRKVos/NoZgd8ByryDBm12EAwTcD5btv
+	 4LOi3iSvzBbKKWk26TQmKpHMQZemoLSuCpO0UG6roiFNEDeEcJch6oLf0G4akkQQbw
+	 437uztPAPyjSrF2HyL1JWD5w01zAQgjiVIQOa8k9ho5a0Z2ENZJlGShGDeDXmIlP1U
+	 Hp2+IpjeuQUmg==
+Date: Thu, 01 Aug 2024 10:45:49 +0000
+To: Alice Ryhl <aliceryhl@google.com>
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: Danilo Krummrich <dakr@redhat.com>, airlied@redhat.com, Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Valentin Obst <kernel@valentinobst.de>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 3/3] rust: sync: Add SpinLockIrq
-Message-ID: <991a7dd2-f8a8-402d-a651-eafd857c540d@proton.me>
-In-Reply-To: <20240731224027.232642-4-lyude@redhat.com>
-References: <20240731224027.232642-1-lyude@redhat.com> <20240731224027.232642-4-lyude@redhat.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Marco Elver <elver@google.com>, Coly Li <colyli@suse.de>, Paolo Abeni <pabeni@redhat.com>, Pierre Gondois <pierre.gondois@arm.com>, Ingo Molnar <mingo@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Wei Yang <richard.weiyang@gmail.com>, Matthew Wilcox <willy@infradead.org>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, Kees Cook <kees@kernel.org>
+Subject: Re: [PATCH v3 04/10] rust: list: add struct with prev/next pointers
+Message-ID: <5b13793c-3ec8-40c2-b0c6-e7b10883d0cb@proton.me>
+In-Reply-To: <CAH5fLggKphE3f=Jv+pfXc+_qjsGBVpXw_F4fOJiAi6vNtJ5x+Q@mail.gmail.com>
+References: <20240723-linked-list-v3-0-89db92c7dbf4@google.com> <20240723-linked-list-v3-4-89db92c7dbf4@google.com> <1b2078d8-d93b-4626-a73f-edc5616a2357@proton.me> <CAH5fLggKphE3f=Jv+pfXc+_qjsGBVpXw_F4fOJiAi6vNtJ5x+Q@mail.gmail.com>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 2a4be2ade01db569fe46a86f7705cb203f8e1730
+X-Pm-Message-ID: e842064c9be3211abfa42f4b108cfb15b7b56416
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,54 +47,72 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On 01.08.24 00:35, Lyude Paul wrote:
-> +unsafe impl super::Backend for SpinLockIrqBackend {
-> +    type State =3D bindings::spinlock_t;
-> +    type GuardState =3D ();
-> +    type Context<'a> =3D IrqDisabled<'a>;
-> +
-> +    unsafe fn init(
-> +        ptr: *mut Self::State,
-> +        name: *const core::ffi::c_char,
-> +        key: *mut bindings::lock_class_key,
-> +    ) {
-> +        // SAFETY: The safety requirements ensure that `ptr` is valid fo=
-r writes, and `name` and
-> +        // `key` are valid for read indefinitely.
-> +        unsafe { bindings::__spin_lock_init(ptr, name, key) }
-> +    }
-> +
-> +    unsafe fn lock(ptr: *mut Self::State) -> Self::GuardState {
-> +        // SAFETY: The safety requirements of this function ensure that =
-`ptr` points to valid
-> +        // memory, and that it has been initialised before.
-> +        unsafe { bindings::spin_lock(ptr) }
+On 01.08.24 11:42, Alice Ryhl wrote:
+> On Wed, Jul 31, 2024 at 8:41=E2=80=AFPM Benno Lossin <benno.lossin@proton=
+.me> wrote:
+>>
+>> On 23.07.24 10:22, Alice Ryhl wrote:
+>>> +/// The prev/next pointers for an item in a linked list.
+>>> +///
+>>> +/// # Invariants
+>>> +///
+>>> +/// The fields are null if and only if this item is not in a list.
+>>> +#[repr(transparent)]
+>>> +pub struct ListLinks<const ID: u64 =3D 0> {
+>>> +    #[allow(dead_code)]
+>>> +    inner: Opaque<ListLinksFields>,
+>>
+>> Do you really need `Opaque`? Or would `UnsafeCell` be enough? (If it is
+>> enough and you change this, be aware that `Opaque` is `!Unpin`, so if
+>> you intend for `ListLinks` to also be `!Unpin`, then you need a
+>> `PhantomPinned`)
+>=20
+> I need the `!Unpin` part for aliasing.
 
-Should this really be the same function as `SpinLock`? (ie is there not
-a special version that expects IRQ to already be disabled? eg this could
-add additional debug calls)
+Oh good point, do you mind adding a comment for that?
 
-If there is such a function and you decide to use it, you need to adjust
-the safety comment, since you need to justify that IRQs are disabled.
-For that you need additional safety requirements on `lock` namely that
-when `lock` is called there exists a object of type `Context<'a>` and
-that object is alive at least until `unlock` is called.
+>>> +}
+>>> +
+>>> +// SAFETY: The next/prev fields of a ListLinks can be moved across thr=
+ead boundaries.
+>>
+>> Why? This is not a justification.
+>=20
+> What would you say?
+
+While trying to come up with a safety comment I thought about the
+following: this impl does not depend on the type that is behind the
+pointer (ie the type containing the `ListLinks`). Thus this `ListLinks`
+will always implement `Send` even if the pointed-to value does not.
+What we could do (and what definitely would be correct) is this:
+`List` can only be used with `Send` types, then we could implement
+`Send` for `ListLinks`. But I haven't actually come up with a problem,
+so there might a more permissive solution.
+Do you have a use-case where you need `!Send` types in a list?
+
+Here is a part of my reasoning: If the pointed-to value is `!Send`, then
+the `List` item type must also be `!Send`. Thus all list operations take
+place on the same thread (since the `List` will be `!Send`). Therefore
+nobody can access the `prev`/`next` pointers from another thread.
+
+But this does not justify that `ListLinks` can be made `Send`. (although
+there isn't actually a problem)
+
+>>> +unsafe impl<const ID: u64> Send for ListLinks<ID> {}
+>>> +// SAFETY: The type is opaque so immutable references to a ListLinks a=
+re useless. Therefore, it's
+>>> +// okay to have immutable access to a ListLinks from several threads a=
+t once.
+>>
+>> You don't need to argue via `Opaque`, the type doesn't expose any
+>> `&self` functions, so there are no functions to consider.
+>=20
+> I'm not arguing via the `Opaque` type. I'm just using "opaque" as a
+> normal english word with its normal meaning.
+
+Oh I see, then it's fine.
 
 ---
 Cheers,
 Benno
-
-> +    }
-> +
-> +    unsafe fn unlock(ptr: *mut Self::State, _guard_state: &Self::GuardSt=
-ate) {
-> +        // SAFETY: The safety requirements of this function ensure that =
-`ptr` is valid and that the
-> +        // caller is the owner of the spinlock.
-> +        unsafe { bindings::spin_unlock(ptr) }
-> +    }
-> +}
-> --
-> 2.45.2
->=20
 
