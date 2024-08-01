@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E3F318A6AC;
-	Thu,  1 Aug 2024 12:30:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F43218950D;
+	Thu,  1 Aug 2024 12:31:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722515410; cv=none; b=rdNuP3sK3B2bYVMnJGxj3r+GaQrj1sIarygJbex2itFh3l2taZeF2rhub/KL4DHkJ0ix3PG/fMXh097IIYfm2iHR+6DTo9tiH0R62H2c7NGDaI6XtZsRFm5ormps7EqlsGyb01XqwP234T47tS5d6GiWith0g1OSX/jm+U5Stfw=
+	t=1722515497; cv=none; b=dNg1vjUojDrqQPmJH1BtFhSRtBkIg05xoqgBIS5izQaIHXCxCvmY8bxI4RcxATJXyP0dRZzyv8CPskkkV0qL56W9wYpeZfdkBThJDVW0flxrNgJr1AloSKbLKq+OapLRMBOGo2gFv3FJ8OvrRSAzTkq2UXH+fldf9Mned7VbYfg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722515410; c=relaxed/simple;
-	bh=6p5xxN4jqmS6heldWZ6mqD4FJ8Kzrt2Vjy/8twVNGdg=;
+	s=arc-20240116; t=1722515497; c=relaxed/simple;
+	bh=UK3PAqMjw979wx5Ie0BBTgUW7P1oxUk5LvST6rJ/ctY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=AmcAzkYPZE6WgsUTGNV5ZFqP0FmUM46XTYdFWzH/OG5nILtSySGLF6H86GxRuS6+O1pkYizlTnR63aZmq6ILXcRVzqdkuS+0F9jHcD7thL9ZA0s93xC4HdzTS2SMC5CyKRq82MDtyE8cW1jmbOuiBDcdmkXgIGNV2klR73+3nRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tHSKZqva; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=j0mPd1PP3AvGjQ8QLIeefHb6gzA6Wyt4agUwBmpJU23inQFQ+2HPsVXlHUuAChD34JKac5KkjIDdOPVSCqrrhkPT+rm6fXB9feQHLB+k/CwHMuwmOeC9J7kjs6oHv/g0/TwAocyOzt4rvgMPoYhqTfs2RKkyw9bDRcBTP4J2wg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=p/qOH4gQ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tHSKZqva"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C91E0C32786;
-	Thu,  1 Aug 2024 12:30:04 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="p/qOH4gQ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F73AC32786;
+	Thu,  1 Aug 2024 12:31:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722515409;
-	bh=6p5xxN4jqmS6heldWZ6mqD4FJ8Kzrt2Vjy/8twVNGdg=;
+	s=k20201202; t=1722515497;
+	bh=UK3PAqMjw979wx5Ie0BBTgUW7P1oxUk5LvST6rJ/ctY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tHSKZqvaSaU/vZsgYgrYCkHt+Lf3VicjqVa4khmV29VPQk4fd5sIe9q6y59MoApQ/
-	 YwTIGM/aecr8uXmAk55C5qqzbkbQxzyhE0kFNNyNGI4sPelUtV61VWAXmbCB4erhG5
-	 O2CfvfsDHXqs7LNdSEDoFSfzNlVysZkUMcbkuFk5XMy96q0wJXs3KTJ+1teVadVkai
-	 qoBhK1Wtf8kmlz+rzp6q6sk1iCb1PkvFKlxBqvhrhpaoN0j97m0/+2qrbkjSmkSpjK
-	 7xOaHyG9dcvHz6HGDNAkPuwXj4pIzkImpozSauhuVhldZ7bYmQWxrDt+yvG8Z9es50
-	 MB/Uf/7bzuS3Q==
-Date: Thu, 1 Aug 2024 14:30:01 +0200
+	b=p/qOH4gQEmTdcjwrP926auEMzokTQWEJWVzEZSW3aNPE357oUPqYBM9V3CytErj6x
+	 yFd5GXClcORsfuZESaRL4G8pkggB6D6f7jnts08B8xqtJV4pdRUyd4RHypLe0HKlZo
+	 AscXUgSSKXx0uBZAg/kZ+pPT5rKcz1oaBT7ee//CFRE73H4eJg8rOcwtKyyGXp3p4L
+	 lz0SwLxzwSwRCCcGoZt6SAN+fs0YujvU47f1SSRdL42KgIxCOegVU0svu/oDgjbLxt
+	 bmvgX7CbZsno2vZxvu4xqgVqjFriSVDL+Jw1xgHSPUKMpUZr9D0RZbvZj0tyTUWwsd
+	 r9kwcPnGux0fQ==
+Date: Thu, 1 Aug 2024 14:31:29 +0200
 From: Danilo Krummrich <dakr@kernel.org>
 To: Alice Ryhl <aliceryhl@google.com>
 Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
@@ -39,11 +39,11 @@ Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
 	airlied@redhat.com, ajanulgu@redhat.com, lyude@redhat.com,
 	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: Re: [PATCH v3 04/25] rust: alloc: implement `Allocator` for `Kmalloc`
-Message-ID: <Zqt_yeGPTIYjgCK8@pollux>
+Subject: Re: [PATCH v3 07/25] rust: alloc: implement `KVmalloc` allocator
+Message-ID: <ZquAIT_ULTmRIyos@pollux>
 References: <20240801000641.1882-1-dakr@kernel.org>
- <20240801000641.1882-5-dakr@kernel.org>
- <CAH5fLggM5X7M9fTJE7C2afSHehK8b72XGKAgsEcn3Xm632s_Gg@mail.gmail.com>
+ <20240801000641.1882-8-dakr@kernel.org>
+ <CAH5fLggy5ngdaEFe1oqO4wgZHTNsx=2A9a+5HNeA6GiUKrHPOw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -53,98 +53,24 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAH5fLggM5X7M9fTJE7C2afSHehK8b72XGKAgsEcn3Xm632s_Gg@mail.gmail.com>
+In-Reply-To: <CAH5fLggy5ngdaEFe1oqO4wgZHTNsx=2A9a+5HNeA6GiUKrHPOw@mail.gmail.com>
 
-On Thu, Aug 01, 2024 at 10:28:09AM +0200, Alice Ryhl wrote:
+On Thu, Aug 01, 2024 at 10:43:44AM +0200, Alice Ryhl wrote:
 > On Thu, Aug 1, 2024 at 2:07 AM Danilo Krummrich <dakr@kernel.org> wrote:
-> > +/// Returns a proper size to alloc a new object aligned to `new_layout`'s alignment.
-> >  fn aligned_size(new_layout: Layout) -> usize {
-> 
-> This comment could potentially be moved to the previous patch that
-> defined the function.
-> 
-> > +struct ReallocFunc(
-> > +    // INVARIANT: One of the following `krealloc`, `vrealloc`, `kvrealloc`.
-> > +    unsafe extern "C" fn(*const core::ffi::c_void, usize, u32) -> *mut core::ffi::c_void,
-> > +);
-> 
-> In this case, the comment would usually be formatted with markdown.
-> 
-> /// # Invariants
-> ///
-> /// Must contain one of the following: `krealloc`, `vrealloc`, `kvrealloc`.
-> 
-> The // INVARIANT: syntax is used when constructing an instance to
-> argue why the documentented invariants are satisfied.
-> 
-> > +impl ReallocFunc {
-> > +    fn krealloc() -> Self {
-> > +        Self(bindings::krealloc)
-> > +    }
-> 
-> Technically this should have an // INVARIANT: explaining why the
-> invariants are satisfied by this new value.
-> 
-> > +
-> > +    // SAFETY: `call` has the exact same safety requirements as `Allocator::realloc`.
-> > +    unsafe fn call(
-> 
-> Similarly to the above, the // SAFETY: syntax is used when arguing why
-> the preconditions are satisfied, but when explaining what the
-> preconditions are, we usually use this syntax instead:
-> 
-> /// # Safety
-> ///
-> /// This method has the same safety requirements as `Allocator::realloc`.
-
-Agreed, I will change this one and the above.
-
-> 
-> > +        &self,
-> > +        ptr: Option<NonNull<u8>>,
-> > +        layout: Layout,
-> > +        flags: Flags,
-> > +    ) -> Result<NonNull<[u8]>, AllocError> {
-> > +        let size = aligned_size(layout);
-> > +        let ptr = match ptr {
-> > +            Some(ptr) => ptr.as_ptr(),
-> > +            None => ptr::null(),
-> > +        };
-> > +
-> > +        // SAFETY: `ptr` is valid by the safety requirements of this function.
-> > +        let raw_ptr = unsafe {
-> > +            // If `size == 0` and `ptr != NULL` the memory behind the pointer is freed.
-> > +            self.0(ptr.cast(), size, flags.0).cast()
-> > +        };
-> > +
-> > +        let ptr = if size == 0 {
-> > +            NonNull::dangling()
-> > +        } else {
-> > +            NonNull::new(raw_ptr).ok_or(AllocError)?
-> > +        };
-> > +
-> > +        Ok(NonNull::slice_from_raw_parts(ptr, size))
-> > +    }
-> > +}
-> > +
-> > +unsafe impl Allocator for Kmalloc {
-> > +    unsafe fn realloc(
-> > +        ptr: Option<NonNull<u8>>,
-> > +        layout: Layout,
-> > +        flags: Flags,
-> > +    ) -> Result<NonNull<[u8]>, AllocError> {
-> > +        let realloc = ReallocFunc::krealloc();
-> > +
-> > +        // SAFETY: If not `None`, `ptr` is guaranteed to point to valid memory, which was previously
-> > +        // allocated with this `Allocator`.
-> > +        unsafe { realloc.call(ptr, layout, flags) }
-> > +    }
-> > +}
-> > +
-> >  unsafe impl GlobalAlloc for Kmalloc {
-> >      unsafe fn alloc(&self, layout: Layout) -> *mut u8 {
-> >          // SAFETY: `ptr::null_mut()` is null and `layout` has a non-zero size by the function safety
-> > --
-> > 2.45.2
 > >
+> > Implement `Allocator` for `KVmalloc`, an `Allocator` that tries to
+> > allocate memory wth `kmalloc` first and, on failure, falls back to
+> > `vmalloc`.
+> >
+> > All memory allocations made with `KVmalloc` end up in
+> > `kvrealloc_noprof()`; all frees in `kvfree()`.
+> >
+> > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> 
+> The nit from vrealloc also applies here, but:
+
+Yes, I will add the invariant comment for both.
+
+> 
+> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 > 
