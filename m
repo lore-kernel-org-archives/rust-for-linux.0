@@ -1,124 +1,132 @@
-Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yb1-f202.google.com (mail-yb1-f202.google.com [209.85.219.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B222014A4F8;
-	Thu,  1 Aug 2024 18:38:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C361D14373A
+	for <rust-for-linux@vger.kernel.org>; Thu,  1 Aug 2024 18:50:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722537523; cv=none; b=W3GaD6/FGzTxuguVTnE9Z/AHrfw2m2Nga0gxcSjmL5h7N9xRR6O/rPvsWXoo5A1d5DHhEHsWJDFnEJIWdufr4d993gYMdw7g2yRR5/P3gbymuX4uNyaU2cmfFAGxGBjlyWOTjB3qXqEouPNwclWVuuV9p+3aTgyixeyYgtVw57A=
+	t=1722538259; cv=none; b=tnd2YbgC9X9NV9ggXdHy6Js1DmJHsPjlvT9O4/Ogoi1ZCdQ17xmBULj/Dt7q933C9Wdy9aA/WWYPJj6GT5WF7mamC3gRy6RUN+bpqvv7uuyVOo0Jk9gGtlSmTpHeWKfNtL+RdQNOnnnBpISJAZc7icM3W81u6cuBdrK/dcEjS5o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722537523; c=relaxed/simple;
-	bh=0wA1I5pw5uMJ7CwgBZx+Bkz88j+ObQ2NSGu6oAhojPM=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EsVRZHmx9G8LcuNHh1lVEgZOR3UKyLeMHwqBv3pAYjZ17gp/ctTHIa+C+zaVt8n6m+4JtgW2+i5l6tM2L5E6wvlxJ5kVqwCGP4IUvnRJPNeEzoZee7LzFXj3CuyKXNSiXEayPIYQ3MMjCWVke0xZqyJOhx1DSa7cdpYwx0khtfo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=e2Oel1Nu; arc=none smtp.client-ip=185.70.40.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1722538259; c=relaxed/simple;
+	bh=2Q5d8tOrw4Hi1xtBW/4AyVlOvnuU7sBSLcDkSaX2tu8=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=ZieUZVd6tYLl/A7/iTlg4w0NCuR3tpqYftScCLayr5mBgB3Z7eKu3wm7eIXXtdqma9uI0lwZW6xriCBHIIpls1bGQlSRVDMwM7lOxgyqSEtuM+n8l5The4dNKIJ3QbwdjF/hVc342LkFs56sLC0cMtdRJPnVwlB+Qqkhntn1Yss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--mmaurer.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=1eIWT/uV; arc=none smtp.client-ip=209.85.219.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--mmaurer.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="e2Oel1Nu"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=tpusvpg7arbntd277skf5e4uz4.protonmail; t=1722537518; x=1722796718;
-	bh=msNfM+n09dyreTa6/jFHnrjM2fYU7OZAlqKTBUbkzBA=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=e2Oel1NuX6s7aIzvYSsdw8ob9WFjL2sa2tub3LArGS4lnHBJuWt5niUllUS84DsLJ
-	 WttCHlEkkxYb0To/5iKo3gEHb5QeAqRo2I4TUZnN13KAIaaWJITGNgQfhAOM/4n4dx
-	 ypu7Fda/19BLRBYSEY9igf5tflK2zVsozP/ZDzVHgxP+53pJpSHMnffIxCHEHFjpTh
-	 BSViOfP2oOCxH9sbhavyY/0fmuDv3hnXkzET5FDR7YppBiY/iBuaU8zpxZVi6DqX9I
-	 Ggvs4eatMPUjZ210UAL3YGrAnk+akZOXXPAvWpfngKJfWHfyj8a1xio0MQXXLLGpen
-	 E7XKcmTwGTOng==
-Date: Thu, 01 Aug 2024 18:38:35 +0000
-To: Lyude Paul <lyude@redhat.com>, rust-for-linux@vger.kernel.org
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Danilo Krummrich <dakr@redhat.com>, airlied@redhat.com, Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Valentin Obst <kernel@valentinobst.de>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 3/3] rust: sync: Add SpinLockIrq
-Message-ID: <0117ba2d-75f6-4291-9108-35607aab0f1b@proton.me>
-In-Reply-To: <028a84fded53be13d1b2d53e877a958f6f08c24a.camel@redhat.com>
-References: <20240731224027.232642-1-lyude@redhat.com> <20240731224027.232642-4-lyude@redhat.com> <991a7dd2-f8a8-402d-a651-eafd857c540d@proton.me> <028a84fded53be13d1b2d53e877a958f6f08c24a.camel@redhat.com>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: e9cd9f11c106d26650f4faa8ff12ecf207845322
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="1eIWT/uV"
+Received: by mail-yb1-f202.google.com with SMTP id 3f1490d57ef6-e03b3f48c65so10753196276.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 01 Aug 2024 11:50:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1722538257; x=1723143057; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=T1eixLZmlF7lWWMkZkzQnmYhc2qV+9L/edGbXjzQ+dg=;
+        b=1eIWT/uVUGHDl3cv/HDTwZ09ADKBwHYHIB3DeubEfsId8FKSQ8TLAaVhTv8E/njcE5
+         mcQJ9GGFebayuMKjn69Nu5BOloTF+QrSezI+8Hlld1OzAfkTXtFnu3n11lBtpB+G0LRk
+         Pr34g85xez5QoqHOZAnTziWpgqlmmHH11BdffQaFDvFmjTXTHRzWe1xJiMmRde31QBAT
+         zngM3k0PUdFNMSMFg91C5zH0YveD0w8M1YYeFqeuTytmS9u+j42wxDkClU0GOeOdw5Iq
+         +pnxLMYSElIH16emj7EY6BwfGjiZsW8acVa49ADEkXvGG68WW99kLG18hXDqgN2s0j3w
+         5UrQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722538257; x=1723143057;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=T1eixLZmlF7lWWMkZkzQnmYhc2qV+9L/edGbXjzQ+dg=;
+        b=Igos2fRJIy97HoymhmEd5gGiNtstwt5u4wLGpaf06qEOLxCrFcp3x3ked2TmzTDJF4
+         kuIwKIKhxUx3ZUkWZfjla0oLj44RF2Pfy7EheOBPwO99YrVXqEHsVyBj/x2xM+ERE2aP
+         8YzsZTxP8tsYQgsNryJFHPj7+QQNIUR7/cpmCa6c20/gueU8StbuRzFBPf74OJkLum8T
+         cKif61OC16zCdwgRM5vUaD2Lw+lTx7Sg9jcnPzqrI6PVahaBNVAjUOkWmnBLy5Yv5ahC
+         VUGKfh9hvyDx+tNNZOwCFqwAD08T1yesds54vrYu00kOHT0pqoX01w+8/rlq0wL9K8tl
+         vzPg==
+X-Gm-Message-State: AOJu0YyBD0TIhQZ0v7dm5LbZ8VvryFInDhQceEgAv3RZHYcTf/Bcondg
+	9JSL60sijrWO3uDbmYkP3uLPnFaLiehAe8+pFOOOiZuPKF70A6Xq/nm1Rfl/kqlTExKew2a+TXG
+	6BodTQw==
+X-Google-Smtp-Source: AGHT+IFWI+8i+PX0TeoUdUb1gBZdBr9ZoC+KhYCemjWo3qnGMiKUFaxNcZedoFT9NYQvBHHGapNwwS2HTTDr
+X-Received: from anyblade.c.googlers.com ([fda3:e722:ac3:cc00:20:ed76:c0a8:1791])
+ (user=mmaurer job=sendgmr) by 2002:a05:6902:1004:b0:e0b:bafe:a7f6 with SMTP
+ id 3f1490d57ef6-e0bde439e04mr12473276.8.1722538256699; Thu, 01 Aug 2024
+ 11:50:56 -0700 (PDT)
+Date: Thu,  1 Aug 2024 18:50:54 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.46.0.rc2.264.g509ed76dc8-goog
+Message-ID: <20240801185054.2518383-1-mmaurer@google.com>
+Subject: [PATCH v2] pahole: Apply CU-level filters early in loading
+From: Matthew Maurer <mmaurer@google.com>
+To: acme@kernel.org
+Cc: rust-for-linux@vger.kernel.org, dwarves@vger.kernel.org, 
+	aliceryhl@google.com, Matthew Maurer <mmaurer@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On 01.08.24 19:10, Lyude Paul wrote:
-> On Thu, 2024-08-01 at 10:29 +0000, Benno Lossin wrote:
->> On 01.08.24 00:35, Lyude Paul wrote:
->>> +unsafe impl super::Backend for SpinLockIrqBackend {
->>> +    type State =3D bindings::spinlock_t;
->>> +    type GuardState =3D ();
->>> +    type Context<'a> =3D IrqDisabled<'a>;
->>> +
->>> +    unsafe fn init(
->>> +        ptr: *mut Self::State,
->>> +        name: *const core::ffi::c_char,
->>> +        key: *mut bindings::lock_class_key,
->>> +    ) {
->>> +        // SAFETY: The safety requirements ensure that `ptr` is valid =
-for writes, and `name` and
->>> +        // `key` are valid for read indefinitely.
->>> +        unsafe { bindings::__spin_lock_init(ptr, name, key) }
->>> +    }
->>> +
->>> +    unsafe fn lock(ptr: *mut Self::State) -> Self::GuardState {
->>> +        // SAFETY: The safety requirements of this function ensure tha=
-t `ptr` points to valid
->>> +        // memory, and that it has been initialised before.
->>> +        unsafe { bindings::spin_lock(ptr) }
->>
->> Should this really be the same function as `SpinLock`? (ie is there not
->> a special version that expects IRQ to already be disabled? eg this could
->> add additional debug calls)
->=20
-> Yes, unless there's some spinlock API function I missed (I checked right
-> before sending this response) we don't really have a variant of spin_lock=
-*()
-> that assumes IRQs are disabled. You really just have:
->=20
-> spin_lock() - Grab lock, no IRQ changes
->=20
-> spin_lock_irq() - Grab lock, unconditionally disable IRQs (regardless of
-> current flags) until spin_unlock_irq()
->=20
-> spin_lock_irqsave() - Grab lock, save IRQ flags and restore upon
-> spin_unlock_irqrestore()
+Without this, even with `--lang_exclude=rust` set, running on `vmlinux`
+with `CONFIG_RUST` enabled will lead to errors like:
+die__process_function: tag not supported 0x2f (template_type_parameter)!
+because the filtering doesn't happen until finalization, but unsupported
+tags are reported during loading.
 
-I see, I have very limited knowledge of the C side and using the same
-function for both seemed strange.
+As an added bonus, this should speed up processing of large objects with
+filtered CUs, as their details will no longer be walked.
 
-> Usually lockdep is the one to actually warn about the interrupt state bei=
-ng
-> incorrect, as it will throw up a warning if you grab a spinlock in both a=
-n
-> interrupt enabled and disabled context (which means you are forgetting to
-> disable interrupts before lock acquisition somewhere).
-
-Cool.
-
-> As well, I think having further debug calls would be unneeded? As of righ=
-t now
-> there's only really two entrypoints for getting IrqDisabled:
-> with_irqs_disabled(), and IrqDisabled::new(). And since IrqDisabled::new(=
-) now
-> has a debug assertion for disabled interrupts, that means all paths to
-> creating IrqDisabled are either already guaranteed to disable interrupts =
-- or
-> would be making use of the debug assertion for verifying interrupt state.
-
-Yes, but if you eg call some FFI function in the meantime it might
-re-enable IRQs (or just a plain old bug in the Rust side). I don't know
-how expensive this will be for debug builds, if it is too much, we could
-try to introduce different levels of debugging.
-But as you already said above, we don't need it for `SpinLockIrq`, since
-lockdep should take care of that.
-
+Signed-off-by: Matthew Maurer <mmaurer@google.com>
 ---
-Cheers,
-Benno
+ dwarf_loader.c | 10 ++++++++++
+ dwarves.h      |  1 +
+ pahole.c       |  4 ++++
+ 3 files changed, 15 insertions(+)
+
+diff --git a/dwarf_loader.c b/dwarf_loader.c
+index b832c93..02a17f4 100644
+--- a/dwarf_loader.c
++++ b/dwarf_loader.c
+@@ -2854,6 +2854,16 @@ static int die__process(Dwarf_Die *die, struct cu *cu, struct conf_load *conf)
+ 
+ 	cu->language = attr_numeric(die, DW_AT_language);
+ 
++	if (conf->early_cu_filter)
++		cu = conf->early_cu_filter(cu);
++
++	/*
++	 * If we filtered this CU out, we still want to keep iterating, but
++	 * there's no need to walk the rest of the CU info.
++	 */
++	if (cu == NULL)
++		return DWARF_CB_OK;
++
+ 	if (dwarf_child(die, &child) == 0) {
+ 		int err = die__process_unit(&child, cu, conf);
+ 		if (err)
+diff --git a/dwarves.h b/dwarves.h
+index f5ae79f..92d102b 100644
+--- a/dwarves.h
++++ b/dwarves.h
+@@ -72,6 +72,7 @@ struct conf_load {
+ 	enum load_steal_kind	(*steal)(struct cu *cu,
+ 					 struct conf_load *conf,
+ 					 void *thr_data);
++	struct cu *		(*early_cu_filter)(struct cu *cu);
+ 	int			(*thread_exit)(struct conf_load *conf, void *thr_data);
+ 	void			*cookie;
+ 	char			*format_path;
+diff --git a/pahole.c b/pahole.c
+index 954498d..42a9c16 100644
+--- a/pahole.c
++++ b/pahole.c
+@@ -3765,6 +3765,10 @@ int main(int argc, char *argv[])
+ 	memset(tab, ' ', sizeof(tab) - 1);
+ 
+ 	conf_load.steal = pahole_stealer;
++
++	if (languages.exclude)
++		conf_load.early_cu_filter = cu__filter;
++
+ 	conf_load.thread_exit = pahole_thread_exit;
+ 
+ 	if (conf_load.reproducible_build) {
+-- 
+2.46.0.rc2.264.g509ed76dc8-goog
 
