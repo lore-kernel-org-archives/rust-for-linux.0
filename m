@@ -1,67 +1,67 @@
-Received: from mail-lf1-f49.google.com (mail-lf1-f49.google.com [209.85.167.49])
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 423884503A
-	for <rust-for-linux@vger.kernel.org>; Thu,  1 Aug 2024 08:46:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 164B916F8F3
+	for <rust-for-linux@vger.kernel.org>; Thu,  1 Aug 2024 08:56:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722501969; cv=none; b=t3iRi0WE6NnpLwR8pjha26evOe435MdbJqFM/ljz0uBoxCkxSXAS0gYjxnh2ejn1kvOiG4aHb/k2pQVrGyh0wVAIEO1u9RXi3Hg0/YxjHroIbX14Kg8rYMuypLqo8Rop0jxGAX06lpw5vC11pzDu6LbeIdQQ4qd1j4CFC2kv4Bw=
+	t=1722502566; cv=none; b=XHYWYzz4luUdP49kg1XWKmwI6go7vtH/EsaB9P7RkW0wbRP8mSTcpH1qpue+E0g85ASUxcWjvOL1jmAloVksM1J0zndXqJySiV0WNuBINXGIqTu3aw0JcPt134iiiGddGEsRg1MY0wiN4zUd+FCmIsGsdWmX/1cmQQwBJUJsCaM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722501969; c=relaxed/simple;
-	bh=5nfLyUhSwdCvNZ7U1JIKCThQBYGQcPVVZFNOS2yg99U=;
+	s=arc-20240116; t=1722502566; c=relaxed/simple;
+	bh=ygjuQzlKtmom8H6z2RDt4YGrv3yabu5jpfpA4qC8M7A=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=T/E2kcyUvjl9S5nZnL/DbFr51ACl5k4Pc9K2wHtq4HBZHP0TDYjDfIwdbBHY7efRuSsnrygvt6DY7zeEFN7wqug0Cj+LOHxUnnX6WbJmR+XdaSs1nfySmn7q9bLfv2/Vv+KnVcQuf+TDwkLRHCssM43ymLYK+apqvJCOjLfQ8EU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FTF0jKq8; arc=none smtp.client-ip=209.85.167.49
+	 To:Cc:Content-Type; b=Km75MpCwr9nD8d7oY018Kqp83Fp0ZCZlzBSF/wXbbrnWebnno9qjERU0UIFaE8whXA/YcTnSWsadw3v/hbhzk5A5zVYaQaOMI3QTWSHdjgmPWjwm72XIoe4hDDnPHfSqvTGJIQ/cVPMlNnoQFSdJ+63JJir7Mj5OgCMv+M46sS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=y3ja27kM; arc=none smtp.client-ip=209.85.128.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FTF0jKq8"
-Received: by mail-lf1-f49.google.com with SMTP id 2adb3069b0e04-52f01afa11cso9965039e87.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 01 Aug 2024 01:46:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="y3ja27kM"
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-428e0d184b4so3652255e9.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 01 Aug 2024 01:56:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1722501966; x=1723106766; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1722502563; x=1723107363; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=5nfLyUhSwdCvNZ7U1JIKCThQBYGQcPVVZFNOS2yg99U=;
-        b=FTF0jKq8p+PDVpwZ//pp1LJgmFSTtVYD1FidUhseUC9MegaStm+BxxRD0Pe/IKnOCp
-         WwqpnWW635/VxTWIYVnKJYJHU3yf26kCGcUTfnTgHdM9wI9Qsu1r3pq2dQsLUHKU7xSn
-         +BAhhoF27LjWF9bSnbqvHm1anrA7Eby35uyaFT3ya4DFlfOCy82NyuiFkT9lDvJbfA8K
-         HLu6wp+L1WsZB+UbG23QM6SNd8L7NzwfN8v1/ic+5zBG9XV94AlPMk27NR+gUT2gTUB1
-         Sag3q9Dgh5PdYfL7ghCMeXxtk+BtsGKmZUR+A2mVnjCRVlM57JjUHNIFHhQkje38BdqS
-         mw6w==
+        bh=fqO6Iix0wCIf9YemqZbokzS5RPd4qkoavIabrTwRodw=;
+        b=y3ja27kMWIQpCMX/SrIrZh9SAhCcdy2sfmSQqFr+MupugU9YwRXnh4/VFfMvjt6RHN
+         GitgrzR5TvKGXqCPn940oXL8nrw9yiQG+nhNV/Xx8bX17kbY78/tQdMdBQ1rbifNcJ4f
+         686i56epkhQIhbIOpK051jxlwmkcVeEg10QA2LpI6XAXmroWGgAFgKL4lTI3KZEil6JW
+         pnAufjhBfkPDGSJLvN+OQ2Y07lx6qYu1ld5x3Ctnfi81879Iosr3zu2jbYubjxDtr8xl
+         eAi14MsHS20zcocueFefXkAvlB+DFtOiz3u5KvEuPHoHd4umvc5CKlP7B6rSA/qpm7pY
+         4tPQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722501966; x=1723106766;
+        d=1e100.net; s=20230601; t=1722502563; x=1723107363;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=5nfLyUhSwdCvNZ7U1JIKCThQBYGQcPVVZFNOS2yg99U=;
-        b=EVp0n/B/EpHJbJfNg0OeoxiU6oM0L8YQgHOXO8Z5UMfj+1YuvZNRPMAVptdxwmOxTh
-         0nAZiGhH3P25pbRMVYuYXSD0LWidfNY7ca0idNLHPjsiS1gJXGs+5FdOj/OqjXlp1QPf
-         SPkNtvtSWNezquw8thb1FZeN7oicjLaxObnFZTi2dS8Axhy76PuomiLszLtpq/3CGtO3
-         72oiGlusoe1eoPGRNB6uXToDonD6x/wkBU451Rvy/Qz9hgYT5TmtO6DEGm/2WcaJp9tl
-         3HwG1lXMlDCIMDQ18uhHdfJG2WbB83HbthMrVfFlvVKQ6aKiNQ/azSjPFc6dsPqApeeg
-         vuUA==
-X-Forwarded-Encrypted: i=1; AJvYcCVV9Gaf5JgGowUVKhcaqoHrF6ctjk6Wmt+/dB8BlXa6Ukcy3MhuXClZ8Bt37t4328p8Kvh8wOKdyntsmNz+vyaZXMSXzQDSgyCJFYla5os=
-X-Gm-Message-State: AOJu0YxRn/5Z/YQsTng56AWSzADbrqA43clGhOOV+JdJUPPDxh78AKlv
-	WpPXbV6Gab6ltmAMyUieMQ0gy4VVQNK1mlUMQ8U3QMEefIvThZyqmO4JnaoQg8sYx+6rksz7be+
-	R2CJj0P4KpJTuOo9Itc+bK+lBdqz8GIVMPkAA
-X-Google-Smtp-Source: AGHT+IFN2UR8WSAl5gylhHpTY15QGFvKiCG7UBeB2JpSyJXc+k5DXeSah0KlURrlJr8LyFkVwCQAWTEobHctV/efbmE=
-X-Received: by 2002:a05:6512:685:b0:52c:82fa:ef7b with SMTP id
- 2adb3069b0e04-530b61f8e09mr1087052e87.44.1722501965930; Thu, 01 Aug 2024
- 01:46:05 -0700 (PDT)
+        bh=fqO6Iix0wCIf9YemqZbokzS5RPd4qkoavIabrTwRodw=;
+        b=EO37clzMG/nyKUQcpe34oPhoW3edJehut5smlhVHzGBUE2PX+VZj3dQLl99qlOdE4B
+         dbiWJz4lLRwW+FWopAA1DFqpuREok6FcwBKgWl7sNiFzpBsfiMcO8604ZRC14E+BWL8Q
+         GQsijVDAzHPzMGBq52d/UjsvyvG5TtR97f7ZPwRSCQvgKUcOedgsizgeVaVeqYJTVBZ+
+         ScaUgmqgk7Sqv9t8SGneIv2n5n58CHXzdxmVfUycOJS2c0qnuvvggXgTOcENK9QVTX5q
+         IJeSALOV5X9+/HmOZSU0WMcxaC4N0gFIEmsJZf9KvZBaGIXPgRq0hnO2LnsLdiRLxbKk
+         vNyw==
+X-Forwarded-Encrypted: i=1; AJvYcCXNVJIJRMbZFXv7vG3xk1UyyxNV9VyN9SNSFHBALyf6nVobULRfHIbuwR8uJgeUbZHmopcLcrFvgwQGo4JO1OL2I3yUIW/o7iIMHGFBe6Q=
+X-Gm-Message-State: AOJu0YxWaflQcCXX+R38WUX6Be6fAlryJQKjjr43Wn5MI2fPgVC5u2JR
+	bsmqKE+orojnWqF6HpM3v25jI53z8yfWJ5JLBXfLaK3iqEWvHnDi6vlj3CgzB028gtFPe8f0Tqd
+	j4sWEYM0nTAnrr9jiM8rhcODxVkYd0gl7a2Be
+X-Google-Smtp-Source: AGHT+IEJnIJSJM3c7ZxrjSpwo8kICD2epumG5XB51tiQWpb0SXEaiAk6zGgcS2+tg6CW5rhLO+jt6TupjzpSK0lZoh8=
+X-Received: by 2002:a5d:47af:0:b0:367:8f29:f7ae with SMTP id
+ ffacd0b85a97d-36baaf507cfmr1372748f8f.49.1722502562925; Thu, 01 Aug 2024
+ 01:56:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240801000641.1882-1-dakr@kernel.org> <20240801000641.1882-9-dakr@kernel.org>
-In-Reply-To: <20240801000641.1882-9-dakr@kernel.org>
+References: <20240801000641.1882-1-dakr@kernel.org> <20240801000641.1882-10-dakr@kernel.org>
+In-Reply-To: <20240801000641.1882-10-dakr@kernel.org>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 1 Aug 2024 10:45:53 +0200
-Message-ID: <CAH5fLgihauE8enXj7x4BjtpXpG+CkWDrfx=3LOwQAuRXgMxybA@mail.gmail.com>
-Subject: Re: [PATCH v3 08/25] rust: types: implement `Unique<T>`
+Date: Thu, 1 Aug 2024 10:55:51 +0200
+Message-ID: <CAH5fLggjs8t2c1GVFdQu6gULjG_oYx7299m4NedQFS+hOgFfTw@mail.gmail.com>
+Subject: Re: [PATCH v3 09/25] rust: alloc: implement kernel `Box`
 To: Danilo Krummrich <dakr@kernel.org>
 Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, 
 	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
@@ -78,21 +78,128 @@ Content-Transfer-Encoding: quoted-printable
 On Thu, Aug 1, 2024 at 2:07=E2=80=AFAM Danilo Krummrich <dakr@kernel.org> w=
 rote:
 >
-> Implement the `Unique` type as a prerequisite for `Box` and `Vec`
-> introduced in subsequent patches.
+> `Box` provides the simplest way to allocate memory for a generic type
+> with one of the kernel's allocators, e.g. `Kmalloc`, `Vmalloc` or
+> `KVmalloc`.
 >
-> `Unique` serves as wrapper around a `NonNull`, but indicates that the
-> possessor of this wrapper owns the referent.
->
-> This type already exists in Rust's core library, but, unfortunately, is
-> exposed as unstable API and hence shouldn't be used in the kernel.
->
-> This implementation of `Unique` is almost identical, but mostly stripped
-> down to the functionality we need for `Box` and `Vec`. Additionally, all
-> unstable features are removed and / or replaced by stable ones.
+> In contrast to Rust's `Box` type, the kernel `Box` type considers the
+> kernel's GFP flags for all appropriate functions, always reports
+> allocation failures through `Result<_, AllocError>` and remains
+> independent from unstable features.
 >
 > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+>
+> [...]
+>
+> +    /// Constructs a `Box<T, A>` from a raw pointer.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// `raw` must point to valid memory, previously allocated with `A`,=
+ and at least the size of
+> +    /// type `T`.
+> +    #[inline]
+> +    pub const unsafe fn from_raw_alloc(raw: *mut T, alloc: PhantomData<A=
+>) -> Self {
+> +        // SAFETY: Safe by the requirements of this function.
+> +        Box(unsafe { Unique::new_unchecked(raw) }, alloc)
+> +    }
 
-Some of your impls could be derives, but looks ok.
+I don't think it makes sense to take the PhantomData as a parameter.
+You can always create a PhantomData value out of thin air.
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Box(unsafe { Unique::new_unchecked(raw) }, PhantomData)
+
+> +    /// Consumes the `Box<T, A>`, returning a wrapped raw pointer and `P=
+hantomData` of the allocator
+> +    /// it was allocated with.
+> +    pub fn into_raw_alloc(b: Self) -> (*mut T, PhantomData<A>) {
+> +        let b =3D ManuallyDrop::new(b);
+> +        let alloc =3D unsafe { ptr::read(&b.1) };
+> +        (b.0.as_ptr(), alloc)
+> +    }
+
+I don't think there's any need to have this function. The caller can
+always create the PhantomData themselves. I would just keep into_raw
+only.
+
+> +    /// Converts a `Box<T>` into a `Pin<Box<T>>`.
+> +    #[inline]
+> +    pub fn into_pin(b: Self) -> Pin<Self>
+> +    where
+> +        A: 'static,
+> +    {
+> +        // SAFETY: It's not possible to move or replace the insides of a=
+ `Pin<Box<T>>` when
+> +        // `T: !Unpin`, so it's safe to pin it directly without any addi=
+tional requirements.
+> +        unsafe { Pin::new_unchecked(b) }
+> +    }
+
+In the standard library, this functionality is provided using the From
+trait rather than an inherent method. I think it makes sense to match
+std here.
+
+> +impl<T, A> Drop for Box<T, A>
+> +where
+> +    T: ?Sized,
+> +    A: Allocator,
+> +{
+> +    fn drop(&mut self) {
+> +        let ptr =3D self.0.as_ptr();
+> +
+> +        // SAFETY: We need to drop `self.0` in place, before we free the=
+ backing memory.
+> +        unsafe { core::ptr::drop_in_place(ptr) };
+> +
+> +        // SAFETY: `ptr` is always properly aligned, dereferenceable and=
+ points to an initialized
+> +        // instance of `T`.
+> +        if unsafe { core::mem::size_of_val(&*ptr) } !=3D 0 {
+> +            // SAFETY: `ptr` was previously allocated with `A`.
+> +            unsafe { A::free(self.0.as_non_null().cast()) };
+> +        }
+
+You just destroyed the value by calling `drop_in_place`, so `ptr` no
+longer points at an initialized instance of `T`. Please compute
+whether the allocation has non-zero size before you call
+`drop_in_place`.
+
+Also, in normal Rust this code would leak the allocation on panic in
+the destructor. We may not care, but it's worth taking into account if
+anybody else copies this code to a different project with a different
+panic configuration.
+
+> +impl<T: 'static, A> ForeignOwnable for crate::alloc::Box<T, A>
+> +where
+> +    A: Allocator,
+> +{
+> +    type Borrowed<'a> =3D &'a T;
+> +
+> +    fn into_foreign(self) -> *const core::ffi::c_void {
+> +        crate::alloc::Box::into_raw(self) as _
+> +    }
+> +
+> +    unsafe fn borrow<'a>(ptr: *const core::ffi::c_void) -> &'a T {
+> +        // SAFETY: The safety requirements for this function ensure that=
+ the object is still alive,
+> +        // so it is safe to dereference the raw pointer.
+> +        // The safety requirements of `from_foreign` also ensure that th=
+e object remains alive for
+> +        // the lifetime of the returned value.
+> +        unsafe { &*ptr.cast() }
+> +    }
+> +
+> +    unsafe fn from_foreign(ptr: *const core::ffi::c_void) -> Self {
+> +        // SAFETY: The safety requirements of this function ensure that =
+`ptr` comes from a previous
+> +        // call to `Self::into_foreign`.
+> +        unsafe { crate::alloc::Box::from_raw(ptr as _) }
+> +    }
+> +}
+
+You may want to also implement ForeignOwnable for Pin<Box<T>>. See:
+https://lore.kernel.org/all/20240730-foreign-ownable-pin-box-v1-1-b1d70cdae=
+541@google.com/
+
+Alice
