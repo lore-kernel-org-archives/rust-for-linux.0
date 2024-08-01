@@ -1,162 +1,208 @@
-Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40DD4170A18
-	for <rust-for-linux@vger.kernel.org>; Thu,  1 Aug 2024 10:50:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B9A7189534
+	for <rust-for-linux@vger.kernel.org>; Thu,  1 Aug 2024 11:22:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722509416; cv=none; b=MaOCeuD+RQw7jM0+S3t6cOaYDrH66JSoM1YQZTw75AQeDSVk336tqPgztWHrW1ecTV6Z+FXobKQAXwxA9Z64rydmP3jqKAeEN98ZL7xbgA4tmyai11Y9ggPhRAXerThApQPWtxpIglIqmorsEvuRu96+P/9FLMs03wMLug4b45E=
+	t=1722511347; cv=none; b=TT72hygiq+Qurt8QRnYSeZzGGT8kB1wLsohTfVfkRrqi9wBihn2d3JZuPYOIrbjwM6gyT1oZBmIE9S0slafKg3H/+hy8RgPTBNqotywqTYMrcYgRWae1/dCjjLz48JZyimbga6plwFOfce5+bZvzAPhZm83lgvnDShiOjIuiuGc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722509416; c=relaxed/simple;
-	bh=FzX9Oi8w1rb7TAtfeMJIxj7qYb3gZnjoJj39P4abMxM=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WNqmGKFNm5wjAvGiBGiMrSQBWldg26E0cLll860aV5SnrgsyHJYBoQaLweY6qWprGqYSEotlg/NMYqW9/Zr4KJmgvfelJe92wDGiA1mClld6Tmv4rLrqvs8ZpJbKEpQ/akOls4yH0wAzlmSAu5tlmX1IAYDQMBaQY3kus5fgN+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=PXjIONh8; arc=none smtp.client-ip=185.70.40.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1722511347; c=relaxed/simple;
+	bh=wT1WeQtWSF4pKg/aqyS1PtzbeURzHustn4W7PgKlu/s=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=jDUU57Ov7HdCpdRaxLUitySVIRwOD8xywXrOvitw14o1LF1N4Md+hrdVL9Stz4+bht2yYSQKezMO2ymenbQG6vVy/eod2SvFOB8i4JMEXmq6Uh3jjyXLkST1wybCLX0oOnsFhKfmW2VYSiKNNztKnZmcc11+MNs2cP8nY7UAibs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=QV5uuEkL; arc=none smtp.client-ip=209.85.218.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="PXjIONh8"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1722509412; x=1722768612;
-	bh=gMdZocEy01zU7HSY4Jv0StclRtNQ2rOH9J2qCOvUQpg=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=PXjIONh8Kto9reGwq1qKvJxpdLNXG6+YJGSTPM0hkI8x6hnAGkal6M3w+pOY08trk
-	 a7tJETI3Z7ADOP9extEIdOR4i7/g9Wqf4snplZ3zD+rO7tSRk1nSYIk1jQBC/WgYQw
-	 P8oLR60X/Sdb8onIbnW5t9FUTWfSrsHUw4vdaKl1mlBv9I7L6+cJoNb5LsuV98BtRm
-	 pL1XyZOgDu4/+309UsZ0mdJJ2IX8nFEVNv4SDDY75gMAsX8Pjin38/RNQIdLmEAB06
-	 yQyB3qAlaI/dNbg9osTkrdEIWj+QXhFcQvVAImYseAojVe8b7k9PBc7Y2PGRVPe0E2
-	 zhyh/ishbRSBA==
-Date: Thu, 01 Aug 2024 10:50:06 +0000
-To: Alice Ryhl <aliceryhl@google.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Marco Elver <elver@google.com>, Coly Li <colyli@suse.de>, Paolo Abeni <pabeni@redhat.com>, Pierre Gondois <pierre.gondois@arm.com>, Ingo Molnar <mingo@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Wei Yang <richard.weiyang@gmail.com>, Matthew Wilcox <willy@infradead.org>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, Kees Cook <kees@kernel.org>
-Subject: Re: [PATCH v3 09/10] rust: list: support heterogeneous lists
-Message-ID: <4af5a8fa-c27c-4ee5-9d2f-67a46bd34635@proton.me>
-In-Reply-To: <CAH5fLghkPgj560a2b_1oRnvuurEugT4TNj+o-fYhGsuSGpywPg@mail.gmail.com>
-References: <20240723-linked-list-v3-0-89db92c7dbf4@google.com> <20240723-linked-list-v3-9-89db92c7dbf4@google.com> <2b548226-e323-466d-9f6d-762f6cbb5474@proton.me> <CAH5fLghkPgj560a2b_1oRnvuurEugT4TNj+o-fYhGsuSGpywPg@mail.gmail.com>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: e0c106a5abae8caf3adbab48a7e800a6c0333dfe
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="QV5uuEkL"
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-a7a94478a4eso370267666b.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 01 Aug 2024 04:22:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1722511342; x=1723116142; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=2qlZj/baYl2pbc9LuE7Qbzb/56dqo6s6gnzipMfbe3g=;
+        b=QV5uuEkLlhu0v3M2uPfkYKSaz6GZaHbVnu102+7axKQdD4l8dQLcds3JLNFXbZVCLD
+         kFpkil7+YE8t1NCKM8OqTHgKGlan1i8Z2FYmB7eFijfR1uYLzRJ67n04PBn5GSP2f0q+
+         r0PcCG/0xY6tuXSDjOeC43cVTekKxpYu+WhNj985Yq3RmupPV4Pj4RDJu06tu/sDX+gR
+         pQ5Muea2WHTE0H2st0UlBopKKt9DtEU1Ef/XLj2usTlvmK12nHnxHZVtxGUhqaMTg1vw
+         Ja3G5MHKm+QQkb+mamMMoTmX5n8Qowhn1AyEstPOpoA7+AAGLTsltSSPAJ6wYja4qbri
+         fHwQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722511342; x=1723116142;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=2qlZj/baYl2pbc9LuE7Qbzb/56dqo6s6gnzipMfbe3g=;
+        b=tboHksaAZS/rxYMMcucz6h4XgoYzmWJ3P6lufYANVrh3tfxHUof48+k0IXLZfUW28a
+         uQ8ydCWPrhBNkxhWqzuoC14iYG/2xFfEv/BOLcTo9RZ4zU9YDfzkLSY6dAuxrCRXAFUv
+         e3ELmodSB+1/y0ttfR6KgTp58JUliL3rwKb+hm0UslDAKJCnMTGHNBsZAqZaitUT4l9P
+         GElqO17ALCpgfGjvr8++gdjZaYQjDp8jzs6qgk0KwEnxhT2xxGLYIv+Gzl3mdP2Z6cu2
+         TtbeJB5DFVen8MzDULQ5UUBE5fdNQ+G5Xm3XhH/6enTcil+gTWLUXQBHdsMWXgxmgN1A
+         7P2g==
+X-Forwarded-Encrypted: i=1; AJvYcCU1FxtlvPnYLYG1M5WFdvfOqu6ynuArdfz3yn2TdsIU/Vn+PPHAIN+eSzg51zca3vpVvDuN9sckHrraknT1hMFijyQ3PL9szFnCjRHEC+k=
+X-Gm-Message-State: AOJu0YyzD081trgfs9xxUwzuP7PpR+eizsXF1rEv4DYRv9rpCXUU9P8Z
+	On1V3ILcM9682zi1jrQZv5SrkRKe4JaF9NlqECThy10GDxpIxp0OikCV3ODK44Y=
+X-Google-Smtp-Source: AGHT+IHSi4OBNzaU+B2LgJN8/gLfHe2x6D+r2Bobw+i8XhnHPuZjnSs85LOFa27DBHA9NywFZOhCkA==
+X-Received: by 2002:a17:907:1608:b0:a7a:bae8:f2b5 with SMTP id a640c23a62f3a-a7dbcd4b357mr54629866b.36.1722511342367;
+        Thu, 01 Aug 2024 04:22:22 -0700 (PDT)
+Received: from [10.100.51.161] ([193.86.92.181])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a7acab23624sm885445266b.20.2024.08.01.04.22.21
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 01 Aug 2024 04:22:22 -0700 (PDT)
+Message-ID: <f08678b1-260f-4200-889b-a4ec016fc7e1@suse.com>
+Date: Thu, 1 Aug 2024 13:22:21 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 00/15] Implement MODVERSIONS for Rust
+To: Sami Tolvanen <samitolvanen@google.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Masahiro Yamada <masahiroy@kernel.org>, Luis Chamberlain
+ <mcgrof@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+ Matthew Maurer <mmaurer@google.com>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>,
+ linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+ linux-modules@vger.kernel.org, rust-for-linux@vger.kernel.org
+References: <20240617175818.58219-17-samitolvanen@google.com>
+ <0b2697fd-7ab4-469f-83a6-ec9ebc701ba0@suse.com>
+ <CABCJKueGRBdFfGW-cvOvqxc-a85GpxtwPmLdE_1RiAkNLrEg+g@mail.gmail.com>
+ <00714a65-953f-4885-9229-1990543c4154@suse.com>
+ <CABCJKucj7zjc4=EiFdSnzNDBvQmaWBBt_KJsTq1ybp=Vegp5eQ@mail.gmail.com>
+Content-Language: en-US
+From: Petr Pavlu <petr.pavlu@suse.com>
+In-Reply-To: <CABCJKucj7zjc4=EiFdSnzNDBvQmaWBBt_KJsTq1ybp=Vegp5eQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On 01.08.24 11:38, Alice Ryhl wrote:
-> On Thu, Aug 1, 2024 at 11:24=E2=80=AFAM Benno Lossin <benno.lossin@proton=
-.me> wrote:
+On 7/26/24 23:05, Sami Tolvanen wrote:
+> On Mon, Jul 22, 2024 at 8:20 AM Petr Pavlu <petr.pavlu@suse.com> wrote:
 >>
->> On 23.07.24 10:22, Alice Ryhl wrote:
->>> @@ -181,6 +185,47 @@ unsafe fn from_fields(me: *mut ListLinksFields) ->=
- *mut Self {
->>>      }
->>>  }
->>>
->>> +/// Similar to [`ListLinks`], but also contains a pointer to the full =
-value.
->>> +///
->>> +/// This type can be used instead of [`ListLinks`] to support lists wi=
-th trait objects.
->>> +#[repr(C)]
->>> +pub struct ListLinksSelfPtr<T: ?Sized, const ID: u64 =3D 0> {
->>> +    /// The `ListLinks` field inside this value.
->>> +    ///
->>> +    /// This is public so that it can be used with `impl_has_list_link=
-s!`.
->>> +    pub inner: ListLinks<ID>,
->>> +    self_ptr: UnsafeCell<MaybeUninit<*const T>>,
+>> From my perspective, I'm okay if gendwarfksyms doesn't provide
+>> functionality to compare a new object file with its reference symtypes
+>> file.
 >>
->> Why do you need `MaybeUninit`?
->=20
-> Right now the constructor initializes it to MaybeUninit::zeroed().
-> What would you initialize it to without MaybeUninit? Remember that the
-> vtable pointer in a fat pointer has strict validity requirements.
+>> As mentioned, genksyms has this functionality but I actually think the
+>> way it works is not ideal. Its design is to operate on one compilation
+>> unit at the time. This has the advantage that a comparison of each file
+>> is performed in parallel during the build, simply because of the make
+>> job system. On the other hand, it has two problems.
+>>
+>> The first one is that genksyms doesn't provide a comparison of the
+>> kernel as a whole. This means that the tool gives rather scattered and
+>> duplicated output about changed structs in the build log. Ideally, one
+>> would like to see a single compact report about what changed at the end
+>> of the build.
+> 
+> Sure, that makes sense. Android uses STG for this, which might be
+> useful to other folks too:
+> 
+> https://android.googlesource.com/platform/external/stg/
+> https://android.googlesource.com/platform/external/stg/+/refs/heads/main/doc/stgdiff.md#output-formats
 
-Oh... I forgot about that, can you add a comment about that? Also why
-not use `Opaque` in that case then?
+STG is an interesting tool. I've played with it a bit last year. To be
+frank, I was surprised to see a new tool being proposed by Google to
+generate modversion CRCs from DWARF instead of potentially extending
+your STG project for this purpose. I'm not sure if it is something that
+you folks have considered and evaluated.
 
->>> +}
->>> +
->>> +// SAFETY: The fields of a ListLinksSelfPtr can be moved across thread=
- boundaries.
->>> +unsafe impl<T: ?Sized + Send, const ID: u64> Send for ListLinksSelfPtr=
-<T, ID> {}
->>> +// SAFETY: The type is opaque so immutable references to a ListLinksSe=
-lfPtr are useless. Therefore,
->>> +// it's okay to have immutable access to a ListLinks from several thre=
-ads at once.
->>> +//
->>> +// Note that `inner` being a public field does not prevent this type f=
-rom being opaque, since
->>> +// `inner` is a opaque type.
->>> +unsafe impl<T: ?Sized + Sync, const ID: u64> Sync for ListLinksSelfPtr=
-<T, ID> {}
+>> A few months ago, I also started working on a tool inspired by this
+>> script. The goal is to have similar functionality but hopefully with
+>> a much faster implementation. Hence, this tool is written in a compiled
+>> language (Rust at the moment) and should also become multi-threaded. I'm
+>> hoping to find some time to make progress on it and make the code
+>> public. It could later be added to the upstream kernel to replace the
+>> comparison functionality implemented by genksyms, if there is interest.
 >>
->> [...]
->>
->>> @@ -135,5 +178,91 @@ unsafe fn post_remove(me: *mut $crate::list::ListL=
-inks<$num>) -> *const Self {
->>>              }
->>>          }
->>>      };
->>> +
->>> +    (
->>> +        impl$({$($generics:tt)*})? ListItem<$num:tt> for $t:ty {
->>> +            using ListLinksSelfPtr;
->>> +        } $($rest:tt)*
->>> +    ) =3D> {
->>> +        // SAFETY: See GUARANTEES comment on each method.
->>> +        unsafe impl$(<$($generics)*>)? $crate::list::ListItem<$num> fo=
-r $t {
->>> +            // GUARANTEES:
->>> +            // This implementation of `ListItem` will not give out exc=
-lusive access to the same
->>> +            // `ListLinks` several times because calls to `prepare_to_=
-insert` and `post_remove`
->>> +            // must alternate and exclusive access is given up when `p=
-ost_remove` is called.
->>> +            //
->>> +            // Other invocations of `impl_list_item!` also cannot give=
- out exclusive access to the
->>> +            // same `ListLinks` because you can only implement `ListIt=
-em` once for each value of
->>> +            // `ID`, and the `ListLinks` fields only work with the spe=
-cified `ID`.
->>> +            unsafe fn prepare_to_insert(me: *const Self) -> *mut $crat=
-e::list::ListLinks<$num> {
->>> +                // SAFETY: The caller promises that `me` points at a v=
-alid value of type `Self`.
->>> +                let links_field =3D unsafe { <Self as $crate::list::Li=
-stItem<$num>>::view_links(me) };
->>> +
->>> +                let spoff =3D $crate::list::ListLinksSelfPtr::<Self, $=
-num>::LIST_LINKS_SELF_PTR_OFFSET;
->>> +                // SAFETY: The constant is equal to `offset_of!(ListLi=
-nksSelfPtr, self_ptr)`, so
->>> +                // the pointer stays in bounds of the allocation.
->>> +                let self_ptr =3D unsafe { (links_field as *const u8).a=
-dd(spoff) }
->>> +                    as *const ::core::cell::UnsafeCell<*const Self>;
->>
->> A bit confused why you need to do it this way, can't you just do this?:
->>
->>     let links_self_field =3D links_field.cast::<$crate::list::ListLinksS=
-elfPtr>();
->>     // SAFETY: ...
->>     let self_ptr =3D unsafe { ::core::ptr::addr_of_mut!((*links_self_fie=
-ld).self_ptr) };
->=20
-> If nothing else, the field is not public. I can't remember if there
-> was another reason.
+>> So as mentioned, I'm fine if gendwarfksyms doesn't have this
+>> functionality. However, for distributions that rely on the symtypes
+>> format, I'd be interested in having gendwarfksyms output its dump data
+>> in this format as well.
+> 
+> We can definitely tweak the output format, but I'm not sure if making
+> it fully compatible with the genksyms symtypes format is feasible,
+> especially for Rust code. I also intentionally decided to use DWARF
+> tag names in the output instead of shorthands like s# etc. to make it
+> a bit more readable.
 
-Oh yeah that's true, then you have to go via the offset.
+Sure, it might be necessary to extend the symtypes format a bit, for
+example, by allowing spaces in type names. What other problems do you
+see?
 
----
-Cheers,
-Benno
+The example I showed preserves the DWARF tag names in type descriptions.
+Cross-references and the target type names use the s# prefix as they
+they need to be distinguished from other tokens.
 
+>> For example, instead of producing:
+>>
+>> gendwarfksyms: process_exported_symbols: _some_mangled_func_name (@ XYZ)
+>> subprogram(
+>>    [formal parameters...]
+>> )
+>> -> structure_type core::result::Result<(), core::fmt::Error> {
+>>    [a description of the structure...]
+>> };
+>>
+>> .. the output could be something like this:
+>>
+>> S#'core::result::Result<(), core::fmt::Error>' structure_type core::result::Result<(), core::fmt::Error> { [a description of the structure...] }
+>> _some_mangled_func_name subprogram _some_mangled_func_name ( [formal parameters...] ) -> S#'core::result::Result<(), core::fmt::Error>'
+> 
+> This wouldn't be enough to make the output format compatible with
+> symtypes though. genksyms basically produces a simple key-value pair
+> database while gendwarfksyms currently outputs the fully expanded type
+> string for each symbol. If you need the tool to produce a type
+> database, it might also be worth discussing if we should use a bit
+> less ad hoc format in that case.
+
+What I think is needed is the ability to compare an updated kernel with
+some previous reference and have an output that clearly and accurately
+shows why CRCs of some symbols changed. The previous reference should be
+possible to store in Git together with the kernel source. It means it
+should be ideally some text format and limited in size. This is what
+distributions that care about stable kABI do in some form currently.
+
+This functionality would be needed if some distribution wants to
+maintain stable Rust kABI (not sure if it is actually feasible), or if
+the idea is for gendwarfksyms to be a general tool that could replace
+genksyms. I assume for the sake of argument that this is the case.
+
+Gendwarfksyms could implement this functionality on its own, or as
+discussed, I believe it could provide a symtypes-like dump and a second
+tool could be used to work with this format and for comparing it.
+
+From my point of view, the current --debug format is not suitable for
+this purpose because its expanded and unstructured form means it is
+bloated and hard to compare with a previous reference.
+
+I'm also not quite yet sold on using separate DWARF tooling, such as
+libabigail or STG, to actually understand why gendwarfksyms produced
+a different CRC for some symbol. Using these tools makes sense in the
+genksyms world, where genksyms operates on the source code level and
+this additional tooling can only work on debug data.
+
+With gendwarfksyms working directly with DWARF data, it doesn't seem
+appealing to me to first run gendwarfksyms to produce CRCs, compare them
+with their reference, and if they are different, use a second tool to
+process the same DWARF data again and with some luck hopefully get an
+actual answer why the CRCs changed. I'm worried that users might
+encounter inaccurate answers if the two tools interpret the input data
+differently.
+
+> 
+> One more thing to note about the current --debug output is that it
+> directly correlates with the debugging information and thus may not
+> contain all aliases. For example, the Rust compiler deduplicates
+> identical function implementations (e.g. Deref::deref and
+> DerefMut::deref_mut etc.), but only one of the symbol names appears in
+> DWARF. We use symbol addresses to print out #SYMVERs also for the
+> aliases, but they don't show up in the debugging output right now.
+
+Thanks,
+Petr
