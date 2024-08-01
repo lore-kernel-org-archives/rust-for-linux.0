@@ -1,257 +1,182 @@
-Received: from mail-0201.mail-europe.com (mail-0201.mail-europe.com [51.77.79.158])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D919916F910
-	for <rust-for-linux@vger.kernel.org>; Thu,  1 Aug 2024 09:24:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=51.77.79.158
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA65A15252D
+	for <rust-for-linux@vger.kernel.org>; Thu,  1 Aug 2024 09:39:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722504291; cv=none; b=gjC83FTjb6lDigkyh8QTxhFA719az2gReZNeIH7bss/W0uB2B+AknfnO2HtERwwMzsJroov08VJRLwZAeoFdV1ttnbfMIW7pvBNhTDnl8plm9KTQppn6rOZoKT0GNLEZgp4HLckMGikUEZ/8hxvJ3ia8GrXOEiKpI+LAjkAOI9Y=
+	t=1722505146; cv=none; b=JP3i0j7M3NUbjzcMmZteYI3WEItM5x1IHolTM6wpapUX8MMrYAmU/WY4WvfsXdeBmsnBvfHnzIMjHKVMPGpb2MMuc+9R7zi2rOq5I+urbmqayKH6J+uETCfPi9tYa1lqvrKLZ4HCRKHnIGuMRo1tFhrbYK1y1dq0xU8v8ue4HPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722504291; c=relaxed/simple;
-	bh=d4ri9VfNgOiIrNVI1mCsreFc8GM8GpdEhbrZ+wzLFdU=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LGvfIV+xtg3lMEhmfk0xrdf+vSCPryBETLqTatCw68QDv+z3C0/ojUjgeTa0ESmTfIAINIrj/kflKKgE+GJXSlGdS/QaXaAmcs+9b++RQSPHMoaxsRwFDFxtkK4QgHE3vW4zq1he+Vo22U35zk/FCoU9/MQ+6TB/M4vDzzd2ud8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=kNBqTYLs; arc=none smtp.client-ip=51.77.79.158
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1722505146; c=relaxed/simple;
+	bh=oApA0qznxaHEE4A8R8hgJNhN2ArNXKYa4oVQONhFyNE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=FUHy0QPzWpB/mvXymTCp9XTbhLdWYhWZWDlOJ/xD8jt+yti05g8evfeDvEYo4hxpxcaReIVEM8gckSjLN3lb3mbvl6uOZdPradmtKJ7/ap4G4rNkHFLognZU/bYzcTXXTTA2iY/t4QPbOLKSpSUYVhJrYXGnpnK6WA2Zy5/NyXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=DM2yAlNF; arc=none smtp.client-ip=209.85.221.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="kNBqTYLs"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1722504285; x=1722763485;
-	bh=TbpqkHCw4lSda76FTheLHxuqma8moDcQD3e3Tnu05W0=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=kNBqTYLsCQO5X8OAHsXsa240Ow150ROzeJ+JPeRpl497PcCYtB8B4cS8aKXYaMPqz
-	 b6c/Z71Q5htytWJN1o8hVhO1HTIHWiJJm4Fm0JNQJGLo3NR9GsH8gVfH1vIhvFfQDy
-	 i3zjr4PLbrHxNrtB/GvISVe4BM9JHXTGqr7j/YDfCRnWvNdvBYD5V7P4uz8PaliCwy
-	 1C81TZXLr3SZejjLdk87Gyz4D5dM2Q9IIy8CWN7e1d43r6ut+OdOQeeddnlaz8jnTo
-	 roWYGaEcUrMM8p40QnQcDQuGQt2Mnb7IvuL3n58FuFULZm7AQwshCiV4HexCM0j4DW
-	 +F0fnamftCMAw==
-Date: Thu, 01 Aug 2024 09:24:40 +0000
-To: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Marco Elver <elver@google.com>, Coly Li <colyli@suse.de>, Paolo Abeni <pabeni@redhat.com>, Pierre Gondois <pierre.gondois@arm.com>, Ingo Molnar <mingo@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Wei Yang <richard.weiyang@gmail.com>, Matthew Wilcox <willy@infradead.org>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, Kees Cook <kees@kernel.org>
-Subject: Re: [PATCH v3 09/10] rust: list: support heterogeneous lists
-Message-ID: <2b548226-e323-466d-9f6d-762f6cbb5474@proton.me>
-In-Reply-To: <20240723-linked-list-v3-9-89db92c7dbf4@google.com>
-References: <20240723-linked-list-v3-0-89db92c7dbf4@google.com> <20240723-linked-list-v3-9-89db92c7dbf4@google.com>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 6d7728b66dbd427ed3379353002f5530636f60ad
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="DM2yAlNF"
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-36844375001so3058465f8f.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 01 Aug 2024 02:39:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1722505143; x=1723109943; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=rQdGA7GJE2VgdG2QsBIACC0GGavEy5/6TiWZnrghIfE=;
+        b=DM2yAlNFOH3v32S8roDbhB1p2pIU7YJOAem6WmYFZWHbT/trYdRbAAlieV8FKu4ayH
+         qK/5kHmhGQRs48PGh2WIjyU5w8ml8AkTzrtmuhgnk+QHpU28SYAzQU56aWyzCjrKz2d1
+         QpeaPH51g8CWhYC8CnvU3WCdRnsTDNd3Q+ASuNBEnE+fBXqURUau4RO/bGd4g1YvHdvw
+         3OXjdmQh9+JrG5Cz3K1swActaHjA2TV3m4F9RdpsaEwGbpeelIfsPsZ0gIEmG/Oh81qM
+         hERu4eJNO4hc/odsmUv8c5+n1HEc2V05+AZE1ZOM2aiL0MClqLyhrVjh3J4h0zTaYVh/
+         nMww==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722505143; x=1723109943;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=rQdGA7GJE2VgdG2QsBIACC0GGavEy5/6TiWZnrghIfE=;
+        b=R49cIQ6y0gMlP/ycUuYEuwPkThUMJfO0ureVvrRpp6z4sdgsWU19gWNCTzntTukljt
+         1W2MyInMs9IBx7GTQnWYHzTLVU6oZyOFHLiMa7N/gxYKmGSlANmZhtydE9WseZx03Yj4
+         ZQUsmkEWwp3uQ2VX6rdYULsrBJhRgnu4wFq373lYWBGOO8kWrVsccSoHjkwwlaUAB2Br
+         6ixpGPqcG7RV4KuRSmCunb8Fj0Lw8v2xvPRfEVQMZk0aNOQup6LkZt3QYDHzyyvFILJ9
+         cOfgNoPjOcvWh9rOURatEXMjkY0Lhd4uZwbO4psPKCwcF2sd919xwkigzFlwxHW1aWgo
+         onEA==
+X-Forwarded-Encrypted: i=1; AJvYcCVIO9UHuvXoi8PcHF6n9YxPUFlCXZGowwGu2xx8GIdnECkAARQo2fnyTFuE0GLwXue/RlXrvvyAp9PSCgErs2PIkK7vLg4edpEsnuqLmVA=
+X-Gm-Message-State: AOJu0YzmujStTOet0KAe0J19erkeVDLpKklZu6IJKCvm8N9XEnQV9nvi
+	p7vZRslZbRnUIEueKoyG1MqJD13sX3TIM25Gzw0HkS0ngF1Sg67mW8R/SrZfko2+2hvcrzi0YV9
+	LsHNEZTAH8yn07VWfDSkSd0ddsj5bQ1+6UXg0
+X-Google-Smtp-Source: AGHT+IHNeIRKHEDLTaSlMEckCTl/havP+o8WgKH8eXCZheQ+hbQIUOGOrwY0qf/8SqbtvZCCyhr7GP8Uz0b/v6290so=
+X-Received: by 2002:a05:6000:910:b0:368:48b1:803 with SMTP id
+ ffacd0b85a97d-36baacbda56mr1204853f8f.12.1722505142506; Thu, 01 Aug 2024
+ 02:39:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20240723-linked-list-v3-0-89db92c7dbf4@google.com>
+ <20240723-linked-list-v3-9-89db92c7dbf4@google.com> <2b548226-e323-466d-9f6d-762f6cbb5474@proton.me>
+In-Reply-To: <2b548226-e323-466d-9f6d-762f6cbb5474@proton.me>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Thu, 1 Aug 2024 11:38:50 +0200
+Message-ID: <CAH5fLghkPgj560a2b_1oRnvuurEugT4TNj+o-fYhGsuSGpywPg@mail.gmail.com>
+Subject: Re: [PATCH v3 09/10] rust: list: support heterogeneous lists
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, Marco Elver <elver@google.com>, Coly Li <colyli@suse.de>, 
+	Paolo Abeni <pabeni@redhat.com>, Pierre Gondois <pierre.gondois@arm.com>, 
+	Ingo Molnar <mingo@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Wei Yang <richard.weiyang@gmail.com>, 
+	Matthew Wilcox <willy@infradead.org>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Kees Cook <kees@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On 23.07.24 10:22, Alice Ryhl wrote:
-> @@ -181,6 +185,47 @@ unsafe fn from_fields(me: *mut ListLinksFields) -> *=
-mut Self {
->      }
->  }
->=20
-> +/// Similar to [`ListLinks`], but also contains a pointer to the full va=
-lue.
-> +///
-> +/// This type can be used instead of [`ListLinks`] to support lists with=
- trait objects.
-> +#[repr(C)]
-> +pub struct ListLinksSelfPtr<T: ?Sized, const ID: u64 =3D 0> {
-> +    /// The `ListLinks` field inside this value.
-> +    ///
-> +    /// This is public so that it can be used with `impl_has_list_links!=
-`.
-> +    pub inner: ListLinks<ID>,
-> +    self_ptr: UnsafeCell<MaybeUninit<*const T>>,
+On Thu, Aug 1, 2024 at 11:24=E2=80=AFAM Benno Lossin <benno.lossin@proton.m=
+e> wrote:
+>
+> On 23.07.24 10:22, Alice Ryhl wrote:
+> > @@ -181,6 +185,47 @@ unsafe fn from_fields(me: *mut ListLinksFields) ->=
+ *mut Self {
+> >      }
+> >  }
+> >
+> > +/// Similar to [`ListLinks`], but also contains a pointer to the full =
+value.
+> > +///
+> > +/// This type can be used instead of [`ListLinks`] to support lists wi=
+th trait objects.
+> > +#[repr(C)]
+> > +pub struct ListLinksSelfPtr<T: ?Sized, const ID: u64 =3D 0> {
+> > +    /// The `ListLinks` field inside this value.
+> > +    ///
+> > +    /// This is public so that it can be used with `impl_has_list_link=
+s!`.
+> > +    pub inner: ListLinks<ID>,
+> > +    self_ptr: UnsafeCell<MaybeUninit<*const T>>,
+>
+> Why do you need `MaybeUninit`?
 
-Why do you need `MaybeUninit`?
+Right now the constructor initializes it to MaybeUninit::zeroed().
+What would you initialize it to without MaybeUninit? Remember that the
+vtable pointer in a fat pointer has strict validity requirements.
 
-> +}
-> +
-> +// SAFETY: The fields of a ListLinksSelfPtr can be moved across thread b=
-oundaries.
-> +unsafe impl<T: ?Sized + Send, const ID: u64> Send for ListLinksSelfPtr<T=
-, ID> {}
-> +// SAFETY: The type is opaque so immutable references to a ListLinksSelf=
-Ptr are useless. Therefore,
-> +// it's okay to have immutable access to a ListLinks from several thread=
-s at once.
-> +//
-> +// Note that `inner` being a public field does not prevent this type fro=
-m being opaque, since
-> +// `inner` is a opaque type.
-> +unsafe impl<T: ?Sized + Sync, const ID: u64> Sync for ListLinksSelfPtr<T=
-, ID> {}
+> > +}
+> > +
+> > +// SAFETY: The fields of a ListLinksSelfPtr can be moved across thread=
+ boundaries.
+> > +unsafe impl<T: ?Sized + Send, const ID: u64> Send for ListLinksSelfPtr=
+<T, ID> {}
+> > +// SAFETY: The type is opaque so immutable references to a ListLinksSe=
+lfPtr are useless. Therefore,
+> > +// it's okay to have immutable access to a ListLinks from several thre=
+ads at once.
+> > +//
+> > +// Note that `inner` being a public field does not prevent this type f=
+rom being opaque, since
+> > +// `inner` is a opaque type.
+> > +unsafe impl<T: ?Sized + Sync, const ID: u64> Sync for ListLinksSelfPtr=
+<T, ID> {}
+>
+> [...]
+>
+> > @@ -135,5 +178,91 @@ unsafe fn post_remove(me: *mut $crate::list::ListL=
+inks<$num>) -> *const Self {
+> >              }
+> >          }
+> >      };
+> > +
+> > +    (
+> > +        impl$({$($generics:tt)*})? ListItem<$num:tt> for $t:ty {
+> > +            using ListLinksSelfPtr;
+> > +        } $($rest:tt)*
+> > +    ) =3D> {
+> > +        // SAFETY: See GUARANTEES comment on each method.
+> > +        unsafe impl$(<$($generics)*>)? $crate::list::ListItem<$num> fo=
+r $t {
+> > +            // GUARANTEES:
+> > +            // This implementation of `ListItem` will not give out exc=
+lusive access to the same
+> > +            // `ListLinks` several times because calls to `prepare_to_=
+insert` and `post_remove`
+> > +            // must alternate and exclusive access is given up when `p=
+ost_remove` is called.
+> > +            //
+> > +            // Other invocations of `impl_list_item!` also cannot give=
+ out exclusive access to the
+> > +            // same `ListLinks` because you can only implement `ListIt=
+em` once for each value of
+> > +            // `ID`, and the `ListLinks` fields only work with the spe=
+cified `ID`.
+> > +            unsafe fn prepare_to_insert(me: *const Self) -> *mut $crat=
+e::list::ListLinks<$num> {
+> > +                // SAFETY: The caller promises that `me` points at a v=
+alid value of type `Self`.
+> > +                let links_field =3D unsafe { <Self as $crate::list::Li=
+stItem<$num>>::view_links(me) };
+> > +
+> > +                let spoff =3D $crate::list::ListLinksSelfPtr::<Self, $=
+num>::LIST_LINKS_SELF_PTR_OFFSET;
+> > +                // SAFETY: The constant is equal to `offset_of!(ListLi=
+nksSelfPtr, self_ptr)`, so
+> > +                // the pointer stays in bounds of the allocation.
+> > +                let self_ptr =3D unsafe { (links_field as *const u8).a=
+dd(spoff) }
+> > +                    as *const ::core::cell::UnsafeCell<*const Self>;
+>
+> A bit confused why you need to do it this way, can't you just do this?:
+>
+>     let links_self_field =3D links_field.cast::<$crate::list::ListLinksSe=
+lfPtr>();
+>     // SAFETY: ...
+>     let self_ptr =3D unsafe { ::core::ptr::addr_of_mut!((*links_self_fiel=
+d).self_ptr) };
 
-[...]
+If nothing else, the field is not public. I can't remember if there
+was another reason.
 
-> @@ -135,5 +178,91 @@ unsafe fn post_remove(me: *mut $crate::list::ListLin=
-ks<$num>) -> *const Self {
->              }
->          }
->      };
-> +
-> +    (
-> +        impl$({$($generics:tt)*})? ListItem<$num:tt> for $t:ty {
-> +            using ListLinksSelfPtr;
-> +        } $($rest:tt)*
-> +    ) =3D> {
-> +        // SAFETY: See GUARANTEES comment on each method.
-> +        unsafe impl$(<$($generics)*>)? $crate::list::ListItem<$num> for =
-$t {
-> +            // GUARANTEES:
-> +            // This implementation of `ListItem` will not give out exclu=
-sive access to the same
-> +            // `ListLinks` several times because calls to `prepare_to_in=
-sert` and `post_remove`
-> +            // must alternate and exclusive access is given up when `pos=
-t_remove` is called.
-> +            //
-> +            // Other invocations of `impl_list_item!` also cannot give o=
-ut exclusive access to the
-> +            // same `ListLinks` because you can only implement `ListItem=
-` once for each value of
-> +            // `ID`, and the `ListLinks` fields only work with the speci=
-fied `ID`.
-> +            unsafe fn prepare_to_insert(me: *const Self) -> *mut $crate:=
-:list::ListLinks<$num> {
-> +                // SAFETY: The caller promises that `me` points at a val=
-id value of type `Self`.
-> +                let links_field =3D unsafe { <Self as $crate::list::List=
-Item<$num>>::view_links(me) };
-> +
-> +                let spoff =3D $crate::list::ListLinksSelfPtr::<Self, $nu=
-m>::LIST_LINKS_SELF_PTR_OFFSET;
-> +                // SAFETY: The constant is equal to `offset_of!(ListLink=
-sSelfPtr, self_ptr)`, so
-> +                // the pointer stays in bounds of the allocation.
-> +                let self_ptr =3D unsafe { (links_field as *const u8).add=
-(spoff) }
-> +                    as *const ::core::cell::UnsafeCell<*const Self>;
-
-A bit confused why you need to do it this way, can't you just do this?:
-
-    let links_self_field =3D links_field.cast::<$crate::list::ListLinksSelf=
-Ptr>();
-    // SAFETY: ...
-    let self_ptr =3D unsafe { ::core::ptr::addr_of_mut!((*links_self_field)=
-.self_ptr) };
-
-> +                let cell_inner =3D ::core::cell::UnsafeCell::raw_get(sel=
-f_ptr);
-> +
-> +                // SAFETY: This value is not accessed in any other place=
-s than `prepare_to_insert`,
-> +                // `post_remove`, or `view_value`. By the safety require=
-ments of those methods,
-> +                // none of these three methods may be called in parallel=
- with this call to
-> +                // `prepare_to_insert`, so this write will not race with=
- any other access to the
-> +                // value.
-> +                unsafe { ::core::ptr::write(cell_inner, me) };
-> +
-> +                links_field
-> +            }
-> +
-> +            // GUARANTEES:
-> +            // * This returns the same pointer as `prepare_to_insert` be=
-cause `prepare_to_insert`
-> +            //   returns the return value of `view_links`.
-> +            // * By the type invariants of `ListLinks`, the `ListLinks` =
-has two null pointers when
-> +            //   this value is not in a list.
-> +            unsafe fn view_links(me: *const Self) -> *mut $crate::list::=
-ListLinks<$num> {
-> +                // SAFETY: The caller promises that `me` points at a val=
-id value of type `Self`.
-> +                unsafe { <Self as HasListLinks<$num>>::raw_get_list_link=
-s(me.cast_mut()) }
-> +            }
-> +
-> +            // This function is also used as the implementation of `post=
-_remove`, so the caller
-> +            // may choose to satisfy the safety requirements of `post_re=
-move` instead of the safety
-> +            // requirements for `view_value`.
-
-This almost sounds like a magic card :)
-
-> +            //
-> +            // GUARANTEES:
-
-Can you also put in "()" here that this satisfies the guarantees of
-`post_remove`?
-
-> +            // * This returns the same pointer as the one passed to the =
-most recent call to
-> +            //   `prepare_to_insert` since that call wrote that pointer =
-to this location. The value
-> +            //   is only modified in `prepare_to_insert`, so it has not =
-been modified since the
-> +            //   most recent call.
-> +            //
-> +            // GUARANTEES: (when using the `view_value` safety requireme=
-nts)
-> +            // * The pointer remains valid until the next call to `post_=
-remove` because the caller
-> +            //   of the most recent call to `prepare_to_insert` promised=
- to retain ownership of the
-> +            //   `ListArc` containing `Self` until the next call to `pos=
-t_remove`. The value cannot
-> +            //   be destroyed while a `ListArc` reference exists.
-> +            unsafe fn view_value(links_field: *mut $crate::list::ListLin=
-ks<$num>) -> *const Self {
-> +                let spoff =3D $crate::list::ListLinksSelfPtr::<Self, $nu=
-m>::LIST_LINKS_SELF_PTR_OFFSET;
-> +                // SAFETY: The constant is equal to `offset_of!(ListLink=
-sSelfPtr, self_ptr)`, so
-> +                // the pointer stays in bounds of the allocation.
-> +                let self_ptr =3D unsafe { (links_field as *const u8).add=
-(spoff) }
-> +                    as *const ::core::cell::UnsafeCell<*const Self>;
-> +                let cell_inner =3D ::core::cell::UnsafeCell::raw_get(sel=
-f_ptr);
-> +                // SAFETY: This is not a data race, because the only fun=
-ction that writes to this
-> +                // value is `prepare_to_insert`, but by the safety requi=
-rements the
-> +                // `prepare_to_insert` method may not be called in paral=
-lel with `view_value` or
-> +                // `post_remove`.
-> +                unsafe { ::core::ptr::read(cell_inner) }
-> +            }
-> +
-> +            // GUARANTEES:
-> +            // The first guarantee of `view_value` is exactly what `post=
-_remove` guarantees.
-> +            unsafe fn post_remove(me: *mut $crate::list::ListLinks<$num>=
-) -> *const Self {
-> +                // SAFETY: This specific implementation of `view_value` =
-allows the caller to
-> +                // promise the safety requirements of `post_remove` inst=
-ead of the safety
-> +                // requirements for `view_value`.
-
-I like this solution better than what you have for `impl_list_item`
-"using ListLinks;"
-
----
-Cheers,
-Benno
-
-> +                unsafe { <Self as $crate::list::ListItem<$num>>::view_va=
-lue(me) }
-> +            }
-> +        }
-> +    };
->  }
->  pub use impl_list_item;
->=20
-> --
-> 2.45.2.1089.g2a221341d9-goog
->=20
-
+Alice
