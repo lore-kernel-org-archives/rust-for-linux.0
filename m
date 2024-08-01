@@ -1,70 +1,70 @@
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17684208A0;
-	Thu,  1 Aug 2024 01:03:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6920310979;
+	Thu,  1 Aug 2024 01:22:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722474238; cv=none; b=OLTcKjiVpOognXD4577v8wk7FxojCcSUbAzuqLTwcLzRRyC2sd5lzidn5wi4lnmSOzS85flqGVEqJ06f4/wZFQbYpfhD9izQZpnmmwBjLkwTi45wJuHO29h/W5vH/Wzz/aw4U6B/C4qLyYuilPTrYLxD1BFNlDu2tt7Oyosycp0=
+	t=1722475322; cv=none; b=FnuJuiEXNPwgP6vSGbYgTE2FO5n5KJ8ZkPut0MFAS+FM12tWC1V3z+DjHLWU9CmfnwVVHVWI1lJrhlY0l6nRrAZS4fhM1A5h6id23XJAJkA6nZV8QDuPx9MjkLJcLP0yW0klwjVQCm7Tq7bW8wktg6vgpz1phgCt91KAdiXN71k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722474238; c=relaxed/simple;
-	bh=+0D9izMov2fVjggCqOiId4Eyo/YCtxQRrNJ1CrxscBg=;
+	s=arc-20240116; t=1722475322; c=relaxed/simple;
+	bh=QMl40B518A1bHhCb+JtSldRX80r07t5zTPu5e9wOqb0=;
 	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=q+Y47d730qjBizKRuOP/FF2EywC1N72+211naqfiYSP1l5KVlkMl/r2zlpbpTDUp+FgHz+Os8v9Sn0a6D3oQnlQynwZNK9HgZw5SrRvc3T2uVUQ1DjN/Ja9bSMMvjWhV2krekXWNt+1/Q26s/TEaaKF807Eqi/j4hC7iiubrCug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UGdx3keZ; arc=none smtp.client-ip=209.85.216.52
+	 Mime-Version:Content-Type; b=aLEXpKovzavjijB5eb+WSKh8/OakyNBLzISanyazmL0Itrj9OfpSwWPxjMx25FzciaEwckrp7eHgdBomEGmn607VF/3sbKmxp5IL06G3F2bkmdIv0wXb8ZUyto7pEJOThzFLnp70NU+RzTbCXRuqkTDdqo6oUnwQbfzgaPDL2+U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=k6B4RHlo; arc=none smtp.client-ip=209.85.214.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UGdx3keZ"
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-2cb67992a5cso1147920a91.1;
-        Wed, 31 Jul 2024 18:03:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="k6B4RHlo"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-1fc53f91ed3so2984115ad.0;
+        Wed, 31 Jul 2024 18:22:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1722474236; x=1723079036; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1722475321; x=1723080121; darn=vger.kernel.org;
         h=content-transfer-encoding:mime-version:references:in-reply-to:from
          :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=2GjmuONFUv2485xz0hzBb/3WjCu0sZQyc5Cvo3OSjjM=;
-        b=UGdx3keZHfxRRTXkI2ejwRj942P5TgMLqxqxnS54ytvvGYis5CxMKahG/+4f/ehYnL
-         AzqyFH0v8zRceECuety9yDBRwBTMu/4gebkQ/PqKcFW/w2eDKyJS71jnpauQUUMja68A
-         jy+zW8aibSMG9EnFqeX6SlGA4vttMZ9Vkf5eJqtGbltj4EwJGtHwi7T+3PDIBW/VfCkq
-         pBsRS+ZQSz0Q+G66s/ikz3Ksjxv8kzfhkR9UmjXKf8iz2sDtSpNQHMNgj4I91TDBJ0fQ
-         Svn8DGSbIoIseSTM2zxhldW4TAb5bNOdUvdAr5T3nzAMLCyi1vkXxlPIQgppIm1vCuQa
-         NT3g==
+        bh=GpNgRuzmu6fNnnwXc6CBDTtU2zTgAmXlH2oDM59VNpA=;
+        b=k6B4RHlozHAUjYJmJIlYXQBN2oBrUaRz1+PdOW0PMlpmIFjP/3IS8UzFJ4vTKGhW3Z
+         jk6nwRvT3e6PKJTywN58gTpRMGWF17rNVJO2cbTwPz7r36DUpRgmMxWDO379SA4EQk8W
+         H7vI9NS3NhdFkq0f7Mx8Zh1+0BBbajRvQvkEXbRiQjV33slAbht/3PTowiYEBcK/R16t
+         0qcwqyaLVPcAfvY5ceTzP5TpfxcM4OV0tmueurW2ACrRc5jKIAmni2oozTi4kXawjbhJ
+         l3IUNuUtweorUF9sM6lyxG/4KGSEq92Cw4e9eQl8Aaw1AUemrJboIryx5Jdmpcwy2lPw
+         SW3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722474236; x=1723079036;
+        d=1e100.net; s=20230601; t=1722475321; x=1723080121;
         h=content-transfer-encoding:mime-version:references:in-reply-to:from
          :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
          :date:message-id:reply-to;
-        bh=2GjmuONFUv2485xz0hzBb/3WjCu0sZQyc5Cvo3OSjjM=;
-        b=vTer++LYz5KXtp9ByzlSwnBO8QKFeaUddYb6YCgHcNGakxOTCYtVNcD7MDXhvZ6Uil
-         LbzKtdMUWU2gIfnPOfZ6qN5txpFyXNaY8IZKVi0LNgQmPhcL0JIZcfli2jpYhqWVCFY8
-         XAIpLEmOVgC2Q9DwBRjVH9dCNt7P/s9UHnorg0smHTN5KdrLaxKpIzu3sS7Pj0LaxDqx
-         k/lT4XS19MizxZ0ixQqh+dIXZHOWtcSNJWHvOGZObP8kFVy/c6JIRdh5juInW/n/pdki
-         xic1kmBXBgaZ+Wv1v2N1dTQcTMjoh0IQhFGx79ZOHYQeghi+zTZEjiA0lVwfd9LAoqyg
-         rOBA==
-X-Forwarded-Encrypted: i=1; AJvYcCXBFeVOjsxSlvpe+bZQxErUWxlbEaCn+od9Jfz1YjPmCBo3KJKtrkNRrYD0vv5eM0xZdWlW+tgHOs2W036O9yOqjdQLP553rO8rkrvxvcRsVGc5EGcRfO1X8oWUzQfTEcFhplgf7Gw=
-X-Gm-Message-State: AOJu0YxjRn31CNOt31ldm9K8QWqyJhmwRy/XCAzIoQAqcuvsGfMyZvaO
-	irOF6m0W03RM2JlT2C0NSTik+bZYNX0iuwx7y8o2mfKxIhdJkZ2F
-X-Google-Smtp-Source: AGHT+IHntwW5d4kvmhU2rn2k+Rm7Mj6aWY9bHjMZUpKAe7D/fwL9ukBVKd2or10Pkzlv1U6BK8wZ8Q==
-X-Received: by 2002:a17:902:d488:b0:1fd:6d4c:24cf with SMTP id d9443c01a7336-1ff4d24464emr7649285ad.5.1722474236297;
-        Wed, 31 Jul 2024 18:03:56 -0700 (PDT)
+        bh=GpNgRuzmu6fNnnwXc6CBDTtU2zTgAmXlH2oDM59VNpA=;
+        b=nkcgNMoBsKthlHOMrzC8bIXT6+xNaYgTc8+sUJwHtr9sPzs78GMMQ88+AOHz0mcy+J
+         360O9+e++lBDjTwfEkIDJZdfwtEMK8A3x/F7P4i46NMXn8Z+TNC7L6br5oIX4QWzw9W4
+         C8nGofcSPOOSJGpR7/kRJ3iJPPyNxHIWbYcpWHM0dcCrVLPJB+fOD/DJQ93HFRMu4w5K
+         5KN99nRF7+TfHA2BZ+swF3oP4E28fSHzLtP9bUDHwunvJalYHhJhJ3fY9BX2AC+hYESA
+         l+Sng8Qo563a/eFr4XU5WAPk5wt/XLg715GsS98vIEoA3eRvOcC0AHK5PvgvAbjFMRk+
+         2wWg==
+X-Forwarded-Encrypted: i=1; AJvYcCXnlJ8ynIz6oC/MU8nGC6QNWz4PN9Dv+1tPYAvLmPlS1bGiC6LdIXKt4iSkOoX+Xx6LXruz7f5rLXgZULgrdIgB+s4n1HNPWn76cW2PcQqIs4CgnAXe9Dw3gn0BK4XFj2vZEDHr9XQ=
+X-Gm-Message-State: AOJu0YxpcFO0/WDd31K6pmn9rX/w+uJkI9gkRuAtfrcoJ8yyOb298r9+
+	Xbk6ZEH9Z+hZpU2LEmBhDNYGYF0S6PhxXSgMhs9bbhMJb07xG2Yd
+X-Google-Smtp-Source: AGHT+IGxZAa39/oZ5SvY4JjgRduHhKnp4M6RjhwX7J7QZ1rYPwlLVOQEUIhdrRjEXFOKzS9hOmIDkg==
+X-Received: by 2002:a17:902:cec2:b0:1fd:a54e:bc41 with SMTP id d9443c01a7336-1ff4d2af358mr7859045ad.8.1722475320525;
+        Wed, 31 Jul 2024 18:22:00 -0700 (PDT)
 Received: from localhost (p4456016-ipxg23001hodogaya.kanagawa.ocn.ne.jp. [153.204.172.16])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1fed7ee1343sm127111835ad.173.2024.07.31.18.03.54
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-1fed7c8cbd5sm126933325ad.57.2024.07.31.18.21.58
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 31 Jul 2024 18:03:56 -0700 (PDT)
-Date: Thu, 01 Aug 2024 10:03:42 +0900 (JST)
-Message-Id: <20240801.100342.2177122481364088518.fujita.tomonori@gmail.com>
+        Wed, 31 Jul 2024 18:22:00 -0700 (PDT)
+Date: Thu, 01 Aug 2024 10:21:46 +0900 (JST)
+Message-Id: <20240801.102146.301991981941433687.fujita.tomonori@gmail.com>
 To: aliceryhl@google.com
-Cc: fujita.tomonori@gmail.com, netdev@vger.kernel.org,
- rust-for-linux@vger.kernel.org, andrew@lunn.ch, tmgross@umich.edu,
+Cc: andrew@lunn.ch, fujita.tomonori@gmail.com, netdev@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, tmgross@umich.edu,
  miguel.ojeda.sandonis@gmail.com, benno.lossin@proton.me
-Subject: Re: [PATCH net-next v2 3/6] rust: net::phy implement
- AsRef<kernel::device::Device> trait
+Subject: Re: [PATCH net-next v2 1/6] rust: sizes: add commonly used
+ constants
 From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <CAH5fLggMWrDU2U81e4Cs5dV82VFdWC8+02sR8RTZisQGnFgNow@mail.gmail.com>
-References: <20240731042136.201327-1-fujita.tomonori@gmail.com>
-	<20240731042136.201327-4-fujita.tomonori@gmail.com>
-	<CAH5fLggMWrDU2U81e4Cs5dV82VFdWC8+02sR8RTZisQGnFgNow@mail.gmail.com>
+In-Reply-To: <CAH5fLgiGAqMTL9mRA_3RXZULV06KF+FJRxYMHC5xsE_=od3Azg@mail.gmail.com>
+References: <20240731042136.201327-2-fujita.tomonori@gmail.com>
+	<6749fc34-c4e0-4971-8ab8-7d39260fc9bb@lunn.ch>
+	<CAH5fLgiGAqMTL9mRA_3RXZULV06KF+FJRxYMHC5xsE_=od3Azg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -74,26 +74,29 @@ Mime-Version: 1.0
 Content-Type: Text/Plain; charset=us-ascii
 Content-Transfer-Encoding: 7bit
 
-On Wed, 31 Jul 2024 10:38:11 +0200
+On Wed, 31 Jul 2024 14:30:23 +0200
 Alice Ryhl <aliceryhl@google.com> wrote:
 
->> +impl AsRef<kernel::device::Device> for Device {
->> +    fn as_ref(&self) -> &kernel::device::Device {
->> +        let phydev = self.0.get();
->> +        // SAFETY: The struct invariant ensures that we may access
->> +        // this field without additional synchronization.
->> +        unsafe { kernel::device::Device::as_ref(&mut (*phydev).mdio.dev) }
+>> > +//! Commonly used sizes.
+>> > +//!
+>> > +//! C headers: [`include/linux/sizes.h`](srctree/include/linux/sizes.h).
+>> > +
+>> > +/// 0x00000400
+>> > +pub const SZ_1K: usize = bindings::SZ_1K as usize;
+>>
+>> 1K is 1K, independent of it being C 1K or Rust 1K. In this case, does
+>> it makes sense to actually use the C header? I don't know? But the
+>> Rust people seems to think this is O.K.
 > 
-> This is a case where I would recommend use of the `addr_of_mut!`
-> macro. The type of the mutable reference will be `&mut
-> bindings::device` without a `Opaque` wrapper around the referent, and
-> the lack of `Opaque` raises questions about uniqueness guarantees.
-> Using `addr_of_mut!` sidesteps those questions.
+> Shrug. I don't think it really matters.
 > 
-> With `addr_of_mut!` and no intermediate mutable reference you may add:
-> 
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> If using the C header required adding constants in
+> rust/bindings/bindings_helper.h to actually make the constants usable
+> from Rust, then I would say we should just set the constants from the
+> Rust side. But in this case using the C header just works so I don't
+> think it's an issue.
 
-Understood. I will use addr_of_mut! in v3.
+Either is fine by me. I'll keep the current version if nobody has
+strong preference.
 
-Thanks a lot!
+Thanks for the quick review!
