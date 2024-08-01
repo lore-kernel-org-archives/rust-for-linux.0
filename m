@@ -1,121 +1,92 @@
-Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
+Received: from mail-pg1-f176.google.com (mail-pg1-f176.google.com [209.85.215.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FCB6163A9B
-	for <rust-for-linux@vger.kernel.org>; Thu,  1 Aug 2024 09:43:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1428E3D97F
+	for <rust-for-linux@vger.kernel.org>; Thu,  1 Aug 2024 09:45:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722505383; cv=none; b=Vfp/I+dlfgYxm3d7mLSBfVAu45uNMnwyCnPLHB3zExGXeavnDwsx4+QRgQ2AZ+mcWKpQ1D8OpLZcikLS9o0+jniH90C0b6MQdJOxJAu44E6qkgjDOkLTl+9lCjrczKmgxLWaxFjOMHenhDeFklWujLV+bsik7bgiijFTFIRqqyQ=
+	t=1722505547; cv=none; b=pLzPqgogcV7NLQC8iEJJOXmhrDH5IzQ5fBxhuesQMtZlm6F+qpBewc700rTiNsC84iUbGEbUgZp2DAbB0agrGehWxFjQeInE56qdsOgS01RbtyWfnUNF4ojcWwAYwtNauUfEHvdC2RGzg2a6EPimy5WflkEhRC2xwt5JAN0HOnY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722505383; c=relaxed/simple;
-	bh=/fZmHLIz4tMUPuqgb1xpJQYqGHHk61hfOq+SQhBPq18=;
+	s=arc-20240116; t=1722505547; c=relaxed/simple;
+	bh=XpkAxp7okrXGe7fsOgq5G/ZKFTAHqaBYu2PoXBbFtBI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=baxe7HEa9h4grAI/TtuYoTQIhwrPKEqrQM7CfTgomEobI+gJZnnVfmJQY/9ygfUCjRpz2N5AoZXC+M27yYD9MfiMzQfhOgCDdPmJpqIorckJ665Ww0pjBfISvAkqqYMwLn2F3FLPw9I0MUcYhElTFs/ClSCCSuft1Sw/G1VIPKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=otWyfblC; arc=none smtp.client-ip=209.85.221.52
+	 To:Cc:Content-Type; b=Rg2mkZM1Gr0EM5F+TlUomN9wtBRKrB+XXuTjXY02uMNzwzurvhYTfoMl07Uk741ZRLoy5/SgtUoob3SD0WmGcWzO5feSM5GTsucba7kAFPEhUFqcz6+zyDtotAb5BDpg7jPAVGsdAoEvFDrUJ8aDJFfvF/G0sdgOmRr5dQONl28=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ES70TpgB; arc=none smtp.client-ip=209.85.215.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="otWyfblC"
-Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-3685b3dbcdcso3745536f8f.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 01 Aug 2024 02:43:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ES70TpgB"
+Received: by mail-pg1-f176.google.com with SMTP id 41be03b00d2f7-7a1be7b5d70so1460742a12.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 01 Aug 2024 02:45:43 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1722505380; x=1723110180; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1722505543; x=1723110343; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=xH+fBgRnwsthPgYi/oe0eH8RjLbFhVP+C/hiF5wcIOg=;
-        b=otWyfblC6ZuR8tCt72hCEvM66lSu5qS2HPbSI0Lzp6M/yZnqGQa4SSKP/YJOzG+PLt
-         v3NJ/qiIlM8lMo87PEx1Q07pRUGjHUUq3UOFPte9IXDIsppQpN/d7mjnlg94yq9DdKQv
-         3T4X0SOdllZ2l86igLzArPmMenAAVPPHZDS6uddPepjIMB9hvOx6H5hxuTlhWw7oe0+6
-         FNhh07X9pxBw2QVAo73VErDvVIW9TdoNiaFR1ROkOljPo2feOZnql8/rTqLlIH6lDOiF
-         zR7dja0IkSvC5giJBmpMTCLVBz3HXLxNehfZ1LAoi8NvkjijpdE44Eql7lSii94sGlqo
-         /3bA==
+        bh=XpkAxp7okrXGe7fsOgq5G/ZKFTAHqaBYu2PoXBbFtBI=;
+        b=ES70TpgBHJ0vBN4M/5quHsvLcX8YyA3M1iVwQa/k7/Yssqm3/YQDf9aKJ443CLxmAV
+         5kLzSESxs1fzois491XM+hijbUnUZK7KTjDeXU0sCzz661ezxKgK8CvvV+E/Ye0L7FRU
+         q4PQ3oCcdvxyN/C0vHySAcybbd1hOPl2n6SkR4uNIz9Iwp7G8Yk/YvQQG+zJczg0g8jW
+         UXMy51yZBI6JOv0auMKGEiLmEdu2wg9QgEXT2dmTBaqxFdScPsSdgmVfqHSvM4eqXTWb
+         gmUB8mEWMAne6432EDS4fEV5CaWadtBDT+k3prMBhY9+j11VJKDqwmx6oIcO9R2WTpPA
+         blEA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722505380; x=1723110180;
+        d=1e100.net; s=20230601; t=1722505543; x=1723110343;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=xH+fBgRnwsthPgYi/oe0eH8RjLbFhVP+C/hiF5wcIOg=;
-        b=nnQ5XLvzpgFkjKwTF3BglspeSbYWhhEh305Br6GtmD4vlKPmkDkwXhk6csmrhqZ5tN
-         8QyFslHZz72MJD7zweN2Yvy++/71XIbDyNOhoIb5Fn5NEC+2qdkpJjIHaRXn1NqTAZUI
-         Kgc0U9u5pDcd1/XqhCfyFLRWYe9U8ULhe/SLFRBHJKDnL3i0tS883Z19KR32IEOnJeiT
-         B0GpNdKVQUMF3W5UmSVJbtZW7v1ScppgJQCKSIAamMUtCfxeTNLvPlasicLyisS4qQyX
-         IMeeC7jMhl+q0/mCwKyq0OTeWqAFUxQXzOKgGqQC+faRJ6ywY5l4X85KVLkJiM+OyRut
-         3g8g==
-X-Forwarded-Encrypted: i=1; AJvYcCWUHWWHU44iDo3qW6tWQh1vxwORu2ICVoV2tatSyGYzsb+0bUj7kSD+8HRfR7UxQlVdhe/vBarCNMbRQrzHcpn8Jvj7VKRg8oHqC0h3vkQ=
-X-Gm-Message-State: AOJu0Yy4gL3gJ9YGKMd8YK2QpFm2EZS0D3BxHxNQjdZcGgQ3auGU3evK
-	qbT891KOvDe3sWrXfS9z2hE/9doNnE1OYen+i3e7vHdKmylwROH56XPpVwHVyhR8aSxPUziEOXH
-	vdWsueiD3PnGNb3VT8TNPYd3deOelRwN71iUD
-X-Google-Smtp-Source: AGHT+IGNxLdpK9yDQuPbeyIoE//94sKUHY6JfjA9T49ykZfGDutE/O2sKVvnl7fm5s8QibFPdq2rJbE+Sj07FBblOmU=
-X-Received: by 2002:a5d:67cc:0:b0:368:3789:1a2 with SMTP id
- ffacd0b85a97d-36baacc9cd9mr1270766f8f.21.1722505380296; Thu, 01 Aug 2024
- 02:43:00 -0700 (PDT)
+        bh=XpkAxp7okrXGe7fsOgq5G/ZKFTAHqaBYu2PoXBbFtBI=;
+        b=d7inIl3rA8A1waJVh3E1uKZLEMvSu4dWzQS0YS0PZ7jIR64fsqACUDfaG5al5z1lPK
+         5XZb3gfW8PvUFH6tvFfaBglsVygcD6ycS36Hjsz3LMYNmQ8Sew22ieeugGJ5Bo9FM0ar
+         5V5msmJFcLh6fr53OAQfum7rKavNuIGDFR7e61VbgvqRb++reCWV+jGX8C9aFeajm9x3
+         CRaZX+PEGqriE+k48MddDLQyeOZ2l6t9I8JJZFDX/tOJAfBJcY74IsQXcU67FQL0Wdhr
+         HwvVj8siHXVRCyE0Wn0cuH9qtWZsSL5UOYNwlQl6hJ3hVznNo1J8jDvqwbC4T6mJ+Gd5
+         ygew==
+X-Forwarded-Encrypted: i=1; AJvYcCXTK7XLexvuWJaMkpPTFfkuJkTz5EOLjFlyTxu0FhpV8fw27eCX58x3kJyVRF7c8yxkX5TS9CRUSf5mBm38OgpEh05JsHktqRfW7UBEhA4=
+X-Gm-Message-State: AOJu0Yw0mz7ORYjd3u7w1WacwMR478kHrkygpWuFLaI8ME3NkgB1Dbrj
+	ZxUjzvFkZsikBjnhCUvO3NDordZp1t3P+utW9o1RVQ6ysMqMfU/XJv5bk3FkRqn64A2yPpmn+B0
+	a20jjnLUvv7jbmOWWF9M4qM4IMrqi44XlrC4A
+X-Google-Smtp-Source: AGHT+IHgNblA39iWI0MtC5wDRwbhiQn7rkgImIvStKgTFOsbnjctz/BVvpws989SGthdiKf/2ftETDgmCV1WPewANGk=
+X-Received: by 2002:a17:90a:ba97:b0:2c2:c3f5:33c3 with SMTP id
+ 98e67ed59e1d1-2cff093a154mr1266464a91.6.1722505542973; Thu, 01 Aug 2024
+ 02:45:42 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240723-linked-list-v3-0-89db92c7dbf4@google.com>
- <20240723-linked-list-v3-4-89db92c7dbf4@google.com> <1b2078d8-d93b-4626-a73f-edc5616a2357@proton.me>
-In-Reply-To: <1b2078d8-d93b-4626-a73f-edc5616a2357@proton.me>
+References: <20240731134346.10630-1-zehuixu@whu.edu.cn>
+In-Reply-To: <20240731134346.10630-1-zehuixu@whu.edu.cn>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 1 Aug 2024 11:42:48 +0200
-Message-ID: <CAH5fLggKphE3f=Jv+pfXc+_qjsGBVpXw_F4fOJiAi6vNtJ5x+Q@mail.gmail.com>
-Subject: Re: [PATCH v3 04/10] rust: list: add struct with prev/next pointers
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@samsung.com>, Marco Elver <elver@google.com>, Coly Li <colyli@suse.de>, 
-	Paolo Abeni <pabeni@redhat.com>, Pierre Gondois <pierre.gondois@arm.com>, 
-	Ingo Molnar <mingo@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Wei Yang <richard.weiyang@gmail.com>, 
-	Matthew Wilcox <willy@infradead.org>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, Kees Cook <kees@kernel.org>
+Date: Thu, 1 Aug 2024 11:45:29 +0200
+Message-ID: <CAH5fLghrX91Ad2eYOR-d8i31vkKAWs8tj=noFMZrTSsDumcPyA@mail.gmail.com>
+Subject: Re: [PATCH v3] rust: Kbuild: Skip -fmin-function-alignment in bindgen flags
+To: Zehui Xu <zehuixu@whu.edu.cn>
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, 
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	benno.lossin@proton.me, a.hindborg@samsung.com, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jul 31, 2024 at 8:41=E2=80=AFPM Benno Lossin <benno.lossin@proton.m=
-e> wrote:
+On Wed, Jul 31, 2024 at 3:45=E2=80=AFPM Zehui Xu <zehuixu@whu.edu.cn> wrote=
+:
 >
-> On 23.07.24 10:22, Alice Ryhl wrote:
-> > +/// The prev/next pointers for an item in a linked list.
-> > +///
-> > +/// # Invariants
-> > +///
-> > +/// The fields are null if and only if this item is not in a list.
-> > +#[repr(transparent)]
-> > +pub struct ListLinks<const ID: u64 =3D 0> {
-> > +    #[allow(dead_code)]
-> > +    inner: Opaque<ListLinksFields>,
+> GCC 14 recently added -fmin-function-alignment option and the
+> root Makefile uses it to replace -falign-functions when available.
+> However, this flag can cause issues when passed to the Rust
+> Makefile and affect the bindgen process. Bindgen relies on
+> libclang to parse C code, and currently does not support the
+> -fmin-function-alignment flag, leading to compilation failures
+> when GCC 14 is used.
 >
-> Do you really need `Opaque`? Or would `UnsafeCell` be enough? (If it is
-> enough and you change this, be aware that `Opaque` is `!Unpin`, so if
-> you intend for `ListLinks` to also be `!Unpin`, then you need a
-> `PhantomPinned`)
-
-I need the `!Unpin` part for aliasing.
-
-> > +}
-> > +
-> > +// SAFETY: The next/prev fields of a ListLinks can be moved across thr=
-ead boundaries.
+> This patch addresses the issue by adding -fmin-function-alignment
+> to the bindgen_skip_c_flags in rust/Makefile. This prevents the
+> flag from causing compilation issues.
 >
-> Why? This is not a justification.
+> Link: https://lore.kernel.org/linux-kbuild/20240222133500.16991-1-petr.pa=
+vlu@suse.com/
+> Signed-off-by: Zehui Xu <zehuixu@whu.edu.cn>
 
-What would you say?
-
-> > +unsafe impl<const ID: u64> Send for ListLinks<ID> {}
-> > +// SAFETY: The type is opaque so immutable references to a ListLinks a=
-re useless. Therefore, it's
-> > +// okay to have immutable access to a ListLinks from several threads a=
-t once.
->
-> You don't need to argue via `Opaque`, the type doesn't expose any
-> `&self` functions, so there are no functions to consider.
-
-I'm not arguing via the `Opaque` type. I'm just using "opaque" as a
-normal english word with its normal meaning.
-
-Alice
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
