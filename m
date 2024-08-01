@@ -1,157 +1,112 @@
-Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
+Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51693146D7D
-	for <rust-for-linux@vger.kernel.org>; Thu,  1 Aug 2024 19:39:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59E7E14A0AA
+	for <rust-for-linux@vger.kernel.org>; Thu,  1 Aug 2024 20:33:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722541146; cv=none; b=LlvPod+sd+3ykcHh/rAQjhfVel7I818Ccscs3aAGDiglxiOmMjCbrbPd8unWZtzzHTzaK1+DslLo2o2Jk7YbZmlAxdpHFUE/lncZwPpOjN5PAotLLKPKNfL6cLgZLEZH0OHPr8CrUvatKYpTWIKDw0EALxn73CvtfmRvBlq/1Lo=
+	t=1722544421; cv=none; b=hxuFjFFkAaNtt2/iSuWfgnui+FjblSWPzhAKyyiyBfRXRRv4/EMVxj9I9RO8ZwyIRspEc5u1ZvzU121W3DWwX2liKLs4a6wil3NEVf9RR1qOIXHZ6TZJ6aN8f7KfGk9zzUx/vP9ASvj2wOU+fBU6BRINwaZfLA9TeAHzkhn7DCI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722541146; c=relaxed/simple;
-	bh=594P5XzwskbETUT36Fts+eHHT1pKYXxLK7ITeT54cLY=;
+	s=arc-20240116; t=1722544421; c=relaxed/simple;
+	bh=uj3FPwEIG0xfFR02AOfEaaHGXag/9QLqipufHIU4Zg0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=J6f8jSZ+6bRbCDK1LUalRI4K+RZjDFDIFROc/9fId7lv/xUrR4ZHovPkhtpMSQP/TcYbb3hOfsO/FHN5m4ZV97oNxSR9E3rcZ1Z/2pXfot6CxXuURc5rnNk14AuFrk5MqX41133k3nZ9JK6f5byurVacpaEhLMpzZSSfBcaNmZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BG8ShvbD; arc=none smtp.client-ip=209.85.210.43
+	 To:Cc:Content-Type; b=F6h3nYQvWmm6iyRhss9uDychgyM05j4M/7CotiA9zT6q4EGnrvqyODD99YS3Z/t0aM6cCougc2vWdvAjOIxbIKEDh2HISVV7CElULv63A+/EWYXw8VMkoX5Ih865MwWp7QgoAp2rkY3BYbD9V616whYX9cQW++OysfSjNlBThww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=1S64wZUr; arc=none smtp.client-ip=209.85.219.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BG8ShvbD"
-Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-709428a9469so4085922a34.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 01 Aug 2024 12:39:05 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="1S64wZUr"
+Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-6b795574f9dso40376056d6.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 01 Aug 2024 13:33:40 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1722541144; x=1723145944; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1722544419; x=1723149219; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=594P5XzwskbETUT36Fts+eHHT1pKYXxLK7ITeT54cLY=;
-        b=BG8ShvbDl4zHA87oCytrBdg9fZ2uQlv77o5+kM8nTWoPfHBG/BzYfSum8olne2kLOT
-         Z5lVpdRXGb5kYlB7KQziTd/YTn4LvYV0PiGy6R85t+InK60FbWz4wZKt8WJSVFrA3rfY
-         44ug7kglZFZMTCmkI/Ltn3/PbBAS5p2rC2+PZ4UAyzaSbTOEI9LLU+srfafC8iUTDpix
-         k6o3MHDxyfY0muNwrayAfWW7Srr7WdgKkPmH9oOPRAZ7yQmcEg727gkUAEx2QVPRs+sh
-         0iJEFlt6orxTkSjD5IQbfMy1N06SohOmZZmYHKro/+2P8uZnCjv3HI0GvbL6Pi887ZqM
-         WYrA==
+        bh=a4LGUqfUQLcaI5k3gnfYaAsiGSEmX4XZthqSuVaynW0=;
+        b=1S64wZUrN9QvfqICVzOdMAgivDxNlDPBenaSiM70h6WY/ufwWA8Z04cnOQzQjBlNZz
+         TRhLZoskzQhmYoLIZmzJpiPnIzqij2A1FK/aJqJaBYopn2nZQkEV49OAsknzljZGLGvl
+         IWp1SkMBL4V1/QxDuyZhFtJnE7i6JiyIC8mWua2xFCp3Tht1N8WB8BZXU5BNm/h1rnD7
+         IA6r76Q1RY5X/FhpMZUdGLc+vrkOXnKTALE6vrIJWkFVzb5mkXbyt+YxO5RBAQ0QVoD3
+         wFFJi3u7Q24uPeEX4dQFT/bN6eu1flP0kHpVH6cIiPqW9eWPM6cxp2nXTaAodDtaLA5I
+         x+Aw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722541144; x=1723145944;
+        d=1e100.net; s=20230601; t=1722544419; x=1723149219;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=594P5XzwskbETUT36Fts+eHHT1pKYXxLK7ITeT54cLY=;
-        b=X1uGzOPq3IkSYdkdepqadKAHcyDOw84kI0l2/fu+Z0pNJxNtHAq7CKtQfuDULLwezO
-         G7sxmZwvKsqKwJTANUZeDQ5NVyXIlUuz0RHXotCMg0Ku9jjmtVBFoe4v85wrAW4F31RX
-         9a8INBMOCs4G6bNND+4DGFnPeByxvwPQyuIvEjEJ4XwBrHhnM6nuW8MB1pM884wssi4x
-         jbkL22sz+hMmu+nWLWFjIQn0GXe1JUEIddoj0vcVuQEunMkJVUGqOn/I/TBtVq8EEtTp
-         OHdWxkCjbSbQiOCLiWa39NBQaxDhnh3BVhm4QOvBOFd8zbb21d5XFKHGT4Kabh+eqzWm
-         WQ4w==
-X-Forwarded-Encrypted: i=1; AJvYcCW8buZemBmJ/j7oxsz744fMsH+U/egmnM/jMckCSq9g1g4yU4Br8INXXMZmX0aS7h5TIckZZgQNJPM9EQIPWTY9gs1zY91IXuBhQ5l9HKE=
-X-Gm-Message-State: AOJu0YyBMWUYtkQhJ/Dg6CIJYV78tFqchz4MkMpQl+SiZXl3cNuJv9Pw
-	l8IimirSFFc/cWruUXELgwj/nKvT9tKxLwKxdUC3z9G9SKUvNrypyKeiNVhiUhXzC97s1NfJQbz
-	4BDNSTrqsYva3yhM3X15R41f9OJkXU/fm/OUB
-X-Google-Smtp-Source: AGHT+IFc3YHkqxrwEoxXwpgLm2CQXNdMsNg3Ac2IO/Rh0opRhVly3THqWe+FTE/9DxHlnE0bTmB/pcYqRJ3qaEuuNto=
-X-Received: by 2002:a05:6358:50c3:b0:1aa:b7fa:4f59 with SMTP id
- e5c5f4694b2df-1af3bac330bmr106834155d.30.1722541144062; Thu, 01 Aug 2024
- 12:39:04 -0700 (PDT)
+        bh=a4LGUqfUQLcaI5k3gnfYaAsiGSEmX4XZthqSuVaynW0=;
+        b=vFrc58gemDfNSWUa2vYaaRjo/QVHW8NBNUqrrQ8W2KRaKTbJtoeqVgTKdMuWnB6PLi
+         V9SeudIacw7Qo2slRi9KBrSKr3kxXQlowfsfLNm7NZp6ZeszArYott0XItACzEiCtxjh
+         ItLav9FoEXtj55MTqLiQQc7gjL/Yez+RIyItGtRgSnyp4/YnjLinwkllDBYungiuxVC0
+         5gWCclfr9GZcXysXOQdr89459dSQyVv3nwGn8Z/n/q7kEwtFaPzWw9FXm7ff2orteFw0
+         ojVojGG+PQz3Ug55FOeccrzvYcixOt5jsdoHoA+RyHqBW393kE2V6EwtOXzeZ1Os9Z9q
+         6rlQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWVNCj/7UYfwRlT8aunurgcXHdNYgNnaw7F+Mn9mLnaWUfExLTzmXrIf+3Il497yDYLO3fHKPNRp6CHtFUPKItqkkafjjvvh+0w3hqG3FE=
+X-Gm-Message-State: AOJu0YwiK8lIuPl1xHRqi20RBfeABpAQnhtsyphZim1oCcOqh4PUKCw4
+	bbjkpejeU/pjcVD4m+xXcGMYNC+zlr2mCaSoUjMUldzfj8XUFNYjYJSfKtMBNPVckuZxAZAguep
+	0nDPKdDaAQ+DmiUFBX1GmfqkLn4yMIojVts3K
+X-Google-Smtp-Source: AGHT+IHRRf+iCcZWfIUk8eMRP01GYpsdBtZcRDR9lDO2O6lJi8LWaU5YtyCRFpNWDktDnSX3GuCXW/wCS7u9+pP4Sbo=
+X-Received: by 2002:a05:6214:3103:b0:6b7:b08e:e795 with SMTP id
+ 6a1803df08f44-6bb9836b891mr13930256d6.25.1722544419100; Thu, 01 Aug 2024
+ 13:33:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240617175818.58219-17-samitolvanen@google.com>
- <0b2697fd-7ab4-469f-83a6-ec9ebc701ba0@suse.com> <CABCJKueGRBdFfGW-cvOvqxc-a85GpxtwPmLdE_1RiAkNLrEg+g@mail.gmail.com>
- <00714a65-953f-4885-9229-1990543c4154@suse.com> <CABCJKucj7zjc4=EiFdSnzNDBvQmaWBBt_KJsTq1ybp=Vegp5eQ@mail.gmail.com>
- <f08678b1-260f-4200-889b-a4ec016fc7e1@suse.com>
-In-Reply-To: <f08678b1-260f-4200-889b-a4ec016fc7e1@suse.com>
+References: <20240801-kcfi-v2-0-c93caed3d121@google.com>
+In-Reply-To: <20240801-kcfi-v2-0-c93caed3d121@google.com>
 From: Sami Tolvanen <samitolvanen@google.com>
-Date: Thu, 1 Aug 2024 19:38:27 +0000
-Message-ID: <CABCJKueScjymx3TR-DCVynfgSg93-17cKC0s0b3A5KpiFEOiEA@mail.gmail.com>
-Subject: Re: [PATCH 00/15] Implement MODVERSIONS for Rust
-To: Petr Pavlu <petr.pavlu@suse.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Masahiro Yamada <masahiroy@kernel.org>, 
-	Luis Chamberlain <mcgrof@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Matthew Maurer <mmaurer@google.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
+Date: Thu, 1 Aug 2024 20:33:02 +0000
+Message-ID: <CABCJKue_8S8jJ1b5RRHGjnqpq=u9KYf1SjPTyS0NCWS4TthUQw@mail.gmail.com>
+Subject: Re: [PATCH v2 0/2] Rust KCFI support
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
+	Nicolas Schier <nicolas@fjasle.eu>, Peter Zijlstra <peterz@infradead.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Kees Cook <kees@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Matthew Maurer <mmaurer@google.com>, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi Petr,
+Hi Alice,
 
-On Thu, Aug 1, 2024 at 4:22=E2=80=AFAM Petr Pavlu <petr.pavlu@suse.com> wro=
-te:
+On Thu, Aug 1, 2024 at 1:35=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> wr=
+ote:
 >
-> STG is an interesting tool. I've played with it a bit last year. To be
-> frank, I was surprised to see a new tool being proposed by Google to
-> generate modversion CRCs from DWARF instead of potentially extending
-> your STG project for this purpose. I'm not sure if it is something that
-> you folks have considered and evaluated.
-
-Yes. STG is fairly large and written in C++, so it didn't seem like a
-great candidate for inclusion in the kernel tree, and it's presumably
-not shipped by most distributions, so it's not really ideal as a
-dependency either.
-
-> Sure, it might be necessary to extend the symtypes format a bit, for
-> example, by allowing spaces in type names. What other problems do you
-> see?
+> The control flow integrity (kCFI) sanitizer is an important sanitizer
+> that is often used in production. This patch series makes it possible to
+> use kCFI and Rust together.
 >
-> The example I showed preserves the DWARF tag names in type descriptions.
-> Cross-references and the target type names use the s# prefix as they
-> they need to be distinguished from other tokens.
-
-What I meant is that genksyms output is basically preprocessed C with
-references scattered in, so if you want something that's fully
-backwards compatible, that might not be possible. However, if you're
-happy with just the same database structure and don't care about the
-exact type description format beyond that, that should be doable, but
-like you said, still requires extending the format to support more
-complex type names.
-
-> What I think is needed is the ability to compare an updated kernel with
-> some previous reference and have an output that clearly and accurately
-> shows why CRCs of some symbols changed. The previous reference should be
-> possible to store in Git together with the kernel source. It means it
-> should be ideally some text format and limited in size. This is what
-> distributions that care about stable kABI do in some form currently.
+> The second patch in this series depends on the next version of [1],
+> which Miguel will send soon. It also depends on [2].
 >
-> This functionality would be needed if some distribution wants to
-> maintain stable Rust kABI (not sure if it is actually feasible), or if
-> the idea is for gendwarfksyms to be a general tool that could replace
-> genksyms. I assume for the sake of argument that this is the case.
+> Link: https://lore.kernel.org/r/20240709160615.998336-12-ojeda@kernel.org=
+ [1]
+> Link: https://lore.kernel.org/r/20240730-target-json-arrays-v1-1-2b376fd0=
+ecf4@google.com [2]
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> ---
+> Changes in v2:
+> - Fix for FineIBT.
+> - Add more info to commit messages and config descrptions.
+> - Link to v1: https://lore.kernel.org/r/20240730-kcfi-v1-0-bbb948752a30@g=
+oogle.com
 >
-> Gendwarfksyms could implement this functionality on its own, or as
-> discussed, I believe it could provide a symtypes-like dump and a second
-> tool could be used to work with this format and for comparing it.
+> ---
+> Alice Ryhl (1):
+>       cfi: add CONFIG_CFI_ICALL_NORMALIZE_INTEGERS
 >
-> From my point of view, the current --debug format is not suitable for
-> this purpose because its expanded and unstructured form means it is
-> bloated and hard to compare with a previous reference.
+> Matthew Maurer (1):
+>       rust: cfi: add support for CFI_CLANG with Rust
 
-I do see your point, there's a ton of duplication in the --debug
-output as each symbol expands all the types it uses.
+Thanks for sorting this out!
 
-> I'm also not quite yet sold on using separate DWARF tooling, such as
-> libabigail or STG, to actually understand why gendwarfksyms produced
-> a different CRC for some symbol. Using these tools makes sense in the
-> genksyms world, where genksyms operates on the source code level and
-> this additional tooling can only work on debug data.
->
-> With gendwarfksyms working directly with DWARF data, it doesn't seem
-> appealing to me to first run gendwarfksyms to produce CRCs, compare them
-> with their reference, and if they are different, use a second tool to
-> process the same DWARF data again and with some luck hopefully get an
-> actual answer why the CRCs changed. I'm worried that users might
-> encounter inaccurate answers if the two tools interpret the input data
-> differently.
-
-I agree, there might be other DWARF changes that we don't care about,
-but that nevertheless make it harder to figure out what caused the
-actual CRC to change.
-
-My initial thought was that simply running a diff between the --debug
-output would be sufficient, as it would directly tell you what
-changed, but I didn't consider that the size of the output dump would
-be of concern as well. I'll look into adding a symtypes-style output
-format in the next version. Thanks again for the feedback!
+Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
 
 Sami
