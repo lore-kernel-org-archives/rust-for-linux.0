@@ -1,67 +1,67 @@
-Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
+Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C513116DC1A
-	for <rust-for-linux@vger.kernel.org>; Thu,  1 Aug 2024 08:22:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C1E316DEC1
+	for <rust-for-linux@vger.kernel.org>; Thu,  1 Aug 2024 08:28:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722500525; cv=none; b=W++Him3O863M7A1b34BFIUjbRs6pMzCGca+CPBUsrV+R/+6oeODKpeU+j7HcNoL9shnAE+AlS2Q4Uzf4laQ++77u27ErLVPqU/ZfElt13F9rkKzI3DTMwdk+b4Kll+/fYjvx5ol2JBDR4RspaN3CgNKKx8Q98SvKdOWmV7sqd5A=
+	t=1722500904; cv=none; b=NGXVcb8hLi8Vpffr22z+h8QkvHIHBNbayx6ZIhQO1pp3qGiV3VUgdfwABLSD+6pL8NN7Ajuu0JD8XfdpFCmLTBYFea/maGBz6VR3ThhEaoFWpqbK+ckr666m92eVIXVx8SwO2YzSGB+Rso6qa7klTzRRLWmgj0gr/GYdiar+UQU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722500525; c=relaxed/simple;
-	bh=FT234993Aw1ZLPSi5PWQMADO794dozH7F0acAYhTfeg=;
+	s=arc-20240116; t=1722500904; c=relaxed/simple;
+	bh=RtsW5WWTyWJIL27AcTCugxjnVd2s4/R7JlgMY9UajKk=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nq5h09KuXcKGjnq95rAjip6AojBm9i+qImusYA+FsIVmgSYVk8RzLQbfln9Faq+Xa3LLAcmXTvnHpz7QB2Gdq8g6ALlBWztxRiPVg55fhtpFn2JSipe5bnQ1AEqZCZ55GLqaC29/P5iOU1pWQFrFu/bXDRu4TKfE+SuoghslfCQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FntNDhVl; arc=none smtp.client-ip=209.85.208.180
+	 To:Cc:Content-Type; b=cG9a0PB6I2h9hv8A3k5VFudvidiq3VNFefo+dRV7tJDCag0o85BnnJPFT913it3mFpTj81FvN+5729mbXWBqoaN/zJ5/AiozCXmhsaHb8tTN9vZathgxbDCaGgS3qE0GjfEYeABDe2M8bzafDFv8ZlvgqZxfe+Q4FSdkKX/c3Mw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YQZI8ihF; arc=none smtp.client-ip=209.85.128.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FntNDhVl"
-Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-2ef2cce8c08so71384631fa.0
-        for <rust-for-linux@vger.kernel.org>; Thu, 01 Aug 2024 01:22:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YQZI8ihF"
+Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-426526d30aaso43969465e9.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 01 Aug 2024 01:28:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1722500522; x=1723105322; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1722500901; x=1723105701; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=FT234993Aw1ZLPSi5PWQMADO794dozH7F0acAYhTfeg=;
-        b=FntNDhVl69IdkN0upJFoCQRkkQ2K95lrV1FoT39BTxheVCM+la9NQUw0feSKnxyDyu
-         gqnAIZwaHk830WfaQ3/irGzsi0bb0ePWbQO7jhmzNOtyc8z9G1g+df0iMNbI1MA2T6XM
-         Fr31SNWkcxjsR/4GdqKB0vdL01bC5iocQsMJ0KExiauVaqSiR3qG27NhazaLTg4jPv+c
-         8/vD2/2yJss3M3L5jqWqpAM8UZQnp8IBEWaAYk14WXS9942pQ4RFEK1NFFKQqN/Ww/Km
-         E1FFVUPEK0R68b0nD50SKAc520FVsGq4j3j6AIcSECzspg4LZ5pb9yfJKoYICpJCcGy0
-         kQOg==
+        bh=ojSR7rF9TxK4zY2qobnr+4uxfHaQxVITngCaPWYPV8k=;
+        b=YQZI8ihFNSfDuku64Ou9K51iGuJGc9zv4KQiuzEFSTLV7wzZb2/o8ualoN0uZUhAOz
+         p4FNvGZusldlAW48l1BNIDnzwDD+G4BYgi/SU3cNuwVFjbpTa8FVD3+KxE7AJihirdC/
+         l76t5G5JpFtItK+uhTdxZA3AykAUU40MaTpy3Xj++g8Yy7PN4Pkc56aaV//kEQzkRsXo
+         +XOe3S5r+ICu40ueq/mxkN9acquy2oYHYYZbnTKQe4O1g9gVA/JIAaISjw5znvHVaK+/
+         +dNBoGOM2qEWr9tm6P3u2P84cLoGtjYOi9WFSMLzDAtOMBef6eJipmL2d9iApNyutuMX
+         6vCA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722500522; x=1723105322;
+        d=1e100.net; s=20230601; t=1722500901; x=1723105701;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=FT234993Aw1ZLPSi5PWQMADO794dozH7F0acAYhTfeg=;
-        b=vesjqtixx3wXpBeC+PNOBFfig7ZNYACvnal5DoG+NeI8g8+toi5VdBxGItRN7TW38d
-         SZ7KWVkAiMhsCso6K7orrdxsCrGh79rmZT0JYYGd7p8uj7SXTuHpFGmtyILm5sq0RFYw
-         AS3suwyx5A45Fvw+X9ppKvnCsgysWMSojEQo6f136LKKPUOr5Ars33oB9UafmVeMWQog
-         qj44EAae0h3MwD6Crbgx39KoKGpnGWNJb7RfAXPXwlEbIRsc0sfJid/dAjiSQpvPZXa8
-         ddSvo5/fXEomwMoy9lukm2VoQc7KGJ7fenuPhyMhV+8f6TyD3koOQmsBgcMMAN2/pMWD
-         YMEQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV0mXMM1No+fGtGCeERfV0pQedPe5KeCk3ojtNsvk1M2r01NH9/Em+w3CBA92VqGNND1c7AYiRcL6Vn9H0B0wOxJJXkAgNL91jfJQBoqfc=
-X-Gm-Message-State: AOJu0Yw9f3nyCtoItQrNApf3yg6fZIN4bPNkxmOk4Iu4I5twQ/O6gc59
-	Qn/iIK0+DMPNdwdmcwDD0VeCxQVKgYFw7zkITuupjfT2P7/XMibtpWwn9eFY17yY2GRFLHroaxA
-	Ss8K0P3rI5wdqUmB3y9zOfzqGDrcqMO+dNhGP
-X-Google-Smtp-Source: AGHT+IHhacoZk5k76GYn78ckj7AxpCBMjEKmH4Pd/5oixcLcLUenXqaOpQlIotSnXXmbAEE1q36iFnsD3sIXG2MF8E8=
-X-Received: by 2002:a2e:9682:0:b0:2ef:3292:4bdf with SMTP id
- 38308e7fff4ca-2f1531027c1mr12931161fa.17.1722500521533; Thu, 01 Aug 2024
- 01:22:01 -0700 (PDT)
+        bh=ojSR7rF9TxK4zY2qobnr+4uxfHaQxVITngCaPWYPV8k=;
+        b=X/9+USj23y6xj6Q4oypaB2vfrcNZT41F3cY/jXFTHriQ4DeSyaoh2pcSIAp/Z2v6za
+         QEbsQWtNZEHTwH7zIp1GsRmFbIls6uLZtm2nfhgiUhnBQvunV1Te+vtIqtlF+LEUrX+k
+         LJ2fOiE3y8CJ+cJonjTlt6+92MtfIiWPJcuWhoNdO9utgrxpZUNdvzSIdtgKutjvxnrE
+         uY5Nf6i90zgSGSD49gJl0J6rI5Dx28ovv7eCCs7EDEQln75Y2XLbeWjV7h2yaxxleHPi
+         U5X7kkbH3qYw0MWvZNmWOLN5vN980+YiOGH4Y3nBPrIr4S1JpndlMTa328nJudoTic52
+         DTpg==
+X-Forwarded-Encrypted: i=1; AJvYcCVZBwR4gnRVn7whfnp7LoJDNHy8K8ikQskh6Ie5/kN0EJtl285SiQ4TMp8ksV951S4KDQ+CUlQu3JMDDnpIR9UjlkOphuJanAd6ugEQX2g=
+X-Gm-Message-State: AOJu0Yw40yDVjGUS1524N9HVnnuBWujOkALhdE4w/HffrGOGJDXCgZCS
+	gKbZweP/GpAr1kpOhxjQPHeCh8+6RE1aIHEfgR2UFL9dUx6nSTKhqj9bjMYAyREnKzfM3UQ0cpJ
+	PlYNrTB0koupfMIojndvkktfr871zVemKEh35
+X-Google-Smtp-Source: AGHT+IFlHvNyLOkNGilTJsUR27sYt/UML/5/UGX3BBsKWn8Zf6ZLf3lpfWpigR7D708NAF2f+Zvc+KIKjlUVPpSpWME=
+X-Received: by 2002:a05:6000:c0a:b0:367:9279:c401 with SMTP id
+ ffacd0b85a97d-36baadef49fmr1115684f8f.34.1722500901119; Thu, 01 Aug 2024
+ 01:28:21 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240801000641.1882-1-dakr@kernel.org> <20240801000641.1882-4-dakr@kernel.org>
-In-Reply-To: <20240801000641.1882-4-dakr@kernel.org>
+References: <20240801000641.1882-1-dakr@kernel.org> <20240801000641.1882-5-dakr@kernel.org>
+In-Reply-To: <20240801000641.1882-5-dakr@kernel.org>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 1 Aug 2024 10:21:49 +0200
-Message-ID: <CAH5fLgi_YXxsnLQ_p6Xx8yKFpn2PVjXO04-+dJ8aX-k0K+O4EA@mail.gmail.com>
-Subject: Re: [PATCH v3 03/25] rust: alloc: rename `KernelAllocator` to `Kmalloc`
+Date: Thu, 1 Aug 2024 10:28:09 +0200
+Message-ID: <CAH5fLggM5X7M9fTJE7C2afSHehK8b72XGKAgsEcn3Xm632s_Gg@mail.gmail.com>
+Subject: Re: [PATCH v3 04/25] rust: alloc: implement `Allocator` for `Kmalloc`
 To: Danilo Krummrich <dakr@kernel.org>
 Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, 
 	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
@@ -77,10 +77,98 @@ Content-Transfer-Encoding: quoted-printable
 
 On Thu, Aug 1, 2024 at 2:07=E2=80=AFAM Danilo Krummrich <dakr@kernel.org> w=
 rote:
->
-> Subsequent patches implement `Vmalloc` and `KVmalloc` allocators, hence
-> align `KernelAllocator` to this naming scheme.
->
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> +/// Returns a proper size to alloc a new object aligned to `new_layout`'=
+s alignment.
+>  fn aligned_size(new_layout: Layout) -> usize {
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+This comment could potentially be moved to the previous patch that
+defined the function.
+
+> +struct ReallocFunc(
+> +    // INVARIANT: One of the following `krealloc`, `vrealloc`, `kvreallo=
+c`.
+> +    unsafe extern "C" fn(*const core::ffi::c_void, usize, u32) -> *mut c=
+ore::ffi::c_void,
+> +);
+
+In this case, the comment would usually be formatted with markdown.
+
+/// # Invariants
+///
+/// Must contain one of the following: `krealloc`, `vrealloc`, `kvrealloc`.
+
+The // INVARIANT: syntax is used when constructing an instance to
+argue why the documentented invariants are satisfied.
+
+> +impl ReallocFunc {
+> +    fn krealloc() -> Self {
+> +        Self(bindings::krealloc)
+> +    }
+
+Technically this should have an // INVARIANT: explaining why the
+invariants are satisfied by this new value.
+
+> +
+> +    // SAFETY: `call` has the exact same safety requirements as `Allocat=
+or::realloc`.
+> +    unsafe fn call(
+
+Similarly to the above, the // SAFETY: syntax is used when arguing why
+the preconditions are satisfied, but when explaining what the
+preconditions are, we usually use this syntax instead:
+
+/// # Safety
+///
+/// This method has the same safety requirements as `Allocator::realloc`.
+
+> +        &self,
+> +        ptr: Option<NonNull<u8>>,
+> +        layout: Layout,
+> +        flags: Flags,
+> +    ) -> Result<NonNull<[u8]>, AllocError> {
+> +        let size =3D aligned_size(layout);
+> +        let ptr =3D match ptr {
+> +            Some(ptr) =3D> ptr.as_ptr(),
+> +            None =3D> ptr::null(),
+> +        };
+> +
+> +        // SAFETY: `ptr` is valid by the safety requirements of this fun=
+ction.
+> +        let raw_ptr =3D unsafe {
+> +            // If `size =3D=3D 0` and `ptr !=3D NULL` the memory behind =
+the pointer is freed.
+> +            self.0(ptr.cast(), size, flags.0).cast()
+> +        };
+> +
+> +        let ptr =3D if size =3D=3D 0 {
+> +            NonNull::dangling()
+> +        } else {
+> +            NonNull::new(raw_ptr).ok_or(AllocError)?
+> +        };
+> +
+> +        Ok(NonNull::slice_from_raw_parts(ptr, size))
+> +    }
+> +}
+> +
+> +unsafe impl Allocator for Kmalloc {
+> +    unsafe fn realloc(
+> +        ptr: Option<NonNull<u8>>,
+> +        layout: Layout,
+> +        flags: Flags,
+> +    ) -> Result<NonNull<[u8]>, AllocError> {
+> +        let realloc =3D ReallocFunc::krealloc();
+> +
+> +        // SAFETY: If not `None`, `ptr` is guaranteed to point to valid =
+memory, which was previously
+> +        // allocated with this `Allocator`.
+> +        unsafe { realloc.call(ptr, layout, flags) }
+> +    }
+> +}
+> +
+>  unsafe impl GlobalAlloc for Kmalloc {
+>      unsafe fn alloc(&self, layout: Layout) -> *mut u8 {
+>          // SAFETY: `ptr::null_mut()` is null and `layout` has a non-zero=
+ size by the function safety
+> --
+> 2.45.2
+>
