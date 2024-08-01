@@ -1,163 +1,195 @@
-Received: from GBR01-LO4-obe.outbound.protection.outlook.com (mail-lo4gbr01on2128.outbound.protection.outlook.com [40.107.122.128])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26E8D19FA96;
-	Thu,  1 Aug 2024 12:33:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.122.128
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722515620; cv=fail; b=kqxpd7/Z6BcGdEw58soYwKFB68p85W1RRxZFWG6v5HhXJ+uo3vLAnqZuBoZ6bI9FbNoE/uK+r4prppLOTlEYggMVowZXbdtsgOVpffjJ7r/7SBGvVg70CFG8clxS7tgYetjpmRo+soa6VvwOXGxmhDyXw3a4Wzzq4AdNt5vgyCI=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722515620; c=relaxed/simple;
-	bh=RJMitLItY+2LDyIZOz8JJkQER0rGaFjFdBWMYv5XDEw=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=HEdUJi3hRmXt60Cmxeie4vAjWque/sRUzrKEWVDJRnAuteEXh3Ie/BWEtYjyfgq16fi1/lqDXRfbFIZ6+cMYM+nSdAKDWRgcPD4g5iudKKLPRV5pk7V1hZ/jIe0f6WZa2LVdfOe0g2LyB8hOWzFPJwGLY0t0KyMJ+AzdnFSvGWI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=JMXYWzQB; arc=fail smtp.client-ip=40.107.122.128
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AB94166305;
+	Thu,  1 Aug 2024 12:45:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1722516347; cv=none; b=XwGRXrjD+DjUXpPbQeyGKtcUBBQ9txOTYKadfYwbUow3TO3sT5tWuRATGwys5nbVdUj5PtFfD9dgRD44maLIUE0L8oA47FRQ5ZRLU77AxADV4OlLIn1qmNAZxaXbigZxzORqEMjJ3ZHm0SNxJ8HDbYR93I9Cu+71wgIkrKjWNaI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1722516347; c=relaxed/simple;
+	bh=uFy9XegXfV2RfEhcBYqHt6jbexjmhCmWnhmt33f0e3U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=XOnPOUmsxJ+mPEHY+QNScRWpbEgZCxNElhhL7mfTOlC+FYq0JaqEdrNhiMpwOWP1RDxs+hVnjnm2nrENAW9mEhgg5jvOVMZjpZqf/htY4YO5Kec2iz1ae3A0Pavo+l5zMh80loCYoeq+ircOeeLyJmsPLTGyQqHm2kmNQoEzSpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ReNm/kjV; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="JMXYWzQB"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=vOsZZYl73C8zqRTzcVGQIymBkcZGl23LrZUSpnVscV4f3hW/BpbvCfwhcpPchLBbAcOzhtJNOn5qrfX6vuNTlExXnaUqiZJh5N1VWolyxR8nXJWdQ63FETnsIXU4D7a/GKjlXbXRr9QeUA9mVtY4wJe+Z5OkUIGGJ97HRA96a8bwu3ELPtui4nQ4gh/dAVxl9jHSAvJdRaMQJu4Z0X0GLlumC7u0JAfF1xSA8HoUSMdQZLU/o3UjaTYmTfHxEEfyP1axEzxr3T8TqsyZzuL1u3yCWRHvsC5szIsj6p8G+vIwFpMCf7fyA74cFnipbknf3CeRWZQ7XbDEND6QmB1lVw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=ftM8nJljvilzAfS1v29/KfeIRjkG+YphvaZr1Yqn/o8=;
- b=HbwBArnimRSPk7G3s9JJ0NeSGEywQytNtqv0NIlHgKr5Ow/NiXilE8JTwa72D/hCmkA31dRJgXVyw21rkEU0bnoQH20Tcn/1uuf267u+emD19Dg1RQjh9A6ezscDXDihF0XPs0iEq5PTN/rZI3+CWxKotiTCBGAUx/LwR1Oul57xATmIfkrUR9On7lVHcnRLRzgN9nfxN3g59pIh6XOPqHd5jCdwSsIBooimPCPnkxnTCCtMypuN5zm2X+DQpJ3zUU29tYn78CAftVci3zukYLIHhn/sDDk+IBONnVebnEcpU20qn0Qy9R7YCe5VO6sc5mV5QffUqUXMdse/mcU+Ww==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=ftM8nJljvilzAfS1v29/KfeIRjkG+YphvaZr1Yqn/o8=;
- b=JMXYWzQBK7CPVEPqcR5rD1bvLb8AZtx4Ub3vvTLsv+lmXmfHzzTRXZUFPlOBZFY8qU/AuwGJIBl0+uU26BHkbV4eyjRfMdtQnFtgDR+mShbfjY91BQ1/UlChJuSIQ7WO1LBcU34N3BYkItTt1IzRG59UNpcK6IragzMgmLLcQtg=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
- by LO0P265MB5190.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:285::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7828.22; Thu, 1 Aug
- 2024 12:30:59 +0000
-Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1818:a2bf:38a7:a1e7]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1818:a2bf:38a7:a1e7%7]) with mapi id 15.20.7828.021; Thu, 1 Aug 2024
- 12:30:59 +0000
-Date: Thu, 1 Aug 2024 13:30:55 +0100
-From: Gary Guo <gary@garyguo.net>
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng
- <boqun.feng@gmail.com>, =?UTF-8?B?QmrDtnJu?= Roy Baron
- <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>,
- Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/2] rust: init: add `write_[pin_]init` functions
-Message-ID: <20240801133055.6d127fd1@eugeo>
-In-Reply-To: <20240708205325.1275473-2-benno.lossin@proton.me>
-References: <20240708205325.1275473-1-benno.lossin@proton.me>
-	<20240708205325.1275473-2-benno.lossin@proton.me>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO4P265CA0167.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:312::12) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:253::10)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ReNm/kjV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13129C32786;
+	Thu,  1 Aug 2024 12:45:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1722516346;
+	bh=uFy9XegXfV2RfEhcBYqHt6jbexjmhCmWnhmt33f0e3U=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ReNm/kjVk52BNkKSLm5Fc+fcd6UmE4GYHHIJAiNCo6ef7gmgAhCN0gHs0w/iAP18/
+	 ZU2EDQnPY8dhP9QHKHFmY7sCO+62u76yNrFWO9PQnttSNThf3g3XybQQxWRqLfzF3z
+	 UNe9qo5EzNdgfzYSJ5aFlI3+1AYgiBQAbw8zxPD2wG3J+lZG3kLwWM+DmNqZmwf7VN
+	 3jUZwY0of5Zmpm/wZt1xJRnse3u3pcZ5OSbOtUlxnHOEwuI5KMtkgLuLueCqRqfy5Y
+	 59MXcnzxuDm41p84NBrKSiGSL9R0CbDsy+vPEWKJXRzqsaIFbhCaxZCJnAbGDnCnAR
+	 ZSC02tZxY2Tdw==
+Date: Thu, 1 Aug 2024 14:45:38 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me, a.hindborg@samsung.com,
+	akpm@linux-foundation.org, daniel.almeida@collabora.com,
+	faith.ekstrand@collabora.com, boris.brezillon@collabora.com,
+	lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com,
+	acurrid@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com,
+	airlied@redhat.com, ajanulgu@redhat.com, lyude@redhat.com,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH v3 09/25] rust: alloc: implement kernel `Box`
+Message-ID: <ZquDcoPg2CzlPbpU@pollux>
+References: <20240801000641.1882-1-dakr@kernel.org>
+ <20240801000641.1882-10-dakr@kernel.org>
+ <CAH5fLggjs8t2c1GVFdQu6gULjG_oYx7299m4NedQFS+hOgFfTw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LO0P265MB5190:EE_
-X-MS-Office365-Filtering-Correlation-Id: fd225dce-548d-4a92-c078-08dcb225cc2c
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?I3LW8C6bbqQDIXjxQ0HduNmUt0+T8CZHW7+1U7r3j1zDhUB4zGk0wlpyQNp4?=
- =?us-ascii?Q?8mN3l7zvFYTHim+eBKpIUVjxcgF4YIiXbQWq1HfwENfdihbq9DjClYmTt27E?=
- =?us-ascii?Q?WToc8wsDF8guq6jB6hVzPw0SZc0fep2V91CZjTm1TgLP5vZMcmEdVGtch4DR?=
- =?us-ascii?Q?dPb4QXF35JNFNknQXaCJoWHsXMgwYvmYAAmeSrRSwCMvojUryRiSWIcsDXki?=
- =?us-ascii?Q?9E3syxN2V+B+nNZJ4u3dTAhCxmH70MOFiSjOKQy3/ySs8cVzacQrNpREoHjL?=
- =?us-ascii?Q?EbyfiIri2m3z3FOwSdvtG08GPx3Kc1dS+ktBpU73kddLLLuFzU7ioZ4VO7nd?=
- =?us-ascii?Q?2F2oX+taDxs16bga3PY0Tm2SjhwQ4y9sjXtbuXrVf68peHOYAkqBca6qG9oZ?=
- =?us-ascii?Q?wcMgo8NSRBMs17Hv4iWJ8DgnKZ/6Fkwluio0X+PPS1lMSB0I/59y8amStlgx?=
- =?us-ascii?Q?veamSRe0V2U7URzb1SLraI5KR+HNylmDXePEwaVS3AsHrlIhst1fh5/I7EJN?=
- =?us-ascii?Q?Ij9b3SVeOvKODV5nyVIE5IivbZjx6KCmYQy1OeTcQmTgB7N2g8fVUFBoprlO?=
- =?us-ascii?Q?wHPpUmW0WF54eH4kHHWJ6EfuDrGSTRvd+mk3E19qh05ml5ov2efFy20T/d5r?=
- =?us-ascii?Q?fC0WFr37Z6xwimNfuDFbf3ZMH5gcAajXFsjG35DCUBPDN4zCogEDh4Onx0/b?=
- =?us-ascii?Q?RYR6+h559ylSW2miQxxKc6xbsRHQ6b5LwnuOhb8U0KtvcHn8Ir2jBMvy+jNA?=
- =?us-ascii?Q?St/EPMQdWut9tHzhr+wUPrdnnMGVgO3zhyrvZF74Cw/K9iJ5aO6UudAzAV9b?=
- =?us-ascii?Q?TJRRoE5D4GqQ9tm5h5cWu+lL3ykh52GxYjXbp6Xp2D3U7EXPMuLNLVpgNK9q?=
- =?us-ascii?Q?gsilKVh+xsB80dFdhpEncmx81SMiphhCA7nKNx2gZDzFcmXVxRM/JG0+KrT8?=
- =?us-ascii?Q?lIxXhzVx4/VkkgDFClmPJ89YOo0ob0z3EOusyMA7FIBD9AezXEjyCV/9LH+o?=
- =?us-ascii?Q?xWnb8D99tARa+oh8HXw4OLjd+vT+izt9spSO/iLEtHpTJabu8rZEpOUb7eV1?=
- =?us-ascii?Q?zpqpVJr9CgzoHQyEftvTkuy04C7v2fB6hYpLrQukiAQMc5QWHVgzSmYHfLU+?=
- =?us-ascii?Q?P+ATku4Eyx8p4DPtde2oOxyMJCOZ5t4kRm71Hh2IiewE0CcUiQGbJBFH2BtH?=
- =?us-ascii?Q?nhS+fkNuRCSVl3Hl/7fHHLDVcBADWc3052jROS9GQNe0xrbvv98z9W+bO03h?=
- =?us-ascii?Q?FYHbOq9a9vLfTMbT910UgTJfsuV6W+JvIJyr4W/dYeLPXLHzts5ZwSoWBctF?=
- =?us-ascii?Q?LJw=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?EgT65mjcAUuQTEfRjZqlX57s5PsbttHUaL6tjkioVvg7khFWE/q/fnLkTW6C?=
- =?us-ascii?Q?yF8lj3ikzsiBjKA2STrf0meEe+YnIUOhjv6RcKwXJxg1PFVr178+XjoI1/bk?=
- =?us-ascii?Q?HlHM5BOoQLIGk0+LFvWsEhrejdp92hqp4hv9dbalhgiMw3OwWPxCxtHC9qA2?=
- =?us-ascii?Q?9sTorrEGlg+gFZPvhTJX5ToLsY2azQokSKbIQjm4Y7dbCovE4hjCCjpsh2Jw?=
- =?us-ascii?Q?HjyQ8F5OgtIiyXvW7K0po1hddmpNlGvxDTp6tGNcfeGY51g2maPw7zPqCzLe?=
- =?us-ascii?Q?Pz6kb4rOj9DOnQYOr9vXnMlDrRNp1TyH90BYumgXqghM/kQrYAHK0ItyhaiW?=
- =?us-ascii?Q?J8TdmR6OXxR3ZDTb+PMYajSxbu/gzTF8kfUirH9ThaVnUt5wNfsugtJzHBUh?=
- =?us-ascii?Q?8KUT2LsPd++sc5QkyKLNdSxsmbQ5+031utouRX36SZaiPGwyl8YsGs7pp5yA?=
- =?us-ascii?Q?RTWYCOUQl1qr7LYYHRyuAzC05Z3A3mG1NbjZbkgjx1D4JQoHdgH9qSHHO0wh?=
- =?us-ascii?Q?QVUaqhfQQl6O0u/5YRUesOI0AxDRaostai848JscxP3iQKK/fx2wV/N022lz?=
- =?us-ascii?Q?DopGWbEJmWWsYxqZTx/eWdFGyb1d/I/JQlVJwxI3+RhuJ1yJQnWfB5pUwUuw?=
- =?us-ascii?Q?gErAUhnk7VTNMx8L3KqrNLst+ZvHjAlmt177bfOm2lPvJeg42krYZ9Vr3eB/?=
- =?us-ascii?Q?f+HfUs/MMI/FgQ3fljPD/3Ya2OptKEjmYkZfZY/AdzIMQGL8ZmDBFd6ODMWr?=
- =?us-ascii?Q?IEe6g5WgcAN5IlvADK42m6LMkGdkl8z0jaGkV8K4zgrbSwxD4P3C8yVdB9zi?=
- =?us-ascii?Q?Z4dcRnZodMx0Yu0oCDmjMpQ8wsJcanva/NkgbT8H9ffz1d0/bG/ugcmL0rkU?=
- =?us-ascii?Q?X1Bj5ulZ9x/CUcfmT4xViRZgK8pD0xfjmNLgprpNfI28EQ36aeVOJ3ATGKN9?=
- =?us-ascii?Q?opWjgrW7Ru//T76YLAMkL9r0hmT/5VyY+D/a18bnyT/ZBd5/QJbjLUT+cmJ7?=
- =?us-ascii?Q?puoVLd6zvhWr5koZppHU9sr3fXufbihvYBHsSnLUsbRWw/Ww08C1y5cpxPcj?=
- =?us-ascii?Q?aYSN5XjVnwcE90kz2eTvFS5tzUTn7lsfbo3K9edVSvGhq5RdPmCU8wuO8a3M?=
- =?us-ascii?Q?8gHUnNfiMnnuBwjXVQT6Zf0LBuFSlrdLpZp/UwlQxVo+yJmm5ClmhSf1J1qf?=
- =?us-ascii?Q?LE1aeQOhCiFoURD8Gx3HQUYrDNO20Hbv0i+xSFIa4kNkPvjSlYoo3qe/E9dR?=
- =?us-ascii?Q?3QBHRuPhCPM6GsyhL922BOVl/GGLYMdpVREq5194Y3P0/aLQVhb+UYqVz/Sp?=
- =?us-ascii?Q?uxtTgO9Hwe8JbpVEJXARcU6kARqShefXBiZ//vjvu+EoqIh2EUzf7RGjPyHQ?=
- =?us-ascii?Q?lPQj2WZQRcWmfyy/lMivKqrtKmDGW1AMEvagpTvclh1uwuumpCltj8uSHLqA?=
- =?us-ascii?Q?7Vz3lPqOCSbcv5j0Leof68Uy7ci+lC9RRrbSH41hOiLVZb1L76VxK4Wfqqjk?=
- =?us-ascii?Q?qgYeN2YH4z/6Z/cPlbQ3GJbcRWPGDfzQMcnzZNq86rO3r2w2RFirkw8jSZNE?=
- =?us-ascii?Q?wyF8tvlCgC2xDjk9uerEwCCawhpiEbJV5hQEaR80mJ1/VknbLaiKempaFo4o?=
- =?us-ascii?Q?SXpGGKhW9X6knATemwjm2kCjXBWqnEQ0PCf1O5Faalh9?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: fd225dce-548d-4a92-c078-08dcb225cc2c
-X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Aug 2024 12:30:58.9959
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: oK1nMxXp6wBXlu0VrBPVDdxpfeXz1OzwzM7Htq1WJuxGKVEQpk7AU2A4Zu1THsG5ilNx+YCaum1Dpp28gKZ8Ng==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO0P265MB5190
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAH5fLggjs8t2c1GVFdQu6gULjG_oYx7299m4NedQFS+hOgFfTw@mail.gmail.com>
 
-On Mon, 08 Jul 2024 20:53:46 +0000
-Benno Lossin <benno.lossin@proton.me> wrote:
-
-> Sometimes it is necessary to split allocation and initialization into
-> two steps. One such situation is when reusing existing allocations
-> obtained via `Box::drop_contents`. See [1] for an example.
-> In order to support this use case add `write_[pin_]init` functions to the
-> pin-init API. These functions operate on already allocated smart
-> pointers that wrap `MaybeUninit<T>`.
+On Thu, Aug 01, 2024 at 10:55:51AM +0200, Alice Ryhl wrote:
+> On Thu, Aug 1, 2024 at 2:07 AM Danilo Krummrich <dakr@kernel.org> wrote:
+> >
+> > `Box` provides the simplest way to allocate memory for a generic type
+> > with one of the kernel's allocators, e.g. `Kmalloc`, `Vmalloc` or
+> > `KVmalloc`.
+> >
+> > In contrast to Rust's `Box` type, the kernel `Box` type considers the
+> > kernel's GFP flags for all appropriate functions, always reports
+> > allocation failures through `Result<_, AllocError>` and remains
+> > independent from unstable features.
+> >
+> > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> >
+> > [...]
+> >
+> > +    /// Constructs a `Box<T, A>` from a raw pointer.
+> > +    ///
+> > +    /// # Safety
+> > +    ///
+> > +    /// `raw` must point to valid memory, previously allocated with `A`, and at least the size of
+> > +    /// type `T`.
+> > +    #[inline]
+> > +    pub const unsafe fn from_raw_alloc(raw: *mut T, alloc: PhantomData<A>) -> Self {
+> > +        // SAFETY: Safe by the requirements of this function.
+> > +        Box(unsafe { Unique::new_unchecked(raw) }, alloc)
+> > +    }
 > 
-> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
+> I don't think it makes sense to take the PhantomData as a parameter.
+> You can always create a PhantomData value out of thin air.
+> 
+> Box(unsafe { Unique::new_unchecked(raw) }, PhantomData)
+> 
+> > +    /// Consumes the `Box<T, A>`, returning a wrapped raw pointer and `PhantomData` of the allocator
+> > +    /// it was allocated with.
+> > +    pub fn into_raw_alloc(b: Self) -> (*mut T, PhantomData<A>) {
+> > +        let b = ManuallyDrop::new(b);
+> > +        let alloc = unsafe { ptr::read(&b.1) };
+> > +        (b.0.as_ptr(), alloc)
+> > +    }
+> 
+> I don't think there's any need to have this function. The caller can
+> always create the PhantomData themselves. I would just keep into_raw
+> only.
 
-Reviewed-by: Gary Guo <gary@garyguo.net>
+Agreed, I actually intended to remove this one and the above.
 
-> Link: https://lore.kernel.org/rust-for-linux/f026532f-8594-4f18-9aa5-57ad3f5bc592@proton.me/ [1]
-> ---
->  rust/kernel/init.rs    | 84 ++++++++++++++++++++++++++++++------------
->  rust/kernel/prelude.rs |  2 +-
->  2 files changed, 61 insertions(+), 25 deletions(-)
+> 
+> > +    /// Converts a `Box<T>` into a `Pin<Box<T>>`.
+> > +    #[inline]
+> > +    pub fn into_pin(b: Self) -> Pin<Self>
+> > +    where
+> > +        A: 'static,
+> > +    {
+> > +        // SAFETY: It's not possible to move or replace the insides of a `Pin<Box<T>>` when
+> > +        // `T: !Unpin`, so it's safe to pin it directly without any additional requirements.
+> > +        unsafe { Pin::new_unchecked(b) }
+> > +    }
+> 
+> In the standard library, this functionality is provided using the From
+> trait rather than an inherent method. I think it makes sense to match
+> std here.
+
+I already provide `impl<T, A> From<Box<T, A>> for Pin<Box<T, A>>` in this patch,
+which just calls `Box::into_pin`.
+
+> 
+> > +impl<T, A> Drop for Box<T, A>
+> > +where
+> > +    T: ?Sized,
+> > +    A: Allocator,
+> > +{
+> > +    fn drop(&mut self) {
+> > +        let ptr = self.0.as_ptr();
+> > +
+> > +        // SAFETY: We need to drop `self.0` in place, before we free the backing memory.
+> > +        unsafe { core::ptr::drop_in_place(ptr) };
+> > +
+> > +        // SAFETY: `ptr` is always properly aligned, dereferenceable and points to an initialized
+> > +        // instance of `T`.
+> > +        if unsafe { core::mem::size_of_val(&*ptr) } != 0 {
+> > +            // SAFETY: `ptr` was previously allocated with `A`.
+> > +            unsafe { A::free(self.0.as_non_null().cast()) };
+> > +        }
+> 
+> You just destroyed the value by calling `drop_in_place`, so `ptr` no
+> longer points at an initialized instance of `T`. Please compute
+> whether the allocation has non-zero size before you call
+> `drop_in_place`.
+
+Huh! Good catch. No idea how I missed that.
+
+> 
+> Also, in normal Rust this code would leak the allocation on panic in
+> the destructor. We may not care, but it's worth taking into account if
+> anybody else copies this code to a different project with a different
+> panic configuration.
+
+I can add a corresponding note.
+
+> 
+> > +impl<T: 'static, A> ForeignOwnable for crate::alloc::Box<T, A>
+> > +where
+> > +    A: Allocator,
+> > +{
+> > +    type Borrowed<'a> = &'a T;
+> > +
+> > +    fn into_foreign(self) -> *const core::ffi::c_void {
+> > +        crate::alloc::Box::into_raw(self) as _
+> > +    }
+> > +
+> > +    unsafe fn borrow<'a>(ptr: *const core::ffi::c_void) -> &'a T {
+> > +        // SAFETY: The safety requirements for this function ensure that the object is still alive,
+> > +        // so it is safe to dereference the raw pointer.
+> > +        // The safety requirements of `from_foreign` also ensure that the object remains alive for
+> > +        // the lifetime of the returned value.
+> > +        unsafe { &*ptr.cast() }
+> > +    }
+> > +
+> > +    unsafe fn from_foreign(ptr: *const core::ffi::c_void) -> Self {
+> > +        // SAFETY: The safety requirements of this function ensure that `ptr` comes from a previous
+> > +        // call to `Self::into_foreign`.
+> > +        unsafe { crate::alloc::Box::from_raw(ptr as _) }
+> > +    }
+> > +}
+> 
+> You may want to also implement ForeignOwnable for Pin<Box<T>>. See:
+> https://lore.kernel.org/all/20240730-foreign-ownable-pin-box-v1-1-b1d70cdae541@google.com/
+
+Yeah, I think I've also seen another patch that it about to add a function to
+convert a `Box` back into uninit state.
+
+Depending how fast you need ForeignOwnable for Pin<Box<T>>, do you prefer to
+contribute a corresponding patch to this series?
+
+> 
+> Alice
+> 
