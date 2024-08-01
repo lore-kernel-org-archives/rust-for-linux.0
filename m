@@ -1,120 +1,163 @@
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from GBR01-LO4-obe.outbound.protection.outlook.com (mail-lo4gbr01on2128.outbound.protection.outlook.com [40.107.122.128])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 782381A01C6
-	for <rust-for-linux@vger.kernel.org>; Thu,  1 Aug 2024 12:33:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722515614; cv=none; b=V4wAZ5XfwZPn082IfdR9e7t92SRHOnyABFEm/vvZK/R5JoE9EemcbnoNAREOob3qG6Xc7mWF6/n6tSTmUlHn1lJufoPXcKoaPQ5GKUDWCKReP2YyWzIXDjnKN7HIMsXWsREcIaN3Z/BQIofRZlyYhKt5bv1E1qbWP1TJDbphBFo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722515614; c=relaxed/simple;
-	bh=6xY5STH7eWH9a4U8sSqLcDaevZ8D3eDsy02tRk6YEVk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=u9b/EsMsvxGZ7SP9QHGERueoLZmVXeNtgDYG7WIRUlJr/vpIgr2nfZ9KwIQHLNYUuklxdp4fOUtMgGP9GVmbOYoFwCPnM8cChCIJjl+BRSiTh+CrwDyTQq+0gZY7+KqtQaYRItACae7/MDw66LQaOnVEO5xEnqi3MTTprRxS998=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=D2eX01At; arc=none smtp.client-ip=209.85.167.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26E8D19FA96;
+	Thu,  1 Aug 2024 12:33:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.122.128
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1722515620; cv=fail; b=kqxpd7/Z6BcGdEw58soYwKFB68p85W1RRxZFWG6v5HhXJ+uo3vLAnqZuBoZ6bI9FbNoE/uK+r4prppLOTlEYggMVowZXbdtsgOVpffjJ7r/7SBGvVg70CFG8clxS7tgYetjpmRo+soa6VvwOXGxmhDyXw3a4Wzzq4AdNt5vgyCI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1722515620; c=relaxed/simple;
+	bh=RJMitLItY+2LDyIZOz8JJkQER0rGaFjFdBWMYv5XDEw=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=HEdUJi3hRmXt60Cmxeie4vAjWque/sRUzrKEWVDJRnAuteEXh3Ie/BWEtYjyfgq16fi1/lqDXRfbFIZ6+cMYM+nSdAKDWRgcPD4g5iudKKLPRV5pk7V1hZ/jIe0f6WZa2LVdfOe0g2LyB8hOWzFPJwGLY0t0KyMJ+AzdnFSvGWI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=JMXYWzQB; arc=fail smtp.client-ip=40.107.122.128
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="D2eX01At"
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-52fc14d6689so7319825e87.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 01 Aug 2024 05:33:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1722515611; x=1723120411; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=I8m23gCfGpYyuhlXZdyZEdOK2nVX60DO5EEWoQsvedo=;
-        b=D2eX01AtU1REBAQhbY03IrGs47qwSVSrs1yK0dXyoUEF3vDobC7tNjJr38lk79sT+J
-         hJzrfgXr2D32fbbwdBdoxEC7YgolHiwP3jsgx17SMo3Jj0Z227zEmTGBZt1DzNJHGqgy
-         WF4ME/TZmmuQhqA1JYcCxk85KmVQLHlTCcOHK3JCfLsTluUZmG9qZRD7VHayxTR/U+n4
-         Gq7+aCJsdBiemom4pEtc5pBRfa+2j8ACR9eIkwjpGBEKAyFFjrCkLPGfuenwGrH3U0XF
-         aT+1b2qc/njx8Uee24CBkVoi7+tTuQ7YxcfUlnF3Hi6G2nqVNem03SwxrMxdKeTRY0WJ
-         OXEQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722515611; x=1723120411;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=I8m23gCfGpYyuhlXZdyZEdOK2nVX60DO5EEWoQsvedo=;
-        b=WDB662EX6g+rYp2gMfyvp36Lwu2fV+HU2thQ9FWrmpPSG0GVmN7L5NLkSusKo8RwSO
-         Lmy23GZ+qk3eaw2KfY6XB+DuNO/S3kB2zJFAIZZLxFrthxN8s8aedY3j6ipiS5d8/OFK
-         h5zJhRnQ0yFYta5ajr5OCloptGhrd/X8a9A14eIu8ANNHQXxW9tH5fB+evJTlRLhhFlN
-         IPvF26g1OB/1ZxgVZZLDFrvcVK/BnopXcjYsAXZns1icTb5IfHXeEn/DssAWlc1JLvyU
-         TjqITakrxYuYTu+pZQ08qyox7iqmxm8KHMx+1CMMRkU/sE85LloJsdbh6MX32YLdE/iT
-         C7EA==
-X-Forwarded-Encrypted: i=1; AJvYcCWoGDdFyDcQjp4rKoAcKHZkEwrJD8Ued3gzSW0yrkQhE6t0zx8c+Uwoc2zzxi2ZBexc30KW+jx3BQq9XNL9PQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxUVXuWZNDUc5ev6mgCJhkW3uvlsIWAxjPQTFyaFjczlsnQaP/h
-	qgx1y0wKVs2VtjlcB+vGjASKa8Fe1epFeZRfZJbwlz1XcN3Msf/e3LugFZNu3Ort2RCbtqEsi5f
-	uoxWwkozflJgybhlN1bu7z9uq3zZ1OIPZGfiy
-X-Google-Smtp-Source: AGHT+IEui3NccP3Nyd1+5eWJDMqRcmvKlbT4XKAqqlJpBpTH5c9HdHNpFLDJj6IvKL85z0QegnQzET6zAtpfyQH26rU=
-X-Received: by 2002:a19:9147:0:b0:52c:a0b8:4dc0 with SMTP id
- 2adb3069b0e04-530b61b7e97mr1267800e87.28.1722515610268; Thu, 01 Aug 2024
- 05:33:30 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="JMXYWzQB"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=vOsZZYl73C8zqRTzcVGQIymBkcZGl23LrZUSpnVscV4f3hW/BpbvCfwhcpPchLBbAcOzhtJNOn5qrfX6vuNTlExXnaUqiZJh5N1VWolyxR8nXJWdQ63FETnsIXU4D7a/GKjlXbXRr9QeUA9mVtY4wJe+Z5OkUIGGJ97HRA96a8bwu3ELPtui4nQ4gh/dAVxl9jHSAvJdRaMQJu4Z0X0GLlumC7u0JAfF1xSA8HoUSMdQZLU/o3UjaTYmTfHxEEfyP1axEzxr3T8TqsyZzuL1u3yCWRHvsC5szIsj6p8G+vIwFpMCf7fyA74cFnipbknf3CeRWZQ7XbDEND6QmB1lVw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ftM8nJljvilzAfS1v29/KfeIRjkG+YphvaZr1Yqn/o8=;
+ b=HbwBArnimRSPk7G3s9JJ0NeSGEywQytNtqv0NIlHgKr5Ow/NiXilE8JTwa72D/hCmkA31dRJgXVyw21rkEU0bnoQH20Tcn/1uuf267u+emD19Dg1RQjh9A6ezscDXDihF0XPs0iEq5PTN/rZI3+CWxKotiTCBGAUx/LwR1Oul57xATmIfkrUR9On7lVHcnRLRzgN9nfxN3g59pIh6XOPqHd5jCdwSsIBooimPCPnkxnTCCtMypuN5zm2X+DQpJ3zUU29tYn78CAftVci3zukYLIHhn/sDDk+IBONnVebnEcpU20qn0Qy9R7YCe5VO6sc5mV5QffUqUXMdse/mcU+Ww==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ftM8nJljvilzAfS1v29/KfeIRjkG+YphvaZr1Yqn/o8=;
+ b=JMXYWzQBK7CPVEPqcR5rD1bvLb8AZtx4Ub3vvTLsv+lmXmfHzzTRXZUFPlOBZFY8qU/AuwGJIBl0+uU26BHkbV4eyjRfMdtQnFtgDR+mShbfjY91BQ1/UlChJuSIQ7WO1LBcU34N3BYkItTt1IzRG59UNpcK6IragzMgmLLcQtg=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
+ by LO0P265MB5190.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:285::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7828.22; Thu, 1 Aug
+ 2024 12:30:59 +0000
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1818:a2bf:38a7:a1e7]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1818:a2bf:38a7:a1e7%7]) with mapi id 15.20.7828.021; Thu, 1 Aug 2024
+ 12:30:59 +0000
+Date: Thu, 1 Aug 2024 13:30:55 +0100
+From: Gary Guo <gary@garyguo.net>
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng
+ <boqun.feng@gmail.com>, =?UTF-8?B?QmrDtnJu?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>,
+ Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 2/2] rust: init: add `write_[pin_]init` functions
+Message-ID: <20240801133055.6d127fd1@eugeo>
+In-Reply-To: <20240708205325.1275473-2-benno.lossin@proton.me>
+References: <20240708205325.1275473-1-benno.lossin@proton.me>
+	<20240708205325.1275473-2-benno.lossin@proton.me>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: LO4P265CA0167.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:312::12) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:253::10)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240723-linked-list-v3-0-89db92c7dbf4@google.com>
- <20240723-linked-list-v3-9-89db92c7dbf4@google.com> <2b548226-e323-466d-9f6d-762f6cbb5474@proton.me>
- <CAH5fLghkPgj560a2b_1oRnvuurEugT4TNj+o-fYhGsuSGpywPg@mail.gmail.com> <4af5a8fa-c27c-4ee5-9d2f-67a46bd34635@proton.me>
-In-Reply-To: <4af5a8fa-c27c-4ee5-9d2f-67a46bd34635@proton.me>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 1 Aug 2024 14:33:17 +0200
-Message-ID: <CAH5fLghdOYt-an=Scic4g4tYvU8WMdvwqt4nHP0j8QybaPPp6w@mail.gmail.com>
-Subject: Re: [PATCH v3 09/10] rust: list: support heterogeneous lists
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@samsung.com>, Marco Elver <elver@google.com>, Coly Li <colyli@suse.de>, 
-	Paolo Abeni <pabeni@redhat.com>, Pierre Gondois <pierre.gondois@arm.com>, 
-	Ingo Molnar <mingo@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Wei Yang <richard.weiyang@gmail.com>, 
-	Matthew Wilcox <willy@infradead.org>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, Kees Cook <kees@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LO0P265MB5190:EE_
+X-MS-Office365-Filtering-Correlation-Id: fd225dce-548d-4a92-c078-08dcb225cc2c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|7416014|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?I3LW8C6bbqQDIXjxQ0HduNmUt0+T8CZHW7+1U7r3j1zDhUB4zGk0wlpyQNp4?=
+ =?us-ascii?Q?8mN3l7zvFYTHim+eBKpIUVjxcgF4YIiXbQWq1HfwENfdihbq9DjClYmTt27E?=
+ =?us-ascii?Q?WToc8wsDF8guq6jB6hVzPw0SZc0fep2V91CZjTm1TgLP5vZMcmEdVGtch4DR?=
+ =?us-ascii?Q?dPb4QXF35JNFNknQXaCJoWHsXMgwYvmYAAmeSrRSwCMvojUryRiSWIcsDXki?=
+ =?us-ascii?Q?9E3syxN2V+B+nNZJ4u3dTAhCxmH70MOFiSjOKQy3/ySs8cVzacQrNpREoHjL?=
+ =?us-ascii?Q?EbyfiIri2m3z3FOwSdvtG08GPx3Kc1dS+ktBpU73kddLLLuFzU7ioZ4VO7nd?=
+ =?us-ascii?Q?2F2oX+taDxs16bga3PY0Tm2SjhwQ4y9sjXtbuXrVf68peHOYAkqBca6qG9oZ?=
+ =?us-ascii?Q?wcMgo8NSRBMs17Hv4iWJ8DgnKZ/6Fkwluio0X+PPS1lMSB0I/59y8amStlgx?=
+ =?us-ascii?Q?veamSRe0V2U7URzb1SLraI5KR+HNylmDXePEwaVS3AsHrlIhst1fh5/I7EJN?=
+ =?us-ascii?Q?Ij9b3SVeOvKODV5nyVIE5IivbZjx6KCmYQy1OeTcQmTgB7N2g8fVUFBoprlO?=
+ =?us-ascii?Q?wHPpUmW0WF54eH4kHHWJ6EfuDrGSTRvd+mk3E19qh05ml5ov2efFy20T/d5r?=
+ =?us-ascii?Q?fC0WFr37Z6xwimNfuDFbf3ZMH5gcAajXFsjG35DCUBPDN4zCogEDh4Onx0/b?=
+ =?us-ascii?Q?RYR6+h559ylSW2miQxxKc6xbsRHQ6b5LwnuOhb8U0KtvcHn8Ir2jBMvy+jNA?=
+ =?us-ascii?Q?St/EPMQdWut9tHzhr+wUPrdnnMGVgO3zhyrvZF74Cw/K9iJ5aO6UudAzAV9b?=
+ =?us-ascii?Q?TJRRoE5D4GqQ9tm5h5cWu+lL3ykh52GxYjXbp6Xp2D3U7EXPMuLNLVpgNK9q?=
+ =?us-ascii?Q?gsilKVh+xsB80dFdhpEncmx81SMiphhCA7nKNx2gZDzFcmXVxRM/JG0+KrT8?=
+ =?us-ascii?Q?lIxXhzVx4/VkkgDFClmPJ89YOo0ob0z3EOusyMA7FIBD9AezXEjyCV/9LH+o?=
+ =?us-ascii?Q?xWnb8D99tARa+oh8HXw4OLjd+vT+izt9spSO/iLEtHpTJabu8rZEpOUb7eV1?=
+ =?us-ascii?Q?zpqpVJr9CgzoHQyEftvTkuy04C7v2fB6hYpLrQukiAQMc5QWHVgzSmYHfLU+?=
+ =?us-ascii?Q?P+ATku4Eyx8p4DPtde2oOxyMJCOZ5t4kRm71Hh2IiewE0CcUiQGbJBFH2BtH?=
+ =?us-ascii?Q?nhS+fkNuRCSVl3Hl/7fHHLDVcBADWc3052jROS9GQNe0xrbvv98z9W+bO03h?=
+ =?us-ascii?Q?FYHbOq9a9vLfTMbT910UgTJfsuV6W+JvIJyr4W/dYeLPXLHzts5ZwSoWBctF?=
+ =?us-ascii?Q?LJw=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(7416014)(376014);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?EgT65mjcAUuQTEfRjZqlX57s5PsbttHUaL6tjkioVvg7khFWE/q/fnLkTW6C?=
+ =?us-ascii?Q?yF8lj3ikzsiBjKA2STrf0meEe+YnIUOhjv6RcKwXJxg1PFVr178+XjoI1/bk?=
+ =?us-ascii?Q?HlHM5BOoQLIGk0+LFvWsEhrejdp92hqp4hv9dbalhgiMw3OwWPxCxtHC9qA2?=
+ =?us-ascii?Q?9sTorrEGlg+gFZPvhTJX5ToLsY2azQokSKbIQjm4Y7dbCovE4hjCCjpsh2Jw?=
+ =?us-ascii?Q?HjyQ8F5OgtIiyXvW7K0po1hddmpNlGvxDTp6tGNcfeGY51g2maPw7zPqCzLe?=
+ =?us-ascii?Q?Pz6kb4rOj9DOnQYOr9vXnMlDrRNp1TyH90BYumgXqghM/kQrYAHK0ItyhaiW?=
+ =?us-ascii?Q?J8TdmR6OXxR3ZDTb+PMYajSxbu/gzTF8kfUirH9ThaVnUt5wNfsugtJzHBUh?=
+ =?us-ascii?Q?8KUT2LsPd++sc5QkyKLNdSxsmbQ5+031utouRX36SZaiPGwyl8YsGs7pp5yA?=
+ =?us-ascii?Q?RTWYCOUQl1qr7LYYHRyuAzC05Z3A3mG1NbjZbkgjx1D4JQoHdgH9qSHHO0wh?=
+ =?us-ascii?Q?QVUaqhfQQl6O0u/5YRUesOI0AxDRaostai848JscxP3iQKK/fx2wV/N022lz?=
+ =?us-ascii?Q?DopGWbEJmWWsYxqZTx/eWdFGyb1d/I/JQlVJwxI3+RhuJ1yJQnWfB5pUwUuw?=
+ =?us-ascii?Q?gErAUhnk7VTNMx8L3KqrNLst+ZvHjAlmt177bfOm2lPvJeg42krYZ9Vr3eB/?=
+ =?us-ascii?Q?f+HfUs/MMI/FgQ3fljPD/3Ya2OptKEjmYkZfZY/AdzIMQGL8ZmDBFd6ODMWr?=
+ =?us-ascii?Q?IEe6g5WgcAN5IlvADK42m6LMkGdkl8z0jaGkV8K4zgrbSwxD4P3C8yVdB9zi?=
+ =?us-ascii?Q?Z4dcRnZodMx0Yu0oCDmjMpQ8wsJcanva/NkgbT8H9ffz1d0/bG/ugcmL0rkU?=
+ =?us-ascii?Q?X1Bj5ulZ9x/CUcfmT4xViRZgK8pD0xfjmNLgprpNfI28EQ36aeVOJ3ATGKN9?=
+ =?us-ascii?Q?opWjgrW7Ru//T76YLAMkL9r0hmT/5VyY+D/a18bnyT/ZBd5/QJbjLUT+cmJ7?=
+ =?us-ascii?Q?puoVLd6zvhWr5koZppHU9sr3fXufbihvYBHsSnLUsbRWw/Ww08C1y5cpxPcj?=
+ =?us-ascii?Q?aYSN5XjVnwcE90kz2eTvFS5tzUTn7lsfbo3K9edVSvGhq5RdPmCU8wuO8a3M?=
+ =?us-ascii?Q?8gHUnNfiMnnuBwjXVQT6Zf0LBuFSlrdLpZp/UwlQxVo+yJmm5ClmhSf1J1qf?=
+ =?us-ascii?Q?LE1aeQOhCiFoURD8Gx3HQUYrDNO20Hbv0i+xSFIa4kNkPvjSlYoo3qe/E9dR?=
+ =?us-ascii?Q?3QBHRuPhCPM6GsyhL922BOVl/GGLYMdpVREq5194Y3P0/aLQVhb+UYqVz/Sp?=
+ =?us-ascii?Q?uxtTgO9Hwe8JbpVEJXARcU6kARqShefXBiZ//vjvu+EoqIh2EUzf7RGjPyHQ?=
+ =?us-ascii?Q?lPQj2WZQRcWmfyy/lMivKqrtKmDGW1AMEvagpTvclh1uwuumpCltj8uSHLqA?=
+ =?us-ascii?Q?7Vz3lPqOCSbcv5j0Leof68Uy7ci+lC9RRrbSH41hOiLVZb1L76VxK4Wfqqjk?=
+ =?us-ascii?Q?qgYeN2YH4z/6Z/cPlbQ3GJbcRWPGDfzQMcnzZNq86rO3r2w2RFirkw8jSZNE?=
+ =?us-ascii?Q?wyF8tvlCgC2xDjk9uerEwCCawhpiEbJV5hQEaR80mJ1/VknbLaiKempaFo4o?=
+ =?us-ascii?Q?SXpGGKhW9X6knATemwjm2kCjXBWqnEQ0PCf1O5Faalh9?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: fd225dce-548d-4a92-c078-08dcb225cc2c
+X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Aug 2024 12:30:58.9959
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: oK1nMxXp6wBXlu0VrBPVDdxpfeXz1OzwzM7Htq1WJuxGKVEQpk7AU2A4Zu1THsG5ilNx+YCaum1Dpp28gKZ8Ng==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO0P265MB5190
 
-On Thu, Aug 1, 2024 at 12:50=E2=80=AFPM Benno Lossin <benno.lossin@proton.m=
-e> wrote:
->
-> On 01.08.24 11:38, Alice Ryhl wrote:
-> > On Thu, Aug 1, 2024 at 11:24=E2=80=AFAM Benno Lossin <benno.lossin@prot=
-on.me> wrote:
-> >>
-> >> On 23.07.24 10:22, Alice Ryhl wrote:
-> >>> @@ -181,6 +185,47 @@ unsafe fn from_fields(me: *mut ListLinksFields) =
--> *mut Self {
-> >>>      }
-> >>>  }
-> >>>
-> >>> +/// Similar to [`ListLinks`], but also contains a pointer to the ful=
-l value.
-> >>> +///
-> >>> +/// This type can be used instead of [`ListLinks`] to support lists =
-with trait objects.
-> >>> +#[repr(C)]
-> >>> +pub struct ListLinksSelfPtr<T: ?Sized, const ID: u64 =3D 0> {
-> >>> +    /// The `ListLinks` field inside this value.
-> >>> +    ///
-> >>> +    /// This is public so that it can be used with `impl_has_list_li=
-nks!`.
-> >>> +    pub inner: ListLinks<ID>,
-> >>> +    self_ptr: UnsafeCell<MaybeUninit<*const T>>,
-> >>
-> >> Why do you need `MaybeUninit`?
-> >
-> > Right now the constructor initializes it to MaybeUninit::zeroed().
-> > What would you initialize it to without MaybeUninit? Remember that the
-> > vtable pointer in a fat pointer has strict validity requirements.
->
-> Oh... I forgot about that, can you add a comment about that? Also why
-> not use `Opaque` in that case then?
+On Mon, 08 Jul 2024 20:53:46 +0000
+Benno Lossin <benno.lossin@proton.me> wrote:
 
-It used to just be UnsafeCell, but then I tried it in miri and found
-out about the issue and added MaybeUninit. But I can make it use
-Opaque instead.
+> Sometimes it is necessary to split allocation and initialization into
+> two steps. One such situation is when reusing existing allocations
+> obtained via `Box::drop_contents`. See [1] for an example.
+> In order to support this use case add `write_[pin_]init` functions to the
+> pin-init API. These functions operate on already allocated smart
+> pointers that wrap `MaybeUninit<T>`.
+> 
+> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
 
-Alice
+Reviewed-by: Gary Guo <gary@garyguo.net>
+
+> Link: https://lore.kernel.org/rust-for-linux/f026532f-8594-4f18-9aa5-57ad3f5bc592@proton.me/ [1]
+> ---
+>  rust/kernel/init.rs    | 84 ++++++++++++++++++++++++++++++------------
+>  rust/kernel/prelude.rs |  2 +-
+>  2 files changed, 61 insertions(+), 25 deletions(-)
