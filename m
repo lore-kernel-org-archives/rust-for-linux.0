@@ -1,192 +1,189 @@
-Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 140ED183CA8
-	for <rust-for-linux@vger.kernel.org>; Thu,  1 Aug 2024 10:11:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.134
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59E46446A1
+	for <rust-for-linux@vger.kernel.org>; Thu,  1 Aug 2024 10:28:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722507115; cv=none; b=VGs6LJ9QyUEuyZUIFgxDkx8DkZ4XFkevr7P0mhbxqNF02stxbcSrZneSQq0mfqmwHJQY+E6UahaLRhmSI+qZh43aR0eYGbTEHYjuUs2iW0QXT9Za1urGMqn9QD545pM2fe/uJmKeEVQ5ZEgeKY++vt99A3Y8ranBLWaCcnGsxa8=
+	t=1722508091; cv=none; b=EXMQQMKBpX6vpRGNyYi8l/WDaN04Z44veGOf7MC/OjD134+0CKvG6XvcYNqWBe7yLdo1nA5Hc8fjqhMTrwWGf5gII3G1UU3gIjv/E9UMM8+JKp46G157/kC4Oi7cfr3hzaRovvsivpmHH0eVRgwK/2gjmLkRkkUGYueP+NRX1pI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722507115; c=relaxed/simple;
-	bh=Iq69SaRT8GGzXmsv05bS8grBvLtWQTR3SCFVnK4tfMg=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oG07bERJHVHQc5VLdUUaFLmTPvtdLh1q6bXcb0nhZ+cDNgpNfj5ayl03Y4VnW/LKxCWi3/+jBBH3nd3Asytle8GLu8nJZEE2xjhO7TLEQ6tbMRYPfYtd5kqPwQKJHpbxZ2pwNXXHbzb0Zphn1I3S5+HOM9gEwv7bceKnC5Mxu4E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=AONgN93H; arc=none smtp.client-ip=185.70.40.134
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1722508091; c=relaxed/simple;
+	bh=yPtcdL9rfkhbng4xukjmHie3gmq6wgHWdXoJQhB6XuQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LDUwwfJ/f3EBh0zbBZY9IB7xiqIsH2WGrzg33pelY9o+/zaZj3fmkSedJ58OqVn0gvdGDa6xpjXvqNlsej4jvKyvoYIEv/nHiZwiWo29QJVNqquq0PCrdgb1Zs0JAKeI1IWSsSF/ztrbGEHBZHTjLc5kSSCGt05bgKH+Uc+tvRs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=qLqxu/A7; arc=none smtp.client-ip=90.155.92.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="AONgN93H"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1722507111; x=1722766311;
-	bh=PgVkGuT/+v1e5Yq/KovVFgrDnMHXMXPtnrHOBzVMHUI=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=AONgN93Hvq9RU70+P+cKUK2Ovmic29GspcPHnxxS4HPosNs22PSRF1fvFqO7W8Xjx
-	 MSze1ef+nqHHN2rFXDgyv0Zalp/rJ0YNyZzwMs3Nf2fTxUeDIkganKdF5QhCZqiSnj
-	 BflPPHr6cJ3shwgz4fqmqxZ8ucbLPfhs30cIy7DJdthH/3UfeuEZ3pWaKwHpCKMOkO
-	 JTRa4fZKsVOA4sGCnqsXndWtDO3VwuyIUw7JnyvgGq3eYCRIqBImu9dzwqhwKe6jv3
-	 vVfg9HUX5xVf89B37tQZqZb9xrbsxISiuMW/zJEH2xfgu1uz7lrqhK2raagRGXV3Cm
-	 G6/LkyFjn6OJA==
-Date: Thu, 01 Aug 2024 10:11:47 +0000
-To: Lyude Paul <lyude@redhat.com>, rust-for-linux@vger.kernel.org
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Danilo Krummrich <dakr@redhat.com>, airlied@redhat.com, Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Valentin Obst <kernel@valentinobst.de>, Trevor Gross <tmgross@umich.edu>, Ben Gooding <ben.gooding.dev@gmail.com>, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 2/3] rust: sync: Introduce lock::Backend::Context
-Message-ID: <6a6bcf8a-8b33-4f46-b891-4a97da2b73fc@proton.me>
-In-Reply-To: <20240731224027.232642-3-lyude@redhat.com>
-References: <20240731224027.232642-1-lyude@redhat.com> <20240731224027.232642-3-lyude@redhat.com>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 8935c47c01e0ee511c4d8a1b1728e4b5ffcdc067
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="qLqxu/A7"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=v1s+5Bi9d041LGdTeseO3YDdAQzIcr7DZg2LK0/Pvu0=; b=qLqxu/A7f3yE8trlCtn2zwr4Sr
+	HsLHcEDK9/3J6tw7LUc6f6UbjMMG4sOJfSifCTcBNiwZSAV/P3ODLWlG7yA2knS7LCa0qhRE4PlrQ
+	ylZjSUWBL9DxVjhdQzws15gwx0gi0lDvz7cXdxLOsjy7w+Ib4IOHWMokdPVtwpOChpjjVn+ye1Uld
+	GFG+rsmUPvDikDI9xHGuE71rzQkSd89IUW183/BHQCmgpPHLpOyMsudNwch8jn/2BqO15VJiimQxp
+	xtAjbcKmLuxcKg2Ku/JMxVsbtgiI4S+inNFNHpfHD9Z1+dwbMwwNH7EbzTp55VBxzAL5Gb3OZJgjQ
+	lwCLoQBw==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1sZT2T-00000005RW9-1tOk;
+	Thu, 01 Aug 2024 10:28:06 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 8B25A30074E; Thu,  1 Aug 2024 12:28:04 +0200 (CEST)
+Date: Thu, 1 Aug 2024 12:28:04 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Jason Baron <jbaron@akamai.com>, Ard Biesheuvel <ardb@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	linux-trace-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+	linux-arch@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradaed.org>,
+	Sean Christopherson <seanjc@google.com>,
+	Uros Bizjak <ubizjak@gmail.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Ryan Roberts <ryan.roberts@arm.com>, Fuad Tabba <tabba@google.com>,
+	linux-arm-kernel@lists.infradead.org,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Anup Patel <apatel@ventanamicro.com>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Samuel Holland <samuel.holland@sifive.com>,
+	linux-riscv@lists.infradead.org,
+	Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>, Bibo Mao <maobibo@loongson.cn>,
+	Tiezhu Yang <yangtiezhu@loongson.cn>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Tianrui Zhao <zhaotianrui@loongson.cn>, loongarch@lists.linux.dev
+Subject: Re: [PATCH v4 1/2] rust: add static_key_false
+Message-ID: <20240801102804.GQ33588@noisy.programming.kicks-ass.net>
+References: <20240628-tracepoint-v4-0-353d523a9c15@google.com>
+ <20240628-tracepoint-v4-1-353d523a9c15@google.com>
+ <20240731170508.GJ33588@noisy.programming.kicks-ass.net>
+ <CAH5fLghYodekhH-1A0BWZVwgbqkWbP3WP70-us2FtHqvOqD_Hw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAH5fLghYodekhH-1A0BWZVwgbqkWbP3WP70-us2FtHqvOqD_Hw@mail.gmail.com>
 
-On 01.08.24 00:35, Lyude Paul wrote:
-> Now that we've introduced an `IrqDisabled` token for marking contexts in
-> which IRQs are disabled, we need a way to be able to pass it to locks tha=
-t
-> require that IRQs are disabled. In order to continue using the
-> `lock::Backend` type instead of inventing our own thing, we accomplish th=
-is
-> by adding the associated Context type, along with a `lock_with()` functio=
-n
-> that can accept a Context when acquiring a lock. To allow current users o=
-f
-> context-less locks to keep using the normal `lock()` method, we take an
-> example from Wedson Almeida Filho's work and add a `where T<'a>: Default`
-> bound to `lock()` so that it can only be called on lock types where the
-> context is simply a placeholder value, then re-implement it through the n=
-ew
-> `lock_with()` function.
->=20
-> Signed-off-by: Lyude Paul <lyude@redhat.com>
-> ---
->  rust/kernel/sync/lock.rs          | 17 +++++++++++++++--
->  rust/kernel/sync/lock/mutex.rs    |  3 +++
->  rust/kernel/sync/lock/spinlock.rs |  1 +
->  3 files changed, 19 insertions(+), 2 deletions(-)
->=20
-> diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
-> index f6c34ca4d819f..f3ff50c4272cf 100644
-> --- a/rust/kernel/sync/lock.rs
-> +++ b/rust/kernel/sync/lock.rs
-> @@ -38,6 +38,9 @@ pub unsafe trait Backend {
->      /// [`unlock`]: Backend::unlock
->      type GuardState;
->=20
-> +    /// The context which much be provided to acquire the lock.
-> +    type Context<'a>;
-> +
->      /// Initialises the lock.
->      ///
->      /// # Safety
-> @@ -120,14 +123,24 @@ pub fn new(t: T, name: &'static CStr, key: &'static=
- LockClassKey) -> impl PinIni
->  }
->=20
->  impl<T: ?Sized, B: Backend> Lock<T, B> {
-> -    /// Acquires the lock and gives the caller access to the data protec=
-ted by it.
-> -    pub fn lock(&self) -> Guard<'_, T, B> {
-> +    /// Acquires the lock with the given context and gives the caller ac=
-cess to the data protected
-> +    /// by it.
-> +    pub fn lock_with(&self, _context: B::Context<'_>) -> Guard<'_, T, B>=
- {
+On Wed, Jul 31, 2024 at 11:34:13PM +0200, Alice Ryhl wrote:
 
-Here we need to be careful, without lifetime elision, this signature is:
+> > Please work harder to not have to duplicate stuff like this.
+> 
+> I really didn't want to duplicate it, but it's very hard to find a
+> performant alternative. Is there any way we could accept duplication
+> only in the cases where an 'i' parameter is used? I don't have the
+> choice of using a Rust helper for 'i' parameters.
+> 
+> Perhaps one option could be to put the Rust code inside jump_label.h
+> and have the header file evaluate to either C or Rust depending on the
+> value of some #ifdefs?
+> 
+> #ifndef RUST_ASM
+> /* existing C code goes here */
+> #endif
+> #ifdef RUST_ASM
+> // rust code goes here
+> #endif
+> 
+> That way the duplication is all in a single file. It would also avoid
+> the need for duplicating the nop5 string, as the Rust case is still
+> going through the C preprocessor and can use the existing #define.
 
-    pub fn lock_with<'a, 'b>(&'a self, _context: B::Context<'b>) -> Guard<'=
-a, T, B>
+I suppose that is slightly better, but ideally you generate the whole of
+the Rust thing from the C version. After all, Clang can already parse
+this.
 
-This is problematic, since with this signature you should be able to
-create this piece of code:
+That said, with the below patch, I think you should be able to reuse the
+JUMP_TABLE_ENTRY macro like:
 
-    let lock: SpinLockIrq =3D /* ... */
+	JUMP_TABLE_ENTRY({0}, {1}, {2} + {3})
 
-    let mut guard =3D None;
-    with_irq_disabled(|irq| guard =3D Some(lock.lock_with(irq)));
-    // then use guard when `irq` are again enabled!
+> I'm also open to other alternatives. But I don't have infinite
+> resources to drive major language changes.
 
-So what we want the signature to be is this:
-   =20
-    pub fn lock_with<'a>(&'a self, _context: B::Context<'a>) -> Guard<'a, T=
-, B>
+Yes, well, you all picked this terrible language full well knowing it
+hated C/C++ and had not a single effort put into integration with
+existing code bases.
 
-So we need to ensure that the lifetime of `context` is bound to the
-lifetime of the guard.
+I find it very hard to care for the problems you've created for
+yourself.
 
->          // SAFETY: The constructor of the type calls `init`, so the exis=
-tence of the object proves
->          // that `init` was called.
->          let state =3D unsafe { B::lock(self.state.get()) };
->          // SAFETY: The lock was just acquired.
->          unsafe { Guard::new(self, state) }
->      }
-> +
-> +    /// Acquires the lock and gives the caller access to the data protec=
-ted by it.
-> +    #[inline]
-> +    pub fn lock<'a>(&'a self) -> Guard<'a, T, B>
-> +    where
-> +        B::Context<'a>: Default,
-> +    {
-> +        self.lock_with(B::Context::default())
-> +    }
->  }
->=20
->  /// A lock guard.
-> diff --git a/rust/kernel/sync/lock/mutex.rs b/rust/kernel/sync/lock/mutex=
-.rs
-> index 30632070ee670..327e53be4c0f4 100644
-> --- a/rust/kernel/sync/lock/mutex.rs
-> +++ b/rust/kernel/sync/lock/mutex.rs
-> @@ -4,6 +4,8 @@
->  //!
->  //! This module allows Rust code to use the kernel's `struct mutex`.
->=20
-> +use core::marker::*;
-> +
->  /// Creates a [`Mutex`] initialiser with the given name and a newly-crea=
-ted lock class.
->  ///
->  /// It uses the name if one is given, otherwise it generates one based o=
-n the file name and line
-> @@ -93,6 +95,7 @@ macro_rules! new_mutex {
->  unsafe impl super::Backend for MutexBackend {
->      type State =3D bindings::mutex;
->      type GuardState =3D ();
-> +    type Context<'a> =3D PhantomData<&'a ()>;
-
-Is there any reason you chose `PhantomData` here? Why not just `()`?
 
 ---
-Cheers,
-Benno
-
->=20
->      unsafe fn init(
->          ptr: *mut Self::State,
-> diff --git a/rust/kernel/sync/lock/spinlock.rs b/rust/kernel/sync/lock/sp=
-inlock.rs
-> index ea5c5bc1ce12e..8503d6e8e3de3 100644
-> --- a/rust/kernel/sync/lock/spinlock.rs
-> +++ b/rust/kernel/sync/lock/spinlock.rs
-> @@ -92,6 +92,7 @@ macro_rules! new_spinlock {
->  unsafe impl super::Backend for SpinLockBackend {
->      type State =3D bindings::spinlock_t;
->      type GuardState =3D ();
-> +    type Context<'a> =3D PhantomData<&'a ()>;
->=20
->      unsafe fn init(
->          ptr: *mut Self::State,
-> --
-> 2.45.2
->=20
-
+diff --git a/arch/x86/include/asm/jump_label.h b/arch/x86/include/asm/jump_label.h
+index cbbef32517f0..6cff7bf5e779 100644
+--- a/arch/x86/include/asm/jump_label.h
++++ b/arch/x86/include/asm/jump_label.h
+@@ -12,12 +12,12 @@
+ #include <linux/stringify.h>
+ #include <linux/types.h>
+ 
+-#define JUMP_TABLE_ENTRY				\
+-	".pushsection __jump_table,  \"aw\" \n\t"	\
+-	_ASM_ALIGN "\n\t"				\
+-	".long 1b - . \n\t"				\
+-	".long %l[l_yes] - . \n\t"			\
+-	_ASM_PTR "%c0 + %c1 - .\n\t"			\
++#define JUMP_TABLE_ENTRY(l_yes, key, branch)				\
++	".pushsection __jump_table,  \"aw\" \n\t"			\
++	_ASM_ALIGN "\n\t"						\
++	".long 1b - . \n\t"						\
++	".long " __stringify(l_yes) "- . \n\t"				\
++	_ASM_PTR " " __stringify(key) " + " __stringify(branch) " - . \n\t" \
+ 	".popsection \n\t"
+ 
+ #ifdef CONFIG_HAVE_JUMP_LABEL_HACK
+@@ -26,7 +26,7 @@ static __always_inline bool arch_static_branch(struct static_key *key, bool bran
+ {
+ 	asm goto("1:"
+ 		"jmp %l[l_yes] # objtool NOPs this \n\t"
+-		JUMP_TABLE_ENTRY
++		JUMP_TABLE_ENTRY(%[l_yes], %c0, %c1)
+ 		: :  "i" (key), "i" (2 | branch) : : l_yes);
+ 
+ 	return false;
+@@ -40,7 +40,7 @@ static __always_inline bool arch_static_branch(struct static_key * const key, co
+ {
+ 	asm goto("1:"
+ 		".byte " __stringify(BYTES_NOP5) "\n\t"
+-		JUMP_TABLE_ENTRY
++		JUMP_TABLE_ENTRY(%[l_yes], %c0, %c1)
+ 		: :  "i" (key), "i" (branch) : : l_yes);
+ 
+ 	return false;
+@@ -54,7 +54,7 @@ static __always_inline bool arch_static_branch_jump(struct static_key * const ke
+ {
+ 	asm goto("1:"
+ 		"jmp %l[l_yes]\n\t"
+-		JUMP_TABLE_ENTRY
++		JUMP_TABLE_ENTRY(%[l_yes], %c0, %c1)
+ 		: :  "i" (key), "i" (branch) : : l_yes);
+ 
+ 	return false;
