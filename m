@@ -1,73 +1,127 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5611214B967;
-	Fri,  2 Aug 2024 11:48:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E3711DF670;
+	Fri,  2 Aug 2024 12:02:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722599305; cv=none; b=Rl8RgbAyJIfjUttmx/i0hL6vlfRENasDxxUJPCMmoIU9FEDsSAq5JSYkiO32xBklY0Mh2JxDhksIkhvGqNoy8UI7q4nEKRLvpdCJlaekC/8ZpmvXmgftUP73Iso7doIfho0kRkbqzJnccvb+sGG0wq/e+A1xik87sbPGF0V37NU=
+	t=1722600161; cv=none; b=YgK+MmpEVtupNLwC692dPUdcLH+cuHvXne+6EivuhnyOk4xL6Z6ZLRvaMMBHbRAp49jPXKmBmczmKBDj+0J0hMZVHZ7+BstzJ0Aie/Qbk9OSNkK8OQPvNcaaeDQjInXV4Gjl5+VNL2UBHeU/JBhA7/zlgI67JaNfNiqYhaVRP7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722599305; c=relaxed/simple;
-	bh=o8iPC2bXimRPJlqxz22KFMbJp1dGZNPsEfxPSGSr0O8=;
+	s=arc-20240116; t=1722600161; c=relaxed/simple;
+	bh=Ox56jQpv10zSiCtaYQE/iYK8oMxsBahCCNxSxZdaSvI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WALvhOZnHEDwMTFOYYsPlCUpU7S13W6Wja94ppmeyQCMAODSxyCsFSm0Pz3NigRn3rmRKZjWpQ2Qa05aZz5Sxo60l4OgDJF6qviO0ZUMvQ+0nt7CIMgBIevys220VXmxpsmpR3dRRzGG7DEtm5iPXBZLgIMvjs/HoXVAOaROHtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DCMtwZ7U; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=RQ3YUA32ZBll8s3rvYKctSK6ai3cpUSj46B4BaFIKw6CQ53LDpovRFTalcS+JDu99QHI0g5FJUbIRv/MS7oyVwLd752Sa155hUSOKhCfHxsjmI/oRNZrxkWtZ3k2pf+L1xPxxHpOfnfil52+5B0PFZ/Co+03ZcZ3DlsPnfB1CZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=F2XjONP9; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DCMtwZ7U"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B5A9C32782;
-	Fri,  2 Aug 2024 11:48:19 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="F2XjONP9"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27B1FC4AF0B;
+	Fri,  2 Aug 2024 12:02:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722599303;
-	bh=o8iPC2bXimRPJlqxz22KFMbJp1dGZNPsEfxPSGSr0O8=;
+	s=k20201202; t=1722600160;
+	bh=Ox56jQpv10zSiCtaYQE/iYK8oMxsBahCCNxSxZdaSvI=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=DCMtwZ7UbCchkiKKyFs0coG8tvY0xGzeqY7up4XVXCr/kYAvvIE8SJiSADwR6eZSB
-	 74QAGt3/ibbeRec3c6QtRkfxTm7E4pkNu/CGLbAXYd/c0r0rscNH6eeR4WMbqxkWkb
-	 pPSwN87b2/UriK/KrZYBDxeDq8wxizzyV8+jN2aULenpI/qPHwwOJKfGC9nqL0Kj5i
-	 +9ExByG4sHnH42KiaCxmZuCuDkg/NKPUux5Hf9VRRxWwTJGCMvXyG55WGjmoz6kzD9
-	 I4rLyeKl9Vr5wkgL9pBf1w2lXm9doUGRnSjzrY1e7YR4D0aa/rJ1rqynGwLREPTUz+
-	 uetWFDj+9/62w==
-Date: Fri, 2 Aug 2024 13:48:17 +0200
+	b=F2XjONP9dcbpSo70yeYKdJah7jJNPb2awHNNwVYJWJS6nsQssTQRgweFPmk+AGIFv
+	 Ff1Om9fxnxrEM9xvDnZQ+MI4hrsHpQnslcjspObtlowtwFT7/XOeSuQTbriUNEF4zY
+	 sWfBfXwuC+x1og3wUYPBs3RskHy/ZdbWyxA1ks8aTRUyLBH/WyY1wlP0AqUP8z87z8
+	 crk8Z+hrUW+bYWYEPyDR7uGIdZmwZSlcQBjYun+6/iUH2zRJ8dElNKfu2Zvu0uR09q
+	 rRI4Bbbb587Zv11v84YuxM/Ha64SqVA7XZyIxQWo1lVk+LdXIvmB9/1cldMOpuziR2
+	 L6qzJZhl358hQ==
+Date: Fri, 2 Aug 2024 14:02:32 +0200
 From: Danilo Krummrich <dakr@kernel.org>
 To: Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v4] rust: mm: add abstractions for mm_struct and
- vm_area_struct
-Message-ID: <ZqzHgUifcBTZplEx@pollux>
-References: <20240802-vma-v4-1-091a87058a43@google.com>
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me, a.hindborg@samsung.com,
+	akpm@linux-foundation.org, daniel.almeida@collabora.com,
+	faith.ekstrand@collabora.com, boris.brezillon@collabora.com,
+	lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com,
+	acurrid@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com,
+	airlied@redhat.com, ajanulgu@redhat.com, lyude@redhat.com,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH v3 17/25] rust: alloc: implement `collect` for `IntoIter`
+Message-ID: <ZqzK2LeUgX1AQP4E@pollux>
+References: <20240801000641.1882-1-dakr@kernel.org>
+ <20240801000641.1882-18-dakr@kernel.org>
+ <CAH5fLghO8v0wn-uCx1u_zojPLdDH_RMn4BXxLB1ZMJjfpTkbAw@mail.gmail.com>
+ <ZqurvdyDD6bH4H7Y@pollux>
+ <CAH5fLgga9TOtZBcJNJBgzRGSrX5JuvdbSrvdYV3w8b7gOAncPA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240802-vma-v4-1-091a87058a43@google.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAH5fLgga9TOtZBcJNJBgzRGSrX5JuvdbSrvdYV3w8b7gOAncPA@mail.gmail.com>
 
-On Fri, Aug 02, 2024 at 07:38:32AM +0000, Alice Ryhl wrote:
-> This is a follow-up to the page abstractions [1] that were recently
-> merged in 6.11. Rust Binder will need these abstractions to manipulate
-> the vma in its implementation of the mmap fop on the Binder file.
+On Fri, Aug 02, 2024 at 09:08:48AM +0200, Alice Ryhl wrote:
+> On Thu, Aug 1, 2024 at 5:37 PM Danilo Krummrich <dakr@kernel.org> wrote:
+> >
+> > On Thu, Aug 01, 2024 at 05:10:22PM +0200, Alice Ryhl wrote:
+> > > On Thu, Aug 1, 2024 at 2:08 AM Danilo Krummrich <dakr@kernel.org> wrote:
+> > > >
+> > > > Currently, we can't implement `FromIterator`. There are a couple of
+> > > > issues with this trait in the kernel, namely:
+> > > >
+> > > >   - Rust's specialization feature is unstable. This prevents us to
+> > > >     optimze for the special case where `I::IntoIter` equals `Vec`'s
+> > > >     `IntoIter` type.
+> > > >   - We also can't use `I::IntoIter`'s type ID either to work around this,
+> > > >     since `FromIterator` doesn't require this type to be `'static`.
+> > > >   - `FromIterator::from_iter` does return `Self` instead of
+> > > >     `Result<Self, AllocError>`, hence we can't properly handle allocation
+> > > >     failures.
+> > > >   - Neither `Iterator::collect` nor `FromIterator::from_iter` can handle
+> > > >     additional allocation flags.
+> > > >
+> > > > Instead, provide `IntoIter::collect`, such that we can at least convert
+> > > > `IntoIter` into a `Vec` again.
+> > > >
+> > > > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> > >
+> > > I'm not convinced a collect implementation specific to IntoIter is necessary?
+> >
+> > For the reasons above, we can't implement `FromIterator`. At some point we may
+> > want to implement our own kernel `FromIterator` trait, but that's out of scope
+> > for this series.
+> >
+> > For now, I just want to provide a way to get a `Vec` from `IntoIter` again,
+> > which without `Vec::collect` would be impossible.
 > 
-> This patch is based on Wedson's implementation on the old rust branch,
-> but has been changed significantly. All mistakes are Alice's.
-> 
-> Link: https://lore.kernel.org/r/20240528-alice-mm-v7-4-78222c31b8f4@google.com [1]
-> Co-developed-by: Wedson Almeida Filho <wedsonaf@gmail.com>
-> Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> If you have a need for a collect on this particular kind of iterator, then okay.
 
-Reviewed-by: Danilo Krummrich <dakr@kernel.org>
+Even once we have our own `FromIterator` trait, we probably want to keep this
+specific one besides the generic `collect` for optimization. With the generic
+one we'd otherwise copy into a new `Vec`.
+
+> 
+> > > > +
+> > > > +        // SAFETY: `buf` points to the start of the backing buffer and `len` is guaranteed to be
+> > > > +        // smaller than `cap`. Depending on `alloc` this operation may shrink the buffer or leaves
+> > > > +        // it as it is.
+> > > > +        ptr = match unsafe { A::realloc(Some(buf.cast()), layout, flags) } {
+> > >
+> > > Why would you shrink it? You can just keep the capacity.
+> >
+> > What if the vector was pretty huge and meanwhile as advanced by a lot? I think
+> > we don't want to waste those resources.
+> >
+> > Ideally the corresponding `Allocator` implements a proper heuristic for when to
+> > actually shrink. For instance, krealloc() never shrinks, and it's probably not
+> > worth it. For vrealloc() though we clearly want to shrink properly (i.e. unmap
+> > and free spare pages) at some point.
+> 
+> The Rust Vec never shrinks unless explicitly requested. But I guess
+> it's okay either way.
+
+It actually does, see [1]. But Rust's `Vec` does it less efficiently. It either
+keeps the `Vec` as it is, or creates a whole new one.
+
+[1] https://github.com/rust-lang/rust/blob/master/library/alloc/src/vec/spec_from_iter.rs#L39
+
+> 
+> Alice
+> 
