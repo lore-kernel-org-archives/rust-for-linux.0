@@ -1,338 +1,393 @@
-Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72B5D175D20;
-	Fri,  2 Aug 2024 15:33:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFAC613634A
+	for <rust-for-linux@vger.kernel.org>; Fri,  2 Aug 2024 17:12:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722612797; cv=none; b=K3PdNO3VyoScYrL580wBRnm5AR8iIDTPft0Uj+40g0es+ehMPSapmaMkGePYYJPCeqlfENLR2sxKJf6AyaBxjKnk7tHaLVLNH2+7AJ3Zn4OC58cOIpZkpM7OQ8wxos12F1cNzog0VyVk95K2de130SHRuvqSC/xzITWwtYrF4CY=
+	t=1722618726; cv=none; b=Z2fnvdhodvk7Vm434jyrYdz1F8XsCwjgVdjDDL5YrvfxJ7cPS00ygj1lWtCHrM5f3N6/9zLlN1UTvg6E0zZ5w0FGdH3zIW6zn4e4AZoFrbWil+RcVgpJMHnjw2iDV8aLsFnaS6eO9Hdk00Z5x7CMm3pgEngndQdrsMLdbhceEHw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722612797; c=relaxed/simple;
-	bh=7yp9NYz/UMI4KVrvMoSSlqpujNCBlAXB2n4EFqgJhVU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=jsrj12ZN4v3oi6BsAmkEvPqn8uzAQRkundjASvg6AMGFSfBF6yZZH9FLk15XSBFVEp5gugmSWd+97WBxiGjb/GzSouN8rT0yWYOG9aJ6Ks6SGh37NMd6VBi1urwA2s/kUtTLCMq0ibpswx/eTPj9KYz292KBZ33MP0bvZZ5AVlA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i2MEEEhe; arc=none smtp.client-ip=209.85.222.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1722618726; c=relaxed/simple;
+	bh=neWOr6PL+EwexsPE988GKl0O2GiEtFK9JOQq2p/0/Zc=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=S74SFB/utwODJGTEMySM9dZUY+n/xXp4UcCP05w6G4WaLfiU0JyyuYA12NUmD5inKqMjAVal8p0Jbdcq7O8e/VIJfyKNMQYTsaV3Cb4WfmRZlAmqFALKw3xmo2CuqQgGaz0EdOcqXihHqa+F+DVTx633MmqnyZFD3G5WzEDvi4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=G1W3TPfT; arc=none smtp.client-ip=185.70.40.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i2MEEEhe"
-Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-7a1d067d5bbso521233085a.3;
-        Fri, 02 Aug 2024 08:33:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1722612794; x=1723217594; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hjG1umlrzw0lSXr9y8w9IUcaGi7HbzKvSj4pZKikvaI=;
-        b=i2MEEEheXf4Ztat1K1Alpi8OaLYRM52LBD55bTqNjJXH5mj7dtpXSO80OLc7XThstj
-         ANxl5bQaZLIuEgVI+cTtF/g3TOVdgrOG805pnNS7028DtoyDYF99jxYQKgTK6NfPAEFI
-         vrBONS7I3CstJlw/5C2DnCT1XuNjbQOyCyCevalecRTmy1tXhtn9H1szyLQgQjhDfLVm
-         uEEhbMFHSE2UiPjLRt5Kzk+RUHjC4yYQXfl9x1NNdrR8ljlGgfKfHIm7JiE50R8wQa7f
-         tzIlXbv4xXXdZAj9ex2MwUKK8RFgIV0CFC9NZHqolIIxURQAjtWX3SBrybEXuKId2pbr
-         Ontw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722612794; x=1723217594;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=hjG1umlrzw0lSXr9y8w9IUcaGi7HbzKvSj4pZKikvaI=;
-        b=KtfFmnpYKuEK96COPeiXRTQteIYnqZwvdal5EIX7pz3rib8vQIwMb5dp9JxYK1LU0n
-         vKTb5peodeFnE8RprZ2hcJscnYdCMKitJ6u6ruhY3e6XP5qqqJHWfiyjFvJd+Kr66xBm
-         XTIRyNtczb8NSd+8LQ8gdOWl2fyEy24Rc75gf5kiO96Xe4cFzg5bsRPSApxqhyFvJrpB
-         Xh1fOFSk8/TGsyif45opWo2D16MQqpaaBc8W2zquCvnN/TITOnEqCCclT2APUHIv69s2
-         UteiyUDSXj3XcYUrBAVDTpFabl/C6hDFtV4FCSUAS3XfMROGx+8PVA+Z2b6s5DDjaMX6
-         nxOQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVb5LimcrfB/M0pTUIIWY8ZzeboDnjdGW04/rB0bQmNKPG0h8QMCnxi59yi8yupCnK90lD1B+P4iu0O+/6u/R7MvgYHi34hynAduB3dPStl6gIJf44euxNfixsvpRY+Pqvx9XrC6ShyN7nykl0=
-X-Gm-Message-State: AOJu0Yzeygb7k5o64qJRCFBfvaMukZ8sNzvz3QVx+5aPoOXgMcifygn5
-	SK01nPwHvo9hEMBktvNEserMFTqKcPRvDYnntrnVsvY6RBVFx7lP
-X-Google-Smtp-Source: AGHT+IHwcwh7lUDTHID/MvbPVdKokl3p8mz9boLIt6HoPbme3x6iG4qqU4gYMx7vpHo+ockIHfyadQ==
-X-Received: by 2002:a05:620a:4614:b0:7a1:e93c:ccf3 with SMTP id af79cd13be357-7a34ef9e42cmr464274485a.47.1722612794075;
-        Fri, 02 Aug 2024 08:33:14 -0700 (PDT)
-Received: from fauth2-smtp.messagingengine.com (fauth2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7a34f6dc7besm95198285a.21.2024.08.02.08.33.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 02 Aug 2024 08:33:13 -0700 (PDT)
-Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
-	by mailfauth.nyi.internal (Postfix) with ESMTP id 134B3120006A;
-	Fri,  2 Aug 2024 11:33:13 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute1.internal (MEProxy); Fri, 02 Aug 2024 11:33:13 -0400
-X-ME-Sender: <xms:OPysZu10Fb81VF20tnEbyCPXn-dWxFlVrKZXmhtZjj_p3fS7rFoTGQ>
-    <xme:OPysZhHToTuuyhJSYAok98liQ_5B4sSui-P0ipekPzmEXNpOpcUtR3y_f5UOQgKjV
-    jW-9i0EVTzg2BMm0A>
-X-ME-Received: <xmr:OPysZm58lBAd0bT6w0DND0coe90vnYks7JVfI1qIVx3yBnn_RSNe3JT9P7A>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrkedtgdeklecutefuodetggdotefrodftvf
-    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
-    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhn
-    ucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrth
-    htvghrnhephedugfduffffteeutddvheeuveelvdfhleelieevtdeguefhgeeuveeiudff
-    iedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsg
-    hoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieeg
-    qddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigi
-    hmvgdrnhgrmhgvpdhnsggprhgtphhtthhopedt
-X-ME-Proxy: <xmx:OfysZv06T9XWpJu435IalwsEw96vYt8GFDwxrAIXVfjIZzLZM-CKjg>
-    <xmx:OfysZhEwOwXJaQZ6BjTGIUuqWRdE2U1lgbN26vZSQOFnS4jhabmbkA>
-    <xmx:OfysZo9Z9fWfJbE2MyyB9ypp1uTIWt1gXO3pb-BpneG0TCLk4ZajTw>
-    <xmx:OfysZmktXyxKx22RGNtrZlQfrP03WB0atxEi_L_eYz_lE5TqVAXhAQ>
-    <xmx:OfysZpF4z1rabOMyrBPsMJJCil6gLIPSizMIvjFZjbMBjqKTZwhqqlLW>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 2 Aug 2024 11:33:12 -0400 (EDT)
-Date: Fri, 2 Aug 2024 08:32:21 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v4] rust: mm: add abstractions for mm_struct and
- vm_area_struct
-Message-ID: <Zqz8BYNQ18XOI0ST@boqun-archlinux>
-References: <20240802-vma-v4-1-091a87058a43@google.com>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="G1W3TPfT"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1722618720; x=1722877920;
+	bh=umKgQ0P6J3fg5Wvduw8E/YyfxFZOHX6++WZeN01S7fo=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=G1W3TPfTWtkPqf07ROxONPFUPs1cLs2kI5QKgpW1N+hujvSZIjumqEsePgaeUVW15
+	 hk4FPlXdM2UbEDF0j/t9gCoOrTirOzpvMotsUk4Vz7Rn4ZxxYwawPih5CPU4CtXVLU
+	 6MEM/OISkPDe3JhGY/SESyO38m2W89/U3K2n0/i6A0Lk763qy2hWKrP6m62tp90pFo
+	 zrYLEEQGMJnXbkvkURoquhgifXS50i3x+AqNPUFYjFL/2Ktk3HBAva+VmegMZmXGIB
+	 KONrvrzBoFkkgDp97KOxWyaQLNhWDI2gS8O2PeIlorIJbiI0ARVrFPgk/Z4Tiev8Iv
+	 UPUMNNUTbTMOA==
+Date: Fri, 02 Aug 2024 17:11:56 +0000
+To: Andreas Hindborg <nmi@metaspace.dk>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Luis Chamberlain <mcgrof@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, rust-for-linux@vger.kernel.org, linux-modules@vger.kernel.org, linux-kernel@vger.kernel.org, Andreas Hindborg <a.hindborg@samsung.com>, Adam Bratschi-Kaye <ark.email@gmail.com>
+Subject: Re: [PATCH] rust: add `module_params` macro
+Message-ID: <a98ddf54-3e27-4587-8e49-f19dd1ac65a6@proton.me>
+In-Reply-To: <87zfpvmd8y.fsf@metaspace.dk>
+References: <20240705111455.142790-1-nmi@metaspace.dk> <2838cf2e-936c-45de-bb19-af9da66fbe00@proton.me> <87plqso50o.fsf@metaspace.dk> <49cad242-7a7c-4e9e-beb7-4f9c493ce794@proton.me> <878qxgnyzd.fsf@metaspace.dk> <ed2f7416-2631-411d-bb49-5a580dbf51b8@proton.me> <874j84nurn.fsf@metaspace.dk> <f84e9189-b64a-4761-86f5-ccd50fb62f36@proton.me> <87zfpvmd8y.fsf@metaspace.dk>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: ec4420c4da41491ad3c4a6322959121f662f9b9e
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240802-vma-v4-1-091a87058a43@google.com>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Aug 02, 2024 at 07:38:32AM +0000, Alice Ryhl wrote:
-[...]
-> +// These methods are safe to call even if `mm_users` is zero.
-> +impl Mm {
-> +    /// Call `mmgrab` on `current.mm`.
-> +    #[inline]
-> +    pub fn mmgrab_current() -> Option<ARef<Mm>> {
-> +        // SAFETY: It's safe to get the `mm` field from current.
-> +        let mm = unsafe {
-> +            let current = bindings::get_current();
-> +            (*current).mm
-> +        };
-> +
-> +        let mm = NonNull::new(mm)?;
-> +
-> +        // SAFETY: We just checked that `mm` is not null.
-> +        unsafe { bindings::mmgrab(mm.as_ptr()) };
-> +
-> +        // SAFETY: We just created an `mmgrab` refcount. Layouts are compatible due to
-> +        // repr(transparent).
-> +        Some(unsafe { ARef::from_raw(mm.cast()) })
+On 02.08.24 12:27, Andreas Hindborg wrote:
+> "Benno Lossin" <benno.lossin@proton.me> writes:
+>> On 01.08.24 17:11, Andreas Hindborg wrote:
+>>> "Benno Lossin" <benno.lossin@proton.me> writes:
+>>>> On 01.08.24 15:40, Andreas Hindborg wrote:
+>>>>> "Benno Lossin" <benno.lossin@proton.me> writes:
+>>>>>> On 01.08.24 13:29, Andreas Hindborg wrote:
+>>>>>>> "Benno Lossin" <benno.lossin@proton.me> writes:
+>>>>>>>> On 05.07.24 13:15, Andreas Hindborg wrote:
+>>>>>>>>> +
+>>>>>>>>> +/// Types that can be used for module parameters.
+>>>>>>>>> +///
+>>>>>>>>> +/// Note that displaying the type in `sysfs` will fail if
+>>>>>>>>> +/// [`core::str::from_utf8`] (as implemented through the [`core:=
+:fmt::Display`]
+>>>>>>>>> +/// trait) writes more than [`PAGE_SIZE`] bytes (including an ad=
+ditional null
+>>>>>>>>> +/// terminator).
+>>>>>>>>> +///
+>>>>>>>>> +/// [`PAGE_SIZE`]: `bindings::PAGE_SIZE`
+>>>>>>>>> +pub trait ModuleParam: core::fmt::Display + core::marker::Sized =
+{
+>>>>>>>>> +    /// The `ModuleParam` will be used by the kernel module thro=
+ugh this type.
+>>>>>>>>> +    ///
+>>>>>>>>> +    /// This may differ from `Self` if, for example, `Self` need=
+s to track
+>>>>>>>>> +    /// ownership without exposing it or allocate extra space fo=
+r other possible
+>>>>>>>>> +    /// parameter values. This is required to support string par=
+ameters in the
+>>>>>>>>> +    /// future.
+>>>>>>>>> +    type Value: ?Sized;
+>>>>>>>>> +
+>>>>>>>>> +    /// Whether the parameter is allowed to be set without an ar=
+gument.
+>>>>>>>>> +    ///
+>>>>>>>>> +    /// Setting this to `true` allows the parameter to be passed=
+ without an
+>>>>>>>>> +    /// argument (e.g. just `module.param` instead of `module.pa=
+ram=3Dfoo`).
+>>>>>>>>> +    const NOARG_ALLOWED: bool;
+>>>>>>>>
+>>>>>>>> I think, there is a better way of doing this. Instead of this bool=
+, we
+>>>>>>>> do the following:
+>>>>>>>> 1. have a `const DEFAULT: Option<Self>`
+>>>>>>>> 2. change the type of the argument of `try_from_param_arg` to
+>>>>>>>>    `&'static [u8]`
+>>>>>>>>
+>>>>>>>> That way we don't have the weird behavior of `try_from_param_arg` =
+that
+>>>>>>>> for params that don't have a default value.
+>>>>>>>
+>>>>>>> Since we have no parameter types for which `NOARG_ALLOWED` is true =
+in
+>>>>>>> this patch set, it is effectively dead code. I will remove it.
+>>>>>>
+>>>>>> Hmm what parameters actually are optional? I looked at the old rust
+>>>>>> branch and only `bool` is marked as optional. Are there others?
+>>>>>>
+>>>>>> If it is used commonly for custom parameters (I could imagine that R=
+ust
+>>>>>> modules have enums as parameters and specifying nothing could mean t=
+he
+>>>>>> default value), then it might be a good idea to just include it now.
+>>>>>> (otherwise we might forget the design later)
+>>>>>
+>>>>> As far as I can tell from the C code, all parameters are able to have
+>>>>> the `NOARG` flag set. We get a null pointer in the callback in that
+>>>>> case.
+>>>>>
+>>>>> If we want to handle this now, we could drop the `default` field
+>>>>> in the Rust module macro. There is no equivalent in the C macros.
+>>>>> And then use an `Option<Option<_>>` to represent the value. `None` wo=
+uld
+>>>>> be an unset parameter. `Some(None)` would be a parameter without a
+>>>>> value. `Some(Some(_))` would be a set parameter with a value. We coul=
+d
+>>>>> probably fix the types so that only parameters with the `NOARG` flag =
+use
+>>>>> the double option, others use a single option.
+>>>>
+>>>> What did you think of my approach that I detailed above? I would like =
+to
+>>>> avoid `Option<Option<_>>` if we can.
+>>>
+>>> How would you represent the case when the parameter is passed without a
+>>> value and a default is given in `module!`?
+>>
+>> I am a bit confused, there are two default values here:
+>> (1) the value returned by `try_from_param_arg(None)`.
+>> (2) the value given by the user to the `module!` macro.
+>>
+>> I am talking about changing the definition of ModuleParam, so (1). I get
+>> the feeling that you are talking about (2), is that correct?
+>=20
+> I confused myself as well I think. I am talking about (1). Let me try
+> again.
+>=20
+> If we support `NOARG_ALLOWED` (`KERNEL_PARAM_OPS_FL_NOARG` in C. I
+> should change the flag name in Rust), modules can optionally support
+> some parameters where users can pass parameters either as
+> `my_module.param=3Dvalue` or `my_module.param`. Thus, at the level of
+> `try_from_param_arg`, we need to represent two cases: parameter passed
+> without value, and parameter passed with value. A third case, parameter
+> not passed at all, is equivalent to `try_from_param_arg` never being
+> called. In C this is undetectable for the predefined parameter types. I
+> wanted the double option to detect this. But I guess it does not make
+> sense.
 
-We can use from_raw() + into() here. If a type `impl`s AlwaysRefcounted,
-we should have no chance to call the "refcount increment" function
-directly.
+My idea was to have an `const DEFAULT: Option<Self>` to represent the
+following:
+(1) if `DEFAULT =3D=3D None`, then `KERNEL_PARAM_OPS_FL_NOARG` is not set
+    and thus either the `module!` user-specified default value is used,
+    or it is specified via `my_module.param=3Dvalue` and
+    `try_from_param_arg` is called.
+(2) if `DEFAULT =3D=3D Some(d)`, then `KERNEL_PARAM_OPS_FL_NOARG` is set an=
+d
+    when `NULL` is given to `kernel_param_ops.set`, the parameter value
+    is set to `d`, otherwise `try_from_param_arg` is called.
 
-> +    }
-> +
-> +    /// Returns a raw pointer to the inner `mm_struct`.
-> +    #[inline]
-> +    pub fn as_raw(&self) -> *mut bindings::mm_struct {
-> +        self.mm.get()
-> +    }
-> +
-> +    /// Obtain a reference from a raw pointer.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// The caller must ensure that `ptr` points at an `mm_struct`, and that it is not deallocated
-> +    /// during the lifetime 'a.
-> +    #[inline]
-> +    pub unsafe fn from_raw<'a>(ptr: *const bindings::mm_struct) -> &'a Mm {
-> +        // SAFETY: Caller promises that the pointer is valid for 'a. Layouts are compatible due to
-> +        // repr(transparent).
-> +        unsafe { &*ptr.cast() }
-> +    }
-> +
-> +    /// Check whether this vma is associated with this mm.
-> +    #[inline]
-> +    pub fn is_same_mm(&self, area: &virt::VmArea) -> bool {
-> +        // SAFETY: The `vm_mm` field of the area is immutable, so we can read it without
-> +        // synchronization.
-> +        let vm_mm = unsafe { (*area.as_ptr()).vm_mm };
-> +
-> +        ptr::eq(vm_mm, self.as_raw())
-> +    }
-> +
-> +    /// Calls `mmget_not_zero` and returns a handle if it succeeds.
-> +    #[inline]
-> +    pub fn mmget_not_zero(&self) -> Option<ARef<MmWithUser>> {
-> +        // SAFETY: The pointer is valid since self is a reference.
-> +        let success = unsafe { bindings::mmget_not_zero(self.as_raw()) };
-> +
-> +        if success {
-> +            // SAFETY: We just created an `mmget` refcount.
-> +            Some(unsafe { ARef::from_raw(NonNull::new_unchecked(self.as_raw().cast())) })
-> +        } else {
-> +            None
-> +        }
-> +    }
-> +}
-> +
-> +// These methods require `mm_users` to be non-zero.
-> +impl MmWithUser {
-> +    /// Obtain a reference from a raw pointer.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// The caller must ensure that `ptr` points at an `mm_struct`, and that `mm_users` remains
-> +    /// non-zero for the duration of the lifetime 'a.
-> +    #[inline]
-> +    pub unsafe fn from_raw<'a>(ptr: *const bindings::mm_struct) -> &'a MmWithUser {
-> +        // SAFETY: Caller promises that the pointer is valid for 'a. The layout is compatible due
-> +        // to repr(transparent).
-> +        unsafe { &*ptr.cast() }
-> +    }
-> +
-> +    /// Use `mmput_async` when dropping this refcount.
-> +    pub fn use_mmput_async(me: ARef<MmWithUser>) -> ARef<MmWithUserAsync> {
-> +        // SAFETY: The layouts and invariants are compatible.
-> +        unsafe { ARef::from_raw(ARef::into_raw(me).cast()) }
-> +    }
-> +
-> +    /// Lock the mmap write lock.
-> +    #[inline]
-> +    pub fn mmap_write_lock(&self) -> MmapWriteLock<'_> {
-> +        // SAFETY: The pointer is valid since self is a reference.
-> +        unsafe { bindings::mmap_write_lock(self.as_raw()) };
-> +
-> +        // INVARIANT: We just acquired the write lock.
-> +        MmapWriteLock { mm: self }
-> +    }
-> +
-> +    /// Lock the mmap read lock.
-> +    #[inline]
-> +    pub fn mmap_read_lock(&self) -> MmapReadLock<'_> {
-> +        // SAFETY: The pointer is valid since self is a reference.
-> +        unsafe { bindings::mmap_read_lock(self.as_raw()) };
-> +
-> +        // INVARIANT: We just acquired the read lock.
-> +        MmapReadLock { mm: self }
-> +    }
-> +
-> +    /// Try to lock the mmap read lock.
-> +    #[inline]
-> +    pub fn mmap_read_trylock(&self) -> Option<MmapReadLock<'_>> {
-> +        // SAFETY: The pointer is valid since self is a reference.
-> +        let success = unsafe { bindings::mmap_read_trylock(self.as_raw()) };
-> +
-> +        if success {
-> +            // INVARIANT: We just acquired the read lock.
-> +            Some(MmapReadLock { mm: self })
-> +        } else {
-> +            None
-> +        }
-> +    }
-> +}
-> +
-> +impl MmWithUserAsync {
-> +    /// Use `mmput` when dropping this refcount.
-> +    pub fn use_mmput(me: ARef<MmWithUserAsync>) -> ARef<MmWithUser> {
-> +        // SAFETY: The layouts and invariants are compatible.
-> +        unsafe { ARef::from_raw(ARef::into_raw(me).cast()) }
-> +    }
-> +}
-> +
-> +/// A guard for the mmap read lock.
-> +///
-> +/// # Invariants
-> +///
-> +/// This `MmapReadLock` guard owns the mmap read lock.
-> +pub struct MmapReadLock<'a> {
-> +    mm: &'a MmWithUser,
-> +}
-> +
-> +impl<'a> MmapReadLock<'a> {
-> +    /// Look up a vma at the given address.
-> +    #[inline]
-> +    pub fn vma_lookup(&self, vma_addr: usize) -> Option<&virt::VmArea> {
-> +        // SAFETY: We hold a reference to the mm, so the pointer must be valid. Any value is okay
-> +        // for `vma_addr`.
-> +        let vma = unsafe { bindings::vma_lookup(self.mm.as_raw(), vma_addr as _) };
-> +
-> +        if vma.is_null() {
-> +            None
-> +        } else {
-> +            // SAFETY: We just checked that a vma was found, so the pointer is valid. Furthermore,
-> +            // the returned area will borrow from this read lock guard, so it can only be used
-> +            // while the read lock is still held. The returned reference is immutable, so the
-> +            // reference cannot be used to modify the area.
-> +            unsafe { Some(virt::VmArea::from_raw_vma(vma)) }
-> +        }
-> +    }
-> +}
-> +
-> +impl Drop for MmapReadLock<'_> {
-> +    #[inline]
-> +    fn drop(&mut self) {
-> +        // SAFETY: We hold the read lock by the type invariants.
-> +        unsafe { bindings::mmap_read_unlock(self.mm.as_raw()) };
-> +    }
-> +}
-> +
-> +/// A guard for the mmap write lock.
-> +///
-> +/// # Invariants
-> +///
-> +/// This `MmapReadLock` guard owns the mmap write lock.
-> +pub struct MmapWriteLock<'a> {
-> +    mm: &'a MmWithUser,
-> +}
-> +
-> +impl<'a> MmapWriteLock<'a> {
-> +    /// Look up a vma at the given address.
-> +    #[inline]
-> +    pub fn vma_lookup(&mut self, vma_addr: usize) -> Option<&mut virt::VmArea> {
+But I think I agree with you removing `NOARG_ALLOWED`, see below.
 
-I think this needs to be -> Option<Pin<&mut virt::VmArea>>, otherwise,
-you could swap two VMAs (from different MMs) while the address stability
-is required by themselves (list_head) or others (list_head and rb_node):
-	
-	let vma1 = writer1.vma_lookup(x)?;
-	let vma2 = writer2.vma_lookup(x)?;
+> At a higher level where the bindings supply the parsing functions, we
+> can decide that passing an argument without a value yields a default
+> parameter value. C does this for the predefined `bool` type. The
+> predefined integer types does not support omitting the value.
+>
+> This patch only supports the higher level predefined parameter types,
+> and does not allow modules to supply their own parameter parsing
+> functions. None of the types we implement in this patch support passing
+> the argument without a value. This is intentional to mirror the C
+> implementation.
+>=20
+> To that end, I removed `NOARG_ALLOWED`, and changed the parsing function
+> trait to:
+>=20
+>     fn try_from_param_arg(arg: &'static [u8]) -> Result<Self>;
+>=20
+> If/when we start supporting types like `bool` or custom parsing
+> functions provided by the module, we will have to update the signature
+> to take an `Option` to represent the case where the user passed an
+> argument without a value. However, to mimic C, the function must always
+> return a value if successful, even if the user did not supply a value to
+> the argument.
+>=20
+> Two different default values are in flight here. 1) the value that the
+> parameter will have before the kernel calls `try_from_param_arg` via
+> `set_param` and 2) the value to return from `try_from_param_arg` if the
+> user did not pass a value with the argument.
+>=20
+> For a `bool` 1) would usually be `false` and 2) would always be `true`.
+>=20
+> For predefined types the module would not customize 2), but 1) is useful
+> to customize. For custom types where the module supplies the parsing
+> function, 2) would be implicitly given by the module in the parsing
+> function.
+>=20
+> In this patch set, we only have 1 default value, namely 1). We do not
+> need 2) because we do not support parameters without values.
 
-	swap(vma1, vma2);
+I am not sure that putting the default value of `my_module.param` into
+the `ModuleParam` trait is a good idea. It feels more correct to me to
+add an optional field to the part in `module!` that can be set to denote
+this default value -- we might also want to change the name of
+`default`, what do you think of `default_inactive` and `default_active`?
 
-> +        // SAFETY: We hold a reference to the mm, so the pointer must be valid. Any value is okay
-> +        // for `vma_addr`.
-> +        let vma = unsafe { bindings::vma_lookup(self.mm.as_raw(), vma_addr as _) };
-> +
-> +        if vma.is_null() {
-> +            None
-> +        } else {
-> +            // SAFETY: We just checked that a vma was found, so the pointer is valid. Furthermore,
-> +            // the returned area will borrow from this write lock guard, so it can only be used
-> +            // while the write lock is still held. We hold the write lock, so mutable operations on
-> +            // the area are okay.
-> +            unsafe { Some(virt::VmArea::from_raw_vma_mut(vma)) }
-> +        }
-> +    }
-> +}
-> +
-> +impl Drop for MmapWriteLock<'_> {
-> +    #[inline]
-> +    fn drop(&mut self) {
-> +        // SAFETY: We hold the write lock by the type invariants.
-> +        unsafe { bindings::mmap_write_unlock(self.mm.as_raw()) };
-> +    }
-> +}
+Since one might want an option by default be `true` and when one writes
+`my_module.param`, it should be `false`.
+Also as the C side shows, having default values for integer types is not
+really a good idea, since you might want a non-zero default value.
+If one does not specify the `default_active` value, then the
+`KERNEL_PARAM_OPS_FL_NOARG` is not set.
 
-(Will review the locking part later)
+If you don't want to implement this (which I can fully understand, since
+we might get `syn` before anyone needs params with default values), then
+we should write this idea down (maybe in an issue?). But regardless, I
+would like to know your opinion on this topic.
 
-Regards,
-Boqun
+>>> I think we need to drop the default value if we adopt the arg without
+>>> value scheme.
+>>
+>> Yes definitely. I don't see anything in the code doing this currently,
+>> right?
+>=20
+> The current patch uses the default value given in the `module!` macro to
+> initialize the parameter value.
 
-[...]
+But what drops the default value, when an actual value is specified via
+`my_module.param=3Dvalue`? (or is the default value only assigned when
+nothing is specified?)
+
+>> We could also only allow `Copy` values to be used as Parameters (but
+>> then `str` cannot be used as a parameter...), since they can't implement
+>> `Drop`.
+>=20
+> We should plan on eventually supporting `String`.
+
+Yes.
+
+>>>>> Or we could just not adopt this feature in the Rust abstractions.
+>>>>
+>>>> Depends on how common this is and if people need to use it. I think th=
+at
+>>>> what I proposed above isn't that complex, so it should be easy to
+>>>> implement.
+>>>
+>>> Rust modules would just force people to add "my_module.param=3D1" inste=
+ad
+>>> of just "my_module.param". I think that is reasonable.
+>>
+>> Eh, why do we want to give that up? I don't think it's difficult to do.
+>=20
+> I just don't see the point. Just have the user pass `my_module.param=3D1`
+> instead of omitting the value. Having multiple ways of specifying for
+> instance a true boolean just leads to confusion. Some boolean parameters
+> have a default value of `true`, for instance `nvme.use_cmb_sqes`. In
+> this case specifying `nvme.use_cmb_sqes` has no effect, even though one
+> might think it has.
+
+This just shows to me that a "global" default in `ModuleParam` is wrong,
+since for `use_cmb_sqes` one could either have a negated flag, or no
+default value, forcing the user to write `nvme.use_cmb_sqes=3Dfalse`.
+
+> Of course, if we are going to do things the same as C, we have to
+> support it.
+
+I think eventually this will be useful, but as you said it's not a
+feature that you *need*.
+
+>>>>>>>>> +                            // Note: when we enable r/w paramete=
+rs, we need to lock here.
+>>>>>>>>> +
+>>>>>>>>> +                            // SAFETY: Parameters do not need to=
+ be locked because they are
+>>>>>>>>> +                            // read only or sysfs is not enabled=
+.
+>>>>>>>>> +                            unsafe {{
+>>>>>>>>> +                                <{param_type_internal} as kernel=
+::module_param::ModuleParam>::value(
+>>>>>>>>> +                                    &__{name}_{param_name}_value
+>>>>>>>>> +                                )
+>>>>>>>>> +                            }}
+>>>>>>>>> +                        }}
+>>>>>>>>> +                    ",
+>>>>>>>>> +                    name =3D info.name,
+>>>>>>>>> +                    param_name =3D param_name,
+>>>>>>>>> +                    param_type_internal =3D param_type_internal,
+>>>>>>>>> +                );
+>>>>>>>>> +
+>>>>>>>>> +                let kparam =3D format!(
+>>>>>>>>> +                    "
+>>>>>>>>> +                    kernel::bindings::kernel_param__bindgen_ty_1=
+ {{
+>>>>>>>>> +                        // SAFETY: Access through the resulting =
+pointer is
+>>>>>>>>> +                        // serialized by C side and only happens=
+ before module
+>>>>>>>>> +                        // `init` or after module `drop` is call=
+ed.
+>>>>>>>>> +                        arg: unsafe {{ &__{name}_{param_name}_va=
+lue }}
+>>>>>>>>> +                            as *const _ as *mut core::ffi::c_voi=
+d,
+>>>>>>>>
+>>>>>>>> Here you should use `addr_of[_mut]!` instead of taking a reference=
+.
+>>>>>>>
+>>>>>>> This is a static initializer, so it would be evaluated in const con=
+text.
+>>>>>>> At that time, this is going to be the only reference to
+>>>>>>> `&__{name}_{param_name}_value` which would be const. So it should b=
+e
+>>>>>>> fine?
+>>>>>>
+>>>>>> When compiling this [1] with a sufficiently new Rust version, you wi=
+ll
+>>>>>> get an error:
+>>>>>>
+>>>>>>     warning: creating a shared reference to mutable static is discou=
+raged
+>>>>>>      --> src/main.rs:4:22
+>>>>>>       |
+>>>>>>     4 |     let x =3D unsafe { &foo };
+>>>>>>       |                      ^^^^ shared reference to mutable static
+>>>>>>       |
+>>>>>>       =3D note: for more information, see issue #114447 <https://git=
+hub.com/rust-lang/rust/issues/114447>
+>>>>>>       =3D note: this will be a hard error in the 2024 edition
+>>>>>>       =3D note: this shared reference has lifetime `'static`, but if=
+ the static ever gets mutated, or a mutable reference is created, then any =
+further use of this shared reference is Undefined Behavior
+>>>>>>       =3D note: `#[warn(static_mut_refs)]` on by default
+>>>>>>     help: use `addr_of!` instead to create a raw pointer
+>>>>>>       |
+>>>>>>     4 |     let x =3D unsafe { addr_of!(foo) };
+>>>>>>       |                      ~~~~~~~~~~~~~
+>>>>>>
+>>>>>> [1]: https://play.rust-lang.org/?version=3Dstable&mode=3Ddebug&editi=
+on=3D2021&gist=3Dc914a438938be6f5fc643ee277efa1d1
+>>>>>>
+>>>>>> So I think we should start using `addr_of!` for mutable static now.
+>>>>>
+>>>>> Oh. Thanks for the pointer.
+>>>>>
+>>>>> Hmm, `addr_of_mut!` still requires the unsafe block. Hopefully that g=
+oes
+>>>>> away as well with the feature you linked as well.
+>>>>
+>>>> I think that will take some time until it is gone.
+>>>>
+>>>>> This also requires `const_mut_refs`, but as I recall that is going to=
+ be
+>>>>> stabilized soon.
+>>>>
+>>>> That should only be needed if you need `addr_of_mut!`, but IIUC, you
+>>>> only need `addr_of!`, right?
+>>>
+>>> The pointer we create here is the one passed to `free` in
+>>> module_param.rs, so it will eventually be used as `&mut T`.
+>>
+>> Oh then the original code is definitely wrong, since it creates a shared
+>> reference. Yeah then you should use `addr_of_mut!`.
+>=20
+> Right. I agree the right thing is to change to `addr_of_mut!`. But I am
+> curious. If the original code was
+>=20
+> ```rust
+> arg: unsafe {{ &mut __{name}_{param_name}_value }} as *mut _ as *mut ::co=
+re::ffi::c_void,
+> ```
+>=20
+> Then it would be fine? Because we have the only mutable reference in
+> existence when the code is evaluated.
+
+That *might* be fine, but I don't know if there is anything that would
+guarantee you that it is. Note that the code above uses a shared
+reference, which definitely isn't OK.
+
+---
+Cheers,
+Benno
+
