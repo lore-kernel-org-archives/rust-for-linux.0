@@ -1,104 +1,73 @@
-Received: from frasgout12.his.huawei.com (frasgout12.his.huawei.com [14.137.139.154])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9178E1E286D;
-	Fri,  2 Aug 2024 11:40:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=14.137.139.154
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5611214B967;
+	Fri,  2 Aug 2024 11:48:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722598850; cv=none; b=NSSZV7Z5fmxzpbuB0madsvehf9xr3GaarQXXcU5pZ9Tq3CdWTelUUlwUjN88cvIf55Ag8MZnFGUGjHe4pBZF2RvvwBOf1QbrOBKQjj1AsCONg9qfue+7sW1yhzMKOnQ7x20NIijrMel/pQxLsNl9mK1HuBFjffHtSlVxJJ0e39M=
+	t=1722599305; cv=none; b=Rl8RgbAyJIfjUttmx/i0hL6vlfRENasDxxUJPCMmoIU9FEDsSAq5JSYkiO32xBklY0Mh2JxDhksIkhvGqNoy8UI7q4nEKRLvpdCJlaekC/8ZpmvXmgftUP73Iso7doIfho0kRkbqzJnccvb+sGG0wq/e+A1xik87sbPGF0V37NU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722598850; c=relaxed/simple;
-	bh=E8Wj2Qe826SSpgPO1+n1aolYqoxkadAQ1V4WZVutK0s=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bDsyBK+9gvVmxkg/KHiHUR/JacbFAuFu+xIO0bfr+O1PgC+dnOjEqcYhb8S2T88M04awZMjiHUzuD8CI3nJyBZG+AYmdDidLFPNlfqENpkqRoTsVRhYiePtXwOEsTp+QaK+Ze052bs6JJxaxIQanELuvWYhnWCamYjgpEY9trTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=14.137.139.154
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
-Received: from mail.maildlp.com (unknown [172.18.186.51])
-	by frasgout12.his.huawei.com (SkyGuard) with ESMTP id 4Wb3F14cCrz9v7Nc;
-	Fri,  2 Aug 2024 19:16:37 +0800 (CST)
-Received: from mail02.huawei.com (unknown [7.182.16.27])
-	by mail.maildlp.com (Postfix) with ESMTP id AB0D0140661;
-	Fri,  2 Aug 2024 19:40:32 +0800 (CST)
-Received: from [10.45.147.218] (unknown [10.45.147.218])
-	by APP2 (Coremail) with SMTP id GxC2BwB3lMGhxaxmYY9lAA--.45712S2;
-	Fri, 02 Aug 2024 12:40:32 +0100 (CET)
-Message-ID: <07bfa8d2-c4b1-4338-8a0f-52eba7f7f600@huaweicloud.com>
-Date: Fri, 2 Aug 2024 13:40:15 +0200
+	s=arc-20240116; t=1722599305; c=relaxed/simple;
+	bh=o8iPC2bXimRPJlqxz22KFMbJp1dGZNPsEfxPSGSr0O8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=WALvhOZnHEDwMTFOYYsPlCUpU7S13W6Wja94ppmeyQCMAODSxyCsFSm0Pz3NigRn3rmRKZjWpQ2Qa05aZz5Sxo60l4OgDJF6qviO0ZUMvQ+0nt7CIMgBIevys220VXmxpsmpR3dRRzGG7DEtm5iPXBZLgIMvjs/HoXVAOaROHtQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=DCMtwZ7U; arc=none smtp.client-ip=10.30.226.201
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="DCMtwZ7U"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B5A9C32782;
+	Fri,  2 Aug 2024 11:48:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1722599303;
+	bh=o8iPC2bXimRPJlqxz22KFMbJp1dGZNPsEfxPSGSr0O8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=DCMtwZ7UbCchkiKKyFs0coG8tvY0xGzeqY7up4XVXCr/kYAvvIE8SJiSADwR6eZSB
+	 74QAGt3/ibbeRec3c6QtRkfxTm7E4pkNu/CGLbAXYd/c0r0rscNH6eeR4WMbqxkWkb
+	 pPSwN87b2/UriK/KrZYBDxeDq8wxizzyV8+jN2aULenpI/qPHwwOJKfGC9nqL0Kj5i
+	 +9ExByG4sHnH42KiaCxmZuCuDkg/NKPUux5Hf9VRRxWwTJGCMvXyG55WGjmoz6kzD9
+	 I4rLyeKl9Vr5wkgL9pBf1w2lXm9doUGRnSjzrY1e7YR4D0aa/rJ1rqynGwLREPTUz+
+	 uetWFDj+9/62w==
+Date: Fri, 2 Aug 2024 13:48:17 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v4] rust: mm: add abstractions for mm_struct and
+ vm_area_struct
+Message-ID: <ZqzHgUifcBTZplEx@pollux>
+References: <20240802-vma-v4-1-091a87058a43@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] MAINTAINERS: Add the dedicated maillist info for LKMM
-To: Boqun Feng <boqun.feng@gmail.com>, linux-kernel@vger.kernel.org,
- lkmm@lists.linux.dev
-Cc: Alan Stern <stern@rowland.harvard.edu>,
- Andrea Parri <parri.andrea@gmail.com>, Will Deacon <will@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>, Nicholas Piggin <npiggin@gmail.com>,
- David Howells <dhowells@redhat.com>, Jade Alglave <j.alglave@ucl.ac.uk>,
- Luc Maranget <luc.maranget@inria.fr>, "Paul E. McKenney"
- <paulmck@kernel.org>, Akira Yokosawa <akiyks@gmail.com>,
- Daniel Lustig <dlustig@nvidia.com>, Joel Fernandes <joel@joelfernandes.org>,
- linux-arch@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl
- <aliceryhl@google.com>, rust-for-linux@vger.kernel.org,
- Hernan Ponce de Leon <hernan.poncedeleon@huaweicloud.com>,
- Puranjay Mohan <puranjay@kernel.org>
-References: <20240703162616.78278-1-boqun.feng@gmail.com>
-From: Jonas Oberhauser <jonas.oberhauser@huaweicloud.com>
-In-Reply-To: <20240703162616.78278-1-boqun.feng@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID:GxC2BwB3lMGhxaxmYY9lAA--.45712S2
-X-Coremail-Antispam: 1UD129KBjvdXoWruF18Ww43CF48WFy5XrykuFg_yoWDJwcE9a
-	n7G3WIgr1DCFyjkw4kCF9Fyrn09rZ7CF1fW3Waqw43Xa4DGrsxt398KwnY93WDX348Cr4q
-	ya1fGFsagr13ujkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUbVkFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
-	Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr0_Gr
-	1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
-	jxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr
-	1lF7xvr2IY64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY
-	04v7MxkF7I0En4kS14v26r4a6rW5MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r
-	1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CE
-	b7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0x
-	vE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAI
-	cVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2Kf
-	nxnUUI43ZEXa7sRiuWl3UUUUU==
-X-CM-SenderInfo: 5mrqt2oorev25kdx2v3u6k3tpzhluzxrxghudrp/
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240802-vma-v4-1-091a87058a43@google.com>
 
-Awesome, thanks!
-
-Am 7/3/2024 um 6:26 PM schrieb Boqun Feng:
-> A dedicated mail list is created for Linux kernel memory model
-> discussion, and this could help more people to track down memory model
-> related discussion, since oftentimes memory model discussions would
-> involve a broader audience. Hence add the list information into the
-> maintainers entry of LKMM.
+On Fri, Aug 02, 2024 at 07:38:32AM +0000, Alice Ryhl wrote:
+> This is a follow-up to the page abstractions [1] that were recently
+> merged in 6.11. Rust Binder will need these abstractions to manipulate
+> the vma in its implementation of the mmap fop on the Binder file.
 > 
-> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-> ---
->   MAINTAINERS | 1 +
->   1 file changed, 1 insertion(+)
+> This patch is based on Wedson's implementation on the old rust branch,
+> but has been changed significantly. All mistakes are Alice's.
 > 
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 3f2047082073..a77bd8a49cd9 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -12796,6 +12796,7 @@ R:	Daniel Lustig <dlustig@nvidia.com>
->   R:	Joel Fernandes <joel@joelfernandes.org>
->   L:	linux-kernel@vger.kernel.org
->   L:	linux-arch@vger.kernel.org
-> +L:	lkmm@lists.linux.dev
->   S:	Supported
->   T:	git git://git.kernel.org/pub/scm/linux/kernel/git/paulmck/linux-rcu.git dev
->   F:	Documentation/atomic_bitops.txt
+> Link: https://lore.kernel.org/r/20240528-alice-mm-v7-4-78222c31b8f4@google.com [1]
+> Co-developed-by: Wedson Almeida Filho <wedsonaf@gmail.com>
+> Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
+Reviewed-by: Danilo Krummrich <dakr@kernel.org>
