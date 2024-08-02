@@ -1,96 +1,138 @@
-Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22E591C3781
-	for <rust-for-linux@vger.kernel.org>; Fri,  2 Aug 2024 12:45:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C4891E675E;
+	Fri,  2 Aug 2024 14:20:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722602745; cv=none; b=Cjru0lbKh6r0pjM0v8HeKd8pkxEG0o38GKYcevDYQvC1B0pVoZM/9TDTeVBwz/coYqjBh9hMAdLC/rx/6LBdJc0NMEfsI6U2YXbB+i0k7Kp5CvodeKEafc02pzJr0y3FjexlEAaadJ0Gebiq8beIPIRi4U9SKlSRXRvzpSMleYU=
+	t=1722608459; cv=none; b=pSxp8ud3rVMwK2RQO+exXh9ZXYamyKPrzFMFXZVSQf7eDlEgy1jCDHN6WxtBMGzYnFQGL4KVgO5h6gEf8fVAl9O2Vmc54K4dNQXlZqvkwzlHHeKA7tKHtfwzzPiy/K0wfQCzimi2+JTSTZysYh3YzrZ1mmsTncyIqLIBCHzh6Ro=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722602745; c=relaxed/simple;
-	bh=198IHW7p/T6PhidWJlWdPVwESeg8JNSFLNq+O29lKZk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O6nekND8sXw6Hl+9vIZYJnnv5gr9D0G+RjqACKwQ6SRHc89l/wPlIUV877Wx2ZhQYbzKHSSx8d6oPt8nP3U/yQrEWSzs0I1Imbdj2Tq1twdi8TmtpwLVXn+/PB+WbrMMglqnL1OEZZ219kTz7iPHDzv0/EjfbCqnqBWRwNN/P5E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=OPMpFxpQ; arc=none smtp.client-ip=209.85.167.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+	s=arc-20240116; t=1722608459; c=relaxed/simple;
+	bh=2Kymamk11WOD8rnOrRmPds0W4hbW7wudYniLHvRIzSs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Vk6H+Pib8oEFSMUNfF9NgLsjgvnIh0ZEH1yuDd8fZQuYaYFGywj+JZWIz5YHuXOMdP32iDrnrVNV8t687Jdfi2FYbiUn7O+nnN+7ejuQhtsn00u/MWbrveGKlNCTm3ovCcHk0iEGEdvjfFZ0tfqafc6WXCYkjU74LrmvMg+dFQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Qvh14qT5; arc=none smtp.client-ip=209.85.160.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="OPMpFxpQ"
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-52efd8807aaso11977500e87.3
-        for <rust-for-linux@vger.kernel.org>; Fri, 02 Aug 2024 05:45:42 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Qvh14qT5"
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-44fe188d25cso29208231cf.3;
+        Fri, 02 Aug 2024 07:20:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1722602741; x=1723207541; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=EzvUY6CqajngImU9C1U2y4kXw0+36J578NUjQngUD0U=;
-        b=OPMpFxpQ+X4l6hURXeGCnLy5Wre29BWhsKB3WCVv+0Yos54XQ3a1DXaAP1kkrRnRGp
-         xBJhRtn4gnMcZoyrZ5k4GrWelkPczDlioxsvkspdBaxPqYWUKWyQKQOXGSSLkOXk2Wjk
-         7Du66R+SFH6HFtAOaJH2NKTWkCy002aBBv/mMBNVfxKJdsjpnWnfrnqj0QGHnzxhk+NZ
-         rXh/CVyXsJB86qI5GhaaBQdHiv+iJ/2t5Dc8TwR6bBWi3AFFpV6/g6cSaClLx9fr5Alk
-         z1hA+gWu90zseR/Ecw04tjUxJw3EdsyzYED/iGLVPfsh8Ax8nHpHxnAlh+oEp7SJc8Lt
-         9E3w==
+        d=gmail.com; s=20230601; t=1722608457; x=1723213257; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=u/Aj+cOhj6fWjHbOXBRNHu2NV1As7NWdRG5jmqjIx7c=;
+        b=Qvh14qT5zDx906Ty3FLE+aZ5oaV++NZUUCL+cBLF5JvftvtBpNm5YZKzqqVT+cfxLM
+         BN8Hpm6wOF9jFoVYdr7G7VZnZ7rL+UYIcuLVs6edfQr5eerf8HBH7c8SBf4B7FujFeId
+         QvSAR1DWQ49Q+CVrENKK9g7fxZCVwhQ2MzBgY998IKOF9jtJf5PLf+7bHS15N7T8yj/q
+         g4cXFRHpH68HjzmEiQOu7M35qjtLqqhddLk2jmEtDMuMJm387uVTL+10wX3Eqje+7uxQ
+         IvYTXQdKhRnanWWabsHVkdyH4lIXo8Ro9c+tLicpaNHbHM9wM99LqNZHiFDN0hq1enOu
+         XZFQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722602741; x=1723207541;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=EzvUY6CqajngImU9C1U2y4kXw0+36J578NUjQngUD0U=;
-        b=tTKd4C6EUrhVmjhDeFSSpy6xRvuujxnj/OMnit+Fd9nSIyYxOSzdUTo9KgXN9B1mJO
-         nVyGlzQ6ExbnXAmImrvxcMTifZSLpm9WKlEkM6OgARuTk+tlco/xQu5DkXJ/Yhf1xhrx
-         9aIzL24yEyX3FhHZBF9G/bwU9wa9stuQJiq3rO9c8kx92S0MnaMWDhsBVnhtJVwOtt8p
-         6Rlj5RvI3ZXD3OuB1Ph2wsh03oy75zOfJu7KJ1wpJK4rUkEfBL5J72DSNkTXzl0OBUba
-         jOEKq7uqY2+o1RzTSQU7t5Q5fF8LVRbS8z76xfP7FQo/Hak1EVM5FJEfhziWoAWeCFdg
-         z4Lw==
-X-Gm-Message-State: AOJu0Yy8MHzibJfD3S0AH5Zb2qD4OK0fr4EUqxPPwwFLp4AkGfe+Mpkd
-	Ef6FaBKO7sPosQltaB0dqzhqu8dAE07g5uiJJBsphsxRuoa15Osrdd4gedwBTNw=
-X-Google-Smtp-Source: AGHT+IGKqSCamMxPEhPZg2DpP7McBM0k60aQHtIDoeS9/S1zbWrD4kLItzjJHFXfCo7lgU/gypkFzQ==
-X-Received: by 2002:a05:6512:114d:b0:52c:8a39:83d7 with SMTP id 2adb3069b0e04-530bb3c7d5amr2168649e87.52.1722602741057;
-        Fri, 02 Aug 2024 05:45:41 -0700 (PDT)
-Received: from localhost (c-9b0ee555.07-21-73746f28.bbcust.telenor.se. [85.229.14.155])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-530bba3ccb0sm216230e87.255.2024.08.02.05.45.40
+        d=1e100.net; s=20230601; t=1722608457; x=1723213257;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=u/Aj+cOhj6fWjHbOXBRNHu2NV1As7NWdRG5jmqjIx7c=;
+        b=CYUdYvDzFgpwi5FNVNv4Sf+OaD7k4Rf/pJecRMWzthRkIyZNVO/0X2YjH2H0r0uHPV
+         sEyjQxT24veMVGi2mIi01KwyT3akYbiixuazqRlJNowBAzMHr1xV1yI2+LCA+1J8uv+w
+         bdZ6csuE57Dt6m0MxuB64gwTDNzGx8I8lxc07NXX0EjVoTlW2gqVmJIQCA5y9x3yDaJP
+         VMWc74+Q1CKx6OYVzQj0o7ZPMPkEsmZhbA3RNjn6iO+h961CY2GbDCBA9yiIaPDFycmP
+         pPHfQ/UciXKprmjIoXWmQJXvPKfhz4X4JrIyYp8xfIgmxXsHezx3pLwNHBU59QlEjv4r
+         zNHA==
+X-Forwarded-Encrypted: i=1; AJvYcCV90MOBjhqi4gwMgVYLjcbQnBbqAETtNcw4u9yzp/G1ZeECtrsvHUAAUWNlm0O9npyW4685TaxG92RyP4X1lSdp8cvWtU06CZ1W3pKU+hxwU59y5GnzUfhIIKOSGpuPo9AuXW5OXV9478S4gTU=
+X-Gm-Message-State: AOJu0YxGvK9ijadTj/YjCuANyDbK1qRovtOQYU6TS5JoT4Izo51M5pJ5
+	sYR6MyAunbatxMnE+WzR9TS7MhPm9WyV5/OQ11Z5Rw7P1ZpN2ibh
+X-Google-Smtp-Source: AGHT+IGYsdNpvcww/DdGLjPvpxF/cJtWqthxbgg6K7qnEWRHjA26hsZ4u2Xysg8+gRDe8ELpQb2ZOA==
+X-Received: by 2002:a05:622a:5794:b0:44f:fb77:74ce with SMTP id d75a77b69052e-4518928df7fmr41673291cf.47.1722608457010;
+        Fri, 02 Aug 2024 07:20:57 -0700 (PDT)
+Received: from fauth1-smtp.messagingengine.com (fauth1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4518a6c5080sm7544581cf.27.2024.08.02.07.20.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 02 Aug 2024 05:45:40 -0700 (PDT)
-From: Anders Roxell <anders.roxell@linaro.org>
-To: ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	wedsonaf@gmail.com,
-	shuah@kernel.org
-Cc: rust-for-linux@vger.kernel.org,
-	linux-kselftest@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Anders Roxell <anders.roxell@linaro.org>
-Subject: [PATCH 2/2] selftests: rust: config: disable GCC_PLUGINS
-Date: Fri,  2 Aug 2024 14:45:36 +0200
-Message-ID: <20240802124536.2905797-2-anders.roxell@linaro.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240802124536.2905797-1-anders.roxell@linaro.org>
-References: <20240802124536.2905797-1-anders.roxell@linaro.org>
+        Fri, 02 Aug 2024 07:20:56 -0700 (PDT)
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
+	by mailfauth.nyi.internal (Postfix) with ESMTP id E89421200066;
+	Fri,  2 Aug 2024 10:20:55 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute2.internal (MEProxy); Fri, 02 Aug 2024 10:20:55 -0400
+X-ME-Sender: <xms:R-usZuv88RDC2Ollm6Ip8E5F1nzNPS0uTLVPBruW-916_Ay5tU-owA>
+    <xme:R-usZjfu3dpzI-9I9Hl58hoptbM6MZZPvsSHtMm3nnCh1ygJM19SuFNciILdKaiqq
+    EZsGt5uGnd-UtLXOw>
+X-ME-Received: <xmr:R-usZpwvmNi8Z3MwnaFO1dInqtVYlXoe7dHMWOQIxQIyXPbxlkBAyCl5ISgyQA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrkedtgdejhecutefuodetggdotefrodftvf
+    curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
+    uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
+    fjughrpeffhffvvefukfhfgggtugfgjgesthekredttddtjeenucfhrhhomhepuehoqhhu
+    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
+    htthgvrhhnpeejhfeikeekffejgeegueevffdtgeefudetleegjeelvdffteeihfelfeeh
+    vdegkeenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivg
+    eptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhh
+    phgvrhhsohhnrghlihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunh
+    drfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphht
+    thhopedt
+X-ME-Proxy: <xmx:R-usZpPZRWTKwFrqBdyMMyjIIzz_1qGM48ks3mf2r2P1QXevQftSDA>
+    <xmx:R-usZu95_7wh7iJmjIIbVFnuf6OIv5kdzbmJTeUxtEq2HObqdDe3RA>
+    <xmx:R-usZhVBjiuEur7rjyfyL_ABoazn678EQYlGN6FNVyyVvRB2Balr2g>
+    <xmx:R-usZnclBAJKTbMI3x0XHnnqPt75XNyKS27GjZUsARrsgKYQ9vpbBQ>
+    <xmx:R-usZoeq0VkgecjcFoux6xdD2OOWPzK2pzWWf4hJRGJDBntIt-6I7kVb>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 2 Aug 2024 10:20:55 -0400 (EDT)
+Date: Fri, 2 Aug 2024 07:20:04 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: add `ARef::into_raw`
+Message-ID: <ZqzrFEbBAbHmil-j@boqun-archlinux>
+References: <20240801-aref-into-raw-v1-1-33401e2fbac8@google.com>
+ <CAH5fLgiHc7azNtwTKNoLP93-APMqkK6vGFKYSEPepWoyNgNjrA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAH5fLgiHc7azNtwTKNoLP93-APMqkK6vGFKYSEPepWoyNgNjrA@mail.gmail.com>
 
-CONFIG_RUST depends on !CONFIG_GCC_PLUGINS. Disable CONFIG_GCC_PLUGINS
-in rust/config file to make sure it doesn't get enabled.
+On Thu, Aug 01, 2024 at 04:45:02PM +0200, Alice Ryhl wrote:
+> On Thu, Aug 1, 2024 at 4:17 PM Alice Ryhl <aliceryhl@google.com> wrote:
+> >
+> > Add a method for `ARef` that is analogous to `Arc::into_raw`. It is the
+> > inverse operation of `ARef::from_raw`, and allows you to convert the
+> > `ARef` back into a raw pointer while retaining ownership of the
+> > refcount.
+> >
+> > This new function will be used by [1] for converting the type in an
+> > `ARef` using `ARef::from_raw(ARef::into_raw(me).cast())`. The author has
+> > also needed the same function for other use-cases in the past, but [1]
+> > is the first to go upstream.
+> >
+> > Link: https://lore.kernel.org/r/20240801-vma-v3-1-db6c1c0afda9@google.com [1]
+> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> 
+> Actually I just realized that there's already another use on the list in
+> https://lore.kernel.org/all/20240725-alice-file-v8-0-55a2e80deaa8@google.com/
 
-Signed-off-by: Anders Roxell <anders.roxell@linaro.org>
----
- tools/testing/selftests/rust/config | 1 +
- 1 file changed, 1 insertion(+)
+Yes, I was about to point this out ;-)
 
-diff --git a/tools/testing/selftests/rust/config b/tools/testing/selftests/rust/config
-index fa06cebae232..5f942b5c8c17 100644
---- a/tools/testing/selftests/rust/config
-+++ b/tools/testing/selftests/rust/config
-@@ -1,3 +1,4 @@
-+# CONFIG_GCC_PLUGINS is not set
- CONFIG_RUST=y
- CONFIG_SAMPLES=y
- CONFIG_SAMPLES_RUST=y
--- 
-2.43.0
+I picked this up in rust-dev and rebased file patches onto it for
+testing purpose.
 
+In the meanwhile,
+
+Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+
+Regards,
+Boqun
