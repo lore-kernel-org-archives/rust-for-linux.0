@@ -1,138 +1,338 @@
-Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+Received: from mail-qk1-f174.google.com (mail-qk1-f174.google.com [209.85.222.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C4891E675E;
-	Fri,  2 Aug 2024 14:20:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72B5D175D20;
+	Fri,  2 Aug 2024 15:33:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722608459; cv=none; b=pSxp8ud3rVMwK2RQO+exXh9ZXYamyKPrzFMFXZVSQf7eDlEgy1jCDHN6WxtBMGzYnFQGL4KVgO5h6gEf8fVAl9O2Vmc54K4dNQXlZqvkwzlHHeKA7tKHtfwzzPiy/K0wfQCzimi2+JTSTZysYh3YzrZ1mmsTncyIqLIBCHzh6Ro=
+	t=1722612797; cv=none; b=K3PdNO3VyoScYrL580wBRnm5AR8iIDTPft0Uj+40g0es+ehMPSapmaMkGePYYJPCeqlfENLR2sxKJf6AyaBxjKnk7tHaLVLNH2+7AJ3Zn4OC58cOIpZkpM7OQ8wxos12F1cNzog0VyVk95K2de130SHRuvqSC/xzITWwtYrF4CY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722608459; c=relaxed/simple;
-	bh=2Kymamk11WOD8rnOrRmPds0W4hbW7wudYniLHvRIzSs=;
+	s=arc-20240116; t=1722612797; c=relaxed/simple;
+	bh=7yp9NYz/UMI4KVrvMoSSlqpujNCBlAXB2n4EFqgJhVU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Vk6H+Pib8oEFSMUNfF9NgLsjgvnIh0ZEH1yuDd8fZQuYaYFGywj+JZWIz5YHuXOMdP32iDrnrVNV8t687Jdfi2FYbiUn7O+nnN+7ejuQhtsn00u/MWbrveGKlNCTm3ovCcHk0iEGEdvjfFZ0tfqafc6WXCYkjU74LrmvMg+dFQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Qvh14qT5; arc=none smtp.client-ip=209.85.160.180
+	 Content-Type:Content-Disposition:In-Reply-To; b=jsrj12ZN4v3oi6BsAmkEvPqn8uzAQRkundjASvg6AMGFSfBF6yZZH9FLk15XSBFVEp5gugmSWd+97WBxiGjb/GzSouN8rT0yWYOG9aJ6Ks6SGh37NMd6VBi1urwA2s/kUtTLCMq0ibpswx/eTPj9KYz292KBZ33MP0bvZZ5AVlA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=i2MEEEhe; arc=none smtp.client-ip=209.85.222.174
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Qvh14qT5"
-Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-44fe188d25cso29208231cf.3;
-        Fri, 02 Aug 2024 07:20:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="i2MEEEhe"
+Received: by mail-qk1-f174.google.com with SMTP id af79cd13be357-7a1d067d5bbso521233085a.3;
+        Fri, 02 Aug 2024 08:33:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1722608457; x=1723213257; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=u/Aj+cOhj6fWjHbOXBRNHu2NV1As7NWdRG5jmqjIx7c=;
-        b=Qvh14qT5zDx906Ty3FLE+aZ5oaV++NZUUCL+cBLF5JvftvtBpNm5YZKzqqVT+cfxLM
-         BN8Hpm6wOF9jFoVYdr7G7VZnZ7rL+UYIcuLVs6edfQr5eerf8HBH7c8SBf4B7FujFeId
-         QvSAR1DWQ49Q+CVrENKK9g7fxZCVwhQ2MzBgY998IKOF9jtJf5PLf+7bHS15N7T8yj/q
-         g4cXFRHpH68HjzmEiQOu7M35qjtLqqhddLk2jmEtDMuMJm387uVTL+10wX3Eqje+7uxQ
-         IvYTXQdKhRnanWWabsHVkdyH4lIXo8Ro9c+tLicpaNHbHM9wM99LqNZHiFDN0hq1enOu
-         XZFQ==
+        d=gmail.com; s=20230601; t=1722612794; x=1723217594; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hjG1umlrzw0lSXr9y8w9IUcaGi7HbzKvSj4pZKikvaI=;
+        b=i2MEEEheXf4Ztat1K1Alpi8OaLYRM52LBD55bTqNjJXH5mj7dtpXSO80OLc7XThstj
+         ANxl5bQaZLIuEgVI+cTtF/g3TOVdgrOG805pnNS7028DtoyDYF99jxYQKgTK6NfPAEFI
+         vrBONS7I3CstJlw/5C2DnCT1XuNjbQOyCyCevalecRTmy1tXhtn9H1szyLQgQjhDfLVm
+         uEEhbMFHSE2UiPjLRt5Kzk+RUHjC4yYQXfl9x1NNdrR8ljlGgfKfHIm7JiE50R8wQa7f
+         tzIlXbv4xXXdZAj9ex2MwUKK8RFgIV0CFC9NZHqolIIxURQAjtWX3SBrybEXuKId2pbr
+         Ontw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722608457; x=1723213257;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=u/Aj+cOhj6fWjHbOXBRNHu2NV1As7NWdRG5jmqjIx7c=;
-        b=CYUdYvDzFgpwi5FNVNv4Sf+OaD7k4Rf/pJecRMWzthRkIyZNVO/0X2YjH2H0r0uHPV
-         sEyjQxT24veMVGi2mIi01KwyT3akYbiixuazqRlJNowBAzMHr1xV1yI2+LCA+1J8uv+w
-         bdZ6csuE57Dt6m0MxuB64gwTDNzGx8I8lxc07NXX0EjVoTlW2gqVmJIQCA5y9x3yDaJP
-         VMWc74+Q1CKx6OYVzQj0o7ZPMPkEsmZhbA3RNjn6iO+h961CY2GbDCBA9yiIaPDFycmP
-         pPHfQ/UciXKprmjIoXWmQJXvPKfhz4X4JrIyYp8xfIgmxXsHezx3pLwNHBU59QlEjv4r
-         zNHA==
-X-Forwarded-Encrypted: i=1; AJvYcCV90MOBjhqi4gwMgVYLjcbQnBbqAETtNcw4u9yzp/G1ZeECtrsvHUAAUWNlm0O9npyW4685TaxG92RyP4X1lSdp8cvWtU06CZ1W3pKU+hxwU59y5GnzUfhIIKOSGpuPo9AuXW5OXV9478S4gTU=
-X-Gm-Message-State: AOJu0YxGvK9ijadTj/YjCuANyDbK1qRovtOQYU6TS5JoT4Izo51M5pJ5
-	sYR6MyAunbatxMnE+WzR9TS7MhPm9WyV5/OQ11Z5Rw7P1ZpN2ibh
-X-Google-Smtp-Source: AGHT+IGYsdNpvcww/DdGLjPvpxF/cJtWqthxbgg6K7qnEWRHjA26hsZ4u2Xysg8+gRDe8ELpQb2ZOA==
-X-Received: by 2002:a05:622a:5794:b0:44f:fb77:74ce with SMTP id d75a77b69052e-4518928df7fmr41673291cf.47.1722608457010;
-        Fri, 02 Aug 2024 07:20:57 -0700 (PDT)
-Received: from fauth1-smtp.messagingengine.com (fauth1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-4518a6c5080sm7544581cf.27.2024.08.02.07.20.56
+        d=1e100.net; s=20230601; t=1722612794; x=1723217594;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=hjG1umlrzw0lSXr9y8w9IUcaGi7HbzKvSj4pZKikvaI=;
+        b=KtfFmnpYKuEK96COPeiXRTQteIYnqZwvdal5EIX7pz3rib8vQIwMb5dp9JxYK1LU0n
+         vKTb5peodeFnE8RprZ2hcJscnYdCMKitJ6u6ruhY3e6XP5qqqJHWfiyjFvJd+Kr66xBm
+         XTIRyNtczb8NSd+8LQ8gdOWl2fyEy24Rc75gf5kiO96Xe4cFzg5bsRPSApxqhyFvJrpB
+         Xh1fOFSk8/TGsyif45opWo2D16MQqpaaBc8W2zquCvnN/TITOnEqCCclT2APUHIv69s2
+         UteiyUDSXj3XcYUrBAVDTpFabl/C6hDFtV4FCSUAS3XfMROGx+8PVA+Z2b6s5DDjaMX6
+         nxOQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVb5LimcrfB/M0pTUIIWY8ZzeboDnjdGW04/rB0bQmNKPG0h8QMCnxi59yi8yupCnK90lD1B+P4iu0O+/6u/R7MvgYHi34hynAduB3dPStl6gIJf44euxNfixsvpRY+Pqvx9XrC6ShyN7nykl0=
+X-Gm-Message-State: AOJu0Yzeygb7k5o64qJRCFBfvaMukZ8sNzvz3QVx+5aPoOXgMcifygn5
+	SK01nPwHvo9hEMBktvNEserMFTqKcPRvDYnntrnVsvY6RBVFx7lP
+X-Google-Smtp-Source: AGHT+IHwcwh7lUDTHID/MvbPVdKokl3p8mz9boLIt6HoPbme3x6iG4qqU4gYMx7vpHo+ockIHfyadQ==
+X-Received: by 2002:a05:620a:4614:b0:7a1:e93c:ccf3 with SMTP id af79cd13be357-7a34ef9e42cmr464274485a.47.1722612794075;
+        Fri, 02 Aug 2024 08:33:14 -0700 (PDT)
+Received: from fauth2-smtp.messagingengine.com (fauth2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7a34f6dc7besm95198285a.21.2024.08.02.08.33.13
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 02 Aug 2024 07:20:56 -0700 (PDT)
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-	by mailfauth.nyi.internal (Postfix) with ESMTP id E89421200066;
-	Fri,  2 Aug 2024 10:20:55 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute2.internal (MEProxy); Fri, 02 Aug 2024 10:20:55 -0400
-X-ME-Sender: <xms:R-usZuv88RDC2Ollm6Ip8E5F1nzNPS0uTLVPBruW-916_Ay5tU-owA>
-    <xme:R-usZjfu3dpzI-9I9Hl58hoptbM6MZZPvsSHtMm3nnCh1ygJM19SuFNciILdKaiqq
-    EZsGt5uGnd-UtLXOw>
-X-ME-Received: <xmr:R-usZpwvmNi8Z3MwnaFO1dInqtVYlXoe7dHMWOQIxQIyXPbxlkBAyCl5ISgyQA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrkedtgdejhecutefuodetggdotefrodftvf
+        Fri, 02 Aug 2024 08:33:13 -0700 (PDT)
+Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
+	by mailfauth.nyi.internal (Postfix) with ESMTP id 134B3120006A;
+	Fri,  2 Aug 2024 11:33:13 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute1.internal (MEProxy); Fri, 02 Aug 2024 11:33:13 -0400
+X-ME-Sender: <xms:OPysZu10Fb81VF20tnEbyCPXn-dWxFlVrKZXmhtZjj_p3fS7rFoTGQ>
+    <xme:OPysZhHToTuuyhJSYAok98liQ_5B4sSui-P0ipekPzmEXNpOpcUtR3y_f5UOQgKjV
+    jW-9i0EVTzg2BMm0A>
+X-ME-Received: <xmr:OPysZm58lBAd0bT6w0DND0coe90vnYks7JVfI1qIVx3yBnn_RSNe3JT9P7A>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrkedtgdeklecutefuodetggdotefrodftvf
     curfhrohhfihhlvgemucfhrghsthforghilhdpqfgfvfdpuffrtefokffrpgfnqfghnecu
     uegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivghnthhsucdlqddutddtmdenuc
-    fjughrpeffhffvvefukfhfgggtugfgjgesthekredttddtjeenucfhrhhomhepuehoqhhu
-    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
-    htthgvrhhnpeejhfeikeekffejgeegueevffdtgeefudetleegjeelvdffteeihfelfeeh
-    vdegkeenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuvehluhhsthgvrhfuihiivg
-    eptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhh
-    phgvrhhsohhnrghlihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunh
-    drfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphht
-    thhopedt
-X-ME-Proxy: <xmx:R-usZpPZRWTKwFrqBdyMMyjIIzz_1qGM48ks3mf2r2P1QXevQftSDA>
-    <xmx:R-usZu95_7wh7iJmjIIbVFnuf6OIv5kdzbmJTeUxtEq2HObqdDe3RA>
-    <xmx:R-usZhVBjiuEur7rjyfyL_ABoazn678EQYlGN6FNVyyVvRB2Balr2g>
-    <xmx:R-usZnclBAJKTbMI3x0XHnnqPt75XNyKS27GjZUsARrsgKYQ9vpbBQ>
-    <xmx:R-usZoeq0VkgecjcFoux6xdD2OOWPzK2pzWWf4hJRGJDBntIt-6I7kVb>
+    fjughrpeffhffvvefukfhfgggtuggjsehttdertddttddvnecuhfhrohhmpeeuohhquhhn
+    ucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrth
+    htvghrnhephedugfduffffteeutddvheeuveelvdfhleelieevtdeguefhgeeuveeiudff
+    iedvnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsg
+    hoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieeg
+    qddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigi
+    hmvgdrnhgrmhgvpdhnsggprhgtphhtthhopedt
+X-ME-Proxy: <xmx:OfysZv06T9XWpJu435IalwsEw96vYt8GFDwxrAIXVfjIZzLZM-CKjg>
+    <xmx:OfysZhEwOwXJaQZ6BjTGIUuqWRdE2U1lgbN26vZSQOFnS4jhabmbkA>
+    <xmx:OfysZo9Z9fWfJbE2MyyB9ypp1uTIWt1gXO3pb-BpneG0TCLk4ZajTw>
+    <xmx:OfysZmktXyxKx22RGNtrZlQfrP03WB0atxEi_L_eYz_lE5TqVAXhAQ>
+    <xmx:OfysZpF4z1rabOMyrBPsMJJCil6gLIPSizMIvjFZjbMBjqKTZwhqqlLW>
 Feedback-ID: iad51458e:Fastmail
 Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 2 Aug 2024 10:20:55 -0400 (EDT)
-Date: Fri, 2 Aug 2024 07:20:04 -0700
+ 2 Aug 2024 11:33:12 -0400 (EDT)
+Date: Fri, 2 Aug 2024 08:32:21 -0700
 From: Boqun Feng <boqun.feng@gmail.com>
 To: Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
 	Wedson Almeida Filho <wedsonaf@gmail.com>,
 	Gary Guo <gary@garyguo.net>,
 	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@samsung.com>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: add `ARef::into_raw`
-Message-ID: <ZqzrFEbBAbHmil-j@boqun-archlinux>
-References: <20240801-aref-into-raw-v1-1-33401e2fbac8@google.com>
- <CAH5fLgiHc7azNtwTKNoLP93-APMqkK6vGFKYSEPepWoyNgNjrA@mail.gmail.com>
+	Matthew Wilcox <willy@infradead.org>,
+	"Liam R. Howlett" <Liam.Howlett@oracle.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v4] rust: mm: add abstractions for mm_struct and
+ vm_area_struct
+Message-ID: <Zqz8BYNQ18XOI0ST@boqun-archlinux>
+References: <20240802-vma-v4-1-091a87058a43@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAH5fLgiHc7azNtwTKNoLP93-APMqkK6vGFKYSEPepWoyNgNjrA@mail.gmail.com>
+In-Reply-To: <20240802-vma-v4-1-091a87058a43@google.com>
 
-On Thu, Aug 01, 2024 at 04:45:02PM +0200, Alice Ryhl wrote:
-> On Thu, Aug 1, 2024 at 4:17 PM Alice Ryhl <aliceryhl@google.com> wrote:
-> >
-> > Add a method for `ARef` that is analogous to `Arc::into_raw`. It is the
-> > inverse operation of `ARef::from_raw`, and allows you to convert the
-> > `ARef` back into a raw pointer while retaining ownership of the
-> > refcount.
-> >
-> > This new function will be used by [1] for converting the type in an
-> > `ARef` using `ARef::from_raw(ARef::into_raw(me).cast())`. The author has
-> > also needed the same function for other use-cases in the past, but [1]
-> > is the first to go upstream.
-> >
-> > Link: https://lore.kernel.org/r/20240801-vma-v3-1-db6c1c0afda9@google.com [1]
-> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> 
-> Actually I just realized that there's already another use on the list in
-> https://lore.kernel.org/all/20240725-alice-file-v8-0-55a2e80deaa8@google.com/
+On Fri, Aug 02, 2024 at 07:38:32AM +0000, Alice Ryhl wrote:
+[...]
+> +// These methods are safe to call even if `mm_users` is zero.
+> +impl Mm {
+> +    /// Call `mmgrab` on `current.mm`.
+> +    #[inline]
+> +    pub fn mmgrab_current() -> Option<ARef<Mm>> {
+> +        // SAFETY: It's safe to get the `mm` field from current.
+> +        let mm = unsafe {
+> +            let current = bindings::get_current();
+> +            (*current).mm
+> +        };
+> +
+> +        let mm = NonNull::new(mm)?;
+> +
+> +        // SAFETY: We just checked that `mm` is not null.
+> +        unsafe { bindings::mmgrab(mm.as_ptr()) };
+> +
+> +        // SAFETY: We just created an `mmgrab` refcount. Layouts are compatible due to
+> +        // repr(transparent).
+> +        Some(unsafe { ARef::from_raw(mm.cast()) })
 
-Yes, I was about to point this out ;-)
+We can use from_raw() + into() here. If a type `impl`s AlwaysRefcounted,
+we should have no chance to call the "refcount increment" function
+directly.
 
-I picked this up in rust-dev and rebased file patches onto it for
-testing purpose.
+> +    }
+> +
+> +    /// Returns a raw pointer to the inner `mm_struct`.
+> +    #[inline]
+> +    pub fn as_raw(&self) -> *mut bindings::mm_struct {
+> +        self.mm.get()
+> +    }
+> +
+> +    /// Obtain a reference from a raw pointer.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// The caller must ensure that `ptr` points at an `mm_struct`, and that it is not deallocated
+> +    /// during the lifetime 'a.
+> +    #[inline]
+> +    pub unsafe fn from_raw<'a>(ptr: *const bindings::mm_struct) -> &'a Mm {
+> +        // SAFETY: Caller promises that the pointer is valid for 'a. Layouts are compatible due to
+> +        // repr(transparent).
+> +        unsafe { &*ptr.cast() }
+> +    }
+> +
+> +    /// Check whether this vma is associated with this mm.
+> +    #[inline]
+> +    pub fn is_same_mm(&self, area: &virt::VmArea) -> bool {
+> +        // SAFETY: The `vm_mm` field of the area is immutable, so we can read it without
+> +        // synchronization.
+> +        let vm_mm = unsafe { (*area.as_ptr()).vm_mm };
+> +
+> +        ptr::eq(vm_mm, self.as_raw())
+> +    }
+> +
+> +    /// Calls `mmget_not_zero` and returns a handle if it succeeds.
+> +    #[inline]
+> +    pub fn mmget_not_zero(&self) -> Option<ARef<MmWithUser>> {
+> +        // SAFETY: The pointer is valid since self is a reference.
+> +        let success = unsafe { bindings::mmget_not_zero(self.as_raw()) };
+> +
+> +        if success {
+> +            // SAFETY: We just created an `mmget` refcount.
+> +            Some(unsafe { ARef::from_raw(NonNull::new_unchecked(self.as_raw().cast())) })
+> +        } else {
+> +            None
+> +        }
+> +    }
+> +}
+> +
+> +// These methods require `mm_users` to be non-zero.
+> +impl MmWithUser {
+> +    /// Obtain a reference from a raw pointer.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// The caller must ensure that `ptr` points at an `mm_struct`, and that `mm_users` remains
+> +    /// non-zero for the duration of the lifetime 'a.
+> +    #[inline]
+> +    pub unsafe fn from_raw<'a>(ptr: *const bindings::mm_struct) -> &'a MmWithUser {
+> +        // SAFETY: Caller promises that the pointer is valid for 'a. The layout is compatible due
+> +        // to repr(transparent).
+> +        unsafe { &*ptr.cast() }
+> +    }
+> +
+> +    /// Use `mmput_async` when dropping this refcount.
+> +    pub fn use_mmput_async(me: ARef<MmWithUser>) -> ARef<MmWithUserAsync> {
+> +        // SAFETY: The layouts and invariants are compatible.
+> +        unsafe { ARef::from_raw(ARef::into_raw(me).cast()) }
+> +    }
+> +
+> +    /// Lock the mmap write lock.
+> +    #[inline]
+> +    pub fn mmap_write_lock(&self) -> MmapWriteLock<'_> {
+> +        // SAFETY: The pointer is valid since self is a reference.
+> +        unsafe { bindings::mmap_write_lock(self.as_raw()) };
+> +
+> +        // INVARIANT: We just acquired the write lock.
+> +        MmapWriteLock { mm: self }
+> +    }
+> +
+> +    /// Lock the mmap read lock.
+> +    #[inline]
+> +    pub fn mmap_read_lock(&self) -> MmapReadLock<'_> {
+> +        // SAFETY: The pointer is valid since self is a reference.
+> +        unsafe { bindings::mmap_read_lock(self.as_raw()) };
+> +
+> +        // INVARIANT: We just acquired the read lock.
+> +        MmapReadLock { mm: self }
+> +    }
+> +
+> +    /// Try to lock the mmap read lock.
+> +    #[inline]
+> +    pub fn mmap_read_trylock(&self) -> Option<MmapReadLock<'_>> {
+> +        // SAFETY: The pointer is valid since self is a reference.
+> +        let success = unsafe { bindings::mmap_read_trylock(self.as_raw()) };
+> +
+> +        if success {
+> +            // INVARIANT: We just acquired the read lock.
+> +            Some(MmapReadLock { mm: self })
+> +        } else {
+> +            None
+> +        }
+> +    }
+> +}
+> +
+> +impl MmWithUserAsync {
+> +    /// Use `mmput` when dropping this refcount.
+> +    pub fn use_mmput(me: ARef<MmWithUserAsync>) -> ARef<MmWithUser> {
+> +        // SAFETY: The layouts and invariants are compatible.
+> +        unsafe { ARef::from_raw(ARef::into_raw(me).cast()) }
+> +    }
+> +}
+> +
+> +/// A guard for the mmap read lock.
+> +///
+> +/// # Invariants
+> +///
+> +/// This `MmapReadLock` guard owns the mmap read lock.
+> +pub struct MmapReadLock<'a> {
+> +    mm: &'a MmWithUser,
+> +}
+> +
+> +impl<'a> MmapReadLock<'a> {
+> +    /// Look up a vma at the given address.
+> +    #[inline]
+> +    pub fn vma_lookup(&self, vma_addr: usize) -> Option<&virt::VmArea> {
+> +        // SAFETY: We hold a reference to the mm, so the pointer must be valid. Any value is okay
+> +        // for `vma_addr`.
+> +        let vma = unsafe { bindings::vma_lookup(self.mm.as_raw(), vma_addr as _) };
+> +
+> +        if vma.is_null() {
+> +            None
+> +        } else {
+> +            // SAFETY: We just checked that a vma was found, so the pointer is valid. Furthermore,
+> +            // the returned area will borrow from this read lock guard, so it can only be used
+> +            // while the read lock is still held. The returned reference is immutable, so the
+> +            // reference cannot be used to modify the area.
+> +            unsafe { Some(virt::VmArea::from_raw_vma(vma)) }
+> +        }
+> +    }
+> +}
+> +
+> +impl Drop for MmapReadLock<'_> {
+> +    #[inline]
+> +    fn drop(&mut self) {
+> +        // SAFETY: We hold the read lock by the type invariants.
+> +        unsafe { bindings::mmap_read_unlock(self.mm.as_raw()) };
+> +    }
+> +}
+> +
+> +/// A guard for the mmap write lock.
+> +///
+> +/// # Invariants
+> +///
+> +/// This `MmapReadLock` guard owns the mmap write lock.
+> +pub struct MmapWriteLock<'a> {
+> +    mm: &'a MmWithUser,
+> +}
+> +
+> +impl<'a> MmapWriteLock<'a> {
+> +    /// Look up a vma at the given address.
+> +    #[inline]
+> +    pub fn vma_lookup(&mut self, vma_addr: usize) -> Option<&mut virt::VmArea> {
 
-In the meanwhile,
+I think this needs to be -> Option<Pin<&mut virt::VmArea>>, otherwise,
+you could swap two VMAs (from different MMs) while the address stability
+is required by themselves (list_head) or others (list_head and rb_node):
+	
+	let vma1 = writer1.vma_lookup(x)?;
+	let vma2 = writer2.vma_lookup(x)?;
 
-Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+	swap(vma1, vma2);
+
+> +        // SAFETY: We hold a reference to the mm, so the pointer must be valid. Any value is okay
+> +        // for `vma_addr`.
+> +        let vma = unsafe { bindings::vma_lookup(self.mm.as_raw(), vma_addr as _) };
+> +
+> +        if vma.is_null() {
+> +            None
+> +        } else {
+> +            // SAFETY: We just checked that a vma was found, so the pointer is valid. Furthermore,
+> +            // the returned area will borrow from this write lock guard, so it can only be used
+> +            // while the write lock is still held. We hold the write lock, so mutable operations on
+> +            // the area are okay.
+> +            unsafe { Some(virt::VmArea::from_raw_vma_mut(vma)) }
+> +        }
+> +    }
+> +}
+> +
+> +impl Drop for MmapWriteLock<'_> {
+> +    #[inline]
+> +    fn drop(&mut self) {
+> +        // SAFETY: We hold the write lock by the type invariants.
+> +        unsafe { bindings::mmap_write_unlock(self.mm.as_raw()) };
+> +    }
+> +}
+
+(Will review the locking part later)
 
 Regards,
 Boqun
+
+[...]
