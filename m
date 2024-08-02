@@ -1,137 +1,104 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from frasgout12.his.huawei.com (frasgout12.his.huawei.com [14.137.139.154])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 682C01DF662
-	for <rust-for-linux@vger.kernel.org>; Fri,  2 Aug 2024 11:12:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9178E1E286D;
+	Fri,  2 Aug 2024 11:40:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=14.137.139.154
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722597154; cv=none; b=ahZ9pOxt4IgLoFPRF1yTQ0hZjU6Sy+bwzKauVpsFUCJRuqrKyY6VAa9v2VRCUgEwOFtSMMmlZ2KSLNhNHoXKdijRz0aR5qDBgilKK17VWM5M1oy0M1WdptLZrK0tvjhc6n/CjZ8SXD2yPTubBmTrEhEW7EhOU3qLmjLDAzg0L0M=
+	t=1722598850; cv=none; b=NSSZV7Z5fmxzpbuB0madsvehf9xr3GaarQXXcU5pZ9Tq3CdWTelUUlwUjN88cvIf55Ag8MZnFGUGjHe4pBZF2RvvwBOf1QbrOBKQjj1AsCONg9qfue+7sW1yhzMKOnQ7x20NIijrMel/pQxLsNl9mK1HuBFjffHtSlVxJJ0e39M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722597154; c=relaxed/simple;
-	bh=gnO4O/zcd8S789cTMN1Qt5kvGy1SLpzswI2NiU04r2A=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=L4dRmc54FXQZHvlRxsNcjbnTODD5LWGn8aCKaQNsToDACpNgg9ncUp+sYfuBFrZiHVslAvQkKe3YpQGjfMnYLxOgcPoVSoJTdT5oSlsT8yi0HsFDy3EtPQEpXs0KWMGt7oldmXzNlUlSgww/AWCjr6DqASFzGoraF8ke12gLqQc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NzRv3Uf8; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NzRv3Uf8"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-428141be2ddso53073485e9.2
-        for <rust-for-linux@vger.kernel.org>; Fri, 02 Aug 2024 04:12:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1722597151; x=1723201951; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=NckEZuTbgzBxmHzYz0RgKDaRsejCSb0E4WOQCnSKCEw=;
-        b=NzRv3Uf8j9XYUci2hOMz58fa6xCSuLN9oR9B9p2cnSSUklhka/SOfrJufOaFSIoFS2
-         G5RIlYRXHOWRtOdKCwtw3CTiivlkA0+SSuNAGhfU16W8E5C2dwnr3w1TEqM5ZYQLEFrq
-         qBxng01LxP3SyJ0+adunwLkIYAwFZflp6YNwipjnjgacBhuR4k8oIcauyqC+YO25MpET
-         P6rbgOqcADJuZN0jG78fHF00juYAk6Qh1IG6jWX76CFWtTZtUPheXJ3MZxspJ/uEWOUp
-         sS0gNltaZbQvXj5oC5jHoyydBsBZ/UGUr8i3lNJ1rya7VJfohzPdQgjzDbtnpznNeSgB
-         N7Uw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722597151; x=1723201951;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=NckEZuTbgzBxmHzYz0RgKDaRsejCSb0E4WOQCnSKCEw=;
-        b=moelP2QllAWBnYqFZwUKrxSSXdsSADGziODf1O3s2c/OA7P4YpydHyNgCv/nDECzqN
-         Tmq0Bp9SpYFH4C8fBbP6o4AKb1WBUbZyK+l3nhHXs/cYERd3cq5rpmWJ2xMWc/DMOvge
-         mxsqlFVnWy+efoyFVEJwy7N1Q9WeA0VrzxbheFqsPAsfF78M0m1TVlkDU5F2yA0qu60P
-         Rfk2W/n3wo/vHpdvA9mJMMcNGhGT6tF5tddkeJuz/0AWRqM6dVABVRqQYS9OSvPmYcLW
-         PIYouZMtg4sHG2yFG6sOSjy9AIrrc5aDGOtowbskj2e33KKWNl2AzOkKVs7wfgjwPj+t
-         hI1A==
-X-Forwarded-Encrypted: i=1; AJvYcCWnFQ8pSEdFO8ito9tKX7CH2VnSkzxg71MQwHcRYazibA3lrYzy2g0IGxRBSRiuV35o3f8Ud7J+VnpT5NXlDVj2MDOiy3gIrss4RrCFjY4=
-X-Gm-Message-State: AOJu0YxNuVhEQ6rGI+DMmL0BQ1c+MZFayFDueU1UzZR7nNnHLrrPTXAD
-	WZpG21feYdPjOP9+mPmjghD5tWCF0kl1XpBrXEhqyy/SKHy2XI5qHYxvDFVnyHMUxAxZZv5dsbr
-	jpo4m3LLc1Q6vPakjkyD9VecSQ8xnv4FnQl8c
-X-Google-Smtp-Source: AGHT+IHG8YT0Tl3r67jSeYzzG/u+IjzVWq2bWRMReS90gVbkEE3+W7//BJg0NubXE694omwJobmhmLbd7NfxN4kakP4=
-X-Received: by 2002:a5d:4003:0:b0:368:4edc:611e with SMTP id
- ffacd0b85a97d-36bbc0db7c9mr1721957f8f.14.1722597150322; Fri, 02 Aug 2024
- 04:12:30 -0700 (PDT)
+	s=arc-20240116; t=1722598850; c=relaxed/simple;
+	bh=E8Wj2Qe826SSpgPO1+n1aolYqoxkadAQ1V4WZVutK0s=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=bDsyBK+9gvVmxkg/KHiHUR/JacbFAuFu+xIO0bfr+O1PgC+dnOjEqcYhb8S2T88M04awZMjiHUzuD8CI3nJyBZG+AYmdDidLFPNlfqENpkqRoTsVRhYiePtXwOEsTp+QaK+Ze052bs6JJxaxIQanELuvWYhnWCamYjgpEY9trTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=14.137.139.154
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
+Received: from mail.maildlp.com (unknown [172.18.186.51])
+	by frasgout12.his.huawei.com (SkyGuard) with ESMTP id 4Wb3F14cCrz9v7Nc;
+	Fri,  2 Aug 2024 19:16:37 +0800 (CST)
+Received: from mail02.huawei.com (unknown [7.182.16.27])
+	by mail.maildlp.com (Postfix) with ESMTP id AB0D0140661;
+	Fri,  2 Aug 2024 19:40:32 +0800 (CST)
+Received: from [10.45.147.218] (unknown [10.45.147.218])
+	by APP2 (Coremail) with SMTP id GxC2BwB3lMGhxaxmYY9lAA--.45712S2;
+	Fri, 02 Aug 2024 12:40:32 +0100 (CET)
+Message-ID: <07bfa8d2-c4b1-4338-8a0f-52eba7f7f600@huaweicloud.com>
+Date: Fri, 2 Aug 2024 13:40:15 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240802-tracepoint-v5-0-faa164494dcb@google.com>
- <20240802-tracepoint-v5-1-faa164494dcb@google.com> <20240802093954.GH39708@noisy.programming.kicks-ass.net>
-In-Reply-To: <20240802093954.GH39708@noisy.programming.kicks-ass.net>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Fri, 2 Aug 2024 13:12:17 +0200
-Message-ID: <CAH5fLggBRBOrGb_2RLP=tFyGeiMmkH+86F-d0Pidv5z-shZ8Vg@mail.gmail.com>
-Subject: Re: [PATCH v5 1/2] rust: add static_key_false
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Josh Poimboeuf <jpoimboe@kernel.org>, 
-	Jason Baron <jbaron@akamai.com>, Ard Biesheuvel <ardb@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	linux-trace-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, linux-arch@vger.kernel.org, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Sean Christopherson <seanjc@google.com>, Uros Bizjak <ubizjak@gmail.com>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>, 
-	Oliver Upton <oliver.upton@linux.dev>, Mark Rutland <mark.rutland@arm.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Fuad Tabba <tabba@google.com>, 
-	linux-arm-kernel@lists.infradead.org, 
-	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Albert Ou <aou@eecs.berkeley.edu>, Anup Patel <apatel@ventanamicro.com>, 
-	Andrew Jones <ajones@ventanamicro.com>, Alexandre Ghiti <alexghiti@rivosinc.com>, 
-	Conor Dooley <conor.dooley@microchip.com>, Samuel Holland <samuel.holland@sifive.com>, 
-	linux-riscv@lists.infradead.org, Huacai Chen <chenhuacai@kernel.org>, 
-	WANG Xuerui <kernel@xen0n.name>, Bibo Mao <maobibo@loongson.cn>, 
-	Tiezhu Yang <yangtiezhu@loongson.cn>, Andrew Morton <akpm@linux-foundation.org>, 
-	Tianrui Zhao <zhaotianrui@loongson.cn>, loongarch@lists.linux.dev, 
-	WANG Rui <wangrui@loongson.cn>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] MAINTAINERS: Add the dedicated maillist info for LKMM
+To: Boqun Feng <boqun.feng@gmail.com>, linux-kernel@vger.kernel.org,
+ lkmm@lists.linux.dev
+Cc: Alan Stern <stern@rowland.harvard.edu>,
+ Andrea Parri <parri.andrea@gmail.com>, Will Deacon <will@kernel.org>,
+ Peter Zijlstra <peterz@infradead.org>, Nicholas Piggin <npiggin@gmail.com>,
+ David Howells <dhowells@redhat.com>, Jade Alglave <j.alglave@ucl.ac.uk>,
+ Luc Maranget <luc.maranget@inria.fr>, "Paul E. McKenney"
+ <paulmck@kernel.org>, Akira Yokosawa <akiyks@gmail.com>,
+ Daniel Lustig <dlustig@nvidia.com>, Joel Fernandes <joel@joelfernandes.org>,
+ linux-arch@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl
+ <aliceryhl@google.com>, rust-for-linux@vger.kernel.org,
+ Hernan Ponce de Leon <hernan.poncedeleon@huaweicloud.com>,
+ Puranjay Mohan <puranjay@kernel.org>
+References: <20240703162616.78278-1-boqun.feng@gmail.com>
+From: Jonas Oberhauser <jonas.oberhauser@huaweicloud.com>
+In-Reply-To: <20240703162616.78278-1-boqun.feng@gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:GxC2BwB3lMGhxaxmYY9lAA--.45712S2
+X-Coremail-Antispam: 1UD129KBjvdXoWruF18Ww43CF48WFy5XrykuFg_yoWDJwcE9a
+	n7G3WIgr1DCFyjkw4kCF9Fyrn09rZ7CF1fW3Waqw43Xa4DGrsxt398KwnY93WDX348Cr4q
+	ya1fGFsagr13ujkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUbVkFF20E14v26rWj6s0DM7CY07I20VC2zVCF04k26cxKx2IYs7xG
+	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
+	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
+	Cr1l84ACjcxK6I8E87Iv67AKxVW8JVWxJwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr0_Gr
+	1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
+	jxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr
+	1lF7xvr2IY64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxan2IY
+	04v7MxkF7I0En4kS14v26r4a6rW5MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r
+	1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CE
+	b7AF67AKxVW8ZVWrXwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0x
+	vE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAI
+	cVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2Kf
+	nxnUUI43ZEXa7sRiuWl3UUUUU==
+X-CM-SenderInfo: 5mrqt2oorev25kdx2v3u6k3tpzhluzxrxghudrp/
 
-On Fri, Aug 2, 2024 at 11:40=E2=80=AFAM Peter Zijlstra <peterz@infradead.or=
-g> wrote:
->
-> On Fri, Aug 02, 2024 at 09:31:27AM +0000, Alice Ryhl wrote:
-> > Add just enough support for static key so that we can use it from
-> > tracepoints. Tracepoints rely on `static_key_false` even though it is
-> > deprecated, so we add the same functionality to Rust.
-> >
-> > It is not possible to use the existing C implementation of
-> > arch_static_branch because it passes the argument `key` to inline
-> > assembly as an 'i' parameter, so any attempt to add a C helper for this
-> > function will fail to compile because the value of `key` must be known
-> > at compile-time.
-> >
-> > One disadvantage of this patch is that it introduces a fair amount of
-> > duplicated inline assembly. However, this is a limited and temporary
-> > situation:
-> >
-> > 1. Most inline assembly has no reason to be duplicated like this. It is
-> >    only needed here due to the use of 'i' parameters.
-> >
-> > 2. Alice will submit a patch along the lines of [1] that removes the
-> >    duplication. This will happen as a follow-up to this patch series.
->
-> You're talking about yourself in the 3rd person?
+Awesome, thanks!
 
-I'm not sure if commit messages are supposed to be a personal message
-from me, or an impersonal description of the patch. I'm happy to
-reword.
+Am 7/3/2024 um 6:26 PM schrieb Boqun Feng:
+> A dedicated mail list is created for Linux kernel memory model
+> discussion, and this could help more people to track down memory model
+> related discussion, since oftentimes memory model discussions would
+> involve a broader audience. Hence add the list information into the
+> maintainers entry of LKMM.
+> 
+> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+> ---
+>   MAINTAINERS | 1 +
+>   1 file changed, 1 insertion(+)
+> 
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 3f2047082073..a77bd8a49cd9 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -12796,6 +12796,7 @@ R:	Daniel Lustig <dlustig@nvidia.com>
+>   R:	Joel Fernandes <joel@joelfernandes.org>
+>   L:	linux-kernel@vger.kernel.org
+>   L:	linux-arch@vger.kernel.org
+> +L:	lkmm@lists.linux.dev
+>   S:	Supported
+>   T:	git git://git.kernel.org/pub/scm/linux/kernel/git/paulmck/linux-rcu.git dev
+>   F:	Documentation/atomic_bitops.txt
 
-> What's the rush, why not do it right first?
-
-Well for one, this version of the series mostly just makes changes to
-the second patch.
-
-But also, maybe I'm being too aggressive about it, but I have large
-amounts of out-of-tree code that I've been working on upstreaming, and
-it's a lot of work to keep it all up-to-date and rebased. I want to
-reduce it as much as I can. I was hoping that I could get the changes
-to include/linux/tracepoint.h off my plate, even if more work is
-needed on the static_key side of things.
-
-Alice
