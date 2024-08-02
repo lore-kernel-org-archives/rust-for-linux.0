@@ -1,288 +1,135 @@
-Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E8071DB459
-	for <rust-for-linux@vger.kernel.org>; Fri,  2 Aug 2024 09:32:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C59E71C2BD;
+	Fri,  2 Aug 2024 09:39:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722591122; cv=none; b=K0kI7meAtyp9vlsSD4wecmPUkEUpX+ULGGAIVZ7/sgqRvbabpqHX7j6KHCL+aCj+VGr5xJkb/SMbKFrq/i+I2z6VoV2xOf/dBU37Gw1af//Nr5vCf/Qb8EbFTbrMRs+cMpXBiyKhnPLbFWDUc8X7WEwbqMUm+sdkgKh9oCKJHnU=
+	t=1722591562; cv=none; b=ib5Y5GKO5PFMgEarGWA2xRSEakT7Pd8p4CFcuF9PPFzvqgF7M7XasBXGsGA5c0YI6Ct4bsJSqMuFi922onTFX2jYtxkxhbpjOnFmWqS2qRqN2ZV4VvF2LFQz/lNGa2IxNGBfpkDdL4HdbD7bhbkeAVRPocKipGmY/uy3qs1iAyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722591122; c=relaxed/simple;
-	bh=w0kjkNp9tXlUo73XWRVbps/1uhcBH0l+7rWOWIsb964=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=RhD/gyURJsQUIWORuZEzGisl7yxYVlHxkOUd4fydIRG6WjcRGGnm6DZySRqlnuL3cOyRC8RN9i/x8lJablFt1iTRi+VfwF2OEUCxSb/i5I9jMvRGEZDr1tBVbaLurNQedc2FjEsgXgkNJ1Qd/tv53RTCZ6oAMe9tVpMEqH/7PAg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=XMD0gA69; arc=none smtp.client-ip=209.85.221.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1722591562; c=relaxed/simple;
+	bh=V/sP0mCciYSgP1SK2ZhqvHjubWCGsjGQsHmSxjGBpQ0=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Q/qtvBngX+pDv3COLxVIqTZmvCO3JYliPNjTOB7x/0fRr0Zv3kAQlUPrZGFgdTcns4tIgbGkn3lH8pGV3qFBDgcxWD49sWTbs+i+uQJekm28G8DpCPD2AU82YuQbxfHwoXxrNzL1kS63cChRaDiZ1QVFO4OE2xHQvOieJ/bAzLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=VV3uBCnl; arc=none smtp.client-ip=185.70.40.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="XMD0gA69"
-Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-3685bbd6dfbso3343820f8f.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 02 Aug 2024 02:32:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1722591119; x=1723195919; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=pFX002WF5KycYvj+q55NDLygad2v8oW7DNGZypmpcz0=;
-        b=XMD0gA690QjQ0URgReqh05CF6/+h2vlWChtio7oskbbRvW09Yiw3H/A8Pu4G4GczPH
-         I51o9NW2GotqIT6eTTZz26GGOUMg4ZHigisGy/Q5hgBpl9tQ5tOVf6jrAFUI16SNssCB
-         p+t+a8D+WfsAEU/PBuZlXqHsFqcTblTLAXJOaHRXhOS8eGygWgBuEjQhTu6PVZlSs6QD
-         5mxutVd2zD2kp+LrEZOv9IQo2lwARkmtsmZC5GZSnSZO6kt82GSYHGSM5Y6HkuSjU8P/
-         /iCbs4cOQQgzDyjMges6hlDKYyLmOUfbhsWzSqZkN8vPJeRzmuLaTouThRtYcRI2XYr7
-         6wng==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722591119; x=1723195919;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=pFX002WF5KycYvj+q55NDLygad2v8oW7DNGZypmpcz0=;
-        b=RPh9prg/XAG5d1K0lG8u8QaLhYZhLFTwzbS7PaobCFoYenpIMGNqYecG6AbRKvnU6U
-         G+OjYLcepisr7IIBeVnwEHNW8+PEo/pDJ3eJ49JB9n5uD60EwdgjXgCJJm6M+/goIzy9
-         oUa8fga4Ox7THQC7Kb2jrg4n4obZrNQNRQXIxoFAgOb3u6yHr6Bznt0vRSGVIy5K1YBV
-         m2BDXl8zZkN2Pmr75tIa6F2oDSgB0J04QNO63pHRpJZ9TsYr6hZSBInVBXr25b7TMy6B
-         lLY/K/uDBT623IIh6K1WeBNks0EUOmFRXFb97Sc+wzdOSlxvgMbgDPXu5gq6RYwgv0KZ
-         fH8g==
-X-Forwarded-Encrypted: i=1; AJvYcCWU6WUDgOuij2KpvhrE9fRDKMUCEXhVscnXJDyK+ktMCKGJk3GiYwnfc9Rs/GlVqxAkKad+dm0DcqdaaO3DlIMF/4obJwdfMEGKldc8LU0=
-X-Gm-Message-State: AOJu0Yyt6AgDrXt/c11CDuNvQ7dONBnQ20O9bfLslSMqzPs3LLkv2K+q
-	mVz+PlNwdllx1wryrC7Dc1ymd5u3td5AQ/Uw0MXT1vq0f/grezAUXAyZWXDOFwPTX6EBSBTCLTB
-	a4+CVyJclDjq3yw==
-X-Google-Smtp-Source: AGHT+IF6TeSE4s9eo+99KIz96YHlhNQA6ZSJ6aPAHp3y6TccqHauRJLpWLajZIVv2ZcexsnAul3c4G3kS9jn4ac=
-X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:35bd])
- (user=aliceryhl job=sendgmr) by 2002:a5d:4a49:0:b0:367:8f81:2086 with SMTP id
- ffacd0b85a97d-36bbc0c268dmr3057f8f.3.1722591118384; Fri, 02 Aug 2024 02:31:58
- -0700 (PDT)
-Date: Fri, 02 Aug 2024 09:31:28 +0000
-In-Reply-To: <20240802-tracepoint-v5-0-faa164494dcb@google.com>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="VV3uBCnl"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1722591551; x=1722850751;
+	bh=m1QNeER4/O9Nb9QxsEYXTwhiESfbBDeW5e0hMJz/WCw=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=VV3uBCnlJPNxvWs14rOC+xZdu5TqRnHJA+phOt1m1hgOQ/AsUyRPkYre4cie7TpKN
+	 W43niQXnjvnTKI29yuLtUqxcYbp372Jmt9x6GWLILBXP5WaXoBQ3JpKezeW661zadL
+	 kc0qrOQTy2mTwUwZnJiSiFjvsGW16FpSPdpo+o4RoHHte6Z/ERrQcCSr+4dRviRevM
+	 LC944B7ROW/Z2+yMkgcXsKY9MbATF7APWS0qBJ0dtxFKHI2Hm4dzxpaQhFIYVP6tK5
+	 vNHGPA6Ug2nK2yX19V17foe5tWnawOuQCuaGFrWIUTzKl2kG4F+BxiQdTBQOT0GUFm
+	 bTjrw7HtHO7Bg==
+Date: Fri, 02 Aug 2024 09:39:03 +0000
+To: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Matthew Wilcox <willy@infradead.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v4] rust: mm: add abstractions for mm_struct and vm_area_struct
+Message-ID: <7f31fa8b-d788-4067-b296-9cdf23df65c7@proton.me>
+In-Reply-To: <20240802-vma-v4-1-091a87058a43@google.com>
+References: <20240802-vma-v4-1-091a87058a43@google.com>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: 1eea1a3ef92c701c98da726d04b4cde5a36fbe26
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20240802-tracepoint-v5-0-faa164494dcb@google.com>
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=6821; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=w0kjkNp9tXlUo73XWRVbps/1uhcBH0l+7rWOWIsb964=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBmrKeGhEkip34Q57vcFdE7eAZCn8m33EEqxM86s
- 0iQvqOQFKGJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZqynhgAKCRAEWL7uWMY5
- RnLNEACz4FN/ONZ7Vt9T1opNcvYM0M1wnNDNzPcCJVfPGUgOOXaPaqXXozfu2ApS6kqEaBAAIw2
- jmFl+Luvdm/Dc+ITPOn9yqJdJ2lNZU9voXBpEssxVH+3TOlfNRn+9/MA8s4qzx1kEpzpX9TPZfR
- LsxFJQrNmp7EFcr/AS+esS8K89ZItQezsxbMNeVeIivkqs5juoxhLg06cvOTp488pwN9KIcIwNr
- M7KTeOVqZETJOZrScjCWw8WQ9udaxlHY5w8XcCF6+Kgw5gXMMCulYgxyVigHok6zIK8WpeRONdN
- Lj2yBJB7eiPyQ27XrASFlSz3SjqzeK55VfDJlAAu36xQHhXy94+KlZkkthdV7dxAJy6fFF0bkL2
- O6KYmORTKz8V7vehTZ0c36Iq0euccI1UtxBmR2rCMMoqV/oI/wTNwTwXRDTjMAXKE4up5znQFlb
- 6Ysqrc9uXVAiKGPZDaPwXYPX6exhQo1Q/JRMFRUoejHXYPyQ9XhDlfp8568aFNP+cd+Jt+Mbpsz
- 0uKE3uQyWMyrpU3lwlDL3hbFxNbh8RpVDNfW6L9T8PqbHE7j1eBq5k2VG7lGyQwq4y6Mev1FRuv
- XTFGZ+Ejy0DS7DWzMIsPa8Wvmv7PvdN0BRrBpmu4LePqlgzIN2wktBWcKnfhmuRkzjpiXbRKagC vcc8t+dAXUfcPRQ==
-X-Mailer: b4 0.13.0
-Message-ID: <20240802-tracepoint-v5-2-faa164494dcb@google.com>
-Subject: [PATCH v5 2/2] rust: add tracepoint support
-From: Alice Ryhl <aliceryhl@google.com>
-To: Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Josh Poimboeuf <jpoimboe@kernel.org>, Jason Baron <jbaron@akamai.com>, 
-	Ard Biesheuvel <ardb@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@samsung.com>
-Cc: linux-trace-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, linux-arch@vger.kernel.org, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Sean Christopherson <seanjc@google.com>, Uros Bizjak <ubizjak@gmail.com>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>, 
-	Oliver Upton <oliver.upton@linux.dev>, Mark Rutland <mark.rutland@arm.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Fuad Tabba <tabba@google.com>, 
-	linux-arm-kernel@lists.infradead.org, 
-	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Albert Ou <aou@eecs.berkeley.edu>, Anup Patel <apatel@ventanamicro.com>, 
-	Andrew Jones <ajones@ventanamicro.com>, Alexandre Ghiti <alexghiti@rivosinc.com>, 
-	Conor Dooley <conor.dooley@microchip.com>, Samuel Holland <samuel.holland@sifive.com>, 
-	linux-riscv@lists.infradead.org, Huacai Chen <chenhuacai@kernel.org>, 
-	WANG Xuerui <kernel@xen0n.name>, Bibo Mao <maobibo@loongson.cn>, 
-	Tiezhu Yang <yangtiezhu@loongson.cn>, Andrew Morton <akpm@linux-foundation.org>, 
-	Tianrui Zhao <zhaotianrui@loongson.cn>, loongarch@lists.linux.dev, 
-	Alice Ryhl <aliceryhl@google.com>, Carlos Llamas <cmllamas@google.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Make it possible to have Rust code call into tracepoints defined by C
-code. It is still required that the tracepoint is declared in a C
-header, and that this header is included in the input to bindgen.
+On 02.08.24 09:38, Alice Ryhl wrote:
+> This is a follow-up to the page abstractions [1] that were recently
+> merged in 6.11. Rust Binder will need these abstractions to manipulate
+> the vma in its implementation of the mmap fop on the Binder file.
+>=20
+> This patch is based on Wedson's implementation on the old rust branch,
+> but has been changed significantly. All mistakes are Alice's.
+>=20
+> Link: https://lore.kernel.org/r/20240528-alice-mm-v7-4-78222c31b8f4@googl=
+e.com [1]
+> Co-developed-by: Wedson Almeida Filho <wedsonaf@gmail.com>
+> Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
-Instead of calling __DO_TRACE directly, the exported rust_do_trace_
-function calls an inline helper function. This is because the `cond`
-argument does not exist at the callsite of DEFINE_RUST_DO_TRACE.
+I have one nit below, with that fixed:
 
-__DECLARE_TRACE always emits an inline static and an extern declaration
-that is only used when CREATE_RUST_TRACE_POINTS is set. These should not
-end up in the final binary so it is not a problem that they sometimes
-are emitted without a user.
+Reviewed-by: Benno Lossin <benno.lossin@proton.me>
 
-Reviewed-by: Carlos Llamas <cmllamas@google.com>
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> diff --git a/rust/kernel/mm/virt.rs b/rust/kernel/mm/virt.rs
+> new file mode 100644
+> index 000000000000..ec8cadb09626
+> --- /dev/null
+> +++ b/rust/kernel/mm/virt.rs
+> @@ -0,0 +1,204 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +// Copyright (C) 2024 Google LLC.
+> +
+> +//! Virtual memory.
+> +
+> +use crate::{
+> +    bindings,
+> +    error::{to_result, Result},
+> +    page::Page,
+> +    types::Opaque,
+> +};
+> +
+> +/// A wrapper for the kernel's `struct vm_area_struct`.
+> +///
+> +/// It represents an area of virtual memory.
+> +///
+> +/// # Invariants
+> +///
+> +/// * If the caller has shared access to this type, then they must hold =
+the mmap read lock.
+> +/// * If the caller has exclusive access to this type, then they must ho=
+ld the mmap write lock.
+> +#[repr(transparent)]
+> +pub struct VmArea {
+> +    vma: Opaque<bindings::vm_area_struct>,
+> +}
+> +
+> +impl VmArea {
+> +    /// Access a virtual memory area given a raw pointer.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// Callers must ensure that `vma` is valid for the duration of 'a, =
+and that the mmap read lock
+> +    /// (or write lock) is held for at least the duration of 'a.
+> +    #[inline]
+> +    pub unsafe fn from_raw_vma<'a>(vma: *const bindings::vm_area_struct)=
+ -> &'a Self {
+
+I think this also should be named `from_raw`.
+
+I took a look at your conversation with Christian Brauner and I
+personally don't see the benefit of `File::from_raw_file` over
+`File::from_raw`. To me it's clear that this function takes some raw C
+structure that represents a `File` and turns it into a `File`.
+In the situation where there are multiple ways of creating something
+from different C structs, I think we should include the name. But if
+there is only one possible struct, then the name should be `from_raw`.
+
+Do you think we should re-open that discussion/start a new one on a
+naming convention for this?
+
 ---
- include/linux/tracepoint.h      | 22 +++++++++++++++++-
- include/trace/define_trace.h    | 12 ++++++++++
- rust/bindings/bindings_helper.h |  1 +
- rust/kernel/lib.rs              |  1 +
- rust/kernel/tracepoint.rs       | 49 +++++++++++++++++++++++++++++++++++++++++
- 5 files changed, 84 insertions(+), 1 deletion(-)
+Cheers,
+Benno
 
-diff --git a/include/linux/tracepoint.h b/include/linux/tracepoint.h
-index 6be396bb4297..5042ca588e41 100644
---- a/include/linux/tracepoint.h
-+++ b/include/linux/tracepoint.h
-@@ -237,6 +237,18 @@ static inline struct tracepoint *tracepoint_ptr_deref(tracepoint_ptr_t *p)
- #define __DECLARE_TRACE_RCU(name, proto, args, cond)
- #endif
- 
-+/*
-+ * Declare an exported function that Rust code can call to trigger this
-+ * tracepoint. This function does not include the static branch; that is done
-+ * in Rust to avoid a function call when the tracepoint is disabled.
-+ */
-+#define DEFINE_RUST_DO_TRACE(name, proto, args)
-+#define __DEFINE_RUST_DO_TRACE(name, proto, args)			\
-+	notrace void rust_do_trace_##name(proto)			\
-+	{								\
-+		__rust_do_trace_##name(args);				\
-+	}
-+
- /*
-  * Make sure the alignment of the structure in the __tracepoints section will
-  * not add unwanted padding between the beginning of the section and the
-@@ -252,6 +264,13 @@ static inline struct tracepoint *tracepoint_ptr_deref(tracepoint_ptr_t *p)
- 	extern int __traceiter_##name(data_proto);			\
- 	DECLARE_STATIC_CALL(tp_func_##name, __traceiter_##name);	\
- 	extern struct tracepoint __tracepoint_##name;			\
-+	extern void rust_do_trace_##name(proto);			\
-+	static inline void __rust_do_trace_##name(proto)		\
-+	{								\
-+		__DO_TRACE(name,					\
-+			TP_ARGS(args),					\
-+			TP_CONDITION(cond), 0);				\
-+	}								\
- 	static inline void trace_##name(proto)				\
- 	{								\
- 		if (static_key_false(&__tracepoint_##name.key))		\
-@@ -336,7 +355,8 @@ static inline struct tracepoint *tracepoint_ptr_deref(tracepoint_ptr_t *p)
- 	void __probestub_##_name(void *__data, proto)			\
- 	{								\
- 	}								\
--	DEFINE_STATIC_CALL(tp_func_##_name, __traceiter_##_name);
-+	DEFINE_STATIC_CALL(tp_func_##_name, __traceiter_##_name);	\
-+	DEFINE_RUST_DO_TRACE(_name, TP_PROTO(proto), TP_ARGS(args))
- 
- #define DEFINE_TRACE(name, proto, args)		\
- 	DEFINE_TRACE_FN(name, NULL, NULL, PARAMS(proto), PARAMS(args));
-diff --git a/include/trace/define_trace.h b/include/trace/define_trace.h
-index 00723935dcc7..8159294c2041 100644
---- a/include/trace/define_trace.h
-+++ b/include/trace/define_trace.h
-@@ -72,6 +72,13 @@
- #define DECLARE_TRACE(name, proto, args)	\
- 	DEFINE_TRACE(name, PARAMS(proto), PARAMS(args))
- 
-+/* If requested, create helpers for calling these tracepoints from Rust. */
-+#ifdef CREATE_RUST_TRACE_POINTS
-+#undef DEFINE_RUST_DO_TRACE
-+#define DEFINE_RUST_DO_TRACE(name, proto, args)	\
-+	__DEFINE_RUST_DO_TRACE(name, PARAMS(proto), PARAMS(args))
-+#endif
-+
- #undef TRACE_INCLUDE
- #undef __TRACE_INCLUDE
- 
-@@ -129,6 +136,11 @@
- # undef UNDEF_TRACE_INCLUDE_PATH
- #endif
- 
-+#ifdef CREATE_RUST_TRACE_POINTS
-+# undef DEFINE_RUST_DO_TRACE
-+# define DEFINE_RUST_DO_TRACE(name, proto, args)
-+#endif
-+
- /* We may be processing more files */
- #define CREATE_TRACE_POINTS
- 
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index b940a5777330..142ee71ae7c4 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -19,6 +19,7 @@
- #include <linux/refcount.h>
- #include <linux/sched.h>
- #include <linux/slab.h>
-+#include <linux/tracepoint.h>
- #include <linux/wait.h>
- #include <linux/workqueue.h>
- 
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index da1f69868d0d..64f2b09920e3 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -52,6 +52,7 @@
- pub mod sync;
- pub mod task;
- pub mod time;
-+pub mod tracepoint;
- pub mod types;
- pub mod uaccess;
- pub mod workqueue;
-diff --git a/rust/kernel/tracepoint.rs b/rust/kernel/tracepoint.rs
-new file mode 100644
-index 000000000000..69dafdb8bfe8
---- /dev/null
-+++ b/rust/kernel/tracepoint.rs
-@@ -0,0 +1,49 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+// Copyright (C) 2024 Google LLC.
-+
-+//! Logic for tracepoints.
-+
-+/// Declare the Rust entry point for a tracepoint.
-+///
-+/// This macro generates an unsafe function that calls into C, and its safety requirements will be
-+/// whatever the relevant C code requires. To document these safety requirements, you may add
-+/// doc-comments when invoking the macro.
-+#[macro_export]
-+macro_rules! declare_trace {
-+    ($($(#[$attr:meta])* $pub:vis fn $name:ident($($argname:ident : $argtyp:ty),* $(,)?);)*) => {$(
-+        $( #[$attr] )*
-+        #[inline(always)]
-+        $pub unsafe fn $name($($argname : $argtyp),*) {
-+            #[cfg(CONFIG_TRACEPOINTS)]
-+            {
-+                // SAFETY: It's always okay to query the static key for a tracepoint.
-+                let should_trace = unsafe {
-+                    $crate::macros::paste! {
-+                        $crate::static_key::static_key_false!(
-+                            $crate::bindings::[< __tracepoint_ $name >],
-+                            $crate::bindings::tracepoint,
-+                            key
-+                        )
-+                    }
-+                };
-+
-+                if should_trace {
-+                    $crate::macros::paste! {
-+                        // SAFETY: The caller guarantees that it is okay to call this tracepoint.
-+                        unsafe { $crate::bindings::[< rust_do_trace_ $name >]($($argname),*) };
-+                    }
-+                }
-+            }
-+
-+            #[cfg(not(CONFIG_TRACEPOINTS))]
-+            {
-+                // If tracepoints are disabled, insert a trivial use of each argument
-+                // to avoid unused argument warnings.
-+                $( let _unused = $argname; )*
-+            }
-+        }
-+    )*}
-+}
-+
-+pub use declare_trace;
-
--- 
-2.46.0.rc2.264.g509ed76dc8-goog
+> +        // SAFETY: The caller ensures that the invariants are satisfied =
+for the duration of 'a.
+> +        unsafe { &*vma.cast() }
+> +    }
 
