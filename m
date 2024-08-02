@@ -1,135 +1,116 @@
-Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C59E71C2BD;
-	Fri,  2 Aug 2024 09:39:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E5081DB420
+	for <rust-for-linux@vger.kernel.org>; Fri,  2 Aug 2024 09:39:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722591562; cv=none; b=ib5Y5GKO5PFMgEarGWA2xRSEakT7Pd8p4CFcuF9PPFzvqgF7M7XasBXGsGA5c0YI6Ct4bsJSqMuFi922onTFX2jYtxkxhbpjOnFmWqS2qRqN2ZV4VvF2LFQz/lNGa2IxNGBfpkDdL4HdbD7bhbkeAVRPocKipGmY/uy3qs1iAyk=
+	t=1722591602; cv=none; b=GigzwMwi8PYbGgSozSTFVqERpradDPQufk2sLWUdoyNfR+KLKf5Y7zeqxAKmvUkwppguvNUtWw1+xPyHaIGlXaPUNY8TkmFAl7HQOQdZTcBI/LF0AFohUSN3dsdC1jWwi5xHmGqkqzxBWE8GYAb4bq6bvsNZYA7SukR+KDz/kXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722591562; c=relaxed/simple;
-	bh=V/sP0mCciYSgP1SK2ZhqvHjubWCGsjGQsHmSxjGBpQ0=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Q/qtvBngX+pDv3COLxVIqTZmvCO3JYliPNjTOB7x/0fRr0Zv3kAQlUPrZGFgdTcns4tIgbGkn3lH8pGV3qFBDgcxWD49sWTbs+i+uQJekm28G8DpCPD2AU82YuQbxfHwoXxrNzL1kS63cChRaDiZ1QVFO4OE2xHQvOieJ/bAzLE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=VV3uBCnl; arc=none smtp.client-ip=185.70.40.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1722591602; c=relaxed/simple;
+	bh=msG2bFBQBZqPQE+/Mc9DqGJxJPZH2XOVibyXJ4vjKh8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FFaUTtC19TQSpCir3t37sMJTva6FBmbR1SUwp67+5OZiXZhWaLTXu6cDiQa9lcmE6Pbe7KnRAlz/gi+PcnWYRMcyol5mmhBkf1xnz/TkEVmFid/wmjlfRjRPUUM0HCpI/x114asZbi3xaPSX5+lG0Z99bYNeFRSefI9u5NeopgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=Zw/KFesV; arc=none smtp.client-ip=90.155.92.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="VV3uBCnl"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1722591551; x=1722850751;
-	bh=m1QNeER4/O9Nb9QxsEYXTwhiESfbBDeW5e0hMJz/WCw=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=VV3uBCnlJPNxvWs14rOC+xZdu5TqRnHJA+phOt1m1hgOQ/AsUyRPkYre4cie7TpKN
-	 W43niQXnjvnTKI29yuLtUqxcYbp372Jmt9x6GWLILBXP5WaXoBQ3JpKezeW661zadL
-	 kc0qrOQTy2mTwUwZnJiSiFjvsGW16FpSPdpo+o4RoHHte6Z/ERrQcCSr+4dRviRevM
-	 LC944B7ROW/Z2+yMkgcXsKY9MbATF7APWS0qBJ0dtxFKHI2Hm4dzxpaQhFIYVP6tK5
-	 vNHGPA6Ug2nK2yX19V17foe5tWnawOuQCuaGFrWIUTzKl2kG4F+BxiQdTBQOT0GUFm
-	 bTjrw7HtHO7Bg==
-Date: Fri, 02 Aug 2024 09:39:03 +0000
-To: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Matthew Wilcox <willy@infradead.org>, "Liam R. Howlett" <Liam.Howlett@oracle.com>, Vlastimil Babka <vbabka@suse.cz>, Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v4] rust: mm: add abstractions for mm_struct and vm_area_struct
-Message-ID: <7f31fa8b-d788-4067-b296-9cdf23df65c7@proton.me>
-In-Reply-To: <20240802-vma-v4-1-091a87058a43@google.com>
-References: <20240802-vma-v4-1-091a87058a43@google.com>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 1eea1a3ef92c701c98da726d04b4cde5a36fbe26
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="Zw/KFesV"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=9Z+aZs0SZ0YC0bCCXeGs8Vm6t97KZ36rxeFA4yv6VTs=; b=Zw/KFesVnIdv3zfmHq5Lgrs5Kv
+	latri07BG8i4S1nwE+kxVm9CRqcaJllTU0uxtIwT+uKPxG/dphWK7zASeRnTfEmWTLCOvBAx4B+z1
+	Ern+lvCmTDVXbcv1dPN0zqMgMzI33TKcRsu4+hzgnhPyCmKqs/Bp988YBtzUM25rpb14ipJQ85AVw
+	A1qBCb2qKv9XsTXMMRilLG3dSTaFmu2TAPcrSPMf3fgPRaPA0fNV8MXpDhCO0KnujT0DRLJAQNj5X
+	5mfm7dVDr1DErxLIcmXKv4X2gk+qdWI705etIfroB8ccBkAw6pd1ol+D+g0iBbcD4UIEBWrLj46po
+	txqO3NeQ==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1sZolP-00000005g5P-01Qh;
+	Fri, 02 Aug 2024 09:39:55 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 7E0F230088D; Fri,  2 Aug 2024 11:39:54 +0200 (CEST)
+Date: Fri, 2 Aug 2024 11:39:54 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Jason Baron <jbaron@akamai.com>, Ard Biesheuvel <ardb@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	linux-trace-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+	linux-arch@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Uros Bizjak <ubizjak@gmail.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Ryan Roberts <ryan.roberts@arm.com>, Fuad Tabba <tabba@google.com>,
+	linux-arm-kernel@lists.infradead.org,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Anup Patel <apatel@ventanamicro.com>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Samuel Holland <samuel.holland@sifive.com>,
+	linux-riscv@lists.infradead.org,
+	Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>, Bibo Mao <maobibo@loongson.cn>,
+	Tiezhu Yang <yangtiezhu@loongson.cn>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Tianrui Zhao <zhaotianrui@loongson.cn>, loongarch@lists.linux.dev,
+	WANG Rui <wangrui@loongson.cn>
+Subject: Re: [PATCH v5 1/2] rust: add static_key_false
+Message-ID: <20240802093954.GH39708@noisy.programming.kicks-ass.net>
+References: <20240802-tracepoint-v5-0-faa164494dcb@google.com>
+ <20240802-tracepoint-v5-1-faa164494dcb@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240802-tracepoint-v5-1-faa164494dcb@google.com>
 
-On 02.08.24 09:38, Alice Ryhl wrote:
-> This is a follow-up to the page abstractions [1] that were recently
-> merged in 6.11. Rust Binder will need these abstractions to manipulate
-> the vma in its implementation of the mmap fop on the Binder file.
->=20
-> This patch is based on Wedson's implementation on the old rust branch,
-> but has been changed significantly. All mistakes are Alice's.
->=20
-> Link: https://lore.kernel.org/r/20240528-alice-mm-v7-4-78222c31b8f4@googl=
-e.com [1]
-> Co-developed-by: Wedson Almeida Filho <wedsonaf@gmail.com>
-> Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+On Fri, Aug 02, 2024 at 09:31:27AM +0000, Alice Ryhl wrote:
+> Add just enough support for static key so that we can use it from
+> tracepoints. Tracepoints rely on `static_key_false` even though it is
+> deprecated, so we add the same functionality to Rust.
+> 
+> It is not possible to use the existing C implementation of
+> arch_static_branch because it passes the argument `key` to inline
+> assembly as an 'i' parameter, so any attempt to add a C helper for this
+> function will fail to compile because the value of `key` must be known
+> at compile-time.
+> 
+> One disadvantage of this patch is that it introduces a fair amount of
+> duplicated inline assembly. However, this is a limited and temporary
+> situation:
+> 
+> 1. Most inline assembly has no reason to be duplicated like this. It is
+>    only needed here due to the use of 'i' parameters.
+> 
+> 2. Alice will submit a patch along the lines of [1] that removes the
+>    duplication. This will happen as a follow-up to this patch series.
 
-I have one nit below, with that fixed:
+You're talking about yourself in the 3rd person?
 
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-
-> diff --git a/rust/kernel/mm/virt.rs b/rust/kernel/mm/virt.rs
-> new file mode 100644
-> index 000000000000..ec8cadb09626
-> --- /dev/null
-> +++ b/rust/kernel/mm/virt.rs
-> @@ -0,0 +1,204 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +// Copyright (C) 2024 Google LLC.
-> +
-> +//! Virtual memory.
-> +
-> +use crate::{
-> +    bindings,
-> +    error::{to_result, Result},
-> +    page::Page,
-> +    types::Opaque,
-> +};
-> +
-> +/// A wrapper for the kernel's `struct vm_area_struct`.
-> +///
-> +/// It represents an area of virtual memory.
-> +///
-> +/// # Invariants
-> +///
-> +/// * If the caller has shared access to this type, then they must hold =
-the mmap read lock.
-> +/// * If the caller has exclusive access to this type, then they must ho=
-ld the mmap write lock.
-> +#[repr(transparent)]
-> +pub struct VmArea {
-> +    vma: Opaque<bindings::vm_area_struct>,
-> +}
-> +
-> +impl VmArea {
-> +    /// Access a virtual memory area given a raw pointer.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// Callers must ensure that `vma` is valid for the duration of 'a, =
-and that the mmap read lock
-> +    /// (or write lock) is held for at least the duration of 'a.
-> +    #[inline]
-> +    pub unsafe fn from_raw_vma<'a>(vma: *const bindings::vm_area_struct)=
- -> &'a Self {
-
-I think this also should be named `from_raw`.
-
-I took a look at your conversation with Christian Brauner and I
-personally don't see the benefit of `File::from_raw_file` over
-`File::from_raw`. To me it's clear that this function takes some raw C
-structure that represents a `File` and turns it into a `File`.
-In the situation where there are multiple ways of creating something
-from different C structs, I think we should include the name. But if
-there is only one possible struct, then the name should be `from_raw`.
-
-Do you think we should re-open that discussion/start a new one on a
-naming convention for this?
-
----
-Cheers,
-Benno
-
-> +        // SAFETY: The caller ensures that the invariants are satisfied =
-for the duration of 'a.
-> +        unsafe { &*vma.cast() }
-> +    }
-
+What's the rush, why not do it right first?
