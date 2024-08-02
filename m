@@ -1,54 +1,56 @@
-Received: from mail-lf1-f45.google.com (mail-lf1-f45.google.com [209.85.167.45])
+Received: from mail-lf1-f51.google.com (mail-lf1-f51.google.com [209.85.167.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1274E1DC474
-	for <rust-for-linux@vger.kernel.org>; Fri,  2 Aug 2024 12:45:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22E591C3781
+	for <rust-for-linux@vger.kernel.org>; Fri,  2 Aug 2024 12:45:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722602743; cv=none; b=GbD4BeSUQ8rQgkBqM9albYu8mUkvr3LzjTIAJMQq7inr1qg9/LBBDLE8Eq0GC2nl3qIB9mVVwVwEfgC54X79mfCQNXrUcJfV+9i3h+NIFA5+Eccoxu9kQnxr9fT4un861ZYmbY5TtRTjA/H6wEYcE0ZZLgnV0W1GYopnG9/PHAA=
+	t=1722602745; cv=none; b=Cjru0lbKh6r0pjM0v8HeKd8pkxEG0o38GKYcevDYQvC1B0pVoZM/9TDTeVBwz/coYqjBh9hMAdLC/rx/6LBdJc0NMEfsI6U2YXbB+i0k7Kp5CvodeKEafc02pzJr0y3FjexlEAaadJ0Gebiq8beIPIRi4U9SKlSRXRvzpSMleYU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722602743; c=relaxed/simple;
-	bh=tiHV62W1WLgEASnBkRMbzZagftzo0qxoQXN58XE/beQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=CqvTYWPatXDJ+p4Ng4npkB57/47kjiYAQg5+VAg7aeo5aKd/E4epnaEynBjD8mvQMAXER6Jp5PIcJhKJJ5pHrh2KVyJrdk8+UJvKgBCKnURkc2zgVAZcuPlh0lK3DMuFSghI+m0Q0/lA4JAoP3esf45XsxcfvW9Ar6CgMMQ8EoI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=BDHU9Iws; arc=none smtp.client-ip=209.85.167.45
+	s=arc-20240116; t=1722602745; c=relaxed/simple;
+	bh=198IHW7p/T6PhidWJlWdPVwESeg8JNSFLNq+O29lKZk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=O6nekND8sXw6Hl+9vIZYJnnv5gr9D0G+RjqACKwQ6SRHc89l/wPlIUV877Wx2ZhQYbzKHSSx8d6oPt8nP3U/yQrEWSzs0I1Imbdj2Tq1twdi8TmtpwLVXn+/PB+WbrMMglqnL1OEZZ219kTz7iPHDzv0/EjfbCqnqBWRwNN/P5E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=OPMpFxpQ; arc=none smtp.client-ip=209.85.167.51
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="BDHU9Iws"
-Received: by mail-lf1-f45.google.com with SMTP id 2adb3069b0e04-52efc60a6e6so12631866e87.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 02 Aug 2024 05:45:41 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="OPMpFxpQ"
+Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-52efd8807aaso11977500e87.3
+        for <rust-for-linux@vger.kernel.org>; Fri, 02 Aug 2024 05:45:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1722602740; x=1723207540; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=kQadfcLj0dbMeA91m7FGzai+vkUYG1DvlG0x0uq/CWQ=;
-        b=BDHU9IwsyPc8Kxp6Shf6D8mk5SRsKDOGAWneg8zYgzdz5YTHBLQGRjGuxaDas1svgF
-         Doj6+F/qllxfgLvKESC/OnZQYBpRsCOsfNvrn9pfLNmwjyD50+8Olnu6EGmw57aK6vnL
-         DXtWkTWmKWJ9RTsYE2/wW9PasY0/UsUEN5F8JUAJA2j55E80ctkj+HcWH7SXQxWrNMUc
-         1MyHfVByzmIJQcrNNtq4scXxfaT3gOM6vnIG6wsCH5MwU3ArARUyOS7s/ERt7Q0LQt7T
-         zRCOGzn+imRxRyrqyBE1E9uSsRx5BWIJd4CYEXH9EnA7gZHbBUONxdcUgbCPALAWM73/
-         dTFw==
+        d=linaro.org; s=google; t=1722602741; x=1723207541; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=EzvUY6CqajngImU9C1U2y4kXw0+36J578NUjQngUD0U=;
+        b=OPMpFxpQ+X4l6hURXeGCnLy5Wre29BWhsKB3WCVv+0Yos54XQ3a1DXaAP1kkrRnRGp
+         xBJhRtn4gnMcZoyrZ5k4GrWelkPczDlioxsvkspdBaxPqYWUKWyQKQOXGSSLkOXk2Wjk
+         7Du66R+SFH6HFtAOaJH2NKTWkCy002aBBv/mMBNVfxKJdsjpnWnfrnqj0QGHnzxhk+NZ
+         rXh/CVyXsJB86qI5GhaaBQdHiv+iJ/2t5Dc8TwR6bBWi3AFFpV6/g6cSaClLx9fr5Alk
+         z1hA+gWu90zseR/Ecw04tjUxJw3EdsyzYED/iGLVPfsh8Ax8nHpHxnAlh+oEp7SJc8Lt
+         9E3w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722602740; x=1723207540;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=kQadfcLj0dbMeA91m7FGzai+vkUYG1DvlG0x0uq/CWQ=;
-        b=JRkjhV/7nAMyhASw5BIFbxMPTGoKUxE0EW27N+PeyEvIOy9aYKPH037cVCJQElztQ+
-         hGbQlg4KmJdkltQHjHQDRr4Y7R5nJU0vcMKlD1r5/eMU+TPET9Vu9zLIfidIyfsCZDLE
-         CuvJtLJffrLm6nIQY5QNrQ3xBepVacXeNNdY9Zu2YvS81RpjEByY3HfKtJivdkl83fco
-         eybC0UWAFKcuNJyNuigPtV00eiKgPSwVdNziSaRrOn67zWk1pQKOJpT6BkoI/bpteX9s
-         ixwS8mwVEEVn6+5iYBDEcisLbRVk2YoKvNJYzGunGf9V9JuDMiH0kTLp6FQRZPcWJdtn
-         MYkw==
-X-Gm-Message-State: AOJu0YzhVwT4NZJfert5uPkcgbzMzPg2zeqeCGplbhlTY97m8FUgrzMz
-	wojEVvWMS7SADRl51H93FsD5eGYJ0r89abBJG29KyMcmBLekpeFIAL0NK5/Q/yU=
-X-Google-Smtp-Source: AGHT+IGPr/cTRmNKJixkMUcjn1GhBezt4VMjTUceJqHStS9ST6UWMb+IoVyz7mZbggjMOS71BVFYIA==
-X-Received: by 2002:a05:6512:3e15:b0:52c:e0fb:92c0 with SMTP id 2adb3069b0e04-530bb385315mr1973294e87.34.1722602739950;
-        Fri, 02 Aug 2024 05:45:39 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1722602741; x=1723207541;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=EzvUY6CqajngImU9C1U2y4kXw0+36J578NUjQngUD0U=;
+        b=tTKd4C6EUrhVmjhDeFSSpy6xRvuujxnj/OMnit+Fd9nSIyYxOSzdUTo9KgXN9B1mJO
+         nVyGlzQ6ExbnXAmImrvxcMTifZSLpm9WKlEkM6OgARuTk+tlco/xQu5DkXJ/Yhf1xhrx
+         9aIzL24yEyX3FhHZBF9G/bwU9wa9stuQJiq3rO9c8kx92S0MnaMWDhsBVnhtJVwOtt8p
+         6Rlj5RvI3ZXD3OuB1Ph2wsh03oy75zOfJu7KJ1wpJK4rUkEfBL5J72DSNkTXzl0OBUba
+         jOEKq7uqY2+o1RzTSQU7t5Q5fF8LVRbS8z76xfP7FQo/Hak1EVM5FJEfhziWoAWeCFdg
+         z4Lw==
+X-Gm-Message-State: AOJu0Yy8MHzibJfD3S0AH5Zb2qD4OK0fr4EUqxPPwwFLp4AkGfe+Mpkd
+	Ef6FaBKO7sPosQltaB0dqzhqu8dAE07g5uiJJBsphsxRuoa15Osrdd4gedwBTNw=
+X-Google-Smtp-Source: AGHT+IGKqSCamMxPEhPZg2DpP7McBM0k60aQHtIDoeS9/S1zbWrD4kLItzjJHFXfCo7lgU/gypkFzQ==
+X-Received: by 2002:a05:6512:114d:b0:52c:8a39:83d7 with SMTP id 2adb3069b0e04-530bb3c7d5amr2168649e87.52.1722602741057;
+        Fri, 02 Aug 2024 05:45:41 -0700 (PDT)
 Received: from localhost (c-9b0ee555.07-21-73746f28.bbcust.telenor.se. [85.229.14.155])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-530bba07e6fsm218765e87.39.2024.08.02.05.45.39
+        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-530bba3ccb0sm216230e87.255.2024.08.02.05.45.40
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 02 Aug 2024 05:45:39 -0700 (PDT)
+        Fri, 02 Aug 2024 05:45:40 -0700 (PDT)
 From: Anders Roxell <anders.roxell@linaro.org>
 To: ojeda@kernel.org,
 	alex.gaynor@gmail.com,
@@ -58,10 +60,12 @@ Cc: rust-for-linux@vger.kernel.org,
 	linux-kselftest@vger.kernel.org,
 	linux-kernel@vger.kernel.org,
 	Anders Roxell <anders.roxell@linaro.org>
-Subject: [PATCH 1/2] selftests: rust: config: add trailing newline
-Date: Fri,  2 Aug 2024 14:45:35 +0200
-Message-ID: <20240802124536.2905797-1-anders.roxell@linaro.org>
+Subject: [PATCH 2/2] selftests: rust: config: disable GCC_PLUGINS
+Date: Fri,  2 Aug 2024 14:45:36 +0200
+Message-ID: <20240802124536.2905797-2-anders.roxell@linaro.org>
 X-Mailer: git-send-email 2.43.0
+In-Reply-To: <20240802124536.2905797-1-anders.roxell@linaro.org>
+References: <20240802124536.2905797-1-anders.roxell@linaro.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -70,33 +74,23 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-If adding multiple config files to the merge_config.sh script and
-rust/config is the fist one, then the last config fragment in this file
-and the first config fragment in the second file wont be set, since
-there isn't a newline in this file, so those two fragements end up at
-the same row like:
-CONFIG_SAMPLE_RUST_PRINT=mCONFIG_FRAGMENT=y
-
-And non of those will be enabled when running 'olddefconfig' after.
-
-Fixing the issue by adding a newline to the file.
+CONFIG_RUST depends on !CONFIG_GCC_PLUGINS. Disable CONFIG_GCC_PLUGINS
+in rust/config file to make sure it doesn't get enabled.
 
 Signed-off-by: Anders Roxell <anders.roxell@linaro.org>
 ---
- tools/testing/selftests/rust/config | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/rust/config | 1 +
+ 1 file changed, 1 insertion(+)
 
 diff --git a/tools/testing/selftests/rust/config b/tools/testing/selftests/rust/config
-index b4002acd40bc..fa06cebae232 100644
+index fa06cebae232..5f942b5c8c17 100644
 --- a/tools/testing/selftests/rust/config
 +++ b/tools/testing/selftests/rust/config
-@@ -2,4 +2,4 @@ CONFIG_RUST=y
+@@ -1,3 +1,4 @@
++# CONFIG_GCC_PLUGINS is not set
+ CONFIG_RUST=y
  CONFIG_SAMPLES=y
  CONFIG_SAMPLES_RUST=y
- CONFIG_SAMPLE_RUST_MINIMAL=m
--CONFIG_SAMPLE_RUST_PRINT=m
-\ No newline at end of file
-+CONFIG_SAMPLE_RUST_PRINT=m
 -- 
 2.43.0
 
