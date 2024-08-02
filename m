@@ -1,233 +1,151 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2C605234
-	for <rust-for-linux@vger.kernel.org>; Fri,  2 Aug 2024 00:15:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3057D15AD9C
+	for <rust-for-linux@vger.kernel.org>; Fri,  2 Aug 2024 07:09:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722557738; cv=none; b=P00TmXdpDok/m+rB10Lag8qVqsnEGrL2dG4LpJUMXvZ8OAnER9Rga5FPvG9/VsuTJxcJmdsfLZ/TzsYEJXZIMDxuphm+NuzmoJQTftzdoDnUjBcGr0QyDnHFkLOGJGX5/g16hfKZD68cjsVTByPkwXSYJnUVVwjBHjDNeHqsDxw=
+	t=1722582543; cv=none; b=kraxTshD+XP4zVjHFqV/ym1DXoGRfoGNj5M6mJPAliVJFrl4wm7cQ3wkZevHsyFIF/tZbJxVHkBoTQ7HF2EQPJP4+X/+w+XIDSAl+ftDhmsO9y7T2LC6jZ0X2BXnO7alcpH563BvCSJ9VAFqrPu+oVPqEEShWg3Jr0cniFrzeXA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722557738; c=relaxed/simple;
-	bh=ATaEraufn9NuoIBXG7cwNDQS7ZyNv5F9ORbQZ90V1+Q=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jr7l3oZGt9QU5ijb6WljimduZByEGAJ7NxURdVckPzGhxE5bP4MK6ypLgcmW0Yk4ihWUzo8//wC+QMHIEEzRRnSh8KONLxrjFcN13zG8LeV55WP8RPrcU3CdDqUOtP5iBMfDbeKv+msDigvO13/UkZInlthPQXiKaVeY4ixOhlY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=BTUxRq47; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1722582543; c=relaxed/simple;
+	bh=w8f4bWfv8QMMf9HK5zaz2GGGR5xiCaSKzaQ4cb6MS+E=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=VAQuuClk9pkitKn/C6s/Ke9m8MSdHP9JEVRXJuv94rB8XjdwwXmsSxAfgYrKGENycnWADaZtblCqOlZxffjePE6MqKeSLENZY+CFPZX7sMHoypYduNxYImLxoSZp6C4DSPlMFHKj0gXzCWeywKk+BDOY2zPCC7ynyLFOo9bgm7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rmQtq8is; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="BTUxRq47"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1722557735;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=WgXcZoSROwgBo7MuW9jRTAol2zy4WW/4zI71Tchl2TQ=;
-	b=BTUxRq47xkyla06KJ+ph60IViQUnvaDqo3w6hfNDK0PKBty6dI/AksfE01dNPy9DUkxNQk
-	zh9OVLkEHgMG4JNTXuHehLKO2ubwv8qp3GOYbs06tpFSstn3AqAB7rgQZ6LtGiVvOYXIQJ
-	xpWoYWx3PM0WgDEUc615bHA3KShPSQw=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-86-pDmwiqQDNwq1zBENVNFevA-1; Thu,
- 01 Aug 2024 20:15:31 -0400
-X-MC-Unique: pDmwiqQDNwq1zBENVNFevA-1
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.15])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 89C2E1955D48;
-	Fri,  2 Aug 2024 00:15:29 +0000 (UTC)
-Received: from emerald.lyude.net (unknown [10.22.9.60])
-	by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id A7A501955D42;
-	Fri,  2 Aug 2024 00:15:25 +0000 (UTC)
-From: Lyude Paul <lyude@redhat.com>
-To: rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Danilo Krummrich <dakr@redhat.com>,
-	airlied@redhat.com,
-	Ingo Molnar <mingo@redhat.com>,
-	Will Deacon <will@kernel.org>,
-	Waiman Long <longman@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Valentin Obst <kernel@valentinobst.de>
-Subject: [PATCH v3 3/3] rust: sync: Add SpinLockIrq
-Date: Thu,  1 Aug 2024 20:10:02 -0400
-Message-ID: <20240802001452.464985-4-lyude@redhat.com>
-In-Reply-To: <20240802001452.464985-1-lyude@redhat.com>
-References: <20240802001452.464985-1-lyude@redhat.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rmQtq8is"
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-428e0d184b4so10936185e9.2
+        for <rust-for-linux@vger.kernel.org>; Fri, 02 Aug 2024 00:09:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1722582540; x=1723187340; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XGGv90E4jZ/60vEt7thNxFzM/O5YoMdiSJ9S3TB3ycs=;
+        b=rmQtq8issg0lQ+a05XyK0j83eRAFqSHf13W5Gy9sNhhbgkWa4OzI4cpLyrGbkZUVQm
+         xVY2NyIHpiKLipLQabtZw+0v6aePnGzBR++g6kk7OoSf8fmYpvia/I3QFcaRehDXE1fF
+         D4o6gIIVRxVaAQXG8wDN5VHEBy5PG6Uo+LSewCpV2cQAo0CJJLu5/2S+cqT/1DZCOgcG
+         AirD5AxXltK63j4gtOZUdBErS61lMvdb9doS1x3NXsMZ8q8xOgZZXdOzKDfMSxhfe/lY
+         R9FKtDKhgaIyHWfFihB023axRTY0YoG6uHzheFzl2MiXX5uguL9ONVt7oVGnOD9og6hz
+         9iwA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722582540; x=1723187340;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=XGGv90E4jZ/60vEt7thNxFzM/O5YoMdiSJ9S3TB3ycs=;
+        b=j4wg/ZsqQ7NdR3qkmhAqKMhtihU2TbjX8BNOEYb74Ffum64pYf6GkaSvBZQENTnC/O
+         5hr/nR3G+LG2NWBd3P/8p9tNmEAf9p31WGdQtMneZB2XD7IuCCw0lXCcRtFju6m4pBaR
+         xyjCOOUxho6UUX/UxZx3jsNpv7OpRELM1RI7Q5cCphR+GMfVa2/0KwjdkuUttgISXJYM
+         jB+J1VESXCrxDC9fQzCq7ShQrrBLXahHGcRvN9nezK1EQRFoJckah29K4bY15BAsrxxc
+         7nE+FSLkyHjDLF52zWyIq71Wtqa0zsuoyyHUwidhYzTOywc9pPMV2Lokgre2dq0ifx3a
+         sJog==
+X-Forwarded-Encrypted: i=1; AJvYcCXxrNTV2bKB/9IxNiMZtOA97wix76MVFO13QFDEkMqfZslr+rO4gmdqnJ2JPqGkirnJtxjS4GYnHzSoiiZTpCMXSO+5HQ7cWk/PsYS3lZM=
+X-Gm-Message-State: AOJu0YwkCtWsiyb+3hbFqK51W/Wo9EXXQC9Ci5x+Poc0zajuvm1eH210
+	2avNugIJJ3PDp3u12xtDop5r+D2oVnSa6ejqOeah3JlrIyaUmpX2lOVG5xRg2W7OPMXVuX4VDtV
+	eUV9wF2Fo7u1Wj8nWQnJGi70tiUbkG2w6QMYF
+X-Google-Smtp-Source: AGHT+IG4BdlPACpAxMAkuvrmIrybwbaSNbWlzp5aQ/dx8NtGyv2vSVHH4dIGcI7nj1JZdge7zE3p9UjbZS2U1WFmAAE=
+X-Received: by 2002:a05:600c:4f0f:b0:426:5cdf:2674 with SMTP id
+ 5b1f17b1804b1-428e6af7070mr14285565e9.4.1722582540093; Fri, 02 Aug 2024
+ 00:09:00 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
+References: <20240801000641.1882-1-dakr@kernel.org> <20240801000641.1882-18-dakr@kernel.org>
+ <CAH5fLghO8v0wn-uCx1u_zojPLdDH_RMn4BXxLB1ZMJjfpTkbAw@mail.gmail.com> <ZqurvdyDD6bH4H7Y@pollux>
+In-Reply-To: <ZqurvdyDD6bH4H7Y@pollux>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Fri, 2 Aug 2024 09:08:48 +0200
+Message-ID: <CAH5fLgga9TOtZBcJNJBgzRGSrX5JuvdbSrvdYV3w8b7gOAncPA@mail.gmail.com>
+Subject: Re: [PATCH v3 17/25] rust: alloc: implement `collect` for `IntoIter`
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, 
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	benno.lossin@proton.me, a.hindborg@samsung.com, akpm@linux-foundation.org, 
+	daniel.almeida@collabora.com, faith.ekstrand@collabora.com, 
+	boris.brezillon@collabora.com, lina@asahilina.net, mcanal@igalia.com, 
+	zhiw@nvidia.com, acurrid@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com, 
+	airlied@redhat.com, ajanulgu@redhat.com, lyude@redhat.com, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-A variant of SpinLock that is expected to be used in noirq contexts, and
-thus requires that the user provide an kernel::irq::IrqDisabled to prove
-they are in such a context upon lock acquisition. This is the rust
-equivalent of spin_lock_irqsave()/spin_lock_irqrestore().
+On Thu, Aug 1, 2024 at 5:37=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> w=
+rote:
+>
+> On Thu, Aug 01, 2024 at 05:10:22PM +0200, Alice Ryhl wrote:
+> > On Thu, Aug 1, 2024 at 2:08=E2=80=AFAM Danilo Krummrich <dakr@kernel.or=
+g> wrote:
+> > >
+> > > Currently, we can't implement `FromIterator`. There are a couple of
+> > > issues with this trait in the kernel, namely:
+> > >
+> > >   - Rust's specialization feature is unstable. This prevents us to
+> > >     optimze for the special case where `I::IntoIter` equals `Vec`'s
+> > >     `IntoIter` type.
+> > >   - We also can't use `I::IntoIter`'s type ID either to work around t=
+his,
+> > >     since `FromIterator` doesn't require this type to be `'static`.
+> > >   - `FromIterator::from_iter` does return `Self` instead of
+> > >     `Result<Self, AllocError>`, hence we can't properly handle alloca=
+tion
+> > >     failures.
+> > >   - Neither `Iterator::collect` nor `FromIterator::from_iter` can han=
+dle
+> > >     additional allocation flags.
+> > >
+> > > Instead, provide `IntoIter::collect`, such that we can at least conve=
+rt
+> > > `IntoIter` into a `Vec` again.
+> > >
+> > > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> >
+> > I'm not convinced a collect implementation specific to IntoIter is nece=
+ssary?
+>
+> For the reasons above, we can't implement `FromIterator`. At some point w=
+e may
+> want to implement our own kernel `FromIterator` trait, but that's out of =
+scope
+> for this series.
+>
+> For now, I just want to provide a way to get a `Vec` from `IntoIter` agai=
+n,
+> which without `Vec::collect` would be impossible.
 
-Signed-off-by: Lyude Paul <lyude@redhat.com>
+If you have a need for a collect on this particular kind of iterator, then =
+okay.
 
----
+> > > +
+> > > +        // SAFETY: `buf` points to the start of the backing buffer a=
+nd `len` is guaranteed to be
+> > > +        // smaller than `cap`. Depending on `alloc` this operation m=
+ay shrink the buffer or leaves
+> > > +        // it as it is.
+> > > +        ptr =3D match unsafe { A::realloc(Some(buf.cast()), layout, =
+flags) } {
+> >
+> > Why would you shrink it? You can just keep the capacity.
+>
+> What if the vector was pretty huge and meanwhile as advanced by a lot? I =
+think
+> we don't want to waste those resources.
+>
+> Ideally the corresponding `Allocator` implements a proper heuristic for w=
+hen to
+> actually shrink. For instance, krealloc() never shrinks, and it's probabl=
+y not
+> worth it. For vrealloc() though we clearly want to shrink properly (i.e. =
+unmap
+> and free spare pages) at some point.
 
-V2:
-* s/IrqSpinLock/SpinLockIrq/
-* Implement `lock::Backend` now that we have `Context`
-* Add missing periods
-* Make sure rustdoc examples compile correctly
-* Add documentation suggestions
----
- rust/kernel/sync.rs               |   2 +-
- rust/kernel/sync/lock/spinlock.rs | 104 ++++++++++++++++++++++++++++++
- 2 files changed, 105 insertions(+), 1 deletion(-)
+The Rust Vec never shrinks unless explicitly requested. But I guess
+it's okay either way.
 
-diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
-index 0ab20975a3b5d..b028ee325f2a6 100644
---- a/rust/kernel/sync.rs
-+++ b/rust/kernel/sync.rs
-@@ -15,7 +15,7 @@
- pub use arc::{Arc, ArcBorrow, UniqueArc};
- pub use condvar::{new_condvar, CondVar, CondVarTimeoutResult};
- pub use lock::mutex::{new_mutex, Mutex};
--pub use lock::spinlock::{new_spinlock, SpinLock};
-+pub use lock::spinlock::{new_spinlock, new_spinlock_irq, SpinLock, SpinLockIrq};
- pub use locked_by::LockedBy;
- 
- /// Represents a lockdep class. It's a wrapper around C's `lock_class_key`.
-diff --git a/rust/kernel/sync/lock/spinlock.rs b/rust/kernel/sync/lock/spinlock.rs
-index 97d85a5576615..47c71d779062a 100644
---- a/rust/kernel/sync/lock/spinlock.rs
-+++ b/rust/kernel/sync/lock/spinlock.rs
-@@ -3,6 +3,7 @@
- //! A kernel spinlock.
- //!
- //! This module allows Rust code to use the kernel's `spinlock_t`.
-+use kernel::irq::*;
- 
- /// Creates a [`SpinLock`] initialiser with the given name and a newly-created lock class.
- ///
-@@ -116,3 +117,106 @@ unsafe fn unlock(ptr: *mut Self::State, _guard_state: &Self::GuardState) {
-         unsafe { bindings::spin_unlock(ptr) }
-     }
- }
-+
-+/// Creates a [`SpinLockIrq`] initialiser with the given name and a newly-created lock class.
-+///
-+/// It uses the name if one is given, otherwise it generates one based on the file name and line
-+/// number.
-+#[macro_export]
-+macro_rules! new_spinlock_irq {
-+    ($inner:expr $(, $name:literal)? $(,)?) => {
-+        $crate::sync::SpinLockIrq::new(
-+            $inner, $crate::optional_name!($($name)?), $crate::static_lock_class!())
-+    };
-+}
-+pub use new_spinlock_irq;
-+
-+/// A spinlock that may be acquired when interrupts are disabled.
-+///
-+/// A version of [`SpinLock`] that can only be used in contexts where interrupts for the local CPU
-+/// are disabled. It requires that the user acquiring the lock provide proof that interrupts are
-+/// disabled through [`IrqDisabled`].
-+///
-+/// For more info, see [`SpinLock`].
-+///
-+/// # Examples
-+///
-+/// The following example shows how to declare, allocate initialise and access a struct (`Example`)
-+/// that contains an inner struct (`Inner`) that is protected by a spinlock.
-+///
-+/// ```
-+/// use kernel::{
-+///     sync::{new_spinlock_irq, SpinLockIrq},
-+///     irq::{with_irqs_disabled, IrqDisabled}
-+/// };
-+///
-+/// struct Inner {
-+///     a: u32,
-+///     b: u32,
-+/// }
-+///
-+/// #[pin_data]
-+/// struct Example {
-+///     c: u32,
-+///     #[pin]
-+///     d: SpinLockIrq<Inner>,
-+/// }
-+///
-+/// impl Example {
-+///     fn new() -> impl PinInit<Self> {
-+///         pin_init!(Self {
-+///             c: 10,
-+///             d <- new_spinlock_irq!(Inner { a: 20, b: 30 }),
-+///         })
-+///     }
-+/// }
-+///
-+/// // Accessing an `Example` from a function that can only be called in no-irq contexts
-+/// fn noirq_work(e: &Example, irq: IrqDisabled<'_>) {
-+///     assert_eq!(e.c, 10);
-+///     assert_eq!(e.d.lock_with(irq).a, 20);
-+/// }
-+///
-+/// // Allocate a boxed `Example`
-+/// let e = Box::pin_init(Example::new(), GFP_KERNEL)?;
-+///
-+/// // Accessing an `Example` from a context where IRQs may not be disabled already.
-+/// let b = with_irqs_disabled(|irq| {
-+///     noirq_work(&e, irq);
-+///     e.d.lock_with(irq).b
-+/// });
-+/// assert_eq!(b, 30);
-+/// # Ok::<(), Error>(())
-+/// ```
-+pub type SpinLockIrq<T> = super::Lock<T, SpinLockIrqBackend>;
-+
-+/// A kernel `spinlock_t` lock backend that is acquired in no-irq contexts.
-+pub struct SpinLockIrqBackend;
-+
-+unsafe impl super::Backend for SpinLockIrqBackend {
-+    type State = bindings::spinlock_t;
-+    type GuardState = ();
-+    type Context<'a> = IrqDisabled<'a>;
-+
-+    unsafe fn init(
-+        ptr: *mut Self::State,
-+        name: *const core::ffi::c_char,
-+        key: *mut bindings::lock_class_key,
-+    ) {
-+        // SAFETY: The safety requirements ensure that `ptr` is valid for writes, and `name` and
-+        // `key` are valid for read indefinitely.
-+        unsafe { bindings::__spin_lock_init(ptr, name, key) }
-+    }
-+
-+    unsafe fn lock(ptr: *mut Self::State) -> Self::GuardState {
-+        // SAFETY: The safety requirements of this function ensure that `ptr` points to valid
-+        // memory, and that it has been initialised before.
-+        unsafe { bindings::spin_lock(ptr) }
-+    }
-+
-+    unsafe fn unlock(ptr: *mut Self::State, _guard_state: &Self::GuardState) {
-+        // SAFETY: The safety requirements of this function ensure that `ptr` is valid and that the
-+        // caller is the owner of the spinlock.
-+        unsafe { bindings::spin_unlock(ptr) }
-+    }
-+}
--- 
-2.45.2
-
+Alice
