@@ -1,94 +1,113 @@
-Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4922C847B;
-	Sat,  3 Aug 2024 12:24:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1DC3B641;
+	Sat,  3 Aug 2024 14:16:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722687875; cv=none; b=iEITb7W/LxY7PsDTo2OUdU6x/FTicmmubL920ACOYxeoZpaTtTKHoC3+qN9QmapLF31kbtjgNBOuLzxR0SwLE1nQLDQyf4SN+rMHPiU9aB8KbDthsVKzF6K4qTFRnL8Jn8la/TvFxuJkT/7OLe4feCGzn1mnBOnZJrZlLYhpcu8=
+	t=1722694620; cv=none; b=WV5/ha4ALUZyK6e/X8jP7GuYc5h1Y5/PlSP6Bta9EtiGW4gxCyqhoK6csT8FhdI4//X769WQ94C/Uzdz6nLt9NTqbo9B4N7F4BoDqcsicBs+yxc6NaHVJbQjJE06GvSGkIGTxt4WIkAlE8MmyzEEzoxwk0KzeXeNNcDWFaVKMOM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722687875; c=relaxed/simple;
-	bh=O0msGMJ7PYF8d1H0sIT6opYv3wNUCSuOtn1nql9khwo=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZHfO/TcqyP82u3HtgIDpig4ZxYaguCjdmZIV3BW1+q6c8wkbKZW6b1dmLHVO77v9qf58u+ZYkNLZJ4inAMtKgRLNxCRPrJY+dNwDzeLEj+9OuDtQJ4QhW0yJq4tmTIMKq2VdGKxllLZurde9VSQ8a9zA/gTZa+RiVcONaKwMHMY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=agarotjn; arc=none smtp.client-ip=209.85.216.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1722694620; c=relaxed/simple;
+	bh=3+Ynq/blDlS/A1xWsiCrCm+4IrtRXyRbpnMqLqXw6ik=;
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=PyxN7X8mUCTBL9RDyFkw2qUXmliMyRl4N2MDZfpotbvATLb2kKo6R0bFR0LSzyBUvheex+jDWo0HVR42Qny12lzWtYs8gZn3S3UYLWiKyexStJnKEai8AzWFLMLo0e4A8FLDPH+/jCImy2lurVwJEOgCCi8WQxqO3oFwaEQXnaE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=MR9HsNh6; arc=none smtp.client-ip=185.70.40.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="agarotjn"
-Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-2cdadce1a57so6179587a91.2;
-        Sat, 03 Aug 2024 05:24:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1722687873; x=1723292673; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=O0msGMJ7PYF8d1H0sIT6opYv3wNUCSuOtn1nql9khwo=;
-        b=agarotjnYsdA7N9QnKbMwfK236q83Z5qR8kpGOH1SNhna2tlEhwbNdx3UKMLIYrdU7
-         mDk2HPQJ+Dl3xG07xs9UVZSf438N1k/Mc7U3kZjSorsQcWcmY7N/NIrsOA19qObEJbgi
-         4+eXYK9nVnfX0wcVXkADxfnsM+Vh1flq+bZHaevy0gffKEgFxfYAbrzYnGG9Yo5lsvQu
-         eQ4I3Ha0A/85ZmtHa6vd51QTTMgfRJgyhShHLr1km5WvZBxLvXtk1o0jFZzs2BDs4J1F
-         yRu+c/VkEJRsHun9iUQa65kx5HIPx5Zj3ch5QjcFsvguX/SeIOhetif9kuQK/XEDrVJl
-         nGOQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722687873; x=1723292673;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=O0msGMJ7PYF8d1H0sIT6opYv3wNUCSuOtn1nql9khwo=;
-        b=S37U4tbQUee07UTPLfgQdJMSKj6pmCg+WLjNjvtusg1Khch9RtpyjVmr4nOj9Z6BsE
-         SLU0LdXDWKblERBzgpbw08AuHk1DBQiuYYq84f5aOxPL86sZ9El6TPpdPc1SYEMl1+Gj
-         zlu5++NFP+iYJTIus6rzQCzzJ/9r0Uk2xg/v/wZe5mLq9s1fTVu7u6syczsv94trrUX2
-         1SJ/KpIP/jOUjT1rXrxMynONguC5kixPBVE4gcm/S7b4GM+uyQ6CK09ABOSRTw93mt5p
-         QFJ/jNyEOyfT9uRWu/+L1OvUvX9tSW3zzKKAymyA4mj2DtB53UHgK1C2bZVeLUYZi6hq
-         1SOA==
-X-Forwarded-Encrypted: i=1; AJvYcCXaHbSOH9ugVh8YwiPyH/foFoJ0gx8TFxe1JSXmPlCh7aQrmpOKWEJYBDl+LJ3PIG3Z+cIS9CJREHRIMW1egFxp6NUpjFXTW8zP/gJOKdMVM2mfG0sFLITfHTQxwipUE9a1FnWnjkxMsmgXM58=
-X-Gm-Message-State: AOJu0YykzGXpW6qV7pjEYXwJlQW9HaoFefP1dWLTe2nhhn9mHE66QytL
-	eQw25w+FQe/tiCHhwMICLBwKh5gQBZjHATxAN/lj2NAvmNx4wt+Xqi0yedg1g2M9KRT8njnBicA
-	cohRz8BAujFQPFiTUbuz0S/PFNug=
-X-Google-Smtp-Source: AGHT+IHCgvjwsL2HXZmMiQhYso+tTERYAcqux3qOuPROp0PNIGsCeN+l2cn5VCWAER4aUeqSIQ3qLoQNV2g6p7obY8o=
-X-Received: by 2002:a17:90a:fa11:b0:2c8:538d:95b7 with SMTP id
- 98e67ed59e1d1-2cff9547cb3mr6767194a91.32.1722687873458; Sat, 03 Aug 2024
- 05:24:33 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="MR9HsNh6"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1722694615; x=1722953815;
+	bh=hAQ6hy44bp3XygD6ePThhXDsm8YAT2lNRtRycLfd8Lw=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=MR9HsNh6cH4NxDg9pvs+a6Y25nCmGwIsmfffMGI4DVBVkh0iFbSHEV4Krauz4jMtk
+	 XvdOcXzSHTGigQi2WcDr7R3s1In3uAEEdWandgBXci7UCueXzar1NgJ8irvejeAOR6
+	 ADhDOL2VzZvlPvQP+UG3CHjnZLmPIaAwdDXxEldgwVyxMZ17qrHvVmrdOple4MntXB
+	 5VNtmFb96kAj++DNkQtTBhFUrsQ4cRAdW4g2/8O54LmxZgVMeev++6R25XcgbT8PfN
+	 X/T1zDYwE80+f+QF1ZAKVFMK0daZ6eiRrJHSd5mE9RqPn5zuEaZ+kUi6jY3Fp5nGOF
+	 0rQ176yn77I9w==
+Date: Sat, 03 Aug 2024 14:16:49 +0000
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v3 1/2] rust: kernel: add `drop_contents` to `BoxExt`
+Message-ID: <20240803141639.3237686-1-benno.lossin@proton.me>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: cbd9a19a765b4f558cda95955f0c0f8c875b915a
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240711-b4-rbtree-v6-0-14bef1a8cdba@google.com>
- <20240711-b4-rbtree-v6-1-14bef1a8cdba@google.com> <20240731210206.2b56b432.gary@garyguo.net>
- <52cc1987-ec62-46dd-9d81-4afc155fe88f@proton.me>
-In-Reply-To: <52cc1987-ec62-46dd-9d81-4afc155fe88f@proton.me>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sat, 3 Aug 2024 14:24:21 +0200
-Message-ID: <CANiq72n_v76yMFJwy8S+Akf6T8hOM-JGwP_WUKEdiNvo371NfQ@mail.gmail.com>
-Subject: Re: [PATCH v6 1/6] rust: kernel: add `drop_contents` to `BoxExt`
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Gary Guo <gary@garyguo.net>, Matt Gilbride <mattgilbride@google.com>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
-	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
-	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Christian Brauner <brauner@kernel.org>, Rob Landley <rob@landley.net>, 
-	Davidlohr Bueso <dave@stgolabs.net>, Michel Lespinasse <michel@lespinasse.org>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jul 31, 2024 at 10:47=E2=80=AFPM Benno Lossin <benno.lossin@proton.=
-me> wrote:
->
-> Note that the newest version of this patch can be found at [1]. I agree,
-> it should probably take `this: Self` instead of a `self` receiver.
->
-> @Miguel, do you think I should send a new version with that change?
+Sometimes (see [1]) it is necessary to drop the value inside of a
+`Box<T>`, but retain the allocation. For example to reuse the allocation
+in the future.
+Introduce a new function `drop_contents` that turns a `Box<T>` into
+`Box<MaybeUninit<T>>` by dropping the value.
 
-You mean with `this` + Boqun's feedback there fixed? Yeah, if you have
-a moment, that would be nice. Thanks!
+Signed-off-by: Benno Lossin <benno.lossin@proton.me>
+Link: https://lore.kernel.org/rust-for-linux/20240418-b4-rbtree-v3-5-323e13=
+4390ce@google.com/ [1]
+---
+ rust/kernel/alloc/box_ext.rs | 26 +++++++++++++++++++++++++-
+ 1 file changed, 25 insertions(+), 1 deletion(-)
 
-Cheers,
-Miguel
+diff --git a/rust/kernel/alloc/box_ext.rs b/rust/kernel/alloc/box_ext.rs
+index 829cb1c1cf9e..076d5de5f47d 100644
+--- a/rust/kernel/alloc/box_ext.rs
++++ b/rust/kernel/alloc/box_ext.rs
+@@ -4,7 +4,7 @@
+=20
+ use super::{AllocError, Flags};
+ use alloc::boxed::Box;
+-use core::mem::MaybeUninit;
++use core::{mem::MaybeUninit, ptr, result::Result};
+=20
+ /// Extensions to [`Box`].
+ pub trait BoxExt<T>: Sized {
+@@ -17,6 +17,22 @@ pub trait BoxExt<T>: Sized {
+     ///
+     /// The allocation may fail, in which case an error is returned.
+     fn new_uninit(flags: Flags) -> Result<Box<MaybeUninit<T>>, AllocError>=
+;
++
++    /// Drops the contents, but keeps the allocation.
++    ///
++    /// # Examples
++    ///
++    /// ```
++    /// use kernel::alloc::{flags, box_ext::BoxExt};
++    /// let value =3D Box::new([0; 32], flags::GFP_KERNEL)?;
++    /// assert_eq!(*value, [0; 32]);
++    /// let value =3D Box::drop_contents(value);
++    /// // Now we can re-use `value`:
++    /// let value =3D Box::write(value, [1; 32]);
++    /// assert_eq!(*value, [1; 32]);
++    /// # Ok::<(), Error>(())
++    /// ```
++    fn drop_contents(this: Self) -> Box<MaybeUninit<T>>;
+ }
+=20
+ impl<T> BoxExt<T> for Box<T> {
+@@ -53,4 +69,12 @@ fn new_uninit(flags: Flags) -> Result<Box<MaybeUninit<T>=
+>, AllocError> {
+         // zero-sized types, we use `NonNull::dangling`.
+         Ok(unsafe { Box::from_raw(ptr) })
+     }
++
++    fn drop_contents(this: Self) -> Box<MaybeUninit<T>> {
++        let ptr =3D Box::into_raw(this);
++        // SAFETY: `ptr` is valid, because it came from `Box::into_raw`.
++        unsafe { ptr::drop_in_place(ptr) };
++        // SAFETY: `ptr` is valid, because it came from `Box::into_raw`.
++        unsafe { Box::from_raw(ptr.cast()) }
++    }
+ }
+--=20
+2.45.2
+
+
