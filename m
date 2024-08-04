@@ -1,89 +1,34 @@
-Received: from mail-qv1-f54.google.com (mail-qv1-f54.google.com [209.85.219.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6ACE0FC19;
-	Sun,  4 Aug 2024 06:55:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06A2D381BD;
+	Sun,  4 Aug 2024 12:30:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722754521; cv=none; b=Vl6mXMOjKiFwUXfPLcESNdRdebRHvk/9pYkekHf3UGOZS/cMfnIp8uCmDuRu0Fkx7siprXkUIAOt1K3Qk4QLPJU/1QWklt4CoTrVR8VK7SMB2qim/9cwjD4Bt5GWpLHMy9Vou0Z+CwswRSXX1/RWo5qyvfEwh23vFfGlYRr8wgw=
+	t=1722774602; cv=none; b=S4zQWYmSQs3FBV12OAC+GNhg/raVP9zOlfB6qKp85B/IyfAVSpyfLyD3UXmGVqg+zgLkI56v4IqPAm4WrbXjW/wYGFtd/1lI6rfqezP+HJOtOYkZ9ERIOnfWbNcZo4VmqIoVeHJGeSRdOaEYz3xGwdkl1UjAu1vSS1e0NlhLjSw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722754521; c=relaxed/simple;
-	bh=6D/+j4eNn56ySxxT28Z42uljRo92JoDAZoLs78OI/2Y=;
+	s=arc-20240116; t=1722774602; c=relaxed/simple;
+	bh=VnyEDyp+Og0b+BRBM/aqZK971zINnbDM9dhZN85qgRU=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Q+0KA5nnNxF1i3E045PGw/82l6Gbe0FBgz2IAf9TQLE+KNS6UuGHvRWGjS5+taFUem5k0DZJAiiDnEi/7e87WU4TvypGGHlcCefotooDu7JRvmlqC9QmnEL7wCh5mY80aiL0Fw6qBzKm4RI94Vf/Qw+2q9wPTnCVP08ehUimV2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PsW4d7Z5; arc=none smtp.client-ip=209.85.219.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=EgcAWIevw0zcXV38nPuRGKeFxuaym3CDksZg88SmqAYpw8+ROHEonw6T82LBk6qmVGvYRATTNl+WBTU+gSOwGQ6KhtBMJJ3YdHaT/s0Xjm28vvvh2MmJp75veyS1BlGrwKVrnd1sRvyKArSu8NC3SiJ66yF/ocljbITJfV9mZek=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nhqWbwrC; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PsW4d7Z5"
-Received: by mail-qv1-f54.google.com with SMTP id 6a1803df08f44-6b7a4668f07so52265936d6.1;
-        Sat, 03 Aug 2024 23:55:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1722754518; x=1723359318; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Sy8FGn/BTbcPJC5MMyxJCn4sZraMIh/6JsCawGK/LUY=;
-        b=PsW4d7Z5H+7AWyc09N4hpnD+L27nIgTNyi4xjxkPsgzhi8L1ams7wBq2JpIP9XJiey
-         nuvPpoLDdT8AGRrJZ7BAG7LOmu6Kf+eKHzAC0pEgdRT6jQWiZLooQvqDI+JWbY4Nu61A
-         Lhc223i87rPaIDMCh/7s9Ym8B9/sXVpRR0pf5FqPX1DpR6utB4ZgELRXL65HMdHUl3Bd
-         5p/SJViEjcYYEyX/iPaZ6EHYgZnFHqLuzhk6GvyzhMmudbs2e2eNXbiXuQqhe8xZ6kSi
-         Fl9ZYSsV/KS8Dvv3jyg2kWsathU121aUl1fi5LVt6duCJSE2rYNg5p4uUhhKt9Sl8YRy
-         2PUQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722754518; x=1723359318;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Sy8FGn/BTbcPJC5MMyxJCn4sZraMIh/6JsCawGK/LUY=;
-        b=KCZVG0Do3p97INLKfSElQ9S9yIiRnX3SGQLbhQD3GzkW8X7iMO+V/NkLHQHT6/ZUxc
-         WV32kpfHoWDIB6uIQFqS3RiPEAyv++tKNrdlLsdji/5Vq2Yvu0ZGPmO/PNUpUmLyIbXl
-         OHIDjWlwl6uTQ5oEZDUJHRbsQLkZqblTboB3ZfLtsiMX3Oy/aCppKdaIx27Cb/PpEd1w
-         hp+HuYkmErv6dr5QXjgoS4D3Mm7mluap3F43iQy20lA3xs2jKy4vFO/6n9rIEOOAbzKC
-         8fx1TktNQBxGUderIzT5GOetAOMefOwUR/fyVTyJtpiLwZbJvuWML4JmGo5ubasi43YT
-         o09A==
-X-Forwarded-Encrypted: i=1; AJvYcCUPHS2xlibDzDf+fuMOs2nSriLMv/pvHL/bkpi6yMU+KUnFueD5dea+yHDRlwM766d/gIRjEdxOMa75/2iik8Yz2UXsk+nG+72CZw99crtWjlf0LLuSC3FXJG3T0HCoKB15FvfBl15aa7OhTN4=
-X-Gm-Message-State: AOJu0Yz91e62LE0zzJ080bVwujvojS7eZk4hlRWlu9VUP9FoCoY1XmzO
-	h2NWSODv6aKsdhCU4QU6va/tD7dVwyGq8JPW1jnHK7NhAE7wiDPA
-X-Google-Smtp-Source: AGHT+IEZzvju0oH2WTEc5x1rknfx0xEx4H+x73atNK4I8YNXMMBWEeXs6uVEgXnER87ogp6NHIi6rA==
-X-Received: by 2002:a05:6214:5984:b0:6b0:6400:3b6f with SMTP id 6a1803df08f44-6bb9833d816mr132610476d6.8.1722754518089;
-        Sat, 03 Aug 2024 23:55:18 -0700 (PDT)
-Received: from fauth2-smtp.messagingengine.com (fauth2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6bb9c760453sm23062286d6.26.2024.08.03.23.55.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 03 Aug 2024 23:55:17 -0700 (PDT)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-	by mailfauth.nyi.internal (Postfix) with ESMTP id ECA84120006E;
-	Sun,  4 Aug 2024 02:55:16 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute6.internal (MEProxy); Sun, 04 Aug 2024 02:55:16 -0400
-X-ME-Sender: <xms:1CWvZpIRKWvW3XbCRf5rDSvmHyCc86PEnrwfa1vZRnduv-dmCGl6sQ>
-    <xme:1CWvZlLD05xXPzVenzUVYZoI1SCIzKlvITMjCvhoBX9urLrOScD9NEzh2istzwPyd
-    I4OE2OZY1KIqT-3-Q>
-X-ME-Received: <xmr:1CWvZhsunipDn-SNX_oe5UgdTRYtYsBs7dZEQBTFNbfppr__9xKi3FL_lcdasw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrkeefgdduudeiucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhu
-    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
-    htthgvrhhnpeefiefhueeghfdtfedvudejgeeltdetjeduhfeltdefteduhfehveelfefg
-    feeileenucffohhmrghinhepghhithhhuhgsrdgtohhmpddtjeeiledqshhouhhnugdqgh
-    gvnhgvrhhitgdqughrohhprdhmugdpphhoihhnthgvrhdrrghspdgrshgpphhtrhdrshgr
-    fhgvthihnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
-    epsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedt
-    ieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfh
-    higihmvgdrnhgrmhgvpdhnsggprhgtphhtthhopedt
-X-ME-Proxy: <xmx:1CWvZqZPjXID0EkXMPwMkppFrs9T3d00JlyEJMZlw9zG8OowyOCINA>
-    <xmx:1CWvZgbSBVkPl1qOD_X4rheCCQmcswfl5JAXwOHuRbfUuvSaLLC_xw>
-    <xmx:1CWvZuBsmnQxE5dvDBvEZHECr1u6TclVpT3epAVxHVQJrhGDn4sNfg>
-    <xmx:1CWvZuYsr3T48hzVvm5FWyBZKFgbrewsFIDE_PVE5wusLS1cV0ZjfA>
-    <xmx:1CWvZsqOpfF06P8zLqZtNZ0c8TdInOFVZ5XID9AU0VUVT4TzXKgksING>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 4 Aug 2024 02:55:16 -0400 (EDT)
-Date: Sat, 3 Aug 2024 23:54:20 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Danilo Krummrich <dakr@kernel.org>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nhqWbwrC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 791D7C32786;
+	Sun,  4 Aug 2024 12:29:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1722774601;
+	bh=VnyEDyp+Og0b+BRBM/aqZK971zINnbDM9dhZN85qgRU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=nhqWbwrClYv7Eg7mLZgSuH/101q/4cByDn2FVtT9qBr1sbyUBqlGZPgPV1SVzA5i3
+	 7gdXLeS9j+ReHj5PMpmOKvmmtpZ/UTv0xlbFMzn6buKY7C5uWdCSdRlPRm4jjVP6PD
+	 qAtYbzcz6TzTJ6odNnPP2uNsqLwX8v5mcqPUBgupd2AX0Ii77Z1lRmPMHv11j2T9HT
+	 p8dYLaa6EghMtLxaRsioC7vcof37hnsUcdbEYYYMxZ2Z43Vw2IadpaY5OhFI6OKqDL
+	 owPsNR7FjEsXUErQpRI0Cq5v819495VuM5PY765XLKBlKU8XZDImrjiMyf/sKN6bXi
+	 2PfCRdiG7bpYA==
+Date: Sun, 4 Aug 2024 14:29:53 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Boqun Feng <boqun.feng@gmail.com>
 Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
 	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
 	a.hindborg@samsung.com, aliceryhl@google.com,
@@ -94,10 +39,11 @@ Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
 	airlied@redhat.com, ajanulgu@redhat.com, lyude@redhat.com,
 	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: Re: [PATCH v3 08/25] rust: types: implement `Unique<T>`
-Message-ID: <Zq8lnBvgqXAk1B5e@boqun-archlinux>
+Subject: Re: [PATCH v3 01/25] rust: alloc: add `Allocator` trait
+Message-ID: <Zq90QTKqJQWtCnPn@pollux>
 References: <20240801000641.1882-1-dakr@kernel.org>
- <20240801000641.1882-9-dakr@kernel.org>
+ <20240801000641.1882-2-dakr@kernel.org>
+ <Zq8d4fKUhXchuZBR@boqun-archlinux>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -106,227 +52,95 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240801000641.1882-9-dakr@kernel.org>
+In-Reply-To: <Zq8d4fKUhXchuZBR@boqun-archlinux>
 
-On Thu, Aug 01, 2024 at 02:02:07AM +0200, Danilo Krummrich wrote:
-> Implement the `Unique` type as a prerequisite for `Box` and `Vec`
-> introduced in subsequent patches.
+On Sat, Aug 03, 2024 at 11:21:21PM -0700, Boqun Feng wrote:
+> On Thu, Aug 01, 2024 at 02:02:00AM +0200, Danilo Krummrich wrote:
+> [...]
+> > +/// The kernel's [`Allocator`] trait.
+> > +///
+> > +/// An implementation of [`Allocator`] can allocate, re-allocate and free memory buffer described
+> > +/// via [`Layout`].
+> > +///
+> > +/// [`Allocator`] is designed to be implemented as a ZST; [`Allocator`] functions do not operate on
+> > +/// an object instance.
+> > +///
+> > +/// # Safety
+> > +///
+> > +/// Memory returned from an allocator must point to a valid memory buffer and remain valid until
+> > +/// it is explicitly freed.
+> > +///
+> > +/// Any pointer to a memory buffer which is currently allocated must be valid to be passed to any
+> > +/// other [`Allocator`] function. The same applies for a NULL pointer.
+> > +///
 > 
-> `Unique` serves as wrapper around a `NonNull`, but indicates that the
-> possessor of this wrapper owns the referent.
-> 
-> This type already exists in Rust's core library, but, unfortunately, is
-> exposed as unstable API and hence shouldn't be used in the kernel.
-> 
-> This implementation of `Unique` is almost identical, but mostly stripped
-> down to the functionality we need for `Box` and `Vec`. Additionally, all
-> unstable features are removed and / or replaced by stable ones.
-> 
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> Are you saying you could kmalloc() a memory buffer and pass it to a
+> vfree()? Or am I missing something here?
 
-If I understand correctly, `Unique` does nothing unless the compiler
-supports putting noalias at the corresponding IRs. If so, should this
-depend on whether Rust compiler supports using `Unique` outside std
-libraries?
+I will extend it to:
 
-Regards,
-Boqun
+"valid to be passed to any other [`Allocator`] function" of the same type.
 
-> ---
->  rust/kernel/types.rs | 183 +++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 183 insertions(+)
 > 
-> diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
-> index bd189d646adb..7cf89067b5fc 100644
-> --- a/rust/kernel/types.rs
-> +++ b/rust/kernel/types.rs
-> @@ -473,3 +473,186 @@ unsafe impl AsBytes for str {}
->  // does not have any uninitialized portions either.
->  unsafe impl<T: AsBytes> AsBytes for [T] {}
->  unsafe impl<T: AsBytes, const N: usize> AsBytes for [T; N] {}
-> +
-> +/// A wrapper around a raw non-null `*mut T` that indicates that the possessor
-> +/// of this wrapper owns the referent. Useful for building abstractions like
-> +/// `Box<T>`, `Vec<T>`, `String`, and `HashMap<K, V>`.
-> +///
-> +/// Unlike `*mut T`, `Unique<T>` behaves "as if" it were an instance of `T`.
-> +/// It implements `Send`/`Sync` if `T` is `Send`/`Sync`. It also implies
-> +/// the kind of strong aliasing guarantees an instance of `T` can expect:
-> +/// the referent of the pointer should not be modified without a unique path to
-> +/// its owning Unique.
-> +///
-> +/// If you're uncertain of whether it's correct to use `Unique` for your purposes,
-> +/// consider using `NonNull`, which has weaker semantics.
-> +///
-> +/// Unlike `*mut T`, the pointer must always be non-null, even if the pointer
-> +/// is never dereferenced. This is so that enums may use this forbidden value
-> +/// as a discriminant -- `Option<Unique<T>>` has the same size as `Unique<T>`.
-> +/// However the pointer may still dangle if it isn't dereferenced.
-> +///
-> +/// Unlike `*mut T`, `Unique<T>` is covariant over `T`. This should always be correct
-> +/// for any type which upholds Unique's aliasing requirements.
-> +#[repr(transparent)]
-> +pub struct Unique<T: ?Sized> {
-> +    pointer: NonNull<T>,
-> +    // NOTE: this marker has no consequences for variance, but is necessary
-> +    // for dropck to understand that we logically own a `T`.
-> +    //
-> +    // For details, see:
-> +    // https://github.com/rust-lang/rfcs/blob/master/text/0769-sound-generic-drop.md#phantom-data
-> +    _marker: PhantomData<T>,
-> +}
-> +
-> +/// `Unique` pointers are `Send` if `T` is `Send` because the data they
-> +/// reference is unaliased. Note that this aliasing invariant is
-> +/// unenforced by the type system; the abstraction using the
-> +/// `Unique` must enforce it.
-> +unsafe impl<T: Send + ?Sized> Send for Unique<T> {}
-> +
-> +/// `Unique` pointers are `Sync` if `T` is `Sync` because the data they
-> +/// reference is unaliased. Note that this aliasing invariant is
-> +/// unenforced by the type system; the abstraction using the
-> +/// `Unique` must enforce it.
-> +unsafe impl<T: Sync + ?Sized> Sync for Unique<T> {}
-> +
-> +impl<T: Sized> Unique<T> {
-> +    /// Creates a new `Unique` that is dangling, but well-aligned.
-> +    ///
-> +    /// This is useful for initializing types which lazily allocate, like
-> +    /// `Vec::new` does.
-> +    ///
-> +    /// Note that the pointer value may potentially represent a valid pointer to
-> +    /// a `T`, which means this must not be used as a "not yet initialized"
-> +    /// sentinel value. Types that lazily allocate must track initialization by
-> +    /// some other means.
-> +    #[must_use]
-> +    #[inline]
-> +    pub const fn dangling() -> Self {
-> +        Unique {
-> +            pointer: NonNull::dangling(),
-> +            _marker: PhantomData,
-> +        }
-> +    }
-> +}
-> +
-> +impl<T: ?Sized> Unique<T> {
-> +    /// Creates a new `Unique`.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// `ptr` must be non-null.
-> +    #[inline]
-> +    pub const unsafe fn new_unchecked(ptr: *mut T) -> Self {
-> +        // SAFETY: the caller must guarantee that `ptr` is non-null.
-> +        unsafe {
-> +            Unique {
-> +                pointer: NonNull::new_unchecked(ptr),
-> +                _marker: PhantomData,
-> +            }
-> +        }
-> +    }
-> +
-> +    /// Creates a new `Unique` if `ptr` is non-null.
-> +    #[allow(clippy::manual_map)]
-> +    #[inline]
-> +    pub fn new(ptr: *mut T) -> Option<Self> {
-> +        if let Some(pointer) = NonNull::new(ptr) {
-> +            Some(Unique {
-> +                pointer,
-> +                _marker: PhantomData,
-> +            })
-> +        } else {
-> +            None
-> +        }
-> +    }
-> +
-> +    /// Acquires the underlying `*mut` pointer.
-> +    #[must_use = "`self` will be dropped if the result is not used"]
-> +    #[inline]
-> +    pub const fn as_ptr(self) -> *mut T {
-> +        self.pointer.as_ptr()
-> +    }
-> +
-> +    /// Dereferences the content.
-> +    ///
-> +    /// The resulting lifetime is bound to self so this behaves "as if"
-> +    /// it were actually an instance of T that is getting borrowed. If a longer
-> +    /// (unbound) lifetime is needed, use `&*my_ptr.as_ptr()`.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// Safety requirements for this function are inherited from [NonNull::as_ref].
-> +    ///
-> +    #[must_use]
-> +    #[inline]
-> +    pub const unsafe fn as_ref(&self) -> &T {
-> +        // SAFETY: the caller must guarantee that `self` meets all the
-> +        // requirements for a reference.
-> +        unsafe { self.pointer.as_ref() }
-> +    }
-> +
-> +    /// Mutably dereferences the content.
-> +    ///
-> +    /// The resulting lifetime is bound to self so this behaves "as if"
-> +    /// it were actually an instance of T that is getting borrowed. If a longer
-> +    /// (unbound) lifetime is needed, use `&mut *my_ptr.as_ptr()`.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// Safety requirements for this function are inherited from [NonNull::as_mut].
-> +    #[must_use]
-> +    #[inline]
-> +    pub unsafe fn as_mut(&mut self) -> &mut T {
-> +        // SAFETY: the caller must guarantee that `self` meets all the
-> +        // requirements for a mutable reference.
-> +        unsafe { self.pointer.as_mut() }
-> +    }
-> +
-> +    /// Casts to a pointer of another type.
-> +    #[must_use = "`self` will be dropped if the result is not used"]
-> +    #[inline]
-> +    pub fn cast<U>(self) -> Unique<U> {
-> +        Unique::from(self.pointer.cast())
-> +    }
-> +
-> +    /// Acquires the underlying `*mut` pointer.
-> +    #[must_use = "`self` will be dropped if the result is not used"]
-> +    #[inline]
-> +    pub const fn as_non_null(self) -> NonNull<T> {
-> +        self.pointer
-> +    }
-> +}
-> +
-> +impl<T: ?Sized> Clone for Unique<T> {
-> +    #[inline]
-> +    fn clone(&self) -> Self {
-> +        *self
-> +    }
-> +}
-> +
-> +impl<T: ?Sized> Copy for Unique<T> {}
-> +
-> +impl<T: ?Sized> From<&mut T> for Unique<T> {
-> +    /// Converts a `&mut T` to a `Unique<T>`.
-> +    ///
-> +    /// This conversion is infallible since references cannot be null.
-> +    #[inline]
-> +    fn from(reference: &mut T) -> Self {
-> +        Self::from(NonNull::from(reference))
-> +    }
-> +}
-> +
-> +impl<T: ?Sized> From<NonNull<T>> for Unique<T> {
-> +    /// Converts a `NonNull<T>` to a `Unique<T>`.
-> +    ///
-> +    /// This conversion is infallible since `NonNull` cannot be null.
-> +    #[inline]
-> +    fn from(pointer: NonNull<T>) -> Self {
-> +        Unique {
-> +            pointer,
-> +            _marker: PhantomData,
-> +        }
-> +    }
-> +}
-> -- 
-> 2.45.2
+> Regards,
+> Boqun
+> 
+> > +/// If `realloc` is called with:
+> > +///   - a size of zero, the given memory allocation, if any, must be freed
+> > +///   - a NULL pointer, a new memory allocation must be created
+> > +pub unsafe trait Allocator {
+> > +    /// Allocate memory based on `layout` and `flags`.
+> > +    ///
+> > +    /// On success, returns a buffer represented as `NonNull<[u8]>` that satisfies the layout
+> > +    /// constraints (i.e. minimum size and alignment as specified by `layout`).
+> > +    ///
+> > +    /// This function is equivalent to `realloc` when called with a NULL pointer.
+> > +    fn alloc(layout: Layout, flags: Flags) -> Result<NonNull<[u8]>, AllocError> {
+> > +        // SAFETY: Passing a NULL pointer to `realloc` is valid by it's safety requirements and asks
+> > +        // for a new memory allocation.
+> > +        unsafe { Self::realloc(None, layout, flags) }
+> > +    }
+> > +
+> > +    /// Re-allocate an existing memory allocation to satisfy the requested `layout`. If the
+> > +    /// requested size is zero, `realloc` behaves equivalent to `free`.
+> > +    ///
+> > +    /// If the requested size is larger than the size of the existing allocation, a successful call
+> > +    /// to `realloc` guarantees that the new or grown buffer has at least `Layout::size` bytes, but
+> > +    /// may also be larger.
+> > +    ///
+> > +    /// If the requested size is smaller than the size of the existing allocation, `realloc` may or
+> > +    /// may not shrink the buffer; this is implementation specific to the allocator.
+> > +    ///
+> > +    /// On allocation failure, the existing buffer, if any, remains valid.
+> > +    ///
+> > +    /// The buffer is represented as `NonNull<[u8]>`.
+> > +    ///
+> > +    /// # Safety
+> > +    ///
+> > +    /// `ptr` must point to an existing and valid memory allocation created by this allocator
+> > +    /// instance.
+> > +    ///
+> > +    /// Additionally, `ptr` is allowed to be a NULL pointer; in this case a new memory allocation is
+> > +    /// created.
+> > +    unsafe fn realloc(
+> > +        ptr: Option<NonNull<u8>>,
+> > +        layout: Layout,
+> > +        flags: Flags,
+> > +    ) -> Result<NonNull<[u8]>, AllocError>;
+> > +
+> > +    /// Free an existing memory allocation.
+> > +    ///
+> > +    /// # Safety
+> > +    ///
+> > +    /// `ptr` must point to an existing and valid memory allocation created by this `Allocator`
+> > +    /// instance.
+> > +    unsafe fn free(ptr: NonNull<u8>) {
+> > +        // SAFETY: `ptr` is guaranteed to be previously allocated with this `Allocator` or NULL.
+> > +        // Calling `realloc` with a buffer size of zero, frees the buffer `ptr` points to.
+> > +        let _ = unsafe { Self::realloc(Some(ptr), Layout::new::<()>(), Flags(0)) };
+> > +    }
+> > +}
+> > -- 
+> > 2.45.2
+> > 
 > 
