@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06A2D381BD;
-	Sun,  4 Aug 2024 12:30:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D7FB1173F;
+	Sun,  4 Aug 2024 12:41:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722774602; cv=none; b=S4zQWYmSQs3FBV12OAC+GNhg/raVP9zOlfB6qKp85B/IyfAVSpyfLyD3UXmGVqg+zgLkI56v4IqPAm4WrbXjW/wYGFtd/1lI6rfqezP+HJOtOYkZ9ERIOnfWbNcZo4VmqIoVeHJGeSRdOaEYz3xGwdkl1UjAu1vSS1e0NlhLjSw=
+	t=1722775287; cv=none; b=VnbDxyqINF98NAKqkwZwdQk8bHCpqwUUnNp98Y2whZ/1e8VEErT2oa2KCUbmaHvSDMhoMgo9wiX30S5nCybZYOb6mIMQip08WFFTr68fmgNkOTU1DCUTwMpQUIe1AsS/a/QZhxtp5DlWP88Y4uTH7EtYgEKvnbpc8Zl/4YFWq0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722774602; c=relaxed/simple;
-	bh=VnyEDyp+Og0b+BRBM/aqZK971zINnbDM9dhZN85qgRU=;
+	s=arc-20240116; t=1722775287; c=relaxed/simple;
+	bh=hkFT8J4L9Om4+1HcbHi/qiwu8V1ZSM/CvwWOwoQr0e8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EgcAWIevw0zcXV38nPuRGKeFxuaym3CDksZg88SmqAYpw8+ROHEonw6T82LBk6qmVGvYRATTNl+WBTU+gSOwGQ6KhtBMJJ3YdHaT/s0Xjm28vvvh2MmJp75veyS1BlGrwKVrnd1sRvyKArSu8NC3SiJ66yF/ocljbITJfV9mZek=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nhqWbwrC; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=S9caRLR3gGP/3ny8F2i3YfxJxWElvIG1PLIIQu3X9uhakdvimd1PEb9Y1OR4OmYOBuaOhn6ghLX/IAsn0LHCFsRZUM+0Ylozlf8KX+N1/HPrIAs1d8aGqBA3x7dAjI+udP/Gi+AU7PDhDW/MiZHP6INJ8+9cpCC3rlPsmhv2/QE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dmMd/l8I; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nhqWbwrC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 791D7C32786;
-	Sun,  4 Aug 2024 12:29:56 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dmMd/l8I"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2F91C32786;
+	Sun,  4 Aug 2024 12:41:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722774601;
-	bh=VnyEDyp+Og0b+BRBM/aqZK971zINnbDM9dhZN85qgRU=;
+	s=k20201202; t=1722775286;
+	bh=hkFT8J4L9Om4+1HcbHi/qiwu8V1ZSM/CvwWOwoQr0e8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nhqWbwrClYv7Eg7mLZgSuH/101q/4cByDn2FVtT9qBr1sbyUBqlGZPgPV1SVzA5i3
-	 7gdXLeS9j+ReHj5PMpmOKvmmtpZ/UTv0xlbFMzn6buKY7C5uWdCSdRlPRm4jjVP6PD
-	 qAtYbzcz6TzTJ6odNnPP2uNsqLwX8v5mcqPUBgupd2AX0Ii77Z1lRmPMHv11j2T9HT
-	 p8dYLaa6EghMtLxaRsioC7vcof37hnsUcdbEYYYMxZ2Z43Vw2IadpaY5OhFI6OKqDL
-	 owPsNR7FjEsXUErQpRI0Cq5v819495VuM5PY765XLKBlKU8XZDImrjiMyf/sKN6bXi
-	 2PfCRdiG7bpYA==
-Date: Sun, 4 Aug 2024 14:29:53 +0200
+	b=dmMd/l8It6O1W9JfjmfFDGfYINuZODnSID4KpxkP0NtekvoU6YrUG6NYN4ZH/9pHI
+	 xKxZvIrMwrj8q4i7KrWJT39S04ic5s9qQq7iFy/UELIirE1HrUGviqhr7huOBefZDx
+	 /yU+RSogpIaiWwH7soxSXz7rXVLSDE4WwG/KUA0PPvIT2IjS/g3PnZO8JlZGwNYmMr
+	 sZeSuD9DO2pZ3clQWq/zqoF59jPhJFhfEnz3zu0JG6Fmz93XkNcfySbnV8BdDEb+0r
+	 1vvYtJq4IXoyO9u8xoCthfh9FBWYztH89C1NqUAEVzHIV34jE+2xwOqGTJh82rYVfD
+	 Jifkz6piRomIg==
+Date: Sun, 4 Aug 2024 14:41:18 +0200
 From: Danilo Krummrich <dakr@kernel.org>
 To: Boqun Feng <boqun.feng@gmail.com>
 Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
@@ -38,12 +38,12 @@ Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
 	acurrid@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com,
 	airlied@redhat.com, ajanulgu@redhat.com, lyude@redhat.com,
 	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH v3 01/25] rust: alloc: add `Allocator` trait
-Message-ID: <Zq90QTKqJQWtCnPn@pollux>
+	linux-mm@kvack.org, Vlastimil Babka <vbabka@suse.cz>
+Subject: Re: [PATCH v3 06/25] rust: alloc: implement `Vmalloc` allocator
+Message-ID: <Zq927hO2fcV5LJME@pollux>
 References: <20240801000641.1882-1-dakr@kernel.org>
- <20240801000641.1882-2-dakr@kernel.org>
- <Zq8d4fKUhXchuZBR@boqun-archlinux>
+ <20240801000641.1882-7-dakr@kernel.org>
+ <Zq8jamaDSKWmj_-4@boqun-archlinux>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -52,94 +52,123 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <Zq8d4fKUhXchuZBR@boqun-archlinux>
+In-Reply-To: <Zq8jamaDSKWmj_-4@boqun-archlinux>
 
-On Sat, Aug 03, 2024 at 11:21:21PM -0700, Boqun Feng wrote:
-> On Thu, Aug 01, 2024 at 02:02:00AM +0200, Danilo Krummrich wrote:
-> [...]
-> > +/// The kernel's [`Allocator`] trait.
+On Sat, Aug 03, 2024 at 11:44:58PM -0700, Boqun Feng wrote:
+> On Thu, Aug 01, 2024 at 02:02:05AM +0200, Danilo Krummrich wrote:
+> > Implement `Allocator` for `Vmalloc`, the kernel's virtually contiguous
+> > allocator, typically used for larger objects, (much) larger than page
+> > size.
+> > 
+> > All memory allocations made with `Vmalloc` end up in `vrealloc()`.
+> > 
+> > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> > ---
+> >  rust/helpers.c                      |  8 ++++++++
+> >  rust/kernel/alloc/allocator.rs      | 24 ++++++++++++++++++++++++
+> >  rust/kernel/alloc/allocator_test.rs |  1 +
+> >  3 files changed, 33 insertions(+)
+> > 
+> > diff --git a/rust/helpers.c b/rust/helpers.c
+> > index 92d3c03ae1bd..4c628986f0c9 100644
+> > --- a/rust/helpers.c
+> > +++ b/rust/helpers.c
+> > @@ -33,6 +33,7 @@
+> >  #include <linux/sched/signal.h>
+> >  #include <linux/slab.h>
+> >  #include <linux/spinlock.h>
+> > +#include <linux/vmalloc.h>
+> >  #include <linux/wait.h>
+> >  #include <linux/workqueue.h>
+> >  
+> > @@ -200,6 +201,13 @@ rust_helper_krealloc(const void *objp, size_t new_size, gfp_t flags)
+> >  }
+> >  EXPORT_SYMBOL_GPL(rust_helper_krealloc);
+> >  
+> > +void * __must_check __realloc_size(2)
+> > +rust_helper_vrealloc(const void *p, size_t size, gfp_t flags)
+> > +{
+> > +	return vrealloc(p, size, flags);
+> > +}
+> > +EXPORT_SYMBOL_GPL(rust_helper_vrealloc);
+> > +
+> >  /*
+> >   * `bindgen` binds the C `size_t` type as the Rust `usize` type, so we can
+> >   * use it in contexts where Rust expects a `usize` like slice (array) indices.
+> > diff --git a/rust/kernel/alloc/allocator.rs b/rust/kernel/alloc/allocator.rs
+> > index 397ae5bcc043..e9a3d0694f41 100644
+> > --- a/rust/kernel/alloc/allocator.rs
+> > +++ b/rust/kernel/alloc/allocator.rs
+> > @@ -16,6 +16,12 @@
+> >  /// `bindings::krealloc`.
+> >  pub struct Kmalloc;
+> >  
+> > +/// The virtually contiguous kernel allocator.
 > > +///
-> > +/// An implementation of [`Allocator`] can allocate, re-allocate and free memory buffer described
-> > +/// via [`Layout`].
-> > +///
-> > +/// [`Allocator`] is designed to be implemented as a ZST; [`Allocator`] functions do not operate on
-> > +/// an object instance.
-> > +///
-> > +/// # Safety
-> > +///
-> > +/// Memory returned from an allocator must point to a valid memory buffer and remain valid until
-> > +/// it is explicitly freed.
-> > +///
-> > +/// Any pointer to a memory buffer which is currently allocated must be valid to be passed to any
-> > +/// other [`Allocator`] function. The same applies for a NULL pointer.
-> > +///
-> 
-> Are you saying you could kmalloc() a memory buffer and pass it to a
-> vfree()? Or am I missing something here?
-
-I will extend it to:
-
-"valid to be passed to any other [`Allocator`] function" of the same type.
-
-> 
-> Regards,
-> Boqun
-> 
-> > +/// If `realloc` is called with:
-> > +///   - a size of zero, the given memory allocation, if any, must be freed
-> > +///   - a NULL pointer, a new memory allocation must be created
-> > +pub unsafe trait Allocator {
-> > +    /// Allocate memory based on `layout` and `flags`.
-> > +    ///
-> > +    /// On success, returns a buffer represented as `NonNull<[u8]>` that satisfies the layout
-> > +    /// constraints (i.e. minimum size and alignment as specified by `layout`).
-> > +    ///
-> > +    /// This function is equivalent to `realloc` when called with a NULL pointer.
-> > +    fn alloc(layout: Layout, flags: Flags) -> Result<NonNull<[u8]>, AllocError> {
-> > +        // SAFETY: Passing a NULL pointer to `realloc` is valid by it's safety requirements and asks
-> > +        // for a new memory allocation.
-> > +        unsafe { Self::realloc(None, layout, flags) }
+> > +/// The vmalloc allocator allocates pages from the page level allocator and maps them into the
+> > +/// contiguous kernel virtual space.
+> > +pub struct Vmalloc;
+> > +
+> >  /// Returns a proper size to alloc a new object aligned to `new_layout`'s alignment.
+> >  fn aligned_size(new_layout: Layout) -> usize {
+> >      // Customized layouts from `Layout::from_size_align()` can have size < align, so pad first.
+> > @@ -58,6 +64,10 @@ fn krealloc() -> Self {
+> >          Self(bindings::krealloc)
+> >      }
+> >  
+> > +    fn vrealloc() -> Self {
+> > +        Self(bindings::vrealloc)
 > > +    }
 > > +
-> > +    /// Re-allocate an existing memory allocation to satisfy the requested `layout`. If the
-> > +    /// requested size is zero, `realloc` behaves equivalent to `free`.
-> > +    ///
-> > +    /// If the requested size is larger than the size of the existing allocation, a successful call
-> > +    /// to `realloc` guarantees that the new or grown buffer has at least `Layout::size` bytes, but
-> > +    /// may also be larger.
-> > +    ///
-> > +    /// If the requested size is smaller than the size of the existing allocation, `realloc` may or
-> > +    /// may not shrink the buffer; this is implementation specific to the allocator.
-> > +    ///
-> > +    /// On allocation failure, the existing buffer, if any, remains valid.
-> > +    ///
-> > +    /// The buffer is represented as `NonNull<[u8]>`.
-> > +    ///
-> > +    /// # Safety
-> > +    ///
-> > +    /// `ptr` must point to an existing and valid memory allocation created by this allocator
-> > +    /// instance.
-> > +    ///
-> > +    /// Additionally, `ptr` is allowed to be a NULL pointer; in this case a new memory allocation is
-> > +    /// created.
+> >      // SAFETY: `call` has the exact same safety requirements as `Allocator::realloc`.
+> >      unsafe fn call(
+> >          &self,
+> > @@ -136,6 +146,20 @@ unsafe fn alloc_zeroed(&self, layout: Layout) -> *mut u8 {
+> >      }
+> >  }
+> >  
+> > +unsafe impl Allocator for Vmalloc {
 > > +    unsafe fn realloc(
 > > +        ptr: Option<NonNull<u8>>,
 > > +        layout: Layout,
 > > +        flags: Flags,
-> > +    ) -> Result<NonNull<[u8]>, AllocError>;
+> > +    ) -> Result<NonNull<[u8]>, AllocError> {
+> > +        let realloc = ReallocFunc::vrealloc();
 > > +
-> > +    /// Free an existing memory allocation.
-> > +    ///
-> > +    /// # Safety
-> > +    ///
-> > +    /// `ptr` must point to an existing and valid memory allocation created by this `Allocator`
-> > +    /// instance.
-> > +    unsafe fn free(ptr: NonNull<u8>) {
-> > +        // SAFETY: `ptr` is guaranteed to be previously allocated with this `Allocator` or NULL.
-> > +        // Calling `realloc` with a buffer size of zero, frees the buffer `ptr` points to.
-> > +        let _ = unsafe { Self::realloc(Some(ptr), Layout::new::<()>(), Flags(0)) };
+> 
+> IIUC, vrealloc() calls __vmalloc_noprof() in allocation case, that is
+> calling __vmalloc_node_noprof() with align=1. In such a case, how would
+> vmalloc() guarantee the allocated memory is aligned to layout.align()?
+
+True, good catch. I thought of this a while ago and then forgot to fix it.
+
+> 
+> [Cc Vlastimil]
+> 
+> Regards,
+> Boqun
+> 
+> > +        // SAFETY: If not `None`, `ptr` is guaranteed to point to valid memory, which was previously
+> > +        // allocated with this `Allocator`.
+> > +        unsafe { realloc.call(ptr, layout, flags) }
 > > +    }
 > > +}
+> > +
+> >  #[global_allocator]
+> >  static ALLOCATOR: Kmalloc = Kmalloc;
+> >  
+> > diff --git a/rust/kernel/alloc/allocator_test.rs b/rust/kernel/alloc/allocator_test.rs
+> > index 4785efc474a7..e7bf2982f68f 100644
+> > --- a/rust/kernel/alloc/allocator_test.rs
+> > +++ b/rust/kernel/alloc/allocator_test.rs
+> > @@ -7,6 +7,7 @@
+> >  use core::ptr::NonNull;
+> >  
+> >  pub struct Kmalloc;
+> > +pub type Vmalloc = Kmalloc;
+> >  
+> >  unsafe impl Allocator for Kmalloc {
+> >      unsafe fn realloc(
 > > -- 
 > > 2.45.2
 > > 
