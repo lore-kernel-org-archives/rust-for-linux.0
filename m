@@ -1,203 +1,138 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EDE179C2;
-	Sun,  4 Aug 2024 17:40:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3215E1ABED7;
+	Sun,  4 Aug 2024 23:41:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722793202; cv=none; b=PtZfkHF7RK3G2CH3NzqjG67I5+xG/xQ22Oy+BqKW0/WCfkF2WTuQYFDqeTSfZrGhNgX5E3aAKJ0g7ua3fbfNpHHRmR9r+u5NjsyYV4Tt3grw6DV7nu7zLvjq2eoI+cInGFe0N5R/yrgzXcj4AkIlIceBXnSPLPOP8IC8BWFoLCY=
+	t=1722814904; cv=none; b=ukaewyoKT4OLJwCF7JFFscBCQfa4V7JBuEOl1IjG1wf4Kfu2+AAZh/fFjFNZ/ur5oKgfDjMl3w55KZOoLo/rhtsrXbyqw6zIQgF38rVeRDWn4hwEQbBBtdZj3cZDl41Nc2XgGa5blNwsxTYCpnhoz36HrFRh8I1rvP4EKWM3Q6A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722793202; c=relaxed/simple;
-	bh=qHPGbFeoOcxpSvq6fb4QCfXh/TEYTmXf/c3Zo+EfqVA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=G3D0OA7lf2xBBo23qz8gwcRyKKMrt2FXnd/Xoj7Tv3miv4E5/+dUQrBJpI1R08M4eV4a0ffbSHt4QRDXHuhOdjNwEQidzzotZnsEo/0bItYbKGpdZTYRL2jBf/u0wz1g+jcV/MVFokN6QQSeGXSSfLoD033yDjCwqGlVMQ8Of9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=E8/iNeTN; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1722814904; c=relaxed/simple;
+	bh=A9lkjWevKEy5TGvPrk1v5VG98iKQYmSYyRvFPwITP0I=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=DN1xIRPtMS9dvUNs1hPOdKCaNHIuX3Rg+TQfrjyaPm2wnUiRO0fR0CBb8Y4NRg2Va8IxLoDLK8igp2sVil2fnUiP7oODUvXNSF639gjYKlW1atvkM6JA+NS+lanjKWU+LotB4thuqZXbw4R95VPHayXewuckWBuHVhbtK9e+KZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=N3by+LjS; arc=none smtp.client-ip=209.85.210.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="E8/iNeTN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 712EBC32786;
-	Sun,  4 Aug 2024 17:39:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722793201;
-	bh=qHPGbFeoOcxpSvq6fb4QCfXh/TEYTmXf/c3Zo+EfqVA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=E8/iNeTNFtEc5Ho6m3a9NKbc4UJkfGsw9/bkX1HBG2HWEU3dJYDXneuOPzTsqlMjH
-	 Q+Fun1MGN41rl8a0EevmWpDL5zMBCm9V1Wf6QkuYswrgZlveaa7jhwH+NGaRmiIzjf
-	 22gtNRT64jyDNtu33nZioa2qlExWN28W+CZNDg7/u38gTg2Z4xkD90267QT5tD11S+
-	 fg5wvL5O9DHO52NcOA/W0N7R8pseNtjP5shHblhbiVzxEBCSxfztOk+OrpLe8Ln782
-	 B+s76XMSoeY3wTfIXEESeeVRE9x9LHkZOJRMTKaL5tVNWTsTvHRgD4DaEtbX/KgS4d
-	 bxioQjumgVtBA==
-Date: Sun, 4 Aug 2024 19:39:52 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	a.hindborg@samsung.com, aliceryhl@google.com,
-	akpm@linux-foundation.org, daniel.almeida@collabora.com,
-	faith.ekstrand@collabora.com, boris.brezillon@collabora.com,
-	lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com,
-	acurrid@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com,
-	airlied@redhat.com, ajanulgu@redhat.com, lyude@redhat.com,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-mm@kvack.org, Vlastimil Babka <vbabka@suse.cz>
-Subject: Re: [PATCH v3 06/25] rust: alloc: implement `Vmalloc` allocator
-Message-ID: <Zq-86Ma1nMybty-f@cassiopeiae>
-References: <20240801000641.1882-1-dakr@kernel.org>
- <20240801000641.1882-7-dakr@kernel.org>
- <Zq8jamaDSKWmj_-4@boqun-archlinux>
- <Zq927hO2fcV5LJME@pollux>
- <Zq-bWJFwtWG23O-L@pollux>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="N3by+LjS"
+Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-70d1876e748so1242647b3a.1;
+        Sun, 04 Aug 2024 16:41:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1722814902; x=1723419702; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Y6wGj3Srs+8ICOjbRflve4DNc2/q7ft3MhVM25w7NE0=;
+        b=N3by+LjSXgVb+FHnZMU3seqBff2wRblCCSHZJLfkgFnoG+IV5Sask+KAitfo6LZHeA
+         7E+sA6s0rW2PJppluJZRb0Kmhym0L8oN+FF2aAYcV6RhUwkgqHrf7INrEOW4urvvU+8v
+         nx1WD1Q0WpSlwEpkAGSRahY95xhya5/Zt0BY/qsNB1CHyCeqCHD48LwDSW1MoykJpNrU
+         H/xyoy0LKoI0wpkaRkPGtJv/Or2rlTYiyQa8SNyKkFjvJoUVZ1hBxw5YX52SRHzGnc09
+         37vbmNJ3/K9l/rJ4TORHHxHd6oue972/1x4qVsaOxcHi1+ZIuVH8RKIkDrgXgd1f7+bN
+         O2MA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722814902; x=1723419702;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Y6wGj3Srs+8ICOjbRflve4DNc2/q7ft3MhVM25w7NE0=;
+        b=Qv7Cnk2q6NKQAwdAKB31u7v9vRQOQ2VlyaYB6Td/QJnN+6meP0MiW0HZTSZJgynBmQ
+         M+RzidocQnyemv/4m4pjEypIp8mbF7istTOSgPjJVL/jnA+Pu0ow2OD9CldfMYV0rNJ6
+         /ohs2DYl+SG/FkGH5kOrp3Rs5M1Qa003TgGRuvo0pUvKGi63HAT3OyiBX0HQ7exIYrL2
+         0nteq2fK4dR7YRkbX8BpoHe0RWvOJb/ePE2Tjog9SreXWuOt2PL5Vi4J00+Mm7X2aiFy
+         qqBN5znjSblvOrIqIAtKgBxA1GZC7bAWEgmmXL7fbK+ZaB3n5eNivYvY1kxf/6fSJeHz
+         eiQw==
+X-Gm-Message-State: AOJu0Yw/3mochCspsEv+zWSBYkT80u2TbJtg4pY1OptuO/wNe5H4qPAy
+	ZWdd1x4h7vnzxJlO0y6Q/TxX4tMbBvLfRFkfW0FQGAaFWfVlDrHdmpybIBDb
+X-Google-Smtp-Source: AGHT+IH3Zevz7B3UMfirhuSprXL2eNKUspaMIkWXl5mTJLRLXgm253Uo9zY5KgAQ/8uz5zGoEinoSQ==
+X-Received: by 2002:a05:6a00:14c1:b0:710:5d44:3a09 with SMTP id d2e1a72fcca58-7106cf907femr8094624b3a.1.1722814901872;
+        Sun, 04 Aug 2024 16:41:41 -0700 (PDT)
+Received: from rpi.. (p4456016-ipxg23001hodogaya.kanagawa.ocn.ne.jp. [153.204.172.16])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7106ece3b99sm4535258b3a.98.2024.08.04.16.41.39
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 04 Aug 2024 16:41:41 -0700 (PDT)
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+To: netdev@vger.kernel.org
+Cc: rust-for-linux@vger.kernel.org,
+	andrew@lunn.ch,
+	tmgross@umich.edu,
+	miguel.ojeda.sandonis@gmail.com,
+	benno.lossin@proton.me,
+	aliceryhl@google.com
+Subject: [PATCH net-next v3 0/6] net: phy: add Applied Micro QT2025 PHY driver
+Date: Mon,  5 Aug 2024 08:38:29 +0900
+Message-Id: <20240804233835.223460-1-fujita.tomonori@gmail.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Zq-bWJFwtWG23O-L@pollux>
+Content-Transfer-Encoding: 8bit
 
-On Sun, Aug 04, 2024 at 05:16:49PM +0200, Danilo Krummrich wrote:
-> On Sun, Aug 04, 2024 at 02:41:26PM +0200, Danilo Krummrich wrote:
-> > On Sat, Aug 03, 2024 at 11:44:58PM -0700, Boqun Feng wrote:
-> > > On Thu, Aug 01, 2024 at 02:02:05AM +0200, Danilo Krummrich wrote:
-> > > > Implement `Allocator` for `Vmalloc`, the kernel's virtually contiguous
-> > > > allocator, typically used for larger objects, (much) larger than page
-> > > > size.
-> > > > 
-> > > > All memory allocations made with `Vmalloc` end up in `vrealloc()`.
-> > > > 
-> > > > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-> > > > ---
-> > > >  rust/helpers.c                      |  8 ++++++++
-> > > >  rust/kernel/alloc/allocator.rs      | 24 ++++++++++++++++++++++++
-> > > >  rust/kernel/alloc/allocator_test.rs |  1 +
-> > > >  3 files changed, 33 insertions(+)
-> > > > 
-> > > > diff --git a/rust/helpers.c b/rust/helpers.c
-> > > > index 92d3c03ae1bd..4c628986f0c9 100644
-> > > > --- a/rust/helpers.c
-> > > > +++ b/rust/helpers.c
-> > > > @@ -33,6 +33,7 @@
-> > > >  #include <linux/sched/signal.h>
-> > > >  #include <linux/slab.h>
-> > > >  #include <linux/spinlock.h>
-> > > > +#include <linux/vmalloc.h>
-> > > >  #include <linux/wait.h>
-> > > >  #include <linux/workqueue.h>
-> > > >  
-> > > > @@ -200,6 +201,13 @@ rust_helper_krealloc(const void *objp, size_t new_size, gfp_t flags)
-> > > >  }
-> > > >  EXPORT_SYMBOL_GPL(rust_helper_krealloc);
-> > > >  
-> > > > +void * __must_check __realloc_size(2)
-> > > > +rust_helper_vrealloc(const void *p, size_t size, gfp_t flags)
-> > > > +{
-> > > > +	return vrealloc(p, size, flags);
-> > > > +}
-> > > > +EXPORT_SYMBOL_GPL(rust_helper_vrealloc);
-> > > > +
-> > > >  /*
-> > > >   * `bindgen` binds the C `size_t` type as the Rust `usize` type, so we can
-> > > >   * use it in contexts where Rust expects a `usize` like slice (array) indices.
-> > > > diff --git a/rust/kernel/alloc/allocator.rs b/rust/kernel/alloc/allocator.rs
-> > > > index 397ae5bcc043..e9a3d0694f41 100644
-> > > > --- a/rust/kernel/alloc/allocator.rs
-> > > > +++ b/rust/kernel/alloc/allocator.rs
-> > > > @@ -16,6 +16,12 @@
-> > > >  /// `bindings::krealloc`.
-> > > >  pub struct Kmalloc;
-> > > >  
-> > > > +/// The virtually contiguous kernel allocator.
-> > > > +///
-> > > > +/// The vmalloc allocator allocates pages from the page level allocator and maps them into the
-> > > > +/// contiguous kernel virtual space.
-> > > > +pub struct Vmalloc;
-> > > > +
-> > > >  /// Returns a proper size to alloc a new object aligned to `new_layout`'s alignment.
-> > > >  fn aligned_size(new_layout: Layout) -> usize {
-> > > >      // Customized layouts from `Layout::from_size_align()` can have size < align, so pad first.
-> > > > @@ -58,6 +64,10 @@ fn krealloc() -> Self {
-> > > >          Self(bindings::krealloc)
-> > > >      }
-> > > >  
-> > > > +    fn vrealloc() -> Self {
-> > > > +        Self(bindings::vrealloc)
-> > > > +    }
-> > > > +
-> > > >      // SAFETY: `call` has the exact same safety requirements as `Allocator::realloc`.
-> > > >      unsafe fn call(
-> > > >          &self,
-> > > > @@ -136,6 +146,20 @@ unsafe fn alloc_zeroed(&self, layout: Layout) -> *mut u8 {
-> > > >      }
-> > > >  }
-> > > >  
-> > > > +unsafe impl Allocator for Vmalloc {
-> > > > +    unsafe fn realloc(
-> > > > +        ptr: Option<NonNull<u8>>,
-> > > > +        layout: Layout,
-> > > > +        flags: Flags,
-> > > > +    ) -> Result<NonNull<[u8]>, AllocError> {
-> > > > +        let realloc = ReallocFunc::vrealloc();
-> > > > +
-> > > 
-> > > IIUC, vrealloc() calls __vmalloc_noprof() in allocation case, that is
-> > > calling __vmalloc_node_noprof() with align=1. In such a case, how would
-> > > vmalloc() guarantee the allocated memory is aligned to layout.align()?
-> > 
-> > True, good catch. I thought of this a while ago and then forgot to fix it.
-> 
-> Just for clarification, we're always PAGE_SIZE aligned (guaranteed by
-> __alloc_vmap_area()), which probably would always be sufficient. That's why I
-> didn't gave it too much attention in the first place and then forgot about it.
-> 
-> However, we indeed do not honor layout.align() if it's larger than PAGE_SIZE.
+This patchset adds a PHY driver for Applied Micro Circuits Corporation
+QT2025.
 
-Another note on that:
+The first patch adds Rust equivalent to include/linux/sizes.h, makes
+code more readable. The 2-5th patches update the PHYLIB Rust bindings.
 
-My plan for this series was to just fail allocation for alignment requests
-larger than PAGE_SIZE. And, if required, address larger alignments in a later
-series, since this one is probably big enough already.
+QT2025 PHY support was implemented as a part of an Ethernet driver for
+Tehuti Networks TN40xx chips. Multiple vendors (DLink, Asus, Edimax,
+QNAP, etc) developed adapters based on TN40xx chips. Tehuti Networks
+went out of business and the driver wasn't merged into mainline. But
+it's still distributed with some of the hardware (and also available
+on some vendor sites).
 
-However, for `Vmalloc` we could support it right away, since it's trivial. For
-`KVmalloc` though it requires a bit more effort.
+The original driver handles multiple PHY hardware (AMCC QT2025, TI
+TLK10232, Aqrate AQR105, and Marvell MV88X3120, MV88X3310, and
+MV88E2010). I divided the original driver into MAC and PHY drivers and
+implemented a QT2025 PHY driver in Rust.
 
-For consistancy it would probably be better to support alignments larger than
-PAGE_SIZE either for `Vmalloc` and `KVmalloc` or neither of those though.
+The MAC driver for Tehuti Networks TN40xx chips was already merged in
+6.11-rc1. The MAC and this PHY drivers have been tested with Edimax
+EN-9320SFP+ 10G network adapter.
 
-My personal tendency goes a bit more into the direction of picking consistancy.
+v3:
+- use addr_of_mut!` to avoid intermediate mutable reference
+- update probe callback's Safety comment
+- add MODULE_FIRMWARE equivalent
+- add Alice's Reviewed-by
+v2: https://lore.kernel.org/netdev/20240731042136.201327-1-fujita.tomonori@gmail.com/
+- add comments in accordance with the hw datasheet
+- unify C22 and C45 APIs
+- load firmware in probe callback instead of config_init
+- use firmware API
+- handle firmware endian
+- check firmware size
+- use SZ_*K constants
+- avoid confusing phy_id variable
+v1: https://lore.kernel.org/netdev/20240415104701.4772-1-fujita.tomonori@gmail.com/
 
-Any other opinions?
+FUJITA Tomonori (6):
+  rust: sizes: add commonly used constants
+  rust: net::phy support probe callback
+  rust: net::phy implement AsRef<kernel::device::Device> trait
+  rust: net::phy unified read/write API for C22 and C45 registers
+  rust: net::phy unified genphy_read_status function for C22 and C45
+    registers
+  net: phy: add Applied Micro QT2025 PHY driver
 
-> 
-> > 
-> > > 
-> > > [Cc Vlastimil]
-> > > 
-> > > Regards,
-> > > Boqun
-> > > 
-> > > > +        // SAFETY: If not `None`, `ptr` is guaranteed to point to valid memory, which was previously
-> > > > +        // allocated with this `Allocator`.
-> > > > +        unsafe { realloc.call(ptr, layout, flags) }
-> > > > +    }
-> > > > +}
-> > > > +
-> > > >  #[global_allocator]
-> > > >  static ALLOCATOR: Kmalloc = Kmalloc;
-> > > >  
-> > > > diff --git a/rust/kernel/alloc/allocator_test.rs b/rust/kernel/alloc/allocator_test.rs
-> > > > index 4785efc474a7..e7bf2982f68f 100644
-> > > > --- a/rust/kernel/alloc/allocator_test.rs
-> > > > +++ b/rust/kernel/alloc/allocator_test.rs
-> > > > @@ -7,6 +7,7 @@
-> > > >  use core::ptr::NonNull;
-> > > >  
-> > > >  pub struct Kmalloc;
-> > > > +pub type Vmalloc = Kmalloc;
-> > > >  
-> > > >  unsafe impl Allocator for Kmalloc {
-> > > >      unsafe fn realloc(
-> > > > -- 
-> > > > 2.45.2
-> > > > 
-> > > 
+ MAINTAINERS                      |   8 ++
+ drivers/net/phy/Kconfig          |   6 +
+ drivers/net/phy/Makefile         |   1 +
+ drivers/net/phy/ax88796b_rust.rs |   7 +-
+ drivers/net/phy/qt2025.rs        |  93 +++++++++++++
+ rust/kernel/lib.rs               |   1 +
+ rust/kernel/net/phy.rs           |  78 ++++++-----
+ rust/kernel/net/phy/reg.rs       | 219 +++++++++++++++++++++++++++++++
+ rust/kernel/sizes.rs             |  26 ++++
+ rust/uapi/uapi_helper.h          |   1 +
+ 10 files changed, 402 insertions(+), 38 deletions(-)
+ create mode 100644 drivers/net/phy/qt2025.rs
+ create mode 100644 rust/kernel/net/phy/reg.rs
+ create mode 100644 rust/kernel/sizes.rs
+
+
+base-commit: 3608d6aca5e793958462e6e01a8cdb6c6e8088d0
+-- 
+2.34.1
+
