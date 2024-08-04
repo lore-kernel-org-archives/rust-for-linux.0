@@ -1,119 +1,191 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10EF514A84;
-	Sat,  3 Aug 2024 23:22:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2216F138C;
+	Sun,  4 Aug 2024 06:31:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722727345; cv=none; b=gEH9EDZqnRGvzpBdOn1wLt1B/mkHKA/dYOn3ZNk7jYhjThKQ3b4GFYaBe2OrbmofyfRGDX7Om/Oj9wmdARJDAKN6dHtIJ/MQbk5rnYUpGWP/AoEebxFBiMFFKa5eBkjEt12oERypFHn7NHDPleWacz2KGZeOM3pffjHgBgYpAtA=
+	t=1722753078; cv=none; b=IOVl20OIPaIBVnTIR1FBfeM95jyC2UD+Ccn3+ViWBvROJn+qYMlqof+deM4+D91bOwXNOJRV4jB5PN5Y7HcVVyncpWNji9ebzbYKk4iDIKf2JRsNHgZkfgfNa01HZ5v97qzdJyNS+Z8HNjpahqrXKRdBXmflxBGKWq+Qi0dG0Xk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722727345; c=relaxed/simple;
-	bh=7DAqEyc+B3FW6qi+j1yhzRctjhcUhMsrnfy3PslD1zQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=DWHJgjp9rXK/0zOyf+6A22NVWwrXHhgRvkAvAP5VPZY8Gb+GcYHuzycLlAa2JkI8kKqA/FalUJveMGzBhUvFhjIV9XDbR+gQdYCK5/cl41eL8GiyqFbivv9aF4I/9gTBSt0NZnGPFXfXW3xjzlCIp0CwKWCsBwyMIoKQAzU/xig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mT2XpuJX; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1722753078; c=relaxed/simple;
+	bh=SbSgs4MFpL6KZRQuV1LLX5H6iF+zg+wO2Gaqqk0dRPI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ioCsaX3wP5dnvfdLSfYRQpq1yDHDhr6q/fGxF0K3EkmsvN2kU/BuQGejvOznKBayb7D4WkQ+3hX/6h7YEJud/9iH7r6nbGxJEe2C71Cc54bc4CTDLBRkzBR/H0kWVO8BPm5Phn+nSmb4dNfQrZ5i2jPfjxdiUPllsWn1YPKXnmw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jENhFP9R; arc=none smtp.client-ip=209.85.219.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mT2XpuJX"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DA48C116B1;
-	Sat,  3 Aug 2024 23:22:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722727344;
-	bh=7DAqEyc+B3FW6qi+j1yhzRctjhcUhMsrnfy3PslD1zQ=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=mT2XpuJXkiav8oaAalMIZj7B97yM3fGkBj5Z0PgIe4sO5lF7QKb8da8c5lF0kGMld
-	 CSq788AkMlSjyvIthNaXthkdsqGH1M+3wqUn+2T8toUUMSRq5Qijq2W6STrHIcQTzf
-	 95/mmBixC1miJIqG5TFhyF24LEgazwSLPPVrAz+zh1WhiprjiarivpWB616Efc9Swy
-	 TWrXd/CpMNVPfjH0ZJqyOBpt9fyAqyri4RTpOu27oBrJEEG6nNgEwyerPrgx1bb+ga
-	 /7uck/ANNqZEhjkOZ3eUaxbQsWYLgsoq0r8oz0rvuPQNOhzEQiNfqaYEv1w3nEMqNq
-	 t5Eed80G++5Og==
-Message-ID: <2ddc08c1-ac38-4cc6-a102-2ad336d6b617@kernel.org>
-Date: Sun, 4 Aug 2024 01:22:20 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jENhFP9R"
+Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-6b797fb1c4aso69674806d6.2;
+        Sat, 03 Aug 2024 23:31:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1722753076; x=1723357876; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/NZxw82SfdAXEz+K8bi67990DiXrbNqIt6CzOagLaek=;
+        b=jENhFP9RcWqyC7Kp3tvNdeLXigYM20hv/vbkqmFRjgEpMcnkNqgFmAZWD7ZJxKwUYd
+         jvPPn6SEdKIgo3DGAdKFOXsX/Ecc+PD9ulGL6KPMCX0bRvCgm0VBJPYrBus7113+SO3O
+         kU0n4DZ7hcS2GAmQ3KVCBz6+mrsnbKiGgTCpIv8vjol/1r0KZU6qWNlzvXvkqxoRBBuR
+         hbnpco5sLqidQtGK6D5HJFB9gYpejBVHGine/QABp/CcymRO504dsnNpcGjkXIDisang
+         lliIMr4jUUdN9+MDS2y2AjPDMI7BWihLxJxSg55hLtJ8zY7Ob3ZN5kpqwQvZJWztYBTH
+         xRcQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722753076; x=1723357876;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=/NZxw82SfdAXEz+K8bi67990DiXrbNqIt6CzOagLaek=;
+        b=VpBMnjp5acUbUB1+UufH2OmW+qA2aGHSVBd/KMYveKJsrbzauqDLlO4hMTtkXUpulk
+         QfC4YfnR6o3BTR5ng5FjWRtU8ouUqy0PtVuNu/cizaoohJorMHbGWYAQUKtuklVvp64k
+         Fp1tP+2Zy45xhITZY0Msdpl3NV70jqsEa1m8DBzUYdpJSVU9D7Ubi8QsIaDAWjB6wnab
+         Kp9qcnzDYgPGzzuL6+ONAeptdHfDBbysEc4wSplWhi3FCxYZYL82W9hAPRZ9CSOEh7Pi
+         /Ybi+MoOQo8/Ej67B9Puzit7pcyH8L9RyhrKKgfAatgpk6vbwiz02Wl8T3ioir2zbB36
+         BZIQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWeemdgIn+mcfuABCcmNsfSiNIzkZ1NcM76X1R9iP+yZ0hxIAe8G5uIDR/ecxCozIwoJTmRJ0AM3u6THYtlmWPHCC9nWeuS0hiI/LBe5rni+h1Bc+M4vhf9uas3/OqWqeSwfyqlB6uhzq4GR7g=
+X-Gm-Message-State: AOJu0YzjG55AAzpRK7IJNXD6I1Rr1TujpsyFeLpvk1KmEA13UtRkoHEu
+	VLdP9BTgJij90kl2a/pYlSZNUU4/ZwljaTJMuxkrYKYW55Sf5XvBxbIOOA==
+X-Google-Smtp-Source: AGHT+IHBTO+D88JzfW6pu9QPm3Lvx4nQGCDMnbUFWj/ag9pX33msBTQ3hbPO/V+yYk0ZXWdu3W1w2g==
+X-Received: by 2002:a05:6214:3f8b:b0:6b5:40d:c2d9 with SMTP id 6a1803df08f44-6bb9836ed10mr115535966d6.19.1722753075899;
+        Sat, 03 Aug 2024 23:31:15 -0700 (PDT)
+Received: from fauth2-smtp.messagingengine.com (fauth2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6bb9c8631d0sm22519876d6.106.2024.08.03.23.31.14
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 03 Aug 2024 23:31:15 -0700 (PDT)
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+	by mailfauth.nyi.internal (Postfix) with ESMTP id BDEDC120006E;
+	Sun,  4 Aug 2024 02:22:17 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute3.internal (MEProxy); Sun, 04 Aug 2024 02:22:17 -0400
+X-ME-Sender: <xms:GR6vZjmj6NqCvj-ExoPQ9kCP_1CDBUuIRPlfXc7uggJxGbNgd19Tug>
+    <xme:GR6vZm3RNGYtSkOrNoFgIFqhonYfbfTz3MOzHaex6Ad_cUGwtrZxHpETF1EHBtOi5
+    6e_QHIxNg1xMn4ipA>
+X-ME-Received: <xmr:GR6vZppxgYazLvrrYBP4qpOaH5ROOBtJqDjborLAUCBy6ZvS9u5VcACsYTQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrkeefgddutdelucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhu
+    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
+    htthgvrhhnpeehudfgudffffetuedtvdehueevledvhfelleeivedtgeeuhfegueeviedu
+    ffeivdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    gsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdei
+    gedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfih
+    igmhgvrdhnrghmvgdpnhgspghrtghpthhtoheptd
+X-ME-Proxy: <xmx:GR6vZrkmCRzKvlm3tNQ6ORObZ1Vdq7VcdSktoQ7GII516aDNTfGzow>
+    <xmx:GR6vZh13f4V4tK_byHEA8M2lgVjKgURzAQaufiaF4oVJyS0hPVjewA>
+    <xmx:GR6vZqth7NHsCTN7HZNQCa2LoMUfzzm9hmzm4V7i8Ai7AbzUz3yv_Q>
+    <xmx:GR6vZlXJpodoAH9rlIObdqZTIEx0VBMS2Fh45qa5B-50RlsMTy0MIw>
+    <xmx:GR6vZg3k8vP5XS9pXJqHCxaAlRPQnx9hgg2armd451g8FXy4PSOw8BBN>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
+ 4 Aug 2024 02:22:17 -0400 (EDT)
+Date: Sat, 3 Aug 2024 23:21:21 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@samsung.com, aliceryhl@google.com,
+	akpm@linux-foundation.org, daniel.almeida@collabora.com,
+	faith.ekstrand@collabora.com, boris.brezillon@collabora.com,
+	lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com,
+	acurrid@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com,
+	airlied@redhat.com, ajanulgu@redhat.com, lyude@redhat.com,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH v3 01/25] rust: alloc: add `Allocator` trait
+Message-ID: <Zq8d4fKUhXchuZBR@boqun-archlinux>
+References: <20240801000641.1882-1-dakr@kernel.org>
+ <20240801000641.1882-2-dakr@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/2] rust: kernel: add `drop_contents` to `BoxExt`
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng
- <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl
- <aliceryhl@google.com>, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
-References: <20240803141639.3237686-1-benno.lossin@proton.me>
-Content-Language: en-US
-From: Danilo Krummrich <dakr@kernel.org>
-In-Reply-To: <20240803141639.3237686-1-benno.lossin@proton.me>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240801000641.1882-2-dakr@kernel.org>
 
-On 8/3/24 4:16 PM, Benno Lossin wrote:
-> Sometimes (see [1]) it is necessary to drop the value inside of a
-> `Box<T>`, but retain the allocation. For example to reuse the allocation
-> in the future.
-> Introduce a new function `drop_contents` that turns a `Box<T>` into
-> `Box<MaybeUninit<T>>` by dropping the value.
+On Thu, Aug 01, 2024 at 02:02:00AM +0200, Danilo Krummrich wrote:
+[...]
+> +/// The kernel's [`Allocator`] trait.
+> +///
+> +/// An implementation of [`Allocator`] can allocate, re-allocate and free memory buffer described
+> +/// via [`Layout`].
+> +///
+> +/// [`Allocator`] is designed to be implemented as a ZST; [`Allocator`] functions do not operate on
+> +/// an object instance.
+> +///
+> +/// # Safety
+> +///
+> +/// Memory returned from an allocator must point to a valid memory buffer and remain valid until
+> +/// it is explicitly freed.
+> +///
+> +/// Any pointer to a memory buffer which is currently allocated must be valid to be passed to any
+> +/// other [`Allocator`] function. The same applies for a NULL pointer.
+> +///
 
-Is this (and the stuff in patch 2) used somewhere? Otherwise, I think it
-would probably make sense to base this work on top of my allocator work.
+Are you saying you could kmalloc() a memory buffer and pass it to a
+vfree()? Or am I missing something here?
 
-> 
-> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
-> Link: https://lore.kernel.org/rust-for-linux/20240418-b4-rbtree-v3-5-323e134390ce@google.com/ [1]
-> ---
->   rust/kernel/alloc/box_ext.rs | 26 +++++++++++++++++++++++++-
->   1 file changed, 25 insertions(+), 1 deletion(-)
-> 
-> diff --git a/rust/kernel/alloc/box_ext.rs b/rust/kernel/alloc/box_ext.rs
-> index 829cb1c1cf9e..076d5de5f47d 100644
-> --- a/rust/kernel/alloc/box_ext.rs
-> +++ b/rust/kernel/alloc/box_ext.rs
-> @@ -4,7 +4,7 @@
->   
->   use super::{AllocError, Flags};
->   use alloc::boxed::Box;
-> -use core::mem::MaybeUninit;
-> +use core::{mem::MaybeUninit, ptr, result::Result};
->   
->   /// Extensions to [`Box`].
->   pub trait BoxExt<T>: Sized {
-> @@ -17,6 +17,22 @@ pub trait BoxExt<T>: Sized {
->       ///
->       /// The allocation may fail, in which case an error is returned.
->       fn new_uninit(flags: Flags) -> Result<Box<MaybeUninit<T>>, AllocError>;
-> +
-> +    /// Drops the contents, but keeps the allocation.
+Regards,
+Boqun
+
+> +/// If `realloc` is called with:
+> +///   - a size of zero, the given memory allocation, if any, must be freed
+> +///   - a NULL pointer, a new memory allocation must be created
+> +pub unsafe trait Allocator {
+> +    /// Allocate memory based on `layout` and `flags`.
 > +    ///
-> +    /// # Examples
+> +    /// On success, returns a buffer represented as `NonNull<[u8]>` that satisfies the layout
+> +    /// constraints (i.e. minimum size and alignment as specified by `layout`).
 > +    ///
-> +    /// ```
-> +    /// use kernel::alloc::{flags, box_ext::BoxExt};
-> +    /// let value = Box::new([0; 32], flags::GFP_KERNEL)?;
-> +    /// assert_eq!(*value, [0; 32]);
-> +    /// let value = Box::drop_contents(value);
-> +    /// // Now we can re-use `value`:
-> +    /// let value = Box::write(value, [1; 32]);
-> +    /// assert_eq!(*value, [1; 32]);
-> +    /// # Ok::<(), Error>(())
-> +    /// ```
-> +    fn drop_contents(this: Self) -> Box<MaybeUninit<T>>;
->   }
->   
->   impl<T> BoxExt<T> for Box<T> {
-> @@ -53,4 +69,12 @@ fn new_uninit(flags: Flags) -> Result<Box<MaybeUninit<T>>, AllocError> {
->           // zero-sized types, we use `NonNull::dangling`.
->           Ok(unsafe { Box::from_raw(ptr) })
->       }
-> +
-> +    fn drop_contents(this: Self) -> Box<MaybeUninit<T>> {
-> +        let ptr = Box::into_raw(this);
-> +        // SAFETY: `ptr` is valid, because it came from `Box::into_raw`.
-> +        unsafe { ptr::drop_in_place(ptr) };
-> +        // SAFETY: `ptr` is valid, because it came from `Box::into_raw`.
-> +        unsafe { Box::from_raw(ptr.cast()) }
+> +    /// This function is equivalent to `realloc` when called with a NULL pointer.
+> +    fn alloc(layout: Layout, flags: Flags) -> Result<NonNull<[u8]>, AllocError> {
+> +        // SAFETY: Passing a NULL pointer to `realloc` is valid by it's safety requirements and asks
+> +        // for a new memory allocation.
+> +        unsafe { Self::realloc(None, layout, flags) }
 > +    }
->   }
+> +
+> +    /// Re-allocate an existing memory allocation to satisfy the requested `layout`. If the
+> +    /// requested size is zero, `realloc` behaves equivalent to `free`.
+> +    ///
+> +    /// If the requested size is larger than the size of the existing allocation, a successful call
+> +    /// to `realloc` guarantees that the new or grown buffer has at least `Layout::size` bytes, but
+> +    /// may also be larger.
+> +    ///
+> +    /// If the requested size is smaller than the size of the existing allocation, `realloc` may or
+> +    /// may not shrink the buffer; this is implementation specific to the allocator.
+> +    ///
+> +    /// On allocation failure, the existing buffer, if any, remains valid.
+> +    ///
+> +    /// The buffer is represented as `NonNull<[u8]>`.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// `ptr` must point to an existing and valid memory allocation created by this allocator
+> +    /// instance.
+> +    ///
+> +    /// Additionally, `ptr` is allowed to be a NULL pointer; in this case a new memory allocation is
+> +    /// created.
+> +    unsafe fn realloc(
+> +        ptr: Option<NonNull<u8>>,
+> +        layout: Layout,
+> +        flags: Flags,
+> +    ) -> Result<NonNull<[u8]>, AllocError>;
+> +
+> +    /// Free an existing memory allocation.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// `ptr` must point to an existing and valid memory allocation created by this `Allocator`
+> +    /// instance.
+> +    unsafe fn free(ptr: NonNull<u8>) {
+> +        // SAFETY: `ptr` is guaranteed to be previously allocated with this `Allocator` or NULL.
+> +        // Calling `realloc` with a buffer size of zero, frees the buffer `ptr` points to.
+> +        let _ = unsafe { Self::realloc(Some(ptr), Layout::new::<()>(), Flags(0)) };
+> +    }
+> +}
+> -- 
+> 2.45.2
+> 
