@@ -1,150 +1,253 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B20BC155351;
-	Mon,  5 Aug 2024 17:13:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6448E2AD13
+	for <rust-for-linux@vger.kernel.org>; Mon,  5 Aug 2024 19:02:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722878028; cv=none; b=TdEki/RGWoSV0M6hZWn+ZGQvJH09f10mRRqUkvTMGdgN6em2IgYRSNPsur6DL1YAYK687fVYLwtYfxDYlNmuLPNKdwxqvJqiY9/tF2YOkn1ojEhBw0azYklQ+5HMiPaV/e6sL/N/yi/shShMeUAGrpBSEwuAE3cck+eniSSz79w=
+	t=1722884566; cv=none; b=M1Hi51GFps7iutl7hHvGHxub4GU6Zfb4yHQ6EBjCU0yhzBuyPwbVQNAsBb4X8b/KbzxuAc0tA8OFJDAudaGHpjhISzt5j2TRdQIJOoWe7tXsCBujdqtbvL8h24m5LmCHzDeh2Vq11saDk3CvNLkz/8odE4V0d/sHUwejfuuUi54=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722878028; c=relaxed/simple;
-	bh=cbBt27hkdYHhswR7zddV7pmhvdwW7EAG8ILuZV1nH1w=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BwmOunUi9Hw/yMFG6e+oMYHKlSWiiZa2WTUiY0mLZfrXaKPwjwLvp4f/LCZkYUNy3JoocQwk1GmoLyp7Y08ZpmzBL/c2zl070ReW4t3qReHe11rbVXNoTZ5+F4fgyYFlUaUdwmaU5z0tHfgmOr3QN0JM3bQ1FyOEICjW8zWRqOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j9+YjFax; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1722884566; c=relaxed/simple;
+	bh=B9YP0SmlZmrl709lb0+tiYfGHYkYU+mdsIyn8q4+xxc=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=R/wEmfISPIKCrB6m/mz4BFOL95ugtpWtZWrbtu/S1asDZMivf1Yww0CSVJMVE71SflGxXENXjRSuSqKvWOQ0R4EtVjr7OVJ9LfsLm8ZiwNMPlsvqyT5z6TtzWlUyhBTTgeiu2nZ6RGhW3b3xbaQyp1SCiAUwhflNkt9N1h6Qxxo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=aDF7vEEY; arc=none smtp.client-ip=185.70.40.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j9+YjFax"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7BABC32782;
-	Mon,  5 Aug 2024 17:13:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722878028;
-	bh=cbBt27hkdYHhswR7zddV7pmhvdwW7EAG8ILuZV1nH1w=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=j9+YjFaxZSYW0ZixSlvUm/Ty/OMkCZIU9jpLjS3AJqB3q3k9IBl/Vn77b+5COySEc
-	 WsMh6JRodj08EwWvXcBxQS3R/dh6B6AaDG0MNl+UTqAK0baehklkdJtzUQS8ywnenk
-	 H2c67m5GCoD5F4q8VBcEZeqnD9D/2x3OYrjDNhDBlhYdcjeNp6fiCkGU9LbukqCx7e
-	 f2ziKSZuPb6Hbr5meHSPVWKFiUjSxRizg6k2z8nmhAxuX9Uwj8TdqAPwncHY1gKVcO
-	 jJXBMBy5bQ2LC/M8Zh4aq91FxSXKi8RsnGAt+jrEfbYYAKzGXqCww7OwQW3IGEwHLp
-	 LXUfO/iOmsNfQ==
-Date: Mon, 5 Aug 2024 18:13:40 +0100
-From: Will Deacon <will@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>,
-	Jamie Cunliffe <Jamie.Cunliffe@arm.com>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Conor Dooley <conor@kernel.org>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nicolas Schier <nicolas@fjasle.eu>,
-	Ard Biesheuvel <ardb@kernel.org>, Marc Zyngier <maz@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mark Brown <broonie@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Valentin Obst <kernel@valentinobst.de>,
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	rust-for-linux@vger.kernel.org, Kees Cook <kees@kernel.org>
-Subject: Re: [PATCH v4 2/2] rust: support for shadow call stack sanitizer
-Message-ID: <20240805171340.GC10196@willie-the-truck>
-References: <20240729-shadow-call-stack-v4-0-2a664b082ea4@google.com>
- <20240729-shadow-call-stack-v4-2-2a664b082ea4@google.com>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="aDF7vEEY"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1722884555; x=1723143755;
+	bh=jb6ms6xd9vhXotlchGtOcFeNqtU4VEY61hgvRpRUbqA=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=aDF7vEEY2Gmo9e2GyoEwT2v8jxIBncldQYMSy9u7ukb6sqTZeYUdlAoK5j/Le/eaR
+	 +VGl2sFY1vOAQcd4IHM1o2MC1T9l/k1ynQiRO2Iz3YSNCWX0AVFAFT6qqGibPeMYRm
+	 JHYf9f/HNU56oCw6U1s4ycREZ8zWTML2IBDEx51lo171XYBWbnlTDvJz9Cn08/so/5
+	 2mHHM9EtbQA1obB3ec+NfmpLAceNR1NmuxKNfW/aLK8VINeDWHSYm6D8sjWIXJEI3/
+	 uaUFcxxbFRZ8l0NlBxYHghC8v71EYGC8ePXQDdShKPuhoT+U1YvZtoen/0QTpBqOM6
+	 o0vf5ufP3DM8w==
+Date: Mon, 05 Aug 2024 19:02:28 +0000
+To: Matt Gilbride <mattgilbride@google.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?utf-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>, Christian Brauner <brauner@kernel.org>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Rob Landley <rob@landley.net>, Davidlohr Bueso <dave@stgolabs.net>, Michel Lespinasse <michel@lespinasse.org>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v8 2/6] rust: rbtree: add red-black tree implementation backed by the C version
+Message-ID: <242d0107-8e2b-4856-8f4c-1d5351fdaad8@proton.me>
+In-Reply-To: <20240727-b4-rbtree-v8-2-951600ada434@google.com>
+References: <20240727-b4-rbtree-v8-0-951600ada434@google.com> <20240727-b4-rbtree-v8-2-951600ada434@google.com>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: 97f1e6a14d126e5e30454a54fb1b44ce92ec5ec1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240729-shadow-call-stack-v4-2-2a664b082ea4@google.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Hi Alice,
+On 27.07.24 22:30, Matt Gilbride wrote:
+> diff --git a/rust/kernel/rbtree.rs b/rust/kernel/rbtree.rs
+> new file mode 100644
+> index 000000000000..74c53e4d5c00
+> --- /dev/null
+> +++ b/rust/kernel/rbtree.rs
+> @@ -0,0 +1,432 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! Red-black trees.
+> +//!
+> +//! C header: [`include/linux/rbtree.h`](srctree/include/linux/rbtree.h)
+> +//!
+> +//! Reference: <https://www.kernel.org/doc/html/latest/core-api/rbtree.h=
+tml>
+> +
+> +use crate::{alloc::Flags, bindings, container_of, error::Result, prelude=
+::*};
+> +use alloc::boxed::Box;
+> +use core::{
+> +    cmp::{Ord, Ordering},
+> +    marker::PhantomData,
+> +    mem::MaybeUninit,
+> +    ptr::{addr_of_mut, NonNull},
+> +};
+> +
+> +/// A red-black tree with owned nodes.
+> +///
+> +/// It is backed by the kernel C red-black trees.
+> +///
+> +/// # Invariants
+> +///
+> +/// Non-null parent/children pointers stored in instances of the `rb_nod=
+e` C struct are always
+> +/// valid, and pointing to a field of our internal representation of a n=
+ode.
 
-Just some minor comments on this:
+I think we should standardize that `Invariants` and `Safety` sections
+are put last. This is because people reading the HTML version are
+probably not interested in the inner workings. This also makes it
+possible to have the invariants and the struct definition on the same
+screen.
 
-On Mon, Jul 29, 2024 at 02:22:50PM +0000, Alice Ryhl wrote:
-> To use the shadow call stack sanitizer, you must pass special flags:
-> 
-> * On arm64, you must pass -ffixed-x18 to your compiler.
-> * On riscv, you must pass --no-relax-gp to your linker.
+> +///
+> +/// # Examples
 
-Since this patch doesn't touch riscv, I think you can just talk about
-arm64 in the commit message.
+[...]
 
-> These requirements also apply to Rust code. When using Rust on arm64,
-> you must pass the -Zfixed-x18 flag to rustc, which has the same effect
-> as the -ffixed-x18 flag does for C code. The -Zfixed-x18 flag requires
-> rustc version 1.80.0 or greater.
-> 
-> There is no need to pass any flags to rustc on riscv as only the linker
-> requires additional flags on this platform.
-> 
-> On older versions of Rust, it is still possible to use shadow call stack
-> by passing -Ctarget-feature=+reserve-x18 instead of -Zfixed-x18.
-> However, this flag emits a warning during the build, so this patch does
-> not add support for using it.
-> 
-> Currently, the compiler thinks that the aarch64-unknown-none target
+> +/// ```
+> +pub struct RBTree<K, V> {
+> +    root: bindings::rb_root,
 
-"Currently" will probably age badly -- can you talk about a compiler
-version instead (e.g. "prior to version nnn, the compiler thinks...").
+It has been a while, so I might have already asked this, but do we need
+`Opaque` here? We would need it, if C changes anything inside `root`
+while Rust holds a `&RBTree` or `&mut RBTree`.
+I don't think that this is the case (ie we don't need `Opaque`), but I
+am not sure.
 
-> doesn't support -Zsanitizer=shadow-call-stack, so the build will fail if
-> you enable shadow call stack in non-dynamic mode. See [1] for the
-> relevant feature request. To avoid this compilation failure, Kconfig is
-> set up to reject such configurations.
-> 
-> The `depends on` clause is placed on `config RUST` to avoid a situation
-> where enabling Rust silently turns off the sanitizer. Instead, turning
-> on the sanitizer results in Rust being disabled. We generally do not
-> want changes to CONFIG_RUST to result in any mitigations being changed
-> or turned off.
-> 
-> Link: https://github.com/rust-lang/rust/issues/121972 [1]
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
->  Makefile            | 1 +
->  arch/arm64/Makefile | 3 +++
->  init/Kconfig        | 2 +-
->  3 files changed, 5 insertions(+), 1 deletion(-)
-> 
-> diff --git a/Makefile b/Makefile
-> index 2b5f9f098b6f..66daca7a9b57 100644
-> --- a/Makefile
-> +++ b/Makefile
-> @@ -928,6 +928,7 @@ ifdef CONFIG_SHADOW_CALL_STACK
->  ifndef CONFIG_DYNAMIC_SCS
->  CC_FLAGS_SCS	:= -fsanitize=shadow-call-stack
->  KBUILD_CFLAGS	+= $(CC_FLAGS_SCS)
-> +KBUILD_RUSTFLAGS += -Zsanitizer=shadow-call-stack
->  endif
->  export CC_FLAGS_SCS
->  endif
-> diff --git a/arch/arm64/Makefile b/arch/arm64/Makefile
-> index f6bc3da1ef11..b058c4803efb 100644
-> --- a/arch/arm64/Makefile
-> +++ b/arch/arm64/Makefile
-> @@ -57,9 +57,11 @@ KBUILD_AFLAGS	+= $(call cc-option,-mabi=lp64)
->  ifneq ($(CONFIG_UNWIND_TABLES),y)
->  KBUILD_CFLAGS	+= -fno-asynchronous-unwind-tables -fno-unwind-tables
->  KBUILD_AFLAGS	+= -fno-asynchronous-unwind-tables -fno-unwind-tables
-> +KBUILD_RUSTFLAGS += -Cforce-unwind-tables=n
->  else
->  KBUILD_CFLAGS	+= -fasynchronous-unwind-tables
->  KBUILD_AFLAGS	+= -fasynchronous-unwind-tables
-> +KBUILD_RUSTFLAGS += -Cforce-unwind-tables=y -Zuse-sync-unwind=n
+> +    _p: PhantomData<Node<K, V>>,
+> +}
+> +
 
-These unwind entries aren't mentioned at all in the commit message.
-Please can you explain what you're doing here? I guess it's something to
-do with the PAC patching? Maybe this hunk would be better as a separate
-patch?
+[...]
 
-Will
+> +    /// Inserts a new node into the tree.
+> +    ///
+> +    /// It overwrites a node if one already exists with the same key and=
+ returns it (containing the
+> +    /// key/value pair). Returns [`None`] if a node with the same key di=
+dn't already exist.
+> +    ///
+> +    /// This function always succeeds.
+> +    pub fn insert(&mut self, RBTreeNode { node }: RBTreeNode<K, V>) -> O=
+ption<RBTreeNode<K, V>> {
+> +        let node =3D Box::into_raw(node);
+> +        // SAFETY: `node` is valid at least until we call `Box::from_raw=
+`, which only happens when
+> +        // the node is removed or replaced.
+> +        let node_links =3D unsafe { addr_of_mut!((*node).links) };
+> +
+> +        // The parameters of `rb_link_node` are as follows:
+
+Can you write `bindings::rb_link_node`?
+
+> +        // - `node`: A pointer to an uninitialized node being inserted.
+> +        // - `parent`: A pointer to an existing node in the tree. One of=
+ its child pointers must be
+> +        //          null, and `node` will become a child of `parent` by =
+replacing that child pointer
+> +        //          with a pointer to `node`.
+> +        // - `rb_link`: A pointer to either the left-child or right-chil=
+d field of `parent`. This
+> +        //          specifies which child of `parent` should hold `node`=
+ after this call. The
+> +        //          value of `*rb_link` must be null before the call to =
+`rb_link_node`. If the
+> +        //          red/black tree is empty, then it=E2=80=99s also poss=
+ible for `parent` to be null. In
+> +        //          this case, `rb_link` is a pointer to the `root` fiel=
+d of the red/black tree.
+> +        //
+> +        // We will traverse the tree looking for a node that has a null =
+pointer as its child,
+> +        // representing an empty subtree where we can insert our new nod=
+e. We need to make sure
+> +        // that we preserve the ordering of the nodes in the tree. In ea=
+ch iteration of the loop
+> +        // we store `parent` and `child_field_of_parent`, and the new `n=
+ode` will go somewhere
+> +        // in the subtree of `parent` that `child_field_of_parent` point=
+s at. Once
+> +        // we find an empty subtree, we can insert the new node using `r=
+b_link_node`.
+> +        let mut parent =3D core::ptr::null_mut();
+> +        let mut child_field_of_parent: &mut *mut bindings::rb_node =3D &=
+mut self.root.rb_node;
+> +        while !child_field_of_parent.is_null() {
+> +            parent =3D *child_field_of_parent;
+> +
+> +            // We need to determine whether `node` should be the left or=
+ right child of `parent`,
+> +            // so we will compare with the `key` field of `parent` a.k.a=
+. `this` below.
+> +            //
+> +            // SAFETY: By the type invariant of `Self`, all non-null `rb=
+_node` pointers stored in `self`
+> +            // point to the links field of `Node<K, V>` objects.
+> +            let this =3D unsafe { container_of!(parent, Node<K, V>, link=
+s) };
+> +
+> +            // SAFETY: `this` is a non-null node so it is valid by the t=
+ype invariants. `node` is
+> +            // valid until the node is removed.
+> +            match unsafe { (*node).key.cmp(&(*this).key) } {
+> +                // We would like `node` to be the left child of `parent`=
+.  Move to this child to check
+> +                // whether we can use it, or continue searching, at the =
+next iteration.
+> +                //
+> +                // SAFETY: `parent` is a non-null node so it is valid by=
+ the type invariants.
+> +                Ordering::Less =3D> child_field_of_parent =3D unsafe { &=
+mut (*parent).rb_left },
+> +                // We would like `node` to be the right child of `parent=
+`.  Move to this child to check
+> +                // whether we can use it, or continue searching, at the =
+next iteration.
+> +                //
+> +                // SAFETY: `parent` is a non-null node so it is valid by=
+ the type invariants.
+> +                Ordering::Greater =3D> child_field_of_parent =3D unsafe =
+{ &mut (*parent).rb_right },
+> +                Ordering::Equal =3D> {
+> +                    // There is an existing node in the tree with this k=
+ey, and that node is
+> +                    // parent.  Thus, we are replacing parent with a new=
+ node.
+
+Missing `` around "parent", double space after '.'.
+
+> +                    //
+> +                    // INVARIANT: We are replacing an existing node with=
+ a new one, which is valid.
+> +                    // It remains valid because we "forgot" it with `Box=
+::into_raw`.
+> +                    // SAFETY: All pointers are non-null and valid.
+> +                    unsafe { bindings::rb_replace_node(parent, node_link=
+s, &mut self.root) };
+> +
+> +                    // INVARIANT: The node is being returned and the cal=
+ler may free it, however,
+> +                    // it was removed from the tree. So the invariants s=
+till hold.
+> +                    return Some(RBTreeNode {
+> +                        // SAFETY: `this` was a node in the tree, so it =
+is valid.
+> +                        node: unsafe { Box::from_raw(this.cast_mut()) },
+> +                    });
+> +                }
+> +            }
+> +        }
+
+[...]
+
+> +struct Node<K, V> {
+> +    links: bindings::rb_node,
+
+Same question as with `rb_root`, do we need `Opaque`?
+
+
+Otherwise the patch looks good.
+
+---
+Cheers,
+Benno
+
+> +    key: K,
+> +    value: V,
+> +}
+>=20
+> --
+> 2.46.0.rc1.232.g9752f9e123-goog
+>=20
+
