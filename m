@@ -1,92 +1,232 @@
-Received: from mail-pj1-f52.google.com (mail-pj1-f52.google.com [209.85.216.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD9191547CC
-	for <rust-for-linux@vger.kernel.org>; Mon,  5 Aug 2024 11:47:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE5CC2D7B8;
+	Mon,  5 Aug 2024 15:20:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722858427; cv=none; b=t9JqpBwvcesHK+b3zt6OeTgYYI6rEzX90DBA3/dJ4a7JbIncFR95AW22/kfdEwF/l+8JenlD8CSrPOyT8oe2i1/PTCc5j+p8Cz8ATwtT75u/hlgU/KgO7hlefDCJLwjJN5wxxpDKKN04DOBhY6NFwyNwhCpAIgLTf+lHir/2f0Y=
+	t=1722871213; cv=none; b=R4z6TuHZV8ycKSuviQgwe1/t/je+nwmTgGmkAE0s6Y7MM0utliU7IQFH0rf32ttM62OkKDiZjrE8JxXB1fkHIVBgZ3glslv5is46qxYezKTKp+JTmEhTZPe4os06sMNayduoeF4RV8FLIcvITRqg5PD2moqyJozx87zk37SrA3k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722858427; c=relaxed/simple;
-	bh=SYr3nGv+tCIM1QI3bK7q+uw9suu9eo2gRjoHtV8Re7s=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=S2TK1RuwGZGX9Xh1ejudDglohyIO02BFhge9Ps5Er+tnjktwCQO0ihA9olNbIcJ/mROIf42Sl9HWYyrAkcTBdKONOCnXUMjvxGo66pnk0fhQ9OfkCC6OJpYMD/ML79alQN+GkzkYEHLDFXBhvPiaGLciX+nyEqLfYCvWpxBeFzs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iVeoFRAc; arc=none smtp.client-ip=209.85.216.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1722871213; c=relaxed/simple;
+	bh=QrXtEg0wmyvs1JTx22APAXm/GrJ0/eFkNJxtPGyB9rw=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Zokjn8Ia0wBikWugTh03gTBaRlSAYQOgVNAWLqF8Mw3UPgtyprcJjyH6JA0hKh7p+Z1QVQJ35Ff9fpvn4ng8IKUyrbOaMc2fZzp/I/jm+ZLEAL2eEO9BgYI2VFGkc5LDYx2nJd79HDqGMv3fgeZEEtf7AfYL+iot7m6Trz1Uhts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rjRANWf8; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iVeoFRAc"
-Received: by mail-pj1-f52.google.com with SMTP id 98e67ed59e1d1-2cf98ba0559so5582621a91.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 05 Aug 2024 04:47:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1722858425; x=1723463225; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=SYr3nGv+tCIM1QI3bK7q+uw9suu9eo2gRjoHtV8Re7s=;
-        b=iVeoFRAcG4D2eYP2U45lRTKl/Zrt31nRARweH+z/L6vDhO7MSQ9vu2odMC1jJgVZgm
-         baYDaqNdm5+vbxQXU60VVwNgCFEW6eyrMxVxV3ffKnH/fPvtkrLPU2S+kbFUhV3ozNds
-         Gh43ONRgq2PMelkIZNOuOesDWDmcwb5/76C+hTCeQprcHWGvUB1br7ZqiUKoIhaEZp0H
-         Zrk1wNW4om3gDfW4xnGA85bsVEEtaxYfSSe2r16hpWdcy2p0ph9f5QyGWklcmSbeTIIT
-         zrInk4KrlULj2NwCt46mvzxb0dOn19rsCKUerKyar5uztUVFrfDHjxsFFjN46Zob6g9V
-         Wgow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722858425; x=1723463225;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=SYr3nGv+tCIM1QI3bK7q+uw9suu9eo2gRjoHtV8Re7s=;
-        b=UlHayKCwOrLdvcxF3dWZGqdWP/8ZvSmBdGaE6iw3vtSh36s2+7MDasBWd0EhjMi0zG
-         xU0UVdQh6rLF4w3puZCqOLtRHWL2oRWjkpNMj+Hwg/pXWmgTT1V+eMVZHlX27Apw9iFb
-         RYDGws+/db4TB2SOH6GTO46rQIxXHP81FMS4yhRI3TcyxA5FrMnZykOOswCFiIZ+4fAJ
-         y6j3ru3b14bM/5WbwhA4dy/+RkAnta8VXRsQ6EIu3cl5oyhVVGObk/YStirDa98aPBDf
-         jVbC5gkj7Pgs9ni+eXN+oOjlPo1/UXAAMw042AjjhyBv4vZWsZCexDWDSijR+1ecIeaW
-         2ecQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUCeb4UOKBBksSpT8m7PxO2CWChCSk/rZJgvXHEEMuOYIZLoJvTIgXCZJ4ygoFZUpfFjZ5BuRh2seh59YBneIPHii5G3GlTkoWFpmccAv0=
-X-Gm-Message-State: AOJu0YxjMvvqFxLRhHEY4Rpnx6NmVBm3HWkDKQVbyixI/35nhNG8x6/v
-	+nDu0pLSQQ0+3nq2D9dkJiIICYmLVtVEuAEI7Es7wSzMMvsiyOUAV4ZZo4c6/pfktZ4TPiFP+7Q
-	25KTe/Zt22Z/S9u3dECmHZETTWNI=
-X-Google-Smtp-Source: AGHT+IGEhxBpFtpAVRlV+09gkfUetsBFun+xFd41cInq0/grs2YheaRJ24FX/Sm/Z70T8WB9pux/kqovxXyF/PL+GA4=
-X-Received: by 2002:a17:90b:184f:b0:2c9:a220:bab1 with SMTP id
- 98e67ed59e1d1-2cff945818fmr10006830a91.20.1722858424983; Mon, 05 Aug 2024
- 04:47:04 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rjRANWf8"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42629C32782;
+	Mon,  5 Aug 2024 15:20:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1722871213;
+	bh=QrXtEg0wmyvs1JTx22APAXm/GrJ0/eFkNJxtPGyB9rw=;
+	h=From:To:Cc:Subject:Date:From;
+	b=rjRANWf85K84MD9P6KZ6wg7jZbtGjIEWGXaYh2NPAL45yGGOpuq+MvSKiu9Hyhjkp
+	 1edEeqMGSxzeT8b2PQrsiriADeKECUPaQdCvZ4+jwgw68MoViaBAx2YpGGnFKu0MTK
+	 cdAs+PrFkK/FFiVX1wZk1+V8rfnp+yWdQ0L2BS6n6hNB418+wEI31VJ8PNOwwQUxLK
+	 F4D6Y2wnMeP6MkG1aQnDVF2O+QsuYjXEuEi7jY6Ka12SksUf0fbZR+i+xWNIcMBUTO
+	 vmcM2ACHEpI6/XGqDoRoTOENv/mPPjiD47aA0v46Mpkr3f8EL6uLsFnPd91J+z6I/e
+	 TWXe2H5+V4jfA==
+From: Danilo Krummrich <dakr@kernel.org>
+To: ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	wedsonaf@gmail.com,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me,
+	a.hindborg@samsung.com,
+	aliceryhl@google.com,
+	akpm@linux-foundation.org
+Cc: daniel.almeida@collabora.com,
+	faith.ekstrand@collabora.com,
+	boris.brezillon@collabora.com,
+	lina@asahilina.net,
+	mcanal@igalia.com,
+	zhiw@nvidia.com,
+	acurrid@nvidia.com,
+	cjia@nvidia.com,
+	jhubbard@nvidia.com,
+	airlied@redhat.com,
+	ajanulgu@redhat.com,
+	lyude@redhat.com,
+	linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-mm@kvack.org,
+	Danilo Krummrich <dakr@kernel.org>
+Subject: [PATCH v4 00/28] Generic `Allocator` support for Rust
+Date: Mon,  5 Aug 2024 17:19:19 +0200
+Message-ID: <20240805152004.5039-1-dakr@kernel.org>
+X-Mailer: git-send-email 2.45.2
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240724172713.899399-1-sarthak.singh99@gmail.com>
- <CAH_eo809VXLGVf2vs9gVGr9r_9y0pP+4ku=zoZv05U_ZWbnaHA@mail.gmail.com>
- <CANiq72nHyuQ9+59qDQw9PbRf-Tm299JNrP_WjsDBrahM3g-HiA@mail.gmail.com> <CAJDY-vRjxd1yM4nL_Z3_S_CojqUNVb3V0VBjceV0V5NiB_A45A@mail.gmail.com>
-In-Reply-To: <CAJDY-vRjxd1yM4nL_Z3_S_CojqUNVb3V0VBjceV0V5NiB_A45A@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 5 Aug 2024 13:46:53 +0200
-Message-ID: <CANiq72mNUu9iQb8YZzo9D+ZtE7BaZMoM7hPk-Akr_CkmTO9-Xg@mail.gmail.com>
-Subject: Re: [PATCH v3] rust: Support latest version of `rust-analyzer`
-To: Lukas Wirth <lukastw97@gmail.com>
-Cc: Sarthak Singh <sarthak.singh99@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, 
-	Dirk Behme <dirk.behme@de.bosch.com>, Lukas Wirth <lukas.wirth@ferrous-systems.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Mon, Aug 5, 2024 at 1:43=E2=80=AFPM Lukas Wirth <lukastw97@gmail.com> wr=
-ote:
->
-> `sysroot_src` is required now if you want to have the sysroot source libr=
-aries be loaded. I think we used to infer it as `{sysroot}/lib/rustlib/src/=
-rust/library` before when only the `sysroot` field was given but that was s=
-ince changed to make it possible in having a sysroot without the standard l=
-ibrary sources (that is only have the binaries available). So if you want t=
-he library sources to be loaded by rust-analyzer you will have to set that =
-field as well now.
+Hi,
 
-Thanks a lot Lukas for confirming that.
+This patch series adds generic kernel allocator support for Rust, which so far
+is limited to `kmalloc` allocations.
 
-Cheers,
-Miguel
+In order to abstain from (re-)adding unstable Rust features to the kernel, this
+patch series does not extend the `Allocator` trait from Rust's `alloc` crate,
+nor does it extend the `BoxExt` and `VecExt` extensions.
+
+Instead, this series introduces a kernel specific `Allocator` trait, which is
+implemented by the `Kmalloc`, `Vmalloc` and `KVmalloc` allocators, also
+implemented in the context of this series.
+
+As a consequence we need our own kernel `Box<T, A>` and `Vec<T, A>` types.
+Additionally, this series adds the following type aliases:
+
+```
+pub type KBox<T> = Box<T, Kmalloc>;
+pub type VBox<T> = Box<T, Vmalloc>;
+pub type KVBox<T> = Box<T, KVmalloc>;
+
+
+pub type KVec<T> = Vec<T, Kmalloc>;
+pub type VVec<T> = Vec<T, Vmalloc>;
+pub type KVVec<T> = Vec<T, KVmalloc>;
+```
+
+With that, we can start using the kernel `Box` and `Vec` types throughout the
+tree and remove the now obolete extensions `BoxExt` and `VecExt`.
+
+For a final cleanup, this series removes the last minor dependencies to Rust's
+`alloc` crate and removes it from the entire kernel build.
+
+The series ensures not to break the `rusttest` make target by implementing the
+`allocator_test` module providing a stub implementation for all kernel
+`Allocator`s.
+
+This patch series passes all KUnit tests, including the ones added by this
+series. Additionally, the tests were run with `kmemleak` and `KASAN` enabled,
+without any issues.
+
+This series is based on [1], which hit -mm/mm-unstable, and is also available
+in [2].
+
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/dakr/linux.git/log/?h=mm/krealloc
+[2] https://git.kernel.org/pub/scm/linux/kernel/git/dakr/linux.git/log/?h=rust/mm
+
+Changes in v4:
+ - (safety) comment fixes suggested by Alice and Boqun
+ - remove `Box::from_raw_alloc` and `Box::into_raw_alloc`, we don't need them
+ - in `Box::drop` call `size_of_val` before `drop_in_place`
+ - implement ForeignOwnable for Pin<Box<T>> as suggested by Alice
+ - in `Vec::extend_with`, iterate over `n` instead of `spare.len()`
+ - for `Vmalloc` and `KVmalloc` fail allocation for alignments larger than
+   PAGE_SIZE for now (will add support for larger alignments in a separate
+   series)
+ - implement `Cmalloc` in `allocator_test` and type alias all kernel allocator
+   types to it, such that we can use the kernel's `Box` and `Vec` types in
+   userspace tests (rusttest)
+   - this makes patch "rust: str: test: replace `alloc::format`" rather trivial
+
+Changes in v3:
+ - Box:
+   - minor documentation fixes
+   - removed unnecessary imports in doc tests
+   - dropeed `self` argument from some remaining `Box` methods 
+   - implement `InPlaceInit` for Box<T, A> rather than specifically for `KBox<T>`
+ - Vec:
+   - minor documentation fixes
+   - removed useless `Vec::allocator` method
+   - in `Vec::extend_with` use `Vec::spare_capacity_mut` instead of raw pointer operations
+   - added a few missing safety comments
+   - pass GFP flags to `Vec::collect`
+ - fixed a rustdoc warning in alloc.rs
+ - fixed the allocator_test module to implement the `Allocator` trait correctly
+ - rebased to rust-next
+
+Changes in v2:
+  - preserve `impl GlobalAlloc for Kmalloc` and remove it at the end (Benno)
+  - remove `&self` parameter from all `Allocator` functions (Benno)
+  - various documentation fixes for `Allocator` (Benno)
+  - use `NonNull<u8>` for `Allocator::free` and `Option<NonNull<u8>>` for
+    `Allocator::realloc` (Benno)
+  - fix leak of `IntoIter` in `Vec::collect` (Boqun)
+  - always realloc (try to shrink) in `Vec::collect`, it's up the the
+    `Allocator` to provide a heuristic whether it makes sense to actually shrink
+  - rename `KBox<T, A>` -> `Box<T, A>` and `KVec<T, A>` -> `Vec<T, A>` and
+    provide type aliases `KBox<T>`, `VBox<T>`, `KVBox<T>`, etc.
+    - This allows for much cleaner code and, in combination with removing
+      `&self` parameters from `Allocator`s, gets us rid of the need for
+      `Box::new` and `Box::new_alloc` and all other "_alloc" postfixed
+      functions.
+    - Before: `KBox::new_alloc(foo, Vmalloc)?`
+    - After:  `VBox::new(foo)?`, which resolves to
+              `Box::<Foo,  Vmalloc>::new(foo)?;
+
+
+Danilo Krummrich (28):
+  rust: alloc: add `Allocator` trait
+  rust: alloc: separate `aligned_size` from `krealloc_aligned`
+  rust: alloc: rename `KernelAllocator` to `Kmalloc`
+  rust: alloc: implement `Allocator` for `Kmalloc`
+  rust: alloc: add module `allocator_test`
+  rust: alloc: implement `Vmalloc` allocator
+  rust: alloc: implement `KVmalloc` allocator
+  rust: types: implement `Unique<T>`
+  rust: alloc: implement kernel `Box`
+  rust: treewide: switch to our kernel `Box` type
+  rust: alloc: remove `BoxExt` extension
+  rust: alloc: add `Box` to prelude
+  rust: alloc: import kernel `Box` type in types.rs
+  rust: alloc: import kernel `Box` type in init.rs
+  rust: alloc: implement kernel `Vec` type
+  rust: alloc: implement `IntoIterator` for `Vec`
+  rust: alloc: implement `collect` for `IntoIter`
+  rust: treewide: switch to the kernel `Vec` type
+  rust: alloc: remove `VecExt` extension
+  rust: alloc: add `Vec` to prelude
+  rust: alloc: remove `GlobalAlloc` and `krealloc_aligned`
+  rust: error: use `core::alloc::LayoutError`
+  rust: error: check for config `test` in `Error::name`
+  rust: alloc: implement `contains` for `Flags`
+  rust: alloc: implement `Cmalloc` in module allocator_test
+  rust: str: test: replace `alloc::format`
+  rust: alloc: update module comment of alloc.rs
+  kbuild: rust: remove the `alloc` crate
+
+ rust/Makefile                       |  44 +-
+ rust/exports.c                      |   1 -
+ rust/helpers.c                      |  16 +-
+ rust/kernel/alloc.rs                | 114 +++-
+ rust/kernel/alloc/allocator.rs      | 167 ++++--
+ rust/kernel/alloc/allocator_test.rs |  98 ++++
+ rust/kernel/alloc/box_ext.rs        |  56 --
+ rust/kernel/alloc/kbox.rs           | 344 +++++++++++
+ rust/kernel/alloc/kvec.rs           | 855 ++++++++++++++++++++++++++++
+ rust/kernel/alloc/vec_ext.rs        | 185 ------
+ rust/kernel/error.rs                |   6 +-
+ rust/kernel/init.rs                 |  56 +-
+ rust/kernel/init/__internal.rs      |   2 +-
+ rust/kernel/lib.rs                  |   1 -
+ rust/kernel/prelude.rs              |   5 +-
+ rust/kernel/str.rs                  |  35 +-
+ rust/kernel/sync/arc.rs             |  17 +-
+ rust/kernel/sync/condvar.rs         |   4 +-
+ rust/kernel/sync/lock/mutex.rs      |   2 +-
+ rust/kernel/sync/lock/spinlock.rs   |   2 +-
+ rust/kernel/sync/locked_by.rs       |   2 +-
+ rust/kernel/types.rs                | 222 +++++++-
+ rust/kernel/uaccess.rs              |  15 +-
+ rust/kernel/workqueue.rs            |  20 +-
+ samples/rust/rust_minimal.rs        |   4 +-
+ scripts/Makefile.build              |   7 +-
+ 26 files changed, 1863 insertions(+), 417 deletions(-)
+ create mode 100644 rust/kernel/alloc/allocator_test.rs
+ delete mode 100644 rust/kernel/alloc/box_ext.rs
+ create mode 100644 rust/kernel/alloc/kbox.rs
+ create mode 100644 rust/kernel/alloc/kvec.rs
+ delete mode 100644 rust/kernel/alloc/vec_ext.rs
+
+
+base-commit: c0d669a6bbe161a3afa26dea3d8491863e352e59
+-- 
+2.45.2
+
