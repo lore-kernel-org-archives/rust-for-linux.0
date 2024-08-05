@@ -1,43 +1,43 @@
-Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6448E2AD13
-	for <rust-for-linux@vger.kernel.org>; Mon,  5 Aug 2024 19:02:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D7A62AD13
+	for <rust-for-linux@vger.kernel.org>; Mon,  5 Aug 2024 19:09:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722884566; cv=none; b=M1Hi51GFps7iutl7hHvGHxub4GU6Zfb4yHQ6EBjCU0yhzBuyPwbVQNAsBb4X8b/KbzxuAc0tA8OFJDAudaGHpjhISzt5j2TRdQIJOoWe7tXsCBujdqtbvL8h24m5LmCHzDeh2Vq11saDk3CvNLkz/8odE4V0d/sHUwejfuuUi54=
+	t=1722884955; cv=none; b=X2xlR4ETEBbrjjPqHKVk/8S9i/COJMIR0NacC8fmmNfc/hQagiLhbeXY8NEeynM63RS5Z+tSoULDIMH8tTJCIz6duQvAal7oUI9UJXk+V59sSTXH87huSHui9GG8K/jxILT2qnmSEx2mcGrVX0uOfzO/eXmJR7O4vDXWDZFS3Nc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722884566; c=relaxed/simple;
-	bh=B9YP0SmlZmrl709lb0+tiYfGHYkYU+mdsIyn8q4+xxc=;
+	s=arc-20240116; t=1722884955; c=relaxed/simple;
+	bh=M5JRShJqbgmvXTkDlI8gf8oSvuSeekCQVjuvxjJdMog=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=R/wEmfISPIKCrB6m/mz4BFOL95ugtpWtZWrbtu/S1asDZMivf1Yww0CSVJMVE71SflGxXENXjRSuSqKvWOQ0R4EtVjr7OVJ9LfsLm8ZiwNMPlsvqyT5z6TtzWlUyhBTTgeiu2nZ6RGhW3b3xbaQyp1SCiAUwhflNkt9N1h6Qxxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=aDF7vEEY; arc=none smtp.client-ip=185.70.40.133
+	 MIME-Version:Content-Type; b=TRahK5YW0+uOwbrP+6wMDwa+2SYTgO8ddgWQnVwcACAicQn8tXFo/s0Hnupxskm5TbhqZsE7f2oeKY6p+TY1snl4AXtaiUf6urPso5t/rng49ynDu5CCQV6HWps0zMXs10QG8hwalqHYytLchXGnjr6uec8KwzdPAbWk6puLtSo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=VZd0akI+; arc=none smtp.client-ip=185.70.43.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="aDF7vEEY"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="VZd0akI+"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1722884555; x=1723143755;
-	bh=jb6ms6xd9vhXotlchGtOcFeNqtU4VEY61hgvRpRUbqA=;
+	s=protonmail; t=1722884945; x=1723144145;
+	bh=/Els57fcd1c+yYHp4eDlQ/rjaPw7DrFzNZpvnboyUs4=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=aDF7vEEY2Gmo9e2GyoEwT2v8jxIBncldQYMSy9u7ukb6sqTZeYUdlAoK5j/Le/eaR
-	 +VGl2sFY1vOAQcd4IHM1o2MC1T9l/k1ynQiRO2Iz3YSNCWX0AVFAFT6qqGibPeMYRm
-	 JHYf9f/HNU56oCw6U1s4ycREZ8zWTML2IBDEx51lo171XYBWbnlTDvJz9Cn08/so/5
-	 2mHHM9EtbQA1obB3ec+NfmpLAceNR1NmuxKNfW/aLK8VINeDWHSYm6D8sjWIXJEI3/
-	 uaUFcxxbFRZ8l0NlBxYHghC8v71EYGC8ePXQDdShKPuhoT+U1YvZtoen/0QTpBqOM6
-	 o0vf5ufP3DM8w==
-Date: Mon, 05 Aug 2024 19:02:28 +0000
+	b=VZd0akI+XxCM2CmdaEOjn1z1m9Ra5xe007WtyDeRSDHwGx53JpJ6vlZUzlTBumAsW
+	 lBS8Ofb996YsVqYBf5XoXRjEY7CwjoxobnvQ48cbJ4nypmfglHsY1PkjoaAxM28gPR
+	 9a4wh+rxXHAc3QtjIX5FzvPNrTudffRURKaXPUyKPds4v9q89r0B/AvTFFd2i5/T/G
+	 UXnWtDSOsDHsTB+QH3jnfVyiUfBQWGeXnP5FjAXus9vkA1O2fXwpXA8Ds+n6CsJSvB
+	 dzr3E3wAVZtgQsnYpEP1Bcu6pe0A5P4YIzErF4MBHAowALfXn0pgXCnSbYEtbVyZ63
+	 3pAFaQALl2Uhw==
+Date: Mon, 05 Aug 2024 19:08:58 +0000
 To: Matt Gilbride <mattgilbride@google.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?utf-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>, Christian Brauner <brauner@kernel.org>
 From: Benno Lossin <benno.lossin@proton.me>
 Cc: Rob Landley <rob@landley.net>, Davidlohr Bueso <dave@stgolabs.net>, Michel Lespinasse <michel@lespinasse.org>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v8 2/6] rust: rbtree: add red-black tree implementation backed by the C version
-Message-ID: <242d0107-8e2b-4856-8f4c-1d5351fdaad8@proton.me>
-In-Reply-To: <20240727-b4-rbtree-v8-2-951600ada434@google.com>
-References: <20240727-b4-rbtree-v8-0-951600ada434@google.com> <20240727-b4-rbtree-v8-2-951600ada434@google.com>
+Subject: Re: [PATCH v8 3/6] rust: rbtree: add iterator
+Message-ID: <8a0f94dc-ccf3-4387-8dd3-9a3d39fb1959@proton.me>
+In-Reply-To: <20240727-b4-rbtree-v8-3-951600ada434@google.com>
+References: <20240727-b4-rbtree-v8-0-951600ada434@google.com> <20240727-b4-rbtree-v8-3-951600ada434@google.com>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 97f1e6a14d126e5e30454a54fb1b44ce92ec5ec1
+X-Pm-Message-ID: 8be4d92471b7c20941bcceeb879d8ff6bc908c6b
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -48,206 +48,31 @@ Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
 On 27.07.24 22:30, Matt Gilbride wrote:
-> diff --git a/rust/kernel/rbtree.rs b/rust/kernel/rbtree.rs
-> new file mode 100644
-> index 000000000000..74c53e4d5c00
-> --- /dev/null
-> +++ b/rust/kernel/rbtree.rs
-> @@ -0,0 +1,432 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! Red-black trees.
-> +//!
-> +//! C header: [`include/linux/rbtree.h`](srctree/include/linux/rbtree.h)
-> +//!
-> +//! Reference: <https://www.kernel.org/doc/html/latest/core-api/rbtree.h=
-tml>
-> +
-> +use crate::{alloc::Flags, bindings, container_of, error::Result, prelude=
-::*};
-> +use alloc::boxed::Box;
-> +use core::{
-> +    cmp::{Ord, Ordering},
-> +    marker::PhantomData,
-> +    mem::MaybeUninit,
-> +    ptr::{addr_of_mut, NonNull},
-> +};
-> +
-> +/// A red-black tree with owned nodes.
-> +///
-> +/// It is backed by the kernel C red-black trees.
-> +///
-> +/// # Invariants
-> +///
-> +/// Non-null parent/children pointers stored in instances of the `rb_nod=
-e` C struct are always
-> +/// valid, and pointing to a field of our internal representation of a n=
-ode.
+> From: Wedson Almeida Filho <wedsonaf@gmail.com>
+>=20
+> - Add Iterator implementation for `RBTree`, allowing
+>   iteration over (key, value) pairs in key order.
+> - Add individual `keys()` and `values()` functions to iterate over keys
+>   or values alone.
+> - Update doctests to use iteration instead of explicitly getting items.
+>=20
+> Iteration is needed by the binder driver to enumerate all values in a
+> tree for oneway spam detection [1].
+>=20
+> Link: https://lore.kernel.org/rust-for-linux/20231101-rust-binder-v1-17-0=
+8ba9197f637@google.com/ [1]
+> Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
+> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> Tested-by: Alice Ryhl <aliceryhl@google.com>
+> Signed-off-by: Matt Gilbride <mattgilbride@google.com>
+> ---
+>  rust/kernel/rbtree.rs | 130 +++++++++++++++++++++++++++++++++++++++++++-=
+------
+>  1 file changed, 112 insertions(+), 18 deletions(-)
 
-I think we should standardize that `Invariants` and `Safety` sections
-are put last. This is because people reading the HTML version are
-probably not interested in the inner workings. This also makes it
-possible to have the invariants and the struct definition on the same
-screen.
-
-> +///
-> +/// # Examples
-
-[...]
-
-> +/// ```
-> +pub struct RBTree<K, V> {
-> +    root: bindings::rb_root,
-
-It has been a while, so I might have already asked this, but do we need
-`Opaque` here? We would need it, if C changes anything inside `root`
-while Rust holds a `&RBTree` or `&mut RBTree`.
-I don't think that this is the case (ie we don't need `Opaque`), but I
-am not sure.
-
-> +    _p: PhantomData<Node<K, V>>,
-> +}
-> +
-
-[...]
-
-> +    /// Inserts a new node into the tree.
-> +    ///
-> +    /// It overwrites a node if one already exists with the same key and=
- returns it (containing the
-> +    /// key/value pair). Returns [`None`] if a node with the same key di=
-dn't already exist.
-> +    ///
-> +    /// This function always succeeds.
-> +    pub fn insert(&mut self, RBTreeNode { node }: RBTreeNode<K, V>) -> O=
-ption<RBTreeNode<K, V>> {
-> +        let node =3D Box::into_raw(node);
-> +        // SAFETY: `node` is valid at least until we call `Box::from_raw=
-`, which only happens when
-> +        // the node is removed or replaced.
-> +        let node_links =3D unsafe { addr_of_mut!((*node).links) };
-> +
-> +        // The parameters of `rb_link_node` are as follows:
-
-Can you write `bindings::rb_link_node`?
-
-> +        // - `node`: A pointer to an uninitialized node being inserted.
-> +        // - `parent`: A pointer to an existing node in the tree. One of=
- its child pointers must be
-> +        //          null, and `node` will become a child of `parent` by =
-replacing that child pointer
-> +        //          with a pointer to `node`.
-> +        // - `rb_link`: A pointer to either the left-child or right-chil=
-d field of `parent`. This
-> +        //          specifies which child of `parent` should hold `node`=
- after this call. The
-> +        //          value of `*rb_link` must be null before the call to =
-`rb_link_node`. If the
-> +        //          red/black tree is empty, then it=E2=80=99s also poss=
-ible for `parent` to be null. In
-> +        //          this case, `rb_link` is a pointer to the `root` fiel=
-d of the red/black tree.
-> +        //
-> +        // We will traverse the tree looking for a node that has a null =
-pointer as its child,
-> +        // representing an empty subtree where we can insert our new nod=
-e. We need to make sure
-> +        // that we preserve the ordering of the nodes in the tree. In ea=
-ch iteration of the loop
-> +        // we store `parent` and `child_field_of_parent`, and the new `n=
-ode` will go somewhere
-> +        // in the subtree of `parent` that `child_field_of_parent` point=
-s at. Once
-> +        // we find an empty subtree, we can insert the new node using `r=
-b_link_node`.
-> +        let mut parent =3D core::ptr::null_mut();
-> +        let mut child_field_of_parent: &mut *mut bindings::rb_node =3D &=
-mut self.root.rb_node;
-> +        while !child_field_of_parent.is_null() {
-> +            parent =3D *child_field_of_parent;
-> +
-> +            // We need to determine whether `node` should be the left or=
- right child of `parent`,
-> +            // so we will compare with the `key` field of `parent` a.k.a=
-. `this` below.
-> +            //
-> +            // SAFETY: By the type invariant of `Self`, all non-null `rb=
-_node` pointers stored in `self`
-> +            // point to the links field of `Node<K, V>` objects.
-> +            let this =3D unsafe { container_of!(parent, Node<K, V>, link=
-s) };
-> +
-> +            // SAFETY: `this` is a non-null node so it is valid by the t=
-ype invariants. `node` is
-> +            // valid until the node is removed.
-> +            match unsafe { (*node).key.cmp(&(*this).key) } {
-> +                // We would like `node` to be the left child of `parent`=
-.  Move to this child to check
-> +                // whether we can use it, or continue searching, at the =
-next iteration.
-> +                //
-> +                // SAFETY: `parent` is a non-null node so it is valid by=
- the type invariants.
-> +                Ordering::Less =3D> child_field_of_parent =3D unsafe { &=
-mut (*parent).rb_left },
-> +                // We would like `node` to be the right child of `parent=
-`.  Move to this child to check
-> +                // whether we can use it, or continue searching, at the =
-next iteration.
-> +                //
-> +                // SAFETY: `parent` is a non-null node so it is valid by=
- the type invariants.
-> +                Ordering::Greater =3D> child_field_of_parent =3D unsafe =
-{ &mut (*parent).rb_right },
-> +                Ordering::Equal =3D> {
-> +                    // There is an existing node in the tree with this k=
-ey, and that node is
-> +                    // parent.  Thus, we are replacing parent with a new=
- node.
-
-Missing `` around "parent", double space after '.'.
-
-> +                    //
-> +                    // INVARIANT: We are replacing an existing node with=
- a new one, which is valid.
-> +                    // It remains valid because we "forgot" it with `Box=
-::into_raw`.
-> +                    // SAFETY: All pointers are non-null and valid.
-> +                    unsafe { bindings::rb_replace_node(parent, node_link=
-s, &mut self.root) };
-> +
-> +                    // INVARIANT: The node is being returned and the cal=
-ler may free it, however,
-> +                    // it was removed from the tree. So the invariants s=
-till hold.
-> +                    return Some(RBTreeNode {
-> +                        // SAFETY: `this` was a node in the tree, so it =
-is valid.
-> +                        node: unsafe { Box::from_raw(this.cast_mut()) },
-> +                    });
-> +                }
-> +            }
-> +        }
-
-[...]
-
-> +struct Node<K, V> {
-> +    links: bindings::rb_node,
-
-Same question as with `rb_root`, do we need `Opaque`?
-
-
-Otherwise the patch looks good.
+Reviewed-by: Benno Lossin <benno.lossin@proton.me>
 
 ---
 Cheers,
 Benno
-
-> +    key: K,
-> +    value: V,
-> +}
->=20
-> --
-> 2.46.0.rc1.232.g9752f9e123-goog
->=20
 
