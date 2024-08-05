@@ -1,76 +1,93 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD5512B9D4;
-	Mon,  5 Aug 2024 01:10:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83EBD3FB3B
+	for <rust-for-linux@vger.kernel.org>; Mon,  5 Aug 2024 08:44:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722820255; cv=none; b=hhTNxmKLQ5dbavHWMhnHTxCWnFz7960apYc9ztJ2qygQRkjb3yg5RlxgJXS17jDk5fronk8C4G+1he0ZEpIiUct+1kqE9jKglF+INQ7Rpd92DaroYGMetLeZxklcACjkgLKdxaX95c0GTbxYfOmpNeSpgWETEkzV947pWraMU6Y=
+	t=1722847454; cv=none; b=bk6si1B4eFQEeFDQvmxUxgAvXDyYt/cMD5y17iy5M1OSjeY4LnXm1QmG90JfECaHUiUJfO5Kcs/hkALMexKeku2wkdOP4X415dDJARlPaDKCNm7JXjZ8tpn7ecHWvdjiS2wx+rmUiL2yTnFcTWyfSpcSJpOWb+aDP3v6hrsnym8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722820255; c=relaxed/simple;
-	bh=Ntytnd3LjnnSWdcMbN61cNqRWuC4RpkfoypY5EK7dDg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PUdPesWQraPfvdmzpx9eGYg0a7GgDFoin/qSH9uaBOjSY2PwddFSJIDv2G+nPfLpdicWH9/sn2TLLS48Z3SrHzqMWNyDl36jlJmDmuNmuprQzuCEMvRh2DzNSylUiNKHFvE1v0xBJRiJM8gOBXVQsLmyUIasu/zObwm/LjKSfE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=cjVUFEEe; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1722847454; c=relaxed/simple;
+	bh=fm6iDdrrchB9TLaDEjrQrAmycPo24uRg4U4FYXtFY70=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Pg5VjGaxEHt7URrNomzrJ9QJL9LcKFdBvfZCgM+pJAW+XfJ4x2xk2+2/x8PEt/AJxczBQp3cYT3/txS8HtQ2Izia6eURqFxI0BQHJ7ALrOY4h4tnzXS0dMIYAdpiDo+1UARb973ar6MFaRPqIBCkgQPZkuPwmr4zsVvDpDF4a9g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=x3D8tgBF; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="cjVUFEEe"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=0TelagZdMac9NaG9bZqYHLjxFGgrFK4T4W00FD9MX9E=; b=cjVUFEEeLWDeZdx2G1rpvm1i3z
-	zXJzIIi+np3VDjZ7E4Tk7y8N+M+4Xzt483zfRqTwVUuAshei8gfqBaOPwsDvfCA1MpDWtXyEW6nrJ
-	Y6u/rPu3HmafRfom5427n4kE+BJvz6wECfdPrXQvDcF/t64knmYlYnO7O7kl4Mb9bq/8=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1samFO-004047-ES; Mon, 05 Aug 2024 03:10:50 +0200
-Date: Mon, 5 Aug 2024 03:10:50 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	tmgross@umich.edu, miguel.ojeda.sandonis@gmail.com,
-	benno.lossin@proton.me, aliceryhl@google.com
-Subject: Re: [PATCH net-next v3 0/6] net: phy: add Applied Micro QT2025 PHY
- driver
-Message-ID: <174bf437-5adf-4ebf-b909-036d6443dcf5@lunn.ch>
-References: <20240804233835.223460-1-fujita.tomonori@gmail.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="x3D8tgBF"
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-428101fa30aso69623075e9.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 05 Aug 2024 01:44:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1722847451; x=1723452251; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=fm6iDdrrchB9TLaDEjrQrAmycPo24uRg4U4FYXtFY70=;
+        b=x3D8tgBFQgUHyC3dJJfgzgsk+HEf9os+Dr4zhjZQeDbLQAmhyWveiQGLOUhKJKjLSE
+         Yvhw0xxovCwCHOzMm3BfOtmcoCdH5BsYdrAleezGdvNRFDZSrq+NfLyyq8+CYgzbwwxp
+         8TNLbh/bXoiKr9p5bHjQyTLj/ZAlaimLtGYI6lgeUN42TvWbI4dFGFjWGxt6SqWQlyKK
+         ElL8hrsk9nN0Dpgobkm9Pz0Eu7FgJbJuVLnvYHRfY9I56X8+h4z5Gy0JihLebRTO91w5
+         SWZFLJQz7dXsBuqE2uBDqMP9QoGiSgPFIWBJIxBzMqoJAVxsP57xOkW8okdhAJ/Pqik4
+         knHg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722847451; x=1723452251;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=fm6iDdrrchB9TLaDEjrQrAmycPo24uRg4U4FYXtFY70=;
+        b=A+xk6zprRDW9qcecqi+5HPp/uELCmEYGZxa10vA46RsF+CECe+8WYKj9zO9v5N0DM0
+         LpcB3opSuh4DKRsV/3Ls1UaIj8T834lb1Z5mk20NYJyrIJKRgMuptxnunfkinr5MgL/c
+         KTuS4a+x9akEUCz1acWZ2FtmI1VC/gSf29qLzCLVtR61xXASd6TRJES9WiCi3i0GwFnU
+         NONrkdVdZm/GknZm1XnLJzkapm5/R0udpN1mv21l2Qi+1QiTXrRVyobljo2hEi6BMPCh
+         dpLtjV4CvXHJya9JnWs+0TU0QkMV1k4loPCt/nSLTG+pkqI66/hB/HiOeyMrQMUeXfW3
+         t04g==
+X-Forwarded-Encrypted: i=1; AJvYcCVpeXbHcxzAUWO50n0vS4jUZfru+DJV7sB5Wg74QTXeoLkiMFA/wNqdA4tC6QBF/AhEXDXKZljk4PAoZvvEJT3sxrcRsiWF4OyydTDziZw=
+X-Gm-Message-State: AOJu0Yz/CcfbInLuDZe8qOnqGrruznD5SiFdPxJyeLgoOVPnYk+2nrKL
+	dbHEa73OT4MFlnnYNgcbpGZmABOAOFsxhrjuyJ+NUtk5akfKigKBnqOCT/MYcB0hHFFM4LCB07Z
+	NwBXxQeCVDVbAvtU+DZ8kLXdtLARZtYsLXXJO
+X-Google-Smtp-Source: AGHT+IFQNNlLaN3e/vSKEN8qAWnUmVt+qaGbQE+xaDCrBD7/2Fspb+GbLuhT6mV28u0V7jNeDv4p8cFoq4FWkdW6LSE=
+X-Received: by 2002:a05:600c:3b0d:b0:428:387:79ac with SMTP id
+ 5b1f17b1804b1-428e6aea8femr77816135e9.6.1722847450485; Mon, 05 Aug 2024
+ 01:44:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240804233835.223460-1-fujita.tomonori@gmail.com>
+References: <20240803141639.3237686-1-benno.lossin@proton.me> <2ddc08c1-ac38-4cc6-a102-2ad336d6b617@kernel.org>
+In-Reply-To: <2ddc08c1-ac38-4cc6-a102-2ad336d6b617@kernel.org>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Mon, 5 Aug 2024 10:43:57 +0200
+Message-ID: <CAH5fLgj2urZ6OD2ki6E=6EuPqW3Z8BGg8jd6Bgo4OOrNiptnDw@mail.gmail.com>
+Subject: Re: [PATCH v3 1/2] rust: kernel: add `drop_contents` to `BoxExt`
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Benno Lossin <benno.lossin@proton.me>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, Aug 05, 2024 at 08:38:29AM +0900, FUJITA Tomonori wrote:
-> This patchset adds a PHY driver for Applied Micro Circuits Corporation
-> QT2025.
-> 
-> The first patch adds Rust equivalent to include/linux/sizes.h, makes
-> code more readable. The 2-5th patches update the PHYLIB Rust bindings.
-> 
-> QT2025 PHY support was implemented as a part of an Ethernet driver for
-> Tehuti Networks TN40xx chips. Multiple vendors (DLink, Asus, Edimax,
-> QNAP, etc) developed adapters based on TN40xx chips. Tehuti Networks
-> went out of business and the driver wasn't merged into mainline. But
-> it's still distributed with some of the hardware (and also available
-> on some vendor sites).
-> 
-> The original driver handles multiple PHY hardware (AMCC QT2025, TI
-> TLK10232, Aqrate AQR105, and Marvell MV88X3120, MV88X3310, and
-> MV88E2010). I divided the original driver into MAC and PHY drivers and
-> implemented a QT2025 PHY driver in Rust.
-> 
-> The MAC driver for Tehuti Networks TN40xx chips was already merged in
-> 6.11-rc1. The MAC and this PHY drivers have been tested with Edimax
-> EN-9320SFP+ 10G network adapter.
+On Sun, Aug 4, 2024 at 1:22=E2=80=AFAM Danilo Krummrich <dakr@kernel.org> w=
+rote:
+>
+> On 8/3/24 4:16 PM, Benno Lossin wrote:
+> > Sometimes (see [1]) it is necessary to drop the value inside of a
+> > `Box<T>`, but retain the allocation. For example to reuse the allocatio=
+n
+> > in the future.
+> > Introduce a new function `drop_contents` that turns a `Box<T>` into
+> > `Box<MaybeUninit<T>>` by dropping the value.
+>
+> Is this (and the stuff in patch 2) used somewhere? Otherwise, I think it
+> would probably make sense to base this work on top of my allocator work.
 
-Sorry about being slow reviewing this. I will get to it by the middle
-of the week.
+Yes, please see the red/black tree.
+https://lore.kernel.org/rust-for-linux/20240727-b4-rbtree-v8-0-951600ada434=
+@google.com/
 
-	Andrew
+Alice
