@@ -1,152 +1,107 @@
-Received: from EUR05-DB8-obe.outbound.protection.outlook.com (mail-db8eur05on2074.outbound.protection.outlook.com [40.107.20.74])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE9F213AD11
-	for <rust-for-linux@vger.kernel.org>; Mon,  5 Aug 2024 10:41:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.20.74
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722854488; cv=fail; b=h5LgFflpU601RZjFu0hVJ90VpdAbRQjYvnyVyWfFl2XBftP6IkK6pI/AYxRnrjI4dMw6BsPH1H4lXcD34DvneKTVikFLq8dzvvEEz7aX5uFuxs5NlpeFOsrmFQZ/nTNI8opfo0aWlmQYyj+gvY/hu476bCtUJLth3lTZV66MJrw=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722854488; c=relaxed/simple;
-	bh=FvXydm2VAUMr1UTwFVrZOk8YBI2bjmfxw3U9t2eCeNY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=cNCf6vpNF+CDfhFbL8EuGEOLIPlL6Zs3mum0dJVR2sHid6brLDIb/bEhFSKMK50roXayAfxDn4LoAw+hg8u04zmGqh6wQ054Hb+AJnYUvUg9GoXMKuE+Z4XNH/G0zHdsx5Z/4cd6NrhxfDH1yrsy5QI5VhRiTuET/govu36Vx6U=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com; spf=pass smtp.mailfrom=de.bosch.com; dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b=QFRepCYH; arc=fail smtp.client-ip=40.107.20.74
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.bosch.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B01A154BE8
+	for <rust-for-linux@vger.kernel.org>; Mon,  5 Aug 2024 10:45:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1722854702; cv=none; b=JxkHMegEwbwfElnsSXMXNF242PAYedQQYjnF7M7yyKsp5HUHdAdzjeoo0W1376lxAktlcJU3gtHyuF3/n/QVnHLhLO+vnzjL38kNUWmuQ2QZPPMb0nImT4Q3JsQttf4dMHFMvFeMtGVXXfPFLPKvYXLENqD0Q9tP22mWQ5f59jU=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1722854702; c=relaxed/simple;
+	bh=v/INaiO6j6n1cBHhtkukKtVzT/0YMv8yM+gJgwKS29c=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ulNGJaoTLbtWB2y07VuZA91+4xlo9kk1GbH13TLsTAxtc7Q0SXpSv3CCs8U/rjmaUKhyLZMNdZPGFMJRaomJ0/B2EDjBiwyVilaamQUc8TNKF/CksMdsHLGFqlxsPnY0PhasiY39ZQQJxE1u4iSwEsyG/cIWN4tRJA7NBupyCms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SOoUwXfM; arc=none smtp.client-ip=209.85.215.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b="QFRepCYH"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ANqUoY/GzvyJmIwQ0TuBAOQ/7ocVueoPwxgBHthgOoJymCfSc4g2dg6/ANuncHgUOI0HybBcBpFFHOw3T4QpLVVinRFxx5X13jEA0KKFg9CWE/FCv15HMcLTWGqR+RI6OpLTpTeyrl+caY5QyoJ818LNWh4LAKZI1lgxbMkHzHSAJ0dKL+NjTmT7KAvBKIQQ2nvhCC8+flzSBrlgBPbJpZbk/7aPfukHfuiqeHRoFyIAHjPvjNW+isLPzwGbTGAq3FHVZ8FyOTtA2yRhRvfI7v7bS4XFVnXwndkMxSljJdV+zqVN0ddQ9QGh17UKPm7zF+oH+uI+wRXXcIwEp/DJmQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=DJBvzy4JSr4OFowMyMCw6qlbQfK/aLNuyYF1yKpuFzU=;
- b=holRZuuhUq6pm5DzpDjUTHVWcF8M9nfAWKCtPC0A2h/x0lAA7cJukpSlc7VCWczkEWG8nMyrjKEgJcBgSHchAXKBkgci7VuTpoQb2+ilFbr5IpknC1mlIpXI3iJvJOBDB3LwW7pprqFXkmtYwsVRgk3q9g+ww0O7+0ZgKVf9LXA2fDEH3lt3m5SAZxcGGpOfNvDkldkDQyPP816qbF92w5i3HCpivr8pe/wUciwmRtugGNM+i1QdWJUku0UkZxbcgWrT7yzpWuXPt3FX0zICDj/XfpnJCbbhS8TQQ5DNHByNqxiBqlPpc54uJZgtZg1/wxGyWt/OGjxTXiq8h90oyA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 139.15.153.205) smtp.rcpttodomain=gmail.com smtp.mailfrom=de.bosch.com;
- dmarc=pass (p=reject sp=none pct=100) action=none header.from=de.bosch.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=de.bosch.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=DJBvzy4JSr4OFowMyMCw6qlbQfK/aLNuyYF1yKpuFzU=;
- b=QFRepCYHL9nSIHltTNjP8iyhnA9emOk273/ghFi/uwIoyn5Vdh37M1jhn5jUoYEgjikrOiqOn+SIsqny6EJWCndheDFATqXTdEO4Tu1IfXnI5lCnzTH7FBrBz+1/UVlhp4XR9kwHHmFM7gC2EQ0VLhhgRODxkUopDgNN9N21n4QpTZyA6DjUGN6Z0cIXQOaKcuaaQh6OxRw2r8Ndr929gn1qvp9hPsDEZTWTnZAvHelRjuv0YSp6pWn72NpfoOKSPCaEXr1GWcOmj/Rgxy6j8MLsfJUuPyiiLofPIRs5S/AMsuWEvyCNnkgF8+CaxmXYhtEAvlis2znUlHYDkVu4hQ==
-Received: from AS8PR04CA0149.eurprd04.prod.outlook.com (2603:10a6:20b:127::34)
- by VI0PR10MB8646.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:800:234::12) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7828.26; Mon, 5 Aug
- 2024 10:41:20 +0000
-Received: from AMS1EPF00000043.eurprd04.prod.outlook.com
- (2603:10a6:20b:127:cafe::7c) by AS8PR04CA0149.outlook.office365.com
- (2603:10a6:20b:127::34) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7828.26 via Frontend
- Transport; Mon, 5 Aug 2024 10:41:20 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 139.15.153.205)
- smtp.mailfrom=de.bosch.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=de.bosch.com;
-Received-SPF: Pass (protection.outlook.com: domain of de.bosch.com designates
- 139.15.153.205 as permitted sender) receiver=protection.outlook.com;
- client-ip=139.15.153.205; helo=eop.bosch-org.com; pr=C
-Received: from eop.bosch-org.com (139.15.153.205) by
- AMS1EPF00000043.mail.protection.outlook.com (10.167.16.40) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7849.8 via Frontend Transport; Mon, 5 Aug 2024 10:41:20 +0000
-Received: from FE-EXCAS2001.de.bosch.com (10.139.217.200) by eop.bosch-org.com
- (139.15.153.205) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Mon, 5 Aug
- 2024 12:41:16 +0200
-Received: from [10.34.219.93] (10.139.217.196) by FE-EXCAS2001.de.bosch.com
- (10.139.217.200) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Mon, 5 Aug
- 2024 12:41:06 +0200
-Message-ID: <1faa08dd-1fb0-45c1-b542-775e131bcb5a@de.bosch.com>
-Date: Mon, 5 Aug 2024 12:40:59 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SOoUwXfM"
+Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-7a115c427f1so6287247a12.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 05 Aug 2024 03:45:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1722854701; x=1723459501; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=nIUbPOVj//FP3m4sbSzQkApcENG8xJSkqZH+p74RNCg=;
+        b=SOoUwXfMT4LfdUGeJF7982JRq/6MMHdL8YoVyvT4AdtG3eYMDA/T+c7EUBJjQ5TSYu
+         mPuK5QOsABkmPsEkJ31VV8K19SZQjvMAWm5NOAziSgG/BEe780rPwEE1EST77Kp9BCyW
+         4p+Q2Rlj3f9Nw0jcf0q/GsI/YKhaMkQA8kuoe3NfL22rrermbz0Q8nTxdFYr8PrbeuYM
+         5AuF4FZfeq3Jc205E8cirWwXPGCtn4ktSV3Zgq6N5ecoCMkXeuh+JHAM+MjSOxBN9HiH
+         FvIJbZv2Ro5tghI4kVZNLwJ+fywaav+9dVTuxuQdWe4h4UdhzmAQqjPTz7KhDucr/0MG
+         +XZg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722854701; x=1723459501;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=nIUbPOVj//FP3m4sbSzQkApcENG8xJSkqZH+p74RNCg=;
+        b=aSI170F2WraBIDPCTDMA/1g/6NUk3UoEJ424kbmarP0U6dKyYqn3LamzV99p2iDOL6
+         hAbVJP228UqWFzPHVoFkjJo9L3X79SnMpyAjKzkZUr4024Yf8W9U2LCgSSiV0kqP55EB
+         EYpHRdBnfA9vSHHM0MDIWgcdNx14fCWqh1Kx9gWuUEl56bU6xD/1xSEilTZW4POxT/1F
+         fkYqnEj5uTX/atD3mfOahwot6nmP4rLnXQJfbJKTfEi8/LhBBzbaWR2aGm6qzeOWYeTJ
+         IJyrxWbJL2AEP3wDJI2WK8e0H09BykYqXUnPeIK5Z6GHupvTCdLWBe5FImQLePm32TnR
+         OVFQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX4VwsIhIBuVkGLSufcmQiLq2eEybK/YDr5+pcw675udRnmeoHOZYIICcTnwnzdiJzlEPTXG64yGwbh8qrWmcRuhXLU9fNVNWy3BmyZEL4=
+X-Gm-Message-State: AOJu0YzmVC9Vv+l1MP1SMoHej8o9gENGhwJARL/fR1jvD0P9uxYqMn20
+	ZN++dm3CnWKaGly0gVhYLSfM8yng5KPjIF9IZpuq2EHUc78H6dD5kul7yHGx+YzUeQq5luKOvq7
+	ULQZCtMSnI/bP6MkezgrEJ+OiyKw=
+X-Google-Smtp-Source: AGHT+IG6xc14ifxqd/baPccljvKs5rksJY5z32qrFxzcPasQLi+0tz6yklad0zrokuO8P65MwKc6kCkwHHaiW/bFaEk=
+X-Received: by 2002:a05:6a21:7896:b0:1c2:8c32:1392 with SMTP id
+ adf61e73a8af0-1c69955f4bamr12272834637.22.1722854700852; Mon, 05 Aug 2024
+ 03:45:00 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+References: <20240724172713.899399-1-sarthak.singh99@gmail.com> <CAH_eo809VXLGVf2vs9gVGr9r_9y0pP+4ku=zoZv05U_ZWbnaHA@mail.gmail.com>
+In-Reply-To: <CAH_eo809VXLGVf2vs9gVGr9r_9y0pP+4ku=zoZv05U_ZWbnaHA@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 5 Aug 2024 12:44:48 +0200
+Message-ID: <CANiq72nHyuQ9+59qDQw9PbRf-Tm299JNrP_WjsDBrahM3g-HiA@mail.gmail.com>
 Subject: Re: [PATCH v3] rust: Support latest version of `rust-analyzer`
-To: Sarthak Singh <sarthak.singh99@gmail.com>, Miguel Ojeda <ojeda@kernel.org>
-CC: <a.hindborg@samsung.com>, <alex.gaynor@gmail.com>, <aliceryhl@google.com>,
-	<benno.lossin@proton.me>, <bjorn3_gh@protonmail.com>, <boqun.feng@gmail.com>,
-	<gary@garyguo.net>, <ojeda@kernel.org>, <rust-for-linux@vger.kernel.org>,
-	<wedsonaf@gmail.com>
-References: <20240724172713.899399-1-sarthak.singh99@gmail.com>
- <20240731080021.195732-1-sarthak.singh99@gmail.com>
-Content-Language: en-US
-From: Dirk Behme <dirk.behme@de.bosch.com>
-In-Reply-To: <20240731080021.195732-1-sarthak.singh99@gmail.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: AMS1EPF00000043:EE_|VI0PR10MB8646:EE_
-X-MS-Office365-Filtering-Correlation-Id: a3c855aa-95a2-4131-f91b-08dcb53b2500
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|36860700013|1800799024|7416014|376014|82310400026;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?ZS9mbjhWYXlNUTRFUkt5U2NITFV1RnZJWDFiN3o3S2RieWF1anpFbk11d0U0?=
- =?utf-8?B?dlJjM3FlMmdYZTc1L1RDZVpYZVVFUzgrbUJLVy95UjVFOUhNK2k2V0ZqR3lH?=
- =?utf-8?B?YW16c1p1OUNibDFBNU9zc1NVNTdaaEdIM2FDWmc3cnJVRGo3WWNVbER6VnBj?=
- =?utf-8?B?Sm5YZ0tYdUVGSTZJOU42L211S1ZScXJiVXZZYnVIdW05VjNDWkx4VzVzczJp?=
- =?utf-8?B?WDR1ZHUvZVh0ME1GaVZSRWdFcjRLOS9XQ0VHbjN3T2gwVHlwYUxzaUd3U3Fu?=
- =?utf-8?B?d2pjS0t4MjFLemtJZTA0bGFwTC9uTVVTVUwrUFprbXBYYVdaYWRqRFZTSkFW?=
- =?utf-8?B?YkZSMHNMdWhDRVhNbkFBelEyOFhCeTJWbVN2Y1RLeDExUUZJYTFhRFE4cUNB?=
- =?utf-8?B?UytXck9kR3VRN1Bka2toY3V2SnpKWnl4NHRpeURzRnpiQ3dDWTduSXpYM3VR?=
- =?utf-8?B?dUd1TjMxWC9PbTU1SnRucTluaUhHY1FoZXAwOEVESUVpZW5ZY2RNQm1lZ05M?=
- =?utf-8?B?ek42elpWUjR1VGRFdUJFcXlpVzdMRkVTelB4N2lsZW9OQ0tqNVJzQmljMFdL?=
- =?utf-8?B?QlU5MXJ0NnhHODg2cnNxa3dsOTAwa1gxOTRNczNid0FrQzNPSmVDQVBrZTlI?=
- =?utf-8?B?Vzc1WENuaksrZUoxN25uS1daNXN0TkZSMWtlcWtpL05GNTlZQjZTRlBxbity?=
- =?utf-8?B?TEZ6REw4bDFvc2xpWmhaY2tpbWdGc2xNbHlqTFNyK1UyRlAwTDkyVm9PYnc5?=
- =?utf-8?B?MEkya01VWnFUdWJyaFd5NDVsY2dGZlVlNmlVODdFMkJpaWUwMm9ZTHdFaVZK?=
- =?utf-8?B?aCtETzV6YlJpU1VlUzhjVDZTTndWRlI3dXU1endtVEVNY0hBNFJiemtUeHhT?=
- =?utf-8?B?TXBxdFl4ZXFjWFVnNi9hNEpoVTFUVGxiN3RmWnhJcEE0bFl5elJOTC9xTUQr?=
- =?utf-8?B?L1BJRHhYcWttS2Iza2JENkRDQXdQemMrSFgxZ0NXM2ZyUkJ6TW1Ib20zblVw?=
- =?utf-8?B?YkRZUVV1R0RkcENRcHBNb01JSk85Z1Q2TCt4Y3lMbDNHNEg5b1B0V0tEUkwr?=
- =?utf-8?B?VzZYUElTR1o2TW82MjRpTUdET1E2SUsvb3RJMnhUUVhwYWdPTXRnSXpoams2?=
- =?utf-8?B?QmFqVG1HVjJ1d1pCTDZMVjJKY3hUM0szNFovMzhERTdseHcrN2ZiTUNCK2ND?=
- =?utf-8?B?RmUzRWlkcEhPalF2aDdDZUxHQU5xNWlNaUtES1RQSFQrUFdGS21hYm9JcTdm?=
- =?utf-8?B?VCtoL0t1SHV6QnJxWHczMDZrRFlmVFBwa29UaHBBa0RsRWNDSmNMUURnYUww?=
- =?utf-8?B?T1UxWWxOS2M3OW83M0ZtUFZNR2tYeTRIUmNVM2F5bm5MS01QQ21KSmZwZGI5?=
- =?utf-8?B?eHVwek40K01jNEVzOVU5WWc2cHozR0FzL3l3Y2ltMCtRWWthdE1tM3daWmM1?=
- =?utf-8?B?Wm5xdlRhMHc0K2UvU3pJK285V1loU3RDSGNYa0JvcnkxcjUyaDBub0p3ZWFr?=
- =?utf-8?B?VVFiSUd3Zi9HZVpaMUJBOGEraisrUUFhYjErN1FuWno4TzYwcmZSRkd4S0g3?=
- =?utf-8?B?czVVMnZibEsvMStMZ3M4cXpsNGc5eWQ0d1N0UXZlcDF4TjB3eWZSTUI5MlV0?=
- =?utf-8?B?M3lvb3VCVDFteW54YjZIMXpDUEZIZ0tNTG9hVXF6Y3l1SDVubjVDSzlTL2pj?=
- =?utf-8?B?ajVYbzQwdjU5MEdEOHA5M0J6K0F1NUtkaG5iVGVkMURhWlJXZHZDMHU0dHh0?=
- =?utf-8?B?Ni9venA1bEU1cVBzcHA3cFhEbDQxOHRLSVpVSzl3QUhEckpjcVRsa29ENk4y?=
- =?utf-8?B?R05LUm93QVpacDZ1WktjcGpkSm8zemw1UVVkbTdvQ0k2R2NYQVdMM3VpTG9D?=
- =?utf-8?B?VVB4U2h6ZC8zb2lLTnVNbFFBNy9hdGZxaEk1MlY4bCtFR2EwWm15UXc0T0lJ?=
- =?utf-8?Q?Vto2Y0YOxoUSdLXgomIlf/2BDrEqhdRE?=
-X-Forefront-Antispam-Report:
-	CIP:139.15.153.205;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eop.bosch-org.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(1800799024)(7416014)(376014)(82310400026);DIR:OUT;SFP:1101;
-X-OriginatorOrg: de.bosch.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Aug 2024 10:41:20.7661
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: a3c855aa-95a2-4131-f91b-08dcb53b2500
-X-MS-Exchange-CrossTenant-Id: 0ae51e19-07c8-4e4b-bb6d-648ee58410f4
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0ae51e19-07c8-4e4b-bb6d-648ee58410f4;Ip=[139.15.153.205];Helo=[eop.bosch-org.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	AMS1EPF00000043.eurprd04.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI0PR10MB8646
+To: Sarthak Singh <sarthak.singh99@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, 
+	Dirk Behme <dirk.behme@de.bosch.com>, Lukas Wirth <lukastw97@gmail.com>, 
+	Lukas Wirth <lukas.wirth@ferrous-systems.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-
-On 31.07.2024 10:00, Sarthak Singh wrote:
+On Wed, Jul 31, 2024 at 9:53=E2=80=AFAM Sarthak Singh <sarthak.singh99@gmai=
+l.com> wrote:
+>
 > A polite reminder to please take a look at this patch.
 
-Would it make sense to apply this to rust-fixes and/or send it to Linus 
-as fix for inclusion into 6.11-rcX?
+It is not forgotten :)
 
-Best regards
+I think you didn't reply to my v2 message? The changelog does not
+really explain what changed, so to understand what is going on one
+needs to recall all the details, diff your patch messages and try to
+understand if there is still something missing from the v2 discussion,
+e.g.
 
-Dirk
+    So I assume things could break (or be confusing) if someone provides
+    (intentionally) a `RUST_LIB_SRC` that is different than the one in the
+    actual sysroot, no?
 
+Please do not get me wrong, the patch contents are probably good, I am
+just saying this because it helps others keep up so that you get
+feedback sooner.
 
+In this commit message, you say:
+
+    Now `sysroot` is a required parameter for a `rust-project.json` file.
+
+But that does not seem to be true given their  docs. I guess you mean
+for combination in particular, so I guess it it is fine.
+
+(Cc'd Lukas)
+
+Cheers,
+Miguel
