@@ -1,139 +1,221 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f46.google.com (mail-wr1-f46.google.com [209.85.221.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE5A218D637;
-	Tue,  6 Aug 2024 14:47:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 196BA18D653
+	for <rust-for-linux@vger.kernel.org>; Tue,  6 Aug 2024 15:00:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722955623; cv=none; b=rWimz83/9PXe5m354p/vdIMuBLw/dgxhK1zyFaEH4aRb25eSTPmecT4V/iTgm4B9pL1AQ2SbbO5meRddyW9PPkXmjZr4ca222ibmApkFIB4TCzSrB3/HylRKD5JccQpRfkO2WSvf92WqOgLkomfyq5mfzHM3m+bpJPViiiiIJzY=
+	t=1722956416; cv=none; b=B63nmFhhlonYtuud3bBeue6YhKIGmxqjxCg5RBQRo57G7rsfIWt/JcML3uWRBUaxhL43kwjyVETb0TLnnBMeY7svgmSsxi5dRFeT1OnaSua+S34Yje9oJVVkyqKTeQEqlsRCAf9mq4XyKRKO9alemOo09jcmZEcA3OipwVrlIYg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722955623; c=relaxed/simple;
-	bh=Y5cnqlYZvFN6cWFHE9qVDfBZuNNP2KiMh9AisNZvLTA=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=B15SPvn2ubSksbwXXI3LbhbClcseFrkfD8hi6qTbIArQWPr3nG4+YR50QKi5n3pOuTMU3SCX1cui3jf7iPYCmNYAqqrC86yFB7rD1+D3eHUOilB+2JDKVE3kfTnVzAbZ3hHC14738B5K6poZnR57EejCDNOIJUh9bPnCFMMYQC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f2PtbaYt; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1722956416; c=relaxed/simple;
+	bh=yqisXkgSD2Nkg9hq1EwKbPZ+otbZreIdbThlZ/FBl7o=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=IGcPPerCEAg7649lKFDeoLzichRK3tkHNgZ5FO8PvuUysk+vjW0cOsnSLzXUZfgbpLdAx5db8i7Rm1PGt15xemW8MStGvHOALaE4Ig7w0MHaii9j7By9gJ3jVQMFo62/8Dx7nrcuk+LtpY9w/OuQnAS4F/Y+S8k5Ig8lujYVXTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=H5lr5CpF; arc=none smtp.client-ip=209.85.221.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f2PtbaYt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0BA1C32786;
-	Tue,  6 Aug 2024 14:46:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1722955622;
-	bh=Y5cnqlYZvFN6cWFHE9qVDfBZuNNP2KiMh9AisNZvLTA=;
-	h=From:To:Cc:Subject:Date:From;
-	b=f2PtbaYtlpBr4dZgWrLP4DSz+0sMAoCOJaf8PlESRaHiKNueurDE9IJVMYT+ERerp
-	 oBumhEUT12cbzB84fVrxmavyk80/teYOGHLwSdN1D6K9+KR4PHustrIOXInX1SElSA
-	 YMZUrtH9MyQjkpzDpU42qnmAwGFj6jBxKSa1iWe9WSoIfliMJO/MyuYX/b2yzJm0Rz
-	 ZFAx7D4lVZz+FQbkISq0r+nT6bmiG4r62iAU0r1OAkT9HZ35/WwyoJhWGvPaeMpNRV
-	 NskOt/DARBB63AmPPmSVeAwyppfkBA+FxkZ5Jeu2v+CnLaGENA5+rj/8isxmi9idYj
-	 5mh7ctuAZbUkg==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Ingo Molnar <mingo@redhat.com>,
-	Borislav Petkov <bp@alien8.de>,
-	Dave Hansen <dave.hansen@linux.intel.com>,
-	x86@kernel.org
-Cc: Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	rust-for-linux@vger.kernel.org,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Bill Wendling <morbo@google.com>,
-	Justin Stitt <justinstitt@google.com>,
-	llvm@lists.linux.dev,
-	"H. Peter Anvin" <hpa@zytor.com>,
-	linux-kernel@vger.kernel.org,
-	patches@lists.linux.dev,
-	Nikita Popov <github@npopov.com>
-Subject: [PATCH] rust: x86: remove `-3dnow{,a}` from target features
-Date: Tue,  6 Aug 2024 16:45:58 +0200
-Message-ID: <20240806144558.114461-1-ojeda@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="H5lr5CpF"
+Received: by mail-wr1-f46.google.com with SMTP id ffacd0b85a97d-3685b3dbcdcso553975f8f.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 06 Aug 2024 08:00:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1722956413; x=1723561213; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Z3lPYNCqUQ0CBq9NAtWdv9x9dDXsAeH8iPTFshxwRXw=;
+        b=H5lr5CpFbZxc2y9Tm5TvvMKN3HUwYHz4kzHKP1fzMPSe/tVdWIjCxpnPvvjP5iOdMP
+         ioNYAssgTO2SkqpSlaqDpWbdz+iFTH1sDpcApaARxzP7lkZvPKtudpb8ABq3qs0LWVSX
+         BZXPWmwHU/tZr/bDg79YVvbyy/gsmEpK7+wkZqw/Nm8nRPtW0julOH7KFSsFJtoN8N/G
+         U1IDX0onSRrBqEpY27DoW0O3qj04a8jNwDViI9ibc29JvVP0jVg7Rd5OsIRJw7ARC2IM
+         KzEXvwsnK32xwAiiCuX3j0BtKopOhk019jj3IxjshKRfotbMCI6yF0iHyE9RWZX/DkLz
+         g1NQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722956413; x=1723561213;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Z3lPYNCqUQ0CBq9NAtWdv9x9dDXsAeH8iPTFshxwRXw=;
+        b=Rur0ofAdNJUK2LL9vbBEULH7PBRGu9QlIY8ZUH6HrPwgGXevdw9WZbMuFqVv7Dpc+F
+         8EaWLWn9vZKpoEYgJ3acByi0Z3f3WzZlszJOZyiJYATKvCfI/rmRvckLj7LuFwZIWrJS
+         b+ZawZq/dV+2PAhLtnIQdQDTZHGDlra5QbziBfqU+oxWUJHkddd5BSFevVsmja10YDeR
+         Ub6BcT7SsTx/ahsfNJQg/68Teqac2+UFAvekIhBD8K1vm+G1MuqbUOar9CUQmVpC0pn5
+         Z1b/5DI8Sj3CjdEtBj29NIWC+cYjoEEdtmkJaz2s37f0pw3J/Ny/54mx+lr8poqpXWRU
+         mYuA==
+X-Forwarded-Encrypted: i=1; AJvYcCUK+vRukOspuIZQjl/2udsMXc7C6Fgt+0GJ8G4EW0214v081aFXFft0AvTdXWVgV2hvuu/nsEri0+fSpzWPJbf+/la82hMmFhbnhQLsv7k=
+X-Gm-Message-State: AOJu0Yw3viLDFRj+Yg5Z/UjUoOxghDkRTnRF1o6XMjC5SrW0qV2qVWqr
+	wfEm38OZQYBqCX7rYbSVh6c/WQDQTuJUxfUOQ7ohAATsFscwDOW5/ciaw2lovdDw49SZy/iW18C
+	VQ3SHSqxbUJrJ1RGoJpFipe17v2b0n1f6RDNK
+X-Google-Smtp-Source: AGHT+IE/CVhS1wESVTuZ5jEcviM63X/Js9/n1/UOV4np0a6p1yHbV1w2VwEd+yTFq+QbD1M6s8WKCwNsuvaj3ZgfgSY=
+X-Received: by 2002:a5d:5749:0:b0:367:8fee:443b with SMTP id
+ ffacd0b85a97d-36bbc1911a4mr11189866f8f.41.1722956412869; Tue, 06 Aug 2024
+ 08:00:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20240805152004.5039-1-dakr@kernel.org> <20240805152004.5039-2-dakr@kernel.org>
+In-Reply-To: <20240805152004.5039-2-dakr@kernel.org>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Tue, 6 Aug 2024 17:00:00 +0200
+Message-ID: <CAH5fLgj=Z7HkBkdRscw1TTXbn5WTN5WvJsPBjnRTRw25CgUudQ@mail.gmail.com>
+Subject: Re: [PATCH v4 01/28] rust: alloc: add `Allocator` trait
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, 
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	benno.lossin@proton.me, a.hindborg@samsung.com, akpm@linux-foundation.org, 
+	daniel.almeida@collabora.com, faith.ekstrand@collabora.com, 
+	boris.brezillon@collabora.com, lina@asahilina.net, mcanal@igalia.com, 
+	zhiw@nvidia.com, acurrid@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com, 
+	airlied@redhat.com, ajanulgu@redhat.com, lyude@redhat.com, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-LLVM 19 is dropping support for 3DNow! in commit f0eb5587ceeb ("Remove
-support for 3DNow!, both intrinsics and builtins. (#96246)"):
+On Mon, Aug 5, 2024 at 5:20=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> w=
+rote:
+>
+> Add a kernel specific `Allocator` trait, that in contrast to the one in
+> Rust's core library doesn't require unstable features and supports GFP
+> flags.
+>
+> Subsequent patches add the following trait implementors: `Kmalloc`,
+> `Vmalloc` and `KVmalloc`.
+>
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> ---
+>  rust/kernel/alloc.rs | 79 ++++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 79 insertions(+)
+>
+> diff --git a/rust/kernel/alloc.rs b/rust/kernel/alloc.rs
+> index 1966bd407017..8a71a589469d 100644
+> --- a/rust/kernel/alloc.rs
+> +++ b/rust/kernel/alloc.rs
+> @@ -11,6 +11,7 @@
+>  /// Indicates an allocation error.
+>  #[derive(Copy, Clone, PartialEq, Eq, Debug)]
+>  pub struct AllocError;
+> +use core::{alloc::Layout, ptr::NonNull};
+>
+>  /// Flags to be used when allocating memory.
+>  ///
+> @@ -86,3 +87,81 @@ pub mod flags {
+>      /// small allocations.
+>      pub const GFP_NOWAIT: Flags =3D Flags(bindings::GFP_NOWAIT);
+>  }
+> +
+> +/// The kernel's [`Allocator`] trait.
+> +///
+> +/// An implementation of [`Allocator`] can allocate, re-allocate and fre=
+e memory buffer described
+> +/// via [`Layout`].
+> +///
+> +/// [`Allocator`] is designed to be implemented as a ZST; [`Allocator`] =
+functions do not operate on
+> +/// an object instance.
+> +///
+> +/// In order to be able to support `#[derive(SmartPointer)]` later on, w=
+e need to avoid a design
+> +/// that requires an `Allocator` to be instantiated, hence its functions=
+ must not contain any kind
+> +/// of `self` parameter.
+> +///
+> +/// # Safety
+> +///
+> +/// Memory returned from an allocator must point to a valid memory buffe=
+r and remain valid until
+> +/// it is explicitly freed.
+> +///
+> +/// Any pointer to a memory buffer which is currently allocated must be =
+valid to be passed to any
+> +/// other [`Allocator`] function of the same type. The same applies for =
+a NULL pointer.
+> +///
+> +/// If `realloc` is called with:
+> +///   - a size of zero, the given memory allocation, if any, must be fre=
+ed
+> +///   - a NULL pointer, a new memory allocation must be created
+> +pub unsafe trait Allocator {
+> +    /// Allocate memory based on `layout` and `flags`.
+> +    ///
+> +    /// On success, returns a buffer represented as `NonNull<[u8]>` that=
+ satisfies the layout
+> +    /// constraints (i.e. minimum size and alignment as specified by `la=
+yout`).
+> +    ///
+> +    /// This function is equivalent to `realloc` when called with a NULL=
+ pointer.
+> +    fn alloc(layout: Layout, flags: Flags) -> Result<NonNull<[u8]>, Allo=
+cError> {
+> +        // SAFETY: Passing a NULL pointer to `realloc` is valid by it's =
+safety requirements and asks
+> +        // for a new memory allocation.
+> +        unsafe { Self::realloc(None, layout, flags) }
+> +    }
+> +
+> +    /// Re-allocate an existing memory allocation to satisfy the request=
+ed `layout`. If the
+> +    /// requested size is zero, `realloc` behaves equivalent to `free`.
+> +    ///
+> +    /// If the requested size is larger than the size of the existing al=
+location, a successful call
+> +    /// to `realloc` guarantees that the new or grown buffer has at leas=
+t `Layout::size` bytes, but
+> +    /// may also be larger.
+> +    ///
+> +    /// If the requested size is smaller than the size of the existing a=
+llocation, `realloc` may or
+> +    /// may not shrink the buffer; this is implementation specific to th=
+e allocator.
+> +    ///
+> +    /// On allocation failure, the existing buffer, if any, remains vali=
+d.
+> +    ///
+> +    /// The buffer is represented as `NonNull<[u8]>`.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// `Some(ptr)` must point to an existing and valid memory allocatio=
+n created by this allocator
+> +    /// instance. The alignment encoded in `layout` must be smaller than=
+ or equal to the alignment
+> +    /// requested in the previous `alloc` or `realloc` call of the same =
+allocation.
+> +    ///
+> +    /// Additionally, `ptr` is allowed to be `None`; in this case a new =
+memory allocation is
+> +    /// created.
+> +    ///
+> +    unsafe fn realloc(
+> +        ptr: Option<NonNull<u8>>,
+> +        layout: Layout,
+> +        flags: Flags,
+> +    ) -> Result<NonNull<[u8]>, AllocError>;
+> +
+> +    /// Free an existing memory allocation.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// `ptr` must point to an existing and valid memory allocation crea=
+ted by this `Allocator`
+> +    /// instance.
+> +    unsafe fn free(ptr: NonNull<u8>) {
+> +        // SAFETY: `ptr` is guaranteed to be previously allocated with t=
+his `Allocator` or NULL.
+> +        // Calling `realloc` with a buffer size of zero, frees the buffe=
+r `ptr` points to.
 
-    Remove support for 3DNow!, both intrinsics and builtins. (#96246)
+It can't actually be NULL since it's a NonNull. I would reword to:
 
-    This set of instructions was only supported by AMD chips starting in
-    the K6-2 (introduced 1998), and before the "Bulldozer" family
-    (2011). They were never much used, as they were effectively superseded
-    by the more-widely-implemented SSE (first implemented on the AMD side
-    in Athlon XP in 2001).
+// SAFETY: The caller guarantees that `ptr` points at a valid
+allocation created by this allocator. We are passing a Layout with the
+smallest possible alignment, so it is smaller than or equal to the
+alignment previously used with this allocation.
 
-    This is being done as a predecessor towards general removal of MMX
-    register usage. Since there is almost no usage of the 3DNow!
-    intrinsics, and no modern hardware even implements them, simple
-    removal seems like the best option.
+Anyway, otherwise this LGTM.
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 
-Thus we should avoid passing these to the backend, since otherwise we
-get a diagnostic about it:
-
-    '-3dnow' is not a recognized feature for this target (ignoring feature)
-    '-3dnowa' is not a recognized feature for this target (ignoring feature)
-
-We could try to disable them only up to LLVM 19 (not the C side one,
-but the one used by `rustc`, which may be built with a range of
-LLVMs). However, to avoid more complexity, we can likely just remove
-them altogether. According to Nikita [2]:
-
-> I don't think it's needed because LLVM should not generate 3dnow
-instructions unless specifically asked to, using intrinsics that Rust
-does not provide in the first place.
-
-Thus do so, like Rust did for one of their builtin targets [3].
-
-For those curious: Clang will warn only about trying to enable them
-(`-m3dnow{,a}`), but not about disabling them (`-mno-3dnow{,a}`), so
-there is no change needed there.
-
-Cc: Nikita Popov <github@npopov.com>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: x86@kernel.org
-Link: https://github.com/llvm/llvm-project/commit/f0eb5587ceeb641445b64cb264c822b4751de04a [1]
-Link: https://github.com/rust-lang/rust/pull/127864#issuecomment-2235898760 [2]
-Link: https://github.com/rust-lang/rust/pull/127864 [3]
-Closes: https://github.com/Rust-for-Linux/linux/issues/1094
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
----
- scripts/generate_rust_target.rs | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/scripts/generate_rust_target.rs b/scripts/generate_rust_target.rs
-index 87f34925eb7b..404edf7587e0 100644
---- a/scripts/generate_rust_target.rs
-+++ b/scripts/generate_rust_target.rs
-@@ -162,7 +162,7 @@ fn main() {
-             "data-layout",
-             "e-m:e-p270:32:32-p271:32:32-p272:64:64-i64:64-i128:128-f80:128-n8:16:32:64-S128",
-         );
--        let mut features = "-3dnow,-3dnowa,-mmx,+soft-float".to_string();
-+        let mut features = "-mmx,+soft-float".to_string();
-         if cfg.has("MITIGATION_RETPOLINE") {
-             features += ",+retpoline-external-thunk";
-         }
-@@ -179,7 +179,7 @@ fn main() {
-             "data-layout",
-             "e-m:e-p:32:32-p270:32:32-p271:32:32-p272:64:64-i128:128-f64:32:64-f80:32-n8:16:32-S128",
-         );
--        let mut features = "-3dnow,-3dnowa,-mmx,+soft-float".to_string();
-+        let mut features = "-mmx,+soft-float".to_string();
-         if cfg.has("MITIGATION_RETPOLINE") {
-             features += ",+retpoline-external-thunk";
-         }
-
-base-commit: de9c2c66ad8e787abec7c9d7eff4f8c3cdd28aed
--- 
-2.46.0
-
+Alice
