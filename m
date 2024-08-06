@@ -1,55 +1,55 @@
-Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
+Received: from mail-yb1-f201.google.com (mail-yb1-f201.google.com [209.85.219.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A703F1779BB
-	for <rust-for-linux@vger.kernel.org>; Tue,  6 Aug 2024 21:21:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B24F6178395
+	for <rust-for-linux@vger.kernel.org>; Tue,  6 Aug 2024 21:21:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722979289; cv=none; b=G45Tf+lh9aiVNq2H6TgiyJ7YZf4vxIrFMV8C0PgAbJugWEklyGN6oSYmyoY9tDjTyj7gopv7wDLzGyj1eLef6lZUUm1w42Kgr9M+OqzOskhJYrg5rGpftsbFd9dC2LkBKSVRa1nQSUxRlDRiJjJi+L7LfhWPq50tew7s4Ev1CGg=
+	t=1722979291; cv=none; b=DvhsiaY1zW9BjHXQRFn0WMSPShJoZpEuDx+oVbgUClDhDA1btcIRmVRXlu4AGB8BdxkJ+CP6MRKhcbAvhtnnhvlC6FVcj+gYo4Un1l7gPFvkGyY9Gm5lF5dMxIycjzXiUpNWFqODNzGmooxo3wy57Whtje4FS+VREL3p4/XRUc0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722979289; c=relaxed/simple;
-	bh=Okhe1T5As6Y64+KRW1MjEmzZ0Hbd7KikHv1V2PgrJsw=;
+	s=arc-20240116; t=1722979291; c=relaxed/simple;
+	bh=dIiU0Tc3uXRBqO8BxbcpDjMxRQlEqkdGqVYtVRXQfa4=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=MhRCRHsq2ue14ciGATjZEOWhS+rqt0P+z0KLT164EYKzDNI/HfJIrmXzRNJSOuVCorPPhufwM2OcjgN6blz1HBefWQ6+Ry903MtPQpm8+Tb1D9FBSWhyP/NQwbgrzyK3ERqMV9KffAvZ4E3qsyaWCFdYCjx6xJiWHu5sQ/VMvu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--mmaurer.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=4WmCiMAK; arc=none smtp.client-ip=209.85.128.202
+	 To:Cc:Content-Type; b=kiP9zrwtIBV6pnou7efm+s03ywlK7ODS6rb2e6WTmPdXj1Uj8/lzJFd96ne9sDJagtmBwWMYV+EQEpDycpfvUSuHmn9Nxd2nIwUL2hdjki1T9intAJSm/yAEl4KyxRfeR/wFXd4HRPj3d54M0CQMAhRcKLKIAZfr8u7AGoDzBFE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--mmaurer.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YoSQTAzB; arc=none smtp.client-ip=209.85.219.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--mmaurer.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="4WmCiMAK"
-Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-68fd6ccd4c8so21176637b3.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 06 Aug 2024 14:21:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YoSQTAzB"
+Received: by mail-yb1-f201.google.com with SMTP id 3f1490d57ef6-e035f7b5976so746060276.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 06 Aug 2024 14:21:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1722979287; x=1723584087; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1722979289; x=1723584089; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=dAFNE/2pEcN+jEiRbAPKQh51YEyYvD+OIb1ItIySijg=;
-        b=4WmCiMAKduvUZyAP9BxIYPo7b/CvFzQZa8FKEdeUq7SikwFTgZQbLAR+Mw0P5hksIR
-         R0NkfSyDEb+UEUohgsj44P7Bcq3cwN0QFk9vCaePKh3+mX86yRQ0Ktjj8jXyLRwdbMja
-         ZW0iQGsS6KJSIEvLQxll/Vl6mmOP8HsB+ZDPIaryLBrfkK7at7roc3vnFq4j9s/NUER8
-         W87ZFrrgGiPm7tjJSOuj8eG99O5glfFj5rsb1t7wDTeLCKUwBiVs4Jgr8advlGC/LdVV
-         FBSqKYQ/agLSEe1mneZ2yymXoraRh+wlEjwQOzgOYDfOzBYRSroIf5+WJb7Ev2gAh5VN
-         LRwA==
+        bh=gUIJSmYAueDMQwZOmqrMFJ3C80+DhAWejM34XgmrZE0=;
+        b=YoSQTAzBlqBCl67gkvZV2vzY++Mq2djV1Ps44zoqDB7HkKhJUfFbtM+TJv6Ts7azbf
+         S6idUvg03wLJKctSagydLQVQ1uXBXGdjjMY0VgJsPK+K/S7kBjRb+m1BH9XdHf68NduD
+         hfmq0YP9RvrhT3bVFWjXrh8ReVKT3KABx/4d0Khz2o/SCYJUcM13EVh79zsMFKwnKh4A
+         K8s42VBxkRWjwXwWN6ID1qe0fL/S6hb3E0YnR+100KDR5il7uyhsSU+Zk8CwcXSyk+yk
+         VkfEBJp+E4FJsLPHV3KxN8Ax/jivvtozSnmeee1fzhPFAnBBIzY8z4U3Tc3xDIiKrXIP
+         nJAg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722979287; x=1723584087;
+        d=1e100.net; s=20230601; t=1722979289; x=1723584089;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=dAFNE/2pEcN+jEiRbAPKQh51YEyYvD+OIb1ItIySijg=;
-        b=AMeJTvn/puJUxh2AX7xyJkzM6jx0mzfDnvKtT1XXIoYcXLzK7atVp0Q1HpIB7Dd31y
-         XhkpVbn4/Z0Tx40w2ftm23kzmtd+v0+YQ3t0DtWVUfMFGc1r1mBTwIt8ePetb5r0DSy+
-         k73xl49lzZD6unPWsxtwNSmdd2I4DOJjZmjTLUc6M+CO/O81Cf7jqlXY3zHtMZIAlnNM
-         R5meGIz/id8kcmAd1FL9GCYDRxPPw6Ou3nYbSGkiFo9WOLwi1dH8cw9AaBKgvtMbPBX2
-         VKWy2v8TAUXj8gJ9BRBW2PgjRtDEB2rRxrG5uCpA2T+EnpwsvU0DsmYRBScMINflCNFL
-         +dMA==
-X-Forwarded-Encrypted: i=1; AJvYcCWdjqx1NTw19YBJX/JEIwodhPm1u/lirwvigMZsnL+ewu/7PaqtQKVSuXBJOwkJnyWvzhOJAazlhUmd6kP/zYzl/2T3bnMhYY6vM1MIVu8=
-X-Gm-Message-State: AOJu0Yx2l7ekcxfoc0Vqca6OZFimUOJBs5r03q58KS+h1Ew5DeJ8u05L
-	LMpHbMuihjcB9vao62xEepSbmbXtKVCsukQvMpbld8iCs3Kqh+Tzwm71k1JeXzqT+Aj3fjzwhUH
-	RXcj94w==
-X-Google-Smtp-Source: AGHT+IEzhkK2hIEZemS/GfHuHvcaKTZwEFGEZ6GZBQ1IPi5h6XQ4rxIprirl+QthlbpWBOw+2Rg13mYDMQTW
+        bh=gUIJSmYAueDMQwZOmqrMFJ3C80+DhAWejM34XgmrZE0=;
+        b=gP1Tn2Oni8y2nky0eh1rv1++otVg7EvvkZMU8i8FHXtl3+V17m0w1CYhlbBGApC0fK
+         Ez+ZYSoy9/QxP/GtOk8oVz5SXJQ/Zzq1wQd22nN0ha4xRUVoFwoBLpTNeR43w6VfM7wl
+         NNGul2KB6/oawP5IgAZvklVfjAVuv2uEHd64sO/4hPYsSgkf08+cfyBG+XmwG7KOECjn
+         s4aK2j2VHabdxtjfzprGS1Tk3VvlhttziZBoRQ9Dfvj/iNsghG2HDqz7mTTYFpVAs0PG
+         OT9urMA/Y0xJADYk/l0oBSxjf62l8d28itRbOlwW00pPskF+4G9ngnJ+A20Lz8HUpiGN
+         sEEw==
+X-Forwarded-Encrypted: i=1; AJvYcCXGRCii2dfVbS5HpBE3VjQLzlfcbGC+NIg0zQEiE9y+gT23BFXkCoBFqAXEKS4OM990tMEZuRUx6Wv3qBSRU+aCZ53JKsZSLzt/gvV0HOQ=
+X-Gm-Message-State: AOJu0YwFx3DpT+wUOvD5Wk3wHEHqr00nOuSSZaCs/BIWcYFWBCW4bsUD
+	GwcYQQTRa7jar+FWWQCATxftRasNuYW/8LAfWQ0o/tiiAqcvKOm3nnuFHnGqHbcQhQYITc38SFT
+	lBoRxjw==
+X-Google-Smtp-Source: AGHT+IHnyhCIE7p7z2n6WnnXCPCeFudWDehmyraniu3E/okfCSEKUYauypMKOFooBVtSeqVPlFvlg3iYazYc
 X-Received: from anyblade.c.googlers.com ([fda3:e722:ac3:cc00:20:ed76:c0a8:1791])
- (user=mmaurer job=sendgmr) by 2002:a05:690c:113:b0:648:3f93:61f2 with SMTP id
- 00721157ae682-689641a414emr7231967b3.6.1722979286737; Tue, 06 Aug 2024
- 14:21:26 -0700 (PDT)
-Date: Tue,  6 Aug 2024 21:20:34 +0000
+ (user=mmaurer job=sendgmr) by 2002:a05:6902:2207:b0:e0b:bc42:53be with SMTP
+ id 3f1490d57ef6-e0e87799e3cmr180276.2.1722979288711; Tue, 06 Aug 2024
+ 14:21:28 -0700 (PDT)
+Date: Tue,  6 Aug 2024 21:20:35 +0000
 In-Reply-To: <20240806212106.617164-1-mmaurer@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -59,8 +59,8 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20240806212106.617164-1-mmaurer@google.com>
 X-Mailer: git-send-email 2.46.0.rc2.264.g509ed76dc8-goog
-Message-ID: <20240806212106.617164-9-mmaurer@google.com>
-Subject: [PATCH v3 08/16] module: Factor out elf_validity_cache_index_str
+Message-ID: <20240806212106.617164-10-mmaurer@google.com>
+Subject: [PATCH v3 09/16] module: Group section index calculations together
 From: Matthew Maurer <mmaurer@google.com>
 To: masahiroy@kernel.org, ndesaulniers@google.com, ojeda@kernel.org, 
 	gary@garyguo.net, mcgrof@kernel.org, Alex Gaynor <alex.gaynor@gmail.com>, 
@@ -74,80 +74,107 @@ Cc: Matthew Maurer <mmaurer@google.com>, rust-for-linux@vger.kernel.org,
 	linux-modules@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 
-Pull out index validation for the symbol string section.
-
-Note that this does not validate the *contents* of the string table,
-only shape and presence of the section.
+Group all the index detection together to make the parent function
+easier to read.
 
 Signed-off-by: Matthew Maurer <mmaurer@google.com>
 ---
- kernel/module/main.c | 37 ++++++++++++++++++++++++++++---------
- 1 file changed, 28 insertions(+), 9 deletions(-)
+ kernel/module/main.c | 68 +++++++++++++++++++++++++++++++++-----------
+ 1 file changed, 51 insertions(+), 17 deletions(-)
 
 diff --git a/kernel/module/main.c b/kernel/module/main.c
-index 53597b785e2a..dec733989ad6 100644
+index dec733989ad6..a3a4acdcd647 100644
 --- a/kernel/module/main.c
 +++ b/kernel/module/main.c
-@@ -2014,6 +2014,31 @@ static int elf_validity_cache_index_sym(struct load_info *info)
+@@ -2039,6 +2039,56 @@ static int elf_validity_cache_index_str(struct load_info *info)
  	return 0;
  }
  
 +/**
-+ * elf_validity_cache_index_str() - Validate and cache strtab index
-+ * @info: Load info to cache strtab index in.
-+ *        Must have &load_info->sechdrs and &load_info->secstrings populated.
-+ *        Must have &load_info->index.sym populated.
++ * elf_validity_cache_index() - Resolve, validate, cache section indices
++ * @info:  Load info to read from and update.
++ *         &load_info->sechdrs and &load_info->secstrings must be populated.
++ * @flags: Load flags, relevant to suppress version loading, see
++ *         uapi/linux/module.h
 + *
-+ * Looks at the symbol table's associated string table, makes sure it is
-+ * in-bounds, and caches it.
++ * Populates &load_info->index, validating as it goes.
++ * See child functions for per-field validation:
 + *
-+ * Return: %0 if valid, %-ENOEXEC on failure.
++ * * elf_validity_cache_index_info()
++ * * elf_validity_cache_index_mod()
++ * * elf_validity_cache_index_sym()
++ * * elf_validity_cache_index_str()
++ *
++ * If versioning is not suppressed via flags, load the version index from
++ * a section called "__versions" with no validation.
++ *
++ * If CONFIG_SMP is enabled, load the percpu section by name with no
++ * validation.
++ *
++ * Return: 0 on success, negative error code if an index failed validation.
 + */
-+static int elf_validity_cache_index_str(struct load_info *info)
++static int elf_validity_cache_index(struct load_info *info, int flags)
 +{
-+	unsigned int str_idx = info->sechdrs[info->index.sym].sh_link;
++	int err;
 +
-+	if (str_idx == SHN_UNDEF || str_idx >= info->hdr->e_shnum) {
-+		pr_err("Invalid ELF sh_link!=SHN_UNDEF(%d) or (sh_link(%d) >= hdr->e_shnum(%d)\n",
-+		       str_idx, str_idx, info->hdr->e_shnum);
-+		return -ENOEXEC;
-+	}
++	err = elf_validity_cache_index_info(info);
++	if (err < 0)
++		return err;
++	err = elf_validity_cache_index_mod(info);
++	if (err < 0)
++		return err;
++	err = elf_validity_cache_index_sym(info);
++	if (err < 0)
++		return err;
++	err = elf_validity_cache_index_str(info);
++	if (err < 0)
++		return err;
 +
-+	info->index.str = str_idx;
++	if (flags & MODULE_INIT_IGNORE_MODVERSIONS)
++		info->index.vers = 0; /* Pretend no __versions section! */
++	else
++		info->index.vers = find_sec(info, "__versions");
++
++	info->index.pcpu = find_pcpusec(info);
++
 +	return 0;
 +}
 +
  /*
   * Check userspace passed ELF module against our expectations, and cache
   * useful variables for further processing as we go.
-@@ -2037,7 +2062,6 @@ static int elf_validity_cache_index_sym(struct load_info *info)
- static int elf_validity_cache_copy(struct load_info *info, int flags)
- {
- 	int err;
--	int str_idx;
- 
- 	err = elf_validity_cache_sechdrs(info);
- 	if (err < 0)
-@@ -2054,16 +2078,11 @@ static int elf_validity_cache_copy(struct load_info *info, int flags)
- 	err = elf_validity_cache_index_sym(info);
+@@ -2069,16 +2119,7 @@ static int elf_validity_cache_copy(struct load_info *info, int flags)
+ 	err = elf_validity_cache_secstrings(info);
  	if (err < 0)
  		return err;
+-	err = elf_validity_cache_index_info(info);
+-	if (err < 0)
+-		return err;
+-	err = elf_validity_cache_index_mod(info);
+-	if (err < 0)
+-		return err;
+-	err = elf_validity_cache_index_sym(info);
+-	if (err < 0)
+-		return err;
+-	err = elf_validity_cache_index_str(info);
++	err = elf_validity_cache_index(info, flags);
+ 	if (err < 0)
+ 		return err;
+ 
+@@ -2095,13 +2136,6 @@ static int elf_validity_cache_copy(struct load_info *info, int flags)
+ 	if (!info->name)
+ 		info->name = info->mod->name;
+ 
+-	if (flags & MODULE_INIT_IGNORE_MODVERSIONS)
+-		info->index.vers = 0; /* Pretend no __versions section! */
+-	else
+-		info->index.vers = find_sec(info, "__versions");
 -
--	str_idx = info->sechdrs[info->index.sym].sh_link;
--	if (str_idx == SHN_UNDEF || str_idx >= info->hdr->e_shnum) {
--		pr_err("Invalid ELF sh_link!=SHN_UNDEF(%d) or (sh_link(%d) >= hdr->e_shnum(%d)\n",
--				str_idx, str_idx, info->hdr->e_shnum);
--		return -ENOEXEC;
--	}
-+	err = elf_validity_cache_index_str(info);
-+	if (err < 0)
-+		return err;
+-	info->index.pcpu = find_pcpusec(info);
+-
+ 	return 0;
+ }
  
- 	/* Sets internal strings. */
--	info->index.str = str_idx;
- 	info->strtab = (char *)info->hdr + info->sechdrs[info->index.str].sh_offset;
- 
- 	/* This is temporary: point mod into copy of data. */
 -- 
 2.46.0.rc2.264.g509ed76dc8-goog
 
