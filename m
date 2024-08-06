@@ -1,91 +1,228 @@
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 786A01607BD;
-	Tue,  6 Aug 2024 09:27:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FDFB15FA78
+	for <rust-for-linux@vger.kernel.org>; Tue,  6 Aug 2024 10:02:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722936470; cv=none; b=Bhgy7y00tlP6lWfJAH343m8EKvbpHcT61Z2k2H0Sm1BY1u2nrvdeFj+8lMw8UzNJH4/xtSgjqQDfE1sN3bLkYKsc3Sn6JYBHqf/EQkH4i7QI0SMWf6sjqhLfL5e5JdsHEKm5DsuSqQsKYcosW1AIQtcnwxJne9KujS06+BvUbm0=
+	t=1722938539; cv=none; b=KwU1joERvAoeXBq9mSnbl9LeiOA9vYeIzezz0x5malH2In4yrkyg/sZQPCnnRC7I9V51sk0AB7lN7suzWh1vl5FWydHVrRGVJ+x9acpPEhTs1tyW6bwPXL/ldi/+MlcqeQObxtvX7pNcQEaJuMDBcZQyjjtdU3OEQvGLEJw1jNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722936470; c=relaxed/simple;
-	bh=7sPbgXjAAEJtXFHk0SLmRdhHDyevcomFeceOUjfG9Sg=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iy7IS1a6e+HLc8Af+VyhJ3gUSKHbdX/YnX5U/sUcbA8mZnZKsW1edeNizZ5YNgl2ObrUr6t5zH5yFkQONZErcegABXXeaKatK5rNnQ5ZjHY2Yw8UUQw/sqSUQ098GTdl28IBzR2jKK8w4SVHSvoJWGNdNseEqDJnuLRoeJzbmqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=fyzDO43g; arc=none smtp.client-ip=185.70.43.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1722938539; c=relaxed/simple;
+	bh=jGrDZg6W7b6yIioFv6kLQqST3aNp9FvB3x/QErRlweA=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=lRabjCXVECyZpenku1ZfTjnsYLLj2QH7H5KiJKlgLzhe51Wwm1wnms0PfEmT3n46uHoj1XyzqiEFhpyjPuImgxyGboQBxJhgxtws8319Kkt5+WkLtjMEByqnl57zT37F8aRaGIOtEf+7uThRQuO1xfpR9OFxs3MAGwoXLvyNeyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vZ31lXX6; arc=none smtp.client-ip=209.85.221.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="fyzDO43g"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1722936455; x=1723195655;
-	bh=QtfHhNVL/fDZI1RcLFsBz/E+dffq3r9sCPeAFCaPUwU=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=fyzDO43gjcKljxhbfec5pSJF3YbmImFPjpC8V3Q8HyrxfEDDHxJ7GCrTC6rY5VeBw
-	 yd4l725NDJ+p3oFVij5KoFVA6/2iJMa3Mw9xRdd3+TIlJe3OfV6JJzw0Gd+DAJrJdc
-	 mF0didLDoGGOwIA2fK0sMJjMBN/1sVCPrvcbmiR/0kotsbYaGvLzPyjGGjPPutbv17
-	 WKXDv4iG/kd0lxTlo0xQDVwOGJ4anklspl3DvmFWr3+Kgi5AHBVmLmf4oK2ACN6BHj
-	 lFHq+Tz63Jns0GmMDjt/M8uXyVUf3ON7FAaornh+2k5+hdWwpnSGy88vvHz7fBVCU6
-	 BX2DcC0ZpUucg==
-Date: Tue, 06 Aug 2024 09:27:29 +0000
-To: Alice Ryhl <aliceryhl@google.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Matt Gilbride <mattgilbride@google.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?utf-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>, Christian Brauner <brauner@kernel.org>, Rob Landley <rob@landley.net>, Davidlohr Bueso <dave@stgolabs.net>, Michel Lespinasse <michel@lespinasse.org>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v8 5/6] rust: rbtree: add `RBTreeCursor`
-Message-ID: <4a1b6a7a-9d0c-4089-bc14-0fe629a56d3e@proton.me>
-In-Reply-To: <CAH5fLgjiqOcu0JVgLze76LQDUD3KTQv9WrBy-GkMbCgVWn0xzA@mail.gmail.com>
-References: <20240727-b4-rbtree-v8-0-951600ada434@google.com> <20240727-b4-rbtree-v8-5-951600ada434@google.com> <309d3d27-62d0-42b0-b50a-40692a019b40@proton.me> <CAH5fLgh30z2Cfixn1aC-LPp-ua46eJ+jREWDTfhMK3aqXzbt-A@mail.gmail.com> <4ef9616f-a35a-4aa2-993c-9b67f50a46ee@proton.me> <CAH5fLgjiqOcu0JVgLze76LQDUD3KTQv9WrBy-GkMbCgVWn0xzA@mail.gmail.com>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 285a73cad60a0c1f3ea661eebb3b461d0430e2d9
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vZ31lXX6"
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-36841edbc32so184321f8f.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 06 Aug 2024 03:02:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1722938535; x=1723543335; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=uyC/KKWrUO6ijg03JYKkhJ/eLBPSnDJxF9JMPfbqZBo=;
+        b=vZ31lXX6APWVn8SPj5ylvAHxrh+OwCCa9/xlgY1oUk6D9IZ8kqknilIWsh7ZtGTOUj
+         xbtwW1eWWEO7cy6HlHbbEUPgR6PSHOC7beA8uJwqYPl+VL1xkrKTFgQl6Ys5mGiMVn7d
+         w5dzehD1Y6MakoR/YB4FW1BD8WBYtdLiT0iLrF1W8zEpvo7DFsZBTnAmyM8gJRbnKgvg
+         4JYNEt4wXA9/pmU9IYFucznF/R8r4sbTS2kAPsZgQ4wAo5YrhJv5pSxA+s8zFxdHfxTk
+         xzuukTZZzy6KNcGbygS/hLy+2zItEIgShfeRTNRuSjLXqhwkc2+t4Jg8EsSdq8zazEj+
+         S66A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722938535; x=1723543335;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=uyC/KKWrUO6ijg03JYKkhJ/eLBPSnDJxF9JMPfbqZBo=;
+        b=XzRfy0bBtWili9mMXvlcgmn1868HDBhiLoRRDJm1z/i1ITvPIZTiXhetf6HuRR7G91
+         Lx7eF7PwFEui4d72TjTXIK/10mWse1Gd35F9ubQreSxCkdfhJjBf0x+dByfWUj4vltnS
+         4eNltJBHmoMO8KC8LNZaW0d0DbI4tWzmqAvEOxmN1ZjqO55HaSmeyi8zxCyt0+8oJpYQ
+         UXtdlZqjMluE1Ojunlh4BBuXHfDebBa8tKf9ChSDhHpz0OEmF2z1ViP1YLShnSMQfkSD
+         ci4LFwTeLkM3iUkAM8ea7QC5BupOmX/1G5EaaG5/zoiResDE+g3BvBarXLwHyJ5M/LfF
+         ui7Q==
+X-Forwarded-Encrypted: i=1; AJvYcCV9t+94rWCUXxbEzm5sF0D+U03wJaqJljuQus9ov8oXcLuZQpS+IA/7sMOjzs7bgRXv1fNSOTS3VSdTjONUk+nndUHhtU1vKflOaG6jppA=
+X-Gm-Message-State: AOJu0YwuyusIanBdNXiuNk/eyW/lou6q2LnF7aOEBZy3r82Dg9oM2+bl
+	a5KeoP4euDC4Wnkqm/s8l49d9ZSejzzWzowyHQ95eqDxZoUDD8eX9LC6nmUN6/GJ/CFXZ2uSr5u
+	LcMvbowiAggI3jw==
+X-Google-Smtp-Source: AGHT+IEyDe1j18RYk8AjnoaPlYKH8v7/F76VPXiJnEvmSKM59tpFx5Id5pL26BGUmaQSWPpm5D+wABpCqbhRCao=
+X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:35bd])
+ (user=aliceryhl job=sendgmr) by 2002:a05:6000:12c8:b0:366:eb4a:7d5e with SMTP
+ id ffacd0b85a97d-36bbc172845mr22591f8f.11.1722938534825; Tue, 06 Aug 2024
+ 03:02:14 -0700 (PDT)
+Date: Tue, 06 Aug 2024 10:01:44 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAIj0sWYC/33OS67CMAxA0a2gjDHKx00pI/aBGLiJ20YUghpUQ
+ Kh7JzCBJ6o3vJZ87IdIPAROYrN4iIHHkEI85SiWC+E6OrUMwecWWmqURiKkjny8gqO+h3Qhd4D
+ KqaokNFb5SuS988BNuL3N3T53F9IlDvf3iVG9pv9powIFjSwKpgYlabdtY2x7Xrl4FC9u1N9EM
+ UfoTLiyRjINeqvsD2E+RDn/hQEJXilXkuWajfwh8IvQ1RyBmdBkLdZyrZnwDzFN0xP1lGzpfAE AAA==
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5321; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=jGrDZg6W7b6yIioFv6kLQqST3aNp9FvB3x/QErRlweA=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBmsfSUVCgPg4u7OxEmK1GfnfKPbsTLND5twh1vD
+ kUlgy5Aqi+JAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZrH0lAAKCRAEWL7uWMY5
+ RimsD/0foVs/+PzuwCqLiYc3wMylEMPGIh+zc+TfUTRc14S8Ip8g3nchnDZ8RCbP1waPO48/Gzb
+ eAcd4YXskpXfZkpuEqdGBNny83M/esTBWKsYS16a9wzP/rmpAei+ok5p5DsddFus/mbwPZy80aQ
+ EdzEu553Y/w5zMCbkizLoSWr0Jb/x0MFImZ9c0P3mkny10L0MomkN6oHKWeKfT3MVhZ9GfvV9wX
+ JNmdMcUCTXqbQ/hd4mV+5sUHgQZ4pJDnVTiaVXIEepVepAkQrDRwBZqgJwlxfaAPyTC2suIdv2b
+ IqQHvSgxD0ihEV/yzeySs+x92/2ySunvkxmK0kVbhfwrytlmASbnP4Omew8O9ZcGGkwU1iX47S6
+ zSxjydp8dDbY2hWzTkXtgtKtDx/Sa8THlspolndKuwFCmKPxxQxMNRRoVOyVECQCjyXJltrgNQp
+ jkzqDYRXD42i1Fxk/lv4xV8AQj380ZsBPUlIGpAOTclpSWXpViZZNlmz6ArJ7OmL6LJhNBvCgBD
+ JRYJVPm/Df6w+bwVr0jJg/2hvZI/Ti1qKBkdxAnYHJrlhpx3cI/xfc8Y6aI9notWyUr6Imvmbvd
+ z7tbH454AzdR08Q9bJjCJ2AT4AgEfTdmcwgFMWysaJHR020TOhveXZfdIuhCoG4H76/Rl41S+D3 Rmpt/bahwCdhE6g==
+X-Mailer: b4 0.13.0
+Message-ID: <20240806-shadow-call-stack-v5-1-26dccb829154@google.com>
+Subject: [PATCH v5] rust: support for shadow call stack sanitizer
+From: Alice Ryhl <aliceryhl@google.com>
+To: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Jamie Cunliffe <Jamie.Cunliffe@arm.com>, Sami Tolvanen <samitolvanen@google.com>, 
+	Nathan Chancellor <nathan@kernel.org>, Conor Dooley <conor@kernel.org>
+Cc: Masahiro Yamada <masahiroy@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, 
+	Ard Biesheuvel <ardb@kernel.org>, Marc Zyngier <maz@kernel.org>, Mark Rutland <mark.rutland@arm.com>, 
+	Mark Brown <broonie@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, Valentin Obst <kernel@valentinobst.de>, 
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, rust-for-linux@vger.kernel.org, 
+	Kees Cook <kees@kernel.org>, Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On 06.08.24 11:04, Alice Ryhl wrote:
-> On Tue, Aug 6, 2024 at 11:01=E2=80=AFAM Benno Lossin <benno.lossin@proton=
-.me> wrote:
->>
->> On 06.08.24 10:24, Alice Ryhl wrote:
->>> On Mon, Aug 5, 2024 at 9:35=E2=80=AFPM Benno Lossin <benno.lossin@proto=
-n.me> wrote:
->>>> On 27.07.24 22:30, Matt Gilbride wrote:
->>>>> +    tree: &'a mut RBTree<K, V>,
->>>>> +    current: NonNull<bindings::rb_node>,
->>>>> +}
->>>>> +
->>>>> +// SAFETY: The [`RBTreeCursor`] gives out immutable references to K =
-and mutable references to V,
->>>>> +// so it has the same thread safety requirements as mutable referenc=
-es.
->>>>> +unsafe impl<'a, K: Send, V: Send> Send for RBTreeCursor<'a, K, V> {}
->>>>
->>>> Again, do we want to use `K: Sync` here instead?
->>>
->>> In this case, `K: Send` and `K: Sync` are both sufficient conditions,
->>> but `K: Send` will generally be less restrictive for the user.
->>
->> What if `K =3D struct(RefCell<i32>, i32)` where only the second i32 is
->> used in `(Partial)Ord`? Then you can send `RBTreeCursor` to another
->> thread and call `borrow` there, even though `K: !Sync` (and the value
->> still lives on another thread).
->=20
-> In that scenario, all immutable references to the key would be on the
-> same thread as the cursor. The cursor borrows the tree mutably, so
-> there can only be one cursor.
->=20
-> When using `K: Send`, it's basically like having `RBTreeCursor` store
-> mutable references to the key, but with an API that downgrades to
-> immutable reference when giving out access to the key.
+This patch adds all of the flags that are needed to support the shadow
+call stack (SCS) sanitizer with Rust, and updates Kconfig to allow
+configurations that work.
 
-Ah that's true.
+The -Zfixed-x18 flag is required to use SCS on arm64, and requires rustc
+version 1.80.0 or greater. This restriction is reflected in Kconfig.
+
+When CONFIG_DYNAMIC_SCS is enabled, the build will be configured to
+include unwind tables in the build artifacts. Dynamic SCS uses the
+unwind tables at boot to find all places that need to be patched. The
+-Cforce-unwind-tables=y flag ensures that unwind tables are available
+for Rust code.
+
+In non-dynamic mode, the -Zsanitizer=shadow-call-stack flag is what
+enables the SCS sanitizer.
+
+At the time of writing, all released rustc versions up to and including
+1.81 incorrectly think that the Rust targets aarch64-unknown-none and
+riscv64-unknown-none-elf don't support -Zsanitizer=shadow-call-stack, so
+the build will fail if you enable shadow call stack in non-dynamic mode.
+See [1] for the relevant feature request. To avoid this compilation
+failure, Kconfig is set up to reject such configurations.
+
+Note that because these configurations are rejected, this patch only
+allows SCS to be used with arm64 and not on riscv. However, once [1] is
+implemented, I will submit a follow-up patch that allows configurations
+without UNWIND_PATCH_PAC_INTO_SCS on sufficiently new compilers. That
+patch will implicitly allow SCS to be enabled on riscv, but this is okay
+because unlike arm64, riscv does not need any flags for rustc beyond
+-Zsanitizer=shadow-call-stack.
+
+It is possible to avoid the requirement of rustc 1.80.0 by using
+-Ctarget-feature=+reserve-x18 instead of -Zfixed-x18. However, this flag
+emits a warning during the build, so this patch does not add support for
+using it and instead requires 1.80.0 or greater.
+
+The `depends on` clause is placed on `config RUST` to avoid a situation
+where enabling Rust silently turns off the sanitizer. Instead, turning
+on the sanitizer results in Rust being disabled. We generally do not
+want changes to CONFIG_RUST to result in any mitigations being changed
+or turned off.
+
+Link: https://github.com/rust-lang/rust/issues/121972 [1]
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+This patch depends on the next version of [1], which Miguel will send
+soon.
+
+Link: https://lore.kernel.org/rust-for-linux/20240709160615.998336-12-ojeda@kernel.org/ [1]
+---
+Changes in v5:
+- Rebase series on v6.11-rc2.
+- The first patch is no longer included as it was merged in v6.11-rc2.
+- The commit message is rewritten from scratch.
+- Link to v4: https://lore.kernel.org/r/20240729-shadow-call-stack-v4-0-2a664b082ea4@google.com
+
+Changes in v4:
+- Move `depends on` to CONFIG_RUST.
+- Rewrite commit messages to include more context.
+- Link to v3: https://lore.kernel.org/r/20240704-shadow-call-stack-v3-0-d11c7a6ebe30@google.com
+
+Changes in v3:
+- Use -Zfixed-x18.
+- Add logic to reject unsupported rustc versions.
+- Also include a fix to be backported.
+- Link to v2: https://lore.kernel.org/rust-for-linux/20240305-shadow-call-stack-v2-1-c7b4a3f4d616@google.com/
+
+Changes in v2:
+- Add -Cforce-unwind-tables flag.
+- Link to v1: https://lore.kernel.org/rust-for-linux/20240304-shadow-call-stack-v1-1-f055eaf40a2c@google.com/
+---
+ Makefile            | 1 +
+ arch/arm64/Makefile | 3 +++
+ init/Kconfig        | 2 +-
+ 3 files changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/Makefile b/Makefile
+index 44c02a6f60a1..eb01a26d8354 100644
+--- a/Makefile
++++ b/Makefile
+@@ -927,6 +927,7 @@ ifdef CONFIG_SHADOW_CALL_STACK
+ ifndef CONFIG_DYNAMIC_SCS
+ CC_FLAGS_SCS	:= -fsanitize=shadow-call-stack
+ KBUILD_CFLAGS	+= $(CC_FLAGS_SCS)
++KBUILD_RUSTFLAGS += -Zsanitizer=shadow-call-stack
+ endif
+ export CC_FLAGS_SCS
+ endif
+diff --git a/arch/arm64/Makefile b/arch/arm64/Makefile
+index f6bc3da1ef11..b058c4803efb 100644
+--- a/arch/arm64/Makefile
++++ b/arch/arm64/Makefile
+@@ -57,9 +57,11 @@ KBUILD_AFLAGS	+= $(call cc-option,-mabi=lp64)
+ ifneq ($(CONFIG_UNWIND_TABLES),y)
+ KBUILD_CFLAGS	+= -fno-asynchronous-unwind-tables -fno-unwind-tables
+ KBUILD_AFLAGS	+= -fno-asynchronous-unwind-tables -fno-unwind-tables
++KBUILD_RUSTFLAGS += -Cforce-unwind-tables=n
+ else
+ KBUILD_CFLAGS	+= -fasynchronous-unwind-tables
+ KBUILD_AFLAGS	+= -fasynchronous-unwind-tables
++KBUILD_RUSTFLAGS += -Cforce-unwind-tables=y -Zuse-sync-unwind=n
+ endif
+ 
+ ifeq ($(CONFIG_STACKPROTECTOR_PER_TASK),y)
+@@ -114,6 +116,7 @@ endif
+ 
+ ifeq ($(CONFIG_SHADOW_CALL_STACK), y)
+ KBUILD_CFLAGS	+= -ffixed-x18
++KBUILD_RUSTFLAGS += -Zfixed-x18
+ endif
+ 
+ ifeq ($(CONFIG_CPU_BIG_ENDIAN), y)
+diff --git a/init/Kconfig b/init/Kconfig
+index fe76c5d0a72e..d857f6f90885 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -1909,7 +1909,7 @@ config RUST
+ 	depends on !MODVERSIONS
+ 	depends on !GCC_PLUGINS
+ 	depends on !RANDSTRUCT
+-	depends on !SHADOW_CALL_STACK
++	depends on !SHADOW_CALL_STACK || RUSTC_VERSION >= 108000 && UNWIND_PATCH_PAC_INTO_SCS
+ 	depends on !DEBUG_INFO_BTF || PAHOLE_HAS_LANG_EXCLUDE
+ 	help
+ 	  Enables Rust support in the kernel.
 
 ---
-Cheers,
-Benno
+base-commit: 5953fd808fca8116a91678ee5fac00fc198ad93d
+change-id: 20240304-shadow-call-stack-9c197a4361d9
+
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
 
