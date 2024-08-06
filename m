@@ -1,177 +1,154 @@
-Received: from mail-40141.protonmail.ch (mail-40141.protonmail.ch [185.70.40.141])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oo1-f54.google.com (mail-oo1-f54.google.com [209.85.161.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 456B718D62B;
-	Tue,  6 Aug 2024 19:07:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.141
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1167E18D62B;
+	Tue,  6 Aug 2024 19:30:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722971241; cv=none; b=n8d2Oa22rNARFiffyYdQ0XT5DfeQ7bTrwTk9GMZaM+eG+Xyyu2c8qJ371eRslHBC4+g+jHqfEhsEsbkair5J1P/DE+SJMraqYkie35kChT6tiY6bBodSAaEHcYbgU2SbkUZtPYAPaaP2Osgz2/8GMd18x/cVT7Jj8tdgyrJ9Gcw=
+	t=1722972628; cv=none; b=or5nqhsWH/xiF0KbnlfDtDe4AoJodnwBRkgVT9OjNF5NSa8fF9utCAN0UxdmB2uZeClgYHxgIMjXPcX5KztfopIF7wGWwL32VMKjNotH7Kxk+aLBsvNLqRzLI9w9TLjkLZxx4FcKBErTpKu87Qt2iktc39Mh874WWgckxF8XSc8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722971241; c=relaxed/simple;
-	bh=zeNlpKKv6ykuvm6nb/GDwYgHxUicuQv3O5Z95Pv2y10=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=lArWVtatqUI2gOJpGJvvC60z+sWjqo/fZw7Ot9y+yrYImpLfNK9bFO5LsWxGkn4m1Hp5DtF7CRt2bThOccj4og441cc5yVgqL2gsmXmc73cCoYRb975akysalXr/kgTgE0DOu9jmx+rvu7cYC6zm0xJ8mud81XBt2KaVrVQTfdo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=B27VXmpb; arc=none smtp.client-ip=185.70.40.141
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
+	s=arc-20240116; t=1722972628; c=relaxed/simple;
+	bh=X6QfkjRatWcsZj3ajfwEGC7HIKUCcjueKZ/olJ4D0/0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=cI3vYm6K48gaObikJZrhfmCw4HHwyyRH5X0dRtc7jhqigP6BCMER8IFvGM31y3jGUMfatnhyf5Ece2URXqKMThzzmOqri1IszleI4YRPS3jdlQ77dQrdUJdWme//HNjnN+Ckl7yvOyoIgSQm/stcXUdDVSxOzhnX8kWQpvV4/zA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eBAQpTo5; arc=none smtp.client-ip=209.85.161.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="B27VXmpb"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
-	s=protonmail3; t=1722971232; x=1723230432;
-	bh=z+H0eZKtffc5wg82zek5HMwYdDr+PMyIR4bABPA+ZKc=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=B27VXmpb4+D0N9qtJKUygaQeEJFVDNxxG3SSIiLC+xUxUK6a9dnKdVLwioT2u88ih
-	 8v94mK5RzX9BvveWsGEf5tzkNnFikmhPtIgKXhtV4usBHv8ehDa5W7iT3NRU06FIwW
-	 b038Jwty6JZzSMA7i3WoKeCxvV48cFRjzEn0irkaBNMpeq/pxt/T/BQdnS/WKsMjqX
-	 KKrqNnhf7qkdif1ffzb+L4ercGJPPDremlFcnn6H68aGUSqNC40+232x59dT4cl7u8
-	 02ZCw1KC/vVSU2vZGvh96CCOM9JvkP+SbRGMW3QSx23zh0PS7sqQMmVRgDSR2D36d1
-	 ogja2O7q59zog==
-Date: Tue, 06 Aug 2024 19:07:07 +0000
-To: Danilo Krummrich <dakr@kernel.org>
-From: =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, benno.lossin@proton.me, a.hindborg@samsung.com, aliceryhl@google.com, akpm@linux-foundation.org, daniel.almeida@collabora.com, faith.ekstrand@collabora.com, boris.brezillon@collabora.com, lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com, acurrid@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com, ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v4 21/28] rust: alloc: remove `GlobalAlloc` and `krealloc_aligned`
-Message-ID: <6HIL4hSg3hOCh5IDDOtdEaEy89ZksSJmSLNiKrSvpu2Q78wA5KdrCCrcPSD_p4jB7IlmVRyVBnvBllU4irzuYgpQJOBtwUInAKdOibtRjVc=@protonmail.com>
-In-Reply-To: <20240805152004.5039-22-dakr@kernel.org>
-References: <20240805152004.5039-1-dakr@kernel.org> <20240805152004.5039-22-dakr@kernel.org>
-Feedback-ID: 27884398:user:proton
-X-Pm-Message-ID: 7d0611c0d8cfb94cead6d48af71725ae727aa1b0
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eBAQpTo5"
+Received: by mail-oo1-f54.google.com with SMTP id 006d021491bc7-5d5e97b8adbso582919eaf.1;
+        Tue, 06 Aug 2024 12:30:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1722972626; x=1723577426; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=xEcKAOS2DS622B2qs4RzqDIjBl0dYknsbxf4LRAMqOg=;
+        b=eBAQpTo5OhC8uyhJK/ZLVSGcM2UppkHbWuYipV7ycMB8+aWaRoAzz52lxmI+9h3Kxl
+         mv9HOaKYrPOzqCsnvgnwpMZq5/vmvOKC+PNlnhwy3BWFrzm+hvrZU3TW+7Ia7D8kE60j
+         V4sYyAvfxcKjUvBKGG+ADIWh4rMuDEgBY3vS1XnqY4GuJIYknJetfJcX+LXj0RK1mtz5
+         7Y9BUTzM/lAz43zEii5ANp8QkpDkVmzwgE2FGdqfj0tH7APVAr/uKlRYT52vRNe+FLsq
+         n7O+F8D8Isw83lovxp73e+Q4m4hfIOVC1sZeYns8Ry2/wEMVrOaQA40EqVYZSE3ip4jK
+         5agg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722972626; x=1723577426;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=xEcKAOS2DS622B2qs4RzqDIjBl0dYknsbxf4LRAMqOg=;
+        b=FPrK7wl8Fy2kI8l3dpVSl9CaK58TW+4dBsQZU9Jy6k+3TW9ekRH5+OUUJnAEd5JZrp
+         2P2aMeoI6kapJGWjpMeBcmOn6Aq5+qaHa1g9IQiuyYaL7zGmfqy33yXViacIyni6b083
+         usP9e9JXou/twCtIuevRBvnCXE/mcgPc2XV3V47bmBr2exyigJvOSfLV5pQtFUfQ/VYW
+         etbu4SfJsEj9iaILzAQS/bApOi0eRWAXTTsmn6hs8lO7A9J58OgNff3dkXSR01OVWWak
+         hcH79P2xpNgFZUZc716lNWpg6rhBCky76d0aWajB4uSmenPfOsS4vBSbyoHorqsXNC4Z
+         9Q0A==
+X-Forwarded-Encrypted: i=1; AJvYcCXeRO+LjITHaMkdk0zB4qsCae40ZHk23safFylJrsoI90URLh25XB/x1k/q5gjqCwFp+3hfdEg+fS6J/Gzcv0KOxEs72kNpwnfgZ1TQJa7eaECTss8OjNpkLCd7EBKZMwN7gs8uuFKipX8ckJmekVjfgxt/81az5O+zTUdco56HT2wg92HLt12pJJRk
+X-Gm-Message-State: AOJu0YyYjX7IPFMjKNd58rCi036T3Q5NAu511WQ3BAYRB9IskZDlS+Qi
+	0nsrJ7JXz2nLkXuxX0vVTlHsera9toP/HXBtf38JdLw3/CnXcYlU
+X-Google-Smtp-Source: AGHT+IHq3ySHZ8u8koQzYUuqImrLLZB7j/aFPojAHRqRVSoE6d6qYX7l74nT6HOmuxqyC4Q4Uo/joQ==
+X-Received: by 2002:a05:6358:3226:b0:1a4:7f4e:d843 with SMTP id e5c5f4694b2df-1af3bac1626mr1934111555d.25.1722972625850;
+        Tue, 06 Aug 2024 12:30:25 -0700 (PDT)
+Received: from fauth1-smtp.messagingengine.com (fauth1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6bb9c864e6dsm49200976d6.108.2024.08.06.12.30.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 06 Aug 2024 12:30:25 -0700 (PDT)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+	by mailfauth.nyi.internal (Postfix) with ESMTP id 791061200066;
+	Tue,  6 Aug 2024 15:30:24 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute6.internal (MEProxy); Tue, 06 Aug 2024 15:30:24 -0400
+X-ME-Sender: <xms:0HmyZjyDFTxPTorPY-_UsXECCdM8l1tO0VIeg8ps5R2h1RtAw98Peg>
+    <xme:0HmyZrTkVjTWXdgwxQBRZ6SSfXFLpmjkBxRGY6HyK9uwET9CL4RblU166omncY2fu
+    twWZ2wK8Pjkz1oFGw>
+X-ME-Received: <xmr:0HmyZtVwyT8rYSlhEIKRXY6PIYtGLcHyn2ClquqEmltIPhczb6PwNL2Hd-CvbQ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrkeekgddufeekucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhu
+    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
+    htthgvrhhnpeehudfgudffffetuedtvdehueevledvhfelleeivedtgeeuhfegueeviedu
+    ffeivdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpe
+    gsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdei
+    gedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfih
+    igmhgvrdhnrghmvgdpnhgspghrtghpthhtoheptd
+X-ME-Proxy: <xmx:0HmyZtjUYyNcfd4r8gyECgWAw7WKEYKJJfJOP8_L-IKUgsZ7nBxyQg>
+    <xmx:0HmyZlB0H4biC831zIslOYhW_MZNPS9mrqYy1yZ1rxG0BTktixVt4w>
+    <xmx:0HmyZmICi3h387IYOsOqhyA7_io3bEKbl8JrtHMOB5agKAqnDgg6zw>
+    <xmx:0HmyZkChSdiDrgYT07keUq8Knpg474CO8PXpzWlx9Sx5YjT5mKT77Q>
+    <xmx:0HmyZhz16W17-zo_4UKKZmjtpoKW3Xl5NF95msrwHYlzoDHD2-xN9Bli>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 6 Aug 2024 15:30:23 -0400 (EDT)
+Date: Tue, 6 Aug 2024 12:29:20 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Benno Lossin <benno.lossin@proton.me>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Christian Brauner <brauner@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
+	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>,
+	Joel Fernandes <joel@joelfernandes.org>,
+	Carlos Llamas <cmllamas@google.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Thomas Gleixner <tglx@linutronix.de>, Daniel Xu <dxu@dxuuu.xyz>,
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+	Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	Kees Cook <kees@kernel.org>
+Subject: Re: [PATCH v8 3/8] rust: file: add Rust abstraction for `struct file`
+Message-ID: <ZrJ5kORJHsITlxr6@boqun-archlinux>
+References: <20240725-alice-file-v8-0-55a2e80deaa8@google.com>
+ <20240725-alice-file-v8-3-55a2e80deaa8@google.com>
+ <4bf5bf3b-88f4-4ee4-80fd-c566428d9f69@proton.me>
+ <CAH5fLgi0MGUhbD0WV99NtU+08HCJG+LYMtx+Ca4gwfo9FR+hTw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAH5fLgi0MGUhbD0WV99NtU+08HCJG+LYMtx+Ca4gwfo9FR+hTw@mail.gmail.com>
 
-On Monday, August 5th, 2024 at 17:19, Danilo Krummrich <dakr@kernel.org> wr=
-ote:
+On Tue, Aug 06, 2024 at 10:48:11AM +0200, Alice Ryhl wrote:
+[...]
+> > > +    /// Returns the flags associated with the file.
+> > > +    ///
+> > > +    /// The flags are a combination of the constants in [`flags`].
+> > > +    #[inline]
+> > > +    pub fn flags(&self) -> u32 {
+> > > +        // This `read_volatile` is intended to correspond to a READ_ONCE call.
+> > > +        //
+> > > +        // SAFETY: The file is valid because the shared reference guarantees a nonzero refcount.
+> > > +        //
+> > > +        // FIXME(read_once): Replace with `read_once` when available on the Rust side.
+> >
+> > Do you know the status of this?
+> 
+> It's still unavailable.
+> 
 
-> Now that we have all the `Allocator`s and the kernel `Box` and `Vec`
-> implementations in place, remove `GlobalAlloc` and `krealloc_aligned`.
->=20
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-> ---
->  rust/kernel/alloc/allocator.rs | 63 ++--------------------------------
->  1 file changed, 2 insertions(+), 61 deletions(-)
->=20
-> diff --git a/rust/kernel/alloc/allocator.rs b/rust/kernel/alloc/allocator=
-.rs
-> index 91ff21372a8f..6abd55694422 100644
-> --- a/rust/kernel/alloc/allocator.rs
-> +++ b/rust/kernel/alloc/allocator.rs
-> @@ -2,8 +2,8 @@
->=20
->  //! Allocator support.
->=20
-> -use super::{flags::*, Flags};
-> -use core::alloc::{GlobalAlloc, Layout};
-> +use super::Flags;
-> +use core::alloc::Layout;
->  use core::ptr;
->  use core::ptr::NonNull;
->=20
-> @@ -40,27 +40,6 @@ fn aligned_size(new_layout: Layout) -> usize {
->      layout.size()
->  }
->=20
-> -/// Calls `krealloc` with a proper size to alloc a new object aligned to=
- `new_layout`'s alignment.
-> -///
-> -/// # Safety
-> -///
-> -/// - `ptr` can be either null or a pointer which has been allocated by =
-this allocator.
-> -/// - `new_layout` must have a non-zero size.
-> -pub(crate) unsafe fn krealloc_aligned(ptr: *mut u8, new_layout: Layout, =
-flags: Flags) -> *mut u8 {
-> -    // SAFETY:
-> -    // - `ptr` is either null or a pointer returned from a previous `k{r=
-e}alloc()` by the
-> -    //   function safety requirement.
-> -    // - `size` is greater than 0 since it's from `layout.size()` (which=
- cannot be zero according
-> -    //   to the function safety requirement)
-> -    unsafe {
-> -        bindings::krealloc(
-> -            ptr as *const core::ffi::c_void,
-> -            aligned_size(new_layout),
-> -            flags.0,
-> -        ) as *mut u8
-> -    }
-> -}
-> -
->  /// # Invariants
->  ///
->  /// One of the following `krealloc`, `vrealloc`, `kvrealloc`.
-> @@ -129,41 +108,6 @@ unsafe fn realloc(
->      }
->  }
->=20
-> -unsafe impl GlobalAlloc for Kmalloc {
-> -    unsafe fn alloc(&self, layout: Layout) -> *mut u8 {
-> -        // SAFETY: `ptr::null_mut()` is null and `layout` has a non-zero=
- size by the function safety
-> -        // requirement.
-> -        unsafe { krealloc_aligned(ptr::null_mut(), layout, GFP_KERNEL) }
-> -    }
-> -
-> -    unsafe fn dealloc(&self, ptr: *mut u8, _layout: Layout) {
-> -        unsafe {
-> -            bindings::kfree(ptr as *const core::ffi::c_void);
-> -        }
-> -    }
-> -
-> -    unsafe fn realloc(&self, ptr: *mut u8, layout: Layout, new_size: usi=
-ze) -> *mut u8 {
-> -        // SAFETY:
-> -        // - `new_size`, when rounded up to the nearest multiple of `lay=
-out.align()`, will not
-> -        //   overflow `isize` by the function safety requirement.
-> -        // - `layout.align()` is a proper alignment (i.e. not zero and m=
-ust be a power of two).
-> -        let layout =3D unsafe { Layout::from_size_align_unchecked(new_si=
-ze, layout.align()) };
-> -
-> -        // SAFETY:
-> -        // - `ptr` is either null or a pointer allocated by this allocat=
-or by the function safety
-> -        //   requirement.
-> -        // - the size of `layout` is not zero because `new_size` is not =
-zero by the function safety
-> -        //   requirement.
-> -        unsafe { krealloc_aligned(ptr, layout, GFP_KERNEL) }
-> -    }
-> -
-> -    unsafe fn alloc_zeroed(&self, layout: Layout) -> *mut u8 {
-> -        // SAFETY: `ptr::null_mut()` is null and `layout` has a non-zero=
- size by the function safety
-> -        // requirement.
-> -        unsafe { krealloc_aligned(ptr::null_mut(), layout, GFP_KERNEL | =
-__GFP_ZERO) }
-> -    }
-> -}
-> -
->  unsafe impl Allocator for Vmalloc {
->      unsafe fn realloc(
->          ptr: Option<NonNull<u8>>,
-> @@ -204,9 +148,6 @@ unsafe fn realloc(
->      }
->  }
->=20
-> -#[global_allocator]
-> -static ALLOCATOR: Kmalloc =3D Kmalloc;
-> -
->  // See <https://github.com/rust-lang/rust/pull/86844>.
->  #[no_mangle]
->  static __rust_no_alloc_shim_is_unstable: u8 =3D 0;
+I think with our own Atomic API, we can just use atomic_read() here:
+yes, I know that to make this is not a UB, we need the C side to also do
+atomic write on this `f_flags`, however, my reading of C code seems to
+suggest that FS relies on writes to this field is atomic, therefore
+unless someone is willing to convert all writes to `f_flags` in C into
+a WRITE_ONCE(), nothing more we can do on Rust side. So using
+atomic_read() is the correct thing to begin with.
 
-This can be removed too. liballoc needed it for us to acknowledge that we
-were linking liballoc in a way that isn't guaranteed to be stable, but now
-that we are removing liballoc entirely, this static is no longer necessary.
+Regards,
+Boqun
 
-> --
-> 2.45.2
+> > > +        unsafe { core::ptr::addr_of!((*self.as_ptr()).f_flags).read_volatile() }
+> > > +    }
+> > > +}
+[...]
