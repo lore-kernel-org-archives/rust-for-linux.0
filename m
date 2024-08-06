@@ -1,171 +1,210 @@
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB711165EE3
-	for <rust-for-linux@vger.kernel.org>; Tue,  6 Aug 2024 09:05:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 526C4161900;
+	Tue,  6 Aug 2024 09:24:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722935107; cv=none; b=P4K2Z6W5madVs0/No2lgh5tzKUa2sVLyYYEuebyBExiGudRiyv3CJYF6zcomqFJSO+80rKCuv/59KgOSCmRxCvjm/9a+mH3kqqDbR1eY4m0eQniOf58+92iPRxkxe4MmnUGjpkLntPi7yyLZw6t8ZZBQkICPnJ63GVs1AjSe0gU=
+	t=1722936245; cv=none; b=Ek0sQmYX6ol8pC6KwuLdCMfkvdSBmaqEmwXo6vFKrB42QrCtXTvk2yd1QCXspqjr0XJnN03WRb4uliKvwKTuzg6s7EGZLSV0LDGNV95OXaHBu8ow/OjgHaz2JjKGSiQ5ElsbfT3f4LeOAeHJGOEcCDwRTO8d2yJF2UdbsEejzMg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722935107; c=relaxed/simple;
-	bh=UCVqS60sn9LNaCSs75cAxVmBRpP/G+2QNbsQ4OV3MQ0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fygmu9u8pkJPE2Md6K5L9DGKjBkfgBlZKDPL02KOzQgY++cmQtDbP3S0Ep0wwpNcqTD7dsD2WwRri0h+LH2eWsDcrT45f6OFEdl5Nk9xD2mqpTghX8RDAcgjGJdgbjQRZJDREOfhEWTIrjCqVZ1XJEAGg+RBM70Z0YMpdeJYc4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=N8N3Ux5V; arc=none smtp.client-ip=209.85.221.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1722936245; c=relaxed/simple;
+	bh=6QihisEp0mn1uvvvE4Jqxxv+CSMqCfke8XvcUnoWJ+k=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=BH2YLH6msRAnjwOSTCIQybffYGLDtJmbKUV0x4iZO2xbgxfsdsfe/wak3CEagrKt8OLum6k4nW2dmsAFyC9XWovXZBXx+V4y7KQRh/si9UMUL5HrmsS3CVtkKl/6xdwQ06GiQY7o9GcVKfd8CxBkmR77LHfc0JzkeIwQlrTsbC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=UnPsvDnv; arc=none smtp.client-ip=185.70.43.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="N8N3Ux5V"
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-36bcc168cdaso297109f8f.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 06 Aug 2024 02:05:05 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1722935104; x=1723539904; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=DETMGaPs2PGmqMwvCjnPO//c4goVZtDilP9QX2nQBO8=;
-        b=N8N3Ux5VsnntlHSullOcM/fbBWCQAtS8fhQyTEb/ONb8yooOVnHGJMYdSeo89aEkS0
-         OU5buJQE3H76Opihs3GphlLlGA6IAanBA+GE7vPiqt4EP+9/jMyOJCmOR5P5oBJNgxAt
-         SVqSZO5VK5GZbPXQgR7eO0xWm1IKjbNE6YkJ35zMvVvFgr1cXd713anBCko6J/rH6MMt
-         deAkl9foelfwp2nLYa9sp1VhphGktcvzUEGyMEvciySoGdJs7/hE8MOaBuGRqsS+HiXL
-         k28A1h/RNJOIPw2ruJZ2RRaFVPnVajUhL27Rt+liLDl1iJaA/4+AaAwnWxMjdQHjscMX
-         0K2Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722935104; x=1723539904;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=DETMGaPs2PGmqMwvCjnPO//c4goVZtDilP9QX2nQBO8=;
-        b=L1i8HGL2LVVP1oC4Y+cjajH+hB8QU0iIg0gI1JtXBjgG2Mx6VkvdBuVZ8hO9OhOrOX
-         LyUYQ2/ywHzgQBXP25ystK6VKce/Q1JQmkxUw7e5j9sz9+bb45QIQ/4/6sLz7krc/cxp
-         /2XoQ0+X7g2WkaYUnXjdfb73848nAwArihvhgOJiuzBx4QKCmtQ+KEaGWiOKaixfM52q
-         jUJYZsY4R2z2gcBw4Lkm+YAjP4e0s/kEqaEtHmEwew0QHUUp9xKiNryMCj5wGoVVeZHy
-         a6eYtXUcpO8kEN5h/LQez0orAPHZMwnwd7nLnExvXk3it57VjOkbgDaVF9gUov6DgaOR
-         rBsA==
-X-Forwarded-Encrypted: i=1; AJvYcCUNF1klYbDIrvKB84c8xXzbNReWjF6Xz0E81aMR+QTObBPnkUjgSXroOMlGMMqIINYNXjvTvlAObPeACIkaC9/U9ZSL9vXBI+IkPJP3I4o=
-X-Gm-Message-State: AOJu0Yx9tU73FlHT+TCWv0wv/uNF17jODnFoxKfQYL3JGHJSafNHkNfF
-	mvQJVr/eaIrKrrJJLxGs9N7T4vYWJSZE0cZAKR7QgleF9fpLm6kFca5PiogUl2UDZ6OWrSH9OVa
-	dgrWGL1oyx4d0+oepys+L5T4lWFRyZH5TyyRx
-X-Google-Smtp-Source: AGHT+IFINWCUgofLtvN+dIZ/17A15VOEXod/e5YskrS11F18PP1AwtyfWa99txQejYOa/nGkarLFvzgk0CyEHspmfQI=
-X-Received: by 2002:a05:6000:402b:b0:368:6633:e23f with SMTP id
- ffacd0b85a97d-36bbc1a6749mr14909337f8f.38.1722935103850; Tue, 06 Aug 2024
- 02:05:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="UnPsvDnv"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1722936240; x=1723195440;
+	bh=o80ArRjJ4S+NSkA8kokhob7C7RE9JLax11CpmI/aPAI=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=UnPsvDnvhAEAhk9KdeXay7NGZvPclwwcrvF0VQeX8P6gIlj11NKXx/7APmfZMbVeA
+	 XhPMm2hqgmzLZASJp4fNaeaCbonhQuOeA4U+P/gYODTJDdzg2TUX+XM8kk8ge68a5Q
+	 oZ0m5ER9iXgTR8xfGo6dzUN1Og0kqSodT8qe7VsohjNeXChjf1Gz34F9QE/PkEUFTv
+	 lFwSbmR3F0yznx1RNlqleEAPprKJcnKTolivRacMsSeXtgaFtW1Qo8sMsjqxmjpRzV
+	 ZoLX7cG4pg2DLM1z30GRx/DkrhzDWWdfyunoJPKelhHQL90ZI6JQ0OoTWGp/dTQmV5
+	 5qCmv237QtiMw==
+Date: Tue, 06 Aug 2024 09:23:55 +0000
+To: Alice Ryhl <aliceryhl@google.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Matt Gilbride <mattgilbride@google.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?utf-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>, Christian Brauner <brauner@kernel.org>, Rob Landley <rob@landley.net>, Davidlohr Bueso <dave@stgolabs.net>, Michel Lespinasse <michel@lespinasse.org>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v8 4/6] rust: rbtree: add mutable iterator
+Message-ID: <2617ec4a-6413-4341-b4fe-c30c1b14432e@proton.me>
+In-Reply-To: <CAH5fLghJmA_01QJvzSBX4HEfLwPr+FskM9dzOs0ykbYj_sCWTg@mail.gmail.com>
+References: <20240727-b4-rbtree-v8-0-951600ada434@google.com> <20240727-b4-rbtree-v8-4-951600ada434@google.com> <27f724ba-4f04-407b-9f5d-81a472f8ba14@proton.me> <CAH5fLghJmA_01QJvzSBX4HEfLwPr+FskM9dzOs0ykbYj_sCWTg@mail.gmail.com>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: 03925b95f4e0101d5cdd57dfd80d4da26e3ebc5e
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240727-b4-rbtree-v8-0-951600ada434@google.com>
- <20240727-b4-rbtree-v8-5-951600ada434@google.com> <309d3d27-62d0-42b0-b50a-40692a019b40@proton.me>
- <CAH5fLgh30z2Cfixn1aC-LPp-ua46eJ+jREWDTfhMK3aqXzbt-A@mail.gmail.com> <4ef9616f-a35a-4aa2-993c-9b67f50a46ee@proton.me>
-In-Reply-To: <4ef9616f-a35a-4aa2-993c-9b67f50a46ee@proton.me>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 6 Aug 2024 11:04:52 +0200
-Message-ID: <CAH5fLgjiqOcu0JVgLze76LQDUD3KTQv9WrBy-GkMbCgVWn0xzA@mail.gmail.com>
-Subject: Re: [PATCH v8 5/6] rust: rbtree: add `RBTreeCursor`
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Matt Gilbride <mattgilbride@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@samsung.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	=?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
-	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
-	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Christian Brauner <brauner@kernel.org>, Rob Landley <rob@landley.net>, 
-	Davidlohr Bueso <dave@stgolabs.net>, Michel Lespinasse <michel@lespinasse.org>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Aug 6, 2024 at 11:01=E2=80=AFAM Benno Lossin <benno.lossin@proton.m=
-e> wrote:
->
-> On 06.08.24 10:24, Alice Ryhl wrote:
-> > On Mon, Aug 5, 2024 at 9:35=E2=80=AFPM Benno Lossin <benno.lossin@proto=
-n.me> wrote:
-> >> On 27.07.24 22:30, Matt Gilbride wrote:
-> >>> +        // SAFETY: `best` is a non-null node so it is valid by the t=
-ype invariants.
-> >>> +        let links =3D unsafe { addr_of_mut!((*best.as_ptr()).links) =
-};
-> >>> +
-> >>> +        NonNull::new(links).map(|current| {
-> >>
-> >> Why would `links` be a null pointer? AFAIK it just came from `best`
-> >> which is non-null. (I don't know if we want to use `new_unchecked`
-> >> instead, but wanted to mention it)
-> >
-> > It's never a null pointer in this branch. Do you prefer an extra
-> > unsafe block to call new_unchecked?
->
-> No need, doesn't seem like this part is hot and this is something that
-> field projections could solve.
->
-> >>> +            // INVARIANT:
-> >>> +            // - `current` is a valid node in the [`RBTree`] pointed=
- to by `self`.
-> >>> +            // - Due to the type signature of this function, the ret=
-urned [`RBTreeCursor`]
-> >>> +            //   borrows mutably from `self`.
-> >>> +            RBTreeCursor {
-> >>> +                current,
-> >>> +                tree: self,
-> >>> +            }
-> >>> +        })
-> >>> +    }
-> >>
-> >> [...]
-> >>
-> >>> +/// // Calling `remove_next` removes and returns the last element.
-> >>> +/// assert_eq!(cursor.remove_next().unwrap().to_key_value(), (30, 30=
-0));
-> >>> +///
-> >>> +/// # Ok::<(), Error>(())
-> >>> +/// ```
-> >>
-> >> I would put a newline here.
-> >
-> > Ok.
-> >
-> >>> +/// # Invariants
-> >>> +/// - `current` points to a node that is in the same [`RBTree`] as `=
-tree`.
-> >>> +pub struct RBTreeCursor<'a, K, V> {
-> >>
-> >> I think we can name it just `Cursor`, since one can refer to it as
-> >> `rbtree::Cursor` and then it also follows the naming scheme for `Iter`
-> >> etc.
-> >
-> > You are welcome to submit that as a follow-up change.
-> >
-> >>> +    tree: &'a mut RBTree<K, V>,
-> >>> +    current: NonNull<bindings::rb_node>,
-> >>> +}
-> >>> +
-> >>> +// SAFETY: The [`RBTreeCursor`] gives out immutable references to K =
-and mutable references to V,
-> >>> +// so it has the same thread safety requirements as mutable referenc=
-es.
-> >>> +unsafe impl<'a, K: Send, V: Send> Send for RBTreeCursor<'a, K, V> {}
-> >>
-> >> Again, do we want to use `K: Sync` here instead?
-> >
-> > In this case, `K: Send` and `K: Sync` are both sufficient conditions,
-> > but `K: Send` will generally be less restrictive for the user.
->
-> What if `K =3D struct(RefCell<i32>, i32)` where only the second i32 is
-> used in `(Partial)Ord`? Then you can send `RBTreeCursor` to another
-> thread and call `borrow` there, even though `K: !Sync` (and the value
-> still lives on another thread).
+On 06.08.24 10:30, Alice Ryhl wrote:
+> On Mon, Aug 5, 2024 at 9:22=E2=80=AFPM Benno Lossin <benno.lossin@proton.=
+me> wrote:
+>>
+>> On 27.07.24 22:30, Matt Gilbride wrote:
+>>> From: Wedson Almeida Filho <wedsonaf@gmail.com>
+>>>
+>>> Add mutable Iterator implementation for `RBTree`,
+>>> allowing iteration over (key, value) pairs in key order. Only values ar=
+e
+>>> mutable, as mutating keys implies modifying a node's position in the tr=
+ee.
+>>>
+>>> Mutable iteration is used by the binder driver during shutdown to
+>>> clean up the tree maintained by the "range allocator" [1].
+>>>
+>>> Link: https://lore.kernel.org/rust-for-linux/20231101-rust-binder-v1-6-=
+08ba9197f637@google.com/ [1]
+>>> Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
+>>> Signed-off-by: Matt Gilbride <mattgilbride@google.com>
+>>> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+>>> Tested-by: Alice Ryhl <aliceryhl@google.com>
+>>> ---
+>>>  rust/kernel/rbtree.rs | 98 +++++++++++++++++++++++++++++++++++++++++++=
++-------
+>>>  1 file changed, 86 insertions(+), 12 deletions(-)
+>>>
+>>> diff --git a/rust/kernel/rbtree.rs b/rust/kernel/rbtree.rs
+>>> index d10074e4ac58..d7514ebadfa8 100644
+>>> --- a/rust/kernel/rbtree.rs
+>>> +++ b/rust/kernel/rbtree.rs
+>>> @@ -197,8 +197,26 @@ pub fn iter(&self) -> Iter<'_, K, V> {
+>>>          // INVARIANT: `bindings::rb_first` returns a valid pointer to =
+a tree node given a valid pointer to a tree root.
+>>
+>> This INVARIANT is out of place, `Iter` doesn't have any INVARIANT any
+>> more.
+>=20
+> We can delete it.
+>=20
+>>>          Iter {
+>>>              _tree: PhantomData,
+>>> -            // SAFETY: `self.root` is a valid pointer to the tree root=
+.
+>>> -            next: unsafe { bindings::rb_first(&self.root) },
+>>> +            iter_raw: IterRaw {
+>>
+>> This `IterRaw` construction is missing an INVARIANT comment. I think you
+>> can copy paste from below.
+>=20
+> We can copy from below.
+>=20
+>>> +                // SAFETY: by the invariants, all pointers are valid.
+>>> +                next: unsafe { bindings::rb_first(&self.root) },
+>>> +                _phantom: PhantomData,
+>>> +            },
+>>> +        }
+>>> +    }
+>>> +
+>>> +    /// Returns a mutable iterator over the tree nodes, sorted by key.
+>>> +    pub fn iter_mut(&mut self) -> IterMut<'_, K, V> {
+>>> +        IterMut {
+>>> +            _tree: PhantomData,
+>>> +            // INVARIANT:
+>>> +            //   - `self.root` is a valid pointer to a tree root.
+>>> +            //   - `bindings::rb_first` produces a valid pointer to a =
+node given `root` is valid.
+>>> +            iter_raw: IterRaw {
+>>> +                // SAFETY: by the invariants, all pointers are valid.
+>>> +                next: unsafe { bindings::rb_first(&self.root) },
+>>
+>> Does this really derive a mutable reference? Ie shouldn't this be:?
+>>
+>>     next: unsafe { bindings::rb_first(&mut self.root) },
+>=20
+> Let's change this to:
+>=20
+> next: unsafe { bindings::rb_first(ptr::from_mut(&mut self.root)) }
+>=20
+> This way, the pointer will be derived from a mutable reference even if
+> it becomes a `*const` through intermediate operations.
 
-In that scenario, all immutable references to the key would be on the
-same thread as the cursor. The cursor borrows the tree mutably, so
-there can only be one cursor.
+SGTM
 
-When using `K: Send`, it's basically like having `RBTreeCursor` store
-mutable references to the key, but with an API that downgrades to
-immutable reference when giving out access to the key.
+>=20
+>=20
+>>> +                _phantom: PhantomData,
+>>> +            },
+>>>          }
+>>>      }
+>>>
+>>> @@ -211,6 +229,11 @@ pub fn keys(&self) -> impl Iterator<Item =3D &'_ K=
+> {
+>>>      pub fn values(&self) -> impl Iterator<Item =3D &'_ V> {
+>>>          self.iter().map(|(_, v)| v)
+>>>      }
+>>> +
+>>> +    /// Returns a mutable iterator over the values of the nodes in the=
+ tree, sorted by key.
+>>> +    pub fn values_mut(&mut self) -> impl Iterator<Item =3D &'_ mut V> =
+{
+>>> +        self.iter_mut().map(|(_, v)| v)
+>>> +    }
+>>>  }
+>>>
+>>>  impl<K, V> RBTree<K, V>
+>>> @@ -414,13 +437,9 @@ fn into_iter(self) -> Self::IntoIter {
+>>>  /// An iterator over the nodes of a [`RBTree`].
+>>>  ///
+>>>  /// Instances are created by calling [`RBTree::iter`].
+>>> -///
+>>> -/// # Invariants
+>>> -/// - `self.next` is a valid pointer.
+>>> -/// - `self.next` points to a node stored inside of a valid `RBTree`.
+>>>  pub struct Iter<'a, K, V> {
+>>>      _tree: PhantomData<&'a RBTree<K, V>>,
+>>> -    next: *mut bindings::rb_node,
+>>> +    iter_raw: IterRaw<K, V>,
+>>>  }
+>>>
+>>>  // SAFETY: The [`Iter`] gives out immutable references to K and V, so =
+it has the same
+>>> @@ -434,21 +453,76 @@ unsafe impl<'a, K: Sync, V: Sync> Sync for Iter<'=
+a, K, V> {}
+>>>  impl<'a, K, V> Iterator for Iter<'a, K, V> {
+>>>      type Item =3D (&'a K, &'a V);
+>>>
+>>> +    fn next(&mut self) -> Option<Self::Item> {
+>>> +        self.iter_raw.next().map(|(k, v)|
+>>> +            // SAFETY: Due to `self._tree`, `k` and `v` are valid for =
+the lifetime of `'a`.
+>>> +            unsafe { (&*k, &*v) })
+>>
+>> I don't really like the formatting here, can you move the SAFETY one
+>> line upwards? It should format nicely then.
+>=20
+> You suggested exactly the reverse formatting change on RBTreeCursor?
 
-Alice
+Do you mean on this version or in a previous one? If you mean in this
+one, then I would argue that they are not "reverses" of each other. For
+this instance I would prefer
+
+        // SAFETY: Due to `self._tree`, `k` and `v` are valid for the lifet=
+ime of `'a`.
+        self.iter_raw.next().map(|(k, v)| unsafe { (&*k, &*v) })
+
+or
+
+        self.iter_raw.next().map(|(k, v)| {
+            // SAFETY: Due to `self._tree`, `k` and `v` are valid for the l=
+ifetime of `'a`.
+            unsafe { (&*k, &*v) }
+        })
+
+I hope that this seems consistent, my motivation behind the suggestions=20
+are that I don't like the comment splitting the single line.
+
+---
+Cheers,
+Benno
+
