@@ -1,126 +1,83 @@
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC33120FAB6
-	for <rust-for-linux@vger.kernel.org>; Tue,  6 Aug 2024 14:00:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E186B18D64D
+	for <rust-for-linux@vger.kernel.org>; Tue,  6 Aug 2024 14:11:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722952825; cv=none; b=kr46w4ydT2kZ0qDNN2+coL9v6xTPMvfrYcZCSEvoHjPq25tGlWbn6ypRLzkuvaCYPngYNUaPgmHbx3AdwjZoMbu4lONx0ij7ROlOgZ5g9sFmnHAUfepvscpD+FcrPWaYk4pRKmQ11olvtI76EBPfOC2HbSKPnENIZ8fcvLHXa8M=
+	t=1722953499; cv=none; b=njl+aYwCqFiMhSzbnxSeggm8t84P92zMsuBFTJwldgaAixVveLwRNOiXwOhkZOWmuuqF/bZYI2Sghme0gaXOD2ibC/nSKmThZPY+LWafKTUD2M6mcDxzkz0edHmjbzO9ZCgXwbf1CjkjPG5Y+DoCiQhVQAC68aroud8JbbIMD6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722952825; c=relaxed/simple;
-	bh=yF7W8plauO3cSOQcFgYN4VtcWTT9YGEzRpS+d5QN+iU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PT1COyzjoQL204/Zusmat36tSHcEBIIx50qfSR/eGCPkdWouYNPeJMCYcO5a0Xjgcgjkxfp0dWSVJnZg+JWhQOXri0+oylyfLN4g1B1Ca02NiId86lGvVj1HAQzivOXR98lTvI74ZQxmsYUNWsUw/o+RN0qB6mh0KicK8JW0Bfg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=0PAZ9nT3; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1722953499; c=relaxed/simple;
+	bh=epdSBWYsFtSGCN/sAFMpeTs3Vq1++V7uVSBtRlfKs/U=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=DWUO9XCKmGuP/G4KDF8qPs6T+SM8IORTIWTFTjhwCsngJiBURYDTQmJB2Ip6acXrHxefyLU9BBb7DMnrs1k7szYBZqVqF57EW3IY/ZUN8FZ7xpdBY8xIA20Mbzo5O0ezRkiXqiQsmrB/aLuVW+UTx7yisGt/iM6EebjBt4hCTEI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=Nw93WDo7; arc=none smtp.client-ip=185.70.43.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="0PAZ9nT3"
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-428ec6c190eso5368095e9.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 06 Aug 2024 07:00:23 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1722952822; x=1723557622; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yF7W8plauO3cSOQcFgYN4VtcWTT9YGEzRpS+d5QN+iU=;
-        b=0PAZ9nT3OrzA8ThpDg92NJMsfGZptftZ+bRIqsET5Kn7uxYTKW0MFOmRnX3CfKsUtd
-         IVGfjwT+avmWT/qLApdphPRx3ElYBgVR3/Dty8CkMfY9mGw4UWTOWvZ/6rP8Hfm0Wm80
-         9aIQauuyEnKBCE5PlD+vp7ESyKQ7hDda9Be/yytH8Uywx9eLrI9ElmGGqLG5snPacIe4
-         WXKelHKD44tAMRQ9gnvFl8nRrnG27TC0ynYJyvYrJ0jdqwHkmzH9gd8fACIx/JbZ/0Mc
-         Kh/Tsyjsksws+q8sMYTc2Mzbopm6YiEEg/Kb8LDb/NatmGCq694cwfWZn2WxSUoG4nWE
-         b5/Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722952822; x=1723557622;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=yF7W8plauO3cSOQcFgYN4VtcWTT9YGEzRpS+d5QN+iU=;
-        b=szbcPoiDf//Q8kX2QStO9y/ZqwFcSDgRWQ/+2BuWcHvUn1vLxCJ3N9dyQI00g9KUNP
-         OdB3zchHcPJmimpVPGkVIOTT857OP+Tzm/JuWe0aOmlFVccYUmvkeVPypm9zpQNsRNQE
-         nIzJNCXC0Ib3oxOQay0QDVInJrCIG+l5lXFe49zpxm2vtFdoggSkTrn152wjWCO82h5t
-         4U9ZOHqLPkwKyQYzv4SDrno3+xnM/DuvwjBXgYr33HFnF+oIs2eTUjxxVdE9HOBsW03B
-         O/K9oIpfwbtsM4/q03sJO2xyz/5zS6PzlffSBDkfZxga3ODKigwQHBzLvC61D7nlaCCX
-         aM4Q==
-X-Forwarded-Encrypted: i=1; AJvYcCUAB7OYgB2hkQgyJiSozbmbOA+PsuN9wPBt6x8uZ5gYbT2BzLwg2UeRcWoC8H9iNkKzznmrQ7fCvqks4DwIom7GTezIRbutos+xUu5ZQXk=
-X-Gm-Message-State: AOJu0YxPv3J+dImMA5tD4shbNo8W4GvtmkANuVDE6l4SDEYajUFWTvGF
-	Izgvip4q7FFkJ5wNTDhwTCaGU7Y6jIKuqnKu4Cwv+bl7+1Mq58KMg/rKdv+pRmty9UZlBiXCP/6
-	8MWUiQSk5zHjQmm/URPT2WHzcGqXsIxxWaTci
-X-Google-Smtp-Source: AGHT+IHgz85bFjKsptm4i5LOyuZb90LSO9jrl4flVX7fyPL1vv0Ry8v7hkD5nB5Yvk7R9grQJFQMJbDKPdbryvDuW4g=
-X-Received: by 2002:a5d:5f43:0:b0:367:4dce:1ff5 with SMTP id
- ffacd0b85a97d-36bbc0e7593mr12113808f8f.32.1722952821732; Tue, 06 Aug 2024
- 07:00:21 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="Nw93WDo7"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1722953496; x=1723212696;
+	bh=Wn9ajIuhXlmQGQC4Z3aaXlblA2FS/BHrUmpEPNRSJMs=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=Nw93WDo7bbs2e0F/WSGYDF7vlAbvzoxpQrtLpUY7cEAHTu0mUoY3NB4dTjVip0nY9
+	 fk4C/qNULelaYbwrVxhMcUgXmZ+QphpvFaNyuDeVdlAjhcOwVBHsph6G/ec8ROaWzX
+	 TKvzVN10DeMem7SvnhMfgQMZDFvXr76Yx6q7I1nL5B2BFHSc8QojgABmOwXnl0Qejb
+	 ImFnsSVszODD42P0LCOF8bFRQ5zJSTB5fx6Pl7FJYqCJBgP8LZnHfnjEN6q8n6Su4o
+	 bavLa7BYDIIFjM9leM2sHpboP6NOVb9EnU68L+trMOd11v0fY7X4xV9e22RfUcONiC
+	 4G/cfzKe1gYGA==
+Date: Tue, 06 Aug 2024 14:11:30 +0000
+To: Alice Ryhl <aliceryhl@google.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Marco Elver <elver@google.com>, Coly Li <colyli@suse.de>, Paolo Abeni <pabeni@redhat.com>, Pierre Gondois <pierre.gondois@arm.com>, Ingo Molnar <mingo@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Wei Yang <richard.weiyang@gmail.com>, Matthew Wilcox <willy@infradead.org>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, Kees Cook <kees@kernel.org>
+Subject: Re: [PATCH v3 02/10] rust: list: add ListArc
+Message-ID: <62158f09-2882-475e-9df5-6d5f26d788ff@proton.me>
+In-Reply-To: <CAH5fLgj3VNyw054Bw9OrPp3QLKTv+k8+_LWCdQTuCPxV2Vg6Rw@mail.gmail.com>
+References: <20240723-linked-list-v3-0-89db92c7dbf4@google.com> <20240723-linked-list-v3-2-89db92c7dbf4@google.com> <037f16f4-e959-4801-90b2-aafb7afcfdb6@proton.me> <CAH5fLgj3VNyw054Bw9OrPp3QLKTv+k8+_LWCdQTuCPxV2Vg6Rw@mail.gmail.com>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: fe7f3057b63d16835113d52422aaecd277e99b60
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240806-linked-list-v4-0-23efc510ec92@google.com>
-In-Reply-To: <20240806-linked-list-v4-0-23efc510ec92@google.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 6 Aug 2024 16:00:09 +0200
-Message-ID: <CAH5fLghPn-i-rOnC5HeUKDMqmhVFSyzPg0DhMVxkrSgBudw8Kg@mail.gmail.com>
-Subject: Re: [PATCH v4 00/10] Add Rust linked list for reference counted values
-To: Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Marco Elver <elver@google.com>, Coly Li <colyli@suse.de>, Paolo Abeni <pabeni@redhat.com>, 
-	Pierre Gondois <pierre.gondois@arm.com>, Ingo Molnar <mingo@kernel.org>, 
-	Jakub Kicinski <kuba@kernel.org>, Wei Yang <richard.weiyang@gmail.com>, 
-	Matthew Wilcox <willy@infradead.org>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, Kees Cook <kees@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Aug 6, 2024 at 3:59=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> wr=
-ote:
->
-> This patchset contains a Rust implementation of a doubly-linked list for
-> use with reference counted values. Linked lists are famously hard to
-> implement in Rust [1] given the cyclic nature of the pointers, and
-> indeed, this implementation uses unsafe to get around that.
->
-> Linked lists aren't great for cache locality reasons, but it can be hard
-> to avoid them for cases where you need data structures that don't
-> allocate. Most linked lists in Binder are for collections where order
-> matters (usually stacks or queues). There are also a few lists that are
-> just collections, but linked lists are only used for this purpose in
-> cases where the linked list is cold and performance isn't that
-> important. The linked list is chosen over Vec in this case so that I
-> don't have to worry about reducing the capacity of the vector. (Our
-> red/black trees are a much better place to look for improving cache
-> locality of collections in Rust Binder, and the upcoming xarray bindings
-> would help with that.)
->
-> Please see the Rust Binder RFC [2] for usage examples.
->
-> The linked lists are used all over Rust Binder, but some pointers for
-> where to look for examples:
->
-> [PATCH RFC 04/20] rust_binder: add work lists
-> Implements the work lists that store heterogeneous items. Uses the
-> various macros a bunch.
->
-> [PATCH RFC 10/20] rust_binder: add death notifications
-> Uses the cursor. Also has objects with multiple prev/next pointer pairs.
->
-> [PATCH RFC 15/20] rust_binder: add process freezing
-> Uses the iterator with for loops.
->
-> Link: https://rust-unofficial.github.io/too-many-lists/ [1]
-> Link: https://lore.kernel.org/rust-for-linux/20231101-rust-binder-v1-0-08=
-ba9197f637@google.com/ [2]
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
-> Changes in v4:
-> - Support several impl blocks inside `impl_list_item!`.
-> - Link to v3: https://lore.kernel.org/r/20240723-linked-list-v3-0-89db92c=
-7dbf4@google.com
+On 06.08.24 15:16, Alice Ryhl wrote:
+> On Wed, Jul 31, 2024 at 6:47=E2=80=AFPM Benno Lossin <benno.lossin@proton=
+.me> wrote:
+>> On 23.07.24 10:22, Alice Ryhl wrote:
+>>> +        // INVARIANT: By the safety requirements, the invariants on `L=
+istArc` are satisfied.
+>>> +        Self { arc }
+>>> +    }
+>>> +
+>>> +    /// Transmutes a `ListArc` into an [`Arc`] without updating the tr=
+acking inside `T`.
+>>> +    ///
+>>> +    /// After this call, the tracking inside `T` will still think that=
+ there is a `ListArc`
+>>> +    /// reference.
+>>> +    #[inline]
+>>> +    fn transmute_to_arc(self) -> Arc<T> {
+>>
+>> Maybe also change this then to be consistent, since the name `transmute`
+>> carries a "dangerous" feel to it, but this is actually totally safe.
+>=20
+> I want it to carry a dangerous feel! Yes, it's safe to leak the
+> ListArc, but you don't want people to think it's a generic ListArc ->
+> Arc conversion function.
 
-Oops, forgot to fill this out. Also addressed the other comments from Benno=
-.
+For me `to_arc_unchecked` would also "feel" dangerous, transmute is just
+more dangerous :)
+Since this is not public I don't mind keeping `transmute`, I just find
+it a bit strange.
 
-Alice
+---
+Cheers,
+Benno
+
