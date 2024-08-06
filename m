@@ -1,79 +1,139 @@
-Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EB7118D632;
-	Tue,  6 Aug 2024 14:32:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.134
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE5A218D637;
+	Tue,  6 Aug 2024 14:47:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722954741; cv=none; b=QtIDYO/FLZ10wgKhau71JhjXE0S5KMeBtXEdPRG/xcjGMX+IIaMo97JeYf2OiTcvJWam6gG0n+mPxAQTSojPE+q0whECZyg0Pr2XqFlaDIh6hZiABAO8aMUwKR9xa31gUeXfl/KUJPUqlMk9k9JQgdaE7nAXRPg0oug4ncXYp94=
+	t=1722955623; cv=none; b=rWimz83/9PXe5m354p/vdIMuBLw/dgxhK1zyFaEH4aRb25eSTPmecT4V/iTgm4B9pL1AQ2SbbO5meRddyW9PPkXmjZr4ca222ibmApkFIB4TCzSrB3/HylRKD5JccQpRfkO2WSvf92WqOgLkomfyq5mfzHM3m+bpJPViiiiIJzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722954741; c=relaxed/simple;
-	bh=pcN/d/ic9v56yWAa0mZozH9gKTUJt9YBwoanEMLgqQ8=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=G9oqIX9j+XZB2MY9q9gpS59YVM98CFfZXwTM4VX7ZMAghb1c3t3c5NI6qP2PY9okjmMcd1R270rqO1GmFUFuL2Zu5UQAgf6YlKx2W/5jQSAorzvwEgSOFaNbc4SjNqcV0G7qDo7kS0VQWq5pkXli5bY1khpVQ/id6sQqabGTFT0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=SCdf4jqb; arc=none smtp.client-ip=185.70.40.134
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1722955623; c=relaxed/simple;
+	bh=Y5cnqlYZvFN6cWFHE9qVDfBZuNNP2KiMh9AisNZvLTA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=B15SPvn2ubSksbwXXI3LbhbClcseFrkfD8hi6qTbIArQWPr3nG4+YR50QKi5n3pOuTMU3SCX1cui3jf7iPYCmNYAqqrC86yFB7rD1+D3eHUOilB+2JDKVE3kfTnVzAbZ3hHC14738B5K6poZnR57EejCDNOIJUh9bPnCFMMYQC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f2PtbaYt; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="SCdf4jqb"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1722954736; x=1723213936;
-	bh=JcWgkMhHASS6SjKn7f8cFn8JlrjOj0kZPaiU3wsalTI=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=SCdf4jqbEltI3s2WDZa/1w5lb6bDAAJvI9nhXFl2eVB5lf5QwsFPCo0bEBckB/PBS
-	 X12ag+Zc3wu157YpPDGrcyGvbophuqO0UE4S+TZ508Tr4Y3JMip+X1EFk2WFtr7YXW
-	 gHwe11xhY3i6C2EKzLiy+fPvhE3zddVSnLDepfebVcfta0no8Xdz5HCbhLdWWNtBHY
-	 RFCoKvFSLWtViidwVf/7Y5aFa5WwjOLluifURci/EDaEYskfPUI5SBZ3UE5JNJEAlX
-	 vLEjflcnBp2eNQunnE7f1kHPIzj5wwR/Mf6i8iDOPc0C30r90NuVpMKKEMtEEta0Xz
-	 UBzuBJilqpoTw==
-Date: Tue, 06 Aug 2024 14:32:10 +0000
-To: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Marco Elver <elver@google.com>, Coly Li <colyli@suse.de>, Paolo Abeni <pabeni@redhat.com>, Pierre Gondois <pierre.gondois@arm.com>, Ingo Molnar <mingo@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Wei Yang <richard.weiyang@gmail.com>, Matthew Wilcox <willy@infradead.org>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, Kees Cook <kees@kernel.org>
-Subject: Re: [PATCH v4 04/10] rust: list: add struct with prev/next pointers
-Message-ID: <e8753c33-f561-46e3-a521-8992fa650787@proton.me>
-In-Reply-To: <20240806-linked-list-v4-4-23efc510ec92@google.com>
-References: <20240806-linked-list-v4-0-23efc510ec92@google.com> <20240806-linked-list-v4-4-23efc510ec92@google.com>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 6f637be5be7b73245525b299dbfb13a707c8f25c
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f2PtbaYt"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0BA1C32786;
+	Tue,  6 Aug 2024 14:46:56 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1722955622;
+	bh=Y5cnqlYZvFN6cWFHE9qVDfBZuNNP2KiMh9AisNZvLTA=;
+	h=From:To:Cc:Subject:Date:From;
+	b=f2PtbaYtlpBr4dZgWrLP4DSz+0sMAoCOJaf8PlESRaHiKNueurDE9IJVMYT+ERerp
+	 oBumhEUT12cbzB84fVrxmavyk80/teYOGHLwSdN1D6K9+KR4PHustrIOXInX1SElSA
+	 YMZUrtH9MyQjkpzDpU42qnmAwGFj6jBxKSa1iWe9WSoIfliMJO/MyuYX/b2yzJm0Rz
+	 ZFAx7D4lVZz+FQbkISq0r+nT6bmiG4r62iAU0r1OAkT9HZ35/WwyoJhWGvPaeMpNRV
+	 NskOt/DARBB63AmPPmSVeAwyppfkBA+FxkZ5Jeu2v+CnLaGENA5+rj/8isxmi9idYj
+	 5mh7ctuAZbUkg==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>,
+	Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>,
+	x86@kernel.org
+Cc: Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	rust-for-linux@vger.kernel.org,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	llvm@lists.linux.dev,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	linux-kernel@vger.kernel.org,
+	patches@lists.linux.dev,
+	Nikita Popov <github@npopov.com>
+Subject: [PATCH] rust: x86: remove `-3dnow{,a}` from target features
+Date: Tue,  6 Aug 2024 16:45:58 +0200
+Message-ID: <20240806144558.114461-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On 06.08.24 15:58, Alice Ryhl wrote:
-> Define the ListLinks struct, which wraps the prev/next pointers that
-> will be used to insert values into a List in a future patch. Also
-> define the ListItem trait, which is implemented by structs that have a
-> ListLinks field.
->=20
-> The ListItem trait provides four different methods that are all
-> essentially container_of or the reverse of container_of. Two of them are
-> used before inserting/after removing an item from the list, and the two
-> others are used when looking at a value without changing whether it is
-> in a list. This distinction is introduced because it is needed for the
-> patch that adds support for heterogeneous lists, which are implemented
-> by adding a third pointer field with a fat pointer to the full struct.
-> When inserting into the heterogeneous list, the pointer-to-self is
-> updated to have the right vtable, and the container_of operation is
-> implemented by just returning that pointer instead of using the real
-> container_of operation.
->=20
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
->  rust/kernel/list.rs | 119 ++++++++++++++++++++++++++++++++++++++++++++++=
-++++++
->  1 file changed, 119 insertions(+)
+LLVM 19 is dropping support for 3DNow! in commit f0eb5587ceeb ("Remove
+support for 3DNow!, both intrinsics and builtins. (#96246)"):
 
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+    Remove support for 3DNow!, both intrinsics and builtins. (#96246)
 
+    This set of instructions was only supported by AMD chips starting in
+    the K6-2 (introduced 1998), and before the "Bulldozer" family
+    (2011). They were never much used, as they were effectively superseded
+    by the more-widely-implemented SSE (first implemented on the AMD side
+    in Athlon XP in 2001).
+
+    This is being done as a predecessor towards general removal of MMX
+    register usage. Since there is almost no usage of the 3DNow!
+    intrinsics, and no modern hardware even implements them, simple
+    removal seems like the best option.
+
+Thus we should avoid passing these to the backend, since otherwise we
+get a diagnostic about it:
+
+    '-3dnow' is not a recognized feature for this target (ignoring feature)
+    '-3dnowa' is not a recognized feature for this target (ignoring feature)
+
+We could try to disable them only up to LLVM 19 (not the C side one,
+but the one used by `rustc`, which may be built with a range of
+LLVMs). However, to avoid more complexity, we can likely just remove
+them altogether. According to Nikita [2]:
+
+> I don't think it's needed because LLVM should not generate 3dnow
+instructions unless specifically asked to, using intrinsics that Rust
+does not provide in the first place.
+
+Thus do so, like Rust did for one of their builtin targets [3].
+
+For those curious: Clang will warn only about trying to enable them
+(`-m3dnow{,a}`), but not about disabling them (`-mno-3dnow{,a}`), so
+there is no change needed there.
+
+Cc: Nikita Popov <github@npopov.com>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: x86@kernel.org
+Link: https://github.com/llvm/llvm-project/commit/f0eb5587ceeb641445b64cb264c822b4751de04a [1]
+Link: https://github.com/rust-lang/rust/pull/127864#issuecomment-2235898760 [2]
+Link: https://github.com/rust-lang/rust/pull/127864 [3]
+Closes: https://github.com/Rust-for-Linux/linux/issues/1094
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 ---
-Cheers,
-Benno
+ scripts/generate_rust_target.rs | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/scripts/generate_rust_target.rs b/scripts/generate_rust_target.rs
+index 87f34925eb7b..404edf7587e0 100644
+--- a/scripts/generate_rust_target.rs
++++ b/scripts/generate_rust_target.rs
+@@ -162,7 +162,7 @@ fn main() {
+             "data-layout",
+             "e-m:e-p270:32:32-p271:32:32-p272:64:64-i64:64-i128:128-f80:128-n8:16:32:64-S128",
+         );
+-        let mut features = "-3dnow,-3dnowa,-mmx,+soft-float".to_string();
++        let mut features = "-mmx,+soft-float".to_string();
+         if cfg.has("MITIGATION_RETPOLINE") {
+             features += ",+retpoline-external-thunk";
+         }
+@@ -179,7 +179,7 @@ fn main() {
+             "data-layout",
+             "e-m:e-p:32:32-p270:32:32-p271:32:32-p272:64:64-i128:128-f64:32:64-f80:32-n8:16:32-S128",
+         );
+-        let mut features = "-3dnow,-3dnowa,-mmx,+soft-float".to_string();
++        let mut features = "-mmx,+soft-float".to_string();
+         if cfg.has("MITIGATION_RETPOLINE") {
+             features += ",+retpoline-external-thunk";
+         }
+
+base-commit: de9c2c66ad8e787abec7c9d7eff4f8c3cdd28aed
+-- 
+2.46.0
 
