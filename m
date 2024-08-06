@@ -1,375 +1,226 @@
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A295D1D1F73
-	for <rust-for-linux@vger.kernel.org>; Tue,  6 Aug 2024 13:17:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD4D21D54FB
+	for <rust-for-linux@vger.kernel.org>; Tue,  6 Aug 2024 13:59:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722950225; cv=none; b=CDW52pTtFE+Weye5oJjQ1N5yGnIK8PWU201I1Booqq+NEmo08TIpotSGb4GqujY+M+XFrnXPPRp1rgby6azMQOZhpnKjhTHX+rB/ysYlcnIHqHlxsmXnFYJqIzO1VQgYjFnVPB4Uw0gDEGDYlQOCG9Dp5inO7+Q7LJy5MsTiEk8=
+	t=1722952773; cv=none; b=SrGW/MJ5W09Hn4qLAuMyRoNXDXdSMES09JAZpCI68GjXT6EQgiYhsH4sIVp3zn87sUxqTVPLfBJHgsapOGf/jS5gf1m/WVFIYZtDtBirUoALrpaGQjpuWSjZNaJzAQmBecRNSlq47y/nIhUKyKbLK73NS/h5osvweHhYcB68XKc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722950225; c=relaxed/simple;
-	bh=cTRTyIDMn3MXYks3WINnYxjGOWhl+xHAxsmO0ve25FY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=lMbsmrs97SDDN4D0b4K47sKXWxIRo63ZiGRMIsol37DhvclRPNwxboTS3LE/puu+SaUqVkhfOOmP5F499HjIPptf0wHmUW0HULr0vJuJe2VYbDzwbn6TVDoMip7tDRERumSqoHteG6UONBIXiUvpq4A65kmO7hc8Q7vZvHq/fJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vPnAOfAD; arc=none smtp.client-ip=209.85.210.173
+	s=arc-20240116; t=1722952773; c=relaxed/simple;
+	bh=jnKF/oyQeugfAQVgW4W1AV60+aM1DDIejGLFKTFwAuQ=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=Hp+W0oiw0y3uNwPZM4RwykhpyXAHqWI33J22V1BIJOQxpZ1U4s0LUHmNOxbrXgCaWpFOEiCaq7HKb43xlr7X58izbHbPFugMwpvBu1lJckDnA4yPheFAwG9nkpdq9SYR4GME83XBOafEgJE3qjglDxvFlEdrukRo3ToTOVC0WGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=10MjEgrc; arc=none smtp.client-ip=209.85.221.74
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vPnAOfAD"
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-70d18112b60so653501b3a.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 06 Aug 2024 06:17:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="10MjEgrc"
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-368665a3fdfso482054f8f.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 06 Aug 2024 06:59:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1722950223; x=1723555023; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4vknjE8oI0ISNoQVSLMAjTHw98TAliTm25RV1z5lh2k=;
-        b=vPnAOfADtQPBvseZ0vrvAlf9lyX3wBRrItho4VP2qkayukJKrdFDXZwS9RE797kvhd
-         //SgVDkMSol0IEBSkZB6YXdakMyvj7/gVM75HXjuB9zz5rineXE7oM2YJ/2pdfN7dwsj
-         cCS/VjobRy+MJXOj2D5laxP//cjK59Ek5cw+sj9tXEkpuKqJXZutThOpx3Vv/V8ZbJYT
-         JjrColPXODFx7KnQLTVzR+xnNA4IrRYni9hKRrpkA/AeKzNJbL6nDcUN/YaldRG0Z15A
-         T+YRetDejYGtIJowWvGigs+rqdcbXYwZvBpbhrNud4fqTlD2znQhs/5VrxNEiFU3mf30
-         AOhg==
+        d=google.com; s=20230601; t=1722952770; x=1723557570; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=7zBzNoBly2krqneRSwSfI4JKOiFR4iaU7/3GH2+Nyg0=;
+        b=10MjEgrcECydPaSJOTViZTV+Zv9yMCcS81nuN87bzGyBOQg4JT7WKJYR+cQqOSx+bH
+         /UN4P1nA4FcQXRwJ4/6KlU8fd3yXrhORMmvo5GlLQ4SMsYYU8rJHKvstWnWi/Ib/hLRN
+         d1Tl0gFO0djNherVzW4e/Jl58yb03yKSZPZr2k2XvUy7D+XPnkrcFbH2SUhRJ+z+AynY
+         Gb/ckWtjTv5LsYHjJea/S/awzaDUpYHXXLWnmq41UqZg9xfllzl99Vuk9182u7D5DBz0
+         rQFF3SQqnTyVbJTxtElusBK/c+64C3Sqeu6OvnfJ/4O/YfzPUBEnCl8YMcC9tYsmjoeo
+         qi2A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722950223; x=1723555023;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4vknjE8oI0ISNoQVSLMAjTHw98TAliTm25RV1z5lh2k=;
-        b=Sgp+BTYFWYNBAuZs19Ev1Zs3oBnYGLUFkJzKQHF4go0FHDV9ose1MY7IzZhG7CmE/p
-         XUjDNP1bZDwdDPQzVh+qM/6ORruD5wFkOcRbepqOJANrn5fLEtMWgFTKnMAYAt23WMRR
-         JngvOf1CSQ2qga+/5J+mbw96RdpUq6+xeiUt+1QcslrFOkdNd87TgS7E0xozhpJO2shY
-         iL4Ecxn2zHFqR4G80MxVaUCWRXp3dzJGjtTsOGCyE86bqejaLfyLIjL6tGOqD0iFz8Sv
-         5ILdJvz8vMp9mkqBf7HErUZ4KzHlFPi1emoCksoEjJSMtzSwv/iax4u8/GU5IM2a+IOE
-         +crQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUXqsmVvRLkjKRb1h/Itn1d09uorPNmzxr16POZEGQFJUgpq3qvY17FVXuUav36eeai0g4Jbib9WQzYarnGYb2wE36JPk2mVFbgalw8q1k=
-X-Gm-Message-State: AOJu0YzZZ8F7bLgC3vnIaAslqb2g+nsjEn9h2b9HyrAoK80YySBZCtgy
-	7X5xHFe4UxEsq0FoUJNwqnQ4IOxXuPPm7vL5HoAZTHdOZaz4SQij0swNq4D8mbjcu7NtfUOgYyN
-	v1BmXYzcQ+bVTNnfBm0r0VtNGL4emzGPdeSBx
-X-Google-Smtp-Source: AGHT+IGFgEjy6yNcS10S4+ojZ0Kd1MXYEExVKiQlwySOuNMHXzHi7+k+ftBKSW3/awNZvBa4RRr3LrPh+aqMNMAdTUg=
-X-Received: by 2002:a05:6a20:3d90:b0:1c4:a4f2:6f77 with SMTP id
- adf61e73a8af0-1c69a5f2e5dmr19563161637.15.1722950222416; Tue, 06 Aug 2024
- 06:17:02 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1722952770; x=1723557570;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=7zBzNoBly2krqneRSwSfI4JKOiFR4iaU7/3GH2+Nyg0=;
+        b=XQt6Y+1wsy7xQGZMkicK/k1O5qkzn830sKrtURQUJrzCbOhDQWHgepKTgTapfpQKK2
+         6CY0IFXf2Rv3oJ4dnM1EJhbDQCVIfl+KYdpZZFNpaxRG4LURs14k5rpbTA6FSPqCxIQ/
+         GcHx/08F7WV5BtY1JSo9U9+UAmhf6kg2ot5sZgBDHGybay32QUatRwYVPCQfe7tK4RiV
+         8tGmZKm6JO+bzV3BETGTcG1wOlV6y/u3JH1/54AsYEE27l0iRuZ+Pgo51a9aosslIe4V
+         AcNY9gCS9+ROLsfajdnTSVwQC5CxSZcxRHzg292+uoc1I0yByrksH7gS4pRA0Mn6dtkH
+         B1MA==
+X-Forwarded-Encrypted: i=1; AJvYcCXDXhVDrJCHqH3NEPxVKyykpuyb4ehlq94B1lckrRYPk2VMkGyF4Kz1ZcU4spa57KQQqP8LoLb2G0owYKYVt2Z6/DxgGVuY5IuC6BF/MuQ=
+X-Gm-Message-State: AOJu0YxxLSg6FIfb2j9pU5QfD5laWKbSWzBSQVx+IQXGujRl39l8c5EM
+	PWjhjo2fW7QHdcqPz7jIH/dmAc+qXHqGP/ql3HfZxsZmWeB88TDdt68aNGsYgaJyx8XuIsXOzDr
+	U+TO7Zg6AHYAOQg==
+X-Google-Smtp-Source: AGHT+IHfyggQAHCMo1H+VuH8fYUdZIKW7TfKe3NVrHO6BjZxNT1rGo7TVK6+tCqJfI/7xJPbJKrteuHkqeyr4V8=
+X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:35bd])
+ (user=aliceryhl job=sendgmr) by 2002:a5d:452f:0:b0:36b:bb7b:923a with SMTP id
+ ffacd0b85a97d-36bbc1882femr21659f8f.12.1722952770169; Tue, 06 Aug 2024
+ 06:59:30 -0700 (PDT)
+Date: Tue, 06 Aug 2024 13:58:53 +0000
+In-Reply-To: <20240806-linked-list-v4-0-23efc510ec92@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240723-linked-list-v3-0-89db92c7dbf4@google.com>
- <20240723-linked-list-v3-2-89db92c7dbf4@google.com> <037f16f4-e959-4801-90b2-aafb7afcfdb6@proton.me>
-In-Reply-To: <037f16f4-e959-4801-90b2-aafb7afcfdb6@proton.me>
+Mime-Version: 1.0
+References: <20240806-linked-list-v4-0-23efc510ec92@google.com>
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4065; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=qZ9J/+0vw2xQYmgGbraO8iTE7yockKbb9UgUTf5VFEA=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBmsiw3YHCMsmdQSF7z4EpNqK59qiwpSqxeizLeX
+ fV5hcUDSS2JAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZrIsNwAKCRAEWL7uWMY5
+ RhG+EAC7hBj+whdtRkvtrucxncYoTz33F9resFfUqJUsEQuOurAvoRVfgeDkNJYbBPbTAMIkMML
+ hdkMJ5Sh8ZLlTUEmHErIsUYWKsnZF6qHRjlNNcYNZMcqjW7vZ5vYM1vYkAnz/Ez5O7I88eBOQQW
+ JeSLYLa1258RDhqsdVGYSP7tzta1Mljj/e0Twr/wLXYkkFulmqePcP9kg6f6Kxzc1/w8GFzrvlB
+ tAkbW9dDl/TvkC1AU9DNEi22iqqIvAQaFWXMMbQ93/i80oGAgBDmG41XR4gzlls6IAOvteQFnDL
+ LeKhjvyZLP+SjtG2WhNWDUjySiV3gsIBfQ9Iqpf6s1oo/vmVfys79mmz29v4xIG5xJ6kzVhkY1t
+ kAnro5FgZIDzmNdUGc3lL4CwBqfGhc6e5R+x+BWGcIyEVnfppIKqWpRkaVHRk+rs2m2JGR+MLtH
+ Y7iOZDZCnqttfLnpWJdWgmypZSpecwan9xlUuEQHiFZ9Me16BfGZN5IVkMJjByQac+Aq9TREVNz
+ iZ89p5WUQ7TdZH+D9y0VIS+rA3Kibz9T3nRRB8HDYgSzAuaiJEEdXwuRfaz16dPPgknm+Jw1pMS
+ 8uof4s7J7aM9GwxiUVIG5Y4Uhyh6+lcqJseanrWSUUeEE/Tg9mLkvDg2nHDfSYPt/E5QnoCjMFj 7ilSFS672vZZ80A==
+X-Mailer: b4 0.13.0
+Message-ID: <20240806-linked-list-v4-1-23efc510ec92@google.com>
+Subject: [PATCH v4 01/10] rust: init: add `assert_pinned` macro
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 6 Aug 2024 15:16:47 +0200
-Message-ID: <CAH5fLgj3VNyw054Bw9OrPp3QLKTv+k8+_LWCdQTuCPxV2Vg6Rw@mail.gmail.com>
-Subject: Re: [PATCH v3 02/10] rust: list: add ListArc
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+To: Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
 	Andreas Hindborg <a.hindborg@samsung.com>, Marco Elver <elver@google.com>, Coly Li <colyli@suse.de>, 
 	Paolo Abeni <pabeni@redhat.com>, Pierre Gondois <pierre.gondois@arm.com>, 
 	Ingo Molnar <mingo@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Wei Yang <richard.weiyang@gmail.com>, 
 	Matthew Wilcox <willy@infradead.org>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, Kees Cook <kees@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+	rust-for-linux@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>, 
+	Kees Cook <kees@kernel.org>
+Content-Type: text/plain; charset="utf-8"
 
-On Wed, Jul 31, 2024 at 6:47=E2=80=AFPM Benno Lossin <benno.lossin@proton.m=
-e> wrote:
->
-> On 23.07.24 10:22, Alice Ryhl wrote:
-> > The `ListArc` type can be thought of as a special reference to a
-> > refcounted object that owns the permission to manipulate the
-> > `next`/`prev` pointers stored in the refcounted object. By ensuring tha=
-t
-> > each object has only one `ListArc` reference, the owner of that
-> > reference is assured exclusive access to the `next`/`prev` pointers.
-> > When a `ListArc` is inserted into a `List`, the `List` takes ownership
-> > of the `ListArc` reference.
-> >
-> > There are various strategies for ensuring that a value has only one
-> > `ListArc` reference. The simplest is to convert a `UniqueArc` into a
-> > `ListArc`. However, the refcounted object could also keep track of
-> > whether a `ListArc` exists using a boolean, which could allow for the
-> > creation of new `ListArc` references from an `Arc` reference. Whatever
-> > strategy is used, the relevant tracking is referred to as "the tracking
-> > inside `T`", and the `ListArcSafe` trait (and its subtraits) are used t=
-o
-> > update the tracking when a `ListArc` is created or destroyed.
-> >
-> > Note that we allow the case where the tracking inside `T` thinks that a
-> > `ListArc` exists, but actually, there isn't a `ListArc`. However, we do
-> > not allow the opposite situation where a `ListArc` exists, but the
-> > tracking thinks it doesn't. This is because the former can at most
-> > result in us failing to create a `ListArc` when the operation could
-> > succeed, whereas the latter can result in the creation of two `ListArc`
-> > references.
->
-> You could add at the end of this paragraph that the latter is a
-> soundness issue and could lead to memory bugs, but the former cannot.
+From: Benno Lossin <benno.lossin@proton.me>
 
-Will do.
+Add a macro to statically check if a field of a struct is marked with
+`#[pin]` ie that it is structurally pinned. This can be used when
+`unsafe` code needs to rely on fields being structurally pinned.
 
-> > This patch introduces the `impl_list_arc_safe!` macro that allows you t=
-o
-> > implement `ListArcSafe` for types using the strategy where a `ListArc`
-> > can only be created from a `UniqueArc`. Other strategies are introduced
-> > in later patches.
->
-> [...]
->
-> > diff --git a/rust/kernel/list/arc.rs b/rust/kernel/list/arc.rs
-> > new file mode 100644
-> > index 000000000000..3b7072e58256
-> > --- /dev/null
-> > +++ b/rust/kernel/list/arc.rs
-> > @@ -0,0 +1,348 @@
-> > +// SPDX-License-Identifier: GPL-2.0
-> > +
-> > +// Copyright (C) 2024 Google LLC.
-> > +
-> > +//! A wrapper around `Arc` for linked lists.
-> > +
-> > +use crate::alloc::{AllocError, Flags};
-> > +use crate::prelude::*;
-> > +use crate::sync::{Arc, ArcBorrow, UniqueArc};
-> > +use core::marker::Unsize;
-> > +use core::ops::Deref;
-> > +use core::pin::Pin;
-> > +
-> > +/// Declares that this type has some way to ensure that there is exact=
-ly one `ListArc` instance for
-> > +/// this id.
-> > +///
-> > +/// Types that implement this trait should include some kind of logic =
-for keeping track of whether
-> > +/// a [`ListArc`] exists or not. We refer to this logic as "the tracki=
-ng inside `T`".
-> > +///
-> > +/// We allow the case where the tracking inside `T` thinks that a [`Li=
-stArc`] exists, but actually,
-> > +/// there isn't a [`ListArc`]. However, we do not allow the opposite s=
-ituation where a [`ListArc`]
-> > +/// exists, but the tracking thinks it doesn't. This is because the fo=
-rmer can at most result in us
-> > +/// failing to create a [`ListArc`] when the operation could succeed, =
-whereas the latter can result
-> > +/// in the creation of two [`ListArc`] references.
->
-> Would be good to also add it here.
+The macro has a special "inline" mode for the case where the type
+depends on generic parameters from the surrounding scope.
 
-Will do.
+Signed-off-by: Benno Lossin <benno.lossin@proton.me>
+Co-developed-by: Alice Ryhl <aliceryhl@google.com>
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+ rust/kernel/init.rs            | 67 ++++++++++++++++++++++++++++++++++++++++++
+ rust/kernel/init/__internal.rs | 29 ++++++++++++++++++
+ 2 files changed, 96 insertions(+)
 
-> > +///
-> > +/// A consequence of the above is that you may implement the tracking =
-inside `T` by not actually
-> > +/// keeping track of anything. To do this, you always claim that a [`L=
-istArc`] exists, even if
-> > +/// there isn't one. This implementation is allowed by the above rule,=
- but it means that
-> > +/// [`ListArc`] references can only be created if you have ownership o=
-f *all* references to the
-> > +/// refcounted object, as you otherwise have no way of knowing whether=
- a [`ListArc`] exists.
-> > +pub trait ListArcSafe<const ID: u64 =3D 0> {
-> > +    /// Informs the tracking inside this type that it now has a [`List=
-Arc`] reference.
-> > +    ///
-> > +    /// This method may be called even if the tracking inside this typ=
-e thinks that a `ListArc`
-> > +    /// reference exists. (But only if that's not actually the case.)
-> > +    ///
-> > +    /// # Safety
-> > +    ///
-> > +    /// Must not be called if a [`ListArc`] already exist for this val=
-ue.
-> > +    unsafe fn on_create_list_arc_from_unique(self: Pin<&mut Self>);
-> > +
-> > +    /// Informs the tracking inside this type that there is no [`ListA=
-rc`] reference anymore.
-> > +    ///
-> > +    /// # Safety
-> > +    ///
-> > +    /// Must only be called if there is no [`ListArc`] reference, but =
-the tracking thinks there is.
-> > +    unsafe fn on_drop_list_arc(&self);
-> > +}
-> > +
-> > +/// Declares that this type supports [`ListArc`].
-> > +///
-> > +/// When using this macro, it will only be possible to create a [`List=
-Arc`] from a [`UniqueArc`].
-> > +#[macro_export]
-> > +macro_rules! impl_list_arc_safe {
-> > +    (impl$({$($generics:tt)*})? ListArcSafe<$num:tt> for $t:ty { untra=
-cked; } $($rest:tt)*) =3D> {
-> > +        impl$(<$($generics)*>)? $crate::list::ListArcSafe<$num> for $t=
- {
-> > +            unsafe fn on_create_list_arc_from_unique(self: ::core::pin=
-::Pin<&mut Self>) {}
-> > +            unsafe fn on_drop_list_arc(&self) {}
-> > +        }
-> > +        $crate::list::impl_list_arc_safe! { $($rest)* }
-> > +    };
-> > +
-> > +    () =3D> {};
-> > +}
-> > +pub use impl_list_arc_safe;
-> > +
-> > +/// A wrapper around [`Arc`] that's guaranteed unique for the given id=
-.
-> > +///
-> > +/// The `ListArc` type can be thought of as a special reference to a r=
-efcounted object that owns the
-> > +/// permission to manipulate the `next`/`prev` pointers stored in the =
-refcounted object. By ensuring
-> > +/// that each object has only one `ListArc` reference, the owner of th=
-at reference is assured
-> > +/// exclusive access to the `next`/`prev` pointers. When a `ListArc` i=
-s inserted into a `List`, the
-> > +/// `List` takes ownership of the `ListArc` reference.
-> > +///
-> > +/// There are various strategies to ensuring that a value has only one=
- `ListArc` reference. The
-> > +/// simplest is to convert a [`UniqueArc`] into a `ListArc`. However, =
-the refcounted object could
-> > +/// also keep track of whether a `ListArc` exists using a boolean, whi=
-ch could allow for the
-> > +/// creation of new `ListArc` references from an [`Arc`] reference. Wh=
-atever strategy is used, the
-> > +/// relevant tracking is referred to as "the tracking inside `T`", and=
- the [`ListArcSafe`] trait
-> > +/// (and its subtraits) are used to update the tracking when a `ListAr=
-c` is created or destroyed.
-> > +///
-> > +/// Note that we allow the case where the tracking inside `T` thinks t=
-hat a `ListArc` exists, but
-> > +/// actually, there isn't a `ListArc`. However, we do not allow the op=
-posite situation where a
-> > +/// `ListArc` exists, but the tracking thinks it doesn't. This is beca=
-use the former can at most
-> > +/// result in us failing to create a `ListArc` when the operation coul=
-d succeed, whereas the latter
-> > +/// can result in the creation of two `ListArc` references.
-> > +///
-> > +/// # Invariants
-> > +///
-> > +/// * Each reference counted object has at most one `ListArc` for each=
- value of `ID`.
-> > +/// * The tracking inside `T` is aware that a `ListArc` reference exis=
-ts.
->
-> I am not entirely sure where to put this, but I think it might be good
-> as the first paragraph or directly after the first:
->
->     While this `ListArc` is unique for the given id, there still might
->     exist normal `Arc` references to the object.
->
-> Feel free to modify it (I am not really happy with "object").
+diff --git a/rust/kernel/init.rs b/rust/kernel/init.rs
+index 495c09ebe3a3..1263f486abc4 100644
+--- a/rust/kernel/init.rs
++++ b/rust/kernel/init.rs
+@@ -742,6 +742,73 @@ macro_rules! try_init {
+     };
+ }
+ 
++/// Asserts that a field on a struct using `#[pin_data]` is marked with `#[pin]` ie. that it is
++/// structurally pinned.
++///
++/// # Example
++///
++/// This will succeed:
++/// ```
++/// use kernel::assert_pinned;
++/// #[pin_data]
++/// struct MyStruct {
++///     #[pin]
++///     some_field: u64,
++/// }
++///
++/// assert_pinned!(MyStruct, some_field, u64);
++/// ```
++///
++/// This will fail:
++/// ```compile_fail
++/// use kernel::assert_pinned;
++/// #[pin_data]
++/// struct MyStruct {
++///     some_field: u64,
++/// }
++///
++/// assert_pinned!(MyStruct, some_field, u64);
++/// ```
++///
++/// Some uses of the macro may trigger the `can't use generic parameters from outer item` error. To
++/// work around this, you may pass the `inline` parameter to the macro. The `inline` parameter can
++/// only be used when the macro is invoked from a function body.
++/// ```
++/// use kernel::assert_pinned;
++/// #[pin_data]
++/// struct Foo<T> {
++///     #[pin]
++///     elem: T,
++/// }
++///
++/// impl<T> Foo<T> {
++///     pub fn project(self: Pin<&mut Self>) -> Pin<&mut T> {
++///         assert_pinned!(Foo<T>, elem, T, inline);
++///
++///         // SAFETY: The field is structurally pinned.
++///         unsafe { self.map_unchecked_mut(|me| &mut me.elem) }
++///     }
++/// }
++/// ```
++#[macro_export]
++macro_rules! assert_pinned {
++    ($ty:ty, $field:ident, $field_ty:ty, inline) => {
++        let _ = move |ptr: *mut $field_ty| {
++            // SAFETY: This code is unreachable.
++            let data = unsafe { <$ty as $crate::init::__internal::HasPinData>::__pin_data() };
++            let init = $crate::init::__internal::AlwaysFail::<$field_ty>::new();
++            // SAFETY: This code is unreachable.
++            unsafe { data.$field(ptr, init) }.ok();
++        };
++    };
++
++    ($ty:ty, $field:ident, $field_ty:ty) => {
++        const _: () = {
++            $crate::assert_pinned!($ty, $field, $field_ty, inline);
++        };
++    };
++}
++
+ /// A pin-initializer for the type `T`.
+ ///
+ /// To use this initializer, you will need a suitable memory location that can hold a `T`. This can
+diff --git a/rust/kernel/init/__internal.rs b/rust/kernel/init/__internal.rs
+index db3372619ecd..13cefd37512f 100644
+--- a/rust/kernel/init/__internal.rs
++++ b/rust/kernel/init/__internal.rs
+@@ -228,3 +228,32 @@ pub unsafe fn new() -> Self {
+         Self(())
+     }
+ }
++
++/// Initializer that always fails.
++///
++/// Used by [`assert_pinned!`].
++///
++/// [`assert_pinned!`]: crate::assert_pinned
++pub struct AlwaysFail<T: ?Sized> {
++    _t: PhantomData<T>,
++}
++
++impl<T: ?Sized> AlwaysFail<T> {
++    /// Creates a new initializer that always fails.
++    pub fn new() -> Self {
++        Self { _t: PhantomData }
++    }
++}
++
++impl<T: ?Sized> Default for AlwaysFail<T> {
++    fn default() -> Self {
++        Self::new()
++    }
++}
++
++// SAFETY: `__pinned_init` always fails, which is always okay.
++unsafe impl<T: ?Sized> PinInit<T, ()> for AlwaysFail<T> {
++    unsafe fn __pinned_init(self, _slot: *mut T) -> Result<(), ()> {
++        Err(())
++    }
++}
 
-I added something about that above the heading.
+-- 
+2.46.0.rc2.264.g509ed76dc8-goog
 
-> > +#[repr(transparent)]
-> > +pub struct ListArc<T, const ID: u64 =3D 0>
-> > +where
-> > +    T: ListArcSafe<ID> + ?Sized,
-> > +{
-> > +    arc: Arc<T>,
-> > +}
->
-> [...]
->
-> > +    /// Transmutes an [`Arc`] into a `ListArc` without updating the tr=
-acking inside `T`.
-> > +    ///
-> > +    /// # Safety
-> > +    ///
-> > +    /// * The value must not already have a `ListArc` reference.
-> > +    /// * The tracking inside `T` must think that there is a `ListArc`=
- reference.
-> > +    #[inline]
-> > +    unsafe fn transmute_from_arc(arc: Arc<T>) -> Self {
->
-> I think the name is inaccurate now, since it is no longer a transmute,
-> so maybe `from_arc_unchecked`?
-
-I think it's fine to keep the transmute name. It gives the right connotatio=
-ns.
-
-> > +        // INVARIANT: By the safety requirements, the invariants on `L=
-istArc` are satisfied.
-> > +        Self { arc }
-> > +    }
-> > +
-> > +    /// Transmutes a `ListArc` into an [`Arc`] without updating the tr=
-acking inside `T`.
-> > +    ///
-> > +    /// After this call, the tracking inside `T` will still think that=
- there is a `ListArc`
-> > +    /// reference.
-> > +    #[inline]
-> > +    fn transmute_to_arc(self) -> Arc<T> {
->
-> Maybe also change this then to be consistent, since the name `transmute`
-> carries a "dangerous" feel to it, but this is actually totally safe.
-
-I want it to carry a dangerous feel! Yes, it's safe to leak the
-ListArc, but you don't want people to think it's a generic ListArc ->
-Arc conversion function.
-
-> > +        // Use a transmute to skip destructor.
-> > +        //
-> > +        // SAFETY: ListArc is repr(transparent).
-> > +        unsafe { core::mem::transmute(self) }
-> > +    }
->
-> [...]
->
-> > +// This is to allow [`ListArc`] (and variants) to be used as the type =
-of `self`.
-> > +impl<T, const ID: u64> core::ops::Receiver for ListArc<T, ID> where T:=
- ListArcSafe<ID> + ?Sized {}
-> > +
-> > +// This is to allow coercion from `ListArc<T>` to `ListArc<U>` if `T` =
-can be converted to the
-> > +// dynamically-sized type (DST) `U`.
-> > +impl<T, U, const ID: u64> core::ops::CoerceUnsized<ListArc<U, ID>> for=
- ListArc<T, ID>
-> > +where
-> > +    T: ListArcSafe<ID> + Unsize<U> + ?Sized,
-> > +    U: ListArcSafe<ID> + ?Sized,
-> > +{
-> > +}
-> > +
-> > +// This is to allow `ListArc<U>` to be dispatched on when `ListArc<T>`=
- can be coerced into
-> > +// `ListArc<U>`.
-> > +impl<T, U, const ID: u64> core::ops::DispatchFromDyn<ListArc<U, ID>> f=
-or ListArc<T, ID>
-> > +where
-> > +    T: ListArcSafe<ID> + Unsize<U> + ?Sized,
-> > +    U: ListArcSafe<ID> + ?Sized,
-> > +{
-> > +}
->
-> Can we start using `feature(derive_smart_pointer)` on new enough
-> compiler versions? (I guess you probably want it as a separate patch
-> series to avoid delaying this in case it needs anything [eg the new
-> build system])
-> Do we need any Makefile modifications for that or could we just do
-> `#[cfg_attr(compiler-is-new-enough, derive(SmartPointer))` on the struct
-> and then cfg these impls away? (and what would "compiler-is-new-enough"
-> be?)
-
-That probably won't be until 1.83 or something like that. It will have
-to be a follow-up.
-
-> Aside from my docs nits, this looks good:
->
-> Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-
-Thanks!
-
-Alice
