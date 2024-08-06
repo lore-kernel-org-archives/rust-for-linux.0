@@ -1,55 +1,55 @@
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BB79165EF1
-	for <rust-for-linux@vger.kernel.org>; Tue,  6 Aug 2024 08:30:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D8EF16BE0A
+	for <rust-for-linux@vger.kernel.org>; Tue,  6 Aug 2024 08:39:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722933055; cv=none; b=HSW1iUzbNwqaufMQgPrX4pxb0/uTiai93miyn1nZ7bLYdC/XELRHC61fEadJXrczFGS8OiWzHLAv0aFwO+2KOV1oWrHV9cD1qMUuAANCRH7+EhJhVOXsNcr2EYe4w/BffQ/kPUuHAMoEDEsSb8YECFCRLiKPcx8mIPdpmnojuW4=
+	t=1722933596; cv=none; b=h5wS2fvo8X0rI305LmphWb+ZCYadVVNa4w5YvNGwGdGFcbEvgjqo3KRuSDltNV2CWhzkkrGQfXJ/yRME4e394PGd3TFlwuL9sq65IhcUqyst5NTyabOqj7rNXmPrbmlpFMCoP+NVlZRawzdxqXEfEZJXrF8c+Tln7kIHwRSzSUc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722933055; c=relaxed/simple;
-	bh=LnFZp12TIqn5SQDpHxYlO8HWh+yQl3eB38wxtB7M/dE=;
+	s=arc-20240116; t=1722933596; c=relaxed/simple;
+	bh=FQB6BQ8ujGZ/vTXoFWjIxLqahSRXoRts8rERnQLUxEA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=S5+ATca0ZisuK3xPLvrnsjM7V3NmsKbgiwa7D3034sYtnVEqGvoRV+3Wc43rXB+vK4Rod9Y1MjBVxT4/FsiNGXADxDLTx7QADtJgsU8/3TSD1k1xZJdVAk4Sr1FvsI8sc5uGglH4+JJkEVPTYYxjsuNA+lCaWpJKoRAywv1hoPY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UNkWtgSi; arc=none smtp.client-ip=209.85.128.53
+	 To:Cc:Content-Type; b=YLCEDSioIqezyulmdaorYsfRVpm7KlyvvZephlC4+lMzc9J6wrdL3228yr3O9sXcPda/75yLPE1QQc7viK3+HAGjLXkGErLLUtZMnA5jhJTpFQl3s5GaorhqJd3aPzho42G3u/uxstWA/O6p1kUDZUDXMXYqgpmszUIIrgcfyu8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CgGNNggR; arc=none smtp.client-ip=209.85.128.42
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UNkWtgSi"
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-4281faefea9so1836095e9.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 06 Aug 2024 01:30:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CgGNNggR"
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-42817f1eb1fso2611825e9.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 06 Aug 2024 01:39:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1722933052; x=1723537852; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1722933592; x=1723538392; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=koPOZ7NdBsDQmuAR9Ro33aVNgwZigMdr1Rj3bsmXrOA=;
-        b=UNkWtgSifrHxv5r8YRgHrbFiADBB/J+2QridtLmbrTXwiWUk24iETWshgVpx6BUswV
-         SrS/UizzqPPHZuzT2UH1becATmPwb+T4sG7oAtTAhfNQEAimeHs1/bMoQOF+rnKWtUXA
-         t1N99A54fvaVpOuAyhY2IiBaL59xyurG/uslHzdP4xI/jFF10eHskPuI5bbKNL+6xyFV
-         bySQsvDa39EsCf90RZSCySfuwzbW+/i/op/WQAwMjHpdRbUA8YOUMs/E+qpZd48hTmlR
-         MorQfzVvjs6pYxtUryBUfDbH8Y8iBHXCdJATFO6RvMlsE880z/t482aL9+ghfBA3jUlU
-         dwPQ==
+        bh=gmne+spHYhWJxTfkP4X4/P4qq2v9kHtbVdyHtJgnPy0=;
+        b=CgGNNggR4S2ZRs3HwxpOqXO3h5wwfRFFAaXcCKap+4u5HIJgVdw44JEOHE8anNcZcf
+         ECgyFOAPLPN5gjh02xYKnYXKpvTa5kGsKwRA6YgX7lSzsohRnoako5DOt0RSRPZtopsx
+         2jbVFnlAdb8s8doTRjtvWFJMBTGbxnBNj4HFMIO+G42GP2YwCrAbg2+qItx4gkFaxgWj
+         v8UfVQDjbsHCXhSCDIvPlKl/xIrGw4Zz6utM8/hwDT9xPBxrrYkBGZCjfYz7J7dlIZt/
+         I+dZIUyHADUE0eqzqgxIKHKwLvTrqEKoIFrR783rA1mHu01JWvgTeM5ch/apgAoKfdNf
+         tTLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722933052; x=1723537852;
+        d=1e100.net; s=20230601; t=1722933592; x=1723538392;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=koPOZ7NdBsDQmuAR9Ro33aVNgwZigMdr1Rj3bsmXrOA=;
-        b=ebCZrN2Z3xmN/FB2IEBh7gg6Aw+c7jycDSLHB23ZFBgeTm72uvXc23I9jQe2PTI7hW
-         n7lClxsRk3x9IU04zkkUTKhtkRyEQJ+3roHjDoQcwm13/2VrDm8nKDi00URx//ivgRn4
-         bgbs5dj7uxTeOLCUPatddLOUMYdKxFuxan/0Xb0utnsNUrDlyoPegrycaSyxdAgLn3/D
-         6Tx91ObU3FX5UCa0DEc1k8KnTi2Wv9mdAD9EO0eT4uZWL0Sl4MuKragzZD8S9bH8nBcz
-         TTBSIOw25NEYN5Th0AfI3ApJVwm1/MW9gFdLAtKy/c9e7OOlPbDeX8+xl5uCB+fbpabh
-         4dtQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXBAPKt8CbUMf1Suxs8rj1X0gCV+CPPqnp6XnOlzT9JCKcNIie4OrvXlWDGDhxEE8EK4UMe50OkZWJGxungOO93xlMamX7QSZZ4yDUbcYM=
-X-Gm-Message-State: AOJu0YxLRgmfQZn3UvOvSpEuEzhbWk/TS5YyTY+w76LGgi9lIiI4cRJw
-	rihr2mewrCLOKZ5qMCh8I2/ZqLMNaPmQnW/tbxZIR7PwfEEhEq2izEQNpBzwxWIcFg78T9hdiBn
-	ZH2svGiebs9dh5imD13m53BaO7IQIrAwv88IJ
-X-Google-Smtp-Source: AGHT+IGzYHiShkvLDa3uQWiW2yA3lF+z/Tz24rRjBIX2lqr731n7mHLts+IQtweqWLM8ZWv2S//3CGuONC3J6sjgRkY=
-X-Received: by 2002:a05:600c:46cc:b0:426:5e0b:5823 with SMTP id
- 5b1f17b1804b1-428e6b92fdcmr95073695e9.34.1722933052114; Tue, 06 Aug 2024
- 01:30:52 -0700 (PDT)
+        bh=gmne+spHYhWJxTfkP4X4/P4qq2v9kHtbVdyHtJgnPy0=;
+        b=S1OH4kYZ7GcUoOB2BJlxkxe1imsRx9Guy3AHDHC5Z438YOjyRA11PQ0dBCzjdI0EDK
+         Etdlp262Svs5sAG+OWo+1OcMteYju32e9MyMKx+2iRMKmDs8PJKN340XPeDgtpYf++W3
+         9hGUKxOSsW4sZfHZ58zedDoZqTlaSOB4/Fy6kE7GoTVNFPABhLMIUA2bA2YBXUoCWgCv
+         k/4U5WD/dbk6Iy3dXwbXGaW7qC0fW5w2UcZA6VuryCykrCG47ik+N5R2q8yUDApsS856
+         nkfrKtaLM7ejrMQg7aKNFWkebeau15C/LidxGk9BS5zotPguTtEAxZ7Ol7GJL2sGj6UU
+         oGwA==
+X-Forwarded-Encrypted: i=1; AJvYcCW6+YPq2q/rXzRizlcGswowAiBy79xvvtWFGFfsi0hzBl1mMCQjUZdsA1GarhHIiA0fvN4jcO7ooSd1knbrUGimHOt8c3W4M9Yzm0cGl/8=
+X-Gm-Message-State: AOJu0YxLpBEGKXjhUIkF5+2R9N7DpgbYtxrGuGtICvqSKOmUSPm3/WGw
+	DxJ6Q46A9NZTfk7VMG+BrvnScUj4Xk8l12AuA0kCyb2oYVSY1QXogS8d6/WTOsvfeKJoAWV7TQJ
+	Bv3OVfIKsiR/FOZapfdFOfQsTkpeAmVwFo0g/
+X-Google-Smtp-Source: AGHT+IHKTYmq3PXNyaNHf68/1HITyUlybKibxB5HX1xBw8PZwfVD3t6ckMOi/tMjlFBjlM5SqLwDEJoRPiFbfhBWSH8=
+X-Received: by 2002:a05:600c:1c14:b0:426:5e8e:410a with SMTP id
+ 5b1f17b1804b1-428ea0fd6a8mr93959365e9.24.1722933591313; Tue, 06 Aug 2024
+ 01:39:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -57,12 +57,12 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20240727-b4-rbtree-v8-0-951600ada434@google.com>
- <20240727-b4-rbtree-v8-4-951600ada434@google.com> <27f724ba-4f04-407b-9f5d-81a472f8ba14@proton.me>
-In-Reply-To: <27f724ba-4f04-407b-9f5d-81a472f8ba14@proton.me>
+ <20240727-b4-rbtree-v8-6-951600ada434@google.com> <cabdde17-5191-4ce6-8cf3-7e7e929e5671@proton.me>
+In-Reply-To: <cabdde17-5191-4ce6-8cf3-7e7e929e5671@proton.me>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 6 Aug 2024 10:30:40 +0200
-Message-ID: <CAH5fLghJmA_01QJvzSBX4HEfLwPr+FskM9dzOs0ykbYj_sCWTg@mail.gmail.com>
-Subject: Re: [PATCH v8 4/6] rust: rbtree: add mutable iterator
+Date: Tue, 6 Aug 2024 10:39:39 +0200
+Message-ID: <CAH5fLggU7B6Bb-fzaFhmNxbAd8aoGmNN4amdtm6gp43myAzcxw@mail.gmail.com>
+Subject: Re: [PATCH v8 6/6] rust: rbtree: add `RBTree::entry`
 To: Benno Lossin <benno.lossin@proton.me>
 Cc: Matt Gilbride <mattgilbride@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
 	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
@@ -78,168 +78,176 @@ Cc: Matt Gilbride <mattgilbride@google.com>, Miguel Ojeda <ojeda@kernel.org>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Aug 5, 2024 at 9:22=E2=80=AFPM Benno Lossin <benno.lossin@proton.me=
-> wrote:
+On Mon, Aug 5, 2024 at 10:03=E2=80=AFPM Benno Lossin <benno.lossin@proton.m=
+e> wrote:
 >
 > On 27.07.24 22:30, Matt Gilbride wrote:
-> > From: Wedson Almeida Filho <wedsonaf@gmail.com>
+> > From: Alice Ryhl <aliceryhl@google.com>
 > >
-> > Add mutable Iterator implementation for `RBTree`,
-> > allowing iteration over (key, value) pairs in key order. Only values ar=
-e
-> > mutable, as mutating keys implies modifying a node's position in the tr=
-ee.
+> > This mirrors the entry API [1] from the Rust standard library on
+> > `RBTree`. This API can be used to access the entry at a specific key an=
+d
+> > make modifications depending on whether the key is vacant or occupied.
+> > This API is useful because it can often be used to avoid traversing the
+> > tree multiple times.
 > >
-> > Mutable iteration is used by the binder driver during shutdown to
-> > clean up the tree maintained by the "range allocator" [1].
+> > This is used by binder to look up and conditionally access or insert a
+> > value, depending on whether it is there or not [2].
 > >
-> > Link: https://lore.kernel.org/rust-for-linux/20231101-rust-binder-v1-6-=
-08ba9197f637@google.com/ [1]
-> > Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
-> > Signed-off-by: Matt Gilbride <mattgilbride@google.com>
-> > Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> > Link: https://doc.rust-lang.org/stable/std/collections/btree_map/enum.E=
+ntry.html [1]
+> > Link: https://android-review.googlesource.com/c/kernel/common/+/2849906=
+ [2]
+> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 > > Tested-by: Alice Ryhl <aliceryhl@google.com>
+> > Signed-off-by: Matt Gilbride <mattgilbride@google.com>
 > > ---
-> >  rust/kernel/rbtree.rs | 98 +++++++++++++++++++++++++++++++++++++++++++=
-+-------
-> >  1 file changed, 86 insertions(+), 12 deletions(-)
+> >  rust/kernel/rbtree.rs | 302 +++++++++++++++++++++++++++++++++++++-----=
+--------
+> >  1 file changed, 227 insertions(+), 75 deletions(-)
 > >
 > > diff --git a/rust/kernel/rbtree.rs b/rust/kernel/rbtree.rs
-> > index d10074e4ac58..d7514ebadfa8 100644
+> > index 5d37aa373685..428f8be8f3a2 100644
 > > --- a/rust/kernel/rbtree.rs
 > > +++ b/rust/kernel/rbtree.rs
-> > @@ -197,8 +197,26 @@ pub fn iter(&self) -> Iter<'_, K, V> {
-> >          // INVARIANT: `bindings::rb_first` returns a valid pointer to =
-a tree node given a valid pointer to a tree root.
->
-> This INVARIANT is out of place, `Iter` doesn't have any INVARIANT any
-> more.
-
-We can delete it.
-
-> >          Iter {
-> >              _tree: PhantomData,
-> > -            // SAFETY: `self.root` is a valid pointer to the tree root=
+> > @@ -295,12 +295,19 @@ pub fn try_create_and_insert(
+> >      /// key/value pair). Returns [`None`] if a node with the same key =
+didn't already exist.
+> >      ///
+> >      /// This function always succeeds.
+> > -    pub fn insert(&mut self, RBTreeNode { node }: RBTreeNode<K, V>) ->=
+ Option<RBTreeNode<K, V>> {
+> > -        let node =3D Box::into_raw(node);
+> > -        // SAFETY: `node` is valid at least until we call `Box::from_r=
+aw`, which only happens when
+> > -        // the node is removed or replaced.
+> > -        let node_links =3D unsafe { addr_of_mut!((*node).links) };
+> > +    pub fn insert(&mut self, node: RBTreeNode<K, V>) -> Option<RBTreeN=
+ode<K, V>> {
+> > +        match self.raw_entry(&node.node.key) {
+> > +            RawEntry::Occupied(entry) =3D> Some(entry.replace(node)),
+> > +            RawEntry::Vacant(entry) =3D> {
+> > +                entry.insert(node);
+> > +                None
+> > +            }
+> > +        }
+> > +    }
+> >
+> > +    fn raw_entry(&mut self, key: &K) -> RawEntry<'_, K, V> {
+> > +        let raw_self: *mut RBTree<K, V> =3D self;
+> > +        // The returned `RawEntry` is used to call either `rb_link_nod=
+e` or `rb_replace_node`.
+> >          // The parameters of `rb_link_node` are as follows:
+> >          // - `node`: A pointer to an uninitialized node being inserted=
 .
-> > -            next: unsafe { bindings::rb_first(&self.root) },
-> > +            iter_raw: IterRaw {
+> >          // - `parent`: A pointer to an existing node in the tree. One =
+of its child pointers must be
+> > @@ -319,62 +326,56 @@ pub fn insert(&mut self, RBTreeNode { node }: RBT=
+reeNode<K, V>) -> Option<RBTree
+> >          // in the subtree of `parent` that `child_field_of_parent` poi=
+nts at. Once
+> >          // we find an empty subtree, we can insert the new node using =
+`rb_link_node`.
+> >          let mut parent =3D core::ptr::null_mut();
+> > -        let mut child_field_of_parent: &mut *mut bindings::rb_node =3D=
+ &mut self.root.rb_node;
+> > -        while !child_field_of_parent.is_null() {
+> > -            parent =3D *child_field_of_parent;
+> > +        let mut child_field_of_parent: &mut *mut bindings::rb_node =3D
+> > +            // SAFETY: `raw_self` is a valid pointer to the `RBTree` (=
+created from `self` above).
+> > +            unsafe { &mut (*raw_self).root.rb_node };
+> > +        while !(*child_field_of_parent).is_null() {
 >
-> This `IterRaw` construction is missing an INVARIANT comment. I think you
-> can copy paste from below.
+> Why do you manually dereference `child_field_of_parent` here?
 
-We can copy from below.
+I think it helps for clarity. It makes it clear to the reader that
+`child_field_of_parent` isn't null, but that it's pointing at a null
+pointer.
 
-> > +                // SAFETY: by the invariants, all pointers are valid.
-> > +                next: unsafe { bindings::rb_first(&self.root) },
-> > +                _phantom: PhantomData,
-> > +            },
+> > +impl<'a, K, V> OccupiedEntry<'a, K, V> {
+> > +    fn node_ptr(&self) -> *mut Node<K, V> {
+> > +        // SAFETY: By the type invariant of `Self`, all `node_links` p=
+ointers stored in `self`
+> > +        // point to the links field of `Node<K, V>` objects.
+> > +        unsafe { container_of!(self.node_links, Node<K, V>, links) }.c=
+ast_mut()
+>
+> You should not call `cast_mut` here, see below
+>
+> > +    }
+> > +
+> > +    /// Gets a reference to the value in the entry.
+> > +    pub fn get(&self) -> &V {
+> > +        // SAFETY: `self.node_ptr` produces a valid pointer to a node =
+in the tree.
+>
+> Can you add a `# Guarantees` section to `node_ptr` that states exactly
+> this?
+>
+> > +        unsafe { &(*self.node_ptr()).value }
+> > +    }
+> > +
+> > +    /// Gets a mutable reference to the value in the entry.
+> > +    pub fn get_mut(&mut self) -> &mut V {
+> > +        // SAFETY: `self.node_ptr` produces a valid pointer to a node =
+in the tree.
+> > +        unsafe { &mut (*self.node_ptr()).value }
+>
+> This is sadly UB, you are creating a `&mut` reference from a pointer
+> that was derived from a `&` reference:
+> - `node_ptr` takes `&self`, thus it converts the `&mut self` to that.
+> - `container_of!` inside of `node_ptr` is used to create a read-only
+>   pointer to the `links` field (it is casted to `*mut`, but that doesn't
+>   change the fact that you are only allowed to use it for reads)
+> - `get_mut` turns it again into a `&mut` reference.
+>
+> One solution is to make `note_ptr` take a `*mut Self`/`*const Self`.
+
+We will get rid of node_ptr and duplicate its contents into get and get_mut=
+.
+
+> > +    }
+> > +
+> > +    /// Converts the entry into a mutable reference to its value.
+> > +    ///
+> > +    /// If you need multiple references to the `OccupiedEntry`, see [`=
+self#get_mut`].
+> > +    pub fn into_mut(self) -> &'a mut V {
+> > +        // SAFETY: `self.node_ptr` produces a valid pointer to a node =
+in the tree.
+> > +        unsafe { &mut (*self.node_ptr()).value }
+> > +    }
+> > +
+> > +    /// Remove this entry from the [`RBTree`].
+> > +    pub fn remove_node(self) -> RBTreeNode<K, V> {
+> > +        // SAFETY: The node is a node in the tree, so it is valid.
+> > +        unsafe { bindings::rb_erase(self.node_links, &mut self.rbtree.=
+root) };
+> > +
+> > +        // INVARIANT: The node is being returned and the caller may fr=
+ee it, however, it was
+> > +        // removed from the tree. So the invariants still hold.
+> > +        RBTreeNode {
+> > +            // SAFETY: The node was a node in the tree, but we removed=
+ it, so we can convert it
+> > +            // back into a box.
+> > +            node: unsafe { Box::from_raw(self.node_ptr()) },
 > > +        }
 > > +    }
 > > +
-> > +    /// Returns a mutable iterator over the tree nodes, sorted by key.
-> > +    pub fn iter_mut(&mut self) -> IterMut<'_, K, V> {
-> > +        IterMut {
-> > +            _tree: PhantomData,
-> > +            // INVARIANT:
-> > +            //   - `self.root` is a valid pointer to a tree root.
-> > +            //   - `bindings::rb_first` produces a valid pointer to a =
-node given `root` is valid.
-> > +            iter_raw: IterRaw {
-> > +                // SAFETY: by the invariants, all pointers are valid.
-> > +                next: unsafe { bindings::rb_first(&self.root) },
->
-> Does this really derive a mutable reference? Ie shouldn't this be:?
->
->     next: unsafe { bindings::rb_first(&mut self.root) },
-
-Let's change this to:
-
-next: unsafe { bindings::rb_first(ptr::from_mut(&mut self.root)) }
-
-This way, the pointer will be derived from a mutable reference even if
-it becomes a `*const` through intermediate operations.
-
-
-> > +                _phantom: PhantomData,
-> > +            },
-> >          }
-> >      }
-> >
-> > @@ -211,6 +229,11 @@ pub fn keys(&self) -> impl Iterator<Item =3D &'_ K=
-> {
-> >      pub fn values(&self) -> impl Iterator<Item =3D &'_ V> {
-> >          self.iter().map(|(_, v)| v)
-> >      }
-> > +
-> > +    /// Returns a mutable iterator over the values of the nodes in the=
- tree, sorted by key.
-> > +    pub fn values_mut(&mut self) -> impl Iterator<Item =3D &'_ mut V> =
-{
-> > +        self.iter_mut().map(|(_, v)| v)
+> > +    /// Takes the value of the entry out of the map, and returns it.
+> > +    pub fn remove(self) -> V {
+> > +        self.remove_node().node.value
 > > +    }
-> >  }
-> >
-> >  impl<K, V> RBTree<K, V>
-> > @@ -414,13 +437,9 @@ fn into_iter(self) -> Self::IntoIter {
-> >  /// An iterator over the nodes of a [`RBTree`].
-> >  ///
-> >  /// Instances are created by calling [`RBTree::iter`].
-> > -///
-> > -/// # Invariants
-> > -/// - `self.next` is a valid pointer.
-> > -/// - `self.next` points to a node stored inside of a valid `RBTree`.
-> >  pub struct Iter<'a, K, V> {
-> >      _tree: PhantomData<&'a RBTree<K, V>>,
-> > -    next: *mut bindings::rb_node,
-> > +    iter_raw: IterRaw<K, V>,
-> >  }
-> >
-> >  // SAFETY: The [`Iter`] gives out immutable references to K and V, so =
-it has the same
-> > @@ -434,21 +453,76 @@ unsafe impl<'a, K: Sync, V: Sync> Sync for Iter<'=
-a, K, V> {}
-> >  impl<'a, K, V> Iterator for Iter<'a, K, V> {
-> >      type Item =3D (&'a K, &'a V);
-> >
-> > +    fn next(&mut self) -> Option<Self::Item> {
-> > +        self.iter_raw.next().map(|(k, v)|
-> > +            // SAFETY: Due to `self._tree`, `k` and `v` are valid for =
-the lifetime of `'a`.
-> > +            unsafe { (&*k, &*v) })
+> > +
+> > +    /// Swap the current node for the provided node.
+> > +    ///
+> > +    /// The key of both nodes must be equal.
 >
-> I don't really like the formatting here, can you move the SAFETY one
-> line upwards? It should format nicely then.
+> Is this a safety requirement? Ie if it is violated, can memory bugs
+> occur, or is it only going to lead to logic bugs?
 
-You suggested exactly the reverse formatting change on RBTreeCursor?
-
-> > +    }
-> > +}
-> > +
-> > +impl<'a, K, V> IntoIterator for &'a mut RBTree<K, V> {
-> > +    type Item =3D (&'a K, &'a mut V);
-> > +    type IntoIter =3D IterMut<'a, K, V>;
-> > +
-> > +    fn into_iter(self) -> Self::IntoIter {
-> > +        self.iter_mut()
-> > +    }
-> > +}
-> > +
-> > +/// A mutable iterator over the nodes of a [`RBTree`].
-> > +///
-> > +/// Instances are created by calling [`RBTree::iter_mut`].
-> > +pub struct IterMut<'a, K, V> {
-> > +    _tree: PhantomData<&'a mut RBTree<K, V>>,
-> > +    iter_raw: IterRaw<K, V>,
-> > +}
-> > +
-> > +// SAFETY: The [`IterMut`] gives out immutable references to K and mut=
-able references to V, so it has the same
-> > +// thread safety requirements as mutable references.
-> > +unsafe impl<'a, K: Send, V: Send> Send for IterMut<'a, K, V> {}
->
-> Since we only borrow `K` immutably, would it make sense to have `K:
-> Sync`?
-
-No, `K: Send` is better because it's less restrictive in practice.
+No, it's not a safety requirement.
 
 Alice
