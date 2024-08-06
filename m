@@ -1,96 +1,79 @@
-Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81C5518D631;
-	Tue,  6 Aug 2024 14:14:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EB7118D632;
+	Tue,  6 Aug 2024 14:32:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.134
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722953655; cv=none; b=NpMDvFCoBQqfuK4FhY0imMs3gJbxhhjMN9WeGMBvrJO639SgYBuTnjicUSUNZkrvbCrf+v/PMD6U0GOu0kfbidqaE32nKWq4X8CsUhbN6gRKDixtfClkhUHY+HVmMV+yUfOLpVISmzg2hH4IVUN4chTylhrCbTgHxJTxa/PmlgI=
+	t=1722954741; cv=none; b=QtIDYO/FLZ10wgKhau71JhjXE0S5KMeBtXEdPRG/xcjGMX+IIaMo97JeYf2OiTcvJWam6gG0n+mPxAQTSojPE+q0whECZyg0Pr2XqFlaDIh6hZiABAO8aMUwKR9xa31gUeXfl/KUJPUqlMk9k9JQgdaE7nAXRPg0oug4ncXYp94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722953655; c=relaxed/simple;
-	bh=U6Dy6uIyj+7meuAbQzHOBFmp18X8IQw07sYpaEHBqf8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=bj10zzISLz5t4xyn9NdmZ/VnMrL1Tb1rC6ATezysVKM/2mFbR/+PhRMmgGZE8ccStGx9Qfz1gmVrsG2vuu0Db0FOG+YIRbEa1+mS6hOLIA+umz0nHCMkmRCIRZx4fJuWR0yZ4NFEKTK7Z45I7mEE9m7LIEX8/gyL6KSKFhrVKME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bNo3K6vl; arc=none smtp.client-ip=209.85.215.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1722954741; c=relaxed/simple;
+	bh=pcN/d/ic9v56yWAa0mZozH9gKTUJt9YBwoanEMLgqQ8=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=G9oqIX9j+XZB2MY9q9gpS59YVM98CFfZXwTM4VX7ZMAghb1c3t3c5NI6qP2PY9okjmMcd1R270rqO1GmFUFuL2Zu5UQAgf6YlKx2W/5jQSAorzvwEgSOFaNbc4SjNqcV0G7qDo7kS0VQWq5pkXli5bY1khpVQ/id6sQqabGTFT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=SCdf4jqb; arc=none smtp.client-ip=185.70.40.134
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bNo3K6vl"
-Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-70b2421471aso448571a12.0;
-        Tue, 06 Aug 2024 07:14:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1722953654; x=1723558454; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=U6Dy6uIyj+7meuAbQzHOBFmp18X8IQw07sYpaEHBqf8=;
-        b=bNo3K6vllwUM6A2zJ1osEMYi6Bh8pPZ7TOWMvDJTYLX1BPmFQwgdDiHjdKGdqAjpzt
-         VgP62mUtClaZouCPqULCfY0My6i8/nXhEGbLmOIBheuBuzevuY2y40z7PxEKV+itIUR0
-         LEZ5kVHnxiqR1VtCycM3eSSmUhk71wjjW5gCw1sjp5p0eZddCSRsDNFsk3DrtbO11KUR
-         eFFRFC4+pq3D03hTxxLLQyvyA76H1zSb9RYemJUQtEPlzDxPIWhl+yN4sRg3pZR6+MCZ
-         AeAPSyPXUh+wtOvXgE2L7OuAtxOf3VcXiO16hhK/027nMCIyof9ao6tSpHqS3cG/P4jy
-         TYXw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722953654; x=1723558454;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=U6Dy6uIyj+7meuAbQzHOBFmp18X8IQw07sYpaEHBqf8=;
-        b=oqLCxpmO7Ujghm2JNAZR/+OWiXPb75xl55bKiukzN2GNFD5ljouuqmbDyd15wtKXS/
-         N+GdB7TfA7j5w4ScYCzhRfAf35CFOr1yFsezs6lnCj7IhRho7QKsj13Lbk4ddNdkud7k
-         N52uc80+az2Y28tpRea039PYEZrWTpuTSbiUV6c+3rN5ZF9hn6i7twuOZm8VQSlTdJvF
-         AduxhNC2JvGhrc8VumRLkd/fTKA7g4Sgx6JzH3UP93S04pd7od1N5xbMadZXsfQ/Rlkj
-         a9Apkun2S3CVdsvpAqnrWCfIfX1Sr6A+quJSLBkuUq6ARPwiJQtk6Q3KAT/+3wFMhNBB
-         xDAw==
-X-Forwarded-Encrypted: i=1; AJvYcCWRMODoFtOYzgnPFqXWdfswOa5ixFA3NTOcOXPPaIVVfPvFlpoLxqPYnI4bHQBieBPm9diVL3GxQbYC/TYEpa2G3too4Mhy7nPdeCdveSAQGKGeEdHILgIfoTMEx6iEGq/7A1xK4+WpHQ++zzk=
-X-Gm-Message-State: AOJu0Yx+2oZBn7K9/BWfSVKsPqZcuMI31Sx3I2Brc9KBJjOinTb+Mm6I
-	GkEq60r19K/8jylzjmHgicbi2Yr/16Jop1ydRU+s7RHf/WSVaKdwZR+9MxuY+d+exxGMQM/ciaf
-	UaUkfotvKvcR0wAYzZ7lrKSyC6nM=
-X-Google-Smtp-Source: AGHT+IHsYgG17t9omf6LKiN8vnig3w3sIZWMN46z2geLqnGeqfG43s976RY2MGOXqzn/FVGJbB88SKeFLCV8tOo2pjc=
-X-Received: by 2002:a17:90b:38ce:b0:2c9:9643:98f4 with SMTP id
- 98e67ed59e1d1-2cff93dbc0cmr13412741a91.5.1722953653713; Tue, 06 Aug 2024
- 07:14:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="SCdf4jqb"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1722954736; x=1723213936;
+	bh=JcWgkMhHASS6SjKn7f8cFn8JlrjOj0kZPaiU3wsalTI=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=SCdf4jqbEltI3s2WDZa/1w5lb6bDAAJvI9nhXFl2eVB5lf5QwsFPCo0bEBckB/PBS
+	 X12ag+Zc3wu157YpPDGrcyGvbophuqO0UE4S+TZ508Tr4Y3JMip+X1EFk2WFtr7YXW
+	 gHwe11xhY3i6C2EKzLiy+fPvhE3zddVSnLDepfebVcfta0no8Xdz5HCbhLdWWNtBHY
+	 RFCoKvFSLWtViidwVf/7Y5aFa5WwjOLluifURci/EDaEYskfPUI5SBZ3UE5JNJEAlX
+	 vLEjflcnBp2eNQunnE7f1kHPIzj5wwR/Mf6i8iDOPc0C30r90NuVpMKKEMtEEta0Xz
+	 UBzuBJilqpoTw==
+Date: Tue, 06 Aug 2024 14:32:10 +0000
+To: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Marco Elver <elver@google.com>, Coly Li <colyli@suse.de>, Paolo Abeni <pabeni@redhat.com>, Pierre Gondois <pierre.gondois@arm.com>, Ingo Molnar <mingo@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Wei Yang <richard.weiyang@gmail.com>, Matthew Wilcox <willy@infradead.org>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, Kees Cook <kees@kernel.org>
+Subject: Re: [PATCH v4 04/10] rust: list: add struct with prev/next pointers
+Message-ID: <e8753c33-f561-46e3-a521-8992fa650787@proton.me>
+In-Reply-To: <20240806-linked-list-v4-4-23efc510ec92@google.com>
+References: <20240806-linked-list-v4-0-23efc510ec92@google.com> <20240806-linked-list-v4-4-23efc510ec92@google.com>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: 6f637be5be7b73245525b299dbfb13a707c8f25c
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240723-linked-list-v3-0-89db92c7dbf4@google.com>
- <20240723-linked-list-v3-2-89db92c7dbf4@google.com> <037f16f4-e959-4801-90b2-aafb7afcfdb6@proton.me>
-In-Reply-To: <037f16f4-e959-4801-90b2-aafb7afcfdb6@proton.me>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 6 Aug 2024 16:14:00 +0200
-Message-ID: <CANiq72m4ufvpHwdLVaSZZsNoMxSCdwdRyAFM7recpy3soMozGA@mail.gmail.com>
-Subject: Re: [PATCH v3 02/10] rust: list: add ListArc
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@samsung.com>, Marco Elver <elver@google.com>, Coly Li <colyli@suse.de>, 
-	Paolo Abeni <pabeni@redhat.com>, Pierre Gondois <pierre.gondois@arm.com>, 
-	Ingo Molnar <mingo@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Wei Yang <richard.weiyang@gmail.com>, 
-	Matthew Wilcox <willy@infradead.org>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, Kees Cook <kees@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Jul 31, 2024 at 6:47=E2=80=AFPM Benno Lossin <benno.lossin@proton.m=
-e> wrote:
->
-> Can we start using `feature(derive_smart_pointer)` on new enough
-> compiler versions? (I guess you probably want it as a separate patch
-> series to avoid delaying this in case it needs anything [eg the new
-> build system])
-> Do we need any Makefile modifications for that or could we just do
-> `#[cfg_attr(compiler-is-new-enough, derive(SmartPointer))` on the struct
-> and then cfg these impls away? (and what would "compiler-is-new-enough"
-> be?)
+On 06.08.24 15:58, Alice Ryhl wrote:
+> Define the ListLinks struct, which wraps the prev/next pointers that
+> will be used to insert values into a List in a future patch. Also
+> define the ListItem trait, which is implemented by structs that have a
+> ListLinks field.
+>=20
+> The ListItem trait provides four different methods that are all
+> essentially container_of or the reverse of container_of. Two of them are
+> used before inserting/after removing an item from the list, and the two
+> others are used when looking at a value without changing whether it is
+> in a list. This distinction is introduced because it is needed for the
+> patch that adds support for heterogeneous lists, which are implemented
+> by adding a third pointer field with a fat pointer to the full struct.
+> When inserting into the heterogeneous list, the pointer-to-self is
+> updated to have the right vtable, and the container_of operation is
+> implemented by just returning that pointer instead of using the real
+> container_of operation.
+>=20
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> ---
+>  rust/kernel/list.rs | 119 ++++++++++++++++++++++++++++++++++++++++++++++=
+++++++
+>  1 file changed, 119 insertions(+)
 
-That is possible with the upcoming `RUSTC_VERSION`: you can have
-Kconfig symbol for a particular version/feature/etc. Please see the
-upcoming lints series for an example in the docs for that.
+Reviewed-by: Benno Lossin <benno.lossin@proton.me>
 
+---
 Cheers,
-Miguel
+Benno
+
