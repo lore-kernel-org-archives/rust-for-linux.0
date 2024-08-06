@@ -1,145 +1,122 @@
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f44.google.com (mail-wr1-f44.google.com [209.85.221.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEEFA2AE97
-	for <rust-for-linux@vger.kernel.org>; Tue,  6 Aug 2024 15:39:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE8D52C697
+	for <rust-for-linux@vger.kernel.org>; Tue,  6 Aug 2024 15:42:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722958759; cv=none; b=VFqsPhm8U7ir27OGdgMhPOECkExTF0iNuFAMMxkSEu88QGVB6PQGgHc/5QmCY3v4VAUqeGHQrD9mRiBxKZ6JNApINfHa9rWxiLB5/RolaRwGWkHP7CI6KlzxlNt4qHEVucWQtfMnfiFn/Wl07TDwuApcwFW6S0vhRm4zNa1X1RA=
+	t=1722958933; cv=none; b=d7i5H4P2c0r4qsOy64dIM0jIH/2o/ZhnNlZpytwpQRhh3tm6QW66XMmujstFW+AGE8RSAV/bwQrowGe2H96Al4Dak0MaSyVu3Ays/GNTKJzcuSfdPDunmG2qOqmFcKVYa8fGf9xQ9hscke0G/FmqtBpyV/6G+sDRjnwl/SCXS0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722958759; c=relaxed/simple;
-	bh=5nd5DARlqYi9S8WFs/uH2XgF+To9Gz9QRZw6fGL/v4Q=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZvFcEV6/SVuN2WQ9demYZvUQ2C1SVq/uLUZhtbfUfy8wYLlkzE42GoDsfZ16VpGAYLOfEp8rxfQY9uWdVYXy2HEHz5hN8BKYcDMMDF9iptcITBm+2MWg5nZYfUHrNkW61eVpNcWlhqgDrq8egAAYr6E9KJC7XdzpgkeK4fHk2+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=XpnSrAof; arc=none smtp.client-ip=185.70.43.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1722958933; c=relaxed/simple;
+	bh=2F97gembZB7Ph+t8UMlLUN/RaEUIDWcSTRDhoreN85k=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ejYg2vZqeQ/lo58L86m8nGICwf6uWtnvyoQzJmcjKE+dEYuay5Sybk05/jSlnbcMgbnLk+mnVKkVeV/WEo3kCyGScntZmzXzZIrWmh12aBPuHxVWJWugGZfmKmuNuJsevOo78+nTHcQmg87TPYcWNZ/ZmFVLLfZtqAc31reWow8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=gF0zgAFx; arc=none smtp.client-ip=209.85.221.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="XpnSrAof"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=vdqqsxdusrdernhqgiiuiln6r4.protonmail; t=1722958755; x=1723217955;
-	bh=pEaB718Z2amEohXeI3H5khlenOy/VSpHtc6ghjrri88=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=XpnSrAof+zmTqGDJzz6CZvJwVD5UrNCLfj8iLEul/mzFAEK1jMctXgJivKQ8Ffvlc
-	 jbzEFsuaqQSesl1G0ad6xhZNgPnBc/7mfP5tlRVv5OARnGgAiKNFg2N77zU1Bro0RD
-	 aijXjYHXQtw6zQY44p361NZYYVzDTVUyQ9Tx5nrb7MDnQ5c5zoT/vMhx5Dq9QKaBmK
-	 t/ihQqvxUXKwqKh+mlpFfB+MXpUB7EI0sg4cG5iPeWsVg2Ph4Con/LFd+gut/Fmcch
-	 TGWjvCDXRmlJnjyEHsTEpfih573blEGf0I4Y3DsimXBNMEC9+KqGSE6G7rr4AB3hxT
-	 BIcTg9mMcz7wg==
-Date: Tue, 06 Aug 2024 15:00:14 +0000
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Nathan Chancellor <nathan@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, llvm@lists.linux.dev, "H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org, patches@lists.linux.dev, Nikita Popov <github@npopov.com>
-Subject: Re: [PATCH] rust: x86: remove `-3dnow{,a}` from target features
-Message-ID: <b7fc013a-297c-4df7-b7bb-e0a8d520d822@proton.me>
-In-Reply-To: <20240806144558.114461-1-ojeda@kernel.org>
-References: <20240806144558.114461-1-ojeda@kernel.org>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: ec7f728f60548262dda571f95f6e3fdd0e8b00cb
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="gF0zgAFx"
+Received: by mail-wr1-f44.google.com with SMTP id ffacd0b85a97d-3684bea9728so450264f8f.3
+        for <rust-for-linux@vger.kernel.org>; Tue, 06 Aug 2024 08:42:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1722958930; x=1723563730; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=THccCsa9d44/a7k4O9weE7Ak3VSX2fq1wLCNhXJEyK4=;
+        b=gF0zgAFxz4+lyXxqmdcJ9DIETmodb9nwyfmVSw6EKIX+GwPLP3UYEJUwGTab3mxJAz
+         23uXBSz3geC0U/gzV1GiAcTend95GCJlXup39W2Yphi2d1rydc6AuHfbVzkTeJ8aUC/L
+         5WL9Ry3ywy/tDzsKmoue7HlXxW3eo6od4UNIyoHMUPo8fjr0CBjoj+Ns6LcPbXgtqjJl
+         rVsOHtJ6T4afw1MZ40Dm3unSj1JLD2X4cNZHBhSTw9QB2d5TJxr9CsHAgUvHKWjY28v3
+         IKcNMee9UJcJLwFeh/KXJa7LosU2nXRWrA9L1XdCKZ33Mt03Bys/uCsp/2y/YBM5bzO6
+         mD3w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722958930; x=1723563730;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=THccCsa9d44/a7k4O9weE7Ak3VSX2fq1wLCNhXJEyK4=;
+        b=Djud4J8LiqzOry3W5Sr+Vtgxvw9NawfwWjMHs++aZrLmtQMwQ+WthRprqRsOtGjyCp
+         uQKHzWD4BkBOZqICslwRDsENlEZJD5Lmj2IOX5BAslCQdbAv/+bODHo9dw/rGZ1kKO0P
+         VOOAj+ZimgeQKBB/zCytltfksCVM8KjqPBVOikssX1SJ68bZt+UQaEZkE+kolpGghWck
+         Hp7/99pj9SL2FrWkltGrNzIJndz7Lt8g+ft+d83lXSmexpYXKqCSPLL3rpzl6xB2SOjr
+         V/3tVg5yB33ilmxD1WbPRp/p9sh2pSXYHIpABEszuL5ibarJ0ewslFH4sVLIksBmngbf
+         6mjA==
+X-Forwarded-Encrypted: i=1; AJvYcCUMi/Tun+6FF6inttuCi/PYDbPYI7CCzNaQdJdoMQnoZXxwF3Q9tV2vEXgucDTrKvunpAk/4O0W6jhw1mRjFA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz9IsOYrqZpqLWGewWQmlI6PdEFImveswAX+RSCGKQAp0ueXmLg
+	WUXjXxuCcq0HiJ1LMOlf1U3Gp2P3PEIqsMIaJ/sOXlUojegmT01dzNBD1shHJ34RY51KW7T7z85
+	CXkEYbGeQTOGlc1DsgQ+MpNBJbEjUZZwzq7YY
+X-Google-Smtp-Source: AGHT+IFy1q1xSU6pQqfOY13ZKc31YixugPXTYoG2iOCjOHiY5xXt+yoxINs0iVcTVHkdmSjbDCF8Z08VAJ3+o8YTt88=
+X-Received: by 2002:a5d:67d0:0:b0:360:7c4b:58c3 with SMTP id
+ ffacd0b85a97d-36bbc17ec0emr11080309f8f.54.1722958929954; Tue, 06 Aug 2024
+ 08:42:09 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20240806150619.192882-1-ojeda@kernel.org>
+In-Reply-To: <20240806150619.192882-1-ojeda@kernel.org>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Tue, 6 Aug 2024 17:41:57 +0200
+Message-ID: <CAH5fLgiPS9ByFPU+4GoLUwgH=GTD0xkCp2mi9zvaC6XzLpP03g@mail.gmail.com>
+Subject: Re: [PATCH] rust: add intrinsics to fix `-Os` builds
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Nathan Chancellor <nathan@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	rust-for-linux@vger.kernel.org, Nick Desaulniers <ndesaulniers@google.com>, 
+	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, llvm@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On 06.08.24 16:45, Miguel Ojeda wrote:
-> LLVM 19 is dropping support for 3DNow! in commit f0eb5587ceeb ("Remove
-> support for 3DNow!, both intrinsics and builtins. (#96246)"):
->=20
->     Remove support for 3DNow!, both intrinsics and builtins. (#96246)
->=20
->     This set of instructions was only supported by AMD chips starting in
->     the K6-2 (introduced 1998), and before the "Bulldozer" family
->     (2011). They were never much used, as they were effectively supersede=
-d
->     by the more-widely-implemented SSE (first implemented on the AMD side
->     in Athlon XP in 2001).
->=20
->     This is being done as a predecessor towards general removal of MMX
->     register usage. Since there is almost no usage of the 3DNow!
->     intrinsics, and no modern hardware even implements them, simple
->     removal seems like the best option.
->=20
-> Thus we should avoid passing these to the backend, since otherwise we
-> get a diagnostic about it:
->=20
->     '-3dnow' is not a recognized feature for this target (ignoring featur=
-e)
->     '-3dnowa' is not a recognized feature for this target (ignoring featu=
-re)
->=20
-> We could try to disable them only up to LLVM 19 (not the C side one,
-> but the one used by `rustc`, which may be built with a range of
-> LLVMs). However, to avoid more complexity, we can likely just remove
-> them altogether. According to Nikita [2]:
->=20
->> I don't think it's needed because LLVM should not generate 3dnow
-> instructions unless specifically asked to, using intrinsics that Rust
-> does not provide in the first place.
->=20
-> Thus do so, like Rust did for one of their builtin targets [3].
->=20
-> For those curious: Clang will warn only about trying to enable them
-> (`-m3dnow{,a}`), but not about disabling them (`-mno-3dnow{,a}`), so
-> there is no change needed there.
->=20
-> Cc: Nikita Popov <github@npopov.com>
-> Cc: Nathan Chancellor <nathan@kernel.org>
-> Cc: x86@kernel.org
-> Link: https://github.com/llvm/llvm-project/commit/f0eb5587ceeb641445b64cb=
-264c822b4751de04a [1]
-> Link: https://github.com/rust-lang/rust/pull/127864#issuecomment-22358987=
-60 [2]
-> Link: https://github.com/rust-lang/rust/pull/127864 [3]
-> Closes: https://github.com/Rust-for-Linux/linux/issues/1094
+On Tue, Aug 6, 2024 at 5:06=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wrot=
+e:
+>
+> Alice reported [1] that an arm64 build failed with:
+>
+>     ld.lld: error: undefined symbol: __extendsfdf2
+>     >>> referenced by core.a6f5fc5794e7b7b3-cgu.0
+>     >>>               rust/core.o:(<f32>::midpoint) in archive vmlinux.a
+>     >>> referenced by core.a6f5fc5794e7b7b3-cgu.0
+>     >>>               rust/core.o:(<f32>::midpoint) in archive vmlinux.a
+>
+>     ld.lld: error: undefined symbol: __truncdfsf2
+>     >>> referenced by core.a6f5fc5794e7b7b3-cgu.0
+>     >>>               rust/core.o:(<f32>::midpoint) in archive vmlinux.a
+>
+> Rust 1.80.0 or later together with `CONFIG_CC_OPTIMIZE_FOR_SIZE=3Dy`
+> is what triggers it.
+>
+> In addition, x86_64 builds also fail the same way.
+>
+> Similarly, compiling with Rust 1.82.0 (currently in nightly) makes
+> another one appear, possibly due to the LLVM 19 upgrade there:
+>
+>     ld.lld: error: undefined symbol: __eqdf2
+>     >>> referenced by core.20495ea57a9f069d-cgu.0
+>     >>>               rust/core.o:(<f64>::next_up) in archive vmlinux.a
+>     >>> referenced by core.20495ea57a9f069d-cgu.0
+>     >>>               rust/core.o:(<f64>::next_down) in archive vmlinux.a
+>
+> Gary adds [1]:
+>
+> > Usually the fix on rustc side is to mark those functions as `#[inline]`
+> >
+> > All of {midpoint,next_up,next_down} are indeed unstable functions not
+> > marked as inline...
+>
+> Fix all those by adding those intrinsics to our usual workaround.
+>
+> Cc: Gary Guo <gary@garyguo.net>
+> Reported-by: Alice Ryhl <aliceryhl@google.com>
+> Closes: https://rust-for-linux.zulipchat.com/#narrow/stream/288089-Genera=
+l/topic/v6.2E11-rc1.20doesn't.20build.20for.20arm64/near/455637364
 > Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-> ---
->  scripts/generate_rust_target.rs | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
 
-Works on my machine:
+This fixes the issue I ran into.
 
-Tested-by: Benno Lossin <benno.lossin@proton.me>
-
----
-Cheers,
-Benno
-
-> diff --git a/scripts/generate_rust_target.rs b/scripts/generate_rust_targ=
-et.rs
-> index 87f34925eb7b..404edf7587e0 100644
-> --- a/scripts/generate_rust_target.rs
-> +++ b/scripts/generate_rust_target.rs
-> @@ -162,7 +162,7 @@ fn main() {
->              "data-layout",
->              "e-m:e-p270:32:32-p271:32:32-p272:64:64-i64:64-i128:128-f80:=
-128-n8:16:32:64-S128",
->          );
-> -        let mut features =3D "-3dnow,-3dnowa,-mmx,+soft-float".to_string=
-();
-> +        let mut features =3D "-mmx,+soft-float".to_string();
->          if cfg.has("MITIGATION_RETPOLINE") {
->              features +=3D ",+retpoline-external-thunk";
->          }
-> @@ -179,7 +179,7 @@ fn main() {
->              "data-layout",
->              "e-m:e-p:32:32-p270:32:32-p271:32:32-p272:64:64-i128:128-f64=
-:32:64-f80:32-n8:16:32-S128",
->          );
-> -        let mut features =3D "-3dnow,-3dnowa,-mmx,+soft-float".to_string=
-();
-> +        let mut features =3D "-mmx,+soft-float".to_string();
->          if cfg.has("MITIGATION_RETPOLINE") {
->              features +=3D ",+retpoline-external-thunk";
->          }
->=20
-> base-commit: de9c2c66ad8e787abec7c9d7eff4f8c3cdd28aed
-> --
-> 2.46.0
->=20
-
+Tested-by: Alice Ryhl <aliceryhl@google.com>
