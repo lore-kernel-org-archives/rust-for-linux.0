@@ -1,218 +1,264 @@
-Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38D6B1BD00D;
-	Tue,  6 Aug 2024 08:09:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB9A71BD006
+	for <rust-for-linux@vger.kernel.org>; Tue,  6 Aug 2024 08:25:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722931765; cv=none; b=Sz3yZ7U7vefsNyynQJcGycvNe2ku2QC6H8Ung2nsNRms63sQoSqQtBixxWsp9c4asPZfM32/mMXIcsGE3czObrWVzTvzVgbpPuouycU/yauYt5DyQxm7GqMjx2y+l5MgkxYwp6vHsbnh4pSsAQgUJyoWkSIPwRVFDEe1pFrMijU=
+	t=1722932712; cv=none; b=AxU+KeGVyVUAIXHKkFqHLPYfmPh7h8dZwVlsxG+NdRjlI6DwnB9bTEynaiJhVHM61bFGSLAgk2R871UtSO0TuyCyRXnXx0RR8hWBr8fYH5+p/3d2B0/nJ2zkjrWz6r7/3h5fNBzjs1FkNAjCeNzAexFiknWjlSJCgWejuaPPC1U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722931765; c=relaxed/simple;
-	bh=p9xExAr/iVlA5WKy/Vdm3K4UTweFifuN4Tk4ISL/pgo=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=T1dHvOdxSFXOGCeu/4tluRlw3R2gnEYUGgW9eEDz0nmvtWZbq3yQgR91d/UVi3ui0rAuuybsvqN+WaRigpSWEfND9A9zJyZ4i1jovL1KV6UG/wnL9cG9MiqcJTw6glnTLzKm8BqphDPvnOuhv+2zNJCxt9JaCwGF4oaxHS5Eb2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=XmsDcjv2; arc=none smtp.client-ip=185.70.40.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1722932712; c=relaxed/simple;
+	bh=mboVvNhKcvl1afsR3mD8DUGbbF4m0JowXtSj1g82+jY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=NynfzuzybcSIjY1yu6jwBcL5rncS2XYUKJfNKKEI+lXBbV5MMHI0MCyjhFslnnvASsOXfAKeB9gg1jgsC4aA0tgqN5IUiTTqQEtyMOouRCcSioGt1NX066nYjs7HhEpJMjvIBgC2+ulD12VtNdYGczq6svc3AW1ikLqKJJhCn0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=OgXpY4bW; arc=none smtp.client-ip=209.85.221.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="XmsDcjv2"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1722931755; x=1723190955;
-	bh=oLUYxbAxLEUHoeTSlg1qUumJFtdJ36VEwGodmemh/PY=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=XmsDcjv2fO1yqop7mqnfjuTiOl7FNw9s9ISW3yPa0nDRWitehYqxzQ6FKjEQAmYwI
-	 qZqF4/mSar91kBGRXvK38xWOkTtIgH1s54U0oRWf9ADIrCmypCCdY4cfAt8+Kc1d+5
-	 gtDO+K4sI5GorBrPfujz9tMW6iTQhF5OvI1S1ooqYEsVXhBajjwL3jgommyBK93lGc
-	 sKluFYJy2tRGUfBmAtMRfne+qeP65ez/YS/enjG6IIk3SirlUaiIHxoN8B0I+5o5cP
-	 Kp8QOswNdPH6/eU6u3Muo7hbxxQMLQFZ4pfrtJbrcnFAVZO417f/4a7XoyXM40mHOi
-	 jFF0bLPgkF52w==
-Date: Tue, 06 Aug 2024 08:09:09 +0000
-To: Andreas Hindborg <nmi@metaspace.dk>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Luis Chamberlain <mcgrof@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, rust-for-linux@vger.kernel.org, linux-modules@vger.kernel.org, linux-kernel@vger.kernel.org, Andreas Hindborg <a.hindborg@samsung.com>, Adam Bratschi-Kaye <ark.email@gmail.com>
-Subject: Re: [PATCH] rust: add `module_params` macro
-Message-ID: <b95cc90a-46ae-44af-90af-0fc374cd381a@proton.me>
-In-Reply-To: <87v80fme7g.fsf@metaspace.dk>
-References: <20240705111455.142790-1-nmi@metaspace.dk> <49cad242-7a7c-4e9e-beb7-4f9c493ce794@proton.me> <878qxgnyzd.fsf@metaspace.dk> <ed2f7416-2631-411d-bb49-5a580dbf51b8@proton.me> <874j84nurn.fsf@metaspace.dk> <f84e9189-b64a-4761-86f5-ccd50fb62f36@proton.me> <87zfpvmd8y.fsf@metaspace.dk> <a98ddf54-3e27-4587-8e49-f19dd1ac65a6@proton.me> <87v80fme7g.fsf@metaspace.dk>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: fa0b965016167af4b6f1337c11afc96ca1d75ead
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="OgXpY4bW"
+Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-36844375001so262555f8f.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 06 Aug 2024 01:25:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1722932709; x=1723537509; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Z9lvJsKz7ICijd0DhaLxQWu2jzPpArvPl4I2+SueeEM=;
+        b=OgXpY4bWBOW7fzhYjIyRYN0mqkCZenDmAqkQM17P2Yltgq3a2O1k0MdDOBxfFwZfle
+         ISLvWFtfUec+M4lGxDITsQPS2SE810nai4ESP6HCMK3AYba7HpLP0hz9ZyyRY/OpAAmR
+         Lbo2LxfDovMNuxtvzcIOwq2sncsWXS6NAwfJ60ZsUh/5Kq1LhOZIQuSIiIdRWHBPxpyt
+         i7cTFR9Tv9mjyqPuIysBPSyVOhZcFKHVL2ujZ0I9MIr/LJ9Bb4f6XkPUz9vfCrkyRc2w
+         DjbX7eIkMmsBFIK8hpndq0H5KmYRPulmFNo2HY9bJv1XaoUZOmxOeNSoSN0klfzuNeqc
+         jdTA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722932709; x=1723537509;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Z9lvJsKz7ICijd0DhaLxQWu2jzPpArvPl4I2+SueeEM=;
+        b=Q+VUTneFSij+RhCrp4DwpV43FnwkQXMCd+6zegjikRBig2StN/09DMmFZ8L5nLqul2
+         dVT1p3+HxENcXtyf8/yGmrt8/DKFAoXSBOmr6b7lVPl+A67CU/vZZO99xlzr50L+XojK
+         KMkV9PXTBGUCxJkf3mcKHS9GZVdRx6TDOaRxjHgQBbYisER2RFdxdSDhf1q2wzyO1rvS
+         3rWysMDyZP3DvXpeWh9QkN5YBjN071krqL31yk06A6LN+CRMU/Vbs7bEgcsSG96SlUwu
+         Cr5nE+flxpDx80F8LnpACLOzc+qbG2AR6+W4jvuU+0G+41/ZfjPN87HOuDQbcfeXY96d
+         VgoA==
+X-Forwarded-Encrypted: i=1; AJvYcCX3Afcr+CyDDIwoHlrPd7nD4ervonqqZwVhKRRDEaCxGYLXiuvaae0UEXgUzIkqWq66EV8ZH5eCGq7m0rfp/dUFonEgljHLtuBqfdxqMV4=
+X-Gm-Message-State: AOJu0YyTpX3Yoyr0GKf5AJF/PmGgAWCHBTSH1vhA2kp43Khi+umsW9fx
+	FBeeMHMiYgBJso4xB6eKV+H6ZfrG2yIWdwTrnURSKLshxIpSLzf2bNVGkTpuxaYZQjPF4PPl2ok
+	ofD2bnzyqnDP8yem8tluPFdmAlojJtIMiU3zK
+X-Google-Smtp-Source: AGHT+IH7to2+HL7/ovgLIty8opMiRdlHrd+tIFDP5fRdfdgqS+61vXDnKz1ED/ta3fm/pAv+4e73SjBAYI+LWrTIrBk=
+X-Received: by 2002:a5d:40cc:0:b0:368:117c:84fd with SMTP id
+ ffacd0b85a97d-36bbc0a71aemr7953673f8f.3.1722932708742; Tue, 06 Aug 2024
+ 01:25:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20240727-b4-rbtree-v8-0-951600ada434@google.com>
+ <20240727-b4-rbtree-v8-5-951600ada434@google.com> <309d3d27-62d0-42b0-b50a-40692a019b40@proton.me>
+In-Reply-To: <309d3d27-62d0-42b0-b50a-40692a019b40@proton.me>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Tue, 6 Aug 2024 10:24:56 +0200
+Message-ID: <CAH5fLgh30z2Cfixn1aC-LPp-ua46eJ+jREWDTfhMK3aqXzbt-A@mail.gmail.com>
+Subject: Re: [PATCH v8 5/6] rust: rbtree: add `RBTreeCursor`
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Matt Gilbride <mattgilbride@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	=?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
+	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
+	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Christian Brauner <brauner@kernel.org>, Rob Landley <rob@landley.net>, 
+	Davidlohr Bueso <dave@stgolabs.net>, Michel Lespinasse <michel@lespinasse.org>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On 05.08.24 12:55, Andreas Hindborg wrote:
-> "Benno Lossin" <benno.lossin@proton.me> writes:
->> On 02.08.24 12:27, Andreas Hindborg wrote:
->>> At a higher level where the bindings supply the parsing functions, we
->>> can decide that passing an argument without a value yields a default
->>> parameter value. C does this for the predefined `bool` type. The
->>> predefined integer types does not support omitting the value.
->>>
->>> This patch only supports the higher level predefined parameter types,
->>> and does not allow modules to supply their own parameter parsing
->>> functions. None of the types we implement in this patch support passing
->>> the argument without a value. This is intentional to mirror the C
->>> implementation.
->>>
->>> To that end, I removed `NOARG_ALLOWED`, and changed the parsing functio=
-n
->>> trait to:
->>>
->>>     fn try_from_param_arg(arg: &'static [u8]) -> Result<Self>;
->>>
->>> If/when we start supporting types like `bool` or custom parsing
->>> functions provided by the module, we will have to update the signature
->>> to take an `Option` to represent the case where the user passed an
->>> argument without a value. However, to mimic C, the function must always
->>> return a value if successful, even if the user did not supply a value t=
-o
->>> the argument.
->>>
->>> Two different default values are in flight here. 1) the value that the
->>> parameter will have before the kernel calls `try_from_param_arg` via
->>> `set_param` and 2) the value to return from `try_from_param_arg` if the
->>> user did not pass a value with the argument.
->>>
->>> For a `bool` 1) would usually be `false` and 2) would always be `true`.
->>>
->>> For predefined types the module would not customize 2), but 1) is usefu=
-l
->>> to customize. For custom types where the module supplies the parsing
->>> function, 2) would be implicitly given by the module in the parsing
->>> function.
->>>
->>> In this patch set, we only have 1 default value, namely 1). We do not
->>> need 2) because we do not support parameters without values.
->>
->> I am not sure that putting the default value of `my_module.param` into
->> the `ModuleParam` trait is a good idea. It feels more correct to me to
->> add an optional field to the part in `module!` that can be set to denote
->> this default value -- we might also want to change the name of
->> `default`, what do you think of `default_inactive` and `default_active`?
->=20
-> For all the predefined parameter types, the module code would never set
-> the `default_active` value. It should be part of the data parsing
-> specification for the predefined argument types.
+On Mon, Aug 5, 2024 at 9:35=E2=80=AFPM Benno Lossin <benno.lossin@proton.me=
+> wrote:
+>
+> On 27.07.24 22:30, Matt Gilbride wrote:
+> > +    /// Returns a cursor over the tree nodes based on the given key.
+> > +    ///
+> > +    /// If the given key exists, the cursor starts there.
+> > +    /// Otherwise it starts with the first larger key in sort order.
+> > +    /// If there is no larger key, it returns [`None`].
+> > +    pub fn cursor_lower_bound(&mut self, key: &K) -> Option<RBTreeCurs=
+or<'_, K, V>>
+> > +    where
+> > +        K: Ord,
+> > +    {
+> > +        let mut node =3D self.root.rb_node;
+> > +        let mut best_match: Option<NonNull<Node<K, V>>> =3D None;
+> > +        while !node.is_null() {
+> > +            // SAFETY: By the type invariant of `Self`, all non-null `=
+rb_node` pointers stored in `self`
+> > +            // point to the links field of `Node<K, V>` objects.
+> > +            let this =3D unsafe { container_of!(node, Node<K, V>, link=
+s) }.cast_mut();
+> > +            // SAFETY: `this` is a non-null node so it is valid by the=
+ type invariants.
+> > +            let this_key =3D unsafe { &(*this).key };
+> > +            // SAFETY: `node` is a non-null node so it is valid by the=
+ type invariants.
+> > +            let left_child =3D unsafe { (*node).rb_left };
+> > +            // SAFETY: `node` is a non-null node so it is valid by the=
+ type invariants.
+> > +            let right_child =3D unsafe { (*node).rb_right };
+> > +            if key =3D=3D this_key {
+> > +                return NonNull::new(node).map(|current| {
+> > +                    // INVARIANT:
+> > +                    // - `node` is a valid node in the [`RBTree`] poin=
+ted to by `self`.
+> > +                    // - Due to the type signature of this function, t=
+he returned [`RBTreeCursor`]
+> > +                    //   borrows mutably from `self`.
+> > +                    RBTreeCursor {
+> > +                        current,
+> > +                        tree: self,
+> > +                    }
+> > +                });
+> > +            } else {
+> > +                node =3D if key > this_key {
+> > +                    right_child
+> > +                } else {
+> > +                    let is_better_match =3D match best_match {
+> > +                        None =3D> true,
+> > +                        Some(best) =3D> {
+> > +                            // SAFETY: `best` is a non-null node so it=
+ is valid by the type invariants.
+> > +                            let best_key =3D unsafe { &(*best.as_ptr()=
+).key };
+> > +                            best_key > this_key
+> > +                        }
+> > +                    };
+> > +                    if is_better_match {
+> > +                        best_match =3D NonNull::new(this);
+> > +                    }
+> > +                    left_child
+> > +                };
+> > +            }
+> > +        }
+> > +
+> > +        let best =3D best_match?;
+> > +
+> > +        // SAFETY: `best` is a non-null node so it is valid by the typ=
+e invariants.
+> > +        let links =3D unsafe { addr_of_mut!((*best.as_ptr()).links) };
+> > +
+> > +        NonNull::new(links).map(|current| {
+>
+> Why would `links` be a null pointer? AFAIK it just came from `best`
+> which is non-null. (I don't know if we want to use `new_unchecked`
+> instead, but wanted to mention it)
 
-So if your module has an i32 parameter, you can't set a default value to
-eg 1000?
+It's never a null pointer in this branch. Do you prefer an extra
+unsafe block to call new_unchecked?
 
-> For custom parsing functions implemented in the module, it makes sense
-> specifying this value in the trait.
+> > +            // INVARIANT:
+> > +            // - `current` is a valid node in the [`RBTree`] pointed t=
+o by `self`.
+> > +            // - Due to the type signature of this function, the retur=
+ned [`RBTreeCursor`]
+> > +            //   borrows mutably from `self`.
+> > +            RBTreeCursor {
+> > +                current,
+> > +                tree: self,
+> > +            }
+> > +        })
+> > +    }
+>
+> [...]
+>
+> > +/// // Calling `remove_next` removes and returns the last element.
+> > +/// assert_eq!(cursor.remove_next().unwrap().to_key_value(), (30, 300)=
+);
+> > +///
+> > +/// # Ok::<(), Error>(())
+> > +/// ```
+>
+> I would put a newline here.
 
-Couldn't I just emulate the behavior from above by creating a
-`struct MyI32(i32)` and having a default value?
-In that case, why make it more difficult instead of providing a simple
-way to do it?
+Ok.
 
->> Since one might want an option by default be `true` and when one writes
->> `my_module.param`, it should be `false`.
->=20
-> I think this would be confusing, since the default C parameter types do
-> not have this semantic. Specifying a default true boolean as an argument
-> does not make it false in C land. TBH this also feels like the most sane
-> thing to do.
+> > +/// # Invariants
+> > +/// - `current` points to a node that is in the same [`RBTree`] as `tr=
+ee`.
+> > +pub struct RBTreeCursor<'a, K, V> {
+>
+> I think we can name it just `Cursor`, since one can refer to it as
+> `rbtree::Cursor` and then it also follows the naming scheme for `Iter`
+> etc.
 
-Can't you also do the custom parameter parsing from above? ie have an
-integer parameter with a default value?
-Or is that frowned upon (ie not allowed through review)?
+You are welcome to submit that as a follow-up change.
 
->> Also as the C side shows, having default values for integer types is not
->> really a good idea, since you might want a non-zero default value.
->> If one does not specify the `default_active` value, then the
->> `KERNEL_PARAM_OPS_FL_NOARG` is not set.
->=20
-> I would rather predefine `KERNEL_PARAM_OPS_FL_NOARG` in the trait
-> implementation like C does. We would set the flag for `bool` but not for
-> integer types. For custom implementations of the trait, the developer
-> can do whatever they want.
-
-So we are only going to use it for `bool`?
-
->> If you don't want to implement this (which I can fully understand, since
->> we might get `syn` before anyone needs params with default values), then
->> we should write this idea down (maybe in an issue?). But regardless, I
->> would like to know your opinion on this topic.
->=20
-> We can create he issue if this series is accepted without the feature.
->=20
->>
->>>>> I think we need to drop the default value if we adopt the arg without
->>>>> value scheme.
->>>>
->>>> Yes definitely. I don't see anything in the code doing this currently,
->>>> right?
->>>
->>> The current patch uses the default value given in the `module!` macro t=
-o
->>> initialize the parameter value.
->>
->> But what drops the default value, when an actual value is specified via
->> `my_module.param=3Dvalue`? (or is the default value only assigned when
->> nothing is specified?)
->=20
-> Some more confusion maybe. When I wrote "drop the default value", I
-> meant remove it from the code, not specify it. I take it back though. We
-> would use the value given in the `module!` macro `default` field as
-> `default_inactive`. `default_active` is not required for integer types,
-> since they always require a value for the argument.
->=20
-> But the drop would happen in `set_param` when the return value of
-> `core::ptr::replace` is dropped.
-
-Ah I see, I missed that.
-
->>>>> We could also only allow `Copy` values to be used as Parameters (but
->>>> then `str` cannot be used as a parameter...), since they can't impleme=
-nt
->>>> `Drop`.
->>>
->>> We should plan on eventually supporting `String`.
->>
->> Yes.
->>
->>>>>>> Or we could just not adopt this feature in the Rust abstractions.
->>>>>>
->>>>>> Depends on how common this is and if people need to use it. I think =
-that
->>>>>> what I proposed above isn't that complex, so it should be easy to
->>>>>> implement.
->>>>>
->>>>> Rust modules would just force people to add "my_module.param=3D1" ins=
-tead
->>>>> of just "my_module.param". I think that is reasonable.
->>>>
->>>> Eh, why do we want to give that up? I don't think it's difficult to do=
+> > +    tree: &'a mut RBTree<K, V>,
+> > +    current: NonNull<bindings::rb_node>,
+> > +}
+> > +
+> > +// SAFETY: The [`RBTreeCursor`] gives out immutable references to K an=
+d mutable references to V,
+> > +// so it has the same thread safety requirements as mutable references=
 .
->>>
->>> I just don't see the point. Just have the user pass `my_module.param=3D=
-1`
->>> instead of omitting the value. Having multiple ways of specifying for
->>> instance a true boolean just leads to confusion. Some boolean parameter=
-s
->>> have a default value of `true`, for instance `nvme.use_cmb_sqes`. In
->>> this case specifying `nvme.use_cmb_sqes` has no effect, even though one
->>> might think it has.
->>
->> This just shows to me that a "global" default in `ModuleParam` is wrong,
->> since for `use_cmb_sqes` one could either have a negated flag, or no
->> default value, forcing the user to write `nvme.use_cmb_sqes=3Dfalse`.
->=20
-> I do not think it is a good idea to be able to override the value
-> assigned to a parameter when it is given without a value. The more
-> predictable a user interface is, the better.
+> > +unsafe impl<'a, K: Send, V: Send> Send for RBTreeCursor<'a, K, V> {}
+>
+> Again, do we want to use `K: Sync` here instead?
 
-By that argument, we should also not permit custom implementations to
-specify a default value.
+In this case, `K: Send` and `K: Sync` are both sufficient conditions,
+but `K: Send` will generally be less restrictive for the user.
 
----
-Cheers,
-Benno
+> > +    fn peek(&self, direction: Direction) -> Option<(&K, &V)> {
+> > +        self.get_neighbor_raw(direction)
+> > +            // SAFETY:
+> > +            // - `neighbor` is a valid tree node.
+> > +            // - By the function signature, we have an immutable refer=
+ence to `self`.
+> > +            .map(|neighbor| unsafe { Self::to_key_value(neighbor) })
+>
+> Alternative way of formatting this:
+>
+>         self.get_neighbor_raw(direction).map(|neighbor| {
+>             // SAFETY:
+>             // - `neighbor` is a valid tree node.
+>             // - By the function signature, we have an immutable referenc=
+e to `self`.
+>             unsafe { Self::to_key_value(neighbor) }
+>         })
+>
+> I think it looks nicer, but we should probably have a written
+> preference.
 
+We can reformat since we need another version anyway, but otherwise I
+would have asked you to make this a follow-up change.
+
+> > +    }
+> > +
+> > +    /// Access the previous node mutably without moving the cursor.
+> > +    pub fn peek_prev_mut(&mut self) -> Option<(&K, &mut V)> {
+> > +        self.peek_mut(Direction::Prev)
+> > +    }
+> > +
+> > +    /// Access the next node mutably without moving the cursor.
+> > +    pub fn peek_next_mut(&mut self) -> Option<(&K, &mut V)> {
+> > +        self.peek_mut(Direction::Next)
+> > +    }
+> > +
+> > +    fn peek_mut(&mut self, direction: Direction) -> Option<(&K, &mut V=
+)> {
+> > +        self.get_neighbor_raw(direction)
+> > +            // SAFETY:
+> > +            // - `neighbor` is a valid tree node.
+> > +            // - By the function signature, we have a mutable referenc=
+e to `self`.
+> > +            .map(|neighbor| unsafe { Self::to_key_value_mut(neighbor) =
+})
+>
+> Ditto.
+
+Ditto.
+
+Alice
