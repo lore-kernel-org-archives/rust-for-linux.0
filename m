@@ -1,83 +1,96 @@
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E186B18D64D
-	for <rust-for-linux@vger.kernel.org>; Tue,  6 Aug 2024 14:11:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81C5518D631;
+	Tue,  6 Aug 2024 14:14:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722953499; cv=none; b=njl+aYwCqFiMhSzbnxSeggm8t84P92zMsuBFTJwldgaAixVveLwRNOiXwOhkZOWmuuqF/bZYI2Sghme0gaXOD2ibC/nSKmThZPY+LWafKTUD2M6mcDxzkz0edHmjbzO9ZCgXwbf1CjkjPG5Y+DoCiQhVQAC68aroud8JbbIMD6c=
+	t=1722953655; cv=none; b=NpMDvFCoBQqfuK4FhY0imMs3gJbxhhjMN9WeGMBvrJO639SgYBuTnjicUSUNZkrvbCrf+v/PMD6U0GOu0kfbidqaE32nKWq4X8CsUhbN6gRKDixtfClkhUHY+HVmMV+yUfOLpVISmzg2hH4IVUN4chTylhrCbTgHxJTxa/PmlgI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722953499; c=relaxed/simple;
-	bh=epdSBWYsFtSGCN/sAFMpeTs3Vq1++V7uVSBtRlfKs/U=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DWUO9XCKmGuP/G4KDF8qPs6T+SM8IORTIWTFTjhwCsngJiBURYDTQmJB2Ip6acXrHxefyLU9BBb7DMnrs1k7szYBZqVqF57EW3IY/ZUN8FZ7xpdBY8xIA20Mbzo5O0ezRkiXqiQsmrB/aLuVW+UTx7yisGt/iM6EebjBt4hCTEI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=Nw93WDo7; arc=none smtp.client-ip=185.70.43.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1722953655; c=relaxed/simple;
+	bh=U6Dy6uIyj+7meuAbQzHOBFmp18X8IQw07sYpaEHBqf8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=bj10zzISLz5t4xyn9NdmZ/VnMrL1Tb1rC6ATezysVKM/2mFbR/+PhRMmgGZE8ccStGx9Qfz1gmVrsG2vuu0Db0FOG+YIRbEa1+mS6hOLIA+umz0nHCMkmRCIRZx4fJuWR0yZ4NFEKTK7Z45I7mEE9m7LIEX8/gyL6KSKFhrVKME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bNo3K6vl; arc=none smtp.client-ip=209.85.215.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="Nw93WDo7"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1722953496; x=1723212696;
-	bh=Wn9ajIuhXlmQGQC4Z3aaXlblA2FS/BHrUmpEPNRSJMs=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=Nw93WDo7bbs2e0F/WSGYDF7vlAbvzoxpQrtLpUY7cEAHTu0mUoY3NB4dTjVip0nY9
-	 fk4C/qNULelaYbwrVxhMcUgXmZ+QphpvFaNyuDeVdlAjhcOwVBHsph6G/ec8ROaWzX
-	 TKvzVN10DeMem7SvnhMfgQMZDFvXr76Yx6q7I1nL5B2BFHSc8QojgABmOwXnl0Qejb
-	 ImFnsSVszODD42P0LCOF8bFRQ5zJSTB5fx6Pl7FJYqCJBgP8LZnHfnjEN6q8n6Su4o
-	 bavLa7BYDIIFjM9leM2sHpboP6NOVb9EnU68L+trMOd11v0fY7X4xV9e22RfUcONiC
-	 4G/cfzKe1gYGA==
-Date: Tue, 06 Aug 2024 14:11:30 +0000
-To: Alice Ryhl <aliceryhl@google.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Marco Elver <elver@google.com>, Coly Li <colyli@suse.de>, Paolo Abeni <pabeni@redhat.com>, Pierre Gondois <pierre.gondois@arm.com>, Ingo Molnar <mingo@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Wei Yang <richard.weiyang@gmail.com>, Matthew Wilcox <willy@infradead.org>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, Kees Cook <kees@kernel.org>
-Subject: Re: [PATCH v3 02/10] rust: list: add ListArc
-Message-ID: <62158f09-2882-475e-9df5-6d5f26d788ff@proton.me>
-In-Reply-To: <CAH5fLgj3VNyw054Bw9OrPp3QLKTv+k8+_LWCdQTuCPxV2Vg6Rw@mail.gmail.com>
-References: <20240723-linked-list-v3-0-89db92c7dbf4@google.com> <20240723-linked-list-v3-2-89db92c7dbf4@google.com> <037f16f4-e959-4801-90b2-aafb7afcfdb6@proton.me> <CAH5fLgj3VNyw054Bw9OrPp3QLKTv+k8+_LWCdQTuCPxV2Vg6Rw@mail.gmail.com>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: fe7f3057b63d16835113d52422aaecd277e99b60
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bNo3K6vl"
+Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-70b2421471aso448571a12.0;
+        Tue, 06 Aug 2024 07:14:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1722953654; x=1723558454; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=U6Dy6uIyj+7meuAbQzHOBFmp18X8IQw07sYpaEHBqf8=;
+        b=bNo3K6vllwUM6A2zJ1osEMYi6Bh8pPZ7TOWMvDJTYLX1BPmFQwgdDiHjdKGdqAjpzt
+         VgP62mUtClaZouCPqULCfY0My6i8/nXhEGbLmOIBheuBuzevuY2y40z7PxEKV+itIUR0
+         LEZ5kVHnxiqR1VtCycM3eSSmUhk71wjjW5gCw1sjp5p0eZddCSRsDNFsk3DrtbO11KUR
+         eFFRFC4+pq3D03hTxxLLQyvyA76H1zSb9RYemJUQtEPlzDxPIWhl+yN4sRg3pZR6+MCZ
+         AeAPSyPXUh+wtOvXgE2L7OuAtxOf3VcXiO16hhK/027nMCIyof9ao6tSpHqS3cG/P4jy
+         TYXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722953654; x=1723558454;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=U6Dy6uIyj+7meuAbQzHOBFmp18X8IQw07sYpaEHBqf8=;
+        b=oqLCxpmO7Ujghm2JNAZR/+OWiXPb75xl55bKiukzN2GNFD5ljouuqmbDyd15wtKXS/
+         N+GdB7TfA7j5w4ScYCzhRfAf35CFOr1yFsezs6lnCj7IhRho7QKsj13Lbk4ddNdkud7k
+         N52uc80+az2Y28tpRea039PYEZrWTpuTSbiUV6c+3rN5ZF9hn6i7twuOZm8VQSlTdJvF
+         AduxhNC2JvGhrc8VumRLkd/fTKA7g4Sgx6JzH3UP93S04pd7od1N5xbMadZXsfQ/Rlkj
+         a9Apkun2S3CVdsvpAqnrWCfIfX1Sr6A+quJSLBkuUq6ARPwiJQtk6Q3KAT/+3wFMhNBB
+         xDAw==
+X-Forwarded-Encrypted: i=1; AJvYcCWRMODoFtOYzgnPFqXWdfswOa5ixFA3NTOcOXPPaIVVfPvFlpoLxqPYnI4bHQBieBPm9diVL3GxQbYC/TYEpa2G3too4Mhy7nPdeCdveSAQGKGeEdHILgIfoTMEx6iEGq/7A1xK4+WpHQ++zzk=
+X-Gm-Message-State: AOJu0Yx+2oZBn7K9/BWfSVKsPqZcuMI31Sx3I2Brc9KBJjOinTb+Mm6I
+	GkEq60r19K/8jylzjmHgicbi2Yr/16Jop1ydRU+s7RHf/WSVaKdwZR+9MxuY+d+exxGMQM/ciaf
+	UaUkfotvKvcR0wAYzZ7lrKSyC6nM=
+X-Google-Smtp-Source: AGHT+IHsYgG17t9omf6LKiN8vnig3w3sIZWMN46z2geLqnGeqfG43s976RY2MGOXqzn/FVGJbB88SKeFLCV8tOo2pjc=
+X-Received: by 2002:a17:90b:38ce:b0:2c9:9643:98f4 with SMTP id
+ 98e67ed59e1d1-2cff93dbc0cmr13412741a91.5.1722953653713; Tue, 06 Aug 2024
+ 07:14:13 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20240723-linked-list-v3-0-89db92c7dbf4@google.com>
+ <20240723-linked-list-v3-2-89db92c7dbf4@google.com> <037f16f4-e959-4801-90b2-aafb7afcfdb6@proton.me>
+In-Reply-To: <037f16f4-e959-4801-90b2-aafb7afcfdb6@proton.me>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 6 Aug 2024 16:14:00 +0200
+Message-ID: <CANiq72m4ufvpHwdLVaSZZsNoMxSCdwdRyAFM7recpy3soMozGA@mail.gmail.com>
+Subject: Re: [PATCH v3 02/10] rust: list: add ListArc
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Andrew Morton <akpm@linux-foundation.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, Marco Elver <elver@google.com>, Coly Li <colyli@suse.de>, 
+	Paolo Abeni <pabeni@redhat.com>, Pierre Gondois <pierre.gondois@arm.com>, 
+	Ingo Molnar <mingo@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Wei Yang <richard.weiyang@gmail.com>, 
+	Matthew Wilcox <willy@infradead.org>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Kees Cook <kees@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On 06.08.24 15:16, Alice Ryhl wrote:
-> On Wed, Jul 31, 2024 at 6:47=E2=80=AFPM Benno Lossin <benno.lossin@proton=
-.me> wrote:
->> On 23.07.24 10:22, Alice Ryhl wrote:
->>> +        // INVARIANT: By the safety requirements, the invariants on `L=
-istArc` are satisfied.
->>> +        Self { arc }
->>> +    }
->>> +
->>> +    /// Transmutes a `ListArc` into an [`Arc`] without updating the tr=
-acking inside `T`.
->>> +    ///
->>> +    /// After this call, the tracking inside `T` will still think that=
- there is a `ListArc`
->>> +    /// reference.
->>> +    #[inline]
->>> +    fn transmute_to_arc(self) -> Arc<T> {
->>
->> Maybe also change this then to be consistent, since the name `transmute`
->> carries a "dangerous" feel to it, but this is actually totally safe.
->=20
-> I want it to carry a dangerous feel! Yes, it's safe to leak the
-> ListArc, but you don't want people to think it's a generic ListArc ->
-> Arc conversion function.
+On Wed, Jul 31, 2024 at 6:47=E2=80=AFPM Benno Lossin <benno.lossin@proton.m=
+e> wrote:
+>
+> Can we start using `feature(derive_smart_pointer)` on new enough
+> compiler versions? (I guess you probably want it as a separate patch
+> series to avoid delaying this in case it needs anything [eg the new
+> build system])
+> Do we need any Makefile modifications for that or could we just do
+> `#[cfg_attr(compiler-is-new-enough, derive(SmartPointer))` on the struct
+> and then cfg these impls away? (and what would "compiler-is-new-enough"
+> be?)
 
-For me `to_arc_unchecked` would also "feel" dangerous, transmute is just
-more dangerous :)
-Since this is not public I don't mind keeping `transmute`, I just find
-it a bit strange.
+That is possible with the upcoming `RUSTC_VERSION`: you can have
+Kconfig symbol for a particular version/feature/etc. Please see the
+upcoming lints series for an example in the docs for that.
 
----
 Cheers,
-Benno
-
+Miguel
