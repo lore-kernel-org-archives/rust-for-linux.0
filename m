@@ -1,80 +1,80 @@
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD4D21D54FB
-	for <rust-for-linux@vger.kernel.org>; Tue,  6 Aug 2024 13:59:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 780891BE875
+	for <rust-for-linux@vger.kernel.org>; Tue,  6 Aug 2024 13:59:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722952773; cv=none; b=SrGW/MJ5W09Hn4qLAuMyRoNXDXdSMES09JAZpCI68GjXT6EQgiYhsH4sIVp3zn87sUxqTVPLfBJHgsapOGf/jS5gf1m/WVFIYZtDtBirUoALrpaGQjpuWSjZNaJzAQmBecRNSlq47y/nIhUKyKbLK73NS/h5osvweHhYcB68XKc=
+	t=1722952774; cv=none; b=M4aSBcpWWyUs52k1J4itet46dODwZiXsNzhGZMQFdluHayeFNgFn8PcY8mwbgT7t59DQxPNSyOtfPGbxA1CQnOXhK5540+AS97GAqHeqmVeAE5nvVj058ZCHvPQb3Lcosd+cv2+kAhbzPTtyf7oYsOue67LtxG1Nmy5O07NXWps=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722952773; c=relaxed/simple;
-	bh=jnKF/oyQeugfAQVgW4W1AV60+aM1DDIejGLFKTFwAuQ=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=Hp+W0oiw0y3uNwPZM4RwykhpyXAHqWI33J22V1BIJOQxpZ1U4s0LUHmNOxbrXgCaWpFOEiCaq7HKb43xlr7X58izbHbPFugMwpvBu1lJckDnA4yPheFAwG9nkpdq9SYR4GME83XBOafEgJE3qjglDxvFlEdrukRo3ToTOVC0WGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=10MjEgrc; arc=none smtp.client-ip=209.85.221.74
+	s=arc-20240116; t=1722952774; c=relaxed/simple;
+	bh=KTgJoZOazfrdYAie9gC7fulCwwFQtzVqz/Rpj5104aw=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=O2bUh4CPF9NoGpbK8fTlcF+VXhdzNAbxbNXjpro6yCwoq1JC5/LrXMTUjcYL5QucWNerMpfXByqtnUAa/9ojLWKcmns/uq7MpUBlQm6SXlycRgOQUKkUuhLda67W3uCd6EQvqpVkP7aPoBpdsMYgsKVDt5bzhgqyUlRNwETiWyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=yMpLrNu6; arc=none smtp.client-ip=209.85.128.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="10MjEgrc"
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-368665a3fdfso482054f8f.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 06 Aug 2024 06:59:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="yMpLrNu6"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4280d8e685eso5702445e9.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 06 Aug 2024 06:59:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1722952770; x=1723557570; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=7zBzNoBly2krqneRSwSfI4JKOiFR4iaU7/3GH2+Nyg0=;
-        b=10MjEgrcECydPaSJOTViZTV+Zv9yMCcS81nuN87bzGyBOQg4JT7WKJYR+cQqOSx+bH
-         /UN4P1nA4FcQXRwJ4/6KlU8fd3yXrhORMmvo5GlLQ4SMsYYU8rJHKvstWnWi/Ib/hLRN
-         d1Tl0gFO0djNherVzW4e/Jl58yb03yKSZPZr2k2XvUy7D+XPnkrcFbH2SUhRJ+z+AynY
-         Gb/ckWtjTv5LsYHjJea/S/awzaDUpYHXXLWnmq41UqZg9xfllzl99Vuk9182u7D5DBz0
-         rQFF3SQqnTyVbJTxtElusBK/c+64C3Sqeu6OvnfJ/4O/YfzPUBEnCl8YMcC9tYsmjoeo
-         qi2A==
+        d=google.com; s=20230601; t=1722952768; x=1723557568; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=QvHU5d/wWcGkM15ZRtoIhzlr4qncO7gLekwnvJlzJnE=;
+        b=yMpLrNu6kutm7gjk+GSMVTEr8ZtRH1b5mhdWob0oNML0lDN1R7gk1EUVftxnl+GKor
+         WQefzK9qpwdP35Sr5vQJA6y206Jp0Tj4aRcmPXG0QCPjM2GjuxOfrG2MS3tluaLH6VmQ
+         ifYQKjAs3dLFNPq44+gBU0Z1/iVLH3ccht5KMRZo30w3xMgfceGIXpB589RHxi5GqW/A
+         kCaXKO9/jFxLqxTN56W5NkCiKfjbOaK10UbK3t/JcZDLuOsWz35394vXKXXzecv6kL+L
+         aA4fnqV9/W7OjUYJJbGIGInsDfMLSIC8zpC0Rhparr3Twzn8xEJT9yNY2v9KVycuZXsr
+         lzzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722952770; x=1723557570;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=7zBzNoBly2krqneRSwSfI4JKOiFR4iaU7/3GH2+Nyg0=;
-        b=XQt6Y+1wsy7xQGZMkicK/k1O5qkzn830sKrtURQUJrzCbOhDQWHgepKTgTapfpQKK2
-         6CY0IFXf2Rv3oJ4dnM1EJhbDQCVIfl+KYdpZZFNpaxRG4LURs14k5rpbTA6FSPqCxIQ/
-         GcHx/08F7WV5BtY1JSo9U9+UAmhf6kg2ot5sZgBDHGybay32QUatRwYVPCQfe7tK4RiV
-         8tGmZKm6JO+bzV3BETGTcG1wOlV6y/u3JH1/54AsYEE27l0iRuZ+Pgo51a9aosslIe4V
-         AcNY9gCS9+ROLsfajdnTSVwQC5CxSZcxRHzg292+uoc1I0yByrksH7gS4pRA0Mn6dtkH
-         B1MA==
-X-Forwarded-Encrypted: i=1; AJvYcCXDXhVDrJCHqH3NEPxVKyykpuyb4ehlq94B1lckrRYPk2VMkGyF4Kz1ZcU4spa57KQQqP8LoLb2G0owYKYVt2Z6/DxgGVuY5IuC6BF/MuQ=
-X-Gm-Message-State: AOJu0YxxLSg6FIfb2j9pU5QfD5laWKbSWzBSQVx+IQXGujRl39l8c5EM
-	PWjhjo2fW7QHdcqPz7jIH/dmAc+qXHqGP/ql3HfZxsZmWeB88TDdt68aNGsYgaJyx8XuIsXOzDr
-	U+TO7Zg6AHYAOQg==
-X-Google-Smtp-Source: AGHT+IHfyggQAHCMo1H+VuH8fYUdZIKW7TfKe3NVrHO6BjZxNT1rGo7TVK6+tCqJfI/7xJPbJKrteuHkqeyr4V8=
+        d=1e100.net; s=20230601; t=1722952768; x=1723557568;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=QvHU5d/wWcGkM15ZRtoIhzlr4qncO7gLekwnvJlzJnE=;
+        b=IKDlCWuCm8sUKI2HyQMNCPZBUvURNl0gpTv0CvMpDlRs251ea6exMmu6/C/+FQ28r/
+         mhP91IcLjkz44Ny21yxnxjV1oZSe7UwJpHQTKhz7D+bDkskKUC4KfgysxRXPL24i/9F8
+         1T7vzXVKYXnwLUBwLEYsnAdOI2CH27nnoJHuux7IMdDDquSiD7tlnP5XxEIZs+IkSYXE
+         BxmPO+pSPNBlrej4ddOKG7dZxblZFfvw3VMDH42MOrUkUXkWTq/ixSRJ1wy06Y7Nj2CB
+         QNuKu9HaS5DBairRcuZWg6geavw7lPN+fPKCKeXY5bENPL5dkljI3+HBtfZTBmACU1D9
+         BtCw==
+X-Forwarded-Encrypted: i=1; AJvYcCULeKYY9TDdtiN2riu2jDRJZKw/cHPz6UNkY8DgLlB2/Zg+jzE/r+4WcDUC1dCLnwuX8S/V43bc4t4DoNDwlSIoKqL728moOqaI7zF4GQw=
+X-Gm-Message-State: AOJu0YzCLZhUUZ0g00mJZEiXbpz/aC7laDKEPE7szZqdm2v0IDm7ywr9
+	0z+FruXV5IrCxmwmix/JpId0G4uS++d5GVpPhy6gVgW35O/xTr0eAVH9MG/81E6b8XCYaOxS+EU
+	a68pJqQtQiZ3cgg==
+X-Google-Smtp-Source: AGHT+IEFOuE8NU2BaX8VMTKXywtGlsM+muat40pADUmqd2QLjAxXGaQo+cBe7XFUqyNSIjzBAO+sT8jJvMEhFe0=
 X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:35bd])
- (user=aliceryhl job=sendgmr) by 2002:a5d:452f:0:b0:36b:bb7b:923a with SMTP id
- ffacd0b85a97d-36bbc1882femr21659f8f.12.1722952770169; Tue, 06 Aug 2024
- 06:59:30 -0700 (PDT)
-Date: Tue, 06 Aug 2024 13:58:53 +0000
-In-Reply-To: <20240806-linked-list-v4-0-23efc510ec92@google.com>
+ (user=aliceryhl job=sendgmr) by 2002:a05:600c:6986:b0:424:a3d1:bdc5 with SMTP
+ id 5b1f17b1804b1-428e6a603a4mr650735e9.0.1722952767742; Tue, 06 Aug 2024
+ 06:59:27 -0700 (PDT)
+Date: Tue, 06 Aug 2024 13:58:52 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20240806-linked-list-v4-0-23efc510ec92@google.com>
+X-B4-Tracking: v=1; b=H4sIAB0ssmYC/2XMyw6CMBCF4VchXVvTDuVSV76HcdHLAI1KTTFEQ
+ 3h3B1wQ4qo5zXz/xAZMAQd2yiaWcAxDiD0NdciY60zfIg+eNgMBSgBIfg/9DT09w4tDIUtttDD
+ KIyPxTNiE91q7XGl3dBTTZ42Pcvn9dai064ySC26lK7Q1lcHcntsY2zseXXywJTTChgtR7jEQr qyWolbCadn84XzDFeR7nBOutbcaXOVto3Z4nucvE3sTwCEBAAA=
 X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=4065; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=qZ9J/+0vw2xQYmgGbraO8iTE7yockKbb9UgUTf5VFEA=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBmsiw3YHCMsmdQSF7z4EpNqK59qiwpSqxeizLeX
- fV5hcUDSS2JAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZrIsNwAKCRAEWL7uWMY5
- RhG+EAC7hBj+whdtRkvtrucxncYoTz33F9resFfUqJUsEQuOurAvoRVfgeDkNJYbBPbTAMIkMML
- hdkMJ5Sh8ZLlTUEmHErIsUYWKsnZF6qHRjlNNcYNZMcqjW7vZ5vYM1vYkAnz/Ez5O7I88eBOQQW
- JeSLYLa1258RDhqsdVGYSP7tzta1Mljj/e0Twr/wLXYkkFulmqePcP9kg6f6Kxzc1/w8GFzrvlB
- tAkbW9dDl/TvkC1AU9DNEi22iqqIvAQaFWXMMbQ93/i80oGAgBDmG41XR4gzlls6IAOvteQFnDL
- LeKhjvyZLP+SjtG2WhNWDUjySiV3gsIBfQ9Iqpf6s1oo/vmVfys79mmz29v4xIG5xJ6kzVhkY1t
- kAnro5FgZIDzmNdUGc3lL4CwBqfGhc6e5R+x+BWGcIyEVnfppIKqWpRkaVHRk+rs2m2JGR+MLtH
- Y7iOZDZCnqttfLnpWJdWgmypZSpecwan9xlUuEQHiFZ9Me16BfGZN5IVkMJjByQac+Aq9TREVNz
- iZ89p5WUQ7TdZH+D9y0VIS+rA3Kibz9T3nRRB8HDYgSzAuaiJEEdXwuRfaz16dPPgknm+Jw1pMS
- 8uof4s7J7aM9GwxiUVIG5Y4Uhyh6+lcqJseanrWSUUeEE/Tg9mLkvDg2nHDfSYPt/E5QnoCjMFj 7ilSFS672vZZ80A==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=3980; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=KTgJoZOazfrdYAie9gC7fulCwwFQtzVqz/Rpj5104aw=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBmsiwkXY3U0EdT+rgZoZ/ddXwPWz8v9EZA5vCiZ
+ dTNjysif7qJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZrIsJAAKCRAEWL7uWMY5
+ RgmkD/9eifnRbUPge29QnXT5pEu+gK10wY1UWHC7T5Q8bt4/5BySbBk8cocdBgmce/CGXLUHylF
+ bic2PChVBNbC/ew360cIGZU4/0vwvSGO+9RF355iHX6+KI5hgbtehAqhU+CIE4RH+3XtdeKGFfJ
+ 3WJuyNnTBD70z8pt4XwwZcE+ey5dEK5dtFBBwvCqpJxMAtC6dvHwING11PaqHQ8bI+9sI4DEmRN
+ T21ZqrV5GY7i4vcQxDNo10aQ66WGdJiK2cLvV9fMpiK900F7ViDFi/knteMHGbnve0JYjM3oRLK
+ rP9ZJ6VdrvIf9JWDbgWOkLvNZ7rVPht2XurjZcPwuFrWEZp5MSJ/5nYVph0fLVBA1C5vbn9UZLY
+ fYc8ZkXlwlUiOLDeqOwB0TwCpN2Xgu++diXNcks0ToGAzev1r4Xlp0lNk+HAdQlmEyKwHYrO7qE
+ Bzk9lTke368eqEzEf/QEWFMJOcwwNXNirDhCmaUP3c/RImjY9yI70W/P5Jp62mG9/Or4mbWK4dr
+ 3XR9gsLA3X+8q6k/FMbwAs2spwvXsF6TVS9ZBT/Uu8cn/KJ30IPjmxxHFt2VH1v3kKz7XVbRz6b
+ hfy/sj+u7mrOZ7Tk7Dy9EXyKNEpfPMOyLRoWJ7OayuUpUf6PdbgShlDAbiANja6vkS2tRDEC2eH ay8Pymy/oDnHHUg==
 X-Mailer: b4 0.13.0
-Message-ID: <20240806-linked-list-v4-1-23efc510ec92@google.com>
-Subject: [PATCH v4 01/10] rust: init: add `assert_pinned` macro
+Message-ID: <20240806-linked-list-v4-0-23efc510ec92@google.com>
+Subject: [PATCH v4 00/10] Add Rust linked list for reference counted values
 From: Alice Ryhl <aliceryhl@google.com>
 To: Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
 Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
@@ -88,139 +88,98 @@ Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.co
 	Kees Cook <kees@kernel.org>
 Content-Type: text/plain; charset="utf-8"
 
-From: Benno Lossin <benno.lossin@proton.me>
+This patchset contains a Rust implementation of a doubly-linked list for
+use with reference counted values. Linked lists are famously hard to
+implement in Rust [1] given the cyclic nature of the pointers, and
+indeed, this implementation uses unsafe to get around that.
 
-Add a macro to statically check if a field of a struct is marked with
-`#[pin]` ie that it is structurally pinned. This can be used when
-`unsafe` code needs to rely on fields being structurally pinned.
+Linked lists aren't great for cache locality reasons, but it can be hard
+to avoid them for cases where you need data structures that don't
+allocate. Most linked lists in Binder are for collections where order
+matters (usually stacks or queues). There are also a few lists that are
+just collections, but linked lists are only used for this purpose in
+cases where the linked list is cold and performance isn't that
+important. The linked list is chosen over Vec in this case so that I
+don't have to worry about reducing the capacity of the vector. (Our
+red/black trees are a much better place to look for improving cache
+locality of collections in Rust Binder, and the upcoming xarray bindings
+would help with that.)
 
-The macro has a special "inline" mode for the case where the type
-depends on generic parameters from the surrounding scope.
+Please see the Rust Binder RFC [2] for usage examples.
 
-Signed-off-by: Benno Lossin <benno.lossin@proton.me>
-Co-developed-by: Alice Ryhl <aliceryhl@google.com>
+The linked lists are used all over Rust Binder, but some pointers for
+where to look for examples:
+
+[PATCH RFC 04/20] rust_binder: add work lists
+Implements the work lists that store heterogeneous items. Uses the
+various macros a bunch.
+
+[PATCH RFC 10/20] rust_binder: add death notifications
+Uses the cursor. Also has objects with multiple prev/next pointer pairs.
+
+[PATCH RFC 15/20] rust_binder: add process freezing
+Uses the iterator with for loops.
+
+Link: https://rust-unofficial.github.io/too-many-lists/ [1]
+Link: https://lore.kernel.org/rust-for-linux/20231101-rust-binder-v1-0-08ba9197f637@google.com/ [2]
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
- rust/kernel/init.rs            | 67 ++++++++++++++++++++++++++++++++++++++++++
- rust/kernel/init/__internal.rs | 29 ++++++++++++++++++
- 2 files changed, 96 insertions(+)
+Changes in v4:
+- Support several impl blocks inside `impl_list_item!`.
+- Link to v3: https://lore.kernel.org/r/20240723-linked-list-v3-0-89db92c7dbf4@google.com
 
-diff --git a/rust/kernel/init.rs b/rust/kernel/init.rs
-index 495c09ebe3a3..1263f486abc4 100644
---- a/rust/kernel/init.rs
-+++ b/rust/kernel/init.rs
-@@ -742,6 +742,73 @@ macro_rules! try_init {
-     };
- }
- 
-+/// Asserts that a field on a struct using `#[pin_data]` is marked with `#[pin]` ie. that it is
-+/// structurally pinned.
-+///
-+/// # Example
-+///
-+/// This will succeed:
-+/// ```
-+/// use kernel::assert_pinned;
-+/// #[pin_data]
-+/// struct MyStruct {
-+///     #[pin]
-+///     some_field: u64,
-+/// }
-+///
-+/// assert_pinned!(MyStruct, some_field, u64);
-+/// ```
-+///
-+/// This will fail:
-+/// ```compile_fail
-+/// use kernel::assert_pinned;
-+/// #[pin_data]
-+/// struct MyStruct {
-+///     some_field: u64,
-+/// }
-+///
-+/// assert_pinned!(MyStruct, some_field, u64);
-+/// ```
-+///
-+/// Some uses of the macro may trigger the `can't use generic parameters from outer item` error. To
-+/// work around this, you may pass the `inline` parameter to the macro. The `inline` parameter can
-+/// only be used when the macro is invoked from a function body.
-+/// ```
-+/// use kernel::assert_pinned;
-+/// #[pin_data]
-+/// struct Foo<T> {
-+///     #[pin]
-+///     elem: T,
-+/// }
-+///
-+/// impl<T> Foo<T> {
-+///     pub fn project(self: Pin<&mut Self>) -> Pin<&mut T> {
-+///         assert_pinned!(Foo<T>, elem, T, inline);
-+///
-+///         // SAFETY: The field is structurally pinned.
-+///         unsafe { self.map_unchecked_mut(|me| &mut me.elem) }
-+///     }
-+/// }
-+/// ```
-+#[macro_export]
-+macro_rules! assert_pinned {
-+    ($ty:ty, $field:ident, $field_ty:ty, inline) => {
-+        let _ = move |ptr: *mut $field_ty| {
-+            // SAFETY: This code is unreachable.
-+            let data = unsafe { <$ty as $crate::init::__internal::HasPinData>::__pin_data() };
-+            let init = $crate::init::__internal::AlwaysFail::<$field_ty>::new();
-+            // SAFETY: This code is unreachable.
-+            unsafe { data.$field(ptr, init) }.ok();
-+        };
-+    };
-+
-+    ($ty:ty, $field:ident, $field_ty:ty) => {
-+        const _: () = {
-+            $crate::assert_pinned!($ty, $field, $field_ty, inline);
-+        };
-+    };
-+}
-+
- /// A pin-initializer for the type `T`.
- ///
- /// To use this initializer, you will need a suitable memory location that can hold a `T`. This can
-diff --git a/rust/kernel/init/__internal.rs b/rust/kernel/init/__internal.rs
-index db3372619ecd..13cefd37512f 100644
---- a/rust/kernel/init/__internal.rs
-+++ b/rust/kernel/init/__internal.rs
-@@ -228,3 +228,32 @@ pub unsafe fn new() -> Self {
-         Self(())
-     }
- }
-+
-+/// Initializer that always fails.
-+///
-+/// Used by [`assert_pinned!`].
-+///
-+/// [`assert_pinned!`]: crate::assert_pinned
-+pub struct AlwaysFail<T: ?Sized> {
-+    _t: PhantomData<T>,
-+}
-+
-+impl<T: ?Sized> AlwaysFail<T> {
-+    /// Creates a new initializer that always fails.
-+    pub fn new() -> Self {
-+        Self { _t: PhantomData }
-+    }
-+}
-+
-+impl<T: ?Sized> Default for AlwaysFail<T> {
-+    fn default() -> Self {
-+        Self::new()
-+    }
-+}
-+
-+// SAFETY: `__pinned_init` always fails, which is always okay.
-+unsafe impl<T: ?Sized> PinInit<T, ()> for AlwaysFail<T> {
-+    unsafe fn __pinned_init(self, _slot: *mut T) -> Result<(), ()> {
-+        Err(())
-+    }
-+}
+Changes in v3:
+- Add `assert_pinned!` macro and use it to ensure that the field is
+  structurally pinned when using the tracked_by strategy.
+- Improve ListArcSafe docs.
+- Use From trait for UniqueArc->ListArc conversions.
+- Implement AsRef<Arc> for ListArc.
+- Improve safety documentation related to ListItem.
+- Improve invariants of List.
+- Other minor docs improvements.
+- Add Reviewed-by tags
+- Link to v2: https://lore.kernel.org/r/20240506-linked-list-v2-0-7b910840c91f@google.com
 
+Changes in v2:
+- Rebase on top of the new allocation APIs.
+- Implement Default for List.
+- `on_create_list_arc_from_unique` now takes `Pin<&mut Self>`
+- from_unique now calls from_pin_unique instead of the other way around
+- Add #[inline] markers.
+- Use build_assert in pair_from_unique.
+- Simplify transmute_from_arc
+- Make macros consistently use full paths.
+- Many improvements to safety comments.
+- Link to v1: https://lore.kernel.org/r/20240402-linked-list-v1-0-b1c59ba7ae3b@google.com
+
+---
+Alice Ryhl (9):
+      rust: list: add ListArc
+      rust: list: add tracking for ListArc
+      rust: list: add struct with prev/next pointers
+      rust: list: add macro for implementing ListItem
+      rust: list: add List
+      rust: list: add iterators
+      rust: list: add cursor
+      rust: list: support heterogeneous lists
+      rust: list: add ListArcField
+
+Benno Lossin (1):
+      rust: init: add `assert_pinned` macro
+
+ rust/kernel/init.rs                    |  67 ++++
+ rust/kernel/init/__internal.rs         |  29 ++
+ rust/kernel/lib.rs                     |   1 +
+ rust/kernel/list.rs                    | 686 +++++++++++++++++++++++++++++++++
+ rust/kernel/list/arc.rs                | 521 +++++++++++++++++++++++++
+ rust/kernel/list/arc_field.rs          |  96 +++++
+ rust/kernel/list/impl_list_item_mod.rs | 274 +++++++++++++
+ 7 files changed, 1674 insertions(+)
+---
+base-commit: 8400291e289ee6b2bf9779ff1c83a291501f017b
+change-id: 20240221-linked-list-25169a90a4de
+
+Best regards,
 -- 
-2.46.0.rc2.264.g509ed76dc8-goog
+Alice Ryhl <aliceryhl@google.com>
 
