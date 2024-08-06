@@ -1,131 +1,97 @@
-Received: from mail-yb1-f202.google.com (mail-yb1-f202.google.com [209.85.219.202])
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA5F217165E
-	for <rust-for-linux@vger.kernel.org>; Tue,  6 Aug 2024 21:21:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28F2914BF9B;
+	Tue,  6 Aug 2024 21:29:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722979321; cv=none; b=SXbMZ3hxCmgvhKfol10bMOs1BpMbpPBWMT428FU6Ul63DKYW2ZKjf7UabzGZBLpnj4pxJXsF+aUgmH+aPzDgJmlCC28Klcu4748Xc+glMpPBNqDjiX+Dh8/ep+n4WZmVrynZJXg7kSPKcJ0V86rjKBSGrXpw2HUZrFE4Ep2Zrzw=
+	t=1722979800; cv=none; b=PZHeHC9MNp7ekeEbbYkOBIX19Ic35Z/ORHkJlY8hyuSGUaeVgOBW7runRvgX+DoIPX578ezNXTHdX6eP+r1Tmc66NbghyymqSoSzg2wMhjrYz+hNEHY2gUqk/fk/Thnmzs9y89IwJ1528dD354tJjxCj1ATGYc+1Aijcw/mGYx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722979321; c=relaxed/simple;
-	bh=PeHGueIu6A9NDir1Q16OtEIXpu5W9OAUxaQCN3XQaIQ=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=aAnE9G+rTa1U7xdIOFOXggy4Ntp0uUJSNhJGnjHewfwvMgnmlnyOfDeWnieQDKeCDNYlmW/v2WFqPJ3+yfU0PlLPoofexOzyuJg4Irea4/9K8yyQpC8CfGs6rlEwZINvkmCMKY4eorAE3O8V7qq45/JSuYBasPCxNM1fuT0BQx8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--mmaurer.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qxgg0Hu7; arc=none smtp.client-ip=209.85.219.202
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--mmaurer.bounces.google.com
+	s=arc-20240116; t=1722979800; c=relaxed/simple;
+	bh=YAYm883qR2b+0OMMEKEDDwX0rE3CyHC+yxTlu4vjzeM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=A7JBVePcXEb3vJ+aR/b3hd1iPJ7cQORQYGRd6Eo7nF3I6xzahhH9+BDVxH6hec51Y1SqrM5TjpeN+mx28fj7D/a3fCKNlV0COyWk9fHX0LYwB/TG8Y2x+n+OyZcc76S850DxWk370I5xc+zP+6o8+i5VWXWzkIk5HRqoLCoY/Io=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CH6LohWg; arc=none smtp.client-ip=209.85.216.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qxgg0Hu7"
-Received: by mail-yb1-f202.google.com with SMTP id 3f1490d57ef6-e0e3eb3feaeso2087030276.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 06 Aug 2024 14:21:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CH6LohWg"
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-2cb7cd6f5f2so835581a91.2;
+        Tue, 06 Aug 2024 14:29:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1722979319; x=1723584119; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=iIxM7MXS5ywuKBbdk2V16TlFyqzq6A34Xp135s0mvWo=;
-        b=qxgg0Hu7sCqA3arWhzLzlYxRlNU63s2V1Me+wEanYEvTTp+cAdFIIYhRCWgXn2q/O1
-         SEkNhC2NI2tns89LRwhBTNff4/jZ4Ypm4PF549l2sGj0bqHGawQDdVg5+GV0tN+z16WR
-         EOeHY2G+L4sGqlGm96q3122AS9U99i3FYBi6J2Mg7QJc1G1HBoflWcYw8Q6P4yuHeHnC
-         Ct3fyHeLjK3p2N+pc5C6/eXYTGujISmCJ+mPbO5vK9Ct8lXwQXfIiP4du5w4M1nQ17oE
-         UxH5/Wev08Cn6SttKsJAVq8lFGMpzJe9rCeDbufby+/h0IthFl4UPojOlN0GHwkq8jvZ
-         y6sQ==
+        d=gmail.com; s=20230601; t=1722979798; x=1723584598; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YAYm883qR2b+0OMMEKEDDwX0rE3CyHC+yxTlu4vjzeM=;
+        b=CH6LohWgP8/Zr9nWw/mQwjad8zqJbTLk2iR6epdtUvJwRFjEGShafjQpEcSzx/O5zq
+         7Axb5F7QIVrpx/lWj/dUj1fqy+IuTTdt8ZZHlo3bo39nvGIRtGDofb0ts0PFA2A8pNR1
+         uywWB0eED0SK0K2LH2hqC2AKGw1DnWlwZt6Qpyvi8ILIz9I4MUYLF/18YzejVdN/zp71
+         zpWpN3IDbqN5hiltCPC6qgW+wenTshp8hvmGpQ9IHtXX4wT/MuBIucw/XU3XMsHuGaJ5
+         GelVjtU9zqHb/WRrzR+8MdVOEHVLel5z0IC4HDUcXbMfcgsURRoRBxcRH9BTbYr6uUT8
+         x1Lw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722979319; x=1723584119;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=iIxM7MXS5ywuKBbdk2V16TlFyqzq6A34Xp135s0mvWo=;
-        b=Nfe1amuFEtpE3g5/28rP6dMSSXBULPQUPFgMqIfnueAbFc+qtQ0/SLml9dfjXYSeYX
-         D7FNxh2UMgjx/UzDciRbpkgJ9FgZL6L/uyivtUEGYdHKYgiczUj2jAcSthxKJSp88PbU
-         34JgYi7PaOJx3U3QX8YAaCdOxwBBwMFjR3UuEJAWe/O4He4Jhk0pc4t/GNmh00ejFcIV
-         gC6KHP9sjgvrxdfT0NkA6mqfZF3NMG0rvG5IurusY/VmNqZOU+knvbUiULGm4kKnaRqj
-         mxFCebn4JpZHlZPv4Wn+Py3dNQEmbKBRw5aRUFRPEcHluId85B2qFnolGSTM1Naht2G2
-         R4lA==
-X-Gm-Message-State: AOJu0YyahzmD4jZuCQHpV4QJTVHpVemKyZiNDYNInKr1if0yy32hZp+X
-	7d/v1Hx8o1nIOqY9wRpAQeFkSZd6anaee/5TkEa+pIGAlAILYF/+SMt6JhkK7cbNLEjut7o+VnT
-	jYeSeGg==
-X-Google-Smtp-Source: AGHT+IE/dOY4BBF0bOHl2trWuq/uURBgtWdSBnMlFtpxYXnDrUIM7aP+OZNSkdR90xgdGT6ytbLkJI0RlN0q
-X-Received: from anyblade.c.googlers.com ([fda3:e722:ac3:cc00:20:ed76:c0a8:1791])
- (user=mmaurer job=sendgmr) by 2002:a05:6902:1241:b0:e03:3cfa:1aa7 with SMTP
- id 3f1490d57ef6-e0bde1e9203mr23531276.1.1722979318983; Tue, 06 Aug 2024
- 14:21:58 -0700 (PDT)
-Date: Tue,  6 Aug 2024 21:20:42 +0000
-In-Reply-To: <20240806212106.617164-1-mmaurer@google.com>
+        d=1e100.net; s=20230601; t=1722979798; x=1723584598;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=YAYm883qR2b+0OMMEKEDDwX0rE3CyHC+yxTlu4vjzeM=;
+        b=gszG08Brc9+jP4g53xmlRKDpNrinGh+T7nNOQ1qRXUVeE7BggUdF+5v5bOPL6m2sp0
+         AW8wa3AkLZCBR8gvYWKf2ToaynKlOX3tVWAUjpTrjmdd+NBTOrJVIdyMZ6szvcp7kBpi
+         4Cuixdt9wPmosc8tInLv6HCQvihLzbT9wta2/PgBg1Tn5iqRQJrBfHdMWkOokY1wgeZb
+         iEu1hSc6J6PsREAhW6TGSzx+7lgAPzWJBVxSvFC5njONQGVrbqGGlonJB2gBoqAZghPp
+         xCLetB9MDQHlSVXf8b5qaP1qQiXRCk3DuMCM5AwQLPX5GlRP718TUihz2aRYK/iqhmtc
+         Wz7A==
+X-Forwarded-Encrypted: i=1; AJvYcCVhQjFMJ1mQ1Ucw1T5lRjYZJPeKRcBal3BQD8B+4P1TFnl6LpXMUYTqUH0nf/Cmi7a8HEMgXmcO5+YQekdtjdLl6m1VcnXMlEiPZhnlJDGeSCGlVs340SgBeqmfIEJJeKgvQ7y0BGiyMwStYYA=
+X-Gm-Message-State: AOJu0Ywl30TS/JSD0Iaj+awGwVwS1JdPdLPnwrLPvwVUPJ69Cl4DLOz4
+	H+6UfAb9H4gPnyNsQ9xFkoNx9J++6gYpdDV14xzTO5KXgH41IMgewcOFt+SQ1dkYoqDaGb49NqU
+	HuLa6ZlNNf/uSAlxxlT2qyVX8rco=
+X-Google-Smtp-Source: AGHT+IEzClk6wi93u2N1ixrRD20SSYcAePSE4oKBt1hQ8ZNBYd1wNxcRTjFOXdxvnz2DSbe4P7vhA5aUuctrQ5oTFLo=
+X-Received: by 2002:a17:90b:1652:b0:2cb:55f9:b7c5 with SMTP id
+ 98e67ed59e1d1-2cff9415bbfmr19564109a91.12.1722979798377; Tue, 06 Aug 2024
+ 14:29:58 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20240806212106.617164-1-mmaurer@google.com>
-X-Mailer: git-send-email 2.46.0.rc2.264.g509ed76dc8-goog
-Message-ID: <20240806212106.617164-17-mmaurer@google.com>
-Subject: [PATCH v3 16/16] export_report: Use new version info format
-From: Matthew Maurer <mmaurer@google.com>
-To: masahiroy@kernel.org, ndesaulniers@google.com, ojeda@kernel.org, 
-	gary@garyguo.net, mcgrof@kernel.org, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Matthew Maurer <mmaurer@google.com>
-Cc: rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, neal@gompa.dev, marcan@marcan.st, j@jannau.net, 
-	asahi@lists.linux.dev, Boqun Feng <boqun.feng@gmail.com>, 
-	"=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>
+MIME-Version: 1.0
+References: <20240725183325.122827-1-ojeda@kernel.org> <20240725183325.122827-6-ojeda@kernel.org>
+ <202408061241.855CB28@keescook> <20240806202217.GZ37996@noisy.programming.kicks-ass.net>
+In-Reply-To: <20240806202217.GZ37996@noisy.programming.kicks-ass.net>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 6 Aug 2024 23:29:46 +0200
+Message-ID: <CANiq72k1OvLEV2uf56vDXGvWX30YWa_r6ewS2fGoqxVGcqf9LQ@mail.gmail.com>
+Subject: Re: [PATCH v3 5/6] objtool/rust: list `noreturn` Rust functions
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Kees Cook <kees@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Josh Poimboeuf <jpoimboe@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, 
+	Masahiro Yamada <masahiroy@kernel.org>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The new version info format has a superset of symbols in the old format.
-Since this is a tool for in-tree modules, we don't need to parse the old
-one with this tool any longer.
+On Tue, Aug 6, 2024 at 10:22=E2=80=AFPM Peter Zijlstra <peterz@infradead.or=
+g> wrote:
+>
+> So it would be fairly simple to make objtool consume a magic section
+> emitted by the compiler.. I think we've asked the compiler folks for
+> that at some point even, but I don't have clear recollections.
 
-Signed-off-by: Matthew Maurer <mmaurer@google.com>
----
- scripts/export_report.pl | 22 ++++++++++------------
- 1 file changed, 10 insertions(+), 12 deletions(-)
+The section sounds like a good approach -- we will ask the Rust team
+about it. Then perhaps we can get Clang/GCC to implement something
+similar too -- for this sort of thing we can use the shorter cycles of
+`rustc` (and their unstable features concept too) to experiment with
+these things :)
 
-diff --git a/scripts/export_report.pl b/scripts/export_report.pl
-index dcef915405f3..6a37df6f947f 100755
---- a/scripts/export_report.pl
-+++ b/scripts/export_report.pl
-@@ -114,31 +114,29 @@ foreach my $thismod (@allcfiles) {
- 	}
- 
- 	my $state=0;
-+	# State map:
-+	# 0 - Looking for names
-+	# 1 - Scanning names
-+	# 2 - Done
- 	while ( <$module> ) {
- 		chomp;
- 		if ($state == 0) {
--			$state = 1 if ($_ =~ /static const struct modversion_info/);
-+			$state = 1 if ($_ =~ /__used __section\("__version_ext_names"\)/);
- 			next;
- 		}
- 		if ($state == 1) {
--			$state = 2 if ($_ =~ /__used __section\("__versions"\)/);
--			next;
--		}
--		if ($state == 2) {
--			if ( $_ =~ /};/ ) {
--				$state = 3;
--				next;
--			}
--			if ( $_ !~ /0x[0-9a-f]+,/ ) {
-+			if ( $_ =~ /;/ ) {
-+				$state = 2;
- 				next;
- 			}
--			my $sym = (split /([,"])/,)[4];
-+			$_ =~ /"(.*)\\0"/;
-+			my $sym = $1;
- 			my ($module, $value, $symbol, $gpl) = @{$SYMBOL{$sym}};
- 			$SYMBOL{ $sym } =  [ $module, $value+1, $symbol, $gpl];
- 			push(@{$MODULE{$thismod}} , $sym);
- 		}
- 	}
--	if ($state != 3) {
-+	if ($state != 2) {
- 		warn "WARNING:$thismod is not built with CONFIG_MODVERSIONS enabled\n";
- 		$modversion_warnings++;
- 	}
--- 
-2.46.0.rc2.264.g509ed76dc8-goog
+I have also added it to our `rustc` sublist of things we need.
 
+Cheers,
+Miguel
