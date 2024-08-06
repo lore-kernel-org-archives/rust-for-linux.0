@@ -1,43 +1,43 @@
 Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA4E922092
-	for <rust-for-linux@vger.kernel.org>; Tue,  6 Aug 2024 17:00:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDFBE50276
+	for <rust-for-linux@vger.kernel.org>; Tue,  6 Aug 2024 17:22:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722963636; cv=none; b=cdCGPtAF6JOVgESPZew5SMlu+wAicrvXAPi+8j2rtATKuE4wNGjqGYQnwa0/XmmbDxd8Z0oePD41hX7gkBMnopibR8ukZGmRUwfJa10dXPpdQ6QMIR+lK6T9rQOndJLpN0NV5fYXPrC4KENtqDHFe8fndT0ySBUnJt1XZbycwwM=
+	t=1722964952; cv=none; b=NhsTVx6XBp87uJKO3D6QJt1EqfZCoe6ZTeQPE3K9/00UWAjzUqWDhGFgXa2yWDTCE2Oa1AzR0ZRr5gfkiVHBSfV11PV5B1gA0mWp4I3TicVkgbDHdbLvlVSu/eTP9wICMXHLIribXMZa7kVQuyKOraxenlL/glCsr5u4RhLxxj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722963636; c=relaxed/simple;
-	bh=bQVZBvnxjPptFlh9gAx7UhEr45KLbvAqhbKlShH90FI=;
+	s=arc-20240116; t=1722964952; c=relaxed/simple;
+	bh=m5kxkaXfCyTE8Wd83ongz8t5b5x/+elgqIVQ+v9kOtw=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=t916dc1hmAW9+RuyhiOaQAjclkplfw9/+7aJ1fKy0dkoubZy7MLhKa03Z1Z5uiIjG/S4T6ITC3q8mHSFdpAkt2uFgjRF2cbIMZVOuVs3OPL96CgqN+/JFBA5Ib/Dx4rX+USDiKarNfRM7qmXOMVHrToW7BI78hKNqjmijWn3QUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=GQxbqjmZ; arc=none smtp.client-ip=185.70.43.16
+	 MIME-Version:Content-Type; b=nSlke0LTNv2JF0xQzO4ny3ExvJE+dQhxsWe+HQn2sDg7m6tnC/z/SYnvCHuc7LXKkHjwg2Z4DfSIMTfj6lApvYJarNhpuABSjN+HOrPQNkP2lE6/cfYm0QjdUpHhu/6rLMVTfjB5Eh23/F+SmfOtbTHV0BFDQARjI4a/xgxGYO4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=Jp6B52kx; arc=none smtp.client-ip=185.70.43.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="GQxbqjmZ"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="Jp6B52kx"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1722963631; x=1723222831;
-	bh=NIEcKfgadTZh0kNRg05u+3nH5Xy+VxOaSmfkkT347rU=;
+	s=protonmail; t=1722964947; x=1723224147;
+	bh=KwacUaqJ5YYWRVk8ykzjM7Y6SD6C+YG7cpGeuP2M4TE=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=GQxbqjmZEDoi65FP028FrB9um2wuA1hrfASYc20HjVmY7YenU0Ae8CHvh53tgkp06
-	 IXMxma13LwqWmuPHCKBnol9jvjrR6LVFGiO35bf0vqYMaMjS5e1jFIzrugweNrE3Bj
-	 tM90QhR3pYA958Y9NlTAYPyFS+e0HmLKlqdYvsVMb6N2kEumIjmdcIfUZ8W+3OY1KV
-	 sJJGBba/oAycTdE9KwvGxHAueaIOPz6zkON26xKsfG1/lquV7iVL0jM9VkaNJJPBtD
-	 yihvSlZOl1G9XOpP+xhxkwDw3cJHBHxiIbytGMg+k7KtoLxBCn0fv/g4+UQ3VBuB6l
-	 qwckLppSHce8w==
-Date: Tue, 06 Aug 2024 17:00:24 +0000
+	b=Jp6B52kxI5n1YaZZZWjw0rHdJWSv4GmOv6fBaO0THOOH61gXplkoVp2llxoc3hsAW
+	 XHx86PKgIdakNV8LE1KWhD4P7CIROJEfCsqEtZNUeLhpbC9Sjw8ejVzIamyN9flQK8
+	 qsew6EwgExhFV8vlQ84jALYyX2fB3Lp1BA3GXZMRJyvdfgAYKIBHANofTd66djbI3Z
+	 GVRwFlLBR2FOv7le9k0rqsXWRukKbZInu/lIElIR4ynUPeBPSduf7OyhIhdPKA6Z4I
+	 CtIf8KsbImIUfv+yNqQ4uUpHJwzjvsePw6YhzrRiu7tasfUAWzFrx5eIfScNrWr8+8
+	 Az1jBtENXUMSQ==
+Date: Tue, 06 Aug 2024 17:22:21 +0000
 To: Danilo Krummrich <dakr@kernel.org>, ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@samsung.com, aliceryhl@google.com, akpm@linux-foundation.org
 From: Benno Lossin <benno.lossin@proton.me>
 Cc: daniel.almeida@collabora.com, faith.ekstrand@collabora.com, boris.brezillon@collabora.com, lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com, acurrid@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com, ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v4 06/28] rust: alloc: implement `Vmalloc` allocator
-Message-ID: <9c144953-819d-44fa-9bb5-af6fa93a5042@proton.me>
-In-Reply-To: <20240805152004.5039-7-dakr@kernel.org>
-References: <20240805152004.5039-1-dakr@kernel.org> <20240805152004.5039-7-dakr@kernel.org>
+Subject: Re: [PATCH v4 08/28] rust: types: implement `Unique<T>`
+Message-ID: <ff0826af-9430-4653-abe8-25fb80cd0e97@proton.me>
+In-Reply-To: <20240805152004.5039-9-dakr@kernel.org>
+References: <20240805152004.5039-1-dakr@kernel.org> <20240805152004.5039-9-dakr@kernel.org>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 0890d966cb92e9d75463d347488d1209ade4142f
+X-Pm-Message-ID: 716c158e9305903de2f6bf86a219c931834c4384
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -48,155 +48,185 @@ Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
 On 05.08.24 17:19, Danilo Krummrich wrote:
-> Implement `Allocator` for `Vmalloc`, the kernel's virtually contiguous
-> allocator, typically used for larger objects, (much) larger than page
-> size.
+> Implement the `Unique` type as a prerequisite for `Box` and `Vec`
+> introduced in subsequent patches.
 >=20
-> All memory allocations made with `Vmalloc` end up in `vrealloc()`.
+> `Unique` serves as wrapper around a `NonNull`, but indicates that the
+> possessor of this wrapper owns the referent.
+>=20
+> This type already exists in Rust's core library, but, unfortunately, is
+> exposed as unstable API and hence shouldn't be used in the kernel.
+>=20
+> This implementation of `Unique` is almost identical, but mostly stripped
+> down to the functionality we need for `Box` and `Vec`. Additionally, all
+> unstable features are removed and / or replaced by stable ones.
 >=20
 > Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 > ---
->  rust/helpers.c                      |  7 +++++++
->  rust/kernel/alloc/allocator.rs      | 32 +++++++++++++++++++++++++++++
->  rust/kernel/alloc/allocator_test.rs |  1 +
->  3 files changed, 40 insertions(+)
+>  rust/kernel/types.rs | 183 +++++++++++++++++++++++++++++++++++++++++++
+>  1 file changed, 183 insertions(+)
 >=20
-> diff --git a/rust/helpers.c b/rust/helpers.c
-> index 9f7275493365..7406943f887d 100644
-> --- a/rust/helpers.c
-> +++ b/rust/helpers.c
-> @@ -33,6 +33,7 @@
->  #include <linux/sched/signal.h>
->  #include <linux/slab.h>
->  #include <linux/spinlock.h>
-> +#include <linux/vmalloc.h>
->  #include <linux/wait.h>
->  #include <linux/workqueue.h>
->=20
-> @@ -199,6 +200,12 @@ void *rust_helper_krealloc(const void *objp, size_t =
-new_size, gfp_t flags)
->  }
->  EXPORT_SYMBOL_GPL(rust_helper_krealloc);
->=20
-> +void *rust_helper_vrealloc(const void *p, size_t size, gfp_t flags)
-> +{
-> +=09return vrealloc(p, size, flags);
-> +}
-> +EXPORT_SYMBOL_GPL(rust_helper_vrealloc);
+> diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
+> index bd189d646adb..7cf89067b5fc 100644
+> --- a/rust/kernel/types.rs
+> +++ b/rust/kernel/types.rs
+> @@ -473,3 +473,186 @@ unsafe impl AsBytes for str {}
+>  // does not have any uninitialized portions either.
+>  unsafe impl<T: AsBytes> AsBytes for [T] {}
+>  unsafe impl<T: AsBytes, const N: usize> AsBytes for [T; N] {}
 > +
->  /*
->   * `bindgen` binds the C `size_t` type as the Rust `usize` type, so we c=
-an
->   * use it in contexts where Rust expects a `usize` like slice (array) in=
-dices.
-> diff --git a/rust/kernel/alloc/allocator.rs b/rust/kernel/alloc/allocator=
-.rs
-> index c6ad1dd59dd0..bb55895cbd03 100644
-> --- a/rust/kernel/alloc/allocator.rs
-> +++ b/rust/kernel/alloc/allocator.rs
-> @@ -9,6 +9,7 @@
->=20
->  use crate::alloc::{AllocError, Allocator};
->  use crate::bindings;
-> +use crate::pr_warn;
->=20
->  /// The contiguous kernel allocator.
->  ///
-> @@ -16,6 +17,12 @@
->  /// `bindings::krealloc`.
->  pub struct Kmalloc;
->=20
-> +/// The virtually contiguous kernel allocator.
+> +/// A wrapper around a raw non-null `*mut T` that indicates that the pos=
+sessor
+> +/// of this wrapper owns the referent. Useful for building abstractions =
+like
+> +/// `Box<T>`, `Vec<T>`, `String`, and `HashMap<K, V>`.
 > +///
-> +/// The vmalloc allocator allocates pages from the page level allocator =
-and maps them into the
-> +/// contiguous kernel virtual space.
-> +pub struct Vmalloc;
-
-One thing that I should also have mentioned for `Kmalloc`, do we want
-these types to also have values? I don't think that we need them to be,
-so we could declare them as `pub enum Vmalloc {}`.
-
-> +
->  /// Returns a proper size to alloc a new object aligned to `new_layout`'=
-s alignment.
->  fn aligned_size(new_layout: Layout) -> usize {
->      // Customized layouts from `Layout::from_size_align()` can have size=
- < align, so pad first.
-> @@ -61,6 +68,11 @@ fn krealloc() -> Self {
->          Self(bindings::krealloc)
->      }
->=20
-> +    // INVARIANT: `vrealloc` satisfies the type invariants.
-
-This should be moved down a line.
-
----
-Cheers,
-Benno
-
-> +    fn vrealloc() -> Self {
-> +        Self(bindings::vrealloc)
-> +    }
-> +
->      /// # Safety
->      ///
->      /// This method has the exact same safety requirements as `Allocator=
-::realloc`.
-> @@ -141,6 +153,26 @@ unsafe fn alloc_zeroed(&self, layout: Layout) -> *mu=
-t u8 {
->      }
->  }
->=20
-> +unsafe impl Allocator for Vmalloc {
-> +    unsafe fn realloc(
-> +        ptr: Option<NonNull<u8>>,
-> +        layout: Layout,
-> +        flags: Flags,
-> +    ) -> Result<NonNull<[u8]>, AllocError> {
-> +        let realloc =3D ReallocFunc::vrealloc();
-> +
-> +        // TODO: Support alignments larger than PAGE_SIZE.
-> +        if layout.align() > bindings::PAGE_SIZE {
-> +            pr_warn!("Vmalloc does not support alignments larger than PA=
-GE_SIZE yet.\n");
-> +            return Err(AllocError);
-> +        }
-> +
-> +        // SAFETY: If not `None`, `ptr` is guaranteed to point to valid =
-memory, which was previously
-> +        // allocated with this `Allocator`.
-> +        unsafe { realloc.call(ptr, layout, flags) }
-
-I am a bit confused, for `Kmalloc`, you manually returned
-`NonNull::dangling` when allocating a zero-sized allocation, but here
-you don't?
-
----
-Cheers,
-Benno
-
-> +    }
+> +/// Unlike `*mut T`, `Unique<T>` behaves "as if" it were an instance of =
+`T`.
+> +/// It implements `Send`/`Sync` if `T` is `Send`/`Sync`. It also implies
+> +/// the kind of strong aliasing guarantees an instance of `T` can expect=
+:
+> +/// the referent of the pointer should not be modified without a unique =
+path to
+> +/// its owning Unique.
+> +///
+> +/// If you're uncertain of whether it's correct to use `Unique` for your=
+ purposes,
+> +/// consider using `NonNull`, which has weaker semantics.
+> +///
+> +/// Unlike `*mut T`, the pointer must always be non-null, even if the po=
+inter
+> +/// is never dereferenced. This is so that enums may use this forbidden =
+value
+> +/// as a discriminant -- `Option<Unique<T>>` has the same size as `Uniqu=
+e<T>`.
+> +/// However the pointer may still dangle if it isn't dereferenced.
+> +///
+> +/// Unlike `*mut T`, `Unique<T>` is covariant over `T`. This should alwa=
+ys be correct
+> +/// for any type which upholds Unique's aliasing requirements.
+> +#[repr(transparent)]
+> +pub struct Unique<T: ?Sized> {
+> +    pointer: NonNull<T>,
+> +    // NOTE: this marker has no consequences for variance, but is necess=
+ary
+> +    // for dropck to understand that we logically own a `T`.
+> +    //
+> +    // For details, see:
+> +    // https://github.com/rust-lang/rfcs/blob/master/text/0769-sound-gen=
+eric-drop.md#phantom-data
+> +    _marker: PhantomData<T>,
 > +}
 > +
->  #[global_allocator]
->  static ALLOCATOR: Kmalloc =3D Kmalloc;
->=20
-> diff --git a/rust/kernel/alloc/allocator_test.rs b/rust/kernel/alloc/allo=
-cator_test.rs
-> index 4785efc474a7..e7bf2982f68f 100644
-> --- a/rust/kernel/alloc/allocator_test.rs
-> +++ b/rust/kernel/alloc/allocator_test.rs
-> @@ -7,6 +7,7 @@
->  use core::ptr::NonNull;
->=20
->  pub struct Kmalloc;
-> +pub type Vmalloc =3D Kmalloc;
->=20
->  unsafe impl Allocator for Kmalloc {
->      unsafe fn realloc(
-> --
-> 2.45.2
->=20
+> +/// `Unique` pointers are `Send` if `T` is `Send` because the data they
+> +/// reference is unaliased. Note that this aliasing invariant is
+> +/// unenforced by the type system; the abstraction using the
+> +/// `Unique` must enforce it.
+> +unsafe impl<T: Send + ?Sized> Send for Unique<T> {}
+> +
+> +/// `Unique` pointers are `Sync` if `T` is `Sync` because the data they
+> +/// reference is unaliased. Note that this aliasing invariant is
+> +/// unenforced by the type system; the abstraction using the
+> +/// `Unique` must enforce it.
+> +unsafe impl<T: Sync + ?Sized> Sync for Unique<T> {}
+> +
+> +impl<T: Sized> Unique<T> {
+> +    /// Creates a new `Unique` that is dangling, but well-aligned.
+> +    ///
+> +    /// This is useful for initializing types which lazily allocate, lik=
+e
+> +    /// `Vec::new` does.
+> +    ///
+> +    /// Note that the pointer value may potentially represent a valid po=
+inter to
+> +    /// a `T`, which means this must not be used as a "not yet initializ=
+ed"
+> +    /// sentinel value. Types that lazily allocate must track initializa=
+tion by
+> +    /// some other means.
+> +    #[must_use]
+> +    #[inline]
+> +    pub const fn dangling() -> Self {
+> +        Unique {
+> +            pointer: NonNull::dangling(),
+> +            _marker: PhantomData,
+> +        }
+> +    }
+
+I think I already asked this, but the code until this point is copied
+from the rust stdlib and nowhere cited, does that work with the
+licensing?
+
+I also think that the code above could use some improvements:
+- add an `# Invariants` section with appropriate invariants (what are
+  they supposed to be?)
+- Do we really want this type to be public and exported from the kernel
+  crate? I think it would be better if it were crate-private.
+- What do we gain from having this type? As I learned recently, the
+  `Unique` type from `core` doesn't actually put the `noalias` onto
+  `Box` and `Vec`. The functions are mostly delegations to `NonNull`, so
+  if the only advantages are that `Send` and `Sync` are already
+  implemented, then I think we should drop this.
+
+> +}
+> +
+> +impl<T: ?Sized> Unique<T> {
+> +    /// Creates a new `Unique`.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// `ptr` must be non-null.
+> +    #[inline]
+> +    pub const unsafe fn new_unchecked(ptr: *mut T) -> Self {
+> +        // SAFETY: the caller must guarantee that `ptr` is non-null.
+> +        unsafe {
+
+The only unsafe operation in the body is `new_unchecked` only that one
+should be wrapped in `unsafe {}`.
+
+> +            Unique {
+> +                pointer: NonNull::new_unchecked(ptr),
+> +                _marker: PhantomData,
+> +            }
+> +        }
+> +    }
+> +
+> +    /// Creates a new `Unique` if `ptr` is non-null.
+> +    #[allow(clippy::manual_map)]
+> +    #[inline]
+> +    pub fn new(ptr: *mut T) -> Option<Self> {
+> +        if let Some(pointer) =3D NonNull::new(ptr) {
+> +            Some(Unique {
+> +                pointer,
+> +                _marker: PhantomData,
+> +            })
+> +        } else {
+> +            None
+> +        }
+
+Why is this so verbose? You even needed to disable the clippy lint!
+Can't this just be?:
+
+    Some(Unique {
+        pointer: NonNull::new(ptr)?,
+        _marker: PhantomData,
+    })
+
+or maybe even
+
+    NonNull::new(ptr).map(Unique::from)
+
+
+> +    }
+> +
+> +    /// Acquires the underlying `*mut` pointer.
+> +    #[must_use =3D "`self` will be dropped if the result is not used"]
+
+This seems like an odd thing, there is no `Drop` impl that drops the
+pointee...
+
+---
+Cheers,
+Benno
 
