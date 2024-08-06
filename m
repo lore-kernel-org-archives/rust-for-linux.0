@@ -1,232 +1,209 @@
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-vs1-f44.google.com (mail-vs1-f44.google.com [209.85.217.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDFBE50276
-	for <rust-for-linux@vger.kernel.org>; Tue,  6 Aug 2024 17:22:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2FE444376;
+	Tue,  6 Aug 2024 17:28:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722964952; cv=none; b=NhsTVx6XBp87uJKO3D6QJt1EqfZCoe6ZTeQPE3K9/00UWAjzUqWDhGFgXa2yWDTCE2Oa1AzR0ZRr5gfkiVHBSfV11PV5B1gA0mWp4I3TicVkgbDHdbLvlVSu/eTP9wICMXHLIribXMZa7kVQuyKOraxenlL/glCsr5u4RhLxxj8=
+	t=1722965305; cv=none; b=cElzNf1uIjsTbsqSvtJFSVoNdcoeA6z8/RXgxFKvlbim3mXFBWF33+HMzLjtokiXyn3LAhJOIsbsy/XjhtwDMzTAVUHS1EqEkpDrewcA+WnjzH/Jmwe0kfPvgMq3Ta+kpO+FA2BlE33vTq/EutzCsNh/6cptTIq3lu6NBxaps7I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722964952; c=relaxed/simple;
-	bh=m5kxkaXfCyTE8Wd83ongz8t5b5x/+elgqIVQ+v9kOtw=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nSlke0LTNv2JF0xQzO4ny3ExvJE+dQhxsWe+HQn2sDg7m6tnC/z/SYnvCHuc7LXKkHjwg2Z4DfSIMTfj6lApvYJarNhpuABSjN+HOrPQNkP2lE6/cfYm0QjdUpHhu/6rLMVTfjB5Eh23/F+SmfOtbTHV0BFDQARjI4a/xgxGYO4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=Jp6B52kx; arc=none smtp.client-ip=185.70.43.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1722965305; c=relaxed/simple;
+	bh=WOQzR1oQzYIbVgPmprQSRRrJW2JnPO/HsIpHRpW9kFQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=JEyWqUjROYCZDeOqmkIQtJAz02p5N6Me60o2BeT1S9LSUODoSI4/U71fRx1j9B+V2SXcE1oBOWPcTiBnzP2U/+ngw6R+KCabs82ipna6b+c5f5YVHxG1SKL4+2mRmNL3s543+mHRWf3K+TU4XeBUuP2Ry69cFEaZvPFN4yAueVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ehnhhqF9; arc=none smtp.client-ip=209.85.217.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="Jp6B52kx"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1722964947; x=1723224147;
-	bh=KwacUaqJ5YYWRVk8ykzjM7Y6SD6C+YG7cpGeuP2M4TE=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=Jp6B52kxI5n1YaZZZWjw0rHdJWSv4GmOv6fBaO0THOOH61gXplkoVp2llxoc3hsAW
-	 XHx86PKgIdakNV8LE1KWhD4P7CIROJEfCsqEtZNUeLhpbC9Sjw8ejVzIamyN9flQK8
-	 qsew6EwgExhFV8vlQ84jALYyX2fB3Lp1BA3GXZMRJyvdfgAYKIBHANofTd66djbI3Z
-	 GVRwFlLBR2FOv7le9k0rqsXWRukKbZInu/lIElIR4ynUPeBPSduf7OyhIhdPKA6Z4I
-	 CtIf8KsbImIUfv+yNqQ4uUpHJwzjvsePw6YhzrRiu7tasfUAWzFrx5eIfScNrWr8+8
-	 Az1jBtENXUMSQ==
-Date: Tue, 06 Aug 2024 17:22:21 +0000
-To: Danilo Krummrich <dakr@kernel.org>, ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@samsung.com, aliceryhl@google.com, akpm@linux-foundation.org
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: daniel.almeida@collabora.com, faith.ekstrand@collabora.com, boris.brezillon@collabora.com, lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com, acurrid@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com, ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v4 08/28] rust: types: implement `Unique<T>`
-Message-ID: <ff0826af-9430-4653-abe8-25fb80cd0e97@proton.me>
-In-Reply-To: <20240805152004.5039-9-dakr@kernel.org>
-References: <20240805152004.5039-1-dakr@kernel.org> <20240805152004.5039-9-dakr@kernel.org>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 716c158e9305903de2f6bf86a219c931834c4384
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ehnhhqF9"
+Received: by mail-vs1-f44.google.com with SMTP id ada2fe7eead31-493e8ef36b4so263040137.2;
+        Tue, 06 Aug 2024 10:28:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1722965302; x=1723570102; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=T9vnUaR6wRRGopZQQHqDc26o4aOyMH38ZUHe9FK1Kw0=;
+        b=ehnhhqF9RG1z3rXw8UXp3kI8kkB0XLj2sPQZjmGGyeSTXeGTz6LQSzch6SwKoy/ipl
+         eiR27SGgdynaMI104Eg/TG/xZvW3yZu6U07MHpRGOXFMtUNY4ofDnyj6hqKmQZweP43+
+         6CueozjnRS2XLNnJuTIaQnEpdVuOuw55CqQrSGbluUYSmCBfHTcoQFl6p6tZ6YL/IvAz
+         2oVEl1IdLLlI/HKJ4/2q9gsRWDtxWsfduuK4Zp28D64qUQa3rh/tzHYzqLT4qj2Ay9so
+         D0lUGPmiuRmvzKl5mGZI8Clt1SAWWJ+dhcQzvTdNdiy1JpGQ1Y1dHutard0FH223zwqN
+         cYmw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1722965302; x=1723570102;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=T9vnUaR6wRRGopZQQHqDc26o4aOyMH38ZUHe9FK1Kw0=;
+        b=HLWtIP7prJu1Ana4CXFdKqtz/IR9kLodloyhT1U81kt6H4qPYO9vAM1UfeyAtSaDno
+         fI9vyJjDRraX0Oao+8nwms/J0dVxEarLR8U95O70kf5zNZ4Bd+QQt7Bb9JLm6YOEd3KA
+         6FvxWKyszvdhPX9zJU7q28UGWX1Xb3IdMsDppM4sr5azQt9ajyIM86LTPnlON3V9u54u
+         VtI2LoitcfkS4pM9brWuHi/RKvT/kp52/sLEMIExNttnUIC0KLxQJKidXsKyG/kj5Ure
+         H1c8IhEYGwLKYn3wkGjCf79fAyV/PPaqKgLf0b35vd3WNofEWPdT7Qipv7CjDgCp21dc
+         9B8A==
+X-Forwarded-Encrypted: i=1; AJvYcCX7k+lJNsqnJCpAxT+mrTvIwVGWVQyIMmwxyXWXUTb0U/3QeoRAkSM7Beo+ec28lGCMvrBUhxm8oziAtLm/IbHE9Gtj29ki6b9p3eW1rCNFmA3i+z+IhzUt+BE+mwFe/ItLAS1n3b0n3QP+JKg=
+X-Gm-Message-State: AOJu0YyXrMoNHhSUnghvdSgz8w8puihT4m+FZB6ttubFuNOVF1L++nm1
+	AD0uaRKVL6eLJlooSezX+EEmUZa+OM7echE8maERrxeKz/IExrM9
+X-Google-Smtp-Source: AGHT+IFB0y+M9Oc1CoQ2lVXqpIciFEC2ygrvj68zOxkubs8DCO/oCBgJk2Lkrlac1mnmzqIBMfk1LQ==
+X-Received: by 2002:a05:6102:d8f:b0:493:b0c2:ad3c with SMTP id ada2fe7eead31-4945bed096cmr22410368137.22.1722965302554;
+        Tue, 06 Aug 2024 10:28:22 -0700 (PDT)
+Received: from fauth1-smtp.messagingengine.com (fauth1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7a34f78adb9sm476610385a.124.2024.08.06.10.28.21
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 06 Aug 2024 10:28:22 -0700 (PDT)
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+	by mailfauth.nyi.internal (Postfix) with ESMTP id 93BB2120006C;
+	Tue,  6 Aug 2024 13:28:21 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute3.internal (MEProxy); Tue, 06 Aug 2024 13:28:21 -0400
+X-ME-Sender: <xms:NV2yZmTgAfArMt_wJJkvCxUWMVmunu0_1RzDmDKQjyukMQQ_d26n_w>
+    <xme:NV2yZrx-jLx9AwBqc8Dc4O43XVvvR_msuY7YNLypTsuYPQFxF1BURctuHCGI8dNOq
+    ns6KYCDx1lQcXA3AQ>
+X-ME-Received: <xmr:NV2yZj02X1ZSeUoz93Esk081oi2Ba7MUbgnuyXccDm3UDJXI9zI9lL4B0FqrYw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrkeekgdduuddvucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepuehoqhhu
+    nhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrdgtohhmqeenucggtffrrg
+    htthgvrhhnpeejtefftdfgueehgffhkedttddtgeetvdeukeetueeggffhhefffeeuledu
+    ieefveenucffohhmrghinhepiihulhhiphgthhgrthdrtghomhenucevlhhushhtvghruf
+    hiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgr
+    uhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsoh
+    hquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvgdpnhgspghr
+    tghpthhtoheptd
+X-ME-Proxy: <xmx:NV2yZiBSZHz0bPQPUDlVFu7n_p7HPyTH4EMdQjWUcGfX4HY0uqTO_w>
+    <xmx:NV2yZvh7Q8oW-2gPrkKx2-i5lg4nI-YiOnF_V5zsRg-Dv-mfRTavyw>
+    <xmx:NV2yZuo0o5kY3gFa1uPlG-GbIbs9xpPKsMS3EBpnTajOSWcxVn8fAw>
+    <xmx:NV2yZihVXTLC5o_N11UoEGXMN3gsV2T3hBPkMx0jrtN30eUpChlF2g>
+    <xmx:NV2yZuT-z4U_qa3jMXw1-jX6yQV5cfFU4LM1zBzBvyQzpaE1coidt9hP>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 6 Aug 2024 13:28:20 -0400 (EDT)
+Date: Tue, 6 Aug 2024 10:27:17 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Nathan Chancellor <nathan@kernel.org>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>, llvm@lists.linux.dev,
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev
+Subject: Re: [PATCH] rust: add intrinsics to fix `-Os` builds
+Message-ID: <ZrJc9UE3xAV1ezdG@boqun-archlinux>
+References: <20240806150619.192882-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240806150619.192882-1-ojeda@kernel.org>
 
-On 05.08.24 17:19, Danilo Krummrich wrote:
-> Implement the `Unique` type as a prerequisite for `Box` and `Vec`
-> introduced in subsequent patches.
->=20
-> `Unique` serves as wrapper around a `NonNull`, but indicates that the
-> possessor of this wrapper owns the referent.
->=20
-> This type already exists in Rust's core library, but, unfortunately, is
-> exposed as unstable API and hence shouldn't be used in the kernel.
->=20
-> This implementation of `Unique` is almost identical, but mostly stripped
-> down to the functionality we need for `Box` and `Vec`. Additionally, all
-> unstable features are removed and / or replaced by stable ones.
->=20
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+On Tue, Aug 06, 2024 at 05:06:19PM +0200, Miguel Ojeda wrote:
+> Alice reported [1] that an arm64 build failed with:
+> 
+>     ld.lld: error: undefined symbol: __extendsfdf2
+>     >>> referenced by core.a6f5fc5794e7b7b3-cgu.0
+>     >>>               rust/core.o:(<f32>::midpoint) in archive vmlinux.a
+>     >>> referenced by core.a6f5fc5794e7b7b3-cgu.0
+>     >>>               rust/core.o:(<f32>::midpoint) in archive vmlinux.a
+> 
+>     ld.lld: error: undefined symbol: __truncdfsf2
+>     >>> referenced by core.a6f5fc5794e7b7b3-cgu.0
+>     >>>               rust/core.o:(<f32>::midpoint) in archive vmlinux.a
+> 
+> Rust 1.80.0 or later together with `CONFIG_CC_OPTIMIZE_FOR_SIZE=y`
+> is what triggers it.
+> 
+> In addition, x86_64 builds also fail the same way.
+> 
+> Similarly, compiling with Rust 1.82.0 (currently in nightly) makes
+> another one appear, possibly due to the LLVM 19 upgrade there:
+> 
+>     ld.lld: error: undefined symbol: __eqdf2
+>     >>> referenced by core.20495ea57a9f069d-cgu.0
+>     >>>               rust/core.o:(<f64>::next_up) in archive vmlinux.a
+>     >>> referenced by core.20495ea57a9f069d-cgu.0
+>     >>>               rust/core.o:(<f64>::next_down) in archive vmlinux.a
+> 
+> Gary adds [1]:
+> 
+> > Usually the fix on rustc side is to mark those functions as `#[inline]`
+> >
+> > All of {midpoint,next_up,next_down} are indeed unstable functions not
+> > marked as inline...
+> 
+> Fix all those by adding those intrinsics to our usual workaround.
+> 
+> Cc: Gary Guo <gary@garyguo.net>
+> Reported-by: Alice Ryhl <aliceryhl@google.com>
+> Closes: https://rust-for-linux.zulipchat.com/#narrow/stream/288089-General/topic/v6.2E11-rc1.20doesn't.20build.20for.20arm64/near/455637364
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+
+Put this one into rust-dev and confirm this could fix the issue with
+Rust 1.80. I also add a test with CONFIG_CC_OPTIMIZE_FOR_SIZE=y in my
+rust-dev script, so we can catch the similar issues earlier.
+
+Tested-by: Boqun Feng <boqun.feng@gmail.com>
+
+Regards,
+Boqun
+
 > ---
->  rust/kernel/types.rs | 183 +++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 183 insertions(+)
->=20
-> diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
-> index bd189d646adb..7cf89067b5fc 100644
-> --- a/rust/kernel/types.rs
-> +++ b/rust/kernel/types.rs
-> @@ -473,3 +473,186 @@ unsafe impl AsBytes for str {}
->  // does not have any uninitialized portions either.
->  unsafe impl<T: AsBytes> AsBytes for [T] {}
->  unsafe impl<T: AsBytes, const N: usize> AsBytes for [T; N] {}
-> +
-> +/// A wrapper around a raw non-null `*mut T` that indicates that the pos=
-sessor
-> +/// of this wrapper owns the referent. Useful for building abstractions =
-like
-> +/// `Box<T>`, `Vec<T>`, `String`, and `HashMap<K, V>`.
-> +///
-> +/// Unlike `*mut T`, `Unique<T>` behaves "as if" it were an instance of =
-`T`.
-> +/// It implements `Send`/`Sync` if `T` is `Send`/`Sync`. It also implies
-> +/// the kind of strong aliasing guarantees an instance of `T` can expect=
-:
-> +/// the referent of the pointer should not be modified without a unique =
-path to
-> +/// its owning Unique.
-> +///
-> +/// If you're uncertain of whether it's correct to use `Unique` for your=
- purposes,
-> +/// consider using `NonNull`, which has weaker semantics.
-> +///
-> +/// Unlike `*mut T`, the pointer must always be non-null, even if the po=
-inter
-> +/// is never dereferenced. This is so that enums may use this forbidden =
-value
-> +/// as a discriminant -- `Option<Unique<T>>` has the same size as `Uniqu=
-e<T>`.
-> +/// However the pointer may still dangle if it isn't dereferenced.
-> +///
-> +/// Unlike `*mut T`, `Unique<T>` is covariant over `T`. This should alwa=
-ys be correct
-> +/// for any type which upholds Unique's aliasing requirements.
-> +#[repr(transparent)]
-> +pub struct Unique<T: ?Sized> {
-> +    pointer: NonNull<T>,
-> +    // NOTE: this marker has no consequences for variance, but is necess=
-ary
-> +    // for dropck to understand that we logically own a `T`.
-> +    //
-> +    // For details, see:
-> +    // https://github.com/rust-lang/rfcs/blob/master/text/0769-sound-gen=
-eric-drop.md#phantom-data
-> +    _marker: PhantomData<T>,
-> +}
-> +
-> +/// `Unique` pointers are `Send` if `T` is `Send` because the data they
-> +/// reference is unaliased. Note that this aliasing invariant is
-> +/// unenforced by the type system; the abstraction using the
-> +/// `Unique` must enforce it.
-> +unsafe impl<T: Send + ?Sized> Send for Unique<T> {}
-> +
-> +/// `Unique` pointers are `Sync` if `T` is `Sync` because the data they
-> +/// reference is unaliased. Note that this aliasing invariant is
-> +/// unenforced by the type system; the abstraction using the
-> +/// `Unique` must enforce it.
-> +unsafe impl<T: Sync + ?Sized> Sync for Unique<T> {}
-> +
-> +impl<T: Sized> Unique<T> {
-> +    /// Creates a new `Unique` that is dangling, but well-aligned.
-> +    ///
-> +    /// This is useful for initializing types which lazily allocate, lik=
-e
-> +    /// `Vec::new` does.
-> +    ///
-> +    /// Note that the pointer value may potentially represent a valid po=
-inter to
-> +    /// a `T`, which means this must not be used as a "not yet initializ=
-ed"
-> +    /// sentinel value. Types that lazily allocate must track initializa=
-tion by
-> +    /// some other means.
-> +    #[must_use]
-> +    #[inline]
-> +    pub const fn dangling() -> Self {
-> +        Unique {
-> +            pointer: NonNull::dangling(),
-> +            _marker: PhantomData,
-> +        }
-> +    }
-
-I think I already asked this, but the code until this point is copied
-from the rust stdlib and nowhere cited, does that work with the
-licensing?
-
-I also think that the code above could use some improvements:
-- add an `# Invariants` section with appropriate invariants (what are
-  they supposed to be?)
-- Do we really want this type to be public and exported from the kernel
-  crate? I think it would be better if it were crate-private.
-- What do we gain from having this type? As I learned recently, the
-  `Unique` type from `core` doesn't actually put the `noalias` onto
-  `Box` and `Vec`. The functions are mostly delegations to `NonNull`, so
-  if the only advantages are that `Send` and `Sync` are already
-  implemented, then I think we should drop this.
-
-> +}
-> +
-> +impl<T: ?Sized> Unique<T> {
-> +    /// Creates a new `Unique`.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// `ptr` must be non-null.
-> +    #[inline]
-> +    pub const unsafe fn new_unchecked(ptr: *mut T) -> Self {
-> +        // SAFETY: the caller must guarantee that `ptr` is non-null.
-> +        unsafe {
-
-The only unsafe operation in the body is `new_unchecked` only that one
-should be wrapped in `unsafe {}`.
-
-> +            Unique {
-> +                pointer: NonNull::new_unchecked(ptr),
-> +                _marker: PhantomData,
-> +            }
-> +        }
-> +    }
-> +
-> +    /// Creates a new `Unique` if `ptr` is non-null.
-> +    #[allow(clippy::manual_map)]
-> +    #[inline]
-> +    pub fn new(ptr: *mut T) -> Option<Self> {
-> +        if let Some(pointer) =3D NonNull::new(ptr) {
-> +            Some(Unique {
-> +                pointer,
-> +                _marker: PhantomData,
-> +            })
-> +        } else {
-> +            None
-> +        }
-
-Why is this so verbose? You even needed to disable the clippy lint!
-Can't this just be?:
-
-    Some(Unique {
-        pointer: NonNull::new(ptr)?,
-        _marker: PhantomData,
-    })
-
-or maybe even
-
-    NonNull::new(ptr).map(Unique::from)
-
-
-> +    }
-> +
-> +    /// Acquires the underlying `*mut` pointer.
-> +    #[must_use =3D "`self` will be dropped if the result is not used"]
-
-This seems like an odd thing, there is no `Drop` impl that drops the
-pointee...
-
----
-Cheers,
-Benno
-
+>  rust/Makefile             | 4 ++--
+>  rust/compiler_builtins.rs | 3 +++
+>  2 files changed, 5 insertions(+), 2 deletions(-)
+> 
+> diff --git a/rust/Makefile b/rust/Makefile
+> index 1f10f92737f2..77836388377d 100644
+> --- a/rust/Makefile
+> +++ b/rust/Makefile
+> @@ -354,8 +354,8 @@ rust-analyzer:
+>  		$(if $(KBUILD_EXTMOD),$(extmod_prefix),$(objtree))/rust-project.json
+>  
+>  redirect-intrinsics = \
+> -	__addsf3 __eqsf2 __gesf2 __lesf2 __ltsf2 __mulsf3 __nesf2 __unordsf2 \
+> -	__adddf3 __ledf2 __ltdf2 __muldf3 __unorddf2 \
+> +	__addsf3 __eqsf2 __extendsfdf2 __gesf2 __lesf2 __ltsf2 __mulsf3 __nesf2 __truncdfsf2 __unordsf2 \
+> +	__adddf3 __eqdf2 __ledf2 __ltdf2 __muldf3 __unorddf2 \
+>  	__muloti4 __multi3 \
+>  	__udivmodti4 __udivti3 __umodti3
+>  
+> diff --git a/rust/compiler_builtins.rs b/rust/compiler_builtins.rs
+> index bba2922c6ef7..f14b8d7caf89 100644
+> --- a/rust/compiler_builtins.rs
+> +++ b/rust/compiler_builtins.rs
+> @@ -40,16 +40,19 @@ pub extern "C" fn $ident() {
+>  define_panicking_intrinsics!("`f32` should not be used", {
+>      __addsf3,
+>      __eqsf2,
+> +    __extendsfdf2,
+>      __gesf2,
+>      __lesf2,
+>      __ltsf2,
+>      __mulsf3,
+>      __nesf2,
+> +    __truncdfsf2,
+>      __unordsf2,
+>  });
+>  
+>  define_panicking_intrinsics!("`f64` should not be used", {
+>      __adddf3,
+> +    __eqdf2,
+>      __ledf2,
+>      __ltdf2,
+>      __muldf3,
+> 
+> base-commit: de9c2c66ad8e787abec7c9d7eff4f8c3cdd28aed
+> -- 
+> 2.46.0
+> 
+> 
