@@ -1,133 +1,250 @@
-Received: from mail-yw1-f172.google.com (mail-yw1-f172.google.com [209.85.128.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62B6C7347C
-	for <rust-for-linux@vger.kernel.org>; Tue,  6 Aug 2024 18:30:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37AF38F77;
+	Tue,  6 Aug 2024 18:55:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722969048; cv=none; b=RP/VE7ohRIT5s77Ud0/WxyWpQQE0Hh1Jo/gVDvLoht4ecW/z2uKjJ4rvsgCmy+30LhOxReB1eR4W4YAVlmzG8hq/4CV0xy7r+62UxI2HxyJdJagNjTGxuQX48bme3S3CjQNpTx8Z8mPIIHSKHHwR+jzKcxQxYO+4JRrMg7I/GQ8=
+	t=1722970524; cv=none; b=rIBIqjk/q8MW8DRo+zmCdBsJf3cCO6ZgJxSH1lhigW8pTup2HIgT9de3uv1MxrQQTiCdpkv3+cbRQTrQd3PjijR/o2uD3f2Nh6FckLxjrDZ3X7UhG293+ilEmI9XA/mkHeH/vzeofsbFvjTLCEEDEZa/nyIexShJdMm2lqGxrlI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722969048; c=relaxed/simple;
-	bh=oe38/BA3I3GPzGRZcA4tK3QobjJz3lxhxxE69sqobgM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=c4Tf3CxfVa5ePuoZflAHOz4YqfIWLrZiCrTqICGh74OJRlDB0hOU4Gd/5Xi1rIc29ok89aQxLXdSE8o2rI3oUYjidDtejZOsULQ6GxYD+EqE/4nF8iNCa53STG3rZI6RygStWGnKDEWuMZbi7fhJeeVJiEU3SlkEFRDak8wl5zE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=qH0UmKmr; arc=none smtp.client-ip=209.85.128.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=umich.edu
+	s=arc-20240116; t=1722970524; c=relaxed/simple;
+	bh=ELUeXZjEYZYjTPyhCLfB8jFhtbY1lakHB6CZNBbwEko=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Kw3iiJh9VsCxq9trImSNDbVtbHsserqRFtup5i9hI3tiA2Do1AhCVOE9IKqLKI8DigAHZplRazash4wSvoILfi3LQbQn7MkDupRPUttCkX70GkVIMBCqei3zQQqOsYlhb+HW9KDMrGfEq7F4UBVExHploqMsjz/q6/zyvZMMeiA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bSDO4Ue5; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="qH0UmKmr"
-Received: by mail-yw1-f172.google.com with SMTP id 00721157ae682-66ca536621cso10777637b3.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 06 Aug 2024 11:30:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=umich.edu; s=google-2016-06-03; t=1722969045; x=1723573845; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=AJcjEsELElj17ftf1H3NNxeE2XuKAN8uQ1oS0Kp4OuE=;
-        b=qH0UmKmrO5pSotYBPE0TwmSSmkwcMGNZskTXkb9M3FQUgEbjfdOBzyIYU7tkLkSFSl
-         YEu/LhvO+ZMTJ1BvJw/yXVa51+oBUWC6Xjx+kSnCWbJGEuG+Amde+MAmQ6NCNMua6vVF
-         bkeDK48LgmrEjo6HOiXg1Q2cVM7H8sWWLDitdAqdUXyMBt/hY7K0gY6VXhSGFLPZP1Sy
-         i1b5u1TPYUp6tro/yDQ8McWPObz9DHtd8jLnLmbsUdqsSrTTg08GhryfDQDep9kOONwo
-         hk2mzyd24++j52RFlHUEsK65VKNUZ8pXyTebG1HjGfaGdNcceCy0qwEgs4AzvqVyUOQt
-         EHdA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722969045; x=1723573845;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=AJcjEsELElj17ftf1H3NNxeE2XuKAN8uQ1oS0Kp4OuE=;
-        b=HpmGWFJomWy15t1gGLRADE6DMs8YxLbMPITZgRijVfRUfimFTGuwCWfwxXlJQ3CC8N
-         6gQLisgPdrwkolVGZTJMnT9882YUUQS3TmxvKOJ1JdJMqP7h5rKkBMDOwhv9MDRH7kuF
-         aqohRx+FNyA0rj2disY7UHof+e81na0he5BGIOBhJjIZ0StEve6jXXnRzfX+x0iViwEm
-         dKdCe+4FrSGRKGwvc7vCsQYzZeEHwjfnyViGV17IzZW1OY95aN1Unkr3KUD6QcFMlxKB
-         +KeUdvj0qRl4jK5rrQrdj87aZsh5fcCnPzQucvYxqF+S/PBal7/oC5PIrmus9I0qk8tX
-         m+nA==
-X-Forwarded-Encrypted: i=1; AJvYcCW62kFhx57TPOPVmTo2ngDR96/EgOCW/4x/eXLIgx1Av5WuQl8Cz1gefIwEVQhvwxXhdTxQ9KkeHg22E/EcmIQ16oORuGmquNW8iHj9GPM=
-X-Gm-Message-State: AOJu0YwtVcw+n/5eMpP7NEbCHUHatyBjxWAL5QXPsm4PUJ1u/JBpqPls
-	BSEettafUEjoGvieS4PuvP2rZk//OTMdM4LeCRvNCNnjU5BX3WZVr3r68hXx94bGNiXI4DfgS6W
-	vFKrc+J0PMd+CBNiWCV5Ffs8OT/0hKw9orPO6rg==
-X-Google-Smtp-Source: AGHT+IEi5wEKcxYijrCG9lZ62HVarFC1N/dov62z2Vvk1px7mbW2C3yfR+rXHXlo0cHub/OfafmZkMejgkYcoEw+XE8=
-X-Received: by 2002:a81:5b06:0:b0:65f:9e35:af1a with SMTP id
- 00721157ae682-68964590c97mr153755347b3.41.1722969045434; Tue, 06 Aug 2024
- 11:30:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bSDO4Ue5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD6CAC32786;
+	Tue,  6 Aug 2024 18:55:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1722970523;
+	bh=ELUeXZjEYZYjTPyhCLfB8jFhtbY1lakHB6CZNBbwEko=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=bSDO4Ue5H+ByvMwMXjciLxo2r8Fc769DAl5UF4s+nCOXJOQCsWf7T2GytSco06nGB
+	 lEzsxmFwFX0jYI9ghSJSKg74Z+Y20YDemSHIKLvdHzlD7rusKjXSnpa9bIHBOQ0b/T
+	 awWIMhxDV88LlCWWdAqfI9hjF88p8+elzKAj8PU4rydujEvqKhErCQMw5BT0Bueeqs
+	 Le6gRqtQC5o1WRp5JjW2SYRhdLyEXhV/P99otkBgW8yakfSCX4rsC172fjJW1QMReB
+	 ycYafQNrtax0WWeC00f1vflEWu/olRbUFoz73yB0Bz2NWOIMbr3X9fIZTpbxoRdDOg
+	 uYpbEehhH1Oeg==
+Date: Tue, 6 Aug 2024 20:55:15 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	a.hindborg@samsung.com, aliceryhl@google.com,
+	akpm@linux-foundation.org, daniel.almeida@collabora.com,
+	faith.ekstrand@collabora.com, boris.brezillon@collabora.com,
+	lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com,
+	acurrid@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com,
+	airlied@redhat.com, ajanulgu@redhat.com, lyude@redhat.com,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH v4 04/28] rust: alloc: implement `Allocator` for `Kmalloc`
+Message-ID: <ZrJxkwF2Y59xln1e@pollux.localdomain>
+References: <20240805152004.5039-1-dakr@kernel.org>
+ <20240805152004.5039-5-dakr@kernel.org>
+ <fe982cb6-4910-4ba2-ae4d-892514c9e7f7@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240806150619.192882-1-ojeda@kernel.org>
-In-Reply-To: <20240806150619.192882-1-ojeda@kernel.org>
-From: Trevor Gross <tmgross@umich.edu>
-Date: Tue, 6 Aug 2024 14:30:33 -0400
-Message-ID: <CALNs47swnK6je1o+LOLUFCDEZJmQmZx8vZ+7MPvUbNKdFr_Q_Q@mail.gmail.com>
-Subject: Re: [PATCH] rust: add intrinsics to fix `-Os` builds
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Nathan Chancellor <nathan@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, 
-	Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, llvm@lists.linux.dev, linux-kernel@vger.kernel.org, 
-	patches@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <fe982cb6-4910-4ba2-ae4d-892514c9e7f7@proton.me>
 
-On Tue, Aug 6, 2024 at 11:06=E2=80=AFAM Miguel Ojeda <ojeda@kernel.org> wro=
-te:
->
-> Alice reported [1] that an arm64 build failed with:
->
->     ld.lld: error: undefined symbol: __extendsfdf2
->     >>> referenced by core.a6f5fc5794e7b7b3-cgu.0
->     >>>               rust/core.o:(<f32>::midpoint) in archive vmlinux.a
->     >>> referenced by core.a6f5fc5794e7b7b3-cgu.0
->     >>>               rust/core.o:(<f32>::midpoint) in archive vmlinux.a
->
->     ld.lld: error: undefined symbol: __truncdfsf2
->     >>> referenced by core.a6f5fc5794e7b7b3-cgu.0
->     >>>               rust/core.o:(<f32>::midpoint) in archive vmlinux.a
->
-> Rust 1.80.0 or later together with `CONFIG_CC_OPTIMIZE_FOR_SIZE=3Dy`
-> is what triggers it.
->
-> In addition, x86_64 builds also fail the same way.
->
-> Similarly, compiling with Rust 1.82.0 (currently in nightly) makes
-> another one appear, possibly due to the LLVM 19 upgrade there:
->
->     ld.lld: error: undefined symbol: __eqdf2
->     >>> referenced by core.20495ea57a9f069d-cgu.0
->     >>>               rust/core.o:(<f64>::next_up) in archive vmlinux.a
->     >>> referenced by core.20495ea57a9f069d-cgu.0
->     >>>               rust/core.o:(<f64>::next_down) in archive vmlinux.a
->
-> Gary adds [1]:
->
-> > Usually the fix on rustc side is to mark those functions as `#[inline]`
-> >
-> > All of {midpoint,next_up,next_down} are indeed unstable functions not
-> > marked as inline...
->
-> Fix all those by adding those intrinsics to our usual workaround.
->
-> Cc: Gary Guo <gary@garyguo.net>
-> Reported-by: Alice Ryhl <aliceryhl@google.com>
-> Closes: https://rust-for-linux.zulipchat.com/#narrow/stream/288089-Genera=
-l/topic/v6.2E11-rc1.20doesn't.20build.20for.20arm64/near/455637364
+On Tue, Aug 06, 2024 at 04:51:28PM +0000, Benno Lossin wrote:
+> On 05.08.24 17:19, Danilo Krummrich wrote:
+> > Implement `Allocator` for `Kmalloc`, the kernel's default allocator,
+> > typically used for objects smaller than page size.
+> > 
+> > All memory allocations made with `Kmalloc` end up in `krealloc()`.
+> > 
+> > It serves as allocator for the subsequently introduced types `KBox` and
+> > `KVec`.
+> > 
+> > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> > ---
+> >  rust/helpers.c                 |  3 +-
+> >  rust/kernel/alloc.rs           |  2 +-
+> >  rust/kernel/alloc/allocator.rs | 68 +++++++++++++++++++++++++++++++++-
+> >  3 files changed, 69 insertions(+), 4 deletions(-)
+> > 
+> > diff --git a/rust/helpers.c b/rust/helpers.c
+> > index 92d3c03ae1bd..9f7275493365 100644
+> > --- a/rust/helpers.c
+> > +++ b/rust/helpers.c
+> > @@ -193,8 +193,7 @@ void rust_helper_init_work_with_key(struct work_struct *work, work_func_t func,
+> >  }
+> >  EXPORT_SYMBOL_GPL(rust_helper_init_work_with_key);
+> > 
+> > -void * __must_check __realloc_size(2)
+> > -rust_helper_krealloc(const void *objp, size_t new_size, gfp_t flags)
+> > +void *rust_helper_krealloc(const void *objp, size_t new_size, gfp_t flags)
+> >  {
+> >  	return krealloc(objp, new_size, flags);
+> >  }
+> > diff --git a/rust/kernel/alloc.rs b/rust/kernel/alloc.rs
+> > index 8a71a589469d..bc01a17df5e0 100644
+> > --- a/rust/kernel/alloc.rs
+> > +++ b/rust/kernel/alloc.rs
+> > @@ -4,7 +4,7 @@
+> > 
+> >  #[cfg(not(test))]
+> >  #[cfg(not(testlib))]
+> > -mod allocator;
+> > +pub mod allocator;
+> >  pub mod box_ext;
+> >  pub mod vec_ext;
+> > 
+> > diff --git a/rust/kernel/alloc/allocator.rs b/rust/kernel/alloc/allocator.rs
+> > index 2c1eae25da84..c6ad1dd59dd0 100644
+> > --- a/rust/kernel/alloc/allocator.rs
+> > +++ b/rust/kernel/alloc/allocator.rs
+> > @@ -5,8 +5,16 @@
+> >  use super::{flags::*, Flags};
+> >  use core::alloc::{GlobalAlloc, Layout};
+> >  use core::ptr;
+> > +use core::ptr::NonNull;
+> > 
+> > -struct Kmalloc;
+> > +use crate::alloc::{AllocError, Allocator};
+> > +use crate::bindings;
+> > +
+> > +/// The contiguous kernel allocator.
+> > +///
+> > +/// The contiguous kernel allocator only ever allocates physically contiguous memory through
+> > +/// `bindings::krealloc`.
+> > +pub struct Kmalloc;
+> > 
+> >  /// Returns a proper size to alloc a new object aligned to `new_layout`'s alignment.
+> >  fn aligned_size(new_layout: Layout) -> usize {
+> > @@ -40,6 +48,64 @@ pub(crate) unsafe fn krealloc_aligned(ptr: *mut u8, new_layout: Layout, flags: F
+> >      }
+> >  }
+> > 
+> > +/// # Invariants
+> > +///
+> > +/// One of the following `krealloc`, `vrealloc`, `kvrealloc`.
+> > +struct ReallocFunc(
+> > +    unsafe extern "C" fn(*const core::ffi::c_void, usize, u32) -> *mut core::ffi::c_void,
+> > +);
+> > +
+> > +impl ReallocFunc {
+> > +    // INVARIANT: `krealloc` satisfies the type invariants.
+> 
+> This INVARIANT comment should be moved one line downwards.
+> 
+> > +    fn krealloc() -> Self {
+> > +        Self(bindings::krealloc)
+> > +    }
+> > +
+> > +    /// # Safety
+> > +    ///
+> > +    /// This method has the exact same safety requirements as `Allocator::realloc`.
+> 
+> I would remove "exact", I don't think we want to mean "almost the same"
+> when we write just "same".
+> 
+> > +    unsafe fn call(
+> > +        &self,
+> > +        ptr: Option<NonNull<u8>>,
+> > +        layout: Layout,
+> > +        flags: Flags,
+> > +    ) -> Result<NonNull<[u8]>, AllocError> {
+> > +        let size = aligned_size(layout);
+> > +        let ptr = match ptr {
+> > +            Some(ptr) => ptr.as_ptr(),
+> > +            None => ptr::null(),
+> > +        };
+> > +
+> > +        // SAFETY: `ptr` is valid by the safety requirements of this function.
+> 
+> "`ptr` is either NULL or valid by the safety requirements of this
+> function."
 
-Should this link have the `[1]`?
+Agreed, for this one and the above ones.
 
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> 
+> > +        let raw_ptr = unsafe {
+> > +            // If `size == 0` and `ptr != NULL` the memory behind the pointer is freed.
+> > +            self.0(ptr.cast(), size, flags.0).cast()
+> > +        };
+> > +
+> > +        let ptr = if size == 0 {
+> > +            NonNull::dangling()
+> 
+> If we call `realloc(Some(ptr), <layout with size = 0>, ...)`, then this
+> leaks the pointer returned by the call to `self.0` above. I don't know
+> what the return value of the different functions are that can appear in
+> `self.0`, do they return NULL?
+
+That is fine, we don't care about the return value. All `ReallocFunc` free the
+memory behind `ptr` if called with a size of zero. But to answer the question,
+they return either NULL or ZERO_SIZE_PTR.
+
+> 
+> What about the following sequence:
+> 
+>     let ptr = realloc(None, <layout with size = 0>, ...);
+>     let ptr = realloc(Some(ptr), <layout with size = 0>, ...);
+> 
+> Then the above call to `self.0` is done with a dangling pointer, can the
+> functions that appear in `self.0` handle that?
+
+This would be incorrect.
+
+Calling `realloc(Some(ptr), <layout with size = 0>, ...)` frees the memory
+behind `ptr`. This is guranteed behavior for all `ReallocFunc`s, i.e.
+krealloc(), vrealloc(), kvrealloc().
+
+> 
+> > +        } else {
+> > +            NonNull::new(raw_ptr).ok_or(AllocError)?
+> > +        };
+> > +
+> > +        Ok(NonNull::slice_from_raw_parts(ptr, size))
+> > +    }
+> > +}
+> > +
+> > +unsafe impl Allocator for Kmalloc {
+> > +    unsafe fn realloc(
+> > +        ptr: Option<NonNull<u8>>,
+> > +        layout: Layout,
+> > +        flags: Flags,
+> > +    ) -> Result<NonNull<[u8]>, AllocError> {
+> > +        let realloc = ReallocFunc::krealloc();
+> > +
+> > +        // SAFETY: If not `None`, `ptr` is guaranteed to point to valid memory, which was previously
+> > +        // allocated with this `Allocator`.
+> 
+> What about the other requirements? (they should be satisfied, since they
+> are also requirements for calling this function)
+
+Indeed, I think we should just write that by definition `Realloc::call` has the
+same safety requirements as `Allocator::realloc`.
+
+> 
+> > +        unsafe { realloc.call(ptr, layout, flags) }
+> 
+> If you make `ReallocFunc::krealloc()` into a constant
+> `ReallocFunc::KREALLOC`, then we could avoid the let binding above.
+
+Agreed, sounds good.
+
+> 
 > ---
->  rust/Makefile             | 4 ++--
->  rust/compiler_builtins.rs | 3 +++
->  2 files changed, 5 insertions(+), 2 deletions(-)
-
-Reviewed-by: Trevor Gross <tmgross@umich.edu>
-
-Also submitted a fix upstream https://github.com/rust-lang/rust/pull/128749=
-.
-
-- Trevor
+> Cheers,
+> Benno
+> 
+> > +    }
+> > +}
+> > +
+> >  unsafe impl GlobalAlloc for Kmalloc {
+> >      unsafe fn alloc(&self, layout: Layout) -> *mut u8 {
+> >          // SAFETY: `ptr::null_mut()` is null and `layout` has a non-zero size by the function safety
+> > --
+> > 2.45.2
+> > 
+> 
