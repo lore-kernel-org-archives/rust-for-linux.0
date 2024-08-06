@@ -1,185 +1,211 @@
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81D8E679E5
-	for <rust-for-linux@vger.kernel.org>; Tue,  6 Aug 2024 08:47:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 878881BD016
+	for <rust-for-linux@vger.kernel.org>; Tue,  6 Aug 2024 08:48:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722934022; cv=none; b=kwSePV2HCPdu1UTJM5pvuIZ3knUFoqcfZqC3f0nwoxQka23X+zDbjEiTw0dhJ8CsG+KkJXA2CkM2AmwmLOaYMO+iegtF0UrnuNYSQZOydcdg5n4CA2ULA8/znxuhJnJU244WH5FyuFphr1inUW9hKev+uqlDjpHEbjZrKCrCuNI=
+	t=1722934109; cv=none; b=nPoyDeqi+wuaqE7Mruhb6gT0n5YMKsNcJFt9dU54PZ5zmnz5Qzc9Iauq4Z7gHc4U1e1QdI0qbBlM5AVDqYd6AWV7guu3nqCXnPDd2empK6T4Zlgf6O1oQAEpHoMAnExUWKh64fnFvvwK2E6MPqn51telgiSj4fWAnuGp/1LoLnc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722934022; c=relaxed/simple;
-	bh=sn8s/hhGM9RCw6roGgyj8qDb3fdbkX/VO1/nAR5WzA4=;
+	s=arc-20240116; t=1722934109; c=relaxed/simple;
+	bh=r/HPO+3T3d3Rsx1+glCgz0NrZqNjccBNAyubtwnWY3U=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=g4z/gzhK0j2guuS1XHnZUvRbc/GK3xBf1/myZlF3RGfYXhxA7Ud9/NEQHrIsDlWfjYNXRdV0NSxcSxPGWYul33aJegG5JXeQMUJA59uTGwafcxRTSVqsrGnca0Z2VWndch1dxj+rbK1aUU6STcizBqmzG2+MRoR586sn4md80+E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=A8tlEsTx; arc=none smtp.client-ip=209.85.221.54
+	 To:Cc:Content-Type; b=UhTmPSHrXi9+dq86aYlDmjMICYuOtzXEc5A115EpoWhO0y78zlVCF54lm+0CP95hywDvdnpVfzREMOb6WJbognFX+5EjmhdyCT1EXaoZx7pqejvdvuL1XZt9dsVP+znt6TGq9wZk3fihc/omBom8tbZQisqgYex6DiX1DPLdtos=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=D0Ax9u7d; arc=none smtp.client-ip=209.85.128.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="A8tlEsTx"
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-368440b073bso342013f8f.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 06 Aug 2024 01:47:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="D0Ax9u7d"
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-428fb103724so7203445e9.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 06 Aug 2024 01:48:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1722934019; x=1723538819; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1722934104; x=1723538904; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=gUsCFOHNeQ648HXfhA+4dUNRAwaFI7wtB1jixg+a1Es=;
-        b=A8tlEsTxnHmcNcwPxMjgD7DD33wjMLgDZMQ57v4YJqyEhJX1N2WzLrXse3iV7EOJbH
-         yDvMj4Xt38YghOYYKk+EJSf4HsTfm2wKjyOnbmeksfuMq4TW/X97EY8xw3im5SsYpBy3
-         P+EGyveUZnxwEqwXlyhBUvchEzfA21jBU0ntvnS9GRgYsXHb5sCOO8nSlwtJsY50rTV7
-         LUh4RcNSU/6c6cGfbR0n540odt21mhUlueKeSoRTS4ZYFv86Pi8gz9J5WtEvu1OMGAuA
-         7BuA7VW+cdNHmIKRIyjTZwPItq/Lov5Hxmb6a9+zL/Cg4P427EU745iCHJlghSmTKbbA
-         5zzA==
+        bh=vkB0Cd0s/Qf30uEbUTYOzYCP2KGraAxLVDIwggQyhkE=;
+        b=D0Ax9u7dx+o+y3NP9iSx9HaBXOkUFDftI5G0okULj6z6Etr7PR3v56wLKjB+eyTuTo
+         4GuVNvWKt6Bi61E9xnClWL1eA1sEfBEMRBq5KzYnzVrUruuDJSNc+4DYK6bgpWUWLq3v
+         zR4r4IeyDlIYBqePFQBJmwLNxiWltl2LEHqrp0sAhWeDioziiqdY365igi2jz6K5gpmV
+         2l0uyK15iXHiYoUIYTbx5jp7Cr882oD7zKOGIye9/bQnhm4LdjBDSe2KiQQGgyTyG1fw
+         e9QEsuQd8ywXjUk8maS9zbHVgVzf7E5lOZvRuHjHKjf0q6ukr6aCZJYtMSC6j/uZLGby
+         Zdww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722934019; x=1723538819;
+        d=1e100.net; s=20230601; t=1722934104; x=1723538904;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=gUsCFOHNeQ648HXfhA+4dUNRAwaFI7wtB1jixg+a1Es=;
-        b=IScUXQpGKRxZfKNLENXPUJ78ohtN4gtulaHONufa3lDRH2Y51/dQT1SiV1iKB5YeKP
-         Ac5HU8bhVNwMTu0Qiza0mfOOFb7SvrdwUpE9XzsPS5yUHC+Os+s565codzF0bu8JWhR6
-         wP5eQxqr+OaieZuxzOR4CmjfiOaveeqNLEHhDe3U/XfnHGLlpsLP8r80hvS0X6TEy1wi
-         LpwL2OtJMW2YKbBStGWe0GSIsxl7aMk8WeR+Pn5gJBaqxDRfwgPxKXPvS311Bp86H/IM
-         hV+9yNl6ZQ3h9DX3N6ydGg4asD4b+DK/F5isitGTA355mWglbVq0xZvlR/s1i7y2m6oD
-         uEaA==
-X-Forwarded-Encrypted: i=1; AJvYcCXfbyDoU3i6NuDGWe/xl5r2OyWS4GcNpFaH2W/nKp5j+KYzUBkY5HrfC8mvihQL43kJv2/icLUzolzEbcXGPCbGWILK5tBj273ZYPMgrUk=
-X-Gm-Message-State: AOJu0YyE+hAXsFxutQJif7k8iP9mNqK3zchikJT/hI6QZJfBuvaBZRk8
-	/x5r9SS1xGEtJ/mtikQ3B+ukray1uZRgE4qfVlnrPsv/wQMCktZu9utrr3W/4MbyaxMXHRr1drV
-	r2lypU/MWlmxdews2KSk41NYszj4X0mBZAOwO
-X-Google-Smtp-Source: AGHT+IEDGBOyTK8qZKnG9L1LD2Vk6xGInwP+MSUtNv88v/GVDYe2o7PhNnFmHzOPtz6NvSausD4c5Xy9d/8U5nThMEY=
-X-Received: by 2002:a5d:63c6:0:b0:367:8fee:4434 with SMTP id
- ffacd0b85a97d-36bbbe58c9amr9941155f8f.16.1722934018478; Tue, 06 Aug 2024
- 01:46:58 -0700 (PDT)
+        bh=vkB0Cd0s/Qf30uEbUTYOzYCP2KGraAxLVDIwggQyhkE=;
+        b=EN6Ytb+mNuoKP9dmB9a5ugHsiH2ejKR+o1WDRkvWacqNHXDO8Wgn5VSEN2C+9Abr4A
+         T6eB5dQJMetKJYX6KDWa8O+MQxBvPhU84HOkh05L9ycBYe4L3kHzIL91p9gEFzC4Nvi4
+         k2FMG0om3pxiEnscKBDp7s8J3hJwuOyk7rDrX/Sf4WjI+Vc/YOMR2amLspVfY2MYCbAz
+         mlYWrXVzFGOVWr989JnkZxYo9/OwGcM94O42EQJY2bKszP2jWG0/bQPHTzrATzso7H5K
+         oZPyDJAARsXdu/Vxhv1grcvCaFQ1q5M5oFraS2UurZm0VtYGTyC/B9jkstvHt3ClS6bv
+         RqWA==
+X-Forwarded-Encrypted: i=1; AJvYcCWJNOjLFElPhHqUOwsgjtvkbz2TxTMWhimsXqJdOx3BMvdLPpuXqvNvxxkrl0UELxjMwCL5E33vRz0YWnxaHwAgbssI8gkyu0r+XqjHzHg=
+X-Gm-Message-State: AOJu0Yzyrjrvfk1NyUOk/jgRzqOrAWoRUohEP+1SQOiAVVE0xe50gd7X
+	iCQneSNYuAdV5cvmOxHC/elzgfRG+Os1ugtFbChKktQ0Ob3GKWYBsqQhcqvezvUKaEcThKZI6Wr
+	mUdKqruOXxbdYmTALTey55aSGAjtwpunnWchR
+X-Google-Smtp-Source: AGHT+IGFgI0TVkke22UsDZQDfugvSmvi4S+Fu5uBorocOt5O9xaTLJiWkTnkaIRnZXLb/CpZCMg4SficQPlMCFHLlNY=
+X-Received: by 2002:adf:ea02:0:b0:362:69b3:8e4d with SMTP id
+ ffacd0b85a97d-36bbbecb622mr12534784f8f.25.1722934103552; Tue, 06 Aug 2024
+ 01:48:23 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240729-shadow-call-stack-v4-0-2a664b082ea4@google.com>
- <20240729-shadow-call-stack-v4-2-2a664b082ea4@google.com> <20240805171340.GC10196@willie-the-truck>
-In-Reply-To: <20240805171340.GC10196@willie-the-truck>
+References: <20240725-alice-file-v8-0-55a2e80deaa8@google.com>
+ <20240725-alice-file-v8-3-55a2e80deaa8@google.com> <4bf5bf3b-88f4-4ee4-80fd-c566428d9f69@proton.me>
+In-Reply-To: <4bf5bf3b-88f4-4ee4-80fd-c566428d9f69@proton.me>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 6 Aug 2024 10:46:46 +0200
-Message-ID: <CAH5fLgiudJsmBvdZ0SLESncmVeh+j1WtCaxFGk8ZKneJpznRiA@mail.gmail.com>
-Subject: Re: [PATCH v4 2/2] rust: support for shadow call stack sanitizer
-To: Will Deacon <will@kernel.org>
-Cc: Catalin Marinas <catalin.marinas@arm.com>, Jamie Cunliffe <Jamie.Cunliffe@arm.com>, 
-	Sami Tolvanen <samitolvanen@google.com>, Nathan Chancellor <nathan@kernel.org>, 
-	Conor Dooley <conor@kernel.org>, Masahiro Yamada <masahiroy@kernel.org>, 
-	Nicolas Schier <nicolas@fjasle.eu>, Ard Biesheuvel <ardb@kernel.org>, Marc Zyngier <maz@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, Mark Brown <broonie@kernel.org>, 
-	Nick Desaulniers <ndesaulniers@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+Date: Tue, 6 Aug 2024 10:48:11 +0200
+Message-ID: <CAH5fLgi0MGUhbD0WV99NtU+08HCJG+LYMtx+Ca4gwfo9FR+hTw@mail.gmail.com>
+Subject: Re: [PATCH v8 3/8] rust: file: add Rust abstraction for `struct file`
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Valentin Obst <kernel@valentinobst.de>, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	rust-for-linux@vger.kernel.org, Kees Cook <kees@kernel.org>
+	Andreas Hindborg <a.hindborg@samsung.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
+	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
+	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Dan Williams <dan.j.williams@intel.com>, 
+	Matthew Wilcox <willy@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, Daniel Xu <dxu@dxuuu.xyz>, 
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	Kees Cook <kees@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Aug 5, 2024 at 7:13=E2=80=AFPM Will Deacon <will@kernel.org> wrote:
+On Tue, Aug 6, 2024 at 10:44=E2=80=AFAM Benno Lossin <benno.lossin@proton.m=
+e> wrote:
 >
-> Hi Alice,
+> On 25.07.24 16:27, Alice Ryhl wrote:
+> > +/// Wraps the kernel's `struct file`. Not thread safe.
+> > +///
+> > +/// This type represents a file that is not known to be safe to transf=
+er across thread boundaries.
+> > +/// To obtain a thread-safe [`File`], use the [`assume_no_fdget_pos`] =
+conversion.
+> > +///
+> > +/// See the documentation for [`File`] for more information.
+> > +///
+> > +/// # Invariants
+> > +///
+> > +/// * All instances of this type are refcounted using the `f_count` fi=
+eld.
+> > +/// * If there is an active call to `fdget_pos` that did not take the =
+`f_pos_lock` mutex, then it
+> > +///   must be on the same thread as this `File`.
 >
-> Just some minor comments on this:
->
-> On Mon, Jul 29, 2024 at 02:22:50PM +0000, Alice Ryhl wrote:
-> > To use the shadow call stack sanitizer, you must pass special flags:
-> >
-> > * On arm64, you must pass -ffixed-x18 to your compiler.
-> > * On riscv, you must pass --no-relax-gp to your linker.
->
-> Since this patch doesn't touch riscv, I think you can just talk about
-> arm64 in the commit message.
+> Do you mean `LocalFile`?
 
-On the previous version, I was asked whether the patch should be
-modified to only allow the configuration on arm64, since there were no
-changes in the patch to support riscv. This part was added to justify
-why the patch doesn't need to be arm64-specific. I will reword to make
-it more clear why I am mentioning riscv.
+I guess. Perhaps I should just say "file" as a general concept?
 
-> > These requirements also apply to Rust code. When using Rust on arm64,
-> > you must pass the -Zfixed-x18 flag to rustc, which has the same effect
-> > as the -ffixed-x18 flag does for C code. The -Zfixed-x18 flag requires
-> > rustc version 1.80.0 or greater.
-> >
-> > There is no need to pass any flags to rustc on riscv as only the linker
-> > requires additional flags on this platform.
-> >
-> > On older versions of Rust, it is still possible to use shadow call stac=
-k
-> > by passing -Ctarget-feature=3D+reserve-x18 instead of -Zfixed-x18.
-> > However, this flag emits a warning during the build, so this patch does
-> > not add support for using it.
-> >
-> > Currently, the compiler thinks that the aarch64-unknown-none target
+> > +///
+> > +/// [`assume_no_fdget_pos`]: LocalFile::assume_no_fdget_pos
+> > +pub struct LocalFile {
+> > +    inner: Opaque<bindings::file>,
+> > +}
 >
-> "Currently" will probably age badly -- can you talk about a compiler
-> version instead (e.g. "prior to version nnn, the compiler thinks...").
-
-I will reword, but unfortunately I don't have a version number I can
-put as it's still unfixed. (But we are actively working on it!)
-
-> > doesn't support -Zsanitizer=3Dshadow-call-stack, so the build will fail=
- if
-> > you enable shadow call stack in non-dynamic mode. See [1] for the
-> > relevant feature request. To avoid this compilation failure, Kconfig is
-> > set up to reject such configurations.
-> >
-> > The `depends on` clause is placed on `config RUST` to avoid a situation
-> > where enabling Rust silently turns off the sanitizer. Instead, turning
-> > on the sanitizer results in Rust being disabled. We generally do not
-> > want changes to CONFIG_RUST to result in any mitigations being changed
-> > or turned off.
-> >
-> > Link: https://github.com/rust-lang/rust/issues/121972 [1]
-> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> > ---
-> >  Makefile            | 1 +
-> >  arch/arm64/Makefile | 3 +++
-> >  init/Kconfig        | 2 +-
-> >  3 files changed, 5 insertions(+), 1 deletion(-)
-> >
-> > diff --git a/Makefile b/Makefile
-> > index 2b5f9f098b6f..66daca7a9b57 100644
-> > --- a/Makefile
-> > +++ b/Makefile
-> > @@ -928,6 +928,7 @@ ifdef CONFIG_SHADOW_CALL_STACK
-> >  ifndef CONFIG_DYNAMIC_SCS
-> >  CC_FLAGS_SCS :=3D -fsanitize=3Dshadow-call-stack
-> >  KBUILD_CFLAGS        +=3D $(CC_FLAGS_SCS)
-> > +KBUILD_RUSTFLAGS +=3D -Zsanitizer=3Dshadow-call-stack
-> >  endif
-> >  export CC_FLAGS_SCS
-> >  endif
-> > diff --git a/arch/arm64/Makefile b/arch/arm64/Makefile
-> > index f6bc3da1ef11..b058c4803efb 100644
-> > --- a/arch/arm64/Makefile
-> > +++ b/arch/arm64/Makefile
-> > @@ -57,9 +57,11 @@ KBUILD_AFLAGS      +=3D $(call cc-option,-mabi=3Dlp6=
-4)
-> >  ifneq ($(CONFIG_UNWIND_TABLES),y)
-> >  KBUILD_CFLAGS        +=3D -fno-asynchronous-unwind-tables -fno-unwind-=
-tables
-> >  KBUILD_AFLAGS        +=3D -fno-asynchronous-unwind-tables -fno-unwind-=
-tables
-> > +KBUILD_RUSTFLAGS +=3D -Cforce-unwind-tables=3Dn
-> >  else
-> >  KBUILD_CFLAGS        +=3D -fasynchronous-unwind-tables
-> >  KBUILD_AFLAGS        +=3D -fasynchronous-unwind-tables
-> > +KBUILD_RUSTFLAGS +=3D -Cforce-unwind-tables=3Dy -Zuse-sync-unwind=3Dn
+> [...]
 >
-> These unwind entries aren't mentioned at all in the commit message.
-> Please can you explain what you're doing here? I guess it's something to
-> do with the PAC patching? Maybe this hunk would be better as a separate
-> patch?
+> > +    /// Returns the flags associated with the file.
+> > +    ///
+> > +    /// The flags are a combination of the constants in [`flags`].
+> > +    #[inline]
+> > +    pub fn flags(&self) -> u32 {
+> > +        // This `read_volatile` is intended to correspond to a READ_ON=
+CE call.
+> > +        //
+> > +        // SAFETY: The file is valid because the shared reference guar=
+antees a nonzero refcount.
+> > +        //
+> > +        // FIXME(read_once): Replace with `read_once` when available o=
+n the Rust side.
+>
+> Do you know the status of this?
 
-It's because the PAC patching uses the unwind tables to find the
-relevant places to patch. I will explain why in the commit message. If
-you still think it needs to be separate after I add an explanation,
-please let me know on the next version, which I will submit shortly.
+It's still unavailable.
+
+> > +        unsafe { core::ptr::addr_of!((*self.as_ptr()).f_flags).read_vo=
+latile() }
+> > +    }
+> > +}
+> > +
+> > +impl File {
+> > +    /// Creates a reference to a [`File`] from a valid pointer.
+> > +    ///
+> > +    /// # Safety
+> > +    ///
+> > +    /// * The caller must ensure that `ptr` points at a valid file and=
+ that the file's refcount is
+> > +    ///   positive for the duration of 'a.
+> > +    /// * The caller must ensure that if there are active `fdget_pos` =
+calls on this file, then they
+> > +    ///   took the `f_pos_lock` mutex.
+> > +    #[inline]
+> > +    pub unsafe fn from_raw_file<'a>(ptr: *const bindings::file) -> &'a=
+ File {
+> > +        // SAFETY: The caller guarantees that the pointer is not dangl=
+ing and stays valid for the
+> > +        // duration of 'a. The cast is okay because `File` is `repr(tr=
+ansparent)`.
+> > +        //
+> > +        // INVARIANT: The caller guarantees that there are no problema=
+tic `fdget_pos` calls.
+> > +        unsafe { &*ptr.cast() }
+> > +    }
+> > +}
+> > +
+> > +// Make LocalFile methods available on File.
+> > +impl core::ops::Deref for File {
+> > +    type Target =3D LocalFile;
+> > +    #[inline]
+> > +    fn deref(&self) -> &LocalFile {
+> > +        // SAFETY: The caller provides a `&File`, and since it is a re=
+ference, it must point at a
+> > +        // valid file for the desired duration.
+> > +        //
+> > +        // By the type invariants, there are no `fdget_pos` calls that=
+ did not take the
+> > +        // `f_pos_lock` mutex.
+> > +        unsafe { LocalFile::from_raw_file(self as *const File as *cons=
+t bindings::file) }
+> > +    }
+> > +}
+> > +
+> > +// SAFETY: The type invariants guarantee that `LocalFile` is always re=
+f-counted. This implementation
+> > +// makes `ARef<File>` own a normal refcount.
+> > +unsafe impl AlwaysRefCounted for LocalFile {
+> > +    #[inline]
+> > +    fn inc_ref(&self) {
+> > +        // SAFETY: The existence of a shared reference means that the =
+refcount is nonzero.
+> > +        unsafe { bindings::get_file(self.as_ptr()) };
+> > +    }
+> > +
+> > +    #[inline]
+> > +    unsafe fn dec_ref(obj: ptr::NonNull<LocalFile>) {
+> > +        // SAFETY: To call this method, the caller passes us ownership=
+ of a normal refcount, so we
+> > +        // may drop it. The cast is okay since `File` has the same rep=
+resentation as `struct file`.
+> > +        unsafe { bindings::fput(obj.cast().as_ptr()) }
+> > +    }
+> > +}
+>
+> Can you move these `AlwaysRefCounted` impls towards the struct
+> definitions?
+>
+> With those two comments fixed:
+>
+> Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+
+Thanks!
 
 Alice
