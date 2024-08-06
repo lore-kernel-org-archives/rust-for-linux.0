@@ -1,296 +1,218 @@
-Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34D3B14A099;
-	Mon,  5 Aug 2024 21:56:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38D6B1BD00D;
+	Tue,  6 Aug 2024 08:09:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722895019; cv=none; b=BZLv3EJseZI5s1GOycfBYD9liCDpn9wFHCwrEEvu1wXTv3c5Qdi4cv0Pw6fHA2MidwkPq4RSSy8jn0/4ttgT2Bs5fJsNxfhFsrx1AgefA0bzBuLfwNxwUYqI753EIIWtwHP64ht6F7PRUmio5PkC5LLbOCoHOSdEvVhnLZGngR8=
+	t=1722931765; cv=none; b=Sz3yZ7U7vefsNyynQJcGycvNe2ku2QC6H8Ung2nsNRms63sQoSqQtBixxWsp9c4asPZfM32/mMXIcsGE3czObrWVzTvzVgbpPuouycU/yauYt5DyQxm7GqMjx2y+l5MgkxYwp6vHsbnh4pSsAQgUJyoWkSIPwRVFDEe1pFrMijU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722895019; c=relaxed/simple;
-	bh=ZgDcPUTpCF4Mm5Z/yZQGDB6kwws0YMUdErBwO2XQ4o8=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=UI3HBQRZt2PR39w6pZNNJbTC+u3lvMVx+f6UF+Jwrdkkx+pOutICZYPEteNnc82ZQVrviH4QmRuuN1b1sbyN+Ihgu66uJ/j+1/To/bFzU+VXr/FhORKCOx6MGjxDe4JNfOtVju6fkFTh9o5AiV5duh81khnP1UWPaNJuHadxQHw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kCEty5Jo; arc=none smtp.client-ip=209.85.128.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1722931765; c=relaxed/simple;
+	bh=p9xExAr/iVlA5WKy/Vdm3K4UTweFifuN4Tk4ISL/pgo=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=T1dHvOdxSFXOGCeu/4tluRlw3R2gnEYUGgW9eEDz0nmvtWZbq3yQgR91d/UVi3ui0rAuuybsvqN+WaRigpSWEfND9A9zJyZ4i1jovL1KV6UG/wnL9cG9MiqcJTw6glnTLzKm8BqphDPvnOuhv+2zNJCxt9JaCwGF4oaxHS5Eb2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=XmsDcjv2; arc=none smtp.client-ip=185.70.40.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kCEty5Jo"
-Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-4280bca3960so470965e9.3;
-        Mon, 05 Aug 2024 14:56:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1722895015; x=1723499815; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=28/uDi1EiKJll8jhWDtTNE12TCXwHFNwlesnqMVZB28=;
-        b=kCEty5Jo+Ha9JjKsz/4muyXjcre7KEeWtEg7uub5aqaHBaqlbEEHIksf0SmWljek0p
-         BxCPfFI2hKSJjP8SIQPeR4HK/gzY9bAHYyB4OGpX3khNvdFGmig38lM7iiw+lzP1Jv2G
-         hlnCd9phYtMEkPxTR+Br8IOnPLXk5k+0ZklRQkjSNVIlGee5iglPomNXHLE1sP7El83Z
-         59sWK//GPp0x2cT6aQRqtF6j9rBhbUl41HILE4iHG9Hx+yv9JRLY4z/FRTuTwxqOFyWw
-         EXRWo0xW+THtQ/5SdhoNjNvH5ehfTfQQGxx+qxgA29mGHgkAMjw8tTw9HGfyalWsYbFs
-         t42Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722895015; x=1723499815;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=28/uDi1EiKJll8jhWDtTNE12TCXwHFNwlesnqMVZB28=;
-        b=ENZjvPI40J5Kj4HZIm3jsvGyjsz/RjsBz0+c2lTo6m5UNh1Ig/CBV1ouGWXYDU6Zkw
-         PbWukAty7fXUa59ZYkW8nSD80oh5rhDcTyeEL4Sba+n8E+Ve5M4U9/zhDnjbPf56uG3w
-         xizegrytLiLTf8XsDN7qj+vGaW7oJ1OdCYFOXC5tzz14+3aUoLwT/l2+OF7FymH/WKVS
-         LwUSTrWzdkXfXYgUdylWwLSfWzs+hg5eJ4BXeBPy/LWt1/thk1AZuCLIE5pqVEnKOWBP
-         vbSw1hmqXEopejm92IT3UBZVvTAZrqt7eOuCErTk2vBpdgSeI2SIvGmhBiWciDDPKvQ2
-         KZeA==
-X-Forwarded-Encrypted: i=1; AJvYcCUO/+CJbT2TWEjNjO+pXTM66ebsmL1t0u2RIQ42ojIe+pTzCpiqYhq21czxtXdFhx2nL2Z2S6wRvkFhhoSccK8T7hrx8fOA6AoKUJUeGNXEXgacfAz0eqLAbRjN/dSNoc7ry80PiGgUP36LeACB6+E=
-X-Gm-Message-State: AOJu0YwUoJlZLXU7Fz1/gwBBoGFdHmmPe+pBSB7PlVfzMTa1EBxDloFw
-	10lSxhP9UVJ6xHMonN3K80tI1uWMAjHcukzxC1Jv1EGmkJVzUpKW
-X-Google-Smtp-Source: AGHT+IEUPcGHYYsoUSKcErZm6gE08kk6KDrurtp/QGjGvauxalr2L6o0kQ5GMjJyBLFnQKsWU77Ytg==
-X-Received: by 2002:a05:600c:4e16:b0:426:5b51:109d with SMTP id 5b1f17b1804b1-428e6b83835mr81794195e9.36.1722895015250;
-        Mon, 05 Aug 2024 14:56:55 -0700 (PDT)
-Received: from laptop.. (220.red-83-52-58.dynamicip.rima-tde.net. [83.52.58.220])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-428fe2d4adcsm2688085e9.1.2024.08.05.14.56.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 05 Aug 2024 14:56:54 -0700 (PDT)
-From: =?UTF-8?q?Sergio=20Gonz=C3=A1lez=20Collado?= <sergio.collado@gmail.com>
-To: Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	linux-kselftest@vger.kernel.org,
-	kunit-dev@googlegroups.com,
-	sergio.collado@gmail.com
-Cc: Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	David Rheinsberg <david@readahead.eu>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel-mentees@lists.linuxfoundation.org,
-	skhan@linuxfoundation.org,
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-Subject: [PATCH v3] Kunit to check the longest symbol length
-Date: Mon,  5 Aug 2024 23:56:22 +0200
-Message-Id: <20240805215622.102133-1-sergio.collado@gmail.com>
-X-Mailer: git-send-email 2.39.2
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="XmsDcjv2"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1722931755; x=1723190955;
+	bh=oLUYxbAxLEUHoeTSlg1qUumJFtdJ36VEwGodmemh/PY=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=XmsDcjv2fO1yqop7mqnfjuTiOl7FNw9s9ISW3yPa0nDRWitehYqxzQ6FKjEQAmYwI
+	 qZqF4/mSar91kBGRXvK38xWOkTtIgH1s54U0oRWf9ADIrCmypCCdY4cfAt8+Kc1d+5
+	 gtDO+K4sI5GorBrPfujz9tMW6iTQhF5OvI1S1ooqYEsVXhBajjwL3jgommyBK93lGc
+	 sKluFYJy2tRGUfBmAtMRfne+qeP65ez/YS/enjG6IIk3SirlUaiIHxoN8B0I+5o5cP
+	 Kp8QOswNdPH6/eU6u3Muo7hbxxQMLQFZ4pfrtJbrcnFAVZO417f/4a7XoyXM40mHOi
+	 jFF0bLPgkF52w==
+Date: Tue, 06 Aug 2024 08:09:09 +0000
+To: Andreas Hindborg <nmi@metaspace.dk>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Luis Chamberlain <mcgrof@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, rust-for-linux@vger.kernel.org, linux-modules@vger.kernel.org, linux-kernel@vger.kernel.org, Andreas Hindborg <a.hindborg@samsung.com>, Adam Bratschi-Kaye <ark.email@gmail.com>
+Subject: Re: [PATCH] rust: add `module_params` macro
+Message-ID: <b95cc90a-46ae-44af-90af-0fc374cd381a@proton.me>
+In-Reply-To: <87v80fme7g.fsf@metaspace.dk>
+References: <20240705111455.142790-1-nmi@metaspace.dk> <49cad242-7a7c-4e9e-beb7-4f9c493ce794@proton.me> <878qxgnyzd.fsf@metaspace.dk> <ed2f7416-2631-411d-bb49-5a580dbf51b8@proton.me> <874j84nurn.fsf@metaspace.dk> <f84e9189-b64a-4761-86f5-ccd50fb62f36@proton.me> <87zfpvmd8y.fsf@metaspace.dk> <a98ddf54-3e27-4587-8e49-f19dd1ac65a6@proton.me> <87v80fme7g.fsf@metaspace.dk>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: fa0b965016167af4b6f1337c11afc96ca1d75ead
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-The longest length of a symbol (KSYM_NAME_LEN) was increased to 512
-in the reference [1]. This patch adds a kunit test to check the longest
-symbol length.
+On 05.08.24 12:55, Andreas Hindborg wrote:
+> "Benno Lossin" <benno.lossin@proton.me> writes:
+>> On 02.08.24 12:27, Andreas Hindborg wrote:
+>>> At a higher level where the bindings supply the parsing functions, we
+>>> can decide that passing an argument without a value yields a default
+>>> parameter value. C does this for the predefined `bool` type. The
+>>> predefined integer types does not support omitting the value.
+>>>
+>>> This patch only supports the higher level predefined parameter types,
+>>> and does not allow modules to supply their own parameter parsing
+>>> functions. None of the types we implement in this patch support passing
+>>> the argument without a value. This is intentional to mirror the C
+>>> implementation.
+>>>
+>>> To that end, I removed `NOARG_ALLOWED`, and changed the parsing functio=
+n
+>>> trait to:
+>>>
+>>>     fn try_from_param_arg(arg: &'static [u8]) -> Result<Self>;
+>>>
+>>> If/when we start supporting types like `bool` or custom parsing
+>>> functions provided by the module, we will have to update the signature
+>>> to take an `Option` to represent the case where the user passed an
+>>> argument without a value. However, to mimic C, the function must always
+>>> return a value if successful, even if the user did not supply a value t=
+o
+>>> the argument.
+>>>
+>>> Two different default values are in flight here. 1) the value that the
+>>> parameter will have before the kernel calls `try_from_param_arg` via
+>>> `set_param` and 2) the value to return from `try_from_param_arg` if the
+>>> user did not pass a value with the argument.
+>>>
+>>> For a `bool` 1) would usually be `false` and 2) would always be `true`.
+>>>
+>>> For predefined types the module would not customize 2), but 1) is usefu=
+l
+>>> to customize. For custom types where the module supplies the parsing
+>>> function, 2) would be implicitly given by the module in the parsing
+>>> function.
+>>>
+>>> In this patch set, we only have 1 default value, namely 1). We do not
+>>> need 2) because we do not support parameters without values.
+>>
+>> I am not sure that putting the default value of `my_module.param` into
+>> the `ModuleParam` trait is a good idea. It feels more correct to me to
+>> add an optional field to the part in `module!` that can be set to denote
+>> this default value -- we might also want to change the name of
+>> `default`, what do you think of `default_inactive` and `default_active`?
+>=20
+> For all the predefined parameter types, the module code would never set
+> the `default_active` value. It should be part of the data parsing
+> specification for the predefined argument types.
 
-[1] https://lore.kernel.org/lkml/20220802015052.10452-6-ojeda@kernel.org/
+So if your module has an i32 parameter, you can't set a default value to
+eg 1000?
 
-Tested-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-Signed-off-by: Sergio González Collado <sergio.collado@gmail.com>
+> For custom parsing functions implemented in the module, it makes sense
+> specifying this value in the trait.
+
+Couldn't I just emulate the behavior from above by creating a
+`struct MyI32(i32)` and having a default value?
+In that case, why make it more difficult instead of providing a simple
+way to do it?
+
+>> Since one might want an option by default be `true` and when one writes
+>> `my_module.param`, it should be `false`.
+>=20
+> I think this would be confusing, since the default C parameter types do
+> not have this semantic. Specifying a default true boolean as an argument
+> does not make it false in C land. TBH this also feels like the most sane
+> thing to do.
+
+Can't you also do the custom parameter parsing from above? ie have an
+integer parameter with a default value?
+Or is that frowned upon (ie not allowed through review)?
+
+>> Also as the C side shows, having default values for integer types is not
+>> really a good idea, since you might want a non-zero default value.
+>> If one does not specify the `default_active` value, then the
+>> `KERNEL_PARAM_OPS_FL_NOARG` is not set.
+>=20
+> I would rather predefine `KERNEL_PARAM_OPS_FL_NOARG` in the trait
+> implementation like C does. We would set the flag for `bool` but not for
+> integer types. For custom implementations of the trait, the developer
+> can do whatever they want.
+
+So we are only going to use it for `bool`?
+
+>> If you don't want to implement this (which I can fully understand, since
+>> we might get `syn` before anyone needs params with default values), then
+>> we should write this idea down (maybe in an issue?). But regardless, I
+>> would like to know your opinion on this topic.
+>=20
+> We can create he issue if this series is accepted without the feature.
+>=20
+>>
+>>>>> I think we need to drop the default value if we adopt the arg without
+>>>>> value scheme.
+>>>>
+>>>> Yes definitely. I don't see anything in the code doing this currently,
+>>>> right?
+>>>
+>>> The current patch uses the default value given in the `module!` macro t=
+o
+>>> initialize the parameter value.
+>>
+>> But what drops the default value, when an actual value is specified via
+>> `my_module.param=3Dvalue`? (or is the default value only assigned when
+>> nothing is specified?)
+>=20
+> Some more confusion maybe. When I wrote "drop the default value", I
+> meant remove it from the code, not specify it. I take it back though. We
+> would use the value given in the `module!` macro `default` field as
+> `default_inactive`. `default_active` is not required for integer types,
+> since they always require a value for the argument.
+>=20
+> But the drop would happen in `set_param` when the return value of
+> `core::ptr::replace` is dropped.
+
+Ah I see, I missed that.
+
+>>>>> We could also only allow `Copy` values to be used as Parameters (but
+>>>> then `str` cannot be used as a parameter...), since they can't impleme=
+nt
+>>>> `Drop`.
+>>>
+>>> We should plan on eventually supporting `String`.
+>>
+>> Yes.
+>>
+>>>>>>> Or we could just not adopt this feature in the Rust abstractions.
+>>>>>>
+>>>>>> Depends on how common this is and if people need to use it. I think =
+that
+>>>>>> what I proposed above isn't that complex, so it should be easy to
+>>>>>> implement.
+>>>>>
+>>>>> Rust modules would just force people to add "my_module.param=3D1" ins=
+tead
+>>>>> of just "my_module.param". I think that is reasonable.
+>>>>
+>>>> Eh, why do we want to give that up? I don't think it's difficult to do=
+.
+>>>
+>>> I just don't see the point. Just have the user pass `my_module.param=3D=
+1`
+>>> instead of omitting the value. Having multiple ways of specifying for
+>>> instance a true boolean just leads to confusion. Some boolean parameter=
+s
+>>> have a default value of `true`, for instance `nvme.use_cmb_sqes`. In
+>>> this case specifying `nvme.use_cmb_sqes` has no effect, even though one
+>>> might think it has.
+>>
+>> This just shows to me that a "global" default in `ModuleParam` is wrong,
+>> since for `use_cmb_sqes` one could either have a negated flag, or no
+>> default value, forcing the user to write `nvme.use_cmb_sqes=3Dfalse`.
+>=20
+> I do not think it is a good idea to be able to override the value
+> assigned to a parameter when it is given without a value. The more
+> predictable a user interface is, the better.
+
+By that argument, we should also not permit custom implementations to
+specify a default value.
+
 ---
-V1 -> V2: corrected CI tests. Added fix proposed at [2]
-
-[2] https://lore.kernel.org/lkml/Y9ES4UKl%2F+DtvAVS@gmail.com/T/#m3ef0e12bb834d01ed1ebdcae12ef5f2add342077
----
-V2 -> V3: updated base and added MODULE_DESCRIPTION() and MODULE_AUTHOR()
----
- arch/x86/tools/insn_decoder_test.c |   3 +-
- lib/Kconfig.debug                  |   9 +++
- lib/Makefile                       |   2 +
- lib/longest_symbol_kunit.c         | 124 +++++++++++++++++++++++++++++
- 4 files changed, 137 insertions(+), 1 deletion(-)
- create mode 100644 lib/longest_symbol_kunit.c
-
-diff --git a/arch/x86/tools/insn_decoder_test.c b/arch/x86/tools/insn_decoder_test.c
-index 472540aeabc2..3bde35ea4188 100644
---- a/arch/x86/tools/insn_decoder_test.c
-+++ b/arch/x86/tools/insn_decoder_test.c
-@@ -10,6 +10,7 @@
- #include <assert.h>
- #include <unistd.h>
- #include <stdarg.h>
-+#include <linux/kallsysms.h>
- 
- #define unlikely(cond) (cond)
- 
-@@ -106,7 +107,7 @@ static void parse_args(int argc, char **argv)
- 	}
- }
- 
--#define BUFSIZE 256
-+#define BUFSIZE (256 + KSYM_NAME_LEN)
- 
- int main(int argc, char **argv)
- {
-diff --git a/lib/Kconfig.debug b/lib/Kconfig.debug
-index a30c03a66172..4587466f7d07 100644
---- a/lib/Kconfig.debug
-+++ b/lib/Kconfig.debug
-@@ -2783,6 +2783,15 @@ config FORTIFY_KUNIT_TEST
- 	  by the str*() and mem*() family of functions. For testing runtime
- 	  traps of FORTIFY_SOURCE, see LKDTM's "FORTIFY_*" tests.
- 
-+config LONGEST_SYM_KUNIT_TEST
-+	tristate "Test the longest symbol possible" if !KUNIT_ALL_TESTS
-+	depends on KUNIT && KPROBES
-+	default KUNIT_ALL_TESTS
-+	help
-+	  Tests the longest symbol possible
-+
-+	  If unsure, say N.
-+
- config HW_BREAKPOINT_KUNIT_TEST
- 	bool "Test hw_breakpoint constraints accounting" if !KUNIT_ALL_TESTS
- 	depends on HAVE_HW_BREAKPOINT
-diff --git a/lib/Makefile b/lib/Makefile
-index 322bb127b4dc..4241807025b8 100644
---- a/lib/Makefile
-+++ b/lib/Makefile
-@@ -388,6 +388,8 @@ CFLAGS_fortify_kunit.o += $(DISABLE_STRUCTLEAK_PLUGIN)
- obj-$(CONFIG_FORTIFY_KUNIT_TEST) += fortify_kunit.o
- obj-$(CONFIG_SIPHASH_KUNIT_TEST) += siphash_kunit.o
- obj-$(CONFIG_USERCOPY_KUNIT_TEST) += usercopy_kunit.o
-+obj-$(CONFIG_LONGEST_SYM_KUNIT_TEST) += longest_symbol_kunit.o
-+CFLAGS_longest_symbol_kunit.o += $(call cc-disable-warning, missing-prototypes)
- 
- obj-$(CONFIG_GENERIC_LIB_DEVMEM_IS_ALLOWED) += devmem_is_allowed.o
- 
-diff --git a/lib/longest_symbol_kunit.c b/lib/longest_symbol_kunit.c
-new file mode 100644
-index 000000000000..557ad6eae56c
---- /dev/null
-+++ b/lib/longest_symbol_kunit.c
-@@ -0,0 +1,124 @@
-+// SPDX-License-Identifier: GPL-2.0
-+/*
-+ * Test the longest symbol length. Execute with:
-+ *  ./tools/testing/kunit/kunit.py run longest-symbol
-+ *  --arch=x86_64 --kconfig_add CONFIG_KPROBES=y --kconfig_add CONFIG_MODULES=y
-+ *  --kconfig_add CONFIG_RETPOLINE=n
-+ */
-+
-+#define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
-+
-+#include <kunit/test.h>
-+#include <linux/stringify.h>
-+#include <linux/kprobes.h>
-+#include <linux/kallsyms.h>
-+
-+#define DI(name) s##name##name
-+#define DDI(name) DI(n##name##name)
-+#define DDDI(name) DDI(n##name##name)
-+#define DDDDI(name) DDDI(n##name##name)
-+#define DDDDDI(name) DDDDI(n##name##name)
-+
-+#define PLUS1(name) __PASTE(name, e)
-+
-+/*Generate a symbol whose name length is 511 */
-+#define LONGEST_SYM_NAME  DDDDDI(g1h2i3j4k5l6m7n)
-+
-+/*Generate a symbol whose name length is 512 */
-+#define LONGEST_SYM_NAME_PLUS1 PLUS1(LONGEST_SYM_NAME)
-+
-+#define RETURN_LONGEST_SYM 0xAAAAA
-+#define RETURN_LONGEST_SYM_PLUS1 0x55555
-+
-+noinline int LONGEST_SYM_NAME(void);
-+noinline int LONGEST_SYM_NAME(void)
-+{
-+	return RETURN_LONGEST_SYM;
-+}
-+
-+noinline int LONGEST_SYM_NAME_PLUS1(void);
-+noinline int LONGEST_SYM_NAME_PLUS1(void)
-+{
-+	return RETURN_LONGEST_SYM_PLUS1;
-+}
-+
-+_Static_assert(sizeof(__stringify(LONGEST_SYM_NAME)) == KSYM_NAME_LEN,
-+"Incorrect symbol length found. Expected KSYM_NAME_LEN: "
-+__stringify(KSYM_NAME) ", but found: "
-+__stringify(sizeof(LONGEST_SYM_NAME)));
-+
-+static void test_longest_symbol(struct kunit *test)
-+{
-+	KUNIT_EXPECT_EQ(test, RETURN_LONGEST_SYM, LONGEST_SYM_NAME());
-+};
-+
-+static void test_longest_symbol_kallsyms(struct kunit *test)
-+{
-+	unsigned long (*kallsyms_lookup_name)(const char *name);
-+	static int (*longest_sym)(void);
-+
-+	struct kprobe kp = {
-+		.symbol_name = "kallsyms_lookup_name",
-+	};
-+
-+	if (register_kprobe(&kp) < 0) {
-+		pr_info("%s: kprobe not registered\n", __func__);
-+		KUNIT_FAIL(test, "test_longest_symbol kallsysms: kprobe not registered\n");
-+		return;
-+	}
-+
-+	kunit_warn(test, "test_longest_symbol kallsyms: kprobe registered\n");
-+	kallsyms_lookup_name = (unsigned long (*)(const char *name))kp.addr;
-+	unregister_kprobe(&kp);
-+
-+	longest_sym =
-+		(void *) kallsyms_lookup_name(__stringify(LONGEST_SYM_NAME));
-+	KUNIT_EXPECT_EQ(test, RETURN_LONGEST_SYM, longest_sym());
-+};
-+
-+static void test_longest_symbol_plus1(struct kunit *test)
-+{
-+	KUNIT_EXPECT_EQ(test, RETURN_LONGEST_SYM_PLUS1, LONGEST_SYM_NAME_PLUS1());
-+};
-+
-+static void test_longest_symbol_plus1_kallsyms(struct kunit *test)
-+{
-+	unsigned long (*kallsyms_lookup_name)(const char *name);
-+	static int (*longest_sym_plus1)(void);
-+
-+	struct kprobe kp = {
-+		.symbol_name = "kallsyms_lookup_name",
-+	};
-+
-+	if (register_kprobe(&kp) < 0) {
-+		pr_info("%s: kprobe not registered\n", __func__);
-+		KUNIT_FAIL(test, "test_longest_symbol kallsysms: kprobe not registered\n");
-+		return;
-+	}
-+
-+	kunit_warn(test, "test_longest_symbol_plus1 kallsyms: kprobe registered\n");
-+	kallsyms_lookup_name = (unsigned long (*)(const char *name))kp.addr;
-+	unregister_kprobe(&kp);
-+
-+	longest_sym_plus1 =
-+		(void *) kallsyms_lookup_name(__stringify(LONGEST_SYM_NAME_PLUS1));
-+	KUNIT_EXPECT_NULL(test, longest_sym_plus1);
-+};
-+
-+static struct kunit_case longest_symbol_test_cases[] = {
-+	KUNIT_CASE(test_longest_symbol),
-+	KUNIT_CASE(test_longest_symbol_kallsyms),
-+	KUNIT_CASE(test_longest_symbol_plus1),
-+	KUNIT_CASE(test_longest_symbol_plus1_kallsyms),
-+	{}
-+};
-+
-+static struct kunit_suite longest_symbol_test_suite = {
-+	.name = "longest-symbol",
-+	.test_cases = longest_symbol_test_cases,
-+};
-+kunit_test_suite(longest_symbol_test_suite);
-+
-+MODULE_LICENSE("GPL");
-+MODULE_DESCRIPTION("Test the longest symbol length");
-+MODULE_AUTHOR("Sergio González Collado");
-
-base-commit: de9c2c66ad8e787abec7c9d7eff4f8c3cdd28aed
--- 
-2.39.2
+Cheers,
+Benno
 
