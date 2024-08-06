@@ -1,230 +1,126 @@
-Received: from mail-yb1-f201.google.com (mail-yb1-f201.google.com [209.85.219.201])
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62CB83DABF5
-	for <rust-for-linux@vger.kernel.org>; Tue,  6 Aug 2024 13:59:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC33120FAB6
+	for <rust-for-linux@vger.kernel.org>; Tue,  6 Aug 2024 14:00:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722952795; cv=none; b=b6BCfg44059dmVhAX4NNvASNP8d0Hny+ByNDUvJsyXaEa3+Fz1QYlLHFST7gbCnMIOF/YAthVbdxIQIjBYqbSp5toqp+WgtvqvKamSLNMEz8Ne06+oKumRd8BRuJ8vs7ijXO50eIH1CfJ7WYLdrdLjdZFSJB70oLSo8d7PqVuyI=
+	t=1722952825; cv=none; b=kr46w4ydT2kZ0qDNN2+coL9v6xTPMvfrYcZCSEvoHjPq25tGlWbn6ypRLzkuvaCYPngYNUaPgmHbx3AdwjZoMbu4lONx0ij7ROlOgZ5g9sFmnHAUfepvscpD+FcrPWaYk4pRKmQ11olvtI76EBPfOC2HbSKPnENIZ8fcvLHXa8M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722952795; c=relaxed/simple;
-	bh=sjs5+cx5RsK4I10owZyIhjJWj92izcNKjyfWK0eU9GU=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=YfePQom6W9zD9Qe6IjHk+RbD6Jny6d7PDlMSzCp6WvlM3PkXDutwjl9uw8cvNTp4DWk3NT3NHEyvRu+c66ddBt1XFjLfmVriw7S0HZayEUGG9psgiS2Zdfz9y4rXYCcjqsd7yVCkhqshzrFIi8vW6xf21CYAjmz86RCLabl3rFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=T4E2xdi6; arc=none smtp.client-ip=209.85.219.201
+	s=arc-20240116; t=1722952825; c=relaxed/simple;
+	bh=yF7W8plauO3cSOQcFgYN4VtcWTT9YGEzRpS+d5QN+iU=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=PT1COyzjoQL204/Zusmat36tSHcEBIIx50qfSR/eGCPkdWouYNPeJMCYcO5a0Xjgcgjkxfp0dWSVJnZg+JWhQOXri0+oylyfLN4g1B1Ca02NiId86lGvVj1HAQzivOXR98lTvI74ZQxmsYUNWsUw/o+RN0qB6mh0KicK8JW0Bfg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=0PAZ9nT3; arc=none smtp.client-ip=209.85.128.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="T4E2xdi6"
-Received: by mail-yb1-f201.google.com with SMTP id 3f1490d57ef6-e03623b24ddso990373276.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 06 Aug 2024 06:59:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="0PAZ9nT3"
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-428ec6c190eso5368095e9.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 06 Aug 2024 07:00:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1722952792; x=1723557592; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=RSHT3FWCrBiqXPsNuRM6ONtDFcAm4Iow/SptrIyizP4=;
-        b=T4E2xdi6Q5R+BtLok+JhEqhGqm0MmbvQWxG7K2qdHrndumOwWJylWqkaayQOUUf3uG
-         31Bzf2g/RU4RbPaAKdKWcJhTodj2TmWSqyw4QjqC1yN2yQPk/eT+hN7fmxJHgqBoRFe4
-         HweWxt9xb9PTV61M0ammgNXiGlkL2gUFJ7r1PNo0M/SDRdYmmfKC9Ai1+lgLirBNAZ9L
-         W2DiSuam4qrv91E4aCAIOCLEge0nzQTRr59vT1GZyUn7UOC1+YZweQSfY3r7el++wLxx
-         cDtdaLe4pw+YeeE4eBL1ti6abucdDa4Ferv1oq9O4SXGRAZO6AxzQUDKUGzYQnNcosYl
-         nhUg==
+        d=google.com; s=20230601; t=1722952822; x=1723557622; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=yF7W8plauO3cSOQcFgYN4VtcWTT9YGEzRpS+d5QN+iU=;
+        b=0PAZ9nT3OrzA8ThpDg92NJMsfGZptftZ+bRIqsET5Kn7uxYTKW0MFOmRnX3CfKsUtd
+         IVGfjwT+avmWT/qLApdphPRx3ElYBgVR3/Dty8CkMfY9mGw4UWTOWvZ/6rP8Hfm0Wm80
+         9aIQauuyEnKBCE5PlD+vp7ESyKQ7hDda9Be/yytH8Uywx9eLrI9ElmGGqLG5snPacIe4
+         WXKelHKD44tAMRQ9gnvFl8nRrnG27TC0ynYJyvYrJ0jdqwHkmzH9gd8fACIx/JbZ/0Mc
+         Kh/Tsyjsksws+q8sMYTc2Mzbopm6YiEEg/Kb8LDb/NatmGCq694cwfWZn2WxSUoG4nWE
+         b5/Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1722952792; x=1723557592;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=RSHT3FWCrBiqXPsNuRM6ONtDFcAm4Iow/SptrIyizP4=;
-        b=GMOJ1u025fTmLkZV7xGb7zE70rza1K3KTLLU51p+ypRBpXB0/mcSYPQzxPK1RUV0rw
-         mgEUBkZ87VO4qUwJ+ZTETnOt7CvQ2EaooMeR4/LSDC3HTPmS13CZBBA3KFqfoD/XNl3x
-         +XsBtAEE01aZ8X8DFI0YxUuyAUejGUeCb6bujqk3qhglAazTsv2wtBLoRbvqglic35lo
-         bBsC/VH2lzCKdcZviPUoAE47C6HeFjwAOZEKNmkf/N+NKlgFbhbZ76ZNZ3iEqwcCuFV3
-         7RGiMAfTaiQVRrBbNYUA8tEQvatN5HWn6Ks+UbFfgPI9CeRcz5fLStX3li3zVFGfyJhy
-         HNtg==
-X-Forwarded-Encrypted: i=1; AJvYcCWNuuBD7afXnKMVB+9w8DO3w+TOQwoiKYZ/JIz9BvwIAarZ9KuczzQlSOhlwM07PSGX0WhsgQvQ0mw+5v9Zyg/rNguEfWn/PfX8839/+yQ=
-X-Gm-Message-State: AOJu0YzPqX2la2vrB0V2/OG6fFKhL2yPsTO9zsa5nipmWFXwhFyoUano
-	l8O2QL6WxluslFzch8V8LUfSxUPn0WgEJRRCe5MFvc15FXEtKAMaFk6EJaO+tn3UQvsA/wjIbGR
-	To3C8TLOFht92+w==
-X-Google-Smtp-Source: AGHT+IGK3CoPkJd39xnjiPgyg29UTNJbe2DuQKHixP3ZF4Qqay5YuUYU3D+U0KziAQa4gcAj3c6RtdIOIt3h0tw=
-X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:35bd])
- (user=aliceryhl job=sendgmr) by 2002:a05:6902:2483:b0:e03:a0b2:f73 with SMTP
- id 3f1490d57ef6-e0bde2f3cdbmr112477276.6.1722952792116; Tue, 06 Aug 2024
- 06:59:52 -0700 (PDT)
-Date: Tue, 06 Aug 2024 13:59:02 +0000
-In-Reply-To: <20240806-linked-list-v4-0-23efc510ec92@google.com>
+        d=1e100.net; s=20230601; t=1722952822; x=1723557622;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=yF7W8plauO3cSOQcFgYN4VtcWTT9YGEzRpS+d5QN+iU=;
+        b=szbcPoiDf//Q8kX2QStO9y/ZqwFcSDgRWQ/+2BuWcHvUn1vLxCJ3N9dyQI00g9KUNP
+         OdB3zchHcPJmimpVPGkVIOTT857OP+Tzm/JuWe0aOmlFVccYUmvkeVPypm9zpQNsRNQE
+         nIzJNCXC0Ib3oxOQay0QDVInJrCIG+l5lXFe49zpxm2vtFdoggSkTrn152wjWCO82h5t
+         4U9ZOHqLPkwKyQYzv4SDrno3+xnM/DuvwjBXgYr33HFnF+oIs2eTUjxxVdE9HOBsW03B
+         O/K9oIpfwbtsM4/q03sJO2xyz/5zS6PzlffSBDkfZxga3ODKigwQHBzLvC61D7nlaCCX
+         aM4Q==
+X-Forwarded-Encrypted: i=1; AJvYcCUAB7OYgB2hkQgyJiSozbmbOA+PsuN9wPBt6x8uZ5gYbT2BzLwg2UeRcWoC8H9iNkKzznmrQ7fCvqks4DwIom7GTezIRbutos+xUu5ZQXk=
+X-Gm-Message-State: AOJu0YxPv3J+dImMA5tD4shbNo8W4GvtmkANuVDE6l4SDEYajUFWTvGF
+	Izgvip4q7FFkJ5wNTDhwTCaGU7Y6jIKuqnKu4Cwv+bl7+1Mq58KMg/rKdv+pRmty9UZlBiXCP/6
+	8MWUiQSk5zHjQmm/URPT2WHzcGqXsIxxWaTci
+X-Google-Smtp-Source: AGHT+IHgz85bFjKsptm4i5LOyuZb90LSO9jrl4flVX7fyPL1vv0Ry8v7hkD5nB5Yvk7R9grQJFQMJbDKPdbryvDuW4g=
+X-Received: by 2002:a5d:5f43:0:b0:367:4dce:1ff5 with SMTP id
+ ffacd0b85a97d-36bbc0e7593mr12113808f8f.32.1722952821732; Tue, 06 Aug 2024
+ 07:00:21 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
+MIME-Version: 1.0
 References: <20240806-linked-list-v4-0-23efc510ec92@google.com>
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5366; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=sjs5+cx5RsK4I10owZyIhjJWj92izcNKjyfWK0eU9GU=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBmsiw95qN0U65sxn3WNBTslbzyWYYlxLIS2QYlL
- KrVxm0wgvWJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZrIsPQAKCRAEWL7uWMY5
- RknPD/95GFWviEvAvGiqrlvWy9Dct+g9YPZ7uZx4exk0nGLduAyqEWEKPkGX01jgDxTSRxAV5eV
- Ed7LOHsvGXL7tBqehry6mzHyqwNRjdAjZwJvsfFTPZXU6nRaarN5bnlMo7YP5p91QlorWU5b2VX
- 8OK6kqM7qGoni+IOoYoPmbJ9Qk9FhdZxjSoj7c/wlAmf4D42z0zd7u+JFkqOL9K+TOpdqfGkze0
- SvmmB6RV0HdNYOTGLWMzGz76SQMb+xjkwEK4JefF2sEXyvAAPPbKfPvpWqnc6U+7spKSTKRoKig
- F1wi9ZRNt51Jkwd+DMQPaDXZcBgl3DonqbQbhiqB+IcfdvSYunqPRCcjaK46nco9oxrfeqBbmHI
- nQMKoKLBSFZBiM4EX+HRkySBEXTObAVDkd7cOv/2ukt8vHLoSCSnTPeFmChapaeNNLIJBzH4auL
- xg1OYcslvWZ97ah+kTsbCR0ZaFgVuI5AU7soFuQIsd4tJ3T3GUHi1MCEiNQrHckMqO8u5BNLgcO
- rOfd8II2QxJPFjgE4VJyMtOKF9URrnXSf0zaeLe9NrR9uZgFjcHQHHCGQwsiwHE8DPJGFAY+i9x
- r+c/lXGWLYvr/EEYT2Xxt1oP6CID4hxaG2X6P3NTJ8hl3ka5rXDih6wyskm9vVpidJKNBCXzAEw FYMJPL6lhGT6IsA==
-X-Mailer: b4 0.13.0
-Message-ID: <20240806-linked-list-v4-10-23efc510ec92@google.com>
-Subject: [PATCH v4 10/10] rust: list: add ListArcField
+In-Reply-To: <20240806-linked-list-v4-0-23efc510ec92@google.com>
 From: Alice Ryhl <aliceryhl@google.com>
+Date: Tue, 6 Aug 2024 16:00:09 +0200
+Message-ID: <CAH5fLghPn-i-rOnC5HeUKDMqmhVFSyzPg0DhMVxkrSgBudw8Kg@mail.gmail.com>
+Subject: Re: [PATCH v4 00/10] Add Rust linked list for reference counted values
 To: Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
 Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@samsung.com>, Marco Elver <elver@google.com>, Coly Li <colyli@suse.de>, 
-	Paolo Abeni <pabeni@redhat.com>, Pierre Gondois <pierre.gondois@arm.com>, 
-	Ingo Molnar <mingo@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Wei Yang <richard.weiyang@gmail.com>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Marco Elver <elver@google.com>, Coly Li <colyli@suse.de>, Paolo Abeni <pabeni@redhat.com>, 
+	Pierre Gondois <pierre.gondois@arm.com>, Ingo Molnar <mingo@kernel.org>, 
+	Jakub Kicinski <kuba@kernel.org>, Wei Yang <richard.weiyang@gmail.com>, 
 	Matthew Wilcox <willy@infradead.org>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>, 
-	Kees Cook <kees@kernel.org>
-Content-Type: text/plain; charset="utf-8"
+	rust-for-linux@vger.kernel.org, Kees Cook <kees@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-One way to explain what `ListArc` does is that it controls exclusive
-access to the prev/next pointer field in a refcounted object. The
-feature of having a special reference to a refcounted object with
-exclusive access to specific fields is useful for other things, so
-provide a general utility for that.
+On Tue, Aug 6, 2024 at 3:59=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> wr=
+ote:
+>
+> This patchset contains a Rust implementation of a doubly-linked list for
+> use with reference counted values. Linked lists are famously hard to
+> implement in Rust [1] given the cyclic nature of the pointers, and
+> indeed, this implementation uses unsafe to get around that.
+>
+> Linked lists aren't great for cache locality reasons, but it can be hard
+> to avoid them for cases where you need data structures that don't
+> allocate. Most linked lists in Binder are for collections where order
+> matters (usually stacks or queues). There are also a few lists that are
+> just collections, but linked lists are only used for this purpose in
+> cases where the linked list is cold and performance isn't that
+> important. The linked list is chosen over Vec in this case so that I
+> don't have to worry about reducing the capacity of the vector. (Our
+> red/black trees are a much better place to look for improving cache
+> locality of collections in Rust Binder, and the upcoming xarray bindings
+> would help with that.)
+>
+> Please see the Rust Binder RFC [2] for usage examples.
+>
+> The linked lists are used all over Rust Binder, but some pointers for
+> where to look for examples:
+>
+> [PATCH RFC 04/20] rust_binder: add work lists
+> Implements the work lists that store heterogeneous items. Uses the
+> various macros a bunch.
+>
+> [PATCH RFC 10/20] rust_binder: add death notifications
+> Uses the cursor. Also has objects with multiple prev/next pointer pairs.
+>
+> [PATCH RFC 15/20] rust_binder: add process freezing
+> Uses the iterator with for loops.
+>
+> Link: https://rust-unofficial.github.io/too-many-lists/ [1]
+> Link: https://lore.kernel.org/rust-for-linux/20231101-rust-binder-v1-0-08=
+ba9197f637@google.com/ [2]
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> ---
+> Changes in v4:
+> - Support several impl blocks inside `impl_list_item!`.
+> - Link to v3: https://lore.kernel.org/r/20240723-linked-list-v3-0-89db92c=
+7dbf4@google.com
 
-This is used by Rust Binder to keep track of which processes have a
-reference to a given node. This involves an object for each process/node
-pair, that is referenced by both the process and the node. For some
-fields in this object, only the process's reference needs to access
-them (and it needs mutable access), so Binder uses a ListArc to give the
-process's reference exclusive access.
+Oops, forgot to fill this out. Also addressed the other comments from Benno=
+.
 
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
- rust/kernel/list.rs           |  3 ++
- rust/kernel/list/arc_field.rs | 96 +++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 99 insertions(+)
-
-diff --git a/rust/kernel/list.rs b/rust/kernel/list.rs
-index cf26fec37c1e..e4cefac0f390 100644
---- a/rust/kernel/list.rs
-+++ b/rust/kernel/list.rs
-@@ -19,6 +19,9 @@
- mod arc;
- pub use self::arc::{impl_list_arc_safe, AtomicTracker, ListArc, ListArcSafe, TryNewListArc};
- 
-+mod arc_field;
-+pub use self::arc_field::{define_list_arc_field_getter, ListArcField};
-+
- /// A linked list.
- ///
- /// All elements in this linked list will be [`ListArc`] references to the value. Since a value can
-diff --git a/rust/kernel/list/arc_field.rs b/rust/kernel/list/arc_field.rs
-new file mode 100644
-index 000000000000..2330f673427a
---- /dev/null
-+++ b/rust/kernel/list/arc_field.rs
-@@ -0,0 +1,96 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+// Copyright (C) 2024 Google LLC.
-+
-+//! A field that is exclusively owned by a [`ListArc`].
-+//!
-+//! This can be used to have reference counted struct where one of the reference counted pointers
-+//! has exclusive access to a field of the struct.
-+//!
-+//! [`ListArc`]: crate::list::ListArc
-+
-+use core::cell::UnsafeCell;
-+
-+/// A field owned by a specific [`ListArc`].
-+///
-+/// [`ListArc`]: crate::list::ListArc
-+pub struct ListArcField<T, const ID: u64 = 0> {
-+    value: UnsafeCell<T>,
-+}
-+
-+// SAFETY: If the inner type is thread-safe, then it's also okay for `ListArc` to be thread-safe.
-+unsafe impl<T: Send + Sync, const ID: u64> Send for ListArcField<T, ID> {}
-+// SAFETY: If the inner type is thread-safe, then it's also okay for `ListArc` to be thread-safe.
-+unsafe impl<T: Send + Sync, const ID: u64> Sync for ListArcField<T, ID> {}
-+
-+impl<T, const ID: u64> ListArcField<T, ID> {
-+    /// Creates a new `ListArcField`.
-+    pub fn new(value: T) -> Self {
-+        Self {
-+            value: UnsafeCell::new(value),
-+        }
-+    }
-+
-+    /// Access the value when we have exclusive access to the `ListArcField`.
-+    ///
-+    /// This allows access to the field using an `UniqueArc` instead of a `ListArc`.
-+    pub fn get_mut(&mut self) -> &mut T {
-+        self.value.get_mut()
-+    }
-+
-+    /// Unsafely assert that you have shared access to the `ListArc` for this field.
-+    ///
-+    /// # Safety
-+    ///
-+    /// The caller must have shared access to the `ListArc<ID>` containing the struct with this
-+    /// field for the duration of the returned reference.
-+    pub unsafe fn assert_ref(&self) -> &T {
-+        // SAFETY: The caller has shared access to the `ListArc`, so they also have shared access
-+        // to this field.
-+        unsafe { &*self.value.get() }
-+    }
-+
-+    /// Unsafely assert that you have mutable access to the `ListArc` for this field.
-+    ///
-+    /// # Safety
-+    ///
-+    /// The caller must have mutable access to the `ListArc<ID>` containing the struct with this
-+    /// field for the duration of the returned reference.
-+    #[allow(clippy::mut_from_ref)]
-+    pub unsafe fn assert_mut(&self) -> &mut T {
-+        // SAFETY: The caller has exclusive access to the `ListArc`, so they also have exclusive
-+        // access to this field.
-+        unsafe { &mut *self.value.get() }
-+    }
-+}
-+
-+/// Defines getters for a [`ListArcField`].
-+#[macro_export]
-+macro_rules! define_list_arc_field_getter {
-+    ($pub:vis fn $name:ident(&self $(<$id:tt>)?) -> &$typ:ty { $field:ident }
-+     $($rest:tt)*
-+    ) => {
-+        $pub fn $name<'a>(self: &'a $crate::list::ListArc<Self $(, $id)?>) -> &'a $typ {
-+            let field = &(&**self).$field;
-+            // SAFETY: We have a shared reference to the `ListArc`.
-+            unsafe { $crate::list::ListArcField::<$typ $(, $id)?>::assert_ref(field) }
-+        }
-+
-+        $crate::list::define_list_arc_field_getter!($($rest)*);
-+    };
-+
-+    ($pub:vis fn $name:ident(&mut self $(<$id:tt>)?) -> &mut $typ:ty { $field:ident }
-+     $($rest:tt)*
-+    ) => {
-+        $pub fn $name<'a>(self: &'a mut $crate::list::ListArc<Self $(, $id)?>) -> &'a mut $typ {
-+            let field = &(&**self).$field;
-+            // SAFETY: We have a mutable reference to the `ListArc`.
-+            unsafe { $crate::list::ListArcField::<$typ $(, $id)?>::assert_mut(field) }
-+        }
-+
-+        $crate::list::define_list_arc_field_getter!($($rest)*);
-+    };
-+
-+    () => {};
-+}
-+pub use define_list_arc_field_getter;
-
--- 
-2.46.0.rc2.264.g509ed76dc8-goog
-
+Alice
