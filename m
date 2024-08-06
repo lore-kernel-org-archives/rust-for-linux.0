@@ -1,43 +1,43 @@
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D293D15CB;
-	Tue,  6 Aug 2024 16:03:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E3D72EB10;
+	Tue,  6 Aug 2024 16:06:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1722960241; cv=none; b=TTsLt6RRD6/6izhQfvhhcYCREd+kUmjTNri4VhycjWsoEn016u6gUydu9lp+XX+RoAXj5ROAHtlwO9hJEkvrthJ7SHg0uJtBb4hPOvX2X/5mME5KWlwaWxloo1H+fn9/CcwnvhQawGHAS0eiP67iJahaXJNNb4t1BsmoQ1/Y0Uk=
+	t=1722960383; cv=none; b=aJP65VOSQtpAcf/sRh2BaRGA6Cx+vdFJ6wGcubARZfzfp7NOdtrmuy5M2xgMdrvylzzVBRWImZDHibsp7hbnc35PkmNU4+vZRBOc6vk+EuO/78QiBbqxhR1Arx31CrIzs8M9AvGZTp2ke9L06a4ESc3qkxw8bzOBXae06YNPNM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1722960241; c=relaxed/simple;
-	bh=k0tOVGYJ2n9MFoo5jwcKLkuAD0PT9GDLWfjKmKs/RHY=;
+	s=arc-20240116; t=1722960383; c=relaxed/simple;
+	bh=ymbZa+/qXj1Pp3mytnNK/X5NKedqcGp12zClIcs+U50=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KLprvJjocjEM3mxsY7m2nWnB2qf7nvB0k7w1iGdFgcS3KRnj3Ueuadw5qGxx7EYlWRXhrbKGFd44/o07O+I1jsBJw6naJJ5IldDo6q/HbaVxm1A4RXGUVikIaI54IpTKTftpsRiUzf3MYZF5lEHQE1eSGEA16Da8zesPf4IUNQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=HOfVHbYE; arc=none smtp.client-ip=185.70.43.16
+	 MIME-Version:Content-Type; b=fbgNQ2BbH6z8ywtwcFNmI/a9RRMT7CKmrHEltXbv0ko347pQh5zO4bvKXjWC4ktkzkAp5bqNF60QGmdneDlRl9rQa/aiSCpXKb2Enxmes/O6bAqewASJRbW4AZWsVuHJKqRkNj00XHKNSt0hjE8/TxLil+Msw7fzc5sUKO+VjmE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=DK9UsCwg; arc=none smtp.client-ip=185.70.43.22
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="HOfVHbYE"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="DK9UsCwg"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=xju4hktstrby3iwr73rebshaee.protonmail; t=1722960236; x=1723219436;
-	bh=S/XzYL9OYUvsdAXy34uRW7jYo0ZLNghR29paIaLIkrM=;
+	s=protonmail; t=1722960380; x=1723219580;
+	bh=mlhTAM6ZiLpoZgUUpSWbqGvf2fRVZ9P9Bjbr6GNY4yk=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=HOfVHbYEocUjFUnqXjTb1mAmOOFX7mF/+vPjl13CfX9lE13Dpt1ri8YJmwCmPOD/y
-	 GI4gDQwACQlij+AkAR9QPE8TKDFFhe54yuCbFK5K42MNLhEDYZZnUr5cTSEsHAtfje
-	 p4JKNc8NglKIbYJhM5GpRR4yUPgYdreLMCVnh3BLsKZgld70knIivw7qfDltSRWs5K
-	 NlMHs8ddNexY65mw2yhvgyvFXXlykBSDAyvo2Eedf3wYh5CpDh1n6WqBQgH1uJTqKM
-	 KxoZXhQO8YlgEQZn4HF3uXpwKqjg1PaDV05CF9o8+SUbwXMY792zrWyQYzZTFsnZOQ
-	 jkZWMrrY7B0Tg==
-Date: Tue, 06 Aug 2024 16:03:49 +0000
+	b=DK9UsCwgE8AotX3XYEaS+lkaXI/0SdEdIPah+KAbNMS8s49hAYzjpt8iNG6T9Hfh3
+	 ybn01IzeGDMDOfpM8PjhNr4FFlZE9TiQcyEbZ8Fh++utferc3utkdQUp9T3BV/7BOY
+	 sGFd+Na5KFx8pD5YA3Z8iMaBR+y425tE/muQgqmxYq3F1xL7G8u9ac7LF9Hf/HdNYL
+	 Djb8QL6EZOU1fiGTvaK2m0Evgc2iTSDzOQeljxxwSQOJgEvT9US0R/sODP4s/JUrDv
+	 hf4on8QkTVmdGIR99PagNC1t3HvZBOv+NDmJknKQmVQldI14oQd9g82dlS9OQzHYHD
+	 fp39lAgncBK8Q==
+Date: Tue, 06 Aug 2024 16:06:14 +0000
 To: Danilo Krummrich <dakr@kernel.org>, ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@samsung.com, aliceryhl@google.com, akpm@linux-foundation.org
 From: Benno Lossin <benno.lossin@proton.me>
 Cc: daniel.almeida@collabora.com, faith.ekstrand@collabora.com, boris.brezillon@collabora.com, lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com, acurrid@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com, ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v4 01/28] rust: alloc: add `Allocator` trait
-Message-ID: <470b5f70-b592-43a7-81ba-c7f1c852b9f3@proton.me>
-In-Reply-To: <20240805152004.5039-2-dakr@kernel.org>
-References: <20240805152004.5039-1-dakr@kernel.org> <20240805152004.5039-2-dakr@kernel.org>
+Subject: Re: [PATCH v4 02/28] rust: alloc: separate `aligned_size` from `krealloc_aligned`
+Message-ID: <10c87505-bf27-4685-af10-6c15fcf8c854@proton.me>
+In-Reply-To: <20240805152004.5039-3-dakr@kernel.org>
+References: <20240805152004.5039-1-dakr@kernel.org> <20240805152004.5039-3-dakr@kernel.org>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: fad6beb5255ffe4da875a8202e88a00e79e1da8b
+X-Pm-Message-ID: ff23bda0148e35d5412c6c8021c32c60276fbda6
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -48,218 +48,92 @@ Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
 On 05.08.24 17:19, Danilo Krummrich wrote:
-> Add a kernel specific `Allocator` trait, that in contrast to the one in
-> Rust's core library doesn't require unstable features and supports GFP
-> flags.
+> Separate `aligned_size` from `krealloc_aligned`.
 >=20
-> Subsequent patches add the following trait implementors: `Kmalloc`,
-> `Vmalloc` and `KVmalloc`.
+> Subsequent patches implement `Allocator` derivates, such as `Kmalloc`,
+> that require `aligned_size` and replace the original `krealloc_aligned`.
 >=20
+> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 > ---
->  rust/kernel/alloc.rs | 79 ++++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 79 insertions(+)
+>  rust/kernel/alloc/allocator.rs | 27 ++++++++++++++++++---------
+>  1 file changed, 18 insertions(+), 9 deletions(-)
 >=20
-> diff --git a/rust/kernel/alloc.rs b/rust/kernel/alloc.rs
-> index 1966bd407017..8a71a589469d 100644
-> --- a/rust/kernel/alloc.rs
-> +++ b/rust/kernel/alloc.rs
-> @@ -11,6 +11,7 @@
->  /// Indicates an allocation error.
->  #[derive(Copy, Clone, PartialEq, Eq, Debug)]
->  pub struct AllocError;
-> +use core::{alloc::Layout, ptr::NonNull};
+> diff --git a/rust/kernel/alloc/allocator.rs b/rust/kernel/alloc/allocator=
+.rs
+> index e6ea601f38c6..e7b7eba84acb 100644
+> --- a/rust/kernel/alloc/allocator.rs
+> +++ b/rust/kernel/alloc/allocator.rs
+> @@ -8,27 +8,36 @@
 >=20
->  /// Flags to be used when allocating memory.
->  ///
-> @@ -86,3 +87,81 @@ pub mod flags {
->      /// small allocations.
->      pub const GFP_NOWAIT: Flags =3D Flags(bindings::GFP_NOWAIT);
->  }
-> +
-> +/// The kernel's [`Allocator`] trait.
-> +///
-> +/// An implementation of [`Allocator`] can allocate, re-allocate and fre=
-e memory buffer described
-> +/// via [`Layout`].
-> +///
-> +/// [`Allocator`] is designed to be implemented as a ZST; [`Allocator`] =
-functions do not operate on
-> +/// an object instance.
-
-This will prevent us from implementing arena-type allocators [^1]. Do we
-want/need those?
-I have heard that some people use them in embedded systems, but I can't=20
-say for sure. But this is a rather big design decision, so we should
-discuss it now.
-
-[^1]: For those who don't know what I mean by that here is a quick
-sketch (without handling flags and optimizations):
-
-    pub struct ArenaAlloc<const SIZE: usize> {
-        memory: Opaque<[u8; SIZE]>,
-        head: Cell<usize>,
-    }
-
-    impl<const SIZE: usize> ArenaAlloc<SIZE> {
-        pub fn new() -> Self {
-            Self {
-                memory: Opaque::uninit(),
-                head: 0,
-            }
-        }
-    }
-
-    impl<const SIZE: usize> Allocator for ArenaAlloc<SIZE> {
-        fn alloc(&self, layout: Layout, _flags: Flags) -> Result<NonNull<u8=
->, AllocError> {
-            let head =3D self.head.get();
-            if head + layout.size() >=3D SIZE {
-                return Err(AllocError);
-            }
-            let ptr =3D self.memory.get();
-            let ptr =3D ptr.cast::<u8>();
-            let ptr =3D unsafe { ptr.add(head) };
-            self.head.set(head + layout.size());
-            unsafe { NonNull::new_unchecked(ptr) }
-        }
-
-        unsafe fn realloc(
-            &self,
-            ptr: Option<NonNull<u8>>,
-            old_layout: Layout, // Note that we also need `old_layout`!
-            layout: Layout,
-            flags: Flags
-        ) -> Result<NonNull<u8>, AllocError> {
-            let new =3D self.alloc(layout, flags)?;
-            let Some(ptr) =3D ptr else { return Ok(new); };
-            unsafe { core::ptr::copy_nonoverlapping(ptr.as_ptr(), new.as_pt=
-r(), old_layout.size()) };
-            self.free(ptr);
-            Ok(new)
-        }
-
-        fn free(&self, ptr: NonNull<u8>) { /* noop */ }
-    }
-
-> +///
-> +/// In order to be able to support `#[derive(SmartPointer)]` later on, w=
-e need to avoid a design
-> +/// that requires an `Allocator` to be instantiated, hence its functions=
- must not contain any kind
-> +/// of `self` parameter.
-
-Ah I see, so since `#[derive(SmartPointer)]` needs `Box` to only consist
-of one non ZST field... I skimmed the RFC discussion and it seems like a
-problem that *might* be solved in the future, but probably not in the
-(very) near future. I guess this is just a bullet that we have to bite.
-We can always have an `ArenaBox` that can deal with that (although
-without `DispatchFromDyn`).
-We should revisit this when `#[derive(SmartPointer)]` becomes advanced
-enough.
-
+>  struct KernelAllocator;
+>=20
+> -/// Calls `krealloc` with a proper size to alloc a new object aligned to=
+ `new_layout`'s alignment.
+> -///
+> -/// # Safety
+> -///
+> -/// - `ptr` can be either null or a pointer which has been allocated by =
+this allocator.
+> -/// - `new_layout` must have a non-zero size.
+> -pub(crate) unsafe fn krealloc_aligned(ptr: *mut u8, new_layout: Layout, =
+flags: Flags) -> *mut u8 {
+> +/// Returns a proper size to alloc a new object aligned to `new_layout`'=
+s alignment.
+> +fn aligned_size(new_layout: Layout) -> usize {
+>      // Customized layouts from `Layout::from_size_align()` can have size=
+ < align, so pad first.
+>      let layout =3D new_layout.pad_to_align();
+>=20
+>      // Note that `layout.size()` (after padding) is guaranteed to be a m=
+ultiple of `layout.align()`
+>      // which together with the slab guarantees means the `krealloc` will=
+ return a properly aligned
+>      // object (see comments in `kmalloc()` for more information).
+> -    let size =3D layout.size();
+> +    layout.size()
+> +}
+>=20
+> +/// Calls `krealloc` with a proper size to alloc a new object aligned to=
+ `new_layout`'s alignment.
 > +///
 > +/// # Safety
 > +///
-> +/// Memory returned from an allocator must point to a valid memory buffe=
-r and remain valid until
-> +/// it is explicitly freed.
-> +///
-> +/// Any pointer to a memory buffer which is currently allocated must be =
-valid to be passed to any
-> +/// other [`Allocator`] function of the same type. The same applies for =
-a NULL pointer.
-> +///
-> +/// If `realloc` is called with:
-> +///   - a size of zero, the given memory allocation, if any, must be fre=
-ed
-> +///   - a NULL pointer, a new memory allocation must be created
-> +pub unsafe trait Allocator {
-> +    /// Allocate memory based on `layout` and `flags`.
-> +    ///
-> +    /// On success, returns a buffer represented as `NonNull<[u8]>` that=
- satisfies the layout
-> +    /// constraints (i.e. minimum size and alignment as specified by `la=
-yout`).
-> +    ///
-> +    /// This function is equivalent to `realloc` when called with a NULL=
- pointer.
-> +    fn alloc(layout: Layout, flags: Flags) -> Result<NonNull<[u8]>, Allo=
-cError> {
-> +        // SAFETY: Passing a NULL pointer to `realloc` is valid by it's =
-safety requirements and asks
-> +        // for a new memory allocation.
-> +        unsafe { Self::realloc(None, layout, flags) }
-> +    }
-> +
-> +    /// Re-allocate an existing memory allocation to satisfy the request=
-ed `layout`. If the
-> +    /// requested size is zero, `realloc` behaves equivalent to `free`.
-> +    ///
-> +    /// If the requested size is larger than the size of the existing al=
-location, a successful call
-> +    /// to `realloc` guarantees that the new or grown buffer has at leas=
-t `Layout::size` bytes, but
-> +    /// may also be larger.
-> +    ///
-> +    /// If the requested size is smaller than the size of the existing a=
-llocation, `realloc` may or
-> +    /// may not shrink the buffer; this is implementation specific to th=
-e allocator.
-> +    ///
-> +    /// On allocation failure, the existing buffer, if any, remains vali=
-d.
-> +    ///
-> +    /// The buffer is represented as `NonNull<[u8]>`.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// `Some(ptr)` must point to an existing and valid memory allocatio=
-n created by this allocator
+> +/// - `ptr` can be either null or a pointer which has been allocated by =
+this allocator.
+> +/// - `new_layout` must have a non-zero size.
+> +pub(crate) unsafe fn krealloc_aligned(ptr: *mut u8, new_layout: Layout, =
+flags: Flags) -> *mut u8 {
+>      // SAFETY:
+>      // - `ptr` is either null or a pointer returned from a previous `k{r=
+e}alloc()` by the
+>      //   function safety requirement.
+>      // - `size` is greater than 0 since it's from `layout.size()` (which=
+ cannot be zero according
+>      //   to the function safety requirement)
+> -    unsafe { bindings::krealloc(ptr as *const core::ffi::c_void, size, f=
+lags.0) as *mut u8 }
+> +    unsafe {
+> +        bindings::krealloc(
+> +            ptr as *const core::ffi::c_void,
+> +            aligned_size(new_layout),
 
-This is the wrong way around, `ptr: Option<NonNull<u8>>`, so
-`Some(ptr): Option<Option<NonNull<u8>>>`. Instead I would write
-"If `ptr =3D Some(p)`, then `p` must point to...".
+Can you move the safe operation outside of the `unsafe` block?
 
-> +    /// instance. The alignment encoded in `layout` must be smaller than=
- or equal to the alignment
-> +    /// requested in the previous `alloc` or `realloc` call of the same =
-allocation.
-> +    ///
-> +    /// Additionally, `ptr` is allowed to be `None`; in this case a new =
-memory allocation is
-> +    /// created.
-> +    ///
-> +    unsafe fn realloc(
-> +        ptr: Option<NonNull<u8>>,
-> +        layout: Layout,
-> +        flags: Flags,
-> +    ) -> Result<NonNull<[u8]>, AllocError>;
-> +
-> +    /// Free an existing memory allocation.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// `ptr` must point to an existing and valid memory allocation crea=
-ted by this `Allocator`
-> +    /// instance.
+With that changed,
 
-Additionally, you need "The memory allocation at `ptr` must never again
-be read from or written to.".
+Reviewed-by: Benno Lossin <benno.lossin@proton.me>
 
 ---
 Cheers,
 Benno
 
-> +    unsafe fn free(ptr: NonNull<u8>) {
-> +        // SAFETY: `ptr` is guaranteed to be previously allocated with t=
-his `Allocator` or NULL.
-> +        // Calling `realloc` with a buffer size of zero, frees the buffe=
-r `ptr` points to.
-> +        let _ =3D unsafe { Self::realloc(Some(ptr), Layout::new::<()>(),=
- Flags(0)) };
+> +            flags.0,
+> +        ) as *mut u8
 > +    }
-> +}
+>  }
+>=20
+>  unsafe impl GlobalAlloc for KernelAllocator {
 > --
 > 2.45.2
 >=20
