@@ -1,106 +1,118 @@
-Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C62A61AE058
-	for <rust-for-linux@vger.kernel.org>; Wed,  7 Aug 2024 08:01:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D7616D1B4
+	for <rust-for-linux@vger.kernel.org>; Wed,  7 Aug 2024 08:50:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723017715; cv=none; b=Q0zq2LsRWwWFDSGOvimSWMTl4jxDPz//hHc3d4H1BudrDWd1PPRzF4+u8krM+4Y/wP9apQugMLzyTmgWMwrOdSagcTVOjP5rHLfuCfzsvlaz12y6hDCo41e9dbY4qwShk+oakLsQIiFHnCGDAaTWXTf96Wm5lvRlCAFO6F71+FY=
+	t=1723020647; cv=none; b=DMGH4JomUdhVglQuUqht210LrIK2FVvvfkdB7RwbA28Xevyu9AKhprdk7XZFPbVNKotQ9OcxWif29j23iElXC+GDze1UMT7BuqyngHtd8e6R6oDVVVReTNIDttNfljPBuRzh46LyjkGiDwWHF9yJCb28jdWcet30B8/H7h7FpB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723017715; c=relaxed/simple;
-	bh=uNRTxLMAMpcbQn5DCRpAhvTpZAl9kCTly36CTOVae9Y=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ITUuVozH/QkX2dmYIQ/nSSWMYCRRuHyFKa8YKYj8hqmPZAdfrEKWDp3uQM8ni4QpmbsbCRNdpxgdcWSPVOK68jy7nAzoWPasj2P91MAW4SnNVAvI6lTqsZhUkTyUlkpATFCg5NOCAkah18c06SPMP5kyP715kquCAJWbn17JhIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=l8rcU5Bv; arc=none smtp.client-ip=185.70.40.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1723020647; c=relaxed/simple;
+	bh=0UtNcQiBJHj5NT3vENREIzfZcUewciu8UD/RmQsY0WE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=s/S8KxZUhwEJYTm/J6Fy0Rr0rMS7SwIgJAKhB8H680J7AbGEeLJj4qiapv/Fi0mRInJ1zgJzu1zzIEeAwyeOPbaJx/y1yxHiM3MmVi5pi1QDLy5ub49ylMZhsYC+iYIW2T8utwB98355BEPxq8O1UOPslBBrfKLQ1GtCZdKCd3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GzjZGlae; arc=none smtp.client-ip=209.85.208.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="l8rcU5Bv"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1723017710; x=1723276910;
-	bh=RWY8n2kwMXBw5zg65jaQElb79dGDUP5Ex7AXip/oERA=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=l8rcU5BvXbczBsQdlGiFBhu8cJLjhgult7+F8YRsB+mLN7KS9etyd76yw12rwQWRP
-	 WkJ5TLzFT12bFC38v9QINztgQABrLkPVZMy9FnRyxRxgv9NEgn/7J+xN71ciGt+gFH
-	 Xvv0i5DopHNmb4LGRIjj10NVew/q/cbi1h0U4Bivvsl2M6/HPS/dY+CwxZFq7vjXRK
-	 73aUdYTFlzoyiOibjcmTI2BDUDR/SJscWdYXp7owOffV3Nl2RPecyMdwLpxeVgyVkK
-	 FEIpbnsB3acccPGsSazAG9xRczo3De1vjnzYFsk/InMH3BUpieB7fJxxhGENLBCwgB
-	 izZk6TjmLfUkw==
-Date: Wed, 07 Aug 2024 08:01:00 +0000
-To: Alice Ryhl <aliceryhl@google.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Danilo Krummrich <dakr@kernel.org>, ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@samsung.com, akpm@linux-foundation.org, daniel.almeida@collabora.com, faith.ekstrand@collabora.com, boris.brezillon@collabora.com, lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com, acurrid@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com, ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v4 09/28] rust: alloc: implement kernel `Box`
-Message-ID: <7f3a4ea5-79c6-4068-9a5f-0aa3a55e38cb@proton.me>
-In-Reply-To: <CAH5fLggiSU9Ossy5gc+S_rSiX8v-JCDKPL_tRDYdjMYGfOt-0w@mail.gmail.com>
-References: <20240805152004.5039-1-dakr@kernel.org> <20240805152004.5039-10-dakr@kernel.org> <a1c1e273-2d40-4114-b3b9-f27c73e3d122@proton.me> <ZrKrMrg5E85y7jkj@pollux> <012f5a12-2408-4658-8318-55fa8d4285e1@proton.me> <CAH5fLggiSU9Ossy5gc+S_rSiX8v-JCDKPL_tRDYdjMYGfOt-0w@mail.gmail.com>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 5e675f3e5db637a98548d3886b70d1e75fe812f2
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GzjZGlae"
+Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-2f15e48f35bso14994341fa.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 07 Aug 2024 01:50:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1723020644; x=1723625444; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=/6uGG/bPgpOPhR7OkqXBHMSIeIgp9LFX//Nhl/4vdqg=;
+        b=GzjZGlaeBVpzHighw8MHNjfOWpidJfcdKgNPykjrbsmaMXelJPExRjFoYlInPR+W8U
+         DNkwkBWDrxQRMhvmk+TH3+TMCHZF4g4lL+xjtJ4TGfMnXCt1L8G8Wo/wjIfHcxWO2AVL
+         iRfaQSsl37T1dEb9ODAgvzLWEyuYL30nPSzwq9PjyxtdqexvHiYVsUjp6UFr75mRZQ10
+         RNfAWzJ2nmAYgjjLAl/P8lKHuDBVCjx0yDXqi9jjctPWJWBvPA5EQEG4IU6onjGA2afW
+         vy1WBeqka9JfMXScinDzeMwJuZ7UBOnlES6prUz36YmGHwVLo7yypu/FijzZGf2ptRmc
+         c47g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723020644; x=1723625444;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=/6uGG/bPgpOPhR7OkqXBHMSIeIgp9LFX//Nhl/4vdqg=;
+        b=OUd18BmH94/H6GT7xiGI3xEjoGVRBGTGFulOPadOHv9P27vqlfnZ6LizsqiIk1UQCM
+         HzRDJ4TanCSoGyD+eb2h19PmycOP4Ui/OCH2mlVtLVFj5p1RX7tfPnqnr+yLpP9Nx5e+
+         a2DiAx+aLQ6Rcj60IZoLak8ry0hVyyC4xHqiWVgMytWOlXnaI2NLAnwJjABEDssEVMHJ
+         VFUWmcx6eZBUvnJ++peAw/jNCnElaELm2eC5w1mZEHp9++vGW2CHnT4oLzEHBMzRKoau
+         Oa36YGSWVUYfWMg5z9aRZYP+xGKxy0mE6uO0AYmWzzjDW5mMepxi7UuOEUT1oCpWy8hM
+         6Z+A==
+X-Forwarded-Encrypted: i=1; AJvYcCX4kzHo09svfd+uVjM8+5UnIcfhOFb/6gP+dMguRuYK3cpwJjHTzCJgJMc0wp1A740UyifW9QnQ+vtl0fteDGofN1HHSbQB3GLSEdfC3mU=
+X-Gm-Message-State: AOJu0YyLG9x+OOxgd6/jFQa5vVoi5lSMDxnIuxxKG7+SgEJ5bNZumt+P
+	QMCBPm0/mYgnQD8FQZ92CHuLZpk80jDWpq0qviqFFzILe0Cve7e0T+bJVS3uZ42cD2O1C+1OyD/
+	cf9BsfjNKudT025V2Dt0vm8d9fbLwoof8f6Ga
+X-Google-Smtp-Source: AGHT+IGccCHlno0tQbb4yPLv0HzWQPlEIf88SJrHYSG7o6Dmgd4Psom8noOTBXPXyYsqb4J1FgwIajAF4YxG75Q1TCk=
+X-Received: by 2002:a2e:91d0:0:b0:2ef:1c0f:d490 with SMTP id
+ 38308e7fff4ca-2f15ab0c2a1mr126113241fa.39.1723020644050; Wed, 07 Aug 2024
+ 01:50:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20240725-alice-file-v8-0-55a2e80deaa8@google.com>
+ <20240725-alice-file-v8-3-55a2e80deaa8@google.com> <4bf5bf3b-88f4-4ee4-80fd-c566428d9f69@proton.me>
+ <CAH5fLgi0MGUhbD0WV99NtU+08HCJG+LYMtx+Ca4gwfo9FR+hTw@mail.gmail.com> <ZrJ5kORJHsITlxr6@boqun-archlinux>
+In-Reply-To: <ZrJ5kORJHsITlxr6@boqun-archlinux>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Wed, 7 Aug 2024 10:50:32 +0200
+Message-ID: <CAH5fLgj2XEvjourzW4aoRDQwMGkKTNiE7Wu9FVRrG=7ae1hiWA@mail.gmail.com>
+Subject: Re: [PATCH v8 3/8] rust: file: add Rust abstraction for `struct file`
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: Benno Lossin <benno.lossin@proton.me>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
+	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
+	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Dan Williams <dan.j.williams@intel.com>, 
+	Matthew Wilcox <willy@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, Daniel Xu <dxu@dxuuu.xyz>, 
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	Kees Cook <kees@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On 07.08.24 09:51, Alice Ryhl wrote:
-> On Wed, Aug 7, 2024 at 9:49=E2=80=AFAM Benno Lossin <benno.lossin@proton.=
-me> wrote:
->> On 07.08.24 01:01, Danilo Krummrich wrote:
->>> On Tue, Aug 06, 2024 at 07:47:17PM +0000, Benno Lossin wrote:
->>>> On 05.08.24 17:19, Danilo Krummrich wrote:
->>>>> +impl<T, A> Box<T, A>
->>>>> +where
->>>>> +    T: ?Sized,
->>>>> +    A: Allocator,
->>>>> +{
->>>>> +    /// Constructs a `Box<T, A>` from a raw pointer.
->>>>> +    ///
->>>>> +    /// # Safety
->>>>> +    ///
->>>>> +    /// `raw` must point to valid memory, previously allocated with =
-`A`, and at least the size of
->>>>> +    /// type `T`.
->>>>
->>>> With this requirement and the invariant on `Box`, I am lead to believe
->>>> that you can't use this for ZSTs, since they are not allocated with `A=
-`.
->>>> One solution would be to adjust this requirement. But I would rather u=
-se
->>>> a different solution: we move the dangling pointer stuff into the
->>>> allocator and also call it when `T` is a ZST (ie don't special case th=
-em
->>>> in `Box` but in the impls of `Allocator`). That way this can stay as-i=
-s
->>>> and the part about ZSTs in the invariant can be removed.
->>>
->>> Actually, we already got that. Every zero sized allocation will return =
-a
->>> dangling pointer. However, we can't call `Allocator::free` with (any) d=
-angling
->>> pointer though.
->>
->> The last part is rather problematic in my opinion, since the safety
->> requirements of the functions in `Allocator` don't ensure that you're
->> not allowed to do it. We should make it possible to free dangling
->> pointers that were previously "allocated" by the allocator (ie returned
->> by `realloc`).
->> Maybe we do need an `old_layout` parameter for that (that way we can
->> also `debug_assert_eq!(old_layout.align(), new_layout.align())`).
->=20
-> The std allocators generally prohibit zero sized allocations, so it
-> seems sensible for us to do the same?
+On Tue, Aug 6, 2024 at 9:30=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com> wr=
+ote:
+>
+> On Tue, Aug 06, 2024 at 10:48:11AM +0200, Alice Ryhl wrote:
+> [...]
+> > > > +    /// Returns the flags associated with the file.
+> > > > +    ///
+> > > > +    /// The flags are a combination of the constants in [`flags`].
+> > > > +    #[inline]
+> > > > +    pub fn flags(&self) -> u32 {
+> > > > +        // This `read_volatile` is intended to correspond to a REA=
+D_ONCE call.
+> > > > +        //
+> > > > +        // SAFETY: The file is valid because the shared reference =
+guarantees a nonzero refcount.
+> > > > +        //
+> > > > +        // FIXME(read_once): Replace with `read_once` when availab=
+le on the Rust side.
+> > >
+> > > Do you know the status of this?
+> >
+> > It's still unavailable.
+> >
+>
+> I think with our own Atomic API, we can just use atomic_read() here:
+> yes, I know that to make this is not a UB, we need the C side to also do
+> atomic write on this `f_flags`, however, my reading of C code seems to
+> suggest that FS relies on writes to this field is atomic, therefore
+> unless someone is willing to convert all writes to `f_flags` in C into
+> a WRITE_ONCE(), nothing more we can do on Rust side. So using
+> atomic_read() is the correct thing to begin with.
 
-I never understood why they do that, the stdlib `Allocator` trait has
-all the information it needs to detect zero-sized allocations, so it
-could just return dangling pointers. I don't see the point of
-duplicating the zero-sized logic in `Box` and `Vec`...
+Huh? The C side uses atomic reads for this?
 
----
-Cheers,
-Benno
-
+Alice
