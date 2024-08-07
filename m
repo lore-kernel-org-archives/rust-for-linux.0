@@ -1,152 +1,171 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from GBR01-LO4-obe.outbound.protection.outlook.com (mail-lo4gbr01on2105.outbound.protection.outlook.com [40.107.122.105])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8F031C9DC9;
-	Wed,  7 Aug 2024 10:17:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723025828; cv=none; b=eslz3wtJIZwOFvrrj2GJwRKXvp+EopSHhDdCBj0Wth765mFdMbEfRHFJc7/63JtgYwbuvEl7ywVAXefVfo1uzrzxYsRRtotCUfT2zafUh/YjqrEbbGP5laiubqu0DufaX+1kgtUcLP+/O+MDQ/yzXSfwTEr/+rGVHG2NCMzp1VU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723025828; c=relaxed/simple;
-	bh=Ps0tNdklgBZ8UoW92I7832USgziviwaLCHV/lVDnt7U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=IsqLPyk1Yvlpa5y7fVxUVxBgGrR9eKgDarxy9OzcIbeKThVpnkFZGbUrQen3EvKq7ytsifvU1Y9XtZi5IyQCjcZBj8BF4XyxmgsntSxVfiWOFqfNbhh1WgXt6PBX5ycnH6wgZMbppI6B4xKZeb/DKcFx6hcW4YPTeOqoqmGv9Oc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tYv3NekZ; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D32291C823D;
+	Wed,  7 Aug 2024 10:24:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.122.105
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1723026286; cv=fail; b=tY3sNLR/oqjU/Nw+eRF5I2pj2ZR4ZeENF4yP3KRXtZRirGBDxM1GUc60he80H+2rC+nk6eshwTC+gKJdrNk6ZOlow1VxstS32fxd5o/m9pjKs4ekov2dmxiRogcyUxCeDVDkLxDwiN2hsAePYw12TA72QlmClBfL0t0/Tvf6Jdg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1723026286; c=relaxed/simple;
+	bh=lYtGQ0KtYleXsT/Vf3KLiMfcY2nXpAURUHFCZLDkBtc=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=j3+wLunKqyW9wv9hBoYQOstR6fCNy2DW6cCMuWY/PKZPFJVE9IYZvZZyYccR1M5qW4eqwX0zB/WdWk1dl/C1cbYbVtRs1kFAvS7cLKmOmboFhrmPHwtv285wbTGQJiQ9nyEl+0b9JFbllJVCLglj1HpzK3TBDzAp/Vss87LIgeI=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=ZkTR69t7; arc=fail smtp.client-ip=40.107.122.105
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tYv3NekZ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84AFFC32782;
-	Wed,  7 Aug 2024 10:17:02 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723025827;
-	bh=Ps0tNdklgBZ8UoW92I7832USgziviwaLCHV/lVDnt7U=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=tYv3NekZVpW4tBlWh124bY1t88ZFswejVkYa9Dvjwp5XoaJtiPVnGlA2KSFsxp4fO
-	 Ok9sKS9iytgNeKb/z8pnB3luosur2Y7EhHPoIIrHB29aYyMX9MbKDY3k1XTYd+J8QR
-	 SiASLUMrADo/z4To2SGxWsDJnXax9KYLofS+yEW9MkjPby//kzKAQHAa3Iqb+LW3j4
-	 /rkbkorgcThYtVJkUfuQagTrl03vira/GHScGpsPQAMWGRmjF+hOcLgeodq6tb1o2f
-	 h0Z8nWEOMZm1jY+rloJYm3CNGVnuoKANH8wKc3bZjFURK/eRop81GDRGViP/Kdoypv
-	 Z67kqgGie46Zg==
-Date: Wed, 7 Aug 2024 12:16:59 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
-	a.hindborg@samsung.com, aliceryhl@google.com,
-	akpm@linux-foundation.org, daniel.almeida@collabora.com,
-	faith.ekstrand@collabora.com, boris.brezillon@collabora.com,
-	lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com,
-	acurrid@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com,
-	airlied@redhat.com, ajanulgu@redhat.com, lyude@redhat.com,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH v4 05/28] rust: alloc: add module `allocator_test`
-Message-ID: <ZrNJmxzN9cmBJtg1@pollux>
-References: <20240805152004.5039-1-dakr@kernel.org>
- <20240805152004.5039-6-dakr@kernel.org>
- <7f4b91e6-aae8-4e17-9fcd-4b1d0b2de9a0@proton.me>
- <ZrJyaWhXHRciX51o@pollux.localdomain>
- <6aaf4e2d-7968-4a7c-a522-73e6788ee0ee@proton.me>
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="ZkTR69t7"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ne7fi9AkfrEHFLKo94BwsQc+Xtm4sk7LW1D8hiilb8+10c/S8svuyNQo/4fzfc1M93hCA0Z5rMb8IYn+GAnaV256tivaxZDVSSiH6AWjvf6dyMvjLNfCrbtrU4mIB77hUKe2EQ6bnHvK2yJHK+gAXsAnDqXOyW26We4APgIbX5ux9FufD/sXFpEpK0eZ0A/WFz1QynE0+gNfymzqqOEqZxAayBGhVQG+/OWfm98Kq8KB/jhAxeOXbr2jRHWwm23nHXtzf1Ie9S7mzIerjeN1h9Ifd/hdPA9GsyHnbkigAlr5h70NyFGLdFlvxF7tGDopO41m1z2tc19g89XMBpYFuA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=hsCRjh0cU0bQJxzUEr9YLKC6EYehMKZp71nf/nKbu+4=;
+ b=QLbg9ZZHFgxmZWD3IjDPoP856Mt35YCqtNqVv4Rizbp6YnNf5II0ojX+SA6RoXziVO9LpUnYbR/icxFsPaiWj93Smk7fAf0Ropq/xk6GMi/+JLarIUSPXssj1m2nmpEEIbrvrLUoQy700vB4VeGTGTob4mloz33tTEk5jctNomxAaT1LhkGW9C+6hey6FcpscXVNZtJFNFRO+G1ZT5fEe6AGtkYeC5YrDcYsBukGrOQ5XW1SQlEfmrMmZqCxkEhJz5SVUe9hguitvbwBh7Frxcfy08IENdP/SXkmI4XRQ0/P8luTLFFp930+sU6HEJXTz8ogzyIhoWudTGZ6gWn1PA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=hsCRjh0cU0bQJxzUEr9YLKC6EYehMKZp71nf/nKbu+4=;
+ b=ZkTR69t7hsUgyOnWnbVaLCQYQPduaAF9c3HifzsJNLX0d2D/AZB/2JqrtfHJBFOQyGvOyZZMfue1bhr6qlVoaLMN8hggjoUtrH4l4BtT8pHli6FfslloEEozLaRuD93rFnP2Y1qikM4n6RmsvykbPNPbWW+TTVi/EVtudCfRA98=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
+ by LO4P265MB6027.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:29c::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7849.13; Wed, 7 Aug
+ 2024 10:24:31 +0000
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1818:a2bf:38a7:a1e7]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1818:a2bf:38a7:a1e7%7]) with mapi id 15.20.7849.008; Wed, 7 Aug 2024
+ 10:24:31 +0000
+Date: Wed, 7 Aug 2024 11:24:28 +0100
+From: Gary Guo <gary@garyguo.net>
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Josh Poimboeuf <jpoimboe@kernel.org>, Peter Zijlstra
+ <peterz@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar
+ <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
+ <dave.hansen@linux.intel.com>, Masahiro Yamada <masahiroy@kernel.org>,
+ x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, Nathan Chancellor
+ <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, Wedson Almeida
+ Filho <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng
+ <boqun.feng@gmail.com>, =?UTF-8?B?QmrDtnJu?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas
+ Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+ patches@lists.linux.dev
+Subject: Re: [PATCH v3 1/6] rust: module: add static pointer to
+ `{init,cleanup}_module()`
+Message-ID: <20240807112428.7620f5c5@eugeo>
+In-Reply-To: <20240725183325.122827-2-ojeda@kernel.org>
+References: <20240725183325.122827-1-ojeda@kernel.org>
+	<20240725183325.122827-2-ojeda@kernel.org>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: LO2P265CA0276.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:a1::24) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:253::10)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <6aaf4e2d-7968-4a7c-a522-73e6788ee0ee@proton.me>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LO4P265MB6027:EE_
+X-MS-Office365-Filtering-Correlation-Id: d77c625e-cf43-4bb1-9f51-08dcb6cb1fda
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|7416014|1800799024;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?LUYcz9ayV7LKFeOIoSJrNU9PEKX7a0ZXTIu7snT6rmF6iC+d80p6UqcX2UdR?=
+ =?us-ascii?Q?3f9jiwvzZAJ1Tcny0Bg2TQgV/qaxSh8OwoxsTfsfeQmlfzL4TQ5nfDzriOO0?=
+ =?us-ascii?Q?pgTEIfDhyM2I09VZuso9ju54v/H5KEEWfW7XE4+obYWSHgzM/dGVwBlLFX7Y?=
+ =?us-ascii?Q?z3ZsH+J5fvMhDk45SXOImhdeuLDsmCjIFC+oBkranmsncEs+gyCCRJBezpgP?=
+ =?us-ascii?Q?4MIoewhAJhIyvJLdE/qNdWuIfojIl7kVKNH7Jld7JSf21aILhfHJFggdWDT6?=
+ =?us-ascii?Q?DU+gPcY9Za/qF20kaXhQng9Ia2xKvLyncO7k+blXRP2cUC8l/6sWjMplkGfz?=
+ =?us-ascii?Q?4Tt1Mqx2GQvYNvI0uT+6Y11AhoAGia5fqj2rBP2ML1pQ1lYZhl0nmC//1k4V?=
+ =?us-ascii?Q?7NsJZkBg/rEXIII17LixVXxDkC4owADgYt6FRzcRkD/Y9T0oxANnYv3myIZ7?=
+ =?us-ascii?Q?2ZLDgYDowHYOUoIKUVr6yNqewi228B8vy+68XLpZi8b5vdjGvp6K4ogSQf+r?=
+ =?us-ascii?Q?nIPvA+n+cfN37dzFHGYGAf7iso+DcCVXekkNW9LP0oCeonDd21wxJ/Wfm/6g?=
+ =?us-ascii?Q?bo5D4rQH2amY7wm31Lw2kKznC3uIDNzqILZKyE0cECFdeVCG0ZZGM99NBTBR?=
+ =?us-ascii?Q?r0hejrK8WMhrIA71Cr739VdepTTrK7m0PjHXj8rYR8LpqGG9olPQQfHSnp7x?=
+ =?us-ascii?Q?6+n+HmnceIXFlGgDDOjz8VTYkrhISdVr1sAZ9iVbmp6mqFV9GtJJ9XwGMh9g?=
+ =?us-ascii?Q?pwRk/Z4Pw9qaBy6wrfTBDvSpxu16s3Leo3KYEZJh0Plblhtnrzoa083pSNlp?=
+ =?us-ascii?Q?uXWmYbgR1oa6doO2EAqUlNkQBpE9Z/QyfKqAUCzxvqQMYf3y19SHqQu3WN3S?=
+ =?us-ascii?Q?mh1U5v8pbd31nmF8S6yH6i5K2BFlFisOXtJJkAxIfbZl2U9BlBGtufjwvIcd?=
+ =?us-ascii?Q?sUgHpcBCSgT05GJX/jdIpnbe0LBo5OBEW72329S70MVzPwNsfmhHpCgrkQb0?=
+ =?us-ascii?Q?ZUQ/78eBG3qbjBxJdellY+kDzwwSZvYXuQSCGTDytz+kRXgJ+vqdb0N9XViX?=
+ =?us-ascii?Q?60gCTlgAQmIa6XxcWJScu2kQrS0afDu4v+2mM80advYjnTOgXRbnxHQ7lAS9?=
+ =?us-ascii?Q?4HBpuRs+Mwh3O7PEKSq59NdfijcpyPfih1odt+UFXoxeDgZRQGPPvSlQP8GU?=
+ =?us-ascii?Q?rrNrhLnBr7VqOhQBK2Lq1igv8vAB2sCa3/P3w8JHixeQ8XG87n19/8LYXyfO?=
+ =?us-ascii?Q?4XgWPyv1DDEtAQKGvvK9t9ZRQt8jX5SOJS+sycrGXw2SJDLCCPCr368N8dAD?=
+ =?us-ascii?Q?4xjf/XgQDvIZsUL2ciqsSkTraBmaSO0fms1nFrPuv5R6hg=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?p7xy4kRKW5Mo/41Dbgf9vD3vpT2eFkOimm9U9NKpmeKYEFSunWz8j0PrH4z0?=
+ =?us-ascii?Q?mjSAwXyxOOPi1kv9fVOmmvIfklZ/vBuA1zvDIBiW8T9jCrp8Geu1wIHKuBLO?=
+ =?us-ascii?Q?zQ9vDqyETq9J6mUDJt58PTuuHQA2LR9Xpy84KicrA9gm8Y7YjWZMyVR3QSFz?=
+ =?us-ascii?Q?beDCo57ZNOuhxamb+4YhRN75PJZk4OQ0KF/aexNrbg3QY5mgU1aeFRear5GK?=
+ =?us-ascii?Q?wyfvL3MvQSFyHANxvJpgv9bojwhFGrSYzW4+90IZxmnje5oE/y4ONBCRoYUT?=
+ =?us-ascii?Q?DPLg2ppqUSQ3asJI+5Nb/Sg6qMhgTis66wteOlGQRlwgFbXetdt4R/Cp4Wvl?=
+ =?us-ascii?Q?HteBL5+zTidG+AD2nCWfJTTixmvDyHL34H1HnlX0YWaLEp1Ljvz93Rw5KhSj?=
+ =?us-ascii?Q?hX9O68JiOcJ08wpWWJuhVi/lYmfzFFgm6g4me1jNJm5gXMgXAZKX0LbzhueC?=
+ =?us-ascii?Q?2dbkzvNJFyYgeb9Ng+gTYJp1WBMzwnlCg9ybeGDHcXJk7/7HX5LZ1jpRt7gl?=
+ =?us-ascii?Q?t9raeUKa1h8VJjiapP3+ncWjVrSORPFuVQClstg4x1uGeB+xCajH6XjRIAbP?=
+ =?us-ascii?Q?tHN49hiH+eodSK8o5MP6GqHr38OwBUHNHANMx/41N3AYEjy3kig4creXTG/b?=
+ =?us-ascii?Q?5D1PflGDyPr2arpS+LnQ+V51Q6AifJE74BkTaCigPrvUgZCzienJLGlb2R/X?=
+ =?us-ascii?Q?9j4+/EgnAz2c4YxXtCSZfTmMAzlknczF5nGFsPG26axo4NbqQZaJ2ETxII99?=
+ =?us-ascii?Q?Jl6Iz5FkvI/BMWdv8k3DLacAPp3wxz0w/rcSp2+l3njttKN7jXnZCATZgmRd?=
+ =?us-ascii?Q?oXG6ihZ20aBqYpjfa4My1FPzhYSl2oP4SXzNveKlGBCpcw/QgGwOTnzDAPYM?=
+ =?us-ascii?Q?0I901BQzpBLlRt7bgq8oGzYIbO5Wt3Cig7zawwhdaNi8VXhKRjPwwVyT8H9W?=
+ =?us-ascii?Q?F/xL47AQcFTXaurNcF1lZYRQRtqj7ejGnW6mxsqB7CqKXa/eUFQTNh5JjnUa?=
+ =?us-ascii?Q?jrIJo3ucY1obN0O436BdfyUE6B+QAcx5BrG45hLw1Q+K/vdTBMBexLUJ/djS?=
+ =?us-ascii?Q?MPMfcxoFdATWmcciu7uQwJTjoFa36ts7PSkz3Pbg4IihUaoLVT2KkMkT+B+z?=
+ =?us-ascii?Q?xQjcPSrtDe6OlxL59EjvvEYoNyLvvRq5/O0OgBgPSdCEi2q+2g5OY///5xZF?=
+ =?us-ascii?Q?cX57uspr6m9s2a3uoGTPyPtCJhdgVuos5M7+RRwobGEfuzbjUG55U38sXk0/?=
+ =?us-ascii?Q?WWDNMYFF/aoieX8HpRzd2EQuYy+K44E/BtMjEIYIw4dJRJsLu/oNs82v4Mua?=
+ =?us-ascii?Q?4P0bNus0AHaCtJKH/sPQL3xgMGuMz/a3UKAwJz2rG+tPPVV7GxhS2RkKI1eS?=
+ =?us-ascii?Q?RARUg0smZR+TXMhm0ARSpSN/vALvzEtHRZuya2KQGiXdxdPEP1NJaWffDu2L?=
+ =?us-ascii?Q?hXvGDAwU8w8zkZIvAZzG7/9cOavCXS5Tz4R9lamI76/ulPNLYboKh0kbid2R?=
+ =?us-ascii?Q?G+zUbWWwiHUhOQphTSpkIRpBvJhnmvdNWoKm+Dp/Qdita+C2ATz3UVr7u2lz?=
+ =?us-ascii?Q?s0lpEemGM1K/s9xw3u8o9U4rXRC4T/kOILgtoV2a?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: d77c625e-cf43-4bb1-9f51-08dcb6cb1fda
+X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Aug 2024 10:24:31.0018
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 20b5wnlFrFfT6OsK47t2QhzYpLruILMgVUl5nR0rdU02epFBtzVUEsC5UEkwcBeEW+boWFr1cI/ZoPDaUKwJmQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO4P265MB6027
 
-On Wed, Aug 07, 2024 at 07:20:03AM +0000, Benno Lossin wrote:
-> On 06.08.24 20:58, Danilo Krummrich wrote:
-> > On Tue, Aug 06, 2024 at 04:54:10PM +0000, Benno Lossin wrote:
-> >> On 05.08.24 17:19, Danilo Krummrich wrote:
-> >>> `Allocator`s, such as `Kmalloc`, will be used by e.g. `Box` and `Vec` in
-> >>> subsequent patches, and hence this dependency propagates throughout the
-> >>> whole kernel.
-> >>>
-> >>> Add the `allocator_test` module that provides an empty implementation
-> >>> for all `Allocator`s in the kernel, such that we don't break the
-> >>> `rusttest` make target in subsequent patches.
-> >>
-> >> This is confusing, since you are talking about both our new `Allocator`
-> >> trait, allocators and the `alloc` crate `Allocator`.
-> > 
-> > I never mention the `alloc` crate `Allocator` here.
-> 
-> Seems like I confused myself...
-> 
-> >>> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> >>> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-> >>> ---
-> >>>  rust/kernel/alloc.rs                |  9 +++++++--
-> >>>  rust/kernel/alloc/allocator_test.rs | 19 +++++++++++++++++++
-> >>>  2 files changed, 26 insertions(+), 2 deletions(-)
-> >>>  create mode 100644 rust/kernel/alloc/allocator_test.rs
-> >>>
-> >>> diff --git a/rust/kernel/alloc.rs b/rust/kernel/alloc.rs
-> >>> index bc01a17df5e0..942e2755f217 100644
-> >>> --- a/rust/kernel/alloc.rs
-> >>> +++ b/rust/kernel/alloc.rs
-> >>> @@ -2,12 +2,17 @@
-> >>>
-> >>>  //! Extensions to the [`alloc`] crate.
-> >>>
-> >>> -#[cfg(not(test))]
-> >>> -#[cfg(not(testlib))]
-> >>> +#[cfg(not(any(test, testlib)))]
-> >>>  pub mod allocator;
-> >>>  pub mod box_ext;
-> >>>  pub mod vec_ext;
-> >>>
-> >>> +#[cfg(any(test, testlib))]
-> >>> +pub mod allocator_test;
-> >>> +
-> >>> +#[cfg(any(test, testlib))]
-> >>> +pub use self::allocator_test as allocator;
-> >>> +
-> >>>  /// Indicates an allocation error.
-> >>>  #[derive(Copy, Clone, PartialEq, Eq, Debug)]
-> >>>  pub struct AllocError;
-> >>> diff --git a/rust/kernel/alloc/allocator_test.rs b/rust/kernel/alloc/allocator_test.rs
-> >>> new file mode 100644
-> >>> index 000000000000..4785efc474a7
-> >>> --- /dev/null
-> >>> +++ b/rust/kernel/alloc/allocator_test.rs
-> >>> @@ -0,0 +1,19 @@
-> >>> +// SPDX-License-Identifier: GPL-2.0
-> >>> +
-> >>> +#![allow(missing_docs)]
-> >>> +
-> >>> +use super::{AllocError, Allocator, Flags};
-> >>> +use core::alloc::Layout;
-> >>> +use core::ptr::NonNull;
-> >>> +
-> >>> +pub struct Kmalloc;
-> >>> +
-> >>> +unsafe impl Allocator for Kmalloc {
-> >>> +    unsafe fn realloc(
-> >>> +        _ptr: Option<NonNull<u8>>,
-> >>> +        _layout: Layout,
-> >>> +        _flags: Flags,
-> >>> +    ) -> Result<NonNull<[u8]>, AllocError> {
-> >>> +        panic!();
-> >>
-> >> Does `build_error!()` also work? If yes, then I would prefer that.
-> > 
-> > Probably, but it also probably doesn't matter too much. A later patch in the
-> > series replaces this with a `Cmalloc` implementation and type aliases all kernel
-> > allocators (e.g. `Kmalloc`) to it.
-> 
-> What prevents you from doing the `Cmalloc` patch here? `build_error!`
-> probably doesn't work, since we probably allocate in rusttest, right?
+On Thu, 25 Jul 2024 20:33:18 +0200
+Miguel Ojeda <ojeda@kernel.org> wrote:
 
-I think it's better to have the creation of the allocator_test module and the
-implementation of `Cmalloc` in separate patches. `Cmalloc` comes later because I
-don't need it yet. I need it to get rid of building Rust's `alloc` crate and I
-think it's good to have those patches close to each other.
-
+> Add the equivalent of the `___ADDRESSABLE()` annotation in the
+> `module_{init,exit}` macros to the Rust `module!` macro.
 > 
+> Without this, `objtool` would complain if enabled for Rust (under IBT
+> builds), e.g.:
+> 
+>     samples/rust/rust_print.o: warning: objtool: cleanup_module(): not an indirect call target
+>     samples/rust/rust_print.o: warning: objtool: init_module(): not an indirect call target
+> 
+> Tested-by: Alice Ryhl <aliceryhl@google.com>
+> Tested-by: Benno Lossin <benno.lossin@proton.me>
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+
+Reviewed-by: Gary Guo <gary@garyguo.net>
+
 > ---
-> Cheers,
-> Benno
-> 
+>  rust/macros/module.rs | 12 ++++++++++++
+>  1 file changed, 12 insertions(+)
