@@ -1,67 +1,67 @@
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F46E1D0DC5
-	for <rust-for-linux@vger.kernel.org>; Wed,  7 Aug 2024 12:42:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 357E41E672B
+	for <rust-for-linux@vger.kernel.org>; Wed,  7 Aug 2024 12:43:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723034557; cv=none; b=rShB01rQstGYbla9/j+dXSTrmEdBHHbe3R9ksjmxxsgZv76VSnlhDP0xqZe9nz98yS6JYsu62mdn7b/BPz7s3YQcFGxQakfiXvC8JHbgeZkKj7Q/l81MOlqZy2VYQC4OimTbPU215JaVsAajZTFbPDhR41HzHgNUhgURChHC2Bs=
+	t=1723034591; cv=none; b=TmnUSPXC0aVcdJvf8GnHQcs8HcnR4zeZN0L1qaa/0xGMeZ+pJQ8Uau19kcobbFr7P+zRUgZg9NQSz+lgqk5cbcWFVNru+Z8wrcaouM6tZbDi2FToSxNieoMHvu7x5ZqPZYKk7ID1I4Mt4W5F4VLoS/iUc4wUpV4fhsUIn8IK4Kg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723034557; c=relaxed/simple;
-	bh=dC1Gqu+ImAfjVByCQHuV657Tr7jIv7TZOwNXzQfDCT0=;
+	s=arc-20240116; t=1723034591; c=relaxed/simple;
+	bh=9TByiAsR7rqHzw0m3GnEqxlrlWwWHyVDWtIiOmBiOok=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=igx8GKDIeWFLsFPP9w5WJi8gUqLfPkfBGwqBl/rezHmf9HGRfGwDM4xTiRY5S5JCc7RDxNhbNgnzwEVG6LXlQNTkfJjcYPoqnHPZEsUnll2Rr05TdkFou/lK9nJQtyrYHknGnA+2q3FXNp94wEc0X+uQkRbLXCzsz63sDFkTwec=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=koKOUPAy; arc=none smtp.client-ip=209.85.221.49
+	 To:Cc:Content-Type; b=nzbplDXNsoswvB3bKCKSBXHjThgI/rv2NIIPAHwKIetJVQPg8XMm8bQA0rHBKEE2bankxR7B37N3IXdN76dKIgK0ykLFzrGlm/S4/sMFQQTC5PtEsABZ0nvpq5pGAU6NRBWAPQhS+Lh8+tQlIrvRFxLMO4cf/MCWePTkU06knSA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=cKhi8PO4; arc=none smtp.client-ip=209.85.128.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="koKOUPAy"
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-3684eb5be64so1141362f8f.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 07 Aug 2024 05:42:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="cKhi8PO4"
+Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-42817f1eb1fso11747625e9.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 07 Aug 2024 05:43:09 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1723034554; x=1723639354; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1723034588; x=1723639388; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=dC1Gqu+ImAfjVByCQHuV657Tr7jIv7TZOwNXzQfDCT0=;
-        b=koKOUPAyxBR4fz5wHc9M97hE0J+oxW4fEmKLMwRbArj4bYyZfpItBbh1/i3+UfUQGm
-         GnmK4UuY/bVCQ2VWahE+paYGvn08hBsXXFW4exBA0o+e3wvSWGTaeVtood8jRgHFFgfx
-         7dige0ulLHr44iV3xeabno1pP41WAWbV3EfMTU/eGLdoSmQed0m0fZfVDa7H4LWVL9yF
-         VVbViv/bE9nbHqNWQtZBMw+A2oG5TPhj89C7GinsS5pQFmUuuNGHcwmZSZJQ1Vml9r9Y
-         dJwV1MJI8TpChjYZHvjjYpxgt2j0A28jset14aZmSCASiYJDslaTeIItaUxwM0REMw8D
-         F46A==
+        bh=9TByiAsR7rqHzw0m3GnEqxlrlWwWHyVDWtIiOmBiOok=;
+        b=cKhi8PO4+CwK3LtDQiigZiMio4BUyj87VW9SfObsTDqEBHFhPMuWb95tM3b8avxWNH
+         qr87Y7PggYnFhV+K9CVzfMMnSYJvPF+K96zQbXVAWh/fl8r5jWsSKYR6fc6N7WfEYEFa
+         if5Cb5qDSkgmJQJhHo57pwS59VoI0RrzNM5J19+ra3ObkO5kJUUXI1F1Bq5V9BlPYrEF
+         LZ6fLlsRpn+CR2cF73nnNwEpJhSzXJ8mKjUvMxbJlADiA5vnV6QXaykIl8W30/64NIaI
+         fgiB01/Po6Nx3OqTGJ5pOQ8x9oJp88lLrNe24p1WCc0IjoCGP+/RgfUwuTGqVh+2TEWY
+         ebxg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723034554; x=1723639354;
+        d=1e100.net; s=20230601; t=1723034588; x=1723639388;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=dC1Gqu+ImAfjVByCQHuV657Tr7jIv7TZOwNXzQfDCT0=;
-        b=CXA12YIPVcYw2sb/6GtABNW6GVUvF/z58MnRNu25E3VoQ4jDbCSr8LHC2Q5WWtgBW0
-         gw6Pn67O4gzHcgZC6duu0J8HZc1QXaENyI66zdfsFq7zCaHloKCgSkbpf4ALOWlucBOv
-         H5YctAYk7ZFkFiZzgRHi6n1cWGJy8HMPtR+OcAL5WSc0MulZr0TYsciDZsMSQKmaamzY
-         JKUN/Iuuu2DFF2XaaPfwMwU6WXxmK2FvLVq3Zea7aqE5APO9mX8z3B+W0gERsN363LgP
-         ese2VMYHyu69THQPLhp1rsNxbRqpZFZmtyRIPKDmbeqxsNhF2CPthQ25R43Iq4QWwGXB
-         LKgA==
-X-Forwarded-Encrypted: i=1; AJvYcCU1Cxa7YgJ/L7L/A0WvNFrGwPs5T03y1lRtLXrbnC13uI74cFGp5fsgcW4He/J1UAdYa20LTwsekqnXudB1l9iRLWRay7GFUL8lhd1PjAM=
-X-Gm-Message-State: AOJu0YxJZTM+Vs8ZtKX2pOEvFxp3jYmy+ilow9tLAeM0ycul4DNOyzWV
-	Jcjy7S6WmO5yvyKh1hILD3iv5BlZuHEhVTyFjQd4Vf0CffCx+0lnm4FHDRbm3hdbUgDrO1FEovj
-	pMWVEWslaw9lhT+QRQljngED9CHuZuBMrxW0B
-X-Google-Smtp-Source: AGHT+IHMOwVO5PgoY1ty91l1/Mip8oCnfxb9A32cACdLXHKInsEtqb2h7xNIx7PEOPNHhk73co0BRxXODtmm62aFDIQ=
-X-Received: by 2002:adf:cc89:0:b0:368:68d3:32b3 with SMTP id
- ffacd0b85a97d-36bbc11aaa5mr11469188f8f.26.1723034554173; Wed, 07 Aug 2024
- 05:42:34 -0700 (PDT)
+        bh=9TByiAsR7rqHzw0m3GnEqxlrlWwWHyVDWtIiOmBiOok=;
+        b=fCpN/LK6I9h7UJ6Rydf7TdrXQTPQXkuFaL+aw/hHg+55gPsxhdvDe5wPr1ysu0oKsi
+         ZnfOM64chJx4uPf2bRQDWPNi3KhtJxM9v7hndiwqSL4oBwqJ45UsWDnxAsOU4FcdPdWy
+         zStV5EuJDpgig9UQQT2ZW/3KJTvYiMxWWchzJxOpsJTwb85d8FFHlhRSKTp/FPFrt4oX
+         qW255NZhbCcB0aMCchkH308luYFpakonClWOknnfHpjBCg4TiiSvRjsLpOFUoLFAwax8
+         4LILvNzXmN4WyFHzUQgSGrYSNRaOD7pAuCJUMAKAh3wcAian444zyJIR6EJZBR0KeNXQ
+         xiMQ==
+X-Forwarded-Encrypted: i=1; AJvYcCX1Tuzrplv+J2z89txHpEQlZvl39mxvfx+FFx7uHb48G7Q5znmRjT2P89ouUYroklohUwR7VEDFMWfQMPmqIP1uVHkI2l4e3OXin09pFMw=
+X-Gm-Message-State: AOJu0YwPBMCtcw/6OC9cQYLZpHqro4zhBD5w69B+ycsqCaKQ3WiG7BOx
+	VYLs4/QkuxZ8TrZkjHVeO4yBw0m/FHep3zKxuBQGDj3LVq3TGHVIJgRFW9hGKp8aPYTS9lWuhsz
+	hs4qeyYAeaCivWBV8p4F1/saD+AH78BNvjCEt
+X-Google-Smtp-Source: AGHT+IGjfaSyLjwrx4jEwLsF47E1kJuxSp9c65dbrjL2s5oRCzn+kjQm+YNz2CjC070fex44kCMZ2IktnmSjrL7vXZw=
+X-Received: by 2002:a05:6000:1c6:b0:35f:cd7:5ba1 with SMTP id
+ ffacd0b85a97d-36bbc1c2390mr12330956f8f.60.1723034588294; Wed, 07 Aug 2024
+ 05:43:08 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240805152004.5039-1-dakr@kernel.org> <20240805152004.5039-11-dakr@kernel.org>
-In-Reply-To: <20240805152004.5039-11-dakr@kernel.org>
+References: <20240805152004.5039-1-dakr@kernel.org> <20240805152004.5039-20-dakr@kernel.org>
+In-Reply-To: <20240805152004.5039-20-dakr@kernel.org>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 7 Aug 2024 14:42:21 +0200
-Message-ID: <CAH5fLgjsHQvJB6O_81O6hBx_XHocQXv8qCEZZXmUeNgQuNZv3A@mail.gmail.com>
-Subject: Re: [PATCH v4 10/28] rust: treewide: switch to our kernel `Box` type
+Date: Wed, 7 Aug 2024 14:42:55 +0200
+Message-ID: <CAH5fLgiBhHVW83zh6wB6916dHdDt5cKsDS8eHS9sre+UkNUuqw@mail.gmail.com>
+Subject: Re: [PATCH v4 19/28] rust: alloc: remove `VecExt` extension
 To: Danilo Krummrich <dakr@kernel.org>
 Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, 
 	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
@@ -75,11 +75,11 @@ Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Aug 5, 2024 at 5:21=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> w=
+On Mon, Aug 5, 2024 at 5:22=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> w=
 rote:
 >
-> Now that we got the kernel `Box` type in place, convert all existing
-> `Box` users to make use of it.
+> Now that all existing `Vec` users were moved to the kernel `Vec` type,
+> remove the `VecExt` extension.
 >
 > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 
