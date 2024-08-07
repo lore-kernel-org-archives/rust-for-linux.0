@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0320F1C7B92;
-	Wed,  7 Aug 2024 10:14:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8F031C9DC9;
+	Wed,  7 Aug 2024 10:17:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723025643; cv=none; b=fK3Va8EaB73Lmy2cy3KTRW3Ww1wswqhYBslRGp2jYSWuyvvaz5ZnFa00Ir3fOVxLnOUcczqz7EN6gRkLUxTKnhud8MVX4vZj2Z4BJZPhl/RxjhQhdo69tVu0Cql0FpnM053sWMiKSnF+hIqXZpI8JqobCS9bYScMXZQEN/30CM4=
+	t=1723025828; cv=none; b=eslz3wtJIZwOFvrrj2GJwRKXvp+EopSHhDdCBj0Wth765mFdMbEfRHFJc7/63JtgYwbuvEl7ywVAXefVfo1uzrzxYsRRtotCUfT2zafUh/YjqrEbbGP5laiubqu0DufaX+1kgtUcLP+/O+MDQ/yzXSfwTEr/+rGVHG2NCMzp1VU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723025643; c=relaxed/simple;
-	bh=cXFScknOCcXsw5mApjuf4qGj6WwS+8PmUpSIsPwrrSw=;
+	s=arc-20240116; t=1723025828; c=relaxed/simple;
+	bh=Ps0tNdklgBZ8UoW92I7832USgziviwaLCHV/lVDnt7U=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JfaWjXTnfmsgvxegDFFbuJuLztaGjkyN50z1hQUncpl3Owz5kz0CoYWUJu3gF9pOwWXovIsPQM9InnWJsdacLUIHCDohEZCQTPj1fqGzhI2yglAHZyz1mzjdBDuRRno+ovIGRXqFlj7L6PXm1mbp30zk7d1wIsL8N7E/kMn5s5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qt1qAxU/; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=IsqLPyk1Yvlpa5y7fVxUVxBgGrR9eKgDarxy9OzcIbeKThVpnkFZGbUrQen3EvKq7ytsifvU1Y9XtZi5IyQCjcZBj8BF4XyxmgsntSxVfiWOFqfNbhh1WgXt6PBX5ycnH6wgZMbppI6B4xKZeb/DKcFx6hcW4YPTeOqoqmGv9Oc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=tYv3NekZ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qt1qAxU/"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CF8EC32782;
-	Wed,  7 Aug 2024 10:13:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="tYv3NekZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84AFFC32782;
+	Wed,  7 Aug 2024 10:17:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723025642;
-	bh=cXFScknOCcXsw5mApjuf4qGj6WwS+8PmUpSIsPwrrSw=;
+	s=k20201202; t=1723025827;
+	bh=Ps0tNdklgBZ8UoW92I7832USgziviwaLCHV/lVDnt7U=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=qt1qAxU/np729XtXNzr44kscc53wJNUCcU3++RzVyVEeBKAF3t2UCEQwV2aNP69+n
-	 LeODvE0EDy2vV63n5wx2XGwcGK2L5o6Mww2vih+J5lvy1fAh1vqhsIplkkZJ4uWg/0
-	 5pJUoMZXu0lkyKF3AwFAUeWqDfUxSjCcham2wvKoitSb28GHF1owMMLNYkIU3TB5JL
-	 GjrjSHU1XEVH/Dy5JRa3xOcCQg1xeJ0A1T12xSGH62YQGh4Aht+7nl0TCePdX64ilW
-	 YaIbTvZ/mzcaKLqYjRGevWxIcXngVQy8tezWScfENM5JUMU0STh8gzIEdn4Wv6OVqr
-	 5lYxYj37LhJrw==
-Date: Wed, 7 Aug 2024 12:13:55 +0200
+	b=tYv3NekZVpW4tBlWh124bY1t88ZFswejVkYa9Dvjwp5XoaJtiPVnGlA2KSFsxp4fO
+	 Ok9sKS9iytgNeKb/z8pnB3luosur2Y7EhHPoIIrHB29aYyMX9MbKDY3k1XTYd+J8QR
+	 SiASLUMrADo/z4To2SGxWsDJnXax9KYLofS+yEW9MkjPby//kzKAQHAa3Iqb+LW3j4
+	 /rkbkorgcThYtVJkUfuQagTrl03vira/GHScGpsPQAMWGRmjF+hOcLgeodq6tb1o2f
+	 h0Z8nWEOMZm1jY+rloJYm3CNGVnuoKANH8wKc3bZjFURK/eRop81GDRGViP/Kdoypv
+	 Z67kqgGie46Zg==
+Date: Wed, 7 Aug 2024 12:16:59 +0200
 From: Danilo Krummrich <dakr@kernel.org>
 To: Benno Lossin <benno.lossin@proton.me>
 Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
@@ -39,13 +39,13 @@ Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
 	airlied@redhat.com, ajanulgu@redhat.com, lyude@redhat.com,
 	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: Re: [PATCH v4 08/28] rust: types: implement `Unique<T>`
-Message-ID: <ZrNI4_z4v4pKroaR@pollux>
+Subject: Re: [PATCH v4 05/28] rust: alloc: add module `allocator_test`
+Message-ID: <ZrNJmxzN9cmBJtg1@pollux>
 References: <20240805152004.5039-1-dakr@kernel.org>
- <20240805152004.5039-9-dakr@kernel.org>
- <ff0826af-9430-4653-abe8-25fb80cd0e97@proton.me>
- <ZrKt7K68W1Jh6nhr@pollux>
- <f3457432-dc83-4a19-b75a-88b914430733@proton.me>
+ <20240805152004.5039-6-dakr@kernel.org>
+ <7f4b91e6-aae8-4e17-9fcd-4b1d0b2de9a0@proton.me>
+ <ZrJyaWhXHRciX51o@pollux.localdomain>
+ <6aaf4e2d-7968-4a7c-a522-73e6788ee0ee@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -54,63 +54,99 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <f3457432-dc83-4a19-b75a-88b914430733@proton.me>
+In-Reply-To: <6aaf4e2d-7968-4a7c-a522-73e6788ee0ee@proton.me>
 
-On Wed, Aug 07, 2024 at 07:27:43AM +0000, Benno Lossin wrote:
-> On 07.08.24 01:12, Danilo Krummrich wrote:
-> > On Tue, Aug 06, 2024 at 05:22:21PM +0000, Benno Lossin wrote:
+On Wed, Aug 07, 2024 at 07:20:03AM +0000, Benno Lossin wrote:
+> On 06.08.24 20:58, Danilo Krummrich wrote:
+> > On Tue, Aug 06, 2024 at 04:54:10PM +0000, Benno Lossin wrote:
 > >> On 05.08.24 17:19, Danilo Krummrich wrote:
-> >>> +impl<T: Sized> Unique<T> {
-> >>> +    /// Creates a new `Unique` that is dangling, but well-aligned.
-> >>> +    ///
-> >>> +    /// This is useful for initializing types which lazily allocate, like
-> >>> +    /// `Vec::new` does.
-> >>> +    ///
-> >>> +    /// Note that the pointer value may potentially represent a valid pointer to
-> >>> +    /// a `T`, which means this must not be used as a "not yet initialized"
-> >>> +    /// sentinel value. Types that lazily allocate must track initialization by
-> >>> +    /// some other means.
-> >>> +    #[must_use]
-> >>> +    #[inline]
-> >>> +    pub const fn dangling() -> Self {
-> >>> +        Unique {
-> >>> +            pointer: NonNull::dangling(),
-> >>> +            _marker: PhantomData,
-> >>> +        }
-> >>> +    }
+> >>> `Allocator`s, such as `Kmalloc`, will be used by e.g. `Box` and `Vec` in
+> >>> subsequent patches, and hence this dependency propagates throughout the
+> >>> whole kernel.
+> >>>
+> >>> Add the `allocator_test` module that provides an empty implementation
+> >>> for all `Allocator`s in the kernel, such that we don't break the
+> >>> `rusttest` make target in subsequent patches.
 > >>
-> >> I think I already asked this, but the code until this point is copied
-> >> from the rust stdlib and nowhere cited, does that work with the
-> >> licensing?
-> >>
-> >> I also think that the code above could use some improvements:
-> >> - add an `# Invariants` section with appropriate invariants (what are
-> >>   they supposed to be?)
-> >> - Do we really want this type to be public and exported from the kernel
-> >>   crate? I think it would be better if it were crate-private.
-> >> - What do we gain from having this type? As I learned recently, the
-> >>   `Unique` type from `core` doesn't actually put the `noalias` onto
-> >>   `Box` and `Vec`. The functions are mostly delegations to `NonNull`, so
-> >>   if the only advantages are that `Send` and `Sync` are already
-> >>   implemented, then I think we should drop this.
+> >> This is confusing, since you are talking about both our new `Allocator`
+> >> trait, allocators and the `alloc` crate `Allocator`.
 > > 
-> > I originally introduced it for the reasons described in [1], but mainly to make
-> > clear that the owner of this thing also owns the memory behind the pointer and
-> > the `Send` and `Sync` stuff you already mentioned.
+> > I never mention the `alloc` crate `Allocator` here.
 > 
-> I would prefer if we make that explicit, since it is rather error-prone
-> when creating new pointer types (and one should have to think about
-> thread safety).
+> Seems like I confused myself...
+> 
+> >>> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> >>> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> >>> ---
+> >>>  rust/kernel/alloc.rs                |  9 +++++++--
+> >>>  rust/kernel/alloc/allocator_test.rs | 19 +++++++++++++++++++
+> >>>  2 files changed, 26 insertions(+), 2 deletions(-)
+> >>>  create mode 100644 rust/kernel/alloc/allocator_test.rs
+> >>>
+> >>> diff --git a/rust/kernel/alloc.rs b/rust/kernel/alloc.rs
+> >>> index bc01a17df5e0..942e2755f217 100644
+> >>> --- a/rust/kernel/alloc.rs
+> >>> +++ b/rust/kernel/alloc.rs
+> >>> @@ -2,12 +2,17 @@
+> >>>
+> >>>  //! Extensions to the [`alloc`] crate.
+> >>>
+> >>> -#[cfg(not(test))]
+> >>> -#[cfg(not(testlib))]
+> >>> +#[cfg(not(any(test, testlib)))]
+> >>>  pub mod allocator;
+> >>>  pub mod box_ext;
+> >>>  pub mod vec_ext;
+> >>>
+> >>> +#[cfg(any(test, testlib))]
+> >>> +pub mod allocator_test;
+> >>> +
+> >>> +#[cfg(any(test, testlib))]
+> >>> +pub use self::allocator_test as allocator;
+> >>> +
+> >>>  /// Indicates an allocation error.
+> >>>  #[derive(Copy, Clone, PartialEq, Eq, Debug)]
+> >>>  pub struct AllocError;
+> >>> diff --git a/rust/kernel/alloc/allocator_test.rs b/rust/kernel/alloc/allocator_test.rs
+> >>> new file mode 100644
+> >>> index 000000000000..4785efc474a7
+> >>> --- /dev/null
+> >>> +++ b/rust/kernel/alloc/allocator_test.rs
+> >>> @@ -0,0 +1,19 @@
+> >>> +// SPDX-License-Identifier: GPL-2.0
+> >>> +
+> >>> +#![allow(missing_docs)]
+> >>> +
+> >>> +use super::{AllocError, Allocator, Flags};
+> >>> +use core::alloc::Layout;
+> >>> +use core::ptr::NonNull;
+> >>> +
+> >>> +pub struct Kmalloc;
+> >>> +
+> >>> +unsafe impl Allocator for Kmalloc {
+> >>> +    unsafe fn realloc(
+> >>> +        _ptr: Option<NonNull<u8>>,
+> >>> +        _layout: Layout,
+> >>> +        _flags: Flags,
+> >>> +    ) -> Result<NonNull<[u8]>, AllocError> {
+> >>> +        panic!();
+> >>
+> >> Does `build_error!()` also work? If yes, then I would prefer that.
+> > 
+> > Probably, but it also probably doesn't matter too much. A later patch in the
+> > series replaces this with a `Cmalloc` implementation and type aliases all kernel
+> > allocators (e.g. `Kmalloc`) to it.
+> 
+> What prevents you from doing the `Cmalloc` patch here? `build_error!`
+> probably doesn't work, since we probably allocate in rusttest, right?
 
-Again, fine for me. If no one else has objections I'll just drop `Unique`.
+I think it's better to have the creation of the allocator_test module and the
+implementation of `Cmalloc` in separate patches. `Cmalloc` comes later because I
+don't need it yet. I need it to get rid of building Rust's `alloc` crate and I
+think it's good to have those patches close to each other.
 
 > 
 > ---
 > Cheers,
 > Benno
-> 
-> > If no one else has objections we can also just drop it. Personally, I'm fine
-> > either way.
-> > 
-> > [1] https://docs.rs/rust-libcore/latest/core/ptr/struct.Unique.html
 > 
