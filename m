@@ -1,64 +1,76 @@
-Received: from GBR01-LO4-obe.outbound.protection.outlook.com (mail-lo4gbr01on2100.outbound.protection.outlook.com [40.107.122.100])
+Received: from CWXP265CU009.outbound.protection.outlook.com (mail-ukwestazon11021109.outbound.protection.outlook.com [52.101.100.109])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 974711B8E82;
-	Wed,  7 Aug 2024 10:57:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.122.100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42BC81CFA9;
+	Wed,  7 Aug 2024 10:59:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.100.109
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723028235; cv=fail; b=lVS1N7IVPJH0HyGz1K0hHRZx7/px3Jgthe1lGsSFu4HaZSqwHkb78/fPgM71gq1Eeq+IvP8sXB+AbLMYWdyjBcs8yIBJZLSsU79eofkc+bq3oB60HBKTTZAVP00npDoVjKAHsBFkRNOa5XQMsZNf2FP77W4QbPET6xt9Z+JsKTE=
+	t=1723028379; cv=fail; b=XRE9JMVcHKzzHolIde9r56tyos4zuTXbB7InmJzwy7zCmNnSGN9QJbpHwahwosO9gOwDoDUvd9NL1pI0EdfhUgAO9wF5QoU7vVSmoAKUQKP40bF9o0PqbzN/VlTFq/ovHfz9QEI1Udub2pOdV527mVWd7ShH4mGFAsmoaVv6zds=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723028235; c=relaxed/simple;
-	bh=/8Cq+oIrMxrX/d51x0H9fplNY8jA/5geUq8eTVFTzyE=;
+	s=arc-20240116; t=1723028379; c=relaxed/simple;
+	bh=qiKPHwylW+hYLfnb/RlNFIni538IXNB/+tLs5O+K8hI=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=ZydCdH835ZGTzHy5QZ7vevHW7RbDP0DDBHysreTxeSbHMpAs7Ek7gfASUZVIaa9P3c8L6syIbugGtvEWdvaU2aSJ1bwzavGFra0XuLRkKA6AplP4/ZznSGWwWabIsaxQ7r34sjlk88WhUHeOBVku+Bv+S1p4dkiuiKmPl+4rZbk=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=BhEJa00d; arc=fail smtp.client-ip=40.107.122.100
+	 Content-Type:MIME-Version; b=lQVme7sAHMR4fuhuArtBmuDo37PGrioVJq0TkMeSbxQUqHWRc8X1IP2okM/8wHpFDrzxgJHRXofS2wnQt9hXA9swgeoZK9jzXXKQnqXF/3tpSAYn/Ue9cvk1mrNkVUEbQS0X1TpJXviXmCUQPbTDPBnHbbY9OOzpkrb5Dyqlqnc=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=vnSlHrvc; arc=fail smtp.client-ip=52.101.100.109
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="BhEJa00d"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="vnSlHrvc"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=fbFHplZHXPDpyA38F/FCZsPbVO4Y7g0kTVk8tqN+vsFX47J2e6uZCXCxjIBryxHCcPzcj11sFh7mZj65y1SbUuccJ2/U42f6y2ERt2E4lwiy7OKxWycT2jo88H8G74npON8GQLQebMJOxJ+ZLSTxoo67LPSt60jdxYmnE5mJwiliqwu0hMRXJzJ4KPmqb9vsX//BsGa6mEw+VvAuzB0xbqQmqwh3k8V9uOOOPNH3OhxgAxEigUMHr1XcUPGKJV6Oq7ItgIvQAJrnnQjzIDujn8mJAYmJdNlKmPf6jSjkmRHJC4P6vijCIjEej3a8asHARqcAV1+JhHpNlemRsCfMOg==
+ b=Iiuil0goLyIamPudlQK30PEdOFQkFnoGrWXzY1ueekoVbXIPcPkJW7eESifsG4wcFOOSnb2x+WztwUlpbV1QTj2n8X7u9m0L4I1+cv1LEmgGAw65xn02P9I1WR+QlzADY/bgNnN0SOxvDUI9w8B8TYQ3IRP7V7vjlG+dcmqcUJbJNdFbEfMyqsecYzCwSa8BlFxytOrBqTM0lUabfTyCF1tpm9zRduXSQUTgJ6Y38f0QZEqSPkd7DvTlWQFjyErCigcKFKBAVUqHHcGVqPNHn4xmK4aH3LFBzgVnUxD9MxRQF9PsxUceWJHNIsjcVOGGRx9ccJQ13QfCTC9pRE0iKQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=Y7hmOd/TYJ6ribJS+flQ8WW0wgklKSLpgI2nwweAR7w=;
- b=a2jcK57xunqTHn8nZRGE88xmC6lVBpag7j6RxNn914852+Beylor87gHOP2a0t4QEs/1ePC6mFCNQLz/MbsgStP7N3Ap6dkfG3O8c+O3++MHvW/fQoliOOyRygKC6ZjdKLbU4OvSjlP4nqS2Dk53muu5d6gu9zPJmlky2DUQ0W2XfH3ufrnJW4C1t68uPptRlcG1OtMJCZq15D1ZD1+1E4p8sIYM9FbymMjoNif2lu93wxqFJlV+wdDRxmEB29/ZAZPHTxJn83JRx03weW+0ddL3y8ZeP9pybM0vBqlKNo1CwVyuBzTfkQvN9fu36VFiAcz3GU6Pc/wLfGjPKbZgRw==
+ bh=NpMoJ/P6duDPhxouqCzBfrenk6VbrAJgg77hI2C7fFc=;
+ b=yteNgLWrxuqTGlWFsRkS1264mZ8rF77FIo8BWaBUUmD5TwOJETIVJhiM9aJ+BMH3XEgCO/lf0hfm2V2lKm7x90PMFdpenwqdZrQI9B9/LO2YSIPzYWevcdZ/SMwSm4IUSBKaqW+MvEdmBsoUm/vUNjHzW1ElDIBJ/X91BZDhAftBYAf/rTURCIR49rlVRdE54PfQp0NYIrBI0ndodXVt/fBYaCTPaJRY+YLRKWLUIkZ1ittNKtZJtLuEvWfQ9NemoqBNt7or7v8WvBoVLXu9wKXXo3xQohWA5M5bE2qeXA3yRD4oUU64yaWMqey5zT1CMjjb4E21vsGlyiyi0sJ13g==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=Y7hmOd/TYJ6ribJS+flQ8WW0wgklKSLpgI2nwweAR7w=;
- b=BhEJa00dPbhZGWGR+UCvt5vgUgjN7d0/crkScaMaYkQeC3NJba6nfDhbE0NPaEYl0NS2e/J8AHxwRFcIz+PJE9Twzu9E35NNSxni9CvPe3wdkYIEAnQXWJI0eWNqcqcRi343EIeAzFP3dnjUtDQHF+y6a9a0X6GoXMRlBs/yH2U=
+ bh=NpMoJ/P6duDPhxouqCzBfrenk6VbrAJgg77hI2C7fFc=;
+ b=vnSlHrvc9j0tJach7/9H0NLIFEKINP6epM77KoOhXwqTYEvsDcIkN07ErdlhBRVC3Xmho4sxhof+bEK35sv/jjZh4O/simqyARCEbI02P1XQj0/Ufqs/qe+fs1qQsL0OdDhEi/t1iS2QCyDsYYgh9GCy/N1ilgHt3vYZ3y20PHM=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
- by LO3P265MB1882.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:b6::15) with
+ by LO3P265MB1915.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:b2::11) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7849.13; Wed, 7 Aug
- 2024 10:57:10 +0000
+ 2024 10:59:34 +0000
 Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1818:a2bf:38a7:a1e7]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1818:a2bf:38a7:a1e7%7]) with mapi id 15.20.7849.008; Wed, 7 Aug 2024
- 10:57:10 +0000
-Date: Wed, 7 Aug 2024 11:57:08 +0100
+ 10:59:34 +0000
+Date: Wed, 7 Aug 2024 11:59:31 +0100
 From: Gary Guo <gary@garyguo.net>
-To: Zehui Xu <zehuixu@whu.edu.cn>
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
- boqun.feng@gmail.com, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
- a.hindborg@samsung.com, aliceryhl@google.com,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] rust: Kbuild: Skip -fmin-function-alignment in
- bindgen flags
-Message-ID: <20240807115708.394a8eb3@eugeo>
-In-Reply-To: <20240731134346.10630-1-zehuixu@whu.edu.cn>
-References: <20240731134346.10630-1-zehuixu@whu.edu.cn>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng
+ <boqun.feng@gmail.com>, "=?UTF-8?B?QmrDtnJu?= Roy Baron"
+ <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas
+ Hindborg <a.hindborg@samsung.com>, Peter Zijlstra <peterz@infradead.org>,
+ Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner
+ <brauner@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ "Arve =?UTF-8?B?SGrDuG5uZXbDpWc=?=" <arve@android.com>, Todd Kjos
+ <tkjos@android.com>, Martijn Coenen <maco@android.com>, Joel Fernandes
+ <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, Suren
+ Baghdasaryan <surenb@google.com>, Dan Williams <dan.j.williams@intel.com>,
+ Matthew Wilcox <willy@infradead.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Daniel Xu <dxu@dxuuu.xyz>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+ Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org, Kees Cook
+ <kees@kernel.org>
+Subject: Re: [PATCH v8 1/8] rust: types: add `NotThreadSafe`
+Message-ID: <20240807115931.22e8654f@eugeo>
+In-Reply-To: <20240725-alice-file-v8-1-55a2e80deaa8@google.com>
+References: <20240725-alice-file-v8-0-55a2e80deaa8@google.com>
+	<20240725-alice-file-v8-1-55a2e80deaa8@google.com>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO4P123CA0067.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:153::18) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: LO4P123CA0244.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:1a7::15) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  (2603:10a6:600:253::10)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -67,128 +79,135 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LO3P265MB1882:EE_
-X-MS-Office365-Filtering-Correlation-Id: 86d3ce11-7e1e-4399-71f4-08dcb6cfafbe
+X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LO3P265MB1915:EE_
+X-MS-Office365-Filtering-Correlation-Id: dc914f96-51f6-4d2b-3d66-08dcb6d00577
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|376014|7416014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?dxSDmFmHG/fQhy2CPnlv5V+RZnb4BYdJJ/WI6kRGbfop3L55tTw4jt8sGlpK?=
- =?us-ascii?Q?7BiAsYiKLk2ZjhXUfw9jV1JeGKgnECcz/D0onFcEwv7LYVLR6W26M6HEEnsJ?=
- =?us-ascii?Q?BiU9KiHgsl3ilPAlndTQP7nBM5QqOoPCxLJZqxsHUNgywAjlbKAAvmRASzOj?=
- =?us-ascii?Q?Y1VHxI2sJrQ/ltU4NYqEwzY5mvM2r8E/3HImQmr7Rf38jBJ8W/Lzct84k4xW?=
- =?us-ascii?Q?IlmSZ1WaAPvLzROJrHDs5B4wB1vCTQNpWCEgf0Xa+9jhmoxNGJIN1dzPVJkK?=
- =?us-ascii?Q?WF+xRGYbi0x0/rgt8cZdoz7a2sP7Ng0eFsoO6gAGXngOhS9NRZbJKneEXhWy?=
- =?us-ascii?Q?af603OZWyM9piyEKM80lipne1te/G/7Xp0/KeRyCbbmA/oIwNDR80qoRFdH2?=
- =?us-ascii?Q?Rbcnl0vASawKZdHt7RNtlZUVjqpslg9gJsc+iAq7xxLllqhh0IcNPZfbaQoc?=
- =?us-ascii?Q?RN6zG5xJU+1QgHWd5Fa6SYOsWRzDmf8JTttIPgaHuPYlukA3PwFBrB1u5D27?=
- =?us-ascii?Q?p3U+hrfrk99qBOXAKM+28UQ3hy5fXgKrSwKZR8j/6V1xRbz2EG9BfXi8/LDX?=
- =?us-ascii?Q?6l4lUDxTtZG5bsco2a2f+qPYm7sgka/UJBj0zKz2vlSzS88kK4rKs93UBkP9?=
- =?us-ascii?Q?tc/7wiOa9oV4Wnag1PtrUJMitT0ZY3p0Ag2E/faOM+lpl7LzuN3Tj78kV5Hb?=
- =?us-ascii?Q?0a0xEjEzaJC9n3EBk2elAWOqRNlIm6qnKiBrtuxT5T1Ir+EBQs7RjkYiztLi?=
- =?us-ascii?Q?oJOk1M3HDgi8Hoo6560IDTUiV+WwdsHe5mq2S3GMgEx8jKJHIHJ0Wlk5KLZ8?=
- =?us-ascii?Q?VAfuqhaVcGtynmfU1xXYBlQWBE0Mdph5T+fhXUzNGZkjEHpV7fVlqHF/nzhK?=
- =?us-ascii?Q?phnlYFT1sf704CEFXZP4YIlp4saCPAsnIQw/M+7u2OpRRqSp3CfQZOlnu4F7?=
- =?us-ascii?Q?VrgniauKpHaA9dEzleSpE/Gx8YapEd/a/jAtHGkKhYk4MqBjBs5uw1z+XJPE?=
- =?us-ascii?Q?eO8ZtoeglCjNlfDO8zTYTQ2XKBR+zfR92X+1hEVceLuCUSTamUMMriqgxjMn?=
- =?us-ascii?Q?3+nBkFPZMD8TBBce8/dZ+HNkT4t26V+JgCXPSh2kEOpkCjj/b3AWkyCqgwnW?=
- =?us-ascii?Q?8+pEeLbWI+z2/DWQpmN62ZErhgtDuxNvZUwifjOF3HbzLBDyHnqCdiPn0f9k?=
- =?us-ascii?Q?W7jlrXkAGYlJjbu1U1yO96FjcpSOtEZxc39ePIqg8ZGC3QDHZpQMZaVVjNnI?=
- =?us-ascii?Q?1eLZf478KGiT2TkU0yua1mfS1+B4ZsOAQ1kqhitZRxQsnBK9ShGPsUNdKGRs?=
- =?us-ascii?Q?3lk=3D?=
+	=?utf-8?B?TWZNLzhNbDVJR01XemxmN0xlTDVXZnhuRlZGOFIrcmZoUHNaT3lnVU5oVlVv?=
+ =?utf-8?B?RTRJaldTRTZMOXpnQlhHWHJoNVJQUGlDdGRwdW0zREJZM291bWlMR2E2N01D?=
+ =?utf-8?B?UDdrN2IzU2pjUHRYSUpxeUpKR3FrMHZvK2ZSdFpVdXJoKzFDZ1Y0bWZwTHBM?=
+ =?utf-8?B?RTdyZHNIVGVvUHg1TW0wUENtTlI4RnhXajFrYTYzYmdKZ0dDUkhwbGhEVWJL?=
+ =?utf-8?B?RmpVYW5rZzZIY1NoUy9BNFBYaVFZUVRJL0VYYWMzaVpOdkZEemN2dUhOVFNu?=
+ =?utf-8?B?aWhSRlpXL2xuSG1NR0ltOVkwSmNzYVowM0MveTRSUitXTWVHYWFWQURmaklH?=
+ =?utf-8?B?Nnk4cHNKL3hPYi8xTURhTFNoWG9jVkczSVRlTHhtR1NBRC9INWVCQXpwdmVj?=
+ =?utf-8?B?Ym1mK1hONUltbStQbDVja2tvOFpqTXFvaTdtNkVzcFIrM0hoR0FWTHZxM1Az?=
+ =?utf-8?B?enJsZThXOHQyaGFQdkdBcnNiZTgrQTBza3c3Zy80dFdydGNhTTNlRGo2RnB2?=
+ =?utf-8?B?SUxCRTlJUndLS3V6TFM0UmdtQ2dmMSt3UjNxQUNaeHJVOE5zaWFEWEwyU1Mr?=
+ =?utf-8?B?aFhqT0J0MEFlK09sRk5paCtzTWtvQTBSM3VtcSsrZ3RzQmIzaVBTSExHSkd1?=
+ =?utf-8?B?dHM3UCtNRXkrbURjZkgxMVVWQ2lKVDhSdExYQVJYNXUxMUNDekJYdXZjT3Zs?=
+ =?utf-8?B?ZnhzL3JicXk5UFJ3clp3cVZ5VC9tNTIydlVvTzk5RFEwQWhaTW1iNzNsM3Iv?=
+ =?utf-8?B?T1owZmNRUVlCUXlhODhVNEw4aG5HZWQ1VFdWdHBKSk1sUzR5OG4raHphSnRu?=
+ =?utf-8?B?Q05GeDVNOUVGdkl0QUhqWlJybWxvbkZ3Sko0ODJFcHJhN3BVUk4xZ3pIOWdE?=
+ =?utf-8?B?VnEzMUFyMi9VaVUyUXpqWGNrRzhkVW16aFRXOE5KbmhzV2k2QjhWaGErblFR?=
+ =?utf-8?B?V2ZaOTZrRkRJWmFuZzE1Sjk4U0tkN2k2Y0pJQjhwT1lhM2pWYVpOTHhhREx3?=
+ =?utf-8?B?YXNIeXROTFlBMjk0UGtPTlNidGRqZTh5YVgybDkzTklBeWV1V05wazZTbUo2?=
+ =?utf-8?B?RElzSmYyV2RYdEdyUXJuMk55OXlCQVlBcXFlUHAvMEhJMlBoVTFmNlNYVnh4?=
+ =?utf-8?B?UlpRZmlnRmFXYmMrTWxaOTNaeHZmWi9wcGZhdXVtU3dWUGJpbFQ1MmQ4R3hF?=
+ =?utf-8?B?c25abDJFQTN5UWRtVVhNdnNORkVnNWlINllrd3JLQ29xZXh2cWluNHdhZU9o?=
+ =?utf-8?B?cXc1RVhUVm1oNUkyR0p1MDFndXM3alVuT091REhiNUhQdXlzV0JPVzZaNTBH?=
+ =?utf-8?B?bDJKWkF0TzJyNGEyTzhtM296UDFma3BCUFkzbjFicUlrODNoZlhyK3lVeHg3?=
+ =?utf-8?B?Yy8wZjVyU1ZETWNNcGQ4OTMzY29udkk2NFJEY2hPMllYQzRLRUpWaHlNNXFC?=
+ =?utf-8?B?KzM1UjEwNDJRd0orY0J1bnBqclVObmtTU1gvV2Jzd2g3SFZyL3oySDBGVmRv?=
+ =?utf-8?B?YjRtWWVNUWxXM3h6TXlYWXlPbWI1ZzZvcFlkei9pZ0I3endDRnZ0dXY2UHNp?=
+ =?utf-8?B?bHUyZUlPTEV0R1BsaG5MNm9vZkNiUVQ5VEk0UjBHMVBuc1oxRUxyNDNiWDBp?=
+ =?utf-8?B?L0tTWmlha0Z2dmpnd21qblVMQ2Y2eXVHeDdWL2l5c0hIcUVEcFpFT1hMdi8r?=
+ =?utf-8?B?SGxLeXRuSTVsOVlYaGpYNmdERU9KNjQyai9IZWgrTlJlTE5PZEoxV01xTis4?=
+ =?utf-8?Q?JGZE9LXlJ0oh6xG9Pk=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?5Rpt5gID6eXdJ4j0MC0Tqd03zE4ZMFZlxmKfMaUfr1skdez6w698TUaPtMcl?=
- =?us-ascii?Q?Xur1BtCgFeKMV3MItZNnaTdNDZ3/juF58ZpzfXKbyr8CVE3ZvLI0RzHfC9DF?=
- =?us-ascii?Q?gQzhhL4oT6UiXnzgP25FSWCpncbpWhvKuHdJVVhrZ4MdnjQaIt4SO1K6T1Gc?=
- =?us-ascii?Q?qfWeuSRXz5rW5gY3gN/HWmF4izFREe0eUhpTLeOw1TBVbiXus7GlkxwvIpig?=
- =?us-ascii?Q?6SLZqslh8SZOXlz4WAGIQGeJD/RX1fEJ+d/gBTpg3yfLZmnA3/eH5qqm0BJ2?=
- =?us-ascii?Q?vQC9gbWoT5Q1EHie7UA6VvyxOWWsmxLlzfvGVBfoYnwTq1FUSOINNyPZI17s?=
- =?us-ascii?Q?fubYCrEGGc8m3eOVmm2C3fCvea3rSUbIop3my46s7YKkXUtW/oU27oobQ+kR?=
- =?us-ascii?Q?5Ox7tytX/QAprdoelaJ4HB5Nskge2w1O/WYapOO0ZL77JMNx3nKQ8c6iw38U?=
- =?us-ascii?Q?WgI1AoY5H4BxiGhDXLvn5WY1Zckm/dzZk/n84e/80Ho4YnJ5Ltr20DmmjBqp?=
- =?us-ascii?Q?N+i+lomSPSV+yauB78zLGmQoVdgH7pbwdKhCZ9uJw5tWKWlYjn3L+yfMDfAz?=
- =?us-ascii?Q?8XOgSPWsYLzZw1VAGpYqYhGGLPCIURcNDJHpm2VvAHalGufOnVnGdptCtCM6?=
- =?us-ascii?Q?Q2UKBL7eyIBdI4ocFpu131aKKTtzHKyRAvBmvFoNEjwM/NGwk6he0FE84Ouq?=
- =?us-ascii?Q?gBUQhgUXamnKRcVppiaMiAo5UaUDKTiW4nG+V40YhS6OTg8tyQkrHvYWWKdR?=
- =?us-ascii?Q?S5v9bmzyhpkMUGLfeC9emLYNmpfLccZgyFJFzwIHbF2ZF0aC1fLi83fj/fkb?=
- =?us-ascii?Q?fD6dteA5OaFaAp18lU6+WcPqv8whcGg1dmrukOBqHgUI6ORMMIZtDOCVGkes?=
- =?us-ascii?Q?J+y07hmpNiTlT9DzIL+DoRX2+LM3fBaUtso4XZ/0TBkggWyrZ+hXKT8lkiIu?=
- =?us-ascii?Q?8c6XCf00bpEHkkZg7+oyXbMLqwSC2Tuvtyh9n08u2S4/dxOtzMDfDK298spd?=
- =?us-ascii?Q?P6RlymNxFCJ1rGW9lVxfrSN/ACcNIw2Lrxea6LvplHb4YgrPtAxoOfXNUNB2?=
- =?us-ascii?Q?Hgm68r3X37nEIxiHcRmx06RNd3aWvjpAjWNPj454uBDAM2PJxRho+4dEX+Eo?=
- =?us-ascii?Q?ScfzJzd4wsUOZ6sPa/lBRs91Op38XqV87wSJQcTXQxcqEbSG/yysYm/lLJfH?=
- =?us-ascii?Q?HNbO8SbOBNPEaigGMRqdPIZ8DXIeXLg8JjBfLmKGQG9eNLUQqdNdLIxz/HKa?=
- =?us-ascii?Q?a9LCjJ7A+C95jB5i3wXvzSkKHCs4p2o+nsFYMqT4S3kId1Ig6g7HSy0oNXZ9?=
- =?us-ascii?Q?QQVFabyms/3IGaUDCtnCslPWdZ6/YPqKKk9YyDdT//pQPx881XTpMEsqTjwA?=
- =?us-ascii?Q?FQ8zBDA0tE/pMNyoNgiwMPo9ZOlfdDZUBMtg49Pjyo8/BwbAK0E3qNOvPBc3?=
- =?us-ascii?Q?hXGILmNqwyaDpIL8nYTjs+SH+TMPS2uQLiocTkFcyXh2E1Dma2MPaJdg6TIY?=
- =?us-ascii?Q?UzhMpR0f9gFO43clfVdas6J2irZj5aWf5NsO4ID95QUZQ8e/bcXqqIrAO3FM?=
- =?us-ascii?Q?Lf1vbdzTUx4X4GY0JewM2BMpiHO6O6Mw52IjiCWs?=
+	=?utf-8?B?QVNCbUVlNDdsUW5KMHZhcUZvL0lobFliSkJPU0JFVDB1UkxVVWhwQVU1TnNu?=
+ =?utf-8?B?aXlJOUswNEFmZjBPa2VndndKeEVWU3ltS3luS3lENVdIUFhOaEh1UDR5bi9a?=
+ =?utf-8?B?M3N3YURwdjFwOTV6L0pDaFFRUVJwbFlzMFRpZ2dWd3hSc0J6ZXpBays2WVBD?=
+ =?utf-8?B?Wk5TWThIcnYydGMvK1hDSUFxT01yenNCL0xIZ0JRdkM1UlR0bmh2K3BpVVFo?=
+ =?utf-8?B?K2ZhSjFNK2ZCdHF1RWhhTDh4VzlZZjVNT0grZmlBSTQwaWZKb0dMY1oxcWJx?=
+ =?utf-8?B?WnFvL3VnL2JHY0xmOWFLdC9ybGhuYmFUMjJYS3FKUFhEYTMvNzlWNmRQaWZG?=
+ =?utf-8?B?QWNqeVI2bU9PazlLQ3FqcUhKRzZYM3paajRHYkc3NTdaK0RFbVJlY05MeCtI?=
+ =?utf-8?B?V0x0WVJucy9OMEd4b3h4M1VESDN1c2VwZzEvS3NUN1piSVgvUXVjdEdaSXZS?=
+ =?utf-8?B?cWROaG9IRjJkWFBBdDZYR2RYdnlOV1U5RUg4MkJrbzhpejdES1FaRjdqb3cw?=
+ =?utf-8?B?NTRrRGVIa0RVMmF6cWF6TUNZRk5MeVo3ZlMvY2s4aWYrU2ZzY2tCd0syMEVK?=
+ =?utf-8?B?OE5KcUJnWURIb20zQ2xQQWMvQTVrWTN6d0FicndmNHNRNnlaaXFJcUlMb0Uy?=
+ =?utf-8?B?OWpIL09PWjRzL3ZrMUhDREtJMHRqTENWQXVKcFN0TkZhUDc4R2xlWmtnbWlP?=
+ =?utf-8?B?THZEUUgycHlQaURJYnNzQWN6WWQrNmVGZHE4SzlWY2M0b01aeloxZ1h5WWVq?=
+ =?utf-8?B?OTVtMmRvMVBtOUI3ZWV3RmVoMklQT0FYMVJTdzhQcFVPbmVQcWd4cUtMZnRw?=
+ =?utf-8?B?SThmNXZXd3NOSHNLQUQ5QXVqcnpaQWJqeUhFN2pWSWh1U2Q5SVByR3lhTlNp?=
+ =?utf-8?B?WlZXSDVKT3FaMWhlcWM0MWs3SDdxd0dVUHpkV1BiZDUyWlJmT0loMmNwRGt4?=
+ =?utf-8?B?a21wNEZEWGp5dks0SU1JcEFQNXpRdUM5dnNwTmRqejd5RXIrVlE4Ty9LZVRL?=
+ =?utf-8?B?VllITGI5RFpxYTlsZUlqN3Y1cEV0dDcxZzlaeTA2ZG9aZy9FdzBMMHNUVllY?=
+ =?utf-8?B?MklHVTlnMk9wTDJ0bkUzNGJRZ1NKTU9ZTzBTYUZ1Mjk2RkgxVG5RNG9qcm5V?=
+ =?utf-8?B?Z1pLTFpxY3NBS3FBYU85YnErNWxBOUQrZTZ0TmVMQUFLcmJZY2tnYlFsb1FZ?=
+ =?utf-8?B?WE9XZFpuL0xXWXgwWk51ZXBvQ2JsSXIwdXo0dHUyS1YxQ3IxSlBqa0ZaSnZ6?=
+ =?utf-8?B?bXk3YW5SWEo4bUM4YzdEbzFsMXN1S1EyNkVNeStPSWsrNWx3K3ppN1BzN1RY?=
+ =?utf-8?B?ZnJIaFE2d04rTThyZ3JjbTBNMDJxbkNpMXZNMitCTmlYVzM4RHBEdERBVmxm?=
+ =?utf-8?B?UndiWVh5U3hucURraXRDOEN2enZ1aFZLYkRhakgrZW1sdExkOC9ZQ1N1d3RV?=
+ =?utf-8?B?aTVxRWg1MWswbXl3dFk2dzRPWGhmOGRONldqZDZCNW8rMEVaYk9sZ1kxeitM?=
+ =?utf-8?B?ZGV2RkxiNE9SNGZ0MXZTd0YxOUc4eHJ0U0tpWTc1cksxQ3hObllGd1JaNFc3?=
+ =?utf-8?B?NEphWnRwV0d2Z05FMTlOWUs3UVdIN1lrdnlXb3JxL21kNHpseGc1SUdDZ1pD?=
+ =?utf-8?B?ZUdJS0lRbEpjVkNCQ3FRT0w3TmZ4MnZlbzBqVHVoRW51cVE1YWl6djVDeU9l?=
+ =?utf-8?B?ZFZuVmRKbEg2RFp2ZkE2QjB0UWJJaVNHRDd4c1paZHZydXdjMEdLTkZoMGx1?=
+ =?utf-8?B?SkdReVo0Mmw1MjdCS1p3azRwYW93OE5NbEZjdXBRcXpZWlRhTlFhZDRtN0NJ?=
+ =?utf-8?B?YU1sWUxyNS9KQXlwNVZVYTR5dTdGZUYwZVlpRzVGY1JyQ2ZXS3JscmRKUzVR?=
+ =?utf-8?B?blZBV2dOUHIrT1pZWk5WTUZtTXBXYXYwUEI5Y1laWGFNM1o0M2xOdXJBSXJC?=
+ =?utf-8?B?dEdsQTNkNWxyZFRFbHRLb2RHQTYzQW9UOFFmQ0ZxMUdXNTVrQ2dUV1haWW9j?=
+ =?utf-8?B?eGU2MXdWcVRDbTBISlFzY2VFeEZ3NTg4WVdpck0vZGE4bHhlOVNkM2tzU01j?=
+ =?utf-8?B?S2JGVHMvcFByaVV5T05oRzJucngra3lzd29BaTZyRXNsaVArd0wzVFllclhq?=
+ =?utf-8?Q?bor8KvkuctzoUSB8d4Q5KLUhs?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 86d3ce11-7e1e-4399-71f4-08dcb6cfafbe
+X-MS-Exchange-CrossTenant-Network-Message-Id: dc914f96-51f6-4d2b-3d66-08dcb6d00577
 X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Aug 2024 10:57:10.4005
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Aug 2024 10:59:34.2282
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: sdEkUjkVkLg+3m8WEvCi0Q0olXCGMs9PmT2xMENhvSYHKDsi864qCPCd5ve0I61Cgpk2usJ7tCiQsPSwDcAtUg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO3P265MB1882
+X-MS-Exchange-CrossTenant-UserPrincipalName: D9wDcB62Vnf7exEHOkt2Ks+3N0pbSqdERWLKsJdxYnB6LApVKAon/wXWKNhka5wS33xPWvwxOM9bOuDekArbSw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO3P265MB1915
 
-On Wed, 31 Jul 2024 16:43:46 +0300
-Zehui Xu <zehuixu@whu.edu.cn> wrote:
+On Thu, 25 Jul 2024 14:27:34 +0000
+Alice Ryhl <aliceryhl@google.com> wrote:
 
-> GCC 14 recently added -fmin-function-alignment option and the
-> root Makefile uses it to replace -falign-functions when available.
-> However, this flag can cause issues when passed to the Rust
-> Makefile and affect the bindgen process. Bindgen relies on
-> libclang to parse C code, and currently does not support the
-> -fmin-function-alignment flag, leading to compilation failures
-> when GCC 14 is used.
-> 
-> This patch addresses the issue by adding -fmin-function-alignment
-> to the bindgen_skip_c_flags in rust/Makefile. This prevents the
-> flag from causing compilation issues.
-
-This patch itself looks fine to me, so
+> This introduces a new marker type for types that shouldn't be thread
+> safe. By adding a field of this type to a struct, it becomes non-Send
+> and non-Sync, which means that it cannot be accessed in any way from
+> threads other than the one it was created on.
+>=20
+> This is useful for APIs that require globals such as `current` to remain
+> constant while the value exists.
+>=20
+> We update two existing users in the Kernel to use this helper:
+>=20
+>  * `Task::current()` - moving the return type of this value to a
+>    different thread would not be safe as you can no longer be guaranteed
+>    that the `current` pointer remains valid.
+>  * Lock guards. Mutexes and spinlocks should be unlocked on the same
+>    thread as where they were locked, so we enforce this using the Send
+>    trait.
+>=20
+> There are also additional users in later patches of this patchset. See
+> [1] and [2] for the discussion that led to the introduction of this
+> patch.
+>=20
+> Link: https://lore.kernel.org/all/nFDPJFnzE9Q5cqY7FwSMByRH2OAn_BpI4H53NQf=
+WIlN6I2qfmAqnkp2wRqn0XjMO65OyZY4h6P4K2nAGKJpAOSzksYXaiAK_FoH_8QbgBI4=3D@pro=
+ton.me/ [1]
+> Link: https://lore.kernel.org/all/nFDPJFnzE9Q5cqY7FwSMByRH2OAn_BpI4H53NQf=
+WIlN6I2qfmAqnkp2wRqn0XjMO65OyZY4h6P4K2nAGKJpAOSzksYXaiAK_FoH_8QbgBI4=3D@pro=
+ton.me/ [2]
+> Suggested-by: Benno Lossin <benno.lossin@proton.me>
+> Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+> Reviewed-by: Trevor Gross <tmgross@umich.edu>
+> Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+> Reviewed-by: Bj=C3=B6rn Roy Baron <bjorn3_gh@protonmail.com>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
 Reviewed-by: Gary Guo <gary@garyguo.net>
 
-We use -fmin-function-alignment for GCC and use -falign-functions for
-clang. These options affect codegen only so it's fine to ignore them
-for bindgen.
-
-Although it appears to me that we currently don't set function
-alignments for Rust codegen. Maybe that's worth considering adding?
-
-- Gary
-
-> 
-> Link: https://lore.kernel.org/linux-kbuild/20240222133500.16991-1-petr.pavlu@suse.com/
-> Signed-off-by: Zehui Xu <zehuixu@whu.edu.cn>
 > ---
-> Since -falign-functions does not affect bindgen output, we do not
-> need logic to add it back to the flags. Thanks to the community's
-> help, especially Miguel Ojeda. Hope this patch is free of problems
-> and can be submitted smoothly : )
-> 
-> v1:
-> * https://lore.kernel.org/all/20240730222053.37066-1-zehuixu@whu.edu.cn/
-> 
-> v2:
-> * Added -falign-functions to bindgen_extra_c_flags when skipping 
->   -fmin-function-alignment to maintain function alignment settings in GCC 14
-> * Used reasonable length and moved email content out of the commit message
-> * Used "Link" tag instead of "Reference:" and removed empty lines between tags
-> * Specified the base commit
-> * https://lore.kernel.org/all/20240731034112.6060-1-zehuixu@whu.edu.cn/
-> 
-> v3:
-> * Removed logic from patch v2 which adds -falign-functions
-> 
->  rust/Makefile | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
+>  rust/kernel/sync/lock.rs | 13 +++++++++----
+>  rust/kernel/task.rs      | 10 ++++++----
+>  rust/kernel/types.rs     | 21 +++++++++++++++++++++
+>  3 files changed, 36 insertions(+), 8 deletions(-)
