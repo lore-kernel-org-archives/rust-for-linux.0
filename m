@@ -1,118 +1,127 @@
-Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com [209.85.208.172])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D7616D1B4
-	for <rust-for-linux@vger.kernel.org>; Wed,  7 Aug 2024 08:50:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A061C1B86C2;
+	Wed,  7 Aug 2024 09:36:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723020647; cv=none; b=DMGH4JomUdhVglQuUqht210LrIK2FVvvfkdB7RwbA28Xevyu9AKhprdk7XZFPbVNKotQ9OcxWif29j23iElXC+GDze1UMT7BuqyngHtd8e6R6oDVVVReTNIDttNfljPBuRzh46LyjkGiDwWHF9yJCb28jdWcet30B8/H7h7FpB8=
+	t=1723023380; cv=none; b=hd/1Xm80EZCI+LLHWiyTo72WiYt7MVauT5cFJTr3QI/LWiccwhBuiqRu/ON4u7+c0K3P1YQZzpsEk4idUTBcTgllIHyLqlXfwLjg3Ujcruqaq2xeDJyg4TJxHYC0FA56umt/JdP/bRFTpJgv6b1rvRtjCSOOzYDVCaj8Ejs3ecw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723020647; c=relaxed/simple;
-	bh=0UtNcQiBJHj5NT3vENREIzfZcUewciu8UD/RmQsY0WE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=s/S8KxZUhwEJYTm/J6Fy0Rr0rMS7SwIgJAKhB8H680J7AbGEeLJj4qiapv/Fi0mRInJ1zgJzu1zzIEeAwyeOPbaJx/y1yxHiM3MmVi5pi1QDLy5ub49ylMZhsYC+iYIW2T8utwB98355BEPxq8O1UOPslBBrfKLQ1GtCZdKCd3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GzjZGlae; arc=none smtp.client-ip=209.85.208.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1723023380; c=relaxed/simple;
+	bh=MYz62clIgHy/rY3ccEC0c02OjnEEQ3ROZZvdicm6dg0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ZejnsnAMf6alNLqxOok4ZlMVkgB/hrwiC7t6tdfSpTqOpcj1cC94QxiNVkX6+4C3/ZQGuQfnJ0IbO9Jtax3mYjDT00NW2JIO2z1kMkIxaGxys/UpafGsmLDWewKq/P06E7rSS7SUifrz0a49C7HZFmXOZcUvG7t7g97C6cKtTDc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=HqcvzCp1; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GzjZGlae"
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-2f15e48f35bso14994341fa.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 07 Aug 2024 01:50:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1723020644; x=1723625444; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/6uGG/bPgpOPhR7OkqXBHMSIeIgp9LFX//Nhl/4vdqg=;
-        b=GzjZGlaeBVpzHighw8MHNjfOWpidJfcdKgNPykjrbsmaMXelJPExRjFoYlInPR+W8U
-         DNkwkBWDrxQRMhvmk+TH3+TMCHZF4g4lL+xjtJ4TGfMnXCt1L8G8Wo/wjIfHcxWO2AVL
-         iRfaQSsl37T1dEb9ODAgvzLWEyuYL30nPSzwq9PjyxtdqexvHiYVsUjp6UFr75mRZQ10
-         RNfAWzJ2nmAYgjjLAl/P8lKHuDBVCjx0yDXqi9jjctPWJWBvPA5EQEG4IU6onjGA2afW
-         vy1WBeqka9JfMXScinDzeMwJuZ7UBOnlES6prUz36YmGHwVLo7yypu/FijzZGf2ptRmc
-         c47g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723020644; x=1723625444;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/6uGG/bPgpOPhR7OkqXBHMSIeIgp9LFX//Nhl/4vdqg=;
-        b=OUd18BmH94/H6GT7xiGI3xEjoGVRBGTGFulOPadOHv9P27vqlfnZ6LizsqiIk1UQCM
-         HzRDJ4TanCSoGyD+eb2h19PmycOP4Ui/OCH2mlVtLVFj5p1RX7tfPnqnr+yLpP9Nx5e+
-         a2DiAx+aLQ6Rcj60IZoLak8ry0hVyyC4xHqiWVgMytWOlXnaI2NLAnwJjABEDssEVMHJ
-         VFUWmcx6eZBUvnJ++peAw/jNCnElaELm2eC5w1mZEHp9++vGW2CHnT4oLzEHBMzRKoau
-         Oa36YGSWVUYfWMg5z9aRZYP+xGKxy0mE6uO0AYmWzzjDW5mMepxi7UuOEUT1oCpWy8hM
-         6Z+A==
-X-Forwarded-Encrypted: i=1; AJvYcCX4kzHo09svfd+uVjM8+5UnIcfhOFb/6gP+dMguRuYK3cpwJjHTzCJgJMc0wp1A740UyifW9QnQ+vtl0fteDGofN1HHSbQB3GLSEdfC3mU=
-X-Gm-Message-State: AOJu0YyLG9x+OOxgd6/jFQa5vVoi5lSMDxnIuxxKG7+SgEJ5bNZumt+P
-	QMCBPm0/mYgnQD8FQZ92CHuLZpk80jDWpq0qviqFFzILe0Cve7e0T+bJVS3uZ42cD2O1C+1OyD/
-	cf9BsfjNKudT025V2Dt0vm8d9fbLwoof8f6Ga
-X-Google-Smtp-Source: AGHT+IGccCHlno0tQbb4yPLv0HzWQPlEIf88SJrHYSG7o6Dmgd4Psom8noOTBXPXyYsqb4J1FgwIajAF4YxG75Q1TCk=
-X-Received: by 2002:a2e:91d0:0:b0:2ef:1c0f:d490 with SMTP id
- 38308e7fff4ca-2f15ab0c2a1mr126113241fa.39.1723020644050; Wed, 07 Aug 2024
- 01:50:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="HqcvzCp1"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 722E2C32782;
+	Wed,  7 Aug 2024 09:36:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1723023380;
+	bh=MYz62clIgHy/rY3ccEC0c02OjnEEQ3ROZZvdicm6dg0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=HqcvzCp1RTxGSapevYDjxnD+PZT53GM3ixPnK9kxpR5pbi7P/cEacnMrllT9W5LyV
+	 WcLw+NGPV4SYz4aYxz0ms7prWFDGwsJeiQGKyN2HEIeCn3W2/V56GFTJQ+qDkLVW8E
+	 0z1PMejbDQ8IU2WQmN/3kK2w4tZXlrQeAJs8YQu6tJWT3irTRH44iAieU08RQpcJMx
+	 GTYws4Kny5zHdF2jZiV3N07X47lbxeAgMRiJaJpWf+tGWEng6lDLqbAR+zRGWMyXqI
+	 v/0IrS6geI8jZYpHXoSFLwMk3VfHi+Yse0CGua3lCUzvBXpfa/7XPyFF9rxrrzbZ8M
+	 1yxxVrsmME/ng==
+Date: Wed, 7 Aug 2024 11:36:12 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	a.hindborg@samsung.com, aliceryhl@google.com,
+	akpm@linux-foundation.org, daniel.almeida@collabora.com,
+	faith.ekstrand@collabora.com, boris.brezillon@collabora.com,
+	lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com,
+	acurrid@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com,
+	airlied@redhat.com, ajanulgu@redhat.com, lyude@redhat.com,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH v4 01/28] rust: alloc: add `Allocator` trait
+Message-ID: <ZrNADDlM-RPS0Sze@pollux>
+References: <20240805152004.5039-1-dakr@kernel.org>
+ <20240805152004.5039-2-dakr@kernel.org>
+ <470b5f70-b592-43a7-81ba-c7f1c852b9f3@proton.me>
+ <ZrJrzYXM9RffF4kf@pollux.localdomain>
+ <52b1a806-48c7-4ae2-b78c-ca0e8bf5e1d7@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240725-alice-file-v8-0-55a2e80deaa8@google.com>
- <20240725-alice-file-v8-3-55a2e80deaa8@google.com> <4bf5bf3b-88f4-4ee4-80fd-c566428d9f69@proton.me>
- <CAH5fLgi0MGUhbD0WV99NtU+08HCJG+LYMtx+Ca4gwfo9FR+hTw@mail.gmail.com> <ZrJ5kORJHsITlxr6@boqun-archlinux>
-In-Reply-To: <ZrJ5kORJHsITlxr6@boqun-archlinux>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 7 Aug 2024 10:50:32 +0200
-Message-ID: <CAH5fLgj2XEvjourzW4aoRDQwMGkKTNiE7Wu9FVRrG=7ae1hiWA@mail.gmail.com>
-Subject: Re: [PATCH v8 3/8] rust: file: add Rust abstraction for `struct file`
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: Benno Lossin <benno.lossin@proton.me>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@samsung.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
-	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
-	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Dan Williams <dan.j.williams@intel.com>, 
-	Matthew Wilcox <willy@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, Daniel Xu <dxu@dxuuu.xyz>, 
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	Kees Cook <kees@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <52b1a806-48c7-4ae2-b78c-ca0e8bf5e1d7@proton.me>
 
-On Tue, Aug 6, 2024 at 9:30=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com> wr=
-ote:
->
-> On Tue, Aug 06, 2024 at 10:48:11AM +0200, Alice Ryhl wrote:
-> [...]
-> > > > +    /// Returns the flags associated with the file.
-> > > > +    ///
-> > > > +    /// The flags are a combination of the constants in [`flags`].
-> > > > +    #[inline]
-> > > > +    pub fn flags(&self) -> u32 {
-> > > > +        // This `read_volatile` is intended to correspond to a REA=
-D_ONCE call.
-> > > > +        //
-> > > > +        // SAFETY: The file is valid because the shared reference =
-guarantees a nonzero refcount.
-> > > > +        //
-> > > > +        // FIXME(read_once): Replace with `read_once` when availab=
-le on the Rust side.
-> > >
-> > > Do you know the status of this?
-> >
-> > It's still unavailable.
-> >
->
-> I think with our own Atomic API, we can just use atomic_read() here:
-> yes, I know that to make this is not a UB, we need the C side to also do
-> atomic write on this `f_flags`, however, my reading of C code seems to
-> suggest that FS relies on writes to this field is atomic, therefore
-> unless someone is willing to convert all writes to `f_flags` in C into
-> a WRITE_ONCE(), nothing more we can do on Rust side. So using
-> atomic_read() is the correct thing to begin with.
+On Tue, Aug 06, 2024 at 08:04:30PM +0000, Benno Lossin wrote:
+> >>> +    /// instance. The alignment encoded in `layout` must be smaller than or equal to the alignment
+> >>> +    /// requested in the previous `alloc` or `realloc` call of the same allocation.
+> >>> +    ///
+> >>> +    /// Additionally, `ptr` is allowed to be `None`; in this case a new memory allocation is
+> >>> +    /// created.
+> >>> +    ///
+> >>> +    unsafe fn realloc(
+> >>> +        ptr: Option<NonNull<u8>>,
+> >>> +        layout: Layout,
+> >>> +        flags: Flags,
+> >>> +    ) -> Result<NonNull<[u8]>, AllocError>;
+> >>> +
+> >>> +    /// Free an existing memory allocation.
+> >>> +    ///
+> >>> +    /// # Safety
+> >>> +    ///
+> >>> +    /// `ptr` must point to an existing and valid memory allocation created by this `Allocator`
+> >>> +    /// instance.
+> >>
+> >> Additionally, you need "The memory allocation at `ptr` must never again
+> >> be read from or written to.".
+> > 
+> > I'm fine adding it, but I wonder if technically this is really required? The
+> > condition whether the pointer is ever accessed again in any way is not relevant
+> > in terms of being a precondition for `free` not causing UB, right?
+> 
+> I don't see how else we would find the mistake in the following code:
+> 
+>     let ptr = Box::into_raw(Box::<i32, Kmalloc>::new(42));
+>     // SAFETY: `ptr` came from `Box::into_raw` and thus is pointing to a
+>     // valid and existing memory allocation allocated by `Kmalloc`.
+>     unsafe { Kmalloc::free(ptr) };
+>     // SAFETY: `ptr` came from `Box::into_raw` and thus is pointing at a
+>     // valid `i32`.
+>     let v = unsafe { ptr.read() };
 
-Huh? The C side uses atomic reads for this?
+Sure, but what I mean is that my understanding is that the "Safety" section in a
+comment describes the requirements of the function it documents. I.e. `free`
+itself doesn't care whether the pointer is read or writted ever again.
 
-Alice
+Or in other words, what are the rules where this belongs to? E.g. why not
+document this exact aspect in the safety section of `Allocator`?
+
+> 
+> Also see the `from_raw` for our `Arc`:
+> 
+>     /// Recreates an [`Arc`] instance previously deconstructed via [`Arc::into_raw`].
+>     ///
+>     /// # Safety
+>     ///
+>     /// `ptr` must have been returned by a previous call to [`Arc::into_raw`]. Additionally, it
+>     /// must not be called more than once for each previous call to [`Arc::into_raw`].
+>     pub unsafe fn from_raw(ptr: *const T) -> Self {
+> 
+> That also requires that the function must not be called more than once.
+> This reminds me, I forgot to say that about `Box::from_raw`.
+
+Indeed, I also wonder if we ever have cases where C code gives us ownership of a
+memory allocation of a certain type that fulfills the requirements we have for
+a `Box`, such that Rust code is tempted to pass it to `Box::from_raw`.
+
+It sounds a bit scary design wise, but in theory it's possible.
+
+> 
+> ---
+> Cheers,
+> Benno
+> 
