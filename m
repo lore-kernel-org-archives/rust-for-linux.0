@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F18615380A;
-	Wed,  7 Aug 2024 23:08:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0056250EC;
+	Wed,  7 Aug 2024 23:16:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723072100; cv=none; b=Wm/GXvC633mbnFzZsGHUn+vj22+FjF9iXEjsXnyA1ih066lsfrPFuzB8RiOvCT0bT+xPGoAjXc65wZYSJJCtgiQ7Dsst+jV4zMPPzlI97OoA1gt39rgCp5wz3knohHF0AzFybtkfNBs8c2iOPeIbB53XcEZgUdI7pd612nituR8=
+	t=1723072592; cv=none; b=QBGdzBYybojpbd2XCy6R4cRaN9RJrB8X1mUDtm+eTtfmffpddHGdjbRTmakeNp35Jrv/upNf0/yGjLO7cmgRqCJvphYjh58HHYk7k9v8WvFCyhhHwIYXV272/LMfn9FX83n7wP/k2nja86eD9QD3s0b6bZ0RSYZSps04vUeKCQY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723072100; c=relaxed/simple;
-	bh=bHfCnWmNYxbaKKzxHQTqa7O20DJNwlaKnBAYJ0PhuyI=;
+	s=arc-20240116; t=1723072592; c=relaxed/simple;
+	bh=0e8i3yrU5eEM4KIlmo9+sD1Bswt/xzSmr+YS1e8TkuQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kqVs2tfUOX2QDIrBGxTWpPVVYiM73UxWM8ddrxjQTrD4pkBj8zm4ydwxFTff7suQZBab6SIRVVGPOow4dCY7QtTMDbujqsA650g9bFZaqZnuZv+YncHBt82BugES5EOgI0oWbA3kaJweh18WbsXxcDSO2SDdn8juIz081osXaRU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=nMsEHE3y; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=mjHo17zWJOiiUA4QyKZcEoMg9rzH0ItDZpPmadZ4wt+6VZv+vXdsB1uWEQoGij5Wr3ftLbJgmKz8rX0EGuTHip9uE+Nv3XfXY27XJoNRz8tZH5c0CElUaiQkhQ8pbZBjkOe7PcdDJzx3mYXtmK6wo2472O6cN7M0XL6vmgd7AoU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QKUwdXRf; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="nMsEHE3y"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3EF0C32781;
-	Wed,  7 Aug 2024 23:08:14 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QKUwdXRf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DC52C32781;
+	Wed,  7 Aug 2024 23:16:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723072099;
-	bh=bHfCnWmNYxbaKKzxHQTqa7O20DJNwlaKnBAYJ0PhuyI=;
+	s=k20201202; t=1723072592;
+	bh=0e8i3yrU5eEM4KIlmo9+sD1Bswt/xzSmr+YS1e8TkuQ=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=nMsEHE3y/pWW1U1EllnlhbwwlaFzPhDnZ5q/9mRghGr4oAJty127nwLRLPVLg7vVd
-	 ZBIdT24VQTCCKEWOAfdo2QrTPEuFyDo25XLMPF64VT6NqjWICwEvCAZeksEcqm4UYv
-	 Dq0Au5x7W1SKp51k7oGn/sTtqydDvHM4cKzsvIswHKkeWCIZAbSDWGcfJ80XYwSufY
-	 +HQVahl1WUh+j7yXzxORAL/4hLHpwgXYs3JHOcOlnErBlQGhnvn045k5yGM6+sxw79
-	 qVJPo8R1IMUzqh0RYcY1iUhF6cNit0U7rHge153dn+Us9Yg1mNmOmqo61hn+Pv0vZ8
-	 T2/7j72Xsz6ag==
-Date: Thu, 8 Aug 2024 01:08:12 +0200
+	b=QKUwdXRfLsIl+eGYTR+1tp6fFtJsUuy43hU68qwmHBXaS2GVmQA3FdO18Y2XQDl2S
+	 eBzFl5HW01HQvhbLIcqPKloNSMpNTafFMlR3pxitqoyUVJzSopWFqvbPV/UPbkJTC5
+	 XtuuwWrqQJoLIHVDpSI29B0dQYcaueEw60jyeVP+J7EbV79JxCkyyZpnuwQWziGbFQ
+	 +jL+JZZccIbN/Lfhqwbc+6AJCrtK/tnbbAse3kqWThhRaRZAkvtA30aJyr2tJPeTvF
+	 0Le/5rjahUgAtS7001Tw51uiImlmreQD9s7UwW/NCRqdV4hWLUr2VeS1YdtiF6YP6P
+	 9xAKLeQRJx9QQ==
+Date: Thu, 8 Aug 2024 01:16:22 +0200
 From: Danilo Krummrich <dakr@kernel.org>
 To: Benno Lossin <benno.lossin@proton.me>
 Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
@@ -39,11 +39,12 @@ Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
 	airlied@redhat.com, ajanulgu@redhat.com, lyude@redhat.com,
 	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
 	linux-mm@kvack.org
-Subject: Re: [PATCH v4 10/28] rust: treewide: switch to our kernel `Box` type
-Message-ID: <ZrP-XHrIQr2qBWkM@pollux>
+Subject: Re: [PATCH v4 21/28] rust: alloc: remove `GlobalAlloc` and
+ `krealloc_aligned`
+Message-ID: <ZrQARho24sFfqlYM@pollux>
 References: <20240805152004.5039-1-dakr@kernel.org>
- <20240805152004.5039-11-dakr@kernel.org>
- <1b17b4b3-69b4-4af1-a816-b401a1bb6ef2@proton.me>
+ <20240805152004.5039-22-dakr@kernel.org>
+ <498e0141-8df5-46a7-b891-e1cb754f49e2@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -52,23 +53,35 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <1b17b4b3-69b4-4af1-a816-b401a1bb6ef2@proton.me>
+In-Reply-To: <498e0141-8df5-46a7-b891-e1cb754f49e2@proton.me>
 
-On Wed, Aug 07, 2024 at 08:57:22PM +0000, Benno Lossin wrote:
+On Wed, Aug 07, 2024 at 09:23:04PM +0000, Benno Lossin wrote:
 > On 05.08.24 17:19, Danilo Krummrich wrote:
-> > Now that we got the kernel `Box` type in place, convert all existing
-> > `Box` users to make use of it.
+> > Now that we have all the `Allocator`s and the kernel `Box` and `Vec`
+> > implementations in place, remove `GlobalAlloc` and `krealloc_aligned`.
 > 
-> You missed a couple usages of `Box`:
-> - `rust/macros/lib.rs:{242,251,281}`
-> - `drivers/block/rnull.rs:{35,50}`
+> When I try to compile this patch, then I get this error:
 > 
-> or is that intentional? (for me rnull doesn't compile after this patch)
+>       UPD     include/generated/utsversion.h
+>       CC      init/version-timestamp.o
+>       KSYMS   .tmp_vmlinux0.kallsyms.S
+>       AS      .tmp_vmlinux0.kallsyms.o
+>       LD      .tmp_vmlinux1
+>     ld.lld: error: undefined symbol: __rust_realloc
+>     >>> referenced by usercopy_64.c
+>     >>>               vmlinux.o:(alloc::raw_vec::finish_grow::<alloc::alloc::Global>)
+>     
+>     ld.lld: error: undefined symbol: __rust_alloc
+>     >>> referenced by usercopy_64.c
+>     >>>               vmlinux.o:(alloc::raw_vec::finish_grow::<alloc::alloc::Global>)
+>     make[2]: *** [scripts/Makefile.vmlinux:34: vmlinux] Error 1
+> 
+> So maybe the `#[global_allocator]` needs to stay until we remove the
+> `alloc` dependency?
 
-No, I missed them. I probably messed up my .config. I really thought I had
-everything relevent enabled for compilation.
-
-Gonna fix those.
+Yes, I think so. I compile checked the single patches with `M=rust` and
+`M=drivers`, which only compiles, but doesn't link things, so it didn't catch
+it.
 
 > 
 > ---
@@ -77,12 +90,6 @@ Gonna fix those.
 > 
 > > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 > > ---
-> >  rust/kernel/init.rs               | 41 ++++++++++++++++---------------
-> >  rust/kernel/init/__internal.rs    |  2 +-
-> >  rust/kernel/sync/arc.rs           | 17 ++++++-------
-> >  rust/kernel/sync/condvar.rs       |  4 +--
-> >  rust/kernel/sync/lock/mutex.rs    |  2 +-
-> >  rust/kernel/sync/lock/spinlock.rs |  2 +-
-> >  rust/kernel/workqueue.rs          | 20 +++++++--------
-> >  7 files changed, 44 insertions(+), 44 deletions(-)
+> >  rust/kernel/alloc/allocator.rs | 63 ++--------------------------------
+> >  1 file changed, 2 insertions(+), 61 deletions(-)
 > 
