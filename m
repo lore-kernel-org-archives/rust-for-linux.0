@@ -1,171 +1,265 @@
-Received: from GBR01-LO4-obe.outbound.protection.outlook.com (mail-lo4gbr01on2105.outbound.protection.outlook.com [40.107.122.105])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D32291C823D;
-	Wed,  7 Aug 2024 10:24:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.122.105
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723026286; cv=fail; b=tY3sNLR/oqjU/Nw+eRF5I2pj2ZR4ZeENF4yP3KRXtZRirGBDxM1GUc60he80H+2rC+nk6eshwTC+gKJdrNk6ZOlow1VxstS32fxd5o/m9pjKs4ekov2dmxiRogcyUxCeDVDkLxDwiN2hsAePYw12TA72QlmClBfL0t0/Tvf6Jdg=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723026286; c=relaxed/simple;
-	bh=lYtGQ0KtYleXsT/Vf3KLiMfcY2nXpAURUHFCZLDkBtc=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=j3+wLunKqyW9wv9hBoYQOstR6fCNy2DW6cCMuWY/PKZPFJVE9IYZvZZyYccR1M5qW4eqwX0zB/WdWk1dl/C1cbYbVtRs1kFAvS7cLKmOmboFhrmPHwtv285wbTGQJiQ9nyEl+0b9JFbllJVCLglj1HpzK3TBDzAp/Vss87LIgeI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=ZkTR69t7; arc=fail smtp.client-ip=40.107.122.105
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD4B113F435;
+	Wed,  7 Aug 2024 10:38:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1723027120; cv=none; b=dPpl09wxjN5vPtTzAV4Kw+4B14Ji+FjW3oD8SK3uOFDb/ovpzK9A0vPF4DzPtk8bKiciMKdrtQMotyBXvRYZ3joeeLbh/naBnnD655Q15jxGpiGmNdgWSqSt9ukLIRb7Rwzge/FS7UqQ/UTFOL64WEZQ16pJZA3/7DxsQyCowfY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1723027120; c=relaxed/simple;
+	bh=STvcnja0Tc7ymfqdtiFmaSa11SWIguyBpn2081WtcHs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uPI7jAhO/Jv/IQfZDH/cobC3fFRlntOtq/rBj0e+jF3+lqJVL5puKGKTbDwVjDBqA1rGe2nsxNAu3/oG/323fx8pQUIU6vRoasKiY+4tM89t1GjPpXQrhwzrA7AqmCngM4goYEgrIiMdNnH5O0HKxcYMD1k9GaePkN9cALEtXfY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pJqLvm3r; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="ZkTR69t7"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=ne7fi9AkfrEHFLKo94BwsQc+Xtm4sk7LW1D8hiilb8+10c/S8svuyNQo/4fzfc1M93hCA0Z5rMb8IYn+GAnaV256tivaxZDVSSiH6AWjvf6dyMvjLNfCrbtrU4mIB77hUKe2EQ6bnHvK2yJHK+gAXsAnDqXOyW26We4APgIbX5ux9FufD/sXFpEpK0eZ0A/WFz1QynE0+gNfymzqqOEqZxAayBGhVQG+/OWfm98Kq8KB/jhAxeOXbr2jRHWwm23nHXtzf1Ie9S7mzIerjeN1h9Ifd/hdPA9GsyHnbkigAlr5h70NyFGLdFlvxF7tGDopO41m1z2tc19g89XMBpYFuA==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=hsCRjh0cU0bQJxzUEr9YLKC6EYehMKZp71nf/nKbu+4=;
- b=QLbg9ZZHFgxmZWD3IjDPoP856Mt35YCqtNqVv4Rizbp6YnNf5II0ojX+SA6RoXziVO9LpUnYbR/icxFsPaiWj93Smk7fAf0Ropq/xk6GMi/+JLarIUSPXssj1m2nmpEEIbrvrLUoQy700vB4VeGTGTob4mloz33tTEk5jctNomxAaT1LhkGW9C+6hey6FcpscXVNZtJFNFRO+G1ZT5fEe6AGtkYeC5YrDcYsBukGrOQ5XW1SQlEfmrMmZqCxkEhJz5SVUe9hguitvbwBh7Frxcfy08IENdP/SXkmI4XRQ0/P8luTLFFp930+sU6HEJXTz8ogzyIhoWudTGZ6gWn1PA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=hsCRjh0cU0bQJxzUEr9YLKC6EYehMKZp71nf/nKbu+4=;
- b=ZkTR69t7hsUgyOnWnbVaLCQYQPduaAF9c3HifzsJNLX0d2D/AZB/2JqrtfHJBFOQyGvOyZZMfue1bhr6qlVoaLMN8hggjoUtrH4l4BtT8pHli6FfslloEEozLaRuD93rFnP2Y1qikM4n6RmsvykbPNPbWW+TTVi/EVtudCfRA98=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
- by LO4P265MB6027.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:29c::14) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7849.13; Wed, 7 Aug
- 2024 10:24:31 +0000
-Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1818:a2bf:38a7:a1e7]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1818:a2bf:38a7:a1e7%7]) with mapi id 15.20.7849.008; Wed, 7 Aug 2024
- 10:24:31 +0000
-Date: Wed, 7 Aug 2024 11:24:28 +0100
-From: Gary Guo <gary@garyguo.net>
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Josh Poimboeuf <jpoimboe@kernel.org>, Peter Zijlstra
- <peterz@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar
- <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, Dave Hansen
- <dave.hansen@linux.intel.com>, Masahiro Yamada <masahiroy@kernel.org>,
- x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, Nathan Chancellor
- <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, Wedson Almeida
- Filho <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng
- <boqun.feng@gmail.com>, =?UTF-8?B?QmrDtnJu?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas
- Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
- patches@lists.linux.dev
-Subject: Re: [PATCH v3 1/6] rust: module: add static pointer to
- `{init,cleanup}_module()`
-Message-ID: <20240807112428.7620f5c5@eugeo>
-In-Reply-To: <20240725183325.122827-2-ojeda@kernel.org>
-References: <20240725183325.122827-1-ojeda@kernel.org>
-	<20240725183325.122827-2-ojeda@kernel.org>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO2P265CA0276.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:a1::24) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:253::10)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pJqLvm3r"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F15CC4AF0F;
+	Wed,  7 Aug 2024 10:38:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1723027120;
+	bh=STvcnja0Tc7ymfqdtiFmaSa11SWIguyBpn2081WtcHs=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=pJqLvm3rHVOLyaq8smuVjQQdSzNS+oIsNqbbIxgDoY3OrwVHwOvTMPeQf3qwxqA04
+	 a4RwUgcFD8wBSqgdMqrZlKjrFl10baZNlqCj51dHK3DedijW/iDCNTX9l+RfIjYYzo
+	 6HkFYnrqjkVFwQLahF9tTAGsb58s4HOHI1M/sWSRHeCSIAGYqcYvYZ+pClgEXu2teR
+	 gHlyU0HHgsxqZXcMmDDG56V/2Zhx+8PTCrwXswJkeKdmtgq5mmxNt4DmsOdoSXKQaB
+	 XFAOXCoSb80CcybPCnq3WBPvD3JyJ7L4Dh4JJBBk50r1XikM09jgBrSrQlq6V67YgM
+	 1FkHh8+eTfTgQ==
+Date: Wed, 7 Aug 2024 12:38:32 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	a.hindborg@samsung.com, aliceryhl@google.com,
+	akpm@linux-foundation.org, daniel.almeida@collabora.com,
+	faith.ekstrand@collabora.com, boris.brezillon@collabora.com,
+	lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com,
+	acurrid@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com,
+	airlied@redhat.com, ajanulgu@redhat.com, lyude@redhat.com,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH v4 09/28] rust: alloc: implement kernel `Box`
+Message-ID: <ZrNOqEXo_V4O4srC@pollux>
+References: <20240805152004.5039-1-dakr@kernel.org>
+ <20240805152004.5039-10-dakr@kernel.org>
+ <a1c1e273-2d40-4114-b3b9-f27c73e3d122@proton.me>
+ <ZrKrMrg5E85y7jkj@pollux>
+ <012f5a12-2408-4658-8318-55fa8d4285e1@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LO4P265MB6027:EE_
-X-MS-Office365-Filtering-Correlation-Id: d77c625e-cf43-4bb1-9f51-08dcb6cb1fda
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|376014|7416014|1800799024;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?LUYcz9ayV7LKFeOIoSJrNU9PEKX7a0ZXTIu7snT6rmF6iC+d80p6UqcX2UdR?=
- =?us-ascii?Q?3f9jiwvzZAJ1Tcny0Bg2TQgV/qaxSh8OwoxsTfsfeQmlfzL4TQ5nfDzriOO0?=
- =?us-ascii?Q?pgTEIfDhyM2I09VZuso9ju54v/H5KEEWfW7XE4+obYWSHgzM/dGVwBlLFX7Y?=
- =?us-ascii?Q?z3ZsH+J5fvMhDk45SXOImhdeuLDsmCjIFC+oBkranmsncEs+gyCCRJBezpgP?=
- =?us-ascii?Q?4MIoewhAJhIyvJLdE/qNdWuIfojIl7kVKNH7Jld7JSf21aILhfHJFggdWDT6?=
- =?us-ascii?Q?DU+gPcY9Za/qF20kaXhQng9Ia2xKvLyncO7k+blXRP2cUC8l/6sWjMplkGfz?=
- =?us-ascii?Q?4Tt1Mqx2GQvYNvI0uT+6Y11AhoAGia5fqj2rBP2ML1pQ1lYZhl0nmC//1k4V?=
- =?us-ascii?Q?7NsJZkBg/rEXIII17LixVXxDkC4owADgYt6FRzcRkD/Y9T0oxANnYv3myIZ7?=
- =?us-ascii?Q?2ZLDgYDowHYOUoIKUVr6yNqewi228B8vy+68XLpZi8b5vdjGvp6K4ogSQf+r?=
- =?us-ascii?Q?nIPvA+n+cfN37dzFHGYGAf7iso+DcCVXekkNW9LP0oCeonDd21wxJ/Wfm/6g?=
- =?us-ascii?Q?bo5D4rQH2amY7wm31Lw2kKznC3uIDNzqILZKyE0cECFdeVCG0ZZGM99NBTBR?=
- =?us-ascii?Q?r0hejrK8WMhrIA71Cr739VdepTTrK7m0PjHXj8rYR8LpqGG9olPQQfHSnp7x?=
- =?us-ascii?Q?6+n+HmnceIXFlGgDDOjz8VTYkrhISdVr1sAZ9iVbmp6mqFV9GtJJ9XwGMh9g?=
- =?us-ascii?Q?pwRk/Z4Pw9qaBy6wrfTBDvSpxu16s3Leo3KYEZJh0Plblhtnrzoa083pSNlp?=
- =?us-ascii?Q?uXWmYbgR1oa6doO2EAqUlNkQBpE9Z/QyfKqAUCzxvqQMYf3y19SHqQu3WN3S?=
- =?us-ascii?Q?mh1U5v8pbd31nmF8S6yH6i5K2BFlFisOXtJJkAxIfbZl2U9BlBGtufjwvIcd?=
- =?us-ascii?Q?sUgHpcBCSgT05GJX/jdIpnbe0LBo5OBEW72329S70MVzPwNsfmhHpCgrkQb0?=
- =?us-ascii?Q?ZUQ/78eBG3qbjBxJdellY+kDzwwSZvYXuQSCGTDytz+kRXgJ+vqdb0N9XViX?=
- =?us-ascii?Q?60gCTlgAQmIa6XxcWJScu2kQrS0afDu4v+2mM80advYjnTOgXRbnxHQ7lAS9?=
- =?us-ascii?Q?4HBpuRs+Mwh3O7PEKSq59NdfijcpyPfih1odt+UFXoxeDgZRQGPPvSlQP8GU?=
- =?us-ascii?Q?rrNrhLnBr7VqOhQBK2Lq1igv8vAB2sCa3/P3w8JHixeQ8XG87n19/8LYXyfO?=
- =?us-ascii?Q?4XgWPyv1DDEtAQKGvvK9t9ZRQt8jX5SOJS+sycrGXw2SJDLCCPCr368N8dAD?=
- =?us-ascii?Q?4xjf/XgQDvIZsUL2ciqsSkTraBmaSO0fms1nFrPuv5R6hg=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(376014)(7416014)(1800799024);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?p7xy4kRKW5Mo/41Dbgf9vD3vpT2eFkOimm9U9NKpmeKYEFSunWz8j0PrH4z0?=
- =?us-ascii?Q?mjSAwXyxOOPi1kv9fVOmmvIfklZ/vBuA1zvDIBiW8T9jCrp8Geu1wIHKuBLO?=
- =?us-ascii?Q?zQ9vDqyETq9J6mUDJt58PTuuHQA2LR9Xpy84KicrA9gm8Y7YjWZMyVR3QSFz?=
- =?us-ascii?Q?beDCo57ZNOuhxamb+4YhRN75PJZk4OQ0KF/aexNrbg3QY5mgU1aeFRear5GK?=
- =?us-ascii?Q?wyfvL3MvQSFyHANxvJpgv9bojwhFGrSYzW4+90IZxmnje5oE/y4ONBCRoYUT?=
- =?us-ascii?Q?DPLg2ppqUSQ3asJI+5Nb/Sg6qMhgTis66wteOlGQRlwgFbXetdt4R/Cp4Wvl?=
- =?us-ascii?Q?HteBL5+zTidG+AD2nCWfJTTixmvDyHL34H1HnlX0YWaLEp1Ljvz93Rw5KhSj?=
- =?us-ascii?Q?hX9O68JiOcJ08wpWWJuhVi/lYmfzFFgm6g4me1jNJm5gXMgXAZKX0LbzhueC?=
- =?us-ascii?Q?2dbkzvNJFyYgeb9Ng+gTYJp1WBMzwnlCg9ybeGDHcXJk7/7HX5LZ1jpRt7gl?=
- =?us-ascii?Q?t9raeUKa1h8VJjiapP3+ncWjVrSORPFuVQClstg4x1uGeB+xCajH6XjRIAbP?=
- =?us-ascii?Q?tHN49hiH+eodSK8o5MP6GqHr38OwBUHNHANMx/41N3AYEjy3kig4creXTG/b?=
- =?us-ascii?Q?5D1PflGDyPr2arpS+LnQ+V51Q6AifJE74BkTaCigPrvUgZCzienJLGlb2R/X?=
- =?us-ascii?Q?9j4+/EgnAz2c4YxXtCSZfTmMAzlknczF5nGFsPG26axo4NbqQZaJ2ETxII99?=
- =?us-ascii?Q?Jl6Iz5FkvI/BMWdv8k3DLacAPp3wxz0w/rcSp2+l3njttKN7jXnZCATZgmRd?=
- =?us-ascii?Q?oXG6ihZ20aBqYpjfa4My1FPzhYSl2oP4SXzNveKlGBCpcw/QgGwOTnzDAPYM?=
- =?us-ascii?Q?0I901BQzpBLlRt7bgq8oGzYIbO5Wt3Cig7zawwhdaNi8VXhKRjPwwVyT8H9W?=
- =?us-ascii?Q?F/xL47AQcFTXaurNcF1lZYRQRtqj7ejGnW6mxsqB7CqKXa/eUFQTNh5JjnUa?=
- =?us-ascii?Q?jrIJo3ucY1obN0O436BdfyUE6B+QAcx5BrG45hLw1Q+K/vdTBMBexLUJ/djS?=
- =?us-ascii?Q?MPMfcxoFdATWmcciu7uQwJTjoFa36ts7PSkz3Pbg4IihUaoLVT2KkMkT+B+z?=
- =?us-ascii?Q?xQjcPSrtDe6OlxL59EjvvEYoNyLvvRq5/O0OgBgPSdCEi2q+2g5OY///5xZF?=
- =?us-ascii?Q?cX57uspr6m9s2a3uoGTPyPtCJhdgVuos5M7+RRwobGEfuzbjUG55U38sXk0/?=
- =?us-ascii?Q?WWDNMYFF/aoieX8HpRzd2EQuYy+K44E/BtMjEIYIw4dJRJsLu/oNs82v4Mua?=
- =?us-ascii?Q?4P0bNus0AHaCtJKH/sPQL3xgMGuMz/a3UKAwJz2rG+tPPVV7GxhS2RkKI1eS?=
- =?us-ascii?Q?RARUg0smZR+TXMhm0ARSpSN/vALvzEtHRZuya2KQGiXdxdPEP1NJaWffDu2L?=
- =?us-ascii?Q?hXvGDAwU8w8zkZIvAZzG7/9cOavCXS5Tz4R9lamI76/ulPNLYboKh0kbid2R?=
- =?us-ascii?Q?G+zUbWWwiHUhOQphTSpkIRpBvJhnmvdNWoKm+Dp/Qdita+C2ATz3UVr7u2lz?=
- =?us-ascii?Q?s0lpEemGM1K/s9xw3u8o9U4rXRC4T/kOILgtoV2a?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: d77c625e-cf43-4bb1-9f51-08dcb6cb1fda
-X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Aug 2024 10:24:31.0018
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 20b5wnlFrFfT6OsK47t2QhzYpLruILMgVUl5nR0rdU02epFBtzVUEsC5UEkwcBeEW+boWFr1cI/ZoPDaUKwJmQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO4P265MB6027
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <012f5a12-2408-4658-8318-55fa8d4285e1@proton.me>
 
-On Thu, 25 Jul 2024 20:33:18 +0200
-Miguel Ojeda <ojeda@kernel.org> wrote:
-
-> Add the equivalent of the `___ADDRESSABLE()` annotation in the
-> `module_{init,exit}` macros to the Rust `module!` macro.
+On Wed, Aug 07, 2024 at 07:49:31AM +0000, Benno Lossin wrote:
+> >> With this requirement and the invariant on `Box`, I am lead to believe
+> >> that you can't use this for ZSTs, since they are not allocated with `A`.
+> >> One solution would be to adjust this requirement. But I would rather use
+> >> a different solution: we move the dangling pointer stuff into the
+> >> allocator and also call it when `T` is a ZST (ie don't special case them
+> >> in `Box` but in the impls of `Allocator`). That way this can stay as-is
+> >> and the part about ZSTs in the invariant can be removed.
+> > 
+> > Actually, we already got that. Every zero sized allocation will return a
+> > dangling pointer. However, we can't call `Allocator::free` with (any) dangling
+> > pointer though.
 > 
-> Without this, `objtool` would complain if enabled for Rust (under IBT
-> builds), e.g.:
-> 
->     samples/rust/rust_print.o: warning: objtool: cleanup_module(): not an indirect call target
->     samples/rust/rust_print.o: warning: objtool: init_module(): not an indirect call target
-> 
-> Tested-by: Alice Ryhl <aliceryhl@google.com>
-> Tested-by: Benno Lossin <benno.lossin@proton.me>
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> The last part is rather problematic in my opinion, since the safety
+> requirements of the functions in `Allocator` don't ensure that you're
+> not allowed to do it.
 
-Reviewed-by: Gary Guo <gary@garyguo.net>
+Yes, I think it needs to be added.
 
+> We should make it possible to free dangling
+> pointers that were previously "allocated" by the allocator (ie returned
+> by `realloc`).
+> Maybe we do need an `old_layout` parameter for that (that way we can
+> also `debug_assert_eq!(old_layout.align(), new_layout.align())`).
+
+Please see my reply in [1] - let's continue the discussion there.
+
+[1] https://lore.kernel.org/rust-for-linux/ZrNIaAcGkGU0d8I3@pollux/
+
+> 
+> >>> +    {
+> >>> +        Ok(Self::new(x, flags)?.into())
+> >>> +    }
+> >>> +
+> >>> +    /// Drops the contents, but keeps the allocation.
+> >>> +    ///
+> >>> +    /// # Examples
+> >>> +    ///
+> >>> +    /// ```
+> >>> +    /// let value = KBox::new([0; 32], GFP_KERNEL)?;
+> >>> +    /// assert_eq!(*value, [0; 32]);
+> >>> +    /// let value = KBox::drop_contents(value);
+> >>> +    /// // Now we can re-use `value`:
+> >>> +    /// let value = KBox::write(value, [1; 32]);
+> >>> +    /// assert_eq!(*value, [1; 32]);
+> >>> +    /// # Ok::<(), Error>(())
+> >>> +    /// ```
+> >>> +    pub fn drop_contents(this: Self) -> Box<MaybeUninit<T>, A> {
+> >>> +        let ptr = Box::into_raw(this);
+> >>> +        // SAFETY: `ptr` is valid, because it came from `Box::into_raw`.
+> >>> +        unsafe { core::ptr::drop_in_place(ptr) };
+> >>> +        // SAFETY: `ptr` is valid, because it came from `Box::into_raw`.
+> >>> +        unsafe { Box::from_raw(ptr.cast()) }
+> >>> +    }
+> >>
+> >> I don't particularly care in this instance, but you just took my patch
+> >> and folded it into your own without asking me or specifying it in the
+> >> commit message. In general I would have assumed that you just put the
+> >> entire patch into the series (with correct From:... etc).
+> > 
+> > When I asked about this in [1] my understanding was that we expect [1] to land
+> > prior to this series. So, I'm just anticipating a future rebase where I move
+> > this code from box_ext.rs to kbox.rs, just like Alice suggested for her
+> > "ForeignOwnable for Pin<crate::alloc::Box<T, A>>" implementation.
+> > 
+> > I also understand your later reply, where you said: "[...] then you can just
+> > include it when you remove the `BoxExit` trait." as confirmation.
+> > 
+> > Probably that's a misunderstanding though. Sorry if that's the case.
+> 
+> Yeah what I meant by that was you base it on top and then move it from
+> the `BoxExt` trait over to `Box` in a correctly attributed patch.
+
+I don't understand this. What do you mean with "correctly attributed patch" in
+this case?
+
+There are various existing implementations around `Box` and `BoxExt`, are you
+saying that I should create separate patches for moving / adapting all of them,
+e.g. this patch adapts parts from `BoxExt`, the implementation of
+`ForeignOwnable` for `Box<T>`, the implementation of `InPlaceInit<T>` for
+`Box<T>`.
+
+I don't think this is necessary.
+
+I probably shouldn't anticipate a future rebase though, it just leads to
+confusion. I'll drop it for now and re-add it once your patch lands in rust-next.
+
+> As I
+> said above, I don't really mind in this case, since it's trivial, so no
+> worries. Just a heads-up for occasions where it is non-trivial.
+> 
+> > [1] https://lore.kernel.org/lkml/24a8d381-dd13-4d19-a736-689b8880dbe1@proton.me/
+> > 
+> >>
+> >>> +}
+> >>> +
+> >>> +impl<T, A> From<Box<T, A>> for Pin<Box<T, A>>
+> >>> +where
+> >>> +    T: ?Sized,
+> >>> +    A: Allocator,
+> >>> +    A: 'static,
+> >>> +{
+> >>> +    /// Converts a `Box<T>` into a `Pin<Box<T>>`. If `T` does not implement [`Unpin`], then
+> >>> +    /// `*boxed` will be pinned in memory and unable to be moved.
+> >>> +    ///
+> >>> +    /// This conversion does not allocate on the heap and happens in place.
+> >>> +    ///
+> >>> +    /// This is also available via [`Box::into_pin`].
+> >>> +    ///
+> >>> +    /// Constructing and pinning a `Box` with <code><Pin<Box\<T>>>::from([Box::new]\(x))</code>
+> >>> +    /// can also be written more concisely using <code>[Box::pin]\(x)</code>.
+> >>> +    /// This `From` implementation is useful if you already have a `Box<T>`, or you are
+> >>> +    /// constructing a (pinned) `Box` in a different way than with [`Box::new`].
+> >>
+> >> This also looks very much like something from the stdlib...
+> > 
+> > Yeah, I'll replace that.
+> > 
+> >>
+> >>> +    fn from(b: Box<T, A>) -> Self {
+> >>> +        Box::into_pin(b)
+> >>> +    }
+> >>> +}
+> >>> +
+> >>> +impl<T, A> Deref for Box<T, A>
+> >>> +where
+> >>> +    T: ?Sized,
+> >>> +    A: Allocator,
+> >>> +{
+> >>> +    type Target = T;
+> >>> +
+> >>> +    fn deref(&self) -> &T {
+> >>> +        // SAFETY: `self.0` is always properly aligned, dereferenceable and points to an initialized
+> >>> +        // instance of `T`.
+> >>
+> >> If `T` is a ZST, then it is not dereferenceable.
+> > 
+> > Why not? If `T` is a ZST `self.0` is `Unique::<T>::dangling()`. So, in the end
+> > this is the same as `NonNull::<T>::dangling().as_ref()`.
+> 
+> You are right, I just looked at [1] again and they define
+> dereferenceable as "the memory range of the given size starting at the
+> pointer must all be within the bounds of a single allocated object", for
+> a zero-sized allocation, this holds vacuously.
+> 
+> [1]: https://doc.rust-lang.org/core/ptr/index.html#safety
+> 
+> >>> +        unsafe { self.0.as_ref() }
+> >>> +    }
+> >>> +}
+> >>> +
+> >>> +impl<T, A> DerefMut for Box<T, A>
+> >>> +where
+> >>> +    T: ?Sized,
+> >>> +    A: Allocator,
+> >>> +{
+> >>> +    fn deref_mut(&mut self) -> &mut T {
+> >>> +        // SAFETY: `self.0` is always properly aligned, dereferenceable and points to an initialized
+> >>> +        // instance of `T`.
+> >>> +        unsafe { self.0.as_mut() }
+> >>> +    }
+> >>> +}
+> >>> +
+> >>> +impl<T, A> fmt::Debug for Box<T, A>
+> >>> +where
+> >>> +    T: ?Sized + fmt::Debug,
+> >>> +    A: Allocator,
+> >>> +{
+> >>> +    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+> >>> +        fmt::Debug::fmt(&**self, f)
+> >>> +    }
+> >>> +}
+> >>> +
+> >>> +impl<T, A> Drop for Box<T, A>
+> >>> +where
+> >>> +    T: ?Sized,
+> >>> +    A: Allocator,
+> >>> +{
+> >>> +    fn drop(&mut self) {
+> >>> +        let ptr = self.0.as_ptr();
+> >>> +
+> >>> +        // SAFETY: `ptr` is always properly aligned, dereferenceable and points to an initialized
+> >>> +        // instance of `T`.
+> >>> +        let size = unsafe { core::mem::size_of_val(&*ptr) };
+> >>
+> >> 1. `size_of_val` is not `unsafe`.
+> > 
+> > Right, but dereferencing the `ptr` is unsafe.
+> > 
+> >> 2. why not use `&*self` instead of using the raw pointer? (then move the
+> >>    let binding below this line)
+> > 
+> > If we ever support non-ZST `Allocator`s using `self` would not always evaluate
+> > to the correct size. I think evaluating the size of `T` rather than `Box<T>` is
+> > the correct thing to do.
+> 
+> I mean use `Box::deref` (that's what `&*self` should do), you don't need
+> to repeat the same SAFETY comment when it already is wrapped by a safe
+> function.
+
+Oh, yes, that's indeed a good suggestion.
+
+> 
 > ---
->  rust/macros/module.rs | 12 ++++++++++++
->  1 file changed, 12 insertions(+)
+> Cheers,
+> Benno
+> 
