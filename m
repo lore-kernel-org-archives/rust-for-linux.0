@@ -1,129 +1,106 @@
-Received: from mail-vk1-f178.google.com (mail-vk1-f178.google.com [209.85.221.178])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C173C1B86DC;
-	Wed,  7 Aug 2024 07:52:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C62A61AE058
+	for <rust-for-linux@vger.kernel.org>; Wed,  7 Aug 2024 08:01:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723017144; cv=none; b=kDn3LJCF75RozRBr4nvgJgxju5+Dp0ztiwfdLEp9DY8jXh4pfOad7vzRb+/jBL1nMzPQNPyc447TedVYlZnmRGvw3C+Npnezwyst7IRpwFA9CSCO2WEcJxPkbHk3T1lxK18Z4W8aaAtvMiVH+1mTJYW+DdPWHXMk76cs2A6Guxo=
+	t=1723017715; cv=none; b=Q0zq2LsRWwWFDSGOvimSWMTl4jxDPz//hHc3d4H1BudrDWd1PPRzF4+u8krM+4Y/wP9apQugMLzyTmgWMwrOdSagcTVOjP5rHLfuCfzsvlaz12y6hDCo41e9dbY4qwShk+oakLsQIiFHnCGDAaTWXTf96Wm5lvRlCAFO6F71+FY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723017144; c=relaxed/simple;
-	bh=P029QhQ2IpIBwTacFgAJzLKzDEjmjM1NRKAZUDdvcVs=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Gb2wD9i32bgu3Vy91XdpmeOUrih6R8Jkdf1YFak7qIL6IIfenFSR5E9iE705+geTf2UHIpdmBcqFLJZ8rpt9hjt3YruKtjZ3fjlO8gPij45gzYvlLjgdzf5MjcmW2BPivRcAcS3tZfacynmo9E5od2XnGN+8LBbXwwPV5eBN5v4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gompa.dev; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.221.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gompa.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-vk1-f178.google.com with SMTP id 71dfb90a1353d-4f51c1f9372so507493e0c.2;
-        Wed, 07 Aug 2024 00:52:22 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723017142; x=1723621942;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=W3xrNS8iZyZhkOmyAcGNIqP3+/HlN9P6GP8Q91kZLyY=;
-        b=BmeX/GTk61n0nSolPXdWoWQXPtrZ4s14CB143uadFrsX3WD9g8+A12TqE/mhdddQ6a
-         jbLF/4TkiF7MgV1D6dj0gmZyggCBOTcKcSOJqA8vuzbwYrqjb8Yg2xiKfuTmKT7NH1gX
-         XoQ+r+80VL7dC2Ure1GSIK0B0aDkNXj8G1nI9PZYj5FjcmXpif13xEszuNItvMFl8yBc
-         MXHN3K9wnNVJ+5NocMbb1ykKFp9ss8OaWUZ1oilOcOT4GgGRyJJG34ehWUL6YhQE3ptZ
-         ZD/Pxbuf3xnrtH6T5dgofUf6OR/fHfFIX0fcQ2DlXJotIVWp5RlWsw8xW/nd86eWMsyi
-         /eqw==
-X-Forwarded-Encrypted: i=1; AJvYcCUo+bbl1d300F4OccSnk8T3fPdPf9BYBkIfu+LUeHn+wR5zLAjpTFU++8xqcOFbqAadYsZ77U8neVbCTngda7T7IAj7H6i8LtckD0RzJOXVwnrRQf5wZBBysvw6BXECnPLRL33n6CUwUrd42TU=
-X-Gm-Message-State: AOJu0YwN7y7TkHvt8HzJNBi9zZi6RdeojVN3aKA7yGLL4QEJyqdpqLPD
-	btEdSJX9ykW9fymsaQmbXEaqmipEBYcjx/vC5FFWkbMFST4znkG9
-X-Google-Smtp-Source: AGHT+IE33uVgVa+VXy9gIqtrgXxspqlIEekyIkajG8XB5P3gG8JKv9KHLMssfYHzag8pRj248sYXPw==
-X-Received: by 2002:a05:6122:1699:b0:4f6:b610:61bf with SMTP id 71dfb90a1353d-4f89ff88eafmr19464410e0c.8.1723017141625;
-        Wed, 07 Aug 2024 00:52:21 -0700 (PDT)
-Received: from skuld-framework.localnet ([32.221.37.233])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7a3785e0798sm36500385a.44.2024.08.07.00.52.20
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 07 Aug 2024 00:52:21 -0700 (PDT)
-From: Neal Gompa <neal@gompa.dev>
-To: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
- Zehui Xu <zehuixu@whu.edu.cn>
-Cc: boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
- benno.lossin@proton.me, a.hindborg@samsung.com, aliceryhl@google.com,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
- zehuixu@whu.edu.cn
-Subject:
- Re: [PATCH v3] rust: Kbuild: Skip -fmin-function-alignment in bindgen flags
-Date: Wed, 07 Aug 2024 03:52:20 -0400
-Message-ID: <3695674.9o76ZdvQCi@skuld-framework>
-In-Reply-To: <20240731134346.10630-1-zehuixu@whu.edu.cn>
-References: <20240731134346.10630-1-zehuixu@whu.edu.cn>
+	s=arc-20240116; t=1723017715; c=relaxed/simple;
+	bh=uNRTxLMAMpcbQn5DCRpAhvTpZAl9kCTly36CTOVae9Y=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ITUuVozH/QkX2dmYIQ/nSSWMYCRRuHyFKa8YKYj8hqmPZAdfrEKWDp3uQM8ni4QpmbsbCRNdpxgdcWSPVOK68jy7nAzoWPasj2P91MAW4SnNVAvI6lTqsZhUkTyUlkpATFCg5NOCAkah18c06SPMP5kyP715kquCAJWbn17JhIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=l8rcU5Bv; arc=none smtp.client-ip=185.70.40.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="l8rcU5Bv"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1723017710; x=1723276910;
+	bh=RWY8n2kwMXBw5zg65jaQElb79dGDUP5Ex7AXip/oERA=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=l8rcU5BvXbczBsQdlGiFBhu8cJLjhgult7+F8YRsB+mLN7KS9etyd76yw12rwQWRP
+	 WkJ5TLzFT12bFC38v9QINztgQABrLkPVZMy9FnRyxRxgv9NEgn/7J+xN71ciGt+gFH
+	 Xvv0i5DopHNmb4LGRIjj10NVew/q/cbi1h0U4Bivvsl2M6/HPS/dY+CwxZFq7vjXRK
+	 73aUdYTFlzoyiOibjcmTI2BDUDR/SJscWdYXp7owOffV3Nl2RPecyMdwLpxeVgyVkK
+	 FEIpbnsB3acccPGsSazAG9xRczo3De1vjnzYFsk/InMH3BUpieB7fJxxhGENLBCwgB
+	 izZk6TjmLfUkw==
+Date: Wed, 07 Aug 2024 08:01:00 +0000
+To: Alice Ryhl <aliceryhl@google.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Danilo Krummrich <dakr@kernel.org>, ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@samsung.com, akpm@linux-foundation.org, daniel.almeida@collabora.com, faith.ekstrand@collabora.com, boris.brezillon@collabora.com, lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com, acurrid@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com, ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v4 09/28] rust: alloc: implement kernel `Box`
+Message-ID: <7f3a4ea5-79c6-4068-9a5f-0aa3a55e38cb@proton.me>
+In-Reply-To: <CAH5fLggiSU9Ossy5gc+S_rSiX8v-JCDKPL_tRDYdjMYGfOt-0w@mail.gmail.com>
+References: <20240805152004.5039-1-dakr@kernel.org> <20240805152004.5039-10-dakr@kernel.org> <a1c1e273-2d40-4114-b3b9-f27c73e3d122@proton.me> <ZrKrMrg5E85y7jkj@pollux> <012f5a12-2408-4658-8318-55fa8d4285e1@proton.me> <CAH5fLggiSU9Ossy5gc+S_rSiX8v-JCDKPL_tRDYdjMYGfOt-0w@mail.gmail.com>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: 5e675f3e5db637a98548d3886b70d1e75fe812f2
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset="utf-8"
 
-On Wednesday, July 31, 2024 9:43:46=E2=80=AFAM EDT Zehui Xu wrote:
-> GCC 14 recently added -fmin-function-alignment option and the
-> root Makefile uses it to replace -falign-functions when available.
-> However, this flag can cause issues when passed to the Rust
-> Makefile and affect the bindgen process. Bindgen relies on
-> libclang to parse C code, and currently does not support the
-> -fmin-function-alignment flag, leading to compilation failures
-> when GCC 14 is used.
->=20
-> This patch addresses the issue by adding -fmin-function-alignment
-> to the bindgen_skip_c_flags in rust/Makefile. This prevents the
-> flag from causing compilation issues.
->=20
-> Link:
-> https://lore.kernel.org/linux-kbuild/20240222133500.16991-1-petr.pavlu@su=
+On 07.08.24 09:51, Alice Ryhl wrote:
+> On Wed, Aug 7, 2024 at 9:49=E2=80=AFAM Benno Lossin <benno.lossin@proton.=
+me> wrote:
+>> On 07.08.24 01:01, Danilo Krummrich wrote:
+>>> On Tue, Aug 06, 2024 at 07:47:17PM +0000, Benno Lossin wrote:
+>>>> On 05.08.24 17:19, Danilo Krummrich wrote:
+>>>>> +impl<T, A> Box<T, A>
+>>>>> +where
+>>>>> +    T: ?Sized,
+>>>>> +    A: Allocator,
+>>>>> +{
+>>>>> +    /// Constructs a `Box<T, A>` from a raw pointer.
+>>>>> +    ///
+>>>>> +    /// # Safety
+>>>>> +    ///
+>>>>> +    /// `raw` must point to valid memory, previously allocated with =
+`A`, and at least the size of
+>>>>> +    /// type `T`.
+>>>>
+>>>> With this requirement and the invariant on `Box`, I am lead to believe
+>>>> that you can't use this for ZSTs, since they are not allocated with `A=
+`.
+>>>> One solution would be to adjust this requirement. But I would rather u=
 se
-> .com/ Signed-off-by: Zehui Xu <zehuixu@whu.edu.cn>
-> ---
-> Since -falign-functions does not affect bindgen output, we do not
-> need logic to add it back to the flags. Thanks to the community's
-> help, especially Miguel Ojeda. Hope this patch is free of problems
-> and can be submitted smoothly : )
+>>>> a different solution: we move the dangling pointer stuff into the
+>>>> allocator and also call it when `T` is a ZST (ie don't special case th=
+em
+>>>> in `Box` but in the impls of `Allocator`). That way this can stay as-i=
+s
+>>>> and the part about ZSTs in the invariant can be removed.
+>>>
+>>> Actually, we already got that. Every zero sized allocation will return =
+a
+>>> dangling pointer. However, we can't call `Allocator::free` with (any) d=
+angling
+>>> pointer though.
+>>
+>> The last part is rather problematic in my opinion, since the safety
+>> requirements of the functions in `Allocator` don't ensure that you're
+>> not allowed to do it. We should make it possible to free dangling
+>> pointers that were previously "allocated" by the allocator (ie returned
+>> by `realloc`).
+>> Maybe we do need an `old_layout` parameter for that (that way we can
+>> also `debug_assert_eq!(old_layout.align(), new_layout.align())`).
 >=20
-> v1:
-> * https://lore.kernel.org/all/20240730222053.37066-1-zehuixu@whu.edu.cn/
->=20
-> v2:
-> * Added -falign-functions to bindgen_extra_c_flags when skipping
->   -fmin-function-alignment to maintain function alignment settings in GCC=
- 14
-> * Used reasonable length and moved email content out of the commit message
-> * Used "Link" tag instead of "Reference:" and removed empty lines between
-> tags * Specified the base commit
-> * https://lore.kernel.org/all/20240731034112.6060-1-zehuixu@whu.edu.cn/
->=20
-> v3:
-> * Removed logic from patch v2 which adds -falign-functions
->=20
->  rust/Makefile | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/rust/Makefile b/rust/Makefile
-> index 1f10f92737f2..0c8736cce64f 100644
-> --- a/rust/Makefile
-> +++ b/rust/Makefile
-> @@ -227,7 +227,7 @@ bindgen_skip_c_flags :=3D -mno-fp-ret-in-387
-> -mpreferred-stack-boundary=3D% \ -fno-reorder-blocks
-> -fno-allow-store-data-races -fasan-shadow-offset=3D% \
-> -fzero-call-used-regs=3D% -fno-stack-clash-protection \
->  	-fno-inline-functions-called-once -fsanitize=3Dbounds-strict \
-> -	-fstrict-flex-arrays=3D% \
-> +	-fstrict-flex-arrays=3D% -fmin-function-alignment=3D% \
->  	--param=3D% --param asan-%
->=20
->  # Derived from `scripts/Makefile.clang`.
->=20
-> base-commit: 8400291e289ee6b2bf9779ff1c83a291501f017b
+> The std allocators generally prohibit zero sized allocations, so it
+> seems sensible for us to do the same?
 
-Looks good to me.
+I never understood why they do that, the stdlib `Allocator` trait has
+all the information it needs to detect zero-sized allocations, so it
+could just return dangling pointers. I don't see the point of
+duplicating the zero-sized logic in `Box` and `Vec`...
 
-Reviewed-by: Neal Gompa <neal@gompa.dev>
-
-=2D-=20
-=E7=9C=9F=E5=AE=9F=E3=81=AF=E3=81=84=E3=81=A4=E3=82=82=E4=B8=80=E3=81=A4=EF=
-=BC=81/ Always, there's only one truth!
-
+---
+Cheers,
+Benno
 
