@@ -1,117 +1,194 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from GBR01-LO4-obe.outbound.protection.outlook.com (mail-lo4gbr01on2100.outbound.protection.outlook.com [40.107.122.100])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30BE61B9B2F;
-	Wed,  7 Aug 2024 10:44:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723027453; cv=none; b=qc/8a4AQkdZb/WJdbqni8BQa9GmzqQhIwq/XMXT3ylMYfUd/pTl8LQCK/F5ZMlSPtDDZVCZvItF3tdtPHW0UySytwJwP/dC1/s4VDyiiGuIFtS6r4ThJMUXIYdydm/Od1w2hMJQ8KzpncvyBBIt/LQdRhFB1G8VtwTJVYDcZPx8=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723027453; c=relaxed/simple;
-	bh=JOxiEarUvo73HuG9/MeZiik0i/gR0KHBA5ZXH7M+o5o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ZDSHAIsJiMou38YEzQNRqyrBvIu6ff/LgecWdhQPHvjNscpY1owRBevfdUaqEzLm0qWTxQ0uDeNRgj5n/aihPHiEEMYS7rkFVK8qQDQRganWQAUEiokIV/IW0gGju9h/QhKdiPoB/OiBPM9PDzUhDA8RD/LJpf9GTz9FZy8q4FM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YezfYi3V; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 974711B8E82;
+	Wed,  7 Aug 2024 10:57:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.122.100
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1723028235; cv=fail; b=lVS1N7IVPJH0HyGz1K0hHRZx7/px3Jgthe1lGsSFu4HaZSqwHkb78/fPgM71gq1Eeq+IvP8sXB+AbLMYWdyjBcs8yIBJZLSsU79eofkc+bq3oB60HBKTTZAVP00npDoVjKAHsBFkRNOa5XQMsZNf2FP77W4QbPET6xt9Z+JsKTE=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1723028235; c=relaxed/simple;
+	bh=/8Cq+oIrMxrX/d51x0H9fplNY8jA/5geUq8eTVFTzyE=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=ZydCdH835ZGTzHy5QZ7vevHW7RbDP0DDBHysreTxeSbHMpAs7Ek7gfASUZVIaa9P3c8L6syIbugGtvEWdvaU2aSJ1bwzavGFra0XuLRkKA6AplP4/ZznSGWwWabIsaxQ7r34sjlk88WhUHeOBVku+Bv+S1p4dkiuiKmPl+4rZbk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=BhEJa00d; arc=fail smtp.client-ip=40.107.122.100
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YezfYi3V"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B168BC32782;
-	Wed,  7 Aug 2024 10:44:07 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723027452;
-	bh=JOxiEarUvo73HuG9/MeZiik0i/gR0KHBA5ZXH7M+o5o=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YezfYi3VwAeOVs3hFM+qZjdVwu4ELBBZC19dpyT2GsyplWss5iaQ1MXtIWlYz9sdz
-	 bmphj3s6/5dWGU3nCNaoKglJeyn179JvGERuwK5hs/gtUBxSfHRQ+TIXbJ1hWfXMyZ
-	 BeOX6OAlzlSy0T9fAb7dYgsYVhKZJGvjTy/KdlzrH6x2wFSVHdDRbdt9snNfkg+Pju
-	 uwhkCrlFw7MRScfiZ9jKkklMhv13dYpalO3Dv6a1kyWtHDr1M3dcJ2d6IMbSlL5scZ
-	 10xCWWReHP7H7ncq9BuFP13KunCo4ieKe6/sZoSqRx591z9GKpREyg9UlzGTr1LFrO
-	 RxGnCZZkOblOg==
-Date: Wed, 7 Aug 2024 12:44:04 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Alice Ryhl <aliceryhl@google.com>, ojeda@kernel.org,
-	alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@samsung.com,
-	akpm@linux-foundation.org, daniel.almeida@collabora.com,
-	faith.ekstrand@collabora.com, boris.brezillon@collabora.com,
-	lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com,
-	acurrid@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com,
-	airlied@redhat.com, ajanulgu@redhat.com, lyude@redhat.com,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	linux-mm@kvack.org
-Subject: Re: [PATCH v4 09/28] rust: alloc: implement kernel `Box`
-Message-ID: <ZrNP9Lx-sTupwqG1@pollux>
-References: <20240805152004.5039-1-dakr@kernel.org>
- <20240805152004.5039-10-dakr@kernel.org>
- <a1c1e273-2d40-4114-b3b9-f27c73e3d122@proton.me>
- <ZrKrMrg5E85y7jkj@pollux>
- <012f5a12-2408-4658-8318-55fa8d4285e1@proton.me>
- <CAH5fLggiSU9Ossy5gc+S_rSiX8v-JCDKPL_tRDYdjMYGfOt-0w@mail.gmail.com>
- <7f3a4ea5-79c6-4068-9a5f-0aa3a55e38cb@proton.me>
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="BhEJa00d"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=fbFHplZHXPDpyA38F/FCZsPbVO4Y7g0kTVk8tqN+vsFX47J2e6uZCXCxjIBryxHCcPzcj11sFh7mZj65y1SbUuccJ2/U42f6y2ERt2E4lwiy7OKxWycT2jo88H8G74npON8GQLQebMJOxJ+ZLSTxoo67LPSt60jdxYmnE5mJwiliqwu0hMRXJzJ4KPmqb9vsX//BsGa6mEw+VvAuzB0xbqQmqwh3k8V9uOOOPNH3OhxgAxEigUMHr1XcUPGKJV6Oq7ItgIvQAJrnnQjzIDujn8mJAYmJdNlKmPf6jSjkmRHJC4P6vijCIjEej3a8asHARqcAV1+JhHpNlemRsCfMOg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Y7hmOd/TYJ6ribJS+flQ8WW0wgklKSLpgI2nwweAR7w=;
+ b=a2jcK57xunqTHn8nZRGE88xmC6lVBpag7j6RxNn914852+Beylor87gHOP2a0t4QEs/1ePC6mFCNQLz/MbsgStP7N3Ap6dkfG3O8c+O3++MHvW/fQoliOOyRygKC6ZjdKLbU4OvSjlP4nqS2Dk53muu5d6gu9zPJmlky2DUQ0W2XfH3ufrnJW4C1t68uPptRlcG1OtMJCZq15D1ZD1+1E4p8sIYM9FbymMjoNif2lu93wxqFJlV+wdDRxmEB29/ZAZPHTxJn83JRx03weW+0ddL3y8ZeP9pybM0vBqlKNo1CwVyuBzTfkQvN9fu36VFiAcz3GU6Pc/wLfGjPKbZgRw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Y7hmOd/TYJ6ribJS+flQ8WW0wgklKSLpgI2nwweAR7w=;
+ b=BhEJa00dPbhZGWGR+UCvt5vgUgjN7d0/crkScaMaYkQeC3NJba6nfDhbE0NPaEYl0NS2e/J8AHxwRFcIz+PJE9Twzu9E35NNSxni9CvPe3wdkYIEAnQXWJI0eWNqcqcRi343EIeAzFP3dnjUtDQHF+y6a9a0X6GoXMRlBs/yH2U=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
+ by LO3P265MB1882.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:b6::15) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7849.13; Wed, 7 Aug
+ 2024 10:57:10 +0000
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1818:a2bf:38a7:a1e7]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1818:a2bf:38a7:a1e7%7]) with mapi id 15.20.7849.008; Wed, 7 Aug 2024
+ 10:57:10 +0000
+Date: Wed, 7 Aug 2024 11:57:08 +0100
+From: Gary Guo <gary@garyguo.net>
+To: Zehui Xu <zehuixu@whu.edu.cn>
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
+ boqun.feng@gmail.com, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+ a.hindborg@samsung.com, aliceryhl@google.com,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] rust: Kbuild: Skip -fmin-function-alignment in
+ bindgen flags
+Message-ID: <20240807115708.394a8eb3@eugeo>
+In-Reply-To: <20240731134346.10630-1-zehuixu@whu.edu.cn>
+References: <20240731134346.10630-1-zehuixu@whu.edu.cn>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: LO4P123CA0067.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:153::18) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:253::10)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <7f3a4ea5-79c6-4068-9a5f-0aa3a55e38cb@proton.me>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LO3P265MB1882:EE_
+X-MS-Office365-Filtering-Correlation-Id: 86d3ce11-7e1e-4399-71f4-08dcb6cfafbe
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?dxSDmFmHG/fQhy2CPnlv5V+RZnb4BYdJJ/WI6kRGbfop3L55tTw4jt8sGlpK?=
+ =?us-ascii?Q?7BiAsYiKLk2ZjhXUfw9jV1JeGKgnECcz/D0onFcEwv7LYVLR6W26M6HEEnsJ?=
+ =?us-ascii?Q?BiU9KiHgsl3ilPAlndTQP7nBM5QqOoPCxLJZqxsHUNgywAjlbKAAvmRASzOj?=
+ =?us-ascii?Q?Y1VHxI2sJrQ/ltU4NYqEwzY5mvM2r8E/3HImQmr7Rf38jBJ8W/Lzct84k4xW?=
+ =?us-ascii?Q?IlmSZ1WaAPvLzROJrHDs5B4wB1vCTQNpWCEgf0Xa+9jhmoxNGJIN1dzPVJkK?=
+ =?us-ascii?Q?WF+xRGYbi0x0/rgt8cZdoz7a2sP7Ng0eFsoO6gAGXngOhS9NRZbJKneEXhWy?=
+ =?us-ascii?Q?af603OZWyM9piyEKM80lipne1te/G/7Xp0/KeRyCbbmA/oIwNDR80qoRFdH2?=
+ =?us-ascii?Q?Rbcnl0vASawKZdHt7RNtlZUVjqpslg9gJsc+iAq7xxLllqhh0IcNPZfbaQoc?=
+ =?us-ascii?Q?RN6zG5xJU+1QgHWd5Fa6SYOsWRzDmf8JTttIPgaHuPYlukA3PwFBrB1u5D27?=
+ =?us-ascii?Q?p3U+hrfrk99qBOXAKM+28UQ3hy5fXgKrSwKZR8j/6V1xRbz2EG9BfXi8/LDX?=
+ =?us-ascii?Q?6l4lUDxTtZG5bsco2a2f+qPYm7sgka/UJBj0zKz2vlSzS88kK4rKs93UBkP9?=
+ =?us-ascii?Q?tc/7wiOa9oV4Wnag1PtrUJMitT0ZY3p0Ag2E/faOM+lpl7LzuN3Tj78kV5Hb?=
+ =?us-ascii?Q?0a0xEjEzaJC9n3EBk2elAWOqRNlIm6qnKiBrtuxT5T1Ir+EBQs7RjkYiztLi?=
+ =?us-ascii?Q?oJOk1M3HDgi8Hoo6560IDTUiV+WwdsHe5mq2S3GMgEx8jKJHIHJ0Wlk5KLZ8?=
+ =?us-ascii?Q?VAfuqhaVcGtynmfU1xXYBlQWBE0Mdph5T+fhXUzNGZkjEHpV7fVlqHF/nzhK?=
+ =?us-ascii?Q?phnlYFT1sf704CEFXZP4YIlp4saCPAsnIQw/M+7u2OpRRqSp3CfQZOlnu4F7?=
+ =?us-ascii?Q?VrgniauKpHaA9dEzleSpE/Gx8YapEd/a/jAtHGkKhYk4MqBjBs5uw1z+XJPE?=
+ =?us-ascii?Q?eO8ZtoeglCjNlfDO8zTYTQ2XKBR+zfR92X+1hEVceLuCUSTamUMMriqgxjMn?=
+ =?us-ascii?Q?3+nBkFPZMD8TBBce8/dZ+HNkT4t26V+JgCXPSh2kEOpkCjj/b3AWkyCqgwnW?=
+ =?us-ascii?Q?8+pEeLbWI+z2/DWQpmN62ZErhgtDuxNvZUwifjOF3HbzLBDyHnqCdiPn0f9k?=
+ =?us-ascii?Q?W7jlrXkAGYlJjbu1U1yO96FjcpSOtEZxc39ePIqg8ZGC3QDHZpQMZaVVjNnI?=
+ =?us-ascii?Q?1eLZf478KGiT2TkU0yua1mfS1+B4ZsOAQ1kqhitZRxQsnBK9ShGPsUNdKGRs?=
+ =?us-ascii?Q?3lk=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?5Rpt5gID6eXdJ4j0MC0Tqd03zE4ZMFZlxmKfMaUfr1skdez6w698TUaPtMcl?=
+ =?us-ascii?Q?Xur1BtCgFeKMV3MItZNnaTdNDZ3/juF58ZpzfXKbyr8CVE3ZvLI0RzHfC9DF?=
+ =?us-ascii?Q?gQzhhL4oT6UiXnzgP25FSWCpncbpWhvKuHdJVVhrZ4MdnjQaIt4SO1K6T1Gc?=
+ =?us-ascii?Q?qfWeuSRXz5rW5gY3gN/HWmF4izFREe0eUhpTLeOw1TBVbiXus7GlkxwvIpig?=
+ =?us-ascii?Q?6SLZqslh8SZOXlz4WAGIQGeJD/RX1fEJ+d/gBTpg3yfLZmnA3/eH5qqm0BJ2?=
+ =?us-ascii?Q?vQC9gbWoT5Q1EHie7UA6VvyxOWWsmxLlzfvGVBfoYnwTq1FUSOINNyPZI17s?=
+ =?us-ascii?Q?fubYCrEGGc8m3eOVmm2C3fCvea3rSUbIop3my46s7YKkXUtW/oU27oobQ+kR?=
+ =?us-ascii?Q?5Ox7tytX/QAprdoelaJ4HB5Nskge2w1O/WYapOO0ZL77JMNx3nKQ8c6iw38U?=
+ =?us-ascii?Q?WgI1AoY5H4BxiGhDXLvn5WY1Zckm/dzZk/n84e/80Ho4YnJ5Ltr20DmmjBqp?=
+ =?us-ascii?Q?N+i+lomSPSV+yauB78zLGmQoVdgH7pbwdKhCZ9uJw5tWKWlYjn3L+yfMDfAz?=
+ =?us-ascii?Q?8XOgSPWsYLzZw1VAGpYqYhGGLPCIURcNDJHpm2VvAHalGufOnVnGdptCtCM6?=
+ =?us-ascii?Q?Q2UKBL7eyIBdI4ocFpu131aKKTtzHKyRAvBmvFoNEjwM/NGwk6he0FE84Ouq?=
+ =?us-ascii?Q?gBUQhgUXamnKRcVppiaMiAo5UaUDKTiW4nG+V40YhS6OTg8tyQkrHvYWWKdR?=
+ =?us-ascii?Q?S5v9bmzyhpkMUGLfeC9emLYNmpfLccZgyFJFzwIHbF2ZF0aC1fLi83fj/fkb?=
+ =?us-ascii?Q?fD6dteA5OaFaAp18lU6+WcPqv8whcGg1dmrukOBqHgUI6ORMMIZtDOCVGkes?=
+ =?us-ascii?Q?J+y07hmpNiTlT9DzIL+DoRX2+LM3fBaUtso4XZ/0TBkggWyrZ+hXKT8lkiIu?=
+ =?us-ascii?Q?8c6XCf00bpEHkkZg7+oyXbMLqwSC2Tuvtyh9n08u2S4/dxOtzMDfDK298spd?=
+ =?us-ascii?Q?P6RlymNxFCJ1rGW9lVxfrSN/ACcNIw2Lrxea6LvplHb4YgrPtAxoOfXNUNB2?=
+ =?us-ascii?Q?Hgm68r3X37nEIxiHcRmx06RNd3aWvjpAjWNPj454uBDAM2PJxRho+4dEX+Eo?=
+ =?us-ascii?Q?ScfzJzd4wsUOZ6sPa/lBRs91Op38XqV87wSJQcTXQxcqEbSG/yysYm/lLJfH?=
+ =?us-ascii?Q?HNbO8SbOBNPEaigGMRqdPIZ8DXIeXLg8JjBfLmKGQG9eNLUQqdNdLIxz/HKa?=
+ =?us-ascii?Q?a9LCjJ7A+C95jB5i3wXvzSkKHCs4p2o+nsFYMqT4S3kId1Ig6g7HSy0oNXZ9?=
+ =?us-ascii?Q?QQVFabyms/3IGaUDCtnCslPWdZ6/YPqKKk9YyDdT//pQPx881XTpMEsqTjwA?=
+ =?us-ascii?Q?FQ8zBDA0tE/pMNyoNgiwMPo9ZOlfdDZUBMtg49Pjyo8/BwbAK0E3qNOvPBc3?=
+ =?us-ascii?Q?hXGILmNqwyaDpIL8nYTjs+SH+TMPS2uQLiocTkFcyXh2E1Dma2MPaJdg6TIY?=
+ =?us-ascii?Q?UzhMpR0f9gFO43clfVdas6J2irZj5aWf5NsO4ID95QUZQ8e/bcXqqIrAO3FM?=
+ =?us-ascii?Q?Lf1vbdzTUx4X4GY0JewM2BMpiHO6O6Mw52IjiCWs?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 86d3ce11-7e1e-4399-71f4-08dcb6cfafbe
+X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Aug 2024 10:57:10.4005
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: sdEkUjkVkLg+3m8WEvCi0Q0olXCGMs9PmT2xMENhvSYHKDsi864qCPCd5ve0I61Cgpk2usJ7tCiQsPSwDcAtUg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO3P265MB1882
 
-On Wed, Aug 07, 2024 at 08:01:00AM +0000, Benno Lossin wrote:
-> On 07.08.24 09:51, Alice Ryhl wrote:
-> > On Wed, Aug 7, 2024 at 9:49 AM Benno Lossin <benno.lossin@proton.me> wrote:
-> >> On 07.08.24 01:01, Danilo Krummrich wrote:
-> >>> On Tue, Aug 06, 2024 at 07:47:17PM +0000, Benno Lossin wrote:
-> >>>> On 05.08.24 17:19, Danilo Krummrich wrote:
-> >>>>> +impl<T, A> Box<T, A>
-> >>>>> +where
-> >>>>> +    T: ?Sized,
-> >>>>> +    A: Allocator,
-> >>>>> +{
-> >>>>> +    /// Constructs a `Box<T, A>` from a raw pointer.
-> >>>>> +    ///
-> >>>>> +    /// # Safety
-> >>>>> +    ///
-> >>>>> +    /// `raw` must point to valid memory, previously allocated with `A`, and at least the size of
-> >>>>> +    /// type `T`.
-> >>>>
-> >>>> With this requirement and the invariant on `Box`, I am lead to believe
-> >>>> that you can't use this for ZSTs, since they are not allocated with `A`.
-> >>>> One solution would be to adjust this requirement. But I would rather use
-> >>>> a different solution: we move the dangling pointer stuff into the
-> >>>> allocator and also call it when `T` is a ZST (ie don't special case them
-> >>>> in `Box` but in the impls of `Allocator`). That way this can stay as-is
-> >>>> and the part about ZSTs in the invariant can be removed.
-> >>>
-> >>> Actually, we already got that. Every zero sized allocation will return a
-> >>> dangling pointer. However, we can't call `Allocator::free` with (any) dangling
-> >>> pointer though.
-> >>
-> >> The last part is rather problematic in my opinion, since the safety
-> >> requirements of the functions in `Allocator` don't ensure that you're
-> >> not allowed to do it. We should make it possible to free dangling
-> >> pointers that were previously "allocated" by the allocator (ie returned
-> >> by `realloc`).
-> >> Maybe we do need an `old_layout` parameter for that (that way we can
-> >> also `debug_assert_eq!(old_layout.align(), new_layout.align())`).
-> > 
-> > The std allocators generally prohibit zero sized allocations, so it
-> > seems sensible for us to do the same?
+On Wed, 31 Jul 2024 16:43:46 +0300
+Zehui Xu <zehuixu@whu.edu.cn> wrote:
+
+> GCC 14 recently added -fmin-function-alignment option and the
+> root Makefile uses it to replace -falign-functions when available.
+> However, this flag can cause issues when passed to the Rust
+> Makefile and affect the bindgen process. Bindgen relies on
+> libclang to parse C code, and currently does not support the
+> -fmin-function-alignment flag, leading to compilation failures
+> when GCC 14 is used.
 > 
-> I never understood why they do that, the stdlib `Allocator` trait has
-> all the information it needs to detect zero-sized allocations, so it
-> could just return dangling pointers. I don't see the point of
-> duplicating the zero-sized logic in `Box` and `Vec`...
+> This patch addresses the issue by adding -fmin-function-alignment
+> to the bindgen_skip_c_flags in rust/Makefile. This prevents the
+> flag from causing compilation issues.
 
-I think it's simpler and less error prone.
+This patch itself looks fine to me, so
 
-Besides that, I think the stdlib `Box` allows to call `from_raw` with any random
-pointer for ZST, which the allocator API can't catch.
+Reviewed-by: Gary Guo <gary@garyguo.net>
+
+We use -fmin-function-alignment for GCC and use -falign-functions for
+clang. These options affect codegen only so it's fine to ignore them
+for bindgen.
+
+Although it appears to me that we currently don't set function
+alignments for Rust codegen. Maybe that's worth considering adding?
+
+- Gary
 
 > 
+> Link: https://lore.kernel.org/linux-kbuild/20240222133500.16991-1-petr.pavlu@suse.com/
+> Signed-off-by: Zehui Xu <zehuixu@whu.edu.cn>
 > ---
-> Cheers,
-> Benno
+> Since -falign-functions does not affect bindgen output, we do not
+> need logic to add it back to the flags. Thanks to the community's
+> help, especially Miguel Ojeda. Hope this patch is free of problems
+> and can be submitted smoothly : )
 > 
+> v1:
+> * https://lore.kernel.org/all/20240730222053.37066-1-zehuixu@whu.edu.cn/
+> 
+> v2:
+> * Added -falign-functions to bindgen_extra_c_flags when skipping 
+>   -fmin-function-alignment to maintain function alignment settings in GCC 14
+> * Used reasonable length and moved email content out of the commit message
+> * Used "Link" tag instead of "Reference:" and removed empty lines between tags
+> * Specified the base commit
+> * https://lore.kernel.org/all/20240731034112.6060-1-zehuixu@whu.edu.cn/
+> 
+> v3:
+> * Removed logic from patch v2 which adds -falign-functions
+> 
+>  rust/Makefile | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
