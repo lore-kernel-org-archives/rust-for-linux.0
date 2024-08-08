@@ -1,234 +1,219 @@
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DF9578274
-	for <rust-for-linux@vger.kernel.org>; Thu,  8 Aug 2024 09:35:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1D184086A;
+	Thu,  8 Aug 2024 09:42:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723109757; cv=none; b=qHlAJCPC9+utevOLvnwqycqvmu4MyQkWux++U7bemIfViXEn2+efy8rSnE09XanEcVCNjc6WZbz+Ui0GNH5k7rwzJs8FuJUeW44GvJFGzb+jTfPUYbvAw0v3V/tF32642CYBz4ECqMeihHwFfUtLtxPSOe5eBf67zz1Hs9WsF7o=
+	t=1723110149; cv=none; b=CmO4uNpiZLTVBuqXH5m4K4QTgnyjVGC6YPc2TYKWiIQGg6/ONqj7Ft88ETrA1rpRvXSf4/LgTHsEyq3Tn/HzeC8LyEcuPEUxVxQla+pvLiqzh4lL1R5I2GNQInHzV4kL5RXtn5B+PZpSZlgMypcDCY/a+emBzhubp85BHjgBvqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723109757; c=relaxed/simple;
-	bh=kRvATRznCe03tSFG6V3ijYfz8RPS8n231nCakUDuoqM=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cocPrm9ev2xpF8GmggppE+L0v/iGHtH7parFdTtPd0OUu55CWLTfe10N2hzo6d3zW5SKi/clXpMDUN4KfyiRvHo6zbIP5UdhXEisp9pvDJXOU0ksl+y12c/dVDSjCP3ppM9V+Cpx85efyRGFH25qR51CLvwrny1bBDbsPVh3OTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=UiI+1r2c; arc=none smtp.client-ip=185.70.43.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1723110149; c=relaxed/simple;
+	bh=Ruu1Dibsz/xmziCilreMjnHwkPH7+MJ6SjlGdxeoEDA=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aUdVbzIL0dmzPPnC1PKSV3Qs8Aubr3ChF08witgzyQwj9bxxmXNS6UeLE3AedTRuDWBnCqzCgcBoEg/PXNX6v9l2qS7Kq3gnxDbHACHMpUtZzn2B8NOsyZKwu9e69AomGV7MMfdbvKJ6SCbyDwvG0GWcVXe+hOV0KUK3R+mjUyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EPPpeXhO; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="UiI+1r2c"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1723109753; x=1723368953;
-	bh=US9rdegIAc82V+TxLOcDfuwNwPnLu8Gw+YCaNvm2ark=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=UiI+1r2clQTQFyaNr5MqdhEmaBHjHn7hE7yax0pfTEoqmTsdvH4b8Qd0icM68k3XY
-	 +T+NmDm6Z1IPuU5qLjb3eSG405g3xIrxLpGxOG/SlQKjWiDucmrxS1bd58pC9IaZl6
-	 ss9QxxwLPyO5qLorGmEuJXO+ThF3h+aGdA08J6N93QSOhZEL4+0IAcmL7m2ApQyfMj
-	 SLswfTEANqg2GTYGUtZWUwo4cEmCFQdvw6tVhdQVdzgf+vYPxQ89vbGX7gUOn3y52R
-	 sKflRXsCsBFLbYPIW9J5C3jW71hd0a9S6KjYGRF9uriFgxYwIU6Ee9KCbycVKkE+Ww
-	 qiOjLMsDWN1wQ==
-Date: Thu, 08 Aug 2024 09:35:47 +0000
-To: Danilo Krummrich <dakr@kernel.org>, ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@samsung.com, aliceryhl@google.com, akpm@linux-foundation.org
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: daniel.almeida@collabora.com, faith.ekstrand@collabora.com, boris.brezillon@collabora.com, lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com, acurrid@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com, ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v4 25/28] rust: alloc: implement `Cmalloc` in module allocator_test
-Message-ID: <dcf75b19-9900-4aaa-8ff7-36b08baa18f2@proton.me>
-In-Reply-To: <20240805152004.5039-26-dakr@kernel.org>
-References: <20240805152004.5039-1-dakr@kernel.org> <20240805152004.5039-26-dakr@kernel.org>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 48c105257adb4a139f79522835a3d1711dc33b2f
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EPPpeXhO"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E7D3C32782;
+	Thu,  8 Aug 2024 09:42:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1723110148;
+	bh=Ruu1Dibsz/xmziCilreMjnHwkPH7+MJ6SjlGdxeoEDA=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=EPPpeXhO4FAZMRakG3y7vAqRGeL1HUCfD1TObCc+Vp6GKpvNzJk0yrNDPsl++4blV
+	 f7ab4r5Vev2Jh5VYOOfqX/dVJ0kFU66V+X9JiF1HREsw2yviNl4ajGRPD4Rs+yogvE
+	 9qlvO53cvT1PjBTgAPSDXU4l06K2D0HPdlp9l5eCen7pWPDzf6zA74EtveZMqb8nAA
+	 p9ilGoqpH5vsvu0Yy3pViuT+PxYyBOMqXrFKH+imxJ1hKmITyJgL8cvd2BCdblGMEP
+	 ThoBCHryJKOdTcasDgndCZKEr0XF1rPv+z18ZTzoi3mAu1eH1VdOaOgNkkvyKzBSL0
+	 xmgfnvKicJAgg==
+Date: Thu, 8 Aug 2024 11:42:20 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	a.hindborg@samsung.com, aliceryhl@google.com,
+	akpm@linux-foundation.org, daniel.almeida@collabora.com,
+	faith.ekstrand@collabora.com, boris.brezillon@collabora.com,
+	lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com,
+	acurrid@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com,
+	airlied@redhat.com, ajanulgu@redhat.com, lyude@redhat.com,
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-mm@kvack.org
+Subject: Re: [PATCH v4 04/28] rust: alloc: implement `Allocator` for `Kmalloc`
+Message-ID: <ZrSS_N1R7zkiH_-E@pollux>
+References: <20240805152004.5039-1-dakr@kernel.org>
+ <20240805152004.5039-5-dakr@kernel.org>
+ <fe982cb6-4910-4ba2-ae4d-892514c9e7f7@proton.me>
+ <ZrJxkwF2Y59xln1e@pollux.localdomain>
+ <8ab83e4b-9c72-4a5d-974a-7f123753e7fe@proton.me>
+ <ZrNIaAcGkGU0d8I3@pollux>
+ <9e22d4ab-eff2-4c69-8a2f-f55a8eaeb892@proton.me>
+ <ZrP90NR1lOpDrQ0X@pollux>
+ <d005fe7e-74a8-4609-92e0-5dd3743ca060@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <d005fe7e-74a8-4609-92e0-5dd3743ca060@proton.me>
 
-On 05.08.24 17:19, Danilo Krummrich wrote:
-> So far the kernel's `Box` and `Vec` types can't be used by userspace
-> test cases, since all users of those types (e.g. `CString`) use kernel
-> allocators for instantiation.
->=20
-> In order to allow userspace test cases to make use of such types as
-> well, implement the `Cmalloc` allocator within the allocator_test module
-> and type alias all kernel allocators to `Cmalloc`. The `Cmalloc`
-> allocator uses libc's realloc() function as allocator backend.
->=20
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-> ---
-> I know, having an `old_size` parameter would indeed help implementing `Cm=
-alloc`.
->=20
-> However, I really don't want test infrastructure to influence the design =
-of
-> kernel internal APIs.
->=20
-> Besides that, adding the `old_size` parameter would have the consequence =
-that
-> we'd either need to honor it for kernel allocators too (which adds anothe=
-r
-> source of potential failure) or ignore it for all kernel allocators (whic=
-h
-> potentially tricks people into taking wrong assumptions on how the API wo=
-rks).
-> ---
->  rust/kernel/alloc/allocator_test.rs | 91 ++++++++++++++++++++++++++---
->  1 file changed, 84 insertions(+), 7 deletions(-)
->=20
-> diff --git a/rust/kernel/alloc/allocator_test.rs b/rust/kernel/alloc/allo=
-cator_test.rs
-> index 1b2642c547ec..05fd75b89238 100644
-> --- a/rust/kernel/alloc/allocator_test.rs
-> +++ b/rust/kernel/alloc/allocator_test.rs
-> @@ -2,20 +2,97 @@
->=20
->  #![allow(missing_docs)]
->=20
-> -use super::{AllocError, Allocator, Flags};
-> +use super::{flags::*, AllocError, Allocator, Flags};
->  use core::alloc::Layout;
-> +use core::ptr;
->  use core::ptr::NonNull;
->=20
-> -pub struct Kmalloc;
-> +pub struct Cmalloc;
-> +pub type Kmalloc =3D Cmalloc;
->  pub type Vmalloc =3D Kmalloc;
->  pub type KVmalloc =3D Kmalloc;
->=20
-> -unsafe impl Allocator for Kmalloc {
-> +extern "C" {
-> +    #[link_name =3D "aligned_alloc"]
-> +    fn libc_aligned_alloc(align: usize, size: usize) -> *mut core::ffi::=
-c_void;
-> +
-> +    #[link_name =3D "free"]
-> +    fn libc_free(ptr: *mut core::ffi::c_void);
-> +
-> +    // Do not use this function for production code! For test cases only=
- it's
-> +    // probably fine if used with care.
-> +    #[link_name =3D "malloc_usable_size"]
-> +    fn libc_malloc_usable_size(ptr: *mut core::ffi::c_void) -> usize;
-> +}
-> +
-> +unsafe impl Allocator for Cmalloc {
-> +    fn alloc(layout: Layout, flags: Flags) -> Result<NonNull<[u8]>, Allo=
-cError> {
-> +        let layout =3D layout.pad_to_align();
-> +
-> +        // SAFETY: Returns either NULL or a pointer to a memory allocati=
-on that satisfies or
-> +        // exceeds the given size and alignment requirements.
-> +        let raw_ptr =3D unsafe { libc_aligned_alloc(layout.align(), layo=
-ut.size()) } as *mut u8;
-> +
-> +        if flags.contains(__GFP_ZERO) && !raw_ptr.is_null() {
-> +            // SAFETY: `raw_ptr` points to memory successfully allocated=
- with `libc_aligned_alloc`.
-> +            let size =3D unsafe { libc_malloc_usable_size(raw_ptr.cast()=
-) };
-> +
-> +            // SAFETY: `raw_ptr` points to memory successfully allocated=
- with `libc_aligned_alloc`
-> +            // of at least `size` bytes.
-> +            unsafe { core::ptr::write_bytes(raw_ptr, 0, size) };
-> +        }
-> +
-> +        let ptr =3D if layout.size() =3D=3D 0 {
-> +            NonNull::dangling()
+On Thu, Aug 08, 2024 at 08:55:29AM +0000, Benno Lossin wrote:
+> On 08.08.24 01:05, Danilo Krummrich wrote:
+> > On Wed, Aug 07, 2024 at 08:15:41PM +0000, Benno Lossin wrote:
+> >>> So, that's not permitted. `free` can't be called with a dangling pointer. The
+> >>> kernel free functions (*1) can't handle it, and I can't detect it, since a
+> >>> dangling pointer does not have a descrete value.
+> >>
+> >> That is true, but only if we do not have access to the old layout of the
+> >> allocation. If we add `old_layout` as a parameter, then we can handle
+> >> dangling pointers.
+> > 
+> > Then we'd need `free` to be `fn free(ptr: NonNull<u8>, layout: Layout)` just to
+> > compare whether `ptr.as_ptr() == layout.align() as _`. Same for `realloc`, but
+> > that's less weird.
+> 
+> I don't think that's a problem (though we would check against the size
+> and not compare the address!). `Allocator` from stdlib also has the
+> extra argument.
 
-Why do you call `libc_aligned_alloc` when you return `dangling()`
-anyways when size is zero? I would move this check upwards.
+Because `Allocator` from stdlib actually needs it, e.g. they have to open code
+`realloc`, since userspace allocators don't give proper alignment guarantees.
 
-> +        } else {
-> +            NonNull::new(raw_ptr).ok_or(AllocError)?
+Again, the kernel allocators neither need, nor take and honor this extra
+information.
 
-Would also make sense to do this above the null check.
+> 
+> > It's also not that we safe code with that. `Box`, `Vec`, any other user, still
+> > would have to create the `Layout` before they call `A::free`.
+> 
+> But for `Box` it would just be `Layout::<T>::new()` and `Vec` needs
+> `Layout::<T>::new().repeat(self.cap)`.
 
-> +        };
-> +
-> +        Ok(NonNull::slice_from_raw_parts(ptr, layout.size()))
-> +    }
-> +
->      unsafe fn realloc(
-> -        _ptr: Option<NonNull<u8>>,
-> -        _layout: Layout,
-> -        _flags: Flags,
-> +        ptr: Option<NonNull<u8>>,
-> +        layout: Layout,
-> +        flags: Flags,
->      ) -> Result<NonNull<[u8]>, AllocError> {
-> -        panic!();
-> +        let layout =3D layout.pad_to_align();
-> +        let src: *mut u8 =3D if let Some(src) =3D ptr {
-> +            src.as_ptr().cast()
-> +        } else {
-> +            ptr::null_mut()
-> +        };
-> +
-> +        if layout.size() =3D=3D 0 {
-> +            // SAFETY: `src` is either NULL or has previously been alloc=
-atored with this
-> +            // `Allocator`.
-> +            unsafe { libc_free(src.cast()) };
-> +
-> +            return Ok(NonNull::slice_from_raw_parts(NonNull::dangling(),=
- 0));
-> +        }
-> +
-> +        let dst =3D Self::alloc(layout, flags)?;
-> +
-> +        if src.is_null() {
-> +            return Ok(dst);
-> +        }
-> +
-> +        // SAFETY: `src` is either NULL or has previously been allocator=
-ed with this `Allocator`.
-> +        let old_size =3D unsafe { libc_malloc_usable_size(src.cast()) };
+Let's take `Vec` for instance, there it's either
 
-Citing man malloc_usable_size(3):
+current code
+------------
+```
+	if cap != 0 {
+		unsafe { A::free(self.ptr.as_non_null().cast()) };
+	}
+```
 
-    CAVEATS
-        The value returned by malloc_usable_size() may be greater than
-        the requested size of the allocation because of various internal
-        implementation details, none of which the programmer should rely
-        on.  This function is intended to only be used for diagnostics
-        and statistics; writing to the excess memory without first
-        calling realloc(3) to resize the allocation is not supported.
-        The returned value is only valid at the time of the call.
+your proposal
+-------------
+```
+	let layout = Layout::<T>::array(self.cap).unwrap();
+	unsafe { A::free(self.ptr.as_non_null().cast(), layout) };
+```
 
-While you don't write, you might read below, which might not be OK?
+I really don't see how that's an improvement.
 
----
-Cheers,
-Benno
+> 
+> Though for `repeat` we need the `alloc_layout_extra` feature, which is
+> an argument against doing this.
+> 
+> >>> Surely, we could also let the caller pass the old alignment, but this all sounds
+> >>> complicated for something that is very trivial for the caller to take care of,
+> >>> i.e. just don't try to free something that was never actually allocated.
+> >>>
+> >>> It can also lead to subtle bugs, e.g. what if someone calls `Box::from_raw` for
+> >>> a ZST with some other random pointer? Currently, that doesn't hurt us, which for
+> >>> robustness, seems to be a good thing.
+> >>
+> >> I think we should forbid that. To me it's just plain wrong to take a
+> >> random integer literal and cast it to a ZST. IIRC it even is UB if that
+> >> points to a previously allocated object that has been freed (but I don't
+> >> remember where I read it...).
+> > 
+> > I think my argument about robustness still holds even if we forbid it.
+> > 
+> > The documentation says "For operations of size zero, every pointer is valid,
+> > including the null pointer." [1]
+> 
+> How does this increase robustness? I am not allowed to call `free` with
+> a random pointer, only pointers returned by that allocator. The same
+> should also be true for `Box::from_raw`. That way the ZST dangling
+> pointer stuff leaks into that API.
 
-> +
-> +        // SAFETY: `src` has previously been allocated with this `Alloca=
-tor`; `dst` has just been
-> +        // newly allocated. Taking the minimum of their sizes guarantees=
- that we do not exceed
-> +        // either bounds.
-> +        unsafe {
-> +            // Always copy -- do not rely on potential spare memory repo=
-rted by
-> +            // malloc_usable_size() which technically may still be suffi=
-cient.
-> +            ptr::copy_nonoverlapping(
-> +                src,
-> +                dst.as_ptr().cast(),
-> +                core::cmp::min(layout.size(), old_size),
-> +            )
-> +        };
-> +
-> +        Ok(dst)
->      }
->  }
-> --
-> 2.45.2
->=20
+This point was about your first proposal to use the alignment. With cosidering
+only the alignment we can't handle the case where `Box::from_raw` is called with
+a random pointer for a ZST, which *technically* isn't illegal. We can define it
+as illegal, but I'd consider it to be more robust, if we don't oops in case.
 
+But as you say checking the size instead of the alignment does not have this
+problem.
+
+> 
+> > [1] https://doc.rust-lang.org/std/ptr/index.html
+> > 
+> >>
+> >> Also if we use the size of the old layout instead of comparing alignment
+> >> with the address of the pointer, then we avoid this issue.
+> > 
+> > That is just another problem when passing the old `Layout` (or maybe just the
+> > old size as usize). Neither do we need the old size, nor do we honor it with any
+> > kernel allocator. This has the following implications:
+> > 
+> > (1) We never see any error if the old size that is passed is garbage (unless
+> >     it's non-zero, when it should be zero and vice versa), which is bad.
+> 
+> We could add debug support for that though?
+
+And add even more complexity just to avoid a simple `if !zero` check before
+calling `free`? I don't like that.
+
+Just to clarify, I'm not against passing the old layout in general. But I really
+don't want to pass something in that is not required *and* not honored by a
+single kernel allocator.
+
+IMO, the only other valid reason to accept unneeded arguments would be if we
+could use the `Allocator` interface from stdlib.
+
+> 
+> > (2) We'd need `free` to be `fn free(ptr: NonNull<u8>, size: usize)`, which is
+> >     confusing, because it implies that an actual free relies on this size for
+> >     freeing the memory.
+> 
+> I don't think that it is confusing to ask for the old layout.
+
+It is always confusing if a function asks for information that it doesn't need
+and doesn't consider, because asking for it in the first place creates the
+impression that it is indeed needed and considered.
+
+> 
+> > If we want to avoid (1) and (2), we'd need to make it
+> > `fn free(ptr: NonNull<u8>, zero: bool)` instead, but then also the caller can
+> > just check this boolean and conditionally call `free`.
+> 
+> Yeah having `free` with a `zero: bool` sounds like a bad idea.
+> 
+> > I don't really see why it's better to let `free` do the `if !zero` check.
+> 
+> You did not reply to my last argument:
+> 
+> >> I think it's better to just let `Box` and `Vec` figure out if calling `free` is
+> >> the right thing to do. The code for that is simple and obvious, i.e. check if
+> >> `T` is a ZST.
+> >
+> > I don't think that it is as simple as you make it out to be. To me this
+> > is functionality that we can move into one place and never have to think
+> > about again.
+> > Also if we at some point decide to add some sort of debugging allocator
+> > (am I right in assuming that such a thing already exists for C?) then we
+
+The C side allocators have quite a lot of debugging capabilities, but there is
+no separate one.
+
+> > might want to tag on extra data in the allocation, in that case it would
+> > be very useful if the allocator also saw zero-sized allocations, since
+> > we should check all allocations.
+
+What would such a debugging allocator do on the Rust side?
+
+The allocators we have are just simple wrappers around the real kernel
+allocators from the C side.
+
+I don't really see the need for some sort of debugging allocator.
