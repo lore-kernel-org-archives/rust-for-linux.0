@@ -1,91 +1,114 @@
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF75718CBF7;
-	Thu,  8 Aug 2024 13:08:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723122518; cv=none; b=WvoMuMFWRV5mporTZXwtPtR8+vLO4F4ZDc99cUgZRnh+j2dCBhnRn789oBUfzr3b7IYeGb4b82oGVdc8tafhS4NOh7Bo4LEqsRIhyVUCNT7zmwwPlAc9gEkGuBZmbJmxCM49+68wv5KK4Dty+DneZO6DA24MRvzs4W0EQr9Sp2s=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723122518; c=relaxed/simple;
-	bh=L/M0l0Y7vAGTAav8a1ztyDeeEzsRFpVwzNDMa42BSoE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Ogn3ldA7I1t1FfsdI8o0fX5R9QDFx14kSGryKKpmozyWASQeRlha25YYdJ4wMaHVEFCtI5DJsZQnCh9UzPhDsWfYYeBUb+huZaUcjgxBvLKNGBNj7EvJkeFfDZ3Cxq5aUtZsIKQwI7h36FGtmZUli7pOFjw4y1sOctFD70/PRzc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CRxp+mZO; arc=none smtp.client-ip=209.85.216.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B78531E511;
+	Thu,  8 Aug 2024 13:10:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1723122641; cv=pass; b=V970dnwYKV/NRiQZRbJoLDALQrfvlKjgdU4hJJR8kb7fJAzqIw2Kdw3xAo0sgYiyDq4WHlkvNRa0yg2/yD6NfbmvjFDUS3ABEm+84mm5P7M0FDMcNAMiaxifJbjFl+TM4RDRjZe4KdAUDascGt3GBHDadb0AwWQ9vuD+3ThIEbA=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1723122641; c=relaxed/simple;
+	bh=ZY0FSscEcQivkYIlbxu8A/3+ds5ckFcTwpIi8w7tEfo=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=WbRGDkurb+DoKbtehSsd9CvPVc3dXeJqpb/L1YzDSXFxQOiJle1CLaOiyYYltMjJOCV7nPn8MbS6hMMLvyLVP/0gTezQc8s5kZ9sL1tEvJ1Td1RaHSeHS6fac+71sv0FcdMrx8swqpjXRwsf7Tv5oSGvtb0/0ydmjFd3wESOObE=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=UHAF29oj; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CRxp+mZO"
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-2cb4c584029so776178a91.3;
-        Thu, 08 Aug 2024 06:08:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1723122516; x=1723727316; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=L/M0l0Y7vAGTAav8a1ztyDeeEzsRFpVwzNDMa42BSoE=;
-        b=CRxp+mZO4dvhqCz9sjcBJwelw1aAMmh9vxqCaB4Ug1F+eP6hd+cqDnes/b4pR5p8Nt
-         1rIC8dDExwgZz+FgZU4RR3P9Cixr1U9AJIs7sUDD/+kIowFIrkmfahDMd05nAhSCuk5Z
-         DtmcxvrzKYHgfs2OkkewHevAKfvhOK0WNzz8h8/1eNqWuStzyaLtlQF9nBTFQsj1XAbi
-         wiiPWMjx/Hr3yFNt2NqvPF82e9Xe8NWDZ3PbPdu6ZimRRE/2N+JKFO/mXbajprxLQAok
-         iLpMPCLRxbzFQsQeITEJt07BsyudbxpKFuc1xZW25o6M2eTy/NAOX5NlYEn3KfopeY4a
-         HbkA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723122516; x=1723727316;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=L/M0l0Y7vAGTAav8a1ztyDeeEzsRFpVwzNDMa42BSoE=;
-        b=IRAd9pChoROcW4khgtIgiAz6rhl6Yyb0RHBdWVZtmHph48kiSQLbiEQfVPgHUbNv6T
-         azfuTQIO+Hq3H2VJGBekzPEVhc2kbxv5bftSz86iwRBoAtM5OkbNfjeTwtS/rYb7xtg0
-         nWVSSmT9qJ5yCpuCKQIW9nuKKnZOMpdc7qdk3Abv53nFNaSy0KkTrlgRotpq08qEGKU8
-         8OmhxloiZgt1wephCS9Fr/tlYyKLADxSG4tCn/x8m5J/ZnuK9afx+OqgC0VxxqZS4zCh
-         dWcoxdQpoBrzbktO4x4nxQvkN2ugZc4wjUTTUGlhbWECYJPyp/yKiEA5YA5dhsX7qsTi
-         1STA==
-X-Forwarded-Encrypted: i=1; AJvYcCVtyjPItDYHkxltzMiPOy9pIthJLsq/92uGWoIy/g0UAD90idK+Ca5rwvUd40KRvihbNrmoJSCcIV98UZansJFfn1K9i610BDIEPrspr3iVZAdC9rzasW6AkzEmRDOP4o6nAn9RFB5hMyY+J4+C/8AoJJOJVWsUg/pja5s0X0Tq+O/dd7JTtrU=
-X-Gm-Message-State: AOJu0YyCkqK24eZlp4cFhxtnVI5445lCu1FjqmEPYm1LQhLRJXCNKcxv
-	uIBLQpHYKVRJPpu2RGapErNbReRHCZU2ILlGLV09Ewv+nv2uKNODFW30xOHQSikBMhUP3LNovHX
-	rQHk9V7+VNMS2i+JAZN4mFqP3zhU=
-X-Google-Smtp-Source: AGHT+IGfFzPyUK5IICdqCExsjWYelZFtELj+WkhmSpJAGFTU1g/ePQyocRfSmcepEbd9z7Q5GNtoCoirfky7VCO0w/w=
-X-Received: by 2002:a17:90b:224d:b0:2c9:77d8:bb60 with SMTP id
- 98e67ed59e1d1-2d1c346b248mr2272576a91.35.1723122515900; Thu, 08 Aug 2024
- 06:08:35 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="UHAF29oj"
+ARC-Seal: i=1; a=rsa-sha256; t=1723122617; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=SiVm3yEuhgFW8aFATjomSh5HsPR9cJNNxBUyRmc2Z7SaoxsZDCQ8CYKU31ypcy5FGxKw1qffKcRjXLM9rKsWY0yHszcel9RMSNyHSzPhbSjtpd8aZ5U6n8+XxWr8958+sN0YB/Ml7QCnDoG42CnM9dMALkbUT+opDtZMWLU55Js=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1723122617; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=ZY0FSscEcQivkYIlbxu8A/3+ds5ckFcTwpIi8w7tEfo=; 
+	b=OXglsNDRf72AQ+usz7XVKQSjydo+8MMXRsxMgjsmFtE5pfsoOgUq0IV6yF3DmCCI05JIX3VR0vcWzWeYsEn85XaYXdM/GkgVuLPOnTu8W0tkHj2IAd7OYOssBXd9QJRLNhKCROellcZS0xN2T37lN92FfMt67nEWFm7Uxu4X4rA=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1723122617;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=ZY0FSscEcQivkYIlbxu8A/3+ds5ckFcTwpIi8w7tEfo=;
+	b=UHAF29ojODlUPsshmbEHXjt6cYzoO44Y64kn3tMgAwAyG3KNTCqdzzMbowfdEM8N
+	U05Xg5L1TQa1ZSrYT4WY45uwZNCSqlQLk8opIUMRmbp75RF5PQVuEZK10My0AJINJt1
+	FP/vSs1RDFxTzoIM/THHKVGltP22IgJluFmo7ps4=
+Received: by mx.zohomail.com with SMTPS id 1723122616970646.6105827752397;
+	Thu, 8 Aug 2024 06:10:16 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240717221133.459589-1-benno.lossin@proton.me>
- <20240717221133.459589-2-benno.lossin@proton.me> <99DF6A0F-BAE9-4341-8B42-6C1F1C69E2C6@collabora.com>
- <a5afc0ed-2193-42f2-a7ef-50fba68980a6@proton.me> <AEA74965-3ABB-42A4-AF0D-DC5D9E6CE7D3@collabora.com>
-In-Reply-To: <AEA74965-3ABB-42A4-AF0D-DC5D9E6CE7D3@collabora.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 8 Aug 2024 15:08:23 +0200
-Message-ID: <CANiq72=mML_kW4zdcK127Te+N=MKT_hfU+7t3EsTpPd54o=5+A@mail.gmail.com>
-Subject: Re: [RFC PATCH 1/5] doc: rust: create safety standard
-To: Daniel Almeida <daniel.almeida@collabora.com>
-Cc: Benno Lossin <benno.lossin@proton.me>, Jonathan Corbet <corbet@lwn.net>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, linux-doc@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.600.62\))
+Subject: Re: [RFC PATCH 2/5] doc: rust: safety standard: add examples
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <37d7b08d-f37a-45ff-9993-08fa7ed87443@proton.me>
+Date: Thu, 8 Aug 2024 10:10:00 -0300
+Cc: Jonathan Corbet <corbet@lwn.net>,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Wedson Almeida Filho <wedsonaf@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Andreas Hindborg <a.hindborg@samsung.com>,
+ Alice Ryhl <aliceryhl@google.com>,
+ linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
+Message-Id: <9959901D-0839-454C-9141-F0661C956AD5@collabora.com>
+References: <20240717221133.459589-1-benno.lossin@proton.me>
+ <20240717221133.459589-3-benno.lossin@proton.me>
+ <B0E3D539-2D29-4BB4-9CB7-98672F590A57@collabora.com>
+ <37d7b08d-f37a-45ff-9993-08fa7ed87443@proton.me>
+To: Benno Lossin <benno.lossin@proton.me>
+X-Mailer: Apple Mail (2.3774.600.62)
+X-ZohoMailClient: External
 
-On Thu, Aug 8, 2024 at 3:02=E2=80=AFPM Daniel Almeida
-<daniel.almeida@collabora.com> wrote:
->
-> Yeah, I wasn=E2=80=99t referring to formal verification, just a lint that=
- will complain when
-> it finds an unsafe block that has no safety comments at all. The clippy l=
-ints you
-> listed should work fine and, IIUC, Miguel already has a patch to enable (=
-some of) them,
-> so I don=E2=80=99t think any further action is needed.
+Hi Benno,
 
-+1, sending a series about that soon.
+>=20
+> I will try to rephrase this, tell me if it helps. When checking if an
+> API is sound, you are not allowed to change the code behind the API.
+> That is because `unsafe` code often relies on the surrounding safe =
+code
+> to work properly. In the example above, safe code ensures that the raw
+> pointer `ptr` is valid. This is OK (and also very necessary), since we
+> expect people to be *aware* of the `unsafe` block and thus more
+> carefully review the changes in surrounding safe code. If you have =
+safe
+> code that only interfaces with other safe code you don't need to be =
+this
+> careful.
+>=20
+> Note that this heavily depends on where you put the API boundary. In =
+our
+> case, we generally have this boundary: driver code <-> `kernel` crate.
+> But if your driver requires very specific helper code that does not =
+fit
+> into the `kernel` crate, then you might also have an API boundary =
+there.
+>=20
+> If it doesn't help, then it would great to get some more detailed
+> questions which part(s) you need help with.
+>=20
+> ---
+> Cheers,
+> Benno
+>=20
+>=20
 
-Cheers,
-Miguel
+Yes, I think this is more clear, but note that this explanation is more =
+thorough
+than the actual example.
+
+My point being, maybe you should take some of what you just wrote and =
+put it
+into the actual docs.
+
+=E2=80=94 Daniel=
