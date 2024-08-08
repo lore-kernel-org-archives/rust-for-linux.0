@@ -1,285 +1,260 @@
-Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+Received: from mail-wr1-f73.google.com (mail-wr1-f73.google.com [209.85.221.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 363A3192B94
-	for <rust-for-linux@vger.kernel.org>; Thu,  8 Aug 2024 16:16:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4806318E740
+	for <rust-for-linux@vger.kernel.org>; Thu,  8 Aug 2024 17:23:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723133813; cv=none; b=cTXo+Fz7uWRQyLHa/FjWFzwt7ZfjySmfKTo8FaTMFXJ9QydZUHNUF+5yva5Od4kmMPjRn/UMLnozHO7gX0gOXGC69qNjWits6jNDnbxYrQLM1S4EHUcmenLvp41g6PT5+AjHZ4oXRk/F7BTUab8tACYyRodsv6/lqu0imclnmH0=
+	t=1723137828; cv=none; b=RaQVBOPiWoVd5myuxzLqkBiXiihe40eO3QHLWKPqTlmTnAVZQbmX6A2hxfWzrKf0DL51yQHOMp/angzNy8yqtiBymMeZZohC4yM4l5SB0IZxP6JnVumIG3D7uox271O/dAzdQaklVnuWdEbKlGydlWIxkQZLd5k4akjfVwpEvCY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723133813; c=relaxed/simple;
-	bh=v6Li3ohO2P9VOUj0DUKsbg7ywLMTVrJwO8YEJkpqo/0=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=lMrqNpnhaQd3ZWBw2KM9RzyaDH1zwqLqw59XGyadAZ1TRSkqJ62++Gg5vkO0quMSj/Fnnjz9jX4GmtmZspAb7aD747zsWPVm1qWK9daB6EvXgBot7+DUfYCq/AhL3Rgo9WwqF/PGXay5aR1CMvPlg+Yfv2aZS+RBsR1D0dq3op4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QsUZ2Bda; arc=none smtp.client-ip=209.85.128.74
+	s=arc-20240116; t=1723137828; c=relaxed/simple;
+	bh=EXrTZ5R7zXGaTHEthIw+hSVSLI3+CtkeI6b60UAGLWU=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=h/WrHB5VVk5lXDSRZI2euNyIpCobCzO4kXztJLLZFh5QZLzKdJIoON9yf1cArwNX8zFRYMzhc5zZXjzBnWF7DrLRoDMr13Gj8bImhU40ZukwLq2ddY4E72cNAENpC7QQKl/36gE+9pbmKf+POgNZ9N1v4HR3tLlz1cUE3/2RIT8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HiBJruDB; arc=none smtp.client-ip=209.85.221.73
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="QsUZ2Bda"
-Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-4281d0d1c57so10795825e9.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 08 Aug 2024 09:16:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HiBJruDB"
+Received: by mail-wr1-f73.google.com with SMTP id ffacd0b85a97d-367962f0cb0so605778f8f.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 08 Aug 2024 10:23:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1723133810; x=1723738610; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=y+ey13UI9SszW+tMd43Q70Tf7NiOEY//3F7sxm3IBtc=;
-        b=QsUZ2Bda26mX0n5V6qpxvXx0D4SuAbXmegggJ36kv61QYe/5hVBC7xOFgdBaVpEQ3b
-         HKDjlBImH22TlKH/6ZW9uVPnqub0Y6yj+EM3AYdJdgb8yMxfEzYEbAac3xOAWuk94M3H
-         eCOOHHAGu/dx4fkdU32F8XRstx7C1OELyLHJgajqMeXZumoi9N8NSImpIrDbkbv9eNx4
-         EgzWeDBIj/PWVXWpiYza1AHz8tEYzgfcXT7a0bt6oJyVvHjc1C6XMGXtXTJnwf+4YLex
-         wQhtIhhR99HW0+akqcT7nJMG2vUp42xhPQ2eXA+fyN48I1mRF9HHG0P7u4FVBZLG42jC
-         YmyQ==
+        d=google.com; s=20230601; t=1723137825; x=1723742625; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=0lj5cEaK01DMF+Ts55tD11YdG34VpHT9zpqu9sa/BQA=;
+        b=HiBJruDBG5DfhS7ZuhQM86suJbWdXW+hO4LMvqTVgwUs/0pwdUZ06w06g0TXgyTqXn
+         GjDBMSuLfseC4M/uEx57PDtjREDDoscFzAlXMqyJznkMukEN8fVfoODZYoHxOWM2pRRk
+         0CrzPgynuObpqWEjI5+oX/+uXOabfIewGR4gnq7g3lz//DsZYtMyviDiQZXAX9feUV3r
+         Zew6OGAfuch208EjlexQK4P9VpN/iq5xdtZTctZ8170nWi1mGioIW+u4F8rwloWDlbdG
+         MWHZQF53G/ScvWYXjqDN7ZZuAYFvjzkbC9JqsYjWAbsj1IaymDLaZTyNlKnJBdkQJP5q
+         i3RA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723133810; x=1723738610;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=y+ey13UI9SszW+tMd43Q70Tf7NiOEY//3F7sxm3IBtc=;
-        b=Scn5XuSzzxAov9pSrFaoSlBrfSadDlzKc558BrZxtWlP7Lx2Cgniz5A6veXZpdMZwD
-         TkgxLWnH9/r8aImJon+OrtEoRZUUlT81ttO2VkWFvqTBONWRKy5+X49iUntrbq5zIhk4
-         4cP+LirHjv3eQRqy69lrUyZx3B+LPIOnoOcCVJ3COmXbXKs+pDLyqgRcJjBxX2mLZuaI
-         ZN+ZFg7ovzYNvjaijl3uYzqriiCfc7smJVB04b1wBBjRd2rvgd9xrfx/wbYqQoZ/dxms
-         ZnVbRsPHBVF10TUGWYxSlS8Lchm9azYS3pL0KNn/Q6J8HOjgvUQ+yjYc1rXeYqU3Uo28
-         2yzQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXVce7C5J8CAc3XLsZznQRweTLfX0BMCAu2ttPDw747PSc8XJkfyLwsFE8i1Pr2jdNVZWtOjwUG8QkRgCyGtdEGNUzqQyBEe9KMMM43nHs=
-X-Gm-Message-State: AOJu0Yw2VVtzZIynr4EUBWkn0zfLywcp7nK2weEoR5NPIv9JYYJvoTe8
-	BzDKiY+z9RB9PJmLs2GKT6DTvjjMsHestylDQ7oO4GdMd2PaAULkj9d0fj6tdLXUjG55cmfmu+L
-	w0LF2gdBZaf3PlA==
-X-Google-Smtp-Source: AGHT+IG2I4RPbnoStD3MOJX605BuNQcfc/hAKnnRNwDK+vapHNO4hCViNkB7px+DBGtKqt1lQ7RyR4EL9zrFG+4=
+        d=1e100.net; s=20230601; t=1723137825; x=1723742625;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=0lj5cEaK01DMF+Ts55tD11YdG34VpHT9zpqu9sa/BQA=;
+        b=csWoX3e7GNr7b7BntyY3uR64I0T4xmEddTgnDjUgHT8DTemvSYBUcBiROGnoZwOaN9
+         rxEZa9XO7FLSRLZ3Sx4IZi5xe88tnr1O+qt0WtCsIlIC+QwrAYyrAYnOrHOmLyszu2SA
+         9b3WUA2zwG59LZH167+rtXuDPsInVw76/LVGqevvv8IhquVh98djnTmovT2hFVcfMNHV
+         hd7eMBIJ6h7WChbQgK7sONwuOU3SvNqrHKOWiMDnZvpSGqIEs+wMjCK7ulBpr3HHghW0
+         LnQ5Vt3XLtHSnwQfkJHV1Dz3mb8yXmG25VfA8eFb+mahTSdBa0uEK3XucBnWrM9lknBn
+         jfDQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVu6CSODEcgcZqe9Bs/pBsmn2khjj79fTt0YVxi3tAyG9Z5emdfMBtH/Vbnj5WyTPL/aj3wRppfxcaYwZJjHw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxwAmIlaCQ1DwNmFh/OyQyOduWKqmRjWMeqDpWUS8S/hlQm2GJU
+	I5b1wBFF2tHnBw/8ytqJg+5uux3EoKRPGOwlgF9suooPnq4+OsXZ1ggGcOejFaaE+tNIMj35uw2
+	Vb7PKjlRGf7tUgg==
+X-Google-Smtp-Source: AGHT+IFUyUu+65lTZkbGz5xkESYfzEgxbLVm+RbfRwHdwMW5RdJRZNPPWyqzUyct2N0zKQrC5Yb9Bug/AQUUIsY=
 X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:35bd])
- (user=aliceryhl job=sendgmr) by 2002:a05:600c:35cb:b0:427:d8f1:e55c with SMTP
- id 5b1f17b1804b1-4290b7c929fmr615195e9.0.1723133809729; Thu, 08 Aug 2024
- 09:16:49 -0700 (PDT)
-Date: Thu, 08 Aug 2024 16:15:51 +0000
-In-Reply-To: <20240808-alice-file-v9-0-2cb7b934e0e1@google.com>
+ (user=aliceryhl job=sendgmr) by 2002:a05:6000:4014:b0:367:9812:b7e3 with SMTP
+ id ffacd0b85a97d-36d2758eba5mr4651f8f.12.1723137824521; Thu, 08 Aug 2024
+ 10:23:44 -0700 (PDT)
+Date: Thu, 08 Aug 2024 17:23:36 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
-References: <20240808-alice-file-v9-0-2cb7b934e0e1@google.com>
+X-B4-Tracking: v=1; b=H4sIABj/tGYC/23PQW7DIBCF4atErEvFDAyxs+o9qi4Ajx2k1kTYs
+ hJFvnuJNzVylw/p+zU8xcQ58iQup6fIvMQpprEM+3YS4erGgWXsyhao0CirrJyzC3xLcZylBgb
+ yrWJzBlHALXMf71vs86vsa5zmlB9be4HX67+ZBaSSlggsnn1P4D+GlIZvfg/pR7w6C+4sqMpis
+ b1j77oGvCY6WL2zCJXVxbZsDDM79M3Rmr1tKmuK1aQ7Qu3aAEdLf7ZRWFnabnZgjWlNF+r/ruv 6CxPXLhWVAQAA
 X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=7284; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=v6Li3ohO2P9VOUj0DUKsbg7ywLMTVrJwO8YEJkpqo/0=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBmtO9ZEoaGDCW3sRjvgQ7wGSV9sVyQG7u0GIe30
- YObCCFtao2JAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZrTvWQAKCRAEWL7uWMY5
- RpmxD/99GymF544SLDODAA4TSMZgcLCu1gRqElkJfapFS54UKp3EaE35FFBZueI80D0FO9iXE0p
- 2cBEeLOSKLr3+Cip5ckUTz0ZFzEvnhP0PXWHmyoc39VyG70eMPWKKYXmc6UsY0z8jjAvHx2nqMg
- dmGOOSefvMKbOxJbRYFIcXv3sWwbpT2+vZ4fyn/WDtuFgxGgZ27keedNV3qlspeNdji9bm8exb7
- C60yHS7QIfgf8MriI/qvkHz40eaJvsD8mQV98YubdEessJmhONSxsQ3g4b72KS22CjH9CnAs8MF
- Ia0e9fSku2bVLfTayQWZcornYxeLkIaM9gapPDr+FVe2ug8BJEXvfqdrVm7rUzhU5IBJgeRK+Iv
- /KuB9MkgV3ZMsILLONf/Sg6KnJ+mgoTFHNwJH8ak59vl2/tepSVUJC4aGM0LPtyc+Q4OTNQ7Xtf
- W1HmgESjgxqskjJOEYHPJBGk3DXBdLxRWOX4ZkuSTpwk04e7fcxXvOch8lAVd1sHtvnHxZrkLxd
- N0qPYtvjV7TTemZWFJz4QlI7E+IQLIVlxuAbvjg7ylbt68qFhwF4FdwHQFXzGzFPOX3CqYMsZGj
- jNgQs2OsXbIbpilaAzYMpM3zwxD6226GBvH3LI1NwVpISg0lKLlwWU8SRV8OP+xbnvcE/aO0X+c zuE5dHeOasm+3mg==
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6191; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=EXrTZ5R7zXGaTHEthIw+hSVSLI3+CtkeI6b60UAGLWU=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBmtP8apye15CDPjep8a4sKbnjhVshmQj6bqmEpn
+ FY/clEVV4iJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZrT/GgAKCRAEWL7uWMY5
+ Rn6pEACJelIjUYMObVtpvs7JKcQ/GkHNHGNbyVCyd2s7wibhbrfX1MYZ22uey8alwOOYoAABCnX
+ oVYjkJUUFisP4QR9yOy4cgV+2SPewumv8vEPfIm/46xYfbvkPwM2d4kUJrsFKsJY17ljll2L5br
+ IBsGTTcBscKsnI96M1/kBhykao3Ba6wcjc1CKbePG1XNHOwIIwURIMNQP2JltG1syenoCRVbb6J
+ UPAKXNYPb+eDt8kNMRBpKzD+q+6aQcDUB5Il2VgQAvhV0B11G0rVkBgJ3UrUOnuIcbpWGhb6wfn
+ BEFrvyEk2A2PuDz5QmkBGym1Ts9uEV1/JzQDr6UH1m6Z5jzy3aZ0XrVrkMN0uAxRQxebID41Cok
+ 6qfFbFF12H4ygvaSrCCcbo9vB4ws2pAOa5G8rsNuqUl67UL8BJzdulss1MieqD3o5JnzLlKhTk2
+ UasU3G9XTc2+xzyfmoXvmH6ZWCnKWTxc0D0B5AsH0yxrMdVbW6ymo9GGsAOEyBlbOKEADCCcQuA
+ etl5yY6SvHpw69V5tOpSGGot2s6wwZ7JZZ+j/ZpjOTmC6PZNvPdWb3vvS5k1U85231d5zkrH7fm
+ hK/wpLZM7TZAtS70qsbbJAda95xy1x1S8DtiMCUgN4/8J6vs3Qe43wguoau5p81BS9fda7sl/aB +AA7X+swvP8JnCw==
 X-Mailer: b4 0.13.0
-Message-ID: <20240808-alice-file-v9-8-2cb7b934e0e1@google.com>
-Subject: [PATCH v9 8/8] rust: file: add abstraction for `poll_table`
+Message-ID: <20240808-tracepoint-v6-0-a23f800f1189@google.com>
+Subject: [PATCH v6 0/5] Tracepoints and static branch in Rust
 From: Alice Ryhl <aliceryhl@google.com>
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+To: Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Josh Poimboeuf <jpoimboe@kernel.org>, Jason Baron <jbaron@akamai.com>, 
+	Ard Biesheuvel <ardb@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@samsung.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Christian Brauner <brauner@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"=?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
-	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
-	Suren Baghdasaryan <surenb@google.com>
-Cc: Dan Williams <dan.j.williams@intel.com>, Matthew Wilcox <willy@infradead.org>, 
-	Thomas Gleixner <tglx@linutronix.de>, Daniel Xu <dxu@dxuuu.xyz>, 
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	Alice Ryhl <aliceryhl@google.com>, Kees Cook <kees@kernel.org>
+	Andreas Hindborg <a.hindborg@samsung.com>
+Cc: linux-trace-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, linux-arch@vger.kernel.org, 
+	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Sean Christopherson <seanjc@google.com>, Uros Bizjak <ubizjak@gmail.com>, 
+	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>, 
+	Oliver Upton <oliver.upton@linux.dev>, Mark Rutland <mark.rutland@arm.com>, 
+	Ryan Roberts <ryan.roberts@arm.com>, Fuad Tabba <tabba@google.com>, 
+	linux-arm-kernel@lists.infradead.org, 
+	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
+	Albert Ou <aou@eecs.berkeley.edu>, Anup Patel <apatel@ventanamicro.com>, 
+	Andrew Jones <ajones@ventanamicro.com>, Alexandre Ghiti <alexghiti@rivosinc.com>, 
+	Conor Dooley <conor.dooley@microchip.com>, Samuel Holland <samuel.holland@sifive.com>, 
+	linux-riscv@lists.infradead.org, Huacai Chen <chenhuacai@kernel.org>, 
+	WANG Xuerui <kernel@xen0n.name>, Bibo Mao <maobibo@loongson.cn>, 
+	Tiezhu Yang <yangtiezhu@loongson.cn>, Andrew Morton <akpm@linux-foundation.org>, 
+	Tianrui Zhao <zhaotianrui@loongson.cn>, loongarch@lists.linux.dev, 
+	Alice Ryhl <aliceryhl@google.com>, Carlos Llamas <cmllamas@google.com>
 Content-Type: text/plain; charset="utf-8"
 
-The existing `CondVar` abstraction is a wrapper around
-`wait_queue_head`, but it does not support all use-cases of the C
-`wait_queue_head` type. To be specific, a `CondVar` cannot be registered
-with a `struct poll_table`. This limitation has the advantage that you
-do not need to call `synchronize_rcu` when destroying a `CondVar`.
+An important part of a production ready Linux kernel driver is
+tracepoints. So to write production ready Linux kernel drivers in Rust,
+we must be able to call tracepoints from Rust code. This patch series
+adds support for calling tracepoints declared in C from Rust.
 
-However, we need the ability to register a `poll_table` with a
-`wait_queue_head` in Rust Binder. To enable this, introduce a type
-called `PollCondVar`, which is like `CondVar` except that you can
-register a `poll_table`. We also introduce `PollTable`, which is a safe
-wrapper around `poll_table` that is intended to be used with
-`PollCondVar`.
+To use the tracepoint support, you must:
 
-The destructor of `PollCondVar` unconditionally calls `synchronize_rcu`
-to ensure that the removal of epoll waiters has fully completed before
-the `wait_queue_head` is destroyed.
+1. Declare the tracepoint in a C header file as usual.
 
-That said, `synchronize_rcu` is rather expensive and is not needed in
-all cases: If we have never registered a `poll_table` with the
-`wait_queue_head`, then we don't need to call `synchronize_rcu`. (And
-this is a common case in Binder - not all processes use Binder with
-epoll.) The current implementation does not account for this, but if we
-find that it is necessary to improve this, a future patch could store a
-boolean next to the `wait_queue_head` to keep track of whether a
-`poll_table` has ever been registered.
+2. Add #define CREATE_RUST_TRACE_POINTS next to your
+   #define CREATE_TRACE_POINTS.
 
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-Reviewed-by: Trevor Gross <tmgross@umich.edu>
+2. Make sure that the header file is visible to bindgen.
+
+3. Use the declare_trace! macro in your Rust code to generate Rust
+   functions that call into the tracepoint.
+
+For example, the kernel has a tracepoint called `sched_kthread_stop`. It
+is declared like this:
+
+	TRACE_EVENT(sched_kthread_stop,
+		TP_PROTO(struct task_struct *t),
+		TP_ARGS(t),
+		TP_STRUCT__entry(
+			__array(	char,	comm,	TASK_COMM_LEN	)
+			__field(	pid_t,	pid			)
+		),
+		TP_fast_assign(
+			memcpy(__entry->comm, t->comm, TASK_COMM_LEN);
+			__entry->pid	= t->pid;
+		),
+		TP_printk("comm=%s pid=%d", __entry->comm, __entry->pid)
+	);
+
+To call the above tracepoint from Rust code, you must first ensure that
+the Rust helper for the tracepoint is generated. To do this, you would
+modify kernel/sched/core.c by adding #define CREATE_RUST_TRACE_POINTS.
+
+Next, you would include include/trace/events/sched.h in
+rust/bindings/bindings_helper.h so that the exported C functions are
+visible to Rust, and then you would declare the tracepoint in Rust:
+
+	declare_trace! {
+	    fn sched_kthread_stop(task: *mut task_struct);
+	}
+
+This will define an inline Rust function that checks the static key,
+calling into rust_do_trace_##name if the tracepoint is active. Since
+these tracepoints often take raw pointers as arguments, it may be
+convenient to wrap it in a safe wrapper:
+
+	mod raw {
+	    declare_trace! {
+	    	/// # Safety
+		/// `task` must point at a valid task for the duration
+		/// of this call.
+	        fn sched_kthread_stop(task: *mut task_struct);
+	    }
+	}
+	
+	#[inline]
+	pub fn trace_sched_kthread_stop(task: &Task) {
+	    // SAFETY: The pointer to `task` is valid.
+	    unsafe { raw::sched_kthread_stop(task.as_raw()) }
+	}
+
+A future expansion of the tracepoint support could generate these safe
+versions automatically, but that is left as future work for now.
+
+This is intended for use in the Rust Binder driver, which was originally
+sent as an RFC [1]. The RFC did not include tracepoint support, but you
+can see how it will be used in Rust Binder at [2]. The author has
+verified that the tracepoint support works on Android devices.
+
+This implementation implements support for static keys in Rust so that
+the actual static branch happens in the Rust object file. However, the
+__DO_TRACE body remains in C code. See v1 for an implementation where
+__DO_TRACE is also implemented in Rust.
+
+Link: https://lore.kernel.org/rust-for-linux/20231101-rust-binder-v1-0-08ba9197f637@google.com/ [1]
+Link: https://r.android.com/3119993 [2]
 Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
- rust/bindings/bindings_helper.h |   1 +
- rust/kernel/sync.rs             |   1 +
- rust/kernel/sync/poll.rs        | 121 ++++++++++++++++++++++++++++++++++++++++
- 3 files changed, 123 insertions(+)
+Changes in v6:
+- Add support for !CONFIG_JUMP_LABEL.
+- Add tracepoint to rust_print sample.
+- Deduplicate inline asm.
+- Require unsafe inside `declare_trace!`.
+- Fix bug on x86 due to use of intel syntax.
+- Link to v5: https://lore.kernel.org/r/20240802-tracepoint-v5-0-faa164494dcb@google.com
 
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index 73a133b92017..b5793142904d 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -20,6 +20,7 @@
- #include <linux/mdio.h>
- #include <linux/phy.h>
- #include <linux/pid_namespace.h>
-+#include <linux/poll.h>
- #include <linux/refcount.h>
- #include <linux/sched.h>
- #include <linux/security.h>
-diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
-index 0ab20975a3b5..bae4a5179c72 100644
---- a/rust/kernel/sync.rs
-+++ b/rust/kernel/sync.rs
-@@ -11,6 +11,7 @@
- mod condvar;
- pub mod lock;
- mod locked_by;
-+pub mod poll;
- 
- pub use arc::{Arc, ArcBorrow, UniqueArc};
- pub use condvar::{new_condvar, CondVar, CondVarTimeoutResult};
-diff --git a/rust/kernel/sync/poll.rs b/rust/kernel/sync/poll.rs
-new file mode 100644
-index 000000000000..d5f17153b424
---- /dev/null
-+++ b/rust/kernel/sync/poll.rs
-@@ -0,0 +1,121 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+// Copyright (C) 2024 Google LLC.
-+
-+//! Utilities for working with `struct poll_table`.
-+
-+use crate::{
-+    bindings,
-+    fs::File,
-+    prelude::*,
-+    sync::{CondVar, LockClassKey},
-+    types::Opaque,
-+};
-+use core::ops::Deref;
-+
-+/// Creates a [`PollCondVar`] initialiser with the given name and a newly-created lock class.
-+#[macro_export]
-+macro_rules! new_poll_condvar {
-+    ($($name:literal)?) => {
-+        $crate::sync::poll::PollCondVar::new(
-+            $crate::optional_name!($($name)?), $crate::static_lock_class!()
-+        )
-+    };
-+}
-+
-+/// Wraps the kernel's `struct poll_table`.
-+///
-+/// # Invariants
-+///
-+/// This struct contains a valid `struct poll_table`.
-+///
-+/// For a `struct poll_table` to be valid, its `_qproc` function must follow the safety
-+/// requirements of `_qproc` functions:
-+///
-+/// * The `_qproc` function is given permission to enqueue a waiter to the provided `poll_table`
-+///   during the call. Once the waiter is removed and an rcu grace period has passed, it must no
-+///   longer access the `wait_queue_head`.
-+#[repr(transparent)]
-+pub struct PollTable(Opaque<bindings::poll_table>);
-+
-+impl PollTable {
-+    /// Creates a reference to a [`PollTable`] from a valid pointer.
-+    ///
-+    /// # Safety
-+    ///
-+    /// The caller must ensure that for the duration of 'a, the pointer will point at a valid poll
-+    /// table (as defined in the type invariants).
-+    ///
-+    /// The caller must also ensure that the `poll_table` is only accessed via the returned
-+    /// reference for the duration of 'a.
-+    pub unsafe fn from_ptr<'a>(ptr: *mut bindings::poll_table) -> &'a mut PollTable {
-+        // SAFETY: The safety requirements guarantee the validity of the dereference, while the
-+        // `PollTable` type being transparent makes the cast ok.
-+        unsafe { &mut *ptr.cast() }
-+    }
-+
-+    fn get_qproc(&self) -> bindings::poll_queue_proc {
-+        let ptr = self.0.get();
-+        // SAFETY: The `ptr` is valid because it originates from a reference, and the `_qproc`
-+        // field is not modified concurrently with this call since we have an immutable reference.
-+        unsafe { (*ptr)._qproc }
-+    }
-+
-+    /// Register this [`PollTable`] with the provided [`PollCondVar`], so that it can be notified
-+    /// using the condition variable.
-+    pub fn register_wait(&mut self, file: &File, cv: &PollCondVar) {
-+        if let Some(qproc) = self.get_qproc() {
-+            // SAFETY: The pointers to `file` and `self` need to be valid for the duration of this
-+            // call to `qproc`, which they are because they are references.
-+            //
-+            // The `cv.wait_queue_head` pointer must be valid until an rcu grace period after the
-+            // waiter is removed. The `PollCondVar` is pinned, so before `cv.wait_queue_head` can
-+            // be destroyed, the destructor must run. That destructor first removes all waiters,
-+            // and then waits for an rcu grace period. Therefore, `cv.wait_queue_head` is valid for
-+            // long enough.
-+            unsafe { qproc(file.as_ptr() as _, cv.wait_queue_head.get(), self.0.get()) };
-+        }
-+    }
-+}
-+
-+/// A wrapper around [`CondVar`] that makes it usable with [`PollTable`].
-+///
-+/// [`CondVar`]: crate::sync::CondVar
-+#[pin_data(PinnedDrop)]
-+pub struct PollCondVar {
-+    #[pin]
-+    inner: CondVar,
-+}
-+
-+impl PollCondVar {
-+    /// Constructs a new condvar initialiser.
-+    pub fn new(name: &'static CStr, key: &'static LockClassKey) -> impl PinInit<Self> {
-+        pin_init!(Self {
-+            inner <- CondVar::new(name, key),
-+        })
-+    }
-+}
-+
-+// Make the `CondVar` methods callable on `PollCondVar`.
-+impl Deref for PollCondVar {
-+    type Target = CondVar;
-+
-+    fn deref(&self) -> &CondVar {
-+        &self.inner
-+    }
-+}
-+
-+#[pinned_drop]
-+impl PinnedDrop for PollCondVar {
-+    fn drop(self: Pin<&mut Self>) {
-+        // Clear anything registered using `register_wait`.
-+        //
-+        // SAFETY: The pointer points at a valid `wait_queue_head`.
-+        unsafe { bindings::__wake_up_pollfree(self.inner.wait_queue_head.get()) };
-+
-+        // Wait for epoll items to be properly removed.
-+        //
-+        // SAFETY: Just an FFI call.
-+        unsafe { bindings::synchronize_rcu() };
-+    }
-+}
+Changes in v5:
+- Update first patch regarding inline asm duplication.
+- Add __rust_do_trace helper to support conditions.
+- Rename DEFINE_RUST_DO_TRACE_REAL to __DEFINE_RUST_DO_TRACE.
+- Get rid of glob-import in tracepoint macro.
+- Address safety requirements on tracepoints in docs.
+- Link to v4: https://lore.kernel.org/rust-for-linux/20240628-tracepoint-v4-0-353d523a9c15@google.com
 
+Changes in v4:
+- Move arch-specific code into rust/kernel/arch.
+- Restore DEFINE_RUST_DO_TRACE at end of define_trace.h
+- Link to v3: https://lore.kernel.org/r/20240621-tracepoint-v3-0-9e44eeea2b85@google.com
+
+Changes in v3:
+- Support for Rust static_key on loongarch64 and riscv64.
+- Avoid failing compilation on architectures that are missing Rust
+  static_key support when the archtectures does not actually use it.
+- Link to v2: https://lore.kernel.org/r/20240610-tracepoint-v2-0-faebad81b355@google.com
+
+Changes in v2:
+- Call into C code for __DO_TRACE.
+- Drop static_call patch, as it is no longer needed.
+- Link to v1: https://lore.kernel.org/r/20240606-tracepoint-v1-0-6551627bf51b@google.com
+
+---
+Alice Ryhl (5):
+      rust: add generic static_key_false
+      rust: add tracepoint support
+      rust: samples: add tracepoint to Rust sample
+      jump_label: adjust inline asm to be consistent
+      rust: add arch_static_branch
+
+ MAINTAINERS                             |  1 +
+ arch/arm/include/asm/jump_label.h       | 14 +++--
+ arch/arm64/include/asm/jump_label.h     | 20 +++++---
+ arch/loongarch/include/asm/jump_label.h | 16 +++---
+ arch/riscv/include/asm/jump_label.h     | 50 ++++++++++--------
+ arch/x86/include/asm/jump_label.h       | 38 ++++++--------
+ include/linux/tracepoint.h              | 22 +++++++-
+ include/trace/define_trace.h            | 12 +++++
+ include/trace/events/rust_sample.h      | 31 +++++++++++
+ rust/Makefile                           |  5 +-
+ rust/bindings/bindings_helper.h         |  3 ++
+ rust/helpers.c                          |  9 ++++
+ rust/kernel/.gitignore                  |  3 ++
+ rust/kernel/arch_static_branch_asm.rs   |  1 +
+ rust/kernel/arch_static_branch_asm.rs.S |  7 +++
+ rust/kernel/jump_label.rs               | 91 +++++++++++++++++++++++++++++++++
+ rust/kernel/lib.rs                      | 32 ++++++++++++
+ rust/kernel/tracepoint.rs               | 49 ++++++++++++++++++
+ samples/rust/Makefile                   |  3 +-
+ samples/rust/rust_print.rs              | 18 +++++++
+ samples/rust/rust_print_events.c        |  8 +++
+ scripts/Makefile.build                  |  9 +++-
+ 22 files changed, 375 insertions(+), 67 deletions(-)
+---
+base-commit: 58e218fe517eff550f8a6cd5f2179d973b006d10
+change-id: 20240606-tracepoint-31e15b90e471
+
+Best regards,
 -- 
-2.46.0.rc2.264.g509ed76dc8-goog
+Alice Ryhl <aliceryhl@google.com>
 
