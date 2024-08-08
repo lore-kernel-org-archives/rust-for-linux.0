@@ -1,103 +1,97 @@
-Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 609D384A2F;
-	Thu,  8 Aug 2024 19:44:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.134
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40AAA15820F;
+	Thu,  8 Aug 2024 22:11:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723146264; cv=none; b=SziZ7tFx0ScUBXBCxc1f9Kbd30KvA9NpOY1XNW9iex5FXhH22iYfF5UW9N4VRPmSA0y6BwnBNaUHHbGsIWqBM9UYypuFJNyBSKZ8mNkeOZTWVZd2b6qTbYcUgyDuWbwcVKQ3O4X1Vs4fGmehxa8DXWjCYfzGS46HobxyZlg3vKs=
+	t=1723155117; cv=none; b=HAa/ZhVRJvQrC59aeVGlRkfsIQX/1P3WeQpAYonaC2pZO/3A1geNYEwhQRXZq0OXRri4xjrBy1CvFBfxf0tHmPBfFTJH/HtQrJW/f638H5+zFiSqOz9viSRGuiG9Ki/2Zou05QSZdT0ZizU8X6ZoJ2ok4ZO80A7a96EarOEdGbg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723146264; c=relaxed/simple;
-	bh=teaW2G1YGha8rVB9C/v3HcRwfsyObZF1CeXtVkwhcuI=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=c/rM148h+7iWUjJir+9bBg4hBOnQrnGpYXDp2tjXShigb0FdGBSMYehqvlrqgfSGyuB+YAQIrLkPSm2xDcTr63y3iqrDNa4ylaXItzjhK7XZZcLXgJd2Zybo+ze6LvaQ0ql3ZHeqB3N/IDKmCGJPlnI0cHEYZd9DpFHpQynbnSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=Rx1gMVYp; arc=none smtp.client-ip=185.70.40.134
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1723155117; c=relaxed/simple;
+	bh=8cwTGDcOJUK8ayBA2CjvTAILOfKtt8rJkL2q5JOGIRY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=s8wuIYDyB2kns6Zp4g0MQBzrbhjj/lSD0iIDmhuo/imWuGftdO5v2Jdc1nNt9rpZLeuTiQYWnlhSQhOMQp8EFrLJ4TgEXfoi3tADR2+6Fi4djph0xYly61AMWOvxYE9o4MUQopjdDgKXkz9SvDdLcqz/YPU0Y2N1b3ronLKN7RQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=eAUQAX9m; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="Rx1gMVYp"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1723146259; x=1723405459;
-	bh=lAr0Z9Q64iaHBte2FBu5E58VU9jdd81HnbL+G/DFjqg=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=Rx1gMVYpTi3jPobET6jCnd0OY9sTVE+7He2/PWK2L64dBqzDsxBLJsHhi3Lv06UEQ
-	 eBn7VpVidhNljGS8N0tX6hma5b++7+l3z37oOIWJ1O1wyNoi5RWYpytGA889pjZier
-	 ffV6FShQQjhMB6aZMoOP3BeYApKsUBicuMMC6iy3YjrZPe4qUT2bVgkVInob8jbPrQ
-	 fR4tmHWy9UVB/pntgWJWMiZNzDGUfX2LudW0DrtTBJSZnVjvKa6Bi63hnZneebFM4G
-	 RU6MmG6xhqmTB2xCroYL13EwxS4bWfv3hZDH48+rVUHjILDYE9s3OxbB9kK1ubjIyT
-	 ewMWw4Qa7DUOQ==
-Date: Thu, 08 Aug 2024 19:44:12 +0000
-To: Danilo Krummrich <dakr@kernel.org>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@samsung.com, aliceryhl@google.com, akpm@linux-foundation.org, daniel.almeida@collabora.com, faith.ekstrand@collabora.com, boris.brezillon@collabora.com, lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com, acurrid@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com, ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v4 09/28] rust: alloc: implement kernel `Box`
-Message-ID: <42e37b4d-000d-4077-ad28-bc8660890b72@proton.me>
-In-Reply-To: <ZrUD6ZyfK9Kg1mrn@pollux>
-References: <20240805152004.5039-1-dakr@kernel.org> <20240805152004.5039-10-dakr@kernel.org> <a1c1e273-2d40-4114-b3b9-f27c73e3d122@proton.me> <ZrKrMrg5E85y7jkj@pollux> <012f5a12-2408-4658-8318-55fa8d4285e1@proton.me> <ZrUD6ZyfK9Kg1mrn@pollux>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: fc2754af04323626804628546a03721ca89db691
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="eAUQAX9m"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5C9BC32782;
+	Thu,  8 Aug 2024 22:11:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1723155116;
+	bh=8cwTGDcOJUK8ayBA2CjvTAILOfKtt8rJkL2q5JOGIRY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=eAUQAX9mI81rc0GGlJ9gUsCcOkRC+8zAd1hgNKn/0LYHf3Tp49SXM/EZyCxGE/s9G
+	 Ay3uMNf6Bk5kXIoKyOHiFF4A4hesGM5R6EzxR1XBAFDnSYY9JllmzEtc3ReS0peeO1
+	 aTFixnDdqqHr0M6SuCNihYAKrFbzNLYbJ0ezzklM26+HlwrpGpGFFYVGyvcf5GBobZ
+	 jAyx18wKxzzf/aqG+Gl6GKJOR7k8AZuIEOzuw41gEPYUo8lCXRh9/4osVdf5TSySbh
+	 KUdbjekrXSX1O7cQ4XVTnOu36CAqbW4t3/FHUvkaTp391WFMhLSsJn4pUZccqVVpTo
+	 h0giCSSq4SC8g==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Masahiro Yamada <masahiroy@kernel.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	rust-for-linux@vger.kernel.org,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nicolas@fjasle.eu>,
+	linux-kbuild@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	patches@lists.linux.dev
+Subject: [PATCH 0/6] kbuild: rust: add `RUSTC_VERSION` and reconfig/rebuild support
+Date: Fri,  9 Aug 2024 00:11:32 +0200
+Message-ID: <20240808221138.873750-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On 08.08.24 19:44, Danilo Krummrich wrote:
-> On Wed, Aug 07, 2024 at 07:49:31AM +0000, Benno Lossin wrote:
->>>>> +impl<T, A> Drop for Box<T, A>
->>>>> +where
->>>>> +    T: ?Sized,
->>>>> +    A: Allocator,
->>>>> +{
->>>>> +    fn drop(&mut self) {
->>>>> +        let ptr =3D self.0.as_ptr();
->>>>> +
->>>>> +        // SAFETY: `ptr` is always properly aligned, dereferenceable=
- and points to an initialized
->>>>> +        // instance of `T`.
->>>>> +        let size =3D unsafe { core::mem::size_of_val(&*ptr) };
->>>>
->>>> 1. `size_of_val` is not `unsafe`.
->>>
->>> Right, but dereferencing the `ptr` is unsafe.
->>>
->>>> 2. why not use `&*self` instead of using the raw pointer? (then move t=
-he
->>>>    let binding below this line)
->>>
->>> If we ever support non-ZST `Allocator`s using `self` would not always e=
-valuate
->>> to the correct size. I think evaluating the size of `T` rather than `Bo=
-x<T>` is
->>> the correct thing to do.
->>
->> I mean use `Box::deref` (that's what `&*self` should do), you don't need
->=20
-> Actually, this must either be `size_of_val(&**self)` or `size_of_val::<T>=
-(self).
->=20
-> `size_of_val(&*self)` should indeed resolve to `&Box<T, A>`, right?
+Hi all,
 
-Oh yeah that is true, good catch! Here is a playground example [1].
+This series introduces `RUSTC_VERSION` support, which is needed for
+several patch series getting upstreamed, and it will be increasingly
+useful as we now support several Rust compiler (and `bindgen`) versions.
+Later on, we will likely introduce other macros, such as
+`rustc-min-version`.
 
-[1]: https://play.rust-lang.org/?version=3Dstable&mode=3Ddebug&edition=3D20=
-21&gist=3Dc439494a0582bb287232c7a05e21bd23
+In addition, the series introduces automatic reconfiguration and rebuild
+based on `RUSTC_VERSION_TEXT`, to mimic the C side, which is also good
+to have now that we support several versions.
 
----
+It is based on top of the current `rust-fixes`, since there are a couple
+pending changes to the version text Kconfig symbols that will be sent to
+Linus soon for an -rc.
+
 Cheers,
-Benno
+Miguel
 
->=20
->> to repeat the same SAFETY comment when it already is wrapped by a safe
->> function.
->>
->> ---
->> Cheers,
->> Benno
->>
+Miguel Ojeda (6):
+  kbuild: rust: add `CONFIG_RUSTC_VERSION`
+  kbuild: rust: make command for `RUSTC_VERSION_TEXT` closer to the `CC`
+    one
+  kbuild: rust: re-run Kconfig if the version text changes
+  kbuild: rust: rebuild if the version text changes
+  kbuild: rust: replace proc macros dependency on `core.o` with the
+    version text
+  docs: rust: include other expressions in conditional compilation
+    section
 
+ Documentation/rust/general-information.rst |  8 +++++++
+ Makefile                                   |  5 +++--
+ init/Kconfig                               | 11 ++++++++-
+ rust/Makefile                              |  8 +++----
+ scripts/rustc-version.sh                   | 26 ++++++++++++++++++++++
+ 5 files changed, 51 insertions(+), 7 deletions(-)
+ create mode 100755 scripts/rustc-version.sh
+
+
+base-commit: fe992163575b187405899c5abaad8ef6fb828ff6
+--
+2.46.0
