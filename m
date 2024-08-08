@@ -1,43 +1,43 @@
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9AA918D63E
-	for <rust-for-linux@vger.kernel.org>; Thu,  8 Aug 2024 09:02:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8097146A97
+	for <rust-for-linux@vger.kernel.org>; Thu,  8 Aug 2024 09:08:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723107736; cv=none; b=aVYNGVh1J99+VgRu0R8VPVjR2IZ8Jj1BT/C9xvdAblCuvww3pYHorXik7VP2WGFRh5Wt1Kq74SvLU/tldX/zGpqMkWU/AUmlzkLR6KDm1uYdTjSz3dAoX4VfwlH1mmvIFEH5mRhSlfO98OPzbOtyqehWKGiVMeWQxPSm0pUe3HU=
+	t=1723108102; cv=none; b=rtKHxN48nJCHRnp0Mq/vq7zKciOT+vJUr87Dbxb9YB97INVc6uT/y9wSRsNLhOv3Tp0z4/uv5qS41adFXTxr0rJT+6otpx3dg9ii3gLfGUxS6ikpBC8xXV7hWmNU+flggBqEfFe/2qXxpDf7FW1sNhaYA3b5/UgexQpSpSWkVI0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723107736; c=relaxed/simple;
-	bh=iP//oevBEAxtIOncAnpKXE2CeY4AlOAC1pNg0K0Cf9w=;
+	s=arc-20240116; t=1723108102; c=relaxed/simple;
+	bh=uAc2ZG3ukw60sc6m6JNUFse46tNj8RxOsLbTub41flo=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KKqpslB8xZfMWfX6aYUhU5R0bD/wOwzLWnrUC/9bqI+D8GcT7JWxdI433OpbBmRDxi4MZfhSwrFRiKF3906B/qlRtY1KTAV6GgLDRlHc/K9Rt1VO+0a9++9Ow2tmYPxJfUnsw5FvXQk4dnPaiSVa81J5DRoBeDpawMssf6Lyxqg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=MmWwrHEB; arc=none smtp.client-ip=185.70.43.16
+	 MIME-Version:Content-Type; b=qYQofq6FkK/lVTcKMBDfxKM26Z7znslpUaGd5ubPAAsUd/idVCAFbYvW2NZEI6PJWpBUmSLCGpzHUP5vJYrhiaRfrW9s1Ai8axfc5KIBe/gYNgOdftMDx9baiL1vLL+3BsteCYbCNY3jIRZrXW/6tuaV3QNy/F413G753wTTU8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=TeVL48QW; arc=none smtp.client-ip=185.70.43.22
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="MmWwrHEB"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="TeVL48QW"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1723107732; x=1723366932;
-	bh=iP//oevBEAxtIOncAnpKXE2CeY4AlOAC1pNg0K0Cf9w=;
+	s=uxdqx6g4jbgnba2mrar46fsg3a.protonmail; t=1723108097; x=1723367297;
+	bh=4+O/PRWpVpxDVZY+qCPNm52oMb0TpQQtgaQHZ09Ht5c=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=MmWwrHEBiCGg7C+K2Xlv4TiE9PM8an5znwPnOnjGqcqG/+bg/fgULxnoRwmOG0qis
-	 Tnd5OkkFtthP9aWPjPQMWwZOlupwcMOQEnY/vG4v0W9X132z08yXNmO+ENdscJTC/N
-	 2NuxdvKITrJeyFznBhTuMo85lXQQ95spAzWHQhNEfOq8nNwDlyDNyFk5VFql8QP6ye
-	 jNfSSolVuSnObOeoWRxl8zJIecax03w5fm3ogEK+VKTN5v64ysNjZFebjwA6I3d529
-	 hXsnb5JPEZYAKGZ1LO7vFU1sP6SwzQeBdxR2gXnb/n4L1cBhyCSznb+q13ZbC6S8wZ
-	 aqX2Xzp5QGY5A==
-Date: Thu, 08 Aug 2024 09:02:06 +0000
-To: Danilo Krummrich <dakr@kernel.org>
+	b=TeVL48QW7o2NuQ0aUiX+K5Bqbk5KWEalW+aXv6yejJR2QQW/ldCyy5RYlfiIFyLBe
+	 sI9AAhbOpohz/V9xMWeg6eNqpjlD0RRvoWmS5cvP4svc/vYMDoUlyBes5Mvmw6n0DB
+	 AkKN/NgaexJiOlRnfZH1TTk0D3/ATOD4RYZ4QtAjkAFTU8RKRdt9xKu8NfJX3kpYrX
+	 gz+HM/Ddweq25Wo+lVyuD3hL+GFnX6Jebauy252r/jfSpDiDDqUGGdMdiCC7xZeH+I
+	 HfEtxpzY+0KjWOMN67a2KLMdp622MXce7iF9CtLCMuKdvw0DTqpovm3/rmWlR6Xn70
+	 ILCcl377xTs1Q==
+Date: Thu, 08 Aug 2024 09:08:10 +0000
+To: Danilo Krummrich <dakr@kernel.org>, ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@samsung.com, aliceryhl@google.com, akpm@linux-foundation.org
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@samsung.com, aliceryhl@google.com, akpm@linux-foundation.org, daniel.almeida@collabora.com, faith.ekstrand@collabora.com, boris.brezillon@collabora.com, lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com, acurrid@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com, ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v4 04/28] rust: alloc: implement `Allocator` for `Kmalloc`
-Message-ID: <7b97e646-2d8d-4947-9313-b828b8f773c2@proton.me>
-In-Reply-To: <d005fe7e-74a8-4609-92e0-5dd3743ca060@proton.me>
-References: <20240805152004.5039-1-dakr@kernel.org> <20240805152004.5039-5-dakr@kernel.org> <fe982cb6-4910-4ba2-ae4d-892514c9e7f7@proton.me> <ZrJxkwF2Y59xln1e@pollux.localdomain> <8ab83e4b-9c72-4a5d-974a-7f123753e7fe@proton.me> <ZrNIaAcGkGU0d8I3@pollux> <9e22d4ab-eff2-4c69-8a2f-f55a8eaeb892@proton.me> <ZrP90NR1lOpDrQ0X@pollux> <d005fe7e-74a8-4609-92e0-5dd3743ca060@proton.me>
+Cc: daniel.almeida@collabora.com, faith.ekstrand@collabora.com, boris.brezillon@collabora.com, lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com, acurrid@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com, ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v4 18/28] rust: treewide: switch to the kernel `Vec` type
+Message-ID: <3237696e-4009-4d3c-b2d4-85d3b4adbb85@proton.me>
+In-Reply-To: <20240805152004.5039-19-dakr@kernel.org>
+References: <20240805152004.5039-1-dakr@kernel.org> <20240805152004.5039-19-dakr@kernel.org>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: ce737a7277b35ef8b58768657532d95832eec3be
+X-Pm-Message-ID: a7f3162e886c0daa82e26e7b3c820f1b72604ab3
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,22 +47,24 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On 08.08.24 10:55, Benno Lossin wrote:
-> On 08.08.24 01:05, Danilo Krummrich wrote:
->> It's also not that we safe code with that. `Box`, `Vec`, any other user,=
- still
->> would have to create the `Layout` before they call `A::free`.
->=20
-> But for `Box` it would just be `Layout::<T>::new()` and `Vec` needs
-> `Layout::<T>::new().repeat(self.cap)`.
->=20
-> Though for `repeat` we need the `alloc_layout_extra` feature, which is
-> an argument against doing this.
+On 05.08.24 17:19, Danilo Krummrich wrote:
+> Now that we got the kernel `Vec` in place, convert all existing `Vec`
+> users to make use of it.
 
-Oops, I overlooked the `Layout::array` function, so this is not a
-problem. Instead it just is `Layout::<T>::array(self.cap).unwrap()`.
+You missed one in `rust/kernel/uaccess.rs:92`, but this doesn't
+prevent it from compiling since the allocator is correctly inferred from
+the context.
 
 ---
 Cheers,
 Benno
+
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> ---
+>  rust/kernel/str.rs            | 12 +++++-------
+>  rust/kernel/sync/locked_by.rs |  2 +-
+>  rust/kernel/types.rs          |  2 +-
+>  rust/kernel/uaccess.rs        | 15 ++++++---------
+>  samples/rust/rust_minimal.rs  |  4 ++--
+>  5 files changed, 15 insertions(+), 20 deletions(-)
 
