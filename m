@@ -1,93 +1,94 @@
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f46.google.com (mail-pj1-f46.google.com [209.85.216.46])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF6BE637;
-	Thu,  8 Aug 2024 14:34:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D462D4A33;
+	Thu,  8 Aug 2024 15:08:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723127645; cv=none; b=SG8lwG+/pAz3/7HjE0yAtb/EDT00gem/Ms0DFbkIufw2Hvyso3cKmRNiSb/3DgMEv8OM2IWCci8YinFMGzf7NlqGQu5UbmIadGkDzfDjGtrof6cpSgRJmlPY4F5xPPa3wWv3+pT7zGPxlfHZiz3yi15XcKCeMotMRiMI3LEBW/c=
+	t=1723129686; cv=none; b=g9rbm3oL9Ak7zbCdP7HwEKlRzZjlvcl22vHufZYWv3XG71ygEO1pQL1KIcGTsDH97MmKMPnObMkzF409i5a3vAZ6xlAMHhyEpMhsk0K44b7IH+7sjAwdHup5MtnTbHp/ojNCQenD7FFbvkN+oTKWLdupyv5abpK2pwnkpcnd1mE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723127645; c=relaxed/simple;
-	bh=esJQD0fZf8esCkWrMF7aZbYFwrQ+M+0lYRz32nZTci0=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bpyj0jLF0lpRfzyfOt2dIVnX453ivovBoFHaIU/8I7vsnsMfRbbCgjQaqA0UJd+z26IBhmKYl9W5GnvetK9/BtB54qV9JIF/fzctKLTJLDR5kjOwKQ0A9l+4Tho10KvLSbp9PUa4VevpBXAynG5fRzXby268fIBwHcHz/aKkiiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=MCP2q9eS; arc=none smtp.client-ip=185.70.43.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1723129686; c=relaxed/simple;
+	bh=mMf/r/w4DzuOC9KV0Qrw+cXuVcK9blVquF0Rk4Wb44s=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=V7e+yCgwwKB9bqXc8A86T3DYcCQmcwpE+NZxUqdCR+zawAgr3LmFqbyeXO8vHUk0HVqb3xX6JWCtYoGirPCanzd2PaFe0IELBg30xccVkUJMENrqsdrPXrbZd2VtbvoAmEWSnkSajMxpfGUDYKLqtwuEFTFLEDbgjCiN4fGvbUg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=B49yBpcr; arc=none smtp.client-ip=209.85.216.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="MCP2q9eS"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1723127638; x=1723386838;
-	bh=esJQD0fZf8esCkWrMF7aZbYFwrQ+M+0lYRz32nZTci0=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=MCP2q9eSf34L+cWotmxPxebSuYRMCxT3/u8Eg7JkyEE1eYRjBLpb9XUoyIDeQapP3
-	 OkqFNN8zElZ1nWYT4Tmo3f3bOv1bCMfh3LKnLaInrVjQYFkGZF9rM+A+0yK5q0xrga
-	 JnRUoQd2DamEDwmQB8NZcaFXOf8BJ1OheQcTUCk1FCbXgHT1rqAqACEnhr2nr+Us3C
-	 CWFlBpzZGSPMS89kGNObtuLqtHpFy8mkFtjE29X5yDiut4gEjEWGuOhJs99U/ZJf+X
-	 uGvqTjOikLqHL21J5/cXuyV+2b1uaQQnnbGynl5NoKDvUGqJbxDqrb4/PwFzNrgW7L
-	 P1xBsPYgd2/2Q==
-Date: Thu, 08 Aug 2024 14:33:55 +0000
-To: Daniel Almeida <daniel.almeida@collabora.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Jonathan Corbet <corbet@lwn.net>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [RFC PATCH 2/5] doc: rust: safety standard: add examples
-Message-ID: <cfd4841d-040b-4101-88be-3eb42f2139ab@proton.me>
-In-Reply-To: <9959901D-0839-454C-9141-F0661C956AD5@collabora.com>
-References: <20240717221133.459589-1-benno.lossin@proton.me> <20240717221133.459589-3-benno.lossin@proton.me> <B0E3D539-2D29-4BB4-9CB7-98672F590A57@collabora.com> <37d7b08d-f37a-45ff-9993-08fa7ed87443@proton.me> <9959901D-0839-454C-9141-F0661C956AD5@collabora.com>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 60e328dc318d6a1d6b5ae404ae2fbb1d4875723d
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="B49yBpcr"
+Received: by mail-pj1-f46.google.com with SMTP id 98e67ed59e1d1-2cf78366187so878897a91.3;
+        Thu, 08 Aug 2024 08:08:04 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1723129684; x=1723734484; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mMf/r/w4DzuOC9KV0Qrw+cXuVcK9blVquF0Rk4Wb44s=;
+        b=B49yBpcrGzEHlehtUXhorSpElK4ABh/+J3errss5bBbzd6TIjdocSoY/LP3xpMjH4z
+         KLH5qX7pWJRzpBoPNwX/v8wdrUybtfTRgrN84if5imhZORWrTBvgLSlurn+Qjdmqba8h
+         bTgYXPU8irhGyJ9Fhgx2y8icU3Dnc1j/2WKJ8K0Rsp6cN8S69L2XOwbJ/GxeIbqx1BcY
+         xu0XEmbiUF4zHSlXFyIEMKjY2lSzcqSPADpmfqrwEZVsfVwzpy4E6phMlnmdAqgdiR7y
+         RmlJg7PRgT5StROeea1jaL4pvGyXc14r69zhSQqa9CDWgftEhYZ4B8UjUQfLeBTj5k+H
+         t9nw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723129684; x=1723734484;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=mMf/r/w4DzuOC9KV0Qrw+cXuVcK9blVquF0Rk4Wb44s=;
+        b=qx8QdRHN0kvZfTWhdO0xsLEn/WGWOn2A7wB0BkQG1bhsck63vLxPr5EMTJL9DWauLg
+         vlDSfWWWAXU9fd7z/BDapMIfu7PnsIKPRSU8t7JwYBJq9/7f7fdiK0SK0/IoQhn6YFUX
+         VvBQ6MVRdS/Cs4EqGtD859vMr+uHbrUjW21rByAe8IBRs1iXsIHukU4L9GDqgjwZcbcL
+         pObmyxwFlFW8YR3snfvrOht8xy3OA97mBMtbQ/7PQ9k9FmdVIhtV0bU4C+xjfhPiOLN6
+         tGshhozGSUKfJJ+KiS7zmwQFgqHFL9PdNo8bAJKF04dHps2cZcgBWIApSlGR/L9AzLy6
+         LGlQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVUxHI5aTO3QRCgxEHLGBoYgRmf5ggDhKsOb4v2StLn9FnyN/XoTiqbeYCq580g6ql8jmhI1WxO7wYyiaozPkjHgTuuixdLcx9hh29bWsk2ZF8FctW3o0Hx8KLwTnGGOv7yO36jQOqFmc9eacg=
+X-Gm-Message-State: AOJu0YylksR0Qz9Hr2zKy1Hi2/8POlp3aIHNUtZh+OjAHzR27hRl5yqK
+	aTZeuGIDRmBM9kiSoQqg0x7LLgDkmJxy3vlRT2ksZvU8w6g7K+JseOU5QMRKzt2bUbd8bxHRpk9
+	TCZDv7x9T+mnsk6b94tg6gP2ZZO0=
+X-Google-Smtp-Source: AGHT+IH608F1d9487XRhV9631qqF/0rEQTdfCWf0KCSugE+PaHzrIoGqNfYkBYPKJJwhtols9tsoTJLOVsrvwS0bBLQ=
+X-Received: by 2002:a17:90b:4ac9:b0:2cb:55f9:b7c5 with SMTP id
+ 98e67ed59e1d1-2d1c3397088mr2638037a91.12.1723129684048; Thu, 08 Aug 2024
+ 08:08:04 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20240731134346.10630-1-zehuixu@whu.edu.cn> <20240807115708.394a8eb3@eugeo>
+In-Reply-To: <20240807115708.394a8eb3@eugeo>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 8 Aug 2024 17:07:51 +0200
+Message-ID: <CANiq72=UeYXi35PNTAtHd5UGt4rgyMjpfLbG3xYxpdcvY3mZYQ@mail.gmail.com>
+Subject: Re: [PATCH v3] rust: Kbuild: Skip -fmin-function-alignment in bindgen flags
+To: Gary Guo <gary@garyguo.net>
+Cc: Zehui Xu <zehuixu@whu.edu.cn>, ojeda@kernel.org, alex.gaynor@gmail.com, 
+	wedsonaf@gmail.com, boqun.feng@gmail.com, bjorn3_gh@protonmail.com, 
+	benno.lossin@proton.me, a.hindborg@samsung.com, aliceryhl@google.com, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On 08.08.24 15:10, Daniel Almeida wrote:
-> Hi Benno,
->=20
->>
->> I will try to rephrase this, tell me if it helps. When checking if an
->> API is sound, you are not allowed to change the code behind the API.
->> That is because `unsafe` code often relies on the surrounding safe code
->> to work properly. In the example above, safe code ensures that the raw
->> pointer `ptr` is valid. This is OK (and also very necessary), since we
->> expect people to be *aware* of the `unsafe` block and thus more
->> carefully review the changes in surrounding safe code. If you have safe
->> code that only interfaces with other safe code you don't need to be this
->> careful.
->>
->> Note that this heavily depends on where you put the API boundary. In our
->> case, we generally have this boundary: driver code <-> `kernel` crate.
->> But if your driver requires very specific helper code that does not fit
->> into the `kernel` crate, then you might also have an API boundary there.
->>
->> If it doesn't help, then it would great to get some more detailed
->> questions which part(s) you need help with.
->>
->> ---
->> Cheers,
->> Benno
->>
->>
->=20
-> Yes, I think this is more clear, but note that this explanation is more t=
-horough
-> than the actual example.
->=20
-> My point being, maybe you should take some of what you just wrote and put=
- it
-> into the actual docs.
+On Wed, Aug 7, 2024 at 12:57=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
+>
+> This patch itself looks fine to me, so
+>
+> Reviewed-by: Gary Guo <gary@garyguo.net>
+>
+> We use -fmin-function-alignment for GCC and use -falign-functions for
+> clang. These options affect codegen only so it's fine to ignore them
+> for bindgen.
 
-Yeah that was part of my plan :)
+Thanks Gary.
 
-Thanks for taking a look.
+> Although it appears to me that we currently don't set function
+> alignments for Rust codegen. Maybe that's worth considering adding?
 
----
+Yeah, agreed. I think currently there is no way for that in `rustc`
+(apart from `fn_align`) -- I have created an issue about it and a few
+others and linked them all at
+https://github.com/Rust-for-Linux/linux/issues/355.
+
 Cheers,
-Benno
-
+Miguel
