@@ -1,114 +1,93 @@
-Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B78531E511;
-	Thu,  8 Aug 2024 13:10:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723122641; cv=pass; b=V970dnwYKV/NRiQZRbJoLDALQrfvlKjgdU4hJJR8kb7fJAzqIw2Kdw3xAo0sgYiyDq4WHlkvNRa0yg2/yD6NfbmvjFDUS3ABEm+84mm5P7M0FDMcNAMiaxifJbjFl+TM4RDRjZe4KdAUDascGt3GBHDadb0AwWQ9vuD+3ThIEbA=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723122641; c=relaxed/simple;
-	bh=ZY0FSscEcQivkYIlbxu8A/3+ds5ckFcTwpIi8w7tEfo=;
-	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
-	 Message-Id:References:To; b=WbRGDkurb+DoKbtehSsd9CvPVc3dXeJqpb/L1YzDSXFxQOiJle1CLaOiyYYltMjJOCV7nPn8MbS6hMMLvyLVP/0gTezQc8s5kZ9sL1tEvJ1Td1RaHSeHS6fac+71sv0FcdMrx8swqpjXRwsf7Tv5oSGvtb0/0ydmjFd3wESOObE=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=UHAF29oj; arc=pass smtp.client-ip=136.143.188.112
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF6BE637;
+	Thu,  8 Aug 2024 14:34:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1723127645; cv=none; b=SG8lwG+/pAz3/7HjE0yAtb/EDT00gem/Ms0DFbkIufw2Hvyso3cKmRNiSb/3DgMEv8OM2IWCci8YinFMGzf7NlqGQu5UbmIadGkDzfDjGtrof6cpSgRJmlPY4F5xPPa3wWv3+pT7zGPxlfHZiz3yi15XcKCeMotMRiMI3LEBW/c=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1723127645; c=relaxed/simple;
+	bh=esJQD0fZf8esCkWrMF7aZbYFwrQ+M+0lYRz32nZTci0=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=bpyj0jLF0lpRfzyfOt2dIVnX453ivovBoFHaIU/8I7vsnsMfRbbCgjQaqA0UJd+z26IBhmKYl9W5GnvetK9/BtB54qV9JIF/fzctKLTJLDR5kjOwKQ0A9l+4Tho10KvLSbp9PUa4VevpBXAynG5fRzXby268fIBwHcHz/aKkiiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=MCP2q9eS; arc=none smtp.client-ip=185.70.43.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="UHAF29oj"
-ARC-Seal: i=1; a=rsa-sha256; t=1723122617; cv=none; 
-	d=zohomail.com; s=zohoarc; 
-	b=SiVm3yEuhgFW8aFATjomSh5HsPR9cJNNxBUyRmc2Z7SaoxsZDCQ8CYKU31ypcy5FGxKw1qffKcRjXLM9rKsWY0yHszcel9RMSNyHSzPhbSjtpd8aZ5U6n8+XxWr8958+sN0YB/Ml7QCnDoG42CnM9dMALkbUT+opDtZMWLU55Js=
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
-	t=1723122617; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
-	bh=ZY0FSscEcQivkYIlbxu8A/3+ds5ckFcTwpIi8w7tEfo=; 
-	b=OXglsNDRf72AQ+usz7XVKQSjydo+8MMXRsxMgjsmFtE5pfsoOgUq0IV6yF3DmCCI05JIX3VR0vcWzWeYsEn85XaYXdM/GkgVuLPOnTu8W0tkHj2IAd7OYOssBXd9QJRLNhKCROellcZS0xN2T37lN92FfMt67nEWFm7Uxu4X4rA=
-ARC-Authentication-Results: i=1; mx.zohomail.com;
-	dkim=pass  header.i=collabora.com;
-	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
-	dmarc=pass header.from=<daniel.almeida@collabora.com>
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1723122617;
-	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
-	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
-	bh=ZY0FSscEcQivkYIlbxu8A/3+ds5ckFcTwpIi8w7tEfo=;
-	b=UHAF29ojODlUPsshmbEHXjt6cYzoO44Y64kn3tMgAwAyG3KNTCqdzzMbowfdEM8N
-	U05Xg5L1TQa1ZSrYT4WY45uwZNCSqlQLk8opIUMRmbp75RF5PQVuEZK10My0AJINJt1
-	FP/vSs1RDFxTzoIM/THHKVGltP22IgJluFmo7ps4=
-Received: by mx.zohomail.com with SMTPS id 1723122616970646.6105827752397;
-	Thu, 8 Aug 2024 06:10:16 -0700 (PDT)
-Content-Type: text/plain;
-	charset=utf-8
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="MCP2q9eS"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1723127638; x=1723386838;
+	bh=esJQD0fZf8esCkWrMF7aZbYFwrQ+M+0lYRz32nZTci0=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=MCP2q9eSf34L+cWotmxPxebSuYRMCxT3/u8Eg7JkyEE1eYRjBLpb9XUoyIDeQapP3
+	 OkqFNN8zElZ1nWYT4Tmo3f3bOv1bCMfh3LKnLaInrVjQYFkGZF9rM+A+0yK5q0xrga
+	 JnRUoQd2DamEDwmQB8NZcaFXOf8BJ1OheQcTUCk1FCbXgHT1rqAqACEnhr2nr+Us3C
+	 CWFlBpzZGSPMS89kGNObtuLqtHpFy8mkFtjE29X5yDiut4gEjEWGuOhJs99U/ZJf+X
+	 uGvqTjOikLqHL21J5/cXuyV+2b1uaQQnnbGynl5NoKDvUGqJbxDqrb4/PwFzNrgW7L
+	 P1xBsPYgd2/2Q==
+Date: Thu, 08 Aug 2024 14:33:55 +0000
+To: Daniel Almeida <daniel.almeida@collabora.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Jonathan Corbet <corbet@lwn.net>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [RFC PATCH 2/5] doc: rust: safety standard: add examples
+Message-ID: <cfd4841d-040b-4101-88be-3eb42f2139ab@proton.me>
+In-Reply-To: <9959901D-0839-454C-9141-F0661C956AD5@collabora.com>
+References: <20240717221133.459589-1-benno.lossin@proton.me> <20240717221133.459589-3-benno.lossin@proton.me> <B0E3D539-2D29-4BB4-9CB7-98672F590A57@collabora.com> <37d7b08d-f37a-45ff-9993-08fa7ed87443@proton.me> <9959901D-0839-454C-9141-F0661C956AD5@collabora.com>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: 60e328dc318d6a1d6b5ae404ae2fbb1d4875723d
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3774.600.62\))
-Subject: Re: [RFC PATCH 2/5] doc: rust: safety standard: add examples
-From: Daniel Almeida <daniel.almeida@collabora.com>
-In-Reply-To: <37d7b08d-f37a-45ff-9993-08fa7ed87443@proton.me>
-Date: Thu, 8 Aug 2024 10:10:00 -0300
-Cc: Jonathan Corbet <corbet@lwn.net>,
- Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Wedson Almeida Filho <wedsonaf@gmail.com>,
- Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Andreas Hindborg <a.hindborg@samsung.com>,
- Alice Ryhl <aliceryhl@google.com>,
- linux-doc@vger.kernel.org,
- linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-Message-Id: <9959901D-0839-454C-9141-F0661C956AD5@collabora.com>
-References: <20240717221133.459589-1-benno.lossin@proton.me>
- <20240717221133.459589-3-benno.lossin@proton.me>
- <B0E3D539-2D29-4BB4-9CB7-98672F590A57@collabora.com>
- <37d7b08d-f37a-45ff-9993-08fa7ed87443@proton.me>
-To: Benno Lossin <benno.lossin@proton.me>
-X-Mailer: Apple Mail (2.3774.600.62)
-X-ZohoMailClient: External
 
-Hi Benno,
+On 08.08.24 15:10, Daniel Almeida wrote:
+> Hi Benno,
+>=20
+>>
+>> I will try to rephrase this, tell me if it helps. When checking if an
+>> API is sound, you are not allowed to change the code behind the API.
+>> That is because `unsafe` code often relies on the surrounding safe code
+>> to work properly. In the example above, safe code ensures that the raw
+>> pointer `ptr` is valid. This is OK (and also very necessary), since we
+>> expect people to be *aware* of the `unsafe` block and thus more
+>> carefully review the changes in surrounding safe code. If you have safe
+>> code that only interfaces with other safe code you don't need to be this
+>> careful.
+>>
+>> Note that this heavily depends on where you put the API boundary. In our
+>> case, we generally have this boundary: driver code <-> `kernel` crate.
+>> But if your driver requires very specific helper code that does not fit
+>> into the `kernel` crate, then you might also have an API boundary there.
+>>
+>> If it doesn't help, then it would great to get some more detailed
+>> questions which part(s) you need help with.
+>>
+>> ---
+>> Cheers,
+>> Benno
+>>
+>>
+>=20
+> Yes, I think this is more clear, but note that this explanation is more t=
+horough
+> than the actual example.
+>=20
+> My point being, maybe you should take some of what you just wrote and put=
+ it
+> into the actual docs.
 
->=20
-> I will try to rephrase this, tell me if it helps. When checking if an
-> API is sound, you are not allowed to change the code behind the API.
-> That is because `unsafe` code often relies on the surrounding safe =
-code
-> to work properly. In the example above, safe code ensures that the raw
-> pointer `ptr` is valid. This is OK (and also very necessary), since we
-> expect people to be *aware* of the `unsafe` block and thus more
-> carefully review the changes in surrounding safe code. If you have =
-safe
-> code that only interfaces with other safe code you don't need to be =
-this
-> careful.
->=20
-> Note that this heavily depends on where you put the API boundary. In =
-our
-> case, we generally have this boundary: driver code <-> `kernel` crate.
-> But if your driver requires very specific helper code that does not =
-fit
-> into the `kernel` crate, then you might also have an API boundary =
-there.
->=20
-> If it doesn't help, then it would great to get some more detailed
-> questions which part(s) you need help with.
->=20
-> ---
-> Cheers,
-> Benno
->=20
->=20
+Yeah that was part of my plan :)
 
-Yes, I think this is more clear, but note that this explanation is more =
-thorough
-than the actual example.
+Thanks for taking a look.
 
-My point being, maybe you should take some of what you just wrote and =
-put it
-into the actual docs.
+---
+Cheers,
+Benno
 
-=E2=80=94 Daniel=
