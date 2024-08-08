@@ -1,115 +1,143 @@
-Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D503443D
-	for <rust-for-linux@vger.kernel.org>; Thu,  8 Aug 2024 07:23:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2D2E7464;
+	Thu,  8 Aug 2024 07:38:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723101822; cv=none; b=KTaYtbTb1tvwdd438U3cusub5l5mcLTk3qn4wGz3c+vWSfzf0PW5FjCyiBzimTNQ9+2ewlU7d/5EQOiPvUvxykQY7Cvxa7YgZH5OC+kXhueitzjvCL/Xwq5/WXo970W/9JrcmXYFJkuL5m5FLo7xAc8JAXV4tKDbjmFWJ5ebosA=
+	t=1723102708; cv=none; b=AV0JzyvT5Dw/sqor09+ngIzihiVJILWMj/t+DLJhUfw1b8DGylcjB5XV4KNa3uu1RLJZnzvkrDfCn+zPDMNTnaIRPVtoAa0/HTyXdFAuFvQ3ddYlz/TJfXFtsLIn+cCEEr6UDmkqGZ1JNZRBMXoK5HZdsj2pZUJ0ZAkbCLBAxxU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723101822; c=relaxed/simple;
-	bh=D6RiyQPc6iIE+hdVJNJNeUNwAVhfVqgT+Pe+C9Y1kmk=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pcfwBCIL2kqPNUMB1dT/K1yBcyg8BMacTc6hOCRF+UFpgPiQDH0lX9/OoHX+iuzSSFoe98a1Hz2U/R2msq2+hdvt0s+GspvtWaAd0c5dDBOpwhW4Cay8L5a6RqfuCEPkRUwSHGrAIkPEWgubxz56R0xc6r1TelDs6yqMdolb0eI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=lZuqVuBA; arc=none smtp.client-ip=185.70.40.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="lZuqVuBA"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1723101816; x=1723361016;
-	bh=VDBYMTYmF1oXsP8HDVQe5zY6DMj6ZP0pIwM8+fNBqu0=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=lZuqVuBAlvTTtYmY28LYemK0HAMsVfDzFKp8f7Q9WapEZ9ANpdXXTjB+k+fVNE9gR
-	 ceCbdKh2+Ymuji6sqBryLB0x7zLqitrp7qHOCVzxVcbs7OeH+iWkWhGdYIKNHe+mTJ
-	 LD+p6edh5Se02bSAi2fk0zzgqZZ2i4p/jaqliAXBclCtv2UMa6g71nCeuRm6Vdp2Km
-	 xD4Esi0N2U6YRud2mblDCfAZMf00U53u7yfdeEZdW1ZRa9/cjRnDMnxPvNgH3HzNmN
-	 KvJYcbOd2ytlR1/5ZwVpqlnoVclKh3ya/3eqdt0kQhhlElb/NdhXBkDxYn9RMZCrM7
-	 JlBWoP2RaOpiA==
-Date: Thu, 08 Aug 2024 07:22:48 +0000
-To: Danilo Krummrich <dakr@kernel.org>, ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@samsung.com, aliceryhl@google.com, akpm@linux-foundation.org
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: daniel.almeida@collabora.com, faith.ekstrand@collabora.com, boris.brezillon@collabora.com, lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com, acurrid@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com, ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v4 26/28] rust: str: test: replace `alloc::format`
-Message-ID: <51d38447-9906-42fd-9e5e-b43983d3a366@proton.me>
-In-Reply-To: <20240805152004.5039-27-dakr@kernel.org>
-References: <20240805152004.5039-1-dakr@kernel.org> <20240805152004.5039-27-dakr@kernel.org>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: fbf5fad7a5e932020ec3969eec09c8bfb6ad1b62
+	s=arc-20240116; t=1723102708; c=relaxed/simple;
+	bh=hc5j+myHdlqI4TvbsXgmby9c342TeQNxoIXR9MdPZt8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=AJ1UZYVh1M5qm9h7UeeoOsHjXY7PbCHmIgvwaZCWL78f8ykT+rJQ5f2JaHvmqfYV2Cf6AsBm0PQ16WCAXRi2XCYwkAfpoe4zpuLUdQRGjn7brhXPPmu3ZLVQLMLPEbKcm9B8ZnXgyki39dxlGMVFr2Ntt1PTlpWTNvlnH0JjRlY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gompa.dev; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.218.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=gompa.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-a7aa212c1c9so86543066b.2;
+        Thu, 08 Aug 2024 00:38:26 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723102704; x=1723707504;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=4HBmbqk9ms7in+UR7tka+4chrV1ZmoOVr9gG0UPaa1E=;
+        b=okir+Z8AAOXSZdRWvK7oUgbeepJcRdbPmjgQZLavd6ReM2nIiIC8WReCwZpgqPoA05
+         KbDj7jqpD08HM4AakoSoR/cgF39qWPURiOSDjoyd7cerpZKZhV1CugTB6C+PzTHqvx0d
+         zEyh397122RNpQQ01S88Np4KShRPCs/u/dNzOFkgh3Q9h3NlLuj2ssonwSp4Bx3z0El1
+         2BIa1bwmKOAdo3cWVf24YD7yrxKpZ8/weSjH52qoF2zPtxForo37//jA/OeYcozxI+Qw
+         k1ikZt0lFp3nocoJIj22t1E5bsiTQ5erJjwmToSziP6CgARiZcyYuT7B1WtLqDEQmcUe
+         dnCg==
+X-Forwarded-Encrypted: i=1; AJvYcCWm6byVQbeRA1LPNJJkPKeG6QlImqnDFs1KzHkQ8SRk7gIZygK9Jro1cpRRPqrJdiwApt8z1/Jq5D+Lq/OESupqlYarK4fBnROCKuACkVRwDlLkeBXYP6nY5FlXUYG1svKPEYMhQnCC1AVGt5Y=
+X-Gm-Message-State: AOJu0YwptXA+lRat8R9peb9woPn+N+gFawIu+MnsjBU0JpYViFvszLZj
+	ks8EWhkyKb0AHGVPz5c1adVhAikvh1+byf7SaKNYR8oUxwObrpjKYUYbM/UbMa0=
+X-Google-Smtp-Source: AGHT+IFMncklZr3LZ6mN1e6VkBP5kQa42R44Fjt8A27gX936k/QTk8MZsfc8W5yLM7AvA2S+Frzrbw==
+X-Received: by 2002:a17:906:6a05:b0:a7a:a138:dbd2 with SMTP id a640c23a62f3a-a8090e6304amr65770466b.50.1723102704133;
+        Thu, 08 Aug 2024 00:38:24 -0700 (PDT)
+Received: from mail-ej1-f42.google.com (mail-ej1-f42.google.com. [209.85.218.42])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a7dc9c0cae0sm708145366b.56.2024.08.08.00.38.23
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 08 Aug 2024 00:38:24 -0700 (PDT)
+Received: by mail-ej1-f42.google.com with SMTP id a640c23a62f3a-a7d2a9a23d9so73172866b.3;
+        Thu, 08 Aug 2024 00:38:23 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUUzy2wf4OyCA8l87Dxf2e4T4Iau2hby85SnTt8j9SPKl6zYZmvI8zo8jBgQLAR11XHu5hVxcsfJ6fkkFGi8FVSYzB2IvDt3P92tc1RP5670FP+PhR1eSsqZ60CA2mHoPogZXVs930gb3jNTos=
+X-Received: by 2002:a17:907:c7e0:b0:a7a:8876:4427 with SMTP id
+ a640c23a62f3a-a8090c835d0mr65204466b.25.1723102703653; Thu, 08 Aug 2024
+ 00:38:23 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20240731134346.10630-1-zehuixu@whu.edu.cn> <3695674.9o76ZdvQCi@skuld-framework>
+In-Reply-To: <3695674.9o76ZdvQCi@skuld-framework>
+From: Neal Gompa <neal@gompa.dev>
+Date: Thu, 8 Aug 2024 03:37:46 -0400
+X-Gmail-Original-Message-ID: <CAEg-Je9gyR2xKF8Ky8eWTR=6odZbgCRCM6DhYPVTAJTDPDxakg@mail.gmail.com>
+Message-ID: <CAEg-Je9gyR2xKF8Ky8eWTR=6odZbgCRCM6DhYPVTAJTDPDxakg@mail.gmail.com>
+Subject: Re: [PATCH v3] rust: Kbuild: Skip -fmin-function-alignment in bindgen flags
+To: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, 
+	Zehui Xu <zehuixu@whu.edu.cn>
+Cc: boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	benno.lossin@proton.me, a.hindborg@samsung.com, aliceryhl@google.com, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On 05.08.24 17:19, Danilo Krummrich wrote:
-> The current implementation of tests in str.rs use `format!` to format
-> strings for comparison, which, internally, creates a new `String`.
->=20
-> In order to prepare for getting rid of Rust's alloc crate, we have to
-> cut this dependency. Instead, implement `format!` for `CString`.
->=20
-> Note that for userspace tests, `Kmalloc`, which is backing `CString`'s
-> memory, is just a type alias to `Cmalloc`.
->=20
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-> ---
->  rust/kernel/str.rs | 23 ++++++++++++++++++++++-
->  1 file changed, 22 insertions(+), 1 deletion(-)
->=20
-> diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
-> index 0b6ffbade521..8f234224cbf5 100644
-> --- a/rust/kernel/str.rs
-> +++ b/rust/kernel/str.rs
-> @@ -523,7 +523,28 @@ macro_rules! c_str {
->  #[cfg(test)]
->  mod tests {
->      use super::*;
-> -    use alloc::format;
-> +
-> +    struct String(CString);
-> +
-> +    impl String {
-> +        fn from_fmt(args: fmt::Arguments<'_>) -> Self {
-> +            String(CString::try_from_fmt(args).unwrap())
-> +        }
-> +    }
-> +
-> +    impl Deref for String {
-> +        type Target =3D str;
-> +
-> +        fn deref(&self) -> &str {
-> +            self.0.to_str().unwrap()
-> +        }
-> +    }
+On Wed, Aug 7, 2024 at 3:52=E2=80=AFAM Neal Gompa <neal@gompa.dev> wrote:
+>
+> On Wednesday, July 31, 2024 9:43:46=E2=80=AFAM EDT Zehui Xu wrote:
+> > GCC 14 recently added -fmin-function-alignment option and the
+> > root Makefile uses it to replace -falign-functions when available.
+> > However, this flag can cause issues when passed to the Rust
+> > Makefile and affect the bindgen process. Bindgen relies on
+> > libclang to parse C code, and currently does not support the
+> > -fmin-function-alignment flag, leading to compilation failures
+> > when GCC 14 is used.
+> >
+> > This patch addresses the issue by adding -fmin-function-alignment
+> > to the bindgen_skip_c_flags in rust/Makefile. This prevents the
+> > flag from causing compilation issues.
+> >
+> > Link:
+> > https://lore.kernel.org/linux-kbuild/20240222133500.16991-1-petr.pavlu@=
+suse
+> > .com/ Signed-off-by: Zehui Xu <zehuixu@whu.edu.cn>
+> > ---
+> > Since -falign-functions does not affect bindgen output, we do not
+> > need logic to add it back to the flags. Thanks to the community's
+> > help, especially Miguel Ojeda. Hope this patch is free of problems
+> > and can be submitted smoothly : )
+> >
+> > v1:
+> > * https://lore.kernel.org/all/20240730222053.37066-1-zehuixu@whu.edu.cn=
+/
+> >
+> > v2:
+> > * Added -falign-functions to bindgen_extra_c_flags when skipping
+> >   -fmin-function-alignment to maintain function alignment settings in G=
+CC 14
+> > * Used reasonable length and moved email content out of the commit mess=
+age
+> > * Used "Link" tag instead of "Reference:" and removed empty lines betwe=
+en
+> > tags * Specified the base commit
+> > * https://lore.kernel.org/all/20240731034112.6060-1-zehuixu@whu.edu.cn/
+> >
+> > v3:
+> > * Removed logic from patch v2 which adds -falign-functions
+> >
+> >  rust/Makefile | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> >
+> > diff --git a/rust/Makefile b/rust/Makefile
+> > index 1f10f92737f2..0c8736cce64f 100644
+> > --- a/rust/Makefile
+> > +++ b/rust/Makefile
+> > @@ -227,7 +227,7 @@ bindgen_skip_c_flags :=3D -mno-fp-ret-in-387
+> > -mpreferred-stack-boundary=3D% \ -fno-reorder-blocks
+> > -fno-allow-store-data-races -fasan-shadow-offset=3D% \
+> > -fzero-call-used-regs=3D% -fno-stack-clash-protection \
+> >       -fno-inline-functions-called-once -fsanitize=3Dbounds-strict \
+> > -     -fstrict-flex-arrays=3D% \
+> > +     -fstrict-flex-arrays=3D% -fmin-function-alignment=3D% \
+> >       --param=3D% --param asan-%
+> >
+> >  # Derived from `scripts/Makefile.clang`.
+> >
+> > base-commit: 8400291e289ee6b2bf9779ff1c83a291501f017b
+>
+> Looks good to me.
+>
+> Reviewed-by: Neal Gompa <neal@gompa.dev>
+>
 
-Don't actually think we need this newtype.
+To add, can we get this in as a fix for Linux 6.11? I can't build
+Fedora kernels with Rust stuff enabled without it since GCC 14 is
+shipped in Fedora Linux 40+.
 
-> +
-> +    macro_rules! format {
-> +        ($($f:tt)*) =3D> ({
-> +            &*String::from_fmt(kernel::fmt!($($f)*))
 
-We could just do this:
-
-    CString::try_from_fmt(kernel::fmt!($(f)*)).unwrap().to_str().unwrap()
-
----
-Cheers,
-Benno
-
-> +        })
-> +    }
->=20
->      const ALL_ASCII_CHARS: &'static str =3D
->          "\\x01\\x02\\x03\\x04\\x05\\x06\\x07\\x08\\x09\\x0a\\x0b\\x0c\\x=
-0d\\x0e\\x0f\
-> --
-> 2.45.2
->=20
-
+--=20
+=E7=9C=9F=E5=AE=9F=E3=81=AF=E3=81=84=E3=81=A4=E3=82=82=E4=B8=80=E3=81=A4=EF=
+=BC=81/ Always, there's only one truth!
