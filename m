@@ -1,43 +1,43 @@
 Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BF1C5228;
-	Thu,  8 Aug 2024 06:49:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86DBE18454F;
+	Thu,  8 Aug 2024 06:58:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723099759; cv=none; b=uonUOLOPEfEIdjMsErzs4YW8rxx2ZVmVc/6tQMX2pVHHN7Em4Z+Fg4vGg+ZwmfFk0CGZiagtBSU9252IDy+RR3wdKPrPX2FUXuP39RXTGMJHNOk28K5KPa2xsmJ2bfF9uFU/zqxGjGD+F/Ubcydxo9bZpqEkcl/XliB03SnwjQE=
+	t=1723100333; cv=none; b=FbmJ8NmfAnykc95dKDDe4FwnR6wvlnz8+yOThL+Dndu2Hj1QpIRcyA5shtlX5aDd3Jpm1Vmzj4fcrh7Z0YZIDrfEhKbiXlM6DAKGcpAC1bnorheW5JQFNhcCj+fMi9uIhLIUqos1i6DXcEJY1mPvJ/5n3zAoOZ1uXFWvxI6J/dc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723099759; c=relaxed/simple;
-	bh=bVX1rOYnUObP38XChLEDnc51mYxhtCO1Yg2yd1VhpPU=;
+	s=arc-20240116; t=1723100333; c=relaxed/simple;
+	bh=16rmbYO3s2QKoxYmTWLhZZOEa339Tp3SddTmwpRS7NY=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=crC2CcGMMHX6+JuevZ5ePH0Bilw3YLs+wZUJ3pHRaaJlSo5kyH47MRqcoCjPwx9fK3cPQjQFd8I98uvYVIWa7UdVMh5q2zUArBu+dWZp8sHjHEiUm1qGgm4TlscEyz3F1FlvXSCRUYk/D/j5/rEAo3XC1GA9p8tV1M6Y0C+zixU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=gZzIhZnY; arc=none smtp.client-ip=185.70.43.22
+	 MIME-Version:Content-Type; b=V/oy9ckJusLiphcCYbB5e9yIewpNs35NNqxcybiEMouIisBILzbdcrAVN1bwhE3HKcz9Y9LryKyR4sRR/LvCwkVzIYYAu8YAKR1SLFR1vrEcB71TRCdQN5P7FYXlZ48QnsCysXvs+ANqgZUhj6j1+3tWh9Mwmcfw/FGb7JcA/DY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=OMFJ79j4; arc=none smtp.client-ip=185.70.43.22
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="gZzIhZnY"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="OMFJ79j4"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=5jhm4nvhhng53ltcimickgczj4.protonmail; t=1723099756; x=1723358956;
-	bh=r+iBirEkz9zdRZUOXIsoz+8Ct/YLQbNnghIUazSahuk=;
+	s=4j5sgbw6zranvjeyxaiukd6oqy.protonmail; t=1723100328; x=1723359528;
+	bh=Pt9CkHZPaha/LAPnzz7aO/OUrpV2czpkgZBZ/H3KaUs=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=gZzIhZnYSN2KtUHf+ka/viVTwzQgJe1uLPTsN96oarO/VjWYam7I5tCKYzmR8wetI
-	 w15GaWqizPWrLaDRj2RnMpxPEnZ1qyDBvLH8dK9osKqv2VKR6xkF9vJVIDrlUu/1yz
-	 LUDyQuArDGPBXqfVGfR9Q3bg07BxX6auwISOGLkn0xZxbqvylWEq0ohUPrtKNfb8ND
-	 ug9Uf+RJt05Ikl7TA4y/vXnlnWDkhnPMugIQREuTuAAemwkN+dmU18ys+HqvIwLjLe
-	 SGRpJa1+i/Z7nWHoBFio13begU96iZrz5pFYwbC7ca2DLvTHzEAu+8QGh5SWgwtqoa
-	 LtRJOaafVF+VA==
-Date: Thu, 08 Aug 2024 06:49:13 +0000
+	b=OMFJ79j4+/s/X2WDIO+2lf9tDbepuwrVvV5Yd9zUo1tSr+/RBdSfdzcuW3qQC4pux
+	 OEeLnv/C4sJwqxyrS7HBs9i+TmueT5cxb2AaNo2I7DHW+HO3KbyJmS76I4fWPsTtVd
+	 6vfrlZT4pSXrXUpoz0wcH3Fc8NFB3QtWGwlX8rDLxR7qrxdI7KGmdcurbF+kAPZefL
+	 I/BMhPqhAE6ov5KkSNAXgr2wndRebYndNVSczIuxUQrYVTibTrpSQqaYf6rcRy5iKz
+	 fus8TSJKleXB0q1t+ktfu4A4KjUyyYBnddMkb/4UQaBXcl55NJOUE5HembZw3+cRRH
+	 V2fwozrJ7txBA==
+Date: Thu, 08 Aug 2024 06:58:26 +0000
 To: Danilo Krummrich <dakr@kernel.org>, ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@samsung.com, aliceryhl@google.com, akpm@linux-foundation.org
 From: Benno Lossin <benno.lossin@proton.me>
 Cc: daniel.almeida@collabora.com, faith.ekstrand@collabora.com, boris.brezillon@collabora.com, lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com, acurrid@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com, ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v4 12/28] rust: alloc: add `Box` to prelude
-Message-ID: <e8b2cd65-4a9a-45e8-842b-9669624a15fa@proton.me>
-In-Reply-To: <20240805152004.5039-13-dakr@kernel.org>
-References: <20240805152004.5039-1-dakr@kernel.org> <20240805152004.5039-13-dakr@kernel.org>
+Subject: Re: [PATCH v4 28/28] kbuild: rust: remove the `alloc` crate
+Message-ID: <45621f42-80a8-4361-8eb6-3e6294819978@proton.me>
+In-Reply-To: <20240805152004.5039-29-dakr@kernel.org>
+References: <20240805152004.5039-1-dakr@kernel.org> <20240805152004.5039-29-dakr@kernel.org>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 6d706988b4cda0f0e4b0845f99f74475cbd6639a
+X-Pm-Message-ID: 9a0ba4d0fbf6ba155982593b22c74a8671a9da45
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -48,37 +48,20 @@ Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
 On 05.08.24 17:19, Danilo Krummrich wrote:
-> Now that we removed `BoxExt` and the corresponding includes in
-> prelude.rs, add the new kernel `Box` type instead.
->=20
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> Now that we have our own `Allocator`, `Box` and `Vec` types we can remove
+> Rust's `alloc` crate and the corresponding unstable features.
 
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+Would be great if you could include the list of unstable features that
+are now no longer needed here.
 
 ---
 Cheers,
 Benno
 
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 > ---
->  rust/kernel/prelude.rs | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
->=20
-> diff --git a/rust/kernel/prelude.rs b/rust/kernel/prelude.rs
-> index a8018ef2e691..6bf77577eae7 100644
-> --- a/rust/kernel/prelude.rs
-> +++ b/rust/kernel/prelude.rs
-> @@ -14,7 +14,7 @@
->  #[doc(no_inline)]
->  pub use core::pin::Pin;
->=20
-> -pub use crate::alloc::{flags::*, vec_ext::VecExt, KBox, KVBox, VBox};
-> +pub use crate::alloc::{flags::*, vec_ext::VecExt, Box, KBox, KVBox, VBox=
-};
->=20
->  #[doc(no_inline)]
->  pub use alloc::vec::Vec;
-> --
-> 2.45.2
->=20
+>  rust/Makefile          | 44 ++++++++++--------------------------------
+>  rust/exports.c         |  1 -
+>  scripts/Makefile.build |  7 +------
+>  3 files changed, 11 insertions(+), 41 deletions(-)
 
