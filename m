@@ -1,102 +1,157 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9893194C6E;
-	Fri,  9 Aug 2024 13:51:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DDE146425;
+	Fri,  9 Aug 2024 17:31:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723211469; cv=none; b=pMI/oujZbuyxwez8N9EjWI+7jJJpiWZCVUkVlDq6scrIraTF84qjGcwKlKs35RcnLUqlq0I/RRe0LQW0sPCMRP7oGHAUVO3z7MmPy7hMLifcNAPNOVvrPWzTRFDam4P4QY3Q5Lc4QUe053m8KBC9jPRTlfwTcaHOZ0auUOuxYbk=
+	t=1723224707; cv=none; b=QJanb8kHifq6FsEJ9AhxX7qVd0B2MclLYt2BvasqjumJUsPy1YJL2jzs0yJKBAPzkDayNcfHDjeUgCqMbiQRGbNoL1cw+GiUINcdZNVE0LVU78gjtanirGQ/6+aRtjaVsaciWqLPIZwZivBmNk0omtJZmel+d4ImA+t4HElwX08=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723211469; c=relaxed/simple;
-	bh=CyjY19UrCD8k4E/bhM/4gegyA6UyPxmNSklMb+WYJSc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=B9SOjbMbfj5YncGC8s4ZUH6OPTHRiv4BwR06jGQ+EJRELI5r49m0fRmzy7RaIPwdyTKXfBRRC8UfMy0p9dPFE6CXA92OZ7UeO2B0wlaB/5PkH2BOCAdAR/HR6C3uaigVVXIW7Hqs4T/1hwAY69dxsm5YVaZ0mZkvKJbu+9YWv9M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jTh0VkYT; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1723224707; c=relaxed/simple;
+	bh=B1tPt2x47jWMPCmFbad8PbgBKHeFXTJjz5sbLvEj89Y=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=onWaXbl3kf8ybY7ikuHR1YS736R+2ZTAlDsYDS3fEsEXPsRz7lTOXsbqBktqxCRiCAIR0JwWtycnSiA0VKxxLJnXrgfDLgo2dLSURRVl/VfXlC0b3Tyo2vZppt3vg1sajPYIISoIIrnXfMKSbEKiA38eG3eD6pyQDL86yxzMezk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=KIvCwOth; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jTh0VkYT"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1F45C32782;
-	Fri,  9 Aug 2024 13:51:08 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="KIvCwOth"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 517E9C4AF09;
+	Fri,  9 Aug 2024 17:31:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723211469;
-	bh=CyjY19UrCD8k4E/bhM/4gegyA6UyPxmNSklMb+WYJSc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=jTh0VkYTqNSZZ3O5zLfZ8B8VcjHtcabsC4npYBY6ZBic3Drpdi/54GyxERCoLNxgG
-	 Ii+W7e69bMVHMl2SIIzRypRx932o2WFBlPgEw9ITD6WJaZ9BJvQ7iJJzV+Cu5a9yWW
-	 Yoj9Arq5b5kGyTW1t7OcP7DZUCZHEp+o0oCv1RvLRUFqDB6Gi6B619/g0mo+yYkZp5
-	 Z5vwb7KT8AvQxIm3290fSJL4chKmECFUR8mqTjjZiDTdXaQrcRD7HcDYBFJiOMZNfD
-	 MflZMWzIeNy2Py6L8VUOUqFYkaK3LUwwXQCjIr4gfur8Lfg9EfpzFuTNMufCP6JeYI
-	 kk2dm591yCXbQ==
-Date: Fri, 9 Aug 2024 10:51:06 -0300
-From: Arnaldo Carvalho de Melo <acme@kernel.org>
-To: Alan Maguire <alan.maguire@oracle.com>
-Cc: Matthew Maurer <mmaurer@google.com>, rust-for-linux@vger.kernel.org,
-	dwarves@vger.kernel.org, aliceryhl@google.com
-Subject: Re: [PATCH v2] pahole: Apply CU-level filters early in loading
-Message-ID: <ZrYeyjyuHiJyj7Xf@x1>
-References: <20240801185054.2518383-1-mmaurer@google.com>
- <25bc65c9-e28e-48cd-b5a9-f603d846ae51@oracle.com>
- <ZrYPVQwJePB-nyO2@x1>
+	s=k20201202; t=1723224707;
+	bh=B1tPt2x47jWMPCmFbad8PbgBKHeFXTJjz5sbLvEj89Y=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=KIvCwOthaSYvnMmQvLtNxeHD4z9Y8uOK680sYuMoHJHMMC9+O+dKugmhaKnkwbil3
+	 kyQBZN97kKo65zkh4AGhPg0uRQsYaHykC+ZG3VNmf9Qz9hZjUmzf/mrS/Ag2oYRMoz
+	 iS1TDiIZcX+F764xX6o0QUzDpbQSSGZWfrH5GbMPlekbUIpVw1qXNAUDSZGVj5GFlZ
+	 GPtwEmbUJEq5BzZU0LHscPxlQ1stETr9dKz9CuyYNoFrhaMyQyZ5yO2jGiuVFbj+Du
+	 v0pUgxrVYCiHSAximOo0Fw4rXeQOsjlEJsAV9rSggXFVs2h3ycPoInSdYKfinnKwsv
+	 JpmymHMi6NUPw==
+Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-2f183f4fa63so19389971fa.1;
+        Fri, 09 Aug 2024 10:31:47 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCV3XU/lQ3fTWYvzUIjfDl1koudgoYFrEij0970lfNYL+EeFyND3pxiY3Zu47JWPV51sOMqMrs4OvN8Afj9x@vger.kernel.org, AJvYcCVi6jRw1pMVVM4pR27sRsyUmwkyHXDyBXF2EU31ktkvpZiu0urvMFukehf+0gpxaGapmKUdEN/bn274ml0=@vger.kernel.org, AJvYcCWkvmIrHUe1D3SnOoFrdI0ULSqkCd0rE17BcxUdDQwdhGTR1JNMs9LoszaNEJIc1/X8DiRn3iCtWzobo5aqzQ0=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywj+OCML0UAIqt4QyuoD79KCNva+XC32EVms/MkHxLP2JYSRRcT
+	mOf0Dkqmb8bLu7GlH4CzWmzHY8bJbmRettTxP4ietiAem5UNgtxAYEdfjHtN7edntsEgIsOdb8u
+	itLRwBcVrrI9T3XjKDMo1c2veepY=
+X-Google-Smtp-Source: AGHT+IExsuSuqXRo19fwiANbiO6YZXnMjSylykBB8elfZCRswlRHZA4pGb68g38boZBAAcqt0qToAq6btKa4wOS7mQU=
+X-Received: by 2002:a05:651c:551:b0:2ef:1efb:1b6b with SMTP id
+ 38308e7fff4ca-2f1a7a67ae6mr6213451fa.15.1723224705902; Fri, 09 Aug 2024
+ 10:31:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <ZrYPVQwJePB-nyO2@x1>
+References: <20240808221138.873750-1-ojeda@kernel.org> <20240808221138.873750-6-ojeda@kernel.org>
+In-Reply-To: <20240808221138.873750-6-ojeda@kernel.org>
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Sat, 10 Aug 2024 02:31:08 +0900
+X-Gmail-Original-Message-ID: <CAK7LNAQBG0nDupXSgAAk-6nOqeqGVkr3H1RjYaqRJ1OxmLm6xA@mail.gmail.com>
+Message-ID: <CAK7LNAQBG0nDupXSgAAk-6nOqeqGVkr3H1RjYaqRJ1OxmLm6xA@mail.gmail.com>
+Subject: Re: [PATCH 5/6] kbuild: rust: replace proc macros dependency on
+ `core.o` with the version text
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, 
+	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Aug 09, 2024 at 09:45:13AM -0300, Arnaldo Carvalho de Melo wrote:
-> On Tue, Aug 06, 2024 at 01:10:03PM +0100, Alan Maguire wrote:
-> > On 01/08/2024 19:50, Matthew Maurer wrote:
-> > > Without this, even with `--lang_exclude=rust` set, running on `vmlinux`
-> > > with `CONFIG_RUST` enabled will lead to errors like:
-> > > die__process_function: tag not supported 0x2f (template_type_parameter)!
-> > > because the filtering doesn't happen until finalization, but unsupported
-> > > tags are reported during loading.
-> > > 
-> > > As an added bonus, this should speed up processing of large objects with
-> > > filtered CUs, as their details will no longer be walked.
-> > > 
-> > > Signed-off-by: Matthew Maurer <mmaurer@google.com>
-> > 
-> > LGTM, thanks!
-> > 
-> > Reviewed-by: Alan Maguire <alan.maguire@oracle.com>
-> > Tested-by: Alan Maguire <alan.maguire@oracle.com>
-> 
-> Thanks, I just split it into two patches, one adding the new early
-> filtering facility and with the second making then use of this new
-> facility in pahole:
-> 
-> ⬢[acme@toolbox pahole]$ git log --oneline -5
-> fbcca0f6c2fbeb52 (HEAD -> master) pahole: Do --languages_exclude CU filtering earlier
-> 1f8d83d16d6d6dfa dwarf_loader: Allow filtering CUs  early in loading
+On Fri, Aug 9, 2024 at 7:12=E2=80=AFAM Miguel Ojeda <ojeda@kernel.org> wrot=
+e:
+>
+> With the `RUSTC_VERSION_TEXT` rebuild support in place, now proc macros
+> can depend on that instead of `core.o`.
+>
+> This means that both the `core` and `macros` crates can be built in
+> parallel, and that touching `core.o` does not trigger a rebuild of the
+> proc macros.
+>
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> ---
+>  rust/Makefile | 5 ++---
+>  1 file changed, 2 insertions(+), 3 deletions(-)
+>
+> diff --git a/rust/Makefile b/rust/Makefile
+> index 966743a9ee25..40c8d2c57024 100644
+> --- a/rust/Makefile
+> +++ b/rust/Makefile
+> @@ -329,9 +329,8 @@ quiet_cmd_rustc_procmacro =3D $(RUSTC_OR_CLIPPY_QUIET=
+) P $@
+>                 --crate-name $(patsubst lib%.so,%,$(notdir $@)) $<
+>
+>  # Procedural macros can only be used with the `rustc` that compiled it.
+> -# Therefore, to get `libmacros.so` automatically recompiled when the com=
+piler
+> -# version changes, we add `core.o` as a dependency (even if it is not ne=
+eded).
+> -$(obj)/libmacros.so: $(src)/macros/lib.rs $(obj)/core.o FORCE
+> +$(obj)/libmacros.so: $(src)/macros/lib.rs \
+> +    $(wildcard $(objtree)/include/config/RUSTC_VERSION_TEXT) FORCE
+>         +$(call if_changed_dep,rustc_procmacro)
 
-Tested building a kernel with CONFIG_RUST, no warnings (that
-template_type_param wouldn't appear anyway as I added initial support
-for it, at least for creating some structs out of its DWARF info, so no
-more warnings), but:
 
-⬢[acme@toolbox linux]$ pahole -C '<kernel::str::RawFormatter as core::fmt::Write>::{vtable_type}' ../build/rust-kernel/rust/kernel.o 
-die__process_class: tag not supported 0x33 (variant_part) at <14f43>!
-struct <kernel::str::RawFormatter as core::fmt::Write>::{vtable_type} {
-	() *                       drop_in_place __attribute__((__aligned__(8))); /*     0     8 */
-	usize                      size __attribute__((__aligned__(8))); /*     8     8 */
-	usize                      align __attribute__((__aligned__(8))); /*    16     8 */
-	() *                       __method3 __attribute__((__aligned__(8))); /*    24     8 */
-	() *                       __method4 __attribute__((__aligned__(8))); /*    32     8 */
-	() *                       __method5 __attribute__((__aligned__(8))); /*    40     8 */
 
-	/* size: 48, cachelines: 1, members: 6 */
-	/* forced alignments: 6 */
-	/* last cacheline: 48 bytes */
-} __attribute__((__aligned__(8)));
+The touched file, include/config/*, is an implementation detail
+in Kconfig and fixdep.
 
-⬢[acme@toolbox linux]$
 
-That DW_TAG_variant_part warning would show up without this series, so
-seems to be working as expected :-)
+Rather, I'd like to put the string "CONFIG_RUST_VERSION_TEXT"
+in the comment of the source file.
 
-- Arnaldo
+This is the idea adopted in include/linux/compiler-version.h
+
+
+
+diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
+index 5be0cb9db3ee..91be2112ceee 100644
+--- a/rust/macros/lib.rs
++++ b/rust/macros/lib.rs
+@@ -2,6 +2,10 @@
+
+ //! Crate for all kernel procedural macros.
+
++// When fixdep scans this, it will find this string "CONFIG_RUSTC_VERSION_=
+TEXT"
++// and add dependency on include/config/RUSTC_VERSION_TEXT, which is touch=
+ed
++// by Kconfig when the version string from the compiler changes.
++
+ #[macro_use]
+ mod quote;
+ mod concat_idents;
+
+
+
+
+
+
+I do not know how to do it for rust/core.o because there is no in-tree
+source file.
+
+But, can we add rust/core.rs, from which
+rustlib/src/rust/library/core/src/macros/mod.rs is imported?
+
+
+
+
+
+
+
+
+>
+>  quiet_cmd_rustc_library =3D $(if $(skip_clippy),RUSTC,$(RUSTC_OR_CLIPPY_=
+QUIET)) L $@
+> --
+> 2.46.0
+>
+>
+
+
+--=20
+Best Regards
+Masahiro Yamada
