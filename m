@@ -1,87 +1,107 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE8F615EFA3;
-	Thu,  8 Aug 2024 22:12:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33CED16C866
+	for <rust-for-linux@vger.kernel.org>; Fri,  9 Aug 2024 06:42:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723155143; cv=none; b=LyYn68OO8LcuXXd+1oJrEpcHEZ9foOAts/cx8rP+iDYppOqRxH2yiRv80PYEEAMtPdW6qV5Oe7VeyL1HrOEWRTzW4diHDI2x0+P4oGzCKCBtQoJiTD6YQn9DYX8ywzG2nhIzbB9pdrk5qhsSs8JdnX8Zh0nCjmZ/AYGjXqohEHs=
+	t=1723185748; cv=none; b=Ksiv4OKZTzfKbk3vcq2PJqAc9xmHC4fo9e8ndu0+5NuCsH5B/RfKFywk9Q6Wu4gHh41l08pc/zSPyj3poXbTuVkQ9oFGY+YOS9YqtWa8Klpw+jyY6Y/eQY+Cx4yIFUQ+8rJ5cg+mY9p75HXf8C8OHzZgotQ+BzTo31j+0+s8AUM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723155143; c=relaxed/simple;
-	bh=Dd+AEbTggXStEdSEmha1BZG1604nKY6E7BJ1Ers8Xg8=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JPL6kXlBDy8UfOrUQthNSJpwxERR/JbPthzFMFX27IIR8kKH5ef08H9a7FLYs/GqnUnrK8oaVTWBS/wMp/gSfAcgk5acUo/0M5byoolxurjeMWlHguRAdFOj/VEe4E+bL81VTSABvvXVpF4PM5crWaNYHyAK5rQZMt9wU8o2Ars=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SGmtupP7; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1723185748; c=relaxed/simple;
+	bh=HholN/+XdyMinrqUfy63uVJsuU7d+wbTPtlTlhrsKx0=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=gYlGVTWSzfvAUKy0x3QStVoRJP6jhf/v/TUCI86THpgc7frxspTevvN7WEhUuIY8KCbSVvUFWYkAi7wQ+C8wLk1FC/cgavN5n67ywg7NCuTBdUJsljFGvKh9sNe2J2xDTS8pEj412bm/EbDP4fWvb+wOtGTZ10Cql1zxm32VpG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=A3Upvgbx; arc=none smtp.client-ip=209.85.128.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SGmtupP7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63A50C4AF0C;
-	Thu,  8 Aug 2024 22:12:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723155143;
-	bh=Dd+AEbTggXStEdSEmha1BZG1604nKY6E7BJ1Ers8Xg8=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SGmtupP7vC2I1Rz0y72beEuKjy7ao5c5zZ0/GBwzGdTnECfOx7ztRX6M4dcJCO+Jv
-	 ZR+VFVJeENtfffM9cqyxHPOMOmY0byYitIFgeb5+ubeyklDz6kAmNjyS1YYCH5ZPtR
-	 H800xsWsYxPaakivRIRWleNtUfKfc/UwpHTQTys9jEKeJPfYqgd9bOk70qvnMi4DjR
-	 xMTtYAtPz0Kxu9fDZcZi7SDXbzVhvKojGx7GH1NnHv1GWByWJhHLMTE1/5JhvgPZqn
-	 DtGuQ4l/dGd8H6X1ct6zCy3hzgLYtyXxDTroTYgV/uRKzHHk42rC5/Z8+9VIdmwouw
-	 GwOjUEUkA+fgg==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Masahiro Yamada <masahiroy@kernel.org>
-Cc: Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	rust-for-linux@vger.kernel.org,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nicolas@fjasle.eu>,
-	linux-kbuild@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	patches@lists.linux.dev
-Subject: [PATCH 6/6] docs: rust: include other expressions in conditional compilation section
-Date: Fri,  9 Aug 2024 00:11:38 +0200
-Message-ID: <20240808221138.873750-7-ojeda@kernel.org>
-In-Reply-To: <20240808221138.873750-1-ojeda@kernel.org>
-References: <20240808221138.873750-1-ojeda@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="A3Upvgbx"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4281310bf7aso12182895e9.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 08 Aug 2024 23:42:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1723185745; x=1723790545; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=ycWHxy08yR7R4gUQxQ3NP2HVLqXqLgVRiOf0Wrc6YeE=;
+        b=A3UpvgbxTYV3V0V+GQZSf+KZ7h2PKfLbb2Sp+w0tAbK/rz4BOCWJdw++UWXXTpcGpJ
+         cQDDaUnpprgBnD251lCs4mD5N0yGKzeqjI9oRNuJXPrFpaDSmupKrcK1d523jR0mWZPj
+         YF/qM6N5/qrnCtaev4aQgJpuBQazvf/zeLgNYzL3mc2u28EhAE+F6fL0mkwtUJ8RNB+z
+         ceeLta1IpNanxGE8VH0XMe0HCdrBTjtYd+Mxul7ezrHwAxQFMJ59t0+Hi/gwDC119xg3
+         uXLsHl7kAgSxCJEkyjAidklGs9EeVUInz1AOgMNjp6OrpzYzsaPQuKUvGyBqZQj4y0CB
+         X77Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723185745; x=1723790545;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=ycWHxy08yR7R4gUQxQ3NP2HVLqXqLgVRiOf0Wrc6YeE=;
+        b=cRHBAvFvugbmy5CEgZQwfojAvhdh08vTCTD9Eh5LcAquS1HbYjmc0m4lOg263P4FQy
+         cIHjtDXp//DQuArhLvZIO0WncayDUc5jyhE+lBqbc40ZupdzqL3CiXx4uKod/+Gfqejr
+         Xknyt4HVPdUS2XSEhIL0RqtPsjBiiJaX9mfX4jNjxzEz62zMmclYczlMA1J4wHtNdhTI
+         CMnhqe9d+h/0YYQp6f2xrUlssD1o1+5I7gapV6WIU4OnRzoJyW4k4YD/iWzN3V8rBrqm
+         YYEPcllh587blJx0XVashijKDan8YkfMNG7w1ddnlx2qc9S3sFI0Z5NIAxcwP6IHu0hn
+         9NUw==
+X-Forwarded-Encrypted: i=1; AJvYcCXpoQ0UinXLIFn7r99H+DRG4OmHLLCXYt7RECvll4X//q4n15AUp5xtFhkBT4jn0+AQp9rrJrvjJOuZB/xE80sVWvpPa4bvMzAcXeSP3GA=
+X-Gm-Message-State: AOJu0YwSaTh9Qyvv9x5em/MzclcGcWn72vyfDeIvHM7VAeeK/3xv+ZYD
+	IOH5GBBVnyez0BZChUn3/no5DSKYWyKQMDtt23SjZ8B1vezv+Q1lgaqrSeWLkBcnL1GtPQgtj3q
+	RJXFl4V8OLwftQw==
+X-Google-Smtp-Source: AGHT+IFQkj4oMuGjXzErYfkKCkm/h2A8MyaTmrLJIibB0GRREzpqMzzF5KRDGS+wu9dVXLR5StKjDEzve+YWlD8=
+X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:35bd])
+ (user=aliceryhl job=sendgmr) by 2002:a05:600c:3c84:b0:426:5c35:ffce with SMTP
+ id 5b1f17b1804b1-429c3a5b035mr21605e9.6.1723185745452; Thu, 08 Aug 2024
+ 23:42:25 -0700 (PDT)
+Date: Fri,  9 Aug 2024 06:42:22 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=810; i=aliceryhl@google.com;
+ h=from:subject; bh=HholN/+XdyMinrqUfy63uVJsuU7d+wbTPtlTlhrsKx0=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBmtbkDvrPOy3Lva2fPoYFKULqo/X6D5Zi3RRhlk
+ ry/UBhYXcKJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZrW5AwAKCRAEWL7uWMY5
+ RiijEACLoqDuh3y8sO80/Q1j8lzQaTjTaa0hPkpGfrfC1YwA/b0BmaXZQmmviaUOOid5VZg3Gqv
+ jA/dewKNo8X5UsHZUKWBEeDRLUkgzmx4QKkjSidfP0o6cBH35pNHnA/Mtpyyxz93nYehOkcekY3
+ MZcQFnGHTRfA+HYJireDVD5UinWQreqY8ExtsfkWaGUOEVCX4UxljxG7hcageZ63lFtryFnWs9p
+ zlLyV2OmnuWWx1DwWQimzXfa4q8v4xufKX5SDHzMQv/08DtRADcw0GXqfQgIlgH89HXbgiT3Nbd
+ EWcgw8pH4SwieSNzSHloQtHmpivcB7o9ncAfAZT0BjV73ff3bOnk5dBaxZboOtRr1SKj+2QmDTq
+ BDaUJ9Mx0fVj7eIjRStcG/y70vlwkvtf0oJfLodLr08QlCCQFv11bSdD7jQz5YNS/2zqDyE4F+i
+ XB3UBjoxJO2DayItBI8jCX0XFrjXTu6Tje+nzHQXV43vxt2PdhImSW+4OrBY4dLwJM3dCetTmTB
+ z4fq0N24xb22DnYn9uXE4FrevRXUzB4N0FJUtcq8KbiPGYexOflp98AO86Hy/MD/WSDAGwI9bnP
+ G8l1pnhqidmRF7tUtDhIxQ+bvouAvTqrELf0Kq0pKOeXfdmkPmhlmHrmvXD7CUry3bqQCiCk0Yr EP0P/bXtC8W9ISA==
+X-Mailer: git-send-email 2.46.0.76.ge559c4bf1a-goog
+Message-ID: <20240809064222.3527881-1-aliceryhl@google.com>
+Subject: [PATCH] rust: sort includes in bindings_helper.h
+From: Alice Ryhl <aliceryhl@google.com>
+To: Jens Axboe <axboe@kernel.dk>, Miguel Ojeda <ojeda@kernel.org>, 
+	Andreas Hindborg <a.hindborg@samsung.com>
+Cc: linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-Expand the conditional compilation section to explain how to support
-other expressions, such as testing whether `RUSTC_VERSION` is at least
-a given version, which requires a numerical comparison that Rust's `cfg`
-predicates do not support (yet?).
+Dash has ascii value 45 and underscore has ascii value 95, so to
+correctly sort the includes, the underscore should be last.
 
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Fixes: 3253aba3408a ("rust: block: introduce `kernel::block::mq` module")
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 ---
- Documentation/rust/general-information.rst | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ rust/bindings/bindings_helper.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/rust/general-information.rst b/Documentation/rust/general-information.rst
-index e3f388ef4ee4..071c5bafd668 100644
---- a/Documentation/rust/general-information.rst
-+++ b/Documentation/rust/general-information.rst
-@@ -142,3 +142,11 @@ configuration:
- 	#[cfg(CONFIG_X="y")]   // Enabled as a built-in (`y`)
- 	#[cfg(CONFIG_X="m")]   // Enabled as a module   (`m`)
- 	#[cfg(not(CONFIG_X))]  // Disabled
-+
-+For other predicates that Rust's ``cfg`` does not support, e.g. expressions with
-+numerical comparisons, one may define a new Kconfig symbol:
-+
-+.. code-block:: kconfig
-+
-+	config RUSTC_VERSION_MIN_107900
-+		def_bool y if RUSTC_VERSION >= 107900
+diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+index b940a5777330..ae82e9c941af 100644
+--- a/rust/bindings/bindings_helper.h
++++ b/rust/bindings/bindings_helper.h
+@@ -7,8 +7,8 @@
+  */
+ 
+ #include <kunit/test.h>
+-#include <linux/blk_types.h>
+ #include <linux/blk-mq.h>
++#include <linux/blk_types.h>
+ #include <linux/blkdev.h>
+ #include <linux/errname.h>
+ #include <linux/ethtool.h>
 -- 
-2.46.0
+2.46.0.76.ge559c4bf1a-goog
 
