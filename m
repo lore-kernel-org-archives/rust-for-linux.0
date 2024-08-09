@@ -1,107 +1,119 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33CED16C866
-	for <rust-for-linux@vger.kernel.org>; Fri,  9 Aug 2024 06:42:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 838511922C7;
+	Fri,  9 Aug 2024 12:45:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723185748; cv=none; b=Ksiv4OKZTzfKbk3vcq2PJqAc9xmHC4fo9e8ndu0+5NuCsH5B/RfKFywk9Q6Wu4gHh41l08pc/zSPyj3poXbTuVkQ9oFGY+YOS9YqtWa8Klpw+jyY6Y/eQY+Cx4yIFUQ+8rJ5cg+mY9p75HXf8C8OHzZgotQ+BzTo31j+0+s8AUM=
+	t=1723207513; cv=none; b=kzkp0TwxGXTLviE+nPSgYq5ij7BhW3ug9ek61S5+YU6+TurxdDUVVdYTHgGyTeD2Yj34Qi+S6dUJtTzIvF86t6x4+UGIoxbceWG5W/Cpu4v2SYjizle5EMoa6SDmIeVfATtg0uZ1eE2hafWrq0RC/TdRdi1q9OtB416DFzBKi0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723185748; c=relaxed/simple;
-	bh=HholN/+XdyMinrqUfy63uVJsuU7d+wbTPtlTlhrsKx0=;
-	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=gYlGVTWSzfvAUKy0x3QStVoRJP6jhf/v/TUCI86THpgc7frxspTevvN7WEhUuIY8KCbSVvUFWYkAi7wQ+C8wLk1FC/cgavN5n67ywg7NCuTBdUJsljFGvKh9sNe2J2xDTS8pEj412bm/EbDP4fWvb+wOtGTZ10Cql1zxm32VpG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=A3Upvgbx; arc=none smtp.client-ip=209.85.128.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+	s=arc-20240116; t=1723207513; c=relaxed/simple;
+	bh=oZkRrJzKxfQUn1quAHgpuD1t0d2KjrkwCBHzaDvkW2M=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=RdNlKIjlxaFthK3BWeabvEKQ6eZv9TSk/Sj8RZ/ugAQcAEj/VFsVMv9pZ/Yk8gbQunl7Gde+BnRINpofFzP0u96d1hKRp0wlwnPtu2ke2eUhLE2t/49cU+X1XNk1RlGYRVmIcZ0DDUKirjoplxkSbFgoccb9KPcTFyMhhQAugI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AmI+pXAJ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="A3Upvgbx"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-4281310bf7aso12182895e9.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 08 Aug 2024 23:42:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1723185745; x=1723790545; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=ycWHxy08yR7R4gUQxQ3NP2HVLqXqLgVRiOf0Wrc6YeE=;
-        b=A3UpvgbxTYV3V0V+GQZSf+KZ7h2PKfLbb2Sp+w0tAbK/rz4BOCWJdw++UWXXTpcGpJ
-         cQDDaUnpprgBnD251lCs4mD5N0yGKzeqjI9oRNuJXPrFpaDSmupKrcK1d523jR0mWZPj
-         YF/qM6N5/qrnCtaev4aQgJpuBQazvf/zeLgNYzL3mc2u28EhAE+F6fL0mkwtUJ8RNB+z
-         ceeLta1IpNanxGE8VH0XMe0HCdrBTjtYd+Mxul7ezrHwAxQFMJ59t0+Hi/gwDC119xg3
-         uXLsHl7kAgSxCJEkyjAidklGs9EeVUInz1AOgMNjp6OrpzYzsaPQuKUvGyBqZQj4y0CB
-         X77Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723185745; x=1723790545;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=ycWHxy08yR7R4gUQxQ3NP2HVLqXqLgVRiOf0Wrc6YeE=;
-        b=cRHBAvFvugbmy5CEgZQwfojAvhdh08vTCTD9Eh5LcAquS1HbYjmc0m4lOg263P4FQy
-         cIHjtDXp//DQuArhLvZIO0WncayDUc5jyhE+lBqbc40ZupdzqL3CiXx4uKod/+Gfqejr
-         Xknyt4HVPdUS2XSEhIL0RqtPsjBiiJaX9mfX4jNjxzEz62zMmclYczlMA1J4wHtNdhTI
-         CMnhqe9d+h/0YYQp6f2xrUlssD1o1+5I7gapV6WIU4OnRzoJyW4k4YD/iWzN3V8rBrqm
-         YYEPcllh587blJx0XVashijKDan8YkfMNG7w1ddnlx2qc9S3sFI0Z5NIAxcwP6IHu0hn
-         9NUw==
-X-Forwarded-Encrypted: i=1; AJvYcCXpoQ0UinXLIFn7r99H+DRG4OmHLLCXYt7RECvll4X//q4n15AUp5xtFhkBT4jn0+AQp9rrJrvjJOuZB/xE80sVWvpPa4bvMzAcXeSP3GA=
-X-Gm-Message-State: AOJu0YwSaTh9Qyvv9x5em/MzclcGcWn72vyfDeIvHM7VAeeK/3xv+ZYD
-	IOH5GBBVnyez0BZChUn3/no5DSKYWyKQMDtt23SjZ8B1vezv+Q1lgaqrSeWLkBcnL1GtPQgtj3q
-	RJXFl4V8OLwftQw==
-X-Google-Smtp-Source: AGHT+IFQkj4oMuGjXzErYfkKCkm/h2A8MyaTmrLJIibB0GRREzpqMzzF5KRDGS+wu9dVXLR5StKjDEzve+YWlD8=
-X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:35bd])
- (user=aliceryhl job=sendgmr) by 2002:a05:600c:3c84:b0:426:5c35:ffce with SMTP
- id 5b1f17b1804b1-429c3a5b035mr21605e9.6.1723185745452; Thu, 08 Aug 2024
- 23:42:25 -0700 (PDT)
-Date: Fri,  9 Aug 2024 06:42:22 +0000
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AmI+pXAJ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71072C32782;
+	Fri,  9 Aug 2024 12:45:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1723207513;
+	bh=oZkRrJzKxfQUn1quAHgpuD1t0d2KjrkwCBHzaDvkW2M=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=AmI+pXAJdwNQ6kkDzC1cR6xrM1Ynq6CqTuzweBscKlC3rOl5cevscMNndRSD0e856
+	 KzzveKpQUkjF4QACEQzo4o5PxB4aY8QU1XIMRJivO0sS+/LA5VA0Zpilo1Gq5WHAED
+	 bPiXbj/MtyjH4ZQLjupYSbhqNvCKBqXIEb2hR4lYQqJMrD497fMeRcNOTY8elE+Pwh
+	 4+t8/CWY5drxV1iv3ekNAWbgNK8EaZsAzZzyZoWuE9nObXOC354pMLSzC6ysWT/enO
+	 93P0skTGPTGLKMe5OPozkWXdDyXtn5P4CoDfDSwigmg1Ja1yF/J0ozffD8IIsrTaB/
+	 UGME9rSc2ulgg==
+Date: Fri, 9 Aug 2024 09:45:09 -0300
+From: Arnaldo Carvalho de Melo <acme@kernel.org>
+To: Alan Maguire <alan.maguire@oracle.com>
+Cc: Matthew Maurer <mmaurer@google.com>, rust-for-linux@vger.kernel.org,
+	dwarves@vger.kernel.org, aliceryhl@google.com
+Subject: Re: [PATCH v2] pahole: Apply CU-level filters early in loading
+Message-ID: <ZrYPVQwJePB-nyO2@x1>
+References: <20240801185054.2518383-1-mmaurer@google.com>
+ <25bc65c9-e28e-48cd-b5a9-f603d846ae51@oracle.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=810; i=aliceryhl@google.com;
- h=from:subject; bh=HholN/+XdyMinrqUfy63uVJsuU7d+wbTPtlTlhrsKx0=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBmtbkDvrPOy3Lva2fPoYFKULqo/X6D5Zi3RRhlk
- ry/UBhYXcKJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZrW5AwAKCRAEWL7uWMY5
- RiijEACLoqDuh3y8sO80/Q1j8lzQaTjTaa0hPkpGfrfC1YwA/b0BmaXZQmmviaUOOid5VZg3Gqv
- jA/dewKNo8X5UsHZUKWBEeDRLUkgzmx4QKkjSidfP0o6cBH35pNHnA/Mtpyyxz93nYehOkcekY3
- MZcQFnGHTRfA+HYJireDVD5UinWQreqY8ExtsfkWaGUOEVCX4UxljxG7hcageZ63lFtryFnWs9p
- zlLyV2OmnuWWx1DwWQimzXfa4q8v4xufKX5SDHzMQv/08DtRADcw0GXqfQgIlgH89HXbgiT3Nbd
- EWcgw8pH4SwieSNzSHloQtHmpivcB7o9ncAfAZT0BjV73ff3bOnk5dBaxZboOtRr1SKj+2QmDTq
- BDaUJ9Mx0fVj7eIjRStcG/y70vlwkvtf0oJfLodLr08QlCCQFv11bSdD7jQz5YNS/2zqDyE4F+i
- XB3UBjoxJO2DayItBI8jCX0XFrjXTu6Tje+nzHQXV43vxt2PdhImSW+4OrBY4dLwJM3dCetTmTB
- z4fq0N24xb22DnYn9uXE4FrevRXUzB4N0FJUtcq8KbiPGYexOflp98AO86Hy/MD/WSDAGwI9bnP
- G8l1pnhqidmRF7tUtDhIxQ+bvouAvTqrELf0Kq0pKOeXfdmkPmhlmHrmvXD7CUry3bqQCiCk0Yr EP0P/bXtC8W9ISA==
-X-Mailer: git-send-email 2.46.0.76.ge559c4bf1a-goog
-Message-ID: <20240809064222.3527881-1-aliceryhl@google.com>
-Subject: [PATCH] rust: sort includes in bindings_helper.h
-From: Alice Ryhl <aliceryhl@google.com>
-To: Jens Axboe <axboe@kernel.dk>, Miguel Ojeda <ojeda@kernel.org>, 
-	Andreas Hindborg <a.hindborg@samsung.com>
-Cc: linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
-Content-Type: text/plain; charset="UTF-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <25bc65c9-e28e-48cd-b5a9-f603d846ae51@oracle.com>
 
-Dash has ascii value 45 and underscore has ascii value 95, so to
-correctly sort the includes, the underscore should be last.
+On Tue, Aug 06, 2024 at 01:10:03PM +0100, Alan Maguire wrote:
+> On 01/08/2024 19:50, Matthew Maurer wrote:
+> > Without this, even with `--lang_exclude=rust` set, running on `vmlinux`
+> > with `CONFIG_RUST` enabled will lead to errors like:
+> > die__process_function: tag not supported 0x2f (template_type_parameter)!
+> > because the filtering doesn't happen until finalization, but unsupported
+> > tags are reported during loading.
+> > 
+> > As an added bonus, this should speed up processing of large objects with
+> > filtered CUs, as their details will no longer be walked.
+> > 
+> > Signed-off-by: Matthew Maurer <mmaurer@google.com>
+> 
+> LGTM, thanks!
+> 
+> Reviewed-by: Alan Maguire <alan.maguire@oracle.com>
+> Tested-by: Alan Maguire <alan.maguire@oracle.com>
 
-Fixes: 3253aba3408a ("rust: block: introduce `kernel::block::mq` module")
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
- rust/bindings/bindings_helper.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Thanks, I just split it into two patches, one adding the new early
+filtering facility and with the second making then use of this new
+facility in pahole:
 
-diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-index b940a5777330..ae82e9c941af 100644
---- a/rust/bindings/bindings_helper.h
-+++ b/rust/bindings/bindings_helper.h
-@@ -7,8 +7,8 @@
-  */
+⬢[acme@toolbox pahole]$ git log --oneline -5
+fbcca0f6c2fbeb52 (HEAD -> master) pahole: Do --languages_exclude CU filtering earlier
+1f8d83d16d6d6dfa dwarf_loader: Allow filtering CUs  early in loading
+14be4e3d3fe56ce9 pahole: Only warn about multithreading not being available with older versions of elfutils in verbose mode
+ee933f35484ac934 dwarf_loader: Simplify the tag__alloc() routine
+cbecc3785266f0c5 (x1/master) dwarf_loader: Do just one alloc for 'struct dwarf_tag + struct tag'
+⬢[acme@toolbox pahole]$ git show
+commit fbcca0f6c2fbeb52349e28f03093a7efafb040ea (HEAD -> master)
+Author: Matthew Maurer <mmaurer@google.com>
+Date:   Thu Aug 1 18:50:54 2024 +0000
+
+    pahole: Do --languages_exclude CU filtering earlier
+    
+    With this, we can avoid warnings for unsupported DWARF tags like:
+    
+      die__process_function: tag not supported 0x2f (template_type_parameter)!
+    
+    when processing object files generated from languages such as Rust, for
+    instance when building the Linux kernel with `CONFIG_RUST`, after
+    appltying the next patch in this series.
+    
+    As an added bonus, this should speed up processing of large objects with
+    filtered CUs, as their details will no longer be walked.
+    
+    Reviewed-by: Alan Maguire <alan.maguire@oracle.com>
+    Signed-off-by: Matthew Maurer <mmaurer@google.com>
+    Tested-by: Alan Maguire <alan.maguire@oracle.com>
+    Cc: Alice Ryhl <aliceryhl@google.com>
+    Cc: rust-for-linux@vger.kernel.org
+    Link: https://lore.kernel.org/r/20240801185054.2518383-1-mmaurer@google.com
+    [ Split from a larger patch ]
+    Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+
+diff --git a/pahole.c b/pahole.c
+index 4db51071b97d5f09..42ef6c262384a8e0 100644
+--- a/pahole.c
++++ b/pahole.c
+@@ -3766,6 +3766,10 @@ int main(int argc, char *argv[])
+        memset(tab, ' ', sizeof(tab) - 1);
  
- #include <kunit/test.h>
--#include <linux/blk_types.h>
- #include <linux/blk-mq.h>
-+#include <linux/blk_types.h>
- #include <linux/blkdev.h>
- #include <linux/errname.h>
- #include <linux/ethtool.h>
--- 
-2.46.0.76.ge559c4bf1a-goog
-
+        conf_load.steal = pahole_stealer;
++
++       if (languages.exclude)
++               conf_load.early_cu_filter = cu__filter;
++
+        conf_load.thread_exit = pahole_thread_exit;
+ 
+        if (conf_load.reproducible_build) {
+⬢[acme@toolbox pahole]$
