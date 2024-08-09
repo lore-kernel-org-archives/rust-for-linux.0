@@ -1,95 +1,140 @@
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0DAD1BDCF;
-	Fri,  9 Aug 2024 22:10:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4821B62171;
+	Fri,  9 Aug 2024 22:16:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723241461; cv=none; b=d0tJn1B4403ngkHUeIM9izuCxLtDT/KxfMdNcI5HgIY2K9I1gCvNSYj0QFFHgepbTHK2o9J8w7L0LpnenmwKt9GmgVntHiUuBs7XNxEmrWz2PG5l5MgK8uhH/3E/whpK8YnyjJfTaoARsr74nOrBntGu6X0BSw9C7Mn3VmhFSQk=
+	t=1723241765; cv=none; b=a6D/4T35sBCj5yDZ8rAhRXqUbps4HRwcD1CeknN1gG/zgEaiWxipzhpMvtZrEiUHl9Tlkjh/N7ikRun8eByF+BsXt6gWAlA3XSjuybOnswKffh0sjk5xIsHorGjQ5KnRy1ZbBgFbIg/GazERneiWmDBmdI7JxeksZrllZI2A5cw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723241461; c=relaxed/simple;
-	bh=oV3BloVbKuXLOtjJvcR1LOLMc57zeGyQ8iA4HgVEU+E=;
+	s=arc-20240116; t=1723241765; c=relaxed/simple;
+	bh=Vyz7mOQSobTax2GI/PV4PZxzi76IZVTiDNoNh8/txbE=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=AzkJh6Z0kdOni9gENv8E7yZarL1e47/2Zn3IJEy0lRxP9yCq9qiPYGdoXYeHb/o1Q8PUv+QSxPheBJYas5rCIUm5YYBQOXJEy7fJ8o2rTCldA0Rskd+h2lfVMq/gkzmuujrR3grhg/bnHwCEMtRneZHxLQ++KfSOXaIYDPhfP2E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TrPznMDp; arc=none smtp.client-ip=209.85.210.175
+	 To:Cc:Content-Type; b=AIPYurQcIwD+KY8G2WUma4xE7hf0bsNzd5t93AtEkGsLPEkU9g2z0+pn6SOoveTNS4sf3uaEUEePVgXQTJJZvBj8tjVjBNYtO4YVuHfR+17RPWxAQLLWPKo4TvJlESTezB1sA9dsm/brb3T2lbCd4vrIjNGmLfILiQtdcEhyq/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RAGXeTcW; arc=none smtp.client-ip=209.85.216.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TrPznMDp"
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-70eb0ae23e4so2064768b3a.0;
-        Fri, 09 Aug 2024 15:10:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RAGXeTcW"
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-2d1fe3754f4so110595a91.1;
+        Fri, 09 Aug 2024 15:16:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1723241458; x=1723846258; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1723241762; x=1723846562; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=5ZtRC13ZBchav+u1uxCwOczYv6vnhbRu71MKK9b/fwA=;
-        b=TrPznMDpzyRAEGziFhsmuL2gJJXKEzz8jp4NdfwJb32ApxcNCPIcUe+aljk6odXq4n
-         u4k3+0WroWCTNMyMFSn1OoCIlRRakR1cRPDvD6mosWriirQMMcB9bq2rntN9eRPIyrc0
-         WVDPXXp7mDi8R6a9mu9kJMRjN+3nvM6BevKar57BiidaUVKM1PgV90dmZwz7ilmU7hcE
-         3880CDuF9a3kGGYebnezogyikZG3sVN+wUVdFZNiX28MPaCu2gIjRJWGkDiiUq+dm74B
-         A1oH48DjHoP3JcCXSWO2VgUfwcl2NWqKvzDrXwua86Lx9Xu7YXSHnp+dSX+jrA4GIpo2
-         IeMQ==
+        bh=7QajCiM9J1gZRiKmQalSp88+y2PjJcBm2h12qCDW+tY=;
+        b=RAGXeTcW+izDyZ8ldcXoG7+CfOij1gmziunJy+JJPqwo7eGaxQIIzv0DEkEGjDTnr+
+         eQ91CQm44AZg+4g6dme4hLkMmgCfaqIrNmlOVeKFLew6RsnDAkwnKt75WVKAu20D2YB5
+         DTSlzGjgxgeumfYOZaT2TwQ/xIHYxyqsbu9xdGSt8l3xTI9QNYie8Z8ADvHdKd3aS3+Q
+         KaUwcSHIPYvVMDNk6988nSNhwwhAMfspLrYYyzN3fnbN0/7/WJEkmuoX5RjqZsB72lfD
+         M5J+UCZl0mlPLjftvMQoe/H2iNu4mHuXk1xjMRhWG3SoRULa+Ibb+hLjl+KZnRwS+/dR
+         U6MA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723241458; x=1723846258;
+        d=1e100.net; s=20230601; t=1723241762; x=1723846562;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=5ZtRC13ZBchav+u1uxCwOczYv6vnhbRu71MKK9b/fwA=;
-        b=gegD+HLJKFTqV9R/kTBOH1s9jaxnfdunZC1BzsS3LwmG3laLzlU7AO7TFMSbHhJRZO
-         h4IHXrGzbrdOyJCqFymK9ZdLFftCag20Yx0cNRm6DjQr27uq5vC0wYzYYRb/BvMeoJm9
-         qZa1Ot9nq4q0yE0FzWwNW/hEGKT7Fbbftbfnf4Q067hmI3M5/XzY2UhN/YCIa8puAyU2
-         sc2x/SIaVVFOTqL+c+oZgOin3VIpngqrLo16Bz4F88RPDht4bVXhdZszond5/eZj5j8u
-         P0iGTsljdUqICC118JjUsUtBOdi7R/WVMtbVEw0H+X1TRKNub0det38WMYLQ31ZBjPdQ
-         M/1g==
-X-Forwarded-Encrypted: i=1; AJvYcCW/K5ptJM+MoS4xckGJSB2bXjbeC1GqvCDReVag/mduPhpHjYIne3ds7EV8EqVdGrM17uV2JekUG3H4btwKrxZD1+EmvJVPj380BQ4+SXMAU6niXY3JaEOmcAtD5StAQtXo+ZQ5MbYfc8+CSaiNy8e4nIorY/br2beXl5ZwvIuyCvCTAtABcsjwgLM=
-X-Gm-Message-State: AOJu0YxCspnLVI04qxR8QYjBWLS9IKUfRTEjFNGnDnj5F34LMMCgwcYF
-	L9toTAX0e4DvkdL2Zv1OyRjA1TcCRaAxb7Vlz4fLYZuuy35zIPdFDlNeXefGjx2DxqCUlkDL+FK
-	5Q6oMfCRtgfk+9mN3llUnSIncMl4=
-X-Google-Smtp-Source: AGHT+IFYHFP4kSBzrnb7VzFHvO7PwEgU9Soz/rqlw3dbZs+l0O11QKxqnszd0Cfg4OCUtiqIzF4xXch/WAOOvLf6T+w=
-X-Received: by 2002:a05:6a21:3414:b0:1c4:23f1:114 with SMTP id
- adf61e73a8af0-1c89feb0bc6mr3293218637.20.1723241457989; Fri, 09 Aug 2024
- 15:10:57 -0700 (PDT)
+        bh=7QajCiM9J1gZRiKmQalSp88+y2PjJcBm2h12qCDW+tY=;
+        b=OtVKp0RUfdpLYgd0Dz0zj4Wh8bgEPfwjNrFm/3IxJ5CCPm92eOdtA9t1sdQkuQOI/U
+         vVycAZi+HSSb0RjKNqAEoS9kK9z0jJarNjPIacbWvfw8oTRMj6dET/VB7Ks2tw5EjHDh
+         NLx34bfsliWNcMunbgy5zMEPGAoClVM5kdK/vlisIvKrqQ6GJAO8niYpsGb/j9UH0uZD
+         41/ECBTwo2ed0XX6og6YNCHyOscTsJ8vxW5tTg49kJApXrMn0NYBHMrq+cThRShwb8AS
+         oeom5cqlWkGbN1MY01ysf+8sLACdtdk4CjOft8a22XnkAd4kVIIXWjPIS8HDt3Ak8vbr
+         YuWA==
+X-Forwarded-Encrypted: i=1; AJvYcCVeh8rNuK4mK9w6O1R8zfQOYpHBhLDgdEOvVjOC2M1v1OBPDR9tLDL4L1qSNU8V4fbRDVnNdjW61M2LpFm77jvoFLLAJbERFLosGdVChgauZqUm+QuqdUdmxZvbJoF4cFCnkey2fTBPp1Ycths=
+X-Gm-Message-State: AOJu0YwaSmxZ7X4fIDsFuXsJO4YTknwnuJ3+W6SEMFgBM9u3E6wNR/Ae
+	oIjRraIUEbLLWICtMr15phEkKu9WVrYQRwcGt2HzsfuZJ+jvuKzBim2WOX17uU10Gdvs3S1gANz
+	mhfRGA+Bv7DuAHBjzWqjdJo8wxzA=
+X-Google-Smtp-Source: AGHT+IGqhAIMpdcPgTvG4Lm0bG1VLto7lgkIz+dlldbt0bpWrxp0o616hdq+TZ0DclexAS+zwSJY7UTJsSeXk+LcnK0=
+X-Received: by 2002:a17:90a:b113:b0:2cd:b915:c80b with SMTP id
+ 98e67ed59e1d1-2d1e8082b97mr3276313a91.27.1723241762470; Fri, 09 Aug 2024
+ 15:16:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240806233559.246705-1-ojeda@kernel.org>
-In-Reply-To: <20240806233559.246705-1-ojeda@kernel.org>
+References: <20240806144558.114461-1-ojeda@kernel.org>
+In-Reply-To: <20240806144558.114461-1-ojeda@kernel.org>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sat, 10 Aug 2024 00:10:45 +0200
-Message-ID: <CANiq72=JrDceFpoAd6gr1fm-j9B_xszyo8a4xJATtQ6U1t3HfA@mail.gmail.com>
-Subject: Re: [PATCH] kbuild: rust-analyzer: mark `rust_is_available.sh`
- invocation as recursive
+Date: Sat, 10 Aug 2024 00:15:50 +0200
+Message-ID: <CANiq72nH9KZZKtDsMkfosmHpgVjvGM6=yy7fRyNP2NrDFUrkvQ@mail.gmail.com>
+Subject: Re: [PATCH] rust: x86: remove `-3dnow{,a}` from target features
 To: Miguel Ojeda <ojeda@kernel.org>
 Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Masahiro Yamada <masahiroy@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	Nathan Chancellor <nathan@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, 
+	Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
 	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev
+	Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, 
+	Justin Stitt <justinstitt@google.com>, llvm@lists.linux.dev, 
+	"H. Peter Anvin" <hpa@zytor.com>, linux-kernel@vger.kernel.org, patches@lists.linux.dev, 
+	Nikita Popov <github@npopov.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Aug 7, 2024 at 1:36=E2=80=AFAM Miguel Ojeda <ojeda@kernel.org> wrot=
+On Tue, Aug 6, 2024 at 4:47=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wrot=
 e:
 >
-> When calling the `rust_is_available.sh` script, we need to make the
-> jobserver available to it, as commit ecab4115c44c ("kbuild: mark `rustc`
-> (and others) invocations as recursive") explains and did for the others.
+> LLVM 19 is dropping support for 3DNow! in commit f0eb5587ceeb ("Remove
+> support for 3DNow!, both intrinsics and builtins. (#96246)"):
 >
-> Otherwise, we get a warning from `rustc`. Thus fix it.
+>     Remove support for 3DNow!, both intrinsics and builtins. (#96246)
 >
-> Fixes: 6dc9d9ca9a72 ("kbuild: rust-analyzer: better error handling")
+>     This set of instructions was only supported by AMD chips starting in
+>     the K6-2 (introduced 1998), and before the "Bulldozer" family
+>     (2011). They were never much used, as they were effectively supersede=
+d
+>     by the more-widely-implemented SSE (first implemented on the AMD side
+>     in Athlon XP in 2001).
+>
+>     This is being done as a predecessor towards general removal of MMX
+>     register usage. Since there is almost no usage of the 3DNow!
+>     intrinsics, and no modern hardware even implements them, simple
+>     removal seems like the best option.
+>
+> Thus we should avoid passing these to the backend, since otherwise we
+> get a diagnostic about it:
+>
+>     '-3dnow' is not a recognized feature for this target (ignoring featur=
+e)
+>     '-3dnowa' is not a recognized feature for this target (ignoring featu=
+re)
+>
+> We could try to disable them only up to LLVM 19 (not the C side one,
+> but the one used by `rustc`, which may be built with a range of
+> LLVMs). However, to avoid more complexity, we can likely just remove
+> them altogether. According to Nikita [2]:
+>
+> > I don't think it's needed because LLVM should not generate 3dnow
+> instructions unless specifically asked to, using intrinsics that Rust
+> does not provide in the first place.
+>
+> Thus do so, like Rust did for one of their builtin targets [3].
+>
+> For those curious: Clang will warn only about trying to enable them
+> (`-m3dnow{,a}`), but not about disabling them (`-mno-3dnow{,a}`), so
+> there is no change needed there.
+>
+> Cc: Nikita Popov <github@npopov.com>
+> Cc: Nathan Chancellor <nathan@kernel.org>
+> Cc: x86@kernel.org
+> Link: https://github.com/llvm/llvm-project/commit/f0eb5587ceeb641445b64cb=
+264c822b4751de04a [1]
+> Link: https://github.com/rust-lang/rust/pull/127864#issuecomment-22358987=
+60 [2]
+> Link: https://github.com/rust-lang/rust/pull/127864 [3]
+> Closes: https://github.com/Rust-for-Linux/linux/issues/1094
 > Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
 Applied to `rust-fixes` -- thanks everyone!
 
-    [ Reworded to add a couple more details mentioned in the list. - Miguel=
- ]
+(If someone from x86 still wants to take a look / Ack it, please let me kno=
+w!)
 
 Cheers,
 Miguel
