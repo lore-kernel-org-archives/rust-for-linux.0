@@ -1,89 +1,90 @@
-Received: from mail-wr1-f47.google.com (mail-wr1-f47.google.com [209.85.221.47])
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E2FB18C906
-	for <rust-for-linux@vger.kernel.org>; Fri,  9 Aug 2024 13:16:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C5E2194AF4
+	for <rust-for-linux@vger.kernel.org>; Fri,  9 Aug 2024 13:19:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723209389; cv=none; b=fvcevtGqCNvku70bAGRF7tFbEZRav1YT/Gwf7ihmNxx9AR4C+ZQhHrQmZlliVYjgoK8efrfeWaXY/XXw7KdWEdoAgy0pytjnvX3+GRepyt6KdkXofMuvjzqwNJSjo70sVKzLRCzv2/Tj7WHIrJpAjE5BJ/BDqnERnZj3WKLnNzI=
+	t=1723209573; cv=none; b=tzHK2U7Zo7HmgcnUZrZeQ30EuKcPaQEPQt6Re+OqpXgBAnBlFR/i9I++olqyrp3Wgn48E5f89OaFQkrXj720FUIq5/AL7r11uBW+JcI+mCVInThPgjNfRGtepnZVXBQ9B2KE3AS/VqRtY0Iz+F5hslQKYLxV5VgNpalGq7eHRf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723209389; c=relaxed/simple;
-	bh=92qOkLCSYu9nmceUlAEJm9hX6RmjzSfHnPjdMwunYvU=;
+	s=arc-20240116; t=1723209573; c=relaxed/simple;
+	bh=hX4prB1rS1ph3HqURVsdgX5nADQOV9sRydK/J8HxadM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Knzw3isNKkdeYSzCsWVkRCVglMvYIZqQQPtsp0XND/dYV8yQkGFfASTwdn+FHq9PRCrhY4Fm0/AOsfSxdD7W8Ac/m2OSodIlRwfqtG9pt5JoIm/uvABG3aJuro++sOUHEabBhQnsihwbNikoZxeFgooBUtMzcce6jWkR2xvKrR4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ij8QSxps; arc=none smtp.client-ip=209.85.221.47
+	 To:Cc:Content-Type; b=D6Z/QLnm+JYt+F6EjBBfCFV3AGUQ4Z0HNzcwZQwRMoyvZUuHN7mSVBFHjnm20lt2QjvNBcqrGY49tPoDQYsaYDG7CsHEnF86Tzx/lAvQPoi6mjujzt9VFW572FmiwL/1ttlfgx32XFfsvNsV3yoQYmi/5VWYJj2JF0ZJ3Exw9jw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PyQkc1T2; arc=none smtp.client-ip=209.85.221.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ij8QSxps"
-Received: by mail-wr1-f47.google.com with SMTP id ffacd0b85a97d-3684bea9728so1234500f8f.3
-        for <rust-for-linux@vger.kernel.org>; Fri, 09 Aug 2024 06:16:27 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PyQkc1T2"
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-368313809a4so1831456f8f.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 09 Aug 2024 06:19:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1723209386; x=1723814186; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1723209570; x=1723814370; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=92qOkLCSYu9nmceUlAEJm9hX6RmjzSfHnPjdMwunYvU=;
-        b=ij8QSxpsg2UMcdzOEQX4CYZL1OeZI4vWBGBX5QHtR3glQk7bQDkbcfZhjuXimJCudH
-         HS5Qro1ADMVr/yIVw9KUDRSoYTGNYoBN/PN8EGYzuOGYGcBWeAJxMKCrbw2g7Ol6YTXy
-         ZrckBN1y/ao7E8gjfUxDlFipKqZBIM1IEoxzy/a2Zrp/wgmYa8fjd0Y1oMml3OXg77OM
-         5GlzIJ/Gh4dAwfe5hrPUNoMgeCzDM63gLQ5D+qwvtPS3WksSw643bob6/XSPO7QC07GH
-         J2CgivjRtgZslYmjhwokSkBfNPFGpotCtDXHVk2g7PVASHrSVPCFVjuyuL9eREjEPrQO
-         5Kww==
+        bh=hX4prB1rS1ph3HqURVsdgX5nADQOV9sRydK/J8HxadM=;
+        b=PyQkc1T27w9PziA7tP/pA51KoiOWraBSWzLTAb5pRiz69+Bwd0Az07CBpn0yBpHnCf
+         t3WSJ30+BAbYFZNsap83H9nk7qRhLaAgjaBXbNrl/iuyX5IxH/zVROS9+i8YXzTsJ4oJ
+         Bb4wxxQXHFzNWJZNh1qGBlYsl4VEA35O/ChT4y4pbe8+3A6cO1OFNlev525sThMsy0Lk
+         cFQFo92cQ7m1gmJLGHBev+P7MMFJghIbDi9a7+SGF2qRAlqaNlCPh3snt1Pfkc6cTCU1
+         Tc7hQZJhSfZGgOKSre3LzxU3T+nUV99fr2wpyvJ58ZxoGB7qWFXWX6ZahQODwZGJrFvb
+         BxIA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723209386; x=1723814186;
+        d=1e100.net; s=20230601; t=1723209570; x=1723814370;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=92qOkLCSYu9nmceUlAEJm9hX6RmjzSfHnPjdMwunYvU=;
-        b=uhZNGfBanficUbb/sbh2yBJU1FKwCSl7vra160EksXzYNftOvx+QJnV2E8b9vf7iuW
-         mzjZtH6iHjcFdij5sEiYFOdGtKqEwjzT4u3OvwOiGXQo7Cjvh0GKChdgWf65LZlfbOP0
-         CvDzUZTLiCqH2BoyXPNPWbT9Q2PuknWsucQ11uwwQ5bcAb7KHxMqIRTZtOj3lRviFjyz
-         78ms56grWYSGvkcuX0iN9+ND5kbd0MRp8JB/6+UeUKrqC+JwpEmn766oNk53azrj5FsW
-         qhqcXvOw2z85cffBm5e3HxDimJ06s1mgjHONMtmAUUBnLfCFosmrgjl4mztM72nutCIV
-         bbSw==
-X-Forwarded-Encrypted: i=1; AJvYcCX6ZLfZ97BH8vicaR2/uXgvQ6eY3lsROwm0q/DZpuBMs3S66gkE8sfMuG5i6pRg1ZIFXAgKSeZNVWjiI1on3Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyXhjj75Xv6unGHkFQwk5Ncxf2BnrhTJGJuwoenREITnrIMZ0I+
-	2Xs9lLTkMSkKOWWG/qU4SWIIyq8otuI4GstaDk6d8/D5XZDgp6wDq72S1RTDUMf3fH8GI62xXkJ
-	MXjipFdiTc/JnvmMMvpXAr1IUZSYaJQyKJKowNqOGTisvRieI3kLm
-X-Google-Smtp-Source: AGHT+IEencuwb5ZiZqBxrl2yiXarWFIGCnvBaoEIUj3k90VcnrheSq2WUA4koqg2hebfaLRX95IYrP+jEef8wEWRJhg=
-X-Received: by 2002:adf:f545:0:b0:369:c6d7:7b93 with SMTP id
- ffacd0b85a97d-36d5ea00d30mr1177252f8f.28.1723209386152; Fri, 09 Aug 2024
- 06:16:26 -0700 (PDT)
+        bh=hX4prB1rS1ph3HqURVsdgX5nADQOV9sRydK/J8HxadM=;
+        b=axeXSWyUqhCOSkP5u6r7wyR6etk+3B9UZXj9+ySd27grPUBq5M2VgqOXaZLIhano/y
+         VVNOHAV4STAV9OaZJ7XWgSSomWYVVH8zknJNcsu02tJRQ823DOwLKi6wbNz5sIGJ2bqZ
+         2m7EA+s1250kxYYrkLnaRgxnTCoDAaC1DyzBtDHT1n5j+ifq5P+sUi36nF3IzOoMMB1u
+         YCNb4M5rn/O1lAqjTeM6MAPHgGqBGX+gulJ5co9Xjg9MNY8EhoCrb2dgUu36s8KQ1JxS
+         BEGxlp1yQUMgbKd0u7KKMQRMIKLr2uVJGHzVPIT/pSFV31FpysUbRazgfJkCPZbCRrin
+         4BiA==
+X-Forwarded-Encrypted: i=1; AJvYcCXFC8UiflVnDlmfRBIExdHQWNo4TGJMoqK4nsDaQdGwk5V7fFkhdK22CSngO6gmpm0CtkKcnxnbkVK1T8+TsY8bg4JqAYasHvbmwRIbb+M=
+X-Gm-Message-State: AOJu0YxSJZdOn4VZXOIBO6P8MRJa2BNtC4wAdkSURUuRTFm8uUB1fAVn
+	KrHfnJlMGrVSEfDze7ge+cVBnQFWiRnvrOYOEYekAnVUBYQfXOOcPkwahh/bet8+Zq+5/5RwCCN
+	3sa99NksYQ9EL9vOdt1z2x/qFZpSOiD6RrD13
+X-Google-Smtp-Source: AGHT+IGNzIaEFkMjqIqsgcveX2voN9uSFLP9w8tPwHgiFhpGT/YS3dCloVdYIRTwq0c/M+SghUXleXsSnC1QOnNSZjg=
+X-Received: by 2002:a5d:66d1:0:b0:367:8fee:4434 with SMTP id
+ ffacd0b85a97d-36d68d9de50mr1201834f8f.16.1723209570197; Fri, 09 Aug 2024
+ 06:19:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240809064222.3527881-1-aliceryhl@google.com> <975158d8-4f26-4b5c-9cc7-eec15d901eb6@kernel.dk>
-In-Reply-To: <975158d8-4f26-4b5c-9cc7-eec15d901eb6@kernel.dk>
+References: <20240809064222.3527881-1-aliceryhl@google.com> <7f38151b-9c9a-42d0-98b8-345c4513a8d1@kernel.org>
+In-Reply-To: <7f38151b-9c9a-42d0-98b8-345c4513a8d1@kernel.org>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Fri, 9 Aug 2024 15:16:13 +0200
-Message-ID: <CAH5fLgiqQ6GxPk4-JCdRnKmi9ECgzVj+MkoUnZLYtUp8-yCebQ@mail.gmail.com>
+Date: Fri, 9 Aug 2024 15:19:18 +0200
+Message-ID: <CAH5fLgiPzm=K5FWdLWdTW159OBedLX8-FU=S_u4Rt1HsU_xDqg@mail.gmail.com>
 Subject: Re: [PATCH] rust: sort includes in bindings_helper.h
-To: Jens Axboe <axboe@kernel.dk>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Jens Axboe <axboe@kernel.dk>, Miguel Ojeda <ojeda@kernel.org>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, linux-block@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Aug 9, 2024 at 3:07=E2=80=AFPM Jens Axboe <axboe@kernel.dk> wrote:
+On Fri, Aug 9, 2024 at 3:01=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> w=
+rote:
 >
-> On 8/9/24 12:42 AM, Alice Ryhl wrote:
+> On 8/9/24 8:42 AM, Alice Ryhl wrote:
 > > Dash has ascii value 45 and underscore has ascii value 95, so to
 > > correctly sort the includes, the underscore should be last.
+> >
+> > Fixes: 3253aba3408a ("rust: block: introduce `kernel::block::mq` module=
+")
 >
-> This commit message lacks an explanation for why the change is
-> being done. Yes it states that it brings the headers in ascii
-> sort order, but WHY?
+> I don't think this patch needs a "Fixes" tag, it's usually for bugs only.
+>
+> But it still makes sense to mention the commit that introduced the includ=
+e
+> in the commit message.
 
-I can add the following to the commit message:
-
-The headers in this file are sorted alphabetically, which makes it
-easy to quickly resolve conflicts by selecting all of the headers and
-invoking :'<,'>sort to sort them. To keep this technique to resolve
-conflicts working, also apply sorting to symbols that are not letters.
+Ok. I can make this change.
 
 Alice
