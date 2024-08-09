@@ -1,86 +1,84 @@
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59881148823;
-	Fri,  9 Aug 2024 20:03:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=193.142.43.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3055C146D68;
+	Fri,  9 Aug 2024 22:06:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723233795; cv=none; b=Muq/bM1+6McEXs1k56x5Se0ejk7BqJ4rIUzoyXMvY02fm0wMwYjdI2c5+5p1uuj9ZPatXpMGaHVxVFDLQx3dwO8B3ZoOGJKLdfReSbZ2mgI4gDFGLAH12HnNxX5UESfh60yIDzaNLyx34BWCPVFDyEBJt+r6ICyOMam8i3PpbbE=
+	t=1723241186; cv=none; b=mT78t5HYdtpQgVuXp1sJpFOJIQcOCuXAnYBPma4fcpIxPzBmpw5B3a6pjN5doZxt5sA7mAxw3F/b4MN6pKR/jonwSrs8BF5UZ/YD7KdUYFhpmA/GEKeQhesUiGzZedj/hyI/EkxUbwhWndfGnIfeAOPS02zD3HMxkf6hpjgPnKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723233795; c=relaxed/simple;
-	bh=LG8Ns60rkZ9TEGMvWXSzSwegnDK/QRz0oNQ4pvH+c/s=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=DV6yqmti6tthSdUyGt+VvuFQh2w30XtlDWwoTbUj6QFfj2oFdKovCKSsPjzKNko5Dpiihte3qzUgs4u6jXgXPfZtuYlpBwdECa6y/wOrBPyKZXb4CzzWYJImDdtjt82cL68h0TU297/+oWVH9F9jIsv3gU1wbKu2N8bt2ZWxhLM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de; spf=pass smtp.mailfrom=linutronix.de; dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=1+kkYuRF; dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b=CE6yzdfj; arc=none smtp.client-ip=193.142.43.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linutronix.de
+	s=arc-20240116; t=1723241186; c=relaxed/simple;
+	bh=74p4vxrrXFBm02Owa6pNXCYlL6JqV0hoL7EComjV118=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=kTxZa+EQ4KhwhBTwpgUAIKaQZV8tlgkEZ1xRDcfMvw3ZMF+5Mai0Y+eEvatkQ5C1Dl57rGRKlyffPk4wgyXbasZXW7pJFSf5yPIpmH385jf9Icao9rLSnCNbbl0F7H8N+KRAwuXXkXenMW8cHvlj+/Fs3qg0FjZhl7rMdx0n4R0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mKeK/8WR; arc=none smtp.client-ip=209.85.214.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="1+kkYuRF";
-	dkim=permerror (0-bit key) header.d=linutronix.de header.i=@linutronix.de header.b="CE6yzdfj"
-From: Thomas Gleixner <tglx@linutronix.de>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020; t=1723233792;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3SAenBF1tV06rGeHucatp5EtQEE3rHSANcRq/1fCXLc=;
-	b=1+kkYuRFDPFoZ1EoGlgoMZFFDIeP5eU55vwXs84Wm73d1MiQZIK28ljZ0kWDCgFDcyFllw
-	1098UhmFtAZ5XeyjBFDgHSAg3zeafhpMSelJH8UN17CSy2pk9mCgcgPOmwEvYH5srOUnsK
-	Eycx1hj+pfm5UEEpnVmTsAug6nW+WinD+2gmuEqLhRnXVsuLq7U9TIAFW5XmSUg9mOEa/q
-	QmSu7aN96LUyOQ8O5eAyYXnWtYFZejgtwyPFiaFl6rdfRVsrCZh3NjgORigaMtltKQpvIK
-	A6SCBLk0vlOlLD8RprJRbeNinF+1CfjiZkVoQhFY3TOKUTCvQOw9ZG6G2RweIQ==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-	s=2020e; t=1723233792;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=3SAenBF1tV06rGeHucatp5EtQEE3rHSANcRq/1fCXLc=;
-	b=CE6yzdfjBNwz7TG7z1VJdGSbRYJhneuMxpyNAFBwBHJMG/itKESMire811flDMRs2Gih35
-	ct6Ko1uMU1CSiOBA==
-To: Miguel Ojeda <ojeda@kernel.org>, Josh Poimboeuf <jpoimboe@kernel.org>,
- Peter Zijlstra <peterz@infradead.org>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- Masahiro Yamada <masahiroy@kernel.org>
-Cc: x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, Nathan Chancellor
- <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, Miguel Ojeda
- <ojeda@kernel.org>, Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor
- <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo
- <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>, Benno
- Lossin <benno.lossin@proton.me>, Andreas Hindborg
- <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
- patches@lists.linux.dev
-Subject: Re: [PATCH v3 3/6] x86/rust: support MITIGATION_RETHUNK
-In-Reply-To: <20240725183325.122827-4-ojeda@kernel.org>
-References: <20240725183325.122827-1-ojeda@kernel.org>
- <20240725183325.122827-4-ojeda@kernel.org>
-Date: Fri, 09 Aug 2024 22:03:11 +0200
-Message-ID: <87bk21tqf4.ffs@tglx>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mKeK/8WR"
+Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-200aa78d35aso8916605ad.3;
+        Fri, 09 Aug 2024 15:06:24 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1723241184; x=1723845984; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=74p4vxrrXFBm02Owa6pNXCYlL6JqV0hoL7EComjV118=;
+        b=mKeK/8WRRCLFCXlYyO30QHHdtVELhwvQy9y4jMnKgi4ZZqNI4MNSYz+yRYHCjUoG/L
+         cKMoX08VRfXktsN1NxTFw1RdX6pGnBIVTpTRCQYL/XTS5LRymqQf/Aqhi5Hy+cwdkOqS
+         hc78X3X9knAu2OBr6YN8wSFrBHOQ3vIkLFDIRoDrjd4Sgbx85VI4ChvqxR0o1+B+oJxc
+         aEl5owLcAX960Eij/jz7Eq/jN1Gfa9Yb9zV/SpLeQeV6WOHMldGRULAsB8F1z4Vv99YX
+         sorwORdoiCJSNsCnKqTIArS5rtQFYMseCUT40/Oz+jgTzad1xSSP5SfbvQ78FkJ0MpZi
+         goiA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723241184; x=1723845984;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=74p4vxrrXFBm02Owa6pNXCYlL6JqV0hoL7EComjV118=;
+        b=aSoh0reSuW0yJvH9dHz8okTLo84VJx2AUTN+GZeXr83ITBcLD7lsQmy0rkZyTGHzCy
+         Mox3P1dPdrkC1LECn/gFR2oqdUrAuHdrdaq6Hir38MczDeKW5NZ5GjmHdzo4L39GPfL+
+         l07DyvFC6vkCYS5wv457llF/3MjGO5ulqiGGND1HbdiJWqH41fKex9Qnc7Roh++1ChkL
+         gsfqhRDrnTKfMmlQ0EX9JGoPl72+YUuvXZQlaO/vCpATSzoeGv16QN1IKe7uc6KDyf9L
+         kqcMGFT0qfDgLNz6+w2r04M49fk4h6c8e/7l5cuy05jwFbO7HxwT4FpLLXcz1+pnxmdx
+         s88w==
+X-Forwarded-Encrypted: i=1; AJvYcCXuLXPmwUwFdXhkcK5xmjH//ItD+/A7DNpcrvhhBUZLgHYgk5NakkpstOvhYabQwh+T0H8vRN2hAng6LTyKlXBUpIVZg/gLPuq7J4UzwAf01uvaiapAp3XZifIQXqX+5xe3wMouS9kf4ps5WJ8=
+X-Gm-Message-State: AOJu0YzQ74BFLcxjoRUKCceNzYJItfMIttIlqEsP9F54aaPVA39t8YuX
+	vPwTe9ihpcGXzMB9p1UWVwL9U91DNrV7v6cW7RQSRu+CHIXM6MrNq4cUYEXBYyafh8pqt0Eduyq
+	EH6gUP5nvoEz9XZnTa6Nz9tq2Fms=
+X-Google-Smtp-Source: AGHT+IHZedMZ99QDiRcOavRwSEGxmOLmUe/8l/c44XSDGNl309S8j7l5pc9icDrgRpQs1L52jNLWooHbKNbCsyRI4+0=
+X-Received: by 2002:a17:902:d550:b0:1fd:8f14:a109 with SMTP id
+ d9443c01a7336-200ae5a7a96mr37619085ad.32.1723241184382; Fri, 09 Aug 2024
+ 15:06:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20240731134346.10630-1-zehuixu@whu.edu.cn> <3695674.9o76ZdvQCi@skuld-framework>
+ <CAEg-Je9gyR2xKF8Ky8eWTR=6odZbgCRCM6DhYPVTAJTDPDxakg@mail.gmail.com>
+In-Reply-To: <CAEg-Je9gyR2xKF8Ky8eWTR=6odZbgCRCM6DhYPVTAJTDPDxakg@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sat, 10 Aug 2024 00:06:12 +0200
+Message-ID: <CANiq72kG9HxZYOa+DT3ibjr0QHU3u5RGtp_m8YVouTMz=opiUQ@mail.gmail.com>
+Subject: Re: [PATCH v3] rust: Kbuild: Skip -fmin-function-alignment in bindgen flags
+To: Neal Gompa <neal@gompa.dev>
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, 
+	Zehui Xu <zehuixu@whu.edu.cn>, boqun.feng@gmail.com, gary@garyguo.net, 
+	bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@samsung.com, 
+	aliceryhl@google.com, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jul 25 2024 at 20:33, Miguel Ojeda wrote:
-> The Rust compiler added support for `-Zfunction-return=thunk-extern` [1]
-> in 1.76.0 [2], i.e. the equivalent of `-mfunction-return=thunk-extern`.
-> Thus add support for `MITIGATION_RETHUNK`.
+On Thu, Aug 8, 2024 at 9:38=E2=80=AFAM Neal Gompa <neal@gompa.dev> wrote:
 >
-> Without this, `objtool` would warn if enabled for Rust and already warns
-> under IBT builds, e.g.:
->
->     samples/rust/rust_print.o: warning: objtool:
->     _R...init+0xa5c: 'naked' return found in RETHUNK build
->
-> Link: https://github.com/rust-lang/rust/issues/116853 [1]
-> Link: https://github.com/rust-lang/rust/pull/116892 [2]
-> Reviewed-by: Gary Guo <gary@garyguo.net>
-> Tested-by: Alice Ryhl <aliceryhl@google.com>
-> Tested-by: Benno Lossin <benno.lossin@proton.me>
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> To add, can we get this in as a fix for Linux 6.11? I can't build
+> Fedora kernels with Rust stuff enabled without it since GCC 14 is
+> shipped in Fedora Linux 40+.
 
-Reviewed-by: Thomas Gleixner <tglx@linutronix.de>
+Yeah, that is the plan -- I am picking another batch now.
+
+Cheers,
+Miguel
