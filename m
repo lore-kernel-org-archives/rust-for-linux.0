@@ -1,87 +1,118 @@
-Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+Received: from mail-pg1-f172.google.com (mail-pg1-f172.google.com [209.85.215.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2C9914E2C0;
-	Sat, 10 Aug 2024 10:34:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B23A2157E91;
+	Sat, 10 Aug 2024 11:36:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723286097; cv=none; b=dToWKoY4verSQJ5ZQlrbhf11OIPOwPuMEzlfYfBEih6wn7UBt70OF9v1xlmVFSPRFSKZvfcIKnb2YuYY9c1zCqeZEFkQjzU9H0F8rVMDeb0pNRIz2E60sA+pbu8yeLHF5PveJ9QpPHBcmbI0P4HUeBXZ7H4A7nftJPy9ZFqylJI=
+	t=1723289777; cv=none; b=HYg1RxzxKBVPKow9qKqVwjsa2IdQYpzwWtCwFHNvsWJ0ehwStdup3fIEehVtZUHfMCK9NDxKo4Vea3uQR/xcSdsEP3AMp07xtaMzmQmrC4Nc43rCaMVSRB3jKR1TpQEOArQ1HBEQUvSEuIq0ubkzVuXNojC2v1BlkhYEhDMM9KE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723286097; c=relaxed/simple;
-	bh=bZW3wVjp7+9zA4pIm9iIi9zx0S5TgK2QEyTc0Gze+bg=;
+	s=arc-20240116; t=1723289777; c=relaxed/simple;
+	bh=pRDv7ES/6srChhxqUba+UjeIOeYp7UdK0hH4IWFavG4=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=l+FOjdGZUGkrfCLRqGCZg9uLvfgzog8x3sRbgNEDmQgWzAHuJjwRox/vuwrVfkipU/2Q3fQKTaWfgSUl3k2vEO7mKAUieoJZlxtvmnuQSGXtU7KiTyZdQCoxWsVlf2GYVtKTszi4Kx5vUtRhbLvo//dWtIuGTsg9DWfT1X0gvNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PI1l3Kko; arc=none smtp.client-ip=209.85.215.169
+	 To:Cc:Content-Type; b=T+5GB5gI3ALevC1QNO5Ls+yLrz74Ej+OoBgwD3Xih/RVAR4zXvrZZdUSzu4T/yCjNAo8fCueCJPNY0A7COgD8Xju6COUIGyLJMODnCCfNTr0DawWbCRVvLgEUxiRlbrH0PhYqvfkhWv/7XfluCP2KPvoS3O2q07lvGGg1CGFr9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RLEgwVnj; arc=none smtp.client-ip=209.85.215.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PI1l3Kko"
-Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-7afd1aeac83so2838985a12.0;
-        Sat, 10 Aug 2024 03:34:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RLEgwVnj"
+Received: by mail-pg1-f172.google.com with SMTP id 41be03b00d2f7-7bcf8077742so2102317a12.0;
+        Sat, 10 Aug 2024 04:36:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1723286096; x=1723890896; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1723289775; x=1723894575; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=bZW3wVjp7+9zA4pIm9iIi9zx0S5TgK2QEyTc0Gze+bg=;
-        b=PI1l3KkooR6On9MhkQsTFEbhWCWEAktHf37/j/0k8OzoGtue60D4trCWZ7Usgn36BE
-         AiqjbU+GjtUE+LHn5G4QsVrw2NaPzUikK8sNJjCFoyOBMGsd0Co0CPM/8Cvu3VeUV/jI
-         rs+pvL0oQSE/XR0wG71Adh3bQ/Y4+7Rkz0E0axBIjYM5EcX24HwbVgcJVJIvTW5ibdqi
-         t/XfMu4FsNh3Ojf5DlrPqV1q8VHLAwJfYS37y92lLXW4jFQAfJ46pGvZNINcVvqOdyT7
-         bxlxQDgebuSf2d1HVAEoaHm9Dxx13pSg1tiwZXr+pxMwg4uYjMY/sDSppBUkzKr0z6dE
-         eVKQ==
+        bh=pRDv7ES/6srChhxqUba+UjeIOeYp7UdK0hH4IWFavG4=;
+        b=RLEgwVnjEt3745iTP0ZeClyT4adSbYxNt1Cflaqh4ohHWuozTeK6K9q9jeYi2FLl0S
+         kKSBv2pPFx4oNjJJrlNHXDAOQS5Ew2EA6YfumbmnpWlkD85EZJwzNn+q47rqY08RSYky
+         5A/UEGjLFWKO+qacvjnj3apJJrwI9C6z3zhuXfoiREj0NPK5HPedujwM/gJIZek4uXe/
+         zgt7WYop3/btCkgCXv0Ljc7kNNTi4AqEdIOvGrfJ7PUUpnqcVwzIaCP566vyMdY0kQIf
+         hGWs2LBOR45spZBAm0UgVUJFRIk0Z6VSiDsDDE/rF35IFfq/RTgT1i9SLeOrWxNota0L
+         IeVA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723286096; x=1723890896;
+        d=1e100.net; s=20230601; t=1723289775; x=1723894575;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=bZW3wVjp7+9zA4pIm9iIi9zx0S5TgK2QEyTc0Gze+bg=;
-        b=QsRzLY3EnAn9QuzrpvZOQpOdNb1pNYHazzrlm3hMCY8l/XVQH8OxDXF7oJ95CoMdru
-         3GR7+9Nxzzh1WQkYOL4s+1EoDazcKk39fdu8ZosO3nMHE/4g1+ZprkO+3k4GYRD4lDmQ
-         Ah7Eonp5fEv9LZjmGhjO3Shgk5Cc9kH8G2mZy0jmQ1IK8YhTRJ8vftqv3426/xa/hEqc
-         y9gcviePM1sfYzY1smdGgSu2ZsWZJTn1kWg/uDb4MCqBOrYHG3cfclxyhU1xumuTHywb
-         aWNJzhiTI9ZI/dggWLU6dbVGcGDQCMd9QBXk7T33EKKMsr8fXcd9SaOyUrILFR4NgM1d
-         3Uog==
-X-Forwarded-Encrypted: i=1; AJvYcCWlL/0569EAwo3A2YUtalSiJ/s7tj4lyUXGQm0rTwZGLKFSG2hjOyVYjlczvNK4iIlKt0ggklY4+mRQBAfVvsy5gvT4CgB+DQrqS7FJJuPkBtsLp21/R4uMjrb3GCxJFJOCuIQWt88P8wVhTokJdYUSBC1zp/zPjquKFy1NQ3dd506/UZ+vHskDDhxzB7g=
-X-Gm-Message-State: AOJu0Yw4WFJZGgL+HgfYVftweaHdPESeNvApm8XlF33XHxE/4rhC5rBN
-	DJW3HGysyVNk+FNA7eYIiBcWYSIRnl5IRkI/jdNsa+2mOL2qgPHUPVMLe+Qz+0/9RdhUu9Inoqu
-	/M9MVzeKBIAwvVXAk6YsNlu54/r7n5x8UXRk=
-X-Google-Smtp-Source: AGHT+IG2EhrfCQGZpybZk9Zk/Risy0Rk6+C7uAFv1cW8iDmmShSmLA5zvW3rWSvXfscTYf4ZvlCpOXAdQRHTafHPw5U=
-X-Received: by 2002:a17:90b:1e49:b0:2c8:2cd1:881b with SMTP id
- 98e67ed59e1d1-2d1c4c468demr11570308a91.20.1723286095818; Sat, 10 Aug 2024
- 03:34:55 -0700 (PDT)
+        bh=pRDv7ES/6srChhxqUba+UjeIOeYp7UdK0hH4IWFavG4=;
+        b=VdShSYGDNWat6tzp/XhRWI6Sjxg5sR5FOcNZ5AprxG6KhNqwHqXnSMsYjQxUiNY3tN
+         xsu2Qre4FpXgrCFjWgfKeQ2f9pPFphePXkcSrkaOp8pkE4F1Pv893pHdvxEnAumByws5
+         uiuRB0bZR5cVFZw090UIaBmF4PMo+MZxclGX8qgFGXSl90/ZwuW39F5TbiPfhczH1KaW
+         UAwl3v0J55AsMLkg14fCVfSP8ZZONk07N72LP8WOaj+2b35LjqKzFJXjxrd2nvFy+9YF
+         5Ycou/vHcE1f6jvHKfum5ga1OPHOD6bGkKoeLesufXw0A2ybMwlczbSzx9UVqMzHacoC
+         AFcQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWA40qrBS2CBhwhGPguTzu72CGD8xGEzV7VMFC+ie0JCytLv4/L22h6h65P9z5GaoIOMTmDe4yBaNUHM8WmYuuwcPU11xNeKF0nksm0IQ+oNz/D3z2L/ha/7IpKAyEJ+62EYKtmTjPw8PNVFYkfRru81dp5VFfw6MuYdZRL0SslG1XM1+y3nUkXsRk=
+X-Gm-Message-State: AOJu0YwdxvSVqT2HIUEYTMO2mlUuTGDyy8SiS1Mk0x+EkmUuJe/gHWqr
+	wh6Jn5k6S7o6DpmEJZKu+3KLsR3AIdXg3uKjdb8plGE83Pr/ITYMv6D7h+uhkFnoAnantXzJp+7
+	qHFnrvurWKtD7qAfp2hGFynZ5V+JDDsgDOIE=
+X-Google-Smtp-Source: AGHT+IFpnJ7gvKTJSB6GWIWnhoHi3O1Ctb9UwS4DLIOCEJdg3CUgwGq9dgvZ3o1M5AYwLlbS30DJQDd8snHf8qzoS1E=
+X-Received: by 2002:a17:90b:190a:b0:2c2:df58:bb8c with SMTP id
+ 98e67ed59e1d1-2d1e7fdb96amr5139875a91.18.1723289774767; Sat, 10 Aug 2024
+ 04:36:14 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240802124536.2905797-1-anders.roxell@linaro.org> <20240802124536.2905797-2-anders.roxell@linaro.org>
-In-Reply-To: <20240802124536.2905797-2-anders.roxell@linaro.org>
+References: <20240808221138.873750-1-ojeda@kernel.org> <20240808221138.873750-6-ojeda@kernel.org>
+ <CAK7LNAQBG0nDupXSgAAk-6nOqeqGVkr3H1RjYaqRJ1OxmLm6xA@mail.gmail.com>
+In-Reply-To: <CAK7LNAQBG0nDupXSgAAk-6nOqeqGVkr3H1RjYaqRJ1OxmLm6xA@mail.gmail.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sat, 10 Aug 2024 12:34:43 +0200
-Message-ID: <CANiq72kb9mDd0xndGFnMQXP4Hg-GE91eQ07yYiQW1HwWv75Qtw@mail.gmail.com>
-Subject: Re: [PATCH 2/2] selftests: rust: config: disable GCC_PLUGINS
-To: Anders Roxell <anders.roxell@linaro.org>
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, 
-	shuah@kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Sat, 10 Aug 2024 13:36:02 +0200
+Message-ID: <CANiq72knS9dGTh1uEQzYvmZuFz6fE8tNhZ8JEuyKFHYR=Kh8sQ@mail.gmail.com>
+Subject: Re: [PATCH 5/6] kbuild: rust: replace proc macros dependency on
+ `core.o` with the version text
+To: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, 
+	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Aug 2, 2024 at 2:45=E2=80=AFPM Anders Roxell <anders.roxell@linaro.=
-org> wrote:
+On Fri, Aug 9, 2024 at 7:31=E2=80=AFPM Masahiro Yamada <masahiroy@kernel.or=
+g> wrote:
 >
-> CONFIG_RUST depends on !CONFIG_GCC_PLUGINS. Disable CONFIG_GCC_PLUGINS
-> in rust/config file to make sure it doesn't get enabled.
+> The touched file, include/config/*, is an implementation detail
+> in Kconfig and fixdep.
 >
-> Signed-off-by: Anders Roxell <anders.roxell@linaro.org>
+> Rather, I'd like to put the string "CONFIG_RUST_VERSION_TEXT"
+> in the comment of the source file.
+>
+> This is the idea adopted in include/linux/compiler-version.h
 
-Acked-by: Miguel Ojeda <ojeda@kernel.org>
++1, I did it this way to follow the same pattern to the previous patch
+on `core.o`, since that one needed another approach, but I am happy to
+change it.
 
-When https://lore.kernel.org/rust-for-linux/20240731125615.3368813-1-neal@g=
-ompa.dev/
-goes in, this could also be relaxed.
+> I do not know how to do it for rust/core.o because there is no in-tree
+> source file.
+>
+> But, can we add rust/core.rs, from which
+> rustlib/src/rust/library/core/src/macros/mod.rs is imported?
+
+That is an interesting idea... :)
+
+Hmm... I think `core` is a bit too special for that, since we need
+attributes on the crate root and it is the one defining things like
+`include!`. Even if we generated the file on the fly to mimic the
+original, we would still need to handle the paths for each module or
+recreate a directory hierarchy or similar.
+
+We are also in talks with the Rust project to figure out building
+`core` in a stable way, so the details around it may change too, e.g.
+probably something like passing a flag like `-Cbuild-std=3Dcore`. They
+may also want to figure out the right input file path themselves, i.e.
+rather than having to provide one from our side.
+
+So I think a hack may not be worth it compared to depending on the
+implementation detail, and may be a bit brittle until we know the
+final details of that.
 
 Thanks!
 
