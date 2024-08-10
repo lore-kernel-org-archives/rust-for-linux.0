@@ -1,99 +1,117 @@
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from desiato.infradead.org (desiato.infradead.org [90.155.92.199])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFBA82F5E;
-	Sat, 10 Aug 2024 14:45:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B3D93AC36;
+	Sat, 10 Aug 2024 21:04:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=90.155.92.199
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723301127; cv=none; b=cpLaxmgFvURZ5aSaZNWrFpsb+a0O07QwjpOh/FMlcom33nMlNbJ75Fto8FjA3535+CN4EYrAdHgvV+9AW5c/oYuYa0EhkrmkgeSaJr6e+lfCoMWZ8x+SDFE72kTxIr0RJF+XE0nGzWgxKw7BkDTrEqCQQ8Y/WsJnlms+Q8lDyNg=
+	t=1723323877; cv=none; b=sHMUvV7+1AJKoTaHy5kOSmbRSv/MdPLaC9pphvtqysU48DkQ4g0Bpiz7peSVHwltVKjk3xix2pPeMpk4/pYBFaLw0BnsO5PwfbrDBW5bFSQZjUl79InKHst6x1H0erBDxCULr2v9Kc9pgvSZFCiu/fjP5m6XWahvzwVGok5sQg0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723301127; c=relaxed/simple;
-	bh=9S4F9A6PaX/W1YdIFNWkFn30l1Nc6GZXCt3lt+ixrQg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Lotz1FcirqiPGOjO62OnC0TbUgcICIZxCVA+ZWCqgRZQBXdWmJIWjIMyFRrXmV/iiKPI4z70JB4t0to7xCdGe5Ll9RC+NV6mc/DpfAte3E/bzVtyfNjB2rjCoLAz/jy7DDJ125cu1HN64uIcld5XIZDomGzBxxU4SmMpGUQYuX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SH6r/Qc2; arc=none smtp.client-ip=209.85.216.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1723323877; c=relaxed/simple;
+	bh=U6uyqW0VIsr3ynf+I05mOzu59oLHp/XRqRKQdkUKQPs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YkFoGwfSWIZ9nV+AcCAuP/+Y9mk2ozoqkIHT1FL/Gy0/bqNkZApyG1qALvdmIrDjNRfr8mVuc1ZvgK2jaG05zSpCrMWz4pus+4Uj0MzhJcxKdMXMhhdAe4RU4VnZ+oo3FJq774gSkKR2EcT16lK7XWOhJO/ch8inhkoEtaSRaFk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org; spf=none smtp.mailfrom=infradead.org; dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b=WSyOlZN4; arc=none smtp.client-ip=90.155.92.199
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=infradead.org
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=infradead.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SH6r/Qc2"
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-2cb7cd6f5f2so2374544a91.2;
-        Sat, 10 Aug 2024 07:45:25 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1723301125; x=1723905925; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9S4F9A6PaX/W1YdIFNWkFn30l1Nc6GZXCt3lt+ixrQg=;
-        b=SH6r/Qc2ICsgr1XZjk8lKTUPW3wROz2xmKxrV6t+kImhopgSphIg6+z0HHerEXFnNK
-         ldEw1OiRaR2D6BUNC03fwtDK63Kz+wDhwHyxj5g0A5DWRhDLpdjfHgJjg8D1XMGO1vbS
-         N96GD29nZcREz/lnAcBaIqsEjKPpA3Vdnbx5ypYeIZfva3W6GAiNgy+Yb7i5IYdYBfq2
-         d/96OOPLF9QW4604JSowF1KH36ccs2OGMa/PZa7VHhLCN3QT6vK0uUvZmCKqC/tqKWC3
-         GP9HnC2Fdw9Ns8tltZVC8w2ibDPgPBoXK7m48OHLJIbSgycjF6UI1gaML0ZntrsyWBz+
-         m+hw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723301125; x=1723905925;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=9S4F9A6PaX/W1YdIFNWkFn30l1Nc6GZXCt3lt+ixrQg=;
-        b=Z++K3pbvYlzBeljxIZ4ClZ2LXsIYzff+mbdf0Wc4p/BdHswsTH1LFBrXHeK16hFK5X
-         6l33B6bYG7TXsP8XqLzTZ02DqX2zf3HksVumzXUWTUnycFhsA5xBoGTuef1oZFJvWMDh
-         fWLTtrovEa5Ij3qheRescSFmMFPJN48wRuaacf1MmML6d6ERa8OL+QGSaFXbMdw8KlJs
-         rUtLhdEdyV7UhoOsjpUtuShQIQnAIuDDCwkLuBZvQAKrDcc3bb3IpP7uTC+2J3x8I7uc
-         loPOU60W7ak2qHKOiee4sfKN8dXLjylrXSDeKo4yQrF/xj9wqsg7CblBFkEh/FFF+0mZ
-         o19w==
-X-Forwarded-Encrypted: i=1; AJvYcCXo0nHlwjV2wl72SljqquQeGs7iG27NMk5/ESqKyTM5n4yuTNIlGsuTX0Zi8zdckWdJIxFDQ6kdosPExI2SC/pW72Rqf2jfbY230qCsJE+FH+R08wiDP/cFUBZa16tUDpY6vJ6nfH0gWn0LX1mhFR55ZXUgIrTiOfiTHtqwA0LbNuf7aTzqOBqBAA4=
-X-Gm-Message-State: AOJu0YwEJc0nsyzsYRsxRnguTcAfLYTtWwiovNX4utMxgZnW3GJHrnYR
-	jWKt99iLS4yZoL6tsNRT2oB1mSnSL+eN+BOtRWjDhHIpK42T9NYQVp4Ig1LjtV7zuv2ZknDxsZ+
-	ddI3hS84RR+3FCpzwfCyv29J1JVaWtRxm
-X-Google-Smtp-Source: AGHT+IGfAWSZ5LwbG80gDM0OaU5dKBmBaQzIewIaSEbnuIWbzBzupl1sGtdFp/rRW2syqJvIsKdkY1uR23zTPg1Hxbc=
-X-Received: by 2002:a17:90b:1b0d:b0:2d2:453:12cb with SMTP id
- 98e67ed59e1d1-2d204531848mr1563929a91.2.1723301124946; Sat, 10 Aug 2024
- 07:45:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=infradead.org header.i=@infradead.org header.b="WSyOlZN4"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=infradead.org; s=desiato.20200630; h=In-Reply-To:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=L5ZaMkcysgxHBoobfCUH51gejY2SZF51sPwk8BxYjEY=; b=WSyOlZN4Nni7gLJNXzcNaOAvzJ
+	AGptP8rQIgN+f0r3MKaa4DkO8n0uajfvfFHFin2/Bt8kD3YAo9vEUuRl1Bupm9EadiUsbtx7hSql/
+	a8CkFGhTcyPe5ZoM/Dz28ZIEApK1jA67plyopWOnjdxd8Am17AfJWo7UaF3NqvbZcOn5fRgJ5ikG/
+	p7WlXxAtLLnWnn/XjjEmwkOEdDCvSLYCRAq1X4fFc4ZgXbYymk4kT6SIvGoQtEcCkjSjqLxp+eKdj
+	acvI13ItRy/3Cn738bv0ltJVQZNhgXszAuribt/HlAdGjnA9yaqgfs/Kf+cSvUsGKtI8rLZwpgI+r
+	WLGtRLyA==;
+Received: from j130084.upc-j.chello.nl ([24.132.130.84] helo=noisy.programming.kicks-ass.net)
+	by desiato.infradead.org with esmtpsa (Exim 4.97.1 #2 (Red Hat Linux))
+	id 1sctFn-00000007Fdg-2gux;
+	Sat, 10 Aug 2024 21:04:00 +0000
+Received: by noisy.programming.kicks-ass.net (Postfix, from userid 1000)
+	id 3BB1B300729; Sat, 10 Aug 2024 23:03:59 +0200 (CEST)
+Date: Sat, 10 Aug 2024 23:03:59 +0200
+From: Peter Zijlstra <peterz@infradead.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Jason Baron <jbaron@akamai.com>, Ard Biesheuvel <ardb@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	linux-trace-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+	linux-arch@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Uros Bizjak <ubizjak@gmail.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>,
+	Oliver Upton <oliver.upton@linux.dev>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Ryan Roberts <ryan.roberts@arm.com>, Fuad Tabba <tabba@google.com>,
+	linux-arm-kernel@lists.infradead.org,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,
+	Albert Ou <aou@eecs.berkeley.edu>,
+	Anup Patel <apatel@ventanamicro.com>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Samuel Holland <samuel.holland@sifive.com>,
+	linux-riscv@lists.infradead.org,
+	Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>, Bibo Mao <maobibo@loongson.cn>,
+	Tiezhu Yang <yangtiezhu@loongson.cn>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Tianrui Zhao <zhaotianrui@loongson.cn>, loongarch@lists.linux.dev
+Subject: Re: [PATCH v6 5/5] rust: add arch_static_branch
+Message-ID: <20240810210359.GD11646@noisy.programming.kicks-ass.net>
+References: <20240808-tracepoint-v6-0-a23f800f1189@google.com>
+ <20240808-tracepoint-v6-5-a23f800f1189@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240808221138.873750-1-ojeda@kernel.org> <20240808221138.873750-3-ojeda@kernel.org>
- <652ElsLaWV50vwbKOQc-kTFLeaf8wUGPKNhc8B8tS6EqgqzSj5k_tHgqCTUcxfSZkYvB1xC_N2pmNIA-oq2q9irSPp2XNaaiv67pZojm_9I=@protonmail.com>
-In-Reply-To: <652ElsLaWV50vwbKOQc-kTFLeaf8wUGPKNhc8B8tS6EqgqzSj5k_tHgqCTUcxfSZkYvB1xC_N2pmNIA-oq2q9irSPp2XNaaiv67pZojm_9I=@protonmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sat, 10 Aug 2024 16:45:11 +0200
-Message-ID: <CANiq72kXNCww6oHKNiPr-mGq3gQsH-kUbK-C9B_3bY-ozkiznA@mail.gmail.com>
-Subject: Re: [PATCH 2/6] kbuild: rust: make command for `RUSTC_VERSION_TEXT`
- closer to the `CC` one
-To: =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Masahiro Yamada <masahiroy@kernel.org>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240808-tracepoint-v6-5-a23f800f1189@google.com>
 
-On Sat, Aug 10, 2024 at 3:44=E2=80=AFPM Bj=C3=B6rn Roy Baron
-<bjorn3_gh@protonmail.com> wrote:
->
-> Cargo depends on the rustc version string not getting localized. Or to be=
- precise it depends on the version string being fixed for a given rustc ver=
-sion, which would not be the case if the value of LC_ALL could change the v=
-ersion string. If the version string changes, cargo will rebuild everything=
- from scratch. There is also not really anything to localize in the non-ver=
-bose version string. I guess setting LC_ALL doesn't hurt either though.
+On Thu, Aug 08, 2024 at 05:23:41PM +0000, Alice Ryhl wrote:
 
-Thanks Bj=C3=B6rn -- yeah, I agree it works either way (also for `head` as
-Masahiro mentioned).
+> +/// Wrapper around `asm!` that uses at&t syntax on x86.
+> +// Uses a semicolon to avoid parsing ambiguities, even though this does not match native `asm!`
+> +// syntax.
+> +#[cfg(target_arch = "x86_64")]
+> +#[macro_export]
+> +macro_rules! asm {
+> +    ($($asm:expr),* ; $($rest:tt)*) => {
+> +        ::core::arch::asm!( $($asm)*, options(att_syntax), $($rest)* )
+> +    };
+> +}
+> +
+> +/// Wrapper around `asm!` that uses at&t syntax on x86.
 
-I made this commit to make it as close as possible to the C one, since
-in the next patch it gets moved to another place where both commands
-go together.
+^ the above line seems out of place given the 'not' below.
 
-It is reasonable to argue that it makes it more complex and slower, so
-I am happy dropping it.
-
-Cheers,
-Miguel
+> +// For non-x86 arches we just pass through to `asm!`.
+> +#[cfg(not(target_arch = "x86_64"))]
+         ^^^
+> +#[macro_export]
+> +macro_rules! asm {
+> +    ($($asm:expr),* ; $($rest:tt)*) => {
+> +        ::core::arch::asm!( $($asm)*, $($rest)* )
+> +    };
+> +}
