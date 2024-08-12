@@ -1,111 +1,157 @@
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66C2517C211
-	for <rust-for-linux@vger.kernel.org>; Mon, 12 Aug 2024 13:33:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDF75183CC4;
+	Mon, 12 Aug 2024 13:49:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723469595; cv=none; b=CP1rvc2Pb2u1oEn6tq/OLYhnKD42xtB3cJZuytWj8c7Ufd7yJ5MRQLR2PM/g1wzpQNjNSOieDf7OXxKDuFb+WFuptJwYrlHMW21yfU2qANf8OylL2P4tFUI7uNG+f4om1scyCK3TDMCEitT/D/0sMZHczbBq/HpQwpmcZMcks6I=
+	t=1723470565; cv=none; b=YEqWTVqeFfqt+grUBfjVDjZZVtu4rc2MD9RGRmOIMZRu5Up/imXqYnZaiTiS3a8CC99DDvDD6XvZlWheMdg/n90oDaBgncvwvEAWfkx8omWFcXICheZ5XDPrrbrSvM5y1qfLW2IsdpPofS+FU2/rNtfxfDkH57g6P7Bj/DI0TiM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723469595; c=relaxed/simple;
-	bh=yQGH4wTqdj6UgcbMWJ/OlXYfokf0rrWK3E7OaiXkuCI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cNJ8HijyZyc6279VVPsKXAHnaANXG5mUjLwoZ6Mmdt2MABM0U1+yJem28jjzdNfTC23yqEBm27REjVKyV6Um03OD8clJimgy1E4kBUCirjwo7TNsVADedeS5IqlN/S/s9rroKLWznlPdzICheqFKHwafrHZ9qLKl3MCF2k1Eu3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=r1dhUITP; arc=none smtp.client-ip=209.85.221.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1723470565; c=relaxed/simple;
+	bh=FSNWWOfBczRimX/OeuXzsO1eWAUfUC6SsCaOC3eStWg=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=lMC7j9EUpukukJirku3Pck2XzWETVIvQ8vPREBCJbrRtEYnd8MIKQfp8skzKJNh01QqOdthnA24jpei9/nN9A39BQXNaqfNLCki83wuUGgW+Q/K6Fnu6hrg/kXW6ktPz1qPDe2QLnodTAdTFNs4MtQBRf0JQHh1OqVrc1RW40t4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Npg2uDff; arc=none smtp.client-ip=198.175.65.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="r1dhUITP"
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-36bd70f6522so2375691f8f.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 12 Aug 2024 06:33:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1723469592; x=1724074392; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yQGH4wTqdj6UgcbMWJ/OlXYfokf0rrWK3E7OaiXkuCI=;
-        b=r1dhUITPF2KaKWUHuGt9L0UVrLIpXu1j3oDeBfzMj3qb/7xnIdSOHJDaeFjXBqA+/j
-         3L4JhAgndp58gnheOPPVWwym12IrrbyovNAOIukmUPJkzw40p82jTbrHsBdLdJJDIkXT
-         yj5IuHlkvpw86z0YdjKB2jF3trnGfBzhrtVAK6eJBsUSD6g3YNRfa9xYcIjNXKDLmbzS
-         feQ9Xs0YAVbSGJkCoZB/Od1A72G27YYP2gmE8kOgLuqPpdzZ5foyrWmnakaXyjoEboiB
-         g7WUnHfQqro1LEPUKcMOJr9vmW6vu7UsUsVgv6629ko65W6WYwQjbnWmfWt5oUZhavck
-         5U6Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723469592; x=1724074392;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=yQGH4wTqdj6UgcbMWJ/OlXYfokf0rrWK3E7OaiXkuCI=;
-        b=LAmaOLJV1Ohm7PYBzX1QWK0d0IhK8gT6zLI7YwGsvqm5yzLBhxdIHgWeBq13HZOp1l
-         NowrkydwSXkq3wP5zyCFc8kinRjzLS9uQK9hTZ/qowIhLbqqhO0zeNCmmaiHBJIeYOmd
-         TtAMeTYMHxemqIbZutmwFfelcE5TRfJhZJuQAURD0bwJO+MmBty5UIZ6y+Q+kHQ4wlQT
-         Fl2Ds2TwIvQX+5GfHrNUKPy0jUQutqGECY6IO6yvOE/xZmHu64bPnOKm5qt0/hs5L7qf
-         NWnnJEbjkpnW6RyUO5ls0z/L+PeARMA6pTNxqJRVq1k4YmohzQXifYNsVqqxAmfrh5HP
-         hBbQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXj7vy3aek3+cAds0sKaUP04z8lxLrjiBW0EsM6uimgCwtIDThH2ymZtWP8flhekW33Wl3+YGJKVVCGfX7GXWkq33lqHuwmI3G1klpVm9A=
-X-Gm-Message-State: AOJu0YxbAuhacmFeWrIJ/3HJE17QSks98q9L8BZpIOiuw2CJsRUeh/AB
-	Rl+wEdtrit3jr4AbiK+u6q3R8BaCnYn/Voum+q5u3jCOcZSECCI85Iox0W8L19bDM9NuHGeicgb
-	ezfrwqEEouG7I+1B7DXbnHih1K84CfmrFi1CN
-X-Google-Smtp-Source: AGHT+IHW60xClnCiQEYYTC8Z9PZ33xaYy4WZgALT6Q+LMP95jazFgPNu9OZ8W3SxyYi1G4TpTJOyz0WQCdXu9YQVFvk=
-X-Received: by 2002:a05:6000:b42:b0:363:d980:9a9e with SMTP id
- ffacd0b85a97d-3716cd267abmr226021f8f.55.1723469591316; Mon, 12 Aug 2024
- 06:33:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Npg2uDff"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1723470564; x=1755006564;
+  h=from:to:cc:subject:in-reply-to:references:date:
+   message-id:mime-version;
+  bh=FSNWWOfBczRimX/OeuXzsO1eWAUfUC6SsCaOC3eStWg=;
+  b=Npg2uDffdN47fkdKLx4gmAt+1S3LPAWnYjUSlnfLJHbHTrOWIbZzj8R6
+   vftbRF/jlJNfAIPwnuunwcU1iFgVWfPxCaV7D+cewBAzCidv3hyj1AJAy
+   HT++j1oQzuiG30O2Hk9/Ec591rwBo9hXkcuydPhpKUX3F0yiQyq3TSio5
+   Vr9xeX/lNwDHSxsTZcXBnEbN+10U95rOX9/7W2CfF+uljVvxR3k/DzyCG
+   VCmm7krt8CtQu9KBVyDWsgjM/ecaUD8NgplPGDTfMMe+6gtAneJeSnZnG
+   n8RKENfjHUkrVol/9roaueg3MRd1Ycw61BP3bxywHZC4YEEzGnirKNdDQ
+   Q==;
+X-CSE-ConnectionGUID: B8oe9XTQTZeZ5+Ryw/RyJQ==
+X-CSE-MsgGUID: 5q/F8kwoS/2oaFaEinhYDQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11162"; a="21439640"
+X-IronPort-AV: E=Sophos;i="6.09,283,1716274800"; 
+   d="scan'208";a="21439640"
+Received: from fmviesa002.fm.intel.com ([10.60.135.142])
+  by orvoesa111.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2024 06:49:23 -0700
+X-CSE-ConnectionGUID: GbxiNnPvS7+EFc2K0UIztg==
+X-CSE-MsgGUID: 1stcQ3ScQ3yZPV0Li/laiA==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,283,1716274800"; 
+   d="scan'208";a="81512475"
+Received: from iklimasz-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.246.117])
+  by fmviesa002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2024 06:49:16 -0700
+From: Jani Nikula <jani.nikula@linux.intel.com>
+To: Jocelyn Falempe <jfalempe@redhat.com>, Maarten Lankhorst
+ <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
+ Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
+ Daniel Vetter <daniel@ffwll.ch>, Miguel Ojeda <ojeda@kernel.org>, Alex
+ Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, Bjorn Roy
+ Baron <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl
+ <aliceryhl@google.com>, linux-kernel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, Danilo
+ Krummrich <dakr@redhat.com>
+Cc: Jocelyn Falempe <jfalempe@redhat.com>
+Subject: Re: [PATCH v6 2/4] drm/rect: Add drm_rect_overlap()
+In-Reply-To: <20240812123147.81356-3-jfalempe@redhat.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20240812123147.81356-1-jfalempe@redhat.com>
+ <20240812123147.81356-3-jfalempe@redhat.com>
+Date: Mon, 12 Aug 2024 16:49:13 +0300
+Message-ID: <87sev926na.fsf@intel.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240808-tracepoint-v6-0-a23f800f1189@google.com> <20240808-tracepoint-v6-4-a23f800f1189@google.com>
-In-Reply-To: <20240808-tracepoint-v6-4-a23f800f1189@google.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 12 Aug 2024 15:32:59 +0200
-Message-ID: <CAH5fLggC_73YQGLLjUsGnsUjAr9vOS-ebG0=-dWGqS7euzzf4Q@mail.gmail.com>
-Subject: Re: [PATCH v6 4/5] jump_label: adjust inline asm to be consistent
-To: Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Josh Poimboeuf <jpoimboe@kernel.org>, Jason Baron <jbaron@akamai.com>, 
-	Ard Biesheuvel <ardb@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>
-Cc: linux-trace-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>, linux-arch@vger.kernel.org, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Sean Christopherson <seanjc@google.com>, Uros Bizjak <ubizjak@gmail.com>, 
-	Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, Marc Zyngier <maz@kernel.org>, 
-	Oliver Upton <oliver.upton@linux.dev>, Mark Rutland <mark.rutland@arm.com>, 
-	Ryan Roberts <ryan.roberts@arm.com>, Fuad Tabba <tabba@google.com>, 
-	linux-arm-kernel@lists.infradead.org, 
-	Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, 
-	Albert Ou <aou@eecs.berkeley.edu>, Anup Patel <apatel@ventanamicro.com>, 
-	Andrew Jones <ajones@ventanamicro.com>, Alexandre Ghiti <alexghiti@rivosinc.com>, 
-	Conor Dooley <conor.dooley@microchip.com>, Samuel Holland <samuel.holland@sifive.com>, 
-	linux-riscv@lists.infradead.org, Huacai Chen <chenhuacai@kernel.org>, 
-	WANG Xuerui <kernel@xen0n.name>, Bibo Mao <maobibo@loongson.cn>, 
-	Tiezhu Yang <yangtiezhu@loongson.cn>, Andrew Morton <akpm@linux-foundation.org>, 
-	Tianrui Zhao <zhaotianrui@loongson.cn>, loongarch@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-On Thu, Aug 8, 2024 at 7:23=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> wr=
-ote:
->
-> To avoid duplication of inline asm between C and Rust, we need to
-> import the inline asm from the relevant `jump_label.h` header into Rust.
-> To make that easier, this patch updates the header files to expose the
-> inline asm via a new ARCH_STATIC_BRANCH_ASM macro.
->
-> The header files are all updated to define a ARCH_STATIC_BRANCH_ASM that
-> takes the same arguments in a consistent order so that Rust can use the
-> same logic for every architecture.
->
-> Link: https://lore.kernel.org/r/20240725183325.122827-7-ojeda@kernel.org =
-[1]
+On Mon, 12 Aug 2024, Jocelyn Falempe <jfalempe@redhat.com> wrote:
+> Check if two rectangles overlap.
+> It's a bit similar to drm_rect_intersect() but this won't modify
+> the rectangle.
+> Simplifies a bit drm_panic.
 
-This link is in the wrong place. It's supposed to be mentioned as a
-dependency for this series. Also, I intended to have the same tags
-here as I did on the last patch.
+Based on the name, I'd expect drm_rect_overlap() to return true for
+*any* overlap, while this one seems to mean if one rectangle is
+completely within another, with no adjacent borders.
 
-Alice
+I'd expect a drm_rect_overlap() to return true for this:
+
+ +-------+
+ |   +---+---+
+ |   |       |
+ +---+       |
+     |       |
+     +-------+
+
+While this seems to be required instead:
+
+ +-------+
+ | +---+ |
+ | |   | |
+ | +---+ |
+ +-------+
+
+
+IOW, I find the name misleading.
+
+BR,
+Jani.
+
+
+>
+> Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
+> ---
+>  drivers/gpu/drm/drm_panic.c |  3 +--
+>  include/drm/drm_rect.h      | 15 +++++++++++++++
+>  2 files changed, 16 insertions(+), 2 deletions(-)
+>
+> diff --git a/drivers/gpu/drm/drm_panic.c b/drivers/gpu/drm/drm_panic.c
+> index 0a047152f88b8..59fba23e5fd7a 100644
+> --- a/drivers/gpu/drm/drm_panic.c
+> +++ b/drivers/gpu/drm/drm_panic.c
+> @@ -529,8 +529,7 @@ static void draw_panic_static_user(struct drm_scanout_buffer *sb)
+>  	/* Fill with the background color, and draw text on top */
+>  	drm_panic_fill(sb, &r_screen, bg_color);
+>  
+> -	if ((r_msg.x1 >= logo_width || r_msg.y1 >= logo_height) &&
+> -	    logo_width <= sb->width && logo_height <= sb->height) {
+> +	if (!drm_rect_overlap(&r_logo, &r_msg)) {
+>  		if (logo_mono)
+>  			drm_panic_blit(sb, &r_logo, logo_mono->data, DIV_ROUND_UP(logo_width, 8),
+>  				       fg_color);
+> diff --git a/include/drm/drm_rect.h b/include/drm/drm_rect.h
+> index 73fcb899a01da..7bafde747d560 100644
+> --- a/include/drm/drm_rect.h
+> +++ b/include/drm/drm_rect.h
+> @@ -238,6 +238,21 @@ static inline void drm_rect_fp_to_int(struct drm_rect *dst,
+>  		      drm_rect_height(src) >> 16);
+>  }
+>  
+> +/**
+> + * drm_rect_overlap - Check if two rectangles overlap
+> + * @r1: first rectangle
+> + * @r2: second rectangle
+> + *
+> + * RETURNS:
+> + * %true if the rectangles overlap, %false otherwise.
+> + */
+> +static inline bool drm_rect_overlap(const struct drm_rect *r1,
+> +				    const struct drm_rect *r2)
+> +{
+> +	return (r1->x2 > r2->x1 && r2->x2 > r1->x1 &&
+> +		r1->y2 > r2->y1 && r2->y2 > r1->y1);
+> +}
+> +
+>  bool drm_rect_intersect(struct drm_rect *r, const struct drm_rect *clip);
+>  bool drm_rect_clip_scaled(struct drm_rect *src, struct drm_rect *dst,
+>  			  const struct drm_rect *clip);
+
+-- 
+Jani Nikula, Intel
