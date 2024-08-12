@@ -1,52 +1,74 @@
-Received: from NAM11-BN8-obe.outbound.protection.outlook.com (mail-bn8nam11on2049.outbound.protection.outlook.com [40.107.236.49])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0910C17C7D9;
-	Mon, 12 Aug 2024 14:06:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.236.49
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723471591; cv=fail; b=CVJmlSdDLTZsV8ZXAYxCR9716jfj4/hh7vu6HeWSytk+ZgU9l+3eXsTACjrJs13Uq1TnUau0KxOtGYo8m3ROgd5uElUIrLfMIvziGVCuKH1mcBx/z0+/UT/WHwLG4fd7kM9zmRDlMkZlpy6pNv+p/GA+HII7wpP06zpT/A7WYho=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723471591; c=relaxed/simple;
-	bh=uEAQeErb5f3QVn+Ur5DM2vttLq+A1cqBFSc6kJjedMI=;
-	h=Message-ID:Date:Subject:To:References:From:In-Reply-To:
-	 Content-Type:MIME-Version; b=DX/SN1vVqaZx7N5lcPMpeLiLM0snzPZ6b/mnaiMPDaLbAmY0oNvJx3Jg3ZLZRuBS391v4ee5gpmgax8fSAO7qzHNToxWYNS0e9+RT2uiALzU8uvjbr4L5QrE+X1GeaYrqiff7VTzXyxkgiUVsNcAZogz+EeILtD8vBuIXJFHx+I=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=4ISe5BQ4; arc=fail smtp.client-ip=40.107.236.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 809EA17C7C2
+	for <rust-for-linux@vger.kernel.org>; Mon, 12 Aug 2024 14:19:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1723472349; cv=none; b=N0KRvwtU0xzT1Z/Uqo3pXTu+JyL7iuOUyO2N71+Dsp61KZ7LqiVx7CCy5YULvKYB1bb863gbxIKe3SYUaM0QMN2WXVSu5/iRYaIQgh3oXr+iXIup9Me4PxEjd/F9QeCrG6mmgqwFLDbSXKJpaCw4yNRIUnw3wKqOmhQci3FzybY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1723472349; c=relaxed/simple;
+	bh=20M6iFSz3FZJrXZ15/AGYEgPToHoPbcKY/YpnkCUJII=;
+	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
+	 In-Reply-To:Content-Type; b=AxngGtJcvHPyAYukpQ95em81WUavt48xurTQyrxtT8HRVbTVPYTeRS3Jvhd4IdtBl76zARgOb2PUoYq2ixgbHRAiqa5/AuK0XyrxOs38RTpMGUvRe/Gbcd+Y5KL4YvomwWiVxkbgIoUye7lWzQ8j3xSNqANh+U90vQUzlOzkzuk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SUpbPw4e; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="4ISe5BQ4"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=tSqOPCZ3Mnwd3Cu03spXhCEejewdHAvS/q699Q5eMxRLFuhReRGtFM2HZ/uBdY9rP/F/+hmagW1kwMErtkFdNB8uVtPMWOAioQ1Y845laMekX4nxQmjDPHtQQrPM8PmwheAMnSNzSDo+Wv0CeWaQHNOWhxafS7D8xrBI5PXZginCRf6EWRunTLCAxWdFNTD7CxbKpMahur/lqqia0t9ef6P8qoUVFMRoKAPvRdXx2hpEnBQoQTRGUotX1pN62c7qZxbn8hZ2wlibAZJI84ap7zVn8m2IQZkEMWkzwRGHUmLBJxpLUqCWRdUGRDsCkmNmoTwieRe2bQFRVlXD00IKxQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=NHDXotm5W7Y6GApY5YAS3hWIAM+2gpC0oPEDAsV9cY0=;
- b=i1RBT4R5LR3kSZ3MAzMnXPoyxSDRuP4+J0/4OYQIcT3v0pJkO54rnJiNY0InFFwiY+z7kMcYhht6zTsuczFQFTT75UNsBBCcB7+Z8JvDGgRetWfYp6AiEBHRflAMYvsRQ8bX3v9OV58zvokCuMkj9R3OTi/fef68j+vv8JwxtCu2iHEZwTxv+b+/O/1jlkf/VcpoxRRGxR5S0Q/lAdbqPTlctOu9z6UcNdXUdrK1VCLALeuTyN8bZgaONpUJOWNB8Y7S3uMlWjIrf82Uiu4uQESLunDxWttB4JRFtTY6eRc4sj/uUY/PyVFytABVata0I8O/VD6ESLIL+VNAwi5dig==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=NHDXotm5W7Y6GApY5YAS3hWIAM+2gpC0oPEDAsV9cY0=;
- b=4ISe5BQ4fcqceBKDJt/tHxESdwO6LwrTgPs+EUCxwhG977xJj0s7UQMj83nrHnGx/4eosyaSf4bOTqSvXCDGwKbELnxPT99fv2lk+v6ayMtLS1hCtYtn1UjVd5BNpoo/F911jFod/a1M+UOfpdrgX7ZmP9ox5afx2r1bcsgDdRU=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from SN7PR12MB6839.namprd12.prod.outlook.com (2603:10b6:806:265::21)
- by SA1PR12MB8741.namprd12.prod.outlook.com (2603:10b6:806:378::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7849.20; Mon, 12 Aug
- 2024 14:06:23 +0000
-Received: from SN7PR12MB6839.namprd12.prod.outlook.com
- ([fe80::eaf3:6d41:3ac0:b5f4]) by SN7PR12MB6839.namprd12.prod.outlook.com
- ([fe80::eaf3:6d41:3ac0:b5f4%6]) with mapi id 15.20.7849.021; Mon, 12 Aug 2024
- 14:06:23 +0000
-Message-ID: <2a88d198-f3b6-4684-b528-4aaaa0340d46@amd.com>
-Date: Mon, 12 Aug 2024 10:06:19 -0400
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SUpbPw4e"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1723472346;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DsZ0n/uAaYy4BF0ruktYY8YrFP/mFKdzXlqcXk7zn70=;
+	b=SUpbPw4ecSB4Hx4Osjmdld+KUd4FtGt7ykEBPnxMQ3lZeCjoZY5RGzcO/Ky9GtkWM6Bamj
+	4cQQnanXg6QUjH+hhUX3Kfr7vJhBBQjdbG3KMbbbwtghWzZNzBrdFmobtv0PgsuT6YLtHX
+	bPT3+VIlEAQTAyCzRJ5PRmf9wMjxROU=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-372-D0-OadpiNeeCeLjNlCoVhA-1; Mon, 12 Aug 2024 10:19:05 -0400
+X-MC-Unique: D0-OadpiNeeCeLjNlCoVhA-1
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-428207daff2so30280745e9.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 12 Aug 2024 07:19:05 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723472344; x=1724077144;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=DsZ0n/uAaYy4BF0ruktYY8YrFP/mFKdzXlqcXk7zn70=;
+        b=PiD+zi+DfHp4eMXzMQDeA3BO1vfW5d/585jADMiQK/YwQCJ9LJMsGSO9mT3TlMnojw
+         0pi+czrpvtG5qMOzKLDpjAl6lSjctmRaDX5PDmBztUp4Pd9d0pHLkqfTI6Rd+MlkZqUK
+         IrbqHfAO0oWuLzyvMotQlipmonxjmAjRnpxLdU6nIg6Q97eGo0KdNQonFUc0K7ZS1YBz
+         8G2ZjPkFk81QjTI1fhRPKDrzZ8exAQovATzMpXjPJKmFIenuJ+dC6PDtdrWTMHOmGUgu
+         0/z5r3RzqVO4l6mUw2i/+6s5++qv0BYLc+BhxpVFaFtdjV4W8fp1IMU1mQxzePZcFqOz
+         PWIw==
+X-Forwarded-Encrypted: i=1; AJvYcCXjv8/bnPIyajcs2stGFbuhz/ofEf/1FCfQg9rdIKojYg0wcXyWEdV9j9dgbnjNRN4S37C3ni22RWTn5grOEg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxEuMfdIYnuhQvkfVrxAxZcepeHdNk+YDltJT5/0I7OaalLAnfE
+	8Xa2vxTHOjCx6AvAs+35ixIuegC8kHojl2YWlxd5zahU17eQYWLmyoNVaWgdJzLe0p/taeK+PAq
+	K5sWrGQVPn2cJa40adFtce4KOyITbziMj5eHuEaNKCrtK2wToO45Nu55woxqehJ1F
+X-Received: by 2002:a05:600c:5489:b0:427:d8f7:b718 with SMTP id 5b1f17b1804b1-429d488047fmr4483215e9.24.1723472343949;
+        Mon, 12 Aug 2024 07:19:03 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFMYqABa//mMcdpuf59X1dzQmjPKUZRUSfrn2rTiz4JEfPCW7tnP/wiYu6/J9T05f0sM7ifPw==
+X-Received: by 2002:a05:600c:5489:b0:427:d8f7:b718 with SMTP id 5b1f17b1804b1-429d488047fmr4483015e9.24.1723472343486;
+        Mon, 12 Aug 2024 07:19:03 -0700 (PDT)
+Received: from ?IPV6:2a01:e0a:c:37e0:ced3:55bd:f454:e722? ([2a01:e0a:c:37e0:ced3:55bd:f454:e722])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4290c79f345sm187090885e9.39.2024.08.12.07.19.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 12 Aug 2024 07:19:03 -0700 (PDT)
+Message-ID: <60e55a9d-70bb-45d1-ac97-e4f6f6ffa9a9@redhat.com>
+Date: Mon, 12 Aug 2024 16:19:01 +0200
+Precedence: bulk
+X-Mailing-List: rust-for-linux@vger.kernel.org
+List-Id: <rust-for-linux.vger.kernel.org>
+List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
+List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH v6 2/4] drm/rect: Add drm_rect_overlap()
 To: Jani Nikula <jani.nikula@linux.intel.com>,
- Jocelyn Falempe <jfalempe@redhat.com>,
  Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
  Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
  David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
@@ -61,113 +83,17 @@ To: Jani Nikula <jani.nikula@linux.intel.com>,
  Danilo Krummrich <dakr@redhat.com>
 References: <20240812123147.81356-1-jfalempe@redhat.com>
  <20240812123147.81356-3-jfalempe@redhat.com> <87sev926na.fsf@intel.com>
-Content-Language: en-US
-From: Hamza Mahfooz <hamza.mahfooz@amd.com>
+From: Jocelyn Falempe <jfalempe@redhat.com>
 In-Reply-To: <87sev926na.fsf@intel.com>
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Language: en-US, fr
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: YQBP288CA0023.CANP288.PROD.OUTLOOK.COM
- (2603:10b6:c01:6a::19) To SN7PR12MB6839.namprd12.prod.outlook.com
- (2603:10b6:806:265::21)
-Precedence: bulk
-X-Mailing-List: rust-for-linux@vger.kernel.org
-List-Id: <rust-for-linux.vger.kernel.org>
-List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
-List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: SN7PR12MB6839:EE_|SA1PR12MB8741:EE_
-X-MS-Office365-Filtering-Correlation-Id: 33166872-c74a-4919-16bf-08dcbad7f2f0
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|366016|376014|7416014|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?NjNXN09pTmlhTzliZ0FyNFBrNklJbU41RURPYWh5dmw1NHVyZGs5QmlwQXQ2?=
- =?utf-8?B?UmNQdld1c2ZZOWlRRnNvTlJFUXZsNk9qOVIyYkZ0ODFIc093S0RmUHlQSXcz?=
- =?utf-8?B?OE8rT3RGMEl2cFkzOXdkNTV0bUxBZEFhdWdXTnkweit4V05KTktpNEdCWXdI?=
- =?utf-8?B?RTZXcHRtVEI0U3R3L3E0cFdIR3JON05rY2ZYeEdDY0pVMUFxbWYxSnN2V0R1?=
- =?utf-8?B?K2Q0N2x2U2FiYWZiZVFBRTB0ejdDdjg5SFRscnhwOFVJaTV0T1VyVUhTV2RM?=
- =?utf-8?B?b2ZUdVdxRkxpMjZ6T0ZvSHlMTWp1WUtsSUIrSlk2M2RxRXh6SzVNRzdJZTA2?=
- =?utf-8?B?dTBxajhDZENCQ0lNWGlPaGFjd0ptbG1HaXpwdTlJTGxHaHFxZTFHcEV6SS9W?=
- =?utf-8?B?U2h1VUMyOFBLR2VpUG01MVd5UUpKUjNwTDNISDFYUzZHQXlUUkRrWGVVeUFK?=
- =?utf-8?B?SUhVUzJIekpmeTZ3QUMwTnYycUNCWXVUVXgxRE1Fc3ZYdmluZTB2M3JEODlu?=
- =?utf-8?B?ZUh3STlaV2RITHJXa3BINjBpYTVkb2hLUDJVMWV3dnhNNnBEN2NvbDdpLzJJ?=
- =?utf-8?B?T1N4dzUvNzVKQW9yeWRVR1E0STRzb1ZJYUZET2JlS1YvVVhncUJVbldyenY3?=
- =?utf-8?B?VUVteXhLQWdIT2x2emE3RWpxWjhwZTljNFNPSmRwaUpkaVBxUFlsdGRDOGJX?=
- =?utf-8?B?djdzK3dWU0F0LzZwdjRaYXI1enpFK0tPZnFTaUFGN3FtNlAvRGd4YXg4bnFK?=
- =?utf-8?B?NS94SWloOFNIank2RUdOR3ZxVFI0QTNLZy9RcHhyYmtoVjlyTzZJbVh3cjZ6?=
- =?utf-8?B?ZGYxbkhCOEFRQVkrTXpFZnRPTlMvNC8yWVZITmJXMlNqR0VteXhWK0ZxMFE1?=
- =?utf-8?B?U2EyR1dXUkRNZkpnS045Vk54QUxQN095Q0FSYkQ4QkxRUjhvOTV0UkVJSW5n?=
- =?utf-8?B?ODVWWkR0aEE3cHZlaFBJcUZSUEdvNUkwQzRZWkFSUE5nTnBlL2VFa1RkakV5?=
- =?utf-8?B?cmt3bHhCOFdCSXJzWWtreEtrS00rTWZtMFVSNElpNHh1RXJQc2ljNkpaYUh2?=
- =?utf-8?B?aEJ3TmczdDNXeEIyWkxFeDFqK3ZoNDdYT25MLzE2V2pGT1Mrd2NaSGhhMjFu?=
- =?utf-8?B?MlR4ODdCcGtuUm9BaEpYS3VzT2lPdUJwOHRLTG0rTGUza3E2VEtoK0VDNEhy?=
- =?utf-8?B?ckppbHBrYzRWcmpuMFp5TUZ6ZFk1TDJzcjNHeEE0QnNOOEorTFRWczBRc3FV?=
- =?utf-8?B?eFFiLzFTNWFYcUx1V1g0anUxQ3dPQ09mZE00cS9URmxqQzQ1cFJxQzg3b1Rs?=
- =?utf-8?B?Y0owdDZHZXUrbEhTNzhEeFI1N241YzV0NDREcXFSM0J3TEtQMTgzRVlVNUll?=
- =?utf-8?B?MDdYMEVOYW5SNjZtTHowUHByck8zNVQxR1NBaU9rMWJGMHdTUm5pU3N0bFVH?=
- =?utf-8?B?dEdhT0VROXViVy80eUFoMmdPeE9JaEZuQ3M2NDZwWjJJRlN4V3A3c3EwSDFY?=
- =?utf-8?B?ajUrWjdQNlNjaWVMV3hZVFc2YzF6bFJmNW9HeVBUdlhNb25SQm1Wclliclho?=
- =?utf-8?B?dzZlTWV3Rk9wVWNxQkxWb0hza21EckFtL3JXQVFNakU1SURDTmdsRGQ1a0l0?=
- =?utf-8?B?N2pZdC9vM2l1ejc1ZGxyRHd4T1RDTm1zOEIwQTVFaXN3ZmZCVTVNRk1zY3o2?=
- =?utf-8?B?TGU4MTM3Tmg2cUFQWWRUcnRUSTM2WU1vb2U0d05vTWd5My9UeVU4OHNzZ0t2?=
- =?utf-8?B?VzR1SHFydHFIREtPRGppMnBHbjZ3RVdLall2L0JubVBHaG14d1dPZDJDc0xD?=
- =?utf-8?B?M2xnWCtNUnUvK3lrbkRjN01uVEgwbkVvV0ZhcDJaWTlLb3pYZ3RLY3JYazB1?=
- =?utf-8?Q?QyrPXPZMyYPMW?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:SN7PR12MB6839.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014)(921020);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?WnRITTBsQVVoVnN2aHhJRDdRQzNKRTcvZmZUVmhQMTlrbWlxMytDeW1ZUStD?=
- =?utf-8?B?RjhTeHdmYXR1YzFwQnVKeTVPNWl4TUFqcDlQakdrTFpOU3VQQlY5bTFWZy9v?=
- =?utf-8?B?OTFzTHpDekQ0elAzc0VtR3g4YUozZS9DcFV1Uk1ibUJXWWlMTGFrNUVZcUVt?=
- =?utf-8?B?OXptWEduV0NPNUp1aFBFNm5ZMjQramVES0dIRU1mS1NnNHV3YTdnQmJuY3Z3?=
- =?utf-8?B?VWhxZVlhWW5XTzMxTHpxcnNJK1hsSGp5WWlWWG9hS21aLytmeEZWK05RcTZj?=
- =?utf-8?B?WUpONEdHYTh0Q3NiRFJVd2FsQlJBazJ4NWgrSTJHcm01cEZlb1RmVkpUbkN2?=
- =?utf-8?B?N3lvaUs2NXpIN0o1RjN0dmRGMXMxNldDSVAreUtjRkZvY3dveld6SjNnVGZv?=
- =?utf-8?B?M3BuQ21WUEZ1QnEyYzhsSEcwRWJwSWh3UzgxOHdOZlpqZTV2NWVTc1A4c3lU?=
- =?utf-8?B?TWd2cVA0Q29vNnBsU2V2M09LM0RjaWU0RmlSeENDMlVTdUpUVml2eXBReG1z?=
- =?utf-8?B?MHdGbGhNTk4rYVdpMWp1cGlOd1RTMkNyWkF5dUNZb0ltMTMzc3NXRExMb2tI?=
- =?utf-8?B?WlVvc1g4cHpEdm40ekNFSTZjcjVURExYVTlVckNvZTRsR3gxYnV3ZFFGbTFy?=
- =?utf-8?B?OFhWanFFUisyd1doV3JmYmpOakpiaG12eTNUaURrMXpmUVdnSW1nQXV0enhO?=
- =?utf-8?B?Tk9Pa1V4S0xDNU9UeGY5aUFaNmVSTFR3SUVPbzkxWmtPejhoLzZ4UXV2OFNG?=
- =?utf-8?B?ZFRoME9xY1hmZDlrWmtSYndyMmV4UmpTNU9HcHEzRHhmNVVzbXFrM0VXWERF?=
- =?utf-8?B?eTRTbDRYTnhrTDd3K0pEVGVLZ3lTenc1cEVhMnl1NmxiVE9KRUhaWUhTUko5?=
- =?utf-8?B?K1ZENklhREhkSnVCbW5vRjU2TTBWZGxYL0wvTUNYM25NUmpSZUxKbFc4ZVBJ?=
- =?utf-8?B?QnQzeWRDamtvSkVZZ3YwY3RRbjV6VFFrOTFpc2I2VUF1Z2huSXorQXpHUXNw?=
- =?utf-8?B?RWx5TlpSc2t5aVp3YnNqNm1vSVVETXVDNFE1dHpXWGJ6MFNSZnMwUzJnc2hN?=
- =?utf-8?B?eGFSYnV3MW10cFpqNFdtRzZwNm1uNGRMY1BYM0YyVUJkcG81Y3BvaXpSTnFv?=
- =?utf-8?B?TFBldktOY25kZVpJNGVZU0RkMUtuZDYzaGo5cjdvQ0o5YXlsZzRkY2I0d2Y3?=
- =?utf-8?B?RjZEeE1GSDVOTytXam5SUURxSEJ0TXJxeUpmWUF0V1F0dVpWTmY2NXRick54?=
- =?utf-8?B?Ty9kQi9VTlYzbTFWQ3lZMnU4eUFtdXNVa1pjYmFMbkVleTBRMG9zZDJBaDFB?=
- =?utf-8?B?ZTVFQjcxY3QzVnk0WDhYeXhidm5HWnl4aFU4a0VENUJSUEZIcjRVQVBDMzE1?=
- =?utf-8?B?UW1oOHFXQkFSaWY3bU9tZzI3eUF1bFNkL1BiRkFUZjZIS1NuVVVCNU9nbW9a?=
- =?utf-8?B?Yk5DU1ZkTnZQcnFrbkhhV3U5R3BqNkhTb0lOMUs0WWU3OHFyWkpIWS9mUi9u?=
- =?utf-8?B?SzgvWmRkMHk4MHQ1cCtHMGQyd0FZZ21wUVpTOHRJdXRJQUNSQ3RWMWg3YXNM?=
- =?utf-8?B?eXJOVkh2MzBjUGVVeFRUa0pERm5rZlh2d1lmai9QUEF0dm5KcWUwN2xkSm42?=
- =?utf-8?B?VysyaHN6SjZwdVJLNWJhRUdEQjcxbnJQd00yamFoM0YvU0o5TE5zYUxUdmRl?=
- =?utf-8?B?dFdEanZsSDN2V2k3S2E0eUljbXlFaFVVditlY2RKSlVFdDZkeHNMV0gzbVRX?=
- =?utf-8?B?Zkt4NVB2MDRkNFhGbkQ2MXlHcnlFelIxOEFFQk8rM29vY1Z2M1drUFZUZGRJ?=
- =?utf-8?B?S09EdFY2M2M0SVBBaEx2d2dNWmlRODArdG9semw4SmM0NnFXL2k0K1ZwbGVJ?=
- =?utf-8?B?dlRMaHU4N3RqS2pDRlBUOGNNV2lEaE9qN2ZOTVFmVmppemQrSXBFdDVoRUNR?=
- =?utf-8?B?MnhOYzNCNXlYUmdlVVJnaGh0WFdVMzVhUmFaQVVpOFQ5b3NiYTR2UjNOZTl1?=
- =?utf-8?B?ZVpzV2ZDUElHR0lRcHFydHVIUERJbFBETk5wMEdQSEFENGJlK3E1WXdENVQx?=
- =?utf-8?B?NVVwdFVPTi9LSU1WN2s1b3FrREI0UC95bXZLazhYWEg2NzdGaUNJVFMwSUFP?=
- =?utf-8?Q?is/8s6dqFkdwAedkVlR3zOIP+?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 33166872-c74a-4919-16bf-08dcbad7f2f0
-X-MS-Exchange-CrossTenant-AuthSource: SN7PR12MB6839.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Aug 2024 14:06:23.7477
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: hk7dWjz3ZGVGVC7sIL91H5HTyZOGjkCrcftEKVlAx5tFuaYOoimIFQnLFyE+Qg4AIW2NqkwAqCLPHHOCDg7vlQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB8741
 
-On 8/12/24 09:49, Jani Nikula wrote:
+
+
+On 12/08/2024 15:49, Jani Nikula wrote:
 > On Mon, 12 Aug 2024, Jocelyn Falempe <jfalempe@redhat.com> wrote:
 >> Check if two rectangles overlap.
 >> It's a bit similar to drm_rect_intersect() but this won't modify
@@ -177,6 +103,8 @@ On 8/12/24 09:49, Jani Nikula wrote:
 > Based on the name, I'd expect drm_rect_overlap() to return true for
 > *any* overlap, while this one seems to mean if one rectangle is
 > completely within another, with no adjacent borders.
+
+It's what I intended, but I may have messed up the formula.
 > 
 > I'd expect a drm_rect_overlap() to return true for this:
 > 
@@ -186,6 +114,19 @@ On 8/12/24 09:49, Jani Nikula wrote:
 >   +---+       |
 >       |       |
 >       +-------+
+
+if r1 is the top left rectangle, you've got:
+
+r1->x2 > r2->x1   => true
+r2->x2 > r1->x1   => true
+r1->y2 > r2->y1   => true
+r2->y2 > r1->y1   => true
+
+So they count as overlap.
+
+Checking in stackoverflow, they use the same formula:
+https://stackoverflow.com/questions/306316/determine-if-two-rectangles-overlap-each-other
+
 > 
 > While this seems to be required instead:
 > 
@@ -197,9 +138,6 @@ On 8/12/24 09:49, Jani Nikula wrote:
 > 
 > 
 > IOW, I find the name misleading.
-
-Ya, maybe drm_rect_encloses() would be a better fit.
-
 > 
 > BR,
 > Jani.
@@ -241,11 +179,6 @@ Ya, maybe drm_rect_encloses() would be a better fit.
 >> + *
 >> + * RETURNS:
 >> + * %true if the rectangles overlap, %false otherwise.
-
-If you do end up going with that name, the returns doc ought to be:
-
-%true if @r2 is completely enclosed in @r1, %false otherwise.
-
 >> + */
 >> +static inline bool drm_rect_overlap(const struct drm_rect *r1,
 >> +				    const struct drm_rect *r2)
@@ -258,6 +191,4 @@ If you do end up going with that name, the returns doc ought to be:
 >>   bool drm_rect_clip_scaled(struct drm_rect *src, struct drm_rect *dst,
 >>   			  const struct drm_rect *clip);
 > 
--- 
-Hamza
 
