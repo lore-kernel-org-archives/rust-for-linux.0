@@ -1,194 +1,186 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 809EA17C7C2
-	for <rust-for-linux@vger.kernel.org>; Mon, 12 Aug 2024 14:19:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 534AE180A81;
+	Mon, 12 Aug 2024 14:32:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723472349; cv=none; b=N0KRvwtU0xzT1Z/Uqo3pXTu+JyL7iuOUyO2N71+Dsp61KZ7LqiVx7CCy5YULvKYB1bb863gbxIKe3SYUaM0QMN2WXVSu5/iRYaIQgh3oXr+iXIup9Me4PxEjd/F9QeCrG6mmgqwFLDbSXKJpaCw4yNRIUnw3wKqOmhQci3FzybY=
+	t=1723473148; cv=none; b=GLV12ywYqbIBm6ctGufP/YmyhdmOKQlKNTgeFCE8+LJkzuteXVW5DTVCGMMm79jTDsnY6lPDHXZi6vBXi8jqyw9F1Ps3QJinAlyKgv8SITQo1SLNW3BNXi2kJ6nj9eEUYVC3PMBhKa9uL5hX0lSdE9GKsT1ANImRiCsy4agCnk8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723472349; c=relaxed/simple;
-	bh=20M6iFSz3FZJrXZ15/AGYEgPToHoPbcKY/YpnkCUJII=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=AxngGtJcvHPyAYukpQ95em81WUavt48xurTQyrxtT8HRVbTVPYTeRS3Jvhd4IdtBl76zARgOb2PUoYq2ixgbHRAiqa5/AuK0XyrxOs38RTpMGUvRe/Gbcd+Y5KL4YvomwWiVxkbgIoUye7lWzQ8j3xSNqANh+U90vQUzlOzkzuk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=SUpbPw4e; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1723473148; c=relaxed/simple;
+	bh=UgrI/Tu5szy4NI0yyxPR1sc5ru7dZ5lT8+iLir7HTo0=;
+	h=From:To:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=NrYJ0fdyNNyOc1xsFDiBdo4+Kr2i9fLjBkHlZW2c4HgljOv+iJC4kixdht69obJKnXKnmFkiesuXYVGLq1PScFgYt7kwd+2lMxSTLXae5160WhM4x6dG36KNWl3eFkbWBieH62TsawRRy+hXhcK2Mm39h+8ozZbRYsZEnG2WcBw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=YI7p0Bx/; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="SUpbPw4e"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1723472346;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=DsZ0n/uAaYy4BF0ruktYY8YrFP/mFKdzXlqcXk7zn70=;
-	b=SUpbPw4ecSB4Hx4Osjmdld+KUd4FtGt7ykEBPnxMQ3lZeCjoZY5RGzcO/Ky9GtkWM6Bamj
-	4cQQnanXg6QUjH+hhUX3Kfr7vJhBBQjdbG3KMbbbwtghWzZNzBrdFmobtv0PgsuT6YLtHX
-	bPT3+VIlEAQTAyCzRJ5PRmf9wMjxROU=
-Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
- [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-372-D0-OadpiNeeCeLjNlCoVhA-1; Mon, 12 Aug 2024 10:19:05 -0400
-X-MC-Unique: D0-OadpiNeeCeLjNlCoVhA-1
-Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-428207daff2so30280745e9.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 12 Aug 2024 07:19:05 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723472344; x=1724077144;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=DsZ0n/uAaYy4BF0ruktYY8YrFP/mFKdzXlqcXk7zn70=;
-        b=PiD+zi+DfHp4eMXzMQDeA3BO1vfW5d/585jADMiQK/YwQCJ9LJMsGSO9mT3TlMnojw
-         0pi+czrpvtG5qMOzKLDpjAl6lSjctmRaDX5PDmBztUp4Pd9d0pHLkqfTI6Rd+MlkZqUK
-         IrbqHfAO0oWuLzyvMotQlipmonxjmAjRnpxLdU6nIg6Q97eGo0KdNQonFUc0K7ZS1YBz
-         8G2ZjPkFk81QjTI1fhRPKDrzZ8exAQovATzMpXjPJKmFIenuJ+dC6PDtdrWTMHOmGUgu
-         0/z5r3RzqVO4l6mUw2i/+6s5++qv0BYLc+BhxpVFaFtdjV4W8fp1IMU1mQxzePZcFqOz
-         PWIw==
-X-Forwarded-Encrypted: i=1; AJvYcCXjv8/bnPIyajcs2stGFbuhz/ofEf/1FCfQg9rdIKojYg0wcXyWEdV9j9dgbnjNRN4S37C3ni22RWTn5grOEg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxEuMfdIYnuhQvkfVrxAxZcepeHdNk+YDltJT5/0I7OaalLAnfE
-	8Xa2vxTHOjCx6AvAs+35ixIuegC8kHojl2YWlxd5zahU17eQYWLmyoNVaWgdJzLe0p/taeK+PAq
-	K5sWrGQVPn2cJa40adFtce4KOyITbziMj5eHuEaNKCrtK2wToO45Nu55woxqehJ1F
-X-Received: by 2002:a05:600c:5489:b0:427:d8f7:b718 with SMTP id 5b1f17b1804b1-429d488047fmr4483215e9.24.1723472343949;
-        Mon, 12 Aug 2024 07:19:03 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFMYqABa//mMcdpuf59X1dzQmjPKUZRUSfrn2rTiz4JEfPCW7tnP/wiYu6/J9T05f0sM7ifPw==
-X-Received: by 2002:a05:600c:5489:b0:427:d8f7:b718 with SMTP id 5b1f17b1804b1-429d488047fmr4483015e9.24.1723472343486;
-        Mon, 12 Aug 2024 07:19:03 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:c:37e0:ced3:55bd:f454:e722? ([2a01:e0a:c:37e0:ced3:55bd:f454:e722])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-4290c79f345sm187090885e9.39.2024.08.12.07.19.02
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 12 Aug 2024 07:19:03 -0700 (PDT)
-Message-ID: <60e55a9d-70bb-45d1-ac97-e4f6f6ffa9a9@redhat.com>
-Date: Mon, 12 Aug 2024 16:19:01 +0200
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="YI7p0Bx/"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1723473147; x=1755009147;
+  h=from:to:subject:in-reply-to:references:date:message-id:
+   mime-version;
+  bh=UgrI/Tu5szy4NI0yyxPR1sc5ru7dZ5lT8+iLir7HTo0=;
+  b=YI7p0Bx/Ku0ecoGeyPNDHwBTyk+AXxXUGKpkC9udmxWZnZadX7Q0PNgx
+   r9IAvwWTsT+yUc6ToJIUu4q5TCE5otWa55KhkzrYhmNjd9a1ugsyggE3s
+   QQLZZovHWYb70bwFslloewt+8/OrUEQNxWfkUf7CWIYZqDN7YcjsUnYKK
+   laPsbnb5qaEEAO+ddukc9Fe3wqigHkOB8Y2kyEcDKRv5iwzrMqZI4iI/d
+   oYOdqNlZRJJ6G4Tnj7sys0DX268C80+kSLH/84a9mwY7eVxpne5yiuCki
+   evYQyMaVtgeidoD09BT67EzP6v4kTtKL0MRp2QAl1o9MMuS906mL2T+V8
+   Q==;
+X-CSE-ConnectionGUID: yo6oo5E0QTGYqHyt6GqSrg==
+X-CSE-MsgGUID: 1DOCe/JPQ3uV+Zp6u0TEJg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11162"; a="32976811"
+X-IronPort-AV: E=Sophos;i="6.09,283,1716274800"; 
+   d="scan'208";a="32976811"
+Received: from fmviesa001.fm.intel.com ([10.60.135.141])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2024 07:32:26 -0700
+X-CSE-ConnectionGUID: sYak2+WAQQeJzE7aS7VfYQ==
+X-CSE-MsgGUID: P8+FzJIkRTGi4z6PYy0mCQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.09,283,1716274800"; 
+   d="scan'208";a="89113324"
+Received: from iklimasz-mobl1.ger.corp.intel.com (HELO localhost) ([10.245.246.117])
+  by smtpauth.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Aug 2024 07:32:20 -0700
+From: Jani Nikula <jani.nikula@linux.intel.com>
+To: Jocelyn Falempe <jfalempe@redhat.com>, Maarten Lankhorst
+ <maarten.lankhorst@linux.intel.com>, Maxime Ripard <mripard@kernel.org>,
+ Thomas Zimmermann <tzimmermann@suse.de>, David Airlie <airlied@gmail.com>,
+ Daniel Vetter <daniel@ffwll.ch>, Miguel Ojeda <ojeda@kernel.org>, Alex
+ Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, Bjorn Roy
+ Baron <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl
+ <aliceryhl@google.com>, linux-kernel@vger.kernel.org,
+ dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org, Danilo
+ Krummrich <dakr@redhat.com>
+Subject: Re: [PATCH v6 2/4] drm/rect: Add drm_rect_overlap()
+In-Reply-To: <60e55a9d-70bb-45d1-ac97-e4f6f6ffa9a9@redhat.com>
+Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
+References: <20240812123147.81356-1-jfalempe@redhat.com>
+ <20240812123147.81356-3-jfalempe@redhat.com> <87sev926na.fsf@intel.com>
+ <60e55a9d-70bb-45d1-ac97-e4f6f6ffa9a9@redhat.com>
+Date: Mon, 12 Aug 2024 17:32:16 +0300
+Message-ID: <87frr924nj.fsf@intel.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 2/4] drm/rect: Add drm_rect_overlap()
-To: Jani Nikula <jani.nikula@linux.intel.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng
- <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- Bjorn Roy Baron <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl
- <aliceryhl@google.com>, linux-kernel@vger.kernel.org,
- dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
- Danilo Krummrich <dakr@redhat.com>
-References: <20240812123147.81356-1-jfalempe@redhat.com>
- <20240812123147.81356-3-jfalempe@redhat.com> <87sev926na.fsf@intel.com>
-From: Jocelyn Falempe <jfalempe@redhat.com>
-In-Reply-To: <87sev926na.fsf@intel.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US, fr
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain
+
+On Mon, 12 Aug 2024, Jocelyn Falempe <jfalempe@redhat.com> wrote:
+> On 12/08/2024 15:49, Jani Nikula wrote:
+>> On Mon, 12 Aug 2024, Jocelyn Falempe <jfalempe@redhat.com> wrote:
+>>> Check if two rectangles overlap.
+>>> It's a bit similar to drm_rect_intersect() but this won't modify
+>>> the rectangle.
+>>> Simplifies a bit drm_panic.
+>> 
+>> Based on the name, I'd expect drm_rect_overlap() to return true for
+>> *any* overlap, while this one seems to mean if one rectangle is
+>> completely within another, with no adjacent borders.
+>
+> It's what I intended, but I may have messed up the formula.
+
+Hmm, then I may have messed up the review. :)
+
+Gotta run now, but I'll get back.
+
+BR,
+Jani.
 
 
 
-On 12/08/2024 15:49, Jani Nikula wrote:
-> On Mon, 12 Aug 2024, Jocelyn Falempe <jfalempe@redhat.com> wrote:
->> Check if two rectangles overlap.
->> It's a bit similar to drm_rect_intersect() but this won't modify
->> the rectangle.
->> Simplifies a bit drm_panic.
-> 
-> Based on the name, I'd expect drm_rect_overlap() to return true for
-> *any* overlap, while this one seems to mean if one rectangle is
-> completely within another, with no adjacent borders.
+>> 
+>> I'd expect a drm_rect_overlap() to return true for this:
+>> 
+>>   +-------+
+>>   |   +---+---+
+>>   |   |       |
+>>   +---+       |
+>>       |       |
+>>       +-------+
+>
+> if r1 is the top left rectangle, you've got:
+>
+> r1->x2 > r2->x1   => true
+> r2->x2 > r1->x1   => true
+> r1->y2 > r2->y1   => true
+> r2->y2 > r1->y1   => true
+>
+> So they count as overlap.
+>
+> Checking in stackoverflow, they use the same formula:
+> https://stackoverflow.com/questions/306316/determine-if-two-rectangles-overlap-each-other
+>
+>> 
+>> While this seems to be required instead:
+>> 
+>>   +-------+
+>>   | +---+ |
+>>   | |   | |
+>>   | +---+ |
+>>   +-------+
+>> 
+>> 
+>> IOW, I find the name misleading.
+>> 
+>> BR,
+>> Jani.
+>> 
+>> 
+>>>
+>>> Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
+>>> ---
+>>>   drivers/gpu/drm/drm_panic.c |  3 +--
+>>>   include/drm/drm_rect.h      | 15 +++++++++++++++
+>>>   2 files changed, 16 insertions(+), 2 deletions(-)
+>>>
+>>> diff --git a/drivers/gpu/drm/drm_panic.c b/drivers/gpu/drm/drm_panic.c
+>>> index 0a047152f88b8..59fba23e5fd7a 100644
+>>> --- a/drivers/gpu/drm/drm_panic.c
+>>> +++ b/drivers/gpu/drm/drm_panic.c
+>>> @@ -529,8 +529,7 @@ static void draw_panic_static_user(struct drm_scanout_buffer *sb)
+>>>   	/* Fill with the background color, and draw text on top */
+>>>   	drm_panic_fill(sb, &r_screen, bg_color);
+>>>   
+>>> -	if ((r_msg.x1 >= logo_width || r_msg.y1 >= logo_height) &&
+>>> -	    logo_width <= sb->width && logo_height <= sb->height) {
+>>> +	if (!drm_rect_overlap(&r_logo, &r_msg)) {
+>>>   		if (logo_mono)
+>>>   			drm_panic_blit(sb, &r_logo, logo_mono->data, DIV_ROUND_UP(logo_width, 8),
+>>>   				       fg_color);
+>>> diff --git a/include/drm/drm_rect.h b/include/drm/drm_rect.h
+>>> index 73fcb899a01da..7bafde747d560 100644
+>>> --- a/include/drm/drm_rect.h
+>>> +++ b/include/drm/drm_rect.h
+>>> @@ -238,6 +238,21 @@ static inline void drm_rect_fp_to_int(struct drm_rect *dst,
+>>>   		      drm_rect_height(src) >> 16);
+>>>   }
+>>>   
+>>> +/**
+>>> + * drm_rect_overlap - Check if two rectangles overlap
+>>> + * @r1: first rectangle
+>>> + * @r2: second rectangle
+>>> + *
+>>> + * RETURNS:
+>>> + * %true if the rectangles overlap, %false otherwise.
+>>> + */
+>>> +static inline bool drm_rect_overlap(const struct drm_rect *r1,
+>>> +				    const struct drm_rect *r2)
+>>> +{
+>>> +	return (r1->x2 > r2->x1 && r2->x2 > r1->x1 &&
+>>> +		r1->y2 > r2->y1 && r2->y2 > r1->y1);
+>>> +}
+>>> +
+>>>   bool drm_rect_intersect(struct drm_rect *r, const struct drm_rect *clip);
+>>>   bool drm_rect_clip_scaled(struct drm_rect *src, struct drm_rect *dst,
+>>>   			  const struct drm_rect *clip);
+>> 
+>
 
-It's what I intended, but I may have messed up the formula.
-> 
-> I'd expect a drm_rect_overlap() to return true for this:
-> 
->   +-------+
->   |   +---+---+
->   |   |       |
->   +---+       |
->       |       |
->       +-------+
-
-if r1 is the top left rectangle, you've got:
-
-r1->x2 > r2->x1   => true
-r2->x2 > r1->x1   => true
-r1->y2 > r2->y1   => true
-r2->y2 > r1->y1   => true
-
-So they count as overlap.
-
-Checking in stackoverflow, they use the same formula:
-https://stackoverflow.com/questions/306316/determine-if-two-rectangles-overlap-each-other
-
-> 
-> While this seems to be required instead:
-> 
->   +-------+
->   | +---+ |
->   | |   | |
->   | +---+ |
->   +-------+
-> 
-> 
-> IOW, I find the name misleading.
-> 
-> BR,
-> Jani.
-> 
-> 
->>
->> Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
->> ---
->>   drivers/gpu/drm/drm_panic.c |  3 +--
->>   include/drm/drm_rect.h      | 15 +++++++++++++++
->>   2 files changed, 16 insertions(+), 2 deletions(-)
->>
->> diff --git a/drivers/gpu/drm/drm_panic.c b/drivers/gpu/drm/drm_panic.c
->> index 0a047152f88b8..59fba23e5fd7a 100644
->> --- a/drivers/gpu/drm/drm_panic.c
->> +++ b/drivers/gpu/drm/drm_panic.c
->> @@ -529,8 +529,7 @@ static void draw_panic_static_user(struct drm_scanout_buffer *sb)
->>   	/* Fill with the background color, and draw text on top */
->>   	drm_panic_fill(sb, &r_screen, bg_color);
->>   
->> -	if ((r_msg.x1 >= logo_width || r_msg.y1 >= logo_height) &&
->> -	    logo_width <= sb->width && logo_height <= sb->height) {
->> +	if (!drm_rect_overlap(&r_logo, &r_msg)) {
->>   		if (logo_mono)
->>   			drm_panic_blit(sb, &r_logo, logo_mono->data, DIV_ROUND_UP(logo_width, 8),
->>   				       fg_color);
->> diff --git a/include/drm/drm_rect.h b/include/drm/drm_rect.h
->> index 73fcb899a01da..7bafde747d560 100644
->> --- a/include/drm/drm_rect.h
->> +++ b/include/drm/drm_rect.h
->> @@ -238,6 +238,21 @@ static inline void drm_rect_fp_to_int(struct drm_rect *dst,
->>   		      drm_rect_height(src) >> 16);
->>   }
->>   
->> +/**
->> + * drm_rect_overlap - Check if two rectangles overlap
->> + * @r1: first rectangle
->> + * @r2: second rectangle
->> + *
->> + * RETURNS:
->> + * %true if the rectangles overlap, %false otherwise.
->> + */
->> +static inline bool drm_rect_overlap(const struct drm_rect *r1,
->> +				    const struct drm_rect *r2)
->> +{
->> +	return (r1->x2 > r2->x1 && r2->x2 > r1->x1 &&
->> +		r1->y2 > r2->y1 && r2->y2 > r1->y1);
->> +}
->> +
->>   bool drm_rect_intersect(struct drm_rect *r, const struct drm_rect *clip);
->>   bool drm_rect_clip_scaled(struct drm_rect *src, struct drm_rect *dst,
->>   			  const struct drm_rect *clip);
-> 
-
+-- 
+Jani Nikula, Intel
