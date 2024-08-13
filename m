@@ -1,238 +1,188 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from CWXP265CU009.outbound.protection.outlook.com (mail-ukwestazon11021115.outbound.protection.outlook.com [52.101.100.115])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F78619DF76
-	for <rust-for-linux@vger.kernel.org>; Tue, 13 Aug 2024 14:34:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723559674; cv=none; b=WnqeZpopOJEyLyMByhDAXQHW7fuRnhwhxmj/gUzKPJ8KePg/5mGBASSiu+fNG3IdaPSiK1+tywsCUs8M5acQugehlaF6Z29vePROnwBf9WBFbeZ3TP/O50MXEMkAIAZ7zsQr3ilgG7jj3dUMhd0cgKOySw2JBcyBJaKNrHTYBUM=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723559674; c=relaxed/simple;
-	bh=kvteX7/5/pd+fMe1MAIAeAD4bp2EgbvOCa0PiA9R+cw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=AxZxBWQmtuAbSzslAucuC43p9yKv/AxIfQ6UfhrOgDJ88bIRqjIuyHNBnk9lqb1ELbflhjU1SGRYi7vdqwx0lLyDvn+NzEDeUd7R5SejFM090twsnWauzPWcoTigH1P6j5tb068JcDRHQLFVtH8K/1I+KfLeF/kqWdxwZnZ0EIw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=cNpbyv8T; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01EF91A2574;
+	Tue, 13 Aug 2024 17:01:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.100.115
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1723568485; cv=fail; b=gJJUv40NgRFbkjWZ8P2eFnrzAp02oSeGc/UWs9Ck5eiobvrnVwQxvvNIzLCG/U/j63as7gJwhcIV3RXqKEWo8n8n4ey6C4UVJxUNNyKgQ95w1LRRECMGlprEWRYXXbyr5o/wriHEvtHjrccDH9eR4orvkkxrdQy781lUlAEGyBQ=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1723568485; c=relaxed/simple;
+	bh=KyKFdJ36ekbdWOC1Iehh3CzEQbV+P9J7PDlnvg//qss=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=ajgN3MUhlXNZXX1rs2khhVjBcjGYLs+e2nrdlpwJpB+3w65MCYwVmcQeCK9cxhoJRTzW/OjAE4Xrvc42L+I87iHhY8ix+oZov6JnLtz8pHiWC3YT5QiiSv5fGeYgjLRlR1BYntjmDcEUQqrbrJRaBqsAjJvfzc6X5KrTlpdcQS0=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=NGEm45uW; arc=fail smtp.client-ip=52.101.100.115
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="cNpbyv8T"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1723559671;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=78IsUJKw9IqeoT5lC9OSKM4PAO7hFbDugoVudFsVevs=;
-	b=cNpbyv8THQzuqaawjFJXG8OgRHlLz9Ce0ODWxwKWP1mWMF573Dh8d75BdcXyJuMidSu4fO
-	vHd9rEKjS5jtnAGFFksCU70iBJyptFMNrJRjnc2MjiYl/VgQHF5R/BSv7k2o7eF6OEBh6I
-	TKczKV/Z7yFaQAtisueK9Aic+UcEReE=
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com
- [209.85.128.71]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-208-IQTOCT_cOfSs_98rEuRoLw-1; Tue, 13 Aug 2024 10:34:29 -0400
-X-MC-Unique: IQTOCT_cOfSs_98rEuRoLw-1
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-429c224d9edso32822155e9.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 13 Aug 2024 07:34:29 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723559668; x=1724164468;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=78IsUJKw9IqeoT5lC9OSKM4PAO7hFbDugoVudFsVevs=;
-        b=OZ2/481ehGZ3QnHBV8zFgnR+c+9W8uOb/GAzQrmWz0Uk2E408DqrnFI1GqIhfC8H83
-         P9Pa5H9Hl8fgU9He2YTVudAxltZWvmYHUdi8+eryb9j01MEbWZSbal1VR8kSh1bxHUp/
-         F/PvKm8kMpx+QTYzccmS15htc/EhfVSux3IfljytC+m7o6lyF+Xr9e3KpM9EyWGzmeTY
-         LcTwOj0Nb4jY4A1yccSU/E6RqIwBPWHlYmztvbtPGmpe+WDSXqRqhY8hiQYUdWIz/999
-         b07P2NrvBCqSS5/q1EFn/2BMPIHPghHpBbrSGowTi9IdOyWM1jHJtiDEh51I3qWFzfeR
-         MqRg==
-X-Forwarded-Encrypted: i=1; AJvYcCUJ/XzzRKKpimDQ1r9arc++lEV7uBfYsyS0EpWEhiIpc/Tz0t/g+Soadnrivb2QeiZfki8uYozUL72GejSCdx0hSSZIjQ56vQkwp01lwK0=
-X-Gm-Message-State: AOJu0Yx6y9XumT7TbUnm3bIj+Qpu115o5eOwuHL8pfGEWsEi0OfyZ9+j
-	z0M4PnPMaq2MGC8SJuiM1zeVhNshSJpBRvKliLwFzOiGncv+VpiVKdmuCfL2NwbAPMGuYJnllIV
-	0QS3r2xudrAX4N5DCHibsvgddX1/gZ95GUGx4Q96va2zjia6LXqIM+gWkI87/BZwm
-X-Received: by 2002:a05:600c:548b:b0:427:fa39:b0db with SMTP id 5b1f17b1804b1-429d487347dmr30344025e9.27.1723559668285;
-        Tue, 13 Aug 2024 07:34:28 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IG9S1VIbZLOEd8TYuQEWYafYxx7AV0xbNqaDFtZ2nyxoqmDI3atbQHIXjCKmWBf0/FxeiUD2w==
-X-Received: by 2002:a05:600c:548b:b0:427:fa39:b0db with SMTP id 5b1f17b1804b1-429d487347dmr30343785e9.27.1723559667737;
-        Tue, 13 Aug 2024 07:34:27 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:c:37e0:ced3:55bd:f454:e722? ([2a01:e0a:c:37e0:ced3:55bd:f454:e722])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-36e4c938045sm10585470f8f.43.2024.08.13.07.34.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 13 Aug 2024 07:34:27 -0700 (PDT)
-Message-ID: <bbbd7a97-6d40-4fd8-b70d-17e02481ba3c@redhat.com>
-Date: Tue, 13 Aug 2024 16:34:26 +0200
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="NGEm45uW"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=iHRqW1QOC0tfbNvgMv2+T/xGG8ODOh9JTP/X+5R83yYvW+0oNxGAjN8JGyRMy6ga3mCEnIQLRk5ZLYYbrCtvfBqeqRG9FlYHQeWDQyVx6wkV5Yu6fjFiQI7xL49D76Tx4l35jGkzaqD9jFskqJoCMCdk8eA2pa7RspJAjL1NIs8BxySJ1MF3oCdYchRCW1ozyaXTmTYpp5R3Yw08J0jOcraLlWF5smMkfbEd0FFqYw50PJSwNJonObjYY07GW7rEa0luwoKDypYyN+qk+pLyIwqrE57UiT+MqSqCKZQB/ddL97g8DE03Vp/CAtP9fSwNC8SrrJzWLjp95q4hU4vfng==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=KyKFdJ36ekbdWOC1Iehh3CzEQbV+P9J7PDlnvg//qss=;
+ b=xtxvWn26mto0+KkGGalPjEKKiN+/xYex5jbIXy5zkvbtJR0goT8kWTENDsmT+zTZRKrKBUK8XOqgyc20v61rVU8iGJEzhHbrZpIWEB/Bz1FFnMIwabc28X9cIjru0WXP+vg7eknrXtNLnoU/N00nGf1FuPGmujQMnwnL61i2aLkRaTdS3VUTb9AiMyX7SJr/rZWZDk9mkZt4uEhK5t2KN9z1HsBfgvSWwugO1KJjM6vlu5V+RDAqs48CY3fF4K8jKoySdZt77PUpTSyy5KQyAwgfF8HeC1AJViuPysC76oxnCDI4w9WKWT0Qosy9A/+fzmymoUf7nof5QoCskO3QQg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=KyKFdJ36ekbdWOC1Iehh3CzEQbV+P9J7PDlnvg//qss=;
+ b=NGEm45uWJ/mni27Nr+Umck5eNeTM1FXX+Yvqv6OTmytzQoDzSXiANq6zCDfCmW+ZLKNJhd5uFBXpl/6AoB8TzUwcCkLMV0CXey14hh36kynQQDmFHjJn02Nc1L9stfj2sQkv0h1ckSZRT/gwqvnD5fyKlyXrSeBUYMyKScB3zqs=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
+ by CWLP265MB6786.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:1e8::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7849.22; Tue, 13 Aug
+ 2024 17:01:19 +0000
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1818:a2bf:38a7:a1e7]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1818:a2bf:38a7:a1e7%7]) with mapi id 15.20.7849.021; Tue, 13 Aug 2024
+ 17:01:19 +0000
+Date: Tue, 13 Aug 2024 18:01:17 +0100
+From: Gary Guo <gary@garyguo.net>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Zehui Xu <zehuixu@whu.edu.cn>, ojeda@kernel.org, alex.gaynor@gmail.com,
+ wedsonaf@gmail.com, boqun.feng@gmail.com, bjorn3_gh@protonmail.com,
+ benno.lossin@proton.me, a.hindborg@samsung.com, aliceryhl@google.com,
+ rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] rust: Kbuild: Skip -fmin-function-alignment in
+ bindgen flags
+Message-ID: <20240813180117.3c259c17@eugeo>
+In-Reply-To: <CANiq72=UeYXi35PNTAtHd5UGt4rgyMjpfLbG3xYxpdcvY3mZYQ@mail.gmail.com>
+References: <20240731134346.10630-1-zehuixu@whu.edu.cn>
+	<20240807115708.394a8eb3@eugeo>
+	<CANiq72=UeYXi35PNTAtHd5UGt4rgyMjpfLbG3xYxpdcvY3mZYQ@mail.gmail.com>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.42; x86_64-pc-linux-gnu)
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: quoted-printable
+X-ClientProxiedBy: LO4P265CA0090.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:2bc::11) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:253::10)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v6 2/4] drm/rect: Add drm_rect_overlap()
-To: Jani Nikula <jani.nikula@linux.intel.com>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>,
- David Airlie <airlied@gmail.com>, Daniel Vetter <daniel@ffwll.ch>,
- Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
- Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng
- <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- Bjorn Roy Baron <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl
- <aliceryhl@google.com>, linux-kernel@vger.kernel.org,
- dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
- Danilo Krummrich <dakr@redhat.com>
-References: <20240812123147.81356-1-jfalempe@redhat.com>
- <20240812123147.81356-3-jfalempe@redhat.com> <87sev926na.fsf@intel.com>
- <60e55a9d-70bb-45d1-ac97-e4f6f6ffa9a9@redhat.com> <87frr924nj.fsf@intel.com>
- <87mslgzf52.fsf@intel.com>
-From: Jocelyn Falempe <jfalempe@redhat.com>
-In-Reply-To: <87mslgzf52.fsf@intel.com>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US, fr
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|CWLP265MB6786:EE_
+X-MS-Office365-Filtering-Correlation-Id: 296a1178-4dd0-4adf-9772-08dcbbb98d0c
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|366016|1800799024|7416014|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?N3NZVlJMK1FSRzhSNllwQVNrNnVQdUhnby96NmdualVyMVpjZGhOU01YUlVL?=
+ =?utf-8?B?Vm1PcXpOMlFJb2orSVR6UXdPbDlkV2dIaGhaNyszNEtoYWRKY2tNNExqMnZo?=
+ =?utf-8?B?MXJTRWhEdXI0RXdKRUpYMkJqd2FHTGdHSVJ4NDU2V3B4VEVzdi93QUkyTGN2?=
+ =?utf-8?B?cERhYVdsWi90VGIxUVlVSSs1Zk1kV0tUUWZvRUdhNUxHckJMd3loSmNPM0dh?=
+ =?utf-8?B?YVFRVXl2c3VUaEYvNk1uUFZVMUc3cjNUQlRSdURINDZHMXBsdW1XZEl5bXRi?=
+ =?utf-8?B?UG9SQkJaVS9vOUJ2akY2cEJyeUJmL3BEbTNqY3Z4WGpWaCtRMFRpTTcvQXZS?=
+ =?utf-8?B?dmJ2QWgxakRzY0hJcnFJZGhGSXNJQjkvZStXbDEyOGZRRCsrVFh0YlpoWjJ4?=
+ =?utf-8?B?cFQzOVlHaW1rVDR5WlZidTF0TU0vNzRPRC9zd1piRUx0eVdDNFl1aS9Yd2dN?=
+ =?utf-8?B?TC9zWFF6UFhObE5xRnMyVWNRZTRoN21abm1SYUwwVUZYRkRVbThwYnRFdmNO?=
+ =?utf-8?B?cTFtK1J1ZVBMKzEzbXNwaW5qNW0rNGFnS0t5TkNHZW9qMmhOSWZUUXVjNnZo?=
+ =?utf-8?B?ZlNDNmIzZVhQdlUvTDVkRGh6Q3V1MkJKSHBWVjJSYStaU2pQcmFvYVdIY2ND?=
+ =?utf-8?B?NW12WEM2RUE3NVdCTVVobUNpSkU1M1BrUnliWW1PSGFPRWZGVlk5V3YzblNi?=
+ =?utf-8?B?OEtwRlNweGQxQ092RWdlUFBpbFdFUjI2UlZ6SkpUSGZhc1FpQnVVVVlMbkJG?=
+ =?utf-8?B?dWxYbzFaQS82RjZVbWkrUGRWS1BpN2k1bjNyZzdVNi9UNTJBMnBNcFlQQkpn?=
+ =?utf-8?B?R0s2dWJMU09vVkFKNkZOQnFIaDVleHJYTTczNXVVMDU0NUp5bEdTSVQzaG1v?=
+ =?utf-8?B?dmlIYkpCSFo1TVpZR0M4dGhhQWQzN0hpTzVsWGRiU0Rwazd1UkNCVitSazVX?=
+ =?utf-8?B?aDgvckN2Z2lLeHladFhIUVlkeUY3T3Y3bGpKaDFsK1E4S0ZOOWFXVGFtOXV0?=
+ =?utf-8?B?cHVzWEpnZVQ1bmN0Ukh4Q1ZnYXpkUkhGT3hIbE9oQ0UvSGt1dHQrWHh3SER2?=
+ =?utf-8?B?Rk90WUdKbGZUV2ZmTWlTUnp2L0phdEJZWWxGT3I0a1lZS1RWZmI5VjhmSGQz?=
+ =?utf-8?B?YkVtdkIvdEtycEZXeFRvYmt2dE1uWHpiMWIrV2ZmT0d0THFwbDZlVmlOK3Y3?=
+ =?utf-8?B?ZDJUR1RYTkNsUFVvTTU1VVBnWi9qaDJsR2l2OHZ3RzZ2cjZOTFBWM3k4QUF6?=
+ =?utf-8?B?RTJLREdTNFVIRHhxSmJ2b1dnYXE1cXc4RHVteWRtZlFGNmo5akZFVXNBV1V2?=
+ =?utf-8?B?eWY0WDZ5MWlUdGtjdHhUTEJhUTZBWis3NDhkRmZkQU5DZHc1TU5xQWkxVEhO?=
+ =?utf-8?B?WnFVWlZ0bHRmZS9iNEFFZTdtZmVmVnN6bGo4a0dOempZakpEY1BVY3NjYU5o?=
+ =?utf-8?B?bjhPL3BXaTlHM1M2bDVQc0xrTnZ3SmhISG1YRDZRQlZZNVE2RVRmUzQ4VDhX?=
+ =?utf-8?B?N09RSjhBaVI1emRNZkFDUmJRMW0zdUMrMnFkWHRqamh5Y0lTdmdXd0ludWxK?=
+ =?utf-8?B?V1Fic25QYkFWNHVJUno0YzVjS0Y0Y1cxay91dkd6VzBmNEY3NjdKZUJaRG5l?=
+ =?utf-8?B?QURENFBPRkhnald2L0Y3ZFRFYUswREdtcWdkUVV3OHJtWnNpdklpY1VITit2?=
+ =?utf-8?B?Wi9nRS8yVWd1TWVyNVRDNFM3NFBjcms0SjlDVDhLNTJZaHpyeGFOVEo5cWxJ?=
+ =?utf-8?Q?t8Fm4GgEA0xu7r/UIY=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(7416014)(376014);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?utf-8?B?SlREMlRxZnBqS1liYVVYcFNPL2w2bkhqeHRmSWVlUExaL1hPRXY2NGUveFRs?=
+ =?utf-8?B?ckoycWRJRjRnM1Y2Z0VMcWhQbTlBaE9vcGRoclM2WXJJa2lJZ1FsMk9NVUo4?=
+ =?utf-8?B?YkdDUDRXcTZhdjRCeUJFWXpTUS9aVEw2UGVhS0cvRmVnR0dRYW9mREFwL2RR?=
+ =?utf-8?B?dlZiZUNNTW5XczR5T2YzajdJU0F6T0JJaHNjUjU5MFBxTFlxRW1WN3VtRlUw?=
+ =?utf-8?B?dUJYMW1IZHhCOFc2cktXVHgvN0pUYVBGY1g2OVlTT2s2MjBQYWNMcFdtZE5w?=
+ =?utf-8?B?UVhHc1BZWk9pTmRRakhrNjRCNnZIajM3MUlvLzJwd2hQU3p5bitMT2lINEpQ?=
+ =?utf-8?B?UmdOdlFRQlZ4VFVsME8yY0ZDYjg2RXJ2WnUyQ2ZYTFRXN0lhdHpSM0RTdCsr?=
+ =?utf-8?B?U2RZSmlHTmtkVG0yYXAyd3VobEhKU2lYWlNMT2JNelVmRkwrVDZFdS9vWlV6?=
+ =?utf-8?B?Qkkra3RXOU9jaEpJUlFNU0ZqNFZTenVoOFVXaWZ2TnpNekRlOFkveVFpMlFX?=
+ =?utf-8?B?anFaNmx0cnlnbGwyZHkzTEhER2lMdzBPZ1ZsZ1hhcTBKMUVKLzJ3OEVTNWxJ?=
+ =?utf-8?B?bFpUVVFUcWtRZzdjOEp0aUZ1K2Nzcmk3bGgyR3ZiUWkwWC9URHJLZ0t1ZTd0?=
+ =?utf-8?B?V3hjMXNMQ2dPL2VONUIxV0xLd1hhRTZaM0h2VWMzRlRISXVkTGhlRXdpTnpk?=
+ =?utf-8?B?VlNoVkV4cDlZQWxqUnBQQzdVQ1Q3dHlwa1lhYTd5ajhzWk9sR1h5d3djOHZj?=
+ =?utf-8?B?S1VrUGh6Y0QxYnIxNThCdmZWejNFMzZNamVTSWpPRG1SQkxLekt2Sy90VFVh?=
+ =?utf-8?B?Q285SmdXdTcxWXZ5QU1MUmxHTUg5eFJETjRINDNLcFEzR3pPYTJiK1YrbGpM?=
+ =?utf-8?B?V3hvcE5vZlUwVUNKMnNYNm5RRXVhMkJrRGl0TEJTU2JEb1Z1Nkg5bVZBV2dj?=
+ =?utf-8?B?a1d6ZHVPNWloTDZzdUt3cmEvdkJ3L3NwZnRRaWZTam9STEpBUVlycnp1emRm?=
+ =?utf-8?B?SlVjVCt4dFVZMHArRDE1WnQyMGs2OWFDNkdOTk5SZms1cmh0NVJ3NHQvaFhG?=
+ =?utf-8?B?YVNJTEN1MEg0TEtVeWlzUmNVTWluK1N4Y2Z5d1VvT1ZRMWJqK0tqUlpWb2NS?=
+ =?utf-8?B?djhQZUZIckViMGlmeWNQcDdUNkdQR2VZWnM4QmR5bWtkSjZUdCtPVTdVRVZq?=
+ =?utf-8?B?NEM1eVpENThqREZKWDlDenFycEFBeGZWcUkyM3BjRWF1K0dqTmhoRGRiQWx1?=
+ =?utf-8?B?YzNvek4vMVlMaDVaMUgxVWhORGt2OU9EWDlva2RiSmluUEtzYmt1MUNUOFU4?=
+ =?utf-8?B?N2ZudlRUaGQ3R21oclpHV01lRWxURUs5dHVkUG9iT2xMSEZTRVdaYTI4QzY4?=
+ =?utf-8?B?RmdON2pETTZ2dFA1YmxuZ016MFhLd1I3bjFCaktKZmp6dVpxc0wyMzBmWG9p?=
+ =?utf-8?B?Szk4UWNDT2pRbFEraUhjYXhvWERsOHh6cGZUZUtoTEJ1YXJTMzJwNG5NL0VF?=
+ =?utf-8?B?RXp4ZDVsY2VocjVIU0JUY3RpQi9WYkQ4cWdGSEhMdzlqYXNrVTZrakdoQ2lm?=
+ =?utf-8?B?TTJhOFNoVkh2dFFqU3dsZ3owaWU3RVU2WXhsZm5iOUV0N0hydVJpZjA0cnV5?=
+ =?utf-8?B?enF6VUF6Q2tpd2Nuc2kyak5hNVF1b2hJM2RQN1J4em9PMjZqT1JVSzBYV3Ew?=
+ =?utf-8?B?WkY1bUVJd2hMR1FhR3lpVEhzVkd6THlmZDdQbFVjRlJWM1lGY2VEL2xabTNY?=
+ =?utf-8?B?OWFIZTdhY0hmTFBUMWJIWGh2M1VxM1V5VmE1UVd4QXpxaG5kOXViOFlXQ2Fq?=
+ =?utf-8?B?Uk4vd010V3BjUytLOVFUS3JlMjN4cGxWNHBKakFNVFZuZFJYMUZqTlY1bDdw?=
+ =?utf-8?B?RUdOSVRlV2JVbTl6M1BkdzlhQTBQME4yLytRNXVPTkRXdG9oZ0ZsdTRiQnpM?=
+ =?utf-8?B?QTZMSE13QXdDcnpTbVJ6ZVNGQXJvd3dsb3RRMGkrcDdYVDhFZWVzaWExeWFC?=
+ =?utf-8?B?SGphREdyZUltSVc3TTFDTkxDRloycDdrUWw1a3E3SHNPc2lEOXU4NnhzcWlk?=
+ =?utf-8?B?UWVPNkxhTExHTkZiMVBwMWQ5R1dBZ3Q1bWNjRFp1cGhBRnVvUkJhOHVpekZK?=
+ =?utf-8?Q?rurj5EGFvpW7eFnH/Td6fpDyo?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 296a1178-4dd0-4adf-9772-08dcbbb98d0c
+X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Aug 2024 17:01:19.0798
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: pLtzxc33Zheqx4Y6SGHp+Z4jZZdoFQL8ozZzLa8DGi75bg3dnsmtm7c++FSUQjF4vRK6fByIv+Si3hHy4eBJ7Q==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB6786
 
-On 13/08/2024 16:11, Jani Nikula wrote:
-> On Mon, 12 Aug 2024, Jani Nikula <jani.nikula@linux.intel.com> wrote:
->> On Mon, 12 Aug 2024, Jocelyn Falempe <jfalempe@redhat.com> wrote:
->>> On 12/08/2024 15:49, Jani Nikula wrote:
->>>> On Mon, 12 Aug 2024, Jocelyn Falempe <jfalempe@redhat.com> wrote:
->>>>> Check if two rectangles overlap.
->>>>> It's a bit similar to drm_rect_intersect() but this won't modify
->>>>> the rectangle.
->>>>> Simplifies a bit drm_panic.
->>>>
->>>> Based on the name, I'd expect drm_rect_overlap() to return true for
->>>> *any* overlap, while this one seems to mean if one rectangle is
->>>> completely within another, with no adjacent borders.
->>>
->>> It's what I intended, but I may have messed up the formula.
->>
->> Hmm, then I may have messed up the review. :)
-> 
-> Yeah, my bad, sorry for the noise.
-> 
-> I think I was thrown off by the comparisons mixing r1 and r2 as the
-> first operand. Something like this might have been easier for *me* to
-> parse, but not sure if it's worth changing anything:
-> 
-> return (a->x1 < b->x2 && a->x2 > b->x1 &&
->          a->y1 < b->y2 && a->y2 > b->y1);
+On Thu, 8 Aug 2024 17:07:51 +0200
+Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> wrote:
 
-You're right, I've used r1 and r2 for consistency with other functions, 
-but for this case it's confusing, I prefer the a/b.
+> On Wed, Aug 7, 2024 at 12:57=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote=
+:
+> >
+> > This patch itself looks fine to me, so
+> >
+> > Reviewed-by: Gary Guo <gary@garyguo.net>
+> >
+> > We use -fmin-function-alignment for GCC and use -falign-functions for
+> > clang. These options affect codegen only so it's fine to ignore them
+> > for bindgen. =20
+>=20
+> Thanks Gary.
+>=20
+> > Although it appears to me that we currently don't set function
+> > alignments for Rust codegen. Maybe that's worth considering adding? =20
+>=20
+> Yeah, agreed. I think currently there is no way for that in `rustc`
+> (apart from `fn_align`) -- I have created an issue about it and a few
+> others and linked them all at
+> https://github.com/Rust-for-Linux/linux/issues/355.
 
-If I send a v7 I will do this change.
 
-I can also rename when pushing, but I was already bitten by doing this.
+I think `-Cllvm-args=3D-align-all-functions=3Dfoo` should work?
 
-Best regards,
-
--- 
-
-Jocelyn
-
-> 
-> 
-> BR,
-> Jani.
-> 
-> 
->>
->> Gotta run now, but I'll get back.
->>
->> BR,
->> Jani.
->>
->>
->>
->>>>
->>>> I'd expect a drm_rect_overlap() to return true for this:
->>>>
->>>>    +-------+
->>>>    |   +---+---+
->>>>    |   |       |
->>>>    +---+       |
->>>>        |       |
->>>>        +-------+
->>>
->>> if r1 is the top left rectangle, you've got:
->>>
->>> r1->x2 > r2->x1   => true
->>> r2->x2 > r1->x1   => true
->>> r1->y2 > r2->y1   => true
->>> r2->y2 > r1->y1   => true
->>>
->>> So they count as overlap.
->>>
->>> Checking in stackoverflow, they use the same formula:
->>> https://stackoverflow.com/questions/306316/determine-if-two-rectangles-overlap-each-other
->>>
->>>>
->>>> While this seems to be required instead:
->>>>
->>>>    +-------+
->>>>    | +---+ |
->>>>    | |   | |
->>>>    | +---+ |
->>>>    +-------+
->>>>
->>>>
->>>> IOW, I find the name misleading.
->>>>
->>>> BR,
->>>> Jani.
->>>>
->>>>
->>>>>
->>>>> Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
->>>>> ---
->>>>>    drivers/gpu/drm/drm_panic.c |  3 +--
->>>>>    include/drm/drm_rect.h      | 15 +++++++++++++++
->>>>>    2 files changed, 16 insertions(+), 2 deletions(-)
->>>>>
->>>>> diff --git a/drivers/gpu/drm/drm_panic.c b/drivers/gpu/drm/drm_panic.c
->>>>> index 0a047152f88b8..59fba23e5fd7a 100644
->>>>> --- a/drivers/gpu/drm/drm_panic.c
->>>>> +++ b/drivers/gpu/drm/drm_panic.c
->>>>> @@ -529,8 +529,7 @@ static void draw_panic_static_user(struct drm_scanout_buffer *sb)
->>>>>    	/* Fill with the background color, and draw text on top */
->>>>>    	drm_panic_fill(sb, &r_screen, bg_color);
->>>>>    
->>>>> -	if ((r_msg.x1 >= logo_width || r_msg.y1 >= logo_height) &&
->>>>> -	    logo_width <= sb->width && logo_height <= sb->height) {
->>>>> +	if (!drm_rect_overlap(&r_logo, &r_msg)) {
->>>>>    		if (logo_mono)
->>>>>    			drm_panic_blit(sb, &r_logo, logo_mono->data, DIV_ROUND_UP(logo_width, 8),
->>>>>    				       fg_color);
->>>>> diff --git a/include/drm/drm_rect.h b/include/drm/drm_rect.h
->>>>> index 73fcb899a01da..7bafde747d560 100644
->>>>> --- a/include/drm/drm_rect.h
->>>>> +++ b/include/drm/drm_rect.h
->>>>> @@ -238,6 +238,21 @@ static inline void drm_rect_fp_to_int(struct drm_rect *dst,
->>>>>    		      drm_rect_height(src) >> 16);
->>>>>    }
->>>>>    
->>>>> +/**
->>>>> + * drm_rect_overlap - Check if two rectangles overlap
->>>>> + * @r1: first rectangle
->>>>> + * @r2: second rectangle
->>>>> + *
->>>>> + * RETURNS:
->>>>> + * %true if the rectangles overlap, %false otherwise.
->>>>> + */
->>>>> +static inline bool drm_rect_overlap(const struct drm_rect *r1,
->>>>> +				    const struct drm_rect *r2)
->>>>> +{
->>>>> +	return (r1->x2 > r2->x1 && r2->x2 > r1->x1 &&
->>>>> +		r1->y2 > r2->y1 && r2->y2 > r1->y1);
->>>>> +}
->>>>> +
->>>>>    bool drm_rect_intersect(struct drm_rect *r, const struct drm_rect *clip);
->>>>>    bool drm_rect_clip_scaled(struct drm_rect *src, struct drm_rect *dst,
->>>>>    			  const struct drm_rect *clip);
->>>>
->>>
-> 
-
+Best,
+Gary
