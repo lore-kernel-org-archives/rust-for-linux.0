@@ -1,106 +1,306 @@
-Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C97F17E0E8
-	for <rust-for-linux@vger.kernel.org>; Mon, 12 Aug 2024 23:32:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87051433DF
+	for <rust-for-linux@vger.kernel.org>; Tue, 13 Aug 2024 07:08:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723505559; cv=none; b=owtQSMoHJKWEISQOGR46ttASypcfiFqXssVEymi6Kwglw5vWkeTGS730QmRPpFlUy4g48LUQjO6FvIhCCneNmQZj7FjCAlOkbX3viuKlKUkzQVJypWCLNvrTQwLluTFnaVNQRGh5YNIIFiJK8eKpgLlsLvnOb6oVVBhRhdq/SJ0=
+	t=1723532882; cv=none; b=l8M19r0Rh0OBXgE+nHh9KDSobSivXwVP+yn9r1zgYWdLGfsz7Qdb4D8fAriv2/izbZMLCjotS77p8W2DKwpzxHXc+8HceYfRJfywmz30en41JmM1Ov/M3dy0QCbQFflBMrasPS4xBcD/uyCORuq74JqyPby1Ce3AdLbm4suD3tk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723505559; c=relaxed/simple;
-	bh=MSiFb2/sRe27Cyt3msuJTOjMgO2mFhCD6nQQ/Olor4c=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FkhzBlgpccettIrVU95NsE8ifW9e5ZpXwb234vAqw/0DAo8xzzBisQ3aeetQaYSwM1PFKqt2fUSmWW1kPrrD26JB60yN/9oOTUQHeQfhfNCDttyFm9duJWYghT6U2/2w1l+FEq4J7gmcJNa7PB4Y1M4XeFKsAsorxkvVL3XVw+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ZooSa2WC; arc=none smtp.client-ip=209.85.208.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1723532882; c=relaxed/simple;
+	bh=CKiEzcNiSzJ5SMT2Tecd7+fK0cL6q6Fdizj3flMFZ/s=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=SSN2r82Vzo4EVjtGcYWVhqqlpTPVAfivJLnza0fW9n7oqPcmQcBYDRxM5Dk6mosy/mjFcDMXwD/1Prp6QlRJT0KREMMeBVtITSwwWfAzTQAAHYjkDvIwEjdLSbOnKecsQ9pDeRP/LIRWwhED2ErcKtgDkUcQ0aNo8PbYyBewx0A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com; spf=pass smtp.mailfrom=protonmail.com; dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b=ROdq3i8o; arc=none smtp.client-ip=185.70.40.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=protonmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=protonmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ZooSa2WC"
-Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-5a18a5dbb23so1513a12.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 12 Aug 2024 16:32:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1723505556; x=1724110356; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=WINgTrCjEBL3+Nvcrrvvezt+JSvL21kHSKavfKsKanw=;
-        b=ZooSa2WCmlM+f1MyZLflLZX43cl1JWujJ0NnalV3yFlKSxQY10EkVNfqPGU4AUx6E2
-         XLgrjigqTlAIIdRQrol9anym7bDwJAIfI0z3kJkozYP3h641FofUgVmjpvXktREzRgDV
-         b68CRrdyMuS5ctiw0AqZwLjBBm/yrmlMvAkFHnlSpG6SzTvDDF/Atqw+7ezojXcqtEx7
-         h1CLrGpml5dbRoQ1ZIoTIVzlGG18YhJJgf5DpAP5MUr8LLnGxEg4flUiQkNJteiuNxF+
-         rNXHSmFIhIPPmkwYQXBoQ5fP3P60yHB5vs4d/SdnS2Qb5g629a2dImxSKvS+fBpoCFFs
-         4hFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723505556; x=1724110356;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=WINgTrCjEBL3+Nvcrrvvezt+JSvL21kHSKavfKsKanw=;
-        b=ZqdjXgrAPP/5jG4Hmn01Gnpa1vlh5bFkodyXIkg1apvUzpq2l+4/Zl5p1ENMPQ/pI6
-         XAdISUNwpXpe8Mpb/pJIijaR3rfQw+FNlbhNNkPl5GSo058Gp3lrpTSLsNWyBA061izj
-         YhuQfbZAUgw0qHqy9i+zdQb87iON9Q04SSX1zESbJd+Hd7hwnc50T0G98wiNRHSFEXeQ
-         2Vf+Z+prP04XyDBEDPrATz6CuwsrlFKr1XUebpfOGg2ZTbTtOpQT6d6ZqO3MB0dKjuCx
-         FV4lhmME8GVoHVnUFkcM8MjGHAcUInvNfSpfOfQbOhpiLvhy+8+Ew33DkbqSc+TnwDXG
-         Hl2Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVil6kM66HMJ0e04Nj0OefT3nE4c5vJO3cG1/QoDb6SqI4tbUB6NQcneq8oYvG6rEI1wzLQ9QR60qzgiPAI7YGPXgbKi74Gqk5Uln7nh64=
-X-Gm-Message-State: AOJu0Yx2b+ZcOYVnIhJBNtnsdXLDExDfIw/eZNt5CzvTs43x5uwt72Z/
-	wGLZZj2GeKx4Xe3v60dNLrmu2bENenlQOtFn3Z8+pxDjxJHsQvjhlfqAQTu49Zl1h7sO0Oawepv
-	30Co5hLGX/HO9C3Wog3loFA7QnRTBjryY1N9n
-X-Google-Smtp-Source: AGHT+IH1VwXhHaZFBtsvf8zgZNCNPlxYCt9sfhXPfzEyA01KGjm/YIu1OjxgUUJhYkiEUOMM3UafU8NvB3Dzs25JDK4=
-X-Received: by 2002:a05:6402:3496:b0:57d:436b:68d6 with SMTP id
- 4fb4d7f45d1cf-5bd73d1681emr17857a12.7.1723505555723; Mon, 12 Aug 2024
- 16:32:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=protonmail.com header.i=@protonmail.com header.b="ROdq3i8o"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=protonmail.com;
+	s=protonmail3; t=1723532872; x=1723792072;
+	bh=T5x8NVZw/qsD8mpPBKY64eVeJFmEgIuSLK51Dio3QRo=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=ROdq3i8oyW4DuG2cEJVbg9ixccGOIHOqyHQ+8+gAz4cUg9skH/VjJMtkQ1y+JEkjb
+	 HmXO5/ymK8VQGVcoLJTWi+F7HltLyTLYJgnd8MSHPRicaUeVrRteRk6oDIzZYrfBIg
+	 EUf7JGIgszfzZdgjwuXYMOb6kdaoKKP3/4Uuyihd+u95nrkdlvd86c51DAyRoB1PZy
+	 iSLWqb0BvOQ9hcWxREFrlcVyhQfk2kDu6rCO36oTgfQqa0O0Zat56FgThbxQ/rPjlr
+	 K6RoeB4qAdT/CK+u177coHtd3VcUNRzKNf+YtGi3HLYC8khANg7dFQ7E3YWca62G77
+	 CTIIA7b+fAI0Q==
+Date: Tue, 13 Aug 2024 07:07:46 +0000
+To: Danilo Krummrich <dakr@kernel.org>, ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@samsung.com, aliceryhl@google.com, akpm@linux-foundation.org
+From: Heghedus Razvan <heghedus.razvan@protonmail.com>
+Cc: daniel.almeida@collabora.com, faith.ekstrand@collabora.com, boris.brezillon@collabora.com, lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com, ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v5 22/26] rust: alloc: implement `Cmalloc` in module allocator_test
+Message-ID: <D3ELEO3QFEZQ.2X1WF8Y3IVNQ0@protonmail.com>
+In-Reply-To: <20240812182355.11641-23-dakr@kernel.org>
+References: <20240812182355.11641-1-dakr@kernel.org> <20240812182355.11641-23-dakr@kernel.org>
+Feedback-ID: 1233518:user:proton
+X-Pm-Message-ID: ed9c6c2815a3741e3af224b54093291a3cbededc
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240812232910.2026387-1-mmaurer@google.com> <20240812232910.2026387-4-mmaurer@google.com>
-In-Reply-To: <20240812232910.2026387-4-mmaurer@google.com>
-From: Matthew Maurer <mmaurer@google.com>
-Date: Mon, 12 Aug 2024 16:32:23 -0700
-Message-ID: <CAGSQo00138fombiueBM-4-OF15afzx3U63Uu17K_wvh9mkFAPg@mail.gmail.com>
-Subject: Re: [PATCH v2 3/3] kasan: rust: Add KASAN smoke test via UAF
-To: dvyukov@google.com, ojeda@kernel.org, 
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>
-Cc: aliceryhl@google.com, samitolvanen@google.com, 
-	Alexander Potapenko <glider@google.com>, Andrey Konovalov <andreyknvl@gmail.com>, 
-	Vincenzo Frascino <vincenzo.frascino@arm.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com, linux-mm@kvack.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-> diff --git a/mm/kasan/kasan_test_rust.rs b/mm/kasan/kasan_test_rust.rs
-> new file mode 100644
-> index 000000000000..6f4b43ea488c
-> --- /dev/null
-> +++ b/mm/kasan/kasan_test_rust.rs
-> @@ -0,0 +1,17 @@
-
-Realized right after sending there should be
-// SPDX-License-Identifier: GPL-2.0
-here. It should be added before merging, but not re-sending to avoid spam.
-
-> +//! Helper crate for KASAN testing
-> +//! Provides behavior to check the sanitization of Rust code.
-> +use kernel::prelude::*;
-> +use core::ptr::addr_of_mut;
-> +
-> +/// Trivial UAF - allocate a big vector, grab a pointer partway through,
-> +/// drop the vector, and touch it.
-> +#[no_mangle]
-> +pub extern "C" fn kasan_test_rust_uaf() -> u8 {
-> +    let mut v: Vec<u8> = Vec::new();
-> +    for _ in 0..4096 {
-> +        v.push(0x42, GFP_KERNEL).unwrap();
-> +    }
-> +    let ptr: *mut u8 = addr_of_mut!(v[2048]);
-> +    drop(v);
-> +    unsafe { *ptr }
-> +}
-> --
-> 2.46.0.76.ge559c4bf1a-goog
+On Mon Aug 12, 2024 at 9:23 PM EEST, Danilo Krummrich wrote:
+> So far the kernel's `Box` and `Vec` types can't be used by userspace
+> test cases, since all users of those types (e.g. `CString`) use kernel
+> allocators for instantiation.
 >
+> In order to allow userspace test cases to make use of such types as
+> well, implement the `Cmalloc` allocator within the allocator_test module
+> and type alias all kernel allocators to `Cmalloc`. The `Cmalloc`
+> allocator uses libc's realloc() function as allocator backend.
+>
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> ---
+> I know, having an `old_size` parameter would indeed help implementing `Cm=
+alloc`.
+>
+> However, I really don't want test infrastructure to influence the design =
+of
+> kernel internal APIs.
+>
+> It's on the test infrastructure to find a way to deal with it, even if it=
+'s more
+> complicated.
+> ---
+>  rust/kernel/alloc/allocator_test.rs | 175 ++++++++++++++++++++++++++--
+>  1 file changed, 168 insertions(+), 7 deletions(-)
+>
+> diff --git a/rust/kernel/alloc/allocator_test.rs b/rust/kernel/alloc/allo=
+cator_test.rs
+> index 1b2642c547ec..7a20e64431ea 100644
+> --- a/rust/kernel/alloc/allocator_test.rs
+> +++ b/rust/kernel/alloc/allocator_test.rs
+> @@ -2,20 +2,181 @@
+>
+>  #![allow(missing_docs)]
+>
+> -use super::{AllocError, Allocator, Flags};
+> +use super::{flags::*, AllocError, Allocator, Flags};
+>  use core::alloc::Layout;
+> +use core::cmp;
+> +use core::mem;
+> +use core::ptr;
+>  use core::ptr::NonNull;
+>
+> -pub struct Kmalloc;
+> +pub struct Cmalloc;
+> +pub type Kmalloc =3D Cmalloc;
+>  pub type Vmalloc =3D Kmalloc;
+>  pub type KVmalloc =3D Kmalloc;
+>
+> -unsafe impl Allocator for Kmalloc {
+> +extern "C" {
+> +    #[link_name =3D "aligned_alloc"]
+> +    fn libc_aligned_alloc(align: usize, size: usize) -> *mut core::ffi::=
+c_void;
+> +
+> +    #[link_name =3D "free"]
+> +    fn libc_free(ptr: *mut core::ffi::c_void);
+> +}
+> +
+> +struct CmallocData {
+> +    // The actual size as requested through `Cmalloc::alloc` or `Cmalloc=
+::realloc`.
+> +    size: usize,
+> +    // The offset from the pointer returned to the caller of `Cmalloc::a=
+lloc` or `Cmalloc::realloc`
+> +    // to the actual base address of the allocation.
+> +    offset: usize,
+> +}
+> +
+> +impl Cmalloc {
+> +    /// Adjust the size and alignment such that we can additionally stor=
+e `CmallocData` right
+> +    /// before the actual data described by `layout`.
+> +    ///
+> +    /// Example:
+> +    ///
+> +    /// For `CmallocData` assume an alignment of 8 and a size of 16.
+> +    /// For `layout` assume and alignment of 16 and a size of 64.
+> +    ///
+> +    /// 0                16               32                            =
+                   96
+> +    /// |----------------|----------------|-----------------------------=
+-------------------|
+> +    ///        empty         CmallocData                         data
+> +    ///
+> +    /// For this example the returned `Layout` has an alignment of 32 an=
+d a size of 96.
+> +    fn layout_adjust(layout: Layout) -> Result<Layout, AllocError> {
+> +        let layout =3D layout.pad_to_align();
+> +
+> +        // Ensure that `CmallocData` fits into half the alignment. Addit=
+ionally, this guarantees
+> +        // that advancing a pointer aligned to `align` by `align / 2` we=
+ still satisfy or exceed
+> +        // the alignment requested through `layout`.
+> +        let align =3D cmp::max(
+> +            layout.align(),
+> +            mem::size_of::<CmallocData>().next_power_of_two(),
+> +        ) * 2;
+> +
+> +        // Add the additional space required for `CmallocData`.
+> +        let size =3D layout.size() + mem::size_of::<CmallocData>();
+> +
+> +        Ok(Layout::from_size_align(size, align)
+> +            .map_err(|_| AllocError)?
+> +            .pad_to_align())
+> +    }
+> +
+> +    fn alloc_store_data(layout: Layout) -> Result<NonNull<u8>, AllocErro=
+r> {
+> +        let requested_size =3D layout.size();
+> +
+> +        let layout =3D Self::layout_adjust(layout)?;
+> +        let min_align =3D layout.align() / 2;
+> +
+> +        // SAFETY: Returns either NULL or a pointer to a memory allocati=
+on that satisfies or
+> +        // exceeds the given size and alignment requirements.
+> +        let raw_ptr =3D unsafe { libc_aligned_alloc(layout.align(), layo=
+ut.size()) } as *mut u8;
+> +
+> +        let priv_ptr =3D NonNull::new(raw_ptr).ok_or(AllocError)?;
+> +
+> +        // SAFETY: Advance the pointer by `min_align`. The adjustments f=
+rom `Self::layout_adjust`
+> +        // ensure that after this operation the original size and alignm=
+ent requirements are still
+> +        // satisfied or exceeded.
+> +        let ptr =3D unsafe { priv_ptr.as_ptr().add(min_align) };
+> +
+> +        // SAFETY: `min_align` is greater than or equal to the size of `=
+CmallocData`, hence we
+> +        // don't exceed the allocation boundaries.
+> +        let data_ptr: *mut CmallocData =3D unsafe { ptr.sub(mem::size_of=
+::<CmallocData>()) }.cast();
+> +
+> +        let data =3D CmallocData {
+> +            size: requested_size,
+> +            offset: min_align,
+> +        };
+> +
+> +        // SAFETY: `data_ptr` is properly aligned and within the allocat=
+ion boundaries reserved for
+> +        // `CmallocData`.
+> +        unsafe { data_ptr.write(data) };
+> +
+> +        NonNull::new(ptr).ok_or(AllocError)
+> +    }
+> +
+> +    /// # Safety
+> +    ///
+> +    /// `ptr` must have been previously allocated with `Self::alloc_stor=
+e_data`.
+> +    unsafe fn data<'a>(ptr: NonNull<u8>) -> &'a CmallocData {
+> +        // SAFETY: `Self::alloc_store_data` stores the `CmallocData` rig=
+ht before the address
+> +        // returned to callers of `Self::alloc_store_data`.
+> +        let data_ptr: *mut CmallocData =3D
+> +            unsafe { ptr.as_ptr().sub(mem::size_of::<CmallocData>()) }.c=
+ast();
+> +
+> +        // SAFETY: The `CmallocData` has been previously stored at this =
+offset with
+> +        // `Self::alloc_store_data`.
+> +        unsafe { &*data_ptr }
+> +    }
+> +
+> +    /// # Safety
+> +    ///
+> +    /// This function must not be called more than once for the same all=
+ocation.
+> +    ///
+> +    /// `ptr` must have been previously allocated with `Self::alloc_stor=
+e_data`.
+> +    unsafe fn free_read_data(ptr: NonNull<u8>) {
+> +        // SAFETY: `ptr` has been created by `Self::alloc_store_data`.
+> +        let data =3D unsafe { Self::data(ptr) };
+> +
+> +        // SAFETY: `ptr` has been created by `Self::alloc_store_data`.
+> +        let priv_ptr =3D unsafe { ptr.as_ptr().sub(data.offset) };
+> +
+> +        // SAFETY: `priv_ptr` has previously been allocatored with this =
+`Allocator`.
+> +        unsafe { libc_free(priv_ptr.cast()) };
+> +    }
+> +}
+> +
+> +unsafe impl Allocator for Cmalloc {
+> +    fn alloc(layout: Layout, flags: Flags) -> Result<NonNull<[u8]>, Allo=
+cError> {
+> +        if layout.size() =3D=3D 0 {
+> +            return Ok(NonNull::slice_from_raw_parts(NonNull::dangling(),=
+ 0));
+> +        }
+> +
+> +        let ptr =3D Self::alloc_store_data(layout)?;
+> +
+> +        if flags.contains(__GFP_ZERO) {
+> +            // SAFETY: `Self::alloc_store_data` guarantees that `ptr` po=
+ints to memory of at least
+> +            // `layout.size()` bytes.
+> +            unsafe { ptr.as_ptr().write_bytes(0, layout.size()) };
+> +        }
+> +
+> +        Ok(NonNull::slice_from_raw_parts(ptr, layout.size()))
+> +    }
+> +
+>      unsafe fn realloc(
+> -        _ptr: Option<NonNull<u8>>,
+> -        _layout: Layout,
+> -        _flags: Flags,
+> +        ptr: Option<NonNull<u8>>,
+> +        layout: Layout,
+> +        flags: Flags,
+>      ) -> Result<NonNull<[u8]>, AllocError> {
+> -        panic!();
+> +        let src: NonNull<u8> =3D if let Some(src) =3D ptr {
+> +            src.cast()
+> +        } else {
+> +            return Self::alloc(layout, flags);
+> +        };
+> +
+> +        if layout.size() =3D=3D 0 {
+> +            // SAFETY: `src` has been created by `Self::alloc_store_data=
+`.
+> +            unsafe { Self::free_read_data(src) };
+> +
+> +            return Ok(NonNull::slice_from_raw_parts(NonNull::dangling(),=
+ 0));
+> +        }
+> +
+> +        let dst =3D Self::alloc(layout, flags)?;
+> +
+> +        // SAFETY: `src` has been created by `Self::alloc_store_data`.
+> +        let data =3D unsafe { Self::data(src) };
+> +
+> +        // SAFETY: `src` has previously been allocated with this `Alloca=
+tor`; `dst` has just been
+> +        // newly allocated. Copy up to the smaller of both sizes.
+> +        unsafe {
+> +            ptr::copy_nonoverlapping(
+> +                src.as_ptr(),
+> +                dst.as_ptr().cast(),
+> +                cmp::min(layout.size(), data.size),
+> +            )
+> +        };
+> +
+At this point should we free the src? Or is the original pointer expected t=
+o remain valid?
+
+> +        Ok(dst)
+>      }
+>  }
+> --
+> 2.45.2
+
+
