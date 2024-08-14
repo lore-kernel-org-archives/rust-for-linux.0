@@ -1,123 +1,266 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6B9D13D51D;
-	Wed, 14 Aug 2024 12:08:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48FA41B0106;
+	Wed, 14 Aug 2024 12:22:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723637287; cv=none; b=ezJiRZY862z/EA4pqqN7Pyq2irOvhlpkPZhX3o4KZz07pkgYkKWddyUfAEVdzYhtNinEFxLDaiskWPTQ6esaLSWlom/zEC3VvpDJbQXFOT+rUXBbi84WAd3merMdaYMgQjBNyw5nQ88a4Vgsm3Gx61Kp1ihff9AnlzOArfU9tVY=
+	t=1723638130; cv=none; b=G7MZ7BjWvwDvc0/LxxxCRJ9AZ5YyEFuxTyuEvBKTgATUu5fih5JSo2ozSz6xz8gkYMqyZi7ZWy0GXLC/uY7PgKdooADEwEHMWC9nHP/MOU7vzU+FmTCe4sNvRcYIiga4XevWTZeqn02eT53z7sEzXG8+l+PoKHbttKIA/qPJuZw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723637287; c=relaxed/simple;
-	bh=NRLpSjB2blskWzdVEuxep7r6O7TWmeLLJ2opBFrnFXw=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=CueIksgG1rDZcKm8kXNKMHUTw/Yq77Pry2HE7esyL/ywDZv5ROkeShDucpJghCmhM7KXhRi76a9NtRRGh8QTQ7T9OsRAriYRI0KCfHFQyna39LInqOm/RxPaW+khs6dqYdsvx+jFS5ZId1sDZ5DyQftMLB+zNvxtaoAImtG4Si0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ognMeWYN; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1723638130; c=relaxed/simple;
+	bh=LY2WEiT97Ay4nDCBo8MD19QX9cPTqZ1QXq9WM5bDD8Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=YlYFYZmo/3wfwITOht47AIzzQDUxy3kBqbixwbUuFgcXwULaLqzeiEZMwyZDU8HI2dIFYnaJRJwbCzbw+2WANjEBslC3RgBwSdhiqRYqJ/OMHAQyFNj2CcNDBrsLbEwrTml6/fZ82O4gfAkrp/g0yZ8Abu0j+tm1JCDYtQTiKJA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cxSprWST; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ognMeWYN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9780C4AF0E;
-	Wed, 14 Aug 2024 12:08:02 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cxSprWST"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30F9CC4AF0D;
+	Wed, 14 Aug 2024 12:22:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723637287;
-	bh=NRLpSjB2blskWzdVEuxep7r6O7TWmeLLJ2opBFrnFXw=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=ognMeWYNbsL4Ndt/N31pW5AQ0q9LIvDwUJeJknGrwkDrZHNBoaSZmVAne8BbYc6WB
-	 48NQI3du7WSrP2U/2M7lZ3k9XhoLRO+2m06aCKZqMZya6HPxQYBe2+ZypAcqeC+O11
-	 UlxPJUCmXA2rH/xXm2uLLyjPXXOdX3yBkka8UpDqyoYu+I8jlRPtQf1q3ko6dT10su
-	 9y6IvASp+/UKlyrEcpW9HJTKlVUFIo1lYVVDnqD967lmKHBunyQQ+5GffcbcT5c9zZ
-	 G0EKiHfUQZjvfAujTQ2b1rr/lRbx1FKSMnrfQg9xmqtAIpHrNxT9X4W18xFbGm37Ht
-	 jHfCGw/LVZLlw==
-Message-ID: <0f6c4fb3-039a-4dc6-a07c-980ca06ecbeb@kernel.org>
-Date: Wed, 14 Aug 2024 14:08:00 +0200
+	s=k20201202; t=1723638128;
+	bh=LY2WEiT97Ay4nDCBo8MD19QX9cPTqZ1QXq9WM5bDD8Q=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=cxSprWSTSJw/Uqfe8Ub8AgSg3IrQH90TcRM/jX4OFm3yTnQ1Ke4K49UGLTu0nM1A9
+	 W+eoVPB1K3RzPvsczO5hmhILiV8bvtI585YApdh9aQmFVEE8VA2JxMbbPbo2qgJqYQ
+	 6VhiKjkSr+4SGJsmYiZSeaQiNxfJyGBdVY3ARlLg+Cm1nNuxr5rqSL10CLlYphNvJ5
+	 TxdGAr4xlANk60rrah/rUu6+V+x8LhNftftTSv8BKCBdawD1SoJWuh5Qgkbm1jSSNG
+	 5AH81MwevsDt4FLt/1qt3sf3zYCLUrhwI0T76BHM9i68+BN4nDZRcRUx6cMKtcBEm9
+	 BP1jDq97QWWDw==
+Date: Wed, 14 Aug 2024 14:22:01 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me, a.hindborg@samsung.com,
+	akpm@linux-foundation.org, daniel.almeida@collabora.com,
+	faith.ekstrand@collabora.com, boris.brezillon@collabora.com,
+	lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com,
+	cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com,
+	ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v5 09/26] rust: alloc: implement kernel `Box`
+Message-ID: <Zryhae9OXD_dqfR8@pollux>
+References: <20240812182355.11641-1-dakr@kernel.org>
+ <20240812182355.11641-10-dakr@kernel.org>
+ <CAH5fLgiyDtMWKe0db+uvKGPoPRepjiSxddSrBh8jF1N1COpdDg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 11/26] rust: alloc: remove `BoxExt` extension
-To: Dirk Behme <dirk.behme@de.bosch.com>
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
- boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
- benno.lossin@proton.me, a.hindborg@samsung.com, aliceryhl@google.com,
- akpm@linux-foundation.org, daniel.almeida@collabora.com,
- faith.ekstrand@collabora.com, boris.brezillon@collabora.com,
- lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com, cjia@nvidia.com,
- jhubbard@nvidia.com, airlied@redhat.com, ajanulgu@redhat.com,
- lyude@redhat.com, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-References: <20240812182355.11641-1-dakr@kernel.org>
- <20240812182355.11641-12-dakr@kernel.org>
- <d83155b4-1c73-4191-85b6-55d1b904a926@de.bosch.com>
-From: Danilo Krummrich <dakr@kernel.org>
-Content-Language: en-US
-In-Reply-To: <d83155b4-1c73-4191-85b6-55d1b904a926@de.bosch.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAH5fLgiyDtMWKe0db+uvKGPoPRepjiSxddSrBh8jF1N1COpdDg@mail.gmail.com>
 
-Hi Dirk,
+On Wed, Aug 14, 2024 at 10:26:10AM +0200, Alice Ryhl wrote:
+> On Mon, Aug 12, 2024 at 8:25 PM Danilo Krummrich <dakr@kernel.org> wrote:
+> >
+> > `Box` provides the simplest way to allocate memory for a generic type
+> > with one of the kernel's allocators, e.g. `Kmalloc`, `Vmalloc` or
+> > `KVmalloc`.
+> >
+> > In contrast to Rust's `Box` type, the kernel `Box` type considers the
+> > kernel's GFP flags for all appropriate functions, always reports
+> > allocation failures through `Result<_, AllocError>` and remains
+> > independent from unstable features.
+> >
+> > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> > ---
+> >  rust/kernel/alloc.rs      |   6 +
+> >  rust/kernel/alloc/kbox.rs | 423 ++++++++++++++++++++++++++++++++++++++
+> >  rust/kernel/prelude.rs    |   2 +-
+> >  3 files changed, 430 insertions(+), 1 deletion(-)
+> >  create mode 100644 rust/kernel/alloc/kbox.rs
+> >
+> > diff --git a/rust/kernel/alloc.rs b/rust/kernel/alloc.rs
+> > index 295107777a12..ed46b69204d0 100644
+> > --- a/rust/kernel/alloc.rs
+> > +++ b/rust/kernel/alloc.rs
+> > @@ -5,6 +5,7 @@
+> >  #[cfg(not(any(test, testlib)))]
+> >  pub mod allocator;
+> >  pub mod box_ext;
+> > +pub mod kbox;
+> >  pub mod vec_ext;
+> >
+> >  #[cfg(any(test, testlib))]
+> > @@ -13,6 +14,11 @@
+> >  #[cfg(any(test, testlib))]
+> >  pub use self::allocator_test as allocator;
+> >
+> > +pub use self::kbox::Box;
+> > +pub use self::kbox::KBox;
+> > +pub use self::kbox::KVBox;
+> > +pub use self::kbox::VBox;
+> > +
+> >  /// Indicates an allocation error.
+> >  #[derive(Copy, Clone, PartialEq, Eq, Debug)]
+> >  pub struct AllocError;
+> > diff --git a/rust/kernel/alloc/kbox.rs b/rust/kernel/alloc/kbox.rs
+> > new file mode 100644
+> > index 000000000000..67bdfc0712d2
+> > --- /dev/null
+> > +++ b/rust/kernel/alloc/kbox.rs
+> > @@ -0,0 +1,423 @@
+> > +// SPDX-License-Identifier: GPL-2.0
+> > +
+> > +//! Implementation of [`Box`].
+> > +
+> > +use super::{AllocError, Allocator, Flags};
+> > +use core::fmt;
+> > +use core::marker::PhantomData;
+> > +use core::mem::ManuallyDrop;
+> > +use core::mem::MaybeUninit;
+> > +use core::ops::{Deref, DerefMut};
+> > +use core::pin::Pin;
+> > +use core::ptr::NonNull;
+> > +use core::result::Result;
+> > +
+> > +use crate::init::{InPlaceInit, Init, PinInit};
+> > +use crate::types::ForeignOwnable;
+> > +
+> > +/// The kernel's [`Box`] type - a heap allocation for a single value of type `T`.
+> > +///
+> > +/// This is the kernel's version of the Rust stdlib's `Box`. There are a couple of differences,
+> > +/// for example no `noalias` attribute is emitted and partially moving out of a `Box` is not
+> > +/// supported.
+> > +///
+> > +/// `Box` works with any of the kernel's allocators, e.g. [`super::allocator::Kmalloc`],
+> > +/// [`super::allocator::Vmalloc`] or [`super::allocator::KVmalloc`]. There are aliases for `Box`
+> > +/// with these allocators ([`KBox`], [`VBox`], [`KVBox`]).
+> > +///
+> > +/// When dropping a [`Box`], the value is also dropped and the heap memory is automatically freed.
+> > +///
+> > +/// # Examples
+> > +///
+> > +/// ```
+> > +/// let b = KBox::<u64>::new(24_u64, GFP_KERNEL)?;
+> > +///
+> > +/// assert_eq!(*b, 24_u64);
+> > +///
+> > +/// # Ok::<(), Error>(())
+> 
+> This is a minor nit, but when hiding lines in examples you should
+> avoid having the rendered docs have empty lines at the beginning/end.
+> There are also several examples of this below with the
+> kernel::bindings import.
 
-On 8/14/24 1:55 PM, Dirk Behme wrote:
-> On 12.08.2024 20:22, Danilo Krummrich wrote:
->> Now that all existing `Box` users were moved to the kernel `Box` type,
->> remove the `BoxExt` extension and all other related extensions.
-> I just noticed that in the recent 'rust-dev' branch we have a change which *adds* something to BoxExt:
-> 
-> rust: kernel: add drop_contents to BoxExt
-> https://github.com/Rust-for-Linux/linux/commit/62c34da1da6c01a635ea2308cb42996d0571059e
-> 
-> I'm unclear how relevant that is. Just want to mention this in case it would make sense to include that directly in this patch series to avoid a future add-on patch ;)
-
-Thanks for reporting. I'm aware of this patch, we expect it to land before this series.
-I'll add `drop_contents` once I rebase onto it.
-
-- Danilo
+Makes sense, gonna fix it.
 
 > 
-> Thanks,
+> > +/// ```
+> > +///
+> > +/// ```
+> > +/// # use kernel::bindings;
+> > +///
+> > +/// const SIZE: usize = bindings::KMALLOC_MAX_SIZE as usize + 1;
+> > +/// struct Huge([u8; SIZE]);
+> > +///
+> > +/// assert!(KBox::<Huge>::new_uninit(GFP_KERNEL | __GFP_NOWARN).is_err());
+> > +/// ```
+> > +///
+> > +/// ```
+> > +/// # use kernel::bindings;
+> > +///
+> > +/// const SIZE: usize = bindings::KMALLOC_MAX_SIZE as usize + 1;
+> > +/// struct Huge([u8; SIZE]);
+> > +///
+> > +/// assert!(KVBox::<Huge>::new_uninit(GFP_KERNEL).is_ok());
+> > +/// ```
+> > +///
+> > +/// # Invariants
+> > +///
+> > +/// The [`Box`]' pointer always properly aligned and either points to memory allocated with `A` or,
+> > +/// for zero-sized types, is a dangling pointer.
+> > +pub struct Box<T: ?Sized, A: Allocator>(NonNull<T>, PhantomData<A>);
 > 
-> Dirk
+> I was about to say this needs a PhantomData<T> too, but I guess it
+> isn't necessary anymore.
+> https://doc.rust-lang.org/nomicon/phantom-data.html#generic-parameters-and-drop-checking
 > 
-> P.S.: It looks like anything like this at least makes the compiler happy:
+> > +// SAFETY: `Box` is `Send` if `T` is `Send` because the data referenced by `self.0` is unaliased.
 > 
-> diff --git a/rust/kernel/alloc/kbox.rs b/rust/kernel/alloc/kbox.rs
-> index d67f975502246..e91d441835d54 100644
-> --- a/rust/kernel/alloc/kbox.rs
-> +++ b/rust/kernel/alloc/kbox.rs
-> @@ -9,6 +9,7 @@
->   use core::mem::MaybeUninit;
->   use core::ops::{Deref, DerefMut};
->   use core::pin::Pin;
-> +use core::ptr;
->   use core::ptr::NonNull;
->   use core::result::Result;
+> Instead of "unaliased" I would probably just say "because the Box owns a T".
+
+I'm fine with either one, if that's preferred, I'll change it.
+
 > 
-> @@ -270,6 +271,28 @@ pub fn new_uninit(flags: Flags) -> Result<Box<MaybeUninit<T>, A>, AllocError> {
->           Ok(Box(ptr, PhantomData::<A>))
->       }
+> > +
+> > +// SAFETY: `Box` is `Sync` if `T` is `Sync` because the data referenced by `self.0` is unaliased.
+> > +unsafe impl<T, A> Sync for Box<T, A>
+> > +where
+> > +    T: Send + ?Sized,
+> > +    A: Allocator,
 > 
-> +    /// Drops the contents, but keeps the allocation.
-> +    ///
-> +    /// # Examples
-> +    ///
-> +    /// ```
-> +    /// use kernel::alloc::{Flags, KBox};
-> +    /// let value = KBox::new([0; 32], GFP_KERNEL)?;
-> +    /// assert_eq!(*value, [0; 32]);
-> +    /// let value = KBox::drop_contents(value);
-> +    /// // Now we can re-use `value`:
-> +    /// let value = KBox::write(value, [1; 32]);
-> +    /// assert_eq!(*value, [1; 32]);
-> +    /// # Ok::<(), Error>(())
-> +    /// ```
-> +    pub fn drop_contents(this: Self) -> Box<MaybeUninit<T>, A> {
-> +        let ptr = Box::into_raw(this);
-> +        // SAFETY: `ptr` is valid, because it came from `Box::into_raw`.
-> +        unsafe { ptr::drop_in_place(ptr) };
-> +        // SAFETY: `ptr` is valid, because it came from `Box::into_raw`.
-> +        unsafe { Box::from_raw(ptr.cast()) }
-> +    }
-> +
->       /// Constructs a new `Pin<Box<T, A>>`. If `T` does not implement [`Unpin`], then `x` will be
->       /// pinned in memory and can't be moved.
->       #[inline]
+> This needs to say `T: Sync` instead of `T: Send`. That matches the std Box.
+
+Good catch, pretty sure `Vec` has the same copy-paste mistake.
+
+> 
+> > +
+> > +impl<T, A> Box<T, A>
+> > +where
+> > +    T: ?Sized,
+> > +    A: Allocator,
+> > +{
+> > +    /// Creates a new `Box<T, A>` from a raw pointer.
+> > +    ///
+> > +    /// # Safety
+> > +    ///
+> > +    /// `raw` must point to valid memory, previously be allocated with `A`, and provide at least
+> > +    /// the size of type `T`. For ZSTs `raw` must be a dangling pointer.
+> 
+> Hmm. I don't love this wording. How about this?
+> 
+> For non-ZSTs, `raw` must point at a live allocation allocated with `A`
+> that is sufficiently aligned for and holds a valid `T`. The caller
+> passes ownership of the allocation to the `Box`.
+
+I'm fine taking that, I'm not so sure about "live allocation" though, we don't
+use this wording anywhere else. It's probably fine to just say "allocation",
+since once it's freed it technically isn't an allocation anymore anyways.
+
+> For ZSTs, the pointer must be non-null and aligned.
+
+Technically, for ZSTs any pointer is aligned and NULL should be valid as well.
+Maybe we just don't mentioned ZSTs at all, since we don't really need to enforce
+anything for ZSTs.
+
+> 
+> > +impl<T, A> From<Box<T, A>> for Pin<Box<T, A>>
+> > +where
+> > +    T: ?Sized,
+> > +    A: Allocator,
+> > +{
+> > +    /// Converts a `Box<T, A>` into a `Pin<Box<T, A>>`. If `T` does not implement [`Unpin`], then
+> > +    /// `*b` will be pinned in memory and can't be moved.
+> > +    ///
+> > +    /// See [`Box::into_pin`] for more details.
+> > +    fn from(b: Box<T, A>) -> Self {
+> > +        Box::into_pin(b)
+> 
+> I still think it makes more sense to match std and only provide From
+> and not an into_pin, but it's not a blocker.
+
+Yeah, I just kept it since I'm not (yet) entirely sure what to think of the
+`From` and `Into` stuff in some cases.
+
+I don't really like that, depending on the context, it may hide relevant
+details.
+
+In the kernel, no matter how well documented an API is, I think it's rather
+common to look at the code for some implementation details before using it.
+
+Sometimes it might not be super trivial for the "occasional" reader to figure
+out what's the type of some variable. Calling `into_pin` vs. just `into`
+immediately tells the reader that things need to be pinned from there on.
+
+However, I had no specific example in my mind and I'm also not overly concerned
+to remove `into_pin`, but I want to at least share the reason why I kept it in
+the first place.
+
+> 
+> Alice
+> 
