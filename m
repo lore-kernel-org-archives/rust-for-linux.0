@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E1661BBBF4;
-	Wed, 14 Aug 2024 21:58:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FC7714389F;
+	Wed, 14 Aug 2024 22:13:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723672697; cv=none; b=ceqnhONekaBes5hFxFAO/3XznAt/SHAqX3Zd6qBh8aO91PFvbGADINPLKxaSuMOfZoonJofiAy/zibtacf/kOQelBSZJmIS/cCjBtPvlIMcd98XOhxPY3BJTQC0AyHTdXnvUtYBplvT6RPdq1ECq1TEYQiViCqkbvyL3/aBlBNE=
+	t=1723673587; cv=none; b=SsY+UpDiAsf5VsF7rLYd1TBkUkRgHFn3rIRNzMFLvYnuvz019GRvQgOB69sclHYxpjPZVdaz3M6H42g/+4gdFQW0TOtRYDhnGFbUuDrk1cNXl8DrVB8OeOoBqrjjDNKBZKrQrmYuXJJh45qkOpQqjrrc/7RJ5FwSNVMqfZcyO5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723672697; c=relaxed/simple;
-	bh=WF7mh1nnaAx+2BtQVDbvZ9mTMjWH5kKojT+9NKpDGDM=;
+	s=arc-20240116; t=1723673587; c=relaxed/simple;
+	bh=MN6Nv6m7Xg/Vf3PzVRlISzwMZJpfsZIfImO2JWBcKlc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=UQ2HhSry+ymTGrJYt/Mrk/0yo2plxi43/W/q6VqRN9LW+e4tHhAAp4HSmLpOmiEGWlTr8eqN3jFbw9+B6B+jYKVz+3uC0z4KK+djFM8GXIq0KUfvtZlK7yK5WT+4uyYVJT12Yq00p0aAJkDv2l00i8Rj4QP5tQFJJZGo6Y0vaIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=k7w3kvYt; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=ARJZme2dccRtQ2/2jr16QXtZA93MrsutyiM5Qslw4qnr8JiSKi+5Y0Qa22MkasMyPWWqJsOQ7nhok/DFclBm4CgHjTXzE2gCBR5kIoSHjR4Xx9m0ihILUDjsVGbcf7NMINZXw0okF/9kvhthpWNX431Q0wosjw/0x2kA4v4kBY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EkPEkqJY; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="k7w3kvYt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE173C116B1;
-	Wed, 14 Aug 2024 21:58:11 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EkPEkqJY"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFD7BC116B1;
+	Wed, 14 Aug 2024 22:13:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723672696;
-	bh=WF7mh1nnaAx+2BtQVDbvZ9mTMjWH5kKojT+9NKpDGDM=;
+	s=k20201202; t=1723673586;
+	bh=MN6Nv6m7Xg/Vf3PzVRlISzwMZJpfsZIfImO2JWBcKlc=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=k7w3kvYtTLgFnwfGAbkC9JLrNGliHDW5YldIQLHAnWlAQGLs5TsJfY66aO72aESXS
-	 NKAzOS5reSFyMrmYzZ6KT8V7gvFvZ8RKwAiLJsMU3kolElPZKA1GKL7EtSHkv4IDfZ
-	 OrcYAKWjTCHnih6lBPj/FTY+Ps8T/7fVqhjQB4/wMuu4lJEx4eGp2LQ0aQb+Ya88lX
-	 eRD4kWGW5rTkeu7hPh90Tlpo7OFTwu0dbV4ED5qAEDdyopTMmdoH/WIrQ0YNW1FTLP
-	 xj9y8L/Brrs+/tYVEm9lgyMshxJo91uuSjbWuSsRZehjzQQBzGRva4ZNBNFvz+ypmx
-	 6Me9Hd3WpGkEw==
-Date: Wed, 14 Aug 2024 23:58:08 +0200
+	b=EkPEkqJYvBUhqcsBqM2TWDBT1knywWVaX+ItA9qm7ZUPkWbCDQQkJ4YFE+RQHlP7e
+	 1Y98MSH7gDezbz6vgART6hEUD7TAKjl/QLxevw92Tu23IiFYSVh9xQvD28kWFNJagQ
+	 IhAkmbCAdIbvynTrcrAyNg3OrtkGVPCipcoWHsvCIDs3thqCCcj5P3tDvUNH7lEC/f
+	 RnhnThuVw8Gs8+1qB3BcbhFlaBZLEr04KvlEHhBsy/g2qAf7d0LCb27cN7LeI/6mgS
+	 h5oJBjchDNhLTwWGMV1Xd6HQ3LSQwj9QBPsClETdBA7EXwkVPJqgyutGTz7/Urc3RF
+	 2HWQkP/pa8Tcg==
+Date: Thu, 15 Aug 2024 00:12:58 +0200
 From: Danilo Krummrich <dakr@kernel.org>
 To: Benno Lossin <benno.lossin@proton.me>
 Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
@@ -38,11 +38,11 @@ Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
 	cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com,
 	ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org,
 	rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v5 09/26] rust: alloc: implement kernel `Box`
-Message-ID: <Zr0ocI-j3fZZM7Rw@cassiopeiae>
+Subject: Re: [PATCH v5 06/26] rust: alloc: implement `Vmalloc` allocator
+Message-ID: <Zr0r6sSFMSQIpHEX@cassiopeiae>
 References: <20240812182355.11641-1-dakr@kernel.org>
- <20240812182355.11641-10-dakr@kernel.org>
- <a69e7280-7291-49f7-a46f-1ad465efce04@proton.me>
+ <20240812182355.11641-7-dakr@kernel.org>
+ <c9d57e77-8748-4e58-a39b-7a23f750ceda@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -51,120 +51,162 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <a69e7280-7291-49f7-a46f-1ad465efce04@proton.me>
+In-Reply-To: <c9d57e77-8748-4e58-a39b-7a23f750ceda@proton.me>
 
-On Wed, Aug 14, 2024 at 05:01:34PM +0000, Benno Lossin wrote:
+On Wed, Aug 14, 2024 at 04:32:34PM +0000, Benno Lossin wrote:
 > On 12.08.24 20:22, Danilo Krummrich wrote:
-> > +/// The kernel's [`Box`] type - a heap allocation for a single value of type `T`.
-> > +///
-> > +/// This is the kernel's version of the Rust stdlib's `Box`. There are a couple of differences,
-> > +/// for example no `noalias` attribute is emitted and partially moving out of a `Box` is not
-> > +/// supported.
-> 
-> I would add "But otherwise it works the same." (I don't know if there is
-> a comma needed after the "otherwise").
-
-There are more differences we don't list here, and probably don't need to.
-Hence, saying that it otherwise works the same isn't correct.
-
-> Also I remember that there was one more difference with a custom box
-> compared to the stdlib, but I forgot what that was, does someone else
-> remember? We should also put that here.
-
-Obviously, there are also quite some API differences. For instance, `Box`
-generally requires two generics, value type and allocator, we take page flags
-and return a `Result`, where std just panics on failure.
-
-> 
-> > +///
-> > +/// `Box` works with any of the kernel's allocators, e.g. [`super::allocator::Kmalloc`],
-> > +/// [`super::allocator::Vmalloc`] or [`super::allocator::KVmalloc`]. There are aliases for `Box`
-> > +/// with these allocators ([`KBox`], [`VBox`], [`KVBox`]).
-> > +///
-> > +/// When dropping a [`Box`], the value is also dropped and the heap memory is automatically freed.
-> > +///
-> > +/// # Examples
-> > +///
-> > +/// ```
-> > +/// let b = KBox::<u64>::new(24_u64, GFP_KERNEL)?;
-> > +///
-> > +/// assert_eq!(*b, 24_u64);
-> > +///
-> > +/// # Ok::<(), Error>(())
-> > +/// ```
-> > +///
-> > +/// ```
-> > +/// # use kernel::bindings;
-> > +///
-> > +/// const SIZE: usize = bindings::KMALLOC_MAX_SIZE as usize + 1;
-> > +/// struct Huge([u8; SIZE]);
-> > +///
-> > +/// assert!(KBox::<Huge>::new_uninit(GFP_KERNEL | __GFP_NOWARN).is_err());
-> > +/// ```
-> > +///
-> > +/// ```
-> > +/// # use kernel::bindings;
-> > +///
-> > +/// const SIZE: usize = bindings::KMALLOC_MAX_SIZE as usize + 1;
-> > +/// struct Huge([u8; SIZE]);
-> > +///
-> > +/// assert!(KVBox::<Huge>::new_uninit(GFP_KERNEL).is_ok());
-> > +/// ```
-> > +///
-> > +/// # Invariants
-> > +///
-> > +/// The [`Box`]' pointer always properly aligned and either points to memory allocated with `A` or,
-> 
-> "pointer always properly" -> "pointer is properly"
-> 
-> > +/// for zero-sized types, is a dangling pointer.
-> 
-> I think this section would look nicer, if it were formatted using bullet
-> points (that way the bracketing of the "or" is also unambiguous).
-> 
-> Additionally, this is missing that the pointer is valid for reads and
-> writes.
-> 
-> > +pub struct Box<T: ?Sized, A: Allocator>(NonNull<T>, PhantomData<A>);
-> 
-> Why no `repr(transparent)`?
-
-I wasn't entirely sure whether that's OK with the additional `PhantomData`, but
-I think it is, gonna add it.
-
-> 
+> > Implement `Allocator` for `Vmalloc`, the kernel's virtually contiguous
+> > allocator, typically used for larger objects, (much) larger than page
+> > size.
+> > 
+> > All memory allocations made with `Vmalloc` end up in `vrealloc()`.
+> > 
+> > Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> > ---
+> >  rust/helpers.c                      |  7 +++++++
+> >  rust/kernel/alloc/allocator.rs      | 28 ++++++++++++++++++++++++++++
+> >  rust/kernel/alloc/allocator_test.rs |  1 +
+> >  3 files changed, 36 insertions(+)
+> > 
+> > diff --git a/rust/helpers.c b/rust/helpers.c
+> > index 9f7275493365..7406943f887d 100644
+> > --- a/rust/helpers.c
+> > +++ b/rust/helpers.c
+> > @@ -33,6 +33,7 @@
+> >  #include <linux/sched/signal.h>
+> >  #include <linux/slab.h>
+> >  #include <linux/spinlock.h>
+> > +#include <linux/vmalloc.h>
+> >  #include <linux/wait.h>
+> >  #include <linux/workqueue.h>
+> > 
+> > @@ -199,6 +200,12 @@ void *rust_helper_krealloc(const void *objp, size_t new_size, gfp_t flags)
+> >  }
+> >  EXPORT_SYMBOL_GPL(rust_helper_krealloc);
+> > 
+> > +void *rust_helper_vrealloc(const void *p, size_t size, gfp_t flags)
+> > +{
+> > +	return vrealloc(p, size, flags);
+> > +}
+> > +EXPORT_SYMBOL_GPL(rust_helper_vrealloc);
 > > +
-> > +/// Type alias for `Box` with a `Kmalloc` allocator.
-> 
-> I think we should add that this is only designed for small values.
-
-I don't want duplicate the existing documentation around kmalloc and friends
-[1].
-
-Maybe we can refer to the existing documentation somehow.
-
-[1] https://www.kernel.org/doc/html/latest/core-api/memory-allocation.html
-
-> 
+> >  /*
+> >   * `bindgen` binds the C `size_t` type as the Rust `usize` type, so we can
+> >   * use it in contexts where Rust expects a `usize` like slice (array) indices.
+> > diff --git a/rust/kernel/alloc/allocator.rs b/rust/kernel/alloc/allocator.rs
+> > index b46883d87715..fdda22c6983f 100644
+> > --- a/rust/kernel/alloc/allocator.rs
+> > +++ b/rust/kernel/alloc/allocator.rs
+> > @@ -9,6 +9,7 @@
+> > 
+> >  use crate::alloc::{AllocError, Allocator};
+> >  use crate::bindings;
+> > +use crate::pr_warn;
+> > 
+> >  /// The contiguous kernel allocator.
+> >  ///
+> > @@ -16,6 +17,12 @@
+> >  /// `bindings::krealloc`.
+> >  pub struct Kmalloc;
+> > 
+> > +/// The virtually contiguous kernel allocator.
 > > +///
-> > +/// # Examples
-> > +///
-> > +/// ```
-> > +/// let b = KBox::new(24_u64, GFP_KERNEL)?;
-> > +///
-> > +/// assert_eq!(*b, 24_u64);
-> > +///
-> > +/// # Ok::<(), Error>(())
-> > +/// ```
-> > +pub type KBox<T> = Box<T, super::allocator::Kmalloc>;
+> > +/// The vmalloc allocator allocates pages from the page level allocator and maps them into the
+> > +/// contiguous kernel virtual space.
+> > +pub struct Vmalloc;
 > > +
-> > +/// Type alias for `Box` with a `Vmalloc` allocator.
+> >  /// Returns a proper size to alloc a new object aligned to `new_layout`'s alignment.
+> >  fn aligned_size(new_layout: Layout) -> usize {
+> >      // Customized layouts from `Layout::from_size_align()` can have size < align, so pad first.
+> > @@ -55,6 +62,9 @@ impl ReallocFunc {
+> >      // INVARIANT: `krealloc` satisfies the type invariants.
+> >      const KREALLOC: Self = Self(bindings::krealloc);
+> > 
+> > +    // INVARIANT: `vrealloc` satisfies the type invariants.
+> > +    const VREALLOC: Self = Self(bindings::vrealloc);
+> > +
+> >      /// # Safety
+> >      ///
+> >      /// This method has the same safety requirements as `Allocator::realloc`.
+> > @@ -132,6 +142,24 @@ unsafe fn alloc_zeroed(&self, layout: Layout) -> *mut u8 {
+> >      }
+> >  }
+> > 
+> > +unsafe impl Allocator for Vmalloc {
 > 
-> Same here, add that this is supposed to be used for big values (or is
-> this also a general-purpose allocator, just not guaranteeing that the
-> memory is physically contiguous? in that case I would document it
-> here and also on `Vmalloc`).
+> Missing SAFETY comment.
+> 
+> > +    unsafe fn realloc(
+> 
+> Does this need `#[inline]`?
 
-Same as above, I'd rather not duplicate that. But I'm happy to link things in,
-just not sure what's the best way doing it.
+Given that we almost only call `ReallocFunc::VREALLOC.call`, inlining this seems
+reasonable. 
 
+> 
+> > +        ptr: Option<NonNull<u8>>,
+> > +        layout: Layout,
+> > +        flags: Flags,
+> > +    ) -> Result<NonNull<[u8]>, AllocError> {
+> > +        // TODO: Support alignments larger than PAGE_SIZE.
+> > +        if layout.align() > bindings::PAGE_SIZE {
+> > +            pr_warn!("Vmalloc does not support alignments larger than PAGE_SIZE yet.\n");
+> > +            return Err(AllocError);
+> 
+> I think here we should first try to use `build_error!`, most often the
+> alignment will be specified statically, so it should get optimized away.
+
+Sure, we can try that first.
+
+> 
+> How difficult will it be to support this? (it is a weird requirement,
+> but I dislike just returning an error...)
+
+It's not difficult to support at all. But it requires a C API taking an
+alignment argument (same for `KVmalloc`).
+
+Coming up with a vrealloc_aligned() is rather trivial. kvrealloc_aligned() would
+be a bit weird though, because the alignment argument could only be really
+honored if we run into the vrealloc() case. For the krealloc() case it'd still
+depend on the bucket size that is selected for the requested size.
+
+Adding the C API, I'm also pretty sure someone's gonna ask what we need an
+alignment larger than PAGE_SIZE for and if we have a real use case for that.
+I'm not entirely sure we have a reasonable answer for that.
+
+I got some hacked up patches for that, but I'd rather polish and send them once
+we actually need it.
+
+> 
+> ---
+> Cheers,
+> Benno
+> 
+> > +        }
+> > +
+> > +        // SAFETY: If not `None`, `ptr` is guaranteed to point to valid memory, which was previously
+> > +        // allocated with this `Allocator`.
+> > +        unsafe { ReallocFunc::VREALLOC.call(ptr, layout, flags) }
+> > +    }
+> > +}
+> > +
+> >  #[global_allocator]
+> >  static ALLOCATOR: Kmalloc = Kmalloc;
+> > 
+> > diff --git a/rust/kernel/alloc/allocator_test.rs b/rust/kernel/alloc/allocator_test.rs
+> > index 4785efc474a7..e7bf2982f68f 100644
+> > --- a/rust/kernel/alloc/allocator_test.rs
+> > +++ b/rust/kernel/alloc/allocator_test.rs
+> > @@ -7,6 +7,7 @@
+> >  use core::ptr::NonNull;
+> > 
+> >  pub struct Kmalloc;
+> > +pub type Vmalloc = Kmalloc;
+> > 
+> >  unsafe impl Allocator for Kmalloc {
+> >      unsafe fn realloc(
+> > --
+> > 2.45.2
+> > 
+> 
