@@ -1,230 +1,262 @@
-Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ED6014A4C3
-	for <rust-for-linux@vger.kernel.org>; Wed, 14 Aug 2024 08:06:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AB58136E18
+	for <rust-for-linux@vger.kernel.org>; Wed, 14 Aug 2024 08:26:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723622785; cv=none; b=MYuRtWdI/hIAESyGKon5mXiUtU0hvE+6Pebn3lgGlLoZHGVHmx8fM9SkJwS6Nf0acAFlt+nuiZX/YGf1wq8UwcYBBhOzTscUFeAuZgxA0ChOBjZALvCT+49jb3/UyE2z8bqpf95eqGnP8FuEL0qTAieyLAM1T0H0Q4KDy0SeEMc=
+	t=1723623987; cv=none; b=lFd9+eYft3i1os4Yy6VRVXQZhdWIzphKN/MM7KtyZ9s3Ul1cW+8GmXS/UNj0mkft3IJo8XlMp6L2HxpkgyHwGpTqL1J6K3GNzUgNf9EgyHwt041DYZInIfe0zS45g3GP/WFX7pEyZF3Keftk0U4h03aGO0g+XOgsHfP62XdJhX8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723622785; c=relaxed/simple;
-	bh=23htzdPkrIBuzSbwmb2DpGXd+teL3V6vJsnxeIFBMn0=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=GaYZ78WQXX5uTQoI4XId0+Pb5cG16rT83xD+RxSo6b9+KUR/4ktMDIki2SWWY7cEQE21TO9DiGRcGjrmvqcgO4oeiW9IPueAifMcy/GKSZ00KT5TXTW2H2/DyQRLjQKSmBivH+xqPyJlrb76ogV5x83ouWssJ9/tAImWgg4XYOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=CsEG1bub; arc=none smtp.client-ip=209.85.221.74
+	s=arc-20240116; t=1723623987; c=relaxed/simple;
+	bh=62pL2XjU9NZjEXg6FHYVpk82cjgBud+cWc/FILW1Ruo=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=EBsvQDLeAqHLydf5evDQZTQywGVScm97TVgtx1rFT27lX816jI89emCUghkPdp+e8c0J8NeuiwgQ2auP1i3OKLBL3IgB9cdhzQsDL4BXv4gadCqu2oXjh9W9PXTM6YaXT3j4qCRCBDeNxEgM2czj56Ud2UWPguaFGBSXG+/G67I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nzGBW8yq; arc=none smtp.client-ip=209.85.221.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="CsEG1bub"
-Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-36835daf8b7so4516074f8f.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 14 Aug 2024 01:06:23 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nzGBW8yq"
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-3687fd09251so3509724f8f.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 14 Aug 2024 01:26:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1723622782; x=1724227582; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=G+5F6LU/OcA7Gz9zYCaBXloVPCpdqosC0u282L4bOXQ=;
-        b=CsEG1bublEo1bjEs7WT4oK1nYFhwIQaImeoqu6spRZBmiNvENT/NBTCzKXGbGlmlb8
-         wUlg3TD+Ss3OEQoM+t2VPmEXD4pTOFxNGiiABZKsyjj0AYBsmnCPDIkiPYEATE1wUWJx
-         Qeazveol5v3A8X6zU98lk2ogfckk1ZTVsy33Iu2Q61rjERBYIxC7BErucB9HRC29JvVc
-         VKNL2VFJPQxTd0vsYjRdx0N2vjcL+RwKODhakU4iwA92db5Nfx8Lu5hyd63tXgQOWNRG
-         D/ur1cE7+syFkvccwQUah8f3VWKTI8RXGOKbJkpPUvE2FNYgZ5MJ/P+FFvv6rXfa5Mr0
-         N9uQ==
+        d=google.com; s=20230601; t=1723623983; x=1724228783; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+0MBDb5+vXEVzKIZLapFfRuEtH5IYfsSmO/Hh3Pyjq4=;
+        b=nzGBW8yqu0zCMppQHBwkec+JW1E5NPrywHoDR1IoRs7kgcowXA/PwW4rbDy1M2I48q
+         2LlcUtzBDGBeGNO6tIWvTLh6VcZQhMnFi+RvFPXa3g/2QNBTeq9nSveqI7OBIxNfk6UA
+         mcvEQL9varBrA9pCL147HKYiqREvDyhoJoXLnaAxn4fjS0N1nBXpX3R9lZpjj8B67tqJ
+         LscLklZCBPdBWxEMF7BPLXDt6/eyqfsVLhLXjpsd1BxJHpmySdnfFMtJtAe9vbOUsrD4
+         +YbtIgMugQMtpJCYTfa4ti8odhv9tU/QVzsvFZtxP0LYmmhq6pr4oFL8jfQTVPlvohfA
+         XiZg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723622782; x=1724227582;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=G+5F6LU/OcA7Gz9zYCaBXloVPCpdqosC0u282L4bOXQ=;
-        b=EGEd2KDD/vMbYSzD5HAkxlYKayOmWQG1/J6YID/83EcZNoc4PDW9iXcnTV+pCpadFT
-         qp4pxOyU6dbvfqy1ViX3zSbu8sunW0zYx4o+Dv6d+Esal3S8bcd0k+zio2OtSTAXxLxV
-         Q9iXEtviWZDcFg6Myua46POYfj+Zt5g5oQf/6Q1Xw9DWI6zActx4LTnBwl4X6b+HxdHf
-         t7nWfPbdauHSIJlnkYCB6oyJ9gcTU3HUuyMOHuKUOVGCuyy1t5Z2aIr/DnJxdVPtryZp
-         cPS0b/fkNbGINq2qGaGhP7As86Qpp7WHRdcFNmBOGoxGeRdLBXN5J0LVdcxU45W7zPFo
-         u8XA==
-X-Forwarded-Encrypted: i=1; AJvYcCWB8Nh1B+P1P+pR6Cb5qjh+b5RjS4lbuagxKLFGWwy69zmZ7RqnK6ykTJcgJ2mxDWwhBk3H3Hwny7rZ+OkgXw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxvJBEfnccMu5OzMl3sJF9mDy1zNI6iXi1vn7NhSYtYH/naEw8f
-	2vQ0nXsz4RjbW77+IYeL3Na5HCrTlfkz51hLZOfXdtinlcjyiyJtmfwBggrNdeuqK97G8CJ+wO1
-	JficrTKYPf8xiCQ==
-X-Google-Smtp-Source: AGHT+IG4+uzs9JFoN8ApOz1EGDBkax7+lwA1i+qa4gBdfEeEUziZccMcI64ZxfWnhlBLnsVsnpcXULhDkh4UkjM=
-X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:35bd])
- (user=aliceryhl job=sendgmr) by 2002:adf:eb01:0:b0:367:96b9:d06f with SMTP id
- ffacd0b85a97d-37177828450mr4127f8f.11.1723622781382; Wed, 14 Aug 2024
- 01:06:21 -0700 (PDT)
-Date: Wed, 14 Aug 2024 08:05:29 +0000
-In-Reply-To: <20240814-linked-list-v5-0-f5f5e8075da0@google.com>
+        d=1e100.net; s=20230601; t=1723623984; x=1724228784;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=+0MBDb5+vXEVzKIZLapFfRuEtH5IYfsSmO/Hh3Pyjq4=;
+        b=UD3Q1Ipet/jzD1AQxlHKvL/81ffoNzD3Rw6bi3xswGVGes80OuuEeqD7e83neecQiY
+         Qt2WRt6n5wrJOXkgAi/sE13NU3r/73cc5oxmI+imaE0Mcmt9r4vFMPqSlNxDILvWys1+
+         COiDYe8Fd5jW1MXP9SjL0j5WzOIIUA6C6u/q0YAjkJkXr7/51UJq85aYrBwe5BRyGmDu
+         DVN4MH23BUi0D5UB/OtwP/CorNJcQDxA1pimLObIvbjVRGjvQP2q6dTuzpFdN3bRA1bc
+         jrvm6r17EagVF8ks6K2mM0zie3baBRCez/Zvje/I9SzthY1tHRSQgWgMmjFMH5assJYu
+         ATAQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUsmVdt/EAgo+tgt1k9SPO6qHtLiMpEmEkOEckdg7IDDIzvRfZzAkEyCi+47F3aQlIj8xieXey9AF2+qqV8gXN85NWTHzvLQJD7ryveTb0=
+X-Gm-Message-State: AOJu0YxXVr08w+NiD0BIa2sWnOup/caG0wwX97lmCG6QJ8FTMJHLGfdh
+	ymMkVG5fRsaZ1b4KZLO0VicDMkAfOw+I1SfP/LxRyRSvMAumOUBE5GZA3omO9UfB40R3sWYRvbx
+	GhseRRbzQne30vyMRT7M+GjPtDOmERS3fbmeQ
+X-Google-Smtp-Source: AGHT+IHCm0scg6mxW0JEpekgZhvKx5QWQ3ad6jquJgs9Up2YmI7n5FfGy3MiFPjp1CZznyAwqTEgCkSzOHAEpNW6ylk=
+X-Received: by 2002:a5d:5e13:0:b0:371:79f0:2cf6 with SMTP id
+ ffacd0b85a97d-37179f02ef3mr583706f8f.11.1723623983239; Wed, 14 Aug 2024
+ 01:26:23 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20240814-linked-list-v5-0-f5f5e8075da0@google.com>
-X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5361; i=aliceryhl@google.com;
- h=from:subject:message-id; bh=23htzdPkrIBuzSbwmb2DpGXd+teL3V6vJsnxeIFBMn0=;
- b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBmvGVh4B7ecG/0WoAj9SNsZ3AW95MJ+LAZH4Xw+
- vx3fBmV8J+JAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZrxlYQAKCRAEWL7uWMY5
- Rj3uD/46bS2kk5jHziMtHpjUpKC2bjCl21bUHG373S8vxIE7H6O66RoyceGwjifV8eR8UPKyobI
- Jki1fSlFhS8ZTh9AUlVYCgsqJ027XiWqJJJQYwYwa/dS/ocBpqo/AVGxrV/NdhaMaTV+Xa3U2sH
- krtuUk4l0MuCQ2oFeqSjHbc0QiGkaogGeXSC4VluG6ajqqci92McNgVkCsolgpV643VoSFGqS43
- iD5Tqp3l07B8DgS2OVte0Bu1WINvFkoscJKSN/RhEkqqSTCuFGNfQ4whE1BfYvL2sXXtDxyLMrr
- UnW+XWCALEU3uBTqy7CEYXmKUxSUc43I9j999kt/fP5Ed6IzUUAB4e+Tq79gmK8GPQMQE/zKsUT
- 3O9K4+8hlR63A0lAptwajlfXOFShK/o1lEKb0sJ3HHOYaTVW6sFVB7gmO2cmTztuZsQ5xYOPsIA
- iKV+jgQD/qBwzhX7q40RYhFHaZUj7zcQflw5aevYB8OVH2CWPD6sL4QClxtlVs1bEypXeDPr4QY
- yifwiu1SvfR3XUX2YjnGQl5vFGDBbXJVuN777gPb8UVFeO3NLu7xyOI71Q/MzMSDC/JKUJMUJqD
- PrnSyIyr4byQ+5w7pVFaXO1cMxfdXAWNh+y2HgPMwzu9chRUibgPXwu+90PUf3YUzOm/SaKYtFQ hFPDjShEvHF9HOA==
-X-Mailer: b4 0.13.0
-Message-ID: <20240814-linked-list-v5-10-f5f5e8075da0@google.com>
-Subject: [PATCH v5 10/10] rust: list: add ListArcField
+MIME-Version: 1.0
+References: <20240812182355.11641-1-dakr@kernel.org> <20240812182355.11641-10-dakr@kernel.org>
+In-Reply-To: <20240812182355.11641-10-dakr@kernel.org>
 From: Alice Ryhl <aliceryhl@google.com>
-To: Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@samsung.com>, Marco Elver <elver@google.com>, Coly Li <colyli@suse.de>, 
-	Paolo Abeni <pabeni@redhat.com>, Pierre Gondois <pierre.gondois@arm.com>, 
-	Ingo Molnar <mingo@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Wei Yang <richard.weiyang@gmail.com>, 
-	Matthew Wilcox <willy@infradead.org>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>, 
-	Kees Cook <kees@kernel.org>
-Content-Type: text/plain; charset="utf-8"
+Date: Wed, 14 Aug 2024 10:26:10 +0200
+Message-ID: <CAH5fLgiyDtMWKe0db+uvKGPoPRepjiSxddSrBh8jF1N1COpdDg@mail.gmail.com>
+Subject: Re: [PATCH v5 09/26] rust: alloc: implement kernel `Box`
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, 
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	benno.lossin@proton.me, a.hindborg@samsung.com, akpm@linux-foundation.org, 
+	daniel.almeida@collabora.com, faith.ekstrand@collabora.com, 
+	boris.brezillon@collabora.com, lina@asahilina.net, mcanal@igalia.com, 
+	zhiw@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com, 
+	ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-One way to explain what `ListArc` does is that it controls exclusive
-access to the prev/next pointer field in a refcounted object. The
-feature of having a special reference to a refcounted object with
-exclusive access to specific fields is useful for other things, so
-provide a general utility for that.
+On Mon, Aug 12, 2024 at 8:25=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> =
+wrote:
+>
+> `Box` provides the simplest way to allocate memory for a generic type
+> with one of the kernel's allocators, e.g. `Kmalloc`, `Vmalloc` or
+> `KVmalloc`.
+>
+> In contrast to Rust's `Box` type, the kernel `Box` type considers the
+> kernel's GFP flags for all appropriate functions, always reports
+> allocation failures through `Result<_, AllocError>` and remains
+> independent from unstable features.
+>
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> ---
+>  rust/kernel/alloc.rs      |   6 +
+>  rust/kernel/alloc/kbox.rs | 423 ++++++++++++++++++++++++++++++++++++++
+>  rust/kernel/prelude.rs    |   2 +-
+>  3 files changed, 430 insertions(+), 1 deletion(-)
+>  create mode 100644 rust/kernel/alloc/kbox.rs
+>
+> diff --git a/rust/kernel/alloc.rs b/rust/kernel/alloc.rs
+> index 295107777a12..ed46b69204d0 100644
+> --- a/rust/kernel/alloc.rs
+> +++ b/rust/kernel/alloc.rs
+> @@ -5,6 +5,7 @@
+>  #[cfg(not(any(test, testlib)))]
+>  pub mod allocator;
+>  pub mod box_ext;
+> +pub mod kbox;
+>  pub mod vec_ext;
+>
+>  #[cfg(any(test, testlib))]
+> @@ -13,6 +14,11 @@
+>  #[cfg(any(test, testlib))]
+>  pub use self::allocator_test as allocator;
+>
+> +pub use self::kbox::Box;
+> +pub use self::kbox::KBox;
+> +pub use self::kbox::KVBox;
+> +pub use self::kbox::VBox;
+> +
+>  /// Indicates an allocation error.
+>  #[derive(Copy, Clone, PartialEq, Eq, Debug)]
+>  pub struct AllocError;
+> diff --git a/rust/kernel/alloc/kbox.rs b/rust/kernel/alloc/kbox.rs
+> new file mode 100644
+> index 000000000000..67bdfc0712d2
+> --- /dev/null
+> +++ b/rust/kernel/alloc/kbox.rs
+> @@ -0,0 +1,423 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! Implementation of [`Box`].
+> +
+> +use super::{AllocError, Allocator, Flags};
+> +use core::fmt;
+> +use core::marker::PhantomData;
+> +use core::mem::ManuallyDrop;
+> +use core::mem::MaybeUninit;
+> +use core::ops::{Deref, DerefMut};
+> +use core::pin::Pin;
+> +use core::ptr::NonNull;
+> +use core::result::Result;
+> +
+> +use crate::init::{InPlaceInit, Init, PinInit};
+> +use crate::types::ForeignOwnable;
+> +
+> +/// The kernel's [`Box`] type - a heap allocation for a single value of =
+type `T`.
+> +///
+> +/// This is the kernel's version of the Rust stdlib's `Box`. There are a=
+ couple of differences,
+> +/// for example no `noalias` attribute is emitted and partially moving o=
+ut of a `Box` is not
+> +/// supported.
+> +///
+> +/// `Box` works with any of the kernel's allocators, e.g. [`super::alloc=
+ator::Kmalloc`],
+> +/// [`super::allocator::Vmalloc`] or [`super::allocator::KVmalloc`]. The=
+re are aliases for `Box`
+> +/// with these allocators ([`KBox`], [`VBox`], [`KVBox`]).
+> +///
+> +/// When dropping a [`Box`], the value is also dropped and the heap memo=
+ry is automatically freed.
+> +///
+> +/// # Examples
+> +///
+> +/// ```
+> +/// let b =3D KBox::<u64>::new(24_u64, GFP_KERNEL)?;
+> +///
+> +/// assert_eq!(*b, 24_u64);
+> +///
+> +/// # Ok::<(), Error>(())
 
-This is used by Rust Binder to keep track of which processes have a
-reference to a given node. This involves an object for each process/node
-pair, that is referenced by both the process and the node. For some
-fields in this object, only the process's reference needs to access
-them (and it needs mutable access), so Binder uses a ListArc to give the
-process's reference exclusive access.
+This is a minor nit, but when hiding lines in examples you should
+avoid having the rendered docs have empty lines at the beginning/end.
+There are also several examples of this below with the
+kernel::bindings import.
 
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
----
- rust/kernel/list.rs           |  3 ++
- rust/kernel/list/arc_field.rs | 96 +++++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 99 insertions(+)
+> +/// ```
+> +///
+> +/// ```
+> +/// # use kernel::bindings;
+> +///
+> +/// const SIZE: usize =3D bindings::KMALLOC_MAX_SIZE as usize + 1;
+> +/// struct Huge([u8; SIZE]);
+> +///
+> +/// assert!(KBox::<Huge>::new_uninit(GFP_KERNEL | __GFP_NOWARN).is_err()=
+);
+> +/// ```
+> +///
+> +/// ```
+> +/// # use kernel::bindings;
+> +///
+> +/// const SIZE: usize =3D bindings::KMALLOC_MAX_SIZE as usize + 1;
+> +/// struct Huge([u8; SIZE]);
+> +///
+> +/// assert!(KVBox::<Huge>::new_uninit(GFP_KERNEL).is_ok());
+> +/// ```
+> +///
+> +/// # Invariants
+> +///
+> +/// The [`Box`]' pointer always properly aligned and either points to me=
+mory allocated with `A` or,
+> +/// for zero-sized types, is a dangling pointer.
+> +pub struct Box<T: ?Sized, A: Allocator>(NonNull<T>, PhantomData<A>);
 
-diff --git a/rust/kernel/list.rs b/rust/kernel/list.rs
-index 8946c6c92521..88fbf70bdf4a 100644
---- a/rust/kernel/list.rs
-+++ b/rust/kernel/list.rs
-@@ -19,6 +19,9 @@
- mod arc;
- pub use self::arc::{impl_list_arc_safe, AtomicTracker, ListArc, ListArcSafe, TryNewListArc};
- 
-+mod arc_field;
-+pub use self::arc_field::{define_list_arc_field_getter, ListArcField};
-+
- /// A linked list.
- ///
- /// All elements in this linked list will be [`ListArc`] references to the value. Since a value can
-diff --git a/rust/kernel/list/arc_field.rs b/rust/kernel/list/arc_field.rs
-new file mode 100644
-index 000000000000..2330f673427a
---- /dev/null
-+++ b/rust/kernel/list/arc_field.rs
-@@ -0,0 +1,96 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+// Copyright (C) 2024 Google LLC.
-+
-+//! A field that is exclusively owned by a [`ListArc`].
-+//!
-+//! This can be used to have reference counted struct where one of the reference counted pointers
-+//! has exclusive access to a field of the struct.
-+//!
-+//! [`ListArc`]: crate::list::ListArc
-+
-+use core::cell::UnsafeCell;
-+
-+/// A field owned by a specific [`ListArc`].
-+///
-+/// [`ListArc`]: crate::list::ListArc
-+pub struct ListArcField<T, const ID: u64 = 0> {
-+    value: UnsafeCell<T>,
-+}
-+
-+// SAFETY: If the inner type is thread-safe, then it's also okay for `ListArc` to be thread-safe.
-+unsafe impl<T: Send + Sync, const ID: u64> Send for ListArcField<T, ID> {}
-+// SAFETY: If the inner type is thread-safe, then it's also okay for `ListArc` to be thread-safe.
-+unsafe impl<T: Send + Sync, const ID: u64> Sync for ListArcField<T, ID> {}
-+
-+impl<T, const ID: u64> ListArcField<T, ID> {
-+    /// Creates a new `ListArcField`.
-+    pub fn new(value: T) -> Self {
-+        Self {
-+            value: UnsafeCell::new(value),
-+        }
-+    }
-+
-+    /// Access the value when we have exclusive access to the `ListArcField`.
-+    ///
-+    /// This allows access to the field using an `UniqueArc` instead of a `ListArc`.
-+    pub fn get_mut(&mut self) -> &mut T {
-+        self.value.get_mut()
-+    }
-+
-+    /// Unsafely assert that you have shared access to the `ListArc` for this field.
-+    ///
-+    /// # Safety
-+    ///
-+    /// The caller must have shared access to the `ListArc<ID>` containing the struct with this
-+    /// field for the duration of the returned reference.
-+    pub unsafe fn assert_ref(&self) -> &T {
-+        // SAFETY: The caller has shared access to the `ListArc`, so they also have shared access
-+        // to this field.
-+        unsafe { &*self.value.get() }
-+    }
-+
-+    /// Unsafely assert that you have mutable access to the `ListArc` for this field.
-+    ///
-+    /// # Safety
-+    ///
-+    /// The caller must have mutable access to the `ListArc<ID>` containing the struct with this
-+    /// field for the duration of the returned reference.
-+    #[allow(clippy::mut_from_ref)]
-+    pub unsafe fn assert_mut(&self) -> &mut T {
-+        // SAFETY: The caller has exclusive access to the `ListArc`, so they also have exclusive
-+        // access to this field.
-+        unsafe { &mut *self.value.get() }
-+    }
-+}
-+
-+/// Defines getters for a [`ListArcField`].
-+#[macro_export]
-+macro_rules! define_list_arc_field_getter {
-+    ($pub:vis fn $name:ident(&self $(<$id:tt>)?) -> &$typ:ty { $field:ident }
-+     $($rest:tt)*
-+    ) => {
-+        $pub fn $name<'a>(self: &'a $crate::list::ListArc<Self $(, $id)?>) -> &'a $typ {
-+            let field = &(&**self).$field;
-+            // SAFETY: We have a shared reference to the `ListArc`.
-+            unsafe { $crate::list::ListArcField::<$typ $(, $id)?>::assert_ref(field) }
-+        }
-+
-+        $crate::list::define_list_arc_field_getter!($($rest)*);
-+    };
-+
-+    ($pub:vis fn $name:ident(&mut self $(<$id:tt>)?) -> &mut $typ:ty { $field:ident }
-+     $($rest:tt)*
-+    ) => {
-+        $pub fn $name<'a>(self: &'a mut $crate::list::ListArc<Self $(, $id)?>) -> &'a mut $typ {
-+            let field = &(&**self).$field;
-+            // SAFETY: We have a mutable reference to the `ListArc`.
-+            unsafe { $crate::list::ListArcField::<$typ $(, $id)?>::assert_mut(field) }
-+        }
-+
-+        $crate::list::define_list_arc_field_getter!($($rest)*);
-+    };
-+
-+    () => {};
-+}
-+pub use define_list_arc_field_getter;
+I was about to say this needs a PhantomData<T> too, but I guess it
+isn't necessary anymore.
+https://doc.rust-lang.org/nomicon/phantom-data.html#generic-parameters-and-=
+drop-checking
 
--- 
-2.46.0.76.ge559c4bf1a-goog
+> +// SAFETY: `Box` is `Send` if `T` is `Send` because the data referenced =
+by `self.0` is unaliased.
 
+Instead of "unaliased" I would probably just say "because the Box owns a T"=
+.
+
+> +
+> +// SAFETY: `Box` is `Sync` if `T` is `Sync` because the data referenced =
+by `self.0` is unaliased.
+> +unsafe impl<T, A> Sync for Box<T, A>
+> +where
+> +    T: Send + ?Sized,
+> +    A: Allocator,
+
+This needs to say `T: Sync` instead of `T: Send`. That matches the std Box.
+
+> +
+> +impl<T, A> Box<T, A>
+> +where
+> +    T: ?Sized,
+> +    A: Allocator,
+> +{
+> +    /// Creates a new `Box<T, A>` from a raw pointer.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// `raw` must point to valid memory, previously be allocated with `=
+A`, and provide at least
+> +    /// the size of type `T`. For ZSTs `raw` must be a dangling pointer.
+
+Hmm. I don't love this wording. How about this?
+
+For non-ZSTs, `raw` must point at a live allocation allocated with `A`
+that is sufficiently aligned for and holds a valid `T`. The caller
+passes ownership of the allocation to the `Box`. For ZSTs, the pointer
+must be non-null and aligned.
+
+> +impl<T, A> From<Box<T, A>> for Pin<Box<T, A>>
+> +where
+> +    T: ?Sized,
+> +    A: Allocator,
+> +{
+> +    /// Converts a `Box<T, A>` into a `Pin<Box<T, A>>`. If `T` does not =
+implement [`Unpin`], then
+> +    /// `*b` will be pinned in memory and can't be moved.
+> +    ///
+> +    /// See [`Box::into_pin`] for more details.
+> +    fn from(b: Box<T, A>) -> Self {
+> +        Box::into_pin(b)
+
+I still think it makes more sense to match std and only provide From
+and not an into_pin, but it's not a blocker.
+
+Alice
