@@ -1,207 +1,89 @@
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+Received: from mail-pj1-f53.google.com (mail-pj1-f53.google.com [209.85.216.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3696917B515;
-	Tue, 13 Aug 2024 22:53:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1136B111A1;
+	Wed, 14 Aug 2024 02:57:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723589637; cv=none; b=njd/3EqWZTH48/0uhKz5CmXgrfQWok0kyjl3iEsiweiptXaRg8XhZg6euYUDrLheFWtg3MxnnMbBLxWgBXT6a8RnyEzqKVzJOsdEus6epxm6xeY1VC8mBM3DjPS5Ri2WVQzR9mhfKjMuyO61C6cHDDmNje2IlCm20dSrYQCTsDY=
+	t=1723604275; cv=none; b=i6HTsMZYpQas1ot5c0sDVDfJAyYzcMKGCIRMngMCn+uyZtoddSMYrml/KVKuA4GfJZFbmq3Vz9fVuJEgn2wvg0++yPIfTaEjty8oC+mXgZxz5o9rQB6rAXAtHB40ARWL1NQiTbWC4CxXoGSeoILlAx4Yg2J3+/jnN1SEhPx1kqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723589637; c=relaxed/simple;
-	bh=z7d0Y8EywRx5BxQc97L1X5CgbIZyAMSBpLk5g8Kvunk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=GAsF6YRb1LQBP6cEGHD3J4fAOQ9ZVWxKCQsJfSFXJheLZQp1qcMs92cFKlZD7BfnkjI+IR0kn4STgLXZKOLeHQ5iHfdzFbJOYwlzD2X04rjqXgsv0YHVVaJQcthb5y2gDsXFmSnK8gHaaTRc+74fT3+fV1JeO7oI/mtAE0yEp0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=PlsInnc/; arc=none smtp.client-ip=209.85.221.53
+	s=arc-20240116; t=1723604275; c=relaxed/simple;
+	bh=MzFat4AX19+kz5477CKCdM9Bs9P14aV91oVUIceILbY=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=iumk/Zpsu3rxdOnZKJRqsgpAjGrp7SUVKSMzTOxTrI0tp0YN/1H4zmOEzRMARjMgPcziYtX1gVP7yvXwycEUEwVeP52MK6CM2vlYa6062fzhQpfWWc/Q2fJ5jS8tTN4Vok+UErOV5HQdodLN5mzrX3RzMZ0cvzsXgkn4AdU6A7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TnGYuMlY; arc=none smtp.client-ip=209.85.216.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="PlsInnc/"
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-36dd8a35722so2268111f8f.1;
-        Tue, 13 Aug 2024 15:53:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TnGYuMlY"
+Received: by mail-pj1-f53.google.com with SMTP id 98e67ed59e1d1-2d213dff499so610280a91.1;
+        Tue, 13 Aug 2024 19:57:53 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1723589633; x=1724194433; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4cttOyHmXr3Ka8gJTh+VvrIxgAB9wJeCTQuXopG67ZQ=;
-        b=PlsInnc/Zwg1k6nntNKCGZIvX7rK8kYb+ljqpRCbUypAIeVIx4TWJ9vDK+Kuv5fx7U
-         ZrsfI6dnrgMz5P5qvXXXRvnx6iLDsud8QvfoXMmla3n+Ql6u2xjfWnDJTPuSw1zc6wBp
-         3D7YYvcieBXtKfVly+508hI3DMPe5pijpOJ5Aw2Yz/Ehm9We5N82OwiNqOdV5M1fwoJK
-         QEqFkjOPsqBxiuIhzEXYLBcHmJcp7LyvL5DYJ3Pw9hP3IXWgrvfwd/IsJn/wImcnSYOt
-         tiWfPStFunDs34yVqFwQfNciH1sOhuPweEKe2gf6/FaF58NOG0ZFuNIolpSz3RlAxj5a
-         E8GQ==
+        d=gmail.com; s=20230601; t=1723604273; x=1724209073; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=97nZLM1M4+Xy8zLwa/bcVunjf/6RvaetZ9cky/UBnXQ=;
+        b=TnGYuMlYopgfvZ7w8DcmFCRWcsDkbKmc6Oq3LyW+nrrbfdIyuIvlU36DGwz7mxZPXy
+         Q0k+Wtf7QhQKKSbH2fpGthJ9TiodDXOHh4BNt4rWG/vFVTDLsDlHD2PwuP1QCJoXklaS
+         ixjSxmR+8areX0EwpuQG8LIiCfi2gjpmoV6saZJJCH516hZsqr9kfqYdjMDaZJ9UIJIU
+         daEgsktZzyOEE8lMG/5EaM+B85Cz9y8/G6VGI7YwbniBMLpCK79sTbv5g4PtTN/fbO7k
+         +UfxyUqFFiNGKZCSB6L3IHGGbFRWo30tV8n+uvttl7eryPbuzRiX83fqzvF/fHHt/mwR
+         3Y/A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723589633; x=1724194433;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4cttOyHmXr3Ka8gJTh+VvrIxgAB9wJeCTQuXopG67ZQ=;
-        b=Zfo7aUqxdVUxirOW9v6QOWGziPHdRq47Bn8hVBisyWRGEYwvAhAe2uzn2gr5zcH4V2
-         iVxxMPJSJqjnP8MBHc4hJuGPzW39Qtl8HAZDhmT+ywvxEwEbibJXpkP3d0XFDMAAvXJr
-         8hwinkhTRlR4nYOuWJxpZkC6CrIUficrI9uWbRj05W3nqPu9OP6+n8dVDYM5kq8Jzf6s
-         ZHviTgwjMhvDr+NBcvpJdjfZLc1ScSolGC2nstcYwTN5x6I4du+i4bfOD8HtecBNvgEs
-         ek5MGxnq+A8+LzPhFMHJiR2yprj0l19E0Bjbr50ZgtCtqhCVgFpkykRilfZ99EQQB08R
-         igQA==
-X-Forwarded-Encrypted: i=1; AJvYcCWrgqXUJ0RvF1xeYrYw5NGiOnHh3bS3m52sWZnbxRSh18vNeVa/bX1Y7xptYl3vhU35k6wyAfoEqBZKghqmf2ysNVRoYJhpjGb/zwzXajk8LaUvE2fzQWsQTw7nwrqd5+lAGSi1cYFHhodtxIw=
-X-Gm-Message-State: AOJu0YxjKY7Gz0wu5oIMx0Sq0lP7Z9G1eHJGfvA0uTnRnAe+nqw91q+L
-	BiuhwTRSzWJpY2J86KhrBLwSdAUPJG+xOy2VFMsbEvjAxSkDVmyO8UdarzycBz+Um9YkOvHzGGC
-	kx+uoJfzctCeFUsiPjp4C5ubNNow=
-X-Google-Smtp-Source: AGHT+IEECoJkMB9xURSOa56jikc44tbEryXp3UYu/nA3WhLVRxfXsGIxnjB/vwMfYCeY+GbiIy7NPDu+RIwHan2qhMs=
-X-Received: by 2002:a5d:5223:0:b0:367:99d8:70 with SMTP id ffacd0b85a97d-3717782761emr565874f8f.61.1723589633180;
- Tue, 13 Aug 2024 15:53:53 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1723604273; x=1724209073;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=97nZLM1M4+Xy8zLwa/bcVunjf/6RvaetZ9cky/UBnXQ=;
+        b=IRjssUqS1vno/9dmNh/WJ9Bc6ms0Keorf4Nz7xdVqV9eizte5BTjX/bvOWSdE76bsc
+         WvMF/ONhddZWuNvmEwQfHXyD7JWlVZBXSqPzO+M84QWhjntWVsbuYrDN4YJ7iM6U4Nfo
+         kXfr/rdLeG9o2whDuYRsHBxGPVr8bb42Bwu1Xs4X1DwZkkTcbHnLCxDA81v4c95qQkkp
+         Glhm8xeuoQTLPfoM7uSO43XGW6ElcIFQF4Ap5sZahpJY224oihWI759G27hzVuzyPgLF
+         0uxQd4dazjuVTeoEX7nGWnsWIJSZrJctqYBHw7gqcOsTANFAkS6/20+LPfHstV8Ut1aA
+         XOCw==
+X-Forwarded-Encrypted: i=1; AJvYcCXsr0qMpa/oB3NETuSuRKTBaaJ9XkrGiEQAIEpu4PVqKYz94meX7i+f9Qe5RMqG3y2aTTTN41U3tY0H7Z6p7/HfZzc7dpNHycOeS+T4dcQ2u1rStQqY3iJJzrmWvKao00KZZAY54mE=
+X-Gm-Message-State: AOJu0YyJ82MH1Pb+kTG7OJ8yo2SGxai5lIL3MG0u+6anfe8X6PFWVMz3
+	5eEnIbdOd05tbvJGl3bw6tiIURVplLuG/cwHD0nv5V5tQMb695Jg
+X-Google-Smtp-Source: AGHT+IEtDbaSusmE32dR8Lmfk1fAMUNpmgxxLX6m8szPS4+uuX0s1CFkoMn2cZ9Uw7F2zJKxiC2hvQ==
+X-Received: by 2002:a17:902:d4c3:b0:1fc:5377:35ac with SMTP id d9443c01a7336-201d6520277mr10380355ad.10.1723604273184;
+        Tue, 13 Aug 2024 19:57:53 -0700 (PDT)
+Received: from localhost (p4468007-ipxg23001hodogaya.kanagawa.ocn.ne.jp. [153.204.200.7])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-201cd1a93edsm20101615ad.130.2024.08.13.19.57.51
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 13 Aug 2024 19:57:52 -0700 (PDT)
+Date: Wed, 14 Aug 2024 02:57:49 +0000 (UTC)
+Message-Id: <20240814.025749.1664228309880354540.fujita.tomonori@gmail.com>
+To: andrew@lunn.ch
+Cc: fujita.tomonori@gmail.com, netdev@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, tmgross@umich.edu,
+ miguel.ojeda.sandonis@gmail.com, benno.lossin@proton.me,
+ aliceryhl@google.com
+Subject: Re: [PATCH net-next v3 0/6] net: phy: add Applied Micro QT2025 PHY
+ driver
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <174bf437-5adf-4ebf-b909-036d6443dcf5@lunn.ch>
+References: <20240804233835.223460-1-fujita.tomonori@gmail.com>
+	<174bf437-5adf-4ebf-b909-036d6443dcf5@lunn.ch>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240812232910.2026387-1-mmaurer@google.com> <20240812232910.2026387-4-mmaurer@google.com>
-In-Reply-To: <20240812232910.2026387-4-mmaurer@google.com>
-From: Andrey Konovalov <andreyknvl@gmail.com>
-Date: Wed, 14 Aug 2024 00:53:42 +0200
-Message-ID: <CA+fCnZfWpCsW-mkKLc55+cRoBQJTeB1ecuown45zchRneNFLhg@mail.gmail.com>
-Subject: Re: [PATCH v2 3/3] kasan: rust: Add KASAN smoke test via UAF
-To: Matthew Maurer <mmaurer@google.com>
-Cc: dvyukov@google.com, ojeda@kernel.org, 
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>, Andrew Morton <akpm@linux-foundation.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, aliceryhl@google.com, 
-	samitolvanen@google.com, Alexander Potapenko <glider@google.com>, 
-	Vincenzo Frascino <vincenzo.frascino@arm.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	linux-kernel@vger.kernel.org, kasan-dev@googlegroups.com, linux-mm@kvack.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-On Tue, Aug 13, 2024 at 1:29=E2=80=AFAM Matthew Maurer <mmaurer@google.com>=
- wrote:
->
-> Adds a smoke test to ensure that KASAN in Rust is actually detecting a
-> Rust-native UAF. There is significant room to expand this test suite,
-> but this will at least ensure that flags are having the intended effect.
->
-> Signed-off-by: Matthew Maurer <mmaurer@google.com>
-> ---
->  mm/kasan/Makefile                         |  9 ++++++++-
->  mm/kasan/{kasan_test.c =3D> kasan_test_c.c} | 13 +++++++++++++
->  mm/kasan/kasan_test_rust.rs               | 17 +++++++++++++++++
->  3 files changed, 38 insertions(+), 1 deletion(-)
->  rename mm/kasan/{kasan_test.c =3D> kasan_test_c.c} (99%)
->  create mode 100644 mm/kasan/kasan_test_rust.rs
->
-> diff --git a/mm/kasan/Makefile b/mm/kasan/Makefile
-> index 7634dd2a6128..d718b0f72009 100644
-> --- a/mm/kasan/Makefile
-> +++ b/mm/kasan/Makefile
-> @@ -44,7 +44,8 @@ ifndef CONFIG_CC_HAS_KASAN_MEMINTRINSIC_PREFIX
->  CFLAGS_KASAN_TEST +=3D -fno-builtin
->  endif
->
-> -CFLAGS_kasan_test.o :=3D $(CFLAGS_KASAN_TEST)
-> +CFLAGS_kasan_test_c.o :=3D $(CFLAGS_KASAN_TEST)
+Hi,
 
-Let's keep the kasan_test.c name for the C tests to avoid changing the
-module name. Naming Rust tests as kasan_test_rust.rs seems to be
-sufficient.
+On Mon, 5 Aug 2024 03:10:50 +0200
+Andrew Lunn <andrew@lunn.ch> wrote:
 
-> +RUSTFLAGS_kasan_test_rust.o :=3D $(RUSTFLAGS_KASAN)
->  CFLAGS_kasan_test_module.o :=3D $(CFLAGS_KASAN_TEST)
->
->  obj-y :=3D common.o report.o
-> @@ -54,3 +55,9 @@ obj-$(CONFIG_KASAN_SW_TAGS) +=3D init.o report_sw_tags.=
-o shadow.o sw_tags.o tags.o
->
->  obj-$(CONFIG_KASAN_KUNIT_TEST) +=3D kasan_test.o
->  obj-$(CONFIG_KASAN_MODULE_TEST) +=3D kasan_test_module.o
-> +
-> +kasan_test-objs :=3D kasan_test_c.o
-> +
-> +ifdef CONFIG_RUST
-> +kasan_test-objs +=3D kasan_test_rust.o
-> +endif
-> diff --git a/mm/kasan/kasan_test.c b/mm/kasan/kasan_test_c.c
-> similarity index 99%
-> rename from mm/kasan/kasan_test.c
-> rename to mm/kasan/kasan_test_c.c
-> index 7b32be2a3cf0..28821c90840e 100644
-> --- a/mm/kasan/kasan_test.c
-> +++ b/mm/kasan/kasan_test_c.c
-> @@ -30,6 +30,7 @@
->  #include <asm/page.h>
->
->  #include "kasan.h"
-> +#include "kasan_test_rust.h"
+>> The MAC driver for Tehuti Networks TN40xx chips was already merged in
+>> 6.11-rc1. The MAC and this PHY drivers have been tested with Edimax
+>> EN-9320SFP+ 10G network adapter.
+> 
+> Sorry about being slow reviewing this. I will get to it by the middle
+> of the week.
 
-You forgot to include this file into the patch.
-
-But I don't think you even need to create a new include file: just put
-the new test function's declaration to kasan.h next to the other
-test-related functions (e.g. after the part with
-kasan_restore_multi_shot).
-
->
->  #define OOB_TAG_OFF (IS_ENABLED(CONFIG_KASAN_GENERIC) ? 0 : KASAN_GRANUL=
-E_SIZE)
->
-> @@ -1899,6 +1900,17 @@ static void match_all_mem_tag(struct kunit *test)
->         kfree(ptr);
->  }
->
-> +/*
-> + * Check that Rust performing a uaf using `unsafe` is detected.
-
-uaf -> use-after-free or UAF
-
-> + * This is an undirected smoke test to make sure that Rust is being sani=
-tized
-> + * appropriately.
-
-What is an undirected test? Let's drop this word, it is confusing.
-
-
-> + */
-> +static void rust_uaf(struct kunit *test)
-> +{
-> +       KUNIT_EXPECT_KASAN_FAIL(test, kasan_test_rust_uaf());
-> +}
-> +
-> +
->  static struct kunit_case kasan_kunit_test_cases[] =3D {
->         KUNIT_CASE(kmalloc_oob_right),
->         KUNIT_CASE(kmalloc_oob_left),
-> @@ -1971,6 +1983,7 @@ static struct kunit_case kasan_kunit_test_cases[] =
-=3D {
->         KUNIT_CASE(match_all_not_assigned),
->         KUNIT_CASE(match_all_ptr_tag),
->         KUNIT_CASE(match_all_mem_tag),
-> +       KUNIT_CASE(rust_uaf),
->         {}
->  };
->
-> diff --git a/mm/kasan/kasan_test_rust.rs b/mm/kasan/kasan_test_rust.rs
-> new file mode 100644
-> index 000000000000..6f4b43ea488c
-> --- /dev/null
-> +++ b/mm/kasan/kasan_test_rust.rs
-> @@ -0,0 +1,17 @@
-> +//! Helper crate for KASAN testing
-> +//! Provides behavior to check the sanitization of Rust code.
-> +use kernel::prelude::*;
-> +use core::ptr::addr_of_mut;
-> +
-> +/// Trivial UAF - allocate a big vector, grab a pointer partway through,
-> +/// drop the vector, and touch it.
-> +#[no_mangle]
-> +pub extern "C" fn kasan_test_rust_uaf() -> u8 {
-> +    let mut v: Vec<u8> =3D Vec::new();
-> +    for _ in 0..4096 {
-> +        v.push(0x42, GFP_KERNEL).unwrap();
-> +    }
-> +    let ptr: *mut u8 =3D addr_of_mut!(v[2048]);
-> +    drop(v);
-> +    unsafe { *ptr }
-> +}
-> --
-> 2.46.0.76.ge559c4bf1a-goog
->
+Would you happen to have a chance to review this?
