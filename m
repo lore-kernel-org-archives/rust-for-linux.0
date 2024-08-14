@@ -1,115 +1,191 @@
-Received: from mail-wm1-f50.google.com (mail-wm1-f50.google.com [209.85.128.50])
+Received: from mail-yb1-f202.google.com (mail-yb1-f202.google.com [209.85.219.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4116139D12
-	for <rust-for-linux@vger.kernel.org>; Wed, 14 Aug 2024 07:51:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00E2A13D529
+	for <rust-for-linux@vger.kernel.org>; Wed, 14 Aug 2024 08:05:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723621911; cv=none; b=XMA4cCNzZTXG7XAx3z8jyveRR6bvuqldezd+JV1Cy1X/MAGu5NK7ZScMK+JSr0Wnj6fhm+jbwQjUzadieDgtWdjfCn5cN5wJ2z8ltNQXY21AoJt9CcO+AFJpLFYrQ/YmDgrzus+waMBo93oES8uFd8hwLcvOrcpLrovHk9bd5/I=
+	t=1723622759; cv=none; b=Yt6DMENZMrwehKYPGZC8X/iQo1vbbEIPX9CRkGeOZ9Us1P4kmSUaNeTqgyTrm0XK7R61lBRER/vUAgD0roS3Kf7Gfwd5g0UTgBdElEpnMVEuvbArSx+u4i4tIXElR+LjWuGeQ0falWUJJoMlHO+cxvV7p2sHzltPgXHSrhkcawo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723621911; c=relaxed/simple;
-	bh=WDW6rQ/apBzDjXQSNnDaeNH9u9GWWkZywdFllnX/IOs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YQqN1lZXzKl69RnrCEgiwLrWZThH17reqqwRBtBdrq+in19u2NkJJ70eI1wtEYpjjGcp9T7ZnXhMgWSeoBAsUrVWQ4x7kL/DMu6jpdSbP42VJT1D9DZmwh3P2pXQv+gluUDySsSfh4Bh5+dUXdwvBvjdk50+yIAK3NPZaNXWgg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=N635iou6; arc=none smtp.client-ip=209.85.128.50
+	s=arc-20240116; t=1723622759; c=relaxed/simple;
+	bh=+eBaqh+2H5uYNm1+WlROU5qD6zqR1eTQrzPcjuqr8dc=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=ik9t+pSGlITHiq6kf2a0mnnDI15x0yUhXFiPKpsSp9z8F3u2H0VXR1QpkorsZl5nfgt55PY+r7zVCtLzBKNRAvYvi+Fm3+bqyL8K7KZteQlEb6FFEjDE/8bfHrOYYMcuf4G9v+iCRC5YRD4pcZCJRXKSCukC31OfEQJopQ7+39g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UzAY+gAD; arc=none smtp.client-ip=209.85.219.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="N635iou6"
-Received: by mail-wm1-f50.google.com with SMTP id 5b1f17b1804b1-429da8b5feaso11909525e9.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 14 Aug 2024 00:51:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UzAY+gAD"
+Received: by mail-yb1-f202.google.com with SMTP id 3f1490d57ef6-e0872023b7dso10147263276.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 14 Aug 2024 01:05:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1723621908; x=1724226708; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=PT+zi+/D9eO+wh878fg/U/GNgg7iPwjsl30b4TPDHZA=;
-        b=N635iou6uTv9OX7tD+53GwPt2gr6bcHjSFYt+5thA30IGCUAeJLIYcltUlUo2u71KE
-         idYyuZ7JhC/llSV9f0AYr5vQjXn6Ez552117dKI9qOMR2xzDaiklEuKJTFW9737GvhLe
-         hIaMZou51wPFGiRCe5rlSKbgCIj/sCsDPHbs0rL7kC9lFXEeRVU7iQcEXD+5c3YYjreP
-         JFl3ZP5EdfGToZwMz/jQ/Ab1jRIq+wkY5phiHTEhFt4hAxjrP/NutR+XJOCdtWK2wzga
-         oT+U3zQ8koOysoMcrc/ZgI4xsAyZaTjmdYcff4/szq31QJUyIzia/J8vS+NEXCstxJND
-         VVFQ==
+        d=google.com; s=20230601; t=1723622757; x=1724227557; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=itE9r8x085HeFvCy6NcU4TMOBuRl7UvyUI5Grg2pV1o=;
+        b=UzAY+gADUl7HxBg2I45bgt1VppJvGX/3XtzWJTfNcPcSrf0xpNMFOFsKuzK25CKgsj
+         6NbViPxq6gt9gelBcQaNAEmZQ/5oxDmG2VkGlGCTVJeDKe9+JBNcx8p6ihvFbX3GyL3u
+         xQA4t99FeSvBloCmLpgzus6S8BHPfellaDa9qt6gthDc/HayepWJsKBjnSmOqtqLExUk
+         ABXSS57Oi2mTu5hxWW47D8Zehkr4cFkQ8R34EaEp99lIg0tzmEQaX0lmhsSiZZIlfYzR
+         Xhh0UsPTI0kvpTEMkZQl4n6fpVNu886KCyckJyPzy+cVCsDPkgdaM99CO5tHk3X0tdKA
+         x9Cw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723621908; x=1724226708;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=PT+zi+/D9eO+wh878fg/U/GNgg7iPwjsl30b4TPDHZA=;
-        b=CAsDyoAhmrKTNIqrepB6ZBR9pFLSyw21MbzN2Q0lWMhH6BhAuC6lJCit83e5EZxVNn
-         EtjMGMNUcTPftuyZvIvVDrLP5cf+QFB8t7Jp4gt5KNlyZ2rwkMk/iqoYCZObeigHSvC4
-         BwvfPDp2t7vj73EPT1kwKmkZ5P1CVTgNzS1ImIuEqptEfXwCkicJp76+3cRbQCvQD7az
-         8kkuUykglZwVSihMlUW/0rYygnHmymwXv6rrGXamIN9S/MEA1XeSi68K2FCWHgugltyQ
-         ITOu1wIiWyOr65EwW9XpxlRl3R19ZLshh39B9DClH7tFGjCyeQSetwKmDnNU2KVsM6Fg
-         NEog==
-X-Forwarded-Encrypted: i=1; AJvYcCWfbX24R02BhUIl7+ycuHC4KXOcGlJMB/L0sRdLIu4wiXLY6IK0o06I7XZdX4ytdLVMuYzIvY5vaxYHcznypKcS36VOmEUntEIvari1lmg=
-X-Gm-Message-State: AOJu0YyeJ7xgS9qbqjuC5vOJz1QTvlRwmmVW0mHtXXPjeXKQr8SOnbYS
-	0nKREWjzAJn+aB/Kv+Mxz5TcEK6q82WuEyRamA+u52yScA9dMbV9UO/nI5i2JAl2P7gf32yqoYt
-	eD1lbL/vnFY2kbIuqtrkLvpstm49OcKqydHAN
-X-Google-Smtp-Source: AGHT+IHNC/TFNKG7R4ZRJeXKfO788rQbS5/gH98Hg+wPjB1fBpqR9ujBShpY4AhPDFKtH2Hl4xoiX6/Le5LMbGM4xCI=
-X-Received: by 2002:adf:e703:0:b0:367:4dce:1ff4 with SMTP id
- ffacd0b85a97d-3717775ae03mr1628464f8f.14.1723621907725; Wed, 14 Aug 2024
- 00:51:47 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1723622757; x=1724227557;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=itE9r8x085HeFvCy6NcU4TMOBuRl7UvyUI5Grg2pV1o=;
+        b=OBlQn9mfJBn4KL/rLimbg0Uj9TLk9eoRwUxkrvnLQedqVuIza37c01fRo6axwgnBtr
+         VQi9LJUoSxkCx3Ie720uYts4RpAwjOrtGeDhWTwJqQGLU0/HEEw8Oty89Geymz5yo0bx
+         jHcJHLPfzf6XRN0ZwOfEafyV1BzMFbcTsAcik6+n/Y/xiIhsGsr5D8wm3dZea1bMiVqU
+         rENaLz1G5vjOL1552EB/ePTsw/LOq94G9jCUsCWTICiEhElRbFKPubu4YGpIe8/A3vFE
+         MdckkwGvuJAqa+94Y83h2aN9rQ+1xevxBoLcu3OUGY9LED/rP22beKFC7z9GNTmmp5dc
+         yI+g==
+X-Forwarded-Encrypted: i=1; AJvYcCVRcldkZkbbWpHfLko4V8n1Pn6UwfBTHPqIfypCAyNjPQWVNvL0hSqc6uHFSpYvKRtTAistAu7mYAtK5wUilUpey/uPJ1bbBMU36wWReUw=
+X-Gm-Message-State: AOJu0YzHnbwrC/Z283oipVEIWiXjq8hpg+cbpQgafRRkM2qJ+z+bKglc
+	fj4opRhB60lFbCOt4NHUIAhq5pXoGiFoqer+OFLwW9nCeeaIYIRJu8N4GbklOgjDLkKDeWs9NUD
+	XaSL1ve5HvjwDYw==
+X-Google-Smtp-Source: AGHT+IHpMYFxTBuHXu1qN09szTEr2M7FiSNTeEYxLMTDlbu+ZlpNeGClNDeZ+xxZvwL2SN19mEI2gB/bjN54Ko0=
+X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:35bd])
+ (user=aliceryhl job=sendgmr) by 2002:a5b:389:0:b0:e11:5c41:54e2 with SMTP id
+ 3f1490d57ef6-e115c4155b1mr2792276.0.1723622756875; Wed, 14 Aug 2024 01:05:56
+ -0700 (PDT)
+Date: Wed, 14 Aug 2024 08:05:19 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240812182355.11641-1-dakr@kernel.org> <20240812182355.11641-5-dakr@kernel.org>
-In-Reply-To: <20240812182355.11641-5-dakr@kernel.org>
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAD9lvGYC/2XNTQ7CIBCG4asY1mJggLa48h7GBT/TStRiWtNom
+ t7dURdN7Yp8hOdlZD12CXu234yswyH1Kbc0zHbDwtm1DfIUaTMQoAWA5NfUXjDS0T84GFlYZ4X
+ TERmJe4d1en5rxxPtMz3K3esbH+Tn9teh0qIzSC64l8FY70qHyh+anJsr7kK+sU9ogBkbUSwxE C69laLSIlhZr7CacQlqiRXhykZvIZTR13qF9Yyr/581YVBYByMFBgsLPE3TG6RBl3JeAQAA
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4254; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=+eBaqh+2H5uYNm1+WlROU5qD6zqR1eTQrzPcjuqr8dc=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBmvGVGG0ATvdsfGHhQPvBlD36YHhNeOwZ3G4fFw
+ Ml/YTrHIVyJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZrxlRgAKCRAEWL7uWMY5
+ RpVFEACwaS6W/oqMFD2u/PIcvbmnM/arvfH3Q9dUeSW54Hm6xUcr5HlOm5vlbooUR50UuyNbyne
+ xgUaJfJK6EIDLboLtS9zQ8mUqK9SdOmKDJdxrYmOLpM4WXvcEWLEqUJhXHFKoklFiu+jK8haTtU
+ VDMjHwtIIacj+W8yJEa/Mdw+F/0khUTz9q3MO2VEsXIVyxV+SditRp30z6/Ai1ITLsKQ5Q1KQm4
+ oVyKerK4YoF2FoXZPMWqufVcZpUr/OS2VdtcajX60H9iRT3TaWShW389jV1MtlNojtNBiqFMOoL
+ iIbfSIAgPySz0o/EBM9vwcIMnhgW4ug7DQ8mNxfeN3kE7coEWNo/miLBWK1Q5IH+GYj23DTNQ0s
+ BWIgHapx70tpdQc9z01iVcSevJlnC02gN8BAHANU7cvRWA06LgTPN5/Nxowdz+l1Z+/fGG5uRTJ
+ ZBbogW2xtlf07cCmWby+/jrtFT54bWESr82MIcxWv68xDNORbidt/N7O8vbjYuvdV9FP1lrl5lT
+ Evhjby53tiLfodS4/v//DXMlGncb9Bz7oFt1ypWnPyMfX15LMY9bvsZODJmmvuayU/9h7aiL+nX
+ PJuhTw33unZOX6CLMYHW0LtBZFAquIYoCn6BBhfH9afdMyJ71+x5w2QwtAwURpQ12ZDg5GGOxBB g8JnoMD4REHPFyA==
+X-Mailer: b4 0.13.0
+Message-ID: <20240814-linked-list-v5-0-f5f5e8075da0@google.com>
+Subject: [PATCH v5 00/10] Add Rust linked list for reference counted values
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 14 Aug 2024 09:51:34 +0200
-Message-ID: <CAH5fLgit0hSFWi_Bv4DFK6vvhoLfSz=BMaPDBU0Z0oyZta9U9w@mail.gmail.com>
-Subject: Re: [PATCH v5 04/26] rust: alloc: implement `Allocator` for `Kmalloc`
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, 
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
-	benno.lossin@proton.me, a.hindborg@samsung.com, akpm@linux-foundation.org, 
-	daniel.almeida@collabora.com, faith.ekstrand@collabora.com, 
-	boris.brezillon@collabora.com, lina@asahilina.net, mcanal@igalia.com, 
-	zhiw@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com, 
-	ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+To: Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, Marco Elver <elver@google.com>, Coly Li <colyli@suse.de>, 
+	Paolo Abeni <pabeni@redhat.com>, Pierre Gondois <pierre.gondois@arm.com>, 
+	Ingo Molnar <mingo@kernel.org>, Jakub Kicinski <kuba@kernel.org>, Wei Yang <richard.weiyang@gmail.com>, 
+	Matthew Wilcox <willy@infradead.org>, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>, 
+	Kees Cook <kees@kernel.org>
+Content-Type: text/plain; charset="utf-8"
 
-On Mon, Aug 12, 2024 at 8:24=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> =
-wrote:
->
-> Implement `Allocator` for `Kmalloc`, the kernel's default allocator,
-> typically used for objects smaller than page size.
->
-> All memory allocations made with `Kmalloc` end up in `krealloc()`.
->
-> It serves as allocator for the subsequently introduced types `KBox` and
-> `KVec`.
->
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-> ---
->  rust/helpers.c                 |  3 +-
->  rust/kernel/alloc.rs           |  2 +-
->  rust/kernel/alloc/allocator.rs | 63 +++++++++++++++++++++++++++++++++-
->  3 files changed, 64 insertions(+), 4 deletions(-)
->
-> diff --git a/rust/helpers.c b/rust/helpers.c
-> index 92d3c03ae1bd..9f7275493365 100644
-> --- a/rust/helpers.c
-> +++ b/rust/helpers.c
-> @@ -193,8 +193,7 @@ void rust_helper_init_work_with_key(struct work_struc=
-t *work, work_func_t func,
->  }
->  EXPORT_SYMBOL_GPL(rust_helper_init_work_with_key);
->
-> -void * __must_check __realloc_size(2)
-> -rust_helper_krealloc(const void *objp, size_t new_size, gfp_t flags)
-> +void *rust_helper_krealloc(const void *objp, size_t new_size, gfp_t flag=
-s)
->  {
->         return krealloc(objp, new_size, flags);
->  }
+This patchset contains a Rust implementation of a doubly-linked list for
+use with reference counted values. Linked lists are famously hard to
+implement in Rust [1] given the cyclic nature of the pointers, and
+indeed, this implementation uses unsafe to get around that.
 
-Why are the various annotations on this helper being removed? This
-deserves an explanation in the commit message.
+Linked lists aren't great for cache locality reasons, but it can be hard
+to avoid them for cases where you need data structures that don't
+allocate. Most linked lists in Binder are for collections where order
+matters (usually stacks or queues). There are also a few lists that are
+just collections, but linked lists are only used for this purpose in
+cases where the linked list is cold and performance isn't that
+important. The linked list is chosen over Vec in this case so that I
+don't have to worry about reducing the capacity of the vector. (Our
+red/black trees are a much better place to look for improving cache
+locality of collections in Rust Binder, and the upcoming xarray bindings
+would help with that.)
 
-Alice
+Please see the Rust Binder RFC [2] for usage examples.
+
+The linked lists are used all over Rust Binder, but some pointers for
+where to look for examples:
+
+[PATCH RFC 04/20] rust_binder: add work lists
+Implements the work lists that store heterogeneous items. Uses the
+various macros a bunch.
+
+[PATCH RFC 10/20] rust_binder: add death notifications
+Uses the cursor. Also has objects with multiple prev/next pointer pairs.
+
+[PATCH RFC 15/20] rust_binder: add process freezing
+Uses the iterator with for loops.
+
+Link: https://rust-unofficial.github.io/too-many-lists/ [1]
+Link: https://lore.kernel.org/rust-for-linux/20231101-rust-binder-v1-0-08ba9197f637@google.com/ [2]
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+Changes in v5:
+- Reword: "must not change implementation" -> "must not change behavior".
+- Fix mixup between zeroed and uninit.
+- Now all patches have a Reviewed-by from Benno.
+- Link to v4: https://lore.kernel.org/r/20240806-linked-list-v4-0-23efc510ec92@google.com
+
+Changes in v4:
+- Support several impl blocks inside `impl_list_item!`.
+- Link to v3: https://lore.kernel.org/r/20240723-linked-list-v3-0-89db92c7dbf4@google.com
+
+Changes in v3:
+- Add `assert_pinned!` macro and use it to ensure that the field is
+  structurally pinned when using the tracked_by strategy.
+- Improve ListArcSafe docs.
+- Use From trait for UniqueArc->ListArc conversions.
+- Implement AsRef<Arc> for ListArc.
+- Improve safety documentation related to ListItem.
+- Improve invariants of List.
+- Other minor docs improvements.
+- Add Reviewed-by tags
+- Link to v2: https://lore.kernel.org/r/20240506-linked-list-v2-0-7b910840c91f@google.com
+
+Changes in v2:
+- Rebase on top of the new allocation APIs.
+- Implement Default for List.
+- `on_create_list_arc_from_unique` now takes `Pin<&mut Self>`
+- from_unique now calls from_pin_unique instead of the other way around
+- Add #[inline] markers.
+- Use build_assert in pair_from_unique.
+- Simplify transmute_from_arc
+- Make macros consistently use full paths.
+- Many improvements to safety comments.
+- Link to v1: https://lore.kernel.org/r/20240402-linked-list-v1-0-b1c59ba7ae3b@google.com
+
+---
+Alice Ryhl (9):
+      rust: list: add ListArc
+      rust: list: add tracking for ListArc
+      rust: list: add struct with prev/next pointers
+      rust: list: add macro for implementing ListItem
+      rust: list: add List
+      rust: list: add iterators
+      rust: list: add cursor
+      rust: list: support heterogeneous lists
+      rust: list: add ListArcField
+
+Benno Lossin (1):
+      rust: init: add `assert_pinned` macro
+
+ rust/kernel/init.rs                    |  67 ++++
+ rust/kernel/init/__internal.rs         |  29 ++
+ rust/kernel/lib.rs                     |   1 +
+ rust/kernel/list.rs                    | 686 +++++++++++++++++++++++++++++++++
+ rust/kernel/list/arc.rs                | 521 +++++++++++++++++++++++++
+ rust/kernel/list/arc_field.rs          |  96 +++++
+ rust/kernel/list/impl_list_item_mod.rs | 274 +++++++++++++
+ 7 files changed, 1674 insertions(+)
+---
+base-commit: 7c626ce4bae1ac14f60076d00eafe71af30450ba
+change-id: 20240221-linked-list-25169a90a4de
+
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
+
