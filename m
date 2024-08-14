@@ -1,213 +1,137 @@
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B6EC1C6897
-	for <rust-for-linux@vger.kernel.org>; Wed, 14 Aug 2024 20:44:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CE811BC069;
+	Wed, 14 Aug 2024 20:53:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723668264; cv=none; b=GW2J0covyp1prQrR16BIsN0Z/aRr9MTKu5lmTlmSRDbXhB+L+6DccL3uFlYidT7YvinLnx36incIcPyAw9MeGmod1inHhufOo4k4QjupRiY2vS3WYsawuX+U4waEEXe1Th7VOwhBvuOELgFi4oB1IFpU70Iot4GATLnXFVKslDg=
+	t=1723668829; cv=none; b=SiZpMGzLxT1DmDrfiuAEQHf4y9N1dn3+A7jmxSBm9CFQh3MAlMwrbJ5aR3LMvSR4/82h3m5DNuqKorv+Trcl8x6z6I7LiVwhx9lh1PcoZvDSbmsq4GHnQfiIQoyqdjGE6v2PRlkRh3bMm8D/QSuUgACr7kWW5B2mjJQkf7BJp5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723668264; c=relaxed/simple;
-	bh=S1RYIxjoIOM2v4Xggy5IaXihSoD6S1AByvM8TOXP3xQ=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oXlD5CGdw968hL5iUPZWfoM4o/JEkkU0qcvK0ejmjkj1Y/P7ysq34o8ATnKOlZBS/BTeBtjhPktGv/eTtSfSyIBgRlNZzpXT86UbeU1qpKtlZU7G+YrIOZerw+RjIRsz7xjuVXcYzykx8P3Z10ZYiKo60qAp/BxF1EbY7W593FU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=elclyek2; arc=none smtp.client-ip=185.70.43.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1723668829; c=relaxed/simple;
+	bh=b8U7/CVYHFqEb0myiU2fWm7aWYNYOtrimMUhZTNfUoA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=UMyXV1rKJh4H1w6Fc08Tk62jvaKQDJImU13bEiohkxc4U4agz6QcZHzPTS7Qvl7KwYTksFGgZMNMn18A6ERpTXnONjCa2nT/mlZNO//3L/aAMw41oLbWrE8favvX18VtZIeqIrWQStJgPVrOAh5mQe1it/quDh1UiRIAPXd11OI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J0zFhJJg; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="elclyek2"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=7tbfsyg77bd6tadjkqwwk7vlva.protonmail; t=1723668258; x=1723927458;
-	bh=IvtMA3+Z7FkvrgaQ6LlkOMVsAEPt5hSPxNVCWZ5bIX8=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=elclyek2ih//0EVuMNi9Y+3HGoeHYkV5b+UNCy1OImXVRpdcZ10LAvP8B9D+FSqjC
-	 10w31msqmbHfaSczaZIgfEffFNieulmreZmCfaGK14SaAW3+0fOSGBKq7Jaa9KMMcD
-	 Zibz9EdYSRXK4C/s2OJvdqm9XfkDQ3RRVYmMVBOGnsnsz0cDYCvQI17hn/KdN/FkE3
-	 1Isj+gP+iW3WR4ETUsel3BYBsWddpSyCXL8GxptBdAb45TVTILd5Euvaw7CmxS+9YN
-	 f1Azsig74cXxsNB5bJxTtFqXDGhbnHyVhU33DOX2ACNFnfuDuD3Rqn8gsGLXCVi83W
-	 6PiLnVe4LU2qg==
-Date: Wed, 14 Aug 2024 20:44:15 +0000
-To: Boqun Feng <boqun.feng@gmail.com>, Lyude Paul <lyude@redhat.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, Danilo Krummrich <dakr@redhat.com>, airlied@redhat.com, Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, FUJITA Tomonori <fujita.tomonori@gmail.com>, Aakash Sen Sharma <aakashsensharma@gmail.com>, Valentin Obst <kernel@valentinobst.de>, Thomas Gleixner <tglx@linutronix.de>
-Subject: Re: [PATCH v3 1/3] rust: Introduce irq module
-Message-ID: <9855f198-858d-4e3f-9259-cd9111900c0c@proton.me>
-In-Reply-To: <Zr0QyN8sQ6W2hPoJ@boqun-archlinux>
-References: <20240802001452.464985-1-lyude@redhat.com> <20240802001452.464985-2-lyude@redhat.com> <Zrzq8su-LhUIoavm@boqun-archlinux> <1bcae676ec4751ae137782c4ced8aad505ec1bb9.camel@redhat.com> <Zr0QyN8sQ6W2hPoJ@boqun-archlinux>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: f842340faae028f04799d26eefc8f2384d4c51ee
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J0zFhJJg"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E95BC116B1;
+	Wed, 14 Aug 2024 20:53:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1723668829;
+	bh=b8U7/CVYHFqEb0myiU2fWm7aWYNYOtrimMUhZTNfUoA=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=J0zFhJJgVxjIWb6mDLr2ZcnWHqCV8whhcOoSvCgqco4CtV44gEGmdN3z3KyFoWurh
+	 yhdV4Yd0OdXXlSiEfo0ojfadxkPP1Qqhvh5t4u7TnxAarU3gKqWBbJtkwi2Q/1cn59
+	 vKthCyXWivsTZzW+IbPaNb/YFsgfIegWFa7rydgcGqsSbzcJpUWMmBXIrs/QWuWOyX
+	 ILU59WhDNJniZLQetykQBgXZ71+ZFoVRLyXE9P8MYHOdNzH/+OQpA4Uk7xgb0VEoOf
+	 /BTUloyoX1aZN8VCjPWZ1K3gFyLq8tAt3H8BCaE7oFMw8C0gRzXzrS51439tXvWIvC
+	 B4NDgBawX3kpQ==
+Message-ID: <e428c15c-f11b-4bbd-9cef-1ad252b206bb@kernel.org>
+Date: Wed, 14 Aug 2024 22:53:41 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 00/26] Generic `Allocator` support for Rust
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
+ gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+ a.hindborg@samsung.com, aliceryhl@google.com, akpm@linux-foundation.org,
+ daniel.almeida@collabora.com, faith.ekstrand@collabora.com,
+ boris.brezillon@collabora.com, lina@asahilina.net, mcanal@igalia.com,
+ zhiw@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com,
+ ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, linux-mm@kvack.org
+References: <20240812182355.11641-1-dakr@kernel.org>
+ <Zr0GP0OXliPRqx4C@boqun-archlinux>
+From: Danilo Krummrich <dakr@kernel.org>
+Content-Language: en-US
+In-Reply-To: <Zr0GP0OXliPRqx4C@boqun-archlinux>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On 14.08.24 22:17, Boqun Feng wrote:
-> On Wed, Aug 14, 2024 at 03:38:47PM -0400, Lyude Paul wrote:
->> On Wed, 2024-08-14 at 10:35 -0700, Boqun Feng wrote:
->>> On Thu, Aug 01, 2024 at 08:10:00PM -0400, Lyude Paul wrote:
->>> [...]
->>>> +/// Run the closure `cb` with interrupts disabled on the local CPU.
->>>> +///
->>>> +/// This creates an [`IrqDisabled`] token, which can be passed to fun=
-ctions that must be run
->>>> +/// without interrupts.
->>>> +///
->>>> +/// # Examples
->>>> +///
->>>> +/// Using [`with_irqs_disabled`] to call a function that can only be =
-called with interrupts
->>>> +/// disabled:
->>>> +///
->>>> +/// ```
->>>> +/// use kernel::irq::{IrqDisabled, with_irqs_disabled};
->>>> +///
->>>> +/// // Requiring interrupts be disabled to call a function
->>>> +/// fn dont_interrupt_me(_irq: IrqDisabled<'_>) {
->>>> +///     /* When this token is available, IRQs are known to be disable=
-d. Actions that rely on this
->>>> +///      * can be safely performed
->>>> +///      */
->>>> +/// }
->>>> +///
->>>> +/// // Disabling interrupts. They'll be re-enabled once this closure =
-completes.
->>>> +/// with_irqs_disabled(|irq| dont_interrupt_me(irq));
->>>> +/// ```
->>>> +#[inline]
->>>> +pub fn with_irqs_disabled<T>(cb: impl for<'a> FnOnce(IrqDisabled<'a>)=
- -> T) -> T {
->>>
->>> Given the current signature, can `cb` return with interrupts enabled (i=
-f
->>> it re-enables interrupt itself)? For example:
->>>
->>> =09with_irqs_disabled(|irq_disabled| {
->>>
->>> =09    // maybe a unsafe function.
->>> =09    reenable_irq(irq_disabled);
+On 8/14/24 9:32 PM, Boqun Feng wrote:
+> Hi Danilo,
+> 
+> On Mon, Aug 12, 2024 at 08:22:46PM +0200, Danilo Krummrich wrote:
+>> Hi,
 >>
->> JFYI: this wouldn't be unsafe, it would be broken code in all circumstan=
-ces
->> Simply put: `with_irqs_disabled()` does not provide the guarantee that
->> interrupts were enabled previously, only that they're disabled now. And =
-it is
->> never a sound operation in C or Rust to ever enable interrupts without a
->> matching disable in the same scope because that immediately risks a dead=
-lock
->> or other undefined behavior. There's no usecase for this, I'd consider a=
-ny
->> kind of function that returns with a different interrupt state then it h=
-ad
->> upon being called to simply be broken.
+>> This patch series adds generic kernel allocator support for Rust, which so far
+>> is limited to `kmalloc` allocations.
 >>
->> Also - like we previously mentioned, `IrqDisabled` is just a marker type=
-. It
->> doesn't enable or disable anything itself, the most it does is run a deb=
-ug
->=20
-> Yes, I know, but my question is more that should `cb` return a
-> `IrqDisabled` to prove the interrupt is still in the disabled state?
-> I.e. no matter what `cb` does, the interrupt remains disabled.
-
-What does this help with? I don't think this will add value (at least
-with how `IrqDisabled` is designed at the moment).
-
->> assertion to ensure interrupts are disabled upon creation. So dropping i=
-t
->> doesn't change interrupt state. I think this actually does make sense
->> semantically: even if IrqDisabled wasn't a no-op in a world where we cou=
-ld
->=20
-> Just to be clear, I'm not suggesting making IrqDisable not a no-op.
->=20
->> somehow implement that without running into the drop order issue - there=
- still
->> would not be a guarantee that dropping `IrqDisabled` would enable interr=
-upts
->> simply because it could be a nested disable. And there's no way we could=
- make
->> interrupt enabled sections explicit without either klint, or carrying ar=
-ound a
->> `IrqEnabled` (which we would have to do for every function that could sl=
-eep,
->> so I don't think that's ideal). So without a token like this all code ca=
-n do
->> is assume it doesn't know the interrupt state, and rely on solutions lik=
-e
->> lockdep to complain if code within an interrupt context tries to perform=
- an
->> operation that would be unsound there like sleeping.
+>> In order to abstain from (re-)adding unstable Rust features to the kernel, this
+>> patch series does not extend the `Allocator` trait from Rust's `alloc` crate,
+>> nor does it extend the `BoxExt` and `VecExt` extensions.
 >>
->> This being said - I would be totally alright with us making it so that w=
-e
->> assert that interrupts are still disabled upon dropping the token. But
-
-We can't implement `Drop`, since it already implements `Copy`. But we
-could add a debug assert before we call `local_irq_restore`. I think
-it's a good idea to add a debug assert.
-
->> interrupts have to disabled throughout the entire closure regardless of =
-the
->> presence of IrqDisabled. The same rules apply to C code using
->> local_irq_save()/local_irq_restore() - between those two function calls,=
- it is
->> always a bug to re-enable interrupts even if they get turned back off. U=
-nsafe
->=20
-> Do you mean the particular local_irq_save() and local_irq_restore(), or
-> do you mean any interrupt disable critical sections? Note that we have
-> wait_event_interruptible_locked_irq() which does exactly re-enabling
-> interrupt in the middle to sleep and I'm pretty sure we have other cases
-> where interrupts are re-enabled. So I'm not sure when you say "the same
-> rules apply to C code ..."
->=20
->> functions are no exceptions, nor are C bindings, and should simply be
->> considered broken (not unsafe) if they violate this. I suppose that's
->> something else we could document if people think it's necessary.
+>> Instead, this series introduces a kernel specific `Allocator` trait, which is
+>> implemented by the `Kmalloc`, `Vmalloc` and `KVmalloc` allocators, also
+>> implemented in the context of this series.
+>>
+>> As a consequence we need our own kernel `Box<T, A>` and `Vec<T, A>` types.
+>> Additionally, this series adds the following type aliases:
+>>
+>> ```
+>> pub type KBox<T> = Box<T, Kmalloc>;
+>> pub type VBox<T> = Box<T, Vmalloc>;
+>> pub type KVBox<T> = Box<T, KVmalloc>;
 >>
 >>
->>> =09})
->>>
->>> note that `cb` is a `-> T` function, other than `-> (IrqDisabled<'a>,
->>> T)`, so semantically, it doesn't require IRQ still disabled after
->>> return.
+>> pub type KVec<T> = Vec<T, Kmalloc>;
+>> pub type VVec<T> = Vec<T, Vmalloc>;
+>> pub type KVVec<T> = Vec<T, KVmalloc>;
+>> ```
 >>
->> This was the reason I originally had us pass IrqDisabled as a reference =
-and
->> not a value - specifically since it seemed to make more sense to treat
->> IrqDisabled as an object which exists throughout the lifetime of the clo=
-sure
->> regardless of whether we drop our reference to it or not - since it's a =
-no-op.
+>> With that, we can start using the kernel `Box` and `Vec` types throughout the
+>> tree and remove the now obolete extensions `BoxExt` and `VecExt`.
 >>
->=20
-> I haven't found a problem with `&IrqDisabled` as the closure parameter,
-> but I may miss something.
+>> For a final cleanup, this series removes the last minor dependencies to Rust's
+>> `alloc` crate and removes it from the entire kernel build.
+>>
+>> The series ensures not to break the `rusttest` make target by implementing the
+>> `allocator_test` module providing a stub implementation for all kernel
+>> `Allocator`s.
+>>
+>> This patch series passes all KUnit tests, including the ones added by this
+>> series. Additionally, the tests were run with `kmemleak` and `KASAN` enabled,
+>> without any issues.
+>>
+>> This series is based on [1], which hit -mm/mm-unstable, and is also available
+>> in [2].
+>>
+>> [1] https://git.kernel.org/pub/scm/linux/kernel/git/dakr/linux.git/log/?h=mm/krealloc
+>> [2] https://git.kernel.org/pub/scm/linux/kernel/git/dakr/linux.git/log/?h=rust/mm
+>>
+>> Changes in v5:
+>>   - (safety) comment / documentation fixes suggested by Alice, Benno and Gary
+>>   - remove `Unique<T>` and implement `Send` and `Sync` for `Box` and `Vec`
+>>   - use `KMALLOC_MAX_SIZE` for `KVmalloc` test and add a `Kmalloc` test that
+>>     expects to fail for `KMALLOC_MAX_SIZE`
+>>   - create use constants `KREALLOC`, `VREALLOC` and `KVREALLOC` for
+>>     `ReallocFuncs`
+>>   - drop `Box::drop_contents` for now, will add it again, once I actually rebase
+>>     on the original patch that introduces it
+> 
+> I'm trying to put your series on rust-dev, but I hit a few conflicts due
+> to the conflict with `Box::drop_contents`, which has been in rust-dev
+> for a while. And the conflict is not that trivial for me to resolve.
+> So just a head-up, that's a requirement for me to put it on rust-dev for
+> more tests from my end ;-)
 
-We could also use `&'a IrqDisabled` instead of `IrqDisabled<'a>` (note
-the first one doesn't have a lifetime). But there is no behavioral
-difference between the two. Originally the intended API was to use `&'a
-IrqDisabled<'a>` as the closure parameter and `IrqDisabled<'a>` in
-functions that require irqs being disabled. As long as we decide on a
-consistent type, I don't mind either (since then we can avoid
-reborrowing).
+I'll rebase later on and send you a branch.
 
-> So the key ask from me is: it looks like we are on the same page that
-> when `cb` returns, the IRQ should be in the same disabled state as when
-> it gets called. So how do we express this "requirement" then? Type
-> sytem, comments, safety comments?
-
-I don't think that expressing this in the type system makes sense, since
-the type that we select (`&'a IrqDisabled` or `IrqDisabled<'a>`) will be
-`Copy`. And thus you can just produce as many of those as you want.
-
----
-Cheers,
-Benno
-
+> 
+> Regards,
+> Boqun
+> 
+>>   - improve usage of `size_of_val` in `Box`
+>>   - move `InPlaceInit` and `ForeignOwnable` impls into kbox.rs
+>>   - fix missing `Box` conversions in rnull.rs
+>>   - reworked `Cmalloc` to keep track of the size of memory allocations itself
+>>   - remove `GlobalAlloc` together with the `alloc` crate to avoid a linker error
+>>   - remove `alloc` from scripts/generate_rust_analyzer.py
+>>
+> [...]
+> 
