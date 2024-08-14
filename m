@@ -1,99 +1,86 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17A7D1BBBCB;
-	Wed, 14 Aug 2024 16:37:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B62AC1B1409;
+	Wed, 14 Aug 2024 16:57:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723653454; cv=none; b=c9Bi6Xzdugkm58eQr/4ynrdjRle4tZwe7AT0BG4eGMpcDfBwJ+6M7lMw2hPqolfhsOwdnjEWcTAxfw1BM+Svrrd5Xf6y96RYwnqDJ16AZGqe+OzKHegxKi4fM52O6dYAr3QpkkuvnZTJVLq5RcC/odnqkdvrf+TQiz/+4raPays=
+	t=1723654626; cv=none; b=d8QsBlCcl7X3ER9kw81v1Xpvk+1TFPttYYsmXp1cRnD1kW+WmRdcVOLE0Dw8hyxI5n0qSNoc7pdSARFj1w7tEXgM4pQFkr8Kn/QE/Wv07Yar3IVnGX7XG9OmdijPk+OH9eyrY26EkIasT7q4HfL61PvPLJsMUkDCv+whB38gPH0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723653454; c=relaxed/simple;
-	bh=v5M9ps6F/NmI6iXi/qytEoSwAtl0c5kzHVIFqFfviyM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=fPTTZ/dd1+fHkJaTC2kT0wd82QRJ2JzHeecm9TaGqhntWLy/sAG+Jwf50eCkdrZKKIYYSwggXOwW06PfH9K/5UQSe9jdJHMPT5VVjmQG/w3YHuwA7/SZGmRgZtyTEz6KGCHtw/aVb1vfjFF1HqgHVtyUujDxNDXOUuQczl77/6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=oPbxhuah; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1723654626; c=relaxed/simple;
+	bh=7qQlTpMuGngTf5mDhK/HSkbSaWAoRr/xpzL3hhsR3ZU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=c+fGV21lF3ZDbFaAVU/2NcX5zGYbYVcka2btj4x+E1PSxF/uW9h1QEgMdEbFotnT+JM/lrOUDLP2axLfSquWUnJIJxdKPmlk5uS+2hR34dynbt3yRga01WZANeLW8g0J+kXSq0VccebMIO7tmvHi7cazHMsraXxb51DuGVXfP1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=RZBQo54L; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="oPbxhuah"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 984B6C4AF09;
-	Wed, 14 Aug 2024 16:37:30 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="RZBQo54L"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52417C116B1;
+	Wed, 14 Aug 2024 16:57:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723653453;
-	bh=v5M9ps6F/NmI6iXi/qytEoSwAtl0c5kzHVIFqFfviyM=;
-	h=From:To:Cc:Subject:Date:From;
-	b=oPbxhuahVqajF4B9E+CAFhVHUvUBI+v+8dgWr975pj/CvP7+rMd56JnBezWR59n2V
-	 anyJeCq889VuN1uKnHjF0SBYH3yMuFH4h1jrn5FCHIJmEsP31iPTaPgpDvmPOPr+oz
-	 VFjZQ8rKGadGnObuaYKa9kk44ygPew9L/4rDwW0B+8m2mFSJlP+K9IDINCLHrgqMYh
-	 Sa5HANASbLrw1g2/nnGhewVuMh2gCW7WPwRiqPgornugsW22d4dU1HgBKb3hO1PDN9
-	 7BmS6UuzZ/nNCWtrWd3M9Uite66a3I4QpVdHXPv2nkqXAt9oG0fLY2AXkEYUd2Q13k
-	 Rng9tM9PmyvXQ==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	patches@lists.linux.dev
-Subject: [PATCH] rust: enable bindgen's `--enable-function-attribute-detection` flag
-Date: Wed, 14 Aug 2024 18:37:22 +0200
-Message-ID: <20240814163722.1550064-1-ojeda@kernel.org>
+	s=k20201202; t=1723654626;
+	bh=7qQlTpMuGngTf5mDhK/HSkbSaWAoRr/xpzL3hhsR3ZU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=RZBQo54Ldmxg87PkvleJ+POeP8Y6RZUQ2mkXVHmobhrQD65DrnnWvK4Cb4aFa4S5N
+	 cIS+BStvKnBa1Olj3PHcE1We1HWsBgxaLJgBINGPxmNwSQL3i8OM1XdiXCSSWKWUir
+	 keafaRtrdrgs8YFjRpVqWpUm1mSePfNn66Fndpqqbk63iVoTKZKPfgfvu2nzw491QW
+	 POylZySURYJJLBBMsfh7dyxs3uDosjV3iAdGDcfJgm+n+crKhcSxZQC9WUj7Xibyaw
+	 MDmpfPsUNBplRRLDz9hCfLMmEmJfdnpRHh7f6e+1LbNKw9g5K429dMwzjUxsomDCAC
+	 r0KVLEV3Vydbw==
+Date: Wed, 14 Aug 2024 18:56:58 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Alice Ryhl <aliceryhl@google.com>, ojeda@kernel.org,
+	alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@samsung.com, akpm@linux-foundation.org,
+	daniel.almeida@collabora.com, faith.ekstrand@collabora.com,
+	boris.brezillon@collabora.com, lina@asahilina.net,
+	mcanal@igalia.com, zhiw@nvidia.com, cjia@nvidia.com,
+	jhubbard@nvidia.com, airlied@redhat.com, ajanulgu@redhat.com,
+	lyude@redhat.com, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v5 04/26] rust: alloc: implement `Allocator` for `Kmalloc`
+Message-ID: <Zrzh2g1AgDm9rfo8@cassiopeiae>
+References: <CAH5fLgit0hSFWi_Bv4DFK6vvhoLfSz=BMaPDBU0Z0oyZta9U9w@mail.gmail.com>
+ <Zryy04DvEsnxsRCj@pollux>
+ <CAH5fLghsONUtxFPgD6vC139H-Uj5LDju7w5eS0JB+BnDMmfngw@mail.gmail.com>
+ <Zry1qwJnPDUtp2Nw@cassiopeiae>
+ <CAH5fLgjNfJyyZygWzeTyrNi8TQNAquufxFxDgJHzq6dan=b9BQ@mail.gmail.com>
+ <Zry4iOGtR0nd6lNP@cassiopeiae>
+ <CANiq72nsSOaG=WhGP5GUQ=ygCh23iDQBc0kgjRP3B5MoF0CUjg@mail.gmail.com>
+ <ZrzLHu5Ey9vLwNJg@cassiopeiae>
+ <CANiq72=u5Nrz_NW3U3_VqywJkD8pECA07q2pFDd1wjtXOWdkAQ@mail.gmail.com>
+ <CANiq72k-haQ5dnUcNx5h1bE1J6_K=K3X+aqv7qJ2K6nag8izyA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72k-haQ5dnUcNx5h1bE1J6_K=K3X+aqv7qJ2K6nag8izyA@mail.gmail.com>
 
-`bindgen` is able to detect certain function attributes and annotate
-functions correspondingly in its output for the Rust side, when the
-`--enable-function-attribute-detection` is passed.
+On Wed, Aug 14, 2024 at 06:16:34PM +0200, Miguel Ojeda wrote:
+> On Wed, Aug 14, 2024 at 6:02 PM Miguel Ojeda
+> <miguel.ojeda.sandonis@gmail.com> wrote:
+> >
+> > I checked about `__must_check`, because it would be nice if it is used
+> > by `bindgen`, and it turns out it already does, but behind
+> > `--enable-function-attribute-detection` (apparently for performance
+> > reasons):
+> 
+> I just tried, and the flag seems to work, gives us a bunch of
+> `#[must_use]`s which are nice, and apparently no other change (in
+> usual x86_64 config at least).
 
-In particular, it is currently able to use `__must_check` in C
-(`#[must_use]` in Rust), which give us a bunch of annotations that are
-nice to have to prevent possible issues in Rust abstractions, e.g.:
+Cool! That's even better then.
 
-     extern "C" {
-    +    #[must_use]
-         pub fn kobject_add(
-             kobj: *mut kobject,
-             parent: *mut kobject,
-             fmt: *const core::ffi::c_char,
-             ...
-         ) -> core::ffi::c_int;
-     }
-
-Apparently, there are edge cases where this can make generation very slow,
-which is why it is behind a flag [1], but it does not seem to affect us
-in any major way at the moment.
-
-Link: https://github.com/rust-lang/rust-bindgen/issues/1465 [1]
-Link: https://lore.kernel.org/rust-for-linux/CANiq72=u5Nrz_NW3U3_VqywJkD8pECA07q2pFDd1wjtXOWdkAQ@mail.gmail.com/
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
----
-If someone notices a major performance difference, please let me know!
-
- rust/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/rust/Makefile b/rust/Makefile
-index 1f10f92737f2..c28b81e2a5fa 100644
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -270,7 +270,7 @@ quiet_cmd_bindgen = BINDGEN $@
-       cmd_bindgen = \
- 	$(BINDGEN) $< $(bindgen_target_flags) \
- 		--use-core --with-derive-default --ctypes-prefix core::ffi --no-layout-tests \
--		--no-debug '.*' \
-+		--no-debug '.*' --enable-function-attribute-detection \
- 		-o $@ -- $(bindgen_c_flags_final) -DMODULE \
- 		$(bindgen_target_cflags) $(bindgen_target_extra)
-
-
-base-commit: de9c2c66ad8e787abec7c9d7eff4f8c3cdd28aed
---
-2.46.0
+> 
+> I don't notice any significant performance difference in our case, so
+> I will send a quick patch to see if others find an issue with it.
+> 
+> Cheers,
+> Miguel
+> 
