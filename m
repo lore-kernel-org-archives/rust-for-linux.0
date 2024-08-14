@@ -1,67 +1,67 @@
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+Received: from mail-wr1-f52.google.com (mail-wr1-f52.google.com [209.85.221.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AB58136E18
-	for <rust-for-linux@vger.kernel.org>; Wed, 14 Aug 2024 08:26:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9758140E34
+	for <rust-for-linux@vger.kernel.org>; Wed, 14 Aug 2024 08:42:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723623987; cv=none; b=lFd9+eYft3i1os4Yy6VRVXQZhdWIzphKN/MM7KtyZ9s3Ul1cW+8GmXS/UNj0mkft3IJo8XlMp6L2HxpkgyHwGpTqL1J6K3GNzUgNf9EgyHwt041DYZInIfe0zS45g3GP/WFX7pEyZF3Keftk0U4h03aGO0g+XOgsHfP62XdJhX8=
+	t=1723624964; cv=none; b=iS71DW2kXq8wykqC0FuA5Q/YBTCJ0djN5yWm90+UsCyZIhibzfC5/iB8UvGroNj7CsmtlFXGc/1axmCdJl8dqMZzjl/oFFJmNPWrsJLnZPeZoy7LgupgO4ht280cNs2q6SpuJYxyta8my54VRvgi3BTmOUi2A2TsPX90jMxZ4LU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723623987; c=relaxed/simple;
-	bh=62pL2XjU9NZjEXg6FHYVpk82cjgBud+cWc/FILW1Ruo=;
+	s=arc-20240116; t=1723624964; c=relaxed/simple;
+	bh=Yz3FvUcSxm+sPTrIaF3ceIVk5DSTE0gKUp7+I6EngE0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=EBsvQDLeAqHLydf5evDQZTQywGVScm97TVgtx1rFT27lX816jI89emCUghkPdp+e8c0J8NeuiwgQ2auP1i3OKLBL3IgB9cdhzQsDL4BXv4gadCqu2oXjh9W9PXTM6YaXT3j4qCRCBDeNxEgM2czj56Ud2UWPguaFGBSXG+/G67I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nzGBW8yq; arc=none smtp.client-ip=209.85.221.49
+	 To:Cc:Content-Type; b=I4av3rMRvkUWO34Xb2w7X68i3PcQrMvf+sURY3xiNjM5UpSMHWhrPZ9y+GqSHPgl/w9DRoP7DjJU3EW4yLUGmTLPXMablS0BY9fboD6tLKYL5VB85hAMWeESchCgeH7cmjQ2nzQSDljnokWRa28vRJmDc/FRGE/GAFOp0sQUvjc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=KmEM7s4b; arc=none smtp.client-ip=209.85.221.52
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nzGBW8yq"
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-3687fd09251so3509724f8f.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 14 Aug 2024 01:26:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="KmEM7s4b"
+Received: by mail-wr1-f52.google.com with SMTP id ffacd0b85a97d-367963ea053so4966832f8f.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 14 Aug 2024 01:42:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1723623983; x=1724228783; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1723624961; x=1724229761; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=+0MBDb5+vXEVzKIZLapFfRuEtH5IYfsSmO/Hh3Pyjq4=;
-        b=nzGBW8yqu0zCMppQHBwkec+JW1E5NPrywHoDR1IoRs7kgcowXA/PwW4rbDy1M2I48q
-         2LlcUtzBDGBeGNO6tIWvTLh6VcZQhMnFi+RvFPXa3g/2QNBTeq9nSveqI7OBIxNfk6UA
-         mcvEQL9varBrA9pCL147HKYiqREvDyhoJoXLnaAxn4fjS0N1nBXpX3R9lZpjj8B67tqJ
-         LscLklZCBPdBWxEMF7BPLXDt6/eyqfsVLhLXjpsd1BxJHpmySdnfFMtJtAe9vbOUsrD4
-         +YbtIgMugQMtpJCYTfa4ti8odhv9tU/QVzsvFZtxP0LYmmhq6pr4oFL8jfQTVPlvohfA
-         XiZg==
+        bh=6GtZhrT/mm/AxwGAt7UwiNX0lEue7r3nHz8XAGJUFqg=;
+        b=KmEM7s4bCf4SHKlU+KNEbCglwEjFzxSALDuvwpqXzAYFKJm7aJx/pvP4JptoIEnBmp
+         nGmZYaq7MGpGyxosy1gsZHB8Z0LQGc6lfMrPvV9opOFoXkGRzhCRMHKgbYc6i24ENs+I
+         6gTWNHaYCcFvZhn1ECDw+YPiRmRM/1xTm9OQWfK35w6JA91PEEea6vQOrt+ajKFeAOWM
+         K/EhTBggqGpc1+d9maw7jsb3agyk5GryUN7ehMH94Qia0yS59DzcuiqmqcRnVMXXC68N
+         5XB8lJfOxgJMNOt6AGsdV9t1TvFeBOLeYW3pMM49jwOROvyiwRNrbH2Uw2+/o3FJtYA+
+         R15A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723623984; x=1724228784;
+        d=1e100.net; s=20230601; t=1723624961; x=1724229761;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=+0MBDb5+vXEVzKIZLapFfRuEtH5IYfsSmO/Hh3Pyjq4=;
-        b=UD3Q1Ipet/jzD1AQxlHKvL/81ffoNzD3Rw6bi3xswGVGes80OuuEeqD7e83neecQiY
-         Qt2WRt6n5wrJOXkgAi/sE13NU3r/73cc5oxmI+imaE0Mcmt9r4vFMPqSlNxDILvWys1+
-         COiDYe8Fd5jW1MXP9SjL0j5WzOIIUA6C6u/q0YAjkJkXr7/51UJq85aYrBwe5BRyGmDu
-         DVN4MH23BUi0D5UB/OtwP/CorNJcQDxA1pimLObIvbjVRGjvQP2q6dTuzpFdN3bRA1bc
-         jrvm6r17EagVF8ks6K2mM0zie3baBRCez/Zvje/I9SzthY1tHRSQgWgMmjFMH5assJYu
-         ATAQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUsmVdt/EAgo+tgt1k9SPO6qHtLiMpEmEkOEckdg7IDDIzvRfZzAkEyCi+47F3aQlIj8xieXey9AF2+qqV8gXN85NWTHzvLQJD7ryveTb0=
-X-Gm-Message-State: AOJu0YxXVr08w+NiD0BIa2sWnOup/caG0wwX97lmCG6QJ8FTMJHLGfdh
-	ymMkVG5fRsaZ1b4KZLO0VicDMkAfOw+I1SfP/LxRyRSvMAumOUBE5GZA3omO9UfB40R3sWYRvbx
-	GhseRRbzQne30vyMRT7M+GjPtDOmERS3fbmeQ
-X-Google-Smtp-Source: AGHT+IHCm0scg6mxW0JEpekgZhvKx5QWQ3ad6jquJgs9Up2YmI7n5FfGy3MiFPjp1CZznyAwqTEgCkSzOHAEpNW6ylk=
-X-Received: by 2002:a5d:5e13:0:b0:371:79f0:2cf6 with SMTP id
- ffacd0b85a97d-37179f02ef3mr583706f8f.11.1723623983239; Wed, 14 Aug 2024
- 01:26:23 -0700 (PDT)
+        bh=6GtZhrT/mm/AxwGAt7UwiNX0lEue7r3nHz8XAGJUFqg=;
+        b=hEVGd+PYzEYgKIRRcX+oKMG4wM6wgYPKR1P4ooVnIBopf/3fF9LPUgen2cuNjaxg2J
+         JxraeET9vrDavk6L9GBKk2xHgQ7BArlKjjwl6NhEkzCK7/MHUEQXfkuarsQwQuafRdJ8
+         ZAGgThTsLVjz/vfIvBFFRQwAVCOzdBZATHXg/Y6tPEXqVpzgNa9MTNJ+BRJOuyLkQHcD
+         sewTIn/dt14aVHpzb+8VdHPbW6PQd0n0pDsqtX608hB1rpcsdgpGE2MdHEgtaciywQhs
+         lLpq/zRGK6z4EN+AYZkf8g4GAg/4fd8MOICLCanNktmWpKQyOhcXqfc7cSolOU6Iz9Kk
+         nxUA==
+X-Forwarded-Encrypted: i=1; AJvYcCWtDn/U5jdRKZky8PezVSEtYaYoDMF5dNOZgxuR2j/j+1dMMkjeNj6ruMUQl42POI905jcr6bbPd4W6pSmZcwe0QP2A1yprKrQIxCW3tas=
+X-Gm-Message-State: AOJu0Yxk4KRZhCyN0uIMeFSP/EiKGq/mpTxM6Xl1yON7VxdN5kfJ/Ci4
+	Pydsp9xMiBR49nTE0EfLotLmqUk6kJ2OrNgg3ZLBom1e3k5uWayDGw3CZsb+Bj9jy8fTMt8u7TA
+	KNnPILQVHsIqeBF7UKingytKmHDfvbtycNB6v
+X-Google-Smtp-Source: AGHT+IFrmL3U1S+rpzBOdS5HfRHkuyTVNTg4EqoC10UJXSwLurGP5QVOWdVYxkQVIjwptFuwedEGKyhyn45M8GLcKU0=
+X-Received: by 2002:a5d:59a5:0:b0:367:9903:a91 with SMTP id
+ ffacd0b85a97d-37177744793mr1608078f8f.11.1723624960494; Wed, 14 Aug 2024
+ 01:42:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240812182355.11641-1-dakr@kernel.org> <20240812182355.11641-10-dakr@kernel.org>
-In-Reply-To: <20240812182355.11641-10-dakr@kernel.org>
+References: <20240812182355.11641-1-dakr@kernel.org> <20240812182355.11641-14-dakr@kernel.org>
+In-Reply-To: <20240812182355.11641-14-dakr@kernel.org>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 14 Aug 2024 10:26:10 +0200
-Message-ID: <CAH5fLgiyDtMWKe0db+uvKGPoPRepjiSxddSrBh8jF1N1COpdDg@mail.gmail.com>
-Subject: Re: [PATCH v5 09/26] rust: alloc: implement kernel `Box`
+Date: Wed, 14 Aug 2024 10:42:28 +0200
+Message-ID: <CAH5fLggchaAzcRK=i=zRm7hTg6qX0yGBAyAHcO45rG-oEh-AMQ@mail.gmail.com>
+Subject: Re: [PATCH v5 13/26] rust: alloc: implement kernel `Vec` type
 To: Danilo Krummrich <dakr@kernel.org>
 Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, 
 	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
@@ -77,186 +77,86 @@ Content-Transfer-Encoding: quoted-printable
 On Mon, Aug 12, 2024 at 8:25=E2=80=AFPM Danilo Krummrich <dakr@kernel.org> =
 wrote:
 >
-> `Box` provides the simplest way to allocate memory for a generic type
-> with one of the kernel's allocators, e.g. `Kmalloc`, `Vmalloc` or
-> `KVmalloc`.
+> `Vec` provides a contiguous growable array type (such as `Vec`) with
+> contents allocated with the kernel's allocators (e.g. `Kmalloc`,
+> `Vmalloc` or `KVmalloc`).
 >
-> In contrast to Rust's `Box` type, the kernel `Box` type considers the
+> In contrast to Rust's `Vec` type, the kernel `Vec` type considers the
 > kernel's GFP flags for all appropriate functions, always reports
 > allocation failures through `Result<_, AllocError>` and remains
 > independent from unstable features.
 >
 > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-> ---
->  rust/kernel/alloc.rs      |   6 +
->  rust/kernel/alloc/kbox.rs | 423 ++++++++++++++++++++++++++++++++++++++
->  rust/kernel/prelude.rs    |   2 +-
->  3 files changed, 430 insertions(+), 1 deletion(-)
->  create mode 100644 rust/kernel/alloc/kbox.rs
->
-> diff --git a/rust/kernel/alloc.rs b/rust/kernel/alloc.rs
-> index 295107777a12..ed46b69204d0 100644
-> --- a/rust/kernel/alloc.rs
-> +++ b/rust/kernel/alloc.rs
-> @@ -5,6 +5,7 @@
->  #[cfg(not(any(test, testlib)))]
->  pub mod allocator;
->  pub mod box_ext;
-> +pub mod kbox;
->  pub mod vec_ext;
->
->  #[cfg(any(test, testlib))]
-> @@ -13,6 +14,11 @@
->  #[cfg(any(test, testlib))]
->  pub use self::allocator_test as allocator;
->
-> +pub use self::kbox::Box;
-> +pub use self::kbox::KBox;
-> +pub use self::kbox::KVBox;
-> +pub use self::kbox::VBox;
-> +
->  /// Indicates an allocation error.
->  #[derive(Copy, Clone, PartialEq, Eq, Debug)]
->  pub struct AllocError;
-> diff --git a/rust/kernel/alloc/kbox.rs b/rust/kernel/alloc/kbox.rs
-> new file mode 100644
-> index 000000000000..67bdfc0712d2
-> --- /dev/null
-> +++ b/rust/kernel/alloc/kbox.rs
-> @@ -0,0 +1,423 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! Implementation of [`Box`].
-> +
-> +use super::{AllocError, Allocator, Flags};
-> +use core::fmt;
-> +use core::marker::PhantomData;
-> +use core::mem::ManuallyDrop;
-> +use core::mem::MaybeUninit;
-> +use core::ops::{Deref, DerefMut};
-> +use core::pin::Pin;
-> +use core::ptr::NonNull;
-> +use core::result::Result;
-> +
-> +use crate::init::{InPlaceInit, Init, PinInit};
-> +use crate::types::ForeignOwnable;
-> +
-> +/// The kernel's [`Box`] type - a heap allocation for a single value of =
-type `T`.
-> +///
-> +/// This is the kernel's version of the Rust stdlib's `Box`. There are a=
- couple of differences,
-> +/// for example no `noalias` attribute is emitted and partially moving o=
-ut of a `Box` is not
-> +/// supported.
-> +///
-> +/// `Box` works with any of the kernel's allocators, e.g. [`super::alloc=
-ator::Kmalloc`],
-> +/// [`super::allocator::Vmalloc`] or [`super::allocator::KVmalloc`]. The=
-re are aliases for `Box`
-> +/// with these allocators ([`KBox`], [`VBox`], [`KVBox`]).
-> +///
-> +/// When dropping a [`Box`], the value is also dropped and the heap memo=
-ry is automatically freed.
-> +///
-> +/// # Examples
-> +///
-> +/// ```
-> +/// let b =3D KBox::<u64>::new(24_u64, GFP_KERNEL)?;
-> +///
-> +/// assert_eq!(*b, 24_u64);
-> +///
-> +/// # Ok::<(), Error>(())
-
-This is a minor nit, but when hiding lines in examples you should
-avoid having the rendered docs have empty lines at the beginning/end.
-There are also several examples of this below with the
-kernel::bindings import.
-
-> +/// ```
-> +///
-> +/// ```
-> +/// # use kernel::bindings;
-> +///
-> +/// const SIZE: usize =3D bindings::KMALLOC_MAX_SIZE as usize + 1;
-> +/// struct Huge([u8; SIZE]);
-> +///
-> +/// assert!(KBox::<Huge>::new_uninit(GFP_KERNEL | __GFP_NOWARN).is_err()=
-);
-> +/// ```
-> +///
-> +/// ```
-> +/// # use kernel::bindings;
-> +///
-> +/// const SIZE: usize =3D bindings::KMALLOC_MAX_SIZE as usize + 1;
-> +/// struct Huge([u8; SIZE]);
-> +///
-> +/// assert!(KVBox::<Huge>::new_uninit(GFP_KERNEL).is_ok());
-> +/// ```
-> +///
-> +/// # Invariants
-> +///
-> +/// The [`Box`]' pointer always properly aligned and either points to me=
-mory allocated with `A` or,
-> +/// for zero-sized types, is a dangling pointer.
-> +pub struct Box<T: ?Sized, A: Allocator>(NonNull<T>, PhantomData<A>);
-
-I was about to say this needs a PhantomData<T> too, but I guess it
-isn't necessary anymore.
-https://doc.rust-lang.org/nomicon/phantom-data.html#generic-parameters-and-=
-drop-checking
-
-> +// SAFETY: `Box` is `Send` if `T` is `Send` because the data referenced =
-by `self.0` is unaliased.
-
-Instead of "unaliased" I would probably just say "because the Box owns a T"=
-.
-
-> +
-> +// SAFETY: `Box` is `Sync` if `T` is `Sync` because the data referenced =
-by `self.0` is unaliased.
-> +unsafe impl<T, A> Sync for Box<T, A>
+> [...]
+> +impl<T, A, const N: usize> Box<[T; N], A>
 > +where
-> +    T: Send + ?Sized,
-> +    A: Allocator,
-
-This needs to say `T: Sync` instead of `T: Send`. That matches the std Box.
-
-> +
-> +impl<T, A> Box<T, A>
-> +where
-> +    T: ?Sized,
 > +    A: Allocator,
 > +{
-> +    /// Creates a new `Box<T, A>` from a raw pointer.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// `raw` must point to valid memory, previously be allocated with `=
-A`, and provide at least
-> +    /// the size of type `T`. For ZSTs `raw` must be a dangling pointer.
+> +    /// Convert a `Box<[T, N], A>` to a `Vec<T, A>`.
+> +    pub fn into_vec(b: Self) -> Vec<T, A> {
 
-Hmm. I don't love this wording. How about this?
+Nit: I would probably make this a From impl.
 
-For non-ZSTs, `raw` must point at a live allocation allocated with `A`
-that is sufficiently aligned for and holds a valid `T`. The caller
-passes ownership of the allocation to the `Box`. For ZSTs, the pointer
-must be non-null and aligned.
+> +#[macro_export]
+> +macro_rules! kvec {
+> +    () =3D> (
+> +        {
+> +            $crate::alloc::KVec::new()
+> +        }
+> +    );
+> +    ($elem:expr; $n:expr) =3D> (
+> +        {
+> +            $crate::alloc::KVec::from_elem($elem, $n, GFP_KERNEL)
+> +        }
+> +    );
+> +    ($($x:expr),+ $(,)?) =3D> (
+> +        {
+> +            match $crate::alloc::KBox::new([$($x),+], GFP_KERNEL) {
+> +                Ok(b) =3D> Ok($crate::alloc::KBox::into_vec(b)),
+> +                Err(e) =3D> Err(e),
 
-> +impl<T, A> From<Box<T, A>> for Pin<Box<T, A>>
+Hmm. This currently generates code that:
+
+1. Creates the array.
+2. Allocates the memory.
+3. Moves the array into the box.
+
+Whereas the stdlib macro swaps step 1 and 2. You can do the same by
+utilizing new_uninit. A sketch:
+
+match KBox::<[_; _]>::new_uninit(GFP_KERNEL) {
+    Ok(b) =3D> Ok(KVec::from(KBox::write(b, [$($x),+]))),
+    Err(e) =3D> Err(e),
+}
+
+> +// SAFETY: `Vec` is `Send` if `T` is `Send` because the data referenced =
+by `self.ptr` is unaliased.
+> +unsafe impl<T, A> Send for Vec<T, A>
 > +where
-> +    T: ?Sized,
+> +    T: Send,
 > +    A: Allocator,
 > +{
-> +    /// Converts a `Box<T, A>` into a `Pin<Box<T, A>>`. If `T` does not =
-implement [`Unpin`], then
-> +    /// `*b` will be pinned in memory and can't be moved.
-> +    ///
-> +    /// See [`Box::into_pin`] for more details.
-> +    fn from(b: Box<T, A>) -> Self {
-> +        Box::into_pin(b)
+> +}
+> +
+> +// SAFETY: `Vec` is `Sync` if `T` is `Sync` because the data referenced =
+by `self.ptr` is unaliased.
+> +unsafe impl<T, A> Sync for Vec<T, A>
+> +where
+> +    T: Send,
+> +    A: Allocator,
 
-I still think it makes more sense to match std and only provide From
-and not an into_pin, but it's not a blocker.
+Same comment as Box. Ditto about "unaliased". Needs `T: Sync` instead.
+
+> +impl<T: Clone, A: Allocator> Vec<T, A> {
+> +    /// Extend the vector by `n` clones of value.
+> +    pub fn extend_with(&mut self, n: usize, value: T, flags: Flags) -> R=
+esult<(), AllocError> {
+> +        self.reserve(n, flags)?;
+> +
+> +        let spare =3D self.spare_capacity_mut();
+> +
+> +        for item in spare.iter_mut().take(n - 1) {
+
+You need to handle `n =3D=3D 0` here.
 
 Alice
