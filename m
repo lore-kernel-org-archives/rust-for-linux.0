@@ -1,131 +1,127 @@
-Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AEB7BA53;
-	Thu, 15 Aug 2024 06:48:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.134
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2E85178CC8
+	for <rust-for-linux@vger.kernel.org>; Thu, 15 Aug 2024 07:30:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723704512; cv=none; b=RLFA8hfnUuEagqOUZNBfzvaSL64vRaIfDIUSspQPqgrWy/Uvlg/UkNPNhxIMRdrViK1nuyS7o5cRiaOXHVz7J2OItwS+JdyU0FTp5lLZTdz2YqlW5qVV7QJItL5GQdZ5bn4vXetj5sQ2hNdAiu9UvEd1fYi9hPwq6nLaJnvd8po=
+	t=1723707052; cv=none; b=tMlN7mXgIXdBr5wjnL9d7f3e+5ZtpGSBJ3ZnRXlkmIPyKtGdeYhswvg6/L4P2Rmbp0W1ClWHXv1liD+r2c0o/ZegkQXBvigRSG45AbNPzjL/gJteOcWuF2zUhXzqoyE5oMB/F8w7AHoYwFLHtarZC1rz2vz1m+NbXgayKSquUFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723704512; c=relaxed/simple;
-	bh=Nh33MOapYcsyZSaE72pj/GAoYlZhrWgFlThVWqv5fpw=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=h3dt4StqSOXdx9GvYQoXjPdXptyrmTGyskIz+155A7j+RyOfiSonYUa88GBrY600ngF29AWXoGonocMEJApZlycaBYj1t37Pg/A4rg7bTDjPj+wtQOfSP79tlZEUEdJJ06ZwW2B07M7qKHGlayB/WBQWWaSeKRNWVAlc12Jz6To=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=W+dE1+u1; arc=none smtp.client-ip=185.70.40.134
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1723707052; c=relaxed/simple;
+	bh=o9Y3VAbaVpEXsRiqkrrvqdRumcVSil10QCL3W83+hg4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=AKbpp7PTq++W9ngeDXOyRlgLUTgv8itScHC71crThhvibI+V5PMOunvbs38tojMB+4ZVrSJm8l+Y8VB9f88PEJAE8VuxVkKQkKnB9UqwHRvU1YUxxR+A93YK88AXSG7YyB9+B3Fxjt9Skducvr1DDc7KgXw4RBx5RGl21ZSLbTU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wzlfRWAu; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="W+dE1+u1"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1723704508; x=1723963708;
-	bh=5I4uF48/D5iv+622qy+0xU6rTasLnm4ofO5ZVU8Faa0=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=W+dE1+u19fQ8vRibOHcKr1+/M5xi0Qu9fn4/aAdgRuLu2q2vDQMtjFuZ9NpkM++N2
-	 G77L82ThfRUOnNo4JFkYH15EINEmEQRKz+DEJ8EsfOFHQVJQUEHHAm5J4uqC1/sIr7
-	 ctQ4KcLFJ0kNXaZzoFba94wUqa8tAPPL2PqP33iHWq1d4cyGa/dl8UfngJXH3fDxiI
-	 4MuwDIa87zbydoAvTQ07vrF5/IUydQKPzKyQpgrkUQiy0FD2UmRIMbjySk4WWs7eJY
-	 vT+RATNBIvosrqPtmZo0rXAP+hq9cd4L728GKULHaV0FTDcsxT+jOSCBIxtvzNxPhF
-	 pHMnPgs5l1uIw==
-Date: Thu, 15 Aug 2024 06:48:19 +0000
-To: Danilo Krummrich <dakr@kernel.org>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@samsung.com, aliceryhl@google.com, akpm@linux-foundation.org, daniel.almeida@collabora.com, faith.ekstrand@collabora.com, boris.brezillon@collabora.com, lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com, ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v5 06/26] rust: alloc: implement `Vmalloc` allocator
-Message-ID: <5dfe8bae-2c1e-47d4-9fb4-373b7d714c4f@proton.me>
-In-Reply-To: <Zr072oSej9KIc1S6@cassiopeiae>
-References: <20240812182355.11641-1-dakr@kernel.org> <20240812182355.11641-7-dakr@kernel.org> <c9d57e77-8748-4e58-a39b-7a23f750ceda@proton.me> <Zr0r6sSFMSQIpHEX@cassiopeiae> <Zr072oSej9KIc1S6@cassiopeiae>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 7dce0f614b91ef9b8e959229288c0aba3f8bbc85
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wzlfRWAu"
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-428e3129851so3903145e9.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 15 Aug 2024 00:30:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1723707049; x=1724311849; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Na2qPkDz9wEnFMfwgo58FPItJ1H0k/FhreZx8u4KhIk=;
+        b=wzlfRWAuo7LZARtunVzjQCXxrQdl+t/BFUyUO2rDkRaEyX0AWaeQa+KRSot0e9G23K
+         BQjJnWix0dPogfVV6vhqx26LN9t+Kp+GigqnPJnAX5fg2ER9wIphTNHGKmce9BepNBTt
+         5S4eaVWvNiQWOwyWVX/HlacB/h/YdgsEXXV+JSdOI4t+xmR/BC1OJQ7ZlfIxxUhZsltc
+         LMudYU3Cs910PjyZTpHKzsV/uiyIINkqgZwNKUxiUvWum/8SB4UbEzr2VeCL9VlD8pL+
+         pBzFSshr3tDxvYEs3EXqJ46T8xj61VcywGUjkXw2bCoJSnckTQBLFJgIeqG4jeRXgJf2
+         Mzwg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723707049; x=1724311849;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Na2qPkDz9wEnFMfwgo58FPItJ1H0k/FhreZx8u4KhIk=;
+        b=RSF90r+/D6fOOL8u4hhkt+RJNveiehYM97bL5arieXa8bGCIILcwocjRL0qzS7bUf2
+         wMQYs1Y949GEnM40UtMMtHRQJ/9iKAeXbq7Ww3Gd0Dvubq+Q5QrEIjId8nhtes59JwCb
+         1+etAm6dTqia2ecpMz5P1hTp8PRbtzETro+XTxyO1jywlxpFyXCsFKdKBjdd9NeEz1fj
+         GyZd75egpCThlWbOaoApEBFtQ6CzLiDq/2Cqas7I3JBI9onN74En+U2fCLEtZcwLwKgo
+         yTCwJKgXeGOELtkoJtcLDySBjbhdZYjl2Px/1/cRt54FA5Zsh2iAp2w+VvPN20d9Nfkc
+         X8Pg==
+X-Forwarded-Encrypted: i=1; AJvYcCVBZ2sUP6/xZ1SKudBVLBfeafzFc2OauDFkVRLSwpUOjA85DQ+OHwns6Dl4UUej15xLnERIGDb6RgxV/ycms1xhgz2xEUYg8DbbqD7g3Vo=
+X-Gm-Message-State: AOJu0Yyfzz9skBaWgA3FE8pLnfSpqRO3IJwkmrR7BNI6Gss6R9e4RTsK
+	AHiFqws41tKtQylEV9gCpDcnLdZ+bYLUjb82MM0FbJaMxZm3aXN5nCYPk0ILjGDx5wtzEb8Bf8C
+	5+dRV43wt2IZoagpLtym22qCAy2r3MH80K3vs
+X-Google-Smtp-Source: AGHT+IEPBTh7NnBCJo7Fv6b3olK539XPfHtZQOZ/CqlqCTfNfwkNYi+Ki3w5YESiWRyIihW6h4nZGGml3+9uEjB0rYY=
+X-Received: by 2002:a05:6000:c82:b0:368:255e:ab13 with SMTP id
+ ffacd0b85a97d-3717780e225mr2611278f8f.50.1723707048574; Thu, 15 Aug 2024
+ 00:30:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20240812182355.11641-1-dakr@kernel.org> <20240812182355.11641-14-dakr@kernel.org>
+ <CAH5fLggchaAzcRK=i=zRm7hTg6qX0yGBAyAHcO45rG-oEh-AMQ@mail.gmail.com> <Zr0z0fBM_acHFezv@cassiopeiae>
+In-Reply-To: <Zr0z0fBM_acHFezv@cassiopeiae>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Thu, 15 Aug 2024 09:30:36 +0200
+Message-ID: <CAH5fLgjDMuiR07jc=aa-3radEOgU8iMn-u+XttepuWr9r_doYQ@mail.gmail.com>
+Subject: Re: [PATCH v5 13/26] rust: alloc: implement kernel `Vec` type
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, 
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
+	benno.lossin@proton.me, a.hindborg@samsung.com, akpm@linux-foundation.org, 
+	daniel.almeida@collabora.com, faith.ekstrand@collabora.com, 
+	boris.brezillon@collabora.com, lina@asahilina.net, mcanal@igalia.com, 
+	zhiw@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com, 
+	ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-mm@kvack.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On 15.08.24 01:20, Danilo Krummrich wrote:
-> On Thu, Aug 15, 2024 at 12:13:06AM +0200, Danilo Krummrich wrote:
->>
->>>
->>>> +        ptr: Option<NonNull<u8>>,
->>>> +        layout: Layout,
->>>> +        flags: Flags,
->>>> +    ) -> Result<NonNull<[u8]>, AllocError> {
->>>> +        // TODO: Support alignments larger than PAGE_SIZE.
->>>> +        if layout.align() > bindings::PAGE_SIZE {
->>>> +            pr_warn!("Vmalloc does not support alignments larger than=
- PAGE_SIZE yet.\n");
->>>> +            return Err(AllocError);
->>>
->>> I think here we should first try to use `build_error!`, most often the
->>> alignment will be specified statically, so it should get optimized away=
-.
->>
->> Sure, we can try that first.
->=20
-> I think I spoke too soon here. I don't think `build_error!` or `build_ass=
-ert!`
-> can work here, it would also fail the build when the compiler doesn't kno=
-w the
-> value of the alignment, wouldn't it? I remember that I wasn't overly happ=
-y about
-> failing this on runtime either when I first thought about this case, but =
-I also
-> couldn't think of something better.
+On Thu, Aug 15, 2024 at 12:46=E2=80=AFAM Danilo Krummrich <dakr@kernel.org>=
+ wrote:
+>
+> On Wed, Aug 14, 2024 at 10:42:28AM +0200, Alice Ryhl wrote:
+> > > +#[macro_export]
+> > > +macro_rules! kvec {
+> > > +    () =3D> (
+> > > +        {
+> > > +            $crate::alloc::KVec::new()
+> > > +        }
+> > > +    );
+> > > +    ($elem:expr; $n:expr) =3D> (
+> > > +        {
+> > > +            $crate::alloc::KVec::from_elem($elem, $n, GFP_KERNEL)
+> > > +        }
+> > > +    );
+> > > +    ($($x:expr),+ $(,)?) =3D> (
+> > > +        {
+> > > +            match $crate::alloc::KBox::new([$($x),+], GFP_KERNEL) {
+> > > +                Ok(b) =3D> Ok($crate::alloc::KBox::into_vec(b)),
+> > > +                Err(e) =3D> Err(e),
+> >
+> > Hmm. This currently generates code that:
+> >
+> > 1. Creates the array.
+> > 2. Allocates the memory.
+> > 3. Moves the array into the box.
+> >
+> > Whereas the stdlib macro swaps step 1 and 2.
+>
+> Isn't stdlib [1] doing the same thing I do?
+>
+> [1] https://doc.rust-lang.org/1.80.1/src/alloc/macros.rs.html#49
 
-Yes, it might fail even though the alignment at runtime will be fine.
-But that's why I suggested trying `build_error!`(or `build_assert!`)
-first, if nobody hits the case where the compiler cannot figure it out,
-then we can keep it. If there are instances, where it fails, but the
-alignment would be fine at runtime, then we can change it to the above.
-(I would add such a comment above the assert).
+Stdlib is using something called #[rustc_box] which has the effect I descri=
+bed.
 
-> In the end it's rather unlikely to ever hit this case, and probably even =
-more
-> unlikely to hit it for a sane reason.
+> > You can do the same by utilizing new_uninit. A sketch:
+> >
+> > match KBox::<[_; _]>::new_uninit(GFP_KERNEL) {
+>
+> How do we get the size here? `#![feature(generic_arg_infer)]` seems to be
+> unstable.
 
-Yeah, but I still prefer the build to fail, rather than emitting a warn
-message that can be overlooked at runtime.
+It probably works if you don't specify the type at all:
+`KBox::new_uninit`. But you should double check.
 
->>> How difficult will it be to support this? (it is a weird requirement,
->>> but I dislike just returning an error...)
->>
->> It's not difficult to support at all. But it requires a C API taking an
->> alignment argument (same for `KVmalloc`).
-
-I see, that's good to know.
-
->> Coming up with a vrealloc_aligned() is rather trivial. kvrealloc_aligned=
-() would
->> be a bit weird though, because the alignment argument could only be real=
-ly
->> honored if we run into the vrealloc() case. For the krealloc() case it'd=
- still
->> depend on the bucket size that is selected for the requested size.
-
-Yeah... Maybe some more logic on the Rust side can help with that.
-
->> Adding the C API, I'm also pretty sure someone's gonna ask what we need =
-an
->> alignment larger than PAGE_SIZE for and if we have a real use case for t=
-hat.
->> I'm not entirely sure we have a reasonable answer for that.
-
-We could argue that we can remove an "ugly hack" (when we don't have the
-build assert, if we do have that, I don't mind not supporting it), but I
-agree that finding a user will be difficult.
-
->> I got some hacked up patches for that, but I'd rather polish and send th=
-em once
->> we actually need it.
-
-Sure, just wanted to check why you don't want to do it this series.
-
----
-Cheers,
-Benno
-
+> >     Ok(b) =3D> Ok(KVec::from(KBox::write(b, [$($x),+]))),
+> >     Err(e) =3D> Err(e),
+> > }
