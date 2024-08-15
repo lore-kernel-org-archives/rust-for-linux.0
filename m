@@ -1,127 +1,78 @@
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-40136.proton.ch (mail-40136.proton.ch [185.70.40.136])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2E85178CC8
-	for <rust-for-linux@vger.kernel.org>; Thu, 15 Aug 2024 07:30:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31D45199393;
+	Thu, 15 Aug 2024 07:49:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723707052; cv=none; b=tMlN7mXgIXdBr5wjnL9d7f3e+5ZtpGSBJ3ZnRXlkmIPyKtGdeYhswvg6/L4P2Rmbp0W1ClWHXv1liD+r2c0o/ZegkQXBvigRSG45AbNPzjL/gJteOcWuF2zUhXzqoyE5oMB/F8w7AHoYwFLHtarZC1rz2vz1m+NbXgayKSquUFo=
+	t=1723708184; cv=none; b=rGO3eu5d2b8A5Ryci6yTYRHBn+Mx48BZD3P9r9U7C52b3Xbgq0wPB9FIuVz3pZ5onvMkG2LGFx1fs1GBi8tHY+rvDr80yYQpddROUEL8pDTzkgIBSvqmjZCqvegjxvzK8YM1TupMwZuPT9VunzmHJh+LrKFTUKq+1EQ4foQSKgA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723707052; c=relaxed/simple;
-	bh=o9Y3VAbaVpEXsRiqkrrvqdRumcVSil10QCL3W83+hg4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=AKbpp7PTq++W9ngeDXOyRlgLUTgv8itScHC71crThhvibI+V5PMOunvbs38tojMB+4ZVrSJm8l+Y8VB9f88PEJAE8VuxVkKQkKnB9UqwHRvU1YUxxR+A93YK88AXSG7YyB9+B3Fxjt9Skducvr1DDc7KgXw4RBx5RGl21ZSLbTU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wzlfRWAu; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1723708184; c=relaxed/simple;
+	bh=5nwVUuNYwKfVCpbEE+hUU9mFT7cu5aK8oxDDp7r0klc=;
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=VIcwUKvlt0Q4bME4x0JscSWIgdHoccq1xHAv5xq+SZBANnxT2cfo0sLuO0x8UswHGHg2s66ZXchnbL/73cwAP6E3zX9HHgPtarm63in4ngSe0jkTJrK8CkWNZau7OkCbfqzwqxapHzX/eXuv3ncR0XSGyW3r7U1MJYbqIFhgVTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=metaspace.dk; spf=pass smtp.mailfrom=metaspace.dk; dkim=pass (2048-bit key) header.d=metaspace.dk header.i=@metaspace.dk header.b=luiBVcIL; arc=none smtp.client-ip=185.70.40.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=metaspace.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=metaspace.dk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wzlfRWAu"
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-428e3129851so3903145e9.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 15 Aug 2024 00:30:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1723707049; x=1724311849; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Na2qPkDz9wEnFMfwgo58FPItJ1H0k/FhreZx8u4KhIk=;
-        b=wzlfRWAuo7LZARtunVzjQCXxrQdl+t/BFUyUO2rDkRaEyX0AWaeQa+KRSot0e9G23K
-         BQjJnWix0dPogfVV6vhqx26LN9t+Kp+GigqnPJnAX5fg2ER9wIphTNHGKmce9BepNBTt
-         5S4eaVWvNiQWOwyWVX/HlacB/h/YdgsEXXV+JSdOI4t+xmR/BC1OJQ7ZlfIxxUhZsltc
-         LMudYU3Cs910PjyZTpHKzsV/uiyIINkqgZwNKUxiUvWum/8SB4UbEzr2VeCL9VlD8pL+
-         pBzFSshr3tDxvYEs3EXqJ46T8xj61VcywGUjkXw2bCoJSnckTQBLFJgIeqG4jeRXgJf2
-         Mzwg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723707049; x=1724311849;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Na2qPkDz9wEnFMfwgo58FPItJ1H0k/FhreZx8u4KhIk=;
-        b=RSF90r+/D6fOOL8u4hhkt+RJNveiehYM97bL5arieXa8bGCIILcwocjRL0qzS7bUf2
-         wMQYs1Y949GEnM40UtMMtHRQJ/9iKAeXbq7Ww3Gd0Dvubq+Q5QrEIjId8nhtes59JwCb
-         1+etAm6dTqia2ecpMz5P1hTp8PRbtzETro+XTxyO1jywlxpFyXCsFKdKBjdd9NeEz1fj
-         GyZd75egpCThlWbOaoApEBFtQ6CzLiDq/2Cqas7I3JBI9onN74En+U2fCLEtZcwLwKgo
-         yTCwJKgXeGOELtkoJtcLDySBjbhdZYjl2Px/1/cRt54FA5Zsh2iAp2w+VvPN20d9Nfkc
-         X8Pg==
-X-Forwarded-Encrypted: i=1; AJvYcCVBZ2sUP6/xZ1SKudBVLBfeafzFc2OauDFkVRLSwpUOjA85DQ+OHwns6Dl4UUej15xLnERIGDb6RgxV/ycms1xhgz2xEUYg8DbbqD7g3Vo=
-X-Gm-Message-State: AOJu0Yyfzz9skBaWgA3FE8pLnfSpqRO3IJwkmrR7BNI6Gss6R9e4RTsK
-	AHiFqws41tKtQylEV9gCpDcnLdZ+bYLUjb82MM0FbJaMxZm3aXN5nCYPk0ILjGDx5wtzEb8Bf8C
-	5+dRV43wt2IZoagpLtym22qCAy2r3MH80K3vs
-X-Google-Smtp-Source: AGHT+IEPBTh7NnBCJo7Fv6b3olK539XPfHtZQOZ/CqlqCTfNfwkNYi+Ki3w5YESiWRyIihW6h4nZGGml3+9uEjB0rYY=
-X-Received: by 2002:a05:6000:c82:b0:368:255e:ab13 with SMTP id
- ffacd0b85a97d-3717780e225mr2611278f8f.50.1723707048574; Thu, 15 Aug 2024
- 00:30:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=metaspace.dk header.i=@metaspace.dk header.b="luiBVcIL"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=metaspace.dk;
+	s=protonmail; t=1723708175; x=1723967375;
+	bh=pIXY+KRFjfzm2ElAJyOBnCOo4x0siZc6A7HAj9o5HdY=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=luiBVcILTJT1FVlY8AKCrYNlcQDeG6ESjOFmw8nhdTiQ4U9C0oxD3zQ/dFycluFIu
+	 mOdJ0xKijQutqSrkMy1lHnm7RJBieKQxSHtt2+6oZ192Fp8sRWEQcGTdEJRdGqkFzG
+	 WGMH5Bs6V6eHKm/Ct/izUUJDuVaHIBsW86vO6WAvQ0pJGqT0CWN0Bf8MgEb4kZ1jXC
+	 b8ueHL+Z84YeR+WIvmsLZWkO7jiSXiUPeOc6RtPNm4LiHce2HuhZUOcKzY78VXVCdl
+	 XDHUSAU89gj4ssgPK/Pz7Da+CMLkwHO0RdRii8/9CCwnLBnbK1+5skB91fc4y1AyJc
+	 qqxRqM32oDlAA==
+Date: Thu, 15 Aug 2024 07:49:30 +0000
+To: Jens Axboe <axboe@kernel.dk>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>
+From: Andreas Hindborg <nmi@metaspace.dk>
+Cc: Andreas Hindborg <a.hindborg@samsung.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, "Behme Dirk (XC-CP/ESB5)" <Dirk.Behme@de.bosch.com>, "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 1/2] rust: fix export of bss symbols
+Message-ID: <20240815074519.2684107-2-nmi@metaspace.dk>
+Feedback-ID: 113830118:user:proton
+X-Pm-Message-ID: efe389b12c330869968acf4e5341f24708aaf04c
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240812182355.11641-1-dakr@kernel.org> <20240812182355.11641-14-dakr@kernel.org>
- <CAH5fLggchaAzcRK=i=zRm7hTg6qX0yGBAyAHcO45rG-oEh-AMQ@mail.gmail.com> <Zr0z0fBM_acHFezv@cassiopeiae>
-In-Reply-To: <Zr0z0fBM_acHFezv@cassiopeiae>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 15 Aug 2024 09:30:36 +0200
-Message-ID: <CAH5fLgjDMuiR07jc=aa-3radEOgU8iMn-u+XttepuWr9r_doYQ@mail.gmail.com>
-Subject: Re: [PATCH v5 13/26] rust: alloc: implement kernel `Vec` type
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, 
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
-	benno.lossin@proton.me, a.hindborg@samsung.com, akpm@linux-foundation.org, 
-	daniel.almeida@collabora.com, faith.ekstrand@collabora.com, 
-	boris.brezillon@collabora.com, lina@asahilina.net, mcanal@igalia.com, 
-	zhiw@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com, 
-	ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Aug 15, 2024 at 12:46=E2=80=AFAM Danilo Krummrich <dakr@kernel.org>=
- wrote:
->
-> On Wed, Aug 14, 2024 at 10:42:28AM +0200, Alice Ryhl wrote:
-> > > +#[macro_export]
-> > > +macro_rules! kvec {
-> > > +    () =3D> (
-> > > +        {
-> > > +            $crate::alloc::KVec::new()
-> > > +        }
-> > > +    );
-> > > +    ($elem:expr; $n:expr) =3D> (
-> > > +        {
-> > > +            $crate::alloc::KVec::from_elem($elem, $n, GFP_KERNEL)
-> > > +        }
-> > > +    );
-> > > +    ($($x:expr),+ $(,)?) =3D> (
-> > > +        {
-> > > +            match $crate::alloc::KBox::new([$($x),+], GFP_KERNEL) {
-> > > +                Ok(b) =3D> Ok($crate::alloc::KBox::into_vec(b)),
-> > > +                Err(e) =3D> Err(e),
-> >
-> > Hmm. This currently generates code that:
-> >
-> > 1. Creates the array.
-> > 2. Allocates the memory.
-> > 3. Moves the array into the box.
-> >
-> > Whereas the stdlib macro swaps step 1 and 2.
->
-> Isn't stdlib [1] doing the same thing I do?
->
-> [1] https://doc.rust-lang.org/1.80.1/src/alloc/macros.rs.html#49
+From: Andreas Hindborg <a.hindborg@samsung.com>
 
-Stdlib is using something called #[rustc_box] which has the effect I descri=
-bed.
+Symbols in the bss segment are not currently exported. This is a problem
+for rust modules that link against statics, that are resident in the kernel
+image. This patch enables export of symbols in the bss segment.
 
-> > You can do the same by utilizing new_uninit. A sketch:
-> >
-> > match KBox::<[_; _]>::new_uninit(GFP_KERNEL) {
->
-> How do we get the size here? `#![feature(generic_arg_infer)]` seems to be
-> unstable.
+Fixes: 2f7ab1267dc9 ("Kbuild: add Rust support")
+Signed-off-by: Andreas Hindborg <a.hindborg@samsung.com>
+---
+ rust/Makefile | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-It probably works if you don't specify the type at all:
-`KBox::new_uninit`. But you should double check.
+diff --git a/rust/Makefile b/rust/Makefile
+index 1f10f92737f2..c890ec4b3618 100644
+--- a/rust/Makefile
++++ b/rust/Makefile
+@@ -305,7 +305,7 @@ $(obj)/bindings/bindings_helpers_generated.rs: $(src)/h=
+elpers.c FORCE
+ quiet_cmd_exports =3D EXPORTS $@
+       cmd_exports =3D \
+ =09$(NM) -p --defined-only $< \
+-=09=09| awk '/ (T|R|D) / {printf "EXPORT_SYMBOL_RUST_GPL(%s);\n",$$3}' > $=
+@
++=09=09| awk '/ (T|R|D|B) / {printf "EXPORT_SYMBOL_RUST_GPL(%s);\n",$$3}' >=
+ $@
+=20
+ $(obj)/exports_core_generated.h: $(obj)/core.o FORCE
+ =09$(call if_changed,exports)
+--=20
+2.46.0
 
-> >     Ok(b) =3D> Ok(KVec::from(KBox::write(b, [$($x),+]))),
-> >     Err(e) =3D> Err(e),
-> > }
+
+
