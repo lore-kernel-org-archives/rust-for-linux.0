@@ -1,149 +1,103 @@
-Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-io1-f47.google.com (mail-io1-f47.google.com [209.85.166.47])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AFFC1AC896;
-	Thu, 15 Aug 2024 14:19:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.134
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05F2E1A00EC
+	for <rust-for-linux@vger.kernel.org>; Thu, 15 Aug 2024 14:22:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731589; cv=none; b=UAuO2D2VrhPmo9S8B4kbSrGBxxteSkypn6oo/so1YXrMVHRxngi5tAvSEX5d2jFick/jdiRPnHvUuQnTGnu+wBTFZ/UJCCXcr+cfLPoaeC7HYLzxEfyw9IlsZwcI7LeeyjMfDKZNu6LP/UyGbufcoim3Jx8VlPa7HyeT3AIuQKs=
+	t=1723731763; cv=none; b=CltrwwgP7KJ3vIwSBSDQjXSFpc8AbMd/NC+cwwCSR0GLA7tZrysubEL8fBjnpnRILhQGazodqFT4ko2bafjy6yVvSyVJqUDDVguJ6P7nDEiGaCYrOehZqjG+7kZifpJCaz7lZSoxWq5dwSvGm1fgstJTmQZk+IzO2U26Tnk84ic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731589; c=relaxed/simple;
-	bh=KbqX/GkBzJQQ/bunYBrYIXbPXPT0lC7rAtpJ178aIKo=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bIhWptl6YmRiJynyRtaqYNI6iOd5o+bWhYsQFCjeb5ZqhmpLWnaZnXq4SqNQCwZA0Ks8DnUBSiSP2WYrnF7fp62Iut4dq2M+PqqxQXs2pKOV11JiS6Qhnkwva4+7neuDmwS42E12oxS3+sER6Np81yx7iw1qMegnIcmTJdPE/S8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=aRv6qiIY; arc=none smtp.client-ip=185.70.40.134
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1723731763; c=relaxed/simple;
+	bh=ZNSWxxQAl5JF1Vv7ZkOh/BPEEz3F/JxT1k0CbN3fYe4=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=eHKjyS5nMDt361QywoNzGyHWO4YiQjmKkcQBc2nFBPNq/8n7DHHcMmfB/xEJrx7Y72k78Ute6d49lUka0XoVPq10VI4ygBrSvJ8yAVLzsJl5UxwWhAwlL4iVYjb3OAuyQ5VA9CSZ++iBPfuaM+rtXb8EMKncu6SmBgLew2nq6rI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=ey7MZYwP; arc=none smtp.client-ip=209.85.166.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="aRv6qiIY"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=gxr7zbezencsjmbcyyqdpmg2aa.protonmail; t=1723731585; x=1723990785;
-	bh=UqgtoJLouKx1iQTjqXRDGDK4zBAgDS774E+gg2Yq3mQ=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=aRv6qiIYOKxr6XQFzLh4lyWHeVOo4C4FkfR4mNcwxlhMyOmZ03dM01iXRSvMuJQ0i
-	 EVEbDCaeps7o38gDrXZXa1BaBKFK9a7L/zCbCrFF5cm7d6YahkSFTl2K7ZPGF0jjrA
-	 aa1UcTRdMc9MnPg/wKbngMeCYDZ2xEOQdaB8tfhaaCX62am2OPE6gxNyZQaqKOyXmQ
-	 LWWf/x1uVSsXzMcyHX8te1qV6ecb4XycAl/1C3p4bzBW8FEHvUlGs1nFe/3gIPjK5T
-	 gTH9bpon1WYrdtF3Ve5wop6a6naCuybDJTGYIAAFSdlUesHuYdaLIyISddKHeQuoTa
-	 gwszo8yUJzyYA==
-Date: Thu, 15 Aug 2024 14:19:41 +0000
-To: Danilo Krummrich <dakr@kernel.org>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Alice Ryhl <aliceryhl@google.com>, Boqun Feng <boqun.feng@gmail.com>, ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@samsung.com, akpm@linux-foundation.org, daniel.almeida@collabora.com, faith.ekstrand@collabora.com, boris.brezillon@collabora.com, lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com, ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v5 00/26] Generic `Allocator` support for Rust
-Message-ID: <62e9af7b-df5a-495b-8fb5-27cf852293b4@proton.me>
-In-Reply-To: <Zr4MEPlbYGrx6BbO@cassiopeiae>
-References: <20240812182355.11641-1-dakr@kernel.org> <Zr0GP0OXliPRqx4C@boqun-archlinux> <Zr1teqjuOHeeFO4Z@cassiopeiae> <CAH5fLgjvuE5uU00u4y+HyHTkQU_OBYvHe6NS5ohAhrLntTX1zQ@mail.gmail.com> <Zr31jqnA2b3qHK5l@cassiopeiae> <CAH5fLgjzNpeVVurPqVS=tMkKQOhXz08EsXRO4s9wYsNBuT6eVw@mail.gmail.com> <Zr4DpPSjDqSoMh0j@cassiopeiae> <e0b0bffb-c240-4d23-bf4d-0c1c19608f60@proton.me> <Zr4MEPlbYGrx6BbO@cassiopeiae>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 82454498d143298b0af31e2a5c089cc31de5f112
+	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="ey7MZYwP"
+Received: by mail-io1-f47.google.com with SMTP id ca18e2360f4ac-81f902e94e6so3439639f.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 15 Aug 2024 07:22:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1723731760; x=1724336560; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=98fnk4sqqU0DUmGRp9hZBZ09L6lQXvEbeeISq6VpsAg=;
+        b=ey7MZYwPeVOkGtjS4178Er0xfhAS/92ANp6l/poyGlekjq38FsnOxGDle7GkS5OcYc
+         YkAu2UJ51AzWE8ntli59/3L5jcIkjbMPNLBaZCsWhlAZPMRF7Z/cvEVopVWCHDkGi4L0
+         l+XoylJiVLVE/Ok3lzEyx+JTOcx7KeuN9XixIBH/h0XkZYi6CfpIpTD3jmXqpvZGw9Gt
+         p7tsxfbD1EIQRUbE+vTFyiSu/K9aAcax2kB423H9kiHVUUODCs9CuiVhOcFYYiy1xt+Z
+         Sv4RpBQHeIVZT9+cY36RJf2CW/7WSpbw6ENc3n82tb6miyvaDV6g5FjTewl9N6vY2or3
+         2TxQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723731760; x=1724336560;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=98fnk4sqqU0DUmGRp9hZBZ09L6lQXvEbeeISq6VpsAg=;
+        b=uFfVWM3k66oacXTd5rbhnghkLLZB9fzmDukxp+tiSAWa1hyvw4Cnm6UCucFhPxKUax
+         fhmuGJRuaalxyIGxZPbJYTaZZsirAiPHiSuvBkqE/qlfD5yuIvWyoMVtyajTZ2oqd4j4
+         cJQjxxQDczjkw2FgAdSIfAyfWZ105WsKmO18q+iEa5e2jVQiG/922F7a93a4C/Fcxu8R
+         4j0KsvMKGLakZM8XwdmHdHVzePunHBSteit4tIr/8I1RVsGTP1RFGrwlLjE3bLMUIYVi
+         J4mKaikyw/WzbOUqfgiDX3xdXbCenoxm5ZozfUrgOhod6aTeSEkvOHsgwsldcW1oRgQS
+         P+CQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVNrcAfsny+x55VF23RpjPIWzHLIn5ZFaZlVufTUDGi6SBimdWh8VpwpLZvzWbiDqJNGcs6ElYda0qRxjXayg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy3eTrmGZDCq1xmRQWFK0sQjFBpjGr9uj13OHxcTG9pEJSPvH6+
+	7iqDVqYN1ZfEmbYrq7Zbo3L0PmaUiZN4nEvW33H8o4/nAqk6TJsCY84o+AiXkG0=
+X-Google-Smtp-Source: AGHT+IHnIel2/POZcT88jDsREpUOei267Za25zQnM3Q5WZHx70O75XoWAG+y8/drExtft5mrS8GkrA==
+X-Received: by 2002:a6b:6305:0:b0:7f6:85d1:f81a with SMTP id ca18e2360f4ac-824e86c307dmr184205039f.2.1723731759821;
+        Thu, 15 Aug 2024 07:22:39 -0700 (PDT)
+Received: from [127.0.0.1] ([96.43.243.2])
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4ccdc941eeasm203908173.176.2024.08.15.07.22.38
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 15 Aug 2024 07:22:39 -0700 (PDT)
+From: Jens Axboe <axboe@kernel.dk>
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+ Wedson Almeida Filho <wedsonaf@gmail.com>, 
+ Andreas Hindborg <nmi@metaspace.dk>
+Cc: Andreas Hindborg <a.hindborg@samsung.com>, 
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, 
+ "Behme Dirk (XC-CP/ESB5)" <Dirk.Behme@de.bosch.com>, 
+ linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ linux-kernel@vger.kernel.org
+In-Reply-To: <20240815074519.2684107-1-nmi@metaspace.dk>
+References: <20240815074519.2684107-1-nmi@metaspace.dk>
+Subject: Re: [PATCH 0/2] rust: fix erranous use of lock class key in rust
+ block device bindings
+Message-Id: <172373175849.6989.2668092199011403509.b4-ty@kernel.dk>
+Date: Thu, 15 Aug 2024 08:22:38 -0600
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.1
 
-On 15.08.24 16:09, Danilo Krummrich wrote:
-> On Thu, Aug 15, 2024 at 01:39:05PM +0000, Benno Lossin wrote:
->> On 15.08.24 15:33, Danilo Krummrich wrote:
->>> On Thu, Aug 15, 2024 at 02:34:50PM +0200, Alice Ryhl wrote:
->>>> On Thu, Aug 15, 2024 at 2:33=E2=80=AFPM Danilo Krummrich <dakr@kernel.=
-org> wrote:
->>>>>
->>>>> On Thu, Aug 15, 2024 at 11:20:32AM +0200, Alice Ryhl wrote:
->>>>>> On Thu, Aug 15, 2024 at 4:52=E2=80=AFAM Danilo Krummrich <dakr@kerne=
-l.org> wrote:
->>>>>>>
->>>>>>> On Wed, Aug 14, 2024 at 12:32:15PM -0700, Boqun Feng wrote:
->>>>>>>> Hi Danilo,
->>>>>>>>
->>>>>>>> I'm trying to put your series on rust-dev, but I hit a few conflic=
-ts due
->>>>>>>> to the conflict with `Box::drop_contents`, which has been in rust-=
-dev
->>>>>>>> for a while. And the conflict is not that trivial for me to resolv=
-e.
->>>>>>>> So just a head-up, that's a requirement for me to put it on rust-d=
-ev for
->>>>>>>> more tests from my end ;-)
->>>>>>>
->>>>>>> I rebased everything and you can fetch them from [1].
->>>>>>>
->>>>>>> I resolved the following conflicts:
->>>>>>>
->>>>>>>   - for `Box`, implement
->>>>>>>     - `drop_contents`
->>>>>>>     - `manually_drop_contents` [2]
->>>>>>
->>>>>> Not sure I like this name. It sounds like something that runs the
->>>>>> destructor, but it does the exact opposite.
->>>>>
->>>>> I thought it kinda makes sense, since it's analogous to `ManuallyDrop=
-::new`.
->>>>>
->>>>> What about `Box::forget_contents` instead?
->>>>
->>>> One option is `into_manually_drop`. This uses the convention of using
->>>> the `into_*` prefix for conversions that take ownership of the
->>>> original value.
->>>
->>> The signature of the current `Box::manually_drop_contents` is the same =
-as for
->>> `Box::drop_contents`, namely
->>> `fn manually_drop_contents(this: Self) -> Box<MaybeUninit<T>, A>`.
->>>
->>> `into_manually_drop` seems misleading for for returning a
->>> `Box<MaybeUninit<T>, A>`.
->>>
->>> I still think `forget_contents` hits it quite well. Just as `drop_conte=
-nts`
->>> drops the value, `forget_contents` makes the `Box` forget the value.
->>
->> I think `forget_contents` sounds good. Can you please add some more docs
->> to that function though? Like an example and change "Manually drops the
->> contents, but keeps the allocation" to "Forgets the contents (does not
->> run the destructor), but keeps the allocation.".
->=20
-> I can't really think of a good real world example other than moving out o=
-f a
-> `Box`, can you? Otherwise, maybe it just shouldn't be public?
 
-Oh I thought you had a user for that function. In that case making it
-private makes a lot of sense.
+On Thu, 15 Aug 2024 07:49:37 +0000, Andreas Hindborg wrote:
+> The rust block device bindings include a wrong use of lock class key. This
+> causes a WARN trace when lockdep is enabled and a `GenDisk` is constructed.
+> 
+> This series fixes the issue by using a static lock class key. To do this, the
+> series first fixes the rust build system to correctly export rust statics from
+> the bss segment.
+> 
+> [...]
 
-Also, `drop_contents` can be implemented with `forget_contents`, but
-that might be a good follow up as a good-first-issue.
+Applied, thanks!
 
->> Another thing that I spotted while looking at the patch, `move_out`
->> doesn't need the `transmute_copy`, you should be able to just call
->> `read` on the pointer.
->=20
-> While technically it's the same I thought `transmute_copy` is considered =
-better,
-> since it has less stict safety requirements?
+[2/2] rust: block: fix wrong usage of lockdep API
+      commit: d28b514ea3ae15274a4d70422ecc873bf6258e77
 
-I would avoid `transmute_copy` as much as possible, transmuting
-signifies to me that you somehow need to change the type and
-`transmute_copy` means that the compiler isn't even able to figure out
-that the two types have the same size (they are allowed to have
-different size [only `Src` larger than `Dst` though], but I most often
-have used this with generics where it was guaranteed to be the same
-type, but the compiler failed to notice it.).
+Best regards,
+-- 
+Jens Axboe
 
-> For `transmute_copy` we only need to say, that dst has the same type as s=
-rc,
-> whereas for `read` the pointer must be valid for reads, properly aligned =
-and
-> point to an initialized value.
 
-You can input a reference, so you get pointer validity for free, though
-you still need to put that in the SAFETY comment.
-
----
-Cheers,
-Benno
 
