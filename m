@@ -1,111 +1,239 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2734F4F602;
-	Thu, 15 Aug 2024 17:31:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 236A146426
+	for <rust-for-linux@vger.kernel.org>; Thu, 15 Aug 2024 17:39:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723743107; cv=none; b=G8+mV5dHQJbpG8ZQgOGNp5Cxy9r1NhFEuB3goHUWqNyZCbg3OP1xXe1FyIEwEv/QH6ALIodnqox5HB70oxrFBtZTg5P6wbvDXgpcOezJXrmD/628JfOi+eX3YAFr2EkVO6UnioaQ+K9ynpB4U1SUyLb+nggUun1ovWF2PW0ark8=
+	t=1723743555; cv=none; b=L0XiuZQJcq2AUYrQcJ8cVWx3Umhc8sipvLPxPzvbDLTKbuW6pELJ5e4m7xIFzHy/Y3mVFjs9UANannqCIbfc2riRONLchBCw4GDRVlT8pABuQV+/m5diJ3sfN6uRbVfGfOy/3kPTmsOHHpeZrC35SwC0oA7MzRbMpr0jO7dWf80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723743107; c=relaxed/simple;
-	bh=U+jRELET6AVBXyt+G5LhJTKwYebbuw6k806cmUl27d4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KObWVtU0k7Oq8FV64DvlQ4ghfk5sPMtkAJ91NCjLv1K4Bm0zSKTJZ2pQlLY/K+lz4mG9LwirwV/2jSbQWDW9CZSDvms2OoHMq006GwZPH/+Yh8jdbbU4a2DMTap1aqRlq9QhY7wZrA0v3eN02TeW6W7kFnB6Xpen0+8L9W1qkA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lW9ynsNv; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1723743555; c=relaxed/simple;
+	bh=/QxSa3ECPYBoJRTg0EGbC8+fquDkIseWUM62eZtMWXA=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=qNAWYDwSIPmwkdTW2KQav7+6JBv48lkrvaMv4VSCZ+fWFqOSlOdnbxdgFeiI7SNvqqTrva34UTSVlSfNG26hrcuAAa3qvN2YLZh//nhdpVglDoVvGkCM4/f+/0TDiqUDIHDiYSpXpONNH/s+6bjdNUMYoIFm7Jytc+F9TsWx2hA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--samitolvanen.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=3rHDqE4l; arc=none smtp.client-ip=209.85.128.201
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--samitolvanen.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lW9ynsNv"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECDD2C32786;
-	Thu, 15 Aug 2024 17:31:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723743106;
-	bh=U+jRELET6AVBXyt+G5LhJTKwYebbuw6k806cmUl27d4=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=lW9ynsNvLMwK7q2CJ6/FKGAkz3vZhFuQk7Tt913Eb3STEgbG6S8JmT5YxEgQ7jikl
-	 s5tMS27uL/3rJ685dtYV/gLpnJ5fclQD8vaf4/v4sYwgoy6d3MejUG/1bb+C2+jKB4
-	 Ql8SZFLapCQEm+xCQEUhh9DfAp3kCEikAWT1u5aBWlm2KmcOqfhB8mHVO4r3h5yG/M
-	 iHPHWai5MCOC1PuGak7223GaADjxgkNXghQDseW2Y6pPrQMPFpgISYFPxp4bqAMfhO
-	 8GOGjmzbfVx41lszNAW25tpjoTkBk1NhBm6vx+dDbjStokOqGqkvg8OZj9eJwhrOoE
-	 s9RMAtsIdln8w==
-Message-ID: <0864ea20-b75d-46c1-844c-9f65da25e6b3@kernel.org>
-Date: Thu, 15 Aug 2024 19:31:39 +0200
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3rHDqE4l"
+Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-6ad660add0fso15092377b3.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 15 Aug 2024 10:39:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1723743553; x=1724348353; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=FI5SwdhvqVZuIi7hVeuwkmGg+eXkS16ccuAJOthoTGw=;
+        b=3rHDqE4lbd7SflJ1E+pWIVy4g08Jb3wIA079GD9JEPm7n/hNziBH9ObJ27iQp1oi+J
+         j8Nt/kiISgut3iM+Ll/j0hfVbTHP8n4CpBE7OvPOPqjrefgx2zJan0ete/NteyvGnk6a
+         vVGyq4+i0fN8DzLzMHfU7uGzYbXNDBKUXiSAn/ekqRzcyvXOCNkgsLmfp8aCOYMQ4EeB
+         9hxXX3O3/kSvm+pYC7aWLeT70GFJVfyXdggfhO/17vpeaL8fn/NOp8QNVqZrJ7IQH32h
+         BGTZHP0nQf0kn7iSxpFQ3FOPoOMG/ueAeMdemvA++XnikPdT1Zd2SqlQUTEZhQLR97sg
+         kk6A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723743553; x=1724348353;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=FI5SwdhvqVZuIi7hVeuwkmGg+eXkS16ccuAJOthoTGw=;
+        b=YbJCjx0qUlwntSqb/2lg6YwoyZhBTlM4FO+BuIhMBIXf5p+ZgnVrPnNBOPiBKbRhE5
+         es3m4ImEZZzFMsD/KRklHocAUK1N1EXzwjzHv1mGM0HzfY/CfbxBgwgyMKfyCUpNT05l
+         NyXuwQkCaxaFA1BU/QYsbcuiz+VD4S7PxkockFTmkicAId0CRrjleBFu5aVBs1SURXc+
+         wQVBJfIFs1DANyos1+AQLjd+xiP/yKpBgcP6l3o62ZGZjKgYxzCeKlS6cMugPuXBnrkz
+         0VTdpmQ/pdM2GM5keK7aikbBcufFgR5tQA6T+cIBJ1mOA3ZW1MIdUstuE33mSf9oNRvu
+         ra/w==
+X-Forwarded-Encrypted: i=1; AJvYcCXrf1etrDS21ilqlkuDQjXCo2FJjz+/rR80u5+het7q69tCGNDd03onZRMwr7/CUrI6JUKCCsFfSeM/Ig9zY4LkzlRSO5vJuc2Z/hZ+xwY=
+X-Gm-Message-State: AOJu0Yzq/PikjrC1KO6mJ7cxbRrW9IFMRD1wGtdoI42KQgmER7jhb0+u
+	gGwl2Qcvd9Uc4ZsCPEPQhGmHFaxTyjwdpzlkupUvYo61P+t7p1nTOWtLmxN3doNDNgG7wVh5fpf
+	4USSp3tLL3HkcT9L6hAjLfbPTnA==
+X-Google-Smtp-Source: AGHT+IHG9k10F+Xr0bHXhKpq1URNC0sUw6joWMjh3WP84iRPDa1q7xobX3VdQ7KeATVRbDrTvrcbseIf5bS0+Ur2UGk=
+X-Received: from samitolvanen.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:4f92])
+ (user=samitolvanen job=sendgmr) by 2002:a05:690c:3405:b0:691:a38c:a61d with
+ SMTP id 00721157ae682-6b1d7ef3527mr5337b3.3.1723743553088; Thu, 15 Aug 2024
+ 10:39:13 -0700 (PDT)
+Date: Thu, 15 Aug 2024 17:39:04 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v5 00/26] Generic `Allocator` support for Rust
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
- gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
- a.hindborg@samsung.com, aliceryhl@google.com, akpm@linux-foundation.org,
- daniel.almeida@collabora.com, faith.ekstrand@collabora.com,
- boris.brezillon@collabora.com, lina@asahilina.net, mcanal@igalia.com,
- zhiw@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com,
- ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-References: <20240812182355.11641-1-dakr@kernel.org>
- <Zr0GP0OXliPRqx4C@boqun-archlinux> <Zr1teqjuOHeeFO4Z@cassiopeiae>
- <Zr44h-4A3rm-ALS2@boqun-archlinux>
-From: Danilo Krummrich <dakr@kernel.org>
-Content-Language: en-US
-In-Reply-To: <Zr44h-4A3rm-ALS2@boqun-archlinux>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+X-Developer-Key: i=samitolvanen@google.com; a=openpgp; fpr=35CCFB63B283D6D3AEB783944CB5F6848BBC56EE
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7301; i=samitolvanen@google.com;
+ h=from:subject; bh=/QxSa3ECPYBoJRTg0EGbC8+fquDkIseWUM62eZtMWXA=;
+ b=owEB7QES/pANAwAKAUy19oSLvFbuAcsmYgBmvj03GZGfdKGX6xZKDzgMxpatJGv4ZX3wPL7Ee
+ 4oD3ORL1F6JAbMEAAEKAB0WIQQ1zPtjsoPW0663g5RMtfaEi7xW7gUCZr49NwAKCRBMtfaEi7xW
+ 7rTZDACeDXgkVekPtKMcZUCTLqkKP8C87jVW7eAaTDcFg5E2jq4kcKcWndlb6h8f0WSh/7XKr6a
+ Mk8yEYovqNadFCx2EARM6j+QpAHkMdITBiutyyNt4b2GM82wo7gtFHcvye0PML04wd4Jap7vmAg
+ N+CNdtd+IF5hhw4W4U1TZKl3s9FxQtdpDvWOLXfrGAYibKSVTUT9Tachp7Ubzx6zQQpSJAKPE99
+ bEEIE49Xuixq4XHcd8WgXccyDkHGhQevmctAcKoQApWvfMHPg11BJFfkAYsL8gpaP0BxgEbgwN+
+ /sUE3MjrU2M0F4y9JIes+DI3BQskBmPR4KFEYv8ZaVpsrOwoTjrpO7uM2/sdlxDBSSS8swaqE1B
+ LTTOAbFQG0R1jxzaIPRr8/h0Lvyq+VsBKfUkLuzMmDrj+nStcYCT9RHeRDCanjCmF1Xnvl2Yudi IuqN5+lO4ZH8gh/0Dc0yTr//BjPtTuEDbed3kA3CH8uwyENcvmCnV2I7dvCygPMNcnkIk=
+X-Mailer: git-send-email 2.46.0.184.g6999bdac58-goog
+Message-ID: <20240815173903.4172139-21-samitolvanen@google.com>
+Subject: [PATCH v2 00/19] Implement DWARF modversions
+From: Sami Tolvanen <samitolvanen@google.com>
+To: Masahiro Yamada <masahiroy@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Matthew Maurer <mmaurer@google.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, Petr Pavlu <petr.pavlu@suse.com>, 
+	Neal Gompa <neal@gompa.dev>, Hector Martin <marcan@marcan.st>, Janne Grunau <j@jannau.net>, 
+	Asahi Linux <asahi@lists.linux.dev>, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, Sami Tolvanen <samitolvanen@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On 8/15/24 7:19 PM, Boqun Feng wrote:
-> On Thu, Aug 15, 2024 at 04:52:42AM +0200, Danilo Krummrich wrote:
->> On Wed, Aug 14, 2024 at 12:32:15PM -0700, Boqun Feng wrote:
->>> Hi Danilo,
->>>
->>> I'm trying to put your series on rust-dev, but I hit a few conflicts due
->>> to the conflict with `Box::drop_contents`, which has been in rust-dev
->>> for a while. And the conflict is not that trivial for me to resolve.
->>> So just a head-up, that's a requirement for me to put it on rust-dev for
->>> more tests from my end ;-)
->>
->> I rebased everything and you can fetch them from [1].
->>
-> 
-> Thanks! I will take a look later today or tomorrow.
+Hi,
 
-I'll also send a v6 soon, which will also be based on rust-dev, so can also
-take this one then.
+Here's v2 of the DWARF modversions series [1]. The main motivation
+remains modversions support for Rust, which is important for
+distributions like Android that are eager to ship Rust kernel
+modules. However, per Luis' request [2], v2 drops all Rust specific
+bits from the series and instead adds the feature as an option
+for the entire kernel. Matt is addressing Rust modversion_info
+compatibility issues in a separate series [3], and we'll follow up
+with a patch to actually allow CONFIG_MODVERSIONS with Rust once
+these have been sorted out.
 
-> 
->> I resolved the following conflicts:
->>
->>    - for `Box`, implement
->>      - `drop_contents`
->>      - `manually_drop_contents` [2]
->>      - ``move_out` [2]
-> 
-> Have you considered naming this `into_inner` which is aligned to std
-> `Box`?
+A short background recap: Unlike C, Rust source code doesn't have
+sufficient information about the final ABI, as the compiler has
+considerable freedom in adjusting structure layout for improved
+performance [4], for example, which makes using a source code
+parser like genksyms a non-starter. Based on Matt's suggestion and
+previous feedback from maintainers, this series uses DWARF debugging
+information for computing versions. DWARF is an established and
+a relatively stable format, which includes all the necessary ABI
+details, and adding a CONFIG_DEBUG_INFO dependency for Rust symbol
+versioning seems like a reasonable trade-off.
 
-Seems viable too. I can rename it.
+The first 16 patches of this series add a small tool for computing
+symbol versions from DWARF, called gendwarfksyms. When passed a
+list of exported symbols and an object file, the tool generates
+an expanded type string for each symbol, and computes symbol CRCs
+similarly to genksyms. gendwarfksyms is written in C and uses libdw
+to process DWARF, mainly because of the existing support for C host
+tools that use elfutils (e.g., objtool). The next two patches ensure
+that debugging information is present where we need it and fix a
+compilation issue with x86 asm-prototypes.h. The last patch adds
+gendwarfksyms as an alternative to genksyms.
 
-> 
-> Regards,
-> Boqun
-> 
->>      - `BorrowedMut` for `ForeignOwnable` for `Box<T, A>` and `Pin<Box<T, A>>`
->>      - `InPlaceWrite` and updated `InPlaceInit`
->>    - for `RBTreeNode`, make use of `Box::move_out` to replace the original
->>      implementation partially moving out of `Box`
->>
->> @Alice: Please have a look at the changes for `RBTreeNode`. Maybe it's also
->> worth having them in a separate patch.
->>
->> - Danilo
->>
->>
->> [1] https://git.kernel.org/pub/scm/linux/kernel/git/dakr/linux.git/log/?h=rust-dev/mm
->> [2] https://git.kernel.org/pub/scm/linux/kernel/git/dakr/linux.git/commit/?h=rust-dev/mm&id=ef80ccca2ccebf3c7bcafdc13d1bfe81341cbe63
->> [3] https://git.kernel.org/pub/scm/linux/kernel/git/dakr/linux.git/diff/rust/kernel/rbtree.rs?h=rust-dev/mm&id=c361d66df7fb7760064fbca6bf9d72171c352a73
->>
->>>
->>> Regards,
->>> Boqun
-> 
+A quick note about performance: On my development system, building
+x86_64 defconfig with MODVERSIONS takes about 59.4s with gcc 13
+(avg. of ten runs). Adding DEBUG_INFO_DWARF5 increases the build
+time by ~23% to 73.3s. Switching from GENKSYMS to GENDWARFKSYMS
+reduces the build time by 6% to 68.9s, which is still ~16% slower
+than genksyms without debugging information. Therefore, if you
+already build kernels with debugging information, gendwarfksyms
+should be slightly faster. YMMV, of course.
+
+Things would change with LTO, because we won't have full DWARF
+until we have an ELF binary, which means we'd have to process
+vmlinux.o. This version of gendwarfksyms is still single-threaded
+as it seems we can't rely on libdw to be thread-safe. Processing
+a ThinLTO x86_64 defconfig vmlinux.o on my system takes ~2m16s,
+and would have to happen even on incremental builds, just like
+LTO linking itself. As cross-language LTO presumably isn't wildly
+popular yet, gendwarfksyms intentionally depends in !LTO in this
+version.
+
+Looking forward to hearing your thoughts!
+
+Sami
+
+[1] https://lore.kernel.org/lkml/20240617175818.58219-17-samitolvanen@google.com/
+[2] https://lore.kernel.org/lkml/ZnIZEtkkQWEIGf9n@bombadil.infradead.org/
+[3] https://lore.kernel.org/lkml/20240806212106.617164-1-mmaurer@google.com/
+[4] https://lore.kernel.org/rust-for-linux/CAGSQo005hRiUZdeppCifDqG9zFDJRwahpBLE4x7-MyfJscn7tQ@mail.gmail.com/
+
+---
+
+Changes in v2:
+- Per Luis' request, dropped Rust-specific patches and added
+  gendwarfksyms as an alternative to genksyms for the entire
+  kernel.
+
+- Added support for missing DWARF features needed to handle
+  also non-Rust code.
+
+- Changed symbol address matching to use the symbol table
+  information instead of relying on addresses in DWARF.
+
+- Added __gendwarfksyms_ptr patches to ensure the compiler emits
+  the necessary type information in DWARF even for symbols that
+  are defined in other TUs.
+
+- Refactored debugging output and moved the more verbose output
+  behind --dump* flags.
+
+- Added a --symtypes flag for generating a genksyms-style
+  symtypes output based on Petr's feedback, and refactored
+  symbol version calculations to be based on symtypes instead
+  of raw --dump-dies output.
+
+- Based on feedback from Greg and Petr, added --stable flag and
+  support for reserved data structure fields and declaration-onl
+  structures. Also added examples for using these features.
+
+- Added a GENDWARFKSYMS option and hooked up kbuild support
+  for both C and assembly code. Note that with gendwarfksyms,
+  we have to actually build a temporary .o file for calculating
+  assembly modversions.
+
+---
+
+Sami Tolvanen (19):
+  tools: Add gendwarfksyms
+  gendwarfksyms: Add symbol list handling
+  gendwarfksyms: Add address matching
+  gendwarfksyms: Add support for type pointers
+  gendwarfksyms: Expand base_type
+  gendwarfksyms: Add a cache for processed DIEs
+  gendwarfksyms: Expand type modifiers and typedefs
+  gendwarfksyms: Expand subroutine_type
+  gendwarfksyms: Expand array_type
+  gendwarfksyms: Expand structure types
+  gendwarfksyms: Limit structure expansion
+  gendwarfksyms: Add die_map debugging
+  gendwarfksyms: Add symtypes output
+  gendwarfksyms: Add symbol versioning
+  gendwarfksyms: Add support for declaration-only data structures
+  gendwarfksyms: Add support for reserved structure fields
+  export: Add __gendwarfksyms_ptr_ references to exported symbols
+  x86/asm-prototypes: Include <asm/ptrace.h>
+  kbuild: Add gendwarfksyms as an alternative to genksyms
+
+ arch/x86/include/asm/asm-prototypes.h     |   1 +
+ include/linux/export.h                    |  15 +
+ kernel/module/Kconfig                     |  31 +
+ scripts/Makefile                          |   3 +-
+ scripts/Makefile.build                    |  34 +-
+ scripts/gendwarfksyms/.gitignore          |   2 +
+ scripts/gendwarfksyms/Makefile            |  12 +
+ scripts/gendwarfksyms/cache.c             |  51 ++
+ scripts/gendwarfksyms/crc32.c             |  69 ++
+ scripts/gendwarfksyms/crc32.h             |  34 +
+ scripts/gendwarfksyms/die.c               | 196 +++++
+ scripts/gendwarfksyms/dwarf.c             | 973 ++++++++++++++++++++++
+ scripts/gendwarfksyms/examples/declonly.c |  31 +
+ scripts/gendwarfksyms/examples/reserved.c |  66 ++
+ scripts/gendwarfksyms/gendwarfksyms.c     | 201 +++++
+ scripts/gendwarfksyms/gendwarfksyms.h     | 275 ++++++
+ scripts/gendwarfksyms/symbols.c           | 392 +++++++++
+ scripts/gendwarfksyms/types.c             | 557 +++++++++++++
+ 18 files changed, 2936 insertions(+), 7 deletions(-)
+ create mode 100644 scripts/gendwarfksyms/.gitignore
+ create mode 100644 scripts/gendwarfksyms/Makefile
+ create mode 100644 scripts/gendwarfksyms/cache.c
+ create mode 100644 scripts/gendwarfksyms/crc32.c
+ create mode 100644 scripts/gendwarfksyms/crc32.h
+ create mode 100644 scripts/gendwarfksyms/die.c
+ create mode 100644 scripts/gendwarfksyms/dwarf.c
+ create mode 100644 scripts/gendwarfksyms/examples/declonly.c
+ create mode 100644 scripts/gendwarfksyms/examples/reserved.c
+ create mode 100644 scripts/gendwarfksyms/gendwarfksyms.c
+ create mode 100644 scripts/gendwarfksyms/gendwarfksyms.h
+ create mode 100644 scripts/gendwarfksyms/symbols.c
+ create mode 100644 scripts/gendwarfksyms/types.c
+
+
+base-commit: 7c626ce4bae1ac14f60076d00eafe71af30450ba
+-- 
+2.46.0.184.g6999bdac58-goog
+
