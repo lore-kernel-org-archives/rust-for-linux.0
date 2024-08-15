@@ -1,158 +1,97 @@
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DC3463D5;
-	Thu, 15 Aug 2024 14:32:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F12F753365;
+	Thu, 15 Aug 2024 15:31:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723732369; cv=none; b=eM6QS9SywpsHrNt2P3iTHMpieyd/6Hx0ucxGQbC0JYJar1LESMNlCJRMY3KDc6/Y0tY/A3cK1zP31DNTNffqgETL3xH0H+yWzig/2lrDUPoSIQINcBK7uIkzfsnCbc1NmQmenbVfNTLGi2noMp/Ohp734Tn61gllQFzP6Ki7Rh8=
+	t=1723735900; cv=none; b=SWE6X6VjrHZXpSrrGXAcdDaQuMXa9SxbDcUqiX5ni413FVZmXZ0emChXm6KX8kIrU1OTXfV/WpcS3QgLirMTP59tqlAr67zxKsYbwh3C1zjPW+qucBIXI26l3mvvlHO7VRYrxMfzjYZAHpa7mzliiCfs0hkH8RH745/27c7uQB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723732369; c=relaxed/simple;
-	bh=wkUzvqCtu+wpi3BEp07oiljISHO9vt/TcVXV6KAxcuM=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cEiqO5nQlAIQG6Ayc0xYvTndRO6iaaRBVlNiLFgQyr9/NYKFd1C0t/p+EUT0PeqYLlUv64Y1a9nz8/QGcml4xJ7hCVmxxZyPcl0uezzgP2jBvBw8bm6a3uilPoki1xWL1d3idL+Q17wb6IDHX6xgx4m1aONhbHaP/2D6UoAH3gA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=OkM5mQLH; arc=none smtp.client-ip=185.70.43.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1723735900; c=relaxed/simple;
+	bh=zO8i28esgOwM2IKZTj6QVpLHk2hrVfYuXE8+Db5XxMc=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Zr5VibnqVFTkEAwm1y5BvtwwWO0Z4DkcxhfEPmepoqbHaosHYPP7W5igKWqbeXWEgPWR+TzLM48ZO5OtWHDUd57iKyhJq0SDYId7lE39RWkGEqailRG+vMbF7hLZIV0+xXw2ajmSwddDof5rOnqXp4L6S+ZG6Qt1gbRvY5NtXVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W+A6v2+y; arc=none smtp.client-ip=209.85.216.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="OkM5mQLH"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1723732365; x=1723991565;
-	bh=5hEzlNomb4W1zQMDLk7SwBhBL9j2hyKIONtSLeO3jn0=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=OkM5mQLHxfAnbTFITUMhTjg1NsfJTsEewYJihxT/qaMFCD4dAeY/PGKvswvv2/jLz
-	 8lRKk2DmiKbKVDR5Nh+V7WMW4wGpCnZ4LOkBKeW53l5GIJ4deIAaEmfYeTs+nyLKO3
-	 Hxqux2tg/LHRuky1WG2ruF0okilkMqcX1QUau4u5oesYjrAa5Ctx+uEcCgLazzbfG/
-	 W6SRazzpS/1B7Gf5ImyGQkd3as0Pvr2rXsThhwIy5L/J1y9c3hrM97sioHSJa4641k
-	 PvFlnF1Mwm2eLPnjYE+EigRyXFMovWqlKJ86/nxZFisPfZF0wEY1CNYJmPO9S/hIvk
-	 3hbe9VrPlV/hg==
-Date: Thu, 15 Aug 2024 14:32:40 +0000
-To: Andreas Hindborg <nmi@metaspace.dk>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Masahiro Yamada <masahiroy@kernel.org>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Andreas Hindborg <a.hindborg@samsung.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, =?utf-8?Q?Sergio_Gonz=C3=A1lez_Collado?= <sergio.collado@gmail.com>, rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] kbuild: rust: split up helpers.c
-Message-ID: <65f8a922-c0dc-4b7e-b701-5f8fd84b5b81@proton.me>
-In-Reply-To: <20240815103016.2771842-1-nmi@metaspace.dk>
-References: <20240815103016.2771842-1-nmi@metaspace.dk>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: ece9b106659f7cf1b14b91ef5b177dec132cba8b
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W+A6v2+y"
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-2d3bc043e81so752546a91.2;
+        Thu, 15 Aug 2024 08:31:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1723735898; x=1724340698; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=a+LqYglqDDwweyHeY9WF0lHIc3M24FlH5C4AoMCNycQ=;
+        b=W+A6v2+yq5xuQmVedigaKEVz1rdhyJlY9PX7OTBxlxals+vTLUJqdZ6AlpDKV+ypY0
+         lERmMmY1y08waEvHzjpGcAGrt24RT/rzaS2+UvZ2Edtze7oePQyLwY8rsCIWgrMChstH
+         Q3oy/D85P8k9Fwp2KtdHuIz6GMyqcwBqo1oy8iyriOVqNhu+AaYX4qVa8wtFHgXM3A0f
+         jAe3Eafb+6FmP0MLrpV/OPeSHXO+sZZRfbmU5G39mRUYrWPPRzw4o8HHmwrXoQ6Zso+3
+         zr3CA2BXW2WfBBi4kqLKPvNw9/qDzPIyiVqEuqdjVapVusCvQNaE+47m60RQ3rm7mQC+
+         rILQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723735898; x=1724340698;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=a+LqYglqDDwweyHeY9WF0lHIc3M24FlH5C4AoMCNycQ=;
+        b=w2ENHZg/JpzMXrMtIASEmprvIYU9xCkh5wmi1UkzKKwBoPMYL+sCOBEvdQlC6K/QMv
+         o0aAq3r3Y3EHL+FdTPTsuIAp7DfBg1TFDGW65FcdyNYyn242RrAplrIYydAv/KJ1BT9A
+         9nU5moUrvyW0/dy+zzx1j5FHfVQfSuZOpybguBYkj6G9/5H+ML2Ybva34ZSs/nFgXUTT
+         /AzOtg3jI8O9YR2ziF+nOd+qWrXbaeX9jtzd4+4ItBl0f0ZZNRPWJA8o2NSkk30QdTmj
+         bArVW/u5rks05nVExqDvaQX/SrJQGPmCbZjD9gThXgDHHU2AryjEY9fRHJtgHJqdW2F9
+         A9iw==
+X-Forwarded-Encrypted: i=1; AJvYcCVyCLJ+LRcPhAe71ik+r/vUuex2Uo58l6EIXZAOdvh9YivAwnqR5XCgeIAhTkuYR5VaYtJ5Qpqr/Xzi1fDxc2qeX2u7Ymi50JmmQSi2icVbq8EP2G5T3SjQ7cYFC6qDP/eAomPFE4rLFOJ9rNX8VlKfB7o75JrwKyC+YMek9jDbwOOnKLQ7n40lLA==
+X-Gm-Message-State: AOJu0YzjNwch3Ci12dnfrKXrIzidcoWjIIRzPfUI6QPRODaEYr0lm1AR
+	pV6vCNht0zFyIBAJhIgDoF+66O/45y3ybsQ767vt7h+XnQKg0aTcpPGiWuawIGG9S2H+M7xRCcZ
+	zlHjPqD+9QaaXmMnPllKOGEVmt/0=
+X-Google-Smtp-Source: AGHT+IFZKfJDyUVUlLPZnL5SSp2gdP0C0YyAdgL1sqDAM9BZcm3HcihDUZEP+nsUhxy6U1bt7PVprEEKbniigIEBU5s=
+X-Received: by 2002:a17:90a:ca89:b0:2c9:754d:2cba with SMTP id
+ 98e67ed59e1d1-2d3dfc2aa3amr18264a91.3.1723735898110; Thu, 15 Aug 2024
+ 08:31:38 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20240815074519.2684107-1-nmi@metaspace.dk> <172373175849.6989.2668092199011403509.b4-ty@kernel.dk>
+In-Reply-To: <172373175849.6989.2668092199011403509.b4-ty@kernel.dk>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 15 Aug 2024 17:31:25 +0200
+Message-ID: <CANiq72kFXihVGDGmRyuc0LkODYOv2jX3shP-dEHjV3k1sqFEKg@mail.gmail.com>
+Subject: Re: [PATCH 0/2] rust: fix erranous use of lock class key in rust
+ block device bindings
+To: Jens Axboe <axboe@kernel.dk>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Andreas Hindborg <nmi@metaspace.dk>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, 
+	"Behme Dirk (XC-CP/ESB5)" <Dirk.Behme@de.bosch.com>, linux-block@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On 15.08.24 12:30, Andreas Hindborg wrote:
-> From: Andreas Hindborg <a.hindborg@samsung.com>
->=20
-> This patch splits up the rust helpers C file. When rebasing patch sets on
-> upstream linux, merge conflicts in helpers.c is common and time consuming
-> [1]. Thus, split the file so that each kernel component can live in a
-> separate file.
->=20
-> This patch lists helper files explicitly and thus conflicts in the file
-> list is still likely. However, they should be more simple to resolve than
-> the conflicts usually seen in helpers.c.
->=20
-> Link: https://rust-for-linux.zulipchat.com/#narrow/stream/288089-General/=
-topic/Splitting.20up.20helpers.2Ec/near/426694012 [1]
-> Signed-off-by: Andreas Hindborg <a.hindborg@samsung.com>
+Hi Jens,
 
-Looks good with `--color-moved`.
+On Thu, Aug 15, 2024 at 4:22=E2=80=AFPM Jens Axboe <axboe@kernel.dk> wrote:
+>
+> Applied, thanks!
+>
+> [2/2] rust: block: fix wrong usage of lockdep API
+>       commit: d28b514ea3ae15274a4d70422ecc873bf6258e77
 
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+If you picked 2/2 only, it requires the former as far as I understand.
 
-I got one comment suggestion below, but feel free to take it without.
+If you want to pick both:
 
-> ---
->=20
-> Changes since v2 [2]:
-> - Rebase on 6.11-rc3.
-> - Use `cpp` instead of Makefile scripting to concatenate files.
->=20
-> Link:
-> https://lore.kernel.org/rust-for-linux/20240507210818.672517-1-ojeda@kern=
-el.org/ [2]
-> ---
->  rust/Makefile               |   6 +-
->  rust/helpers.c              | 239 ------------------------------------
->  rust/helpers/README.md      |  17 +++
->  rust/helpers/blk.c          |  16 +++
->  rust/helpers/bug.c          |   9 ++
->  rust/helpers/build_assert.c |  25 ++++
->  rust/helpers/build_bug.c    |  10 ++
->  rust/helpers/err.c          |  22 ++++
->  rust/helpers/helpers.c      |  18 +++
->  rust/helpers/kunit.c        |  10 ++
->  rust/helpers/mutex.c        |  10 ++
->  rust/helpers/page.c         |  24 ++++
->  rust/helpers/refcount.c     |  22 ++++
->  rust/helpers/signal.c       |  10 ++
->  rust/helpers/slab.c         |  10 ++
->  rust/helpers/spinlock.c     |  27 ++++
->  rust/helpers/task.c         |  22 ++++
->  rust/helpers/uaccess.c      |  17 +++
->  rust/helpers/wait.c         |  10 ++
->  rust/helpers/workqueue.c    |  16 +++
->  20 files changed, 298 insertions(+), 242 deletions(-)
->  delete mode 100644 rust/helpers.c
->  create mode 100644 rust/helpers/README.md
->  create mode 100644 rust/helpers/blk.c
->  create mode 100644 rust/helpers/bug.c
->  create mode 100644 rust/helpers/build_assert.c
->  create mode 100644 rust/helpers/build_bug.c
->  create mode 100644 rust/helpers/err.c
->  create mode 100644 rust/helpers/helpers.c
->  create mode 100644 rust/helpers/kunit.c
->  create mode 100644 rust/helpers/mutex.c
->  create mode 100644 rust/helpers/page.c
->  create mode 100644 rust/helpers/refcount.c
->  create mode 100644 rust/helpers/signal.c
->  create mode 100644 rust/helpers/slab.c
->  create mode 100644 rust/helpers/spinlock.c
->  create mode 100644 rust/helpers/task.c
->  create mode 100644 rust/helpers/uaccess.c
->  create mode 100644 rust/helpers/wait.c
->  create mode 100644 rust/helpers/workqueue.c
+Acked-by: Miguel Ojeda <ojeda@kernel.org>
 
-[...]
+Otherwise, I am happy to take them too.
 
-> diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
-> new file mode 100644
-> index 000000000000..74dd4275c233
-> --- /dev/null
-> +++ b/rust/helpers/helpers.c
-> @@ -0,0 +1,18 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
+Thanks!
 
-Should there be a comment here noting that these includes are sorted
-alphabetically? Since then (most) conflicts in this file can simply be
-solved by concatenating all hunks and doing `:'<,'>!sort | uniq`?
-
----
 Cheers,
-Benno
-
-> +#include "blk.c"
-> +#include "bug.c"
-> +#include "build_assert.c"
-> +#include "build_bug.c"
-> +#include "err.c"
-> +#include "kunit.c"
-> +#include "mutex.c"
-> +#include "page.c"
-> +#include "refcount.c"
-> +#include "signal.c"
-> +#include "slab.c"
-> +#include "spinlock.c"
-> +#include "task.c"
-> +#include "uaccess.c"
-> +#include "wait.c"
-> +#include "workqueue.c"
-
+Miguel
