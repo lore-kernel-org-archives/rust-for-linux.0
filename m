@@ -1,43 +1,43 @@
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E29BC176ADE;
-	Thu, 15 Aug 2024 13:44:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4BE21494C5;
+	Thu, 15 Aug 2024 13:50:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723729474; cv=none; b=fLWVZI7czB4pidIBYZ6ceuUvuS0evwRgZIgXpMWADQLCPDLfmMZcmgeKl+EXjX2oS7zWaCqzLr3J2cfDPHMNplYG8reE/pwM6OsqNQD9YhJ476pZkndRLUFDZe95GCaIp52X/YMZi5DRi8zat5wahDWCiKbKgta8ezOcxrC4BHU=
+	t=1723729808; cv=none; b=h7a8cox5ri62i0FhQOwDpxOsgF199qyP9I0INcDEowJe8iEPGpBLCcLBEOfhRbbPltjw/sONY55HWTOCviyyd6VDT6LwukqXhSownzRryVSYefakdIxv0NAFQcVhSAf/q60KGO6sJcQDtmBrJjeiMeXIHPYHDY9vCTrOl7H8AzY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723729474; c=relaxed/simple;
-	bh=eNphmiHc83AKclX5Kb1J+PRW9v7p2ZiSzVk+iMnUfoQ=;
+	s=arc-20240116; t=1723729808; c=relaxed/simple;
+	bh=VHcZHRipWBwVJFTK+W08oRNQL269lIOOCvroraVRk0Q=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tYEQNOYSbYjOU3TSl3+Eq8WYagpNpEiSIO2DwHkfGh4ajHVx+Qf9cumwLKYwWi50S11pvYD52F5F4xglAO88vkFRkUiVRLs37cWHN9/ijHN3lA9A0FK9JQUJaTrePTQbIXQxnInVltd0i86g1/KEe/JaI8fY/kzCP2Ofe7P8rKs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=eM9P/b+6; arc=none smtp.client-ip=185.70.43.16
+	 MIME-Version:Content-Type; b=q16Y229ZWTwObViXn0Xn7lCftrHcbpc8etIInjww0HaQsc85rOh5X0n0XErF1gn0iBKwsFGmSpxZ+7f2h3c+JzsRKZdY9uPxkdFuEfGRL8MfDInFpmxJ9scunoQQmNduN9lm1S74YmR9cRI3H7igDITjSs38Z2sJ6+XgExpbC0Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=dvruiuGc; arc=none smtp.client-ip=185.70.40.133
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="eM9P/b+6"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="dvruiuGc"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1723729470; x=1723988670;
-	bh=3VYeWvujsQ3yDJQHGGKJzkKmIzXIyBmtxkRQaNyIsdo=;
+	s=protonmail; t=1723729802; x=1723989002;
+	bh=KEupb37DrZI7fKTirvjR5sFyvknSbw5Bw1SxzjumzWg=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=eM9P/b+6X+siK4xfHqXgARV3W6l7uzGO52rWuCPqS2r3k+Xkvhknelzc7IDBfW2iM
-	 cp840X0qhvqrl7ti87Xw7mPwoptnpLxslY8PQXoVsdbFyKUiA+ghhM0h1Ofo6DEQ+B
-	 Jo9+tlWDDaTkamx64mtJCeyY9pEE5IKkr3y7HN0aeTQaKoUDn9Kdk+XChXulFKnm5h
-	 GfdqjuC1wbUPZz559klCZZM9DpRt6PhEv2S9f1OtwruBzc88wwDeGFdqwo+MzQ77E5
-	 U7FDg1164NT+gs9/Xdtt5K7QqlN39/zDzp+3MQ7mnmAM9F5/nqlbvrmtWbuDNofeA6
-	 cnzBvQhX3g3Cg==
-Date: Thu, 15 Aug 2024 13:44:27 +0000
+	b=dvruiuGcYy9XjfiiXN+udkg0CQt6KsH/wfuGMotUl+tnvX/rODk0lST+iZ2OiQnQn
+	 ofK+rV6bfXB5BUFhwHkRxXwWDbezOi0xfPg0756FKGYyko8o/b79S1V06eYZuxyHt+
+	 olkc4sDvKn+RBP7ZOArwu/H7xbH5d1LEEOJsqFMcncPRFEwttVn8oo/66GYbKFp35y
+	 cp60QNWMkTBXeqheFwSolxhdtTIe812KSB77CrmxZFDgEpLb0lrSyZFpi4mC5UVFtA
+	 wbFxvRhSfAR91QgmTFQfuFuRKFGccDTbekjEe3FbVsWgbvlV1dGGXzXXhuGKHo+hq6
+	 S/wzOuYpuS4HQ==
+Date: Thu, 15 Aug 2024 13:49:55 +0000
 To: Danilo Krummrich <dakr@kernel.org>
 From: Benno Lossin <benno.lossin@proton.me>
 Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@samsung.com, aliceryhl@google.com, akpm@linux-foundation.org, daniel.almeida@collabora.com, faith.ekstrand@collabora.com, boris.brezillon@collabora.com, lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com, ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v5 06/26] rust: alloc: implement `Vmalloc` allocator
-Message-ID: <01a46c6d-0107-4455-8c87-af43426752ff@proton.me>
-In-Reply-To: <Zr30pNwc5aanRaqj@cassiopeiae>
-References: <20240812182355.11641-1-dakr@kernel.org> <20240812182355.11641-7-dakr@kernel.org> <c9d57e77-8748-4e58-a39b-7a23f750ceda@proton.me> <Zr0r6sSFMSQIpHEX@cassiopeiae> <Zr072oSej9KIc1S6@cassiopeiae> <5dfe8bae-2c1e-47d4-9fb4-373b7d714c4f@proton.me> <Zr30pNwc5aanRaqj@cassiopeiae>
+Subject: Re: [PATCH v5 01/26] rust: alloc: add `Allocator` trait
+Message-ID: <a2462e9e-0b65-4cbd-82d9-32298dfb781e@proton.me>
+In-Reply-To: <Zr1Izo9Qp8mYkbpr@cassiopeiae>
+References: <20240812182355.11641-1-dakr@kernel.org> <20240812182355.11641-2-dakr@kernel.org> <cfcdaa42-6a62-4a17-a8dc-2382e88774dc@proton.me> <Zr1Izo9Qp8mYkbpr@cassiopeiae>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 17ff0a7a46da8fb406562ea9cc13290e07cee10e
+X-Pm-Message-ID: 93fe3d43e70bb7f12b5d0fa2bcfee2ab778e703f
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,115 +47,135 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On 15.08.24 14:29, Danilo Krummrich wrote:
-> On Thu, Aug 15, 2024 at 06:48:19AM +0000, Benno Lossin wrote:
->> On 15.08.24 01:20, Danilo Krummrich wrote:
->>> On Thu, Aug 15, 2024 at 12:13:06AM +0200, Danilo Krummrich wrote:
->>>>
->>>>>
->>>>>> +        ptr: Option<NonNull<u8>>,
->>>>>> +        layout: Layout,
->>>>>> +        flags: Flags,
->>>>>> +    ) -> Result<NonNull<[u8]>, AllocError> {
->>>>>> +        // TODO: Support alignments larger than PAGE_SIZE.
->>>>>> +        if layout.align() > bindings::PAGE_SIZE {
->>>>>> +            pr_warn!("Vmalloc does not support alignments larger th=
-an PAGE_SIZE yet.\n");
->>>>>> +            return Err(AllocError);
->>>>>
->>>>> I think here we should first try to use `build_error!`, most often th=
-e
->>>>> alignment will be specified statically, so it should get optimized aw=
-ay.
->>>>
->>>> Sure, we can try that first.
->>>
->>> I think I spoke too soon here. I don't think `build_error!` or `build_a=
-ssert!`
->>> can work here, it would also fail the build when the compiler doesn't k=
-now the
->>> value of the alignment, wouldn't it? I remember that I wasn't overly ha=
-ppy about
->>> failing this on runtime either when I first thought about this case, bu=
-t I also
->>> couldn't think of something better.
+On 15.08.24 02:16, Danilo Krummrich wrote:
+> On Wed, Aug 14, 2024 at 04:13:06PM +0000, Benno Lossin wrote:
+>> On 12.08.24 20:22, Danilo Krummrich wrote:
+>>> +/// # Safety
+>>> +///
+>>> +/// Memory returned from an allocator must point to a valid memory buf=
+fer and remain valid until
+>>> +/// it is explicitly freed.
 >>
->> Yes, it might fail even though the alignment at runtime will be fine.
->> But that's why I suggested trying `build_error!`(or `build_assert!`)
->> first, if nobody hits the case where the compiler cannot figure it out,
->> then we can keep it. If there are instances, where it fails, but the
->> alignment would be fine at runtime, then we can change it to the above.
->> (I would add such a comment above the assert).
+>> I wouldn't say that an allocator "returns memory", and in general I
+>> don't think the structure of the safety comment here is nice, how about
+>> the following: we put "Implementers must ensure that all trait functions
+>> abide by the guarantees documented in the `# Guarantees` sections."...
 >=20
-> Unfortunately, it already does fail with just the test cases.
+> Sounds reasonable to me. Additionally, I'd still keep the part below, tha=
+t says
+> that any pointer to a memory allocation must bbe valid to be passed to an=
+y other [`Allocator`]
+> function of the same type.
 
-Aw that's sad.
+Yes of course, that should be kept.
 
-> Anyway, even if it would have been fine, I don't think it would have been=
- nice
-> for a future user to run into a build error even though the alignment is
-> perfectlly within bounds.
+>>> +///
+>>> +/// Any pointer to a memory buffer which is currently allocated must b=
+e valid to be passed to any
+>>> +/// other [`Allocator`] function of the same type.
+>>> +///
+>>> +/// If `realloc` is called with:
+>>> +///   - a size of zero, the given memory allocation, if any, must be f=
+reed
+>>> +///   - `None`, a new memory allocation must be created
 
-I think it would have been better compared to failing with a warning at
-runtime.
+Only this list should be moved.
 
->>> In the end it's rather unlikely to ever hit this case, and probably eve=
-n more
->>> unlikely to hit it for a sane reason.
+>>> +pub unsafe trait Allocator {
+>>> +    /// Allocate memory based on `layout` and `flags`.
+>>> +    ///
+>>> +    /// On success, returns a buffer represented as `NonNull<[u8]>` th=
+at satisfies the layout
+>>> +    /// constraints (i.e. minimum size and alignment as specified by `=
+layout`).
+>>> +    ///
+>>> +    /// This function is equivalent to `realloc` when called with `Non=
+e`.
 >>
->> Yeah, but I still prefer the build to fail, rather than emitting a warn
->> message that can be overlooked at runtime.
+>> ... Then we can add this here:
 >>
->>>>> How difficult will it be to support this? (it is a weird requirement,
->>>>> but I dislike just returning an error...)
->>>>
->>>> It's not difficult to support at all. But it requires a C API taking a=
-n
->>>> alignment argument (same for `KVmalloc`).
+>>     /// # Guarantees
+>>     ///
+>>     /// When the return value is `Ok(ptr)`, then `ptr` is
+>>     /// - valid for writes (and reads after the memory has been initiali=
+zed) for `layout.size()` bytes,
+>>     ///   until it is passed to [`Allocator::free`] or [`Allocator::real=
+loc`],
+>>     /// - aligned to `layout.align()`,
+>>     /// - is valid for reads, if `flags.contains(flags::__GFP_ZERO)`,
 >>
->> I see, that's good to know.
->>
->>>> Coming up with a vrealloc_aligned() is rather trivial. kvrealloc_align=
-ed() would
->>>> be a bit weird though, because the alignment argument could only be re=
-ally
->>>> honored if we run into the vrealloc() case. For the krealloc() case it=
-'d still
->>>> depend on the bucket size that is selected for the requested size.
->>
->> Yeah... Maybe some more logic on the Rust side can help with that.
+>> Do we need to handle other flags?
 >=20
-> Only if we reimplement `KVmalloc` in Rust, However, there are quite some =
-special
-> cases in __kvmalloc_node_noprof(), i.e. fixup page flags, sanity check th=
-e size
-> on kmalloc failure, fail on certain page flags, etc.
+> The whole flags thing is a bit difficult to represent here properly.
 >=20
-> I don't really want to duplicate this code, unless we absolutely have to.
+> Theoretically, we'd need to add that it guarantees that the memory is zer=
+oed for
+> __GFP_ZERO, non-blocking for GFP_NOWAIT, etc. But, I think we shouldn't
+> re-iterate all different behavior for the different flags.
 
-I am under the (probably wrong) impression that kvmalloc has some size
-check and selects vmalloc or kmalloc depending on that. I think that we
-could check the size and if it is going to allocate via kmalloc, then we
-adjust the size for alignment as usual and if it is going to select
-vmalloc, then we can just pass the alignment (if the vmalloc alignment
-patch is done first).=20
+If there are good docs, then link them.
 
->>>> Adding the C API, I'm also pretty sure someone's gonna ask what we nee=
-d an
->>>> alignment larger than PAGE_SIZE for and if we have a real use case for=
- that.
->>>> I'm not entirely sure we have a reasonable answer for that.
+> Another inconvenience is that not all page flags are honored or make sens=
+e for
+> all allocators. This is especially inconvenient for `KVmalloc` where we c=
+an't
+> even say if we end up in vrealloc() or krealloc(). kvmalloc() even contai=
+ns a
+> couple of flag fixups for this reason [2].
+
+I am wondering if we want to encode this in the type system...
+
+> I think we should just point to [1], which should document everything alr=
+eady.
+>=20
+> [1] https://elixir.bootlin.com/linux/v6.10.4/source/include/linux/gfp_typ=
+es.h
+> [2] https://elixir.bootlin.com/linux/v6.10.4/source/mm/util.c#L612
+>=20
+>> Also IIRC the memory given to us by C is considered initialized by Rust
+>> (though it has a non-deterministic value), so we might have an
+>> unconditional "valid for reads". Am I correct?
+>=20
+> Yes, but as you say, unless allocated with __GFP_ZERO, it contains non-de=
+terministic data. It may
+> even contain old data from previous allocations.
+
+Yeah, but IIRC that is not a soundness issue. So memory coming from C is
+always considered initialized by Rust. Whereas
+`MaybeUninit::uninit().assume_init()` is insta-UB, reading such memory
+should be fine (just not useful).
+
+>>> +    /// by this allocator. The alignment encoded in `layout` must be s=
+maller than or equal to the
+>>> +    /// alignment requested in the previous `alloc` or `realloc` call =
+of the same allocation.
+>>> +    ///
+>>> +    /// Additionally, `ptr` is allowed to be `None`; in this case a ne=
+w memory allocation is
+>>> +    /// created.
 >>
->> We could argue that we can remove an "ugly hack" (when we don't have the
->> build assert, if we do have that, I don't mind not supporting it), but I
->> agree that finding a user will be difficult.
+>> This Safety section does not talk about the case `layout.size() =3D=3D 0=
+`,
+>> but it should have the same requirement as `free()`.
+>>
+>> Also add a `# Guarantees` section here:
+>>
+>>     /// # Guarantees
+>>     ///
+>>     /// This function has the same guarantees as [`Allocator::alloc`]. W=
+hen `ptr =3D=3D Some(p)`, then it
+>>     /// additionally has the following:
+>>     /// - when `Ok(ret_ptr)` is the return value, then
+>>     ///   `ret_ptr[0..min(layout.size(), old_size)] =3D=3D p[0..min(layo=
+ut.size(), old_size)]`, where
+>>     ///   `old_size` is the size of the allocation that `p` points at.
 >=20
-> I'd argue it's not really a hack to fail on something that's not supporte=
-d
-> (yet). Allocations can (almost) always fail, this is just another case.
+> We could also say "The contents of the memory pointed to by `p` are prese=
+rved
+> up to the lesser of the new and old size." But I'm fine with both.
 
-I guess since this is a deterministic failure, it's better than other
-failures. But I would still say this is hacky.
+I can read and write the math-ish syntax better, so I would prefer that
+over words. If others think we should use words, then we can discuss.
 
 ---
 Cheers,
