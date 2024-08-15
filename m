@@ -1,106 +1,287 @@
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-40136.proton.ch (mail-40136.proton.ch [185.70.40.136])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B191619D89D;
-	Thu, 15 Aug 2024 13:04:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7463F17C9BC
+	for <rust-for-linux@vger.kernel.org>; Thu, 15 Aug 2024 13:11:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.136
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723727083; cv=none; b=poUamoVqiOp0bCZbhXcKsCY1GO0wVcmu1xU45StTw2krgi2uwOCt2T5yKQrZMdqkQ1ahiKtk+fzrIKWG+weY9zZzNOQeU/RG2ViFtyZw5XxyyRJOHGqLZO1EUuDLcTasM+1Uafoq8fXUwLSj5g1Vhw50FK81Iqv2b5ii8X4PE4s=
+	t=1723727481; cv=none; b=LeZZXQM9pDIwOsNyfV5Q2YQNreZlu+nILS3B1RDsZfQ9nUGsTxI/hNwUEnr4wov4vNghF4ValG5R0BMxyyAjruKFXaeQlquXOvptyajkXU0FhTqpeVf0YyWyLLvxNIzMJHiecux9734Kv5fnQ+1YrBuDS1tK4kpk0YwaeQqKqxg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723727083; c=relaxed/simple;
-	bh=CDgGq5qU3Wr0Pir/YqVs7Al/PZ/iVw/ki/I4EssR9Gs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Oxh2i9Rki4tB9HqnNUIzTnX64cC0i0ZJR8nNbthAoHD/bwDGO8PGE5xVn37iFspLi6CPDQ1y4zcFxGblVTHXE4RptgdZgKpWif1nnNcfrmWf+0NL1BQP+z2EOHTEBc/45vuJFBrHT9OPKlLHpn7HVTTposuG/qhDYEN4e7BxGUE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Bv7HjBoR; arc=none smtp.client-ip=209.85.216.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1723727481; c=relaxed/simple;
+	bh=757O26+5ZPnBoh7j8aKthYi3ucPVSyRWKNnky4QqYvo=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=j5dk+F0iLr3GFBFU/pYxvKfF1H20uzyZEfq02TXsG7Om/TiFoApr0iq0vkoqAuUwaUNg+Til8b8metR81RLIzsmPdsBen9MzkETk9utWtJu2mnOn4x/tJX1cFOYN8ieDtFVo1w51x3i0xAVABKFwoChbvCZlaw12aYWYkI4W/Jk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=metaspace.dk; spf=pass smtp.mailfrom=metaspace.dk; dkim=pass (2048-bit key) header.d=metaspace.dk header.i=@metaspace.dk header.b=lcvxCZkY; arc=none smtp.client-ip=185.70.40.136
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=metaspace.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=metaspace.dk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Bv7HjBoR"
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-2d3c05dc63eso642036a91.0;
-        Thu, 15 Aug 2024 06:04:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1723727081; x=1724331881; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ia3t2Va5NtSu3BetvUd2KwI5mB/axZOmAEnZeyG3umQ=;
-        b=Bv7HjBoRSkwYJp+afAgm6m9wEWXbr+lydKjFjFAa5HCHVOUCx3KwjAblF6ATDo5AP5
-         uXdCWcwcEje2tCelFYELBx2tu9tljmjPvyu8UwUqtgy+eVKJaOr3CCQTjRrIN7ELPCbv
-         2Ry2sBgojVaVT9p0tSBJvFSa8Htk27q693stQ4xMvxh6GWyAGxJJtENnRD84oafH59SY
-         hRdqHXq8v5F6usr6mTG7uC4VL6LnEhMundc3qYuZkf1ZggiouBCH/g/ZiH3q9DelIa/3
-         EhnCpGxXtvpxWKuiVdVnPmFrSGJ0iDvaxMtCbwizePEDPLfzlcXZ7YAU3zLucaHfyuRV
-         mkCA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723727081; x=1724331881;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ia3t2Va5NtSu3BetvUd2KwI5mB/axZOmAEnZeyG3umQ=;
-        b=XnKKUyIxCiQn8o/8F5TvfqqXPG22iITBKEbSSkT9jQNXdpbpXAK2PwDJKCreGhqSlz
-         I+3Z/jkuY2Zv5j/4fBWhf42DgOlbtEo9XEVlxucD8gvQz/LB+fiKFiUKCQVAmS9oz4W7
-         NYqzxXs6B9RjUpSPNlUW06YCiptSlU4qLb2yRgz+zXA8MmfB/K8mgTE1fFO4Oa8MXupv
-         GkQxwfKoBeQ4nQEll8ENGWiJr93/JbL2yoscFbJs9MYp7xNRsN6dw64bZEPDbvhkrqwg
-         YjqRAs8lCeQZVvAacjIMjbyY6RFr34rBkQKIBULxgsY1t1kfD3kjx/6hVzTWhvBt/Q8p
-         52ng==
-X-Forwarded-Encrypted: i=1; AJvYcCVO3/J3XugBVcGsbYotU8ZkeeJmM2c9RYCMUaX5ok/0csKBl6wZwezFljuo0v/Np6244SW6BF+S3Ql6YjvCv6F2QTfHaZPlgc9ajOjUdnLzTPhLpJWSNhgV+CNOsc+tydCZsFZA7buLQFEveG+Pge7IKzLHqsDEBtPIrsTeNdhteM3k2CY=
-X-Gm-Message-State: AOJu0YyCMo9iH6K0frof48ic4gF7tsxSbEUzSBclENggs20cj3wvd9Gl
-	VVfFdVu+RhH5++XbC7RADng9z+6GtDaaUbJ8XHxQ7y7uD+JBOGDSN4UNYC/Nt2FebgGpV+iEZ26
-	8d7k8y+MIyGWTrl8+dsf/IrCFZtPTpp2rBwk=
-X-Google-Smtp-Source: AGHT+IGSrLrwuM5RhDoD7uxpi1mK7ij3LB5lI6V4fRyA+cAlhCiR6Vgro+l7Mk/y4jnJPGmGy0vvDkvDt+x+XsPj1nk=
-X-Received: by 2002:a17:90b:4c51:b0:2d3:d0b7:da4 with SMTP id
- 98e67ed59e1d1-2d3d0b70f31mr1146539a91.19.1723727080832; Thu, 15 Aug 2024
- 06:04:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=metaspace.dk header.i=@metaspace.dk header.b="lcvxCZkY"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=metaspace.dk;
+	s=protonmail; t=1723727474; x=1723986674;
+	bh=pQHC8kTWve/pou9rdJQUHbrZKp74QqybR2ypPHRTiMo=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=lcvxCZkYcqw0yaLxp/9qk84L2vceETo2raMK/VYlIZ0PFfwLk0aa079qgzfizodsU
+	 qQrN6IYXuliUt21gXO2pYwbFr9A+ak9AfmvrYlecCpfzaedQ/fQeCAjvIxHUHS2eFF
+	 DGRF9d09tJCxv50zF5CZb2fHmJsNSCjKlLv12IGQQaMyz4KaNDwdAowTGLHcFxFcYm
+	 BdG0Cv3Qu+sTWVYwfKTKDulRgwCrpzamS6lGO6zv63oVJivizKC5ZLscPwXzBfljJ1
+	 +7pZIrs+oTV082RT1VKZd0DdQ1rVA2ToM0hjDUBbUk0IWb1VVYx3MUu62t2bPs5ncG
+	 fdsDoMJ7AwjNw==
+Date: Thu, 15 Aug 2024 13:11:09 +0000
+To: Benno Lossin <benno.lossin@proton.me>
+From: Andreas Hindborg <nmi@metaspace.dk>
+Cc: Luis Chamberlain <mcgrof@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, rust-for-linux@vger.kernel.org, linux-modules@vger.kernel.org, linux-kernel@vger.kernel.org, Andreas Hindborg <a.hindborg@samsung.com>, Adam Bratschi-Kaye <ark.email@gmail.com>
+Subject: Re: [PATCH] rust: add `module_params` macro
+Message-ID: <87ikw2rlbi.fsf@metaspace.dk>
+In-Reply-To: <b95cc90a-46ae-44af-90af-0fc374cd381a@proton.me>
+References: <20240705111455.142790-1-nmi@metaspace.dk> <49cad242-7a7c-4e9e-beb7-4f9c493ce794@proton.me> <878qxgnyzd.fsf@metaspace.dk> <ed2f7416-2631-411d-bb49-5a580dbf51b8@proton.me> <874j84nurn.fsf@metaspace.dk> <f84e9189-b64a-4761-86f5-ccd50fb62f36@proton.me> <87zfpvmd8y.fsf@metaspace.dk> <a98ddf54-3e27-4587-8e49-f19dd1ac65a6@proton.me> <87v80fme7g.fsf@metaspace.dk> <b95cc90a-46ae-44af-90af-0fc374cd381a@proton.me>
+Feedback-ID: 113830118:user:proton
+X-Pm-Message-ID: 56e6b912e6d7dfbc2158ac3ec6487c37618ec7cb
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240815082916.1210110-1-pierre.gondois@arm.com> <20240815082916.1210110-7-pierre.gondois@arm.com>
-In-Reply-To: <20240815082916.1210110-7-pierre.gondois@arm.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 15 Aug 2024 15:04:27 +0200
-Message-ID: <CANiq72mjvE7h_aH5tYnuuzdPHAzDUpioMi-h44HNCro8qFfDSw@mail.gmail.com>
-Subject: Re: [RFC PATCH 6/6] rust: cpufreq: Add rust implementation of
- cppc_cpufreq driver
-To: Pierre Gondois <pierre.gondois@arm.com>
-Cc: linux-kernel@vger.kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Len Brown <lenb@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>, 
-	Robert Moore <robert.moore@intel.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, 
-	Manos Pitsidianakis <manos.pitsidianakis@linaro.org>, 
-	Mika Westerberg <mika.westerberg@linux.intel.com>, 
-	FUJITA Tomonori <fujita.tomonori@gmail.com>, Thomas Bertschinger <tahbertschinger@gmail.com>, 
-	Danilo Krummrich <dakr@redhat.com>, linux-acpi@vger.kernel.org, linux-pm@vger.kernel.org, 
-	acpica-devel@lists.linux.dev, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Aug 15, 2024 at 10:31=E2=80=AFAM Pierre Gondois <pierre.gondois@arm=
-.com> wrote:
+"Benno Lossin" <benno.lossin@proton.me> writes:
+
+> On 05.08.24 12:55, Andreas Hindborg wrote:
+>> "Benno Lossin" <benno.lossin@proton.me> writes:
+>>> On 02.08.24 12:27, Andreas Hindborg wrote:
+>>>> At a higher level where the bindings supply the parsing functions, we
+>>>> can decide that passing an argument without a value yields a default
+>>>> parameter value. C does this for the predefined `bool` type. The
+>>>> predefined integer types does not support omitting the value.
+>>>>
+>>>> This patch only supports the higher level predefined parameter types,
+>>>> and does not allow modules to supply their own parameter parsing
+>>>> functions. None of the types we implement in this patch support passin=
+g
+>>>> the argument without a value. This is intentional to mirror the C
+>>>> implementation.
+>>>>
+>>>> To that end, I removed `NOARG_ALLOWED`, and changed the parsing functi=
+on
+>>>> trait to:
+>>>>
+>>>>     fn try_from_param_arg(arg: &'static [u8]) -> Result<Self>;
+>>>>
+>>>> If/when we start supporting types like `bool` or custom parsing
+>>>> functions provided by the module, we will have to update the signature
+>>>> to take an `Option` to represent the case where the user passed an
+>>>> argument without a value. However, to mimic C, the function must alway=
+s
+>>>> return a value if successful, even if the user did not supply a value =
+to
+>>>> the argument.
+>>>>
+>>>> Two different default values are in flight here. 1) the value that the
+>>>> parameter will have before the kernel calls `try_from_param_arg` via
+>>>> `set_param` and 2) the value to return from `try_from_param_arg` if th=
+e
+>>>> user did not pass a value with the argument.
+>>>>
+>>>> For a `bool` 1) would usually be `false` and 2) would always be `true`=
+.
+>>>>
+>>>> For predefined types the module would not customize 2), but 1) is usef=
+ul
+>>>> to customize. For custom types where the module supplies the parsing
+>>>> function, 2) would be implicitly given by the module in the parsing
+>>>> function.
+>>>>
+>>>> In this patch set, we only have 1 default value, namely 1). We do not
+>>>> need 2) because we do not support parameters without values.
+>>>
+>>> I am not sure that putting the default value of `my_module.param` into
+>>> the `ModuleParam` trait is a good idea. It feels more correct to me to
+>>> add an optional field to the part in `module!` that can be set to denot=
+e
+>>> this default value -- we might also want to change the name of
+>>> `default`, what do you think of `default_inactive` and `default_active`=
+?
+>>=20
+>> For all the predefined parameter types, the module code would never set
+>> the `default_active` value. It should be part of the data parsing
+>> specification for the predefined argument types.
 >
-> In an effort to add test/support the cpufreq framework in rust,
-> add a rust implementation of the cppc_cpufreq driver named:
-> `rcppc_cpufreq`.
+> So if your module has an i32 parameter, you can't set a default value to
+> eg 1000?
 
-Similar to what Greg said -- is this intended to be something like a
-"Rust reference driver" [1] for the subsystem?
+You _would_ be able to set the `default_inactive` value, which is the
+value assigned to the static at initialization time. It would make sense
+to default this to 0 for integer types and make it overridable in the
+`module!` macro.
 
-[1] https://rust-for-linux.com/rust-reference-drivers
+You would not be to set the `default_active` value, which is the value
+assigned to the parameter static variable, when the parameter is passed
+without value. The reason being that we want to mirror C, so we prohibit
+this for predefined integer parameter types.
 
-> +       depends on ACPI_PROCESSOR
-> +       depends on ARM || ARM64 || RISCV
+>
+>> For custom parsing functions implemented in the module, it makes sense
+>> specifying this value in the trait.
+>
+> Couldn't I just emulate the behavior from above by creating a
+> `struct MyI32(i32)` and having a default value?
+> In that case, why make it more difficult instead of providing a simple
+> way to do it?
 
-`depends on RUST`?
+The way parameter parsing works in C (that we try to replicate) is that
+we are able to parse a set of predefined types. For each predefined type
+we have a set of parser functions. If a module author want to parse
+something outside of the predefined set, they can provide custom parser
+functions.
 
-Also, I imagine you skipped all safety comments etc. since it is an
-RFC, but I thought I would mention it nevertheless.
+I would advocate we do the same in Rust. This patch provides a set of
+predefined types that can be parsed. For parsing to other types, we
+would eventually expand the features to allow the module authors to
+implement the parsing trait on their own types.
 
-Thanks for experimenting with Rust!
+So to answer your question: No, not in this patch set. But let's plan to
+add it in the future.
 
-Cheers,
-Miguel
+>
+>>> Since one might want an option by default be `true` and when one writes
+>>> `my_module.param`, it should be `false`.
+>>=20
+>> I think this would be confusing, since the default C parameter types do
+>> not have this semantic. Specifying a default true boolean as an argument
+>> does not make it false in C land. TBH this also feels like the most sane
+>> thing to do.
+>
+> Can't you also do the custom parameter parsing from above? ie have an
+> integer parameter with a default value?
+> Or is that frowned upon (ie not allowed through review)?
+
+In C, you cannot, if you utilize the predefined parameter parsing
+functions. Your can supply your own parser, and then you can do whatever
+you want.
+
+I would assume that it is best practice to reuse the predefined parsing
+functions. For Rust code I would argue that we should have module
+authors use the predefined parsers, unless they have very special
+requirements.
+
+>
+>>> Also as the C side shows, having default values for integer types is no=
+t
+>>> really a good idea, since you might want a non-zero default value.
+>>> If one does not specify the `default_active` value, then the
+>>> `KERNEL_PARAM_OPS_FL_NOARG` is not set.
+>>=20
+>> I would rather predefine `KERNEL_PARAM_OPS_FL_NOARG` in the trait
+>> implementation like C does. We would set the flag for `bool` but not for
+>> integer types. For custom implementations of the trait, the developer
+>> can do whatever they want.
+>
+> So we are only going to use it for `bool`?
+
+I think so.
+
+As far as I can tell, the predefined C parsers only allow this for bool.
+Outside of the predefined parsers, I see only 4 custom argument parsers
+that allow parameters without values.
+
+>
+>>> If you don't want to implement this (which I can fully understand, sinc=
+e
+>>> we might get `syn` before anyone needs params with default values), the=
+n
+>>> we should write this idea down (maybe in an issue?). But regardless, I
+>>> would like to know your opinion on this topic.
+>>=20
+>> We can create he issue if this series is accepted without the feature.
+>>=20
+>>>
+>>>>>> I think we need to drop the default value if we adopt the arg withou=
+t
+>>>>>> value scheme.
+>>>>>
+>>>>> Yes definitely. I don't see anything in the code doing this currently=
+,
+>>>>> right?
+>>>>
+>>>> The current patch uses the default value given in the `module!` macro =
+to
+>>>> initialize the parameter value.
+>>>
+>>> But what drops the default value, when an actual value is specified via
+>>> `my_module.param=3Dvalue`? (or is the default value only assigned when
+>>> nothing is specified?)
+>>=20
+>> Some more confusion maybe. When I wrote "drop the default value", I
+>> meant remove it from the code, not specify it. I take it back though. We
+>> would use the value given in the `module!` macro `default` field as
+>> `default_inactive`. `default_active` is not required for integer types,
+>> since they always require a value for the argument.
+>>=20
+>> But the drop would happen in `set_param` when the return value of
+>> `core::ptr::replace` is dropped.
+>
+> Ah I see, I missed that.
+>
+>>>>>> We could also only allow `Copy` values to be used as Parameters (but
+>>>>> then `str` cannot be used as a parameter...), since they can't implem=
+ent
+>>>>> `Drop`.
+>>>>
+>>>> We should plan on eventually supporting `String`.
+>>>
+>>> Yes.
+>>>
+>>>>>>>> Or we could just not adopt this feature in the Rust abstractions.
+>>>>>>>
+>>>>>>> Depends on how common this is and if people need to use it. I think=
+ that
+>>>>>>> what I proposed above isn't that complex, so it should be easy to
+>>>>>>> implement.
+>>>>>>
+>>>>>> Rust modules would just force people to add "my_module.param=3D1" in=
+stead
+>>>>>> of just "my_module.param". I think that is reasonable.
+>>>>>
+>>>>> Eh, why do we want to give that up? I don't think it's difficult to d=
+o.
+>>>>
+>>>> I just don't see the point. Just have the user pass `my_module.param=
+=3D1`
+>>>> instead of omitting the value. Having multiple ways of specifying for
+>>>> instance a true boolean just leads to confusion. Some boolean paramete=
+rs
+>>>> have a default value of `true`, for instance `nvme.use_cmb_sqes`. In
+>>>> this case specifying `nvme.use_cmb_sqes` has no effect, even though on=
+e
+>>>> might think it has.
+>>>
+>>> This just shows to me that a "global" default in `ModuleParam` is wrong=
+,
+>>> since for `use_cmb_sqes` one could either have a negated flag, or no
+>>> default value, forcing the user to write `nvme.use_cmb_sqes=3Dfalse`.
+>>=20
+>> I do not think it is a good idea to be able to override the value
+>> assigned to a parameter when it is given without a value. The more
+>> predictable a user interface is, the better.
+>
+> By that argument, we should also not permit custom implementations to
+> specify a default value.
+
+If we provide a predefined set of parsing functions, most uses will use
+those, and we will get a similar user experience across most of the
+modules. If we allow said customization of the predefined parsers,
+people will use it those customizations, and we will not get a good user
+experience. If we omit the customizations, I think most will still stick
+to predefined semantics, rather than implement their own parsers. For
+those that actually need to have other semantics (or types), we will
+have the option of user provided parsers, just as C.
+
+
+Best regards,
+Andreas
+
+
+
