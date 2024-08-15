@@ -1,175 +1,158 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B886A1AC437;
-	Thu, 15 Aug 2024 14:23:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7DC3463D5;
+	Thu, 15 Aug 2024 14:32:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723731794; cv=none; b=ZOeHh6Osu9Yh+h9k6qoY63OhieRAzMG48TKsygI4Q8/4X9rmWLymZjI7QCUGpRKTxl906SOjDhFU1FnAKfvANAzkwS5eE/OdvvhaGNPIRQ3DhrBRx1qT3b3pjLql3xAYJJl3Yajocr1Sj/bxert5NeM5chc4dqPrKqx4yeNfsDs=
+	t=1723732369; cv=none; b=eM6QS9SywpsHrNt2P3iTHMpieyd/6Hx0ucxGQbC0JYJar1LESMNlCJRMY3KDc6/Y0tY/A3cK1zP31DNTNffqgETL3xH0H+yWzig/2lrDUPoSIQINcBK7uIkzfsnCbc1NmQmenbVfNTLGi2noMp/Ohp734Tn61gllQFzP6Ki7Rh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723731794; c=relaxed/simple;
-	bh=ZICUfqW3ibLnp1tG3YkER08ff+Zhm0tKGhwrShQiyvg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FBxiJCit+DGvRj6EJmEeghHXFhgZYi8r5H0YuXMfmlzQOp8pNNsrbJ5/7Q28rvc6ZSuAVVVu10lMtdDzDjJQhBDGyIxXiKpoov2508CqcPGyYQmr1grjpBN8/bK/lQIFUYlh1NT99W2NMXrWVvgqH7IhaXipT2eCpsRuhI6FzUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Hrokymxa; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1723732369; c=relaxed/simple;
+	bh=wkUzvqCtu+wpi3BEp07oiljISHO9vt/TcVXV6KAxcuM=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=cEiqO5nQlAIQG6Ayc0xYvTndRO6iaaRBVlNiLFgQyr9/NYKFd1C0t/p+EUT0PeqYLlUv64Y1a9nz8/QGcml4xJ7hCVmxxZyPcl0uezzgP2jBvBw8bm6a3uilPoki1xWL1d3idL+Q17wb6IDHX6xgx4m1aONhbHaP/2D6UoAH3gA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=OkM5mQLH; arc=none smtp.client-ip=185.70.43.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Hrokymxa"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96176C32786;
-	Thu, 15 Aug 2024 14:23:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723731794;
-	bh=ZICUfqW3ibLnp1tG3YkER08ff+Zhm0tKGhwrShQiyvg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=HrokymxamxMNOr/rIg/O/ihcm9ydAtLZNCV8EtB4nD6/GRac43Zn9YWH1wmI4m/Up
-	 dv/SjEjMNXUGY5g7k1L50DYUbSfvs4oCT+DOSykiL2NAT7eElnEgV+wTo0U8GjaXEk
-	 Wb5gEcxdNVytXkLc7z5L0lDnxPH4B31H1l2+KT6531S1RfNeo6jOP/pVkmmAk9hMZS
-	 GfU6IoTl3nN9Jedr83EPgcIbv4pP0OMq5ZNDw2sgBmLkY9hjok6nSp6U1nmx4fwO0c
-	 loF1iJtBrdFXkvQASm0qOwQTohZRTg4x7wiLn6xCePFkugZjR/kYVPnOJ3OfQwGu1V
-	 HeMEHkWXO+G1A==
-Date: Thu, 15 Aug 2024 16:23:06 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
-	a.hindborg@samsung.com, aliceryhl@google.com,
-	akpm@linux-foundation.org, daniel.almeida@collabora.com,
-	faith.ekstrand@collabora.com, boris.brezillon@collabora.com,
-	lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com,
-	cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com,
-	ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v5 06/26] rust: alloc: implement `Vmalloc` allocator
-Message-ID: <Zr4PSuIOpiE-8OkJ@cassiopeiae>
-References: <20240812182355.11641-1-dakr@kernel.org>
- <20240812182355.11641-7-dakr@kernel.org>
- <c9d57e77-8748-4e58-a39b-7a23f750ceda@proton.me>
- <Zr0r6sSFMSQIpHEX@cassiopeiae>
- <Zr072oSej9KIc1S6@cassiopeiae>
- <5dfe8bae-2c1e-47d4-9fb4-373b7d714c4f@proton.me>
- <Zr30pNwc5aanRaqj@cassiopeiae>
- <01a46c6d-0107-4455-8c87-af43426752ff@proton.me>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="OkM5mQLH"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1723732365; x=1723991565;
+	bh=5hEzlNomb4W1zQMDLk7SwBhBL9j2hyKIONtSLeO3jn0=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=OkM5mQLHxfAnbTFITUMhTjg1NsfJTsEewYJihxT/qaMFCD4dAeY/PGKvswvv2/jLz
+	 8lRKk2DmiKbKVDR5Nh+V7WMW4wGpCnZ4LOkBKeW53l5GIJ4deIAaEmfYeTs+nyLKO3
+	 Hxqux2tg/LHRuky1WG2ruF0okilkMqcX1QUau4u5oesYjrAa5Ctx+uEcCgLazzbfG/
+	 W6SRazzpS/1B7Gf5ImyGQkd3as0Pvr2rXsThhwIy5L/J1y9c3hrM97sioHSJa4641k
+	 PvFlnF1Mwm2eLPnjYE+EigRyXFMovWqlKJ86/nxZFisPfZF0wEY1CNYJmPO9S/hIvk
+	 3hbe9VrPlV/hg==
+Date: Thu, 15 Aug 2024 14:32:40 +0000
+To: Andreas Hindborg <nmi@metaspace.dk>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Masahiro Yamada <masahiroy@kernel.org>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Andreas Hindborg <a.hindborg@samsung.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, =?utf-8?Q?Sergio_Gonz=C3=A1lez_Collado?= <sergio.collado@gmail.com>, rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v3] kbuild: rust: split up helpers.c
+Message-ID: <65f8a922-c0dc-4b7e-b701-5f8fd84b5b81@proton.me>
+In-Reply-To: <20240815103016.2771842-1-nmi@metaspace.dk>
+References: <20240815103016.2771842-1-nmi@metaspace.dk>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: ece9b106659f7cf1b14b91ef5b177dec132cba8b
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <01a46c6d-0107-4455-8c87-af43426752ff@proton.me>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Aug 15, 2024 at 01:44:27PM +0000, Benno Lossin wrote:
-> On 15.08.24 14:29, Danilo Krummrich wrote:
-> > On Thu, Aug 15, 2024 at 06:48:19AM +0000, Benno Lossin wrote:
-> >> On 15.08.24 01:20, Danilo Krummrich wrote:
-> >>> On Thu, Aug 15, 2024 at 12:13:06AM +0200, Danilo Krummrich wrote:
-> >>>>
-> >>>>>
-> >>>>>> +        ptr: Option<NonNull<u8>>,
-> >>>>>> +        layout: Layout,
-> >>>>>> +        flags: Flags,
-> >>>>>> +    ) -> Result<NonNull<[u8]>, AllocError> {
-> >>>>>> +        // TODO: Support alignments larger than PAGE_SIZE.
-> >>>>>> +        if layout.align() > bindings::PAGE_SIZE {
-> >>>>>> +            pr_warn!("Vmalloc does not support alignments larger than PAGE_SIZE yet.\n");
-> >>>>>> +            return Err(AllocError);
-> >>>>>
-> >>>>> I think here we should first try to use `build_error!`, most often the
-> >>>>> alignment will be specified statically, so it should get optimized away.
-> >>>>
-> >>>> Sure, we can try that first.
-> >>>
-> >>> I think I spoke too soon here. I don't think `build_error!` or `build_assert!`
-> >>> can work here, it would also fail the build when the compiler doesn't know the
-> >>> value of the alignment, wouldn't it? I remember that I wasn't overly happy about
-> >>> failing this on runtime either when I first thought about this case, but I also
-> >>> couldn't think of something better.
-> >>
-> >> Yes, it might fail even though the alignment at runtime will be fine.
-> >> But that's why I suggested trying `build_error!`(or `build_assert!`)
-> >> first, if nobody hits the case where the compiler cannot figure it out,
-> >> then we can keep it. If there are instances, where it fails, but the
-> >> alignment would be fine at runtime, then we can change it to the above.
-> >> (I would add such a comment above the assert).
-> > 
-> > Unfortunately, it already does fail with just the test cases.
-> 
-> Aw that's sad.
-> 
-> > Anyway, even if it would have been fine, I don't think it would have been nice
-> > for a future user to run into a build error even though the alignment is
-> > perfectlly within bounds.
-> 
-> I think it would have been better compared to failing with a warning at
-> runtime.
+On 15.08.24 12:30, Andreas Hindborg wrote:
+> From: Andreas Hindborg <a.hindborg@samsung.com>
+>=20
+> This patch splits up the rust helpers C file. When rebasing patch sets on
+> upstream linux, merge conflicts in helpers.c is common and time consuming
+> [1]. Thus, split the file so that each kernel component can live in a
+> separate file.
+>=20
+> This patch lists helper files explicitly and thus conflicts in the file
+> list is still likely. However, they should be more simple to resolve than
+> the conflicts usually seen in helpers.c.
+>=20
+> Link: https://rust-for-linux.zulipchat.com/#narrow/stream/288089-General/=
+topic/Splitting.20up.20helpers.2Ec/near/426694012 [1]
+> Signed-off-by: Andreas Hindborg <a.hindborg@samsung.com>
 
-Generally, yes. But I think it's not acceptable to make calls fail that should
-actually succeed.
+Looks good with `--color-moved`.
 
-> 
-> >>> In the end it's rather unlikely to ever hit this case, and probably even more
-> >>> unlikely to hit it for a sane reason.
-> >>
-> >> Yeah, but I still prefer the build to fail, rather than emitting a warn
-> >> message that can be overlooked at runtime.
-> >>
-> >>>>> How difficult will it be to support this? (it is a weird requirement,
-> >>>>> but I dislike just returning an error...)
-> >>>>
-> >>>> It's not difficult to support at all. But it requires a C API taking an
-> >>>> alignment argument (same for `KVmalloc`).
-> >>
-> >> I see, that's good to know.
-> >>
-> >>>> Coming up with a vrealloc_aligned() is rather trivial. kvrealloc_aligned() would
-> >>>> be a bit weird though, because the alignment argument could only be really
-> >>>> honored if we run into the vrealloc() case. For the krealloc() case it'd still
-> >>>> depend on the bucket size that is selected for the requested size.
-> >>
-> >> Yeah... Maybe some more logic on the Rust side can help with that.
-> > 
-> > Only if we reimplement `KVmalloc` in Rust, However, there are quite some special
-> > cases in __kvmalloc_node_noprof(), i.e. fixup page flags, sanity check the size
-> > on kmalloc failure, fail on certain page flags, etc.
-> > 
-> > I don't really want to duplicate this code, unless we absolutely have to.
-> 
-> I am under the (probably wrong) impression that kvmalloc has some size
-> check and selects vmalloc or kmalloc depending on that. 
+Reviewed-by: Benno Lossin <benno.lossin@proton.me>
 
-Basically, yes. But as mentioned above, there are quite some corner cases [1].
+I got one comment suggestion below, but feel free to take it without.
 
-> I think that we
-> could check the size and if it is going to allocate via kmalloc, then we
-> adjust the size for alignment as usual
-
-We don't need this adjustment any longer, see commit ad59baa31695 ("slab, rust:
-extend kmalloc() alignment guarantees to remove Rust padding").
-
-> and if it is going to select
-> vmalloc, then we can just pass the alignment (if the vmalloc alignment
-> patch is done first).
-
-Yeah, but as mentioned, I'd prefer to do this in C, such that we don't need to
-open code everything the C code already does.
-
-[1] https://elixir.bootlin.com/linux/v6.11-rc3/source/mm/util.c#L628
-> 
-> >>>> Adding the C API, I'm also pretty sure someone's gonna ask what we need an
-> >>>> alignment larger than PAGE_SIZE for and if we have a real use case for that.
-> >>>> I'm not entirely sure we have a reasonable answer for that.
-> >>
-> >> We could argue that we can remove an "ugly hack" (when we don't have the
-> >> build assert, if we do have that, I don't mind not supporting it), but I
-> >> agree that finding a user will be difficult.
-> > 
-> > I'd argue it's not really a hack to fail on something that's not supported
-> > (yet). Allocations can (almost) always fail, this is just another case.
-> 
-> I guess since this is a deterministic failure, it's better than other
-> failures. But I would still say this is hacky.
-> 
 > ---
-> Cheers,
-> Benno
-> 
+>=20
+> Changes since v2 [2]:
+> - Rebase on 6.11-rc3.
+> - Use `cpp` instead of Makefile scripting to concatenate files.
+>=20
+> Link:
+> https://lore.kernel.org/rust-for-linux/20240507210818.672517-1-ojeda@kern=
+el.org/ [2]
+> ---
+>  rust/Makefile               |   6 +-
+>  rust/helpers.c              | 239 ------------------------------------
+>  rust/helpers/README.md      |  17 +++
+>  rust/helpers/blk.c          |  16 +++
+>  rust/helpers/bug.c          |   9 ++
+>  rust/helpers/build_assert.c |  25 ++++
+>  rust/helpers/build_bug.c    |  10 ++
+>  rust/helpers/err.c          |  22 ++++
+>  rust/helpers/helpers.c      |  18 +++
+>  rust/helpers/kunit.c        |  10 ++
+>  rust/helpers/mutex.c        |  10 ++
+>  rust/helpers/page.c         |  24 ++++
+>  rust/helpers/refcount.c     |  22 ++++
+>  rust/helpers/signal.c       |  10 ++
+>  rust/helpers/slab.c         |  10 ++
+>  rust/helpers/spinlock.c     |  27 ++++
+>  rust/helpers/task.c         |  22 ++++
+>  rust/helpers/uaccess.c      |  17 +++
+>  rust/helpers/wait.c         |  10 ++
+>  rust/helpers/workqueue.c    |  16 +++
+>  20 files changed, 298 insertions(+), 242 deletions(-)
+>  delete mode 100644 rust/helpers.c
+>  create mode 100644 rust/helpers/README.md
+>  create mode 100644 rust/helpers/blk.c
+>  create mode 100644 rust/helpers/bug.c
+>  create mode 100644 rust/helpers/build_assert.c
+>  create mode 100644 rust/helpers/build_bug.c
+>  create mode 100644 rust/helpers/err.c
+>  create mode 100644 rust/helpers/helpers.c
+>  create mode 100644 rust/helpers/kunit.c
+>  create mode 100644 rust/helpers/mutex.c
+>  create mode 100644 rust/helpers/page.c
+>  create mode 100644 rust/helpers/refcount.c
+>  create mode 100644 rust/helpers/signal.c
+>  create mode 100644 rust/helpers/slab.c
+>  create mode 100644 rust/helpers/spinlock.c
+>  create mode 100644 rust/helpers/task.c
+>  create mode 100644 rust/helpers/uaccess.c
+>  create mode 100644 rust/helpers/wait.c
+>  create mode 100644 rust/helpers/workqueue.c
+
+[...]
+
+> diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+> new file mode 100644
+> index 000000000000..74dd4275c233
+> --- /dev/null
+> +++ b/rust/helpers/helpers.c
+> @@ -0,0 +1,18 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+
+Should there be a comment here noting that these includes are sorted
+alphabetically? Since then (most) conflicts in this file can simply be
+solved by concatenating all hunks and doing `:'<,'>!sort | uniq`?
+
+---
+Cheers,
+Benno
+
+> +#include "blk.c"
+> +#include "bug.c"
+> +#include "build_assert.c"
+> +#include "build_bug.c"
+> +#include "err.c"
+> +#include "kunit.c"
+> +#include "mutex.c"
+> +#include "page.c"
+> +#include "refcount.c"
+> +#include "signal.c"
+> +#include "slab.c"
+> +#include "spinlock.c"
+> +#include "task.c"
+> +#include "uaccess.c"
+> +#include "wait.c"
+> +#include "workqueue.c"
+
