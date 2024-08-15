@@ -1,142 +1,165 @@
-Received: from flow8-smtp.messagingengine.com (flow8-smtp.messagingengine.com [103.168.172.143])
+Received: from EUR03-VI1-obe.outbound.protection.outlook.com (mail-vi1eur03on2055.outbound.protection.outlook.com [40.107.103.55])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53ADB1AC8AC;
-	Thu, 15 Aug 2024 11:11:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.143
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723720278; cv=none; b=FZxbwynd08E88lhgjD8rB1q0Xj86GarggNFTcErDakxpRwd8pQRTLbgtn2zVy05y5JsqnTb/sbMemtA4tUDad7AjYRQWQvLQDqCNSWVjSyg9zzIE0Qfd45dezcNttgTZRSa3UkDYr+YwaHVSZB0UxUQdCV8jDj7+ujH8WPrpMnY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723720278; c=relaxed/simple;
-	bh=cM/oa+aXFrNIzMB4+mBWw40HctDtv+Aci9IQkyQCuug=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=b+oLQYWx8j5va+GZvxrBv7X+PN5WAA0/TGXFVhLnQXzju3PLQRzfUNyJ8fMUJaQV72i1tpENdUB6mfMGG5E2OXigKIfHXDqWGqUxz9yFOvmuIqbVVPVOj5chR+q1Jmndyq1huyGajLbg/NcYnFiekh9ANq1498mZCdERRXxgVS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com; spf=pass smtp.mailfrom=kroah.com; dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b=iBR1wMYI; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=KVMre4P/; arc=none smtp.client-ip=103.168.172.143
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=kroah.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kroah.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5583A1AC8B4;
+	Thu, 15 Aug 2024 11:37:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.103.55
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1723721836; cv=fail; b=VhonU1iAMCDo5t7OrI1LqJJbqcnDQjRlADTMHE4a12QpS5wx+k8PIVs6DzfAFpN8QLzrWl664xVETAsVQmlPZ3PoBHioyojFYB+Oj5JdmTQ5VGfSUWRlH4j0hNd/QVWKX4jOUQy20zP0qq6J2lkinI1k+1gHPgcgABvQAszrEFw=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1723721836; c=relaxed/simple;
+	bh=c9EyuIOq6RmbeMiOn0z3MC9b4hZk+kHEaNjxIjuGciA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=cS1k1c6q/MGHMGk4soLezpq8pi1Ky/q4odI+RxFG5Xw/FR/AUnTCQ/+JxM4jxl8dfVPSRUupmyIViLtOGSXr+sLwfo1F9ZhftRJxabZmmSmsACKeLNX9dN4Q4PBvVzfczEYMAGtWV0DDbSWS2PWO5SC1J4ihlBnOQKwCzUq1wHQ=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com; spf=pass smtp.mailfrom=de.bosch.com; dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b=AHL20BO7; arc=fail smtp.client-ip=40.107.103.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.bosch.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kroah.com header.i=@kroah.com header.b="iBR1wMYI";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="KVMre4P/"
-Received: from phl-compute-07.internal (phl-compute-07.nyi.internal [10.202.2.47])
-	by mailflow.nyi.internal (Postfix) with ESMTP id 464B5200A34;
-	Thu, 15 Aug 2024 05:24:26 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-07.internal (MEProxy); Thu, 15 Aug 2024 05:24:26 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm3; t=1723713866; x=1723721066; bh=DJrlepPVyE
-	+yZqIgbQ54BkO2ZvNmAfile0WCqAW+g3Q=; b=iBR1wMYIvM5n4U4j9ojUn2xlhC
-	TxvTDAwt/nwgs+2zmiaHQZDMqoqh1T8AGAWcfVi3d5dcZi3Hugw09lt2CFrR2yMG
-	a3VWsCVkCMOsmGZSNweIEkNVa2T3Mi9vFA2VdJ5F03VSiP8uhJ2fGuCccEGMs6g9
-	ENiDFWbPGoL6f7ZGhkknVGz7Fn/trhE+cCNF/6XdM47Jq6uT4zMs7SH/vSdQGY+Q
-	I1Zvf/WWb58YdMlqrCn9x8sKjpUp1oGgr4wcpksLTlzF6ZwgO9X1D2FDZA0iEV7L
-	HPkXEUJgKXP3kjUcNqxZIjr0xAKbP7vAZwFVfMuI+CRNXtOIE5RaHO45qlJg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
-	fm3; t=1723713866; x=1723721066; bh=DJrlepPVyE+yZqIgbQ54BkO2ZvNm
-	Afile0WCqAW+g3Q=; b=KVMre4P/zOVhUEqNei7d4gCpmWhHoJ7TMwaIs9mXpkIa
-	8Kr1YzdEg/ucwYT+fTLlcQbuzMD3FMfE9iFyix/6pSVMkEiK46LuO0/kIQGVlLsW
-	L3pxTn5aBuEtPK3kER2Kmt8F+Sfo97p67lWcDkt9hMs/IPEwlS1inU+9dKNtqY7D
-	QwxSs8Z3Kk3g6zcVTe6RS4+uKnlM8EBoJEmoJ0dpyLSgzU1JKAVjIXeX/I/yfhQK
-	eOoJ0DzF25tGyR8gS+PzuWSA3d8b2088lRLRjLlYEAGt3eBn7QsbirBbNZH9I+dT
-	Ep1w/wtpcfCdu47jA0BXbP3/xqQ8ET60I9X7KmE1ug==
-X-ME-Sender: <xms:Scm9Zr44ufvsXsylmy04oXubruVNMTwC_NH8lxtvpjrFxphYCzgp0w>
-    <xme:Scm9Zg759fHIramAPVWZWOcfnaWS7Mgl9BnqTgssZwgk5OExyIiGFiyMBIGTT0RN0
-    jO2WS6ej06Whw>
-X-ME-Received: <xmr:Scm9Zif3xbeEDC2d37bvApihyPYrYAptc7X2PiNnCS1r60iWr1xBOQHZ1GsFLzoDFBkLY70AabKozf82Eq2Qo_ujlVzqrznUFcDJvA>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddruddtiedgudegucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
-    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
-    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvden
-    ucfhrhhomhepifhrvghgucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrf
-    grthhtvghrnhepheegvdevvdeljeeugfdtudduhfekledtiefhveejkeejuefhtdeufefh
-    gfehkeetnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
-    epghhrvghgsehkrhhorghhrdgtohhmpdhnsggprhgtphhtthhopeehtddpmhhouggvpehs
-    mhhtphhouhhtpdhrtghpthhtohepphhivghrrhgvrdhgohhnughoihhssegrrhhmrdgtoh
-    hmpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdho
-    rhhgpdhrtghpthhtoheprhgrfhgrvghlsehkvghrnhgvlhdrohhrghdprhgtphhtthhope
-    hlvghnsgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepvhhirhgvshhhrdhkuhhmrghr
-    sehlihhnrghrohdrohhrghdprhgtphhtthhopehrohgsvghrthdrmhhoohhrvgesihhnth
-    gvlhdrtghomhdprhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhrghdprhgtphht
-    thhopegrlhgvgidrghgrhihnohhrsehgmhgrihhlrdgtohhmpdhrtghpthhtohepfigvug
-    hsohhnrghfsehgmhgrihhlrdgtohhm
-X-ME-Proxy: <xmx:Scm9ZsKxLgryY2bIonp-45LEqE5IFULfg2yV1sKSkkOSCR-cf4PBeg>
-    <xmx:Scm9ZvK_saCXo3XcEjOkFk5yNo0CJrsQZSZVCcTVgX2M45Y7G9mXVg>
-    <xmx:Scm9ZlzCIG7C4fIwfrhCpuh07SdtuXzlVJ4FKzCvqmemALBno60U7Q>
-    <xmx:Scm9ZrL6_rnIvDjhmzhOOvu7InSxqGihlTolXs-HCyjcpaijTbm-QA>
-    <xmx:Ssm9ZpTgcQ0NxjHBc_8hQ_LOehZMU26etWUiR8XZL1I9PDF9of7bvgZT>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 15 Aug 2024 05:24:24 -0400 (EDT)
-Date: Thu, 15 Aug 2024 11:24:23 +0200
-From: Greg KH <greg@kroah.com>
-To: Pierre Gondois <pierre.gondois@arm.com>
-Cc: linux-kernel@vger.kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>,
-	Robert Moore <robert.moore@intel.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-	Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Thomas Bertschinger <tahbertschinger@gmail.com>,
-	Danilo Krummrich <dakr@redhat.com>, linux-acpi@vger.kernel.org,
-	linux-pm@vger.kernel.org, acpica-devel@lists.linux.dev,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [RFC PATCH 6/6] rust: cpufreq: Add rust implementation of
- cppc_cpufreq driver
-Message-ID: <2024081519-magenta-giddily-09ad@gregkh>
-References: <20240815082916.1210110-1-pierre.gondois@arm.com>
- <20240815082916.1210110-7-pierre.gondois@arm.com>
+	dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b="AHL20BO7"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=iJlcP8iruqS/6XR0rzFT5cEkSazjJdTuewrHxDhSvCdYBdm2trDiC7SXn/KkA0A6yhLkWZe1Vx/h8ENpHzHOWnZuNzZ0OaoIudTuHPPx9McasJi4fIU9VonRWAovrSPpW0w8A9MXicEsa7xylhxE2CzklkYIPOJGZFPuD9DRsQazt/Cd2YZSPHJ6lLmKpHfYiZyzec1kdWe4AAHc76tjD8Kr5lnnffqXtnr30LjoiFqiZBm87NUkum4HLPe8mPJm6EzUTDlBpk40cyaIhNvR5u7O9o4ZzHT1Zr/qtj3+KSBQ32OVqFHa2M9HhA1LAC8OXJXTUEwN9/PfROH3Z0111w==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=+xa41/NoV//ZGQX297XIDIXjtw/cGH9X9PZtqX82Hng=;
+ b=NQEoOMGHQotbO1pcYWXe0THrJ4v42WgsrhjB3nLkdLobBYCeRihS88dd2zyiJAfBfkTM5OIsJPeWvw47F978IEQk+neJvCwUnH6h50mfkG1Iy0NOJtaHhPgFKJ55QFxLFMUiZ/5HwiiG9DdXCCiyxbGfsQ8Sj1zFK6wZa2Pn6StEQINAuncu2ok6o+N4ZG3mJU3XO22Ikj3WMWnhDLTlztEnlZAWXnEMesKL4QBy+W0M+Q1sTkxnD4U2qfWKSZ40WI+04uy7zGgqPSPSiMFNwq1MoDYuJQXCu3FVqkqq7IBQ7N5XHguxZvPWGAjuIY4UHh4YngR8SIVrtwWNIsqsIA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 139.15.153.206) smtp.rcpttodomain=metaspace.dk smtp.mailfrom=de.bosch.com;
+ dmarc=pass (p=reject sp=none pct=100) action=none header.from=de.bosch.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=de.bosch.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=+xa41/NoV//ZGQX297XIDIXjtw/cGH9X9PZtqX82Hng=;
+ b=AHL20BO7FpkR4idQHz8gDYQTe0ZT7veaIgzPnymCGJ7K/FOPf34h9DkCb6Gq3s6JhjRiYxIHhnzLPKUEk1ic+0eE076xXmdU6iEzu65DudgN6tt2vKEvXr4i77WGvptsQ/ob0GLSiQgxBJ1SAFs7WG9KTXFp2XNfApBlh0PqTNTDb3yL65qZSS7kDkZDMVp8Zw77L6NBBVbVROhu7TyWKNiuGfpZBNKkZRoT94euLE41vhb5a5PdZHp/YSCqtrtFmeZmqAtLV0Jp1I40kKFaaofTUwcWVIusJVQ4lzAlOp2SjelsP5liv1hVBbuxzsGLRzBu0iiE5NbUKjN7/xdyww==
+Received: from DU2P251CA0017.EURP251.PROD.OUTLOOK.COM (2603:10a6:10:230::16)
+ by AS2PR10MB7047.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:20b:595::8) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7849.22; Thu, 15 Aug
+ 2024 11:37:09 +0000
+Received: from DB3PEPF0000885A.eurprd02.prod.outlook.com
+ (2603:10a6:10:230:cafe::95) by DU2P251CA0017.outlook.office365.com
+ (2603:10a6:10:230::16) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7875.19 via Frontend
+ Transport; Thu, 15 Aug 2024 11:37:09 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 139.15.153.206)
+ smtp.mailfrom=de.bosch.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=de.bosch.com;
+Received-SPF: Pass (protection.outlook.com: domain of de.bosch.com designates
+ 139.15.153.206 as permitted sender) receiver=protection.outlook.com;
+ client-ip=139.15.153.206; helo=eop.bosch-org.com; pr=C
+Received: from eop.bosch-org.com (139.15.153.206) by
+ DB3PEPF0000885A.mail.protection.outlook.com (10.167.242.5) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7849.8 via Frontend Transport; Thu, 15 Aug 2024 11:37:09 +0000
+Received: from FE-EXCAS2000.de.bosch.com (10.139.217.199) by eop.bosch-org.com
+ (139.15.153.206) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 15 Aug
+ 2024 13:36:55 +0200
+Received: from [10.34.219.93] (10.139.217.196) by FE-EXCAS2000.de.bosch.com
+ (10.139.217.199) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 15 Aug
+ 2024 13:36:54 +0200
+Message-ID: <c96a0827-cff7-4558-983b-42f965f80005@de.bosch.com>
+Date: Thu, 15 Aug 2024 13:36:44 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240815082916.1210110-7-pierre.gondois@arm.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] kbuild: rust: split up helpers.c
+To: Andreas Hindborg <nmi@metaspace.dk>, Miguel Ojeda <ojeda@kernel.org>,
+	"Alex Gaynor" <alex.gaynor@gmail.com>, Wedson Almeida Filho
+	<wedsonaf@gmail.com>, Masahiro Yamada <masahiroy@kernel.org>
+CC: Andreas Hindborg <a.hindborg@samsung.com>, Boqun Feng
+	<boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin
+	<benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, "Nathan
+ Chancellor" <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>,
+	=?UTF-8?Q?Sergio_Gonz=C3=A1lez_Collado?= <sergio.collado@gmail.com>,
+	<rust-for-linux@vger.kernel.org>, <linux-kbuild@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>
+References: <20240815103016.2771842-1-nmi@metaspace.dk>
+Content-Language: en-US
+From: Dirk Behme <dirk.behme@de.bosch.com>
+In-Reply-To: <20240815103016.2771842-1-nmi@metaspace.dk>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DB3PEPF0000885A:EE_|AS2PR10MB7047:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2ccd17c7-f0b8-4e6f-1dc8-08dcbd1e990b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|36860700013|82310400026|1800799024|7416014|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?Q2VGdnR5cXB5K3YrdENmUkprYnhVYWxhc1FIanJhZzlFTU9objdEOTdnS0Yr?=
+ =?utf-8?B?WS9rbTB5ekgyUERBeHpoSFUvREtXRXhJWDZhTGpFLzRweTJTV1FDKzc5Ukhw?=
+ =?utf-8?B?NHh0eUdnZkptUEpYN0U2ejhhTEZ6bHFGNW1kaVlkamJyUnRYVmVxU1pjTlgy?=
+ =?utf-8?B?SkJLZU1XbUVtejE1SmRUTzhMN0xWMVk4TnJxWkpKWWJvOFZ1WThNZGxNS1U4?=
+ =?utf-8?B?UFJWSGRELzRVdzNHNTRpemVzQXp3eVNoWWdKcTRMZGJQTVdyY1Bna3BqN3Ez?=
+ =?utf-8?B?UnNnNHlZMCt6eFovcDhGQUdyTXhaNmZXSngreVU5UXpxdUYvajBCUzhmdnF3?=
+ =?utf-8?B?MUVzM20zTWRMODkwQlcxKy93U1BGbm5HY0Q1RkRkUXZDbDhGNzJNbjU3Z0w3?=
+ =?utf-8?B?V3NEMkZHbUdIdDR6K1h3R01XM2ZlKzZ3amsyQk5mdElZV0l2cHBTY0FFbzlY?=
+ =?utf-8?B?cGpEVkJzN0tBbnZRTXB6MHZOSUVUeEdGL1hYSXp5WElYclBUeWZRTjJrVEtW?=
+ =?utf-8?B?LzhCWFl3V0hFZzY4di82K2ZNUE9sRHczZ0VPQXFpOXkzQ28xUVZKSTlDYnpM?=
+ =?utf-8?B?c0FQK3FiSC9FbDltOXJWTzJKUjduOGV6aTJEa29zL1ptNDEvY1dZSWI3NWxa?=
+ =?utf-8?B?UGlxWkQxQlBkdG14MVgzUUFaOUt4aFR6a3IvSlUwODFOVG10YW94bzFpblcy?=
+ =?utf-8?B?ak9mNUllMHk2S0tlNG84WHNkNnNQTS9Qd1pkRFgxMmhuU3RzNDQxSk1SalBY?=
+ =?utf-8?B?d3dyM2JXU1RyY3NxSGVoUEtWNkFXZmZRUUYvQVpCNW5sWVlFaVRCQXJzL3du?=
+ =?utf-8?B?eml6R2ZHM0RsallMUVEzUURSb0RUbHowK001eUFLNlYveEFmQ2J4ZUdoWkdE?=
+ =?utf-8?B?N2xxeVBNUlJGNVhYRkdXN2JGK3NTdnk1Ly9OMi82THNZaGxXeWJOZWpXU3lU?=
+ =?utf-8?B?UHYxVUdobkpUUksvMFJFS0FVU0I0VDlOd1QyM1B6ODFaVElVUldxNHp4RHlJ?=
+ =?utf-8?B?Mjlvd0lvTFBRYjlpZXMza0lXUWxhemRYbUpkSmtwb1djS3hnak5aa3BxblJy?=
+ =?utf-8?B?eEdUK3hXL0pBUE1RQlg3Q1VVMyt0YUdMdXVhMjhYbk84cXNMdDFsNHNRdytt?=
+ =?utf-8?B?UUNuNnNEMERLb0xPNXNzS2NZektQclUyajgvNkwrWWhrT1VJTlhGYjBMV3dx?=
+ =?utf-8?B?UnFySzRhNkFYYWU2WFNxcndPbzNZMmRPODlzWGxNTkovd3I4cGN3aUU2Vkpj?=
+ =?utf-8?B?MWNWcFpTRDBTTG1NVmJVTWcvVzI1S2wzajdwemVxWE9IYnlQWjJPcklTYWcx?=
+ =?utf-8?B?VGpXQzVQeG5sR2EzMWYvNHdwUVY1a0RsdkloS3JweVllQkxHZGhTa3pXSUVx?=
+ =?utf-8?B?MFhpUXJsT0RLaXI2V1A2U2cxYVhiZXh4MEtLd3BOU0ZaSDJ5TTdZY0JiKzFO?=
+ =?utf-8?B?czdlUEFUYU8yZXBBNER2Qjh3Q2txZWxDcCsxVDVqQ3hQVHpxd1hYSHJBdllG?=
+ =?utf-8?B?bmVONGJ0bllNdUI5dG9SUTdmcFN2N29wSDV2YkxQUGdQTThoMEkyb240YWht?=
+ =?utf-8?B?S3o2MzRIZlArZ2JmeGo1NDdFWkhQem14ditOTGlWUnVVR2h5c1pZZ3hPbURj?=
+ =?utf-8?B?TEl5MlRCaWEycVNSMWdYWm9tZFFIMkVIMGtONDlYTWFNNDVtdDdDTFhLVmF0?=
+ =?utf-8?B?Qms0K3BRMFhra2Z5V2YzZFN3VlU3dS9ZeWhqVStlUHhiTVBmcWpWOW1NeFRJ?=
+ =?utf-8?B?bjZpTmJEV1pucGxNS3hyMThNN2VzdmdHdEFFemR5ZXdLZHArckNRNDljMUZX?=
+ =?utf-8?B?TWU1Z0R0bjJxNmcwK2FmWnBtM3d0cFBpWmdNdjA3NlNFM1VDcldUZU9qZ21h?=
+ =?utf-8?Q?M5ACq401rcGww?=
+X-Forefront-Antispam-Report:
+	CIP:139.15.153.206;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eop.bosch-org.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(36860700013)(82310400026)(1800799024)(7416014)(376014);DIR:OUT;SFP:1101;
+X-OriginatorOrg: de.bosch.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Aug 2024 11:37:09.2516
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2ccd17c7-f0b8-4e6f-1dc8-08dcbd1e990b
+X-MS-Exchange-CrossTenant-Id: 0ae51e19-07c8-4e4b-bb6d-648ee58410f4
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0ae51e19-07c8-4e4b-bb6d-648ee58410f4;Ip=[139.15.153.206];Helo=[eop.bosch-org.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DB3PEPF0000885A.eurprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS2PR10MB7047
 
-On Thu, Aug 15, 2024 at 10:29:10AM +0200, Pierre Gondois wrote:
-> In an effort to add test/support the cpufreq framework in rust,
-> add a rust implementation of the cppc_cpufreq driver named:
-> `rcppc_cpufreq`.
+On 15.08.2024 12:30, Andreas Hindborg wrote:
+> From: Andreas Hindborg <a.hindborg@samsung.com>
 > 
-> This implementation doesn't support/implement:
-> - vendor specific workarounds
-> - Frequency Invariance Engine (FIE)
-> - artificial Energy Model (EM)
-> - (struct cpufreq_driver).attr field
-> - QoS requests
+> This patch splits up the rust helpers C file. When rebasing patch sets on
+> upstream linux, merge conflicts in helpers.c is common and time consuming
+> [1]. Thus, split the file so that each kernel component can live in a
+> separate file.
 > 
-> Basic support is provided to get/set the frequency on a platform
-> implementing the CPPC section of the ACPI spec.
+> This patch lists helper files explicitly and thus conflicts in the file
+> list is still likely. However, they should be more simple to resolve than
+> the conflicts usually seen in helpers.c.
 > 
-> Signed-off-by: Pierre Gondois <pierre.gondois@arm.com>
-> ---
->  drivers/cpufreq/Kconfig          |  16 ++
->  drivers/cpufreq/Makefile         |   1 +
->  drivers/cpufreq/rcppc_cpufreq.rs | 333 +++++++++++++++++++++++++++++++
->  3 files changed, 350 insertions(+)
->  create mode 100644 drivers/cpufreq/rcppc_cpufreq.rs
+> Link: https://rust-for-linux.zulipchat.com/#narrow/stream/288089-General/topic/Splitting.20up.20helpers.2Ec/near/426694012 [1]
+> Signed-off-by: Andreas Hindborg <a.hindborg@samsung.com>
 
-I'm missing why you want to re-implement an existing driver here.  Why
-are you going to have 2 drivers for the same functionality/hardware?
+Acked-by: Dirk Behme <dirk.behme@de.bosch.com>
 
-How is the system going to handle switching between the two drivers?
+Thanks!
 
-thanks,
+Dirk
 
-greg k-h
