@@ -1,98 +1,108 @@
-Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFABA1A08C6
-	for <rust-for-linux@vger.kernel.org>; Thu, 15 Aug 2024 08:05:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BD9719D886;
+	Thu, 15 Aug 2024 08:29:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=217.140.110.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723709114; cv=none; b=Sx6LRydvFuMoJyoaWvSUc6SlYDmzU88dERZMIt1kXgZa3dkCBiIX8H/nyxqazQGDWrtq4ies/8BtavOLc7YLZSKp6tOIxrNMOUS78SqiLPoh804cazTJ61N9sLLvGnMX5zSytBVCWgvb6cMoytJLE4z8Melsm8X/tmjQbgyI6ak=
+	t=1723710589; cv=none; b=cDrl5mqUYx1ax3HcIY/G81agG8d0eJZHEEijOtg3Uyz6bzc/HxD0ZelgmqflSR3ftwVP9W2jfjnnYviYMH2zgIGgEjmfRL+OEDEA/J3oi8forT05eSShqWMqU6svCjg6RhH5NvEmwJtFxNxm25WS+FTUmqmSP698w/kX/wJgmJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723709114; c=relaxed/simple;
-	bh=z9gF/rR4YAP9Df3qlVcsOZgH5TMPEw3eQ5J9+Wi9oJY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=IJfwRr+qW3hcTe9sOypVElDLnLeNMzfy1dPNnBKy7IU+yMiUt7f9YXILy0r/B4AB1gR10NHOUQlawCfOvHd9rwaOYBMMeci5slxhf6y7jgklhBB2tW+5S/Dkb5vNENynYWqj8cCkGO39x65RJQeFuaureYwc23LM6XBlYkTo4VM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=PLWkDSOp; arc=none smtp.client-ip=209.85.167.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="PLWkDSOp"
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-52f01993090so846616e87.2
-        for <rust-for-linux@vger.kernel.org>; Thu, 15 Aug 2024 01:05:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1723709110; x=1724313910; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=z9gF/rR4YAP9Df3qlVcsOZgH5TMPEw3eQ5J9+Wi9oJY=;
-        b=PLWkDSOpMHZFKQsgTm8xgxvd+o5CCb62ZpXxOPO+Bm5p8HnWvl17l4GbzQnYYqQyQ9
-         MWG5Bwo6ATSWUJ5zIxmBgNL97NNA/u5HM6cFx5IBiXxd3z1xieX4D7irf19IcfcFyLnt
-         SIVDWcgBxV3SPNpt2JxgYsn0NMf0tDhK15+Ro2vbAcLT62U+uDIkMqo+daW27s4f1Lmm
-         GKBEGMNJ1+ew9q+ZfFr3PbzlZCfBIQfaO7iJA9wH+CWuKxQvOgvhSOfqBfnxQcnClvfr
-         iIVETwdOvJgDZOKKuV4Ltmd4BXVbVKOAvfqpL2PPEhqbcGi6d/lKlXS+cOc1gw4hc6GC
-         EphQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723709110; x=1724313910;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=z9gF/rR4YAP9Df3qlVcsOZgH5TMPEw3eQ5J9+Wi9oJY=;
-        b=CuLPfT1qyp1GUrVwwc6vsZzPc4D679nk6avfbdskCYlJDAquhAIlnZank8v5nPTRlN
-         VDsJu0kKGxCh980h36VnWq0BinSWLmManQ+8Dhf6y/ruiyvYb4939H60K9dKvTddhURn
-         1DkIa6wgPmb9Cntjli213aqNA24lHOcLYXSP9aRwDpE4c38Qp3KnE1dpcGFd/OxEOURy
-         vSsylVuQlSofhQuQB/neXArzAS0OxGmKd4eu+WnBnGx/Pm01p5RkE/9ep5N42kfH0DQI
-         GkTsm4WSpoaFk3Iwm6y8qkTU5G4HilbLhh0vUS+MCoHSrvrQAbY2uMJimlh6ibJBO72P
-         TmZA==
-X-Forwarded-Encrypted: i=1; AJvYcCXtBALttFw7Q+nnGoy8yQ+84PBB7YxkyUAt6APMsCqvxCaT9X4Rb7Y5OQ6qkwuNBSv1keaTW5qjHBVSpOObWA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyTBDv7xGRc74KhRTsN/sID0uvhnJE7x5Pjeng4ku5TApjDtyZX
-	bb1p8yrkmaVEPOOEf6sW2fn01Z/0LvzqdNL/DA1dlP//Ifl5JWRQFbO16nYe8BxklSuGdeeiHv7
-	4rmcoPkuWvFHopectJaUVTD9Suozbat5WXpIpQ2fSJ0L9wKUteA==
-X-Google-Smtp-Source: AGHT+IGCOOMBdtfFVG7gZ5Ss3y66J/LKGslf+MKrMBKcw1l8XPOfnAgft4zB0125aa1c2yS8DWuc4vWYMO5cotvBUlc=
-X-Received: by 2002:a05:6512:6ce:b0:52d:6663:5cbe with SMTP id
- 2adb3069b0e04-532eda5ee4bmr2856220e87.12.1723709109517; Thu, 15 Aug 2024
- 01:05:09 -0700 (PDT)
+	s=arc-20240116; t=1723710589; c=relaxed/simple;
+	bh=usUJ+ZMdAJKFpHqU9vw+q8ZPHOCj/YT/Au10Vbbq66A=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=C3gRGEo3C2iaQa9pz951O7o8mmeApCe7DZ/4wAsFckYJcOsJdkE6Hiu5wvjbkz9x4qf23uMKyZsF+Q20wDWl2Mj5TQWldpofP+hO9DmimsJ2+o6OtWNJOc4gZO8ZaMWxzCh952d0H7mdhI2V27dj79cXWtEBE/r2eOXXT9hQ+OU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com; spf=pass smtp.mailfrom=arm.com; arc=none smtp.client-ip=217.140.110.172
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=arm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=arm.com
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+	by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 97929169E;
+	Thu, 15 Aug 2024 01:30:10 -0700 (PDT)
+Received: from e126645.nice.arm.com (usa-sjc-mx-foss1.foss.arm.com [172.31.20.19])
+	by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPA id 706C33F6A8;
+	Thu, 15 Aug 2024 01:29:39 -0700 (PDT)
+From: Pierre Gondois <pierre.gondois@arm.com>
+To: linux-kernel@vger.kernel.org
+Cc: Pierre Gondois <pierre.gondois@arm.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
+	Len Brown <lenb@kernel.org>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Robert Moore <robert.moore@intel.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+	Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>,
+	Mika Westerberg <mika.westerberg@linux.intel.com>,
+	Danilo Krummrich <dakr@redhat.com>,
+	Thomas Bertschinger <tahbertschinger@gmail.com>,
+	linux-acpi@vger.kernel.org,
+	linux-pm@vger.kernel.org,
+	acpica-devel@lists.linux.dev,
+	rust-for-linux@vger.kernel.org
+Subject: [RFC PATCH 0/6] rust: cpufreq: Add cppc_cpufreq driver implementation
+Date: Thu, 15 Aug 2024 10:29:04 +0200
+Message-Id: <20240815082916.1210110-1-pierre.gondois@arm.com>
+X-Mailer: git-send-email 2.25.1
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240815074519.2684107-1-nmi@metaspace.dk> <20240815074519.2684107-3-nmi@metaspace.dk>
-In-Reply-To: <20240815074519.2684107-3-nmi@metaspace.dk>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 15 Aug 2024 10:04:56 +0200
-Message-ID: <CAH5fLgih1QtO-ACyoifNsgqd=VtJimoGV+aD=3iHG0wb+iDGyw@mail.gmail.com>
-Subject: Re: [PATCH 2/2] rust: block: fix wrong usage of lockdep API
-To: Andreas Hindborg <nmi@metaspace.dk>
-Cc: Jens Axboe <axboe@kernel.dk>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Andreas Hindborg <a.hindborg@samsung.com>, 
-	"Behme Dirk (XC-CP/ESB5)" <Dirk.Behme@de.bosch.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, 
-	"linux-block@vger.kernel.org" <linux-block@vger.kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Thu, Aug 15, 2024 at 9:49=E2=80=AFAM Andreas Hindborg <nmi@metaspace.dk>=
- wrote:
->
-> From: Andreas Hindborg <a.hindborg@samsung.com>
->
-> When allocating `struct gendisk`, `GenDiskBuilder` is using a dynamic loc=
-k
-> class key without registering the key. This is incorrect use of the API,
-> which causes a `WARN` trace. This patch fixes the issue by using a static
-> lock class key, which is more appropriate for the situation anyway.
->
-> Fixes: 3253aba3408a ("rust: block: introduce `kernel::block::mq` module")
-> Reported-by: "Behme Dirk (XC-CP/ESB5)" <Dirk.Behme@de.bosch.com>
-> Closes: https://rust-for-linux.zulipchat.com/#narrow/stream/288089-Genera=
-l/topic/6.2E11.2E0-rc1.3A.20rust.2Fkernel.2Fblock.2Fmq.2Ers.3A.20doctest.20=
-lock.20warning
-> Signed-off-by: Andreas Hindborg <a.hindborg@samsung.com>
+Hello,
+This patchset is based on Viresh's Rust cpufreq patchset [1] and
+implements a basic cppc cpufreq driver in Rust. The following features/
+possibilities are not supported yet:
+- vendor specific workarounds
+- Frequency Invariance Engine (FIE)
+- artificial Energy Model (EM)
+- (struct cpufreq_driver).attr field
+- QoS requests
 
-LGTM. This makes me wonder if there's some design mistake in how we
-handle lock classes in Rust.
+Testing:
+The patchset was tested on a CPPC based Juno-r2 platform. It was
+checked that the underlying firmware received the freq. requests
+the OS made.
+The platform doesn't support Delivered/Reference Performance Counters
+which are used to infer the current frequency of a perf. domain. The
+.get() function of the driver was thus implemented, but bypassed
+during testing.
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+[1]
+Can be found at:
+- git://git.kernel.org/pub/scm/linux/kernel/git/vireshk/linux.git rust/cpufreq-dt
+- latest commit: 2b6d636d1c7db3b21198105ad3ed5f458f027637
+  ("defconfig: Update Rust and initramfs")
+- Latest version is available at:
+  - https://lore.kernel.org/lkml/cover.1722334569.git.viresh.kumar@linaro.org/
+
+Pierre Gondois (6):
+  ACPI: CPPC: Move struct cppc_cpudata to cppc_cpufreq driver
+  cpufreq: cppc: Remove perf_fb_ctrs field from struct cppc_cpudata
+  rust: module: Allow modules to specify initcall section
+  rust: cpufreq: Add methods to struct Cpufreq
+  rust: bindings: Add bindings for rcppc_cpufreq driver
+  rust: cpufreq: Add rust implementation of cppc_cpufreq driver
+
+ drivers/acpi/cppc_acpi.c         |  26 ++-
+ drivers/cpufreq/Kconfig          |  16 ++
+ drivers/cpufreq/Makefile         |   1 +
+ drivers/cpufreq/cppc_cpufreq.c   |  12 +-
+ drivers/cpufreq/rcppc_cpufreq.rs | 333 +++++++++++++++++++++++++++++++
+ include/acpi/cppc_acpi.h         |  13 +-
+ rust/bindings/bindings_helper.h  |   1 +
+ rust/helpers.c                   |   6 +
+ rust/kernel/cpufreq.rs           |  53 +++++
+ rust/macros/module.rs            |  21 +-
+ 10 files changed, 457 insertions(+), 25 deletions(-)
+ create mode 100644 drivers/cpufreq/rcppc_cpufreq.rs
+
+-- 
+2.25.1
+
