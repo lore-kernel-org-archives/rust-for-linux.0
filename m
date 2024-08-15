@@ -1,97 +1,102 @@
-Received: from hs01.dakr.org (hs01.dakr.org [173.249.23.66])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84F5575804;
-	Thu, 15 Aug 2024 18:40:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=173.249.23.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 820D747F4A;
+	Thu, 15 Aug 2024 19:05:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723747226; cv=none; b=Tt3nCFSeVLYRcPXz0wyGPYfaO0GSxS+dzwl2GBrih1bfLVE1RrWKU3pwCnkAGZMNq6zoIKN/n7lMdhyw6pq0Nt6kdb46IHOXh/3myQ1YiIflka2zBJuPZ9NJqTJiOgr1Q1RFmQCkdPtrsTTCbN/28RGNQami1h4DBtOwvdREN5c=
+	t=1723748727; cv=none; b=f4OzOKycKHHxfSs0SENjBTVhkbdAbM6kXVZaOc1mK0mRDbh7wOmqAcZ2avQE/phc1vd0psDUFbEfO81WG2h+SlJp3sR5xEnPf0JT2syarYOEOiJuzwZ2la0ITZw4qZAxsNeIThuuDKfRBTzD+cNG6Y+IvOrywTQ5qoOljzjlNlU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723747226; c=relaxed/simple;
-	bh=DqvoXi4F3Pc40CMrzlKdtaZnQEiVxRYmQ3FlnDvE2gg=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=IszLpyIArCiNZHqeBxYAfsQJxQXZXlZCgNGO9nMtxpqzAkU1ResturJlP7+GsN4kSreeaqdWZc94JfFvVncp57MBxu3TVsbZyzUFHswg8pXes2CWAxESpPD8csgMxTZBs2vcJJiEzY8QPYlYQrCI8xLtLEXPUSD/JU1/PMoYLIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dakr.org; spf=pass smtp.mailfrom=dakr.org; arc=none smtp.client-ip=173.249.23.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=dakr.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=dakr.org
-Message-ID: <204d94fb-14af-4132-831a-73aab2ef9d36@dakr.org>
-Date: Thu, 15 Aug 2024 20:33:33 +0200
+	s=arc-20240116; t=1723748727; c=relaxed/simple;
+	bh=1DV64RzpVMCAX55Iauonqozdn6VLZrNKEpB/bDsTJ/k=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=GBwwDYXNxQd10uv9RxxfkN9ugx4F5pyzOzLRtrUt2er4qrLa7nk+XFPfwcjbKWHEWqtRfci7O3B6RI2Wch7FYqjK+TvWIMQTYr9jIkdIV1yawwrQZLZ02LcI3mLl1eK9jUafsYG9yUMTPnaJUyrXwWYblaZuOseU0IgjyCu0yh4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=nOw5w8Z6; arc=none smtp.client-ip=185.70.40.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="nOw5w8Z6"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=eybudsxja5hwfk6bdmj344og6i.protonmail; t=1723748716; x=1724007916;
+	bh=1DV64RzpVMCAX55Iauonqozdn6VLZrNKEpB/bDsTJ/k=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=nOw5w8Z6boJ9LfhZXXmr/kh0bam8ZVCAkMt4H669lq0cgjMWERD29gQFhQAhCYV5u
+	 ePXLouJ+zmfB70A44QDNrr8sSf3FmMBwtiGaUGb+LYXUrdqQHyxbUYSrfE6bHVq1Et
+	 IezjH8YnKD3KEOq328T/Bx0wcYryszKdzksWR8FGycJ7G9UVtK1GB9elXFFDuZKJmf
+	 OMsBi1gpz3ndAbamSzEYr79WoK3B463KU8UMCFC86CJ41pCsW16wLDGRY9Mth8BCWl
+	 ws95SeyVUD0hYYnoGYiywaQmkItsbdkJ0QTg3SaH6iVxRoB/l4YQz0bpTsF5f0RAMY
+	 /Ciaa2rB03N1A==
+Date: Thu, 15 Aug 2024 19:05:09 +0000
+To: Alice Ryhl <aliceryhl@google.com>, Andreas Hindborg <nmi@metaspace.dk>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Jens Axboe <axboe@kernel.dk>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, "Behme Dirk (XC-CP/ESB5)" <Dirk.Behme@de.bosch.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/2] rust: block: fix wrong usage of lockdep API
+Message-ID: <10ae8a5a-5dbc-4d6a-8f86-30236dacc5b3@proton.me>
+In-Reply-To: <CAH5fLgih1QtO-ACyoifNsgqd=VtJimoGV+aD=3iHG0wb+iDGyw@mail.gmail.com>
+References: <20240815074519.2684107-1-nmi@metaspace.dk> <20240815074519.2684107-3-nmi@metaspace.dk> <CAH5fLgih1QtO-ACyoifNsgqd=VtJimoGV+aD=3iHG0wb+iDGyw@mail.gmail.com>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: d6c547810c6ff8f844f72e469f2489227a3f6a48
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Subject: Re: [PATCH] rust: enable bindgen's
- `--enable-function-attribute-detection` flag
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>,
- Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng
- <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl
- <aliceryhl@google.com>, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, patches@lists.linux.dev
-References: <20240814163722.1550064-1-ojeda@kernel.org>
-From: Danilo Krummrich <me@dakr.org>
-Content-Language: en-US
-In-Reply-To: <20240814163722.1550064-1-ojeda@kernel.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On 8/14/24 6:37 PM, Miguel Ojeda wrote:
-> `bindgen` is able to detect certain function attributes and annotate
-> functions correspondingly in its output for the Rust side, when the
-> `--enable-function-attribute-detection` is passed.
-> 
-> In particular, it is currently able to use `__must_check` in C
-> (`#[must_use]` in Rust), which give us a bunch of annotations that are
-> nice to have to prevent possible issues in Rust abstractions, e.g.:
-> 
->       extern "C" {
->      +    #[must_use]
->           pub fn kobject_add(
->               kobj: *mut kobject,
->               parent: *mut kobject,
->               fmt: *const core::ffi::c_char,
->               ...
->           ) -> core::ffi::c_int;
->       }
-> 
-> Apparently, there are edge cases where this can make generation very slow,
-> which is why it is behind a flag [1], but it does not seem to affect us
-> in any major way at the moment.
-> 
-> Link: https://github.com/rust-lang/rust-bindgen/issues/1465 [1]
-> Link: https://lore.kernel.org/rust-for-linux/CANiq72=u5Nrz_NW3U3_VqywJkD8pECA07q2pFDd1wjtXOWdkAQ@mail.gmail.com/
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+On 15.08.24 10:04, Alice Ryhl wrote:
+> On Thu, Aug 15, 2024 at 9:49=E2=80=AFAM Andreas Hindborg <nmi@metaspace.d=
+k> wrote:
+>>
+>> From: Andreas Hindborg <a.hindborg@samsung.com>
+>>
+>> When allocating `struct gendisk`, `GenDiskBuilder` is using a dynamic lo=
+ck
+>> class key without registering the key. This is incorrect use of the API,
+>> which causes a `WARN` trace. This patch fixes the issue by using a stati=
+c
+>> lock class key, which is more appropriate for the situation anyway.
+>>
+>> Fixes: 3253aba3408a ("rust: block: introduce `kernel::block::mq` module"=
+)
+>> Reported-by: "Behme Dirk (XC-CP/ESB5)" <Dirk.Behme@de.bosch.com>
+>> Closes: https://rust-for-linux.zulipchat.com/#narrow/stream/288089-Gener=
+al/topic/6.2E11.2E0-rc1.3A.20rust.2Fkernel.2Fblock.2Fmq.2Ers.3A.20doctest.2=
+0lock.20warning
+>> Signed-off-by: Andreas Hindborg <a.hindborg@samsung.com>
+>=20
+> LGTM. This makes me wonder if there's some design mistake in how we
+> handle lock classes in Rust.
 
-Thanks for looking into this,
+So `LockClassKey::new` doesn't initialize the `lock_class_key` and is
+also movable. I think in this case we either just overlooked it or
+thought that the C side would initialize it.
 
-Acked-by: Danilo Krummrich <dakr@kernel.org>
+For those people that know about this, are there APIs that initialize
+`lock_class_key` themselves? (ie not a function to initialize a lock
+class key, but rather an API like `__blk_mq_alloc_disk`)
+Because if it is usually expected that the class key is already
+initialized, then I think we should change our abstraction.
 
-> ---
-> If someone notices a major performance difference, please let me know!
-> 
->   rust/Makefile | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/rust/Makefile b/rust/Makefile
-> index 1f10f92737f2..c28b81e2a5fa 100644
-> --- a/rust/Makefile
-> +++ b/rust/Makefile
-> @@ -270,7 +270,7 @@ quiet_cmd_bindgen = BINDGEN $@
->         cmd_bindgen = \
->   	$(BINDGEN) $< $(bindgen_target_flags) \
->   		--use-core --with-derive-default --ctypes-prefix core::ffi --no-layout-tests \
-> -		--no-debug '.*' \
-> +		--no-debug '.*' --enable-function-attribute-detection \
->   		-o $@ -- $(bindgen_c_flags_final) -DMODULE \
->   		$(bindgen_target_cflags) $(bindgen_target_extra)
-> 
-> 
-> base-commit: de9c2c66ad8e787abec7c9d7eff4f8c3cdd28aed
-> --
-> 2.46.0
-> 
+Additionally, I think that it needs to be pinned, since it contains an
+`struct hlist_node` (I might be wrong on this, but that looks and sounds
+like an intrusive linked list).
+
+Also the `new` function is probably prone for misuse, since it will
+create a new lock class key every time it is run. But as I learned in
+[1], the more common use-case is a single lock class key for several
+locks. Therefore it might be a good idea to at least rename it to
+`new_dynamic` or similar and add appropriate documentation pointing to
+`static_lock_class!`.
+
+[1]: https://rust-for-linux.zulipchat.com/#narrow/stream/288089-General/top=
+ic/.E2.9C.94.206.2E11.2E0-rc1.3A.20rust.2Fkernel.2Fblock.2Fmq.2Ers.3A.20doc=
+test.20lock.20warning/near/460074755
+
+---
+Cheers,
+Benno
+
