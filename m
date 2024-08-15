@@ -1,43 +1,43 @@
 Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E86A3165F1E
-	for <rust-for-linux@vger.kernel.org>; Thu, 15 Aug 2024 06:40:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AEB7BA53;
+	Thu, 15 Aug 2024 06:48:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.134
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723704037; cv=none; b=MnT/4GjJKJT0Ll4SMTV0hAYjK6xainx6nbcATywKzL+N0fLPzagWnrwuQWgVWKj6eQ77h/kkA7ei6cMkRzRhNSK+Bv1ZA34ezWVKynNnk3GyJwfZ0BElKgmivSChQ8e82j5iYz9cwhKdOpet9JizMETgk5jTiazfhHFy2TgnA2g=
+	t=1723704512; cv=none; b=RLFA8hfnUuEagqOUZNBfzvaSL64vRaIfDIUSspQPqgrWy/Uvlg/UkNPNhxIMRdrViK1nuyS7o5cRiaOXHVz7J2OItwS+JdyU0FTp5lLZTdz2YqlW5qVV7QJItL5GQdZ5bn4vXetj5sQ2hNdAiu9UvEd1fYi9hPwq6nLaJnvd8po=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723704037; c=relaxed/simple;
-	bh=btVyO5gQo/KA6fR4kSWu222wz0/LfuumKfAIGpzzPRg=;
+	s=arc-20240116; t=1723704512; c=relaxed/simple;
+	bh=Nh33MOapYcsyZSaE72pj/GAoYlZhrWgFlThVWqv5fpw=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=geqbJYrEVh4+iH2fbx7a59Lv4ORhbCHxN4y1Fm2DwOMKswbHLy64qmk508+He4KF/4fwRdZuyeSEOgKglKowu4Zs+f+txRIJy0n7iQU41pdgsIXqjZTg+2024cJbfkMXNUU+c6Gpmuqi7uzzKbWItMLsBgZufH9B9AyjA5ZFdK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=W95hu87Z; arc=none smtp.client-ip=185.70.40.134
+	 MIME-Version:Content-Type; b=h3dt4StqSOXdx9GvYQoXjPdXptyrmTGyskIz+155A7j+RyOfiSonYUa88GBrY600ngF29AWXoGonocMEJApZlycaBYj1t37Pg/A4rg7bTDjPj+wtQOfSP79tlZEUEdJJ06ZwW2B07M7qKHGlayB/WBQWWaSeKRNWVAlc12Jz6To=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=W+dE1+u1; arc=none smtp.client-ip=185.70.40.134
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="W95hu87Z"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="W+dE1+u1"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1723704032; x=1723963232;
-	bh=JS43fM60RhDm+Th9MoEtNNKuKV29u1Ehm7PpXPr8fO8=;
+	s=protonmail; t=1723704508; x=1723963708;
+	bh=5I4uF48/D5iv+622qy+0xU6rTasLnm4ofO5ZVU8Faa0=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=W95hu87ZrFzIJKRWqy7jJGYtEoW0XwdV1CnQ1Mti26jwCs+JTKG/sqp5axXMQ4hUb
-	 hTD74u4GPLku7uhSh6sIWl2Ik3XIGcIo2lfHrnncUYbwbXlw6q/Ist2VXoOOp3cRtd
-	 w5swmtogjto4IplpVXSITimV2GUqtZpg3J/Kp8VkoLxuJk5ebwciDefgc/pLUPspkT
-	 Vodt4I8TBq2TqGGn8Lg7HttJ+Z7bn8OMceUolzjewXmegH7dbMdjN8tf0nZEII3kiA
-	 xlrol+93f/+cwEmNBA7ZAoy4SgaQn17JJhJyAyEVO3P7CNx9FTLK3r9xtsh36+2IL3
-	 J7Uzxarcc132g==
-Date: Thu, 15 Aug 2024 06:40:28 +0000
-To: Boqun Feng <boqun.feng@gmail.com>
+	b=W+dE1+u19fQ8vRibOHcKr1+/M5xi0Qu9fn4/aAdgRuLu2q2vDQMtjFuZ9NpkM++N2
+	 G77L82ThfRUOnNo4JFkYH15EINEmEQRKz+DEJ8EsfOFHQVJQUEHHAm5J4uqC1/sIr7
+	 ctQ4KcLFJ0kNXaZzoFba94wUqa8tAPPL2PqP33iHWq1d4cyGa/dl8UfngJXH3fDxiI
+	 4MuwDIa87zbydoAvTQ07vrF5/IUydQKPzKyQpgrkUQiy0FD2UmRIMbjySk4WWs7eJY
+	 vT+RATNBIvosrqPtmZo0rXAP+hq9cd4L728GKULHaV0FTDcsxT+jOSCBIxtvzNxPhF
+	 pHMnPgs5l1uIw==
+Date: Thu, 15 Aug 2024 06:48:19 +0000
+To: Danilo Krummrich <dakr@kernel.org>
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: Lyude Paul <lyude@redhat.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, Danilo Krummrich <dakr@redhat.com>, airlied@redhat.com, Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, FUJITA Tomonori <fujita.tomonori@gmail.com>, Aakash Sen Sharma <aakashsensharma@gmail.com>, Valentin Obst <kernel@valentinobst.de>, Thomas Gleixner <tglx@linutronix.de>
-Subject: Re: [PATCH v3 1/3] rust: Introduce irq module
-Message-ID: <2b139d06-c0e0-4896-8747-d62499aec82f@proton.me>
-In-Reply-To: <Zr2JryyeoZPn3JGC@boqun-archlinux>
-References: <20240802001452.464985-1-lyude@redhat.com> <20240802001452.464985-2-lyude@redhat.com> <Zrzq8su-LhUIoavm@boqun-archlinux> <1bcae676ec4751ae137782c4ced8aad505ec1bb9.camel@redhat.com> <Zr0QyN8sQ6W2hPoJ@boqun-archlinux> <9855f198-858d-4e3f-9259-cd9111900c0c@proton.me> <Zr0aUwTqJXOxE-ju@boqun-archlinux> <Zr2JryyeoZPn3JGC@boqun-archlinux>
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@samsung.com, aliceryhl@google.com, akpm@linux-foundation.org, daniel.almeida@collabora.com, faith.ekstrand@collabora.com, boris.brezillon@collabora.com, lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com, ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v5 06/26] rust: alloc: implement `Vmalloc` allocator
+Message-ID: <5dfe8bae-2c1e-47d4-9fb4-373b7d714c4f@proton.me>
+In-Reply-To: <Zr072oSej9KIc1S6@cassiopeiae>
+References: <20240812182355.11641-1-dakr@kernel.org> <20240812182355.11641-7-dakr@kernel.org> <c9d57e77-8748-4e58-a39b-7a23f750ceda@proton.me> <Zr0r6sSFMSQIpHEX@cassiopeiae> <Zr072oSej9KIc1S6@cassiopeiae>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 64c2b25ea9656e001ad16ddd492ff2aec8b43367
+X-Pm-Message-ID: 7dce0f614b91ef9b8e959229288c0aba3f8bbc85
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,134 +47,83 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On 15.08.24 06:53, Boqun Feng wrote:
-> On Wed, Aug 14, 2024 at 01:57:55PM -0700, Boqun Feng wrote:
->> On Wed, Aug 14, 2024 at 08:44:15PM +0000, Benno Lossin wrote:
->>> On 14.08.24 22:17, Boqun Feng wrote:
->>>> On Wed, Aug 14, 2024 at 03:38:47PM -0400, Lyude Paul wrote:
->>>>> On Wed, 2024-08-14 at 10:35 -0700, Boqun Feng wrote:
->>>>>> On Thu, Aug 01, 2024 at 08:10:00PM -0400, Lyude Paul wrote:
->>>>>> [...]
->>>>>>> +/// Run the closure `cb` with interrupts disabled on the local CPU=
+On 15.08.24 01:20, Danilo Krummrich wrote:
+> On Thu, Aug 15, 2024 at 12:13:06AM +0200, Danilo Krummrich wrote:
+>>
+>>>
+>>>> +        ptr: Option<NonNull<u8>>,
+>>>> +        layout: Layout,
+>>>> +        flags: Flags,
+>>>> +    ) -> Result<NonNull<[u8]>, AllocError> {
+>>>> +        // TODO: Support alignments larger than PAGE_SIZE.
+>>>> +        if layout.align() > bindings::PAGE_SIZE {
+>>>> +            pr_warn!("Vmalloc does not support alignments larger than=
+ PAGE_SIZE yet.\n");
+>>>> +            return Err(AllocError);
+>>>
+>>> I think here we should first try to use `build_error!`, most often the
+>>> alignment will be specified statically, so it should get optimized away=
 .
->>>>>>> +///
->>>>>>> +/// This creates an [`IrqDisabled`] token, which can be passed to =
-functions that must be run
->>>>>>> +/// without interrupts.
->>>>>>> +///
->>>>>>> +/// # Examples
->>>>>>> +///
->>>>>>> +/// Using [`with_irqs_disabled`] to call a function that can only =
-be called with interrupts
->>>>>>> +/// disabled:
->>>>>>> +///
->>>>>>> +/// ```
->>>>>>> +/// use kernel::irq::{IrqDisabled, with_irqs_disabled};
->>>>>>> +///
->>>>>>> +/// // Requiring interrupts be disabled to call a function
->>>>>>> +/// fn dont_interrupt_me(_irq: IrqDisabled<'_>) {
->>>>>>> +///     /* When this token is available, IRQs are known to be disa=
-bled. Actions that rely on this
->>>>>>> +///      * can be safely performed
->>>>>>> +///      */
->>>>>>> +/// }
->>>>>>> +///
->>>>>>> +/// // Disabling interrupts. They'll be re-enabled once this closu=
-re completes.
->>>>>>> +/// with_irqs_disabled(|irq| dont_interrupt_me(irq));
->>>>>>> +/// ```
->>>>>>> +#[inline]
->>>>>>> +pub fn with_irqs_disabled<T>(cb: impl for<'a> FnOnce(IrqDisabled<'=
-a>) -> T) -> T {
->>>>>>
->>>>>> Given the current signature, can `cb` return with interrupts enabled=
- (if
->>>>>> it re-enables interrupt itself)? For example:
->>>>>>
->>>>>> =09with_irqs_disabled(|irq_disabled| {
->>>>>>
->>>>>> =09    // maybe a unsafe function.
->>>>>> =09    reenable_irq(irq_disabled);
->>>>>
->>>>> JFYI: this wouldn't be unsafe, it would be broken code in all circums=
-tances
->>>>> Simply put: `with_irqs_disabled()` does not provide the guarantee tha=
-t
->>>>> interrupts were enabled previously, only that they're disabled now. A=
-nd it is
->>>>> never a sound operation in C or Rust to ever enable interrupts withou=
-t a
->>>>> matching disable in the same scope because that immediately risks a d=
-eadlock
->>>>> or other undefined behavior. There's no usecase for this, I'd conside=
-r any
->>>>> kind of function that returns with a different interrupt state then i=
-t had
->>>>> upon being called to simply be broken.
->>>>>
->>>>> Also - like we previously mentioned, `IrqDisabled` is just a marker t=
-ype. It
->>>>> doesn't enable or disable anything itself, the most it does is run a =
-debug
->>>>
->>>> Yes, I know, but my question is more that should `cb` return a
->>>> `IrqDisabled` to prove the interrupt is still in the disabled state?
->>>> I.e. no matter what `cb` does, the interrupt remains disabled.
->>>
->>> What does this help with? I don't think this will add value (at least
->>> with how `IrqDisabled` is designed at the moment).
->>>
 >>
->> I was trying to make sure that user shouldn't mess up with interrupt
->> state in the callback function, but as you mention below, type system
->> cannot help here.
->>
-> [...]
->>>>
->>>> I haven't found a problem with `&IrqDisabled` as the closure parameter=
-,
->>>> but I may miss something.
->>>
->>> We could also use `&'a IrqDisabled` instead of `IrqDisabled<'a>` (note
->>> the first one doesn't have a lifetime). But there is no behavioral
->>> difference between the two. Originally the intended API was to use `&'a
->>> IrqDisabled<'a>` as the closure parameter and `IrqDisabled<'a>` in
->>> functions that require irqs being disabled. As long as we decide on a
->>> consistent type, I don't mind either (since then we can avoid
->>> reborrowing).
->>>
->>>> So the key ask from me is: it looks like we are on the same page that
->>>> when `cb` returns, the IRQ should be in the same disabled state as whe=
-n
->>>> it gets called. So how do we express this "requirement" then? Type
->>>> sytem, comments, safety comments?
->>>
->>> I don't think that expressing this in the type system makes sense, sinc=
-e
->>> the type that we select (`&'a IrqDisabled` or `IrqDisabled<'a>`) will b=
-e
->>> `Copy`. And thus you can just produce as many of those as you want.
->>>
+>> Sure, we can try that first.
 >=20
-> Hmm.. on a second thought, `Copy` doesn't affect what I'm proposing
-> here, yes one could have as many `IrqDisabled<'a>` as one wants, but
-> making `cb` returns a `(IrqDisabled<'a>, T)` means the `cb` has to prove
-> at least one of the `IrqDisabled<'a>` exists, i.e. it must prove the irq
-> is still disabled, which the requirement of `with_irqs_disabled`, right?
+> I think I spoke too soon here. I don't think `build_error!` or `build_ass=
+ert!`
+> can work here, it would also fail the build when the compiler doesn't kno=
+w the
+> value of the alignment, wouldn't it? I remember that I wasn't overly happ=
+y about
+> failing this on runtime either when I first thought about this case, but =
+I also
+> couldn't think of something better.
 
-Yes, but that doesn't do anything. If the token is `Copy`, then we are
-not allowed to have the following API:
+Yes, it might fail even though the alignment at runtime will be fine.
+But that's why I suggested trying `build_error!`(or `build_assert!`)
+first, if nobody hits the case where the compiler cannot figure it out,
+then we can keep it. If there are instances, where it fails, but the
+alignment would be fine at runtime, then we can change it to the above.
+(I would add such a comment above the assert).
 
-    fn enable_irq(irq: IrqDisabled<'_>);
+> In the end it's rather unlikely to ever hit this case, and probably even =
+more
+> unlikely to hit it for a sane reason.
 
-Since if the token is `Copy`, you can just copy it, call the function
-and still return an `IrqDisabled<'a>` to satisfy the closure. It only
-adds verbosity IMO.
+Yeah, but I still prefer the build to fail, rather than emitting a warn
+message that can be overlooked at runtime.
 
-> Or you're saying there could exist an `IrqDisabled<'a>` but the
-> interrupts are enabled?
+>>> How difficult will it be to support this? (it is a weird requirement,
+>>> but I dislike just returning an error...)
+>>
+>> It's not difficult to support at all. But it requires a C API taking an
+>> alignment argument (same for `KVmalloc`).
 
-No.
+I see, that's good to know.
+
+>> Coming up with a vrealloc_aligned() is rather trivial. kvrealloc_aligned=
+() would
+>> be a bit weird though, because the alignment argument could only be real=
+ly
+>> honored if we run into the vrealloc() case. For the krealloc() case it'd=
+ still
+>> depend on the bucket size that is selected for the requested size.
+
+Yeah... Maybe some more logic on the Rust side can help with that.
+
+>> Adding the C API, I'm also pretty sure someone's gonna ask what we need =
+an
+>> alignment larger than PAGE_SIZE for and if we have a real use case for t=
+hat.
+>> I'm not entirely sure we have a reasonable answer for that.
+
+We could argue that we can remove an "ugly hack" (when we don't have the
+build assert, if we do have that, I don't mind not supporting it), but I
+agree that finding a user will be difficult.
+
+>> I got some hacked up patches for that, but I'd rather polish and send th=
+em once
+>> we actually need it.
+
+Sure, just wanted to check why you don't want to do it this series.
 
 ---
 Cheers,
