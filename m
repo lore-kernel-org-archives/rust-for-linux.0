@@ -1,97 +1,111 @@
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
+Received: from mail-il1-f174.google.com (mail-il1-f174.google.com [209.85.166.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F12F753365;
-	Thu, 15 Aug 2024 15:31:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7475A1ABEDC
+	for <rust-for-linux@vger.kernel.org>; Thu, 15 Aug 2024 16:00:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723735900; cv=none; b=SWE6X6VjrHZXpSrrGXAcdDaQuMXa9SxbDcUqiX5ni413FVZmXZ0emChXm6KX8kIrU1OTXfV/WpcS3QgLirMTP59tqlAr67zxKsYbwh3C1zjPW+qucBIXI26l3mvvlHO7VRYrxMfzjYZAHpa7mzliiCfs0hkH8RH745/27c7uQB8=
+	t=1723737659; cv=none; b=SmtTxBAicsSZHVH0+Cm/lBjHLcTVBLqKYiLfrP9Jju+Ye9phLP1B+V6twRN4LhE3pxAMDvBqTvUh91QXfkqrxkM+HGXPU3JZmfhy/+we5vIAcy3jgoq91Wy/WCRoHYkjn2ALKgVAHAgjXGWHmzdGSqJVWMwTxd046YhWeS2A9kU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723735900; c=relaxed/simple;
-	bh=zO8i28esgOwM2IKZTj6QVpLHk2hrVfYuXE8+Db5XxMc=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Zr5VibnqVFTkEAwm1y5BvtwwWO0Z4DkcxhfEPmepoqbHaosHYPP7W5igKWqbeXWEgPWR+TzLM48ZO5OtWHDUd57iKyhJq0SDYId7lE39RWkGEqailRG+vMbF7hLZIV0+xXw2ajmSwddDof5rOnqXp4L6S+ZG6Qt1gbRvY5NtXVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=W+A6v2+y; arc=none smtp.client-ip=209.85.216.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1723737659; c=relaxed/simple;
+	bh=8EmgGrQTiAThFUecEEjj/YeR2I3mqpRC/ExlP7Mbp8A=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=rsdQBzjwFQ8MQM4K8ucg5ulePWecil0jBHIi0+uk1hWUXLlO/xw4WO1nde8H7yJmbmgRXIkahOQPL/irEhNxbfDpZk5yNcER0bTJllvzrSlecdrlyQtZ3CWbCg21Guu1C+4WfxE0C3Z4qB/kKFDxIBMuEBa9LHaLiJW3JQY6WsU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=ZIB6qPwR; arc=none smtp.client-ip=209.85.166.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="W+A6v2+y"
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-2d3bc043e81so752546a91.2;
-        Thu, 15 Aug 2024 08:31:38 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="ZIB6qPwR"
+Received: by mail-il1-f174.google.com with SMTP id e9e14a558f8ab-39b26410e0cso634645ab.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 15 Aug 2024 09:00:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1723735898; x=1724340698; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=a+LqYglqDDwweyHeY9WF0lHIc3M24FlH5C4AoMCNycQ=;
-        b=W+A6v2+yq5xuQmVedigaKEVz1rdhyJlY9PX7OTBxlxals+vTLUJqdZ6AlpDKV+ypY0
-         lERmMmY1y08waEvHzjpGcAGrt24RT/rzaS2+UvZ2Edtze7oePQyLwY8rsCIWgrMChstH
-         Q3oy/D85P8k9Fwp2KtdHuIz6GMyqcwBqo1oy8iyriOVqNhu+AaYX4qVa8wtFHgXM3A0f
-         jAe3Eafb+6FmP0MLrpV/OPeSHXO+sZZRfbmU5G39mRUYrWPPRzw4o8HHmwrXoQ6Zso+3
-         zr3CA2BXW2WfBBi4kqLKPvNw9/qDzPIyiVqEuqdjVapVusCvQNaE+47m60RQ3rm7mQC+
-         rILQ==
+        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1723737656; x=1724342456; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=kvY52rn3VLdN7FSBDk7M0Q/xyXbEHYPcDeYIz1HEN8U=;
+        b=ZIB6qPwRpqE5R1sOeKpkgt/kx+fb4VkH6RBlekOE207dVb2SivpPOn1Z7FY+xTda0O
+         aWP5oEh5/m563ppxAKSQzoeXC8h0P0+k+5LMuOr5RK4GEgLK+b6wUCkQZOZUtHE4sfJz
+         G+NZNhCqRIv88Ah7rQt2eabsLTfg5UDmX+0YFcOVsoTuLJlmsh752vcwpHwCqRVdZVAH
+         UecYR9cz9BP/hNdDMxdHlLe1RU/KH+pmxEudC/hIMyftKpHA343WWMWbJZ03e7A0v9fm
+         M7RzOjGqEAXRV+4a9zdpNyWyN4ICptusqYk4G4NaRLJ4QYtl4Qghxfto9tIPzqsXkJXH
+         x3Ww==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723735898; x=1724340698;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=a+LqYglqDDwweyHeY9WF0lHIc3M24FlH5C4AoMCNycQ=;
-        b=w2ENHZg/JpzMXrMtIASEmprvIYU9xCkh5wmi1UkzKKwBoPMYL+sCOBEvdQlC6K/QMv
-         o0aAq3r3Y3EHL+FdTPTsuIAp7DfBg1TFDGW65FcdyNYyn242RrAplrIYydAv/KJ1BT9A
-         9nU5moUrvyW0/dy+zzx1j5FHfVQfSuZOpybguBYkj6G9/5H+ML2Ybva34ZSs/nFgXUTT
-         /AzOtg3jI8O9YR2ziF+nOd+qWrXbaeX9jtzd4+4ItBl0f0ZZNRPWJA8o2NSkk30QdTmj
-         bArVW/u5rks05nVExqDvaQX/SrJQGPmCbZjD9gThXgDHHU2AryjEY9fRHJtgHJqdW2F9
-         A9iw==
-X-Forwarded-Encrypted: i=1; AJvYcCVyCLJ+LRcPhAe71ik+r/vUuex2Uo58l6EIXZAOdvh9YivAwnqR5XCgeIAhTkuYR5VaYtJ5Qpqr/Xzi1fDxc2qeX2u7Ymi50JmmQSi2icVbq8EP2G5T3SjQ7cYFC6qDP/eAomPFE4rLFOJ9rNX8VlKfB7o75JrwKyC+YMek9jDbwOOnKLQ7n40lLA==
-X-Gm-Message-State: AOJu0YzjNwch3Ci12dnfrKXrIzidcoWjIIRzPfUI6QPRODaEYr0lm1AR
-	pV6vCNht0zFyIBAJhIgDoF+66O/45y3ybsQ767vt7h+XnQKg0aTcpPGiWuawIGG9S2H+M7xRCcZ
-	zlHjPqD+9QaaXmMnPllKOGEVmt/0=
-X-Google-Smtp-Source: AGHT+IFZKfJDyUVUlLPZnL5SSp2gdP0C0YyAdgL1sqDAM9BZcm3HcihDUZEP+nsUhxy6U1bt7PVprEEKbniigIEBU5s=
-X-Received: by 2002:a17:90a:ca89:b0:2c9:754d:2cba with SMTP id
- 98e67ed59e1d1-2d3dfc2aa3amr18264a91.3.1723735898110; Thu, 15 Aug 2024
- 08:31:38 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1723737656; x=1724342456;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=kvY52rn3VLdN7FSBDk7M0Q/xyXbEHYPcDeYIz1HEN8U=;
+        b=f56txznm2jFYNnKXoiXw82GrqgXRYQ0cZNsTBS316apzaDaMezI3jW3evpp5+398C2
+         PdGzZhUhmn6ykmPg1pltaHRThx3U2LFyRvgsKoOtTN61UaCn/FZqPieKtlKoo3fPsuaY
+         uobPnc/5pyjI41UaoBtQEDBTQCHA9ZJeXSg3tio+uIEK2H6fG5Sp1g2nuDf4sPNlhlSD
+         fMik/WfIEHcrOYAjr5BL7dj5jZve6qS6RRyNJiqO9gKWKpuEsoLEebeKbhRdXsw4Dh4O
+         LSHMVO6Z3r9LdmPoEx5Dq35Afi+f2QydnazVaADCTS/oYkt3rkndiMLaIL9Etq6KSsua
+         aomA==
+X-Forwarded-Encrypted: i=1; AJvYcCWPAR0vernvMfEMfBKAb6zrfWVQ9/CkSUnZX7aISas+lRjf8vKrzw4UWUH+8pMc55pfP19VyVA4pFyvwgx9fg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwjAOO7o3ly4t0jN4XXNsfkNVdLCMwdqW6xx6ughU69jl9FWe3v
+	5/EQwDB440ITrcM+Q5CCQCu1cFkOra21HaLEZQ2Uo11lOmnKq9oFDX5c8mmipv4=
+X-Google-Smtp-Source: AGHT+IHVdJLpv3Jd1d39Hh3l6ibKrPATj6iR/ePmOqrUAeo+aVkAGUQ5weyaKqVzlglv7c5OP8ZOww==
+X-Received: by 2002:a5d:91c9:0:b0:822:3c35:5fc0 with SMTP id ca18e2360f4ac-824f2721fa8mr14417139f.3.1723737655813;
+        Thu, 15 Aug 2024 09:00:55 -0700 (PDT)
+Received: from [192.168.1.116] ([96.43.243.2])
+        by smtp.gmail.com with ESMTPSA id 8926c6da1cb9f-4ccd6f3db32sm566067173.116.2024.08.15.09.00.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 15 Aug 2024 09:00:55 -0700 (PDT)
+Message-ID: <622e155f-2ad0-4f62-a6a7-c9c88903db82@kernel.dk>
+Date: Thu, 15 Aug 2024 10:00:53 -0600
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240815074519.2684107-1-nmi@metaspace.dk> <172373175849.6989.2668092199011403509.b4-ty@kernel.dk>
-In-Reply-To: <172373175849.6989.2668092199011403509.b4-ty@kernel.dk>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 15 Aug 2024 17:31:25 +0200
-Message-ID: <CANiq72kFXihVGDGmRyuc0LkODYOv2jX3shP-dEHjV3k1sqFEKg@mail.gmail.com>
+User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 0/2] rust: fix erranous use of lock class key in rust
  block device bindings
-To: Jens Axboe <axboe@kernel.dk>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Andreas Hindborg <nmi@metaspace.dk>, 
-	Andreas Hindborg <a.hindborg@samsung.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, 
-	"Behme Dirk (XC-CP/ESB5)" <Dirk.Behme@de.bosch.com>, linux-block@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Wedson Almeida Filho <wedsonaf@gmail.com>,
+ Andreas Hindborg <nmi@metaspace.dk>,
+ Andreas Hindborg <a.hindborg@samsung.com>, Boqun Feng
+ <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>,
+ "Behme Dirk (XC-CP/ESB5)" <Dirk.Behme@de.bosch.com>,
+ linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+References: <20240815074519.2684107-1-nmi@metaspace.dk>
+ <172373175849.6989.2668092199011403509.b4-ty@kernel.dk>
+ <CANiq72kFXihVGDGmRyuc0LkODYOv2jX3shP-dEHjV3k1sqFEKg@mail.gmail.com>
+Content-Language: en-US
+From: Jens Axboe <axboe@kernel.dk>
+In-Reply-To: <CANiq72kFXihVGDGmRyuc0LkODYOv2jX3shP-dEHjV3k1sqFEKg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-Hi Jens,
+On 8/15/24 9:31 AM, Miguel Ojeda wrote:
+> Hi Jens,
+> 
+> On Thu, Aug 15, 2024 at 4:22?PM Jens Axboe <axboe@kernel.dk> wrote:
+>>
+>> Applied, thanks!
+>>
+>> [2/2] rust: block: fix wrong usage of lockdep API
+>>       commit: d28b514ea3ae15274a4d70422ecc873bf6258e77
+> 
+> If you picked 2/2 only, it requires the former as far as I understand.
 
-On Thu, Aug 15, 2024 at 4:22=E2=80=AFPM Jens Axboe <axboe@kernel.dk> wrote:
->
-> Applied, thanks!
->
-> [2/2] rust: block: fix wrong usage of lockdep API
->       commit: d28b514ea3ae15274a4d70422ecc873bf6258e77
+Sorry I missed that, mostly because they were split into two separate
+postings. Hence it only pulled one.
 
-If you picked 2/2 only, it requires the former as far as I understand.
+> If you want to pick both:
+> 
+> Acked-by: Miguel Ojeda <ojeda@kernel.org>
+> 
+> Otherwise, I am happy to take them too.
 
-If you want to pick both:
+Go ahead and take them, I'll just kill the one I have. Thanks!
 
-Acked-by: Miguel Ojeda <ojeda@kernel.org>
+-- 
+Jens Axboe
 
-Otherwise, I am happy to take them too.
-
-Thanks!
-
-Cheers,
-Miguel
