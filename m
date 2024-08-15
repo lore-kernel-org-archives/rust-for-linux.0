@@ -1,53 +1,43 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF9061AE035;
-	Thu, 15 Aug 2024 14:09:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E40C1A00EC;
+	Thu, 15 Aug 2024 14:10:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723730968; cv=none; b=p8dzo/KCDKaPzoPuXRCVbBNszA6sK/FPRGO314I6DkLro2mCXdvsm21D3lW3GScdsAMeEDNQ7MIUPxGE/1DCjOvIBrMBkwB/IZSpzAorN5q1T7tZKTyDeiKGd6oNWGns9DWT/DEB98kDSvpsFlAhG/F7iLwlQBjsxGyFqcCHeuM=
+	t=1723731037; cv=none; b=XNSB7O6vd61k/qc6c5C5VNegFouCnYC2fD00NN63DTlFgvAk8wpcnd2gHK2nZTfebwYjtKftcLJxqtUcjPfIIVhfz3YnKahlya6k8SM41so37dj2+Nes8gRXTmvWfdbERGLgSGC0byr5m1WPXq0o+kbO3C0rkIuQkYwYcZGcxY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723730968; c=relaxed/simple;
-	bh=2WMl6EaRKHyEK2/ZQZdr02Mc4qbGm1r0DYQ2zC7R8LE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=BojKYfXtYsXNeTUWkf2aXihEzuVbWCcZ5yJFVHZZ8lq7jmow8DcmRFR0r1Cxwt7L9b5RwvC2HmvC+SNAOlZHeYwTIMO19O1yDtAPRJ7oXq0oUQiLc/8GCtjsaQl6E3WUYsen2nEzVcOYm4ibzOU3VZ8h3N9lpt3tISSCoksjJ3o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rodQTSjR; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1723731037; c=relaxed/simple;
+	bh=BDHaQFo8dDeUDSWWnczHxuH+Hb4dCYs/6Cp/V24JuiQ=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=i4YYfJC4yZgRokt8clEcSiqV+H0GsAY+OWER+iTMSeB+esOunYUj4FsXjDorZkv4/dh526gPOI6Mc+elJ7A4e8kWTrLAYzdJpkW1zaXCLBlfpekx/KclqzXvcBL7vd32lh1Oq0qROCTbdWF5bGT4KkSvxrkwZ6p79VSkB8xIw8g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=eaqSD0u5; arc=none smtp.client-ip=185.70.43.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rodQTSjR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8DE7C4AF0D;
-	Thu, 15 Aug 2024 14:09:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723730968;
-	bh=2WMl6EaRKHyEK2/ZQZdr02Mc4qbGm1r0DYQ2zC7R8LE=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=rodQTSjRyZaZMi9wvpDn6L5vd2PItWpn+1+Hze3ZI6tx7NDN1XGsNH/seMN8chlZe
-	 9fnuYBBvRX+7FPpJwcgzS61CVgHj7TpWsViVSxyWAJfwZv5gTJ1V5BHbnpYInVZ2cF
-	 KyOnhrzJApsM5HutwlWg0lYgo+oeuiXznnrPE5JKDqA/IqHGZ5C9r8/zsVBoM8j5vZ
-	 MDNtDGgNoV7mA+SHZni/cBBbXo9uJ8w/DzB5Bd50+Js6boJ/M4nOpliwp2rI4EgkBO
-	 DrJhnZ34rnCUrCpq547G11cZIXcB/P7ujFG4j9I+pWp1uUxIWIdGm58EIE52f+JgoF
-	 S1lapkYIrjUOg==
-Date: Thu, 15 Aug 2024 16:09:20 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Alice Ryhl <aliceryhl@google.com>, Boqun Feng <boqun.feng@gmail.com>,
-	ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@samsung.com,
-	akpm@linux-foundation.org, daniel.almeida@collabora.com,
-	faith.ekstrand@collabora.com, boris.brezillon@collabora.com,
-	lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com,
-	cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com,
-	ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v5 00/26] Generic `Allocator` support for Rust
-Message-ID: <Zr4MEPlbYGrx6BbO@cassiopeiae>
-References: <20240812182355.11641-1-dakr@kernel.org>
- <Zr0GP0OXliPRqx4C@boqun-archlinux>
- <Zr1teqjuOHeeFO4Z@cassiopeiae>
- <CAH5fLgjvuE5uU00u4y+HyHTkQU_OBYvHe6NS5ohAhrLntTX1zQ@mail.gmail.com>
- <Zr31jqnA2b3qHK5l@cassiopeiae>
- <CAH5fLgjzNpeVVurPqVS=tMkKQOhXz08EsXRO4s9wYsNBuT6eVw@mail.gmail.com>
- <Zr4DpPSjDqSoMh0j@cassiopeiae>
- <e0b0bffb-c240-4d23-bf4d-0c1c19608f60@proton.me>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="eaqSD0u5"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1723731030; x=1723990230;
+	bh=BDHaQFo8dDeUDSWWnczHxuH+Hb4dCYs/6Cp/V24JuiQ=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=eaqSD0u5FIVhekwomHdqa7qqVPhLldaCA2i9Uer6UkdNF+AtVw/u59xrQ24n14Ykb
+	 ogdgNAx9ikn3GlbX4HGHbbbNuoqz1N0c00lK3saGzWZPTltSbuIS5ga2FhLHBOZpRy
+	 Ufwm+37qwf8EIPjE66iMmbsSwif/LtmYwKywwybZraLauX0rmc47xRDU+AXV0TYBsZ
+	 7LreQGALq77u/wCqW1j5XIVKjGnr2nhCyiFHUBFcpX4d4d0/xbqzqzsxRjzsl+Guyh
+	 aRPXfR2qqwxSYYScz/nZ2ilyt3UoAiGyecPdsTPQqWbZP15iMY6Cr7rq+PKzFniasl
+	 o8xbdXbqrzDmg==
+Date: Thu, 15 Aug 2024 14:10:24 +0000
+To: Danilo Krummrich <dakr@kernel.org>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@samsung.com, aliceryhl@google.com, akpm@linux-foundation.org, daniel.almeida@collabora.com, faith.ekstrand@collabora.com, boris.brezillon@collabora.com, lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com, ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v5 09/26] rust: alloc: implement kernel `Box`
+Message-ID: <66ed33bf-b17a-406f-b277-501ea9f002bf@proton.me>
+In-Reply-To: <Zr4J4e1aLADlyDMD@cassiopeiae>
+References: <20240812182355.11641-1-dakr@kernel.org> <20240812182355.11641-10-dakr@kernel.org> <a69e7280-7291-49f7-a46f-1ad465efce04@proton.me> <Zr0ocI-j3fZZM7Rw@cassiopeiae> <56ebda7b-c570-4dc6-8456-ab768d3a4b77@proton.me> <Zr4J4e1aLADlyDMD@cassiopeiae>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: 90b6225e273150ef957894a0d74fa40346620329
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -55,78 +45,68 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <e0b0bffb-c240-4d23-bf4d-0c1c19608f60@proton.me>
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Aug 15, 2024 at 01:39:05PM +0000, Benno Lossin wrote:
-> On 15.08.24 15:33, Danilo Krummrich wrote:
-> > On Thu, Aug 15, 2024 at 02:34:50PM +0200, Alice Ryhl wrote:
-> >> On Thu, Aug 15, 2024 at 2:33 PM Danilo Krummrich <dakr@kernel.org> wrote:
-> >>>
-> >>> On Thu, Aug 15, 2024 at 11:20:32AM +0200, Alice Ryhl wrote:
-> >>>> On Thu, Aug 15, 2024 at 4:52 AM Danilo Krummrich <dakr@kernel.org> wrote:
-> >>>>>
-> >>>>> On Wed, Aug 14, 2024 at 12:32:15PM -0700, Boqun Feng wrote:
-> >>>>>> Hi Danilo,
-> >>>>>>
-> >>>>>> I'm trying to put your series on rust-dev, but I hit a few conflicts due
-> >>>>>> to the conflict with `Box::drop_contents`, which has been in rust-dev
-> >>>>>> for a while. And the conflict is not that trivial for me to resolve.
-> >>>>>> So just a head-up, that's a requirement for me to put it on rust-dev for
-> >>>>>> more tests from my end ;-)
-> >>>>>
-> >>>>> I rebased everything and you can fetch them from [1].
-> >>>>>
-> >>>>> I resolved the following conflicts:
-> >>>>>
-> >>>>>   - for `Box`, implement
-> >>>>>     - `drop_contents`
-> >>>>>     - `manually_drop_contents` [2]
-> >>>>
-> >>>> Not sure I like this name. It sounds like something that runs the
-> >>>> destructor, but it does the exact opposite.
-> >>>
-> >>> I thought it kinda makes sense, since it's analogous to `ManuallyDrop::new`.
-> >>>
-> >>> What about `Box::forget_contents` instead?
-> >>
-> >> One option is `into_manually_drop`. This uses the convention of using
-> >> the `into_*` prefix for conversions that take ownership of the
-> >> original value.
-> > 
-> > The signature of the current `Box::manually_drop_contents` is the same as for
-> > `Box::drop_contents`, namely
-> > `fn manually_drop_contents(this: Self) -> Box<MaybeUninit<T>, A>`.
-> > 
-> > `into_manually_drop` seems misleading for for returning a
-> > `Box<MaybeUninit<T>, A>`.
-> > 
-> > I still think `forget_contents` hits it quite well. Just as `drop_contents`
-> > drops the value, `forget_contents` makes the `Box` forget the value.
-> 
-> I think `forget_contents` sounds good. Can you please add some more docs
-> to that function though? Like an example and change "Manually drops the
-> contents, but keeps the allocation" to "Forgets the contents (does not
-> run the destructor), but keeps the allocation.".
+On 15.08.24 16:00, Danilo Krummrich wrote:
+> On Thu, Aug 15, 2024 at 01:24:47PM +0000, Benno Lossin wrote:
+>> On 14.08.24 23:58, Danilo Krummrich wrote:
+>>> On Wed, Aug 14, 2024 at 05:01:34PM +0000, Benno Lossin wrote:
+>>>> On 12.08.24 20:22, Danilo Krummrich wrote:
+>>>>> +///
+>>>>> +/// # Examples
+>>>>> +///
+>>>>> +/// ```
+>>>>> +/// let b =3D KBox::new(24_u64, GFP_KERNEL)?;
+>>>>> +///
+>>>>> +/// assert_eq!(*b, 24_u64);
+>>>>> +///
+>>>>> +/// # Ok::<(), Error>(())
+>>>>> +/// ```
+>>>>> +pub type KBox<T> =3D Box<T, super::allocator::Kmalloc>;
+>>>>> +
+>>>>> +/// Type alias for `Box` with a `Vmalloc` allocator.
+>>>>
+>>>> Same here, add that this is supposed to be used for big values (or is
+>>>> this also a general-purpose allocator, just not guaranteeing that the
+>>>> memory is physically contiguous? in that case I would document it
+>>>> here and also on `Vmalloc`).
+>>>
+>>> Same as above, I'd rather not duplicate that. But I'm happy to link thi=
+ngs in,
+>>> just not sure what's the best way doing it.
+>>
+>> I took a look at the link and there is the "Selecting memory allocator"
+>> section, but there isn't really just a vmalloc or kmalloc section, it is
+>> rather stuff that we would put in the module documentation.
+>=20
+> There are no dedicated sections, but...
+>=20
+>> What I would write on these types would be what to use these boxes for.
+>> eg large allocations, general purpose etc. I don't think that that is
+>> easily accessible from the docs that you linked above.
+>=20
+> ...this stuff should be covered by the document, e.g.:
+>=20
+> "The maximal size of a chunk that can be allocated with kmalloc is limite=
+d. The
+> actual limit depends on the hardware and the kernel configuration, but it=
+ is a
+> good practice to use kmalloc for objects smaller than page size."
+>=20
+> or
+>=20
+> "For large allocations you can use vmalloc() and vzalloc(), or directly r=
+equest
+> pages from the page allocator. The memory allocated by vmalloc and relate=
+d
+> functions is not physically contiguous."
 
-I can't really think of a good real world example other than moving out of a
-`Box`, can you? Otherwise, maybe it just shouldn't be public?
+Yeah, but for that you have to read big chunks of the document and item
+docs in Rust are often very short, since you only need to know what that
+one item does.
+Would be a good idea to talk about how we can improve this at Kangrejos.
 
-> 
-> Another thing that I spotted while looking at the patch, `move_out`
-> doesn't need the `transmute_copy`, you should be able to just call
-> `read` on the pointer.
+---
+Cheers,
+Benno
 
-While technically it's the same I thought `transmute_copy` is considered better,
-since it has less stict safety requirements?
-
-For `transmute_copy` we only need to say, that dst has the same type as src,
-whereas for `read` the pointer must be valid for reads, properly aligned and
-point to an initialized value.
-
-> 
-> ---
-> Cheers,
-> Benno
-> 
