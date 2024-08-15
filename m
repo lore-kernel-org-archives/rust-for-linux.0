@@ -1,43 +1,43 @@
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51AE413B599
-	for <rust-for-linux@vger.kernel.org>; Thu, 15 Aug 2024 19:08:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 659EA3214;
+	Thu, 15 Aug 2024 19:15:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723748896; cv=none; b=X8xgIn1+npJL9Q4+NsfEhMXq6rkmlt6wPNIvdYS4z8NmKHUXV/+xMpBq1YjjdhWt4EAXG18v9ETgPl7Zo2ccZz5qw0Z8LmEv1G4asjtTzuu7BZ2IkvXZCCEH4xn/eOhP2cruH4aAk+Is2ScUwY2Pcmwss+KdFcWHGEt+Duds70o=
+	t=1723749353; cv=none; b=eqh6zGRXYinUeihEfFEjEu0/ANghQIcRvZnx+5Kbpxfy6epzEipPqnnl5tXQDok2FLP2KbXAPo3SRpJWcjt9xReD775unUo2FZJ+8TaDgo0ZoOkNtcSqH7PdAxrBuGQT6EVcf+zkasYlJzCUeCKsnAABXgJIflcHbJKldpdLtfw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723748896; c=relaxed/simple;
-	bh=0ozggr77TSIkab1vrhgR73woDMghC/BCCc6vgLBxdr0=;
+	s=arc-20240116; t=1723749353; c=relaxed/simple;
+	bh=3IA/lEQS5Ka5U3GAMoEyvBhsFlr1JFKsKR/ohfA3REs=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WPywvbfHsADmLwAJhqBhjo3BRIHdlDOUUZI8hBHFATizIkCLVx/a3JY9ySrXfdB211gLTXMYs28lYxgvYcOoxoYy/Q6LgVsMZd4RF055FCQi8l6DED1bamcv8Ny4TxaLIkzJsOU3J76pyIZ+x4aSkHsCMEOLZu5sX7mLQ7VxUUQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=dtdNWwRY; arc=none smtp.client-ip=185.70.43.16
+	 MIME-Version:Content-Type; b=uibhTXThcQIghl4a4DjDaWKz0RT6siY5Nh/41gNvlauopmUyvaem1bbvi2q9ZRIUJBOfQSEfv6c3l5jwn/QK79H93iooJekX0qkvD8LTINSksphU0gtb/bU388tgeN+vhhXEhE/OEQx9+nb77Kr147peuSNA+9s1c5GKQdpA2Xg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=bEPOA2se; arc=none smtp.client-ip=185.70.43.22
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="dtdNWwRY"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="bEPOA2se"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1723748887; x=1724008087;
-	bh=0ozggr77TSIkab1vrhgR73woDMghC/BCCc6vgLBxdr0=;
+	s=protonmail; t=1723749349; x=1724008549;
+	bh=3IA/lEQS5Ka5U3GAMoEyvBhsFlr1JFKsKR/ohfA3REs=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=dtdNWwRYXesRJQkZUlaNUCVEPKgakblWm1jHWX0cJLCJP8Pd7uzUZ3prpdRAED0Zy
-	 f/2WaNfMPp4/WTYtRtsJ9RmHHjJayky8Jpthcn4rYkE9hvRcA2MRxSeIUHPG05lOSu
-	 mdjtKAEgBfRVl6BEu2/6YuNUb6SvkNdysF6gYUCMQkYlooWzpK9nttRWUU20Rf4cTj
-	 CFVm/Vh9enF1j66a/lAuahAY3z8FHO8ozaGOzL7cvYqzrpMCOeQZFN9Io81gY91prq
-	 qXCT5wXDqWnc9AXbQVFWLAULnJVTlhqg66Mww1rygp9MERXZwt0FHhH3XHCUS2gHNb
-	 x1RWnilrdwRkg==
-Date: Thu, 15 Aug 2024 19:08:02 +0000
-To: Danilo Krummrich <dakr@kernel.org>
+	b=bEPOA2seWoWAvvPfEDo2VYV4iguqmyMHOj798GZZgq48xgguk84oyqCyFLm8kutlV
+	 f8IXV12LywLJOn7Mrt1IM8nsCD596IfFNCgQdFKJAl5O98wjiFzydwa9w3y8rB/IcV
+	 WJ2LaoO7f5rKO10Q0clbr4P1tm45xabLTFw9tiawcm5eLfUMMAzYLQU5s0/M60Czu+
+	 0IeiJ929pnADxyp9bW1fMng244RRbl/9i0v6n4qgC2q8vouJktkGVZ4nrmw8vIThJi
+	 kJBbu3jgz7n/HDwGJU6hp8Pe7dmXbGaSnf1eAlgS95U0FtqfXNjB7ppyl6PIUEbthe
+	 UcB81T8CC3neA==
+Date: Thu, 15 Aug 2024 19:15:43 +0000
+To: Alice Ryhl <aliceryhl@google.com>, Andreas Hindborg <nmi@metaspace.dk>
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@samsung.com, aliceryhl@google.com, akpm@linux-foundation.org, daniel.almeida@collabora.com, faith.ekstrand@collabora.com, boris.brezillon@collabora.com, lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com, ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v5 06/26] rust: alloc: implement `Vmalloc` allocator
-Message-ID: <c693cfad-f3e4-48e8-820c-16bc3d9f46ab@proton.me>
-In-Reply-To: <Zr4PSuIOpiE-8OkJ@cassiopeiae>
-References: <20240812182355.11641-1-dakr@kernel.org> <20240812182355.11641-7-dakr@kernel.org> <c9d57e77-8748-4e58-a39b-7a23f750ceda@proton.me> <Zr0r6sSFMSQIpHEX@cassiopeiae> <Zr072oSej9KIc1S6@cassiopeiae> <5dfe8bae-2c1e-47d4-9fb4-373b7d714c4f@proton.me> <Zr30pNwc5aanRaqj@cassiopeiae> <01a46c6d-0107-4455-8c87-af43426752ff@proton.me> <Zr4PSuIOpiE-8OkJ@cassiopeiae>
+Cc: Jens Axboe <axboe@kernel.dk>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, "Behme Dirk (XC-CP/ESB5)" <Dirk.Behme@de.bosch.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/2] rust: block: fix wrong usage of lockdep API
+Message-ID: <5b251842-564c-4b7a-8d4d-d7fc2b1b857c@proton.me>
+In-Reply-To: <10ae8a5a-5dbc-4d6a-8f86-30236dacc5b3@proton.me>
+References: <20240815074519.2684107-1-nmi@metaspace.dk> <20240815074519.2684107-3-nmi@metaspace.dk> <CAH5fLgih1QtO-ACyoifNsgqd=VtJimoGV+aD=3iHG0wb+iDGyw@mail.gmail.com> <10ae8a5a-5dbc-4d6a-8f86-30236dacc5b3@proton.me>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 52564aee61cdea9f9328fff33fb3ea771ee2a636
+X-Pm-Message-ID: 3516b6ed98df991ff6888e2756a91275131bcb07
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,69 +47,66 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On 15.08.24 16:23, Danilo Krummrich wrote:
-> On Thu, Aug 15, 2024 at 01:44:27PM +0000, Benno Lossin wrote:
->> On 15.08.24 14:29, Danilo Krummrich wrote:
->>> On Thu, Aug 15, 2024 at 06:48:19AM +0000, Benno Lossin wrote:
->>>> On 15.08.24 01:20, Danilo Krummrich wrote:
->>>>> On Thu, Aug 15, 2024 at 12:13:06AM +0200, Danilo Krummrich wrote:
->>>>>>> How difficult will it be to support this? (it is a weird requiremen=
-t,
->>>>>>> but I dislike just returning an error...)
->>>>>>
->>>>>> It's not difficult to support at all. But it requires a C API taking=
- an
->>>>>> alignment argument (same for `KVmalloc`).
->>>>
->>>> I see, that's good to know.
->>>>
->>>>>> Coming up with a vrealloc_aligned() is rather trivial. kvrealloc_ali=
-gned() would
->>>>>> be a bit weird though, because the alignment argument could only be =
-really
->>>>>> honored if we run into the vrealloc() case. For the krealloc() case =
-it'd still
->>>>>> depend on the bucket size that is selected for the requested size.
->>>>
->>>> Yeah... Maybe some more logic on the Rust side can help with that.
+On 15.08.24 21:05, Benno Lossin wrote:
+> On 15.08.24 10:04, Alice Ryhl wrote:
+>> On Thu, Aug 15, 2024 at 9:49=E2=80=AFAM Andreas Hindborg <nmi@metaspace.=
+dk> wrote:
 >>>
->>> Only if we reimplement `KVmalloc` in Rust, However, there are quite som=
-e special
->>> cases in __kvmalloc_node_noprof(), i.e. fixup page flags, sanity check =
-the size
->>> on kmalloc failure, fail on certain page flags, etc.
+>>> From: Andreas Hindborg <a.hindborg@samsung.com>
 >>>
->>> I don't really want to duplicate this code, unless we absolutely have t=
-o.
+>>> When allocating `struct gendisk`, `GenDiskBuilder` is using a dynamic l=
+ock
+>>> class key without registering the key. This is incorrect use of the API=
+,
+>>> which causes a `WARN` trace. This patch fixes the issue by using a stat=
+ic
+>>> lock class key, which is more appropriate for the situation anyway.
+>>>
+>>> Fixes: 3253aba3408a ("rust: block: introduce `kernel::block::mq` module=
+")
+>>> Reported-by: "Behme Dirk (XC-CP/ESB5)" <Dirk.Behme@de.bosch.com>
+>>> Closes: https://rust-for-linux.zulipchat.com/#narrow/stream/288089-Gene=
+ral/topic/6.2E11.2E0-rc1.3A.20rust.2Fkernel.2Fblock.2Fmq.2Ers.3A.20doctest.=
+20lock.20warning
+>>> Signed-off-by: Andreas Hindborg <a.hindborg@samsung.com>
 >>
->> I am under the (probably wrong) impression that kvmalloc has some size
->> check and selects vmalloc or kmalloc depending on that.
+>> LGTM. This makes me wonder if there's some design mistake in how we
+>> handle lock classes in Rust.
 >=20
-> Basically, yes. But as mentioned above, there are quite some corner cases=
- [1].
+> So `LockClassKey::new` doesn't initialize the `lock_class_key` and is
+> also movable. I think in this case we either just overlooked it or
+> thought that the C side would initialize it.
 >=20
->> I think that we
->> could check the size and if it is going to allocate via kmalloc, then we
->> adjust the size for alignment as usual
->=20
-> We don't need this adjustment any longer, see commit ad59baa31695 ("slab,=
- rust:
-> extend kmalloc() alignment guarantees to remove Rust padding").
->=20
->> and if it is going to select
->> vmalloc, then we can just pass the alignment (if the vmalloc alignment
->> patch is done first).
->=20
-> Yeah, but as mentioned, I'd prefer to do this in C, such that we don't ne=
-ed to
-> open code everything the C code already does.
->=20
-> [1] https://elixir.bootlin.com/linux/v6.11-rc3/source/mm/util.c#L628
+> For those people that know about this, are there APIs that initialize
+> `lock_class_key` themselves? (ie not a function to initialize a lock
+> class key, but rather an API like `__blk_mq_alloc_disk`)
+> Because if it is usually expected that the class key is already
+> initialized, then I think we should change our abstraction.
 
-I see, then it's probably better to just add an align parameter variant
-on the C side. Instead of rebuilding it in Rust.
+Sorry, I got confused, this has nothing to do with initialization.
 
 ---
 Cheers,
 Benno
+
+> Additionally, I think that it needs to be pinned, since it contains an
+> `struct hlist_node` (I might be wrong on this, but that looks and sounds
+> like an intrusive linked list).
+>=20
+> Also the `new` function is probably prone for misuse, since it will
+> create a new lock class key every time it is run. But as I learned in
+> [1], the more common use-case is a single lock class key for several
+> locks. Therefore it might be a good idea to at least rename it to
+> `new_dynamic` or similar and add appropriate documentation pointing to
+> `static_lock_class!`.
+>=20
+> [1]: https://rust-for-linux.zulipchat.com/#narrow/stream/288089-General/t=
+opic/.E2.9C.94.206.2E11.2E0-rc1.3A.20rust.2Fkernel.2Fblock.2Fmq.2Ers.3A.20d=
+octest.20lock.20warning/near/460074755
+>=20
+> ---
+> Cheers,
+> Benno
+>=20
+>=20
 
