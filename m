@@ -1,163 +1,111 @@
-Received: from mail-qv1-f47.google.com (mail-qv1-f47.google.com [209.85.219.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4006F29A1;
-	Thu, 15 Aug 2024 17:20:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2734F4F602;
+	Thu, 15 Aug 2024 17:31:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723742438; cv=none; b=fZiOhiG8rSEfTZB0wfh6+gowXgc4YNQyGVvcAjyRDOGIVbz/1G280pWJgcj1QvICXPYn6Ku4byaaBTbT2p/p7KHs9LadpUpCCoa+LhV3fiBd4DEddiRgI7ESANaE2wR4ygsJ2phqRKnZWDR4Xoyt0RCzKFU4DetD73lP2iO0XCU=
+	t=1723743107; cv=none; b=G8+mV5dHQJbpG8ZQgOGNp5Cxy9r1NhFEuB3goHUWqNyZCbg3OP1xXe1FyIEwEv/QH6ALIodnqox5HB70oxrFBtZTg5P6wbvDXgpcOezJXrmD/628JfOi+eX3YAFr2EkVO6UnioaQ+K9ynpB4U1SUyLb+nggUun1ovWF2PW0ark8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723742438; c=relaxed/simple;
-	bh=XUHVz7yEGk5IAlb3cYzpq2y+0jE9EuCFrg8BbQ9e29o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Mg9MH+P4W9BbfwDb4NiEWKmv+XFmHll/PiZCGM3/IhadyLDvgMzAPeTDrJjHS1mK2cR2+fNQlU8gx6UPqJ5Aac24MODseUN6GQlcB5iqVnPBlQe2+uFh2D9qtXNS4tlld8n2U2l0UaMfqlh6mxsDulndAXjlYsYQwmx3/ywIbb0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Ag5ta62P; arc=none smtp.client-ip=209.85.219.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1723743107; c=relaxed/simple;
+	bh=U+jRELET6AVBXyt+G5LhJTKwYebbuw6k806cmUl27d4=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=KObWVtU0k7Oq8FV64DvlQ4ghfk5sPMtkAJ91NCjLv1K4Bm0zSKTJZ2pQlLY/K+lz4mG9LwirwV/2jSbQWDW9CZSDvms2OoHMq006GwZPH/+Yh8jdbbU4a2DMTap1aqRlq9QhY7wZrA0v3eN02TeW6W7kFnB6Xpen0+8L9W1qkA8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lW9ynsNv; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Ag5ta62P"
-Received: by mail-qv1-f47.google.com with SMTP id 6a1803df08f44-6b7a4668f1fso7059496d6.3;
-        Thu, 15 Aug 2024 10:20:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1723742436; x=1724347236; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=1JEMit7NXWy1oM7PwyAX/lr16pflfyaQomIcHR1s8G0=;
-        b=Ag5ta62PQ4U/8JuggTuItM7W1Ghp7RpyGytVvij28ITEA4OrFi8aUwVcNreinymSAR
-         0SQ3cVOW/8H1kbPDyR9WcPJmx1F+beKmlFFcjKMCPyaMljcZojIF200FSj12aoIELUHT
-         DIeBdf1hSNGMu36hxVhVgex8H9A5vB8xISc3KYpUCdz0uVRhssguEHJJksGkciDWPstm
-         N50oSZyAtn/qyHUKH2+q/RiYwmgHEnQzc4x28iP1g3NsHiAFb9yzTvAJp28zJxahI8Cm
-         vbV7/G2jOA7Ugxk5FjzQ7/V/uWHQfdkbfzL+H3b65gzdSiY6VB8XzDsdT6rvBOccDiD9
-         9uRw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723742436; x=1724347236;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=1JEMit7NXWy1oM7PwyAX/lr16pflfyaQomIcHR1s8G0=;
-        b=tZLC6nQ25b0KADFx7JkMvu080eUpAKfoubFokxdKd3dE85Dber1i4aUAKIiRuPFtDe
-         1EDdmG3xpDjRzed9/rlsEMSeq/lS9QM4AQwfmFItlUp5aBkhm/BmtyeSjZH4GuZd+D0G
-         Hb1hlP7G60kU42n/M3kY1ZRXUufcNaU/tiy13kdTP9aNJOcjMuEmVKs9iSzT+q5qCCkG
-         MGoPcDI/pxZa/RkVBGmbu4jn0VcgUoh3dPb6WtADWX7E1G7Uuv0BpVPOvc5/nZTQ2EoL
-         oNf1z4CkVNNAa7SvDh+T/RobR+3xErnAQRbnkBxwomgj5FYlJqsXJkBKtl2hzi5L4Pll
-         WsUA==
-X-Forwarded-Encrypted: i=1; AJvYcCU15NACqn//+Cbdjxs3MTQY1KNKD2N2AsLtYjMyJq71xuxdTUZSTV9iHbJHWe3CUgh8bOGbwoMzd/oAl35ITP/mBO5MwPfsBRPRmZRfcDLOciwcsYueWUgKu3bRDvS8FSPTLVlDO86OaFatEzE=
-X-Gm-Message-State: AOJu0YzP+FwWlkyauKDYwyCRp1Dv7VUzVVGMz/7lz2fBZfFLkGvwA79h
-	hVjDudB+6XeY5OnsD5ZJxXkBxK6yqHvfQP+1Fpw0eRpAueXGPF+5
-X-Google-Smtp-Source: AGHT+IHGdJ9pU0p5MvXCP0KQeaP2XqUR3h3aauTkKl1mBnuGM+AjKEOAePQH06YoMSm6v5bIHMzPdA==
-X-Received: by 2002:a05:6214:4890:b0:6bb:b21b:d158 with SMTP id 6a1803df08f44-6bf7ce7b5c0mr1111866d6.45.1723742435947;
-        Thu, 15 Aug 2024 10:20:35 -0700 (PDT)
-Received: from fauth2-smtp.messagingengine.com (fauth2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6bf6fe2748csm8018416d6.63.2024.08.15.10.20.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 15 Aug 2024 10:20:35 -0700 (PDT)
-Received: from phl-compute-01.internal (phl-compute-01.nyi.internal [10.202.2.41])
-	by mailfauth.nyi.internal (Postfix) with ESMTP id 6F99B120007E;
-	Thu, 15 Aug 2024 13:20:34 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-01.internal (MEProxy); Thu, 15 Aug 2024 13:20:34 -0400
-X-ME-Sender: <xms:4ji-ZoEM_3ZPhHpHa8mCUb-L1NMvhb0jJDD0ydvrzxhSdHuj1MfjHg>
-    <xme:4ji-ZhVVtnzvD-qiTWSECmNa2EruqugW4IZU5sOXTDB7pE-BFCbxl3UBz5WXkZshW
-    Tb2YXNGwy5YaTj2oQ>
-X-ME-Received: <xmr:4ji-ZiJwz4bbTq30QMWg6Y-1cWCcMZD7_gVvbE4N-RcwnSbHnpIuixdnwC3j_Q>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddruddtiedgudduvdcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
-    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
-    hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddv
-    necuhfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilh
-    drtghomheqnecuggftrfgrthhtvghrnhepuedvgeekjeevgffggfejgfehueefteeuffff
-    gfehteekjeffvdfgkeetgeeiieeunecuffhomhgrihhnpehkvghrnhgvlhdrohhrghdprh
-    gsthhrvggvrdhrshenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhl
-    fhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeile
-    dvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgt
-    ohhmsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepvdehpdhmohguvgepshhmth
-    hpohhuthdprhgtphhtthhopegurghkrheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohep
-    ohhjvggurgeskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheprghlvgigrdhgrgihnhhorh
-    esghhmrghilhdrtghomhdprhgtphhtthhopeifvggushhonhgrfhesghhmrghilhdrtgho
-    mhdprhgtphhtthhopehgrghrhiesghgrrhihghhuohdrnhgvthdprhgtphhtthhopegsjh
-    horhhnfegpghhhsehprhhothhonhhmrghilhdrtghomhdprhgtphhtthhopegsvghnnhho
-    rdhlohhsshhinhesphhrohhtohhnrdhmvgdprhgtphhtthhopegrrdhhihhnuggsohhrgh
-    esshgrmhhsuhhnghdrtghomhdprhgtphhtthhopegrlhhitggvrhihhhhlsehgohhoghhl
-    vgdrtghomh
-X-ME-Proxy: <xmx:4ji-ZqG2TOXIgstRyOPciAxc5joEklizNsxZD6FevJ2tPc2u0m9kUg>
-    <xmx:4ji-ZuUsbsTfIUTrnn4aV1fdzUSdSOFH5JbH7C5Ta3kJRxKWMRJq5A>
-    <xmx:4ji-ZtN3QRnHONEnUZSB6TzEWaSsd-aXCes5_3b1UO2_YSrQa8Svhg>
-    <xmx:4ji-Zl0oqXUCoH04696eiNSVNnNakSarWxC5xtTGfn3QsyyinEV8KA>
-    <xmx:4ji-ZnWKtvdnZC_lj0FymiBWebImdMu1a3bncWuhdqsc6zLi6ycKNMiy>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 15 Aug 2024 13:20:33 -0400 (EDT)
-Date: Thu, 15 Aug 2024 10:19:03 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	a.hindborg@samsung.com, aliceryhl@google.com,
-	akpm@linux-foundation.org, daniel.almeida@collabora.com,
-	faith.ekstrand@collabora.com, boris.brezillon@collabora.com,
-	lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com,
-	cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com,
-	ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v5 00/26] Generic `Allocator` support for Rust
-Message-ID: <Zr44h-4A3rm-ALS2@boqun-archlinux>
-References: <20240812182355.11641-1-dakr@kernel.org>
- <Zr0GP0OXliPRqx4C@boqun-archlinux>
- <Zr1teqjuOHeeFO4Z@cassiopeiae>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lW9ynsNv"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECDD2C32786;
+	Thu, 15 Aug 2024 17:31:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1723743106;
+	bh=U+jRELET6AVBXyt+G5LhJTKwYebbuw6k806cmUl27d4=;
+	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+	b=lW9ynsNvLMwK7q2CJ6/FKGAkz3vZhFuQk7Tt913Eb3STEgbG6S8JmT5YxEgQ7jikl
+	 s5tMS27uL/3rJ685dtYV/gLpnJ5fclQD8vaf4/v4sYwgoy6d3MejUG/1bb+C2+jKB4
+	 Ql8SZFLapCQEm+xCQEUhh9DfAp3kCEikAWT1u5aBWlm2KmcOqfhB8mHVO4r3h5yG/M
+	 iHPHWai5MCOC1PuGak7223GaADjxgkNXghQDseW2Y6pPrQMPFpgISYFPxp4bqAMfhO
+	 8GOGjmzbfVx41lszNAW25tpjoTkBk1NhBm6vx+dDbjStokOqGqkvg8OZj9eJwhrOoE
+	 s9RMAtsIdln8w==
+Message-ID: <0864ea20-b75d-46c1-844c-9f65da25e6b3@kernel.org>
+Date: Thu, 15 Aug 2024 19:31:39 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Zr1teqjuOHeeFO4Z@cassiopeiae>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v5 00/26] Generic `Allocator` support for Rust
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
+ gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+ a.hindborg@samsung.com, aliceryhl@google.com, akpm@linux-foundation.org,
+ daniel.almeida@collabora.com, faith.ekstrand@collabora.com,
+ boris.brezillon@collabora.com, lina@asahilina.net, mcanal@igalia.com,
+ zhiw@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com,
+ ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, linux-mm@kvack.org
+References: <20240812182355.11641-1-dakr@kernel.org>
+ <Zr0GP0OXliPRqx4C@boqun-archlinux> <Zr1teqjuOHeeFO4Z@cassiopeiae>
+ <Zr44h-4A3rm-ALS2@boqun-archlinux>
+From: Danilo Krummrich <dakr@kernel.org>
+Content-Language: en-US
+In-Reply-To: <Zr44h-4A3rm-ALS2@boqun-archlinux>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On Thu, Aug 15, 2024 at 04:52:42AM +0200, Danilo Krummrich wrote:
-> On Wed, Aug 14, 2024 at 12:32:15PM -0700, Boqun Feng wrote:
-> > Hi Danilo,
-> > 
-> > I'm trying to put your series on rust-dev, but I hit a few conflicts due
-> > to the conflict with `Box::drop_contents`, which has been in rust-dev
-> > for a while. And the conflict is not that trivial for me to resolve.
-> > So just a head-up, that's a requirement for me to put it on rust-dev for
-> > more tests from my end ;-)
+On 8/15/24 7:19 PM, Boqun Feng wrote:
+> On Thu, Aug 15, 2024 at 04:52:42AM +0200, Danilo Krummrich wrote:
+>> On Wed, Aug 14, 2024 at 12:32:15PM -0700, Boqun Feng wrote:
+>>> Hi Danilo,
+>>>
+>>> I'm trying to put your series on rust-dev, but I hit a few conflicts due
+>>> to the conflict with `Box::drop_contents`, which has been in rust-dev
+>>> for a while. And the conflict is not that trivial for me to resolve.
+>>> So just a head-up, that's a requirement for me to put it on rust-dev for
+>>> more tests from my end ;-)
+>>
+>> I rebased everything and you can fetch them from [1].
+>>
 > 
-> I rebased everything and you can fetch them from [1].
-> 
+> Thanks! I will take a look later today or tomorrow.
 
-Thanks! I will take a look later today or tomorrow.
+I'll also send a v6 soon, which will also be based on rust-dev, so can also
+take this one then.
 
-> I resolved the following conflicts:
 > 
->   - for `Box`, implement
->     - `drop_contents`
->     - `manually_drop_contents` [2]
->     - ``move_out` [2]
+>> I resolved the following conflicts:
+>>
+>>    - for `Box`, implement
+>>      - `drop_contents`
+>>      - `manually_drop_contents` [2]
+>>      - ``move_out` [2]
+> 
+> Have you considered naming this `into_inner` which is aligned to std
+> `Box`?
 
-Have you considered naming this `into_inner` which is aligned to std
-`Box`?
+Seems viable too. I can rename it.
 
-Regards,
-Boqun
-
->     - `BorrowedMut` for `ForeignOwnable` for `Box<T, A>` and `Pin<Box<T, A>>`
->     - `InPlaceWrite` and updated `InPlaceInit`
->   - for `RBTreeNode`, make use of `Box::move_out` to replace the original
->     implementation partially moving out of `Box`
 > 
-> @Alice: Please have a look at the changes for `RBTreeNode`. Maybe it's also
-> worth having them in a separate patch.
+> Regards,
+> Boqun
 > 
-> - Danilo
+>>      - `BorrowedMut` for `ForeignOwnable` for `Box<T, A>` and `Pin<Box<T, A>>`
+>>      - `InPlaceWrite` and updated `InPlaceInit`
+>>    - for `RBTreeNode`, make use of `Box::move_out` to replace the original
+>>      implementation partially moving out of `Box`
+>>
+>> @Alice: Please have a look at the changes for `RBTreeNode`. Maybe it's also
+>> worth having them in a separate patch.
+>>
+>> - Danilo
+>>
+>>
+>> [1] https://git.kernel.org/pub/scm/linux/kernel/git/dakr/linux.git/log/?h=rust-dev/mm
+>> [2] https://git.kernel.org/pub/scm/linux/kernel/git/dakr/linux.git/commit/?h=rust-dev/mm&id=ef80ccca2ccebf3c7bcafdc13d1bfe81341cbe63
+>> [3] https://git.kernel.org/pub/scm/linux/kernel/git/dakr/linux.git/diff/rust/kernel/rbtree.rs?h=rust-dev/mm&id=c361d66df7fb7760064fbca6bf9d72171c352a73
+>>
+>>>
+>>> Regards,
+>>> Boqun
 > 
-> 
-> [1] https://git.kernel.org/pub/scm/linux/kernel/git/dakr/linux.git/log/?h=rust-dev/mm
-> [2] https://git.kernel.org/pub/scm/linux/kernel/git/dakr/linux.git/commit/?h=rust-dev/mm&id=ef80ccca2ccebf3c7bcafdc13d1bfe81341cbe63
-> [3] https://git.kernel.org/pub/scm/linux/kernel/git/dakr/linux.git/diff/rust/kernel/rbtree.rs?h=rust-dev/mm&id=c361d66df7fb7760064fbca6bf9d72171c352a73
-> 
-> > 
-> > Regards,
-> > Boqun
