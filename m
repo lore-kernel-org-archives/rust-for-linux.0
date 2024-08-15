@@ -1,36 +1,36 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81DD8A32;
-	Thu, 15 Aug 2024 00:16:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FA8629422;
+	Thu, 15 Aug 2024 02:52:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723680982; cv=none; b=jOgNYPDGdNIUghC1aSqaVZ2dJdQ//EtFCVS3p4H4h5mraff5cA8CeNB1CpZNsrK4CBKidFGp+KCrWgKilmWHrsBgJVeyEL7Zc6ZeZtOYubCgQjAXfPmCWzSZD4wneaBrKcPmiaeFC5yQrotNQF9DDN0ozhpCUiEhKMmFa9DyTlA=
+	t=1723690370; cv=none; b=IotpLnKXb2nAiV0QxqtDaXzqOSpVWPCZ7OH5YVb7gE8rDDtgXjbZAeWzIU65WhPkFh193+be/CuPBOGj5EJrT6Kfit6toED9slg9fZbyJPYUOg1VKkpfiOAB3Xc5xZ8z66DOMOLjMyIsqYZgWbC0xnhuz9Zi7hlCb1R5FYlfhOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723680982; c=relaxed/simple;
-	bh=8n714ePaEc1LnJejZ6lCUckFCOLvDCkdBz92Ksi4mCo=;
+	s=arc-20240116; t=1723690370; c=relaxed/simple;
+	bh=9lHi4Fn05Fqn+UhryIcKZ35IIPLC/wPvR9F2k2Ns8cM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=P5zijoo4VaokopWvBzr9QtLE2U2vsd4blcid3hegGb9/K5pdM4Qw7jKxo9zHYqansXFNzYlL+4vcIZdASa9UEPVKBJ7iNVYB7DekiMMeka0T7UWrq+nWlVgWvXOdCqW1YKGY9Yx7HmgQjtE1WMMxp6/6NJgIPihaIU++F+RXvOA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uHyTNH2Q; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=qhbwU+LTpbY2PGSD/M6pvRi61Lokkv3r0abD7Ore/eiX3tmScVd4EBK+rvYpzP1+DIsUzcZoAWQpPiBtExMelHEJ6TQUA1n0arOwnfdX6d+t/d734G87SoXwOJe65Gt3eSCqPEaeq18XzEnSMubwGfz/oSyjwBWCG2e7f4bNfyA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=g4sEqKBr; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uHyTNH2Q"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C3F8C116B1;
-	Thu, 15 Aug 2024 00:16:17 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="g4sEqKBr"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05297C116B1;
+	Thu, 15 Aug 2024 02:52:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723680982;
-	bh=8n714ePaEc1LnJejZ6lCUckFCOLvDCkdBz92Ksi4mCo=;
+	s=k20201202; t=1723690369;
+	bh=9lHi4Fn05Fqn+UhryIcKZ35IIPLC/wPvR9F2k2Ns8cM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=uHyTNH2QfiCQCfU8sclHYwXUoDgaB3GJCWBMNhzTG1hDk3Zt+z0BYOqDZoTBc72Wp
-	 a6mJZ0QaHN/kaKkbqtqwodHhs0p5LKL+Z85mD3Z9YEopckDKlMW1XexyTV+y7rdCFk
-	 JKlNa8bOVwGu82TXzNZG8lccY3aYprCupiPwBgxB6tX+TjYqjCqetK2u2DkAJ8GBKX
-	 OvmQbx/WDyP0XUIMC5AoKNpCxWSjTRtt9dEalFnIr20qn96wZXQ88zNRLC3s3atFKW
-	 KZ3/tyNCfExKeENCFoYeRgC6wHU5+7ao5ZiH9/3+Rz9ALTTGR4FaGsS7si4an5bURQ
-	 aBSj3fCJDheFA==
-Date: Thu, 15 Aug 2024 02:16:14 +0200
+	b=g4sEqKBrmnWlBt8i+NAmFnBQMJb+TClGPq40kRq6aEOzy237abhszxAqG4/VQ+F/j
+	 ii94cDngj1RVzVnol55shUXUhi4xiYB/b1vEjG4xcqkLbZvRBnmgMjzc61Sf4CIlwO
+	 fg7l5at6aBTJ5pp4jaPmy9kdi0Pk78YH6RU7M58fk61jA1o4RmmHx/XmeXJZDOHNuX
+	 nStvf4Lpj9ESgk9bDUnXXKMgXQz6IaEU3pqrv3G1kY0f95DvAbQPqjlfXuqd2QXPGr
+	 m4TBkP5QZoDInMNeIWSZLC8YLyZdxPUdWUbg34znsyQjGncYMklpZ8d1bHDlfvUz44
+	 S05Ge/Pu47omg==
+Date: Thu, 15 Aug 2024 04:52:42 +0200
 From: Danilo Krummrich <dakr@kernel.org>
-To: Benno Lossin <benno.lossin@proton.me>
+To: Boqun Feng <boqun.feng@gmail.com>
 Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
 	a.hindborg@samsung.com, aliceryhl@google.com,
 	akpm@linux-foundation.org, daniel.almeida@collabora.com,
 	faith.ekstrand@collabora.com, boris.brezillon@collabora.com,
@@ -38,11 +38,10 @@ Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
 	cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com,
 	ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org,
 	rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v5 01/26] rust: alloc: add `Allocator` trait
-Message-ID: <Zr1Izo9Qp8mYkbpr@cassiopeiae>
+Subject: Re: [PATCH v5 00/26] Generic `Allocator` support for Rust
+Message-ID: <Zr1teqjuOHeeFO4Z@cassiopeiae>
 References: <20240812182355.11641-1-dakr@kernel.org>
- <20240812182355.11641-2-dakr@kernel.org>
- <cfcdaa42-6a62-4a17-a8dc-2382e88774dc@proton.me>
+ <Zr0GP0OXliPRqx4C@boqun-archlinux>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -51,201 +50,40 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <cfcdaa42-6a62-4a17-a8dc-2382e88774dc@proton.me>
+In-Reply-To: <Zr0GP0OXliPRqx4C@boqun-archlinux>
 
-On Wed, Aug 14, 2024 at 04:13:06PM +0000, Benno Lossin wrote:
-> On 12.08.24 20:22, Danilo Krummrich wrote:
-> > Add a kernel specific `Allocator` trait, that in contrast to the one in
-> > Rust's core library doesn't require unstable features and supports GFP
-> > flags.
-> > 
-> > Subsequent patches add the following trait implementors: `Kmalloc`,
-> > `Vmalloc` and `KVmalloc`.
-> > 
-> > Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-> > ---
-> >  rust/kernel/alloc.rs | 81 ++++++++++++++++++++++++++++++++++++++++++++
-> >  1 file changed, 81 insertions(+)
-> > 
-> > diff --git a/rust/kernel/alloc.rs b/rust/kernel/alloc.rs
-> > index 1966bd407017..194745498a75 100644
-> > --- a/rust/kernel/alloc.rs
-> > +++ b/rust/kernel/alloc.rs
-> > @@ -11,6 +11,7 @@
-> >  /// Indicates an allocation error.
-> >  #[derive(Copy, Clone, PartialEq, Eq, Debug)]
-> >  pub struct AllocError;
-> > +use core::{alloc::Layout, ptr::NonNull};
-> > 
-> >  /// Flags to be used when allocating memory.
-> >  ///
-> > @@ -86,3 +87,83 @@ pub mod flags {
-> >      /// small allocations.
-> >      pub const GFP_NOWAIT: Flags = Flags(bindings::GFP_NOWAIT);
-> >  }
-> > +
-> > +/// The kernel's [`Allocator`] trait.
-> > +///
-> > +/// An implementation of [`Allocator`] can allocate, re-allocate and free memory buffer described
-> > +/// via [`Layout`].
-> > +///
-> > +/// [`Allocator`] is designed to be implemented as a ZST; [`Allocator`] functions do not operate on
-> > +/// an object instance.
-> > +///
-> > +/// In order to be able to support `#[derive(SmartPointer)]` later on, we need to avoid a design
-> > +/// that requires an `Allocator` to be instantiated, hence its functions must not contain any kind
-> > +/// of `self` parameter.
-> > +///
-> > +/// # Safety
-> > +///
-> > +/// Memory returned from an allocator must point to a valid memory buffer and remain valid until
-> > +/// it is explicitly freed.
+On Wed, Aug 14, 2024 at 12:32:15PM -0700, Boqun Feng wrote:
+> Hi Danilo,
 > 
-> I wouldn't say that an allocator "returns memory", and in general I
-> don't think the structure of the safety comment here is nice, how about
-> the following: we put "Implementers must ensure that all trait functions
-> abide by the guarantees documented in the `# Guarantees` sections."...
+> I'm trying to put your series on rust-dev, but I hit a few conflicts due
+> to the conflict with `Box::drop_contents`, which has been in rust-dev
+> for a while. And the conflict is not that trivial for me to resolve.
+> So just a head-up, that's a requirement for me to put it on rust-dev for
+> more tests from my end ;-)
 
-Sounds reasonable to me. Additionally, I'd still keep the part below, that says
-that any pointer to a memory allocation must bbe valid to be passed to any other [`Allocator`]
-function of the same type.
+I rebased everything and you can fetch them from [1].
+
+I resolved the following conflicts:
+
+  - for `Box`, implement
+    - `drop_contents`
+    - `manually_drop_contents` [2]
+    - ``move_out` [2]
+    - `BorrowedMut` for `ForeignOwnable` for `Box<T, A>` and `Pin<Box<T, A>>`
+    - `InPlaceWrite` and updated `InPlaceInit`
+  - for `RBTreeNode`, make use of `Box::move_out` to replace the original
+    implementation partially moving out of `Box`
+
+@Alice: Please have a look at the changes for `RBTreeNode`. Maybe it's also
+worth having them in a separate patch.
+
+- Danilo
+
+
+[1] https://git.kernel.org/pub/scm/linux/kernel/git/dakr/linux.git/log/?h=rust-dev/mm
+[2] https://git.kernel.org/pub/scm/linux/kernel/git/dakr/linux.git/commit/?h=rust-dev/mm&id=ef80ccca2ccebf3c7bcafdc13d1bfe81341cbe63
+[3] https://git.kernel.org/pub/scm/linux/kernel/git/dakr/linux.git/diff/rust/kernel/rbtree.rs?h=rust-dev/mm&id=c361d66df7fb7760064fbca6bf9d72171c352a73
 
 > 
-> > +///
-> > +/// Any pointer to a memory buffer which is currently allocated must be valid to be passed to any
-> > +/// other [`Allocator`] function of the same type.
-> > +///
-> > +/// If `realloc` is called with:
-> > +///   - a size of zero, the given memory allocation, if any, must be freed
-> > +///   - `None`, a new memory allocation must be created
-> > +pub unsafe trait Allocator {
-> > +    /// Allocate memory based on `layout` and `flags`.
-> > +    ///
-> > +    /// On success, returns a buffer represented as `NonNull<[u8]>` that satisfies the layout
-> > +    /// constraints (i.e. minimum size and alignment as specified by `layout`).
-> > +    ///
-> > +    /// This function is equivalent to `realloc` when called with `None`.
-> 
-> ... Then we can add this here:
-> 
->     /// # Guarantees
->     ///
->     /// When the return value is `Ok(ptr)`, then `ptr` is
->     /// - valid for writes (and reads after the memory has been initialized) for `layout.size()` bytes,
->     ///   until it is passed to [`Allocator::free`] or [`Allocator::realloc`],
->     /// - aligned to `layout.align()`,
->     /// - is valid for reads, if `flags.contains(flags::__GFP_ZERO)`,
-> 
-> Do we need to handle other flags?
-
-The whole flags thing is a bit difficult to represent here properly.
-
-Theoretically, we'd need to add that it guarantees that the memory is zeroed for
-__GFP_ZERO, non-blocking for GFP_NOWAIT, etc. But, I think we shouldn't
-re-iterate all different behavior for the different flags.
-
-Another inconvenience is that not all page flags are honored or make sense for
-all allocators. This is especially inconvenient for `KVmalloc` where we can't
-even say if we end up in vrealloc() or krealloc(). kvmalloc() even contains a
-couple of flag fixups for this reason [2].
-
-I think we should just point to [1], which should document everything already.
-
-[1] https://elixir.bootlin.com/linux/v6.10.4/source/include/linux/gfp_types.h
-[2] https://elixir.bootlin.com/linux/v6.10.4/source/mm/util.c#L612
-
-> Also IIRC the memory given to us by C is considered initialized by Rust
-> (though it has a non-deterministic value), so we might have an
-> unconditional "valid for reads". Am I correct?
-
-Yes, but as you say, unless allocated with __GFP_ZERO, it contains non-deterministic data. It may
-even contain old data from previous allocations.
-
-> 
-> 
-> > +    fn alloc(layout: Layout, flags: Flags) -> Result<NonNull<[u8]>, AllocError> {
-> > +        // SAFETY: Passing `None` to `realloc` is valid by it's safety requirements and asks for a
-> > +        // new memory allocation.
-> > +        unsafe { Self::realloc(None, layout, flags) }
-> > +    }
-> > +
-> > +    /// Re-allocate an existing memory allocation to satisfy the requested `layout`. If the
-> > +    /// requested size is zero, `realloc` behaves equivalent to `free`.
-> 
-> I don't think we want to include the second sentence in the short
-> description of this function, please add an empty line in between.
-> 
-> > +    ///
-> > +    /// If the requested size is larger than the size of the existing allocation, a successful call
-> > +    /// to `realloc` guarantees that the new or grown buffer has at least `Layout::size` bytes, but
-> > +    /// may also be larger.
-> > +    ///
-> > +    /// If the requested size is smaller than the size of the existing allocation, `realloc` may or
-> > +    /// may not shrink the buffer; this is implementation specific to the allocator.
-> > +    ///
-> > +    /// On allocation failure, the existing buffer, if any, remains valid.
-> > +    ///
-> > +    /// The buffer is represented as `NonNull<[u8]>`.
-> > +    ///
-> > +    /// # Safety
-> > +    ///
-> > +    /// If `ptr = Some(p)`, then `p` must point to an existing and valid memory allocation created
-> 
-> I don't like the single `=` (I might have written it in haste myself),
-> how about `==` or we use if-let syntax?
-> 
-> > +    /// by this allocator. The alignment encoded in `layout` must be smaller than or equal to the
-> > +    /// alignment requested in the previous `alloc` or `realloc` call of the same allocation.
-> > +    ///
-> > +    /// Additionally, `ptr` is allowed to be `None`; in this case a new memory allocation is
-> > +    /// created.
-> 
-> This Safety section does not talk about the case `layout.size() == 0`,
-> but it should have the same requirement as `free()`.
-> 
-> Also add a `# Guarantees` section here:
-> 
->     /// # Guarantees
->     ///
->     /// This function has the same guarantees as [`Allocator::alloc`]. When `ptr == Some(p)`, then it
->     /// additionally has the following:
->     /// - when `Ok(ret_ptr)` is the return value, then
->     ///   `ret_ptr[0..min(layout.size(), old_size)] == p[0..min(layout.size(), old_size)]`, where
->     ///   `old_size` is the size of the allocation that `p` points at.
-
-We could also say "The contents of the memory pointed to by `p` are preserved
-up to the lesser of the new and old size." But I'm fine with both.
-
->     /// - when the return value is `Err(AllocError)`, then `p` is still valid.
-> 
-> ---
-> Cheers,
-> Benno
-> 
-> > +    unsafe fn realloc(
-> > +        ptr: Option<NonNull<u8>>,
-> > +        layout: Layout,
-> > +        flags: Flags,
-> > +    ) -> Result<NonNull<[u8]>, AllocError>;
-> 
-> > +
-> > +    /// Free an existing memory allocation.
-> > +    ///
-> > +    /// # Safety
-> > +    ///
-> > +    /// `ptr` must point to an existing and valid memory allocation created by this `Allocator` and
-> > +    /// must not be a dangling pointer.
-> > +    ///
-> > +    /// The memory allocation at `ptr` must never again be read from or written to.
-> > +    unsafe fn free(ptr: NonNull<u8>) {
-> > +        // SAFETY: The caller guarantees that `ptr` points at a valid allocation created by this
-> > +        // allocator. We are passing a `Layout` with the smallest possible alignment, so it is
-> > +        // smaller than or equal to the alignment previously used with this allocation.
-> > +        let _ = unsafe { Self::realloc(Some(ptr), Layout::new::<()>(), Flags(0)) };
-> > +    }
-> > +}
-> > --
-> > 2.45.2
-> > 
-> 
+> Regards,
+> Boqun
