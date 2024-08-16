@@ -1,168 +1,74 @@
-Received: from mail-vs1-f47.google.com (mail-vs1-f47.google.com [209.85.217.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47B091BDABD
-	for <rust-for-linux@vger.kernel.org>; Fri, 16 Aug 2024 15:51:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 950181BCA0B
+	for <rust-for-linux@vger.kernel.org>; Fri, 16 Aug 2024 15:59:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723823495; cv=none; b=r8l8ekXfpByP497dCK9Ck5NH6URZHuXFNSOMe+r5sHDTVk6KtHH8B35eRc1THbM+9PCg96V7FSv6r5ldkaDKFS2SYSv/kBLS9KBf7BZyglp958Un1s7u1tu1PCD3Gnzm6oPLK2YZ8dxic+04Gso99hsxibW1jpvq6vaioU6SMSI=
+	t=1723823963; cv=none; b=Xdu8QiJV0A90WzC+0W3iaB8UdR7U0znXJt6UawPU5N4VmKWaiN5OXxJJ8rB4fp7C8sN5g1mZ3unYaGu2h4JONBZg5PvT3aD1RBsm90GW257zDIHmrFpY5+oWqJbsucFli2xdzQBnaE+ERccSpd/rfDDmnrYYlUa6bdXCD5YH9KM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723823495; c=relaxed/simple;
-	bh=aTpatmIGqiMC7+hU1OkoYLiM35+6LYxID9L25XPk8l8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LoLmlzp259JxrN8XPGoFtPq0yS9d91h6NEEU41Rv/cY8f/apQyNa7591rPL+L4akzjh4OChEBy0hv78yFyQltrEm1j3CwfhuebFVEuThlfF0IF2fnGCT5yfOojEtJM9nHwnLOGlZON4bLf2SLPudCVC+PLyhcA7iy4ijK2BkmPk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=EnOpsI0x; arc=none smtp.client-ip=209.85.217.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1723823963; c=relaxed/simple;
+	bh=PwFCq4HA+VM/TqeJYVTNwOwEiSG7asgzKeswyfcvfxM=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=JLf6zpR1padTcTBK7Mh8DT5d1Hu3CKsPhqloDsA5uagVR/VQuXY22UIbdwtEft33HX9dVnyJgpm1s0W8BQ5CMnt45AVR4l9D28mzC4LDyuXwRXB5i2nTzwJnOqRlHjyy/mwzttpZdWhmK5hjx73lLzzKPyncjSA5OkQGQ8ClWiI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=VAl1AtmU; arc=none smtp.client-ip=185.70.43.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="EnOpsI0x"
-Received: by mail-vs1-f47.google.com with SMTP id ada2fe7eead31-49297ff2594so763070137.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 16 Aug 2024 08:51:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1723823492; x=1724428292; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=oVTGOKA5IKmJj5zDO1DyZoUEkVlymdLnKbH0vw8teA4=;
-        b=EnOpsI0x1zX/KA9JOiq3diJCg5p8yrxq1Kju5yDHOkDoRasrBXR4Qtbe+z8I94zRy9
-         oKaDMOZ/aYTTSak0IcgTBQS4kRdWgajUIcwyyQ1m+bJLPBR90TOYap/SZ3Z/o26iq237
-         uqgLRSvHz+IwVU7WZGKOu0alI9eyJwLW2urG1eHtTtX6ahUoS0GZx1yj0+bpOojaiKn5
-         Yhd7aQgQttY0FKjilLjfzUlJbo/SnJGlhQl7ysTbIzomoBvs9EBT8ZG93NCZTOaxJoij
-         q/EqTVCEYlz4gcAlhkuSsrr/GYJfBQgb+xXQ4KlYOdZswH6w63KQBVyTdxEnucQyV0rY
-         Pgzw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723823492; x=1724428292;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=oVTGOKA5IKmJj5zDO1DyZoUEkVlymdLnKbH0vw8teA4=;
-        b=a5x5VGmQec03qvJx/n3QIgtEb4JGDWpKAzAh17eAEtGyvseuegqn+VoApR9stMS0Q5
-         cc5D1DRpgfDXRrV5tL//RWBkHxLDBPtMwVdB4NQQtTRGSeGkcfyx4QLO4YFnyeh3lGie
-         9Oi0REKcplE0wWPIlhc2XJDv9uxhfhZch923VGOCuOK71c1snsCmR2E7itlk/muxaHZk
-         ivAwusLb28Gi01kJIG/8w4s+IZY51a5zq05cx5Dx7aE5aVC2gVDWPXelYFwnxkxbN0t+
-         CW7+KkssM+TdATDbPlCh7zUzFGilLvpq7gygtuTD3x51oeLmaWs7yPYIJxOjzPkfPgjD
-         dNdw==
-X-Forwarded-Encrypted: i=1; AJvYcCWy1YfauGND9bsW6ZNtWmehZ9mk48fcXG/9nb0l3wrDNbaX1QqUzGtjC72Lvch+NUrHUUqrjudc6OrCcv2wtcXkvgP/ebqiw8LOCtdKTos=
-X-Gm-Message-State: AOJu0YzBERbdP5BdAecL2j/66XzuhcED/QqWfPbMZZhiuk+uboVYn0sa
-	3t2AqIkUzBO+q7paUtpdyNKvQIsYgK+EZ/zBcsy8YKekuIcJbcFVxT478q6k9qOSMrhkrUoTh8i
-	MjPPiwSojFETM9eYQa43WB6ghT2aFS8zlv0IB
-X-Google-Smtp-Source: AGHT+IFrg6f6qSm3TiL3zt4TuWVBOxUcMXZyDfUiXF2IUyGH3wmo6nzc1yc+vCPuTrt/IV1JuHI4FaQJcHYE6thnrtU=
-X-Received: by 2002:a05:6102:390f:b0:48f:380a:ca90 with SMTP id
- ada2fe7eead31-4978848984dmr131943137.18.1723823491972; Fri, 16 Aug 2024
- 08:51:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="VAl1AtmU"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1723823958; x=1724083158;
+	bh=B+BumcKHKtkyfAWPcUH/EmOHcEtK+9Bi+uQxd+QCyJ0=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=VAl1AtmUAav1AzMGX/4K2lD4e5JFaNIqlHpQAXb3ulC29Cb5oK1f9lTc10CtYk9Pb
+	 SpP2NXLrx4pnvLCZSQXtEUsXrHbdjJaR+XCkowvWqa1IuMjC5ztFNI4xaHkzUO0het
+	 mLgCtB8AKrya29B24hUz3UCy4NBwxkh7To2bBHNlz2muFHZtw93DEiY8bPECPvVHFZ
+	 clp8x51J/xQYHYW9L3TkhETQcIswgELjJt+kfwbM99yjQlC019um+HvlrP0hK54f42
+	 Q9dZSUJxWf73Q6D+9W/GNURoa0EvwXrLpEAQQU1blURBsQU0EvcT/+00m44386dEds
+	 DynKbZhL0rjpA==
+Date: Fri, 16 Aug 2024 15:59:10 +0000
+To: Andreas Hindborg <nmi@metaspace.dk>, Jens Axboe <axboe@kernel.dk>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Andreas Hindborg <a.hindborg@samsung.com>, "Behme Dirk (XC-CP/ESB5)" <Dirk.Behme@de.bosch.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/2] rust: block: fix wrong usage of lockdep API
+Message-ID: <34282f40-d6a1-4354-8fd5-24239ada15ed@proton.me>
+In-Reply-To: <20240815074519.2684107-3-nmi@metaspace.dk>
+References: <20240815074519.2684107-1-nmi@metaspace.dk> <20240815074519.2684107-3-nmi@metaspace.dk>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: 3599b4c02900e339b0a6f8e36171634a4a326f53
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240815173903.4172139-21-samitolvanen@google.com>
- <20240815173903.4172139-37-samitolvanen@google.com> <2024081600-grub-deskwork-4bae@gregkh>
-In-Reply-To: <2024081600-grub-deskwork-4bae@gregkh>
-From: Sami Tolvanen <samitolvanen@google.com>
-Date: Fri, 16 Aug 2024 08:50:53 -0700
-Message-ID: <CABCJKuedc3aCO2Or+_YBSzK_zp9zB8nFwjr-tK95EBM3La1AmA@mail.gmail.com>
-Subject: Re: [PATCH v2 16/19] gendwarfksyms: Add support for reserved
- structure fields
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Masahiro Yamada <masahiroy@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Matthew Maurer <mmaurer@google.com>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	Petr Pavlu <petr.pavlu@suse.com>, Neal Gompa <neal@gompa.dev>, Hector Martin <marcan@marcan.st>, 
-	Janne Grunau <j@jannau.net>, Asahi Linux <asahi@lists.linux.dev>, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-Hi Greg,
+On 15.08.24 09:49, Andreas Hindborg wrote:
+> From: Andreas Hindborg <a.hindborg@samsung.com>
+>=20
+> When allocating `struct gendisk`, `GenDiskBuilder` is using a dynamic loc=
+k
+> class key without registering the key. This is incorrect use of the API,
+> which causes a `WARN` trace. This patch fixes the issue by using a static
+> lock class key, which is more appropriate for the situation anyway.
+>=20
+> Fixes: 3253aba3408a ("rust: block: introduce `kernel::block::mq` module")
+> Reported-by: "Behme Dirk (XC-CP/ESB5)" <Dirk.Behme@de.bosch.com>
+> Closes: https://rust-for-linux.zulipchat.com/#narrow/stream/288089-Genera=
+l/topic/6.2E11.2E0-rc1.3A.20rust.2Fkernel.2Fblock.2Fmq.2Ers.3A.20doctest.20=
+lock.20warning
+> Signed-off-by: Andreas Hindborg <a.hindborg@samsung.com>
+> ---
+>  rust/kernel/block/mq/gen_disk.rs | 6 ++----
+>  1 file changed, 2 insertions(+), 4 deletions(-)
 
-On Fri, Aug 16, 2024 at 12:20=E2=80=AFAM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> On Thu, Aug 15, 2024 at 05:39:20PM +0000, Sami Tolvanen wrote:
-> > Distributions that want to maintain a stable kABI need the ability to
-> > add reserved fields to kernel data structures that they anticipate
-> > will be modified during the ABI support timeframe, either by LTS
-> > updates or backports.
-> >
-> > With genksyms, developers would typically hide changes to the reserved
-> > fields from version calculation with #ifndef __GENKSYMS__, which would
-> > result in the symbol version not changing even though the actual type
-> > of the reserved field changes. When we process precompiled object
-> > files, this is again not an option.
-> >
-> > To support stable symbol versions for reserved fields, change the
-> > union type processing to recognize field name prefixes, and if the
-> > union contains a field name that starts with __kabi_reserved, only use
-> > the type of that field for computing symbol versions. In other words,
-> > let's assume we have a structure where we want to reserve space for
-> > future changes:
-> >
-> >   struct struct1 {
-> >     long a;
-> >     long __kabi_reserved_0; /* reserved for future use */
-> >   };
-> >   struct struct1 exported;
-> >
-> > gendwarfksyms --debug produces the following output:
-> >
-> >   variable structure_type struct1 {
-> >     member base_type long int byte_size(8) encoding(5) data_member_loca=
-tion(0),
-> >     member base_type long int byte_size(8) encoding(5) data_member_loca=
-tion(8),
-> >   } byte_size(16);
-> >   #SYMVER exported 0x67997f89
-> >
-> > To take the reserved field into use, a distribution would replace it
-> > with a union, with one of the fields keeping the __kabi_reserved name
-> > prefix for the original type:
-> >
-> >   struct struct1 {
-> >     long a;
-> >     union {
-> >       long __kabi_reserved_0;
-> >       struct {
-> >           int b;
-> >           int v;
-> >       };
-> >     };
-> >
->
-> Ah, ignore my previous email, here's the --stable stuff.
->
-> But this all needs to go into some documentation somewhere, trying to
-> dig it out of a changelog is going to be impossible to point people at.
+Reviewed-by: Benno Lossin <benno.lossin@proton.me>
 
-I agree, which is why I included the details in the comments too.
-There's also an example file if you scroll down a bit further, but I
-can certainly add some actual documentation too. Since the --stable
-bits are not really needed in the mainline kernel, do you prefer a
-file in Documentation/ or is it sufficient to expand the example files
-to include any missing details?
+---
+Cheers,
+Benno
 
-> > +/* See dwarf.c:process_reserved */
-> > +#define RESERVED_PREFIX "__kabi_reserved"
->
-> Seems semi-sane, I can live with this.
-
-Is there something you'd change to make this more than semi-sane?
-
-> I don't know if you want to take the next step and provide examples of
-> how to use this in "easy to use macros" for it all, but if so, that
-> might be nice.
-
-This should already work with the macros Android uses, for example,
-with minor changes. The current example file doesn't include macro
-wrappers, but I can add them in the next version.
-
-> Especially as I have no idea how you are going to do
-> this with the rust side of things, this all will work for any structures
-> defined in .rs code, right?
-
-Yes, Rust structures can use the same scheme. Accessing union members
-might be less convenient than in C, but can presumably be wrapped in
-helper macros if needed.
-
-Sami
