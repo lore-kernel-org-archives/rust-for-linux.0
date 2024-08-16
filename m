@@ -1,127 +1,89 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74CB42BB0D;
-	Fri, 16 Aug 2024 17:16:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C6028288C;
+	Fri, 16 Aug 2024 18:15:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723828598; cv=none; b=b854dXrbh86To50I//YvXYd1voQDm8x0g6h8tfOMNtDNYblLrGUhKe+TszipoqG2S8FDRTgF+ENP8arIff4k0OMoAa0B6UySuewdN27JMWZ/C2qaXFPJIpZRLaTlFPsbTWnL0Ki5GqfGhG8fpmw7YBbuUs19D9wRAdNV7t34z84=
+	t=1723832138; cv=none; b=N+KUjvqz+LFLvu/Ma3sVLITfEZdN/9NiTp7khxteCuHR13ynHepN5scDLpW9PzRfDbKJH6QojZRy7VUEMGQrLkugV8aq/yw0s1IAOCJJA3QgEDgspYMrXTUh/DYJJQMwwN8IbUAuCHrk9m5Qf9cR/HIRNruUVUnD/CyLvB71nY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723828598; c=relaxed/simple;
-	bh=sPYv0g/AfzPWZIknl7bScophvQHJynMsFyJ6W+w2qAk=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=O80T8HKdUBPQPk19jHLvdtfM8lYiWAZ1ZLED5t+s486e643B6qgRkvnLy0V+EhNLrL003CaL53HTvElXBnY5I2+4y/rKkxo3/LCx4p/uc4L6WWHSEGHSmOKLnY3Otnb/b6Ccj7ECJdZNuBjU++bJfVBeD+EJgZeOz7vdxmygNro=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h1oehXc0; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1723832138; c=relaxed/simple;
+	bh=YUt2/pe6iAs+TkYT8g42GYFWjweeJHYBiqNpeTfkS6A=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=mb06qtqfYSpjrrf/aaF7R8qQRA3lfFcEzaz3FYGiWGOcZ2ZyFvDOvUgS73u5NbDRk166mfGI5/tMhKw15itdwz1JV9lTcbUWkC1Hz4uNcnXXjqft+U9c1FurjcI1jkB1W2xvetgiuYtGZECN46iXLgGDzXhvH074xOzAZMXm9aw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LelS2RTi; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h1oehXc0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E91D8C32782;
-	Fri, 16 Aug 2024 17:16:34 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LelS2RTi"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DAC4C32782;
+	Fri, 16 Aug 2024 18:15:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723828597;
-	bh=sPYv0g/AfzPWZIknl7bScophvQHJynMsFyJ6W+w2qAk=;
+	s=k20201202; t=1723832137;
+	bh=YUt2/pe6iAs+TkYT8g42GYFWjweeJHYBiqNpeTfkS6A=;
 	h=From:To:Cc:Subject:Date:From;
-	b=h1oehXc0icqnbRuhYTxwoipafHAMcIFWAt+/LTGkWtx+ahATF/4cGnt9zalvD4/tY
-	 R1nw+CoFVY3J3mTreehIsXZeoHui6Pli6oLwvNsBLOILELl3MyC3En1AmTpJJe8ey2
-	 WQyYvaD+pYQWmAELTJfZRFSgCPCRoca04cW+whsFNM0n8N+ET8M1dd/ueJtzulEPbc
-	 FNDufldoFxk5VLuoXsRy/kREw5Dd959xrfpxaoprpsxnOTU/vDkpbCnp0r6FDrVE3O
-	 tMQanumzcsjhdnXNcwWYbi39+f184REI66iJCuf8Mlzwg41ugqEbQfEhMAFpj2bFYH
-	 4xsZdNJ6KNYgg==
+	b=LelS2RTi1k6RhhtqjK28hT4t35xW3pAEw82mK1CW1aBULknwHg33a/iV2TGt+QD+R
+	 BHTIJACdb5zA+o2Ip92hASf5hLn5XmC0hfhGV/Yx/uuhUVR12X8icoEfrA1FBXPCP7
+	 dVXmVbWiDDEjh6cGabXhv6HbSJ4doJBKxLuV41kI0M2Xm07Oa8PDXgJDrLcsOrYipk
+	 nyLckwsRs2swE/skSzMwyUk/nLm74Bu+9JIEFxBjnZgoYITcz2Opzm+bEAQmTva0r8
+	 gzOKUZbKi+xF4T4Y7j2HnebIgrDWIaKTuu4n2TKcOgm5dkxeW17MiBnmtFPG7z0H41
+	 wklIE06Ab2uXQ==
 From: Miguel Ojeda <ojeda@kernel.org>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
+To: Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>,
 	Gary Guo <gary@garyguo.net>,
 	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@samsung.com>,
 	Alice Ryhl <aliceryhl@google.com>,
 	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [GIT PULL] Rust fixes for 6.11
-Date: Fri, 16 Aug 2024 19:16:22 +0200
-Message-ID: <20240816171622.41357-1-ojeda@kernel.org>
+	linux-kernel@vger.kernel.org,
+	patches@lists.linux.dev,
+	=?UTF-8?q?Fabian=20Gr=C3=BCnbichler?= <debian@fabian.gruenbichler.email>
+Subject: [PATCH] docs: rust: quick-start: add Debian Testing
+Date: Fri, 16 Aug 2024 20:15:14 +0200
+Message-ID: <20240816181514.45696-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-Hi Linus,
+Debian Testing is now also providing recent Rust releases (outside of
+the freeze period), like Debian Unstable (Sid).
 
-Please pull these fixes for Rust.
+Thus add it to the list.
 
-They have been in linux-next for a week or more.
+Cc: Fabian Grünbichler <debian@fabian.gruenbichler.email>
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+---
+Debian Testing is now providing a very recent Rust release (1.79), which
+is good enough for us, and as far as I understand, it is the intention
+to keep Debian Testing (outside the freeze period) close to the latest
+release of Rust upstream. If that is correct, then we should add it to
+the list. Thanks Fabian!
 
-No conflicts expected. No changes to the C side.
+ Documentation/rust/quick-start.rst | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-Thanks!
+diff --git a/Documentation/rust/quick-start.rst b/Documentation/rust/quick-start.rst
+index d06a36106cd4..ed5af2b5339a 100644
+--- a/Documentation/rust/quick-start.rst
++++ b/Documentation/rust/quick-start.rst
+@@ -39,8 +39,8 @@ of the box, e.g.::
+ Debian
+ ******
 
-Cheers,
-Miguel
+-Debian Unstable (Sid), outside of the freeze period, provides recent Rust
+-releases and thus it should generally work out of the box, e.g.::
++Debian Testing and Debian Unstable (Sid), outside of the freeze period, provide
++recent Rust releases and thus they should generally work out of the box, e.g.::
 
-The following changes since commit 8400291e289ee6b2bf9779ff1c83a291501f017b:
+ 	apt install rustc rust-src bindgen rustfmt rust-clippy
 
-  Linux 6.11-rc1 (2024-07-28 14:19:55 -0700)
 
-are available in the Git repository at:
-
-  https://github.com/Rust-for-Linux/linux.git tags/rust-fixes-6.11
-
-for you to fetch changes up to 0eba65f0310d3c7d5516c7fd4c172d0bfa8b285b:
-
-  rust: x86: remove `-3dnow{,a}` from target features (2024-08-10 00:05:10 +0200)
-
-----------------------------------------------------------------
-Rust fixes for v6.11
-
- - Fix '-Os' Rust 1.80.0+ builds adding more intrinsics (also tweaked
-   in upstream Rust for the upcoming 1.82.0).
-
- - Fix support for the latest version of rust-analyzer due to a change
-   on rust-analyzer config file semantics (considered a fix since most
-   developers use the latest version of the tool, which is the only one
-   actually supported by upstream). I am discussing stability of the
-   config file with upstream -- they may be able to start versioning it.
-
- - Fix GCC 14 builds due to '-fmin-function-alignment' not skipped for
-   libclang (bindgen).
-
- - A couple Kconfig fixes around '{RUSTC,BINDGEN}_VERSION_TEXT' to
-   suppress error messages in a foreign architecture chroot and to use a
-   proper default format.
-
- - Clean 'rust-analyzer' target warning due to missing recursive make
-   invocation mark.
-
- - Clean Clippy warning due to missing indentation in docs.
-
- - Clean LLVM 19 build warning due to removed 3dnow feature upstream.
-
-----------------------------------------------------------------
-Masahiro Yamada (2):
-      rust: suppress error messages from CONFIG_{RUSTC,BINDGEN}_VERSION_TEXT
-      rust: fix the default format for CONFIG_{RUSTC,BINDGEN}_VERSION_TEXT
-
-Miguel Ojeda (4):
-      rust: macros: indent list item in `module!`'s docs
-      rust: add intrinsics to fix `-Os` builds
-      kbuild: rust-analyzer: mark `rust_is_available.sh` invocation as recursive
-      rust: x86: remove `-3dnow{,a}` from target features
-
-Sarthak Singh (1):
-      rust: Support latest version of `rust-analyzer`
-
-Zehui Xu (1):
-      kbuild: rust: skip -fmin-function-alignment in bindgen flags
-
- Makefile                          | 2 +-
- init/Kconfig                      | 4 ++--
- rust/Makefile                     | 8 ++++----
- rust/compiler_builtins.rs         | 3 +++
- rust/macros/lib.rs                | 2 +-
- scripts/generate_rust_analyzer.py | 6 +++++-
- scripts/generate_rust_target.rs   | 4 ++--
- 7 files changed, 18 insertions(+), 11 deletions(-)
+base-commit: 7c626ce4bae1ac14f60076d00eafe71af30450ba
+--
+2.46.0
