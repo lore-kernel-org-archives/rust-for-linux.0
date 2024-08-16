@@ -1,115 +1,92 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f178.google.com (mail-pf1-f178.google.com [209.85.210.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D90161E515;
-	Fri, 16 Aug 2024 01:45:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92169EDE;
+	Fri, 16 Aug 2024 05:21:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723772716; cv=none; b=CyiaawOaNzlg7gmpeQkv94p5CYFnb3ethPBvYyw1HfaUfkkg3LLSFultDta9IPnRVI2RGbIN7oqvfxd/BiDDeEh/yZHp/sS2J1Yde5wkcl9FFldq1WlhOI/6SDyYLdjqMtDajz0Hg8cU+X1gsRpuLZiM+P5PQ4rb4L3uTzRncxg=
+	t=1723785671; cv=none; b=g2UtfzlCCjQar4iMpjIvntu2AgzopI2R7hMdVm/TQRt3HhDrhpvt7Bl7ha8amR0qV/OOQ55BTD9pVJaq1oD6VqNPkahrJC2CG1R2v9IYHqQdzC/CJJvmAWxc9ym16Oc8QwRODnQXgoNmV3lTX1h8tO1XFwqjfkp9zrQz1imPGDg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723772716; c=relaxed/simple;
-	bh=AdvMryl6jBiNkZ7VRREtcROcphQN5lq8hj5nSWl+xwo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=eabOgm7vpxqUEReGHCbFO44I2ht5xzHs2BEn/Eq3qqNzW7ecOuIIUxIvwnZYReYPaC2AaVefXTS0WPuxeb0lamI06lEBKSR6ucSpLbaMMTH6ngVHCAw15tgrt76Y0b9U1yV2bBmwTKd99kYqC25ZC5pKDD3friC4lTsYljFUGXg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=kJbsMwMH; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1723785671; c=relaxed/simple;
+	bh=Q1StPvmYrIPDrCqVc1rknl7jqCQjLsJDaLzLSDzBkvg=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=aI5TLTHH5mtPSht7nctYPT+/jdi74n6tO7ln8QhdibKiDRZnkNR4mn9SvKPMB04+nXNQBx5AyD98pROzFzQePT73C+weFIQ4BJLU9LQ3ESVhLyuZInuHLHdvWAk4mL6tPPuo13iC0y7cZyD880IMtL/H75ssuqybLWAFQvB4AIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=f1+9OE9c; arc=none smtp.client-ip=209.85.210.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="kJbsMwMH"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=LMZ/H1f7EOgQSnMvzNXmSFFbE5G3GwsE9SktaoTmTpU=; b=kJbsMwMHJF842YbnZUGjRpyyQ3
-	sjozCqZsG0H7A7wbpPvgLSodBvSJe65KwudSXL1VVQSzK+OnNmgNKt+NxNNxvTg2R3ZX1SiOy5EWb
-	mvWiekp1l4JJB0tPv3Qo4pvcWE4mQgVOiGAYwufVoJNDOAU9drQOLYsmHgtLusyNshbQ=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1sem1d-004tDC-PQ; Fri, 16 Aug 2024 03:45:09 +0200
-Date: Fri, 16 Aug 2024 03:45:09 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	tmgross@umich.edu, miguel.ojeda.sandonis@gmail.com,
-	benno.lossin@proton.me, aliceryhl@google.com
-Subject: Re: [PATCH net-next v3 6/6] net: phy: add Applied Micro QT2025 PHY
- driver
-Message-ID: <0675cff9-5502-43e4-87ee-97d2e35d72da@lunn.ch>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="f1+9OE9c"
+Received: by mail-pf1-f178.google.com with SMTP id d2e1a72fcca58-70d19bfdabbso36975b3a.2;
+        Thu, 15 Aug 2024 22:21:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1723785670; x=1724390470; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Kt4MLjhHN1/ECVknyeMFc6dLTiAulkcnJtVT+D32Bcg=;
+        b=f1+9OE9cnkct2fCOVam0nhA50tT/KHB2Wxk5Jlzk02VJ+znWkd4q13OoTuA/HS3dO+
+         BpaUI9lb+i/pgPluKYrsQrMLGy407UuYcQGrMZYYijJrYQ23T+mxaerpGBKkv+8BtjoJ
+         trMYTIvFuoczu/NICDblHvaA+QSrnCLm5GdMcufVEPvy5r9nJcqAfEaDJRqba7dlaFdV
+         kSaEVrrgQD9619lRV1uW/TdUArpiH7T4Kn3lGyFNfUfOXq1cCT+91Nld+2OzhRnG5YW/
+         MqwlNIxkVsCIIpf+P/42MA5FiFFz1xd+hag+0WPTFj5RquoMugK8QpGaxlaoXYWBKuD9
+         5V2w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1723785670; x=1724390470;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=Kt4MLjhHN1/ECVknyeMFc6dLTiAulkcnJtVT+D32Bcg=;
+        b=uDK/cyJaNZgPH/DOuoeA5KBABSizVsd+IzuH7D8qvgof/2ThnoPqLPAGvVhAfV+F/n
+         zw2/OzOxUYGGgPJa8MU8OylVQfkkHr2GnWqGboI4PU5dgqDRWEUwV67N0x5bYWr4u0zs
+         1lCyepX3368896D5X7YF8PR15HQAqLGvSAMqwqLExwEUCszKbAFnU7zybdd0CwYFIr7Z
+         jST7SgQYR8EBcU/dhnL1yP6qymNCUs0Gmlw4HJBgCl/j79F9y5WWbT2u36SXi916IFPD
+         iV22WtOVvWwYOHBxMpCQVIZgIohPmvYpSTMvNqhbMfJZR34MjrCTjvRLWaMZk8+LYNcE
+         LCqA==
+X-Forwarded-Encrypted: i=1; AJvYcCUgftBe949AJkE+rfxmFhB6rnEZT0MgX+w1ok/JPlaaUk7jcUmfXqWOKaIosVwlfDbIroVT9OL8nRbMPNLuag5yg/cTs25sCF3PmvMdk9b7Vd3KgHWrEFhhCRVA6dwfLo5lJ75W7xo=
+X-Gm-Message-State: AOJu0YwOcROMRQa3Z3HN+drnB0cRolhpDz61lD9BEfDF41Tb8l6UXWf+
+	w76OyWq6Lt0gPJayEkrv1kfPjJDZUD8VdvyuQ7Orghgxm0HQRWYzPk4fTmzL
+X-Google-Smtp-Source: AGHT+IEozBvUEpc3aKQfOu8vFKNPgrKEPB+3Yp6nU10Ft4nyWdn9A/ATnBljSD7Qa0O42VO2lFcHLg==
+X-Received: by 2002:a05:6a00:3e06:b0:70d:2cf6:598 with SMTP id d2e1a72fcca58-713c56ae134mr1249619b3a.5.1723785669641;
+        Thu, 15 Aug 2024 22:21:09 -0700 (PDT)
+Received: from localhost (p4468007-ipxg23001hodogaya.kanagawa.ocn.ne.jp. [153.204.200.7])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7127af1bc1dsm1922208b3a.170.2024.08.15.22.21.07
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 15 Aug 2024 22:21:09 -0700 (PDT)
+Date: Fri, 16 Aug 2024 05:21:05 +0000 (UTC)
+Message-Id: <20240816.052105.1315142429490875559.fujita.tomonori@gmail.com>
+To: andrew@lunn.ch
+Cc: fujita.tomonori@gmail.com, netdev@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, tmgross@umich.edu,
+ miguel.ojeda.sandonis@gmail.com, benno.lossin@proton.me,
+ aliceryhl@google.com
+Subject: Re: [PATCH net-next v3 1/6] rust: sizes: add commonly used
+ constants
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <6b12ed3a-d846-41ff-9821-a3946bb88378@lunn.ch>
 References: <20240804233835.223460-1-fujita.tomonori@gmail.com>
- <20240804233835.223460-7-fujita.tomonori@gmail.com>
+	<20240804233835.223460-2-fujita.tomonori@gmail.com>
+	<6b12ed3a-d846-41ff-9821-a3946bb88378@lunn.ch>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240804233835.223460-7-fujita.tomonori@gmail.com>
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-> +#[vtable]
-> +impl Driver for PhyQT2025 {
-> +    const NAME: &'static CStr = c_str!("QT2025 10Gpbs SFP+");
-> +    const PHY_DEVICE_ID: phy::DeviceId = phy::DeviceId::new_with_exact_mask(0x0043A400);
-> +
-> +    fn probe(dev: &mut phy::Device) -> Result<()> {
-> +        // The hardware is configurable?
-> +        let hw_id = dev.read(C45::new(Mmd::PMAPMD, 0xd001))?;
-> +        if (hw_id >> 8) & 0xff != 0xb3 {
-> +            return Ok(());
-> +        }
+On Fri, 16 Aug 2024 02:37:02 +0200
+Andrew Lunn <andrew@lunn.ch> wrote:
 
-I don't understand this bit of code. At a guess, if the upper bytes of
-that register is not 0xb3, the firmware has already been loaded into
-the device?
+>> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+>> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> 
+> Your Signed-off-by: should come last. That keeps it together with the
+> others added by Maintainers as they handle the patch on its way to
+> mainline.
+> 
+> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
 
-> +
-> +        // The 8051 will remain in the reset state.
-> +        dev.write(C45::new(Mmd::PMAPMD, 0xC300), 0x0000)?;
-> +        // Configure the 8051 clock frequency.
-> +        dev.write(C45::new(Mmd::PMAPMD, 0xC302), 0x0004)?;
-> +        // Non loopback mode.
-> +        dev.write(C45::new(Mmd::PMAPMD, 0xC319), 0x0038)?;
-> +        // Global control bit to select between LAN and WAN (WIS) mode.
-> +        dev.write(C45::new(Mmd::PMAPMD, 0xC31A), 0x0098)?;
-> +        dev.write(C45::new(Mmd::PCS, 0x0026), 0x0E00)?;
-> +        dev.write(C45::new(Mmd::PCS, 0x0027), 0x0893)?;
-> +        dev.write(C45::new(Mmd::PCS, 0x0028), 0xA528)?;
-> +        dev.write(C45::new(Mmd::PCS, 0x0029), 0x0003)?;
+Fixed the order, along with the remaining ones.
 
-802.3 says:
-
-3.38 through 3.4110/25GBASE-R PCS test pattern seed B ????
-
-> +        // Configure transmit and recovered clock.
-> +        dev.write(C45::new(Mmd::PMAPMD, 0xC30A), 0x06E1)?;
-> +        // The 8051 will finish the reset state.
-> +        dev.write(C45::new(Mmd::PMAPMD, 0xC300), 0x0002)?;
-> +        // The 8051 will start running from the boot ROM.
-> +        dev.write(C45::new(Mmd::PCS, 0xE854), 0x00C0)?;
-> +
-> +        let fw = Firmware::request(c_str!("qt2025-2.0.3.3.fw"), dev.as_ref())?;
-> +        if fw.data().len() > SZ_16K + SZ_8K {
-> +            return Err(code::EFBIG);
-> +        }
-> +
-> +        // The 24kB of program memory space is accessible by MDIO.
-> +        // The first 16kB of memory is located in the address range 3.8000h - 3.BFFFh.
-> +        // The next 8kB of memory is located at 4.8000h - 4.9FFFh.
-> +        let mut j = SZ_32K;
-> +        for (i, val) in fw.data().iter().enumerate() {
-> +            if i == SZ_16K {
-> +                j = SZ_32K;
-> +            }
-> +
-> +            let mmd = if i < SZ_16K { Mmd::PCS } else { Mmd::PHYXS };
-> +            dev.write(
-> +                C45::new(mmd, j as u16),
-> +                <u8 as Into<u16>>::into(*val).to_le(),
-
-This is well past my level of Rust. I assume fw.data is a collection
-of bytes, and you enumerate it as bytes. A byte has no endiannes, so
-why do you need to convert it to little endian?
-
-	Andrew
+Thanks!
