@@ -1,98 +1,70 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34DE078C68;
-	Fri, 16 Aug 2024 07:06:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C21A978C68;
+	Fri, 16 Aug 2024 07:14:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723792000; cv=none; b=Oou9XUrHZdtHN8tpvQsmo2zg76IqnpYZGwtwcw+RovvlMDP4cTZxVcPtEEKy6LxNREcQYUPLN4rJZsXpkenmWyNhtsYkWRAfQYLV0ORzL6KaDhUEuDHTR4a9WBmJry9P7su/k8VY0YfhaY+4YI4ew3yBJ2WloCK0vLzvCilaBYQ=
+	t=1723792447; cv=none; b=HQO63Gd1hKqi3IbvU7nwOvO9CRPBjHK1atyHhnUlawsXg0lyyh2KdGyaFaD+G4YbzY20sUWe/9/uQvxvbxKlVu3uisolp+QltWZBBWGH18RM0TRmUGb+6gYE25lAkbpizIesyHJ7uj8JunHccaubPr9svBfteGngP3RzH+egWXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723792000; c=relaxed/simple;
-	bh=3J0NRytEsTukDgVOmZIAUw6cxnJT3AnHuFYMxFXR5/4=;
+	s=arc-20240116; t=1723792447; c=relaxed/simple;
+	bh=D0+HGB7x2+EU9kTyZqyNjrkHZaMRg8XhZjV6j5p3NCM=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=JlSoQyu8MuMHxQ2CzQVW3gJNAFcn14mY+CDoyyJhFoUMesv/fjCJ6xawBnQ5veXy6wKf0y5ThfK3WDJpjpvV9/uwiGZ7yzXJpH/ev38bcs94qa0XE8EAFAbourbCR0zUYPh9aieeLJzNKI2sxMQZiAqpH2R7lImLqTDN3BqyRqc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kfPWJs8z; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=Q1Uzd893UHRsqAnZOIqlhLwbuKw+s++dTN3mKGSmfcm7xsm8FjN2nsE39JQqhFhLJBuvxA/CPjmpzguVYWJOKb7bpWEFEuC/CbwuQzG0IOAc+MAmBqn//VY3+cf3+esWlcO1SkVqjX1b+Q9RuQDfok1fPvEQO4GkHrf3DO97lrA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LpKfaihC; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kfPWJs8z"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F8D4C32782;
-	Fri, 16 Aug 2024 07:06:39 +0000 (UTC)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LpKfaihC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDEFCC4AF09;
+	Fri, 16 Aug 2024 07:14:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723791999;
-	bh=3J0NRytEsTukDgVOmZIAUw6cxnJT3AnHuFYMxFXR5/4=;
+	s=korg; t=1723792446;
+	bh=D0+HGB7x2+EU9kTyZqyNjrkHZaMRg8XhZjV6j5p3NCM=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=kfPWJs8zN3LV+ovFZqYb0GyUraQ71cmPjiIK6tzsmYps0Y3h8KC8jP0BSNEGa85If
-	 PA1nwWfnYzoUpg4qZOog9cj+0KVJ5pan7CmMu9PFVrSCwwleavd29aHezUmAHAezBV
-	 S0637v2hVxRNlGTV4O6/xJtFEo3ERTxShj5VhqMM=
-Date: Fri, 16 Aug 2024 09:06:36 +0200
+	b=LpKfaihC58yOrhhZ1550lMcbezhcNtEhcX/VQ6AA27NhoZYb6NDP/lFBgD3W8EsVc
+	 2i62HQExDs525PJExjmob2RYI1R/kauniQEfXLxi8d9KVybKqQ34gqccJ2zsHVYQzr
+	 b/RGRcEEyx20/2pGZ0W9BRu67U1tGNCbKYii6Jz8=
+Date: Fri, 16 Aug 2024 09:14:02 +0200
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Pierre Gondois <pierre.gondois@arm.com>
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	linux-kernel@vger.kernel.org,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
-	Len Brown <lenb@kernel.org>, Viresh Kumar <viresh.kumar@linaro.org>,
-	Robert Moore <robert.moore@intel.com>,
+To: Sami Tolvanen <samitolvanen@google.com>
+Cc: Masahiro Yamada <masahiroy@kernel.org>,
+	Luis Chamberlain <mcgrof@kernel.org>,
 	Miguel Ojeda <ojeda@kernel.org>,
+	Matthew Maurer <mmaurer@google.com>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
 	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-	Manos Pitsidianakis <manos.pitsidianakis@linaro.org>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Thomas Bertschinger <tahbertschinger@gmail.com>,
-	Danilo Krummrich <dakr@redhat.com>, linux-acpi@vger.kernel.org,
-	linux-pm@vger.kernel.org, acpica-devel@lists.linux.dev,
-	rust-for-linux@vger.kernel.org, Metin Kaya <metin.kaya@arm.com>
-Subject: Re: [RFC PATCH 6/6] rust: cpufreq: Add rust implementation of
- cppc_cpufreq driver
-Message-ID: <2024081634-excluding-squeezing-c386@gregkh>
-References: <20240815082916.1210110-1-pierre.gondois@arm.com>
- <20240815082916.1210110-7-pierre.gondois@arm.com>
- <CANiq72mjvE7h_aH5tYnuuzdPHAzDUpioMi-h44HNCro8qFfDSw@mail.gmail.com>
- <1605d622-faf5-4535-bd71-ba514ee102dd@arm.com>
+	Gary Guo <gary@garyguo.net>, Petr Pavlu <petr.pavlu@suse.com>,
+	Neal Gompa <neal@gompa.dev>, Hector Martin <marcan@marcan.st>,
+	Janne Grunau <j@jannau.net>, Asahi Linux <asahi@lists.linux.dev>,
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-modules@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v2 01/19] tools: Add gendwarfksyms
+Message-ID: <2024081603-punctual-hamlet-152e@gregkh>
+References: <20240815173903.4172139-21-samitolvanen@google.com>
+ <20240815173903.4172139-22-samitolvanen@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <1605d622-faf5-4535-bd71-ba514ee102dd@arm.com>
+In-Reply-To: <20240815173903.4172139-22-samitolvanen@google.com>
 
-On Fri, Aug 16, 2024 at 08:59:22AM +0200, Pierre Gondois wrote:
-> Hello Greg, Miguel,
-> 
-> On 8/15/24 15:04, Miguel Ojeda wrote:
-> > On Thu, Aug 15, 2024 at 10:31 AM Pierre Gondois <pierre.gondois@arm.com> wrote:
-> > > 
-> > > In an effort to add test/support the cpufreq framework in rust,
-> > > add a rust implementation of the cppc_cpufreq driver named:
-> > > `rcppc_cpufreq`.
-> > 
-> > Similar to what Greg said -- is this intended to be something like a
-> > "Rust reference driver" [1] for the subsystem?
-> 
-> The initial intent was to review/test Viresh's patchset [1]. I then
-> thought it would be a good idea to implement another cpufreq driver
-> to see if the provided interface would work.
-> As the cpufreq-dt driver is re-implemented in Viresh's patchset,
-> I thought it was also ok to have this driver.
+On Thu, Aug 15, 2024 at 05:39:05PM +0000, Sami Tolvanen wrote:
+> --- /dev/null
+> +++ b/scripts/gendwarfksyms/dwarf.c
+> @@ -0,0 +1,87 @@
+> +// SPDX-License-Identifier: GPL-2.0-or-later
 
-Duplicate drivers for the same hardware are never a good idea, we need
-to learn from our past mistakes when we have done this before (hint, it
-did not work out and we ended up dropping the duplicates.)
+Sorry, but I have to ask, do you _REALLY_ mean "or later" here and in
+other places in this series?  If so, great, but I want to be sure, as I
+know:
 
-However, if the subsystem maintainer agrees, they are free to have
-duplicate drivers, as long as the maintainer of the "new" one will be
-there to help out with all of the confusion and problems that users and
-distros will have :)
+> + * Copyright (C) 2024 Google LLC
 
-good luck!
+Has some issues with the types of licenses that marking will cover.
+
+thanks,
 
 greg k-h
