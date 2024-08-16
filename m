@@ -1,45 +1,45 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C632E10E4;
-	Fri, 16 Aug 2024 20:41:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7314C8063C;
+	Fri, 16 Aug 2024 20:47:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723840906; cv=none; b=GhtPfU8KqCObDzhd4Uzm0u2PyWdw71XlUz6FVsijtwVu56rp2q+H75CYSclxNtcCRRvGQ/cnqk2qZNIORzSFm2hg8g8RqQzCYZcG39VSD4LQbgVd0l8t0mbgXOd/M53IV45hDBkj5+n+BNaNFPKVrEpm0jXJGL88y3HJt8JeAV0=
+	t=1723841229; cv=none; b=N4cc6OLetpPQg9+pO6I9XGUc8NDjPbFVmHfFWF2vkxrH4jGosRBH1uvDBOJgOr1E7g77pRi2C9HEq1Qke3aqLKY2oNbHtSyY4sxrY9GD6WfMy8BS175akacXQCmCPkF8B7MnPMyFdgnCVqt3wAygWfMhdxADnI3CL/CqBY71jxA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723840906; c=relaxed/simple;
-	bh=FJqFOAQHLZgrVIsKHKsM350ktpzcfGfOeC3fVJwlIF8=;
+	s=arc-20240116; t=1723841229; c=relaxed/simple;
+	bh=JZfHiz1tB38rMW9olGjsTLFDdVnBPmmfwFoUIW2rIm8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pABGWR4sTb/MdKgzCg/qWRveV7T9lkExe3cjtTpSQbcsKi7Bn2fnWLrcNHVybTHsxvs8dwWEO9CiaHnfGj4UGcFWzmoa0iXgQT0kOUJihuBtfwSTcthuVah2na0NhW84TvD/9E9g6MmOgZbQbRgQv1QaMTWRyjN73Too2+ELsCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=MPdK48xC; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=OYyBeA3Gu6iL5k1NhBn0Cge8DnVJhNldRPD0leJXHX0pLMe6UYXzkCwzu+5Ar/SpsNRTpz+DIyMYviE0ro3YtqAfcbAjuqnJJ40/PJoeG4V2yx3IYRRDZWQPZacug8aYxfvmqxBJkmekxCECxOvNB7xt30f1plqwtUhtTQOxosE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=brQutFfx; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="MPdK48xC"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="brQutFfx"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=6mHwF5eJNyqAoQxsmASoimJoKtlAU6uWjPM1E5/4Nfo=; b=MPdK48xCSuCxC23JVg5WUjj8AB
-	d9SPxSWvKAbl01M5HR0mFfvAoIhXRYSS1DTH+gX1hNWk3vwTATrrpqvSd4F6b4truDdG5d1/nhWje
-	j1NxtMUHTAlKXotM1ph+aKjjOYRE0rCY0cnJsHEWPEQjXfP2Qqw32kXuTAvoqyEJK86w=;
+	bh=aOP2LMJeFmr80roGNiJdWxr3mEBBBuA/8/eNBaXhU4g=; b=brQutFfxYC7tP1HnYn+HCkKg7v
+	dieym8XOM2rnbEifOr0M7/CsszAK/aA9W8hFOENVE2QN45gDelnlyN13NHg+tjbR8rVWxLJrljWPv
+	Nnyj9LIFvTdnilP67NOVkOKXq67bPrMbLb9v1/lb7ZOGl221YgIQbSoPB1ZvGuHt+OEc=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1sf3lS-004xk2-VQ; Fri, 16 Aug 2024 22:41:38 +0200
-Date: Fri, 16 Aug 2024 22:41:38 +0200
+	id 1sf3qi-004xlV-1N; Fri, 16 Aug 2024 22:47:04 +0200
+Date: Fri, 16 Aug 2024 22:47:04 +0200
 From: Andrew Lunn <andrew@lunn.ch>
 To: FUJITA Tomonori <fujita.tomonori@gmail.com>
 Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
 	tmgross@umich.edu, miguel.ojeda.sandonis@gmail.com,
 	benno.lossin@proton.me, aliceryhl@google.com
-Subject: Re: [PATCH net-next v3 5/6] rust: net::phy unified
- genphy_read_status function for C22 and C45 registers
-Message-ID: <7dbf30ef-4908-4600-8898-cb812024392b@lunn.ch>
+Subject: Re: [PATCH net-next v3 6/6] net: phy: add Applied Micro QT2025 PHY
+ driver
+Message-ID: <ec02de97-2521-4897-9076-cabb8f057c8b@lunn.ch>
 References: <20240804233835.223460-1-fujita.tomonori@gmail.com>
- <20240804233835.223460-6-fujita.tomonori@gmail.com>
- <b61b5eb4-ee73-405c-aeae-0c26c66445fc@lunn.ch>
- <20240816.053009.1420518753499945384.fujita.tomonori@gmail.com>
+ <20240804233835.223460-7-fujita.tomonori@gmail.com>
+ <0675cff9-5502-43e4-87ee-97d2e35d72da@lunn.ch>
+ <20240816.061710.793938744815241582.fujita.tomonori@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -48,30 +48,56 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240816.053009.1420518753499945384.fujita.tomonori@gmail.com>
+In-Reply-To: <20240816.061710.793938744815241582.fujita.tomonori@gmail.com>
 
-On Fri, Aug 16, 2024 at 05:30:09AM +0000, FUJITA Tomonori wrote:
-> On Fri, 16 Aug 2024 03:19:51 +0200
+On Fri, Aug 16, 2024 at 06:17:10AM +0000, FUJITA Tomonori wrote:
+> On Fri, 16 Aug 2024 03:45:09 +0200
 > Andrew Lunn <andrew@lunn.ch> wrote:
 > 
-> >> +///
-> >> +///     // Checks the link status and updates current link state via C22.
-> >> +///     dev.genphy_read_status::<phy::C22>();
-> >> +///     // Checks the link status and updates current link state via C45.
-> >> +///     dev.genphy_read_status::<phy::C45>();
+> >> +#[vtable]
+> >> +impl Driver for PhyQT2025 {
+> >> +    const NAME: &'static CStr = c_str!("QT2025 10Gpbs SFP+");
+> >> +    const PHY_DEVICE_ID: phy::DeviceId = phy::DeviceId::new_with_exact_mask(0x0043A400);
+> >> +
+> >> +    fn probe(dev: &mut phy::Device) -> Result<()> {
+> >> +        // The hardware is configurable?
+> >> +        let hw_id = dev.read(C45::new(Mmd::PMAPMD, 0xd001))?;
+> >> +        if (hw_id >> 8) & 0xff != 0xb3 {
+> >> +            return Ok(());
+> >> +        }
 > > 
-> > Again, the word `via` is wrong here. You are looking at the link state
-> > as reported by registers in the C22 namespace, or the C45 namespace.
+> > I don't understand this bit of code. At a guess, if the upper bytes of
+> > that register is not 0xb3, the firmware has already been loaded into
+> > the device?
 > 
-> Yeah, how about the followings?
+> I've just added debug code and found that the upper bytes of the
+> register is 0xb3 even after loading the firmware.
 > 
-> ///     // Checks the link status as reported by registers in the C22 namespace
-> ///     // and updates current link state.
-> ///     dev.genphy_read_status::<phy::C22>();
-> ///     // Checks the link status as reported by registers in the C45 namespace
-> ///     // and updates current link state.
-> ///     dev.genphy_read_status::<phy::C45>();
+> I checked the original code again and found that if the bytes isn't
+> 0xb3, the driver initialization fails. I guess that the probe should
+> return an error here (ENODEV?). 
 
-Yes, that is good.
+O.K. Maybe add a comment that the vendor driver does this, but we have
+no idea why.
 
-     Andrew
+> 
+> >> +        dev.write(C45::new(Mmd::PCS, 0x0026), 0x0E00)?;
+> >> +        dev.write(C45::new(Mmd::PCS, 0x0027), 0x0893)?;
+> >> +        dev.write(C45::new(Mmd::PCS, 0x0028), 0xA528)?;
+> >> +        dev.write(C45::new(Mmd::PCS, 0x0029), 0x0003)?;
+> > 
+> > 802.3 says:
+> > 
+> > 3.38 through 3.4110/25GBASE-R PCS test pattern seed B ????
+> 
+> Yeah, strange. But I can't find any hints on them in the datasheet or
+> the original code.
+
+Seems unlikely it is seeding anything. So i guess they have reused the
+registers for something else. This is actually a bit odd, because all
+the other registers are in the ranges reserved for vendor usage.
+
+If these were legitimate register usage, i would of suggested adding
+#define to include/uapi/linux/mdio.h for them.
+
+	Andrew
