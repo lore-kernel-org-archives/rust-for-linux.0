@@ -1,74 +1,127 @@
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 950181BCA0B
-	for <rust-for-linux@vger.kernel.org>; Fri, 16 Aug 2024 15:59:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74CB42BB0D;
+	Fri, 16 Aug 2024 17:16:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723823963; cv=none; b=Xdu8QiJV0A90WzC+0W3iaB8UdR7U0znXJt6UawPU5N4VmKWaiN5OXxJJ8rB4fp7C8sN5g1mZ3unYaGu2h4JONBZg5PvT3aD1RBsm90GW257zDIHmrFpY5+oWqJbsucFli2xdzQBnaE+ERccSpd/rfDDmnrYYlUa6bdXCD5YH9KM=
+	t=1723828598; cv=none; b=b854dXrbh86To50I//YvXYd1voQDm8x0g6h8tfOMNtDNYblLrGUhKe+TszipoqG2S8FDRTgF+ENP8arIff4k0OMoAa0B6UySuewdN27JMWZ/C2qaXFPJIpZRLaTlFPsbTWnL0Ki5GqfGhG8fpmw7YBbuUs19D9wRAdNV7t34z84=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723823963; c=relaxed/simple;
-	bh=PwFCq4HA+VM/TqeJYVTNwOwEiSG7asgzKeswyfcvfxM=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JLf6zpR1padTcTBK7Mh8DT5d1Hu3CKsPhqloDsA5uagVR/VQuXY22UIbdwtEft33HX9dVnyJgpm1s0W8BQ5CMnt45AVR4l9D28mzC4LDyuXwRXB5i2nTzwJnOqRlHjyy/mwzttpZdWhmK5hjx73lLzzKPyncjSA5OkQGQ8ClWiI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=VAl1AtmU; arc=none smtp.client-ip=185.70.43.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1723828598; c=relaxed/simple;
+	bh=sPYv0g/AfzPWZIknl7bScophvQHJynMsFyJ6W+w2qAk=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=O80T8HKdUBPQPk19jHLvdtfM8lYiWAZ1ZLED5t+s486e643B6qgRkvnLy0V+EhNLrL003CaL53HTvElXBnY5I2+4y/rKkxo3/LCx4p/uc4L6WWHSEGHSmOKLnY3Otnb/b6Ccj7ECJdZNuBjU++bJfVBeD+EJgZeOz7vdxmygNro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h1oehXc0; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="VAl1AtmU"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1723823958; x=1724083158;
-	bh=B+BumcKHKtkyfAWPcUH/EmOHcEtK+9Bi+uQxd+QCyJ0=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=VAl1AtmUAav1AzMGX/4K2lD4e5JFaNIqlHpQAXb3ulC29Cb5oK1f9lTc10CtYk9Pb
-	 SpP2NXLrx4pnvLCZSQXtEUsXrHbdjJaR+XCkowvWqa1IuMjC5ztFNI4xaHkzUO0het
-	 mLgCtB8AKrya29B24hUz3UCy4NBwxkh7To2bBHNlz2muFHZtw93DEiY8bPECPvVHFZ
-	 clp8x51J/xQYHYW9L3TkhETQcIswgELjJt+kfwbM99yjQlC019um+HvlrP0hK54f42
-	 Q9dZSUJxWf73Q6D+9W/GNURoa0EvwXrLpEAQQU1blURBsQU0EvcT/+00m44386dEds
-	 DynKbZhL0rjpA==
-Date: Fri, 16 Aug 2024 15:59:10 +0000
-To: Andreas Hindborg <nmi@metaspace.dk>, Jens Axboe <axboe@kernel.dk>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Andreas Hindborg <a.hindborg@samsung.com>, "Behme Dirk (XC-CP/ESB5)" <Dirk.Behme@de.bosch.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/2] rust: block: fix wrong usage of lockdep API
-Message-ID: <34282f40-d6a1-4354-8fd5-24239ada15ed@proton.me>
-In-Reply-To: <20240815074519.2684107-3-nmi@metaspace.dk>
-References: <20240815074519.2684107-1-nmi@metaspace.dk> <20240815074519.2684107-3-nmi@metaspace.dk>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 3599b4c02900e339b0a6f8e36171634a4a326f53
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h1oehXc0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E91D8C32782;
+	Fri, 16 Aug 2024 17:16:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1723828597;
+	bh=sPYv0g/AfzPWZIknl7bScophvQHJynMsFyJ6W+w2qAk=;
+	h=From:To:Cc:Subject:Date:From;
+	b=h1oehXc0icqnbRuhYTxwoipafHAMcIFWAt+/LTGkWtx+ahATF/4cGnt9zalvD4/tY
+	 R1nw+CoFVY3J3mTreehIsXZeoHui6Pli6oLwvNsBLOILELl3MyC3En1AmTpJJe8ey2
+	 WQyYvaD+pYQWmAELTJfZRFSgCPCRoca04cW+whsFNM0n8N+ET8M1dd/ueJtzulEPbc
+	 FNDufldoFxk5VLuoXsRy/kREw5Dd959xrfpxaoprpsxnOTU/vDkpbCnp0r6FDrVE3O
+	 tMQanumzcsjhdnXNcwWYbi39+f184REI66iJCuf8Mlzwg41ugqEbQfEhMAFpj2bFYH
+	 4xsZdNJ6KNYgg==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [GIT PULL] Rust fixes for 6.11
+Date: Fri, 16 Aug 2024 19:16:22 +0200
+Message-ID: <20240816171622.41357-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On 15.08.24 09:49, Andreas Hindborg wrote:
-> From: Andreas Hindborg <a.hindborg@samsung.com>
->=20
-> When allocating `struct gendisk`, `GenDiskBuilder` is using a dynamic loc=
-k
-> class key without registering the key. This is incorrect use of the API,
-> which causes a `WARN` trace. This patch fixes the issue by using a static
-> lock class key, which is more appropriate for the situation anyway.
->=20
-> Fixes: 3253aba3408a ("rust: block: introduce `kernel::block::mq` module")
-> Reported-by: "Behme Dirk (XC-CP/ESB5)" <Dirk.Behme@de.bosch.com>
-> Closes: https://rust-for-linux.zulipchat.com/#narrow/stream/288089-Genera=
-l/topic/6.2E11.2E0-rc1.3A.20rust.2Fkernel.2Fblock.2Fmq.2Ers.3A.20doctest.20=
-lock.20warning
-> Signed-off-by: Andreas Hindborg <a.hindborg@samsung.com>
-> ---
->  rust/kernel/block/mq/gen_disk.rs | 6 ++----
->  1 file changed, 2 insertions(+), 4 deletions(-)
+Hi Linus,
 
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+Please pull these fixes for Rust.
 
----
+They have been in linux-next for a week or more.
+
+No conflicts expected. No changes to the C side.
+
+Thanks!
+
 Cheers,
-Benno
+Miguel
 
+The following changes since commit 8400291e289ee6b2bf9779ff1c83a291501f017b:
+
+  Linux 6.11-rc1 (2024-07-28 14:19:55 -0700)
+
+are available in the Git repository at:
+
+  https://github.com/Rust-for-Linux/linux.git tags/rust-fixes-6.11
+
+for you to fetch changes up to 0eba65f0310d3c7d5516c7fd4c172d0bfa8b285b:
+
+  rust: x86: remove `-3dnow{,a}` from target features (2024-08-10 00:05:10 +0200)
+
+----------------------------------------------------------------
+Rust fixes for v6.11
+
+ - Fix '-Os' Rust 1.80.0+ builds adding more intrinsics (also tweaked
+   in upstream Rust for the upcoming 1.82.0).
+
+ - Fix support for the latest version of rust-analyzer due to a change
+   on rust-analyzer config file semantics (considered a fix since most
+   developers use the latest version of the tool, which is the only one
+   actually supported by upstream). I am discussing stability of the
+   config file with upstream -- they may be able to start versioning it.
+
+ - Fix GCC 14 builds due to '-fmin-function-alignment' not skipped for
+   libclang (bindgen).
+
+ - A couple Kconfig fixes around '{RUSTC,BINDGEN}_VERSION_TEXT' to
+   suppress error messages in a foreign architecture chroot and to use a
+   proper default format.
+
+ - Clean 'rust-analyzer' target warning due to missing recursive make
+   invocation mark.
+
+ - Clean Clippy warning due to missing indentation in docs.
+
+ - Clean LLVM 19 build warning due to removed 3dnow feature upstream.
+
+----------------------------------------------------------------
+Masahiro Yamada (2):
+      rust: suppress error messages from CONFIG_{RUSTC,BINDGEN}_VERSION_TEXT
+      rust: fix the default format for CONFIG_{RUSTC,BINDGEN}_VERSION_TEXT
+
+Miguel Ojeda (4):
+      rust: macros: indent list item in `module!`'s docs
+      rust: add intrinsics to fix `-Os` builds
+      kbuild: rust-analyzer: mark `rust_is_available.sh` invocation as recursive
+      rust: x86: remove `-3dnow{,a}` from target features
+
+Sarthak Singh (1):
+      rust: Support latest version of `rust-analyzer`
+
+Zehui Xu (1):
+      kbuild: rust: skip -fmin-function-alignment in bindgen flags
+
+ Makefile                          | 2 +-
+ init/Kconfig                      | 4 ++--
+ rust/Makefile                     | 8 ++++----
+ rust/compiler_builtins.rs         | 3 +++
+ rust/macros/lib.rs                | 2 +-
+ scripts/generate_rust_analyzer.py | 6 +++++-
+ scripts/generate_rust_target.rs   | 4 ++--
+ 7 files changed, 18 insertions(+), 11 deletions(-)
