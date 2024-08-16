@@ -1,97 +1,173 @@
-Received: from mout-y-209.mailbox.org (mout-y-209.mailbox.org [91.198.250.237])
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9B012E859;
-	Fri, 16 Aug 2024 12:46:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.198.250.237
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 835A11B86C7;
+	Fri, 16 Aug 2024 13:08:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723812383; cv=none; b=KwFUwPdmE8e45mR0YopcgtwVcHqmks4GZLAzYAcc5ymKTgdEIdYuRV/91zZEpL3BCNqlc8ludEcnEr/IO+W1QTFnW3gLsyJ4+TLhFCtuxplidUrj0HGyN5AU+WwuAVvu0nVID7qUJ16cTWzs0CBK5HO+acxNjr47ejvbfHQy7dI=
+	t=1723813719; cv=none; b=ewUytqagUel3MaDOitMFwSwQUsEH5FpNUjaHVzZe5oxlsPTbgAi6Rv1ptXBLMwkHgcMxJJ3DHXcGMTecWnPk1xEqbv7p2QV4G3prqHsCQOY8V3CKAIX751F55yDFh47mLtrYDlpXiq5+rsR7DkPRXweQE9uXRcicMEZJG7SLh/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723812383; c=relaxed/simple;
-	bh=QWNpYU3pWiV57+7SurtAARnts5tJewlmVTfYZF98uvI=;
-	h=Date:From:To:Cc:Message-ID:In-Reply-To:References:Subject:
-	 MIME-Version:Content-Type; b=KKLHV2kwGMZSONwzkXFlA24mRU8VL6xvQhnE7Y5hLiVADUtql9i+Nn+ieQyjN3OiXlHhQd6Zd+VuGlLVhhOuCn6ydNm5W1WW+QHaU1dIZNJ9qPazhwbA4wwruSzZPQGz4GB4gAv3ExYyTkh7iO+a9iWJjWmTRDgT0cLpq4f2RrM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=woltmann.art; spf=fail smtp.mailfrom=woltmann.art; dkim=pass (2048-bit key) header.d=woltmann.art header.i=@woltmann.art header.b=Ofo4kXtN; arc=none smtp.client-ip=91.198.250.237
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=woltmann.art
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=woltmann.art
+	s=arc-20240116; t=1723813719; c=relaxed/simple;
+	bh=uLZRSEKvV+sYwD5VMfcEH45Ip8gLy4Lvpolp9iUOzDA=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=YzjbyucbsLM5EY8GjfWoGyQ7f8WKqiNqojeKS1ba4g5WZPKL4SVBq6PsOXvs4wJacI34jqfTBZSiw3Q3WVDWda8EcvX9bwptCLCEYvGo+fALzpoi2GBjoRva5EmojP5D9Qphbrakvj1LCvHu4aT9oUq1ZMOvHM7YoutQSed3T7o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=IehBWnw/; arc=none smtp.client-ip=185.70.43.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=woltmann.art header.i=@woltmann.art header.b="Ofo4kXtN"
-Received: from smtp102.mailbox.org (smtp102.mailbox.org [10.196.197.102])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mout-y-209.mailbox.org (Postfix) with ESMTPS id 4WlhZ10TJ1z9vl7;
-	Fri, 16 Aug 2024 14:46:17 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=woltmann.art;
-	s=MBO0001; t=1723812377;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=EkqdX+9+e8U5naCUvH0638tTZBSM4TEqE32jNdQOARc=;
-	b=Ofo4kXtNA1ZfrC9lipkdlD0FwPHu2uVn6vFRW4RhTGHkEYaAsoWkDIz/8V1fadv3BOKbeA
-	jxQXvXTla3NLJpcwhMOqrZhQLObBwUrA2XqMFfR1QCYJBrEQ3ayCojcQW2sv2yWajjci3m
-	/Zb9aTHODEUXzN2QZqPfELo1LLGpCgMs9laVNDtAgwPclog7K4oDdMea0/BmBGCShb3JsB
-	UVgMisUuYf/au75ldDyRmJNahSn0/etX6lvbAlm1toibQJLIRgvMGLZqxie7xTGZa7j5ZC
-	8KdN20TbKU86qDJflia+b2BUnl6XPyBgA0otoAgb/bxF/aqcYWChWpi1VvjmFw==
-Date: Fri, 16 Aug 2024 14:46:13 +0200 (CEST)
-From: Vincent Woltmann <vincent@woltmann.art>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>, Jonathan Corbet <corbet@lwn.net>,
-	Julian Merkle <me@jvmerkle.de>, Wei Liu <wei.liu@kernel.org>,
-	Sven Van Asbroeck <thesven73@gmail.com>,
-	Adam Bratschi-Kaye <ark.email@gmail.com>,
-	"open list:DOCUMENTATION" <linux-doc@vger.kernel.org>,
-	open list <linux-kernel@vger.kernel.org>
-Message-ID: <2130133683.467462.1723812373582@office.mailbox.org>
-In-Reply-To: <CANiq72nN+x9FR8whpiEFtUr+4gkBN=pfw6URO9VO31qtX7=5Bg@mail.gmail.com>
-References: <20240816092536.2444105-1-vincent@woltmann.art>
- <CANiq72nN+x9FR8whpiEFtUr+4gkBN=pfw6URO9VO31qtX7=5Bg@mail.gmail.com>
-Subject: Re: [PATCH] rust: Remove erronous blockquote in coding guidelines
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="IehBWnw/"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1723813715; x=1724072915;
+	bh=62zRic87JxqPmj05J36bTPKEn8/CdP3vVB4/nw0/CTU=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=IehBWnw/g7yU1gMhY6AuaUfxXHqS5k9KGX9wjWLHdQcd2DTHryxyIqpvL/eE3BWLU
+	 laDCiUJ6FKXyyQdw06pX/jh9l0kk1ulv5JvQ6fsw/xfGOqdIwB/g8uuIdDKPn4DmYB
+	 2TstslElKcciKLBDmYD9F/Uxt7I3akIC0G5lS9Ze3KXRTW2t8ZcpJlQC/TY9lNdgyK
+	 75iM92e/SohGRKdIYpGJtO/cx/ystzGz3FLSkDHIfyebd2oHV/yoAFZJFO2wAafmXN
+	 pT+dSfMwawEqSZRi9w8nNzdLaAIKSb8rIhihcCZ+GNpdrlMa5TvegmQbkITJqxI+7y
+	 rV8cPaz+90EgA==
+Date: Fri, 16 Aug 2024 13:08:29 +0000
+To: Gary Guo <gary@garyguo.net>, Boqun Feng <boqun.feng@gmail.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Alice Ryhl <aliceryhl@google.com>, Andreas Hindborg <nmi@metaspace.dk>, Jens Axboe <axboe@kernel.dk>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, "Behme Dirk (XC-CP/ESB5)" <Dirk.Behme@de.bosch.com>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, "linux-block@vger.kernel.org" <linux-block@vger.kernel.org>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 2/2] rust: block: fix wrong usage of lockdep API
+Message-ID: <2e3bc20e-ca91-45bb-9e35-586620e56d96@proton.me>
+In-Reply-To: <20240815224234.561de1b5.gary@garyguo.net>
+References: <20240815074519.2684107-1-nmi@metaspace.dk> <20240815074519.2684107-3-nmi@metaspace.dk> <CAH5fLgih1QtO-ACyoifNsgqd=VtJimoGV+aD=3iHG0wb+iDGyw@mail.gmail.com> <20240815200738.096dca4a.gary@garyguo.net> <Zr5z7N2JCMBbQ_YK@boqun-archlinux> <20240815224234.561de1b5.gary@garyguo.net>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: 4f98ced78d52e0365dbab01ea38cf10610a2e445
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
-X-Priority: 3
-Importance: Normal
 
-> Miguel Ojeda <miguel.ojeda.sandonis@gmail.com> hat am 16.08.2024 11:32 CE=
-ST geschrieben:
+On 15.08.24 23:42, Gary Guo wrote:
+> On Thu, 15 Aug 2024 14:32:28 -0700
+> Boqun Feng <boqun.feng@gmail.com> wrote:
+>> On Thu, Aug 15, 2024 at 08:07:38PM +0100, Gary Guo wrote:
+>>> On Thu, 15 Aug 2024 10:04:56 +0200
+>>> Alice Ryhl <aliceryhl@google.com> wrote:
+>>>> On Thu, Aug 15, 2024 at 9:49=E2=80=AFAM Andreas Hindborg <nmi@metaspac=
+e.dk> wrote:
+>>>>> From: Andreas Hindborg <a.hindborg@samsung.com>
+>>>>>
+>>>>> When allocating `struct gendisk`, `GenDiskBuilder` is using a dynamic=
+ lock
+>>>>> class key without registering the key. This is incorrect use of the A=
+PI,
+>>>>> which causes a `WARN` trace. This patch fixes the issue by using a st=
+atic
+>>>>> lock class key, which is more appropriate for the situation anyway.
+>>>>>
+>>>>> Fixes: 3253aba3408a ("rust: block: introduce `kernel::block::mq` modu=
+le")
+>>>>> Reported-by: "Behme Dirk (XC-CP/ESB5)" <Dirk.Behme@de.bosch.com>
+>>>>> Closes: https://rust-for-linux.zulipchat.com/#narrow/stream/288089-Ge=
+neral/topic/6.2E11.2E0-rc1.3A.20rust.2Fkernel.2Fblock.2Fmq.2Ers.3A.20doctes=
+t.20lock.20warning
+>>>>> Signed-off-by: Andreas Hindborg <a.hindborg@samsung.com>
+>>>>
+>>>> LGTM. This makes me wonder if there's some design mistake in how we
+>>>> handle lock classes in Rust.
+>>>>
+>>>> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+>>>
+>>> I agree. The API that we current have is designed without much
+>>> consideration into dynamically allocated keys, and we use `&'static
+>>> LockClassKey` in a lot of kernel crate APIs.
+>>>
+>>> This arguably is wrong, because presence of `&'static LockClassKey`
+>>> doesn't mean the key is static. If we do a
+>>> `Box::leak(Box::new(LockClassKey::new()))`, then this is a `&'static
+>>> LockClassKey`, but lockdep wouldn't consider this as a static object.
+>>>
+>>> Maybe we should make the `new` function unsafe.
+>>>
+>>
+>> I think a more proper fix is to make LockClassKey pin-init, for
+>> dynamically allocated LockClassKey, we just use lockdep_register_key()
+>> as the initializer and lockdep_unregister_key() as the desconstructor.
+>> And instead of a `&'static LockClassKey`, we should use `Pin<&'static
+>> LockClassKey>` to pass a lock class key. Of course we will need some
+>> special treatment on static allocated keys (e.g. assume they are
+>> initialized since lockdep doesn't require initialization for them).
+>>
+>>
+>> Pin initializer:
+>>
+>> =09impl LockClassKey {
+>> =09    pub fn new() -> impl PinInit<Self> {
+>> =09=09pin_init!(Self {
+>> =09=09    inner <- Opaque::ffi_init(|slot| { lockdep_register_key(slot) =
+})
+>> =09=09})
+>> =09    }
+>> =09}
+>>
+>> LockClassKey::new_uninit() for `static_lock_class!`:
+>>
+>>
+>> =09impl LockClassKey {
+>> =09    pub const fn new_uninit() -> MaybeUninit<Self> {
+
+We don't need to wrap it in `MaybeUninit`, since it already is
+containing an `Opaque`. But I think we don't need to expose this
+function at all, see below.
+
+>> =09        ....
+>> =09    }
+>> =09}
+>>
+>> and the new `static_lock_class!`:
+>>
+>> =09macro_rules! static_lock_class {
+>> =09    () =3D> {{
+>> =09=09static CLASS: MaybeUninit<$crate::sync::LockClassKey> =3D $crate::=
+sync::LockClassKey::new_uninit();
+
+    () =3D> {{
+        // SAFETY: `LockClassKey` contains a single field of type `Opaque` =
+and thus an uninitialized
+        // value is valid.
+        static CLASS: $crate::sync::LockClassKey =3D unsafe {
+            ::core::mem::MaybeUninit::uninit().assume_init()
+        };
+        Pin::from_static(&CLASS)
+    }};
+
+That way users can either create a static class, or a dynamic one via
+`new_dynmaic` (I think we should rename it while we're at it), which is
+always registered.
+
+> nit: this could just be `MaybeUninit::uninit()`
 >=20
-> =20
-> On Fri, Aug 16, 2024 at 11:26=E2=80=AFAM Vincent Woltmann <vincent@woltma=
-nn.art> wrote:
-> >
-> > -    While sometimes the reason might look trivial and therefore unneed=
-ed,
-> > -    writing these comments is not just a good way of documenting what =
-has been
-> > -    taken into account, but most importantly, it provides a way to kno=
-w that
-> > -    there are no *extra* implicit constraints.
-> > +While sometimes the reason might look trivial and therefore unneeded,
-> > +writing these comments is not just a good way of documenting what has =
-been
-> > +taken into account, but most importantly, it provides a way to know th=
-at
-> > +there are no *extra* implicit constraints.
+>>
+>> =09        // SAFETY: `CLASS` is pinned because it's static
+>> =09=09// allocated. And it's OK to assume it's initialized
+>> =09=09// because lockdep support uninitialized static
+>> =09=09// allocated key.
+>> =09=09unsafe { Pin::new_unchecked(CLASS.assume_init_ref()) }
 >=20
-> Doesn't this part of the change make the paragraph be outside its bullet?
+> nit: this could be `Pin::from_static(unsafe { CLASS.assume_init_ref() })`
+>=20
+>> =09    }};
+>> =09}
+>>
+>> Thoughts?
+>=20
+> I think this design looks good. I suggested adding unsafe as a quick
+> way to address the pontential misuse, when we have no user for
+> dynamically allocated keys.
 
-Yes, you are quite right, I must have missed that. Thank you for the feedba=
-ck and I will prepare a new patch
+I think we should do it properly, since the solution seems easy.
 
-Have a great day,
+---
+Cheers,
+Benno
 
-Vincent
