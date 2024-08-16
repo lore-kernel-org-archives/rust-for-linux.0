@@ -1,111 +1,78 @@
-Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.ozlabs.org (gandalf.ozlabs.org [150.107.74.76])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9642413B293;
-	Fri, 16 Aug 2024 21:11:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40B85147C79;
+	Fri, 16 Aug 2024 23:04:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=150.107.74.76
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723842697; cv=none; b=e3mHJIC1SvkSd1AwQwiEPoacYVP60LMp48yL9sYvhlok+4El+bI2GBzo60fNeTtuAGhdfsMDib1Ar5p431jqwGpsopx8B415kL9mwTqQfWu/vsxVz5TXJC9RjADad8Is7GDI1R0V44N7WegH1GnH96E1vNabqz+zJKUu32aYCoM=
+	t=1723849468; cv=none; b=fhRIyTa73K/t8XrLU3sBDspSAXhjmlP+opYu7JU4cFkyku6zefJuy8C88PfZ+NVOa88/xVFlGbznGf4QYG0WiO52IanBJXIBN3BDLCmN/pBPXrhf6AyP60NmSmBfdb8+yZJ3KmzUI0QZa3gRXLTuYI3qqqCbFNYLDvG80XTN0kM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723842697; c=relaxed/simple;
-	bh=T68BK8/ZLf+KT+zFv9yqVj8/Tite2DTE9V8y2JPHTlU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ovk4N9bqV+KRUpCRsY0EOjSkYBMl/vBPj1Ry0eHgHgRJa0LHOA0w4r5y4JhTPW0nMywawtMWkQpbw9Ll6HcGgogN6U6YpMfoX5qzuY25jNry9OMBXdsiCMJNh+w9V3ArS3PpRXQqzU8p+PAja7eKkmLK2jPo5X/X+0REISootsQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=c/nTHonR; arc=none smtp.client-ip=209.85.215.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1723849468; c=relaxed/simple;
+	bh=Y5/Gimvm3m3uUoIctaiu3fbIOMfcFy+xzSL5XT5v8vs=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=OvOZ0IxVS6otI47i1gnJr7/Lr6Hz/UTmK71JqsKJLkITof/pi6ZaSmZRSFs4sH0eqSWe6ibqJEKLMykFz6JRCgBMeTUzqOj/hTPVxbu9WqXpaC4WQlRB4NtKLk6be7KjtqQMqM8hShppk9sHHhcqm717CfNjHdVRGuxaW2Qfvh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au; spf=pass smtp.mailfrom=ellerman.id.au; dkim=pass (2048-bit key) header.d=ellerman.id.au header.i=@ellerman.id.au header.b=Sk4XSiql; arc=none smtp.client-ip=150.107.74.76
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ellerman.id.au
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ellerman.id.au
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="c/nTHonR"
-Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-7c3e0a3c444so1659705a12.1;
-        Fri, 16 Aug 2024 14:11:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1723842695; x=1724447495; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/WxOXfxQX0MfWi047Yxx88FkaE7RURXklWJ75UAHi9k=;
-        b=c/nTHonRc1zkDgtKiorIVcuQO5v7jG4gQPe8NtPQ0Ml+H/9oyHkduSGE5Z8xQoQCpy
-         oCVMY7t0I/8FtrGaMbkzinkMuAmbwP6PVx24VQ7+n1BaxLoAiO3BywWvjYcOxKZYtnUP
-         AAXjI4B8B3la21i8fio86dA/ln600flGUro64LQNMr+WThNj7EJf9l+MBBTBNQJ9qGQK
-         OqV7zI42BE+wqPQBiDUkuAaekiDo8fuKprrWoluQRVDD4WVMZkAsJbWFBtBixrFC6f0T
-         KwV8I5p7PGbHR/dzWCQq6glX7UU9T38xfutfPze2vpBVkpPdDe5s9iRYd+fD+dKmqZoh
-         tOvw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723842695; x=1724447495;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/WxOXfxQX0MfWi047Yxx88FkaE7RURXklWJ75UAHi9k=;
-        b=hRdERFgXfdyfgO4KUN5hq08nXdfZHE+QAOqr3LuX42GLtB0w5QW0/36yIEp1i3AAAy
-         ZPWpT6Ajyw4vNjBSeNSSwt1JRFl9SjL+L/X1nq7o8ugjRsZjwPXOxc8WW4yKMs3RPXpT
-         XILG6/PIzcJJOnYk7KPJyFYW34DQMCu02kekpqpFk59B2ULDZy/jhTnx95ty5FgQCEdS
-         rkor3RgwCqib2vGjXo6H7rwhuwQKIs7annK65M5xRFGwPPbGIbHSBCxgUUap5Qc7Cv6W
-         2I3aZwR7zXqmqT7W4XqoWAGYay3N9zTHAN2gFVQCIqwBwS4LmJIN71V8mRmNFwDXYGe3
-         xnBA==
-X-Forwarded-Encrypted: i=1; AJvYcCXImQ9yJGplkRLpcRH53LC4KxL0AujqMmBQfPINmuzwvmrDEyw3Y/qrjIbIu3oev0qVJA7z8wyC+KNxqDw+DrbtonYOWSw7VqKQ2zySCD6kCLH+5AM+RYFuPKPlVKZ4G6YLUKl+mw7y27zBU6I=
-X-Gm-Message-State: AOJu0YxCb1DAoL3x5uFCDoP0mtUejyj4G+oB8jcflWUK1tEnWo4NDxMc
-	SI8RothQaUUjH0rzn+L49W0Vz4AJZ7KDV3Z+Ku0e8ck/e1nugJbfTYF+MKwOoST4q8U2VvSuy/R
-	3d6G30IVZFwhmWjn7/86Rn1/IIcU=
-X-Google-Smtp-Source: AGHT+IFXNkdgnRCRwit8E7FnnxLgHUWJ0EeiZ3mhwobxOiM2DOvYorRxtTh/BpXZlA1zdsQnoy40+2uvSVHeU2VXzGE=
-X-Received: by 2002:a05:6a20:c706:b0:1c4:f1d6:e5e6 with SMTP id
- adf61e73a8af0-1c9aacfbce7mr5250531637.18.1723842694574; Fri, 16 Aug 2024
- 14:11:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=ellerman.id.au header.i=@ellerman.id.au header.b="Sk4XSiql"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ellerman.id.au;
+	s=201909; t=1723849464;
+	bh=Y5/Gimvm3m3uUoIctaiu3fbIOMfcFy+xzSL5XT5v8vs=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=Sk4XSiqlShJxmfMJBLcBNjDi6FeX1il4lfn9nR2l5xLY5N2x4mCzpPVifnP7QDbWF
+	 l7Y06pOstzc2Na07dLZiXQBkeXnbsXaLbguhlsenLKyagVT8aWwIrgjnsjysOdVgIy
+	 yQCrkq/KOoqePJhaPmmARbESGlBd61UankYAWDZt/G+t88Dv7c+MZzAwexTh6+RA02
+	 D1Julpi3xVHnNQ7nV1141llox5u5xRrBg3/ZTi58a0KgRinJIBE7Rk39yUkWzanPjm
+	 OoErY8FWNqKbinfVkfLm/qdyr2CNtbdr+IcgMiyZB5BHFiCRRIV2EKD8MJuwXCuGYf
+	 0yYPFFZVltLDA==
+Received: from authenticated.ozlabs.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	by mail.ozlabs.org (Postfix) with ESMTPSA id 4WlyHB5BVhz4wcs;
+	Sat, 17 Aug 2024 09:04:22 +1000 (AEST)
+From: Michael Ellerman <mpe@ellerman.id.au>
+To: Matthew Maurer <mmaurer@google.com>, masahiroy@kernel.org,
+ ndesaulniers@google.com, ojeda@kernel.org, gary@garyguo.net,
+ mcgrof@kernel.org, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida
+ Filho <wedsonaf@gmail.com>, Christophe Leroy
+ <christophe.leroy@csgroup.eu>, Matthew Maurer <mmaurer@google.com>, Naveen
+ N Rao <naveen@kernel.org>
+Cc: rust-for-linux@vger.kernel.org, linux-kbuild@vger.kernel.org,
+ linux-kernel@vger.kernel.org, neal@gompa.dev, marcan@marcan.st,
+ j@jannau.net, asahi@lists.linux.dev, Nicholas Piggin <npiggin@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas
+ Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>,
+ linuxppc-dev@lists.ozlabs.org, linux-modules@vger.kernel.org
+Subject: Re: [PATCH v3 14/16] modules: Support extended MODVERSIONS info
+In-Reply-To: <20240806212106.617164-15-mmaurer@google.com>
+References: <20240806212106.617164-1-mmaurer@google.com>
+ <20240806212106.617164-15-mmaurer@google.com>
+Date: Sat, 17 Aug 2024 09:04:22 +1000
+Message-ID: <87le0w2hop.fsf@mail.lhotse>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240816-b4-rbtree-v9-0-425b442af7e5@google.com> <20240816-b4-rbtree-v9-1-425b442af7e5@google.com>
-In-Reply-To: <20240816-b4-rbtree-v9-1-425b442af7e5@google.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 16 Aug 2024 23:11:22 +0200
-Message-ID: <CANiq72mr53kE2s3so-xK5BpiqbuH+cStZ6qrN9X6TROBR6WAHg@mail.gmail.com>
-Subject: Re: [PATCH v9 1/6] rust: kernel: add `drop_contents` to `BoxExt`
-To: Matt Gilbride <mattgilbride@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	=?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
-	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
-	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Christian Brauner <brauner@kernel.org>, Rob Landley <rob@landley.net>, 
-	Davidlohr Bueso <dave@stgolabs.net>, Michel Lespinasse <michel@lespinasse.org>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-On Fri, Aug 16, 2024 at 10:48=E2=80=AFPM Matt Gilbride <mattgilbride@google=
-.com> wrote:
+Matthew Maurer <mmaurer@google.com> writes:
+> Adds a new format for MODVERSIONS which stores each field in a separate
+> ELF section. This initially adds support for variable length names, but
+> could later be used to add additional fields to MODVERSIONS in a
+> backwards compatible way if needed. Any new fields will be ignored by
+> old user tooling, unlike the current format where user tooling cannot
+> tolerate adjustments to the format (for example making the name field
+> longer).
 >
-> From: Benno Lossin <benno.lossin@proton.me>
->
-> Sometimes (see [1]) it is necessary to drop the value inside of a
-> `Box<T>`, but retain the allocation. For example to reuse the allocation
-> in the future.
-> Introduce a new function `drop_contents` that turns a `Box<T>` into
-> `Box<MaybeUninit<T>>` by dropping the value.
->
-> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
-> Link: https://lore.kernel.org/rust-for-linux/20240418-b4-rbtree-v3-5-323e=
-134390ce@google.com/ [1]
-> Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> Since PPC munges its version records to strip leading dots, we reproduce
+> the munging for the new format.
 
-When sending a patch from someone else, then your own Signed-off-by is
-still needed at the bottom.
+AFAICS the existing code only strips a single leading dot, not all
+leading dots?
 
-By the way, since you are editing `helpers.c` later in the series, if
-you don't mind rebasing on top of the helpers split [1], that would be
-great (I am putting that one into rust-next very soon, in case it
-helps):
-
-    https://lore.kernel.org/rust-for-linux/20240815103016.2771842-1-nmi@met=
-aspace.dk/
-
-Thanks!
-
-Cheers,
-Miguel
+cheers
