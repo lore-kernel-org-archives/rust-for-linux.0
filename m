@@ -1,43 +1,43 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DACBF64D;
-	Fri, 16 Aug 2024 00:41:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 778A429CEC;
+	Fri, 16 Aug 2024 01:09:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723768904; cv=none; b=r3LymcIqdzkfRrTGF89gWRxhSm2JPAazRCmGzzcq8whHUgJRTXa8z9nGoR1pBd4Wh0/Q1BOSn1pTl1+dpNVloAhjjC632Ar1flU6fJbayQmDixY8YejPJ9aX8SzyNVs+TRSC0GwFs9Ux1+vOX5OWNMKxAWJSHadGarbPhzCp3rc=
+	t=1723770576; cv=none; b=Cf1/DFYctE4BhqD4xln7vw3Ybomj/khoQU3SsKxAuPs3zCnUYehn1GLINXzZ+oQSp2u55+sx8Qr/2t97Rj3nLfwqOx+FvksGZdGhls9qhn5FgTAAH7Qzf2Et6gdJ3Dh1vRdiM95kwzIzOtFDaVIlnMl/r8w5Rcpv+UN8SRJj1S0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723768904; c=relaxed/simple;
-	bh=KX65Xf8GHqA2T2Gw3J/Xs+++WXEDR0ZpA5qpLN9rI44=;
+	s=arc-20240116; t=1723770576; c=relaxed/simple;
+	bh=Tg/lJR8GjLeXQ7Bu+bOxz02RC+jvCzoEK23yjTbs4RE=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=dne4AkAQvBQVsFvJ/fMzaG9puct7JEedZRPRfmU8571hcwPkvcFRF5M3eYI+GT18jT3BLKiAuDeMYCgMunzmw6GYQb5cxQDQDPA6+veC6CWTLBF3I3TflLNw2m2hetvlIB47DfzfuJVJrroFjOiJ7FJxx39x+Rg48YsT0Ss9EJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=gs+aD2FX; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=e3yGPJ6xvFGnFcGu8Q3d0RTo8LKAAoQIsMSIL/BtROubL1u4kcJ/qhEtfnUdQJt/Xz/tT7W7QeWO1iYSVgO59lmFg5kTDvXfyEqya5wOe3XTfnzLAmBwP6y0PfHYFKiqxbrTd/0I6g7mnso8d3ULmeVAWRYyxt608cXp9xmFw3E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=C5L/x9eL; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="gs+aD2FX"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="C5L/x9eL"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=yFVbfOah576madugnu0PfK2BUlzCSBl6aVrXXG/CWkM=; b=gs+aD2FXQCiY0Dor3Wt9GQNL3s
-	JaZy9okmFnfIwwejAWERZjcl2V4pYnLB8vvPG6vxWlj82Jesub3EG43Iuik3X5SKHHyH6IJ+vr8WK
-	EM9c7AMXr/mHaDVlX6DK/F+f8OLv4yTtN341yPmSbfcBKU6D9cE0RcjBAkBV7uCUDCkw=;
+	bh=MBD3Zc+izpQo2xbgefhhtee5KH9AgmMTO8RzRtDfI+A=; b=C5L/x9eLleLvD0IxVPNCP2FiNN
+	N+WVImt91raIyGhuwvK3EudFwLiQ9lBGuBT4PuaAgX1KzoEoAKZSTqvOfNU9pv7ZEvf6EZXNHtWV0
+	JHGmUP/zyRRW7x5nL8sRvam8J6gf83ljSjwNZeCm7TSRHeS5gC8mDfg7utuR4AwO2X1c=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1sel2A-004spc-Uj; Fri, 16 Aug 2024 02:41:38 +0200
-Date: Fri, 16 Aug 2024 02:41:38 +0200
+	id 1selT9-004t0w-6G; Fri, 16 Aug 2024 03:09:31 +0200
+Date: Fri, 16 Aug 2024 03:09:31 +0200
 From: Andrew Lunn <andrew@lunn.ch>
 To: FUJITA Tomonori <fujita.tomonori@gmail.com>
 Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
 	tmgross@umich.edu, miguel.ojeda.sandonis@gmail.com,
 	benno.lossin@proton.me, aliceryhl@google.com
-Subject: Re: [PATCH net-next v3 3/6] rust: net::phy implement
- AsRef<kernel::device::Device> trait
-Message-ID: <321193ce-10ef-4d3e-a2b5-bce5b1290b32@lunn.ch>
+Subject: Re: [PATCH net-next v3 4/6] rust: net::phy unified read/write API
+ for C22 and C45 registers
+Message-ID: <82db7404-4665-4563-8011-6d2d5e9c2685@lunn.ch>
 References: <20240804233835.223460-1-fujita.tomonori@gmail.com>
- <20240804233835.223460-4-fujita.tomonori@gmail.com>
+ <20240804233835.223460-5-fujita.tomonori@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -46,15 +46,87 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240804233835.223460-4-fujita.tomonori@gmail.com>
+In-Reply-To: <20240804233835.223460-5-fujita.tomonori@gmail.com>
 
-On Mon, Aug 05, 2024 at 08:38:32AM +0900, FUJITA Tomonori wrote:
-> Implement AsRef<kernel::device::Device> trait for Device. A PHY driver
-> needs a reference to device::Device to call the firmware API.
-> 
-> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> @@ -0,0 +1,193 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +// Copyright (C) 2024 FUJITA Tomonori <fujita.tomonori@gmail.com>
+> +
+> +//! PHY register interfaces.
+> +//!
+> +//! This module provides support for accessing PHY registers via Ethernet
+> +//! management interface clause 22 and 45, as defined in IEEE 802.3.
 
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Here we need to be very careful. The word `via` in the sentence above
+means we are talking about the access mechanism, c22 transfers, or c45
+transfers. A PHY driver should not care about the transfer mechanism,
+it should just care about the register in the C22 or C45 register
+namespace.
+
+> +impl Register for C22 {
+> +    fn read(&self, dev: &mut Device) -> Result<u16> {
+> +        let phydev = dev.0.get();
+> +        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Device`.
+> +        // So it's just an FFI call, open code of `phy_read()` with a valid `phy_device` pointer
+> +        // `phydev`.
+> +        let ret = unsafe {
+> +            bindings::mdiobus_read((*phydev).mdio.bus, (*phydev).mdio.addr, self.0.into())
+> +        };
+> +        to_result(ret)?;
+> +        Ok(ret as u16)
+> +    }
+> +
+> +    fn write(&self, dev: &mut Device, val: u16) -> Result {
+> +        let phydev = dev.0.get();
+> +        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Device`.
+> +        // So it's just an FFI call, open code of `phy_write()` with a valid `phy_device` pointer
+> +        // `phydev`.
+> +        to_result(unsafe {
+> +            bindings::mdiobus_write((*phydev).mdio.bus, (*phydev).mdio.addr, self.0.into(), val)
+> +        })
+
+These two are O.K. You have to use C22 bus transfers to access the C22
+register namespace.
+
+> +impl Register for C45 {
+> +    fn read(&self, dev: &mut Device) -> Result<u16> {
+> +        let phydev = dev.0.get();
+> +        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Device`.
+> +        // So it's just an FFI call.
+> +        let ret =
+> +            unsafe { bindings::phy_read_mmd(phydev, self.devad.0.into(), self.regnum.into()) };
+> +        to_result(ret)?;
+> +        Ok(ret as u16)
+> +    }
+> +
+> +    fn write(&self, dev: &mut Device, val: u16) -> Result {
+> +        let phydev = dev.0.get();
+> +        // SAFETY: `phydev` is pointing to a valid object by the type invariant of `Device`.
+> +        // So it's just an FFI call.
+> +        to_result(unsafe {
+> +            bindings::phy_write_mmd(phydev, self.devad.0.into(), self.regnum.into(), val)
+> +        })
+> +    }
+
+And these are also O.K. There are two mechanisms to access the C45
+register namespace. By calling phy_write_mmd()/phy_write_mmd() you are
+leaving it upto the core to decide which mechanism to use. The driver
+itself does not care.
+
+So the problem is with the comment above. It would be better to say
+something like:
+
+This module provides support for accessing PHY registers in the
+Ethernet management interface clauses 22 and 45 register namespaces, as
+defined in IEEE 802.3.
+
+Dropping the via, and adding register namespace should make it clear
+we are talking about the registers themselves, not how you access
+them.
+
 
     Andrew
+
+---
+pw-bot: cr
