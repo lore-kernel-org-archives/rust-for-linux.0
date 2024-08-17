@@ -1,139 +1,123 @@
-Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B41E533E1;
-	Sat, 17 Aug 2024 00:13:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B04AF43178;
+	Sat, 17 Aug 2024 04:50:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723853632; cv=none; b=pohqqsriWuONWfbKq2I9SH84Ye7wJsOt51dCjZZAd775oSWhstvkgkzbdwWzXem64N+cFiL62ZZVkNWC+IQWot1TP594IkP8raGkJWQMQ955w+TomMvdoXLP+pFJuJ6+mVIYCcjW5Pq/nstItOzxaMG3sVBDngmqkojtElnGRuw=
+	t=1723870217; cv=none; b=VyQlzN6pX9oy3CoeEncoY/6qXI6iy2FTbKRlhpNNOQMDLkZG7ocrnhKXqgtHn5qNkk7qcxOOygUw7nwJS6ytFXNYiCAh90Vao0Ik4P3dJy933fmN36Buxml8F6cUAAjxYq4C0Qkd66QLuUFfQJ+PWDCLLQJyRyfiTsSpiO9185A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723853632; c=relaxed/simple;
-	bh=3HVlOoSaHjxcJtIpzVhJ2EEpWDtgKqdfoAvIwk0krVk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=K1cXZrI1v4+uz+dFCf5neOLEiKl9yGAlNXhOQtUwbaohAF6HgODr+/BY4pmld39bBAwW4ke542Su5D2d8IC6p+7grnLBGy8eHMyll+zT/bStNNx9tKAXHh/CnHzhY2sppMta+/5MaD81miBZSOOOz2fJTPpCITH08VzjypEJhUk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YAPWM2DT; arc=none smtp.client-ip=209.85.215.175
+	s=arc-20240116; t=1723870217; c=relaxed/simple;
+	bh=G5hlTm0XbJANDGPbaqllgxjbgbMj0PDpNIiybwLbYLo=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=jOned3oWDn8wecT0KX078IIeAFZXGr953vrm4CzP+Go6li3foHT4IhuqjPcl4yuPk7GxbyHIL4aDR6UEfaaUccPUR0TwCydWNmv5Qs3K9S0iLzQU9CcnaEcoSiRvhMl9wEympz0cldZadVNH//5lzfs4cYLJX+/shpZmEv7+sEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=anT80uSl; arc=none smtp.client-ip=209.85.216.49
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YAPWM2DT"
-Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-7b594936e9bso1757023a12.1;
-        Fri, 16 Aug 2024 17:13:50 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="anT80uSl"
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-2d3e6fd744fso224094a91.3;
+        Fri, 16 Aug 2024 21:50:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1723853630; x=1724458430; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=orKEJYAdBIcqnwofGrE2LY4UvzofdPCTuKCAHjekjZw=;
-        b=YAPWM2DTmVQrQrgX9YvKoEYl59pgwLI77mzFhCWYFrOVx1XOzM9ZeBEoCg2d9CFIhD
-         4f4Ah+5CnfUm5Ca19Qa/NZmOVaY6kEv3AEEjvkAwnXMoQ35+fkn4adTuwpSISIMcidIi
-         RqvUJMvKhBK+d8W9w9E32sLPAjGFH3sjoAiQ6afknNzrL5wm94fw0fa8n0Bb4CDmyMph
-         akXWAXKGwjSA2/jJ4Qz0kbGLJ5K5TEkT1Dag+jWt1PMtTXHEPvjtkXa6uvktm6VTHep5
-         Esxe6/UE2eatSIle8/8s9vWxgF+gdgwve2bwxHLf5iqYV7PwpNZLvt88S6y4GL7ea0A8
-         rNiQ==
+        d=gmail.com; s=20230601; t=1723870215; x=1724475015; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=oN+FHL48ppH7HSghFhiItefq/YdgKnk/njXUEPMSGpg=;
+        b=anT80uSl00aR+1MrFPlTxLhASI2x32bhFbv3VpjQAes2Fh26Ul/no7cQ4u0DLNHIK8
+         bdRyVlQIVuJekRGKhyYdYYw/q4LnVi0OQTOgKP47xv6+Q13g/bL7BNJhcnz4sB46Cbs1
+         RSFt/x7Le3jSZ/glOcM/ie5Y9+9qLzzBJnB3lar5K0/cJAb/FPn+cP/NZmXG/D8/rp/O
+         7y/WJ2QH+5HBcJZDMf+ujqoOUtq5GRnfP3zOvrsBy8ErxAosQBOsJLewHPCeF/jNtwmM
+         oRG7R5G+bqcRezyKZjpYTWNuAhUQtLkfwowI9zi2Y0y6GtUTDzYrAWBc8CxpWYzCzO/p
+         Lkqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723853630; x=1724458430;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=orKEJYAdBIcqnwofGrE2LY4UvzofdPCTuKCAHjekjZw=;
-        b=hmMdhAzfZwSM5H4hm4hs9mdSa8HhPNxII3h0OWs8BBpbjCSds2293FjCG61wpfdnJb
-         19K9VmFenjZLUqOcERM1iMLFJ6Wk2VpkbojVs5MHVPRRa9t8ecHMx9jSfsyCd3Dy0icF
-         hpwEjIj+w+MI6VRb+2O2VKt/jF0o1aQnc99vvwVArd9TAE9101mshieLLS4Nfwd4uRnb
-         ip3N3ccLgxidZ/XFL69d0ujckrzo8CL9epZcVfvrYu/hNd9VOxYCTknDjPH6pdzOL7aq
-         dWl71MLvFFnTsf2Sb201T7cbmUfofzoSVybEAU2Lkury0A4gDjKq1ct0XWkkRb5m1eaZ
-         H1XQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWSvNlRGHUH4PTPGzfKJeFwx9T1MFpxY2td5cQpkiDnxF+QncaPqQOUWuWhw8YkS8VCsnjdpyFacYdz9vuImCQmR3bNvyGPDYsKVhzvUiBisTynL33xCAkg+Lf6z//WibsoRi+o+Y/Ku5Hxkq5ngsytfy05OeM5Pf+fUUqQjqcCwR4B4kefmG5klAw=
-X-Gm-Message-State: AOJu0Yz2lzKBslOiZJW83fgib+dRDpIb+f/N7NMLgGJAnBwGDdBmauDZ
-	Vm/CQqm93+pUqCeabAcUsPpPGit3b+vn+QAWM2KON//khUvYq0gO
-X-Google-Smtp-Source: AGHT+IEH9B3oI0gJFVzifTXR7FCn1fNnmN8LJvHyGdRm3dKrf2Frh6i1NVY3qyfddffDfh4yDkMN4g==
-X-Received: by 2002:a05:6a20:b71c:b0:1c4:a55b:8146 with SMTP id adf61e73a8af0-1caa3635fddmr1311059637.26.1723853629683;
-        Fri, 16 Aug 2024 17:13:49 -0700 (PDT)
-Received: from Gatlins-MBP.lan ([2001:558:6025:79:9460:fb03:8dbb:8b69])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7c6b61dc929sm3583010a12.40.2024.08.16.17.13.47
+        d=1e100.net; s=20230601; t=1723870215; x=1724475015;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=oN+FHL48ppH7HSghFhiItefq/YdgKnk/njXUEPMSGpg=;
+        b=p4ohc61sN+DhOSXqhkUnUki/BVqT4UA/WZmmju34JdGEoWQjlrjyuKryQ5C3ABp9Vl
+         Lff4X4PgPY+Ud8GLDw6vv2mWXT6xlxl43d3Jw/yWjXbbbPAVf8d3X2mN3WkwkEbdZcEk
+         W5LbaWpygjNnpi78mXt4SdsP/V+JW7G8crQTnXQWjNeE1OpYeNCU5A7WS4uunpwve5jY
+         /A3HhWSKvUvh0iAhDQpGsiXc6axOlHyhjZEixYA5t9oA0s3JrQZf7vlISvmSUzrExuk/
+         wwkBU55xfG5NFDmtwBFDMrQVWDH6SVVrY6+YFpUYaEgWh3TTyyYszNH2SQHEw4HTBsow
+         S7QA==
+X-Forwarded-Encrypted: i=1; AJvYcCUtwkWMxlPD+FWDGqNefKFvv+w1h/Om7sAsyWae1fJqwSn+Gx96/Dxj1n2+HDdPb6LcBe0aGDXPGl5+WEZODEzP60OZ/CxG0bmxZQPTXR01aiF6KaURF4IPF9ubq6bGpXn6yD2XVtg=
+X-Gm-Message-State: AOJu0YwdUybJCWevMfQ6lzJfaRrwN9SeZmigN4UJJUWb9VYyF5nZRPIQ
+	Mnm6eom4zASYW3aK+iNQCLnsdMyKUYrODxRhRo1j+Dcw0mIhX9gP
+X-Google-Smtp-Source: AGHT+IErTdJdG1OfO+fSrlTgFdFW2L+rUdS51SLJpeBhX6j2Q+kojz1j5DsVkMAnbjKCItsMsBuKQA==
+X-Received: by 2002:a05:6a00:9446:b0:710:5d44:5fe6 with SMTP id d2e1a72fcca58-713c557a36amr3496919b3a.1.1723870214624;
+        Fri, 16 Aug 2024 21:50:14 -0700 (PDT)
+Received: from localhost (p4468007-ipxg23001hodogaya.kanagawa.ocn.ne.jp. [153.204.200.7])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7127ae0cb2esm3389619b3a.64.2024.08.16.21.50.12
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 16 Aug 2024 17:13:48 -0700 (PDT)
-Date: Fri, 16 Aug 2024 17:13:47 -0700
-From: Gatlin Newhouse <gatlin.newhouse@gmail.com>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Masahiro Yamada <masahiroy@kernel.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, 
-	Sami Tolvanen <samitolvanen@google.com>, Peter Zijlstra <peterz@infradead.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Kees Cook <kees@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@samsung.com>, Matthew Maurer <mmaurer@google.com>, 
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v2 0/2] Rust KCFI support
-Message-ID: <oehf6r5eftrnuvzulg2yhukf7gjh7jltfdqmtffiok3ro63xe7@y3iplw2gpcy2>
-References: <20240801-kcfi-v2-0-c93caed3d121@google.com>
+        Fri, 16 Aug 2024 21:50:14 -0700 (PDT)
+Date: Sat, 17 Aug 2024 04:50:10 +0000 (UTC)
+Message-Id: <20240817.045010.1342766151118215404.fujita.tomonori@gmail.com>
+To: andrew@lunn.ch
+Cc: fujita.tomonori@gmail.com, netdev@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, tmgross@umich.edu,
+ miguel.ojeda.sandonis@gmail.com, benno.lossin@proton.me,
+ aliceryhl@google.com
+Subject: Re: [PATCH net-next v3 6/6] net: phy: add Applied Micro QT2025 PHY
+ driver
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <ec02de97-2521-4897-9076-cabb8f057c8b@lunn.ch>
+References: <0675cff9-5502-43e4-87ee-97d2e35d72da@lunn.ch>
+	<20240816.061710.793938744815241582.fujita.tomonori@gmail.com>
+	<ec02de97-2521-4897-9076-cabb8f057c8b@lunn.ch>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240801-kcfi-v2-0-c93caed3d121@google.com>
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-On Thu, Aug 01, 2024 at 01:35:16PM UTC, Alice Ryhl wrote:
-> The control flow integrity (kCFI) sanitizer is an important sanitizer
-> that is often used in production. This patch series makes it possible to
-> use kCFI and Rust together.
+On Fri, 16 Aug 2024 22:47:04 +0200
+Andrew Lunn <andrew@lunn.ch> wrote:
+
+>> >> +    fn probe(dev: &mut phy::Device) -> Result<()> {
+>> >> +        // The hardware is configurable?
+>> >> +        let hw_id = dev.read(C45::new(Mmd::PMAPMD, 0xd001))?;
+>> >> +        if (hw_id >> 8) & 0xff != 0xb3 {
+>> >> +            return Ok(());
+>> >> +        }
+>> > 
+>> > I don't understand this bit of code. At a guess, if the upper bytes of
+>> > that register is not 0xb3, the firmware has already been loaded into
+>> > the device?
+>> 
+>> I've just added debug code and found that the upper bytes of the
+>> register is 0xb3 even after loading the firmware.
+>> 
+>> I checked the original code again and found that if the bytes isn't
+>> 0xb3, the driver initialization fails. I guess that the probe should
+>> return an error here (ENODEV?). 
 > 
-> The second patch in this series depends on the next version of [1],
-> which Miguel will send soon. It also depends on [2].
+> O.K. Maybe add a comment that the vendor driver does this, but we have
+> no idea why.
+
+Yes, added the comment.
+
+>> >> +        dev.write(C45::new(Mmd::PCS, 0x0026), 0x0E00)?;
+>> >> +        dev.write(C45::new(Mmd::PCS, 0x0027), 0x0893)?;
+>> >> +        dev.write(C45::new(Mmd::PCS, 0x0028), 0xA528)?;
+>> >> +        dev.write(C45::new(Mmd::PCS, 0x0029), 0x0003)?;
+>> > 
+>> > 802.3 says:
+>> > 
+>> > 3.38 through 3.4110/25GBASE-R PCS test pattern seed B ????
+>> 
+>> Yeah, strange. But I can't find any hints on them in the datasheet or
+>> the original code.
 > 
-> Link: https://lore.kernel.org/r/20240709160615.998336-12-ojeda@kernel.org [1]
-> Link: https://lore.kernel.org/r/20240730-target-json-arrays-v1-1-2b376fd0ecf4@google.com [2]
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
-> Changes in v2:
-> - Fix for FineIBT.
-> - Add more info to commit messages and config descrptions.
-> - Link to v1: https://lore.kernel.org/r/20240730-kcfi-v1-0-bbb948752a30@google.com
+> Seems unlikely it is seeding anything. So i guess they have reused the
+> registers for something else. This is actually a bit odd, because all
+> the other registers are in the ranges reserved for vendor usage.
 > 
-> ---
-> Alice Ryhl (1):
->       cfi: add CONFIG_CFI_ICALL_NORMALIZE_INTEGERS
-> 
-> Matthew Maurer (1):
->       rust: cfi: add support for CFI_CLANG with Rust
-> 
->  Makefile                        | 10 ++++++++++
->  arch/Kconfig                    | 16 ++++++++++++++++
->  arch/x86/Makefile               |  4 ++++
->  init/Kconfig                    |  4 +++-
->  rust/Makefile                   |  2 +-
->  scripts/generate_rust_target.rs |  1 +
->  6 files changed, 35 insertions(+), 2 deletions(-)
+> If these were legitimate register usage, i would of suggested adding
+> #define to include/uapi/linux/mdio.h for them.
 
-To test this patch: I started from v6.11-rc3 tag and applied the new version of
-Miguel's RUSTC_VERSION_TEXT patch [1] and the Support Arrays in Target JSON
-patch [2], before applying this patch. I am on Rust's beta channel and
-Clang/LLVM 19.
-
-I also built a v6.11-rc3 kernel without these patches to establish a baseline
-for LKDTM output in dmesg when testing CFI [3]. I built the v6.11-rc3 kernel by
-starting with an x86_64_defconfig, then enabling CFI_CLANG, CFI_PERMISSIVE, and
-LKDTM.
-
-When applying [1], there was an patch does not apply error. I had to manually
-change the init/Kconfig RUSTC_VERSION_TEXT to Miguel's change in [1]. No issues
-encountered applying [2] afterwards. Similarly, was able to automerge this
-patch without any issues.
-
-Then I built the kernel starting with x86_64_defconfig and enabling: RUST,
-CFI_CLANG, CFI_ICALL_NORMALIZE_INTEGERS, CFI_PERMISSIVE and LKDTM. Compiled the
-kernel, load into qemu with Busybox rootfs, test CFI within LKDTM per Kees's
-blog [3]. I saw the same expected behavior from LKDTM after applying these
-patches when compared with the behavior from LKDTM on a v6.11-rc3 build without
-these patches.
-
-Link: https://lore.kernel.org/lkml/20240808221138.873750-1-ojeda@kernel.org/ [1]
-Link: https://lore.kernel.org/all/20240730-target-json-arrays-v1-1-2b376fd0ecf4@google.com/ [2]
-Link: https://outflux.net/blog/archives/2019/11/20/experimenting-with-clang-cfi-on-upstream-linux/ [3]
-
-Tested-by: Gatlin Newhouse <gatlin.newhouse@gmail.com>
-
---
-Gatlin Newhouse
+I see.
