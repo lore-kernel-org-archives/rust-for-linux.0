@@ -1,186 +1,173 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26A4F20E6;
-	Sat, 17 Aug 2024 07:10:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABA5713D8A3;
+	Sat, 17 Aug 2024 07:41:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723878609; cv=none; b=QaOnqOcSJMT2IK+A8AqoWNf603iq85tT/lGn/6XpidVK9XGBOhulCkuCyY70+Szcdz+aL48DlXurxDX52c/Ij44FVbyTgxr4t77nZCKVYZqaKk7hAxUShP5A/2zCaGG6UTbm/IiBwvLu48l8wZ2KhvNA5DJF8tl7Vpl4TbUh5GU=
+	t=1723880483; cv=none; b=bBoNpIYyXp0Qu+sWEqyZVLfURofXPChG5rCS6icFjLs8dzzuGYpiq34Nd0W/6b9Z7ik8oKvcuFCGoh6Qb5oq0xxMcMI1wPACoefE434XlY5nBPjgm+yJOBveHttSyYSWYXX5q6HWid2sOAxHMtnYicZRluqGKgmW8kcRr1vE/fw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723878609; c=relaxed/simple;
-	bh=tIqCjtm+/HuN2gETnbefaJy4X5JoZecAjfCwKAX8KZQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=JKGAW2Ozz3vi6QZdJ4QVMebmZakCnWUxKH3gq0YkZ2ElTmLwXtneJtX8H04blwhdBw4XR0gkoLyDWfThAGGwPUhxI3RtQnybzb4Uxk1F81FHPc0cfnLbx+YPfaz4i6/u5tHdmwJyGzA/zN/3JHcVp/KbREmdBgMqhtrJMLRzFQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ojTOqX66; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1723880483; c=relaxed/simple;
+	bh=ouOiNakR9AJKElEYsRFF7eC3ZWKxqzpdD71OQFANQC8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=iZCKtJ2nLKxDT9exYz9uCFckgCwSmLueCoKwGGx3T5obXyxH0b2CDOXU/8XEzyPHMFFYnhfVNzCRq7XFgDyYQuUY7I9eJNUDwwBzOrzvXUrsToHGgOXa5gzyouzp0XOZKy6mO0L/kyJS961/14m4VkqRMylulKlkhV/r626UtYA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ppWBcpSc; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ojTOqX66"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32824C116B1;
-	Sat, 17 Aug 2024 07:10:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723878608;
-	bh=tIqCjtm+/HuN2gETnbefaJy4X5JoZecAjfCwKAX8KZQ=;
-	h=From:To:Cc:Subject:Date:From;
-	b=ojTOqX66Z8jB8mmsfZqdgbj8FuEDxLkczwk27xkChaO7KbKMLY50m0xV6lNNjh3UA
-	 WfadxEb7KQrZB0dW1pIrH6Zi4d7B3dNPRUD7b2apezmSrL0qDj7oUdwa7P3hLAQNeg
-	 X4SAClVqyKRBpN+w9gn7BjWWvhf4DljsK5xsh7arFoBs+XXQo+hOFJAFVEFGJaf7um
-	 6Pm41d7WRqZGG1N7BPmmNkrWZ6jQNztqQivjW3r7/RTMD3+etTMz0o4rfW+F5sNK+A
-	 gnoZdsmTfiljMCMcNSpBKEHxXYrXUUSw/+wpDbapwAZQMwef931TWevZYR5zBWb+ke
-	 d2f7bG8JFxM0g==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: Miguel Ojeda <ojeda@kernel.org>,
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ppWBcpSc"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8537BC116B1;
+	Sat, 17 Aug 2024 07:41:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1723880483;
+	bh=ouOiNakR9AJKElEYsRFF7eC3ZWKxqzpdD71OQFANQC8=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ppWBcpSc6rrRBk/5O16TwTf0NlH3xqMdKThzt5+5neFK1l5kW4C21h2A2ekvaAjPJ
+	 j5PIgKE8iLMHUGRwOioEVlY0Ds50UMOHNGOGc6uiqboS6bwSNJTiRGBCf0YfM2inEb
+	 jsNXjODIGAZVEwVLAh0lZiNSoSH/xsVCZSUMvu3I=
+Date: Sat, 17 Aug 2024 09:41:20 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Sami Tolvanen <samitolvanen@google.com>
+Cc: Masahiro Yamada <masahiroy@kernel.org>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Matthew Maurer <mmaurer@google.com>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	patches@lists.linux.dev,
-	Ali Bektas <bektasali@protonmail.com>,
-	Lukas Wirth <lukastw97@gmail.com>
-Subject: [RFC PATCH] rust: use the hidden variant of `rust-project.json`
-Date: Sat, 17 Aug 2024 09:09:55 +0200
-Message-ID: <20240817070955.75717-1-ojeda@kernel.org>
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Gary Guo <gary@garyguo.net>, Petr Pavlu <petr.pavlu@suse.com>,
+	Neal Gompa <neal@gompa.dev>, Hector Martin <marcan@marcan.st>,
+	Janne Grunau <j@jannau.net>, Asahi Linux <asahi@lists.linux.dev>,
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-modules@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v2 16/19] gendwarfksyms: Add support for reserved
+ structure fields
+Message-ID: <2024081705-overarch-deceptive-6689@gregkh>
+References: <20240815173903.4172139-21-samitolvanen@google.com>
+ <20240815173903.4172139-37-samitolvanen@google.com>
+ <2024081600-grub-deskwork-4bae@gregkh>
+ <CABCJKuedc3aCO2Or+_YBSzK_zp9zB8nFwjr-tK95EBM3La1AmA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
+In-Reply-To: <CABCJKuedc3aCO2Or+_YBSzK_zp9zB8nFwjr-tK95EBM3La1AmA@mail.gmail.com>
 
-Very soon after we requested it [1], `rust-analyzer` added support for
-`.rust-project.json` [2], i.e. the hidden variant of `.rust-project.json`.
+On Fri, Aug 16, 2024 at 08:50:53AM -0700, Sami Tolvanen wrote:
+> Hi Greg,
+> 
+> On Fri, Aug 16, 2024 at 12:20 AM Greg Kroah-Hartman
+> <gregkh@linuxfoundation.org> wrote:
+> >
+> > On Thu, Aug 15, 2024 at 05:39:20PM +0000, Sami Tolvanen wrote:
+> > > Distributions that want to maintain a stable kABI need the ability to
+> > > add reserved fields to kernel data structures that they anticipate
+> > > will be modified during the ABI support timeframe, either by LTS
+> > > updates or backports.
+> > >
+> > > With genksyms, developers would typically hide changes to the reserved
+> > > fields from version calculation with #ifndef __GENKSYMS__, which would
+> > > result in the symbol version not changing even though the actual type
+> > > of the reserved field changes. When we process precompiled object
+> > > files, this is again not an option.
+> > >
+> > > To support stable symbol versions for reserved fields, change the
+> > > union type processing to recognize field name prefixes, and if the
+> > > union contains a field name that starts with __kabi_reserved, only use
+> > > the type of that field for computing symbol versions. In other words,
+> > > let's assume we have a structure where we want to reserve space for
+> > > future changes:
+> > >
+> > >   struct struct1 {
+> > >     long a;
+> > >     long __kabi_reserved_0; /* reserved for future use */
+> > >   };
+> > >   struct struct1 exported;
+> > >
+> > > gendwarfksyms --debug produces the following output:
+> > >
+> > >   variable structure_type struct1 {
+> > >     member base_type long int byte_size(8) encoding(5) data_member_location(0),
+> > >     member base_type long int byte_size(8) encoding(5) data_member_location(8),
+> > >   } byte_size(16);
+> > >   #SYMVER exported 0x67997f89
+> > >
+> > > To take the reserved field into use, a distribution would replace it
+> > > with a union, with one of the fields keeping the __kabi_reserved name
+> > > prefix for the original type:
+> > >
+> > >   struct struct1 {
+> > >     long a;
+> > >     union {
+> > >       long __kabi_reserved_0;
+> > >       struct {
+> > >           int b;
+> > >           int v;
+> > >       };
+> > >     };
+> > >
+> >
+> > Ah, ignore my previous email, here's the --stable stuff.
+> >
+> > But this all needs to go into some documentation somewhere, trying to
+> > dig it out of a changelog is going to be impossible to point people at.
+> 
+> I agree, which is why I included the details in the comments too.
+> There's also an example file if you scroll down a bit further, but I
+> can certainly add some actual documentation too. Since the --stable
+> bits are not really needed in the mainline kernel, do you prefer a
+> file in Documentation/ or is it sufficient to expand the example files
+> to include any missing details?
 
-While this is only a (tiny) issue for kernel developers that use Rust
-(i.e. so far a very small number compared to the total), the file is not
-really something most kernel developers need to see, care or modify while
-working, so it is not really needed to show it by default in listings.
+Ah, I missed the examples, I thought that was a test for the feature :)
 
-It also follows the pattern of other files that are not directly related
-to the project (unlike e.g. a `Kconfig` file).
+Yes, it needs to be documented somewhere, and usually documentation is
+in Documentation/ so that it shows up on the web and everywhere else.
 
-Thus migrate to it.
+> > > +/* See dwarf.c:process_reserved */
+> > > +#define RESERVED_PREFIX "__kabi_reserved"
+> >
+> > Seems semi-sane, I can live with this.
+> 
+> Is there something you'd change to make this more than semi-sane?
 
-Cc: Ali Bektas <bektasali@protonmail.com>
-Cc: Lukas Wirth <lukastw97@gmail.com>
-Link: https://github.com/rust-lang/rust-analyzer/issues/17816 [1]
-Link: https://github.com/rust-lang/rust-analyzer/pull/17818 [2]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
----
-This is a patch for the future -- we need to wait until most Rust kernel
-developers are using a new enough version of rust-analyzer. Thanks Ali
-& Lukas!
+I can't think of it, but perhaps we need a check somewhere to ensure
+that these symbol names do NOT end up in the main kernel tree?
 
- .gitignore                         | 2 +-
- Documentation/rust/quick-start.rst | 2 +-
- Makefile                           | 8 ++++----
- rust/Makefile                      | 2 +-
- scripts/generate_rust_analyzer.py  | 2 +-
- scripts/remove-stale-files         | 2 ++
- 6 files changed, 10 insertions(+), 8 deletions(-)
+Or just keep this whole patch as an add-on on the end that is only
+applied by the distro kernels and is not merged into mainline at all?
 
-diff --git a/.gitignore b/.gitignore
-index 7902adf4f7f1..a79fc2a71c62 100644
---- a/.gitignore
-+++ b/.gitignore
-@@ -176,4 +176,4 @@ x509.genkey
- sphinx_*/
+> > I don't know if you want to take the next step and provide examples of
+> > how to use this in "easy to use macros" for it all, but if so, that
+> > might be nice.
+> 
+> This should already work with the macros Android uses, for example,
+> with minor changes. The current example file doesn't include macro
+> wrappers, but I can add them in the next version.
 
- # Rust analyzer configuration
--/rust-project.json
-+/.rust-project.json
-diff --git a/Documentation/rust/quick-start.rst b/Documentation/rust/quick-start.rst
-index d06a36106cd4..02f9dee6d236 100644
---- a/Documentation/rust/quick-start.rst
-+++ b/Documentation/rust/quick-start.rst
-@@ -259,7 +259,7 @@ The `rust-analyzer <https://rust-analyzer.github.io/>`_ language server can
- be used with many editors to enable syntax highlighting, completion, go to
- definition, and other features.
+The Android macros are a copy of what SLES and RHEL does so that's good.
 
--``rust-analyzer`` needs a configuration file, ``rust-project.json``, which
-+``rust-analyzer`` needs a configuration file, ``.rust-project.json``, which
- can be generated by the ``rust-analyzer`` Make target::
+And yes, an example macro would be nice so we all don't have to reinvent
+it yet-again like we have done already.  Consolidation is nice.
 
- 	make LLVM=1 rust-analyzer
-diff --git a/Makefile b/Makefile
-index 0a364e34f50b..9ef90963330c 100644
---- a/Makefile
-+++ b/Makefile
-@@ -1483,7 +1483,7 @@ endif # CONFIG_MODULES
- CLEAN_FILES += vmlinux.symvers modules-only.symvers \
- 	       modules.builtin modules.builtin.modinfo modules.nsdeps \
- 	       compile_commands.json rust/test \
--	       rust-project.json .vmlinux.objs .vmlinux.export.c
-+	       .rust-project.json .vmlinux.objs .vmlinux.export.c
+> > Especially as I have no idea how you are going to do
+> > this with the rust side of things, this all will work for any structures
+> > defined in .rs code, right?
+> 
+> Yes, Rust structures can use the same scheme. Accessing union members
+> might be less convenient than in C, but can presumably be wrapped in
+> helper macros if needed.
 
- # Directories & files removed with 'make mrproper'
- MRPROPER_FILES += include/config include/generated          \
-@@ -1621,7 +1621,7 @@ help:
- 	@echo  '		    (requires kernel .config)'
- 	@echo  '  rusttest        - Runs the Rust tests'
- 	@echo  '                    (requires kernel .config; downloads external repos)'
--	@echo  '  rust-analyzer	  - Generate rust-project.json rust-analyzer support file'
-+	@echo  '  rust-analyzer	  - Generate .rust-project.json rust-analyzer support file'
- 	@echo  '		    (requires kernel .config)'
- 	@echo  '  dir/file.[os]   - Build specified target only'
- 	@echo  '  dir/file.rsi    - Build macro expanded source, similar to C preprocessing.'
-@@ -1809,7 +1809,7 @@ help:
- 	@echo  '  modules         - default target, build the module(s)'
- 	@echo  '  modules_install - install the module'
- 	@echo  '  clean           - remove generated files in module directory only'
--	@echo  '  rust-analyzer	  - generate rust-project.json rust-analyzer support file'
-+	@echo  '  rust-analyzer	  - generate .rust-project.json rust-analyzer support file'
- 	@echo  ''
+That feels ripe for problems for any rust code as forcing a helper macro
+for a "normal" access to a structure field is going to be a lot of churn
+over time.  Is the need for a macro due to the fact that accessing a
+union is always considered "unsafe" in rust?  If that's the case, ick,
+this is going to get even messier even faster as the need for sprinkling
+unsafe accesses everywhere for what used to be a normal/safe one will
+cause people to get nervous...
 
- ifndef CONFIG_MODULES
-@@ -1958,7 +1958,7 @@ quiet_cmd_tags = GEN     $@
- tags TAGS cscope gtags: FORCE
- 	$(call cmd,tags)
+thanks,
 
--# Generate rust-project.json (a file that describes the structure of non-Cargo
-+# Generate .rust-project.json (a file that describes the structure of non-Cargo
- # Rust projects) for rust-analyzer (an implementation of the Language Server
- # Protocol).
- PHONY += rust-analyzer
-diff --git a/rust/Makefile b/rust/Makefile
-index 1f10f92737f2..311675e97332 100644
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -351,7 +351,7 @@ rust-analyzer:
- 		--cfgs='core=$(core-cfgs)' --cfgs='alloc=$(alloc-cfgs)' \
- 		$(realpath $(srctree)) $(realpath $(objtree)) \
- 		$(RUST_LIB_SRC) $(KBUILD_EXTMOD) > \
--		$(if $(KBUILD_EXTMOD),$(extmod_prefix),$(objtree))/rust-project.json
-+		$(if $(KBUILD_EXTMOD),$(extmod_prefix),$(objtree))/.rust-project.json
-
- redirect-intrinsics = \
- 	__addsf3 __eqsf2 __gesf2 __lesf2 __ltsf2 __mulsf3 __nesf2 __unordsf2 \
-diff --git a/scripts/generate_rust_analyzer.py b/scripts/generate_rust_analyzer.py
-index f270c7b0cf34..8b3a063b7c34 100755
---- a/scripts/generate_rust_analyzer.py
-+++ b/scripts/generate_rust_analyzer.py
-@@ -1,6 +1,6 @@
- #!/usr/bin/env python3
- # SPDX-License-Identifier: GPL-2.0
--"""generate_rust_analyzer - Generates the `rust-project.json` file for `rust-analyzer`.
-+"""generate_rust_analyzer - Generates the `.rust-project.json` file for `rust-analyzer`.
- """
-
- import argparse
-diff --git a/scripts/remove-stale-files b/scripts/remove-stale-files
-index f38d26b78c2a..1e8c3278a133 100755
---- a/scripts/remove-stale-files
-+++ b/scripts/remove-stale-files
-@@ -21,3 +21,5 @@ set -e
- # then will be really dead and removed from the code base entirely.
-
- rm -f *.spec
-+
-+rm -f rust-project.json
-
-base-commit: 7c626ce4bae1ac14f60076d00eafe71af30450ba
---
-2.46.0
+greg k-h
