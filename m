@@ -1,92 +1,81 @@
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.domeneshop.no (smtp.domeneshop.no [194.63.252.55])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0B6D757FC;
-	Sat, 17 Aug 2024 13:36:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1323B66E;
+	Sat, 17 Aug 2024 15:50:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.63.252.55
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723901804; cv=none; b=BVmVy6XP15rFEZeEneseNf9BSSbLYDdJ5EQQ1BE6mbAzxLwlptCso7zrV+NqAdixdLzJvB0AwJhatWeZlUPzXVy+MRMkE4lEH+0zeAQPHWk+Dr44Pi0g2xr5yP3pGPa1FNpZC4lF6x/2uUAf0CzDHDToSJijhhGpb0Xlp9NJ1OM=
+	t=1723909816; cv=none; b=NDv+OoUnIhhimVG3LCluy9QqurM3U5tG2QSptkRNq+Mz80apTIXp1g7mgnt4Th89XmDBxnZyNa4MScf2d6QiqyMW2R1r4HPnPk8Zntu868ea4MI6yPqZ2nki8Xg4D5hq+6xJycOgIFnjM/l2RExJs+NPTQZUiKsfMujvNMpDvMo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723901804; c=relaxed/simple;
-	bh=sy0AB5iz17nq7kNmhns+GwjqlSVrmhHMr067N4apBBQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=U0ccxOYczSVSRosDYdJ7UKK3ddbtY98AMKqU867kx/Zd5YQV8VKRV6NcZz/cZDqktivn9pPmr+Bmx19x+h6cQvY61uhnF6yMS/4Nzn+uHASTpiNlnoDGq/Wre+lw+1EucMEOvVy3pTgR3mflZ3J7lGLIPHKxkB8cKR+v4E84/AA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WIizHmPp; arc=none smtp.client-ip=209.85.210.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1723909816; c=relaxed/simple;
+	bh=Zl0ChTncPMNN6mk6yeaJjrVWBKqPdcuuKU+3vckHno4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=rxUeIrDiR1jSPh7oB/QIj3z+ds6YZVSz50p5z3XduLx54wE7jJublReJax49qZ9oQGrfQmPe93QYJd0yltQg5v4IwCa/RrphFeQN+ERwTbY+F0fgc6NQZR7bCX62vh8a5jsczpuTZQ+woczB5ONHm3LAMOCwh0hXwIiPnAExKEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fjasle.eu; spf=pass smtp.mailfrom=fjasle.eu; dkim=pass (2048-bit key) header.d=fjasle.eu header.i=@fjasle.eu header.b=COPnU63L; arc=none smtp.client-ip=194.63.252.55
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fjasle.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fjasle.eu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WIizHmPp"
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-71275436546so2550247b3a.1;
-        Sat, 17 Aug 2024 06:36:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1723901802; x=1724506602; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=sy0AB5iz17nq7kNmhns+GwjqlSVrmhHMr067N4apBBQ=;
-        b=WIizHmPpa03aWFWHmnIxu3bP7UGXlgPGTrrex8uAMMGN9lClH19+fqntjLQNM/w3JR
-         n8bqqHUKSiO77HP1jXs2N8SCD/lmS8N0b/xBkIz78L/5GrXoKnhKs4wrdMUrY1uXBt2/
-         3IYE80qqowGy7dua21Y1CfsIqMuyVW6iMnFkcTmP0Ew0o4dNnq85DcfHwVCBL6poAqMg
-         Qs7/7YpNEoQnqC+tl/PVS06hcxbsaXsoib6tUGZaBzWCatmSINsXG9oO+nfbR4RsuYg4
-         2Yvr1RPEcyPFS9p2+UKA6E+7A1SAuqXxios1WDAA5tOjz9LNeGbmou8Cl1MUrfcw4r/2
-         BX1A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723901802; x=1724506602;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=sy0AB5iz17nq7kNmhns+GwjqlSVrmhHMr067N4apBBQ=;
-        b=HoedN4y5Qn8Z/3LbvD9Jzexum4esoe9/nG6X5j0RmczobWNfXP2YSpiOv6/VFNT30L
-         fxw/DzQ70biCrOm+kYvWtOX6HY6pIOKiF6fqpFYd/WeR8x5T0i37w1M1/sri54jyuJfs
-         TBTSZgHATj3e3f88DvwhcbnGkVzDPF/MEMTOe6MHJ8oU4Ktu7uzlbIdHaSSf8Unb8gUK
-         01jtjV25DpRvWUSz7Bx6juw2yCa7BDuIfuUaMCDT8KSvgt9julM7ckEYlkKn6ZMLwngd
-         sGopmsfswQFH1zRCUyOXfqK4bKiJWcGruIyVyoN/g9N9W1XHbaGdcvfFfZXoPyTAo0as
-         UdmA==
-X-Forwarded-Encrypted: i=1; AJvYcCU1nAt0vuNwIh54ED77ZNxfby7fbOs96WKu172JfX45RaFSmckAARzsoDnE6UXBJFSAJSSlui9ifIhAwsysMkZqV6d29FEgDT0/cFbDPIi0rmAsbfuXBNMidY7a8plQpKArQ0qgxwkRXv5Q2GSuLyoaag+aAl18Y4XwYJJw0ky4TcApqajErUpcSBQ=
-X-Gm-Message-State: AOJu0YygvmaUm1wTCK5/U8VjGiUwxzm/H5oeZMfuM2sfjKX0YMDB2p2w
-	V2dDsf83supyIf2MH0s76/vIaGweotcrpII+4SfbTbFRJ3ejWDVooAEqjYJ2UPKnT467xep+qkA
-	v4bAqVYMjnUvy1XmWl2Z09mAxJOJcroBCWSo=
-X-Google-Smtp-Source: AGHT+IH/hAp1t7BLkopNdMC3iXYCzXWGKQyV4QJtUVk6UoW9M5nliQEfLvAArDP6hc6F2iZYvVyk4QhK2eWdtQtYbpo=
-X-Received: by 2002:a05:6a20:c88a:b0:1c8:92ed:7c5c with SMTP id
- adf61e73a8af0-1c905027bafmr7184681637.35.1723901801891; Sat, 17 Aug 2024
- 06:36:41 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=fjasle.eu header.i=@fjasle.eu header.b="COPnU63L"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=fjasle.eu;
+	s=ds202307; h=In-Reply-To:Content-Transfer-Encoding:Content-Type:MIME-Version
+	:References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
+	Resent-To:Resent-Cc:Resent-Message-ID:In-Reply-To:References:List-Id:
+	List-Help:List-Unsubscribe:List-Subscribe:List-Post:List-Owner:List-Archive;
+	bh=N0nHQd2qcdVDpmiUaUdSsKPxa/AL8k1EyCsqP9bD/9o=; b=COPnU63L9IYgDxhVeEGTvKfbJZ
+	f2dHftrv8PwXzZrtfOEslnCZ2kVxkTtWVsUQa/6gT4pqcGPWXiullIJzi8IXmJwRA9tRvztdFFcSo
+	m2WmvTrcIV5FIX+lbFlzNvfGyCiKJDiOW0ZEXfeBNIxQJ9ESCCokH8c304HjVo4WcMWAJBP2zUtZJ
+	pIDLnvxYOiJqEaHD/CU9r6KkXjmPPqa7fv+8kNNawNCHiQQrvpj5UF1ADdvS94Eg095x7URM4X/WR
+	t5X/sGLjrc9a8CodtkfsKqp2zMlk9AO1Ck3m0JHWqJ+QxYEdv1x37KCdxhkndIndXNjBkEMhPOgPY
+	+TGs9UQw==;
+Received: from [2001:9e8:9db:8201:3235:adff:fed0:37e6] (port=60180 helo=lindesnes.fjasle.eu)
+	by smtp.domeneshop.no with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.95)
+	(envelope-from <nicolas@fjasle.eu>)
+	id 1sfLgp-00E17M-Aj;
+	Sat, 17 Aug 2024 17:50:03 +0200
+Date: Sat, 17 Aug 2024 17:49:58 +0200
+From: Nicolas Schier <nicolas@fjasle.eu>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org,
+	Nathan Chancellor <nathan@kernel.org>, linux-kbuild@vger.kernel.org,
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev
+Subject: Re: [PATCH 4/6] kbuild: rust: rebuild if the version text changes
+Message-ID: <20240817-ambrosial-zealous-reindeer-de0f25@lindesnes>
+References: <20240808221138.873750-1-ojeda@kernel.org>
+ <20240808221138.873750-5-ojeda@kernel.org>
+ <20240817-cute-doberman-from-shambhala-6f42db@lindesnes>
+ <CANiq72nkBoiLUDQjBZi57OYwMpnH8D5Q4wR7XKWMry+mdwFOHw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240808221138.873750-1-ojeda@kernel.org> <20240808221138.873750-5-ojeda@kernel.org>
- <20240817-cute-doberman-from-shambhala-6f42db@lindesnes>
-In-Reply-To: <20240817-cute-doberman-from-shambhala-6f42db@lindesnes>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sat, 17 Aug 2024 15:36:30 +0200
-Message-ID: <CANiq72nkBoiLUDQjBZi57OYwMpnH8D5Q4wR7XKWMry+mdwFOHw@mail.gmail.com>
-Subject: Re: [PATCH 4/6] kbuild: rust: rebuild if the version text changes
-To: Nicolas Schier <nicolas@fjasle.eu>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Masahiro Yamada <masahiroy@kernel.org>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, 
-	Nathan Chancellor <nathan@kernel.org>, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72nkBoiLUDQjBZi57OYwMpnH8D5Q4wR7XKWMry+mdwFOHw@mail.gmail.com>
 
-On Sat, Aug 17, 2024 at 3:04=E2=80=AFPM Nicolas Schier <nicolas@fjasle.eu> =
-wrote:
->
-> Looks good to me, but I'd prefer something like the suggestion from
-> Masahiro:
-> https://lore.kernel.org/linux-kbuild/CAK7LNAQBG0nDupXSgAAk-6nOqeqGVkr3H1R=
-jYaqRJ1OxmLm6xA@mail.gmail.com/
+On Sat, Aug 17, 2024 at 03:36:30PM +0200, Miguel Ojeda wrote:
+> On Sat, Aug 17, 2024 at 3:04 PM Nicolas Schier <nicolas@fjasle.eu> wrote:
+> >
+> > Looks good to me, but I'd prefer something like the suggestion from
+> > Masahiro:
+> > https://lore.kernel.org/linux-kbuild/CAK7LNAQBG0nDupXSgAAk-6nOqeqGVkr3H1RjYaqRJ1OxmLm6xA@mail.gmail.com/
+> 
+> Do you mean for `core` (here), or for `macros` (in the next commit)?
+> (if you mean for `core`, please see my reply to Masahiro there).
 
-Do you mean for `core` (here), or for `macros` (in the next commit)?
-(if you mean for `core`, please see my reply to Masahiro there).
+oops, I missed that 'core' is delivered external.  Sorry for the noise.
 
-Thanks for taking a look!
-
-Cheers,
-Miguel
+Kind regards,
+Nicolas
