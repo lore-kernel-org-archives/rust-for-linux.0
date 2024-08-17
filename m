@@ -1,109 +1,129 @@
-Received: from smtp.domeneshop.no (smtp.domeneshop.no [194.63.252.55])
+Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CA7511187;
-	Sat, 17 Aug 2024 13:04:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.63.252.55
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B00C283A17
+	for <rust-for-linux@vger.kernel.org>; Sat, 17 Aug 2024 13:20:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723899895; cv=none; b=VIt+zLTCYl/LVLb7hPO6gtsymsQ+YO0/oBiHBCD+QsWD9gMci/pY0MLLLd6HRePLm9H8Vtxk0HrPrzv4Vnw/cNt3LOuOYg34O98d4dj32lkg6syvqLUH37nCyyCnU/Smhr1MnNfZNZuZGQEE8dCOWBU9sglJ+yVhcVh+NYOwEZQ=
+	t=1723900804; cv=none; b=Mp9rsVTbzqj7QubvZfkosc33o7nvE7xirqRng879OiYdpQ4lOoqLY7143/ebIeuzT0hB+DHvmrqUG8iCCvprqh2M6wz4ec/IopA7Vq5hac54mOTtdrrWEP7PRHRE9A49zlv+sGym3Rtt8NxGoEEyCgGJOyZvOSS/dupJ0gUk5rM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723899895; c=relaxed/simple;
-	bh=JZM8n8x+g7qMtmOd0SazR3cDaPmkuaJQzeNaeIE0dq8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=twQjXTaSDbsFsuGEjyiw7qSqU+yKJeW4/zK4wQJviO+m/iAclgEksvwu/n7xELw3v1ZzOjOJFu9nq4jHsP+AzAzd0FOkBFUcVLDMAYe6DVK2IlG6t7+r30VEVZ4zo8POmuEfXln0Ad46fdu7m0eT+NRzjtBfNQcRloXOSWYhwXs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fjasle.eu; spf=pass smtp.mailfrom=fjasle.eu; dkim=pass (2048-bit key) header.d=fjasle.eu header.i=@fjasle.eu header.b=o7bH7Vwh; arc=none smtp.client-ip=194.63.252.55
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fjasle.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fjasle.eu
+	s=arc-20240116; t=1723900804; c=relaxed/simple;
+	bh=mPLPgPLHO6Ixud7oOpd/z/JGbxH2aQkAFVO52+GRYik=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=bN2+2bfW7wOdzSTFtU/86c62a4A1q6dDx+mbmtgIorrFG3MUxGVQw03nbtRbUrWgFyG4MnrZ7BwrHA6Zk6Xe3Kcou91hakIHSUdFXlMH1Yi/U9FeUAaRIQkogCX3A6wmr5ml3DPGoSGkCf+yR2daZqTaF8UBAJ46pXcC3CILHvU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=g2XMO8Kr; arc=none smtp.client-ip=185.70.40.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fjasle.eu header.i=@fjasle.eu header.b="o7bH7Vwh"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=fjasle.eu;
-	s=ds202307; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
-	Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:Date:Message-ID:To:Cc:
-	MIME-Version:Content-Type:Content-Transfer-Encoding:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:
-	List-Subscribe:List-Post:List-Owner:List-Archive;
-	bh=/Dt+vJQWOKJTjuhMKbvYgOKGXnEc+DToKh1gi8tXf1U=; b=o7bH7Vwh5q/EcfqpCJwKbpjXIk
-	7fUra0YsHU5cLrF2PCDtdo7rwnboFRQ1PHxUxZ9DxJcR5nFW4K2q8wGyrdDL2K/g1VfYzK7CvUrjz
-	6qGx/aaER4duegBZr9KYzTYam1AS2l5OKzC5vQ4nErpWAV6t3sCMcNzHODyPpS80j6kuheQKJ65em
-	jo6BVpz5+dENNmxBJ8ulptaM+zftmhcSJb73SQeGrbg4iwXeQ4tk+OkUX8KlQPV2xy9As3RlZ9XPk
-	l5LIjgQ/h4uSCX+ahueSXjNsIm+PWoJJeiwU2a2kc/ZQi18fJLgZjN5Rwp405y36Wq76OvGyFRaJz
-	Td3QW+xA==;
-Received: from [2001:9e8:9db:8201:3235:adff:fed0:37e6] (port=53842 helo=lindesnes.fjasle.eu)
-	by smtp.domeneshop.no with esmtpsa  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.95)
-	(envelope-from <nicolas@fjasle.eu>)
-	id 1sfJ6p-00DWQe-Oa;
-	Sat, 17 Aug 2024 15:04:43 +0200
-Date: Sat, 17 Aug 2024 15:04:39 +0200
-From: Nicolas Schier <nicolas@fjasle.eu>
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org,
-	Nathan Chancellor <nathan@kernel.org>, linux-kbuild@vger.kernel.org,
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev
-Subject: Re: [PATCH 4/6] kbuild: rust: rebuild if the version text changes
-Message-ID: <20240817-cute-doberman-from-shambhala-6f42db@lindesnes>
-References: <20240808221138.873750-1-ojeda@kernel.org>
- <20240808221138.873750-5-ojeda@kernel.org>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="g2XMO8Kr"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1723900799; x=1724159999;
+	bh=j/PPS3EYuNHFT3+6UMf12p/CM7ltsg2HQQvZIYDDvrY=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=g2XMO8KrGCemhep3mXA0XstRJkQG4mViRXVMJOTlbUtQX520QNQqN9r6JMwMna8Xq
+	 XbnVwnVDh6YM0IVFsqguVYgnAKYuEz2GLxRS4xfWNFH4Lv5YCE/HXjWT4OF5cI20Dq
+	 LvnQam9XXddIi7DxFZWLboTBeWE+OGzwzxU6vMgtFD9vRSolPErnt7LksY1hkAKgIy
+	 uLffKcoXtUMQjV8w6YoajX4pQD7IF9pPgW6k/5UMMbGezMywFyOon+GTUHkv8O0ZcG
+	 rSjI8ehM4dAxKOXHvIcBhoqMvIpbb3pSLNPGUe/aJ0TjGH5OGW8+z201JfskKhj8qN
+	 P9qearbDqczDA==
+Date: Sat, 17 Aug 2024 13:19:55 +0000
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Sami Tolvanen <samitolvanen@google.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Masahiro Yamada <masahiroy@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Matthew Maurer <mmaurer@google.com>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, Petr Pavlu <petr.pavlu@suse.com>, Neal Gompa <neal@gompa.dev>, Hector Martin <marcan@marcan.st>, Janne Grunau <j@jannau.net>, Asahi Linux <asahi@lists.linux.dev>, linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v2 16/19] gendwarfksyms: Add support for reserved structure fields
+Message-ID: <ef6f7294-0afe-46af-8714-ed4a4aaee558@proton.me>
+In-Reply-To: <2024081705-overarch-deceptive-6689@gregkh>
+References: <20240815173903.4172139-21-samitolvanen@google.com> <20240815173903.4172139-37-samitolvanen@google.com> <2024081600-grub-deskwork-4bae@gregkh> <CABCJKuedc3aCO2Or+_YBSzK_zp9zB8nFwjr-tK95EBM3La1AmA@mail.gmail.com> <2024081705-overarch-deceptive-6689@gregkh>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: 985bccfc1600ca44c1aa5ffd0d6fb059413f58a3
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240808221138.873750-5-ojeda@kernel.org>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Aug 09, 2024 at 12:11:36AM +0200, Miguel Ojeda wrote:
-> Now that `RUSTC_VERSION_TEXT` exists, use it to rebuild `core` when the
-> version text changes (which in turn will trigger a rebuild of all the
-> kernel Rust code).
-> 
-> This also applies to proc macros (which only work with the `rustc` that
-> compiled them), via the already existing dependency on `core.o`. That
-> is cleaned up in the next commit.
-> 
-> However, this does not cover host programs written in Rust, which is
-> the same case in the C side.
-> 
-> This is accomplished by referencing directly the generated file, instead
-> of using the `fixdep` header trick, since we cannot change the Rust
-> standard library sources. This is not too much of a burden, since it
-> only needs to be done for `core`.
-> 
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-> ---
-> Masahiro: I used `$(objtree)` here since we still use it in the rest of
-> this `Makefile`, but please let me know if you prefer otherwise. Thanks!
-> 
->  rust/Makefile | 3 ++-
->  1 file changed, 2 insertions(+), 1 deletion(-)
-> 
-> diff --git a/rust/Makefile b/rust/Makefile
-> index 6c0644b6090c..966743a9ee25 100644
-> --- a/rust/Makefile
-> +++ b/rust/Makefile
-> @@ -370,7 +370,8 @@ $(obj)/core.o: private skip_clippy = 1
->  $(obj)/core.o: private skip_flags = -Wunreachable_pub
->  $(obj)/core.o: private rustc_objcopy = $(foreach sym,$(redirect-intrinsics),--redefine-sym $(sym)=__rust$(sym))
->  $(obj)/core.o: private rustc_target_flags = $(core-cfgs)
-> -$(obj)/core.o: $(RUST_LIB_SRC)/core/src/lib.rs FORCE
-> +$(obj)/core.o: $(RUST_LIB_SRC)/core/src/lib.rs \
-> +    $(wildcard $(objtree)/include/config/RUSTC_VERSION_TEXT) FORCE
->  	+$(call if_changed_dep,rustc_library)
->  ifneq ($(or $(CONFIG_X86_64),$(CONFIG_X86_32)),)
->  $(obj)/core.o: scripts/target.json
-> --
-> 2.46.0
+On 17.08.24 09:41, Greg Kroah-Hartman wrote:
+> On Fri, Aug 16, 2024 at 08:50:53AM -0700, Sami Tolvanen wrote:
+>> On Fri, Aug 16, 2024 at 12:20=E2=80=AFAM Greg Kroah-Hartman
+>> <gregkh@linuxfoundation.org> wrote:
+>>> On Thu, Aug 15, 2024 at 05:39:20PM +0000, Sami Tolvanen wrote:
+>>> Especially as I have no idea how you are going to do
+>>> this with the rust side of things, this all will work for any structure=
+s
+>>> defined in .rs code, right?
+>>
+>> Yes, Rust structures can use the same scheme. Accessing union members
+>> might be less convenient than in C, but can presumably be wrapped in
+>> helper macros if needed.
+>=20
+> That feels ripe for problems for any rust code as forcing a helper macro
+> for a "normal" access to a structure field is going to be a lot of churn
+> over time.  Is the need for a macro due to the fact that accessing a
+> union is always considered "unsafe" in rust?  If that's the case, ick,
+> this is going to get even messier even faster as the need for sprinkling
+> unsafe accesses everywhere for what used to be a normal/safe one will
+> cause people to get nervous...
 
-Looks good to me, but I'd prefer something like the suggestion from
-Masahiro:
-https://lore.kernel.org/linux-kbuild/CAK7LNAQBG0nDupXSgAAk-6nOqeqGVkr3H1RjYaqRJ1OxmLm6xA@mail.gmail.com/
+The reason for union field access being unsafe in Rust is that you can
+easily shoot yourself in the foot. For example:
+
+    union Foo {
+        a: bool,
+        b: i32,
+    }
+
+    let foo =3D Foo { b: 3 };
+    println!("{}", unsafe { foo.a });
+
+This is UB, since `3` is of course not a valid value for `bool`. With
+unions the compiler doesn't know which variant is active.
+
+Since unions are unsafe in Rust, we don't really use them directly (in
+the `kernel` crate, we have 0 union definitions). Instead we use certain
+unions from the stdlib such as `MaybeUninit`. But the fields of that
+union are private and never accessed.
+
+In general, unions in Rust are very important primitive types, but they
+are seldomly used directly. Instead enums are used a lot more, since you
+don't need to roll your own tagged unions.
+
+For this use-case (the one in the patch), I don't really know if we want
+to copy the approach from C. Do we even support exporting kABI from
+Rust? If yes, then we I would recommend we tag it in the source code
+instead of using a union. Here the example from the patch adapted:
+
+    #[repr(C)] // needed for layout stability
+    pub struct Struct1 {
+        a: u64,
+        #[kabi_reserved(u64)] // this marker is new
+        _reserved: u64,
+    }
+
+And then to use the reserved field, you would do this:
+   =20
+    #[repr(C)]
+    pub struct Struct1 {
+        a: u64,
+        #[kabi_reserved(u64)]
+        b: Struct2,
+    }
+
+    #[repr(C)]
+    pub struct Struct2 {
+        b: i32,
+        v: i32,
+    }
+
+The attribute would check that the size of the two types match and
+gendwarfksyms would use the type given in "()" instead of the actual
+type.
+
+---
+Cheers,
+Benno
+
