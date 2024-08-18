@@ -1,61 +1,74 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 466EA8F6E;
-	Sun, 18 Aug 2024 16:22:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 222B11D551;
+	Sun, 18 Aug 2024 17:39:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723998157; cv=none; b=Y0ksNST05bq4k/xjMUma3lTBsfs3LOSIm8S+M3nmcQ00Bmdhs72KikoT/RktCpAXOmLsmCXlzAL8kMkl9Qt46YrFtFhf/FlrVF8RShb/PSWQUYwPDxFj4XM4Y6XmfoGWjV0PVGvQ94N4LXXSjP6O3VSTeoKA7UjST4KYomBCkRo=
+	t=1724002768; cv=none; b=TpW75yVfvaR51vTGM4gW5KuOFpU5l8x4kYYHBBfngL3isE3e1HcubtfW+ZonQpHfgQ/COm3TGPtKL4xSFFGEf1u7F93L2pQtl70BaVd5PwGZJ/ZHLuKjf48/mwZ6Tb+sQxye+B9K5h1e+rkfBXn8qbNcMZeB1169hiu/9PYjnIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723998157; c=relaxed/simple;
-	bh=yfDXeKpfoTsz6WNEkk/c74H40IhurnjP1aVuZLT9Gpo=;
+	s=arc-20240116; t=1724002768; c=relaxed/simple;
+	bh=MUispAl9g8BbGpxRcKkTd+9L1jsuZPQybAuNsLB6KoY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=PotXazWw59f4/IR01hoqgC7ruWGW6VWc9DhKpcU9SmTVs8snq7oJfyNyjvYztV7zGiGkEmcQshA2IghS5UWX9hCPsUJZzHxW5SjIFggOi3lC9wB/9Z8J2xlG1MwO7Jp7pR9WbmD8Th1XOHZDyfGPVkJcrwJyHHAByNvQIx9EJyA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xlmgyFg+; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=QsQ7VIdwpABFoOGWKAFMZjHChWWK+31IDkeTMzNHEInDANXW5GBrYUyKghQcreL0fDJIZmu4/RV3GZ+NPqgZ6Y4E74c20g94REl666azz6+1HR4g33DJJr6XweyrRHpku4m0ZiR9Fd9bl0BYK7Pn8uLLzVNKx1sxSmAz/cwOu2c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=Ek0ON/Jd; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xlmgyFg+"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89473C32786;
-	Sun, 18 Aug 2024 16:22:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1723998156;
-	bh=yfDXeKpfoTsz6WNEkk/c74H40IhurnjP1aVuZLT9Gpo=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=xlmgyFg+UpCHeg1hdSMSy3FQEE49k6w1fjPq5MHi4b9UY/8/gkxEcyfldrCJ7lBSk
-	 gGyrbUgxQuBamUO7PACWJzD6BPY2q6X15dJ3ie1lFy8iiDvv/6l03dh9jvzWqWt68m
-	 +cxHgZQxAa7O98mHps1grEPn3qYN9OaQjHTNh7vE=
-Date: Sun, 18 Aug 2024 12:22:35 -0400
-From: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Jonathan Corbet <corbet@lwn.net>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, 
-	rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	patches@lists.linux.dev
-Subject: Re: [PATCH 1/2] docs: rust: link to https://rust.docs.kernel.org
-Message-ID: <20240818-shaggy-pastoral-shark-cb3c3a@lemur>
-References: <20240818141200.386899-1-ojeda@kernel.org>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="Ek0ON/Jd"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=wKSOkNO8Sg+YG0BLKTf4EZv5hDKZoidIasg9HDR/uto=; b=Ek0ON/JdiX/L6KWMeMx8fPwcGS
+	ZspKWJm6Jr3HF+kDo0ILqBKbXkUlAP+/LpHwHCxEIYhbdkyaqiRPl1amtuzwWijv5CkyALb2zoo//
+	2mxbjT4+R+3sXynFzgVofEdxkYeizheKorvCtbKXAd3e6Oox61neW7NjBHr95Z/Uylog=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1sfjsC-0052z2-5c; Sun, 18 Aug 2024 19:39:24 +0200
+Date: Sun, 18 Aug 2024 19:39:24 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, tmgross@umich.edu,
+	miguel.ojeda.sandonis@gmail.com, aliceryhl@google.com
+Subject: Re: [PATCH net-next v4 6/6] net: phy: add Applied Micro QT2025 PHY
+ driver
+Message-ID: <bdfdac7c-edb0-4b78-b616-76be287c7597@lunn.ch>
+References: <20240817051939.77735-1-fujita.tomonori@gmail.com>
+ <20240817051939.77735-7-fujita.tomonori@gmail.com>
+ <9a7c687a-29a9-4a1a-ad69-39ce7edad371@lunn.ch>
+ <7f835fe8-e641-4b84-a080-13f4841fb64a@proton.me>
+ <1a717f2d-8512-47bd-a5b3-c5ceb9b44f03@lunn.ch>
+ <0797f8e8-ea3c-413d-b782-84dd97919ea9@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240818141200.386899-1-ojeda@kernel.org>
+In-Reply-To: <0797f8e8-ea3c-413d-b782-84dd97919ea9@proton.me>
 
-On Sun, Aug 18, 2024 at 04:11:59PM GMT, Miguel Ojeda wrote:
-> The generation uses a particular kernel configuration, based on x86_64,
-> which may get tweaked over time. Older tags, and how they are generated,
-> may also change in the future. We may consider freezing them at some
-> point, but for the moment, the content should not be considered immutable.
+> Then you get this error:
 > 
-> Thanks Konstantin for the support setting it up!
+>     error: unused `core::result::Result` that must be used
+>       --> drivers/net/phy/qt2025.rs:88:9
+>        |
+>     88 |         dev.genphy_read_status::<C45>();
+>        |         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+>        |
+>        = note: this `Result` may be an `Err` variant, which should be handled
+>        = note: `-D unused-must-use` implied by `-D warnings`
+>        = help: to override `-D warnings` add `#[allow(unused_must_use)]`
+>     help: use `let _ = ...` to ignore the resulting value
+>        |
+>     88 |         let _ = dev.genphy_read_status::<C45>();
+>        |         +++++++
 
-Happy to help!
+O.K, so the compiler tells you, which is great. The C compiler would
+not, which is why i tend to think of these things.
 
-Acked-by: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
-
--K
+	Andrew
