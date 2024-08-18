@@ -1,95 +1,106 @@
-Received: from mail-pj1-f50.google.com (mail-pj1-f50.google.com [209.85.216.50])
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 637221A270;
-	Sun, 18 Aug 2024 23:38:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 140DC1A270;
+	Sun, 18 Aug 2024 23:40:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724024312; cv=none; b=npmYTLY5gzY4iELlSR0I40Zgf8C8xzGQQxPo/2kS10RWvlSz8W1VpSuh+5nO3rm4XF3wDg+RtxU8E5PJVbwZ7G3YDDkCB7grzr89VP2aXxEF9rNKvBXN8/p0iVkn8jF29lqI5M645YPe6yU0jgk/jNTypyf/6dEkOUO+00Eeyuc=
+	t=1724024459; cv=none; b=ZGec0xtLMnuTcgoCHXoSGddbWXp2ap1n5JTzOWjhJvawbVC1GhsCjTX2yyWhR+03omKUhQDMCjle2nClaybdxeblJ2qDKY/GA4lZV6Y+sfy394+cys8DcZ5U26N+1C3ZeFNEGLZOiA2Lf3E09adx5mKFUFdWGx08VwC++jfgN68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724024312; c=relaxed/simple;
-	bh=Aw2YXgPqlzQ1wcGLDZ4rKOCOh2zClAVbuUVQMaPcye0=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=nW4CDSYNPD0mWN5lZFlD8Nb0FWgZAd6E58MLSEEcSsdpsnGx1SDaxNKjkTWeDJxkHOX/JKLRSUbXxTZrGaGbWr7jO1q7YFLgfygdSE6vGF5svLE235WAIKh+f4ZtlcIabxkP4oHqdvAYrbrXeeh3fIqiTe0XZ2VxjiVrMjSm4Ag=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=InZi1ytl; arc=none smtp.client-ip=209.85.216.50
+	s=arc-20240116; t=1724024459; c=relaxed/simple;
+	bh=JPMhUR53W1LQAo52Vm+lFmzisQ+6GX62iB0ve2z8pE8=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=gNqs3/xXmrNkBhuVE/eQoFSuP5jDeNRDrLNtMOjlrcwzyBhNhYQU7IaqSpqQWvHcA2clGRqGcJxbA0JckuGaFeuCaZayGkeONmBO5Btahjg+a11g2jH0+cnfU5ZDmm3owJND3ukzGZbMtaYXFxqaY6778g4MvJ7LThURojGgz1o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QZ6W8pQY; arc=none smtp.client-ip=209.85.216.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="InZi1ytl"
-Received: by mail-pj1-f50.google.com with SMTP id 98e67ed59e1d1-2d3d4862712so600057a91.2;
-        Sun, 18 Aug 2024 16:38:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QZ6W8pQY"
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-2d3c08541cdso2743694a91.2;
+        Sun, 18 Aug 2024 16:40:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724024311; x=1724629111; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=U6VgqVvxk7VK7HY1HsAaE5udkholJjW1tlWASTNlMKw=;
-        b=InZi1ytly79NhDxGFKqaQ2/iKBnZxyaAY0opD0m4qjln630jo3qSZIu26KudPv9jIQ
-         eHCjF50WbQXy3BpaBtVyCQ2O0xzg7SjBFarlsziilI8Gn5hgQ5r1ZsCim3HM+DVHqEoc
-         IpR0ye8yvMDVLkwrFIj2jRttXMBqBdBiZ3o1acTzqEMeeYvK7OS8clgcHppSWtStyTgI
-         BpQzKxUcNj99oGKVDkgZzRExTgVzadqEjx4sippUvdbjcNDND8Jsp5HUGEhGOxgu+HlD
-         GbRMkv5NBupfNKGlnRd7GPKCS+yc1hYJOSIBzYjgnbYHlS4sQ5MLgxTr8Hh5FGGeIFfZ
-         rvkw==
+        d=gmail.com; s=20230601; t=1724024457; x=1724629257; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=v59q99jiIZDGEhVy26WZsBaijtwbFioIky9kBjG5YAU=;
+        b=QZ6W8pQY7xnAg2ntCZx8S1lpJpjtbcko71EPgcg37ZEpqexIqlKLdaDPnsd97EyGpT
+         m5PE7aBcrHTArrigQcAhqp2L3WMms71+m2lww7hZQeqAFE8v3jq3Jk0PkiJAvokZ4QhX
+         9Oro4q0ZTKx1bpaqYDn6Mg20Jt3WkaevDodGfCxqJWwT9WNW2p9u2WRPgUGlNueC/54Q
+         96XKdWAoWXgL1+yxZRa+hnV2RWwDqyZkvbIqEmPLkGt+7u09LwJ0pr7RVO48v7dRmb+V
+         E2WZqP9Ufr0S7pztqyeJaOhtGTnWtZSJRLA7H93HH/2ZbcaJAaRjuc6GWYRpoRg40h6V
+         zd1Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724024311; x=1724629111;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=U6VgqVvxk7VK7HY1HsAaE5udkholJjW1tlWASTNlMKw=;
-        b=KMaLMH99zUC7HJanerM30YgDB6eInadr54+N8p1nNmqpuK5sR9ISXgzqw6TxSyb3z1
-         H/48R3+M2aa9WYCSdHaDxkBMvUg0ZKlpgezI7PDSuuArA01FTlg5cGrd3J3EH4rSXXvD
-         bhy9vUkvpXC604bWVUxi5vlL6SSmJT6Y5VyYfwI2WxFirhpjxw7GocBicyuqk1T3RzwU
-         T4lwSkjNwVq/2iQGX3ToTPjfNY/xu45RPj3OknB5T4aiXP84zBUZvKDVGtFbBix+cPBc
-         oA05pAhzVlINVu38sso82Acz1kTNt1utbC77k4ssJPJQUIo8XBjb27ilZVZqAEwYvGCO
-         /qHg==
-X-Forwarded-Encrypted: i=1; AJvYcCWfcpgOWzz337sXtA3UWvKBJLJt4ju1RMRJUN02fdEkj0B7XC3FlQ93z3nUAfC0Y0xLy4BjdQZqdoe/sJfEIbBRtfQwxW7k6veQ2Xzim5fp9zfmfhEAH8jobHyH04ulJU6MGprlJ4w=
-X-Gm-Message-State: AOJu0Yx6VIPr99fMOCJ7JP1QDqOBnY2WaOdvlyxcwEtDY0kSuwxIP8mB
-	Xcuq7kBp//XDciOOcWssxfPVfqtK/WjaPcMSgpCQfPzZXzXVtnRv
-X-Google-Smtp-Source: AGHT+IFiDE+RADuhXRQG2NIt2m1Mk+U2Coi2L/ne4sMXzKIyjbNab46mpJ4buHJe0g5SjNaMwRLyRQ==
-X-Received: by 2002:a05:6a20:a10f:b0:1c4:ccef:cd6e with SMTP id adf61e73a8af0-1c9a2a86ab0mr8695662637.8.1724024310331;
-        Sun, 18 Aug 2024 16:38:30 -0700 (PDT)
-Received: from localhost (p4468007-ipxg23001hodogaya.kanagawa.ocn.ne.jp. [153.204.200.7])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-7127aefa113sm5821906b3a.99.2024.08.18.16.38.27
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 18 Aug 2024 16:38:30 -0700 (PDT)
-Date: Sun, 18 Aug 2024 23:38:25 +0000 (UTC)
-Message-Id: <20240818.233825.850938536134184993.fujita.tomonori@gmail.com>
-To: benno.lossin@proton.me
-Cc: fujita.tomonori@gmail.com, netdev@vger.kernel.org,
- rust-for-linux@vger.kernel.org, andrew@lunn.ch, tmgross@umich.edu,
- miguel.ojeda.sandonis@gmail.com, aliceryhl@google.com
-Subject: Re: [PATCH net-next v4 6/6] net: phy: add Applied Micro QT2025 PHY
- driver
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <aa02b004-7281-45d0-87b1-668545bb3493@proton.me>
-References: <20240817051939.77735-1-fujita.tomonori@gmail.com>
-	<20240817051939.77735-7-fujita.tomonori@gmail.com>
-	<aa02b004-7281-45d0-87b1-668545bb3493@proton.me>
+        d=1e100.net; s=20230601; t=1724024457; x=1724629257;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=v59q99jiIZDGEhVy26WZsBaijtwbFioIky9kBjG5YAU=;
+        b=kY+yA/S7Pe7N5meRvOoZBjZd/Q9P/UnY5CZARqPD3Tk5h4NU7SHquZg7o/A/lycYhw
+         jhHyYY+LKwEJJD2uCkeegQMasoZPQ+/MR1/fnsabg9tRCBmjl6+J9mBSE3PphntxulWK
+         6SrW31S1OXMs3GyN9Q3npL5/Ibi4ST6tohZf4WGKXyw3VbyhqmT13gRWM/eBHIRP3C0W
+         Bk3uTvsWs24Pn4YSKj+FmHAy3a3l+XLChy4eLVf/QLDq2YgJJ4r2q1NJi+tf6Xllm0zM
+         6Bb55ENvrIhAfs7Kh5+t3EvNshXZzQQmvvISd2Hopm43VtmYGynlFwNcupvlz8F6/RNX
+         Oilw==
+X-Forwarded-Encrypted: i=1; AJvYcCUTBtnBTJGkNB9pOtRVOGOOcHlLdNdxt3+5PtYuwk8ExdVN/d+J9xnz/FarrsTRVNajG4UrGsHUy5vw0CQ=@vger.kernel.org, AJvYcCVPH6CAD/CeJRWJIqSI0LVvhMUmqoGNYwmPq1Y40LseW3RVwS8xh6TNgFmLFVn8Py+cR9jaCDWLYV7TYLCuYVI=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzq6cjPwmzeHKPBiVmWEr9xs9qq82oKvmRkLjwns/y1a72jAmyu
+	FgGGKZQQYKVk4B4y2pS+zPbnMXiYiCp9IBGjSkjO4OzCJa6X7tgFMyBHi2u763Gk/QzrHaY2Z7j
+	lI1G0DkchOhWI9Dp5Vv1aLNhtUeI=
+X-Google-Smtp-Source: AGHT+IHr+4Y3IZRPArIsKEgxYHPD9DoLuxJrGQ3mH41DyA1LsW8Wi+0LpNAaO/mM0pECSMPf76jvhbu4/a+wZ0V++zY=
+X-Received: by 2002:a17:90b:4ace:b0:2cb:5134:562a with SMTP id
+ 98e67ed59e1d1-2d40533a35bmr6498157a91.7.1724024456724; Sun, 18 Aug 2024
+ 16:40:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+References: <20240817165302.3852499-1-gary@garyguo.net> <ZsFEpjvE9osKDb3b@boqun-archlinux>
+In-Reply-To: <ZsFEpjvE9osKDb3b@boqun-archlinux>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 19 Aug 2024 01:40:44 +0200
+Message-ID: <CANiq72k81VrS+3Skh7gfYzkcxTsGscUJOhroV4MXH-LZgroZFg@mail.gmail.com>
+Subject: Re: [PATCH v2] kbuild: rust: auto generate rust helper exports
+To: Boqun Feng <boqun.feng@gmail.com>
+Cc: Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Alice Ryhl <aliceryhl@google.com>, Dirk Behme <dirk.behme@de.bosch.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sun, 18 Aug 2024 16:10:25 +0000
-Benno Lossin <benno.lossin@proton.me> wrote:
+On Sun, Aug 18, 2024 at 2:49=E2=80=AFAM Boqun Feng <boqun.feng@gmail.com> w=
+rote:
+>
+> Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+>
+> This also passed my test script (x86, arm64 and riscv build and kunit
+> tests).
 
-> On 17.08.24 07:19, FUJITA Tomonori wrote:
->> diff --git a/drivers/net/phy/Kconfig b/drivers/net/phy/Kconfig
->> index 7fddc8306d82..e0ff386d90cd 100644
->> --- a/drivers/net/phy/Kconfig
->> +++ b/drivers/net/phy/Kconfig
->> @@ -109,6 +109,12 @@ config ADIN1100_PHY
->>  	  Currently supports the:
->>  	  - ADIN1100 - Robust,Industrial, Low Power 10BASE-T1L Ethernet PHY
->> 
->> +config AMCC_QT2025_PHY
->> +	tristate "AMCC QT2025 PHY"
->> +	depends on RUST_PHYLIB_ABSTRACTIONS
-> 
-> This is missing a depends on RUST_FW_LOADER_ABSTRACTIONS.
+Hmm... I think you either tested another one, or you manually fixed
+the dependency (`$(obj)/helpers/helpers.o`).
 
-Oops, added. Thanks!
+Or am I confused?
+
+> Miguel, I think it makes more sense if we take this one and the
+> helpers.c split one as early as possible, given they are treewide
+> changes ;-)
+
+Agreed, we should take it soon. I have rebased it on top of
+`rust-next` and fixed the dependency.
+
+Please take a look:
+
+    https://github.com/Rust-for-Linux/linux/commit/0d6e3e8d3677ee7b5cccf9bc=
+002e18f140c02a4e
+
+I will put it in after we confirm we are not confused :) (and after we
+get a linux-next round or two for what is currently there).
+
+Extra `Tested-by`s would be nice!
+
+Cheers,
+Miguel
