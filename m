@@ -1,115 +1,68 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6534450E2;
-	Sun, 18 Aug 2024 14:13:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFDF74C8E;
+	Sun, 18 Aug 2024 15:38:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723990380; cv=none; b=ewSALmNUEGSfEcpUGkDBz7foa5GqVr7mD2EYBTd9lmHevh3id8D5qDAR03eLq256IxdmjlJniNVSpJozop40Eer1DmkM3uZ9gfuibGMFRo/GLkaK3z8soPv1ouPdfmbMEi+De2HzwSzeEszAO6K93Y1+Djj27cbcbgSmg9z85vA=
+	t=1723995488; cv=none; b=WqEXLJPsnRA1vX5qakqOe+fBMxPsZdZg7lXDiRCiXWl74ktgXLCe1ozPeQO0PpQP17orU62QG2E1iCUqcOBC2nMpxvfkhNUBJ38UnV0RripVdACP+Ot6S43Ii4f4kJelTXhMiiEk0sk7Ex0eiw39+11O1wiVjU6taZum8bjYn44=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723990380; c=relaxed/simple;
-	bh=zGM+UT9oq8bGJfotirHww7TPVe1zVtlsHDkNzKJAFOM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hwXQ2bp/oQ8F4qQvQ58OYUI6+viJFyg95gp4ghCMBY4gb5mN5QhNMIBJBZKtcsSvY+X8zfJdncVpBjpWvB0LMy9q8eJ9ylMrAiml5ZL3GRgqI1hZI3NhpPJY/qYplBpMzK85dlw0I7ik8AcyM9wpBx1CN4XVOHDeH0noqDY0oRY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JnhGZKb1; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1723995488; c=relaxed/simple;
+	bh=rDBQpwuO6bjhFq4wfue+ifGsC+h2+pAxROTWcdKsADI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=hdpATkDkuqGGMdp+Acx2lhDOv257qFrHhmjQA4WzqmlLqY+z2bCQmxQueRmZATPT7XttTFTmb5ATFU1XZnpE3E9Uaky/zHppmh2dnx8gyWDLyY9Xf4YGiDDeF0DxSJKFX3aT2zD5tubM/ei5soZ5InXeTW/rvB1xfQvfe89U7M0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=GC+d0YTF; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JnhGZKb1"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B497C32786;
-	Sun, 18 Aug 2024 14:12:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1723990380;
-	bh=zGM+UT9oq8bGJfotirHww7TPVe1zVtlsHDkNzKJAFOM=;
-	h=From:To:Cc:Subject:Date:From;
-	b=JnhGZKb1bZ+07HabqiKsINDcZMO50BhBTq510XovrEs5Gy3huTk7cVmTCGoOPcclL
-	 kdwKyTGu7NaEvErBVXe7pPOgig0BCtHfJy07KsZCbei/4xMefrE/+BYcGaz8f1AFB5
-	 OC4ou2dBwxYy+E0Ig0Q8py9NkV7r8Hj5SMlscoyluzVkU6Z9K74ib71NrFt1TTceSB
-	 WNS84Yz82K932qw0WhxvmLE5qhL1n9yIWZ+E4GyMCweayQptt2blRLLxpwEd4c6e+j
-	 0s0kXcZRoD+VvgdAqKi4eXopwyKBQpy8kWhxsTL2d8id9Qu9Hdl8YZaSWRQN/KlyQ2
-	 oVNzA5o6x6/WA==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Jonathan Corbet <corbet@lwn.net>
-Cc: Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	rust-for-linux@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	patches@lists.linux.dev,
-	Konstantin Ryabitsev <konstantin@linuxfoundation.org>,
-	Guillaume Gomez <guillaume1.gomez@gmail.com>
-Subject: [RFC PATCH] rust: enable rustdoc's `--generate-link-to-definition`
-Date: Sun, 18 Aug 2024 16:12:49 +0200
-Message-ID: <20240818141249.387166-1-ojeda@kernel.org>
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="GC+d0YTF"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=+VrEIYLY0/b0iX4tFAE0puVZXs13Yf+4rnJxOQhlDWQ=; b=GC+d0YTFZUjG20h4gf3WHM+OPi
+	+OHRfdNE9gCpi53uXEW3ZineHvd/gO9Sly4fasnczWYKONuP4DSBBJmZAHl0LlELBOi2YMxtUTDrc
+	tHsa1ERybEyMhsaSHulyUXVJ44e5AaOH49Va7kYxaOhrwuoTgNsfYEPdk9/wq7hDtjdc=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1sfhyj-0052Zk-Eu; Sun, 18 Aug 2024 17:38:01 +0200
+Date: Sun, 18 Aug 2024 17:38:01 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, tmgross@umich.edu,
+	miguel.ojeda.sandonis@gmail.com, aliceryhl@google.com
+Subject: Re: [PATCH net-next v4 3/6] rust: net::phy implement
+ AsRef<kernel::device::Device> trait
+Message-ID: <1afb6d69-f850-455f-97e2-361d490a2637@lunn.ch>
+References: <a8284afb-d01f-47c7-835f-49097708a53e@proton.me>
+ <20240818.021341.1481957326827323675.fujita.tomonori@gmail.com>
+ <9127c46d-688c-41ea-8f6c-2ca6bdcdd2cd@proton.me>
+ <20240818.073603.398833722324231598.fujita.tomonori@gmail.com>
+ <f480eb03-78f5-497e-a71d-57ba4f596153@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <f480eb03-78f5-497e-a71d-57ba4f596153@proton.me>
 
-In Rust 1.56.0 [1], rustdoc introduced the "jump to definition"
-feature [2], i.e. the unstable flag `--generate-link-to-definition`.
-It adds links to the source view of the documentation.
+> Just to be sure: the `phydev.mdio.dev` struct is refcounted and
+> incrementing the refcount is fine, right?
 
-For instance, in the source view of `rust/kernel/sync.rs`, for this code:
+There is nothing special here. PHY devices are just normal Linux
+devices. The device core is responsible for calling .probe() and
+.remove() on a device, and these should be the first and last
+operation on a device. The device core provides refcounting of the
+struct device, so it should always be valid.
 
-    impl Default for LockClassKey {
-        fn default() -> Self {
-            Self::new()
-        }
-    }
+So i have to wounder if you are solving this at the correct
+level. This should be generic to any device, so the Rust concept of a
+device should be stating these guarantees, not each specific type of
+device.
 
-It will add three hyperlinks:
-
-  - `Default` points to the rendered "Trait `core::default::Default`"
-    page (not the source view, since it goes to another crate, though
-    this may change).
-
-  - `LockClassKey` points to the `pub struct LockClassKey(...);` line
-    in the same page, highlighting the line number.
-
-  - `Self::new()` points to the `pub const fn new() -> Self { ... }`
-    associated function, highlighting its line numbers (i.e. for the
-    full function).
-
-This makes the source view more useful and a bit closer to the experience
-in e.g. the Elixir Cross Referencer [3].
-
-I have provisionally enabled it for rust.docs.kernel.org [4] -- one can
-take a look at the source view there for an example of how it looks like.
-
-Thus enable it.
-
-Cc: Guillaume Gomez <guillaume1.gomez@gmail.com>
-Link: https://github.com/rust-lang/rust/pull/84176 [1]
-Link: https://github.com/rust-lang/rust/issues/89095 [2]
-Link: https://elixir.bootlin.com [3]
-Link: https://rust.docs.kernel.org [4]
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
----
- rust/Makefile | 1 +
- 1 file changed, 1 insertion(+)
-
-diff --git a/rust/Makefile b/rust/Makefile
-index 1f10f92737f2..d311bcc30226 100644
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -63,6 +63,7 @@ quiet_cmd_rustdoc = RUSTDOC $(if $(rustdoc_host),H, ) $<
- 	OBJTREE=$(abspath $(objtree)) \
- 	$(RUSTDOC) $(if $(rustdoc_host),$(rust_common_flags),$(rust_flags)) \
- 		$(rustc_target_flags) -L$(objtree)/$(obj) \
-+		-Zunstable-options --generate-link-to-definition \
- 		--output $(rustdoc_output) \
- 		--crate-name $(subst rustdoc-,,$@) \
- 		$(if $(rustdoc_host),,--sysroot=/dev/null) \
-
-base-commit: 7c626ce4bae1ac14f60076d00eafe71af30450ba
--- 
-2.46.0
-
+	Andrew
