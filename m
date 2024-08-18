@@ -1,46 +1,45 @@
 Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFDF74C8E;
-	Sun, 18 Aug 2024 15:38:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D342814883B;
+	Sun, 18 Aug 2024 15:44:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723995488; cv=none; b=WqEXLJPsnRA1vX5qakqOe+fBMxPsZdZg7lXDiRCiXWl74ktgXLCe1ozPeQO0PpQP17orU62QG2E1iCUqcOBC2nMpxvfkhNUBJ38UnV0RripVdACP+Ot6S43Ii4f4kJelTXhMiiEk0sk7Ex0eiw39+11O1wiVjU6taZum8bjYn44=
+	t=1723995894; cv=none; b=fYNAgBIu2+Ud6R29sXxFT+QeLuIbuPeTGLZwWWE6jVM6etPF/H7fEssvIniKRvWbkhZM/b8IWOgUHmiESpWuj8w6ltvA+50SsG+0nvvJ4jA420B6H+hgagqDQCiRQUQZwOryh+NjLagKSN/Uw0IR3UwAnvN+ALHRUOKRsbw1C3w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723995488; c=relaxed/simple;
-	bh=rDBQpwuO6bjhFq4wfue+ifGsC+h2+pAxROTWcdKsADI=;
+	s=arc-20240116; t=1723995894; c=relaxed/simple;
+	bh=PUyinxWjfUOPfACNm8w50oXOklVs0JiUI3Vo342p/bw=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=hdpATkDkuqGGMdp+Acx2lhDOv257qFrHhmjQA4WzqmlLqY+z2bCQmxQueRmZATPT7XttTFTmb5ATFU1XZnpE3E9Uaky/zHppmh2dnx8gyWDLyY9Xf4YGiDDeF0DxSJKFX3aT2zD5tubM/ei5soZ5InXeTW/rvB1xfQvfe89U7M0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=GC+d0YTF; arc=none smtp.client-ip=156.67.10.101
+	 Content-Type:Content-Disposition:In-Reply-To; b=KW8MGnUGXLe8K4eXyCTbyeWRIf5sjhsZY7AmxVXwrRPm3E7vKZViIvTbrz8zaw+nM9d09Ivrd/7Xqf8KtDzQy5d/62eO4LqYVGvHtAj0hG4o1E1R56pTZp3ODOTcuYWI0dbjkwnjt5/86WgMAZMDRGG82zo7HKRfnx4m0OAr19Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=4wftUawp; arc=none smtp.client-ip=156.67.10.101
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="GC+d0YTF"
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="4wftUawp"
 DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
 	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
 	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
 	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
 	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=+VrEIYLY0/b0iX4tFAE0puVZXs13Yf+4rnJxOQhlDWQ=; b=GC+d0YTFZUjG20h4gf3WHM+OPi
-	+OHRfdNE9gCpi53uXEW3ZineHvd/gO9Sly4fasnczWYKONuP4DSBBJmZAHl0LlELBOi2YMxtUTDrc
-	tHsa1ERybEyMhsaSHulyUXVJ44e5AaOH49Va7kYxaOhrwuoTgNsfYEPdk9/wq7hDtjdc=;
+	bh=SJVFrrWXKpqcQrELUI3D7UkflbTJVVx/NWFl5FdHBSw=; b=4wftUawpOmMjcqPOt4VN+C01zi
+	JxcX4uke/jBwPzgamL5JXHN4Pg7+j8pF6plL+dV/YBH79xTlNWA5SyQBC0VeNvr9+wtbicDnE5mjN
+	UYFK47o/S1FfyWVFDHTkuFeRlTYKIm3vN6+qltP4iS3FJbWgoHVLdSBGRo92AAhbowtI=;
 Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
 	(envelope-from <andrew@lunn.ch>)
-	id 1sfhyj-0052Zk-Eu; Sun, 18 Aug 2024 17:38:01 +0200
-Date: Sun, 18 Aug 2024 17:38:01 +0200
+	id 1sfi5E-0052b6-NG; Sun, 18 Aug 2024 17:44:44 +0200
+Date: Sun, 18 Aug 2024 17:44:44 +0200
 From: Andrew Lunn <andrew@lunn.ch>
 To: Benno Lossin <benno.lossin@proton.me>
 Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org,
 	rust-for-linux@vger.kernel.org, tmgross@umich.edu,
 	miguel.ojeda.sandonis@gmail.com, aliceryhl@google.com
-Subject: Re: [PATCH net-next v4 3/6] rust: net::phy implement
- AsRef<kernel::device::Device> trait
-Message-ID: <1afb6d69-f850-455f-97e2-361d490a2637@lunn.ch>
-References: <a8284afb-d01f-47c7-835f-49097708a53e@proton.me>
- <20240818.021341.1481957326827323675.fujita.tomonori@gmail.com>
- <9127c46d-688c-41ea-8f6c-2ca6bdcdd2cd@proton.me>
- <20240818.073603.398833722324231598.fujita.tomonori@gmail.com>
- <f480eb03-78f5-497e-a71d-57ba4f596153@proton.me>
+Subject: Re: [PATCH net-next v4 6/6] net: phy: add Applied Micro QT2025 PHY
+ driver
+Message-ID: <1a717f2d-8512-47bd-a5b3-c5ceb9b44f03@lunn.ch>
+References: <20240817051939.77735-1-fujita.tomonori@gmail.com>
+ <20240817051939.77735-7-fujita.tomonori@gmail.com>
+ <9a7c687a-29a9-4a1a-ad69-39ce7edad371@lunn.ch>
+ <7f835fe8-e641-4b84-a080-13f4841fb64a@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -49,20 +48,45 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <f480eb03-78f5-497e-a71d-57ba4f596153@proton.me>
+In-Reply-To: <7f835fe8-e641-4b84-a080-13f4841fb64a@proton.me>
 
-> Just to be sure: the `phydev.mdio.dev` struct is refcounted and
-> incrementing the refcount is fine, right?
+On Sat, Aug 17, 2024 at 09:34:13PM +0000, Benno Lossin wrote:
+> On 17.08.24 20:51, Andrew Lunn wrote:
+> >> +    fn read_status(dev: &mut phy::Device) -> Result<u16> {
+> >> +        dev.genphy_read_status::<C45>()
+> >> +    }
+> > 
+> > Probably a dumb Rust question. Shouldn't this have a ? at the end? It
+> > can return a negative error code.
+> 
+> `read_status` returns a `Result<u16>` and `Device::genphy_read_status`
+> also returns a `Result<u16>`. In the function body we just delegate to
+> the latter, so no `?` is needed. We just return the entire result.
+> 
+> Here is the equivalent pseudo-C code:
+> 
+>     int genphy_read_status(struct phy_device *dev);
+>     
+>     int read_status(struct phy_device *dev)
+>     {
+>         return genphy_read_status(dev);
+>     }
+> 
+> There you also don't need an if for the negative error code, since it's
+> just propagated.
 
-There is nothing special here. PHY devices are just normal Linux
-devices. The device core is responsible for calling .probe() and
-.remove() on a device, and these should be the first and last
-operation on a device. The device core provides refcounting of the
-struct device, so it should always be valid.
+O.K, it seems to work. But one of the things we try to think about in
+the kernel is avoiding future bugs. Say sometime in the future i
+extend it:
 
-So i have to wounder if you are solving this at the correct
-level. This should be generic to any device, so the Rust concept of a
-device should be stating these guarantees, not each specific type of
-device.
+    fn read_status(dev: &mut phy::Device) -> Result<u16> {
+        dev.genphy_read_status::<C45>()
+
+        dev.genphy_read_foo()
+    }
+
+By forgetting to add the ? to dev.genphy_read_status, have i just
+introduced a bug? Could i have avoided that by always having the ?
+even when it is not needed?
 
 	Andrew
