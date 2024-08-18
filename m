@@ -1,86 +1,119 @@
-Received: from mail-pg1-f171.google.com (mail-pg1-f171.google.com [209.85.215.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB24A17BA9;
-	Sun, 18 Aug 2024 14:08:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 972EE8F66;
+	Sun, 18 Aug 2024 14:12:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1723990121; cv=none; b=g74lXYcRrwoi4AA9xPXZLU2NUczQbOiPQFCkrGca2tlr08XCKhrL0h2Q669x+zJ3D4qwSo60hYqS1z7s9nbKIY2LB14ELBch6RQdzoiJ945GrvILQXRGWHOmm+PGTpdSBg+qFUT33VsiEzjSjsYsyV8zFWmUUTsEYVhtXsHQmCQ=
+	t=1723990336; cv=none; b=ZUgsZWyLCBl6I9JB1xAdVj73nCe6y6P4pOpvWokOKpeq7ztv224doevanjOPCd9H8bMMFc4XrN9pjDGZ3odkozXN6Y5iRoH8ZaWoBETGf47pl705m5RGcTeOoNf3KFVUsuOwK0hFXFD9w1QIe4QkR96NmRvOwQXwLYonEAs5d7w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1723990121; c=relaxed/simple;
-	bh=9sFuh4ejMdxdXtCYfvXG+pVVZDVcD3PhuIlFpr8vrXI=;
-	h=MIME-Version:From:Date:Message-ID:Subject:To:Cc:Content-Type; b=CHrvVelHKKXBSKTQDS98YpQfwg2Q78R7qgWWzOmMMIkrSumrJXYCnCZBcIT1qfoyJxd4S1DMqB778FaWzwEnLvIGPISqROuG7OrX/6Ub07oCpM6pXntzQxq6vFl9x9gS1Zd7Ug6/LyyUVnFF0zrAS8Er8QubpLIhiLuxHpgc+kg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=K4Qy1TJm; arc=none smtp.client-ip=209.85.215.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1723990336; c=relaxed/simple;
+	bh=Qz+yNv/sbLh3s6hFYGhJd0002JWVp9ZyYnfE7jmmIM0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MZH7MDDqbg6PyYkbjKviu6/+2U544ZC+qcqNauhbNL6sjjeLFpOTSjmJaNFR1xO/+y1HUxLWCzva/ewTqtx8U2/SWHmDTF9YP1z2V4G8T+dmIfbLBJSDO/XBb6HceokEEpaMjg9Hn01TpJ3rQ9cQzQxXLWTR3a/SrZAmVgJ5H3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=b/RgDozU; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="K4Qy1TJm"
-Received: by mail-pg1-f171.google.com with SMTP id 41be03b00d2f7-76cb5b6b3e4so2408461a12.1;
-        Sun, 18 Aug 2024 07:08:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1723990119; x=1724594919; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=laIiQJ2iEbIWT/0DgdSsdt92Z8C7p4+nGvu7hW2oc0M=;
-        b=K4Qy1TJmQuc8qrd4ifoxnXrFPiaKzk527ITcB65yseQ1mfyxlzoV9LXL0k5/8upHqu
-         9d90EtNSVoaabBQz09XX1rFAuvnTGcNyhSQBiiAGzB4eR4PUtALbEJ0Pd/2E34kZl8E1
-         g0Q8t2ergJfLB923SAw4d66jA0gkNgZT8PBZUuCC0rDw/FvwyJHLHbVXkMWT0zhBqsnh
-         /RQCxCvG+U72F1aLuCvtaCGpi61uWCzRkGUKUly1DoI0CbS/BG9h1e1eKwHzneubfz5c
-         PAaZnZvO/h5AcXjX6H02OTlzrz7iyrahq0pWcuJY8nJZ7hyJiHU48ISnMXGS9ejyxlia
-         RDBA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1723990119; x=1724594919;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=laIiQJ2iEbIWT/0DgdSsdt92Z8C7p4+nGvu7hW2oc0M=;
-        b=DQThZgQFDgxjFGR90LiP3dPxPEkaUG5/S50P3GRLmxekm6nTVX6j84kG0u1M9nz1CR
-         SwgQ7TuO4XPzFcg33sywJatI63HCBz2S+E/QrwRCoUB4PK5qQZpfBOq0Qgmc5UzgAMly
-         qvswLbXFV4N0Wd25tImiqV49mxpQe/5gamcIC1C9zXSI/XooBvkVqDTknfgpcCwV8ZbI
-         j/C0oaQT1bpgx/pe4pAl2XlHlCV7cW1E7zb+M8LMh48/42CJoOZCVlJGzm18WJBuGSDr
-         5Em4+QSdw2H4a6yHTE/QVz+UjqEabOfhYipvqcoJ4B/VXTNY/OWv1zMmzo8m0xN9rzx0
-         fkKw==
-X-Gm-Message-State: AOJu0YyY46AK7ZXIKG6WAYRjVwaXm54NRYhSu1EjHmThrpG5WFO1airs
-	GOPvPLT6Y+QohrX/Lu/H2/XsWs/PSWGK8KLrxZgHN64xr/2HE/2pgGKGIRRBaN4idru5uFSv3F3
-	lvWP1s4L1bexpl52srbb0NU2XbunUGBjJDfA=
-X-Google-Smtp-Source: AGHT+IEXuabBGklRqTMUQ4+dmxoZ4tgTUCIeZ3hzy18zBl5qcbZDb1bV+O3FYosnhtjaOS5/GApttsXR3FAHDy+7XZA=
-X-Received: by 2002:a05:6a20:9f4b:b0:1c0:e1a5:9583 with SMTP id
- adf61e73a8af0-1c904f91247mr7436869637.17.1723990119000; Sun, 18 Aug 2024
- 07:08:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="b/RgDozU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 680B5C32786;
+	Sun, 18 Aug 2024 14:12:12 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1723990335;
+	bh=Qz+yNv/sbLh3s6hFYGhJd0002JWVp9ZyYnfE7jmmIM0=;
+	h=From:To:Cc:Subject:Date:From;
+	b=b/RgDozUyt6LKnGWQ4oo4AyQ0/fYW0K2vMskFsTYluqlnTTTL65VhOR21C9KPvwOl
+	 TLxj6aYIIzlSN+gITD/3jBb+lHT/IavyzigUy+wPJwLtBgsEaJvAg39v6SX1ZwQz2i
+	 dhf3RPQMCoB8A4/QoPGUcCXPBtYuHSlsFmgtv2QY8yP2oCYVNZ0qFlW6QC0B++R4rH
+	 aMV18ckrZJbZY/5lTPNhDO4T83ysVOeeFLQlS6GYuB9YHvuF4T/G1vSnaErNylzhRc
+	 Ke3khe042cFbJ4q4oWri7VMuGpIZMZdPcwvpKGZ6D8j9XPfLo/lx3CE+tAaA1qp1H/
+	 GUwk0/FVAuP8A==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Jonathan Corbet <corbet@lwn.net>
+Cc: Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	rust-for-linux@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	patches@lists.linux.dev,
+	Konstantin Ryabitsev <konstantin@linuxfoundation.org>
+Subject: [PATCH 1/2] docs: rust: link to https://rust.docs.kernel.org
+Date: Sun, 18 Aug 2024 16:11:59 +0200
+Message-ID: <20240818141200.386899-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 18 Aug 2024 16:08:26 +0200
-Message-ID: <CANiq72nSwGou23kFU9v8=CW_78WzVbCVhfDL=SNZja8aBLCRSQ@mail.gmail.com>
-Subject: https://rust.docs.kernel.org is now available
-To: rust-for-linux <rust-for-linux@vger.kernel.org>
-Cc: Linux Doc Mailing List <linux-doc@vger.kernel.org>, 
-	Konstantin Ryabitsev <konstantin@linuxfoundation.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
 
-Hi all,
-
-The Rust code documentation (i.e. `rustdoc`-generated docs) is now available at:
+The Rust code documentation (i.e. `rustdoc`-generated docs) is now
+available at:
 
     https://rust.docs.kernel.org
 
-For linux-next, see:
+Thus document it and remove the `TODO` line.
 
-    https://rust.docs.kernel.org/next/
-
-There are also tags for each main release, e.g. for the current stable kernel:
-
-    https://rust.docs.kernel.org/6.10/
-
-The generation uses a particular kernel configuration, based on x86_64, which
-may get tweaked over time. Older tags, and how they are generated, may also
-change in the future. We may consider freezing them at some point, but for the
-moment, please do not consider the content to be immutable.
+The generation uses a particular kernel configuration, based on x86_64,
+which may get tweaked over time. Older tags, and how they are generated,
+may also change in the future. We may consider freezing them at some
+point, but for the moment, the content should not be considered immutable.
 
 Thanks Konstantin for the support setting it up!
 
-Cheers,
-Miguel
+Cc: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+---
+ Documentation/rust/general-information.rst | 13 ++++++++++---
+ Documentation/rust/index.rst               |  3 +++
+ 2 files changed, 13 insertions(+), 3 deletions(-)
+
+diff --git a/Documentation/rust/general-information.rst b/Documentation/rust/general-information.rst
+index e3f388ef4ee4..e174327ad361 100644
+--- a/Documentation/rust/general-information.rst
++++ b/Documentation/rust/general-information.rst
+@@ -22,10 +22,17 @@ Rust kernel code is documented using ``rustdoc``, its built-in documentation
+ generator.
+ 
+ The generated HTML docs include integrated search, linked items (e.g. types,
+-functions, constants), source code, etc. They may be read at (TODO: link when
+-in mainline and generated alongside the rest of the documentation):
++functions, constants), source code, etc. They may be read at:
+ 
+-	http://kernel.org/
++	https://rust.docs.kernel.org
++
++For linux-next, please see:
++
++	https://rust.docs.kernel.org/next/
++
++There are also tags for each main release, e.g.:
++
++	https://rust.docs.kernel.org/6.10/
+ 
+ The docs can also be easily generated and read locally. This is quite fast
+ (same order as compiling the code itself) and no special tools or environment
+diff --git a/Documentation/rust/index.rst b/Documentation/rust/index.rst
+index 46d35bd395cf..5e51bfb248a4 100644
+--- a/Documentation/rust/index.rst
++++ b/Documentation/rust/index.rst
+@@ -32,6 +32,9 @@ configurations.
+ .. only:: not rustdoc and html
+ 
+ 	This documentation does not include rustdoc generated information.
++	A pregenerated version is provided at:
++
++		https://rust.docs.kernel.org
+ 
+ .. toctree::
+     :maxdepth: 1
+
+base-commit: 7c626ce4bae1ac14f60076d00eafe71af30450ba
+-- 
+2.46.0
+
