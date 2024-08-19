@@ -1,215 +1,122 @@
-Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A38115B964
-	for <rust-for-linux@vger.kernel.org>; Mon, 19 Aug 2024 09:07:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37082142900;
+	Mon, 19 Aug 2024 11:24:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724058464; cv=none; b=Mt/Y/opYESmwOqpqRdL/dsrGM+nj7Q3jBqTrjdLvUHdV2/ZQkbAcpa96a/Vji4hyZpHIns5GmIMItHRLCUNB4zKOFerqzvCpBmicoiLG84CzMYr3ODgLX3uAxY4S4es7yNYbXMKr17JUnUb6BG2JowR9Hxq4IDjpVYVqYMs/y3Y=
+	t=1724066689; cv=none; b=WXiPcNDQBqq8V15R9+THmkZog/fPx/dHUZPT0JBSKeKVsNiYZb8/SJkJmRm7pRusCrr3n2zmyhgM6RdXP/QMJ9a0An9/ljbe8AEckaCyNZKKrOPyCn8LQalTNgSmxqWsrg2wkhwzgYJGZOofzPsKxAqGuX9p2+HJTgdOrQG8G1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724058464; c=relaxed/simple;
-	bh=0ksC3JMD9/LB03gW2/IHzb/51BObj81BzqD4gUWtbGE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pBU6JoZrhUdcno6wdNEx2lUKwBG/+okX9pH/nxa8+yzcaqCJ+THlakqFELPfg2cswP/+YQzte2Gz0hez3eTa5C/xjcleFNbLteLZcts41VfUoPCVK9Jweyse3oFv3qjOirbeyG6UfOgP0mcDt8oQgW6k7iuTgVlvQq69OrwhTlk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=p5k/7rnY; arc=none smtp.client-ip=209.85.128.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=umich.edu
+	s=arc-20240116; t=1724066689; c=relaxed/simple;
+	bh=LbRFn62ecbLf29F1YC968ykQ84zaLwEJBRwts8aNNog=;
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=L7/FRe+6U57pcLyykB5tTs7wqu7d4UiCUZb7DWcTupY06ttWk3VrCc+O/tADbY8A+gbvV8wiPAMJDg1EgcK+vC4T6DP5/oStHRTCGJTYCnjDCQCyzh1Za0fa6RDO+FCxJai7NyKPxWgScLtji2HOiJZfYhV5Crm4HnsDpB5Q0WA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=HSQS1LK7; arc=none smtp.client-ip=185.70.43.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="p5k/7rnY"
-Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-6b47ff8a59aso15967387b3.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 19 Aug 2024 02:07:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=umich.edu; s=google-2016-06-03; t=1724058461; x=1724663261; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=E5pxH0Wv82KaWtSz09+l7PjD8n6brxLfJzKsxVLOzpA=;
-        b=p5k/7rnYFnttZ0UsUkptcSEJIFkOK7tbYIR68mgtC0n4rYQqEPR8vKaJyD67psk96h
-         F/G9kPdayTnu305efP4YzDsc3CbsCmGvhVkCzFuuEfq6FXMYNuCk87KKyxu+zXvomFVs
-         4LHY8jtzbqNsGZO1SvnVossAyjfCK0lNGDF1Z/FE/1et6X8kfTIcLTTcJXLjLWozDxVP
-         OrNc1zNGFLPMBnhlFfViLQm8J6fpnPjN+TxZHmLKUZU818+tEdaoaX7l6skiYS4Kjwvl
-         RU5hXy9jNIi7b88djkdVciNaAQBJyGoXg2PULNX2oNNjW1a0rspqi4s1oxu4EFIaFqbk
-         brDQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724058461; x=1724663261;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=E5pxH0Wv82KaWtSz09+l7PjD8n6brxLfJzKsxVLOzpA=;
-        b=BqMIsYP1ug9IxprDXg6buWecrQqivmmiBwaDJNUA3aV8HYBCy6V+oNPD0Z+6Qu9vaC
-         jjHXozzpCvTLFxfRWqykLRgvSxebmrK1qR0fHlzOQQhtVyRThITcx7ZWIE7SI2p97hKa
-         /73sQo93rG20nwoQOGx69quQV+QOXPzpfC6z/AXnALcl0vsypU967elGfKRCyOYCqLbL
-         AOkA1AwDdRQ8lla1LohHHcdctph3onDb/I93GfEY3CdovgoF85kh5lTQCjlY+JOSAXxr
-         6jRi/iCdM0n1ugMaABdt6lIpsSddrheFSEC4xaC7YEZUMK55gTqsLQ6lAsePku8BtgXR
-         AoMA==
-X-Forwarded-Encrypted: i=1; AJvYcCUXi2GS4EI2IZ1HI7Vih0uWCIwp8LryELjaww8u19kj9OgBiWBfHJEfZG8OTEdTd564n2/nmOkV0DEg+Y5sl3fOTqNqKSEMnj22Eiilz9s=
-X-Gm-Message-State: AOJu0Ywfb2kug1nYnUv+QEESuRAIV3Flx6l9fa8CQby96WQdrZeYZMSD
-	pu8n3tOmhyfvhxR649KQmBcrstGTpyGmjP0DuM2OJ/9wcGMJM1l4P89NZ7KmWMKgUyA1aatqdL6
-	Fm78ccGFCgBIOajT1hVfi0EIvOpAbwgdPgfFU2w==
-X-Google-Smtp-Source: AGHT+IFZoh/Vo8yOpmmELJS5Vw6qZn89KiNK25SiDb2hf1NrmGPIUA51jAwqStuSpVERFGP5l6Bdox0KJchgH23uiiY=
-X-Received: by 2002:a05:690c:ec5:b0:6b0:52a6:6515 with SMTP id
- 00721157ae682-6b1b9b5abbemr128653977b3.6.1724058461451; Mon, 19 Aug 2024
- 02:07:41 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="HSQS1LK7"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1724066684; x=1724325884;
+	bh=M/jI8Buod5/ftUezgCTTRBGMAk+KfEY7PTZZcXJeT0U=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=HSQS1LK7XUKNn4s9N3pbjm4vY6UWoYYuKbOLVn+mJ3zSSUBG9mrwQEJstpzCEkCVM
+	 mBZfuPzX/0AmU1i8unn2e0P4Mu/Q2U8ezbxqrT3f9FUpLce6k/aoQ4KokerDCJV8T9
+	 gkDRyZYsFImsKxKXy+dwSdp+xRJTT8NUaMh3Da0MeOMza9vXvscrCf0J4lGnQiG0ou
+	 YxiJYk6fRYMU2oBk6UNd3o3IpvB9JSwN5TaEkDhImrrQ52CLp7cBvBmCs6nzuyNU+c
+	 2gnKg1p1+DjuWKgZf4pmtDJakYtUESKbUmyJ7jV2WFgiVRIgHUmI9y1TXDHCrr0cbw
+	 O0AyGlgZci/ig==
+Date: Mon, 19 Aug 2024 11:24:35 +0000
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH v4 1/2] rust: kernel: add `drop_contents` to `BoxExt`
+Message-ID: <20240819112415.99810-1-benno.lossin@proton.me>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: a0252b75cbbe8e8c7345969b04e6326d787da8b3
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240819005345.84255-1-fujita.tomonori@gmail.com> <20240819005345.84255-7-fujita.tomonori@gmail.com>
-In-Reply-To: <20240819005345.84255-7-fujita.tomonori@gmail.com>
-From: Trevor Gross <tmgross@umich.edu>
-Date: Mon, 19 Aug 2024 04:07:30 -0500
-Message-ID: <CALNs47siFZQDE8_N2FyLhCMfszrcX7f5Q=rj8c9dzO9Q=hQsmQ@mail.gmail.com>
-Subject: Re: [PATCH net-next v5 6/6] net: phy: add Applied Micro QT2025 PHY driver
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, andrew@lunn.ch, 
-	miguel.ojeda.sandonis@gmail.com, benno.lossin@proton.me, aliceryhl@google.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Aug 18, 2024 at 8:01=E2=80=AFPM FUJITA Tomonori
-<fujita.tomonori@gmail.com> wrote:
->
-> This driver supports Applied Micro Circuits Corporation QT2025 PHY,
-> based on a driver for Tehuti Networks TN40xx chips.
->
-> The original driver for TN40xx chips supports multiple PHY hardware
-> (AMCC QT2025, TI TLK10232, Aqrate AQR105, and Marvell 88X3120,
-> 88X3310, and MV88E2010). This driver is extracted from the original
-> driver and modified to a PHY driver in Rust.
->
-> This has been tested with Edimax EN-9320SFP+ 10G network adapter.
->
-> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-> ---
->  MAINTAINERS               |  7 +++
->  drivers/net/phy/Kconfig   |  7 +++
->  drivers/net/phy/Makefile  |  1 +
->  drivers/net/phy/qt2025.rs | 90 +++++++++++++++++++++++++++++++++++++++
->  4 files changed, 105 insertions(+)
->  create mode 100644 drivers/net/phy/qt2025.rs
->
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 9dbfcf77acb2..d4464e59dfea 100644
+Sometimes (see [1]) it is necessary to drop the value inside of a
+`Box<T>`, but retain the allocation. For example to reuse the allocation
+in the future.
+Introduce a new function `drop_contents` that turns a `Box<T>` into
+`Box<MaybeUninit<T>>` by dropping the value.
 
-> +struct PhyQT2025;
-> +
-> +#[vtable]
-> +impl Driver for PhyQT2025 {
-> +    const NAME: &'static CStr =3D c_str!("QT2025 10Gpbs SFP+");
-> +    const PHY_DEVICE_ID: phy::DeviceId =3D phy::DeviceId::new_with_exact=
-_mask(0x0043A400);
-> +
-> +    fn probe(dev: &mut phy::Device) -> Result<()> {
-> +        // The vendor driver does the following checking but we have no =
-idea why.
+Signed-off-by: Benno Lossin <benno.lossin@proton.me>
+Link: https://lore.kernel.org/rust-for-linux/20240418-b4-rbtree-v3-5-323e13=
+4390ce@google.com/ [1]
+---
+ rust/kernel/alloc/box_ext.rs | 31 ++++++++++++++++++++++++++++++-
+ 1 file changed, 30 insertions(+), 1 deletion(-)
 
-In the module doc comment, could you add a note about where the vendor
-driver came from? I am not sure how to find it.
+diff --git a/rust/kernel/alloc/box_ext.rs b/rust/kernel/alloc/box_ext.rs
+index 829cb1c1cf9e..b68ade26a42d 100644
+--- a/rust/kernel/alloc/box_ext.rs
++++ b/rust/kernel/alloc/box_ext.rs
+@@ -4,7 +4,7 @@
+=20
+ use super::{AllocError, Flags};
+ use alloc::boxed::Box;
+-use core::mem::MaybeUninit;
++use core::{mem::MaybeUninit, ptr, result::Result};
+=20
+ /// Extensions to [`Box`].
+ pub trait BoxExt<T>: Sized {
+@@ -17,6 +17,22 @@ pub trait BoxExt<T>: Sized {
+     ///
+     /// The allocation may fail, in which case an error is returned.
+     fn new_uninit(flags: Flags) -> Result<Box<MaybeUninit<T>>, AllocError>=
+;
++
++    /// Drops the contents, but keeps the allocation.
++    ///
++    /// # Examples
++    ///
++    /// ```
++    /// use kernel::alloc::{flags, box_ext::BoxExt};
++    /// let value =3D Box::new([0; 32], flags::GFP_KERNEL)?;
++    /// assert_eq!(*value, [0; 32]);
++    /// let value =3D Box::drop_contents(value);
++    /// // Now we can re-use `value`:
++    /// let value =3D Box::write(value, [1; 32]);
++    /// assert_eq!(*value, [1; 32]);
++    /// # Ok::<(), Error>(())
++    /// ```
++    fn drop_contents(this: Self) -> Box<MaybeUninit<T>>;
+ }
+=20
+ impl<T> BoxExt<T> for Box<T> {
+@@ -53,4 +69,17 @@ fn new_uninit(flags: Flags) -> Result<Box<MaybeUninit<T>=
+>, AllocError> {
+         // zero-sized types, we use `NonNull::dangling`.
+         Ok(unsafe { Box::from_raw(ptr) })
+     }
++
++    fn drop_contents(this: Self) -> Box<MaybeUninit<T>> {
++        let ptr =3D Box::into_raw(this);
++        // SAFETY: `ptr` is valid, because it came from `Box::into_raw`.
++        unsafe { ptr::drop_in_place(ptr) };
++
++        // CAST: `MaybeUninit<T>` is a transparent wrapper of `T`.
++        let ptr =3D ptr.cast::<MaybeUninit<T>>();
++
++        // SAFETY: `ptr` is valid for writes, because it came from `Box::i=
+nto_raw` and it is valid for
++        // reads, since the pointer came from `Box::into_raw` and the type=
+ is `MaybeUninit<T>`.
++        unsafe { Box::from_raw(ptr) }
++    }
+ }
 
-> +        let hw_id =3D dev.read(C45::new(Mmd::PMAPMD, 0xd001))?;
-> +        if (hw_id >> 8) & 0xff !=3D 0xb3 {
-> +            return Err(code::ENODEV);
-> +        }
-> +
-> +        // The 8051 will remain in the reset state.
+base-commit: c4d7f546dd9aa9780716cdb07416ca97264dce43
+--=20
+2.45.2
 
-What is the 8051 here?
 
-> +        dev.write(C45::new(Mmd::PMAPMD, 0xC300), 0x0000)?;
-> +        // Configure the 8051 clock frequency.
-> +        dev.write(C45::new(Mmd::PMAPMD, 0xC302), 0x0004)?;
-> +        // Non loopback mode.
-> +        dev.write(C45::new(Mmd::PMAPMD, 0xC319), 0x0038)?;
-> +        // Global control bit to select between LAN and WAN (WIS) mode.
-> +        dev.write(C45::new(Mmd::PMAPMD, 0xC31A), 0x0098)?;
-> +        dev.write(C45::new(Mmd::PCS, 0x0026), 0x0E00)?;
-> +        dev.write(C45::new(Mmd::PCS, 0x0027), 0x0893)?;
-> +        dev.write(C45::new(Mmd::PCS, 0x0028), 0xA528)?;
-> +        dev.write(C45::new(Mmd::PCS, 0x0029), 0x0003)?;
-
-The above four writes should probably get a comment based on the
-discussion at [1].
-
-> +        // Configure transmit and recovered clock.
-> +        dev.write(C45::new(Mmd::PMAPMD, 0xC30A), 0x06E1)?;
-> +        // The 8051 will finish the reset state.
-> +        dev.write(C45::new(Mmd::PMAPMD, 0xC300), 0x0002)?;
-> +        // The 8051 will start running from the boot ROM.
-> +        dev.write(C45::new(Mmd::PCS, 0xE854), 0x00C0)?;
-> +
-> +        let fw =3D Firmware::request(c_str!("qt2025-2.0.3.3.fw"), dev.as=
-_ref())?;
-
-I don't know if this works, but can you put `qt2025-2.0.3.3.fw` in a
-const to use both here and in the `module_phy_driver!` macro?
-
-> +        if fw.data().len() > SZ_16K + SZ_8K {
-> +            return Err(code::EFBIG);
-> +        }
-> +
-> +        // The 24kB of program memory space is accessible by MDIO.
-> +        // The first 16kB of memory is located in the address range 3.80=
-00h - 3.BFFFh.
-> +        // The next 8kB of memory is located at 4.8000h - 4.9FFFh.
-> +        let mut j =3D SZ_32K;
-> +        for (i, val) in fw.data().iter().enumerate() {
-> +            if i =3D=3D SZ_16K {
-> +                j =3D SZ_32K;
-> +            }
-> +
-> +            let mmd =3D if i < SZ_16K { Mmd::PCS } else { Mmd::PHYXS };
-> +            dev.write(C45::new(mmd, j as u16), (*val).into())?;
-> +
-> +            j +=3D 1;
-> +        }
-
-Possibly:
-
-1. Hint the MMD name in the comments
-2. Give i and j descriptive names (I used `src_idx` and `dst_offset`)
-3. Set `mmd` once at the same time you reset the address offset
-4. Tracking the offset from 0 rather than from SZ_32K seems more readable
-
-E.g.:
-
-    // The 24kB of program memory space is accessible by MDIO.
-    // The first 16kB of memory is located in the address range
-3.8000h - 3.BFFFh (PCS).
-    // The next 8kB of memory is located at 4.8000h - 4.9FFFh (PHYXS).
-    let mut dst_offset =3D 0;
-    let mut dst_mmd =3D Mmd::PCS;
-    for (src_idx, val) in fw.data().iter().enumerate() {
-        if src_idx =3D=3D SZ_16K {
-            // Start writing to the next register with no offset
-            dst_offset =3D 0;
-            dst_mmd =3D Mmd::PHYXS;
-        }
-
-        dev.write(C45::new(dst_mmd, 0x8000 + dst_offset), (*val).into())?;
-
-        dst_offset +=3D 1;
-    }
-
-Alternatively you could split the iterator with
-`.by_ref().take(SZ_16K)`, but that may not be more readable.
-
-> +        // The 8051 will start running from SRAM.
-> +        dev.write(C45::new(Mmd::PCS, 0xE854), 0x0040)?;
-> +
-> +        Ok(())
-> +    }
-> +
-> +    fn read_status(dev: &mut phy::Device) -> Result<u16> {
-> +        dev.genphy_read_status::<C45>()
-> +    }
-> +}
-
-Overall this looks pretty reasonable to me, I just don't know what to
-reference for the initialization sequence.
-
-- Trevor
-
-[1]: https://lore.kernel.org/netdev/0675cff9-5502-43e4-87ee-97d2e35d72da@lu=
-nn.ch/
