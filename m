@@ -1,472 +1,939 @@
-Received: from mail-qk1-f201.google.com (mail-qk1-f201.google.com [209.85.222.201])
+Received: from mail-ed1-f65.google.com (mail-ed1-f65.google.com [209.85.208.65])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89C7D17921D
-	for <rust-for-linux@vger.kernel.org>; Mon, 19 Aug 2024 15:07:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2303412EBDB;
+	Mon, 19 Aug 2024 15:39:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.65
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724080055; cv=none; b=ldginYOjWZCMghWmf2AlAQZjTL6joxiqIa2pKt47nMM6ulW5a+FQ5O5i7RtkaAKhf//R84AaUDZm/VTyEGBrazloim9+gHYOXH86ebwot7JxppvGQLQHWRjZKsxyhIsThQpUe93jAjRFMrlb8e8MaRm1zu3bSZML1LRgigiOUr0=
+	t=1724081993; cv=none; b=FW+8iEUnaaqn4/4VEuJFH80/slZYNRqYRtU4g3qPuwUWvg0+5IgJHnXhkGNtsnEl3u7xLdBzhXsrWW7BKv3mODh/y0EurZuH1IDw9v7/nVEJK2dGgHcJu+WXqYxAi3aZrnRnbR/+KjryzPl82Pebn4fw7NWplSDh+qZGcpx78pI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724080055; c=relaxed/simple;
-	bh=yULzxhgqabfFUTtoN2cYbJ23pCpjO4bznnV2x8i2jxY=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=V+ZSE9TYqKHy47ICOA6MUnK3aeJBCkm4+CRZ7EkP9AG9UzZyBuJcymOYMFs8TL9CawMHuneVTyh29ugCtGqAfoMOkkGpLtwDbYeLDTTFEJphSsoSNh1oqXM3a3RJBrnlubxwBeJ0MOc5uEwo9mHGk7gOGTKQ5tb9s8oiEJMwbIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--mattgilbride.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=u5usl7tg; arc=none smtp.client-ip=209.85.222.201
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--mattgilbride.bounces.google.com
+	s=arc-20240116; t=1724081993; c=relaxed/simple;
+	bh=EQrzrpEWS0Msjzd7Lg1pS6gIdsyAJw24yaQ6qXtEOME=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Aghx+NZphP0MTAP/4ybDHjHkXs/KZlne1EKQuPUMmCOeIgi5fV3gzW6s0RcG2Px4DyEj4zjjN6KXltDhUJkPbItnTSPxa6XS4IFvTkW520ii/LP7KstsQGI6a13xhfOnBCqQWTPlDkpZG39anKalQoFYIJJGr/+F0DaTxMjRbKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mn6yUnj3; arc=none smtp.client-ip=209.85.208.65
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="u5usl7tg"
-Received: by mail-qk1-f201.google.com with SMTP id af79cd13be357-7a1e9a3825aso494472685a.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 19 Aug 2024 08:07:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mn6yUnj3"
+Received: by mail-ed1-f65.google.com with SMTP id 4fb4d7f45d1cf-5bec7ee6f44so3915394a12.0;
+        Mon, 19 Aug 2024 08:39:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1724080050; x=1724684850; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=ho9lWkBHrnP95w04SuuVC92kMJhRKmYkeES5lEDr4BM=;
-        b=u5usl7tgh1HiwiQI7QN52aup6Cp7KeCLY6IwaVLWk7oz/okK2RszAc88LUCjfMzGMi
-         BpaZxeYjie9FA2fszVeuIivn9zWOO/OmOy+h5lHDEkda7+5l9liutJJMyi0hP5UzPtXT
-         8Ar7W9YJA+h5sNFmEaX6cxiVqjY316Y40b/6fkL1Y/lRaT83YkN7X0ingsduCJ7+6fY8
-         KaO/RsMNlivfoQ2Vk7wTOcjTqJSdJTA44rR5HHYSfkf4P+y6BXSasOfINgUjRFnUnk4Y
-         IlIsKTfOow8Chtp0yZcifUo3Vt39glOX+XuhK64nrSfXPpPoEH2+LmWViYMwreZwq4cA
-         iSOw==
+        d=gmail.com; s=20230601; t=1724081987; x=1724686787; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=5UENWL/7CHDqF5f98/TWU/Ijyp7+vq9Ti1n3vzOBH38=;
+        b=mn6yUnj3xaJwASvDSsweErEAbvTJWUjyyLwGkj9vkKYRG4s9ZXLUaP4qfBG6U9IkCZ
+         lF1g4EW0A6WurpvCTszLSaBuEXfT81ecyN6GxkqKJl8x4sgOnBtwUkM2n6ujt8uMRrE6
+         pYcPX7hqbpI9Ykt8FpI2IyeLKaVEWWnDX+BkXeLJ/B6ZsGIzqSRNpe5ugHJDIq0NqDOj
+         rAkdR+nIAse7z8X8yXRiF8EPHVxnkxhVZSL3mVN8O8fN6z9n2Q0mtFbcHuXAYDbtahPU
+         6aqpYm1X9IW4TDm9q0VNwWJeDt4HAVLpnDLGIGTmd2CTIbuws2lSJZAnuv5kj/fxgG9e
+         EjNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724080050; x=1724684850;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=ho9lWkBHrnP95w04SuuVC92kMJhRKmYkeES5lEDr4BM=;
-        b=ED7BKYCfeHMB1D1NGD9+Pnm8M4LuLk0bXGyCBq4vrkm4ccVeYOs7/HenskQ07v9bpL
-         iipr9Wo4QRDpIDR11mMIEw/srZYaCL30cTSmXvT4SenAZYOX1MDsSVhG2vVyE7gS+dDJ
-         xOvJK13aJd6pZtIiWOp69o7z8OY/1d7pu+fkpm9tmfWIr012JSKAhvPfYB3VVhnYhR/a
-         AXJn1z1gEAFt1LRH//929O9UY6Huvd74WYvlfUwAiLRDLPlOO069GpZlRhw/FKIlaKDI
-         /SSli0Ni0qGLGNdr59mvk6ffXYzENJUIrh7fCqRv/k2DXBK/fMjsvOw2Ga8NoQyBiSFg
-         KBDQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWLyOavp20c86YW2dIb/5l9IXQCAAlySCQq1TlYqKn6N8fS9PPANcIMd7IBUjePoJ4I3OiQ/6xRScvGMjJRtQPeqbyhy7i/PaOLKu3pso8=
-X-Gm-Message-State: AOJu0YzyTPycFIRHPYsxudu5vsLtvnXSmS99HlWJhrNykhs1siI8FoXe
-	Ppuav+Qam2F9TDpdAy+8D+8bALDSQTJln1mX8C4a6PFYziISQf+Urp6R89E8rLQqGmcW6b+jRno
-	tlEJW563o5aJUjSYhULbVog9UfA==
-X-Google-Smtp-Source: AGHT+IE8L8y/XQdv1ohdKFo7fxMeiaKmkmmdw2vFHaITjBT6FZf7278cXZxzFaXpeGYNAA8KDOhURlaMjz4U9oQuUNE=
-X-Received: from mattgilbride.c.googlers.com ([fda3:e722:ac3:cc00:2b:7d90:c0a8:2ac5])
- (user=mattgilbride job=sendgmr) by 2002:a05:620a:9370:b0:79f:1863:701d with
- SMTP id af79cd13be357-7a506945dcbmr3258085a.7.1724080050623; Mon, 19 Aug 2024
- 08:07:30 -0700 (PDT)
-Date: Mon, 19 Aug 2024 15:07:13 +0000
-In-Reply-To: <20240819-b4-rbtree-v10-0-3b3b2c4d73af@google.com>
+        d=1e100.net; s=20230601; t=1724081987; x=1724686787;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=5UENWL/7CHDqF5f98/TWU/Ijyp7+vq9Ti1n3vzOBH38=;
+        b=TzdIshSOS1a4lLh5t4xZYbNJK9A/BI13ZwNacHax4Wf6Fv5AHy/MAIw7/GEc4rA91c
+         zyQ+Vr7wz1WCLUKwBV6c9qBeoxTYFgHNOAlfUVO43MNA0QGenGEX76VFVvF/TeUYyq3m
+         mI4KMQxykD4ivpTNB2GoC0nWkbVNOGmETtczSvTwb14EXKPYy8xzAls+8+4OsBwi8m03
+         zs1N5p/VA9a3Aqw5qPd26hcbm9YQSZLGgmSPc+C3hehjbf3C+oeEL7b8Bpai9cjDPfZ0
+         qA9EaH30B/Lpvd6phjZPukWn7H18khtQBBh83MwSjmEtdMnyruQppGRmy1ppZMBDjyyI
+         /2EA==
+X-Forwarded-Encrypted: i=1; AJvYcCWU2JU7dDuqIJggI8Ufg+68etsB58WgW87VhGZKBmBs8MBmy2g/CdWP0J4SrsCJjiCvCDhyKHPqZNVxKRlo5ydgats87ZT5X+gvFygnrWYmN5B+ydx6WncnUS7fMhdYrNPiygRUeoVbZbPc5vQ2aRp64BAck0N6VvYLDIW3F7IdEXcY3HTzC/zxHefOYBZLSBP/u8bEOpZgtYGk5TOX9UBlSfKI164=
+X-Gm-Message-State: AOJu0Yw3wOeoFHuOpsrw0Naih8zy5wRfCTbhZiVdnNtuvlqwXLNkDOKY
+	efvuR1QmmxuP9ekpHlpVtAuhyk4m0kgZJC0dqNwG7qxuiJDYTFCh
+X-Google-Smtp-Source: AGHT+IFlntUuZMVFKiqJGIFNQs+PmnLPvyBpd4e7M8ngMvbMLO/mP8M9AFJEMCuShjOYqOcWwebPGA==
+X-Received: by 2002:a17:907:f719:b0:a72:8762:1f5d with SMTP id a640c23a62f3a-a8392a11c1bmr783811366b.55.1724081986486;
+        Mon, 19 Aug 2024 08:39:46 -0700 (PDT)
+Received: from navi.fritz.box ([2a02:2454:299:1800:db9c:cb9b:300b:5a61])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a8383935698sm643232266b.102.2024.08.19.08.39.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Aug 2024 08:39:45 -0700 (PDT)
+From: Michal Rostecki <vadorovsky@gmail.com>
+X-Google-Original-From: Michal Rostecki <vadorovsky@protonmail.com>
+To: 
+Cc: Michal Rostecki <vadorovsky@gmail.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@google.com>,
+	Rae Moar <rmoar@google.com>,
+	FUJITA Tomonori <fujita.tomonori@gmail.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Bill Wendling <morbo@google.com>,
+	Justin Stitt <justinstitt@google.com>,
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+	Finn Behrens <me@kloenk.dev>,
+	Manmohan Shukla <manmshuk@gmail.com>,
+	Valentin Obst <kernel@valentinobst.de>,
+	Yutaro Ohno <yutaro.ono.418@gmail.com>,
+	Asahi Lina <lina@asahilina.net>,
+	Danilo Krummrich <dakr@redhat.com>,
+	Tiago Lam <tiagolam@gmail.com>,
+	Charalampos Mitrodimas <charmitro@posteo.net>,
+	Tejun Heo <tj@kernel.org>,
+	Roland Xu <mu001999@outlook.com>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-kselftest@vger.kernel.org,
+	kunit-dev@googlegroups.com,
+	netdev@vger.kernel.org,
+	llvm@lists.linux.dev
+Subject: [PATCH RESEND v5] rust: str: Use `core::CStr`, remove the custom `CStr` implementation
+Date: Mon, 19 Aug 2024 17:36:35 +0200
+Message-ID: <20240819153656.28807-2-vadorovsky@protonmail.com>
+X-Mailer: git-send-email 2.44.2
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20240819-b4-rbtree-v10-0-3b3b2c4d73af@google.com>
-X-Mailer: b4 0.13.0
-Message-ID: <20240819-b4-rbtree-v10-5-3b3b2c4d73af@google.com>
-Subject: [PATCH v10 5/5] rust: rbtree: add `RBTree::entry`
-From: Matt Gilbride <mattgilbride@google.com>
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
-	Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	"=?utf-8?q?Arve_Hj=C3=B8nnev=C3=A5g?=" <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
-	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Christian Brauner <brauner@kernel.org>
-Cc: Rob Landley <rob@landley.net>, Davidlohr Bueso <dave@stgolabs.net>, 
-	Michel Lespinasse <michel@lespinasse.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, Matt Gilbride <mattgilbride@google.com>
-Content-Type: text/plain; charset="utf-8"
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-From: Alice Ryhl <aliceryhl@google.com>
+From: Michal Rostecki <vadorovsky@gmail.com>
 
-This mirrors the entry API [1] from the Rust standard library on
-`RBTree`. This API can be used to access the entry at a specific key and
-make modifications depending on whether the key is vacant or occupied.
-This API is useful because it can often be used to avoid traversing the
-tree multiple times.
+`CStr` became a part of `core` library in Rust 1.75. This change replaces
+the custom `CStr` implementation with the one from `core`.
 
-This is used by binder to look up and conditionally access or insert a
-value, depending on whether it is there or not [2].
+`core::CStr` behaves generally the same as the removed implementation,
+with the following differences:
 
-Link: https://doc.rust-lang.org/stable/std/collections/btree_map/enum.Entry.html [1]
-Link: https://android-review.googlesource.com/c/kernel/common/+/2849906 [2]
-Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-Tested-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
-Signed-off-by: Matt Gilbride <mattgilbride@google.com>
+- It does not implement `Display`.
+- It does not provide `from_bytes_with_nul_unchecked_mut` method.
+- It has `as_ptr()` method instead of `as_char_ptr()`, which also returns
+  `*const c_char`.
+
+The first two differences are handled by providing the `CStrExt` trait,
+with `display()` and `from_bytes_with_nul_unchecked_mut()` methods.
+`display()` returns a `CStrDisplay` wrapper, with a custom `Display`
+implementation.
+
+`DerefMut` implementation for `CString` is removed here, as it's not
+being used anywhere.
+
+Signed-off-by: Michal Rostecki <vadorovsky@gmail.com>
 ---
- rust/kernel/rbtree.rs | 310 ++++++++++++++++++++++++++++++++++++++------------
- 1 file changed, 235 insertions(+), 75 deletions(-)
+ rust/kernel/error.rs        |   7 +-
+ rust/kernel/kunit.rs        |  18 +-
+ rust/kernel/net/phy.rs      |   2 +-
+ rust/kernel/prelude.rs      |   4 +-
+ rust/kernel/str.rs          | 465 ++++++------------------------------
+ rust/kernel/sync/condvar.rs |   5 +-
+ rust/kernel/sync/lock.rs    |   6 +-
+ rust/kernel/workqueue.rs    |   2 +-
+ scripts/rustdoc_test_gen.rs |   4 +-
+ 9 files changed, 93 insertions(+), 420 deletions(-)
 
-diff --git a/rust/kernel/rbtree.rs b/rust/kernel/rbtree.rs
-index 754af0db86b5..db185b6b3c65 100644
---- a/rust/kernel/rbtree.rs
-+++ b/rust/kernel/rbtree.rs
-@@ -297,12 +297,19 @@ pub fn try_create_and_insert(
-     /// key/value pair). Returns [`None`] if a node with the same key didn't already exist.
-     ///
-     /// This function always succeeds.
--    pub fn insert(&mut self, RBTreeNode { node }: RBTreeNode<K, V>) -> Option<RBTreeNode<K, V>> {
--        let node = Box::into_raw(node);
--        // SAFETY: `node` is valid at least until we call `Box::from_raw`, which only happens when
--        // the node is removed or replaced.
--        let node_links = unsafe { addr_of_mut!((*node).links) };
-+    pub fn insert(&mut self, node: RBTreeNode<K, V>) -> Option<RBTreeNode<K, V>> {
-+        match self.raw_entry(&node.node.key) {
-+            RawEntry::Occupied(entry) => Some(entry.replace(node)),
-+            RawEntry::Vacant(entry) => {
-+                entry.insert(node);
-+                None
-+            }
-+        }
-+    }
+diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
+index 6f1587a2524e..6a2bb11ac09c 100644
+--- a/rust/kernel/error.rs
++++ b/rust/kernel/error.rs
+@@ -4,10 +4,11 @@
+ //!
+ //! C header: [`include/uapi/asm-generic/errno-base.h`](srctree/include/uapi/asm-generic/errno-base.h)
  
-+    fn raw_entry(&mut self, key: &K) -> RawEntry<'_, K, V> {
-+        let raw_self: *mut RBTree<K, V> = self;
-+        // The returned `RawEntry` is used to call either `rb_link_node` or `rb_replace_node`.
-         // The parameters of `bindings::rb_link_node` are as follows:
-         // - `node`: A pointer to an uninitialized node being inserted.
-         // - `parent`: A pointer to an existing node in the tree. One of its child pointers must be
-@@ -321,62 +328,56 @@ pub fn insert(&mut self, RBTreeNode { node }: RBTreeNode<K, V>) -> Option<RBTree
-         // in the subtree of `parent` that `child_field_of_parent` points at. Once
-         // we find an empty subtree, we can insert the new node using `rb_link_node`.
-         let mut parent = core::ptr::null_mut();
--        let mut child_field_of_parent: &mut *mut bindings::rb_node = &mut self.root.rb_node;
--        while !child_field_of_parent.is_null() {
--            parent = *child_field_of_parent;
-+        let mut child_field_of_parent: &mut *mut bindings::rb_node =
-+            // SAFETY: `raw_self` is a valid pointer to the `RBTree` (created from `self` above).
-+            unsafe { &mut (*raw_self).root.rb_node };
-+        while !(*child_field_of_parent).is_null() {
-+            let curr = *child_field_of_parent;
-+            // SAFETY: All links fields we create are in a `Node<K, V>`.
-+            let node = unsafe { container_of!(curr, Node<K, V>, links) };
+-use crate::{alloc::AllocError, str::CStr};
++use crate::alloc::AllocError;
  
--            // We need to determine whether `node` should be the left or right child of `parent`,
--            // so we will compare with the `key` field of `parent` a.k.a. `this` below.
--            //
--            // SAFETY: By the type invariant of `Self`, all non-null `rb_node` pointers stored in `self`
--            // point to the links field of `Node<K, V>` objects.
--            let this = unsafe { container_of!(parent, Node<K, V>, links) };
--
--            // SAFETY: `this` is a non-null node so it is valid by the type invariants. `node` is
--            // valid until the node is removed.
--            match unsafe { (*node).key.cmp(&(*this).key) } {
--                // We would like `node` to be the left child of `parent`.  Move to this child to check
--                // whether we can use it, or continue searching, at the next iteration.
--                //
--                // SAFETY: `parent` is a non-null node so it is valid by the type invariants.
--                Ordering::Less => child_field_of_parent = unsafe { &mut (*parent).rb_left },
--                // We would like `node` to be the right child of `parent`.  Move to this child to check
--                // whether we can use it, or continue searching, at the next iteration.
--                //
--                // SAFETY: `parent` is a non-null node so it is valid by the type invariants.
--                Ordering::Greater => child_field_of_parent = unsafe { &mut (*parent).rb_right },
-+            // SAFETY: `node` is a non-null node so it is valid by the type invariants.
-+            match key.cmp(unsafe { &(*node).key }) {
-+                // SAFETY: `curr` is a non-null node so it is valid by the type invariants.
-+                Ordering::Less => child_field_of_parent = unsafe { &mut (*curr).rb_left },
-+                // SAFETY: `curr` is a non-null node so it is valid by the type invariants.
-+                Ordering::Greater => child_field_of_parent = unsafe { &mut (*curr).rb_right },
-                 Ordering::Equal => {
--                    // There is an existing node in the tree with this key, and that node is
--                    // `parent`. Thus, we are replacing parent with a new node.
--                    //
--                    // INVARIANT: We are replacing an existing node with a new one, which is valid.
--                    // It remains valid because we "forgot" it with `Box::into_raw`.
--                    // SAFETY: All pointers are non-null and valid.
--                    unsafe { bindings::rb_replace_node(parent, node_links, &mut self.root) };
--
--                    // INVARIANT: The node is being returned and the caller may free it, however,
--                    // it was removed from the tree. So the invariants still hold.
--                    return Some(RBTreeNode {
--                        // SAFETY: `this` was a node in the tree, so it is valid.
--                        node: unsafe { Box::from_raw(this.cast_mut()) },
--                    });
-+                    return RawEntry::Occupied(OccupiedEntry {
-+                        rbtree: self,
-+                        node_links: curr,
-+                    })
-                 }
-             }
-+            parent = curr;
+ use alloc::alloc::LayoutError;
+ 
++use core::ffi::CStr;
+ use core::fmt;
+ use core::num::TryFromIntError;
+ use core::str::Utf8Error;
+@@ -151,7 +152,7 @@ pub fn name(&self) -> Option<&'static CStr> {
+             None
+         } else {
+             // SAFETY: The string returned by `errname` is static and `NUL`-terminated.
+-            Some(unsafe { CStr::from_char_ptr(ptr) })
++            Some(unsafe { CStr::from_ptr(ptr) })
          }
- 
--        // INVARIANT: We are linking in a new node, which is valid. It remains valid because we
--        // "forgot" it with `Box::into_raw`.
--        // SAFETY: All pointers are non-null and valid (`*child_field_of_parent` is null, but `child_field_of_parent` is a
--        // mutable reference).
--        unsafe { bindings::rb_link_node(node_links, parent, child_field_of_parent) };
-+        RawEntry::Vacant(RawVacantEntry {
-+            rbtree: raw_self,
-+            parent,
-+            child_field_of_parent,
-+            _phantom: PhantomData,
-+        })
-+    }
- 
--        // SAFETY: All pointers are valid. `node` has just been inserted into the tree.
--        unsafe { bindings::rb_insert_color(node_links, &mut self.root) };
--        None
-+    /// Gets the given key's corresponding entry in the map for in-place manipulation.
-+    pub fn entry(&mut self, key: K) -> Entry<'_, K, V> {
-+        match self.raw_entry(&key) {
-+            RawEntry::Occupied(entry) => Entry::Occupied(entry),
-+            RawEntry::Vacant(entry) => Entry::Vacant(VacantEntry { raw: entry, key }),
-+        }
      }
  
--    /// Returns a node with the given key, if one exists.
--    fn find(&self, key: &K) -> Option<NonNull<Node<K, V>>> {
-+    /// Used for accessing the given node, if it exists.
-+    pub fn find_mut(&mut self, key: &K) -> Option<OccupiedEntry<'_, K, V>> {
-+        match self.raw_entry(key) {
-+            RawEntry::Occupied(entry) => Some(entry),
-+            RawEntry::Vacant(_entry) => None,
-+        }
-+    }
+@@ -173,7 +174,7 @@ fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+             None => f.debug_tuple("Error").field(&-self.0).finish(),
+             // SAFETY: These strings are ASCII-only.
+             Some(name) => f
+-                .debug_tuple(unsafe { core::str::from_utf8_unchecked(name) })
++                .debug_tuple(unsafe { core::str::from_utf8_unchecked(name.to_bytes()) })
+                 .finish(),
+         }
+     }
+diff --git a/rust/kernel/kunit.rs b/rust/kernel/kunit.rs
+index 0ba77276ae7e..79a50ab59af0 100644
+--- a/rust/kernel/kunit.rs
++++ b/rust/kernel/kunit.rs
+@@ -56,13 +56,15 @@ macro_rules! kunit_assert {
+                 break 'out;
+             }
+ 
+-            static FILE: &'static $crate::str::CStr = $crate::c_str!($file);
++            static FILE: &'static core::ffi::CStr = $file;
+             static LINE: i32 = core::line!() as i32 - $diff;
+-            static CONDITION: &'static $crate::str::CStr = $crate::c_str!(stringify!($condition));
++            static CONDITION: &'static core::ffi::CStr = $crate::c_str!(stringify!($condition));
+ 
+             // SAFETY: FFI call without safety requirements.
+             let kunit_test = unsafe { $crate::bindings::kunit_get_current_test() };
+             if kunit_test.is_null() {
++                use kernel::str::CStrExt;
 +
-+    /// Returns a reference to the value corresponding to the key.
-+    pub fn get(&self, key: &K) -> Option<&V> {
-         let mut node = self.root.rb_node;
-         while !node.is_null() {
-             // SAFETY: By the type invariant of `Self`, all non-null `rb_node` pointers stored in `self`
-@@ -388,47 +389,30 @@ fn find(&self, key: &K) -> Option<NonNull<Node<K, V>>> {
-                 Ordering::Less => unsafe { (*node).rb_left },
-                 // SAFETY: `node` is a non-null node so it is valid by the type invariants.
-                 Ordering::Greater => unsafe { (*node).rb_right },
--                Ordering::Equal => return NonNull::new(this.cast_mut()),
-+                // SAFETY: `node` is a non-null node so it is valid by the type invariants.
-+                Ordering::Equal => return Some(unsafe { &(*this).value }),
-             }
-         }
-         None
-     }
+                 // The assertion failed but this task is not running a KUnit test, so we cannot call
+                 // KUnit, but at least print an error to the kernel log. This may happen if this
+                 // macro is called from an spawned thread in a test (see
+@@ -71,11 +73,13 @@ macro_rules! kunit_assert {
+                 //
+                 // This mimics KUnit's failed assertion format.
+                 $crate::kunit::err(format_args!(
+-                    "    # {}: ASSERTION FAILED at {FILE}:{LINE}\n",
+-                    $name
++                    "    # {}: ASSERTION FAILED at {}:{LINE}\n",
++                    $name.display(),
++                    FILE.display(),
+                 ));
+                 $crate::kunit::err(format_args!(
+-                    "    Expected {CONDITION} to be true, but is false\n"
++                    "    Expected {} to be true, but is false\n",
++                    CONDITION.display(),
+                 ));
+                 $crate::kunit::err(format_args!(
+                     "    Failure not reported to KUnit since this is a non-KUnit task\n"
+@@ -98,12 +102,12 @@ unsafe impl Sync for Location {}
+             unsafe impl Sync for UnaryAssert {}
  
--    /// Returns a reference to the value corresponding to the key.
--    pub fn get(&self, key: &K) -> Option<&V> {
--        // SAFETY: The `find` return value is a node in the tree, so it is valid.
--        self.find(key).map(|node| unsafe { &node.as_ref().value })
+             static LOCATION: Location = Location($crate::bindings::kunit_loc {
+-                file: FILE.as_char_ptr(),
++                file: FILE.as_ptr(),
+                 line: LINE,
+             });
+             static ASSERTION: UnaryAssert = UnaryAssert($crate::bindings::kunit_unary_assert {
+                 assert: $crate::bindings::kunit_assert {},
+-                condition: CONDITION.as_char_ptr(),
++                condition: CONDITION.as_ptr(),
+                 expected_true: true,
+             });
+ 
+diff --git a/rust/kernel/net/phy.rs b/rust/kernel/net/phy.rs
+index fd40b703d224..19f45922ec42 100644
+--- a/rust/kernel/net/phy.rs
++++ b/rust/kernel/net/phy.rs
+@@ -502,7 +502,7 @@ unsafe impl Sync for DriverVTable {}
+ pub const fn create_phy_driver<T: Driver>() -> DriverVTable {
+     // INVARIANT: All the fields of `struct phy_driver` are initialized properly.
+     DriverVTable(Opaque::new(bindings::phy_driver {
+-        name: T::NAME.as_char_ptr().cast_mut(),
++        name: T::NAME.as_ptr().cast_mut(),
+         flags: T::FLAGS,
+         phy_id: T::PHY_DEVICE_ID.id,
+         phy_id_mask: T::PHY_DEVICE_ID.mask_as_int(),
+diff --git a/rust/kernel/prelude.rs b/rust/kernel/prelude.rs
+index b37a0b3180fb..b0969ca78f10 100644
+--- a/rust/kernel/prelude.rs
++++ b/rust/kernel/prelude.rs
+@@ -12,7 +12,7 @@
+ //! ```
+ 
+ #[doc(no_inline)]
+-pub use core::pin::Pin;
++pub use core::{ffi::CStr, pin::Pin};
+ 
+ pub use crate::alloc::{box_ext::BoxExt, flags::*, vec_ext::VecExt};
+ 
+@@ -35,7 +35,7 @@
+ 
+ pub use super::error::{code::*, Error, Result};
+ 
+-pub use super::{str::CStr, ThisModule};
++pub use super::ThisModule;
+ 
+ pub use super::init::{InPlaceInit, Init, PinInit};
+ 
+diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
+index bb8d4f41475b..97a298a44b96 100644
+--- a/rust/kernel/str.rs
++++ b/rust/kernel/str.rs
+@@ -4,8 +4,9 @@
+ 
+ use crate::alloc::{flags::*, vec_ext::VecExt, AllocError};
+ use alloc::vec::Vec;
++use core::ffi::CStr;
+ use core::fmt::{self, Write};
+-use core::ops::{self, Deref, DerefMut, Index};
++use core::ops::Deref;
+ 
+ use crate::error::{code::*, Error};
+ 
+@@ -41,11 +42,11 @@ impl fmt::Display for BStr {
+     /// # use kernel::{fmt, b_str, str::{BStr, CString}};
+     /// let ascii = b_str!("Hello, BStr!");
+     /// let s = CString::try_from_fmt(fmt!("{}", ascii)).unwrap();
+-    /// assert_eq!(s.as_bytes(), "Hello, BStr!".as_bytes());
++    /// assert_eq!(s.to_bytes(), "Hello, BStr!".as_bytes());
+     ///
+     /// let non_ascii = b_str!("🦀");
+     /// let s = CString::try_from_fmt(fmt!("{}", non_ascii)).unwrap();
+-    /// assert_eq!(s.as_bytes(), "\\xf0\\x9f\\xa6\\x80".as_bytes());
++    /// assert_eq!(s.to_bytes(), "\\xf0\\x9f\\xa6\\x80".as_bytes());
+     /// ```
+     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+         for &b in &self.0 {
+@@ -72,11 +73,11 @@ impl fmt::Debug for BStr {
+     /// // Embedded double quotes are escaped.
+     /// let ascii = b_str!("Hello, \"BStr\"!");
+     /// let s = CString::try_from_fmt(fmt!("{:?}", ascii)).unwrap();
+-    /// assert_eq!(s.as_bytes(), "\"Hello, \\\"BStr\\\"!\"".as_bytes());
++    /// assert_eq!(s.to_bytes(), "\"Hello, \\\"BStr\\\"!\"".as_bytes());
+     ///
+     /// let non_ascii = b_str!("😺");
+     /// let s = CString::try_from_fmt(fmt!("{:?}", non_ascii)).unwrap();
+-    /// assert_eq!(s.as_bytes(), "\"\\xf0\\x9f\\x98\\xba\"".as_bytes());
++    /// assert_eq!(s.to_bytes(), "\"\\xf0\\x9f\\x98\\xba\"".as_bytes());
+     /// ```
+     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+         f.write_char('"')?;
+@@ -128,271 +129,29 @@ macro_rules! b_str {
+     }};
+ }
+ 
+-/// Possible errors when using conversion functions in [`CStr`].
+-#[derive(Debug, Clone, Copy)]
+-pub enum CStrConvertError {
+-    /// Supplied bytes contain an interior `NUL`.
+-    InteriorNul,
++/// Wrapper around [`CStr`] which implements [`Display`](core::fmt::Display).
++pub struct CStrDisplay<'a>(&'a CStr);
+ 
+-    /// Supplied bytes are not terminated by `NUL`.
+-    NotNulTerminated,
+-}
+-
+-impl From<CStrConvertError> for Error {
+-    #[inline]
+-    fn from(_: CStrConvertError) -> Error {
+-        EINVAL
+-    }
+-}
+-
+-/// A string that is guaranteed to have exactly one `NUL` byte, which is at the
+-/// end.
+-///
+-/// Used for interoperability with kernel APIs that take C strings.
+-#[repr(transparent)]
+-pub struct CStr([u8]);
+-
+-impl CStr {
+-    /// Returns the length of this string excluding `NUL`.
+-    #[inline]
+-    pub const fn len(&self) -> usize {
+-        self.len_with_nul() - 1
 -    }
 -
-     /// Returns a mutable reference to the value corresponding to the key.
-     pub fn get_mut(&mut self, key: &K) -> Option<&mut V> {
--        // SAFETY: The `find` return value is a node in the tree, so it is valid.
--        self.find(key)
--            .map(|mut node| unsafe { &mut node.as_mut().value })
-+        self.find_mut(key).map(|node| node.into_mut())
-     }
- 
-     /// Removes the node with the given key from the tree.
-     ///
-     /// It returns the node that was removed if one exists, or [`None`] otherwise.
--    fn remove_node(&mut self, key: &K) -> Option<RBTreeNode<K, V>> {
--        let mut node = self.find(key)?;
+-    /// Returns the length of this string with `NUL`.
+-    #[inline]
+-    pub const fn len_with_nul(&self) -> usize {
+-        // SAFETY: This is one of the invariant of `CStr`.
+-        // We add a `unreachable_unchecked` here to hint the optimizer that
+-        // the value returned from this function is non-zero.
+-        if self.0.is_empty() {
+-            unsafe { core::hint::unreachable_unchecked() };
+-        }
+-        self.0.len()
+-    }
 -
--        // SAFETY: The `find` return value is a node in the tree, so it is valid.
--        unsafe { bindings::rb_erase(&mut node.as_mut().links, &mut self.root) };
+-    /// Returns `true` if the string only includes `NUL`.
+-    #[inline]
+-    pub const fn is_empty(&self) -> bool {
+-        self.len() == 0
+-    }
 -
--        // INVARIANT: The node is being returned and the caller may free it, however, it was
--        // removed from the tree. So the invariants still hold.
--        Some(RBTreeNode {
--            // SAFETY: The `find` return value was a node in the tree, so it is valid.
--            node: unsafe { Box::from_raw(node.as_ptr()) },
--        })
-+    pub fn remove_node(&mut self, key: &K) -> Option<RBTreeNode<K, V>> {
-+        self.find_mut(key).map(OccupiedEntry::remove_node)
-     }
- 
-     /// Removes the node with the given key from the tree.
+-    /// Wraps a raw C string pointer.
+-    ///
+-    /// # Safety
+-    ///
+-    /// `ptr` must be a valid pointer to a `NUL`-terminated C string, and it must
+-    /// last at least `'a`. When `CStr` is alive, the memory pointed by `ptr`
+-    /// must not be mutated.
+-    #[inline]
+-    pub unsafe fn from_char_ptr<'a>(ptr: *const core::ffi::c_char) -> &'a Self {
+-        // SAFETY: The safety precondition guarantees `ptr` is a valid pointer
+-        // to a `NUL`-terminated C string.
+-        let len = unsafe { bindings::strlen(ptr) } + 1;
+-        // SAFETY: Lifetime guaranteed by the safety precondition.
+-        let bytes = unsafe { core::slice::from_raw_parts(ptr as _, len as _) };
+-        // SAFETY: As `len` is returned by `strlen`, `bytes` does not contain interior `NUL`.
+-        // As we have added 1 to `len`, the last byte is known to be `NUL`.
+-        unsafe { Self::from_bytes_with_nul_unchecked(bytes) }
+-    }
+-
+-    /// Creates a [`CStr`] from a `[u8]`.
+-    ///
+-    /// The provided slice must be `NUL`-terminated, does not contain any
+-    /// interior `NUL` bytes.
+-    pub const fn from_bytes_with_nul(bytes: &[u8]) -> Result<&Self, CStrConvertError> {
+-        if bytes.is_empty() {
+-            return Err(CStrConvertError::NotNulTerminated);
+-        }
+-        if bytes[bytes.len() - 1] != 0 {
+-            return Err(CStrConvertError::NotNulTerminated);
+-        }
+-        let mut i = 0;
+-        // `i + 1 < bytes.len()` allows LLVM to optimize away bounds checking,
+-        // while it couldn't optimize away bounds checks for `i < bytes.len() - 1`.
+-        while i + 1 < bytes.len() {
+-            if bytes[i] == 0 {
+-                return Err(CStrConvertError::InteriorNul);
+-            }
+-            i += 1;
+-        }
+-        // SAFETY: We just checked that all properties hold.
+-        Ok(unsafe { Self::from_bytes_with_nul_unchecked(bytes) })
+-    }
+-
+-    /// Creates a [`CStr`] from a `[u8]` without performing any additional
+-    /// checks.
+-    ///
+-    /// # Safety
+-    ///
+-    /// `bytes` *must* end with a `NUL` byte, and should only have a single
+-    /// `NUL` byte (or the string will be truncated).
+-    #[inline]
+-    pub const unsafe fn from_bytes_with_nul_unchecked(bytes: &[u8]) -> &CStr {
+-        // SAFETY: Properties of `bytes` guaranteed by the safety precondition.
+-        unsafe { core::mem::transmute(bytes) }
+-    }
+-
+-    /// Creates a mutable [`CStr`] from a `[u8]` without performing any
+-    /// additional checks.
+-    ///
+-    /// # Safety
+-    ///
+-    /// `bytes` *must* end with a `NUL` byte, and should only have a single
+-    /// `NUL` byte (or the string will be truncated).
+-    #[inline]
+-    pub unsafe fn from_bytes_with_nul_unchecked_mut(bytes: &mut [u8]) -> &mut CStr {
+-        // SAFETY: Properties of `bytes` guaranteed by the safety precondition.
+-        unsafe { &mut *(bytes as *mut [u8] as *mut CStr) }
+-    }
+-
+-    /// Returns a C pointer to the string.
+-    #[inline]
+-    pub const fn as_char_ptr(&self) -> *const core::ffi::c_char {
+-        self.0.as_ptr() as _
+-    }
+-
+-    /// Convert the string to a byte slice without the trailing `NUL` byte.
+-    #[inline]
+-    pub fn as_bytes(&self) -> &[u8] {
+-        &self.0[..self.len()]
+-    }
+-
+-    /// Convert the string to a byte slice containing the trailing `NUL` byte.
+-    #[inline]
+-    pub const fn as_bytes_with_nul(&self) -> &[u8] {
+-        &self.0
+-    }
+-
+-    /// Yields a [`&str`] slice if the [`CStr`] contains valid UTF-8.
+-    ///
+-    /// If the contents of the [`CStr`] are valid UTF-8 data, this
+-    /// function will return the corresponding [`&str`] slice. Otherwise,
+-    /// it will return an error with details of where UTF-8 validation failed.
+-    ///
+-    /// # Examples
+-    ///
+-    /// ```
+-    /// # use kernel::str::CStr;
+-    /// let cstr = CStr::from_bytes_with_nul(b"foo\0").unwrap();
+-    /// assert_eq!(cstr.to_str(), Ok("foo"));
+-    /// ```
+-    #[inline]
+-    pub fn to_str(&self) -> Result<&str, core::str::Utf8Error> {
+-        core::str::from_utf8(self.as_bytes())
+-    }
+-
+-    /// Unsafely convert this [`CStr`] into a [`&str`], without checking for
+-    /// valid UTF-8.
+-    ///
+-    /// # Safety
+-    ///
+-    /// The contents must be valid UTF-8.
++impl fmt::Display for CStrDisplay<'_> {
++    /// Formats printable ASCII characters, escaping the rest.
      ///
-     /// It returns the value that was removed if one exists, or [`None`] otherwise.
-     pub fn remove(&mut self, key: &K) -> Option<V> {
--        self.remove_node(key).map(|node| node.node.value)
-+        self.find_mut(key).map(OccupiedEntry::remove)
+     /// # Examples
+     ///
+     /// ```
+-    /// # use kernel::c_str;
+-    /// # use kernel::str::CStr;
+-    /// let bar = c_str!("ツ");
+-    /// // SAFETY: String literals are guaranteed to be valid UTF-8
+-    /// // by the Rust compiler.
+-    /// assert_eq!(unsafe { bar.as_str_unchecked() }, "ツ");
+-    /// ```
+-    #[inline]
+-    pub unsafe fn as_str_unchecked(&self) -> &str {
+-        unsafe { core::str::from_utf8_unchecked(self.as_bytes()) }
+-    }
+-
+-    /// Convert this [`CStr`] into a [`CString`] by allocating memory and
+-    /// copying over the string data.
+-    pub fn to_cstring(&self) -> Result<CString, AllocError> {
+-        CString::try_from(self)
+-    }
+-
+-    /// Converts this [`CStr`] to its ASCII lower case equivalent in-place.
+-    ///
+-    /// ASCII letters 'A' to 'Z' are mapped to 'a' to 'z',
+-    /// but non-ASCII letters are unchanged.
+-    ///
+-    /// To return a new lowercased value without modifying the existing one, use
+-    /// [`to_ascii_lowercase()`].
+-    ///
+-    /// [`to_ascii_lowercase()`]: #method.to_ascii_lowercase
+-    pub fn make_ascii_lowercase(&mut self) {
+-        // INVARIANT: This doesn't introduce or remove NUL bytes in the C
+-        // string.
+-        self.0.make_ascii_lowercase();
+-    }
+-
+-    /// Converts this [`CStr`] to its ASCII upper case equivalent in-place.
+-    ///
+-    /// ASCII letters 'a' to 'z' are mapped to 'A' to 'Z',
+-    /// but non-ASCII letters are unchanged.
+-    ///
+-    /// To return a new uppercased value without modifying the existing one, use
+-    /// [`to_ascii_uppercase()`].
+-    ///
+-    /// [`to_ascii_uppercase()`]: #method.to_ascii_uppercase
+-    pub fn make_ascii_uppercase(&mut self) {
+-        // INVARIANT: This doesn't introduce or remove NUL bytes in the C
+-        // string.
+-        self.0.make_ascii_uppercase();
+-    }
+-
+-    /// Returns a copy of this [`CString`] where each character is mapped to its
+-    /// ASCII lower case equivalent.
+-    ///
+-    /// ASCII letters 'A' to 'Z' are mapped to 'a' to 'z',
+-    /// but non-ASCII letters are unchanged.
+-    ///
+-    /// To lowercase the value in-place, use [`make_ascii_lowercase`].
+-    ///
+-    /// [`make_ascii_lowercase`]: str::make_ascii_lowercase
+-    pub fn to_ascii_lowercase(&self) -> Result<CString, AllocError> {
+-        let mut s = self.to_cstring()?;
+-
+-        s.make_ascii_lowercase();
+-
+-        Ok(s)
+-    }
+-
+-    /// Returns a copy of this [`CString`] where each character is mapped to its
+-    /// ASCII upper case equivalent.
+-    ///
+-    /// ASCII letters 'a' to 'z' are mapped to 'A' to 'Z',
+-    /// but non-ASCII letters are unchanged.
+-    ///
+-    /// To uppercase the value in-place, use [`make_ascii_uppercase`].
+-    ///
+-    /// [`make_ascii_uppercase`]: str::make_ascii_uppercase
+-    pub fn to_ascii_uppercase(&self) -> Result<CString, AllocError> {
+-        let mut s = self.to_cstring()?;
+-
+-        s.make_ascii_uppercase();
+-
+-        Ok(s)
+-    }
+-}
+-
+-impl fmt::Display for CStr {
+-    /// Formats printable ASCII characters, escaping the rest.
+-    ///
+-    /// ```
++    /// # use core::ffi::CStr;
+     /// # use kernel::c_str;
+     /// # use kernel::fmt;
+-    /// # use kernel::str::CStr;
+-    /// # use kernel::str::CString;
+-    /// let penguin = c_str!("🐧");
+-    /// let s = CString::try_from_fmt(fmt!("{}", penguin)).unwrap();
+-    /// assert_eq!(s.as_bytes_with_nul(), "\\xf0\\x9f\\x90\\xa7\0".as_bytes());
+-    ///
+-    /// let ascii = c_str!("so \"cool\"");
+-    /// let s = CString::try_from_fmt(fmt!("{}", ascii)).unwrap();
+-    /// assert_eq!(s.as_bytes_with_nul(), "so \"cool\"\0".as_bytes());
++    /// # use kernel::str::{CStrExt, CString};
++    /// let penguin = c"🐧";
++    /// let s = CString::try_from_fmt(fmt!("{}", penguin.display())).unwrap();
++    /// assert_eq!(s.to_bytes_with_nul(), "\\xf0\\x9f\\x90\\xa7\0".as_bytes());
++    ///
++    /// let ascii = c"so \"cool\"";
++    /// let s = CString::try_from_fmt(fmt!("{}", ascii.display())).unwrap();
++    /// assert_eq!(s.to_bytes_with_nul(), "so \"cool\"\0".as_bytes());
+     /// ```
+     fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+-        for &c in self.as_bytes() {
++        for &c in self.0.to_bytes() {
+             if (0x20..0x7f).contains(&c) {
+                 // Printable character.
+                 f.write_char(c as char)?;
+@@ -404,116 +163,70 @@ fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+     }
+ }
+ 
+-impl fmt::Debug for CStr {
+-    /// Formats printable ASCII characters with a double quote on either end, escaping the rest.
++/// Extensions to [`CStr`].
++pub trait CStrExt {
++    /// Returns an object that implements [`Display`](core::fmt::Display) for
++    /// safely printing a [`CStr`] that may contain non-ASCII data, which are
++    /// escaped.
++    ///
++    /// # Examples
+     ///
+     /// ```
++    /// # use core::ffi::CStr;
+     /// # use kernel::c_str;
+     /// # use kernel::fmt;
+-    /// # use kernel::str::CStr;
+-    /// # use kernel::str::CString;
+-    /// let penguin = c_str!("🐧");
+-    /// let s = CString::try_from_fmt(fmt!("{:?}", penguin)).unwrap();
+-    /// assert_eq!(s.as_bytes_with_nul(), "\"\\xf0\\x9f\\x90\\xa7\"\0".as_bytes());
+-    ///
+-    /// // Embedded double quotes are escaped.
+-    /// let ascii = c_str!("so \"cool\"");
+-    /// let s = CString::try_from_fmt(fmt!("{:?}", ascii)).unwrap();
+-    /// assert_eq!(s.as_bytes_with_nul(), "\"so \\\"cool\\\"\"\0".as_bytes());
++    /// # use kernel::str::{CStrExt, CString};
++    /// let penguin = c"🐧";
++    /// let s = CString::try_from_fmt(fmt!("{}", penguin.display())).unwrap();
++    /// assert_eq!(s.to_bytes_with_nul(), "\\xf0\\x9f\\x90\\xa7\0".as_bytes());
++    ///
++    /// let ascii = c"so \"cool\"";
++    /// let s = CString::try_from_fmt(fmt!("{}", ascii.display())).unwrap();
++    /// assert_eq!(s.to_bytes_with_nul(), "so \"cool\"\0".as_bytes());
+     /// ```
+-    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+-        f.write_str("\"")?;
+-        for &c in self.as_bytes() {
+-            match c {
+-                // Printable characters.
+-                b'\"' => f.write_str("\\\"")?,
+-                0x20..=0x7e => f.write_char(c as char)?,
+-                _ => write!(f, "\\x{:02x}", c)?,
+-            }
+-        }
+-        f.write_str("\"")
+-    }
+-}
+-
+-impl AsRef<BStr> for CStr {
+-    #[inline]
+-    fn as_ref(&self) -> &BStr {
+-        BStr::from_bytes(self.as_bytes())
+-    }
+-}
+-
+-impl Deref for CStr {
+-    type Target = BStr;
+-
+-    #[inline]
+-    fn deref(&self) -> &Self::Target {
+-        self.as_ref()
+-    }
+-}
+-
+-impl Index<ops::RangeFrom<usize>> for CStr {
+-    type Output = CStr;
++    fn display(&self) -> CStrDisplay<'_>;
+ 
+-    #[inline]
+-    fn index(&self, index: ops::RangeFrom<usize>) -> &Self::Output {
+-        // Delegate bounds checking to slice.
+-        // Assign to _ to mute clippy's unnecessary operation warning.
+-        let _ = &self.as_bytes()[index.start..];
+-        // SAFETY: We just checked the bounds.
+-        unsafe { Self::from_bytes_with_nul_unchecked(&self.0[index.start..]) }
+-    }
++    /// Creates a mutable [`CStr`] from a `[u8]` without performing any
++    /// additional checks.
++    ///
++    /// # Safety
++    ///
++    /// `bytes` *must* end with a `NUL` byte, and should only have a single
++    /// `NUL` byte (or the string will be truncated).
++    unsafe fn from_bytes_with_nul_unchecked_mut(bytes: &mut [u8]) -> &mut Self;
+ }
+ 
+-impl Index<ops::RangeFull> for CStr {
+-    type Output = CStr;
+-
+-    #[inline]
+-    fn index(&self, _index: ops::RangeFull) -> &Self::Output {
+-        self
++impl CStrExt for CStr {
++    fn display(&self) -> CStrDisplay<'_> {
++        CStrDisplay(self)
+     }
+-}
+ 
+-mod private {
+-    use core::ops;
+-
+-    // Marker trait for index types that can be forward to `BStr`.
+-    pub trait CStrIndex {}
+-
+-    impl CStrIndex for usize {}
+-    impl CStrIndex for ops::Range<usize> {}
+-    impl CStrIndex for ops::RangeInclusive<usize> {}
+-    impl CStrIndex for ops::RangeToInclusive<usize> {}
+-}
+-
+-impl<Idx> Index<Idx> for CStr
+-where
+-    Idx: private::CStrIndex,
+-    BStr: Index<Idx>,
+-{
+-    type Output = <BStr as Index<Idx>>::Output;
+-
+-    #[inline]
+-    fn index(&self, index: Idx) -> &Self::Output {
+-        &self.as_ref()[index]
++    unsafe fn from_bytes_with_nul_unchecked_mut(bytes: &mut [u8]) -> &mut Self {
++        // SAFETY: Properties of `bytes` guaranteed by the safety precondition.
++        unsafe { &mut *(bytes as *mut [u8] as *mut CStr) }
+     }
+ }
+ 
+ /// Creates a new [`CStr`] from a string literal.
+ ///
+-/// The string literal should not contain any `NUL` bytes.
++/// This macro is not needed when C-string literals (`c"hello"` syntax) can be
++/// used directly, but can be used when a C-string version of a standard string
++/// literal is required (often when working with macros).
++///
++/// The string should not contain any `NUL` bytes.
+ ///
+ /// # Examples
+ ///
+ /// ```
++/// # use core::ffi::CStr;
+ /// # use kernel::c_str;
+-/// # use kernel::str::CStr;
+-/// const MY_CSTR: &CStr = c_str!("My awesome CStr!");
++/// const MY_CSTR: &CStr = c_str!(stringify!(5));
+ /// ```
+ #[macro_export]
+ macro_rules! c_str {
+     ($str:expr) => {{
+         const S: &str = concat!($str, "\0");
+-        const C: &$crate::str::CStr = match $crate::str::CStr::from_bytes_with_nul(S.as_bytes()) {
++        const C: &core::ffi::CStr = match core::ffi::CStr::from_bytes_with_nul(S.as_bytes()) {
+             Ok(v) => v,
+             Err(_) => panic!("string contains interior NUL"),
+         };
+@@ -540,40 +253,16 @@ mod tests {
+         \\xe0\\xe1\\xe2\\xe3\\xe4\\xe5\\xe6\\xe7\\xe8\\xe9\\xea\\xeb\\xec\\xed\\xee\\xef\
+         \\xf0\\xf1\\xf2\\xf3\\xf4\\xf5\\xf6\\xf7\\xf8\\xf9\\xfa\\xfb\\xfc\\xfd\\xfe\\xff";
+ 
+-    #[test]
+-    fn test_cstr_to_str() {
+-        let good_bytes = b"\xf0\x9f\xa6\x80\0";
+-        let checked_cstr = CStr::from_bytes_with_nul(good_bytes).unwrap();
+-        let checked_str = checked_cstr.to_str().unwrap();
+-        assert_eq!(checked_str, "🦀");
+-    }
+-
+-    #[test]
+-    #[should_panic]
+-    fn test_cstr_to_str_panic() {
+-        let bad_bytes = b"\xc3\x28\0";
+-        let checked_cstr = CStr::from_bytes_with_nul(bad_bytes).unwrap();
+-        checked_cstr.to_str().unwrap();
+-    }
+-
+-    #[test]
+-    fn test_cstr_as_str_unchecked() {
+-        let good_bytes = b"\xf0\x9f\x90\xA7\0";
+-        let checked_cstr = CStr::from_bytes_with_nul(good_bytes).unwrap();
+-        let unchecked_str = unsafe { checked_cstr.as_str_unchecked() };
+-        assert_eq!(unchecked_str, "🐧");
+-    }
+-
+     #[test]
+     fn test_cstr_display() {
+         let hello_world = CStr::from_bytes_with_nul(b"hello, world!\0").unwrap();
+-        assert_eq!(format!("{}", hello_world), "hello, world!");
++        assert_eq!(format!("{}", hello_world.display()), "hello, world!");
+         let non_printables = CStr::from_bytes_with_nul(b"\x01\x09\x0a\0").unwrap();
+-        assert_eq!(format!("{}", non_printables), "\\x01\\x09\\x0a");
++        assert_eq!(format!("{}", non_printables.display()), "\\x01\\x09\\x0a");
+         let non_ascii = CStr::from_bytes_with_nul(b"d\xe9j\xe0 vu\0").unwrap();
+-        assert_eq!(format!("{}", non_ascii), "d\\xe9j\\xe0 vu");
++        assert_eq!(format!("{}", non_ascii.display()), "d\\xe9j\\xe0 vu");
+         let good_bytes = CStr::from_bytes_with_nul(b"\xf0\x9f\xa6\x80\0").unwrap();
+-        assert_eq!(format!("{}", good_bytes), "\\xf0\\x9f\\xa6\\x80");
++        assert_eq!(format!("{}", good_bytes.display()), "\\xf0\\x9f\\xa6\\x80");
      }
  
-     /// Returns a cursor over the tree nodes based on the given key.
-@@ -1136,6 +1120,182 @@ unsafe impl<K: Send, V: Send> Send for RBTreeNode<K, V> {}
- // [`RBTreeNode`] without synchronization.
- unsafe impl<K: Sync, V: Sync> Sync for RBTreeNode<K, V> {}
+     #[test]
+@@ -584,19 +273,7 @@ fn test_cstr_display_all_bytes() {
+             bytes[i as usize] = i.wrapping_add(1);
+         }
+         let cstr = CStr::from_bytes_with_nul(&bytes).unwrap();
+-        assert_eq!(format!("{}", cstr), ALL_ASCII_CHARS);
+-    }
+-
+-    #[test]
+-    fn test_cstr_debug() {
+-        let hello_world = CStr::from_bytes_with_nul(b"hello, world!\0").unwrap();
+-        assert_eq!(format!("{:?}", hello_world), "\"hello, world!\"");
+-        let non_printables = CStr::from_bytes_with_nul(b"\x01\x09\x0a\0").unwrap();
+-        assert_eq!(format!("{:?}", non_printables), "\"\\x01\\x09\\x0a\"");
+-        let non_ascii = CStr::from_bytes_with_nul(b"d\xe9j\xe0 vu\0").unwrap();
+-        assert_eq!(format!("{:?}", non_ascii), "\"d\\xe9j\\xe0 vu\"");
+-        let good_bytes = CStr::from_bytes_with_nul(b"\xf0\x9f\xa6\x80\0").unwrap();
+-        assert_eq!(format!("{:?}", good_bytes), "\"\\xf0\\x9f\\xa6\\x80\"");
++        assert_eq!(format!("{}", cstr.display()), ALL_ASCII_CHARS);
+     }
  
-+impl<K, V> RBTreeNode<K, V> {
-+    /// Drop the key and value, but keep the allocation.
-+    ///
-+    /// It then becomes a reservation that can be re-initialised into a different node (i.e., with
-+    /// a different key and/or value).
-+    ///
-+    /// The existing key and value are dropped in-place as part of this operation, that is, memory
-+    /// may be freed (but only for the key/value; memory for the node itself is kept for reuse).
-+    pub fn into_reservation(self) -> RBTreeNodeReservation<K, V> {
-+        RBTreeNodeReservation {
-+            node: Box::drop_contents(self.node),
-+        }
-+    }
-+}
-+
-+/// A view into a single entry in a map, which may either be vacant or occupied.
-+///
-+/// This enum is constructed from the [`RBTree::entry`].
-+///
-+/// [`entry`]: fn@RBTree::entry
-+pub enum Entry<'a, K, V> {
-+    /// This [`RBTree`] does not have a node with this key.
-+    Vacant(VacantEntry<'a, K, V>),
-+    /// This [`RBTree`] already has a node with this key.
-+    Occupied(OccupiedEntry<'a, K, V>),
-+}
-+
-+/// Like [`Entry`], except that it doesn't have ownership of the key.
-+enum RawEntry<'a, K, V> {
-+    Vacant(RawVacantEntry<'a, K, V>),
-+    Occupied(OccupiedEntry<'a, K, V>),
-+}
-+
-+/// A view into a vacant entry in a [`RBTree`]. It is part of the [`Entry`] enum.
-+pub struct VacantEntry<'a, K, V> {
-+    key: K,
-+    raw: RawVacantEntry<'a, K, V>,
-+}
-+
-+/// Like [`VacantEntry`], but doesn't hold on to the key.
-+///
-+/// # Invariants
-+/// - `parent` may be null if the new node becomes the root.
-+/// - `child_field_of_parent` is a valid pointer to the left-child or right-child of `parent`. If `parent` is
-+///     null, it is a pointer to the root of the [`RBTree`].
-+struct RawVacantEntry<'a, K, V> {
-+    rbtree: *mut RBTree<K, V>,
-+    /// The node that will become the parent of the new node if we insert one.
-+    parent: *mut bindings::rb_node,
-+    /// This points to the left-child or right-child field of `parent`, or `root` if `parent` is
-+    /// null.
-+    child_field_of_parent: *mut *mut bindings::rb_node,
-+    _phantom: PhantomData<&'a mut RBTree<K, V>>,
-+}
-+
-+impl<'a, K, V> RawVacantEntry<'a, K, V> {
-+    /// Inserts the given node into the [`RBTree`] at this entry.
-+    ///
-+    /// The `node` must have a key such that inserting it here does not break the ordering of this
-+    /// [`RBTree`].
-+    fn insert(self, node: RBTreeNode<K, V>) -> &'a mut V {
-+        let node = Box::into_raw(node.node);
-+
-+        // SAFETY: `node` is valid at least until we call `Box::from_raw`, which only happens when
-+        // the node is removed or replaced.
-+        let node_links = unsafe { addr_of_mut!((*node).links) };
-+
-+        // INVARIANT: We are linking in a new node, which is valid. It remains valid because we
-+        // "forgot" it with `Box::into_raw`.
-+        // SAFETY: The type invariants of `RawVacantEntry` are exactly the safety requirements of `rb_link_node`.
-+        unsafe { bindings::rb_link_node(node_links, self.parent, self.child_field_of_parent) };
-+
-+        // SAFETY: All pointers are valid. `node` has just been inserted into the tree.
-+        unsafe { bindings::rb_insert_color(node_links, addr_of_mut!((*self.rbtree).root)) };
-+
-+        // SAFETY: The node is valid until we remove it from the tree.
-+        unsafe { &mut (*node).value }
-+    }
-+}
-+
-+impl<'a, K, V> VacantEntry<'a, K, V> {
-+    /// Inserts the given node into the [`RBTree`] at this entry.
-+    pub fn insert(self, value: V, reservation: RBTreeNodeReservation<K, V>) -> &'a mut V {
-+        self.raw.insert(reservation.into_node(self.key, value))
-+    }
-+}
-+
-+/// A view into an occupied entry in a [`RBTree`]. It is part of the [`Entry`] enum.
-+///
-+/// # Invariants
-+/// - `node_links` is a valid, non-null pointer to a tree node in `self.rbtree`
-+pub struct OccupiedEntry<'a, K, V> {
-+    rbtree: &'a mut RBTree<K, V>,
-+    /// The node that this entry corresponds to.
-+    node_links: *mut bindings::rb_node,
-+}
-+
-+impl<'a, K, V> OccupiedEntry<'a, K, V> {
-+    /// Gets a reference to the value in the entry.
-+    pub fn get(&self) -> &V {
-+        // SAFETY:
-+        // - `self.node_links` is a valid pointer to a node in the tree.
-+        // - We have shared access to the underlying tree, and can thus give out a shared reference.
-+        unsafe { &(*container_of!(self.node_links, Node<K, V>, links)).value }
-+    }
-+
-+    /// Gets a mutable reference to the value in the entry.
-+    pub fn get_mut(&mut self) -> &mut V {
-+        // SAFETY:
-+        // - `self.node_links` is a valid pointer to a node in the tree.
-+        // - We have exclusive access to the underlying tree, and can thus give out a mutable reference.
-+        unsafe {
-+            &mut (*(container_of!(self.node_links, Node<K, V>, links) as *mut Node<K, V>)).value
-+        }
-+    }
-+
-+    /// Converts the entry into a mutable reference to its value.
-+    ///
-+    /// If you need multiple references to the `OccupiedEntry`, see [`self#get_mut`].
-+    pub fn into_mut(self) -> &'a mut V {
-+        // SAFETY:
-+        // - `self.node_links` is a valid pointer to a node in the tree.
-+        // - This consumes the `&'a mut RBTree<K, V>`, therefore it can give out a mutable reference that lives for `'a`.
-+        unsafe {
-+            &mut (*(container_of!(self.node_links, Node<K, V>, links) as *mut Node<K, V>)).value
-+        }
-+    }
-+
-+    /// Remove this entry from the [`RBTree`].
-+    pub fn remove_node(self) -> RBTreeNode<K, V> {
-+        // SAFETY: The node is a node in the tree, so it is valid.
-+        unsafe { bindings::rb_erase(self.node_links, &mut self.rbtree.root) };
-+
-+        // INVARIANT: The node is being returned and the caller may free it, however, it was
-+        // removed from the tree. So the invariants still hold.
-+        RBTreeNode {
-+            // SAFETY: The node was a node in the tree, but we removed it, so we can convert it
-+            // back into a box.
-+            node: unsafe {
-+                Box::from_raw(container_of!(self.node_links, Node<K, V>, links) as *mut Node<K, V>)
-+            },
-+        }
-+    }
-+
-+    /// Takes the value of the entry out of the map, and returns it.
-+    pub fn remove(self) -> V {
-+        self.remove_node().node.value
-+    }
-+
-+    /// Swap the current node for the provided node.
-+    ///
-+    /// The key of both nodes must be equal.
-+    fn replace(self, node: RBTreeNode<K, V>) -> RBTreeNode<K, V> {
-+        let node = Box::into_raw(node.node);
-+
-+        // SAFETY: `node` is valid at least until we call `Box::from_raw`, which only happens when
-+        // the node is removed or replaced.
-+        let new_node_links = unsafe { addr_of_mut!((*node).links) };
-+
-+        // SAFETY: This updates the pointers so that `new_node_links` is in the tree where
-+        // `self.node_links` used to be.
-+        unsafe {
-+            bindings::rb_replace_node(self.node_links, new_node_links, &mut self.rbtree.root)
-+        };
-+
-+        // SAFETY:
-+        // - `self.node_ptr` produces a valid pointer to a node in the tree.
-+        // - Now that we removed this entry from the tree, we can convert the node to a box.
-+        let old_node = unsafe {
-+            Box::from_raw(container_of!(self.node_links, Node<K, V>, links) as *mut Node<K, V>)
-+        };
-+
-+        RBTreeNode { node: old_node }
-+    }
-+}
-+
- struct Node<K, V> {
-     links: bindings::rb_node,
-     key: K,
-
+     #[test]
+@@ -779,11 +456,11 @@ fn write_str(&mut self, s: &str) -> fmt::Result {
+ /// use kernel::{str::CString, fmt};
+ ///
+ /// let s = CString::try_from_fmt(fmt!("{}{}{}", "abc", 10, 20)).unwrap();
+-/// assert_eq!(s.as_bytes_with_nul(), "abc1020\0".as_bytes());
++/// assert_eq!(s.to_bytes_with_nul(), "abc1020\0".as_bytes());
+ ///
+ /// let tmp = "testing";
+ /// let s = CString::try_from_fmt(fmt!("{tmp}{}", 123)).unwrap();
+-/// assert_eq!(s.as_bytes_with_nul(), "testing123\0".as_bytes());
++/// assert_eq!(s.to_bytes_with_nul(), "testing123\0".as_bytes());
+ ///
+ /// // This fails because it has an embedded `NUL` byte.
+ /// let s = CString::try_from_fmt(fmt!("a\0b{}", 123));
+@@ -838,21 +515,13 @@ fn deref(&self) -> &Self::Target {
+     }
+ }
+ 
+-impl DerefMut for CString {
+-    fn deref_mut(&mut self) -> &mut Self::Target {
+-        // SAFETY: A `CString` is always NUL-terminated and contains no other
+-        // NUL bytes.
+-        unsafe { CStr::from_bytes_with_nul_unchecked_mut(self.buf.as_mut_slice()) }
+-    }
+-}
+-
+ impl<'a> TryFrom<&'a CStr> for CString {
+     type Error = AllocError;
+ 
+     fn try_from(cstr: &'a CStr) -> Result<CString, AllocError> {
+         let mut buf = Vec::new();
+ 
+-        <Vec<_> as VecExt<_>>::extend_from_slice(&mut buf, cstr.as_bytes_with_nul(), GFP_KERNEL)
++        <Vec<_> as VecExt<_>>::extend_from_slice(&mut buf, cstr.to_bytes_with_nul(), GFP_KERNEL)
+             .map_err(|_| AllocError)?;
+ 
+         // INVARIANT: The `CStr` and `CString` types have the same invariants for
+diff --git a/rust/kernel/sync/condvar.rs b/rust/kernel/sync/condvar.rs
+index 2b306afbe56d..16d1a1cb8d00 100644
+--- a/rust/kernel/sync/condvar.rs
++++ b/rust/kernel/sync/condvar.rs
+@@ -9,12 +9,11 @@
+ use crate::{
+     init::PinInit,
+     pin_init,
+-    str::CStr,
+     task::{MAX_SCHEDULE_TIMEOUT, TASK_INTERRUPTIBLE, TASK_NORMAL, TASK_UNINTERRUPTIBLE},
+     time::Jiffies,
+     types::Opaque,
+ };
+-use core::ffi::{c_int, c_long};
++use core::ffi::{c_int, c_long, CStr};
+ use core::marker::PhantomPinned;
+ use core::ptr;
+ use macros::pin_data;
+@@ -108,7 +107,7 @@ pub fn new(name: &'static CStr, key: &'static LockClassKey) -> impl PinInit<Self
+             // SAFETY: `slot` is valid while the closure is called and both `name` and `key` have
+             // static lifetimes so they live indefinitely.
+             wait_queue_head <- Opaque::ffi_init(|slot| unsafe {
+-                bindings::__init_waitqueue_head(slot, name.as_char_ptr(), key.as_ptr())
++                bindings::__init_waitqueue_head(slot, name.as_ptr(), key.as_ptr())
+             }),
+         })
+     }
+diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
+index f6c34ca4d819..318ecb5a5916 100644
+--- a/rust/kernel/sync/lock.rs
++++ b/rust/kernel/sync/lock.rs
+@@ -6,8 +6,8 @@
+ //! spinlocks, raw spinlocks) to be provided with minimal effort.
+ 
+ use super::LockClassKey;
+-use crate::{init::PinInit, pin_init, str::CStr, types::Opaque, types::ScopeGuard};
+-use core::{cell::UnsafeCell, marker::PhantomData, marker::PhantomPinned};
++use crate::{init::PinInit, pin_init, types::Opaque, types::ScopeGuard};
++use core::{cell::UnsafeCell, ffi::CStr, marker::PhantomData, marker::PhantomPinned};
+ use macros::pin_data;
+ 
+ pub mod mutex;
+@@ -113,7 +113,7 @@ pub fn new(t: T, name: &'static CStr, key: &'static LockClassKey) -> impl PinIni
+             // SAFETY: `slot` is valid while the closure is called and both `name` and `key` have
+             // static lifetimes so they live indefinitely.
+             state <- Opaque::ffi_init(|slot| unsafe {
+-                B::init(slot, name.as_char_ptr(), key.as_ptr())
++                B::init(slot, name.as_ptr(), key.as_ptr())
+             }),
+         })
+     }
+diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
+index 553a5cba2adc..a6418873e82e 100644
+--- a/rust/kernel/workqueue.rs
++++ b/rust/kernel/workqueue.rs
+@@ -380,7 +380,7 @@ pub fn new(name: &'static CStr, key: &'static LockClassKey) -> impl PinInit<Self
+                         slot,
+                         Some(T::Pointer::run),
+                         false,
+-                        name.as_char_ptr(),
++                        name.as_ptr(),
+                         key.as_ptr(),
+                     )
+                 }
+diff --git a/scripts/rustdoc_test_gen.rs b/scripts/rustdoc_test_gen.rs
+index 5ebd42ae4a3f..339991ee6885 100644
+--- a/scripts/rustdoc_test_gen.rs
++++ b/scripts/rustdoc_test_gen.rs
+@@ -172,7 +172,7 @@ pub extern "C" fn {kunit_name}(__kunit_test: *mut kernel::bindings::kunit) {{
+     #[allow(unused)]
+     macro_rules! assert {{
+         ($cond:expr $(,)?) => {{{{
+-            kernel::kunit_assert!("{kunit_name}", "{real_path}", __DOCTEST_ANCHOR - {line}, $cond);
++            kernel::kunit_assert!(c"{kunit_name}", c"{real_path}", __DOCTEST_ANCHOR - {line}, $cond);
+         }}}}
+     }}
+ 
+@@ -180,7 +180,7 @@ macro_rules! assert {{
+     #[allow(unused)]
+     macro_rules! assert_eq {{
+         ($left:expr, $right:expr $(,)?) => {{{{
+-            kernel::kunit_assert_eq!("{kunit_name}", "{real_path}", __DOCTEST_ANCHOR - {line}, $left, $right);
++            kernel::kunit_assert_eq!(c"{kunit_name}", c"{real_path}", __DOCTEST_ANCHOR - {line}, $left, $right);
+         }}}}
+     }}
+ 
 -- 
-2.46.0.184.g6999bdac58-goog
+2.44.2
 
