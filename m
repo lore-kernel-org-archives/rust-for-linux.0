@@ -1,64 +1,105 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15EAD1DD3BE;
-	Mon, 19 Aug 2024 22:46:27 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB00F15A865
+	for <rust-for-linux@vger.kernel.org>; Mon, 19 Aug 2024 23:41:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724107590; cv=none; b=uMFVPSHlIxKXvTr0GX57NjdFA7rs1iIgGJ4UBKI5mGedCAXNqMIzo0xVJKk6Kwivob4dWFuOIwfP8eYJz+9zNFuxmFeWsOua4LaoXonSn11hD9AaowM5uTkRzi7FMTjaClekxyATlBIsWpmM5B99WIV/7thyRhtKpI9rdheqINc=
+	t=1724110904; cv=none; b=M+0pgYRo+GS4NWmIVt2PuVZ83U8gmJlOw5WaqgQDLwrPZXbHXKx0XZ0Zucy4GgRlKb2iBhi0b7o6IPzZ3Xqz+KiZro0EUsJJzOl6OMwbcAd8uLEuXXxmVRhQQXvzyqlFGpSD9w9BT9L82RZjAMhNM42btcxyR4S4382fLa2RsUI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724107590; c=relaxed/simple;
-	bh=YeI+c5WvDzru7+/xMcVttNeBu1UXihiWYeaeNU6/BSI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gMxFbMP5tFWbJX2RBCrS0QG/1IwaG24h9kpuI7mOi1hmozX9Hn/HrAL3DferNuTDOMIIYlQ6JFbwraejRQ+DHAoxxLqd5UfsiNOekBG3vldVegbVbuGQhD3Yn/GSEkcJbr9NR+3Wx3vr9FAG3D4O6BX3CTVUxkkDGmT2UEUaVeE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=KvUdsQUz; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1724110904; c=relaxed/simple;
+	bh=VyJ7DwTEeQRwF2J9itqF7qF9lyR7ouza0PHAuQm+FtY=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ZOwzRhND8TCrPbse06K1qu/2n5U0mYUhptqiFlS3jz2DvSDybtdzDfejE9xZ4svhCHPv29Fu92Z6MOnK+lrxIqTxdLmF5LdV7TqS8jwXUaRGgDdNAhwxdU0LzmMaqpsnzj2eGBkfBWH+6h2yFy3h4Yw4C8MjQaSbNNBt8gMhDrI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Ac2Ojsv+; arc=none smtp.client-ip=209.85.208.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="KvUdsQUz"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=XJ9tVL1kIeuNmlrENC1i7J8LwpXeoRweT1+rYLUPcCA=; b=KvUdsQUzt0wVZlvrt068EL1Lz8
-	qa0/daRg7uuGCQCPSOPH3UurIoP1R7xgLW1ixTnJu2vsreBx6Irw/iakQgrqm6YSXEo3czbxfqca9
-	XIU1WHSx+sGZnzsv0oLJ+lzUnhHBm5WAHKwq9AutYfBNXunH5lAB4H0vlJi8tf0Awfjs=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1sgB8r-0059zT-Ba; Tue, 20 Aug 2024 00:46:25 +0200
-Date: Tue, 20 Aug 2024 00:46:25 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Trevor Gross <tmgross@umich.edu>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, miguel.ojeda.sandonis@gmail.com,
-	benno.lossin@proton.me, aliceryhl@google.com
-Subject: Re: [PATCH net-next v5 6/6] net: phy: add Applied Micro QT2025 PHY
- driver
-Message-ID: <5a063eb5-923e-4743-b72e-57f3fbf82107@lunn.ch>
-References: <20240819005345.84255-1-fujita.tomonori@gmail.com>
- <20240819005345.84255-7-fujita.tomonori@gmail.com>
- <CALNs47siFZQDE8_N2FyLhCMfszrcX7f5Q=rj8c9dzO9Q=hQsmQ@mail.gmail.com>
- <20240819.121936.1897793847560374944.fujita.tomonori@gmail.com>
- <CALNs47u8=J14twTLGos6MM6fZWSiR5GVVyooLt7mxUyX4XhHcQ@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Ac2Ojsv+"
+Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-5bec507f4ddso3428a12.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 19 Aug 2024 16:41:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1724110901; x=1724715701; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=VyJ7DwTEeQRwF2J9itqF7qF9lyR7ouza0PHAuQm+FtY=;
+        b=Ac2Ojsv+hT/DVDertFOoZEdRExcr/WaXAMQbTdz93ijpmy43bOKyv3uOZtKHPIZzr5
+         uB0cl7HeJG1v2KgAvPxqdqg+cOkf6Za8ohHy1BbTMGfVL4F4qKYrqalzlymfs31szu/H
+         G+jTa0ZhrTGYk/pJ2i3OQeoOMzAlAMU9AJ7RwTuWGzPGKRt6EwndtRrArxrWBdX9hCsk
+         CkTv9DNovdTNrSvD4uE4RoTt2CTZOMemhGH3vk4tjLgh0n8AqT8a032uJn0BBuym71Mz
+         YG/fd2jTeHD+leGzaIQRXVJi9/+T7azt5CaPxn2Yg01BDTT8ddE82iwbLOBsq1C4Hwq+
+         9LMA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724110901; x=1724715701;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=VyJ7DwTEeQRwF2J9itqF7qF9lyR7ouza0PHAuQm+FtY=;
+        b=LU1Re/5tsd8VAY81nUcVBF6mn4VyWp8fWDq+es7R5OILFDANKXl78yMwHyEZRqy43T
+         VMPtGy7AhfvwXc6qc1o2Zy2PoF9mf5/EI+qdCHaQsVcw3frjSVTwcU06cnCUR88U9cx7
+         Nuae360KtKaRRKFy5wOpXZiXR7POXrTa1jTa5WTXjKkzgC3DXJuf0TgqsbRmeEoeJdvP
+         yahmBPQ/CSia6U6l5BOSg0yDmDPKKqE+xQ6y1BsBOswqgF3mPdcVyWoADvN5qUlbALXt
+         yU3xSxvx1y9UVu38j9GhA7ESUHh7T3L0Qu3Te+TWwb1/N/8WA4gYi+JIfLzL9ljJde6V
+         bRfg==
+X-Forwarded-Encrypted: i=1; AJvYcCUay2GqWpD7oWOEIihN2+wyhHQ2oaMb7RWXloiyMBeBeVr9q928G3e+a/YmC5ry1WGzDq0Hl1vs5hvKVjcVjzqibdDPVcoTPXjCS1gTQDU=
+X-Gm-Message-State: AOJu0YwtXqZuhpElO1Q3656FqTPr+Xm5/Dl25wqGpbmYCamLvalenqQ8
+	2NT6i2MTww8ToW1WOpXNEPDFU9MTnmz4GmGYZAGs7tIDb4qVzGbNUxvHX02Y73eEznBlTC/JS7K
+	K7gZ6TZqeDuYNf/KmROqf7rZthrU0bZuhLPMZ
+X-Google-Smtp-Source: AGHT+IEFf0La4uREmgZmbe880Nnbs8CZTxbPC4ox9daCMh8bMB0DPDlb/vwxR0dv4G47Vf1sgvElegvu9c36SV8SoxM=
+X-Received: by 2002:a05:6402:3546:b0:59f:9f59:9b07 with SMTP id
+ 4fb4d7f45d1cf-5bf0c262b15mr42504a12.4.1724110900976; Mon, 19 Aug 2024
+ 16:41:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CALNs47u8=J14twTLGos6MM6fZWSiR5GVVyooLt7mxUyX4XhHcQ@mail.gmail.com>
+References: <20240806212106.617164-1-mmaurer@google.com> <20240806212106.617164-15-mmaurer@google.com>
+ <87le0w2hop.fsf@mail.lhotse>
+In-Reply-To: <87le0w2hop.fsf@mail.lhotse>
+From: Matthew Maurer <mmaurer@google.com>
+Date: Mon, 19 Aug 2024 16:41:29 -0700
+Message-ID: <CAGSQo02r3NhWnpBF--5nB2RJ=1Hh97VshtiZmasDfknnL+UjmA@mail.gmail.com>
+Subject: Re: [PATCH v3 14/16] modules: Support extended MODVERSIONS info
+To: Michael Ellerman <mpe@ellerman.id.au>
+Cc: masahiroy@kernel.org, ndesaulniers@google.com, ojeda@kernel.org, 
+	gary@garyguo.net, mcgrof@kernel.org, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
+	Naveen N Rao <naveen@kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, neal@gompa.dev, 
+	marcan@marcan.st, j@jannau.net, asahi@lists.linux.dev, 
+	Nicholas Piggin <npiggin@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Alice Ryhl <aliceryhl@google.com>, linuxppc-dev@lists.ozlabs.org, 
+	linux-modules@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
->     //! This driver is based on the vendor driver `qt2025_phy.c` This source
->     //! and firmware can be downloaded on the EN-9320SFP+ support site.
-> 
-> so anyone reading in the future knows what to look for without relying
-> on a link. But I don't know what the policy is here.
- 
-Ideally, the firmware should be added to linux-firmware. It will then
-appear in most distros. That however requires there is a clear license
-which allows distribution.
+On Fri, Aug 16, 2024 at 4:04=E2=80=AFPM Michael Ellerman <mpe@ellerman.id.a=
+u> wrote:
+>
+> Matthew Maurer <mmaurer@google.com> writes:
+> > Adds a new format for MODVERSIONS which stores each field in a separate
+> > ELF section. This initially adds support for variable length names, but
+> > could later be used to add additional fields to MODVERSIONS in a
+> > backwards compatible way if needed. Any new fields will be ignored by
+> > old user tooling, unlike the current format where user tooling cannot
+> > tolerate adjustments to the format (for example making the name field
+> > longer).
+> >
+> > Since PPC munges its version records to strip leading dots, we reproduc=
+e
+> > the munging for the new format.
+>
+> AFAICS the existing code only strips a single leading dot, not all
+> leading dots?
 
-	Andrew
+You appear to be correct, I'll update that in the next version, but
+want to wait for more feedback on the rest of the patchset before
+sending up another full series.
+
+>
+> cheers
