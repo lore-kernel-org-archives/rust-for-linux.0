@@ -1,55 +1,55 @@
-Received: from mail-qk1-f202.google.com (mail-qk1-f202.google.com [209.85.222.202])
+Received: from mail-yb1-f202.google.com (mail-yb1-f202.google.com [209.85.219.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A0E43176226
-	for <rust-for-linux@vger.kernel.org>; Mon, 19 Aug 2024 15:07:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.202
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7604B176246
+	for <rust-for-linux@vger.kernel.org>; Mon, 19 Aug 2024 15:07:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724080050; cv=none; b=YEnV5+HTo3dYRqKzk6OoZ5nQmYye+tRdynnGmhbkpYNVJoU7f9Qih3vFink6mRI/joyAZcj1ckohGEPmafzvwzIQ3lCXyiEmFvPSPJXxyQQKOB3hKPJ+edXFB8ZK+5VLd2FpQEThNs2hNe3iXHnAFxDLg9dDTUGDPVrQdegrffI=
+	t=1724080051; cv=none; b=mf2gF/QuuTZlaiJs/qBtaOTamt/seC+AJnQANYsRy9916LEjYAexGE2HLB6tq8SHIU2gPv4L97fYGsuJHWWNAbJMwXq8aeXQMNjK4oHois5Wmc0CKaBRXFRSaXUIWMkUZjHHwKHQS5lcLKFpKVEif8mtN3s+gk/BlJXskLO0luQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724080050; c=relaxed/simple;
-	bh=prbzF9A7rp/G33IcXNJKm6tZRhmAfexWxJAHcXVXlYc=;
+	s=arc-20240116; t=1724080051; c=relaxed/simple;
+	bh=bY3uwhAdqdUeCxk8YovfoOJpj6gAoBiYhX2fhlfpqY4=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=dKySbfu5unmtlZAizaSdoi2tTAr3LFN6ISVymNrj41j0Rc4TAY6QLxLRtOMRwtUyVi1lq1ehJO1Nu+PiYOinS6VXeHP83Lr2OUNl6+VvrJVEdKoxDduOTgIiP5sxxA0azOrmn4VJRPwPAKoPWCNRhjx6BEdKQ/VbFp2Sfa0wVRk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--mattgilbride.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=yQIrjZJh; arc=none smtp.client-ip=209.85.222.202
+	 To:Cc:Content-Type; b=IIzB2bx0fAV3ZwwPFeJjOsaU1/9iXGBh1lzuHFxGO0NQdesfuDuG4Dp56i32alnGd7p0lno4YFX4MsItP1I+Myjqsgv2Kxnqm1VPl5d6pgzlInhAEo2CPaJ5uIVlfUwY1JuOHbGM925WgX9hGKkdwZgwI/+mJz3q5Sr188jnJ+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--mattgilbride.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=WjSglrrd; arc=none smtp.client-ip=209.85.219.202
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--mattgilbride.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="yQIrjZJh"
-Received: by mail-qk1-f202.google.com with SMTP id af79cd13be357-7a1d06f8e78so429862285a.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 19 Aug 2024 08:07:28 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="WjSglrrd"
+Received: by mail-yb1-f202.google.com with SMTP id 3f1490d57ef6-e0be2c7c34dso6678703276.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 19 Aug 2024 08:07:29 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1724080047; x=1724684847; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1724080048; x=1724684848; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=CYBGbx/uYLeIyT2X3cGbSQ5xZpFImUAaykVOvmQ6VX8=;
-        b=yQIrjZJhhfaZxR6DrdNqf7OJfKBjOHB4IvwV5VWv/RRtsqwYoKUP+p7bS4ENuXu5RS
-         RfyIj0h+YpJ5DCqorlxSBMlQCyZo8T/wzM+4A3Z3yOPYtI+tp7Bp67YFoClhIbLRkIjW
-         2ZtwJx2UC3DbxT40QwYMQA30+81ggTH9lE8Tl4Y2FX9zPorSnjOVaLht5GJkfvlvh/VA
-         HmsAEEjwVEzB9nkVth3DsaPT/zv9E35SSYPfLNOHggMaw4fhEW5POFchl1v6FB0k875U
-         wwcsr9RCPd5iM7kS5BCBBhZ9lHuI1Ws2m1ObiRtf+MhAlEvW8LRy2RYcQGeVjMM72hcE
-         v/KA==
+        bh=85UzCaGowEZwuxuV5kMmpUWk+b/7cJAuTQ/iw0RGtwQ=;
+        b=WjSglrrdJh0RgybG9eq5NNUr1dpugvRsJYWfbFeBxQdyBw3Oo6ecVLPfJ3V62NxnQS
+         mrF38w5JL89Dzd6fNkPrkqLY2SkQUempfnJbxWJ9Fltm5tr5zW60YS5VIbz4MpntQvdv
+         4iFuexFw8j9ZqXXXdmtpDxaNPgI/PntNtRnUp8j6s7gmLPrC5KrQx0XblIWSi0Sq1i6B
+         vsyfetTUzTgKJXm/XhpiOi3PtEw/iZ1V+QMCVd+EJPYfBGjP5WkVY7mq4vXOX7i2wqju
+         B/3P90qVSk4lvHdplrwFBWX9sW/i1m2Q1FNBoPUVQajTNlvMcdfoY5/VhhBUxYFDiVjJ
+         3F9A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724080047; x=1724684847;
+        d=1e100.net; s=20230601; t=1724080048; x=1724684848;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=CYBGbx/uYLeIyT2X3cGbSQ5xZpFImUAaykVOvmQ6VX8=;
-        b=utwJ0iERnAIN79+XpcUy/Ei2NXrYv/UOVfbfB3xpP+XSisGc8RURu1O0Y0t1K97cxe
-         qNi0Fs2ykniC9zCjfU4lXobRhPNb0LzROpn4yqeDnfRgclVnDc02drCICKQrFEBrKsZI
-         MtIOaIMMNZ4JLGBGj7ONckUPArEgxRW+746z+uG93HF3NAvwqoybt0sgo1OtdNst9zv+
-         1jc+PPol88bU80ZWMOkndcAKLJjvuFUcgmDbfIMkm3tFePLYxZ5kK3Ad0lqzqXlHnqr/
-         XLHN77UpWjiAw4C1p8/wH08bk3EeqnPL05/YcR/rKVoHU8WAQdVihkIRYu1+K01LRrI6
-         CpLQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXDnEqp0GS1UPFOavYPrgxZ8Uhw7D5thUI/jGe0bvHm8brMEAt5v40X4axUgKqOw9GUnciy/s1yqZf2zN8zoml/LUWjQBaChTSIOQmzXT0=
-X-Gm-Message-State: AOJu0YzDG7jKvJpUp7o7nAf+ecLXzn17n/yhg1DDe87Mk6eh+H8ApBZ9
-	U1pXDq7jN3QonKJHZzVQ+cTte+QyWGLFvO2YVdllKkxSU1OY1UjjTLiONX1GEiSC/aAXUDL8ZDN
-	Pwx9wg3DWF2/o4cespcidagEmmg==
-X-Google-Smtp-Source: AGHT+IH8CwNc1AeUg31OWohquZPNxZpUUr0cyhV4RpH3f2FhxI6NTXi3a6nWqOovpY2lzkhR/TJnHA5e2mF3F63mXsQ=
+        bh=85UzCaGowEZwuxuV5kMmpUWk+b/7cJAuTQ/iw0RGtwQ=;
+        b=EXo24GwNW/zxT7PrWFgPAmXEssJXnc8D0QFKj2FecZiSuHHQEwIIj+YIGrP/gnQ+qa
+         gkfOxOmsHKdV2/kabvIgc8V21Foi26HoMIP44FesU5ghdF/v+UJMOHwlCAVk7sYDi2I1
+         kTewltez5/IXCMyJay7nnLbKNKmHy+mNigw10gaGu08G5AnP3/6SRJ83o8WE+GiS0W/Y
+         vNRPFDRmWBk0ghDO82z45zmBHY/LU/rDtoGkQ6KTS0/9ak2RqUM+B2E7bo6KTQq/kGIb
+         FhYDEbvd+/Qpw6j4149PpOe4pE0e8Fc9CV9WVQrKLBf0qTsJbpI7G30W9IM7xHHZ1zXF
+         1QQw==
+X-Forwarded-Encrypted: i=1; AJvYcCXmmPKlMMrMJyRS5bh4qzwcpSFmc6Jf8Qa8C6xOLSQJ0MLEzZ5bVUa+vHNdFqODntnmeX+TPlSyla6+u2jsPmkMYPuudF8Xd0LofjrQSLM=
+X-Gm-Message-State: AOJu0Yzmk1GUTWRfmUv84pATVtqgvFoJUWfgD8K50hlQ8nt4F/hUQvH0
+	N6qnhvFssbmuObYu1bGTUT/l0P+8FDu0+Lu0EV1UnnaAhfXuk605aMEebhfdNV2hs2Oqtnx8GgW
+	bgzqMnQaXHGF8pTyKAGM92V4o3A==
+X-Google-Smtp-Source: AGHT+IH0pNDpzwpu3UuDXN/wj6kQ1ChIbzTzqX9g7z2VYmIU2cDLMj5JmJ33g+U/No06uNi+RVR5rWt69vBUGSO54SU=
 X-Received: from mattgilbride.c.googlers.com ([fda3:e722:ac3:cc00:2b:7d90:c0a8:2ac5])
- (user=mattgilbride job=sendgmr) by 2002:a05:620a:209c:b0:7a2:a1d:bc95 with
- SMTP id af79cd13be357-7a5068eaabbmr3961285a.3.1724080046963; Mon, 19 Aug 2024
- 08:07:26 -0700 (PDT)
-Date: Mon, 19 Aug 2024 15:07:10 +0000
+ (user=mattgilbride job=sendgmr) by 2002:a05:6902:4ad:b0:e11:5f87:1e3c with
+ SMTP id 3f1490d57ef6-e1180f8aef5mr172016276.11.1724080048491; Mon, 19 Aug
+ 2024 08:07:28 -0700 (PDT)
+Date: Mon, 19 Aug 2024 15:07:11 +0000
 In-Reply-To: <20240819-b4-rbtree-v10-0-3b3b2c4d73af@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -59,8 +59,8 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20240819-b4-rbtree-v10-0-3b3b2c4d73af@google.com>
 X-Mailer: b4 0.13.0
-Message-ID: <20240819-b4-rbtree-v10-2-3b3b2c4d73af@google.com>
-Subject: [PATCH v10 2/5] rust: rbtree: add iterator
+Message-ID: <20240819-b4-rbtree-v10-3-3b3b2c4d73af@google.com>
+Subject: [PATCH v10 3/5] rust: rbtree: add mutable iterator
 From: Matt Gilbride <mattgilbride@google.com>
 To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
@@ -77,221 +77,180 @@ Content-Type: text/plain; charset="utf-8"
 
 From: Wedson Almeida Filho <wedsonaf@gmail.com>
 
-- Add Iterator implementation for `RBTree`, allowing
-  iteration over (key, value) pairs in key order.
-- Add individual `keys()` and `values()` functions to iterate over keys
-  or values alone.
-- Update doctests to use iteration instead of explicitly getting items.
+Add mutable Iterator implementation for `RBTree`,
+allowing iteration over (key, value) pairs in key order. Only values are
+mutable, as mutating keys implies modifying a node's position in the tree.
 
-Iteration is needed by the binder driver to enumerate all values in a
-tree for oneway spam detection [1].
+Mutable iteration is used by the binder driver during shutdown to
+clean up the tree maintained by the "range allocator" [1].
 
-Link: https://lore.kernel.org/rust-for-linux/20231101-rust-binder-v1-17-08ba9197f637@google.com/ [1]
+Link: https://lore.kernel.org/rust-for-linux/20231101-rust-binder-v1-6-08ba9197f637@google.com/ [1]
 Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
 Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 Tested-by: Alice Ryhl <aliceryhl@google.com>
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
 Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
 Signed-off-by: Matt Gilbride <mattgilbride@google.com>
 ---
- rust/kernel/rbtree.rs | 130 +++++++++++++++++++++++++++++++++++++++++++-------
- 1 file changed, 112 insertions(+), 18 deletions(-)
+ rust/kernel/rbtree.rs | 104 +++++++++++++++++++++++++++++++++++++++++++-------
+ 1 file changed, 90 insertions(+), 14 deletions(-)
 
 diff --git a/rust/kernel/rbtree.rs b/rust/kernel/rbtree.rs
-index 51c53a25bc7d..29e7a0795266 100644
+index 29e7a0795266..6c9a8f0a00e6 100644
 --- a/rust/kernel/rbtree.rs
 +++ b/rust/kernel/rbtree.rs
-@@ -42,14 +42,30 @@
- ///     assert_eq!(tree.get(&30).unwrap(), &300);
- /// }
- ///
-+/// // Iterate over the nodes we just inserted.
-+/// {
-+///     let mut iter = tree.iter();
-+///     assert_eq!(iter.next().unwrap(), (&10, &100));
-+///     assert_eq!(iter.next().unwrap(), (&20, &200));
-+///     assert_eq!(iter.next().unwrap(), (&30, &300));
-+///     assert!(iter.next().is_none());
-+/// }
-+///
-+/// // Print all elements.
-+/// for (key, value) in &tree {
-+///     pr_info!("{} = {}\n", key, value);
-+/// }
-+///
- /// // Replace one of the elements.
- /// tree.try_create_and_insert(10, 1000, flags::GFP_KERNEL)?;
- ///
- /// // Check that the tree reflects the replacement.
- /// {
--///     assert_eq!(tree.get(&10).unwrap(), &1000);
--///     assert_eq!(tree.get(&20).unwrap(), &200);
--///     assert_eq!(tree.get(&30).unwrap(), &300);
-+///     let mut iter = tree.iter();
-+///     assert_eq!(iter.next().unwrap(), (&10, &1000));
-+///     assert_eq!(iter.next().unwrap(), (&20, &200));
-+///     assert_eq!(iter.next().unwrap(), (&30, &300));
-+///     assert!(iter.next().is_none());
- /// }
- ///
- /// // Change the value of one of the elements.
-@@ -57,9 +73,11 @@
- ///
- /// // Check that the tree reflects the update.
- /// {
--///     assert_eq!(tree.get(&10).unwrap(), &1000);
--///     assert_eq!(tree.get(&20).unwrap(), &200);
--///     assert_eq!(tree.get(&30).unwrap(), &3000);
-+///     let mut iter = tree.iter();
-+///     assert_eq!(iter.next().unwrap(), (&10, &1000));
-+///     assert_eq!(iter.next().unwrap(), (&20, &200));
-+///     assert_eq!(iter.next().unwrap(), (&30, &3000));
-+///     assert!(iter.next().is_none());
- /// }
- ///
- /// // Remove an element.
-@@ -67,9 +85,10 @@
- ///
- /// // Check that the tree reflects the removal.
- /// {
--///     assert_eq!(tree.get(&10), None);
--///     assert_eq!(tree.get(&20).unwrap(), &200);
--///     assert_eq!(tree.get(&30).unwrap(), &3000);
-+///     let mut iter = tree.iter();
-+///     assert_eq!(iter.next().unwrap(), (&20, &200));
-+///     assert_eq!(iter.next().unwrap(), (&30, &3000));
-+///     assert!(iter.next().is_none());
- /// }
- ///
- /// # Ok::<(), Error>(())
-@@ -109,9 +128,11 @@
- ///
- /// // Check the nodes we just inserted.
- /// {
--///     assert_eq!(tree.get(&10).unwrap(), &100);
--///     assert_eq!(tree.get(&20).unwrap(), &200);
--///     assert_eq!(tree.get(&30).unwrap(), &300);
-+///     let mut iter = tree.iter();
-+///     assert_eq!(iter.next().unwrap(), (&10, &100));
-+///     assert_eq!(iter.next().unwrap(), (&20, &200));
-+///     assert_eq!(iter.next().unwrap(), (&30, &300));
-+///     assert!(iter.next().is_none());
- /// }
- ///
- /// // Remove a node, getting back ownership of it.
-@@ -119,9 +140,10 @@
- ///
- /// // Check that the tree reflects the removal.
- /// {
--///     assert_eq!(tree.get(&10).unwrap(), &100);
--///     assert_eq!(tree.get(&20).unwrap(), &200);
--///     assert_eq!(tree.get(&30), None);
-+///     let mut iter = tree.iter();
-+///     assert_eq!(iter.next().unwrap(), (&10, &100));
-+///     assert_eq!(iter.next().unwrap(), (&20, &200));
-+///     assert!(iter.next().is_none());
- /// }
- ///
- /// // Create a preallocated reservation that we can re-use later.
-@@ -133,9 +155,11 @@
- ///
- /// // Check that the tree reflect the new insertion.
- /// {
--///     assert_eq!(tree.get(&10).unwrap(), &100);
--///     assert_eq!(tree.get(&15).unwrap(), &150);
--///     assert_eq!(tree.get(&20).unwrap(), &200);
-+///     let mut iter = tree.iter();
-+///     assert_eq!(iter.next().unwrap(), (&10, &100));
-+///     assert_eq!(iter.next().unwrap(), (&15, &150));
-+///     assert_eq!(iter.next().unwrap(), (&20, &200));
-+///     assert!(iter.next().is_none());
- /// }
- ///
- /// # Ok::<(), Error>(())
-@@ -167,6 +191,26 @@ pub fn new() -> Self {
-             _p: PhantomData,
-         }
-     }
-+
-+    /// Returns an iterator over the tree nodes, sorted by key.
-+    pub fn iter(&self) -> Iter<'_, K, V> {
-+        // INVARIANT: `bindings::rb_first` returns a valid pointer to a tree node given a valid pointer to a tree root.
-+        Iter {
-+            _tree: PhantomData,
-+            // SAFETY: `self.root` is a valid pointer to the tree root.
-+            next: unsafe { bindings::rb_first(&self.root) },
+@@ -12,7 +12,7 @@
+     cmp::{Ord, Ordering},
+     marker::PhantomData,
+     mem::MaybeUninit,
+-    ptr::{addr_of_mut, NonNull},
++    ptr::{addr_of_mut, from_mut, NonNull},
+ };
+ 
+ /// A red-black tree with owned nodes.
+@@ -194,11 +194,31 @@ pub fn new() -> Self {
+ 
+     /// Returns an iterator over the tree nodes, sorted by key.
+     pub fn iter(&self) -> Iter<'_, K, V> {
+-        // INVARIANT: `bindings::rb_first` returns a valid pointer to a tree node given a valid pointer to a tree root.
+         Iter {
+             _tree: PhantomData,
+-            // SAFETY: `self.root` is a valid pointer to the tree root.
+-            next: unsafe { bindings::rb_first(&self.root) },
++            // INVARIANT:
++            //   - `self.root` is a valid pointer to a tree root.
++            //   - `bindings::rb_first` produces a valid pointer to a node given `root` is valid.
++            iter_raw: IterRaw {
++                // SAFETY: by the invariants, all pointers are valid.
++                next: unsafe { bindings::rb_first(&self.root) },
++                _phantom: PhantomData,
++            },
 +        }
 +    }
 +
-+    /// Returns an iterator over the keys of the nodes in the tree, in sorted order.
-+    pub fn keys(&self) -> impl Iterator<Item = &'_ K> {
-+        self.iter().map(|(k, _)| k)
-+    }
++    /// Returns a mutable iterator over the tree nodes, sorted by key.
++    pub fn iter_mut(&mut self) -> IterMut<'_, K, V> {
++        IterMut {
++            _tree: PhantomData,
++            // INVARIANT:
++            //   - `self.root` is a valid pointer to a tree root.
++            //   - `bindings::rb_first` produces a valid pointer to a node given `root` is valid.
++            iter_raw: IterRaw {
++                // SAFETY: by the invariants, all pointers are valid.
++                next: unsafe { bindings::rb_first(from_mut(&mut self.root)) },
++                _phantom: PhantomData,
++            },
+         }
+     }
+ 
+@@ -211,6 +231,11 @@ pub fn keys(&self) -> impl Iterator<Item = &'_ K> {
+     pub fn values(&self) -> impl Iterator<Item = &'_ V> {
+         self.iter().map(|(_, v)| v)
+     }
 +
-+    /// Returns an iterator over the values of the nodes in the tree, sorted by key.
-+    pub fn values(&self) -> impl Iterator<Item = &'_ V> {
-+        self.iter().map(|(_, v)| v)
++    /// Returns a mutable iterator over the values of the nodes in the tree, sorted by key.
++    pub fn values_mut(&mut self) -> impl Iterator<Item = &'_ mut V> {
++        self.iter_mut().map(|(_, v)| v)
 +    }
  }
  
  impl<K, V> RBTree<K, V>
-@@ -358,6 +402,56 @@ fn drop(&mut self) {
-     }
+@@ -414,13 +439,9 @@ fn into_iter(self) -> Self::IntoIter {
+ /// An iterator over the nodes of a [`RBTree`].
+ ///
+ /// Instances are created by calling [`RBTree::iter`].
+-///
+-/// # Invariants
+-/// - `self.next` is a valid pointer.
+-/// - `self.next` points to a node stored inside of a valid `RBTree`.
+ pub struct Iter<'a, K, V> {
+     _tree: PhantomData<&'a RBTree<K, V>>,
+-    next: *mut bindings::rb_node,
++    iter_raw: IterRaw<K, V>,
  }
  
-+impl<'a, K, V> IntoIterator for &'a RBTree<K, V> {
-+    type Item = (&'a K, &'a V);
-+    type IntoIter = Iter<'a, K, V>;
-+
-+    fn into_iter(self) -> Self::IntoIter {
-+        self.iter()
+ // SAFETY: The [`Iter`] gives out immutable references to K and V, so it has the same
+@@ -434,21 +455,76 @@ unsafe impl<'a, K: Sync, V: Sync> Sync for Iter<'a, K, V> {}
+ impl<'a, K, V> Iterator for Iter<'a, K, V> {
+     type Item = (&'a K, &'a V);
+ 
++    fn next(&mut self) -> Option<Self::Item> {
++        // SAFETY: Due to `self._tree`, `k` and `v` are valid for the lifetime of `'a`.
++        self.iter_raw.next().map(|(k, v)| unsafe { (&*k, &*v) })
 +    }
 +}
 +
-+/// An iterator over the nodes of a [`RBTree`].
++impl<'a, K, V> IntoIterator for &'a mut RBTree<K, V> {
++    type Item = (&'a K, &'a mut V);
++    type IntoIter = IterMut<'a, K, V>;
++
++    fn into_iter(self) -> Self::IntoIter {
++        self.iter_mut()
++    }
++}
++
++/// A mutable iterator over the nodes of a [`RBTree`].
 +///
-+/// Instances are created by calling [`RBTree::iter`].
++/// Instances are created by calling [`RBTree::iter_mut`].
++pub struct IterMut<'a, K, V> {
++    _tree: PhantomData<&'a mut RBTree<K, V>>,
++    iter_raw: IterRaw<K, V>,
++}
++
++// SAFETY: The [`IterMut`] has exclusive access to both `K` and `V`, so it is sufficient to require them to be `Send`.
++// The iterator only gives out immutable references to the keys, but since the iterator has excusive access to those same
++// keys, `Send` is sufficient. `Sync` would be okay, but it is more restrictive to the user.
++unsafe impl<'a, K: Send, V: Send> Send for IterMut<'a, K, V> {}
++
++// SAFETY: The [`IterMut`] gives out immutable references to K and mutable references to V, so it has the same
++// thread safety requirements as mutable references.
++unsafe impl<'a, K: Sync, V: Sync> Sync for IterMut<'a, K, V> {}
++
++impl<'a, K, V> Iterator for IterMut<'a, K, V> {
++    type Item = (&'a K, &'a mut V);
++
++    fn next(&mut self) -> Option<Self::Item> {
++        self.iter_raw.next().map(|(k, v)|
++            // SAFETY: Due to `&mut self`, we have exclusive access to `k` and `v`, for the lifetime of `'a`.
++            unsafe { (&*k, &mut *v) })
++    }
++}
++
++/// A raw iterator over the nodes of a [`RBTree`].
 +///
 +/// # Invariants
 +/// - `self.next` is a valid pointer.
 +/// - `self.next` points to a node stored inside of a valid `RBTree`.
-+pub struct Iter<'a, K, V> {
-+    _tree: PhantomData<&'a RBTree<K, V>>,
++struct IterRaw<K, V> {
 +    next: *mut bindings::rb_node,
++    _phantom: PhantomData<fn() -> (K, V)>,
 +}
 +
-+// SAFETY: The [`Iter`] gives out immutable references to K and V, so it has the same
-+// thread safety requirements as immutable references.
-+unsafe impl<'a, K: Sync, V: Sync> Send for Iter<'a, K, V> {}
++impl<K, V> Iterator for IterRaw<K, V> {
++    type Item = (*mut K, *mut V);
 +
-+// SAFETY: The [`Iter`] gives out immutable references to K and V, so it has the same
-+// thread safety requirements as immutable references.
-+unsafe impl<'a, K: Sync, V: Sync> Sync for Iter<'a, K, V> {}
-+
-+impl<'a, K, V> Iterator for Iter<'a, K, V> {
-+    type Item = (&'a K, &'a V);
-+
-+    fn next(&mut self) -> Option<Self::Item> {
-+        if self.next.is_null() {
-+            return None;
-+        }
-+
-+        // SAFETY: By the type invariant of `Iter`, `self.next` is a valid node in an `RBTree`,
-+        // and by the type invariant of `RBTree`, all nodes point to the links field of `Node<K, V>` objects.
-+        let cur = unsafe { container_of!(self.next, Node<K, V>, links) };
-+
-+        // SAFETY: `self.next` is a valid tree node by the type invariants.
-+        self.next = unsafe { bindings::rb_next(self.next) };
-+
-+        // SAFETY: By the same reasoning above, it is safe to dereference the node. Additionally,
-+        // it is ok to return a reference to members because the iterator must outlive it.
-+        Some(unsafe { (&(*cur).key, &(*cur).value) })
-+    }
-+}
-+
- /// A memory reservation for a red-black tree node.
- ///
- ///
+     fn next(&mut self) -> Option<Self::Item> {
+         if self.next.is_null() {
+             return None;
+         }
+ 
+-        // SAFETY: By the type invariant of `Iter`, `self.next` is a valid node in an `RBTree`,
++        // SAFETY: By the type invariant of `IterRaw`, `self.next` is a valid node in an `RBTree`,
+         // and by the type invariant of `RBTree`, all nodes point to the links field of `Node<K, V>` objects.
+-        let cur = unsafe { container_of!(self.next, Node<K, V>, links) };
++        let cur: *mut Node<K, V> =
++            unsafe { container_of!(self.next, Node<K, V>, links) }.cast_mut();
+ 
+         // SAFETY: `self.next` is a valid tree node by the type invariants.
+         self.next = unsafe { bindings::rb_next(self.next) };
+ 
+-        // SAFETY: By the same reasoning above, it is safe to dereference the node. Additionally,
+-        // it is ok to return a reference to members because the iterator must outlive it.
+-        Some(unsafe { (&(*cur).key, &(*cur).value) })
++        // SAFETY: By the same reasoning above, it is safe to dereference the node.
++        Some(unsafe { (addr_of_mut!((*cur).key), addr_of_mut!((*cur).value)) })
+     }
+ }
+ 
 
 -- 
 2.46.0.184.g6999bdac58-goog
