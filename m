@@ -1,96 +1,113 @@
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9B87D512;
-	Mon, 19 Aug 2024 00:17:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81AFDF4E2;
+	Mon, 19 Aug 2024 00:22:20 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724026644; cv=none; b=aWUapMUl3MVHiS0ei5YG4jV9zbDr69zttAYVlrsYgQEIks5db+zU+7IR008GvxJmrhOXDMjJP87szMP6PxEYq+mwvFmJTrZo37J+fLa68EyYXnCCNKwHnTNF6UP4lIWwixEQFdYcbOM9JcTXQCn4np5+/+Qvj9TDiSlDMnDUoOc=
+	t=1724026941; cv=none; b=P2G6yXG5oj+n00Z91n3pzGTpUuf4BvxRdOPyd6MNUZgRtjGKp83VFyuJZnRM4Mk9b9BNXl7kl8qbGIq/OP04MSusLPDLUH/ycOrsuB2H+SYCf1fciivlaXUsNEZSgCIfAOcLwqTug7bZh0pAQPvgsIEUf7ihgef16uO3v7CCX0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724026644; c=relaxed/simple;
-	bh=DvITub9vf7BDb7rAZqKY59MExun/BEU5f/3tliK3zQo=;
+	s=arc-20240116; t=1724026941; c=relaxed/simple;
+	bh=hUlasCGs8bJ/CqR9HffjtbBB4lngk1f4AcPUhJq0AcU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Wh8NgqcH71IUUG+sQf2SAmIY5NTHRq+/jdQN2BacLbU+s9+kEEdtEH9gtA0MRVD1FOsWey/gO9HKs3xqwmGBVPrCrWAadH+08e2Z88pXBSIcRckvK4kAtYg5FRk+Byxtjt4izaBSNylKxLvkNIOtXCHcdARNAVleqjbaov7UIzQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=A5dFYzE9; arc=none smtp.client-ip=209.85.210.181
+	 To:Cc:Content-Type; b=TQW2J97C+3PfJ7nW/kRnp+8ZIP+AigNSUTOMK1rqwMvMdeoPxyrY9tuMfGcdteVXYckG2WL7kKdWkS5PI8rJhF65qJ5frsoxsQ/PHT8u3YngKe/12oTTQa36V50jNBawfy2OoQmxwH/iJR6Cw3kZQIB6XrwF1/6bU/VTabRk/rQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OlLW40F1; arc=none smtp.client-ip=209.85.210.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="A5dFYzE9"
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-713edc53429so377076b3a.2;
-        Sun, 18 Aug 2024 17:17:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OlLW40F1"
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-70eaf5874ddso2752789b3a.3;
+        Sun, 18 Aug 2024 17:22:20 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724026642; x=1724631442; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1724026940; x=1724631740; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=DvITub9vf7BDb7rAZqKY59MExun/BEU5f/3tliK3zQo=;
-        b=A5dFYzE9umfOlsfKo7+SFqQCrK9jvD28KcL0zeQ75Har7uJ41M3VenpvjGXxgomnIr
-         Fr3kWFf8NCmw22ISVY06X/v6ZGuQ6A74Qw9OVFQfB3sj5WfoDfUEkf0dWVuAZQlbP+ct
-         29OwwW5owFrTFxPCoUbe+bxVIjcSHwldeJZg3zl6ivWEJNqGD1ERCn0idmsWWQIs+cD7
-         RiLTTJJScsHEUWNBCjvgOE4ey+PSAOuC+ettyHVYf9VY5/be3SJulcb6k44Gjkm2NU7T
-         ZzgtEK9jKpPdHbqZcCgbZwvw2hEOEZhycgUYBQYVae23Gbl3ZIzfMrO1sbndgHNUYww6
-         VHxQ==
+        bh=RYZfJCDZHiEEDuTx7TQepweKjjgoFmH0zVv9FmE6Nt4=;
+        b=OlLW40F1sgrvK7baYujl96VOaNfHJJ06rpkLjOtEmm1qPlOQ8o+g2rGu7jLtkcus8o
+         CQfWTlsSBo/bZDAuQeLOfYTP6hwIv7hctPS+90rDoAKaqYKUClr9ZVpRldJCWI4KNzKg
+         rq06OTfpAHsB+b7jt9/Ex5XAmx8x7Dnqt28EwGmTINsP0CkSwvRAFsv8VBaSFkP2b4h5
+         gQIp9A8ErydmpQEvsfw49cgXPCytG8VpIEavkStMipu5ntBPOltI3HpHF5ZffL8TV4p9
+         s/Rdf165t7YXpqTPv1lr0YM5xNu3Rm1QQ1LD+WZO1OJ7/ASjQv/QuM1Skvlfn0zSlC3g
+         28NA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724026642; x=1724631442;
+        d=1e100.net; s=20230601; t=1724026940; x=1724631740;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=DvITub9vf7BDb7rAZqKY59MExun/BEU5f/3tliK3zQo=;
-        b=qy4j8Z86obHU1W+A6l1pfIHtMgOXSFHuZ7pq9cYKYPDgllbXen5vuBZbdo/wv1CqJX
-         GnexrWovAo+C87qg3lecKA9+tyVo1KgIMRS2oh+pNSh7kzKKVNDcgEztWKM1DewcCglf
-         L7oxQKUjoBa26H/W8gc0T/z9eLmvjxUz6rI4WPKzGKKhD7go0rUjCQU1iu0gVFBPfVif
-         0D/ZpoBdOl0S4IHHwbtB6M5nfwuLPsL22eueSbqiKeOnh5AxGaIGoKsAEmCBd31ENb4/
-         ESfr51kspSFPtvPju9tIpHFptxAepH1jtGRDFP09oATEFFMaSxOOkN45Do2+kW0JrKTU
-         UJrg==
-X-Forwarded-Encrypted: i=1; AJvYcCVsu6SsTG+PLLS45IfGr+OBpojITHpPBhRKDtdXFdtDEGbuQP2EvWyfmQvRGioPgofGglUQnnk+xaJwwfIpUEdfivNxQoq8zuDsR7hd9tos3vbCU9fJyaXe79EGGJqajrIubwDatjonUmI5N54=
-X-Gm-Message-State: AOJu0Yw9kNrZQA+qdnJ3WgxZ5B4VqpU2KN6jjZVMYNwYEYjkWWHiVFoa
-	qjUcsEZkyRJGsI1a/1MbFxR89zWgtgloybqvjhUGROXqVYT4CqcKvtnUk4UgVl1bo+duihAv226
-	SEjPzOwvP/ogHfCqOiM1zeAufVFY=
-X-Google-Smtp-Source: AGHT+IEGSGsh3Or9iR0XrfJeGk8bLn0rbToR0F5erUw9pWSVmYRClJovKPpJtRQXtFlylrOY3a98XBPcZAZw6CL4S+o=
-X-Received: by 2002:a05:6a00:178c:b0:710:5825:5ba0 with SMTP id
- d2e1a72fcca58-713c4d89219mr9331298b3a.3.1724026641815; Sun, 18 Aug 2024
- 17:17:21 -0700 (PDT)
+        bh=RYZfJCDZHiEEDuTx7TQepweKjjgoFmH0zVv9FmE6Nt4=;
+        b=RbeADj9+RSr/Y9PRLXP79z7tILqpuCUo6xnOAXGF1mLZYV8F086LMyqhvqQ7RFI0pa
+         iA5ia63GNJUxURSyV/p18G36Hp8TmXotqrSg7uOiE1S8PNhaP5xU3hxDCc0tz3sHvaE3
+         gVMrfHa6rH9GWex8ZqKCwhP2Q4foxk3vC2VhCJvp5ww7Bb6EJkXKl+gI/XG4z8r+8DrI
+         GRgweXou6ExBGZp86N9xMFoWiKBKfTLAJDtnBHExvjoG0EadENc0KG38iXJN96B0I4Za
+         w3AorbvfPdb2MM8nogv3XMUHOHLGapGTj7rwwfsEr9wN9CJSXtk3OIky+FaeUV/GZHMo
+         r5mQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXEWUQ9PQII4iJhJcYxb5PQaxGS8PRg8KI9J22iBFRxxAWNucNxHEAlexCbiLhAUCt1oBYotV1yEv7+bympKaNVYc4qP4kYNgjKK1+2JkDOGj6/HDfHq7wOgJWw5haTCJNanDKYhuY=
+X-Gm-Message-State: AOJu0Yy9v+CEL9dtNguP7ZnpG9PSioI6k5wyMj6rXRvYnP/LiNR1yWZ/
+	2udYa/KVBnS5gIXPc7GE4OxpMfiCO+eEmNPMcU/ComwppUSnGYoNbuYxgFQzzykPLyPZqxTHG2r
+	90KiInSP9tINXTCP6adBmbqG5I6A=
+X-Google-Smtp-Source: AGHT+IEGKxijvM5mqkst0BgtqjvHPalpw5q93+BJyczPe2AiwKeMQbFced36aht9WX6/LWN2Dm8QtTLHyCRUk2OA61g=
+X-Received: by 2002:a05:6a00:66d9:b0:70d:37f4:2c73 with SMTP id
+ d2e1a72fcca58-713c4ddc3abmr9471115b3a.10.1724026939632; Sun, 18 Aug 2024
+ 17:22:19 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240817165302.3852499-1-gary@garyguo.net> <ZsFEpjvE9osKDb3b@boqun-archlinux>
- <CANiq72k81VrS+3Skh7gfYzkcxTsGscUJOhroV4MXH-LZgroZFg@mail.gmail.com> <20240819005637.47e7045f.gary@garyguo.net>
-In-Reply-To: <20240819005637.47e7045f.gary@garyguo.net>
+References: <20240817051939.77735-1-fujita.tomonori@gmail.com>
+ <20240817051939.77735-7-fujita.tomonori@gmail.com> <9a7c687a-29a9-4a1a-ad69-39ce7edad371@lunn.ch>
+ <7f835fe8-e641-4b84-a080-13f4841fb64a@proton.me> <1a717f2d-8512-47bd-a5b3-c5ceb9b44f03@lunn.ch>
+ <0797f8e8-ea3c-413d-b782-84dd97919ea9@proton.me> <bdfdac7c-edb0-4b78-b616-76be287c7597@lunn.ch>
+In-Reply-To: <bdfdac7c-edb0-4b78-b616-76be287c7597@lunn.ch>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 19 Aug 2024 02:17:08 +0200
-Message-ID: <CANiq72kGyuhthMQA7bLaVduUS08AuVf-805_e0w9_vwBp0JcGA@mail.gmail.com>
-Subject: Re: [PATCH v2] kbuild: rust: auto generate rust helper exports
-To: Gary Guo <gary@garyguo.net>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, Dirk Behme <dirk.behme@de.bosch.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Date: Mon, 19 Aug 2024 02:22:07 +0200
+Message-ID: <CANiq72=Ga7usdPgACL6znOJ_=SQXy8ESbft4x0XewGL-Xf-M-g@mail.gmail.com>
+Subject: Re: [PATCH net-next v4 6/6] net: phy: add Applied Micro QT2025 PHY driver
+To: Andrew Lunn <andrew@lunn.ch>
+Cc: Benno Lossin <benno.lossin@proton.me>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
+	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, tmgross@umich.edu, 
+	aliceryhl@google.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Aug 19, 2024 at 1:56=E2=80=AFAM Gary Guo <gary@garyguo.net> wrote:
+On Sun, Aug 18, 2024 at 7:39=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote:
 >
-> It's the mistake on my patch. I noticed the exact issue while I was
-> trying to rebase my helper-lto patch :)
->
-> I believe that reason that it builds fine for me previously and for
-> Boqun was that we didn't delete the helpers.o generated prior to
-> applying the helper split patch, and we know that kbuild is not
-> hermetic.
+> O.K, so the compiler tells you, which is great. The C compiler would
+> not, which is why i tend to think of these things.
 
-Yeah, probably it was that -- as you say, it would require a stale
-`rust/helpers.o` from a build before Andreas' patch (and not just
-before this patch).
+For the unused result, there is `__must_check` of course, though it
+does not seem to apply to types in GCC like it is applied to `Result`
+in Rust (Clang is OK with it).
 
-> Your rebase and the fix is identical to the one I got locally, and I
-> can confirm that it compiles fine for a clean build.
+C23 brings `[[nodiscard]]`, which can be. GCC >=3D 11 and Clang >=3D 17
+support it, so one can do things like:
 
-Thanks a lot for taking a look!
+    typedef struct [[nodiscard]] Result {
+        ...
+    } Result;
+
+    Result g(void);
+
+    Result f(void)
+    {
+        g(); // will warn.
+        return g();
+    }
+
+https://godbolt.org/z/PqK36rjWY
+
+And have a `Result`-like type (or, rather, like our alias in the
+kernel, given the generics).
+
+So if one is happy using new types, that is great.
+
+It would be nice to be able to do something like:
+
+    #define Result __must_check int
+
+...but that faces trouble when using it for e.g. local variables.
 
 Cheers,
 Miguel
