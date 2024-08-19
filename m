@@ -1,92 +1,211 @@
-Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
+Received: from mail-yb1-f202.google.com (mail-yb1-f202.google.com [209.85.219.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B19E14AD3D
-	for <rust-for-linux@vger.kernel.org>; Mon, 19 Aug 2024 07:37:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CA09157A48
+	for <rust-for-linux@vger.kernel.org>; Mon, 19 Aug 2024 07:55:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724053036; cv=none; b=u+gCXW2QbHKyqy7WNgz5vF6+iYvqZxIFJqP39vwfSWJIN1bb1tOJAOkPNjBus0fDs3Nwzrltv7sBbrlFRqwJU/wfq83w4uThHcA8Q2IGMLkPuc6JtH9G6QL+ouq0QuFnsZjUhhvC86Nk5H5e9tqFAObu9FMfIvIggMhps6eDCBk=
+	t=1724054125; cv=none; b=hKL9+aC63/VxTW1YKuG36K5tTVwiFLAkULXjdPI0zmYM0TfMPCIVEr7JWA2Lgw4DQN8cABxTMvTeE9WQnkFN48uaH1PLolP3mCthpQ3G5+cK7wQLo5y/cbiU29kS17cp/6NmYbzuGpVmwbjrgd5HiS2yBYe98Tz+LjOrrPAgquM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724053036; c=relaxed/simple;
-	bh=8R+HLMGC9DANB5Upwhp7nK70CFwhS9LHDQm2sVdKp9U=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YkJjGyShvXxD5deRegQaisv+R1gaQLCJdZdx9XmaP0OrPiOt9f/udbQx3lGeczy1nulJ5jhECX8LIKNrkSy4GdtGZxZFnKtuOrQdfSP7dLYHJ9qYUBqPa1HROMJLu6sdQu1IdwVFFk0vfwZbIFuiEeNL+gyHRy9C16cK9K053II=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=owFl/To0; arc=none smtp.client-ip=209.85.128.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=umich.edu
+	s=arc-20240116; t=1724054125; c=relaxed/simple;
+	bh=Bzj0OBsOyjOq5i/otbgGherJGLxV0e7eeDR5mlqDSWg=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=Dn+1fRhkccumWL7Pm0y78ufNcjnwHOn4kBCIq2PVEev3JY9CMWyweYi0iDBf2emvpUUrhMKfjAo05nsSETElgQe663jZdYgaOOdrxQLcxPcyjyfkyy2P9Qa78+b7/evY9dx98xyObwMzkICjte9Xk4GyGbViBZkD6qfhLlgyG7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=UY7gATLq; arc=none smtp.client-ip=209.85.219.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="owFl/To0"
-Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-6b8d96aa4c3so8048627b3.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 19 Aug 2024 00:37:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="UY7gATLq"
+Received: by mail-yb1-f202.google.com with SMTP id 3f1490d57ef6-e1166ecfacdso7649527276.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 19 Aug 2024 00:55:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=umich.edu; s=google-2016-06-03; t=1724053033; x=1724657833; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=8R+HLMGC9DANB5Upwhp7nK70CFwhS9LHDQm2sVdKp9U=;
-        b=owFl/To00VXWBCS5sSO28/PnMkDEwYUoEE+0RXhvj/0FNVUzabNnj5ZQ/sEoz6QF1J
-         osUgDus9gLORI1PCTtpNExD9yFHXEjGn2V9hep9jiP9uyFdD0mE3HtbGbIuLhnhXs4i4
-         aPVL+DY1MKjSwCxSLJe8dAXrdYJ3YXRb3cHKuvWfteT8ciE1dcc5GBo1vaNFkTOyKqvY
-         aiv/J+oiYz4oh/G3nSJp81p/fu+/KbluXfCzHRLAaNKI58QZ1Rixt58N0iYnckQhq9PW
-         paDORl/C2OU9T1EnH8c/m2z5jcJs4QpeFlTwnTYMl+WIvnaQPU5qjrt7m69rfoLQ2Gkf
-         Gr4w==
+        d=google.com; s=20230601; t=1724054123; x=1724658923; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=c7ZCawhzLiT2hbSx/SLoMERFd6MH+WHf7PVQaHlSMho=;
+        b=UY7gATLqkPtQIBIRNDpd887DBdtZSXSAJ87JCPEyhlzAbatlXth1VN7qtd9W6KYWc1
+         wArVwgCoLeSif+FGY4EYNrlqQRw22j3FfaM8B+PMXFAU7075X0dJQxC4L+zMZqnanyUp
+         66gR2KFFn8RaXLSUlCv0XE2b/8r+tg1avDM0+NDIHpkpzy48mpog6ZGCzsBVAL3B/uiQ
+         M4dpiBpWiWjoihNShL7X4TCvnoF5E2wNeofeX22SQvYXEIKXDZ0W9ujCfke7PDTlCZcz
+         F6gvrr6Z9qruBFyPlQa8RzVKS1q1VfTvkOYxw4Gc0LnM/8pJ3ABucdGR/deGttDqGway
+         lMTQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724053033; x=1724657833;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=8R+HLMGC9DANB5Upwhp7nK70CFwhS9LHDQm2sVdKp9U=;
-        b=bzqchFULcDUlGTh51xVQRRtWi3jxkJeIv2UVEW5zAFowZ8phhkyNpQxm0UvQPIbkqe
-         ZkaoWqqcvd1NbTnvfy2Y8XODeoVZNuDak0aEPnedMO6Z/8miT5lPbRYy0XpeeTFcjOJf
-         BpPluUmBhc7JQhsx7eGl6JIn+Neqi9GV2IRrj8UYWHA3rWsz3Q9gNOvUKC1vw7M09DU3
-         Ndk81UDGoIbf+8xBPjHJrZZZs5Txkb+BVaR/oLbfOVNcWqZWF7X6/nOtTG7w9dWPfRv1
-         M3k4DrQWyaZOE8UUOwskQuYKllgEUelVLI0VcLyECEMVv1ZJ5WducVI6MVAW/dfZdCOq
-         cB+g==
-X-Forwarded-Encrypted: i=1; AJvYcCViHqwnc0W3cVtLmnxYitZXBe14Paz07yNZBd5p/dGatSP2zP2l4VWEf0jqT3gQXV1H3h/wVHpcMOjsCVAUykODVLeLYEWYhk/89eMoaxc=
-X-Gm-Message-State: AOJu0YyAL94E9YfUXbrYyxmsKypBeeJLgk9YEYH0y11xNepI1Xt3ZJ6A
-	VTe75dh4FrwNSmDJqf0s9XeoD+/AwI+Ekge4xQkj0iJLenKhqtViyUCODb2jS0FasMzj6hKdXbS
-	U9fzdmuatMuRZczhAsOihKqL7vethMy7Eeq2jeA==
-X-Google-Smtp-Source: AGHT+IFp7kZc51+IIezkIKw6qvUfXZ+YpkHllZrprtp0K/0BIXlAECx6uUl9oWabDPVcWKm5IL/NjaLLy/MJWc4bqhQ=
-X-Received: by 2002:a05:690c:7013:b0:627:de70:f2f8 with SMTP id
- 00721157ae682-6b1ba7e4845mr107827237b3.14.1724053033006; Mon, 19 Aug 2024
- 00:37:13 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1724054123; x=1724658923;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=c7ZCawhzLiT2hbSx/SLoMERFd6MH+WHf7PVQaHlSMho=;
+        b=MIBJUleuX6F0J+62C+aExBIPKz4ufDMGMPp/og/HrqoG4yZOTSHGVOG+MCX603GuNM
+         Wm43JkDGJXBlBe67FihUtcHp/zsqNuCw51bj16u+PUfMDOIqPLVVTBXtv3Ro1nzS6gRi
+         t6/bb5FgLvsh6KIN896esci5zEosGwcwEFj9DYphIH1FFuX2oOCRbUJmgLEu5DaDdKyO
+         SqkUU+CEAddOFiAQt4C1P0SR7eIP7fDNQ7g3F8f/itBSW6HYdCEc+QtqL+OPend6OwbS
+         Ue5jQPhCiEbARHPC+zx5cURtGBjBfVrDQjnvzVer3xRr8jB7xHPEzzAAchG6EoJTNL4j
+         5F1Q==
+X-Forwarded-Encrypted: i=1; AJvYcCX9nhTLbnJ8zHeksjxwEs/zSt7jn0JOtrCneI1m3yRwJQ9I2w3hK6T9DVHUL98XcEFpGj4L9URODUoT+LMl0af87fcQfgSscoyA/wSnG2c=
+X-Gm-Message-State: AOJu0YxeGreq7emVisRAwvJ/0j2OeYsofx0WV+O87YFZ09H2C/pnh9Z4
+	zbV0NTSw1tIc0fv9AhwWuFc0Ef2ySLXUg+adV3jL80kDLXB5uXexLVerAlnd1Jng6YAjBzBd5Vo
+	/krfOI3llJ2LOfw==
+X-Google-Smtp-Source: AGHT+IGrZOKUNkZwEXux57+oz5w6kAirAdl/7hs0EIWBRRT6GxickSOwEbLbevHrku7qKv9XvqgvOq4/QBtrGSY=
+X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:35bd])
+ (user=aliceryhl job=sendgmr) by 2002:a05:6902:1821:b0:e11:57b5:733f with SMTP
+ id 3f1490d57ef6-e1180ba5576mr24276276.0.1724054123247; Mon, 19 Aug 2024
+ 00:55:23 -0700 (PDT)
+Date: Mon, 19 Aug 2024 07:55:18 +0000
+In-Reply-To: <20240801-kcfi-v2-2-c93caed3d121@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240819005345.84255-1-fujita.tomonori@gmail.com> <20240819005345.84255-5-fujita.tomonori@gmail.com>
-In-Reply-To: <20240819005345.84255-5-fujita.tomonori@gmail.com>
-From: Trevor Gross <tmgross@umich.edu>
-Date: Mon, 19 Aug 2024 02:37:02 -0500
-Message-ID: <CALNs47tLDD2SQDeJ7h24Sakd6N244OXM8HvPsHQMds4XjwOTQw@mail.gmail.com>
-Subject: Re: [PATCH net-next v5 4/6] rust: net::phy unified read/write API for
- C22 and C45 registers
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, andrew@lunn.ch, 
-	miguel.ojeda.sandonis@gmail.com, benno.lossin@proton.me, aliceryhl@google.com
+Mime-Version: 1.0
+References: <20240801-kcfi-v2-2-c93caed3d121@google.com>
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=5110; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=pk+3xxI+4/FRGOxNmAbyfBM/kYOJSbuUCOFff3jL+zg=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBmwvoUCyD1jzfv8yeFzpQGCfoS/Xt2RoHkjsMk+
+ wTLhk2xixyJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZsL6FAAKCRAEWL7uWMY5
+ Rp8AD/9r70rHdpDFllqwkTcYqCbGI0NWBMbdytm9LSl5ERftI/jDs5GfFxUzypPyz6/cjMYNlGi
+ WEG4n+yX23q/vqYIScj+3Xba+YySXAZTp4ZX9ajL9rQuqutHqcoBdpaXxoS/ntmqlyM1aP1SccM
+ MguvNLRg1QwGyb0Ph7AOm9y4iwL1PmPDiMlXnsQ/VkTkGxeU1imRiCD8IBt4AnlxjgIFF/hxdjH
+ dHQkWD/9Zaibooo29tzjO99fBkoCREx3EcFjAWVuHDJMf3yi8KXRbBrWIcolMplu3OuVXVRGfru
+ uAWQnOO2Ht51oxf+Ze2zbq8cT1MJjYcs+IiffPRS/DpXejQE9p2+y1LKYd7r6ipe6KBKf5NaDQ3
+ 265v5ALE10me0yy+YzrPMtKmDiHmvb4cHL6r4YMXcK3ycvi6tkwSIRWHebC1go+LSkXX6nz6NfQ
+ 3DPCl1yAW9vmbCSGoI4fw6IVW+nJBfRM9QTgP0TzK74zphQfEiq1cCSrmA5BqqZ3uhJ0UVQtVkS
+ X40vNLrfxxJb4xvijbWnYQ+zFSWsuAjATVgHkU+Ycce/xwBGCqUbDiLqoycQ0faFNBU2/7JPB9F
+ ZWsUvDccFRFH3O2aMJuT7zSKmUPZ4RBZrPCHq/Dem1bX5WB5urINn5ZCApdcUqreIpTsTI/Wt81 h+wURc5aV7wbfLA==
+X-Mailer: git-send-email 2.46.0.184.g6999bdac58-goog
+Message-ID: <20240801-kcfi-v2b-2-c93caed3d121@google.com>
+Subject: [PATCH v2b] rust: cfi: add support for CFI_CLANG with Rust
+From: Alice Ryhl <aliceryhl@google.com>
+To: aliceryhl@google.com
+Cc: a.hindborg@samsung.com, alex.gaynor@gmail.com, benno.lossin@proton.me, 
+	bjorn3_gh@protonmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
+	kees@kernel.org, linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	masahiroy@kernel.org, mmaurer@google.com, nathan@kernel.org, 
+	nicolas@fjasle.eu, ojeda@kernel.org, peterz@infradead.org, 
+	rust-for-linux@vger.kernel.org, samitolvanen@google.com, wedsonaf@gmail.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Sun, Aug 18, 2024 at 8:01=E2=80=AFPM FUJITA Tomonori
-<fujita.tomonori@gmail.com> wrote:
->
-> Add the unified read/write API for C22 and C45 registers. The
-> abstractions support access to only C22 registers now. Instead of
-> adding read/write_c45 methods specifically for C45, a new reg module
-> supports the unified API to access C22 and C45 registers with trait,
-> by calling an appropriate phylib functions.
->
-> Reviewed-by: Trevor Gross <tmgross@umich.edu>
-> Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-> ---
+From: Matthew Maurer <mmaurer@google.com>
 
-If there winds up being another version, could you link the previous
-chain for these two patches ([1]) in the cover letter? I knew it was
-familiar but couldn't figure out where I had seen it before :)
+Make it possible to use the Control Flow Integrity (CFI) sanitizer when
+Rust is enabled. Enabling CFI with Rust requires that CFI is configured
+to normalize integer types so that all integer types of the same size
+and signedness are compatible under CFI.
 
-[1]: https://lore.kernel.org/rust-for-linux/20240607052113.69026-1-fujita.t=
-omonori@gmail.com/
+Rust and C use the same LLVM backend for code generation, so Rust KCFI
+is compatible with the KCFI used in the kernel for C. In the case of
+FineIBT, CFI also depends on -Zpatchable-function-entry for rewriting
+the function prolouge, so we set that flag for Rust as well. The flag
+for FineIBT requires rustc 1.80.0 or later, so include a Kconfig
+requirement for that.
+
+Enabling Rust will select CFI_ICALL_NORMALIZE_INTEGERS because the flag
+is required to use Rust with CFI. Using select rather than `depends on`
+avoids the case where Rust is not visible in menuconfig due to
+CFI_ICALL_NORMALIZE_INTEGERS not being enabled. One disadvantage of
+select is that RUST must `depends on` all of the things that
+CFI_ICALL_NORMALIZE_INTEGERS depends on to avoid invalid configurations.
+
+Alice has been using KCFI on her phone for several months, so it is
+reasonably well tested on arm64.
+
+Signed-off-by: Matthew Maurer <mmaurer@google.com>
+Co-developed-by: Alice Ryhl <aliceryhl@google.com>
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+This is an alternate version that shows how to resolve the conflict with
+the "rust: fix export of bss symbols" patch [1].
+
+As for the conflict with the KASAN patchset [2], it should be resolved
+by adding both strings to the supported-sanitizers list in sorted order.
+
+[1]: https://lore.kernel.org/r/20240815074519.2684107-2-nmi@metaspace.dk
+[2]: https://lore.kernel.org/r/20240812232910.2026387-1-mmaurer@google.com
+
+ Makefile                        | 7 +++++++
+ arch/x86/Makefile               | 4 ++++
+ init/Kconfig                    | 4 +++-
+ rust/Makefile                   | 2 +-
+ scripts/generate_rust_target.rs | 1 +
+ 5 files changed, 16 insertions(+), 2 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 484c6900337e..2dc39a23005d 100644
+--- a/Makefile
++++ b/Makefile
+@@ -955,6 +955,13 @@ CC_FLAGS_CFI	:= -fsanitize=kcfi
+ ifdef CONFIG_CFI_ICALL_NORMALIZE_INTEGERS
+ 	CC_FLAGS_CFI	+= -fsanitize-cfi-icall-experimental-normalize-integers
+ endif
++ifdef CONFIG_RUST
++	# Always pass -Zsanitizer-cfi-normalize-integers as CONFIG_RUST selects
++	# CONFIG_CFI_ICALL_NORMALIZE_INTEGERS.
++	RUSTC_FLAGS_CFI   := -Zsanitizer=kcfi -Zsanitizer-cfi-normalize-integers
++	KBUILD_RUSTFLAGS += $(RUSTC_FLAGS_CFI)
++	export RUSTC_FLAGS_CFI
++endif
+ KBUILD_CFLAGS	+= $(CC_FLAGS_CFI)
+ export CC_FLAGS_CFI
+ endif
+diff --git a/arch/x86/Makefile b/arch/x86/Makefile
+index 801fd85c3ef6..e9b2ee3c8a71 100644
+--- a/arch/x86/Makefile
++++ b/arch/x86/Makefile
+@@ -237,6 +237,10 @@ ifdef CONFIG_CALL_PADDING
+ PADDING_CFLAGS := -fpatchable-function-entry=$(CONFIG_FUNCTION_PADDING_BYTES),$(CONFIG_FUNCTION_PADDING_BYTES)
+ KBUILD_CFLAGS += $(PADDING_CFLAGS)
+ export PADDING_CFLAGS
++
++PADDING_RUSTFLAGS := -Zpatchable-function-entry=$(CONFIG_FUNCTION_PADDING_BYTES),$(CONFIG_FUNCTION_PADDING_BYTES)
++KBUILD_RUSTFLAGS += $(PADDING_RUSTFLAGS)
++export PADDING_RUSTFLAGS
+ endif
+ 
+ KBUILD_LDFLAGS += -m elf_$(UTS_MACHINE)
+diff --git a/init/Kconfig b/init/Kconfig
+index b0238c4b6e79..306af56a22df 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -1905,11 +1905,13 @@ config RUST
+ 	bool "Rust support"
+ 	depends on HAVE_RUST
+ 	depends on RUST_IS_AVAILABLE
+-	depends on !CFI_CLANG
+ 	depends on !MODVERSIONS
+ 	depends on !GCC_PLUGINS
+ 	depends on !RANDSTRUCT
+ 	depends on !DEBUG_INFO_BTF || PAHOLE_HAS_LANG_EXCLUDE
++	depends on !CFI_CLANG || RUSTC_VERSION >= 107900 && $(cc-option,-fsanitize=kcfi -fsanitize-cfi-icall-experimental-normalize-integers)
++	select CFI_ICALL_NORMALIZE_INTEGERS if CFI_CLANG
++	depends on !FINEIBT || RUSTC_VERSION >= 108000
+ 	help
+ 	  Enables Rust support in the kernel.
+ 
+diff --git a/rust/Makefile b/rust/Makefile
+index 26b16c036fe3..53a17d22f5cd 100644
+--- a/rust/Makefile
++++ b/rust/Makefile
+@@ -305,7 +305,7 @@ $(obj)/bindings/bindings_helpers_generated.rs: $(src)/helpers.c FORCE
+ quiet_cmd_exports = EXPORTS $@
+       cmd_exports = \
+ 	$(NM) -p --defined-only $< \
+-		| awk '/ (T|R|D|B) / {printf "EXPORT_SYMBOL_RUST_GPL(%s);\n",$$3}' > $@
++		| awk '$$2~/(T|R|D|B)/ && $$3!~/__cfi/ {printf "EXPORT_SYMBOL_RUST_GPL(%s);\n",$$3}' > $@
+ 
+ $(obj)/exports_core_generated.h: $(obj)/core.o FORCE
+ 	$(call if_changed,exports)
+diff --git a/scripts/generate_rust_target.rs b/scripts/generate_rust_target.rs
+index c31657380bf9..9b184099278a 100644
+--- a/scripts/generate_rust_target.rs
++++ b/scripts/generate_rust_target.rs
+@@ -192,6 +192,7 @@ fn main() {
+         }
+         ts.push("features", features);
+         ts.push("llvm-target", "x86_64-linux-gnu");
++        ts.push("supported-sanitizers", ["kcfi"]);
+         ts.push("target-pointer-width", "64");
+     } else if cfg.has("X86_32") {
+         // This only works on UML, as i386 otherwise needs regparm support in rustc
+-- 
+2.46.0.184.g6999bdac58-goog
+
