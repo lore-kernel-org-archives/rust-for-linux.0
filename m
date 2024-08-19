@@ -1,114 +1,108 @@
-Received: from mail-yw1-f181.google.com (mail-yw1-f181.google.com [209.85.128.181])
+Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28D7D15AD83
-	for <rust-for-linux@vger.kernel.org>; Mon, 19 Aug 2024 07:21:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D884513D251
+	for <rust-for-linux@vger.kernel.org>; Mon, 19 Aug 2024 07:28:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724052077; cv=none; b=lFkgOCilLXi1evMRUKqmiVuOOXmdfeYrI2XWLDDzidYTfHaGwpIRfHj064lEr+UDMuzbo0X6LZfAb7y7gE8p+Mj+3qzs8pq6/d0Cv/nljfBN6JNeIHyyr9Tg4lXf6fsysUqZ6SpMQuMdGQG6IxUvF7NV9yfzQq5+zuOdI01kJnM=
+	t=1724052541; cv=none; b=nfMXBbwKLDikXUXQlHwscWy8Rt2mXs4nDZypZcCiGVBvA6ETFFqOeXDMID8tyMptZHaZiJnAZRwQ/8DMtHoKV577PDHsu/JMYOvkOLn8zK7N9lUP0GTdgS0zM6VVfG5YSYURgfrE73AcQLBIqKbrEO25liBdVL03xxPWJA13rME=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724052077; c=relaxed/simple;
-	bh=+4yVrBXqRyZn+p0Lfs6mh5yjgyKNLQndI4t3znQWL80=;
+	s=arc-20240116; t=1724052541; c=relaxed/simple;
+	bh=9RpqaSW3EP8+7YSs6+tNYph9FaHPbkC6S+ZfjCCWSvc=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rxSpr201YxE+4zeJxD6nj2GTPZxWJnTkJS4YX0qWRS9n2H5optLhZgbfgZehg9KINVfu/5XvJMFUjX5jJqmSiWy4QjNzGEs/vJww7VYrCNe5xSoOd0CHjF57PnbFXgrlit4rxD/vpveS/oeQNGPGAiChmCSwNGeqj2lDnD5o6rw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=iaODfeWq; arc=none smtp.client-ip=209.85.128.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=umich.edu
+	 To:Cc:Content-Type; b=FD9r7sutkMWVVl9r2UUNfvHNwCRf9jlfVEvRByox8qPMIS9HgLcK/UrPgeB/FeFYLk9StGn3lMk+RiyA0YZAyGtDT0o941eQw/T2Rs4ejspXmivDM+0Tcy1Wv+HGfgj/vyQkXsuk3qPrsZaD+0azsRziNc8UBkb7gG4HtqiS93c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NaC6+FVL; arc=none smtp.client-ip=209.85.128.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="iaODfeWq"
-Received: by mail-yw1-f181.google.com with SMTP id 00721157ae682-6bada443ffeso3207677b3.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 19 Aug 2024 00:21:14 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NaC6+FVL"
+Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-428243f928cso31636715e9.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 19 Aug 2024 00:28:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=umich.edu; s=google-2016-06-03; t=1724052074; x=1724656874; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1724052537; x=1724657337; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=cH6fxmDB43HdtvDVAfM22RpRfY3QBW48IQCvIoSlAv0=;
-        b=iaODfeWqULUHVxurNVapH2rAimrAzTZhxUsR8pCACXnQ4t5UxP7RIve0blFyv0FwHO
-         vbgEGPaTnlTrjC8YdWbBrecukx4VZtmZjusQ+Nj5sqKRdME7w03SSijDMeqdv87UfQIa
-         s/9u3zqDmoUy3LrKMasbmUeqIvb+FLnkQcQlo7eJkVR1cS0f9R9RLaqvnGNzCwNB/gZ3
-         SyNodjs6e6G0SEXfmnOlgOJylbkHJnitF8ftnpbwfCSZ/ofeMT2xX4phMS11ivESqjCo
-         tLGPmHO/uv+P3oynzJRHvzb89yX8EO4BJGVZWzuAodufMPHl8LVJ0/Seu/9VqZ6Xfzda
-         gwmA==
+        bh=9RpqaSW3EP8+7YSs6+tNYph9FaHPbkC6S+ZfjCCWSvc=;
+        b=NaC6+FVLQE9PUe/A8woofJQkxb4eRv3AcLCZMkmdButhE88Z0m5AoM8dohL7qTd7UH
+         4YGh3ZzaxwCTSmc6BTbZhEygtGTbfXudLqwwnBPRm8Re9w66mA2xStkcIW2eWVlS0XuE
+         IGJN5oQNTj4O/knvnwWQVGF5Zm8DMqtD98MzCHDbxbpdFBLtvjmAvYAPO65OYU2ljoqo
+         Q+p1ZZtiVKwUcn1KKF1uKBtPzvC24byYZa+Z6Xx5uY2aSleYQC05bX3rXaxL9ndMyFYW
+         yuON27L2OVBfnV9PfsS0U5hDyP0atGUf9eQ2Xe6/cuEFJDw+Tp5kTBhB4iRlXPo9EgFE
+         sdNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724052074; x=1724656874;
+        d=1e100.net; s=20230601; t=1724052537; x=1724657337;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=cH6fxmDB43HdtvDVAfM22RpRfY3QBW48IQCvIoSlAv0=;
-        b=abFniX1OsE5FHTGVNkb1A6ipkmsXx7WyfYuDhNTElBQTdHJHpH3lVpQdbSQ5gtjjgp
-         gdgUZctoMdk8sSFaAA1DPskwsEROJwWZJSOBSWaQ+btpA7DK2WfjpSimashaVjSjOnBD
-         EmXBUYja+978v1MZu307QVSsklOYORr1Fihkd+nlUc+Z5YZe2xdGEr00dbQW4hWSwVks
-         mCUvxUEyoP2JhxEO3TlBp7w01+K/1ZJCpMljcFHAgJnyA6wyKJ5D7oT2lhzEx0NczGlw
-         qYHHgPMMPbtr+C3T6aN4bLH5divxr6IJ+Xon1HoctFsVfFlNLS91SnzySt+fha/cmVDr
-         maJQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW+me0QHlEy77f0RNifrjFicRMmlPGD7gBHekEnuBr5fsj7TSR5g+Sm3jWppNdpbbb0RkTcm56We4D/+SxnTMgo6vPRJS9TMAvCdnukJOQ=
-X-Gm-Message-State: AOJu0YwsPr32ATSXID4SwK0WMPqBwuzbRttTD/lKv8SXI+LYjY7vkedH
-	BImqSAybMSEzV88Nypqq5D/PFUDl+i6PVshmpBpwgV70TfhGqPSyoqoRttpbSEdZlT0Q2llk4OF
-	/b58+2wIRyYL6SfD6V9qvu3VlwlS0VT5So22g+Q==
-X-Google-Smtp-Source: AGHT+IHZ7u4Hnv/z1U3bjN/RD/UUN3yN0Qf5+xjS5QHUahme4ZkL0mZBuJwVfFgFy97j33e7AovzfL5Je482F4mvZIM=
-X-Received: by 2002:a05:690c:6f8a:b0:65c:8dfb:fa04 with SMTP id
- 00721157ae682-6b1efc1a0c2mr79707337b3.14.1724052074205; Mon, 19 Aug 2024
- 00:21:14 -0700 (PDT)
+        bh=9RpqaSW3EP8+7YSs6+tNYph9FaHPbkC6S+ZfjCCWSvc=;
+        b=h1evP6cFXMt40rderaVu/4J6L98DkvS0qZkJfJEJnhGEu/fSVN34xl5vKeQCZjcNny
+         i+ASQkkmD0tDfXUwZiidRsmQMBB8/QPHPUt/Wufg4xGd65ODVyrauJvmDztmLNoXLrT+
+         9Uk3a3n1iXLzX8UqobuPB90pds03RdSz/Rz5Z6A77njEEHFZ+X0QUdK5dDcXJyZU4HwM
+         6oQEZW7HLCftsm1DoiQzuLa/lFyDBIgA1rnQeyOOdAJdAncpBRpN6235IKaHCqQID5b0
+         gy2v7EIUo+QC6dMRtn50LRckMQz85RTWNktmVAS+Ml1O1s/FOB6CcN7Sqv79JBNuIv03
+         8vxQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW3ot/EMal8QEIqTf/VqjYWGgvhPXcNrZcVF6rax3gXeEMqxTVJB1J83yrc0zJoZeRXR/+y8N81EXwCM68lWbRfaSmSAzMnuzMWHK3cer4=
+X-Gm-Message-State: AOJu0Ywh1e0NFJW/ms6xEpR/72s3qO5tYSo2GrO/A805e21m0TTic03v
+	Rkg/L92oTB6iRvLz1QuIiCooUGKqEK1Dfq4xdpPgf3rAg3e752LyJKPhTrtEq0KwB0f+B9NnM6R
+	B57si85ToEZopft2qA3fZDGUsi309WJi+Q9uL
+X-Google-Smtp-Source: AGHT+IFbDPWP+j/rqNlthxQd7CrAdmAs9wRe0NTha3CeBwITtFOy28z/1Ffe4WKvnY7vqXrMteXUHK3icZnMnT+QQxY=
+X-Received: by 2002:a5d:49cf:0:b0:371:8ca4:1b76 with SMTP id
+ ffacd0b85a97d-3719465b8fcmr6024363f8f.32.1724052536815; Mon, 19 Aug 2024
+ 00:28:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240819005345.84255-1-fujita.tomonori@gmail.com> <20240819005345.84255-4-fujita.tomonori@gmail.com>
-In-Reply-To: <20240819005345.84255-4-fujita.tomonori@gmail.com>
-From: Trevor Gross <tmgross@umich.edu>
-Date: Mon, 19 Aug 2024 02:21:03 -0500
-Message-ID: <CALNs47s6oscYosRT-xgdTtC_4SG7W2iwEzrB+7w0Bc=P4G6tPw@mail.gmail.com>
-Subject: Re: [PATCH net-next v5 3/6] rust: net::phy implement
- AsRef<kernel::device::Device> trait
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, andrew@lunn.ch, 
-	miguel.ojeda.sandonis@gmail.com, benno.lossin@proton.me, aliceryhl@google.com
+References: <20240808221138.873750-1-ojeda@kernel.org>
+In-Reply-To: <20240808221138.873750-1-ojeda@kernel.org>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Mon, 19 Aug 2024 09:28:42 +0200
+Message-ID: <CAH5fLgh9Moq_9M+zMu300ohK=mPqkLyS6cpQ6An2Q3THCPFjaA@mail.gmail.com>
+Subject: Re: [PATCH 0/6] kbuild: rust: add `RUSTC_VERSION` and
+ reconfig/rebuild support
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Masahiro Yamada <masahiroy@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	rust-for-linux@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>, 
+	Nicolas Schier <nicolas@fjasle.eu>, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Aug 18, 2024 at 8:00=E2=80=AFPM FUJITA Tomonori
-<fujita.tomonori@gmail.com> wrote:
+On Fri, Aug 9, 2024 at 12:12=E2=80=AFAM Miguel Ojeda <ojeda@kernel.org> wro=
+te:
 >
-> Implement AsRef<kernel::device::Device> trait for Device. A PHY driver
-> needs a reference to device::Device to call the firmware API.
+> Hi all,
 >
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-> Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-> ---
->  rust/kernel/net/phy.rs | 24 +++++++++++++++++-------
->  1 file changed, 17 insertions(+), 7 deletions(-)
+> This series introduces `RUSTC_VERSION` support, which is needed for
+> several patch series getting upstreamed, and it will be increasingly
+> useful as we now support several Rust compiler (and `bindgen`) versions.
+> Later on, we will likely introduce other macros, such as
+> `rustc-min-version`.
 >
-> diff --git a/rust/kernel/net/phy.rs b/rust/kernel/net/phy.rs
-> index 5e8137a1972f..ec337cbd391b 100644
-> --- a/rust/kernel/net/phy.rs
-> +++ b/rust/kernel/net/phy.rs
+> In addition, the series introduces automatic reconfiguration and rebuild
+> based on `RUSTC_VERSION_TEXT`, to mimic the C side, which is also good
+> to have now that we support several versions.
+>
+> It is based on top of the current `rust-fixes`, since there are a couple
+> pending changes to the version text Kconfig symbols that will be sent to
+> Linus soon for an -rc.
+>
+> Cheers,
+> Miguel
 
-> @@ -76,9 +76,11 @@ impl Device {
->      ///
->      /// # Safety
->      ///
-> -    /// For the duration of 'a, the pointer must point at a valid `phy_d=
-evice`,
-> -    /// and the caller must be in a context where all methods defined on=
- this struct
-> -    /// are safe to call.
-> +    /// For the duration of 'a,
+I tested this together with Rust Binder. I also ran this patchset
+through Android's CI setup to verify that it works in builds with
+CONFIG_RUST disabled. It passes both with and without a Rust compiler
+available to the build system.
 
-Nit, backticks around `'a`
+Tested-by: Alice Ryhl <aliceryhl@google.com>
 
-> +    /// - the pointer must point at a valid `phy_device`, and the caller
-> +    ///   must be in a context where all methods defined on this struct
-> +    ///   are safe to call.
-> +    /// - `(*ptr).mdio.dev` must be a valid.
->      unsafe fn from_raw<'a>(ptr: *mut bindings::phy_device) -> &'a mut Se=
-lf {
->          // CAST: `Self` is a `repr(transparent)` wrapper around `binding=
-s::phy_device`.
->          let ptr =3D ptr.cast::<Self>();
+I'm happy to rerun these tests for new versions.
 
-Reviewed-by: Trevor Gross <tmgross@umich.edu>
+Alice
