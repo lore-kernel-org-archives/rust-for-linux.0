@@ -1,272 +1,159 @@
-Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2215176233;
-	Mon, 19 Aug 2024 17:26:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 38A00184535;
+	Mon, 19 Aug 2024 18:25:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724088393; cv=none; b=lDAw4aOv25A635S9/+MMDqYg50oK8pxK1V3VMWN6Ju9yJAKscYbYI4vk1XsTPCs68AGDrAkqIRd/NBHiY6hQtPJncvkCnednjNZNqbYV7F73VC7nP0ZPqWPy0BRF3DiD56nER789RDZPwoZhhURuBuVYcpvNSadauzmGomOXlO4=
+	t=1724091927; cv=none; b=K6tG/+3rBJzbL86Lhjuj18tXJZJWBGdK49NkbiSAWbBHfdEBp5eqrcHFbaE1sv1OANdbDWoyQ7h+HuZvLNGMmQbmQBns48SYSfPT4BgA4G4jaY+JX32NFfULmcKTaI5ngPjqoeqkONWVGbbyJGklkUiey+eS61MfqtUWQyIaraw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724088393; c=relaxed/simple;
-	bh=MoPdvLHesIKzB0czCR2POj913MyZHS5c+CL3vWVexwY=;
+	s=arc-20240116; t=1724091927; c=relaxed/simple;
+	bh=yALXwTSmv4+UWSMtBlDSLjJMgKa3P7yXVK4NJJPbVuk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bVQTclF+st2fHWDcHGjFDziX8RULzZmNzrKiBPe6pV4+ifht6hCRl0Fx/4RRwEfmivtk6u5zAVUFJwNWjwa7QUUTh4Kcjj4E6RGKwamGaczugBPflN/QWnU9aSfFWQ6nQP/wJwj+dYn739ljfGXsaMfRp1mrSOO9R1EiONm13ac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=YMm7OSnN; arc=none smtp.client-ip=209.85.160.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=n+RG4JGpoHLp50FiGqtSsfRecRAoVcNsr2M5p0aM/Xamp4O/n88YnMY0VQdsqUmgXQlX7VxI6SZIa0kqaa3iGCAkbQXQM+EiTk7MzaqC+FgfkAavZVesjUOH7utPtD56tq3fs0WKxti1ogUWGaCS50g7ppqL+XCDgu1PtymxHRA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=khTGhjIE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="YMm7OSnN"
-Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-450059a25b9so42373651cf.0;
-        Mon, 19 Aug 2024 10:26:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724088390; x=1724693190; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vZiLrD6YE4C/ZCUesz25irk0ZZtPLFdzHeSuDMMGBEA=;
-        b=YMm7OSnNNWIrg9Gz7fPZFSWtIRbfCyuZgEvlqHbj2Zr3vnah7LhHBE8da7za2aZK5u
-         Z5g+CsauFPTg/ZhXFbwqXzq7X6eISZeNB4y2efbvQCy6/ovacI1+9ify+Wkp+MFtcahD
-         0jwSp7Xw+CdqEBtxniS9z3yrpzTpAZpHls+HEiC4EXQ/b7sRVdc34xIahSmTqQEqb6tZ
-         /DX9qoa8U/KfEn4rtyu0H9GGLSupm2+rx69vkAd2NT0PzJGX/a+dwUeX+dEvtAxqTVK3
-         VmHq4r9jqXTiFt7V++23oVdSgOtFGkVro3guTlWVc+ey2WYl503CmYu8y/whezy2bKJy
-         uY9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724088390; x=1724693190;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=vZiLrD6YE4C/ZCUesz25irk0ZZtPLFdzHeSuDMMGBEA=;
-        b=GRFSUHm1OX3kDaQPxqGVvHV7QCPvd6qFkOAvqdzJHdR4LRRfdLxGHu+8Elj0xBzIR2
-         dFKb+j/1nAT73l/LqSUQR3RxNTgtcGjUB6/PbCBWd2FQCqMtdYkwrbWlSqDg8zCWa7B6
-         YiDRYv0TSI+qSQ5bE59E9/3+xhGx5S+3ydKpCRxKiFd7kG13ReVfdfKu1WspLrGPckP+
-         +UxGmapZbHsfua/SBKkEekfBoHwW//2Oh44PKvEBQd8JmcMsmK1yxCN9yYUVJg4vbA+V
-         dl02hR0+OggMqCx2wd2qSZYcYiojoWQLcYS3usRQHDqcAlc15KGGhxtYfFMKe4c+svkD
-         adAw==
-X-Forwarded-Encrypted: i=1; AJvYcCWONuVSEBISpVvfT8kizo+793SYtLnEoE0fa3Iwq6JKFxLRp/+Wv4K73I9nYcxWoJFLwOsQDv86LOr9EPwJd7wKyIkaALiBM2zUPLf0LqFBvVfGR4SeBUo2YFPQv7Z79JLwOBrETXZj2xjgpB8=
-X-Gm-Message-State: AOJu0Yyxhxa2pu10di+ecQnb4oDQZInKV4GLVmP4JlKwkiYbXdsI9cU+
-	n3akxxy/fV/DrgSQ5MdTznyzL9+tRko6y63+lA0SsBJS4blkCjRu
-X-Google-Smtp-Source: AGHT+IFDdIptDkzfaZx9A2Qj1MYTF20UTKDY4IPc59+IJsG+GFw190QBtULzzmsVsy3si6dMk1L6gA==
-X-Received: by 2002:a05:622a:1988:b0:44f:ff65:97be with SMTP id d75a77b69052e-454e5116be5mr6296911cf.14.1724088390458;
-        Mon, 19 Aug 2024 10:26:30 -0700 (PDT)
-Received: from fauth2-smtp.messagingengine.com (fauth2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id d75a77b69052e-45369fd90c0sm42183801cf.7.2024.08.19.10.26.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Aug 2024 10:26:30 -0700 (PDT)
-Received: from phl-compute-06.internal (phl-compute-06.nyi.internal [10.202.2.46])
-	by mailfauth.nyi.internal (Postfix) with ESMTP id 9DBAB1200070;
-	Mon, 19 Aug 2024 13:26:29 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Mon, 19 Aug 2024 13:26:29 -0400
-X-ME-Sender: <xms:RYDDZuJVoSqrGcSmk6nW-DqO324ZMJJG-O17eQnH_geAYfAUZjdBvQ>
-    <xme:RYDDZmK5KIrV7A10UyTtxAB5vDfWTVEHVygW0EWsWuEdfR4w7L5G4PqLnaSriQsCv
-    ga0YUoSaqAjX0reSA>
-X-ME-Received: <xmr:RYDDZutSnUOGA7rtpZhQldDezXUjYDhDZlfJoVcDywm_wPPAtFeP06OzOfc>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddruddugedgudduvdcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
-    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
-    hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddv
-    necuhfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilh
-    drtghomheqnecuggftrfgrthhtvghrnhephfetvdfgtdeukedvkeeiteeiteejieehvdet
-    heduudejvdektdekfeegvddvhedtnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghenuc
-    evlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhn
-    odhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedqudejje
-    ekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmhgvrdhn
-    rghmvgdpnhgspghrtghpthhtohepuddupdhmohguvgepshhmthhpohhuthdprhgtphhtth
-    hopegsvghnnhhordhlohhsshhinhesphhrohhtohhnrdhmvgdprhgtphhtthhopehojhgv
-    uggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhgvgidrghgrhihnohhrsehgmh
-    grihhlrdgtohhmpdhrtghpthhtohepfigvughsohhnrghfsehgmhgrihhlrdgtohhmpdhr
-    tghpthhtohepghgrrhihsehgrghrhihguhhordhnvghtpdhrtghpthhtohepsghjohhrnh
-    efpghghhesphhrohhtohhnmhgrihhlrdgtohhmpdhrtghpthhtoheprgdrhhhinhgusgho
-    rhhgsehsrghmshhunhhgrdgtohhmpdhrtghpthhtoheprghlihgtvghrhihhlhesghhooh
-    hglhgvrdgtohhmpdhrtghpthhtoheprhhushhtqdhfohhrqdhlihhnuhigsehvghgvrhdr
-    khgvrhhnvghlrdhorhhg
-X-ME-Proxy: <xmx:RYDDZjbcAqIpbKTxg-CbT9yoUfsh8DKhhmG2SzytGvgPh0oDF754HA>
-    <xmx:RYDDZlYLHJ_-ek_TfXtQ54bLSRjbnjqRBgy1tsH0OFA3D33_LlM2wg>
-    <xmx:RYDDZvCzTnknXu4DDdEqHZ0dBHnSRPYvorWQ0cEeB2gvVOr0gWX5rg>
-    <xmx:RYDDZrbOCdA6UUH2D70lSFbraHtXyOlXnWC9AnnveLvKlkzlkcHQcg>
-    <xmx:RYDDZlpUXdBvhbEnTS48DruY3a0hF6xeJ3kp3tRmuxoTSiZQwOmwA6wZ>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 19 Aug 2024 13:26:29 -0400 (EDT)
-Date: Mon, 19 Aug 2024 10:24:47 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="khTGhjIE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F1ADC32782;
+	Mon, 19 Aug 2024 18:25:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1724091926;
+	bh=yALXwTSmv4+UWSMtBlDSLjJMgKa3P7yXVK4NJJPbVuk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=khTGhjIEDs49GsU7Lni6hfu2hOgb9DN8IIC1iHGCgjowaDD/BBgdZqJLfwKDBcf4X
+	 3+JGjsjbI8oChg72BHP6NxsvypU8TEGyxYKSAN/6WxncMvIj5hiYcANg6AXqGHX3Kn
+	 mTbXr6frDV162Gs5cp4VUw7+XzQZUxmkZqkTRXtA=
+Date: Mon, 19 Aug 2024 20:25:23 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+Cc: Sami Tolvanen <samitolvanen@google.com>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Matthew Maurer <mmaurer@google.com>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
 	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v4 2/2] rust: init: add `write_[pin_]init` functions
-Message-ID: <ZsN_3wJHineYUL7i@boqun-archlinux>
-References: <20240819112415.99810-1-benno.lossin@proton.me>
- <20240819112415.99810-2-benno.lossin@proton.me>
+	Gary Guo <gary@garyguo.net>, Petr Pavlu <petr.pavlu@suse.com>,
+	Neal Gompa <neal@gompa.dev>, Hector Martin <marcan@marcan.st>,
+	Janne Grunau <j@jannau.net>, Asahi Linux <asahi@lists.linux.dev>,
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-modules@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v2 16/19] gendwarfksyms: Add support for reserved
+ structure fields
+Message-ID: <2024081938-lyricist-estimator-c4eb@gregkh>
+References: <20240815173903.4172139-21-samitolvanen@google.com>
+ <20240815173903.4172139-37-samitolvanen@google.com>
+ <2024081600-grub-deskwork-4bae@gregkh>
+ <CABCJKuedc3aCO2Or+_YBSzK_zp9zB8nFwjr-tK95EBM3La1AmA@mail.gmail.com>
+ <2024081705-overarch-deceptive-6689@gregkh>
+ <ef6f7294-0afe-46af-8714-ed4a4aaee558@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20240819112415.99810-2-benno.lossin@proton.me>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <ef6f7294-0afe-46af-8714-ed4a4aaee558@proton.me>
 
-On Mon, Aug 19, 2024 at 11:24:39AM +0000, Benno Lossin wrote:
-> Sometimes it is necessary to split allocation and initialization into
-> two steps. One such situation is when reusing existing allocations
-> obtained via `Box::drop_contents`. See [1] for an example.
-> In order to support this use case add `write_[pin_]init` functions to the
-> pin-init API. These functions operate on already allocated smart
-> pointers that wrap `MaybeUninit<T>`.
+On Sat, Aug 17, 2024 at 01:19:55PM +0000, Benno Lossin wrote:
+> On 17.08.24 09:41, Greg Kroah-Hartman wrote:
+> > On Fri, Aug 16, 2024 at 08:50:53AM -0700, Sami Tolvanen wrote:
+> >> On Fri, Aug 16, 2024 at 12:20 AM Greg Kroah-Hartman
+> >> <gregkh@linuxfoundation.org> wrote:
+> >>> On Thu, Aug 15, 2024 at 05:39:20PM +0000, Sami Tolvanen wrote:
+> >>> Especially as I have no idea how you are going to do
+> >>> this with the rust side of things, this all will work for any structures
+> >>> defined in .rs code, right?
+> >>
+> >> Yes, Rust structures can use the same scheme. Accessing union members
+> >> might be less convenient than in C, but can presumably be wrapped in
+> >> helper macros if needed.
+> > 
+> > That feels ripe for problems for any rust code as forcing a helper macro
+> > for a "normal" access to a structure field is going to be a lot of churn
+> > over time.  Is the need for a macro due to the fact that accessing a
+> > union is always considered "unsafe" in rust?  If that's the case, ick,
+> > this is going to get even messier even faster as the need for sprinkling
+> > unsafe accesses everywhere for what used to be a normal/safe one will
+> > cause people to get nervous...
 > 
-> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
-> Link: https://lore.kernel.org/rust-for-linux/f026532f-8594-4f18-9aa5-57ad3f5bc592@proton.me/ [1]
+> The reason for union field access being unsafe in Rust is that you can
+> easily shoot yourself in the foot. For example:
+> 
+>     union Foo {
+>         a: bool,
+>         b: i32,
+>     }
+> 
+>     let foo = Foo { b: 3 };
+>     println!("{}", unsafe { foo.a });
+> 
+> This is UB, since `3` is of course not a valid value for `bool`. With
+> unions the compiler doesn't know which variant is active.
 
-Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
+Understood, then why attempt to use a union for this type of "abi safe
+padding"?
 
-Regards,
-Boqun
+> Since unions are unsafe in Rust, we don't really use them directly (in
+> the `kernel` crate, we have 0 union definitions). Instead we use certain
+> unions from the stdlib such as `MaybeUninit`. But the fields of that
+> union are private and never accessed.
+> 
+> In general, unions in Rust are very important primitive types, but they
+> are seldomly used directly. Instead enums are used a lot more, since you
+> don't need to roll your own tagged unions.
+> 
+> For this use-case (the one in the patch), I don't really know if we want
+> to copy the approach from C. Do we even support exporting kABI from
+> Rust?
 
-> ---
->  rust/kernel/init.rs    | 84 ++++++++++++++++++++++++++++++------------
->  rust/kernel/prelude.rs |  2 +-
->  2 files changed, 61 insertions(+), 25 deletions(-)
+That's the goal here, you want to create an abi that can change over
+time without "breaking" the abi.  Usually this is just adding additional
+padding in structures to have room for new additions.
+
+> If yes, then we I would recommend we tag it in the source code
+> instead of using a union. Here the example from the patch adapted:
 > 
-> diff --git a/rust/kernel/init.rs b/rust/kernel/init.rs
-> index 771701805a97..a8068f99fcaa 100644
-> --- a/rust/kernel/init.rs
-> +++ b/rust/kernel/init.rs
-> @@ -1183,13 +1183,7 @@ fn try_pin_init<E>(init: impl PinInit<T, E>, flags: Flags) -> Result<Self::Pinne
->      where
->          E: From<AllocError>,
->      {
-> -        let mut this = <Box<_> as BoxExt<_>>::new_uninit(flags)?;
-> -        let slot = this.as_mut_ptr();
-> -        // SAFETY: When init errors/panics, slot will get deallocated but not dropped,
-> -        // slot is valid and will not be moved, because we pin it later.
-> -        unsafe { init.__pinned_init(slot)? };
-> -        // SAFETY: All fields have been initialized.
-> -        Ok(unsafe { this.assume_init() }.into())
-> +        <Box<_> as BoxExt<_>>::new_uninit(flags)?.write_pin_init(init)
->      }
->  
->      #[inline]
-> @@ -1197,13 +1191,7 @@ fn try_init<E>(init: impl Init<T, E>, flags: Flags) -> Result<Self, E>
->      where
->          E: From<AllocError>,
->      {
-> -        let mut this = <Box<_> as BoxExt<_>>::new_uninit(flags)?;
-> -        let slot = this.as_mut_ptr();
-> -        // SAFETY: When init errors/panics, slot will get deallocated but not dropped,
-> -        // slot is valid.
-> -        unsafe { init.__init(slot)? };
-> -        // SAFETY: All fields have been initialized.
-> -        Ok(unsafe { this.assume_init() })
-> +        <Box<_> as BoxExt<_>>::new_uninit(flags)?.write_init(init)
->      }
->  }
->  
-> @@ -1215,13 +1203,7 @@ fn try_pin_init<E>(init: impl PinInit<T, E>, flags: Flags) -> Result<Self::Pinne
->      where
->          E: From<AllocError>,
->      {
-> -        let mut this = UniqueArc::new_uninit(flags)?;
-> -        let slot = this.as_mut_ptr();
-> -        // SAFETY: When init errors/panics, slot will get deallocated but not dropped,
-> -        // slot is valid and will not be moved, because we pin it later.
-> -        unsafe { init.__pinned_init(slot)? };
-> -        // SAFETY: All fields have been initialized.
-> -        Ok(unsafe { this.assume_init() }.into())
-> +        UniqueArc::new_uninit(flags)?.write_pin_init(init)
->      }
->  
->      #[inline]
-> @@ -1229,13 +1211,67 @@ fn try_init<E>(init: impl Init<T, E>, flags: Flags) -> Result<Self, E>
->      where
->          E: From<AllocError>,
->      {
-> -        let mut this = UniqueArc::new_uninit(flags)?;
-> -        let slot = this.as_mut_ptr();
-> +        UniqueArc::new_uninit(flags)?.write_init(init)
-> +    }
-> +}
-> +
-> +/// Smart pointer containing uninitialized memory and that can write a value.
-> +pub trait InPlaceWrite<T> {
-> +    /// The type `Self` turns into when the contents are initialized.
-> +    type Initialized;
-> +
-> +    /// Use the given initializer to write a value into `self`.
-> +    ///
-> +    /// Does not drop the current value and considers it as uninitialized memory.
-> +    fn write_init<E>(self, init: impl Init<T, E>) -> Result<Self::Initialized, E>;
-> +
-> +    /// Use the given pin-initializer to write a value into `self`.
-> +    ///
-> +    /// Does not drop the current value and considers it as uninitialized memory.
-> +    fn write_pin_init<E>(self, init: impl PinInit<T, E>) -> Result<Pin<Self::Initialized>, E>;
-> +}
-> +
-> +impl<T> InPlaceWrite<T> for Box<MaybeUninit<T>> {
-> +    type Initialized = Box<T>;
-> +
-> +    fn write_init<E>(mut self, init: impl Init<T, E>) -> Result<Self::Initialized, E> {
-> +        let slot = self.as_mut_ptr();
->          // SAFETY: When init errors/panics, slot will get deallocated but not dropped,
->          // slot is valid.
->          unsafe { init.__init(slot)? };
->          // SAFETY: All fields have been initialized.
-> -        Ok(unsafe { this.assume_init() })
-> +        Ok(unsafe { self.assume_init() })
-> +    }
-> +
-> +    fn write_pin_init<E>(mut self, init: impl PinInit<T, E>) -> Result<Pin<Self::Initialized>, E> {
-> +        let slot = self.as_mut_ptr();
-> +        // SAFETY: When init errors/panics, slot will get deallocated but not dropped,
-> +        // slot is valid and will not be moved, because we pin it later.
-> +        unsafe { init.__pinned_init(slot)? };
-> +        // SAFETY: All fields have been initialized.
-> +        Ok(unsafe { self.assume_init() }.into())
-> +    }
-> +}
-> +
-> +impl<T> InPlaceWrite<T> for UniqueArc<MaybeUninit<T>> {
-> +    type Initialized = UniqueArc<T>;
-> +
-> +    fn write_init<E>(mut self, init: impl Init<T, E>) -> Result<Self::Initialized, E> {
-> +        let slot = self.as_mut_ptr();
-> +        // SAFETY: When init errors/panics, slot will get deallocated but not dropped,
-> +        // slot is valid.
-> +        unsafe { init.__init(slot)? };
-> +        // SAFETY: All fields have been initialized.
-> +        Ok(unsafe { self.assume_init() })
-> +    }
-> +
-> +    fn write_pin_init<E>(mut self, init: impl PinInit<T, E>) -> Result<Pin<Self::Initialized>, E> {
-> +        let slot = self.as_mut_ptr();
-> +        // SAFETY: When init errors/panics, slot will get deallocated but not dropped,
-> +        // slot is valid and will not be moved, because we pin it later.
-> +        unsafe { init.__pinned_init(slot)? };
-> +        // SAFETY: All fields have been initialized.
-> +        Ok(unsafe { self.assume_init() }.into())
->      }
->  }
->  
-> diff --git a/rust/kernel/prelude.rs b/rust/kernel/prelude.rs
-> index b37a0b3180fb..4571daec0961 100644
-> --- a/rust/kernel/prelude.rs
-> +++ b/rust/kernel/prelude.rs
-> @@ -37,6 +37,6 @@
->  
->  pub use super::{str::CStr, ThisModule};
->  
-> -pub use super::init::{InPlaceInit, Init, PinInit};
-> +pub use super::init::{InPlaceInit, InPlaceWrite, Init, PinInit};
->  
->  pub use super::current;
-> -- 
-> 2.45.2
+>     #[repr(C)] // needed for layout stability
+>     pub struct Struct1 {
+>         a: u64,
+>         #[kabi_reserved(u64)] // this marker is new
+>         _reserved: u64,
+>     }
 > 
+> And then to use the reserved field, you would do this:
+>     
+>     #[repr(C)]
+>     pub struct Struct1 {
+>         a: u64,
+>         #[kabi_reserved(u64)]
+>         b: Struct2,
+>     }
 > 
+>     #[repr(C)]
+>     pub struct Struct2 {
+>         b: i32,
+>         v: i32,
+>     }
 > 
+> The attribute would check that the size of the two types match and
+> gendwarfksyms would use the type given in "()" instead of the actual
+> type.
+
+Remember the "goal" here is to NOT have to modify the places in the
+kernel that use the new field in the structure, but for that to "just
+work".  Your change here wouldn't allow that as any use of the new "b"
+field would have to be through something in "Struct2", not directly in
+Struct1, right?
+
+We can mess with the structure definitions but we should not have to
+touch the places where the structure fields are used at all.  If that's
+going to be a requirement (as it sounds like it would with the use of
+unsafe in the union), then this is not going to be a solution at all.
+
+thanks,
+
+greg k-h
