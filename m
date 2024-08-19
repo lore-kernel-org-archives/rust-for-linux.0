@@ -1,104 +1,92 @@
-Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
+Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86F4616B396;
-	Mon, 19 Aug 2024 12:41:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CF321E4AB;
+	Mon, 19 Aug 2024 13:04:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724071317; cv=none; b=A3i6edVIPCG8kND5YsV6DskQK2+yJI9tvJ1rvad/EebNqfDb/Yf6NTqccAMX9h+d9ihFEzg81wsZGCpOELnOK552i0IyNM2wH06ykx2LTPIUM7Xkl1Tlgp6+0rEMj/TaOwb3n1flD7xLhUwBWPIcL+mS9BW1dyo5AuheVCwo1mI=
+	t=1724072652; cv=none; b=ZkFCjUTEpqJGq1SsIHXik+hyI/nAHCema5AHizetzn1bNfQkpZlV5sYFyhnuOzeG2ZtFiOQpCdEtONmTf+4bIZG9WEnMlXpg5E81qdaalq+Ya+vfIfzS39U5kIuMWqHHfb7v5lQtq4tQcsn5BKmrWFakBW8bx2zVntS5U+Vfm/4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724071317; c=relaxed/simple;
-	bh=HkorkWo41c7o1W5la+gTTbeuOE1bBXcPoKgZ7ULoVb4=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=ZoZYs1lngX2VuYXC+4eLKqNPDWeWLnwdFOiQmndAdOVl+VwQJqwcf+VSA/LS0LuX43WNkzKdKJyaXraTw4mJYmbXXbEaRE0qgyRoIGnb6gkPdT6vAM0zUDZtG+rarfHnSP4vBCcinyGrApzfuFsK7MTj/M85pr/cVwTq6+JhUJM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hDoWFCsv; arc=none smtp.client-ip=209.85.214.182
+	s=arc-20240116; t=1724072652; c=relaxed/simple;
+	bh=jyfAn8dUcudlLvulBnmIku0W1Gbivc7wVmOdNkcgG/U=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=pNJ02X2s2Oiw2ZQixdpmEOA9BDdWg21EJhyBZoy3pd2Rp5puQ8DcSKvkRbTCbBR/RiMNl1nXZRlxOwgMG7VQDSkc8FYy8F2esCEk4fVkzYUjD76f8yf80GlLaw/4ILkJKNKXt0hUfYsvbv/Ws+zbZKLvjT7dLxFO1dghVEYo8EI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WEO+s/ee; arc=none smtp.client-ip=209.85.216.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hDoWFCsv"
-Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-20201433461so1041725ad.3;
-        Mon, 19 Aug 2024 05:41:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WEO+s/ee"
+Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-2d3b595c18dso3196775a91.0;
+        Mon, 19 Aug 2024 06:04:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724071316; x=1724676116; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=egIIq2Tij2yZlcDUiB3SS6h443dfxA40vwxckLIt5Xk=;
-        b=hDoWFCsvFG9i0JLewgiCj0n3aistsdQp4W2AslAPu2l82060tWCVDzxuTVArlvwPDK
-         spgz4e7gty2MCBrY//L2M58qjReQ/T+SYyFRlGfzwG1rlkYg1otkJjxmnTix8ieWeWjt
-         d7Iht8xKgdUZt68t1djfmUBDx/1gfr6DmiiEsTqmRbRWheCrFDHWgMLFcCTYa/jf/MJi
-         Z1LgsXAIEFUatJtk6z/69upJuLiB5pH9DLDJ6VyJO8XApuyoK4sQ+GgP7zcrkAZcEQHT
-         WGx7+WFECRUqzntb6iK4VWGMykueuAONW9w+6xCazLnAIE17czkNLHva6DaR5BxUwzuC
-         HJ7Q==
+        d=gmail.com; s=20230601; t=1724072650; x=1724677450; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=d5tKZxq1FCx8yBXYhSVUiSbzvbO4Et2vnFtJ8mslMwI=;
+        b=WEO+s/eeqs6UHinAua1FUF2x32h42gTumUAHd8TUUwSdSjsOdkTwqgtiI3bsI9Nmer
+         KeCGAs2t+6nZcF39m7aA/YDeBSj2S6F2YTrz2w0yqgLcizfX1JwHr/GBjn+xLvignSNv
+         uYngj9V6TQ620e9lWSJKdCqz+WEAijqVxFgzUvrc61DWyU7EozblebW354HnwKS/mOYI
+         4jmW51rdtHmHuQR9uhUXrUaYTlWqiqIsWp/LJcWgZcRnSv2hzeEhZq3lzxYiHpnQfm8+
+         xDsRcxUHk07IWysWiD48+ajntRnpJpMMSoTJGxTgeNMtdBXPcN+IkqMCV/NVIqTfx+4J
+         raMg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724071316; x=1724676116;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=egIIq2Tij2yZlcDUiB3SS6h443dfxA40vwxckLIt5Xk=;
-        b=DVeaSagHEajHzYlJVX5CE036n1zt7YTA5vmb8gn8uQEsh7BW8Hrx6+BdgsHCxtE8Dj
-         h5EKOdbn2dmIrCwVuIy0cR04ofcq5+w1Qtw0Y7Axa4cqe914qQOT3sfazYVnN/zNgLsS
-         XXTpR/jT/JpPVwL1KE1/7ApTTAcET3zJjz6UpgJ3uLZ+RnFZxkWTx4y48PtngEk3nvL+
-         lft/stE3n1WiJAsbEh6G+QmRxZcJkjIU/enVxV7Uim8ZZ6GY4LFFHXYv0ejUG0Fiz/ae
-         BGwR31Ia0eqP+GWe0reDG336N3jryXRU46ddU88rXUn9roZz6U3ziXtKWATuLke6jYFe
-         oylQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVFNG2Xw4E5pTqHJvjIwOOZnn9DZltO6hDWV04honAPAkAHz9jtAHDUtMcWQ3ekz8rTJptj5WU=@vger.kernel.org, AJvYcCWusZ5CZDjW6k/ol//G+gnwWz+3THfEgZYKsYmf5COv1cM16upUQUKX2hJ0jOKORZpiRpStDkYngvpWwGsQZgM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YweYru61aju2uYU+0b4DL6UZjMzm5UfkpSPhM5NlnoEGkJANe8J
-	HLEHXIAW5uX7Qrtb69StJPq1ksO9NNGwIVJx3iEQpDjIqTykgbmd
-X-Google-Smtp-Source: AGHT+IGD5oXHKY8DggbLbs8785+A8clBy8pdJNgZXfBNsRUm5YwKDS1Z4yCcAFD98Yp0yZ0QWfC2Ww==
-X-Received: by 2002:a17:902:f545:b0:202:41cb:7d73 with SMTP id d9443c01a7336-20241cb80c9mr20775625ad.11.1724071315637;
-        Mon, 19 Aug 2024 05:41:55 -0700 (PDT)
-Received: from localhost (p4468007-ipxg23001hodogaya.kanagawa.ocn.ne.jp. [153.204.200.7])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-201f022c72bsm62249535ad.0.2024.08.19.05.41.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 19 Aug 2024 05:41:55 -0700 (PDT)
-Date: Mon, 19 Aug 2024 12:41:52 +0000 (UTC)
-Message-Id: <20240819.124152.1149996909347890108.fujita.tomonori@gmail.com>
-To: tmgross@umich.edu
-Cc: fujita.tomonori@gmail.com, netdev@vger.kernel.org,
- rust-for-linux@vger.kernel.org, andrew@lunn.ch,
- miguel.ojeda.sandonis@gmail.com, benno.lossin@proton.me,
- aliceryhl@google.com
-Subject: Re: [PATCH net-next v5 3/6] rust: net::phy implement
- AsRef<kernel::device::Device> trait
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <CALNs47s6oscYosRT-xgdTtC_4SG7W2iwEzrB+7w0Bc=P4G6tPw@mail.gmail.com>
-References: <20240819005345.84255-1-fujita.tomonori@gmail.com>
-	<20240819005345.84255-4-fujita.tomonori@gmail.com>
-	<CALNs47s6oscYosRT-xgdTtC_4SG7W2iwEzrB+7w0Bc=P4G6tPw@mail.gmail.com>
+        d=1e100.net; s=20230601; t=1724072650; x=1724677450;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=d5tKZxq1FCx8yBXYhSVUiSbzvbO4Et2vnFtJ8mslMwI=;
+        b=MYbCB+PCXnUU3bp8KQWQ6JvUXlyC2WL7+OfXgifvcnNZAiFoV5hhLDD8Axadq29NDm
+         F8qIzql8LtgNYWe6oLD8DAEP0vSuW6NclaXipjKEyI3CFvinKK8pBUn5BD+v5kHuL3iV
+         K2vMg7VfGaSyfWna362YUmGWnFotHkQKfchvlqaT++eETnBH2nFrhS0JfvhZoNPo7Tpq
+         e5soY8fBkcOGTVwIfEynKFghtdXeHN8L5SUzwuDqepncptcceQDrCuhq6RmdVyNbbh8Q
+         lJq5WDZaVOEGuxTpl6n6D+A7ZQbuaRq/shf4vxXNWqnJ/+RIACaov9H6/IXBPNa9fNDY
+         1jFw==
+X-Forwarded-Encrypted: i=1; AJvYcCUwCxWB9rOEJxck+wctLlnN54+K1iuESLeFouqw1taKTJZ5k33EhGdhGK/AQ83zQqVcegdWIl/ugApu2InpyFyy7k5nxzNcwM8HZ3mK7NtVdGMZSUtkdzdsj4ysoycbzaayGVOA4pMRcdC67P8=
+X-Gm-Message-State: AOJu0Ywpo2us+p2ZydYc5GAdFSozKJx++cd4RjgSjW8IHYUL5OK/RwNj
+	kruKXt8XU/kB/PllHwPgcXxW0+GoH2lrSMzyRa3xf+HSdz58nEa0TWptBIhM/sqZkjwL37Ol0Qc
+	PkGs/IJbK328A1aFkJ6kp4rxmXCM=
+X-Google-Smtp-Source: AGHT+IH4FYhpxpfvS2aoZZ+AnOF+NEZ8UNiNNW8OA+pgeymbSSwA5mLhitnXzRrV2/Ta45YDRJ4eDt4tc5nXUOZcLe4=
+X-Received: by 2002:a17:90a:d352:b0:2c8:4250:66a1 with SMTP id
+ 98e67ed59e1d1-2d3c38dde41mr22303342a91.3.1724072650278; Mon, 19 Aug 2024
+ 06:04:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+References: <20240817165302.3852499-1-gary@garyguo.net>
+In-Reply-To: <20240817165302.3852499-1-gary@garyguo.net>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 19 Aug 2024 15:03:58 +0200
+Message-ID: <CANiq72mGbdKRKuEPbmC7TLOJVXMmpvap8Vinpex-TCtorKaUVw@mail.gmail.com>
+Subject: Re: [PATCH v2] kbuild: rust: auto generate rust helper exports
+To: Gary Guo <gary@garyguo.net>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Alice Ryhl <aliceryhl@google.com>, Dirk Behme <dirk.behme@de.bosch.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Mon, 19 Aug 2024 02:21:03 -0500
-Trevor Gross <tmgross@umich.edu> wrote:
+On Sat, Aug 17, 2024 at 6:54=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
+>
+> This removes the need for explicit exporting all symbols.
+>
+> Generate helper exports similar to what's currently done for Rust
+> crates. These helpers are exclusively called from within Rust code
+> and therefore can be treated similar as other Rust symbols.
+>
+> Signed-off-by: Gary Guo <gary@garyguo.net>
 
->> @@ -76,9 +76,11 @@ impl Device {
->>      ///
->>      /// # Safety
->>      ///
->> -    /// For the duration of 'a, the pointer must point at a valid `phy_device`,
->> -    /// and the caller must be in a context where all methods defined on this struct
->> -    /// are safe to call.
->> +    /// For the duration of 'a,
-> 
-> Nit, backticks around `'a`
+Applied to `rust-next` -- thanks everyone!
 
-Oops, I'll add.
+    [ Fixed dependency path, reworded slightly, edited comment a bit and
+      rebased on top of the changes made when applying Andreas' patch
+      (e.g. no `README.md` anymore, so moved the edits).  - Miguel ]
 
->> +    /// - the pointer must point at a valid `phy_device`, and the caller
->> +    ///   must be in a context where all methods defined on this struct
->> +    ///   are safe to call.
->> +    /// - `(*ptr).mdio.dev` must be a valid.
->>      unsafe fn from_raw<'a>(ptr: *mut bindings::phy_device) -> &'a mut Self {
->>          // CAST: `Self` is a `repr(transparent)` wrapper around `bindings::phy_device`.
->>          let ptr = ptr.cast::<Self>();
-> 
-> Reviewed-by: Trevor Gross <tmgross@umich.edu>
-
-Thanks!
+Cheers,
+Miguel
