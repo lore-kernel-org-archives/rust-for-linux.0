@@ -1,108 +1,92 @@
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
+Received: from mail-yw1-f175.google.com (mail-yw1-f175.google.com [209.85.128.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D884513D251
-	for <rust-for-linux@vger.kernel.org>; Mon, 19 Aug 2024 07:28:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B19E14AD3D
+	for <rust-for-linux@vger.kernel.org>; Mon, 19 Aug 2024 07:37:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724052541; cv=none; b=nfMXBbwKLDikXUXQlHwscWy8Rt2mXs4nDZypZcCiGVBvA6ETFFqOeXDMID8tyMptZHaZiJnAZRwQ/8DMtHoKV577PDHsu/JMYOvkOLn8zK7N9lUP0GTdgS0zM6VVfG5YSYURgfrE73AcQLBIqKbrEO25liBdVL03xxPWJA13rME=
+	t=1724053036; cv=none; b=u+gCXW2QbHKyqy7WNgz5vF6+iYvqZxIFJqP39vwfSWJIN1bb1tOJAOkPNjBus0fDs3Nwzrltv7sBbrlFRqwJU/wfq83w4uThHcA8Q2IGMLkPuc6JtH9G6QL+ouq0QuFnsZjUhhvC86Nk5H5e9tqFAObu9FMfIvIggMhps6eDCBk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724052541; c=relaxed/simple;
-	bh=9RpqaSW3EP8+7YSs6+tNYph9FaHPbkC6S+ZfjCCWSvc=;
+	s=arc-20240116; t=1724053036; c=relaxed/simple;
+	bh=8R+HLMGC9DANB5Upwhp7nK70CFwhS9LHDQm2sVdKp9U=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FD9r7sutkMWVVl9r2UUNfvHNwCRf9jlfVEvRByox8qPMIS9HgLcK/UrPgeB/FeFYLk9StGn3lMk+RiyA0YZAyGtDT0o941eQw/T2Rs4ejspXmivDM+0Tcy1Wv+HGfgj/vyQkXsuk3qPrsZaD+0azsRziNc8UBkb7gG4HtqiS93c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=NaC6+FVL; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=YkJjGyShvXxD5deRegQaisv+R1gaQLCJdZdx9XmaP0OrPiOt9f/udbQx3lGeczy1nulJ5jhECX8LIKNrkSy4GdtGZxZFnKtuOrQdfSP7dLYHJ9qYUBqPa1HROMJLu6sdQu1IdwVFFk0vfwZbIFuiEeNL+gyHRy9C16cK9K053II=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=owFl/To0; arc=none smtp.client-ip=209.85.128.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=umich.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="NaC6+FVL"
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-428243f928cso31636715e9.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 19 Aug 2024 00:28:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="owFl/To0"
+Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-6b8d96aa4c3so8048627b3.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 19 Aug 2024 00:37:13 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1724052537; x=1724657337; darn=vger.kernel.org;
+        d=umich.edu; s=google-2016-06-03; t=1724053033; x=1724657833; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=9RpqaSW3EP8+7YSs6+tNYph9FaHPbkC6S+ZfjCCWSvc=;
-        b=NaC6+FVLQE9PUe/A8woofJQkxb4eRv3AcLCZMkmdButhE88Z0m5AoM8dohL7qTd7UH
-         4YGh3ZzaxwCTSmc6BTbZhEygtGTbfXudLqwwnBPRm8Re9w66mA2xStkcIW2eWVlS0XuE
-         IGJN5oQNTj4O/knvnwWQVGF5Zm8DMqtD98MzCHDbxbpdFBLtvjmAvYAPO65OYU2ljoqo
-         Q+p1ZZtiVKwUcn1KKF1uKBtPzvC24byYZa+Z6Xx5uY2aSleYQC05bX3rXaxL9ndMyFYW
-         yuON27L2OVBfnV9PfsS0U5hDyP0atGUf9eQ2Xe6/cuEFJDw+Tp5kTBhB4iRlXPo9EgFE
-         sdNA==
+        bh=8R+HLMGC9DANB5Upwhp7nK70CFwhS9LHDQm2sVdKp9U=;
+        b=owFl/To00VXWBCS5sSO28/PnMkDEwYUoEE+0RXhvj/0FNVUzabNnj5ZQ/sEoz6QF1J
+         osUgDus9gLORI1PCTtpNExD9yFHXEjGn2V9hep9jiP9uyFdD0mE3HtbGbIuLhnhXs4i4
+         aPVL+DY1MKjSwCxSLJe8dAXrdYJ3YXRb3cHKuvWfteT8ciE1dcc5GBo1vaNFkTOyKqvY
+         aiv/J+oiYz4oh/G3nSJp81p/fu+/KbluXfCzHRLAaNKI58QZ1Rixt58N0iYnckQhq9PW
+         paDORl/C2OU9T1EnH8c/m2z5jcJs4QpeFlTwnTYMl+WIvnaQPU5qjrt7m69rfoLQ2Gkf
+         Gr4w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724052537; x=1724657337;
+        d=1e100.net; s=20230601; t=1724053033; x=1724657833;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=9RpqaSW3EP8+7YSs6+tNYph9FaHPbkC6S+ZfjCCWSvc=;
-        b=h1evP6cFXMt40rderaVu/4J6L98DkvS0qZkJfJEJnhGEu/fSVN34xl5vKeQCZjcNny
-         i+ASQkkmD0tDfXUwZiidRsmQMBB8/QPHPUt/Wufg4xGd65ODVyrauJvmDztmLNoXLrT+
-         9Uk3a3n1iXLzX8UqobuPB90pds03RdSz/Rz5Z6A77njEEHFZ+X0QUdK5dDcXJyZU4HwM
-         6oQEZW7HLCftsm1DoiQzuLa/lFyDBIgA1rnQeyOOdAJdAncpBRpN6235IKaHCqQID5b0
-         gy2v7EIUo+QC6dMRtn50LRckMQz85RTWNktmVAS+Ml1O1s/FOB6CcN7Sqv79JBNuIv03
-         8vxQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW3ot/EMal8QEIqTf/VqjYWGgvhPXcNrZcVF6rax3gXeEMqxTVJB1J83yrc0zJoZeRXR/+y8N81EXwCM68lWbRfaSmSAzMnuzMWHK3cer4=
-X-Gm-Message-State: AOJu0Ywh1e0NFJW/ms6xEpR/72s3qO5tYSo2GrO/A805e21m0TTic03v
-	Rkg/L92oTB6iRvLz1QuIiCooUGKqEK1Dfq4xdpPgf3rAg3e752LyJKPhTrtEq0KwB0f+B9NnM6R
-	B57si85ToEZopft2qA3fZDGUsi309WJi+Q9uL
-X-Google-Smtp-Source: AGHT+IFbDPWP+j/rqNlthxQd7CrAdmAs9wRe0NTha3CeBwITtFOy28z/1Ffe4WKvnY7vqXrMteXUHK3icZnMnT+QQxY=
-X-Received: by 2002:a5d:49cf:0:b0:371:8ca4:1b76 with SMTP id
- ffacd0b85a97d-3719465b8fcmr6024363f8f.32.1724052536815; Mon, 19 Aug 2024
- 00:28:56 -0700 (PDT)
+        bh=8R+HLMGC9DANB5Upwhp7nK70CFwhS9LHDQm2sVdKp9U=;
+        b=bzqchFULcDUlGTh51xVQRRtWi3jxkJeIv2UVEW5zAFowZ8phhkyNpQxm0UvQPIbkqe
+         ZkaoWqqcvd1NbTnvfy2Y8XODeoVZNuDak0aEPnedMO6Z/8miT5lPbRYy0XpeeTFcjOJf
+         BpPluUmBhc7JQhsx7eGl6JIn+Neqi9GV2IRrj8UYWHA3rWsz3Q9gNOvUKC1vw7M09DU3
+         Ndk81UDGoIbf+8xBPjHJrZZZs5Txkb+BVaR/oLbfOVNcWqZWF7X6/nOtTG7w9dWPfRv1
+         M3k4DrQWyaZOE8UUOwskQuYKllgEUelVLI0VcLyECEMVv1ZJ5WducVI6MVAW/dfZdCOq
+         cB+g==
+X-Forwarded-Encrypted: i=1; AJvYcCViHqwnc0W3cVtLmnxYitZXBe14Paz07yNZBd5p/dGatSP2zP2l4VWEf0jqT3gQXV1H3h/wVHpcMOjsCVAUykODVLeLYEWYhk/89eMoaxc=
+X-Gm-Message-State: AOJu0YyAL94E9YfUXbrYyxmsKypBeeJLgk9YEYH0y11xNepI1Xt3ZJ6A
+	VTe75dh4FrwNSmDJqf0s9XeoD+/AwI+Ekge4xQkj0iJLenKhqtViyUCODb2jS0FasMzj6hKdXbS
+	U9fzdmuatMuRZczhAsOihKqL7vethMy7Eeq2jeA==
+X-Google-Smtp-Source: AGHT+IFp7kZc51+IIezkIKw6qvUfXZ+YpkHllZrprtp0K/0BIXlAECx6uUl9oWabDPVcWKm5IL/NjaLLy/MJWc4bqhQ=
+X-Received: by 2002:a05:690c:7013:b0:627:de70:f2f8 with SMTP id
+ 00721157ae682-6b1ba7e4845mr107827237b3.14.1724053033006; Mon, 19 Aug 2024
+ 00:37:13 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240808221138.873750-1-ojeda@kernel.org>
-In-Reply-To: <20240808221138.873750-1-ojeda@kernel.org>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 19 Aug 2024 09:28:42 +0200
-Message-ID: <CAH5fLgh9Moq_9M+zMu300ohK=mPqkLyS6cpQ6An2Q3THCPFjaA@mail.gmail.com>
-Subject: Re: [PATCH 0/6] kbuild: rust: add `RUSTC_VERSION` and
- reconfig/rebuild support
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Masahiro Yamada <masahiroy@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	rust-for-linux@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>, 
-	Nicolas Schier <nicolas@fjasle.eu>, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev
+References: <20240819005345.84255-1-fujita.tomonori@gmail.com> <20240819005345.84255-5-fujita.tomonori@gmail.com>
+In-Reply-To: <20240819005345.84255-5-fujita.tomonori@gmail.com>
+From: Trevor Gross <tmgross@umich.edu>
+Date: Mon, 19 Aug 2024 02:37:02 -0500
+Message-ID: <CALNs47tLDD2SQDeJ7h24Sakd6N244OXM8HvPsHQMds4XjwOTQw@mail.gmail.com>
+Subject: Re: [PATCH net-next v5 4/6] rust: net::phy unified read/write API for
+ C22 and C45 registers
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, andrew@lunn.ch, 
+	miguel.ojeda.sandonis@gmail.com, benno.lossin@proton.me, aliceryhl@google.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Aug 9, 2024 at 12:12=E2=80=AFAM Miguel Ojeda <ojeda@kernel.org> wro=
-te:
+On Sun, Aug 18, 2024 at 8:01=E2=80=AFPM FUJITA Tomonori
+<fujita.tomonori@gmail.com> wrote:
 >
-> Hi all,
+> Add the unified read/write API for C22 and C45 registers. The
+> abstractions support access to only C22 registers now. Instead of
+> adding read/write_c45 methods specifically for C45, a new reg module
+> supports the unified API to access C22 and C45 registers with trait,
+> by calling an appropriate phylib functions.
 >
-> This series introduces `RUSTC_VERSION` support, which is needed for
-> several patch series getting upstreamed, and it will be increasingly
-> useful as we now support several Rust compiler (and `bindgen`) versions.
-> Later on, we will likely introduce other macros, such as
-> `rustc-min-version`.
->
-> In addition, the series introduces automatic reconfiguration and rebuild
-> based on `RUSTC_VERSION_TEXT`, to mimic the C side, which is also good
-> to have now that we support several versions.
->
-> It is based on top of the current `rust-fixes`, since there are a couple
-> pending changes to the version text Kconfig symbols that will be sent to
-> Linus soon for an -rc.
->
-> Cheers,
-> Miguel
+> Reviewed-by: Trevor Gross <tmgross@umich.edu>
+> Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> ---
 
-I tested this together with Rust Binder. I also ran this patchset
-through Android's CI setup to verify that it works in builds with
-CONFIG_RUST disabled. It passes both with and without a Rust compiler
-available to the build system.
+If there winds up being another version, could you link the previous
+chain for these two patches ([1]) in the cover letter? I knew it was
+familiar but couldn't figure out where I had seen it before :)
 
-Tested-by: Alice Ryhl <aliceryhl@google.com>
-
-I'm happy to rerun these tests for new versions.
-
-Alice
+[1]: https://lore.kernel.org/rust-for-linux/20240607052113.69026-1-fujita.t=
+omonori@gmail.com/
