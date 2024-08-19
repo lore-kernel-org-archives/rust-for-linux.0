@@ -1,113 +1,152 @@
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+Received: from mail-qk1-f182.google.com (mail-qk1-f182.google.com [209.85.222.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81AFDF4E2;
-	Mon, 19 Aug 2024 00:22:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEF0D125BA;
+	Mon, 19 Aug 2024 00:29:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724026941; cv=none; b=P2G6yXG5oj+n00Z91n3pzGTpUuf4BvxRdOPyd6MNUZgRtjGKp83VFyuJZnRM4Mk9b9BNXl7kl8qbGIq/OP04MSusLPDLUH/ycOrsuB2H+SYCf1fciivlaXUsNEZSgCIfAOcLwqTug7bZh0pAQPvgsIEUf7ihgef16uO3v7CCX0c=
+	t=1724027347; cv=none; b=R7i39zUWxVYTsYtOpii+OjxAxxg3k7oFMgAR2pStt3f8pHMiWYORUmvODPzQw9nj/j1S4VXMCzqpjRrIBHE/HUhn5KqBzsxCFyXZyGBtxCHM0pRHfTZb7+tcF8n+i7TUi/q6J4b6uH2Xmn7La0VzimnGJbpsAtoNiHciSe1Xeys=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724026941; c=relaxed/simple;
-	bh=hUlasCGs8bJ/CqR9HffjtbBB4lngk1f4AcPUhJq0AcU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TQW2J97C+3PfJ7nW/kRnp+8ZIP+AigNSUTOMK1rqwMvMdeoPxyrY9tuMfGcdteVXYckG2WL7kKdWkS5PI8rJhF65qJ5frsoxsQ/PHT8u3YngKe/12oTTQa36V50jNBawfy2OoQmxwH/iJR6Cw3kZQIB6XrwF1/6bU/VTabRk/rQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=OlLW40F1; arc=none smtp.client-ip=209.85.210.173
+	s=arc-20240116; t=1724027347; c=relaxed/simple;
+	bh=Oi+NhraI2VmJmeKPZf8UBPFcjWlmlFYhCcnKuzVljZo=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=VwsQwdSQ1t49KNQ/uQyhyyktyFkEg5tB3IiNxe4iuIenWqpr0ft7QSe0YsA0AOLFKicCxuhlJCDSBUrKg5ONddElZv++eUWAgr2AVjjMCjgxRBudsQzcnzmqtHn1UxazBS//aT1JDVqJR06FFCZ4nrtBpeuJstFAyQ38UWpX0rY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gp6ZKcYE; arc=none smtp.client-ip=209.85.222.182
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="OlLW40F1"
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-70eaf5874ddso2752789b3a.3;
-        Sun, 18 Aug 2024 17:22:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gp6ZKcYE"
+Received: by mail-qk1-f182.google.com with SMTP id af79cd13be357-7a1df0a9281so262304985a.1;
+        Sun, 18 Aug 2024 17:29:05 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724026940; x=1724631740; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RYZfJCDZHiEEDuTx7TQepweKjjgoFmH0zVv9FmE6Nt4=;
-        b=OlLW40F1sgrvK7baYujl96VOaNfHJJ06rpkLjOtEmm1qPlOQ8o+g2rGu7jLtkcus8o
-         CQfWTlsSBo/bZDAuQeLOfYTP6hwIv7hctPS+90rDoAKaqYKUClr9ZVpRldJCWI4KNzKg
-         rq06OTfpAHsB+b7jt9/Ex5XAmx8x7Dnqt28EwGmTINsP0CkSwvRAFsv8VBaSFkP2b4h5
-         gQIp9A8ErydmpQEvsfw49cgXPCytG8VpIEavkStMipu5ntBPOltI3HpHF5ZffL8TV4p9
-         s/Rdf165t7YXpqTPv1lr0YM5xNu3Rm1QQ1LD+WZO1OJ7/ASjQv/QuM1Skvlfn0zSlC3g
-         28NA==
+        d=gmail.com; s=20230601; t=1724027345; x=1724632145; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=C5AzRw4Ng5DlmqxlU3RfYDaBWap+7V+NPvtomq7FwMQ=;
+        b=gp6ZKcYEKxRNM5nlI+mvbiJo6jEaT96xe1tcYzKzLj60dVTtn2RQI25rNmF8xnKV13
+         dFmfDcY92tlJjRdqBhthjOaVtpc0E0FJwExLVNg8pZA2Rq7QU4JZbhSiGgYVBlJet83i
+         2uYA14vMv0b7My8sdwwIfhXiRvR+r+Qx+MEe319Z7QbzisI+lDazYoeyzY7/7DWfjICm
+         PiwUnmJnf7HBlsD7CwHVOUrL4ppHxK9THJENjY2mpeX859DXB3z2ML4G8StdQhTNaiR/
+         juE/lqAa+qbVZRChL5NZlcU++Cl8AAcxP5HXNYqRe9Y8lHAGoIBOSSgtD/fMcWOqruIK
+         P0/w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724026940; x=1724631740;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=RYZfJCDZHiEEDuTx7TQepweKjjgoFmH0zVv9FmE6Nt4=;
-        b=RbeADj9+RSr/Y9PRLXP79z7tILqpuCUo6xnOAXGF1mLZYV8F086LMyqhvqQ7RFI0pa
-         iA5ia63GNJUxURSyV/p18G36Hp8TmXotqrSg7uOiE1S8PNhaP5xU3hxDCc0tz3sHvaE3
-         gVMrfHa6rH9GWex8ZqKCwhP2Q4foxk3vC2VhCJvp5ww7Bb6EJkXKl+gI/XG4z8r+8DrI
-         GRgweXou6ExBGZp86N9xMFoWiKBKfTLAJDtnBHExvjoG0EadENc0KG38iXJN96B0I4Za
-         w3AorbvfPdb2MM8nogv3XMUHOHLGapGTj7rwwfsEr9wN9CJSXtk3OIky+FaeUV/GZHMo
-         r5mQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXEWUQ9PQII4iJhJcYxb5PQaxGS8PRg8KI9J22iBFRxxAWNucNxHEAlexCbiLhAUCt1oBYotV1yEv7+bympKaNVYc4qP4kYNgjKK1+2JkDOGj6/HDfHq7wOgJWw5haTCJNanDKYhuY=
-X-Gm-Message-State: AOJu0Yy9v+CEL9dtNguP7ZnpG9PSioI6k5wyMj6rXRvYnP/LiNR1yWZ/
-	2udYa/KVBnS5gIXPc7GE4OxpMfiCO+eEmNPMcU/ComwppUSnGYoNbuYxgFQzzykPLyPZqxTHG2r
-	90KiInSP9tINXTCP6adBmbqG5I6A=
-X-Google-Smtp-Source: AGHT+IEGKxijvM5mqkst0BgtqjvHPalpw5q93+BJyczPe2AiwKeMQbFced36aht9WX6/LWN2Dm8QtTLHyCRUk2OA61g=
-X-Received: by 2002:a05:6a00:66d9:b0:70d:37f4:2c73 with SMTP id
- d2e1a72fcca58-713c4ddc3abmr9471115b3a.10.1724026939632; Sun, 18 Aug 2024
- 17:22:19 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1724027345; x=1724632145;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=C5AzRw4Ng5DlmqxlU3RfYDaBWap+7V+NPvtomq7FwMQ=;
+        b=TSVaVPkKo4ukufMgMtTJ2xnEKqz1RsoNd82HL7AGyd5f4la0McLC4X1xBE66Otd0zQ
+         HYsg96Z//g3nch6yjM9dySR/1v5rysptK9kV76F/agi4tcoUK96PZ2H9iL9tR1st1Cme
+         vSmuI7jpGVenHgCt64PeN9MKiRMo+QCgGGbaWni0nHlpqxqv/2hL5MS6Xra1MG0mSdSx
+         74a6ho3jfFEh10MuBh3YM07HmyyaCPBcIac66/9xcl+zO4bcAH4LEhMA5fTcHFzB48xL
+         H+J8IZLaZauAYBi1XC632L/4bJ6U5KBKaXQsvRvgEhKsYwTjk/cylWA7PMlUucrr21gq
+         TMrA==
+X-Forwarded-Encrypted: i=1; AJvYcCWj16F7ZcCGDMPmNgFOba1nubdl5ypS62JKYrrEhzsBNKRaMOTAkjyblyN9X7diqNGsaXoj1vee95q5S0mSnfQzEXmYUiMlsS2Gocw3OSux5MFPgrOnq7U4XLtLSTS1RUEqbHQVpsdTVsfsQX8=
+X-Gm-Message-State: AOJu0YxyBOBaX7ZtiYsKeBa5OIp0XJNdHGiYHjrCdBmEyVIRm7sN5eMk
+	F69YQk38Z2D9enToqtscLZQz/mqWNQ/VAtKMjhLsLlUgW7Vyo2b4
+X-Google-Smtp-Source: AGHT+IHyg3d0sd7EOkoXZNh7PYyheSgaE/cf9pEAgw6nG1HNq1wcYHflrlmiHCm3ngWESSZjYZFp1Q==
+X-Received: by 2002:a05:620a:2903:b0:79f:104a:ba4e with SMTP id af79cd13be357-7a506901bafmr1353451885a.13.1724027344585;
+        Sun, 18 Aug 2024 17:29:04 -0700 (PDT)
+Received: from fauth1-smtp.messagingengine.com (fauth1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7a4ff051b84sm387503185a.35.2024.08.18.17.29.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 18 Aug 2024 17:29:04 -0700 (PDT)
+Received: from phl-compute-03.internal (phl-compute-03.nyi.internal [10.202.2.43])
+	by mailfauth.nyi.internal (Postfix) with ESMTP id C0F141200068;
+	Sun, 18 Aug 2024 20:29:03 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-03.internal (MEProxy); Sun, 18 Aug 2024 20:29:03 -0400
+X-ME-Sender: <xms:z5HCZt4x7y6dp95AenBSAeGTrAOM0ay2kMnaVVH0du6GvCRgKffIlg>
+    <xme:z5HCZq7LQ6dwcpbcR-xV_-4mHD1geVH45urLu07jTfXscFOfMZ2_QLhXfWsZXQ87W
+    -riBEossfSpeI2Y2Q>
+X-ME-Received: <xmr:z5HCZkdlpMDaOKwxECwm4GUOnxRRUIMV1O6sMxijzaOWQChBEEQwveJeRkyVxA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddruddufedgfeehucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggugfgjsehtkeertddttdej
+    necuhfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilh
+    drtghomheqnecuggftrfgrthhtvghrnhepvefghfeuveekudetgfevudeuudejfeeltdfh
+    gfehgeekkeeigfdukefhgfegleefnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
+    hmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghl
+    ihhthidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepgh
+    hmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthhopedufedpmhho
+    uggvpehsmhhtphhouhhtpdhrtghpthhtohepmhhighhuvghlrdhojhgvuggrrdhsrghnug
+    honhhishesghhmrghilhdrtghomhdprhgtphhtthhopehgrghrhiesghgrrhihghhuohdr
+    nhgvthdprhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhope
+    grlhgvgidrghgrhihnohhrsehgmhgrihhlrdgtohhmpdhrtghpthhtohepfigvughsohhn
+    rghfsehgmhgrihhlrdgtohhmpdhrtghpthhtohepsghjohhrnhefpghghhesphhrohhtoh
+    hnmhgrihhlrdgtohhmpdhrtghpthhtohepsggvnhhnohdrlhhoshhsihhnsehprhhothho
+    nhdrmhgvpdhrtghpthhtoheprgdrhhhinhgusghorhhgsehsrghmshhunhhgrdgtohhmpd
+    hrtghpthhtoheprghlihgtvghrhihhlhesghhoohhglhgvrdgtohhm
+X-ME-Proxy: <xmx:z5HCZmJVVO2p3fxktUEVE8iAnVa74nMUEEe81hfFayt50GuZ1AEkZA>
+    <xmx:z5HCZhIrOsCTnsS6pJCnF13ur28IlUpKUd-Hn6OvAmQGB89SVjHO1Q>
+    <xmx:z5HCZvwe9ewDibH2lYKodf7wj_acCRcKc6ZoYgXGms1b2pVnD2L3sA>
+    <xmx:z5HCZtIqIqmMItP9i-_CECVWpu7c58Vm6EVg1Y6q7Xv4ilb9mP_OpA>
+    <xmx:z5HCZka0TVTs4bM1WoJpoqYlBY0ZOh9rMtFEd6iZ4oQvN3c7tBqV3k9t>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
+ 18 Aug 2024 20:29:03 -0400 (EDT)
+Date: Sun, 18 Aug 2024 17:27:23 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Dirk Behme <dirk.behme@de.bosch.com>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] kbuild: rust: auto generate rust helper exports
+Message-ID: <ZsKRax0h-Fes3mpU@boqun-archlinux>
+References: <20240817165302.3852499-1-gary@garyguo.net>
+ <ZsFEpjvE9osKDb3b@boqun-archlinux>
+ <CANiq72k81VrS+3Skh7gfYzkcxTsGscUJOhroV4MXH-LZgroZFg@mail.gmail.com>
+ <20240819005637.47e7045f.gary@garyguo.net>
+ <CANiq72kGyuhthMQA7bLaVduUS08AuVf-805_e0w9_vwBp0JcGA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240817051939.77735-1-fujita.tomonori@gmail.com>
- <20240817051939.77735-7-fujita.tomonori@gmail.com> <9a7c687a-29a9-4a1a-ad69-39ce7edad371@lunn.ch>
- <7f835fe8-e641-4b84-a080-13f4841fb64a@proton.me> <1a717f2d-8512-47bd-a5b3-c5ceb9b44f03@lunn.ch>
- <0797f8e8-ea3c-413d-b782-84dd97919ea9@proton.me> <bdfdac7c-edb0-4b78-b616-76be287c7597@lunn.ch>
-In-Reply-To: <bdfdac7c-edb0-4b78-b616-76be287c7597@lunn.ch>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 19 Aug 2024 02:22:07 +0200
-Message-ID: <CANiq72=Ga7usdPgACL6znOJ_=SQXy8ESbft4x0XewGL-Xf-M-g@mail.gmail.com>
-Subject: Re: [PATCH net-next v4 6/6] net: phy: add Applied Micro QT2025 PHY driver
-To: Andrew Lunn <andrew@lunn.ch>
-Cc: Benno Lossin <benno.lossin@proton.me>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
-	netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, tmgross@umich.edu, 
-	aliceryhl@google.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CANiq72kGyuhthMQA7bLaVduUS08AuVf-805_e0w9_vwBp0JcGA@mail.gmail.com>
 
-On Sun, Aug 18, 2024 at 7:39=E2=80=AFPM Andrew Lunn <andrew@lunn.ch> wrote:
->
-> O.K, so the compiler tells you, which is great. The C compiler would
-> not, which is why i tend to think of these things.
+On Mon, Aug 19, 2024 at 02:17:08AM +0200, Miguel Ojeda wrote:
+> On Mon, Aug 19, 2024 at 1:56 AM Gary Guo <gary@garyguo.net> wrote:
+> >
+> > It's the mistake on my patch. I noticed the exact issue while I was
+> > trying to rebase my helper-lto patch :)
+> >
+> > I believe that reason that it builds fine for me previously and for
+> > Boqun was that we didn't delete the helpers.o generated prior to
+> > applying the helper split patch, and we know that kbuild is not
+> > hermetic.
+> 
 
-For the unused result, there is `__must_check` of course, though it
-does not seem to apply to types in GCC like it is applied to `Result`
-in Rust (Clang is OK with it).
+Oh yes, that's the case, I have a .kunit/rust/helpers.o created at Aug 7
+:-(
 
-C23 brings `[[nodiscard]]`, which can be. GCC >=3D 11 and Clang >=3D 17
-support it, so one can do things like:
+> Yeah, probably it was that -- as you say, it would require a stale
+> `rust/helpers.o` from a build before Andreas' patch (and not just
+> before this patch).
+> 
+> > Your rebase and the fix is identical to the one I got locally, and I
+> > can confirm that it compiles fine for a clean build.
+> 
+> Thanks a lot for taking a look!
+> 
 
-    typedef struct [[nodiscard]] Result {
-        ...
-    } Result;
+Let me rerun your fixed version.
 
-    Result g(void);
+Regards,
+Boqun
 
-    Result f(void)
-    {
-        g(); // will warn.
-        return g();
-    }
-
-https://godbolt.org/z/PqK36rjWY
-
-And have a `Result`-like type (or, rather, like our alias in the
-kernel, given the generics).
-
-So if one is happy using new types, that is great.
-
-It would be nice to be able to do something like:
-
-    #define Result __must_check int
-
-...but that faces trouble when using it for e.g. local variables.
-
-Cheers,
-Miguel
+> Cheers,
+> Miguel
