@@ -1,249 +1,114 @@
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 387691C9DD7;
-	Tue, 20 Aug 2024 22:59:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAEE414A4F0;
+	Tue, 20 Aug 2024 23:41:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724194761; cv=none; b=h6hoiVh4kiMIwZ0p2dUe533hi/yPTVaBPx9YIXVPqQNGBtHai/oVyP8kLr3E78SbkygZDeWQ0Gsd1ZiAQ10mphvSdFYkW4box7MNhOZvYZawfh36oa5ZLVRaVXc1nErIXvPA/X6necuFowVAVtVuZeGqsfHe9Pzh4q7cdZ4NeTE=
+	t=1724197288; cv=none; b=CuwIgjokmDnVHEETJeKR+Kpz8h/YmY19AoyFFld4tgIemPBiSgc/o1H4K0Coet5tWN1K3TAiDBDDMslRUv0Xm5/gB7+wXvdLKdiyUtIlkjvIU7NdnbbBUJFfL+XyWB80nsAJ6kGLg18AHhctUpnqRzxw+SVzi9gof1pyrPxwQz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724194761; c=relaxed/simple;
-	bh=SYB1bYt/I9pbgcrV03oLTHLBqJQvuECjyVQk2wzkJ1A=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H9JlrANHFm/gIrdIWZelV6nKJJwcxiFzBbYcoLl82/LLVJesK3uW1Kxan9V0uMWYmqhp9ZST8LxP6VAOuId4hhwXlstXUwQoLBYTTE4HiuCUxvdwci/2OzWoYOOZg9W3++U3XdEvih5Zxm+xykix8wME8SSYPHtVxPvspEzm6oY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=aQOb8Ba4; arc=none smtp.client-ip=209.85.210.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1724197288; c=relaxed/simple;
+	bh=2C1+fevqxPQfpmLOWSDAXkqFMWb31NM79hCoChzWAJk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kQ7txzFIpmkWthBDjd0lrWXM4sySNiwrWiinbBIsHhc+2/6Cy7H0ww8xFqG4aifX04eLZBLBn1+5RQeTHwHl5THJ6paT6dKkDIL1Bx+YS0TxuGPMWi4HpqVAB5cQDjeKfi5t6nbSmMXhPrge387U7xFMWDfBU3MpZdUQ/1juLGI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fjzrP2UC; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="aQOb8Ba4"
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-713f3b4c9f7so2065084b3a.2;
-        Tue, 20 Aug 2024 15:59:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724194759; x=1724799559; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Vk6cenPh8mXerZDJZXHKSIJxmQKegqpbUXCJEqMtXGo=;
-        b=aQOb8Ba4lRrhu6g2PP5CgYqItnPngOJh+ShxEdxEoXI8+B3NNnoPNDpGeN974Cq0Br
-         8/buu/UW/DvJduxp0elXHEMpkcn1wOOVOBm4P7jzOf0nkUCtLNJeQhSqinACxrkp53d7
-         am/YYWqdiUwhQ8YTnxOwgp8bp77AzDKvrSDx4U9tw9kqUOQ6z/L22bXmvRYErkWhDMLC
-         ZsKayDbdmfemIYETL+XRO7u/OAU6TzWTY1S+AOKjZW88QxoIVgd1uM4Ny0PPXCX5IAGl
-         WpDLdSo4ICslSwTtFm6LZBeBjz6Y7T2N1sZ5gBXmjwZ43syzGWtaSvEcye8nWdS4kiG1
-         ltQQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724194759; x=1724799559;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Vk6cenPh8mXerZDJZXHKSIJxmQKegqpbUXCJEqMtXGo=;
-        b=kzoqFCsZebV/Dct5jmZzruWBnVeIw8whoZTr8V6pczJL4IeZbSKCzP/Cq1veuFk7AS
-         U0R7bFmQV+771TW1ul0YECuXCfxa/SGz2HVSrWcHx+ho455ReylPBZIuN39hBXcmLsOQ
-         YNDEGf0f9E1hX5j/7suuwEFO083fI7ZijMteIP1WOYPxGVZcZWrt0fUEEqaoEYVfr31T
-         ixUQ+uluVIYDFdUuQA7Lk9SpsrtffeGcQmBOlhPBq6p3rMmGJKoQ0cw2Mpj4TlP92aY0
-         JefKDdGZaLAtCFYqykOwf1IZKcZnP+ykLc+wh94Y8gzkBcFMcWH2B+O3siz/Ph30Ic5p
-         /Uow==
-X-Gm-Message-State: AOJu0YzQg8dDk/Wzvqu4BQSHZxr0LpwmC1xVhytri/fWYoiFBj4cea8d
-	CTYhKoWRWzEi/ztE0b/SyL/mrTIKCht/Ls6LPqZLtfPgoCffB5aQMXxMj7gj
-X-Google-Smtp-Source: AGHT+IHljW+8ipi10Rh9i8Rv2nwtaG7zl0rlwr9s65wUL4AOd2s4gBbwpl+LiwLtlafo5waOFsrJCw==
-X-Received: by 2002:a05:6a20:c78e:b0:1c4:919f:3677 with SMTP id adf61e73a8af0-1cada1488c8mr750933637.42.1724194759047;
-        Tue, 20 Aug 2024 15:59:19 -0700 (PDT)
-Received: from localhost.localdomain (p4468007-ipxg23001hodogaya.kanagawa.ocn.ne.jp. [153.204.200.7])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7c6b61d5045sm9922076a12.38.2024.08.20.15.59.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 20 Aug 2024 15:59:18 -0700 (PDT)
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-To: netdev@vger.kernel.org
-Cc: rust-for-linux@vger.kernel.org,
-	andrew@lunn.ch,
-	tmgross@umich.edu,
-	miguel.ojeda.sandonis@gmail.com,
-	benno.lossin@proton.me,
-	aliceryhl@google.com
-Subject: [PATCH net-next v6 6/6] net: phy: add Applied Micro QT2025 PHY driver
-Date: Tue, 20 Aug 2024 22:57:19 +0000
-Message-ID: <20240820225719.91410-7-fujita.tomonori@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240820225719.91410-1-fujita.tomonori@gmail.com>
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fjzrP2UC"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8FFCC4AF09;
+	Tue, 20 Aug 2024 23:41:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1724197288;
+	bh=2C1+fevqxPQfpmLOWSDAXkqFMWb31NM79hCoChzWAJk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=fjzrP2UCDe6P96m/i5mMRm6/os3z55k5saXaXiGdplqziJR08esyx4eDTYs1VSvJn
+	 Td+wjiMx7UgbU3VkkYwo9zPncFLdH1smgsbP0GbqqGdRK1D+ofiZqPm6xwvsJDeCbT
+	 iFcbWtGGcF/TQJdRQwRQ6YIiKpNJAu/sVU0I0FAM=
+Date: Wed, 21 Aug 2024 07:41:24 +0800
+From: Greg KH <gregkh@linuxfoundation.org>
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, andrew@lunn.ch,
+	tmgross@umich.edu, miguel.ojeda.sandonis@gmail.com,
+	benno.lossin@proton.me, aliceryhl@google.com
+Subject: Re: [PATCH net-next v6 1/6] rust: sizes: add commonly used constants
+Message-ID: <2024082121-anemic-reformed-de75@gregkh>
 References: <20240820225719.91410-1-fujita.tomonori@gmail.com>
+ <20240820225719.91410-2-fujita.tomonori@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240820225719.91410-2-fujita.tomonori@gmail.com>
 
-This driver supports Applied Micro Circuits Corporation QT2025 PHY,
-based on a driver for Tehuti Networks TN40xx chips.
+On Tue, Aug 20, 2024 at 10:57:14PM +0000, FUJITA Tomonori wrote:
+> Add rust equivalent to include/linux/sizes.h, makes code more
+> readable.
+> 
+> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+> Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+> Reviewed-by: Trevor Gross <tmgross@umich.edu>
+> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+> ---
+>  rust/kernel/lib.rs   |  1 +
+>  rust/kernel/sizes.rs | 26 ++++++++++++++++++++++++++
+>  2 files changed, 27 insertions(+)
+>  create mode 100644 rust/kernel/sizes.rs
+> 
+> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> index 274bdc1b0a82..58ed400198bf 100644
+> --- a/rust/kernel/lib.rs
+> +++ b/rust/kernel/lib.rs
+> @@ -43,6 +43,7 @@
+>  pub mod page;
+>  pub mod prelude;
+>  pub mod print;
+> +pub mod sizes;
+>  mod static_assert;
+>  #[doc(hidden)]
+>  pub mod std_vendor;
+> diff --git a/rust/kernel/sizes.rs b/rust/kernel/sizes.rs
+> new file mode 100644
+> index 000000000000..834c343e4170
+> --- /dev/null
+> +++ b/rust/kernel/sizes.rs
+> @@ -0,0 +1,26 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! Commonly used sizes.
+> +//!
+> +//! C headers: [`include/linux/sizes.h`](srctree/include/linux/sizes.h).
+> +
+> +/// 0x00000400
+> +pub const SZ_1K: usize = bindings::SZ_1K as usize;
+> +/// 0x00000800
+> +pub const SZ_2K: usize = bindings::SZ_2K as usize;
+> +/// 0x00001000
+> +pub const SZ_4K: usize = bindings::SZ_4K as usize;
+> +/// 0x00002000
+> +pub const SZ_8K: usize = bindings::SZ_8K as usize;
+> +/// 0x00004000
+> +pub const SZ_16K: usize = bindings::SZ_16K as usize;
+> +/// 0x00008000
+> +pub const SZ_32K: usize = bindings::SZ_32K as usize;
+> +/// 0x00010000
+> +pub const SZ_64K: usize = bindings::SZ_64K as usize;
+> +/// 0x00020000
+> +pub const SZ_128K: usize = bindings::SZ_128K as usize;
+> +/// 0x00040000
+> +pub const SZ_256K: usize = bindings::SZ_256K as usize;
+> +/// 0x00080000
+> +pub const SZ_512K: usize = bindings::SZ_512K as usize;
 
-The original driver for TN40xx chips supports multiple PHY hardware
-(AMCC QT2025, TI TLK10232, Aqrate AQR105, and Marvell 88X3120,
-88X3310, and MV88E2010). This driver is extracted from the original
-driver and modified to a PHY driver in Rust.
+Why only some of the values in sizes.h?
 
-This has been tested with Edimax EN-9320SFP+ 10G network adapter.
+And why can't sizes.h be directly translated into rust code without
+having to do it "by hand" here?  We do that for other header file
+bindings, right?
 
-Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
----
- MAINTAINERS               |  7 +++
- drivers/net/phy/Kconfig   |  7 +++
- drivers/net/phy/Makefile  |  1 +
- drivers/net/phy/qt2025.rs | 98 +++++++++++++++++++++++++++++++++++++++
- 4 files changed, 113 insertions(+)
- create mode 100644 drivers/net/phy/qt2025.rs
+thanks,
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 9dbfcf77acb2..d4464e59dfea 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1609,6 +1609,13 @@ F:	Documentation/admin-guide/perf/xgene-pmu.rst
- F:	Documentation/devicetree/bindings/perf/apm-xgene-pmu.txt
- F:	drivers/perf/xgene_pmu.c
- 
-+APPLIED MICRO QT2025 PHY DRIVER
-+M:	FUJITA Tomonori <fujita.tomonori@gmail.com>
-+L:	netdev@vger.kernel.org
-+L:	rust-for-linux@vger.kernel.org
-+S:	Maintained
-+F:	drivers/net/phy/qt2025.rs
-+
- APTINA CAMERA SENSOR PLL
- M:	Laurent Pinchart <Laurent.pinchart@ideasonboard.com>
- L:	linux-media@vger.kernel.org
-diff --git a/drivers/net/phy/Kconfig b/drivers/net/phy/Kconfig
-index f530fcd092fe..01b235b3bb7e 100644
---- a/drivers/net/phy/Kconfig
-+++ b/drivers/net/phy/Kconfig
-@@ -112,6 +112,13 @@ config ADIN1100_PHY
- 	  Currently supports the:
- 	  - ADIN1100 - Robust,Industrial, Low Power 10BASE-T1L Ethernet PHY
- 
-+config AMCC_QT2025_PHY
-+	tristate "AMCC QT2025 PHY"
-+	depends on RUST_PHYLIB_ABSTRACTIONS
-+	depends on RUST_FW_LOADER_ABSTRACTIONS
-+	help
-+	  Adds support for the Applied Micro Circuits Corporation QT2025 PHY.
-+
- source "drivers/net/phy/aquantia/Kconfig"
- 
- config AX88796B_PHY
-diff --git a/drivers/net/phy/Makefile b/drivers/net/phy/Makefile
-index f086a606a87e..669d71959be4 100644
---- a/drivers/net/phy/Makefile
-+++ b/drivers/net/phy/Makefile
-@@ -37,6 +37,7 @@ obj-$(CONFIG_ADIN_PHY)		+= adin.o
- obj-$(CONFIG_ADIN1100_PHY)	+= adin1100.o
- obj-$(CONFIG_AIR_EN8811H_PHY)   += air_en8811h.o
- obj-$(CONFIG_AMD_PHY)		+= amd.o
-+obj-$(CONFIG_AMCC_QT2025_PHY)	+= qt2025.o
- obj-$(CONFIG_AQUANTIA_PHY)	+= aquantia/
- ifdef CONFIG_AX88796B_RUST_PHY
-   obj-$(CONFIG_AX88796B_PHY)	+= ax88796b_rust.o
-diff --git a/drivers/net/phy/qt2025.rs b/drivers/net/phy/qt2025.rs
-new file mode 100644
-index 000000000000..a1505ffca9f5
---- /dev/null
-+++ b/drivers/net/phy/qt2025.rs
-@@ -0,0 +1,98 @@
-+// SPDX-License-Identifier: GPL-2.0
-+// Copyright (C) Tehuti Networks Ltd.
-+// Copyright (C) 2024 FUJITA Tomonori <fujita.tomonori@gmail.com>
-+
-+//! Applied Micro Circuits Corporation QT2025 PHY driver
-+//!
-+//! This driver is based on the vendor driver `QT2025_phy.c`. This source
-+//! and firmware can be downloaded on the EN-9320SFP+ support site.
-+use kernel::c_str;
-+use kernel::error::code;
-+use kernel::firmware::Firmware;
-+use kernel::net::phy::{
-+    self,
-+    reg::{Mmd, C45},
-+    DeviceId, Driver,
-+};
-+use kernel::prelude::*;
-+use kernel::sizes::{SZ_16K, SZ_8K};
-+
-+kernel::module_phy_driver! {
-+    drivers: [PhyQT2025],
-+    device_table: [
-+        DeviceId::new_with_driver::<PhyQT2025>(),
-+    ],
-+    name: "qt2025_phy",
-+    author: "FUJITA Tomonori <fujita.tomonori@gmail.com>",
-+    description: "AMCC QT2025 PHY driver",
-+    license: "GPL",
-+    firmware: ["qt2025-2.0.3.3.fw"],
-+}
-+
-+struct PhyQT2025;
-+
-+#[vtable]
-+impl Driver for PhyQT2025 {
-+    const NAME: &'static CStr = c_str!("QT2025 10Gpbs SFP+");
-+    const PHY_DEVICE_ID: phy::DeviceId = phy::DeviceId::new_with_exact_mask(0x0043A400);
-+
-+    fn probe(dev: &mut phy::Device) -> Result<()> {
-+        // The vendor driver does the following checking but we have no idea why.
-+        let hw_id = dev.read(C45::new(Mmd::PMAPMD, 0xd001))?;
-+        if (hw_id >> 8) & 0xff != 0xb3 {
-+            return Err(code::ENODEV);
-+        }
-+
-+        // The Intel 8051 will remain in the reset state.
-+        dev.write(C45::new(Mmd::PMAPMD, 0xC300), 0x0000)?;
-+        // Configure the 8051 clock frequency.
-+        dev.write(C45::new(Mmd::PMAPMD, 0xC302), 0x0004)?;
-+        // Non loopback mode.
-+        dev.write(C45::new(Mmd::PMAPMD, 0xC319), 0x0038)?;
-+        // Global control bit to select between LAN and WAN (WIS) mode.
-+        dev.write(C45::new(Mmd::PMAPMD, 0xC31A), 0x0098)?;
-+        // The following writes use standardized registers (3.38 through
-+        // 3.41 5/10/25GBASE-R PCS test pattern seed B) for something else.
-+        // We don't know what.
-+        dev.write(C45::new(Mmd::PCS, 0x0026), 0x0E00)?;
-+        dev.write(C45::new(Mmd::PCS, 0x0027), 0x0893)?;
-+        dev.write(C45::new(Mmd::PCS, 0x0028), 0xA528)?;
-+        dev.write(C45::new(Mmd::PCS, 0x0029), 0x0003)?;
-+        // Configure transmit and recovered clock.
-+        dev.write(C45::new(Mmd::PMAPMD, 0xC30A), 0x06E1)?;
-+        // The 8051 will finish the reset state.
-+        dev.write(C45::new(Mmd::PMAPMD, 0xC300), 0x0002)?;
-+        // The 8051 will start running from the boot ROM.
-+        dev.write(C45::new(Mmd::PCS, 0xE854), 0x00C0)?;
-+
-+        let fw = Firmware::request(c_str!("qt2025-2.0.3.3.fw"), dev.as_ref())?;
-+        if fw.data().len() > SZ_16K + SZ_8K {
-+            return Err(code::EFBIG);
-+        }
-+
-+        // The 24kB of program memory space is accessible by MDIO.
-+        // The first 16kB of memory is located in the address range 3.8000h - 3.BFFFh.
-+        // The next 8kB of memory is located at 4.8000h - 4.9FFFh.
-+        let mut dst_offset = 0;
-+        let mut dst_mmd = Mmd::PCS;
-+        for (src_idx, val) in fw.data().iter().enumerate() {
-+            if src_idx == SZ_16K {
-+                // Start writing to the next register with no offset
-+                dst_offset = 0;
-+                dst_mmd = Mmd::PHYXS;
-+            }
-+
-+            dev.write(C45::new(dst_mmd, 0x8000 + dst_offset), (*val).into())?;
-+
-+            dst_offset += 1;
-+        }
-+        // The Intel 8051 will start running from SRAM.
-+        dev.write(C45::new(Mmd::PCS, 0xE854), 0x0040)?;
-+
-+        Ok(())
-+    }
-+
-+    fn read_status(dev: &mut phy::Device) -> Result<u16> {
-+        dev.genphy_read_status::<C45>()
-+    }
-+}
--- 
-2.34.1
-
+greg k-h
