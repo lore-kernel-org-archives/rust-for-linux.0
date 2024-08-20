@@ -1,111 +1,156 @@
-Received: from mail-lf1-f46.google.com (mail-lf1-f46.google.com [209.85.167.46])
+Received: from mail-ot1-f48.google.com (mail-ot1-f48.google.com [209.85.210.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF2BC166F3D;
-	Tue, 20 Aug 2024 20:50:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEE5D1514FB;
+	Tue, 20 Aug 2024 22:59:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724187009; cv=none; b=HS4maicovKAsR5e+FCwZgu8nbl3JKMhbWpEJRkLl+mcbezX3vWVWF+Cn0udkjsm9O7HsvbYwYRzcxn1pg0YhWa3lMDmPfDqcW30yHvS/yI/6VnnL7bc0ceyLrbEHAvflhPUIZsYrYI7B4oz+KsAkGXXxMzQuH/jlZOULuQrXr7w=
+	t=1724194748; cv=none; b=pxuBnnQfIM3HR04ip5tyijlfdMFbpok5b4xEUXNyOWjlqrj6hGchv5WJ06XQpd588dEd4PsimH+Q66afWpaheI9ogFpybCcO8qOyWQQuWty6Nf7c7z37AMzUs/si6NzrV1weNlQQNVTFyxWh1STFCrxxj9ZzpEBp1ZC/G7w1x2A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724187009; c=relaxed/simple;
-	bh=VzJFd4bvLYVyrRq91pLVKMp6cHYmymXxbjKHf0cCDsY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kg78Sw3HNUCVJdw34tAiP1APO5/D2qwTrxoUooi5QtTEvhh5YCu45qPu2sr/BWeu8zUzGrFfBlhPtdLbFmApu4FgfpCO4v9AUlYMUG4h0Vn+pP1CNI/aezLy+hj+RXZ7Yt3jJI7vlI7NfE+w3dzdChFTRsJJVi266lInAu372+0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dL5AuwZB; arc=none smtp.client-ip=209.85.167.46
+	s=arc-20240116; t=1724194748; c=relaxed/simple;
+	bh=HHCPIDvyK05qfa4SNsfZaOc8FCBXhRJR62AYAZNyhns=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=u1wQezQTKEDbkvPNtBUPIZ0JwK9EKbUucXXALEo6oE/WuV2Rw6drLGQsppsWGlT8t9wvlGEg+RlDwEVjvTEDobp/yXKJQB7PE2dH5dmRg640n8JbC0Wpmp7Rq4WoV/LwUIEs3MnHT/C9zQDZiXBcvwiRQeCCDaTjDmGBFWRbYQo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZcO22625; arc=none smtp.client-ip=209.85.210.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dL5AuwZB"
-Received: by mail-lf1-f46.google.com with SMTP id 2adb3069b0e04-530ad984f2dso15046e87.1;
-        Tue, 20 Aug 2024 13:50:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZcO22625"
+Received: by mail-ot1-f48.google.com with SMTP id 46e09a7af769-70949118d26so4960120a34.0;
+        Tue, 20 Aug 2024 15:59:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724187006; x=1724791806; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VzJFd4bvLYVyrRq91pLVKMp6cHYmymXxbjKHf0cCDsY=;
-        b=dL5AuwZB8RU4QehavcoBis5bPUPFgOeAgeeBc+A0147ax5AOt+Ufp8c6zhwaSeQF0H
-         zOkVMR0GD1OqaplRlSfWbztNtkEifBlFRJqGdj+7iEFn0oN+69HGtyQbgmLma/HT8S9H
-         dCPYpGTPljN1skf99rGVEltbchdyYbSU7XNRUBqp8aBofoeUrNAsM9qg4bac3g5X2mYX
-         RGnk3Ckz9swnZzYkJS9r3G/TaBDPIgGw6k8wPiedE5T+AHCVxdN0aUEt1nK7DhcVkYNJ
-         4KsFIs4PVafRBpsnE4Ys/hQbqTHsNxItdcuQK23dI8zRUxoHgVmSMKd2AGQfT2dP0GRk
-         IQXg==
+        d=gmail.com; s=20230601; t=1724194746; x=1724799546; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=NjLAXEC9qZatTjv0VKwa8ha+bQsXiBEJ+z4SyznFSZU=;
+        b=ZcO22625OxyptzZBZl0wwriHslIoRdiXLrZzsMoZEMacZ/41xqBscsdVRYR9EuFWJO
+         fgtHfjLh9lneYsa2DDtkdlaostSrV4N9L8go3LVXuEaiy0XMSwBXGulgx6omXhBVzZfx
+         pjr+LgvRXWqYATLI7y+yT6O9cFMUzsknURzBsI9fWB7ozWJZChkmtcZgTrHsYimZzDfP
+         xoariXM6xq6UurrcasLclfOhls89SMIBvAwGCOkq93r0tlWolRepV5cj3Z0Z++ZOEWSX
+         ZBHqjyk4ggk/OdGF0jATyLL2Qv9u4XN21JcCT3ezTYvpiuJPkqtXyPGMQM4aXq5jZiWb
+         wfGA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724187006; x=1724791806;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=VzJFd4bvLYVyrRq91pLVKMp6cHYmymXxbjKHf0cCDsY=;
-        b=BWcM+yJ8NNTxFItj3eKmz8s8kaN/1wO3uj0WNj1gAEnOYEU2WDbc2ZFTLiHEVTEOFY
-         0AoUW2zX/xhB6c4z4kyWgN0REZltlL2Q8mQg0lSLaEyovfYEVcPqL4bTlZGche1QKGc6
-         lIqN5L+u5aHC7kz8Et49vrbtRokmCVV3jpdGPUwRlehAGhnLYPzCTnlFFdoovRANTL4P
-         A1HnL97jBsrjjHFab+2X03enDq1bf/HkOrLqU1qhYXoVSWWiGkTGbV8mHyK8sbiDGilF
-         HHarBligrN5PbsF0ANE0YAx5JJP6oH0OyFwARqNQ6HetvtCUpGNS85pXKK5RcXzGGeRq
-         eQUw==
-X-Forwarded-Encrypted: i=1; AJvYcCUlQekKllRNtpsfCEwiRfO3FlXfMRT1Oub6j7a6QzDdXpvnNLM1SniO3ClfHaR6qfeNlU1rgYgGBvvi1wtt@vger.kernel.org, AJvYcCX8dJMrN5ghEzm9WiukLIBleXBlt4EkCP3T4cZBCAWh3kzetW00+LcaMZ02X8zkNR/PUM5i5+DanjcDRowxIgs=@vger.kernel.org, AJvYcCXONiRwazbkqAlv9hITyPyDnYLmpEmvAQRuvH1HX3sz2EaVszWvCjPSUoD3Sb2UI+VmIIAdhWrEU8svPK4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyH8/a0i+5P2LVq6DZSr+t2xxsJen/KeDggWHDj/UkQLbTuT/8x
-	vHM/yOxBqVVdXhtL+aY1r331k8LbQiwMEfIdeLf3BhPYYCdN8qBlEHN2tTOtBi77fMad/eMft1H
-	o1qMEGf7GnZHFRqiFhsjZ3irEzM0=
-X-Google-Smtp-Source: AGHT+IF4A2X5DHiMp2y/ISoHY4+FoDb2VARi23ScSmyW+z0nIW9IUdjYL2vjnS5voFYAV9Yn/hORkomSr0zeq2FvaaE=
-X-Received: by 2002:a05:6512:b99:b0:52f:c337:4c1f with SMTP id
- 2adb3069b0e04-533484ee187mr12476e87.0.1724187005190; Tue, 20 Aug 2024
- 13:50:05 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1724194746; x=1724799546;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=NjLAXEC9qZatTjv0VKwa8ha+bQsXiBEJ+z4SyznFSZU=;
+        b=DYDMQLM/k3343IzHvoWDdgud8M9b9JqBclaL6M4n3NQ+junIwvdsuNnrt1eicKoiJl
+         ruy19cu1gd1ijSwcicu7/K368OhX1xaWzrjzrJxYaUpVptne3g1dnKl4Tx980twFf1KR
+         Z60FAGdBMlzuvAhjKvFoj30HjTa6k590wATHEQNaGVkjP9fkfKWvhTLWzoU+lO7p+7xv
+         W4VbxO4kMqalyJ/euknmYZHd8hyPGRqJWqCT+xn94CKOedVKysBu0SVAYmK36olFxlJf
+         cbFyPKLQD6UWC/zhr1TPSMIPrRKbeEQVvb5MxVpd682IFLs9EFKhI8W7WRlA3uCMqoZO
+         ZHCw==
+X-Gm-Message-State: AOJu0YwtwmYl0W1WJxcwoik3P8+3L+ilmUTTkptkhErw6JbwYuO36g2c
+	BojM3QZKU5doy0TT93jwq3SHLX4hBRTfQXLa+xZoRNnxmMrAupcsWOfFNOpm
+X-Google-Smtp-Source: AGHT+IGHpO5Q3mnCh4JIJA4nu887E2L5xIIjDKHAwI2uM77WDdMTXNBPfBTKxqseuUPtzzvGCNvtUg==
+X-Received: by 2002:a05:6830:440e:b0:70c:934c:b1e2 with SMTP id 46e09a7af769-70df85f0f2dmr530769a34.7.1724194745665;
+        Tue, 20 Aug 2024 15:59:05 -0700 (PDT)
+Received: from localhost.localdomain (p4468007-ipxg23001hodogaya.kanagawa.ocn.ne.jp. [153.204.200.7])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7c6b61d5045sm9922076a12.38.2024.08.20.15.59.03
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 20 Aug 2024 15:59:05 -0700 (PDT)
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+To: netdev@vger.kernel.org
+Cc: rust-for-linux@vger.kernel.org,
+	andrew@lunn.ch,
+	tmgross@umich.edu,
+	miguel.ojeda.sandonis@gmail.com,
+	benno.lossin@proton.me,
+	aliceryhl@google.com
+Subject: [PATCH net-next v6 0/6] net: phy: add Applied Micro QT2025 PHY driver
+Date: Tue, 20 Aug 2024 22:57:13 +0000
+Message-ID: <20240820225719.91410-1-fujita.tomonori@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240819213534.4080408-1-mmaurer@google.com> <20240819213534.4080408-2-mmaurer@google.com>
- <CANiq72k8UVa5py5Cg=1+NuVjV6DRqvN7Y-TNRkkzohAA=AdxmA@mail.gmail.com> <CAGSQo03GVik5_yXFmCUnNUnPUwuwk-YFA0kqBd640PUjFOXcGA@mail.gmail.com>
-In-Reply-To: <CAGSQo03GVik5_yXFmCUnNUnPUwuwk-YFA0kqBd640PUjFOXcGA@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 20 Aug 2024 22:49:51 +0200
-Message-ID: <CANiq72kgw8YA_1yFrCbo-=okFC8Y5R1rc+QGhE0e7pVJ0bV=2Q@mail.gmail.com>
-Subject: Re: [PATCH v3 1/4] kbuild: rust: Define probing macros for rustc
-To: Matthew Maurer <mmaurer@google.com>
-Cc: dvyukov@google.com, ojeda@kernel.org, andreyknvl@gmail.com, 
-	Masahiro Yamada <masahiroy@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Nathan Chancellor <nathan@kernel.org>, aliceryhl@google.com, 
-	samitolvanen@google.com, kasan-dev@googlegroups.com, linux-mm@kvack.org, 
-	glider@google.com, ryabinin.a.a@gmail.com, Nicolas Schier <nicolas@fjasle.eu>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	llvm@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Tue, Aug 20, 2024 at 7:22=E2=80=AFPM Matthew Maurer <mmaurer@google.com>=
- wrote:
->
-> Sorry, I did miss that in the refresh. To respond to a few points
-> before I send up a replacement for this patch:
+This patchset adds a PHY driver for Applied Micro Circuits Corporation
+QT2025.
 
-No problem at all -- thanks!
+The first patch adds Rust equivalent to include/linux/sizes.h, makes
+code more readable. The 2-5th patches update the PHYLIB Rust bindings.
+The 4th and 5th patches have been reviewed previously in a different
+thread [1].
 
-> I expect this to be potentially used for whether you're *allowed* to
-> set `RUST=3Dy` - for example, if a particular sanitizer is enabled, you
-> may need to probe whether Rust+LLVM supports that sanitizer before
-> allowing RUST to be set to y.
+QT2025 PHY support was implemented as a part of an Ethernet driver for
+Tehuti Networks TN40xx chips. Multiple vendors (DLink, Asus, Edimax,
+QNAP, etc) developed adapters based on TN40xx chips. Tehuti Networks
+went out of business and the driver wasn't merged into mainline. But
+it's still distributed with some of the hardware (and also available
+on some vendor sites).
 
-Yeah, makes sense if we do the dependency that way.
+The original driver handles multiple PHY hardware (AMCC QT2025, TI
+TLK10232, Aqrate AQR105, and Marvell MV88X3120, MV88X3310, and
+MV88E2010). I divided the original driver into MAC and PHY drivers and
+implemented a QT2025 PHY driver in Rust.
 
-> I don't think so - I can't think of a case where we'd want to error on
-> a warning from an empty crate (though that may be a failure of
-> imagination.) Do you have an example of a warning we might trip that
-> we'd want to make the build reject an option's availability?
+The MAC driver for Tehuti Networks TN40xx chips was already merged in
+6.11-rc1. The MAC and this PHY drivers have been tested with Edimax
+EN-9320SFP+ 10G network adapter.
 
-IIRC back then I was thinking about something like the "unknown target
-feature forwarded to backend" one, i.e. to identify whether a target
-feature was supported or not. However, that is not a warning even
-under `-Dwarning`s (https://github.com/rust-lang/rust/issues/91262)
-unless something recently changed.
+[1] https://lore.kernel.org/rust-for-linux/20240607052113.69026-1-fujita.tomonori@gmail.com/
 
-We can add it if/when we need it.
+v6:
+- improve comments
+- make the logic to load firmware more readable
+- add Copy trait to reg::{C22 and C45}
+- add Trevor Reviewed-by
+v5: https://lore.kernel.org/netdev/20240819005345.84255-1-fujita.tomonori@gmail.com/
+- fix the comments (3th patch)
+- add RUST_FW_LOADER_ABSTRACTIONS dependency
+- add Andrew and Benno Reviewed-by
+v4: https://lore.kernel.org/netdev/20240817051939.77735-1-fujita.tomonori@gmail.com/
+- fix the comments
+- add Andrew's Reviewed-by
+- fix the order of tags
+- remove wrong endianness conversion
+v3: https://lore.kernel.org/netdev/20240804233835.223460-1-fujita.tomonori@gmail.com/
+- use addr_of_mut!` to avoid intermediate mutable reference
+- update probe callback's Safety comment
+- add MODULE_FIRMWARE equivalent
+- add Alice's Reviewed-by
+v2: https://lore.kernel.org/netdev/20240731042136.201327-1-fujita.tomonori@gmail.com/
+- add comments in accordance with the hw datasheet
+- unify C22 and C45 APIs
+- load firmware in probe callback instead of config_init
+- use firmware API
+- handle firmware endian
+- check firmware size
+- use SZ_*K constants
+- avoid confusing phy_id variable
+v1: https://lore.kernel.org/netdev/20240415104701.4772-1-fujita.tomonori@gmail.com/
 
-Cheers,
-Miguel
+FUJITA Tomonori (6):
+  rust: sizes: add commonly used constants
+  rust: net::phy support probe callback
+  rust: net::phy implement AsRef<kernel::device::Device> trait
+  rust: net::phy unified read/write API for C22 and C45 registers
+  rust: net::phy unified genphy_read_status function for C22 and C45
+    registers
+  net: phy: add Applied Micro QT2025 PHY driver
+
+ MAINTAINERS                      |   8 ++
+ drivers/net/phy/Kconfig          |   7 +
+ drivers/net/phy/Makefile         |   1 +
+ drivers/net/phy/ax88796b_rust.rs |   7 +-
+ drivers/net/phy/qt2025.rs        |  98 ++++++++++++++
+ rust/kernel/lib.rs               |   1 +
+ rust/kernel/net/phy.rs           |  90 +++++++------
+ rust/kernel/net/phy/reg.rs       | 224 +++++++++++++++++++++++++++++++
+ rust/kernel/sizes.rs             |  26 ++++
+ rust/uapi/uapi_helper.h          |   1 +
+ 10 files changed, 420 insertions(+), 43 deletions(-)
+ create mode 100644 drivers/net/phy/qt2025.rs
+ create mode 100644 rust/kernel/net/phy/reg.rs
+ create mode 100644 rust/kernel/sizes.rs
+
+
+base-commit: af3dc0ad3167985894a292968c67502f42854e6d
+-- 
+2.34.1
+
