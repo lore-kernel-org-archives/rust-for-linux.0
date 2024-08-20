@@ -1,105 +1,93 @@
-Received: from mail-ed1-f51.google.com (mail-ed1-f51.google.com [209.85.208.51])
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB00F15A865
-	for <rust-for-linux@vger.kernel.org>; Mon, 19 Aug 2024 23:41:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19535101C4;
+	Tue, 20 Aug 2024 01:07:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724110904; cv=none; b=M+0pgYRo+GS4NWmIVt2PuVZ83U8gmJlOw5WaqgQDLwrPZXbHXKx0XZ0Zucy4GgRlKb2iBhi0b7o6IPzZ3Xqz+KiZro0EUsJJzOl6OMwbcAd8uLEuXXxmVRhQQXvzyqlFGpSD9w9BT9L82RZjAMhNM42btcxyR4S4382fLa2RsUI=
+	t=1724116079; cv=none; b=dkjNbCcXPDGTif4PjjydQglAo7ANcHKiUDIOix3yvoS6LuNqXUv89+YmzhNmW55Nq4mvMqWtSVJyIRPG4ZlJb0WTj6jLZKRJ9aouKwgq3yMbWf2BklJqmAkI/lduisoRDGrj6CVB3HqR97O3U3uGt1m6F3k4YgcK0xb21JyuSO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724110904; c=relaxed/simple;
-	bh=VyJ7DwTEeQRwF2J9itqF7qF9lyR7ouza0PHAuQm+FtY=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZOwzRhND8TCrPbse06K1qu/2n5U0mYUhptqiFlS3jz2DvSDybtdzDfejE9xZ4svhCHPv29Fu92Z6MOnK+lrxIqTxdLmF5LdV7TqS8jwXUaRGgDdNAhwxdU0LzmMaqpsnzj2eGBkfBWH+6h2yFy3h4Yw4C8MjQaSbNNBt8gMhDrI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Ac2Ojsv+; arc=none smtp.client-ip=209.85.208.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1724116079; c=relaxed/simple;
+	bh=8pCLvRPG4vgUWMwhpSX2k+B4vS50nxxwKI3EYcger/A=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=lQhhMbOCyXkxMYqc5qCag/k9MZK2jtFCZzRmrwph5PT5US5AnEa/uAtpPQAfPYYSXbcdOtcfB/XsqhjNPeaV9tyd22dBFaH+fs77LEIu3GV/7onvjmII3rMLSE6NbmZFqHh9kiVoGo5kUf815HsCsqdlKSP+e0P79jwbSewCv6s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CCVPdB/Y; arc=none smtp.client-ip=209.85.216.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Ac2Ojsv+"
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-5bec507f4ddso3428a12.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 19 Aug 2024 16:41:42 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CCVPdB/Y"
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-2d3ed48c748so714899a91.3;
+        Mon, 19 Aug 2024 18:07:57 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1724110901; x=1724715701; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VyJ7DwTEeQRwF2J9itqF7qF9lyR7ouza0PHAuQm+FtY=;
-        b=Ac2Ojsv+hT/DVDertFOoZEdRExcr/WaXAMQbTdz93ijpmy43bOKyv3uOZtKHPIZzr5
-         uB0cl7HeJG1v2KgAvPxqdqg+cOkf6Za8ohHy1BbTMGfVL4F4qKYrqalzlymfs31szu/H
-         G+jTa0ZhrTGYk/pJ2i3OQeoOMzAlAMU9AJ7RwTuWGzPGKRt6EwndtRrArxrWBdX9hCsk
-         CkTv9DNovdTNrSvD4uE4RoTt2CTZOMemhGH3vk4tjLgh0n8AqT8a032uJn0BBuym71Mz
-         YG/fd2jTeHD+leGzaIQRXVJi9/+T7azt5CaPxn2Yg01BDTT8ddE82iwbLOBsq1C4Hwq+
-         9LMA==
+        d=gmail.com; s=20230601; t=1724116077; x=1724720877; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=FJLjhXumluvEXGs+t8WvUNcMLDpSA9d0j5Qakf+/Ks0=;
+        b=CCVPdB/YODvSiG+OBKxgiccJIuamJaqGnfJc7IixiPcNgkhBLygsijjZd/rDgEEVno
+         Q3HMz7nMVLgGYPdBcroIFSffXGrDpDJklkAEwCwXCUeYeOfFGqPm/mxGc8WnHgJyyJoJ
+         4RMvUHP5esPlg3kYch+TTFQu+k12awHs9lRMH3Suc+0pzaGafm3wbmmqf2oyl2iLFASp
+         /3+h6yyqmEUVbZf6felOHIZAHPpGqUpm5WLlZm34ZZTk1ZJsIKVb/qpXD6dK6PfBG1Rs
+         VI7FIeqvDLIjYQfHNG3vRAovusJ5xDft9ZhOppG6b6yTa9FN1esgKFNRe2JSM2QzVXl6
+         s3DA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724110901; x=1724715701;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=VyJ7DwTEeQRwF2J9itqF7qF9lyR7ouza0PHAuQm+FtY=;
-        b=LU1Re/5tsd8VAY81nUcVBF6mn4VyWp8fWDq+es7R5OILFDANKXl78yMwHyEZRqy43T
-         VMPtGy7AhfvwXc6qc1o2Zy2PoF9mf5/EI+qdCHaQsVcw3frjSVTwcU06cnCUR88U9cx7
-         Nuae360KtKaRRKFy5wOpXZiXR7POXrTa1jTa5WTXjKkzgC3DXJuf0TgqsbRmeEoeJdvP
-         yahmBPQ/CSia6U6l5BOSg0yDmDPKKqE+xQ6y1BsBOswqgF3mPdcVyWoADvN5qUlbALXt
-         yU3xSxvx1y9UVu38j9GhA7ESUHh7T3L0Qu3Te+TWwb1/N/8WA4gYi+JIfLzL9ljJde6V
-         bRfg==
-X-Forwarded-Encrypted: i=1; AJvYcCUay2GqWpD7oWOEIihN2+wyhHQ2oaMb7RWXloiyMBeBeVr9q928G3e+a/YmC5ry1WGzDq0Hl1vs5hvKVjcVjzqibdDPVcoTPXjCS1gTQDU=
-X-Gm-Message-State: AOJu0YwtXqZuhpElO1Q3656FqTPr+Xm5/Dl25wqGpbmYCamLvalenqQ8
-	2NT6i2MTww8ToW1WOpXNEPDFU9MTnmz4GmGYZAGs7tIDb4qVzGbNUxvHX02Y73eEznBlTC/JS7K
-	K7gZ6TZqeDuYNf/KmROqf7rZthrU0bZuhLPMZ
-X-Google-Smtp-Source: AGHT+IEFf0La4uREmgZmbe880Nnbs8CZTxbPC4ox9daCMh8bMB0DPDlb/vwxR0dv4G47Vf1sgvElegvu9c36SV8SoxM=
-X-Received: by 2002:a05:6402:3546:b0:59f:9f59:9b07 with SMTP id
- 4fb4d7f45d1cf-5bf0c262b15mr42504a12.4.1724110900976; Mon, 19 Aug 2024
- 16:41:40 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1724116077; x=1724720877;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=FJLjhXumluvEXGs+t8WvUNcMLDpSA9d0j5Qakf+/Ks0=;
+        b=T12JzRpGuTqgLj3lcuVa0BC/vnJajS4CGbN3aSv9l0hJUYm/Ajdroh1+SWSgN/STM+
+         b5ul7IDusVJeZUoLWYcDpVjBZ+/Mz1BxXSJtl60iV6vZJjCqmWEHoR+HnIAWePUHOTtd
+         eR9VUrVf6Pw6olcNpF2TfAhCKlCdS/7+QbwThIcVio92wcGzDnKXzS1U7RJU7VpgnI6B
+         wOGbS0AzPjMP8NVrwfWKhg5VqzddcuxSOa/uckApLaMd2XPAt6MfpKaG4sQ+wh+UafTx
+         utxxo0lUrzIJTTJKzGPw6jFvZYv5x99y2lZRShXniAI8YRilnh8ugZNgkBLWzIL/n5T7
+         oIWA==
+X-Forwarded-Encrypted: i=1; AJvYcCX1HDxO1PPoxebY3beep9/qszMVYZRlszQcE8nayJTv36Hk0cSGG08EqEKUWbJtocu4lMShHWA=@vger.kernel.org, AJvYcCXJDUrXGOBmGvWfvHbt28YwvZTkOW/WDFIGAw4TBppbdz6C0T8fmesSAAZY38wlU9ziUatevLTa9MwpiAqgjfc=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw+bh91FHtyqYIB9yEbt8t0TQ46faCOssYYrZjQEjnwtFtEADvy
+	OxcXx1kf3cI/LZXBWqJOyOwELpc/45kA+0EqFblPQCAs3nM5bNCf
+X-Google-Smtp-Source: AGHT+IElPVxr9HUXP2x9gBR+LSW2l11InNVV2F8rmy5Md0Z0Xmr9FjogKoH1t3Xw14utHjE3NkGECg==
+X-Received: by 2002:a17:90b:209:b0:2d3:d6fd:7218 with SMTP id 98e67ed59e1d1-2d3dfc69c13mr7900076a91.2.1724116076991;
+        Mon, 19 Aug 2024 18:07:56 -0700 (PDT)
+Received: from localhost (p4468007-ipxg23001hodogaya.kanagawa.ocn.ne.jp. [153.204.200.7])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2d3e2b64e7bsm7950878a91.9.2024.08.19.18.07.55
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 19 Aug 2024 18:07:56 -0700 (PDT)
+Date: Tue, 20 Aug 2024 01:07:43 +0000 (UTC)
+Message-Id: <20240820.010743.20238453596963731.fujita.tomonori@gmail.com>
+To: andrew@lunn.ch
+Cc: tmgross@umich.edu, fujita.tomonori@gmail.com, netdev@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, miguel.ojeda.sandonis@gmail.com,
+ benno.lossin@proton.me, aliceryhl@google.com
+Subject: Re: [PATCH net-next v5 6/6] net: phy: add Applied Micro QT2025 PHY
+ driver
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <5a063eb5-923e-4743-b72e-57f3fbf82107@lunn.ch>
+References: <20240819.121936.1897793847560374944.fujita.tomonori@gmail.com>
+	<CALNs47u8=J14twTLGos6MM6fZWSiR5GVVyooLt7mxUyX4XhHcQ@mail.gmail.com>
+	<5a063eb5-923e-4743-b72e-57f3fbf82107@lunn.ch>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240806212106.617164-1-mmaurer@google.com> <20240806212106.617164-15-mmaurer@google.com>
- <87le0w2hop.fsf@mail.lhotse>
-In-Reply-To: <87le0w2hop.fsf@mail.lhotse>
-From: Matthew Maurer <mmaurer@google.com>
-Date: Mon, 19 Aug 2024 16:41:29 -0700
-Message-ID: <CAGSQo02r3NhWnpBF--5nB2RJ=1Hh97VshtiZmasDfknnL+UjmA@mail.gmail.com>
-Subject: Re: [PATCH v3 14/16] modules: Support extended MODVERSIONS info
-To: Michael Ellerman <mpe@ellerman.id.au>
-Cc: masahiroy@kernel.org, ndesaulniers@google.com, ojeda@kernel.org, 
-	gary@garyguo.net, mcgrof@kernel.org, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Christophe Leroy <christophe.leroy@csgroup.eu>, 
-	Naveen N Rao <naveen@kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, neal@gompa.dev, 
-	marcan@marcan.st, j@jannau.net, asahi@lists.linux.dev, 
-	Nicholas Piggin <npiggin@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, linuxppc-dev@lists.ozlabs.org, 
-	linux-modules@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-On Fri, Aug 16, 2024 at 4:04=E2=80=AFPM Michael Ellerman <mpe@ellerman.id.a=
-u> wrote:
->
-> Matthew Maurer <mmaurer@google.com> writes:
-> > Adds a new format for MODVERSIONS which stores each field in a separate
-> > ELF section. This initially adds support for variable length names, but
-> > could later be used to add additional fields to MODVERSIONS in a
-> > backwards compatible way if needed. Any new fields will be ignored by
-> > old user tooling, unlike the current format where user tooling cannot
-> > tolerate adjustments to the format (for example making the name field
-> > longer).
-> >
-> > Since PPC munges its version records to strip leading dots, we reproduc=
-e
-> > the munging for the new format.
->
-> AFAICS the existing code only strips a single leading dot, not all
-> leading dots?
+On Tue, 20 Aug 2024 00:46:25 +0200
+Andrew Lunn <andrew@lunn.ch> wrote:
 
-You appear to be correct, I'll update that in the next version, but
-want to wait for more feedback on the rest of the patchset before
-sending up another full series.
+>>     //! This driver is based on the vendor driver `qt2025_phy.c` This source
+>>     //! and firmware can be downloaded on the EN-9320SFP+ support site.
+>> 
+>> so anyone reading in the future knows what to look for without relying
+>> on a link. But I don't know what the policy is here.
+>  
+> Ideally, the firmware should be added to linux-firmware. It will then
+> appear in most distros. That however requires there is a clear license
+> which allows distribution.
 
->
-> cheers
+The firmware is an array in the header file in the source code
+distributed under GPL. I plan to add it to linux-firmware after this
+driver is merged.
+
