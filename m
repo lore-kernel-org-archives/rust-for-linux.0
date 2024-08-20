@@ -1,43 +1,43 @@
 Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 960A218E345
-	for <rust-for-linux@vger.kernel.org>; Tue, 20 Aug 2024 08:00:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF1D0189BBD
+	for <rust-for-linux@vger.kernel.org>; Tue, 20 Aug 2024 08:08:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724140851; cv=none; b=fC7ZZ++fA5Ras4DQJu9ByMZYJ7pYd5vlsdVHr2XY99++WkPiLTvi2L2uWlOfDPvNugDFtl1A2FISEeoRlFD58rn3J58yqtm3gKGKJcSebHN6kKWDGVHg2jxxRcEKvZ9VGl6XY6ScYWOeMK2dIHq8F0430TNKieYf9gjMRkwej08=
+	t=1724141312; cv=none; b=L1X4CUuOdB2RTiHCzpJ91f2SPj75Mbo/+dQz/vgKpwQs3XBi7y0jXefihEEfP+d/fa8znhJ+CVdeyeR2DB2dxsA1TNF3H7I2E6INmn60cZQISdpJCdWt3+xnIqY4dyAp+NTCerc3LP0vfzeE0AGJVkvsuRR9ckbGbU48Licp2/w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724140851; c=relaxed/simple;
-	bh=45CFavrRmiUgCOWn+8UMYgAijihqGsrwh20+k90AbDA=;
+	s=arc-20240116; t=1724141312; c=relaxed/simple;
+	bh=pd90YgBG4tBg17cPOjEFD3caGTY+9mJ92uswnxk6IkE=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=doLrfodDnFJI9cfUF8BHYnxl5JMVH6pOD4df3xDqR3l/IYPE+RL3pbmVZ20wWoFeo1lyEearUyxdnTWEYpVvlie3xhICcE0urqSHFz7fl2HxIEYIC/o5GEGoQyzmIWC+X06fdRZH+Qj1ZdtQ8V/tBz1A9VR942NkasZvzhN3djs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=cgjYCCFL; arc=none smtp.client-ip=185.70.40.133
+	 MIME-Version:Content-Type; b=KCLHKK/ICr1SZripxy9eXWS8nmdoeUfj0HtZq8tTwO7gayDsNnBEGgjHUqVafJC2nifZBbIChCr4RR0fnHCB+LonxXmY6mb+oJ7MIepLjZ9gmkam1KctUt1vWbBluH+MVXog1jOvJecNIxljhNCbYkt89x+UpSuMj852hD7mJEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=ETXQDx+F; arc=none smtp.client-ip=185.70.40.133
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="cgjYCCFL"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="ETXQDx+F"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1724140846; x=1724400046;
-	bh=gpTaEjzTAA8CTwwnN5T9GMAFa4M+/VTyRF4u+7qUIK0=;
+	s=protonmail; t=1724141306; x=1724400506;
+	bh=53+5x/xmXek+DbIG4yjMFIEkhMF4WzX2KOCqZDEYdaM=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=cgjYCCFLSkN2sMkbB0qQLPpUF9aUptT1A6c8tA1xgirRU+I0Xvv61x5uvfCKRHG2D
-	 cNjEHiYrOjQ8ZH5NWpCSuqu2/0zmpYlEnwx1DSFH2IAxGlB8yOQCboRvUBb8DsCYz8
-	 d8+9AZhCA52vEgdPfiwhSkBCSgs8dWJAl8AB6F2MjQ2ikU931Xzvz4UKXol+MHKlbL
-	 kllZ9NuEGrWpR5VoIm/XRNLehjuwC6HEd2Fgg4oEq3vbKFYP/wjob/XB3hPrAfcbH+
-	 AikhAJCA4kjjJVSkM2/r3UwSLJDiSEuRys8ClAz7ftmg5l1Wm7FR6cxM10mkY9+X6y
-	 DJRGUiivell+Q==
-Date: Tue, 20 Aug 2024 08:00:40 +0000
+	b=ETXQDx+FpztwH++Xyy1bxmN7dL8AFYd03w0HFzh1Py+dioTXjnSmxku+so0A2rF1b
+	 Kim+QH0zXvcdbC+8evJD7Kre8ZRDk3uHnzmVp8b/1/UcR4t9J2THbco7ZO5nfR83vo
+	 dPtV1Q7mfLs6a9Bw5ojvbBtfrjMXe5PnmNof59oSstTpS+F1McadQmTHufj1/3bVAc
+	 XwV1xhVY/v8B+ecqCritye3o7rhBnqfrmtn3FutpH8X3ziPuf1PzK/pT/qGR5iyRJ6
+	 yq64fVB4cIKgGtuYWPivqrwNhtbdW3w2oqR85QnwMlb+R7BtnyclX2/fBeixwUggXl
+	 sE/P8YRwPGSGA==
+Date: Tue, 20 Aug 2024 08:08:22 +0000
 To: Matt Gilbride <mattgilbride@google.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?utf-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>, Christian Brauner <brauner@kernel.org>
 From: Benno Lossin <benno.lossin@proton.me>
 Cc: Rob Landley <rob@landley.net>, Davidlohr Bueso <dave@stgolabs.net>, Michel Lespinasse <michel@lespinasse.org>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v10 4/5] rust: rbtree: add cursor
-Message-ID: <9ac0aeb3-0f27-4345-8faf-4aeb22f451c5@proton.me>
-In-Reply-To: <20240819-b4-rbtree-v10-4-3b3b2c4d73af@google.com>
-References: <20240819-b4-rbtree-v10-0-3b3b2c4d73af@google.com> <20240819-b4-rbtree-v10-4-3b3b2c4d73af@google.com>
+Subject: Re: [PATCH v10 5/5] rust: rbtree: add `RBTree::entry`
+Message-ID: <57aa157d-ee94-419d-bad3-0bb93f5c2095@proton.me>
+In-Reply-To: <20240819-b4-rbtree-v10-5-3b3b2c4d73af@google.com>
+References: <20240819-b4-rbtree-v10-0-3b3b2c4d73af@google.com> <20240819-b4-rbtree-v10-5-3b3b2c4d73af@google.com>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 1b40b9369f1722951cfd4a82e33e563c69e89e35
+X-Pm-Message-ID: 5ab9c56df45f04e8737dfb27924e85c535452cfa
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -48,204 +48,69 @@ Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
 On 19.08.24 17:07, Matt Gilbride wrote:
-> Add a cursor interface to `RBTree`, supporting the following use cases:
-> - Inspect the current node pointed to by the cursor, inspect/move to
->   it's neighbors in sort order (bidirectionally).
-> - Mutate the tree itself by removing the current node pointed to by the
->   cursor, or one of its neighbors.
+> From: Alice Ryhl <aliceryhl@google.com>
 >=20
-> Add functions to obtain a cursor to the tree by key:
-> - The node with the smallest key
-> - The node with the largest key
-> - The node matching the given key, or the one with the next larger key
+> This mirrors the entry API [1] from the Rust standard library on
+> `RBTree`. This API can be used to access the entry at a specific key and
+> make modifications depending on whether the key is vacant or occupied.
+> This API is useful because it can often be used to avoid traversing the
+> tree multiple times.
 >=20
-> The cursor abstraction is needed by the binder driver to efficiently
-> search for nodes and (conditionally) modify them, as well as their
-> neighbors [1].
+> This is used by binder to look up and conditionally access or insert a
+> value, depending on whether it is there or not [2].
 >=20
-> Link: https://lore.kernel.org/rust-for-linux/20231101-rust-binder-v1-6-08=
-ba9197f637@google.com/ [1]
-> Co-developed-by: Alice Ryhl <aliceryhl@google.com>
+> Link: https://doc.rust-lang.org/stable/std/collections/btree_map/enum.Ent=
+ry.html [1]
+> Link: https://android-review.googlesource.com/c/kernel/common/+/2849906 [=
+2]
 > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 > Tested-by: Alice Ryhl <aliceryhl@google.com>
 > Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
 > Signed-off-by: Matt Gilbride <mattgilbride@google.com>
+
+One nit below, but feel free to add if it doesn't work:
+
+Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+
 > ---
->  rust/kernel/rbtree.rs | 541 ++++++++++++++++++++++++++++++++++++++++++++=
-++++++
->  1 file changed, 541 insertions(+)
->=20
-> diff --git a/rust/kernel/rbtree.rs b/rust/kernel/rbtree.rs
-> index 6c9a8f0a00e6..754af0db86b5 100644
-> --- a/rust/kernel/rbtree.rs
-> +++ b/rust/kernel/rbtree.rs
-> @@ -236,6 +236,40 @@ pub fn values(&self) -> impl Iterator<Item =3D &'_ V=
-> {
->      pub fn values_mut(&mut self) -> impl Iterator<Item =3D &'_ mut V> {
->          self.iter_mut().map(|(_, v)| v)
->      }
-> +
-> +    /// Returns a cursor over the tree nodes, starting with the smallest=
- key.
-> +    pub fn cursor_front(&mut self) -> Option<Cursor<'_, K, V>> {
-> +        let root =3D addr_of_mut!(self.root);
-> +        // SAFETY: `self.root` is always a valid root node
-> +        let current =3D unsafe { bindings::rb_first(root) };
-> +        NonNull::new(current).map(|current| {
-> +            // INVARIANT:
-> +            // - `current` is a valid node in the [`RBTree`] pointed to =
-by `self`.
-> +            // - Due to the type signature of this function, the returne=
-d [`Cursor`]
-> +            //   borrows mutably from `self`.
+>  rust/kernel/rbtree.rs | 310 ++++++++++++++++++++++++++++++++++++++------=
+------
+>  1 file changed, 235 insertions(+), 75 deletions(-)
 
-This second invariant doesn't exist on `Cursor`, probably some stale
-comment.
+[...]
 
-> +            Cursor {
-> +                current,
-> +                tree: self,
-> +            }
-> +        })
-> +    }
-> +
-> +    /// Returns a cursor over the tree nodes, starting with the largest =
-key.
-> +    pub fn cursor_back(&mut self) -> Option<Cursor<'_, K, V>> {
-> +        let root =3D addr_of_mut!(self.root);
-> +        // SAFETY: `self.root` is always a valid root node
-> +        let current =3D unsafe { bindings::rb_last(root) };
-> +        NonNull::new(current).map(|current| {
-> +            // INVARIANT:
-> +            // - `current` is a valid node in the [`RBTree`] pointed to =
-by `self`.
-> +            // - Due to the type signature of this function, the returne=
-d [`Cursor`]
-> +            //   borrows mutably from `self`.
+> +    /// Gets a mutable reference to the value in the entry.
+> +    pub fn get_mut(&mut self) -> &mut V {
+> +        // SAFETY:
+> +        // - `self.node_links` is a valid pointer to a node in the tree.
+> +        // - We have exclusive access to the underlying tree, and can th=
+us give out a mutable reference.
+> +        unsafe {
+> +            &mut (*(container_of!(self.node_links, Node<K, V>, links) as=
+ *mut Node<K, V>)).value
 
-Ditto.
-
-> +            Cursor {
-> +                current,
-> +                tree: self,
-> +            }
-> +        })
-> +    }
->  }
->=20
->  impl<K, V> RBTree<K, V>
-> @@ -396,6 +430,75 @@ fn remove_node(&mut self, key: &K) -> Option<RBTreeN=
-ode<K, V>> {
->      pub fn remove(&mut self, key: &K) -> Option<V> {
->          self.remove_node(key).map(|node| node.node.value)
->      }
-> +
-> +    /// Returns a cursor over the tree nodes based on the given key.
-> +    ///
-> +    /// If the given key exists, the cursor starts there.
-> +    /// Otherwise it starts with the first larger key in sort order.
-> +    /// If there is no larger key, it returns [`None`].
-> +    pub fn cursor_lower_bound(&mut self, key: &K) -> Option<Cursor<'_, K=
-, V>>
-> +    where
-> +        K: Ord,
-> +    {
-> +        let mut node =3D self.root.rb_node;
-> +        let mut best_match: Option<NonNull<Node<K, V>>> =3D None;
-> +        while !node.is_null() {
-> +            // SAFETY: By the type invariant of `Self`, all non-null `rb=
-_node` pointers stored in `self`
-> +            // point to the links field of `Node<K, V>` objects.
-> +            let this =3D unsafe { container_of!(node, Node<K, V>, links)=
- }.cast_mut();
-> +            // SAFETY: `this` is a non-null node so it is valid by the t=
-ype invariants.
-> +            let this_key =3D unsafe { &(*this).key };
-> +            // SAFETY: `node` is a non-null node so it is valid by the t=
-ype invariants.
-> +            let left_child =3D unsafe { (*node).rb_left };
-> +            // SAFETY: `node` is a non-null node so it is valid by the t=
-ype invariants.
-> +            let right_child =3D unsafe { (*node).rb_right };
-> +            if key =3D=3D this_key {
-> +                return NonNull::new(node).map(|current| {
-> +                    // INVARIANT:
-> +                    // - `node` is a valid node in the [`RBTree`] pointe=
-d to by `self`.
-> +                    // - Due to the type signature of this function, the=
- returned [`Cursor`]
-> +                    //   borrows mutably from `self`.
-
-Here again the stale invariant.
-
-> +                    Cursor {
-> +                        current,
-> +                        tree: self,
-> +                    }
-> +                });
-
-You could do this instead of returning here:
-
-    best_match =3D NonNull::new(this);
-    break;
-
-Then we don't have two places constructing a `Cursor` and can avoid
-having to duplicate the `INVARIANT` comment.
-
-> +            } else {
-> +                node =3D if key > this_key {
-
-I don't know how much this cares about performance, but you can avoid
-having to do two comparisons by doing `match key.cmp(this_key)`. Maybe
-the compiler is already doing that optimization though.
-
-> +                    right_child
-> +                } else {
-> +                    let is_better_match =3D match best_match {
-> +                        None =3D> true,
-> +                        Some(best) =3D> {
-> +                            // SAFETY: `best` is a non-null node so it i=
-s valid by the type invariants.
-> +                            let best_key =3D unsafe { &(*best.as_ptr()).=
-key };
-> +                            best_key > this_key
-> +                        }
-> +                    };
-> +                    if is_better_match {
-> +                        best_match =3D NonNull::new(this);
-> +                    }
-> +                    left_child
-> +                };
-> +            }
-> +        }
-> +
-> +        let best =3D best_match?;
-> +
-> +        // SAFETY: `best` is a non-null node so it is valid by the type =
-invariants.
-> +        let links =3D unsafe { addr_of_mut!((*best.as_ptr()).links) };
-> +
-> +        NonNull::new(links).map(|current| {
-> +            // INVARIANT:
-> +            // - `current` is a valid node in the [`RBTree`] pointed to =
-by `self`.
-> +            // - Due to the type signature of this function, the returne=
-d [`Cursor`]
-> +            //   borrows mutably from `self`.
-
-Stale invariant (more instances below).
+Does `.cast_mut()` work here instead of `as *mut Node<K, V>`? (also
+below)
 
 ---
 Cheers,
 Benno
 
-> +            Cursor {
-> +                current,
-> +                tree: self,
-> +            }
-> +        })
+> +        }
 > +    }
->  }
->=20
->  impl<K, V> Default for RBTree<K, V> {
+> +
+> +    /// Converts the entry into a mutable reference to its value.
+> +    ///
+> +    /// If you need multiple references to the `OccupiedEntry`, see [`se=
+lf#get_mut`].
+> +    pub fn into_mut(self) -> &'a mut V {
+> +        // SAFETY:
+> +        // - `self.node_links` is a valid pointer to a node in the tree.
+> +        // - This consumes the `&'a mut RBTree<K, V>`, therefore it can =
+give out a mutable reference that lives for `'a`.
+> +        unsafe {
+> +            &mut (*(container_of!(self.node_links, Node<K, V>, links) as=
+ *mut Node<K, V>)).value
+> +        }
+> +    }
 
