@@ -1,118 +1,139 @@
-Received: from fhigh2-smtp.messagingengine.com (fhigh2-smtp.messagingengine.com [103.168.172.153])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A3764CDEC
-	for <rust-for-linux@vger.kernel.org>; Tue, 20 Aug 2024 17:52:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.153
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F58D158A23
+	for <rust-for-linux@vger.kernel.org>; Tue, 20 Aug 2024 18:48:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724176378; cv=none; b=AJyqsEWHcTITjPELGNtjveJqrv8A5Ratl/Be27IQCnglvD7KOqt2gdak32s6Z+MUApaI8l8z5xW2Ti0z9caq3xhxjrPUL0Wveu2m18QSLgUOFKdJ8hSzyocxPitzCcbtEv4Z0MOCHP93NIVlJApCFRJugcsgMihkQFVn3lO/wHo=
+	t=1724179693; cv=none; b=Ke6Qe/Dg2bXSFc/D+alBa/MW5F7XdDUt1InPRcR+grJuPAF+0iB957DWUqt/5VTxB08N9WKJv08IAxmyL31MdYbEITLRBCz/ig22IeZzrz2+YlpoyIrANu9j68utREQEfdEas0AdWuOkouiTh/hauMjCNcM1JN93dVAAh1N5YKc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724176378; c=relaxed/simple;
-	bh=iAAo5fMg6K+SAUBPBbNUtjGDqd6INwOgww9z6xt2Ojc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=qDYEZhJznMe1vS1eOzD01rolEvXQ717MOmh/kqIqwVNXZcy6a5l7iETvUQeoK0XK3ikfGCpKq7U/GcKzFsfoKJPMKBgdJwmEP0D9UyvLr65KDBqTUUtE2CsFt4+Y88XxDEf5rsr3TjZwPVrjASEsclvOfGVSPZqI0lWUbv3PBNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ryhl.io; spf=pass smtp.mailfrom=ryhl.io; dkim=pass (2048-bit key) header.d=ryhl.io header.i=@ryhl.io header.b=Do/drMqW; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=aOrQjEVx; arc=none smtp.client-ip=103.168.172.153
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ryhl.io
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ryhl.io
+	s=arc-20240116; t=1724179693; c=relaxed/simple;
+	bh=9IntjtaXg9k+kUVEV9axZKmA4rC298YdyXwRG+HAIh4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=LLoacnLKvKM52VQkNn+YBtq0pgmQPNrlrKAl927+ZRDzprauD9uPOHw9fhqJx/LuJB2NJpQQGyDS5g7LE3+0mXIhiBOlHt19Sq59In0CNLCnRK6IFhO0/X5TcoEUJXWYg4wGocPanP6auKyOAq8F2qmhG5yy6u12Cu7oGsvLqNc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HA08n9ZI; arc=none smtp.client-ip=209.85.160.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ryhl.io header.i=@ryhl.io header.b="Do/drMqW";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="aOrQjEVx"
-Received: from phl-compute-05.internal (phl-compute-05.nyi.internal [10.202.2.45])
-	by mailfhigh.nyi.internal (Postfix) with ESMTP id 7E900114C014;
-	Tue, 20 Aug 2024 13:52:55 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-05.internal (MEProxy); Tue, 20 Aug 2024 13:52:55 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ryhl.io; h=cc:cc
-	:content-transfer-encoding:content-type:content-type:date:date
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm1; t=1724176375;
-	 x=1724262775; bh=FmUZfUav3BKMSvLL7a8dJXOXth5me8Z3O4LEP0Z5+eA=; b=
-	Do/drMqWrJ59QKiFGgYWGAbMmCDMrFkgTPPllcDJuOAckZgUC3DGkV85JlDgtSqD
-	S2BXR5SAm0WGfKrD9d/GMeY+e+EOXtGkfTaz2gYSB8KGWITuLIPoXP2VM8ksgxWP
-	bVSMRf5GjnE6EcIay50rXp7dtLe+jZcaLl1xs2VMVdqUbPpSKkmp+BKrDsyIGe7R
-	FfnvIkzC7TFW8wW3oRYYFJnBK8Af4fybGL3rTUoXLUXoZ++0JSmUXqTLuO6Q1NYk
-	GKmPF8h6y1ZWCuMCO0PA6yGwKWUX06h55KsrvcoWmrPLYbK2RJu8EFBLNpONJDVM
-	MPdsaWLcCqO9HfvlyX0cjw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1724176375; x=
-	1724262775; bh=FmUZfUav3BKMSvLL7a8dJXOXth5me8Z3O4LEP0Z5+eA=; b=a
-	OrQjEVxi2ATTsRTLRBTsLt79F4GlMAr/Iv9E6aGAU+ZJ2P1JbeGthHB+rG2/3ElC
-	6lAKZ0iyA+4D6PkciDCvLzSrLpH3W+JDNDGqYldGWKADMnG+S4QPVy0yLxoCe7cE
-	+5GSnCkHq0IlaR1x+Jm2SPbPS5WLSgSjgWCj1obwqZaWBTzbgEaKvlG0XZoxY488
-	iGe2HqABjpuSD/GlvHrmZEEnb8tlQbL7Jj6k2HRQW3FYyDcpPmgN2Ndd7TEVTZkO
-	HS5VcdAcwz8XOw1m3DzPGhJOuYgze+roHXqkjSNohc5maFAq8gzoWeZDThHFbAkJ
-	/SSt0P7AfYY8BWQFjXjwA==
-X-ME-Sender: <xms:9tfEZhzAgdAA-bW8OMZtHZKOT6uYZ97YP2IoG5apHHAlOmPwpH6soQ>
-    <xme:9tfEZhQQngPNEE1UZkr_bvU6uMaC19-bftzJs4k4jxWO2XZAvGs2sWGHW7N4iHL2c
-    IDWDnlSK3ITx18lag>
-X-ME-Received: <xmr:9tfEZrUoj67aa7dHtZ0tJAyQuqSAqvZ93Xw5zHPndRE4o1a3_IiC2Dk-W1o48P1PL-m-asXqqhG8Cqur2XntRGFg_MdVAfTV9zXE>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrudduiedgudduhecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
-    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
-    hnthhsucdlqddutddtmdenucfjughrpefkffggfgfuvfevfhfhjggtgfesthejredttddv
-    jeenucfhrhhomheptehlihgtvgcutfihhhhluceorghlihgtvgesrhihhhhlrdhioheqne
-    cuggftrfgrthhtvghrnhepfefguefgtdeghfeuieduffejhfevueehueehkedvteefgfeh
-    hedtffdutdfgudejnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilh
-    hfrhhomheprghlihgtvgesrhihhhhlrdhiohdpnhgspghrtghpthhtohepvdefpdhmohgu
-    vgepshhmthhpohhuthdprhgtphhtthhopehmmhgruhhrvghrsehgohhoghhlvgdrtghomh
-    dprhgtphhtthhopeguvhihuhhkohhvsehgohhoghhlvgdrtghomhdprhgtphhtthhopeho
-    jhgvuggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrnhgurhgvhihknhhvlhesgh
-    hmrghilhdrtghomhdprhgtphhtthhopegrlhgvgidrghgrhihnohhrsehgmhgrihhlrdgt
-    ohhmpdhrtghpthhtohepfigvughsohhnrghfsehgmhgrihhlrdgtohhmpdhrtghpthhtoh
-    epnhgrthhhrghnsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhhitggvrhihhhhl
-    sehgohhoghhlvgdrtghomhdprhgtphhtthhopehsrghmihhtohhlvhgrnhgvnhesghhooh
-    hglhgvrdgtohhm
-X-ME-Proxy: <xmx:99fEZjhfRrMqzgkpGd9hhUi7E9B-_0S8w5Zx2DFug1oFHIlFul4rJg>
-    <xmx:99fEZjCfZiKxTy6ZTfFJxK-Om95jjUtrg4SIauFtB4BIVQutbLQ4Hw>
-    <xmx:99fEZsKD3bnRmfxVFCGM2QoXZ72QrntbQzcZk2rJWnhEpTd9YP2cWA>
-    <xmx:99fEZiD3Jk0jhuFSUCEfrxHqawpqzlOPqsF9hBkDnuXzsWPUVziJMQ>
-    <xmx:99fEZgyaMNvkyoMedsJClIsMceGU0erYbuZdmiGZvxuDXDUaxjuzLxKz>
-Feedback-ID: i56684263:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 20 Aug 2024 13:52:50 -0400 (EDT)
-Message-ID: <d1e5e8e4-3d54-45d9-aae5-183a5642e0dc@ryhl.io>
-Date: Tue, 20 Aug 2024 19:55:41 +0200
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HA08n9ZI"
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-454b1e08393so63731cf.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 20 Aug 2024 11:48:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1724179690; x=1724784490; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Kqyu9H3Z/7xJHVyMUShvAD4YuvpcJRXIyTBe+BDA0AQ=;
+        b=HA08n9ZIQJLmCrRV8+Ce1gYw50AGfpOYxhfwP9BbcEhjGr8MXkoEHvQekbQb39cN1l
+         CpNpq1aufeU/9WDCyZn8VJtQ6YLSB3ny5c2b/Us/q50dO877oJSjH3Ub4dHcnq7PCMtZ
+         vPX3vGcPYzrsgbDNPqcTrtFYhNiNK1xIjV9P7b6WfYGqiuDgmbT0Bwcs25Xh3s2KvMIU
+         ppsee8V2rjFSrT6FUWEFvfx1glD/WMJesNP+YDHRBWNlakvr5TEpMLhtjIYbBu2m2gmf
+         BP0UQuYe67hxjenYfi2AusZuE0SLIKgBI3c5WyPsk3fzNyfJYksvAl8mETg9x1gtFRls
+         RZVg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724179690; x=1724784490;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Kqyu9H3Z/7xJHVyMUShvAD4YuvpcJRXIyTBe+BDA0AQ=;
+        b=kVQJsTxcAiLetgyK7YwQdgbIQhrnh3G2QfBH025B43vSNC8ILOWLxnOPnSA1UarBJy
+         1407Vi7IfogUMXx2bhQcMPL1Ul/Nrt5SSI1uLhF9nRONhcAlPxSZazotP3fXZ/1yAwSI
+         sQo1J/I0baoKgqEhb7yeifTwIXDPJ4S2zAd5dS/4ZwdUWMtwENy7J0HK1lFTu3ZFFNvV
+         wse39jzAMztjtp202monzLNVYZKCZodlBCRWMWnRXMktCFG1Fsq48U4S8HN2RoiDqS2z
+         tAQUA/D+OvDltitkelD9rRsPbMgUNjqcg8NT+057klo4glbjt4jKSCYTWcknfIjDZkk2
+         30KA==
+X-Forwarded-Encrypted: i=1; AJvYcCU+pF3ghehCZKhIzfxq/nogdHyfLsjbSlZYLdc7bfoNhqwtvgOoOHOB7p0QQMr66TNsFOfO4/AN0UpNAeyf7A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxGnSkhUr5aDmEt+gKcXANheejGObTaz+YigEkUijNOW2mtPIjd
+	wGJCgyxsqI0n6szjxEae9T+fvOCLwfO1T/gdOUx6tNXokgCDVPc1PRc4LXh0BOevhONrcw9kMOq
+	ppgT+7ukOuTCcxpTD2Ujn1/MnvEvnqfFiVPOo
+X-Google-Smtp-Source: AGHT+IEaaaVbWTiloHDIiXOmckXCXgvScfO2Sv9V70rY2jP8blHGtm/LE4cy6bWAnQvIHakKwQ31ZmSJ833RTPp+SXA=
+X-Received: by 2002:ac8:7dc5:0:b0:447:d97f:9765 with SMTP id
+ d75a77b69052e-454e642e2ccmr3218081cf.16.1724179690110; Tue, 20 Aug 2024
+ 11:48:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 0/4] Rust KASAN Support
-To: Matthew Maurer <mmaurer@google.com>, dvyukov@google.com,
- ojeda@kernel.org, andreyknvl@gmail.com, Alex Gaynor <alex.gaynor@gmail.com>,
- Wedson Almeida Filho <wedsonaf@gmail.com>,
- Nathan Chancellor <nathan@kernel.org>
-Cc: aliceryhl@google.com, samitolvanen@google.com,
- kasan-dev@googlegroups.com, linux-mm@kvack.org, glider@google.com,
- ryabinin.a.a@gmail.com, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@samsung.com>,
- Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling
- <morbo@google.com>, Justin Stitt <justinstitt@google.com>,
- rust-for-linux@vger.kernel.org, llvm@lists.linux.dev
-References: <20240819213534.4080408-1-mmaurer@google.com>
-Content-Language: en-US, da
-From: Alice Ryhl <alice@ryhl.io>
-In-Reply-To: <20240819213534.4080408-1-mmaurer@google.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20240815173903.4172139-21-samitolvanen@google.com>
+ <20240815173903.4172139-37-samitolvanen@google.com> <2024081600-grub-deskwork-4bae@gregkh>
+ <CABCJKuedc3aCO2Or+_YBSzK_zp9zB8nFwjr-tK95EBM3La1AmA@mail.gmail.com>
+ <2024081705-overarch-deceptive-6689@gregkh> <ef6f7294-0afe-46af-8714-ed4a4aaee558@proton.me>
+ <20240819193851.GA4809@google.com> <a76f9422-4001-416a-a31b-37ab7dcb17f4@proton.me>
+In-Reply-To: <a76f9422-4001-416a-a31b-37ab7dcb17f4@proton.me>
+From: Sami Tolvanen <samitolvanen@google.com>
+Date: Tue, 20 Aug 2024 18:47:31 +0000
+Message-ID: <CABCJKudAF0=29js8SDcYY5r6kM7RBveTrZH9RyECNGqkcqy=nw@mail.gmail.com>
+Subject: Re: [PATCH v2 16/19] gendwarfksyms: Add support for reserved
+ structure fields
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Masahiro Yamada <masahiroy@kernel.org>, 
+	Luis Chamberlain <mcgrof@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Matthew Maurer <mmaurer@google.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, Petr Pavlu <petr.pavlu@suse.com>, 
+	Neal Gompa <neal@gompa.dev>, Hector Martin <marcan@marcan.st>, Janne Grunau <j@jannau.net>, 
+	Asahi Linux <asahi@lists.linux.dev>, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 8/19/24 11:35 PM, Matthew Maurer wrote:
-> The notable piece of feedback I have not followed is in the renaming of
-> kasan_test.c to kasan_test_c.c - this was done in order to allow the
-> module to be named kasan_test but consist of two .o files. The other
-> options I see are renaming the test suite or creating a separate Rust
-> test suite, but both of those seemed more invasive than the rename. Let
-> me know if you have another approach you'd prefer there.
+On Mon, Aug 19, 2024 at 10:17=E2=80=AFPM Benno Lossin <benno.lossin@proton.=
+me> wrote:
+>
+> On 19.08.24 21:38, Sami Tolvanen wrote:
+> >
+> > This definitely looks cleaner than unions in Rust, but how would this
+> > scheme be visible in DWARF? You might also need to expand the annotatio=
+n
+> > to allow replacing one reserved field with multiple smaller ones withou=
+t
+> > using structs.
+>
+> Hmm that's a good question, I have no idea how DWARF works. The way you
+> do it in this patch is just by the name of the field, right?
 
-If you're sending another version anyway, then it would make sense to 
-mention why the file is renamed in the commit message of that patch.
+Correct, it just looks at the name of the union fields.
 
-Alice
+> If Rust's DWARF output contains exact types names (I just checked this,
+> I *think* that this is the case, but I have never used/seen DWARF
+> before), we might be able to just create a `KAbiReserved<T, R>` type
+> that you search for instead of the attribute. The usage would then be
+> like this:
+>
+>     #[repr(C)]
+>     pub struct Struct1 {
+>         a: u64,
+>         _reserved: KAbiReserved<(), u64>,
+>     }
+>
+> And then when adding a new field, you would do this:
+>
+>     #[repr(C)]
+>     pub struct Struct1 {
+>         a: u64,
+>         b: KAbiReserved<Struct2, u64>,
+>     }
+>
+>     /* Struct2 as above */
+>
+> The way `KAbiReserved` is implemented is via a `union` (maybe a bit
+> ironic, considering what I said in my other replies, but in this case,
+> we would provide a safe abstraction over this `union`, thus avoiding
+> exposing users of this type to `unsafe`):
+>
+>     #[repr(C)]
+>     pub union KAbiReserved<T, R> {
+>         value: T,
+>         _reserved: R,
+>     }
+
+I like this approach even better, assuming any remaining issues with
+ownership etc. can be sorted out. This would also look identical to
+the C version in DWARF if you rename _reserved in the union to
+__kabi_reserved. Of course, we can always change gendwarfksyms to
+support a different scheme for Rust code if a better solution comes
+along later.
+
+Sami
