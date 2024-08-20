@@ -1,147 +1,121 @@
-Received: from mail-wm1-f46.google.com (mail-wm1-f46.google.com [209.85.128.46])
+Received: from mail-ed1-f46.google.com (mail-ed1-f46.google.com [209.85.208.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B06CF15E5CF
-	for <rust-for-linux@vger.kernel.org>; Tue, 20 Aug 2024 19:57:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 091EB149C4F
+	for <rust-for-linux@vger.kernel.org>; Tue, 20 Aug 2024 20:04:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724183865; cv=none; b=ZxjUP//SqRtQg5CHj88gy5d8RqxqQC2drYx9yoIR7kcPyg6J24qfUzH62XIxpJZwPX9+f6i5FUrMAt32mfnG4NqLux58c3n18L6R3vQ9uhk/qiMxTS1gJDKG/EQFnZoTliz6AMgqVXl/mYMwCHTlFtPU5ixXfqpsL+40Tm/RvFs=
+	t=1724184249; cv=none; b=boRnnDK+TS2MQs72JHM1yfScb0sCrOE6B/gKCvJ5TxYF16Oa95zC+Yh5HDWHr3mh6/8zrdG9uTL4BZAbFP3xLuZ3IBxMZh10TrQqo1IlMga6QJraYdwWZqwdfJeoqHOvD9Izt4QUY9CyayB2Susp6cVvYdJ1T+fM1E8TZry+RbM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724183865; c=relaxed/simple;
-	bh=gYtGpgv6WrPH8c3CiYf0hVAGgsEyBUaSZhsVYkRtZOY=;
+	s=arc-20240116; t=1724184249; c=relaxed/simple;
+	bh=yIsSyfviDurZmXmSYbUpZGkU3uUIQIszSbu7SpzwhjM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=daZ4hqgU3egDU8gxvVFHe4ya3vWTdnPzvI9O2vxA3TjU/zA1H4EOjURzVbZQ4B9w3jMa1JCrgKtqQHc/2ZXjIQ1ORcpDvAzfMXrWEAjkJDDxZKIs5XkXbRNhUjGamQy3mrHF2QiNHASUepuOtris3naAsqlpA+/Hwj1BGIOSO/Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LXO5LuAl; arc=none smtp.client-ip=209.85.128.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=VQ+fLVn0XCSqw5IB8bSMq/9U1Fhv3bRZLYyIBRiyHQwCjng49byqvIOv/nQ/26oNqf27gXQSx04IWX267V4f2Q74Ly5aYu2xyNC4li+GBoErV7FevqaITZAc1Opnlibkd1Koyx3oY8EiVNXPaU979TaQ9/GkkrhH5I/X6tEuNhc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=m0mFQfRG; arc=none smtp.client-ip=209.85.208.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LXO5LuAl"
-Received: by mail-wm1-f46.google.com with SMTP id 5b1f17b1804b1-427fc97a88cso50133435e9.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 20 Aug 2024 12:57:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="m0mFQfRG"
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-5bebc830406so3714a12.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 20 Aug 2024 13:04:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724183862; x=1724788662; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=I04d+UCyEJKSGzYujs6lGhbuTD9A1sKvAATpdsPOPRs=;
-        b=LXO5LuAlzSp3CO8QvrU701CrPymkl1aKjyEGrsvb9Xll6ajaeqKYRd8oEO8KDZ+RRX
-         TAEs6FZjuU0c6iyhOr9CTKd/h4oBuPIHqn+G7cfbRDY+THJsnduq0tZVHUC1XXZkiNLV
-         /mKnlxasA8AY+Hx8+Mz5Hl2Mz6q/4Ec3DcDux9gAx5wNR3QCAGRxUpMw/NlT2btFfAju
-         VGJUrM6Jv0rdxO6TFv6OiyzCxZhjEYukDmpUZo0YtAKYMC2LCV+xVPqjX6xrAW/pvyKQ
-         MdUze2zGoV5IDJ/cLYlb7olEt45OtvXZFOMc6Q/uNSu6OGcMYppV7C2d9L+CGPBNOvJw
-         mq9Q==
+        d=google.com; s=20230601; t=1724184246; x=1724789046; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=zBGLTWPAaobHWpK0PLexiPFsVPJzHgwXjGqO2pdg9Uo=;
+        b=m0mFQfRGozTQOzmyIfA0Gq8CDwSF18Y6k1PKM4NhyYJz9MxBM4P94BLJVnEb0U61vs
+         AXC5iyWrSch2Bz0jrfWPXNJzseDT8BLgeBDnoCD81eL3OLyclH5QvbLigDQ9Q2lbRtG8
+         rh/fV+hK8JoV1Runs2P9gqYZMR+wVfR8KwaiUAoESyrRWlQXiyWFB7lc9jvLNg5A+xQ9
+         Lyn6QJpM5WGqR+o8ukDAhK7fPSge4ToJykPlcjf1eIS9fusJhgRjm1Xe+p7FSBBhrxmw
+         9ohSgMKYxE0F0oWBIHVVfKJwCCgmQ2bxIfIQR1ZEOfKGhfnzgXK6O/YFPiEPbF4M3c/h
+         +OQw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724183862; x=1724788662;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=I04d+UCyEJKSGzYujs6lGhbuTD9A1sKvAATpdsPOPRs=;
-        b=hEep3HbptegEB3/NE0BBhdRErz+AgZ6FsttFEmjzOV6UpTNaowS9AaL+rNoj09eIpm
-         I04hQTIvPjvC7lSp+U8H3VorghRuWxND4Qla7yzaI4dmV6DzM93Rk4HU93eLaB6skjiO
-         nZ2uyvhY7j6grKrxEvFQmRocXGeFrKeEZnhg8qHF9wfTz30uCqdTULVQsWkoz0jnCNkw
-         IG8ySFULiuIQDn5p8lDZJbN5vzJIg6QLpItAj48jWT6KVFR1odYUie1n+OU50lVBevz0
-         lYqsfceIh7Vu6FbIj/GnOEcNO3P6+fgqEX3m+FDPXc3zX6UUkv0NIl0uj+rAcMenDtfY
-         jt3Q==
-X-Forwarded-Encrypted: i=1; AJvYcCXr6XLA7RbenJaG9C9Q5DJpFopnM5bUQU+sP98yh7Oxr45lLWAgRQk3byyMlbPcWBkiPrEsxX7LV3z5WWh0fQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz1XMhNElr4NCBd50UxsJgUrARWmGOemMclsZY0hclOs+cdcIZr
-	RGigC6Sr02hDk9J5RxVCnjSovS7WvH91W1CpJzbKFW608GFvjgyIL7uAuWM3UBffR2ss5Wt5DuJ
-	r6pVX4k7691uVaFqbppOaiT7J+Fs=
-X-Google-Smtp-Source: AGHT+IElLP3U6GC5jiblsqfmTGvnchVDzLv7QwlAycsREo1k3dgNT3ZyETsIYu2PzzvOhij5top8TkrmV+tZLhPVzvY=
-X-Received: by 2002:a05:600c:3b83:b0:426:5ee3:728b with SMTP id
- 5b1f17b1804b1-42abd2300d2mr2526935e9.13.1724183861809; Tue, 20 Aug 2024
- 12:57:41 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1724184246; x=1724789046;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=zBGLTWPAaobHWpK0PLexiPFsVPJzHgwXjGqO2pdg9Uo=;
+        b=dJVTt12jb6JjAHzJHrVDq5aZaYuGbRIub/6hWIO5CivNXrqGnSuIZcZqgNPjrr5scI
+         k/yYV8JYE+NRLQUSYziJ10mc6YlWPXbqim/G3f6SEULa+HGmq7rZ4jcNVMPQIo6gntqx
+         yjpOW4LqAS3fGSjJ0rdqjllbLvBZqCa8/AFvCky9gue4GGCNzx53wXJN0LZujN57X9e9
+         OViNFESA5GHb8OBz5vu5/5CEYObk9ITOJxoOawYkkiLvB3KWd5iEIqjrgkD/gTDudALO
+         teK7XsEKGGB7O+VECY/tVUE9u3+qQg6oMQKKNPeuzUid3zHd1Jir/Zs9ROhlYGwjce/s
+         ICrA==
+X-Forwarded-Encrypted: i=1; AJvYcCX79IAcBpwIp0nTUOmxtuEFukzbz9Jte+n48NqDcw6Gfd7Z6QJ/L99mwRACfBgi44YtOJoFi/BR2+5GhHZ6kQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzOkdpaR4AI8O7c9Yzu4Rj2HfPo6sDWgPkyJqUB83sv7RqxeE2v
+	foM7A19UJr9IbVgh+HI+AtG9gilvqd9G9//ssJm2FcET9QcbHK9WxuSMEizvpkvdFJA/kptqBsx
+	MS5n99T11o3QBwWwywUlTBAqN6uR43blhHomG
+X-Google-Smtp-Source: AGHT+IHBOlxTMezCxNobnsUoiZeYOd0qoLxq7X7TniTea0TiWM+nj9FCIhtHSOc2++3F/63SSSPXEzlYu0HBLCkngtQ=
+X-Received: by 2002:a05:6402:524d:b0:5b8:ccae:a8b8 with SMTP id
+ 4fb4d7f45d1cf-5bf0e590ea8mr155516a12.3.1724184245967; Tue, 20 Aug 2024
+ 13:04:05 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240820194910.187826-1-mmaurer@google.com>
-In-Reply-To: <20240820194910.187826-1-mmaurer@google.com>
-From: Andrey Konovalov <andreyknvl@gmail.com>
-Date: Tue, 20 Aug 2024 21:57:31 +0200
-Message-ID: <CA+fCnZcowB4=AQO=mEDNgKb8ES5unewQdHkPMLXYwvcxaDMthg@mail.gmail.com>
-Subject: Re: [PATCH v4 0/4] Rust KASAN Support
-To: Matthew Maurer <mmaurer@google.com>
-Cc: ojeda@kernel.org, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Nathan Chancellor <nathan@kernel.org>, dvyukov@google.com, 
-	aliceryhl@google.com, samitolvanen@google.com, kasan-dev@googlegroups.com, 
-	linux-mm@kvack.org, glider@google.com, ryabinin.a.a@gmail.com, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, rust-for-linux@vger.kernel.org, 
-	llvm@lists.linux.dev
+References: <20240815173903.4172139-21-samitolvanen@google.com>
+ <20240815173903.4172139-37-samitolvanen@google.com> <2024081600-grub-deskwork-4bae@gregkh>
+ <CABCJKuedc3aCO2Or+_YBSzK_zp9zB8nFwjr-tK95EBM3La1AmA@mail.gmail.com>
+ <2024081705-overarch-deceptive-6689@gregkh> <ef6f7294-0afe-46af-8714-ed4a4aaee558@proton.me>
+ <20240819193851.GA4809@google.com> <a76f9422-4001-416a-a31b-37ab7dcb17f4@proton.me>
+ <CABCJKudAF0=29js8SDcYY5r6kM7RBveTrZH9RyECNGqkcqy=nw@mail.gmail.com>
+In-Reply-To: <CABCJKudAF0=29js8SDcYY5r6kM7RBveTrZH9RyECNGqkcqy=nw@mail.gmail.com>
+From: Matthew Maurer <mmaurer@google.com>
+Date: Tue, 20 Aug 2024 13:03:53 -0700
+Message-ID: <CAGSQo01kCUd64nB7C7Ssy1N=UBpOP3bORsRDcHJ1k2CqkbKsfQ@mail.gmail.com>
+Subject: Re: [PATCH v2 16/19] gendwarfksyms: Add support for reserved
+ structure fields
+To: Sami Tolvanen <samitolvanen@google.com>
+Cc: Benno Lossin <benno.lossin@proton.me>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Masahiro Yamada <masahiroy@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, Petr Pavlu <petr.pavlu@suse.com>, 
+	Neal Gompa <neal@gompa.dev>, Hector Martin <marcan@marcan.st>, Janne Grunau <j@jannau.net>, 
+	Asahi Linux <asahi@lists.linux.dev>, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Tue, Aug 20, 2024 at 9:49=E2=80=AFPM Matthew Maurer <mmaurer@google.com>=
- wrote:
+> > The way `KAbiReserved` is implemented is via a `union` (maybe a bit
+> > ironic, considering what I said in my other replies, but in this case,
+> > we would provide a safe abstraction over this `union`, thus avoiding
+> > exposing users of this type to `unsafe`):
+> >
+> >     #[repr(C)]
+> >     pub union KAbiReserved<T, R> {
+> >         value: T,
+> >         _reserved: R,
+> >     }
 >
-> Right now, if we turn on KASAN, Rust code will cause violations because
-> it's not enabled properly.
+> I like this approach even better, assuming any remaining issues with
+> ownership etc. can be sorted out. This would also look identical to
+> the C version in DWARF if you rename _reserved in the union to
+> __kabi_reserved. Of course, we can always change gendwarfksyms to
+> support a different scheme for Rust code if a better solution comes
+> along later.
 >
-> This series:
-> 1. Adds flag probe macros for Rust - now that we're setting a minimum rus=
-tc
->    version instead of an exact one, these could be useful in general. We =
-need
->    them in this patch because we don't set a restriction on which LLVM ru=
-stc
->    is using, which is what KASAN actually cares about.
-> 2. Makes `rustc` enable the relevant KASAN sanitizer flags when C does.
-> 3. Adds a smoke test to the `kasan_test` KUnit suite to check basic
->    integration.
->
-> This patch series requires the target.json array support patch [1] as
-> the x86_64 target.json file currently produced does not mark itself as KA=
-SAN
-> capable, and is rebased on top of the KASAN Makefile rewrite [2].
->
-> Differences from v3 [3]:
-> * Probing macro comments made more accurate
-> * Probing macros now set --out-dir to avoid potential read-only fs
->   issues
-> * Reordered KHWASAN explicit disablement patch to come before KASAN
->   enablement
-> * Comment/ordering cleanup in KASAN makefile
-> * Ensured KASAN tests work with and without CONFIG_RUST enabled
->
-> [1] https://lore.kernel.org/lkml/20240730-target-json-arrays-v1-1-2b376fd=
-0ecf4@google.com/
-> [2] https://lore.kernel.org/all/20240813224027.84503-1-andrey.konovalov@l=
-inux.dev
-> [3] https://lore.kernel.org/all/20240819213534.4080408-1-mmaurer@google.c=
-om/
->
-> Matthew Maurer (4):
->   kbuild: rust: Define probing macros for rustc
->   rust: kasan: Rust does not support KHWASAN
->   kbuild: rust: Enable KASAN support
->   kasan: rust: Add KASAN smoke test via UAF
->
->  init/Kconfig                              |  1 +
->  mm/kasan/Makefile                         |  7 ++-
->  mm/kasan/kasan.h                          |  6 +++
->  mm/kasan/{kasan_test.c =3D> kasan_test_c.c} | 12 +++++
->  mm/kasan/kasan_test_rust.rs               | 19 ++++++++
->  scripts/Kconfig.include                   |  8 ++++
->  scripts/Makefile.compiler                 | 15 ++++++
->  scripts/Makefile.kasan                    | 57 ++++++++++++++++-------
->  scripts/Makefile.lib                      |  3 ++
->  scripts/generate_rust_target.rs           |  1 +
->  10 files changed, 112 insertions(+), 17 deletions(-)
->  rename mm/kasan/{kasan_test.c =3D> kasan_test_c.c} (99%)
->  create mode 100644 mm/kasan/kasan_test_rust.rs
->
-> --
-> 2.46.0.184.g6999bdac58-goog
->
+> Sami
 
-Left a couple of nit comments - feel free to ignore if you don't end
-up sending v5.
+Agreement here - this seems like a good approach to representing
+reserved in Rust code. A few minor adjustments we discussed off-list
+which aren't required for gendwarfksyms to know about:
+1. Types being added to reserved fields have to be `Copy`, e.g. they
+must be `!Drop`.
+2. Types being added to reserved fields must be legal to be
+represented by all zeroes.
+3. Reserved fields need to be initialized to zero before having their
+union set to the provided value when constructing them.
+4. It may be helpful to have delegating trait implementations to avoid
+the couple places where autoderef won't handle the conversion.
 
-Otherwise, for patches 2-4:
-
-Reviewed-by: Andrey Konovalov <andreyknvl@gmail.com>
+While I think this is the right solution, esp. since it can share a
+representation with C, I wanted to call out one minor shortfall - a
+reserved field can only be replaced by one type. We could still
+indicate a replacement by two fields the same as in C, by using a
+tuple which will look like an anonymous struct. The limitation will be
+that if two or more new fields were introduced, we'd need to edit the
+patches accessing them to do foo.x.y and foo.x.z for their accesses
+instead of simply foo.y and foo.z - the autoref trick only works for a
+single type.
