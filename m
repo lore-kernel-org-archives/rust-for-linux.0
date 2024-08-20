@@ -1,139 +1,126 @@
-Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+Received: from mail-yw1-f201.google.com (mail-yw1-f201.google.com [209.85.128.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F58D158A23
-	for <rust-for-linux@vger.kernel.org>; Tue, 20 Aug 2024 18:48:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A4B214D70E
+	for <rust-for-linux@vger.kernel.org>; Tue, 20 Aug 2024 19:49:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724179693; cv=none; b=Ke6Qe/Dg2bXSFc/D+alBa/MW5F7XdDUt1InPRcR+grJuPAF+0iB957DWUqt/5VTxB08N9WKJv08IAxmyL31MdYbEITLRBCz/ig22IeZzrz2+YlpoyIrANu9j68utREQEfdEas0AdWuOkouiTh/hauMjCNcM1JN93dVAAh1N5YKc=
+	t=1724183356; cv=none; b=XSapiSMWttDU0our0PNvbiERRJubzAtpEFb6fINlSJv358K6hTEtOYgjdY+ZY8EhCK9qWjkRf66oWwMcjdh9Y3QZxNJ7KpjZav/gbUYRdxHfVSsqDj3mKduc8VBE+q/ts89cK2JPyzZMtjXuuFYVnEufzrmLRvS3F7um8ZY6soI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724179693; c=relaxed/simple;
-	bh=9IntjtaXg9k+kUVEV9axZKmA4rC298YdyXwRG+HAIh4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=LLoacnLKvKM52VQkNn+YBtq0pgmQPNrlrKAl927+ZRDzprauD9uPOHw9fhqJx/LuJB2NJpQQGyDS5g7LE3+0mXIhiBOlHt19Sq59In0CNLCnRK6IFhO0/X5TcoEUJXWYg4wGocPanP6auKyOAq8F2qmhG5yy6u12Cu7oGsvLqNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=HA08n9ZI; arc=none smtp.client-ip=209.85.160.177
+	s=arc-20240116; t=1724183356; c=relaxed/simple;
+	bh=gWvn3EqsG8i5kBjD+BMbfTLcXiM7MFTxitLqtZSYl70=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=cPuMNhM/5Gw8vWX8UFJjMEXe1fOz0CWvlrGKEV0VIEaIilZ99Q7/1QIJKRfiVIwE0Y6yLxR7Vlr4mOcVTOMhQrOSKODn1eDPCL3MnYq2KznGd8gmmkRzqt8FkHb2VBwawecdPE3gFdARu38Zy8aTtbJSA/j1Rdb6nhUj6Z4mW7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--mmaurer.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=RY1U/oyO; arc=none smtp.client-ip=209.85.128.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--mmaurer.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="HA08n9ZI"
-Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-454b1e08393so63731cf.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 20 Aug 2024 11:48:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="RY1U/oyO"
+Received: by mail-yw1-f201.google.com with SMTP id 00721157ae682-6b8f13f2965so50518237b3.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 20 Aug 2024 12:49:14 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1724179690; x=1724784490; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Kqyu9H3Z/7xJHVyMUShvAD4YuvpcJRXIyTBe+BDA0AQ=;
-        b=HA08n9ZIQJLmCrRV8+Ce1gYw50AGfpOYxhfwP9BbcEhjGr8MXkoEHvQekbQb39cN1l
-         CpNpq1aufeU/9WDCyZn8VJtQ6YLSB3ny5c2b/Us/q50dO877oJSjH3Ub4dHcnq7PCMtZ
-         vPX3vGcPYzrsgbDNPqcTrtFYhNiNK1xIjV9P7b6WfYGqiuDgmbT0Bwcs25Xh3s2KvMIU
-         ppsee8V2rjFSrT6FUWEFvfx1glD/WMJesNP+YDHRBWNlakvr5TEpMLhtjIYbBu2m2gmf
-         BP0UQuYe67hxjenYfi2AusZuE0SLIKgBI3c5WyPsk3fzNyfJYksvAl8mETg9x1gtFRls
-         RZVg==
+        d=google.com; s=20230601; t=1724183354; x=1724788154; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=EZ/BWqyZRlCP7UBokATY0JI3r3d12PwUba1tdxpBJwY=;
+        b=RY1U/oyO0o+LFCuhpQ+QMR0TVilWMnoy86dqzN3gqxBrbqpyLwmOsmgvUxAEaxjmxe
+         NjvxWWpAPJT0WYLTsoiPABDY+ZwW9bP8brsFPZqhEnIeCWAzohUwlB+i7NMPnDQJOZrg
+         jHp7bHSU8DuE/YKuur01JHyueEvCZuPkIwIZMlq6SOEpGbThOPcQE5QJjnh/0NmWGarO
+         vV8c9RvRvOKkNCWpthZsSbrzGIhxzaIxWCBDh20M+GyH0J2wFbxo0t5UcTdVgAW/NX+/
+         emsZIO2k1+Si2s+Hkcw3y1LW+ogHXw9hwEiHjH+x8vrUY1YB/pDGgn5xe2dzIgz9n8ho
+         ym+A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724179690; x=1724784490;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Kqyu9H3Z/7xJHVyMUShvAD4YuvpcJRXIyTBe+BDA0AQ=;
-        b=kVQJsTxcAiLetgyK7YwQdgbIQhrnh3G2QfBH025B43vSNC8ILOWLxnOPnSA1UarBJy
-         1407Vi7IfogUMXx2bhQcMPL1Ul/Nrt5SSI1uLhF9nRONhcAlPxSZazotP3fXZ/1yAwSI
-         sQo1J/I0baoKgqEhb7yeifTwIXDPJ4S2zAd5dS/4ZwdUWMtwENy7J0HK1lFTu3ZFFNvV
-         wse39jzAMztjtp202monzLNVYZKCZodlBCRWMWnRXMktCFG1Fsq48U4S8HN2RoiDqS2z
-         tAQUA/D+OvDltitkelD9rRsPbMgUNjqcg8NT+057klo4glbjt4jKSCYTWcknfIjDZkk2
-         30KA==
-X-Forwarded-Encrypted: i=1; AJvYcCU+pF3ghehCZKhIzfxq/nogdHyfLsjbSlZYLdc7bfoNhqwtvgOoOHOB7p0QQMr66TNsFOfO4/AN0UpNAeyf7A==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxGnSkhUr5aDmEt+gKcXANheejGObTaz+YigEkUijNOW2mtPIjd
-	wGJCgyxsqI0n6szjxEae9T+fvOCLwfO1T/gdOUx6tNXokgCDVPc1PRc4LXh0BOevhONrcw9kMOq
-	ppgT+7ukOuTCcxpTD2Ujn1/MnvEvnqfFiVPOo
-X-Google-Smtp-Source: AGHT+IEaaaVbWTiloHDIiXOmckXCXgvScfO2Sv9V70rY2jP8blHGtm/LE4cy6bWAnQvIHakKwQ31ZmSJ833RTPp+SXA=
-X-Received: by 2002:ac8:7dc5:0:b0:447:d97f:9765 with SMTP id
- d75a77b69052e-454e642e2ccmr3218081cf.16.1724179690110; Tue, 20 Aug 2024
- 11:48:10 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1724183354; x=1724788154;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=EZ/BWqyZRlCP7UBokATY0JI3r3d12PwUba1tdxpBJwY=;
+        b=wNDNLMcw5Xn4jVPiQBc4qO0KBPlBilJ3O/EaAs2tp84yqSuTVbfw0K3dFpDLc0AIAj
+         b85I6vxBCRf2pE0/IXZCXDm7tQ8uZUgXwxhPDb1EbBrANGhJpXkubrHAFOEYEBI7dk74
+         2x6yMX5fka5aMkN5mnOgKXLGBzYIyX8F/LU591y0aJ1Gy5SyEkqJSgQT55vJMc6ckbgj
+         kWUPv3c9Z7wcD4lV7zAYWYZq0VYeVn2HbjFZ7rFxPEaTMDbWsX7j3+7g2yLWmdiiblzp
+         X7Yexclni4xRz8t/6ouLGynU1ePcdnL4hslYS9TT5FxpUdWbiaRl0uLE9ForWLBhLzho
+         LZsA==
+X-Forwarded-Encrypted: i=1; AJvYcCWepifKFI0rTTyglTLOkqa4X5gZgDXjyGhBXsK4CXYHWYWzG/yQ1A56BbVko0e+VyhFNuKt2rZ61Z1hVuZ54A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwpexWo4nv92SaLz/YjMUIjjSlbdti1jevGxFL8DhsE8/q8NhwM
+	sFfsQjtz1EM7bHO9U9tfu/4jvys2R/hdg6xakCsechJLsG/B9KkuEUsuuoybpYHKZ14YkocVKSa
+	Fj+rtvg==
+X-Google-Smtp-Source: AGHT+IFp/nm12VvtMz6NTjd0kIpucSX0HE9Tww56O3We2qIoUG3Oc6YRA1DbTDJEzjcCHwu/hP0I6l7HF/pp
+X-Received: from anyblade.c.googlers.com ([fda3:e722:ac3:cc00:20:ed76:c0a8:1791])
+ (user=mmaurer job=sendgmr) by 2002:a05:690c:600e:b0:6b2:6cd4:7f9a with SMTP
+ id 00721157ae682-6c0a09f33ffmr115947b3.8.1724183354122; Tue, 20 Aug 2024
+ 12:49:14 -0700 (PDT)
+Date: Tue, 20 Aug 2024 19:48:55 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240815173903.4172139-21-samitolvanen@google.com>
- <20240815173903.4172139-37-samitolvanen@google.com> <2024081600-grub-deskwork-4bae@gregkh>
- <CABCJKuedc3aCO2Or+_YBSzK_zp9zB8nFwjr-tK95EBM3La1AmA@mail.gmail.com>
- <2024081705-overarch-deceptive-6689@gregkh> <ef6f7294-0afe-46af-8714-ed4a4aaee558@proton.me>
- <20240819193851.GA4809@google.com> <a76f9422-4001-416a-a31b-37ab7dcb17f4@proton.me>
-In-Reply-To: <a76f9422-4001-416a-a31b-37ab7dcb17f4@proton.me>
-From: Sami Tolvanen <samitolvanen@google.com>
-Date: Tue, 20 Aug 2024 18:47:31 +0000
-Message-ID: <CABCJKudAF0=29js8SDcYY5r6kM7RBveTrZH9RyECNGqkcqy=nw@mail.gmail.com>
-Subject: Re: [PATCH v2 16/19] gendwarfksyms: Add support for reserved
- structure fields
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Masahiro Yamada <masahiroy@kernel.org>, 
-	Luis Chamberlain <mcgrof@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Matthew Maurer <mmaurer@google.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, Petr Pavlu <petr.pavlu@suse.com>, 
-	Neal Gompa <neal@gompa.dev>, Hector Martin <marcan@marcan.st>, Janne Grunau <j@jannau.net>, 
-	Asahi Linux <asahi@lists.linux.dev>, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.46.0.184.g6999bdac58-goog
+Message-ID: <20240820194910.187826-1-mmaurer@google.com>
+Subject: [PATCH v4 0/4] Rust KASAN Support
+From: Matthew Maurer <mmaurer@google.com>
+To: andreyknvl@gmail.com, ojeda@kernel.org, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Nathan Chancellor <nathan@kernel.org>
+Cc: dvyukov@google.com, aliceryhl@google.com, samitolvanen@google.com, 
+	kasan-dev@googlegroups.com, linux-mm@kvack.org, glider@google.com, 
+	ryabinin.a.a@gmail.com, Matthew Maurer <mmaurer@google.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, Nick Desaulniers <ndesaulniers@google.com>, 
+	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, 
+	rust-for-linux@vger.kernel.org, llvm@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Aug 19, 2024 at 10:17=E2=80=AFPM Benno Lossin <benno.lossin@proton.=
-me> wrote:
->
-> On 19.08.24 21:38, Sami Tolvanen wrote:
-> >
-> > This definitely looks cleaner than unions in Rust, but how would this
-> > scheme be visible in DWARF? You might also need to expand the annotatio=
-n
-> > to allow replacing one reserved field with multiple smaller ones withou=
-t
-> > using structs.
->
-> Hmm that's a good question, I have no idea how DWARF works. The way you
-> do it in this patch is just by the name of the field, right?
+Right now, if we turn on KASAN, Rust code will cause violations because
+it's not enabled properly.
 
-Correct, it just looks at the name of the union fields.
+This series:
+1. Adds flag probe macros for Rust - now that we're setting a minimum rustc
+   version instead of an exact one, these could be useful in general. We need
+   them in this patch because we don't set a restriction on which LLVM rustc
+   is using, which is what KASAN actually cares about.
+2. Makes `rustc` enable the relevant KASAN sanitizer flags when C does.
+3. Adds a smoke test to the `kasan_test` KUnit suite to check basic
+   integration.
 
-> If Rust's DWARF output contains exact types names (I just checked this,
-> I *think* that this is the case, but I have never used/seen DWARF
-> before), we might be able to just create a `KAbiReserved<T, R>` type
-> that you search for instead of the attribute. The usage would then be
-> like this:
->
->     #[repr(C)]
->     pub struct Struct1 {
->         a: u64,
->         _reserved: KAbiReserved<(), u64>,
->     }
->
-> And then when adding a new field, you would do this:
->
->     #[repr(C)]
->     pub struct Struct1 {
->         a: u64,
->         b: KAbiReserved<Struct2, u64>,
->     }
->
->     /* Struct2 as above */
->
-> The way `KAbiReserved` is implemented is via a `union` (maybe a bit
-> ironic, considering what I said in my other replies, but in this case,
-> we would provide a safe abstraction over this `union`, thus avoiding
-> exposing users of this type to `unsafe`):
->
->     #[repr(C)]
->     pub union KAbiReserved<T, R> {
->         value: T,
->         _reserved: R,
->     }
+This patch series requires the target.json array support patch [1] as
+the x86_64 target.json file currently produced does not mark itself as KASAN
+capable, and is rebased on top of the KASAN Makefile rewrite [2].
 
-I like this approach even better, assuming any remaining issues with
-ownership etc. can be sorted out. This would also look identical to
-the C version in DWARF if you rename _reserved in the union to
-__kabi_reserved. Of course, we can always change gendwarfksyms to
-support a different scheme for Rust code if a better solution comes
-along later.
+Differences from v3 [3]:
+* Probing macro comments made more accurate
+* Probing macros now set --out-dir to avoid potential read-only fs
+  issues
+* Reordered KHWASAN explicit disablement patch to come before KASAN
+  enablement
+* Comment/ordering cleanup in KASAN makefile
+* Ensured KASAN tests work with and without CONFIG_RUST enabled
 
-Sami
+[1] https://lore.kernel.org/lkml/20240730-target-json-arrays-v1-1-2b376fd0ecf4@google.com/
+[2] https://lore.kernel.org/all/20240813224027.84503-1-andrey.konovalov@linux.dev
+[3] https://lore.kernel.org/all/20240819213534.4080408-1-mmaurer@google.com/
+
+Matthew Maurer (4):
+  kbuild: rust: Define probing macros for rustc
+  rust: kasan: Rust does not support KHWASAN
+  kbuild: rust: Enable KASAN support
+  kasan: rust: Add KASAN smoke test via UAF
+
+ init/Kconfig                              |  1 +
+ mm/kasan/Makefile                         |  7 ++-
+ mm/kasan/kasan.h                          |  6 +++
+ mm/kasan/{kasan_test.c => kasan_test_c.c} | 12 +++++
+ mm/kasan/kasan_test_rust.rs               | 19 ++++++++
+ scripts/Kconfig.include                   |  8 ++++
+ scripts/Makefile.compiler                 | 15 ++++++
+ scripts/Makefile.kasan                    | 57 ++++++++++++++++-------
+ scripts/Makefile.lib                      |  3 ++
+ scripts/generate_rust_target.rs           |  1 +
+ 10 files changed, 112 insertions(+), 17 deletions(-)
+ rename mm/kasan/{kasan_test.c => kasan_test_c.c} (99%)
+ create mode 100644 mm/kasan/kasan_test_rust.rs
+
+-- 
+2.46.0.184.g6999bdac58-goog
+
