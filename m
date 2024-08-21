@@ -1,66 +1,66 @@
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CABF71531C1
-	for <rust-for-linux@vger.kernel.org>; Wed, 21 Aug 2024 12:08:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE6091A4B89
+	for <rust-for-linux@vger.kernel.org>; Wed, 21 Aug 2024 13:47:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724242140; cv=none; b=VYrFMSu5HoIY+TDUhDh4Cx42NcRhLbGsfUT7BiA9uzMQwtdD3li6hUPHDGFFRj240USqCpVtD0V76uek63mwifvfTGZ1k0qaHtTozVliMm3M4OAqUO7yPdCB2QJ+nBc5YaTUweELo5lRzkji+mzO7RypOafa6kOukMkJ0P7Qc+8=
+	t=1724248068; cv=none; b=I9uq8fGs2Rrn+TRYQnntRfvTdI89kMjPO8KG2jX5DKjZ2yAyLD43G3l4zdPBJSpxw4FascIt7KwMm4HojK+fQnStBFEsFrXD6tcM2jmNbDYCFQ/l2FcEBgk1k/jeJWfUxbpo9PrnounBgq9dw73tPpuN3DnCrZ2TN3PNNB/Nkbo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724242140; c=relaxed/simple;
-	bh=DA1X9Ve0Vn6diqrYfPjFkkduWMPJiWV9pT4xIJEPvqY=;
+	s=arc-20240116; t=1724248068; c=relaxed/simple;
+	bh=gwLjHNTsXHMmlKgeIfCrG8pO4t2Y8x/pcVf6IX7HJS0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jtvQXtRqVq0haJmUZ7NWuVjVW/aCagI9obpLE89JMn+iva2QwkKX7v38j42oNbJQoJi4SufJ1HER9JbYez3ObELhiHUbS4ViAbIgJgBeFl4y92pC/3TwueHa9GwyGcMIaPkG1rypq807jwdM2chuLan4BP75frkPt6MHIVxRtWU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=el4ac9Ch; arc=none smtp.client-ip=209.85.128.53
+	 To:Cc:Content-Type; b=oqdylxslY18JprkIL2OBuh/f+JkFykF6mDlZ+37V893NCE4LrSjf1CkGTprPfpoaU+WxkW9f0YVld4o1mG0irDq785OUKBsZ5qTxwkXKefZRhUOZQ3qy9eNKY/QcUVgDc/TfEZ85lphwpyEOVA+Ij7eymf/ec3FFXAWwpnbYUfw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dolPsNWv; arc=none smtp.client-ip=209.85.128.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="el4ac9Ch"
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-428fb103724so3830155e9.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 21 Aug 2024 05:08:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dolPsNWv"
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-429ec9f2155so48418285e9.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 21 Aug 2024 06:47:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1724242137; x=1724846937; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1724248064; x=1724852864; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=mDwqhRHhMBQJ/+TLyoRpyJFlfsxxIUrIdKu8FSn6JKQ=;
-        b=el4ac9ChIdU3dbBwOzt1Ipwcxb58MCdsiuKZO3aBWpLg7jNbUs066ybdpBPeCYXCTn
-         7gicQIB1zld37AXYhH5LqLi5QzYsaMWDfWln8mU8FGHaTmcwg4plNC7FxPOCOVr1WoeM
-         YJZOMOBMehuGPWIDYYukie6A1j0LoQbimC9sEqdsljqKu2F987/mcxABHlMHETQXW/6z
-         2PlpI3gKBbvHJPY3tna82klmpc1iFjRXYV7Gg3MfHccFrdUy+/skUWRs5xU34Y+v9IL/
-         xCOcuZhEAYb1Wk5NB3832Z2tKroexKQrUsZfhTf+V0Zy/o9NLuwfCAnn6Vdx9huXTllR
-         ODPg==
+        bh=+ZR2V02XpqNEW9fvu30UGOqjOdE3SQr9bcH8M/YKkZE=;
+        b=dolPsNWvrSeN1bjtX6ZyZ4JT8coc+48QIJvDg6MwxbHw4pe3mbqEbesmqh2lL+eRSt
+         ReiP3BYXHER5gTs/Jgp7JRX0IWMn6sHNnDz11HD7NaNDq9cJKYxk1YaAP+epj1nRgN9h
+         Sj7nO0Ht/2ie9fOWrMi51EH3Vy6GHn3Gk0K0fchKPqn9daRfq3eI4R9HalWAJ9asFj6h
+         GMAfKvdYGyPmjpsjCxvrZm+xtqrdrSYM4MTJ6uJQuR94rao+lhvsaPPrk/apjYCHkvpX
+         YFgneHgTgJYG89FU7AH00ltJjxOda2SnkXlEoYvjNcTsNKeQlI8Q1W/gIeDUqATCQfRg
+         3ckw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724242137; x=1724846937;
+        d=1e100.net; s=20230601; t=1724248064; x=1724852864;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=mDwqhRHhMBQJ/+TLyoRpyJFlfsxxIUrIdKu8FSn6JKQ=;
-        b=uUeNspdtAc7oEx9pPyAs93vzAr3PJPvw0Tx/hxcvuxhqQOHzPIbOhHymwENXZAfTJd
-         wYop8cXvrj8UOP3wUbIZbVcnnCDr7pQOWpI9XupJJB4PPqgRkMRvPVppZRLRo3FcSlUB
-         zmtDC/GqyAupX80qJ1weOAoB7SEE0Rdgw8ROUo8mYfP+0n/cfaIlsqNsxn7bHHPdwrDI
-         r4l3PfcLpK74grJsuzTBlsIXGWHRfK2N0bWSXmluoFy+v0VDLRYrEvFCo7L5EtpmWfnT
-         YEeOzDHFsA8zQCsiJ0BEfCLhJ190tBIK3Bue1c/Y20KvWc9sJUqr2IKV0iZSL6f65n3e
-         yFnA==
-X-Forwarded-Encrypted: i=1; AJvYcCWxjlHBECnjOdvsq8Hr9cKSzSiLpgB3asyBHofzZEmyZpkoV4lHdUcwYw3TZ6Q9nya3LE6t5hvI86UCO21oCQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw1twJnG4bzPhv5OESZazdw77+8QXGcbOm3fZ/v/mX+I+fixRHY
-	0Sk64EkD7SqKzXgwXedNTk+KEG75HI+BeOzdnsczfvWoaO8Ew/8fAxddl0E8pC5lk5p0F9XV7ou
-	7Alie/yn21TabB7titXbdinXbTfumIahHxvjF
-X-Google-Smtp-Source: AGHT+IF/+B4e2rOwDucRvS4kWT6EeKo58j00U+Ub/62J14Eex9C5zjjnxt5zAjMaLCrIZo2JrYvwnhV20MJ6wjBJhW4=
-X-Received: by 2002:a05:6000:b01:b0:366:dfc4:3790 with SMTP id
- ffacd0b85a97d-372fd98d681mr1189198f8f.0.1724242136775; Wed, 21 Aug 2024
- 05:08:56 -0700 (PDT)
+        bh=+ZR2V02XpqNEW9fvu30UGOqjOdE3SQr9bcH8M/YKkZE=;
+        b=IKadCrgWzZHSmR5QNZMvPkAIUQOyI4LFSCOk6++mhuhlsDbeKxq22Kfr9PFD4FfsVV
+         tXppVpq6wbGaqvzb5FGmowBw5r5UxR2JbswmfVjDRJ0VDkggn6/R6HJwjjROS79OWtwN
+         X4E9IGnY5au6O4gVK/rZuyyCF7uusdY1fiJj0GCrOyIV+Id2F7LsGHt6AdH6MiNq33uc
+         y0G93OVIAQ7Wa11PZvi84GXTyAwBW9qEkDYqk+bZuI02sTk7C/0qgRR0PfVYnBSphg31
+         803DmNqYYzdCvZWIHmGwV2Taa1VSD5vR5vEXb3Ypnl+uFyjwhUNAxCTAGpJ5/EwkBKA9
+         vwOw==
+X-Forwarded-Encrypted: i=1; AJvYcCV8f2KCVc/OBxI+nOOqquSGYrBD39rHeEIsskDFcQUuYzqmSnHOv3U9R4U0tXmP61DFq1SLrJJrvS2WwYlffg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxKuy/WvzysfrWaFa8oJMbzCOMxx/ffExON5vss4Vs5PvypUFVN
+	IzT+TA3Ed//djF259mN+0x0dMTWDgXiU7s9ad5n6TkK6YgABtWNHhoNbIEQCCeMojbtkugfufbh
+	LAhZFn1XG4muTuvxh+tW1zr6mcFlkv/WVJC/3
+X-Google-Smtp-Source: AGHT+IE+WRPQ5cxJkts/8lQ1Pyrz4IDfgbmZOe9kRkxkJ6+Ctq49hnrFtuGR4cuPoH3txY4c4UXweZZ+1LQnmVHuF+A=
+X-Received: by 2002:a05:600c:4e91:b0:426:6f5f:9da6 with SMTP id
+ 5b1f17b1804b1-42abf096794mr15321995e9.27.1724248063553; Wed, 21 Aug 2024
+ 06:47:43 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240819153656.28807-2-vadorovsky@protonmail.com>
-In-Reply-To: <20240819153656.28807-2-vadorovsky@protonmail.com>
+References: <20240819153656.28807-2-vadorovsky@protonmail.com> <CAH5fLghOFYxwCOGrk8NYX0V9rgrJJ70YOa+dY1O0pbNB-CoK=w@mail.gmail.com>
+In-Reply-To: <CAH5fLghOFYxwCOGrk8NYX0V9rgrJJ70YOa+dY1O0pbNB-CoK=w@mail.gmail.com>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 21 Aug 2024 14:08:44 +0200
-Message-ID: <CAH5fLghOFYxwCOGrk8NYX0V9rgrJJ70YOa+dY1O0pbNB-CoK=w@mail.gmail.com>
+Date: Wed, 21 Aug 2024 15:47:31 +0200
+Message-ID: <CAH5fLgiRPOVRsF5yz6d-fOciHg1EcwjD21eAgu4sSynSSsgf5A@mail.gmail.com>
 Subject: Re: [PATCH RESEND v5] rust: str: Use `core::CStr`, remove the custom
  `CStr` implementation
 To: Michal Rostecki <vadorovsky@gmail.com>
@@ -83,37 +83,46 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Aug 19, 2024 at 5:39=E2=80=AFPM Michal Rostecki <vadorovsky@gmail.c=
-om> wrote:
+On Wed, Aug 21, 2024 at 2:08=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
+rote:
 >
-> From: Michal Rostecki <vadorovsky@gmail.com>
+> On Mon, Aug 19, 2024 at 5:39=E2=80=AFPM Michal Rostecki <vadorovsky@gmail=
+.com> wrote:
+> >
+> > From: Michal Rostecki <vadorovsky@gmail.com>
+> >
+> > `CStr` became a part of `core` library in Rust 1.75. This change replac=
+es
+> > the custom `CStr` implementation with the one from `core`.
+> >
+> > `core::CStr` behaves generally the same as the removed implementation,
+> > with the following differences:
+> >
+> > - It does not implement `Display`.
+> > - It does not provide `from_bytes_with_nul_unchecked_mut` method.
+> > - It has `as_ptr()` method instead of `as_char_ptr()`, which also retur=
+ns
+> >   `*const c_char`.
+> >
+> > The first two differences are handled by providing the `CStrExt` trait,
+> > with `display()` and `from_bytes_with_nul_unchecked_mut()` methods.
+> > `display()` returns a `CStrDisplay` wrapper, with a custom `Display`
+> > implementation.
+> >
+> > `DerefMut` implementation for `CString` is removed here, as it's not
+> > being used anywhere.
+> >
+> > Signed-off-by: Michal Rostecki <vadorovsky@gmail.com>
 >
-> `CStr` became a part of `core` library in Rust 1.75. This change replaces
-> the custom `CStr` implementation with the one from `core`.
+> A few comments:
 >
-> `core::CStr` behaves generally the same as the removed implementation,
-> with the following differences:
->
-> - It does not implement `Display`.
-> - It does not provide `from_bytes_with_nul_unchecked_mut` method.
-> - It has `as_ptr()` method instead of `as_char_ptr()`, which also returns
->   `*const c_char`.
->
-> The first two differences are handled by providing the `CStrExt` trait,
-> with `display()` and `from_bytes_with_nul_unchecked_mut()` methods.
-> `display()` returns a `CStrDisplay` wrapper, with a custom `Display`
-> implementation.
->
-> `DerefMut` implementation for `CString` is removed here, as it's not
-> being used anywhere.
->
-> Signed-off-by: Michal Rostecki <vadorovsky@gmail.com>
+> * I would probably add CStrExt to the kernel prelude.
+> * I would probably remove `from_bytes_with_nul_unchecked_mut` and keep
+> `DerefMut for CString` instead of the other way around.
+> * Perhaps we should remove the `c_str!` macro and use c"" instead?
 
-A few comments:
+Ah, also, please add this tag:
 
-* I would probably add CStrExt to the kernel prelude.
-* I would probably remove `from_bytes_with_nul_unchecked_mut` and keep
-`DerefMut for CString` instead of the other way around.
-* Perhaps we should remove the `c_str!` macro and use c"" instead?
+Closes: https://github.com/Rust-for-Linux/linux/issues/1075
 
 Alice
