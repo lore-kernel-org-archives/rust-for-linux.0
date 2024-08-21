@@ -1,81 +1,110 @@
-Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3998614A624
-	for <rust-for-linux@vger.kernel.org>; Wed, 21 Aug 2024 11:02:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 314601D12E2
+	for <rust-for-linux@vger.kernel.org>; Wed, 21 Aug 2024 11:31:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724238146; cv=none; b=XMgTHTq0comRcteSUuQd84A9GkPSOGL1BJnftSrrONPu+SimBiRdAE5CQfMz7XhgUfAc8jpje7Rb24yPb+9BLPen9yieNTGkTYgdMgsJLgQ60+EJgWsa5JE46Jx4MTiLoSYZ2vttuG/z8MjQ0BR//AZPINmWuXUY3l2PyMGTFsw=
+	t=1724239902; cv=none; b=IIZJY7CvlaR7qWH6wkXZw5Xry1eWNnCugO0VFv8aOu5eRyT1bLSXfzpHNZg3bdxqA32IcXGmY4hqKrkpUU5c/cvxH6HsJGSb/0hw9E2d42xJ7jmXwnSvAvOhvBH0bD29dCyr0hWWtJxD1O0bgGXvYSq1xen2vhMyEEhW8rt1Tvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724238146; c=relaxed/simple;
-	bh=Q69u3s6znEibL2nrdLZJ0oVIBCpsr1Pw9TkJln4Hpw8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hTn+3HPOyks9VylQ95yF6pGtwDr2GTorVYzZ8hoalRguYFyLaoMI/mdEDhM5Mif6DJNT0gmid2rYAAkmL+z9BlBB0q+8/7LU1VY7avW8BQidh+AgiTDyCyoFlbFYDdsim78k1N+TcqD1wHU9U5LWSP9XjGcWOUh7Lh213Hrnu/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=V4L+NE7t; arc=none smtp.client-ip=209.85.210.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1724239902; c=relaxed/simple;
+	bh=RzmfVrWUhBr3jHRQaWjPRIQ5gWenH0/n2KaMEw1Uu7I=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=UWmuLsEmbE2bP68cEwZ5yD3gCr5RLgNFV34AhaTRgNUFMWbEFW4KJXlJgFUzhebXRYKX6Mj5FnK6m54ZBjhcqlHDDZCzy2Ph1F8ljyAPxZw3kmf07CQASPrSEanvw3rV4Qkz3kJ/ldE2xBIav0lECg3RrzL8jKHY1R+rRGGKtPY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=eypalCqS; arc=none smtp.client-ip=185.70.43.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="V4L+NE7t"
-Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-70d2c0ee69fso53730b3a.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 21 Aug 2024 04:02:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724238144; x=1724842944; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/dRbAXO2LsR/RvpbzIEFop2mvkzIduzNIQqtnzKp4nc=;
-        b=V4L+NE7tg5zD7YhYMhaXz8LvdvOMEV4OpTaC8+kA2b0ahgkibgrMbpbCgevAO1EosM
-         cr0PpwvprtcRLwPUnAa+nEI4MtJ0J+eKzJNbE2yhBrwoGjdsHg7HcJTUr49KiuQgyWx0
-         8n0OCur4o0VqGGwZWbEZWtaNZNPNuvJyz5I/NykYVkKzQg8hU26NS2zlkm074v7VkOw7
-         Pr1NRtUamzYOK148lA7B9ouK5StTkgGO7jmCGSWKahaFi0t37JSdYITTyKTUSYu73ZPe
-         LtO07bX+BoVp3FpEAuPfz6SoaQrBHDNPk91QXRTLgLaxKoR/Ec3HclWH/Gsz7FwxhFhu
-         bLFA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724238144; x=1724842944;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/dRbAXO2LsR/RvpbzIEFop2mvkzIduzNIQqtnzKp4nc=;
-        b=MyLrjbj+zxU5FzoBdTIY5ED8lLoEPptbltIq+5Q0MPgtaKqsBn+mhTWvpd+w5aUIlx
-         srgVs6yeJOZMdfTtz/D+3yr5cz4ICJqvV0akDLbStmoa/vt5KwhpCw0Px3CvEjmjILZf
-         MOlfrIAdjo3SJeAvfPPmaHzco9mLTfcsujedp6Qkquab80XpeZx8i3FXWdJNGjyiAGK1
-         pZ/zlWaacTtdwlzv6SbF9WAa6ZkiL78zG//NTu/DRB4MDWAajyeyhtGCvHPIWiha0Nbl
-         0EDbyCcpwYheQQ2LzBBpBRRDipSc07pvAREvj5jqBkKab5HhvsZSpX1br1y1f/lye9AB
-         UhSQ==
-X-Gm-Message-State: AOJu0YzSCpI9tZoDtbYKrvnrp9smH+Ut8u1J4OGNZGCy5U9IhEbVg9dQ
-	kU3eES2tnm84hvIgluFrQqFX6isBnP35iBUBdUwaLRQcN9TiNHE0lz2XPeVKdo6kCIiPubC4aMe
-	8wu+FuWkfqB15dl54nURhcTHO5pQ0P5oO
-X-Google-Smtp-Source: AGHT+IFh1cgEgi9FpP9ye1LlwndvjkMRTA2gcAQyGPPFRgTEQKpgzwLch2++kcvNTmBEP3vd+wNRHvZR2Vnzy7m+CCM=
-X-Received: by 2002:a05:6a20:9186:b0:1c4:88e1:7c3b with SMTP id
- adf61e73a8af0-1cad9ff33bfmr1227636637.1.1724238144412; Wed, 21 Aug 2024
- 04:02:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="eypalCqS"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=b5zllgnbznfshfdmc3hqiefzqa.protonmail; t=1724239892; x=1724499092;
+	bh=6e+KrV8eK1jYjXKD3gCoNRPU6HnobC3E51PBNfGSs0M=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=eypalCqS/3lcRKIK7Itf6QjrE8EkvGixvbUpDqFJK6fAlt8FJgW+ITFZMWlthTOz6
+	 xSroeFZZ7GsNugNqDWeOQnWPyBkTvZZkl4is5J5KPDeNuqjhCmHVrb0emAlYQgmCfB
+	 vWnCUuhW7d507QFUztq5qX4AvzRXLfzn/CQdaAW8L7Bo5r3/tfi3lKGrq6l6S7bLbx
+	 5hq6vUKYxBctn+CTihezafbFoo/6L+2gm2CKmTYrLaJ/mhg5U7CXFXecS6UHWBOzLD
+	 N19zht4joffrjgFFsNoVvdW/caih+kcyqxj4pxwRnz/h4HZbe38aANWZLFoxmDtreM
+	 PrBiEq1ZKPflQ==
+Date: Wed, 21 Aug 2024 11:31:25 +0000
+To: Matthew Maurer <mmaurer@google.com>, Sami Tolvanen <samitolvanen@google.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Masahiro Yamada <masahiroy@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, Petr Pavlu <petr.pavlu@suse.com>, Neal Gompa <neal@gompa.dev>, Hector Martin <marcan@marcan.st>, Janne Grunau <j@jannau.net>, Asahi Linux <asahi@lists.linux.dev>, linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v2 16/19] gendwarfksyms: Add support for reserved structure fields
+Message-ID: <c6c1e84a-40f3-41a5-a732-f1cf06521691@proton.me>
+In-Reply-To: <CAGSQo01kCUd64nB7C7Ssy1N=UBpOP3bORsRDcHJ1k2CqkbKsfQ@mail.gmail.com>
+References: <20240815173903.4172139-21-samitolvanen@google.com> <20240815173903.4172139-37-samitolvanen@google.com> <2024081600-grub-deskwork-4bae@gregkh> <CABCJKuedc3aCO2Or+_YBSzK_zp9zB8nFwjr-tK95EBM3La1AmA@mail.gmail.com> <2024081705-overarch-deceptive-6689@gregkh> <ef6f7294-0afe-46af-8714-ed4a4aaee558@proton.me> <20240819193851.GA4809@google.com> <a76f9422-4001-416a-a31b-37ab7dcb17f4@proton.me> <CABCJKudAF0=29js8SDcYY5r6kM7RBveTrZH9RyECNGqkcqy=nw@mail.gmail.com> <CAGSQo01kCUd64nB7C7Ssy1N=UBpOP3bORsRDcHJ1k2CqkbKsfQ@mail.gmail.com>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: 6a5a4130b8ba58dcb7d4dbdbde33889b843fe919
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240819205731.2163-1-jubalh@iodoru.org>
-In-Reply-To: <20240819205731.2163-1-jubalh@iodoru.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 21 Aug 2024 13:02:12 +0200
-Message-ID: <CANiq72kJcnMF=xoBTC0fW8vu6PQ7+hTMG0pCz62GgHEK7oiJDQ@mail.gmail.com>
-Subject: Re: [PATCH] rust: fix typos in documentation
-To: Michael Vetter <jubalh@iodoru.org>
-Cc: rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Aug 19, 2024 at 11:03=E2=80=AFPM Michael Vetter <jubalh@iodoru.org>=
- wrote:
->
-> Fix spelling mistakes in code comments.
->
-> Signed-off-by: Michael Vetter <jubalh@iodoru.org>
+On 20.08.24 22:03, Matthew Maurer wrote:
+>>> The way `KAbiReserved` is implemented is via a `union` (maybe a bit
+>>> ironic, considering what I said in my other replies, but in this case,
+>>> we would provide a safe abstraction over this `union`, thus avoiding
+>>> exposing users of this type to `unsafe`):
+>>>
+>>>     #[repr(C)]
+>>>     pub union KAbiReserved<T, R> {
+>>>         value: T,
+>>>         _reserved: R,
+>>>     }
+>>
+>> I like this approach even better, assuming any remaining issues with
+>> ownership etc. can be sorted out. This would also look identical to
+>> the C version in DWARF if you rename _reserved in the union to
+>> __kabi_reserved. Of course, we can always change gendwarfksyms to
+>> support a different scheme for Rust code if a better solution comes
+>> along later.
 
-Applied to `rust-fixes` -- thanks everyone!
+Yeah sure, that should also then work directly with this patch, right?
 
-    [ Reworded slightly. - Miguel ]
+>> Sami
+>=20
+> Agreement here - this seems like a good approach to representing
+> reserved in Rust code. A few minor adjustments we discussed off-list
+> which aren't required for gendwarfksyms to know about:
+> 1. Types being added to reserved fields have to be `Copy`, e.g. they
+> must be `!Drop`.
+> 2. Types being added to reserved fields must be legal to be
+> represented by all zeroes.
+> 3. Reserved fields need to be initialized to zero before having their
+> union set to the provided value when constructing them.
+> 4. It may be helpful to have delegating trait implementations to avoid
+> the couple places where autoderef won't handle the conversion.
+>=20
+> While I think this is the right solution, esp. since it can share a
+> representation with C, I wanted to call out one minor shortfall - a
+> reserved field can only be replaced by one type. We could still
+> indicate a replacement by two fields the same as in C, by using a
+> tuple which will look like an anonymous struct. The limitation will be
+> that if two or more new fields were introduced, we'd need to edit the
+> patches accessing them to do foo.x.y and foo.x.z for their accesses
+> instead of simply foo.y and foo.z - the autoref trick only works for a
+> single type.
 
+We will have to see how often multiple fields are added to a struct. If
+they are infrequent and it's fine for those patches to then touch the
+field accesses, then I think we can just stick with this approach.
+If there are problems with that, we can also try the following:
+all fields of kABI structs must be private and must only be accessed
+through setters/getters. We can then modify the body the setters/getters
+to handle the additional indirection.
+
+If that also sounds too much work compared to the C side, then we can
+get in touch with the Rust language folks and see if they can provide us
+with a better solution.
+
+---
 Cheers,
-Miguel
+Benno
+
