@@ -1,129 +1,98 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 079F2F510;
-	Wed, 21 Aug 2024 00:22:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63BB41649C6;
+	Wed, 21 Aug 2024 10:50:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724199745; cv=none; b=TrS+JuON2l1tL9Wsc5GO3zOaEB1M66bGAvt0MEo1qWK7zGofNnQ5Jdkhk1gsh1ijxDZMok6/NlPadUE0Sl3qrjYB64UnanwPxQ+9WZHgmB7wzOpyukW7HLEhekEcF6WHBqsz73YUaafV9SzFWe27cHoJvK9EB82ipUzoYvBCu4A=
+	t=1724237420; cv=none; b=dIkNnYQ0GkVk/fOuCC99gIHI1Iyiw4TF8nS9L75T2ly/gognMHPMzYNXDSgsJtkt9fcrfGa0n7jiwREbE+W1fJ+cARsqYn5uW67Zt/llsFdKePC6cptDF2006a3nYAsy3+fan2P2t1yRG59LIg04064GG1mQOC5+X/CdzCS8p3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724199745; c=relaxed/simple;
-	bh=fOa1cEJ/E2+mB7MJ4he/MyTHRycelX40z6QjkAR1dBM=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=uRsHQcf4euCKCPkrG4mIL3zxwzEM4clpWflVS7pF2AIr563GVi1bmu5itiJ0/e6a9Dx/53h6ZjjkiS1d+cSm5U54Wdr5JG1Xp8vcv38aYHRCbHXVJDpQAexti5a526WSDP4w89EgWzWN4+WKa8lu45UGDjk/F/dnddqsRSDCZVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ht1lMh+x; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1724237420; c=relaxed/simple;
+	bh=JXDxYM3WmdtyuoT6cF8661y7zZfPtQ9LFgGpjPO8Te4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=QeF/CDiEULZHKqSsy6XW6FBio94H/Zi2SMuW2yOnQZvgAsI8YA1Uon07T4Oy6ssQbkDykz1yDxNRQy86dS9dPv4s4Q2gn7em8N2tFMF354AqEjiwzIwo0GZxtA/ZtYz3wSpa3shBpldyzq26PI+1c2G466qsY5h0zkD3ANwF60Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=QsO1ABO5; arc=none smtp.client-ip=209.85.216.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ht1lMh+x"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11072C4AF09;
-	Wed, 21 Aug 2024 00:22:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724199744;
-	bh=fOa1cEJ/E2+mB7MJ4he/MyTHRycelX40z6QjkAR1dBM=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Ht1lMh+x9A9cvtvfZBvR9gSWwn+sG1G9zai0TmOyvsOk6cSYTTkqkMNaKmBdHL1mo
-	 Qw8d3zzqk89HobZPx0OjxNu4a+JWH3+PPXHX/P77NLY6lNyRHaDNeLb2xcWoBTgFRZ
-	 DYIIHmYFV0kfs6lGJbTcJgJ9ulzSpzWmOBFR/DIM=
-Date: Wed, 21 Aug 2024 08:22:21 +0800
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: FUJITA Tomonori <fujita.tomonori@gmail.com>, netdev@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, andrew@lunn.ch, tmgross@umich.edu,
-	miguel.ojeda.sandonis@gmail.com, benno.lossin@proton.me,
-	aliceryhl@google.com
-Subject: Re: [PATCH net-next v6 1/6] rust: sizes: add commonly used constants
-Message-ID: <2024082100-estate-eccentric-c1a6@gregkh>
-References: <20240820225719.91410-1-fujita.tomonori@gmail.com>
- <20240820225719.91410-2-fujita.tomonori@gmail.com>
- <2024082121-anemic-reformed-de75@gregkh>
- <93e4d643-a38b-4416-9097-af11b9c60f56@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="QsO1ABO5"
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-2d42c59df79so115367a91.1;
+        Wed, 21 Aug 2024 03:50:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1724237415; x=1724842215; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qmF4fnNQO06v6glKq1+P4ngcb0gtyYmsdANRi5vGz5E=;
+        b=QsO1ABO5pnd9Sb+Kez7FE89ozgGDRxr1nJ1mRQeuqS+r0GHc1pRVZ0CGf/GG8a1b6l
+         Ng9pYC/i35JFRAJflbKRo/B2RZq+NiPbQSibsgYU/BQ/jegk8sLki3bJU7ahqt+sGM4+
+         1Zu+c+Q6Jn8Bj11Hec8eKAk9QoKlc5JppKqKjfDy1sWfhE6CgLf4qRtzmfyPh3eHzcAC
+         f3t5ICbEFuL7IR4RPiAKwBIwtzwZRvTfUS0uoiFM4woDmbgHKq8dEjRHSFDhZnYk8Vmd
+         aFR4GDk9xZjdLOixvzt5Pkd7MOMOVQy/6RyZ03ENB3uU0qcusanvvPjwkAXs1rCNtJVE
+         v0GQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724237415; x=1724842215;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=qmF4fnNQO06v6glKq1+P4ngcb0gtyYmsdANRi5vGz5E=;
+        b=cnZD7TJ+zzJNgXosxb5vcjkuFcmOTdWZA+4mBkFkFfJc34WgkDvBH9Uk1eLOHly1vJ
+         wBVkilEsPQLUEMVamb3ry/KlM/khzSPhDqOHrM69tPsSjnWNQp3UtIyw37RlT30asMN2
+         OALEjYqWVHrX+nj1jbqwU+meq5PftPLVxy4d4hW69mHTX2seYwLDuYEiOYmJHQEh/YKG
+         3dV/DdjxS5J8Y0aAIy0+vv4OlzNZJlAZdtXD8oMF8QN9BKPfP62uKHMhY2A1RKULKlv2
+         yhXVTPhEv/pb/KYMLx7CLdW5cKX1ioMkyySVtqeSSYM/fm/CMwXqtje0hw/fMLga8C6T
+         bhIA==
+X-Forwarded-Encrypted: i=1; AJvYcCUIjbVOrA79i4BAefa6SaT8zbTO2ikxNLwLXchh/8SgFdW/gL+W/l/nkE6uHhVaLh5CQwius1lDI80FWhZ3@vger.kernel.org, AJvYcCUbdLHOcLYT9UNzyKrC1duNE5R9KfGSEiKUPOpA6ePC3vADrvFul/lO9dk9W6DPczCiKigc7E2OXmYPKUB+C3o=@vger.kernel.org, AJvYcCVoziu6ojXe14gwoOmEgPuHEwoi18FuT1X9/uWgkK3RbrmJIGl45VvkUAp3m6nZU4XFtPW0FzJMzVXOIA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YysnmVmdPkpj16Mgqyzu8Vz8pLUFLdjRw4y3yCAejwxFsSrQtHP
+	c+1OattqxoLKgOScXIGvHb6mYuWFQjp4fanKN0FoZN3hijf5e/1PTg9912HD3vBZFvUiF9iBR9e
+	/vx4i1nodeOZ0HACKABKpDEHL4F0n0A==
+X-Google-Smtp-Source: AGHT+IFREzv1+qeMvAZLqHsdIGcPJkHZSWdtoUsO7gZARHtF1qJ77Zpp82brKZTWwq1l1xUs2ssU13KhcBvDg5Ho+fM=
+X-Received: by 2002:a17:90b:4c04:b0:2c2:f501:20f8 with SMTP id
+ 98e67ed59e1d1-2d5e98bd64fmr1170817a91.0.1724237415444; Wed, 21 Aug 2024
+ 03:50:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <93e4d643-a38b-4416-9097-af11b9c60f56@kernel.org>
+References: <20240815074519.2684107-2-nmi@metaspace.dk>
+In-Reply-To: <20240815074519.2684107-2-nmi@metaspace.dk>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 21 Aug 2024 12:50:03 +0200
+Message-ID: <CANiq72ncqgRU-DNYqGEZezkNQ-VGU4pYP7XZzKAHkLye_YWbUQ@mail.gmail.com>
+Subject: Re: [PATCH 1/2] rust: fix export of bss symbols
+To: Andreas Hindborg <nmi@metaspace.dk>
+Cc: Jens Axboe <axboe@kernel.dk>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, 
+	"Behme Dirk (XC-CP/ESB5)" <Dirk.Behme@de.bosch.com>, 
+	"linux-block@vger.kernel.org" <linux-block@vger.kernel.org>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Aug 21, 2024 at 01:54:43AM +0200, Danilo Krummrich wrote:
-> On 8/21/24 1:41 AM, Greg KH wrote:
-> > On Tue, Aug 20, 2024 at 10:57:14PM +0000, FUJITA Tomonori wrote:
-> > > Add rust equivalent to include/linux/sizes.h, makes code more
-> > > readable.
-> > > 
-> > > Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> > > Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-> > > Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-> > > Reviewed-by: Trevor Gross <tmgross@umich.edu>
-> > > Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
-> > > ---
-> > >   rust/kernel/lib.rs   |  1 +
-> > >   rust/kernel/sizes.rs | 26 ++++++++++++++++++++++++++
-> > >   2 files changed, 27 insertions(+)
-> > >   create mode 100644 rust/kernel/sizes.rs
-> > > 
-> > > diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> > > index 274bdc1b0a82..58ed400198bf 100644
-> > > --- a/rust/kernel/lib.rs
-> > > +++ b/rust/kernel/lib.rs
-> > > @@ -43,6 +43,7 @@
-> > >   pub mod page;
-> > >   pub mod prelude;
-> > >   pub mod print;
-> > > +pub mod sizes;
-> > >   mod static_assert;
-> > >   #[doc(hidden)]
-> > >   pub mod std_vendor;
-> > > diff --git a/rust/kernel/sizes.rs b/rust/kernel/sizes.rs
-> > > new file mode 100644
-> > > index 000000000000..834c343e4170
-> > > --- /dev/null
-> > > +++ b/rust/kernel/sizes.rs
-> > > @@ -0,0 +1,26 @@
-> > > +// SPDX-License-Identifier: GPL-2.0
-> > > +
-> > > +//! Commonly used sizes.
-> > > +//!
-> > > +//! C headers: [`include/linux/sizes.h`](srctree/include/linux/sizes.h).
-> > > +
-> > > +/// 0x00000400
-> > > +pub const SZ_1K: usize = bindings::SZ_1K as usize;
-> > > +/// 0x00000800
-> > > +pub const SZ_2K: usize = bindings::SZ_2K as usize;
-> > > +/// 0x00001000
-> > > +pub const SZ_4K: usize = bindings::SZ_4K as usize;
-> > > +/// 0x00002000
-> > > +pub const SZ_8K: usize = bindings::SZ_8K as usize;
-> > > +/// 0x00004000
-> > > +pub const SZ_16K: usize = bindings::SZ_16K as usize;
-> > > +/// 0x00008000
-> > > +pub const SZ_32K: usize = bindings::SZ_32K as usize;
-> > > +/// 0x00010000
-> > > +pub const SZ_64K: usize = bindings::SZ_64K as usize;
-> > > +/// 0x00020000
-> > > +pub const SZ_128K: usize = bindings::SZ_128K as usize;
-> > > +/// 0x00040000
-> > > +pub const SZ_256K: usize = bindings::SZ_256K as usize;
-> > > +/// 0x00080000
-> > > +pub const SZ_512K: usize = bindings::SZ_512K as usize;
-> > 
-> > Why only some of the values in sizes.h?
-> > 
-> > And why can't sizes.h be directly translated into rust code without
-> > having to do it "by hand" here?  We do that for other header file
-> > bindings, right?
-> 
-> Those are all generated bindings from C headers, e.g. `bindings::SZ_2K `, but
-> bindgen isn't guaranteed to assign the type we want (`usize` in this case), plus
-> for size constants having the `bindings::` prefix doesn't really add any value.
-> 
-> Rust could also define those without using bindings at all, but this was already
-> discussed in earlier versions of this series.
+On Thu, Aug 15, 2024 at 9:49=E2=80=AFAM Andreas Hindborg <nmi@metaspace.dk>=
+ wrote:
+>
+> From: Andreas Hindborg <a.hindborg@samsung.com>
+>
+> Symbols in the bss segment are not currently exported. This is a problem
+> for rust modules that link against statics, that are resident in the kern=
+el
+> image. This patch enables export of symbols in the bss segment.
+>
+> Fixes: 2f7ab1267dc9 ("Kbuild: add Rust support")
+> Signed-off-by: Andreas Hindborg <a.hindborg@samsung.com>
 
-Then this information should probably go in the changelog text so that
-others don't keep asking the same question :)
+Applied to `rust-fixes` -- thanks everyone!
 
-thanks,
+(I am sending the notice twice for this series, since somehow the
+email threads got split into two in Lore, which also broke `b4`)
 
-greg k-h
+    [ Reworded slightly. - Miguel ]
+
+Cheers,
+Miguel
