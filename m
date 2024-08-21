@@ -1,99 +1,119 @@
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12F6A192D66;
-	Wed, 21 Aug 2024 11:54:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CABF71531C1
+	for <rust-for-linux@vger.kernel.org>; Wed, 21 Aug 2024 12:08:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724241291; cv=none; b=H2DDxmM8xbzu6v8EQ8MfmPVq0o5tJa8ZllC5zDn3J2ZFmw/DATPCiM+SFzWp41eMSuG9XEEI0uBGNO1TRqYNfAevBs6q2o9sRUrnM1v1F+BL/HKodRVfgHR1lzHXjhG/Ie5OQWkxFwRgxX5QsFgOh9bJ3Xsuz0aO3ngTA5Lbl9s=
+	t=1724242140; cv=none; b=VYrFMSu5HoIY+TDUhDh4Cx42NcRhLbGsfUT7BiA9uzMQwtdD3li6hUPHDGFFRj240USqCpVtD0V76uek63mwifvfTGZ1k0qaHtTozVliMm3M4OAqUO7yPdCB2QJ+nBc5YaTUweELo5lRzkji+mzO7RypOafa6kOukMkJ0P7Qc+8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724241291; c=relaxed/simple;
-	bh=JBtWbazJKUA6/dJ6r9f034nEMDUsTMqHc2oC7nYIFtY=;
+	s=arc-20240116; t=1724242140; c=relaxed/simple;
+	bh=DA1X9Ve0Vn6diqrYfPjFkkduWMPJiWV9pT4xIJEPvqY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=JYKHS3v8TQKa4llle4mm5014r7VBJmHyxYCFYqO+qwj0JzpSA5jf5t4eoC8a363J1TQ03MUAk+N6oWOMa02GbQCPpMNUPCAfYplMtMFyFRsdaz2d7mGU2flUC/yafCegeLrL7fFw31jUTXAu6RgZ9kt2AwwLJNovitmrpXHfO8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BpeJivBb; arc=none smtp.client-ip=209.85.216.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=jtvQXtRqVq0haJmUZ7NWuVjVW/aCagI9obpLE89JMn+iva2QwkKX7v38j42oNbJQoJi4SufJ1HER9JbYez3ObELhiHUbS4ViAbIgJgBeFl4y92pC/3TwueHa9GwyGcMIaPkG1rypq807jwdM2chuLan4BP75frkPt6MHIVxRtWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=el4ac9Ch; arc=none smtp.client-ip=209.85.128.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BpeJivBb"
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-2d3ba497224so88682a91.0;
-        Wed, 21 Aug 2024 04:54:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="el4ac9Ch"
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-428fb103724so3830155e9.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 21 Aug 2024 05:08:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724241289; x=1724846089; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1724242137; x=1724846937; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=A1YX2miHAUi0+/dGV7pb1+2w+ezV83KYwxdEEwMmR18=;
-        b=BpeJivBbt9W7dcFlaHjEGwOzJnLBRz9HI2ZQMS0fwWAlo4ZyzUvAvDXXOjjH4YQNtU
-         ug9tNWmRm7qp7QICQG/NNESfmJPEI9J+Mna/36wxmoadc8fP7syCjvlBARGfvvi/T53g
-         vhwv3xGUOhr3wDBqlLN+LxQGGN4s6uB+BT84R0gTFM2bOkkutowrwAqjIY+WckFeWfQY
-         jdJG7aefb98GaXOIbPlUFGDQtTBHx0BWwjnYWGClsoVCiRV38OROTNVjyM0lAosWQa2Q
-         T9Yfge9QVQiIP5ZwjOS2fozkKrjMO7hzBWZGZ0KwvcNtnm0sala7qCeODRkM6AisC2dF
-         oUzA==
+        bh=mDwqhRHhMBQJ/+TLyoRpyJFlfsxxIUrIdKu8FSn6JKQ=;
+        b=el4ac9ChIdU3dbBwOzt1Ipwcxb58MCdsiuKZO3aBWpLg7jNbUs066ybdpBPeCYXCTn
+         7gicQIB1zld37AXYhH5LqLi5QzYsaMWDfWln8mU8FGHaTmcwg4plNC7FxPOCOVr1WoeM
+         YJZOMOBMehuGPWIDYYukie6A1j0LoQbimC9sEqdsljqKu2F987/mcxABHlMHETQXW/6z
+         2PlpI3gKBbvHJPY3tna82klmpc1iFjRXYV7Gg3MfHccFrdUy+/skUWRs5xU34Y+v9IL/
+         xCOcuZhEAYb1Wk5NB3832Z2tKroexKQrUsZfhTf+V0Zy/o9NLuwfCAnn6Vdx9huXTllR
+         ODPg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724241289; x=1724846089;
+        d=1e100.net; s=20230601; t=1724242137; x=1724846937;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=A1YX2miHAUi0+/dGV7pb1+2w+ezV83KYwxdEEwMmR18=;
-        b=i8peSddl1E4an0b3BmhuNF/iRq9DOgdbRJbzMQ7bhNYE4RiBUVhyGolPKw7KT1uI8J
-         lgE4Z8yJkrx3C26F11gWa5HDCVhuM4fAFNJRfCEyYHcelbtTpnsu4aZv+fVOKcVF3kzo
-         4u3HhUVdikB0Kn894yFz4Jym23FkYnaL/G8JFwnrGgQDX7kV8HB3RF5pQD7tq3Fg0uxe
-         mOodArpvUer+RWWtzgkym4+SARhfvTCiW/WLXGvszkrTxBQpSWMrfUWCv/BeKYg+AUKo
-         yb3leMoB2dGwCVu9AgQ6Wz2sqyAVq8jstODpJuG5dvPSCUieLxwzmCFmnZZlJd2C+zYc
-         5UGA==
-X-Forwarded-Encrypted: i=1; AJvYcCUNL3FaDyYRxRIEYnhMzU21EeeUdr+kbsUfoS4UILZDgjHQlRn0yjn12lRRVmC6iyXrIQv9inqgvFafxTgQ@vger.kernel.org, AJvYcCWxh8imdEBhkidyyojED98PzhdNHjzq0kYegL6si3DL09A8TyLS8UTKm1f0XXsMAAzWnAEpBkNai1RMgQ==@vger.kernel.org, AJvYcCXs2GYqD8ZLGHAYMq9WP9s4Ki0s0HwCPQdUsugADX8OOWGK5W+mGQZPtWEqihxauYrA5Ba02DlHnteLjbOuJ8U=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyaV+9hrmuqeMRdGWljL3ks//VeTcZ0qCByv6OHBYFy15C5tjhw
-	Ggf8gTOAxA/3h54FXc5iHWvw7sjgijYYDQV/IhP5imm3lBo8XO50Jt8y1nNOQS9klG3EF71PHg+
-	8qFPp5tkrXaibmVkiwjkIaQbgLFk=
-X-Google-Smtp-Source: AGHT+IFHrNgx7Mk0k6i86ljxev3co52Px3UGqMq0OFJcxXsGwjnWhDqw7fIp0dTObjIm3aRC6xk0+3wBT5j4CIvDW70=
-X-Received: by 2002:a17:90b:2d4f:b0:2c2:d11b:14dd with SMTP id
- 98e67ed59e1d1-2d5e98c2845mr1267711a91.0.1724241289195; Wed, 21 Aug 2024
- 04:54:49 -0700 (PDT)
+        bh=mDwqhRHhMBQJ/+TLyoRpyJFlfsxxIUrIdKu8FSn6JKQ=;
+        b=uUeNspdtAc7oEx9pPyAs93vzAr3PJPvw0Tx/hxcvuxhqQOHzPIbOhHymwENXZAfTJd
+         wYop8cXvrj8UOP3wUbIZbVcnnCDr7pQOWpI9XupJJB4PPqgRkMRvPVppZRLRo3FcSlUB
+         zmtDC/GqyAupX80qJ1weOAoB7SEE0Rdgw8ROUo8mYfP+0n/cfaIlsqNsxn7bHHPdwrDI
+         r4l3PfcLpK74grJsuzTBlsIXGWHRfK2N0bWSXmluoFy+v0VDLRYrEvFCo7L5EtpmWfnT
+         YEeOzDHFsA8zQCsiJ0BEfCLhJ190tBIK3Bue1c/Y20KvWc9sJUqr2IKV0iZSL6f65n3e
+         yFnA==
+X-Forwarded-Encrypted: i=1; AJvYcCWxjlHBECnjOdvsq8Hr9cKSzSiLpgB3asyBHofzZEmyZpkoV4lHdUcwYw3TZ6Q9nya3LE6t5hvI86UCO21oCQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw1twJnG4bzPhv5OESZazdw77+8QXGcbOm3fZ/v/mX+I+fixRHY
+	0Sk64EkD7SqKzXgwXedNTk+KEG75HI+BeOzdnsczfvWoaO8Ew/8fAxddl0E8pC5lk5p0F9XV7ou
+	7Alie/yn21TabB7titXbdinXbTfumIahHxvjF
+X-Google-Smtp-Source: AGHT+IF/+B4e2rOwDucRvS4kWT6EeKo58j00U+Ub/62J14Eex9C5zjjnxt5zAjMaLCrIZo2JrYvwnhV20MJ6wjBJhW4=
+X-Received: by 2002:a05:6000:b01:b0:366:dfc4:3790 with SMTP id
+ ffacd0b85a97d-372fd98d681mr1189198f8f.0.1724242136775; Wed, 21 Aug 2024
+ 05:08:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240815074519.2684107-1-nmi@metaspace.dk> <CANiq72mCsBO01FHbf4D0h0yvTV=TbpgO-jeTHLL39ae-JpMLZg@mail.gmail.com>
- <CANiq72mrwBs_YTcBvge4ME5bwSLKbNaoFU+KZw3EfCTyGjiJ9w@mail.gmail.com>
-In-Reply-To: <CANiq72mrwBs_YTcBvge4ME5bwSLKbNaoFU+KZw3EfCTyGjiJ9w@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 21 Aug 2024 13:54:36 +0200
-Message-ID: <CANiq72mBonwX43d4y5VpZH+1ZWTnJxMfX889Aa3HHmY0_m5Mvg@mail.gmail.com>
-Subject: Re: [PATCH 0/2] rust: fix erranous use of lock class key in rust
- block device bindings
-To: Andy Whitcroft <apw@canonical.com>, Joe Perches <joe@perches.com>, 
-	Andreas Hindborg <nmi@metaspace.dk>
-Cc: Jens Axboe <axboe@kernel.dk>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Andreas Hindborg <a.hindborg@samsung.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, 
-	"Behme Dirk (XC-CP/ESB5)" <Dirk.Behme@de.bosch.com>, 
-	"linux-block@vger.kernel.org" <linux-block@vger.kernel.org>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+References: <20240819153656.28807-2-vadorovsky@protonmail.com>
+In-Reply-To: <20240819153656.28807-2-vadorovsky@protonmail.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Wed, 21 Aug 2024 14:08:44 +0200
+Message-ID: <CAH5fLghOFYxwCOGrk8NYX0V9rgrJJ70YOa+dY1O0pbNB-CoK=w@mail.gmail.com>
+Subject: Re: [PATCH RESEND v5] rust: str: Use `core::CStr`, remove the custom
+ `CStr` implementation
+To: Michal Rostecki <vadorovsky@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Brendan Higgins <brendan.higgins@linux.dev>, David Gow <davidgow@google.com>, 
+	Rae Moar <rmoar@google.com>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
+	Trevor Gross <tmgross@umich.edu>, Nathan Chancellor <nathan@kernel.org>, 
+	Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, 
+	Justin Stitt <justinstitt@google.com>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, 
+	Finn Behrens <me@kloenk.dev>, Manmohan Shukla <manmshuk@gmail.com>, 
+	Valentin Obst <kernel@valentinobst.de>, Yutaro Ohno <yutaro.ono.418@gmail.com>, 
+	Asahi Lina <lina@asahilina.net>, Danilo Krummrich <dakr@redhat.com>, Tiago Lam <tiagolam@gmail.com>, 
+	Charalampos Mitrodimas <charmitro@posteo.net>, Tejun Heo <tj@kernel.org>, Roland Xu <mu001999@outlook.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, 
+	netdev@vger.kernel.org, llvm@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Aug 21, 2024 at 1:36=E2=80=AFPM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
+On Mon, Aug 19, 2024 at 5:39=E2=80=AFPM Michal Rostecki <vadorovsky@gmail.c=
+om> wrote:
 >
-> Dirk noticed the Zulip link was broken due to a rename of the topic.
-> Normally I try to remember to convert them into message links (which
-> are permalinks) and to shorten them when they are too long too -- done
-> now.
+> From: Michal Rostecki <vadorovsky@gmail.com>
 >
-> For context, Zulip is gaining the ability to get topic permalinks (see
-> https://github.com/zulip/zulip/issues/21505 -- we gave them feedback a
-> year ago that it would be useful for kernel commits), though I think
-> it is not exposed through the UI yet.
+> `CStr` became a part of `core` library in Rust 1.75. This change replaces
+> the custom `CStr` implementation with the one from `core`.
+>
+> `core::CStr` behaves generally the same as the removed implementation,
+> with the following differences:
+>
+> - It does not implement `Display`.
+> - It does not provide `from_bytes_with_nul_unchecked_mut` method.
+> - It has `as_ptr()` method instead of `as_char_ptr()`, which also returns
+>   `*const c_char`.
+>
+> The first two differences are handled by providing the `CStrExt` trait,
+> with `display()` and `from_bytes_with_nul_unchecked_mut()` methods.
+> `display()` returns a `CStrDisplay` wrapper, with a custom `Display`
+> implementation.
+>
+> `DerefMut` implementation for `CString` is removed here, as it's not
+> being used anywhere.
+>
+> Signed-off-by: Michal Rostecki <vadorovsky@gmail.com>
 
-It could be a good idea to warn about non-permalinks to Zulip in
-`checkpatch.pl` -- Cc'ing Andy and Joe and created an issue:
+A few comments:
 
-    https://github.com/Rust-for-Linux/linux/issues/1104
+* I would probably add CStrExt to the kernel prelude.
+* I would probably remove `from_bytes_with_nul_unchecked_mut` and keep
+`DerefMut for CString` instead of the other way around.
+* Perhaps we should remove the `c_str!` macro and use c"" instead?
 
-Cheers,
-Miguel
+Alice
