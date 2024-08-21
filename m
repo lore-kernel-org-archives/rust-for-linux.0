@@ -1,128 +1,215 @@
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from GBR01-LO4-obe.outbound.protection.outlook.com (mail-lo4gbr01on2120.outbound.protection.outlook.com [40.107.122.120])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE6091A4B89
-	for <rust-for-linux@vger.kernel.org>; Wed, 21 Aug 2024 13:47:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724248068; cv=none; b=I9uq8fGs2Rrn+TRYQnntRfvTdI89kMjPO8KG2jX5DKjZ2yAyLD43G3l4zdPBJSpxw4FascIt7KwMm4HojK+fQnStBFEsFrXD6tcM2jmNbDYCFQ/l2FcEBgk1k/jeJWfUxbpo9PrnounBgq9dw73tPpuN3DnCrZ2TN3PNNB/Nkbo=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724248068; c=relaxed/simple;
-	bh=gwLjHNTsXHMmlKgeIfCrG8pO4t2Y8x/pcVf6IX7HJS0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=oqdylxslY18JprkIL2OBuh/f+JkFykF6mDlZ+37V893NCE4LrSjf1CkGTprPfpoaU+WxkW9f0YVld4o1mG0irDq785OUKBsZ5qTxwkXKefZRhUOZQ3qy9eNKY/QcUVgDc/TfEZ85lphwpyEOVA+Ij7eymf/ec3FFXAWwpnbYUfw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dolPsNWv; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 484D213BC39;
+	Wed, 21 Aug 2024 15:28:51 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.122.120
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1724254134; cv=fail; b=GNh9oafZSEAHvnNBlkjCn6qBR7vsCU7qzjXm5tBGbZ3xpvHCvxzpAJIwgfoVySoVjp8Hy7TrSabGY3RlwE6aKN7JfzT5evpwvI7F/GsYcY+PuvqO+akqPFDWkp5pO+2xHJEo4XTvT6RgmtAieD9xaSEaIXcsuon9t2dg9QU+w/k=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1724254134; c=relaxed/simple;
+	bh=Lh1TJSX+heedhZtKLaG18g6jb3FQsx0Rt7WTJikzO7g=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=UjArxFrBrVn+P9ehVOPqYIDW2FFi0azk24wDg9BOOmpA+sBpfJfOIGqMpzrNZyzv57w4BZWJTfQHIrzBYoIvPDPLfxSdDfcTFoB2sqsh+vPYHzVcubfAOiykOqXaRSVZFSVV4jXfb010hmSVWlM8rvsP3XgkQyUH116DgdBAaK4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=o3bYRDsh; arc=fail smtp.client-ip=40.107.122.120
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dolPsNWv"
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-429ec9f2155so48418285e9.2
-        for <rust-for-linux@vger.kernel.org>; Wed, 21 Aug 2024 06:47:45 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1724248064; x=1724852864; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+ZR2V02XpqNEW9fvu30UGOqjOdE3SQr9bcH8M/YKkZE=;
-        b=dolPsNWvrSeN1bjtX6ZyZ4JT8coc+48QIJvDg6MwxbHw4pe3mbqEbesmqh2lL+eRSt
-         ReiP3BYXHER5gTs/Jgp7JRX0IWMn6sHNnDz11HD7NaNDq9cJKYxk1YaAP+epj1nRgN9h
-         Sj7nO0Ht/2ie9fOWrMi51EH3Vy6GHn3Gk0K0fchKPqn9daRfq3eI4R9HalWAJ9asFj6h
-         GMAfKvdYGyPmjpsjCxvrZm+xtqrdrSYM4MTJ6uJQuR94rao+lhvsaPPrk/apjYCHkvpX
-         YFgneHgTgJYG89FU7AH00ltJjxOda2SnkXlEoYvjNcTsNKeQlI8Q1W/gIeDUqATCQfRg
-         3ckw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724248064; x=1724852864;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=+ZR2V02XpqNEW9fvu30UGOqjOdE3SQr9bcH8M/YKkZE=;
-        b=IKadCrgWzZHSmR5QNZMvPkAIUQOyI4LFSCOk6++mhuhlsDbeKxq22Kfr9PFD4FfsVV
-         tXppVpq6wbGaqvzb5FGmowBw5r5UxR2JbswmfVjDRJ0VDkggn6/R6HJwjjROS79OWtwN
-         X4E9IGnY5au6O4gVK/rZuyyCF7uusdY1fiJj0GCrOyIV+Id2F7LsGHt6AdH6MiNq33uc
-         y0G93OVIAQ7Wa11PZvi84GXTyAwBW9qEkDYqk+bZuI02sTk7C/0qgRR0PfVYnBSphg31
-         803DmNqYYzdCvZWIHmGwV2Taa1VSD5vR5vEXb3Ypnl+uFyjwhUNAxCTAGpJ5/EwkBKA9
-         vwOw==
-X-Forwarded-Encrypted: i=1; AJvYcCV8f2KCVc/OBxI+nOOqquSGYrBD39rHeEIsskDFcQUuYzqmSnHOv3U9R4U0tXmP61DFq1SLrJJrvS2WwYlffg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxKuy/WvzysfrWaFa8oJMbzCOMxx/ffExON5vss4Vs5PvypUFVN
-	IzT+TA3Ed//djF259mN+0x0dMTWDgXiU7s9ad5n6TkK6YgABtWNHhoNbIEQCCeMojbtkugfufbh
-	LAhZFn1XG4muTuvxh+tW1zr6mcFlkv/WVJC/3
-X-Google-Smtp-Source: AGHT+IE+WRPQ5cxJkts/8lQ1Pyrz4IDfgbmZOe9kRkxkJ6+Ctq49hnrFtuGR4cuPoH3txY4c4UXweZZ+1LQnmVHuF+A=
-X-Received: by 2002:a05:600c:4e91:b0:426:6f5f:9da6 with SMTP id
- 5b1f17b1804b1-42abf096794mr15321995e9.27.1724248063553; Wed, 21 Aug 2024
- 06:47:43 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="o3bYRDsh"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=WGiJQ3CGBEiRbsQV+tVv/DQYwl+8moNZlvsTxpulQOHY7TLcklGE3JvMHiObZ4XRC498dxjItP00d29Mu4sVV+fF3eads65+oh7J5Y7q90n/CQIgCd5If/wNu3ofTxQ1LlBbsmLMlTvdxS8bTCFvoY9LzU4J3acEVG1laySrrv+xspDq1k+DcrOrhDEXQiz0deW5AzRZT48+MxvgDPQTo/alJNXoPsyBgAhmhmFTYsQvPJZ2LQH9NC5RNRr44pZP/6l43H2YGV5S2yCyG2d1At6pXUex2rm4MdxtQA/khiHIysbMithz4kcHeZBxTvv7+bTAWXIw0glAIu/Q+JT/Vg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=dTawsLwrHQjuLS9JuyRYrV+uQahpEvpFD23ifVUGdNI=;
+ b=LwaGA/fcb81CA+yudBBvC+wfA8RfHUTu6FeV2KCDCv7q2k+3n5sl2GqPvDJIFbZ6zbif8WovD9CRhZqIjRdhrUtEDjCHeETZY41iKOhvXU1gj9W91OAMMXRna6hESm0TvZ2rG095XNVe5WbHOcpEYDjdca+A6HBVGIZ6v45X0wbkbJlc8TRujrBRHYuyjf4X7jz4CvmqwzRNFvs6SxN3K6u5FhDESF0S2U9gfVUwgJYugOR0Z4NrCTX3p6+ZMneHWuw2wlMMFbf4M9UGaPhkCgChc8q0i/DWyQ1LqBwuul+q0Lcwb5CloG/2kY/i/uH1Ajjr5Ovk54xNYuOgaUCIsQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=dTawsLwrHQjuLS9JuyRYrV+uQahpEvpFD23ifVUGdNI=;
+ b=o3bYRDsh+v5gtzonV7QMGKgB9XE9N6hiNoi+rATbxecqcFUqR0AAiEQTFKOySEe+SajWC/0sbb7WefnCKt42EdkOUIjy4q/RDNhdcnPV5tY3E+UgVDrTmdryMTwubCsqe/TgO8t5c1kQ+0M9/CU/jg9vFoUf2n3YfsBOHPfJLEQ=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
+ by LO0P265MB5957.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:289::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7897.16; Wed, 21 Aug
+ 2024 15:28:49 +0000
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1818:a2bf:38a7:a1e7]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1818:a2bf:38a7:a1e7%3]) with mapi id 15.20.7897.014; Wed, 21 Aug 2024
+ 15:28:49 +0000
+Date: Wed, 21 Aug 2024 16:28:46 +0100
+From: Gary Guo <gary@garyguo.net>
+To: Peter Zijlstra <peterz@infradead.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Josh Poimboeuf <jpoimboe@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+ Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
+ Masahiro Yamada <masahiroy@kernel.org>, x86@kernel.org, "H. Peter Anvin"
+ <hpa@zytor.com>, Nathan Chancellor <nathan@kernel.org>, Nicolas Schier
+ <nicolas@fjasle.eu>, Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor
+ <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+ =?UTF-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin
+ <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, Alice
+ Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org, patches@lists.linux.dev
+Subject: Re: [PATCH v2 5/6] objtool: list `noreturn` Rust functions
+Message-ID: <20240821162846.5f9ead69@eugeo>
+In-Reply-To: <20240725083355.GD13387@noisy.programming.kicks-ass.net>
+References: <20240724161501.1319115-1-ojeda@kernel.org>
+	<20240724161501.1319115-6-ojeda@kernel.org>
+	<20240724203549.2db3e36f.gary@garyguo.net>
+	<20240725083355.GD13387@noisy.programming.kicks-ass.net>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: LO4P265CA0258.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:37c::13) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:253::10)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240819153656.28807-2-vadorovsky@protonmail.com> <CAH5fLghOFYxwCOGrk8NYX0V9rgrJJ70YOa+dY1O0pbNB-CoK=w@mail.gmail.com>
-In-Reply-To: <CAH5fLghOFYxwCOGrk8NYX0V9rgrJJ70YOa+dY1O0pbNB-CoK=w@mail.gmail.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 21 Aug 2024 15:47:31 +0200
-Message-ID: <CAH5fLgiRPOVRsF5yz6d-fOciHg1EcwjD21eAgu4sSynSSsgf5A@mail.gmail.com>
-Subject: Re: [PATCH RESEND v5] rust: str: Use `core::CStr`, remove the custom
- `CStr` implementation
-To: Michal Rostecki <vadorovsky@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Brendan Higgins <brendan.higgins@linux.dev>, David Gow <davidgow@google.com>, 
-	Rae Moar <rmoar@google.com>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
-	Trevor Gross <tmgross@umich.edu>, Nathan Chancellor <nathan@kernel.org>, 
-	Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, 
-	Finn Behrens <me@kloenk.dev>, Manmohan Shukla <manmshuk@gmail.com>, 
-	Valentin Obst <kernel@valentinobst.de>, Yutaro Ohno <yutaro.ono.418@gmail.com>, 
-	Asahi Lina <lina@asahilina.net>, Danilo Krummrich <dakr@redhat.com>, Tiago Lam <tiagolam@gmail.com>, 
-	Charalampos Mitrodimas <charmitro@posteo.net>, Tejun Heo <tj@kernel.org>, Roland Xu <mu001999@outlook.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-kselftest@vger.kernel.org, kunit-dev@googlegroups.com, 
-	netdev@vger.kernel.org, llvm@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LO0P265MB5957:EE_
+X-MS-Office365-Filtering-Correlation-Id: 768fba38-a5c8-4e0a-d00a-08dcc1f5f45b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?7vgXb/dSgm1yaK1kzRUFOs425ZIdLXzbTfyia/fF4TXsu0oodYC5B/Ffmwlr?=
+ =?us-ascii?Q?/ZUZUw4OQ+wC+Z7JqQEtPkrEm8VQzalWEJHCRrAQLQgu0P2Ct3nG0dm8k6W6?=
+ =?us-ascii?Q?bmcQB0HxGTL7lRcHp3JeoTg4kLfyj7XxNzD6y99jFTGv7ZMcHULm73lx8auE?=
+ =?us-ascii?Q?A2szb/iR3liaMlz2CstqPu5aK34qQgAAaN2sEiJMe2G38pNDnLuXvmIAFHaG?=
+ =?us-ascii?Q?ECPsYGxSrLMraumJCoxHUoq2zDYwl+1Gx1uinPKlU3Mijwlgsm1I6s5loDTv?=
+ =?us-ascii?Q?DoIsYm0lb5ppcmeCPhTD3AMnXWnoeogBY+m+VxVSAdeQyQYJM9rnuMRj2F0v?=
+ =?us-ascii?Q?3qO0tOzp+QAbeqVPVZ33vMkxXxF2BWuEKquswjUv2zayLifhob0IZ+u8y5RI?=
+ =?us-ascii?Q?wQG/Ebhyio+jl/xir7x/WyczDWlj4DpL+3UbVvo+JHGNSK4lfZP3d5+/IcDb?=
+ =?us-ascii?Q?9gSVLjM2B+RJc//1VJwMjtA2MvFwUFA/4jbYd9B7WhlqWPhlSsnbUqzQhif9?=
+ =?us-ascii?Q?wWOQ609qxN/ryyG2QEjZ6+vPNy0BcEAo5ZWHdqCEdjkdF9ec4s2vdmprCKOB?=
+ =?us-ascii?Q?2ERP4DF27fulKl3VBqcSuMEZFXVzVZm2zXaWIgIvQ2Al3gY1vH9NaEWqKQLD?=
+ =?us-ascii?Q?QLKZvJArdc4vK2BvInRAOY95X0MqfvyRPiyfRJ5qwx7Il1mDs7+sWowhbmRw?=
+ =?us-ascii?Q?DAM0PuXPtQRAuGHKs5kSlsUjvwz4u0pxLyqCCuiM3zlqtZtKvaoOY4NmKnBt?=
+ =?us-ascii?Q?ApQIycm+tDpKrDLQJvh6HAiwpzgwdkrAvzmVKOOSfS3urV7Wl6lYkGYWxZYN?=
+ =?us-ascii?Q?Ta5EIg5sa2MTya/8J+zDa+58b3pUCV+hzVGKYPtdP9nUV9naoagu2cv/PCt2?=
+ =?us-ascii?Q?NksuEn4xJeg4xQIARFN3lkJntQhFIPzWLTxwh+cN+q0M/Y+B/4yBfSDEPFi3?=
+ =?us-ascii?Q?v6Xu8rbl0VKznn2QLI6x7m38A/jQR7gmeITwj2DWYUeKWXgN8UTdkPTGJcVR?=
+ =?us-ascii?Q?LXfW+3habpj8qhMcs1Uo1LK3V9KIdcC1W2k2MJjP1NGEF6MKWrWoqM6OjH8M?=
+ =?us-ascii?Q?sp4I+5EqXcdb+x0QjEiJ54nkoWPZ09YQGTj2xd/2VKOJj2uhoKvUI8u6nWsn?=
+ =?us-ascii?Q?bZmMUBr1DBZfBvNgDoudIqAsC5rlWHCBvWa0ruu4RGm/0YlEF2KZhCJg7wGT?=
+ =?us-ascii?Q?KnpJv5UfZC6/VRtYr3WaHW73kX6sOQ6a0AvsfN8OjWa0odpI/VYULNa7By/x?=
+ =?us-ascii?Q?UaL1ppl03re2g1PrK9NHWGR/1BrDsjq0iZAO93zM9MkAdH4fNwkQAVgxKxUR?=
+ =?us-ascii?Q?NcA=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?gdeMwS+jlBimXlIpI072w0xCv7MGlL2+/Zfu/sXHbGqbbo/TOKtaH1U+9q/U?=
+ =?us-ascii?Q?4jmTmU1kSgd0uhEDgAZ8+RSYvv3Xu6FIokprVXILLJiHK99Pko/IiF2/ctKv?=
+ =?us-ascii?Q?KyTrTwR4hdgFgh0HMxWqddm4zwMqHjbmWGm2F7sF9zLpYBBpZn4B8AzO31Ch?=
+ =?us-ascii?Q?fbzVVRV9E1Yx+giNuY7DfGLc+uDVtYAIIuL2Uqglu8/UYH3Cy+qHVN8Rt0F6?=
+ =?us-ascii?Q?nUQQHlejhWBR7XqJxACLunc23rnAuFUbBcGDVcb37OjaCp/d9OhHUfRJlYq9?=
+ =?us-ascii?Q?MEedvqC5i5G82JASyuW7ZxGKSFJDpuvtfovsrmxWGm5y0Uecba6fogfm5duK?=
+ =?us-ascii?Q?QBihiG/GVyVK+NniLRKq+095Etxm04Euney0GBMM8y9oalfeD3CuAq9WQlwm?=
+ =?us-ascii?Q?QM0Ab7q0C/gznjrjkDJOBSRflDiUo8ul8W8ZUSZ7DKK1BwiMIt7yVuYneXzJ?=
+ =?us-ascii?Q?CwLAJk1C2QAKvh3u1RL/jwirsYL7Jr/BoX8tuFX//ArxQifZ0zwFJ5Tv8wh1?=
+ =?us-ascii?Q?+N/p1zCH40/n38Obbwsrvwh1cFH64Ha4ol6dCM4euGGroOQgW5KBj30G/nQu?=
+ =?us-ascii?Q?CZ9oR/AakzExAwEZVx6qjfmDUuiOZmOdK6FkiaGvvNeQGemAx8+8cQ2T9OPX?=
+ =?us-ascii?Q?6wlICn9T+fn33PqlAa4w0L2/bOqfiVa7b3S7cBA91WWVc4EQ0x6wU3/gSBeI?=
+ =?us-ascii?Q?OSUdgfoj8ZyxjkPjRVXYhy9AQWQuRFvaG1rTnFyTrZAJK4baWbFd3kC7HnMB?=
+ =?us-ascii?Q?cYGEpa5vFH17+e6zquqXTK2mY9/qKACPom7aV9mRBeaXRTzaEyKMfAUp5M+Q?=
+ =?us-ascii?Q?0463Bacq9hhqPwtn7gHpOyzMtr0rnMoYDSWYQrPuWibSC1lSVI8fOH7K0mNm?=
+ =?us-ascii?Q?S2TJPxsbAg3bG3m94KyWqVA2JlDRX++xjQ14TCanQKjIUFQqu7+uga1XUq/u?=
+ =?us-ascii?Q?61jrJARqBepmkiaq9nJRRnCNSWen4EnKFPUx3PUNKV5OQGsB6TicInB4vYfT?=
+ =?us-ascii?Q?JmR9RePQ6IGrDlW8icVvaXIGLz5yyf5XIU2KoOIJDhYTrGE/++cNWN0Vmk/7?=
+ =?us-ascii?Q?RvLntqxf2eGvyxjCPrZ5tW0wVK1lhqlw6r2mCUahR0GBNzX7DnH8WONXgqQR?=
+ =?us-ascii?Q?IMsCDXzvci81nfpPMWkVFb5jOETVIdgNvhTtV/Jtl21pKokNlMEaNTE6rl0w?=
+ =?us-ascii?Q?sg/+OSMC/mqs7NEaB9ns5wkIAUlMtLFI5W4Yno5grIpWLt2jJYockToAOf6x?=
+ =?us-ascii?Q?ItIdDOd27YcYEOlQ0/NZdBHy+z9el9UHCWSr+Zp8EWsdIX6bbMB+2j8n28SC?=
+ =?us-ascii?Q?sUMU46kz2od8sKlRxSRqhXm//lV6Qz0j+rpQPSg3n0o7zveH5V2XCOm8gXpG?=
+ =?us-ascii?Q?r9cMd7R0kQeERIa4w2FGTYJpHuEIK2BjWXDJAhfHK9eOq8QltgJhsAG5u4MG?=
+ =?us-ascii?Q?HK4fmucXh2R7ywsSL+a4CHTrd3aRH34Qg8rDnTQBouurW7sq0/F8xxBLN29q?=
+ =?us-ascii?Q?T3FpWAgzkDgo4a0NtUxmv/U5qguxwHnWZ5PPuSVaeR2q4DbjGjiFlDznrZXk?=
+ =?us-ascii?Q?rozXy1LIk6v+Cll7WVMoqVIBuqQIPIwymjG1+3/s9T0Cvpjqstro18sqnxs6?=
+ =?us-ascii?Q?ye2a7SXNpXZ5dXkvqKom5Yj1xldi+DiVS0t38PmCyUDB?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 768fba38-a5c8-4e0a-d00a-08dcc1f5f45b
+X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Aug 2024 15:28:49.2175
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: c1SmsP2bko5iH9XTAv8okJhsDqAN51nfkTG5o0GSDzwqT+VzdzAb2Lx1Axhtsyn2BiOjj2GKgvHiyCx/l9/hmQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO0P265MB5957
 
-On Wed, Aug 21, 2024 at 2:08=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
-rote:
->
-> On Mon, Aug 19, 2024 at 5:39=E2=80=AFPM Michal Rostecki <vadorovsky@gmail=
-.com> wrote:
-> >
-> > From: Michal Rostecki <vadorovsky@gmail.com>
-> >
-> > `CStr` became a part of `core` library in Rust 1.75. This change replac=
-es
-> > the custom `CStr` implementation with the one from `core`.
-> >
-> > `core::CStr` behaves generally the same as the removed implementation,
-> > with the following differences:
-> >
-> > - It does not implement `Display`.
-> > - It does not provide `from_bytes_with_nul_unchecked_mut` method.
-> > - It has `as_ptr()` method instead of `as_char_ptr()`, which also retur=
-ns
-> >   `*const c_char`.
-> >
-> > The first two differences are handled by providing the `CStrExt` trait,
-> > with `display()` and `from_bytes_with_nul_unchecked_mut()` methods.
-> > `display()` returns a `CStrDisplay` wrapper, with a custom `Display`
-> > implementation.
-> >
-> > `DerefMut` implementation for `CString` is removed here, as it's not
-> > being used anywhere.
-> >
-> > Signed-off-by: Michal Rostecki <vadorovsky@gmail.com>
->
-> A few comments:
->
-> * I would probably add CStrExt to the kernel prelude.
-> * I would probably remove `from_bytes_with_nul_unchecked_mut` and keep
-> `DerefMut for CString` instead of the other way around.
-> * Perhaps we should remove the `c_str!` macro and use c"" instead?
+On Thu, 25 Jul 2024 10:33:55 +0200
+Peter Zijlstra <peterz@infradead.org> wrote:
 
-Ah, also, please add this tag:
+> On Wed, Jul 24, 2024 at 08:35:49PM +0100, Gary Guo wrote:
+> > > @@ -202,10 +216,30 @@ static bool __dead_end_function(struct objtool_file *file, struct symbol *func,
+> > >  	if (!func)
+> > >  		return false;
+> > > 
+> > > -	if (func->bind == STB_GLOBAL || func->bind == STB_WEAK)
+> > > +	if (func->bind == STB_GLOBAL || func->bind == STB_WEAK) {
+> > > +		/*
+> > > +		 * Rust standard library functions.
+> > > +		 *
+> > > +		 * These are just heuristics -- we do not control the precise symbol
+> > > +		 * name, due to the crate disambiguators (which depend on the compiler)
+> > > +		 * as well as changes to the source code itself between versions.
+> > > +		 */
+> > > +		if (!strncmp(func->name, "_R", 2) &&
+> > > +		    (str_ends_with(func->name, "_4core6option13unwrap_failed")			||
+> > > +		     str_ends_with(func->name, "_4core6result13unwrap_failed")			||
+> > > +		     str_ends_with(func->name, "_4core9panicking5panic")			||
+> > > +		     str_ends_with(func->name, "_4core9panicking9panic_fmt")			||
+> > > +		     str_ends_with(func->name, "_4core9panicking14panic_explicit")		||
+> > > +		     str_ends_with(func->name, "_4core9panicking18panic_bounds_check")		||
+> > > +		     strstr(func->name, "_4core9panicking11panic_const24panic_const_")		||
+> > > +		     (strstr(func->name, "_4core5slice5index24slice_") &&
+> > > +		      str_ends_with(func->name, "_fail"))))
+> > > +			return true;
+> > > +  
+> 
+> Perhaps add a helper function: is_rust_noreturn() or somesuch.
+> 
+> > I wonder if we should use dwarf for this. There's DW_AT_noreturn which
+> > tells us exactly what we want. This would also remove the need for the
+> > hardcoded C symbol list. I do recognise that debug info is not required
+> > for objtool though...  
+> 
+> I think the slightly longer term plan here was to have noreturn.h
+> generated from a DWARF build but still included verbatim in the objtool
+> source, such that it works even on regular builds.
+> 
+> (and can be augmented where the compilers are being 'funny')
+> 
+> It's just that nobody has had time to implement this... you fancy giving
+> this a stab?
 
-Closes: https://github.com/Rust-for-Linux/linux/issues/1075
+The information extraction from dwarf is quite easy: I produced a tiny
+cargo script that would be able to extract the info from an object file
+(Miguel mentioned it in one of the replies):
 
-Alice
+https://gist.github.com/nbdd0121/449692570622c2f46a29ad9f47c3379a
+
+I think the issue is that the list of noreturn symbols changes
+depending on the configuration, so it's kind of difficult to
+pregenerate this information.
+
+Do you think it makes sense to have Rust object files always have DWARF
+enabled, and we check Rust noreturn symbols using DWARF, while keep the
+hardcoded C symbol list?
+
+Best,
+Gary
+
+
