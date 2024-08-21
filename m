@@ -1,90 +1,111 @@
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
+Received: from mail-qt1-f182.google.com (mail-qt1-f182.google.com [209.85.160.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C5D316DED2;
-	Wed, 21 Aug 2024 22:16:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B68C2139597
+	for <rust-for-linux@vger.kernel.org>; Wed, 21 Aug 2024 23:01:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724278613; cv=none; b=L9t8nIp3jF2qFiyL36pkKM9Pt55MgJMfJrzRqKhiqtGhjDQA3RsMznasU6W1Bekj4tge7skA8ldSyTtrWB2KeaxhSULHrdl/rLFTZrBGyOFxB+mDNK8csyqsmPmThDKhn+mZQ3NXbl1CuB43gTjEpUPR0NpdchcBfaLQurAUt6g=
+	t=1724281307; cv=none; b=WsSr/UjlBYTy28fOnJmi7oiA7TpgWyaC5WRJDDoVhluE/K7SPWucS0FANhFJc23a3S9j8oXXYMvgAR/7bnwQddxH267xIhD3K6B6At4z7UgNeSZYdEgIgldtIxDMwsB2JQ4qQLkkunp/gA9eFPcuXc5WggiJrK/IB0y9N1FBw+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724278613; c=relaxed/simple;
-	bh=KGn/Lap3NquCQGHYpATicRGUctT61k7ang/T9HKvS9w=;
+	s=arc-20240116; t=1724281307; c=relaxed/simple;
+	bh=aWbQKsoO/3O0Lnp0a6MfXVSMRVMVZaRxC4kpSF7nsAM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CRTvsYb4QMP2n6adBrcWpNA8binTpttCRYIsz8JG1wVR8fPdnXicBpCltX2RIajXUSSjxj31QA48uFmsjDhY/tp8L4ahdE0ETDUNH5tKNzHr6BpAgAG+RtTGr2dg57cmGNtDDDlPcuV7bdqbiVPJ/xNN2hq8Vkiw+RHHRs1wmhg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SRfxaHHb; arc=none smtp.client-ip=209.85.216.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=ElBnFA+Mv1403bvdKi+J+4SzSCvVC0RWTCqimI14boAyA5y3BWiHcMMnNaArSTIN+vEYTcD40u5cyDOjt+t6+IAAckh3+ffIRm/DVj8zA4/KA8yPzSzLZ61NCxgFhPLr1teIuRSZ0wzk2gw0s54+IZcxhhJQ5uUP3XsXzCFVysg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=llX0/Ebs; arc=none smtp.client-ip=209.85.160.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SRfxaHHb"
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-2d3badec49eso19513a91.1;
-        Wed, 21 Aug 2024 15:16:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="llX0/Ebs"
+Received: by mail-qt1-f182.google.com with SMTP id d75a77b69052e-454b1e08393so136091cf.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 21 Aug 2024 16:01:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724278612; x=1724883412; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1724281305; x=1724886105; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=KGn/Lap3NquCQGHYpATicRGUctT61k7ang/T9HKvS9w=;
-        b=SRfxaHHbw0XclUaK2rgEgCTj2a36H8d90mq/bHDrP9DgzLAPcM1zQjTw/nNQg0YTqV
-         9BdozcRFFU/GBdXPUvQKKlLYOpkOMRvRtI8/zAUkR8mfhJemJ/S5Zp8L/oMSZinXJFmx
-         g73XnDJDFFha3JSl6ob8JHSK0oM0azEMv/Wz/fJPHz4/pH71T4D74o6vQDMamuyLuCQT
-         IKj03REntcPJIFdjM0ARFZ48Sd74rdceFIFlh5LI5cLleBreSASgKTU/eutDIiALj8Ez
-         enKe56wu6ocVs5lBawok0puC5WXYw5PDOJn2NIACXyclGdER/kgbiHu6HJIaepoVnwfu
-         PBfg==
+        bh=eYqlc+O3M1PAGsmUtdwrYwO0p9/AGmcfM5YGYrhFe/U=;
+        b=llX0/EbsQWgvdxkuMG03M4wna6v5q5zCeCqz7SqNw5lp/bqWGLMeWiFQS5I+AOppAz
+         yRD1BXQvCMXbl1fexId6GidUm3kwklzprBlBeOMxUMhUUvqIXyK8gqZpafLYPEQzFgo5
+         8pHYYgSB0MHgHKyTgKzZAZ94AHAceSyIrrnRVNBuPhWr5wiiwqP1AwBTM/9dnHufGi/D
+         5oCqwQvSSzDpp0jyYBiPoZyDSJM2RhN6RoOzm8Oe65yz7leKjEdvwSxP38R4U8+bGzZq
+         PtdkEFAW5GDSbWEJLcSX2gLaKPxFw0i+grH1YWORFdvw2Ma3lXOqUVckvan5dJzDiSSf
+         c8Dg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724278612; x=1724883412;
+        d=1e100.net; s=20230601; t=1724281305; x=1724886105;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=KGn/Lap3NquCQGHYpATicRGUctT61k7ang/T9HKvS9w=;
-        b=ZBuNnAIkhlUoF0gyy9HMOREh9aRVwaGOBQNU0fEmPfbDayC06komRDEXmqolZGxtjS
-         5v5KWpvkwtd4p8BQtMiz2G+yhhvRSTW4GBhht0jczLFqKmyHW4CnP3a8UKBklhe2nt9Y
-         V5DEFKiS2aDnFfaoZyolmC0RXzHXWkX4HbRixrz0SnBccXwg3cHaregjOg+lVb/MFWYe
-         k5Twg8RFfZRRhQpGF82sWPGfz1fzVr8iN9AtYU0ThGAWyeebLc0Qf5+67Uxs7wupRrd0
-         76R9Mdn0+zZhje8DU76mO4tKstIo8eL71G5SpAGjbl2zgK2rgEABEfbsXPS25dGORUwz
-         NE6g==
-X-Forwarded-Encrypted: i=1; AJvYcCV8E+V3mN6N1LXac2Eg52ay5kC6+mqh2srzvoGTrBHgAZehtbHavEbOISpvc5KpAwZzm8vHTjN9KfDphjg=@vger.kernel.org, AJvYcCVDy+IxsB6RjEozIKMRJrOGmMbKz1eOBD41hlMYtc2yp3Noe1tiRULgzQDVR++YESSlj50Ggb6VILCpUWztq0w=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzIQKSyMvXb6Re327x9uY3UuT/MMBmRJ7WF89cEIEOnWdjMQJHM
-	aLhcTS8KKyeElFcPm0sPI3CbP/t0i38XEOy2pRq5XsU8gEZ+kl4CHLjX8qoxUPge7Mm73MO/qu4
-	e1tBc17A4c1P4IgqxQQTzDJD6BqU=
-X-Google-Smtp-Source: AGHT+IE2lb0AB+9KUA1H6OgmCsm0tTNOd2x0di5wefL2xeTjUdO7tTGDtqlOVZpkLQzMtvLEPmXIv0JKr38o+6MP45A=
-X-Received: by 2002:a17:90a:9c18:b0:2c9:6920:d2b2 with SMTP id
- 98e67ed59e1d1-2d5e99dea60mr2464396a91.1.1724278611636; Wed, 21 Aug 2024
- 15:16:51 -0700 (PDT)
+        bh=eYqlc+O3M1PAGsmUtdwrYwO0p9/AGmcfM5YGYrhFe/U=;
+        b=uwtxC8xom3XoW6J3GCT38xmQ2fzCChf/6JMDHYzV4DWe/09rlIUmAOvUSL0jKh1ZDT
+         rRvzm/9DbyeZpG7ByeqM2RjnG4SzYUSI8/h2C71bxOWmGk3CpG32Cy0Hs97eDS3/qhcG
+         EeDrKPs+YUj8ouyLTRwnfZnkmwkBKKzNxWtuBqZYuGQ4DpFFSUfhXZlIGsJ6gecGD922
+         jw3lB1B/h97BkbapKTpYCQDXi3GiVRHfl6uMYEe++8GdJq7q7+dLPurOywk//GLTAtRk
+         x05+2HJSVW3aOZyeh0kku032IKMe3lSwcR3kilBAq1VZSCFMc6jzBQ017K3VKW36Z+gf
+         HslA==
+X-Forwarded-Encrypted: i=1; AJvYcCWQa3cdM5PQzEwRmXpxCcVcpV6rf6YXWv9WXHYXRDl0QSiQtwIOW8VPCgfa//TJVfUAH1DyI6aW9T5vB6bsrg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxZb6CILu6xa/cphh1xoM8Sp8QZ3vnjZjTHZldtNHv9kfoSiyS8
+	fmBseV4FgeyRWuEt71Uc1d8LZohA3NzW2IelpTklafrj8aYN5COly0/5+9JDuVGA32Ao0C3ENRn
+	7YFJutXP+Zf+Dliy0py80IyDVvggMqxAlcmvi
+X-Google-Smtp-Source: AGHT+IHr6GY8qz9jDAmwr42+hMsnH5B+DA3xc3h3v+2emTPxckOukoEGDbPDha957SRPhSwjOBNcOQFJ2vjqfFpTJfg=
+X-Received: by 2002:ac8:5708:0:b0:450:47a5:2203 with SMTP id
+ d75a77b69052e-454fd778a28mr587521cf.11.1724281304543; Wed, 21 Aug 2024
+ 16:01:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240819112415.99810-1-benno.lossin@proton.me>
-In-Reply-To: <20240819112415.99810-1-benno.lossin@proton.me>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 22 Aug 2024 00:16:39 +0200
-Message-ID: <CANiq72nXC-Ck+7ikmYgELA+wnPpTrC=zZvOtd52yuTvhVz7fng@mail.gmail.com>
-Subject: Re: [PATCH v4 1/2] rust: kernel: add `drop_contents` to `BoxExt`
+References: <20240815173903.4172139-21-samitolvanen@google.com>
+ <20240815173903.4172139-37-samitolvanen@google.com> <2024081600-grub-deskwork-4bae@gregkh>
+ <CABCJKuedc3aCO2Or+_YBSzK_zp9zB8nFwjr-tK95EBM3La1AmA@mail.gmail.com>
+ <2024081705-overarch-deceptive-6689@gregkh> <ef6f7294-0afe-46af-8714-ed4a4aaee558@proton.me>
+ <20240819193851.GA4809@google.com> <a76f9422-4001-416a-a31b-37ab7dcb17f4@proton.me>
+ <CABCJKudAF0=29js8SDcYY5r6kM7RBveTrZH9RyECNGqkcqy=nw@mail.gmail.com>
+ <CAGSQo01kCUd64nB7C7Ssy1N=UBpOP3bORsRDcHJ1k2CqkbKsfQ@mail.gmail.com> <c6c1e84a-40f3-41a5-a732-f1cf06521691@proton.me>
+In-Reply-To: <c6c1e84a-40f3-41a5-a732-f1cf06521691@proton.me>
+From: Sami Tolvanen <samitolvanen@google.com>
+Date: Wed, 21 Aug 2024 16:01:08 -0700
+Message-ID: <CABCJKudN7vGB1gfGDuEArdkH9DL4iPFw3DXMPrX1ZLzPRp8+3w@mail.gmail.com>
+Subject: Re: [PATCH v2 16/19] gendwarfksyms: Add support for reserved
+ structure fields
 To: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Cc: Matthew Maurer <mmaurer@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Masahiro Yamada <masahiroy@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, Petr Pavlu <petr.pavlu@suse.com>, 
+	Neal Gompa <neal@gompa.dev>, Hector Martin <marcan@marcan.st>, Janne Grunau <j@jannau.net>, 
+	Asahi Linux <asahi@lists.linux.dev>, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Aug 19, 2024 at 1:24=E2=80=AFPM Benno Lossin <benno.lossin@proton.m=
+On Wed, Aug 21, 2024 at 4:31=E2=80=AFAM Benno Lossin <benno.lossin@proton.m=
 e> wrote:
 >
-> Sometimes (see [1]) it is necessary to drop the value inside of a
-> `Box<T>`, but retain the allocation. For example to reuse the allocation
-> in the future.
-> Introduce a new function `drop_contents` that turns a `Box<T>` into
-> `Box<MaybeUninit<T>>` by dropping the value.
+> On 20.08.24 22:03, Matthew Maurer wrote:
+> >>> The way `KAbiReserved` is implemented is via a `union` (maybe a bit
+> >>> ironic, considering what I said in my other replies, but in this case=
+,
+> >>> we would provide a safe abstraction over this `union`, thus avoiding
+> >>> exposing users of this type to `unsafe`):
+> >>>
+> >>>     #[repr(C)]
+> >>>     pub union KAbiReserved<T, R> {
+> >>>         value: T,
+> >>>         _reserved: R,
+> >>>     }
+> >>
+> >> I like this approach even better, assuming any remaining issues with
+> >> ownership etc. can be sorted out. This would also look identical to
+> >> the C version in DWARF if you rename _reserved in the union to
+> >> __kabi_reserved. Of course, we can always change gendwarfksyms to
+> >> support a different scheme for Rust code if a better solution comes
+> >> along later.
 >
-> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
-> Link: https://lore.kernel.org/rust-for-linux/20240418-b4-rbtree-v3-5-323e=
-134390ce@google.com/ [1]
+> Yeah sure, that should also then work directly with this patch, right?
 
-Applied series to `rust-next` -- thanks everyone!
+Yes, this would work without changes.
 
-Cheers,
-Miguel
+Sami
