@@ -1,215 +1,380 @@
-Received: from GBR01-LO4-obe.outbound.protection.outlook.com (mail-lo4gbr01on2120.outbound.protection.outlook.com [40.107.122.120])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qv1-f53.google.com (mail-qv1-f53.google.com [209.85.219.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 484D213BC39;
-	Wed, 21 Aug 2024 15:28:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.122.120
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724254134; cv=fail; b=GNh9oafZSEAHvnNBlkjCn6qBR7vsCU7qzjXm5tBGbZ3xpvHCvxzpAJIwgfoVySoVjp8Hy7TrSabGY3RlwE6aKN7JfzT5evpwvI7F/GsYcY+PuvqO+akqPFDWkp5pO+2xHJEo4XTvT6RgmtAieD9xaSEaIXcsuon9t2dg9QU+w/k=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724254134; c=relaxed/simple;
-	bh=Lh1TJSX+heedhZtKLaG18g6jb3FQsx0Rt7WTJikzO7g=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=UjArxFrBrVn+P9ehVOPqYIDW2FFi0azk24wDg9BOOmpA+sBpfJfOIGqMpzrNZyzv57w4BZWJTfQHIrzBYoIvPDPLfxSdDfcTFoB2sqsh+vPYHzVcubfAOiykOqXaRSVZFSVV4jXfb010hmSVWlM8rvsP3XgkQyUH116DgdBAaK4=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=o3bYRDsh; arc=fail smtp.client-ip=40.107.122.120
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5468C1B1D52
+	for <rust-for-linux@vger.kernel.org>; Wed, 21 Aug 2024 17:08:27 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.53
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1724260109; cv=none; b=fnwuzIi3NjppAF2kGSuJnyw9vyo/FR4C00R+e8M3GvED75IRrQexM4Yrr3tyLuSF0RPsMySN0dEvvgHjCsQTEV1eIoe+IxwQuh+WpC1AeqqT3G2oqMC5g58L+tMyIFDreKgyDOQeBQb9VzsEnD2XoRcbY6SY0RIbgIuCMdyHym4=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1724260109; c=relaxed/simple;
+	bh=IuVDw/80YWYc4Tv7MyJ7dZ15Npf/cBodIg8N5LcldTM=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mstqmHlUFFjxEhcFOUGntY1uCU6I6RSf5scSWgbOsLlokPp5F9FnKEfzA6YtCDCtqIrdf0RyzGi+3VV185DmQ7leRJp8pEKbWUDS5noARZMJhlzn2n8IRnA5FYHXcLI/x0zAYGS4Pi+RBDtGo/LrXjEUvcWV7S3ZHkNOuiQ7iAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Z9r/ct1X; arc=none smtp.client-ip=209.85.219.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="o3bYRDsh"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=WGiJQ3CGBEiRbsQV+tVv/DQYwl+8moNZlvsTxpulQOHY7TLcklGE3JvMHiObZ4XRC498dxjItP00d29Mu4sVV+fF3eads65+oh7J5Y7q90n/CQIgCd5If/wNu3ofTxQ1LlBbsmLMlTvdxS8bTCFvoY9LzU4J3acEVG1laySrrv+xspDq1k+DcrOrhDEXQiz0deW5AzRZT48+MxvgDPQTo/alJNXoPsyBgAhmhmFTYsQvPJZ2LQH9NC5RNRr44pZP/6l43H2YGV5S2yCyG2d1At6pXUex2rm4MdxtQA/khiHIysbMithz4kcHeZBxTvv7+bTAWXIw0glAIu/Q+JT/Vg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=dTawsLwrHQjuLS9JuyRYrV+uQahpEvpFD23ifVUGdNI=;
- b=LwaGA/fcb81CA+yudBBvC+wfA8RfHUTu6FeV2KCDCv7q2k+3n5sl2GqPvDJIFbZ6zbif8WovD9CRhZqIjRdhrUtEDjCHeETZY41iKOhvXU1gj9W91OAMMXRna6hESm0TvZ2rG095XNVe5WbHOcpEYDjdca+A6HBVGIZ6v45X0wbkbJlc8TRujrBRHYuyjf4X7jz4CvmqwzRNFvs6SxN3K6u5FhDESF0S2U9gfVUwgJYugOR0Z4NrCTX3p6+ZMneHWuw2wlMMFbf4M9UGaPhkCgChc8q0i/DWyQ1LqBwuul+q0Lcwb5CloG/2kY/i/uH1Ajjr5Ovk54xNYuOgaUCIsQ==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=dTawsLwrHQjuLS9JuyRYrV+uQahpEvpFD23ifVUGdNI=;
- b=o3bYRDsh+v5gtzonV7QMGKgB9XE9N6hiNoi+rATbxecqcFUqR0AAiEQTFKOySEe+SajWC/0sbb7WefnCKt42EdkOUIjy4q/RDNhdcnPV5tY3E+UgVDrTmdryMTwubCsqe/TgO8t5c1kQ+0M9/CU/jg9vFoUf2n3YfsBOHPfJLEQ=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
- by LO0P265MB5957.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:289::13) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7897.16; Wed, 21 Aug
- 2024 15:28:49 +0000
-Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1818:a2bf:38a7:a1e7]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1818:a2bf:38a7:a1e7%3]) with mapi id 15.20.7897.014; Wed, 21 Aug 2024
- 15:28:49 +0000
-Date: Wed, 21 Aug 2024 16:28:46 +0100
-From: Gary Guo <gary@garyguo.net>
-To: Peter Zijlstra <peterz@infradead.org>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Josh Poimboeuf <jpoimboe@kernel.org>,
- Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
- Borislav Petkov <bp@alien8.de>, Dave Hansen <dave.hansen@linux.intel.com>,
- Masahiro Yamada <masahiroy@kernel.org>, x86@kernel.org, "H. Peter Anvin"
- <hpa@zytor.com>, Nathan Chancellor <nathan@kernel.org>, Nicolas Schier
- <nicolas@fjasle.eu>, Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor
- <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
- =?UTF-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin
- <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, Alice
- Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org, patches@lists.linux.dev
-Subject: Re: [PATCH v2 5/6] objtool: list `noreturn` Rust functions
-Message-ID: <20240821162846.5f9ead69@eugeo>
-In-Reply-To: <20240725083355.GD13387@noisy.programming.kicks-ass.net>
-References: <20240724161501.1319115-1-ojeda@kernel.org>
-	<20240724161501.1319115-6-ojeda@kernel.org>
-	<20240724203549.2db3e36f.gary@garyguo.net>
-	<20240725083355.GD13387@noisy.programming.kicks-ass.net>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO4P265CA0258.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:37c::13) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:253::10)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Z9r/ct1X"
+Received: by mail-qv1-f53.google.com with SMTP id 6a1803df08f44-6bf8a662467so25208626d6.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 21 Aug 2024 10:08:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1724260106; x=1724864906; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WItMaeY5hi8+K3FTWN8onrZqOVRFgwo42FK4ki6Up7k=;
+        b=Z9r/ct1XoOPToY5pXv4mygjRKkAx/rzW/tOhsVShwzg+AWkOJOJgVz5HEdGH4m03Kv
+         a14Dbwjm78Pxyx4iwygligY0QxX3ahFEVaMempoRlDIQHaXOYqWKejUwGdkHpLKFDPae
+         C2UKzdaOjXypNwuRLBvSxN2Te7fvhRx4dt9Jsr4geWPWazpcMOpusmJklCkWVkJeXnyL
+         YjgA5Usf6Q+en3iD2KtQwHc9y0+6nsVh86o9jIOPn/gK9VjQ0I0j+1hE6DDsD5vb7nTx
+         07dZTDVjYyq6fnsFE1HVzXlnji2vnoVAV8My8gC8fbY4V6AtGWsc29LVJD7PvzGnSFnC
+         U/6Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724260106; x=1724864906;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=WItMaeY5hi8+K3FTWN8onrZqOVRFgwo42FK4ki6Up7k=;
+        b=F2CGqu7pusSYWzoBF7myMB/y0Z0B3z9oZZCoUyIh30qC77t2qIutKWIAVd3S27T8G2
+         rnH+G4IoJzfo7qqAFDDlv4TRd21xyyAInrtBGDKVwcTRqJZjWpGYaoxzF59W/wqXABYq
+         mp2S8Fc/T3zX4oyMPN38FABaFjBwjw/DYi0qkK/NibigHiuNBQIEsZqyBlOYvOYJfjZY
+         PygwwgWfRfmUZH8apYsMzyaOqv7noDd5Yvp8UQdcpAt1mzfltwS6nrDf2mzwm8HonhUx
+         FN/SbPB83zAffU3Iv4AaaW8Cyhi5VpW8kQTTI/PJpTyBjLMUIhlgbDwB6rFLoBgHXfGZ
+         FySA==
+X-Forwarded-Encrypted: i=1; AJvYcCULyMaN8zikfX9RnjItuGiXq0qwAdHwm1R1yK3dmSHYsFQTKKa+tquj35jvcDMiAuf3lqfWPfAE383XSuW86A==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxRRq/JnqSpfI37qjMlGdQKaKUCPoX7IXZHHINYcM8FZb1XVLRg
+	lSZY0i8wiQsmQOYSt9ZR5BkeMTQYxzt1Pmrf+mNdHySypEQBNmbj83Iazvw1
+X-Google-Smtp-Source: AGHT+IFgzLEFazOLV2NiBDtpbCYcR89ibPWHYvZ2PcIUH205gH/HXqZgq3yCxcOLufX/1B6bGcAJUg==
+X-Received: by 2002:a05:6214:5987:b0:6bd:88d5:fa87 with SMTP id 6a1803df08f44-6c155e1f87dmr36394806d6.55.1724260105489;
+        Wed, 21 Aug 2024 10:08:25 -0700 (PDT)
+Received: from fauth1-smtp.messagingengine.com (fauth1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6bf6fdd8875sm63470266d6.16.2024.08.21.10.08.24
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 21 Aug 2024 10:08:24 -0700 (PDT)
+Received: from phl-compute-01.internal (phl-compute-01.nyi.internal [10.202.2.41])
+	by mailfauth.nyi.internal (Postfix) with ESMTP id 662A01200043;
+	Wed, 21 Aug 2024 13:08:23 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-01.internal (MEProxy); Wed, 21 Aug 2024 13:08:23 -0400
+X-ME-Sender: <xms:Bx_GZmzlhgzQJVimnzAq8DxkpCEEKpKZnGHwldoYfUXdg3qTwPgi8A>
+    <xme:Bx_GZiTTFPe4MJvfGmjNx0AxL4-1ZD7TswYcaddbnjYZldyUG9Pt2OppqcYIOguY1
+    JQGMFB0T-nQcxFySw>
+X-ME-Received: <xmr:Bx_GZoWWIL7HXb49O-zcMWQoYmpV9g2_DBlD_yAMWBvba-oDlVDwgairALU>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddruddukedguddtlecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
+    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
+    hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdortddttddv
+    necuhfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilh
+    drtghomheqnecuggftrfgrthhtvghrnhepjeelveeguddvheehvddvkeegvdehgfejhedu
+    geejtedtheekleehieefvdeulefgnecuffhomhgrihhnpehrshdrshgsnecuvehluhhsth
+    gvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdomhgvshhm
+    thhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddujeejkeehheehvd
+    dqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhn
+    sggprhgtphhtthhopeehfedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoheprghlih
+    gtvghrhihhlhesghhoohhglhgvrdgtohhmpdhrtghpthhtoheprhhoshhtvgguthesghho
+    ohgumhhishdrohhrghdprhgtphhtthhopehmhhhirhgrmhgrtheskhgvrhhnvghlrdhorh
+    hgpdhrtghpthhtohepmhgrthhhihgvuhdruggvshhnohihvghrshesvghffhhitghiohhs
+    rdgtohhmpdhrtghpthhtohepphgvthgvrhiisehinhhfrhgruggvrggurdhorhhgpdhrtg
+    hpthhtohepjhhpohhimhgsohgvsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehjsggr
+    rhhonhesrghkrghmrghirdgtohhmpdhrtghpthhtoheprghruggssehkvghrnhgvlhdroh
+    hrghdprhgtphhtthhopehojhgvuggrsehkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:Bx_GZsgAm5iZZrnJVUpKXpZr02SBSmpFjeWNFwzhlqgPdEzrefaVfA>
+    <xmx:Bx_GZoDJVqHQjTYl6ZVUyugDuuzBW8gqsXd5uzJaI4CsR11L3Ba1CQ>
+    <xmx:Bx_GZtJn4-2Fu9KRHH7nM-ozEKYWsqeAxcj9IWJ29R77P7_zxK83Vw>
+    <xmx:Bx_GZvBxT92fkYDS8tuxiscs6WnAoGuTqsD2n-cO7I1ATfN7cRCR9A>
+    <xmx:Bx_GZgzwIc3BoB_vKKok2EbMxkKW9NG_NhxnFRf9dZN79pUet8in8PZ5>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 21 Aug 2024 13:08:22 -0400 (EDT)
+Date: Wed, 21 Aug 2024 10:08:16 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,	Jason Baron <jbaron@akamai.com>,
+ Ard Biesheuvel <ardb@kernel.org>,	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	linux-trace-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org, Arnd Bergmann <arnd@arndb.de>,
+	linux-arch@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+	Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+	"H. Peter Anvin" <hpa@zytor.com>,
+	Sean Christopherson <seanjc@google.com>,	Uros Bizjak <ubizjak@gmail.com>,
+	Catalin Marinas <catalin.marinas@arm.com>,	Will Deacon <will@kernel.org>,
+ Marc Zyngier <maz@kernel.org>,	Oliver Upton <oliver.upton@linux.dev>,
+	Mark Rutland <mark.rutland@arm.com>,	Ryan Roberts <ryan.roberts@arm.com>,
+ Fuad Tabba <tabba@google.com>,	linux-arm-kernel@lists.infradead.org,
+	Paul Walmsley <paul.walmsley@sifive.com>,
+	Palmer Dabbelt <palmer@dabbelt.com>,	Albert Ou <aou@eecs.berkeley.edu>,
+	Anup Patel <apatel@ventanamicro.com>,
+	Andrew Jones <ajones@ventanamicro.com>,
+	Alexandre Ghiti <alexghiti@rivosinc.com>,
+	Conor Dooley <conor.dooley@microchip.com>,
+	Samuel Holland <samuel.holland@sifive.com>,
+	linux-riscv@lists.infradead.org,	Huacai Chen <chenhuacai@kernel.org>,
+	WANG Xuerui <kernel@xen0n.name>, Bibo Mao <maobibo@loongson.cn>,
+	Tiezhu Yang <yangtiezhu@loongson.cn>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Tianrui Zhao <zhaotianrui@loongson.cn>, loongarch@lists.linux.dev
+Subject: Re: [PATCH v7 5/5] rust: add arch_static_branch
+Message-ID: <ZsYfAFrBFVewchGM@boqun-archlinux>
+References: <20240816-tracepoint-v7-0-d609b916b819@google.com>
+ <20240816-tracepoint-v7-5-d609b916b819@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LO0P265MB5957:EE_
-X-MS-Office365-Filtering-Correlation-Id: 768fba38-a5c8-4e0a-d00a-08dcc1f5f45b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?7vgXb/dSgm1yaK1kzRUFOs425ZIdLXzbTfyia/fF4TXsu0oodYC5B/Ffmwlr?=
- =?us-ascii?Q?/ZUZUw4OQ+wC+Z7JqQEtPkrEm8VQzalWEJHCRrAQLQgu0P2Ct3nG0dm8k6W6?=
- =?us-ascii?Q?bmcQB0HxGTL7lRcHp3JeoTg4kLfyj7XxNzD6y99jFTGv7ZMcHULm73lx8auE?=
- =?us-ascii?Q?A2szb/iR3liaMlz2CstqPu5aK34qQgAAaN2sEiJMe2G38pNDnLuXvmIAFHaG?=
- =?us-ascii?Q?ECPsYGxSrLMraumJCoxHUoq2zDYwl+1Gx1uinPKlU3Mijwlgsm1I6s5loDTv?=
- =?us-ascii?Q?DoIsYm0lb5ppcmeCPhTD3AMnXWnoeogBY+m+VxVSAdeQyQYJM9rnuMRj2F0v?=
- =?us-ascii?Q?3qO0tOzp+QAbeqVPVZ33vMkxXxF2BWuEKquswjUv2zayLifhob0IZ+u8y5RI?=
- =?us-ascii?Q?wQG/Ebhyio+jl/xir7x/WyczDWlj4DpL+3UbVvo+JHGNSK4lfZP3d5+/IcDb?=
- =?us-ascii?Q?9gSVLjM2B+RJc//1VJwMjtA2MvFwUFA/4jbYd9B7WhlqWPhlSsnbUqzQhif9?=
- =?us-ascii?Q?wWOQ609qxN/ryyG2QEjZ6+vPNy0BcEAo5ZWHdqCEdjkdF9ec4s2vdmprCKOB?=
- =?us-ascii?Q?2ERP4DF27fulKl3VBqcSuMEZFXVzVZm2zXaWIgIvQ2Al3gY1vH9NaEWqKQLD?=
- =?us-ascii?Q?QLKZvJArdc4vK2BvInRAOY95X0MqfvyRPiyfRJ5qwx7Il1mDs7+sWowhbmRw?=
- =?us-ascii?Q?DAM0PuXPtQRAuGHKs5kSlsUjvwz4u0pxLyqCCuiM3zlqtZtKvaoOY4NmKnBt?=
- =?us-ascii?Q?ApQIycm+tDpKrDLQJvh6HAiwpzgwdkrAvzmVKOOSfS3urV7Wl6lYkGYWxZYN?=
- =?us-ascii?Q?Ta5EIg5sa2MTya/8J+zDa+58b3pUCV+hzVGKYPtdP9nUV9naoagu2cv/PCt2?=
- =?us-ascii?Q?NksuEn4xJeg4xQIARFN3lkJntQhFIPzWLTxwh+cN+q0M/Y+B/4yBfSDEPFi3?=
- =?us-ascii?Q?v6Xu8rbl0VKznn2QLI6x7m38A/jQR7gmeITwj2DWYUeKWXgN8UTdkPTGJcVR?=
- =?us-ascii?Q?LXfW+3habpj8qhMcs1Uo1LK3V9KIdcC1W2k2MJjP1NGEF6MKWrWoqM6OjH8M?=
- =?us-ascii?Q?sp4I+5EqXcdb+x0QjEiJ54nkoWPZ09YQGTj2xd/2VKOJj2uhoKvUI8u6nWsn?=
- =?us-ascii?Q?bZmMUBr1DBZfBvNgDoudIqAsC5rlWHCBvWa0ruu4RGm/0YlEF2KZhCJg7wGT?=
- =?us-ascii?Q?KnpJv5UfZC6/VRtYr3WaHW73kX6sOQ6a0AvsfN8OjWa0odpI/VYULNa7By/x?=
- =?us-ascii?Q?UaL1ppl03re2g1PrK9NHWGR/1BrDsjq0iZAO93zM9MkAdH4fNwkQAVgxKxUR?=
- =?us-ascii?Q?NcA=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(1800799024)(366016);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?gdeMwS+jlBimXlIpI072w0xCv7MGlL2+/Zfu/sXHbGqbbo/TOKtaH1U+9q/U?=
- =?us-ascii?Q?4jmTmU1kSgd0uhEDgAZ8+RSYvv3Xu6FIokprVXILLJiHK99Pko/IiF2/ctKv?=
- =?us-ascii?Q?KyTrTwR4hdgFgh0HMxWqddm4zwMqHjbmWGm2F7sF9zLpYBBpZn4B8AzO31Ch?=
- =?us-ascii?Q?fbzVVRV9E1Yx+giNuY7DfGLc+uDVtYAIIuL2Uqglu8/UYH3Cy+qHVN8Rt0F6?=
- =?us-ascii?Q?nUQQHlejhWBR7XqJxACLunc23rnAuFUbBcGDVcb37OjaCp/d9OhHUfRJlYq9?=
- =?us-ascii?Q?MEedvqC5i5G82JASyuW7ZxGKSFJDpuvtfovsrmxWGm5y0Uecba6fogfm5duK?=
- =?us-ascii?Q?QBihiG/GVyVK+NniLRKq+095Etxm04Euney0GBMM8y9oalfeD3CuAq9WQlwm?=
- =?us-ascii?Q?QM0Ab7q0C/gznjrjkDJOBSRflDiUo8ul8W8ZUSZ7DKK1BwiMIt7yVuYneXzJ?=
- =?us-ascii?Q?CwLAJk1C2QAKvh3u1RL/jwirsYL7Jr/BoX8tuFX//ArxQifZ0zwFJ5Tv8wh1?=
- =?us-ascii?Q?+N/p1zCH40/n38Obbwsrvwh1cFH64Ha4ol6dCM4euGGroOQgW5KBj30G/nQu?=
- =?us-ascii?Q?CZ9oR/AakzExAwEZVx6qjfmDUuiOZmOdK6FkiaGvvNeQGemAx8+8cQ2T9OPX?=
- =?us-ascii?Q?6wlICn9T+fn33PqlAa4w0L2/bOqfiVa7b3S7cBA91WWVc4EQ0x6wU3/gSBeI?=
- =?us-ascii?Q?OSUdgfoj8ZyxjkPjRVXYhy9AQWQuRFvaG1rTnFyTrZAJK4baWbFd3kC7HnMB?=
- =?us-ascii?Q?cYGEpa5vFH17+e6zquqXTK2mY9/qKACPom7aV9mRBeaXRTzaEyKMfAUp5M+Q?=
- =?us-ascii?Q?0463Bacq9hhqPwtn7gHpOyzMtr0rnMoYDSWYQrPuWibSC1lSVI8fOH7K0mNm?=
- =?us-ascii?Q?S2TJPxsbAg3bG3m94KyWqVA2JlDRX++xjQ14TCanQKjIUFQqu7+uga1XUq/u?=
- =?us-ascii?Q?61jrJARqBepmkiaq9nJRRnCNSWen4EnKFPUx3PUNKV5OQGsB6TicInB4vYfT?=
- =?us-ascii?Q?JmR9RePQ6IGrDlW8icVvaXIGLz5yyf5XIU2KoOIJDhYTrGE/++cNWN0Vmk/7?=
- =?us-ascii?Q?RvLntqxf2eGvyxjCPrZ5tW0wVK1lhqlw6r2mCUahR0GBNzX7DnH8WONXgqQR?=
- =?us-ascii?Q?IMsCDXzvci81nfpPMWkVFb5jOETVIdgNvhTtV/Jtl21pKokNlMEaNTE6rl0w?=
- =?us-ascii?Q?sg/+OSMC/mqs7NEaB9ns5wkIAUlMtLFI5W4Yno5grIpWLt2jJYockToAOf6x?=
- =?us-ascii?Q?ItIdDOd27YcYEOlQ0/NZdBHy+z9el9UHCWSr+Zp8EWsdIX6bbMB+2j8n28SC?=
- =?us-ascii?Q?sUMU46kz2od8sKlRxSRqhXm//lV6Qz0j+rpQPSg3n0o7zveH5V2XCOm8gXpG?=
- =?us-ascii?Q?r9cMd7R0kQeERIa4w2FGTYJpHuEIK2BjWXDJAhfHK9eOq8QltgJhsAG5u4MG?=
- =?us-ascii?Q?HK4fmucXh2R7ywsSL+a4CHTrd3aRH34Qg8rDnTQBouurW7sq0/F8xxBLN29q?=
- =?us-ascii?Q?T3FpWAgzkDgo4a0NtUxmv/U5qguxwHnWZ5PPuSVaeR2q4DbjGjiFlDznrZXk?=
- =?us-ascii?Q?rozXy1LIk6v+Cll7WVMoqVIBuqQIPIwymjG1+3/s9T0Cvpjqstro18sqnxs6?=
- =?us-ascii?Q?ye2a7SXNpXZ5dXkvqKom5Yj1xldi+DiVS0t38PmCyUDB?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 768fba38-a5c8-4e0a-d00a-08dcc1f5f45b
-X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Aug 2024 15:28:49.2175
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: c1SmsP2bko5iH9XTAv8okJhsDqAN51nfkTG5o0GSDzwqT+VzdzAb2Lx1Axhtsyn2BiOjj2GKgvHiyCx/l9/hmQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO0P265MB5957
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240816-tracepoint-v7-5-d609b916b819@google.com>
 
-On Thu, 25 Jul 2024 10:33:55 +0200
-Peter Zijlstra <peterz@infradead.org> wrote:
-
-> On Wed, Jul 24, 2024 at 08:35:49PM +0100, Gary Guo wrote:
-> > > @@ -202,10 +216,30 @@ static bool __dead_end_function(struct objtool_file *file, struct symbol *func,
-> > >  	if (!func)
-> > >  		return false;
-> > > 
-> > > -	if (func->bind == STB_GLOBAL || func->bind == STB_WEAK)
-> > > +	if (func->bind == STB_GLOBAL || func->bind == STB_WEAK) {
-> > > +		/*
-> > > +		 * Rust standard library functions.
-> > > +		 *
-> > > +		 * These are just heuristics -- we do not control the precise symbol
-> > > +		 * name, due to the crate disambiguators (which depend on the compiler)
-> > > +		 * as well as changes to the source code itself between versions.
-> > > +		 */
-> > > +		if (!strncmp(func->name, "_R", 2) &&
-> > > +		    (str_ends_with(func->name, "_4core6option13unwrap_failed")			||
-> > > +		     str_ends_with(func->name, "_4core6result13unwrap_failed")			||
-> > > +		     str_ends_with(func->name, "_4core9panicking5panic")			||
-> > > +		     str_ends_with(func->name, "_4core9panicking9panic_fmt")			||
-> > > +		     str_ends_with(func->name, "_4core9panicking14panic_explicit")		||
-> > > +		     str_ends_with(func->name, "_4core9panicking18panic_bounds_check")		||
-> > > +		     strstr(func->name, "_4core9panicking11panic_const24panic_const_")		||
-> > > +		     (strstr(func->name, "_4core5slice5index24slice_") &&
-> > > +		      str_ends_with(func->name, "_fail"))))
-> > > +			return true;
-> > > +  
+On Fri, Aug 16, 2024 at 11:07:42AM +0000, Alice Ryhl wrote:
+> To allow the Rust implementation of static_key_false to use runtime code
+> patching instead of the generic implementation, pull in the relevant
+> inline assembly from the jump_label.h header by running the C
+> preprocessor on a .rs.S file. Build rules are added for .rs.S files.
 > 
-> Perhaps add a helper function: is_rust_noreturn() or somesuch.
+> Since the relevant inline asm has been adjusted to export the inline asm
+> via the ARCH_STATIC_BRANCH_ASM macro in a consistent way, the Rust side
+> does not need architecture specific code to pull in the asm.
 > 
-> > I wonder if we should use dwarf for this. There's DW_AT_noreturn which
-> > tells us exactly what we want. This would also remove the need for the
-> > hardcoded C symbol list. I do recognise that debug info is not required
-> > for objtool though...  
+> It is not possible to use the existing C implementation of
+> arch_static_branch via a Rust helper because it passes the argument
+> `key` to inline assembly as an 'i' parameter. Any attempt to add a C
+> helper for this function will fail to compile because the value of `key`
+> must be known at compile-time.
 > 
-> I think the slightly longer term plan here was to have noreturn.h
-> generated from a DWARF build but still included verbatim in the objtool
-> source, such that it works even on regular builds.
+> Suggested-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+> Co-developed-by: Miguel Ojeda <ojeda@kernel.org>
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> ---
+>  rust/Makefile                           |  5 ++-
+>  rust/kernel/.gitignore                  |  3 ++
+>  rust/kernel/arch_static_branch_asm.rs.S |  7 ++++
+>  rust/kernel/jump_label.rs               | 64 ++++++++++++++++++++++++++++++++-
+>  rust/kernel/lib.rs                      | 30 ++++++++++++++++
+>  scripts/Makefile.build                  |  9 ++++-
+>  6 files changed, 115 insertions(+), 3 deletions(-)
 > 
-> (and can be augmented where the compilers are being 'funny')
+> diff --git a/rust/Makefile b/rust/Makefile
+> index 199e0db67962..277fcef656b8 100644
+> --- a/rust/Makefile
+> +++ b/rust/Makefile
+> @@ -14,6 +14,8 @@ CFLAGS_REMOVE_helpers.o = -Wmissing-prototypes -Wmissing-declarations
+>  always-$(CONFIG_RUST) += libmacros.so
+>  no-clean-files += libmacros.so
+>  
+> +always-$(subst y,$(CONFIG_RUST),$(CONFIG_JUMP_LABEL)) += kernel/arch_static_branch_asm.rs
+> +
+>  always-$(CONFIG_RUST) += bindings/bindings_generated.rs bindings/bindings_helpers_generated.rs
+>  obj-$(CONFIG_RUST) += alloc.o bindings.o kernel.o
+>  always-$(CONFIG_RUST) += exports_alloc_generated.h exports_bindings_generated.h \
+> @@ -409,7 +411,8 @@ $(obj)/uapi.o: $(src)/uapi/lib.rs \
+>  $(obj)/kernel.o: private rustc_target_flags = --extern alloc \
+>      --extern build_error --extern macros --extern bindings --extern uapi
+>  $(obj)/kernel.o: $(src)/kernel/lib.rs $(obj)/alloc.o $(obj)/build_error.o \
+> -    $(obj)/libmacros.so $(obj)/bindings.o $(obj)/uapi.o FORCE
+> +    $(obj)/libmacros.so $(obj)/bindings.o $(obj)/uapi.o \
+> +	$(obj)/kernel/arch_static_branch_asm.rs FORCE
+>  	+$(call if_changed_rule,rustc_library)
+>  
+>  endif # CONFIG_RUST
+> diff --git a/rust/kernel/.gitignore b/rust/kernel/.gitignore
+> new file mode 100644
+> index 000000000000..d082731007c6
+> --- /dev/null
+> +++ b/rust/kernel/.gitignore
+> @@ -0,0 +1,3 @@
+> +# SPDX-License-Identifier: GPL-2.0
+> +
+> +/arch_static_branch_asm.rs
+> diff --git a/rust/kernel/arch_static_branch_asm.rs.S b/rust/kernel/arch_static_branch_asm.rs.S
+> new file mode 100644
+> index 000000000000..9e373d4f7567
+> --- /dev/null
+> +++ b/rust/kernel/arch_static_branch_asm.rs.S
+> @@ -0,0 +1,7 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +#include <linux/jump_label.h>
+> +
+> +// Cut here.
+> +
+> +::kernel::concat_literals!(ARCH_STATIC_BRANCH_ASM("{symb} + {off} + {branch}", "{l_yes}"))
+> diff --git a/rust/kernel/jump_label.rs b/rust/kernel/jump_label.rs
+> index 011e1fc1d19a..7757e4f8e85e 100644
+> --- a/rust/kernel/jump_label.rs
+> +++ b/rust/kernel/jump_label.rs
+> @@ -23,7 +23,69 @@ macro_rules! static_key_false {
+>          let _key: *const $keytyp = ::core::ptr::addr_of!($key);
+>          let _key: *const $crate::bindings::static_key = ::core::ptr::addr_of!((*_key).$field);
+>  
+> -        $crate::bindings::static_key_count(_key.cast_mut()) > 0
+> +        #[cfg(not(CONFIG_JUMP_LABEL))]
+> +        {
+> +            $crate::bindings::static_key_count(_key.cast_mut()) > 0
+> +        }
+> +
+> +        #[cfg(CONFIG_JUMP_LABEL)]
+> +        $crate::jump_label::arch_static_branch! { $key, $keytyp, $field, false }
+>      }};
+>  }
+>  pub use static_key_false;
+> +
+> +/// Assert that the assembly block evaluates to a string literal.
+> +#[cfg(CONFIG_JUMP_LABEL)]
+> +const _: &str = include!("arch_static_branch_asm.rs");
+
+Have you try this with "make O=<dir>"? I hit the following issue, but I
+am rebasing on rust-dev, so I might miss something:
+
+	error: couldn't read ../rust/kernel/arch_static_branch_asm.rs: No such file or directory (os error 2)
+	  --> ../rust/kernel/jump_label.rs:39:17
+	   |
+	39 | const _: &str = include!("arch_static_branch_asm.rs");
+	   |                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+	   |
+	   = note: this error originates in the macro `include` (in Nightly builds, run with -Z macro-backtrace for more info)
+
+	error: aborting due to 1 previous error	
+
+Regards,
+Boqun
+
+> +
+> +#[macro_export]
+> +#[doc(hidden)]
+> +#[cfg(CONFIG_JUMP_LABEL)]
+> +#[cfg(not(CONFIG_HAVE_JUMP_LABEL_HACK))]
+> +macro_rules! arch_static_branch {
+> +    ($key:path, $keytyp:ty, $field:ident, $branch:expr) => {'my_label: {
+> +        $crate::asm!(
+> +            include!(concat!(env!("SRCTREE"), "/rust/kernel/arch_static_branch_asm.rs"));
+> +            l_yes = label {
+> +                break 'my_label true;
+> +            },
+> +            symb = sym $key,
+> +            off = const ::core::mem::offset_of!($keytyp, $field),
+> +            branch = const $crate::jump_label::bool_to_int($branch),
+> +        );
+> +
+> +        break 'my_label false;
+> +    }};
+> +}
+> +
+> +#[macro_export]
+> +#[doc(hidden)]
+> +#[cfg(CONFIG_JUMP_LABEL)]
+> +#[cfg(CONFIG_HAVE_JUMP_LABEL_HACK)]
+> +macro_rules! arch_static_branch {
+> +    ($key:path, $keytyp:ty, $field:ident, $branch:expr) => {'my_label: {
+> +        $crate::asm!(
+> +            include!(concat!(env!("SRCTREE"), "/rust/kernel/arch_static_branch_asm.rs"));
+> +            l_yes = label {
+> +                break 'my_label true;
+> +            },
+> +            symb = sym $key,
+> +            off = const ::core::mem::offset_of!($keytyp, $field),
+> +            branch = const 2 | $crate::jump_label::bool_to_int($branch),
+> +        );
+> +
+> +        break 'my_label false;
+> +    }};
+> +}
+> +
+> +#[cfg(CONFIG_JUMP_LABEL)]
+> +pub use arch_static_branch;
+> +
+> +/// A helper used by inline assembly to pass a boolean to as a `const` parameter.
+> +///
+> +/// Using this function instead of a cast lets you assert that the input is a boolean, and not some
+> +/// other type that can also be cast to an integer.
+> +#[doc(hidden)]
+> +pub const fn bool_to_int(b: bool) -> i32 {
+> +    b as i32
+> +}
+> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> index d00a44b000b6..9e9b95ab6966 100644
+> --- a/rust/kernel/lib.rs
+> +++ b/rust/kernel/lib.rs
+> @@ -145,3 +145,33 @@ macro_rules! container_of {
+>          ptr.sub(offset) as *const $type
+>      }}
+>  }
+> +
+> +/// Helper for `.rs.S` files.
+> +#[doc(hidden)]
+> +#[macro_export]
+> +macro_rules! concat_literals {
+> +    ($( $asm:literal )* ) => {
+> +        ::core::concat!($($asm),*)
+> +    };
+> +}
+> +
+> +/// Wrapper around `asm!` that uses at&t syntax on x86.
+> +// Uses a semicolon to avoid parsing ambiguities, even though this does not match native `asm!`
+> +// syntax.
+> +#[cfg(target_arch = "x86_64")]
+> +#[macro_export]
+> +macro_rules! asm {
+> +    ($($asm:expr),* ; $($rest:tt)*) => {
+> +        ::core::arch::asm!( $($asm)*, options(att_syntax), $($rest)* )
+> +    };
+> +}
+> +
+> +/// Wrapper around `asm!` that uses at&t syntax on x86.
+> +// For non-x86 arches we just pass through to `asm!`.
+> +#[cfg(not(target_arch = "x86_64"))]
+> +#[macro_export]
+> +macro_rules! asm {
+> +    ($($asm:expr),* ; $($rest:tt)*) => {
+> +        ::core::arch::asm!( $($asm)*, $($rest)* )
+> +    };
+> +}
+> diff --git a/scripts/Makefile.build b/scripts/Makefile.build
+> index 72b1232b1f7d..59fe83fba647 100644
+> --- a/scripts/Makefile.build
+> +++ b/scripts/Makefile.build
+> @@ -263,12 +263,13 @@ $(obj)/%.lst: $(obj)/%.c FORCE
+>  # Compile Rust sources (.rs)
+>  # ---------------------------------------------------------------------------
+>  
+> -rust_allowed_features := new_uninit
+> +rust_allowed_features := asm_const,asm_goto,new_uninit
+>  
+>  # `--out-dir` is required to avoid temporaries being created by `rustc` in the
+>  # current working directory, which may be not accessible in the out-of-tree
+>  # modules case.
+>  rust_common_cmd = \
+> +	SRCTREE=$(abspath $(srctree)) \
+>  	RUST_MODFILE=$(modfile) $(RUSTC_OR_CLIPPY) $(rust_flags) \
+>  	-Zallow-features=$(rust_allowed_features) \
+>  	-Zcrate-attr=no_std \
+> @@ -318,6 +319,12 @@ quiet_cmd_rustc_ll_rs = $(RUSTC_OR_CLIPPY_QUIET) $(quiet_modtag) $@
+>  $(obj)/%.ll: $(obj)/%.rs FORCE
+>  	+$(call if_changed_dep,rustc_ll_rs)
+>  
+> +quiet_cmd_rustc_rs_rs_S = RSCPP $(quiet_modtag) $@
+> +      cmd_rustc_rs_rs_S = $(CPP) $(c_flags) -xc -C -P $< | sed '1,/^\/\/ Cut here.$$/d' >$@
+> +
+> +$(obj)/%.rs: $(obj)/%.rs.S FORCE
+> +	+$(call if_changed_dep,rustc_rs_rs_S)
+> +
+>  # Compile assembler sources (.S)
+>  # ---------------------------------------------------------------------------
+>  
 > 
-> It's just that nobody has had time to implement this... you fancy giving
-> this a stab?
-
-The information extraction from dwarf is quite easy: I produced a tiny
-cargo script that would be able to extract the info from an object file
-(Miguel mentioned it in one of the replies):
-
-https://gist.github.com/nbdd0121/449692570622c2f46a29ad9f47c3379a
-
-I think the issue is that the list of noreturn symbols changes
-depending on the configuration, so it's kind of difficult to
-pregenerate this information.
-
-Do you think it makes sense to have Rust object files always have DWARF
-enabled, and we check Rust noreturn symbols using DWARF, while keep the
-hardcoded C symbol list?
-
-Best,
-Gary
-
-
+> -- 
+> 2.46.0.184.g6999bdac58-goog
+> 
