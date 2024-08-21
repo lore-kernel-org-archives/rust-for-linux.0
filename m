@@ -1,110 +1,90 @@
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71E7217B4E2;
-	Wed, 21 Aug 2024 22:13:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C5D316DED2;
+	Wed, 21 Aug 2024 22:16:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724278428; cv=none; b=e+PgRYAkOEtU6IbVnmQ/ovMrXWiS27vRYlu7jGVz/zfd1Ne61Ss0kw2EjEprIRNz3MGF+H+ciWVrKcd5zLePg7pG/m5Nr0ZWAKlPlatv/lje7JlnoVf9QLLAX5aPdXWrqNmuQGoANC3iRdBFR3yhsmxpaQG6huyJ8gwpJuN+N30=
+	t=1724278613; cv=none; b=L9t8nIp3jF2qFiyL36pkKM9Pt55MgJMfJrzRqKhiqtGhjDQA3RsMznasU6W1Bekj4tge7skA8ldSyTtrWB2KeaxhSULHrdl/rLFTZrBGyOFxB+mDNK8csyqsmPmThDKhn+mZQ3NXbl1CuB43gTjEpUPR0NpdchcBfaLQurAUt6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724278428; c=relaxed/simple;
-	bh=QhXejlXvAomkFd8EP61NJGFSBPRUcQ/txFYLGv+s3pk=;
+	s=arc-20240116; t=1724278613; c=relaxed/simple;
+	bh=KGn/Lap3NquCQGHYpATicRGUctT61k7ang/T9HKvS9w=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=o4BeiveP222nTal3T9Hn+q7XCLilWndiofjBrNv77NNV4wjXjyybLF+AJCeJUGX+Y13apw3bp8MRj8qs02+409PVQJ84nwquV8itEunjj55LQ+ac+zbqZF9RFa7n7vuwm0Step40heXr3MDaJoDHeV7NScwcOJ8Jxqjh7Jpn08c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=B7orBg3W; arc=none smtp.client-ip=209.85.210.173
+	 To:Cc:Content-Type; b=CRTvsYb4QMP2n6adBrcWpNA8binTpttCRYIsz8JG1wVR8fPdnXicBpCltX2RIajXUSSjxj31QA48uFmsjDhY/tp8L4ahdE0ETDUNH5tKNzHr6BpAgAG+RtTGr2dg57cmGNtDDDlPcuV7bdqbiVPJ/xNN2hq8Vkiw+RHHRs1wmhg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SRfxaHHb; arc=none smtp.client-ip=209.85.216.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="B7orBg3W"
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-714269f312fso25304b3a.3;
-        Wed, 21 Aug 2024 15:13:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SRfxaHHb"
+Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-2d3badec49eso19513a91.1;
+        Wed, 21 Aug 2024 15:16:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724278427; x=1724883227; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1724278612; x=1724883412; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=pgTqsnBM9O5JTCZtnF9wRMYwA4akEnvManPLStJFabI=;
-        b=B7orBg3WsC1vhGcusTTV2Mn3clOeYwKE8FxDdnR7NcSC2UdJi658T5eqxPF+KciAPw
-         vJsbEQgDFIN/Gu7v0NMXan5O0z1QllcvaeeoeRyKSY1UZOMkIqyEZQQzxPOMfwZyk+28
-         ePWJjeRQvV9TmekgnG0PkTOCCz9DJMOncq/6ve9QL27Pa32nJcoSJYHE+Ua8vZ4004pv
-         +9vDMJt87ntPU8t8USxVQ1/7FRPzAWSu6PaPr7DoRnbbjts3vih52jXL0OZOzRcRAlAl
-         U4ma9K6I4LeloYfNYttXocBuH2QXmhukCPTHvcn5gL/OHwhTv8Hgxz7B7bdLlSgpQZCU
-         LjVw==
+        bh=KGn/Lap3NquCQGHYpATicRGUctT61k7ang/T9HKvS9w=;
+        b=SRfxaHHbw0XclUaK2rgEgCTj2a36H8d90mq/bHDrP9DgzLAPcM1zQjTw/nNQg0YTqV
+         9BdozcRFFU/GBdXPUvQKKlLYOpkOMRvRtI8/zAUkR8mfhJemJ/S5Zp8L/oMSZinXJFmx
+         g73XnDJDFFha3JSl6ob8JHSK0oM0azEMv/Wz/fJPHz4/pH71T4D74o6vQDMamuyLuCQT
+         IKj03REntcPJIFdjM0ARFZ48Sd74rdceFIFlh5LI5cLleBreSASgKTU/eutDIiALj8Ez
+         enKe56wu6ocVs5lBawok0puC5WXYw5PDOJn2NIACXyclGdER/kgbiHu6HJIaepoVnwfu
+         PBfg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724278427; x=1724883227;
+        d=1e100.net; s=20230601; t=1724278612; x=1724883412;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=pgTqsnBM9O5JTCZtnF9wRMYwA4akEnvManPLStJFabI=;
-        b=rrObJHEvXbqXi4gRF8tPzzIjioC82JlVM4uoxIcoG6U1cGhKw86XdHzBCUu6Y4dI/0
-         Oa5rzkrKLrLhz2I1AH+c6E+OoOn2yhEoVDpf21jAFHPeg+nZe03eva6VN+z/psNfy3g/
-         IppO8tZn7AQ9ir5yj94TDLqiIfpluCCcgJEBqDR9JCC9Xr71QvocKkTLDEqr3LrASCmi
-         w8RGQ61RkqZhE2esQeD9HsJrO7g2O4Hd4AWtNE5wQnInBUYrIz80Xz9Xi9JdyQi2tRr9
-         okWl7HDFo4Fmmgx51c/blRsQ+HQxljOD/ph5DKnqAYYur0MMBwTkmbAMZlxjhdjI0rdX
-         zlvg==
-X-Forwarded-Encrypted: i=1; AJvYcCXPlT3iL45s+SqmCvKq39eWB1iTOJWdrEidyXxRv/vqlLx9dzo5YAsAnDwgKPHQZkw5CxtEMLRWxaXo1E0=@vger.kernel.org, AJvYcCXlo0hRXSL5uZ71+gD5XIb8/KzHQda6jBV5TIxDyi9dqRo7o7H4zDMeBp8jP2gR1gLxVgJExZUNvIt790if3Y4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywu7JxklOiEA6z/7noLCEqwUyne9CPQz/mtpMdnW2izXQHSACiG
-	GA+SBNI8CeDAiOb+s02KdCy6FcSQGAay6Hg+vY7b+2bUR4Vin0VhSbhkfeZAP61kTsw68iQBuC1
-	CqOOCzWrBz9uewKQwoXEDeQRZ13Y=
-X-Google-Smtp-Source: AGHT+IFt49kL1Ixsc3kRci9+nRnfWm7P1N0g0CNp61ltVH4fSelwuKgrdRmJAH6JtYIjIvS6h/bvJPl/72+LTfQImeI=
-X-Received: by 2002:a05:6a20:2588:b0:1c3:b106:d293 with SMTP id
- adf61e73a8af0-1cada0422f6mr2590110637.3.1724278426631; Wed, 21 Aug 2024
- 15:13:46 -0700 (PDT)
+        bh=KGn/Lap3NquCQGHYpATicRGUctT61k7ang/T9HKvS9w=;
+        b=ZBuNnAIkhlUoF0gyy9HMOREh9aRVwaGOBQNU0fEmPfbDayC06komRDEXmqolZGxtjS
+         5v5KWpvkwtd4p8BQtMiz2G+yhhvRSTW4GBhht0jczLFqKmyHW4CnP3a8UKBklhe2nt9Y
+         V5DEFKiS2aDnFfaoZyolmC0RXzHXWkX4HbRixrz0SnBccXwg3cHaregjOg+lVb/MFWYe
+         k5Twg8RFfZRRhQpGF82sWPGfz1fzVr8iN9AtYU0ThGAWyeebLc0Qf5+67Uxs7wupRrd0
+         76R9Mdn0+zZhje8DU76mO4tKstIo8eL71G5SpAGjbl2zgK2rgEABEfbsXPS25dGORUwz
+         NE6g==
+X-Forwarded-Encrypted: i=1; AJvYcCV8E+V3mN6N1LXac2Eg52ay5kC6+mqh2srzvoGTrBHgAZehtbHavEbOISpvc5KpAwZzm8vHTjN9KfDphjg=@vger.kernel.org, AJvYcCVDy+IxsB6RjEozIKMRJrOGmMbKz1eOBD41hlMYtc2yp3Noe1tiRULgzQDVR++YESSlj50Ggb6VILCpUWztq0w=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzIQKSyMvXb6Re327x9uY3UuT/MMBmRJ7WF89cEIEOnWdjMQJHM
+	aLhcTS8KKyeElFcPm0sPI3CbP/t0i38XEOy2pRq5XsU8gEZ+kl4CHLjX8qoxUPge7Mm73MO/qu4
+	e1tBc17A4c1P4IgqxQQTzDJD6BqU=
+X-Google-Smtp-Source: AGHT+IE2lb0AB+9KUA1H6OgmCsm0tTNOd2x0di5wefL2xeTjUdO7tTGDtqlOVZpkLQzMtvLEPmXIv0JKr38o+6MP45A=
+X-Received: by 2002:a17:90a:9c18:b0:2c9:6920:d2b2 with SMTP id
+ 98e67ed59e1d1-2d5e99dea60mr2464396a91.1.1724278611636; Wed, 21 Aug 2024
+ 15:16:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240814163722.1550064-1-ojeda@kernel.org>
-In-Reply-To: <20240814163722.1550064-1-ojeda@kernel.org>
+References: <20240819112415.99810-1-benno.lossin@proton.me>
+In-Reply-To: <20240819112415.99810-1-benno.lossin@proton.me>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 22 Aug 2024 00:13:33 +0200
-Message-ID: <CANiq72k435QRB1ZGLTaf-yPgGZ4br5UZCrCDx3TWZxDavAbJgA@mail.gmail.com>
-Subject: Re: [PATCH] rust: enable bindgen's `--enable-function-attribute-detection`
- flag
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+Date: Thu, 22 Aug 2024 00:16:39 +0200
+Message-ID: <CANiq72nXC-Ck+7ikmYgELA+wnPpTrC=zZvOtd52yuTvhVz7fng@mail.gmail.com>
+Subject: Re: [PATCH v4 1/2] rust: kernel: add `drop_contents` to `BoxExt`
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev
+	Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Aug 14, 2024 at 6:37=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
-te:
+On Mon, Aug 19, 2024 at 1:24=E2=80=AFPM Benno Lossin <benno.lossin@proton.m=
+e> wrote:
 >
-> `bindgen` is able to detect certain function attributes and annotate
-> functions correspondingly in its output for the Rust side, when the
-> `--enable-function-attribute-detection` is passed.
+> Sometimes (see [1]) it is necessary to drop the value inside of a
+> `Box<T>`, but retain the allocation. For example to reuse the allocation
+> in the future.
+> Introduce a new function `drop_contents` that turns a `Box<T>` into
+> `Box<MaybeUninit<T>>` by dropping the value.
 >
-> In particular, it is currently able to use `__must_check` in C
-> (`#[must_use]` in Rust), which give us a bunch of annotations that are
-> nice to have to prevent possible issues in Rust abstractions, e.g.:
->
->      extern "C" {
->     +    #[must_use]
->          pub fn kobject_add(
->              kobj: *mut kobject,
->              parent: *mut kobject,
->              fmt: *const core::ffi::c_char,
->              ...
->          ) -> core::ffi::c_int;
->      }
->
-> Apparently, there are edge cases where this can make generation very slow=
-,
-> which is why it is behind a flag [1], but it does not seem to affect us
-> in any major way at the moment.
->
-> Link: https://github.com/rust-lang/rust-bindgen/issues/1465 [1]
-> Link: https://lore.kernel.org/rust-for-linux/CANiq72=3Du5Nrz_NW3U3_VqywJk=
-D8pECA07q2pFDd1wjtXOWdkAQ@mail.gmail.com/
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
+> Link: https://lore.kernel.org/rust-for-linux/20240418-b4-rbtree-v3-5-323e=
+134390ce@google.com/ [1]
 
-Applied to `rust-next` -- thanks everyone!
+Applied series to `rust-next` -- thanks everyone!
 
 Cheers,
 Miguel
