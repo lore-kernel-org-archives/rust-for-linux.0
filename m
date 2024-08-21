@@ -1,94 +1,81 @@
-Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6AC31A7ACE;
-	Wed, 21 Aug 2024 10:52:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3998614A624
+	for <rust-for-linux@vger.kernel.org>; Wed, 21 Aug 2024 11:02:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724237578; cv=none; b=YsSDUqt1nHMl3PQNcWoOUsWQl9eK9fisBNrlrGPqVaa4qiDCB8gOFprN5b1UwOI9Y4ZMzSa7CMF5S0ISJI3sY1pse+COxVxUhjmIBczb+HUdGya+vXTW46SKbe8czD8tmoX4H8teH0miAQCeFfmytk6c+Br9OJb0Yz+2W4WsDvs=
+	t=1724238146; cv=none; b=XMgTHTq0comRcteSUuQd84A9GkPSOGL1BJnftSrrONPu+SimBiRdAE5CQfMz7XhgUfAc8jpje7Rb24yPb+9BLPen9yieNTGkTYgdMgsJLgQ60+EJgWsa5JE46Jx4MTiLoSYZ2vttuG/z8MjQ0BR//AZPINmWuXUY3l2PyMGTFsw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724237578; c=relaxed/simple;
-	bh=cWo+had6U4TTZ/AMZ/4Dea/i+TbACyjARzDSe/o3lsQ=;
+	s=arc-20240116; t=1724238146; c=relaxed/simple;
+	bh=Q69u3s6znEibL2nrdLZJ0oVIBCpsr1Pw9TkJln4Hpw8=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ixeCeFPrWIvhRO6I6S3kRk+ZakV27NM5N4wNyzy+SXHCc9Ms5t0B7pKnfqK0xjNYaFWWREgiRxUhwTQO56KJbj9E8Se/D/r5hvM2mR52CyCuE3DYYpbd96iH/7YbV9rVjWbjxLIQYtYJ2CZ3p+W8jYlk4xcFDa0VCOdazpWLl+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EkuoNDjX; arc=none smtp.client-ip=209.85.216.49
+	 To:Cc:Content-Type; b=hTn+3HPOyks9VylQ95yF6pGtwDr2GTorVYzZ8hoalRguYFyLaoMI/mdEDhM5Mif6DJNT0gmid2rYAAkmL+z9BlBB0q+8/7LU1VY7avW8BQidh+AgiTDyCyoFlbFYDdsim78k1N+TcqD1wHU9U5LWSP9XjGcWOUh7Lh213Hrnu/w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=V4L+NE7t; arc=none smtp.client-ip=209.85.210.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EkuoNDjX"
-Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-2d3c4d47c65so79132a91.3;
-        Wed, 21 Aug 2024 03:52:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="V4L+NE7t"
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-70d2c0ee69fso53730b3a.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 21 Aug 2024 04:02:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724237576; x=1724842376; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1724238144; x=1724842944; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=vMSPdG7KQxNI6Tub4YCHXu5EFWuA68mvqjrG9XCAkDM=;
-        b=EkuoNDjXvonMQGxbxagcMxRpbWFAmKHXUPgUZ7DiJW5wu1IuBsTnlzVLZCOZOYAO1N
-         BO/3hzZMqqcdkf3ix3htGgyJU8pQaZA8EYl0m6H/yGw2FVebw5s7r73ABD9XSbMR/tL3
-         +bIbueHM+ihEB3rtaSN0QZLyhmuDY2Jpf4jIcDXUZvFHt8XLUUiCnprOeumJRkGGNzul
-         aQqN9l76gnZHhoxaXed4PIGAgUAsTq466SI3tvcGS7mZ0f5CDuTnt3O/fxL+6q41A5pA
-         3y5psOFRPYVVaOWxy517P2lunPc8CHsn2u2Nc3MXJbtmkWNRLR3LIQSJORnv9CjfFGL3
-         RE+A==
+        bh=/dRbAXO2LsR/RvpbzIEFop2mvkzIduzNIQqtnzKp4nc=;
+        b=V4L+NE7tg5zD7YhYMhaXz8LvdvOMEV4OpTaC8+kA2b0ahgkibgrMbpbCgevAO1EosM
+         cr0PpwvprtcRLwPUnAa+nEI4MtJ0J+eKzJNbE2yhBrwoGjdsHg7HcJTUr49KiuQgyWx0
+         8n0OCur4o0VqGGwZWbEZWtaNZNPNuvJyz5I/NykYVkKzQg8hU26NS2zlkm074v7VkOw7
+         Pr1NRtUamzYOK148lA7B9ouK5StTkgGO7jmCGSWKahaFi0t37JSdYITTyKTUSYu73ZPe
+         LtO07bX+BoVp3FpEAuPfz6SoaQrBHDNPk91QXRTLgLaxKoR/Ec3HclWH/Gsz7FwxhFhu
+         bLFA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724237576; x=1724842376;
+        d=1e100.net; s=20230601; t=1724238144; x=1724842944;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=vMSPdG7KQxNI6Tub4YCHXu5EFWuA68mvqjrG9XCAkDM=;
-        b=Ae0AfmczpIzjv0QueBGdWrGj1cN8DdjzomF793XOgYsf2zvu/u8sy/YJSNg+/+IB3s
-         ioKNKyOF/vzKYfCUMWUmMpeP38YyUBKOrsbGXTFBIc7Fp4bRZBGp9JcdxyblL+Mtg/8D
-         R6yXFkgh5PLDMRBuIOU1gKlzVcmk6uFuOsD2/ZH1cbPzUQR6VhYHrkLeL6GNfOdykW/7
-         yRctlNKdKLiiem3g6rWn33FjGYEW4z5Qp/bz7JL/jTOuB6fS/oTLI3+pxA/Eg7vDv3ls
-         kuP9Nl/tGlXgfPbahWSpAiILAHaceaRthR8uodbVRePbmm3+2Oel+dsoBhBBRSCsZpKi
-         77oQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUTiV6pooPAj551M0AN4fIFjk+M0xcq8f8+akBqtBIxD3ju/RhAK0GHt/L0zzYQ13Id6PYVYIpnY23V4VZ7@vger.kernel.org, AJvYcCXRY9mriO1nCwQHWztQZi8QwLDSnI2F/1skveS2NH/jDTZFkGTTdfsBl2qugRHqND9ujzpLEJlIc8g=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwXL2ormAjdGuaEEqUnHHScNhrFL6bdCb2RBM193pvxkHo7WA7c
-	sTxivDFqnjWW8eTwrrzrRTdphEvbNOAukxeA/goHjE7EJhFvPvfQx805zZla9JDr2Ppd+9K6O3i
-	o/wNtyl5BZo0WMKxuHdOYdR1UPU0=
-X-Google-Smtp-Source: AGHT+IEM50af18jvodT26Md3wOz97ZtT9CJBlxg+Xx6A1jFeZU38tmY3hI/5RyIzTN7uI12qNNlI25a70Thlm1tYbc4=
-X-Received: by 2002:a17:90a:6888:b0:2c8:e8ed:8a33 with SMTP id
- 98e67ed59e1d1-2d5eaaa746cmr1138454a91.4.1724237576095; Wed, 21 Aug 2024
- 03:52:56 -0700 (PDT)
+        bh=/dRbAXO2LsR/RvpbzIEFop2mvkzIduzNIQqtnzKp4nc=;
+        b=MyLrjbj+zxU5FzoBdTIY5ED8lLoEPptbltIq+5Q0MPgtaKqsBn+mhTWvpd+w5aUIlx
+         srgVs6yeJOZMdfTtz/D+3yr5cz4ICJqvV0akDLbStmoa/vt5KwhpCw0Px3CvEjmjILZf
+         MOlfrIAdjo3SJeAvfPPmaHzco9mLTfcsujedp6Qkquab80XpeZx8i3FXWdJNGjyiAGK1
+         pZ/zlWaacTtdwlzv6SbF9WAa6ZkiL78zG//NTu/DRB4MDWAajyeyhtGCvHPIWiha0Nbl
+         0EDbyCcpwYheQQ2LzBBpBRRDipSc07pvAREvj5jqBkKab5HhvsZSpX1br1y1f/lye9AB
+         UhSQ==
+X-Gm-Message-State: AOJu0YzSCpI9tZoDtbYKrvnrp9smH+Ut8u1J4OGNZGCy5U9IhEbVg9dQ
+	kU3eES2tnm84hvIgluFrQqFX6isBnP35iBUBdUwaLRQcN9TiNHE0lz2XPeVKdo6kCIiPubC4aMe
+	8wu+FuWkfqB15dl54nURhcTHO5pQ0P5oO
+X-Google-Smtp-Source: AGHT+IFh1cgEgi9FpP9ye1LlwndvjkMRTA2gcAQyGPPFRgTEQKpgzwLch2++kcvNTmBEP3vd+wNRHvZR2Vnzy7m+CCM=
+X-Received: by 2002:a05:6a20:9186:b0:1c4:88e1:7c3b with SMTP id
+ adf61e73a8af0-1cad9ff33bfmr1227636637.1.1724238144412; Wed, 21 Aug 2024
+ 04:02:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240816200339.2495875-1-vincent@woltmann.art>
-In-Reply-To: <20240816200339.2495875-1-vincent@woltmann.art>
+References: <20240819205731.2163-1-jubalh@iodoru.org>
+In-Reply-To: <20240819205731.2163-1-jubalh@iodoru.org>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 21 Aug 2024 12:52:43 +0200
-Message-ID: <CANiq72=kdZW5KYUVedJ=5LoxnU1s9UFog_vUS39cT=DLaQY00g@mail.gmail.com>
-Subject: Re: [PATCH v2] rust: Remove erronous blockquote in coding guidelines
-To: Vincent Woltmann <vincent@woltmann.art>
-Cc: rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, Jonathan Corbet <corbet@lwn.net>, Wei Liu <wei.liu@kernel.org>, 
-	Yuki Okushi <jtitor@2k36.org>, "open list:DOCUMENTATION" <linux-doc@vger.kernel.org>, 
-	open list <linux-kernel@vger.kernel.org>
+Date: Wed, 21 Aug 2024 13:02:12 +0200
+Message-ID: <CANiq72kJcnMF=xoBTC0fW8vu6PQ7+hTMG0pCz62GgHEK7oiJDQ@mail.gmail.com>
+Subject: Re: [PATCH] rust: fix typos in documentation
+To: Michael Vetter <jubalh@iodoru.org>
+Cc: rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Aug 16, 2024 at 10:04=E2=80=AFPM Vincent Woltmann <vincent@woltmann=
-.art> wrote:
+On Mon, Aug 19, 2024 at 11:03=E2=80=AFPM Michael Vetter <jubalh@iodoru.org>=
+ wrote:
 >
-> An unordered list in coding-guidelines.rst was indented, producing
-> a blockquote around it and making it look more indented than expected.
-> Remove the indentation to only output an unordered list.
+> Fix spelling mistakes in code comments.
 >
-> Reported-by: Miguel Ojeda <ojeda@kernel.org>
-> Closes: https://github.com/Rust-for-Linux/linux/issues/1063
-> Fixes: d07479b211b7 ("docs: add Rust documentation")
-> Signed-off-by: Vincent Woltmann <vincent@woltmann.art>
+> Signed-off-by: Michael Vetter <jubalh@iodoru.org>
 
-Applied to `rust-fixes` -- thanks!
+Applied to `rust-fixes` -- thanks everyone!
 
-    [ Reworded title. - Miguel ]
+    [ Reworded slightly. - Miguel ]
 
 Cheers,
 Miguel
