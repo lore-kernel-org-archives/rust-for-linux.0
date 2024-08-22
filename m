@@ -1,168 +1,134 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B875713C3CD;
-	Thu, 22 Aug 2024 07:29:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E2A21537BF
+	for <rust-for-linux@vger.kernel.org>; Thu, 22 Aug 2024 07:39:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724311782; cv=none; b=pNWJ9WrGjFrN5VIeiQNDE0WBtyHXlVV84IdGDuboordigRi/XDPRlt65ZiGr2x9n73U2YIx64jLSphHLSbIgOE8e7fSn+4vciBrbYZOZgqXkFVTkE6qo0KjLUOSOD0oKhl9YvzwlJatjTmCJK1+EErYz+avmL2Bxv2XZNOiLrZ8=
+	t=1724312360; cv=none; b=ZFW8uJiZT4kCqYNAhG1S0jCeMTh6bosQkvlCpsZr2IIPF0hPsbHgtRIP0CgTq3IcmcFxpJKVWKt+53CSgq2/R9IyiH19ATXafcNd15WpmNBwO2qLyFWJHxnR3GVcA/+zu4f4RzONpG83kob5Rca3Rw7Ki3c/HXI9jCP4E6MRRz4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724311782; c=relaxed/simple;
-	bh=w9XdQWD6yVQTR5oVc6W0zIErtl2bKpEKa4fn20IwpwA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rfsny3u1JfK14t6G/I8gJVfdSu5t+i7kn+W99bQg7mFiDRZAcWSjZRAXtYsxfXDzXzMUXw2t7Jbq3k1CkVbdL5jHHdJXXk5Afaual7m5A7Wwp6z2Zfos5YJUA5uRCeFfDwU0bLbR4+lqEB1c9WtUZAvtwlkY5BgfKmEij5/AMic=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CenOI7hN; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1724312360; c=relaxed/simple;
+	bh=ngsVzx8rA8dorvLUX1pEJou+TcN2FfuQAX9zmlCAPlU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=MGavOClkk0JhyJAgcPPFo2finCWQhq0nkQDZojR6f2+ATxhhz/n5HtRUF/VlvbByq+7WgOuifMlSq1yzGuQtbEbC7veLmfUYzBQ4PHmf+RsNT/Xsj0JpSAEZyNFw1Mcc5nz+9fIcgNxF5hZ9coArwDDoYTUMOi/6f1wFYF9QKs0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=LBoWJDRN; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CenOI7hN"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EC94C4AF09;
-	Thu, 22 Aug 2024 07:29:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1724311782;
-	bh=w9XdQWD6yVQTR5oVc6W0zIErtl2bKpEKa4fn20IwpwA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=CenOI7hNmkkdPQerFofPvI5PWphImINR3YR6l/6bFB6W6+4D6CpX0xNeLP0CQMVbw
-	 SLk0DDz2HOMzLoFCVapXtHJi7llGiLMU8DVFx04DSfGxf41xBkVJp2Vo6P+/vEYeSo
-	 zVyvum9zIIZPftdk+YNY6AyQhX+gqDqDTl9Y04WU=
-Date: Thu, 22 Aug 2024 15:29:39 +0800
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Matthew Maurer <mmaurer@google.com>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Luis Chamberlain <mcgrof@kernel.org>,
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="LBoWJDRN"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1724312356;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=OU4+GO9dY3KCe88LkMJXdKSy/IKKWUcc3BCoLQVde9s=;
+	b=LBoWJDRNlEoWiyVFr+gQYM6PGuRMDj+jik5J2MJ71oEp4yRuF/YKz56+lh2t1rztyWDzGz
+	5sDhtsgBBav6IB7kMwFNQFJUGy+s5N5j9PsMxJgNfvS/XR8F1dhn2/V0UzJDbLnri0/+0N
+	mrsnqxluZmNMK+sbRpTz/Yjwm/MRR/w=
+Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-119-8wEP7il1Oh2mzs6XGegCmg-1; Thu,
+ 22 Aug 2024 03:39:12 -0400
+X-MC-Unique: 8wEP7il1Oh2mzs6XGegCmg-1
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C3A291954B06;
+	Thu, 22 Aug 2024 07:39:09 +0000 (UTC)
+Received: from hydra.redhat.com (unknown [10.39.193.88])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id D34BC1955DD6;
+	Thu, 22 Aug 2024 07:39:03 +0000 (UTC)
+From: Jocelyn Falempe <jfalempe@redhat.com>
+To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	David Airlie <airlied@gmail.com>,
+	Daniel Vetter <daniel@ffwll.ch>,
 	Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
 	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Gary Guo <gary@garyguo.net>, Petr Pavlu <petr.pavlu@suse.com>,
-	Neal Gompa <neal@gompa.dev>, Hector Martin <marcan@marcan.st>,
-	Janne Grunau <j@jannau.net>, Asahi Linux <asahi@lists.linux.dev>,
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-modules@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v2 16/19] gendwarfksyms: Add support for reserved
- structure fields
-Message-ID: <2024082257-refrain-subsector-b6c4@gregkh>
-References: <20240815173903.4172139-37-samitolvanen@google.com>
- <2024081705-overarch-deceptive-6689@gregkh>
- <ef6f7294-0afe-46af-8714-ed4a4aaee558@proton.me>
- <20240819193851.GA4809@google.com>
- <a76f9422-4001-416a-a31b-37ab7dcb17f4@proton.me>
- <CABCJKudAF0=29js8SDcYY5r6kM7RBveTrZH9RyECNGqkcqy=nw@mail.gmail.com>
- <CAGSQo01kCUd64nB7C7Ssy1N=UBpOP3bORsRDcHJ1k2CqkbKsfQ@mail.gmail.com>
- <c6c1e84a-40f3-41a5-a732-f1cf06521691@proton.me>
- <2024082229-elevation-emporium-8118@gregkh>
- <bc2e02d7-d4a7-4f0f-852c-e26ad6a8688f@proton.me>
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	"Bjorn Roy Baron" <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	linux-kernel@vger.kernel.org,
+	dri-devel@lists.freedesktop.org,
+	rust-for-linux@vger.kernel.org,
+	Danilo Krummrich <dakr@redhat.com>
+Cc: Jocelyn Falempe <jfalempe@redhat.com>
+Subject: [PATCH v7 0/4] drm/panic: Add a QR code panic screen
+Date: Thu, 22 Aug 2024 09:33:53 +0200
+Message-ID: <20240822073852.562286-1-jfalempe@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <bc2e02d7-d4a7-4f0f-852c-e26ad6a8688f@proton.me>
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-On Thu, Aug 22, 2024 at 05:55:32AM +0000, Benno Lossin wrote:
-> On 22.08.24 01:29, Greg Kroah-Hartman wrote:
-> > On Wed, Aug 21, 2024 at 11:31:25AM +0000, Benno Lossin wrote:
-> >> On 20.08.24 22:03, Matthew Maurer wrote:
-> >>>>> The way `KAbiReserved` is implemented is via a `union` (maybe a bit
-> >>>>> ironic, considering what I said in my other replies, but in this case,
-> >>>>> we would provide a safe abstraction over this `union`, thus avoiding
-> >>>>> exposing users of this type to `unsafe`):
-> >>>>>
-> >>>>>     #[repr(C)]
-> >>>>>     pub union KAbiReserved<T, R> {
-> >>>>>         value: T,
-> >>>>>         _reserved: R,
-> >>>>>     }
-> >>>>
-> >>>> I like this approach even better, assuming any remaining issues with
-> >>>> ownership etc. can be sorted out. This would also look identical to
-> >>>> the C version in DWARF if you rename _reserved in the union to
-> >>>> __kabi_reserved. Of course, we can always change gendwarfksyms to
-> >>>> support a different scheme for Rust code if a better solution comes
-> >>>> along later.
-> >>
-> >> Yeah sure, that should also then work directly with this patch, right?
-> >>
-> >>>> Sami
-> >>>
-> >>> Agreement here - this seems like a good approach to representing
-> >>> reserved in Rust code. A few minor adjustments we discussed off-list
-> >>> which aren't required for gendwarfksyms to know about:
-> >>> 1. Types being added to reserved fields have to be `Copy`, e.g. they
-> >>> must be `!Drop`.
-> >>> 2. Types being added to reserved fields must be legal to be
-> >>> represented by all zeroes.
-> >>> 3. Reserved fields need to be initialized to zero before having their
-> >>> union set to the provided value when constructing them.
-> >>> 4. It may be helpful to have delegating trait implementations to avoid
-> >>> the couple places where autoderef won't handle the conversion.
-> >>>
-> >>> While I think this is the right solution, esp. since it can share a
-> >>> representation with C, I wanted to call out one minor shortfall - a
-> >>> reserved field can only be replaced by one type. We could still
-> >>> indicate a replacement by two fields the same as in C, by using a
-> >>> tuple which will look like an anonymous struct. The limitation will be
-> >>> that if two or more new fields were introduced, we'd need to edit the
-> >>> patches accessing them to do foo.x.y and foo.x.z for their accesses
-> >>> instead of simply foo.y and foo.z - the autoref trick only works for a
-> >>> single type.
-> >>
-> >> We will have to see how often multiple fields are added to a struct. If
-> >> they are infrequent and it's fine for those patches to then touch the
-> >> field accesses, then I think we can just stick with this approach.
-> >> If there are problems with that, we can also try the following:
-> >> all fields of kABI structs must be private and must only be accessed
-> >> through setters/getters. We can then modify the body the setters/getters
-> >> to handle the additional indirection.
-> > 
-> > That's just not going to work, sorry.  Remember, the goal here is to
-> > keep the code that comes from kernel.org identical to what you have in
-> > your "enterprise" kernel tree, with the exception of the few extra
-> > "padding" fields you have added to allow for changes in the future in
-> > the kernel.org versions.
-> 
-> Yeah, that's what I thought.
-> 
-> > Requiring all kernel.org changes that add a new field to a structure to
-> > only do so with a settter/getter is going to just not fly at all as they
-> > will not care one bit.
-> > 
-> > Or, we can just forget about "abi stability" for rust code entirely,
-> > which I am totally fine with.  It's something that managers seem to like
-> > for a "check box" but in reality, no one really needs it (hint, vendors
-> > rebuild their code anyway.)
-> 
-> The approach already works for a adding a single field and I got from
-> the discussions with Matthew and Sami that that is the most common case.
-> We will reach out to the Rust folks and see what we can do about the
-> multiple field case.
+This series adds a new panic screen, with the kmsg data embedded in a QR code.
 
-No, single field is NOT the common case, the common case is reserving
-multiple padding variables in a structure as lots of things can change
-of the long lifetimes of some of these kernel trees.  Look at the
-changes in the Android or SLES or RHEL kernels for specifics.
+The main advantage of QR code, is that you can copy/paste the debug data to a bug report.
 
-Here's one example in the android tree where 4 64bit fields are reserved
-for future abi changes:
-	https://android.googlesource.com/kernel/common/+/refs/heads/android12-5.10/include/linux/fs.h#421
+The QR code encoder is written in rust, and is very specific to drm panic.
+The reason is that it is called in a panic handler, and thus can't allocate memory, or use locking.
+The rust code uses a few rust core API, and provides only two C entry points.
+There is no particular reason to do it in rust, I just wanted to learn rust, and see if it can work in the kernel.
 
-And here's a different place where a field is being used with many
-remaining for future use:
-	https://android.googlesource.com/kernel/common/+/refs/heads/android12-5.10/include/linux/sched.h#1379
+If you want to see what it looks like, I've put a few screenshots here:
+https://github.com/kdj0c/panic_report/issues/1
 
-And also, we want/need lots of other space reservation at times, look at
-how "Others" can get access to reserved areas in structures that need to
-be done in an abi-safe way:
-	https://android.googlesource.com/kernel/common/+/refs/heads/android12-5.10/include/linux/sched.h#1375
+v2:
+ * Rewrite the rust comments with Markdown (Alice Ryhl)
+ * Mark drm_panic_qr_generate() as unsafe (Alice Ryhl)
+ * Use CStr directly, and remove the call to as_str_unchecked()
+   (Alice Ryhl)
+ * Add a check for data_len <= data_size (Greg KH)
 
-All of this also needs to be possible in any structures that are
-exported by rust code if vendors want to have a way to track and ensure
-that abis do not change over time, just like they can today in C code.
+v3:
+ * Fix all rust comments (typo, punctuation) (Miguel Ojeda)
+ * Change the wording of safety comments (Alice Ryhl)
+ * Add a link to the javascript decoder in the Kconfig (Greg KH)
+ * Fix data_size and tmp_size check in drm_panic_qr_generate()
 
-Or if not possible, just don't export any rust structures at all :)
+v4:
+ * Fix the logic to find next line and skip the '\n' (Alic Ryhl)
+ * Remove __LOG_PREFIX as it's not used (Alice Ryhl)
 
-hope this helps,
+v5:
+ * Move drm_panic_[init|exit]() prototype to drm_crtc_internal.h
+   (Daniel Vetter)
 
-greg k-h
+v6:
+ * rebase, and handle conflict with 5d45c01dea6f ("drm/panic: Add panic description")
+ * Fix qr_width should be a signed int, to handle error code.
+
+v7:
+ * rename r1/r2 to a/b in drm_rect_overlap() (Jani Nikula)
+
+Jocelyn Falempe (4):
+  drm/panic: Add integer scaling to blit()
+  drm/rect: Add drm_rect_overlap()
+  drm/panic: Simplify logo handling
+  drm/panic: Add a QR code panic screen
+
+ drivers/gpu/drm/Kconfig             |   31 +
+ drivers/gpu/drm/Makefile            |    1 +
+ drivers/gpu/drm/drm_crtc_internal.h |    4 +
+ drivers/gpu/drm/drm_drv.c           |    3 +
+ drivers/gpu/drm/drm_panic.c         |  340 +++++++--
+ drivers/gpu/drm/drm_panic_qr.rs     | 1003 +++++++++++++++++++++++++++
+ include/drm/drm_rect.h              |   15 +
+ 7 files changed, 1357 insertions(+), 40 deletions(-)
+ create mode 100644 drivers/gpu/drm/drm_panic_qr.rs
+
+
+base-commit: 04b5b362bc2a36f1dfe5cad52c83b1ea9d25b87c
+-- 
+2.46.0
+
