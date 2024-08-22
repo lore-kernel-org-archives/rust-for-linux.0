@@ -1,258 +1,260 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f169.google.com (mail-qt1-f169.google.com [209.85.160.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC9A41C9EAB
-	for <rust-for-linux@vger.kernel.org>; Thu, 22 Aug 2024 13:14:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 857DE1CB315
+	for <rust-for-linux@vger.kernel.org>; Thu, 22 Aug 2024 13:43:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724332495; cv=none; b=T0mwOVGAb+2yI+BX+Jx//YIR0AleJsrdb08B5e2CZ86iAFn9TJX0SfrAjuPA6NVWuJwp3XoUv8LJGHOgm/hUlezL/kb4W22RQ79P27kvBjeQIfLaAbwyxOmNumicpSlo7gOTcxNaj/VecsEMRU/2C3ZkxHfasV4pstB1HgeT1Uk=
+	t=1724334201; cv=none; b=iBjtmOSPgWejj4QyxFgpjEoIvWh2eLq4Mt0cQxyZtuRK6Vz61Lq4+uATd9NoUIyWk8Onyf+mMdbNT13/XuhRMZexIb5Du61OBX2VGELYwK3k7VFe7KqF0wsM2eIuTIsb+l5///vQvO2EhiVIK/5KfeYp1KGrqddd7hUcB+MJO5s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724332495; c=relaxed/simple;
-	bh=L+6BNfcxDE5TGZrnfYWgLyBZkG5GqgShVafF874fWek=;
-	h=Message-ID:Date:MIME-Version:Subject:To:References:From:
-	 In-Reply-To:Content-Type; b=efmD8tJz5O1rxpQKUJrxkz8X86bAeV42HJTOG2YzQ0XkEl6ooiZPPHttByi5t70HO3UkvMMA+8imOs7Dq0B4+llOp+dU2Du8WknowGORyeYOxvomfN9lcgo+w0XQPJzK52YA+0FzJYyR09WKxAp6ZSoIjMVoHAppuCmNTUkTH60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=CjpjZgG6; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1724334201; c=relaxed/simple;
+	bh=sQvd+bwcFWTX/oc4OS7Btb+0j0aSoPqVXbUm0Nn6uig=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=EmNtG9Dz+sDVuiGfKjL4liJFXDlVD8E0Lkshl3NDaeal1Esp66uiRP/dYxb+Y8Rj4eWmYOaL21ARMRp8ZpquwBmHPx7A0FGbDMM5qnemvZvCMBfHertYQRs0B2qSzY5SfQJzNTguQmb7sW2EOILd2SjlG9j77lUL+yPjCQBpeMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nN3G4Z1l; arc=none smtp.client-ip=209.85.160.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="CjpjZgG6"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1724332492;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=VjpStOY2tZRsWe7659pvw1wDWH9gZfVqjlnowrqh2XU=;
-	b=CjpjZgG6Z04cSYk5dKifG9h4tBAXvAnzsO4b0ZZ+LpR4IeZcM74HtqNTGn9OGloot748lL
-	yLjhYRMmkuGWtZeVc8KY9+wkQnx8/GrzrZG5rTvsDawZGlXS09ovG0pXY0sVR2gXeTBZUg
-	Qw85ZHDDyQs2i1q+QRzJ5PXM17NVy6w=
-Received: from mail-wm1-f69.google.com (mail-wm1-f69.google.com
- [209.85.128.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-20-k6dLcYDHPoe1kN4lxCa5pA-1; Thu, 22 Aug 2024 09:14:51 -0400
-X-MC-Unique: k6dLcYDHPoe1kN4lxCa5pA-1
-Received: by mail-wm1-f69.google.com with SMTP id 5b1f17b1804b1-428e48612acso8057245e9.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 22 Aug 2024 06:14:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nN3G4Z1l"
+Received: by mail-qt1-f169.google.com with SMTP id d75a77b69052e-45007373217so15833231cf.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 22 Aug 2024 06:43:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1724334198; x=1724938998; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Zdl67ic8HgEb8M4S4PfeCh58b8P52iTtl7Cnr2VuH+w=;
+        b=nN3G4Z1l2MI2LwwgHLuNKrlrTpdsrqv1x5+JKLN9zOLnDoKlcFOaQXkmNgP1TAvC9Y
+         P+IKn4mSsF4tdwL2xmNCm2fuc2Y/wlLlgLFzjpTa23uxWqL4qyW4/X3G0A0KvJLYoM0Y
+         cugnvkj2IHGK/CPx1F5aewJoJybauZTi+092YuXLJIXVFscy9MWCdG7YVhjzWl/OF/Vg
+         VTwuK+VpspkYNU1RAz9rrQRqLjzgd3WcCfWxe7mudaSRFHb4VCgwT7/EU6Td15miBMSe
+         HG+Junl4a0efOdBSyxceURi5JjK+uRqxGATrPL0jaHTsE7e5BDvxUP9BQ7q9neS0IVxz
+         /9pw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724332490; x=1724937290;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=VjpStOY2tZRsWe7659pvw1wDWH9gZfVqjlnowrqh2XU=;
-        b=QyFr+mCyNctsIfLrMwOkG2oSXKXl08yLXK7ji+pEIj/N+DHZFtk8H9AlBZNpmMmU1F
-         9WqBgKo44KJuS/Jr2XCtjzY2rfNhaUaFoImLC5Mk0nN7Eh58tucay1UekBUe7GapH2f+
-         Vwx/3w+0LEs5+giXi4kdyXglbzBEkeB3tPcs7Q3QvK1ihfKe6X5nQSINGdykWQjgqJzk
-         YSOGWnTct39dM3a5tRWSt1SvCo33aFaTJp4tTEtf8ijlMuwMczRjp4RNxe8MT3EUtk4D
-         e3KZzmo1Jafh7IzhlPDPON25bMa1F/6LlX6r0W+828n0GyKSVWO3u3h4qwJFZU+p5Y7M
-         16QA==
-X-Forwarded-Encrypted: i=1; AJvYcCWFqhkT44Vq2AJA1ZNSwHQa8ctzsKy8uPhXsMPKWz46k/sjN1035MahBqhWYcirRbsXYJdsVW91hYIdPJihiQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzMeyPREMrhXfz2sM9JNLQjJIqBzcWtqGzv9JLni6eYVXE0fPoA
-	gJOIjr/o7K4F370w2E/SSXhNWGc5RFn17ceaaaNn9U5/Mt3+n5SgQ197u+ZcVJ/FryEKrSa31bl
-	AzOwWa7F1eRlgG8ocXUDAqdUNZoMxchNIjxkU7sq+4IkeKCMy+ULbcsWuDH03tFo8
-X-Received: by 2002:a05:600c:1f1b:b0:426:5c81:2538 with SMTP id 5b1f17b1804b1-42ac55cbf78mr16184805e9.14.1724332490422;
-        Thu, 22 Aug 2024 06:14:50 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHhA7gC2VdvVqzYSk0wAWJHB/+5+dYhcALlheQ+TK94kTmFHmle2ajWyTmgc1AUzZnwZ09QnA==
-X-Received: by 2002:a05:600c:1f1b:b0:426:5c81:2538 with SMTP id 5b1f17b1804b1-42ac55cbf78mr16184405e9.14.1724332489857;
-        Thu, 22 Aug 2024 06:14:49 -0700 (PDT)
-Received: from ?IPV6:2a01:e0a:c:37e0:ced3:55bd:f454:e722? ([2a01:e0a:c:37e0:ced3:55bd:f454:e722])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42ac515914bsm24052965e9.12.2024.08.22.06.14.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 22 Aug 2024 06:14:49 -0700 (PDT)
-Message-ID: <0e17c77a-75bd-4ee7-a0d0-8c164b300ea4@redhat.com>
-Date: Thu, 22 Aug 2024 15:14:47 +0200
+        d=1e100.net; s=20230601; t=1724334198; x=1724938998;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Zdl67ic8HgEb8M4S4PfeCh58b8P52iTtl7Cnr2VuH+w=;
+        b=R52lGC2xMKyWuiKg0gyuxXq+4Fb4xPDk7Wwt1WiMrauvJxWhKehf6NuOFD04DFnVao
+         OytGVWH/sSGu9lsZ49SBTe/CNwmdCY4bq00wIvtTJeBZdHJHkFg9u4zdUaRGOBaCjI4y
+         ZyNisA7ukvGPfWnKwa8eEut/JAJ7F0fvhmW/hHUleYaWBs6GWwtXEGZna1ZYBGiddmXK
+         Wy1LRbQcRO5QpzlTKo+tvkp893/hZmazPszyiFLzJ5TKawA4r9nofsXHQgm8na9m7h6J
+         XY9qxP/s4JqPRaYJOGq20e82C8XdZMmfH4jzQpva7Krkneqt1bzw2cwBy/Ug8UD9ZbGc
+         kkDg==
+X-Forwarded-Encrypted: i=1; AJvYcCU9hxbgcSJzfcaxJ8YNwPX9766VTgR6edwtIWT4YPDcUTsZXidEbAIKWXSiGpVL0VzyCwcygK7Myq5bNSLEgA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzpwsvzgCEROqTWb8Q612Pn3zS8aqQPAs5IXtigwifpNkwiWzCr
+	lGfMGH7Z4bgKa8V/6gv4dFDrxWjQJEJNrIds+k8pRaTEk1OWiWTzsNHzylXk
+X-Google-Smtp-Source: AGHT+IGwYQk1jQlo91cNjrX9JQiCJvgYTJRjflXFr8UjPRi4vXozXXfDccxkbvMD9QXK4/XiWk1y2g==
+X-Received: by 2002:a05:622a:3c9:b0:44f:dc79:afd6 with SMTP id d75a77b69052e-454fae6e9b3mr48563671cf.17.1724334197983;
+        Thu, 22 Aug 2024 06:43:17 -0700 (PDT)
+Received: from fauth2-smtp.messagingengine.com (fauth2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-454fdfc09ffsm6869101cf.20.2024.08.22.06.43.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 22 Aug 2024 06:43:17 -0700 (PDT)
+Received: from phl-compute-08.internal (phl-compute-08.nyi.internal [10.202.2.48])
+	by mailfauth.nyi.internal (Postfix) with ESMTP id 16C45120006B;
+	Thu, 22 Aug 2024 09:43:16 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-08.internal (MEProxy); Thu, 22 Aug 2024 09:43:16 -0400
+X-ME-Sender: <xms:dEDHZs-Uu1QrKkiY-oVdLHzWtxqROV2farUj6grkkH4X-fGNWEAUxA>
+    <xme:dEDHZktyWpS3ITVw6h89oq81ca9j_3hKKZ_Vq14gZuz-jFubxeBlEOVXSn6gAJ8q3
+    ao4D5FFAR4YzSj7jw>
+X-ME-Received: <xmr:dEDHZiBktsutJsHa1EDcwS_U3aKQBNlH10nc5Qeqfbb17_kgryGFLlZxeRIwsw>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddruddvtddgieeiucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvden
+    ucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrd
+    gtohhmqeenucggtffrrghtthgvrhhnpefhtedvgfdtueekvdekieetieetjeeihedvteeh
+    uddujedvkedtkeefgedvvdehtdenucffohhmrghinhepkhgvrhhnvghlrdhorhhgnecuve
+    hluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepsghoqhhunhdo
+    mhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqieelvdeghedtieegqddujeejke
+    ehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdrtghomhesfhhigihmvgdrnhgr
+    mhgvpdhnsggprhgtphhtthhopeehfedpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtoh
+    eprghlihgtvghrhihhlhesghhoohhglhgvrdgtohhmpdhrtghpthhtoheprgdrhhhinhgu
+    sghorhhgsehsrghmshhunhhgrdgtohhmpdhrtghpthhtoheprghjohhnvghssehvvghnth
+    grnhgrmhhitghrohdrtghomhdprhgtphhtthhopegrkhhpmheslhhinhhugidqfhhouhhn
+    uggrthhiohhnrdhorhhgpdhrtghpthhtoheprghlvgigrdhgrgihnhhorhesghhmrghilh
+    drtghomhdprhgtphhtthhopegrlhgvgihghhhithhisehrihhvohhsihhntgdrtghomhdp
+    rhgtphhtthhopegrohhusegvvggtshdrsggvrhhkvghlvgihrdgvughupdhrtghpthhtoh
+    eprghprghtvghlsehvvghnthgrnhgrmhhitghrohdrtghomhdprhgtphhtthhopegrrhgu
+    sgeskhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:dEDHZsfNAO2KfbEz1kaXZ_nbhnDePpyUV1gRLFjtHVlMaNflg6iZJg>
+    <xmx:dEDHZhMs8CPRen4V_NIyCqBFPKnZ4_sN9UCLAWbcQFrM1oVZaahJVg>
+    <xmx:dEDHZmlyRrHJ8PnL-3vgbYRcqbaNA4U5IsLMGLpi571JC6kYee4bJA>
+    <xmx:dEDHZjueMr_6ePqPIv3LdRePtsn5wEwdSWWYW5z6pFHU6oxEuMb_5g>
+    <xmx:dEDHZvsty_NFU9voKfT8TVM2to8A7PqU9JWozXcbc_HkfyMAjmPlXZ-3>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 22 Aug 2024 09:43:15 -0400 (EDT)
+Date: Thu, 22 Aug 2024 06:43:07 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: a.hindborg@samsung.com, ajones@ventanamicro.com,
+	akpm@linux-foundation.org, alex.gaynor@gmail.com,	alexghiti@rivosinc.com,
+ aou@eecs.berkeley.edu,	apatel@ventanamicro.com, ardb@kernel.org,
+ arnd@arndb.de,	benno.lossin@proton.me, bjorn3_gh@protonmail.com,
+ bp@alien8.de,	catalin.marinas@arm.com, chenhuacai@kernel.org,
+	conor.dooley@microchip.com, dave.hansen@linux.intel.com,
+	gary@garyguo.net, hpa@zytor.com, jbaron@akamai.com,	jpoimboe@kernel.org,
+ kernel@xen0n.name, linux-arch@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, linux-kernel@vger.kernel.org,
+	linux-riscv@lists.infradead.org, linux-trace-kernel@vger.kernel.org,
+	loongarch@lists.linux.dev, maobibo@loongson.cn,	mark.rutland@arm.com,
+ mathieu.desnoyers@efficios.com,	maz@kernel.org, mhiramat@kernel.org,
+ mingo@redhat.com,	ojeda@kernel.org, oliver.upton@linux.dev,
+ palmer@dabbelt.com,	paul.walmsley@sifive.com, peterz@infradead.org,
+ rostedt@goodmis.org,	rust-for-linux@vger.kernel.org,
+ ryan.roberts@arm.com,	samuel.holland@sifive.com, seanjc@google.com,
+ tabba@google.com,	tglx@linutronix.de, ubizjak@gmail.com,
+ wedsonaf@gmail.com,	will@kernel.org, x86@kernel.org,
+ yangtiezhu@loongson.cn,	zhaotianrui@loongson.cn
+Subject: Re: [PATCH v8 1/5 alt] rust: add generic static_key_false
+Message-ID: <ZsdAawBhPXojpDA1@boqun-archlinux>
+References: <20240822-tracepoint-v8-1-f0c5899e6fd3@google.com>
+ <20240822-tracepoint-v8-1b-f0c5899e6fd3@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v7 3/4] drm/panic: Simplify logo handling
-To: Thomas Zimmermann <tzimmermann@suse.de>,
- Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
- Maxime Ripard <mripard@kernel.org>, David Airlie <airlied@gmail.com>,
- Daniel Vetter <daniel@ffwll.ch>, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng
- <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
- Bjorn Roy Baron <bjorn3_gh@protonmail.com>,
- Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl
- <aliceryhl@google.com>, linux-kernel@vger.kernel.org,
- dri-devel@lists.freedesktop.org, rust-for-linux@vger.kernel.org,
- Danilo Krummrich <dakr@redhat.com>
-References: <20240822073852.562286-1-jfalempe@redhat.com>
- <20240822073852.562286-4-jfalempe@redhat.com>
- <166850ea-ef40-4868-be26-681ea7a0bca4@suse.de>
-From: Jocelyn Falempe <jfalempe@redhat.com>
-In-Reply-To: <166850ea-ef40-4868-be26-681ea7a0bca4@suse.de>
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US, fr
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240822-tracepoint-v8-1b-f0c5899e6fd3@google.com>
 
-On 22/08/2024 15:00, Thomas Zimmermann wrote:
+On Thu, Aug 22, 2024 at 12:08:07PM +0000, Alice Ryhl wrote:
+> Add just enough support for static key so that we can use it from
+> tracepoints. Tracepoints rely on `static_key_false` even though it is
+> deprecated, so we add the same functionality to Rust.
 > 
+> This patch only provides a generic implementation without code patching
+> (matching the one used when CONFIG_JUMP_LABEL is disabled). Later
+> patches add support for inline asm implementations that use runtime
+> patching.
 > 
-> Am 22.08.24 um 09:33 schrieb Jocelyn Falempe:
->> Move logo rectangle initialisation, and logo drawing in separate
->> functions, so they can be re-used by different panic screens.
->> It prepares the introduction of the QR code panic screen.
->>
->> Signed-off-by: Jocelyn Falempe <jfalempe@redhat.com>
+> When CONFIG_JUMP_LABEL is unset, `static_key_count` is a static inline
+> function, so a Rust helper is defined for `static_key_count` in this
+> case. If Rust is compiled with LTO, this call should get inlined. The
+> helper can be eliminated once we have the necessary inline asm to make
+> atomic operations from Rust.
 > 
-> Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-> 
-> with the comments considered.
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
-Sure, I will change the const int to const size_t before pushing.
+Reviewed-by: Boqun Feng <boqun.feng@gmail.com>
 
-Thanks
+Regards,
+Boqun
 
--- 
-
-Jocelyn
+> ---
+> This is an alternate version of patch 1 that resolves the conflict with
+> https://lore.kernel.org/all/20240725183325.122827-7-ojeda@kernel.org/
 > 
->> ---
->>
->> v6:
->>   * rebase, and handle conflict with 5d45c01dea6f ("drm/panic: Add 
->> panic description")
->>
->>   drivers/gpu/drm/drm_panic.c | 58 +++++++++++++++++++++----------------
->>   1 file changed, 33 insertions(+), 25 deletions(-)
->>
->> diff --git a/drivers/gpu/drm/drm_panic.c b/drivers/gpu/drm/drm_panic.c
->> index 59fba23e5fd7a..473db5fafb617 100644
->> --- a/drivers/gpu/drm/drm_panic.c
->> +++ b/drivers/gpu/drm/drm_panic.c
->> @@ -85,7 +85,7 @@ static struct drm_panic_line panic_msg[] = {
->>       PANIC_LINE(""), /* will be replaced by the panic description */
->>   };
->> -#define PANIC_MSG_LINES ARRAY_SIZE(panic_msg)
->> +static const int panic_msg_lines = ARRAY_SIZE(panic_msg);
+>  rust/bindings/bindings_helper.h |  1 +
+>  rust/helpers/helpers.c          |  1 +
+>  rust/helpers/tracepoint.c       | 18 ++++++++++++++++++
+>  rust/kernel/jump_label.rs       | 29 +++++++++++++++++++++++++++++
+>  rust/kernel/lib.rs              |  1 +
+>  5 files changed, 50 insertions(+)
+>  create mode 100644 rust/helpers/tracepoint.c
+>  create mode 100644 rust/kernel/jump_label.rs
 > 
-> This type should be size_t instead of int
+> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
+> index ae82e9c941af..e0846e7e93e6 100644
+> --- a/rust/bindings/bindings_helper.h
+> +++ b/rust/bindings/bindings_helper.h
+> @@ -14,6 +14,7 @@
+>  #include <linux/ethtool.h>
+>  #include <linux/firmware.h>
+>  #include <linux/jiffies.h>
+> +#include <linux/jump_label.h>
+>  #include <linux/mdio.h>
+>  #include <linux/phy.h>
+>  #include <linux/refcount.h>
+> diff --git a/rust/helpers/helpers.c b/rust/helpers/helpers.c
+> index 173533616c91..5b17839de43a 100644
+> --- a/rust/helpers/helpers.c
+> +++ b/rust/helpers/helpers.c
+> @@ -20,6 +20,7 @@
+>  #include "slab.c"
+>  #include "spinlock.c"
+>  #include "task.c"
+> +#include "tracepoint.c"
+>  #include "uaccess.c"
+>  #include "wait.c"
+>  #include "workqueue.c"
+> diff --git a/rust/helpers/tracepoint.c b/rust/helpers/tracepoint.c
+> new file mode 100644
+> index 000000000000..02aafb2b226f
+> --- /dev/null
+> +++ b/rust/helpers/tracepoint.c
+> @@ -0,0 +1,18 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +/*
+> + * Helpers for tracepoints. At the moment, helpers are only needed when
+> + * CONFIG_JUMP_LABEL is disabled, as `static_key_count` is only marked inline
+> + * in that case.
+> + *
+> + * Copyright (C) 2024 Google LLC.
+> + */
+> +
+> +#include <linux/jump_label.h>
+> +
+> +#ifndef CONFIG_JUMP_LABEL
+> +int rust_helper_static_key_count(struct static_key *key)
+> +{
+> +	return static_key_count(key);
+> +}
+> +#endif
+> diff --git a/rust/kernel/jump_label.rs b/rust/kernel/jump_label.rs
+> new file mode 100644
+> index 000000000000..011e1fc1d19a
+> --- /dev/null
+> +++ b/rust/kernel/jump_label.rs
+> @@ -0,0 +1,29 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +// Copyright (C) 2024 Google LLC.
+> +
+> +//! Logic for static keys.
+> +//!
+> +//! C header: [`include/linux/jump_label.h`](srctree/include/linux/jump_label.h).
+> +
+> +/// Branch based on a static key.
+> +///
+> +/// Takes three arguments:
+> +///
+> +/// * `key` - the path to the static variable containing the `static_key`.
+> +/// * `keytyp` - the type of `key`.
+> +/// * `field` - the name of the field of `key` that contains the `static_key`.
+> +///
+> +/// # Safety
+> +///
+> +/// The macro must be used with a real static key defined by C.
+> +#[macro_export]
+> +macro_rules! static_key_false {
+> +    ($key:path, $keytyp:ty, $field:ident) => {{
+> +        let _key: *const $keytyp = ::core::ptr::addr_of!($key);
+> +        let _key: *const $crate::bindings::static_key = ::core::ptr::addr_of!((*_key).$field);
+> +
+> +        $crate::bindings::static_key_count(_key.cast_mut()) > 0
+> +    }};
+> +}
+> +pub use static_key_false;
+> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> index 274bdc1b0a82..91af9f75d121 100644
+> --- a/rust/kernel/lib.rs
+> +++ b/rust/kernel/lib.rs
+> @@ -36,6 +36,7 @@
+>  pub mod firmware;
+>  pub mod init;
+>  pub mod ioctl;
+> +pub mod jump_label;
+>  #[cfg(CONFIG_KUNIT)]
+>  pub mod kunit;
+>  #[cfg(CONFIG_NET)]
+> -- 
+> 2.46.0.184.g6999bdac58-goog
 > 
->>   static const struct drm_panic_line logo_ascii[] = {
->>       PANIC_LINE("     .--.        _"),
->> @@ -97,7 +97,7 @@ static const struct drm_panic_line logo_ascii[] = {
->>       PANIC_LINE(" \\___)=(___/"),
->>   };
->> -#define PANIC_LOGO_LINES ARRAY_SIZE(logo_ascii)
->> +static const int logo_ascii_lines = ARRAY_SIZE(logo_ascii);
-> 
-> size_t
-> 
->>   #if defined(CONFIG_LOGO) && !defined(MODULE)
->>   static const struct linux_logo *logo_mono;
->> @@ -496,31 +496,44 @@ static void draw_txt_rectangle(struct 
->> drm_scanout_buffer *sb,
->>       }
->>   }
->> +static void drm_panic_logo_rect(struct drm_rect *rect, const struct 
->> font_desc *font)
->> +{
->> +    if (logo_mono)
->> +        drm_rect_init(rect, 0, 0, logo_mono->width, logo_mono->height);
->> +    else {
->> +        int logo_width = get_max_line_len(logo_ascii, 
->> logo_ascii_lines) * font->width;
->> +
->> +        drm_rect_init(rect, 0, 0, logo_width, logo_ascii_lines * 
->> font->height);
->> +    }
->> +}
->> +
->> +static void drm_panic_logo_draw(struct drm_scanout_buffer *sb, struct 
->> drm_rect *rect,
->> +                const struct font_desc *font, u32 fg_color)
->> +{
->> +    if (logo_mono)
->> +        drm_panic_blit(sb, rect, logo_mono->data,
->> +                   DIV_ROUND_UP(drm_rect_width(rect), 8), 1, fg_color);
->> +    else
->> +        draw_txt_rectangle(sb, font, logo_ascii, logo_ascii_lines, 
->> false, rect,
->> +                   fg_color);
->> +}
->> +
->>   static void draw_panic_static_user(struct drm_scanout_buffer *sb)
->>   {
->>       u32 fg_color = 
->> convert_from_xrgb8888(CONFIG_DRM_PANIC_FOREGROUND_COLOR, 
->> sb->format->format);
->>       u32 bg_color = 
->> convert_from_xrgb8888(CONFIG_DRM_PANIC_BACKGROUND_COLOR, 
->> sb->format->format);
->>       const struct font_desc *font = get_default_font(sb->width, 
->> sb->height, NULL, NULL);
->>       struct drm_rect r_screen, r_logo, r_msg;
->> -    unsigned int logo_width, logo_height;
->>       unsigned int msg_width, msg_height;
->>       if (!font)
->>           return;
->>       r_screen = DRM_RECT_INIT(0, 0, sb->width, sb->height);
->> +    drm_panic_logo_rect(&r_logo, font);
->> -    if (logo_mono) {
->> -        logo_width = logo_mono->width;
->> -        logo_height = logo_mono->height;
->> -    } else {
->> -        logo_width = get_max_line_len(logo_ascii, PANIC_LOGO_LINES) * 
->> font->width;
->> -        logo_height = PANIC_LOGO_LINES * font->height;
->> -    }
->> -    r_logo = DRM_RECT_INIT(0, 0, logo_width, logo_height);
->> -
->> -    msg_width = min(get_max_line_len(panic_msg, PANIC_MSG_LINES) * 
->> font->width, sb->width);
->> -    msg_height = min(PANIC_MSG_LINES * font->height, sb->height);
->> +    msg_width = min(get_max_line_len(panic_msg, panic_msg_lines) * 
->> font->width, sb->width);
->> +    msg_height = min(panic_msg_lines * font->height, sb->height);
->>       r_msg = DRM_RECT_INIT(0, 0, msg_width, msg_height);
->>       /* Center the panic message */
->> @@ -529,15 +542,10 @@ static void draw_panic_static_user(struct 
->> drm_scanout_buffer *sb)
->>       /* Fill with the background color, and draw text on top */
->>       drm_panic_fill(sb, &r_screen, bg_color);
->> -    if (!drm_rect_overlap(&r_logo, &r_msg)) {
->> -        if (logo_mono)
->> -            drm_panic_blit(sb, &r_logo, logo_mono->data, 
->> DIV_ROUND_UP(logo_width, 8),
->> -                       fg_color);
->> -        else
->> -            draw_txt_rectangle(sb, font, logo_ascii, 
->> PANIC_LOGO_LINES, false, &r_logo,
->> -                       fg_color);
->> -    }
->> -    draw_txt_rectangle(sb, font, panic_msg, PANIC_MSG_LINES, true, 
->> &r_msg, fg_color);
->> +    if (!drm_rect_overlap(&r_logo, &r_msg))
->> +        drm_panic_logo_draw(sb, &r_logo, font, fg_color);
->> +
->> +    draw_txt_rectangle(sb, font, panic_msg, panic_msg_lines, true, 
->> &r_msg, fg_color);
->>   }
->>   /*
->> @@ -647,7 +655,7 @@ static void drm_panic_set_description(const char 
->> *description)
->>       u32 len;
->>       if (description) {
->> -        struct drm_panic_line *desc_line = &panic_msg[PANIC_MSG_LINES 
->> - 1];
->> +        struct drm_panic_line *desc_line = &panic_msg[panic_msg_lines 
->> - 1];
->>           desc_line->txt = description;
->>           len = strlen(description);
->> @@ -660,7 +668,7 @@ static void drm_panic_set_description(const char 
->> *description)
->>   static void drm_panic_clear_description(void)
->>   {
->> -    struct drm_panic_line *desc_line = &panic_msg[PANIC_MSG_LINES - 1];
->> +    struct drm_panic_line *desc_line = &panic_msg[panic_msg_lines - 1];
->>       desc_line->len = 0;
->>       desc_line->txt = NULL;
-> 
-
