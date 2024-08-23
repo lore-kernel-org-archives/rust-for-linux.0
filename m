@@ -1,99 +1,85 @@
-Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+Received: from mail-oa1-f47.google.com (mail-oa1-f47.google.com [209.85.160.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C509156C69
-	for <rust-for-linux@vger.kernel.org>; Fri, 23 Aug 2024 11:10:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F203718754E
+	for <rust-for-linux@vger.kernel.org>; Fri, 23 Aug 2024 11:23:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724411417; cv=none; b=pZnEgBdsnJv4HmLApfw8j2Q6iWIIbsprQ31a9fBAHE/1GtYrxDpR6hnNC/srW3mTHZKcFYrXS2kP5lhkaK4pUs54s5U+YvkdE2UaGu24eSeuTD3vwM/B0YD64ay9PqbYBdTSTx1HinypPPh7xLaV60BQiZ0H7qhJy+9rcOtTKkA=
+	t=1724412210; cv=none; b=pYzZm9EmPNVQW6DIXQIdML9ExO/pTm8RH3KrdghJ2sGO5jfpKtYmHrNG+TQ7bEaqAQVAhNYHY4AdZl+8mE9dpgan2eM8Ud+ghII/QYlD1SWPlb2RlJ/af707J2jbPTIyIW+5b20zB0qGBxYZrtriZbKBkIh1LldpcbBuO/jR1xM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724411417; c=relaxed/simple;
-	bh=ReeI4s6+qF5bV3tgr5n/AouGQXbJo28yIppO71OTYvU=;
+	s=arc-20240116; t=1724412210; c=relaxed/simple;
+	bh=9zPwRVTbxJhE7Ic3efyU4P6aRiX+muNt3WCGVVGpUb0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=k273wuw9T8dhsIqNu5X+YcVilERqznedgqffbX8jDyCf3eaZQSiR9Yf6qdotlWNjUsuGucYMEQkITezke8pd0jEfdbPYRm2ULT3ex1DlkdSDoSZUOHZDk7seai2RzkeC6mCboBQ87/raYndRVGWjPYFe7+yG/dOcp7qsD3jq0Gk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=BOaLEFRD; arc=none smtp.client-ip=209.85.221.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=cHzL7+LbwJyDde810IQbx7bP6PQk29dJ2gPtXhQ7an/wOzTYwhcZyiZnfsWqvYwGu/RV+99ADZ4q555lXOLNnHzowA1hY2YBoZSpXcdzRyF8H8YO1/gFtj9swKvJk/xPjmtL/gWPV8634+wjpOlJ0/4NIZqdR8Sccn3Y4mZhbhQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lHOhE/Q+; arc=none smtp.client-ip=209.85.160.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="BOaLEFRD"
-Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-371afae614aso906412f8f.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 23 Aug 2024 04:10:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lHOhE/Q+"
+Received: by mail-oa1-f47.google.com with SMTP id 586e51a60fabf-268e0b13471so245220fac.2
+        for <rust-for-linux@vger.kernel.org>; Fri, 23 Aug 2024 04:23:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1724411414; x=1725016214; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1724412208; x=1725017008; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ReeI4s6+qF5bV3tgr5n/AouGQXbJo28yIppO71OTYvU=;
-        b=BOaLEFRD4JxBiydGebcxghO8AF+ejOT41fbJE2V9uBW1+Yg68t6RDoOuqlnRwkd0ZL
-         uNGsy+wb9/1e/lYRjjveAVZn3j/1PKZjpKaFhLwPS7CGFCuH1IG4OFnOtNi1/nstkkjJ
-         OgpEH8h3Z8AddVHZR2ZMx3G9Sna9Qx44n4JEL8gUhccpU7JfUn/YV2Cw9qdSWx5f6m7t
-         cjWVt4Pc/Sev+2vaNyAN47PVZyTXNp2rnfo74EflqpQiQwdqD+1wZu0PxdQrJh3LGVS6
-         6ORXGCeGwA0CegdPYwvzqRZAYl1NRv21phHavPilVwhUnqCDumiTmAU2b0hedFxylWI6
-         EvYA==
+        bh=9zPwRVTbxJhE7Ic3efyU4P6aRiX+muNt3WCGVVGpUb0=;
+        b=lHOhE/Q+KR3VEaFrW7mspuJeFpZZ8ak+tnXbnPSE7Q03fJxOfc+rdD+V5W0Z+/RuUi
+         CYBiRDszqYKLPNIuOP7O9v4FuP8/D24+JmwEqV3JmPbSd6kZS1fBEOXUW+6d5qnmWpP8
+         Yi4c89WsovGfp/kWQhEud9G1TxyXb3PAUg/XHiMgXlWclwLfFs6vF4IaOyf0k3LDx456
+         wdHUusZ/0G5UDNWHRtttaOplNnvTlBw7GmEzAjZYWn9TWpBxvtHIHrIfYlIGaEx2uWSj
+         XohtqhyAfOeMWvUYX1EEFNrmziBXRJmN1xDQnc6gKaiy7iY2N50zeCWs97VSkq+P3gAU
+         oKOA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724411414; x=1725016214;
+        d=1e100.net; s=20230601; t=1724412208; x=1725017008;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=ReeI4s6+qF5bV3tgr5n/AouGQXbJo28yIppO71OTYvU=;
-        b=SdpU5spWlH9Q78cOJox3FNTIGPHZGwTNPGgF0aYUT7xqnNk88YfW8i3kFIRKGAZQRL
-         7W8GLANw/RLI834p3w/2MNcgEp0qVyCx58d57eddQsDTrRVcrHeWTJe3b1J7c6f5NCIw
-         8q1MyKFDaTvVzw/A+d8GzsBBvKryO6j0SVT7x/QBDo2DcBSWD9+JJT7JcpnDYOy0H65a
-         7Y2zSwEVAiPmJDAJoKDGuKkkAq8xtGBXBsqioOsjUFxcI+GYLf7UUxAP1lrqek7bRveP
-         rDHm7/1L3iRBz8GSP9WK2ynp8tojOxX7Z7CySzKdT8tIEC2fQi4fERBmpsogWGsqt192
-         dwXQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXuUmGGLhgBDZX7/BIol6IK/syE4cLpHRQuMSCOEpjFNM6vwxppygqQesQhZ4/xI5SR1Yl7ZM2kzoNS5TZgDA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwMZ23TVoYOJiL6UAI42rsxaMYEAJavy4rdF3Eg/cJ5CilzWtHC
-	dSzD3jDHP8B+dQILXxSDdjst81krhq6MK66PUaU20xB476M/YL7N6p5JSuV8KOLNBLx2kRSlO0Q
-	SRGStAn536wGDliYa+upLEJbeZZt9Y/YQhd3M
-X-Google-Smtp-Source: AGHT+IFxnNI6hIRfLr8zjmmLCONdLPArCYnTTrpVH1QypHa6cWS+nkf7glv9CxcV+oX05jJ7qlfZCvYVo0OIXTNEuIY=
-X-Received: by 2002:adf:fe09:0:b0:368:327c:372b with SMTP id
- ffacd0b85a97d-37311858570mr1093585f8f.19.1724411414133; Fri, 23 Aug 2024
- 04:10:14 -0700 (PDT)
+        bh=9zPwRVTbxJhE7Ic3efyU4P6aRiX+muNt3WCGVVGpUb0=;
+        b=uashAF/kHSKoHM7qSXMfmcNWb98EXwySO+G8ZCE6tBRxgWE/VeUP0FOqgTf3Zmo2W7
+         0C0rCibBni4M4uoMQifZt/5JaaLB9AeuTAo78p2m2fLRc6+gwZH+kinzH0GBjlkx1nLq
+         OXGytTh9/3nTQwkJpoXb/b2TGuvplecj9dr1/G8wcqiQiWRgaUw4W0WngRY8DvI6ciyb
+         0vEKZhKk9knMr3HDsZ82L9hPIddAB1JHS/74eEannlGO7wv7UxhfN2b4MFLFiaIZYCyL
+         XKQaIyOao17BUCWnDNlFMWGrsOQJPtgQLUKVhKaWw6wVTVgo+gGtR9kggSqAbq3cIRaa
+         mo8Q==
+X-Forwarded-Encrypted: i=1; AJvYcCWWyQcZMdNdOuTe1yT2YFg8SxXq7BCKpaAH+q+l6pH6fonZcktNRCL3WfAlX/nHEzFiHx/FE50DmXbzoVfifA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyrf6cQ5SLw4H9M4eZXpbAtsHmiFpnFNpp81DWBXHnHDBMzTQ1M
+	N9aKDqLkNQNeWqxl4p7xy5I2UF5oyC4MUPuexi4OiWOP9m26ST7w8rcZ8qsRfI5eSrAWZlOPRRz
+	lMny68//boJX7jLNcNTKgFLChDp4=
+X-Google-Smtp-Source: AGHT+IHDP4C/3yO90RywJ4cAv8fQnPB5eu1INeOoHTL1B4MeXum/gzyQhaY1QoMkztNCvn0F+EMEHMcWui+idNEzV3Y=
+X-Received: by 2002:a05:6870:171e:b0:25e:14d9:da27 with SMTP id
+ 586e51a60fabf-273e600c02dmr1181926fac.0.1724412207988; Fri, 23 Aug 2024
+ 04:23:27 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240823050359.1737893-1-workingjubilee@gmail.com>
-In-Reply-To: <20240823050359.1737893-1-workingjubilee@gmail.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Fri, 23 Aug 2024 13:10:01 +0200
-Message-ID: <CAH5fLgj8dVUrsin0PTBxFDd5QsRf_QGfPzTosTZk2iP9-hP_Hw@mail.gmail.com>
+References: <20240823050359.1737893-1-workingjubilee@gmail.com> <CAH5fLgj8dVUrsin0PTBxFDd5QsRf_QGfPzTosTZk2iP9-hP_Hw@mail.gmail.com>
+In-Reply-To: <CAH5fLgj8dVUrsin0PTBxFDd5QsRf_QGfPzTosTZk2iP9-hP_Hw@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Fri, 23 Aug 2024 13:23:16 +0200
+Message-ID: <CANiq72krF5M5CnBJxRXrXB1KbM8vUERhwu4v9YDRPU0RVr1+8g@mail.gmail.com>
 Subject: Re: [PATCH] rust: Eschew `Box<MaybeUninit<T>>::write`
-To: Jubilee Young <workingjubilee@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Jubilee Young <workingjubilee@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
 	rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Aug 23, 2024 at 7:04=E2=80=AFAM Jubilee Young <workingjubilee@gmail=
-.com> wrote:
+On Fri, Aug 23, 2024 at 1:10=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
+rote:
 >
-> T-libs-api has consensus for stabilizing some of `feature(new_uninit)`,
-> but not for `Box<MaybeUninit<T>>::write`. Instead, we can use
-> `MaybeUninit<T>::write`, so Rust for Linux can drop the feature after
-> stabilization. That will happen after merging, as the FCP has completed:
-> https://github.com/rust-lang/rust/issues/63291#issuecomment-2183022955
->
-> This is required before stabilization because remaining-unstable API
-> will be divided into new features. This code doesn't know about those
-> yet. It can't: they haven't landed, as the relevant PR is blocked on
-> rustc's CI testing Rust-for-Linux without this patch.
->
-> Signed-off-by: Jubilee Young <workingjubilee@gmail.com>
+> I'm not sure if this should have a Fixes tag? The original code is
+> from commit 08d3f5492879 ("rust: alloc: introduce the `BoxExt` trait")
+> which got merged in 6.10.
 
-This looks good to me. It should work both before and after the change in r=
-ustc.
+There was no bug in the original code, so I don't think so.
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-
-I'm not sure if this should have a Fixes tag? The original code is
-from commit 08d3f5492879 ("rust: alloc: introduce the `BoxExt` trait")
-which got merged in 6.10.
-
-Alice
+Cheers,
+Miguel
