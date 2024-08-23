@@ -1,117 +1,136 @@
-Received: from mail-yw1-f178.google.com (mail-yw1-f178.google.com [209.85.128.178])
+Received: from mail-qt1-f170.google.com (mail-qt1-f170.google.com [209.85.160.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE6978488
-	for <rust-for-linux@vger.kernel.org>; Fri, 23 Aug 2024 19:13:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 166AD18A6A9
+	for <rust-for-linux@vger.kernel.org>; Fri, 23 Aug 2024 19:17:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724440419; cv=none; b=acFe6s630EABFUA8IdnKCSQh7U0G01RBSQmRAVCaowqP2w5sIFJvDl1hFANiThAaRP3jwBYtcMrgZ0T2KL7x0HEFEj12ZB1Uc1KjnZJeZBzacTEM5qsj4NIjai81ZwWFmFFt1JbYueSZtzB1tH7K2/VUhREmRSYZrqnHCmo+dIY=
+	t=1724440663; cv=none; b=ZJ0Jc6Xk9GT8Ou5dnQx4sDVoZ4Emsv2M0Cahe5RthxEQvKQf1UPutumJiYDfD5U8Ozx/MQnIUZCAHFHpOJUx4uXyPjBvWYPVWS46H9iL7G2nvfwxqTSij2ODKtY7BF6tfAVTZ1p0vnBzNIg7KLAhSF/RvIXIz2RF4E6zld2wJmQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724440419; c=relaxed/simple;
-	bh=7aUFx8cxFOwF0WID6eSNxZMzobzkEuWFC5EGYifrKn8=;
+	s=arc-20240116; t=1724440663; c=relaxed/simple;
+	bh=JIaW/apNWCzAmV/n0G/RjvJeXSQThNu/IWRYC/nMlBQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=M13D1S841+s191uq6+8op2/pbHlbg/A7JGQdl2VpW/bcStL2lotACKXEH0A6Ifi+MybXmNtFi0J0pU+95o3odBn9Frwl1Lx4pxNG4DOIEHBi1YUsPMseRp7XBQT5cXj9hxl0Yff10dK8FTMGhxeQPfCB2dG8IcVVOuaZc/nd1ZU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=ITpRKxEU; arc=none smtp.client-ip=209.85.128.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=umich.edu
+	 To:Cc:Content-Type; b=GjdmlFf4csEf31jOU6EoLhwqu3PbGnoZVLoPDY608+wWPstKn9slhTsyY8LmDFg8LGaCT9uZLmy+dZb+5PsgwWNEtQ6qhKMvFI+WIIZYXZoBjLbUGvd2P7MpzyrON75XX3weh5bP/4z5Q9PTx1CA7IbcZdQA9vL1LW8FZDTSDn8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nQjFtDUY; arc=none smtp.client-ip=209.85.160.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="ITpRKxEU"
-Received: by mail-yw1-f178.google.com with SMTP id 00721157ae682-691c85525ebso21307527b3.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 23 Aug 2024 12:13:37 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nQjFtDUY"
+Received: by mail-qt1-f170.google.com with SMTP id d75a77b69052e-44fee2bfd28so1321cf.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 23 Aug 2024 12:17:41 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=umich.edu; s=google-2016-06-03; t=1724440416; x=1725045216; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1724440661; x=1725045461; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=7aUFx8cxFOwF0WID6eSNxZMzobzkEuWFC5EGYifrKn8=;
-        b=ITpRKxEUpv/7up7O0+nXBQpyzxOTY/4itFhTTZz5NFlZaPTUeSgEewGAFj3ySVKkZF
-         S04YCnHhp8PJrPdbjSYeRTe0oq+Q91lTYfPPw75UgnmbE396pnqBmopBjuXWmz3ymFVi
-         QlrDGAWwAqGZ8cP93i/Djev++iEQa5n29rUbDkdeWMGk4jtwrthKVOmq0/WeJphWDzLU
-         xm49teUi4QJD4OWNRFX6SG2myBfbK96DZIJ3TmUEyqcKlpvxqROAEBL0+Hby5XKl6f0t
-         XQDP+jpcrZ0frKr6eFY2PTWYfoxncG29Rl3kjM9OC0Q/go56K4F4uew1WBJdAaKRGhve
-         xW2A==
+        bh=HK1Wvsdu8rfQ7lMKZWs3qCjFTpM3O30wRJ41e4mXEQM=;
+        b=nQjFtDUYePQmYnE9EQJwWAQiHgusjrHR7wzqtda3MIHccSeQSWS/pM/mAuvbwrSEon
+         kQk5hJQNheGOF9eavi8D0shnYnrqKUTWe54HFLyjzo0A7R8WWFT6HOcec0hqJ5hTI8Te
+         +aZnp8HOB6SPgQotqWrW6Vyn2E/mTCWnqdktR+bkTYysQV5LSlAZtdg01Od20tSEOuEG
+         WkvL2LbZ2yPT55q+MpFC/FgcnML37II0zSjgiX2bJGeS7G5oek4cmUKxb4Lw0wrhjNOm
+         L0OaDHq64eYS7NuFHAnd07dzM9ONAdvli4LYP/QaEDHm3+TPRxCBd/5uWckpRX99lsr+
+         ejUg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724440416; x=1725045216;
+        d=1e100.net; s=20230601; t=1724440661; x=1725045461;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=7aUFx8cxFOwF0WID6eSNxZMzobzkEuWFC5EGYifrKn8=;
-        b=K6HtMTJfLZ4vHrqX2FfFp4zysySyiESWnydVlAhjeQGp0ZGuK6mDrQCPRqJ8fbcV4F
-         axH/IErxwJz0FOd4GIH0RZ+UEGo97G7lRnzbUfFrPk0bbXHZFE0LgFH06eV6rp1bNHDe
-         3VzkYnUftRejtJgjuSPI/tsXRebTYVbI5hs8H9OII9WPvZ5KNTMv1t8fJuS9rY3nfVe2
-         M4rV3NASv3lip0R7RP8Rh/v+/T9OiLZoRSWLgi2eaHH9NB7dOVP4KqMAm5NOsWuDIrGF
-         w836d/vVtJi0Ottrtl26xgCAN+r792BE//SGM5WpsoSLnerbz1NZ/EnCNc8lsg7Cd1lE
-         HkNQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXPA+9XoIWkoR67rGGyci1QZ1NdAi2Xfoex548iIVa7KOH8r5LePao12DcY5wuqk11tP/FfwBqGKMlvSrugsg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzLF3CjHG2YXZr6h0NgpunQNFoybcUwT0XzdqXMvFCgGoNJBdFC
-	GVXRr7o0fxXmqlIgxCySp7JEKgQxZo7IDytEe6wMrR1Nvjqv905koc0NNrw9j3nh1EhyhEaUKC5
-	Gw8szJSc3j3rRmGhi9T6byvMaJFgU4jhj0njyBg==
-X-Google-Smtp-Source: AGHT+IFcMDW0basToGMWwrN6IlEZFwXsVJ7kJ4mtTeeL1VAh1oM7BhbMtKw6zEmyfR0/Tgad6SIdughuT745+IOGF4U=
-X-Received: by 2002:a05:690c:f94:b0:6b7:a7b3:8d94 with SMTP id
- 00721157ae682-6c6247f0eb9mr38028247b3.6.1724440416643; Fri, 23 Aug 2024
- 12:13:36 -0700 (PDT)
+        bh=HK1Wvsdu8rfQ7lMKZWs3qCjFTpM3O30wRJ41e4mXEQM=;
+        b=bs63fsZHM4ONMpWaskI9+XOvwo/8Ddelymz9MMBTQCJCkjrcTpy/xAPSO0qJoC0BnU
+         +9CFd0uvWVjQdEK6bwvGv0+su3l1F1GqnpydtEglNQUMuIVbhBWXpk+Ai3NrA5qkZ2hZ
+         bEztKc8sQ8CeizQMSy3ivXUWpU6no6xac7awlf2iAUNSPIYGaG1mNshTgtQEwrrugf8J
+         CG0dVcVdLG5buzZL5gYDJ+kQ8NQdj3isHousjm+gvsleADHyVnuOPxJKi/+hIAHVH3eD
+         U8eAyx6ljaKxQE+uiA8XwvmC/WrFjE4kybA8DzUDE+F1rr6T0P3Mk71MpRr7K1tC5f+9
+         4QbQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXMuk1uuYLy29AUWTn63yl/i5ZamTBlUGDRPu4M7Wp/lfyZZOISH0HyykaMZBD1FhnNxqY5Oh2URgcUy+6fXw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwK0ysDawzEStGO97e0fTgHfWGSMP4bFMzZfVXnKbMp9h8EMutO
+	BHqdSHdiI1a45Byu7QofUDwDBYCyT1P+OHLpHZ1uHt5QxASu7NbzPrwnrwrsmwhy9myzMujWolx
+	tlZEOp3bh+p3HXRsV18hxw9cvlxM18vydOqZQ
+X-Google-Smtp-Source: AGHT+IF5LomZc7hzqJKmq6FHV/NPspoQklrwD6w75B8q4/YSMNHk+tcBlzWN1zsXKbub6U63GbI50CTIDeaWmmKUtbY=
+X-Received: by 2002:a05:622a:30a:b0:44f:ea7a:2119 with SMTP id
+ d75a77b69052e-456420b7fa6mr478581cf.18.1724440660708; Fri, 23 Aug 2024
+ 12:17:40 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240820225719.91410-1-fujita.tomonori@gmail.com>
- <20240820225719.91410-7-fujita.tomonori@gmail.com> <CALNs47uvG_yjzX7Ewszb6M__jMZFtPu1rtw8DqvL5CceqCw4Zg@mail.gmail.com>
- <20240823.133656.1425422314833390920.fujita.tomonori@gmail.com>
-In-Reply-To: <20240823.133656.1425422314833390920.fujita.tomonori@gmail.com>
-From: Trevor Gross <tmgross@umich.edu>
-Date: Fri, 23 Aug 2024 14:13:25 -0500
-Message-ID: <CALNs47u6+EFYkvpyHZD5zLcjQeb2CuZNTOjPuZ4MKewoKZYPMg@mail.gmail.com>
-Subject: Re: [PATCH net-next v6 6/6] net: phy: add Applied Micro QT2025 PHY driver
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, andrew@lunn.ch, 
-	miguel.ojeda.sandonis@gmail.com, benno.lossin@proton.me, aliceryhl@google.com
+References: <20240815173903.4172139-37-samitolvanen@google.com>
+ <20240819193851.GA4809@google.com> <a76f9422-4001-416a-a31b-37ab7dcb17f4@proton.me>
+ <CABCJKudAF0=29js8SDcYY5r6kM7RBveTrZH9RyECNGqkcqy=nw@mail.gmail.com>
+ <CAGSQo01kCUd64nB7C7Ssy1N=UBpOP3bORsRDcHJ1k2CqkbKsfQ@mail.gmail.com>
+ <c6c1e84a-40f3-41a5-a732-f1cf06521691@proton.me> <2024082229-elevation-emporium-8118@gregkh>
+ <bc2e02d7-d4a7-4f0f-852c-e26ad6a8688f@proton.me> <2024082257-refrain-subsector-b6c4@gregkh>
+ <77e8e20c-8ca1-4df7-a4d7-ed77454f1754@proton.me> <2024082356-stowing-endowment-555b@gregkh>
+In-Reply-To: <2024082356-stowing-endowment-555b@gregkh>
+From: Sami Tolvanen <samitolvanen@google.com>
+Date: Fri, 23 Aug 2024 19:17:01 +0000
+Message-ID: <CABCJKud--imREq8E6uuk4XwatLsKC7ikmyoLKJStqr3Azz0Hdw@mail.gmail.com>
+Subject: Re: [PATCH v2 16/19] gendwarfksyms: Add support for reserved
+ structure fields
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Benno Lossin <benno.lossin@proton.me>, Matthew Maurer <mmaurer@google.com>, 
+	Masahiro Yamada <masahiroy@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, Petr Pavlu <petr.pavlu@suse.com>, 
+	Neal Gompa <neal@gompa.dev>, Hector Martin <marcan@marcan.st>, Janne Grunau <j@jannau.net>, 
+	Asahi Linux <asahi@lists.linux.dev>, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Aug 23, 2024 at 8:37=E2=80=AFAM FUJITA Tomonori
-<fujita.tomonori@gmail.com> wrote:
-> > At this point the vendor driver looks like it does some verification:
-> > it attempts to read 3.d7fd until it returns something other than 0x10
-> > or 0, or times out. Could that be done here?
+On Thu, Aug 22, 2024 at 11:53=E2=80=AFPM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
 >
-> Yeah, we better to wait here until the hw becomes ready (since the
-> 8051 has just started) and check if it works correctly. A new Rust
-> abstraction for msleep() is necessary.
+> On Thu, Aug 22, 2024 at 12:00:15PM +0000, Benno Lossin wrote:
+> > > Here's one example in the android tree where 4 64bit fields are reser=
+ved
+> > > for future abi changes:
+> > >     https://android.googlesource.com/kernel/common/+/refs/heads/andro=
+id12-5.10/include/linux/fs.h#421
+> > >
+> > > And here's a different place where a field is being used with many
+> > > remaining for future use:
+> > >     https://android.googlesource.com/kernel/common/+/refs/heads/andro=
+id12-5.10/include/linux/sched.h#1379
+> > >
+> > > And also, we want/need lots of other space reservation at times, look=
+ at
+> > > how "Others" can get access to reserved areas in structures that need=
+ to
+> > > be done in an abi-safe way:
+> > >     https://android.googlesource.com/kernel/common/+/refs/heads/andro=
+id12-5.10/include/linux/sched.h#1375
+> >
+> > Let me correct myself, it's only possible to replace one `KAbiReserved`
+> > by one new field. You can have as many fields of type `KAbiReserved` as
+> > you want. The thing that you can't do is replace a single `KAbiReserved=
+`
+> > field by multiple (well you can, but then you have to change the sites
+> > that use it).
 >
-> Even without the logic, the driver starts to work eventually (if the
-> hw isn't broken) so I didn't include it in the patchset. I'll work on
-> the abstraction and update the driver after this is merged.
+> That's odd/foolish, why would that be the case?  Isn't that exactly what
+> a union is for?  How are you going to know ahead of time what size types
+> to save space for?
 
-It sounds okay to me to not block on this as long as it isn't glitchy
-- It should probably be a FIXME?
+I believe Benno is referring to the lack of anonymous structures in
+Rust. While you can replace a reserved field with a struct that
+contains multiple smaller fields, you can't access the fields
+transparently from the parent struct like you can in C:
 
-> > Consistency nit: this file uses a mix of upper and lowercase hex
-> > (mostly uppercase here) - we should probably be consistent. A quick
-> > regex search looks like lowercase hex is about twice as common in the
-> > kernel as uppercase so I think this may as well be updated.
->
-> Ah, I'll use lowercase for all the hex in the driver.
->
-> It will be a new coding rule for rust code in kernel? If so, can a
-> checker tool warn this?
+    struct s { struct { u32 a; u32 b; }; };
+    struct s s;
+    s.a =3D 0;
+    ...
 
-I don't know of any rule for this, I just noticed that the patch had
-both and it made me take a look at what is used elsewhere. rustfmt has
-an option to just commonize it for you, `hex_literal_case` [1], but it
-is unstable. That would probably be nice at some point.
+It looks like nightly Rust does have some level of support for unnamed
+fields in unions, but the implementation is not yet complete:
 
-> > Overall this looks pretty good to me, checking against both the
-> > datasheet and the vendor driver we have. Mostly small suggestions
-> > here, I'm happy to add a RB with my verification question addressed
-> > and some rewording of the 0xd001 (phy revision) comment.
->
-> Thanks a lot! I'll send v7 soon.
+https://play.rust-lang.org/?version=3Dnightly&mode=3Ddebug&edition=3D2021&g=
+ist=3D4f268d308fe6aa7a47566c7080c6e604
 
-Thanks!
+Benno, Matt, are you familiar with this feature?
 
-- Trevor
-
-[1]: https://rust-lang.github.io/rustfmt/?version=3Dv1.6.0&search=3D#hex_li=
-teral_case
+Sami
