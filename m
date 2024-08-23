@@ -1,87 +1,161 @@
-Received: from mail-oo1-f42.google.com (mail-oo1-f42.google.com [209.85.161.42])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4D0316EB79
-	for <rust-for-linux@vger.kernel.org>; Fri, 23 Aug 2024 11:23:41 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA1D01514CE;
+	Fri, 23 Aug 2024 12:24:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724412223; cv=none; b=bN9O0SPq/IyFXE/nrGJoUbMjqT7OJiSg3JhK7dEET8eWqg3bP4xNSAj3XGacSd6bXsLZ6Ud0Pjbyvn+zsHwcoiTVpog4YhEAXqJR5yLYlKryi+qR8MH5z3RrvjfG2j1M/sGqTDbwX903Ri9yyZXIqlmLWpzKpZ3QslsD5uqLWck=
+	t=1724415872; cv=none; b=W+J7kaA65kgwdoSVZ8cs2L358mm9232/1ZOXlWXf/iEZvhOtg+Jeosmbc2d342fTjnWDZVdQT9ooNY/KpeQSEVz9wpkNcF61YFs07qau5sWnZ/hbtS/KEHXuAUnxr9r0E/bVcMGKQyjjl58ksyAHdU3qAwozBvIpjsEi4j34Wmo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724412223; c=relaxed/simple;
-	bh=XeKIk62Mbzchw0HTz+5vzjGQOBcsTd1wCr4zjuAkGQ0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UfvVkNn66VViawQcGvMRC5Ica8Qn1UOXd2i25tsMPLWxiymm+4yYrPlWDIaD2JQ540NYYJgYRfLGvhZ5CQOoPgFzkE83xhfoZs4SuI0bfXHSLr40lZbfwtJeblkVNI3ZjUsb6CQ4br7y2iEqdnq2jIKw0xnV3UZzuUhEi+4RYeg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=TnnmlLKS; arc=none smtp.client-ip=209.85.161.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1724415872; c=relaxed/simple;
+	bh=8a6EIa44OOJDxbLB2ztVoJlWqzWC+VF2rEZMS8UZcXg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=jyMLFgYXbBc3wfPR/Ezz3fiBkRwfdykmgpXOezsTF+GNDUL9qhcgew8UdsbE85nSrFTunJfjS5qL6mp4UXX0OvaxeS6RtxukpZ6ZT9ZFdmE54jm+mJP7YzIaQNass/SphWCKm3JlOsdJhGe0hB7DNaTlS+NkEkaSwXBbEzL/8gY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ls5/LtwE; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="TnnmlLKS"
-Received: by mail-oo1-f42.google.com with SMTP id 006d021491bc7-5dca00a809aso277428eaf.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 23 Aug 2024 04:23:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724412221; x=1725017021; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=XeKIk62Mbzchw0HTz+5vzjGQOBcsTd1wCr4zjuAkGQ0=;
-        b=TnnmlLKSDs06JUPF66EBTS3e6zdDsa+IbSGzBdSl9K99Dx0Bl65q+jTMC2R/75OoZP
-         ulfX3jRkyb2AW1WMrFIzYuvD4hQLhsEu6kepyeCMpqDY2yEVbK0dv4jK8HLnBr0NL9Ml
-         NRQ2dEjgelsqkXS2IqACM2KrZgWOqY07qKsWyAar3CwfDKzb+gRHMfBeJEH78Az9XOk0
-         FkLq+3iPb1fVIfLoa6Tx91jvMzhMBEOMWWZ9qR3BPihHegIbHlIfh0NPqurB1haCRGGu
-         wmt9ltPP3fOegw3uEfiD7zf/jWsIFesLegv8WovaKDRV1hAN812SdEcH8cKpnPkOuT9H
-         F+BA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724412221; x=1725017021;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=XeKIk62Mbzchw0HTz+5vzjGQOBcsTd1wCr4zjuAkGQ0=;
-        b=IzFB3IUaa7lftRFT6M5Onr4adPrf+/0yNwG1fhFUCoSI5+bwbI1Wh4EG8IuHLPyATA
-         6pDnmmvGN0cc9FGR871SHGL6gUPj8Aks7hMDtGjadCwYGjxPRn8WR07h8zIfLc6/lRLu
-         0pvSojDUTaz0vW7j6dXIjyFPiGto1UCaG4qx7R5qIa/858KmbZLW/zt4ZBlWZVYvIpb4
-         EiS/c6KY2uD0Gn40n4YbXOeBWBeYzmhJGmJ3U+HjQxS0EsAKBXjdktatwto+UTJMUlbt
-         HDZu+fIEK/2P/9InJTQ6kvcuntm3LXAb3QYO1o7jp0gGTbIKYaKS4jGcr/aE6rwuWMXm
-         P18A==
-X-Forwarded-Encrypted: i=1; AJvYcCURZqmWyFjZzfvIAp6EK8yy4TPWZv9f67mLZ2wjmHJiaSbYFN+g2qUZe47KITRGBBKxsM3hUyP2dFlaW6Hoxg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwXhM+hXoQhIEavP4qMY6nWa0jaKAtEfkiFg+zGXSfkKwngcj+a
-	1e+vAg+Tn8uKWPOklBIj4+Z1R062nXreEZXOfCA8/Yxvrp7hpotUXt+ugRQKNURw5PIHJLMAyXH
-	zzTCmYbWj78AVOxF9a2yLTemGPQ0=
-X-Google-Smtp-Source: AGHT+IFKDZ+c9aM3GsI3i/+nwBhSKFCDdNknsjQDjRgSE4/oD2HhFprLHoftm730SkTjioHn0XJ4jW2UebyzDPSm9tY=
-X-Received: by 2002:a05:6871:713:b0:260:23bb:1087 with SMTP id
- 586e51a60fabf-273e602277amr1172612fac.0.1724412220883; Fri, 23 Aug 2024
- 04:23:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ls5/LtwE"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB63AC32786;
+	Fri, 23 Aug 2024 12:24:27 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1724415872;
+	bh=8a6EIa44OOJDxbLB2ztVoJlWqzWC+VF2rEZMS8UZcXg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ls5/LtwEmVBoo0uvKo9yzL/3KY62jz6z7v/qU4DLNiSpQDoWpsFNwon/L4bptD+mj
+	 2g1EXECOknp85t2VSHc8kvJg8LGeBE+2XalbNl0xUgX4o2DQSlu94azseId+xfiyT+
+	 ahxX9yQaK6UncPCIKSfeXOVkUYwCkRiHVzpQhow7EhPpUs4d830vi8Y28nK0jQbnkU
+	 2LHiSLVg3owUTqHTT+W9aI5ZZspWUb83sufwjFb06nFChOn2lTa486lpP4YlDylyOH
+	 TiBsQduJIpJz4QxIkL7YJ9srrEob3Hm77m6QQcZiJFV97qwoMvh8w3OE9Gwk/17Fwx
+	 Gn8t/3V/aNgQA==
+Date: Fri, 23 Aug 2024 13:24:24 +0100
+From: Will Deacon <will@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+	Jamie Cunliffe <Jamie.Cunliffe@arm.com>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Conor Dooley <conor@kernel.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nicolas Schier <nicolas@fjasle.eu>,
+	Ard Biesheuvel <ardb@kernel.org>, Marc Zyngier <maz@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mark Brown <broonie@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Valentin Obst <kernel@valentinobst.de>,
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	rust-for-linux@vger.kernel.org, Kees Cook <kees@kernel.org>
+Subject: Re: [PATCH v5] rust: support for shadow call stack sanitizer
+Message-ID: <20240823122423.GB32110@willie-the-truck>
+References: <20240806-shadow-call-stack-v5-1-26dccb829154@google.com>
+ <20240820143503.GD28338@willie-the-truck>
+ <CAH5fLggN+A2RawC-cpmSUHxYm=xz=1EDpMUv5C803hj37re1qA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240823050359.1737893-1-workingjubilee@gmail.com>
- <CALNs47tTwECK_pX=RbC3Rj3AVovO_a3_ap3ctCQj724FJVQ3Wg@mail.gmail.com>
- <CANiq72=jR0d0jC6Pzz8CS0gmgfcKp-=nBebGWtbAO_rYvWegUg@mail.gmail.com> <CALNs47vP=D__NHj83kM4o+z7gv4NhKSpr02Qjx2vm-qEmUqEQA@mail.gmail.com>
-In-Reply-To: <CALNs47vP=D__NHj83kM4o+z7gv4NhKSpr02Qjx2vm-qEmUqEQA@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Fri, 23 Aug 2024 13:23:29 +0200
-Message-ID: <CANiq72n9bWaD=yNUDR_U7-Cwv-seKmaKcDfZq2fxqUOQcgAa9g@mail.gmail.com>
-Subject: Re: [PATCH] rust: Eschew `Box<MaybeUninit<T>>::write`
-To: Trevor Gross <tmgross@umich.edu>
-Cc: Jubilee Young <workingjubilee@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAH5fLggN+A2RawC-cpmSUHxYm=xz=1EDpMUv5C803hj37re1qA@mail.gmail.com>
+User-Agent: Mutt/1.10.1 (2018-07-13)
 
-On Fri, Aug 23, 2024 at 8:25=E2=80=AFAM Trevor Gross <tmgross@umich.edu> wr=
-ote:
->
-> After [1] I was thinking that staying on a tagged version was the
-> goal. If this isn't the case then sounds reasonable, thanks for the
-> clarification!
+On Tue, Aug 20, 2024 at 05:13:58PM +0200, Alice Ryhl wrote:
+> On Tue, Aug 20, 2024 at 4:35 PM Will Deacon <will@kernel.org> wrote:
+> > On Tue, Aug 06, 2024 at 10:01:44AM +0000, Alice Ryhl wrote:
+> > > diff --git a/init/Kconfig b/init/Kconfig
+> > > index fe76c5d0a72e..d857f6f90885 100644
+> > > --- a/init/Kconfig
+> > > +++ b/init/Kconfig
+> > > @@ -1909,7 +1909,7 @@ config RUST
+> > >       depends on !MODVERSIONS
+> > >       depends on !GCC_PLUGINS
+> > >       depends on !RANDSTRUCT
+> > > -     depends on !SHADOW_CALL_STACK
+> > > +     depends on !SHADOW_CALL_STACK || RUSTC_VERSION >= 108000 && UNWIND_PATCH_PAC_INTO_SCS
+> >
+> > Sorry, I didn't spot this in v4, but since UNWIND_PATCH_PAC_INTO_SCS is
+> > specific to arm64 and the only other architecture selecting
+> > ARCH_SUPPORTS_SHADOW_CALL_STACK is riscv, I can't help but feel it would
+> > be cleaner to move this logic into the arch code selecting HAVE_RUST.
+> >
+> > That is, it's up to the architecture to make sure that it has whatever
+> > it needs for SCS to work with Rust if it claims to support Rust.
+> >
+> > What do you think?
+> 
+> The `select RUST if ...` is going to get really complicated if we
+> apply that rule in general. Having options here allows us to split
+> them across several `depends on` clauses. I'm not sure it will even
+> work, I had issues with cyclic Kconfig errors previously. I also don't
+> think it's unreasonable for the architecture to say it supports both
+> options when it really does support both; they are just mutually
+> exclusive. I also think there is value in having all of the options
+> that Rust doesn't work with in one place.
 
-Definitely -- if such a tag exists in mainline, we should use that.
+I'm not sure I follow why this will get really complicated. Isn't it as
+straightforward as the diff below, or did I miss something?
 
-Cheers,
-Miguel
+Will
+
+--->8
+
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index a2f8ff354ca6..2f5702cb9dac 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -231,7 +231,7 @@ config ARM64
+        select HAVE_FUNCTION_ARG_ACCESS_API
+        select MMU_GATHER_RCU_TABLE_FREE
+        select HAVE_RSEQ
+-       select HAVE_RUST if CPU_LITTLE_ENDIAN
++       select HAVE_RUST if RUSTC_SUPPORTS_ARM64
+        select HAVE_STACKPROTECTOR
+        select HAVE_SYSCALL_TRACEPOINTS
+        select HAVE_KPROBES
+@@ -265,6 +265,11 @@ config ARM64
+        help
+          ARM 64-bit (AArch64) Linux support.
+ 
++config RUSTC_SUPPORTS_ARM64
++       bool
++       depends on CPU_LITTLE_ENDIAN
++       depends on !SHADOW_CALL_STACK || RUSTC_VERSION >= 108000 && UNWIND_PATCH_PAC_INTO_SC
++
+ config CLANG_SUPPORTS_DYNAMIC_FTRACE_WITH_ARGS
+        def_bool CC_IS_CLANG
+        # https://github.com/ClangBuiltLinux/linux/issues/1507
+diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+index 0f3cd7c3a436..93858dbfefc0 100644
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@ -172,7 +172,7 @@ config RISCV
+        select HAVE_REGS_AND_STACK_ACCESS_API
+        select HAVE_RETHOOK if !XIP_KERNEL
+        select HAVE_RSEQ
+-       select HAVE_RUST if 64BIT
++       select HAVE_RUST if 64BIT && !SHADOW_CALL_STACK
+        select HAVE_SAMPLE_FTRACE_DIRECT
+        select HAVE_SAMPLE_FTRACE_DIRECT_MULTI
+        select HAVE_STACKPROTECTOR
+diff --git a/init/Kconfig b/init/Kconfig
+index 5783a0b87517..3ada33b1d681 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -1902,7 +1902,6 @@ config RUST
+        depends on !MODVERSIONS
+        depends on !GCC_PLUGINS
+        depends on !RANDSTRUCT
+-       depends on !SHADOW_CALL_STACK
+        depends on !DEBUG_INFO_BTF || PAHOLE_HAS_LANG_EXCLUDE
+        help
+          Enables Rust support in the kernel.
+
