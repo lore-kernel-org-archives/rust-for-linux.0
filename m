@@ -1,90 +1,89 @@
-Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6925E179647;
-	Sat, 24 Aug 2024 14:45:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724510753; cv=none; b=o5G5sqKhnI6vthAKTR0gsfsGB3UCUIMftQsZ+AbPxFL6pFfKBDMZ2L6/XMAyCFUBaXLTDnd57yGKETDUDRobYHd5WT9GvPejvggKWWPkYQ+i0fHlcFAi2vHsAAeiRLqea3UB1GqmPwJ4Y1/yj0lqJzj8p3oLtrXPZizp14uPSGI=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724510753; c=relaxed/simple;
-	bh=/AY/sNru5AP+z05Xzfrj8YNsnhwxuUTOdjXIlQJ6XyU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=XeqVTQUIh3KLOwMtnFFBPHrkggzLFzN4fNcTw1SLSPEwLhiaY9xhYSplP5KPUDowAJqZGc2/Kqj7MD/2dfXpIEU/YsTBF1f6rCDYT84ZdkcmyQCCo0Mp16nUhw4knQhteird6JbMXQDo+eForJ5WRhB5OtFAJJREdmgIixrFG98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=FyH1roT+; arc=none smtp.client-ip=209.85.216.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 855E4B669;
+	Sat, 24 Aug 2024 19:48:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1724528885; cv=pass; b=N40bxynHhMq6ZVzrZwe/qUN7oh5H2Ss0dXNlxZdsvtdfI1E+jfatqA6BL+YVik05QJGzpSQYdBlJ3wCfvxR6VzSkLgR4IYT+/drg4w0w9VWVzAy55ZSp0gAbUkbkfNg2mAyhs3EIc0VXMujy6U1B9hTqyXHIOaHur6QZb1YKKes=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1724528885; c=relaxed/simple;
+	bh=bOkpbfgfSj3qeUT/h8Mgu+vfuZecCK8Ya0ifgmoikLI=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=bKVLI282E0F2T5lWNjhpJXGPMMnedKEpXEitwYRDK69a3CUDxEfcs383THtx9kj3BYTvlVxdTwg3vdwsJR12ouJnJDnMSBEXfxhmVtu1BWGmcwb2YyDY2mS2Q326CDZ/K5r+x5wS5mHA5zPH7w1V1B0ZBHUTedUoL/YWj6so0lk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=QUy+ZKmy; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="FyH1roT+"
-Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-2d3bc9405c2so346395a91.2;
-        Sat, 24 Aug 2024 07:45:52 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724510752; x=1725115552; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=/AY/sNru5AP+z05Xzfrj8YNsnhwxuUTOdjXIlQJ6XyU=;
-        b=FyH1roT+wI34LlaNYz21nVP0R/+D70hlHTOrz/2wCcokObC7g3eKhgfJ1A3HPkZ2Kl
-         KGM+JUHiE/Qs87hKyILUWPEDPCmFA2j2uTOa5W5U+BuRKVuAjLoz3/Zw4h1XLYQJwCAU
-         EPoO/z3iXYakEIRI9NmJbMIMH1AJcbC6ZCyx2ZcZUC9IhSljItD7RtEevatawfc8FSXz
-         0lEBALSTKeWKOC3FQvofjcg1luf3f1lqD63P9OrEqzm8CrFLmDKCcDU/D7PSeAvjG2cR
-         jjaYelAnh/ytc8xxmEFToL3a9nsTXw9E2cxniI1GGzLQFMDjp+NCpmOr3wc5gTC+DHfO
-         O8cQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724510752; x=1725115552;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=/AY/sNru5AP+z05Xzfrj8YNsnhwxuUTOdjXIlQJ6XyU=;
-        b=Gt2d9IXa06Yt+b5q3ufAToC5xTZL6aHeGq0uwZmOEisHWYgzxk4+LCAtMrUry3ty6n
-         Tn5szyvcpElILPvm42gdFdTQMXwA6r9lK1eNn80+myqC9BwaAD8UopWd5KKJeVhViv+5
-         nlmAhV3UY07WGyt2dg+Z4YdDR2EYjRQPUizxzfmh864GtuflAIkqR63GpVbfa6XaRV82
-         MvqmhTMfBQ++yAssr4SW3Hq3wOPvIgm7t2lI2GpC0B7Lh5rB3Mf3owEPm+gSXiSoSigO
-         gAJzsRavVCjMgg4i4heOjmhxG18a9Y6M4LxdVsmTo8dUKGUb64i6E6REJI7HjFe6053j
-         9DbQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVoMNGV74Odh1vr4dV0/m/q1+f25lnfXGpofb6y4HToTkVKtAWzlpPEzYzKPx1VmK8lQJvPJ7zF@vger.kernel.org, AJvYcCX/W3PyEoJtbWq/uC6SolCRCoKGvsW1cBMT1d0+nGlnO7eFagGlndrdIqOCritc2LF5prkA4IDysd+vRxrU8A==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwShoxQUceNedEtOFxQwIb2cb7duCqdSMtOt/kR8tay6U2B+5KJ
-	Nh0y60NiXvLIPpTHCy1EQKFffl+K5LoJS+LA7joCfNC/DkfdioJhltik7oHGcW4fI332COVNaj0
-	ZtJke2ZIVzS140R88cMHnIddIj5M=
-X-Google-Smtp-Source: AGHT+IGfX8QIzewjfC1VpX6LrP8Cy2hMePVnGVnVmq6AtmnErsRclJnUUAQfjFofiK3pLD75V1yJSc/BeFY9dH0Q4ck=
-X-Received: by 2002:a17:90b:3e8c:b0:2cb:4382:99eb with SMTP id
- 98e67ed59e1d1-2d646db48c5mr3602585a91.6.1724510751965; Sat, 24 Aug 2024
- 07:45:51 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="QUy+ZKmy"
+ARC-Seal: i=1; a=rsa-sha256; t=1724528847; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=ikylJpY+oSH2VYCO7wbK6Q9LefQuA2nYPoBxKYGTSEj8ui1OI0nqi9tLfEGkfc42GhkISqwmmxSTvCRuUtrl4j95rHzVx/TvyRnFhZuZF4GLiYe6qEex5lcUHDBIUUyV+//X3WQJ5JeEq4MgLIBnCK84FtZO19C9W3CJ0e8di98=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1724528847; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=bOkpbfgfSj3qeUT/h8Mgu+vfuZecCK8Ya0ifgmoikLI=; 
+	b=ehAw0SXf5mdzmm3+4IkHT1hNsiyvsCbav7nmU5l30jHKNTRXJbiJsFe2H2FzJU1QumBAPtVANzuylT+UToYqR0jN8PnS80Xo6P/n+rFqS22Q3Wyi3exPEkgd+ca9Tqw8iDwLk4Xe1rSnrxbBLzr710OLR+b5q1kZufs77hfzpZs=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1724528847;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=bOkpbfgfSj3qeUT/h8Mgu+vfuZecCK8Ya0ifgmoikLI=;
+	b=QUy+ZKmyo2983l9HZk/FVBzgXgKs3GxCjo8pjHW8wBOS6ve0Lyl3NOqWHlj/7Kvf
+	JZZv7qm5BboRxnXcJwPki6uv+N6ehdbyIvXq1wlHYMb5nmvDFdx++NdaBLhw0koFpTU
+	AQPPIC4It1DrylfGWq3duUh/Trs8xwm3Ep1zrnTQ=
+Received: by mx.zohomail.com with SMTPS id 1724528845223809.8339247569138;
+	Sat, 24 Aug 2024 12:47:25 -0700 (PDT)
+Content-Type: text/plain;
+	charset=utf-8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240823140121.1974012-1-sashal@kernel.org> <20240823140121.1974012-10-sashal@kernel.org>
-In-Reply-To: <20240823140121.1974012-10-sashal@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sat, 24 Aug 2024 16:45:36 +0200
-Message-ID: <CANiq72=gqDOeqHhL=cvohoBWrc-gp8p6p11+13gE7C1MA6pwyQ@mail.gmail.com>
-Subject: Re: [PATCH AUTOSEL 6.10 10/24] rust: add intrinsics to fix `-Os` builds
-To: Sasha Levin <sashal@kernel.org>
-Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	Miguel Ojeda <ojeda@kernel.org>, Gary Guo <gary@garyguo.net>, Alice Ryhl <aliceryhl@google.com>, 
-	Trevor Gross <tmgross@umich.edu>, Boqun Feng <boqun.feng@gmail.com>, alex.gaynor@gmail.com, 
-	wedsonaf@gmail.com, nathan@kernel.org, rust-for-linux@vger.kernel.org, 
-	llvm@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3776.700.51\))
+Subject: Re: [PATCH v2 07/10] rust: add `io::Io` base type
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20240618234025.15036-8-dakr@redhat.com>
+Date: Sat, 24 Aug 2024 16:47:07 -0300
+Cc: Greg KH <gregkh@linuxfoundation.org>,
+ rafael@kernel.org,
+ bhelgaas@google.com,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Wedson Almeida Filho <wedsonaf@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@samsung.com>,
+ Alice Ryhl <aliceryhl@google.com>,
+ David Airlie <airlied@gmail.com>,
+ FUJITA Tomonori <fujita.tomonori@gmail.com>,
+ Asahi Lina <lina@asahilina.net>,
+ Philipp Stanner <pstanner@redhat.com>,
+ ajanulgu@redhat.com,
+ Lyude Paul <lyude@redhat.com>,
+ Rob Herring <robh@kernel.org>,
+ rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org,
+ linux-pci@vger.kernel.org
 Content-Transfer-Encoding: quoted-printable
+Message-Id: <CF9E76A0-C62A-4A73-973A-8FB1CB8CF8ED@collabora.com>
+References: <20240618234025.15036-1-dakr@redhat.com>
+ <20240618234025.15036-8-dakr@redhat.com>
+To: Danilo Krummrich <dakr@redhat.com>
+X-Mailer: Apple Mail (2.3776.700.51)
+X-ZohoMailClient: External
 
-On Fri, Aug 23, 2024 at 4:01=E2=80=AFPM Sasha Levin <sashal@kernel.org> wro=
-te:
->
-> From: Miguel Ojeda <ojeda@kernel.org>
->
-> [ Upstream commit 02dfd63afe65f7bacad543ba2b10f77083ae7929 ]
+Hi Danilo,
 
-Sounds good.
+=46rom a Rust API point of view, this looks good to me.
 
-I don't think one can hit this, since we only saw the issue with Rust
-1.80.0+ and 6.10 Stable supports only 1.78.0 so far, but it could be
-that we later need it or someone unpins/upgrades the version.
-
-Thanks!
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
 
 Cheers,
-Miguel
+
+=E2=80=94 Daniel=
