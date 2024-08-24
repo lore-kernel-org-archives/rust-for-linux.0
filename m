@@ -1,146 +1,163 @@
-Received: from mail-lf1-f53.google.com (mail-lf1-f53.google.com [209.85.167.53])
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E8A233985;
-	Fri, 23 Aug 2024 21:46:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FEEF179AA;
+	Sat, 24 Aug 2024 02:08:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724449583; cv=none; b=WET9QQfV8rt0P3bY+WV1hqdplJSl83Tv7ibe0mA7gQp46yLjwvhAsomQyua2atXtmYzPX1unoTzM+kpdiuXmOsqZ/FSpmzPX8/JHdG5ZyQw1Wtuy4R0E8XIG5I3rAi4sSgOp2ED9KKpvx+br7cJ9DXu+EskOCyzwSvI8EZas2Xc=
+	t=1724465314; cv=none; b=cYF9ge/2WeG2zecuMyV+lKlxAmvi8RIt1hDZTb5XzFt0178Q06o3nVzWbw9TDCEkk75g0NaK+GPZUhejbEVcbvMMA+7W60k4shbFEdjjBnrQHjWiyIgdw0x+OVrZ6SsE5LMUpy4CsRuj5QfDuw9S2rwmJoVkl4Ug5k8OLkjW4Vw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724449583; c=relaxed/simple;
-	bh=3pfZ1sPmNUvyG7TVwFvR3Rqz69rwliQPJGBAVEOGrUE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=pYgCXl/FBVtjxVzMoLPxMXlzDwF2Zg5RZ40DlwII3zJ4133IxyjNsB7bK9pRmCaXe0FOkow/hg3xX+KTTcgORJDtpi7NOYDLWVnG7RzkF9aN51UpWPcEaBuVPf4UzsOgzasM8aPt4dcNd/f2WE1pabGE+FvXOw94DFVsb7pTs4U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.167.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org
+	s=arc-20240116; t=1724465314; c=relaxed/simple;
+	bh=GbX4khao5Gqa9QXP6hc+sSmMnX3ZI2xvuWGpgSnvv2Q=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=rAh5nfacI91FE5swLrzPflYKBsxrZ4oSy0xYoAjH3Qe5Qnqa+OPxNvIkw3ovCx6OtYuMGBuswtiH1bldiVOnrQc5/AcNqyRNaw5cdRwMVV+R0DGiCCyMjpa8NKBF9xcrHe/qFrrP8oomxYwgOkRdgdsEonoWbTJe5rcLN+PxscU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ayBGrfUJ; arc=none smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-5334879ba28so2992592e87.3;
-        Fri, 23 Aug 2024 14:46:20 -0700 (PDT)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ayBGrfUJ"
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-2021c08b95cso28730815ad.0;
+        Fri, 23 Aug 2024 19:08:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1724465312; x=1725070112; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Or1h62UcyIfIvC9Isz/3yZD0qLR1qHYZktC9TocjD/g=;
+        b=ayBGrfUJaZgKEVRu3vkpH/CnHC/A9yaMhSsJxoOk1/LQHtZNYPntz/ERL/D06rrj0w
+         jNscALrWqCLEhjFbQXUh7G1n5qx50ICEFbekkZoprzeV6c2y+rPJgS2/Jui61NJO6A3m
+         FfLDAhYaJlYCIEXCqBrs7hvwAn4IbULRuE67gA81mGloviQ3rVT4eQnzLX+gBTiuMXFf
+         CO5dv8qnZI7qgOF5LnaYzISLKRd9Gyzko3g+aw0FH3/WnvhGQmURrDhRxethuTTqSs3Y
+         c1+eVPeILKUR1+QulILcAe4V/xWzgMs9dcVTtl9KzqVmndhmzyXGxku1b7rlYx+j79oy
+         kwHQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724449579; x=1725054379;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=3pfZ1sPmNUvyG7TVwFvR3Rqz69rwliQPJGBAVEOGrUE=;
-        b=XzeJCuQJ+lGhi5XfWAPChcV8Mv5z16y4rQ8d7KLkdWjafjmcXe21sLmHbXKNkO30Ps
-         rFdNp3mO0X/AqcgAZLGl68P7oXCGixkWIMo/kDbpZsd60acOCA1Mame3YBPkraDvqC24
-         YLMQlTzGaKvHtCGSXwaI2O0slTLl8GFIJdLgbk/NyBQlao3r5FO9kjQsH/TtF6MP0o/G
-         g0xUEM27exrsWpR0jlODalEBlMwBJ/wTsuK0Xs205uS9aM3erhXw6fZyO5yNYhvMepZ/
-         XtEINrZphEacIWtSvV07P6qJ234DFBfzB4h4YDqqD9cs672UuEyNF5VggZoKXarl+sHP
-         MLiQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXbkd3Xv5BMEaFcoVjQLbxBEb3XRK38Vq/exlyL9Fw80dyL2V72YP/w6jUnCLcqLj2QbDI=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywy/LWL3nt6oOREqvEeJ1hWxQhb0J/Msw0aQR5qAs0nCECBUJBh
-	X4YYZiV+qePGy9rT3OOmsfcKVFhfwXHfLUgLhIzQGeRaXqyL0h6EZkvjqPZIMhs=
-X-Google-Smtp-Source: AGHT+IHXjmSeDpuJ7pXkWmbiIUTSL8yPcJD1cuyf5p6G6WG2Kk5RU15Moeld7ZOwVe9eIsCRStmIZw==
-X-Received: by 2002:a05:6512:118d:b0:533:3268:b959 with SMTP id 2adb3069b0e04-534387c1770mr2370536e87.53.1724449578596;
-        Fri, 23 Aug 2024 14:46:18 -0700 (PDT)
-Received: from mail-lj1-f172.google.com (mail-lj1-f172.google.com. [209.85.208.172])
-        by smtp.gmail.com with ESMTPSA id 2adb3069b0e04-5334ea5964fsm687655e87.126.2024.08.23.14.46.18
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 23 Aug 2024 14:46:18 -0700 (PDT)
-Received: by mail-lj1-f172.google.com with SMTP id 38308e7fff4ca-2f502086419so2354911fa.3;
-        Fri, 23 Aug 2024 14:46:18 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUWDT2FvvIfhF3x4BpZNPZSuTUSdsPAyzA/8/jMVtZkyyuFj0sKVj2tjbgq+mhgFudYoCM=@vger.kernel.org
-X-Received: by 2002:a2e:bc1b:0:b0:2f5:2ba:2c99 with SMTP id
- 38308e7fff4ca-2f502ba2f21mr1927371fa.9.1724449578174; Fri, 23 Aug 2024
- 14:46:18 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1724465312; x=1725070112;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Or1h62UcyIfIvC9Isz/3yZD0qLR1qHYZktC9TocjD/g=;
+        b=tNNlksPgJkurCzNPHunNDSXpc8A5RzdtQd8YOwkC/17FMrzwUThfQyTRefgYQNZDAu
+         tPIp0ZtFD34XmUHUkSK2GpHsW5/SPrNu7rT2GmqNSvPEicGDPNQYQ5ZhFk34qF+b2xI0
+         avxscG24ZncmTl8eJ2R3S4Rj0kVpTDcQynYQojhLTVp1rSyeDwRJ8Lox4TRiTyiZw4xx
+         pqyJl7uG++vAMqRTYrVDc3SMpt5Txmm75iCWoWkJwyPXt1VnT32wUOq/xHMszAm5bKxG
+         yRKNX3Zq46Luv4rl7RtjV5GeSu3oT98TAN1U/CE/07QsQcnaz29fJ+GDA0kdIRKB9A3p
+         EefA==
+X-Gm-Message-State: AOJu0YxgYWyo1+slubzwvYl1HbITdA66+EjzqIrQJho+NLrEIjj8RPPG
+	Pb8+DURbpEpywtEN4a8VTjF0w3ytKlRY3OQeuwxxn9fdGTSeBnt4vgHKgk7j
+X-Google-Smtp-Source: AGHT+IHS37zrS3GN5HsCSeBnS5Hz7WbG1HNogM4zb9BRfIiOafaoGbncmgEHfwzC08PEytit9jnAJA==
+X-Received: by 2002:a17:903:32c8:b0:1fb:2ebc:d17a with SMTP id d9443c01a7336-2039c50a20amr88249955ad.23.1724465311865;
+        Fri, 23 Aug 2024 19:08:31 -0700 (PDT)
+Received: from localhost.localdomain (p4468007-ipxg23001hodogaya.kanagawa.ocn.ne.jp. [153.204.200.7])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-203855809d4sm34393875ad.95.2024.08.23.19.08.29
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 23 Aug 2024 19:08:31 -0700 (PDT)
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+To: netdev@vger.kernel.org
+Cc: rust-for-linux@vger.kernel.org,
+	andrew@lunn.ch,
+	tmgross@umich.edu,
+	miguel.ojeda.sandonis@gmail.com,
+	benno.lossin@proton.me,
+	aliceryhl@google.com
+Subject: [PATCH net-next v7 0/6] net: phy: add Applied Micro QT2025 PHY driver
+Date: Sat, 24 Aug 2024 02:06:10 +0000
+Message-ID: <20240824020617.113828-1-fujita.tomonori@gmail.com>
+X-Mailer: git-send-email 2.43.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <CAEg-Je8=t_cXKsWL0XSx3vF1gsArSWpychfbEf+yjM6wVz3Mjw@mail.gmail.com>
- <CAM22NNBrXSUbrpFAKv8jrREKTBYx_aW0cibtDE5AZ_kTijUrPA@mail.gmail.com>
-In-Reply-To: <CAM22NNBrXSUbrpFAKv8jrREKTBYx_aW0cibtDE5AZ_kTijUrPA@mail.gmail.com>
-From: Neal Gompa <ngompa@fedoraproject.org>
-Date: Fri, 23 Aug 2024 17:45:41 -0400
-X-Gmail-Original-Message-ID: <CAEg-Je_9r_96j-un6TS7Dm_kJ3m7Q6y_RDEs9NTvxjNJM-zEvQ@mail.gmail.com>
-Message-ID: <CAEg-Je_9r_96j-un6TS7Dm_kJ3m7Q6y_RDEs9NTvxjNJM-zEvQ@mail.gmail.com>
-Subject: Re: Weird failure with bpftool when building 6.11-rc4 with clang+rust+lto
-To: Matthew Maurer <matthew.r.maurer@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
-	Quentin Monnet <qmo@kernel.org>, bpf@vger.kernel.org, 
-	"Justin M. Forbes" <jforbes@fedoraproject.org>, Davide Cavalca <dcavalca@fedoraproject.org>, 
-	Janne Grunau <jannau@fedoraproject.org>, Hector Martin <marcan@fedoraproject.org>, 
-	Asahi Linux <asahi@lists.linux.dev>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-Hey Matthew,
+This patchset adds a PHY driver for Applied Micro Circuits Corporation
+QT2025.
 
-The current thinking is that maybe the culprit is dwarves. We've
-backported a fix in Fedora that may help, I'm waiting to find out if
-it does. Apparently all test runs with Clang+LTO are broken right now
-with dwarves 1.27, so it wasn't just unique to my merge request.
+The first patch adds Rust equivalent to include/linux/sizes.h, makes
+code more readable. The 2-5th patches update the PHYLIB Rust bindings.
+The 4th and 5th patches have been reviewed previously in a different
+thread [1].
 
+QT2025 PHY support was implemented as a part of an Ethernet driver for
+Tehuti Networks TN40xx chips. Multiple vendors (DLink, Asus, Edimax,
+QNAP, etc) developed adapters based on TN40xx chips. Tehuti Networks
+went out of business and the driver wasn't merged into mainline. But
+it's still distributed with some of the hardware (and also available
+on some vendor sites).
 
-On Tue, Aug 20, 2024 at 12:49=E2=80=AFPM Matthew Maurer
-<matthew.r.maurer@gmail.com> wrote:
->
-> Sorry that this isn't a solution, but I can tell you some background:
->
-> Linux currently relies on the `--lang_exclude` flag to `pahole` to
-> filter Rust debugging information out of the output BTF. This is done
-> because various downstream tools (for example, bpftool) do not handle
-> Rust types correctly. The `--lang_exclude` flag works by checking the
-> language flag on the compilation unit the type is referenced in. Once
-> LTO is enabled however, things can migrate from one compilation unit
-> to another, leading to C code having Rust code and types referenced
-> inside them. The resulting type will be considered C-language type by
-> `pahole`, but is actually a Rust type. Even if you fixed bpftool,
-> without additional patches/hacks, once the kernel boots it would
-> likely fail to parse its own BTF debugging information, and disable
-> BPF loading.
->
-> The most confusing part to me here is that I only encountered this
-> issue with x-lang LTO enabled, which is not available in the kernel
-> you're building from. If this is happening without x-lang LTO enabled,
-> it likely means that there's another way for debug symbols to leak
-> across CUs during LTO. That's where I'd start looking - use `pahole`
-> to dump the contents of `vmlinux.o` and see if you can find a
-> C-language CU referencing a Rust type. Then, try to figure out how
-> that's possible. With x-lang LTO it was obvious, inlining caused a
-> bunch of issues.
->
-> The last possibility I can think of is that somehow in your build
-> configuration `pahole` is not being invoked with the `--lang_exclude`
-> flag when building `vmlinux`. I don't know why that would be, but it
-> might be worth double checking.
->
-> On Tue, Aug 20, 2024 at 5:13=E2=80=AFAM Neal Gompa <ngompa@fedoraproject.=
-org> wrote:
-> >
-> > Hey all,
-> >
-> > While working on enabling Rust in the Fedora kernel[1], we've managed
-> > to get the setup almost completely working, but we have a build
-> > failure with the clang+lto build variant[2][3].
-> >
-> > Based on the build failure log[4][5], it looks like there's some
-> > random mixing of Rust inside of C code or something of the sort (which
-> > obviously would be invalid).
-> >
-> > Can someone help with this?
-> >
-> > Thanks in advance and best regards,
-> >
-> > [1]: https://gitlab.com/cki-project/kernel-ark/-/merge_requests/3295
-> > [2]: https://s3.amazonaws.com/arr-cki-prod-trusted-artifacts/index.html=
-?prefix=3Dtrusted-artifacts/1419488480/build_x86_64/7618803903/artifacts/
-> > [3]: https://s3.amazonaws.com/arr-cki-prod-trusted-artifacts/index.html=
-?prefix=3Dtrusted-artifacts/1419488480/build_aarch64/7618803917/artifacts/
-> > [4]: https://s3.amazonaws.com/arr-cki-prod-trusted-artifacts/trusted-ar=
-tifacts/1419488480/build_x86_64/7618803903/artifacts/build-failure.log
-> > [5]: https://s3.amazonaws.com/arr-cki-prod-trusted-artifacts/trusted-ar=
-tifacts/1419488480/build_aarch64/7618803917/artifacts/build-failure.log
-> >
-> >
-> > --
-> > Neal Gompa (FAS: ngompa)
-> >
+The original driver handles multiple PHY hardware (AMCC QT2025, TI
+TLK10232, Aqrate AQR105, and Marvell MV88X3120, MV88X3310, and
+MV88E2010). I divided the original driver into MAC and PHY drivers and
+implemented a QT2025 PHY driver in Rust.
 
+The MAC driver for Tehuti Networks TN40xx chips was already merged in
+6.11-rc1. The MAC and this PHY drivers have been tested with Edimax
+EN-9320SFP+ 10G network adapter.
+
+[1] https://lore.kernel.org/rust-for-linux/20240607052113.69026-1-fujita.tomonori@gmail.com/
+
+v7:
+- add Trevor as Reviewer to MAINTAINERS file entry
+- add Trevor Reviewed-by
+- add/fix comments
+- replace uppercase hex with lowercase
+- remove unnecessary code
+- update the commit message (1st patch)
+v6: https://lore.kernel.org/netdev/20240820225719.91410-1-fujita.tomonori@gmail.com/
+- improve comments
+- make the logic to load firmware more readable
+- add Copy trait to reg::{C22 and C45}
+- add Trevor Reviewed-by
+v5: https://lore.kernel.org/netdev/20240819005345.84255-1-fujita.tomonori@gmail.com/
+- fix the comments (3th patch)
+- add RUST_FW_LOADER_ABSTRACTIONS dependency
+- add Andrew and Benno Reviewed-by
+v4: https://lore.kernel.org/netdev/20240817051939.77735-1-fujita.tomonori@gmail.com/
+- fix the comments
+- add Andrew's Reviewed-by
+- fix the order of tags
+- remove wrong endianness conversion
+v3: https://lore.kernel.org/netdev/20240804233835.223460-1-fujita.tomonori@gmail.com/
+- use addr_of_mut!` to avoid intermediate mutable reference
+- update probe callback's Safety comment
+- add MODULE_FIRMWARE equivalent
+- add Alice's Reviewed-by
+v2: https://lore.kernel.org/netdev/20240731042136.201327-1-fujita.tomonori@gmail.com/
+- add comments in accordance with the hw datasheet
+- unify C22 and C45 APIs
+- load firmware in probe callback instead of config_init
+- use firmware API
+- handle firmware endian
+- check firmware size
+- use SZ_*K constants
+- avoid confusing phy_id variable
+v1: https://lore.kernel.org/netdev/20240415104701.4772-1-fujita.tomonori@gmail.com/
+
+FUJITA Tomonori (6):
+  rust: sizes: add commonly used constants
+  rust: net::phy support probe callback
+  rust: net::phy implement AsRef<kernel::device::Device> trait
+  rust: net::phy unified read/write API for C22 and C45 registers
+  rust: net::phy unified genphy_read_status function for C22 and C45
+    registers
+  net: phy: add Applied Micro QT2025 PHY driver
+
+ MAINTAINERS                      |   9 ++
+ drivers/net/phy/Kconfig          |   7 +
+ drivers/net/phy/Makefile         |   1 +
+ drivers/net/phy/ax88796b_rust.rs |   7 +-
+ drivers/net/phy/qt2025.rs        | 103 ++++++++++++++
+ rust/kernel/lib.rs               |   1 +
+ rust/kernel/net/phy.rs           |  90 +++++++------
+ rust/kernel/net/phy/reg.rs       | 224 +++++++++++++++++++++++++++++++
+ rust/kernel/sizes.rs             |  26 ++++
+ rust/uapi/uapi_helper.h          |   1 +
+ 10 files changed, 426 insertions(+), 43 deletions(-)
+ create mode 100644 drivers/net/phy/qt2025.rs
+ create mode 100644 rust/kernel/net/phy/reg.rs
+ create mode 100644 rust/kernel/sizes.rs
 
 
---
-Neal Gompa (FAS: ngompa)
+base-commit: f9db28bb09f46087580f2a8da54bb0aab59a8024
+-- 
+2.34.1
+
