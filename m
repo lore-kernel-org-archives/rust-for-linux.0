@@ -1,118 +1,86 @@
-Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA23C1714B2
-	for <rust-for-linux@vger.kernel.org>; Sat, 24 Aug 2024 13:29:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C364A94D;
+	Sat, 24 Aug 2024 14:45:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724506170; cv=none; b=Umcgb/0e4SBgUkTJ07yDk33blZ+heOl2aezzlUfXdStqw1aWEmV1kQeIG6Sx1Gv1xT4T5s6tASKquG3gwk8lFlYD12usSYabtf4DeggRP9c1h+GJQj4TQNcxpq5xhOQMknJ+cgiADZbRi22XFg1wFFvkGHR57LAsdoPzBmQdlLg=
+	t=1724510737; cv=none; b=lwJyfUKTYmTB2JEmOGd80IocDJ1XzLdcEtluFOKZ2Q5oHp5vW5Z0dEfMqG0tccGzhedOx81cTHLs2skk/shIpRvt24LrVX63kFO2w0czHw3Rf12kCzeqZj21IcInGEAPSeboYoyQRH/XROatWzP2ayySsYx2EaLxfSmt2jaNXUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724506170; c=relaxed/simple;
-	bh=hr1XOQZ9U343cnTrd1bJhdSY7hzd+T1SWciojjT1rhU=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jwOnQPxrqx66irU2H58QZDr6gtLr2jTNWRsBRTWdg4ANuEomKcTaLKXZ4ly7F0K8JyQLwVcX6iuFrMwLGpgITyOrCzkHyzIdi8jKKtPdK+w4K7APxIShQAmnFD0QWQfVsy+m7q3ggMJtOsOgSYpaRj8r0RG1s//xg12biqwqxOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=cy6Zw7Jq; arc=none smtp.client-ip=185.70.40.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1724510737; c=relaxed/simple;
+	bh=hcZfQXCPMfbtBofazNo1S7/ZYeLZhUtzfyiS8oPPyz0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=nKktHgKiDibWFZGLgU9C/RE4NZ6MJbvWn86moGU1UEEl1fSvLkJDrD3XxjeXXBmthr2Aihxl5ux2XLZwwgVIWVyjT9opGmHRKJwO850o+ZctMqxyWpPhdSh1xbZTo+lsGABWca+oRheWY29UKbeEYmxhWyrbqM9xi7HoJXSmT/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=fZ/gvwLA; arc=none smtp.client-ip=209.85.216.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="cy6Zw7Jq"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1724506166; x=1724765366;
-	bh=4WZEdxtP20MxpWbuNX42Iofz/oj03EQ9p6kzoS8qGsI=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=cy6Zw7Jqym9i1pP8Siju0RjfDNBh6OVPs+ns6S1v+gyCPxQTjgDjxFjt0bk19Jw5i
-	 r9B+8FxKTzQ4neq2UKJGZ8Wm6Ug0taqQsF3QHQMLr1LyQKyXxMpTSmnmNU695OTVz+
-	 x+PhoESPwW+cjF7YciFcJVjq/psJop3Mn6TPzWyXoTjGlMa6gDFrhn08JBcIq2THW5
-	 C7kyNIyBRbtDoDTOSO7Et/m7csDzBGcQB46u4782IFPfynigqAXH3NpZNUmlE7Qom4
-	 090h/CJZkg5YN9z3sDqXlXlsQvAVuc8Ms1gZSga+thybJyVyBQQZPgW74cDRH6SCIh
-	 sfSOpOXfapsjA==
-Date: Sat, 24 Aug 2024 13:29:21 +0000
-To: Sami Tolvanen <samitolvanen@google.com>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Matthew Maurer <mmaurer@google.com>, Masahiro Yamada <masahiroy@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, Petr Pavlu <petr.pavlu@suse.com>, Neal Gompa <neal@gompa.dev>, Hector Martin <marcan@marcan.st>, Janne Grunau <j@jannau.net>, Asahi Linux <asahi@lists.linux.dev>, linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v2 16/19] gendwarfksyms: Add support for reserved structure fields
-Message-ID: <b1271470-3d96-4e59-9daa-59ebd7182077@proton.me>
-In-Reply-To: <CABCJKud--imREq8E6uuk4XwatLsKC7ikmyoLKJStqr3Azz0Hdw@mail.gmail.com>
-References: <20240815173903.4172139-37-samitolvanen@google.com> <CAGSQo01kCUd64nB7C7Ssy1N=UBpOP3bORsRDcHJ1k2CqkbKsfQ@mail.gmail.com> <c6c1e84a-40f3-41a5-a732-f1cf06521691@proton.me> <2024082229-elevation-emporium-8118@gregkh> <bc2e02d7-d4a7-4f0f-852c-e26ad6a8688f@proton.me> <2024082257-refrain-subsector-b6c4@gregkh> <77e8e20c-8ca1-4df7-a4d7-ed77454f1754@proton.me> <2024082356-stowing-endowment-555b@gregkh> <CABCJKud--imREq8E6uuk4XwatLsKC7ikmyoLKJStqr3Azz0Hdw@mail.gmail.com>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 6785fcfab27dbd28be2583ccd0b0e44a12322f31
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="fZ/gvwLA"
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-2d3bc9405c2so346377a91.2;
+        Sat, 24 Aug 2024 07:45:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1724510736; x=1725115536; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=hcZfQXCPMfbtBofazNo1S7/ZYeLZhUtzfyiS8oPPyz0=;
+        b=fZ/gvwLAEwlaEBk/oQ+/v6ovYVUTlrPiijoZE3gjQw8fLVKmzwMqpzgngvxWKZsKtj
+         Z8XGVx1BnrP90uNSgMOxjwHsWYrHWmVK/N1RSLeVZMrMlucyUoc6avx4FICGPVUioMGI
+         IOuc3hk8yXoXmIDEH5cQEvEgM1OE5H66JKCKZ6C57Ufhk3FNBQQmH4nqCoILWN09jwiR
+         rSnSOtDyyE2KSeyPgt7j0bb0OPEfl1r0jaKr9VSNoXloKUHGhJ1sSFBly7abdkBj2dCS
+         23g3rYFnbydt5gctMLQ7Hwhu5FOSXvI6PP/so1kSulWlGr4FtsFbkRLEICIZgoX43Zlj
+         UKkA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724510736; x=1725115536;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=hcZfQXCPMfbtBofazNo1S7/ZYeLZhUtzfyiS8oPPyz0=;
+        b=r21PfQFQxik3/QDhNkA2sY0ZciPmaxO/mNqMe5m5dCB6goImNze96PQxzFWJPlbE1R
+         Hy+7TLxhDqG5WBsr6xJ22NS7if8koJZhSIKjAEy8BzlRW4+aiU/L8MWaCedbKf5Jjtw7
+         9Jeg/0WXOEOEW5iYaXkrHlCy88K6m2pGrzonM4XqqBlYzo69VlKtb0Q4ertYPluwNCIy
+         4ICQXnlp5YX08O9RbDXmuGKFM44Doq9SFONhf04mOmpSIDhjZwEv3NuH4bdyA2rORnoZ
+         o9OLIrvso5M2PqFgkbCxsH87M2wY8Fpu6sc3eMLcJM0gAJjJqkVnzWfiXvxokpSv7ymH
+         PBnw==
+X-Forwarded-Encrypted: i=1; AJvYcCVFO/FGqiZRS7ES/C9CAMoP/pa1WYHMZmzeFp/53SkjvKzeF8gx5O1ls7hwSvOcWlUSpX18EAh9UYh7qks1cw==@vger.kernel.org, AJvYcCVWWnt43dCWIYDg4o3K2l9y9GAbR3yiSnsLnxhUzBI1E7xZpM6dHENM96h1Qz1aS3LxRl3ueobr@vger.kernel.org
+X-Gm-Message-State: AOJu0YzpOdmwz/4IXk8tAlLY+Cig6yoouqSQL7TBqq5E+P8+Nhvm6ghk
+	JLcXurCJyoVnxgK5kZ94P6jSM5PSdBboDb+sfrTvwoKlCYj68RSSx+Wz5++P5HZMRbHu6CZ38Y3
+	ETBUqzkat2uW+fYC8VjzJfPY1vdg=
+X-Google-Smtp-Source: AGHT+IE+OBhuNFTc2DhxpTSuK3T4/iWGGKYoPxf5Nnc7rEcJ9gV3xAdvO1Lvms8P0I60wdRp+Ei95r14uPTkAGKZUPA=
+X-Received: by 2002:a17:90a:1f07:b0:2c9:6920:d2b2 with SMTP id
+ 98e67ed59e1d1-2d646b9d9bfmr3741225a91.1.1724510735795; Sat, 24 Aug 2024
+ 07:45:35 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20240823140121.1974012-1-sashal@kernel.org> <20240823140121.1974012-9-sashal@kernel.org>
+In-Reply-To: <20240823140121.1974012-9-sashal@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sat, 24 Aug 2024 16:45:21 +0200
+Message-ID: <CANiq72=WHzjck6fU4b-Tjv0iJPCT7EeGdgKbyQ62JwcgzfW+wA@mail.gmail.com>
+Subject: Re: [PATCH AUTOSEL 6.10 09/24] kbuild: rust: skip -fmin-function-alignment
+ in bindgen flags
+To: Sasha Levin <sashal@kernel.org>
+Cc: linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	Zehui Xu <zehuixu@whu.edu.cn>, Alice Ryhl <aliceryhl@google.com>, Neal Gompa <neal@gompa.dev>, 
+	Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>, alex.gaynor@gmail.com, 
+	wedsonaf@gmail.com, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On 23.08.24 21:17, Sami Tolvanen wrote:
-> On Thu, Aug 22, 2024 at 11:53=E2=80=AFPM Greg Kroah-Hartman
-> <gregkh@linuxfoundation.org> wrote:
->>
->> On Thu, Aug 22, 2024 at 12:00:15PM +0000, Benno Lossin wrote:
->>>> Here's one example in the android tree where 4 64bit fields are reserv=
-ed
->>>> for future abi changes:
->>>>     https://android.googlesource.com/kernel/common/+/refs/heads/androi=
-d12-5.10/include/linux/fs.h#421
->>>>
->>>> And here's a different place where a field is being used with many
->>>> remaining for future use:
->>>>     https://android.googlesource.com/kernel/common/+/refs/heads/androi=
-d12-5.10/include/linux/sched.h#1379
->>>>
->>>> And also, we want/need lots of other space reservation at times, look =
-at
->>>> how "Others" can get access to reserved areas in structures that need =
-to
->>>> be done in an abi-safe way:
->>>>     https://android.googlesource.com/kernel/common/+/refs/heads/androi=
-d12-5.10/include/linux/sched.h#1375
->>>
->>> Let me correct myself, it's only possible to replace one `KAbiReserved`
->>> by one new field. You can have as many fields of type `KAbiReserved` as
->>> you want. The thing that you can't do is replace a single `KAbiReserved=
-`
->>> field by multiple (well you can, but then you have to change the sites
->>> that use it).
->>
->> That's odd/foolish, why would that be the case?  Isn't that exactly what
->> a union is for?  How are you going to know ahead of time what size types
->> to save space for?
->=20
-> I believe Benno is referring to the lack of anonymous structures in
-> Rust. While you can replace a reserved field with a struct that
-> contains multiple smaller fields, you can't access the fields
-> transparently from the parent struct like you can in C:
->=20
->     struct s { struct { u32 a; u32 b; }; };
->     struct s s;
->     s.a =3D 0;
->     ...
->=20
-> It looks like nightly Rust does have some level of support for unnamed
-> fields in unions, but the implementation is not yet complete:
->=20
-> https://play.rust-lang.org/?version=3Dnightly&mode=3Ddebug&edition=3D2021=
-&gist=3D4f268d308fe6aa7a47566c7080c6e604
->=20
-> Benno, Matt, are you familiar with this feature?
+On Fri, Aug 23, 2024 at 4:01=E2=80=AFPM Sasha Levin <sashal@kernel.org> wro=
+te:
+>
+> From: Zehui Xu <zehuixu@whu.edu.cn>
+>
+> [ Upstream commit 869b5016e94eced02f2cf99bf53c69b49adcee32 ]
 
-No, thanks for pointing that out!
+Sounds good.
 
-But this will run into the issue that field access for unions is
-`unsafe`. So we can't really use it. I also tried to use our current
-`KAbiReserved<T, R>` approach and using this as `T`:
+Thanks!
 
-    struct Foo {
-        _: struct { a: u32, b: u32 }
-    }
-
-But that doesn't work.
-
----
 Cheers,
-Benno
-
+Miguel
