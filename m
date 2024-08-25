@@ -1,106 +1,101 @@
-Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
+Received: from mail-pg1-f175.google.com (mail-pg1-f175.google.com [209.85.215.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9834F13DDB6;
-	Sun, 25 Aug 2024 12:50:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29006481B7;
+	Sun, 25 Aug 2024 20:22:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724590246; cv=none; b=elHpkuZseISsL+Ik/JptnegySNzR6oJ83BveMON0Wxz8ETBd/miyYWJsqJAv3+TEcmxNYO5yc2bLFjCpxk6F3OniZOmPYGhZzBTLZjeFuBjxyC7bgb5mdG1tazGvVNWV9sZkq54Yj7YTh2XkpV2bcELofruCicacicBK+UFaQJE=
+	t=1724617337; cv=none; b=YKjkDqhx0S2SmCAsv8QQFUdAxfTRz0CYrH4jODQJs8keLupjoLG5X5XaQVBIxgv0Iiwk7/GYwLQpoopaZaDyJQYK3AXgskFWHq8voreN23Vw1Lemogtm65++jPaUg9uJNspseDe2M4CXpHNnrIQxT2jdN38d5MWYVRRhkQwE9I4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724590246; c=relaxed/simple;
-	bh=r9WeuWABwMmRkPqLpGJAMX1LfE7ljeaPQU3aY0g/cHU=;
+	s=arc-20240116; t=1724617337; c=relaxed/simple;
+	bh=GYSyNOK3k1Vwvu+qUM78Phh1+2YeSoxQg85u3iLzFEs=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=uMNB8o7l44c41Q6Yu3afTOS83982zgESt4LoXK0mYV+vLHjEJhjER4PLzJqRt4zZJoxNqSJMuAeD1m13klh4PACWKucG4sDybAz4VBX/TAs8BskaqnT6ok+hSJaYDIjL7P5hGQ2AeBFQXMg+1WyOhnIPJA8tXYo6P8FocHY2NUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=VzpVp6LJ; arc=none smtp.client-ip=209.85.216.42
+	 To:Cc:Content-Type; b=SXV1B+LEnlbVRvx7H08CvFzCQ2jIfwUyhuN18vS8qOGbR5fel/H4Ky7lAGj9/Al+C40VXLGQ8apGR23gFSi8cQO+bXVQK27puxAjze5Qs+qjBQ8JVpQ5dJYjzAXE3HSbRykxudJuHbdchGKBUQ5rlq8ONQCMauFFOLxCh8baGtY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Gna6gxaf; arc=none smtp.client-ip=209.85.215.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="VzpVp6LJ"
-Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-2d3ed48c748so618138a91.3;
-        Sun, 25 Aug 2024 05:50:45 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Gna6gxaf"
+Received: by mail-pg1-f175.google.com with SMTP id 41be03b00d2f7-72703dd2b86so603170a12.1;
+        Sun, 25 Aug 2024 13:22:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724590245; x=1725195045; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1724617335; x=1725222135; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=1NectQEqGBNO86BpxEJPRR5vvssTGqVJHmsHRMzJiCk=;
-        b=VzpVp6LJ4ZMh4+IUqep4pgWcHAsnh2GsedOOwDpFqxcimlOI3dTOIxMXo9FxodUqSc
-         WHOiEXt9/AwsAaZlJ9cj8rqtj53f4iLzhE+4ICS2Smo8+13Hs50Xi0m13yXuWT9AqcSA
-         P1jFHhp1HSHr09F+SjHhghnP4LkZEnTvO4rLFk6BnshPngQ/w9eDAKVWtX5FyxXIbL+u
-         +p6T1H3GacBWIqy5X6ks8LD4AKYvs4DosvxCMxcxRjP7UJYV8ZsNQ6Dsr2uG2P8zwP48
-         F0ZjrJrZyLwdb2vHNe4gsqn+NZMjlyVaqNd0yulBixwm3wdqb+7Few0DIJNXhm7HLJaZ
-         olQg==
+        bh=0/YBMbb7bDw+tUfEn9ELV8y2Lwvjiv14mYFxssAzGRo=;
+        b=Gna6gxafX0vdznZIHox3IJa0ix5nZB7Yo/kmGR5aBoGOKW23yGjfZAW5NgRQublkUV
+         5RhsNPAc2BbpV99W4ZRLPqaNg1g3FqEd2ilVBpmm6scuZJWSR5JIcZM+iWRkIDcxgwnI
+         sGFvtmty3FxW4niDB+l3QU7lg8wh1SrDJlVFQ3O2Bn23+NtsXMSAdgANO22RNENj4KXb
+         vsvwOLCpJw2kyTaiBGtlYnmUxeNPo+qsMvCFCpqIpMa7rhoeswbCvrkI2QvKwHl5gIr3
+         S8iLh/dhEn2h21ZqB2sg5Yyr0hIUCnEVPqPfrErmEvfMiPS8n+jyT5rg6NmPbMf/7ock
+         LamA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724590245; x=1725195045;
+        d=1e100.net; s=20230601; t=1724617335; x=1725222135;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=1NectQEqGBNO86BpxEJPRR5vvssTGqVJHmsHRMzJiCk=;
-        b=kJOEt8no6IQ4B8r5VmXWgrvZN7CCp6dB3rDLphi+dGmce+MUhW2qe1BK80pS9Ulvin
-         uj/oAgvy0dbNUtx0YhKIScJ52twP36bUOEZQIpMmxOxiSQGHfJnZ4iACCVcnJ5ERKADB
-         H1Pnk5PcPW3ElHmeBkR23Qx3lW2CnZjTHk3EkROrKqHO0fY/5crSvFbFYtggQHaCG1fz
-         7mfG67JLaNjOvmPjdKzoxPxEmz4M2cL70AuK5jcw8m4LO60vC3dx1+/jF6Yg1KqfS2k0
-         0N62ZB5Q+1OzYGOmqI22IH1aYXZ8HY/E7VxhXHU8yonMTlLFxKFSVimXk8H7x/BpkVj1
-         Fuiw==
-X-Forwarded-Encrypted: i=1; AJvYcCUc0TcUS/9GU1OrEwxrno0xNHwClcmx1h9QcxGcaho5eOICgiDQu52TftLoRc2ajME3E4m3IVfPS3NohnaLQ8s=@vger.kernel.org, AJvYcCXPWiolvDCZM/xX3TDouUmbXuSYrn6sUO0mG90MfxMCXUsVpTVHTKyRMepUzGYoPesnO0qfN6DktObiz2E=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwVp22UYqn5yk5SE8m3M2esbMeu3u1e32OyBCX6gGrIcb6HLCmR
-	5nDCGGO01W5WppJNWKKqVZ1GiZvP0P2o3PWy9nO+qD7Vd5vbFfq6iVxX+1Etygr1tjEFMQnsMil
-	DWCTVJR5hWMAHhYxjRQloPfzWEoY=
-X-Google-Smtp-Source: AGHT+IFhLRblrp5yfgJOeY2kAtUzgPNt47PKkc86rSetVTd5vH/BaqrFrIKFcbLJPhBSdAsNsGH0XUv5AngSlA3qoSU=
-X-Received: by 2002:a17:90b:30d6:b0:2cd:1e0d:a4c8 with SMTP id
- 98e67ed59e1d1-2d646d44922mr4654116a91.3.1724590244796; Sun, 25 Aug 2024
- 05:50:44 -0700 (PDT)
+        bh=0/YBMbb7bDw+tUfEn9ELV8y2Lwvjiv14mYFxssAzGRo=;
+        b=HARJI5/ZZmQtAog6oAei00UIBPNWF8fknxzKFAzMt+pugObZBMrs305feeE1RyY/jd
+         3PlbOOKl93DPdJsHDvBV3fTO0H5sTMO/7u7oFrRtZGqfDJYaQ3DVZI9AF0kAO2DEON6I
+         Jbw7IB0GyHcRsnrdtB31sjCfW9YcNA7GSKgwTMbr5qobihT0lcx1Cuweo5Bx7voxxiQQ
+         hQxishhI/KnT6fUiApG9qynAEOdqupn93weXQI29Zj2eSvQFs6VWGX8zJ4GBlZ1wnm0I
+         Eq+Tp8pMVsPidnEjs1l1ZqqIW3o4r0qrNHIYDOotH58ZwvDE4JPo7Km9t0k+BkWI/f7K
+         3Mtw==
+X-Forwarded-Encrypted: i=1; AJvYcCUJyqidWOmiWje7pMLBUNc8kB6cRgb/twhUcPVjXNINcxa1qxNC6m4rw/a1bFfhiFqc+WCUuWGif7B5P3uw@vger.kernel.org, AJvYcCXAPHyQ74jeCcPcKVvkviKZx98tCd5Xfdg1aM0S8YDauvaMa/D7TJjauMu1U0h10vGgNaxREiKjS1A=@vger.kernel.org, AJvYcCXvVwtl+b45lkghPlALXLODTMrT8E7wItD90nOb7jsl0IRkzqXCXFVZyNiRcWk2LR3kiKl/qM3lREH9rqydaUg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwT63UNu40978haGVtgDXfofa5roYhaO4d3Vik9g+wke+FRWgBE
+	1uDBYuEj0Fh+8exHjgndTtsIsJy9dw1aWeR+DHSuRa2P6hGCrsIrAlM63qnfLBQYnNSa/abvCaK
+	SYsNtnWf/H4APx9XCMf/FV5v4y34=
+X-Google-Smtp-Source: AGHT+IHCmep9UepNduc+XY5Tzud3PFNGZ8xoRBKUCUNs9JGrOraBzt1yGvUVLlvm+mlvyPkNrStBGRCpiayAi7lCJI0=
+X-Received: by 2002:a17:90a:ce97:b0:2d4:d74:ea4d with SMTP id
+ 98e67ed59e1d1-2d646dafd3fmr5964512a91.5.1724617335360; Sun, 25 Aug 2024
+ 13:22:15 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240821-aref-into-raw-v2-1-9215bbca5720@google.com>
-In-Reply-To: <20240821-aref-into-raw-v2-1-9215bbca5720@google.com>
+References: <20240818141200.386899-1-ojeda@kernel.org>
+In-Reply-To: <20240818141200.386899-1-ojeda@kernel.org>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Sun, 25 Aug 2024 14:50:31 +0200
-Message-ID: <CANiq72mB3dOqTedkRN2zMea_2Y88XBiDWwBHgyEAm3mWyZnjCA@mail.gmail.com>
-Subject: Re: [PATCH v2] rust: add `ARef::into_raw`
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+Date: Sun, 25 Aug 2024 22:22:02 +0200
+Message-ID: <CANiq72=gTVwJmD8eW5Yoi=rROH4Kf45+0NLDVbG41xmTr+XKGA@mail.gmail.com>
+Subject: Re: [PATCH 1/2] docs: rust: link to https://rust.docs.kernel.org
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Jonathan Corbet <corbet@lwn.net>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Kartik Prajapati <kartikprajapati987@gmail.com>
+	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, 
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	patches@lists.linux.dev, 
+	Konstantin Ryabitsev <konstantin@linuxfoundation.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Aug 21, 2024 at 9:59=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> w=
-rote:
+On Sun, Aug 18, 2024 at 4:12=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
+te:
 >
-> From: Kartik Prajapati <kartikprajapati987@gmail.com>
+> The Rust code documentation (i.e. `rustdoc`-generated docs) is now
+> available at:
 >
-> Add a method for `ARef` that is analogous to `Arc::into_raw`. It is the
-> inverse operation of `ARef::from_raw`, and allows you to convert the
-> `ARef` back into a raw pointer while retaining ownership of the
-> refcount.
+>     https://rust.docs.kernel.org
 >
-> This new function will be used by [1] for converting the type in an
-> `ARef` using `ARef::from_raw(ARef::into_raw(me).cast())`. The author has
-> also needed the same function for other use-cases in the past, but [1]
-> is the first to go upstream.
+> Thus document it and remove the `TODO` line.
 >
-> This was implemented independently by Kartik and Alice. The two versions
-> were merged by Alice, so all mistakes are Alice's.
+> The generation uses a particular kernel configuration, based on x86_64,
+> which may get tweaked over time. Older tags, and how they are generated,
+> may also change in the future. We may consider freezing them at some
+> point, but for the moment, the content should not be considered immutable=
+.
 >
-> Link: https://lore.kernel.org/r/20240801-vma-v3-1-db6c1c0afda9@google.com=
- [1]
-> Closes: https://github.com/Rust-for-Linux/linux/issues/1044
-> Signed-off-by: Kartik Prajapati <kartikprajapati987@gmail.com>
-> Co-developed-by: Alice Ryhl <aliceryhl@google.com>
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> Thanks Konstantin for the support setting it up!
+>
+> Cc: Konstantin Ryabitsev <konstantin@linuxfoundation.org>
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-Applied to `rust-next` -- thanks everyone!
-
-    [ Reworded to correct the author reference and changed tag to Link
-      since it is not a bug. - Miguel ]
+Applied series to `rust-next` -- thanks!
 
 Cheers,
 Miguel
