@@ -1,55 +1,55 @@
-Received: from mail-oo1-f42.google.com (mail-oo1-f42.google.com [209.85.161.42])
+Received: from mail-pj1-f47.google.com (mail-pj1-f47.google.com [209.85.216.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 769A91803A;
-	Sun, 25 Aug 2024 20:25:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D902E1803A;
+	Sun, 25 Aug 2024 20:29:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724617521; cv=none; b=Tf94d92bJ0vQd+pWZLV3ke+DBBBf+5ZPbosVZDoLKhfWWW7ZbKiG0fXC/O4W/SG6FbLX2SD25DI7XxwQ8jNb86WUcToe6KSBl2fwi6lpskhn0nXUWSqfq3kAD2nLdNNGm6wolB5B4Q+TT+3e6fIHg+J8TnRKxf8efGV+CDkuLVg=
+	t=1724617791; cv=none; b=RBI5Gj5IRRtjrgQ6rF0x8poYrD/PF5mvH1fwEfLAC54VX1yRFYqRwX2fYO2QSKv/3scVx5odJf372+CUDxPR1gy6q9fLe9iPS82y85IAX7H70GkIKn55Cs1ayd9kCSTkI++ACB4tZPsdE3Zc/fae1ZUE9XMm44e8RNjZuu8ZBwU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724617521; c=relaxed/simple;
-	bh=PLF+XAa7kibaNCJLJ2jSiiFd5un4L9bAbuBTPmptxYM=;
+	s=arc-20240116; t=1724617791; c=relaxed/simple;
+	bh=Tabtq3pbe9qAyEkgCDeJgXpNUAzPs0xWGHdygU8SfDU=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qaX6zlPmSXgAkL/u5nS+LNJbOjMOi0Y0bOaeRJWOqQXCQAAVc6WR4EB1jFRODwFigkyJ4kb7vQozpZ73Mm+C9Q4o+noB07XWScT9WrebIiyOp5WH4c+K2fb58OvaxzLa3BWlHyGM8rC9F/qW9mjyYKTAi6jrNaQo4r/5RCMh7xc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jI3lIKDl; arc=none smtp.client-ip=209.85.161.42
+	 To:Cc:Content-Type; b=WTXk5tD0sKxyb8plr5dEt8QZ1+HKBPD6rv4PZJwC0gisURpdeUp1IJYpZhqvvWTHakJzXacfSrtlQMeQmvgamAScsolZE1B50pyadtCGUbad9GlTZ6KelLbGpmp9OOuCX0yGwzsTfR/lmYRqvsN2cymHQf6PbT2l82Bt98If73Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mPoDngky; arc=none smtp.client-ip=209.85.216.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jI3lIKDl"
-Received: by mail-oo1-f42.google.com with SMTP id 006d021491bc7-5d5b850d969so2648476eaf.0;
-        Sun, 25 Aug 2024 13:25:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mPoDngky"
+Received: by mail-pj1-f47.google.com with SMTP id 98e67ed59e1d1-2d3ba4e6ad9so670621a91.2;
+        Sun, 25 Aug 2024 13:29:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724617519; x=1725222319; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1724617789; x=1725222589; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=50RI/a1NZmhiwt7nlsK+guAvWBNFkemQkKhjN0j6aOU=;
-        b=jI3lIKDlsdhL9yA26nS9hYIgpjc+JPESW/j6eVooIl/ZrshOctmlqV8NwLrUZQacdx
-         UsIJZP6ZFbV4TIu2V2kEdVr7rZXuoT/MC2M3SfIYFK92uNp7EID825IwMT4b409xQ6VQ
-         AIHI2xC1ER2sHKAI3qamH66Q2B6P5R6NBCtpzv6atV8SAfhVf00LKdqUwzywb8xDh9gF
-         540jTqKv3AbbH3+ldPsAXmf43Z/VuNFY31tRBYbBt0TOC0T+UXFft7xwHZZoShZld33X
-         kILkOujI8eAXIsuJmR3jYKFtYBui9F4qb+NjpRRj+bYRkVIaTPY0x79LMzvzcMuSaoAS
-         w+bw==
+        bh=Tabtq3pbe9qAyEkgCDeJgXpNUAzPs0xWGHdygU8SfDU=;
+        b=mPoDngkyKq45m1xrUFUHPuHm00xyyK/+5Fx2/6+nVnKtwLYQHRG+JfNp02Urexp4rF
+         Fbk09kGcOb53lJMN47QREr3NProECBjlDbwNsyuOTteaL0+KwDGVQEpr65D+AkYfdpkc
+         g+yYg6OiCJ6wuiMTQW9YZBN3dyeQ6SsK+Bhipcxa3JD/5qjpDT77jEyhL6w40M2/kBxf
+         a7c+wQbyEc4wGPU4zc0j045g7cP/ZleTc2xvZ85ag9JksmXAZ4CgeWwVB1yq6vTjW4XD
+         U1QrrA+WBVKtV1VvRpfz3XrbG++uiWMZksAol/cRf6I90JGYUxCl84jCg7/nPBusbLNJ
+         b03g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724617519; x=1725222319;
+        d=1e100.net; s=20230601; t=1724617789; x=1725222589;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=50RI/a1NZmhiwt7nlsK+guAvWBNFkemQkKhjN0j6aOU=;
-        b=fE9NcWmCxgQHXTwbJc+pTLbl19tAaGpnbrLvT9huqlUqZkfT81uCOzNOxfQIyz9BVS
-         AnkkyZsTt6xeAlORm7m7gouMWvzPlOSfYupjXrfK+T2eBQc5CVzoBJn6hAwXkTMBusyn
-         G8UVCp/bODOypz7fgkUGwV635uWlCs0B9dTBoE68zHMIUk1lCftff39xb7MQ7SJRjqAV
-         kCtNl7fQ6Y3eqwMD99iCJxmeXP4cnL0CH/EUZpzrLuH6FLWD/vqode34W6CoB0WF0jrd
-         N8wzpzLBOuBhqOJV+qge1z5xshpgW/bwE8/QDtU/qPmwgik0LEchbzLbP6Wwsnz6gOI/
-         WB7Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVuSkhCaqL/cPEgFOtkaeN/WSDou7kygvvzNL5eU7YrAFafnf/FQG5fE5MZ9oQGOe6hGs0fn9+LGm4=@vger.kernel.org, AJvYcCVzTUvp1pg40A3JG4FbGgtdwQffp934khQ5K3y8be+T21VtFa0aU0iRykmeWqUCiaYj5Y5p+yKhmNi3lhrL@vger.kernel.org, AJvYcCWwNj4QCzq31E5LdJmjZJJ9UwZX+u7NB5amigI38P8X5ky5dsASaDWNoVVuCc2MwVQEwdC6Weazqcht6Ihlm1k=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyzpoMFiUhJcxdDlO/yeQnU8oERdtqdnhOixHNaikU7rrD3Um0m
-	SU1+uPgjHKnrIl7wXUJ4YXf6tW3o0X09RRNRzshjyVF1PMvN8ChI5ezHPM4eKkuSW/7j1fp08FX
-	Vhem2Ri7BQ2PloQqe67Vn966KYfI=
-X-Google-Smtp-Source: AGHT+IFGU5O5gyc3TgWpgfRqxbYR3vkdTRqKzvhpIj7OVx9PfV9d+nAJJKaOipWlJDXJhWRbgsLMkB5n9Ws97Tw/rZg=
-X-Received: by 2002:a05:6820:174a:b0:5c6:9320:2df6 with SMTP id
- 006d021491bc7-5dcc6282916mr7857893eaf.7.1724617519570; Sun, 25 Aug 2024
- 13:25:19 -0700 (PDT)
+        bh=Tabtq3pbe9qAyEkgCDeJgXpNUAzPs0xWGHdygU8SfDU=;
+        b=C4TLBHGglpYvQ6ZUzQCBpc6WiWiKdLgqLndTpIA2QDUuxpk0atjhP275oVlRuipz3n
+         z8CldWQ7eKYrzKaETVPQQV+ucLAUidxVdBO+wFg3rp4ZXg1bkK3/LahCj77SHaxI6Ttu
+         IPCrcgX6CuArSc2A1o8HXt7Q3Jb9RaYpyAlOJ0VAUZDE8e57UdmP1C9HUCVxjj11GAE5
+         NGIAlo2o28ELB+NmiKv54qnZ7+16OXxg0KWwtjTQ3bjT8hMDZroYbucLeQakBVu6+ONd
+         r4iS5cTLe5X6VSzvxUopeidXLZpUZPe3DnNSFeubxly/O+VKoSNQyOEH+PtIWDyrXrWn
+         eNbQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVQOVcWFGOw8KmFi7AyTkmu9p4pVT2bsMl6Z43GHLeoVJdQWB5Q70HqPjqALO4uFij3Zwqvzp0tf78=@vger.kernel.org, AJvYcCVgMMSOTPOKD8ZdT67rIyvSaRppAbGyZBOCzzUOTPr2djAdDsx2TrPOvlbIYf3M79rDu7n+oYFMFPT7GYwJr2I=@vger.kernel.org, AJvYcCXBhfgToT+0Z2yJRfcHtZkfCTBuP86Z1W7SVbhqUGxJ31kL1qf29L8+ucp2FI5XhDh3DGQ2q2mMfGyI2PML@vger.kernel.org
+X-Gm-Message-State: AOJu0YxBxn6PUk+bjGlWkEr0DZRUFXUI+SjxcoemR/mmtWsUBKl/lPKw
+	ZxWm9fBt6rxR7aMc4mtmnmMB73ChI4CUmE3p6NmhXqjQQUQlVAJgNjlTKM52qN26hasMFASxmpb
+	12SivrTjq7XBl5Dmc0YVtySleWO4=
+X-Google-Smtp-Source: AGHT+IGJ0vPpx4EfP3jAuDeWFpMIZNHlyFSDsmJuLjEou2DJG7XpFM0CJHn7XJgN5N7kJO9sAW70557WPT2I2byI400=
+X-Received: by 2002:a05:6a21:6da5:b0:1c4:d312:64d8 with SMTP id
+ adf61e73a8af0-1cc89d6442emr5691191637.3.1724617789154; Sun, 25 Aug 2024
+ 13:29:49 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -57,12 +57,13 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20240818141249.387166-1-ojeda@kernel.org> <CANiq72=amLCxV3QRVqK0gVKnGZe_YeqB79LkydEjZ_hJ6_K4QA@mail.gmail.com>
-In-Reply-To: <CANiq72=amLCxV3QRVqK0gVKnGZe_YeqB79LkydEjZ_hJ6_K4QA@mail.gmail.com>
-From: Guillaume Gomez <guillaume1.gomez@gmail.com>
-Date: Sun, 25 Aug 2024 22:25:08 +0200
-Message-ID: <CAAOQCfSi9sMqgBzh+v42XGOh2fopytBSjxfPp6kd5DUcGtq20w@mail.gmail.com>
+ <CAAOQCfSi9sMqgBzh+v42XGOh2fopytBSjxfPp6kd5DUcGtq20w@mail.gmail.com>
+In-Reply-To: <CAAOQCfSi9sMqgBzh+v42XGOh2fopytBSjxfPp6kd5DUcGtq20w@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sun, 25 Aug 2024 22:29:37 +0200
+Message-ID: <CANiq72nCJNGRSJCyYXn4+Xgq83doxB+oFE87P62pFtqpk6CZFw@mail.gmail.com>
 Subject: Re: [RFC PATCH] rust: enable rustdoc's `--generate-link-to-definition`
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+To: Guillaume Gomez <guillaume1.gomez@gmail.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Wedson Almeida Filho <wedsonaf@gmail.com>, Jonathan Corbet <corbet@lwn.net>, Boqun Feng <boqun.feng@gmail.com>, 
 	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
@@ -74,65 +75,16 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Don't hesitate if you encounter any bug to tell me so I can fix them.
+On Sun, Aug 25, 2024 at 10:25=E2=80=AFPM Guillaume Gomez
+<guillaume1.gomez@gmail.com> wrote:
+>
+> Don't hesitate if you encounter any bug to tell me so I can fix them.
+>
+> Any feedback is also very appreciated!
 
-Any feedback is also very appreciated!
+Thanks Guillaume, that is very appreciated!
 
+We will hopefully not have to tell you about any bugs :)
 
-Le dim. 25 ao=C3=BBt 2024 =C3=A0 22:22, Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> a =C3=A9crit :
->
-> On Sun, Aug 18, 2024 at 4:13=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> w=
-rote:
-> >
-> > In Rust 1.56.0 [1], rustdoc introduced the "jump to definition"
-> > feature [2], i.e. the unstable flag `--generate-link-to-definition`.
-> > It adds links to the source view of the documentation.
-> >
-> > For instance, in the source view of `rust/kernel/sync.rs`, for this cod=
-e:
-> >
-> >     impl Default for LockClassKey {
-> >         fn default() -> Self {
-> >             Self::new()
-> >         }
-> >     }
-> >
-> > It will add three hyperlinks:
-> >
-> >   - `Default` points to the rendered "Trait `core::default::Default`"
-> >     page (not the source view, since it goes to another crate, though
-> >     this may change).
-> >
-> >   - `LockClassKey` points to the `pub struct LockClassKey(...);` line
-> >     in the same page, highlighting the line number.
-> >
-> >   - `Self::new()` points to the `pub const fn new() -> Self { ... }`
-> >     associated function, highlighting its line numbers (i.e. for the
-> >     full function).
-> >
-> > This makes the source view more useful and a bit closer to the experien=
-ce
-> > in e.g. the Elixir Cross Referencer [3].
-> >
-> > I have provisionally enabled it for rust.docs.kernel.org [4] -- one can
-> > take a look at the source view there for an example of how it looks lik=
-e.
-> >
-> > Thus enable it.
-> >
-> > Cc: Guillaume Gomez <guillaume1.gomez@gmail.com>
-> > Link: https://github.com/rust-lang/rust/pull/84176 [1]
-> > Link: https://github.com/rust-lang/rust/issues/89095 [2]
-> > Link: https://elixir.bootlin.com [3]
-> > Link: https://rust.docs.kernel.org [4]
-> > Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
->
-> Applied to `rust-next` -- thanks!
->
-> Let's enable this since it has already been useful for people. If it
-> happens to break, we can always disable it. And it may help getting it
-> stabilized.
->
-> Cheers,
-> Miguel
+Cheers,
+Miguel
