@@ -1,149 +1,155 @@
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f42.google.com (mail-wr1-f42.google.com [209.85.221.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6495F14EC4B
-	for <rust-for-linux@vger.kernel.org>; Mon, 26 Aug 2024 15:30:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B476B186298
+	for <rust-for-linux@vger.kernel.org>; Mon, 26 Aug 2024 15:31:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724686219; cv=none; b=MrbKG2U2/yr/k04A0YzIoIN8tXHuE2ZDRF0XMLlZvojjoqNSQsuJSJDj8TQzYVLfeaBxucm9s3AInwHSRoqdnOhWX67H/IQnD3Upce6topwaz+hOJlfD/7b/gXL/f3y2m1H2rkcUAHxf2QSlNKxUauipk3m6buMeBwj/3b7xch8=
+	t=1724686285; cv=none; b=cxwzJVSu9zW4Uhj1aDFQdf+Jh772Y+dzs7Pwts6CNcWeHvmUJ0Yf6d94LRek+5Lf9GiWvwsXBQiF1ELdR227wI/vhhy+TToYvNZx0WPpjLJVxH+7Nx1nH6qb/m5dZwMMWAAU2WvfKDEKvDNBnsfL1p7lqj/onL2F67lCPfSWkXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724686219; c=relaxed/simple;
-	bh=06p/l1Z2HVeU+KDuAy8+n0dmtDSXIUuwbXx5MRqFTxk=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=T/D0rKx2PSP4M5H6Fs6pGK1coCx5pShKcT7ljMxttnTla2PzHnhVYkLgrSA3HViyLx1Xls7GCYztlkoxPqevoUhV1pYmklKaeOOZu1lR8WjM/NQMbIpcF0pXUkowXLBE9+DTxcFQKwnZEzpq6RnNMtvFhUVDucawxGFLmOGNjX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=foeuuRGe; arc=none smtp.client-ip=185.70.43.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1724686285; c=relaxed/simple;
+	bh=UBl4FU15A8tb8ujhhS/2FtY/4b0ns+u3UlTgs0f+NWQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Unu9UGhInLXIOGVbp/2U4/uVbxYFU2m5xxwmYqq5jrO3MQedQTgg16sRyd6lX2f6CnyjT1RHnRawjDkzCKqrKByEu8uY1sQ6Jly05spNUOKVibS6rXbwsToC7jR0BrgucfxVLAiutszPanW+RrIdxhJPaPgWVkebVH7n3N8vVZ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=byvi5YJZ; arc=none smtp.client-ip=209.85.221.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="foeuuRGe"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1724686214; x=1724945414;
-	bh=KxRHVmcm1qvb26ydvSyHXTipBP2NvBWirzM8fU55iS0=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=foeuuRGeTizHJrJLsZBGwbmsD4ZDOGARkh8CFP8r4t7mgCRx9chRThgUk5IvyNBUz
-	 MFv+v/WigmwMY0xlF/sG3qv/TX/fILnYhuE6/isApni2YJDzYOlwI6SSWHzeSOly4q
-	 ZtK5wBOt+d01mGoJroPegBovUu9okPAITV01XEiMracwtedeN4ooCjn/2Vc+zfltNX
-	 4JngLhGkCBSSvNFO4lLUku7XTxt7Q3QQUg8Nu2b77h99qlKFZevf6uGIBP5sM9tTk7
-	 aEiM7nUqEgc0XMhOMgByK4FOBcOr0JXGTr8Pa34rawZep2STVRQTs5ormn/yO9KKqw
-	 mwsi5gGAH3DpA==
-Date: Mon, 26 Aug 2024 15:30:08 +0000
-To: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: add global lock support
-Message-ID: <9feb41cc-cb1c-4d0d-a3df-09298e69af69@proton.me>
-In-Reply-To: <20240826-static-mutex-v1-1-a14ee71561f3@google.com>
-References: <20240826-static-mutex-v1-1-a14ee71561f3@google.com>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 81454d238bba8d88fbf1f30a0e89dd200375df55
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="byvi5YJZ"
+Received: by mail-wr1-f42.google.com with SMTP id ffacd0b85a97d-3719398eafcso2599738f8f.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 26 Aug 2024 08:31:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1724686281; x=1725291081; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5RyvorOmaB0wAXgQv5bWHPkMw7nEOqq3IqbAMWHqucA=;
+        b=byvi5YJZ0nnRZ5FN67wqGyevZOZaEp0q6EBrLPaaoCFxSFfgW1eu7fECZ+lTk6J+MQ
+         Qb1MVhMHDGAGqu5bJpOswbxuvqxmjcez5m5aTTY6VY7Ecmcu2IToiQN2qtbAS3sbyU75
+         QBjBfG9xR4YnzqP8NduBX72zwZxcvPmCnhjM1FKz2Vx2lpUPgHxjDrbNKdmFvIeeACnX
+         anPj4RqTkMnBPJMyEqhDvEuOJjpcurDECCj+bPYhopWXoDG5KePsPh8oErJ7Bu6zqdxt
+         7wXogYD+02dLdzyVEgL0J1xjxjQt/uGXfPhzdueO3yEm6j73TLnDvVeEMRm6AFpKkHBy
+         Javg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724686281; x=1725291081;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=5RyvorOmaB0wAXgQv5bWHPkMw7nEOqq3IqbAMWHqucA=;
+        b=tX2GFSq0trTjA96UgUuOTK3LNrXIKqVwtAcNSFPVjKkiJgi8AiiopudP4XmIDaOQxa
+         KZgv4kbwKKhFH9MiR0Y1aiLtJCid/863B1DWLpMr8mSvfWznTeeA6hh08QCWqmxBhG2M
+         HgPWFM98HxohrHbU/7YHeb2Ic2VI+YfqEelBh4zCXEP5ODERZrGvLzkLUOTlS1OsYXez
+         2uu2J5IWO48DnMLo1VnxQVQ4UbF7XeBOdFzzcfaVkzmut0TII47CPM2rjwNAI9cxKnWZ
+         IjJ7yHl0FuWsGTRlZ63KckNqnfctPgHchmN0fWFDs4owcmvQhNyEXKEZMm7dplIpP4OW
+         LHTA==
+X-Forwarded-Encrypted: i=1; AJvYcCVLzJU6hlmP/wyQIHFai3FS51ni7PgB4FDwjAM2OhMHvHG4s4ftqzruJanghFAOnlKFNKlAUnfcECSutz5qyA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YziCcHAAYt/5Yc9GmW5NY4rVoBjQSy+mPNdcEqnuXyQUlFHcVvm
+	q7fAy3Wr32npEvr2ZSOaMvR/Dcp4i95+MPIDI9h8QQOA0Dg+ec4xH8wVhS25UHb903BV36dAKo9
+	KLO3hEQ1wdATArsN0xj6yjGvk6ezRy3MjsAWf
+X-Google-Smtp-Source: AGHT+IEIqQrZlUNxKO6DnJGXQCf/gHmVjUX8ag+3f8xAxj+baEZ/T8fvEXoDQ1xhOzgL6fbmRHOMI7fmk4NmNz2Lsdw=
+X-Received: by 2002:adf:e645:0:b0:36c:b5a1:f108 with SMTP id
+ ffacd0b85a97d-373118e3547mr6032056f8f.39.1724686280737; Mon, 26 Aug 2024
+ 08:31:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20240826-static-mutex-v1-1-a14ee71561f3@google.com> <9feb41cc-cb1c-4d0d-a3df-09298e69af69@proton.me>
+In-Reply-To: <9feb41cc-cb1c-4d0d-a3df-09298e69af69@proton.me>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Mon, 26 Aug 2024 17:31:08 +0200
+Message-ID: <CAH5fLgjtSVMcKL4aMrNT=zJPGvzAPJt3qAUMYdB-+3=s80FNKQ@mail.gmail.com>
+Subject: Re: [PATCH] rust: add global lock support
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On 26.08.24 17:27, Alice Ryhl wrote:
-> We don't currently have any support for global locks in Rust, however
-> they are very useful and I have needed to work around this limitation
-> several times. My workarounds generally involve initializing the mutex
-> in the module's init function, and this workaround is reflected here.
->=20
-> Due to the initialization requirement, constructing a global mutex is
-> unsafe with the current approach. In the future, it would be really nice
-> to support global mutexes that don't need to be initialized, which would
-> make them safe. Unfortunately, this is not possible today because
-> bindgen refuses to expose __ARCH_SPIN_LOCK_UNLOCKED to Rust as a
-> compile-time constant. It just generates an `extern "C"` global
-> reference instead.
->=20
-> On most architectures, we could initialize the lock to just contain all
-> zeros. A possible improvement would be to create a Kconfig constant
-> that is set whenever the current architecture uses all zeros for the
-> initializer and have `unsafe_const_init` be a no-op on those
-> architectures. We could also provide a safe const initializer that is
-> only available when that Kconfig option is set.
->=20
-> For architectures that don't use all-zeros for the unlocked case, we
-> will most likely have to hard-code the correct representation on the
-> Rust side.
->=20
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> ---
->  rust/kernel/sync/lock.rs | 34 ++++++++++++++++++++++++++++++++++
->  1 file changed, 34 insertions(+)
->=20
-> diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
-> index f6c34ca4d819..19e8ecd8d194 100644
-> --- a/rust/kernel/sync/lock.rs
-> +++ b/rust/kernel/sync/lock.rs
-> @@ -117,6 +117,40 @@ pub fn new(t: T, name: &'static CStr, key: &'static =
-LockClassKey) -> impl PinIni
->              }),
->          })
->      }
-> +
-> +    /// Create a global lock that has not yet been initialized.
-> +    ///
-> +    /// Since global locks is not yet fully supported, this method imple=
-ments global locks by
-> +    /// requiring you to initialize them before you start using it. Usua=
-lly this is best done in
-> +    /// the module's init function.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// You must call [`unsafe_const_init`] before calling any other met=
-hod on this lock.
-> +    ///
-> +    /// [`unsafe_const_init`]: Self::unsafe_const_init
-> +    pub const unsafe fn unsafe_const_new(t: T) -> Self {
-> +        Self {
-> +            data: UnsafeCell::new(t),
-> +            state: Opaque::uninit(),
-> +            _pin: PhantomPinned,
-> +        }
-> +    }
-> +
-> +    /// Initialize a global lock.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// * This lock must have been created with [`unsafe_const_new`].
-> +    /// * This lock must be pinned.
+On Mon, Aug 26, 2024 at 5:30=E2=80=AFPM Benno Lossin <benno.lossin@proton.m=
+e> wrote:
+>
+> On 26.08.24 17:27, Alice Ryhl wrote:
+> > We don't currently have any support for global locks in Rust, however
+> > they are very useful and I have needed to work around this limitation
+> > several times. My workarounds generally involve initializing the mutex
+> > in the module's init function, and this workaround is reflected here.
+> >
+> > Due to the initialization requirement, constructing a global mutex is
+> > unsafe with the current approach. In the future, it would be really nic=
+e
+> > to support global mutexes that don't need to be initialized, which woul=
+d
+> > make them safe. Unfortunately, this is not possible today because
+> > bindgen refuses to expose __ARCH_SPIN_LOCK_UNLOCKED to Rust as a
+> > compile-time constant. It just generates an `extern "C"` global
+> > reference instead.
+> >
+> > On most architectures, we could initialize the lock to just contain all
+> > zeros. A possible improvement would be to create a Kconfig constant
+> > that is set whenever the current architecture uses all zeros for the
+> > initializer and have `unsafe_const_init` be a no-op on those
+> > architectures. We could also provide a safe const initializer that is
+> > only available when that Kconfig option is set.
+> >
+> > For architectures that don't use all-zeros for the unlocked case, we
+> > will most likely have to hard-code the correct representation on the
+> > Rust side.
+> >
+> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> > ---
+> >  rust/kernel/sync/lock.rs | 34 ++++++++++++++++++++++++++++++++++
+> >  1 file changed, 34 insertions(+)
+> >
+> > diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
+> > index f6c34ca4d819..19e8ecd8d194 100644
+> > --- a/rust/kernel/sync/lock.rs
+> > +++ b/rust/kernel/sync/lock.rs
+> > @@ -117,6 +117,40 @@ pub fn new(t: T, name: &'static CStr, key: &'stati=
+c LockClassKey) -> impl PinIni
+> >              }),
+> >          })
+> >      }
+> > +
+> > +    /// Create a global lock that has not yet been initialized.
+> > +    ///
+> > +    /// Since global locks is not yet fully supported, this method imp=
+lements global locks by
+> > +    /// requiring you to initialize them before you start using it. Us=
+ually this is best done in
+> > +    /// the module's init function.
+> > +    ///
+> > +    /// # Safety
+> > +    ///
+> > +    /// You must call [`unsafe_const_init`] before calling any other m=
+ethod on this lock.
+> > +    ///
+> > +    /// [`unsafe_const_init`]: Self::unsafe_const_init
+> > +    pub const unsafe fn unsafe_const_new(t: T) -> Self {
+> > +        Self {
+> > +            data: UnsafeCell::new(t),
+> > +            state: Opaque::uninit(),
+> > +            _pin: PhantomPinned,
+> > +        }
+> > +    }
+> > +
+> > +    /// Initialize a global lock.
+> > +    ///
+> > +    /// # Safety
+> > +    ///
+> > +    /// * This lock must have been created with [`unsafe_const_new`].
+> > +    /// * This lock must be pinned.
+>
+> You could also ask for `self: Pin<&Self>` and remove this constraint, or
+> is that not possible in your use-case?
 
-You could also ask for `self: Pin<&Self>` and remove this constraint, or
-is that not possible in your use-case?
+The value is going to be in a static, and it's inconvenient to have to
+use Pin::new_unchecked when calling this initializer. Not sure much
+value is gained.
 
----
-Cheers,
-Benno
-
-> +    /// * This method must not be called more than once on a given lock.
-> +    ///
-> +    /// [`unsafe_const_new`]: Self::unsafe_const_new
-> +    pub unsafe fn unsafe_const_init(&self, name: &'static CStr, key: &'s=
-tatic LockClassKey) {
-> +        // SAFETY: The pointer to `state` is valid for the duration of t=
-his call, and both `name`
-> +        // and `key` are valid indefinitely.
-> +        unsafe { B::init(self.state.get(), name.as_char_ptr(), key.as_pt=
-r()) }
-> +    }
->  }
->=20
->  impl<T: ?Sized, B: Backend> Lock<T, B> {
->=20
-> ---
-> base-commit: b204bbc53f958fc3119d63bf2cda5a526e7267a4
-> change-id: 20240826-static-mutex-a4b228e0e6aa
->=20
-> Best regards,
-> --
-> Alice Ryhl <aliceryhl@google.com>
->=20
-
+Alice
