@@ -1,116 +1,108 @@
-Received: from mail-pj1-f41.google.com (mail-pj1-f41.google.com [209.85.216.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D271D14AD0C;
-	Mon, 26 Aug 2024 20:03:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AEED811E2;
+	Mon, 26 Aug 2024 20:12:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724702632; cv=none; b=nBzb5T4ok6n0jSKX83J9vaS6IxX+vaJ3ZCyNMa8GGcqvHIWMQh05ul1vQgcCbZAniSjF2gqdHiKNlbLkLRFuVzNCGECJAoMdtjD5blc+cz/S/BsgqM4K8JR5CgLaSHW+D3aSGktmIOnOROKHIOgTZdC+59qSYg2p0EbCHagx0gw=
+	t=1724703139; cv=none; b=g1Ai43ZDEUx5gAHFBYYMY3btbNmdGcbcGexuJgc3s7FnaMzmQUtUM29aK+IQqyywmWgw4XHN7AbOLN2ol1DXGMzWurK22EoMjjnags1NkcXr3rIOmuFTb0v8jKBikfTTOLWartNz7Rqh19guWMEK/8qVMLESPgRbtwtSVMCBqzQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724702632; c=relaxed/simple;
-	bh=SJ74gEwTuALUMMJ4yxY4RwKZXzLKiT2GaQEX/jOvqNQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=TYwgD8n+CLJSLeBd3W4g6TTFTYAqbA4u2jlOKIYKhDB8/LlKEX5lVktjUBrZc41gaFOLHVKhksaSNNQip4WfQT134mXEA5NSeezIi3netDvVxza+WIVQEXOcXedeqQm/kUAtbGXA1TDmfO3sg29hpProApgErdTAY+pCWEfRK9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZHacH0Pi; arc=none smtp.client-ip=209.85.216.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1724703139; c=relaxed/simple;
+	bh=rbSh8CmH7ijmLi8lho/8tDPvmVlxo2BscRK2x9bo/Fw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Y0tw8OHKehygAvlMDpzzpSFG4KaOsIc/5Ddm81S9O51q3wbAgUI3HIwnBan4kK2styPbQPCJV9+qL+ya2dp1QEIQ7qsEGWkMbHG2L394ZRP9/56xneDzMdhPoDeNfV7jHaYJGxIydfP/8ntFWn37Z0XoCos5rokLGIb+1U3LDLg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=j623cd1/; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZHacH0Pi"
-Received: by mail-pj1-f41.google.com with SMTP id 98e67ed59e1d1-2d3ba497224so497809a91.0;
-        Mon, 26 Aug 2024 13:03:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724702630; x=1725307430; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=3ObXozr3BJ6v7ZqhdBN9DFf0iC+TTqCIr3HMlLGbcJk=;
-        b=ZHacH0PihmMIll6qVLlS490wf8hvxRI/Y+5gQDBa8zCnZsnaW5Xdo3aTNk1Qq66n85
-         JBGnUQgsSjGJQG19Nsjd7KOhjPZr0mdG2FlJjVS5Zr51deyUCLtDDb06Tn96fD1HPYMW
-         CZsnNwJP+2lsgD2SSR7JaWBhTjbALyG2cKIcaLZ3FTxql8+H7wdrS0NmnGvOSnc6U5Bf
-         bqQfkC+5NHuQ2sTqAENwZUE6sjtk3GlgYeMjYRGytPW61CqEsxwCC/NG34TUUaz9Yzhd
-         lubmd9Y+o4M0r1gLTq9Shz8qNz2oJmnlPr09FPaZS91SKjJp3gVWiZgAJEKTzgHegsUy
-         qFNQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724702630; x=1725307430;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=3ObXozr3BJ6v7ZqhdBN9DFf0iC+TTqCIr3HMlLGbcJk=;
-        b=h9pfxTa45e3u9BJBb0l3+hM2KIsA3ttpWRVOvK23nwL4UNpIeqTW3cOW5WT40KxZUb
-         OLvB2i5n3zx2yD+W89T4IYoLXlLRoaWWdXlq5H9kTWver0tJu9o60e8dmvbDtaLyJeWs
-         ZcfHkbc4AZ+QBqlFdJAs93YQ/WddCev3q1v0xrEf4Q3aT1UTByT1wm/ih/3bzlkcwqQO
-         hR08X6zfWmuHSH3hd/rQR0hi6fLLBzEGoJqaszWk85inE1jK/A1+Ofb7GDqrnA8KqtR8
-         S7sdHeEoF0+WsPit94WJz94sSQckNYbXhSOiYNuFoni9oY9Ye/A1eQtTohvu1o/4Stom
-         NGAg==
-X-Forwarded-Encrypted: i=1; AJvYcCXzgxsfnSd7z8J5md/j9y2zzvAVjbc+/mq7UFuvftKOWrxB9BddYLa9eNuy2MF9KnG0NuS8nGKVxXSkVJo=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwSf+cflGG3b6rwIjvl2JfGlLsEdzq5SfIRrqNVxT7He4m4mady
-	gbwQkCmK74W5LFeunDET2V0Apoiqjqvc+rx1/LfHe6GcqtlMh53N3hFMYVSOQwnCdtaDYDlYfzJ
-	2R0Dn/ZyujY2iFFrQ/CtnWWN6nIaS5D/Qa5Y=
-X-Google-Smtp-Source: AGHT+IF06Qa5kKCgDuixFMP84Oud7TdmALiwNRboY94oox6pPnz2S6FVPKSATudfOFNYzfDRJrY+uZXQgkOB1Cm46Gw=
-X-Received: by 2002:a17:90b:188b:b0:2d3:c488:fa6b with SMTP id
- 98e67ed59e1d1-2d646d8b377mr7653756a91.5.1724702630001; Mon, 26 Aug 2024
- 13:03:50 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="j623cd1/"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CCB9C8B7AA;
+	Mon, 26 Aug 2024 20:12:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1724703138;
+	bh=rbSh8CmH7ijmLi8lho/8tDPvmVlxo2BscRK2x9bo/Fw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=j623cd1/U+2g5Dgk9F6SU74+/4hy9tkDdQijiKKVQX7xKpQBNo4w8X3i97Zf7AH8F
+	 MAKj58+DtCiZHysZnZEx2lzG5YffQiYv0rF4QKSblwO48L9HfCtNUJc0Sdma1dAAsZ
+	 uLvB0jqLlFH0/+HMVcyrpNgZRa9N9ECKg7CkzqZDBno2E68wM8nR00nmjey4zEwgN2
+	 CcBz8SBJz7Id8HQwf/u5R/2caJ3aJ0SqTJPohbSxZ1IoFsoTuI1yayYYJUDCdRKiVP
+	 Dozcyqa6rOiFOK/+MYs6H5qwnxeg104wP4JMhxlMYxFuHwJi1JXdgVxKKaTGhqbJUW
+	 B08nfstphiQaA==
+Date: Mon, 26 Aug 2024 13:12:18 -0700
+From: Kees Cook <kees@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>,
+	Will Deacon <will@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
+	Jamie Cunliffe <Jamie.Cunliffe@arm.com>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Conor Dooley <conor@kernel.org>,
+	Masahiro Yamada <masahiroy@kernel.org>,
+	Nicolas Schier <nicolas@fjasle.eu>, Marc Zyngier <maz@kernel.org>,
+	Mark Rutland <mark.rutland@arm.com>,
+	Mark Brown <broonie@kernel.org>,
+	Nick Desaulniers <ndesaulniers@google.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Valentin Obst <kernel@valentinobst.de>,
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v6] rust: support for shadow call stack sanitizer
+Message-ID: <202408261311.3C191659@keescook>
+References: <20240826-shadow-call-stack-v6-1-495a7e3eb0ef@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240825221806.253575-1-simeddon@gmail.com>
-In-Reply-To: <20240825221806.253575-1-simeddon@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 26 Aug 2024 22:03:37 +0200
-Message-ID: <CANiq72ns_Awo3HD+P-hHrAOHQemRirtp3Zvei9OYgfLf8eWncw@mail.gmail.com>
-Subject: Re: [PATCH] scripts/checkpatch.pl: check for non-permalinks to Zulip
-To: Siddharth Menon <simeddon@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-kernel-mentees@lists.linuxfoundation.org, apw@canonical.com, 
-	joe@perches.com, ojeda@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240826-shadow-call-stack-v6-1-495a7e3eb0ef@google.com>
 
-On Mon, Aug 26, 2024 at 12:18=E2=80=AFAM Siddharth Menon <simeddon@gmail.co=
-m> wrote:
->
-> Zulip links to https://rust-for-linux.zulipchat.com can break in
-> case of renaming the topic or channel if they are not a message
-> links (which are permalinks).
+On Mon, Aug 26, 2024 at 02:22:52PM +0000, Alice Ryhl wrote:
+> This patch adds all of the flags that are needed to support the shadow
+> call stack (SCS) sanitizer with Rust, and updates Kconfig to allow only
+> configurations that work.
+> 
+> The -Zfixed-x18 flag is required to use SCS on arm64, and requires rustc
+> version 1.80.0 or greater. This restriction is reflected in Kconfig.
+> 
+> When CONFIG_DYNAMIC_SCS is enabled, the build will be configured to
+> include unwind tables in the build artifacts. Dynamic SCS uses the
+> unwind tables at boot to find all places that need to be patched. The
+> -Cforce-unwind-tables=y flag ensures that unwind tables are available
+> for Rust code.
+> 
+> In non-dynamic mode, the -Zsanitizer=shadow-call-stack flag is what
+> enables the SCS sanitizer. Using this flag requires rustc version 1.82.0
+> or greater on the targets used by Rust in the kernel. This restriction
+> is reflected in Kconfig.
+> 
+> It is possible to avoid the requirement of rustc 1.80.0 by using
+> -Ctarget-feature=+reserve-x18 instead of -Zfixed-x18. However, this flag
+> emits a warning during the build, so this patch does not add support for
+> using it and instead requires 1.80.0 or greater.
+> 
+> The dependency is placed on `select HAVE_RUST` to avoid a situation
+> where enabling Rust silently turns off the sanitizer. Instead, turning
+> on the sanitizer results in Rust being disabled. We generally do not
+> want changes to CONFIG_RUST to result in any mitigations being changed
+> or turned off.
+> 
+> At the time of writing, rustc 1.82.0 only exists via the nightly release
+> channel. There is a chance that the -Zsanitizer=shadow-call-stack flag
+> will end up needing 1.83.0 instead, but I think it is small.
+> 
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
 
-a message -> message
+Thanks for continuing to chase this down.
 
-> If a non-permanent zulip link is referenced emit a warning and
-> directs to the zulip documentation.
+Reviewed-by: Kees Cook <kees@kernel.org>
 
-emit -> , then emit
-directs -> direct the user
-zulip -> Zulip
-
-> permanent links are of the format:
-> https://.../#narrow/stream/x/topic/x/near/<numerical_id>
-
-permanent -> Permanent
-
-> Reported-by: ojeda@kernel.org
-> Closes: https://github.com/Rust-for-Linux/linux/issues/110
-
-Sorry, I copy-pasted a template we use for "good first issues" and I
-should have not mentioned these two tags, because it is not a bug.
-They should be `Suggested-by` and `Link` instead. Also, please use the
-standard format "Full Name <email>".
-
-In addition, the link should be to #1104, not #110, i.e.
-https://github.com/Rust-for-Linux/linux/issues/1104
-
-> +                            "Use permanent Zulip links when possible - s=
-ee https://chat.zulip.org/api/construct-narrow#narrows-that-use-ids\n" . $h=
-erecurr);
-
-Hmm... That link seems a bit too technical.
-
-Perhaps it would be easiest to give an example here (like in the
-commit message) if there are no better docs about this.
-
-Thanks!
-
-Cheers,
-Miguel
+-- 
+Kees Cook
