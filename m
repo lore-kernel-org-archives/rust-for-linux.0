@@ -1,75 +1,196 @@
-Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f54.google.com (mail-ed1-f54.google.com [209.85.208.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B93A5B69E
-	for <rust-for-linux@vger.kernel.org>; Mon, 26 Aug 2024 15:46:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8BE0194C83
+	for <rust-for-linux@vger.kernel.org>; Mon, 26 Aug 2024 17:42:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724687181; cv=none; b=SiECugc9dNY2GxJUbUoUh7nFAi5vRMcwGMoytZVf+/6K2Q+XEpCxCucmttGrjizXqHH+FaAVBRcJit1UkwUuaSb6YQxfAL0enTh8bN3pT0jL9qYMXOMUkaMZvZZo6pUpa6svUKBcnIde/xYNpG3tQ+06jvJAovwlm1xzTJ0SBOA=
+	t=1724694124; cv=none; b=s6p3V2NACNQPBUDO5kyKtR1DmUaqczAhE7+fokidgFdXWWSPi3PwnWVnbc/AXOK+dobkmvKTqpvs+vji13hGv8p3QWTp3IzK2rwaFuS6LM+yLI8i2P8Vd5auda0lkscXsvS30WztViFoBebBVh80wnSEu0V4uX6nheSJlHRwIdQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724687181; c=relaxed/simple;
-	bh=rijYHIP0Ao4lvCJLZaabkuQiGBKAVts2w69Ma/szZjQ=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AsKBSlI7XoZdgwKqxjBzyQTgtO+8ZjvolCzc7LDZQ53NuBWfZbdOFwIFQqMl3cFeoGfQI4JZvJPODrFUpCK/Eei2h4rlFoEf9HdjZigD+0keP18i3rlEBGBuwIu52K/LDiT2dJpDMY1BMzs45wYAXAXBr9R5Bkit/nPJIgBeInM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=X+7HGJhG; arc=none smtp.client-ip=185.70.40.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1724694124; c=relaxed/simple;
+	bh=QuSLEspvauRYDRZz063fX415QSr6sTsEnReWnJYDXVk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=JeorQ01nBcDU2PakedCBh9UWc/0UbTwaksRDDBwqkG8t4JS0IgymBLkBmMMM46ulXl02gQ7jrRgLbA0Rq5DKZ723AX4K7PH3TmCgwmmF0XgxiCi4Bx2Rxz+MqK2+NabcZYVcdmbSCfZH1mr0d4dWlBP/XOLKBaPvokYIJPh+b0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=OUmwdnOp; arc=none smtp.client-ip=209.85.208.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="X+7HGJhG"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=ewcidbvko5enbggt7fhozxovdy.protonmail; t=1724687177; x=1724946377;
-	bh=1S2zdt5fhwBL6dRleG9sKZYBdZBYfRqGJChdpr7OXPg=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=X+7HGJhGLPHX1+IPTRM1q+GrUynyMCtOkS7+gafxmPJtqPDa9ifCxgOW1Ga4oSGpy
-	 leDnLCiFYCgudimQW6MX8lkDHV7KkhUDd8BVB2H06KpgzuQDpt5NHWjuSL89P7lFbw
-	 Tvz8IRHhd6IyuNrzpSvX5Nsr92djm9JCIN2aNhD2qGT21FTDVUfw3zh1rZLTYeyhGa
-	 /EGaTxdhJBqDFfkk4xKVbxKSD9FE0qpZTqXO0k7W0vurUl8+pEZg8aU9Zg+dzNB37+
-	 uS71jDlgpeJDQm3EpNcqtIh1qdaiOts93d6X/iUYETMIilJLT5WupVHdeY37TbIZ2p
-	 nW8F4KYQNYdMA==
-Date: Mon, 26 Aug 2024 15:46:12 +0000
-To: Alice Ryhl <aliceryhl@google.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] rust: add global lock support
-Message-ID: <91ce9f9a-5def-4f5a-ab9d-9bde4736cca0@proton.me>
-In-Reply-To: <CAH5fLgjtSVMcKL4aMrNT=zJPGvzAPJt3qAUMYdB-+3=s80FNKQ@mail.gmail.com>
-References: <20240826-static-mutex-v1-1-a14ee71561f3@google.com> <9feb41cc-cb1c-4d0d-a3df-09298e69af69@proton.me> <CAH5fLgjtSVMcKL4aMrNT=zJPGvzAPJt3qAUMYdB-+3=s80FNKQ@mail.gmail.com>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 40ae1f2bb1268bc8d502447b32524023b018a751
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="OUmwdnOp"
+Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-5befe420fc2so5605106a12.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 26 Aug 2024 10:42:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1724694121; x=1725298921; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=JiCSnJD3HP198YRuwR9nlOg90E6QQ9s3+l37OIn7TdU=;
+        b=OUmwdnOpvRIWhkEmEAVhae0ZqGSgwqeyx6i6qmgV7GHgS1xbADzTRVPvgceJApGf3x
+         zV6VD24l4MMAP9Bt2MOlgWr+Qj12uc5qs6ntTy/X2ASnAKtL/Cym4LNw3U50VmTQeO/i
+         juLndVSyNOR5ONMpHc96US7Sw/pG260fBK0mkLsbdKiIvpc4rNN2hgwPEbzw/RqoJPGp
+         K2pIRs0LjRIvcqg5hioX3Ad20YVVGMR3HJNaiUDk4e7+wso2WsNRuuRzIB4X4ikE+or+
+         brky1YIWkYi/sMSX8D4bMwUiuq4/zWIfLJnI59tEaHzXBwzTZs0wuaV197pyP2SmWabv
+         8e8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724694121; x=1725298921;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=JiCSnJD3HP198YRuwR9nlOg90E6QQ9s3+l37OIn7TdU=;
+        b=CS28I6+JCW7TDFhtLqbRKexZNTo0PA4J6GdvIwgSZ801fs47LuNwNZGSm7NOFcDHz3
+         kQAs13u/GnP4UVtbVtyGkler4ywUxHWXI0bTJa3KSC2IfNOh+yIHuEke6h4g1cLN+Ry2
+         kh5aBGAduBymMps5Q91T3cSzwcyOV87wLAsprM4LWm4UNPT+Rj27c+UCwtaL/5ASJPqJ
+         B0yRJKtxPO9MS63tpXCkXl33QpoEYYe2sMe8tItPvqOxsPUJbdqinA6KLDRUIJx/0Z6/
+         FytKYZhe0Qo8cCob/mPyIk62LEgGMNkc7urHJeCU03IyINnt2EwhHzfR8vXSh+il4Q8G
+         b2YA==
+X-Forwarded-Encrypted: i=1; AJvYcCV1db0mjILs7rplzixHL3l0H4IMaZbDON3eG1iZizdjT2rGTki8b7zRboUlSt0vnIRVNIHDimJsHSfwCJWEXA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy8IphGEnims69bk2H6U92K4yZqcmkfzdMSqYVJzKutJsexJcRE
+	+OfeCo0ElUa9lYn/tWj5bnumrKjzDkRJCvPPgvYW3FKx/8HLYEdGTydYW1s55Fg=
+X-Google-Smtp-Source: AGHT+IFr4go4JINnJLtcWs0BB1xC/SXPqe+y4XSFmlELq1W0LCxG/Dp4ZIa768YslVaqXV+TjwDVpA==
+X-Received: by 2002:a05:6402:34c7:b0:5c0:ba90:6a9e with SMTP id 4fb4d7f45d1cf-5c0ba906ba4mr80529a12.38.1724694120916;
+        Mon, 26 Aug 2024 10:42:00 -0700 (PDT)
+Received: from [10.100.51.161] ([193.86.92.181])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5c0bb213739sm9690a12.54.2024.08.26.10.42.00
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Mon, 26 Aug 2024 10:42:00 -0700 (PDT)
+Message-ID: <71505c05-b651-4740-b14a-a53084a16a61@suse.com>
+Date: Mon, 26 Aug 2024 19:41:59 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 01/19] tools: Add gendwarfksyms
+To: Sami Tolvanen <samitolvanen@google.com>
+Cc: Masahiro Yamada <masahiroy@kernel.org>,
+ Luis Chamberlain <mcgrof@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Matthew Maurer <mmaurer@google.com>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>,
+ Petr Pavlu <petr.pavlu@suse.com>, Neal Gompa <neal@gompa.dev>,
+ Hector Martin <marcan@marcan.st>, Janne Grunau <j@jannau.net>,
+ Asahi Linux <asahi@lists.linux.dev>, linux-kbuild@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org,
+ rust-for-linux@vger.kernel.org
+References: <20240815173903.4172139-21-samitolvanen@google.com>
+ <20240815173903.4172139-22-samitolvanen@google.com>
+Content-Language: en-US
+From: Petr Pavlu <petr.pavlu@suse.com>
+In-Reply-To: <20240815173903.4172139-22-samitolvanen@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On 26.08.24 17:31, Alice Ryhl wrote:
-> On Mon, Aug 26, 2024 at 5:30=E2=80=AFPM Benno Lossin <benno.lossin@proton=
-.me> wrote:
->> On 26.08.24 17:27, Alice Ryhl wrote:
->>> +    /// Initialize a global lock.
->>> +    ///
->>> +    /// # Safety
->>> +    ///
->>> +    /// * This lock must have been created with [`unsafe_const_new`].
->>> +    /// * This lock must be pinned.
->>
->> You could also ask for `self: Pin<&Self>` and remove this constraint, or
->> is that not possible in your use-case?
->=20
-> The value is going to be in a static, and it's inconvenient to have to
-> use Pin::new_unchecked when calling this initializer. Not sure much
-> value is gained.
+On 8/15/24 19:39, Sami Tolvanen wrote:
+> Add a basic DWARF parser, which uses libdw to traverse the debugging
+> information in an object file and looks for functions and variables.
+> In follow-up patches, this will be expanded to produce symbol versions
+> for CONFIG_MODVERSIONS from DWARF.
+> 
+> Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
+> ---
+>  kernel/module/Kconfig                 |   8 ++
+>  scripts/Makefile                      |   1 +
+>  scripts/gendwarfksyms/.gitignore      |   2 +
+>  scripts/gendwarfksyms/Makefile        |   7 ++
+>  scripts/gendwarfksyms/dwarf.c         |  87 +++++++++++++++
+>  scripts/gendwarfksyms/gendwarfksyms.c | 146 ++++++++++++++++++++++++++
+>  scripts/gendwarfksyms/gendwarfksyms.h |  78 ++++++++++++++
+>  7 files changed, 329 insertions(+)
+>  create mode 100644 scripts/gendwarfksyms/.gitignore
+>  create mode 100644 scripts/gendwarfksyms/Makefile
+>  create mode 100644 scripts/gendwarfksyms/dwarf.c
+>  create mode 100644 scripts/gendwarfksyms/gendwarfksyms.c
+>  create mode 100644 scripts/gendwarfksyms/gendwarfksyms.h
+> 
+> [...]
+> +static int parse_options(int argc, const char **argv)
+> +{
+> +	for (int i = 1; i < argc; i++) {
+> +		bool flag = false;
+> +
+> +		for (int j = 0; j < ARRAY_SIZE(options); j++) {
+> +			if (strcmp(argv[i], options[j].arg))
+> +				continue;
+> +
+> +			*options[j].flag = true;
+> +
+> +			if (options[j].param) {
+> +				if (++i >= argc) {
+> +					error("%s needs an argument",
+> +					      options[j].arg);
+> +					return -1;
+> +				}
+> +
+> +				*options[j].param = argv[i];
+> +			}
+> +
+> +			flag = true;
+> +			break;
+> +		}
+> +
+> +		if (!flag)
+> +			object_files[object_count++] = argv[i];
 
-Can't you use `Pin::static_ref` [1]?
+I would rather add a check that this doesn't produce an out-of-bounds
+access.
 
-[1]: https://doc.rust-lang.org/std/pin/struct.Pin.html#method.static_ref
+> [...]
+> +int main(int argc, const char **argv)
+> +{
+> +	unsigned int n;
+> +
+> +	if (parse_options(argc, argv) < 0)
+> +		return usage();
+> +
+> +	for (n = 0; n < object_count; n++) {
+> +		Dwfl *dwfl;
+> +		int fd;
+> +
+> +		fd = open(object_files[n], O_RDONLY);
+> +		if (fd == -1) {
+> +			error("open failed for '%s': %s", object_files[n],
+> +			      strerror(errno));
+> +			return -1;
+> +		}
+> +
+> +		dwfl = dwfl_begin(&callbacks);
+> +		if (!dwfl) {
+> +			error("dwfl_begin failed for '%s': %s", object_files[n],
+> +			      dwarf_errmsg(-1));
+> +			return -1;
+> +		}
+> +
+> +		if (!dwfl_report_offline(dwfl, object_files[n], object_files[n],
+> +					 fd)) {
+> +			error("dwfl_report_offline failed for '%s': %s",
+> +			      object_files[n], dwarf_errmsg(-1));
+> +			return -1;
+> +		}
+> +
+> +		dwfl_report_end(dwfl, NULL, NULL);
+> +
+> +		if (dwfl_getmodules(dwfl, &process_modules, NULL, 0)) {
+> +			error("dwfl_getmodules failed for '%s'",
+> +			      object_files[n]);
+> +			return -1;
+> +		}
 
----
-Cheers,
-Benno
+I see that libdwfl has also directly function dwfl_nextcu(). Would it
+make sense to use it to simplify the code?
 
+> +
+> +		dwfl_end(dwfl);
+> +		close(fd);
+
+Isn't fd consumed by dwfl_report_offline() on success? I'm seeing EBADF
+from this close() call.
+
+> +	}
+> +
+> +	return 0;
+> +}
+
+-- 
+Thanks,
+Petr
