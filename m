@@ -1,264 +1,273 @@
-Received: from mail-qk1-f172.google.com (mail-qk1-f172.google.com [209.85.222.172])
+Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E1A418BC38;
-	Mon, 26 Aug 2024 14:22:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9DC77BB15
+	for <rust-for-linux@vger.kernel.org>; Mon, 26 Aug 2024 14:23:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724682133; cv=none; b=ZOCm6qp4vpt3vyRzVsF1BvGHj0ojdMuaq5TSNb+ywWoFWnX4b+Acyp/xNHwfbNg/m/H1UlT0nZMaNcmt/bmRBd6Pli+xF6jpwAv+3936UW2GMmPZI1hXdeloZjYbVRPqNa8rsX6YH5vRzktLKDvmoWHW7f0jpXhr4Czm0Nvjsjg=
+	t=1724682219; cv=none; b=DO5uAjH5LE2slm2sYPGtZH0e9ntHRvIgI4PoN1eCV+dZXr1WVWxC3c5EgrjvTkVEDg2C0NMjmst4jvCALgFH7jfpTdOUyYM/2nbOiV9T6qp5x/0txyVT1ruJoaEiFe0Nmk1X2p3sAO6lmHR4gc62jVsYpaFE2TfH07mjFCyPncI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724682133; c=relaxed/simple;
-	bh=QTgZ4WdFW4S5YCjj0Qa/qOI3/hCG6BVFh4uafqO+DNw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QWsSA4Ghv0TuYZhEQblZPuVFQ35XyYl9ylpjzsaa2037XE3Fb8kFssZFmyEskr01iG2WSREKWDfHnzthLBT17E9xb5C87v7/TPPdbnUfT2Ly14fEsyKRxLNn+cW7coa4iQpbx5wlktnK+sKOcDSCrPBZ5K1I2poPe/0qx0c2C6A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=I2KXe66D; arc=none smtp.client-ip=209.85.222.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1724682219; c=relaxed/simple;
+	bh=uNIGBGso885sgOwNAeYYgHStA0nEfCTH+EOqhcdH59s=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=Mp/x03q74oLlNfkjukZ143VqUgjZMUbeCRy4NZbD73KB+T+emghNdFeb//ro6PuKh0RJZKrLaMfPzwG8CviQCQzIQ7E7KjzDOuth468EUwn9QkEQypI6gHuLUrSqVdwaq54rXiX/895Bh9U4BujJtMMZkJv1UVz8bcfp6yyan7s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=V5/ZpZoO; arc=none smtp.client-ip=209.85.128.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="I2KXe66D"
-Received: by mail-qk1-f172.google.com with SMTP id af79cd13be357-7a7d91354ceso66650885a.1;
-        Mon, 26 Aug 2024 07:22:11 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="V5/ZpZoO"
+Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-6adcb88da08so91923167b3.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 26 Aug 2024 07:23:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724682130; x=1725286930; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=QAIBTpy+UcM1PODupdYW7vV4ggFaHtIRW2qJr+KL3XM=;
-        b=I2KXe66DrfbLAFH5qe4/YNiGzmVP7JRYgdg5Fi9jLg8UXDnxKIhsHMsRX382e2p3Xs
-         P6gbXO2u8W2Ha260m3Vp+1+5U/h95wpNIvLerNbg4q1pqlhZRvpukZHKsgOzCtvFkxi4
-         FbjbhxlfWf/CU+f3Ei0ZT4LRHyLM7rUSLSDw/0SYz51LSawTIBy7/jviF58QK8sNE7kD
-         ywexfA0+qk8WukxKK508WEmcqzWxr+EQS0f4njq5+rPW+lMAk4dhJabHfm2E+IAJCYP7
-         TzcpxnU4lQjJg5qco+npL9BJa3Szhvnq0qpXLjH6ILtkm1Oa3litlDWoQa58XVETJH8Q
-         Zgrw==
+        d=google.com; s=20230601; t=1724682216; x=1725287016; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=HcboO1A3MI6m5KMCRr+YPbAr/cyeINNu4stoU8u59qc=;
+        b=V5/ZpZoOdVZrXICbqWTqy+Nd2yrvIEWKVtyf8e+qa0M62KwJF4XWQCK070dAiw4+Nd
+         01b2fX90DJo5EWUvIc6KA0kJbEGt8kHS2IR7N85YikyFfSdj/hPQqK/hvTw6NINbv4y+
+         HohgMAS7g6jlsALXaTnJblv3u273i+zWzsvMQJ+RTLg+7g4ijEGI1PmbiXBrbd/iWYab
+         C1/+1+A+wCv3VVROzM21cvDGzoIHy2Bh5UkFc32f1Zvf3xVbQbqkaDaacXVdOpb0Q6da
+         lul7TMC1sw/t6yaaiiQXFdxq6seIo+rbYk7lXX6clrNECectXSs0E2KlaDWVEfOLXrTc
+         9moA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724682130; x=1725286930;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=QAIBTpy+UcM1PODupdYW7vV4ggFaHtIRW2qJr+KL3XM=;
-        b=uJvI0d5c+EI+k/FKrGRuScGZIATpdZ/Jgmvbc3YSIhpwT8hoRBgWhXnbw3Vl8rWfLb
-         q+e+2U4wn7tylr85305jl7qzM1cvj130QOGB2k7E15++F8F6Xwmf8DHfyomBbo6VISHq
-         kAYXsJKTRn+v6kmVwH0CPShgDeGWvsuOD/IsiaTSt6eKWhyoMisjoOlf4h6slzOPYklE
-         NvtWrHlY/F82C4RbkOabAZzFP6a/6fNUEFndYegFEYAOlqq0DukjZbmPOv94L4uwyrpE
-         PsMnOT0Yh9XBx/ID+cMtXLM6bHU0vbWUImvrvmysZGuSmE1JamMq/R8/Pd7KRG4nvSZN
-         R4GQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVw0fY/aljqAP6oatzAbqxJUNbDuv0bXy/2/wYv7gLuT/7YEq6elMWcIZREZac0AHdY1eSd5ewuNPEx78o=@vger.kernel.org, AJvYcCXd5OFxsbshI5tJNlOr31hnDBaJzfIQkPZdu/qQ5qM5f+2ushDOVZhB88bN6BndDca5PSvEh6YenwxNxDzWQ+8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzDpJNsIeCS4ok1r+VGtzqe/ydgKxBFUkQ9dbMXrNgzbOg8EGPh
-	YSUEXaeod/RSJOPecaqpASXJKLap6DauscHA8BuGVOWzLojfy0Xe
-X-Google-Smtp-Source: AGHT+IGCs+yhpaU8za04NkW4MKiAaZPtHLGSbuWzzq/WaUXxBcdJ8L5oWAoEhZVlNu3g39Rt0PsaGA==
-X-Received: by 2002:a05:6214:4904:b0:6bf:796a:23ef with SMTP id 6a1803df08f44-6c16deb9a9cmr109220326d6.56.1724682130005;
-        Mon, 26 Aug 2024 07:22:10 -0700 (PDT)
-Received: from fauth1-smtp.messagingengine.com (fauth1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6c162db09a7sm46842946d6.95.2024.08.26.07.22.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 26 Aug 2024 07:22:09 -0700 (PDT)
-Received: from phl-compute-06.internal (phl-compute-06.nyi.internal [10.202.2.46])
-	by mailfauth.nyi.internal (Postfix) with ESMTP id 9FF8E1200094;
-	Mon, 26 Aug 2024 10:22:08 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Mon, 26 Aug 2024 10:22:08 -0400
-X-ME-Sender: <xms:kI_MZiRHJXhEMDR7R5qDpj0CRuO0M5hIG6opndzmmTsqUVFtC-GfNg>
-    <xme:kI_MZny-77pusQAnidNKprNOneoIZwNkrvngxKfnB5xdcJ2W3EBEfonXWSRg0s-YU
-    9Plz98yFkSjtMuBcQ>
-X-ME-Received: <xmr:kI_MZv3a5xbMeZLHCOBl8DcUJF0huYV291eqISAwdfBzC5J1gzKLfGwXmWqZ6g>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddruddvkedgjeefucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
-    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
-    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvden
-    ucfhrhhomhepuehoqhhunhcuhfgvnhhguceosghoqhhunhdrfhgvnhhgsehgmhgrihhlrd
-    gtohhmqeenucggtffrrghtthgvrhhnpeehudfgudffffetuedtvdehueevledvhfelleei
-    vedtgeeuhfegueevieduffeivdenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmh
-    epmhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhi
-    thihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmh
-    grihhlrdgtohhmsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepvddvpdhmohgu
-    vgepshhmthhpohhuthdprhgtphhtthhopeguihhrkhdrsggvhhhmvgesuggvrdgsohhstg
-    hhrdgtohhmpdhrtghpthhtoheplhihuhguvgesrhgvughhrghtrdgtohhmpdhrtghpthht
-    oheprhhushhtqdhfohhrqdhlihhnuhigsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtg
-    hpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhr
-    tghpthhtohepuggrkhhrsehrvgguhhgrthdrtghomhdprhgtphhtthhopegrihhrlhhivg
-    gusehrvgguhhgrthdrtghomhdprhgtphhtthhopehmihhnghhosehrvgguhhgrthdrtgho
-    mhdprhgtphhtthhopeifihhllheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhonh
-    hgmhgrnhesrhgvughhrghtrdgtohhm
-X-ME-Proxy: <xmx:kI_MZuD3lpuuOfMKbnwgbJo-XlvLXF7t3avx1uJA6rrWYn6PKMEIRg>
-    <xmx:kI_MZriOvuDMhajaP0EjJNHYKxtnLc0l8VlXevTPAyMxf09ZcA-S-g>
-    <xmx:kI_MZqqw4ocRGUotl4fW9uik_GTKoem-dB6A10rHRwv8LVOpKMcLsQ>
-    <xmx:kI_MZuiFk0EOfx9wjG7opjno3DEJ9MgHklbB3wkZG4S5paAIAsoggg>
-    <xmx:kI_MZqRAryAuTt5W9The6xLqig_gClzq0POEFLwNEb9yz9RsesMQnPLn>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 26 Aug 2024 10:22:08 -0400 (EDT)
-Date: Mon, 26 Aug 2024 07:21:47 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Dirk Behme <dirk.behme@de.bosch.com>
-Cc: Lyude Paul <lyude@redhat.com>, rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org, Danilo Krummrich <dakr@redhat.com>,
-	airlied@redhat.com, Ingo Molnar <mingo@redhat.com>,
-	Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	FUJITA Tomonori <fujita.tomonori@gmail.com>,
-	Aakash Sen Sharma <aakashsensharma@gmail.com>,
-	Valentin Obst <kernel@valentinobst.de>
-Subject: Re: [PATCH v3 1/3] rust: Introduce irq module
-Message-ID: <ZsyPezklN_tANFtQ@boqun-archlinux>
-References: <20240802001452.464985-1-lyude@redhat.com>
- <20240802001452.464985-2-lyude@redhat.com>
- <3f6a5c86-8dc4-4a62-8308-5ca25f9e4aec@de.bosch.com>
+        d=1e100.net; s=20230601; t=1724682216; x=1725287016;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=HcboO1A3MI6m5KMCRr+YPbAr/cyeINNu4stoU8u59qc=;
+        b=GhhJCT62h+/13ItxRppjj2g/VPaCbcy5ILG7FKBmegQtcZAFieEGNHqh3Mb0RsrLs6
+         9oOsvkqTWSeX+G7ah72bCAo2rveif8URvJY3GkUrPvPOOIiMOaaUHAaPdrx+EhbKGDlW
+         GBqfjSqLiWAKI3W1F4lM4z2EWbauaMQQu4uF5BJLo9mO33BWJ5sSJRLH+tYY3Es4XSmm
+         ysloJdN2BHseuhdHeFsQSBpt/8H5vb+ODoZtTIshgqps2ux1RRlKV0cb1UoGzvSUWGta
+         BdVQydObboLllduuhBnRIUMAouEj48R3Tb+F+pLuhLQtq22OBNKIqVGRO8WUYZF49qEL
+         UH4A==
+X-Forwarded-Encrypted: i=1; AJvYcCWHYs8ymqNF8fiv5LOjjHTKBTMgGQDnTAhKhNTyoCf07DN/LWD32A3wY/KE24N81hnX7IY0PBN3gT+SBJ1jeQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyQeei+3wg2aYRdO1DXz5W1F/lLei0Bw+y6nZs6p1iMxDtucQxT
+	UdKNHchLdIMw4YSu6fnDQAnIF64huCyltCZBf1SwQovIdhgfj2g8lRPbRQZar9r841ZQZxdKgsH
+	xtjpzw7IEP4xpWw==
+X-Google-Smtp-Source: AGHT+IHl5kKUJXD/nE7kgbhMkIaAeFFbg9NCHX/TBOwWbqnPCJBOP0amcy/pxb65aOf0bZUR4EdJGTHIC02FlbY=
+X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:35bd])
+ (user=aliceryhl job=sendgmr) by 2002:a81:ff08:0:b0:64a:8aec:617c with SMTP id
+ 00721157ae682-6c61e8fcf4dmr4251197b3.0.1724682216593; Mon, 26 Aug 2024
+ 07:23:36 -0700 (PDT)
+Date: Mon, 26 Aug 2024 14:22:52 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <3f6a5c86-8dc4-4a62-8308-5ca25f9e4aec@de.bosch.com>
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIALuPzGYC/33Pz07DMAwG8FeZciYof5y02Yn3QBxcx20jyoKaq
+ YCmvjvZLhtqxfGz5N9nX0ThOXERx8NFzLykkvKpBv90EDTiaWCZYs3CKAPKKpBlxJi/JOE0yXJ
+ GepeBdGgQrNcxiLr3OXOfvm/m61vNYyrnPP/cKhZ9nf6nLVpq2SvnGHtQaOhlyHmY+Jnyh7hyi
+ 3kk3B5hKkFNB2h7iF77DWHvRLN/hZVKRq2pQc8dW7Uh4IEwYY+AShj0HjrVGkbYEO5OtMrvEa4 +Ynwk6loTtPtLrOv6CzH0aAq/AQAA
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=6594; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=uNIGBGso885sgOwNAeYYgHStA0nEfCTH+EOqhcdH59s=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBmzI/Omc0CmOU3AZ9YFD3d5kXaNhvLZ4DWsIZdU
+ oJ2hj4FH9eJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZsyPzgAKCRAEWL7uWMY5
+ Ro7IEACciJR0dfBowoH/wZreKokHz1mqTcLRIxWkicDSjvI7EK0OoZuy+6+wBMvJtTQV+MKTmCc
+ k0jFyd5yVIQLtwPy5pUU94vAyPptnLauc3MM+UJlG4xUcr8/IqIvbjiXbonlpn4Z6pEQPvumPZB
+ IUTPj73xlyZqy6i/ZIEzm8mMJ7mbtOB7bcydglBC3O5KITVdZNWytk6EK9xNJ3mco+zkaAsUhVk
+ CY/ZJtH3UDyRN5+KUFB57TnYreIUm3xVn/LPRGA/kRdo4llmqCjtOeP8qfYjQw2+tf26cWPatQx
+ lQi8vu6NP8FBCiFksbi85Tv+k/cw7yTp+RPilRZjfLHNZkqE/8xk5RRj2gRII2SBY5E2siQpRIw
+ CBayGgwj1ELJEeAo5OmHgPkhtO0PQOZ1qrZHGKWTzBEbRMXBQJJ2oHV/WdRz9dmkq1KsldlpMUV
+ Jmd8fmVLADQmdeZuJe1Ewfg/tw4BhnL5T4IOFuN/P07QacVPKB61eGmv0N8EjPPnkqemTewz6/H
+ JVBGQbGbvpdfamM9cv/tXB/FcYZAazMdb4+JD2nE5tYEBGuUf1esKQrwXiLwmVzAcY3H34/C2H0
+ xpjJUicVDerim7FAV2zgYhx3GmCahOEmNVZ7EIU1F49RgTzpzWKvm1O4iwlZABOo71WDTkaozFC 6GlZFtn8zOoYeNQ==
+X-Mailer: b4 0.13.0
+Message-ID: <20240826-shadow-call-stack-v6-1-495a7e3eb0ef@google.com>
+Subject: [PATCH v6] rust: support for shadow call stack sanitizer
+From: Alice Ryhl <aliceryhl@google.com>
+To: Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>, 
+	Ard Biesheuvel <ardb@kernel.org>, Jamie Cunliffe <Jamie.Cunliffe@arm.com>, 
+	Sami Tolvanen <samitolvanen@google.com>, Nathan Chancellor <nathan@kernel.org>, 
+	Conor Dooley <conor@kernel.org>, Kees Cook <kees@kernel.org>
+Cc: Masahiro Yamada <masahiroy@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, 
+	Marc Zyngier <maz@kernel.org>, Mark Rutland <mark.rutland@arm.com>, Mark Brown <broonie@kernel.org>, 
+	Nick Desaulniers <ndesaulniers@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, Valentin Obst <kernel@valentinobst.de>, 
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, rust-for-linux@vger.kernel.org, 
+	Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Mon, Aug 26, 2024 at 01:21:17PM +0200, Dirk Behme wrote:
-> Hi Lyude,
-> 
-> On 02.08.2024 02:10, Lyude Paul wrote:
-> > This introduces a module for dealing with interrupt-disabled contexts,
-> > including the ability to enable and disable interrupts
-> > (with_irqs_disabled()) - along with the ability to annotate functions as
-> > expecting that IRQs are already disabled on the local CPU.
-> > 
-> > Signed-off-by: Lyude Paul <lyude@redhat.com>
-> ...
-> > diff --git a/rust/kernel/irq.rs b/rust/kernel/irq.rs
-> > new file mode 100644
-> > index 0000000000000..b52f8073e5cd0
-> > --- /dev/null
-> > +++ b/rust/kernel/irq.rs
-> > @@ -0,0 +1,84 @@
-> > +// SPDX-License-Identifier: GPL-2.0
-> > +
-> > +//! Interrupt controls
-> > +//!
-> > +//! This module allows Rust code to control processor interrupts. [`with_irqs_disabled()`] may be
-> > +//! used for nested disables of interrupts, whereas [`IrqDisabled`] can be used for annotating code
-> > +//! that requires interrupts to be disabled.
-> > +
-> > +use bindings;
-> > +use core::marker::*;
-> > +
-> > +/// A token that is only available in contexts where IRQs are disabled.
-> > +///
-> > +/// [`IrqDisabled`] is marker made available when interrupts are not active. Certain functions take
-> > +/// an [`IrqDisabled`] in order to indicate that they may only be run in IRQ-free contexts.
-> > +///
-> > +/// This is a marker type; it has no size, and is simply used as a compile-time guarantee that
-> > +/// interrupts are disabled where required.
-> > +///
-> > +/// This token can be created by [`with_irqs_disabled`]. See [`with_irqs_disabled`] for examples and
-> > +/// further information.
-> > +#[derive(Copy, Clone, Debug, Ord, Eq, PartialOrd, PartialEq, Hash)]
-> > +pub struct IrqDisabled<'a>(PhantomData<(&'a (), *mut ())>);
-> > +
-> > +impl IrqDisabled<'_> {
-> > +    /// Create a new [`IrqDisabled`] without disabling interrupts.
-> > +    ///
-> > +    /// This creates an [`IrqDisabled`] token, which can be passed to functions that must be run
-> > +    /// without interrupts. If debug assertions are enabled, this function will assert that
-> > +    /// interrupts are disabled upon creation. Otherwise, it has no size or cost at runtime.
-> > +    ///
-> > +    /// # Panics
-> > +    ///
-> > +    /// If debug assertions are enabled, this function will panic if interrupts are not disabled
-> > +    /// upon creation.
-> > +    ///
-> > +    /// # Safety
-> > +    ///
-> > +    /// This function must only be called in contexts where it is already known that interrupts have
-> > +    /// been disabled for the current CPU, as the user is making a promise that they will remain
-> > +    /// disabled at least until this [`IrqDisabled`] is dropped.
-> > +    pub unsafe fn new() -> Self {
-> > +        // SAFETY: FFI call with no special requirements
-> > +        debug_assert!(unsafe { bindings::irqs_disabled() });
-> > +
-> > +        Self(PhantomData)
-> > +    }
-> > +}
-> 
-> I have some (understanding) questions for this IrqDisabled::new():
-> 
-> 1. It looks to me that both examples, below in this file irq.rs nor the
-> with_irqs_disabled() example in spinlock.rs in the 3rd patch seem to use
-> IrqDisabled::new()? At least some debug pr_info() added here doesn't print
-> anything.
-> 
-> What's the intended use case of IrqDisabled::new()? Do we have any example?
-> 
-> I 'simulated' an interrupt handler where we know the interrupts are
-> disabled:
-> 
-> let flags = unsafe { bindings::local_irq_save() }; // Simulate IRQ disable
-> of an interrupt handler
-> let mut g = foo.lock_with(unsafe {IrqDisabled::new() });
-> g.val = 42;
-> unsafe { bindings::local_irq_restore(flags) }; // Simulate IRQ re-enable of
-> an interrupt handler
-> 
-> Is this the intended use case?
-> 
-> 
-> 2. If the example above is what is intended here, is it intended that this
-> has to be called unsafe{}?
-> 
-> foo.lock_with(unsafe {IrqDisabled::new() });
-> 
-> 
-> 3. I somehow feel slightly uncomfortable with the debug_assert!().
-> 
-> I understood that this is intended to be not in production code and only
-> enabled with RUST_DEBUG_ASSERTIONS for performance reasons? But I have some
-> doubts how many people have RUST_DEBUG_ASSERTIONS enabled? And disable it
-> for the production build?
-> 
-> Wouldn't it be better to be on the safe side and have this check, always?
+This patch adds all of the flags that are needed to support the shadow
+call stack (SCS) sanitizer with Rust, and updates Kconfig to allow only
+configurations that work.
 
-No, for example in your code example above, the IRQ is known being
-disabled, so actually there's no point to check. The checking of course
-makes sense in a function where there is no IRQ	disable code, and you
-want to make sure it's only called when IRQ disabled. But that's
-something you want to make sure at development time rather than in the
-production.
+The -Zfixed-x18 flag is required to use SCS on arm64, and requires rustc
+version 1.80.0 or greater. This restriction is reflected in Kconfig.
 
-> Wouldn't a permanent if statement checking this be safer for all cases?
+When CONFIG_DYNAMIC_SCS is enabled, the build will be configured to
+include unwind tables in the build artifacts. Dynamic SCS uses the
+unwind tables at boot to find all places that need to be patched. The
+-Cforce-unwind-tables=y flag ensures that unwind tables are available
+for Rust code.
 
-I don't think so, it's just a checking, even if we enable this in the
-production, the best it could do is just telling us the code is
-incorrect. If one realy wants to make sure a function works in both IRQ
-disabled and enabled cases, he/she should check the irq status and
-handle it accordingly e.g.
+In non-dynamic mode, the -Zsanitizer=shadow-call-stack flag is what
+enables the SCS sanitizer. Using this flag requires rustc version 1.82.0
+or greater on the targets used by Rust in the kernel. This restriction
+is reflected in Kconfig.
 
-	if (irqs_disabled()) {
-		// irq is disabled, we can call it directly
-		do_sth();
-	} else {
-		// Disable IRQ on our own.
-		local_irq_disable();
-		do_sth();
-		local_irq_enabled();
-	}
+It is possible to avoid the requirement of rustc 1.80.0 by using
+-Ctarget-feature=+reserve-x18 instead of -Zfixed-x18. However, this flag
+emits a warning during the build, so this patch does not add support for
+using it and instead requires 1.80.0 or greater.
 
-> Compare e.g. BUG_ON() or WARN_ONCE() or similar in the kernel's C code?
-> 
-> Or could we invent anything more clever?
-> 
+The dependency is placed on `select HAVE_RUST` to avoid a situation
+where enabling Rust silently turns off the sanitizer. Instead, turning
+on the sanitizer results in Rust being disabled. We generally do not
+want changes to CONFIG_RUST to result in any mitigations being changed
+or turned off.
 
-I'm open to any new idea, but for the time being, I think the
-debug_assert!() makes more sense.
+At the time of writing, rustc 1.82.0 only exists via the nightly release
+channel. There is a chance that the -Zsanitizer=shadow-call-stack flag
+will end up needing 1.83.0 instead, but I think it is small.
 
-Regards,
-Boqun
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+Link: https://lore.kernel.org/rust-for-linux/20240808221138.873750-1-ojeda@kernel.org/ [1]
+---
+Changes in v6:
+- Move Kconfig requirements into arch/*/Kconfig.
+- List non-dynamic SCS as supported on 1.82. This reflects newly added
+  things in rustc.
+- Link to v5: https://lore.kernel.org/r/20240806-shadow-call-stack-v5-1-26dccb829154@google.com
 
-> 
-[...]
+Changes in v5:
+- Rebase series on v6.11-rc2.
+- The first patch is no longer included as it was merged in v6.11-rc2.
+- The commit message is rewritten from scratch.
+- Link to v4: https://lore.kernel.org/r/20240729-shadow-call-stack-v4-0-2a664b082ea4@google.com
+
+Changes in v4:
+- Move `depends on` to CONFIG_RUST.
+- Rewrite commit messages to include more context.
+- Link to v3: https://lore.kernel.org/r/20240704-shadow-call-stack-v3-0-d11c7a6ebe30@google.com
+
+Changes in v3:
+- Use -Zfixed-x18.
+- Add logic to reject unsupported rustc versions.
+- Also include a fix to be backported.
+- Link to v2: https://lore.kernel.org/rust-for-linux/20240305-shadow-call-stack-v2-1-c7b4a3f4d616@google.com/
+
+Changes in v2:
+- Add -Cforce-unwind-tables flag.
+- Link to v1: https://lore.kernel.org/rust-for-linux/20240304-shadow-call-stack-v1-1-f055eaf40a2c@google.com/
+---
+ Makefile            | 1 +
+ arch/arm64/Kconfig  | 7 ++++++-
+ arch/arm64/Makefile | 3 +++
+ arch/riscv/Kconfig  | 7 ++++++-
+ init/Kconfig        | 1 -
+ 5 files changed, 16 insertions(+), 3 deletions(-)
+
+diff --git a/Makefile b/Makefile
+index 44c02a6f60a1..eb01a26d8354 100644
+--- a/Makefile
++++ b/Makefile
+@@ -927,6 +927,7 @@ ifdef CONFIG_SHADOW_CALL_STACK
+ ifndef CONFIG_DYNAMIC_SCS
+ CC_FLAGS_SCS	:= -fsanitize=shadow-call-stack
+ KBUILD_CFLAGS	+= $(CC_FLAGS_SCS)
++KBUILD_RUSTFLAGS += -Zsanitizer=shadow-call-stack
+ endif
+ export CC_FLAGS_SCS
+ endif
+diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+index a2f8ff354ca6..28c4a3035331 100644
+--- a/arch/arm64/Kconfig
++++ b/arch/arm64/Kconfig
+@@ -231,7 +231,7 @@ config ARM64
+ 	select HAVE_FUNCTION_ARG_ACCESS_API
+ 	select MMU_GATHER_RCU_TABLE_FREE
+ 	select HAVE_RSEQ
+-	select HAVE_RUST if CPU_LITTLE_ENDIAN
++	select HAVE_RUST if RUSTC_SUPPORTS_ARM64
+ 	select HAVE_STACKPROTECTOR
+ 	select HAVE_SYSCALL_TRACEPOINTS
+ 	select HAVE_KPROBES
+@@ -265,6 +265,11 @@ config ARM64
+ 	help
+ 	  ARM 64-bit (AArch64) Linux support.
+ 
++config RUSTC_SUPPORTS_ARM64
++       def_bool y
++       depends on CPU_LITTLE_ENDIAN
++       depends on !SHADOW_CALL_STACK || RUSTC_VERSION >= 108200 || RUSTC_VERSION >= 108000 && UNWIND_PATCH_PAC_INTO_SCS
++
+ config CLANG_SUPPORTS_DYNAMIC_FTRACE_WITH_ARGS
+ 	def_bool CC_IS_CLANG
+ 	# https://github.com/ClangBuiltLinux/linux/issues/1507
+diff --git a/arch/arm64/Makefile b/arch/arm64/Makefile
+index f6bc3da1ef11..b058c4803efb 100644
+--- a/arch/arm64/Makefile
++++ b/arch/arm64/Makefile
+@@ -57,9 +57,11 @@ KBUILD_AFLAGS	+= $(call cc-option,-mabi=lp64)
+ ifneq ($(CONFIG_UNWIND_TABLES),y)
+ KBUILD_CFLAGS	+= -fno-asynchronous-unwind-tables -fno-unwind-tables
+ KBUILD_AFLAGS	+= -fno-asynchronous-unwind-tables -fno-unwind-tables
++KBUILD_RUSTFLAGS += -Cforce-unwind-tables=n
+ else
+ KBUILD_CFLAGS	+= -fasynchronous-unwind-tables
+ KBUILD_AFLAGS	+= -fasynchronous-unwind-tables
++KBUILD_RUSTFLAGS += -Cforce-unwind-tables=y -Zuse-sync-unwind=n
+ endif
+ 
+ ifeq ($(CONFIG_STACKPROTECTOR_PER_TASK),y)
+@@ -114,6 +116,7 @@ endif
+ 
+ ifeq ($(CONFIG_SHADOW_CALL_STACK), y)
+ KBUILD_CFLAGS	+= -ffixed-x18
++KBUILD_RUSTFLAGS += -Zfixed-x18
+ endif
+ 
+ ifeq ($(CONFIG_CPU_BIG_ENDIAN), y)
+diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+index 0f3cd7c3a436..476e38ed9c00 100644
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@ -172,7 +172,7 @@ config RISCV
+ 	select HAVE_REGS_AND_STACK_ACCESS_API
+ 	select HAVE_RETHOOK if !XIP_KERNEL
+ 	select HAVE_RSEQ
+-	select HAVE_RUST if 64BIT
++	select HAVE_RUST if RUSTC_SUPPORTS_RISCV
+ 	select HAVE_SAMPLE_FTRACE_DIRECT
+ 	select HAVE_SAMPLE_FTRACE_DIRECT_MULTI
+ 	select HAVE_STACKPROTECTOR
+@@ -202,6 +202,11 @@ config RISCV
+ 	select UACCESS_MEMCPY if !MMU
+ 	select ZONE_DMA32 if 64BIT
+ 
++config RUSTC_SUPPORTS_RISCV
++       def_bool y
++       depends on 64BIT
++       depends on !SHADOW_CALL_STACK || RUSTC_VERSION >= 108200
++
+ config CLANG_SUPPORTS_DYNAMIC_FTRACE
+ 	def_bool CC_IS_CLANG
+ 	# https://github.com/ClangBuiltLinux/linux/issues/1817
+diff --git a/init/Kconfig b/init/Kconfig
+index fe76c5d0a72e..e095e94eb9db 100644
+--- a/init/Kconfig
++++ b/init/Kconfig
+@@ -1909,7 +1909,6 @@ config RUST
+ 	depends on !MODVERSIONS
+ 	depends on !GCC_PLUGINS
+ 	depends on !RANDSTRUCT
+-	depends on !SHADOW_CALL_STACK
+ 	depends on !DEBUG_INFO_BTF || PAHOLE_HAS_LANG_EXCLUDE
+ 	help
+ 	  Enables Rust support in the kernel.
+
+---
+base-commit: 5953fd808fca8116a91678ee5fac00fc198ad93d
+change-id: 20240304-shadow-call-stack-9c197a4361d9
+
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
+
