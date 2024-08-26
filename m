@@ -1,177 +1,81 @@
-Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+Received: from mail-pj1-f43.google.com (mail-pj1-f43.google.com [209.85.216.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC49282C7E
-	for <rust-for-linux@vger.kernel.org>; Mon, 26 Aug 2024 18:48:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87B4580034;
+	Mon, 26 Aug 2024 19:57:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724698107; cv=none; b=N9+3s/9SyV0MeIXDoUUZfHuzQu6LCwLibjpO7QIpB+BR64D+wPj7jjd3GR0XENOohFoOzXAwvSGVoZLP63uvOhaTzdmCTpVOBhgIeWxEbaOcCqOjiYaDFx83Tnmry7Dvwz05yh/gKaokH8OtclnuLorzIn1l2rKX1brilLIb6Kc=
+	t=1724702273; cv=none; b=T/E/cvtuecYjLF15adiG7aXMtb/DQO+HTs3eqjVKt8Ofv3weplSu5ZCOO0NrzBLZAIgci73xgtHRIrHCBeS+OqAEMSi3PVdlAB6vqe8MLljOQ+Lf7cbwHEsvD6ZawVRiAHxYuBlf4ZB3hqe8RJr0L/2d0444zvK2qVxZk6qEKwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724698107; c=relaxed/simple;
-	bh=4KHZDbHVvybJrrJRf2shJpi55zrBot//rPnU6diq1ys=;
+	s=arc-20240116; t=1724702273; c=relaxed/simple;
+	bh=xMMGfoZu3zq3LAyMsb9O3Kt5EP+58+oDydS276i8Bg0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mb5Prc2O+oxO737f3dZ3FXaXSA9sK8AAfTxQK2mghsMAxNex2pIsGj/HxixuuQjk+3L/FKKMOLkwE9dLYyTG1VJz24OgCNbW91A+pNdrXm8IVA2RyJ4Qazyxk9612/udUV+0BZ/1YXfa1kA/qBzmo8Lv5vqBwyXP5mAo8V4752Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=xrTdxsMZ; arc=none smtp.client-ip=209.85.160.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=WkQCJwBd9a/CXaKySq8g/GrHMLFDVWjHMjMN4di9p73X3zW7LmfxsiQcoR2Y2H2Jh2LB/AhioiSNLkVsCfPdftbq3axXMuds91AKSribqAe0iTYgvsclWjpsatieAYFWQdQf3t+jBdjDdFV1sIj85aRQJBbdxDmjr5X4OycPAGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=drj0Ub2t; arc=none smtp.client-ip=209.85.216.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="xrTdxsMZ"
-Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-454b1e08393so56771cf.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 26 Aug 2024 11:48:24 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="drj0Ub2t"
+Received: by mail-pj1-f43.google.com with SMTP id 98e67ed59e1d1-2d445c87788so908864a91.2;
+        Mon, 26 Aug 2024 12:57:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1724698103; x=1725302903; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1724702272; x=1725307072; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=sxRNBk+sXtrzsGJLBtG2+5zrhZWxSczLlI1FbuSfc9s=;
-        b=xrTdxsMZ/ZoWTn8P16GU5E4J1mHm0VP4YeofyKM2u9vaRNVYB7q9y7YOYo3MZ+GV7q
-         O9lymsCe6g3z7mtLoPmCODjXQOrGxRSyoF7lHXdlvSbFcebdfKtt2GmHABJbkVE5fKtr
-         dCDh2zF7DcUrWjcHZJo5bwNJGYont2PfBVu2YpMqlGGNwZm4giJizv35p5cTsaMdRZRL
-         FzAGXbHxpArambyRMV+83qFv69fmAyRNYRjGmYtTYhABSSXEFDnjoQ+9/hKx8LlNGmxC
-         QMgJjdOVuUVHQl00nZK/LBgfyxRRShY2Dii7x7fMwN3Rhtg7CAmIOgG/acESZyRtF7PD
-         vb9g==
+        bh=xMMGfoZu3zq3LAyMsb9O3Kt5EP+58+oDydS276i8Bg0=;
+        b=drj0Ub2t7fJ+vWZHImbqF6J5RX4Qr2cyc/lmHmecNWSsjiJkczGWVb19+/iRBsR7KN
+         IPAFcnbInKX4bMBAPJU2AjtDRl2pBGhERgRhaGwcSIFDWAlGg/TNidv/VevSmCtZE3AG
+         9PZLZtrvAWSI+3TQStPfDHynI+5QbqGCUmXTJTiuxS9JQfrkzLFLTt2CClwtAMjTWnXr
+         +jbGdG1w7xPXNcExtDA4ue455KDOlPRxvS+GaPRhWcZKag4Xvl/rGUCW/J52T5qKgHy8
+         JKSB9397nK/1NihD9P9YEszvqMfuuq74x13G9E6x4Zlwh6bWolHtWqWe57Fg3WN1jMpf
+         SVQQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724698103; x=1725302903;
+        d=1e100.net; s=20230601; t=1724702272; x=1725307072;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=sxRNBk+sXtrzsGJLBtG2+5zrhZWxSczLlI1FbuSfc9s=;
-        b=Dka2PF73iabgOCMQ9npX1mT6+pTTFCmVJv9mY8wCXLxiVFLTlI/RTYwbN0nLu2L1vU
-         2xTO1kSDd98N7gX0+zeiL+SAZgdJygakpfqYvxesm/B8p9VtjqNOzYhTkP5VwuQtJHQc
-         XF1+zVHXW5dKnP7yJKX0qdPJAL40M9y1edoFswgpOhFvzJtCaI6E4s5k8JB/opXE2g6w
-         VEfadaApnm/AcqtgXlMUn4dQiI7egYW3N/P5/MtsnDAyC5kjS+h8Q+1pk7l42/fSK0RO
-         Q1AGOzp9TnaLAb/6LQplokQwinS0yssPOUAroMXbStunsw67uGTg2J9fZnyHyqh3Cf7x
-         pYfg==
-X-Forwarded-Encrypted: i=1; AJvYcCWBam6gWOykS1ocPkBHo01BnxF1Zj8oCCPb63WoR7bV9Mk0V5kqj1uaYem68Y/CfdVuSqKThsQG4jGSXEam2g==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzA868WqMnLPx4DSa8BPGrDy+xKG5pFRTDf/H98NCb03k+PCwJh
-	oaqKNmNLS7yjnCk1+GBTwObMprS5UFYXF/XBGy+LkKj0KKTkg5awR5Q5R7UW4pdWk00Rd/l4znU
-	5LrbsVImTiEiX9VQa9ttW8vZl05rceCOqAfLj
-X-Google-Smtp-Source: AGHT+IGkpKvYNDu7BE8rDmRjRl0GYKrGuST0mK1D3Ze+fn0oUWdVXS11q+PYcRrRvwRXWWrWWCo3LPcNpB2zFsfmlAc=
-X-Received: by 2002:a05:622a:130b:b0:447:d7fd:63f with SMTP id
- d75a77b69052e-45661e2b315mr247951cf.19.1724698103340; Mon, 26 Aug 2024
- 11:48:23 -0700 (PDT)
+        bh=xMMGfoZu3zq3LAyMsb9O3Kt5EP+58+oDydS276i8Bg0=;
+        b=gbc0cEY12Db8rvmrj9uyG/EpQqv0OIAmiQ+6bsvRoNKGbzJ+/JePQ9H3k9IfW5RWfT
+         IfUmDplm8ee/ao92HfbZ9x4sJprA7wx1whsBv8r/7dZO0MUfXb7iNThKiXT53+TRr7Se
+         V7D1gAzmiHwFkyLtknjdDWxMyIb4tUOFJ9Pi5ejlTylZYhA6qyHwcgF9PneILGQVflni
+         fNFZzVbgRcadnaHgusqNOgetJ17vuTnuA5JpLx62+cQjakGt33bpu+O+8fflPPOiG3j4
+         usjwSM2GtrId0VgAddD3tKjv42a9RBdDJixpUc78+1tawYCQzXQFTLKKWIKEZH1/axsw
+         aoeQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVvS5G4F+W2dhH5i7peY6ZuQfRVsOOROQi3bwmNsupjGt4efGoBveThX3Nq44TRtF+UASBpseIxp/blbRWEPeg=@vger.kernel.org, AJvYcCWYZR3GG6CXg976xNTgXWNjYxlRFkqm8d+AGGTG4RxoPJHReZlHw+pOC9RjCPTYJqcfzg+d+ABq958TjoY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwfGLfu0pf2msXETid7rqqXEJ3iJA+ZC7WXC7QF3UvE1y12omD+
+	u7Ti8g9yDnEhXNG48uR7XzyrYs1j9nlWFM+FxJFLD2ojTcXCQwAR0BtwSl1MsjT9NQ6UsaTEAlB
+	Dj8oHp0tpGnEvpPNz6+jTecdJ7hoh5Oc8
+X-Google-Smtp-Source: AGHT+IH0xHJvCXLQdyiwZcEdYykooutvvN5FAVtrGek53W+SuiddMjWmhOhp/bzM0hdf5FrlmmNbK5Hto4lYKIuk3QA=
+X-Received: by 2002:a17:90b:4ac1:b0:2d3:c34b:a071 with SMTP id
+ 98e67ed59e1d1-2d646d3f560mr7681140a91.3.1724702271664; Mon, 26 Aug 2024
+ 12:57:51 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240815173903.4172139-21-samitolvanen@google.com>
- <20240815173903.4172139-22-samitolvanen@google.com> <71505c05-b651-4740-b14a-a53084a16a61@suse.com>
-In-Reply-To: <71505c05-b651-4740-b14a-a53084a16a61@suse.com>
-From: Sami Tolvanen <samitolvanen@google.com>
-Date: Mon, 26 Aug 2024 11:47:44 -0700
-Message-ID: <CABCJKufveknkc_ribOBamC_MXRGounFkYBeRkKhppPSHijxtZg@mail.gmail.com>
-Subject: Re: [PATCH v2 01/19] tools: Add gendwarfksyms
-To: Petr Pavlu <petr.pavlu@suse.com>
-Cc: Masahiro Yamada <masahiroy@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Matthew Maurer <mmaurer@google.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, Neal Gompa <neal@gompa.dev>, 
-	Hector Martin <marcan@marcan.st>, Janne Grunau <j@jannau.net>, Asahi Linux <asahi@lists.linux.dev>, 
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-modules@vger.kernel.org, rust-for-linux@vger.kernel.org
+References: <20240825221806.253575-1-simeddon@gmail.com> <f53fa069b9cc24a9552d54c7a004fe6d@perches.com>
+In-Reply-To: <f53fa069b9cc24a9552d54c7a004fe6d@perches.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Mon, 26 Aug 2024 21:57:39 +0200
+Message-ID: <CANiq72nDL65FDQ2xURPeNJKU61RjgidW43ZJQ6SBaV6PJh6trA@mail.gmail.com>
+Subject: Re: [PATCH] scripts/checkpatch.pl: check for non-permalinks to Zulip
+To: Joe Perches <joe@perches.com>
+Cc: Siddharth Menon <simeddon@gmail.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-kernel-mentees@lists.linuxfoundation.org, 
+	apw@canonical.com, ojeda@kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-Hi Petr,
-
-On Mon, Aug 26, 2024 at 10:42=E2=80=AFAM Petr Pavlu <petr.pavlu@suse.com> w=
-rote:
+On Mon, Aug 26, 2024 at 12:33=E2=80=AFAM Joe Perches <joe@perches.com> wrot=
+e:
 >
-> On 8/15/24 19:39, Sami Tolvanen wrote:
-> > +static int parse_options(int argc, const char **argv)
-> > +{
-> > +     for (int i =3D 1; i < argc; i++) {
-> > +             bool flag =3D false;
-> > +
-> > +             for (int j =3D 0; j < ARRAY_SIZE(options); j++) {
-> > +                     if (strcmp(argv[i], options[j].arg))
-> > +                             continue;
-> > +
-> > +                     *options[j].flag =3D true;
-> > +
-> > +                     if (options[j].param) {
-> > +                             if (++i >=3D argc) {
-> > +                                     error("%s needs an argument",
-> > +                                           options[j].arg);
-> > +                                     return -1;
-> > +                             }
-> > +
-> > +                             *options[j].param =3D argv[i];
-> > +                     }
-> > +
-> > +                     flag =3D true;
-> > +                     break;
-> > +             }
-> > +
-> > +             if (!flag)
-> > +                     object_files[object_count++] =3D argv[i];
->
-> I would rather add a check that this doesn't produce an out-of-bounds
-> access.
+> Why should these links be used in the kernel at all?
 
-True, this could overflow object_files with a sufficient number of
-arguments. I'll add a check.
+They should probably not be used in files, but we put them in commit
+messages from time to time, e.g. for `Closes:` or `Link:` tags.
 
-> > [...]
-> > +int main(int argc, const char **argv)
-> > +{
-> > +     unsigned int n;
-> > +
-> > +     if (parse_options(argc, argv) < 0)
-> > +             return usage();
-> > +
-> > +     for (n =3D 0; n < object_count; n++) {
-> > +             Dwfl *dwfl;
-> > +             int fd;
-> > +
-> > +             fd =3D open(object_files[n], O_RDONLY);
-> > +             if (fd =3D=3D -1) {
-> > +                     error("open failed for '%s': %s", object_files[n]=
-,
-> > +                           strerror(errno));
-> > +                     return -1;
-> > +             }
-> > +
-> > +             dwfl =3D dwfl_begin(&callbacks);
-> > +             if (!dwfl) {
-> > +                     error("dwfl_begin failed for '%s': %s", object_fi=
-les[n],
-> > +                           dwarf_errmsg(-1));
-> > +                     return -1;
-> > +             }
-> > +
-> > +             if (!dwfl_report_offline(dwfl, object_files[n], object_fi=
-les[n],
-> > +                                      fd)) {
-> > +                     error("dwfl_report_offline failed for '%s': %s",
-> > +                           object_files[n], dwarf_errmsg(-1));
-> > +                     return -1;
-> > +             }
-> > +
-> > +             dwfl_report_end(dwfl, NULL, NULL);
-> > +
-> > +             if (dwfl_getmodules(dwfl, &process_modules, NULL, 0)) {
-> > +                     error("dwfl_getmodules failed for '%s'",
-> > +                           object_files[n]);
-> > +                     return -1;
-> > +             }
->
-> I see that libdwfl has also directly function dwfl_nextcu(). Would it
-> make sense to use it to simplify the code?
-
-How do you propose using the function? This loop goes through multiple
-input files, should we need them, and we iterate through all the CUs
-in process_modules.
-
-> > +
-> > +             dwfl_end(dwfl);
-> > +             close(fd);
->
-> Isn't fd consumed by dwfl_report_offline() on success? I'm seeing EBADF
-> from this close() call.
-
-Good catch! I'll drop this in v3.
-
-Sami
+Cheers,
+Miguel
