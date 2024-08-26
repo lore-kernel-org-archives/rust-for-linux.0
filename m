@@ -1,55 +1,67 @@
-Received: from relay.hostedemail.com (smtprelay0017.hostedemail.com [216.40.44.17])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DCF37441F;
-	Sun, 25 Aug 2024 22:48:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.17
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D11910A0D;
+	Mon, 26 Aug 2024 01:24:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724626133; cv=none; b=T/ITDBv2aogAC9edFBel8QqdBZMrJHxuDMaSRHH4LeAPS94jnB4T5EaNXbftdgt1mZ6Dh51738eh91thpIYoxsCQx3p2RTnv+I8kXTvVPRT2KIwKdJAVBUHeR1Pc6uwNxqzj99fGpcxuckloWrIWb1IiQIwqWquy+6bmmhvXEIc=
+	t=1724635487; cv=none; b=R34XUiVhAXtnyIo7jomuJ+3Kh+8lM/+0dQnBER6MIUchd2lWI0E+tq9JeS5hiVUgFhrpNDqD1XLjjPJMtZWqENnf49em+N7rFnUjmsGTphJ9AldeZG7Ynvw/efJ2FnZwfaAQt6E8lMevmxQ1zN0uWxxGMedDrs7bz11ryJp5m5c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724626133; c=relaxed/simple;
-	bh=Y7ukIYgyj34kzicFN2EZfCkb7ApWgS8GHa754G33Y4U=;
-	h=MIME-Version:Date:From:To:Cc:Subject:In-Reply-To:References:
-	 Message-ID:Content-Type; b=TYTIU1tND3cjvuJnPiyaqnhDHZitwsI5dZE1FiilWaxwpxKVWCPeX3/4qJ8sK1xGUMYnuZ4WQ8GrbNIlyJmRqRwzf/5mevrue6mr3D1aNENyqT23vuFtUujfLCIbyngrs5Z7116PsogVY8tDcaZ+DGVJq73IAIYdEdxcVOEmBfQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=perches.com; spf=pass smtp.mailfrom=perches.com; arc=none smtp.client-ip=216.40.44.17
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=perches.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=perches.com
-Received: from omf07.hostedemail.com (a10.router.float.18 [10.200.18.1])
-	by unirelay04.hostedemail.com (Postfix) with ESMTP id D9FB91A0913;
-	Sun, 25 Aug 2024 22:23:43 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by omf07.hostedemail.com (Postfix) with ESMTPA id 5B0F22002D;
-	Sun, 25 Aug 2024 22:23:42 +0000 (UTC)
+	s=arc-20240116; t=1724635487; c=relaxed/simple;
+	bh=+zgtYQwHdj3mclsleZhbFWTZxfxk6lehfk2YWv6DqIs=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=G2rcN819px16ZndCSsrGGtrpInclMkXvQXRBblUQEKn4EyCE4VWPsxAm2YqQbje4DNlFMVMsL8Fn/bqcTZjOXvVEjMTV1PtAj2dNaRyEdxHNPjcvWC9RvdcND9GFRBfet2R/hGFcPM6yFlClqaGAOpFf0wt89YQKoqXoI1fxrA0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=WMc/mo2q; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="WMc/mo2q"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=lwxHq6LHfc4IM7CfAbEnO0bIHUd1TlW881ZFY4sEziM=; b=WMc/mo2qTciYHDHWONwOh2FNAf
+	DchjfaecmgL2WulUhR0Qvm1KZabwW/SNMof47/pRauto32i2XlKbHuIA8tJHa3W5wg6rpeyBTlIdj
+	jooWBVZO3n7YCLq9/xWFOW2O9SIOHtXW2gLGCh2CSl3H7euV8wmxBDwa+LGYyILJkSHY=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1siOTK-005f8w-Sk; Mon, 26 Aug 2024 03:24:42 +0200
+Date: Mon, 26 Aug 2024 03:24:42 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org,
+	tmgross@umich.edu, miguel.ojeda.sandonis@gmail.com,
+	benno.lossin@proton.me, aliceryhl@google.com
+Subject: Re: [PATCH net-next v7 6/6] net: phy: add Applied Micro QT2025 PHY
+ driver
+Message-ID: <b8023c02-df49-4bec-b525-cef9c55e1b89@lunn.ch>
+References: <20240824020617.113828-1-fujita.tomonori@gmail.com>
+ <20240824020617.113828-7-fujita.tomonori@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Sun, 25 Aug 2024 15:23:42 -0700
-From: Joe Perches <joe@perches.com>
-To: Siddharth Menon <simeddon@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-kernel-mentees@lists.linuxfoundation.org, apw@canonical.com,
- ojeda@kernel.org
-Subject: Re: [PATCH] scripts/checkpatch.pl: check for non-permalinks to Zulip
-In-Reply-To: <20240825221806.253575-1-simeddon@gmail.com>
-References: <20240825221806.253575-1-simeddon@gmail.com>
-Message-ID: <f53fa069b9cc24a9552d54c7a004fe6d@perches.com>
-X-Sender: joe@perches.com
-Content-Type: text/plain; charset=US-ASCII;
- format=flowed
-Content-Transfer-Encoding: 7bit
-X-Rspamd-Queue-Id: 5B0F22002D
-X-Rspamd-Server: rspamout01
-X-Stat-Signature: 4u3wmiyokw19s98z8c6a187d5asuaawq
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Session-ID: U2FsdGVkX1+zkfSnsJQ/IQVGjMyf8RVvtKgtLwQY73c=
-X-HE-Tag: 1724624622-984051
-X-HE-Meta: U2FsdGVkX1/jFxYIqeZdH/Q4MB9o+hq2lLr9McUno24VaQBukcDvQ1MY6TV/YHHluxikW2Ink5Xu+kTTMBjFcKLe1XQhVjeNfdgLkMheoDQXb4W5FJ4KdL3YdgWJTLgfzGhylL2/E1GtNRKXXfiVqceEDd4IjKqPFrl82r+2GM6A4/mqN6GnAKvP4NjPVTFVay7tOHissn79pL7S+tcKvm9V7ZQ295uJdYcBinK0pFMGwSDPBsPHXb6NYhSRZ5NTklucqoKFKIF60qD9gSGjR3EyXmwqhFWfAcyuS+gUG15oBh8XRtJW+RTAsLq1kASxc/HaAwzTv93ZFUDzVonINg==
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240824020617.113828-7-fujita.tomonori@gmail.com>
 
-On 2024-08-25 15:18, Siddharth Menon wrote:
-> Zulip links to https://rust-for-linux.zulipchat.com can break in
-> case of renaming the topic or channel if they are not a message
-> links (which are permalinks).
+On Sat, Aug 24, 2024 at 02:06:16AM +0000, FUJITA Tomonori wrote:
+61;7603;1c> This driver supports Applied Micro Circuits Corporation QT2025 PHY,
+> based on a driver for Tehuti Networks TN40xx chips.
+> 
+> The original driver for TN40xx chips supports multiple PHY hardware
+> (AMCC QT2025, TI TLK10232, Aqrate AQR105, and Marvell 88X3120,
+> 88X3310, and MV88E2010). This driver is extracted from the original
+> driver and modified to a PHY driver in Rust.
+> 
+> This has been tested with Edimax EN-9320SFP+ 10G network adapter.
+> 
+> Reviewed-by: Trevor Gross <tmgross@umich.edu>
+> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
-Why should these links be used in the kernel at all?
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+
+    Andrew
