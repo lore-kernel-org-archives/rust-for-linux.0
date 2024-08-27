@@ -1,104 +1,210 @@
-Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DBE5156653
-	for <rust-for-linux@vger.kernel.org>; Tue, 27 Aug 2024 07:34:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D011194AEA
+	for <rust-for-linux@vger.kernel.org>; Tue, 27 Aug 2024 08:42:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724744059; cv=none; b=cFsO0/7coVMjz/0qJALXI+2K4eJbHM4O5rbPUrA32bxVaoiZfVDe7j2eaYnK6k6FvBYxwNOQYXhAwzvmcEzFZ+L8ZdBb687gbMCPvPBo69NJBrkyZHWjV24pFBy9iIg/M0oQKsqF07/b3tqZDoLUDGPReAXjTcQg5z2eGgSVH0Y=
+	t=1724748176; cv=none; b=eLrF/5JVy/NXTgfvCPlQO+39Dd25+GUAj1xyOFsTk69BdceYVEgUf7CjZ59fKdZJkN4vYK73+wITzmJHIIP9iXBWV56QuQ6GGwZ5ITTHNHBYvsgj2hL+c3GvwtsDfagm5AKY5sbK6v9+3Kyr4B5MAhCJSM53jGpC/KbbzqySCB4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724744059; c=relaxed/simple;
-	bh=NJE474NjSPNM8jaYv6bQpsozfEWoFiwHPlZhAkNA91k=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=puoBCnnW1JqslvVD740E3l60XZlJ1QI5LhMFzSSnh/PCnI7NBUr7mhjEydxkMM/xhhpmu9e4AeUx9JujFVd2/5UpjIsSWbISuA3wvY2EYknHvH6uz0ajNcAMiQzJeY2HZKfKEKhUUmJkJ90/kS3j9Ua1dUGAac4/tIoiCLXRbL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=D3qQZDee; arc=none smtp.client-ip=209.85.216.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1724748176; c=relaxed/simple;
+	bh=nSPV8Vu2jTB+1mmMsBZsTzuk8kyInlVIoqksoRkFqFI=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=hrP/gHt+ORFm7ydSjGwNuWtE7HQQAHZoDhlJyOFaeL7AnQaZyPclE9ZyMCPVYZ7+TYSqV+FTIJ0/jFgtpAV27hTlW7dKk+Ig9yIrTeBKB9UWtY7A7RSuNzN5yivYTIDETo2D8rzfrUrYp3zV+p1WEvVTZXdqCbPvhcJbFzROxl8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ablnBGjz; arc=none smtp.client-ip=209.85.128.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D3qQZDee"
-Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-2d3f39e7155so583933a91.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 27 Aug 2024 00:34:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ablnBGjz"
+Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-429e937ed39so48860665e9.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 27 Aug 2024 01:42:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724744057; x=1725348857; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=64+BMzgfOPAjjb8zRIIV524IoxfYtdcgNtuyqlNQdnI=;
-        b=D3qQZDee0MvBZrkd+npp87Wu7dxkWFa7F1eXrpyqkswo8ri4YlmjoxgGVIVkH6AoYT
-         iK1YB5rvz4BYSDOD7b7BfD3lNZCNvBvLJUAXnNGl7BwRBj5u4lyGw14K+r2LDtXUdZmU
-         4x2eytUcmz5g+nCafHLbUvKXFHRufqy4sYxx5jn/5STPNE0fprDPPPKCsxCpqZeT37Y/
-         knorYHMQvS5srJrT9fmsfQ/onWetsvcqpMYU6I7CQC630rVqftHENMo8xEFi49ipw07h
-         XKoTarWj1saIZhusu57nvnP2wWogE0qubrsUSd8o4zQ1AP8//eBxP/fhQxhC9CSHrQqa
-         ++6w==
+        d=google.com; s=20230601; t=1724748171; x=1725352971; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=q4GWtWFEo5xKDMIEdChm0qMn4JHq45UYY4/Y5VkFNFQ=;
+        b=ablnBGjzIN5feNPdcrUVjz6+AbUEv7WuYWq7N1u1eVthaXWTrzc6CxFWJUNCNthONe
+         DayYLtqp+pK02Rtjjb6J86iSF2Vh070hp3woY2FpP7rYB0w89e7kdiZ4zWH0wd+k2hvt
+         C5b36A0Cc6NY1ro/BrkPfaagCLc9QVEv53kNdY07u0jrdfSqZd7f/Tewt8AQBsKhX0Kt
+         pxvcMIUKl5k+bPUryzaIsWQ1F0I+2awh+sBHBxAECYFPwkTVZH7mBxsdVTtV+SnvMkf+
+         wtTfR7o9CR/RQrTc9+C78m61NLk4STAYgxpJeCa7SPELMBRyAd//vUW7PH5cCajVIX+w
+         lthA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724744057; x=1725348857;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=64+BMzgfOPAjjb8zRIIV524IoxfYtdcgNtuyqlNQdnI=;
-        b=KypfLCQXIbXFjL1/KyY5QwXUyk2iaftOYOzM8iQZQbO14Jht7gDhBgnkD/lMipYSZl
-         UG8rZ6Zp9tKvkcLG9qQO7ZCPZWZkiz6jRCF8WkClC0+k7DxUVafV5vY6DXwo/+xh1KzK
-         pRvLI2ZIU0+mQJ8OT0l70gjuV+RGBBRPaIpEXc+vOmBss9nVf3BIZURo+FmZAkubiJ6z
-         hyUG4hIKU3n5+bzfiTDR+7Bzn7crd+pEWzSaKJ7mpdeXeOJUUWJqPvc4KnHPVUCvmpxn
-         91d+Uz7WHBgOfa6v4JoeM4frLZWfj13n92/asYHzcJ5MjjKe4bdC12uGQwdmp1/p+fqJ
-         kosg==
-X-Forwarded-Encrypted: i=1; AJvYcCWDbyxobiLjKI69I32r1n9ZhBxOAFgV+48hD/mBPl5mIjXun7ZiLIi1Fec61J6pwXzmja42D0ILcz4riurKZg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxtz1oQM17DnMC2DOhlPvBif68Q18CHjrBUR7UtVUefQftOkT6i
-	2HX0kvKcYRG6CI2VyCo7Rz/0a6kGu1jPlR0YO4Mez/kgkqlZH211ATA5TiWlQteZ7oa6RGhhqNi
-	zXrfewc2JgDu4y1tivrNW2EsYWvE=
-X-Google-Smtp-Source: AGHT+IEjasFyoS2ypIfj8qtL0Ar9WfLJfCKFD505SDVB5S5Wa5yE5qfBSsiS5FUauS26rqXFaYYO+I3oJ2147b31hHE=
-X-Received: by 2002:a17:90b:2d46:b0:2cb:4382:99f1 with SMTP id
- 98e67ed59e1d1-2d646dd8d9dmr8453486a91.6.1724744057432; Tue, 27 Aug 2024
- 00:34:17 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1724748171; x=1725352971;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=q4GWtWFEo5xKDMIEdChm0qMn4JHq45UYY4/Y5VkFNFQ=;
+        b=tkV94URTZSu5fOzeUvfcMrcvJ30Kav6gXcKkvJpHSRb5iqpnsE/ahASfwKevio0NF1
+         Y8OquB7v1p6gCgunqUhfmJuImy+7Lr65sWfrJTNnH87Ep9+9Akv3OiX5vZahKcOyacAU
+         qlt3Fw1FCOVDZKsDkThsJN6iKitQMP/XBE2s2+ETMqo9+U5TnFCMmDY2KR2ZSCOxZ8S4
+         TsiEmfOfV3PBDdWI8SmHPHTsTWnBmQdQ3BLNuxnbWKGgoeImqFnXN4WewgtoC8N3uCav
+         ULmACG0xOIwAUwETzfCPIZKxg+XlRyoWEDiLdfRYkd0xAIVObGWMWQXJ6RTPUIcVMYr7
+         OXvg==
+X-Forwarded-Encrypted: i=1; AJvYcCU8lv7SBIJocIalH87T1dYBMQ3jE+Gt1IqT9Nk6SvcuUnCIaefPBCL8NwMQT2IDxtanfBumvVpTwGJeGN7yOg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yyj8DO+dfcicAE/c27zBXZ8FZDLv3+Ewl9RyoNUlO3d/YZDNKMx
+	A6NS9a5dNobvDIV/REt3lug46bpyTQPuWdV5VgiHrXNGvGjegybh4Mu5MLlUVE+PwUHvRyGsLmr
+	xE3+fkSCybGLb+Q==
+X-Google-Smtp-Source: AGHT+IGtuMWRFNMgruIuVgXWhTXoVRgKsYTIKD0MW7aN7lQ7+wOBVE2iuGi7hjC9C4W7axsMuYSuGkQ7WUnU+y0=
+X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:35bd])
+ (user=aliceryhl job=sendgmr) by 2002:a05:600c:2296:b0:426:4920:2857 with SMTP
+ id 5b1f17b1804b1-42b9ae488b8mr363105e9.8.1724748170994; Tue, 27 Aug 2024
+ 01:42:50 -0700 (PDT)
+Date: Tue, 27 Aug 2024 08:41:56 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240823050359.1737893-1-workingjubilee@gmail.com>
-In-Reply-To: <20240823050359.1737893-1-workingjubilee@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 27 Aug 2024 09:34:05 +0200
-Message-ID: <CANiq72m8rxWDjh9dh7S7nxb9+kwDyFs-W7BBg4x4NL2jDn_HbQ@mail.gmail.com>
-Subject: Re: [PATCH] rust: Eschew `Box<MaybeUninit<T>>::write`
-To: Jubilee Young <workingjubilee@gmail.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAFORzWYC/3XMQQ7CIBCF4as0sxbDIGLjynuYLhCndBJbGsCmp
+ uHuYvcu/5e8b4NEkSnBtdkg0sKJw1RDHRpwg508CX7WBiWVlq0yImWb2YnxnWkVVj+UakmSsRb qZY7U87pz9672wCmH+Nn1BX/rH2hBgcKiJrrg2WB/uvkQ/IuOLozQlVK+Z4nwjKkAAAA=
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4940; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=nSPV8Vu2jTB+1mmMsBZsTzuk8kyInlVIoqksoRkFqFI=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBmzZFifK//EYvvrWTQRp/UE7hxakMy1RJ9fhhsC
+ lVBjXBsQT+JAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZs2RYgAKCRAEWL7uWMY5
+ Rt7bEACpo02sg0YeTDjP0UsYtbHLcanhyxMRMedx/+3tJvSDM+yBLJOv3aFVyIGrwoM5A8r8uzs
+ 4AZ2qs7Mycfk1ndBvsQStiuftFtUaQNiaJPzLjwnFEbKFg8WgPhyGsUekHMWrsoV3WjS7W+Xkh5
+ 9mTD3D0ZTWRlsxFi6NGmfSSl+ivCSArMNQuFHOwS4ZvHayBMqBbQiO3HZg7SyqbbQVb/WrH/JRO
+ a8vaDwXE2Zcxi/7rbafDP6+EqXKlB3V1/WkQGgjCEABdK/xMV3E6jyZXpqLSprzGVuPqO/jA/Ts
+ HS3b3NNVMsK9Pi1Y9ctDXMbSgmfqqFt/J6o2Ks2z8Hbga+wFFOEZwBQtgs+oGajb66UjxfqFrD8
+ Iq+qgxUokKOYxsMx5EuTCA9lD+rHbKTR1EgMZ1wlpRFzAXGXx0J0tAFZNFxfBF6QhikjlMfCuww
+ ee/kWmg+3+zkNlFPt1FGdK40LWXa4Ycxz7Cznji/Bwy9rd7cavubQiwbTbwyrvgmGo0r1nzsa5x
+ XJyJhWRZ+OgktCBzzRF1fzwT35AWNbO1ntihUWtQo6Jk0jVuW3+PjMsza4s3zm6stggRO1FJIKF
+ 5noaSsScj/hjJgRZjMX9ooBMNpimg/aHItAVU2yAcy/yKzZrq79/GHYVQUUeIihlypxivzn1Ieq It1lmXeNZ9E7dag==
+X-Mailer: b4 0.13.0
+Message-ID: <20240827-static-mutex-v2-1-17fc32b20332@google.com>
+Subject: [PATCH v2] rust: add global lock support
+From: Alice Ryhl <aliceryhl@google.com>
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On Fri, Aug 23, 2024 at 7:04=E2=80=AFAM Jubilee Young <workingjubilee@gmail=
-.com> wrote:
->
-> T-libs-api has consensus for stabilizing some of `feature(new_uninit)`,
-> but not for `Box<MaybeUninit<T>>::write`. Instead, we can use
-> `MaybeUninit<T>::write`, so Rust for Linux can drop the feature after
-> stabilization. That will happen after merging, as the FCP has completed:
-> https://github.com/rust-lang/rust/issues/63291#issuecomment-2183022955
->
-> This is required before stabilization because remaining-unstable API
-> will be divided into new features. This code doesn't know about those
-> yet. It can't: they haven't landed, as the relevant PR is blocked on
-> rustc's CI testing Rust-for-Linux without this patch.
->
-> Signed-off-by: Jubilee Young <workingjubilee@gmail.com>
+We don't currently have any support for global locks in Rust, however
+they are very useful and I have needed to work around this limitation
+several times. My workarounds generally involve initializing the mutex
+in the module's init function, and this workaround is reflected here.
 
-Applied to `rust-fixes` -- thanks everyone!
+Due to the initialization requirement, constructing a global mutex is
+unsafe with the current approach. In the future, it would be really nice
+to support global mutexes that don't need to be initialized, which would
+make them safe. Unfortunately, this is not possible today because
+bindgen refuses to expose __ARCH_SPIN_LOCK_UNLOCKED to Rust as a
+compile-time constant. It just generates an `extern "C"` global
+reference instead.
 
-    [ The PR has landed [2] and will be released in Rust 1.82.0 (expected o=
-n
-      2024-10-17), so we could conditionally enable the new unstable featur=
-e
-      (`box_uninit_write` [3]) instead, but just for a single `unsafe` bloc=
-k
-      it is probably not worth it. For the time being, I added it to the
-      "nice to have" section of our unstable features list. - Miguel ]
+On most architectures, we could initialize the lock to just contain all
+zeros. A possible improvement would be to create a Kconfig constant
+that is set whenever the current architecture uses all zeros for the
+initializer and have `unsafe_const_init` be a no-op on those
+architectures. We could also provide a safe const initializer that is
+only available when that Kconfig option is set.
 
-    [ Reworded slightly. - Miguel ]
+For architectures that don't use all-zeros for the unlocked case, we
+will most likely have to hard-code the correct representation on the
+Rust side.
 
-Cheers,
-Miguel
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+Changes in v2:
+- Require `self: Pin<&Self>` and recommend `Pin::static_ref`.
+- Other doc improvements including new example.
+- Link to v1: https://lore.kernel.org/r/20240826-static-mutex-v1-1-a14ee71561f3@google.com
+---
+ rust/kernel/sync/lock.rs | 64 +++++++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 63 insertions(+), 1 deletion(-)
+
+diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
+index f6c34ca4d819..cfc5e160d78c 100644
+--- a/rust/kernel/sync/lock.rs
++++ b/rust/kernel/sync/lock.rs
+@@ -7,7 +7,7 @@
+ 
+ use super::LockClassKey;
+ use crate::{init::PinInit, pin_init, str::CStr, types::Opaque, types::ScopeGuard};
+-use core::{cell::UnsafeCell, marker::PhantomData, marker::PhantomPinned};
++use core::{cell::UnsafeCell, marker::PhantomData, marker::PhantomPinned, pin::Pin};
+ use macros::pin_data;
+ 
+ pub mod mutex;
+@@ -117,6 +117,68 @@ pub fn new(t: T, name: &'static CStr, key: &'static LockClassKey) -> impl PinIni
+             }),
+         })
+     }
++
++    /// Create a global lock that has not yet been initialized.
++    ///
++    /// Since global locks is not yet fully supported, this method implements global locks by
++    /// requiring you to initialize them before you start using it. Usually this is best done in
++    /// the module's init function.
++    ///
++    /// # Examples
++    ///
++    /// ```
++    /// use kernel::sync::Mutex;
++    ///
++    /// // SAFETY: We initialize the mutex before first use.
++    /// static MY_MUTEX: Mutex<()> = unsafe { Mutex::unsafe_const_new(()) };
++    ///
++    /// // For the sake of this example, assume that this is the module initializer.
++    /// fn module_init() {
++    ///     // SAFETY:
++    ///     // * `MY_MUTEX` was created using `unsafe_const_new`.
++    ///     // * This call is in the module initializer, which doesn't runs more than once.
++    ///     unsafe {
++    ///         core::pin::Pin::static_ref(&MY_MUTEX)
++    ///             .unsafe_const_init(kernel::c_str!("MY_MUTEX"), kernel::static_lock_class!())
++    ///     };
++    /// }
++    /// ```
++    ///
++    /// # Safety
++    ///
++    /// You must call [`unsafe_const_init`] before calling any other method on this lock.
++    ///
++    /// [`unsafe_const_init`]: Self::unsafe_const_init
++    pub const unsafe fn unsafe_const_new(t: T) -> Self {
++        Self {
++            data: UnsafeCell::new(t),
++            state: Opaque::uninit(),
++            _pin: PhantomPinned,
++        }
++    }
++
++    /// Initialize a global lock.
++    ///
++    /// When using this to initialize a `static` lock, you can use [`Pin::static_ref`] to construct
++    /// the pinned reference.
++    ///
++    /// See the docs for [`unsafe_const_new`] for examples.
++    ///
++    /// # Safety
++    ///
++    /// * This lock must have been created with [`unsafe_const_new`].
++    /// * This method must not be called more than once on a given lock.
++    ///
++    /// [`unsafe_const_new`]: Self::unsafe_const_new
++    pub unsafe fn unsafe_const_init(
++        self: Pin<&Self>,
++        name: &'static CStr,
++        key: &'static LockClassKey,
++    ) {
++        // SAFETY: The pointer to `state` is valid for the duration of this call, and both `name`
++        // and `key` are valid indefinitely.
++        unsafe { B::init(self.state.get(), name.as_char_ptr(), key.as_ptr()) }
++    }
+ }
+ 
+ impl<T: ?Sized, B: Backend> Lock<T, B> {
+
+---
+base-commit: b204bbc53f958fc3119d63bf2cda5a526e7267a4
+change-id: 20240826-static-mutex-a4b228e0e6aa
+
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
+
