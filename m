@@ -1,128 +1,144 @@
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+Received: from mail-qt1-f179.google.com (mail-qt1-f179.google.com [209.85.160.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 289A71D2796;
-	Tue, 27 Aug 2024 18:44:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F11F1A08AD
+	for <rust-for-linux@vger.kernel.org>; Tue, 27 Aug 2024 18:48:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724784262; cv=none; b=ANW8n5N4m7rZB/s0iO4P15SzeoQelCO3ZlpkHPL58CHubowfJPz4ji1jpS4LH7Ph897ErWZnAg+bGm6ex8nnbsUCjj+7tJDV9ubIqNsZBKz4fQQy/W5L3Zh4P/ODch1aBLGY8NwtUrzjBkjmp11dmjhV7zprdNHGoP2lXoID5uw=
+	t=1724784512; cv=none; b=u8hj0AExem6U1PUSJReP8t5Uv//plHkZfCpOzzCmGwhSL/uxl5N0uIZtsCq+SI9nYNzrQILb3jkhDa17GSdxcyIOeej/YMKCvvNXP/XGZpggBImh/pxoUlBcLR5Xpa5XguTUjq5/l2v1M3EFT1wdGXRjPJcXs2z5VoQqU2UKP7A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724784262; c=relaxed/simple;
-	bh=u6kW+6ArbewrNzZcKJ3cCim3nQ5/kCbS8zfS9851Gio=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=aJgeWiENbU62682EEgukPCik/18aIbKJQctugKuSzQ4E5jC+s7H3rgZ8dVLupVjL3FLzZwi0aH2FiAmZ1Rik0IInwtS8lvA+t6AN85lFAJASdi11HtEQQvYQ2YEfFGSMVjMTNhlDoagNAGjrWuuzzXpXUfBAjnj3HqwQ4vR3AsY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bfHqzdDT; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1724784512; c=relaxed/simple;
+	bh=I5//Ha3NSD2Wtl/0jjx0iRpYd7vI5TxmgjMPfRVQ1/g=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=m6D5jKZkBB3mdvewEof9y5HAHeljbDqYcYKAK8NcSXoB4VqzFDA8LgGVWYSDDjt7/Wk6Ksz4RvoG5CHBExmIbzndIl3d9lAoWaibR1xgu/p7SleIjlQj5TtX6JOruZk78mFb/maKtZAl60M5ONjD4H9ndwnvHHM3j933ymQHVwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=4eGRhfl3; arc=none smtp.client-ip=209.85.160.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bfHqzdDT"
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-201d5af11a4so52146525ad.3;
-        Tue, 27 Aug 2024 11:44:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="4eGRhfl3"
+Received: by mail-qt1-f179.google.com with SMTP id d75a77b69052e-45029af1408so39141cf.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 27 Aug 2024 11:48:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724784260; x=1725389060; darn=vger.kernel.org;
-        h=content-transfer-encoding:commitdate:commit:author:mime-version
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+        d=google.com; s=20230601; t=1724784510; x=1725389310; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=XdyQszHmpMjA1lielnMCOCT+CVl9suwnpweUfFJE9W4=;
-        b=bfHqzdDTrLGi7ie3Bh7Q7EBPj1iRlE5n0+ld/R2xpFczS/kM2qjSDez6efCUjdev7l
-         YbkBGKWW01TLf8aHXEwFEMzJBl5Z/SqkKHx9qrOxYNuj+Rn2bNEXdwqywWEEKqki1IdV
-         RdSxycwTEyLxEs3Z6lOgByGHrsyV2Ona9oseEWMfRTaUwOzbNuGdT0O2jrgAWidzZE8+
-         XKkaf+z868nfUzQ52t+uelq5hUMw+nktV4B6yQMR3QUtcVLy0OZ6LzymLD65NATlesrZ
-         ETZSXXuGbl4mpiUtNigyjjYK8Zdhjg3yDZ6/s6KmaGyyscODzL/3YDCljrukLC4VHdPl
-         9mag==
+        bh=LidQY3N7TAVU7mz++A4EWJV/Qlk2ObRsexeEqCJH/sQ=;
+        b=4eGRhfl3kXUoAYV1Enr6mzC5351bzICnr6nhNH48IsRwaHVU6z0s5mLq9fPrOcJH8x
+         XHvrX8i4u70ltCZhnNQVWkQWZbJ8OE4ye70pZwN5v7GnrptJCtO0qNmrDQI1pnzMGlXg
+         T6aLawl8+TaQPwcQ1YagRxdQ25I2Qo671YZLLrBTwSvscdTk6aHmFH0WIkdfFl9aj8Md
+         tjImVw834O50hhLLMltKfGrs603HfCFL770DDl3BVSrEfxZK+88hb8ix86u09xJ2F6m4
+         BLPqVXfNF0UHtMjF8LkmHNtrktVfPF7JdZ9k7VM/j2T4JtEl+KlH3xDdCeb3V7zoAdh6
+         KRmg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724784260; x=1725389060;
-        h=content-transfer-encoding:commitdate:commit:author:mime-version
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1724784510; x=1725389310;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=XdyQszHmpMjA1lielnMCOCT+CVl9suwnpweUfFJE9W4=;
-        b=l/ELzjjraAljvG8i3LvgIxQjuu97pOIw2WYwUJU7U135qVKMzkfmwFF2Pmhl/Dw9lP
-         nbbWIb9PWU2TmJcwIdJQkdCF7hLoiUO3WMxFusWASbfCG3zYS+yhFFmsqrTjC9P4LahZ
-         5eOL9Yppq4rQnqElAXGMrsMsY+qj3FEriT1MZmq72NV9+tj2D5ncBpzia941bh8x0UZP
-         Acr7ec8C0DlQKYGGgMbzhDP1i6RxhZOAdwf89qPuaxG4V97T80R4Stnn8io6Tu1agPt9
-         1idWSBCP0fXE9Cr7tfoFLpOJajvef5JbOEgmOwp67n50o+ZsBJUWkOsQ+6bXj7aHq9uq
-         5eMQ==
-X-Gm-Message-State: AOJu0YzD8gfSMn+7JjTLZs3R7idAOALSGxtSJVzrm931KCigDKZcg6x5
-	effkchKzj9m2Kr26ruzYuPj0NCYQYIBiea2wefUA7Ffj++GyuQlnYvzQ1CSxwVcMfw==
-X-Google-Smtp-Source: AGHT+IFsLXIZScZAJ2TBLqBoc9pEROKLjGEiHL1U3h3kRucKfLmGZZTuWQ4JAzS5QiQQ10KFYHpvow==
-X-Received: by 2002:a17:903:35cf:b0:202:1db8:d9aa with SMTP id d9443c01a7336-204df46e52cmr44607005ad.30.1724784260178;
-        Tue, 27 Aug 2024 11:44:20 -0700 (PDT)
-Received: from localhost.localdomain ([2405:201:f022:f804:2fa2:fde0:4987:3a52])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20385fd0e91sm86660385ad.309.2024.08.27.11.44.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 27 Aug 2024 11:44:19 -0700 (PDT)
-From: Siddharth Menon <simeddon@gmail.com>
-To: rust-for-linux@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	linux-kernel-mentees@lists.linuxfoundation.org,
-	apw@canonical.com,
-	joe@perches.com,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Siddharth Menon <simeddon@gmail.com>
-Subject: [PATCH V2] scripts/checkpatch.pl: check for non-permalinks to Zulip
-Date: Wed, 28 Aug 2024 00:13:59 +0530
-Message-Id: <20240827184359.46968-1-simeddon@gmail.com>
-X-Mailer: git-send-email 2.39.2
+        bh=LidQY3N7TAVU7mz++A4EWJV/Qlk2ObRsexeEqCJH/sQ=;
+        b=FdEadwXWr0Eugsv8XDV/TWSqYiSdHj0Lo0gMHRgJirpM6PagdQ/un4TJkSOE/2plLn
+         e+7HKl11ZkopKsvRGftAkqu6FT/HW0L+t+8+kCKdOXYmOmoA6QLRCdQIubzj4GtRQMu1
+         jvesgl+N/dKBL7rpgnvRQrWzypnTWdvtH+Fm9gBARKRKPaK4WWBZImtd+ajFl92PsDQU
+         aImbxnQ6ULEk+dHClpyRiWZTMvG1ZUEO+v+tUtx9CA0jFP/PKnPl4WClT4rCSJEsWIgM
+         gaaTtqqaiGqrBMX83XIgGcgmC3zO/sYmb1dqdL4/GLAnl7x7SDTQaO2X1FlyL7FWUoDF
+         RQog==
+X-Forwarded-Encrypted: i=1; AJvYcCW/zGGds/KfGuRxHo6WmgnIMsyZHnU32NgkodcDml/7gqn6fmZ28fHwR8kGfeBBqb/3DO+0YBzio+oZs3QtpA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxSR1WU9hgksQPE+y1yTPBhTEqXZw+aXUciFiKZrH/WMC/+bAsp
+	mzoPFcsnaDyzVg5c8ySj1SZ1blz8wLhV98dif4yGG8ye+FRK4s+cuXJBM2Bbq3iS+MpkkbxmnG/
+	R37ZrthIFS9QbEDI3P9eWhxQnllvVqkayE0td
+X-Google-Smtp-Source: AGHT+IEYo3wpUDQ07W+N/9n1FFu7R6YCMxlFn855GpjF2BmicavhNUlzTFwLoKagN05qtS/bFGVksEONLKfLBTPt0T8=
+X-Received: by 2002:ac8:5a45:0:b0:453:5b18:817 with SMTP id
+ d75a77b69052e-4566caed6c1mr336721cf.6.1724784509942; Tue, 27 Aug 2024
+ 11:48:29 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Author:     Siddharth Menon <simeddon@gmail.com>
-Commit:     9c32b4f2ad277b94a54955b0285ff7dcfb5087aa
-CommitDate: Tue Aug 27 23:39:18 2024 +0530
-Content-Transfer-Encoding: 8bit
+References: <20240815173903.4172139-21-samitolvanen@google.com>
+ <20240815173903.4172139-23-samitolvanen@google.com> <f9ad5fdd-25d4-4d98-84d0-84dfba2a75f2@suse.com>
+In-Reply-To: <f9ad5fdd-25d4-4d98-84d0-84dfba2a75f2@suse.com>
+From: Sami Tolvanen <samitolvanen@google.com>
+Date: Tue, 27 Aug 2024 11:47:51 -0700
+Message-ID: <CABCJKuc8fOmsbpqOJXwYstwc+7DEf-Bf26_n5_ai2Pax1tXqUg@mail.gmail.com>
+Subject: Re: [PATCH v2 02/19] gendwarfksyms: Add symbol list handling
+To: Petr Pavlu <petr.pavlu@suse.com>
+Cc: Masahiro Yamada <masahiroy@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Matthew Maurer <mmaurer@google.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, Neal Gompa <neal@gompa.dev>, 
+	Hector Martin <marcan@marcan.st>, Janne Grunau <j@jannau.net>, Asahi Linux <asahi@lists.linux.dev>, 
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-modules@vger.kernel.org, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Zulip links to https://rust-for-linux.zulipchat.com can break in
-case of renaming the topic or channel if they are not message
-links (which are permanent links).
+Hi Petr,
 
-If a non-permanent Zulip link is referenced then emit a warning
-and direct the user to the Zulip documentation.
+On Tue, Aug 27, 2024 at 2:16=E2=80=AFAM Petr Pavlu <petr.pavlu@suse.com> wr=
+ote:
+>
+> On 8/15/24 19:39, Sami Tolvanen wrote:
+> > +static bool is_export_symbol(struct state *state, Dwarf_Die *die)
+> > +{
+> > +     Dwarf_Die *source =3D die;
+> > +     Dwarf_Die origin;
+> > +
+> > +     state->sym =3D NULL;
+>
+> Nit: This assignment isn't strictly necessary, the value is overwritten
+> a few lines below and isn't used in between.
 
-Permanent links are of the format:
-https://.../#narrow/stream/x/topic/x/near/<numerical_id>
+True, I think this was left over from refactoring.
 
-Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-Link: https://github.com/Rust-for-Linux/linux/issues/1104
-Signed-off-by: Siddharth Menon <simeddon@gmail.com>
----
-V1->V2:
-Corrected the Github link to the right issue,
-Fixed grammatical errors and Replaced the link to reference 
-Documentation to one that is easier to understand.
+> > +int symbol_read_exports(FILE *file)
+> > +{
+> > +     struct symbol *sym;
+> > +     char *line =3D NULL;
+> > +     char *name =3D NULL;
+> > +     size_t size =3D 0;
+> > +     int nsym =3D 0;
+> > +
+> > +     while (getline(&line, &size, file) > 0) {
+> > +             if (sscanf(line, "%ms\n", &name) !=3D 1) {
+> > +                     error("malformed input line: %s", line);
+> > +                     return -1;
+> > +             }
+> > +
+> > +             free(line);
+> > +             line =3D NULL;
+> > +
+> > +             if (is_exported(name))
+> > +                     continue; /* Ignore duplicates */
+> > +
+> > +             sym =3D malloc(sizeof(struct symbol));
+> > +             if (!sym) {
+> > +                     error("malloc failed");
+> > +                     return -1;
+> > +             }
+> > +
+> > +             sym->name =3D name;
+> > +             name =3D NULL;
+> > +
+> > +             hash_add(symbol_names, &sym->name_hash, name_hash(sym->na=
+me));
+> > +             ++nsym;
+> > +
+> > +             debug("%s", sym->name);
+> > +     }
+> > +
+> > +     if (line)
+> > +             free(line);
+>
+> The loop leaks line on a potential sscanf() error and name if the symbol
+> is a duplicate or malloc(sizeof(struct symbol)) fails. Additionally, it
+> should be possible to avoid allocating line by getline() on each
+> iteration.
+>
+> I would change it to something like this (not tested):
 
- scripts/checkpatch.pl | 10 ++++++++++
- 1 file changed, 10 insertions(+)
+Good points, I'll change this to your suggested version (after testing). Th=
+anks!
 
-diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-index 39032224d504..41630532a056 100755
---- a/scripts/checkpatch.pl
-+++ b/scripts/checkpatch.pl
-@@ -735,6 +735,10 @@ our $obsolete_archives = qr{(?xi:
- 	\Qspinics.net\E
- )};
- 
-+our $zulip_forums = qr{(?xi:
-+	\Qrust-for-linux.zulipchat.com\E
-+)};
-+
- our @typeListMisordered = (
- 	qr{char\s+(?:un)?signed},
- 	qr{int\s+(?:(?:un)?signed\s+)?short\s},
-@@ -3415,6 +3419,12 @@ sub process {
- 			     "Use lore.kernel.org archive links when possible - see https://lore.kernel.org/lists.html\n" . $herecurr);
- 		}
- 
-+# Check for permanent Zulip URL
-+		if ($rawline =~ m{http.*\b$zulip_forums(?!(?:/#narrow/stream/.+/topic/.+/(?:near|with)/\d+)?($|\s+.*))}) {
-+			WARN("PREFER_PERMANENT_URL",
-+			     "Use permanent Zulip links when possible - see https://zulip.com/help/link-to-a-message-or-conversation\n" . $herecurr);
-+		}
-+
- # Check for added, moved or deleted files
- 		if (!$reported_maintainer_file && !$in_commit_log &&
- 		    ($line =~ /^(?:new|deleted) file mode\s*\d+\s*$/ ||
--- 
-2.39.2
-
+Sami
