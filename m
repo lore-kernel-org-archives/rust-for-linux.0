@@ -1,62 +1,43 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-4317.proton.ch (mail-4317.proton.ch [185.70.43.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEA3A19D8AC;
-	Tue, 27 Aug 2024 12:54:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E93019E7DF;
+	Tue, 27 Aug 2024 14:00:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.17
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724763266; cv=none; b=i0UaqWmcswPdFaQXRdMUxTFOqzKEk0H1perTO8toENGjoD6VJWWbytrsYTJ9QI52uq4sunM21AgKHNQ4WPN12qlbU83DIVjPAcWJX4cVGVYBDWhBbdWFP239OD9A7EM6ZawmIvnkocJmkZwGLijsy6WPg6bqT0xVTy3gtcJUpgU=
+	t=1724767245; cv=none; b=NdPLj05D6ModGrgW90pI0iPxS28vIgl63icO++Mx/yVr8ukVrRf5Xn2MZduWOohfYhhRYRg+5nwg5nIIDsdcBihT97UWvqjkKf1/wzyWPO9hvqX5xfJ1A68gNOegBoUPF40kOPHL6wOh1v+Ra4pqH8a9hyybT7aj+ZiqcyTWsQk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724763266; c=relaxed/simple;
-	bh=VMUzRAM5Hw52cDsbFyBaNOrcpREqdpt0SHKNWwSUbGY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NzOaoNlMxZQ+KIaT0twshibCAKaBD8HLd7ZOFBwEIOtDt13KrMX6TQtifK4c8A012LHce52vJnNDudhqgcGvvtOFpZ9jGK5oKh+5AtPgjB5YA875NGytRnplHdqyNdHUIHuKMMakWPAzl45iaDp74Kfo2wy0M3vje7OzLd38deg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=P1USXRxL; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1724767245; c=relaxed/simple;
+	bh=/q4kKzosiUOSKJRCBjUonXD/HaaFvIdGv1Ci64z1xc4=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=mK4cU3AMLeiwD1SgBJx26DtrWMWDEGz6lrlIbbNsptpmRhPf12UMwB7f2QG/DTRRz4keZ092nTcwOtzB5sA5xTJ759KZ9b2V5BA7A4zapp1as9v74pBzmMII4aKe7Yju7lpP7r9pVbIgVjtYhgFiVtCSSzGsxnDhNhcJo1vYwTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=metaspace.dk; spf=pass smtp.mailfrom=metaspace.dk; dkim=pass (2048-bit key) header.d=metaspace.dk header.i=@metaspace.dk header.b=SNTNX1Id; arc=none smtp.client-ip=185.70.43.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=metaspace.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=metaspace.dk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="P1USXRxL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91EE1C61060;
-	Tue, 27 Aug 2024 12:54:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1724763266;
-	bh=VMUzRAM5Hw52cDsbFyBaNOrcpREqdpt0SHKNWwSUbGY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=P1USXRxLuKv9RSf1QYGvs6fH7m858MTeSVxGH13wbiZUR9323Kl8Y9I0s1pJKygos
-	 ATDercIrA+OEr8zd4rrl2bE93RPZybE4kpbVRiyKJt0tf1U0Ir8wIwVtY22k5H/IpQ
-	 OSc3iSrJWl+HCV09IQ7zqaF+Go0HpSpWmB+f4eaRMSl/Js9kbNZ5BHtzuictFeKkfc
-	 W76MOA8oIXiiA8tkFzawU7qyp6ZlNA8QSxrxOKXXUSBEKdarzusPVRb02BIDO/QQZq
-	 i1gngIYnnEKiSDV+bNklcMohWpfW+2RkygrlWRiPgrozQBQ3qr4mWV9kdKKTVGVfAS
-	 Ufi9qvuScyqLg==
-Date: Tue, 27 Aug 2024 13:54:18 +0100
-From: Will Deacon <will@kernel.org>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Alice Ryhl <aliceryhl@google.com>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Jamie Cunliffe <Jamie.Cunliffe@arm.com>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Conor Dooley <conor@kernel.org>, Kees Cook <kees@kernel.org>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nicolas Schier <nicolas@fjasle.eu>, Marc Zyngier <maz@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mark Brown <broonie@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Valentin Obst <kernel@valentinobst.de>,
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v6] rust: support for shadow call stack sanitizer
-Message-ID: <20240827125417.GE4772@willie-the-truck>
-References: <20240826-shadow-call-stack-v6-1-495a7e3eb0ef@google.com>
- <20240827125037.GC4772@willie-the-truck>
- <CANiq72kAS9yYS1EJvmwL9LXk_k3nVQ=ShE=k6_Baa7vuBNgnqA@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=metaspace.dk header.i=@metaspace.dk header.b="SNTNX1Id"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=metaspace.dk;
+	s=protonmail; t=1724767234; x=1725026434;
+	bh=/q4kKzosiUOSKJRCBjUonXD/HaaFvIdGv1Ci64z1xc4=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=SNTNX1IdTOZorJhgy/gJCMOoFxvqyRWd9H9ScRgavoaCqDJ64b913/p2I5S9Ziy1H
+	 VfzGaGPyO5AM9d+I7Az9Luu6sAlj7VXbDmfZm6c0tXHFVEOeHbotI8ILg74/MWR1XK
+	 eo9Cpoqaqa8zRTsqBJSlXfgItFGyLQ6bsl+khIFr1RZIY7/FpzcPBzNWuABhbkLWRT
+	 hDTPMGpXVfFqcHRyoSt420txuyLkTikpUb0wapx3hsAGdnhg77f8JMjgCBiupmMnlq
+	 OWBVpyxFqdHXvjoIIlZuZ5LjGbWT7WHqXl+2GKr4z3sLkPsAnpjTno0I2UpsgxmZSY
+	 YHRdJmx88DPkw==
+Date: Tue, 27 Aug 2024 14:00:29 +0000
+To: Trevor Gross <tmgross@umich.edu>
+From: Andreas Hindborg <nmi@metaspace.dk>
+Cc: Luis Chamberlain <mcgrof@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Adam Bratschi-Kaye <ark.email@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, Daniel Gomez <da.gomez@samsung.com>, rust-for-linux@vger.kernel.org, linux-modules@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] rust: add `module_params` macro
+Message-ID: <875xrmxdzg.fsf@metaspace.dk>
+In-Reply-To: <CALNs47sF1o4x-=wPdy6c520-sCX_+sA=158MMP9c0SByKvwXfw@mail.gmail.com>
+References: <20240819133345.3438739-1-nmi@metaspace.dk> <CALNs47sF1o4x-=wPdy6c520-sCX_+sA=158MMP9c0SByKvwXfw@mail.gmail.com>
+Feedback-ID: 113830118:user:proton
+X-Pm-Message-ID: e95aa94bc582d4f3706489047c00e71145d4face
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -64,26 +45,25 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72kAS9yYS1EJvmwL9LXk_k3nVQ=ShE=k6_Baa7vuBNgnqA@mail.gmail.com>
-User-Agent: Mutt/1.10.1 (2018-07-13)
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Aug 27, 2024 at 02:52:30PM +0200, Miguel Ojeda wrote:
-> On Tue, Aug 27, 2024 at 2:50 PM Will Deacon <will@kernel.org> wrote:
-> >
-> > For the arm64 parts:
-> >
-> > Acked-by: Will Deacon <will@kernel.org>
-> >
-> > In which tree do you plan to merge this?
-> 
-> If it goes in this cycle, and that is OK with you, then I think it
-> would be easiest to put it into Rust, since it depends on
-> `RUSTC_VERSION` which we will want to put there too since other things
-> will be placed on top too.
+"Trevor Gross" <tmgross@umich.edu> writes:
 
-Fine by me! I just wanted to make sure you didn't need me to do anything
-else.
+> On Mon, Aug 19, 2024 at 8:35=E2=80=AFAM Andreas Hindborg <nmi@metaspace.d=
+k> wrote:
+>>
+>> From: Andreas Hindborg <a.hindborg@samsung.com>
+>>
+>> This patch includes changes required for Rust kernel modules to utilize
+>> module parameters. This code implements read only support for integer
+>> types without `sysfs` support.
+>
+> Also, I think the subject line needs an update ("rust: add
+> `module_params` macro")
 
-Will
+Well, it is still what it does. Plus few support types. You think it is
+not descriptive enough?
+
+BR Andreas
+
+
