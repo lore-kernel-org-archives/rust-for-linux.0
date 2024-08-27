@@ -1,125 +1,104 @@
-Received: from mail-vs1-f45.google.com (mail-vs1-f45.google.com [209.85.217.45])
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E55CA881E;
-	Mon, 26 Aug 2024 21:11:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.217.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DBE5156653
+	for <rust-for-linux@vger.kernel.org>; Tue, 27 Aug 2024 07:34:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724706672; cv=none; b=bSiFXWr0r5LvHtOklyXu+cr/SfHIciNgJtXtMOtyHFVQNrXfurvKH4T9LwVONS+TpWbfodWC8SBrMhG4C3IQ2yCzJw6AmnN5T9rx2ey1nD3nz7AEnI5ljDQaGol8dnj6G+Su0XoZQY5EhHxU8v8osCGYbrAdJBt9Iwmeop1SZhw=
+	t=1724744059; cv=none; b=cFsO0/7coVMjz/0qJALXI+2K4eJbHM4O5rbPUrA32bxVaoiZfVDe7j2eaYnK6k6FvBYxwNOQYXhAwzvmcEzFZ+L8ZdBb687gbMCPvPBo69NJBrkyZHWjV24pFBy9iIg/M0oQKsqF07/b3tqZDoLUDGPReAXjTcQg5z2eGgSVH0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724706672; c=relaxed/simple;
-	bh=mvpg7Vi+JNpebj/+2S4OHlr93xR1UlWOA7zBPYvkp+M=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=BcbKVjiG93BqDn016gtf+l0supMx1qlqV4niGU3e+kdxFPLj74/iepklqGcRtB3Ect3aTRDq2DlAer9vhCSCPD/myA87P8CxXl/71IV5QHbCftfW9oQYt5nFPYf1T6j0oKJ8ij4auMe+D8EWCuLbadoD3S8MuNCjpzgXGm2CPFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hTgtA75S; arc=none smtp.client-ip=209.85.217.45
+	s=arc-20240116; t=1724744059; c=relaxed/simple;
+	bh=NJE474NjSPNM8jaYv6bQpsozfEWoFiwHPlZhAkNA91k=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=puoBCnnW1JqslvVD740E3l60XZlJ1QI5LhMFzSSnh/PCnI7NBUr7mhjEydxkMM/xhhpmu9e4AeUx9JujFVd2/5UpjIsSWbISuA3wvY2EYknHvH6uz0ajNcAMiQzJeY2HZKfKEKhUUmJkJ90/kS3j9Ua1dUGAac4/tIoiCLXRbL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=D3qQZDee; arc=none smtp.client-ip=209.85.216.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hTgtA75S"
-Received: by mail-vs1-f45.google.com with SMTP id ada2fe7eead31-498e1fea1a7so1332384137.3;
-        Mon, 26 Aug 2024 14:11:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="D3qQZDee"
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-2d3f39e7155so583933a91.0
+        for <rust-for-linux@vger.kernel.org>; Tue, 27 Aug 2024 00:34:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724706670; x=1725311470; darn=vger.kernel.org;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=mTot/2/JNzH7OE6ElQQ5reor//jnO3hoThV2tPzBlEQ=;
-        b=hTgtA75S2VzM+n5cu2A0wVydn1cVMyJMYjPKSseiNGjUU+h1pMljA/lzsJSfowfnMI
-         Y+RU5EwcWbVkyL9GfxXXs4NbGhbdHNzSQvVNAkAg9ZBRxYDJjmLmrGSq5mB7gd77y9rF
-         qcaQpHhxmC7m52DA15HcOy3rTHOXESoJTr+gZPlvqcdWS2/l8nq3mQuaz+gmmGXW5SLz
-         daSTW7c+EfajS8To8gOH+XqLiv1UQTKSwsQ2W0kHEZ1y1E8PRyklJtql1Do4/NdA04ol
-         9+36GDaz7h7bz8CdZ4uZ/ql3Sb3VN+w6OQsK31UrQhSXrFK5M79NO8mMdDBxvq/QA6gk
-         RsiA==
+        d=gmail.com; s=20230601; t=1724744057; x=1725348857; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=64+BMzgfOPAjjb8zRIIV524IoxfYtdcgNtuyqlNQdnI=;
+        b=D3qQZDee0MvBZrkd+npp87Wu7dxkWFa7F1eXrpyqkswo8ri4YlmjoxgGVIVkH6AoYT
+         iK1YB5rvz4BYSDOD7b7BfD3lNZCNvBvLJUAXnNGl7BwRBj5u4lyGw14K+r2LDtXUdZmU
+         4x2eytUcmz5g+nCafHLbUvKXFHRufqy4sYxx5jn/5STPNE0fprDPPPKCsxCpqZeT37Y/
+         knorYHMQvS5srJrT9fmsfQ/onWetsvcqpMYU6I7CQC630rVqftHENMo8xEFi49ipw07h
+         XKoTarWj1saIZhusu57nvnP2wWogE0qubrsUSd8o4zQ1AP8//eBxP/fhQxhC9CSHrQqa
+         ++6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724706670; x=1725311470;
-        h=cc:to:message-id:content-transfer-encoding:mime-version:subject
-         :date:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=mTot/2/JNzH7OE6ElQQ5reor//jnO3hoThV2tPzBlEQ=;
-        b=ns4eHYKJ1iF4bxq9UnhLeyT1ATCQGQCfmoImocHWo2nq0B8Vbs42ICCyzNHQgBd+c7
-         KYGA1K90VuJmpNqVOoEfEE6fBc7D664my4ZWaCW3+7QzVNPa2Q/vj2a8w94BIloULQ+D
-         yB+0mE4J4HCVr2t9bekqpyLw7aEHNJw1dRt7mGgCxJJv3ZAU1XWRVoNihNYZVQ5AbZYN
-         ulKRgv6Gny4jRH1eIsZV386ZKXzeIFFEgb5UvI3QMNRIni/h8a4FzITlhYPagIPzmdMy
-         ZzgPe5OMJA7HtoBXHqG50dJ41cy67ZVBdLkYLvSD4pr5s/Oo3Auv5YzyGwnOlvEXEc8a
-         wrWQ==
-X-Forwarded-Encrypted: i=1; AJvYcCV4aegCN9/w2p4GDMCsTt8tC//a6A7F1lKaOSC4xJDtfkX9f9ikJLZdCrW8bODGAvUHGeyqRKULxbI=@vger.kernel.org, AJvYcCW77Om/TiQiPVTHSb/utLc6M9fYXDQQvzRamWovk1MnKVYa4RYi5kYCAgXGRUm1wmOgwIBsdBFeV6gIMGFN@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy72ePBr7aybKfaHaSmu8XMpi6HYXcTa/cWCesW9LUpzyZA4daD
-	fOOzrJtej4lKajUPl+KshuNyvVqchxwQhu54vZbWRhNhIwqwHMdf
-X-Google-Smtp-Source: AGHT+IHKO/lO1SiTa6i7Im7UcRHwKNHK4pMih2QKoNyKRgvIeV7FrsmBOPgfpC7MjQJS71WclowBuQ==
-X-Received: by 2002:a05:6102:3051:b0:498:ca87:ba49 with SMTP id ada2fe7eead31-498f47008ecmr8671119137.19.1724706669511;
-        Mon, 26 Aug 2024 14:11:09 -0700 (PDT)
-Received: from localhost ([2600:4040:9ce9:9c00:a449:bcf7:4497:9791])
-        by smtp.gmail.com with UTF8SMTPSA id af79cd13be357-7a67f319221sm492831885a.13.2024.08.26.14.11.08
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 26 Aug 2024 14:11:09 -0700 (PDT)
-From: Jon Mulder <jon.e.mulder@gmail.com>
-Date: Mon, 26 Aug 2024 17:10:32 -0400
-Subject: [PATCH] docs: rust: fix formatting of Hacking quick-start list
+        d=1e100.net; s=20230601; t=1724744057; x=1725348857;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=64+BMzgfOPAjjb8zRIIV524IoxfYtdcgNtuyqlNQdnI=;
+        b=KypfLCQXIbXFjL1/KyY5QwXUyk2iaftOYOzM8iQZQbO14Jht7gDhBgnkD/lMipYSZl
+         UG8rZ6Zp9tKvkcLG9qQO7ZCPZWZkiz6jRCF8WkClC0+k7DxUVafV5vY6DXwo/+xh1KzK
+         pRvLI2ZIU0+mQJ8OT0l70gjuV+RGBBRPaIpEXc+vOmBss9nVf3BIZURo+FmZAkubiJ6z
+         hyUG4hIKU3n5+bzfiTDR+7Bzn7crd+pEWzSaKJ7mpdeXeOJUUWJqPvc4KnHPVUCvmpxn
+         91d+Uz7WHBgOfa6v4JoeM4frLZWfj13n92/asYHzcJ5MjjKe4bdC12uGQwdmp1/p+fqJ
+         kosg==
+X-Forwarded-Encrypted: i=1; AJvYcCWDbyxobiLjKI69I32r1n9ZhBxOAFgV+48hD/mBPl5mIjXun7ZiLIi1Fec61J6pwXzmja42D0ILcz4riurKZg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxtz1oQM17DnMC2DOhlPvBif68Q18CHjrBUR7UtVUefQftOkT6i
+	2HX0kvKcYRG6CI2VyCo7Rz/0a6kGu1jPlR0YO4Mez/kgkqlZH211ATA5TiWlQteZ7oa6RGhhqNi
+	zXrfewc2JgDu4y1tivrNW2EsYWvE=
+X-Google-Smtp-Source: AGHT+IEjasFyoS2ypIfj8qtL0Ar9WfLJfCKFD505SDVB5S5Wa5yE5qfBSsiS5FUauS26rqXFaYYO+I3oJ2147b31hHE=
+X-Received: by 2002:a17:90b:2d46:b0:2cb:4382:99f1 with SMTP id
+ 98e67ed59e1d1-2d646dd8d9dmr8453486a91.6.1724744057432; Tue, 27 Aug 2024
+ 00:34:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240826-pr-docs-rust-remove-quickstart-blockquote-v1-1-c51317d8d71a@gmail.com>
-X-B4-Tracking: v=1; b=H4sIAEfvzGYC/x3NwQqDMAyA4VeRnBewxQ23Vxk7xBq34GY1aWUgv
- rvF43f5/w2MVdjgUW2gvIpJnArcpYLwoenNKH0x+No3detvOCv2MRhqtoTKv7gyLlnCaIk0Yfe
- NYVxyTIzXOw3OUdsER1B6s/Ig//P1fO37Ae+Npzt7AAAA
-To: Alex Gaynor <alex.gaynor@gmail.com>, 
- Wedson Almeida Filho <wedsonaf@gmail.com>, 
- Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <benno.lossin@proton.me>, 
- Andreas Hindborg <a.hindborg@samsung.com>, 
- Alice Ryhl <aliceryhl@google.com>, Jonathan Corbet <corbet@lwn.net>
-Cc: rust-for-linux@vger.kernel.org, linux-doc@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
- Jon Mulder <jon.e.mulder@gmail.com>
-X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1724706668; l=1636;
- i=jon.e.mulder@gmail.com; s=20240826; h=from:subject:message-id;
- bh=mvpg7Vi+JNpebj/+2S4OHlr93xR1UlWOA7zBPYvkp+M=;
- b=I9hTNfsZhXcPu3h/7sImBW1+GeYan8nbFblxoii1h+Vp3fpb5hwlu4IzTq0QFba/rYqDTg3Um
- 0pA/J15wMp0DNHCD2cAqPs0os5NKmD/ripkDJb+Yb5hlN1HkS5wL3OO
-X-Developer-Key: i=jon.e.mulder@gmail.com; a=ed25519;
- pk=TBp30jl6pgKrBPlChwtN5wDRdl4hhtaVyW+oLu4YXMo=
+References: <20240823050359.1737893-1-workingjubilee@gmail.com>
+In-Reply-To: <20240823050359.1737893-1-workingjubilee@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 27 Aug 2024 09:34:05 +0200
+Message-ID: <CANiq72m8rxWDjh9dh7S7nxb9+kwDyFs-W7BBg4x4NL2jDn_HbQ@mail.gmail.com>
+Subject: Re: [PATCH] rust: Eschew `Box<MaybeUninit<T>>::write`
+To: Jubilee Young <workingjubilee@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Patch to remove indentation within the "hacking" section of the Rust
-quick-start guide. This removes a `<blockquote>` HTML element from the
-rendered documentation.
+On Fri, Aug 23, 2024 at 7:04=E2=80=AFAM Jubilee Young <workingjubilee@gmail=
+.com> wrote:
+>
+> T-libs-api has consensus for stabilizing some of `feature(new_uninit)`,
+> but not for `Box<MaybeUninit<T>>::write`. Instead, we can use
+> `MaybeUninit<T>::write`, so Rust for Linux can drop the feature after
+> stabilization. That will happen after merging, as the FCP has completed:
+> https://github.com/rust-lang/rust/issues/63291#issuecomment-2183022955
+>
+> This is required before stabilization because remaining-unstable API
+> will be divided into new features. This code doesn't know about those
+> yet. It can't: they haven't landed, as the relevant PR is blocked on
+> rustc's CI testing Rust-for-Linux without this patch.
+>
+> Signed-off-by: Jubilee Young <workingjubilee@gmail.com>
 
-Reported-by: Miguel Ojeda <ojeda@kernel.org>
-Closes: https://github.com/Rust-for-Linux/linux/issues/1103
-Signed-off-by: Jon Mulder <jon.e.mulder@gmail.com>
----
-Patch to remove indentation within the "hacking" section of the Rust
-quick-start guide. This removes a `<blockquote>` HTML element from the
-rendered documentation.
----
- Documentation/rust/quick-start.rst | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+Applied to `rust-fixes` -- thanks everyone!
 
-diff --git a/Documentation/rust/quick-start.rst b/Documentation/rust/quick-start.rst
-index ed5af2b5339a..2d107982c87b 100644
---- a/Documentation/rust/quick-start.rst
-+++ b/Documentation/rust/quick-start.rst
-@@ -305,7 +305,7 @@ If GDB/Binutils is used and Rust symbols are not getting demangled, the reason
- is the toolchain does not support Rust's new v0 mangling scheme yet.
- There are a few ways out:
- 
--  - Install a newer release (GDB >= 10.2, Binutils >= 2.36).
-+- Install a newer release (GDB >= 10.2, Binutils >= 2.36).
- 
--  - Some versions of GDB (e.g. vanilla GDB 10.1) are able to use
--    the pre-demangled names embedded in the debug info (``CONFIG_DEBUG_INFO``).
-+- Some versions of GDB (e.g. vanilla GDB 10.1) are able to use
-+  the pre-demangled names embedded in the debug info (``CONFIG_DEBUG_INFO``).
+    [ The PR has landed [2] and will be released in Rust 1.82.0 (expected o=
+n
+      2024-10-17), so we could conditionally enable the new unstable featur=
+e
+      (`box_uninit_write` [3]) instead, but just for a single `unsafe` bloc=
+k
+      it is probably not worth it. For the time being, I added it to the
+      "nice to have" section of our unstable features list. - Miguel ]
 
----
-base-commit: 6e6efc5fef4a1cdcccca3cffd5b73fd25d093352
-change-id: 20240826-pr-docs-rust-remove-quickstart-blockquote-59af11a84c1a
+    [ Reworded slightly. - Miguel ]
 
-Best regards,
--- 
-Jon Mulder <jon.e.mulder@gmail.com>
-
+Cheers,
+Miguel
