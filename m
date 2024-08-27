@@ -1,130 +1,197 @@
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9773319FA89
-	for <rust-for-linux@vger.kernel.org>; Tue, 27 Aug 2024 11:30:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC0F719F499
+	for <rust-for-linux@vger.kernel.org>; Tue, 27 Aug 2024 11:36:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724758245; cv=none; b=lJXT0laLDqDSQ2w7cO50r4EPh21IUTYrWdSeIk0OhdXWkj1Ujmy7JDf0iMxmOG+dGSlPN61hQsMiAqSHPcBjhn5r5ekEg7aaod0fJoHhn4a8krN5+6mcW6RysSehPxSSpUkPJSO+vBIl0dkknUTBIfa6ZVNo9ydsTXSy2sHbyQo=
+	t=1724758617; cv=none; b=rVmo1rEKE3ticCKVvFbOlrKyPQYikT6jR/McG90lBXVOgOEz8oP4xvd+B0INF327TLkG2P0KPH7j18MpH5mVAYy0XldcdAiIlu6d1gccXHmyqabpG2kZtfBu64p9Y02LJD+hVwLhmvSQ4+kicOQY8Byet3AouwAZhZwM9hIPLOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724758245; c=relaxed/simple;
-	bh=pxwUZjIEzUdNMrTjj+dC9adH6yYFv8ZxuOHul7Of6Ak=;
+	s=arc-20240116; t=1724758617; c=relaxed/simple;
+	bh=IRbk4XlXS9AL1SVPnwuRZB64g4tDHR/DIdnqSuKhoPE=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=tBVqQuSFn5pPmJd4li4tKO10btcxwLDmTSMY2Wz47i1dzwpT9+sozF6wdlL6PKadia5NniPyQsu2hyvZF5pWzY403vBxYY2NUTzCraebenmUB9GinhkyGbslPTCkz4vLK2ccFcdxKEfJwNnOo7sxYprHqjLept0ptTvtrxurzkw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FIJ8h26v; arc=none smtp.client-ip=209.85.221.53
+	 To:Cc:Content-Type; b=Mj5wJnppYmrxaKzqHil9CtnmWiw55EYw3/TpWc6qF+YNtWX0aSaj3VomNCOHO4tw2zy12ZUPMcV1EiNGQvf9u+Vu4eJwRbLPwY5AVLk67d0zRFakhey5dFZl9UUwdif7P92Ax0Zr7Dgc5SDSJH/kwK22JZM8kA7p6z4ws+w9fL4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=S0tZRJpa; arc=none smtp.client-ip=209.85.221.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FIJ8h26v"
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-36d2a601c31so3172240f8f.0
-        for <rust-for-linux@vger.kernel.org>; Tue, 27 Aug 2024 04:30:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="S0tZRJpa"
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-371b97cfd6fso3445008f8f.2
+        for <rust-for-linux@vger.kernel.org>; Tue, 27 Aug 2024 04:36:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1724758242; x=1725363042; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1724758614; x=1725363414; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=eUhlT5a/QMpCNH2uUAixzmV7FXsegXG889Otbeqkao4=;
-        b=FIJ8h26vi2I5p8sK4QWlV8SAJTpkpJdRmSi+WwbonbSFrRXq4YSS0n11y6Hg5vyJVp
-         oiAZSolojvAFEUmWlRebnt2T6LIhKUldKSlYYJ/x7xECkPlDQwhtFhTCnjUUIaTUyh0s
-         pdqFVLnpFCF1mszY5pNZ3+zRTyCnfobFOy7OzCy38X0ioIGaOKamVl78OlB5MT19FhJo
-         DJYcDYtzfuM96u+gXUJhHNU0P2RhVxG9KNcR/NvdH+xi8u9FFO9cUfUuZrgEkB/mnUqr
-         mzXWE5KvemRB/WIuketesPSLtLiFpviIzioqzjUIWDYdFIygyaVx0nHMPxjmuCzSOZm5
-         u0Vg==
+        bh=OiKQkX9JXAm55mwNI4zYxY4asKveYVGU+Q+n1G5Ueug=;
+        b=S0tZRJpad7dacAWNhk7IbSgkKrz9I4QXzh1O1oAAdI/kj3Kz9hRbuLHPCG7QNa+OL3
+         PnXJNxUYcyaVcGw95CrNrDQD6G6LyQtWtlUL6sf1zUqYLGVT5G8MPZSfsPAdnaibigm4
+         tR3BaiyvSRxhDPQ+dDpJR4I/pOzOHrUrFRZjKZJWPdGg7A3JI7DsoYXP0IJKTfC5DMp1
+         vHzlGcWLcNauHr5GG7OUIH82r5+0vLRLmVM9oKNF/kuq2Ii89KNRBy+4CEKDprLMY4R6
+         8NUFgIO1STeIHZ9QAR7NDBBB2o+rIJoDDjk1+kU0C2XY3IQ6o7pMjtnvBaOtS1hTajl8
+         RClg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724758242; x=1725363042;
+        d=1e100.net; s=20230601; t=1724758614; x=1725363414;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=eUhlT5a/QMpCNH2uUAixzmV7FXsegXG889Otbeqkao4=;
-        b=oiN/Y2T44f3C22TCjhSVt9BK1qh7Z6vf+IPxHi/TR4zoA7rjrSDiipptwMwxgMXLvx
-         ReArsyO/nXl9CQGmEW0ectrmdh5k/JqzvL+3iemQcRUeBAs9O256jBaqnnoQNrQi4dbL
-         VN1OnvXbMW3xcUe52dkvJIjnAY1e7PTMCVYNlxhHPbpUj40phl8RvjXvm+oeFPiDXTnB
-         QciQnCxzdBWzmJRExM+vXbu5eHgfez0YofPVK3ol6qpuNZEHohhjw73r4Ytl0SFxFKns
-         2ygXpjMq4aaXvLHQmW0sguZ5HEejWvK7FLAwx+Iv2xA7Gi8InTgUOwYaXUVAH1t/5kya
-         zRBQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUvqlrytIbOwIhDYZAjai+yD79cwYgxuiYY/IjOaosBXDeF7dRcph0KTiGXVfbmTm7MJe9XsVo8ApjZ2jEJKQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxsviA7HJ4UhAwJuGz9+VRkc97u6mJAi3ZQeALHFuM3F3C8rXAk
-	tfTwkNEW2ZJDT9xH4hH2QtmxK0JNNv9HhEcAayic7rycg8mQ0ExIipdQSk6j2uYi1emqPuzsJUF
-	ACzkExnlCAtkb4+fDkIZrAnDYzS+JeUARNTfw
-X-Google-Smtp-Source: AGHT+IH6vpUg+8mWXDKTFNmf1KdzZsxtXKssoNipDJms7hahddmniOI+sSiJNcbup7z54o3qp32hTwnfiagOWZS6Kts=
-X-Received: by 2002:a5d:4fc5:0:b0:368:3f6a:1dec with SMTP id
- ffacd0b85a97d-3748c7c790emr1887630f8f.9.1724758241551; Tue, 27 Aug 2024
- 04:30:41 -0700 (PDT)
+        bh=OiKQkX9JXAm55mwNI4zYxY4asKveYVGU+Q+n1G5Ueug=;
+        b=Tk5EoYh0uYLPkW/7YOfE+K2ghVKTr49HidOPNlu6/6tmjNRlHFHudk5yuzj1miXDv0
+         /1krdHevG4VyziNqhabXO0ynsf9Pr1/diPCGtonmxsD5ncfDh9m/xBavlZVioaPEGMkS
+         dJUsa1Wx3a77jltBHED/TKY7yK5AoNwrSZYxG1kSzHbq9HXzOQcy9Fmf4qZDqAQef9in
+         5IZA+2zxSwlFYVphsbPNBFD0x6o2PZiMwUCe49eHvum/b5qilSPtj5dOvJ08ReUO2XVb
+         y5tMtNV4d6b6SY66In7/p9KBOXmJflaxA55Are/AHS/zlkYiAjlU0Mw9qKHYXTXQwUUv
+         rlew==
+X-Forwarded-Encrypted: i=1; AJvYcCVIjAduILjPvNvel8koDawDAbG9XgmXmQ6O3vFv8oeUF2nc/jhiaXRGE2Pv73fkFTrH2unnyV2mpw/RICkjJg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzZpXi/5GqYR1GyD4ZBy60Yjl173IVDk522+o492tNqrNmWdNhB
+	5y9/62tUvK2y/1OR29G21j34FWAK+4FgWC9Y6U2jKmfOb6jd1YFoSlocTuGOQyoxiQWFTJgJVev
+	uy34e9SgWjC/W+DQ1Fk4LE/sXLWjyUb/oOX9h
+X-Google-Smtp-Source: AGHT+IHLB2RvAn3JqickjtZcl5YzVN33cRXUCK4PAl1Gfw449IAMUegRjNOP1+0UnRKyCCQgoiHkiFDo9yZOJt1ijW8=
+X-Received: by 2002:adf:fe86:0:b0:371:7c68:32e6 with SMTP id
+ ffacd0b85a97d-3748c7c78demr1625380f8f.4.1724758613879; Tue, 27 Aug 2024
+ 04:36:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240827100403.376389-1-ojeda@kernel.org> <CAH5fLghhgWdJHdOR7TYwGADecsqBtOF08+S4v3RimeFsqvdfuw@mail.gmail.com>
- <ab399fac-4b10-4ed9-ac28-55797a17fff2@proton.me>
-In-Reply-To: <ab399fac-4b10-4ed9-ac28-55797a17fff2@proton.me>
+References: <20240806-shadow-call-stack-v5-1-26dccb829154@google.com>
+ <20240820143503.GD28338@willie-the-truck> <CAH5fLggN+A2RawC-cpmSUHxYm=xz=1EDpMUv5C803hj37re1qA@mail.gmail.com>
+ <20240823122423.GB32110@willie-the-truck> <CAH5fLgh6ywHeFSwbnaOu-QYrt_Jytv_y3zb1QbJzK-w4kQ617w@mail.gmail.com>
+ <20240823125739.GA32156@willie-the-truck> <CAH5fLgiCr3hOEX1yaqy66OMsbPTtEhA4FCmRiw20zY64vYKHPw@mail.gmail.com>
+ <20240823132133.GC32156@willie-the-truck>
+In-Reply-To: <20240823132133.GC32156@willie-the-truck>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 27 Aug 2024 13:30:29 +0200
-Message-ID: <CAH5fLgi1_=FhM1800xz=53OpfvF55WqBijPSvSXC7pHuFL41rA@mail.gmail.com>
-Subject: Re: [PATCH] rust: allow `stable_features` lint
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+Date: Tue, 27 Aug 2024 13:36:41 +0200
+Message-ID: <CAH5fLgjjnDZG2BBApmiss43+gOs85xjJM9DP8RLO+y+UXm1cOg@mail.gmail.com>
+Subject: Re: [PATCH v5] rust: support for shadow call stack sanitizer
+To: Will Deacon <will@kernel.org>
+Cc: Catalin Marinas <catalin.marinas@arm.com>, Jamie Cunliffe <Jamie.Cunliffe@arm.com>, 
+	Sami Tolvanen <samitolvanen@google.com>, Nathan Chancellor <nathan@kernel.org>, 
+	Conor Dooley <conor@kernel.org>, Masahiro Yamada <masahiroy@kernel.org>, 
+	Nicolas Schier <nicolas@fjasle.eu>, Ard Biesheuvel <ardb@kernel.org>, Marc Zyngier <maz@kernel.org>, 
+	Mark Rutland <mark.rutland@arm.com>, Mark Brown <broonie@kernel.org>, 
+	Nick Desaulniers <ndesaulniers@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@samsung.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Valentin Obst <kernel@valentinobst.de>, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	rust-for-linux@vger.kernel.org, Kees Cook <kees@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Aug 27, 2024 at 1:29=E2=80=AFPM Benno Lossin <benno.lossin@proton.m=
-e> wrote:
+On Fri, Aug 23, 2024 at 3:21=E2=80=AFPM Will Deacon <will@kernel.org> wrote=
+:
 >
-> On 27.08.24 12:39, Alice Ryhl wrote:
-> > On Tue, Aug 27, 2024 at 12:04=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org=
-> wrote:
-> >>
-> >> Support for several Rust compiler versions started in commit 63b27f4a0=
-074
-> >> ("rust: start supporting several compiler versions"). Since we current=
-ly
-> >> need to use a number of unstable features in the kernel, it is a matte=
-r
-> >> of time until one gets stabilized and the `stable_features` lint warns=
-.
-> >>
-> >> For instance, the `new_uninit` feature may become stable soon, which
-> >> would give us multiple warnings like the following:
-> >>
-> >>     warning: the feature `new_uninit` has been stable since 1.82.0-dev
-> >>     and no longer requires an attribute to enable
-> >>       --> rust/kernel/lib.rs:17:12
-> >>        |
-> >>     17 | #![feature(new_uninit)]
-> >>        |            ^^^^^^^^^^
-> >>        |
-> >>        =3D note: `#[warn(stable_features)]` on by default
-> >>
-> >> Thus allow the `stable_features` lint to avoid such warnings. This is
-> >> the simplest approach -- we do not have that many cases (and the goal
-> >> is to stop using unstable features anyway) and cleanups can be easily
-> >> done when we decide to update the minimum version.
-> >>
-> >> An alternative would be to conditionally enable them based on the
-> >> compiler version (with the upcoming `RUSTC_VERSION` or maybe with the
-> >> unstable `cfg(version(...))`, but that one apparently will not work fo=
-r
-> >> the nightly case). However, doing so is more complex and may not work
-> >> well for different nightlies of the same version, unless we do not car=
-e
-> >> about older nightlies.
-> >>
-> >> Another alternative is using explicit tests of the feature calling
-> >> `rustc`, but that is also more complex and slower.
+> On Fri, Aug 23, 2024 at 03:09:40PM +0200, Alice Ryhl wrote:
+> > On Fri, Aug 23, 2024 at 2:57=E2=80=AFPM Will Deacon <will@kernel.org> w=
+rote:
+> > >
+> > > On Fri, Aug 23, 2024 at 02:38:20PM +0200, Alice Ryhl wrote:
+> > > > On Fri, Aug 23, 2024 at 2:24=E2=80=AFPM Will Deacon <will@kernel.or=
+g> wrote:
+> > > > >
+> > > > > On Tue, Aug 20, 2024 at 05:13:58PM +0200, Alice Ryhl wrote:
+> > > > > > On Tue, Aug 20, 2024 at 4:35=E2=80=AFPM Will Deacon <will@kerne=
+l.org> wrote:
+> > > > > > > On Tue, Aug 06, 2024 at 10:01:44AM +0000, Alice Ryhl wrote:
+> > > > > > > > diff --git a/init/Kconfig b/init/Kconfig
+> > > > > > > > index fe76c5d0a72e..d857f6f90885 100644
+> > > > > > > > --- a/init/Kconfig
+> > > > > > > > +++ b/init/Kconfig
+> > > > > > > > @@ -1909,7 +1909,7 @@ config RUST
+> > > > > > > >       depends on !MODVERSIONS
+> > > > > > > >       depends on !GCC_PLUGINS
+> > > > > > > >       depends on !RANDSTRUCT
+> > > > > > > > -     depends on !SHADOW_CALL_STACK
+> > > > > > > > +     depends on !SHADOW_CALL_STACK || RUSTC_VERSION >=3D 1=
+08000 && UNWIND_PATCH_PAC_INTO_SCS
+> > > > > > >
+> > > > > > > Sorry, I didn't spot this in v4, but since UNWIND_PATCH_PAC_I=
+NTO_SCS is
+> > > > > > > specific to arm64 and the only other architecture selecting
+> > > > > > > ARCH_SUPPORTS_SHADOW_CALL_STACK is riscv, I can't help but fe=
+el it would
+> > > > > > > be cleaner to move this logic into the arch code selecting HA=
+VE_RUST.
+> > > > > > >
+> > > > > > > That is, it's up to the architecture to make sure that it has=
+ whatever
+> > > > > > > it needs for SCS to work with Rust if it claims to support Ru=
+st.
+> > > > > > >
+> > > > > > > What do you think?
+> > > > > >
+> > > > > > The `select RUST if ...` is going to get really complicated if =
+we
+> > > > > > apply that rule in general. Having options here allows us to sp=
+lit
+> > > > > > them across several `depends on` clauses. I'm not sure it will =
+even
+> > > > > > work, I had issues with cyclic Kconfig errors previously. I als=
+o don't
+> > > > > > think it's unreasonable for the architecture to say it supports=
+ both
+> > > > > > options when it really does support both; they are just mutuall=
+y
+> > > > > > exclusive. I also think there is value in having all of the opt=
+ions
+> > > > > > that Rust doesn't work with in one place.
+> > > > >
+> > > > > I'm not sure I follow why this will get really complicated. Isn't=
+ it as
+> > > > > straightforward as the diff below, or did I miss something?
+> > > >
+> > > > Hmm. I tried this but I wasn't able to enable Rust with this setup.
+> > > > Even though the deps of RUSTC_SUPPORTS_ARM64 are ok, it doesn't see=
+m
+> > > > to be enabled and I can't find it in menuconfig. I think we need to
+> > > > have a `select RUSTC_SUPPORTS_ARM64` somewhere.
+> > >
+> > > Sorry, yes, my diff was a little half-arsed:
+> > >
+> > > > > diff --git a/arch/arm64/Kconfig b/arch/arm64/Kconfig
+> > > > > index a2f8ff354ca6..2f5702cb9dac 100644
+> > > > > --- a/arch/arm64/Kconfig
+> > > > > +++ b/arch/arm64/Kconfig
+> > > > > @@ -231,7 +231,7 @@ config ARM64
+> > > > >         select HAVE_FUNCTION_ARG_ACCESS_API
+> > > > >         select MMU_GATHER_RCU_TABLE_FREE
+> > > > >         select HAVE_RSEQ
+> > > > > -       select HAVE_RUST if CPU_LITTLE_ENDIAN
+> > > > > +       select HAVE_RUST if RUSTC_SUPPORTS_ARM64
+> > > > >         select HAVE_STACKPROTECTOR
+> > > > >         select HAVE_SYSCALL_TRACEPOINTS
+> > > > >         select HAVE_KPROBES
+> > > > > @@ -265,6 +265,11 @@ config ARM64
+> > > > >         help
+> > > > >           ARM 64-bit (AArch64) Linux support.
+> > > > >
+> > > > > +config RUSTC_SUPPORTS_ARM64
+> > > > > +       bool
+> > >
+> > > This line ^^^ should be 'def_bool y'.
 > >
-> > You mention a bunch of alternatives, but I agree that this is the best
-> > way forward. It's very simple. Only possible disadvantage could be if
-> > we forget to remove features when raising the MSRV, but I don't think
-> > that's a big risk.
+> > Ah, I see, I guess I learned something today. It also seems to work if
+> > I add `default y`.
+> >
+> > I can change it if you think this is better. I still think there's
+> > some value in having everything in one place, but it's not a big deal.
+> > Either way, it should be temporary for a few kernel releases as we'll
+> > eventually only support compiler versions where this works.
 >
-> What even are the risks associated with enabling an already stable
-> feature?
+> I do like moving the reference to UNWIND_PATCH_PAC_INTO_SCS into the
+> arch code, so if you could respin along these lines then that would be
+> great.
 
-Nothing, really. Clutter?
+Done, see:
+https://lore.kernel.org/all/20240826-shadow-call-stack-v6-1-495a7e3eb0ef@go=
+ogle.com/
+
+I took the opportunity to incorporate new developments in rustc
+changes into the Kconfig rules.
 
 Alice
