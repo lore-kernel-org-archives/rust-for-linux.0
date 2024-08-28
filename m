@@ -1,154 +1,251 @@
-Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 956181A7067;
-	Wed, 28 Aug 2024 18:02:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01D7A2747B;
+	Wed, 28 Aug 2024 18:15:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724868123; cv=none; b=pdF8MVxvplfCNviEf5CONbYT/7ntvXOaE+xteefTHro9QrmfaB8crkw9/zA6q3AVZTK5UArNeKgbo2PqxpV/uTRQWDUyQjZY235LS/rlEtPomcQ4Q0gCpdbu+nWZK4TohSyL1gTWZ4M3LQvMW3vZFb8QnghB7Wogw8HbnTyH7UI=
+	t=1724868940; cv=none; b=EnZJnSlvKTSPwgNrrrItUAqHU86vcCWkgbZ6GuqVxQMj5c3Y5DV24cuv3E4o1KgCBRCBQiWmpj9T74Z0DfLOC3I5IEm3l1Up8Rx1Pp1BvSWFB0vSxMArEFksiGINZAsJS34qypQy4q4WqWSkQELKozeYDbbgwOjqWvR5+rPlwik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724868123; c=relaxed/simple;
-	bh=wCEraXtt3CtNf0yLZCe+VwVDczzOo3RFhCzAD51xT8w=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=tUtqdlxzQUfKRNd9VoxWye5WLYlz+nXu7qK3F3154San5NK2UIDeshTbijlQ2U8/ELMonBq8R8155KIO21Hbges4uaQDgRNP8yQNTQeJpMEujUMvn5KONxGY+GfYhHOXO9Tb7OTidwZwXXR7HbQCiYhifoKPrXP6mVueir9WaSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RgxCrwJx; arc=none smtp.client-ip=209.85.219.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1724868940; c=relaxed/simple;
+	bh=FveA6ivn7jNuVVJwt3ZVsWXWe3VU5PK0bqzTdYvMwNE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=iqtLzXnczvOTShN1VfLaw5cTbIFKYwTXASiHP/mcCJI1koAxYZ/UdFY/Px2I+OWyG5VLkFQGQUcVMW5/2GYYiNhM/fv4PmBzKeuYs6D5ya54yHc2I5IUEZUpZ6REwy560wBlZTOlqzodCn1W2NC4SQHDygsIdj5hjuh+oRetOLc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=EadeC2G5; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RgxCrwJx"
-Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-6bf705959f1so8993746d6.1;
-        Wed, 28 Aug 2024 11:02:01 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724868120; x=1725472920; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:feedback-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=54WDneH5aK9PrcJyxN7n5h0O+70QCL7ZSw0Q0gtHZVQ=;
-        b=RgxCrwJxI/4ZaD74VTqiDIXpYOMNQSRUPrQdDKov5kgLgY/SkqtKvUkFApLN54HHqH
-         pPgFmQoujhU2OWUWSh9jCvG1WeUD9LutQRr8/CkAhTPWwyQXve0px0IZ0HZlt6LE+Im1
-         4SD97ycA6+xY0Nw0uuQhNta0CzrBLVuinQ5fOhI1xIONp3pgeub/bfT97FnCORHdUrG8
-         0iCzUkslIqsmwObQtCxWA2qH1/iviwYMBQ4HseAIiTIKbJrm9Au199YfsxxrrCZMvMaF
-         GIFFlPxaQ2EdMfPlo15EpBue6k55jiNN139jKreUk6MTalkAHDI4b5Oj03GEDqUlEXvA
-         7IFA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724868120; x=1725472920;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:feedback-id:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=54WDneH5aK9PrcJyxN7n5h0O+70QCL7ZSw0Q0gtHZVQ=;
-        b=gyr8Bgz3i5TkB0+GUpg1uLJs2DJfUkQw60vKx3Lh0qmBhJu67YRqKwpjweuL/9J5Iy
-         7wb0uF6yXrHx0LVe7s8++oatFRivnDBzJX/hm6DeDR8k7wcnJgvrgaE1pl/fadF7crzD
-         sgh+e0lVHlCI0xbLouAOIvaQgLLeuN6seOxCIafSKSF3FWWpGnlWf/+XtYF2HTMfmI5q
-         ShgNomGQgfhdcLZugQHnhXHZq8tAsiTJ81stzQMFm9SxdUkveFP87cq5VidZei46s2DI
-         8WuBFlR9QvoQJFB281R6DkjWGJygOCHxQx5i7xyisOtXBu/n2ziElQA93Vb2xkiKoh8E
-         x/FA==
-X-Forwarded-Encrypted: i=1; AJvYcCWQmuSAp92N2CSU6Q0p4nUixBr5uNoy3y/4I7lfmV1w83quQy+Cs4vNw1dUFTUM8eD+bGVNGuCo6TnJj5U=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxEfuFgGhABxgbgtjjBVmk4zxURlxLVdY8Nl80e68P7C488AeSo
-	4mXqfRL2XJFkxZsm9oL7lrTKk5+xS1l/2lIogJD39SiKZDW4cDJv
-X-Google-Smtp-Source: AGHT+IF6KFSL7WK8Q8kMdEVQM7ZBZvcCB/Hsm7d0+iaMLXt4IZg/8vJ6Oj0GBa+uttL89AXNnzmNww==
-X-Received: by 2002:a05:6214:4304:b0:6c1:80d3:8d2b with SMTP id 6a1803df08f44-6c33e3fb944mr7355766d6.18.1724868119993;
-        Wed, 28 Aug 2024 11:01:59 -0700 (PDT)
-Received: from fauth1-smtp.messagingengine.com (fauth1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6c162d1d242sm67879766d6.16.2024.08.28.11.01.59
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Aug 2024 11:01:59 -0700 (PDT)
-Received: from phl-compute-05.internal (phl-compute-05.nyi.internal [10.202.2.45])
-	by mailfauth.nyi.internal (Postfix) with ESMTP id 1AA7A1200068;
-	Wed, 28 Aug 2024 14:01:59 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-05.internal (MEProxy); Wed, 28 Aug 2024 14:01:59 -0400
-X-ME-Sender: <xms:FmbPZpi1Oat4QMoTQmLRsZXFvfm_WFlCeL70LEkihIIMOQS3sdN8kQ>
-    <xme:FmbPZuD9zkBHuL0aH7caioVLXWh_rd_YSxIEjiqtHpFbU-372hbAVLGj0dI5PxFM6
-    09ucXOsKM6m9x18AQ>
-X-ME-Received: <xmr:FmbPZpGwGdKbuJyPW8XVH1Vh4j2J98ja5BRldtWTZMufALDNstjupzHWfJ0>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrudefvddguddujecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
-    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
-    hnthhsucdlqddutddtmdenucfjughrpefhvfevufffkffoggfgsedtkeertdertddtnecu
-    hfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilhdrtg
-    homheqnecuggftrfgrthhtvghrnhepgfetfffhheejgedtudeiffduteefhefggedujedu
-    hfeifefgiefgveeuudeludffnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpe
-    hmrghilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihht
-    hidqieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrg
-    hilhdrtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthhopeduvddpmhhouggv
-    pehsmhhtphhouhhtpdhrtghpthhtoheprhhushhtqdhfohhrqdhlihhnuhigsehvghgvrh
-    drkhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgv
-    rhdrkhgvrhhnvghlrdhorhhgpdhrtghpthhtohepohhjvggurgeskhgvrhhnvghlrdhorh
-    hgpdhrtghpthhtoheprghlvgigrdhgrgihnhhorhesghhmrghilhdrtghomhdprhgtphht
-    thhopeifvggushhonhgrfhesghhmrghilhdrtghomhdprhgtphhtthhopegsohhquhhnrd
-    hfvghnghesghhmrghilhdrtghomhdprhgtphhtthhopehgrghrhiesghgrrhihghhuohdr
-    nhgvthdprhgtphhtthhopegsjhhorhhnfegpghhhsehprhhothhonhhmrghilhdrtghomh
-    dprhgtphhtthhopegsvghnnhhordhlohhsshhinhesphhrohhtohhnrdhmvg
-X-ME-Proxy: <xmx:FmbPZuTfIVLKHGZtwjtHODwWwCwHRxWycFDbhWEHVmhx9YgW58Xb_Q>
-    <xmx:FmbPZmzwBsK7nrV_BSYOyvdSAH8YdBbz-0isuahc24knNqKkbXCqwQ>
-    <xmx:FmbPZk4CbKXVRcXrwRCaAnaI0mrT3qolVN4eRpipHzmrabL7VeIbJA>
-    <xmx:FmbPZryglK_bCv9rNdC-eo-uVMGIWI-bn8OrhllIqmI52ez25A424w>
-    <xmx:FmbPZugksohC1kBUKKDQnDqQrwDOD8cEyMGH9N7X6mBccL3zdF6ybznw>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 28 Aug 2024 14:01:58 -0400 (EDT)
-From: Boqun Feng <boqun.feng@gmail.com>
-To: rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Cc: Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>
-Subject: [RFC PATCH] rust: Provide correct provenance when constructing THIS_MODULE
-Date: Wed, 28 Aug 2024 11:01:29 -0700
-Message-ID: <20240828180129.4046355-1-boqun.feng@gmail.com>
-X-Mailer: git-send-email 2.45.2
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="EadeC2G5"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D46E6C4CEC3;
+	Wed, 28 Aug 2024 18:15:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1724868939;
+	bh=FveA6ivn7jNuVVJwt3ZVsWXWe3VU5PK0bqzTdYvMwNE=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=EadeC2G5/c1OO3GBWW8sYLNVlSbhUacvcdVwKY0jRzfddZi1t7HJ8/fsSzoH+3JRC
+	 J0LKRmnRgedjLZNQ2c9w+ALCX6a0iPCaejEuyG00t/uvjIMDPr+DlRhKaUTdBTtuLh
+	 0IBCUzeLx3lRTHMKtMY9HoKs1WvyILtzA6KRhQO5czQ/a03dvktee4MhrMiCIFikVq
+	 pU3gtAGq6cM/JPlK8mOYQWWSFoKdZv635VvekJOrk2XoogZYhJvYtIxosei722hZ+O
+	 azMuOef5YszfO3fiI96P8hkfbwaJru15Po7JcGvpptO5vfF20LhkuJlfEaLxzW5z/J
+	 i/FK2wb7WOEsQ==
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-533488ffaf7so9680588e87.0;
+        Wed, 28 Aug 2024 11:15:39 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUDVfqqaeYskwunGlOJ7KjFJfvuank/jPvc+9yipR1fbpF2IDd14+vARJJW8NcqKNFZcc48abaqCWIFegCd@vger.kernel.org, AJvYcCUXf3f+RJ5ARwqbxZQtj4qqBykXa3gBifp6c0akLN1PlGjfqBOHRLliIfwPtRQb5a7dDHrhflxlt8U0t6x3+w==@vger.kernel.org, AJvYcCV8XRmTQ6XPkgDAGaetTQIO9BoIzGWvT0aaacEoWv7llR1w1pq3jZ43vnYgtpcY5eZLfkIPiw6XKSrF0mg=@vger.kernel.org, AJvYcCVAIiJR7IIoQh3G8bX3Q6lwJwdUljwbf5XG20yXhv7IeyX19s8IxJzs3biydi0FmriMyrR1yZn3R8BlZ5rWTso=@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywf3RvqaPAQr8q3QXMjlMEgyMTzxzBsLA3KmW3z1/2FELuY/SKB
+	IWqegYynNVpUxNLCyXKaL/BPugXpLT22z5tj7NqBtQ3GyqxW8QMXIKg6+2voAVrP5S0mP4FJLG2
+	zX5n2gKFRtzE1inSJG2Jbe5qFzBg=
+X-Google-Smtp-Source: AGHT+IF/63jL53P75A8iee8qUEGbkNUdjDngWZczENu3dFzHOlQ0gMsu6LTAAnvPf8fF3Lg63689rhWEBKtJDKSCfY8=
+X-Received: by 2002:a05:6512:e92:b0:533:97b:e272 with SMTP id
+ 2adb3069b0e04-5353e5aae0emr99002e87.41.1724868938342; Wed, 28 Aug 2024
+ 11:15:38 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20240815173903.4172139-21-samitolvanen@google.com> <20240815173903.4172139-27-samitolvanen@google.com>
+In-Reply-To: <20240815173903.4172139-27-samitolvanen@google.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Thu, 29 Aug 2024 03:15:02 +0900
+X-Gmail-Original-Message-ID: <CAK7LNARQncjxxqbjiMHXdAnakpo8QYo-5kYnN=KaD2xDe0uXPA@mail.gmail.com>
+Message-ID: <CAK7LNARQncjxxqbjiMHXdAnakpo8QYo-5kYnN=KaD2xDe0uXPA@mail.gmail.com>
+Subject: Re: [PATCH v2 06/19] gendwarfksyms: Add a cache for processed DIEs
+To: Sami Tolvanen <samitolvanen@google.com>
+Cc: Luis Chamberlain <mcgrof@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Matthew Maurer <mmaurer@google.com>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	Petr Pavlu <petr.pavlu@suse.com>, Neal Gompa <neal@gompa.dev>, Hector Martin <marcan@marcan.st>, 
+	Janne Grunau <j@jannau.net>, Asahi Linux <asahi@lists.linux.dev>, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Currently while defining `THIS_MODULE` symbol in `module!()`, the
-pointer used to contruct `ThisModule` is derived from an immutable
-reference of `__this_module`, which means the pointer doesn't have
-the provenance for writting, and that means any write to that pointer
-is UB regardless of data races or not. However, the usage of
-`THIS_MODULE` includes passing this pointer to functions that may write
-to it (probably in unsafe code), and this will create soundness issues.
+On Fri, Aug 16, 2024 at 2:39=E2=80=AFAM Sami Tolvanen <samitolvanen@google.=
+com> wrote:
+>
+> Basic types in DWARF repeat frequently and traversing the DIEs using
+> libdw is relatively slow. Add a simple hashtable based cache for the
+> processed DIEs.
+>
+> Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
+> ---
+>  scripts/gendwarfksyms/Makefile        |   1 +
+>  scripts/gendwarfksyms/die.c           | 170 +++++++++++++++++++++++
+>  scripts/gendwarfksyms/dwarf.c         | 192 ++++++++++++++++++++------
+>  scripts/gendwarfksyms/gendwarfksyms.c |   6 +
+>  scripts/gendwarfksyms/gendwarfksyms.h |  58 +++++++-
+>  5 files changed, 382 insertions(+), 45 deletions(-)
+>  create mode 100644 scripts/gendwarfksyms/die.c
+>
+> diff --git a/scripts/gendwarfksyms/Makefile b/scripts/gendwarfksyms/Makef=
+ile
+> index 623f8fc975ea..fcbac52ca00a 100644
+> --- a/scripts/gendwarfksyms/Makefile
+> +++ b/scripts/gendwarfksyms/Makefile
+> @@ -1,6 +1,7 @@
+>  hostprogs-always-y +=3D gendwarfksyms
+>
+>  gendwarfksyms-objs +=3D gendwarfksyms.o
+> +gendwarfksyms-objs +=3D die.o
+>  gendwarfksyms-objs +=3D dwarf.o
+>  gendwarfksyms-objs +=3D symbols.o
+>
+> diff --git a/scripts/gendwarfksyms/die.c b/scripts/gendwarfksyms/die.c
+> new file mode 100644
+> index 000000000000..ad6ba435d9dd
+> --- /dev/null
+> +++ b/scripts/gendwarfksyms/die.c
+> @@ -0,0 +1,170 @@
+> +// SPDX-License-Identifier: GPL-2.0-or-later
+> +/*
+> + * Copyright (C) 2024 Google LLC
+> + */
+> +
+> +#include <string.h>
+> +#include "gendwarfksyms.h"
+> +
+> +#define DIE_HASH_BITS 20
+> +
+> +/* uintptr_t die->addr -> struct die * */
+> +static DEFINE_HASHTABLE(die_map, DIE_HASH_BITS);
+> +
+> +static unsigned int map_hits;
+> +static unsigned int map_misses;
+> +
+> +static int create_die(Dwarf_Die *die, struct die **res)
+> +{
+> +       struct die *cd;
+> +
+> +       cd =3D malloc(sizeof(struct die));
+> +       if (!cd) {
+> +               error("malloc failed");
+> +               return -1;
+> +       }
+> +
+> +       cd->state =3D INCOMPLETE;
+> +       cd->mapped =3D false;
+> +       cd->fqn =3D NULL;
+> +       cd->tag =3D -1;
+> +       cd->addr =3D (uintptr_t)die->addr;
+> +       cd->list =3D NULL;
+> +
+> +       hash_add(die_map, &cd->hash, addr_hash(cd->addr));
+> +       *res =3D cd;
+> +       return 0;
+> +}
+> +
+> +int __die_map_get(uintptr_t addr, enum die_state state, struct die **res=
+)
+> +{
+> +       struct die *cd;
+> +
+> +       hash_for_each_possible(die_map, cd, hash, addr_hash(addr)) {
+> +               if (cd->addr =3D=3D addr && cd->state =3D=3D state) {
+> +                       *res =3D cd;
+> +                       return 0;
+> +               }
+> +       }
+> +
+> +       return -1;
+> +}
+> +
+> +int die_map_get(Dwarf_Die *die, enum die_state state, struct die **res)
+> +{
+> +       if (__die_map_get((uintptr_t)die->addr, state, res) =3D=3D 0) {
+> +               map_hits++;
+> +               return 0;
+> +       }
+> +
+> +       map_misses++;
+> +       return check(create_die(die, res));
+> +}
+> +
+> +static void reset_die(struct die *cd)
+> +{
+> +       struct die_fragment *tmp;
+> +       struct die_fragment *df =3D cd->list;
+> +
+> +       while (df) {
+> +               if (df->type =3D=3D STRING)
+> +                       free(df->data.str);
+> +
+> +               tmp =3D df->next;
+> +               free(df);
+> +               df =3D tmp;
+> +       }
+> +
+> +       cd->state =3D INCOMPLETE;
+> +       cd->mapped =3D false;
+> +       if (cd->fqn)
+> +               free(cd->fqn);
+> +       cd->fqn =3D NULL;
+> +       cd->tag =3D -1;
+> +       cd->addr =3D 0;
+> +       cd->list =3D NULL;
+> +}
+> +
+> +void die_map_free(void)
+> +{
+> +       struct hlist_node *tmp;
+> +       unsigned int stats[LAST + 1];
+> +       struct die *cd;
+> +       int i;
+> +
+> +       memset(stats, 0, sizeof(stats));
+> +
+> +       hash_for_each_safe(die_map, i, tmp, cd, hash) {
+> +               stats[cd->state]++;
+> +               reset_die(cd);
+> +               free(cd);
+> +       }
+> +       hash_init(die_map);
+> +
+> +       if ((map_hits + map_misses > 0))
+> +               debug("hits %u, misses %u (hit rate %.02f%%)", map_hits,
+> +                     map_misses,
+> +                     (100.0f * map_hits) / (map_hits + map_misses));
+> +
+> +       for (i =3D 0; i <=3D LAST; i++)
+> +               debug("%s: %u entries", die_state_name(i), stats[i]);
+> +}
+> +
+> +static int append_item(struct die *cd, struct die_fragment **res)
+> +{
+> +       struct die_fragment *prev;
+> +       struct die_fragment *df;
+> +
+> +       df =3D malloc(sizeof(struct die_fragment));
+> +       if (!df) {
+> +               error("malloc failed");
+> +               return -1;
+> +       }
+> +
+> +       df->type =3D EMPTY;
+> +       df->next =3D NULL;
+> +
+> +       prev =3D cd->list;
+> +       while (prev && prev->next)
+> +               prev =3D prev->next;
 
-One way to fix this is using `addr_of_mut!()` but that requires the
-unstable feature "const_mut_refs". So instead of `addr_of_mut()!`,
-an extern static `Opaque` is used here: since `Opaque<T>` is transparent
-to `T`, an extern static `Opaque` will just wrap the C symbol (defined
-in a C compile unit) in an `Opaque`, which provides a pointer with
-writable provenance via `Opaque::get()`. This fix the potential UBs
-because of pointer provenance unmatched.
 
-Reported-by: Alice Ryhl <aliceryhl@google.com>
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
----
- rust/macros/module.rs | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/rust/macros/module.rs b/rust/macros/module.rs
-index 571ffa2e189c..aef3b132f32b 100644
---- a/rust/macros/module.rs
-+++ b/rust/macros/module.rs
-@@ -217,7 +217,11 @@ pub(crate) fn module(ts: TokenStream) -> TokenStream {
-             // freed until the module is unloaded.
-             #[cfg(MODULE)]
-             static THIS_MODULE: kernel::ThisModule = unsafe {{
--                kernel::ThisModule::from_ptr(&kernel::bindings::__this_module as *const _ as *mut _)
-+                extern \"C\" {{
-+                    static __this_module: kernel::types::Opaque<kernel::bindings::module>;
-+                }}
-+
-+                kernel::ThisModule::from_ptr(__this_module.get())
-             }};
-             #[cfg(not(MODULE))]
-             static THIS_MODULE: kernel::ThisModule = unsafe {{
--- 
-2.45.2
+So, this entirely traverses the singly-linked list
+every time a new item is appended to the tail.
 
+
+In my analysis, this while loop iterates for thousands
+of times in total for emitting each export symbol.
+
+
+Why isn't this list_add_tail()?
+
+
+
+
+
+
+
+
+--
+Best Regards
+Masahiro Yamada
