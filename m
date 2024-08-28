@@ -1,148 +1,123 @@
-Received: from mail-pl1-f171.google.com (mail-pl1-f171.google.com [209.85.214.171])
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F29D216133E
-	for <rust-for-linux@vger.kernel.org>; Wed, 28 Aug 2024 22:53:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E2221AD3F0
+	for <rust-for-linux@vger.kernel.org>; Wed, 28 Aug 2024 23:09:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724885590; cv=none; b=MPd6ayTIh3rgb1j4b5SuJE2ALy+iPQaPOC82EKjBbVAp9+0yIR0Tb5ZOcQzvU1zfWfba3LuA9gsUKkkZE2ynxY9cUhZYC9khHVSJecdx48ZsxdkwCbN4VkJ/oZF9svmmvRfRNItWChM8Hy4EjQiPF0UyyGqPnyfAwJUcvLVtBCU=
+	t=1724886566; cv=none; b=d99lVDyqXfRY7JeyMn37PwLd24CARFdOqJqCGLuGSifpEinYF9jsnIdoYhXCm5vNI8agGijXeKtMgr6Tada/b9uDygELD9ZGt/Ptr1AqcMk0soAFvRpqmdD6o7XaKzyIgJu4eqg2NtkTiA/qm0E1v38CiNx8k6gmtTEP5yVT5mE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724885590; c=relaxed/simple;
-	bh=vBcDKzqZD0IGH+kMo+OOysCrPxyHMCAFpcXSn+OPSOk=;
+	s=arc-20240116; t=1724886566; c=relaxed/simple;
+	bh=RZmcXzwnrRhYwDoAQj1Jxhe7OhhEeGVabMOYn+OKJEI=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gGeQ8evrJHd9e5lbvOx0AduZLrY3qfRtvbc3W/Q7xwchFMP2TbYyZ0ImwYY3L8MtBL1PCE6q/jZt1pknpV7ngdO5eSihG8gJ9zDb9HFoX6RV5aMqmkZm8JuwIasGpcyPyk38ghN/CMCc0oGAT1jVuLq0HgmiPzhOmjFb0TY2HYw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=d2O4GfF7; arc=none smtp.client-ip=209.85.214.171
+	 Content-Type:Content-Disposition:In-Reply-To; b=WNruQ1fm/2BmbqiLSK6RfjT1NRXeukfNtnlPLeYu38AuzR1xpzn9CHvVQo3bElUcwmCpZnAQiTuoPHirGLplmi5k+d4JOo2ElPYGtSNZm9QR/u97u3V8Rh4d6HCP4DH/v9rH2YcXZe3yf6Ngy5uVdv2ffMFdNLbDDMkXtJD61go=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=H4Mzj55Y; arc=none smtp.client-ip=209.85.214.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="d2O4GfF7"
-Received: by mail-pl1-f171.google.com with SMTP id d9443c01a7336-20260346ca1so76955ad.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 28 Aug 2024 15:53:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="H4Mzj55Y"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-20353e5de9cso72075ad.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 28 Aug 2024 16:09:25 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1724885588; x=1725490388; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=nAbDwChQbWZl01mr4KnwFnysig2L5blgWIiA7h1UA+g=;
-        b=d2O4GfF7WopxCnqOqwsLLniMZHCWPaQPvt3QIdMi9YZJEaqqeR649XtcrztBfCf9pU
-         kAtum6pMD/WYzjSXmPMS6gfRJfqy3ugo074qqigzq7jsj7zZr0XcuT1mhg+tr7OV9elY
-         a9Q6d+jrqmjd6d3sdJV0xWFfcLDw8mmqCujW/lyEbrB5AJ4AEqlM7dzsznVNcJ43Qbab
-         OQwFuJyfQWDk3cuo+TzqsTN0uhtrH7eBpqtvebW3yXpKQHlG88snSzU8TD+sK8iz3Ehr
-         twQOQBMJxEz+np6I3dLHVZBcyMyOCApLKo77SIlJNJPjSd0V3m6+TMHMK/Fp9tMYi+Sj
-         mvYw==
+        d=google.com; s=20230601; t=1724886565; x=1725491365; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=bF9tb8hwDYR6xa7gB1x7sZNbhUYJUgSYOVOAb5zjrCw=;
+        b=H4Mzj55Y4gMWJjD1yLPZX94RAzWQmOtv7QN7sKScGjy84ZXuLZl7MRRSW+5n14ADLp
+         1mv1DSXKXTcK9T4lsvGpZsPosjeUN3M+jNiiBszsGLZTfRzDKl/VC8U0hvjOuRLwfQBP
+         Hm1h5BOIZfPcb7Mrk0/8ENbwdZEijPzrw/qWtU9d8Q8P8np7DcjyDIzVMn+eCsVS9rqY
+         XgrsEuQX3KS7KTat6SaZ1TNqgHSjKoMKtpXROs9+3lDy47NoTCfcQzh7c6oUYckFX8Ah
+         l5fYnYM+0oqAS41V5b59z6BSEwP7RvB186VBIGi5eNx23qGQO5LcFTdj4w+3vvCA4Vih
+         kNGg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724885588; x=1725490388;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=nAbDwChQbWZl01mr4KnwFnysig2L5blgWIiA7h1UA+g=;
-        b=EB9f5Z9t3RfNqLRCp1kkg1WqUw9UxNKzpTJc+p/u0boSfhWQ0UfQV6HHZWlkMQqSX0
-         V+xTnJ9LH1Wg4puB1fksAmYJNe113ERQjgMkiRh40jpBvoyqpNhf7eX6oIHPMB/bClYJ
-         aDJjX4ToUSUKJzfCB4u3nUDQ3abDhhds6dx+6MRDZ0VU2i7KHSQGgaNcNxTCEqLgUoUD
-         xsw8OqmzqD/3Rhhg1CNRSdSuQG+GKGss1vufT25w2DcrapDb7+kHB1u3JLBvJoTBdeeU
-         kwWiehQVpV563HAvPLJawGPsL+3oW4HAODlj2bZ8FBOj7XPd7HdiIRi0JX0ynGX4SbXu
-         A2Fw==
-X-Forwarded-Encrypted: i=1; AJvYcCV0zcpzpKEJuhhtPdyFBZj8ABdFdhN9GQhTErCZLbpX7SL3ONgK1C7fq9ZGiRRoEkAe0mWqMZKCebXzRSIPWg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YywewQR/HXNje+Y4LxBdSDLLionwc6mBPetqV/gsOZkxlQjCCX2
-	9ZTL2f2Kp+lScOcwj04uDZZy0R5QzZQmioKuG5IvQ0jfbc3PCAR0LXltALPCsg==
-X-Google-Smtp-Source: AGHT+IEQaTc+wud0mzSYI+hEe/4PWmz2+rLLZ8+Mx8YVlCteMCgZHZsbCbUbqJpRqiB0krS+Bxb7ZQ==
-X-Received: by 2002:a17:902:e849:b0:1e0:c571:d652 with SMTP id d9443c01a7336-20510a7f2e1mr522765ad.1.1724885587784;
-        Wed, 28 Aug 2024 15:53:07 -0700 (PDT)
-Received: from google.com (83.92.168.34.bc.googleusercontent.com. [34.168.92.83])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2038557eec1sm104064935ad.91.2024.08.28.15.53.06
+        d=1e100.net; s=20230601; t=1724886565; x=1725491365;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=bF9tb8hwDYR6xa7gB1x7sZNbhUYJUgSYOVOAb5zjrCw=;
+        b=G5FCuM0zC/7MvhrCnvltV8AI1EeVAGsQxyDfH2VIoeF/LNRAa6l6ai3V3/FEs2ei96
+         PZzRzH0UpAkO/e4Xd8ybCBOFBdoHk+arLjYdyRKXMy6Jz4iKk5jd0nJxLdcsrewk6PJW
+         3WQUOmlWuqExTqxqnhQXUiyT6PdYMn7krXrEJ8qAMybHeA3JgmkpdbR4ta+d1OuNNRYN
+         vNEzI2hbCAVAg4alUA+EzU/a/+vBGyVeOMLPcaleccmEzoFq9VQ/pUxMsj3QBh11XG3w
+         hcIvDtUwtBodfVJr0kTtoJpkdtevub/H95VTC5AwhaTuTvBOMSoaQT/EDe00rAImCLFZ
+         w3sA==
+X-Forwarded-Encrypted: i=1; AJvYcCVupg3W36uFga3a0GcrKEBCN1giiKx6WySN8GY00yauSImO9z0pazLJUX/ozIPWeo5tV9U4yFJTcaGXZwisow==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzxmsyy/OEymz6CVgdJm2q/A1jjFlPcLhkoLkz3J1bNSuR8fL/c
+	4d8A/KjA+qXueNp1VKSddUAtgfLNaXxmTn/Vi6AiYB8Jkq690/ARANFr18/6lw==
+X-Google-Smtp-Source: AGHT+IGefsWlldxzVDyfJdh6ODHqSR4DIkOY4bryKmhorJbglzA63HVpwHsAO+Qawqv6PlgLxud4xg==
+X-Received: by 2002:a17:902:ce8a:b0:200:7d11:e8e3 with SMTP id d9443c01a7336-2050d1f0c57mr1140385ad.14.1724886564314;
+        Wed, 28 Aug 2024 16:09:24 -0700 (PDT)
+Received: from google.com (226.75.127.34.bc.googleusercontent.com. [34.127.75.226])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-715e55a5b56sm5350b3a.57.2024.08.28.16.09.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Aug 2024 15:53:07 -0700 (PDT)
-Date: Wed, 28 Aug 2024 22:53:02 +0000
+        Wed, 28 Aug 2024 16:09:23 -0700 (PDT)
+Date: Wed, 28 Aug 2024 23:09:19 +0000
 From: Sami Tolvanen <samitolvanen@google.com>
-To: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Luis Chamberlain <mcgrof@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+To: Petr Pavlu <petr.pavlu@suse.com>
+Cc: Masahiro Yamada <masahiroy@kernel.org>,
+	Luis Chamberlain <mcgrof@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Matthew Maurer <mmaurer@google.com>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
 	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Gary Guo <gary@garyguo.net>, Petr Pavlu <petr.pavlu@suse.com>,
-	Neal Gompa <neal@gompa.dev>, Hector Martin <marcan@marcan.st>,
-	Janne Grunau <j@jannau.net>, Asahi Linux <asahi@lists.linux.dev>,
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-modules@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v2 00/19] Implement DWARF modversions
-Message-ID: <20240828225302.GH2130480@google.com>
+	Gary Guo <gary@garyguo.net>, Neal Gompa <neal@gompa.dev>,
+	Hector Martin <marcan@marcan.st>, Janne Grunau <j@jannau.net>,
+	Asahi Linux <asahi@lists.linux.dev>, linux-kbuild@vger.kernel.org,
+	linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v2 02/19] gendwarfksyms: Add symbol list handling
+Message-ID: <20240828230919.GI2130480@google.com>
 References: <20240815173903.4172139-21-samitolvanen@google.com>
- <CAK7LNAQ0dHq3eALkvGDSCyVKOvhBqwCEG3BTQ0h52Xq_1YNu2A@mail.gmail.com>
+ <20240815173903.4172139-23-samitolvanen@google.com>
+ <95db3178-a2ce-421e-8024-afd7fa3359a3@suse.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAK7LNAQ0dHq3eALkvGDSCyVKOvhBqwCEG3BTQ0h52Xq_1YNu2A@mail.gmail.com>
+In-Reply-To: <95db3178-a2ce-421e-8024-afd7fa3359a3@suse.com>
 
-Hi Masahiro,
-
-On Wed, Aug 28, 2024 at 04:04:09PM +0900, Masahiro Yamada wrote:
-> On Fri, Aug 16, 2024 at 2:39 AM Sami Tolvanen <samitolvanen@google.com> wrote:
-> >
-> > The first 16 patches of this series add a small tool for computing
+On Wed, Aug 28, 2024 at 02:35:29PM +0200, Petr Pavlu wrote:
+> On 8/15/24 19:39, Sami Tolvanen wrote:
+> > diff --git a/scripts/gendwarfksyms/dwarf.c b/scripts/gendwarfksyms/dwarf.c
+> > index 65a29d0bd8f4..71cfab0553da 100644
+> > --- a/scripts/gendwarfksyms/dwarf.c
+> > +++ b/scripts/gendwarfksyms/dwarf.c
+> > @@ -5,6 +5,48 @@
+> > [...]
+> > +
+> > +static bool is_export_symbol(struct state *state, Dwarf_Die *die)
+> > +{
+> > +	Dwarf_Die *source = die;
+> > +	Dwarf_Die origin;
+> > +
+> > +	state->sym = NULL;
+> > +
+> > +	/* If the DIE has an abstract origin, use it for type information. */
+> > +	if (get_ref_die_attr(die, DW_AT_abstract_origin, &origin))
+> > +		source = &origin;
+> > +
+> > +	state->sym = symbol_get(get_name(die));
+> > +
+> > +	/* Look up using the origin name if there are no matches. */
+> > +	if (!state->sym && source != die)
+> > +		state->sym = symbol_get(get_name(source));
+> > +
+> > +	state->die = *source;
+> > +	return !!state->sym;
+> > +}
 > 
-> 
-> Splitting a new tool into small chunks makes line-by-line review difficult.
+> Sorry, I don't want to comment much on function names.. but I realized
+> the name of is_export_symbol() isn't really great. The "is_" prefix
+> strongly indicates that it is only a query function, yet it changes the
+> state. It makes its caller process_exported_symbols() hard to understand
+> on the first read.
 
-I split this into smaller pieces to make it less of a chore to
-review, but I'm also happy to squash these into larger patches if you
-prefer. How would you like to see this split instead?
-
-> For example, 02/19 adds malloc().
-> 
-> 03/19 immediately replaces it with calloc().
-> 
-> Then, I wonder why you did not add calloc() in the first place.
-
-Yes, that wasn't ideal, but like I said in my other response, I tried
-to keep the churn minimal. Please let me know if you spot any other
-annoyances.
-
-> And, I do not think it is so "small".
-> It is bigger than the current genksyms.
-
-In my defense, the first version was smaller, but sure, I'll drop the
-false advertising from the cover letter now that it has more features.
-
-> > symbol versions from DWARF, called gendwarfksyms. When passed a
-> > list of exported symbols and an object file,
-> 
-> 
-> Why is "a list of exported symbols" passed separately?
-> 
-> All necessary information is available in the object file.
-> (The export symbols are listed in the .export_symbol section.
-
-Unfortunately this is not the case for Rust object files where exports
-are handled separately. Passing the list of symbols as input feels
-more flexible to me, and also is rather convenient for debugging.
-
-> > - Added a --symtypes flag for generating a genksyms-style
-> >   symtypes output based on Petr's feedback, and refactored
-> >   symbol version calculations to be based on symtypes instead
-> >   of raw --dump-dies output.
-> 
-> 
-> 
-> I do not know if this is worthwhile.
-
-Greg, Petr, do you want to comment on the usefulness of the symtypes
-output? I was under the impression it was a useful tool for figuring
-out exactly what caused the versions to change?
-
-> And, it is obviously a build error.
-> 
-> gendwarfksyms cannot create %.symtypes from %.c.
-
-Ah, this obviously needs to depends on the .o files instead. I'll sort
-this out in v3.
-
-Thanks for taking a look!
+I see your point. How would you make this more obvious? get_ doesn't
+seem entirely accurate either. match_ perhaps?
 
 Sami
