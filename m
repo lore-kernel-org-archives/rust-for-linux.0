@@ -1,55 +1,55 @@
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
+Received: from mail-pl1-f181.google.com (mail-pl1-f181.google.com [209.85.214.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADC3F1AB528;
-	Wed, 28 Aug 2024 21:35:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE82C15ADB3;
+	Wed, 28 Aug 2024 21:38:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724880902; cv=none; b=bCikungzkf390KIfcxS0SrrGLbB0SG1aOyfzjJxbr6nDx3GBwHicuz2Z+mpnmLtUIF/l5cJf/UI4DKm+rA7NBZgoQDFAM1VqVdOSVQNlI+GK1HutSdRtmZTT+oKFHDqKO/2iTxaPcFJ5w/tQzm5RYEoYbekCQukUlcLRaLlh+us=
+	t=1724881092; cv=none; b=IV0OrjYp3yk84BbAjsmx5FnwBKAxB5dXHcQVf+V7y9qydAAQYYBpSRbLE+rUSgOg++C0XugpKpwEkKQkylcmtxOROpgU6+VgYwf/FFRB7SKfev25KaW6MgYcNLufxEmm3SYgXtGTREMavfGDkbKo2pMGCRPr5ZWx4q4uZmSItNE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724880902; c=relaxed/simple;
-	bh=u6kW+6ArbewrNzZcKJ3cCim3nQ5/kCbS8zfS9851Gio=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=dTHzT9qqeZzKagTJ+AJgduR6boDYAvwcgilmBDbvQSP1137L8dLivAhIq7Wf4b/DbPpzKdiTz0bFTXeHgLacHeVcikUVEPvlNtbUP9IPh4sbH5EQUXtEpX6Kjk6PTd3vheZOiEF7aT8c56nuS+1iFI8N2qVMJ58tbMEcdfWwE/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dEs17HGM; arc=none smtp.client-ip=209.85.210.173
+	s=arc-20240116; t=1724881092; c=relaxed/simple;
+	bh=mXpwxscITuJmDBnHHHFo2Unzf4ty8r85TPNYp2/qzwQ=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=U+WTUvWSWQDNqZLSFL8knM1PMKxa/ywO80TlQKC90/7qWC3rhbaExr2D6QSaiqo7su8W4oF8eWhfJobpXOoEKvNy93yzqUtFgiR9VFC+QfDtiT21m7r4YyivAi0QJoCO2VSA8qVY52uTvxwTlHD9qWh8m4ZHhOW8grqukVTD6uk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=jjuRKgzH; arc=none smtp.client-ip=209.85.214.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dEs17HGM"
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-7142a93ea9cso5298418b3a.3;
-        Wed, 28 Aug 2024 14:35:00 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="jjuRKgzH"
+Received: by mail-pl1-f181.google.com with SMTP id d9443c01a7336-201fae21398so51570265ad.1;
+        Wed, 28 Aug 2024 14:38:10 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724880900; x=1725485700; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1724881090; x=1725485890; darn=vger.kernel.org;
         h=content-transfer-encoding:commitdate:commit:author:mime-version
          :message-id:date:subject:cc:to:from:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=XdyQszHmpMjA1lielnMCOCT+CVl9suwnpweUfFJE9W4=;
-        b=dEs17HGMr7ms8RekeL+OBCEb9KuiHxw2vMZ2mEUk4QMoXph3+YR4qA1+E0YuvqdsQD
-         WbVfjdtddngGQeEn9esSExGRn6moQ9XJ6j/cwS6SIGCM3pDHAsvFHmAfOA4JJVeTx9VA
-         yPtWYLi46CJAu7lEHaS666hqoB6biWk4uCRf+xeoiZS/Kiopze2mRjKxvGzAKqthfKHO
-         EyaiZNtwvFKJ6NGLQJwYfB5r6ecqFoVbRzIDGTEZxYvg/NlzK0G9mHX6vbN3Ox9y7fcT
-         vYSbpmazU6hL8JuIGr8EdtvB4hU0hgGn0E74yeW0qkcX6OZrWKPXbT01Du//ZcJKasqz
-         zoaw==
+        bh=jMk99BuXbDSj6pqZLfc1bsxguv/U5uK+knnZthXiKeo=;
+        b=jjuRKgzHNiyfZQ7DTUNL9Bm5WnMDX5KhN1qv0+I9qjcU0zdTAnrN9lgzfUClNY2DIh
+         TvvLSDnI+p9wc6zkoKf4gMpqG5fYYvoluADkbKUwXtum0YuZy2G8KEnGXoMsW9jxaS1T
+         1frsXHiaX7dTVBcmI54AEQURr2V+6ZppBpEnfz6LyBbkzB+XXU8P4FwmzrQujeTdR2EF
+         j8hA+eXJZaSjd4S1Abe0eIfVrtKaftIlUXOLeGCx12pteswuoH2NjdkvvBOD5n/FsY4B
+         6xHM/OgoqmYUFuUT8dT5/R3oIIyf4MeJBQmr1iKVwlOq1qnuy0T/q6aeVGux4atsjfPY
+         kqeQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724880900; x=1725485700;
+        d=1e100.net; s=20230601; t=1724881090; x=1725485890;
         h=content-transfer-encoding:commitdate:commit:author:mime-version
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=XdyQszHmpMjA1lielnMCOCT+CVl9suwnpweUfFJE9W4=;
-        b=f2sxKN2XNSx59XboGQN5PklP3gJATWT+vI/wf2/xiw1VxtpkOex6RFR4W4iKK8YCg9
-         OJdYZeCnzN9S9stw2mtAbwQn3ztEu8fVn5jl5PalNgP1VkNzdgwHDu+mM9Pjat8pmgRQ
-         hvKOjGMDZYnk3uqe7vu0+O8HiHMQMfitUY3htdbgF80i7v1AnQl4u8QeSiVKdRMw+Dkt
-         3NAKAQUURxcZYW8zqiv0xf2zj99wvQEvQiMdJcJFpKjYufK1c/ONxg5GIBDnzheNdLut
-         heh4uF1L1yR/fpmafl75WH25G9ySyYaMHh4aEd+91sbBZ1U72a958QyLUUOUT1u1IEQy
-         94Ew==
-X-Gm-Message-State: AOJu0YzNZO2Rg71ljjUX/EylbifS7RUmDDV+D8mTwOUfmSAQ/9AAynXl
-	ekBWbQP92repRj+YZGd9w7L88JI4ePD56Fknxb/mOyMwdD8lCHw2kxrKcaP1KA0=
-X-Google-Smtp-Source: AGHT+IH6YpYbGSLGbv/6QL0onHVlxfvlNcSz95VJnl66HChd64IDoO0wGi155UZej8DlZbj+DN8W0w==
-X-Received: by 2002:a05:6a00:3d4c:b0:714:25ee:df68 with SMTP id d2e1a72fcca58-715dfaf2ed4mr1006275b3a.8.1724880899523;
-        Wed, 28 Aug 2024 14:34:59 -0700 (PDT)
+        bh=jMk99BuXbDSj6pqZLfc1bsxguv/U5uK+knnZthXiKeo=;
+        b=mC7DHWXZR8BkSc8J+jEdeCcBClTCrSdiWIHbwkaClbu8p5mcTYHhGqwI9ff1QHYGLY
+         alVl9X8NC/6UZyEbod42x5bmw0Vs9Ur5mKKrDOxxE8MGZt6DMLmBroYoKEd6lIaKkzL4
+         mOroUzF+W9ZQOwj7Gz9LZaK4HEvm6XgXrH/M6xfBS6UNPRYmVi+KHSb8zD8EtAULE+KT
+         K32Scu9Hv5xHJ0GOrPz5I53dCPZFrNRqTJL/6q8QS2HOEV2+BCGmMwxM+7CzdlzYV40T
+         6/icqR/KPVUi/gxcN8fYF2x1sGoWobG3E4x6iIYuddpmORZoeelA9RxMrYQvFOdQ4+Bh
+         8EBg==
+X-Gm-Message-State: AOJu0YzQynN5pklAcUPmYZEqYY52EBgJVWaFDW3XIkxCJpPti247bJ6R
+	01Me7rGzXQJhtkxfxc+nfRcVcKHhIfcJL3yytUQ3ngznXK29SW467Zme4lNCMbs=
+X-Google-Smtp-Source: AGHT+IFaT8OEEW0oabyNfRxvHJKgCkfSakODxyJlgwi2BKF24q8TjzgeSilZGLAJ/APAfWrYwd7Lyw==
+X-Received: by 2002:a17:902:e886:b0:202:3bae:9718 with SMTP id d9443c01a7336-2050c23beecmr9354515ad.15.1724881089707;
+        Wed, 28 Aug 2024 14:38:09 -0700 (PDT)
 Received: from localhost.localdomain ([2405:201:f022:f804:ca0a:f615:5d6e:f4e1])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-71434af17ccsm10475739b3a.8.2024.08.28.14.34.56
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-20385566585sm104084125ad.4.2024.08.28.14.38.07
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Aug 2024 14:34:59 -0700 (PDT)
+        Wed, 28 Aug 2024 14:38:09 -0700 (PDT)
 From: Siddharth Menon <simeddon@gmail.com>
 To: rust-for-linux@vger.kernel.org
 Cc: linux-kernel@vger.kernel.org,
@@ -58,9 +58,9 @@ Cc: linux-kernel@vger.kernel.org,
 	joe@perches.com,
 	Miguel Ojeda <ojeda@kernel.org>,
 	Siddharth Menon <simeddon@gmail.com>
-Subject: [PATCH V2] scripts/checkpatch.pl: check for non-permalinks to Zulip
-Date: Thu, 29 Aug 2024 03:03:57 +0530
-Message-Id: <20240828213357.21241-1-simeddon@gmail.com>
+Subject: [PATCH V3] scripts/checkpatch.pl: check for non-permalinks to Zulip
+Date: Thu, 29 Aug 2024 03:07:54 +0530
+Message-Id: <20240828213754.25137-1-simeddon@gmail.com>
 X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -69,8 +69,8 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Author:     Siddharth Menon <simeddon@gmail.com>
-Commit:     9c32b4f2ad277b94a54955b0285ff7dcfb5087aa
-CommitDate: Tue Aug 27 23:39:18 2024 +0530
+Commit:     846988fa0b20c2eb1bac2ee341c973762df9a1f1
+CommitDate: Thu Aug 29 02:49:40 2024 +0530
 Content-Transfer-Encoding: 8bit
 
 Zulip links to https://rust-for-linux.zulipchat.com can break in
@@ -91,12 +91,15 @@ V1->V2:
 Corrected the Github link to the right issue,
 Fixed grammatical errors and Replaced the link to reference 
 Documentation to one that is easier to understand.
+V2->V3:
+Updated the URL to link directly to the section in the documentation 
+with instructions on how to create perma-links.
 
  scripts/checkpatch.pl | 10 ++++++++++
  1 file changed, 10 insertions(+)
 
 diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-index 39032224d504..41630532a056 100755
+index 39032224d504..58a5e02c588f 100755
 --- a/scripts/checkpatch.pl
 +++ b/scripts/checkpatch.pl
 @@ -735,6 +735,10 @@ our $obsolete_archives = qr{(?xi:
@@ -117,7 +120,7 @@ index 39032224d504..41630532a056 100755
 +# Check for permanent Zulip URL
 +		if ($rawline =~ m{http.*\b$zulip_forums(?!(?:/#narrow/stream/.+/topic/.+/(?:near|with)/\d+)?($|\s+.*))}) {
 +			WARN("PREFER_PERMANENT_URL",
-+			     "Use permanent Zulip links when possible - see https://zulip.com/help/link-to-a-message-or-conversation\n" . $herecurr);
++			     "Use permanent Zulip links when possible - see https://zulip.com/help/link-to-a-message-or-conversation#get-a-link-to-a-specific-message\n" . $herecurr);
 +		}
 +
  # Check for added, moved or deleted files
