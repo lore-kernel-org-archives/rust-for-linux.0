@@ -1,58 +1,58 @@
-Received: from mail-pl1-f177.google.com (mail-pl1-f177.google.com [209.85.214.177])
+Received: from mail-pl1-f179.google.com (mail-pl1-f179.google.com [209.85.214.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC1B61AD9EE
-	for <rust-for-linux@vger.kernel.org>; Wed, 28 Aug 2024 21:56:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AE3B1AC891
+	for <rust-for-linux@vger.kernel.org>; Wed, 28 Aug 2024 21:58:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724882204; cv=none; b=eloxCsPzbzH5n98eFitYwGtx0U3XRQARl8ffDLj9xKfoCJcrrcAkIc0UWtH9v7RoMdgP9hV6wMV12be/sJDhCBG9QBdhERR8cn87f0KmXs9C4ZDbag0rYj1jvHN5x7S88imqgn3hLhSzKRY4O00zK1JpYM4SpxQY5g2DP24jikw=
+	t=1724882335; cv=none; b=u2AK22UiI4mr5DLWODdkt6BjOgUhNlLn2TeUz/tzk6PeWArh+T36YN9k0O1+30Ay7G9BcEdgJwzzC4rv22iTOvXyNpxw/UAlb/W15P4txKWwgOMnxOh4W+/05WKy2APNqCbNSPR5J7ttdRUFIazIsAIgUn5KkmoLwIl88NgKNhI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724882204; c=relaxed/simple;
-	bh=PID4ATgIcRdlwJUDpahwj8UfLb1Vr51kkg4K6Y9E+zY=;
+	s=arc-20240116; t=1724882335; c=relaxed/simple;
+	bh=o+gAn/ilZ3C56975j8rPvUkgN8dfBSz6M6D5Wf/lSRQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gfSaVnZOicPGCY/TDCFLIXJn7wxXPG/Ffs6WcZ7/ggMITkUo6gExw1Kfq0R9ZMLohpTYaOXrj34nVO8P958IPRWmobIHYaPQuiXGBEGKw7xNtsl94Gtzhksg3V2Cdl1JSXwtpigp39+anmNOZNWpNid72fh7I73R2zhnVNl3lNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=u430U86/; arc=none smtp.client-ip=209.85.214.177
+	 Content-Type:Content-Disposition:In-Reply-To; b=jBxN1ftAuwI5VA+DJFwAHFhCR3VMg1kf1dKl4Ddc/f9WxJkdChDBEowCTXzTlPqill2KT3rbHszJPSWdg2l9AsPPsYrmijQokc/cZsr8nKL85Ci2fZfF8C8zvCO2Wyclo54Z1yiSFyrtzdAGXGsZqgNWKBYj29WhmEeYL1iDoa4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=v+V4kCIM; arc=none smtp.client-ip=209.85.214.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="u430U86/"
-Received: by mail-pl1-f177.google.com with SMTP id d9443c01a7336-201fed75b38so28195ad.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 28 Aug 2024 14:56:42 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="v+V4kCIM"
+Received: by mail-pl1-f179.google.com with SMTP id d9443c01a7336-20260346ca1so70025ad.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 28 Aug 2024 14:58:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1724882202; x=1725487002; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1724882334; x=1725487134; darn=vger.kernel.org;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date:from:to
          :cc:subject:date:message-id:reply-to;
-        bh=oMJtTqWHyENpXYFshc0NGQIcxCOjJlWKHxL6Pc51Vp8=;
-        b=u430U86/w41hIGFRxUWn2jOegZ4k8oU+D01A/WfKA6xHYh9biKU3pjpECPVqChTXeT
-         lh1cnSqRaX7byzuwdtxDxnKpWIFMUVmmbh5u9Yg526AnskSHunCa/RGuYq9iJWUz3pyt
-         bIOeiHXLS8Rq0JbG6TGfrkGVAyzbdE6FrqNS4qWL48M0godsDp1BxyNi3MpIyLolXEl0
-         u7d7wNZ6DfO5QMytEPTUFLEkpfzwtHrwO4+Z9a1+CyWpEhw55v+xc/8v3Zh7t8SbEaKF
-         T7+QXDzVJG+xqTsoqnKdHmizcldii+sbnNFkCqNHUr2aG5F3WVawzyR60yEF4xgyfGE3
-         jQDQ==
+        bh=nnGSwXCYQc4Hwc+sfrpcLFkK6Wt2k6zs0AyOgifdXGg=;
+        b=v+V4kCIMaDH5LZGtMEqJHuPmAHofgBF4kgzrNaRoL7jJ50gC6axGbUpQKImEJYK1oU
+         MZdCnnBcTr7MomTjEriinbhpLMaZlRiRnvNWTyNf7QQfREgJygui0Ju+pN95ngpp9tjH
+         rOYDQTqFaagJFBwbGyH9jwhsb7SG+yh4P/U9jrSSPc4gDvEnRl3nmVz+8WZLdiQw36Ge
+         +EJbo8D4UskccJHKoMZDtmW7nVxwTu+YL0ukoJAL/t5awf//J9zZ3i44VW+zcn7t6m2I
+         KgfjFyCc3TpLZqMszFA2tPr9cfrt7hYy4jqLoWFDUGzPBfKyy/R2xp/vFTFWya32Aqhs
+         61Jg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724882202; x=1725487002;
+        d=1e100.net; s=20230601; t=1724882334; x=1725487134;
         h=in-reply-to:content-transfer-encoding:content-disposition
          :mime-version:references:message-id:subject:cc:to:from:date
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=oMJtTqWHyENpXYFshc0NGQIcxCOjJlWKHxL6Pc51Vp8=;
-        b=TyGLnUQRizMrZk0EpUZyKFow+h6SD4bfbJTHBKtMMnXsU6SkuFqAO5N5T4+xaDhqiC
-         8+kPSUaIOkWydAbNDCcl/WKObe7fnuujy86cdcnI+2iXZtIhQuyMmEjCgH72uEBcSSQW
-         ykE/Npon++QbyC4WHxcxv5C4jWEEGKLEEMWknOZAlUsY+tf1Sm9tSShFPP6ANsZloO7P
-         TOQRO2Dxr60EndUAjKXqZJLntDUHEDIeb5yHBCe+eiPtpUKd6v22KNw8egwHf3u4eUre
-         TinkziXoo1Ii+8WPosgchXj7dqjOwCxWUCHrVzS+kjoBH2AD6QqbKj1UNaoYbZj5d1KV
-         +ChQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVSBa2Ob0iye6aZ3AfkOCDwwAbov/xVRzBfQf2v20w27QI4qZFvUzLUuOnlctxXXsidHBv5Sg8QQNkZ/XNa0Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YylGjTaK/vIsJwWgVLbYF7oZw1ccTxyzxaPLYTxWJlBWt5fFkNh
-	9o6Q+EMYVVX6dZvrpo6ABSogwCIshFPcewkp3soDUZNaFmyWxJ+fGj4/0w6M5Q==
-X-Google-Smtp-Source: AGHT+IFWsFfpSmAomvEtt5G6mILaLDEaIo62yZwexT1w7z/fqh1GYiNgxkqAWApkzmvRxk0nVu7qtg==
-X-Received: by 2002:a17:903:187:b0:1f7:1c96:d2e8 with SMTP id d9443c01a7336-2050d1999a0mr965815ad.10.1724882201781;
-        Wed, 28 Aug 2024 14:56:41 -0700 (PDT)
+        bh=nnGSwXCYQc4Hwc+sfrpcLFkK6Wt2k6zs0AyOgifdXGg=;
+        b=YjX4PVKlGRrm4iKG+lYLYhn4hYG7UKZFxSDE595GwV9pBBGQiEKCOFZoRs6wn4XCY3
+         cOkpyd5JFl6nxosXAqdDzR+YjGH4mdKLHGZArk91mtqrEStwju6zWli2G+t8vMXLCJgO
+         UquQrBh0K7rgJSF8aJoXB8vlPd+Rlf150fdbrbmr0c1qeciFb285UNoA4sESxlhHnSdb
+         tL0yNOtmUjfmz+kPxY8R3BEulEt+ws8WNcN4HWsi9vtH2C3ye3fA5zTwOeZv/oVvLpdg
+         dPnmyV7ANXU9sXXR1rAycLvZqPPp9bql8lUJOhTnBbFLArjtVrewoSTsN7kbVNIfWa0J
+         zcgA==
+X-Forwarded-Encrypted: i=1; AJvYcCXmbd8Si4i9bcU33rSjKoqRTTLe9bbLUazq1ixXpRXo8w4IatvmN3u+/SGTCtioCpkTg7ZIjmYViWWV/dZIKw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyewoaZZ6ZdtAUatpfOr88+e7Z+++xMcnP7fhYXZu9FLlnJY1aw
+	WxPgQCvxZ2nfBJYuI1X/Bv6FSlivgRnrsHenVBl+jRlnJvr1D0s0hsHmA04XEw==
+X-Google-Smtp-Source: AGHT+IGVfzjHYyRASEld6yxxMpC9vJZBxYqjU0CXEpHxInbohWJsi3m/XdXyujxzXPDjs/QQJYYJow==
+X-Received: by 2002:a17:903:604:b0:202:883:c0d with SMTP id d9443c01a7336-2050d2366demr1037415ad.24.1724882333453;
+        Wed, 28 Aug 2024 14:58:53 -0700 (PDT)
 Received: from google.com (226.75.127.34.bc.googleusercontent.com. [34.127.75.226])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2d8445f9602sm2484968a91.14.2024.08.28.14.56.40
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2038560dfaesm103172195ad.223.2024.08.28.14.58.51
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Aug 2024 14:56:40 -0700 (PDT)
-Date: Wed, 28 Aug 2024 21:56:37 +0000
+        Wed, 28 Aug 2024 14:58:52 -0700 (PDT)
+Date: Wed, 28 Aug 2024 21:58:48 +0000
 From: Sami Tolvanen <samitolvanen@google.com>
 To: Masahiro Yamada <masahiroy@kernel.org>
 Cc: Luis Chamberlain <mcgrof@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
@@ -65,11 +65,12 @@ Cc: Luis Chamberlain <mcgrof@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
 	Janne Grunau <j@jannau.net>, Asahi Linux <asahi@lists.linux.dev>,
 	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
 	linux-modules@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v2 03/19] gendwarfksyms: Add address matching
-Message-ID: <20240828215637.GD2130480@google.com>
+Subject: Re: [PATCH v2 04/19] gendwarfksyms: Add support for type pointers
+Message-ID: <20240828215848.GE2130480@google.com>
 References: <20240815173903.4172139-21-samitolvanen@google.com>
- <20240815173903.4172139-24-samitolvanen@google.com>
- <CAK7LNASAzsgmkWGOU7WWuBMmzG4vPRDQLjyW4sW+q46QZT=vnQ@mail.gmail.com>
+ <20240815173903.4172139-25-samitolvanen@google.com>
+ <CAK7LNATb8zbwEVgM+_=CaYSysov6YBMbKjy8+t8CrRA_72jxuQ@mail.gmail.com>
+ <CAK7LNAQBO-VA8G9uumwH5m9idQofY1ZR+hnNfL7y4P3m16xFNQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -79,32 +80,52 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAK7LNASAzsgmkWGOU7WWuBMmzG4vPRDQLjyW4sW+q46QZT=vnQ@mail.gmail.com>
+In-Reply-To: <CAK7LNAQBO-VA8G9uumwH5m9idQofY1ZR+hnNfL7y4P3m16xFNQ@mail.gmail.com>
 
-On Thu, Aug 29, 2024 at 03:22:25AM +0900, Masahiro Yamada wrote:
-> On Fri, Aug 16, 2024 at 2:39 AM Sami Tolvanen <samitolvanen@google.com> wrote:
-> >  int symbol_read_exports(FILE *file)
-> > @@ -57,13 +93,14 @@ int symbol_read_exports(FILE *file)
-> >                 if (is_exported(name))
-> >                         continue; /* Ignore duplicates */
+On Wed, Aug 28, 2024 at 04:15:03PM +0900, Masahiro Yamada wrote:
+> On Wed, Aug 28, 2024 at 3:50 PM Masahiro Yamada <masahiroy@kernel.org> wrote:
 > >
-> > -               sym = malloc(sizeof(struct symbol));
-> > +               sym = calloc(1, sizeof(struct symbol));
+> > On Fri, Aug 16, 2024 at 2:39 AM Sami Tolvanen <samitolvanen@google.com> wrote:
+> > >
+> > > The compiler may choose not to emit type information in DWARF for
+> > > external symbols. Clang, for example, does this for symbols not
+> > > defined in the current TU.
+> > >
+> > > To provide a way to work around this issue, add support for
+> > > __gendwarfksyms_ptr_<symbol> pointers that force the compiler to emit
+> > > the necessary type information in DWARF also for the missing symbols.
+> > >
+> > > Example usage:
+> > >
+> > >   #define GENDWARFKSYMS_PTR(sym) \
+> > >       static typeof(sym) *__gendwarfksyms_ptr_##sym __used  \
+> > >           __section(".discard.gendwarfksyms") = &sym;
+> > >
+> > >   extern int external_symbol(void);
+> > >   GENDWARFKSYMS_PTR(external_symbol);
+> > >
+> > > Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
+> >
+> >
+> >
+> >
+> > Commit ddb5cdbafaaad6b99d7007ae1740403124502d03
+> > had a similar idea; it has a reference to each
+> > export symbol, including the ones defined in different TUs,
+> > but in assembly code.
+> >
+> > Didn't it suffice your need?
+> >
 > 
 > 
+> Presumably, this is an unfortunate duplication, but I do not have an
+> idea to avoid it.
 > 
-> I am tired of noise changes when reviewing this patch set.
+> The symbol reference in assembly code works in *.S as well as *.c.
 > 
-> 
-> 2/19 added malloc(), which is immediately replaced with calloc() by 3/19.
+> The C reference will pull-in the debug info, but it will not work in *.S
 
-This was changed to calloc because the structure now has a new field
-that should be zero-initialized, but I do agree, this could have
-just been a calloc from the beginning. I'll change this in the next
-version.
-
-I did try to make sure there wouldn't be too much churn in the series,
-but clearly I've missed a few places. Hopefully there's nothing
-equally egregious in the later patches!
+Correct. I'm not a huge fan of the extra reference either, but I don't
+see a cleaner way to ensure we always have all the types in DWARF.
 
 Sami
