@@ -1,129 +1,128 @@
-Received: from mail-pl1-f178.google.com (mail-pl1-f178.google.com [209.85.214.178])
+Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A6F11AD3F9
-	for <rust-for-linux@vger.kernel.org>; Wed, 28 Aug 2024 21:32:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.178
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADC3F1AB528;
+	Wed, 28 Aug 2024 21:35:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724880781; cv=none; b=RROXC6GIrs1/Eu0ARcXTKVKGRkULZbdHbn1/Z4TtDUQWbP3hSB0tl6456Q5y6YQ8qxjY92VjlhVwxMXUO8bF8plnMCQm0sCteLxpIlXLB0kO3e2HzCfiUvCyLMOzXV4QUaWQBdQWzhRdUiGSbealXau1+6R9OM5WfBATylJ5aek=
+	t=1724880902; cv=none; b=bCikungzkf390KIfcxS0SrrGLbB0SG1aOyfzjJxbr6nDx3GBwHicuz2Z+mpnmLtUIF/l5cJf/UI4DKm+rA7NBZgoQDFAM1VqVdOSVQNlI+GK1HutSdRtmZTT+oKFHDqKO/2iTxaPcFJ5w/tQzm5RYEoYbekCQukUlcLRaLlh+us=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724880781; c=relaxed/simple;
-	bh=cEpCS+awESzibz2fx1rBVxzmh/G9/OK1eGkd1D1LRF4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HVJoDm8Q1ebWoZ0JCfYTG0/TpOQhiOyOe3VBj4mzvhC1e7b1XmRDy6JKd0Fx+0EoySI4wQFNeljFgsm5qMkKDOu15Y3MnbhAq63XMGTdOqd83Ith1TERP01DHFu6z0cBEMc7iE2XgE+ycGbiTEwAx4VTzxsxCvByMtTXfs7PVdg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=wDRWooRX; arc=none smtp.client-ip=209.85.214.178
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1724880902; c=relaxed/simple;
+	bh=u6kW+6ArbewrNzZcKJ3cCim3nQ5/kCbS8zfS9851Gio=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=dTHzT9qqeZzKagTJ+AJgduR6boDYAvwcgilmBDbvQSP1137L8dLivAhIq7Wf4b/DbPpzKdiTz0bFTXeHgLacHeVcikUVEPvlNtbUP9IPh4sbH5EQUXtEpX6Kjk6PTd3vheZOiEF7aT8c56nuS+1iFI8N2qVMJ58tbMEcdfWwE/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dEs17HGM; arc=none smtp.client-ip=209.85.210.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="wDRWooRX"
-Received: by mail-pl1-f178.google.com with SMTP id d9443c01a7336-20353e5de9cso58655ad.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 28 Aug 2024 14:32:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dEs17HGM"
+Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-7142a93ea9cso5298418b3a.3;
+        Wed, 28 Aug 2024 14:35:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1724880779; x=1725485579; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=6OiNe2YeQCUna2f4UjRdeOC+WErdfdXGa82/r6tUnVw=;
-        b=wDRWooRXfR4puGYCZll52GXUhb38BKO9LpLdLgtDfRlLUaTpg+uHT00gYpMkGnKc0g
-         BMfbF7+kIhUGkJoKFiPfJtX2tzCHP2jAlCBt9Gfrp5/643Ez3Qg9VDZ2B1aoQUpZdCvl
-         AeJMhWKUgeo98hid76CWbpnlckir78xJKXKuI/Y3QsJUDae5kFCHANVnOJEbtA+MoeoZ
-         hgz2eXG6e93P+/bfXDRniuVDXo/mCDv3dOUSDYgICmS9Yu+fr15/Bx2vwiU9TEL1bu2m
-         bsKpqhz53dQ4NwPjSsJRhAZJNKwxCVviacI2eb2F01HPL3BCn2JCztv4VOrWLvYIkHsg
-         hKMw==
+        d=gmail.com; s=20230601; t=1724880900; x=1725485700; darn=vger.kernel.org;
+        h=content-transfer-encoding:commitdate:commit:author:mime-version
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XdyQszHmpMjA1lielnMCOCT+CVl9suwnpweUfFJE9W4=;
+        b=dEs17HGMr7ms8RekeL+OBCEb9KuiHxw2vMZ2mEUk4QMoXph3+YR4qA1+E0YuvqdsQD
+         WbVfjdtddngGQeEn9esSExGRn6moQ9XJ6j/cwS6SIGCM3pDHAsvFHmAfOA4JJVeTx9VA
+         yPtWYLi46CJAu7lEHaS666hqoB6biWk4uCRf+xeoiZS/Kiopze2mRjKxvGzAKqthfKHO
+         EyaiZNtwvFKJ6NGLQJwYfB5r6ecqFoVbRzIDGTEZxYvg/NlzK0G9mHX6vbN3Ox9y7fcT
+         vYSbpmazU6hL8JuIGr8EdtvB4hU0hgGn0E74yeW0qkcX6OZrWKPXbT01Du//ZcJKasqz
+         zoaw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724880779; x=1725485579;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=6OiNe2YeQCUna2f4UjRdeOC+WErdfdXGa82/r6tUnVw=;
-        b=QARymbLC2NMy9KRoCBtvoNv0uA1E9l/ayuqCU3Ijva2tMBS75fhy5kQzo7ls2onkdu
-         UP07cVauPm+5nq8NWCLBlNhBJTGjd/9+6gtjAm9s24U8mFkx/pH1JbIFxCWrW6mt1u4W
-         pQC2lc9v3EW9kyMZlJ2LwhhlOGPMSxqttU96w0+wAdWHqyyebw0GkxVmfWXvjVg3h9Ao
-         Cs19xXRv2joLxiVN5RAWhlXECSAicXABuVcNJWnVx78+B9gc+S58ysM4iDgFXi9AVoqu
-         KnseT2x70AnGYNa0hIVwFlM0a99ZBcFw8eRg78+JpOH9V8N3aceHvv2EB2hhAymD32fa
-         ZNFg==
-X-Forwarded-Encrypted: i=1; AJvYcCVZAuGzplofntkUPV98b97uKZ8SjUvCN65jycaE4n4gENAk3BRYcqbpsHeGPqfG4FVnbtat2j5+3c6r1xqnrw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwdAUxAh8kRBQ8fF7i9hkB4g3FZJWUqwaT6IrnKjlpgSrbwWcfh
-	w+e8aBI5pQWbqJAiWVhtyPYGK6PKBcSFRvUI7sdE4NXsb1swN1XiCcuUKF2ERQ==
-X-Google-Smtp-Source: AGHT+IHHf+VlJrFFBJgPYVRNtck/f/imxXiwO9YAgJOrmaeUNIYbTt/FhYzSs4jbx7giAS/mraakLQ==
-X-Received: by 2002:a17:902:e5ca:b0:200:8e1e:9940 with SMTP id d9443c01a7336-20510d58e83mr210625ad.23.1724880778385;
-        Wed, 28 Aug 2024 14:32:58 -0700 (PDT)
-Received: from google.com (226.75.127.34.bc.googleusercontent.com. [34.127.75.226])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-203855dbf41sm102647885ad.134.2024.08.28.14.32.55
+        d=1e100.net; s=20230601; t=1724880900; x=1725485700;
+        h=content-transfer-encoding:commitdate:commit:author:mime-version
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=XdyQszHmpMjA1lielnMCOCT+CVl9suwnpweUfFJE9W4=;
+        b=f2sxKN2XNSx59XboGQN5PklP3gJATWT+vI/wf2/xiw1VxtpkOex6RFR4W4iKK8YCg9
+         OJdYZeCnzN9S9stw2mtAbwQn3ztEu8fVn5jl5PalNgP1VkNzdgwHDu+mM9Pjat8pmgRQ
+         hvKOjGMDZYnk3uqe7vu0+O8HiHMQMfitUY3htdbgF80i7v1AnQl4u8QeSiVKdRMw+Dkt
+         3NAKAQUURxcZYW8zqiv0xf2zj99wvQEvQiMdJcJFpKjYufK1c/ONxg5GIBDnzheNdLut
+         heh4uF1L1yR/fpmafl75WH25G9ySyYaMHh4aEd+91sbBZ1U72a958QyLUUOUT1u1IEQy
+         94Ew==
+X-Gm-Message-State: AOJu0YzNZO2Rg71ljjUX/EylbifS7RUmDDV+D8mTwOUfmSAQ/9AAynXl
+	ekBWbQP92repRj+YZGd9w7L88JI4ePD56Fknxb/mOyMwdD8lCHw2kxrKcaP1KA0=
+X-Google-Smtp-Source: AGHT+IH6YpYbGSLGbv/6QL0onHVlxfvlNcSz95VJnl66HChd64IDoO0wGi155UZej8DlZbj+DN8W0w==
+X-Received: by 2002:a05:6a00:3d4c:b0:714:25ee:df68 with SMTP id d2e1a72fcca58-715dfaf2ed4mr1006275b3a.8.1724880899523;
+        Wed, 28 Aug 2024 14:34:59 -0700 (PDT)
+Received: from localhost.localdomain ([2405:201:f022:f804:ca0a:f615:5d6e:f4e1])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-71434af17ccsm10475739b3a.8.2024.08.28.14.34.56
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Aug 2024 14:32:57 -0700 (PDT)
-Date: Wed, 28 Aug 2024 21:32:51 +0000
-From: Sami Tolvanen <samitolvanen@google.com>
-To: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Luis Chamberlain <mcgrof@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Matthew Maurer <mmaurer@google.com>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Gary Guo <gary@garyguo.net>, Petr Pavlu <petr.pavlu@suse.com>,
-	Neal Gompa <neal@gompa.dev>, Hector Martin <marcan@marcan.st>,
-	Janne Grunau <j@jannau.net>, Asahi Linux <asahi@lists.linux.dev>,
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-modules@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v2 01/19] tools: Add gendwarfksyms
-Message-ID: <20240828213251.GB2130480@google.com>
-References: <20240815173903.4172139-21-samitolvanen@google.com>
- <20240815173903.4172139-22-samitolvanen@google.com>
- <CAK7LNATKWnkdmxvPBaBLYThLk0Voh7UVh5V4_eKHs9g-40qUTQ@mail.gmail.com>
+        Wed, 28 Aug 2024 14:34:59 -0700 (PDT)
+From: Siddharth Menon <simeddon@gmail.com>
+To: rust-for-linux@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	linux-kernel-mentees@lists.linuxfoundation.org,
+	apw@canonical.com,
+	joe@perches.com,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Siddharth Menon <simeddon@gmail.com>
+Subject: [PATCH V2] scripts/checkpatch.pl: check for non-permalinks to Zulip
+Date: Thu, 29 Aug 2024 03:03:57 +0530
+Message-Id: <20240828213357.21241-1-simeddon@gmail.com>
+X-Mailer: git-send-email 2.39.2
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Author:     Siddharth Menon <simeddon@gmail.com>
+Commit:     9c32b4f2ad277b94a54955b0285ff7dcfb5087aa
+CommitDate: Tue Aug 27 23:39:18 2024 +0530
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAK7LNATKWnkdmxvPBaBLYThLk0Voh7UVh5V4_eKHs9g-40qUTQ@mail.gmail.com>
 
-Hi Masahiro,
+Zulip links to https://rust-for-linux.zulipchat.com can break in
+case of renaming the topic or channel if they are not message
+links (which are permanent links).
 
-On Thu, Aug 29, 2024 at 02:45:03AM +0900, Masahiro Yamada wrote:
-> On Fri, Aug 16, 2024 at 2:39 AM Sami Tolvanen <samitolvanen@google.com> wrote:
-> > +static int usage(void)
-> > +{
-> > +       error("usage: gendwarfksyms [options] elf-object-file ...");
-> 
-> 
-> 
-> Description for each option, please.
+If a non-permanent Zulip link is referenced then emit a warning
+and direct the user to the Zulip documentation.
 
-Sure, will add.
+Permanent links are of the format:
+https://.../#narrow/stream/x/topic/x/near/<numerical_id>
 
-> > +static int parse_options(int argc, const char **argv)
-> 
-> 
-> 
-> Why not getopt_long()?
+Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+Link: https://github.com/Rust-for-Linux/linux/issues/1104
+Signed-off-by: Siddharth Menon <simeddon@gmail.com>
+---
+V1->V2:
+Corrected the Github link to the right issue,
+Fixed grammatical errors and Replaced the link to reference 
+Documentation to one that is easier to understand.
 
-Good point, I'll switch to getopt.
+ scripts/checkpatch.pl | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-> > +int main(int argc, const char **argv)
-> > +{
-> > +       unsigned int n;
-> > +
-> > +       if (parse_options(argc, argv) < 0)
-> > +               return usage();
-> > +
-> > +       for (n = 0; n < object_count; n++) {
-> 
-> 
-> When does  "object_count >= 2" happen ?
+diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
+index 39032224d504..41630532a056 100755
+--- a/scripts/checkpatch.pl
++++ b/scripts/checkpatch.pl
+@@ -735,6 +735,10 @@ our $obsolete_archives = qr{(?xi:
+ 	\Qspinics.net\E
+ )};
+ 
++our $zulip_forums = qr{(?xi:
++	\Qrust-for-linux.zulipchat.com\E
++)};
++
+ our @typeListMisordered = (
+ 	qr{char\s+(?:un)?signed},
+ 	qr{int\s+(?:(?:un)?signed\s+)?short\s},
+@@ -3415,6 +3419,12 @@ sub process {
+ 			     "Use lore.kernel.org archive links when possible - see https://lore.kernel.org/lists.html\n" . $herecurr);
+ 		}
+ 
++# Check for permanent Zulip URL
++		if ($rawline =~ m{http.*\b$zulip_forums(?!(?:/#narrow/stream/.+/topic/.+/(?:near|with)/\d+)?($|\s+.*))}) {
++			WARN("PREFER_PERMANENT_URL",
++			     "Use permanent Zulip links when possible - see https://zulip.com/help/link-to-a-message-or-conversation\n" . $herecurr);
++		}
++
+ # Check for added, moved or deleted files
+ 		if (!$reported_maintainer_file && !$in_commit_log &&
+ 		    ($line =~ /^(?:new|deleted) file mode\s*\d+\s*$/ ||
+-- 
+2.39.2
 
-Right now it doesn't, but if we want to support LTO, we'll need to also
-process the temporary object files we build for stand-alone assembly to
-find types for the symbols exported there.
-
-> > +extern int process_module(Dwfl_Module *mod, Dwarf *dbg, Dwarf_Die *cudie);
-> 
-> 
-> No 'extern' for function declarations.
-
-Ack, I'll drop these. Thanks for the review!
-
-Sami
