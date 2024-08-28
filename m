@@ -1,92 +1,111 @@
-Received: from mail-pl1-f174.google.com (mail-pl1-f174.google.com [209.85.214.174])
+Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CF0B15957E;
-	Wed, 28 Aug 2024 07:48:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34F774962E;
+	Wed, 28 Aug 2024 09:27:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724831321; cv=none; b=BeYeXE9hc5mCA+lJT2ux63ACAPYBtvWrCmkvOOhRDWCKd0w5VngBQh3k4WKIQN6WL3AoM6cS3jrJksWxu3FoOI05Ah5xj5f+8SBcwUlb9U9o24zDVPuCTLWqOBdg4/2jXc8bMNszEgwxP1MBmHXisFOcLcGpj7O7+Em0joCZtFU=
+	t=1724837240; cv=none; b=GuUJR3FYTtLLRPK7BlKq8VQKq76kM1NKN60rvOWkqasxMpZzrGluGSJbLwInySFZSO9zoQa9P1mA1RWLfebl4HESusWyG9ReA2V3vY3UvR5O4jgsVgQE2SAm6cBZHP117x3Rp6MV2FeP46G7zqPOnbgt5/5klab8fpvh0LhfApQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724831321; c=relaxed/simple;
-	bh=cvwBg+vc7Z5xuhOLUoW6MzYNlOuDcEp0GnvSg+atvNU=;
-	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=V8JGxBCJMCe/B4lbT47/ObxZpktDdBhG5DfU8OBpHrFNnunH+FaH8E3wiXY2vzz0C8Rt999Q3Ue6IS346kvYIG1dqbMYjw43gmXBZUMvfv/KzvtVXF6QHtN1SafF+0aPM7R4tEo7UCjgU2cBWKv6G3vNX28HlcPYvUBurGh4EME=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EZUQtQdR; arc=none smtp.client-ip=209.85.214.174
+	s=arc-20240116; t=1724837240; c=relaxed/simple;
+	bh=ghZnaAJ+VEThr3FH9O0jb/lJbXGZiKDJOo57uVGeV1g=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=XB3MMuHvtOK92y+l2pH5ssaZp13T+XYF8b5D9QMqdunw332DS6VVOKj633RwvkuJw5m/W12MJLe+S1qrvFVveDnIInwrBe4LJwIFvrTl2iii6FRe4fru4DOvU8ARX1XslAKNOoWFIg182QB7ByZayltLgSYySlpYBisneZobN1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Yw3Oxb5i; arc=none smtp.client-ip=209.85.214.172
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EZUQtQdR"
-Received: by mail-pl1-f174.google.com with SMTP id d9443c01a7336-2020ac89cabso59345325ad.1;
-        Wed, 28 Aug 2024 00:48:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Yw3Oxb5i"
+Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-201e2ebed48so4052645ad.0;
+        Wed, 28 Aug 2024 02:27:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1724831320; x=1725436120; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=QdM11Hzj21jX8WIQIsqHNUec34LU9DCiYb1eu6IcWC4=;
-        b=EZUQtQdRYYgUppKT2kGuvd2BbrmWdSUcTHHvIgCPEE5OnXOZn/7pBvwqv3muxgG0cg
-         JiF1pKMEfNsMiBM59FGtViJXz9YpdaUzVMTQyIS+kWBwrUoG6rPHq8o/jyP4PeytjhvR
-         Wf20R4bu43Tz2t7w3bElEXrScaX3OMV0SSc3g0QfmMG+bTDnnLtU41u63FIMl3RkzB6W
-         6T51wkCAdxMqiJH8IdUNjm2Nx2ekRzN6kj7DJGdnriz6CCXXWsKS0YksXHMaVlxuyplK
-         f13HjAtlcjyQPH3/MC7BwoOWXKpaikkgPeLUW/k7PLUSbCn3NVv4a8/Ok5NeJU6ou+Ab
-         VXgQ==
+        d=gmail.com; s=20230601; t=1724837238; x=1725442038; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=jSCip+Bemb8ICBMigULdX6HCTnC9f35hc67PS6U5/Fw=;
+        b=Yw3Oxb5i2sL0SZmWLYXCjp1j7ObsP79ViTJoNcp3ZrSOV7EbdQ00aJ80LOIRMQ+zOz
+         xDA03Q7lnj4/WD7KG2t4kgBVdvv3hvEIkXNdjiNbUk3xtwHwFJTK91Wxqo8F3Qy3vCf7
+         NRKQVHlu1D0n5ZtLSLc2VKHPEOK3IzFqa4iQF3+frfE4+dZ9noZbwLMtVE6GmTyBOFca
+         EcIOjDnmCLIUBg/WeF0SHA6rVQCSatkezbUR40MmgMHHEEkK57/lprGvzxPvhen5SgOb
+         zptbCXNR6ACyHf1LbXH7UrK7cvv+yQAMJAWgHC2PyytCG/scsJ1CDMBh5x2yeHC1bbu8
+         Vh5Q==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724831320; x=1725436120;
-        h=content-transfer-encoding:mime-version:references:in-reply-to:from
-         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=QdM11Hzj21jX8WIQIsqHNUec34LU9DCiYb1eu6IcWC4=;
-        b=Jtp8ZNIFY4sdGP6ShEjUX7RYxZFxwO4GPyYgSzt8cy1yoDkGx0eIcyE8ydywiDMOUy
-         JYdMttm5BkfZfuHN2Q9dXv4vSjR0ziGxb2uJxTMxc3N5srSKB8jqUuxM410JEjYx2Vx9
-         OkpZXmK/jtORoDUK790F+oNPHHaFlIEmrmEc108f2ZUNEvntXni6Jw4ZJTqutf94MEbT
-         X9EXOzUPoZI2bZPy4WpsA/Kcyt/ui5SEDygm+9JFAjuf61TY9fKg0zT7ulGE/lzhTZ/S
-         UmAZ/oiTg6QEaoSeRzgi4i3+xy54Fw0sKSAdrjnEWbn1g8XEVgRhBgX4ox7nLG4PtZ8E
-         3Ezg==
-X-Forwarded-Encrypted: i=1; AJvYcCX4DxzA22pR/0d/xPvi4GeoZrfNU8sNDjn4VQ6wCn86yoMvQqQ33yoOmuzyuusqqzdEyqiiFF9r7F6jZRGkYqw=@vger.kernel.org, AJvYcCXVYsetAuuQ8nz/kO5e0fgbqzANCw5lOTpWbgWZOjV+DsDSp7mvsjJY0ctqNOBrW/DoejTgQDI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwSZs5cJpRTUBFpFHYgsBV4a1WMvdoQa4OdHpd7fdWOZFPYSkne
-	4PT8qLljv8SJ/VzDwRVfHMS2pjRTTJeVa7bBk7duZ+c+/IWVC+6O
-X-Google-Smtp-Source: AGHT+IGE6ra6l8EkQgKy7Qba7L/AqIhjet4fFtoGT2PwCnjMMXFoF5b/Y6UyyjGCWeBcEGWTz2DMSg==
-X-Received: by 2002:a17:902:e807:b0:1fd:d807:b29e with SMTP id d9443c01a7336-2039e4ca6e6mr172972615ad.35.1724831319563;
-        Wed, 28 Aug 2024 00:48:39 -0700 (PDT)
-Received: from localhost (p4468007-ipxg23001hodogaya.kanagawa.ocn.ne.jp. [153.204.200.7])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-203859f00fcsm94267385ad.247.2024.08.28.00.48.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Aug 2024 00:48:38 -0700 (PDT)
-Date: Wed, 28 Aug 2024 07:48:35 +0000 (UTC)
-Message-Id: <20240828.074835.1208741310226632116.fujita.tomonori@gmail.com>
-To: kuba@kernel.org
-Cc: tmgross@umich.edu, fujita.tomonori@gmail.com, netdev@vger.kernel.org,
- rust-for-linux@vger.kernel.org, andrew@lunn.ch,
- miguel.ojeda.sandonis@gmail.com, benno.lossin@proton.me,
- aliceryhl@google.com
-Subject: Re: [PATCH net-next v7 4/6] rust: net::phy unified read/write API
- for C22 and C45 registers
-From: FUJITA Tomonori <fujita.tomonori@gmail.com>
-In-Reply-To: <20240827141414.5df849d5@kernel.org>
-References: <20240824020617.113828-5-fujita.tomonori@gmail.com>
-	<CALNs47uSeGR_Z_Bor4yKbd848XdohHMam47zwBct39nEmKFb7g@mail.gmail.com>
-	<20240827141414.5df849d5@kernel.org>
+        d=1e100.net; s=20230601; t=1724837238; x=1725442038;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=jSCip+Bemb8ICBMigULdX6HCTnC9f35hc67PS6U5/Fw=;
+        b=il4w6ePSZbCzZdnaZEnpXblIkJhuMF6k0cuVg5mXjnhoui6TyUDOLlu0COD2fVJOaH
+         mtGUeU7D5/6QpYSL6cWpjJSp66R/0RaOqJfEfY9ZcHtzIdcX6xvOErLk/QkkImhnJt/+
+         +wLs/fKRhky55siUG2o6bXhesIDvuz7V2XKtHehP5r36+Gh0moiR8vOiB4Au+xUzXuYO
+         32bMygU/lJyPQO69b1VW7Qf9Ovj63QlcvCs1LGk3Mw71fmwtGlf4BZy6XxIjmoOkbu1y
+         6nFJasyzVCdZ6Mqfz+LWtCTz3yFGMe0nIjhFQBrZcQR4hoU6ZP7C5z+i049AwPG/1u1N
+         mEvw==
+X-Forwarded-Encrypted: i=1; AJvYcCVCNGuVjJx/F9Bev3816XsKf+iSapQeUxSVqjAgG1c9qS2zdF/kIsFsRyzMz2MkzTTXx4CEwwpEypahPQM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwM2dlt0sN/q1oLR0QdgeEj1ET/NuKaWYdzw81z6Z8EbIxin6TP
+	biSfmobbMV4pMvgaBGGk4D+HU6DwsI00Pc+hQ8aCMhCe5rJFp9DtapVnyZhrM2WLbfG6RgD+Oo5
+	xCym4nQO08AFuMTQ+lihnUqxVChhZvKgrvxY=
+X-Google-Smtp-Source: AGHT+IHyABdB0poHBT0/yxTNrTjxAPxluXkzEFpqADvsChc4IObbGax1uCnmgL3SyLpTCbNWSKm7+t/J+ZYVTPfTe38=
+X-Received: by 2002:a05:6a20:6a0a:b0:1c6:a62a:9773 with SMTP id
+ adf61e73a8af0-1cc8a0d328emr12063523637.5.1724837238318; Wed, 28 Aug 2024
+ 02:27:18 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: Text/Plain; charset=us-ascii
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+References: <20240827184359.46968-1-simeddon@gmail.com>
+In-Reply-To: <20240827184359.46968-1-simeddon@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 28 Aug 2024 11:27:05 +0200
+Message-ID: <CANiq72kOKAB6ptLzGDuRe5wStppAqWZnED-bcoUN5V5MYO1UfA@mail.gmail.com>
+Subject: Re: [PATCH V2] scripts/checkpatch.pl: check for non-permalinks to Zulip
+To: Siddharth Menon <simeddon@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-kernel-mentees@lists.linuxfoundation.org, apw@canonical.com, 
+	joe@perches.com, Miguel Ojeda <ojeda@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 27 Aug 2024 14:14:14 -0700
-Jakub Kicinski <kuba@kernel.org> wrote:
+On Tue, Aug 27, 2024 at 8:44=E2=80=AFPM Siddharth Menon <simeddon@gmail.com=
+> wrote:
+>
+> Zulip links to https://rust-for-linux.zulipchat.com can break in
+> case of renaming the topic or channel if they are not message
+> links (which are permanent links).
+>
+> If a non-permanent Zulip link is referenced then emit a warning
+> and direct the user to the Zulip documentation.
+>
+> Permanent links are of the format:
+> https://.../#narrow/stream/x/topic/x/near/<numerical_id>
+>
+> Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+> Link: https://github.com/Rust-for-Linux/linux/issues/1104
+> Signed-off-by: Siddharth Menon <simeddon@gmail.com>
 
-> On Sat, 24 Aug 2024 00:44:50 -0500 Trevor Gross wrote:
->> Small suggestion: I think these could all be `#[derive(Clone, Copy,
->> Debug)]` so they are easy to `pr_info!(...)`. C45 doesn't have any
->> derives.
->> 
->> This could probably be done when it is picked up if there isn't another version.
-> 
-> Please respin, it's not too much work. It's really rare that'd edit
-> people's code when applying in networking. The commit message yes
-> but code very rarely.
+This looks better, thanks!
 
-Sure, I've just send v8.
+> +                            "Use permanent Zulip links when possible - s=
+ee https://zulip.com/help/link-to-a-message-or-conversation\n" . $herecurr)=
+;
+
+That link is better, yeah.
+
+It may still be a bit confusing (one needs to search for "permalink"
+inside the page), but perhaps Zulip will improve those when they
+introduce more permalinks (?).
+
+I guess we could link directly to the section at
+https://zulip.com/help/link-to-a-message-or-conversation#get-a-link-to-a-sp=
+ecific-message
+-- it may help a bit.
+
+We could also explain how to shorten the links if the line is very
+long, but that is probably best left for another patch (possibly
+another warning).
+
+Cheers,
+Miguel
