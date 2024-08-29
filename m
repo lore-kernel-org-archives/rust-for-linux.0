@@ -1,123 +1,112 @@
-Received: from mail-pl1-f172.google.com (mail-pl1-f172.google.com [209.85.214.172])
+Received: from mail-yb1-f174.google.com (mail-yb1-f174.google.com [209.85.219.174])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E2221AD3F0
-	for <rust-for-linux@vger.kernel.org>; Wed, 28 Aug 2024 23:09:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.172
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B275A1CA85;
+	Thu, 29 Aug 2024 02:39:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724886566; cv=none; b=d99lVDyqXfRY7JeyMn37PwLd24CARFdOqJqCGLuGSifpEinYF9jsnIdoYhXCm5vNI8agGijXeKtMgr6Tada/b9uDygELD9ZGt/Ptr1AqcMk0soAFvRpqmdD6o7XaKzyIgJu4eqg2NtkTiA/qm0E1v38CiNx8k6gmtTEP5yVT5mE=
+	t=1724899189; cv=none; b=eJrwuEdY6hLKwwdzjUz0dbpXZQxaom/mQ2vvHpC1OJkU2Aw3ynPTPYdyhi9kkI3strAbz9Nx0C9RbqIZyHSv4DDjy+Byw0wh25El7f8Na1CeRVMx6Zkc19j35Ru8W3tuSC9r3UnNwRfg0Lb6juE2C/tTgU5lyG8otRNtph8aRxA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724886566; c=relaxed/simple;
-	bh=RZmcXzwnrRhYwDoAQj1Jxhe7OhhEeGVabMOYn+OKJEI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WNruQ1fm/2BmbqiLSK6RfjT1NRXeukfNtnlPLeYu38AuzR1xpzn9CHvVQo3bElUcwmCpZnAQiTuoPHirGLplmi5k+d4JOo2ElPYGtSNZm9QR/u97u3V8Rh4d6HCP4DH/v9rH2YcXZe3yf6Ngy5uVdv2ffMFdNLbDDMkXtJD61go=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=H4Mzj55Y; arc=none smtp.client-ip=209.85.214.172
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1724899189; c=relaxed/simple;
+	bh=v+Q1Ce/5Hc9pCqD3ej9vK7hY2hUfQtYzXW+/BbTnJe4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=VE+KQzNPpw3csw3RIbzEKJsY/eR8Gffze00VjX2CnGyLOWyU5uWKl9vAzhEUW2AqhErwIJ/7mFv/vEodhSLz6TLuQvBEyQXnftXIFu5FBYNObetjhTtXfg4gsAvrGDh0EqXW10CY6FHQJEcGJKQ/LpkpG26HBFGmxgOiYoJa9uw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=mU9OIU2n; arc=none smtp.client-ip=209.85.219.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="H4Mzj55Y"
-Received: by mail-pl1-f172.google.com with SMTP id d9443c01a7336-20353e5de9cso72075ad.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 28 Aug 2024 16:09:25 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="mU9OIU2n"
+Received: by mail-yb1-f174.google.com with SMTP id 3f1490d57ef6-e117059666eso206904276.3;
+        Wed, 28 Aug 2024 19:39:47 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1724886565; x=1725491365; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=bF9tb8hwDYR6xa7gB1x7sZNbhUYJUgSYOVOAb5zjrCw=;
-        b=H4Mzj55Y4gMWJjD1yLPZX94RAzWQmOtv7QN7sKScGjy84ZXuLZl7MRRSW+5n14ADLp
-         1mv1DSXKXTcK9T4lsvGpZsPosjeUN3M+jNiiBszsGLZTfRzDKl/VC8U0hvjOuRLwfQBP
-         Hm1h5BOIZfPcb7Mrk0/8ENbwdZEijPzrw/qWtU9d8Q8P8np7DcjyDIzVMn+eCsVS9rqY
-         XgrsEuQX3KS7KTat6SaZ1TNqgHSjKoMKtpXROs9+3lDy47NoTCfcQzh7c6oUYckFX8Ah
-         l5fYnYM+0oqAS41V5b59z6BSEwP7RvB186VBIGi5eNx23qGQO5LcFTdj4w+3vvCA4Vih
-         kNGg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1724886565; x=1725491365;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1724899186; x=1725503986; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=bF9tb8hwDYR6xa7gB1x7sZNbhUYJUgSYOVOAb5zjrCw=;
-        b=G5FCuM0zC/7MvhrCnvltV8AI1EeVAGsQxyDfH2VIoeF/LNRAa6l6ai3V3/FEs2ei96
-         PZzRzH0UpAkO/e4Xd8ybCBOFBdoHk+arLjYdyRKXMy6Jz4iKk5jd0nJxLdcsrewk6PJW
-         3WQUOmlWuqExTqxqnhQXUiyT6PdYMn7krXrEJ8qAMybHeA3JgmkpdbR4ta+d1OuNNRYN
-         vNEzI2hbCAVAg4alUA+EzU/a/+vBGyVeOMLPcaleccmEzoFq9VQ/pUxMsj3QBh11XG3w
-         hcIvDtUwtBodfVJr0kTtoJpkdtevub/H95VTC5AwhaTuTvBOMSoaQT/EDe00rAImCLFZ
-         w3sA==
-X-Forwarded-Encrypted: i=1; AJvYcCVupg3W36uFga3a0GcrKEBCN1giiKx6WySN8GY00yauSImO9z0pazLJUX/ozIPWeo5tV9U4yFJTcaGXZwisow==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzxmsyy/OEymz6CVgdJm2q/A1jjFlPcLhkoLkz3J1bNSuR8fL/c
-	4d8A/KjA+qXueNp1VKSddUAtgfLNaXxmTn/Vi6AiYB8Jkq690/ARANFr18/6lw==
-X-Google-Smtp-Source: AGHT+IGefsWlldxzVDyfJdh6ODHqSR4DIkOY4bryKmhorJbglzA63HVpwHsAO+Qawqv6PlgLxud4xg==
-X-Received: by 2002:a17:902:ce8a:b0:200:7d11:e8e3 with SMTP id d9443c01a7336-2050d1f0c57mr1140385ad.14.1724886564314;
-        Wed, 28 Aug 2024 16:09:24 -0700 (PDT)
-Received: from google.com (226.75.127.34.bc.googleusercontent.com. [34.127.75.226])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-715e55a5b56sm5350b3a.57.2024.08.28.16.09.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 28 Aug 2024 16:09:23 -0700 (PDT)
-Date: Wed, 28 Aug 2024 23:09:19 +0000
-From: Sami Tolvanen <samitolvanen@google.com>
-To: Petr Pavlu <petr.pavlu@suse.com>
-Cc: Masahiro Yamada <masahiroy@kernel.org>,
-	Luis Chamberlain <mcgrof@kernel.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Matthew Maurer <mmaurer@google.com>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Gary Guo <gary@garyguo.net>, Neal Gompa <neal@gompa.dev>,
-	Hector Martin <marcan@marcan.st>, Janne Grunau <j@jannau.net>,
-	Asahi Linux <asahi@lists.linux.dev>, linux-kbuild@vger.kernel.org,
-	linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v2 02/19] gendwarfksyms: Add symbol list handling
-Message-ID: <20240828230919.GI2130480@google.com>
-References: <20240815173903.4172139-21-samitolvanen@google.com>
- <20240815173903.4172139-23-samitolvanen@google.com>
- <95db3178-a2ce-421e-8024-afd7fa3359a3@suse.com>
+        bh=v+Q1Ce/5Hc9pCqD3ej9vK7hY2hUfQtYzXW+/BbTnJe4=;
+        b=mU9OIU2nPq0rSB7VyQgLFPqu3d5RvojC705ArSWlJCAsi7swiJE8iaBInc9+Qmm0y9
+         /YgWvHE/JWGT9I039NI7o+6h252xOMt7ac+l2sYNUj7L7izuvkD4a2baVd3DG/8fGy3C
+         t01Hm9zxL0JSUAs9zUYob52vPiSscH0JZTQ6Gh2CFP5eTDbzJn0Eu1VEn1wnzSahc8r4
+         ivBQZQxk9H0QZRWo0jgDao8K/4+xK3rITu+baIZpX1EKlM8bh+V5/AvWWR8OUcSC6ovi
+         ZoEIAE8I3pM35Rkb2oOkCDtSGqtasctrBrOXQ83c88aB8Mo0PGp4WH+NOOKttHbiGOJ9
+         jjEQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1724899186; x=1725503986;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=v+Q1Ce/5Hc9pCqD3ej9vK7hY2hUfQtYzXW+/BbTnJe4=;
+        b=Lu9ePywP2iHrjP47IHw8+U+/9R/edVHoPclHormshfJCrU+UU7bCqXH0FMrucSCWuC
+         Pm22RIirHMBYASPGorMZD4XB6klb+SxI9SEg+PlE9VAb7gPf8eShTMUMTJKnXVfnxVxK
+         oCkMopP7btvMidNvG1DyWYuMCmTPN3Wq/2fcSTRw/lvgfZKBGGM4QQSiHIFAzJ/RnjNJ
+         ZTXMpuaEP7+Rzm8heLxgSDDYLmZl1zwtFMjm158dnZzktxA+Cy/SekgcJWrC0gQLHJ4x
+         4w1A8tv4EBc5pCwjvMbMUcpZNl3hyjhYtJGQHilnU8GWcI9UqeEZ+mb1N9R+04qo7abt
+         9bDg==
+X-Forwarded-Encrypted: i=1; AJvYcCV91XrCkBpvAu/sDDBNa6zHy+hRAeZrvy8xhE26twt+2lYH0wl0Ck6ZVm/ydkOzwclxvT5rAwNxQDGwF2XAi8A=@vger.kernel.org, AJvYcCVCS01H2nxJGxDuIWGoM0rKWC0qAvi64Ci7JVhNSaky6w7tSY8iatK1UqvoeMGRTzYsqJT+QXfCsqA8rM4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzdxt+Qf22UXjTliY++mCKQXmxlwWhyv43S+EU0g5wvHxhIfUmH
+	NS40cJ+ECW1ZlcrQG/8XAlgpugVs9xacdIHPU/2h+HohpwEa6QCjsVF4aYjwKFFLzFTCN7WyXYX
+	2GCbKJkIcKPO9yG5tW2PEXslL8P8=
+X-Google-Smtp-Source: AGHT+IFO5XaG+3uxaY1UwIm4DrrE11jSpukivu5WMVWg0urnyJddKZygxfJ8+dyeMGr/7UnxcjhuKDYBeQgL4k12y3k=
+X-Received: by 2002:a05:6902:1890:b0:e1a:40da:f47f with SMTP id
+ 3f1490d57ef6-e1a5ae0125emr1657507276.38.1724899186474; Wed, 28 Aug 2024
+ 19:39:46 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <95db3178-a2ce-421e-8024-afd7fa3359a3@suse.com>
+References: <20240828211117.9422-1-wedsonaf@gmail.com> <CANiq72mzNyZkJbPJU1i1PLC81g8CPqfTZ-oO+mAMGeo-r28xKw@mail.gmail.com>
+In-Reply-To: <CANiq72mzNyZkJbPJU1i1PLC81g8CPqfTZ-oO+mAMGeo-r28xKw@mail.gmail.com>
+From: Alex Gaynor <alex.gaynor@gmail.com>
+Date: Wed, 28 Aug 2024 22:39:35 -0400
+Message-ID: <CAFRnB2XHyDc=vWo8E0CzmHiTSJ2cs_frRdK49zEvmidhTK0BBg@mail.gmail.com>
+Subject: Re: [PATCH 0/1] Retiring from the Rust for Linux project
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Wedson Almeida Filho <wedsonaf@gmail.com>, rust-for-linux@vger.kernel.org, 
+	Miguel Ojeda <ojeda@kernel.org>, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Aug 28, 2024 at 02:35:29PM +0200, Petr Pavlu wrote:
-> On 8/15/24 19:39, Sami Tolvanen wrote:
-> > diff --git a/scripts/gendwarfksyms/dwarf.c b/scripts/gendwarfksyms/dwarf.c
-> > index 65a29d0bd8f4..71cfab0553da 100644
-> > --- a/scripts/gendwarfksyms/dwarf.c
-> > +++ b/scripts/gendwarfksyms/dwarf.c
-> > @@ -5,6 +5,48 @@
-> > [...]
-> > +
-> > +static bool is_export_symbol(struct state *state, Dwarf_Die *die)
-> > +{
-> > +	Dwarf_Die *source = die;
-> > +	Dwarf_Die origin;
-> > +
-> > +	state->sym = NULL;
-> > +
-> > +	/* If the DIE has an abstract origin, use it for type information. */
-> > +	if (get_ref_die_attr(die, DW_AT_abstract_origin, &origin))
-> > +		source = &origin;
-> > +
-> > +	state->sym = symbol_get(get_name(die));
-> > +
-> > +	/* Look up using the origin name if there are no matches. */
-> > +	if (!state->sym && source != die)
-> > +		state->sym = symbol_get(get_name(source));
-> > +
-> > +	state->die = *source;
-> > +	return !!state->sym;
-> > +}
-> 
-> Sorry, I don't want to comment much on function names.. but I realized
-> the name of is_export_symbol() isn't really great. The "is_" prefix
-> strongly indicates that it is only a query function, yet it changes the
-> state. It makes its caller process_exported_symbols() hard to understand
-> on the first read.
+I just wanted to echo Miguel's email.
 
-I see your point. How would you make this more obvious? get_ doesn't
-seem entirely accurate either. match_ perhaps?
+Thank you for all of your contributions, over many years, to making
+Rust for Linux what it is today. It wouldn't be here without you.
 
-Sami
+Alex
+
+On Wed, Aug 28, 2024 at 6:20=E2=80=AFPM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
+>
+> On Wed, Aug 28, 2024 at 11:11=E2=80=AFPM Wedson Almeida Filho
+> <wedsonaf@gmail.com> wrote:
+> >
+> > To the Rust for Linux team: thank you, you are great. It was a pleasure=
+ working
+> > with you all; the times we spent discussing technical issues, finding w=
+ays to
+> > address soundness holes, etc. were something I always enjoyed and looke=
+d
+> > forward to. I count myself lucky to have collaborated with such a talen=
+ded and
+> > friendly group.
+> >
+> > I wish all the success to the project.
+>
+> Thanks Wedson, it has been a pleasure -- I think I speak for everyone
+> in the team when I say we will all miss you.
+>
+> Rust for Linux got where it is this quickly thanks in big part to all
+> your efforts and quite a few people inherited code you started.
+>
+> I wish you the best of luck in whatever you decide to do.
+>
+> P.S. I will miss our long calls! :)
+>
+> Cheers,
+> Miguel
+>
+
+
+--=20
+All that is necessary for evil to succeed is for good people to do nothing.
