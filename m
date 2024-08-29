@@ -1,43 +1,43 @@
 Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 152011B375C
-	for <rust-for-linux@vger.kernel.org>; Thu, 29 Aug 2024 18:42:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81FD91B8E98
+	for <rust-for-linux@vger.kernel.org>; Thu, 29 Aug 2024 18:43:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724956972; cv=none; b=UJFitr5TtHYS+0+4LgVuky0TU5eEg1ALj/4RTWV/1e2W1sf0pEM5Gc5kUwZFkMF63tH8UjUQoj6tABiH193smmMGjw3zWPSA8ntdENMgRhyjM3bTRUhAhIrB2QDCb3ObP6x7MTJdyz3S1QiZsjSGgPQOlaIE3rHzJMi7uV9PXQs=
+	t=1724957009; cv=none; b=EIVBh6OzCcdCdbcePICMjww9CBWRaDN8hKHPzWIiShhnGzeL/RttlKCms5Gz0HR2BQimBTGYIB+dIWOx3tSaZSKC+uVZCjDc+MJi0mmtnpGTgZNndMrYWoXEfF2pnNKWnAYx+vOlC6eoZGBdzwMtJvsffy7GvpwAf2BmrwpEZPc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724956972; c=relaxed/simple;
-	bh=FKzuZ92hgjikr1TymWCa05Fjh2jFE3ZTr+nuO70Y0/Q=;
+	s=arc-20240116; t=1724957009; c=relaxed/simple;
+	bh=b5iYG9c3pe2iQ/IrNCJUWEzqa3Q76JEhhDwYWKGw9aA=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZurOjAr/B74vdIlfCKxCtyDaqc7706Pxk8/pDYgIWZoZ6bZ1/kHJ56MXaOGuuyWTJdsCjavVQwv72FMEBrlno9+5Dmrbm6Vkul8qVsN0qHBkCsD1/5dfxwIIgLHP1JcIux7LwLiyMziE6gh5C3a1Qo0EuES4rQis/WqFbQm9/G8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=joWaMbs/; arc=none smtp.client-ip=185.70.43.22
+	 MIME-Version:Content-Type; b=BZZ0mkyEtdu7peh9l4Xz6Unc6U0OraF7gEyNrt3BaanAkp14MpokfZwH1HIuR1D2dyBMVY6NGXY50Gh+xT6AmHPoQxzMfgv6TPULtOq46lg5ntovTqnyrQKYYvlnSTvmB1jzCD1HkNTnxLjpQzIVW2sXLXxClYcbOeQKLxzhjHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=j1+mGw1p; arc=none smtp.client-ip=185.70.43.22
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="joWaMbs/"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="j1+mGw1p"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1724956969; x=1725216169;
-	bh=IghPTrqsf0PYbIybSIdWfKQ4wloUFIsbW+NfxCoVioY=;
+	s=protonmail; t=1724957005; x=1725216205;
+	bh=PrOIXUmPfGYqq2ocopMHRuco9LPY6PWH9M8dhHPmIts=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=joWaMbs/SnRJug/1Efl3lukJJ7Kh3g+2jYETUe5Uxw5upCvhOMO5R7ydgtTnvK3i2
-	 usFPCfBccdLzAKFosfM2p7KxYJYFR8na5xZNJAYDVij+KQWLIHmKwHDeuGdU61wIeo
-	 Z7uAE8wI/zM5AOB2+LFHfyhxpUKAwt61AIKoyn3FLurrONRfoc8IgGyhkToQPUg9Z5
-	 jFoKsZUYcRFlrv4ZfA61jt69pXnXcp4nKYbZ2ztX9+J2TUw4vrJwQ2fylFdCzLmjtD
-	 hwdgpbi4xbb7snqigyvsJ+c4auhQtpGmFwhoYV4wDdiZb1iHY2UzthYDUkDZuYA4PZ
-	 2H9Hi7lXjhdcw==
-Date: Thu, 29 Aug 2024 18:42:43 +0000
+	b=j1+mGw1pPF4UxjdWVxpIsSVII1MPS73G2KyaNUae/ktsbUVLOVOxfW7h333MmzjSN
+	 S4Bj0GTw4F4FU2t6uTa/tW2o8+ePc9v/scJybd29px4EMfKNADnEYoT0Q+HXi+g/aP
+	 GuJmMs2dlDX0tm09MkS2/tCFjUybkZRu2VnUR6uylydH+D2vG3YfHH1+PiRdHYTrHA
+	 PQSPSxUFza/b4RdcSoJ49PDlGJkC2CaUn1VjVaxBPPM4uD6h+SV3EDJgFRxJlPU4jj
+	 L7w+Djw5CcBl1Hs64XXDfLK9VvL8D34Dx6HEGmNqXYgtVAcMWJNWBK5fhWVYPzJbec
+	 4cxrwtu3pGfrg==
+Date: Thu, 29 Aug 2024 18:43:20 +0000
 To: Danilo Krummrich <dakr@kernel.org>, ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@samsung.com, aliceryhl@google.com, akpm@linux-foundation.org
 From: Benno Lossin <benno.lossin@proton.me>
 Cc: daniel.almeida@collabora.com, faith.ekstrand@collabora.com, boris.brezillon@collabora.com, lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com, ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v6 21/26] rust: alloc: implement `contains` for `Flags`
-Message-ID: <9dee325e-6610-4628-8afb-d53895f7a9f1@proton.me>
-In-Reply-To: <20240816001216.26575-22-dakr@kernel.org>
-References: <20240816001216.26575-1-dakr@kernel.org> <20240816001216.26575-22-dakr@kernel.org>
+Subject: Re: [PATCH v6 23/26] rust: str: test: replace `alloc::format`
+Message-ID: <1e36b27c-fea6-44a1-9956-14916e5cd3f9@proton.me>
+In-Reply-To: <20240816001216.26575-24-dakr@kernel.org>
+References: <20240816001216.26575-1-dakr@kernel.org> <20240816001216.26575-24-dakr@kernel.org>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 23c120e56b61df2530a0e7ade62cef2f46c6a9dc
+X-Pm-Message-ID: 63d698293bc76c54053ea8df5e5851aebf3e9acb
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -48,11 +48,14 @@ Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
 On 16.08.24 02:11, Danilo Krummrich wrote:
-> Provide a simple helper function to check whether given flags do
-> contain one or multiple other flags.
+> The current implementation of tests in str.rs use `format!` to format
+> strings for comparison, which, internally, creates a new `String`.
 >=20
-> This is used by a subsequent patch implementing the Cmalloc `Allocator`
-> to check for __GFP_ZERO.
+> In order to prepare for getting rid of Rust's alloc crate, we have to
+> cut this dependency. Instead, implement `format!` for `CString`.
+>=20
+> Note that for userspace tests, `Kmalloc`, which is backing `CString`'s
+> memory, is just a type alias to `Cmalloc`.
 >=20
 > Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
@@ -64,34 +67,44 @@ Cheers,
 Benno
 
 > ---
->  rust/kernel/alloc.rs | 7 ++++++-
->  1 file changed, 6 insertions(+), 1 deletion(-)
+>  rust/kernel/str.rs | 23 ++++++++++++++++++++++-
+>  1 file changed, 22 insertions(+), 1 deletion(-)
 >=20
-> diff --git a/rust/kernel/alloc.rs b/rust/kernel/alloc.rs
-> index 1feabc817d00..5c66229a7542 100644
-> --- a/rust/kernel/alloc.rs
-> +++ b/rust/kernel/alloc.rs
-> @@ -34,7 +34,7 @@
->  /// They can be combined with the operators `|`, `&`, and `!`.
->  ///
->  /// Values can be used from the [`flags`] module.
-> -#[derive(Clone, Copy)]
-> +#[derive(Clone, Copy, PartialEq)]
->  pub struct Flags(u32);
->=20
->  impl Flags {
-> @@ -42,6 +42,11 @@ impl Flags {
->      pub(crate) fn as_raw(self) -> u32 {
->          self.0
->      }
+> diff --git a/rust/kernel/str.rs b/rust/kernel/str.rs
+> index 209ad1bb1a49..726329530338 100644
+> --- a/rust/kernel/str.rs
+> +++ b/rust/kernel/str.rs
+> @@ -523,7 +523,28 @@ macro_rules! c_str {
+>  #[cfg(test)]
+>  mod tests {
+>      use super::*;
+> -    use alloc::format;
 > +
-> +    /// Check whether `flags` is contained in `self`.
-> +    pub fn contains(self, flags: Flags) -> bool {
-> +        (self & flags) =3D=3D flags
+> +    struct String(CString);
+> +
+> +    impl String {
+> +        fn from_fmt(args: fmt::Arguments<'_>) -> Self {
+> +            String(CString::try_from_fmt(args).unwrap())
+> +        }
 > +    }
->  }
+> +
+> +    impl Deref for String {
+> +        type Target =3D str;
+> +
+> +        fn deref(&self) -> &str {
+> +            self.0.to_str().unwrap()
+> +        }
+> +    }
+> +
+> +    macro_rules! format {
+> +        ($($f:tt)*) =3D> ({
+> +            &*String::from_fmt(kernel::fmt!($($f)*))
+> +        })
+> +    }
 >=20
->  impl core::ops::BitOr for Flags {
+>      const ALL_ASCII_CHARS: &'static str =3D
+>          "\\x01\\x02\\x03\\x04\\x05\\x06\\x07\\x08\\x09\\x0a\\x0b\\x0c\\x=
+0d\\x0e\\x0f\
 > --
 > 2.46.0
 >=20
