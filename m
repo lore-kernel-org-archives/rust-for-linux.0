@@ -1,43 +1,43 @@
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 104D014B086
-	for <rust-for-linux@vger.kernel.org>; Thu, 29 Aug 2024 18:19:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 726371AAE1E
+	for <rust-for-linux@vger.kernel.org>; Thu, 29 Aug 2024 18:32:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1724955558; cv=none; b=bTjVRoVSDNeDuXD3Q/UkS3+niJnAVs7VuL+qKMHPb7lehje8H3Lptqckgl+X6YqC1ItRA6UDDm6xWAd8vJ+ooJn5RG2MyNXG1qOCDL9J5Kf50pAji5r2UFNd6mVKj5rAMAiRxcKcSBokw8dp0EU4zSBZcRjaEKt4CpFKC5FcI0o=
+	t=1724956370; cv=none; b=dYkCjrwg3UQ6DFmHy98/4Slo1oMCjpB02/TSVM5GVzmTYsaqlA5/d4qe57RQIffpdOkqoWLdcp3iByDEWvWRRgjkHKGo2dpjJbbe4jGzsf4QvZLAXlkjnlH3zM499wm3u8sXZ35gtDsqpF7bSjZg4wp+WvY6yTEuwafrLWON0J8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1724955558; c=relaxed/simple;
-	bh=h3FeHrXdQcOSknLmzlELlkNf2rblPiuIhon54Vp0OAo=;
+	s=arc-20240116; t=1724956370; c=relaxed/simple;
+	bh=XE8VsHrTihT1SQ8vq+VttOG+6NW/1znWtgXdQzKIXbU=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=D1BdrvnMQm22O5Iu/hlFRasa4klxcCfZpIC5DdyF+Z+mcZydVjQjjsClKoHWs2DBmuIP8R7b+rM4anfv/gIGJnskme2axktgjFSZNcVMy5KcwZMsKiU9J/l3u5VeEHBFL2s5JeiupH3WT9GOPAW1dj01VcJ1DBGQKLYXuGO+RHM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=j26c9S+d; arc=none smtp.client-ip=185.70.43.22
+	 MIME-Version:Content-Type; b=NPYukiOr3OZMA2Ot/95qlkFVpZYXdXziPwqTZEHhLLKMNonxsKg7v1T5o5JzI+F4tn3Vv0rRHpaDDe71MofgYOzAO9JfFzkbB66W+CcK7Q83Q6YN2rVUCXJkcIZQwgweg9ejAMh+ixlWjAxhinO07Fch8XPokDLlcB08o+EIdhw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=Ftcn2N2e; arc=none smtp.client-ip=185.70.43.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="j26c9S+d"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="Ftcn2N2e"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1724955555; x=1725214755;
-	bh=h3FeHrXdQcOSknLmzlELlkNf2rblPiuIhon54Vp0OAo=;
+	s=protonmail; t=1724956366; x=1725215566;
+	bh=YOfxQtw40ZXlYY9ClmFMSo+YqxH/dt5Klo4ck81NB/A=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=j26c9S+dFupn+t1U3Oje/yxSGYbZnxMC/XEXQovK+KqjS8A2fvFAtfj9PTBdmwtv/
-	 X8mjjPkwoQpuoJa171IgR3VCgBE3eGv3QWi0g5Idz8IikIi2RSVwIlazVVd4I7ebQC
-	 J8LiziINqDK7jJ0IWYxWtKHTfRDiXZhV9csb+fI6wxeY61x1z6T9cAR9zvi5n6L9nw
-	 zrjMIFf4TveSj8QOmf/iEOPNGbIHbrABII1Xmym3MMfZFIcOoMxcd0YN3P+g5kx/l4
-	 XKwhMpJy9AOPqNsJVEGzYMBDQir3FSlvNAhNhUOoYgf/6nWvxaOYh1jvJaJdbvh9ac
-	 pjLHfDEGkuCOg==
-Date: Thu, 29 Aug 2024 18:19:09 +0000
+	b=Ftcn2N2eOuSuiG7u+g7CIp+3zJMQ2q7LYMg+6er7KOtGiO3B+XOy07ntPSylMjvfd
+	 NzNi6QgtNPVwtvm64/ROgFqUtonPV6cMdkpAEqAzKiwVey+Ip4xqkBiW24nokrunAu
+	 2EUG9eb+iq4iBusYzszjJq4NaoZcaVh7Ktwx5DZyVtIKvL/XcrndPSZaxD5QVIGXCm
+	 CwAirNhHIymW+wIi68sQuNxUfMk191Ugh80bk4VvpZZUKB8CUmC2AU+Ot0HtXI8+nu
+	 BhG9U3FGqWt/lroWdN1mKMilS4lUq9jZWs+dF6nz5MRNZ27/LkJznJ+XZzzd5KR7Wr
+	 xSUSEduTqoZ6Q==
+Date: Thu, 29 Aug 2024 18:32:42 +0000
 To: Danilo Krummrich <dakr@kernel.org>, ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@samsung.com, aliceryhl@google.com, akpm@linux-foundation.org
 From: Benno Lossin <benno.lossin@proton.me>
 Cc: daniel.almeida@collabora.com, faith.ekstrand@collabora.com, boris.brezillon@collabora.com, lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com, ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v6 01/26] rust: alloc: add `Allocator` trait
-Message-ID: <60253988-37e7-4acb-b2ae-748b30a4ac21@proton.me>
-In-Reply-To: <20240816001216.26575-2-dakr@kernel.org>
-References: <20240816001216.26575-1-dakr@kernel.org> <20240816001216.26575-2-dakr@kernel.org>
+Subject: Re: [PATCH v6 04/26] rust: alloc: implement `Allocator` for `Kmalloc`
+Message-ID: <2dd02834-b2b6-4ff6-9e29-43c9d77b69e2@proton.me>
+In-Reply-To: <20240816001216.26575-5-dakr@kernel.org>
+References: <20240816001216.26575-1-dakr@kernel.org> <20240816001216.26575-5-dakr@kernel.org>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 6bc830cb4344c3a2d832377fd8c8b4022cb0514a
+X-Pm-Message-ID: 5d22a818e5a4787a27c7c22d2758781a7315a81e
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -48,22 +48,162 @@ Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
 On 16.08.24 02:10, Danilo Krummrich wrote:
-> Add a kernel specific `Allocator` trait, that in contrast to the one in
-> Rust's core library doesn't require unstable features and supports GFP
-> flags.
+> Implement `Allocator` for `Kmalloc`, the kernel's default allocator,
+> typically used for objects smaller than page size.
 >=20
-> Subsequent patches add the following trait implementors: `Kmalloc`,
-> `Vmalloc` and `KVmalloc`.
+> All memory allocations made with `Kmalloc` end up in `krealloc()`.
 >=20
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> It serves as allocator for the subsequently introduced types `KBox` and
+> `KVec`.
+>=20
 > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> ---
+>  rust/kernel/alloc.rs           |  2 +-
+>  rust/kernel/alloc/allocator.rs | 72 +++++++++++++++++++++++++++++++++-
+>  2 files changed, 72 insertions(+), 2 deletions(-)
+>=20
+> diff --git a/rust/kernel/alloc.rs b/rust/kernel/alloc.rs
+> index 9932f21b0539..477dbe3c5a2f 100644
+> --- a/rust/kernel/alloc.rs
+> +++ b/rust/kernel/alloc.rs
+> @@ -4,7 +4,7 @@
+>=20
+>  #[cfg(not(test))]
+>  #[cfg(not(testlib))]
+> -mod allocator;
+> +pub mod allocator;
+>  pub mod box_ext;
+>  pub mod vec_ext;
+>=20
+> diff --git a/rust/kernel/alloc/allocator.rs b/rust/kernel/alloc/allocator=
+.rs
+> index e32182f91167..78e7d5488843 100644
+> --- a/rust/kernel/alloc/allocator.rs
+> +++ b/rust/kernel/alloc/allocator.rs
+> @@ -1,12 +1,28 @@
+>  // SPDX-License-Identifier: GPL-2.0
+>=20
+>  //! Allocator support.
+> +//!
+> +//! Documentation for the kernel's memory allocators can found in the "M=
+emory Allocation Guide"
+> +//! linked below. For instance, this includes the concept of "get free p=
+age" (GFP) flags and the
+> +//! typical application of the different kernel allocators.
+> +//!
+> +//! Reference: <https://docs.kernel.org/core-api/memory-allocation.html>
 
-We discussed this in our weekly meeting (I think ~one week ago?). If you
-give me a draft version of the comment that you plan to add regarding
-the `old_layout` parameter, I can see if I am happy with it. If I am, I
-would give you my RB.
+Thanks, this nice.
+
+>=20
+>  use super::{flags::*, Flags};
+>  use core::alloc::{GlobalAlloc, Layout};
+>  use core::ptr;
+> +use core::ptr::NonNull;
+>=20
+> -struct Kmalloc;
+> +use crate::alloc::{AllocError, Allocator};
+> +use crate::bindings;
+> +
+> +/// The contiguous kernel allocator.
+> +///
+> +/// `Kmalloc` is typically used for physically contiguous allocations up=
+ to page size, but also
+> +/// supports larger allocations up to `bindings::KMALLOC_MAX_SIZE`, whic=
+h is hardware specific.
+
+Does putting a link here work? (I guess we don't yet export the bindings
+documentation, so it will probably fail... When we decide to enable it,
+we should create an issue to add missing links)
+
+> +///
+> +/// For more details see [self].
+> +pub struct Kmalloc;
+>=20
+>  /// Returns a proper size to alloc a new object aligned to `new_layout`'=
+s alignment.
+>  fn aligned_size(new_layout: Layout) -> usize {
+> @@ -36,6 +52,60 @@ pub(crate) unsafe fn krealloc_aligned(ptr: *mut u8, ne=
+w_layout: Layout, flags: F
+>      unsafe { bindings::krealloc(ptr as *const core::ffi::c_void, size, f=
+lags.0) as *mut u8 }
+>  }
+>=20
+> +/// # Invariants
+> +///
+> +/// One of the following `krealloc`, `vrealloc`, `kvrealloc`.
+> +struct ReallocFunc(
+> +    unsafe extern "C" fn(*const core::ffi::c_void, usize, u32) -> *mut c=
+ore::ffi::c_void,
+> +);
+> +
+> +impl ReallocFunc {
+> +    // INVARIANT: `krealloc` satisfies the type invariants.
+> +    const KREALLOC: Self =3D Self(bindings::krealloc);
+> +
+> +    /// # Safety
+> +    ///
+> +    /// This method has the same safety requirements as [`Allocator::rea=
+lloc`].
+> +    unsafe fn call(
+> +        &self,
+> +        ptr: Option<NonNull<u8>>,
+> +        layout: Layout,
+> +        flags: Flags,
+> +    ) -> Result<NonNull<[u8]>, AllocError> {
+> +        let size =3D aligned_size(layout);
+> +        let ptr =3D match ptr {
+> +            Some(ptr) =3D> ptr.as_ptr(),
+> +            None =3D> ptr::null(),
+> +        };
+> +
+> +        // SAFETY: `ptr` is either NULL or valid by the safety requireme=
+nts of this function.
+
+You need some justification as to why calling the three allowed
+functions here.
+
+> +        let raw_ptr =3D unsafe {
+> +            // If `size =3D=3D 0` and `ptr !=3D NULL` the memory behind =
+the pointer is freed.
+> +            self.0(ptr.cast(), size, flags.0).cast()
+> +        };
+> +
+> +        let ptr =3D if size =3D=3D 0 {
+> +            NonNull::dangling()
+> +        } else {
+> +            NonNull::new(raw_ptr).ok_or(AllocError)?
+> +        };
+> +
+> +        Ok(NonNull::slice_from_raw_parts(ptr, size))
+> +    }
+> +}
+> +
+> +unsafe impl Allocator for Kmalloc {
+
+Missing SAFETY comment.
 
 ---
 Cheers,
 Benno
+
+> +    #[inline]
+> +    unsafe fn realloc(
+> +        ptr: Option<NonNull<u8>>,
+> +        layout: Layout,
+> +        flags: Flags,
+> +    ) -> Result<NonNull<[u8]>, AllocError> {
+> +        // SAFETY: `ReallocFunc::call` has the same safety requirements =
+as `Allocator::realloc`.
+> +        unsafe { ReallocFunc::KREALLOC.call(ptr, layout, flags) }
+> +    }
+> +}
+> +
+>  unsafe impl GlobalAlloc for Kmalloc {
+>      unsafe fn alloc(&self, layout: Layout) -> *mut u8 {
+>          // SAFETY: `ptr::null_mut()` is null and `layout` has a non-zero=
+ size by the function safety
+> --
+> 2.46.0
+>=20
 
