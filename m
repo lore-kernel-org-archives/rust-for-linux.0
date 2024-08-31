@@ -1,191 +1,99 @@
-Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27D5513BAE2;
-	Fri, 30 Aug 2024 16:34:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FC7B2C9D
+	for <rust-for-linux@vger.kernel.org>; Sat, 31 Aug 2024 00:06:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.171
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725035681; cv=none; b=oKCeod8lWt+dTNtivDpgCzkCjv6v8V91lB09bJepHhmO6K8QT7nkkuXLgsX8Ck3Xyek6PAMYD3Wz4h/cz6sidJHeNgKFphy48/2fImEWErkZbwChpccsz2NyXD3ihgQJiKBP3/7YsFecO9ltzfewPgKItflRUBJgIhHHWORsvXA=
+	t=1725062780; cv=none; b=beKPwqUzGttJZ0G94WXu8zhDuYJTCpW18yJoNSSUj/vFiEP2boYrZnwHqorQs+1qVOkCiIayysfQ1TPiQ+Rm91/IPwKTD2Los8UaL/dQRpYVw6LPHul2jO08MWQ1JqJcpYpkOh000mDnzM2hPF5jVsGHrWdgK81G3mtQqaIVBMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725035681; c=relaxed/simple;
-	bh=iFzf0Lzty/5yMH4AQkyBN8IKf0cDxoABsMXKbvCcmOs=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=NwrBylRx7TfXzlA5XkJUV3keV6zekemM50rbnHheIHB0YEC2n9jLixal4ufmeJPoVJRCgkACimfXnQUdC1C+k+rO8noIzCWtOD3TAZqS0nkbGSF7ab6tC/BkzTzJCUR+NY1bGNWFHyqQGcwdcNRmk6SZ1iN8CQfkJu9D6Z7cpnY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Puiqd24N; arc=none smtp.client-ip=209.85.160.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1725062780; c=relaxed/simple;
+	bh=n8xcqiHEzhMcHy2TGqeuIA4zEqW0LBBlmS3A1RDmuII=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RkDtcqdjFPh16TYhLw7e3eVK9+PTLJxjzh3i4D6gWxW1AbbIn3zDh3R5APWfHfy3YU6kZ/tnXRlM88k33tYs2CJuszW1XG0xUuwozs+bC6JCf7PQzJOZuQSpVaDRgBcB8BiSrwhGtupD1gIUXA4Siwrv0sv0dIDTZMQvGDBScH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=3vHhwB/r; arc=none smtp.client-ip=209.85.160.171
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Puiqd24N"
-Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-4567587224eso11463331cf.0;
-        Fri, 30 Aug 2024 09:34:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="3vHhwB/r"
+Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-4567fe32141so79721cf.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 30 Aug 2024 17:06:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1725035679; x=1725640479; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+        d=google.com; s=20230601; t=1725062777; x=1725667577; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=1UuncYEpLqNPDMV52iLjYpBbuWE5/gdn/gZaZV8ruJY=;
-        b=Puiqd24NQZlWnZgk1/yUZR99GzL1zJPOjywXqWrwAtE5RDy2S9/X3qowjvYrFnzzX9
-         iBkLa1ICqmf9kTfzIfzuk8vxXNhORN2MWczDJApLDQwj8lq5VZXIuVDmIhP3SwcoHzJW
-         FZ8mh3KAS/yftmw0uynn53cZMwf+DOioFQOG+BqM7dMy/S8HI4pv/l36YetqK9WOHIff
-         o0a13sdE60rolPsJAw3odlrTIxp+RN4idBiSZkDg7Ipp/5e9Piw1h+Eh+iyk+5S4hsyq
-         z8EQGdJEI2kByF10+85dGyCbDDYZUmOyRmK3gR3awlMXLRqR3sfqo4tqb9fkaYaEXwnS
-         CM5w==
+        bh=n8xcqiHEzhMcHy2TGqeuIA4zEqW0LBBlmS3A1RDmuII=;
+        b=3vHhwB/rvceYxkjD9IZz+rYaiCLZQGsFAT0Y6tqw29EeC9vQfiHmHQFKQdH7t0XgyA
+         ka93vNsLHaXQYaxHdvxrkoZc9hQz6EJvlHImjserC7JTNY/HSwBkQ66f2WrEH6UYf+dd
+         EVNjrTeszz/K9UMyzgHJmzc76dqF3ZI4pxTNadrjBBuZqea0ZuyFlYGWdv+fBr/e0HcS
+         Xv4QWl8xUlmRh462iNuLhzepBAgxql7at6Y7M/Vn5K+aVlxmJ3abTsz+q8uStO/IuCpM
+         6icFmQQZLLOe84MWI7h4OdH7ppmKfNqb7F0qzIPiz4Z+o0CKR8wdsOZ8T2uBhiK5bXsw
+         SxhQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725035679; x=1725640479;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1725062777; x=1725667577;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=1UuncYEpLqNPDMV52iLjYpBbuWE5/gdn/gZaZV8ruJY=;
-        b=nltI63mY10utEQfGMxR6VadU6LAPWKHXWWQdcUpQNvaDDY06Nqz/zSm6lqnAOqZQgy
-         IOqKEuYPF5LQtRxkZYp0Ai+KMCymeyimDejom0XZAT4PHJv+46KOxkGYTAoc4NWI8ESx
-         eM/BV9SH+/CS5X7cTZJMIWXNiFCL44KxQWe05Q2LpwFQFyPmHEdM6MNuNfmVjWUNC22e
-         5ZbS16um0yX8izD5uk03iJueuUhj4hgDoB0iGu5qes4a0IUPcHpdSMiySkSkowKRHM96
-         z8jlTGtCFXBvD+giDfBiLjkNcrObaVMHKrNLFjH2DNlB+ziSZVg7DayyZNeQmZjZoPnm
-         k15w==
-X-Forwarded-Encrypted: i=1; AJvYcCU1jG9UhAGFtxIjCgUOvf9kuKmgg3gfznflX4LZuCMg9FpB7/t4/VEgC/xMwfnJ6GEPOENxjqk34FrA3O4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz7cFtS0TcNIh9fpVfKFuwX4UXUKV3UvThgnofdNlU3qv0c1mPu
-	yTK95hQAxvtDNvJZuzfTp/o7oGTFA83IAop+n1pQvNiHePyGuUth
-X-Google-Smtp-Source: AGHT+IEThTZ4xKh5mN+fRZwI2iFzvcos3RJSkzDDdnkBqxXLHqtt0P1KtSwmRav6LrT88HooOIUBUg==
-X-Received: by 2002:a05:6214:418a:b0:6bf:6b15:a6da with SMTP id 6a1803df08f44-6c33e62780bmr64898766d6.25.1725035678888;
-        Fri, 30 Aug 2024 09:34:38 -0700 (PDT)
-Received: from fauth2-smtp.messagingengine.com (fauth2-smtp.messagingengine.com. [103.168.172.201])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6c340cacccbsm15931756d6.129.2024.08.30.09.34.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 30 Aug 2024 09:34:38 -0700 (PDT)
-Received: from phl-compute-06.internal (phl-compute-06.nyi.internal [10.202.2.46])
-	by mailfauth.nyi.internal (Postfix) with ESMTP id E5C4B1200043;
-	Fri, 30 Aug 2024 12:34:37 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-06.internal (MEProxy); Fri, 30 Aug 2024 12:34:37 -0400
-X-ME-Sender: <xms:nfTRZry0Qlh7vpx1oQqcnKrHGRnb4XIcP2_LWErdrEdaHgWNcOzIjA>
-    <xme:nfTRZjT4DXD4UNmxoderv9V9XGFIckmXGcI4FQr5vVt1UAQ-4Bc45G9gGJu94VYDr
-    VVe2k7QhuYmp2PGJg>
-X-ME-Received: <xmr:nfTRZlW-QSJNpEbZwnYRS7jNuNcxmVNHDyfwXIawU7sET36IOVmMYCtgvfw>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrudefiedguddtvdcutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
-    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
-    hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddv
-    necuhfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilh
-    drtghomheqnecuggftrfgrthhtvghrnhepffdtiefhieegtddvueeuffeiteevtdegjeeu
-    hffhgfdugfefgefgfedtieeghedvnecuffhomhgrihhnpehgihhthhhusgdrtghomhenuc
-    evlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhn
-    odhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedqudejje
-    ekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmhgvrdhn
-    rghmvgdpnhgspghrtghpthhtohepuddvpdhmohguvgepshhmthhpohhuthdprhgtphhtth
-    hopehgrghrhiesghgrrhihghhuohdrnhgvthdprhgtphhtthhopehruhhsthdqfhhorhdq
-    lhhinhhugiesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlihhnuhigqd
-    hkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehojhgvuggr
-    sehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhgvgidrghgrhihnohhrsehgmhgrih
-    hlrdgtohhmpdhrtghpthhtohepfigvughsohhnrghfsehgmhgrihhlrdgtohhmpdhrtghp
-    thhtohepsghjohhrnhefpghghhesphhrohhtohhnmhgrihhlrdgtohhmpdhrtghpthhtoh
-    epsggvnhhnohdrlhhoshhsihhnsehprhhothhonhdrmhgvpdhrtghpthhtoheprgdrhhhi
-    nhgusghorhhgsehsrghmshhunhhgrdgtohhm
-X-ME-Proxy: <xmx:nfTRZljUPRhh4BLtS3S152_uk6oC6aVTf-wtsK3jDw3uA01q20xqTg>
-    <xmx:nfTRZtA9fix1m5OJctmIseslus_qaASqiGxIsCnRJUJAdKLjV7rI1g>
-    <xmx:nfTRZuLN7zkwJTfmoddc4fjtzJnjn6SZR70R3z6KxeMDnvBWXRodlw>
-    <xmx:nfTRZsBGCVl5PhHJZjxTP7gPjMa4mj51fmFi-5eKzOcXYG-xqy2lqA>
-    <xmx:nfTRZpxsNACeIxEEmv6xIsnaWKX6x2H86uekq6gmzrpucpwqwyyzgreA>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 30 Aug 2024 12:34:37 -0400 (EDT)
-Date: Fri, 30 Aug 2024 09:34:36 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Gary Guo <gary@garyguo.net>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>
-Subject: Re: [RFC PATCH] rust: Provide correct provenance when constructing
- THIS_MODULE
-Message-ID: <ZtH0nK8ytZCiZs-_@Boquns-Mac-mini.local>
-References: <20240828180129.4046355-1-boqun.feng@gmail.com>
- <20240830160532.4a526a62@eugeo>
+        bh=n8xcqiHEzhMcHy2TGqeuIA4zEqW0LBBlmS3A1RDmuII=;
+        b=rLrphLJo5K/dYGoKz+e/ZkAX/SVSKA0T6kKAP0K9zuXDKWSutR8UdcKUC1UpZXLyJG
+         MzVn4m1RWphSnkjnZ1AotlfhfcetGK1J05KhHyjPfXqxmKI+GYa1bDrZoYgr2IpZnUh8
+         HfAjEFEg5MrnCVKhdup2alfQ3pZvqjcGMCmjyUCYfyxFhQxRTnVxa1Fw07ih59PUYck4
+         PMIgydDOw9SHJ0a1JOY4DRKfNtO2fKklvKKHnBf/UOv9eNntwD3v6AxaulRXCx++Zpim
+         MtDMKxZZTH8EQW8KGAD3rU8QhI5ZCGSty2btiRGlYKDcG+K/QgvX97ChRilixmqoouxF
+         8sLA==
+X-Forwarded-Encrypted: i=1; AJvYcCVzGd0yYLqByur9Ijnk/xWOcYEW0GQDj5N4FnZdpZTF2cMq6sismgzlgdBK/RxOAu+6zChaj8GzQcD8NrpwYA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyD8dG429E9NTrhgvrIwXwTiUJDgLOVO3ljog5K7FaMDkJyNaib
+	sSSlaGRSSfOwrzSjtVCIytR16mFAWLTi6g+ZKK1H0cmhjhGY+3pAXJcGuhmeNTi5zU41zu29nVh
+	E0C4nhdzvlFSnKwPCJyg9n9GneiI5K3uY3ySJ
+X-Google-Smtp-Source: AGHT+IFg6NnIqNYSyCQdp+4piRmBL+jQdTn0fkJWHCEEU/fYsuOdUxONjCSJBEQ2wyGjIkWsARNyrhv7f4RZhj+2hRc=
+X-Received: by 2002:ac8:5987:0:b0:447:e847:486 with SMTP id
+ d75a77b69052e-457c41b4ae7mr670401cf.3.1725062777214; Fri, 30 Aug 2024
+ 17:06:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240830160532.4a526a62@eugeo>
+References: <20240815173903.4172139-21-samitolvanen@google.com>
+ <20240815173903.4172139-37-samitolvanen@google.com> <alpine.LSU.2.21.2408301114000.1124@pobox.suse.cz>
+In-Reply-To: <alpine.LSU.2.21.2408301114000.1124@pobox.suse.cz>
+From: Sami Tolvanen <samitolvanen@google.com>
+Date: Sat, 31 Aug 2024 00:05:40 +0000
+Message-ID: <CABCJKucCWfeC0yL6Q2ZcBfef0tMd9L_gmHRJt-cUYkg_4PDtnA@mail.gmail.com>
+Subject: Re: [PATCH v2 16/19] gendwarfksyms: Add support for reserved
+ structure fields
+To: Miroslav Benes <mbenes@suse.cz>
+Cc: Masahiro Yamada <masahiroy@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Matthew Maurer <mmaurer@google.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, Petr Pavlu <petr.pavlu@suse.com>, 
+	Neal Gompa <neal@gompa.dev>, Hector Martin <marcan@marcan.st>, Janne Grunau <j@jannau.net>, 
+	Asahi Linux <asahi@lists.linux.dev>, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Aug 30, 2024 at 04:05:32PM +0100, Gary Guo wrote:
-> On Wed, 28 Aug 2024 11:01:29 -0700
-> Boqun Feng <boqun.feng@gmail.com> wrote:
-> 
-> > Currently while defining `THIS_MODULE` symbol in `module!()`, the
-> > pointer used to contruct `ThisModule` is derived from an immutable
-> > reference of `__this_module`, which means the pointer doesn't have
-> > the provenance for writting, and that means any write to that pointer
-> > is UB regardless of data races or not. However, the usage of
-> > `THIS_MODULE` includes passing this pointer to functions that may write
-> > to it (probably in unsafe code), and this will create soundness issues.
-> > 
-> > One way to fix this is using `addr_of_mut!()` but that requires the
-> > unstable feature "const_mut_refs". So instead of `addr_of_mut()!`,
-> > an extern static `Opaque` is used here: since `Opaque<T>` is transparent
-> > to `T`, an extern static `Opaque` will just wrap the C symbol (defined
-> > in a C compile unit) in an `Opaque`, which provides a pointer with
-> > writable provenance via `Opaque::get()`. This fix the potential UBs
-> > because of pointer provenance unmatched.
-> 
-> `const_mut_refs` is getting stablised so we should be able to use it
-> soon. I am slightly inclined to use `addr_of_mut!()` over `Opaque` in
-> this case so we can use it directly from bindgen.
-> 
+Hi Miroslav,
 
-That's the reason why I put "RFC" in the title, although I feel `Opaque`
-is better, one of the reasons is you can easily provide a `*mut T` with
-wrong provenance (e.g. casting from a `&T`), but it's harder to
-construct a (or an? ;-)) `&Opaque<T>` incorrectly. So if an API takes
-`&Opaque<T>` instead of a `*mut T`, it can reduce some user errors.
-Therefore personally, I prefer `&Opaque<T>` (or `&UnsafeCell<T>`). But
-of course, I don't think this is something really strong, and I might
-miss something, so I don't feel bad using `*mut T`.
+On Fri, Aug 30, 2024 at 9:34=E2=80=AFAM Miroslav Benes <mbenes@suse.cz> wro=
+te:
+>
+> yes, this is one of the approaches we use in SLES. We add kabi paddings
+> to some structures in advance (see [1] as a random example) and then use
+> it later if needed.
+>
+> It is not the only approach. Much more often we do not have a padding and
+> use alignment holes ([5]), addition of a new member to the end of a
+> structure ([2] or [3]) and such "tricks" ([4] for a newly fully defined
+> structure).
 
-Moreover, besides `const_mut_refs`, we also may also want to wait for
+Thanks for bringing this up! Sounds like we're also going to need a
+way to completely exclude specific fields from the output then. I
+think we can use a similar union approach, but instead of instructing
+the tool to use another type, we can just indicate that the field
+should be skipped. I'll come up with a solution for v3.
 
-	https://github.com/rust-lang/rust/pull/125834
-
-to be in stable to avoid unnecessary unsafe.
-
-> That said, the current approach also LGTM.
-> 
-
-Thanks!
-
-Regards,
-Boqun
-
-> Reviewed-by: Gary Guo <gary@garyguo.net>
-> 
-> > 
-> > Reported-by: Alice Ryhl <aliceryhl@google.com>
-> > Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-> > ---
-> >  rust/macros/module.rs | 6 +++++-
-> >  1 file changed, 5 insertions(+), 1 deletion(-)
-> > 
-> > diff --git a/rust/macros/module.rs b/rust/macros/module.rs
-> > index 571ffa2e189c..aef3b132f32b 100644
-> > --- a/rust/macros/module.rs
-> > +++ b/rust/macros/module.rs
-> > @@ -217,7 +217,11 @@ pub(crate) fn module(ts: TokenStream) -> TokenStream {
-> >              // freed until the module is unloaded.
-> >              #[cfg(MODULE)]
-> >              static THIS_MODULE: kernel::ThisModule = unsafe {{
-> > -                kernel::ThisModule::from_ptr(&kernel::bindings::__this_module as *const _ as *mut _)
-> > +                extern \"C\" {{
-> > +                    static __this_module: kernel::types::Opaque<kernel::bindings::module>;
-> > +                }}
-> > +
-> > +                kernel::ThisModule::from_ptr(__this_module.get())
-> >              }};
-> >              #[cfg(not(MODULE))]
-> >              static THIS_MODULE: kernel::ThisModule = unsafe {{
-> 
+Sami
