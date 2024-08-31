@@ -1,48 +1,48 @@
-Received: from GBR01-LO4-obe.outbound.protection.outlook.com (mail-lo4gbr01on2122.outbound.protection.outlook.com [40.107.122.122])
+Received: from GBR01-CWX-obe.outbound.protection.outlook.com (mail-cwxgbr01on2137.outbound.protection.outlook.com [40.107.121.137])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC3A217BB19;
-	Sat, 31 Aug 2024 12:16:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.122.122
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14A4D17E473;
+	Sat, 31 Aug 2024 12:18:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.121.137
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725106573; cv=fail; b=P44icWgcxgU/qgs0CzSdhC06rhd58j7v80LcCPybdejC/lcIn9xGaWB+6m1D3XMSEoYiDapGNfuAQDj0rF96L/dM73BdURv4Qlqhblm2tV0po+DhmUhlXTejsIvUrofoZALD6Z11AuYlaMyVJBwGcMd2KVMRDMTuERFHyzbl6iU=
+	t=1725106720; cv=fail; b=le2QLA2t+MJwSwz1U5ECNV5Fv9hXptVMi/PEgo0tozi+fQoZ+l4Y8wv3ffsLghXLX62qaIqCNeyzgMBt+bEZ0UC1uKHRv/riHcDF7JULpGAiCnf9UKJNWEUkgED+rnlpx5JSyMZ2BVSwMws3VLLvkovne4Z0w+C4KkdRc7pQt2M=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725106573; c=relaxed/simple;
-	bh=DoX+0LS/xzDtA+QjlhC5RATksqJwhnuoxLj390otEnc=;
+	s=arc-20240116; t=1725106720; c=relaxed/simple;
+	bh=CMjqY/OlKwxe8ai4MD7K02kdQIoEdKr6cGBaPgS4PS8=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=VeHPbozTjarSAX8k1pJmmgcJGF/6ZhtxM0+qvoHmiVTw/5l+27mJ8nJKnBjoyy66S+MhW5AxtjEeCysBrd9Ot3sa+4oDxO5aEVTh3tvsfrHo65h6Y7eDgD7rw48LvzlVKjq2EOcLhTThdW2cYlmcSbvmH5/tAmmB0b1WGR2PrKA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=FJP/cnF2; arc=fail smtp.client-ip=40.107.122.122
+	 Content-Type:MIME-Version; b=XBANSfNG/UlGOwNPXfuyKR0FQH8PcDtN6raYpE1PN+RGbtOaAxW2GW8rqiPtRMgT/tJgBtAT8UGzuRyVU3zQVJ5cerC0gY0YmpN40SaAy0VfwtWidmJowo5pRgzhS//VNnQSoL1K3xCFvhDJT/y3FXPiVkD3fNY4hGjlr3Y2pjg=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=ro2eQJQ4; arc=fail smtp.client-ip=40.107.121.137
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="FJP/cnF2"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="ro2eQJQ4"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=D7ZR0M616B/adhH6NgLeongXbr83PmK5Ik9MfTT21NTcVHZA/DNKmmIGcM5y+LALNxkuiMeQRtAYokT35/hobynUxKtak1O4BzKmHURyFdlJRorKd+d40M3tRBU38CxxokIbr0tpCeb946DdRWgxrYMx9zHYhkTV5CPVMy8D9lN/2fms+kBL61/nsfc+yUzNZJT04Xg0h2mBNJm9HsuyXCsoQ8SdDCQcWLhRtjylNp6fKtyqqQdNniGXBnUJE8mLo8s5YzfiuLNp8+aeJBcRSFbNDy1ptTxYq3pXDtpCUc22mqXUg7c4mslJ44oFD8yVDiTrdedqA/GzTWpJ1P38Mw==
+ b=qzI7d7uh9jJ9JLIWpp9V/BXEUkHQg0yoP/s34aaAa7dhyzDCQ44sGMGS37jIjcl2QR/cH0qS0rdPHLUEbuPB6kFT0EOM5uM/5pWO7RoqheUHy53j74g3tle+jUXvMl+0QAihCdb8mlP1hRLfIRILTQwqBJdFwab8ZKqiRWZBW+CTUIxx972ANsNFy6awPmNiikY8wlbjWECsNMwJpGXejpmsFgTdAaVcFTKVYeCyMXxCZTCHXeOCi3PPF4xjriM56VF0CVAZnKmjjXBUj3n3I1GAgY7sbF4akDSbb7M9vmIFnNeQaynkmHHGA2KtFtx42uDNx3O5xGLfyEWNZqghRA==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=kxCWA+N7MDEFds4ulOnG+tg+kGwI7Xft5R11KnecwJ0=;
- b=VgantBY2iJH8JGCquj/a/TmYos6HG/f0UTaw8Nzj9O2dF1kGyR9NY63xAnBbNqeOz5NcFsJELYLQADdfwtpGHd9MvyBibd3449ErAZ1E44nApAxkAHVhy4qNU9/lhyo3NdUUT3ZuqgNSPL9SV/OCi8+fpxVtKuEy/AxpIFVFvBQ9A5+8jpsOuuOEXJwkdDn9bjntlP4MUMSkxrVKmlqvASMSqK92bZ9XQkBZqVYg4+AlC/Ctl4Sqfkl1cWaYtenX9ea5gpW4+h4KnHJPF8xnFGm4Mh97OBOueEOf+GBj8lU8QCiAnqr4RKcIXqU6U2YghRWK2fDilRlxEzOEp1tG5Q==
+ bh=QzjhHmgHm1Kgy7j+mKJnPVMyYg0YsoZjbl0MVC9T7X8=;
+ b=HefN4+AiCW4KumrQWkE8PYncGeADYdLlZX+Zf6TWtMndczj1UHetU1pPZ6NS6mpQFoxVLNIcu9/LxbC8yTVMAFE4IELipHWtNkOywYjlVPU/LuP3ws/YTDHPh1ZtC98ByTEySeUqOPyLGKeEd8rqtxg4CbuRdAD12tNsy+iE7hgO4FSuuP103KMnh1FsRswFhmvGrCUuhKCrRNfVZLtIznD5WXpBZI73yywAAZ3SKTo0j0KaMAxvsVnMgDzco6d9BxdsLpzZLYJaOkrAH4jV7QefoUBlIWT4o3epgO2xl+XUxnPlQ9vgEjIAJan6mF+HhzR98zAMgpvAnQjqM3FgxQ==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=kxCWA+N7MDEFds4ulOnG+tg+kGwI7Xft5R11KnecwJ0=;
- b=FJP/cnF2MSB7hQxjzscqQmL81/UMzEy8VxWoAyQOApqCK0170EgBz0WVXGA9nv7+BGU8bpzv4OVMIE7Yax1AbgnE7+vfacF2IMdXxowQ1B7RBU1hF+O4Z7jaU6SBqG0N+8VxsvwYt/dfV3fTvQ0t9yU2CSN6ehpCJ396SmoGKlQ=
+ bh=QzjhHmgHm1Kgy7j+mKJnPVMyYg0YsoZjbl0MVC9T7X8=;
+ b=ro2eQJQ4WX8631jsoFVHEMYWpTg0MyEFWK+L/dMFu3fz0arsAXIzzcSjJL0W+Qlp6IyZCoJ6SXvttsUqE2PTBcN73QYPYmp4ecKVB/VpV7dvsYcvKiTcVFAeKcyGpXG2qktQjfgxh7/43bOD1IKoJY4sfQ8QAPrZ0Av05sbW4vE=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
  by LO2P265MB5757.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:26f::12) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7918.22; Sat, 31 Aug
- 2024 12:16:08 +0000
+ 2024 12:18:36 +0000
 Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1818:a2bf:38a7:a1e7]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1818:a2bf:38a7:a1e7%7]) with mapi id 15.20.7918.020; Sat, 31 Aug 2024
- 12:16:08 +0000
-Date: Sat, 31 Aug 2024 13:16:06 +0100
+ 12:18:36 +0000
+Date: Sat, 31 Aug 2024 13:18:34 +0100
 From: Gary Guo <gary@garyguo.net>
 To: Danilo Krummrich <dakr@kernel.org>
 Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
@@ -53,17 +53,16 @@ Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
  zhiw@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com,
  ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org,
  rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v6 02/26] rust: alloc: separate `aligned_size` from
- `krealloc_aligned`
-Message-ID: <20240831131606.32427c73.gary@garyguo.net>
-In-Reply-To: <20240816001216.26575-3-dakr@kernel.org>
+Subject: Re: [PATCH v6 05/26] rust: alloc: add module `allocator_test`
+Message-ID: <20240831131834.180cd71b.gary@garyguo.net>
+In-Reply-To: <20240816001216.26575-6-dakr@kernel.org>
 References: <20240816001216.26575-1-dakr@kernel.org>
-	<20240816001216.26575-3-dakr@kernel.org>
+	<20240816001216.26575-6-dakr@kernel.org>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: AM4PR0302CA0023.eurprd03.prod.outlook.com
- (2603:10a6:205:2::36) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+X-ClientProxiedBy: LO4P123CA0204.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:1a5::11) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  (2603:10a6:600:253::10)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -73,85 +72,88 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
 X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LO2P265MB5757:EE_
-X-MS-Office365-Filtering-Correlation-Id: ac1a9303-5802-4660-8abd-08dcc9b6b1f6
+X-MS-Office365-Filtering-Correlation-Id: 5ee15dc3-543c-4a90-8668-08dcc9b70a24
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?cn2A1j4mPqofngR+9nwxgk9uDEy6QIQIyYGf9A5yVbnh05jfb5GHyE2Bceuy?=
- =?us-ascii?Q?ZBKq8LMAefu3baOvzXw1BCXdNJ/RcC1suGbIpUso4pZIGrLKiRtemsNIUP2q?=
- =?us-ascii?Q?xwis6DdWxQ42S9j5MlNDij07SkSXrk6ZeAI/LwTwzQ1yGG3is6bpEYO+OR7u?=
- =?us-ascii?Q?CNa6nydj6Seo19GWOyEjS5u/a+K5CaxkLniHCyPE/2uuunavtXYTnrI+gda6?=
- =?us-ascii?Q?EwU7sWASp+w4gdFZLoXVVU1Zt8mU035bpAdvwZIssbntMopNkO4Rm0iUbYv/?=
- =?us-ascii?Q?78rBRtX5GtcHx24Pl+FwnqHTmXjZRWfi3R74u3KlOCFtAlOFeNELIbVsQH8n?=
- =?us-ascii?Q?UpnkTh0vuGG3aM4+SSW9UzNY+yNQBThBZJo9LVP4XVh2H54yFwKoIUA23Xug?=
- =?us-ascii?Q?a9kH8FGbLBuAB0y8gSYKXECrrw4DV1V2sYMqexpfLxN7lTeHzaO6Mj8tai1W?=
- =?us-ascii?Q?+xBRxeBrE+HMG1f9xaufJAilhbFRUvr2m3aFQQxv5e0+ttYnoy4Al/1C0PEZ?=
- =?us-ascii?Q?SlyWD06JUU3FlL9AVcOKGIIREr212R9/EkW2PmAqHJ74WlltvGbZhQESgb8B?=
- =?us-ascii?Q?a8jdqyzQwIcZX+vozeZxv1FgFxnK1jpF/64Wiv/58EmeX9kl2BvMXKcsrtCi?=
- =?us-ascii?Q?Oo35ZuoqxxtCS+idZvHUFfDJKXzyPvxWCoNPk/vqVheGzapu/bxFGxJ0R8dh?=
- =?us-ascii?Q?h20YhfjDQVkdIWKixZCZAN4MVAtazjaoyfJZssFDRswiRqBnhWGPLYYVfeRM?=
- =?us-ascii?Q?nB6yUaSCqMLORNDT4Adp96M6xwOrnWSpDzMRba5mBkGJJmKMVm9uye/a5FLB?=
- =?us-ascii?Q?niOmr6xTf4oVmu9IQGW/uT3ODt+UuX3h8yacpkJej7jx6FOXTQdko+ud3KRO?=
- =?us-ascii?Q?M9gtaaEVz3s4fF3nwqE+oRGFE10PZb9iLncjX4aDgffocmbxuQX6UBpGIOd3?=
- =?us-ascii?Q?VjZ0qi+bQaEGPoBoHRE9lklu15KEKrlJ9F9NqQx2iUNr6kGoc6XdPeYXA08d?=
- =?us-ascii?Q?NHlRtH5VoDV8evazdUMHn5vGLU89EHtJ4e6S7PaaOFfetiyiSJUR+nCu3LNE?=
- =?us-ascii?Q?FbBXG2V3u5GAWMQ09JghEnV2BB7kUGMXzD6ZWz57/LsGly0QqRvojbBHQupN?=
- =?us-ascii?Q?jOvUtlF6ZOH664Zl6VIYc3NYvfW75xVPBU3gGgfb3uS1H0/eDmSai0BhpXLm?=
- =?us-ascii?Q?zt9IO82DOK+jGGmZAQKvN0a4kZNfP/KgcufMTiCiJZIBlgwhc6+y+SftyFTC?=
- =?us-ascii?Q?XdTwvjvP/9eaeRLSokPEO3IxRRX4sEbwqlv80Oyy15SxGaCHQL7GS63BRcqG?=
- =?us-ascii?Q?MW7FtfoRlc3LP5V+FCzsR8EBzwRABKpSRe8BPWac5K8V0w=3D=3D?=
+	=?us-ascii?Q?RbNM2UYuFI11V77YVHZiYt4LPpO6O09/OuL9z8dYlMWGGhtY1p02FY5ZMqeC?=
+ =?us-ascii?Q?trnWMYp0Tg1GMFSlu8NGxRJUOeEtZNGZodtSKtS2TzNkcFv7R3DRHJsynXQs?=
+ =?us-ascii?Q?SIO/OR+TNrhJ2VupSA2k18MLnB0PumfCEh/MdpzeQB4vkahAJQHqfBUM//k0?=
+ =?us-ascii?Q?Q6TEr7UbRbVl4jmjLmb443e2avaQGCcTyMjN0TN43clt/jYILn205hp+zCV7?=
+ =?us-ascii?Q?IaRfJDGgATHmoskDfV696WRDsC1mAUC5a+aZA9tIhtBd1kK+CGdktAk1y7kt?=
+ =?us-ascii?Q?MTLbcynsTZnFqyKIdU4pq6vb++oJPmTfvdIJBgvJppqmdHhNYYL0qZs5Gvg5?=
+ =?us-ascii?Q?Sz5Ae/Cpati9SfinA6TRs8ZG8Bj5rYpOGvHufZPK+RKZen29EBX7rOnEvi3N?=
+ =?us-ascii?Q?spdKK/BqOpRtPYRG+pG8AR3pQDBbsOPtP5A9cYlmV8/kSHSXuUiE6wny9usV?=
+ =?us-ascii?Q?mXSOx0zXP/I8k/IZ119rpLrvjYn/SAL2Is7ESRbo7L9MVd4ehq2pv3dEBerK?=
+ =?us-ascii?Q?jviQ9JjNx0FbzDSu11PjF4zMMIb1CNBFnqczPwwCREb3O18iXuE0v6lSkq8f?=
+ =?us-ascii?Q?N/CIZiCQWNzx2d+7GitOESvlVgbk43rq6sBylFflJHHmdUERcXvCGP1aqrcu?=
+ =?us-ascii?Q?dCZG/yv9+5U7YpDj3r53ZW0SBHP5Kk6wDrzUgz+R6frPloomcw3pUx3yVpS/?=
+ =?us-ascii?Q?G+kdrpfE+NVKrqOCtV73M74cGpE1JQ80XGNJJzCXLZuRqwmGM8yCLsNsAxs8?=
+ =?us-ascii?Q?h5JVV+b5gjtOyFT9oEvym+eXt4akAhH3IjWQrHuwUSd2GHafjPNkKPo9OAeR?=
+ =?us-ascii?Q?ahknIjBOyTcgB4zZqo7xLNbT8Y5mDkprQXZbThc9Tu5qY1EKPjlmxcm3toXZ?=
+ =?us-ascii?Q?vDLtk1ldH2LWjpPx0EHAIU7SJliwmeUuaCwavYZKqzI+rRUUenJQQv9avGXX?=
+ =?us-ascii?Q?PQJQWpZxQYyYQil7uaI2gruoBIdGM2LYJ+uNmckBAUCY87uA6RUzFpVY3ywG?=
+ =?us-ascii?Q?fbBJmLb8rvCmAWAUC1sD6Sf6EqBFiXLeMny5OKJaoM/aukYel8KnLUSpGJjA?=
+ =?us-ascii?Q?o9kLin/8tYGIyearhICZc807JILA2nrVDMnZQpMvQHqJXbqZ+BlTdjD7AllS?=
+ =?us-ascii?Q?asD9K9lR2gKODBZuRkxYN6W0v/KG3gmjbUqFl8F+GkVeI9rKZZQci+qsingz?=
+ =?us-ascii?Q?tgTmd7Xx3CgWtn7llYjic/d/I1t5toWlvcVdSm6dYSmkminm31wSUK/jphqq?=
+ =?us-ascii?Q?+UYyyhtpxTYOR8eAK7HMWDnpGRD2iXrpyqh3ab6A86QrUW1Kn194xnAzo8tD?=
+ =?us-ascii?Q?FSpBTycyv7hOjGVDx7mfAzFYgRfdB7HRLD9CcRyHBzrosg=3D=3D?=
 X-Forefront-Antispam-Report:
 	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?Jai0i+upLNHGSbXWrEDccPhs5qs6NoYZCZZXeqfHqR2N1Jfcdd495F63GCrN?=
- =?us-ascii?Q?92NETcYW3XY/chxXI60DsPJnQOOE570xA+51Aq155/LqpTUcMB3AHv4o3h0Z?=
- =?us-ascii?Q?d8jGnxNKl5Lp4Sbo0ykqqGCTzC2n35aCBumpbd4JdiA0EDzWSmzVz9MBQ1cg?=
- =?us-ascii?Q?/luLTCQovyg/J80g86kcNVxyWky5DM4a+7HVj4ioRLibVUQtSrqKsgX3Ckdz?=
- =?us-ascii?Q?0MG7E9ZziFCWZETnVYy5/wfKZpwo1AY+T24CuX2AyfU7e4MWdc4LbRqoctPL?=
- =?us-ascii?Q?4AzZnZarr3QCM5h74ff7B2yQH8CNrrg67i2nkSTZ7w2ICVS2MlO7tQ186fjD?=
- =?us-ascii?Q?Wt9P2kEkPuNzjCTsyDuEL1qCJU1dh71xLQUE2J/vdWKwePEhO9tUj2AUmp8x?=
- =?us-ascii?Q?lf4tn4kAalt2rQm2+qV+Jm3nSZRW3YClxyhvkl4msh4x+2wrjyQTtQJf44T+?=
- =?us-ascii?Q?SUn2HdWDdmUr/ZL1Tv7k/W1Ar61UQDrlR5AWfxxEAU1TnjY2npR8i7bvhtr6?=
- =?us-ascii?Q?vzbR0LtHMUj14TotvQSBpSajWtBclsUNsHbANcRvbPyYheH9AvQneBDkwDNh?=
- =?us-ascii?Q?65aW5ett922cua/BeXW3jwkkwanFeZyKhW6Sg1mOWRYkVYT4fazNrr4C535F?=
- =?us-ascii?Q?pTwjYy9rgzdUfP1c6t8CvLkDeko+1wuS66s1dDpe1ANpRD9YVlDPrqzpmquR?=
- =?us-ascii?Q?vqDoPCfmvo5fx5gvlbwv/VDHGHLzycdoL41t3WcC1ZvQDpSKd++t2XmmGlyO?=
- =?us-ascii?Q?5woh1wA7EG9sxbVKFBA+xe5cUdHgaaWl6rNm64PML7qHdeRK3C0uPn1mf0J9?=
- =?us-ascii?Q?sjYsVWAztXP6A6OO5xiExxBDFSJ7zM7T6cIKiD7/qAxardzxRG9MRUopywmd?=
- =?us-ascii?Q?baMUCB1MwB/1wree/MpudrGAR5OvzlTsGePLpL9S071jfsd0vzod3ndzgKnq?=
- =?us-ascii?Q?h5kgNSAO/EjeyGSs3iLYahHKjiaPBHjPJlvU0V1/+kGyjQlwILNM6T3qqqMc?=
- =?us-ascii?Q?6+Ru5lFWD8pH91cZYsScuSksybeDqQ6QZPIj86Yi/H5gLnrDqBMjwB5w/KkP?=
- =?us-ascii?Q?jg3and/BMuyKSZHVoD3XPoe3LwND/ppDuyoyz0XlJ2AG6zWbpOqGnfuDCX7N?=
- =?us-ascii?Q?3Wr57GCMrw9GqDUYrkdpmXtTiSV7uHoMM3GKgkimOkg9anJB5VhoSeJv/Sd1?=
- =?us-ascii?Q?YxIx7YDCVe/3fYF2dlveMg3hZV1TiXDhyHgwIEitIxqTt3fxHqfs1TnqyKTx?=
- =?us-ascii?Q?6FG1TMc+wEJquVBec49Yl3cfYfiObPPb/qqv0rL1sCCgLD3cg2YxMkUo5QpE?=
- =?us-ascii?Q?wCw5Qj5pOmkUI5dMGOXYWN1LrUIwSJqQmMLoesAklOxvTq1fYxDsfTAzOogJ?=
- =?us-ascii?Q?6z9UBw+fMkF/wQZTA+ffCjGlod5DLTO9GItcSI1MZ0LD27Nnv4bnGXbi3Z1o?=
- =?us-ascii?Q?1NsvLq7uODuIXEj90J0PCBYr5+2lvPxP+rGfP2tEvHJUfkb/NNGnehvLGxGB?=
- =?us-ascii?Q?q+aUlgw81SBKX1dOt/zbKcD6NYWcxWaaPwZUKWew4Pwx9jDOBpN/NVmdAd15?=
- =?us-ascii?Q?WUi55WDsGlYjHMFJeUnwBLWed3iEY5+VgtAhfMVKNPM/sJgZgs9YrwLbnPQ8?=
- =?us-ascii?Q?sg=3D=3D?=
+	=?us-ascii?Q?MXvXcVZ1YwEKhCuVaZaeXC5/taKjsXinrAZk6+bnvq2QYR596/YZs1Yz4SiZ?=
+ =?us-ascii?Q?cSpo6/sFa0bWUweJ60sivDJetoUWqxwAoipTOZE9z+ebcUT0HCjr+9X4GUa8?=
+ =?us-ascii?Q?ndHsCaLd+7/oDpQLjzv8PGy/oK4aTCJZU32bK/pfiy1CLhngaVf/Jy18UleD?=
+ =?us-ascii?Q?7EGvGBb6TYr0oqc6kv/W5MkWZb6bibXW6V69RlEmOyPJkQAss8tY8ymBPCDY?=
+ =?us-ascii?Q?jPaESS/0ubb8paKAsC17Ix00ukGC/BY5XoYXquaksdkumAK0unl+07oS6bBx?=
+ =?us-ascii?Q?KjEe/hfw8mjDUIqKy3VU6BFiCZ8rp2pDViK23hNeTbfqc02nv1M74cP12Vld?=
+ =?us-ascii?Q?ulWBH0tSpQE1Bbv/GDQlDIx7M1A9pM9e+YLZoCu1tCnxhgkeV24slet+X0Qt?=
+ =?us-ascii?Q?5Oy+6+HbGyKH18Y+ql76gsYw4zCEX20a5xXsFYfkCIxxlbaDbMoKA0VKr1Mz?=
+ =?us-ascii?Q?l3A1MC61rJA3AW70lKqQ5vplIwk1Xu15bOLiIx2vcWA6g9DqeiG+puR1B2GG?=
+ =?us-ascii?Q?+V/U44Ug4cJZ1QdGo0dog+Vs/0HM237LZfF1rQWFEJFPyDQlf/PaaXedhwIX?=
+ =?us-ascii?Q?H20VEFknoePPPn1DY8APxXl1WdS17+38wkR63hnQGcSVA6T8wBvYemKjMOJe?=
+ =?us-ascii?Q?Goai46hjKhM6EWTQ6AMTQu8jMsTflKOjMaD1NAKM7oNyDiN3f6VraasekQao?=
+ =?us-ascii?Q?u3PlEUdVN2+4/2zadlq7CZftRxTxdSNSqXzWUB7ZydT3ewquNZ9f9UsM9seu?=
+ =?us-ascii?Q?mbrpf7g7/38Y78kS/588fg3QUFlSbdmvS2Ry8LaKrom6Tj4ZrXRNVEN99rsU?=
+ =?us-ascii?Q?HCUHpB5fhcUhhbDhLGRWsI9ZgxuDH3q49D17VwGJMNyc7VYjXfPHrt8dNCmm?=
+ =?us-ascii?Q?yXQrFF6XuYiiQD/l9a5UMJCis96l+AWXCJOxVojlOUcwsnzENAmbzY9AQ7c7?=
+ =?us-ascii?Q?4yzfGS1cmxymfzY6DAWN1PgvLW3ylGGSCT9ML2rn7C4jDforoSxQ2ReJK0Vm?=
+ =?us-ascii?Q?HzZWC38M12pRBlnzmlRwkiGM1luAMZy5wNLwzB7Pb+5S+Bhd1i2M40IEYnXB?=
+ =?us-ascii?Q?86kjAU3JgatC7yFTVYK3bo9tVjarc3Y18NvTnACzAFtgOdOkl5mcVMocOqET?=
+ =?us-ascii?Q?GYLD2ARnAmTd2sQUxMiGc4rff25AL/xmW7dly4OJdbc4nOH3y1pYM6LQuvhv?=
+ =?us-ascii?Q?t94CSZf5y1g6sVZTiM/aIHi9/1zHwLAPfi6AbXwo2t9o0oxKLwnusf2G7YRd?=
+ =?us-ascii?Q?bZrEPl+Q1U4xloXxUyNlOuH3ydXZSs1dQFfQpc7I8dV2BvjrJkFABsfI57B8?=
+ =?us-ascii?Q?8mPYT43wncYJW0BCKuNopdd6X2ufs9+Lvn+HzScTmBz9AstyiYC2LxtzQaGp?=
+ =?us-ascii?Q?LEU9rSMyw4nzJ4zO1BkUbiCcYwAhIj4cgHtPlYsHESbkvxHePX8i/SuaWLBm?=
+ =?us-ascii?Q?U2MFWul8ccSFBnwl90GHEXTxvFuVJ/D2g1rGu3Ezv/IVdnnXnGc4BoDLtwQH?=
+ =?us-ascii?Q?uqYu397KW195HPdn7rhm91lnFE6uBjA4OxSRFg7AdTZ18G9zIt/2cR8i+i37?=
+ =?us-ascii?Q?4AODOG6TClpSaQYQNTn3t58NCDzOuOTZXBjBfyk/f8nUO2XV5Y6MkAYPXFDd?=
+ =?us-ascii?Q?8Q=3D=3D?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: ac1a9303-5802-4660-8abd-08dcc9b6b1f6
+X-MS-Exchange-CrossTenant-Network-Message-Id: 5ee15dc3-543c-4a90-8668-08dcc9b70a24
 X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Aug 2024 12:16:08.8731
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Aug 2024 12:18:36.7559
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: vXgqsH+zklM5Djd6Um3hLJm13vtuNlSrVmatpMq9m78PpTjXGq8h6WlPLihW4wgASxwFkUbfsC87lPSSL93oeA==
+X-MS-Exchange-CrossTenant-UserPrincipalName: GXdsqhA73AfEjqq+uvL1HtgcxwsqrKO1goMo5GRK37D321ssmML14mYuLTisQUI1O9kNezjv0FIi/6AtXZZGZQ==
 X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO2P265MB5757
 
-On Fri, 16 Aug 2024 02:10:44 +0200
+On Fri, 16 Aug 2024 02:10:47 +0200
 Danilo Krummrich <dakr@kernel.org> wrote:
 
-> Separate `aligned_size` from `krealloc_aligned`.
+> `Allocator`s, such as `Kmalloc`, will be used by e.g. `Box` and `Vec` in
+> subsequent patches, and hence this dependency propagates throughout the
+> whole kernel.
 > 
-> Subsequent patches implement `Allocator` derivates, such as `Kmalloc`,
-> that require `aligned_size` and replace the original `krealloc_aligned`.
+> Add the `allocator_test` module that provides an empty implementation
+> for all `Allocator`s in the kernel, such that we don't break the
+> `rusttest` make target in subsequent patches.
 > 
 > Reviewed-by: Alice Ryhl <aliceryhl@google.com>
 > Reviewed-by: Benno Lossin <benno.lossin@proton.me>
@@ -160,44 +162,58 @@ Danilo Krummrich <dakr@kernel.org> wrote:
 Reviewed-by: Gary Guo <gary@garyguo.net>
 
 > ---
->  rust/kernel/alloc/allocator.rs | 19 ++++++++++++-------
->  1 file changed, 12 insertions(+), 7 deletions(-)
+>  rust/kernel/alloc.rs                |  9 +++++++--
+>  rust/kernel/alloc/allocator_test.rs | 19 +++++++++++++++++++
+>  2 files changed, 26 insertions(+), 2 deletions(-)
+>  create mode 100644 rust/kernel/alloc/allocator_test.rs
 > 
-> diff --git a/rust/kernel/alloc/allocator.rs b/rust/kernel/alloc/allocator.rs
-> index e6ea601f38c6..c83b6dff896d 100644
-> --- a/rust/kernel/alloc/allocator.rs
-> +++ b/rust/kernel/alloc/allocator.rs
-> @@ -8,6 +8,17 @@
+> diff --git a/rust/kernel/alloc.rs b/rust/kernel/alloc.rs
+> index 477dbe3c5a2f..91a367a58f36 100644
+> --- a/rust/kernel/alloc.rs
+> +++ b/rust/kernel/alloc.rs
+> @@ -2,12 +2,17 @@
 >  
->  struct KernelAllocator;
+>  //! Extensions to the [`alloc`] crate.
 >  
-> +/// Returns a proper size to alloc a new object aligned to `new_layout`'s alignment.
-> +fn aligned_size(new_layout: Layout) -> usize {
-> +    // Customized layouts from `Layout::from_size_align()` can have size < align, so pad first.
-> +    let layout = new_layout.pad_to_align();
+> -#[cfg(not(test))]
+> -#[cfg(not(testlib))]
+> +#[cfg(not(any(test, testlib)))]
+>  pub mod allocator;
+>  pub mod box_ext;
+>  pub mod vec_ext;
+>  
+> +#[cfg(any(test, testlib))]
+> +pub mod allocator_test;
 > +
-> +    // Note that `layout.size()` (after padding) is guaranteed to be a multiple of `layout.align()`
-> +    // which together with the slab guarantees means the `krealloc` will return a properly aligned
-> +    // object (see comments in `kmalloc()` for more information).
-> +    layout.size()
+> +#[cfg(any(test, testlib))]
+> +pub use self::allocator_test as allocator;
+> +
+>  /// Indicates an allocation error.
+>  #[derive(Copy, Clone, PartialEq, Eq, Debug)]
+>  pub struct AllocError;
+> diff --git a/rust/kernel/alloc/allocator_test.rs b/rust/kernel/alloc/allocator_test.rs
+> new file mode 100644
+> index 000000000000..4785efc474a7
+> --- /dev/null
+> +++ b/rust/kernel/alloc/allocator_test.rs
+> @@ -0,0 +1,19 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +#![allow(missing_docs)]
+> +
+> +use super::{AllocError, Allocator, Flags};
+> +use core::alloc::Layout;
+> +use core::ptr::NonNull;
+> +
+> +pub struct Kmalloc;
+> +
+> +unsafe impl Allocator for Kmalloc {
+> +    unsafe fn realloc(
+> +        _ptr: Option<NonNull<u8>>,
+> +        _layout: Layout,
+> +        _flags: Flags,
+> +    ) -> Result<NonNull<[u8]>, AllocError> {
+> +        panic!();
+> +    }
 > +}
-> +
->  /// Calls `krealloc` with a proper size to alloc a new object aligned to `new_layout`'s alignment.
->  ///
->  /// # Safety
-> @@ -15,13 +26,7 @@
->  /// - `ptr` can be either null or a pointer which has been allocated by this allocator.
->  /// - `new_layout` must have a non-zero size.
->  pub(crate) unsafe fn krealloc_aligned(ptr: *mut u8, new_layout: Layout, flags: Flags) -> *mut u8 {
-> -    // Customized layouts from `Layout::from_size_align()` can have size < align, so pad first.
-> -    let layout = new_layout.pad_to_align();
-> -
-> -    // Note that `layout.size()` (after padding) is guaranteed to be a multiple of `layout.align()`
-> -    // which together with the slab guarantees means the `krealloc` will return a properly aligned
-> -    // object (see comments in `kmalloc()` for more information).
-> -    let size = layout.size();
-> +    let size = aligned_size(new_layout);
->  
->      // SAFETY:
->      // - `ptr` is either null or a pointer returned from a previous `k{re}alloc()` by the
 
