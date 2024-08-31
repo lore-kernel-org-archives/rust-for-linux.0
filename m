@@ -1,366 +1,87 @@
-Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f49.google.com (mail-wm1-f49.google.com [209.85.128.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1055D8468;
-	Sat, 31 Aug 2024 05:39:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6D9A33EA;
+	Sat, 31 Aug 2024 11:26:38 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725082758; cv=none; b=J0j5KCkf4iLTrSeopvppAauHfa/72qdKGFbEnBwI/c0VKI55mGfs9bl6rVbHyZbSW+paQ60EsduBU26zs9RZjQmRjUJGqJta8nwygFlM3AzqZh/tMPqstmLvQD5OuTju4Ry2rzhjAoSgzxJh9VrGHAOxcRolxm90kTYux89MJ14=
+	t=1725103601; cv=none; b=N7Fm3Dv5lRSWD7dT1rXj9ihlqr9qeF0Mq4pV322sW+NEWQLcwT/tsDksZH9XjKjtqwSiiukN7Cj6xUesi7IGMGVBAawrSceKjRpGonVUef+an5d7DfpifJ9FB78/rfmkHv23zCvBIzPQEJfloPAvnuBt5Xpzk0ODvfBenMhEBBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725082758; c=relaxed/simple;
-	bh=nVTvmuFsiMH7S3o2lPBdbIJ/ylJBLCeluk9F3OG8QmA=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PhftuGTvjoEgXcyc0e6rfbu93ZfDbuIUt8wY9FIBsEbFsGxOEAFr0fklltmCMm9+uw1a8id8mdW7TiyFDnPK5bU9TFuYkxi9F+vNf8WZfUaVyGx/GIcqFk0DNYoGnFY/XC1k9wRi6+TzsPtHAGWRnb0qKsLZjYd2lrkDOFIeHCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=HE7AO8Vi; arc=none smtp.client-ip=185.70.40.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="HE7AO8Vi"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1725082753; x=1725341953;
-	bh=H0yhunYtVRJSRKYFJ1oR8mA4txjPQQLzLVyKGXLbgQw=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=HE7AO8Vi8VdhtuYn2MrDdC+iDn1DisKqFwwCfE+hI4fXCXk0EnLoXihOTHOyl2uHc
-	 L7P1tVQX5LB8vRKuH8Adj7Kea9FSGCKR25ZTwnlqMUX304PKVqfesD5WO9YUi1dKNr
-	 6SY0rybcldbSRTLNll9cCEulSWm+IJoSZs55q7EZb5TGz5gaZxRjyPuqvOXTrmIs9T
-	 NupZfN0+ByG0JW75Hqlm0nfiBoZiRtv/f9FIfWxyosHFRfU8pVRybpnP86ogwxzgJQ
-	 0FmftV8e9OsgQV2jM5FpieFuJc29D9k+XkZrfbp9LUany8oFuBFaqx+VhS2DtLqTen
-	 iAsvEJtRRVRDg==
-Date: Sat, 31 Aug 2024 05:39:07 +0000
-To: Danilo Krummrich <dakr@kernel.org>, ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@samsung.com, aliceryhl@google.com, akpm@linux-foundation.org
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: daniel.almeida@collabora.com, faith.ekstrand@collabora.com, boris.brezillon@collabora.com, lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com, ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v6 09/26] rust: alloc: implement kernel `Box`
-Message-ID: <0146cb78-5a35-4d6b-bc75-fed1fc0c270c@proton.me>
-In-Reply-To: <20240816001216.26575-10-dakr@kernel.org>
-References: <20240816001216.26575-1-dakr@kernel.org> <20240816001216.26575-10-dakr@kernel.org>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 698fe482ee03c71dfbffcc1aecbcd36dd1de7e9e
+	s=arc-20240116; t=1725103601; c=relaxed/simple;
+	bh=ZvbGp0mAKFAUDmcihLLlDp0OuZrzBX+nmwBkND+95xE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=fQLbVOYI0GUA1in2RwGdrcRugw3XPlqZi+41I2TK3ZhroBciEkF8mGUo/dF1i6hUXPKmjGyVqJLbJqWFF/2eMOW8ihG+opROrEce0Q2K0YfpzXo5S7hLGtrVhPS/FNddjCBrfCi2by4et0yrjUcuyzuayiqtCkzeHjre8modQuw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org; spf=pass smtp.mailfrom=gmail.com; arc=none smtp.client-ip=209.85.128.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=fedoraproject.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-wm1-f49.google.com with SMTP id 5b1f17b1804b1-42bb9d719d4so16089405e9.3;
+        Sat, 31 Aug 2024 04:26:38 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725103597; x=1725708397;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ZvbGp0mAKFAUDmcihLLlDp0OuZrzBX+nmwBkND+95xE=;
+        b=jbldVREBC1YooSkH250v1GgzxXbNMPbXAye/wGmwI09d91YZu9iJhGDM7IFk1NvLAl
+         j+d2UAB5yP3PHxLv5wHSlcX82t3g52bEpjypQaXsrDjeAzUMLcgHr5TqoJ1k5rQpQqMy
+         7ZtQDYnkOex/7ySAcNwmz1fVHoOChFrumucbBmbSKGq/FxnfecXE15er9TpFD7d3aN2x
+         VIYJiN3QoSjrS77JTu08oPPiexu0VsnGMwEkmX9Mxx8Xz4Jq+2qv1DZTKY22CIHqsLHt
+         zzCkZMXY+ylrDB7DCP6Dw7JiHqTsmFslZx5rFinU+ANyn4GvDPKYL1EjeJj5mSvy89mD
+         dQqQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWULp5kPr9EXduoAmjqDHC7MGniyAEf7M24mxU+rDACTHk2Lq7mMxkPqGTOFz886pQq8t8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyB/RCXcvPy1dLmefUXM9cR3trOPy1BM97iXi6JielQYn/nIK51
+	vljXHvN9Bdt6Jw0wNW6gB1DZIEyal5K3dOwftcB+MPB5z6ejXohdjNx+/wq4
+X-Google-Smtp-Source: AGHT+IHjIV0wNFzBDkSzTEmFFC73pt6/3eZBEe0W3ElSXi4eWK0Z4NvLr/P1WhaQ2fEt9aRZk1om5A==
+X-Received: by 2002:adf:e642:0:b0:367:9614:fb99 with SMTP id ffacd0b85a97d-3749b526f8bmr6304669f8f.10.1725103596789;
+        Sat, 31 Aug 2024 04:26:36 -0700 (PDT)
+Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com. [209.85.208.47])
+        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-5c226ccff17sm2870399a12.73.2024.08.31.04.26.36
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 31 Aug 2024 04:26:36 -0700 (PDT)
+Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-5befd2f35bfso2502349a12.2;
+        Sat, 31 Aug 2024 04:26:36 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUEOKapEkXfkGdGx7gZLaxQwmnrqEIrkH+QdIrRASyyp6W/u68eQBAiEBprgMoHR91npV8=@vger.kernel.org
+X-Received: by 2002:a05:6402:2714:b0:5a3:a4d7:caf5 with SMTP id
+ 4fb4d7f45d1cf-5c21eda33d9mr6746821a12.36.1725103596088; Sat, 31 Aug 2024
+ 04:26:36 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <CAEg-Je8=t_cXKsWL0XSx3vF1gsArSWpychfbEf+yjM6wVz3Mjw@mail.gmail.com>
+ <CAM22NNBrXSUbrpFAKv8jrREKTBYx_aW0cibtDE5AZ_kTijUrPA@mail.gmail.com> <CAEg-Je_9r_96j-un6TS7Dm_kJ3m7Q6y_RDEs9NTvxjNJM-zEvQ@mail.gmail.com>
+In-Reply-To: <CAEg-Je_9r_96j-un6TS7Dm_kJ3m7Q6y_RDEs9NTvxjNJM-zEvQ@mail.gmail.com>
+From: Neal Gompa <ngompa@fedoraproject.org>
+Date: Sat, 31 Aug 2024 07:25:59 -0400
+X-Gmail-Original-Message-ID: <CAEg-Je-yfKSvHVnyJDmD9fprKX2kw9icKcG0SipGTUvjivwL9g@mail.gmail.com>
+Message-ID: <CAEg-Je-yfKSvHVnyJDmD9fprKX2kw9icKcG0SipGTUvjivwL9g@mail.gmail.com>
+Subject: Re: Weird failure with bpftool when building 6.11-rc4 with clang+rust+lto
+To: Matthew Maurer <matthew.r.maurer@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
+	Quentin Monnet <qmo@kernel.org>, bpf@vger.kernel.org, 
+	"Justin M. Forbes" <jforbes@fedoraproject.org>, Davide Cavalca <dcavalca@fedoraproject.org>, 
+	Janne Grunau <jannau@fedoraproject.org>, Hector Martin <marcan@fedoraproject.org>, 
+	Asahi Linux <asahi@lists.linux.dev>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On 16.08.24 02:10, Danilo Krummrich wrote:
-> diff --git a/rust/kernel/alloc/kbox.rs b/rust/kernel/alloc/kbox.rs
-> new file mode 100644
-> index 000000000000..93b1ab9de6e8
-> --- /dev/null
-> +++ b/rust/kernel/alloc/kbox.rs
-> @@ -0,0 +1,480 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! Implementation of [`Box`].
-> +
-> +#[allow(unused_imports)] // Used in doc comments.
-> +use super::allocator::{KVmalloc, Kmalloc, Vmalloc};
-> +use super::{AllocError, Allocator, Flags};
-> +use core::fmt;
-> +use core::marker::PhantomData;
-> +use core::mem::ManuallyDrop;
-> +use core::mem::MaybeUninit;
-> +use core::ops::{Deref, DerefMut};
-> +use core::pin::Pin;
-> +use core::ptr::NonNull;
-> +use core::result::Result;
-> +
-> +use crate::init::{InPlaceInit, InPlaceWrite, Init, PinInit};
-> +use crate::types::ForeignOwnable;
-> +
-> +/// The kernel's [`Box`] type - a heap allocation for a single value of =
-type `T`.
+On Fri, Aug 23, 2024 at 5:45=E2=80=AFPM Neal Gompa <ngompa@fedoraproject.or=
+g> wrote:
+>
+> Hey Matthew,
+>
+> The current thinking is that maybe the culprit is dwarves. We've
+> backported a fix in Fedora that may help, I'm waiting to find out if
+> it does. Apparently all test runs with Clang+LTO are broken right now
+> with dwarves 1.27, so it wasn't just unique to my merge request.
+>
 
-A single `-` doesn't really render nicely in markdown, instead use a
-double or triple dash (`--` or `---`).
+Well, that didn't work. The backported fix doesn't seem to have
+resolved the problem. I'm at a loss now.
 
-> +///
-> +/// This is the kernel's version of the Rust stdlib's `Box`. There are s=
-everal of differences,
-> +/// for example no `noalias` attribute is emitted and partially moving o=
-ut of a `Box` is not
-> +/// supported. There are also several API differences, e.g. `Box` always=
- requires an [`Allocator`]
-> +/// implementation to be passed as generic, page [`Flags`] when allocati=
-ng memory and all functions
-> +/// that may allocate memory are failable.
 
-Do you mean fallible?
 
-> +///
-> +/// `Box` works with any of the kernel's allocators, e.g. [`Kmalloc`], [=
-`Vmalloc`] or [`KVmalloc`].
-> +/// There are aliases for `Box` with these allocators ([`KBox`], [`VBox`=
-], [`KVBox`]).
-> +///
-> +/// When dropping a [`Box`], the value is also dropped and the heap memo=
-ry is automatically freed.
-> +///
-> +/// # Examples
-> +///
-> +/// ```
-> +/// let b =3D KBox::<u64>::new(24_u64, GFP_KERNEL)?;
-> +///
-> +/// assert_eq!(*b, 24_u64);
-> +/// # Ok::<(), Error>(())
-> +/// ```
-> +///
-> +/// ```
-> +/// # use kernel::bindings;
-> +/// const SIZE: usize =3D bindings::KMALLOC_MAX_SIZE as usize + 1;
-> +/// struct Huge([u8; SIZE]);
-> +///
-> +/// assert!(KBox::<Huge>::new_uninit(GFP_KERNEL | __GFP_NOWARN).is_err()=
-);
-> +/// ```
-
-It would be nice if you could add something like "KBox can't handle big
-allocations:" above this example, so that people aren't confused why
-this example expects an error.
-
-> +///
-> +/// ```
-> +/// # use kernel::bindings;
-> +/// const SIZE: usize =3D bindings::KMALLOC_MAX_SIZE as usize + 1;
-> +/// struct Huge([u8; SIZE]);
-> +///
-> +/// assert!(KVBox::<Huge>::new_uninit(GFP_KERNEL).is_ok());
-> +/// ```
-
-Similarly, you could then say above this one "Instead use either `VBox`
-or `KVBox`:"
-
-> +///
-> +/// # Invariants
-> +///
-> +/// The [`Box`]' pointer is always properly aligned and either points to=
- memory allocated with `A`
-
-Please use `self.0` instead of "[`Box`]'".
-
-> +/// or, for zero-sized types, is a dangling pointer.
-
-Probably "dangling, well aligned pointer.".
-
-> +#[repr(transparent)]
-> +pub struct Box<T: ?Sized, A: Allocator>(NonNull<T>, PhantomData<A>);
-> +
-> +/// Type alias for `Box` with a [`Kmalloc`] allocator.
-
-Can you make these `Box` references links?
-
-> +///
-> +/// # Examples
-> +///
-> +/// ```
-> +/// let b =3D KBox::new(24_u64, GFP_KERNEL)?;
-> +///
-> +/// assert_eq!(*b, 24_u64);
-> +/// # Ok::<(), Error>(())
-> +/// ```
-> +pub type KBox<T> =3D Box<T, super::allocator::Kmalloc>;
-> +
-> +/// Type alias for `Box` with a [`Vmalloc`] allocator.
-> +///
-> +/// # Examples
-> +///
-> +/// ```
-> +/// let b =3D VBox::new(24_u64, GFP_KERNEL)?;
-> +///
-> +/// assert_eq!(*b, 24_u64);
-> +/// # Ok::<(), Error>(())
-> +/// ```
-> +pub type VBox<T> =3D Box<T, super::allocator::Vmalloc>;
-> +
-> +/// Type alias for `Box` with a [`KVmalloc`] allocator.
-> +///
-> +/// # Examples
-> +///
-> +/// ```
-> +/// let b =3D KVBox::new(24_u64, GFP_KERNEL)?;
-> +///
-> +/// assert_eq!(*b, 24_u64);
-> +/// # Ok::<(), Error>(())
-> +/// ```
-> +pub type KVBox<T> =3D Box<T, super::allocator::KVmalloc>;
-> +
-> +// SAFETY: `Box` is `Send` if `T` is `Send` because the `Box` owns a `T`=
-.
-> +unsafe impl<T, A> Send for Box<T, A>
-> +where
-> +    T: Send + ?Sized,
-> +    A: Allocator,
-> +{
-> +}
-> +
-> +// SAFETY: `Box` is `Sync` if `T` is `Sync` because the `Box` owns a `T`=
-.
-> +unsafe impl<T, A> Sync for Box<T, A>
-> +where
-> +    T: Sync + ?Sized,
-> +    A: Allocator,
-> +{
-> +}
-> +
-> +impl<T, A> Box<T, A>
-> +where
-> +    T: ?Sized,
-> +    A: Allocator,
-> +{
-> +    /// Creates a new `Box<T, A>` from a raw pointer.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// For non-ZSTs, `raw` must point at an allocation allocated with `=
-A`that is sufficiently
-> +    /// aligned for and holds a valid `T`. The caller passes ownership o=
-f the allocation to the
-> +    /// `Box`.
-
-You don't say what must happen for ZSTs.
-
-> +    #[inline]
-> +    pub const unsafe fn from_raw(raw: *mut T) -> Self {
-> +        // INVARIANT: Validity of `raw` is guaranteed by the safety prec=
-onditions of this function.
-> +        // SAFETY: By the safety preconditions of this function, `raw` i=
-s not a NULL pointer.
-> +        Self(unsafe { NonNull::new_unchecked(raw) }, PhantomData::<A>)
-> +    }
-> +
-> +    /// Consumes the `Box<T, A>` and returns a raw pointer.
-> +    ///
-> +    /// This will not run the destructor of `T` and for non-ZSTs the all=
-ocation will stay alive
-> +    /// indefinitely. Use [`Box::from_raw`] to recover the [`Box`], drop=
- the value and free the
-> +    /// allocation, if any.
-> +    ///
-> +    /// # Examples
-> +    ///
-> +    /// ```
-> +    /// let x =3D KBox::new(24, GFP_KERNEL)?;
-> +    /// let ptr =3D KBox::into_raw(x);
-> +    /// let x =3D unsafe { KBox::from_raw(ptr) };
-> +    ///
-> +    /// assert_eq!(*x, 24);
-> +    /// # Ok::<(), Error>(())
-> +    /// ```
-> +    #[inline]
-> +    pub fn into_raw(b: Self) -> *mut T {
-> +        let b =3D ManuallyDrop::new(b);
-> +
-> +        b.0.as_ptr()
-> +    }
-> +
-> +    /// Consumes and leaks the `Box<T, A>` and returns a mutable referen=
-ce.
-> +    ///
-> +    /// See [Box::into_raw] for more details.
-> +    #[inline]
-> +    pub fn leak<'a>(b: Self) -> &'a mut T {
-> +        // SAFETY: `Box::into_raw` always returns a properly aligned and=
- dereferenceable pointer
-> +        // which points to an initialized instance of `T`.
-> +        unsafe { &mut *Box::into_raw(b) }
-> +    }
-> +}
-> +
-> +impl<T, A> Box<MaybeUninit<T>, A>
-> +where
-> +    A: Allocator,
-> +{
-> +    /// Converts a `Box<MaybeUninit<T>, A>` to a `Box<T, A>`.
-> +    ///
-> +    /// It is undefined behavior to call this function while the value i=
-nside of `b` is not yet
-> +    /// fully initialized.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// Callers must ensure that the value inside of `b` is in an initia=
-lized state.
-> +    pub unsafe fn assume_init(b: Self) -> Box<T, A> {
-> +        let raw =3D Self::into_raw(b);
-> +
-> +        // SAFETY: `raw` comes from a previous call to `Box::into_raw`. =
-By the safety requirements
-> +        // of this function, the value inside the `Box` is in an initial=
-ized state. Hence, it is
-> +        // safe to reconstruct the `Box` as `Box<T, A>`.
-> +        unsafe { Box::from_raw(raw as *mut T) }
-
-You should be able to use `.cast()` instead.
-
-> +    }
-> +
-> +    /// Writes the value and converts to `Box<T, A>`.
-> +    pub fn write(mut b: Self, value: T) -> Box<T, A> {
-> +        (*b).write(value);
-> +        // SAFETY: We've just initialized `boxed`'s value.
-
-The variable is called `b`.
-
-> +        unsafe { Self::assume_init(b) }
-> +    }
-> +}
-
-[...]
-
-> +impl<T, A> Drop for Box<T, A>
-> +where
-> +    T: ?Sized,
-> +    A: Allocator,
-> +{
-> +    fn drop(&mut self) {
-> +        let size =3D core::mem::size_of_val::<T>(self);
-> +
-> +        // SAFETY: We need to drop `self.0` in place, before we free the=
- backing memory.
-
-This is the reason you are calling this function, not the justification
-why it is OK to do so. (the pointer is valid)
-
-> +        unsafe { core::ptr::drop_in_place(self.0.as_ptr()) };
-
-Instead of using the raw pointer directly, you can also just use
-`deref_mut`.
-
-> +
-> +        if size !=3D 0 {
-> +            // SAFETY: `ptr` was previously allocated with `A`.
-
-There is no variable `ptr`, this is guaranteed by the type invariant of
-`Self`.
-
----
-Cheers,
-Benno
-
-> +            unsafe { A::free(self.0.cast()) };
-> +        }
-> +    }
-> +}
-> diff --git a/rust/kernel/prelude.rs b/rust/kernel/prelude.rs
-> index 4571daec0961..a9210634a8c3 100644
-> --- a/rust/kernel/prelude.rs
-> +++ b/rust/kernel/prelude.rs
-> @@ -14,7 +14,7 @@
->  #[doc(no_inline)]
->  pub use core::pin::Pin;
->=20
-> -pub use crate::alloc::{box_ext::BoxExt, flags::*, vec_ext::VecExt};
-> +pub use crate::alloc::{box_ext::BoxExt, flags::*, vec_ext::VecExt, KBox,=
- KVBox, VBox};
->=20
->  #[doc(no_inline)]
->  pub use alloc::{boxed::Box, vec::Vec};
-> --
-> 2.46.0
->=20
-
+--=20
+Neal Gompa (FAS: ngompa)
