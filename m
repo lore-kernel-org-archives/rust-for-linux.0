@@ -1,43 +1,43 @@
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED49713AD16;
-	Sat, 31 Aug 2024 05:21:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1055D8468;
+	Sat, 31 Aug 2024 05:39:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725081703; cv=none; b=jX4cha/Ui9Q+biYhOl6DJ3zH9vjshWEsMk2kfQ8JXSN4vb/mG9DHXwN+H2NJ1+o29OyruOUzjFqk6OUgWInmWEoi2/v7hfvRznRfzPZOPvBrGFL7jmFq1dYN3QLAE4kkam9oHQm+ZJww12DyLgfoAmAv9ZRaFq7zDgARZ6ArWzA=
+	t=1725082758; cv=none; b=J0j5KCkf4iLTrSeopvppAauHfa/72qdKGFbEnBwI/c0VKI55mGfs9bl6rVbHyZbSW+paQ60EsduBU26zs9RZjQmRjUJGqJta8nwygFlM3AzqZh/tMPqstmLvQD5OuTju4Ry2rzhjAoSgzxJh9VrGHAOxcRolxm90kTYux89MJ14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725081703; c=relaxed/simple;
-	bh=IqYefaBEZFnaqAoFRZKSo6lqVtBx3PHy4lb38p++5Y4=;
+	s=arc-20240116; t=1725082758; c=relaxed/simple;
+	bh=nVTvmuFsiMH7S3o2lPBdbIJ/ylJBLCeluk9F3OG8QmA=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=nDmextBgkxJ50k8jWxIbeURqAHLRA7YQeptR7uP4bIMjDVyqXxck95pkYD32QiJ0wGojtNzDjcD8taQuEqC2fBFfUNYG/U2JMGVmlYtRxZFBuyplopmNb7xJ/YgsBVNOedZNFIOrtY6b+MYhHumJP7zi9GlfZkDt9tmzRBhNYlM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=W/YAWbwr; arc=none smtp.client-ip=185.70.43.22
+	 MIME-Version:Content-Type; b=PhftuGTvjoEgXcyc0e6rfbu93ZfDbuIUt8wY9FIBsEbFsGxOEAFr0fklltmCMm9+uw1a8id8mdW7TiyFDnPK5bU9TFuYkxi9F+vNf8WZfUaVyGx/GIcqFk0DNYoGnFY/XC1k9wRi6+TzsPtHAGWRnb0qKsLZjYd2lrkDOFIeHCU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=HE7AO8Vi; arc=none smtp.client-ip=185.70.40.133
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="W/YAWbwr"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="HE7AO8Vi"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1725081691; x=1725340891;
-	bh=A1VfMnXiPQMxx6pH7IkEaSr4ATlFOI5jIKJBkF14eNU=;
+	s=protonmail; t=1725082753; x=1725341953;
+	bh=H0yhunYtVRJSRKYFJ1oR8mA4txjPQQLzLVyKGXLbgQw=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=W/YAWbwrZSWnf9/vXBG4eoa31RuA45gYISApJakLAWYvGj2QMiLnuBa9nH24CuRV7
-	 n0YTJYctCxt2mQCIFI92rM1RQSx9p+/OBYsywG3KR88RCBUMWUpUvPmM9dl0Q+oNAw
-	 +uwUQDMvlioc6OSVUODIInwdCLr+LONc7Rq5KN/OvIu/tBphZJigT6/ymJUakaJTDG
-	 1T7IYMAWdi/UOtxqHupmSVfGE6ZdGewt1rGs2idunt402Sgct/qITFgboSnwKhH/JT
-	 Orl571FhGVmolRzfEJLz3ZbBvuOclaOzp8E7KqYjZOvtYlXVg57+9Sky2ddFexXgeU
-	 fcrcpCd7acPlQ==
-Date: Sat, 31 Aug 2024 05:21:25 +0000
+	b=HE7AO8Vi8VdhtuYn2MrDdC+iDn1DisKqFwwCfE+hI4fXCXk0EnLoXihOTHOyl2uHc
+	 L7P1tVQX5LB8vRKuH8Adj7Kea9FSGCKR25ZTwnlqMUX304PKVqfesD5WO9YUi1dKNr
+	 6SY0rybcldbSRTLNll9cCEulSWm+IJoSZs55q7EZb5TGz5gaZxRjyPuqvOXTrmIs9T
+	 NupZfN0+ByG0JW75Hqlm0nfiBoZiRtv/f9FIfWxyosHFRfU8pVRybpnP86ogwxzgJQ
+	 0FmftV8e9OsgQV2jM5FpieFuJc29D9k+XkZrfbp9LUany8oFuBFaqx+VhS2DtLqTen
+	 iAsvEJtRRVRDg==
+Date: Sat, 31 Aug 2024 05:39:07 +0000
 To: Danilo Krummrich <dakr@kernel.org>, ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@samsung.com, aliceryhl@google.com, akpm@linux-foundation.org
 From: Benno Lossin <benno.lossin@proton.me>
 Cc: daniel.almeida@collabora.com, faith.ekstrand@collabora.com, boris.brezillon@collabora.com, lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com, ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v6 06/26] rust: alloc: implement `Vmalloc` allocator
-Message-ID: <808973f5-2c3b-4373-a41b-29e54f3ca4fa@proton.me>
-In-Reply-To: <20240816001216.26575-7-dakr@kernel.org>
-References: <20240816001216.26575-1-dakr@kernel.org> <20240816001216.26575-7-dakr@kernel.org>
+Subject: Re: [PATCH v6 09/26] rust: alloc: implement kernel `Box`
+Message-ID: <0146cb78-5a35-4d6b-bc75-fed1fc0c270c@proton.me>
+In-Reply-To: <20240816001216.26575-10-dakr@kernel.org>
+References: <20240816001216.26575-1-dakr@kernel.org> <20240816001216.26575-10-dakr@kernel.org>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 46553616bdf28661d31b7f7ab2333e02362d697b
+X-Pm-Message-ID: 698fe482ee03c71dfbffcc1aecbcd36dd1de7e9e
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -48,67 +48,318 @@ Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
 On 16.08.24 02:10, Danilo Krummrich wrote:
-> @@ -63,6 +73,9 @@ impl ReallocFunc {
->      // INVARIANT: `krealloc` satisfies the type invariants.
->      const KREALLOC: Self =3D Self(bindings::krealloc);
->=20
-> +    // INVARIANT: `vrealloc` satisfies the type invariants.
-> +    const VREALLOC: Self =3D Self(bindings::vrealloc);
+> diff --git a/rust/kernel/alloc/kbox.rs b/rust/kernel/alloc/kbox.rs
+> new file mode 100644
+> index 000000000000..93b1ab9de6e8
+> --- /dev/null
+> +++ b/rust/kernel/alloc/kbox.rs
+> @@ -0,0 +1,480 @@
+> +// SPDX-License-Identifier: GPL-2.0
 > +
->      /// # Safety
->      ///
->      /// This method has the same safety requirements as [`Allocator::rea=
-lloc`].
-> @@ -141,6 +154,25 @@ unsafe fn alloc_zeroed(&self, layout: Layout) -> *mu=
-t u8 {
->      }
->  }
->=20
-> +unsafe impl Allocator for Vmalloc {
+> +//! Implementation of [`Box`].
+> +
+> +#[allow(unused_imports)] // Used in doc comments.
+> +use super::allocator::{KVmalloc, Kmalloc, Vmalloc};
+> +use super::{AllocError, Allocator, Flags};
+> +use core::fmt;
+> +use core::marker::PhantomData;
+> +use core::mem::ManuallyDrop;
+> +use core::mem::MaybeUninit;
+> +use core::ops::{Deref, DerefMut};
+> +use core::pin::Pin;
+> +use core::ptr::NonNull;
+> +use core::result::Result;
+> +
+> +use crate::init::{InPlaceInit, InPlaceWrite, Init, PinInit};
+> +use crate::types::ForeignOwnable;
+> +
+> +/// The kernel's [`Box`] type - a heap allocation for a single value of =
+type `T`.
 
-The same safety comment as with `Kmalloc` should fit here (and with
-`KVmalloc` too).
+A single `-` doesn't really render nicely in markdown, instead use a
+double or triple dash (`--` or `---`).
+
+> +///
+> +/// This is the kernel's version of the Rust stdlib's `Box`. There are s=
+everal of differences,
+> +/// for example no `noalias` attribute is emitted and partially moving o=
+ut of a `Box` is not
+> +/// supported. There are also several API differences, e.g. `Box` always=
+ requires an [`Allocator`]
+> +/// implementation to be passed as generic, page [`Flags`] when allocati=
+ng memory and all functions
+> +/// that may allocate memory are failable.
+
+Do you mean fallible?
+
+> +///
+> +/// `Box` works with any of the kernel's allocators, e.g. [`Kmalloc`], [=
+`Vmalloc`] or [`KVmalloc`].
+> +/// There are aliases for `Box` with these allocators ([`KBox`], [`VBox`=
+], [`KVBox`]).
+> +///
+> +/// When dropping a [`Box`], the value is also dropped and the heap memo=
+ry is automatically freed.
+> +///
+> +/// # Examples
+> +///
+> +/// ```
+> +/// let b =3D KBox::<u64>::new(24_u64, GFP_KERNEL)?;
+> +///
+> +/// assert_eq!(*b, 24_u64);
+> +/// # Ok::<(), Error>(())
+> +/// ```
+> +///
+> +/// ```
+> +/// # use kernel::bindings;
+> +/// const SIZE: usize =3D bindings::KMALLOC_MAX_SIZE as usize + 1;
+> +/// struct Huge([u8; SIZE]);
+> +///
+> +/// assert!(KBox::<Huge>::new_uninit(GFP_KERNEL | __GFP_NOWARN).is_err()=
+);
+> +/// ```
+
+It would be nice if you could add something like "KBox can't handle big
+allocations:" above this example, so that people aren't confused why
+this example expects an error.
+
+> +///
+> +/// ```
+> +/// # use kernel::bindings;
+> +/// const SIZE: usize =3D bindings::KMALLOC_MAX_SIZE as usize + 1;
+> +/// struct Huge([u8; SIZE]);
+> +///
+> +/// assert!(KVBox::<Huge>::new_uninit(GFP_KERNEL).is_ok());
+> +/// ```
+
+Similarly, you could then say above this one "Instead use either `VBox`
+or `KVBox`:"
+
+> +///
+> +/// # Invariants
+> +///
+> +/// The [`Box`]' pointer is always properly aligned and either points to=
+ memory allocated with `A`
+
+Please use `self.0` instead of "[`Box`]'".
+
+> +/// or, for zero-sized types, is a dangling pointer.
+
+Probably "dangling, well aligned pointer.".
+
+> +#[repr(transparent)]
+> +pub struct Box<T: ?Sized, A: Allocator>(NonNull<T>, PhantomData<A>);
+> +
+> +/// Type alias for `Box` with a [`Kmalloc`] allocator.
+
+Can you make these `Box` references links?
+
+> +///
+> +/// # Examples
+> +///
+> +/// ```
+> +/// let b =3D KBox::new(24_u64, GFP_KERNEL)?;
+> +///
+> +/// assert_eq!(*b, 24_u64);
+> +/// # Ok::<(), Error>(())
+> +/// ```
+> +pub type KBox<T> =3D Box<T, super::allocator::Kmalloc>;
+> +
+> +/// Type alias for `Box` with a [`Vmalloc`] allocator.
+> +///
+> +/// # Examples
+> +///
+> +/// ```
+> +/// let b =3D VBox::new(24_u64, GFP_KERNEL)?;
+> +///
+> +/// assert_eq!(*b, 24_u64);
+> +/// # Ok::<(), Error>(())
+> +/// ```
+> +pub type VBox<T> =3D Box<T, super::allocator::Vmalloc>;
+> +
+> +/// Type alias for `Box` with a [`KVmalloc`] allocator.
+> +///
+> +/// # Examples
+> +///
+> +/// ```
+> +/// let b =3D KVBox::new(24_u64, GFP_KERNEL)?;
+> +///
+> +/// assert_eq!(*b, 24_u64);
+> +/// # Ok::<(), Error>(())
+> +/// ```
+> +pub type KVBox<T> =3D Box<T, super::allocator::KVmalloc>;
+> +
+> +// SAFETY: `Box` is `Send` if `T` is `Send` because the `Box` owns a `T`=
+.
+> +unsafe impl<T, A> Send for Box<T, A>
+> +where
+> +    T: Send + ?Sized,
+> +    A: Allocator,
+> +{
+> +}
+> +
+> +// SAFETY: `Box` is `Sync` if `T` is `Sync` because the `Box` owns a `T`=
+.
+> +unsafe impl<T, A> Sync for Box<T, A>
+> +where
+> +    T: Sync + ?Sized,
+> +    A: Allocator,
+> +{
+> +}
+> +
+> +impl<T, A> Box<T, A>
+> +where
+> +    T: ?Sized,
+> +    A: Allocator,
+> +{
+> +    /// Creates a new `Box<T, A>` from a raw pointer.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// For non-ZSTs, `raw` must point at an allocation allocated with `=
+A`that is sufficiently
+> +    /// aligned for and holds a valid `T`. The caller passes ownership o=
+f the allocation to the
+> +    /// `Box`.
+
+You don't say what must happen for ZSTs.
+
+> +    #[inline]
+> +    pub const unsafe fn from_raw(raw: *mut T) -> Self {
+> +        // INVARIANT: Validity of `raw` is guaranteed by the safety prec=
+onditions of this function.
+> +        // SAFETY: By the safety preconditions of this function, `raw` i=
+s not a NULL pointer.
+> +        Self(unsafe { NonNull::new_unchecked(raw) }, PhantomData::<A>)
+> +    }
+> +
+> +    /// Consumes the `Box<T, A>` and returns a raw pointer.
+> +    ///
+> +    /// This will not run the destructor of `T` and for non-ZSTs the all=
+ocation will stay alive
+> +    /// indefinitely. Use [`Box::from_raw`] to recover the [`Box`], drop=
+ the value and free the
+> +    /// allocation, if any.
+> +    ///
+> +    /// # Examples
+> +    ///
+> +    /// ```
+> +    /// let x =3D KBox::new(24, GFP_KERNEL)?;
+> +    /// let ptr =3D KBox::into_raw(x);
+> +    /// let x =3D unsafe { KBox::from_raw(ptr) };
+> +    ///
+> +    /// assert_eq!(*x, 24);
+> +    /// # Ok::<(), Error>(())
+> +    /// ```
+> +    #[inline]
+> +    pub fn into_raw(b: Self) -> *mut T {
+> +        let b =3D ManuallyDrop::new(b);
+> +
+> +        b.0.as_ptr()
+> +    }
+> +
+> +    /// Consumes and leaks the `Box<T, A>` and returns a mutable referen=
+ce.
+> +    ///
+> +    /// See [Box::into_raw] for more details.
+> +    #[inline]
+> +    pub fn leak<'a>(b: Self) -> &'a mut T {
+> +        // SAFETY: `Box::into_raw` always returns a properly aligned and=
+ dereferenceable pointer
+> +        // which points to an initialized instance of `T`.
+> +        unsafe { &mut *Box::into_raw(b) }
+> +    }
+> +}
+> +
+> +impl<T, A> Box<MaybeUninit<T>, A>
+> +where
+> +    A: Allocator,
+> +{
+> +    /// Converts a `Box<MaybeUninit<T>, A>` to a `Box<T, A>`.
+> +    ///
+> +    /// It is undefined behavior to call this function while the value i=
+nside of `b` is not yet
+> +    /// fully initialized.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// Callers must ensure that the value inside of `b` is in an initia=
+lized state.
+> +    pub unsafe fn assume_init(b: Self) -> Box<T, A> {
+> +        let raw =3D Self::into_raw(b);
+> +
+> +        // SAFETY: `raw` comes from a previous call to `Box::into_raw`. =
+By the safety requirements
+> +        // of this function, the value inside the `Box` is in an initial=
+ized state. Hence, it is
+> +        // safe to reconstruct the `Box` as `Box<T, A>`.
+> +        unsafe { Box::from_raw(raw as *mut T) }
+
+You should be able to use `.cast()` instead.
+
+> +    }
+> +
+> +    /// Writes the value and converts to `Box<T, A>`.
+> +    pub fn write(mut b: Self, value: T) -> Box<T, A> {
+> +        (*b).write(value);
+> +        // SAFETY: We've just initialized `boxed`'s value.
+
+The variable is called `b`.
+
+> +        unsafe { Self::assume_init(b) }
+> +    }
+> +}
+
+[...]
+
+> +impl<T, A> Drop for Box<T, A>
+> +where
+> +    T: ?Sized,
+> +    A: Allocator,
+> +{
+> +    fn drop(&mut self) {
+> +        let size =3D core::mem::size_of_val::<T>(self);
+> +
+> +        // SAFETY: We need to drop `self.0` in place, before we free the=
+ backing memory.
+
+This is the reason you are calling this function, not the justification
+why it is OK to do so. (the pointer is valid)
+
+> +        unsafe { core::ptr::drop_in_place(self.0.as_ptr()) };
+
+Instead of using the raw pointer directly, you can also just use
+`deref_mut`.
+
+> +
+> +        if size !=3D 0 {
+> +            // SAFETY: `ptr` was previously allocated with `A`.
+
+There is no variable `ptr`, this is guaranteed by the type invariant of
+`Self`.
 
 ---
 Cheers,
 Benno
 
-> +    #[inline]
-> +    unsafe fn realloc(
-> +        ptr: Option<NonNull<u8>>,
-> +        layout: Layout,
-> +        flags: Flags,
-> +    ) -> Result<NonNull<[u8]>, AllocError> {
-> +        // TODO: Support alignments larger than PAGE_SIZE.
-> +        if layout.align() > bindings::PAGE_SIZE {
-> +            pr_warn!("Vmalloc does not support alignments larger than PA=
-GE_SIZE yet.\n");
-> +            return Err(AllocError);
+> +            unsafe { A::free(self.0.cast()) };
 > +        }
-> +
-> +        // SAFETY: If not `None`, `ptr` is guaranteed to point to valid =
-memory, which was previously
-> +        // allocated with this `Allocator`.
-> +        unsafe { ReallocFunc::VREALLOC.call(ptr, layout, flags) }
 > +    }
 > +}
-> +
->  #[global_allocator]
->  static ALLOCATOR: Kmalloc =3D Kmalloc;
+> diff --git a/rust/kernel/prelude.rs b/rust/kernel/prelude.rs
+> index 4571daec0961..a9210634a8c3 100644
+> --- a/rust/kernel/prelude.rs
+> +++ b/rust/kernel/prelude.rs
+> @@ -14,7 +14,7 @@
+>  #[doc(no_inline)]
+>  pub use core::pin::Pin;
 >=20
-> diff --git a/rust/kernel/alloc/allocator_test.rs b/rust/kernel/alloc/allo=
-cator_test.rs
-> index 4785efc474a7..e7bf2982f68f 100644
-> --- a/rust/kernel/alloc/allocator_test.rs
-> +++ b/rust/kernel/alloc/allocator_test.rs
-> @@ -7,6 +7,7 @@
->  use core::ptr::NonNull;
+> -pub use crate::alloc::{box_ext::BoxExt, flags::*, vec_ext::VecExt};
+> +pub use crate::alloc::{box_ext::BoxExt, flags::*, vec_ext::VecExt, KBox,=
+ KVBox, VBox};
 >=20
->  pub struct Kmalloc;
-> +pub type Vmalloc =3D Kmalloc;
->=20
->  unsafe impl Allocator for Kmalloc {
->      unsafe fn realloc(
+>  #[doc(no_inline)]
+>  pub use alloc::{boxed::Box, vec::Vec};
 > --
 > 2.46.0
 >=20
