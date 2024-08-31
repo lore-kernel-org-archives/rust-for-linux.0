@@ -1,48 +1,48 @@
-Received: from GBR01-CWX-obe.outbound.protection.outlook.com (mail-cwxgbr01on2118.outbound.protection.outlook.com [40.107.121.118])
+Received: from GBR01-LO4-obe.outbound.protection.outlook.com (mail-lo4gbr01on2122.outbound.protection.outlook.com [40.107.122.122])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9FC46A8CF;
-	Sat, 31 Aug 2024 12:01:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.121.118
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC3A217BB19;
+	Sat, 31 Aug 2024 12:16:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.122.122
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725105695; cv=fail; b=pDITZ8SaHAVxa3uT5bb9RyN91PxM2l85KwZXgUfXNxQnoo5xE4g/HHy7mFJs/HAiDNadCAv/DQ5bzgtwgWpxlrttWE6EkOPKeoyfFHDtzq4MexjRDlPui/fsmE77BRv6NRxe6xVQMrM57J8pcrrpXqTwDPATK4vTByCl21gB7iI=
+	t=1725106573; cv=fail; b=P44icWgcxgU/qgs0CzSdhC06rhd58j7v80LcCPybdejC/lcIn9xGaWB+6m1D3XMSEoYiDapGNfuAQDj0rF96L/dM73BdURv4Qlqhblm2tV0po+DhmUhlXTejsIvUrofoZALD6Z11AuYlaMyVJBwGcMd2KVMRDMTuERFHyzbl6iU=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725105695; c=relaxed/simple;
-	bh=MxMaXOR0kFixaRpfJm2bxE8qbJmCxJ4Wt14tCY+p+U4=;
+	s=arc-20240116; t=1725106573; c=relaxed/simple;
+	bh=DoX+0LS/xzDtA+QjlhC5RATksqJwhnuoxLj390otEnc=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=i5EQydifb+XXVpgjU619BREOnByhSjDb5DegXnsDjb2OKRQD7xSbtlOnWIUCnlVrZ+1crbjJO+lwq597Fq6b7lLOtcgA8z1zfRv6vfoVNdD5N7LoulyuMhTnTj39VNPDgJf/Kb2ahZETSJa2fg5iiWWBxSsggfaOizEGNDRA2Xo=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=JaTQEXt1; arc=fail smtp.client-ip=40.107.121.118
+	 Content-Type:MIME-Version; b=VeHPbozTjarSAX8k1pJmmgcJGF/6ZhtxM0+qvoHmiVTw/5l+27mJ8nJKnBjoyy66S+MhW5AxtjEeCysBrd9Ot3sa+4oDxO5aEVTh3tvsfrHo65h6Y7eDgD7rw48LvzlVKjq2EOcLhTThdW2cYlmcSbvmH5/tAmmB0b1WGR2PrKA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=FJP/cnF2; arc=fail smtp.client-ip=40.107.122.122
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="JaTQEXt1"
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="FJP/cnF2"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=QIWOHY7iu61Q6KuAecg8p1UojI1j+iW4ngjqrw26qhAOTt6l9TxtpRAxkOg4hhkqL+6beczVGpyW3nR3AoVN0TkFkWJG122uRrh2AIVnf/YcGAakuHaS/FDlrCi0RTWkFGBXe4Fw+krqDSoWUWVoSb1Vow+ZKYN/iw19Wm8TAQIkhNeYVcUPs7FzWmeETvAeGjYxZ272FnTKWl2CUlAK8beLiP4sc3hRtDh/4O921lkv0/FnYHnGJ/xEdmj3k8X1HBeILB0VFq8pFlP7SpVaAtLFT3wMqVx0iBgnRNncP6yp0fw52diNtiWiVJAdsDWtFKSwMFNzIK2oUSYhbUgcgg==
+ b=D7ZR0M616B/adhH6NgLeongXbr83PmK5Ik9MfTT21NTcVHZA/DNKmmIGcM5y+LALNxkuiMeQRtAYokT35/hobynUxKtak1O4BzKmHURyFdlJRorKd+d40M3tRBU38CxxokIbr0tpCeb946DdRWgxrYMx9zHYhkTV5CPVMy8D9lN/2fms+kBL61/nsfc+yUzNZJT04Xg0h2mBNJm9HsuyXCsoQ8SdDCQcWLhRtjylNp6fKtyqqQdNniGXBnUJE8mLo8s5YzfiuLNp8+aeJBcRSFbNDy1ptTxYq3pXDtpCUc22mqXUg7c4mslJ44oFD8yVDiTrdedqA/GzTWpJ1P38Mw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bl7sDsXvH3NpqavzT54ckkMooSMR8unx3x1RpuVxiMM=;
- b=Ycn19HBkQYFCDjRJr1M7hLNeHh8kk0MnH7CDEQU2jNdr0o4rZWconTbnfuM/EefgxYmPiBLbnhs/aPgxdYTdnX0HjTUwsB38rdc6sTgOXPufaMfpuaizj8jNSpupwo3Al449hG2wRX8CyYVkPHhNn+E38YPBdS0ZQLBHG621ZEVCZdj7qfjPPZx1xNBDRhZKJIol0fC2mkNIYcuG8Z1ZsJj2FC//UgJKo1c6VMMYr5Jfohu6Rfga8qtYj5p11ir53QVRMXv0az5h7iM5rPUwMiNXn1R+pd844XiNH3Kt7rypCPGScwYt/QvG2Zemun0+iOg6E1txNOCD0X14fhx9eA==
+ bh=kxCWA+N7MDEFds4ulOnG+tg+kGwI7Xft5R11KnecwJ0=;
+ b=VgantBY2iJH8JGCquj/a/TmYos6HG/f0UTaw8Nzj9O2dF1kGyR9NY63xAnBbNqeOz5NcFsJELYLQADdfwtpGHd9MvyBibd3449ErAZ1E44nApAxkAHVhy4qNU9/lhyo3NdUUT3ZuqgNSPL9SV/OCi8+fpxVtKuEy/AxpIFVFvBQ9A5+8jpsOuuOEXJwkdDn9bjntlP4MUMSkxrVKmlqvASMSqK92bZ9XQkBZqVYg4+AlC/Ctl4Sqfkl1cWaYtenX9ea5gpW4+h4KnHJPF8xnFGm4Mh97OBOueEOf+GBj8lU8QCiAnqr4RKcIXqU6U2YghRWK2fDilRlxEzOEp1tG5Q==
 ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
  smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
  dkim=pass header.d=garyguo.net; arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
  s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=bl7sDsXvH3NpqavzT54ckkMooSMR8unx3x1RpuVxiMM=;
- b=JaTQEXt1yc/CCpFboeFC3FHTcaLm51L2L69v/d/EwoH5qWCkIrYw1ejzXc9rmQXiwETDvq+M4IQxhlz5YhxrZ45TC6JXGgkql27Ovx8DYw/Ni9AdNnZ/TJmg+vJGGgvySMwrf0LkmunAk5SLnJuLz7xqhPpv91KPXH7x7j8loes=
+ bh=kxCWA+N7MDEFds4ulOnG+tg+kGwI7Xft5R11KnecwJ0=;
+ b=FJP/cnF2MSB7hQxjzscqQmL81/UMzEy8VxWoAyQOApqCK0170EgBz0WVXGA9nv7+BGU8bpzv4OVMIE7Yax1AbgnE7+vfacF2IMdXxowQ1B7RBU1hF+O4Z7jaU6SBqG0N+8VxsvwYt/dfV3fTvQ0t9yU2CSN6ehpCJ396SmoGKlQ=
 Authentication-Results: dkim=none (message not signed)
  header.d=none;dmarc=none action=none header.from=garyguo.net;
 Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
- by LO0P265MB6146.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:247::13) with
+ by LO2P265MB5757.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:26f::12) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7875.20; Sat, 31 Aug
- 2024 12:01:28 +0000
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7918.22; Sat, 31 Aug
+ 2024 12:16:08 +0000
 Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1818:a2bf:38a7:a1e7]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  ([fe80::1818:a2bf:38a7:a1e7%7]) with mapi id 15.20.7918.020; Sat, 31 Aug 2024
- 12:01:28 +0000
-Date: Sat, 31 Aug 2024 13:01:22 +0100
+ 12:16:08 +0000
+Date: Sat, 31 Aug 2024 13:16:06 +0100
 From: Gary Guo <gary@garyguo.net>
 To: Danilo Krummrich <dakr@kernel.org>
 Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
@@ -53,16 +53,17 @@ Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
  zhiw@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com,
  ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org,
  rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v6 01/26] rust: alloc: add `Allocator` trait
-Message-ID: <20240831130122.0faa7651.gary@garyguo.net>
-In-Reply-To: <20240816001216.26575-2-dakr@kernel.org>
+Subject: Re: [PATCH v6 02/26] rust: alloc: separate `aligned_size` from
+ `krealloc_aligned`
+Message-ID: <20240831131606.32427c73.gary@garyguo.net>
+In-Reply-To: <20240816001216.26575-3-dakr@kernel.org>
 References: <20240816001216.26575-1-dakr@kernel.org>
-	<20240816001216.26575-2-dakr@kernel.org>
+	<20240816001216.26575-3-dakr@kernel.org>
 X-Mailer: Claws Mail 4.2.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO4P123CA0539.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:319::10) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+X-ClientProxiedBy: AM4PR0302CA0023.eurprd03.prod.outlook.com
+ (2603:10a6:205:2::36) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
  (2603:10a6:600:253::10)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -71,213 +72,132 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LO0P265MB6146:EE_
-X-MS-Office365-Filtering-Correlation-Id: 667bb4c1-6198-4f82-ea64-08dcc9b4a4eb
+X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LO2P265MB5757:EE_
+X-MS-Office365-Filtering-Correlation-Id: ac1a9303-5802-4660-8abd-08dcc9b6b1f6
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|376014|1800799024|366016|7416014;
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|366016|376014|7416014;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?Ez0wvKcJaTfb/2ccPlsBDNCt1oge2VuwqWvc4Q7HuQrPXLUsJgx7LPYYuhYx?=
- =?us-ascii?Q?ekuOOwcQuebaO+0rB1LQfF0NRsJOLow+OdIzShuwDPbZsywERmu9GGvx23sF?=
- =?us-ascii?Q?k16L0N7M6aXKht9R06RGa3brhTOoo15ti8YSBPkaCoogH8S87K9ptLuQZh2z?=
- =?us-ascii?Q?CGm9DrtqG76tauUvWALfL8VaJ5I2bktmzxhDg4p1HmfzpMsvg6AmkO1cRPIr?=
- =?us-ascii?Q?XkTWbCl9jOLZxjinrAd7dInPHF2slqLSpfKzALR1J96unZSjat6JtehitZMy?=
- =?us-ascii?Q?xJ80Et5VRUXRHXAq7gF3dHFsRRL0KLOhdV7UyiiOnMNprgofb+27Nrt36Rsc?=
- =?us-ascii?Q?so4GmBC27rmyGRkdFcxJ08qWoe23U7lJVsOJwuG7LRnrGVMZC+9TtQyhIx9L?=
- =?us-ascii?Q?xjSWRX3HNkytiD+TpbeodFp3qcQtiR9a2dutdshaFtBvVzHYzzRT78KEcpf/?=
- =?us-ascii?Q?xqG3pXMptVHy/n3z9qttFjW5Ut3tacw3O3DYEcQC7XlyDGQrqeK1whxikxcY?=
- =?us-ascii?Q?/03ZF5tBCwdeo8Cvi27SkMd2sliN8Bl8l4cYnsayd9SnME7a+e0PEJrqgAc7?=
- =?us-ascii?Q?ZL41BRnS//XdsnHQ/JdoU2/jaVF47i8bRfh5hI+2nMEW9VJEdiQOkUnV5jrO?=
- =?us-ascii?Q?w3dJyPi2XQuftbyJNoYwDuuD6GRMadTgkd7NCmgbKWg+Cjcz/1HpkivPWGl8?=
- =?us-ascii?Q?U/P9OlNaNb5PpoqJ8lirWpyB2XNBuAtjSceq6iBmJ1LxtPB2thw6cL0NqEm/?=
- =?us-ascii?Q?+H4cbDNfUaMOar27fE5uzOrKEdQ6D3W0I+7QEI7WLvgrZayZD5llcUSZCYzn?=
- =?us-ascii?Q?JNWhQ0BCaos+ugapfaSfax7jDdviy0P7IjFEXj7rli1wqr9lT2JxCvs9SQvU?=
- =?us-ascii?Q?hkqUBVUNKHnXbx1arizA8DoUGm1Ubnnpq7yddQKzqcziPgyqrNfXiUTNWDuh?=
- =?us-ascii?Q?StuSHJg1dANubo78SyV/DpiwXzFx4RJxEc5buLm5wTWr3Wcxo3QTax09d9T4?=
- =?us-ascii?Q?2S3WbyKvylmM215uot1rIwhFowXYETjmPZc/3m3tdbi0vtAlNssqLmR3NV+2?=
- =?us-ascii?Q?ZKgNA3MabC0/6tFvSwgmBoncHBeArsww97o7r8EiFc5of2eVl88XaobEB1PJ?=
- =?us-ascii?Q?kWE0MkOUKRkLWRoj4KwoWvckrh0AVwp08ee/URAfNPz1g2vga+jbTkl/d1SX?=
- =?us-ascii?Q?4/+FMduvYFNXPTtDaZbCzSiYORvlhdv8ORJ+/EYEESgi0+HXBmqBE7lv9UtE?=
- =?us-ascii?Q?AdytlmckFvVLsDCmy96irjcY4LMddIazO5dlBSi+ix1qAaLgmmq9dr5g2doZ?=
- =?us-ascii?Q?+eQ=3D?=
+	=?us-ascii?Q?cn2A1j4mPqofngR+9nwxgk9uDEy6QIQIyYGf9A5yVbnh05jfb5GHyE2Bceuy?=
+ =?us-ascii?Q?ZBKq8LMAefu3baOvzXw1BCXdNJ/RcC1suGbIpUso4pZIGrLKiRtemsNIUP2q?=
+ =?us-ascii?Q?xwis6DdWxQ42S9j5MlNDij07SkSXrk6ZeAI/LwTwzQ1yGG3is6bpEYO+OR7u?=
+ =?us-ascii?Q?CNa6nydj6Seo19GWOyEjS5u/a+K5CaxkLniHCyPE/2uuunavtXYTnrI+gda6?=
+ =?us-ascii?Q?EwU7sWASp+w4gdFZLoXVVU1Zt8mU035bpAdvwZIssbntMopNkO4Rm0iUbYv/?=
+ =?us-ascii?Q?78rBRtX5GtcHx24Pl+FwnqHTmXjZRWfi3R74u3KlOCFtAlOFeNELIbVsQH8n?=
+ =?us-ascii?Q?UpnkTh0vuGG3aM4+SSW9UzNY+yNQBThBZJo9LVP4XVh2H54yFwKoIUA23Xug?=
+ =?us-ascii?Q?a9kH8FGbLBuAB0y8gSYKXECrrw4DV1V2sYMqexpfLxN7lTeHzaO6Mj8tai1W?=
+ =?us-ascii?Q?+xBRxeBrE+HMG1f9xaufJAilhbFRUvr2m3aFQQxv5e0+ttYnoy4Al/1C0PEZ?=
+ =?us-ascii?Q?SlyWD06JUU3FlL9AVcOKGIIREr212R9/EkW2PmAqHJ74WlltvGbZhQESgb8B?=
+ =?us-ascii?Q?a8jdqyzQwIcZX+vozeZxv1FgFxnK1jpF/64Wiv/58EmeX9kl2BvMXKcsrtCi?=
+ =?us-ascii?Q?Oo35ZuoqxxtCS+idZvHUFfDJKXzyPvxWCoNPk/vqVheGzapu/bxFGxJ0R8dh?=
+ =?us-ascii?Q?h20YhfjDQVkdIWKixZCZAN4MVAtazjaoyfJZssFDRswiRqBnhWGPLYYVfeRM?=
+ =?us-ascii?Q?nB6yUaSCqMLORNDT4Adp96M6xwOrnWSpDzMRba5mBkGJJmKMVm9uye/a5FLB?=
+ =?us-ascii?Q?niOmr6xTf4oVmu9IQGW/uT3ODt+UuX3h8yacpkJej7jx6FOXTQdko+ud3KRO?=
+ =?us-ascii?Q?M9gtaaEVz3s4fF3nwqE+oRGFE10PZb9iLncjX4aDgffocmbxuQX6UBpGIOd3?=
+ =?us-ascii?Q?VjZ0qi+bQaEGPoBoHRE9lklu15KEKrlJ9F9NqQx2iUNr6kGoc6XdPeYXA08d?=
+ =?us-ascii?Q?NHlRtH5VoDV8evazdUMHn5vGLU89EHtJ4e6S7PaaOFfetiyiSJUR+nCu3LNE?=
+ =?us-ascii?Q?FbBXG2V3u5GAWMQ09JghEnV2BB7kUGMXzD6ZWz57/LsGly0QqRvojbBHQupN?=
+ =?us-ascii?Q?jOvUtlF6ZOH664Zl6VIYc3NYvfW75xVPBU3gGgfb3uS1H0/eDmSai0BhpXLm?=
+ =?us-ascii?Q?zt9IO82DOK+jGGmZAQKvN0a4kZNfP/KgcufMTiCiJZIBlgwhc6+y+SftyFTC?=
+ =?us-ascii?Q?XdTwvjvP/9eaeRLSokPEO3IxRRX4sEbwqlv80Oyy15SxGaCHQL7GS63BRcqG?=
+ =?us-ascii?Q?MW7FtfoRlc3LP5V+FCzsR8EBzwRABKpSRe8BPWac5K8V0w=3D=3D?=
 X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(376014)(1800799024)(366016)(7416014);DIR:OUT;SFP:1102;
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(366016)(376014)(7416014);DIR:OUT;SFP:1102;
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?rLuinzzkkb7X4mMUUpaWgdF5RyVZe+D023EIMKVxeyB6YNHAiCes7NYM/xi4?=
- =?us-ascii?Q?rn7fCEBY6m8AaR6xS7QOzyOG4wgOoyX3Uc2sfVHxLdhWDHKKiZomgyNV2izF?=
- =?us-ascii?Q?8TH2CzohW5Jqx0oSDYb/3/vbgZ6O0FFs2fuGZrAhGA0gzIgEOxwSf6r214Uz?=
- =?us-ascii?Q?wLTwL8Zwmy99/oMkj+NxCZ4nj/alD8HVSjbB88/CyJZ1TSsF6ii51pxXJ7vW?=
- =?us-ascii?Q?4tn6218Je6gYqulxnEfNDxn2toSGOgfhJoej0Tlh7hKARyIpEvAxK2UsdJZr?=
- =?us-ascii?Q?uEx7w34IfkW9OCdE1gEMJlZtl8g8zxGKUMxysB4nlKQn68w5s37riKGFP0Mo?=
- =?us-ascii?Q?vH+ZRUka3/FHc8WHzzVXV4UngIJ3AepDLfuxjDTj1F+cHANPgjwqP21j4eGR?=
- =?us-ascii?Q?9EUAGwlvOHCvWxAkYMlykDVSRXrM/EOSmg3wbqTWnnNBgGCaU2EZHUi6zUZm?=
- =?us-ascii?Q?NyHvLMD3uci9FqROp5ewyYYXgf3t4uXYroKnY0OCX5d2iiIyRtn1e5PZxW7q?=
- =?us-ascii?Q?xBi6SLSoyg64Ar4mBXGUvhwrH2lX9olrIoxnbgqamUvwwbG3EzAKFDR12ZYn?=
- =?us-ascii?Q?vCHmxvTtDP12iEUdbutoacsNFEs4gg/cqWmpn2lHsQCTjYWrjJ2IVBmuNml9?=
- =?us-ascii?Q?9mg0Xl2fMr3UOGNhhwEtquvBGQxxONsMxm3QVxZd8D+YdnbHpR8ByiGQDPqU?=
- =?us-ascii?Q?taAYpC5xycShuxpuBYLYCrbGNPLhzFiEYMhVaowSp9G2nu61qx9aJC1NQAr2?=
- =?us-ascii?Q?eKcF3b5vpcMh0ObjVW1ZVApR8wk+MZBlwSh80R8zP4R493VIHqLGq9fmvMAA?=
- =?us-ascii?Q?DIrOIKXXFnbcEhuHSNZTwmFmNwVlp7eBBSguBAWeJobYTqvB6JUQUkfN+8s1?=
- =?us-ascii?Q?iTLxVAbIMYh8ZwKZ23ePRiG0Q//umnqHRICiuM1BCfUhyTRFpMSFsksavolH?=
- =?us-ascii?Q?Ugv26V6zYn0T4prQCWVs+N3HorYV9mrT1sQgqdgSgrI+T1/Kx5JS9rcd3AOt?=
- =?us-ascii?Q?VaKCCIxbhIqe3QiBfjXP2HVq1vj0Wocp01NLioL37fCU99MfX7nkDoT89/Tp?=
- =?us-ascii?Q?w06Bs0WIqdabOlyH5nmT0CX3dsJhHfVF/YdjjsbnL2UL0jRI4MGcHBZL5s8w?=
- =?us-ascii?Q?AlQck96HCjjxLW2pf29oYBT8XH6AFuYxbzXnADQpcgAKYRJ3nEBCk2fvj+Mc?=
- =?us-ascii?Q?WWUjSwxgLc4wjDgyuzZXEEuSh+q25FDzl+z5uOr6ojjoy/ry/r1HKP8IMqa0?=
- =?us-ascii?Q?rk0mmicrxxuE+EsUUdJPMcZu7ZQ2v81x7gShXxk7WOGaHjUO8pLlR1QbgiFK?=
- =?us-ascii?Q?XvUjBkxDvGU4/Yx9Sqz4ys+Mzt4CSA8/jAuJnnYJTCpvA0nSUsFC93ZOd2I2?=
- =?us-ascii?Q?wNF5/+iw5Tak7cSw+LbeDdiqHQF9PKabmEMiTeK35rYaoYT+rPM4AqwPIPsD?=
- =?us-ascii?Q?dNqMQpBUFz6ND9uO7dqfEvokkmtIh8TJAZ/pfgT9v7dc9AHCFlp0NMFCRU3+?=
- =?us-ascii?Q?8lkCSObdlyLI92FUyvrbCY9sFPFnRefZGqKOLkUw53DiJeDewH9NeYMP+euV?=
- =?us-ascii?Q?Ii1hF234PUslhZOXMCJTMPW/I4IA3rNWnGd7tXck1/bOS5N5p1eZt3Y2Y6mu?=
- =?us-ascii?Q?0g=3D=3D?=
+	=?us-ascii?Q?Jai0i+upLNHGSbXWrEDccPhs5qs6NoYZCZZXeqfHqR2N1Jfcdd495F63GCrN?=
+ =?us-ascii?Q?92NETcYW3XY/chxXI60DsPJnQOOE570xA+51Aq155/LqpTUcMB3AHv4o3h0Z?=
+ =?us-ascii?Q?d8jGnxNKl5Lp4Sbo0ykqqGCTzC2n35aCBumpbd4JdiA0EDzWSmzVz9MBQ1cg?=
+ =?us-ascii?Q?/luLTCQovyg/J80g86kcNVxyWky5DM4a+7HVj4ioRLibVUQtSrqKsgX3Ckdz?=
+ =?us-ascii?Q?0MG7E9ZziFCWZETnVYy5/wfKZpwo1AY+T24CuX2AyfU7e4MWdc4LbRqoctPL?=
+ =?us-ascii?Q?4AzZnZarr3QCM5h74ff7B2yQH8CNrrg67i2nkSTZ7w2ICVS2MlO7tQ186fjD?=
+ =?us-ascii?Q?Wt9P2kEkPuNzjCTsyDuEL1qCJU1dh71xLQUE2J/vdWKwePEhO9tUj2AUmp8x?=
+ =?us-ascii?Q?lf4tn4kAalt2rQm2+qV+Jm3nSZRW3YClxyhvkl4msh4x+2wrjyQTtQJf44T+?=
+ =?us-ascii?Q?SUn2HdWDdmUr/ZL1Tv7k/W1Ar61UQDrlR5AWfxxEAU1TnjY2npR8i7bvhtr6?=
+ =?us-ascii?Q?vzbR0LtHMUj14TotvQSBpSajWtBclsUNsHbANcRvbPyYheH9AvQneBDkwDNh?=
+ =?us-ascii?Q?65aW5ett922cua/BeXW3jwkkwanFeZyKhW6Sg1mOWRYkVYT4fazNrr4C535F?=
+ =?us-ascii?Q?pTwjYy9rgzdUfP1c6t8CvLkDeko+1wuS66s1dDpe1ANpRD9YVlDPrqzpmquR?=
+ =?us-ascii?Q?vqDoPCfmvo5fx5gvlbwv/VDHGHLzycdoL41t3WcC1ZvQDpSKd++t2XmmGlyO?=
+ =?us-ascii?Q?5woh1wA7EG9sxbVKFBA+xe5cUdHgaaWl6rNm64PML7qHdeRK3C0uPn1mf0J9?=
+ =?us-ascii?Q?sjYsVWAztXP6A6OO5xiExxBDFSJ7zM7T6cIKiD7/qAxardzxRG9MRUopywmd?=
+ =?us-ascii?Q?baMUCB1MwB/1wree/MpudrGAR5OvzlTsGePLpL9S071jfsd0vzod3ndzgKnq?=
+ =?us-ascii?Q?h5kgNSAO/EjeyGSs3iLYahHKjiaPBHjPJlvU0V1/+kGyjQlwILNM6T3qqqMc?=
+ =?us-ascii?Q?6+Ru5lFWD8pH91cZYsScuSksybeDqQ6QZPIj86Yi/H5gLnrDqBMjwB5w/KkP?=
+ =?us-ascii?Q?jg3and/BMuyKSZHVoD3XPoe3LwND/ppDuyoyz0XlJ2AG6zWbpOqGnfuDCX7N?=
+ =?us-ascii?Q?3Wr57GCMrw9GqDUYrkdpmXtTiSV7uHoMM3GKgkimOkg9anJB5VhoSeJv/Sd1?=
+ =?us-ascii?Q?YxIx7YDCVe/3fYF2dlveMg3hZV1TiXDhyHgwIEitIxqTt3fxHqfs1TnqyKTx?=
+ =?us-ascii?Q?6FG1TMc+wEJquVBec49Yl3cfYfiObPPb/qqv0rL1sCCgLD3cg2YxMkUo5QpE?=
+ =?us-ascii?Q?wCw5Qj5pOmkUI5dMGOXYWN1LrUIwSJqQmMLoesAklOxvTq1fYxDsfTAzOogJ?=
+ =?us-ascii?Q?6z9UBw+fMkF/wQZTA+ffCjGlod5DLTO9GItcSI1MZ0LD27Nnv4bnGXbi3Z1o?=
+ =?us-ascii?Q?1NsvLq7uODuIXEj90J0PCBYr5+2lvPxP+rGfP2tEvHJUfkb/NNGnehvLGxGB?=
+ =?us-ascii?Q?q+aUlgw81SBKX1dOt/zbKcD6NYWcxWaaPwZUKWew4Pwx9jDOBpN/NVmdAd15?=
+ =?us-ascii?Q?WUi55WDsGlYjHMFJeUnwBLWed3iEY5+VgtAhfMVKNPM/sJgZgs9YrwLbnPQ8?=
+ =?us-ascii?Q?sg=3D=3D?=
 X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 667bb4c1-6198-4f82-ea64-08dcc9b4a4eb
+X-MS-Exchange-CrossTenant-Network-Message-Id: ac1a9303-5802-4660-8abd-08dcc9b6b1f6
 X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Aug 2024 12:01:27.9414
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Aug 2024 12:16:08.8731
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
 X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
 X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: epntk3LRY23cZ37PJoKG4ipnd4mbW+cccK1zqGQOmANKGINspwggsbt15c8dTSy8DQ33gHdlTZBs6m+nPJ/ruQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO0P265MB6146
+X-MS-Exchange-CrossTenant-UserPrincipalName: vXgqsH+zklM5Djd6Um3hLJm13vtuNlSrVmatpMq9m78PpTjXGq8h6WlPLihW4wgASxwFkUbfsC87lPSSL93oeA==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO2P265MB5757
 
-On Fri, 16 Aug 2024 02:10:43 +0200
+On Fri, 16 Aug 2024 02:10:44 +0200
 Danilo Krummrich <dakr@kernel.org> wrote:
 
-> Add a kernel specific `Allocator` trait, that in contrast to the one in
-> Rust's core library doesn't require unstable features and supports GFP
-> flags.
+> Separate `aligned_size` from `krealloc_aligned`.
 > 
-> Subsequent patches add the following trait implementors: `Kmalloc`,
-> `Vmalloc` and `KVmalloc`.
+> Subsequent patches implement `Allocator` derivates, such as `Kmalloc`,
+> that require `aligned_size` and replace the original `krealloc_aligned`.
 > 
 > Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> Reviewed-by: Benno Lossin <benno.lossin@proton.me>
 > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+
+Reviewed-by: Gary Guo <gary@garyguo.net>
+
 > ---
->  rust/kernel/alloc.rs | 102 +++++++++++++++++++++++++++++++++++++++++++
->  1 file changed, 102 insertions(+)
+>  rust/kernel/alloc/allocator.rs | 19 ++++++++++++-------
+>  1 file changed, 12 insertions(+), 7 deletions(-)
 > 
-> diff --git a/rust/kernel/alloc.rs b/rust/kernel/alloc.rs
-> index 1966bd407017..9932f21b0539 100644
-> --- a/rust/kernel/alloc.rs
-> +++ b/rust/kernel/alloc.rs
-> @@ -11,6 +11,7 @@
->  /// Indicates an allocation error.
->  #[derive(Copy, Clone, PartialEq, Eq, Debug)]
->  pub struct AllocError;
-> +use core::{alloc::Layout, ptr::NonNull};
+> diff --git a/rust/kernel/alloc/allocator.rs b/rust/kernel/alloc/allocator.rs
+> index e6ea601f38c6..c83b6dff896d 100644
+> --- a/rust/kernel/alloc/allocator.rs
+> +++ b/rust/kernel/alloc/allocator.rs
+> @@ -8,6 +8,17 @@
 >  
->  /// Flags to be used when allocating memory.
->  ///
-> @@ -86,3 +87,104 @@ pub mod flags {
->      /// small allocations.
->      pub const GFP_NOWAIT: Flags = Flags(bindings::GFP_NOWAIT);
->  }
+>  struct KernelAllocator;
+>  
+> +/// Returns a proper size to alloc a new object aligned to `new_layout`'s alignment.
+> +fn aligned_size(new_layout: Layout) -> usize {
+> +    // Customized layouts from `Layout::from_size_align()` can have size < align, so pad first.
+> +    let layout = new_layout.pad_to_align();
 > +
-> +/// The kernel's [`Allocator`] trait.
-> +///
-> +/// An implementation of [`Allocator`] can allocate, re-allocate and free memory buffer described
-> +/// via [`Layout`].
-> +///
-> +/// [`Allocator`] is designed to be implemented as a ZST; [`Allocator`] functions do not operate on
-> +/// an object instance.
-> +///
-> +/// In order to be able to support `#[derive(SmartPointer)]` later on, we need to avoid a design
-> +/// that requires an `Allocator` to be instantiated, hence its functions must not contain any kind
-> +/// of `self` parameter.
-> +///
-> +/// # Safety
-> +///
-> +/// A memory allocation returned from an allocator must remain valid until it is explicitly freed.
-> +///
-> +/// Any pointer to a valid memory allocation must be valid to be passed to any other [`Allocator`]
-> +/// function of the same type.
-> +///
-> +/// Implementers must ensure that all trait functions abide by the guarantees documented in the
-> +/// `# Guarantees` sections.
-> +pub unsafe trait Allocator {
-> +    /// Allocate memory based on `layout` and `flags`.
-> +    ///
-> +    /// On success, returns a buffer represented as `NonNull<[u8]>` that satisfies the layout
-> +    /// constraints (i.e. minimum size and alignment as specified by `layout`).
-> +    ///
-> +    /// This function is equivalent to `realloc` when called with `None`.
-> +    ///
-> +    /// # Guarantees
-> +    ///
-> +    /// When the return value is `Ok(ptr)`, then `ptr` is
-> +    /// - valid for reads and writes for `layout.size()` bytes, until it is passed to
-> +    ///   [`Allocator::free`] or [`Allocator::realloc`],
-> +    /// - aligned to `layout.align()`,
-> +    ///
-> +    /// Additionally, `Flags` are honored as documented in
-> +    /// <https://docs.kernel.org/core-api/mm-api.html#mm-api-gfp-flags>.
-> +    fn alloc(layout: Layout, flags: Flags) -> Result<NonNull<[u8]>, AllocError> {
-> +        // SAFETY: Passing `None` to `realloc` is valid by it's safety requirements and asks for a
-> +        // new memory allocation.
-> +        unsafe { Self::realloc(None, layout, flags) }
-> +    }
-> +
-> +    /// Re-allocate an existing memory allocation to satisfy the requested `layout`.
-> +    ///
-> +    /// If the requested size is zero, `realloc` behaves equivalent to `free`.
-> +    ///
-> +    /// If the requested size is larger than the size of the existing allocation, a successful call
-> +    /// to `realloc` guarantees that the new or grown buffer has at least `Layout::size` bytes, but
-> +    /// may also be larger.
-> +    ///
-> +    /// If the requested size is smaller than the size of the existing allocation, `realloc` may or
-> +    /// may not shrink the buffer; this is implementation specific to the allocator.
-> +    ///
-> +    /// On allocation failure, the existing buffer, if any, remains valid.
-> +    ///
-> +    /// The buffer is represented as `NonNull<[u8]>`.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// If `ptr == Some(p)`, then `p` must point to an existing and valid memory allocation created
-> +    /// by this allocator. The alignment encoded in `layout` must be smaller than or equal to the
-> +    /// alignment requested in the previous `alloc` or `realloc` call of the same allocation.
-> +    ///
-> +    /// Additionally, `ptr` is allowed to be `None`; in this case a new memory allocation is
-> +    /// created.
-> +    ///
-> +    /// # Guarantees
-> +    ///
-> +    /// This function has the same guarantees as [`Allocator::alloc`]. When `ptr == Some(p)`, then
-> +    /// it additionally guarantees that:
-> +    /// - the contents of the memory pointed to by `p` are preserved up to the lesser of the new
-> +    ///   and old size,
-> +    ///   and old size, i.e.
-> +    ///   `ret_ptr[0..min(layout.size(), old_size)] == p[0..min(layout.size(), old_size)]`, where
-> +    ///   `old_size` is the size of the allocation that `p` points at.
-> +
-
-This line seems to be missing `///`?
-
-> +    /// - when the return value is `Err(AllocError)`, then `p` is still valid.
-> +    unsafe fn realloc(
-> +        ptr: Option<NonNull<u8>>,
-> +        layout: Layout,
-> +        flags: Flags,
-> +    ) -> Result<NonNull<[u8]>, AllocError>;
-> +
-> +    /// Free an existing memory allocation.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// `ptr` must point to an existing and valid memory allocation created by this `Allocator` and
-> +    /// must not be a dangling pointer.
-> +    ///
-> +    /// The memory allocation at `ptr` must never again be read from or written to.
-> +    unsafe fn free(ptr: NonNull<u8>) {
-> +        // SAFETY: The caller guarantees that `ptr` points at a valid allocation created by this
-> +        // allocator. We are passing a `Layout` with the smallest possible alignment, so it is
-> +        // smaller than or equal to the alignment previously used with this allocation.
-> +        let _ = unsafe { Self::realloc(Some(ptr), Layout::new::<()>(), Flags(0)) };
-> +    }
+> +    // Note that `layout.size()` (after padding) is guaranteed to be a multiple of `layout.align()`
+> +    // which together with the slab guarantees means the `krealloc` will return a properly aligned
+> +    // object (see comments in `kmalloc()` for more information).
+> +    layout.size()
 > +}
+> +
+>  /// Calls `krealloc` with a proper size to alloc a new object aligned to `new_layout`'s alignment.
+>  ///
+>  /// # Safety
+> @@ -15,13 +26,7 @@
+>  /// - `ptr` can be either null or a pointer which has been allocated by this allocator.
+>  /// - `new_layout` must have a non-zero size.
+>  pub(crate) unsafe fn krealloc_aligned(ptr: *mut u8, new_layout: Layout, flags: Flags) -> *mut u8 {
+> -    // Customized layouts from `Layout::from_size_align()` can have size < align, so pad first.
+> -    let layout = new_layout.pad_to_align();
+> -
+> -    // Note that `layout.size()` (after padding) is guaranteed to be a multiple of `layout.align()`
+> -    // which together with the slab guarantees means the `krealloc` will return a properly aligned
+> -    // object (see comments in `kmalloc()` for more information).
+> -    let size = layout.size();
+> +    let size = aligned_size(new_layout);
+>  
+>      // SAFETY:
+>      // - `ptr` is either null or a pointer returned from a previous `k{re}alloc()` by the
 
