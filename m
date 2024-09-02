@@ -1,159 +1,123 @@
-Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D7F1D7346D
-	for <rust-for-linux@vger.kernel.org>; Mon,  2 Sep 2024 08:18:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FC7018660A;
+	Mon,  2 Sep 2024 08:33:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725265131; cv=none; b=dksFmmfcS27ssYMBeyGX0g3D5EcA8/GZ1uM1Lks+LO0BTbCeMIUYJz++4u0yVDdP5Wa8g1q0/YR8dPZVcFqwKQqUBbbfR8kdett2hdZw8hoXIoiskEjxsGTi/F4CwkHmSOSzkmqHC4pZ5+1CHCkrhjaav4DwzpqA933I2Rb7SVg=
+	t=1725266009; cv=none; b=uSMgxGlutMulljBFoLImzboEDGzN3nkv5mDq5enkcyycidvr0cgW7pIDZ/++E72kPqpiMrxDFYjBTUP8bHsuy5JJWqkX26/dWkq7FgpMntW95uN53NKGlhc0wXZN1tPwQuoTc9x0GeB86ruiWuEXKNo4O+riiHCExn2dyrVJzkg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725265131; c=relaxed/simple;
-	bh=0XBlDPmNzBYUn+4H02GVn0eXdNtRNCQGIcsW9pKqJeQ=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Iv2+a3aLVUJ2c1D4f/Yxa/fLeiAyYE0HjpGJpwMHYut27jHE1qxlIByZNHOfic9nar61XBBW82rWsZGaQqi5ONZRFN0leyOM04Wt34kxnhYPqdwOtT5xX0XsBSD4rjaALcyuJ8QDFqoTpg2fF0M9N8L8h+2zXD13gl+2+J/DuiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=QIL5s/hq; arc=none smtp.client-ip=185.70.40.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1725266009; c=relaxed/simple;
+	bh=xVjeuEAK/3aM0vsGYPY4dUHOj95o8OgLHPHyeTgQBDc=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=o2CqVj3iyIWYW248ytBCnZbQbftR5bDPqIEUXALHrtA4w0njhq0MXNOn+Rg4XwbueREVP9mFL7bSBZvDGBy3e/QxNdA2Hurkghim94g6X6tPMVJzm9GjcE2675V2oV1DTXKn5BD2ye9XscXeJLGZRCjshnWStyrhuuY5GMYNY6E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dhf0CwZI; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="QIL5s/hq"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1725265121; x=1725524321;
-	bh=S95bxlo27WVbdFZgGK4z8TIsKVubHTnpzo+VgzlMuZo=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=QIL5s/hqHFkPtjZdgkV9OnSHpqiRH2VFoRkzI/Jcep/MComFP1IaOrtijJ7Q6fEL1
-	 LK8g8OrZU5U9kUSLrBa+OauAfQsPollBudgs5BGJ/P+IKD2OOUlWfS90RMQgTuXtQG
-	 vPpF6NJkb1y19sDkygfmr8JEaEBKBHdihcrq/5dJfIPMaJoQysC+X4ZedJ3oXIqQQH
-	 2i6PpU7OeI2yxXyT5ydemEr0aY1Y6zt5OqeC7nfQkt5fnGwb5GoHz3tE/D7bZabvK9
-	 OJxWstWEyQbztpYt4q8pgzRsUje0w2j+R56uJfMQxVjzQYX1tQzI4Lu1YV9ZjDHiwh
-	 /78VNAeCCmUMA==
-Date: Mon, 02 Sep 2024 08:18:37 +0000
-To: Alexey Dobriyan <adobriyan@gmail.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Jens Axboe <axboe@kernel.dk>, Andreas Hindborg <a.hindborg@samsung.com>, Boqun Feng <boqun.feng@gmail.com>, linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH RESEND] block, rust: simplify validate_block_size() function
-Message-ID: <c33ed288-9c83-4d94-b820-e4e457a0426e@proton.me>
-In-Reply-To: <4386823d-d611-44ef-9017-88ddd5e7ba57@p183>
-References: <005b6680-da19-495a-bc99-9ec3f66a5e74@p183> <309bd39a-0c58-472a-9fc8-6fa33d14925a@proton.me> <4386823d-d611-44ef-9017-88ddd5e7ba57@p183>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 2d986a1bd40491f7cd845a826c2b75aa31766403
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dhf0CwZI"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93BD7C4CEC2;
+	Mon,  2 Sep 2024 08:33:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1725266009;
+	bh=xVjeuEAK/3aM0vsGYPY4dUHOj95o8OgLHPHyeTgQBDc=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=dhf0CwZILv2FE3RAkA+PMGNIxZiLaJ/IVq8TExQUefYmf+cEPh741TudQROZG687t
+	 a7/kiWXGQptaaCXFdAu92XYaQbA5/vqeCSw+pj1tecKorXSka3TinTFN49IBcL3Xhq
+	 cOLs4r/ZnCNdW533F8t1rgsNhYCNSa1aTjOfX7FYX0F9DjJzHYr97pKu6Dd3dKqQXf
+	 4JYBaZbbl7lSG5oaNc9m45BpGlTuHDo7c1CXcWIy8wZiIkeOHd/IzS2kkggZJKPnBq
+	 9Ze5OaxyuVA4Vk/pkpu1yLunrB2n+raJNSos3VE+uLS9LusBLX7w8xKjfZ/LqWQgvh
+	 nwFjO0huovE0A==
+From: Christian Brauner <brauner@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Christian Brauner <brauner@kernel.org>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Daniel Xu <dxu@dxuuu.xyz>,
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org,
+	Kees Cook <kees@kernel.org>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	Bjoern Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Arve Hjonnevag <arve@android.com>,
+	Todd Kjos <tkjos@android.com>,
+	Martijn Coenen <maco@android.com>,
+	Joel Fernandes <joel@joelfernandes.org>,
+	Carlos Llamas <cmllamas@google.com>,
+	Suren Baghdasaryan <surenb@google.com>
+Subject: Re: [PATCH v9 0/8] File abstractions needed by Rust Binder
+Date: Mon,  2 Sep 2024 10:33:11 +0200
+Message-ID: <20240902-ofenfrisch-deretwegen-52d00d98ba90@brauner>
+X-Mailer: git-send-email 2.45.2
+In-Reply-To: <20240808-alice-file-v9-0-2cb7b934e0e1@google.com>
+References: <20240808-alice-file-v9-0-2cb7b934e0e1@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2031; i=brauner@kernel.org; h=from:subject:message-id; bh=xVjeuEAK/3aM0vsGYPY4dUHOj95o8OgLHPHyeTgQBDc=; b=owGbwMvMwCU28Zj0gdSKO4sYT6slMaRdrfDYXlD4Pr09UPbZvNiej/kCIrPdvs1qqBPVbef0a ttx1LOio5SFQYyLQVZMkcWh3SRcbjlPxWajTA2YOaxMIEMYuDgFYCLcKgz/A/cKqed7TPqcZLI5 ruUGn1zohQ2R4Vq7rRbv/vDD/s3Nrwz/HV1PMx1hki09fkvb+O++g5c3TnONOTT3v/9qrr4ZdnP PcQMA
+X-Developer-Key: i=brauner@kernel.org; a=openpgp; fpr=4880B8C9BD0E5106FC070F4F7B3C391EFEA93624
+Content-Transfer-Encoding: 8bit
 
-On 01.09.24 21:56, Alexey Dobriyan wrote:
-> On Sat, Aug 31, 2024 at 08:39:45PM +0000, Benno Lossin wrote:
->> On 31.08.24 22:15, Alexey Dobriyan wrote:
->>> two comparisons. Using range doesn't prevent any bugs here because
->>> typing "=3D" in range can be forgotten just as easily as in "<=3D" oper=
-ator.
->>
->> I don't think that using traditional comparisons is an improvement.
->=20
-> They are an improvement, or rather contains() on integers is of dubious
-> value.
->=20
-> First, coding style mandates that there are no whitespace on both sides
-> of "..". This merges all characters into one Perl-like line noise.
+On Thu, 08 Aug 2024 16:15:43 +0000, Alice Ryhl wrote:
+> This patchset contains the file abstractions needed by the Rust
+> implementation of the Binder driver.
+> 
+> Please see the Rust Binder RFC for usage examples:
+> https://lore.kernel.org/rust-for-linux/20231101-rust-binder-v1-0-08ba9197f637@google.com/
+> 
+> Users of "rust: types: add `NotThreadSafe`":
+> 	[PATCH 5/9] rust: file: add `FileDescriptorReservation`
+> 
+> [...]
 
-Can you please provide a link to that coding style? This is the default
-formatting of rustfmt.
-
-> Second, when writing C I've a habit of writing comparisons like numeric
-> line in school which goes from left to right:
->=20
-> =09512 ... size .. PAGE_SIZE   ------> infinity
->=20
-> See?
-> Now it is easy to insert comparisons:
->=20
-> =09512 <=3D size <=3D PAGE_SIZE
->=20
-> Of course in C the middle variable must be duplicated but so what?
->=20
-> How hard is to parse this?
->=20
-> =09512 <=3D size && size <=3D PAGE_SIZE
-
-I would argue that this is just a matter of taste and familiarity. In
-mathematics there are also several other ways to express the above.
-For example $size \in [512, PAGE_SIZE]$.
-
-> And thirdly, to a C/C++ dev, passing u32 by reference instead of by
-> value to a function which obviously doesn't mutate it screams WHAT???
-
-That is because the function is implemented with generics over the type
-inside of the range. So if you have your own type, you can use `..` and
-`..=3D` to create ranges. For big structs you wouldn't use by-value even
-in C and C++.
-
->> When
->> using `contains`, both of the bounds are visible with one look.
->=20
-> Yes, they are within 4 characters of each other 2 of which are
-> whitespace.
->=20
-> This is what this patch is all about: contains() for integers?
-> I can understand contains() instead of strstr() but for integers?
-
-Don't get me wrong, we can have a discussion about this. I just think
-that it is not as clear-cut as you make it out to be.
-
->> When
->> using two comparisons, you have to first parse that they compare the
->> same variable and then look at the bounds.
->=20
-> Yes but now you have to parse () and .. and &.
-
-As I said above, it's a matter of familiarity. I don't think that using
-contains is inherently worse.
-
->>> Also delete few comments of "increment i by 1" variety.
->>
->> As Miguel already said, these are part of the documentation. Do not
->> remove them.
->=20
-> Kernel has its fair share of 1:1 kernel-doc comments which contain
-> exactly zero useful information because everything is in function
-> signature already.
-
-Sure, but in this case, I don't think everything is in the function
-signature.
-
-> This is the original function:
->=20
-> =09/* blk_validate_limits() validates bsize, so drivers don't usually nee=
-d to */
-> =09static inline int blk_validate_block_size(unsigned long bsize)
-> =09{
-> =09        if (bsize < 512 || bsize > PAGE_SIZE || !is_power_of_2(bsize))
-> =09                return -EINVAL;
-> =09        return 0;
-> =09}
->=20
-> I have to say this is useful comment because it refers to another more
-> complex function and hints that it should be used instead. It doesn't
-> reiterate what the function does internally.
->
-> Something was lost in translation.
-
-We currently don't have that function in Rust. Also note that in
-contrast to C, this function is private. So no driver is able to call it
-anyways.
-
-In this case, documentation is not really necessary, as we only require
-it for publicly facing functions. But for those I think it is useful to
-reiterate what the code does. They might be the entrypoint for first
-time kernel developers and giving them an easier time of understanding
-is IMO a good thing.
+Moving this to vfs.rust.file. This won't show up in -next for quite a while
+(until v6.12-rc1 is out).
 
 ---
-Cheers,
-Benno
 
+Applied to the vfs.rust.file branch of the vfs/vfs.git tree.
+Patches in the vfs.rust.file branch should appear in linux-next soon.
+
+Please report any outstanding bugs that were missed during review in a
+new review to the original patch series allowing us to drop it.
+
+It's encouraged to provide Acked-bys and Reviewed-bys even though the
+patch has now been applied. If possible patch trailers will be updated.
+
+Note that commit hashes shown below are subject to change due to rebase,
+trailer updates or similar. If in doubt, please check the listed branch.
+
+tree:   https://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs.git
+branch: vfs.rust.file
+
+[1/8] rust: types: add `NotThreadSafe`
+      https://git.kernel.org/vfs/vfs/c/1fc5fbeff010
+[2/8] rust: task: add `Task::current_raw`
+      https://git.kernel.org/vfs/vfs/c/dff63ff65920
+[3/8] rust: file: add Rust abstraction for `struct file`
+      https://git.kernel.org/vfs/vfs/c/3d52041c524e
+[4/8] rust: cred: add Rust abstraction for `struct cred`
+      https://git.kernel.org/vfs/vfs/c/bd5715551277
+[5/8] rust: security: add abstraction for secctx
+      https://git.kernel.org/vfs/vfs/c/b94bf604a856
+[6/8] rust: file: add `FileDescriptorReservation`
+      https://git.kernel.org/vfs/vfs/c/b7af88a7d25d
+[7/8] rust: file: add `Kuid` wrapper
+      https://git.kernel.org/vfs/vfs/c/73cd06e92529
+[8/8] rust: file: add abstraction for `poll_table`
+      https://git.kernel.org/vfs/vfs/c/891ad53c3c62
