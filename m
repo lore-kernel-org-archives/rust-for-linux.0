@@ -1,43 +1,43 @@
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1F631A4E8D;
-	Mon,  2 Sep 2024 21:38:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC3D0187FEE
+	for <rust-for-linux@vger.kernel.org>; Mon,  2 Sep 2024 22:17:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725313089; cv=none; b=ZeZuPkAcRYsM+muWiszDxNgYZg3QZ1bDi6i9R23ZjHZBanOLgEMJAxp4YU9BCchP0mxLOcP6AXnM6L2w1dxplgrg7jUkcP/pSwL0TeuIPSN2jJh+dhk3erORXftkFSsIglWbKMdR5xF2oPQjtUCveck9zJhTS4n0maQNUtLR4DU=
+	t=1725315428; cv=none; b=juk7UE5ePqyoGxRGAop6MxUBJ7Ea6SSHeHS8sUepy3Pnb2nk6qMrJuDJF+7Yipt8fitvSl5+v9DXkaQE9NUznE9qZ1kth6owcpUs7eRLeSCWXMF1Uh9HCc23EtPWW63W9JRx5oJ4tGZghEFaXXOl/aaJIsM298o/ZfJuEK7wYcM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725313089; c=relaxed/simple;
-	bh=vrpGGX2NQaqB57eYvVx4w0vr9yKpbPl3dneG1r9ulYg=;
+	s=arc-20240116; t=1725315428; c=relaxed/simple;
+	bh=GoZUV7MbGKxynSZJAs4RLzAgBLkhjJMLw+Qx0MG8NqU=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WUkCzlTvrIVgq9Xs0lwtjp+9matpxHgFU4QnRRMd6UwN8gjTZhnMNr5/zAUMr17NCFx6d2c374+TzRzzitGI/w3IAFQy7seUAZTicUVOCUjHBMbxJluHMsze8awf0lOAomvuCVD4xoAnYJB1flLcN66+f0aNMgyzAKzOvl3hV1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=bbi+2nPC; arc=none smtp.client-ip=185.70.43.16
+	 MIME-Version:Content-Type; b=UND6Ns64pldu5K5/yGFJcv8tDvZdg7m3GRbhS6G3dtsfIKVEjyat16i8lnslUifUFFJj++ArnHFjhxc5zvvtSYVzeM37QjGwEOwdht+O2sWLyUc3BGyitz2F5+rGCvArVaPq/OsiOgjMoFq9Ff38cD2fUJ+5OLcipapqylczs1E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=KQU1n7pW; arc=none smtp.client-ip=185.70.43.22
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="bbi+2nPC"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="KQU1n7pW"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1725313078; x=1725572278;
-	bh=vrpGGX2NQaqB57eYvVx4w0vr9yKpbPl3dneG1r9ulYg=;
+	s=kg5d4ngctfdqleapdipdatsrty.protonmail; t=1725315418; x=1725574618;
+	bh=rkU7GkFKBBZdLeXW1ZCyj0xGWBwOQjsIL44iRqw36m8=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=bbi+2nPCJiC7dzW8V7s6DjzmTt/HNKP6qO/dzWIYHqbnS4lpSmw8wCH7pneT2pIE+
-	 te/S8ihHAtqpSzIgwPRsQm6VsinOU08Nn0WKkBS33kZvpcQOk0jzznKpD+iGGZJF35
-	 OKmVmTBnyaM4BaV5OZwMCbparlgeZSqpRiT2krcebKDeUd8CBxuArnGr4AAEko7w1W
-	 r5hSK5bOVP3Pg1TGi3xGg2T0xmDKSTu0GJ5PFRy4lfpiMs1fWh391vkgT/aBWs6BTe
-	 u6uAFFKFo+fjkalNHi9RNvKr3d5jdkA21cGztCurkRdANjRikx+yS/qb2e0KwiYuru
-	 Kg+/xgpKVuZXw==
-Date: Mon, 02 Sep 2024 21:37:53 +0000
+	b=KQU1n7pWn/R1Cps4tWhCR51wQB9JR6VDb3HKRiHGhJm+1JrpuuVj8Ml45xx05FKTM
+	 4xNFDpPn8+52PbOMpEpCqT0WdS2wNA/XxQ9D6q52bmCbcjfp7NWWWFLGMjot/tViM5
+	 0Ndt/Pko7g9NcG/nytB0OPWbguNutmw/sr7ibhCnCv59sTy8Hal70RDVXywa6WdC6R
+	 Vb9J1XXgy0fkkK2rtVpaog6EhpO3xnCXx/8jxQa2uNsoLwe9vu5TpycdOpmkEZSwdu
+	 fjkqMUm51FtMeX7CIdK5GY3HEY+zcWV5VBdL2eqdMiinOps9PSKUzQDmrOf+hx3apS
+	 pWfCCatUgL08Q==
+Date: Mon, 02 Sep 2024 22:16:53 +0000
 To: Alice Ryhl <aliceryhl@google.com>
 From: Benno Lossin <benno.lossin@proton.me>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 Subject: Re: [PATCH v2] rust: add global lock support
-Message-ID: <8bcd10eb-97ac-4dbf-b59b-b7f12c4e24c6@proton.me>
-In-Reply-To: <CAH5fLggE-fWDuZXH_F3ixDSo7sQEFwnUV3cd+9_rpFH+XmnA2Q@mail.gmail.com>
-References: <20240827-static-mutex-v2-1-17fc32b20332@google.com> <10453342-d269-4b78-8962-821ef53d3cb5@proton.me> <CAH5fLgh-DYvXobXQVaQ9txYS4Rx8QhjyVvfTphk6vvnUOGzPnw@mail.gmail.com> <3b557f61-cead-4568-b2b4-4a56c4cbff52@proton.me> <CAH5fLggE-fWDuZXH_F3ixDSo7sQEFwnUV3cd+9_rpFH+XmnA2Q@mail.gmail.com>
+Message-ID: <0030a292-49f4-4575-846f-424b098c7f1a@proton.me>
+In-Reply-To: <CAH5fLgiZt3uVZiU1xXPcvYNR-Em2V3y+-C9EbsqrNvkScbiAYA@mail.gmail.com>
+References: <20240827-static-mutex-v2-1-17fc32b20332@google.com> <10453342-d269-4b78-8962-821ef53d3cb5@proton.me> <CAH5fLgh-DYvXobXQVaQ9txYS4Rx8QhjyVvfTphk6vvnUOGzPnw@mail.gmail.com> <3b557f61-cead-4568-b2b4-4a56c4cbff52@proton.me> <CAH5fLggE-fWDuZXH_F3ixDSo7sQEFwnUV3cd+9_rpFH+XmnA2Q@mail.gmail.com> <CAH5fLgiZt3uVZiU1xXPcvYNR-Em2V3y+-C9EbsqrNvkScbiAYA@mail.gmail.com>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: ca9e744c05ead387e4ea040278402994b57024f5
+X-Pm-Message-ID: 46805cf17ac8bb15ea0c3908e21dc9e2229b3150
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,38 +47,61 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On 02.09.24 13:37, Alice Ryhl wrote:
-> On Fri, Aug 30, 2024 at 3:22=E2=80=AFPM Benno Lossin <benno.lossin@proton=
-.me> wrote:
+On 02.09.24 13:42, Alice Ryhl wrote:
+> On Mon, Sep 2, 2024 at 1:37=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> =
+wrote:
 >>
->> On 30.08.24 07:34, Alice Ryhl wrote:
->>> On Thu, Aug 29, 2024 at 8:17=E2=80=AFPM Benno Lossin <benno.lossin@prot=
-on.me> wrote:
->>>>
->>>> On 27.08.24 10:41, Alice Ryhl wrote:
->>>>> We don't currently have any support for global locks in Rust, however
->>>>> they are very useful and I have needed to work around this limitation
->>>>> several times. My workarounds generally involve initializing the mute=
-x
->>>>> in the module's init function, and this workaround is reflected here.
->>>>
->>>> I would not exactly call this a "workaround". If your use-case is
->>>> covered by putting a `Mutex`, then I would prefer it. Or did you need
->>>> additional ugly code to access it?
+>> On Fri, Aug 30, 2024 at 3:22=E2=80=AFPM Benno Lossin <benno.lossin@proto=
+n.me> wrote:
 >>>
->>> Not sure what you mean by "putting a Mutex" but the workaround is
+>>> On 30.08.24 07:34, Alice Ryhl wrote:
+>>>> On Thu, Aug 29, 2024 at 8:17=E2=80=AFPM Benno Lossin <benno.lossin@pro=
+ton.me> wrote:
+>>>>>
+>>>>> On 27.08.24 10:41, Alice Ryhl wrote:
+>>>>>> For architectures that don't use all-zeros for the unlocked case, we
+>>>>>> will most likely have to hard-code the correct representation on the
+>>>>>> Rust side.
+>>>>>
+>>>>> You mean in `unsafe_const_init`?
+>>>>
+>>>> No, I mean we would have `unsafe_const_new` directly set `state` to
+>>>> the right value and let `unsafe_const_init` be a no-op.
+>>>
+>>> But how do you set the right value of a list_head? The value will be
+>>> moved.
 >>
->> Oh sorry, seems like I forgot to write the rest of that... Let me try
->> again: If your use-case is covered by putting a `Mutex` inside of the
->> type that implements `Module`, then I think you should do that instead
->> of using a global. (you need the inplace module patch for that)
+>> Right ... we probably can't get around needing a macro. Can statics
+>> even reference themselves?
 >=20
-> I don't think it's possible to access the `Module` struct after `init`
-> returns? Even with in-place init.
+> Looks like they can:
+>=20
+> use std::ptr::addr_of;
+>=20
+> struct MyStruct {
+>     ptr: *const MyStruct,
+> }
+>=20
+> static mut MY_STRUCT: MyStruct =3D MyStruct {
+>     ptr: addr_of!(MY_STRUCT),
+> };
 
-Oh I see... Maybe if you create it inside of an `Arc` or `Box` and then
-pass it to something inside of your module that will then be called by
-some other mechanism?
+That's useful to know...
+But I don't see a way to get pinned-init to work with this. I would need
+a lot of currently experimental features (const closures, const traits)
+and a way to initialize a static without providing a direct value, since
+I can't just do
+
+    static mut MY_STRUCT: MyStruct =3D {
+        unsafe { __pinned_init(addr_of_mut!(MY_STRUCT), /* initializer */) =
+};
+        unsafe { addr_of!(MY_STRUCT).read() }
+    };
+
+It (rightfully) complains that I am initializing the static with itself.
+
+We /might/ be able to do something special for `Mutex`/ other locks, but
+I haven't tried yet. So the unsafe approach seems the best at the moment.
 
 ---
 Cheers,
