@@ -1,55 +1,55 @@
-Received: from mail-wr1-f41.google.com (mail-wr1-f41.google.com [209.85.221.41])
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7B2A17E46E
-	for <rust-for-linux@vger.kernel.org>; Mon,  2 Sep 2024 10:47:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9800D195
+	for <rust-for-linux@vger.kernel.org>; Mon,  2 Sep 2024 11:38:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725274029; cv=none; b=WXFofBPInaW1JyadRecjS5h2J4zzaLaE56Gnc3zbXHof1YXJFpdgwN3QGdrCShBdyRwFNNmJSXAXvh8MKy3omYNim6q6b1yp8ZFfSwLMhIXOAfYIw0cG6s5Q20S9ckGIyeyEsZCF4mGA3+OjgTsaem+r+3exTrZnwac0yzNvA4A=
+	t=1725277084; cv=none; b=ia2WIiH7PYs7gk33rZ/C+aR70UxY1lF0EHzBG7cPc+cdN6el4ne5Qg4Q/7/I1W3lhkpfHX5Ank7tMJuH6jbPaD2n02zc2g2RUq8vhPCxc6OVflbM4PC0CPGjV2HuA+y58b3aalkMV+DjyyLLNmPd2tQteNWXeSfG1MX3FdY3boQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725274029; c=relaxed/simple;
-	bh=tDah0EiX2QJRFB9Cf/8cXLOBVOtbqSnLW1c0fNSrnDM=;
+	s=arc-20240116; t=1725277084; c=relaxed/simple;
+	bh=wfYLkE7LiT2/yG0ACwTF9nSTVgljXntTYZQ8PpUr5V4=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=R91uVyw4wUxktnlxHTQJ+98J6Md3R2gsoy8A+7RAmbIF6OSarlrOKzU753JoYzP98C/wPC+Ly1nyFufRm+ybLdWoh2r5aru/nm0zq4Rf30daqmlAa/V37H3JsB+Gv/zMeyLAYfv2+K4PNcRGZ8uyKBya001iBXTHfWT4lT/3oDo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=rUwEktDk; arc=none smtp.client-ip=209.85.221.41
+	 To:Cc:Content-Type; b=I5ZwaauHNI7q5zcctwDx6fG2VDg47Dj/yrWXEbPpxpXepAbHC+diDZTqO8pJe3ehnEonF9eSgZOQdb17G4Zc12ElI3pshW04vYZqMJNxY9MDJlRMOGMvYgw+iEks251TUKNz5qlQ6HjBL0SX5Tkqy9ymAHLuZQNYH0VZkEMVF+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=2tkXezNN; arc=none smtp.client-ip=209.85.128.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="rUwEktDk"
-Received: by mail-wr1-f41.google.com with SMTP id ffacd0b85a97d-374c962e5adso493091f8f.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 02 Sep 2024 03:47:07 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="2tkXezNN"
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-427fc97a88cso34624935e9.0
+        for <rust-for-linux@vger.kernel.org>; Mon, 02 Sep 2024 04:38:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1725274026; x=1725878826; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1725277081; x=1725881881; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=tDah0EiX2QJRFB9Cf/8cXLOBVOtbqSnLW1c0fNSrnDM=;
-        b=rUwEktDkHulBV0pS1DHhAdkq8vI1nvHYkJ1ftcseHEsnTQveiPA3IqFqGegCqS9svB
-         ffW6HUGwmu7BVrrKNf5Lke0vwNb7T/lb7ulE+7I0I8+ypdoJ1ilFZrCgKlS3ELfIy5yM
-         Ut5CnNxmdE8GIQShI4LdG8Arv9GtH+1eXUMQwrOgrvk0pe550SpQ93jr0PZQY3ScskOa
-         FKmJfZNDzFuWlwIFzkip4J0Q3EJIjiEI/VKeb9SGBhUrsKj56Buv7PLA5q4RTYdf23BU
-         ONC69c+8zZFoLVvgqeVc/ZWnINKgXyBBvaPIkNNrYMxZb163HXlIQbBRB7+40+T0EosJ
-         vvfg==
+        bh=qZa//9wOk7FNHzhYJJB1CStsOJGcgeuFsi3tmo4wxzg=;
+        b=2tkXezNNRDWCsnJOJBt268cZXMNvMqxAr6d3aD4j3IWCNzQ9bXANFaChw1QZ53eF5R
+         ZaP29KkF8ujJkczT7x+9A7xpY/m7aCDJx/prTBJhBcrZFRH9cQ1DOcICKu4dQ+IR5ky7
+         aR+T01nbSN7TU0aRr3K/vEWEttnYdUleTigvWrdto8X7c2QxJWF0Y95Izb4V0tzigbeY
+         Uwutr5dojdhFzzUu4+9KJV5lWL5L6trvPj2Hie7bxOWgbLvy2Q4HEGfta3NUdh8a2107
+         W5nFSUY7y/XZDh+ZZTxmvcqQ9M+7q0gibF2Os39LSCmR2U65A5nXCoIp8yuTAQayOvhN
+         9t3g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725274026; x=1725878826;
+        d=1e100.net; s=20230601; t=1725277081; x=1725881881;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=tDah0EiX2QJRFB9Cf/8cXLOBVOtbqSnLW1c0fNSrnDM=;
-        b=skHw3E97APvJjzWD/sQ38WVSqya9oVlrDofoaMbtJ6r/pM7D/ch0ZheUtxx0EyJzHl
-         c0Ff7sE7WrsBvou1R7CTTwW09uM3SWvthiGet9G+1MLVYClUHKXmoKA0oIAfpBdpQ3u6
-         6zqPJYAiv2t+dclvepLhQJH8373nLbN1US5f8QJJ3wo2/vQE+QxrB0/tCUEpdK4sGHV2
-         EPBosUpu8cU8V1mELhdqPuad1uarUxTO4tBFmxJrPfuYJ0A2NrSJUJWZIBJJ5H3Qmra4
-         vSn5WwCpnUfrKRad/hJj4JUkDKOw++tVMfhLq66IFLNEcQTEXjbqE3Bw8IKwUPMPVBCJ
-         TvEg==
-X-Forwarded-Encrypted: i=1; AJvYcCWHrv0JiXNmwPHNDIldz5wI2LbEMG3LF6OPnYpe7V4TgmlLRoefxPjrUWOXNq9dIWXkzX2EZ6h0M8Qck8IMJw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwGVAn3w2l7ZW+zw0Gib5vh6X1O5TZbgmYccL9sJQYYVhvzAlrW
-	HK/YQ5gwbycBftckcoJxllsKepM8yknmCvDS0SKUvGwpto9329J9F8c/fr6rJe/D4b+kkKmN0uP
-	P2h0S/HVIVsk/3z8LTnRimvB86gjUbaC6aDXg
-X-Google-Smtp-Source: AGHT+IHIqV4yykcuSDh8/L9j2xuNA7UB6o306ceirl6YASbGc8rNGJOeqVEHOSBb9wDUJJnEZZEv+Rd0P/hFLHw6zjc=
-X-Received: by 2002:adf:b31a:0:b0:374:c618:7fd2 with SMTP id
- ffacd0b85a97d-374c6188127mr2867899f8f.8.1725274025625; Mon, 02 Sep 2024
- 03:47:05 -0700 (PDT)
+        bh=qZa//9wOk7FNHzhYJJB1CStsOJGcgeuFsi3tmo4wxzg=;
+        b=MlwG3vvu20D93X6K1dGmdA2wrrTH3P3vHYvb3zEgmipMGj3mhnOIzCiPdRpbl3q6XN
+         HAX+N72JAgPKtxq+JgeRsB/1jp5lD9zYcW7/fLiPmKNh/h1ZIWc8QkUg1cdEpC9T3f03
+         QJw5qaS6FnHFk6u9J98vY4ywnWX3xs9yStHnde6mkfSoH9HW5ZjMVlrR0E36OQvb0WEU
+         ESuaZTugMPYGy4ctEW3hUNBw3wurKiDowedukCoofgfx4p9CDvJVNmQ2tqktxIlOH6PB
+         vIb6fBDtLwew3gyGDeggT4cLZ8C+Und5vsOmp5pUgPLkA22EeKvKPcqHtkqgfEr/aFqw
+         ArOg==
+X-Forwarded-Encrypted: i=1; AJvYcCVQ1d/Pk4r1OmMtBjWAQQRaL3CtjI7hVBhOdu+KGiXh3vLCRPzLR1tCLRLaoveK7Ld2meCJYGpNs/ag4ju48g==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxDkpes+Mo9iyKidSsc4XrMYgOpnwqe4qf5+OHphZMD6Pxon+JN
+	S+Gb6fY0nJw+GtoDUtIMvSEJ+GT4BtrJYuJUBxhYpjM6IdRTTs93sv6uC5RwbTpoShe6o8ryMQ5
+	d2mzclEXaFnCyGRxqgBvyjvfhXVvTtVpnK+zZ
+X-Google-Smtp-Source: AGHT+IH+c7G02pXmLKTzR0kKMvFbDOPx96p4Ph3YDBnUHvKXyRrD2ca/MkZ04xl3PU+KbAesdHq3bK9M3Phb0OivgCU=
+X-Received: by 2002:a05:600c:4f53:b0:426:55a3:71af with SMTP id
+ 5b1f17b1804b1-42c82f6cf51mr21024445e9.33.1725277080540; Mon, 02 Sep 2024
+ 04:38:00 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -58,57 +58,268 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20240827-static-mutex-v2-1-17fc32b20332@google.com>
  <10453342-d269-4b78-8962-821ef53d3cb5@proton.me> <CAH5fLgh-DYvXobXQVaQ9txYS4Rx8QhjyVvfTphk6vvnUOGzPnw@mail.gmail.com>
- <20240830160953.768e38c2@eugeo>
-In-Reply-To: <20240830160953.768e38c2@eugeo>
+ <3b557f61-cead-4568-b2b4-4a56c4cbff52@proton.me>
+In-Reply-To: <3b557f61-cead-4568-b2b4-4a56c4cbff52@proton.me>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 2 Sep 2024 12:46:53 +0200
-Message-ID: <CAH5fLgjasg1UKyF84f-6dnzGZMKgjgZ6n7e+bL7nWkJoYBsSyA@mail.gmail.com>
+Date: Mon, 2 Sep 2024 13:37:48 +0200
+Message-ID: <CAH5fLggE-fWDuZXH_F3ixDSo7sQEFwnUV3cd+9_rpFH+XmnA2Q@mail.gmail.com>
 Subject: Re: [PATCH v2] rust: add global lock support
-To: Gary Guo <gary@garyguo.net>
-Cc: Benno Lossin <benno.lossin@proton.me>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Andreas Hindborg <a.hindborg@samsung.com>, rust-for-linux@vger.kernel.org, 
 	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Aug 30, 2024 at 5:10=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
+On Fri, Aug 30, 2024 at 3:22=E2=80=AFPM Benno Lossin <benno.lossin@proton.m=
+e> wrote:
 >
-> On Fri, 30 Aug 2024 07:34:00 +0200
-> Alice Ryhl <aliceryhl@google.com> wrote:
+> On 30.08.24 07:34, Alice Ryhl wrote:
+> > On Thu, Aug 29, 2024 at 8:17=E2=80=AFPM Benno Lossin <benno.lossin@prot=
+on.me> wrote:
+> >>
+> >> On 27.08.24 10:41, Alice Ryhl wrote:
+> >>> We don't currently have any support for global locks in Rust, however
+> >>> they are very useful and I have needed to work around this limitation
+> >>> several times. My workarounds generally involve initializing the mute=
+x
+> >>> in the module's init function, and this workaround is reflected here.
+> >>
+> >> I would not exactly call this a "workaround". If your use-case is
+> >> covered by putting a `Mutex`, then I would prefer it. Or did you need
+> >> additional ugly code to access it?
+> >
+> > Not sure what you mean by "putting a Mutex" but the workaround is
 >
-> > > > Due to the initialization requirement, constructing a global mutex =
-is
-> > > > unsafe with the current approach. In the future, it would be really=
- nice
-> > > > to support global mutexes that don't need to be initialized, which =
-would
-> > > > make them safe. Unfortunately, this is not possible today because
-> > > > bindgen refuses to expose __ARCH_SPIN_LOCK_UNLOCKED to Rust as a
-> > > > compile-time constant. It just generates an `extern "C"` global
-> > > > reference instead.
-> > >
-> > > Ideally, we would have support for static initialization in pinned-in=
-it.
+> Oh sorry, seems like I forgot to write the rest of that... Let me try
+> again: If your use-case is covered by putting a `Mutex` inside of the
+> type that implements `Module`, then I think you should do that instead
+> of using a global. (you need the inplace module patch for that)
+
+I don't think it's possible to access the `Module` struct after `init`
+returns? Even with in-place init.
+
+> > really gross and involves defining a whole struct to make types Sync
+> > and so on. Unlike binder, this patch has access to private fields of
+> > Lock, so it can do it in a more nice way. You can find it in the
+> > Binder RFC if you search for "context_global".
+> > https://lore.kernel.org/rust-for-linux/20231101-rust-binder-v1-2-08ba91=
+97f637@google.com/#Z31drivers:android:context.rs
+>
+> Oh I remember this... Yeah I agree that is ugly, but it is not the
+> workaround that I imagined when you wrote "initializing the mutex in the
+> module's init function". There I was thinking of what I wrote above.
+>
+> This might just be me misunderstanding that, but if you want to improve
+> it, then you could mention that the mutex is still a static.
+>
+> >>> Due to the initialization requirement, constructing a global mutex is
+> >>> unsafe with the current approach. In the future, it would be really n=
+ice
+> >>> to support global mutexes that don't need to be initialized, which wo=
+uld
+> >>> make them safe. Unfortunately, this is not possible today because
+> >>> bindgen refuses to expose __ARCH_SPIN_LOCK_UNLOCKED to Rust as a
+> >>> compile-time constant. It just generates an `extern "C"` global
+> >>> reference instead.
+> >>
+> >> Ideally, we would have support for static initialization in pinned-ini=
+t.
 > >
 > > I don't think traits work with const today, so pin-init would need an
 > > entirely different mechanism? If you're talking about using
+>
+> Oh yeah I forgot that that got scratched some time ago.
+>
 > > CONSTRUCTORS, then I think it's an undesirable solution. C code can
+>
+> No, I was thinking that the initializer is run at const eval and then
+> the result is put into the binary.
+>
 > > define static mutexes without load-time initialization hooks. We
 > > should be able to do the same.
 >
-> I think I actually prefer using constructors to unsafe.
+> Agreed.
+>
+> >>> On most architectures, we could initialize the lock to just contain a=
+ll
+> >>> zeros. A possible improvement would be to create a Kconfig constant
+> >>> that is set whenever the current architecture uses all zeros for the
+> >>> initializer and have `unsafe_const_init` be a no-op on those
+> >>> architectures. We could also provide a safe const initializer that is
+> >>> only available when that Kconfig option is set.
+> >>
+> >> I am not sure if the two branches (depending on the config) will be a
+> >> good idea. We don't save on `unsafe` and only increase code complexity=
+.
+> >> The no-op sounds like a better idea to me.
+> >
+> > You mean put the logic here instead in the downstream user? I agree.
+>
+> I meant that
+>
+>     #[cfg(ZERO_LOCK_INIT)]
+>     static MY_MUTEX: Mutex<()> =3D Mutex::new_zeroed();
+>
+>     #[cfg(not(ZERO_LOCK_INIT))]
+>     // SAFETY: ...
+>     static MY_MUTEX: Mutex<()> =3D unsafe { Mutex::unsafe_const_new() };
+>
+>
+>     module_init() {
+>         #[cfg(not(ZERO_LOCK_INIT))]
+>         {
+>             // SAFETY: ...
+>             unsafe { MY_MUTEX.unsafe_const_init() };
+>         }
+>     }
+>
+> is significantly worse compared to just
+>
+>     // SAFETY: ...
+>     static MY_MUTEX: Mutex<()> =3D unsafe { Mutex::unsafe_const_new() };
+>
+>
+>     module_init() {
+>         // SAFETY: ...
+>         unsafe { MY_MUTEX.unsafe_const_init() };
+>         //                ^^^^^^^^^^^^^^^^^
+>         //                if ZERO_LOCK_INIT, then this is a no-op.
+>     }
 
-Constructors are used pretty rarely. They're not enabled in the
-Android build right now at all. I could ask to enable the option, but
-I think "global mutexes" are a rather weak reason.
+Agree.
 
-I also think they're a can of worms safety-wise. You can't run
-arbitrary code in them since otherwise one constructor could use
-another global before it gets initialized, so we will still need
-global-mutex/spinlock-specific functionality even with constructors.
-At that point, I think it would be better to just strive for real
-const mutexes.
+> >>> For architectures that don't use all-zeros for the unlocked case, we
+> >>> will most likely have to hard-code the correct representation on the
+> >>> Rust side.
+> >>
+> >> You mean in `unsafe_const_init`?
+> >
+> > No, I mean we would have `unsafe_const_new` directly set `state` to
+> > the right value and let `unsafe_const_init` be a no-op.
+>
+> But how do you set the right value of a list_head? The value will be
+> moved.
+
+Right ... we probably can't get around needing a macro. Can statics
+even reference themselves?
+
+> >>> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> >>> ---
+> >>> Changes in v2:
+> >>> - Require `self: Pin<&Self>` and recommend `Pin::static_ref`.
+> >>> - Other doc improvements including new example.
+> >>> - Link to v1: https://lore.kernel.org/r/20240826-static-mutex-v1-1-a1=
+4ee71561f3@google.com
+> >>> ---
+> >>>  rust/kernel/sync/lock.rs | 64 ++++++++++++++++++++++++++++++++++++++=
++++++++++-
+> >>>  1 file changed, 63 insertions(+), 1 deletion(-)
+> >>>
+> >>> diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
+> >>> index f6c34ca4d819..cfc5e160d78c 100644
+> >>> --- a/rust/kernel/sync/lock.rs
+> >>> +++ b/rust/kernel/sync/lock.rs
+> >>> @@ -7,7 +7,7 @@
+> >>>
+> >>>  use super::LockClassKey;
+> >>>  use crate::{init::PinInit, pin_init, str::CStr, types::Opaque, types=
+::ScopeGuard};
+> >>> -use core::{cell::UnsafeCell, marker::PhantomData, marker::PhantomPin=
+ned};
+> >>> +use core::{cell::UnsafeCell, marker::PhantomData, marker::PhantomPin=
+ned, pin::Pin};
+> >>>  use macros::pin_data;
+> >>>
+> >>>  pub mod mutex;
+> >>> @@ -117,6 +117,68 @@ pub fn new(t: T, name: &'static CStr, key: &'sta=
+tic LockClassKey) -> impl PinIni
+> >>>              }),
+> >>>          })
+> >>>      }
+> >>> +
+> >>> +    /// Create a global lock that has not yet been initialized.
+> >>> +    ///
+> >>
+> >> Could you add a paragraph that explains that
+> >
+> > Explains that what?
+>
+> ... this is not the usual way to create a `Lock`, use this only when
+> creating a global, `static` lock. For all other purposes, use
+> `new_<lock-type>`.
+
+Ok.
+
+> >>> +    /// Since global locks is not yet fully supported, this method i=
+mplements global locks by
+> >>> +    /// requiring you to initialize them before you start using it. =
+Usually this is best done in
+> >>> +    /// the module's init function.
+> >>> +    ///
+> >>> +    /// # Examples
+> >>> +    ///
+> >>
+> >> I would preface this example with "Instead of [`Mutex<T>`], you can us=
+e
+> >> any other lock.".
+> >
+> > I don't love that wording. How about something along these lines?
+> > "This example uses a Mutex, but this works with any other lock
+> > including spin locks."
+>
+> Sure.
+>
+> >>> +    /// ```
+> >>> +    /// use kernel::sync::Mutex;
+> >>> +    ///
+> >>> +    /// // SAFETY: We initialize the mutex before first use.
+> >>> +    /// static MY_MUTEX: Mutex<()> =3D unsafe { Mutex::unsafe_const_=
+new(()) };
+> >>> +    ///
+> >>> +    /// // For the sake of this example, assume that this is the mod=
+ule initializer.
+> >>
+> >> Why not actually provide a module initializer?
+> >
+> > Can I put a `module!` macro inside a kunit test? I assumed that I could=
+n't.
+>
+> I think if you wrap it in another `mod`, then it should work, but I
+> might be wrong.
+
+I guess I can implement the Module trait without using the module! macro.
+
+> >>> +    ///             .unsafe_const_init(kernel::c_str!("MY_MUTEX"), k=
+ernel::static_lock_class!())
+> >>> +    ///     };
+> >>> +    /// }
+> >>> +    /// ```
+> >>> +    ///
+> >>> +    /// # Safety
+> >>> +    ///
+> >>> +    /// You must call [`unsafe_const_init`] before calling any other=
+ method on this lock.
+> >>> +    ///
+> >>> +    /// [`unsafe_const_init`]: Self::unsafe_const_init
+> >>> +    pub const unsafe fn unsafe_const_new(t: T) -> Self {
+> >>
+> >> I am not sure on this name, I don't think we have any functions with
+> >> `unsafe` in it (and `std` also doesn't). How about `new_uninitialized`=
+?
+> >>
+> >> Although that might be confusing, since it does actually take a value.=
+..
+> >
+> > Hmm. Any other ideas? const_new_need_manual_init?
+>
+> Hmm that seems too long... `new_static_uninit`? I don't think that
+> `const` belongs in the name either, since you wouldn't use it in a
+> `const` (but sure it is used in const contexts, but I find putting it in
+> the name confusing).
+
+Works for me.
 
 Alice
