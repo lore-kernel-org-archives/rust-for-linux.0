@@ -1,112 +1,83 @@
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+Received: from mail-pf1-f169.google.com (mail-pf1-f169.google.com [209.85.210.169])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A8EF179654;
-	Mon,  2 Sep 2024 09:39:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E2AD1D0DDE;
+	Mon,  2 Sep 2024 09:43:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725269960; cv=none; b=Um+zaHECmc14bqYBvx7BQXoA/Q3vjF7PVIauWTpBYjvFyBbxSrrCt+1b0k5zgVvLCJMCWgnVpcFtNxAZExQOqcLrVCJSkn7G2YjMMJ4fttIdT5cnK0JlHx8cnFNtXvj509taGW6ByrnAb0nKHbwvuCE+6TmKqV7Hv47gOUkff3s=
+	t=1725270199; cv=none; b=tCxacNc/+JisWHDCvlRwPG+oP7wwVuruhgWp3dohC2Bb/CMjzBUFgGWBBR1ZRApM4gKOoDO238yBxUX9AbminKxQNvWp3g8IJZnx4/pp5Obl0XW5jnrVdML+rNXdHft2ekufY/BW2I/8UdKVr9o+6MAQZOWJt9F/Ci/XEaaXqIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725269960; c=relaxed/simple;
-	bh=hhmxC5V+xiBOTO2E3bd+btwjZNOIpNmkQwWHtizS5mc=;
+	s=arc-20240116; t=1725270199; c=relaxed/simple;
+	bh=zhNulfH3n14fOn2JNuL8z+IAWX0T+nyB/inh1k7rzk8=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iyEioEoJckFy2kar6qniUJ36byhIlW1jwhO2MI8GqPxwlmriyaOyM3VOcDpOkM//icAG3TaZsCAZGo8cMBDofdGI8MXFe4UqV7Trp+GCkkSN9hBO+Mhwuk88kqcZmMLuNS32r9FM3uIxaXFZD2SKZbFnhRpp9p9Nra3Eg9XnU5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JCW9UIPU; arc=none smtp.client-ip=209.85.210.176
+	 To:Cc:Content-Type; b=t5kMUoUXIkt8UtUS6s0md3sJUSs2jzrHmPVmftS6qytkHn8uOwkhBOlQqTIj/cylbWvFxwEI4Qr4IR2eco7FLuwYK0lk3qlKtaDuXukk45MQaEpql3slMZMTHE0UpRnpo+oxUzgydw+c+44DkT6MTtJifIVuAbSo5+TtKU/6DLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=WA7Yzl5h; arc=none smtp.client-ip=209.85.210.169
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JCW9UIPU"
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-714269f312fso409536b3a.3;
-        Mon, 02 Sep 2024 02:39:18 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="WA7Yzl5h"
+Received: by mail-pf1-f169.google.com with SMTP id d2e1a72fcca58-71446767885so482786b3a.1;
+        Mon, 02 Sep 2024 02:43:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1725269958; x=1725874758; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1725270197; x=1725874997; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=azTCUX5p5rbJLOuNQLdb2F4kxD0kEsoshFDFHg0ws+w=;
-        b=JCW9UIPUiZD2nYmxET6hgXQFEEwNkW5eKSlEAfn3mFHv90HtryimlXh0Q9uElRTJK1
-         K4EU9UGxw61Dydfvv7UI7uNZ4LsBRtqV6gTHUOr5CyHXgSHqhSp0+r79JP6FkrXNtdB0
-         yQtf0OSb1Y8s8fHZkGYhASU2hYPgNmEJK1JMK6i+m31f3EZr9Y6x2Oxqiq3scQrlb+Kp
-         dVoMaxtnisAv2Iu7rQ51UePLbBXhVUFUuCZpnFpM86nuG1NRuTiebnGBXGp/QKVEuJKo
-         kxYEe1BxtFOlcQg/Im7qnqDhHs7e1gk9aHJUkKfuLrzVF9XfWmEsxXz3TE6i4KjWfheD
-         vS+Q==
+        bh=zhNulfH3n14fOn2JNuL8z+IAWX0T+nyB/inh1k7rzk8=;
+        b=WA7Yzl5hAY9dqH0twbDCZ+0em6+4x3DcjRHvC6YNG2mY+jVkojHIKknZAm0BqAjGO1
+         2+gadKO9IiEJzY6PktLN9M5VHbs3xuZqgSDulM/ZEaNA7gEj1qeysoPRaGZO6Y73pFq3
+         NSUYcnZpVIpSeTMZx8TktqfvMfSKYl/IVOdUHvs85DKqaarhu9iyc5gzCGARs04mSwwZ
+         joWIlNIDeozaaQuFCbC8WIxKBeNF1j8Qr998zVF7SsVTT7v+ph1D1snd0JNLNy7El3kz
+         5M6M0PhmjiizfmMcETwlsr2jNhsQy3ikeJHAqal2g4hA0dx3nO6KqqI954ANOqsiXFnw
+         qJNg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725269958; x=1725874758;
+        d=1e100.net; s=20230601; t=1725270197; x=1725874997;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=azTCUX5p5rbJLOuNQLdb2F4kxD0kEsoshFDFHg0ws+w=;
-        b=aXK2gJQDdlRuYLG02OHLtUPHBgBxMXMOQYCMD6v4PaEBUYB9i2RItIeZzOpz+SszSs
-         GPgyW0QFwSILZgn5K6zxSmc8lHEoABrrSdBjEAbL+E/paqP/LGI92txjwi55cRMBYxoc
-         YZX7VaUY4M8kjhUMyCZP+Ff2ld866fnHOfKUqMfeCnGCThjT2z5YPSZkFoAZ7sdBWABF
-         nVUmT+y4F74AncM1e6UfNqswkCVPuePB1LDbkIS87hD4+2E4/ptr36YA/8zSyc8VfapQ
-         oMAedyDc/Scurkq0G1k3rxMWC2drdb55XWCUx4DLOb63cpBRyk7w21zN0URR/l26vo8N
-         TrlA==
-X-Forwarded-Encrypted: i=1; AJvYcCWdo4qg+lNEjQgXYkIMOkMyYxhFC0coy+4sOjekVJYgYu/T4E0eDPgjIlJ2+Wyr7jzEPBEcPTk8A42dYSw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy0/hOoL24wkZSKgsZmPDq2B7SxHSkMjTePVg2dVPg+2PZIrion
-	RRImT+NW5+dr4G4/nnPWKi9VNCPraDCw675NrFjnmGSOKJn/5IunVivWRaqXdJmtTq5ZnvnGJsb
-	FdLNDMTla69bAsw9XKPI8Qg5FcNE=
-X-Google-Smtp-Source: AGHT+IE09aP3/PULrOr/3mspUu7EwweMDnAHsWHrWM+0cuo10MQ7uqoW9DZJly+8THAsl1b0u0ZQ0X+rv+9WVzbk90I=
-X-Received: by 2002:a05:6a20:4327:b0:1c6:ecf5:4418 with SMTP id
- adf61e73a8af0-1ccee501d0bmr6201698637.4.1725269957610; Mon, 02 Sep 2024
- 02:39:17 -0700 (PDT)
+        bh=zhNulfH3n14fOn2JNuL8z+IAWX0T+nyB/inh1k7rzk8=;
+        b=HepQMztuFkd2CqkJeroLl9RTdGKLK4xJBcfESytqiJiBMycLqDF7JOqVpxQCvegDul
+         q4Ng3UYiAclgBiTg3qmF380DSiEUGFGVwUNmtL2/x+o7B9dt8sDs70aAmESDhswsNlB6
+         zsMb2TPhr3XTIkSHFPdeSiueSFFajpMUVZAAfX0wR5EGTan2UF9nSOjHwWfGGbZa4agH
+         HAb9RW59YZ4gsz3HGl8Ok9Vop4H1o35eAFIdcHIXLNo2TRBaZuvtjJhE2iOnTITC1wqq
+         Kc8q6fd2Y7MsX+vlBwlcgfbZ8SPFQv+oP/6+bFyKCy/kg9GZrMCY+gsPNalKfBXP+e7O
+         s0Bg==
+X-Forwarded-Encrypted: i=1; AJvYcCX2PIIKMC8pjWFqIRQ17MnvQJc6YdIrxISEnDjOFhzzQLVxQ5cuR9JemkIwnm0apX8szQ7m96cia9Ai4Z0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzklVQAd3W6f/Cvh94vtlvto0OcEaRcYRhvuOUdUmflBlWLDt4Z
+	Oi85CBZe64AyuinKYYMBiYOkUoy4oLJKwISmLhiUR0YYB5opKxaceutx07kVP+WGA/CLUl8UHkw
+	w39LXOAfPcI+qpbhoaecj0iyBRN50mN8L
+X-Google-Smtp-Source: AGHT+IGlB+lEw6yJBKm4oVc4gGZmqwkZTrNL4hcgi7QWLNM1GhPkqBPyaA47DL12j+P/wMgG1SA7SHZrN/XXeuPoenw=
+X-Received: by 2002:a17:902:c409:b0:204:e4c9:ce9b with SMTP id
+ d9443c01a7336-20527300e77mr55557025ad.2.1725270197468; Mon, 02 Sep 2024
+ 02:43:17 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240828180129.4046355-1-boqun.feng@gmail.com>
-In-Reply-To: <20240828180129.4046355-1-boqun.feng@gmail.com>
+References: <20240828211117.9422-1-wedsonaf@gmail.com> <20240828211117.9422-2-wedsonaf@gmail.com>
+In-Reply-To: <20240828211117.9422-2-wedsonaf@gmail.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 2 Sep 2024 11:39:05 +0200
-Message-ID: <CANiq72m1DyAVx4=bg9Hmiayp8jsQsYBirb33S=YN8ptmEu3XsQ@mail.gmail.com>
-Subject: Re: [RFC PATCH] rust: Provide correct provenance when constructing THIS_MODULE
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>
+Date: Mon, 2 Sep 2024 11:43:04 +0200
+Message-ID: <CANiq72nv4Uq5GMVMrZ1pC971gCW9bjFPZsMcFRnLwp4BHrNNig@mail.gmail.com>
+Subject: Re: [PATCH 1/1] MAINTAINERS: Remove Wedson as Rust maintainer
+To: Wedson Almeida Filho <wedsonaf@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Aug 28, 2024 at 8:02=E2=80=AFPM Boqun Feng <boqun.feng@gmail.com> w=
-rote:
+On Wed, Aug 28, 2024 at 11:11=E2=80=AFPM Wedson Almeida Filho
+<wedsonaf@gmail.com> wrote:
 >
-> Currently while defining `THIS_MODULE` symbol in `module!()`, the
-> pointer used to contruct `ThisModule` is derived from an immutable
-> reference of `__this_module`, which means the pointer doesn't have
-> the provenance for writting, and that means any write to that pointer
-> is UB regardless of data races or not. However, the usage of
-> `THIS_MODULE` includes passing this pointer to functions that may write
-> to it (probably in unsafe code), and this will create soundness issues.
+> I am retiring from the project, so removing myself from MAINTAINERS as I =
+won't
+> have time to dedicate to it.
 >
-> One way to fix this is using `addr_of_mut!()` but that requires the
-> unstable feature "const_mut_refs". So instead of `addr_of_mut()!`,
-> an extern static `Opaque` is used here: since `Opaque<T>` is transparent
-> to `T`, an extern static `Opaque` will just wrap the C symbol (defined
-> in a C compile unit) in an `Opaque`, which provides a pointer with
-> writable provenance via `Opaque::get()`. This fix the potential UBs
-> because of pointer provenance unmatched.
->
-> Reported-by: Alice Ryhl <aliceryhl@google.com>
-> Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
+> Signed-off-by: Wedson Almeida Filho <wedsonaf@gmail.com>
 
-Applied to `rust-fixes` -- thanks everyone!
-
-    Closes: https://rust-for-linux.zulipchat.com/#narrow/stream/x/topic/x/n=
-ear/465412664
-    Fixes: 1fbde52bde73 ("rust: add `macros` crate")
-    Cc: stable@vger.kernel.org # 6.6.x: be2ca1e03965: ("rust: types:
-Make Opaque::get const")
-
-    [ Fixed two typos, reworded title. - Miguel ]
-
-For 6.1 we will send a targeted patch via Option 3 instead of
-cherry-picking `Opaque` and a bunch of other bits that would be
-required.
+Applied, with sadness, to `rust-fixes`.
 
 Cheers,
 Miguel
