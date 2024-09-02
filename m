@@ -1,156 +1,170 @@
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+Received: from mail-qv1-f52.google.com (mail-qv1-f52.google.com [209.85.219.52])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 44E7219E981
-	for <rust-for-linux@vger.kernel.org>; Mon,  2 Sep 2024 14:17:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.52
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73EA920126B;
+	Mon,  2 Sep 2024 14:18:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.52
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725286626; cv=none; b=nRT4+GibuPGAQyOhoQKx4B5KGCNYPNrFiP9xcTyGMk6eUbSFEwJHoFcs4a95eQnbwsG5eqhzcYg26P2Mgmc4Tc690mk06kSoicVzZj9AAK2r0/n5kCG3zH2VjNPaQBr0Ehj007nDdGgRb0IrGzJtzpAA0bgd933MQZAe0ytAcE8=
+	t=1725286687; cv=none; b=LbmkTAkl7weFgLGXhw9MYRo1lxcrhf3x/RjMsVYTWbSxOv6lz32AOqSz8LdREipwXky6Xo+ItuDjaHnjpSmG4mg8oKDv+SHVplsoY20Rh5UmaS2lSY2UAzLi8LpZ6IZqS2s+1sOTk0YQlzTnvhFQ+jN+BHo66EtQOq7VK4q0stM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725286626; c=relaxed/simple;
-	bh=vh2QgxSX2L75UOqalaQcbV73L5PLbsUphxMNDQ2BtJQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=YVkmg2wxXkw0qbr3lgu7FjIE1Buz8usUkV2JC9STeu5PkJgP8aq7S9u6J170PUzS/8iYC85hh9ZdBef2J5mCyJlYTmkEHSS5HRgPOJV0wLGWk44OeTHpnOpDuFDrC7x6tYMd6N+Qzwcj4smIAOGaGyAIAPOEqTR4UcSYNYsi9Mw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=miNkKwNd; arc=none smtp.client-ip=209.85.128.52
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1725286687; c=relaxed/simple;
+	bh=jMCex3px73EHSdRzyEBYShIRB/5DiCyonwkt84ZnbVI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Z1c+8pTcmGZM/zXEbBVg7kOqw8HgzR4wKZNNB3BNcnUaLfVQ5VbCCEko2Awej/n4a017a3PLMIx1g1FtVcS1QyqpVF+PYbbx9/gbZPohHSb20TSA7jtX4CZbykG/GkXHqDyjezVBZXdT9ZVPrD49s3HNVkhfko4k58n86QqHxBo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dxHByPkP; arc=none smtp.client-ip=209.85.219.52
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="miNkKwNd"
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-42bac9469e8so35843185e9.3
-        for <rust-for-linux@vger.kernel.org>; Mon, 02 Sep 2024 07:17:03 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dxHByPkP"
+Received: by mail-qv1-f52.google.com with SMTP id 6a1803df08f44-6bf6606363fso23179986d6.3;
+        Mon, 02 Sep 2024 07:18:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1725286622; x=1725891422; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0nZ+9fn7BwVDUG445G81+75wyZkpZMEfiuxhieME3PM=;
-        b=miNkKwNdeWS4tpogmKrBjbky7evnbuusOAVqBFv5H0ON4npDnYvHnvTLNxlePMq+bl
-         zQ3XwfiJ4QNcoVYKR+FtuicLJM8qCRdEtViJHzTFo17JvfXQ5VcfLQnCF8yh9LVZv4xm
-         EvY7UkSTaMbTUmC2k1Ynlas9dWiYgWt0HnFuX2KfdSTvFbxJwA/X4j6Zhmr5NCQvj8zH
-         eo8AAQIFys7OF0m1rYkVBMW71E+RZqOq1ZooFgdotdjtCch4wWlmWkZreRAVYOQeViSx
-         FD206ABBeYdg7TMllW41z7ocWEIBR+CyNYJb2esN+tspWJikjNYdksJc01pEuBWZ9nzI
-         4Qyw==
+        d=gmail.com; s=20230601; t=1725286685; x=1725891485; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=n6ivKodbavAmFdOS3jjnN7jrM7WOCONoPyhGHCp74yk=;
+        b=dxHByPkP1snIVFawnaHLF04VfQJB4dzn+BH5B9wv8HxQetaxR2QPntmvEvvkc55rDQ
+         SRJJg3Q+3aLFr2zfio1VMwviYzIMVtV5G5NEJ4poSdNftV9apf4UNl0i9oh60nRQAPQB
+         RY/o8eR+VZw4tLLZGUl8EovSu85aijoDbwi4Vdx6UnX3+Fz2kALLMDH9Cb7wTKunMqSR
+         FN3zjcrJaTPWkCuzPfZ4Pp7OvZljFOtbM3Joi8VLU4xdwOypVdgtVlYjyvx4IIiL2qK4
+         btrfjEWzjH/CvIsgz0U3iO0m5JrdGSrpPTeDYeD3+Mz8mDBsF1viHq+eaM6C56xq2BCv
+         wapA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725286622; x=1725891422;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0nZ+9fn7BwVDUG445G81+75wyZkpZMEfiuxhieME3PM=;
-        b=kO/IYyJG10Tq6EmPyJX4kdT8ph69a94nonnbavylbmjo5dLin8zBwuIlyq+jiFRtKc
-         vwIA1qjYeD6PXFMwZk6I3p3yp+SwuZQ8F4j7VQBj1tc4cx/jZdgJuXVM0UvrQooYiYKX
-         12PkVDD9J5yGE5ARjJUs2j+zMZ/xnArMNQZfYHOGqIQ0LeMAguhMZS+yaQlqWU12hk13
-         idjsY8/X1pQiM7EDnlslcaMvX4b0WnYzt2bg+LrF+ZT0r+fLobioN+SznNyr+W8uotL7
-         gJTfCmV5DAxIuMrXuomOD3Dc2XpBXn7oYdLzrX43txuKY7r3ZmN19BT/pq6S8rs55VOv
-         ZRPQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWNiPmT81XQe7PfWSgtWLjixyKGLby414EOqbMDZv266Dj97TAewtzjgrP9h9j/TYPRAyWlj9q1Lz56ITGzlQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywt0xzmP1a/B2H6OoiSSW+sGCnc5ToBc/LDZlz0ZJlL1LGoOJsU
-	ZRnF6qWgihifX/kzNB+ybuAbG77h1mRuL6MFMXe3fC6dnK4QQkmuJe+avJAp07uE91BkszGMC4T
-	Ki9o0POpQKXxl7YPColE4Bi3/7n3K17wr4g0w
-X-Google-Smtp-Source: AGHT+IGTiHL3dLiYbM7/qkPUXctMrWRqR8rS7ipP+OnuURlbIUWlRU6s9EcTEKznODPu2Frc6lmN7cFFpOek3NTUuYc=
-X-Received: by 2002:a05:600c:46c6:b0:426:4978:65f0 with SMTP id
- 5b1f17b1804b1-42c82f56727mr29036395e9.18.1725286622239; Mon, 02 Sep 2024
- 07:17:02 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1725286685; x=1725891485;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :feedback-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=n6ivKodbavAmFdOS3jjnN7jrM7WOCONoPyhGHCp74yk=;
+        b=wEtMZXBa4Xr3qDRB7qbo8rYMGOA3YWYllRofsDMaMyuGBvhz0ZxYRKts9uwxYBIBhC
+         Kf8FQ9s5T52i30KRjMtX+Xk/s43z2D/4JNUSiEPAnpd2oWOa9BSvtYwX7OpuDB+LeAvM
+         nSCMsnDa1aa8f1XNqt+wr9T3lnh/cmYJdYGRN4ZyORoJPGcWS5jyAyjC5oDSakVMiM6y
+         G/SLnGDjpLyNbMXnGRBaEL4X+8DugFZD+gPk7yX1g9+TGP7qELQ5JwqjtYoq3bpXGWuR
+         98RngR6xikemaL8pydKr8c8ZmTHW94LbhBrUJ6o0HQ/iCvHirycXjOUG6EXyHMNbRHd2
+         qK8w==
+X-Forwarded-Encrypted: i=1; AJvYcCUUDVsK4+tijLB5IXd3+3uqQKQaaseXe9UFcgEtENmStcsFhiMrNiyKpNQ1ZqwVudYP27jePJnHsVq/UCY=@vger.kernel.org, AJvYcCWUnJMrf+0cEipc0ylHzgQhwUFwYwp2JxM07lrPvkLxYLv+prWFCtYSG/uibUMbe1dPd7NilkvTd2TkTEO+e+8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzSVjAblPd1PUGSLRCcO4zEU4UYcVdAgrXdfbAg/bt2zVRYoWr5
+	9jGuCGiL6nC3D7DRzOXit/jqPJUizRLaBiw88qaM2lXBx3etJHlQ
+X-Google-Smtp-Source: AGHT+IHjEzrLsj5R4Z2mOwcHCPFNU/trTrlsrw2ZW58duHyGU6GBZVNq/zWqJMkut0Y7cQHi+x656Q==
+X-Received: by 2002:a05:6214:4498:b0:6c3:5d9f:ceaf with SMTP id 6a1803df08f44-6c35d9fd0dcmr73252546d6.21.1725286685318;
+        Mon, 02 Sep 2024 07:18:05 -0700 (PDT)
+Received: from fauth2-smtp.messagingengine.com (fauth2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6c34fbb01d5sm31112106d6.39.2024.09.02.07.18.04
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 02 Sep 2024 07:18:05 -0700 (PDT)
+Received: from phl-compute-02.internal (phl-compute-02.nyi.internal [10.202.2.42])
+	by mailfauth.nyi.internal (Postfix) with ESMTP id 883A41200043;
+	Mon,  2 Sep 2024 10:18:04 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-02.internal (MEProxy); Mon, 02 Sep 2024 10:18:04 -0400
+X-ME-Sender: <xms:HMnVZuy63hH5NAWGqHGO0L3g3UEjiPsPdzz7Cz0Gmn5PWnYh-IZWEg>
+    <xme:HMnVZqS6S_lWD-wmdVM2RyQBX2fLGhkEYj_3YGJJXKEfjjkH51lhExVZ59VQz1eLx
+    M7wWt5J3dlIy5WALw>
+X-ME-Received: <xmr:HMnVZgUofm0tim-e5vRmELr96Vzr3KlUg0Kqx_gy4OyAnbdjf62QYqcieP0>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrudehfedgjeegucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggugfgjsehtkeertddttdej
+    necuhfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilh
+    drtghomheqnecuggftrfgrthhtvghrnhepheeuhedtgeffudelkeekhfefteehtdekkeel
+    feeufffhvedtgeetudeugfdtfedvnecuffhomhgrihhnpehruhhsthdqlhgrnhhgrdhorh
+    hgpdhgihhthhhusgdrtghomhenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhep
+    mhgrihhlfhhrohhmpegsohhquhhnodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhith
+    ihqdeiledvgeehtdeigedqudejjeekheehhedvqdgsohhquhhnrdhfvghngheppehgmhgr
+    ihhlrdgtohhmsehfihigmhgvrdhnrghmvgdpnhgspghrtghpthhtohepuddupdhmohguvg
+    epshhmthhpohhuthdprhgtphhtthhopegrlhhitggvrhihhhhlsehgohhoghhlvgdrtgho
+    mhdprhgtphhtthhopegsvghnnhhordhlohhsshhinhesphhrohhtohhnrdhmvgdprhgtph
+    htthhopehojhgvuggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrlhgvgidrghgr
+    hihnohhrsehgmhgrihhlrdgtohhmpdhrtghpthhtohepfigvughsohhnrghfsehgmhgrih
+    hlrdgtohhmpdhrtghpthhtohepghgrrhihsehgrghrhihguhhordhnvghtpdhrtghpthht
+    ohepsghjohhrnhefpghghhesphhrohhtohhnmhgrihhlrdgtohhmpdhrtghpthhtoheprg
+    drhhhinhgusghorhhgsehsrghmshhunhhgrdgtohhmpdhrtghpthhtoheprhhushhtqdhf
+    ohhrqdhlihhnuhigsehvghgvrhdrkhgvrhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:HMnVZkj0KnaAIcZkL9IxdHNd__fVX6SyLgT1zw15-x4rdgYH0wfolg>
+    <xmx:HMnVZgB3ZsYOjy0-cHbxvz0qWEecLcyAIAVj3w33N-ZGZ8W2pI1LGA>
+    <xmx:HMnVZlJHcb0LvM0fjZa9sinkJiRLJJsOWfzlDR1Next0Q0q4VaWMwQ>
+    <xmx:HMnVZnCbhL0ZbUJq59XbRDZKrnFENlLaMl-2Q5Z8lvSjrOQqily4bg>
+    <xmx:HMnVZoybDUn5Wz3UFf_RQBbOd4yqjUO9nc99WQZretGdek2Qex6ZHCPh>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 2 Sep 2024 10:18:04 -0400 (EDT)
+Date: Mon, 2 Sep 2024 07:18:03 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Benno Lossin <benno.lossin@proton.me>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] rust: add global lock support
+Message-ID: <ZtXJGzse8CN30Cp3@Boquns-Mac-mini.local>
+References: <20240827-static-mutex-v2-1-17fc32b20332@google.com>
+ <10453342-d269-4b78-8962-821ef53d3cb5@proton.me>
+ <CAH5fLgh-DYvXobXQVaQ9txYS4Rx8QhjyVvfTphk6vvnUOGzPnw@mail.gmail.com>
+ <3b557f61-cead-4568-b2b4-4a56c4cbff52@proton.me>
+ <CAH5fLggE-fWDuZXH_F3ixDSo7sQEFwnUV3cd+9_rpFH+XmnA2Q@mail.gmail.com>
+ <CAH5fLgiZt3uVZiU1xXPcvYNR-Em2V3y+-C9EbsqrNvkScbiAYA@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240808-alice-file-v9-0-2cb7b934e0e1@google.com> <20240902-dickdarm-zumeist-3858e57fb425@brauner>
-In-Reply-To: <20240902-dickdarm-zumeist-3858e57fb425@brauner>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 2 Sep 2024 16:16:49 +0200
-Message-ID: <CAH5fLgjho1p7EHkqpot4pXvrKLFkXLsw9MWcriNCOHXZ0NJ5bw@mail.gmail.com>
-Subject: Re: [PATCH v9 0/8] File abstractions needed by Rust Binder
-To: Christian Brauner <brauner@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
-	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
-	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Dan Williams <dan.j.williams@intel.com>, 
-	Matthew Wilcox <willy@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, Daniel Xu <dxu@dxuuu.xyz>, 
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
-	Kees Cook <kees@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAH5fLgiZt3uVZiU1xXPcvYNR-Em2V3y+-C9EbsqrNvkScbiAYA@mail.gmail.com>
 
-On Mon, Sep 2, 2024 at 10:02=E2=80=AFAM Christian Brauner <brauner@kernel.o=
-rg> wrote:
->
-> On Thu, Aug 08, 2024 at 04:15:43PM GMT, Alice Ryhl wrote:
-> > This patchset contains the file abstractions needed by the Rust
-> > implementation of the Binder driver.
+On Mon, Sep 02, 2024 at 01:42:53PM +0200, Alice Ryhl wrote:
+> On Mon, Sep 2, 2024 at 1:37 PM Alice Ryhl <aliceryhl@google.com> wrote:
 > >
-> > Please see the Rust Binder RFC for usage examples:
-> > https://lore.kernel.org/rust-for-linux/20231101-rust-binder-v1-0-08ba91=
-97f637@google.com/
+> > On Fri, Aug 30, 2024 at 3:22 PM Benno Lossin <benno.lossin@proton.me> wrote:
+> > >
+> > > On 30.08.24 07:34, Alice Ryhl wrote:
+> > > > On Thu, Aug 29, 2024 at 8:17 PM Benno Lossin <benno.lossin@proton.me> wrote:
+> > > >>
+> > > >> On 27.08.24 10:41, Alice Ryhl wrote:
+> > > >>> For architectures that don't use all-zeros for the unlocked case, we
+> > > >>> will most likely have to hard-code the correct representation on the
+> > > >>> Rust side.
+> > > >>
+> > > >> You mean in `unsafe_const_init`?
+> > > >
+> > > > No, I mean we would have `unsafe_const_new` directly set `state` to
+> > > > the right value and let `unsafe_const_init` be a no-op.
+> > >
+> > > But how do you set the right value of a list_head? The value will be
+> > > moved.
 > >
-> > Users of "rust: types: add `NotThreadSafe`":
-> >       [PATCH 5/9] rust: file: add `FileDescriptorReservation`
-> >
-> > Users of "rust: task: add `Task::current_raw`":
-> >       [PATCH 7/9] rust: file: add `Kuid` wrapper
-> >       [PATCH 8/9] rust: file: add `DeferredFdCloser`
-> >
-> > Users of "rust: file: add Rust abstraction for `struct file`":
-> >       [PATCH RFC 02/20] rust_binder: add binderfs support to Rust binde=
-r
-> >       [PATCH RFC 03/20] rust_binder: add threading support
-> >
-> > Users of "rust: cred: add Rust abstraction for `struct cred`":
-> >       [PATCH RFC 05/20] rust_binder: add nodes and context managers
-> >       [PATCH RFC 06/20] rust_binder: add oneway transactions
-> >       [PATCH RFC 11/20] rust_binder: send nodes in transaction
-> >       [PATCH RFC 13/20] rust_binder: add BINDER_TYPE_FD support
-> >
-> > Users of "rust: security: add abstraction for secctx":
-> >       [PATCH RFC 06/20] rust_binder: add oneway transactions
-> >
-> > Users of "rust: file: add `FileDescriptorReservation`":
-> >       [PATCH RFC 13/20] rust_binder: add BINDER_TYPE_FD support
-> >       [PATCH RFC 14/20] rust_binder: add BINDER_TYPE_FDA support
-> >
-> > Users of "rust: file: add `Kuid` wrapper":
-> >       [PATCH RFC 05/20] rust_binder: add nodes and context managers
-> >       [PATCH RFC 06/20] rust_binder: add oneway transactions
-> >
-> > Users of "rust: file: add abstraction for `poll_table`":
-> >       [PATCH RFC 07/20] rust_binder: add epoll support
-> >
-> > This patchset has some uses of read_volatile in place of READ_ONCE.
-> > Please see the following rfc for context on this:
-> > https://lore.kernel.org/all/20231025195339.1431894-1-boqun.feng@gmail.c=
-om/
-> >
-> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
-> > ---
->
-> So, this won't make v6.12 anymore. There already were pretty big changes
-> around files for the coming cycle so I did not also want to throw this
-> into the mix as well. (Sorry that this had to miss it's birthday, Alice.)
+> > Right ... we probably can't get around needing a macro. Can statics
+> > even reference themselves?
+> 
+> Looks like they can:
+> 
+> use std::ptr::addr_of;
+> 
+> struct MyStruct {
+>     ptr: *const MyStruct,
+> }
+> 
+> static mut MY_STRUCT: MyStruct = MyStruct {
+>     ptr: addr_of!(MY_STRUCT),
 
-This has also gained a conflict with the helpers split [1] in
-rust-next, so maybe that is for the best.
+I'm guessing you're using nightly or new enough rustc, in the current
+stable (1.80), this would complain using static mut without unsafe:
 
-I will look into whether any other changes are needed given what is
-going in for 6.12 and send a new version. It looks like you already
-added it to an vfs.rust.file branch, and it doesn't look like anything
-in vfs.file required changes in this series.
+	https://play.rust-lang.org/?version=stable&mode=debug&edition=2021&gist=2954daab193caf14d1fb91492dcf325a
 
-[1]: https://lore.kernel.org/r/20240815103016.2771842-1-nmi@metaspace.dk
+, which gets changed recently:
 
-> However, I do intend to merge a version for this for v6.13. There's some
-> wrapping of struct cred and specifically of struct secctx that I can
-> only handwave at. Ideally you get a nod from the LSM maintainers as well
-> but if that doesn't come in I don't see much point in making this sit in
-> limbo indefinitely.
+	https://github.com/rust-lang/rust/pull/125834
 
-Okay thanks! I can look into that.
+Regards,
+Boqun
 
-Alice
+> };
+> 
+> Alice
