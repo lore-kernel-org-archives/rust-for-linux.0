@@ -1,118 +1,197 @@
-Received: from mail-pj1-f51.google.com (mail-pj1-f51.google.com [209.85.216.51])
+Received: from mail-oa1-f48.google.com (mail-oa1-f48.google.com [209.85.160.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B8AB201254;
-	Tue,  3 Sep 2024 19:01:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 365321D5CC0;
+	Tue,  3 Sep 2024 19:08:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725390100; cv=none; b=uw0aX74dzSraUDwze1mVmJJOSq2xgynMrT3ZYw+r3WM/VQIjVVBj+4t1ZA+EKrnNeMyzO36L1/jFqCk9NtMdqxbLiuS8D+PtZiaQz8GsL8mc258EnhwX+bzMqUYH1Hzw2EmVH+464YV7/xNZ7sO8NaLJOZNNTiRE8zX8P3vBkIk=
+	t=1725390536; cv=none; b=e6o9FgA/JR8VOxAtp/D8uEP2PCv/Ojsr+hJlZGC0MPrpycnEpNOlOt4a0tAxDv0dcvccRnIDG6KHNAn7K8kVu5DCDvebPSXitpJ2z0SReG3npw9BpqBMmMrHDZ20n38FQ1+ekSvdlwpVrklTVbApELStUEL+T1y3Tb9GObzMPek=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725390100; c=relaxed/simple;
-	bh=KE5xWwHnPm+WIDf2FbxryrsTqOGezFO5SQcRnazmxKM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Kjzu+cUWdpZgL24f0AeRZ+MaaIy3B5nZhE+/CRQEDhpCKDIGoXZDF61f1klKiT7Sm+bltNWzcZRX9aSv/fmgojehIOBQ5Hk7sLA0NBlJPT6vm3HUBue/9JYUtNIn77jmFcK2Uq7X69aRSol5EyoAJCcJDpdT9SjsElDzWjEjUso=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=iw+//3ej; arc=none smtp.client-ip=209.85.216.51
+	s=arc-20240116; t=1725390536; c=relaxed/simple;
+	bh=IEXjWfEq84DXfETdW81agNiGv57E65QfxLkph8camuQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FeE9s09hrfJQSXeQznaXu2nTTmuCfOIYj9N2X7hNug463IRhhUaBJfDSU3GKJJEZxKY/PmTY/UVmzxY+SWG9EUMv64rvv9bF4e80dRsh2dv1o02tWSupQ4ecpzM/9JbelcD8DuQsp92aSrq5vnZ1EMc9SbRQ8AwKBfCMccdtGCo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gVaHKo3p; arc=none smtp.client-ip=209.85.160.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="iw+//3ej"
-Received: by mail-pj1-f51.google.com with SMTP id 98e67ed59e1d1-2da516e6940so121730a91.3;
-        Tue, 03 Sep 2024 12:01:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gVaHKo3p"
+Received: by mail-oa1-f48.google.com with SMTP id 586e51a60fabf-277efdcfa63so1329750fac.2;
+        Tue, 03 Sep 2024 12:08:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1725390098; x=1725994898; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1725390534; x=1725995334; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=KE5xWwHnPm+WIDf2FbxryrsTqOGezFO5SQcRnazmxKM=;
-        b=iw+//3ej9ZMZ1yKToRbCt5XbxgMQO7/fZoH3xmzGIoom2eZvoJJr5CNfjzfaWjB1IX
-         ot94pRMPoIs0tXR+Tmrdn1HzvETCGCEtTNhZPdleCyFohmZXPb3zUlSqXED6jLkEO5A4
-         Az5l9GkwCdjT3Wx1j+Uh+K53Xd1o+h0wg65NerJxPkZVQkk8naGX0aKoDPlt31KDS7On
-         3w2Q/JMNXicH4Vu0ZW6FhBOSxa0sWAR0noq+FToOC3Ms4WMiGP+utnbyyx+Iz2PBvLXI
-         7ZAixbn1ha32G6KTDpoZCPEDvlohrDGhQvAzaE1oc2Zo5qh3ZtFyjy1xhgjEBH3OCHgz
-         F9Jw==
+        bh=UbOQUlni+K3mU+VT36wyrqeCHc06ganEEsHZCUl3X20=;
+        b=gVaHKo3pd3rjnd0wpbzcKEXvVYqwUQGZP/tNoqLMqka6S7C1LP19CdlvWAkJVQqKNg
+         m02lxACZ9DaNLUBQi3SCSCLs/TXJn5u8LQXz/iRJlaZ+kG+k2tQler2Z5KrPT44E6ID/
+         PZXwXtHqtOy7FLb+YfVEMR882apVc3Jo/YFN3+M1D2aqvbmrjd+NwvfNwUl553CdrfrD
+         YQpiqeeiNeNyn0JQ3qRPVOw6cVV88TNnz9D0yh1xZgsfQtFhwSN6RS7/ovucyzBkXCxT
+         YFVvIXG/9nvdLplbW0W8hrTYEvniUm27uhi35Ttqw4BHNvMKpHig5O1L5qDPL+eESnks
+         RDCg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725390098; x=1725994898;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1725390534; x=1725995334;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=KE5xWwHnPm+WIDf2FbxryrsTqOGezFO5SQcRnazmxKM=;
-        b=So55j8NoFXN33qos7R+WAEoCdRiySPKDp9Niae6YRwCtrGjuFI75sYYBDs5CPJjfLx
-         Hucl5WMCl2Wak2Xcc6oS3K6C0srGqgB2g+e9GE4I+7ZqQOGk/7GtgOhXyYyTJf6HeQW9
-         +YxjaZpqUJ/0ffjhncg8DHH1pEo/GEKrq52bAQPYXE6Ed4OnqIpdB4f3kBRBZyh6oTu2
-         oEjQrlbkOkcuD88YZYndILMfravVIlTlwzRm8S023RlB0pqXvwf3a7wiyvoWBsj9Q++G
-         mDKKYzgSYKvlq3AgXXal2jfBupioJEAq43IFuetSP5YgEky5PsBRI7Ryg2XIp6WkQwLb
-         53IA==
-X-Forwarded-Encrypted: i=1; AJvYcCUDBHcL6djoksYe7376qO8oxC2U1u7CMoFLcjhqy256FXGgudazWLM+LaK0iCs5xfyQggj0YqpmylsKzZk+@vger.kernel.org, AJvYcCUMnhgwIYMU/eBR3CetYv3nQXrR/0KPWH3YZiD3xoorVgcdBbVyIv3jEY6GFQp2NKD6Ch2m7xrL+1dU3DiSYuuxymO3@vger.kernel.org, AJvYcCV8AtvzHvkjtdbMScLMnK2OUCzefPM+atbrYGQxsFcoRwTTv33qUTzCWW69vQO7NbMNgoSodq+eBY3koC5j@vger.kernel.org, AJvYcCVIf6K7eEHewcCCXkxFAOYyYampiR7kt29kCR20HTUZKilOR9D7NJLeab7MaRtk3YYtt3812ijQH13CBXIZsSs=@vger.kernel.org, AJvYcCW+ru6IsmFFX1pBBQvJ7pt0wpKuibSrZ3SeB142eCRGrUH5bcpKrBh0v14Y2wQGXjujc1b9vPWnn33dxw==@vger.kernel.org, AJvYcCWxPi4SdtQYOcZdoLXXrNKICMD0WSlC5YmFBAUT7Ukc1OEqI0fgK0fP3pVq41x0o+wKNJIyYswscuQ=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxDI9YMK1nM37hoY3ZyQfUw99TIzWn2wV4SL4poAlNynRpcLlEm
-	RSNvMrlhDrG8kyAiKquZOcCRBUSvthh8WxuKMeR6ld1D4HrH2XKIcG95wqB3+2pLIzdza+KMHfw
-	t3UxB7WiFybm7+9QeOJGvf5M1kkI=
-X-Google-Smtp-Source: AGHT+IGRHnvtSIMPglv/36A6hpMPDiFKSZKiUYGzC4lWBAVbp+fP4jGwB7yTCWBdu31Z0QsqEhbQ0JnFGvwe1zJu2gc=
-X-Received: by 2002:a17:90a:dd88:b0:2c9:863c:604 with SMTP id
- 98e67ed59e1d1-2d86b82a57amr8603316a91.3.1725390098481; Tue, 03 Sep 2024
- 12:01:38 -0700 (PDT)
+        bh=UbOQUlni+K3mU+VT36wyrqeCHc06ganEEsHZCUl3X20=;
+        b=NU+xpqu7t6NgL99pEr2gpTX45bBiU8qbW2ht9e1ehTzd6BwaqNClDU9S+BATRwThcn
+         ep7Xje0NHtTj4gVdwnBY0Ig39ZK7bZ/GPWCpmvWqRvO9Wnio1rKFsoujqGob89TIz5i/
+         isfRcJP5eG5qomdoAvNbY/nN4M4COrJTE3Hu87B4MweCJFJKGZipV+NDPIsJuaG+9Udw
+         pC4vZeTH58yx46RU/uCwgObKtPY3rUx5hKHwSvDXR0aPbkSQ5azf/jmGuYSGw8V+4oeC
+         +aBKilPWhUkVBBYCB8eX873bCY1+C0Nag4xWWxB51IrFybF91i+PNj65vspLO0016R+o
+         rIvQ==
+X-Forwarded-Encrypted: i=1; AJvYcCW1xQi+QgfItK0eKGA3xxSrnOOLfBqRB4mSdmROeiq7eIRp6lsr6KL7Abfb90YUn9ifvAJsCQW6EP39x8aBp9Y=@vger.kernel.org, AJvYcCXAJ9RSu1LVLcaOnxdcKLK8L7HodN6VElO/KfZwc5xnuJbbG1r7z0Kfe07DaMfl169GOgEHhtDmrEV5L40=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwXef6i/6Ow5zwnLWt/7L43JXHkaV5SVTEq0OXyf0D9O49DQcnE
+	+mzsS+oglOMRlbo2e2KHcuUfi4fm/8nEJIYFSOf4jbOG6a/tgbmp
+X-Google-Smtp-Source: AGHT+IGtCzQWoZOtKA3syrQPJGzUcBg/Ps85zPwRD229jSRfHPmnAAhoD8+rYvbPIs4FoggfBXP+Ow==
+X-Received: by 2002:a05:6870:c110:b0:278:986:1e44 with SMTP id 586e51a60fabf-2780986204amr6402016fac.18.1725390534144;
+        Tue, 03 Sep 2024 12:08:54 -0700 (PDT)
+Received: from pfauth1-smtp.messagingengine.com (fauth1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7a806bfb8f5sm552822085a.12.2024.09.03.12.08.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 03 Sep 2024 12:08:53 -0700 (PDT)
+Received: from phl-compute-03.internal (phl-compute-03.phl.internal [10.202.2.43])
+	by mailfauth.phl.internal (Postfix) with ESMTP id F0E191200087;
+	Tue,  3 Sep 2024 15:08:52 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-03.internal (MEProxy); Tue, 03 Sep 2024 15:08:53 -0400
+X-ME-Sender: <xms:xF7XZhQlqc1otvOeyL3vr-oO9IrY6CSO7MadvUT0j0OJIfsDU9UaNg>
+    <xme:xF7XZqzdulaaoXFRRpZw302oMPagZPhRiMicFT0v21YrS3umSonTtNea0MLEJhQYN
+    eg7L15a84ex8BsklA>
+X-ME-Received: <xmr:xF7XZm1CqUqXTQ_WQnUsVUN7W9BxBYkWjUB_H6f5mBaOidaK56U7Vi8jNxE>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrudehhedgudefgecutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
+    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
+    hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddv
+    necuhfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilh
+    drtghomheqnecuggftrfgrthhtvghrnhephfekudfhfeffvdfhhfdvtefhveffhfeftdef
+    vdehjeegkeeftdeggfevfffhveeknecuffhomhgrihhnpehpthhrrdgrshenucevlhhush
+    htvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghs
+    mhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedqudejjeekheehhe
+    dvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvgdp
+    nhgspghrtghpthhtohepvdehpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegurg
+    hkrheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepohhjvggurgeskhgvrhhnvghlrdho
+    rhhgpdhrtghpthhtoheprghlvgigrdhgrgihnhhorhesghhmrghilhdrtghomhdprhgtph
+    htthhopeifvggushhonhgrfhesghhmrghilhdrtghomhdprhgtphhtthhopehgrghrhies
+    ghgrrhihghhuohdrnhgvthdprhgtphhtthhopegsjhhorhhnfegpghhhsehprhhothhonh
+    hmrghilhdrtghomhdprhgtphhtthhopegsvghnnhhordhlohhsshhinhesphhrohhtohhn
+    rdhmvgdprhgtphhtthhopegrrdhhihhnuggsohhrghesshgrmhhsuhhnghdrtghomhdprh
+    gtphhtthhopegrlhhitggvrhihhhhlsehgohhoghhlvgdrtghomh
+X-ME-Proxy: <xmx:xF7XZpCiHuPyziMORgpFYPZnudQdourFlgh3PsHv587ReIoX0LPgJA>
+    <xmx:xF7XZqhbHDP7sL-EOBI6lTHHtZ8jL6H0-S1OliblQBCJFX5I87OIZQ>
+    <xmx:xF7XZtqSMu1mueqmLcuIoDlgEocfDDJzCS_N1XQzfh-suPtK4MjBsA>
+    <xmx:xF7XZlj0DU7e5fem_WC7oHUY29dym1oDgRuWFZkJjUbsgb-L23MeUA>
+    <xmx:xF7XZlTmSF9vnAj4mIsBVsorEz-XWWXUeV85wPtlePiIEpaYKmlpB83J>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
+ 3 Sep 2024 15:08:52 -0400 (EDT)
+Date: Tue, 3 Sep 2024 12:08:08 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+	a.hindborg@samsung.com, aliceryhl@google.com,
+	akpm@linux-foundation.org, daniel.almeida@collabora.com,
+	faith.ekstrand@collabora.com, boris.brezillon@collabora.com,
+	lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com,
+	cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com,
+	ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v6 13/26] rust: alloc: implement kernel `Vec` type
+Message-ID: <ZtdemCduZ1KqayXw@boqun-archlinux>
+References: <20240816001216.26575-1-dakr@kernel.org>
+ <20240816001216.26575-14-dakr@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240903-mips-rust-v1-0-0fdf0b2fd58f@flygoat.com>
- <20240903-mips-rust-v1-3-0fdf0b2fd58f@flygoat.com> <CANiq72=z1yJm-B_ie=GfueOF1qksaSD9txgFU1YQo2tZx0qQPg@mail.gmail.com>
- <d9591a84-9a0f-4046-9b2a-437061f6882b@app.fastmail.com> <CANiq72m5iFcqRU_qdUCZkoV8ayPhtQQq3TTEDRUYfMEsnNqTDg@mail.gmail.com>
- <6f6f04d7-55b3-4714-9bcd-cb4e1ae6c86a@app.fastmail.com>
-In-Reply-To: <6f6f04d7-55b3-4714-9bcd-cb4e1ae6c86a@app.fastmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 3 Sep 2024 21:01:23 +0200
-Message-ID: <CANiq72mvTTgyTjDCWBz_kOdY1f4gopAtWxyC4P4c+Lr0YVkzLA@mail.gmail.com>
-Subject: Re: [PATCH 3/3] rust: Enable for MIPS
-To: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Cc: Masahiro Yamada <masahiroy@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
-	Nicolas Schier <nicolas@fjasle.eu>, Richard Weinberger <richard@nod.at>, 
-	Anton Ivanov <anton.ivanov@cambridgegreys.com>, Johannes Berg <johannes@sipsolutions.net>, 
-	Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>, 
-	Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, Thomas Bogendoerfer <tsbogend@alpha.franken.de>, 
-	Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu <mhiramat@kernel.org>, 
-	Mark Rutland <mark.rutland@arm.com>, Jonathan Corbet <corbet@lwn.net>, Alex Shi <alexs@kernel.org>, 
-	Yanteng Si <siyanteng@loongson.cn>, Nick Desaulniers <ndesaulniers@google.com>, 
-	Bill Wendling <morbo@google.com>, Justin Stitt <justinstitt@google.com>, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-um@lists.infradead.org, 
-	rust-for-linux@vger.kernel.org, 
-	"linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>, linux-trace-kernel@vger.kernel.org, 
-	linux-doc@vger.kernel.org, llvm@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240816001216.26575-14-dakr@kernel.org>
 
-On Tue, Sep 3, 2024 at 8:32=E2=80=AFPM Jiaxun Yang <jiaxun.yang@flygoat.com=
-> wrote:
->
-> Ahh thanks for the elaboration.
+On Fri, Aug 16, 2024 at 02:10:55AM +0200, Danilo Krummrich wrote:
+> `Vec` provides a contiguous growable array type (such as `Vec`) with
+> contents allocated with the kernel's allocators (e.g. `Kmalloc`,
+> `Vmalloc` or `KVmalloc`).
+> 
+> In contrast to Rust's `Vec` type, the kernel `Vec` type considers the
+> kernel's GFP flags for all appropriate functions, always reports
+> allocation failures through `Result<_, AllocError>` and remains
+> independent from unstable features.
+> 
+> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> ---
+[...]
+> +
+> +impl<T, A> Vec<T, A>
+> +where
+> +    A: Allocator,
+> +{
+[...]
+> +    /// Forcefully sets `self.len` to `new_len`.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// - `new_len` must be less than or equal to [`Self::capacity`].
+> +    /// - If `new_len` is greater than `self.len`, all elements within the interval
+> +    ///   [`self.len`,`new_len`] must be initialized.
 
-You're welcome!
+Maybe use "[`self.len`, `new_len`)" to indicate `new_len` side is open?
+Also `self.len` may confuse people whether it's the old length or new
+length, could you use `old_len` and add note saying "`old_len` is the
+length before `set_len()`?
 
-> However, kernel supports many ISA variants that are not defined by any ru=
-st target
-> triple, I'm not really sure if it's appropriate to define them all in ups=
-tream.
+> +    #[inline]
+> +    pub unsafe fn set_len(&mut self, new_len: usize) {
+> +        self.len = new_len;
+> +    }
+> +
+> +    /// Returns a slice of the entire vector.
+> +    ///
+> +    /// Equivalent to `&s[..]`.
 
-They need to be in upstream Rust somehow, because upstream Rust does
-not want to stabilize `target.json` since it is too tied to LLVM (as
-far as we have been told). Whether that is via `-Ctarget-feature`, or a
-new `-Cglobal-target-feature`, or specific flags like `-Zfixed-x18`
-(originally `-Ctarget-feature=3D+reserve-x18`), or (many) new target
-triples for different combinations, or something else, it depends on
-the case and what upstream Rust wants to do.
+"s" is used here without pre-definition, it's a bit confusing. Either we
+use an example here, or we can just avoid mentioning it at all?
 
-That is why we should tell them what is needed, ideally in a new issue
-in upstream Rust, and link it in
-https://github.com/Rust-for-Linux/linux/issues/355 (please see that
-list for similar examples).
+> +    #[inline]
+> +    pub fn as_slice(&self) -> &[T] {
+> +        self
+> +    }
+> +
+> +    /// Returns a mutable slice of the entire vector.
+> +    ///
+> +    /// Equivalent to `&mut s[..]`.
 
-I hope that explains a bit more the context.
+Ditto.
 
-Cheers,
-Miguel
+> +    #[inline]
+> +    pub fn as_mut_slice(&mut self) -> &mut [T] {
+> +        self
+> +    }
+> +
+> +    /// Returns a mutable raw pointer to the vector's backing buffer, or, if `T` is a ZST, a
+> +    /// dangling raw pointer.
+> +    #[inline]
+> +    pub fn as_mut_ptr(&self) -> *mut T {
+
+I think this function needs to take a `&mut self` to mirror the
+`as_mut_ptr` of a slice.
+
+Regards,
+Boqun
+
+> +        self.ptr.as_ptr()
+> +    }
+> +
+> +    /// Returns a raw pointer to the vector's backing buffer, or, if `T` is a ZST, a dangling raw
+> +    /// pointer.
+> +    #[inline]
+> +    pub fn as_ptr(&self) -> *const T {
+> +        self.as_mut_ptr()
+> +    }
+> +
+[...]
