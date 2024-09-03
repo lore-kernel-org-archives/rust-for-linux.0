@@ -1,114 +1,136 @@
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE1CD1A42C1
-	for <rust-for-linux@vger.kernel.org>; Tue,  3 Sep 2024 11:34:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52C921A42DB
+	for <rust-for-linux@vger.kernel.org>; Tue,  3 Sep 2024 11:35:55 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725363262; cv=none; b=XvhSSJuYVj1Vp1WhHSxYBme7fie+4pY6G+EtHytVDN7BSkMpqPfJ7YXeEmCyRtZGBBmcyTCPea/yspWkfhNfTMkODtlwAl26wva73MrwpyNwm6kAErzRnh/SKJxmclIT0Kgz+JeyvhNijCLLl/CyXRUhCwXbTtnUro4LthFCPOc=
+	t=1725363357; cv=none; b=kvRxdXsIQ/SxQWXp+o2z9pbqnZbxpM5UC0USvJMXLeKjPW/dl/TyIVwtcLuFgEFaPATrI+E+/js+vhvZZwpVYW2GxNOwOcYcNtMtmKNtfbELSdedDC7AHwxdIbq2Rr3k3/ylCCtXki7UEgJQGYocqOpJtVRMqrdTBT8To4oybB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725363262; c=relaxed/simple;
-	bh=46XNmUR45khZvA8eAYqDcdhPS16b5Y3YseKtzeiIWkQ=;
+	s=arc-20240116; t=1725363357; c=relaxed/simple;
+	bh=bT4RGC2/CI90zsMbK3CXEI/uSpQdMQIiJJS3i73fW+Y=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=egLnh5Bb7kCOU1Dyak6PigHlNVoSHOQGOXs4oU+O/wSoEB1y42xWn2iNWohTjlzkekrKjsbxxotMuR8ifbtSNs6sandFgkFZCntPqpyJI3J66Nluve5K2wmVsSt8S8jLwlQdRWsz3xS/2hkEvCMLeNTYy6UoRsVywVwk+A58GzE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hKorwkrY; arc=none smtp.client-ip=209.85.128.44
+	 To:Cc:Content-Type; b=IFz9VbDk8xwVgiQFv9QfzN+1k7QC8U2Odx1bfAYhlis3XmL4BFthMIBQZAfKFbtRXqxIJXbDo2hEyovK6lRcW6Dr+/2dThDS3BXK/7hyOYcqFxaxRLHgAmHSQQxpSD8Wp1P3biAa8zPfFmIR2eU/+y7kJdaQpc43kx8ASwo5KBk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TOHqjb7E; arc=none smtp.client-ip=209.85.128.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hKorwkrY"
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-42bbe908380so31621325e9.2
-        for <rust-for-linux@vger.kernel.org>; Tue, 03 Sep 2024 04:34:20 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TOHqjb7E"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-42bb72a5e0bso45885315e9.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 03 Sep 2024 04:35:55 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1725363259; x=1725968059; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1725363354; x=1725968154; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=46XNmUR45khZvA8eAYqDcdhPS16b5Y3YseKtzeiIWkQ=;
-        b=hKorwkrYB33irTBYcLr7LQdDbZR3NChYrs/alfmQkEToIDUspe5MO3QNc7/B027sl5
-         Wm1WtnaZC+dN1QqCFvA141ay2M/rcTaphhir4rDCDAfQR16skewqNHce+OYTA31Y533a
-         lsAIOIww9wOzJuYu0ehV636/cUTKvmaegcFfVkJfWtjO1YEv/yWZG8v53qvM62/NOIgV
-         eTUsV8mFnYdvXYeaGSiKB6skrUxSIqh+z+V9yERQwhHuJ1TO20Qv86acQxIW5w36F6+U
-         7y0hEGnDyBOkuFZIzQJsYchjvEOkl8k4EXT369x3Ia9qoes2HOdS4YnWim0RErN4Hldy
-         pFoQ==
+        bh=IEfBb5av8BFTOtupO7uTtvSgIG4RHj+5V1mUmY2oDqg=;
+        b=TOHqjb7EGUzXr7ryAcjsxPmAL7Tb7uKEpUJb7qJA/tgZn/URRKaUzFyDKpRkRNXEhi
+         mqNsESbDFPgObUo/6ZmflEIkgdBXpMeMowOISK6iukvTNclTskdv8Ygcrs6vrbJ0XhAX
+         ExuRrS0fYQXB7nxwBjXyXvA+4Z6yVDf5nz4yuYx6rrF9H4rwvjXzOcsT73nqs7pMgXQ3
+         u2IKfk42qVvwdncaOoGlHRcWtTWjUIuxQ1s+qod4elBVOvWgpGIuNBwEQDWqso4XGS61
+         QDmqC0a4dcpPeEWLcq9H/qAIXMynKvsQ/zGPlur/yxow2TNMtzC8FCO6oohvUZa3etaD
+         +8Kg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725363259; x=1725968059;
+        d=1e100.net; s=20230601; t=1725363354; x=1725968154;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=46XNmUR45khZvA8eAYqDcdhPS16b5Y3YseKtzeiIWkQ=;
-        b=bnf5CKBtaBQn4Vba2y1mN4rTwhZ+W4dFys2L1vUt/sCPzwSPgTZww2TAUoarAp28cZ
-         rz1qzD0+S0UIOoWqWtzHIEXXokfA7EVFBZK0QlUdern7eld0oLVOzMuwwdqDmCHfjn7W
-         cqizbtQ3LihiAQAtm0xmkX+AVbYzH2JQTSM5/3Di1x/bjRjFREaMsteFJ9F18T/4x7XW
-         9khm7MYzfJIIsBuhzhqrB2WH/0STqBE+jghZQZ6107C9qlTH53riqOBCOYPyfYU30mFd
-         fok7MY44exxHF7C0tdR4EteTx0F9wg7NPIW6FamjzW/tfFkii/9sL8XULnU/f/Br0mVF
-         qmKg==
-X-Forwarded-Encrypted: i=1; AJvYcCWQZXknSUDk7LRr4SlADqGlBZBjFYySSlOuyS7YkWzfRcAMYsXpJGYo76oOgCdycZUdnJV1puNBtEgX1F2QhQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyIHD//p67OmQVjq4QxJzqJ2jFSc5kElSDjcYzr48K9vsso25Gw
-	nh3XxL1Ypq2Ig/ZjSUhIGp6QTlwI8D92uwk5jO7l3tK+tcVBWSxsYkPR0JBWmhc/j8XsqhSL1Gn
-	agtzFacqU1eYEObJUMg9DJJc6OlnucLirbEo1
-X-Google-Smtp-Source: AGHT+IFuNzVuMjoZGRoZLPtdEPPXHkmFSmRBW7NyYXKHWBhqV12O7T7xt9BawC+YUzC3UzRWxXIuVp1OKWsiC9kNggs=
-X-Received: by 2002:a05:600c:34c6:b0:426:6921:e3e5 with SMTP id
- 5b1f17b1804b1-42bdc64e47fmr67490965e9.24.1725363258825; Tue, 03 Sep 2024
- 04:34:18 -0700 (PDT)
+        bh=IEfBb5av8BFTOtupO7uTtvSgIG4RHj+5V1mUmY2oDqg=;
+        b=bfqfIBWmvGE8vr8L7Z0i3K8OQfk02LmuQeK7S7URQIaKgm1IUzQ9xOXoh7iGfCwquf
+         6O77nGX0HqWB7HLpRzRIT3TMFIn6VFg5DZsS2xRBUEZeInUhcdtaMZR+syHd9W6yzDgI
+         5S/rAls+vw6YIDBX15FLLkzvwB0Ii8z/5e5PY42a0ntoundqXWgAd9QkeLpCfhMyMPS/
+         DjTBlxFScGD2WmiCGqYWOULeyCTGnD4y1AEMVyJM30ScN7hZPiDCg8svyDkJePcU5O36
+         iRfh794xH/XFru/bjNs0UtQWpHWsoB6zqFIdu0HJL/o42XIee+KawE9JQqQ+30H6P+j5
+         1nLg==
+X-Forwarded-Encrypted: i=1; AJvYcCXbPu4YrYPmYk8EM7Y/Z+uEBB3z0m/32pjR4yVbcF/5MiK+3kO10734eacNHkmSVPqSh/oKsgEoz9luRNLLxQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxQnR5Z1NEo19EPzJYarE0GC+VKZDP2AHsaIl4NSvb13moCjuM9
+	3WSruEMDCqUtSA1WxnK43WYtQsRf5mf+5HrFJ2wSauF2PwR5MsJPDKdnJ4bFlpk3SjxcdAGUTDX
+	WEjICdQ5ro9gXP7KkF8MYpqkl5DPhPbIzVBBA
+X-Google-Smtp-Source: AGHT+IF9EQsoYXne6eLFgLTZXI3J+dUe2SLFltUotHmh01fE8kD9sVslO84tO3FvbvFkH2w8hwfuP0jI+0CAeaHMDUg=
+X-Received: by 2002:adf:9bde:0:b0:374:bd05:a074 with SMTP id
+ ffacd0b85a97d-374bd05a0cemr5743763f8f.12.1725363353295; Tue, 03 Sep 2024
+ 04:35:53 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240903091700.172734-1-benno.lossin@proton.me>
- <20240903091700.172734-2-benno.lossin@proton.me> <CAH5fLgjicT5O77UviXUPxc0-O7nQO4J+M3Nfo+6Mm-DVGQBhMg@mail.gmail.com>
- <ca2e865a-f0a2-488e-ab0b-53ef5c4e95b3@proton.me>
-In-Reply-To: <ca2e865a-f0a2-488e-ab0b-53ef5c4e95b3@proton.me>
+References: <20240902165535.1101978-1-ojeda@kernel.org>
+In-Reply-To: <20240902165535.1101978-1-ojeda@kernel.org>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 3 Sep 2024 13:34:05 +0200
-Message-ID: <CAH5fLgj+U_9_GsFk5cJw_t6UdOsZsQkBtRz5cG-iHgTuj=qY7g@mail.gmail.com>
-Subject: Re: [PATCH 2/2] rust: sync: require `Sync` for `Backend::GuardState`
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+Date: Tue, 3 Sep 2024 13:35:41 +0200
+Message-ID: <CAH5fLghEz-6HtcpD5N8qXHZt8AK-8DUXHKXbHgs0YQ-pTJrTtg@mail.gmail.com>
+Subject: Re: [PATCH v2 0/6] `RUSTC_VERSION` and re-config/re-build support on
+ compiler change
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Masahiro Yamada <masahiroy@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@samsung.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	rust-for-linux@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>, 
+	Nicolas Schier <nicolas@fjasle.eu>, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Sep 3, 2024 at 12:06=E2=80=AFPM Benno Lossin <benno.lossin@proton.m=
-e> wrote:
+On Mon, Sep 2, 2024 at 6:55=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wrot=
+e:
 >
-> On 03.09.24 11:32, Alice Ryhl wrote:
-> > On Tue, Sep 3, 2024 at 11:17=E2=80=AFAM Benno Lossin <benno.lossin@prot=
-on.me> wrote:
-> >>
-> >> `Guard<T, B>` implements `Sync` when `T` is `Sync`. Since this does no=
-t
-> >> depend on `B`, creating a `Guard` that is `Sync`, but with `!Sync` sta=
-te
-> >> is possible. This is a soundness issue, thus add the bounds to the
-> >> respective impls.
-> >>
-> >> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
-> >
-> > Right now, a `&Guard<T, B>` has exactly the same powers as &T, as the
-> > only thing you can do on the guard with only a shared reference is
-> > deref to a &T. So the bounds are correct as they are, unless new APIs
-> > are added (which seems unlikely?).
+> This series mainly adds support for `CONFIG_RUSTC_VERSION` (which is need=
+ed for
+> other upcoming series) as well as support for rebuilding the kernel when =
+the
+> Rust compiler version text changes, plus other secondary improvements.
 >
-> Right, but I thought it was strange not to require that. Since that
-> would be the default behavior of the `Sync` auto-trait. And the only
-> reason why we have to implement `Sync` is because we want it to be
-> `!Send` with the `PhantomData<*mut ()>`.
+> v1: https://lore.kernel.org/rust-for-linux/20240808221138.873750-1-ojeda@=
+kernel.org/
+> v2:
 >
-> All of our locks currently use `()` as the guard state, so we don't lose
-> anything.
+>   - Dropped patch #2 "kbuild: rust: make command for `RUSTC_VERSION_TEXT`=
+ closer
+>     to the `CC` one" (Masahiro, Bj=C3=B6rn).
 >
-> Maybe it might make sense to instead have a marker type that is `!Send`
-> but `Sync` that can be used here instead, since then we could avoid the
-> `unsafe impl Sync`.
+>     In other words, now the `RUSTC_VERSION_TEXT` command is kept as it
+>     was, without `LC_ALL=3D1` nor `| head -n1`.
+>
+>   - Replaced `macros` crate dependency with a comment in the code that `f=
+ixdep`
+>     will find, since we can do it for that one, unlike `core` (Masahiro,
+>     Nicolas).
+>
+>   - Added patch (here #5) to add a warning when the Rust compiler used to=
+ build
+>     the kernel differs from the one used to build an out-of-tree module, =
+like
+>     the C side does (Nicolas).
+>
+>     If the patch is not wanted, then it can be skipped without much loss,=
+ since
+>     anyway Rust will fail to compile in that case. However, it would be n=
+ice to
+>     have to prevent potentially unexpected situations and to clarify the =
+errors
+>     that `rustc` would emit later. See the commit message for more detail=
+s.
+>
+>   - Rewrapped comment to stay under 80 lines (Nicolas).
+>
+>   - Picked up a couple tags that could more or less be reasonably taken g=
+iven
+>     the changes to v2. Re-runs of tests welcome!
+>
+> Miguel Ojeda (6):
+>   kbuild: rust: add `CONFIG_RUSTC_VERSION`
+>   kbuild: rust: re-run Kconfig if the version text changes
+>   kbuild: rust: rebuild if the version text changes
+>   kbuild: rust: replace proc macros dependency on `core.o` with the
+>     version text
+>   kbuild: rust: warn if the out-of-tree compiler differs from the kernel
+>     one
+>   docs: rust: include other expressions in conditional compilation
+>     section
 
-I think it's actually quite reasonable to `unsafe impl Sync` for lock
-guards. The lock guard in std is also rather special in regards to its
-Sync implementation, since it also has a situation where Send deals
-with special details of the guard, but Sync does not.
+I re-ran the same tests as for v1.
 
-Alice
+Tested-by: Alice Ryhl <aliceryhl@google.com>
