@@ -1,136 +1,97 @@
-Received: from mail-pg1-f177.google.com (mail-pg1-f177.google.com [209.85.215.177])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A2051DC720;
-	Tue,  3 Sep 2024 19:47:08 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.177
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23A611D5891;
+	Tue,  3 Sep 2024 20:10:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725392829; cv=none; b=I1+6Q2xZEQYiFl5Z3otcqgynhtSTBKfG+n31MFv/5B8d1p7z3eQ+eVz/mhhR0tMjMOZP/Jlg3MIRV6otALZh7q/ZM1XOdw+H2jGGqkdE8++3gDU9uiqsaomz6piKMMQo1uPr2p8ovC0CKdnDz3sEYgcpiRhgg7S94lrN28ZRKuA=
+	t=1725394232; cv=none; b=jH0+a6K33d/xs/X55vPjljGyQWOxTnHTqo9SW8kFyq5318x4TWV+bH4ZD7W3lwjGyFG3ljWEcsGCGx6eVPHFC46TWjjK01ocKZRoUB15oyZNpmRdNvdaQQvypww3Om5Dy0en3p25k+3MWuyTC82WqyL1xWcpdmVluiM55rdqlXI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725392829; c=relaxed/simple;
-	bh=AW5O3fYmGL289gmg2dbXstbvmyw9Js/B5YLfw07ifLo=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=pFUU/dWhA7GWTVZJB+X2xbRtC4u3Si92vRegKNdwXq4kF0Rgi2TQ9sqUcUnkvG8h8lXXiV8aLw3yedyhMi7u2uF1g3aJ9Y6kni9qvWsKLEMAMda1QSaIz1QjZ/G/h5V68fpw5HR2KsnrnzCxlhLImMyFjvWBYzybXHtZW4mjZVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UQZwXfJV; arc=none smtp.client-ip=209.85.215.177
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1725394232; c=relaxed/simple;
+	bh=vpwZJNPO0XrbJLguy28wBPuADqR/WcUHSbWi9p0uZDY=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=BjG8VfzVCvgnX50m4399RBWn55rPjNJCcVEpY4/s+NqdshO6VaI5MSTW88vrn1RFLO2/nPhfXMg8Oj47kKJhvL1wVIPqnpVvBKhAdQuyczr5dH1/ctVt6It4oriR7rhgponPfnYwwBDNJtrwK7kQQ/OL2g9vuCYSnv6HMClc6Xw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qRAcwvVd; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UQZwXfJV"
-Received: by mail-pg1-f177.google.com with SMTP id 41be03b00d2f7-7cb3db0932cso4324984a12.1;
-        Tue, 03 Sep 2024 12:47:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1725392828; x=1725997628; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=sQE4RGf00KcJD0pcpR6cGZr6q6lFBV5A5RGUfUHfC2A=;
-        b=UQZwXfJVlhl+wGkE6duOaV9F6tYPH4AxH8Wemmdos2cmdzVGndxn7avzQ1bSEltGRB
-         S7t/nioiSb4uBT6aC2OXfae3W1fdphVvs/uxYkSRJ0FnZ7FhowLleWqsmvYy8uOKR5eC
-         d59UzovYbDuJl2QfjUVXyrDPC7bAVWMiLw6vIGWpG1nZrV5naJD+jisWUum5/dW9rHAj
-         q7Hncj2S6m0VZOWxadHsGkd8M8orxOivdQAArrrULUv10W3FZAPgI5AOfRGJHgqYRxsT
-         eBUK7v2+Z+KouTqfXU9Q0hKV6RSA76AphjCKeh413BzKGyO9j16L+z6hX70fHHyMMFtT
-         yjHQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725392828; x=1725997628;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=sQE4RGf00KcJD0pcpR6cGZr6q6lFBV5A5RGUfUHfC2A=;
-        b=bYrQsFewynLMf4F4OnNR/TEHYw01Yty8D5ptpmuhgyStzw0U6RyocI+PvzXtardbMn
-         R6Ohw/T3JWowCuByt+UaIEXAEPFEUR+sBSM5mTavOSboCJMrK8P31/VJBNnFVias3lmw
-         bKN3SIkjn13Y/zSmVJyoSKXPgIG472GtFvaqUU9wPlm0SSjOZgl9J8dDgpn9zIls9Ks0
-         lWITb0+gWOZBRu/saziNwxr72s1oLtxWdWnuIdQvu65xkNRPid0I2woTOulpujatDSYy
-         f/5npXd5UiV0NlW8drJPb/4xbWs3b3aoMxwvw489MzRrh9ZJtSad89rjqAoqrX8RPm6L
-         E4vA==
-X-Forwarded-Encrypted: i=1; AJvYcCUPOuyW4JQjgeVvdpCr4qwUTdMyT4D6/7+Az6ypAXoYWXvXmmy7Qt+2Go/E+MGWu9NjGWh7VpZ5sv0j6Vmk4iA=@vger.kernel.org, AJvYcCW42aWCMFu71PEh026x0aj2DfD6+0YNaKSo59Frs0pqdnvU+iE6bD143pzhJKDGYcFaxo20ChAVyDvqbA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzyqtwlhRc8LGxyN/tv+tJQQulQBnqGHFDA7MI8AWZgbtf/CNyR
-	2GmX1ZhjKD/2ELrTXjHfwmBuoGBLnzmDRc/gQkolslwIN3Qo9qm2
-X-Google-Smtp-Source: AGHT+IEdvgz/igkRwCVTF1iTKBYnEie+4ECXFulIAHBmC2FHNBpY/Ut/3YcO/5TBs5f58FRsaBMm9g==
-X-Received: by 2002:a17:903:40cf:b0:205:9112:efea with SMTP id d9443c01a7336-2059112f137mr73932235ad.35.1725392827404;
-        Tue, 03 Sep 2024 12:47:07 -0700 (PDT)
-Received: from google.com ([2620:15c:9d:2:e682:e3dc:908:eef0])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-206ae913ad2sm2128605ad.39.2024.09.03.12.47.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Sep 2024 12:47:07 -0700 (PDT)
-Date: Tue, 3 Sep 2024 12:47:04 -0700
-From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Andreas Hindborg <nmi@metaspace.dk>,
-	Alexey Dobriyan <adobriyan@gmail.com>,
-	Benno Lossin <benno.lossin@proton.me>, Jens Axboe <axboe@kernel.dk>,
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qRAcwvVd"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BF10C4CEC4;
+	Tue,  3 Sep 2024 20:10:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1725394232;
+	bh=vpwZJNPO0XrbJLguy28wBPuADqR/WcUHSbWi9p0uZDY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=qRAcwvVd2eHpjA3jqDUsvYtdam6X8bME6gg5HXXUOHKZ+buSHVCOcMmKkf6zSFvtH
+	 bc0WLzmSNFI+A96qAImSwLa6SEOI3qy02fBAo4qQn/kDUy4qXzpC7WOwAh52iZhZYj
+	 MRvbvsUJjNNkcXImZdxkv5l5hiidyPLSBkVSR/5iRZ/zHd/9i3gWuWKkQl+kuu0fpi
+	 RILQc+ttytzz/sRz4+/osg27juptkcZH8oq/bG1EtcgAI2O8QBzqN4UB3AyzpPPd0F
+	 zrv6+UGNg6ncZSBphgOeZPhJdjp66/wREu2SSYU/OTit7APZ5rhtoB+AcZ9ySXjuBF
+	 0wppFT6T/T8Kg==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Jens Axboe <axboe@kernel.dk>,
+	rust-for-linux@vger.kernel.org,
+	linux-block@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
 	Andreas Hindborg <a.hindborg@samsung.com>,
-	Boqun Feng <boqun.feng@gmail.com>, linux-block@vger.kernel.org,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH RESEND] block, rust: simplify validate_block_size()
- function
-Message-ID: <ZtdnuH9lWtsPCg-X@google.com>
-References: <878qwaxtsd.fsf@metaspace.dk>
- <Ztdctd0mbsJOBtJV@google.com>
- <CANiq72=GRbxY=3-NP6RutcJjCqRxRftafVZqDD73tureOh20Ew@mail.gmail.com>
+	Andreas Hindborg <a.hindborg@kernel.org>
+Subject: [PATCH] MAINTAINERS: mailmap: Update Andreas Hindborg's email address
+Date: Tue,  3 Sep 2024 22:09:48 +0200
+Message-ID: <20240903200956.68231-1-a.hindborg@kernel.org>
+X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1622; i=a.hindborg@kernel.org; h=from:subject; bh=fioxQcbG3apiE4VFtEFZfVL7qHBv3evTsbReL36QZSQ=; b=LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgpvd0o0bkFGdEFwTDlrQTBEQUFvQjRiZ2FQb mtvWTNjQnl5WmlBR2JYYTV3NzlQRmpZVW1maEdRR0RQejdYVEpXCjhPVWc1YkkwZnVJeFVRMDRz ejh1ZDRrQ013UUFBUW9BSFJZaEJCTEIrVWRXdjN3cUZkYkFFdUc0R2o1NUtHTjMKQlFKbTEydWN BQW9KRU9HNEdqNTVLR04zbG1jUCtnSU5kRWZ3YkR2QVAweHBvOE1LdTlIMjMzeS83MmNVa2JudA oyNFl0QVdlMmswVVFXYW05QXkvVkwxZDVVYVFWYTBwMW8venFVMXltOGR5OVZ5eHNMUGhTZ1Erc mdIVWVtR1RqCk81S3BRVjMyZE8ySkFydGVwMGw4Y3FuQTczOHloSXdLSkpxRFlNSGphajRVWVg3 SXdHOXdxUHBaM2tsOFE3c1AKZEV2eXljclhMSDViYzFiN0FNbGtzWlpNNmFjeU1Cdmp6TjI0SGt zMC9qeVVETmM5VkFoRWI5TWZqN1RjSUpGUgpESFNLcG5Bb1laNlZUYVRyTkJ5N0s5S1ZDN2g5dl huWUg3UDVtcnVLQjkwUTVpMUNrMFUyQjhkRTZPU0VLODFFCko0M3o4MVNPakRZTEJKK3BWV0tqQ kY4SlNnY2FteHR2K0xxcm9ENVZRMUE5WXRRMExFZDNjNzU1cHhCMjJZVlcKS2VCVDFaNC9acHph UEtxRFI5Yk1hNzluUi9sWEE1R2JxQXlpcEZrTjVhM2tBUUZvVi93d1dhM0pBc2l1bDNEMQpOVkR xOWtMZUlnYlJrWG9yNVB4aHYyMzRDemNQVGJlbExGWmVaK2duOVdWSWJTYmhFRHBPVllhRE1UUW d6UEFvCmFCRkhBUkxxaU5qUFVFMWxiMlpRMC9tQ0Vaa1RCbEFJSlpEdzJDS01vOXlzb2RhNnFiN GE2UW9FeWp3YndrUjYKbU9XRk03Y2pvKytPeFpGTWhFRTgxNHJRbklHbkQ4T3pUK2FOcTZMY0M4 NkN0Yk5YbG5VdG5kR28rbk1ON29obgo5ejA5TmxwQk5XOTZHNm1EaHVhL2gxR1NRa1JyNTNIMTV mNTRNSzlZTlpMK0xrenRWOGFNM3hJN1duSFpVMDlDClAyOE9pQ3RKTFV3aENnPT0KPVRiYzEKLS 0tLS1FTkQgUEdQIE1FU1NBR0UtLS0tLQo=
+X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp; fpr=3108C10F46872E248D1FB221376EB100563EF7A7
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CANiq72=GRbxY=3-NP6RutcJjCqRxRftafVZqDD73tureOh20Ew@mail.gmail.com>
 
-On Tue, Sep 03, 2024 at 09:30:53PM +0200, Miguel Ojeda wrote:
-> On Tue, Sep 3, 2024 at 9:00 PM Dmitry Torokhov
-> <dmitry.torokhov@gmail.com> wrote:
-> >
-> > If you want to keep dividing into Rust-land and C-land I'm afraid you
-> > will have 2 islands that do not talk to each other. I really want to be
-> 
-> We are not trying to divide the Rust and C side, quite the opposite.
-> That should be obvious since dividing both sides only hurts the
-> project to begin with.
-> 
-> > able to parse the things quickly and not constantly think if my Rust is
-> > idiomatic enough or I could write the code in a more idiomatic way with
-> > something brand new that just got off the nightly list and moved into
-> > stable.
-> 
-> If a feature is in the minimum support version we have for Rust in the
-> kernel, and it improves the way we write code, then we should consider
-> taking advantage of it.
-> 
-> Now, that particular function call would have compiled since Rust 1.35
-> and ranges were already a concept back in Rust 1.0. So I am not sure
-> why you mention recently stabilized features here.
+Move away from corporate infrastructure for upstream work. Also update
+mailmap.
 
-I was talking in general, not about this exact case, sorry if I was
-unclear. But in general I personally have this issue with Rust and to
-extent also with C++ where I constantly wonder if my code is "idiomatic
-enough" or if it looks obsolete because it is "only" C++14 and not 17
-or 20.
+Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+---
+ .mailmap    | 1 +
+ MAINTAINERS | 4 ++--
+ 2 files changed, 3 insertions(+), 2 deletions(-)
 
-With C usually have no such concerns which allows me to concentrate on
-different things.
-
-> 
-> For this particular case, I don't think it matters too much, and I can
-> see arguments both ways (and we could introduce other ways to avoid
-> the reference or swap the order, e.g. `n.within(a..b)`).
-> 
-> > This is a private function and an implementation detail. Why does it
-> > need to be exposed in documentation at all?
-> 
-> That is a different question -- but even if it should be a private
-> function, it does not mean documentation should be removed (even if
-> currently we do not require documentation for private items).
-
-I think exposing documentation for private function that can change at
-any time and is not callable from outside has little value. That does
-not mean that comments annotating such function have no value. But they
-need to be taken together with the function code, and in this case
-Alexey's concern about comments like "this increments that by 1"
-becomes quite valid.
-
-Thanks.
-
+diff --git a/.mailmap b/.mailmap
+index caf46a652f15..c0e3de93a481 100644
+--- a/.mailmap
++++ b/.mailmap
+@@ -60,6 +60,7 @@ Amit Nischal <quic_anischal@quicinc.com> <anischal@codeaurora.org>
+ Andi Kleen <ak@linux.intel.com> <ak@suse.de>
+ Andi Shyti <andi@etezian.org> <andi.shyti@samsung.com>
+ Andreas Herrmann <aherrman@de.ibm.com>
++Andreas Hindborg <a.hindborg@kernel.org> <a.hindborg@samsung.com>
+ Andrej Shadura <andrew.shadura@collabora.co.uk>
+ Andrej Shadura <andrew@shadura.me> <andrew@beldisplaytech.com>
+ Andrew Morton <akpm@linux-foundation.org>
+diff --git a/MAINTAINERS b/MAINTAINERS
+index fe83ba7194ea..3f932a631420 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -3868,7 +3868,7 @@ F:	kernel/trace/blktrace.c
+ F:	lib/sbitmap.c
+ 
+ BLOCK LAYER DEVICE DRIVER API [RUST]
+-M:	Andreas Hindborg <a.hindborg@samsung.com>
++M:	Andreas Hindborg <a.hindborg@kernel.org>
+ R:	Boqun Feng <boqun.feng@gmail.com>
+ L:	linux-block@vger.kernel.org
+ L:	rust-for-linux@vger.kernel.org
+@@ -19937,7 +19937,7 @@ R:	Boqun Feng <boqun.feng@gmail.com>
+ R:	Gary Guo <gary@garyguo.net>
+ R:	Björn Roy Baron <bjorn3_gh@protonmail.com>
+ R:	Benno Lossin <benno.lossin@proton.me>
+-R:	Andreas Hindborg <a.hindborg@samsung.com>
++R:	Andreas Hindborg <a.hindborg@kernel.org>
+ R:	Alice Ryhl <aliceryhl@google.com>
+ L:	rust-for-linux@vger.kernel.org
+ S:	Supported
 -- 
-Dmitry
+2.46.0
+
+
