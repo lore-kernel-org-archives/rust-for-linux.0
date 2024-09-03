@@ -1,197 +1,108 @@
-Received: from mail-oa1-f48.google.com (mail-oa1-f48.google.com [209.85.160.48])
+Received: from mail-pf1-f179.google.com (mail-pf1-f179.google.com [209.85.210.179])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 365321D5CC0;
-	Tue,  3 Sep 2024 19:08:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7E1E1D7E4E;
+	Tue,  3 Sep 2024 19:31:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725390536; cv=none; b=e6o9FgA/JR8VOxAtp/D8uEP2PCv/Ojsr+hJlZGC0MPrpycnEpNOlOt4a0tAxDv0dcvccRnIDG6KHNAn7K8kVu5DCDvebPSXitpJ2z0SReG3npw9BpqBMmMrHDZ20n38FQ1+ekSvdlwpVrklTVbApELStUEL+T1y3Tb9GObzMPek=
+	t=1725391868; cv=none; b=XDsfKiiQ8nNRIatNQS/8epYwSQKj4kBEF7cuf4LYPvzDg5MI6n1CJnzNzs5jeOt5fPZWS3aO2No1+toCVN6ihfbQzB2tZIlb22X588mC7C6sxbVFmqUFO9+N4SeD9Y+M2Hn7gpdXd50q33XFeq67jsBBMc6WW7SwxtK6fzhtRzQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725390536; c=relaxed/simple;
-	bh=IEXjWfEq84DXfETdW81agNiGv57E65QfxLkph8camuQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=FeE9s09hrfJQSXeQznaXu2nTTmuCfOIYj9N2X7hNug463IRhhUaBJfDSU3GKJJEZxKY/PmTY/UVmzxY+SWG9EUMv64rvv9bF4e80dRsh2dv1o02tWSupQ4ecpzM/9JbelcD8DuQsp92aSrq5vnZ1EMc9SbRQ8AwKBfCMccdtGCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=gVaHKo3p; arc=none smtp.client-ip=209.85.160.48
+	s=arc-20240116; t=1725391868; c=relaxed/simple;
+	bh=PFADzAobtGQyxswhtGzm7oHP5BEdBKmeVvXdsDuxHu0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=unSRvpwn0G2Ikc0iCfrPyQJG2gBHDO9FRV50NQucjI2yJIwJR//opTpEgni9g9OzXRraVzN584b0kxXJOqz3SOadN6L0GRp9D4IiPuQh6spL5R2Mfu0KBpB0YVy8xXQRp6p7cocHm9A/a5NbZ7O00tc3Y9hWpkfcvOYFaSgkv70=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=CcS+yIkM; arc=none smtp.client-ip=209.85.210.179
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="gVaHKo3p"
-Received: by mail-oa1-f48.google.com with SMTP id 586e51a60fabf-277efdcfa63so1329750fac.2;
-        Tue, 03 Sep 2024 12:08:54 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="CcS+yIkM"
+Received: by mail-pf1-f179.google.com with SMTP id d2e1a72fcca58-71420e66ecfso465674b3a.0;
+        Tue, 03 Sep 2024 12:31:06 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1725390534; x=1725995334; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+        d=gmail.com; s=20230601; t=1725391866; x=1725996666; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=UbOQUlni+K3mU+VT36wyrqeCHc06ganEEsHZCUl3X20=;
-        b=gVaHKo3pd3rjnd0wpbzcKEXvVYqwUQGZP/tNoqLMqka6S7C1LP19CdlvWAkJVQqKNg
-         m02lxACZ9DaNLUBQi3SCSCLs/TXJn5u8LQXz/iRJlaZ+kG+k2tQler2Z5KrPT44E6ID/
-         PZXwXtHqtOy7FLb+YfVEMR882apVc3Jo/YFN3+M1D2aqvbmrjd+NwvfNwUl553CdrfrD
-         YQpiqeeiNeNyn0JQ3qRPVOw6cVV88TNnz9D0yh1xZgsfQtFhwSN6RS7/ovucyzBkXCxT
-         YFVvIXG/9nvdLplbW0W8hrTYEvniUm27uhi35Ttqw4BHNvMKpHig5O1L5qDPL+eESnks
-         RDCg==
+        bh=PFADzAobtGQyxswhtGzm7oHP5BEdBKmeVvXdsDuxHu0=;
+        b=CcS+yIkMmnXnv/7MT99+PRqvo9iZAVo+CLtZuwusFiXs+BZRI6fOwNs1uG30LjXw99
+         l3yw0bqwvCKdBAeh9gk3GpyKnABEaq2Oexxd8funle/SgCNta6wnwvZvL4Kan+uzfDls
+         h1MoyYWPqubA0qhpb6k79irPQ0+6OQyNZhovhpLJf4VZQxbWOS6AC1jqZL7UtNRZ404B
+         ZAuN9poQUGX3LlONpdLOjTgo6NLs3iCXMmZPoSWsaUefPonjjSqrspbGQ5MYSWDKf8Kd
+         VkIAbzEI0ZV4TgsUfLQQmYIGh7bCAkSFfaw8qQMUql2pU7zfPcwSY/JiHEJusLrZxZQR
+         u3Ng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725390534; x=1725995334;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20230601; t=1725391866; x=1725996666;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=UbOQUlni+K3mU+VT36wyrqeCHc06ganEEsHZCUl3X20=;
-        b=NU+xpqu7t6NgL99pEr2gpTX45bBiU8qbW2ht9e1ehTzd6BwaqNClDU9S+BATRwThcn
-         ep7Xje0NHtTj4gVdwnBY0Ig39ZK7bZ/GPWCpmvWqRvO9Wnio1rKFsoujqGob89TIz5i/
-         isfRcJP5eG5qomdoAvNbY/nN4M4COrJTE3Hu87B4MweCJFJKGZipV+NDPIsJuaG+9Udw
-         pC4vZeTH58yx46RU/uCwgObKtPY3rUx5hKHwSvDXR0aPbkSQ5azf/jmGuYSGw8V+4oeC
-         +aBKilPWhUkVBBYCB8eX873bCY1+C0Nag4xWWxB51IrFybF91i+PNj65vspLO0016R+o
-         rIvQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW1xQi+QgfItK0eKGA3xxSrnOOLfBqRB4mSdmROeiq7eIRp6lsr6KL7Abfb90YUn9ifvAJsCQW6EP39x8aBp9Y=@vger.kernel.org, AJvYcCXAJ9RSu1LVLcaOnxdcKLK8L7HodN6VElO/KfZwc5xnuJbbG1r7z0Kfe07DaMfl169GOgEHhtDmrEV5L40=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwXef6i/6Ow5zwnLWt/7L43JXHkaV5SVTEq0OXyf0D9O49DQcnE
-	+mzsS+oglOMRlbo2e2KHcuUfi4fm/8nEJIYFSOf4jbOG6a/tgbmp
-X-Google-Smtp-Source: AGHT+IGtCzQWoZOtKA3syrQPJGzUcBg/Ps85zPwRD229jSRfHPmnAAhoD8+rYvbPIs4FoggfBXP+Ow==
-X-Received: by 2002:a05:6870:c110:b0:278:986:1e44 with SMTP id 586e51a60fabf-2780986204amr6402016fac.18.1725390534144;
-        Tue, 03 Sep 2024 12:08:54 -0700 (PDT)
-Received: from pfauth1-smtp.messagingengine.com (fauth1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7a806bfb8f5sm552822085a.12.2024.09.03.12.08.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Sep 2024 12:08:53 -0700 (PDT)
-Received: from phl-compute-03.internal (phl-compute-03.phl.internal [10.202.2.43])
-	by mailfauth.phl.internal (Postfix) with ESMTP id F0E191200087;
-	Tue,  3 Sep 2024 15:08:52 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-03.internal (MEProxy); Tue, 03 Sep 2024 15:08:53 -0400
-X-ME-Sender: <xms:xF7XZhQlqc1otvOeyL3vr-oO9IrY6CSO7MadvUT0j0OJIfsDU9UaNg>
-    <xme:xF7XZqzdulaaoXFRRpZw302oMPagZPhRiMicFT0v21YrS3umSonTtNea0MLEJhQYN
-    eg7L15a84ex8BsklA>
-X-ME-Received: <xmr:xF7XZm1CqUqXTQ_WQnUsVUN7W9BxBYkWjUB_H6f5mBaOidaK56U7Vi8jNxE>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrudehhedgudefgecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
-    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
-    hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddv
-    necuhfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilh
-    drtghomheqnecuggftrfgrthhtvghrnhephfekudfhfeffvdfhhfdvtefhveffhfeftdef
-    vdehjeegkeeftdeggfevfffhveeknecuffhomhgrihhnpehpthhrrdgrshenucevlhhush
-    htvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpegsohhquhhnodhmvghs
-    mhhtphgruhhthhhpvghrshhonhgrlhhithihqdeiledvgeehtdeigedqudejjeekheehhe
-    dvqdgsohhquhhnrdhfvghngheppehgmhgrihhlrdgtohhmsehfihigmhgvrdhnrghmvgdp
-    nhgspghrtghpthhtohepvdehpdhmohguvgepshhmthhpohhuthdprhgtphhtthhopegurg
-    hkrheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepohhjvggurgeskhgvrhhnvghlrdho
-    rhhgpdhrtghpthhtoheprghlvgigrdhgrgihnhhorhesghhmrghilhdrtghomhdprhgtph
-    htthhopeifvggushhonhgrfhesghhmrghilhdrtghomhdprhgtphhtthhopehgrghrhies
-    ghgrrhihghhuohdrnhgvthdprhgtphhtthhopegsjhhorhhnfegpghhhsehprhhothhonh
-    hmrghilhdrtghomhdprhgtphhtthhopegsvghnnhhordhlohhsshhinhesphhrohhtohhn
-    rdhmvgdprhgtphhtthhopegrrdhhihhnuggsohhrghesshgrmhhsuhhnghdrtghomhdprh
-    gtphhtthhopegrlhhitggvrhihhhhlsehgohhoghhlvgdrtghomh
-X-ME-Proxy: <xmx:xF7XZpCiHuPyziMORgpFYPZnudQdourFlgh3PsHv587ReIoX0LPgJA>
-    <xmx:xF7XZqhbHDP7sL-EOBI6lTHHtZ8jL6H0-S1OliblQBCJFX5I87OIZQ>
-    <xmx:xF7XZtqSMu1mueqmLcuIoDlgEocfDDJzCS_N1XQzfh-suPtK4MjBsA>
-    <xmx:xF7XZlj0DU7e5fem_WC7oHUY29dym1oDgRuWFZkJjUbsgb-L23MeUA>
-    <xmx:xF7XZlTmSF9vnAj4mIsBVsorEz-XWWXUeV85wPtlePiIEpaYKmlpB83J>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Tue,
- 3 Sep 2024 15:08:52 -0400 (EDT)
-Date: Tue, 3 Sep 2024 12:08:08 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
-	gary@garyguo.net, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
-	a.hindborg@samsung.com, aliceryhl@google.com,
-	akpm@linux-foundation.org, daniel.almeida@collabora.com,
-	faith.ekstrand@collabora.com, boris.brezillon@collabora.com,
-	lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com,
-	cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com,
-	ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v6 13/26] rust: alloc: implement kernel `Vec` type
-Message-ID: <ZtdemCduZ1KqayXw@boqun-archlinux>
-References: <20240816001216.26575-1-dakr@kernel.org>
- <20240816001216.26575-14-dakr@kernel.org>
+        bh=PFADzAobtGQyxswhtGzm7oHP5BEdBKmeVvXdsDuxHu0=;
+        b=LlTPoRkk294A0TMY4B2x+b5cd9MgR0Gxe/kj++P4FNZPdFKMf/XB7P0taCmxntRoku
+         UoDUjei17Um+IweYSw7Znjk7aDPXNecSVt1lGUB/6TYc6VdYqRnT5wCMQ1GQvV68HhCu
+         YtnLY8S4fdKQqoIzKkMgGfjuU9zJxZbw9Pvn7DXmOZFb5SOqD/vjwRLuilZ3s+utz/IE
+         rSR/Djh2wFEwOuEjwzam26fTjU+E/bzrDOb0tBzq++NjxFMHWzqbPa8Wto8ryK/x+Qnj
+         UXz+3QGGkeU7PFpMzrlZJJ1LCKf2ULxoHysGj6VIJhrJ3ViP7SBDkFMKymXW+28wEGkW
+         n2cQ==
+X-Forwarded-Encrypted: i=1; AJvYcCU4uTFCEgzs5HDVEwWEmPKD28DGEkT4ZiJwo/1h5Qbu3SQSQ/OxAIXp58o9WViNEyuaBuWvOaYeyMcOAm42TMA=@vger.kernel.org, AJvYcCVzfOzqTSuNTbKm94p+6GbspXSYnFPmR3hVDPSHJk/z2owZ0y1idL9PMUe7jGZNGtz6kaI323eyAzetSw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzCTdo680KgyZdZTXBhIBudELNJrEzzq6SDiMJ/yhsoEY9zcFAU
+	agK6dpheUfboFT/KxXKw98htYIqQ+Cp4PT0u+ojI7qPkw3tybIy5nhrTwq4BLrj5PLm3gERxhX8
+	eZsJOnCpHpSfXZHKJwVzJKZSq3BU=
+X-Google-Smtp-Source: AGHT+IHh9CsY4yVhRJ2qs32WZGWKKUWUaDj0SQS4dc0CkDdmN5IqxpmTZiY2wvIddjXFFSwhepjIXKkf8xKyLf+wV08=
+X-Received: by 2002:a05:6a00:2e82:b0:70d:1048:d4eb with SMTP id
+ d2e1a72fcca58-71730730585mr8731761b3a.3.1725391866135; Tue, 03 Sep 2024
+ 12:31:06 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240816001216.26575-14-dakr@kernel.org>
+References: <878qwaxtsd.fsf@metaspace.dk> <Ztdctd0mbsJOBtJV@google.com>
+In-Reply-To: <Ztdctd0mbsJOBtJV@google.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 3 Sep 2024 21:30:53 +0200
+Message-ID: <CANiq72=GRbxY=3-NP6RutcJjCqRxRftafVZqDD73tureOh20Ew@mail.gmail.com>
+Subject: Re: [PATCH RESEND] block, rust: simplify validate_block_size() function
+To: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Cc: Andreas Hindborg <nmi@metaspace.dk>, Alexey Dobriyan <adobriyan@gmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Jens Axboe <axboe@kernel.dk>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Fri, Aug 16, 2024 at 02:10:55AM +0200, Danilo Krummrich wrote:
-> `Vec` provides a contiguous growable array type (such as `Vec`) with
-> contents allocated with the kernel's allocators (e.g. `Kmalloc`,
-> `Vmalloc` or `KVmalloc`).
-> 
-> In contrast to Rust's `Vec` type, the kernel `Vec` type considers the
-> kernel's GFP flags for all appropriate functions, always reports
-> allocation failures through `Result<_, AllocError>` and remains
-> independent from unstable features.
-> 
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-> ---
-[...]
-> +
-> +impl<T, A> Vec<T, A>
-> +where
-> +    A: Allocator,
-> +{
-[...]
-> +    /// Forcefully sets `self.len` to `new_len`.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// - `new_len` must be less than or equal to [`Self::capacity`].
-> +    /// - If `new_len` is greater than `self.len`, all elements within the interval
-> +    ///   [`self.len`,`new_len`] must be initialized.
+On Tue, Sep 3, 2024 at 9:00=E2=80=AFPM Dmitry Torokhov
+<dmitry.torokhov@gmail.com> wrote:
+>
+> If you want to keep dividing into Rust-land and C-land I'm afraid you
+> will have 2 islands that do not talk to each other. I really want to be
 
-Maybe use "[`self.len`, `new_len`)" to indicate `new_len` side is open?
-Also `self.len` may confuse people whether it's the old length or new
-length, could you use `old_len` and add note saying "`old_len` is the
-length before `set_len()`?
+We are not trying to divide the Rust and C side, quite the opposite.
+That should be obvious since dividing both sides only hurts the
+project to begin with.
 
-> +    #[inline]
-> +    pub unsafe fn set_len(&mut self, new_len: usize) {
-> +        self.len = new_len;
-> +    }
-> +
-> +    /// Returns a slice of the entire vector.
-> +    ///
-> +    /// Equivalent to `&s[..]`.
+> able to parse the things quickly and not constantly think if my Rust is
+> idiomatic enough or I could write the code in a more idiomatic way with
+> something brand new that just got off the nightly list and moved into
+> stable.
 
-"s" is used here without pre-definition, it's a bit confusing. Either we
-use an example here, or we can just avoid mentioning it at all?
+If a feature is in the minimum support version we have for Rust in the
+kernel, and it improves the way we write code, then we should consider
+taking advantage of it.
 
-> +    #[inline]
-> +    pub fn as_slice(&self) -> &[T] {
-> +        self
-> +    }
-> +
-> +    /// Returns a mutable slice of the entire vector.
-> +    ///
-> +    /// Equivalent to `&mut s[..]`.
+Now, that particular function call would have compiled since Rust 1.35
+and ranges were already a concept back in Rust 1.0. So I am not sure
+why you mention recently stabilized features here.
 
-Ditto.
+For this particular case, I don't think it matters too much, and I can
+see arguments both ways (and we could introduce other ways to avoid
+the reference or swap the order, e.g. `n.within(a..b)`).
 
-> +    #[inline]
-> +    pub fn as_mut_slice(&mut self) -> &mut [T] {
-> +        self
-> +    }
-> +
-> +    /// Returns a mutable raw pointer to the vector's backing buffer, or, if `T` is a ZST, a
-> +    /// dangling raw pointer.
-> +    #[inline]
-> +    pub fn as_mut_ptr(&self) -> *mut T {
+> This is a private function and an implementation detail. Why does it
+> need to be exposed in documentation at all?
 
-I think this function needs to take a `&mut self` to mirror the
-`as_mut_ptr` of a slice.
+That is a different question -- but even if it should be a private
+function, it does not mean documentation should be removed (even if
+currently we do not require documentation for private items).
 
-Regards,
-Boqun
-
-> +        self.ptr.as_ptr()
-> +    }
-> +
-> +    /// Returns a raw pointer to the vector's backing buffer, or, if `T` is a ZST, a dangling raw
-> +    /// pointer.
-> +    #[inline]
-> +    pub fn as_ptr(&self) -> *const T {
-> +        self.as_mut_ptr()
-> +    }
-> +
-[...]
+Cheers,
+Miguel
