@@ -1,340 +1,89 @@
-Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtpbg151.qq.com (smtpbg151.qq.com [18.169.211.239])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB2A51CF2A2
-	for <rust-for-linux@vger.kernel.org>; Tue,  3 Sep 2024 12:39:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2489F1CA68B;
+	Tue,  3 Sep 2024 13:08:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=18.169.211.239
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725367199; cv=none; b=twJRKXk7nnuNAbjq/VfDkVN8PrN3YcgP9doyvTzBp5eVf8EqjGc9IJp/cq1mCc32D6SBxkRUiVUCmYLXu0c8YtXRy5q87gh0ISNCxTEfwYVEbhTlkk5TtpI+Po8FGTuMW5Jsa7HDxMzJkNB2eJkgXwdZFfsyXQBFzo1lxVasjaM=
+	t=1725368884; cv=none; b=mbAu1GgqASNVcIFRIcVFkKgH21wVVcofSbwwDzUaPLnBLf58UAQfOJPlwjGunnD4FWnk/pnvBg6F9YE9pwCsXiBGxVtaEtgxNc0o20kr9+NxTmJo566MwQ/Pz7tqj31mb0jgj5xAt2feL2iqfezRux+HEIBNyulww+5vtofmAig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725367199; c=relaxed/simple;
-	bh=p+oLt/NahkLJYeV8xLHfHe+eVnUjjD1Fmzp5FFzJrEc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=law6/yTaVUUwjGz4h1onThR0tuwKftSLmusZX+U2qh8TCJNgZ6oAhsLYxFWvgf0w3raekhfiCHiKIl+rbNDATz8GfagWyKALs3BtRUnAFLeMdIeZS+38VvzZZDZ9LJsAk4cHw4KmbSyMYpba8YP26wrt2unYRoXKgx5almHrAoc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch; spf=none smtp.mailfrom=ffwll.ch; dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b=SCHrvGeG; arc=none smtp.client-ip=209.85.128.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ffwll.ch
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b="SCHrvGeG"
-Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-4280ca0791bso45681215e9.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 03 Sep 2024 05:39:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google; t=1725367196; x=1725971996; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=eS0iv/n7MbSe6dw0/hr9KhntehZWi/UAfId00tU1FBU=;
-        b=SCHrvGeGKr5LdLnX6d7GSxPrK0A7KRC4WCufHh2JxV7Vsc0+6jXTubPZLLQ8x6D9dS
-         hAdG/MKZwB9xgf8sn+toghRTZ0xOuJSPMJn/vQwwn1GN4xFb/gGMYWXKnofz0jovYRiG
-         AzBMDq8Kj4ATyPtSd4AZS59geNLA4zFrfINeU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725367196; x=1725971996;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=eS0iv/n7MbSe6dw0/hr9KhntehZWi/UAfId00tU1FBU=;
-        b=fyTcRPn+IWyP5gqAKCdiyDNM8rGjh0Ag2WNMf8bmWJOSTlv5Fgyq/v5gmkedC94PjV
-         sb3FmJVH83ySHzJ0cp37Ml7r0uskv5RJDZG+eEN0qOKFfq6dd4jmNQFEtN/nII55OM5P
-         VJldCGwYr4hzucdUdVleP/XslG8B7+1X1UAi9EtTt0gErzS629bU4Vb9eVZNTLZFArsg
-         j+4CdXNYkvs5a5HHL6MfQ7LrFVhAP6QQ6/2DN9J0mvmt7YAXKdABc5fSeppSbNK4xSl+
-         K019TTwWTD7RRWNLm9yu0EXUiJiDeRZu/X1o5VQGHsFWYon1RY6cv8lmewGhzYngoCBc
-         rvig==
-X-Forwarded-Encrypted: i=1; AJvYcCVYVIAJpSMwFM6vkZ90kpaVPen4qDhzsYRnTBAsfEZj0K9ZYybrcLfMtHi4jr9Ow87ZxwHLE1rTH+x0Xa0C6g==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwgzV9Hvl6GARrFeLnbT7g7KwIK5G1k16rUJRTkHpLJ/mypYdCt
-	S7Y2aluWkb7ftgEa5V0f6gEclSMZQ5h3MMTH7L8/Tk6SO1hhpyFbZ8uFMYhtJOM=
-X-Google-Smtp-Source: AGHT+IHNhD+r/CPo523w/8HFM2TuVsrQ7AuT5zWQJdKE4RvYIw+abb1WIkixGF9ybaxSUJ7T3j7prg==
-X-Received: by 2002:a05:600c:3150:b0:426:6eae:6596 with SMTP id 5b1f17b1804b1-42c8de9dd30mr4970165e9.25.1725367195774;
-        Tue, 03 Sep 2024 05:39:55 -0700 (PDT)
-Received: from phenom.ffwll.local ([2a02:168:57f4:0:5485:d4b2:c087:b497])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42ba63abea3sm208229195e9.28.2024.09.03.05.39.54
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 03 Sep 2024 05:39:55 -0700 (PDT)
-Date: Tue, 3 Sep 2024 14:39:52 +0200
-From: Simona Vetter <simona.vetter@ffwll.ch>
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: Daniel Vetter <daniel.vetter@ffwll.ch>,
-	Danilo Krummrich <dakr@redhat.com>,
-	maarten.lankhorst@linux.intel.com, mripard@kernel.org,
-	tzimmermann@suse.de, airlied@gmail.com, daniel@ffwll.ch,
-	ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me, a.hindborg@samsung.com,
-	aliceryhl@google.com, lina@asahilina.net, pstanner@redhat.com,
-	ajanulgu@redhat.com, lyude@redhat.com, gregkh@linuxfoundation.org,
-	robh@kernel.org, daniel.almeida@collabora.com,
-	rust-for-linux@vger.kernel.org, dri-devel@lists.freedesktop.org,
-	nouveau@lists.freedesktop.org
-Subject: Re: [PATCH v2 3/8] rust: drm: add driver abstractions
-Message-ID: <ZtcDmPf9Zr9wPcjo@phenom.ffwll.local>
-References: <20240618233324.14217-1-dakr@redhat.com>
- <20240618233324.14217-4-dakr@redhat.com>
- <ZtXn0hesji0s_45x@phenom.ffwll.local>
- <Ztbu-wUkH0l3nbUm@pollux>
+	s=arc-20240116; t=1725368884; c=relaxed/simple;
+	bh=Vhnmll9zt72GM45/4xbyanTxdOlRJq74euwmki9CYv4=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=bF0OygW7WJ/hzR/u4YRNNpcRgSo2aDT5HyUt0dZa/h6H92ce6MC6xZVafz+uxk3XscAeypnW6OVubFNdqVHKgk5taDADe9P0HK5y5waoJJVWWw33W0jReDvUWGxOtZYv4fzkNOBvsq4+bOI2pfz2z9YKt1/wW4aKgPZrDHx5NyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iorw.io; spf=none smtp.mailfrom=iorw.io; arc=none smtp.client-ip=18.169.211.239
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iorw.io
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=iorw.io
+X-QQ-mid: bizesmtp88t1725368783t223hx0z
+X-QQ-Originating-IP: qap3eIf9cahdFTsqlxew/Xldv5nVj7nlHj3Cnw0v890=
+Received: from localhost.localdomain ( [203.119.160.23])
+	by bizesmtp.qq.com (ESMTP) with 
+	id ; Tue, 03 Sep 2024 21:06:16 +0800 (CST)
+X-QQ-SSF: 0000000000000000000000000000000
+X-QQ-GoodBg: 0
+X-BIZMAIL-ID: 186613237743599165
+From: Zigit Zo <zig@iorw.io>
+To: ojeda@kernel.org,
+	bjorn3_gh@protonmail.com,
+	richard@nod.at,
+	anton.ivanov@cambridgegreys.com,
+	johannes@sipsolutions.net,
+	tglx@linutronix.de,
+	mingo@redhat.com,
+	nathan@kernel.org,
+	ndesaulniers@google.com,
+	gary@garyguo.net
+Cc: zig@iorw.io,
+	rust-for-linux@vger.kernel.org,
+	linux-um@lists.infradead.org,
+	llvm@lists.linux.dev,
+	x86@kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH 0/2] rust: arch/um: Rust modules support for UML
+Date: Tue,  3 Sep 2024 21:06:04 +0800
+Message-ID: <62F5EEA0B866E9E0+20240903130606.292935-1-zig@iorw.io>
+X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <Ztbu-wUkH0l3nbUm@pollux>
-X-Operating-System: Linux phenom 6.9.12-amd64 
+Content-Transfer-Encoding: 8bit
+X-QQ-SENDSIZE: 520
+Feedback-ID: bizesmtp:iorw.io:qybglogicsvrgz:qybglogicsvrgz8a-1
 
-On Tue, Sep 03, 2024 at 01:11:55PM +0200, Danilo Krummrich wrote:
-> On Mon, Sep 02, 2024 at 06:29:06PM +0200, Daniel Vetter wrote:
-> > On Wed, Jun 19, 2024 at 01:31:39AM +0200, Danilo Krummrich wrote:
-> > > Implement the DRM driver abstractions.
-> > > 
-> > > The `Driver` trait provides the interface to the actual driver to fill
-> > > in the driver specific data, such as the `DriverInfo`, driver features
-> > > and IOCTLs.
-> > > 
-> > > Co-developed-by: Asahi Lina <lina@asahilina.net>
-> > > Signed-off-by: Asahi Lina <lina@asahilina.net>
-> > > Signed-off-by: Danilo Krummrich <dakr@redhat.com>
-> > > ---
-> > >  rust/bindings/bindings_helper.h |   1 +
-> > >  rust/kernel/drm/drv.rs          | 141 ++++++++++++++++++++++++++++++++
-> > >  rust/kernel/drm/mod.rs          |   1 +
-> > >  3 files changed, 143 insertions(+)
-> > >  create mode 100644 rust/kernel/drm/drv.rs
-> > > 
-> > > diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-> > > index ed25b686748e..dc19cb789536 100644
-> > > --- a/rust/bindings/bindings_helper.h
-> > > +++ b/rust/bindings/bindings_helper.h
-> > > @@ -6,6 +6,7 @@
-> > >   * Sorted alphabetically.
-> > >   */
-> > >  
-> > > +#include <drm/drm_drv.h>
-> > >  #include <drm/drm_ioctl.h>
-> > >  #include <kunit/test.h>
-> > >  #include <linux/errname.h>
-> > > diff --git a/rust/kernel/drm/drv.rs b/rust/kernel/drm/drv.rs
-> > > new file mode 100644
-> > > index 000000000000..cd594a32f9e4
-> > > --- /dev/null
-> > > +++ b/rust/kernel/drm/drv.rs
-> > > @@ -0,0 +1,141 @@
-> > > +// SPDX-License-Identifier: GPL-2.0 OR MIT
-> > > +
-> > > +//! DRM driver core.
-> > > +//!
-> > > +//! C header: [`include/linux/drm/drm_drv.h`](srctree/include/linux/drm/drm_drv.h)
-> > > +
-> > > +use crate::{bindings, drm, private::Sealed, str::CStr, types::ForeignOwnable};
-> > > +use macros::vtable;
-> > > +
-> > > +/// Driver use the GEM memory manager. This should be set for all modern drivers.
-> > > +pub const FEAT_GEM: u32 = bindings::drm_driver_feature_DRIVER_GEM;
-> > > +/// Driver supports mode setting interfaces (KMS).
-> > > +pub const FEAT_MODESET: u32 = bindings::drm_driver_feature_DRIVER_MODESET;
-> > > +/// Driver supports dedicated render nodes.
-> > > +pub const FEAT_RENDER: u32 = bindings::drm_driver_feature_DRIVER_RENDER;
-> > > +/// Driver supports the full atomic modesetting userspace API.
-> > > +///
-> > > +/// Drivers which only use atomic internally, but do not support the full userspace API (e.g. not
-> > > +/// all properties converted to atomic, or multi-plane updates are not guaranteed to be tear-free)
-> > > +/// should not set this flag.
-> > > +pub const FEAT_ATOMIC: u32 = bindings::drm_driver_feature_DRIVER_ATOMIC;
-> > > +/// Driver supports DRM sync objects for explicit synchronization of command submission.
-> > > +pub const FEAT_SYNCOBJ: u32 = bindings::drm_driver_feature_DRIVER_SYNCOBJ;
-> > > +/// Driver supports the timeline flavor of DRM sync objects for explicit synchronization of command
-> > > +/// submission.
-> > > +pub const FEAT_SYNCOBJ_TIMELINE: u32 = bindings::drm_driver_feature_DRIVER_SYNCOBJ_TIMELINE;
-> > > +/// Driver supports compute acceleration devices. This flag is mutually exclusive with `FEAT_RENDER`
-> > > +/// and `FEAT_MODESET`. Devices that support both graphics and compute acceleration should be
-> > > +/// handled by two drivers that are connected using auxiliary bus.
-> > > +pub const FEAT_COMPUTE_ACCEL: u32 = bindings::drm_driver_feature_DRIVER_COMPUTE_ACCEL;
-> > > +/// Driver supports user defined GPU VA bindings for GEM objects.
-> > > +pub const FEAT_GEM_GPUVA: u32 = bindings::drm_driver_feature_DRIVER_GEM_GPUVA;
-> > > +/// Driver supports and requires cursor hotspot information in the cursor plane (e.g. cursor plane
-> > > +/// has to actually track the mouse cursor and the clients are required to set hotspot in order for
-> > > +/// the cursor planes to work correctly).
-> > > +pub const FEAT_CURSOR_HOTSPOT: u32 = bindings::drm_driver_feature_DRIVER_CURSOR_HOTSPOT;
-> > > +
-> > > +/// Information data for a DRM Driver.
-> > > +pub struct DriverInfo {
-> > > +    /// Driver major version.
-> > > +    pub major: i32,
-> > > +    /// Driver minor version.
-> > > +    pub minor: i32,
-> > > +    /// Driver patchlevel version.
-> > > +    pub patchlevel: i32,
-> > > +    /// Driver name.
-> > > +    pub name: &'static CStr,
-> > > +    /// Driver description.
-> > > +    pub desc: &'static CStr,
-> > > +    /// Driver date.
-> > > +    pub date: &'static CStr,
-> > > +}
-> > > +
-> > > +/// Internal memory management operation set, normally created by memory managers (e.g. GEM).
-> > > +///
-> > > +/// See `kernel::drm::gem` and `kernel::drm::gem::shmem`.
-> > > +pub struct AllocOps {
-> > > +    pub(crate) gem_create_object: Option<
-> > > +        unsafe extern "C" fn(
-> > > +            dev: *mut bindings::drm_device,
-> > > +            size: usize,
-> > > +        ) -> *mut bindings::drm_gem_object,
-> > > +    >,
-> > > +    pub(crate) prime_handle_to_fd: Option<
-> > > +        unsafe extern "C" fn(
-> > > +            dev: *mut bindings::drm_device,
-> > > +            file_priv: *mut bindings::drm_file,
-> > > +            handle: u32,
-> > > +            flags: u32,
-> > > +            prime_fd: *mut core::ffi::c_int,
-> > > +        ) -> core::ffi::c_int,
-> > > +    >,
-> > > +    pub(crate) prime_fd_to_handle: Option<
-> > > +        unsafe extern "C" fn(
-> > > +            dev: *mut bindings::drm_device,
-> > > +            file_priv: *mut bindings::drm_file,
-> > > +            prime_fd: core::ffi::c_int,
-> > > +            handle: *mut u32,
-> > > +        ) -> core::ffi::c_int,
-> > > +    >,
-> > > +    pub(crate) gem_prime_import: Option<
-> > > +        unsafe extern "C" fn(
-> > > +            dev: *mut bindings::drm_device,
-> > > +            dma_buf: *mut bindings::dma_buf,
-> > > +        ) -> *mut bindings::drm_gem_object,
-> > > +    >,
-> > > +    pub(crate) gem_prime_import_sg_table: Option<
-> > > +        unsafe extern "C" fn(
-> > > +            dev: *mut bindings::drm_device,
-> > > +            attach: *mut bindings::dma_buf_attachment,
-> > > +            sgt: *mut bindings::sg_table,
-> > > +        ) -> *mut bindings::drm_gem_object,
-> > > +    >,
-> > > +    pub(crate) dumb_create: Option<
-> > > +        unsafe extern "C" fn(
-> > > +            file_priv: *mut bindings::drm_file,
-> > > +            dev: *mut bindings::drm_device,
-> > > +            args: *mut bindings::drm_mode_create_dumb,
-> > > +        ) -> core::ffi::c_int,
-> > > +    >,
-> > > +    pub(crate) dumb_map_offset: Option<
-> > > +        unsafe extern "C" fn(
-> > > +            file_priv: *mut bindings::drm_file,
-> > > +            dev: *mut bindings::drm_device,
-> > > +            handle: u32,
-> > > +            offset: *mut u64,
-> > > +        ) -> core::ffi::c_int,
-> > > +    >,
-> > > +}
-> > > +
-> > > +/// Trait for memory manager implementations. Implemented internally.
-> > > +pub trait AllocImpl: Sealed {
-> > > +    /// The C callback operations for this memory manager.
-> > > +    const ALLOC_OPS: AllocOps;
-> > > +}
-> > > +
-> > > +/// The DRM `Driver` trait.
-> > > +///
-> > > +/// This trait must be implemented by drivers in order to create a `struct drm_device` and `struct
-> > > +/// drm_driver` to be registered in the DRM subsystem.
-> > > +#[vtable]
-> > > +pub trait Driver {
-> > > +    /// Context data associated with the DRM driver
-> > > +    ///
-> > > +    /// Determines the type of the context data passed to each of the methods of the trait.
-> > > +    type Data: ForeignOwnable + Sync + Send;
-> > > +
-> > > +    /// The type used to manage memory for this driver.
-> > > +    ///
-> > > +    /// Should be either `drm::gem::Object<T>` or `drm::gem::shmem::Object<T>`.
-> > > +    type Object: AllocImpl;
-> > 
-> > Bit similar comment to what I discussed at length with lyude, drivers
-> > might have a need for different implementations. But I think from the kms
-> > discussions we have solid solution for that, so I think we should be fine.
-> > 
-> > > +
-> > > +    /// Driver metadata
-> > > +    const INFO: DriverInfo;
-> > > +
-> > > +    /// Feature flags
-> > > +    const FEATURES: u32;
-> > 
-> > I think there's a type safety issue here with allowing drivers to muck
-> > with these directly. Example:
-> > 
-> > - If you don't set FEAT_GEM but try to use gem C functions, stuff blows up
-> >   because the core doesn't call drm_gem_init() in that case.
-> 
-> Indeed. Ideally, we'd want the feature flags to be automatically set, when a
-> corresponding implementation is provided by the driver.
-> 
-> For now, as you say, GEM can just be mandatory I think.
-> 
-> > 
-> > - For modesetting it's more fun because there mandatory init functions are
-> >   meant to be called by the driver, in the right sequence, interleaved
-> >   with other driver setup code for all the right modeset objects. If you
-> >   get it wrong you go boom.
-> 
-> My proposal was to just have another associated `Kms` type for `Driver` that
-> provides the corresponding callbacks for initialization. KMS initialization
-> functions could then be exposed only through those callbacks, such that they
-> can't be called after registration.
+The series make Rust modules running under x86_64 UML, as a supplement
+for the previous work:
+- https://lore.kernel.org/rust-for-linux/20221217044436.4138642-1-davidgow@google.com/
 
-Hm yeah I guess callbacks works too. No idea whether that's the rust way
-or not though, at least on the C side callbacks for init are kinda
-midlayer smell and tend to be in the way.
--Sima
+The previous work by David (many thanks!) has made the Rust UML compiles,
+and for the builtin modules, it works as expected. But for loadable
+modules, the UML will complain
 
-> 
-> > 
-> > For the modeset side of things I've dumped a pile of comments on lyude's
-> > patches already: Essentially during registration I think we need a special
-> > drmKmsDriverInit object or phantom type or so, so that you can proof
-> > you're registering kms objects at the right time, with the rust
-> > abstraction calling all the other functions around that in the right
-> > order.
-> > 
-> > For gem I think we should flat out not allow non-gem drivers in rust. At
-> > least until someone comes up with a need for a non-gem driver.
-> > 
-> > For some of the values like hotspot cursor support we might need to change
-> > the rust abstraction to compute these at runtime driver init, and then set
-> > them somewhere in the runtime data structure instead of having them
-> > statically sepcified in drm_driver->features.
-> > 
-> > In general these feature flag are midlayer design and that tends to be
-> > bad, rust is just the messenger here.
-> > 
-> > Cheers, Sima
-> > 
-> > 
-> > > +
-> > > +    /// IOCTL list. See `kernel::drm::ioctl::declare_drm_ioctls!{}`.
-> > > +    const IOCTLS: &'static [drm::ioctl::DrmIoctlDescriptor];
-> > > +}
-> > > diff --git a/rust/kernel/drm/mod.rs b/rust/kernel/drm/mod.rs
-> > > index 9ec6d7cbcaf3..d987c56b3cec 100644
-> > > --- a/rust/kernel/drm/mod.rs
-> > > +++ b/rust/kernel/drm/mod.rs
-> > > @@ -2,4 +2,5 @@
-> > >  
-> > >  //! DRM subsystem abstractions.
-> > >  
-> > > +pub mod drv;
-> > >  pub mod ioctl;
-> > > -- 
-> > > 2.45.1
-> > > 
-> > 
-> > -- 
-> > Simona Vetter
-> > Software Engineer, Intel Corporation
-> > http://blog.ffwll.ch
-> > 
+  'Unknown rela relocation: 9'
 
+when we try to 'insmod rust_print.ko'. That's because the modules are
+compiled against '-Crelocation-model=pie', makes the LLVM treat the
+modules as PIE executables, but they are just static modules.
+
+Besides, the Rust's code model for x86_64 UML is still 'kernel', leading
+some relocations "overflowed", we keep it the same as 'KBUILD_CFLAGS'
+set in UML ('large' here) to address it.
+
+Now we can test our Rust modules in UML.
+
+Regards,
+-- Zigit
+
+Zigit Zo (2):
+  rust: arch/um: use 'static' relocation model for uml modules
+  rust: arch/um: use 'large' code model for uml
+
+ arch/um/Makefile | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+
+base-commit: 431c1646e1f86b949fa3685efc50b660a364c2b6
 -- 
-Simona Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
+2.46.0
+
