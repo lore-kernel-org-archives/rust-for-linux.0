@@ -1,156 +1,101 @@
-Received: from pfout8-smtp.messagingengine.com (fout8-smtp.messagingengine.com [103.168.172.151])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC21C18BC1D;
-	Tue,  3 Sep 2024 17:55:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.151
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A39BD20E3;
+	Tue,  3 Sep 2024 17:57:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725386108; cv=none; b=V7E68ItXxCZMJodOgPu7Aw/qgmaARYeUw3kDRORqOmSTHCIbFQOHCujUFmt1AfT1XtPEKLpC70hTEzqlKcg5DzCTvjHqVAU/I+Vi42QzfPWrXUi2YfpPKxnyK0xywXqLfNRILQud+wOcOQGgaO0xJlYhX1cUH78CAAUobkVWf8U=
+	t=1725386227; cv=none; b=njBOQ2oO8Wx6EfyfPQbl8L9GFgXtFQlLtQ8P0R8aEX/1zava7yGI/jtYQv8KEExKqLypA1SnXT56bZTTgJFpmRGpybmzICFIvGw/LPAyG2KSYX5UQm85SWHJ5Ypq9QN5OPFlmXgcTRK1b88b3Dg8gdB3khFcxn3BwfRWBHPS4as=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725386108; c=relaxed/simple;
-	bh=37evq7OXVd1o3LryU5tBnSFjiHmbXWuaq7kxeMtQ1tU=;
-	h=MIME-Version:Date:From:To:Cc:Message-Id:In-Reply-To:References:
-	 Subject:Content-Type; b=mZ5pvlYWn1UblO1TBrwyGvXfsQ5GKt8/sSiMW0WLuxS1a/rn/TvM8oPHOm9WSSUgT2bsy5Mz85wKD6Yn/Y/9OEFM9puLv+vMsUDjLMD54BmZyg/TXiRsIbDR/ugnGjqsMdn2uOi1eDxflmhwof4twx9TG01RVTB6Do2OZfnZ/hU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=flygoat.com; spf=pass smtp.mailfrom=flygoat.com; dkim=pass (2048-bit key) header.d=flygoat.com header.i=@flygoat.com header.b=Moo2wn3Y; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=OKci0VBm; arc=none smtp.client-ip=103.168.172.151
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=flygoat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flygoat.com
+	s=arc-20240116; t=1725386227; c=relaxed/simple;
+	bh=t5Pvfhc9ofOfcldHQJ9u+ljAsffSZtYZTCoBxKuC0ig=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Hqmh6VKbQA7rN0VEWknSYlTYdFFGZTUrri+zH656QfKeV3XnvI4PhPn97GRtU1LzqvGPCbyIMrSFuEM93ZgyF0n0YZ6lhKwYQrPzW2ex1wL9iCMl5W7TDxgCq8SqH/11lrLpGZOA4tKqHGmg5ERjMvxvuiihBWRztCBqjceRlSI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=RDtOvP3V; arc=none smtp.client-ip=209.85.221.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=flygoat.com header.i=@flygoat.com header.b="Moo2wn3Y";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="OKci0VBm"
-Received: from phl-compute-05.internal (phl-compute-05.phl.internal [10.202.2.45])
-	by mailfout.phl.internal (Postfix) with ESMTP id F1D7713804C2;
-	Tue,  3 Sep 2024 13:55:05 -0400 (EDT)
-Received: from phl-imap-12 ([10.202.2.86])
-  by phl-compute-05.internal (MEProxy); Tue, 03 Sep 2024 13:55:06 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1725386105;
-	 x=1725472505; bh=37evq7OXVd1o3LryU5tBnSFjiHmbXWuaq7kxeMtQ1tU=; b=
-	Moo2wn3Y6WCs1URJbxvK5gtu1ZToa7Zni3vxmE7obzQyRJn20r6WyvC8N1mtKBzr
-	KZH/LoPhTOQpCggk3Hok4R0oPTHD5mjQLQ7ln6evNRvneQXl5lg/FiXdUQnh3YoL
-	42QIvYA0qO6zCJYrSAciDBmHEAMC3gDywagFgeL9mxAe1mpxxbaK8IYYQe5p+wu2
-	nJarnfvLVpgt1/o1lZPsJwbp4kPOLq79yjxC2wQB5x0R5p3N9t8ZyowTYp7vmP38
-	Ov+iZ6ciNYzuPDf7vBjw8HnA1mYyM9wjYWI1iy6YAAUYuu2ag41m0O8chUfAjGZI
-	WLH4wdpI0r95308Z3B6E5A==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1725386105; x=
-	1725472505; bh=37evq7OXVd1o3LryU5tBnSFjiHmbXWuaq7kxeMtQ1tU=; b=O
-	Kci0VBmFXv6/+sVXOuqU4tP/J/aP5vCYWtQclpXo5zcw21hK17LVCpTsH5kn8wAS
-	A0cybhaOCzrd96lcRRTJqFvzKZGnOlpEc/EWR8kMCs2R6r6kx7arFurMeIwUoNdF
-	qdwj4TRrKYTWODDxZsWXPOx6/4UogwJNaprgkUJ99NWgNhESG/Skng6y9q9Wg6ej
-	JcIVtpedGrkB5XlsPA9SkJDDTEEICY/ZMcUZr+OBroPFAA2fALELkFc/mYSvDNsL
-	SKXTkfs8wuTSabjS6kTXVNhg42RoxTiAZYvPSZlJUwkpBMZE7cyHz05bMMuisl9R
-	KnGcLM/jbbVK2hkd1FEGQ==
-X-ME-Sender: <xms:eU3XZkeEcPm2N_fIACF3sWlRA7fx7YTTJSUTHkt0htHoJAiE-oylTA>
-    <xme:eU3XZmM4KhfyeuTLS12g5pR2gH_GZmOEyuhhC9m1rKDMaVEM9KFeSMQgbmtt9hOK6
-    OqBpIwVZGLjKg24T2E>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrudehhedguddukecutefuodetggdotefrod
-    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
-    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
-    hnthhsucdlqddutddtmdenucfjughrpefoggffhffvvefkjghfufgtgfesthhqredtredt
-    jeenucfhrhhomhepfdflihgrgihunhcujggrnhhgfdcuoehjihgrgihunhdrhigrnhhgse
-    hflhihghhorghtrdgtohhmqeenucggtffrrghtthgvrhhnpeejheefuddvtdfggfdvffek
-    teehhfelgfdvvedvkeeuffefkeehheegvefhveetjeenucevlhhushhtvghrufhiiigvpe
-    dunecurfgrrhgrmhepmhgrihhlfhhrohhmpehjihgrgihunhdrhigrnhhgsehflhihghho
-    rghtrdgtohhmpdhnsggprhgtphhtthhopeegtddpmhhouggvpehsmhhtphhouhhtpdhrtg
-    hpthhtohepsghpsegrlhhivghnkedruggvpdhrtghpthhtohepthhssghoghgvnhgusegr
-    lhhphhgrrdhfrhgrnhhkvghnrdguvgdprhgtphhtthhopehmrghrkhdrrhhuthhlrghnug
-    esrghrmhdrtghomhdprhgtphhtthhopegrnhhtohhnrdhivhgrnhhovhestggrmhgsrhhi
-    ughgvghgrhgvhihsrdgtohhmpdhrtghpthhtohepnhhitgholhgrshesfhhjrghslhgvrd
-    gvuhdprhgtphhtthhopehgrghrhiesghgrrhihghhuohdrnhgvthdprhgtphhtthhopegr
-    lhgvgidrghgrhihnohhrsehgmhgrihhlrdgtohhmpdhrtghpthhtohepsghoqhhunhdrfh
-    gvnhhgsehgmhgrihhlrdgtohhmpdhrtghpthhtohepmhhighhuvghlrdhojhgvuggrrdhs
-    rghnughonhhishesghhmrghilhdrtghomh
-X-ME-Proxy: <xmx:eU3XZlhMR5hSOSE7wF6lDgDyrnutKD2EF9GKEiaqWzvJRzIo-rMN2A>
-    <xmx:eU3XZp_99dpfkzk8G_1WmY9G5YXDGtVu7mqZjxXEySvjb4YGFG4Pjw>
-    <xmx:eU3XZgubcSmwKeA2j0cL6SRW_KNh_FL5bI9KbTLu4hLKUrkCX-VYyw>
-    <xmx:eU3XZgGCta-RgpGuud7BhfyxZYDQmth0-_xvPgAsMauDtBEfrDf2lg>
-    <xmx:eU3XZisFZK27rMpmFnW2pejSCaE8ngfxf4dAhYjYTZGret47doCBW3xG>
-Feedback-ID: ifd894703:Fastmail
-Received: by mailuser.phl.internal (Postfix, from userid 501)
-	id 23E241C207BB; Tue,  3 Sep 2024 13:55:05 -0400 (EDT)
-X-Mailer: MessagingEngine.com Webmail Interface
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="RDtOvP3V"
+Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-374b25263a3so2438213f8f.0;
+        Tue, 03 Sep 2024 10:57:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1725386224; x=1725991024; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=og7Qx78AsRkTiyheXWJhyRERbOVyeMXkKMDVEahcXL8=;
+        b=RDtOvP3VbHzs/uLelgm2p/1albv/tLDn1LOq37dOMnCrkrLXAU2hDp8G00IMTNiJnv
+         kSUvM7U93LX6mzZC6+Vux4y9f6J6AbNC+HyX1PZAiLwRDft/9USSAIUBOETwt8VQOjhW
+         e5UDZMebEfJBLNehUTPvgZuhPQNP6xHfcMIarqQ5wMX8m7lWreqM5EJPClGibq0AmAUG
+         YIk4Pwb/x46zq2CSzIr4FxgXqNv2W4And2QmnTU+9K/Y5pcDTkrLEEWimqeC/Zd6aav3
+         ZIaeAveXvZjPmcdWURd63/Mv000/Fc+W8aW7biDLXSQlUhh4s7ULYT7BHJ96SOllgE6h
+         c93w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725386224; x=1725991024;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=og7Qx78AsRkTiyheXWJhyRERbOVyeMXkKMDVEahcXL8=;
+        b=s4w6XYaDmCZJChfQriDQgzhjIW192F2TlSAGd+xtwDWXHC8PwRX+gzs761aQOwIfJj
+         t7vstTKx1Pt31gmzF6DZyxiAeIetNsLTozWEnO3cipoZgVU7CwRxkIUNte/nqlKB4Z3/
+         CHfSMsegjKFYMJ2z1F3hSIDk7uZrH+jZk+n2VYGNTNSCaxyAjH8A8N4P6XXvLlog6kaN
+         R857dCAMQbe87iZ2dfT8iyc61x4GwWL9RdXHmipptFbpSxCpuTycxjTKyLObeylYRDyc
+         U6eV0ktMQrO9qshFPZT/tdtOfvJGBw2ZXFxZ7QrSUDSnHEoj7KCSjBc1nJty3zDDC0RZ
+         bf9Q==
+X-Forwarded-Encrypted: i=1; AJvYcCXOo8DNneInBOqsfl/7jE5RaB2EDOPSJtL3ZsBTVRvPJtwMEpG0Wj2LKcYF64yupG8YHRW7LHoAgrGY9g==@vger.kernel.org, AJvYcCXpETbYgzzxaE61e63Dkml+JkeC+V1MICVxr+4330GTPS0u6rGRYO0XMc+hRHiWIIC95V+eInOgPia/OkpG@vger.kernel.org, AJvYcCXxsD7DjE80QxMk2GfnHdBMWJjJuoOhnjpGetMdwFhv5VvaI08pxSob5GPzPGlsmPAH+vuRtoi7ZgENSXaiBkM=@vger.kernel.org
+X-Gm-Message-State: AOJu0YytU4onQ5+0UKJomykCkuxuNTzM+w0C7QZBfMIRPuYvzjnFEibL
+	uaElqbS1Xxhk8rdElYu9Mg+mFgiNIqjARSbsavyINJuXGPranojE9wgA0Jc0QzdcZ4+h0I0NL5n
+	zF7AIH3x4+bX+216oKh77FRBBx3M=
+X-Google-Smtp-Source: AGHT+IFFaAhnHajP0Mu1GUqtdTLzVqyC0SfkvkeA2JtuBR3rjDvsP/p5u50uEsrX+aF03C1Ksz8g5ZMS3FVGmFnjblk=
+X-Received: by 2002:a05:6000:144e:b0:374:d2a3:9806 with SMTP id
+ ffacd0b85a97d-374d2a3989cmr3996471f8f.2.1725386223195; Tue, 03 Sep 2024
+ 10:57:03 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Date: Tue, 03 Sep 2024 18:54:44 +0100
-From: "Jiaxun Yang" <jiaxun.yang@flygoat.com>
-To: "Miguel Ojeda" <miguel.ojeda.sandonis@gmail.com>
-Cc: "Masahiro Yamada" <masahiroy@kernel.org>,
- "Nathan Chancellor" <nathan@kernel.org>,
- "Nicolas Schier" <nicolas@fjasle.eu>,
- "Richard Weinberger" <richard@nod.at>,
- "Anton Ivanov" <anton.ivanov@cambridgegreys.com>,
- "Johannes Berg" <johannes@sipsolutions.net>,
- "Thomas Gleixner" <tglx@linutronix.de>, "Ingo Molnar" <mingo@redhat.com>,
- "Borislav Petkov" <bp@alien8.de>,
- "Dave Hansen" <dave.hansen@linux.intel.com>, x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>, "Miguel Ojeda" <ojeda@kernel.org>,
- "Alex Gaynor" <alex.gaynor@gmail.com>,
- "Wedson Almeida Filho" <wedsonaf@gmail.com>,
- "Boqun Feng" <boqun.feng@gmail.com>, "Gary Guo" <gary@garyguo.net>,
- =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- "Benno Lossin" <benno.lossin@proton.me>,
- "Andreas Hindborg" <a.hindborg@samsung.com>,
- "Alice Ryhl" <aliceryhl@google.com>,
- "Thomas Bogendoerfer" <tsbogend@alpha.franken.de>,
- "Steven Rostedt" <rostedt@goodmis.org>,
- "Masami Hiramatsu" <mhiramat@kernel.org>,
- "Mark Rutland" <mark.rutland@arm.com>,
- "Jonathan Corbet" <corbet@lwn.net>, "Alex Shi" <alexs@kernel.org>,
- "Yanteng Si" <siyanteng@loongson.cn>,
- "Nick Desaulniers" <ndesaulniers@google.com>,
- "Bill Wendling" <morbo@google.com>,
- "Justin Stitt" <justinstitt@google.com>, linux-kbuild@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-um@lists.infradead.org,
- rust-for-linux@vger.kernel.org,
- "linux-mips@vger.kernel.org" <linux-mips@vger.kernel.org>,
- linux-trace-kernel@vger.kernel.org, linux-doc@vger.kernel.org,
- llvm@lists.linux.dev
-Message-Id: <e7d4e600-d8a0-42d6-8bf5-6877f52b2d18@app.fastmail.com>
-In-Reply-To: 
- <CANiq72mKZukJ+V_fXtvfBxN-WVBBOr1pZJ3iKrWgagTrJC4pdg@mail.gmail.com>
-References: <20240903-mips-rust-v1-0-0fdf0b2fd58f@flygoat.com>
- <20240903-mips-rust-v1-2-0fdf0b2fd58f@flygoat.com>
- <CANiq72mKZukJ+V_fXtvfBxN-WVBBOr1pZJ3iKrWgagTrJC4pdg@mail.gmail.com>
-Subject: Re: [PATCH 2/3] MIPS: Rename mips_instruction type to workaround bindgen issue
-Content-Type: text/plain; charset=utf-8
+References: <20240902211553.103807-1-frazar00@gmail.com> <CANiq72naAHm81thntNdaEoq8rMVH0gVNAKB_Fd5dy2Eu1pk5mA@mail.gmail.com>
+In-Reply-To: <CANiq72naAHm81thntNdaEoq8rMVH0gVNAKB_Fd5dy2Eu1pk5mA@mail.gmail.com>
+From: Francesco Zardi <frazar00@gmail.com>
+Date: Tue, 3 Sep 2024 19:56:51 +0200
+Message-ID: <CABHx2S88vqMofg4sn=ybzxnKu9th-TSx3_iTVuVz6r=1rHuaXw@mail.gmail.com>
+Subject: Re: [PATCH] docs: rust: fix formatting for kernel::block::mq::Request
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Alice Ryhl <aliceryhl@google.com>, Jens Axboe <axboe@kernel.dk>, rust-for-linux@vger.kernel.org, 
+	linux-block@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-
-
-=E5=9C=A82024=E5=B9=B49=E6=9C=883=E6=97=A5=E4=B9=9D=E6=9C=88 =E4=B8=8B=E5=
-=8D=886:43=EF=BC=8CMiguel Ojeda=E5=86=99=E9=81=93=EF=BC=9A
-> On Tue, Sep 3, 2024 at 7:15=E2=80=AFPM Jiaxun Yang <jiaxun.yang@flygoa=
-t.com> wrote:
->>
->> We have a union and a type both named after mips_instruction,
->> rust bindgen is not happy with this kind of naming alias.
+On Tue, Sep 3, 2024 at 12:38=E2=80=AFPM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
+> On Mon, Sep 2, 2024 at 11:16=E2=80=AFPM Francesco Zardi <frazar00@gmail.c=
+om> wrote:
+> > Closes: https://github.com/Rust-for-Linux/linux/issues/1108
+> >
+> > Signed-off-by: Francesco Zardi <frazar00@gmail.com>
+> > Suggested-by: Miguel Ojeda <ojeda@kernel.org>
 >
-> For this sort of thing, you may be able to add it to the block list at
-> `rust/bindgen_parameters`, so that you don't need to change any C
-> code.
-
-Thanks for the tip!
-
-Given that it's trivial to avoid in C code I'd still prefer to fix the a=
-ctual
-code.=20
-
-Thanks
+> If we considered these a fix (I think at least for the first bullet
+> point it makes sense to do so), these should probably be (in this
+> order, and without blank newlines):
 >
-> I hope that helps!
+>     Reported-by:
+>     Closes:
+>     Signed-off-by:
 >
-> Cheers,
-> Miguel
+> But depending on the maintainer they may do this without a v2 when
+> picking it up -- it depends on what Andreas wants to do (it could go
+> through Block or Rust).
 
---=20
-- Jiaxun
+Thank you very much Miguel for the very clear and quick feedback.
+
+I will submit a v2 with the suggested fixes.
+
+Regards,
+Francesco
