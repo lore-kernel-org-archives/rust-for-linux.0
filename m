@@ -1,80 +1,151 @@
-Received: from smtpbgbr1.qq.com (smtpbgbr1.qq.com [54.207.19.206])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 018241A724C;
-	Tue,  3 Sep 2024 13:08:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=54.207.19.206
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20B5617C7C3
+	for <rust-for-linux@vger.kernel.org>; Tue,  3 Sep 2024 15:12:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725368891; cv=none; b=IYFbgjfs0E/V9losBhKX6lsAqmGw3veRFA9AoeytL/8+u1Gc8E9ViWyTIuOpbjrhkF3bebiJcjaXRu1UcYjsEAKCw1UId5Hf/42daBJNVC8EUOiKe62GchYC9qdwNHPj5KJpFeEQPqTCRH6WRfd8sZMNfmm49xMtq/SZEbPw68k=
+	t=1725376323; cv=none; b=aBHvMid5HNzoHVt6LkOrZtbiFvsDhBplcPj2JssOvwVWMURCKlKgJkMUa/CwP5HIhVy8Y1S4ZsoVKMEeFrMTyxhW0OXSOSCx5PIBe4fLW0YXTeYn0JxTUApA9dPgqDVuYKqbjCos9FMHn5no2loNFfqx0edvmNILwsjj7hM+YXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725368891; c=relaxed/simple;
-	bh=KHxS+RzsYQVUstki9O9G2Fth9NOTM3+FP0WNjRpmWGw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cGFrB5if3PLFA9Il9Y0nMqQjTYKqn4wr9d1IEvgneGCtxb6kcJ54EUUjaL8H3MjuoJEB4jMLlILkrJz7vOgjF9pVqWnLtbjdyphlgGC3hzIemYE2tVAtlGI4ixrjHxkXIrZo9d4Q7M0PcK4YBefqU1tHTbdA8aGQcWNleuERD3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iorw.io; spf=none smtp.mailfrom=iorw.io; arc=none smtp.client-ip=54.207.19.206
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iorw.io
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=iorw.io
-X-QQ-mid: bizesmtp88t1725368797tvffge9y
-X-QQ-Originating-IP: IniwHKqgiTyeNYqQCtQD+YECBJEHxDU1F/TeNYWWD5k=
-Received: from localhost.localdomain ( [203.119.160.23])
-	by bizesmtp.qq.com (ESMTP) with 
-	id ; Tue, 03 Sep 2024 21:06:31 +0800 (CST)
-X-QQ-SSF: 0000000000000000000000000000000
-X-QQ-GoodBg: 0
-X-BIZMAIL-ID: 14936481488341771613
-From: Zigit Zo <zig@iorw.io>
-To: ojeda@kernel.org,
-	bjorn3_gh@protonmail.com,
-	richard@nod.at,
-	anton.ivanov@cambridgegreys.com,
-	johannes@sipsolutions.net,
-	tglx@linutronix.de,
-	mingo@redhat.com,
-	nathan@kernel.org,
-	ndesaulniers@google.com,
-	gary@garyguo.net
-Cc: zig@iorw.io,
-	rust-for-linux@vger.kernel.org,
-	linux-um@lists.infradead.org,
-	llvm@lists.linux.dev,
-	x86@kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH 2/2] rust: arch/um: use 'large' code model for uml
-Date: Tue,  3 Sep 2024 21:06:06 +0800
-Message-ID: <54FC087D02C52990+20240903130606.292935-3-zig@iorw.io>
-X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240903130606.292935-1-zig@iorw.io>
-References: <20240903130606.292935-1-zig@iorw.io>
+	s=arc-20240116; t=1725376323; c=relaxed/simple;
+	bh=HaQoSOeNV+l72P3AJuWZoCj9lxSZl2+1ZxYqkRtwfCw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LiBFLOmjo2xeqrluq9RUZM5jw8hsBOizxvBBuQVEsw0jMuGaI0RHPegQXuyJOSFeDE+sUbMObyZ46TpfxzWzVIjT7knqVGR6L717CpsLAJde11vmOVbsHPDURI0HlOqKIQHaWoRYz28rXjYiOGe6vfcifatMdvRBQutz2K/CU3c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=IXOBeDS4; arc=none smtp.client-ip=209.85.208.44
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="IXOBeDS4"
+Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-5c23f0a9699so3443540a12.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 03 Sep 2024 08:12:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1725376318; x=1725981118; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=8WDyM7wA+4uXBEwvEfZ6K89F1ujUbboR8QatKwOx+kg=;
+        b=IXOBeDS4oCGAf/Gz3mqX9hKKukL0qrRfs9tZPRq2GoV2182iaU/hC81nSQ8PtlLBmK
+         sSy+rLMTANh6Z5+T9hJBZJSbFnU6cxwbCMuMN5eYJc/0ZI4ZPhX0662K/t4cpqIna708
+         dPYLtqEvXgiAs8A8KXdS6ZVBNs4aH/Dx7Hmd+oHi29n+fFq2M2p2IrzTB0lINVY1mKKR
+         lhHyUcGNwIBk9AsNXfnLo0cJXnYpPBo74M9qxrIiOKzL92ChsWBS7whKEx4mEcmsU/mt
+         ipRkJ1oqW9XWEwyrqoUb5iKaQECVjUtvw1y522pnfHK/a5qHxCkzvQZMOVUUWLJHK5g8
+         r6Ag==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725376318; x=1725981118;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=8WDyM7wA+4uXBEwvEfZ6K89F1ujUbboR8QatKwOx+kg=;
+        b=F2+zdflivYXqyJa/AKUdHNuwRA+5ppAYpy7TRO3aLXBKLeHTx1ZZ+VTMeAX7Pp/LcT
+         Y7C3zaWd04U58tBS/VaGfEDf2FW+qX1cHGQICkjtn+2ScJol+UvtOzhGPd7wfQ4rao1/
+         iCSbe5yXQXlDIYcX6kmQ4+IyVSZ6/nYYfZNCq5WNcwtDRYmHQGzsXbItCFZMw/fJjMNh
+         /a2AQi2bb9KuF4dfwZwGfu6l9wFMn6z7H2bpK2Y5G7dlsrjj5ZFydXiaNGTpEKKdaxno
+         XLywZZX1PL6Lxhl8t1y3NUG76y7QLtM0aUihnJZuKpGC5Jd+94OtBBKAAA9wqiINbaKW
+         r6Sw==
+X-Forwarded-Encrypted: i=1; AJvYcCUmEjWSAnLx8aVzwWAfNkFC42uHwzeZbH4Rl5WT/WXbKwBX1m7UVza58cmOT44WuedvitMy6yS2w88EEoe5qw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Ywvo/SqyFbhOzEMgfq26YJEoRy+g5s23buim9j/mmxdfc0O7+m6
+	DA1hKnhgEJ7ocqUwJgpxRUdprZcgn0FRl7gOZhVOD+aRULNYtz+6BObE2Qt8dLc=
+X-Google-Smtp-Source: AGHT+IFoUUFxcVhHxWppSsUC1TKbkdYIP8izH9TlTs0zzWQ7ixgWt0bHVTTPOJbkicRNtP6gPNtD2A==
+X-Received: by 2002:a17:906:ef0d:b0:a80:f7db:3e7 with SMTP id a640c23a62f3a-a89d87216d1mr821251966b.5.1725376318249;
+        Tue, 03 Sep 2024 08:11:58 -0700 (PDT)
+Received: from [10.100.51.161] ([193.86.92.181])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a8989196500sm695054466b.138.2024.09.03.08.11.57
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 03 Sep 2024 08:11:57 -0700 (PDT)
+Message-ID: <9978884e-87c8-4c20-b9ff-b4571bce01ce@suse.com>
+Date: Tue, 3 Sep 2024 17:11:57 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-QQ-SENDSIZE: 520
-Feedback-ID: bizesmtp:iorw.io:qybglogicsvrgz:qybglogicsvrgz8a-1
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 08/19] gendwarfksyms: Expand subroutine_type
+To: Sami Tolvanen <samitolvanen@google.com>
+Cc: Masahiro Yamada <masahiroy@kernel.org>,
+ Luis Chamberlain <mcgrof@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Matthew Maurer <mmaurer@google.com>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>,
+ Petr Pavlu <petr.pavlu@suse.com>, Neal Gompa <neal@gompa.dev>,
+ Hector Martin <marcan@marcan.st>, Janne Grunau <j@jannau.net>,
+ Asahi Linux <asahi@lists.linux.dev>, linux-kbuild@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org,
+ rust-for-linux@vger.kernel.org
+References: <20240815173903.4172139-21-samitolvanen@google.com>
+ <20240815173903.4172139-29-samitolvanen@google.com>
+Content-Language: en-US
+From: Petr Pavlu <petr.pavlu@suse.com>
+In-Reply-To: <20240815173903.4172139-29-samitolvanen@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-The Rust modules compiled against UML should be 'large', without this
-the compiler will generate some R_X86_64_32S relocations, but UML is
-running at userspace with signed-address larger than zero, therefore
-makes '__write_relocate_add' treating the relocation as overflowed.
----
- arch/um/Makefile | 1 +
- 1 file changed, 1 insertion(+)
+On 8/15/24 19:39, Sami Tolvanen wrote:
+> Add support for expanding DW_TAG_subroutine_type and the parameters
+> in DW_TAG_formal_parameter. Use this to also expand subprograms.
+> 
+> Example output with --debug:
+> 
+>   subprogram(
+>     formal_parameter base_type usize byte_size(8),
+>     formal_parameter base_type usize byte_size(8),
+>   )
+>   -> base_type void;
+> 
+> Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
+> ---
+>  scripts/gendwarfksyms/dwarf.c         | 57 ++++++++++++++++++++++++++-
+>  scripts/gendwarfksyms/gendwarfksyms.h |  1 +
+>  2 files changed, 57 insertions(+), 1 deletion(-)
+> 
+> diff --git a/scripts/gendwarfksyms/dwarf.c b/scripts/gendwarfksyms/dwarf.c
+> index 82185737fa2a..c81652426be8 100644
+> --- a/scripts/gendwarfksyms/dwarf.c
+> +++ b/scripts/gendwarfksyms/dwarf.c
+> [...]
+>  
+> +static int __process_subroutine_type(struct state *state, struct die *cache,
+> +				     Dwarf_Die *die, const char *type)
+> +{
+> +	check(process(state, cache, type));
+> +	check(process(state, cache, "("));
+> +	check(process_linebreak(cache, 1));
+> +	/* Parameters */
+> +	check(process_die_container(state, cache, die, process_type,
+> +				    match_formal_parameter_type));
+> +	check(process_linebreak(cache, -1));
+> +	check(process(state, cache, ")"));
+> +	process_linebreak(cache, 0);
+> +	/* Return type */
+> +	check(process(state, cache, "-> "));
+> +	return check(process_type_attr(state, cache, die));
+> +}
 
-diff --git a/arch/um/Makefile b/arch/um/Makefile
-index b04b1d4d6dfe..c2a9f2102ba7 100644
---- a/arch/um/Makefile
-+++ b/arch/um/Makefile
-@@ -32,6 +32,7 @@ endif
- 
- ifdef CONFIG_64BIT
- 	KBUILD_CFLAGS += -mcmodel=large
-+	KBUILD_RUSTFLAGS += -Ccode-model=large
- endif
- 
- HOST_DIR := arch/$(HEADER_ARCH)
+If I understand correctly, this formatting logic also affects the
+symtypes output. Looking at its format, I would like to propose a few
+minor changes.
+
+Example of the current symtypes output:
+kprobe_event_cmd_init subprogram( formal_parameter pointer_type <unnamed> { s#dynevent_cmd } byte_size(8), formal_parameter pointer_type <unnamed> { base_type char byte_size(1) encoding(8) } byte_size(8), formal_parameter base_type int byte_size(4) encoding(5),  ) -> base_type void
+
+Proposed changes:
+kprobe_event_cmd_init subprogram ( formal_parameter pointer_type <unnamed> { s#dynevent_cmd } byte_size(8) , formal_parameter pointer_type <unnamed> { base_type char byte_size(1) encoding(8) } byte_size(8) , formal_parameter base_type int byte_size(4) encoding(5) ) -> base_type void
+                                ^- (1)                                                                    ^- (2)                                                                                                                                                       ^- (3)
+
+(1) "subprogram(" is split to "subprogram (".
+(2) A space is added prior to ",".
+(3) String ", " is removed after the last parameter.
+
+Separating each token with a whitespace matches the current genksyms
+format, makes the data trivially parsable and easy to pretty-print by
+additional tools. If some tokens are merged, as in "subprogram(", then
+such a tool needs to have extra logic to parse each word and split it
+into tokens.
+
+For attributes with one value, such as "byte_size(4)", I think the
+current format is probably ok.
+
 -- 
-2.46.0
-
+Thanks,
+Petr
