@@ -1,97 +1,121 @@
-Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+Received: from mail-yw1-f180.google.com (mail-yw1-f180.google.com [209.85.128.180])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65D69126C03;
-	Tue,  3 Sep 2024 21:56:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CA201D58B5
+	for <rust-for-linux@vger.kernel.org>; Tue,  3 Sep 2024 23:43:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725400618; cv=none; b=UAo1/nHkPjXLCcvnt2DIMABW2HLwFHJ/tc9hnZJZscotM+Dz0xwOQebq50yD21BwPnEW3z0S5qySrdLV92MKyzNzc4O+3TiVMAXYFLSuNI1eDel6pr7nYRZBDsO/x/1A7By9/N5KByiqprYNF+JbwDbhxiFQ8Ir1pwFN4N4X+fI=
+	t=1725407015; cv=none; b=rl97jNpXc4ffkg26evw1qvnljXOlLP3mlJZW+9YsMmB50DjnkQL06s7u73c0eXuHhgBNgRubqBmG72FzHtIZamEMhnxsLSG1VC9c6C2U7kKalHszUay/YmTDqYqvq2QNsaDchtit3lobfWBZPCohnrLsZLECHD+mQonUXUoRuY0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725400618; c=relaxed/simple;
-	bh=GEvdm2ML5hAmdyHvDrjNM6tMhQ+dZYtKLzN6HrIhslg=;
+	s=arc-20240116; t=1725407015; c=relaxed/simple;
+	bh=dRWeIz+ubJrojnqheq1wHauzuvHp2VInC5LvS5KJ2X0=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=s1Afc3z6Itz4+HYSnCYfafYdqv7Ter1JB9sV/DZUQLgMYZkSdpwO7PPdKwfsaC08xYwJDTcVspbKcPsX6i3bubvwGblbh1j9XLDi2uqSC+WeDjmfU9WhWT/xCiTmTq0Xe3+BfVPLDf2Z48+VOxYr8i3fUUHpiZyw7H55Oe4E8z8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=DvIyoRBa; arc=none smtp.client-ip=209.85.210.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=G+0UiQa5GC/81Qi6asWADL+yu6JDHgne6q/Yi25Zvs+gbu7dLIceCvpJYESiBYRLhm7eFuYqIsCPHdara/zZQQ79a1GWl/dednizjtDg3FurkPdnBIEA+l4Sv7TOjgBim4JhH/KDF+1hiW9MAwMZnBwUkek2eTuKi78/Y7oblDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu; spf=pass smtp.mailfrom=umich.edu; dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b=PT8+wQmW; arc=none smtp.client-ip=209.85.128.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=umich.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=umich.edu
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="DvIyoRBa"
-Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-714269f312fso679127b3a.3;
-        Tue, 03 Sep 2024 14:56:57 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=umich.edu header.i=@umich.edu header.b="PT8+wQmW"
+Received: by mail-yw1-f180.google.com with SMTP id 00721157ae682-6cdae28014dso1421197b3.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 03 Sep 2024 16:43:33 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1725400617; x=1726005417; darn=vger.kernel.org;
+        d=umich.edu; s=google-2016-06-03; t=1725407012; x=1726011812; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=GEvdm2ML5hAmdyHvDrjNM6tMhQ+dZYtKLzN6HrIhslg=;
-        b=DvIyoRBa6txP6352ZGANFUPoo1U4zsGGV1R0FSmnmNbtyNv6L3eIGNRSpK5/U9i1Lw
-         iEbb788vv23D1WDwgEUqyUvIwaphvCxD06HjIh9xIVnQrNC6L57kGfiyLwx9imMsRBkw
-         /D73HcsTQ5p0lcs56Ds4ov5BuzZPvYTdKUj+XPUIntQ1X2Y1QXFLZHGhh+hcz2uxnv7e
-         5sPUzJnFZiPWOEkjgMe2kg7tsN+JDAX983WHbHgwJE5RDzVfkJuroYNk8ogQUCWcCQBQ
-         GKkECU1XUGcNr6tNcWUvxq0WTiM9DQKw/MI84zorzIe4u8l7nfpKkcCIrHn6D52xgHF9
-         gmgA==
+        bh=SlCnxIZL2Il1OI5y0fydGu2G23DBSVnD0BItXQgCoF0=;
+        b=PT8+wQmWS6MLQDBhaDKPBexl0TYL/Vp+WmJou8jm05d8Da5MkPa1vpatT3N0DSyUnT
+         ZU61ZMcBLhIAENUmi+Uow2opRfG+xX7ynrsvrBpneCl07GvloTrOBzkqq4UHe2JIhO/q
+         jLzpl9fVdfyry+RACyuyt9D3JPHL1QegtbnNa3w87Xe5vsU2R02zhUsG82PWb78iWCxw
+         llFJW+XxV77O4N/ycoSJe4zxD8L4B+BDpAqdyTljD/mFVJy9vCd/6fINN9cAzNaGBWgn
+         hpFiEa8/TMU0Jbi5hUSDECi8/bfs0Md4XjEGBxaNOsuNio3ziJltKgqSWMHxYWWGXm09
+         zKHA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725400617; x=1726005417;
+        d=1e100.net; s=20230601; t=1725407012; x=1726011812;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=GEvdm2ML5hAmdyHvDrjNM6tMhQ+dZYtKLzN6HrIhslg=;
-        b=ERwpQDags/j+lqfCCN3pDnAAy2V1K0xUO+sr29V64G3hkdqzdXRIi3YSXGZmpta75Z
-         L5mbDoXnNFzMbx42+Pnl4UCSx+A+rX6iw6meMxnLfgV55oQ7Gw2tHU5sZ7e7CwDlV6sb
-         CtQTT8eShl75IQMCIc935T+bWmaw6MYGV0pdDed97pPyAAHZRDZvUN6Qz/J9EBQqg6FL
-         Q4HWhig73JuiaVPG0JflRv7evxc5QYXmhbXYPq+QS3urpBoKPsft913Pf811jbTyz8eo
-         z8YNwOt9fuo+IFIZhNiB7czhz/Kbg5dv4aW5IDzjM1g6QykBQez5xPqHncbSkCDCaeNJ
-         gWDw==
-X-Forwarded-Encrypted: i=1; AJvYcCWZQ7tnzK9FLQEPGT2KkngieBkzqN28PeS6Cv9RhFCjS95OBSX8MZbqbPq73LkBQFUzI0lvwWSIEd7BP37eUzU=@vger.kernel.org, AJvYcCXKG/DXVHPgDUOAdTuphkWpK8oHq5qKf+Aj6h71OniJRTip/ELes3uF3wpd9ND0aiWyVBQHgtJlUx5IXDg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxYpWJpDVnKSXm7cR8Ji6FaXtaICdLSY4TFw8XzjgsCGwUoXHAT
-	yiNJOfpf+gWGjCp/lWJ7zPjBCR31ac8ElB39Xb6u8SMtynw8Q/j+M54mH16kA4cjECke3XXJi9V
-	P768j8/MXmcvrv+aHdAeKb8VcG6Kt1ruV
-X-Google-Smtp-Source: AGHT+IG9Ts3Rsy57/ISSeVLDpOmDsIkdYIbRhT/z7Gw6akfQlkLkFi8kvgWu54+P8ag3xH2HV/7eiTvLLg4TKi2x78M=
-X-Received: by 2002:a05:6a00:6f02:b0:70a:efec:6b88 with SMTP id
- d2e1a72fcca58-7173077f630mr8952365b3a.3.1725400616650; Tue, 03 Sep 2024
- 14:56:56 -0700 (PDT)
+        bh=SlCnxIZL2Il1OI5y0fydGu2G23DBSVnD0BItXQgCoF0=;
+        b=jWBXFARXLG2VUxC6QNns62/xSsIpe4GKp0DLEAE07m7gKrw+OOTnuDWoMDiRgz8XAv
+         lYeS8pRt+C1dm52lCspQIKzpvL1DThpmQJKUDUy8pz4/XrvEACn/+uhvYa9/vNN1mKp1
+         bAvFeSjmn74tmcXrLme17+kkw5o0NMxL1iHxlYbvjdcgCIBsHO/As//D5fjP6F9XqLWd
+         HDhrpWoA4fkf6aEUUqWA9gWmx5BAioB+sN7N9vX0c4tp76+0cXD2AFAMRibfQGd5oqWn
+         4rQ3fjTr1eq7tOHAZkBdwAaKMrjO64FIbaUMtjB4sOTUiKA+RKahUUk+9po3khnBNzWa
+         h6GQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUaHAK+SYiNXHpAY+JGGAKEDJQKnd019Bz/3LFmgKEnA5NXJSD0elecEbGV7rXCneVV2USgNvplnap8glk3SA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx/3uSdY5IXneH6IN6I03guVFGvVF79MrfCN8ApMUiOehUbq+P/
+	WfFk0XjFZluJz/qJymwcGZR4+81lzwbsLzMFPqYMB/K5RbO0D8rf9Nt3sjbUhwaTqaqxAtnvTFs
+	Rb7BkbPKWo7JRslsC+9pY6XlXaya7L2oj1C2Gqg==
+X-Google-Smtp-Source: AGHT+IFrQMIAF4flYNUpK76WrQSCNNRsT5DiFAql0jr+5EnBkw560S9E7XVDmYuoVKDvvbmn5wWUKdeul1GdgNXPNN4=
+X-Received: by 2002:a05:690c:2891:b0:64a:445c:6 with SMTP id
+ 00721157ae682-6db25fcd975mr1453357b3.17.1725407012635; Tue, 03 Sep 2024
+ 16:43:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240902173255.1105340-1-ojeda@kernel.org>
-In-Reply-To: <20240902173255.1105340-1-ojeda@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Tue, 3 Sep 2024 23:56:44 +0200
-Message-ID: <CANiq72=h3xQ8+b9kBYCxzAiGfpCgC18f7=AW+yNSDGG-dHv7VA@mail.gmail.com>
-Subject: Re: [PATCH] MAINTAINERS: add Trevor Gross as Rust reviewer
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Trevor Gross <tmgross@umich.edu>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev
+References: <62F5EEA0B866E9E0+20240903130606.292935-1-zig@iorw.io>
+In-Reply-To: <62F5EEA0B866E9E0+20240903130606.292935-1-zig@iorw.io>
+From: Trevor Gross <tmgross@umich.edu>
+Date: Tue, 3 Sep 2024 19:43:21 -0400
+Message-ID: <CALNs47s8Qzbckjf_f_-Cr2rVmAf4sbo1MaSBFagdhZS4KcpQNQ@mail.gmail.com>
+Subject: Re: [PATCH 0/2] rust: arch/um: Rust modules support for UML
+To: Zigit Zo <zig@iorw.io>
+Cc: ojeda@kernel.org, bjorn3_gh@protonmail.com, richard@nod.at, 
+	anton.ivanov@cambridgegreys.com, johannes@sipsolutions.net, 
+	tglx@linutronix.de, mingo@redhat.com, nathan@kernel.org, 
+	ndesaulniers@google.com, gary@garyguo.net, rust-for-linux@vger.kernel.org, 
+	linux-um@lists.infradead.org, llvm@lists.linux.dev, x86@kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Sep 2, 2024 at 7:33=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wrot=
-e:
+On Tue, Sep 3, 2024 at 9:10=E2=80=AFAM Zigit Zo <zig@iorw.io> wrote:
 >
-> Trevor has been involved with the Rust for Linux project for more than
-> a year now. He has been active reviewing Rust code in the mailing list,
-> and he already is a formal reviewer of the Rust PHY library and the two
-> PHY drivers.
+> The series make Rust modules running under x86_64 UML, as a supplement
+> for the previous work:
+> - https://lore.kernel.org/rust-for-linux/20221217044436.4138642-1-davidgo=
+w@google.com/
 >
-> In addition, he is also part of several upstream Rust teams:
-> libs-contributors (contributors to the Rust standard library on a regular
-> basis), crate-maintainers (maintainers of official Rust crates), the
-> binary size working group and the Rust for Linux ping group.
+> The previous work by David (many thanks!) has made the Rust UML compiles,
+> and for the builtin modules, it works as expected. But for loadable
+> modules, the UML will complain
 >
-> His expertise with the language will be very useful to have around in
-> the future if Rust keeps growing within the kernel, thus add him to the
-> `RUST` entry as a reviewer.
+>   'Unknown rela relocation: 9'
 >
-> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+> when we try to 'insmod rust_print.ko'. That's because the modules are
+> compiled against '-Crelocation-model=3Dpie', makes the LLVM treat the
+> modules as PIE executables, but they are just static modules.
+>
+> Besides, the Rust's code model for x86_64 UML is still 'kernel', leading
+> some relocations "overflowed", we keep it the same as 'KBUILD_CFLAGS'
+> set in UML ('large' here) to address it.
+>
+> Now we can test our Rust modules in UML.
+>
+> Regards,
+> -- Zigit
+>
+> Zigit Zo (2):
+>   rust: arch/um: use 'static' relocation model for uml modules
+>   rust: arch/um: use 'large' code model for uml
 
-Applied to `rust-next` -- thanks everyone & welcome, Trevor!
+Hi Zigit,
 
-Cheers,
-Miguel
+Thanks for sending this. It looks like the patches may have gotten
+split from the cover letter because the In-Reply-To header isn't exact
+for whatever reason (the two patches reply to
+<20240903130606.292935-1-zig@iorw.io>, but the original has ID
+<62F5EEA0B866E9E0+20240903130606.292935-1-zig@iorw.io>).
+
+No worries for this initial rev, but just double check this if there
+is a v2 :) archive links of the individual patches for reference:
+
+[1/2]: https://lore.kernel.org/lkml/FD7D773099A0C7EC+20240903130606.292935-=
+2-zig@iorw.io/
+[2/2]: https://lore.kernel.org/lkml/54FC087D02C52990+20240903130606.292935-=
+3-zig@iorw.io/
+
+- Trevor
