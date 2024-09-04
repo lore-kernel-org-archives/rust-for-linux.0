@@ -1,94 +1,100 @@
-Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
+Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 998091547F3;
-	Wed,  4 Sep 2024 21:15:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C5DC38DD1;
+	Wed,  4 Sep 2024 21:16:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725484554; cv=none; b=uUSYInqDOkzqY6ofWkJOild3azS2QX43/Cdi1+pVo69ryjOANeXhdnYRSCFjtmd8kxXFfP5lZv5y8ctloTT6Isf+d0GM4SPyPhZhpeTHvFcNcEkBZXauaw2xlhRRKMI6QwMC952N4F6GbdRmti572NMh4rJhwAIjnNa5/73YZ2I=
+	t=1725484600; cv=none; b=sFDUZYY0xgAihBU8+UmzfCiqSMcW4EmFp8yZe+Xxnem/WSKoUp8J0bSsaCkaHl7+MoyonxDIS/1k0W7cvWwJVRlcEfitVyKFvK9e5cbHoUBtEZgaaHfCoc058i6b3wQIjJL0O8yl+3kXG++DmCIz9Le+byF3BK8n7x7cH5TDV9M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725484554; c=relaxed/simple;
-	bh=4fCflFULU1+SFkIZ9nYfOOgt5VRh5g5+mOSpWCdLiVA=;
+	s=arc-20240116; t=1725484600; c=relaxed/simple;
+	bh=z/1GcMiLGE2rHSFEqhZvLGeKhghzMwgRmPxqcTBrj1g=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Z0/6z0TskPL20/qmNWo5vPWpGYhwTKpqg9gOxSfT14/kH6aebp3KLMTb7iRyxn/WqTcXyc5A9SxuXhPohYsbEjMuOyBPuVYAIP9JVp3FlB8TYOceObw5eACNZPV+cj+MXtycR+9TuWqa6+iA1q2gbb9GZHnnlv+bn0zHOW3+F1w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Kq7AEOda; arc=none smtp.client-ip=209.85.216.45
+	 To:Cc:Content-Type; b=cI49bu8gevfgaHhxwKYTWmqJsy4uFkT7nwIzOafxP8uhrwhn3p+4+X89QEW0Ui3DIhO/cQZq39nI32HbNcVhKJSMz84hKW/TmjyW0NQ6oJxwhxyVqn+cH6NxMGwI2kKFvjLsT0tlHgV8P0/CSJSqZQw42lZ/fhWpKQfs6e9KjXE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dax5en7+; arc=none smtp.client-ip=209.85.210.176
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Kq7AEOda"
-Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-2d87182874fso584a91.3;
-        Wed, 04 Sep 2024 14:15:53 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dax5en7+"
+Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-71446767885so3568b3a.1;
+        Wed, 04 Sep 2024 14:16:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1725484553; x=1726089353; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1725484597; x=1726089397; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=4fCflFULU1+SFkIZ9nYfOOgt5VRh5g5+mOSpWCdLiVA=;
-        b=Kq7AEOdaBZF+BDivlY1uqLs0Rk+5GgMdtx6xelTBLamtKZJxspDI5MXBep6oXx76nz
-         LoTQLFSbTVbXvJ32Ld7i43UaNGJaffVKRU5EY5j8PUE09C0B2S/d7F95A8WeU5sdwRuf
-         1vxUrKZHK8NNkQ0d+ZW6LNLOh8IK5n4BqqtN/c33Cv67yu54yBwIO0J+MWTrbK91fYiJ
-         1oYXsDTuBLUzo3zkQw0IMDouL2MtNBBvJeMZekdPrWXr/QbS00DufP6wlTd0wR7Rtgtf
-         /GyAUopOXCkrNwwYX10fI6G6bqHtOPJ6E7MDfXe78xr6q5cr14gabXHCFRcGJO+WOKGO
-         EUig==
+        bh=z/1GcMiLGE2rHSFEqhZvLGeKhghzMwgRmPxqcTBrj1g=;
+        b=dax5en7+vGdHYZk0Q1hcLRgHZgtenOJvJdR0izjD8xwbqq4x0sElMmRe+s2vB3dhcz
+         pVF4lIZiIMjzva6hFqIyYwq64kwbf3LEEMK1B+6eTDiCMo31VmIwxFqqBBjadRcgiowM
+         ota6rYkFwPBVbL4Rw3gWAwRIIGcgKyT4Q3Z3TpD+DSmK4z31oREfnLjneBEDihpmyZRY
+         44tOtd1esmE5s8LuwoonRITOHzVl4Pp7kpknH/Bi7uVp+bm4TmuNFDfSJ2GpC7cfKt6/
+         z9Ca36r2X90Nq+3J171HDOPbPlvOk9siLNLJhH7QuL2mXfxsZwTiZ6u47/2S50joAKQQ
+         N4Aw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725484553; x=1726089353;
+        d=1e100.net; s=20230601; t=1725484597; x=1726089397;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=4fCflFULU1+SFkIZ9nYfOOgt5VRh5g5+mOSpWCdLiVA=;
-        b=bGnJ9WDxDeK7B9TJUMJKsw9Z0xG5Zm3esTN+T9EjfTCUkFFTZlU369OuaOhF7mbuCr
-         EGvaPHQ5ChrydjfdUwm/WOMz8JXMG/kDJEYogMT3Ur53FDPQ2acDykdlvxd0BIWA+9wV
-         sz++k1LpIcjO/Fej2/Cocz+K8TqKvWI5skuP10tw4Lagx5VKfRj3DsALpX001IY1QkJq
-         lf9o6Tm3IxzSzEjaH+u98r+MPFMHEmeJnvxXfgQE4Fcmax1SzOFDFnJlARyOvqd2p1JD
-         CI7cbqmK+A7ejkiDv5JGykMNVHyjSh2w02+Gvtk4HzIf88Nz64jhKyFZnEaJUyZaW6Yk
-         7eWQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUXnYbZXAjnvfbFMNsX3874I3/wKwz7FCJZuShAp2M0LZC9/ys101BCAq81NH0wZi4IiuNyl/ofgqSUykAxEuw=@vger.kernel.org, AJvYcCW+Krr7jO1t+bvuIQ8wToF51409e5IWgs0P3wE28RF1ghTjSoMPmf5OxAY5XbO0z3Hu/2VHj/vU5/SjbS2w@vger.kernel.org, AJvYcCW8zuiwaEXt4N1h7INpNO2/jlr7CknAKa1GqLnLgAMoHgd5hNqN8+4gsWUIDyRY/uaOs+XQAz/R7ZtxN1c=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxK++HiBoLRgHIfYMK2tusG9VJE1mFIiQ48nTadyMucFeWw5xHR
-	QmIvRLCbbe48NQ+RURL0mhYRN10wkXzEqNItRiv0kGDYdYk/zeSBDF1CIJHeUjDXzk7rr6FEGyy
-	CvSlSu1SxHph1UtNp84UBij0HM8M=
-X-Google-Smtp-Source: AGHT+IFlxv6CPgnp/Wrf38HuLWqVbBunoKGlc8ncr3kHRkQdIkIQT11t5zcA9Eh5DzjZI9I8Fg6EOTfIRZSE4JfoGUQ=
-X-Received: by 2002:a17:90b:4f8b:b0:2d8:e7ef:7d23 with SMTP id
- 98e67ed59e1d1-2d8e7ef8144mr6231365a91.4.1725484553082; Wed, 04 Sep 2024
- 14:15:53 -0700 (PDT)
+        bh=z/1GcMiLGE2rHSFEqhZvLGeKhghzMwgRmPxqcTBrj1g=;
+        b=ZIL/792E6wmbrbfrefXZdjT0gij0BzoYa/kdeJ60dVFYt8Ufn0Wtd/nFuSe/rgFWAL
+         6kN0PKGWZN0kXGdUpiCE0Djwr5/tqbDNAQh7uaDkexsxaOaGJDEP+92QIxZ5Tni7FKbW
+         5/BfOx9Gl2+59NEtiokH3kCqAlrRcFgzWBvLDNzCWEgeglk+Qzrl7+GE2asH4xt/UVOX
+         VvKEs7/qaG9VAzy96iMA6aR+5qs/rHAEVslmn9iFZJ1Rw1zqOasrQOgeKYxoE7KTlVFg
+         9tBXXWgaPIaFj+7G3HXU4k9R0TBXi843NHnOGaHI/kazMO3nkjVCjdomzQcmhK+nCr7v
+         0exw==
+X-Forwarded-Encrypted: i=1; AJvYcCUnIUl7hTji4ehlNcu8Be4BWyE8Ly/GthgKrad5G21L7sT12B+AKbBzG+/xHPjdlO/mFcpT5zcV7v7ShfE=@vger.kernel.org, AJvYcCV5oBF+uQ3cVHgvmyJWhOSPsAXylEPDW5RTe7PW/Hf+NOYBsnGy7Zp46ZJViQSu+6qpmDtaEu8llqTz2hlZinw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzEVOZWKu7+Zb1HN4hnt7qkRoUxb7iNfLmVuUTknfhW1YoQILo5
+	O0VO7k4jLxgZOhSAeRk8AF20EiAHJx6BUFeOh5uA+bEd0IVJhK7jlBhovB+pTD6mwENwBuT/RiV
+	83BaxvUE/DhJ9C9fWpSHTpXJzaGDHuzf7fYkXfg==
+X-Google-Smtp-Source: AGHT+IECOjX6+cc3J5pmZJ7COQWLiR4DxSa2AEtFoWMmYTEsU/aqmrfc/2G96Po35zcWza7gSUJgGY59zigAkoOgxo8=
+X-Received: by 2002:a05:6a21:328d:b0:1c3:b106:d293 with SMTP id
+ adf61e73a8af0-1ccee3cc4femr12176334637.3.1725484597426; Wed, 04 Sep 2024
+ 14:16:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240902165535.1101978-1-ojeda@kernel.org>
-In-Reply-To: <20240902165535.1101978-1-ojeda@kernel.org>
+References: <20240904144229.18592-1-ojeda@kernel.org>
+In-Reply-To: <20240904144229.18592-1-ojeda@kernel.org>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 4 Sep 2024 23:15:38 +0200
-Message-ID: <CANiq72ni=sC7Co6W8U-_ikGU0Tf2HvOOoNdHOc7dXLWb1Cuq0A@mail.gmail.com>
-Subject: Re: [PATCH v2 0/6] `RUSTC_VERSION` and re-config/re-build support on
- compiler change
+Date: Wed, 4 Sep 2024 23:16:24 +0200
+Message-ID: <CANiq72k3Fs6Cj7mnhQaNdS4bAWjsvg_=0+EcH_hUhX97BMwUjw@mail.gmail.com>
+Subject: Re: [PATCH] rust: avoid `box_uninit_write` feature
 To: Miguel Ojeda <ojeda@kernel.org>
 Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Masahiro Yamada <masahiroy@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Matt Gilbride <mattgilbride@google.com>, Danilo Krummrich <dakr@kernel.org>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	patches@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Sep 2, 2024 at 6:55=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wrot=
+On Wed, Sep 4, 2024 at 4:43=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wrot=
 e:
 >
-> This series mainly adds support for `CONFIG_RUSTC_VERSION` (which is need=
-ed for
-> other upcoming series) as well as support for rebuilding the kernel when =
-the
-> Rust compiler version text changes, plus other secondary improvements.
+> Like commit 0903b9e2a46c ("rust: alloc: eschew
+> `Box<MaybeUninit<T>>::write`"), but for the new `rbtree` and `alloc` code=
+.
+>
+> That is, `feature(new_uninit)` [1] got partially stabilized [2]
+> for Rust 1.82.0 (expected to be released on 2024-10-17), but it
+> did not include `Box<MaybeUninit<T>>::write`, which got split into
+> `feature(box_uninit_write)` [3].
+>
+> To avoid relying on a new unstable feature, rewrite the `write` +
+> `assume_init` pair manually.
+>
+> Link: https://github.com/rust-lang/rust/issues/63291 [1]
+> Link: https://github.com/rust-lang/rust/pull/129401 [2]
+> Link: https://github.com/rust-lang/rust/issues/129397 [3]
+> Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
-Applied to `rust-next` -- thanks everyone!
-
-Just to be extra safe, I did not add patch #5 ("kbuild: rust: warn if
-the out-of-tree compiler differs from the kernel one") for the moment
-to give people more time to look at it, but we can add it later if
-nobody shouts.
+Applied to `rust-next` -- thanks Alice and Matt for the quick reviews!
 
 Cheers,
 Miguel
