@@ -1,329 +1,145 @@
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0A7A1CF5FB
-	for <rust-for-linux@vger.kernel.org>; Wed,  4 Sep 2024 10:29:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 833303FE55
+	for <rust-for-linux@vger.kernel.org>; Wed,  4 Sep 2024 10:33:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725445801; cv=none; b=FZukqbrcB0NW4/JXFNSdoagWRct7XqoUoj5/uhPVU2HQ62rZI8IjhpiL5ep6f0wodNBwMEiRlv5nBXQhaEiugDza0rxfAYO7kSPYFjgM2SeJwjpRyVjSmLxRrYj1Nq/6ukRxfqvC+h6w6fpQryKLpIrNjEh+nLinmVEbJglZYYE=
+	t=1725445983; cv=none; b=NusirLgRm1Ni14scswaItpyOmz6TI5we1i8s0HUitUP9jOMhBoLfUTuyIANCdCVB7qIAgiNgAUwoOZ+VQKkkh2aRCuUal66/NVDzaIFWhoGhD+mE7YUpMONWf697c9x8ReFZ6JaKy32Yt14p/pur/L3TFFkgH//BG8/TMX7q0wg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725445801; c=relaxed/simple;
-	bh=xOaRnjRgKSTBXoBrckkAh6k5MeQKaIjjbdVTeFSuRLM=;
+	s=arc-20240116; t=1725445983; c=relaxed/simple;
+	bh=3AvC/HvopHDKWAFbhonJNcdID+9j3PuDBg2EN9cYUXI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=H+U7dYP6fY8zQc5yxv1mk0u+gE/Ez3p6JYEmuinysdppnAGb0v1nV6t8Uz1GRzFudt5BFsO2O7RODQe7fYRcolq5VTkL6kviVJPvFBI15GByaX4matJEL9PqpeDZXSTK8RZCKK1iNHafZXELHdp5rITNktkbZ3xB0pAOTw01f64=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=fO21in6D; arc=none smtp.client-ip=209.85.221.43
+	 To:Cc:Content-Type; b=Y4OvpF+SonQnmNGPtBkriqZYMjabFq4OiIjlBdEOybYZemoabsr2qJWI+Ault8N1WYDhdZ28fNDXY/N8sDmmd9ke99gDBzMhEMnVXb6YEXjstncIJ4k8MX94q8lMvghfWUKX51e7ZiSl+XNGunLDTqgmcGN2z702/ISVRG7Utm8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SfBp447m; arc=none smtp.client-ip=209.85.221.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="fO21in6D"
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-374ba74e9b6so3596524f8f.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 04 Sep 2024 03:29:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SfBp447m"
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-374ca7a10d4so1797656f8f.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 04 Sep 2024 03:33:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1725445798; x=1726050598; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1725445980; x=1726050780; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=Y/KVUrCheFbwrwKIW01tEK7XS9zRlh9AQQ32oNA94o8=;
-        b=fO21in6D601eFwdmVvUagDPHBa5pyr1rDJSQEUpzgIbhxH2xUgsWOj6Mc6VIMkPYs/
-         GZ7inn/Z69lqb++/D+Jp5/kTXdPP+vTLmzugGauHss6sEgr49xOB38UPppmgih7rZyRH
-         ph023WNO3jvqHIKaUrCcMDlwtBy2E5xdNtsagCQzkGB6CoLetkg5mrO6LX39xLHaMJsV
-         hQQ9qPLrBUFUqJ0DqYnyFp9DgPlhXOtccbsul3PG53B1Z4nLJgDjdzyjtuPcl+PPt02O
-         +QRME61fLdeJATY+VFO/iE1Ac5JOQprUB6k55YXdnYa3R/18P0fk9nqoiXry/yLYfarx
-         q4dQ==
+        bh=KE1/Hq11uOxchKULHphyn5S0kqPZsHWqE0/VF8WLruQ=;
+        b=SfBp447mlIMOS2J7bGY3nhmcX0FnsiMWMJ+worm0mBjeh2AgS6bkC7iWTHSlFl/IcV
+         fCl79wYB/NCwbiIm33h0bWoGpgiVvv/Wyk9SkeUrQZQ7ncdWxyrh7UD58RnuUWOquVVX
+         Xm3YxyETuDzGaJvpX4kZlXk7IMSZGQPmb36llwMrmweltIXgEgD0K/NKhhU/RH8G/U2w
+         iH2lxb2pDZpt6GDIRReyV/nwAXsGlpQaLyeNxo+eM/35DA9hhUFpX9Jh9dxAt41f8Kar
+         6Aek3u5IbP6m1hRAhRciUP0WWgPItoRxj/kEWjFUB+rkaidqrQj8YcfrJ4ocDaydwAf5
+         pBzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725445798; x=1726050598;
+        d=1e100.net; s=20230601; t=1725445980; x=1726050780;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=Y/KVUrCheFbwrwKIW01tEK7XS9zRlh9AQQ32oNA94o8=;
-        b=wSzNjivyKAMnCRM1s+ZsZOTk7hs7WbqoGlBSQfO9SoEflI1dzC9lHXZmVrpxdmzRIb
-         cgTiOu7Uw4PXT/bLzsHbgI5MuJDpkFAarMJD0iif3HZrn8RBluZCbo/AM3vjFRBIPxZf
-         GaQZyYSUiPdwwCGqCM4TbuH71vosRTuGO/k5jrHPQogYRFm0rPAN3f53MH7uwU6TcmHs
-         JFDCPAD2YUuC0elZsYBI+Zet8dXBaMtDTXNweNeGUzGuAcYtIuFK4cenQhUO/w7bgk5A
-         xWLZAj34hLaK4GXTJ5adeYtBtubCWK8ZZbf59jw5CUILbNGUqfBo1WsrXtNuKdv9h+LJ
-         JlCA==
-X-Forwarded-Encrypted: i=1; AJvYcCUo7CefDQutgUKSv7dQfB6w6wH4RpbFfrjMsRDD8OCu69AmmDMPuEfAMoRVrdLWnB2t/6PoKSZyrjtWFZ4VFw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx5f68Y3nXLs8jbCZKKIY7EZ2Y5Vx1Oy+3kljqyvcj8x0Xnk7a6
-	asOaFr+fl/6BcZYICKsbxhNpfDlZCyuJc58rKzXq64w3s6X/VbVSK/UQzJ9CeytIEGAd3zxUnTM
-	Yji/jfFTZvRiQ+MYBs0Mxjn07HjBbl31EgMv5
-X-Google-Smtp-Source: AGHT+IE6W9vQz1y68yO5qeHUn4/djJSdduZOAYLjB/UAITY2qd74Q9MXHNnrgxlzMmuajj/inFZcuqlopvdC7XxN3r8=
-X-Received: by 2002:adf:e6c8:0:b0:374:c3cd:73de with SMTP id
- ffacd0b85a97d-374c3cd74d5mr9938028f8f.35.1725445797876; Wed, 04 Sep 2024
- 03:29:57 -0700 (PDT)
+        bh=KE1/Hq11uOxchKULHphyn5S0kqPZsHWqE0/VF8WLruQ=;
+        b=uB9r1OGiZ8VIu56cWx2Tn14YomeuAgE4bMD+zx3xBWd9TSsYCG+KPCba1s9up+lShY
+         J/mIMOIVCrBr7ccMB4+KsUosLb0onAP5fJ4TjQN+Wm29qfVx4avKymT1AG+FJ8heFyQ/
+         vDuBkZTGcbPSbCOAt21RlLAJr9yJUIsiMFqmMgNeCsgP+/zmmY2jDedBY2LPNH2eYoXa
+         KbhLf+KF8FK8tERCYbRS/Oj5gS0je2pHfnrgp/+twBeoTjTwT4zeOvlsTm4aHeD7kiMC
+         V5k7w8tbzsX/VyG6IBMejSz3ZasHo5pp5I+xhCSf/ghbh/f0+1PGLbrboVVzIVjvfhzB
+         AFOg==
+X-Forwarded-Encrypted: i=1; AJvYcCU9h5XK8DaN1VlSjsjDGfPSazlkCJ5DHXw3exepcBjxvT0FNlfBn1DjeR4SWLbWVJpHoKk16Bx/jF8A3SRM2w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwNt+pjvLF+VsVyz5IHHgWpSWMEfsmvsk+kWdbsB08hmgJumOab
+	4vYM5kszIGmOOjBJXAG7dt/Uzbmp+Sr9+Bfk604UVvbT7jksKgyyXcNOeIRV2jQvOhIpFugCJfK
+	aOPEvxuD72XYiUpCDate145Pb8NEzdRy1JMzy
+X-Google-Smtp-Source: AGHT+IGsqhG20Xuaq75zLs5w9BXHd/1bEmZIuRJUXywMO5FqOhq7bmlArA7HxcoGVRmCM6y/SVZXTSj+THt/5F5OvRo=
+X-Received: by 2002:adf:cd0e:0:b0:374:bfb2:39d with SMTP id
+ ffacd0b85a97d-374bfb204e6mr9160088f8f.38.1725445979513; Wed, 04 Sep 2024
+ 03:32:59 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240816001216.26575-1-dakr@kernel.org> <20240816001216.26575-15-dakr@kernel.org>
-In-Reply-To: <20240816001216.26575-15-dakr@kernel.org>
+References: <20240827-static-mutex-v2-1-17fc32b20332@google.com>
+ <10453342-d269-4b78-8962-821ef53d3cb5@proton.me> <CAH5fLgh-DYvXobXQVaQ9txYS4Rx8QhjyVvfTphk6vvnUOGzPnw@mail.gmail.com>
+ <3b557f61-cead-4568-b2b4-4a56c4cbff52@proton.me> <CAH5fLggE-fWDuZXH_F3ixDSo7sQEFwnUV3cd+9_rpFH+XmnA2Q@mail.gmail.com>
+ <CAH5fLgiZt3uVZiU1xXPcvYNR-Em2V3y+-C9EbsqrNvkScbiAYA@mail.gmail.com> <0030a292-49f4-4575-846f-424b098c7f1a@proton.me>
+In-Reply-To: <0030a292-49f4-4575-846f-424b098c7f1a@proton.me>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Wed, 4 Sep 2024 12:29:44 +0200
-Message-ID: <CAH5fLghJznTQ1r5cAHWywsdgEP13s1=9q7P9StTp8Mt4CbjRFw@mail.gmail.com>
-Subject: Re: [PATCH v6 14/26] rust: alloc: implement `IntoIterator` for `Vec`
-To: Danilo Krummrich <dakr@kernel.org>
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, 
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, 
-	benno.lossin@proton.me, a.hindborg@samsung.com, akpm@linux-foundation.org, 
-	daniel.almeida@collabora.com, faith.ekstrand@collabora.com, 
-	boris.brezillon@collabora.com, lina@asahilina.net, mcanal@igalia.com, 
-	zhiw@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com, 
-	ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-mm@kvack.org
+Date: Wed, 4 Sep 2024 12:32:47 +0200
+Message-ID: <CAH5fLgh9kHm4XbcH2X4y6nwZ9VLYuUeu3hNmQBcdZ+Vx1H1L9w@mail.gmail.com>
+Subject: Re: [PATCH v2] rust: add global lock support
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Aug 16, 2024 at 2:13=E2=80=AFAM Danilo Krummrich <dakr@kernel.org> =
-wrote:
+On Tue, Sep 3, 2024 at 12:17=E2=80=AFAM Benno Lossin <benno.lossin@proton.m=
+e> wrote:
 >
-> Implement `IntoIterator` for `Vec`, `Vec`'s `IntoIter` type, as well as
-> `Iterator` for `IntoIter`.
+> On 02.09.24 13:42, Alice Ryhl wrote:
+> > On Mon, Sep 2, 2024 at 1:37=E2=80=AFPM Alice Ryhl <aliceryhl@google.com=
+> wrote:
+> >>
+> >> On Fri, Aug 30, 2024 at 3:22=E2=80=AFPM Benno Lossin <benno.lossin@pro=
+ton.me> wrote:
+> >>>
+> >>> On 30.08.24 07:34, Alice Ryhl wrote:
+> >>>> On Thu, Aug 29, 2024 at 8:17=E2=80=AFPM Benno Lossin <benno.lossin@p=
+roton.me> wrote:
+> >>>>>
+> >>>>> On 27.08.24 10:41, Alice Ryhl wrote:
+> >>>>>> For architectures that don't use all-zeros for the unlocked case, =
+we
+> >>>>>> will most likely have to hard-code the correct representation on t=
+he
+> >>>>>> Rust side.
+> >>>>>
+> >>>>> You mean in `unsafe_const_init`?
+> >>>>
+> >>>> No, I mean we would have `unsafe_const_new` directly set `state` to
+> >>>> the right value and let `unsafe_const_init` be a no-op.
+> >>>
+> >>> But how do you set the right value of a list_head? The value will be
+> >>> moved.
+> >>
+> >> Right ... we probably can't get around needing a macro. Can statics
+> >> even reference themselves?
+> >
+> > Looks like they can:
+> >
+> > use std::ptr::addr_of;
+> >
+> > struct MyStruct {
+> >     ptr: *const MyStruct,
+> > }
+> >
+> > static mut MY_STRUCT: MyStruct =3D MyStruct {
+> >     ptr: addr_of!(MY_STRUCT),
+> > };
 >
-> `Vec::into_iter` disassembles the `Vec` into its raw parts; additionally,
-> `IntoIter` keeps track of a separate pointer, which is incremented
-> correspondingsly as the iterator advances, while the length, or the count
-> of elements, is decremented.
+> That's useful to know...
+> But I don't see a way to get pinned-init to work with this. I would need
+> a lot of currently experimental features (const closures, const traits)
+> and a way to initialize a static without providing a direct value, since
+> I can't just do
 >
-> This also means that `IntoIter` takes the ownership of the backing
-> buffer and is responsible to drop the remaining elements and free the
-> backing buffer, if it's dropped.
+>     static mut MY_STRUCT: MyStruct =3D {
+>         unsafe { __pinned_init(addr_of_mut!(MY_STRUCT), /* initializer */=
+) };
+>         unsafe { addr_of!(MY_STRUCT).read() }
+>     };
 >
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> It (rightfully) complains that I am initializing the static with itself.
+>
+> We /might/ be able to do something special for `Mutex`/ other locks, but
+> I haven't tried yet. So the unsafe approach seems the best at the moment.
 
-This looks ok to me. One nit below, though. Either way:
+It sounds like we'll just want a macro that generates a global wrapped
+in a Mutex/SpinLock for now ...
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+If we're going to do that, we could take the extra step and have it
+generate special Guard and LockedBy types so that you can have a
+LockedBy that doesn't need to make any runtime checks.
 
->  rust/kernel/alloc.rs      |   1 +
->  rust/kernel/alloc/kvec.rs | 184 ++++++++++++++++++++++++++++++++++++++
->  2 files changed, 185 insertions(+)
->
-> diff --git a/rust/kernel/alloc.rs b/rust/kernel/alloc.rs
-> index e88c7e10ee9b..4ff4df4597a3 100644
-> --- a/rust/kernel/alloc.rs
-> +++ b/rust/kernel/alloc.rs
-> @@ -19,6 +19,7 @@
->  pub use self::kbox::KVBox;
->  pub use self::kbox::VBox;
->
-> +pub use self::kvec::IntoIter;
->  pub use self::kvec::KVVec;
->  pub use self::kvec::KVec;
->  pub use self::kvec::VVec;
-> diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
-> index 89afc0f25bd4..3b79f977b65e 100644
-> --- a/rust/kernel/alloc/kvec.rs
-> +++ b/rust/kernel/alloc/kvec.rs
-> @@ -11,6 +11,7 @@
->      ops::DerefMut,
->      ops::Index,
->      ops::IndexMut,
-> +    ptr,
->      ptr::NonNull,
->      slice,
->      slice::SliceIndex,
-> @@ -627,3 +628,186 @@ fn eq(&self, other: &$rhs) -> bool { self[..] =3D=
-=3D other[..] }
->  __impl_slice_eq! { [A: Allocator] [T], Vec<U, A> }
->  __impl_slice_eq! { [A: Allocator, const N: usize] Vec<T, A>, [U; N] }
->  __impl_slice_eq! { [A: Allocator, const N: usize] Vec<T, A>, &[U; N] }
-> +
-> +impl<'a, T, A> IntoIterator for &'a Vec<T, A>
-> +where
-> +    A: Allocator,
-> +{
-> +    type Item =3D &'a T;
-> +    type IntoIter =3D slice::Iter<'a, T>;
-> +
-> +    fn into_iter(self) -> Self::IntoIter {
-> +        self.iter()
-> +    }
-> +}
-> +
-> +impl<'a, T, A: Allocator> IntoIterator for &'a mut Vec<T, A>
-> +where
-> +    A: Allocator,
-> +{
-> +    type Item =3D &'a mut T;
-> +    type IntoIter =3D slice::IterMut<'a, T>;
-> +
-> +    fn into_iter(self) -> Self::IntoIter {
-> +        self.iter_mut()
-> +    }
-> +}
-> +
-> +/// An `Iterator` implementation for `Vec<T,A>` that moves elements out =
-of a vector.
-> +///
-> +/// This structure is created by the `Vec::into_iter` method on [`Vec`] =
-(provided by the
-> +/// [`IntoIterator`] trait).
-> +///
-> +/// # Examples
-> +///
-> +/// ```
-> +/// let v =3D kernel::kvec![0, 1, 2]?;
-> +/// let iter =3D v.into_iter();
-> +///
-> +/// # Ok::<(), Error>(())
-> +/// ```
-> +pub struct IntoIter<T, A: Allocator> {
-> +    ptr: *mut T,
-> +    buf: NonNull<T>,
-> +    len: usize,
-> +    cap: usize,
-> +    _p: PhantomData<A>,
-> +}
-> +
-> +impl<T, A> IntoIter<T, A>
-> +where
-> +    A: Allocator,
-> +{
-> +    fn as_raw_mut_slice(&mut self) -> *mut [T] {
-> +        ptr::slice_from_raw_parts_mut(self.ptr, self.len)
-> +    }
-> +}
-> +
-> +impl<T, A> Iterator for IntoIter<T, A>
-> +where
-> +    A: Allocator,
-> +{
-> +    type Item =3D T;
-> +
-> +    /// # Examples
-> +    ///
-> +    /// ```
-> +    /// let v =3D kernel::kvec![1, 2, 3]?;
-> +    /// let mut it =3D v.into_iter();
-> +    ///
-> +    /// assert_eq!(it.next(), Some(1));
-> +    /// assert_eq!(it.next(), Some(2));
-> +    /// assert_eq!(it.next(), Some(3));
-> +    /// assert_eq!(it.next(), None);
-> +    ///
-> +    /// # Ok::<(), Error>(())
-> +    /// ```
-> +    fn next(&mut self) -> Option<T> {
-> +        if self.len =3D=3D 0 {
-> +            return None;
-> +        }
-> +
-> +        let ptr =3D self.ptr;
-
-Nit: It would probably be slightly clearer to rename this variable to `curr=
-ent`.
-
-> +        if !Vec::<T, A>::is_zst() {
-> +            // SAFETY: We can't overflow; `end` is guaranteed to mark th=
-e end of the buffer.
-> +            unsafe { self.ptr =3D self.ptr.add(1) };
-> +        } else {
-> +            // For ZST `ptr` has to stay where it is to remain aligned, =
-so we just reduce `self.len`
-> +            // by 1.
-> +        }
-> +        self.len -=3D 1;
-> +
-> +        // SAFETY: `ptr` is guaranteed to point at a valid element withi=
-n the buffer.
-> +        Some(unsafe { ptr.read() })
-> +    }
-> +
-> +    /// # Examples
-> +    ///
-> +    /// ```
-> +    /// let v: KVec<u32> =3D kernel::kvec![1, 2, 3]?;
-> +    /// let mut iter =3D v.into_iter();
-> +    /// let size =3D iter.size_hint().0;
-> +    ///
-> +    /// iter.next();
-> +    /// assert_eq!(iter.size_hint().0, size - 1);
-> +    ///
-> +    /// iter.next();
-> +    /// assert_eq!(iter.size_hint().0, size - 2);
-> +    ///
-> +    /// iter.next();
-> +    /// assert_eq!(iter.size_hint().0, size - 3);
-> +    ///
-> +    /// # Ok::<(), Error>(())
-> +    /// ```
-> +    fn size_hint(&self) -> (usize, Option<usize>) {
-> +        (self.len, Some(self.len))
-> +    }
-> +}
-> +
-> +impl<T, A> Drop for IntoIter<T, A>
-> +where
-> +    A: Allocator,
-> +{
-> +    fn drop(&mut self) {
-> +        // SAFETY: Drop the remaining vector's elements in place, before=
- we free the backing
-> +        // memory.
-> +        unsafe { ptr::drop_in_place(self.as_raw_mut_slice()) };
-> +
-> +        // If `cap =3D=3D 0` we never allocated any memory in the first =
-place.
-> +        if self.cap !=3D 0 {
-> +            // SAFETY: `self.buf` was previously allocated with `A`.
-> +            unsafe { A::free(self.buf.cast()) };
-> +        }
-> +    }
-> +}
-> +
-> +impl<T, A> IntoIterator for Vec<T, A>
-> +where
-> +    A: Allocator,
-> +{
-> +    type Item =3D T;
-> +    type IntoIter =3D IntoIter<T, A>;
-> +
-> +    /// Consumes the `Vec<T, A>` and creates an `Iterator`, which moves =
-each value out of the
-> +    /// vector (from start to end).
-> +    ///
-> +    /// # Examples
-> +    ///
-> +    /// ```
-> +    /// let v =3D kernel::kvec![1, 2]?;
-> +    /// let mut v_iter =3D v.into_iter();
-> +    ///
-> +    /// let first_element: Option<u32> =3D v_iter.next();
-> +    ///
-> +    /// assert_eq!(first_element, Some(1));
-> +    /// assert_eq!(v_iter.next(), Some(2));
-> +    /// assert_eq!(v_iter.next(), None);
-> +    ///
-> +    /// # Ok::<(), Error>(())
-> +    /// ```
-> +    ///
-> +    /// ```
-> +    /// let v =3D kernel::kvec![];
-> +    /// let mut v_iter =3D v.into_iter();
-> +    ///
-> +    /// let first_element: Option<u32> =3D v_iter.next();
-> +    ///
-> +    /// assert_eq!(first_element, None);
-> +    ///
-> +    /// # Ok::<(), Error>(())
-> +    /// ```
-> +    #[inline]
-> +    fn into_iter(self) -> Self::IntoIter {
-> +        let (ptr, len, cap) =3D self.into_raw_parts();
-> +
-> +        IntoIter {
-> +            ptr,
-> +            // SAFETY: `ptr` is either a dangling pointer or a pointer t=
-o a valid memory
-> +            // allocation, allocated with `A`.
-> +            buf: unsafe { NonNull::new_unchecked(ptr) },
-> +            len,
-> +            cap,
-> +            _p: PhantomData::<A>,
-> +        }
-> +    }
-> +}
-> --
-> 2.46.0
->
+Alice
