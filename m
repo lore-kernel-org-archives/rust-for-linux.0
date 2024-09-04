@@ -1,103 +1,102 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f178.google.com (mail-qt1-f178.google.com [209.85.160.178])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E17218FDBB;
-	Wed,  4 Sep 2024 20:45:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2793917838B
+	for <rust-for-linux@vger.kernel.org>; Wed,  4 Sep 2024 20:48:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725482752; cv=none; b=j2V1qMu5czQhFu3TeQenjd6oaMyB3O5L3i6T1RuJPo8tXAaS7RFYNjs82/RGaV9xtt47h/LjsrVGRuEIlLPdLLbdSkNxc/Zju9sNJeGyrhU5eICkft67NOTp7wFcVuTR/976ramKhnZwbyOAMvaSVCmhl11Z76nwgWpcUdLZ7RM=
+	t=1725482910; cv=none; b=JfvOWopnWAdwWwpQV7QEV3sphcvvWnWs2ilqXKCE6pbljA2lpHACZClhCFYgHU3lJRkfbzf2xIoSdjobi/YTApzdnhw10jjrXxXJ51wQ3VGKhk/Qex7545SxfO4eehVKKLwEiCjNfEtlpMU9EQcljpWl0gHL/VvSL/6qasQnaa4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725482752; c=relaxed/simple;
-	bh=Gln31nQ0hbxwsmmxUuwdP/R/XMmAD97Munol/XkULzI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cSZcb/Lsp8uli+KWmi5Hs1tLRHgKYxTULEFoZpCDlStIbKC4qeAZ9miX287WujF5/82bbfXtRglGWmI7a+ZY2bjf+JDVWPuS48vcdlfdNk4wWYz59FVZNP4eGMLKywAB3fqM/m8Vm4Gl9zb4uMnb10j6QDe6r8W1uJVeQEK3SF4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jHAeA/I4; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1725482910; c=relaxed/simple;
+	bh=IlJyInQbVE7u36t+XXgKiK53ANBHKwwMMhwzf2pzfBs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=emLDyDpBbkvWSD8y43n+fi7HlZrAqQKfydO/lNtt7BAUDUFXl0ROBxBsBUZCcZdB88QbQgbxM62P4imjNC7wbUqwvNIydYvfhHsQzQUEGzr87wgr0j1oyeUVbjduMAhSnyPpBFcjFnldMCTXDYtfXCxylujMflJwdnEqB478AqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=C+FVqOBN; arc=none smtp.client-ip=209.85.160.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jHAeA/I4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 322DEC4CEC2;
-	Wed,  4 Sep 2024 20:45:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725482752;
-	bh=Gln31nQ0hbxwsmmxUuwdP/R/XMmAD97Munol/XkULzI=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jHAeA/I4a0F8/1m82vsBGH9+5MMtsuNKp+oGEJSrZqL74/2oUVURo8CPeRh8gEUXh
-	 14Lrta0V8zEGDfOXNyLUo73D+s0KXSCJ86utYnPWH7DSiiAvVeZkWpN/o1QaG+dSwU
-	 tUitEzhSDQDwYjW2P9JyJfeihZrB9MleJpW8IvXR0XUY/tpJ35DW6mi3/TkLUyS1/i
-	 VospzDdHRjUfg7uxtkiXgJBxg854FsHF2TwDD6Z9CALpde7tddBDpEz1fflZG1BO4G
-	 4F9DmI/ag+XEy56C4+8hVPVBusY+0r3i+11yzgs88lEWkvqjL0CFB8LFhfIFt8qAXU
-	 0m4DyT21aWhaQ==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	patches@lists.linux.dev
-Subject: [PATCH 19/19] rust: std_vendor: simplify `{ .. macro! .. }` with inner attributes
-Date: Wed,  4 Sep 2024 22:43:47 +0200
-Message-ID: <20240904204347.168520-20-ojeda@kernel.org>
-In-Reply-To: <20240904204347.168520-1-ojeda@kernel.org>
-References: <20240904204347.168520-1-ojeda@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="C+FVqOBN"
+Received: by mail-qt1-f178.google.com with SMTP id d75a77b69052e-457c6389a3aso24261cf.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 04 Sep 2024 13:48:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1725482907; x=1726087707; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=IlJyInQbVE7u36t+XXgKiK53ANBHKwwMMhwzf2pzfBs=;
+        b=C+FVqOBNOxx7XkHDFlPxba1pKcW+FPVRZ1XczH35o1arUNEmTAt/yA961yMdFV7FX7
+         Ih97totuYdKbOWzaiqikj9hjUTjY0yobopDRhO7BEeZMZGxaJXK+Yq0qubLNbunnmLJv
+         BNY90s19C8iY8Q2/IoE31XCC6/xDgtysogXItJjFiwYeODdC66eom57HndQcTo/28Vnj
+         8wCCy8noCcTbNNmfRb9bvPfcqggRN4gwiJfeOy6LOYJu9ZwIm+mnyw9QAtkDiyqzh/CF
+         L9+aWnpQl8x/AfiUXyp+KqQ+CQqAFn/o+/oOWXE+5v4zenSLepeaSyK+jx3lzml/MCdt
+         83Kw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725482907; x=1726087707;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=IlJyInQbVE7u36t+XXgKiK53ANBHKwwMMhwzf2pzfBs=;
+        b=jz5NA8bASMEDHa+xKB5FK7ZBx4Uf2FT4iJ2GpeoOv/e8x65sDbS3o2+hsb4BDg0inf
+         hBB3SVeqUM5FLY8Kx7g4Vjz7cSjY8wcoq0yvTUXNE5hfHijS0BumUL3gYbJiEb2am0hu
+         iuLhok0alM5YdTrgFnhizdBD1kaRmBa4W3WVPsRhNfKDAxPv5S/ACWZJr08thDx7BvPQ
+         f5ferYt37mkanCWvc8bl8WRJnxMGqK0yPvssBW7rVXz8YUv1Zag/T34gMobxVqfgMJEg
+         pQ1pYO21knPhLN5WaZW3jouiEltZHC2nCo+JxwlLSSWoqqNnjfvn1lpmSYoA1kSUgYLr
+         VTmg==
+X-Forwarded-Encrypted: i=1; AJvYcCX4uaDZcRiMWdiQPUQ+yLs4HH8/i5H6TGUpIkte6rAx8z71p6pxmBnMNDedSLfTlDNWw4u1/yHIjX9pi0FHvg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw8FeJMR/BU0cbG1DrKRz6Xb0uOmXpgEcQrRcwQcaNuEoq4/WpE
+	u2PDgmAQZkrL+HNQpzeB8pD/ozJyMuQ7EhtHWs8E05y2da/+1GBBEzgfdSFrT0LCNFlJqxLvEa5
+	bhkbxdEdsSIZeVgT5zGViniBScsx6L5p/Ulym
+X-Google-Smtp-Source: AGHT+IH29w72UxfNOmF+cOkn6nGTKhQJqTJySHQ6AISmMgpemfPBBYnt6mkLOYyAZK7vuhZ4wOocZ3LTTemcXVPpeUk=
+X-Received: by 2002:a05:622a:64e:b0:453:581f:f29e with SMTP id
+ d75a77b69052e-45801f21252mr1019391cf.24.1725482906905; Wed, 04 Sep 2024
+ 13:48:26 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20240815173903.4172139-21-samitolvanen@google.com>
+ <20240815173903.4172139-39-samitolvanen@google.com> <CAK7LNAQ4Qy-Z7Z2ads7JNRs+aTP5BrRTqCZgmm51e+_6mU3sYg@mail.gmail.com>
+In-Reply-To: <CAK7LNAQ4Qy-Z7Z2ads7JNRs+aTP5BrRTqCZgmm51e+_6mU3sYg@mail.gmail.com>
+From: Sami Tolvanen <samitolvanen@google.com>
+Date: Wed, 4 Sep 2024 20:47:48 +0000
+Message-ID: <CABCJKuccRnMAn4VUWjD4=2NXOR1a=wpHp-iNNUTv_Eh4e8155A@mail.gmail.com>
+Subject: Re: [PATCH v2 18/19] x86/asm-prototypes: Include <asm/ptrace.h>
+To: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Luis Chamberlain <mcgrof@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Matthew Maurer <mmaurer@google.com>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	Petr Pavlu <petr.pavlu@suse.com>, Neal Gompa <neal@gompa.dev>, Hector Martin <marcan@marcan.st>, 
+	Janne Grunau <j@jannau.net>, Asahi Linux <asahi@lists.linux.dev>, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-It is cleaner to have a single inner attribute rather than needing
-several hidden lines to wrap the macro invocations.
+Hi Masahiro,
 
-Thus simplify them.
+On Sun, Sep 1, 2024 at 10:51=E2=80=AFAM Masahiro Yamada <masahiroy@kernel.o=
+rg> wrote:
+>
+> On Fri, Aug 16, 2024 at 2:39=E2=80=AFAM Sami Tolvanen <samitolvanen@googl=
+e.com> wrote:
+> >
+> > <asm/ftrace.h> refers to struct pt_regs, make sure it's visible.
+> >
+> > Signed-off-by: Sami Tolvanen <samitolvanen@google.com>
+>
+>
+> Then, why don't you include <asm/ptrace.h>
+> from arch/x86/include/asm/ftrace.h
+> instead of from arch/x86/include/asm/asm-prototypes.h
+>
+>
+> And, this patch can get in independently.
+>
+> You should send it as a standalone patch
+> to the x86 ML.
 
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
----
- rust/kernel/std_vendor.rs | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+Sure, that works too. I'll send a separate patch for this.
 
-diff --git a/rust/kernel/std_vendor.rs b/rust/kernel/std_vendor.rs
-index 8b4872b48e97..8f27d447a7fc 100644
---- a/rust/kernel/std_vendor.rs
-+++ b/rust/kernel/std_vendor.rs
-@@ -73,8 +73,7 @@
- /// Naive factorial implementation:
- ///
- /// ```rust
--/// # #[expect(clippy::disallowed_macros)]
--/// # {
-+/// # #![expect(clippy::disallowed_macros)]
- /// fn factorial(n: u32) -> u32 {
- ///     if dbg!(n <= 1) {
- ///         dbg!(1)
-@@ -84,7 +83,6 @@
- /// }
- ///
- /// dbg!(factorial(4));
--/// # }
- /// ```
- ///
- /// This prints to the kernel log:
-@@ -129,11 +127,9 @@
- /// invocations. You can use a 1-tuple directly if you need one:
- ///
- /// ```
--/// # #[expect(clippy::disallowed_macros)]
--/// # {
-+/// # #![expect(clippy::disallowed_macros)]
- /// assert_eq!(1, dbg!(1u32,)); // trailing comma ignored
- /// assert_eq!((1,), dbg!((1u32,))); // 1-tuple
--/// # }
- /// ```
- ///
- /// [`std::dbg`]: https://doc.rust-lang.org/std/macro.dbg.html
--- 
-2.46.0
-
+Sami
