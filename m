@@ -1,90 +1,125 @@
-Received: from mail-pf1-f170.google.com (mail-pf1-f170.google.com [209.85.210.170])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89E701D9344;
-	Wed,  4 Sep 2024 12:58:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.170
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F23E85C96;
+	Wed,  4 Sep 2024 14:43:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725454692; cv=none; b=OEeWRM1xLn+3Rt1P9wBoELVWR4xeina/3YSAi7AQYUxuILtg0d//rlnDfb9UHNvsj5QsI5Sim3K5acOxd2ZEX0QGNmcePsTm8wHsrFY7Le7dOsaSmEOrU3Rq8SpDFNWMubTZYsmsFGinWKSb+xL1Mv+Fzy2c/LdT/eNuvgHH4qI=
+	t=1725461003; cv=none; b=Nvgl3aSAfz4YnqgBo7sHuI4xScw1ZW12463qUon14u9PGf3NO6IqYt7WMQfOZA0hSs7z5fgrlIBDgKub17JQIi6Z52hxVLFt2tmM6lIRSJOMJFylnplTRd4J2sCc38nNb5/OrFCuMhi6G+HCS/pSk+yfjsmu3j3LJeOyUYNo9Ws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725454692; c=relaxed/simple;
-	bh=y+0wgterEVCQgKUJhhw1nJyoRD+c6QWvYNhAzYbfqIU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=iFLg64CXto2RhoaD71RdbIIzpJ+a70MTsXKQyfY+0tdWRyVp3KzG8zvUethaPWEKS/r9uMX1RZNKxl8xm/kIj5GwFt9Bszl2lhjGmDbXXajAol1uZ1DlutVHBCjMhB/QaHPDGyYsgxBCiMakHJ4wNV18QIyUKlgWxSsPoqcEoJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=M28SfeCK; arc=none smtp.client-ip=209.85.210.170
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1725461003; c=relaxed/simple;
+	bh=ysrIaa54LXGyRQ0SCJqaqPXG/wL/56b1svoQ9zTZvwI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Tf6c76OyKWpCEJO25W67Y3Xrl7A7OZtmFSYjAP/ViGy02+l2zb0uElulBoMXFHfHH6qawj2DlL9cc20U8ybzq9+UBDIY8IYHl3ns+TvOtBY/7/TxwROeG4auutzrbgHaXrmqKCmmkMuwSRjObqh+tinHplpODt9Muf6ild2t62I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=og6Bu/9Q; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="M28SfeCK"
-Received: by mail-pf1-f170.google.com with SMTP id d2e1a72fcca58-714481eca0cso851826b3a.2;
-        Wed, 04 Sep 2024 05:58:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1725454691; x=1726059491; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=y+0wgterEVCQgKUJhhw1nJyoRD+c6QWvYNhAzYbfqIU=;
-        b=M28SfeCK2V5h11Ca7Z8jIqCcFQ4HOClbJ3/a312t8fCgQQmnGP1/iNjjgkptG+IZ23
-         h7Ja+cndOAzU3Ikn3H3hHdL/DrgRG3sCm8OW95Wz92HGfTeZ9EEoReiR5JPovAOk+Lyz
-         WTkbh2rtkyLzpOfbB898yLPOoGdcWaVmU+9HxWus1P+cNWMZKg6yU9gJEZO2OCVFYw78
-         p/kA9DOkpgber723NJK1N1MoDqmQA4sE+3LCSXzA6uvXhCpyvQzTtkXQXjVby4tSOsmo
-         Q9OlSTrj/o83UJOud2jN+NqPElkGpyuxP6uzPTpIXXMjR1gGcKB5V9kW7cELCMHr/2m2
-         8iqQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725454691; x=1726059491;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=y+0wgterEVCQgKUJhhw1nJyoRD+c6QWvYNhAzYbfqIU=;
-        b=u2tThBRSC2YGsq3L2+BWvsWGuabmLCp0Xyp1cClFzD1BuFfMQQp7HHUC00Aww4c+iR
-         bHF192PJW1JMnN9iFICovvURH0zyxJ7+yzqWBYSdJJUcKsILfRg7IWsllB5PPo9m6DTH
-         JcDg3+morGb4lL67+IBHmUWBgiMbRVzp/ftyoGJbnFWvjv9IjK8C+LtAz0/PGffBZwiF
-         gEAsRmZx2T4cN7DsGx8J0ubJ3Va1t18J0WnkggtNE8cpPSbwHRhl37uHmYUZngdpMI7+
-         7/a8x8m0a5mL22XceAjmHhiVuQZSeECHipNAKAofwb/NTsesVB7kIdtlrDJUp5uOmZzi
-         yfiQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWTxKEyLGE6lPdkdF320RnOVHJXOexpBo4Qejp15zuHeIhFV5GbRU3lYbaWvCupfhfapAmnoun85cjEHY6w1eI=@vger.kernel.org, AJvYcCXIpyC1TEG20rkkAa9Qh0bImAqumi5N4bBZXAaFEnCU2oCrUHxdJmImEkAnoYzoVzcaQhmPoMHwWfN6yBM=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxcYs/orVaZ1ogrdiUg+/8R5/SxJU7pviTbJkaRIKafSzar/b9L
-	ZxmhiUFWH28ElykkeI0nEpLn7TRZdYDoRd50vjSPH4GK20rcnMwBhoD5TEDbBuks1fHNNXerPPY
-	In7mALnopoXIagsPjr/SQGbnJqRo=
-X-Google-Smtp-Source: AGHT+IHHFnOAollc81Fq5wkdOLmRHnza96tNKfO2NPUTgKf9KOBAGSr3O3dlDku0aCIc2IZW9nFI5aKhLtV5YrMtyRU=
-X-Received: by 2002:a05:6a21:7884:b0:1c4:f30e:97ff with SMTP id
- adf61e73a8af0-1ccee533fd6mr9625890637.9.1725454690660; Wed, 04 Sep 2024
- 05:58:10 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="og6Bu/9Q"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5841C4CEC2;
+	Wed,  4 Sep 2024 14:43:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1725461002;
+	bh=ysrIaa54LXGyRQ0SCJqaqPXG/wL/56b1svoQ9zTZvwI=;
+	h=From:To:Cc:Subject:Date:From;
+	b=og6Bu/9QOcl2W3bniJfApqUSTx6DFe/oZoANDXrHF9Xd2/5tdinWY0pa2C/GWx4cj
+	 xBbaTHrDpDcvV3uKakxsSbcR8g9VN3JIKNSU92Uwnr/7depEttC94p7Ig8Lm3WAG8q
+	 6RmqVZXY1qKuziPnTB1qa5w+6OPMlGTzvO9sF1hkTmaVr7KYRo097faW7TPq9a5Rxb
+	 1Qmawq+a6s0n3+C6oDt8Ey/L1hEr9KOE3sWfOgusTfGONnLTAgxRVs3WkZSYTvN8y5
+	 jLMrT6gPPehqUF7gzzt9aAVFdujAZGT+CWU3Ah9VC26Ht9DOg8nmkgGdm/uqGCbAI0
+	 4cq9Vsm3fD7VA==
+From: Miguel Ojeda <ojeda@kernel.org>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Matt Gilbride <mattgilbride@google.com>,
+	Danilo Krummrich <dakr@kernel.org>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	patches@lists.linux.dev
+Subject: [PATCH] rust: avoid `box_uninit_write` feature
+Date: Wed,  4 Sep 2024 16:42:29 +0200
+Message-ID: <20240904144229.18592-1-ojeda@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240816001216.26575-1-dakr@kernel.org> <20240816001216.26575-27-dakr@kernel.org>
- <20240831135712.0d7366b6.gary@garyguo.net> <Ztb6_XW3ccnHQDmw@pollux>
- <CAH5fLgjbnGstjzsudjavzt5+UwK_r8n8X3LPdw29QSkBzaygxQ@mail.gmail.com> <f99d8d3a-5b56-4555-a1fc-bd7685dcea40@proton.me>
-In-Reply-To: <f99d8d3a-5b56-4555-a1fc-bd7685dcea40@proton.me>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 4 Sep 2024 14:57:58 +0200
-Message-ID: <CANiq72=MD8jmWb9EGA8yW6eMT6Prj8fYEiJM81-HTq3p4dKmGg@mail.gmail.com>
-Subject: Re: [PATCH v6 26/26] MAINTAINERS: add entry for the Rust `alloc` module
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>, Gary Guo <gary@garyguo.net>, 
-	ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, 
-	boqun.feng@gmail.com, bjorn3_gh@protonmail.com, a.hindborg@samsung.com, 
-	akpm@linux-foundation.org, daniel.almeida@collabora.com, 
-	faith.ekstrand@collabora.com, boris.brezillon@collabora.com, 
-	lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com, cjia@nvidia.com, 
-	jhubbard@nvidia.com, airlied@redhat.com, ajanulgu@redhat.com, 
-	lyude@redhat.com, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Wed, Sep 4, 2024 at 2:51=E2=80=AFPM Benno Lossin <benno.lossin@proton.me=
-> wrote:
->
-> I forgot the reason for not using it, does anyone remember?
+Like commit 0903b9e2a46c ("rust: alloc: eschew
+`Box<MaybeUninit<T>>::write`"), but for the new `rbtree` and `alloc` code.
 
-One of the reasons argued was that `mod.rs` is the same name
-everywhere, and thus it is hard to notice the difference in some
-editors and may be harder to "jump into" in history/tabs/etc.
+That is, `feature(new_uninit)` [1] got partially stabilized [2]
+for Rust 1.82.0 (expected to be released on 2024-10-17), but it
+did not include `Box<MaybeUninit<T>>::write`, which got split into
+`feature(box_uninit_write)` [3].
 
-Cheers,
-Miguel
+To avoid relying on a new unstable feature, rewrite the `write` +
+`assume_init` pair manually.
+
+Link: https://github.com/rust-lang/rust/issues/63291 [1]
+Link: https://github.com/rust-lang/rust/pull/129401 [2]
+Link: https://github.com/rust-lang/rust/issues/129397 [3]
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+---
+ rust/kernel/alloc/box_ext.rs |  6 ++++--
+ rust/kernel/rbtree.rs        | 17 ++++++++---------
+ 2 files changed, 12 insertions(+), 11 deletions(-)
+
+diff --git a/rust/kernel/alloc/box_ext.rs b/rust/kernel/alloc/box_ext.rs
+index b68ade26a42d..5b1550d620fd 100644
+--- a/rust/kernel/alloc/box_ext.rs
++++ b/rust/kernel/alloc/box_ext.rs
+@@ -26,9 +26,11 @@ pub trait BoxExt<T>: Sized {
+     /// use kernel::alloc::{flags, box_ext::BoxExt};
+     /// let value = Box::new([0; 32], flags::GFP_KERNEL)?;
+     /// assert_eq!(*value, [0; 32]);
+-    /// let value = Box::drop_contents(value);
++    /// let mut value = Box::drop_contents(value);
+     /// // Now we can re-use `value`:
+-    /// let value = Box::write(value, [1; 32]);
++    /// value.write([1; 32]);
++    /// // SAFETY: We just wrote to it.
++    /// let value = unsafe { value.assume_init() };
+     /// assert_eq!(*value, [1; 32]);
+     /// # Ok::<(), Error>(())
+     /// ```
+diff --git a/rust/kernel/rbtree.rs b/rust/kernel/rbtree.rs
+index 48ceb9560bf5..25eb36fd1cdc 100644
+--- a/rust/kernel/rbtree.rs
++++ b/rust/kernel/rbtree.rs
+@@ -1059,15 +1059,14 @@ impl<K, V> RBTreeNodeReservation<K, V> {
+     /// Initialises a node reservation.
+     ///
+     /// It then becomes an [`RBTreeNode`] that can be inserted into a tree.
+-    pub fn into_node(self, key: K, value: V) -> RBTreeNode<K, V> {
+-        let node = Box::write(
+-            self.node,
+-            Node {
+-                key,
+-                value,
+-                links: bindings::rb_node::default(),
+-            },
+-        );
++    pub fn into_node(mut self, key: K, value: V) -> RBTreeNode<K, V> {
++        self.node.write(Node {
++            key,
++            value,
++            links: bindings::rb_node::default(),
++        });
++        // SAFETY: We just wrote to it.
++        let node = unsafe { self.node.assume_init() };
+         RBTreeNode { node }
+     }
+ }
+
+base-commit: 68d3b6aa08708bb3907c2c13eaf4b3ccf4805160
+-- 
+2.46.0
+
