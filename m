@@ -1,67 +1,67 @@
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79BBC193091
-	for <rust-for-linux@vger.kernel.org>; Thu,  5 Sep 2024 08:04:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23A88193079
+	for <rust-for-linux@vger.kernel.org>; Thu,  5 Sep 2024 08:07:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725523457; cv=none; b=TwgNzvme2KtgFkPGFnqrRMUDMePcVPXP28KTXkt9+rNuNeqbWXZ+d6YXBsxmXms0Q/t9fxF6b0O3REQfjr1GbJuUvHMkwKIyClpZn2uEF8RLxQtFgAzjqye0azXl4NiXztG/IwMShsL/iNqGr1/RpfsOVu6CHHcY08xPZYUAzX8=
+	t=1725523668; cv=none; b=BtJBXSyRoET+AhlMvV72bSw0vYteo0Kop7DnO6/+Xu4pjz6ANm6Bejb0q4Qybdc72AKcAIZMIQbOcfByhfHj5YzeKyBpVPzufPHzJE5RZ08kuIj00QpvXntBdANnwfgBGfl5DOGNoNvRZ2xH1AcSnoej6RmQFJpfmOs3F/rOw2I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725523457; c=relaxed/simple;
-	bh=2pLfpYslB2ZuYauJSQQHIlJZPnMxW6xOF3LASls58OE=;
+	s=arc-20240116; t=1725523668; c=relaxed/simple;
+	bh=HZnCJipsXwMP4VZBsZOkHz1xv48awVQlqhiAnpcMQ/4=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=CIy58/iBy0p4PiPAJRwKbHQ1Z+MGl/+o32791Pcexz6JLIOJlG2UjS7pESfBanEItFCrUPCUpxqTcu7RjUGajPtYSUD3R/KDCm8NsmRmtM4g40aHW90PrRUqHuAfUGUfbWewGyveHM8YhPd8VE2oBcsALh/lopzRQj0cbh5L/kg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nyZsjO4J; arc=none smtp.client-ip=209.85.221.53
+	 To:Cc:Content-Type; b=eC9fMBDipXkt3qRo5M3XrugWqstZuM6RejcLDgRdUbl1zozmC2ozWhEjhdmYqhmDgiorNszn+z90BZBhPdA4WEkI82TzadXbs9FPvLaNziQqk8lF87AdkR2OUqaiVHcp5RFbLcPB3PifQt730xqi9Pu+7bUhVv4kO2njA9W9WyY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=hQsiOz0j; arc=none smtp.client-ip=209.85.128.41
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nyZsjO4J"
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-374c84dcc64so282099f8f.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 05 Sep 2024 01:04:15 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="hQsiOz0j"
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-42c2e50ec13so3258395e9.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 05 Sep 2024 01:07:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1725523454; x=1726128254; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1725523664; x=1726128464; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=2pLfpYslB2ZuYauJSQQHIlJZPnMxW6xOF3LASls58OE=;
-        b=nyZsjO4JciQ53pQq3ygNaUBzN9d1JdOpmSukInG++EadQDE6RmK/980V5nRQPDJBeg
-         XwjW2MURW5D/OOmqAdmPyHmpzusMB3l3Wgx16kVA2EemHdqOFwoT4TKTBqRraU+nhufS
-         I1WmtkrcfBgsylIX3DRfxH284O+lZAv48+OqBMDp7I3HyWwSdlzdd9eWOQjgFj0VEDjV
-         BrliXH3Q/YZLGB3kAGIDWI+nM5TCYqrQHCLd+7vUfxinDiavsQXgMhtsAJoOA/vhJpJZ
-         HJuIVdYdSymn3jrRktkf9i6W170c0+NctnEP2Sb1cnwLI5hK7kXMSUG2i9kEXTmJQGfw
-         0YQw==
+        bh=HZnCJipsXwMP4VZBsZOkHz1xv48awVQlqhiAnpcMQ/4=;
+        b=hQsiOz0jE5rJ9UVB6AUQ6shs3DAlhYcaeNbn4hTVkcsaFpc+mXnnTO3uN4L6MhP8u4
+         K0E6Wrv1VPqkpWGVVt3D5To1j0lLchYPQCX2mJi0NvYELMZMxOykBY5+0kMf9yewOh6y
+         MvrjQCwJ6nwiyU7v/mR6dVqv7qz3oHzwoHFqsNY95YQhvYV8CzFSXIzG6/BKF+gVoqsA
+         Vufeflbrn5uuMlqcv/QdBx+pDMZUtLaoEXMFX0Md0r2fXCPG+Fi7/XVvgLhcXlH1a/n6
+         Y3W3KDVD+P7XOuVwypkYs9vGFrFunHIupcQGGx8sN2KVgWXoVu6s4hoeP2RQSgHVi5Bo
+         wLWA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725523454; x=1726128254;
+        d=1e100.net; s=20230601; t=1725523664; x=1726128464;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=2pLfpYslB2ZuYauJSQQHIlJZPnMxW6xOF3LASls58OE=;
-        b=EGk7wzkWrV3jYAb3tARx7nq9kqODUmAHcuUDqtrvhwwxp3LQ1HCRGIyCgCQZh7dVrw
-         L0AClAli2n3xbvROQolHLJBfJ6HozhrFifol16sy9ui8qabWzSnshdzPPGd2e/PFxQT1
-         v/Dx26BL2RQOrOF6mPRw2GApWn0kKCxBE0093Va0XC7LKCmaa7oysevTN0uuEXCt9H+V
-         WeSoGWEKVyIzifK05di+F5KfRAKGMQLnh/HMaRSXc2EPJwBByOBONIu5Lq1L+l1/XsHS
-         Whkzc++8GWA4JchuAaDGYTUqBtSL3ldMLoSCGR1eIs63xpVgeKcsQgoiiSBED2ASHRnv
-         3HiA==
-X-Forwarded-Encrypted: i=1; AJvYcCWR1c2bndUkGjzVaHDBtYZWF9rmU7MLQoxSSZxN/mH/EToUZMsqA1mDIKBauyVld+hOm1iPYZZwR4ebYjLh4A==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzmQ8Xjt/0X9ONrD0QgHRnvG5/G6SxHvhU9h0K4EqN9xu3YiuX0
-	g0NJqr5l6KtrLwCD23FkT1FkcISQkny8OVsaoNPivqw0niq6Luk/rXbBD99SpI/XHOtaujQ7Gyb
-	FTgN8e92GidHOzTyuJsGfiDTHVSP68ItIGWlG
-X-Google-Smtp-Source: AGHT+IFXkQuUA6GvCxWiY5ZV2+dZ7ObdZQnAmrohv7u/9rzMrCvrlFR1MGRiX+3aUn2jzxx2iuNDgsCy59mtYNh8lQA=
-X-Received: by 2002:a05:6000:c8e:b0:367:9903:a91 with SMTP id
- ffacd0b85a97d-3749b526808mr19134357f8f.11.1725523453475; Thu, 05 Sep 2024
- 01:04:13 -0700 (PDT)
+        bh=HZnCJipsXwMP4VZBsZOkHz1xv48awVQlqhiAnpcMQ/4=;
+        b=RHBsfZcqEiDSLTFhYzt+9O2B61lmdIENhE2EnwWW0bx3kjhAwod49v3cwYIHanHj1m
+         VBtOnAUt5032R/Z50Ig+PmbjJYTz8fb4y6kRsS4jQHgch1L8RDEcglC0YZ+/Ta5c8Yen
+         /27YLpy+C8TAaNXu7aZ8l2M5FBgMoOuDrW3Ol+iymQ442LaI6p7x+q3jH6YtigHtz6nz
+         1VwDIHZVEWxX35KD7ERmRKoZAPuL9krbLGsqQ1xb3ycC4PoRyYsg8OAaoQxGggq08/KL
+         p+/0QR4grHMMvBaHovIDZkLrgXi2qH1xm6244DIpbx1TQy0bqzoWWDzXRvECAnVB19z2
+         sD2w==
+X-Forwarded-Encrypted: i=1; AJvYcCWP59RWDk6y52HVVrIiIgHpFNfmK07Jssal8nCEnfqd3/FwJqp8slTRNj9zxihx3HMVfV7+HVxfedYeVKS+LA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy5XGZo4qe/Ppuiokvx2YEgDDJoVt5snSM1U1z4MaDbUSUr6/an
+	+jFB66X4pPErnqk36SpI5ESoEHYXsa+68vq6SBFRqIe78neMAOLkfL81BrjpiI5mvsfElpVTJ+k
+	UUgA6C6KD/lgPTJDoScrOQuH94JlR1ojVO5bv
+X-Google-Smtp-Source: AGHT+IFhiAj/3EFHGD/JiFE+H1pUAlKa3bW4DHEc6Kdw3MES/KJPwsv1V++t7JJOI75tAiCoDGf6ibbzuzPSulZPbkc=
+X-Received: by 2002:a05:600c:1e09:b0:425:7974:2266 with SMTP id
+ 5b1f17b1804b1-42bbb436e04mr134483975e9.24.1725523664230; Thu, 05 Sep 2024
+ 01:07:44 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240904204347.168520-1-ojeda@kernel.org> <20240904204347.168520-5-ojeda@kernel.org>
-In-Reply-To: <20240904204347.168520-5-ojeda@kernel.org>
+References: <20240904204347.168520-1-ojeda@kernel.org> <20240904204347.168520-6-ojeda@kernel.org>
+In-Reply-To: <20240904204347.168520-6-ojeda@kernel.org>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 5 Sep 2024 10:04:01 +0200
-Message-ID: <CAH5fLgjOA7pNtQYTuRy5WAbxJd+uDv2Eh4Z3u6QxSJvd-xcBNg@mail.gmail.com>
-Subject: Re: [PATCH 04/19] rust: enable `clippy::undocumented_unsafe_blocks` lint
+Date: Thu, 5 Sep 2024 10:07:32 +0200
+Message-ID: <CAH5fLgjmBQe-VmNP5RUB3sAVGh7EKi3i6GZmaP2b3WZMnGkQ4Q@mail.gmail.com>
+Subject: Re: [PATCH 05/19] rust: enable `clippy::unnecessary_safety_comment` lint
 To: Miguel Ojeda <ojeda@kernel.org>
 Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
@@ -72,31 +72,20 @@ Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.co
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Sep 4, 2024 at 10:44=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
+On Wed, Sep 4, 2024 at 10:45=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
 te:
 >
-> Checking that we are not missing any `// SAFETY` comments in our `unsafe`
-> blocks is something we have wanted to do for a long time, as well as
-> cleaning up the remaining cases that were not documented [1].
+> In Rust 1.67.0, Clippy added the `unnecessary_safety_comment` lint [1],
+> which is the "inverse" of `undocumented_unsafe_blocks`: it finds places
+> where safe code has a `// SAFETY` comment attached.
 >
-> Back when Rust for Linux started, this was something that could have
-> been done via a script, like Rust's `tidy`. Soon after, in Rust 1.58.0,
-> Clippy implemented the `undocumented_unsafe_blocks` lint [2].
+> The lint currently finds 3 places where we had such mistakes, thus it
+> seems already quite useful.
 >
-> Even though the lint has a few false positives, e.g. in some cases where
-> attributes appear between the comment and the `unsafe` block [3], there
-> are workarounds and the lint seems quite usable already.
+> Thus clean those and enable it.
 >
-> Thus enable the lint now.
->
-> We still have a few cases to clean up, so just allow those for the moment
-> by writing a `TODO` comment -- some of those may be good candidates for
-> new contributors.
->
-> Link: https://github.com/Rust-for-Linux/linux/issues/351 [1]
-> Link: https://rust-lang.github.io/rust-clippy/master/#/undocumented_unsaf=
-e_blocks [2]
-> Link: https://github.com/rust-lang/rust-clippy/issues/13189 [3]
+> Link: https://rust-lang.github.io/rust-clippy/master/index.html#/unnecess=
+ary_safety_comment [1]
 > Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 
 Reviewed-by: Alice Ryhl <aliceryhl@google.com>
