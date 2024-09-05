@@ -1,94 +1,181 @@
-Received: from mail-ot1-f53.google.com (mail-ot1-f53.google.com [209.85.210.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fhigh7-smtp.messagingengine.com (fhigh7-smtp.messagingengine.com [103.168.172.158])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 044F3198845;
-	Thu,  5 Sep 2024 09:45:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D74401E487;
+	Thu,  5 Sep 2024 13:33:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.158
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725529532; cv=none; b=qkY9fKXwYCEbFgHhRZaGIOVytgbCGKSl0nrlXG90zaLBFVEzOz6CXFjibFPgKMOimzbovZ4C3+0+u3RCCzfk6UcZgXL0NORCFpWe2EkAn3Qcv2F3CJ+Scqeo3Yfo1Rh5Xyg8i/ZbsC2oPMRtQj4E7oX74nYlpdDz9Z/HR/8Lt8Y=
+	t=1725543200; cv=none; b=NHLsZwaaytB2I8WrETETQSrO8mOuS6vU2tp9TWqTq0pzg5S2HS87xmYz+x+SCqq7DsH98kPTto9hkd6QMgg8DLpjueLWh/f+cPAkF7o7EUGNaRGkVmVhJnjPKyh9Hj0sj56vEaa98eHIka1fBmfUQ4uIlgbdDseUz0jAmlDjbD0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725529532; c=relaxed/simple;
-	bh=T9uAT6P2XJVZAdZnyx/4GZlbV0cbx0PWvTakz+ui324=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=m+Jc888/E0GyuwLc0jJ0eF5ybyVUa3HZM9Ymo8Etin/GWzslJuCkEYqNUtUB5TtVc5wxQNLTrA2vEHs6wjBeej/LyUtX/7C7mqsB0kP8aiNFALE4FLh+HXxcbIkP+gYYqEa81++h4vGBDcZJwMa/kl8eN2clG5b9R0aqK18vQGo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hKlPNsFB; arc=none smtp.client-ip=209.85.210.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1725543200; c=relaxed/simple;
+	bh=qjUaAPTaliz5J4cRsvrBexPWV1blwkxxWIdH50rGLzI=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=Ts073V3bY3U9ZKOq2H+2lQVa3ZeTdEummacPpWiHnHxPUKPcXTHANsaMGmyn6LFg5wg9G+qyUw3emnneCgt3iZjF0YppTWsYM+aR53VrXNoomnqA8qdup45tyuZayVhflIElgYXi9/jPmOmv5jUhjEVh4x02CO+VFapdkJFrR6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=flygoat.com; spf=pass smtp.mailfrom=flygoat.com; dkim=pass (2048-bit key) header.d=flygoat.com header.i=@flygoat.com header.b=PdMvnsb/; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=Y+Nnp21a; arc=none smtp.client-ip=103.168.172.158
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=flygoat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flygoat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hKlPNsFB"
-Received: by mail-ot1-f53.google.com with SMTP id 46e09a7af769-70f5f85971dso73626a34.3;
-        Thu, 05 Sep 2024 02:45:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1725529530; x=1726134330; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=T9uAT6P2XJVZAdZnyx/4GZlbV0cbx0PWvTakz+ui324=;
-        b=hKlPNsFBu9coNLPi/j5IDWlqZOCZGdSJ6qhhtHsaL533KLRUEo10++Ng8oFiYl6BF9
-         1EYHOVmKTm4f9tzmkYBhNfk6iAVos8mY5okRo20Xg5sa0E/P/mrQGEN4+uSajj+r1dJH
-         9oFtNRU774J1N7VIvxaLL13DgeWYlD8ROH5Nv0s257SQC5ilhVjXmv/gXdCtkcEtQ5TQ
-         oAlLewOG2qa66E6ZPnJJ+Jirf5ShKggpfoNT3nZfl+zL8YeXundKdhwRK+ZazLAkhUvC
-         SFOxIiDqDqxwfDckNLVWJ9cOskAEWbspr4fbaI0MtDu6Gw1lZp8QBuuwzjp8Qr3Aji+l
-         t5Wg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725529530; x=1726134330;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=T9uAT6P2XJVZAdZnyx/4GZlbV0cbx0PWvTakz+ui324=;
-        b=qnL98HocVrAp6qEZLQd0rnG/HgTq7qLrUh/zv3mBasI5DwYcGyOQ589Kl+Mgqe8p7M
-         RiCQ+co1JH6fBzSK6ut0/hH6/PWbofWWw9fgwkQOeo+O5Bok7ogt0izcqxQfxtyNL66U
-         Hmmg+09F2I+Xr20EIbz1quJU+1suEJpE/e0EYd0Z/Q7zQ4inAycMDSCVH96n9dSAqDVt
-         ZbCKFnlFV90ts0ZoTEgSEFDRDmEfmGraOdsH2iOQc/VVChBcZacPYQ2Nik+PAnjfh9Lr
-         8TSLXngP+ynCAK0hxgmicysV4Gm3FPuvBGPeyp3FfkmM9jiF/+hV4uN7CdpajQXojX7y
-         95DA==
-X-Forwarded-Encrypted: i=1; AJvYcCXZMao59pscHr2LWcZMeMyrRrxY8WrNHTBoYN/8sd58USIZlS3cPjzhRqE5+vn3Hud4f2qlzH2dzSxhZlnSAMA=@vger.kernel.org, AJvYcCXjmsUcqb1lBPG7Pc04ZCjru7jCDg4v+Q2KAkfvw6Em7la5qnRL4yR0W6J2cxuwXJd4k8a/F5WgmXPegYI=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxsG8wp3rwmjmeVn4RLEBKWGOG5U/3H4lgnL87GHZBgg3zTViMa
-	z2uSXB1xsfF34xH25E/eWig9eqvwJckBg/yEXEv8gXqiNrlS3W+VP+gQkWpWhb9AtnmexoqHerW
-	Uv3qAXrmhl7XgkH6CADt52SiPdLM=
-X-Google-Smtp-Source: AGHT+IF4/iqCXFx0YZniYl3ZSu+g9OE3IT6hrjrMVy3pCALICpQGkQrU5kNPgWw9rFg6Yzz1lTOlB0WKywfTKVKf050=
-X-Received: by 2002:a05:6871:54a:b0:278:6e3:934c with SMTP id
- 586e51a60fabf-27806e3966fmr6728709fac.5.1725529530073; Thu, 05 Sep 2024
- 02:45:30 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=flygoat.com header.i=@flygoat.com header.b="PdMvnsb/";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="Y+Nnp21a"
+Received: from phl-compute-01.internal (phl-compute-01.phl.internal [10.202.2.41])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id EB1F31140263;
+	Thu,  5 Sep 2024 09:33:17 -0400 (EDT)
+Received: from phl-mailfrontend-02 ([10.202.2.163])
+  by phl-compute-01.internal (MEProxy); Thu, 05 Sep 2024 09:33:17 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
+	cc:cc:content-transfer-encoding:content-type:content-type:date
+	:date:from:from:in-reply-to:message-id:mime-version:reply-to
+	:subject:subject:to:to; s=fm2; t=1725543197; x=1725629597; bh=0L
+	6FxNpj/PudHapXC4OU2emJoWIjVzEfXLmyz4x/E4E=; b=PdMvnsb/OntTB8LKjc
+	4FMd2sBTGmsLLu7Qc6v5dKt9ugU47ve2tbKW8tRsjwTvSOpa7BFJ0APLPQlLss7m
+	304fSR9XiLY6NlDBY7eVdXG0kX9uPdhd9IJiK5ZD4dgzi17d54p3+tCAnIank3fw
+	610VKgvDZDpuCLRwLK0UlC84k5BYptDelvRbuqCNiGobkfDgUN0Mjmo6w9+N3oyf
+	sNI9SCjfGckTG8tLsCX/avX1T+SCE3oUuolSbW1DCbBdszdSr0PMnaPmwKb8NdYi
+	HcUZxqr29LMq/cxocz4vlmj2AY2ufhPdWBkYUpff33U6V7C+TaL2RVoTQjJzeDHf
+	76JQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-transfer-encoding
+	:content-type:content-type:date:date:feedback-id:feedback-id
+	:from:from:in-reply-to:message-id:mime-version:reply-to:subject
+	:subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+	:x-sasl-enc; s=fm1; t=1725543197; x=1725629597; bh=0L6FxNpj/PudH
+	apXC4OU2emJoWIjVzEfXLmyz4x/E4E=; b=Y+Nnp21aOOWlw1BXngSS0dK3Oq92o
+	KQ5ffLqsYD+FSSZmFj5MID8NjE4uHa8QyOLkcI2U8v4Jr9gXcUa6qBAIFdVL8tGv
+	sg1e1/w6q0M7cVrNgrdhOkQXmKMF9HQygSZSHd3dew5Hc3kWSUrTeO/0r7uZGDxv
+	+Yrla2VmFJIXWiWqN8TIvXkTq21kb+atxoGVcqd+OJ5qcHODTUCi5UFG4E9MqDRV
+	GWn2dW0cEumSKmBoymeXWZeJqibVzLkXkYnms3BUDwtzfh7HJKbg+RNO93cx9JvZ
+	NRa6dhPtGQE9bXVY/hByM9O4KT5Bz6HvsE2qcM5DiL1m+/CsRApzVdB6Q==
+X-ME-Sender: <xms:G7PZZmnLsLylXlG6CQGcPrlbeUbLhLJ2zr3dfhFTXOofyhf78O45MA>
+    <xme:G7PZZt0NyQjzXWRGWkZWn_HzrTqE5Z8Af29Nh_g-lriJz7k7nnS-gzs_Cc0VqiIPV
+    TTHYWk44hc8-W_hR80>
+X-ME-Received: <xmr:G7PZZkrNK8WgPaP8q-p8iZyBsyn8bVgW4tRzsqvlm24rtEH7JJ_V6_iznrNJo_juhA>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrudehledgieehucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+    htshculddquddttddmnecujfgurhephffufffkgggtgffvvefosehtjeertdertdejnecu
+    hfhrohhmpeflihgrgihunhcujggrnhhguceojhhirgiguhhnrdihrghnghesfhhlhihgoh
+    grthdrtghomheqnecuggftrfgrthhtvghrnhepgfevffejteegjeeflefgkeetleekhfeu
+    gfegvdeuueejkeejteekkedvfffffedunecuffhomhgrihhnpehkvghrnhgvlhdrohhrgh
+    enucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehjihgr
+    gihunhdrhigrnhhgsehflhihghhorghtrdgtohhmpdhnsggprhgtphhtthhopeegtddpmh
+    houggvpehsmhhtphhouhhtpdhrtghpthhtohepnhguvghsrghulhhnihgvrhhssehgohho
+    ghhlvgdrtghomhdprhgtphhtthhopehmihhnghhosehrvgguhhgrthdrtghomhdprhgtph
+    htthhopehrohhsthgvughtsehgohhoughmihhsrdhorhhgpdhrtghpthhtohepmhhhihhr
+    rghmrghtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrrdhhihhnuggsohhrghessh
+    grmhhsuhhnghdrtghomhdprhgtphhtthhopegsjhhorhhnfegpghhhsehprhhothhonhhm
+    rghilhdrtghomhdprhgtphhtthhopeigkeeisehkvghrnhgvlhdrohhrghdprhgtphhtth
+    hopeifvggushhonhgrfhesghhmrghilhdrtghomhdprhgtphhtthhopehlihhnuhigqdhm
+    ihhpshesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:G7PZZqlQMv-YYB0XC88UY0jLTGZdF5L2Q-PtRXFzE349eMlE-oSi1A>
+    <xmx:G7PZZk3y8wLJx7CTmrlsU_VCnz_yRFWNLstW-KImm0MMNawWM81JNg>
+    <xmx:G7PZZhv1cRNHSfodrQXmL5dPrHRxtuJzSQr8sthoPTKc8j7PaViZFw>
+    <xmx:G7PZZgUwPXtfzod7pnnUm_Ui6vsW6b5N_qtKmbHHY0F7BgVG7kM-FQ>
+    <xmx:HbPZZtoSbg8Issh36bt-E_kNQL2RrHmisjXXArIsRPGKKIQsrMcS9Ym->
+Feedback-ID: ifd894703:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 5 Sep 2024 09:33:11 -0400 (EDT)
+From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+Subject: [PATCH v2 0/3] rust: Initial MIPS support
+Date: Thu, 05 Sep 2024 14:33:04 +0100
+Message-Id: <20240905-mips-rust-v2-0-409d66819418@flygoat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240904204347.168520-1-ojeda@kernel.org> <20240904204347.168520-17-ojeda@kernel.org>
- <CAH5fLgg20kDCJfD_6+fTSogOnpqK0x3a6eKaTahgSvdgfFzSEw@mail.gmail.com>
-In-Reply-To: <CAH5fLgg20kDCJfD_6+fTSogOnpqK0x3a6eKaTahgSvdgfFzSEw@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 5 Sep 2024 11:45:17 +0200
-Message-ID: <CANiq72ktnMSfMfGEhN1kO0F+C5O_KsUY1y_eb7ZL+qzzSkg9bw@mail.gmail.com>
-Subject: Re: [PATCH 16/19] Documentation: rust: add coding guidelines on lints
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIABCz2WYC/23MQQ6CMBCF4auQWVtTipriinsYFrWdgUmEkrYSC
+ endraxd/i8v3w4RA2OEe7VDwJUj+7mEOlVgRzMPKNiVBiXVRbayERMvUYR3TIKMRnK6uVlsofy
+ XgMSfw3r0pUeOyYftoNf6t/5T1lpIIcmRfCpyV00dvbbBm3S2foI+5/wFnrA6GaQAAAA=
+To: Masahiro Yamada <masahiroy@kernel.org>,
+  Nathan Chancellor <nathan@kernel.org>,
+ Nicolas Schier <nicolas@fjasle.eu>,  Richard Weinberger <richard@nod.at>,
+  Anton Ivanov <anton.ivanov@cambridgegreys.com>,
+  Johannes Berg <johannes@sipsolutions.net>,
+  Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
+  Borislav Petkov <bp@alien8.de>,
+ Dave Hansen <dave.hansen@linux.intel.com>,  x86@kernel.org,
+ "H. Peter Anvin" <hpa@zytor.com>,  Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+  Wedson Almeida Filho <wedsonaf@gmail.com>,
+  Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+  =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+  Benno Lossin <benno.lossin@proton.me>,
+  Andreas Hindborg <a.hindborg@samsung.com>,
+  Alice Ryhl <aliceryhl@google.com>,
+  Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+  Steven Rostedt <rostedt@goodmis.org>,
+  Masami Hiramatsu <mhiramat@kernel.org>,
+ Mark Rutland <mark.rutland@arm.com>,  Jonathan Corbet <corbet@lwn.net>,
+ Alex Shi <alexs@kernel.org>,  Yanteng Si <siyanteng@loongson.cn>,
+  Nick Desaulniers <ndesaulniers@google.com>,
+  Bill Wendling <morbo@google.com>,
+ Justin Stitt <justinstitt@google.com>
+Cc: linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ linux-um@lists.infradead.org, rust-for-linux@vger.kernel.org, 
+ linux-mips@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
+ linux-doc@vger.kernel.org, llvm@lists.linux.dev, 
+ Jiaxun Yang <jiaxun.yang@flygoat.com>
+X-Mailer: b4 0.14.1
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1974;
+ i=jiaxun.yang@flygoat.com; h=from:subject:message-id;
+ bh=qjUaAPTaliz5J4cRsvrBexPWV1blwkxxWIdH50rGLzI=;
+ b=owGbwMvMwCXmXMhTe71c8zDjabUkhrSbm8WDZl+5WGVsyf1um8wVFU1W6U2W0X3qSl9Ppe27O
+ eUcK4d1RykLgxgXg6yYIkuIgFLfhsaLC64/yPoDM4eVCWQIAxenAEzk+S+G/3GGcy7/1rDjUWn5
+ 7r3Wwaiz+uCjNbYZWflG/gv/562f/Izhf1HrrqVry4N7Pys8+F3ncCC266zR/9i8mc2+weJhCeV
+ zuAA=
+X-Developer-Key: i=jiaxun.yang@flygoat.com; a=openpgp;
+ fpr=980379BEFEBFBF477EA04EF9C111949073FC0F67
 
-On Thu, Sep 5, 2024 at 10:16=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> w=
-rote:
->
-> Wow, does C really not have an easier way to do it?
+Hi Folks,
 
-Yeah, it would be nice to get a similar system in C.
+This series added MIPS arch support to rust for linux,
+hopefully MIPS is not too late to the party :-)
 
-There are targeted attributes that can annotate certain things, like
-`[[maybe_unused]]` in C23 (and vendor attributes too like our
-`__maybe_unused` macro), so `-Wunused-function` is not really the best
-example in that sense -- I will think of a better one (it was nice to
-use the same as in the other examples I wrote for `expect` later on,
-which is why I used it).
+Sample rust module tested on R4000(el),mips32,mips32r2el,mips64,
+mips64r2el,mips64r6el.
 
-But, as far as I am aware, there is no way to handle lints (and levels
-and so on) in a simple and consistent way like Rust does.
+Please review.
 
-Cheers,
-Miguel
+Thanks
+
+Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
+---
+Changes in v2:
+- Address review comments on wording & style (See individual commit messages)
+- Add microMIPS support
+- Link to v1: https://lore.kernel.org/r/20240903-mips-rust-v1-0-0fdf0b2fd58f@flygoat.com
+
+---
+Jiaxun Yang (3):
+      rust: Introduce HAVE_GENERATE_RUST_TARGET config option
+      MIPS: Rename mips_instruction type to workaround bindgen issue
+      rust: Enable for MIPS
+
+ Documentation/rust/arch-support.rst                |  1 +
+ .../translations/zh_CN/rust/arch-support.rst       |  1 +
+ Makefile                                           |  3 +
+ arch/Kconfig                                       |  8 +++
+ arch/mips/Kconfig                                  |  2 +
+ arch/mips/include/asm/dsemul.h                     |  2 +-
+ arch/mips/include/asm/inst.h                       |  6 +-
+ arch/mips/kernel/ftrace.c                          |  2 +-
+ arch/mips/kernel/kprobes.c                         |  2 +-
+ arch/mips/math-emu/cp1emu.c                        | 18 +++---
+ arch/mips/math-emu/dsemul.c                        |  8 +--
+ arch/um/Kconfig                                    |  1 +
+ arch/x86/Makefile                                  |  1 -
+ arch/x86/Makefile.um                               |  1 -
+ rust/Makefile                                      |  2 +-
+ scripts/Makefile                                   |  4 +-
+ scripts/generate_rust_target.rs                    | 68 ++++++++++++++++++++++
+ 17 files changed, 105 insertions(+), 25 deletions(-)
+---
+base-commit: 469f1bad3c1c6e268059f78c0eec7e9552b3894c
+change-id: 20240903-mips-rust-fa8efd836ce9
+
+Best regards,
+-- 
+Jiaxun Yang <jiaxun.yang@flygoat.com>
+
