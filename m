@@ -1,67 +1,67 @@
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 972A0194AD1
-	for <rust-for-linux@vger.kernel.org>; Thu,  5 Sep 2024 08:14:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B66B1991C9
+	for <rust-for-linux@vger.kernel.org>; Thu,  5 Sep 2024 08:16:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725524084; cv=none; b=k2GTUH1/jClB0X+C52yGESjFxs4V101mSfVRbL8tdjx2ul1QdpulzRvkHz4e8JLiMjJk4zLnVgObdJt77k690CZNoFoFUTledOQbwZOZRexrjMIT4OA9bJRPTuaZ/Xl9Yf+zcgjFkrDlpmvm74QgssdFDyAwxHzAbTjxTAlJ3LY=
+	t=1725524163; cv=none; b=NkwRRmMA8meH6OHIbRBrPSy5GfpwaUKw+qEbjmfFfFjkfaKxnxHr+TJty/2YErEjg+GmE2pJmKuGZZX61nNxVHtKuXFr9r4pFk1o9YkZvLWEd8jfuOHA5XXgI7gT1Nv+97sewur0InJMbNNitN4FUkSE2shLNtlEoUDid6Qn1C8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725524084; c=relaxed/simple;
-	bh=4Z7ZM2Zqsf7stqQxw1qBOI8mLWWVIXA0qh6UQvkxfis=;
+	s=arc-20240116; t=1725524163; c=relaxed/simple;
+	bh=zzEfaENRIqRQl0JbYcNKk5MHDb85IJy5SJDJt767CxQ=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=cjwRwD19/Ng2EHPvXiDxmvjH8xoVdINtJVWTC2SSXkP6ZtXGoPoSiuSGgIhw08ElvQzQoP0mZA3unPvnei/XpE28Yg2x+6Psi4817ueZo8IaOUGscf0UeaBLZVCuT/c0S7T3oyF9ysGbTknH6p7TAMJ+PTG4DDCwVLB8qi5FSQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=iBTuuq+q; arc=none smtp.client-ip=209.85.128.43
+	 To:Cc:Content-Type; b=nb7SpJzLMvrtwoIvxkP8mlfs2J0stnlxErt24Mbkbkt9XgL6jArU62PF6VBw4UUww284eZqdAdZZJb7IqWWcD8868OkIK7B2gCEks3pKRUOgg2pG45bfqOSP+xyAvyXQyQTFwybbOi3gGq4pHPtEhdsKkEISnn2hVfQdobORcDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LbRXe4x4; arc=none smtp.client-ip=209.85.128.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="iBTuuq+q"
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-428e1915e18so3217935e9.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 05 Sep 2024 01:14:42 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LbRXe4x4"
+Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-42bb7298bdeso4361945e9.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 05 Sep 2024 01:16:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1725524081; x=1726128881; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1725524160; x=1726128960; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=4Z7ZM2Zqsf7stqQxw1qBOI8mLWWVIXA0qh6UQvkxfis=;
-        b=iBTuuq+q92PnrDUI/KzUkUAaFV6Wuu5BqcmwnebxJY3KG/2qj0tmLXq3nlS086TNvK
-         Mdudi+X2qT84jfXsYFks1u+6jBBUTPi/Dik938rRf+RhZgBruhsi1ImsbwzXx5KvlREa
-         1KFDiGBDf+95CK5Gvp3S1ibVtYcZV9f72+eZq7YmIq1I2cgwS2QffcwiPYlSiRSWZUhc
-         7W37rsCWdFC0VtPuqUcBlh4Ag9bhXb/M4KR3N6jW3O1kC+TfPMoqzCwSKF/+0Oq07BqR
-         c/4Qkiu6XHBPjy7cIhJYhsS60B1mdElufMC8gP87719iyfgAFkTpRz5yPicRJCfmtvyK
-         xWZw==
+        bh=zzEfaENRIqRQl0JbYcNKk5MHDb85IJy5SJDJt767CxQ=;
+        b=LbRXe4x4V2G4d3x+k4gr0uEDrvMhlC7P3i1R9+VrswR+tJFo4qXR4z794I+1f3xINW
+         j4L0BV9AMxqrtxFIgGADGJoWGR1CmEhipt2wmT4XMum/ohLLMW+nHKWoPrZbnRrhF+Cd
+         0OJz2cJguCJfBxu/UBEBAdpc1Ptp3/nN2sOyy/qHAdYQCp1wyE7Ryq8PXYxuWDdaZYfR
+         5SLwOGwRzcl9nDFz+Q28JdaiNX7j68ZlgmhDW6WUUI3lP4kpEvKjAys/NC2jX5sNritq
+         WU4SqXyTb3AvrbHzfkDn59HAvlfqcr1qRisdRuwF73iYMI9vdg0uMMBqpYoh1W8xwLao
+         8jzA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725524081; x=1726128881;
+        d=1e100.net; s=20230601; t=1725524160; x=1726128960;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=4Z7ZM2Zqsf7stqQxw1qBOI8mLWWVIXA0qh6UQvkxfis=;
-        b=omXlrIhhYqb9dLL73w7C7nqQIa6DR6Rxq7GM5I2S+iJkb9sqTKp1CiAbejUGC6L4A2
-         BFS5Czv4twasDDWb0h1sTxdeLOKGlymlT5LlEfkKPWQXLHPwqNCPIEpM5+xkGvlxNzrt
-         9plrJaQgEdHgTiap5i4V/PskF0/keXHqihNqbNAdQgZCpwlr9UYE8G1GbTP1G55Fh0DW
-         JSzzXgineiO/JTcQOFH6FihWJMS5v2QAjdML7aeZE/aXBTo1qKQ8NZMnh54l2h8XyPUD
-         n6dSIwpfMNM40SFO1prs0qCCAafpInzdFgmqaH6QQ3edTY34Q2YcTesx64VN06eaOWv9
-         HBXg==
-X-Forwarded-Encrypted: i=1; AJvYcCW0KxTE46guHCLMe90LfuQbbcsrcLDyVX6pnBMoMCGwwLLoXsdFxHQyzUaGETv2FmZ5OY9RvCT4Nc04QREZiA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz7yJlRliG8WW42swC4rH5q/2o8b92PClu8LvNdi17sh4zW2Uek
-	xHEL1Ew/hIbe43q3d6XZtEe7xDy9xx6uVCCnfwsaLWfMmy2/Mo6JTP9hOo6ialay8GUA3U1dVGE
-	D4SAlwQ/njbTKgyGu9kY2u3/pYsA5HC1Nz/v2
-X-Google-Smtp-Source: AGHT+IFoFMEFG++KUV5iQ/Tyfkl/lsDMQem/o0J6AzcE+fLX1huKPxyQpwstvU5CcpYtGKJwWga2u5zlwmR9qabq4Js=
-X-Received: by 2002:a05:600c:1c09:b0:423:791:f446 with SMTP id
- 5b1f17b1804b1-42c7b59e335mr112875365e9.7.1725524080520; Thu, 05 Sep 2024
- 01:14:40 -0700 (PDT)
+        bh=zzEfaENRIqRQl0JbYcNKk5MHDb85IJy5SJDJt767CxQ=;
+        b=r9Z9vVl/ngm0wB2XHoTk76p+bcwaXh+Y7h6FU1dFsjZgUazzrWoQbtpflcQNtusorj
+         gyNCxw8H4AAFqAya30wp3KdKYszrZaKPuD1S1tX0bGuCak+6m5w8DMad7FIvkkp6c1LK
+         vqULc+ULdOBWYEC3XzOCzvNfX6h8qFQeu78+E/9sf4ce2h+rn10jL3+l9B5YK1kVVkQ6
+         +m4+1OlbDuKevm4A/dEKNAqUhW8gkdpJ67ywkvttSG/HhpBXH51ijraQjl4vTgjbPuLI
+         fVNZfEt/1Rx+/vjO86CQ+BkOMZOhowNpLs0CfzFFJUBM2G+0en5vCvdAV0nzY6j2ho8F
+         oepw==
+X-Forwarded-Encrypted: i=1; AJvYcCWexbF2T+KGWiPyD0Vjf066U+gUcqcCUKbECWN/KW6RNWUdeosWgG0KoN/ta4eg+tiCsx1HNOyyFr686ucAKg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz/Bl6JI30ocI2AsV/5ddSMwtH6aFBLBMCkQDCVp5Pval9tcys4
+	SiFg9gz9KSeuJmICM3gckQYWp/vX37sQjh+6XIsO6X9vm6Os0Jhx65FS2vnOmonlB3umFeAD8NX
+	3gqyyNycaWmkIvR6l4XX092+p72vBnbiuP8Oq
+X-Google-Smtp-Source: AGHT+IFGe9FwF4ew6fPFdL2Ygl8vPEA3LpCNMQCfRGgsrU2sesbleRr+RS60eiRwK9tP5YwgxFA3l6MeMRDAa53pyQU=
+X-Received: by 2002:adf:e6c8:0:b0:374:c3cd:73de with SMTP id
+ ffacd0b85a97d-374c3cd74d5mr12499736f8f.35.1725524159551; Thu, 05 Sep 2024
+ 01:15:59 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240904204347.168520-1-ojeda@kernel.org> <20240904204347.168520-16-ojeda@kernel.org>
-In-Reply-To: <20240904204347.168520-16-ojeda@kernel.org>
+References: <20240904204347.168520-1-ojeda@kernel.org> <20240904204347.168520-17-ojeda@kernel.org>
+In-Reply-To: <20240904204347.168520-17-ojeda@kernel.org>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 5 Sep 2024 10:14:28 +0200
-Message-ID: <CAH5fLgjnX1hF6OSJco5xce1Gmd0brSLKDbmotCPUmOXa4UChEQ@mail.gmail.com>
-Subject: Re: [PATCH 15/19] rust: enable Clippy's `check-private-items`
+Date: Thu, 5 Sep 2024 10:15:47 +0200
+Message-ID: <CAH5fLgg20kDCJfD_6+fTSogOnpqK0x3a6eKaTahgSvdgfFzSEw@mail.gmail.com>
+Subject: Re: [PATCH 16/19] Documentation: rust: add coding guidelines on lints
 To: Miguel Ojeda <ojeda@kernel.org>
 Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
@@ -75,23 +75,21 @@ Content-Transfer-Encoding: quoted-printable
 On Wed, Sep 4, 2024 at 10:45=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
 te:
 >
-> In Rust 1.76.0, Clippy added the `check-private-items` lint configuration
-> option. When turned on (the default is off), it makes several lints
-> check private items as well.
+> In the C side, disabling diagnostics locally, i.e. within the source code=
+,
+> is rare (at least in the kernel). Sometimes warnings are manipulated
+> via the flags at the translation unit level, but that is about it.
 >
-> In our case, it affects two lints we have enabled [1]:
-> `missing_safety_doc` and `unnecessary_safety_doc`.
+> In Rust, it is easier to change locally the "level" of lints
+> (e.g. allowing them locally). In turn, this means it is easier to
+> globally enable more lints that may trigger a few false positives here
+> and there that need to be allowed ocally, but that generally can spot
+> issues or bugs.
 >
-> It also seems to affect the new `too_long_first_doc_paragraph` lint [2],
-> even though the documentation does not mention it.
+> Thus document this.
 >
-> Thus allow the few instances remaining we currently hit and enable
-> the lint.
->
-> Link: https://doc.rust-lang.org/nightly/clippy/lint_configuration.html#ch=
-eck-private-items [1]
-> Link: https://rust-lang.github.io/rust-clippy/master/index.html#/too_long=
-_first_doc_paragraph [2]
 > Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+
+Wow, does C really not have an easier way to do it?
 
 Reviewed-by: Alice Ryhl <aliceryhl@google.com>
