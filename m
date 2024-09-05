@@ -1,95 +1,143 @@
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B66B1991C9
-	for <rust-for-linux@vger.kernel.org>; Thu,  5 Sep 2024 08:16:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 772AB194AD6
+	for <rust-for-linux@vger.kernel.org>; Thu,  5 Sep 2024 08:17:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725524163; cv=none; b=NkwRRmMA8meH6OHIbRBrPSy5GfpwaUKw+qEbjmfFfFjkfaKxnxHr+TJty/2YErEjg+GmE2pJmKuGZZX61nNxVHtKuXFr9r4pFk1o9YkZvLWEd8jfuOHA5XXgI7gT1Nv+97sewur0InJMbNNitN4FUkSE2shLNtlEoUDid6Qn1C8=
+	t=1725524281; cv=none; b=Agyivz3aIdQz51rFs4pGbFRIGXNW3kHUIxiIdEJ4L372SQTc/MO/ssaspLqPSf/IVuv3/vy6KBXERLGH2/elGWDRCVYLab6jSQ3v3WF1mZhSxDnRGPPF0PLAgA7Tma0Us027K88x20aea2DNAhbseuzF7aDtE2WKcz0/v/a7tsk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725524163; c=relaxed/simple;
-	bh=zzEfaENRIqRQl0JbYcNKk5MHDb85IJy5SJDJt767CxQ=;
+	s=arc-20240116; t=1725524281; c=relaxed/simple;
+	bh=7Y9mMvURfqBtSXQvsVegDkMt+DE23gELOjibhwvkhKY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=nb7SpJzLMvrtwoIvxkP8mlfs2J0stnlxErt24Mbkbkt9XgL6jArU62PF6VBw4UUww284eZqdAdZZJb7IqWWcD8868OkIK7B2gCEks3pKRUOgg2pG45bfqOSP+xyAvyXQyQTFwybbOi3gGq4pHPtEhdsKkEISnn2hVfQdobORcDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=LbRXe4x4; arc=none smtp.client-ip=209.85.128.53
+	 To:Cc:Content-Type; b=mQgOo6mGWAyrGjfulqGIcQaqconh5S8lhyZjl/w0jA6XJjcjv2L5gyWzXByzU/MiDXKwoioO8yyeP5EWO0Gz4DByXSnXU0tEF7Pn9FETtfvgkrfbb5eHX6yyiCZy3JcEb7khnxlvwv0Y3ktQ7yOTu/TrpWPMXonpMcQJa4ExGGU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=n53D27AT; arc=none smtp.client-ip=209.85.167.48
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="LbRXe4x4"
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-42bb7298bdeso4361945e9.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 05 Sep 2024 01:16:01 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="n53D27AT"
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-535dc4ec181so401806e87.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 05 Sep 2024 01:17:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1725524160; x=1726128960; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1725524277; x=1726129077; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=zzEfaENRIqRQl0JbYcNKk5MHDb85IJy5SJDJt767CxQ=;
-        b=LbRXe4x4V2G4d3x+k4gr0uEDrvMhlC7P3i1R9+VrswR+tJFo4qXR4z794I+1f3xINW
-         j4L0BV9AMxqrtxFIgGADGJoWGR1CmEhipt2wmT4XMum/ohLLMW+nHKWoPrZbnRrhF+Cd
-         0OJz2cJguCJfBxu/UBEBAdpc1Ptp3/nN2sOyy/qHAdYQCp1wyE7Ryq8PXYxuWDdaZYfR
-         5SLwOGwRzcl9nDFz+Q28JdaiNX7j68ZlgmhDW6WUUI3lP4kpEvKjAys/NC2jX5sNritq
-         WU4SqXyTb3AvrbHzfkDn59HAvlfqcr1qRisdRuwF73iYMI9vdg0uMMBqpYoh1W8xwLao
-         8jzA==
+        bh=maHTiqvxZFhGv52tqnTG+Ua5ccl+t5ZmEQhD3kv29/g=;
+        b=n53D27ATz8EEjNJ+R3Sswy6FszT1XqijSVkq2xEFOhIA+fgG1+Nlj7JXzVuRhQmFUq
+         l2Vhki6nd9GgRV+n1Yzp265WK/eQNYo85lJlz0VkhgMBG4utyg8JXVIH/ubXrzAUnuzs
+         yraf7noaRlZ0bFUIT+Oe52NtxpXBOjKW4FjALqtR+E9H70vuBPkYAiDKkyBcPPWeM9zj
+         tNwlEDZn81prV80NqbfYHe9xIQgVJfY2UMJp0ktAe8STNDAVJp2beCU9+KFS10ikOIWb
+         i56yvAW43kRPh7f/Q2CcaUb4pCmhJFQYIBkt67r6tgTu9JJcyXGqchVABhyrGVTUh2AC
+         hPNA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725524160; x=1726128960;
+        d=1e100.net; s=20230601; t=1725524277; x=1726129077;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=zzEfaENRIqRQl0JbYcNKk5MHDb85IJy5SJDJt767CxQ=;
-        b=r9Z9vVl/ngm0wB2XHoTk76p+bcwaXh+Y7h6FU1dFsjZgUazzrWoQbtpflcQNtusorj
-         gyNCxw8H4AAFqAya30wp3KdKYszrZaKPuD1S1tX0bGuCak+6m5w8DMad7FIvkkp6c1LK
-         vqULc+ULdOBWYEC3XzOCzvNfX6h8qFQeu78+E/9sf4ce2h+rn10jL3+l9B5YK1kVVkQ6
-         +m4+1OlbDuKevm4A/dEKNAqUhW8gkdpJ67ywkvttSG/HhpBXH51ijraQjl4vTgjbPuLI
-         fVNZfEt/1Rx+/vjO86CQ+BkOMZOhowNpLs0CfzFFJUBM2G+0en5vCvdAV0nzY6j2ho8F
-         oepw==
-X-Forwarded-Encrypted: i=1; AJvYcCWexbF2T+KGWiPyD0Vjf066U+gUcqcCUKbECWN/KW6RNWUdeosWgG0KoN/ta4eg+tiCsx1HNOyyFr686ucAKg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yz/Bl6JI30ocI2AsV/5ddSMwtH6aFBLBMCkQDCVp5Pval9tcys4
-	SiFg9gz9KSeuJmICM3gckQYWp/vX37sQjh+6XIsO6X9vm6Os0Jhx65FS2vnOmonlB3umFeAD8NX
-	3gqyyNycaWmkIvR6l4XX092+p72vBnbiuP8Oq
-X-Google-Smtp-Source: AGHT+IFGe9FwF4ew6fPFdL2Ygl8vPEA3LpCNMQCfRGgsrU2sesbleRr+RS60eiRwK9tP5YwgxFA3l6MeMRDAa53pyQU=
-X-Received: by 2002:adf:e6c8:0:b0:374:c3cd:73de with SMTP id
- ffacd0b85a97d-374c3cd74d5mr12499736f8f.35.1725524159551; Thu, 05 Sep 2024
- 01:15:59 -0700 (PDT)
+        bh=maHTiqvxZFhGv52tqnTG+Ua5ccl+t5ZmEQhD3kv29/g=;
+        b=bNncNfUVrUnav3CuiXQr3pntWctY5Xq0/IRkGFjRrMLnO0QVYc7tYxWZScKRAAmgcT
+         PzxmMdzOqw97ZJvSXIL88G5IuII+whnseWg7JOMF96i76QCTFJG/oW9hgy8FRORGJH5V
+         I9bFIiiSm3BCaIxDa2K14m1YAEgXI7Hf7Q4Dd/EJMuRYL9Qnb4vc/r5VxQhEzr48SXE3
+         8fUCkLd7qS4BiOpfJ2DxqE5VrSO4XIZMiUvQYN7IcBlX+Msm8W+7j2DPbQWGoQbQMhq/
+         bDganL28olwIvw6spY/o/+MWbIrJlxpl9qCkoujdsftgksdYblVd3zyVVr1xtzGeZdnt
+         oCpg==
+X-Forwarded-Encrypted: i=1; AJvYcCXkfx6CGZORKQ8HG/sOIXBsJSmSnPYzwDB7TNL3hEZYH/xk9zmTEDvW6zRZpGGoY/z5Th5njH5Hfrtl1UtY0w==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yylp9bjYfzLwFCfKHEdr1ZOkvCR3hc7MzlCtbS3PoEB2eioHFue
+	mKznHwF4duNR257VG/goW9puIyBQsBgkyKT9muVT3iAS3BFucNAvYBWxWoHqfR312tTBrfvzKLW
+	a6G0LmWJicmsHXJdqbO2am/+4XAR+Rm9iB3uv
+X-Google-Smtp-Source: AGHT+IG6Om9J4eOqgOko9ka7GX8WLUwtyLwQ/+bHxDiMJosbus8+m1xto+kgJ/kB8HOh9qlOy1x8XjJXUGcGNgggKT4=
+X-Received: by 2002:a05:6512:3b8c:b0:52f:159:2dc5 with SMTP id
+ 2adb3069b0e04-53546ba9fd4mr13925653e87.42.1725524277149; Thu, 05 Sep 2024
+ 01:17:57 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240904204347.168520-1-ojeda@kernel.org> <20240904204347.168520-17-ojeda@kernel.org>
-In-Reply-To: <20240904204347.168520-17-ojeda@kernel.org>
+References: <20240904204347.168520-1-ojeda@kernel.org> <20240904204347.168520-18-ojeda@kernel.org>
+In-Reply-To: <20240904204347.168520-18-ojeda@kernel.org>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 5 Sep 2024 10:15:47 +0200
-Message-ID: <CAH5fLgg20kDCJfD_6+fTSogOnpqK0x3a6eKaTahgSvdgfFzSEw@mail.gmail.com>
-Subject: Re: [PATCH 16/19] Documentation: rust: add coding guidelines on lints
+Date: Thu, 5 Sep 2024 10:17:45 +0200
+Message-ID: <CAH5fLgiwOWtAqhJR+crLm1p4zP-YSd8NjmF0pDdqq5C275B6Fg@mail.gmail.com>
+Subject: Re: [PATCH 17/19] rust: start using the `#[expect(...)]` attribute
 To: Miguel Ojeda <ojeda@kernel.org>
 Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
 	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev
+	linux-kernel@vger.kernel.org, patches@lists.linux.dev, 
+	Fridtjof Stoldt <xfrednet@gmail.com>, Urgau <urgau@numericable.fr>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
 On Wed, Sep 4, 2024 at 10:45=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
 te:
 >
-> In the C side, disabling diagnostics locally, i.e. within the source code=
-,
-> is rare (at least in the kernel). Sometimes warnings are manipulated
-> via the flags at the translation unit level, but that is about it.
+> In Rust, it is possible to `allow` particular warnings (diagnostics,
+> lints) locally, making the compiler ignore instances of a given warning
+> within a given function, module, block, etc.
 >
-> In Rust, it is easier to change locally the "level" of lints
-> (e.g. allowing them locally). In turn, this means it is easier to
-> globally enable more lints that may trigger a few false positives here
-> and there that need to be allowed ocally, but that generally can spot
-> issues or bugs.
+> It is similar to `#pragma GCC diagnostic push` + `ignored` + `pop` in C:
 >
-> Thus document this.
+>     #pragma GCC diagnostic push
+>     #pragma GCC diagnostic ignored "-Wunused-function"
+>     static void f(void) {}
+>     #pragma GCC diagnostic pop
 >
+> But way less verbose:
+>
+>     #[allow(dead_code)]
+>     fn f() {}
+>
+> By that virtue, it makes it possible to comfortably enable more
+> diagnostics by default (i.e. outside `W=3D` levels) that may have some
+> false positives but that are otherwise quite useful to keep enabled to
+> catch potential mistakes.
+>
+> The `#[expect(...)]` attribute [1] takes this further, and makes the
+> compiler warn if the diagnostic was _not_ produced. For instance, the
+> following will ensure that, when `f()` is called somewhere, we will have
+> to remove the attribute:
+>
+>     #[expect(dead_code)]
+>     fn f() {}
+>
+> If we do not, we get a warning from the compiler:
+>
+>     warning: this lint expectation is unfulfilled
+>      --> x.rs:3:10
+>       |
+>     3 | #[expect(dead_code)]
+>       |          ^^^^^^^^^
+>       |
+>       =3D note: `#[warn(unfulfilled_lint_expectations)]` on by default
+>
+> This means that `expect`s do not get forgotten when they are not needed.
+>
+> See the next commit for more details, nuances on its usage and
+> documentation on the feature.
+>
+> The attribute requires the `lint_reasons` [2] unstable feature, but it
+> is becoming stable in 1.81.0 (to be released on 2024-09-05) and it has
+> already been useful to clean things up in this patch series, finding
+> cases where the `allow`s should not have been there.
+>
+> Thus, enable `lint_reasons` and convert some of our `allow`s to `expect`s
+> where possible.
+>
+> This feature was also an example of the ongoing collaboration between
+> Rust and the kernel -- we tested it in the kernel early on and found an
+> issue that was quickly resolved [3].
+>
+> Cc: Fridtjof Stoldt <xfrednet@gmail.com>
+> Cc: Urgau <urgau@numericable.fr>
+> Link: https://rust-lang.github.io/rfcs/2383-lint-reasons.html#expect-lint=
+-attribute [1]
+> Link: https://github.com/rust-lang/rust/issues/54503 [2]
+> Link: https://github.com/rust-lang/rust/issues/114557 [3]
 > Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-
-Wow, does C really not have an easier way to do it?
 
 Reviewed-by: Alice Ryhl <aliceryhl@google.com>
