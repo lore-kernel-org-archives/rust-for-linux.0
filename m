@@ -1,70 +1,69 @@
-Received: from mail-wr1-f49.google.com (mail-wr1-f49.google.com [209.85.221.49])
+Received: from mail-ot1-f53.google.com (mail-ot1-f53.google.com [209.85.210.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F71419882B
-	for <rust-for-linux@vger.kernel.org>; Thu,  5 Sep 2024 09:41:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.49
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 044F3198845;
+	Thu,  5 Sep 2024 09:45:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725529305; cv=none; b=POnJjd1ntM6kRmMyFD2fTWN8wy5rqihxxs1x2h2fKHA6XPvahJbO++gGoxNQeX++PhThmSX3NMifqsFTWe9Ba0paqx710GNzdfNK11tdM8LBzTR/PSVxhoJzquLH+eOzdNfTC1WufRrQMrBXthMdgNFH4PjGaFb58UxB4hW1rkU=
+	t=1725529532; cv=none; b=qkY9fKXwYCEbFgHhRZaGIOVytgbCGKSl0nrlXG90zaLBFVEzOz6CXFjibFPgKMOimzbovZ4C3+0+u3RCCzfk6UcZgXL0NORCFpWe2EkAn3Qcv2F3CJ+Scqeo3Yfo1Rh5Xyg8i/ZbsC2oPMRtQj4E7oX74nYlpdDz9Z/HR/8Lt8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725529305; c=relaxed/simple;
-	bh=1zkNgUAM/QwmJuwVc3NX3CSZZoP5SUWIgiCl+DR8w6U=;
+	s=arc-20240116; t=1725529532; c=relaxed/simple;
+	bh=T9uAT6P2XJVZAdZnyx/4GZlbV0cbx0PWvTakz+ui324=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=RQxXywvph7dAcpDfiZx9/WoU06v7lLOuub/Hq57fRejSzPrKI1zC0v3OGgGWT+m32hb6kfvlfKAiiKiB/84t7hjp1h6QrtGCTbnfSFcTGCHTSC5aEKI6Mt4Es+e5vTAgPZkQulgfHaBuFZTx43KXDGQKhDLy0iV+M74sg+nlqtE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=VYavYrix; arc=none smtp.client-ip=209.85.221.49
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=m+Jc888/E0GyuwLc0jJ0eF5ybyVUa3HZM9Ymo8Etin/GWzslJuCkEYqNUtUB5TtVc5wxQNLTrA2vEHs6wjBeej/LyUtX/7C7mqsB0kP8aiNFALE4FLh+HXxcbIkP+gYYqEa81++h4vGBDcZJwMa/kl8eN2clG5b9R0aqK18vQGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hKlPNsFB; arc=none smtp.client-ip=209.85.210.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="VYavYrix"
-Received: by mail-wr1-f49.google.com with SMTP id ffacd0b85a97d-374c1963cb6so325228f8f.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 05 Sep 2024 02:41:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hKlPNsFB"
+Received: by mail-ot1-f53.google.com with SMTP id 46e09a7af769-70f5f85971dso73626a34.3;
+        Thu, 05 Sep 2024 02:45:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1725529302; x=1726134102; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1725529530; x=1726134330; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=1zkNgUAM/QwmJuwVc3NX3CSZZoP5SUWIgiCl+DR8w6U=;
-        b=VYavYrixjN0EUkVJ8P3CSgV42zooTLTB6VpcGWzNnL/QcB8Jh9imA3VF66mQsvfn8A
-         NUNwyWisT/mWs7zGyvs+yIEMrAg2HIdjS5g6TjH7TF1OFKsOURN8TFuGhcSwZUDiqYkZ
-         ykI3QX2be96cMOErY7mrP4G82FVS4MESAYhbJ/m2k0yuy6as9kFAGCCE/C3e/tXZSrYZ
-         Ovg3lZZ35chRDxBhKAhymuNuxwVJi6FvHls08DU8qwwk2pj31Jpm7VecoVUgFyKw10p5
-         g0GJW62lZbMO1Z0X2YzSYUZll77On1j/K5dL6cVtNiupFEPUGuQCho6rS3ntSRh/wnqh
-         YCOA==
+        bh=T9uAT6P2XJVZAdZnyx/4GZlbV0cbx0PWvTakz+ui324=;
+        b=hKlPNsFBu9coNLPi/j5IDWlqZOCZGdSJ6qhhtHsaL533KLRUEo10++Ng8oFiYl6BF9
+         1EYHOVmKTm4f9tzmkYBhNfk6iAVos8mY5okRo20Xg5sa0E/P/mrQGEN4+uSajj+r1dJH
+         9oFtNRU774J1N7VIvxaLL13DgeWYlD8ROH5Nv0s257SQC5ilhVjXmv/gXdCtkcEtQ5TQ
+         oAlLewOG2qa66E6ZPnJJ+Jirf5ShKggpfoNT3nZfl+zL8YeXundKdhwRK+ZazLAkhUvC
+         SFOxIiDqDqxwfDckNLVWJ9cOskAEWbspr4fbaI0MtDu6Gw1lZp8QBuuwzjp8Qr3Aji+l
+         t5Wg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725529302; x=1726134102;
+        d=1e100.net; s=20230601; t=1725529530; x=1726134330;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=1zkNgUAM/QwmJuwVc3NX3CSZZoP5SUWIgiCl+DR8w6U=;
-        b=PkNvDWgmDBwGlev8ex2fkgD79ovFF887dOGkrK7Q5L7TVyAGQKtpsykaSHsIuut3FB
-         e45uNDTRaqEQQnUsuNxYeS7ceKTXSUFMoTmE/XDpCc3yIdjmdOVa5C5jghKNsBwQomRM
-         V0je9A4Ca1yAiMrqR+739RW5j8YQYS9hzoxaxyegPFk3WmQk3PiFeWhZgJcf2S0fu0UE
-         2+Ij7McEvdMCTciOyCgHos/ZS8pgRP2Y+s39zG+5bnmmqro4WDN1GW0XvXJc7WKdeQB6
-         TfjzNo8h0A8lNZSJEEg8MX1CFsTKvbIv9u5S83N2BmOgTVlNAPzbgP201vjPB2tsKZj+
-         4iWg==
-X-Forwarded-Encrypted: i=1; AJvYcCVBYbBPh1PcHROCsAhY7/8Y/KxXIdE/MEMFHGncqBra0OvcOqxHUG8q+It2V1CrJBq7qYYiWEHkfCwnij1fJQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy69B7ilzGwKSIFWX5EicC2pb5yKbjgkf23syeNOVw+4gjNKKCJ
-	X9oY3YPUUpVSVSqxWZYj7ebnc8x+Ktd1LDYF/xvMcbS0JVFkSNXswbaT8zMcVOQ3gvZBfKOPpkZ
-	aXZwGWCL9j6bZEtJSW+MwkREsqohNW/CLRVOK
-X-Google-Smtp-Source: AGHT+IHJPny+Snwd0y0fa0gKoADQLjpbyUkOKURoPb20rbDcDh68aZg+DCflOGtgw2LNVd0/14snpmMwRHGXhfR7Vww=
-X-Received: by 2002:adf:f0ca:0:b0:374:c847:86d with SMTP id
- ffacd0b85a97d-374c8470b7cmr8594180f8f.16.1725529301228; Thu, 05 Sep 2024
- 02:41:41 -0700 (PDT)
+        bh=T9uAT6P2XJVZAdZnyx/4GZlbV0cbx0PWvTakz+ui324=;
+        b=qnL98HocVrAp6qEZLQd0rnG/HgTq7qLrUh/zv3mBasI5DwYcGyOQ589Kl+Mgqe8p7M
+         RiCQ+co1JH6fBzSK6ut0/hH6/PWbofWWw9fgwkQOeo+O5Bok7ogt0izcqxQfxtyNL66U
+         Hmmg+09F2I+Xr20EIbz1quJU+1suEJpE/e0EYd0Z/Q7zQ4inAycMDSCVH96n9dSAqDVt
+         ZbCKFnlFV90ts0ZoTEgSEFDRDmEfmGraOdsH2iOQc/VVChBcZacPYQ2Nik+PAnjfh9Lr
+         8TSLXngP+ynCAK0hxgmicysV4Gm3FPuvBGPeyp3FfkmM9jiF/+hV4uN7CdpajQXojX7y
+         95DA==
+X-Forwarded-Encrypted: i=1; AJvYcCXZMao59pscHr2LWcZMeMyrRrxY8WrNHTBoYN/8sd58USIZlS3cPjzhRqE5+vn3Hud4f2qlzH2dzSxhZlnSAMA=@vger.kernel.org, AJvYcCXjmsUcqb1lBPG7Pc04ZCjru7jCDg4v+Q2KAkfvw6Em7la5qnRL4yR0W6J2cxuwXJd4k8a/F5WgmXPegYI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxsG8wp3rwmjmeVn4RLEBKWGOG5U/3H4lgnL87GHZBgg3zTViMa
+	z2uSXB1xsfF34xH25E/eWig9eqvwJckBg/yEXEv8gXqiNrlS3W+VP+gQkWpWhb9AtnmexoqHerW
+	Uv3qAXrmhl7XgkH6CADt52SiPdLM=
+X-Google-Smtp-Source: AGHT+IF4/iqCXFx0YZniYl3ZSu+g9OE3IT6hrjrMVy3pCALICpQGkQrU5kNPgWw9rFg6Yzz1lTOlB0WKywfTKVKf050=
+X-Received: by 2002:a05:6871:54a:b0:278:6e3:934c with SMTP id
+ 586e51a60fabf-27806e3966fmr6728709fac.5.1725529530073; Thu, 05 Sep 2024
+ 02:45:30 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240904204347.168520-1-ojeda@kernel.org> <20240904204347.168520-20-ojeda@kernel.org>
- <CAH5fLgjfxSOmnPsk_673qNdnpVoj1W11LD+qgKqBG8J7sm-u3g@mail.gmail.com> <CANiq72m9y6agZyca0dhchr64xJYjuNL3G-NVSKO6=wyU=skJ=g@mail.gmail.com>
-In-Reply-To: <CANiq72m9y6agZyca0dhchr64xJYjuNL3G-NVSKO6=wyU=skJ=g@mail.gmail.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 5 Sep 2024 11:41:29 +0200
-Message-ID: <CAH5fLgg8KSNLrAUsFHTceVA0Zp3gUCP5yjawXN_3SuOR5Y4Gig@mail.gmail.com>
-Subject: Re: [PATCH 19/19] rust: std_vendor: simplify `{ .. macro! .. }` with
- inner attributes
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+References: <20240904204347.168520-1-ojeda@kernel.org> <20240904204347.168520-17-ojeda@kernel.org>
+ <CAH5fLgg20kDCJfD_6+fTSogOnpqK0x3a6eKaTahgSvdgfFzSEw@mail.gmail.com>
+In-Reply-To: <CAH5fLgg20kDCJfD_6+fTSogOnpqK0x3a6eKaTahgSvdgfFzSEw@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Thu, 5 Sep 2024 11:45:17 +0200
+Message-ID: <CANiq72ktnMSfMfGEhN1kO0F+C5O_KsUY1y_eb7ZL+qzzSkg9bw@mail.gmail.com>
+Subject: Re: [PATCH 16/19] Documentation: rust: add coding guidelines on lints
+To: Alice Ryhl <aliceryhl@google.com>
 Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
@@ -74,27 +73,22 @@ Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Sep 5, 2024 at 11:27=E2=80=AFAM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
+On Thu, Sep 5, 2024 at 10:16=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> w=
+rote:
 >
-> On Thu, Sep 5, 2024 at 10:19=E2=80=AFAM Alice Ryhl <aliceryhl@google.com>=
- wrote:
-> >
-> > Are we ok with changing std_vendor?
->
-> Yeah, to some degree, i.e. the code is already adapted slightly (it is
-> not intended to be a 1:1 copy). As long as we keep it more or less in
-> sync with upstream, it should be fine.
->
-> Even if we had to diverge, it should not be a big deal, but it would
-> be nice to be able to pick up improvements if any, e.g. there is `let
-> else` being used now upstream, which we could replicate (I will create
-> a "good first issue" for that).
->
-> (These allows/expects are not there in the original anyway, for that reas=
-on)
->
-> Cheers,
-> Miguel
+> Wow, does C really not have an easier way to do it?
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Yeah, it would be nice to get a similar system in C.
+
+There are targeted attributes that can annotate certain things, like
+`[[maybe_unused]]` in C23 (and vendor attributes too like our
+`__maybe_unused` macro), so `-Wunused-function` is not really the best
+example in that sense -- I will think of a better one (it was nice to
+use the same as in the other examples I wrote for `expect` later on,
+which is why I used it).
+
+But, as far as I am aware, there is no way to handle lints (and levels
+and so on) in a simple and consistent way like Rust does.
+
+Cheers,
+Miguel
