@@ -1,277 +1,182 @@
-Received: from fout3-smtp.messagingengine.com (fout3-smtp.messagingengine.com [103.168.172.146])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com [209.85.160.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53F7F19D884;
-	Thu,  5 Sep 2024 13:33:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.146
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 095FF1A01B9
+	for <rust-for-linux@vger.kernel.org>; Thu,  5 Sep 2024 17:19:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725543213; cv=none; b=F6xeRMu9iZ6lwLlx4HEvlRFjczPxn21BIdenmNh0zIsKgTT5mr3ITx6RQvmtpEWi14rXJLAd0ojjzFqYWqfWJB2i8UCSOG/JNuwfmWldkQVkn0NA715XdSfbOGrt0sr5pPLJziif8lgY5lkHyGiSn3B8c6vEhG4JJw+AtXznV3Y=
+	t=1725556791; cv=none; b=iPZIyhTB7SBqApoaFewAZB/PNRdVGQ8gln2xfRgOh/mYu5GPSE3S9sFA3HQojPpRilnLz4K/G5PQDJ+pXeNdOdQoceRiGyHKQ2qqMOfTPRrynuXtePdck1fNQ53QApSnFGYryhzsYBJi0seCCe6tCH2EuA/qpWjFjV63cxBfc4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725543213; c=relaxed/simple;
-	bh=dVkj/exm1KSiU0b/0TGp9u+BBn+LGdFz9eAdIeMiN8A=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=hj4Tjc+1JK6hx8TySB4BIZyKDFy6ltUcsVuyhMDtRdfEHP+uAg/OCIGTfwuO/zdB6JKFeKKvczX09dtgprkbvly139dXIgcov03wO8Twqzbs+UFcij4qWDoOaIhPZcWVEGixxzeaZAc6JKVYgflp7WHxh+QPLdOGTw9oUihmKEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=flygoat.com; spf=pass smtp.mailfrom=flygoat.com; dkim=pass (2048-bit key) header.d=flygoat.com header.i=@flygoat.com header.b=DUFu6lhN; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=hCRduZd0; arc=none smtp.client-ip=103.168.172.146
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=flygoat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flygoat.com
+	s=arc-20240116; t=1725556791; c=relaxed/simple;
+	bh=SOqrYYpujWF0rx1/RcFwVywMkWfqYauzZsed9RHcpQs=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ZofHCuVaBvJG7CeiKSqNMMdP4TndctqtbGHLEp3nJcQR5lrpiaa33somSNkLf//NCrH8gQ9mz/xAFl/NjFv1celY02V127MATK9XO0aEIq/Sh6XQ2mMkKkujxLQX0EWv93Ttxlf0gyfZK1Mcw3+W2Eh0dtv38tPeUmnQ/kDPZRM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=2AYdpwrn; arc=none smtp.client-ip=209.85.160.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=flygoat.com header.i=@flygoat.com header.b="DUFu6lhN";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="hCRduZd0"
-Received: from phl-compute-02.internal (phl-compute-02.phl.internal [10.202.2.42])
-	by mailfout.phl.internal (Postfix) with ESMTP id 8E231138026D;
-	Thu,  5 Sep 2024 09:33:31 -0400 (EDT)
-Received: from phl-mailfrontend-02 ([10.202.2.163])
-  by phl-compute-02.internal (MEProxy); Thu, 05 Sep 2024 09:33:31 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
-	cc:cc:content-transfer-encoding:content-type:content-type:date
-	:date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to; s=fm2; t=1725543211;
-	 x=1725629611; bh=z2B0F8060umJHdopRQNGtZEBNjqM4wVRBCzxrvcUhSw=; b=
-	DUFu6lhN0qGUhUYatTxIHgIP6kNGLyzy1blThsogwkg/3YJpEEBIwCKMlq7I0x1Z
-	oNoQpZ7ZheO+hVtlcv1fYCYq0CtsOuy+HKefI8MWS0ZeJaelN7SuOW8O6ZUXrlJt
-	uU4qjMH6EuOul/uAKLiSvEeJkShmOkA9Jwwy5p5M8Yfz+uWlTrRBo53fEH9KXY40
-	0yZ8ycmK43QeHVOIt6J3CqM05Ukl9bQwSMsHXMWXLdv9hq7IJunrKt8nVwKIE3DC
-	72Br4R32cdWaCV0zXCznxc+4/lCjeg6gjLTlIKzV6RrV9Gr4lm3Z+PX45ocQkjOy
-	gcwLmR3WuFRHE21bU32Ccw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-transfer-encoding
-	:content-type:content-type:date:date:feedback-id:feedback-id
-	:from:from:in-reply-to:in-reply-to:message-id:mime-version
-	:references:reply-to:subject:subject:to:to:x-me-proxy:x-me-proxy
-	:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=1725543211; x=
-	1725629611; bh=z2B0F8060umJHdopRQNGtZEBNjqM4wVRBCzxrvcUhSw=; b=h
-	CRduZd0GkqMWAd0FuBYs1gHD3z8D+TUxc1eo7fMCVsiIYH3kObPBA/342p5kcXg9
-	GxyRnK1t0guZHd7ZQo3Piq60+XURaNkjhXRwue3GC1TftadQbqdPLOdBMqc8r+H1
-	jn3e3/jAR/HKeqwpz5wqlAhRDiTw8ey7B33eHHw9GLZjYB3397AgnhERzjZ95wjI
-	TPzwx2CbDmQR45ldUA8hCNeuRkHLP8qudFe7IFqWE22Sb53Kr/UVw3L2tMB+BYzs
-	K+bU/hx8BZfGXIbONG2oJj4BQljaPFU/pqrMIrd+khsmwZq1Kze1Ph5WKIxnvkfI
-	fd//X7b4hXlRN0BZQ0hUA==
-X-ME-Sender: <xms:K7PZZikKuo4dBB9dwPUZk80GPVNUM3Zvo_WEJlipLLW0vdx7xKKPIQ>
-    <xme:K7PZZp1FGR5i7xRiXcWunZ-3fIAK0OGYYWNQmPAeFcO42mDdrcHBKDGcjS3gyAoJf
-    nhJgsy3BRbVoSOV6-k>
-X-ME-Received: <xmr:K7PZZgoKas-EFPjTj6M2xizcnuAFOIOEgq-HxZV-La4ZM9Wzo8NIm0CNfS7AAZcF4Q>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrudehledgieehucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
-    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
-    htshculddquddttddmnecujfgurhephfffufggtgfgkfhfjgfvvefosehtkeertdertdej
-    necuhfhrohhmpeflihgrgihunhcujggrnhhguceojhhirgiguhhnrdihrghnghesfhhlhi
-    hgohgrthdrtghomheqnecuggftrfgrthhtvghrnhepledutdeigeehvdegkedvudevffdt
-    hedttddtjeevuddtgfektdekgfdtgedtieevnecuffhomhgrihhnpehgihhthhhusgdrtg
-    homhenucevlhhushhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehj
-    ihgrgihunhdrhigrnhhgsehflhihghhorghtrdgtohhmpdhnsggprhgtphhtthhopeegtd
-    dpmhhouggvpehsmhhtphhouhhtpdhrtghpthhtohepnhguvghsrghulhhnihgvrhhssehg
-    ohhoghhlvgdrtghomhdprhgtphhtthhopehmihhnghhosehrvgguhhgrthdrtghomhdprh
-    gtphhtthhopehrohhsthgvughtsehgohhoughmihhsrdhorhhgpdhrtghpthhtohepmhhh
-    ihhrrghmrghtsehkvghrnhgvlhdrohhrghdprhgtphhtthhopegrrdhhihhnuggsohhrgh
-    esshgrmhhsuhhnghdrtghomhdprhgtphhtthhopegsjhhorhhnfegpghhhsehprhhothho
-    nhhmrghilhdrtghomhdprhgtphhtthhopeigkeeisehkvghrnhgvlhdrohhrghdprhgtph
-    htthhopeifvggushhonhgrfhesghhmrghilhdrtghomhdprhgtphhtthhopehlihhnuhig
-    qdhmihhpshesvhhgvghrrdhkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:K7PZZmmuRsdvqfTkmRryL-SDkL3pNEWsJoFpaoneO3Qet3U9AWJMvA>
-    <xmx:K7PZZg1d2myNx9xVVoFzDWf_ZFLSYvoPZl-Vq7FoDLyn0B-enpRdbw>
-    <xmx:K7PZZtvodRceTSBHOW1A5rJfgMLO7_6byu6CKbSfLqTyr4rLQYf54Q>
-    <xmx:K7PZZsV46vKg8iGkmtpIP5NYFvd4GbSUI3YZoAKgjBiaCmNlJ0EKvg>
-    <xmx:K7PZZppfaojp8iFBlAPZHohDQMbFXKzobUe2qMIZfC1yh3KPpusjNJvt>
-Feedback-ID: ifd894703:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 5 Sep 2024 09:33:27 -0400 (EDT)
-From: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Date: Thu, 05 Sep 2024 14:33:07 +0100
-Subject: [PATCH v2 3/3] rust: Enable for MIPS
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="2AYdpwrn"
+Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-4567fe32141so17821cf.0
+        for <rust-for-linux@vger.kernel.org>; Thu, 05 Sep 2024 10:19:49 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1725556789; x=1726161589; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=s8TUkMt4fFXBEZL3VlaXrE+AmUqotHsPhCt7Jc7mmqM=;
+        b=2AYdpwrnQavYxkexatYSxZavlV4OQ747+SlNm+hyM8ovoiZ/1Wsl58tdoT/kfABcRF
+         Dna90UWPVISGlDGmF4q65DnHNzulg+CvIsDWiKTlVyL/yrkvlEE3VgeKxa36f1Svxje9
+         UJBHdlERGbTgEBlpVOKxfOlkhZtqbP4QwgaE5BCt4If0m/lahXUfEp+yZynXBio0U+Eh
+         kFRdGXtzV6W56r95sFayFQFGkOPMfoG6DtAbVmdgi9CyXP2aTOFZGnZvNxmhRNEw8eqr
+         sdSzTRfTJJPZasgiNkiGVtfPBRVG25N8dCVng6dxwQtS3NVaWy+tTZa8Y4WP+fbgo0mA
+         on4w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725556789; x=1726161589;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=s8TUkMt4fFXBEZL3VlaXrE+AmUqotHsPhCt7Jc7mmqM=;
+        b=ninpZpOlyrsgtXyaAaNiqhMlKkjP5f1Wy8soP2gZKEoq2iwY2QvtolubU791167VGt
+         c0Vlc8oZCrCZT8bhYYV5llyeGvc0qsW6SoUH50NHllkjFeYV+2TXNNg3/JusXLGFM6h/
+         8+mvJodQRm7E9oQqXj80DDWxukY2hM0eO2Ugd6S5S+n1QN1t4Y7zZSAaO0NdgM9Yi1y0
+         tdpOaIqRp9s8AzqHiutT98kZNxWidE2S81veVGc1a75o7HGhkj5MawCTFkwjph7f9Hz4
+         3FBMWJRk6A8c7muFPoQTXlciFrWZlkAQigkFdI+PM0Xp4jrcyTGE1vh74jgTLDa1nAYc
+         JyFw==
+X-Forwarded-Encrypted: i=1; AJvYcCVT0oV1GFQnpYUQQS9CUjq9f7LmfvE5DkPRQMM7pDjlVk+AS3rLIv9fbpT0QbN8MlUohT7Wx3VYdb6wBq5b9w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzaiuxEdweU86n3Hf2+vZGQgjEWb/34lwDS8tf8gKj9L93aRAx+
+	0tEAjaWoNNKsSdbiCdTtFmX8UCmFsbXG5eeOoAYrveyzwNAFHqq0P51us9FKCVSVVLZxMgdC0js
+	0nR4metIEgSu1lzw6dyVDxKDlr7tcSFUlTfw+
+X-Google-Smtp-Source: AGHT+IETIgxd5HzjpKOCX0pYc+T39/K61/DMXW8lisgIOK3FIf/vt5BqtGRErHYZut1e/sGdlaZFVuc/zR1ufHF/hsY=
+X-Received: by 2002:a05:622a:44d:b0:447:dd54:2cd4 with SMTP id
+ d75a77b69052e-45801f211acmr4795831cf.22.1725556788641; Thu, 05 Sep 2024
+ 10:19:48 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
-Message-Id: <20240905-mips-rust-v2-3-409d66819418@flygoat.com>
-References: <20240905-mips-rust-v2-0-409d66819418@flygoat.com>
-In-Reply-To: <20240905-mips-rust-v2-0-409d66819418@flygoat.com>
-To: Masahiro Yamada <masahiroy@kernel.org>,
-  Nathan Chancellor <nathan@kernel.org>,
- Nicolas Schier <nicolas@fjasle.eu>,  Richard Weinberger <richard@nod.at>,
-  Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-  Johannes Berg <johannes@sipsolutions.net>,
-  Thomas Gleixner <tglx@linutronix.de>, Ingo Molnar <mingo@redhat.com>,
-  Borislav Petkov <bp@alien8.de>,
- Dave Hansen <dave.hansen@linux.intel.com>,  x86@kernel.org,
- "H. Peter Anvin" <hpa@zytor.com>,  Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
-  Wedson Almeida Filho <wedsonaf@gmail.com>,
-  Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-  =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
-  Benno Lossin <benno.lossin@proton.me>,
-  Andreas Hindborg <a.hindborg@samsung.com>,
-  Alice Ryhl <aliceryhl@google.com>,
-  Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-  Steven Rostedt <rostedt@goodmis.org>,
-  Masami Hiramatsu <mhiramat@kernel.org>,
- Mark Rutland <mark.rutland@arm.com>,  Jonathan Corbet <corbet@lwn.net>,
- Alex Shi <alexs@kernel.org>,  Yanteng Si <siyanteng@loongson.cn>,
-  Nick Desaulniers <ndesaulniers@google.com>,
-  Bill Wendling <morbo@google.com>,
- Justin Stitt <justinstitt@google.com>
-Cc: linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
- linux-um@lists.infradead.org, rust-for-linux@vger.kernel.org, 
- linux-mips@vger.kernel.org, linux-trace-kernel@vger.kernel.org, 
- linux-doc@vger.kernel.org, llvm@lists.linux.dev, 
- Jiaxun Yang <jiaxun.yang@flygoat.com>
-X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=5800;
- i=jiaxun.yang@flygoat.com; h=from:subject:message-id;
- bh=dVkj/exm1KSiU0b/0TGp9u+BBn+LGdFz9eAdIeMiN8A=;
- b=owGbwMvMwCXmXMhTe71c8zDjabUkhrSbm8Xny0wpaS6zMgrh3PNl5YuLz+8Zsv5d7N0mF9oho
- p24+WxwRykLgxgXg6yYIkuIgFLfhsaLC64/yPoDM4eVCWQIAxenAExEIJaRoe9RxA3OG0se3WJ6
- lOPL4i1dUTfX6Kdsc/8qDvWVAusyXjAydDeeWrP5vHfo5tqXnse38Po/+p/++EsJD/+NDq7tRj0
- H+AE=
-X-Developer-Key: i=jiaxun.yang@flygoat.com; a=openpgp;
- fpr=980379BEFEBFBF477EA04EF9C111949073FC0F67
+References: <20240815173903.4172139-21-samitolvanen@google.com>
+ <20240815173903.4172139-27-samitolvanen@google.com> <1e6cd0ad-48bb-4dd7-8cd7-4e94d0cd7cf5@suse.com>
+In-Reply-To: <1e6cd0ad-48bb-4dd7-8cd7-4e94d0cd7cf5@suse.com>
+From: Sami Tolvanen <samitolvanen@google.com>
+Date: Thu, 5 Sep 2024 10:19:10 -0700
+Message-ID: <CABCJKucgYt09P=cjD8J6Epi67XXvJ7hBdQksLBt9-UtFSu8Pug@mail.gmail.com>
+Subject: Re: [PATCH v2 06/19] gendwarfksyms: Add a cache for processed DIEs
+To: Petr Pavlu <petr.pavlu@suse.com>
+Cc: Masahiro Yamada <masahiroy@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Matthew Maurer <mmaurer@google.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, Neal Gompa <neal@gompa.dev>, 
+	Hector Martin <marcan@marcan.st>, Janne Grunau <j@jannau.net>, Asahi Linux <asahi@lists.linux.dev>, 
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-modules@vger.kernel.org, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Enable rust for linux by implement generate_rust_target.rs
-and select relevant Kconfig options.
+Hi Petr,
 
-We don't use builtin target as there is no sutiable baremetal
-target for us that can cover all ISA variants supported by kernel.
+On Mon, Sep 2, 2024 at 3:05=E2=80=AFAM Petr Pavlu <petr.pavlu@suse.com> wro=
+te:
+>
+> On 8/15/24 19:39, Sami Tolvanen wrote:
+> > +void die_map_free(void)
+> > +{
+> > +     struct hlist_node *tmp;
+> > +     unsigned int stats[LAST + 1];
+> > +     struct die *cd;
+> > +     int i;
+> > +
+> > +     memset(stats, 0, sizeof(stats));
+> > +
+> > +     hash_for_each_safe(die_map, i, tmp, cd, hash) {
+> > +             stats[cd->state]++;
+> > +             reset_die(cd);
+> > +             free(cd);
+> > +     }
+> > +     hash_init(die_map);
+> > +
+> > +     if ((map_hits + map_misses > 0))
+>
+> Nit: Extra parentheses can be dropped.
 
-Link: https://github.com/Rust-for-Linux/linux/issues/107
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
----
-v2:
-	- Add micromips flags
-	- Sync issues with upstream
----
- Documentation/rust/arch-support.rst                |  1 +
- .../translations/zh_CN/rust/arch-support.rst       |  1 +
- arch/mips/Kconfig                                  |  2 +
- scripts/generate_rust_target.rs                    | 68 ++++++++++++++++++++++
- 4 files changed, 72 insertions(+)
+Oops, I'll fix that.
 
-diff --git a/Documentation/rust/arch-support.rst b/Documentation/rust/arch-support.rst
-index 750ff371570a..ab6c0ae5a407 100644
---- a/Documentation/rust/arch-support.rst
-+++ b/Documentation/rust/arch-support.rst
-@@ -17,6 +17,7 @@ Architecture   Level of support  Constraints
- =============  ================  ==============================================
- ``arm64``      Maintained        Little Endian only.
- ``loongarch``  Maintained        \-
-+``mips``       Maintained        \-
- ``riscv``      Maintained        ``riscv64`` only.
- ``um``         Maintained        \-
- ``x86``        Maintained        ``x86_64`` only.
-diff --git a/Documentation/translations/zh_CN/rust/arch-support.rst b/Documentation/translations/zh_CN/rust/arch-support.rst
-index abd708d48f82..1eaa6c3297ac 100644
---- a/Documentation/translations/zh_CN/rust/arch-support.rst
-+++ b/Documentation/translations/zh_CN/rust/arch-support.rst
-@@ -21,6 +21,7 @@
- =============  ================  ==============================================
- ``arm64``      Maintained        只有小端序
- ``loongarch``  Maintained        \-
-+``mips``       Maintained        \-
- ``riscv``      Maintained        只有 ``riscv64``
- ``um``         Maintained        只有 ``x86_64``
- ``x86``        Maintained        只有 ``x86_64``
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index 43da6d596e2b..a91f0a4fd8e9 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -90,6 +90,8 @@ config MIPS
- 	select HAVE_PERF_USER_STACK_DUMP
- 	select HAVE_REGS_AND_STACK_ACCESS_API
- 	select HAVE_RSEQ
-+	select HAVE_RUST
-+	select HAVE_GENERATE_RUST_TARGET
- 	select HAVE_SPARSE_SYSCALL_NR
- 	select HAVE_STACKPROTECTOR
- 	select HAVE_SYSCALL_TRACEPOINTS
-diff --git a/scripts/generate_rust_target.rs b/scripts/generate_rust_target.rs
-index 863720777313..bbdf8a4dd169 100644
---- a/scripts/generate_rust_target.rs
-+++ b/scripts/generate_rust_target.rs
-@@ -141,6 +141,13 @@ fn has(&self, option: &str) -> bool {
-         let option = "CONFIG_".to_owned() + option;
-         self.0.contains_key(&option)
-     }
-+
-+    /// Returns the value of the option in the configuration.
-+    /// The argument must be passed without the `CONFIG_` prefix.
-+    fn get(&self, option: &str) -> Option<&String> {
-+        let option = "CONFIG_".to_owned() + option;
-+        self.0.get(&option)
-+    }
- }
- 
- fn main() {
-@@ -203,6 +210,67 @@ fn main() {
-         ts.push("target-pointer-width", "32");
-     } else if cfg.has("LOONGARCH") {
-         panic!("loongarch uses the builtin rustc loongarch64-unknown-none-softfloat target");
-+    } else if cfg.has("MIPS") {
-+        let mut features = "+soft-float,+noabicalls".to_string();
-+
-+        if cfg.has("CPU_MICROMIPS") {
-+            features += ",+micromips";
-+        }
-+
-+        if cfg.has("64BIT") {
-+            ts.push("arch", "mips64");
-+            ts.push("abi", "abi64");
-+            cfg.get("TARGET_ISA_REV").map(|isa_rev| {
-+                let feature = match isa_rev.as_str() {
-+                    "1" => ",+mips64",
-+                    "2" => ",+mips64r2",
-+                    "5" => ",+mips64r5",
-+                    "6" => ",+mips64r6",
-+                    _ => ",+mips3",
-+                };
-+                features += feature;
-+            });
-+
-+            ts.push("features", features);
-+            if cfg.has("CPU_BIG_ENDIAN") {
-+                ts.push(
-+                    "data-layout",
-+                    "E-m:e-i8:8:32-i16:16:32-i64:64-n32:64-S128",
-+                );
-+                ts.push("llvm-target", "mips64-unknown-linux-gnuabi64");
-+            } else {
-+                ts.push(
-+                    "data-layout",
-+                    "e-m:e-i8:8:32-i16:16:32-i64:64-n32:64-S128",
-+                );
-+                ts.push("llvm-target", "mips64el-unknown-linux-gnuabi64");
-+            }
-+            ts.push("target-pointer-width", "64");
-+        } else {
-+            ts.push("arch", "mips");
-+            cfg.get("TARGET_ISA_REV").map(|isa_rev| {
-+                let feature = match isa_rev.as_str() {
-+                    "1" => ",+mips32",
-+                    "2" => ",+mips32r2",
-+                    "5" => ",+mips32r5",
-+                    "6" => ",+mips32r6",
-+                    _ => ",+mips2",
-+                };
-+                features += feature;
-+            });
-+
-+            ts.push("features", features);
-+            if cfg.has("CPU_BIG_ENDIAN") {
-+                ts.push("data-layout",
-+                        "E-m:m-p:32:32-i8:8:32-i16:16:32-i64:64-n32-S64");
-+                ts.push("llvm-target", "mips-unknown-linux-gnu");
-+            } else {
-+                ts.push("data-layout",
-+                        "e-m:m-p:32:32-i8:8:32-i16:16:32-i64:64-n32-S64");
-+                ts.push("llvm-target", "mipsel-unknown-linux-gnu");
-+            }
-+            ts.push("target-pointer-width", "32");
-+        }
-     } else {
-         panic!("Unsupported architecture");
-     }
+> > +             /*
+> > +              * If any of the DIEs in the scope is missing a name, con=
+sider
+> > +              * the DIE to be unnamed.
+> > +              */
+> > +             list[count] =3D get_name(&scopes[i]);
+> > +
+> > +             if (!list[count]) {
+> > +                     free(scopes);
+> > +                     return 0;
+> > +             }
+>
+> This slightly changes how scopes with no name are processed which is
+> unrelated to the added caching. The previous logic used "<unnamed>" for
+> individual unnamed scopes. The new code in such a case returns an empty
+> FQN which is turned in process_fqn() into "<unnamed>".
+>
+> This is likely ok in practice for this particular tool. In general,
+> I think "<unnamed>" should be returned when the initial DIE is missing
+> a name and something like "<anonymous>::foo" when an outer scope has no
+> name.
 
--- 
-2.46.0
+I did consider that, but didn't find instances of anonymous scopes in
+the output, so I simplified this a bit. I'll dig around a bit more and
+change this if I find a use case. Note that going through the scopes
+is mostly just needed for Rust code.
 
+> More importantly, using "<unnamed>" when a type has no name looks to me
+> overly verbose, in particular, when it comes to the symtypes output. For
+> instance, the current output for a 'const char *' parameter is:
+> formal_parameter pointer_type <unnamed> { const_type <unnamed> { base_typ=
+e char byte_size(1) encoding(8) } } byte_size(8)
+>
+> .. while the following should be sufficient and easier to grasp:
+> formal_parameter pointer_type { const_type { base_type char byte_size(1) =
+encoding(8) } } byte_size(8)
+
+Agreed, that's way more readable. I'll drop the "<unnamed>" from the output=
+.
+
+> > +     for (i =3D 0; i < count; i++)
+> > +             strcat(*fqn, list[i]);
+>
+> Small optimization: This loop could be written as follows to avoid
+> repeatedly searching the end of fqn:
+>
+> char *p =3D *fqn;
+> for (i =3D 0; i < count; i++)
+>         p =3D stpcpy(p, list[i]);
+
+True, I'll change this. Thanks!
+
+> > +static int process_fqn(struct state *state, struct die *cache, Dwarf_D=
+ie *die)
+> > +{
+> > +     const char *fqn;
+> > +
+> > +     if (!cache->fqn)
+> > +             check(get_fqn(state, die, &cache->fqn));
+> > +
+> > +     fqn =3D cache->fqn;
+> > +     fqn =3D fqn ?: "<unnamed>";
+>
+> As a small optimization and for consistency, I would recommended to also
+> cache the "<unnamed>" name to avoid repeatedly calling get_fqn() for
+> such DIEs.
+
+Ack.
+
+> > +enum die_state { INCOMPLETE, COMPLETE, LAST =3D COMPLETE };
+> > +enum die_fragment_type { EMPTY, STRING, DIE };
+>
+> Nit: I would suggest to prefix the enum values, for example,
+> STATE_INCOMPLETE, ... and FRAGMENT_EMPTY, ...
+
+Sure, I'll add prefixes.
+
+Sami
