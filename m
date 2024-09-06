@@ -1,175 +1,122 @@
-Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AA3FE55B;
-	Fri,  6 Sep 2024 17:29:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.134
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CF621D61A9;
+	Fri,  6 Sep 2024 17:56:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725643778; cv=none; b=t0FMiPmvGqawtE6V4bQbWpykEM1k7Ky8ZuzybkNN/tx5GXDo/tjijywWiZ+vMrmrhTM+qaZ9lSonZtF8P/XGkVX6o6P/UYpvpZ3tVequH1Mdm42gssu8cw8Ks7CZNuZESOEl37Etgy9emU09omkuEV5FrTYbs7/TZbmXx3bURGI=
+	t=1725645418; cv=none; b=hT/0RGtETgA6YoHrVE6V/b+NYuOLNAgijdTPwIqzclmfXggzywhngeI5D6AymeyiqHU7A8SCli5ewdT+d6RzIlZUAgGgWSXfdAtYnSGZJejCqlA0FBOKCiOiWsyr5RlKmkrXFRVLl2KdXppvrZ7AlhS+xHROSotIZIHucV9Dris=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725643778; c=relaxed/simple;
-	bh=PImS7UJ48429hdSI7psmmfyEJFCe/jIV68VMqGI9S70=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=KPRufohPBht/3JK0O88zH4g1YE0fO36qy0frCwfMlv0P+KW77nIYEiJUHZyBsSR4Tt3dJA7CbDEQQiwAWA4S7gSpIspZTE9MLgSptM6zz27qncP9s5z/d+JSzaijrJA11T9jviXVcpEsDvPjefLKNBMwqAqYgyQEtuKgU7bvSUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=mwWcw3lu; arc=none smtp.client-ip=185.70.40.134
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1725645418; c=relaxed/simple;
+	bh=WdOBW6mYXpA8iYMY4tnBdje0XASTr6rM3Glk9ZgrOoc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=S015h2meWykCHkgINByLxXoNIkdbknKweld3uQdF+xLQ31+Cigs78S34vnOUGsflameWP8F07jGjxanCXBrVYxMnlU4U9Y2ha0Cex3p8qbV4l1Ujcp5pcvJlQbxU4xbinaX1cLTbUB9ncMapF9UuWtmj1ZTHrbWSfGsV34AG3Cc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mcHV9JlZ; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="mwWcw3lu"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1725643773; x=1725902973;
-	bh=PImS7UJ48429hdSI7psmmfyEJFCe/jIV68VMqGI9S70=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=mwWcw3luUzoMt+vZTtSx77c96wwb0xyp+NKVtorWE+itT2wX4VS64ryYpS02bZxpx
-	 +LHVcaPaMrR/6nIqwoMUZ4Ab3qfc74JoXeIU5bHvHx/XAqnMeq7yFH7zWkmhT3wj1/
-	 RRbH+RqSRk1k2jmuBdy40UsbKJPT6nksOQ9Ewjj84ktG6rQ3YbtaraikKD3d/JVyOk
-	 z05f6v5y4wsrAgYX3o8McXKK1aYGd1iojpCl8QGsXhTQSg/l0YogTfjqKrPPdVP2m+
-	 IafRqvuHjXzUxKhnAH+h6p6UN/aFwJZ77IfQHhcsRXwTUuDLGZvYVe1PC9+ZX3pl2h
-	 Ju1x/DFqZZXjg==
-Date: Fri, 06 Sep 2024 17:29:28 +0000
-To: Greg KH <gregkh@linuxfoundation.org>
-From: Patrick Miller <paddymills@proton.me>
-Cc: a.hindborg@samsung.com, alex.gaynor@gmail.com, aliceryhl@google.com, apw@canonical.com, benno.lossin@proton.me, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, dwaipayanray1@gmail.com, gary@garyguo.net, joe@perches.com, linux-kernel@vger.kernel.org, lukas.bulwahn@gmail.com, ojeda@kernel.org, rust-for-linux@vger.kernel.org, tmgross@umich.edu, wedsonaf@gmail.com
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mcHV9JlZ"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74F5EC4CEC4;
+	Fri,  6 Sep 2024 17:56:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1725645418;
+	bh=WdOBW6mYXpA8iYMY4tnBdje0XASTr6rM3Glk9ZgrOoc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=mcHV9JlZrx9op16OrBN5ycOyaQ9NpHZRQ9nrzB0l7C7u7ylVzikp19bG2KKtlOlzB
+	 b+4WkK/GEGRQe/oWgIy6n4TIymySIsB6hZ+XQFZMgGBdp9SVWs2J3d/lSuMZs/hBdm
+	 5tDOqy7IFDjEUPNdyAhK5S0oReY4hDYDVb8n/hyc=
+Date: Fri, 6 Sep 2024 19:56:55 +0200
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Patrick Miller <paddymills@proton.me>
+Cc: a.hindborg@samsung.com, alex.gaynor@gmail.com, aliceryhl@google.com,
+	apw@canonical.com, benno.lossin@proton.me, bjorn3_gh@protonmail.com,
+	boqun.feng@gmail.com, dwaipayanray1@gmail.com, gary@garyguo.net,
+	joe@perches.com, linux-kernel@vger.kernel.org,
+	lukas.bulwahn@gmail.com, ojeda@kernel.org,
+	rust-for-linux@vger.kernel.org, tmgross@umich.edu,
+	wedsonaf@gmail.com
 Subject: Re: [PATCH 2/2] checkpatch: warn on known non-plural rust doc headers
-Message-ID: <SP3tXoSxg14Ga_W2X_E6G3HpeqZjRVwWUhlMCcUMgDvvJOageFJiaQ1OLnZ0mxKuyueW4z10jZZgGankXKf8ezLTTEbyo_pF7vTbjrt0pZU=@proton.me>
-In-Reply-To: <2024090620-clause-unfrozen-f493@gregkh>
-References: <20240906164543.2268973-1-paddymills@proton.me> <2024090620-clause-unfrozen-f493@gregkh>
-Feedback-ID: 45271957:user:proton
-X-Pm-Message-ID: 40dcb189ac704d41f0abcb9d729c4cdc87ef8fb3
+Message-ID: <2024090628-bankable-refusal-5f20@gregkh>
+References: <20240906164543.2268973-1-paddymills@proton.me>
+ <2024090620-clause-unfrozen-f493@gregkh>
+ <SP3tXoSxg14Ga_W2X_E6G3HpeqZjRVwWUhlMCcUMgDvvJOageFJiaQ1OLnZ0mxKuyueW4z10jZZgGankXKf8ezLTTEbyo_pF7vTbjrt0pZU=@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; protocol="application/pgp-signature"; micalg=pgp-sha512; boundary="------92cba60f43a877a473dc0e95e992924985a3734b9d75f3703e94d444401cdbe1"; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <SP3tXoSxg14Ga_W2X_E6G3HpeqZjRVwWUhlMCcUMgDvvJOageFJiaQ1OLnZ0mxKuyueW4z10jZZgGankXKf8ezLTTEbyo_pF7vTbjrt0pZU=@proton.me>
 
-This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
---------92cba60f43a877a473dc0e95e992924985a3734b9d75f3703e94d444401cdbe1
-Content-Type: multipart/mixed;boundary=---------------------b57f89715bba07d51bf9c942a183d4da
+On Fri, Sep 06, 2024 at 05:29:28PM +0000, Patrick Miller wrote:
+> 
+> 
+> 
+> 
+> 
+> On Friday, September 6th, 2024 at 1:00 PM, Greg KH <gregkh@linuxfoundation.org> wrote:
+> 
+> > 
+> 
+> > 
+> 
+> > On Fri, Sep 06, 2024 at 04:45:49PM +0000, Patrick Miller wrote:
+> > 
+> 
+> > > Adds a check for documentation in rust file. Warns if certain known
+> > > documentation headers are not plural.
+> > > 
+> 
+> > > Signed-off-by: Patrick Miller paddymills@proton.me
+> > > Suggested-by: Miguel Ojeda ojeda@kernel.org
+> > > Link: https://github.com/Rust-for-Linux/linux/issues/1110
+> > > 
+> 
+> > > ---
+> > > scripts/checkpatch.pl | 8 ++++++++
+> > > 1 file changed, 8 insertions(+)
+> > > 
+> 
+> > > diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
+> > > index 39032224d504..0e99d11eeb04 100755
+> > > --- a/scripts/checkpatch.pl
+> > > +++ b/scripts/checkpatch.pl
+> > > @@ -3900,6 +3900,14 @@ sub process {
+> > > "Avoid using '.L' prefixed local symbol names for denoting a range of code via 'SYM_*_START/END' annotations; see Documentation/core-api/asm-annotations.rst\n" . $herecurr);
+> > > }
+> > > 
+> 
+> > > +# check that document section headers are plural in rust files
+> > > + if ( $realfile =~ /\.rs$/
+> > > + && $rawline =~ /^\+\s*\/\/\/\s+#+\s+(Example|Invariant)\s*$/ )
+> > > + {
+> > > + WARN( "RUST_DOC_HEADER",
+> > > + "Rust doc he
+> > > aders should be plural\n" . $herecurr );
+> > 
+> 
+> > 
+> 
+> > Something went wrong, your patch lost the tabs and it had a line wrap?
+> My bad! Editor settings strikes again.
+> 
+> > 
+> 
+> > And why is Rust unique for plurals here? What if there really is only
+> > one example?
+> Per Miguel Ojeda (who suggested the issue): "We prefer plurals when writing code documentation sections: # Examples, # Invariants, # Guarantees and # Panics, so that it is consistent and so that one can add more examples without having to change the section name."
+> > 
+> 
+> > thanks,
+> > 
+> 
+> > greg k-h
+> 
+> I apologize, first time submitting. Do I submit a new email or add the fixed patch to this one?
 
------------------------b57f89715bba07d51bf9c942a183d4da
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain;charset=utf-8
-
-
-
-
-
-
-On Friday, September 6th, 2024 at 1:00 PM, Greg KH <gregkh@linuxfoundation=
-.org> wrote:
-
-> =
-
-
-> =
-
-
-> On Fri, Sep 06, 2024 at 04:45:49PM +0000, Patrick Miller wrote:
-> =
-
-
-> > Adds a check for documentation in rust file. Warns if certain known
-> > documentation headers are not plural.
-> > =
-
-
-> > Signed-off-by: Patrick Miller paddymills@proton.me
-> > Suggested-by: Miguel Ojeda ojeda@kernel.org
-> > Link: https://github.com/Rust-for-Linux/linux/issues/1110
-> > =
-
-
-> > ---
-> > scripts/checkpatch.pl | 8 ++++++++
-> > 1 file changed, 8 insertions(+)
-> > =
-
-
-> > diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-> > index 39032224d504..0e99d11eeb04 100755
-> > --- a/scripts/checkpatch.pl
-> > +++ b/scripts/checkpatch.pl
-> > @@ -3900,6 +3900,14 @@ sub process {
-> > "Avoid using '.L' prefixed local symbol names for denoting a range of =
-code via 'SYM_*_START/END' annotations; see Documentation/core-api/asm-ann=
-otations.rst\n" . $herecurr);
-> > }
-> > =
-
-
-> > +# check that document section headers are plural in rust files
-> > + if ( $realfile =3D~ /\.rs$/
-> > + && $rawline =3D~ /^\+\s*\/\/\/\s+#+\s+(Example|Invariant)\s*$/ )
-> > + {
-> > + WARN( "RUST_DOC_HEADER",
-> > + "Rust doc he
-> > aders should be plural\n" . $herecurr );
-> =
-
-
-> =
-
-
-> Something went wrong, your patch lost the tabs and it had a line wrap?
-My bad! Editor settings strikes again.
-
-> =
+As this one can't apply, you need to send a whole new one :)
 
 
-> And why is Rust unique for plurals here? What if there really is only
-> one example?
-Per Miguel Ojeda (who suggested the issue): "We prefer plurals when writin=
-g code documentation sections: # Examples, # Invariants, # Guarantees and =
-# Panics, so that it is consistent and so that one can add more examples w=
-ithout having to change the section name."
-> =
+thanks,
 
-
-> thanks,
-> =
-
-
-> greg k-h
-
-I apologize, first time submitting. Do I submit a new email or add the fix=
-ed patch to this one?
------------------------b57f89715bba07d51bf9c942a183d4da
-Content-Type: application/pgp-keys; filename="publickey - paddymills@proton.me - 0xDCA74891.asc"; name="publickey - paddymills@proton.me - 0xDCA74891.asc"
-Content-Transfer-Encoding: base64
-Content-Disposition: attachment; filename="publickey - paddymills@proton.me - 0xDCA74891.asc"; name="publickey - paddymills@proton.me - 0xDCA74891.asc"
-
-LS0tLS1CRUdJTiBQR1AgUFVCTElDIEtFWSBCTE9DSy0tLS0tCgp4ak1FWWs0UnNSWUpLd1lCQkFI
-YVJ3OEJBUWRBU1FhVy9FUmQ4dGZncXNNSHQweTY3ZFdRTEU3UnV2T3gKM2p6YWdhRWI0c0xOSzNC
-aFpHUjViV2xzYkhOQWNISnZkRzl1TG0xbElEeHdZV1JrZVcxcGJHeHpRSEJ5CmIzUnZiaTV0WlQ3
-Q2p3UVFGZ29BSUFVQ1lrNFJzUVlMQ1FjSUF3SUVGUWdLQWdRV0FnRUFBaGtCQWhzRApBaDRCQUNF
-SkVKdFJHcnN1cjU0UkZpRUUzS2RJa1N2VW5DdmU4MDFtbTFFYXV5NnZuaEZpcUFFQXQwVCsKcGdw
-MFJvV3dJZm1EUEZUbjNsbVRRcVA0dUEreDRnNXB2OG5SSHBJQS8xVU1YLzh3akZlK24wZUM0V0pq
-Cnk0bjUvTmVLcTF6LzhQSnRZYXVzZVZnT3pqZ0VZazRSc1JJS0t3WUJCQUdYVlFFRkFRRUhRRi9m
-TnBEZgpsbERSbkhIcmVIdlR0SXRGd3VETDNLWkFhaDhZd3dxV0FyNFJBd0VJQjhKNEJCZ1dDQUFK
-QlFKaVRoR3gKQWhzTUFDRUpFSnRSR3JzdXI1NFJGaUVFM0tkSWtTdlVuQ3ZlODAxbW0xRWF1eTZ2
-bmhHR2Z3RUFuWkFzCkdwb0w3UWk5VkNOT3Bja3IwdjhONUt4YnNsSUxmZVArMmNJU0hlY0Erd1Rx
-WDNsZ3dnNVJDN1lBT1MvUQowQ3NxMGNrT0kwSm5zTEtVWlNyOE5Sb0IKPVcxOG4KLS0tLS1FTkQg
-UEdQIFBVQkxJQyBLRVkgQkxPQ0stLS0tLQo=
------------------------b57f89715bba07d51bf9c942a183d4da--
-
---------92cba60f43a877a473dc0e95e992924985a3734b9d75f3703e94d444401cdbe1
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: OpenPGP digital signature
-Content-Disposition: attachment; filename="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-Version: ProtonMail
-
-wnUEARYKACcFgmbbO+8JkJtRGrsur54RFiEE3KdIkSvUnCve801mm1Eauy6v
-nhEAAOiSAQC7RvdqJpdVf7jVhiJbP0U+H9gUzeiCVNKOyq/rjj4PhgEA0VcB
-7RH14ZU1Fihr6tG3RAE8/eDBghmh/kkpgDNt/wo=
-=pHNQ
------END PGP SIGNATURE-----
-
-
---------92cba60f43a877a473dc0e95e992924985a3734b9d75f3703e94d444401cdbe1--
-
+greg k-h
