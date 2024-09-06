@@ -1,91 +1,63 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE60218EFF8;
-	Thu,  5 Sep 2024 23:59:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 334113B1BC;
+	Fri,  6 Sep 2024 03:20:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725580785; cv=none; b=c+Ck3j1eeDcLF6Won2DpYhT+u35muqMMKsEHUvSCKtfzJ9mGjwx2UyV5A8PaO0ncO51vpGbOaQBD7giUpWNfrplo102QHIb1oyF+AB0veQ3+tmWBNMFU5nNfGt3BsFWbHaBI0yF98fwcMzNWzSFe4KbXz8qWHDNjMVZ+oyJtTXw=
+	t=1725592808; cv=none; b=J/STDBqlJn9Vb3jZoQSWEyGfJueMitlcAIK+V6lPYWAIJuxBMjLwLaTlG1+myBEg0kkO6ktbYzH1Q7aTKht1LUFbXYq07sSYHuu2iL89/V2aeAeXhiVCHNZQpH4h0QGQe1KVAXxoihXzisqc5BQmE5I8OJGK34igBtnctu6+Bpg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725580785; c=relaxed/simple;
-	bh=JYI3PA3KgTPpVbsypC8aLWWteQaLMLXfffjyWBRuqS0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=k74sMwgdjONcSygIa0lUMcSuT+KmC4/GdOv/cafiOijiXwMxyPdRPPHAO8G1zJPjSvSmsJHz7qEEfr9zoc3J208NNU38GVypCgNVuy7P4kD4K7G9/Pz6rARJPTnF/B21F+bWeGj3h8f3Oq6z8fLa94dsO97h4I74+EYHMlm0HlI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=O3xM7nu4; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1725592808; c=relaxed/simple;
+	bh=8c/8Wgi2rJSdCiIs7EaEI1dZZNdI0HFt+Vm3zC/Ev9w=;
+	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=VtXxuDt7P0wLmGGGxK9C+9Ys3H8MPdAufb9XFBdvbadUTjOHd8qVlgP/DjD6I1GrANEFLCM+OJLjNhlBegUACuMMcK45LO7CuRamqoI4G/Mp5Z4dNFGnP2xpjf3zcWKCqyPv+4ME9R+aUHhEEFeDGKirzRIIkIN7CPQ0xRDLsLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bItryljU; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="O3xM7nu4"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B135C4AF0E;
-	Thu,  5 Sep 2024 23:59:45 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bItryljU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A11ADC4CEC6;
+	Fri,  6 Sep 2024 03:20:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725580785;
-	bh=JYI3PA3KgTPpVbsypC8aLWWteQaLMLXfffjyWBRuqS0=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=O3xM7nu4IFH02RfX1ORJK79OOJl/TOM/ptr3rsOmFhoMyHwKW68AMEXGeSRU9HXer
-	 jc1ORwm0OyttgqBVliQx09jkS9nKjmsp1vfySnAF8ZOxEN5iCZAf/tPXIfgeprrDVW
-	 Ec9tlCWCMltZVByRL2khg2ufNSCs8K6ytYqwBPOZwr/io8TKcpkrnAL0fcXgMun+k0
-	 Vr+ZkrRJksaQ1/lS3BBkNLJBNIjs4gl0f72ZPWOdKo11EYsaF23EnaVNEgGxLGqLkX
-	 HeLxh6HkY5hSYRmlt8k8YoMKQtkOUMWEm1GtlCdki2bfuq4JKkN9QOJkXbkgulT7R5
-	 i+R2GYy962TCQ==
-Received: by mail-lf1-f41.google.com with SMTP id 2adb3069b0e04-5334879ba28so1638905e87.3;
-        Thu, 05 Sep 2024 16:59:45 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCUpjiC52x5Cqs/W8QEj/Ztk2Ezf6SJU9LUEv6GHySuBA3ZJUg5jkbuK4TttANrkQsVQIM4kVQMBFKNQ5AA=@vger.kernel.org, AJvYcCXB5FNUsNZvrHu49GBzvIZzE6ccWCFdgPPoyiBFI6WsyAXvnzXHR6QtxlWBsrBzi6Ck5IO9QzEtru41XgaBxZc=@vger.kernel.org, AJvYcCXqh8mt8VRE1BfMulQnZTC3yiyse//k/z0/OrvlgkjorCxr8zoBDJlOkuhnzWYEJYDYKvEQ1jy+CDd3RR+d@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw1nyl6efm3f/Z7LSQRXB1ZaOojTHCNX1ErxIHgRj6RjJeXaWYZ
-	wLMeOMlPe7cIYtSr29ffPkBvebxQIOUPoZTOSBsBno5gL0/LU7gF6DjHMYIwhDceuYa980nkEYi
-	O4Ch5qwdRMANuyFXNVMXeV3R9Peg=
-X-Google-Smtp-Source: AGHT+IFR8+IjtzXyDib8ZC6nUZHJtS5vrZ7G8gpcaYWONjJmQhbrk3/4JYCN102Pa4oHRqA2GKKSGJ1QjnvP2cUV3b0=
-X-Received: by 2002:a05:6512:124e:b0:533:3268:b959 with SMTP id
- 2adb3069b0e04-53658805f76mr262083e87.53.1725580784084; Thu, 05 Sep 2024
- 16:59:44 -0700 (PDT)
+	s=k20201202; t=1725592807;
+	bh=8c/8Wgi2rJSdCiIs7EaEI1dZZNdI0HFt+Vm3zC/Ev9w=;
+	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
+	b=bItryljUNqyQ9LdI39eBFLqwRKhnSiCm5T5Fm98TVCAR8qYrggRzYbkR6++FyzObC
+	 jwVv/5cdw1cCyl9LBPOJBK0inBz+dmfoUliA3rgq+nT5D3gQ517FCCvNIwYBbuwhtm
+	 0CCH33uZnSErYpuPm41fqQa37CH926zvT7kSMo8vzLszDBO/4d1jGXM/l4zA3hI5Gp
+	 xhS5qN6stbocJyBW5jiOLlfqJQgZZjskhmxngrMLj6IkAH0MbqwiHw3kLP4cVEuo8t
+	 f0p12hZ5u549vxHfpWjdkGcMH4w+TXDbrMcY+60avZQU2F9O3MAsPr9MP8vx6YlwQt
+	 lHv8G8kl/H99A==
+Received: from [10.30.226.235] (localhost [IPv6:::1])
+	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id AF9773806654;
+	Fri,  6 Sep 2024 03:20:09 +0000 (UTC)
+Subject: Re: [GIT PULL] Rust fixes for 6.11 (2nd)
+From: pr-tracker-bot@kernel.org
+In-Reply-To: <20240905213425.253828-1-ojeda@kernel.org>
+References: <20240905213425.253828-1-ojeda@kernel.org>
+X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
+X-PR-Tracked-Message-Id: <20240905213425.253828-1-ojeda@kernel.org>
+X-PR-Tracked-Remote: https://github.com/Rust-for-Linux/linux.git tags/rust-fixes-6.11-2
+X-PR-Tracked-Commit-Id: cff56ff737e2da095ca9f228e2c5afc903bfca69
+X-PR-Merge-Tree: torvalds/linux.git
+X-PR-Merge-Refname: refs/heads/master
+X-PR-Merge-Commit-Id: 6c5b3e30e5854f121d2e2cbb2d5ff7350ef7fdfb
+Message-Id: <172559280858.1917326.988525702640406803.pr-tracker-bot@kernel.org>
+Date: Fri, 06 Sep 2024 03:20:08 +0000
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>, Miguel Ojeda <ojeda@kernel.org>, Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <20240808221138.873750-1-ojeda@kernel.org> <CAH5fLgh9Moq_9M+zMu300ohK=mPqkLyS6cpQ6An2Q3THCPFjaA@mail.gmail.com>
- <CANiq72kUBPnua1Pob++-6SJ8MeGxQMfrePY9SQVd0DZp5VU-2A@mail.gmail.com>
- <CAK7LNASHdd8Gv6OpXnP3tywrTA6iEZVqZGLb0V-vV_VUR-ksWQ@mail.gmail.com> <CANiq72mtaSGtDx5fn2VPYfyBNGVDm7adQAYxJh3tvd6esLiaRA@mail.gmail.com>
-In-Reply-To: <CANiq72mtaSGtDx5fn2VPYfyBNGVDm7adQAYxJh3tvd6esLiaRA@mail.gmail.com>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Fri, 6 Sep 2024 08:59:07 +0900
-X-Gmail-Original-Message-ID: <CAK7LNATgbZB7e+3D+Mj2fAA-HXTOdsnf-AKcCzxL7DoE2cWdXg@mail.gmail.com>
-Message-ID: <CAK7LNATgbZB7e+3D+Mj2fAA-HXTOdsnf-AKcCzxL7DoE2cWdXg@mail.gmail.com>
-Subject: Re: [PATCH 0/6] kbuild: rust: add `RUSTC_VERSION` and
- reconfig/rebuild support
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	rust-for-linux@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>, 
-	Nicolas Schier <nicolas@fjasle.eu>, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Fri, Sep 6, 2024 at 5:47=E2=80=AFAM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
->
-> On Thu, Sep 5, 2024 at 3:19=E2=80=AFAM Masahiro Yamada <masahiroy@kernel.=
-org> wrote:
-> >
-> > With the nit in 1/6 fixed (No need to resend if you fix it locally)
-> >
-> > Acked-by: Masahiro Yamada <masahiroy@kernel.org>
->
-> Thanks a lot Masahiro (nit fixed and tag applied). I guess you meant
-> to reply to v2?
+The pull request you sent on Thu,  5 Sep 2024 23:34:25 +0200:
 
+> https://github.com/Rust-for-Linux/linux.git tags/rust-fixes-6.11-2
 
-Yes, I meant Ack to v2.
+has been merged into torvalds/linux.git:
+https://git.kernel.org/torvalds/c/6c5b3e30e5854f121d2e2cbb2d5ff7350ef7fdfb
 
-Sorry for confusion.
+Thank you!
 
-
-
-
-
---=20
-Best Regards
-Masahiro Yamada
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/prtracker.html
