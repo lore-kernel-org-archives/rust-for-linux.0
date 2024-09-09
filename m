@@ -1,158 +1,334 @@
-Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12olkn2078.outbound.protection.outlook.com [40.92.21.78])
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A642B171066
-	for <rust-for-linux@vger.kernel.org>; Mon,  9 Sep 2024 19:59:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.92.21.78
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725911985; cv=fail; b=hxnwFnplVNmRw44PptqNF5ODCvU/sXrUEWNdZRl8x2bkam5fVbrGarU+hAsr2enCcP2ksoDylfO/dEGAWAtexINvzt+LDa9eoX3Iq9leBhwjCTpE0rsG5nap2QjuF5/bg43yV8La6XfhHyrKJHZtuw50vdZ2XCPWDh3F0bYPIs4=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725911985; c=relaxed/simple;
-	bh=wqIlK68vMUIiKHWF5xW6S7NbM43vygXRVQAGg0F2nmc=;
-	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=SUXl/GRm0stDb6uuBQ7vsGFKKRnUxXQOHavtkJlXeDbZtmFZX/XhU/QEYQnQsUDHmwEDBtbeaRTKiHG7ntwQjhseyAZG0zwXhvZ7I2A89VyfsiUXSL4/ZW42Yi0lzGqpgbmhh0XbapGYdqMF+UHh98KodGKSqA50B2QUee3pJzs=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=live.com; spf=pass smtp.mailfrom=live.com; dkim=pass (2048-bit key) header.d=live.com header.i=@live.com header.b=AidjN0i+; arc=fail smtp.client-ip=40.92.21.78
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=live.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=live.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E3B118C350
+	for <rust-for-linux@vger.kernel.org>; Mon,  9 Sep 2024 21:18:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1725916689; cv=none; b=JlZwrAtDWyl7emXZAXAys8nxij65Z9rmYb7QHjAPo9YrwicIzLvU8MChCu3RxifasjwN/JQrisK80XF+jbNth7J9DuVQjA7qw/6TsmYhkkz1AdBOxzoUVXmu8F2xnKmQklNgO209iTQMa/WXe5qEYd3fhZioSxz5NZCy5hAT5qc=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1725916689; c=relaxed/simple;
+	bh=8dD8qWypGnCFacam4LF8FYB6oNE4Yete5auyayOtlj8=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=Xql1UjmdL9TTADmyIWxPDSqRUkfHqciIbwb9s03+BqnhKxFna+D2S4JtIFx3Yhq7g4uP1VjFN3wDnymWfO05+DKHO1kBX+Dj9+ZU9ULQFw3jX4j5BTCi+e9/Jv24JkTSl+L5KzF76GCjwke8MDXaOEkWYV9EibnSC9VVXAbPSkM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=W/8gJ34V; arc=none smtp.client-ip=185.70.43.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=live.com header.i=@live.com header.b="AidjN0i+"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=GB5ymbLoeCYB5ZNcPucVLF8jhlsQuW6rbHCt2r3k+eca2HyzFjLS00GLeTIHkIZDirth9A7qw9G3M/lmXT3+mJYeP8311siD0gKse3podbLpRxJoPt2/QofS82jYxk6O3v84wIahmNmG+usdiwwdFw9jg3kCIKMSr5NBdQUzRrlUjqoODQyOouQy7qm8GFSxlyvSd8xhPbnIO+zbAoatwXIuzCodyR4svI9PYOMwkQvX+CUrcQrmeTNnnEIi52L1PMG6moCymVKtAQLjz1bnx2ayXfYI3zqeJgCmEujVzFEoYNUj7r48T2A2HNzmE0FUjlNWa21lUHDw0F+xxRPJaQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=aiyWW+Nbi6BTcdS4Bvxz8d20B8oJaHl9vN3o9lXnAsE=;
- b=izJ4jKB0ZISM7H+1oFfw8E3CJw8/OGfRf//JdeHKY3IJilCKVMfLnMjl2XfdhSjg5IinL18NMPGLl+SgOmEGUlLXAy5KKE4bRFMxsPr4WzWS3nttvpNd06tLzp8FJoBwogx7RFvrj61uvD6KmE+IXbvv+uC8eJdI+I9Z6yJZwr8CpfOtJ9J/ACvjYfQI2rfJEg1nxIsBfmcXy3b0YPmLXtl9IrAPGwc+S7Qb3asNRqsu6QGwT1MfoQuosNaiqG0xrnNgJntP7QazO9RmlrYeuTzORbzDT0yFjxJ1eoE9hG8m4qaWyT7E8KfnEORa5S+2+E424mFE4CQkwhvc9t33GA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
- dkim=none; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=live.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=aiyWW+Nbi6BTcdS4Bvxz8d20B8oJaHl9vN3o9lXnAsE=;
- b=AidjN0i+3p5W7IrtDLzJ9QUCDS/n6049EMZb6U9Ty01vpaDyg5GkuW5/RwiG2yOxTMHeGG+xr9leOhu5woEZEjpuY8R2e5f5hAwi/v1je4FE7SSgvmviHPlblVanGhhoaUimUUuAQDLiHSWk5ByDxTZzV34xDsnTPhCQ3iNzxKHzrabkO08CBCudrIDBLqQQReARZNCxssxMgWZoy1OIeW7N4BXq6YrT90JbW7H5uNfmNhHYvHKzSPtnPHzueDw5lEcukG/0+S92OL2OplqQuGwIwscQa79G3BywfC2gHi0s8W98tmdj5bcH5VivEKzR0mzo1jOKQ+KDXiiRYXR4rA==
-Received: from DM4PR14MB7276.namprd14.prod.outlook.com (2603:10b6:8:186::13)
- by BY5PR14MB3669.namprd14.prod.outlook.com (2603:10b6:a03:1d2::19) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7918.27; Mon, 9 Sep
- 2024 19:59:39 +0000
-Received: from DM4PR14MB7276.namprd14.prod.outlook.com
- ([fe80::744f:71ea:aec:9c4d]) by DM4PR14MB7276.namprd14.prod.outlook.com
- ([fe80::744f:71ea:aec:9c4d%4]) with mapi id 15.20.7918.024; Mon, 9 Sep 2024
- 19:59:39 +0000
-From: Filipe Xavier <felipe_life@live.com>
-To: aliceryhl@google.com,
-	ojeda@kernel.org,
-	alex.gaynor@gmail.com
-Cc: rust-for-linux@vger.kernel.org,
-	Filipe Xavier <felipe_life@live.com>
-Subject: [PATCH v2] rust: Make functions accessible outside the kernel crate
-Date: Mon,  9 Sep 2024 16:59:26 -0300
-Message-ID:
- <DM4PR14MB727613E0669989AF7E12357FE9992@DM4PR14MB7276.namprd14.prod.outlook.com>
-X-Mailer: git-send-email 2.46.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-TMN: [Yroo4Z5fL8M1YMOwsPUKJvnXY5c1H100pBvdH610J2AAq8Qavxyuzr085qFnxO90]
-X-ClientProxiedBy: CP5P284CA0040.BRAP284.PROD.OUTLOOK.COM
- (2603:10d6:103:96::9) To DM4PR14MB7276.namprd14.prod.outlook.com
- (2603:10b6:8:186::13)
-X-Microsoft-Original-Message-ID: <20240909195926.35655-1-felipe_life@live.com>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="W/8gJ34V"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1725916679; x=1726175879;
+	bh=mKJSL1WLkzQQfvSewxHUvxherY3mwVtPg6Pj0SUV9M0=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=W/8gJ34Vlduij03PSusMjXeyWnVjahDQTI4wSQVHNkFDDreSbda/3xMgKyX5H1zEq
+	 g/hKMF7TeYEGxjpegxpuM8l+9l+pbFRWABasYYiO1oJh1BYCuW+T3Hv9fFJPxlAVC2
+	 qvtGbgTwKmWkIXPHpBk8eygy9guKwoden/nwKKovkeBoBwLCNwhtrpr6zxAEmbWAmi
+	 eJc1aknwFxj7nag1NsYQtgrd7oIAmce6u3Y77i0NxdWRvGLjC4SnmXnteIBMOSpOs5
+	 O5iPfg+L/RYIpcQhbgb4atoC//aunM3O5AcwXT7UsARypyDJY88avMjdXZBH44up24
+	 gyQai3zNi15tg==
+Date: Mon, 09 Sep 2024 21:17:54 +0000
+To: levymitchell0@gmail.com, Andreas Hindborg <a.hindborg@samsung.com>, Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH RFC] rust: lockdep: Use Pin for all LockClassKey usages
+Message-ID: <75b6167d-ed22-4c7f-b2a2-390d938a7f1a@proton.me>
+In-Reply-To: <20240905-rust-lockdep-v1-1-d2c9c21aa8b2@gmail.com>
+References: <20240905-rust-lockdep-v1-1-d2c9c21aa8b2@gmail.com>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: 6689aa314c1e5f79ad7e9e9dcd6c667a849523dc
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-Exchange-MessageSentRepresentingType: 1
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM4PR14MB7276:EE_|BY5PR14MB3669:EE_
-X-MS-Office365-Filtering-Correlation-Id: c2641a9d-6011-416e-bc6e-08dcd109f007
-X-Microsoft-Antispam:
-	BCL:0;ARA:14566002|461199028|15080799006|8060799006|5072599009|19110799003|3412199025|440099028|4302099013|1602099012|1710799026;
-X-Microsoft-Antispam-Message-Info:
-	K9yW8BHiEY65AgSlDOhSVbnr6g1VkPEzMv206doDVEIK4F5lB6cBkThRH/BgZ02PddJAeyuUd4E8VA0K7OkmK7+fy6dZF5A0mhxaQ3Us9bJEYwwz9Cm9y0zugUy3hvBihf8NDyqBPGdS8+8p8giuc88ztlKLfHGcTgtwg2X6GdmUxKX+J1ZGDEAq28Vjc9tPopuzZub44AoCKKAGVr/3l8AZdjDIEvzzleFwUk3sauQ9WyyAjRRXs2e3wcyTv2B3UoWlOSAUeVLs++DHSiwkwDOGUUbtztDMkQYJiRk/XjZT27PVTlOTe3bpArrL5WPlaep4rYW3tGiFcX6xw7QYgiX7mNV8BGRlWYKNF+03ypDkin/2PoEsmVPNYwZr1MjOI9DQuXoTL5elRk0uhQQ+e09gssKC/nREwkxChGgG/129+KbjhScYyLaF99GK4NJr2GKWVpTy3kjOJrolfzedIv7m9QuYM7L5JscKCL5boGmUGajJllp5v59g8zn89GfmS8E3z5FbIMoPNsQYu3KF6GBP4yzPLghtc13+3kmgeHGk5ZCuTRSUl1DceQAp4X2yI7nT5mpACmewgCIDm+geLjf+zCWDSSFD/shMi8B7aSKtw7/jDf7X5tNGjB5So8KmvdvG4uqzJBk6Tdxbiu2LxxDKMvllPiGkMoGtoObb5TXMeAiyK9PGCwKx8YuIaq6HLjGv0G4ThamGxFSDD6JX/+NTDdnqNwxEq24jUWPaWw0z2EQqKk9e5wvyPaqBjsL8p2fxxaKGA+vjG+5Zqx1yYW4pHd+S1usjS9OWtoBsRBlERR8ACHdgmTYJXHvKoN0kYSdxgkWo68nr+gCNgmqOSw==
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?eTO2seG96qn45bCf5rxt9ZW9Mn2jolOam5aq7q5mUlryCpoRwWnKp8Tu9lY7?=
- =?us-ascii?Q?ExvFb2MiUtsKDiYys9lplVoniOwHRWqPdMhtkv8drz6dF7wJZOPes5pG2NYt?=
- =?us-ascii?Q?HaykGpJk/S2ddcDbWIx36wfjkQ5r9mAjbkjZKTE84Hb7LwibKKKOjMo08MZO?=
- =?us-ascii?Q?JIyCmRzeHcyExcy0gm2ODCSQwExHbLerTXMW2QtAZM7IWBVOWgvgLzcHqj3S?=
- =?us-ascii?Q?Jg4Q/xv3FmuTVLRNoPGGz1fbhHQxhlImWKsH2NCP2fjcQRnflkHiZ2xDbDxb?=
- =?us-ascii?Q?yc5bCkJrEH2rvGrNCTatINMOJEyK+hEtbOJ4VZQ2COB9BYBfFNirt/c+LU5u?=
- =?us-ascii?Q?pTQFh7HBAF4atNWKvjk8i/zx+eh8YILMiHrQsn696ly8NM0/bjV0+yH1Q8Bf?=
- =?us-ascii?Q?dM+jKZHHNdqjbRnyJRUqe8A48LnJ2UhR/PBm8nrHn/zcqv6ddasldpa7UL/z?=
- =?us-ascii?Q?Ajic3YZ2FHWhx/JZHcXiuSSIxLcl/0ZlPAAlaxxXIZInf4juAyZEIeyJjnls?=
- =?us-ascii?Q?3DMQUWn26YMYvukvelYZtita+BW2Fcp3eCPxI7XEyVX0nc26Bxtd8S/mvQtS?=
- =?us-ascii?Q?hmcqX6+oxzDUJu7xJG6tU01vm5VHNu1S9yinRF5hB6jFnOHMhJEussY2WZvP?=
- =?us-ascii?Q?PYuSmQegYcYkz+DWFUuJSjGP/BJ1jxvBzcnbUgAgEXyn2619DZ3Hb1AHPW4r?=
- =?us-ascii?Q?Lk5bn3s9/B3NZIjQ9MLQgLim19Mmpwam41VxobYC9VGxvjmqx/0hZtB8rTRo?=
- =?us-ascii?Q?BV8cWJXILkhmzPhY760Wf6jy/VTL1Q20qqHX8nklZasE1zBT0V3Yk9oZm1j9?=
- =?us-ascii?Q?WmvFCcLz5NKx0nPHr7f0sxqw/C6RGz/skEyMZrniOPyLI0zD1XaeEU3NwMQi?=
- =?us-ascii?Q?5fNaPSMLfR4PFW3rV+aT1V6zmCukV5NIWguT1GyISXhgGM4NPOjU9QLKQkW+?=
- =?us-ascii?Q?mZnp1pA17leAvnqz4maw7xX1tZT7aQeYiyDqa9Q+3xuoYmafDJEp79yBDvUL?=
- =?us-ascii?Q?u4XOqx0+dsbFAVeovI/68PdL3g8DJt2JaIunOjqKJcOFVvv7z2S1ckZ6qSoB?=
- =?us-ascii?Q?7FvECwGVYuiQGBIWeGBGeFRjlKMbs07OBfibKSviIq3iAJ1pSwPxS5aXIH3b?=
- =?us-ascii?Q?L0n/7PDfbC8JzrsUEFLX71+t1Vj0QOD9Ec8G3tMD2DWTMU4ykvToHKOejD7r?=
- =?us-ascii?Q?Bgz0n4niJNnsccxGMBLXEp5M/fYDz5/3uPkaWqULq7nEBbvuHSA+vTn8+wsd?=
- =?us-ascii?Q?TidCmEZXeNn9aRTG0hXU9PZ4nYtpdKxbITN1EGjsFnF2+55tfsPiajYlYekM?=
- =?us-ascii?Q?S3I=3D?=
-X-OriginatorOrg: sct-15-20-7719-19-msonline-outlook-e4812.templateTenant
-X-MS-Exchange-CrossTenant-Network-Message-Id: c2641a9d-6011-416e-bc6e-08dcd109f007
-X-MS-Exchange-CrossTenant-AuthSource: DM4PR14MB7276.namprd14.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Sep 2024 19:59:39.6165
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
-X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
-	00000000-0000-0000-0000-000000000000
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR14MB3669
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-Change visibility to public of functions in error.rs:
-from_err_ptr, from_result and to_ptr. 
-Additionally, remove dead_code annotations.
+On 06.09.24 01:13, Mitchell Levy via B4 Relay wrote:
+> From: Mitchell Levy <levymitchell0@gmail.com>
+>=20
+> The current LockClassKey API has soundness issues related to the use of
+> dynamically allocated LockClassKeys. In particular, these keys can be
+> used without being registered and don't have address stability.
+>=20
+> This fixes the issue by using Pin<&LockClassKey> and properly
+> registering/deregistering the keys on init/drop.
+>=20
+> Link: https://lore.kernel.org/rust-for-linux/20240815074519.2684107-1-nmi=
+@metaspace.dk/
+> Suggested-by: Benno Lossin <benno.lossin@proton.me>
+> Suggested-by: Boqun Feng <boqun.feng@gmail.com>
+> Signed-off-by: Mitchell Levy <levymitchell0@gmail.com>
+> ---
+> This change is based on applying the linked patch to the top of
+> rust-next.
+>=20
+> I'm sending this as an RFC because I'm not sure that using
+> Pin<&'static LockClassKey> is appropriate as the parameter for, e.g.,
+> Work::new. This should preclude using dynamically allocated
+> LockClassKeys here, which might not be desirable. Unfortunately, using
+> Pin<&'a LockClassKey> creates other headaches as the compiler then
+> requires that T and PinImpl<Self> be bounded by 'a, which also seems
+> undesirable. I would be especially interested in feedback/ideas along
+> these lines.
+> ---
+>  rust/kernel/block/mq/gen_disk.rs |  2 +-
+>  rust/kernel/sync.rs              | 30 +++++++++++++++++++++---------
+>  rust/kernel/sync/condvar.rs      | 13 ++++++++-----
+>  rust/kernel/sync/lock.rs         |  6 +++---
+>  rust/kernel/workqueue.rs         |  6 +++---
+>  5 files changed, 36 insertions(+), 21 deletions(-)
 
-Link: https://github.com/Rust-for-Linux/linux/issues/1105
-Signed-off-by: Filipe Xavier <felipe_life@live.com>
+When I try to build with LOCKDEP=3Dn, then I get this error:
+
+    error[E0425]: cannot find function `lockdep_register_key` in crate `bin=
+dings`
+      --> rust/kernel/sync.rs:40:65
+       |
+    40 |             inner <- Opaque::ffi_init(|slot| unsafe { bindings::lo=
+ckdep_register_key(slot) })
+       |                                                                 ^^=
+^^^^^^^^^^^^^^^^^^ not found in `bindings`
+   =20
+    error[E0425]: cannot find function `lockdep_unregister_key` in crate `b=
+indings`
+      --> rust/kernel/sync.rs:52:28
+       |
+    52 |         unsafe { bindings::lockdep_unregister_key(self.as_ptr()) }
+       |
+
+> diff --git a/rust/kernel/block/mq/gen_disk.rs b/rust/kernel/block/mq/gen_=
+disk.rs
+> index 708125dce96a..706ac3c532d5 100644
+> --- a/rust/kernel/block/mq/gen_disk.rs
+> +++ b/rust/kernel/block/mq/gen_disk.rs
+> @@ -108,7 +108,7 @@ pub fn build<T: Operations>(
+>                  tagset.raw_tag_set(),
+>                  &mut lim,
+>                  core::ptr::null_mut(),
+> -                static_lock_class!().as_ptr(),
+> +                static_lock_class!().get_ref().as_ptr(),
+
+Why do we need the `get_ref()` calls? `Pin<&T>` implements
+`Deref<Target =3D T>`, so I don't think that it is necessary to add the
+`get_ref` calls.
+
+>              )
+>          })?;
+>=20
+> diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
+> index 0ab20975a3b5..c46a296cbe6d 100644
+> --- a/rust/kernel/sync.rs
+> +++ b/rust/kernel/sync.rs
+> @@ -5,6 +5,8 @@
+>  //! This module contains the kernel APIs related to synchronisation that=
+ have been ported or
+>  //! wrapped for usage by Rust code in the kernel.
+>=20
+> +use crate::pin_init;
+> +use crate::prelude::*;
+>  use crate::types::Opaque;
+>=20
+>  mod arc;
+> @@ -20,7 +22,11 @@
+>=20
+>  /// Represents a lockdep class. It's a wrapper around C's `lock_class_ke=
+y`.
+>  #[repr(transparent)]
+> -pub struct LockClassKey(Opaque<bindings::lock_class_key>);
+> +#[pin_data(PinnedDrop)]
+> +pub struct LockClassKey {
+> +    #[pin]
+> +    inner: Opaque<bindings::lock_class_key>,
+> +}
+>=20
+>  // SAFETY: `bindings::lock_class_key` is designed to be used concurrentl=
+y from multiple threads and
+>  // provides its own synchronization.
+> @@ -28,18 +34,22 @@ unsafe impl Sync for LockClassKey {}
+>=20
+>  impl LockClassKey {
+>      /// Creates a new lock class key.
+> -    pub const fn new() -> Self {
+> -        Self(Opaque::uninit())
+> +    pub fn new_dynamic() -> impl PinInit<Self> {
+
+Can you add some more documentation on this function? For example:
+- directing people to use `static_lock_class!` if they only need a
+  static key (AFAIK that is the common use-case).
+- Also would be nice if we had an example here.
+- I would change the first line to be "Creates a dynamic lock class
+  key.".
+
+> +        pin_init!(Self {
+> +            // SAFETY: lockdep_register_key expects an uninitialized blo=
+ck of memory
+> +            inner <- Opaque::ffi_init(|slot| unsafe { bindings::lockdep_=
+register_key(slot) })
+> +        })
+>      }
+>=20
+>      pub(crate) fn as_ptr(&self) -> *mut bindings::lock_class_key {
+> -        self.0.get()
+> +        self.inner.get()
+>      }
+>  }
+>=20
+> -impl Default for LockClassKey {
+> -    fn default() -> Self {
+> -        Self::new()
+> +#[pinned_drop]
+> +impl PinnedDrop for LockClassKey {
+> +    fn drop(self: Pin<&mut Self>) {
+> +        unsafe { bindings::lockdep_unregister_key(self.as_ptr()) }
+>      }
+>  }
+>=20
+> @@ -48,8 +58,10 @@ fn default() -> Self {
+>  #[macro_export]
+>  macro_rules! static_lock_class {
+>      () =3D> {{
+> -        static CLASS: $crate::sync::LockClassKey =3D $crate::sync::LockC=
+lassKey::new();
+> -        &CLASS
+> +        static CLASS: $crate::sync::LockClassKey =3D unsafe {
+> +            ::core::mem::MaybeUninit::uninit().assume_init()
+> +        };
+> +        $crate::prelude::Pin::static_ref(&CLASS)
+
+Just to make sure we get it right this time, is this true: "static
+`lock_class_key` values don't need to be initialized."?
+
+>      }};
+>  }
+>=20
+> diff --git a/rust/kernel/sync/condvar.rs b/rust/kernel/sync/condvar.rs
+> index 2b306afbe56d..6c40b45e35cd 100644
+> --- a/rust/kernel/sync/condvar.rs
+> +++ b/rust/kernel/sync/condvar.rs
+> @@ -14,9 +14,12 @@
+>      time::Jiffies,
+>      types::Opaque,
+>  };
+> -use core::ffi::{c_int, c_long};
+> -use core::marker::PhantomPinned;
+> -use core::ptr;
+> +use core::{
+> +    ffi::{c_int, c_long},
+> +    marker::PhantomPinned,
+> +    pin::Pin,
+> +    ptr,
+> +};
+>  use macros::pin_data;
+>=20
+>  /// Creates a [`CondVar`] initialiser with the given name and a newly-cr=
+eated lock class.
+> @@ -102,13 +105,13 @@ unsafe impl Sync for CondVar {}
+>=20
+>  impl CondVar {
+>      /// Constructs a new condvar initialiser.
+> -    pub fn new(name: &'static CStr, key: &'static LockClassKey) -> impl =
+PinInit<Self> {
+> +    pub fn new(name: &'static CStr, key: Pin<&'static LockClassKey>) -> =
+impl PinInit<Self> {
+>          pin_init!(Self {
+>              _pin: PhantomPinned,
+>              // SAFETY: `slot` is valid while the closure is called and b=
+oth `name` and `key` have
+>              // static lifetimes so they live indefinitely.
+>              wait_queue_head <- Opaque::ffi_init(|slot| unsafe {
+> -                bindings::__init_waitqueue_head(slot, name.as_char_ptr()=
+, key.as_ptr())
+> +                bindings::__init_waitqueue_head(slot, name.as_char_ptr()=
+, key.get_ref().as_ptr())
+>              }),
+>          })
+>      }
+> diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
+> index f6c34ca4d819..c6bdbb85a39c 100644
+> --- a/rust/kernel/sync/lock.rs
+> +++ b/rust/kernel/sync/lock.rs
+> @@ -7,7 +7,7 @@
+>=20
+>  use super::LockClassKey;
+>  use crate::{init::PinInit, pin_init, str::CStr, types::Opaque, types::Sc=
+opeGuard};
+> -use core::{cell::UnsafeCell, marker::PhantomData, marker::PhantomPinned}=
+;
+> +use core::{cell::UnsafeCell, marker::PhantomData, marker::PhantomPinned,=
+ pin::Pin};
+>  use macros::pin_data;
+>=20
+>  pub mod mutex;
+> @@ -106,14 +106,14 @@ unsafe impl<T: ?Sized + Send, B: Backend> Sync for =
+Lock<T, B> {}
+>=20
+>  impl<T, B: Backend> Lock<T, B> {
+>      /// Constructs a new lock initialiser.
+> -    pub fn new(t: T, name: &'static CStr, key: &'static LockClassKey) ->=
+ impl PinInit<Self> {
+> +    pub fn new(t: T, name: &'static CStr, key: Pin<&'static LockClassKey=
+>) -> impl PinInit<Self> {
+>          pin_init!(Self {
+>              data: UnsafeCell::new(t),
+>              _pin: PhantomPinned,
+>              // SAFETY: `slot` is valid while the closure is called and b=
+oth `name` and `key` have
+>              // static lifetimes so they live indefinitely.
+>              state <- Opaque::ffi_init(|slot| unsafe {
+> -                B::init(slot, name.as_char_ptr(), key.as_ptr())
+> +                B::init(slot, name.as_char_ptr(), key.get_ref().as_ptr()=
+)
+>              }),
+>          })
+>      }
+> diff --git a/rust/kernel/workqueue.rs b/rust/kernel/workqueue.rs
+> index 553a5cba2adc..eefc2b7b578c 100644
+> --- a/rust/kernel/workqueue.rs
+> +++ b/rust/kernel/workqueue.rs
+> @@ -367,9 +367,9 @@ impl<T: ?Sized, const ID: u64> Work<T, ID> {
+>      /// Creates a new instance of [`Work`].
+>      #[inline]
+>      #[allow(clippy::new_ret_no_self)]
+> -    pub fn new(name: &'static CStr, key: &'static LockClassKey) -> impl =
+PinInit<Self>
+> +    pub fn new(name: &'static CStr, key: Pin<&'static LockClassKey>) -> =
+impl PinInit<Self>
+>      where
+> -        T: WorkItem<ID>,
+> +        T: WorkItem<ID>
+
+`rustfmt` re-adds the comma. It also formats other parts of your patch
+differently. You can run it using the `rustfmt` target.
 
 ---
- rust/kernel/error.rs | 11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
+Cheers,
+Benno
 
-diff --git a/rust/kernel/error.rs b/rust/kernel/error.rs
-index 6f1587a2524e..ecfa6aa41034 100644
---- a/rust/kernel/error.rs
-+++ b/rust/kernel/error.rs
-@@ -133,8 +133,7 @@ pub(crate) fn to_blk_status(self) -> bindings::blk_status_t {
-     }
- 
-     /// Returns the error encoded as a pointer.
--    #[allow(dead_code)]
--    pub(crate) fn to_ptr<T>(self) -> *mut T {
-+    pub fn to_ptr<T>(self) -> *mut T {
-         #[cfg_attr(target_pointer_width = "32", allow(clippy::useless_conversion))]
-         // SAFETY: `self.0` is a valid error due to its invariant.
-         unsafe {
-@@ -268,9 +267,7 @@ pub fn to_result(err: core::ffi::c_int) -> Result {
- ///     from_err_ptr(unsafe { bindings::devm_platform_ioremap_resource(pdev.to_ptr(), index) })
- /// }
- /// ```
--// TODO: Remove `dead_code` marker once an in-kernel client is available.
--#[allow(dead_code)]
--pub(crate) fn from_err_ptr<T>(ptr: *mut T) -> Result<*mut T> {
-+pub fn from_err_ptr<T>(ptr: *mut T) -> Result<*mut T> {
-     // CAST: Casting a pointer to `*const core::ffi::c_void` is always valid.
-     let const_ptr: *const core::ffi::c_void = ptr.cast();
-     // SAFETY: The FFI function does not deref the pointer.
-@@ -315,9 +312,7 @@ pub(crate) fn from_err_ptr<T>(ptr: *mut T) -> Result<*mut T> {
- ///     })
- /// }
- /// ```
--// TODO: Remove `dead_code` marker once an in-kernel client is available.
--#[allow(dead_code)]
--pub(crate) fn from_result<T, F>(f: F) -> T
-+pub fn from_result<T, F>(f: F) -> T
- where
-     T: From<i16>,
-     F: FnOnce() -> Result<T>,
--- 
-2.46.0
+>      {
+>          pin_init!(Self {
+>              work <- Opaque::ffi_init(|slot| {
+> @@ -381,7 +381,7 @@ pub fn new(name: &'static CStr, key: &'static LockCla=
+ssKey) -> impl PinInit<Self
+>                          Some(T::Pointer::run),
+>                          false,
+>                          name.as_char_ptr(),
+> -                        key.as_ptr(),
+> +                        key.get_ref().as_ptr(),
+>                      )
+>                  }
+>              }),
+>=20
+> ---
+> base-commit: 8edf38a534a38e5d78470a98d43454e3b73e307c
+> change-id: 20240905-rust-lockdep-d3e30521c8ba
+>=20
+> Best regards,
+> --
+> Mitchell Levy <levymitchell0@gmail.com>
+>=20
+>=20
 
