@@ -1,83 +1,98 @@
-Received: from mail-wr1-f50.google.com (mail-wr1-f50.google.com [209.85.221.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 777528528F
-	for <rust-for-linux@vger.kernel.org>; Mon,  9 Sep 2024 16:23:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ACC4214B09F;
+	Mon,  9 Sep 2024 16:25:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725898992; cv=none; b=Mqo1x/HCczcgss2cHjUA8har5v1r+oEdjOqXyRRA8lMZO8uH2Bgeku8mA2y6UD79FvRC3rRQA64TBYjFy7ayxYRzHPyKpu55X8+h2VmDtMdI7E8ZW+NMmdkvDZAKyfxtxsiAiMRHPzUrmgODoTpe3f+sPWxbR3W8ZIL6iU2FVXk=
+	t=1725899109; cv=none; b=B/iVre95G4wHdtjnbJpPQj50iBZzY5xIQBnw7R1M3T5gzcAQgKV6VssrOW0Z0Pt+Ies3ej5mx+HDXvo0i/v9QSsIzLHwW+89cV+k8mGe66qYWEr36d7uZoHHYAg/t75Ee/aPGU+wrB733/m+341IV0pwoA+93MG78HGOosmoRxI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725898992; c=relaxed/simple;
-	bh=qdFhZU2r5xFdA8KfDRlBW7jZauhNKo9TcpWQuo3EmbU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=F7i5dyqIo2L2Ujuxp2Nr5tH0DjLeDnE0vyAl8YWimZRbL2dSL2EY0aPak66VWyizAsH4fY4EDjfzekTZfG2qw2yZJkNx5veS0gQa4NQx9HiO49WA63WqL927/DCjzueoFPSqel/qNyNW1TMQDMRJKgUDeJzdTVev5wcwCwhsZ2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lnKoDx2i; arc=none smtp.client-ip=209.85.221.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1725899109; c=relaxed/simple;
+	bh=xhsqEHr5Lya2HrKdzyJ7IGw9smbplfMqwbvY3nAvQys=;
+	h=Date:To:From:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=noQoXd1RGg37ZsxWNVWklGFthQDLz4R49p7+G6GAcVTJCrX4gvp3WyBNG6Weg82LFoT5ejFHKqgDhBwEw/mejxEsad2fC8OF4rz0uwXwmtxHKyfMtpfjW73LakcqmoIC7dCouP6WAKx+v5Zoejuo0T46xB1Y9xSw2v7bw0tViqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=RCA3BELB; arc=none smtp.client-ip=185.70.40.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lnKoDx2i"
-Received: by mail-wr1-f50.google.com with SMTP id ffacd0b85a97d-374c3eef39eso2569904f8f.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 09 Sep 2024 09:23:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1725898989; x=1726503789; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qdFhZU2r5xFdA8KfDRlBW7jZauhNKo9TcpWQuo3EmbU=;
-        b=lnKoDx2iaxicfLEcE7+viUSsjcbDBFVFPIqEkYrXHQpPbW0xHKYB8mroSvbe/mBFG/
-         SIpE+Chiex81kGljK5YmeuOiryXcVesbAc0DcCI+1X5/wIfiwHd6XpjZDr+pMsfxp99q
-         wbbp8aYd1ZiFHuDWPlHreiGewYePnllkC4z+DYxNHaypqz8hJ5JXDh48m3/i3FOyshdF
-         DupvEGQF5QOVpN1PMV3YVbvV9p08zVb2cU1HGV+fk4ewINsEidDpM/pVAXjiXhQtgrlr
-         EQLPjja0vbKh9B9HPkQ3q0SZ28MrPc5rh79kgNbGpb9TlcQDI4TvZG416Yr6WOEsMlbW
-         bJXw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725898989; x=1726503789;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qdFhZU2r5xFdA8KfDRlBW7jZauhNKo9TcpWQuo3EmbU=;
-        b=AJcz+jFf5KtKISFrc9NL2LXn3yQ48suYjha623/0qPDsXa7cWfw6KaztD10tbOJZpC
-         V/kCUi1Y1hz23VdEK/dRxvXjoQbWtrRsfqg23mqRhmSVzVKCQ6WkKyN/qtVrSXV4o4/8
-         chOhNXy5PHhneONYkCoXH8YmxRwLidZ1KV4uM4b3VPNrv+VA9suwllQ16NN0HIMji5a3
-         QbH2u/oPhZGGUXBIsHAqSlDW4v5n+erjzmzvanSO4eSTS4seToH46aE7yx7GFiFQ+KN5
-         J8DU75mnVZA5lJ2lwBTydKu/Q33pF8IQFJKpddCAdCABkvOkcdbBPzMTGYgjABTOjmeR
-         Tz1g==
-X-Forwarded-Encrypted: i=1; AJvYcCU6nJXCAhRJ3XuejbsLXZjKqzGuJiZyirKoMhDCE7Jl9r/duyDYmQ22DjmRAZxTd/MLhmijCbockow7i7eKBw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzD3JaX6ppVWOcLv7B4ymWhuyNFGpvoALxvpaWJhF7qv+v9sbG5
-	nwI2SpVHF6Q684riIrqftQXuiUozB5yE6Al1Qp5YZudd6nfcmuZ8tyweZJmzhXGpvA5pDY7SX1O
-	3BynWfivwnEzXJZ9VP9HMB/c8Xrx9FbLdyy6e
-X-Google-Smtp-Source: AGHT+IHx9J/yPFQaPjxmG7oik6CeBdUgdSF5f+JFwuhc11j3xM9DcZfmY8nyTNNJUueV/KbdjSiGl6sL+Mh/kyBkMzk=
-X-Received: by 2002:adf:f4cc:0:b0:371:86bc:6c05 with SMTP id
- ffacd0b85a97d-378895c31ddmr7061192f8f.10.1725898988441; Mon, 09 Sep 2024
- 09:23:08 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="RCA3BELB"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1725899099; x=1726158299;
+	bh=oi3Y34JIxk7wPwLnhM8Uobni8KdU1kfw/MqLzQcy9io=;
+	h=Date:To:From:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=RCA3BELBCMZaPLDsOWi874Ao5HLYr4EFaSED1f2asV2g+sZhGUJ6IsHw65PZ83nvC
+	 iKKTPP1MsjiMScfYyORGBANfdIPAYvcNdfwMHJvJdvuSC0w7Pwx8B2LQkFdyKTMH4z
+	 +1744BkKAG189dSZgpTQttpgs5NEVY/asxzM6GnAJzPz+ToZa3BvYRXdNxgKSBngCe
+	 jp8HS8U8XOnmix2ct5bntknMlCQmOeA9nDn6t8jLn+vK8t5WgJli9/yOG5TTNxGrec
+	 T8SjB6752qkLiSQ6rPvJqpZMjzAdq2dYUNLXP38MulsDEQjESD1i7Ml2Udeiwpnc0S
+	 uip/5poy2KLag==
+Date: Mon, 09 Sep 2024 16:24:55 +0000
+To: Joe Perches <joe@perches.com>, Patrick Miller <paddymills@proton.me>, a.hindborg@samsung.com, alex.gaynor@gmail.com, aliceryhl@google.com, apw@canonical.com, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, dwaipayanray1@gmail.com, gary@garyguo.net, linux-kernel@vger.kernel.org, lukas.bulwahn@gmail.com, ojeda@kernel.org, rust-for-linux@vger.kernel.org, tmgross@umich.edu, wedsonaf@gmail.com
+From: Benno Lossin <benno.lossin@proton.me>
+Subject: Re: [PATCH 2/2] checkpatch: warn on known non-plural rust doc headers
+Message-ID: <de23288b-6d98-4808-98a8-32830165650d@proton.me>
+In-Reply-To: <db693ef6c064fa42eda323f067d4270baf68b1f5.camel@perches.com>
+References: <20240906180456.2302688-1-paddymills@proton.me> <db693ef6c064fa42eda323f067d4270baf68b1f5.camel@perches.com>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: 1381c960fa16e2a7121a1c924455fa9af9a59940
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <DM4PR14MB72767619350CA0C447D9A965E9982@DM4PR14MB7276.namprd14.prod.outlook.com>
-In-Reply-To: <DM4PR14MB72767619350CA0C447D9A965E9982@DM4PR14MB7276.namprd14.prod.outlook.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 9 Sep 2024 18:22:56 +0200
-Message-ID: <CAH5fLgjQ4X_SBSaF9RdaJcMuTG+1Zwzet7tua8QJ9X8yfNrMKw@mail.gmail.com>
-Subject: Re: [PATCH] rust: error.rs: Remove dead_code marker and make
- from_err_ptr, from_result and to_ptr public
-To: Filipe Xavier <felipe_life@live.com>
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Sun, Sep 8, 2024 at 5:26=E2=80=AFPM Filipe Xavier <felipe_life@live.com>=
- wrote:
->
-> Remove dead_code annotation from from_err_ptr, from_result and to_ptr fun=
-ctions in error.rs file and change visibility to public, making it accessib=
-le outside the kernel crate(issue #1105).
->
-> Signed-off-by: Filipe Xavier <felipe_life@live.com>
+On 07.09.24 12:53, Joe Perches wrote:
+> On Fri, 2024-09-06 at 18:05 +0000, Patrick Miller wrote:
+>> Adds a check for documentation in rust file. Warns if certain known
+>> documentation headers are not plural. Even though some sections may
+>> be singular (i.e. only one example), the header should still be plural
+>> so that more examples can be added later without needing to change the
+>> header.
+>>
+>> Fixed the whitespace issue on my previous patch.
+>=20
+> Well, one of them.
+>=20
+>> diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
+> []
+>> @@ -3900,6 +3900,13 @@ sub process {
+>>  =09=09=09     "Avoid using '.L' prefixed local symbol names for denotin=
+g a range of code via 'SYM_*_START/END' annotations; see Documentation/core=
+-api/asm-annotations.rst\n" . $herecurr);
+>>  =09=09}
+>>
+>> +# check that document section headers are plural in rust files
+>> +=09=09if ($realfile =3D~ /\.rs$/
+>> +=09=09=09&& $rawline =3D~ /^\+\s*\/\/\/\s+#+\s+(Example|Invariant|Guara=
+ntee|Panic)\s*$/) {
+>> +=09=09=09WARN( "RUST_DOC_HEADER",
+>> +=09=09=09=09"Rust doc headers should be plural\n" . $herecurr );
+>=20
+> There is no autoformatter for checkpatch/perl/etc.
+>=20
+> Continuation && on previous line
+> No space after open paren
+> Align to open paren
+> No space before close paren
+>=20
+> I think this is an overly trivial addition.
 
-Please include a link to the github issue. You can format it like this:
+We want this so we don't have to manually remind people to fix their
+documentation sections. Quoting Miguel from the issue [1]:
 
-Link: <url goes here>
-Signed-off-by: Filipe Xavier <felipe_life@live.com>
+> We prefer plurals when writing code documentation sections:
+> `# Examples`, `# Invariants`, `# Guarantees` and `# Panics`, so that
+> it is consistent and so that one can add more examples without having
+> to change the section name.
+
+[1]: https://github.com/Rust-for-Linux/linux/issues/1110
+
+---
+Cheers,
+Benno
+
