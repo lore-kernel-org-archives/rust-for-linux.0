@@ -1,43 +1,43 @@
-Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
+Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7901D1A7AF0
-	for <rust-for-linux@vger.kernel.org>; Tue, 10 Sep 2024 19:43:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7217E1A2576;
+	Tue, 10 Sep 2024 19:49:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.134
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725997391; cv=none; b=OSN9k98qzMHfoPeqNTfRK71O1NqcO04xXBWitnKvzfvirE50doLZWuw0hQe1Zeuglm4L48JlgsewJ3OTrlN05LyCmQPhPyQJpKtsUxHWo3ieTiEzlzJEGgMYTd3NQxLvWTLfsXuWCl7fYyTiV8AJ3Vcy5bOyvi0215LfkejOkhY=
+	t=1725997790; cv=none; b=jnN4pYVDq/PTmwE+W5SIujKmK6mVfjozQeTirrCXHM86XSgdx8PJG4xc0DzMi5XlFOt8XYAtHqKOvywFZ4iewDCE+M0/WYTJATSyeQd2VhaFZ39MhByJmk+UWImhAkgDjKbPZTQ5NDUwM4uVHJowr7DM87Z2/49dFLnkhFA+SFE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725997391; c=relaxed/simple;
-	bh=gZVB/MuRCS4h6Lo4R860D4eofVdYx9DrfzSc39kyhbQ=;
+	s=arc-20240116; t=1725997790; c=relaxed/simple;
+	bh=bD0vhkUxcynJyipBLvXyCHh0YaXgdiOAXsDiV8DAWlk=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=h/W4SFps+gwVIDh5MKqDJXKBldVtQtod0Zs0LyH+nwA+Mm7wPhkctsFFs+hJD6nmVheHGgc2LSNDUmiGSnFtkKbLxCxz3o6f3lb72dCLnQIUDAquzEJgWBMijN+QboqUJW3tSAtpU9vUMAoA/v0mxUYRt7BDl0dJrjczUC12upw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=cRjU1mPe; arc=none smtp.client-ip=185.70.40.131
+	 MIME-Version:Content-Type; b=rerDfLDTctnBX28Zhg7R+bk8bpCmgUz48jXCGbvqE1o9OJI1tuPG3oCsv8se+UI0cKWBb1LiLBpHbiFPcsV4yWRTZpVvIff3mCoJl6IEQl5SSq0gkDT+HcDiQTGW70+Aqvb/6tA7wTzad0s/4biyOM2cH8CUdmJV4syPhc/JVZM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=NwL46EJy; arc=none smtp.client-ip=185.70.40.134
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="cRjU1mPe"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="NwL46EJy"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1725997381; x=1726256581;
-	bh=Us6VG5nQDdDxL5urD5Sho4IxwJbjQmA55je3Wx4UKTM=;
+	s=protonmail; t=1725997786; x=1726256986;
+	bh=NBSy/ukMPUFq4hhiS8sTvxHbE6CJ6MpnNMDJG5LgNIA=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=cRjU1mPefQYidYLc2FHqC23tY/cq/DraTfUuUu+j6KF6KRZqrbLJLWzGTCX3br1ZB
-	 Tx7zRCuTXovxyh+Z5PmZ6twptgWvVsRFduJwNwLlrQtkC/deZv0gv0udGblD3qBzpl
-	 nptWS+Nw2vi6xRLtyMUO86Sdhp1ZQo18EATHtnvZCHkHVz5Tzp6kJXyg0ZyRkqB991
-	 GqsbekkADqjESz3RXmB0Z30Z+IR2rSVAAO69bD2K4CkcwBXjvmi3dNEVg51fDgK1DI
-	 epDDhS+Xhn/gkWjCX9KEa9HFFcstwk2UHy52E/F0qdefrxQls1GoHIintejdf5wLJq
-	 i+1U/7s5LYqJQ==
-Date: Tue, 10 Sep 2024 19:42:58 +0000
+	b=NwL46EJyGnK9RO/wPG0QgZgUapyz8uQhsLe5hp23XfG3o3P70qLY+TGp4Mq5esA/U
+	 dvUSlc/rKdk65qH+xS3enhxTXDnv3ns69MSaTd0OyrqJextYDhYCh/4OkBxifnnBtE
+	 ankLDKvUMvDxTi4lZdwEPN/zB17Kht3X2DuIl5Mu5Hd8NOn4lQrvcKsgmbNLvImZWq
+	 Bxm6/f00Xx7icAqwvJOkCKJ4idzXzr/idICUXgI9AGbzLooDkxXtC26zya5g8AVkhU
+	 4lexie5ZO4dauIRbiTvRBL5gTYCCUWa0SmiWQclh3M2d6fFwtNknBY6gdJdAxplo5R
+	 oiDW4hDSCRFCA==
+Date: Tue, 10 Sep 2024 19:49:42 +0000
 To: Danilo Krummrich <dakr@kernel.org>
 From: Benno Lossin <benno.lossin@proton.me>
 Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@samsung.com, aliceryhl@google.com, akpm@linux-foundation.org, daniel.almeida@collabora.com, faith.ekstrand@collabora.com, boris.brezillon@collabora.com, lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com, ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v6 04/26] rust: alloc: implement `Allocator` for `Kmalloc`
-Message-ID: <92ef0fb2-aa5a-451a-a79c-2d81e562da41@proton.me>
-In-Reply-To: <ZuBLmwpwurxFwYG_@cassiopeiae>
-References: <20240816001216.26575-1-dakr@kernel.org> <20240816001216.26575-5-dakr@kernel.org> <2dd02834-b2b6-4ff6-9e29-43c9d77b69e2@proton.me> <ZtDwduKjIEZ3RQtk@pollux.localdomain> <962b7014-4f8b-4abe-8774-636b612a051c@proton.me> <Ztb3eOoiHs2rLCoH@pollux> <c1b5a3bf-b11c-4c33-9519-c93649860a9a@proton.me> <ZuBLmwpwurxFwYG_@cassiopeiae>
+Subject: Re: [PATCH v6 09/26] rust: alloc: implement kernel `Box`
+Message-ID: <19d81a27-9600-4990-867c-624104e3ad83@proton.me>
+In-Reply-To: <ZuCEneJeXcRo5qs8@pollux>
+References: <20240816001216.26575-1-dakr@kernel.org> <20240816001216.26575-10-dakr@kernel.org> <0146cb78-5a35-4d6b-bc75-fed1fc0c270c@proton.me> <ZuCEneJeXcRo5qs8@pollux>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: d22009bd5d0f6c20035602ec26b4f558f839fd62
+X-Pm-Message-ID: 47c1545a9cd7e38378def8282cdab552c864d3e8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,149 +47,136 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On 10.09.24 15:37, Danilo Krummrich wrote:
-> On Tue, Sep 10, 2024 at 01:11:35PM +0000, Benno Lossin wrote:
->> On 03.09.24 13:48, Danilo Krummrich wrote:
->>> On Fri, Aug 30, 2024 at 02:45:35PM +0000, Benno Lossin wrote:
->>>> On 30.08.24 00:04, Danilo Krummrich wrote:
->>>>> On Thu, Aug 29, 2024 at 06:32:42PM +0000, Benno Lossin wrote:
->>>>>> On 16.08.24 02:10, Danilo Krummrich wrote:
->>>>>>> +///
->>>>>>> +/// For more details see [self].
->>>>>>> +pub struct Kmalloc;
->>>>>>>
->>>>>>>  /// Returns a proper size to alloc a new object aligned to `new_la=
-yout`'s alignment.
->>>>>>>  fn aligned_size(new_layout: Layout) -> usize {
->>>>>>> @@ -36,6 +52,60 @@ pub(crate) unsafe fn krealloc_aligned(ptr: *mut =
-u8, new_layout: Layout, flags: F
->>>>>>>      unsafe { bindings::krealloc(ptr as *const core::ffi::c_void, s=
-ize, flags.0) as *mut u8 }
->>>>>>>  }
->>>>>>>
->>>>>>> +/// # Invariants
->>>>>>> +///
->>>>>>> +/// One of the following `krealloc`, `vrealloc`, `kvrealloc`.
->>>>>>> +struct ReallocFunc(
->>>>>>> +    unsafe extern "C" fn(*const core::ffi::c_void, usize, u32) -> =
-*mut core::ffi::c_void,
->>>>>>> +);
->>>>>>> +
->>>>>>> +impl ReallocFunc {
->>>>>>> +    // INVARIANT: `krealloc` satisfies the type invariants.
->>>>>>> +    const KREALLOC: Self =3D Self(bindings::krealloc);
->>>>>>> +
->>>>>>> +    /// # Safety
->>>>>>> +    ///
->>>>>>> +    /// This method has the same safety requirements as [`Allocato=
-r::realloc`].
->>>>>>> +    unsafe fn call(
->>>>>>> +        &self,
->>>>>>> +        ptr: Option<NonNull<u8>>,
->>>>>>> +        layout: Layout,
->>>>>>> +        flags: Flags,
->>>>>>> +    ) -> Result<NonNull<[u8]>, AllocError> {
->>>>>>> +        let size =3D aligned_size(layout);
->>>>>>> +        let ptr =3D match ptr {
->>>>>>> +            Some(ptr) =3D> ptr.as_ptr(),
->>>>>>> +            None =3D> ptr::null(),
->>>>>>> +        };
->>>>>>> +
->>>>>>> +        // SAFETY: `ptr` is either NULL or valid by the safety req=
-uirements of this function.
->>>>>>
->>>>>> You need some justification as to why calling the three allowed
->>>>>> functions here.
->>>>>
->>>>> What kind of justification do I need? Can you please share some more =
-details on
->>>>> what you think is missing here?
->>>>
->>>> So, you are calling a function pointer to an `unsafe` function. This
->>>> means that through some invariant you have to know what the safety
->>>> requirements are (otherwise how can you guarantee that this is OK?). Y=
-ou
->>>> have the invariant that the pointer points at one of the three functio=
-ns
->>>> mentioned above. What are the safety requirements of those functions? =
-I
->>>> would assume that the only one is that `ptr` is valid. So you can use:
->>>>
->>>>     // SAFETY:
->>>>     // - `self.0` is one of `krealloc`, `vrealloc`, `kvrealloc` and th=
-us only requires that `ptr` is
->>>>     //   NULL or valid.
->>>
->>> I'm fine adding it, but I'd like to understand why you think it's requi=
-red in
->>> the safety comment here? Isn't this implicit by being the type invarian=
-t?
+On 10.09.24 19:40, Danilo Krummrich wrote:
+> On Sat, Aug 31, 2024 at 05:39:07AM +0000, Benno Lossin wrote:
+>> On 16.08.24 02:10, Danilo Krummrich wrote:
+>>> +/// # Examples
+>>> +///
+>>> +/// ```
+>>> +/// let b =3D KBox::<u64>::new(24_u64, GFP_KERNEL)?;
+>>> +///
+>>> +/// assert_eq!(*b, 24_u64);
+>>> +/// # Ok::<(), Error>(())
+>>> +/// ```
+>>> +///
+>>> +/// ```
+>>> +/// # use kernel::bindings;
+>>> +/// const SIZE: usize =3D bindings::KMALLOC_MAX_SIZE as usize + 1;
+>>> +/// struct Huge([u8; SIZE]);
+>>> +///
+>>> +/// assert!(KBox::<Huge>::new_uninit(GFP_KERNEL | __GFP_NOWARN).is_err=
+());
+>>> +/// ```
 >>
->> You are calling a function pointer to an `unsafe` function that takes a
->> raw pointer. Without this comment it is not clear what the function
->> pointer's safety requirements are for the raw pointer parameter.
+>> It would be nice if you could add something like "KBox can't handle big
+>> allocations:" above this example, so that people aren't confused why
+>> this example expects an error.
 >=20
-> That's my point, isn't this implicitly clear by the type invariant? If ne=
-eded,
-> shouldn't it be:
-
-I would argue that it is not implicitly clear, since to the reader of
-just that unsafe block it's totally unclear that `self.0` has such an
-invariant. They would have to read the type definition.
-
-> // INVARIANT:
-> // - `self.0` is one of [...]
-> //
-> // SAFETY:
-> // - `ptr` is either NULL or [...]
+> I don't think that's needed, it's implied by
+> `SIZE =3D=3D bindings::KMALLOC_MAX_SIZE + 1`.
 >=20
+> Surely, we could add it nevertheless, but it's not very precise to just s=
+ay "big
+> allocations". And I think this isn't the place for lengthy explanations o=
+f
+> `Kmalloc` behavior.
+
+Fair point, nevertheless I find examples a bit more useful, when the
+intention behind them is not only given as code.
+
+>>> +///
+>>> +/// ```
+>>> +/// # use kernel::bindings;
+>>> +/// const SIZE: usize =3D bindings::KMALLOC_MAX_SIZE as usize + 1;
+>>> +/// struct Huge([u8; SIZE]);
+>>> +///
+>>> +/// assert!(KVBox::<Huge>::new_uninit(GFP_KERNEL).is_ok());
+>>> +/// ```
 >>
->>>>     // - `ptr` is either NULL or valid by the safety requirements of t=
-his function.
->>>
->>> This is the part I already have.
+>> Similarly, you could then say above this one "Instead use either `VBox`
+>> or `KVBox`:"
 >>
->> I kept it to ensure that you also keep it.
-
-[...]
-
->>>>>>> +    #[inline]
->>>>>>> +    unsafe fn realloc(
->>>>>>> +        ptr: Option<NonNull<u8>>,
->>>>>>> +        layout: Layout,
->>>>>>> +        flags: Flags,
->>>>>>> +    ) -> Result<NonNull<[u8]>, AllocError> {
->>>>>>> +        // SAFETY: `ReallocFunc::call` has the same safety require=
-ments as `Allocator::realloc`.
->>>>>>> +        unsafe { ReallocFunc::KREALLOC.call(ptr, layout, flags) }
->>>>>>> +    }
->>>>>>> +}
->>>>
->>>> Oh one more thing, I know that you already have a lot of patches in th=
-is
->>>> series, but could you split this one into two? So the first one should
->>>> introduce `ReallocFunc` and the second one add the impl for `Kmalloc`?
->>>> I managed to confuse me twice because of that :)
->>>
->>> Generally, I'm fine with that, but I'm not sure if I can avoid an inter=
-mediate
->>> compiler warning about unused code doing that.
+>>> +///
+>>> +/// # Invariants
+>>> +///
+>>> +/// The [`Box`]' pointer is always properly aligned and either points =
+to memory allocated with `A`
 >>
->> You can just use `#[expect(dead_code)]` for that in the intermediate
->> patches.
+>> Please use `self.0` instead of "[`Box`]'".
+>>
+>>> +/// or, for zero-sized types, is a dangling pointer.
+>>
+>> Probably "dangling, well aligned pointer.".
 >=20
-> I usually try to avoid that, because it can be misleading when bisecting =
-things.
->=20
-> If the temporarily unused code contains a bug, your bisection doesn't end=
- up at
-> this patch, but some other patch that starts using it.
+> Does this add any value? For ZSTs everything is "well aligned", isn't it?
 
-I don't think it's a problem in this case, since the two patches are
-directly next to each other and you're not changing existing code, just
-splitting up the addition of new code.
+ZSTs can have alignment and then unaligned pointers do exist for them
+(and dereferencing them is UB!):
+
+    #[repr(align(64))]
+    struct Token;
+
+    fn main() {
+        let t =3D 64 as *mut Token;
+        let t =3D unsafe { t.read() }; // this is fine.
+        let t =3D 4 as *mut Token;
+        let t =3D unsafe { t.read() }; // this is UB, see below for miri's =
+output
+    }
+
+Miri complains:
+
+    error: Undefined Behavior: accessing memory based on pointer with align=
+ment 4, but alignment 64 is required
+     --> src/main.rs:8:22
+      |
+    8 |     let t =3D unsafe { t.read() }; // this is UB, see below for mir=
+i's output
+      |                      ^^^^^^^^ accessing memory based on pointer wit=
+h alignment 4, but alignment 64 is required
+      |
+      =3D help: this indicates a bug in the program: it performed an invali=
+d operation, and caused Undefined Behavior
+      =3D help: see https://doc.rust-lang.org/nightly/reference/behavior-co=
+nsidered-undefined.html for further information
+      =3D note: BACKTRACE:
+      =3D note: inside `main` at src/main.rs:8:22: 8:30
+
+>>> +#[repr(transparent)]
+>>> +pub struct Box<T: ?Sized, A: Allocator>(NonNull<T>, PhantomData<A>);
+
+
+>>> +impl<T, A> Box<T, A>
+>>> +where
+>>> +    T: ?Sized,
+>>> +    A: Allocator,
+>>> +{
+>>> +    /// Creates a new `Box<T, A>` from a raw pointer.
+>>> +    ///
+>>> +    /// # Safety
+>>> +    ///
+>>> +    /// For non-ZSTs, `raw` must point at an allocation allocated with=
+ `A`that is sufficiently
+>>> +    /// aligned for and holds a valid `T`. The caller passes ownership=
+ of the allocation to the
+>>> +    /// `Box`.
+>>
+>> You don't say what must happen for ZSTs.
+>=20
+> Because we don't require anything for a ZST, do we?
+
+We require a non-null, well aligned pointer (see above).
 
 ---
 Cheers,
 Benno
+
+>>> +    #[inline]
+>>> +    pub const unsafe fn from_raw(raw: *mut T) -> Self {
+>>> +        // INVARIANT: Validity of `raw` is guaranteed by the safety pr=
+econditions of this function.
+>>> +        // SAFETY: By the safety preconditions of this function, `raw`=
+ is not a NULL pointer.
+>>> +        Self(unsafe { NonNull::new_unchecked(raw) }, PhantomData::<A>)
+>>> +    }
 
