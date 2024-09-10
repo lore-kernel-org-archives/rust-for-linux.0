@@ -1,43 +1,43 @@
-Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 364F517BB1A;
-	Tue, 10 Sep 2024 07:07:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.134
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94DFE12B143;
+	Tue, 10 Sep 2024 07:10:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725952071; cv=none; b=XeVCBjuu8LVi3cKpPFWMSZeseTpkxyglYCWxalyDOm01B4kCVOwQcNHDQ6WhxVKOe7vcUfJYPr6G/v+c0+f1ppSTEkJ7eXttilll2NqRgf2f54vOtGSZFeflyOv0xDvHfEADnruttd6vVQz31LXFw2NSTzoXHmC4EWusxfpw9ig=
+	t=1725952256; cv=none; b=Qjk6CjMvgjcbheHq287DoPVHWerCOj0tt1s7sVuySwypRj+t8XmgRKB1AdeqSy9YgKGcRM4OLiwd8l1AGABmOWUAljlJ5IuoIQt0e4h5aaUv2wJhHmI11xBJH1kvhLpSEtB6EsRqm+bdAQ6VhG0QselfSELwQpNngzh94KjEKDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725952071; c=relaxed/simple;
-	bh=Tzupit/7jNP49QkdU+n8i+au8MHleKVz7I8yNFSGpyQ=;
+	s=arc-20240116; t=1725952256; c=relaxed/simple;
+	bh=Lj5Sd8urnV5cGR8bCaMgOHsQZWxqX/08qozA/Wp5OfI=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IHrpDZo1t1eZvJ+QAG+Y33QjhEGj+1hu6GooHhw+hXcuCWcbwvhJlLc1chhUF1uPu5H1DcLc3ROCKHhERtF5afR/DyAhugqZDQPixy0ufAt5bSemA3UrZQKehUy6IJgQybdGwtQLg9f/6Im+6FEbx3ellUMQSoSbNxzYtBzOQN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=fIRuZs94; arc=none smtp.client-ip=185.70.40.134
+	 MIME-Version:Content-Type; b=WQhxYVkP/KEktgH6xXIW44FnespZ5zSspwAdHjrBHqSeBuLRJ0udo7EeJrLJwCF/Jk83/JqCsWzjbwE3AdXIY5lVlg+VpHeBxwwQX9FQY9kiikztf4BV9bJbmVFrauKdNo/EddkV4juy2x+Vorir9m83KWRhtO6yAd0f0Uc7lVk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=FVmCFbzn; arc=none smtp.client-ip=185.70.43.16
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="fIRuZs94"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="FVmCFbzn"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1725952067; x=1726211267;
-	bh=Tzupit/7jNP49QkdU+n8i+au8MHleKVz7I8yNFSGpyQ=;
+	s=protonmail; t=1725952252; x=1726211452;
+	bh=Tvk63EWKIJfcsR9nu+1LRzzHViUVxsD4efOy36kxKd8=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=fIRuZs947rgsw2YJdY1DkPsT+rjYra71BQiefVgwdAx9RWaTfNdx0Z/DDJRJX9B/p
-	 hDBx0rO+nsmSQ0gmsF5uD07hbnMjK7HoR8EqCQnq3jVM5DMC4GxXsqGMpcpH4vy89c
-	 YPH9FcGFB65HovM52HgdP/v+x5EKhBAuJZ6Nuni+v1aV/P07WmTkhIQo8rNXtDfaHA
-	 sCfSjVFtebGEvryfAC3bZPWqe8ykB6Po6zSCWuxSjt7xKTasqikMp+bMX/wjzvvw3C
-	 aFwVEG1YlvKRAI7x97PUmwiAJzqtFQwDMdcHkSvlj+A4AcZbLziT/AYeKDzKhYdaY7
-	 9+wTnDJZgM2JQ==
-Date: Tue, 10 Sep 2024 07:07:42 +0000
-To: levymitchell0@gmail.com, Andreas Hindborg <a.hindborg@samsung.com>, Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>
+	b=FVmCFbznzGpr7Y6VsJ4XEHMtK7KafwMwU22GdtiSxiZ4xKfo1GYPqBf7guIqQjSlz
+	 xLHzc7RKrhS+WUba9zRPpdcmrK97rz1/ka0pYkCASavn5fW30E5+erV1y9TPR28u3T
+	 3esTtHcVseRda3Jgu0knzSkXDCRMkXKldCfIiBl1v23+DEws5w/y9Go7B/th19VQ/A
+	 GcrkMOrjsj0AT1mp8r5rxRwZZUFFzwAWdGIFw2MZgLWp0WH8hb7VpwqDbSSwSxWHmc
+	 tlaGoKlbXkBcRzYuDQ8Y8j+Kl8nn7l585Q6wawIwjvwInpLtubSFVpd79Q+/zy00zt
+	 0Ot/1lDksIY9w==
+Date: Tue, 10 Sep 2024 07:10:46 +0000
+To: Alice Ryhl <aliceryhl@google.com>
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH RFC] rust: lockdep: Use Pin for all LockClassKey usages
-Message-ID: <f56dcef9-5dce-45e7-9de8-b12e2e723ef3@proton.me>
-In-Reply-To: <20240905-rust-lockdep-v1-1-d2c9c21aa8b2@gmail.com>
-References: <20240905-rust-lockdep-v1-1-d2c9c21aa8b2@gmail.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] rust: add global lock support
+Message-ID: <3c471d06-d8c4-47a2-b29b-4faa5d61d25d@proton.me>
+In-Reply-To: <CAH5fLgh9kHm4XbcH2X4y6nwZ9VLYuUeu3hNmQBcdZ+Vx1H1L9w@mail.gmail.com>
+References: <20240827-static-mutex-v2-1-17fc32b20332@google.com> <10453342-d269-4b78-8962-821ef53d3cb5@proton.me> <CAH5fLgh-DYvXobXQVaQ9txYS4Rx8QhjyVvfTphk6vvnUOGzPnw@mail.gmail.com> <3b557f61-cead-4568-b2b4-4a56c4cbff52@proton.me> <CAH5fLggE-fWDuZXH_F3ixDSo7sQEFwnUV3cd+9_rpFH+XmnA2Q@mail.gmail.com> <CAH5fLgiZt3uVZiU1xXPcvYNR-Em2V3y+-C9EbsqrNvkScbiAYA@mail.gmail.com> <0030a292-49f4-4575-846f-424b098c7f1a@proton.me> <CAH5fLgh9kHm4XbcH2X4y6nwZ9VLYuUeu3hNmQBcdZ+Vx1H1L9w@mail.gmail.com>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: ba27d37648ef86cf0db6638ab469fea20779d898
+X-Pm-Message-ID: fff6e56f1003443a7083231ea76ea55439635c5b
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,42 +47,81 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On 06.09.24 01:13, Mitchell Levy via B4 Relay wrote:
-> From: Mitchell Levy <levymitchell0@gmail.com>
+On 04.09.24 12:32, Alice Ryhl wrote:
+> On Tue, Sep 3, 2024 at 12:17=E2=80=AFAM Benno Lossin <benno.lossin@proton=
+.me> wrote:
+>>
+>> On 02.09.24 13:42, Alice Ryhl wrote:
+>>> On Mon, Sep 2, 2024 at 1:37=E2=80=AFPM Alice Ryhl <aliceryhl@google.com=
+> wrote:
+>>>>
+>>>> On Fri, Aug 30, 2024 at 3:22=E2=80=AFPM Benno Lossin <benno.lossin@pro=
+ton.me> wrote:
+>>>>>
+>>>>> On 30.08.24 07:34, Alice Ryhl wrote:
+>>>>>> On Thu, Aug 29, 2024 at 8:17=E2=80=AFPM Benno Lossin <benno.lossin@p=
+roton.me> wrote:
+>>>>>>>
+>>>>>>> On 27.08.24 10:41, Alice Ryhl wrote:
+>>>>>>>> For architectures that don't use all-zeros for the unlocked case, =
+we
+>>>>>>>> will most likely have to hard-code the correct representation on t=
+he
+>>>>>>>> Rust side.
+>>>>>>>
+>>>>>>> You mean in `unsafe_const_init`?
+>>>>>>
+>>>>>> No, I mean we would have `unsafe_const_new` directly set `state` to
+>>>>>> the right value and let `unsafe_const_init` be a no-op.
+>>>>>
+>>>>> But how do you set the right value of a list_head? The value will be
+>>>>> moved.
+>>>>
+>>>> Right ... we probably can't get around needing a macro. Can statics
+>>>> even reference themselves?
+>>>
+>>> Looks like they can:
+>>>
+>>> use std::ptr::addr_of;
+>>>
+>>> struct MyStruct {
+>>>     ptr: *const MyStruct,
+>>> }
+>>>
+>>> static mut MY_STRUCT: MyStruct =3D MyStruct {
+>>>     ptr: addr_of!(MY_STRUCT),
+>>> };
+>>
+>> That's useful to know...
+>> But I don't see a way to get pinned-init to work with this. I would need
+>> a lot of currently experimental features (const closures, const traits)
+>> and a way to initialize a static without providing a direct value, since
+>> I can't just do
+>>
+>>     static mut MY_STRUCT: MyStruct =3D {
+>>         unsafe { __pinned_init(addr_of_mut!(MY_STRUCT), /* initializer *=
+/) };
+>>         unsafe { addr_of!(MY_STRUCT).read() }
+>>     };
+>>
+>> It (rightfully) complains that I am initializing the static with itself.
+>>
+>> We /might/ be able to do something special for `Mutex`/ other locks, but
+>> I haven't tried yet. So the unsafe approach seems the best at the moment=
+.
 >=20
-> The current LockClassKey API has soundness issues related to the use of
-> dynamically allocated LockClassKeys. In particular, these keys can be
-> used without being registered and don't have address stability.
->=20
-> This fixes the issue by using Pin<&LockClassKey> and properly
-> registering/deregistering the keys on init/drop.
->=20
-> Link: https://lore.kernel.org/rust-for-linux/20240815074519.2684107-1-nmi=
-@metaspace.dk/
-> Suggested-by: Benno Lossin <benno.lossin@proton.me>
-> Suggested-by: Boqun Feng <boqun.feng@gmail.com>
-> Signed-off-by: Mitchell Levy <levymitchell0@gmail.com>
-> ---
-> This change is based on applying the linked patch to the top of
-> rust-next.
->=20
-> I'm sending this as an RFC because I'm not sure that using
-> Pin<&'static LockClassKey> is appropriate as the parameter for, e.g.,
-> Work::new. This should preclude using dynamically allocated
-> LockClassKeys here, which might not be desirable. Unfortunately, using
-> Pin<&'a LockClassKey> creates other headaches as the compiler then
-> requires that T and PinImpl<Self> be bounded by 'a, which also seems
-> undesirable. I would be especially interested in feedback/ideas along
-> these lines.
+> It sounds like we'll just want a macro that generates a global wrapped
+> in a Mutex/SpinLock for now ...
 
-I don't think that we can make this sound without also adding a lifetime
-to `Lock`. Because with only the changes you have outlined above, the
-key is at least valid for lifetime of the initializer, but might not be
-afterwards (while the lock still exists).
-So I think we should leave it as is now.
+Yeah.
+
+> If we're going to do that, we could take the extra step and have it
+> generate special Guard and LockedBy types so that you can have a
+> LockedBy that doesn't need to make any runtime checks.
+
+Oh that is a good idea!
 
 ---
 Cheers,
 Benno
-
 
