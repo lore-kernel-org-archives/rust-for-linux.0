@@ -1,206 +1,106 @@
-Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73F4017DFE1
-	for <rust-for-linux@vger.kernel.org>; Tue, 10 Sep 2024 20:12:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FCE91A7051
+	for <rust-for-linux@vger.kernel.org>; Tue, 10 Sep 2024 21:10:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725999156; cv=none; b=BKdmJ5MHCheKVNF+GfbAmAA0zoOKJlewo4MiOueDNnaQTEPfZonyjWw1WXgQ37PRuBeXQvHxxvu+/yyaQUIbotq6ALC6icr2Mw172qp0yj1ntHnlGvnX/DkJRsqrEreEJEF+80Zt7Ly1MuTGlsO1IPRmGHbgUo/LVtGUgwt9TiE=
+	t=1726002641; cv=none; b=rRpIUVKsikkuQrwlN5Ep2pU/SEE6wjy/cc7PhL9DiVv5TFtWeP+Zd3m20vGaTETP0FZOe8Xj0oRxzFr1NeTJWCyfXsNAIHfNjtpwz3skmEoc0E5V4vQd4qmegaioym9G6LObBLk1cbRUeIGEUWnkB+BZyrs1e0wBgHhtIBP9wpU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725999156; c=relaxed/simple;
-	bh=NRiIFH6x4iZlVLGeeia5n6s/WjhrrQtPi9+1G4jqisI=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=IOqzUbZIw/qYJjlteDSl2WnftQItQLb4nHZoqZkJxA13+ro/NaxzYGNekT0seikJ6ZAoGcfhEkPqBKwCprUFLs/RO6P79yPJB7aOw+3didSU5Eob6cV3DnPTNw5OmkKigmxje0sCX4zK9rDIk45CFirSYX+AgtaMWGVLpaHtk20=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=VS81JBGK; arc=none smtp.client-ip=185.70.40.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1726002641; c=relaxed/simple;
+	bh=XE4+e/G/h/a5BwWjufqCbsxsDHKt/oX1Y9qt8d3awZg=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jBkhpHHyRGr6GOGU/HWLY5TEzUYMfPVqGQ1DxZ2Z+5EM5fSkftyalbA/JWRULAeYFapHnvYlEAkq00sd3Q0xwjEq7kwThcm849hhIr9N2j9ubEYMvxXxmm44NYlPPgAJpGXuQbe1zEU8EQTAhAZZ12Eyt9tI0jspoRwHl5Vo9kA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IMhGDA9P; arc=none smtp.client-ip=209.85.167.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="VS81JBGK"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1725999151; x=1726258351;
-	bh=U7TvNmIC8oYr76NVImDfIu1YBXLZLymi+/XLCAXDtOY=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=VS81JBGKA2mN7j8bQElk8fOfzC9fDcZxlStBjbVZYnxsl7TWbk4PN04noUNPcqMX0
-	 FhctSlK3OLOTxPJTb7skC646auw+rjrcD3kPh2+QhTa4O+dkFkxgg6Sy4gnnuSVvMk
-	 vG6InoYUBHGGjp6F9pJuV5RV2+xV9G4PfskxW1EQweXYAhncuIIgxjNFfZbKrzryxD
-	 oky75NVa1vNDmoevRK7YElABRXvj0bbO/FKHPkl0mBA2POy9GtHU7egizmWkJPPegw
-	 yFvI5yiUqgsTi08SaAOAHeMgXYnaG0BWvztDohuk6xtGymJFcTeFi4uoQW4WxNgW1G
-	 squtgGPu7zcEg==
-Date: Tue, 10 Sep 2024 20:12:24 +0000
-To: Danilo Krummrich <dakr@kernel.org>, ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@samsung.com, aliceryhl@google.com, akpm@linux-foundation.org
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: daniel.almeida@collabora.com, faith.ekstrand@collabora.com, boris.brezillon@collabora.com, lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com, ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v6 15/26] rust: alloc: implement `collect` for `IntoIter`
-Message-ID: <747b8c1c-cb7b-422e-b6a0-ea863cc37f0a@proton.me>
-In-Reply-To: <20240816001216.26575-16-dakr@kernel.org>
-References: <20240816001216.26575-1-dakr@kernel.org> <20240816001216.26575-16-dakr@kernel.org>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: db6c5e1305b658d7c7974deb81cc2f1735bd099d
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IMhGDA9P"
+Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-53661d95508so36986e87.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 10 Sep 2024 14:10:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1726002638; x=1726607438; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XE4+e/G/h/a5BwWjufqCbsxsDHKt/oX1Y9qt8d3awZg=;
+        b=IMhGDA9PtnhJuDgWhIt+osY3utDErZQrpGxHQX1cZem8XR0WPXUblvyuMwCTQJ3LAk
+         ahZZKFHV1qNYkYDe5Leg0qzlS9pghc9TOwrV8mQtndbl/yH7+YoEZ8FQNnDoFmEk+k9o
+         nozManjiVRkA6fsjKSbk8d4W1GV3RvH/a62Q6SHHfFQygos0MNzXua6r7NOwAl/Z7oxd
+         aRq4dNhX9jImXn/M3fjh3iIlh87Punokkgk6plc6zWnCO1CaaWFCtm3zhrsxMIDLVF6M
+         RLluowyvXNv9EQbPygBLYbD8AVqYi04W3q6QJmfHKE+aQEFZP7iequE5UNCH5DB0RH+m
+         A8NA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1726002638; x=1726607438;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=XE4+e/G/h/a5BwWjufqCbsxsDHKt/oX1Y9qt8d3awZg=;
+        b=VSWdhnK7L9Kjfha6shD7BF44+JUhPQREwLIjjIRiHjX33C0mHOIgOlf07Nu8jKxK0e
+         clf8uzDgVvma6rHjiTwlOq9GDTqs/wy6Rvxklq6ui5cYw8Pzxs2LN2NzLtvgpDEvTANe
+         Jw7pzq7XBj+UcKhZljBrRK5FCg6M2PgufCNhOCCB+3qgpwrtml+9FECVT2nEX53opQSn
+         y8E4HD3Js7wUe51zY9yhaPWIPyKLaIl+3MGkFn3hnLG6UURWi+J4H1U9aKrKgT2aHEBO
+         SOz2Nk774DZo3DrvaTkk68dJWFPzDXP0UhQCe1+dfB1OIpv2+AMd+jvwwDuIAvhpAhov
+         5I3A==
+X-Forwarded-Encrypted: i=1; AJvYcCVoVucK8K3jk9OKMNCvr3F3H38AJgayiCXWlLPSlQGbO27DN3Dy3hxUMhQ7YGLwV7HjtoW9x6u3EDUpPbDtvA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwarSVftHFjnSO3J2f+Z3m0pabF1LxFJ1MCFCVvV9ugvRWMcN/n
+	4ZN3ba+t3TgS+nUBPR0lrl2A01ioZbhAFw+CvZHp1ZLx3YD0wNsuhRmuOKtIo+fVIT2a4oAl5pC
+	8EDtD4igjkMbATd3p4aEtp8b0FwHvPlxWpz+s
+X-Google-Smtp-Source: AGHT+IHIo/1g0cKAyt8QSBLpZEYQTEjztdB1IERh1UKFzCf1Ts3Mvd2qv8bZQ+qVA3GI1MbRVcan2+yf5xHv8XmvNuo=
+X-Received: by 2002:a05:6512:3f14:b0:52e:934c:1cc0 with SMTP id
+ 2adb3069b0e04-53674bbe0demr32143e87.7.1726002637398; Tue, 10 Sep 2024
+ 14:10:37 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20240815173903.4172139-21-samitolvanen@google.com>
+ <20240815173903.4172139-22-samitolvanen@google.com> <CAK7LNAQdutCiBkWtA6MbVLpfhB-MQXnszQm8eEiBZpeX++5eLA@mail.gmail.com>
+ <CABCJKucott2g8mZyJ0uaG+PdPTMsniR7eNCR9GwHpT_kQ+GFvg@mail.gmail.com> <CAK7LNATyv+zfSwyykKQrSjxR84ST0xTyEarnAudF2VuLPVxqnQ@mail.gmail.com>
+In-Reply-To: <CAK7LNATyv+zfSwyykKQrSjxR84ST0xTyEarnAudF2VuLPVxqnQ@mail.gmail.com>
+From: Sami Tolvanen <samitolvanen@google.com>
+Date: Tue, 10 Sep 2024 14:09:58 -0700
+Message-ID: <CABCJKueSe0TT7HnoJULVZfz6t8x0WjkWksZ1hzBY7SZQm6iYgw@mail.gmail.com>
+Subject: Re: [PATCH v2 01/19] tools: Add gendwarfksyms
+To: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Luis Chamberlain <mcgrof@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Matthew Maurer <mmaurer@google.com>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	Petr Pavlu <petr.pavlu@suse.com>, Neal Gompa <neal@gompa.dev>, Hector Martin <marcan@marcan.st>, 
+	Janne Grunau <j@jannau.net>, Asahi Linux <asahi@lists.linux.dev>, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On 16.08.24 02:10, Danilo Krummrich wrote:
-> Currently, we can't implement `FromIterator`. There are a couple of
-> issues with this trait in the kernel, namely:
->=20
->   - Rust's specialization feature is unstable. This prevents us to
->     optimze for the special case where `I::IntoIter` equals `Vec`'s
->     `IntoIter` type.
->   - We also can't use `I::IntoIter`'s type ID either to work around this,
->     since `FromIterator` doesn't require this type to be `'static`.
->   - `FromIterator::from_iter` does return `Self` instead of
->     `Result<Self, AllocError>`, hence we can't properly handle allocation
->     failures.
->   - Neither `Iterator::collect` nor `FromIterator::from_iter` can handle
->     additional allocation flags.
->=20
-> Instead, provide `IntoIter::collect`, such that we can at least convert
-> `IntoIter` into a `Vec` again.
->=20
-> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-> ---
->  rust/kernel/alloc/kvec.rs | 78 +++++++++++++++++++++++++++++++++++++++
->  1 file changed, 78 insertions(+)
->=20
-> diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
-> index 3b79f977b65e..ad96f4c3af9e 100644
-> --- a/rust/kernel/alloc/kvec.rs
-> +++ b/rust/kernel/alloc/kvec.rs
-> @@ -681,6 +681,84 @@ impl<T, A> IntoIter<T, A>
->      fn as_raw_mut_slice(&mut self) -> *mut [T] {
->          ptr::slice_from_raw_parts_mut(self.ptr, self.len)
->      }
-> +
-> +    fn into_raw_parts(self) -> (*mut T, NonNull<T>, usize, usize) {
-> +        let me =3D ManuallyDrop::new(self);
-> +        let ptr =3D me.ptr;
-> +        let buf =3D me.buf;
-> +        let len =3D me.len;
-> +        let cap =3D me.cap;
-> +        (ptr, buf, len, cap)
-> +    }
-> +
-> +    /// Same as `Iterator::collect` but specialized for `Vec`'s `IntoIte=
-r`.
-> +    ///
-> +    /// Currently, we can't implement `FromIterator`. There are a couple=
- of issues with this trait
-> +    /// in the kernel, namely:
-> +    ///
-> +    /// - Rust's specialization feature is unstable. This prevents us to=
- optimze for the special
-> +    ///   case where `I::IntoIter` equals `Vec`'s `IntoIter` type.
-> +    /// - We also can't use `I::IntoIter`'s type ID either to work aroun=
-d this, since `FromIterator`
-> +    ///   doesn't require this type to be `'static`.
-> +    /// - `FromIterator::from_iter` does return `Self` instead of `Resul=
-t<Self, AllocError>`, hence
-> +    ///   we can't properly handle allocation failures.
-> +    /// - Neither `Iterator::collect` nor `FromIterator::from_iter` can =
-handle additional allocation
-> +    ///   flags.
-> +    ///
-> +    /// Instead, provide `IntoIter::collect`, such that we can at least =
-convert a `IntoIter` into a
-> +    /// `Vec` again.
+On Tue, Sep 10, 2024 at 2:44=E2=80=AFAM Masahiro Yamada <masahiroy@kernel.o=
+rg> wrote:
+>
+> On Fri, Sep 6, 2024 at 5:53=E2=80=AFAM Sami Tolvanen <samitolvanen@google=
+.com> wrote:
+> >
+> > Thanks for the patch! I think this would otherwise work, but I also
+> > need jhash (or a similar hash function), and I can't combine the
+> > tools/include version with this, because it ends up pulling in a
+> > duplicate definition of struct list_head. Would you consider adding a
+> > hash function as well?
+>
+>
+> I did it as a part of my kconfig works.
+>
+> Check scripts/include/hash.h added by the following patches.
+>
+> https://lore.kernel.org/linux-kbuild/20240908124352.1828890-1-masahiroy@k=
+ernel.org/T/#mea41ff4c5b6c77aaaae1ed9dac6723bc2f705107
+> https://lore.kernel.org/linux-kbuild/20240908124352.1828890-1-masahiroy@k=
+ernel.org/T/#m9050a270fedb7df9a54e843674bc9ad8fd068f57
+>
+>
+> I think simple helpers are enough for name_hash and addr_hash,
+> but please let me know if you encounter a problem.
 
-I think it's great that you include this in the code, but I don't think
-that it should be visible in the documentation, can you move it under
-the `Examples` section and turn it into normal comments?
+Great, thanks! Looks like this should have everything I need.
 
-> +    ///
-> +    /// Note that `IntoIter::collect` doesn't require `Flags`, since it =
-re-uses the existing backing
-> +    /// buffer. However, this backing buffer may be shrunk to the actual=
- count of elements.
-> +    ///
-> +    /// # Examples
-> +    ///
-> +    /// ```
-> +    /// let v =3D kernel::kvec![1, 2, 3]?;
-> +    /// let mut it =3D v.into_iter();
-> +    ///
-> +    /// assert_eq!(it.next(), Some(1));
-> +    ///
-> +    /// let v =3D it.collect(GFP_KERNEL);
-> +    /// assert_eq!(v, [2, 3]);
-> +    ///
-> +    /// # Ok::<(), Error>(())
-> +    /// ```
-> +    pub fn collect(self, flags: Flags) -> Vec<T, A> {
-> +        let (mut ptr, buf, len, mut cap) =3D self.into_raw_parts();
-> +        let has_advanced =3D ptr !=3D buf.as_ptr();
-> +
-> +        if has_advanced {
-> +            // SAFETY: Copy the contents we have advanced to at the begi=
-nning of the buffer.
-
-This first sentence should not be part of the SAFETY comment.
-
-> +            // `ptr` is guaranteed to be between `buf` and `buf.add(cap)=
-` and `ptr.add(len)` is
-> +            // guaranteed to be smaller than `buf.add(cap)`.
-
-This doesn't justify all the requirements documented in [1].
-
-[1]: https://doc.rust-lang.org/core/ptr/fn.copy.html#safety
-
-> +            unsafe { ptr::copy(ptr, buf.as_ptr(), len) };
-> +            ptr =3D buf.as_ptr();
-> +        }
-> +
-> +        // This can never fail, `len` is guaranteed to be smaller than `=
-cap`.
-> +        let layout =3D core::alloc::Layout::array::<T>(len).unwrap();
-> +
-> +        // SAFETY: `buf` points to the start of the backing buffer and `=
-len` is guaranteed to be
-> +        // smaller than `cap`. Depending on `alloc` this operation may s=
-hrink the buffer or leaves
-> +        // it as it is.
-> +        ptr =3D match unsafe { A::realloc(Some(buf.cast()), layout, flag=
-s) } {
-> +            // If we fail to shrink, which likely can't even happen, con=
-tinue with the existing
-> +            // buffer.
-> +            Err(_) =3D> ptr,
-> +            Ok(ptr) =3D> {
-> +                cap =3D len;
-> +                ptr.as_ptr().cast()
-> +            }
-> +        };
-> +
-> +        // SAFETY: If the iterator has been advanced, the advanced eleme=
-nts have been copied to
-> +        // the beginning of the buffer and `len` has been adjusted accor=
-dingly. `ptr` is guaranteed
-> +        // to point to the start of the backing buffer. `cap` is either =
-the original capacity or,
-> +        // after shrinking the buffer, equal to `len`. `alloc` is guaran=
-teed to be unchanged since
-> +        // `into_iter` has been called on the original `Vec`.
-
-Turn this into bullet points please.
-
----
-Cheers,
-Benno
-
-> +        unsafe { Vec::from_raw_parts(ptr, len, cap) }
-> +    }
->  }
->=20
->  impl<T, A> Iterator for IntoIter<T, A>
-> --
-> 2.46.0
->=20
-
+Sami
