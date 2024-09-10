@@ -1,127 +1,147 @@
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94DFE12B143;
-	Tue, 10 Sep 2024 07:10:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4E5E18A6B9;
+	Tue, 10 Sep 2024 09:44:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725952256; cv=none; b=Qjk6CjMvgjcbheHq287DoPVHWerCOj0tt1s7sVuySwypRj+t8XmgRKB1AdeqSy9YgKGcRM4OLiwd8l1AGABmOWUAljlJ5IuoIQt0e4h5aaUv2wJhHmI11xBJH1kvhLpSEtB6EsRqm+bdAQ6VhG0QselfSELwQpNngzh94KjEKDI=
+	t=1725961455; cv=none; b=gIFAGXIOPF0NVQGkd31vSElNXJHorOSDUoUvbEwUr5moa1qDNqxRKa+HEJIDZOj9nY2lRKoR8TA3zumsxXiDg4FRH5nKFIsgrJGqqkMVOk/y9OzWiYBmWh4dv4KT+ZIyupd4lt3HDca5DPAeaGfn3xJWexRQlBH4TAGq+6n8zsU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725952256; c=relaxed/simple;
-	bh=Lj5Sd8urnV5cGR8bCaMgOHsQZWxqX/08qozA/Wp5OfI=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WQhxYVkP/KEktgH6xXIW44FnespZ5zSspwAdHjrBHqSeBuLRJ0udo7EeJrLJwCF/Jk83/JqCsWzjbwE3AdXIY5lVlg+VpHeBxwwQX9FQY9kiikztf4BV9bJbmVFrauKdNo/EddkV4juy2x+Vorir9m83KWRhtO6yAd0f0Uc7lVk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=FVmCFbzn; arc=none smtp.client-ip=185.70.43.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1725961455; c=relaxed/simple;
+	bh=D3N04FmIzvqggt9C4bVYVfpcu/iBmJ0tG8QKUZ/Wex4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Y21Cv+LYEVxByj7AUUO8O5g2rY3H42Y2c46mEPXLNyKgwQlorWpGWa/MbE0xWNtaTmKks37kVlNL+m8eP8tGxLoBPLVf+FdJD61WanquqjJp5WVAA4DMvm6JD6a9MOK5JKzjzOTTXDV6gVKVhhSHQdafTE7bZ9jjiK4JauwXDX8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V0JpD3e7; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="FVmCFbzn"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1725952252; x=1726211452;
-	bh=Tvk63EWKIJfcsR9nu+1LRzzHViUVxsD4efOy36kxKd8=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=FVmCFbznzGpr7Y6VsJ4XEHMtK7KafwMwU22GdtiSxiZ4xKfo1GYPqBf7guIqQjSlz
-	 xLHzc7RKrhS+WUba9zRPpdcmrK97rz1/ka0pYkCASavn5fW30E5+erV1y9TPR28u3T
-	 3esTtHcVseRda3Jgu0knzSkXDCRMkXKldCfIiBl1v23+DEws5w/y9Go7B/th19VQ/A
-	 GcrkMOrjsj0AT1mp8r5rxRwZZUFFzwAWdGIFw2MZgLWp0WH8hb7VpwqDbSSwSxWHmc
-	 tlaGoKlbXkBcRzYuDQ8Y8j+Kl8nn7l585Q6wawIwjvwInpLtubSFVpd79Q+/zy00zt
-	 0Ot/1lDksIY9w==
-Date: Tue, 10 Sep 2024 07:10:46 +0000
-To: Alice Ryhl <aliceryhl@google.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2] rust: add global lock support
-Message-ID: <3c471d06-d8c4-47a2-b29b-4faa5d61d25d@proton.me>
-In-Reply-To: <CAH5fLgh9kHm4XbcH2X4y6nwZ9VLYuUeu3hNmQBcdZ+Vx1H1L9w@mail.gmail.com>
-References: <20240827-static-mutex-v2-1-17fc32b20332@google.com> <10453342-d269-4b78-8962-821ef53d3cb5@proton.me> <CAH5fLgh-DYvXobXQVaQ9txYS4Rx8QhjyVvfTphk6vvnUOGzPnw@mail.gmail.com> <3b557f61-cead-4568-b2b4-4a56c4cbff52@proton.me> <CAH5fLggE-fWDuZXH_F3ixDSo7sQEFwnUV3cd+9_rpFH+XmnA2Q@mail.gmail.com> <CAH5fLgiZt3uVZiU1xXPcvYNR-Em2V3y+-C9EbsqrNvkScbiAYA@mail.gmail.com> <0030a292-49f4-4575-846f-424b098c7f1a@proton.me> <CAH5fLgh9kHm4XbcH2X4y6nwZ9VLYuUeu3hNmQBcdZ+Vx1H1L9w@mail.gmail.com>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: fff6e56f1003443a7083231ea76ea55439635c5b
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V0JpD3e7"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4C6FC4CECC;
+	Tue, 10 Sep 2024 09:44:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1725961454;
+	bh=D3N04FmIzvqggt9C4bVYVfpcu/iBmJ0tG8QKUZ/Wex4=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=V0JpD3e7sKruPeep6Cxyq2dpx6qjdL0MIrRHp5Yy29lynGweoxEznoPIH4IkTuXjZ
+	 p6YtutpNth7tSupJtqjbJ5I55XrfUiAn+/Ou6IAaYynWlmub14PpBZynEnOQ4VpSrU
+	 8x7WrCqIIRZIsecKpg5WILTWBtyowS6vulX3djzTkkF7KMCY0qqytTGQHwIGioYbAY
+	 ZnQ0tjEcEQYZm7eYeXkrTtSIhmLiOiukzLA+ou9YHVkOJBQEewhhJLw9C2LhqojNxY
+	 ttiZW1TvZZVf7EvQIbAHAYhvhZ3ySIZdPfcQ4XrlGYyPyr8OwcGMiS0Fuk+GdHx3p+
+	 lQdhAqe53HHMg==
+Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-2f6580c2bbfso53433041fa.1;
+        Tue, 10 Sep 2024 02:44:14 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCU5Rae+h2LeHvTrk+v9CnT6V/3ie3Rr3WJz2muI+qHWOs+jbUPWUQhnOVvoEknzDFkIv4Yg0k74rntoMozK@vger.kernel.org, AJvYcCVcbpzoDp0lAZY5sjtL8rzLn/b7NvQ+XuAXof956CNdIzcnsOZg0AQkt03m/+6VNwn1O3J2yq7D3fdz+aOv6sI=@vger.kernel.org, AJvYcCW9Yk0ySK7ovmbKmwAs5m/idN+nYXmBV06i3rrGyfpdEM5PIREmJVuO8ym6iFl0Zaws7HQcIO+kQNxkxsKvYg==@vger.kernel.org, AJvYcCWvEsBojM/dkcf5n9643/4MI/PxL7lU8Yp32JaYJ9JkW9kZ22M8oJzSmlhDrkpqmpsAxMkgV9I0M7YH5jk=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwZ2fHgzMYSCSBSgfnthvjgKfI/MWXTuIsjrzGMsvL//3EZur07
+	aVcuWriWRN0LGIhrAiycWil5awupod5AOIvhfz8nsfTRJtQGGCF1ywRWCy/pI0YMY3QQM1ogJyX
+	yVhNY47fV0qlDfBfzSqy7gRfka6I=
+X-Google-Smtp-Source: AGHT+IHdShnxBBjUPptQ41/ldZfk223s5R8ozEYJtzbMZjFzw1UM2NBN4Nfeh9oGsEZBQBVytVHnTCzwafdOaAGxUc8=
+X-Received: by 2002:a2e:bea5:0:b0:2f7:54fb:e68c with SMTP id
+ 38308e7fff4ca-2f772603a20mr9852201fa.4.1725961453356; Tue, 10 Sep 2024
+ 02:44:13 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20240815173903.4172139-21-samitolvanen@google.com>
+ <20240815173903.4172139-22-samitolvanen@google.com> <CAK7LNAQdutCiBkWtA6MbVLpfhB-MQXnszQm8eEiBZpeX++5eLA@mail.gmail.com>
+ <CABCJKucott2g8mZyJ0uaG+PdPTMsniR7eNCR9GwHpT_kQ+GFvg@mail.gmail.com>
+In-Reply-To: <CABCJKucott2g8mZyJ0uaG+PdPTMsniR7eNCR9GwHpT_kQ+GFvg@mail.gmail.com>
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Tue, 10 Sep 2024 18:43:37 +0900
+X-Gmail-Original-Message-ID: <CAK7LNATyv+zfSwyykKQrSjxR84ST0xTyEarnAudF2VuLPVxqnQ@mail.gmail.com>
+Message-ID: <CAK7LNATyv+zfSwyykKQrSjxR84ST0xTyEarnAudF2VuLPVxqnQ@mail.gmail.com>
+Subject: Re: [PATCH v2 01/19] tools: Add gendwarfksyms
+To: Sami Tolvanen <samitolvanen@google.com>
+Cc: Luis Chamberlain <mcgrof@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Matthew Maurer <mmaurer@google.com>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	Petr Pavlu <petr.pavlu@suse.com>, Neal Gompa <neal@gompa.dev>, Hector Martin <marcan@marcan.st>, 
+	Janne Grunau <j@jannau.net>, Asahi Linux <asahi@lists.linux.dev>, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On 04.09.24 12:32, Alice Ryhl wrote:
-> On Tue, Sep 3, 2024 at 12:17=E2=80=AFAM Benno Lossin <benno.lossin@proton=
-.me> wrote:
->>
->> On 02.09.24 13:42, Alice Ryhl wrote:
->>> On Mon, Sep 2, 2024 at 1:37=E2=80=AFPM Alice Ryhl <aliceryhl@google.com=
-> wrote:
->>>>
->>>> On Fri, Aug 30, 2024 at 3:22=E2=80=AFPM Benno Lossin <benno.lossin@pro=
-ton.me> wrote:
->>>>>
->>>>> On 30.08.24 07:34, Alice Ryhl wrote:
->>>>>> On Thu, Aug 29, 2024 at 8:17=E2=80=AFPM Benno Lossin <benno.lossin@p=
-roton.me> wrote:
->>>>>>>
->>>>>>> On 27.08.24 10:41, Alice Ryhl wrote:
->>>>>>>> For architectures that don't use all-zeros for the unlocked case, =
-we
->>>>>>>> will most likely have to hard-code the correct representation on t=
-he
->>>>>>>> Rust side.
->>>>>>>
->>>>>>> You mean in `unsafe_const_init`?
->>>>>>
->>>>>> No, I mean we would have `unsafe_const_new` directly set `state` to
->>>>>> the right value and let `unsafe_const_init` be a no-op.
->>>>>
->>>>> But how do you set the right value of a list_head? The value will be
->>>>> moved.
->>>>
->>>> Right ... we probably can't get around needing a macro. Can statics
->>>> even reference themselves?
->>>
->>> Looks like they can:
->>>
->>> use std::ptr::addr_of;
->>>
->>> struct MyStruct {
->>>     ptr: *const MyStruct,
->>> }
->>>
->>> static mut MY_STRUCT: MyStruct =3D MyStruct {
->>>     ptr: addr_of!(MY_STRUCT),
->>> };
->>
->> That's useful to know...
->> But I don't see a way to get pinned-init to work with this. I would need
->> a lot of currently experimental features (const closures, const traits)
->> and a way to initialize a static without providing a direct value, since
->> I can't just do
->>
->>     static mut MY_STRUCT: MyStruct =3D {
->>         unsafe { __pinned_init(addr_of_mut!(MY_STRUCT), /* initializer *=
-/) };
->>         unsafe { addr_of!(MY_STRUCT).read() }
->>     };
->>
->> It (rightfully) complains that I am initializing the static with itself.
->>
->> We /might/ be able to do something special for `Mutex`/ other locks, but
->> I haven't tried yet. So the unsafe approach seems the best at the moment=
-.
->=20
-> It sounds like we'll just want a macro that generates a global wrapped
-> in a Mutex/SpinLock for now ...
+On Fri, Sep 6, 2024 at 5:53=E2=80=AFAM Sami Tolvanen <samitolvanen@google.c=
+om> wrote:
+>
+> Hi,
+>
+> On Thu, Sep 5, 2024 at 2:30=E2=80=AFAM Masahiro Yamada <masahiroy@kernel.=
+org> wrote:
+> >
+> > On Fri, Aug 16, 2024 at 2:39=E2=80=AFAM Sami Tolvanen <samitolvanen@goo=
+gle.com> wrote:
+> > >
+> > > +++ b/scripts/gendwarfksyms/gendwarfksyms.h
+> > > @@ -0,0 +1,78 @@
+> > > +/* SPDX-License-Identifier: GPL-2.0-or-later */
+> > > +/*
+> > > + * Copyright (C) 2024 Google LLC
+> > > + */
+> > > +
+> > > +#include <dwarf.h>
+> > > +#include <elfutils/libdw.h>
+> > > +#include <elfutils/libdwfl.h>
+> > > +#include <linux/hashtable.h>
+> > > +#include <inttypes.h>
+> > > +#include <stdlib.h>
+> > > +#include <stdio.h>
+> >
+> >
+> > Could you include external headers first,
+> > then in-tree headers?
+> > (and one blank line in-between).
+>
+> Sure, I'll reorder this.
+>
+> > Also, please consider using scripts/include/hashtable.h
+> >
+> >
+> >
+> > How about this?
+> >
+> >
+> > #include <dwarf.h>
+> > #include <elfutils/libdw.h>
+> > #include <elfutils/libdwfl.h>
+> > #include <inttypes.h>
+> > #include <stdlib.h>
+> > #include <stdio.h>
+> >
+> > #include <hashtable.h>
+> >
+> >
+> >
+> >
+> >
+> >
+> > If necessary, you can use this patch too:
+> > https://lore.kernel.org/linux-kbuild/20240904235500.700432-1-masahiroy@=
+kernel.org/T/#u
+>
+> Thanks for the patch! I think this would otherwise work, but I also
+> need jhash (or a similar hash function), and I can't combine the
+> tools/include version with this, because it ends up pulling in a
+> duplicate definition of struct list_head. Would you consider adding a
+> hash function as well?
 
-Yeah.
 
-> If we're going to do that, we could take the extra step and have it
-> generate special Guard and LockedBy types so that you can have a
-> LockedBy that doesn't need to make any runtime checks.
+I did it as a part of my kconfig works.
 
-Oh that is a good idea!
+Check scripts/include/hash.h added by the following patches.
 
----
-Cheers,
-Benno
+https://lore.kernel.org/linux-kbuild/20240908124352.1828890-1-masahiroy@ker=
+nel.org/T/#mea41ff4c5b6c77aaaae1ed9dac6723bc2f705107
+https://lore.kernel.org/linux-kbuild/20240908124352.1828890-1-masahiroy@ker=
+nel.org/T/#m9050a270fedb7df9a54e843674bc9ad8fd068f57
 
+
+I think simple helpers are enough for name_hash and addr_hash,
+but please let me know if you encounter a problem.
+
+
+
+--=20
+Best Regards
+Masahiro Yamada
