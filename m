@@ -1,43 +1,43 @@
-Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
+Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9CF417C7B1;
-	Tue, 10 Sep 2024 19:37:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7901D1A7AF0
+	for <rust-for-linux@vger.kernel.org>; Tue, 10 Sep 2024 19:43:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725997054; cv=none; b=g/Rz89A0w95+UyMCutUl3pa70UAbgz/6oweCZlOPSch9WmuoDkb0wDjDkjnADFrUrCdImzPp8Q82MHOsgkIpC2KKOAgpwPoE9dLQ9hYIP6m2wwSB3b0nauS3bCYVZcrNCL94uap6nf+mkpM/NSHsmFqBrv1wF8yd185Nwcb66VQ=
+	t=1725997391; cv=none; b=OSN9k98qzMHfoPeqNTfRK71O1NqcO04xXBWitnKvzfvirE50doLZWuw0hQe1Zeuglm4L48JlgsewJ3OTrlN05LyCmQPhPyQJpKtsUxHWo3ieTiEzlzJEGgMYTd3NQxLvWTLfsXuWCl7fYyTiV8AJ3Vcy5bOyvi0215LfkejOkhY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725997054; c=relaxed/simple;
-	bh=EZIpDs7zDzaQfrc7/Nqi0dlJx2YqqkEcwb/gmWT/uvM=;
+	s=arc-20240116; t=1725997391; c=relaxed/simple;
+	bh=gZVB/MuRCS4h6Lo4R860D4eofVdYx9DrfzSc39kyhbQ=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Tto4rY3ggghy1oSeOTS/Dgxso860/GGshJFs/0xLPlPQMSC0VeLPlMGBC+Ax9GZF+XsF3iUttfwk9mv5Q/BuMPN2MjKUIvB7yQjpKUZNftjhns/ohf8s5HMh40AxpTGXW5z06apc4oJcTd8KB8qWMANL8U+IbBih5/+f1/ODuMQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=EJeq2aYk; arc=none smtp.client-ip=185.70.40.133
+	 MIME-Version:Content-Type; b=h/W4SFps+gwVIDh5MKqDJXKBldVtQtod0Zs0LyH+nwA+Mm7wPhkctsFFs+hJD6nmVheHGgc2LSNDUmiGSnFtkKbLxCxz3o6f3lb72dCLnQIUDAquzEJgWBMijN+QboqUJW3tSAtpU9vUMAoA/v0mxUYRt7BDl0dJrjczUC12upw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=cRjU1mPe; arc=none smtp.client-ip=185.70.40.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="EJeq2aYk"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="cRjU1mPe"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1725997051; x=1726256251;
-	bh=2vhIboT8ME/071QA9HFuaYGAReumSa+MmRICSuZMu6o=;
+	s=protonmail; t=1725997381; x=1726256581;
+	bh=Us6VG5nQDdDxL5urD5Sho4IxwJbjQmA55je3Wx4UKTM=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=EJeq2aYkTtSxcaKY09Y/x+THrtwR0fMeOOfR3rqtjwDzx8AFbiodhNJkuBX8WygaA
-	 KoGbjoQoWcAwkENMBMqyWqUT4lSALm2DIfLgdTnHt7rhuuy48PH1UV/51WEk2Yk4of
-	 tD0Ccc8vU8x9cAaKrHLGJmguBv1N6KVcL5DEJ7T/NzPsxtT6K8yjEboA7c3P9MU975
-	 mapkFILrtOPjKGCoLkj7Brh8SgmnI+IIyJfvEoYc/puiPHOXA61CVxFmL9KuYDM3+z
-	 rc/yksqXXv8MASpnbo2Yo3M5eix0RMqCwenpTgdBoTj9GwlZzzwHEiIinnoOxi/nD3
-	 2aF4ytiiwpEeQ==
-Date: Tue, 10 Sep 2024 19:37:24 +0000
+	b=cRjU1mPefQYidYLc2FHqC23tY/cq/DraTfUuUu+j6KF6KRZqrbLJLWzGTCX3br1ZB
+	 Tx7zRCuTXovxyh+Z5PmZ6twptgWvVsRFduJwNwLlrQtkC/deZv0gv0udGblD3qBzpl
+	 nptWS+Nw2vi6xRLtyMUO86Sdhp1ZQo18EATHtnvZCHkHVz5Tzp6kJXyg0ZyRkqB991
+	 GqsbekkADqjESz3RXmB0Z30Z+IR2rSVAAO69bD2K4CkcwBXjvmi3dNEVg51fDgK1DI
+	 epDDhS+Xhn/gkWjCX9KEa9HFFcstwk2UHy52E/F0qdefrxQls1GoHIintejdf5wLJq
+	 i+1U/7s5LYqJQ==
+Date: Tue, 10 Sep 2024 19:42:58 +0000
 To: Danilo Krummrich <dakr@kernel.org>
 From: Benno Lossin <benno.lossin@proton.me>
 Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@samsung.com, aliceryhl@google.com, akpm@linux-foundation.org, daniel.almeida@collabora.com, faith.ekstrand@collabora.com, boris.brezillon@collabora.com, lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com, ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v6 01/26] rust: alloc: add `Allocator` trait
-Message-ID: <3309d946-c513-4c0b-baf4-d65cba04832a@proton.me>
-In-Reply-To: <ZuBIYNrwIiGXx8Uw@cassiopeiae>
-References: <20240816001216.26575-1-dakr@kernel.org> <20240816001216.26575-2-dakr@kernel.org> <60253988-37e7-4acb-b2ae-748b30a4ac21@proton.me> <ZtDuf0QGfhiy5X_I@pollux.localdomain> <44b80095-8b03-4558-967e-138ea712f780@proton.me> <Ztb5arBBX2LsrFKo@pollux> <d5761d8e-8e17-42a5-9793-92edb121428e@proton.me> <ZuBIYNrwIiGXx8Uw@cassiopeiae>
+Subject: Re: [PATCH v6 04/26] rust: alloc: implement `Allocator` for `Kmalloc`
+Message-ID: <92ef0fb2-aa5a-451a-a79c-2d81e562da41@proton.me>
+In-Reply-To: <ZuBLmwpwurxFwYG_@cassiopeiae>
+References: <20240816001216.26575-1-dakr@kernel.org> <20240816001216.26575-5-dakr@kernel.org> <2dd02834-b2b6-4ff6-9e29-43c9d77b69e2@proton.me> <ZtDwduKjIEZ3RQtk@pollux.localdomain> <962b7014-4f8b-4abe-8774-636b612a051c@proton.me> <Ztb3eOoiHs2rLCoH@pollux> <c1b5a3bf-b11c-4c33-9519-c93649860a9a@proton.me> <ZuBLmwpwurxFwYG_@cassiopeiae>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 3f2cbc8058bb0b3e4f0868a85c58b7d733780848
+X-Pm-Message-ID: d22009bd5d0f6c20035602ec26b4f558f839fd62
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,85 +47,147 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On 10.09.24 15:23, Danilo Krummrich wrote:
-> On Tue, Sep 10, 2024 at 01:03:48PM +0000, Benno Lossin wrote:
->> On 03.09.24 13:56, Danilo Krummrich wrote:
->>> On Fri, Aug 30, 2024 at 01:06:00PM +0000, Benno Lossin wrote:
->>>> On 29.08.24 23:56, Danilo Krummrich wrote:
->>>>> On Thu, Aug 29, 2024 at 06:19:09PM +0000, Benno Lossin wrote:
+On 10.09.24 15:37, Danilo Krummrich wrote:
+> On Tue, Sep 10, 2024 at 01:11:35PM +0000, Benno Lossin wrote:
+>> On 03.09.24 13:48, Danilo Krummrich wrote:
+>>> On Fri, Aug 30, 2024 at 02:45:35PM +0000, Benno Lossin wrote:
+>>>> On 30.08.24 00:04, Danilo Krummrich wrote:
+>>>>> On Thu, Aug 29, 2024 at 06:32:42PM +0000, Benno Lossin wrote:
 >>>>>> On 16.08.24 02:10, Danilo Krummrich wrote:
->>>>>>> Add a kernel specific `Allocator` trait, that in contrast to the on=
-e in
->>>>>>> Rust's core library doesn't require unstable features and supports =
-GFP
->>>>>>> flags.
+>>>>>>> +///
+>>>>>>> +/// For more details see [self].
+>>>>>>> +pub struct Kmalloc;
 >>>>>>>
->>>>>>> Subsequent patches add the following trait implementors: `Kmalloc`,
->>>>>>> `Vmalloc` and `KVmalloc`.
+>>>>>>>  /// Returns a proper size to alloc a new object aligned to `new_la=
+yout`'s alignment.
+>>>>>>>  fn aligned_size(new_layout: Layout) -> usize {
+>>>>>>> @@ -36,6 +52,60 @@ pub(crate) unsafe fn krealloc_aligned(ptr: *mut =
+u8, new_layout: Layout, flags: F
+>>>>>>>      unsafe { bindings::krealloc(ptr as *const core::ffi::c_void, s=
+ize, flags.0) as *mut u8 }
+>>>>>>>  }
 >>>>>>>
->>>>>>> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
->>>>>>> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+>>>>>>> +/// # Invariants
+>>>>>>> +///
+>>>>>>> +/// One of the following `krealloc`, `vrealloc`, `kvrealloc`.
+>>>>>>> +struct ReallocFunc(
+>>>>>>> +    unsafe extern "C" fn(*const core::ffi::c_void, usize, u32) -> =
+*mut core::ffi::c_void,
+>>>>>>> +);
+>>>>>>> +
+>>>>>>> +impl ReallocFunc {
+>>>>>>> +    // INVARIANT: `krealloc` satisfies the type invariants.
+>>>>>>> +    const KREALLOC: Self =3D Self(bindings::krealloc);
+>>>>>>> +
+>>>>>>> +    /// # Safety
+>>>>>>> +    ///
+>>>>>>> +    /// This method has the same safety requirements as [`Allocato=
+r::realloc`].
+>>>>>>> +    unsafe fn call(
+>>>>>>> +        &self,
+>>>>>>> +        ptr: Option<NonNull<u8>>,
+>>>>>>> +        layout: Layout,
+>>>>>>> +        flags: Flags,
+>>>>>>> +    ) -> Result<NonNull<[u8]>, AllocError> {
+>>>>>>> +        let size =3D aligned_size(layout);
+>>>>>>> +        let ptr =3D match ptr {
+>>>>>>> +            Some(ptr) =3D> ptr.as_ptr(),
+>>>>>>> +            None =3D> ptr::null(),
+>>>>>>> +        };
+>>>>>>> +
+>>>>>>> +        // SAFETY: `ptr` is either NULL or valid by the safety req=
+uirements of this function.
 >>>>>>
->>>>>> We discussed this in our weekly meeting (I think ~one week ago?). If=
- you
->>>>>> give me a draft version of the comment that you plan to add regardin=
-g
->>>>>> the `old_layout` parameter, I can see if I am happy with it. If I am=
-, I
->>>>>> would give you my RB.
+>>>>>> You need some justification as to why calling the three allowed
+>>>>>> functions here.
 >>>>>
->>>>> May I propose you let me know what you would like to see covered, rat=
-her than
->>>>> me trying to guess it. :-)
+>>>>> What kind of justification do I need? Can you please share some more =
+details on
+>>>>> what you think is missing here?
 >>>>
->>>> I was hoping that we put that in our meeting notes, but I failed to fi=
-nd
->>>> them... I would put this in a normal comment, so it doesn't show up in=
- the
->>>> documentation. Preface it like implementation decision/detail:
->>>> - Why do `Allocator::{realloc,free}` not have an `old_layout` paramete=
-r
->>>>   like in the stdlib? (the reasons you had for that decision, like we
->>>>   don't need it etc.)
+>>>> So, you are calling a function pointer to an `unsafe` function. This
+>>>> means that through some invariant you have to know what the safety
+>>>> requirements are (otherwise how can you guarantee that this is OK?). Y=
+ou
+>>>> have the invariant that the pointer points at one of the three functio=
+ns
+>>>> mentioned above. What are the safety requirements of those functions? =
+I
+>>>> would assume that the only one is that `ptr` is valid. So you can use:
+>>>>
+>>>>     // SAFETY:
+>>>>     // - `self.0` is one of `krealloc`, `vrealloc`, `kvrealloc` and th=
+us only requires that `ptr` is
+>>>>     //   NULL or valid.
 >>>
->>> Ok.
->>>
->>>> - Then something along the lines of "Note that no technical reason is
->>>>   listed above, so if you need/want to implement an allocator taking
->>>>   advantage of that, you can change it"
->>>
->>> I don't really want to set the conditions for this to change in the
->>> documentation. It really depends on whether it's actually needed or the
->>> advantage of having it is huge enough to leave the core kernel allocato=
-rs with
->>> unused arguments.
->>>
->>> This can really only be properly evaluated case by case in a discussion=
-.
+>>> I'm fine adding it, but I'd like to understand why you think it's requi=
+red in
+>>> the safety comment here? Isn't this implicit by being the type invarian=
+t?
 >>
->> Agreed, but I don't want people to think that we have a reason against
->> doing it in the future. Do you have an idea how to convey this?
+>> You are calling a function pointer to an `unsafe` function that takes a
+>> raw pointer. Without this comment it is not clear what the function
+>> pointer's safety requirements are for the raw pointer parameter.
 >=20
-> I understand (and agree with) your intention. But I don't think it's nece=
-ssary
-> to document, because, ideally, this is already true for the whole kernel.
+> That's my point, isn't this implicitly clear by the type invariant? If ne=
+eded,
+> shouldn't it be:
+
+I would argue that it is not implicitly clear, since to the reader of
+just that unsafe block it's totally unclear that `self.0` has such an
+invariant. They would have to read the type definition.
+
+> // INVARIANT:
+> // - `self.0` is one of [...]
+> //
+> // SAFETY:
+> // - `ptr` is either NULL or [...]
 >=20
-> Generally, I think it's valid to assume that people are willing to change=
- the
-> code if the advantages outweigh the disadvantages.
+>>
+>>>>     // - `ptr` is either NULL or valid by the safety requirements of t=
+his function.
+>>>
+>>> This is the part I already have.
+>>
+>> I kept it to ensure that you also keep it.
 
-Sure, but for certain areas you might need a very, very good reason to
-do so.
-In this case, I fear that people might believe that this is the case,
-even though it isn't (one of course still needs a good reason).
+[...]
 
-> So, we could write something like "This may be changed if the advantages
-> outweigh the disadvantages.", but it'd be a bit random, since we could pr=
-obably
-> sprinkle this everywhere.
+>>>>>>> +    #[inline]
+>>>>>>> +    unsafe fn realloc(
+>>>>>>> +        ptr: Option<NonNull<u8>>,
+>>>>>>> +        layout: Layout,
+>>>>>>> +        flags: Flags,
+>>>>>>> +    ) -> Result<NonNull<[u8]>, AllocError> {
+>>>>>>> +        // SAFETY: `ReallocFunc::call` has the same safety require=
+ments as `Allocator::realloc`.
+>>>>>>> +        unsafe { ReallocFunc::KREALLOC.call(ptr, layout, flags) }
+>>>>>>> +    }
+>>>>>>> +}
+>>>>
+>>>> Oh one more thing, I know that you already have a lot of patches in th=
+is
+>>>> series, but could you split this one into two? So the first one should
+>>>> introduce `ReallocFunc` and the second one add the impl for `Kmalloc`?
+>>>> I managed to confuse me twice because of that :)
+>>>
+>>> Generally, I'm fine with that, but I'm not sure if I can avoid an inter=
+mediate
+>>> compiler warning about unused code doing that.
+>>
+>> You can just use `#[expect(dead_code)]` for that in the intermediate
+>> patches.
+>=20
+> I usually try to avoid that, because it can be misleading when bisecting =
+things.
+>=20
+> If the temporarily unused code contains a bug, your bisection doesn't end=
+ up at
+> this patch, but some other patch that starts using it.
 
-Sure, that works for me. I don't think that we can sprinkle this
-everywhere (but of course a in lot of places).
+I don't think it's a problem in this case, since the two patches are
+directly next to each other and you're not changing existing code, just
+splitting up the addition of new code.
 
 ---
 Cheers,
