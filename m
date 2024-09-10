@@ -1,72 +1,89 @@
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f177.google.com (mail-pf1-f177.google.com [209.85.210.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62FA2187555
-	for <rust-for-linux@vger.kernel.org>; Tue, 10 Sep 2024 13:27:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF4AA191F82;
+	Tue, 10 Sep 2024 13:31:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725974836; cv=none; b=cBwn3MqPdVAUIdyGN8UtBIFm8UEE1ggLkNwBfBhlR0IuieDduATD4r/OaSqrE5EJXUC0Rxgde1PZIUc/y/dCZ0K4Qi/jt0+Tk/w2GJXQj0pE8kD1zV1OHlRNXvW0C48P16ICh3jFP8IJIx86N/tBLxMM4lIJ8SN2brk7TQg1MhY=
+	t=1725975067; cv=none; b=FPE76ADP6owOqfuOeAG7YPqpLzhjgq/k05JSaaD61IWMzi/Z/YCMYxyW9HxepvfO8JFTZX7ZhmMKNix/BqF99mL+wMf0MFt7eXQRrfdvCKAFB0G+BSknp7n3dNY/Jclu8Eq1Nq+Jd0cYY0qDNxdnxDXVwYjMGbDdDTmeWFF6mrk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725974836; c=relaxed/simple;
-	bh=59LhVAIff5XFYxepQj3fCMMGfNu38AxikS6S1TnocIU=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=tTLfOUVpHRtbyi2Ro7gz98nGn5s6kcDglPaRqO/SgOsJDh8dWMRTGtYe9Ukv/e7k21Q2H1dJpEKfkQ1hZrpYj0yHR2UEkd71RJe0ayWU+B3rUZfnTvEWeyiz8snkJr8nXhlWEOCrINr3KeFg3syQHP1k962/63pXA3ANE8lVNls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=iU5C/C4l; arc=none smtp.client-ip=185.70.43.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1725975067; c=relaxed/simple;
+	bh=8IM2BCYuDlqVMcITEL66ApomB9Uwz1TwgljKzkwZa6A=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=outyBThT/VpfyaZxT8HUj8wRO/wUqF1ZCjZLKfkVC1iIDtq7KQoDqn6KnXWZp3NBaHnMv8OY2+XnrLACZn46rOLu8iALOcXYr8jg9tYGWO7D74t67THH7IfzxJ9DLnexOSLKa71wS7N3AHViDN4zgtEyASpkd1K91Iv+/1gLuGs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=hRTl8kps; arc=none smtp.client-ip=209.85.210.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="iU5C/C4l"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=3zq6duxak5funmskg677udfreu.protonmail; t=1725974831; x=1726234031;
-	bh=59LhVAIff5XFYxepQj3fCMMGfNu38AxikS6S1TnocIU=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=iU5C/C4lc1wDQpjvu7u5lF6rLP0RPcCAxj8iItwLBSDbUuC8L0NQe/P9kkpBtTBjA
-	 rIKTPEO7wMAHGZDWw0c6NesqGzwT+xg2uj84RYDve5tEoiWpLOwU44xVS/p3IfJ2Td
-	 /r4A7dbhWxw4qflriH/KMDatltcqfGlN7JeBeixZEJnArKWo9IUycL7ft9pN9PG/IN
-	 xmmP7Q+9Pzda0MWqZdilpz2e5R1oJvioTVEnsUPleLLeuS0L2mf7fEPB6sWps+JLQy
-	 21Y90qkyKAe/B/KcXdODV+xMLNf0s+6w/ivZGF+LUDol8OsabzEC/bQsUaEIHe8Gbl
-	 AV8jcN9Fn55TA==
-Date: Tue, 10 Sep 2024 13:26:34 +0000
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>, Gary Guo <gary@garyguo.net>, ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com, bjorn3_gh@protonmail.com, a.hindborg@samsung.com, akpm@linux-foundation.org, daniel.almeida@collabora.com, faith.ekstrand@collabora.com, boris.brezillon@collabora.com, lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com, ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v6 26/26] MAINTAINERS: add entry for the Rust `alloc` module
-Message-ID: <05abcf53-4997-4bdc-953b-30bbb5118639@proton.me>
-In-Reply-To: <CANiq72=MD8jmWb9EGA8yW6eMT6Prj8fYEiJM81-HTq3p4dKmGg@mail.gmail.com>
-References: <20240816001216.26575-1-dakr@kernel.org> <20240816001216.26575-27-dakr@kernel.org> <20240831135712.0d7366b6.gary@garyguo.net> <Ztb6_XW3ccnHQDmw@pollux> <CAH5fLgjbnGstjzsudjavzt5+UwK_r8n8X3LPdw29QSkBzaygxQ@mail.gmail.com> <f99d8d3a-5b56-4555-a1fc-bd7685dcea40@proton.me> <CANiq72=MD8jmWb9EGA8yW6eMT6Prj8fYEiJM81-HTq3p4dKmGg@mail.gmail.com>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: cdd673e249abf917c1ab57e7aa7cac4657d773f8
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="hRTl8kps"
+Received: by mail-pf1-f177.google.com with SMTP id d2e1a72fcca58-70d19bfdabbso466742b3a.2;
+        Tue, 10 Sep 2024 06:31:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1725975065; x=1726579865; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=8IM2BCYuDlqVMcITEL66ApomB9Uwz1TwgljKzkwZa6A=;
+        b=hRTl8kpsiYHcdODuckoXrbq2rv2dC2H2P5Siea3qPfoBj0g7r3MNx4xd53cA3iEFNa
+         Q2Wn3GYdD4zAZdNT7csA1RVPu1vAcX09DLS51KfzYw78n5nJ11i79ZhrJQRqhGPua95o
+         pZARPAbqFzLV5U5w/iBa18n8bmISeKjnGlzSniLFxG13C6s6buYFc3j+4BXHVvF4enVf
+         t9wtrO5z3R1XoLLi8ftq/mVLdMUJAyEzxT3sgNSmLtVSchCZFLEUewIOLKESyPp7ajRd
+         cWujBl7ZA/TLyEIvLeidCNN+mscXdDv4T1GdOSPKwneMnkY4gkKkjVIwR3D1LXYPwzk+
+         YkxQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725975065; x=1726579865;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=8IM2BCYuDlqVMcITEL66ApomB9Uwz1TwgljKzkwZa6A=;
+        b=o4LlNGqKoOe6cfANVUmzhmbh+6Uyt+yXnYUsKW00Jwyg8a8K4cvblq/I5DH7YCMfp0
+         jqMy/0JBhhPBbH36E42R3Dr8jocYSVOJnOu35v1je2m2i1hK5ZM467GyEhP2acAfTz/q
+         yFed77iE7c92sUzDlYdd85/NwUJwJBHPyGTe/ihNsPb8X5dmN9Oz6KMOD1qFgHGXaBAd
+         B9cUVdDg2U+kcrxongDHMzF5RJHXgv4k2vxocjxwxnhSoDriD5e9rFdzMENaz4sgYQbh
+         EAS9m8dyng1JMTGIJJpIC4OwzNI8vWn3taP0XC+PUVybBxssqHXxcaq6UiPgCc1dLaxg
+         bCvA==
+X-Forwarded-Encrypted: i=1; AJvYcCUqRWRdDpshx0rpg3BrVqYjtbqzz1boDewnEnBZ4HwAsPV7v1e+iOwZaTsKEThLj/yNEDNg5xB6qW8WfJs=@vger.kernel.org, AJvYcCW7kl+2LXksBBzSXvBC0tHL/GX13hyl+LXsotzIKmGPlRlCl1i2hN/Sh/T3RPz6yvot6e85Ow97fd1kFGKWsKc=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzHNSACw7OTw0qxVOo5wzijYXEsU/l+j0Exj/L85xUcFdmHWgqv
+	gZbRyipUaUzgRS8stnILcwXchAsyeJ2WENU6owQCntuAfTb0Uzvpk+Vfo9+IptkvNgjlEAb39ck
+	2B7MjyQNl64y1geMfd2Xh6gJZYFo=
+X-Google-Smtp-Source: AGHT+IEbU5pdhaY5wWJd0ty0w7X1YM3B6QiTtxg7gWGkmskwR62fRuRjoIpcsk1GiEWvJ+WOfd/1vR/Sc5ctfx2dqOs=
+X-Received: by 2002:a05:6a20:12c8:b0:1cf:217b:46ce with SMTP id
+ adf61e73a8af0-1cf5e19e26fmr474676637.7.1725975063957; Tue, 10 Sep 2024
+ 06:31:03 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+References: <20240909161749.147076-1-hridesh699@gmail.com>
+In-Reply-To: <20240909161749.147076-1-hridesh699@gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 10 Sep 2024 15:30:51 +0200
+Message-ID: <CANiq72ni=BZX4QxG+ouK-m-6C=D1J1xgYNdOMEUMAUUnzuZ3Kg@mail.gmail.com>
+Subject: Re: [PATCH] docs: rust: clean up empty `\\\` lines and improve
+ rustdoc formatting
+To: hridesh <hridesh699@gmail.com>
+Cc: linux-block@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, Jens Axboe <axboe@kernel.dk>, 
+	Matt Gilbride <mattgilbride@google.com>, Shuah Khan <skhan@linuxfoundation.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On 04.09.24 14:57, Miguel Ojeda wrote:
-> On Wed, Sep 4, 2024 at 2:51=E2=80=AFPM Benno Lossin <benno.lossin@proton.=
-me> wrote:
->>
->> I forgot the reason for not using it, does anyone remember?
->=20
-> One of the reasons argued was that `mod.rs` is the same name
-> everywhere, and thus it is hard to notice the difference in some
-> editors and may be harder to "jump into" in history/tabs/etc.
+On Mon, Sep 9, 2024 at 6:19=E2=80=AFPM hridesh <hridesh699@gmail.com> wrote=
+:
+>
+> Signed-off-by: hridesh <hridesh699@gmail.com>
 
-I don't usually open more than 2-4 files anyways, so it's not an issue
-for me. But of course people's workflow is different, does anyone have a
-problem with switching to `mod.rs`?
+Is hridesh a "known identity"? If not, please use your full legal name
+(please see https://docs.kernel.org/process/submitting-patches.html#sign-yo=
+ur-work-the-developer-s-certificate-of-origin).
+Thanks!
 
-I have another reason that it might be nicer, when I want to edit eg
-`init.rs` and I decide to directly open it with the editor from my
-shell, not using my fuzzy finder, then I need to press tab to select
-between `rust/kernel/init` and `rust/kernel/init.rs`.
-
----
 Cheers,
-Benno
-
+Miguel
