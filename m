@@ -1,43 +1,43 @@
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D025717DFE1
-	for <rust-for-linux@vger.kernel.org>; Tue, 10 Sep 2024 20:04:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B5880176252
+	for <rust-for-linux@vger.kernel.org>; Tue, 10 Sep 2024 20:07:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725998678; cv=none; b=QIh7ZUggmdVhbBusM1f7wtBtiNjOW9emEu5jUAR+UNi1KMrN6lGNjRH2gCCynZwK2dSS9qBqdlIgFUj/KethKEZvQCw/uMqlhidRZwhXg74UWJU8pjhaK1u7rwy6aQYWxKbB6zxuKiAQPSFcaQPmSeE4gMiHjJJ80qxd2g5yQts=
+	t=1725998871; cv=none; b=pOr4EBWDCyhqP9pqgM0yTdqbS3dI/FFpG5TLWGbStTnkKEBBXd8NvfGZ6hYxNg25xBaUJEewBPxOsFJ/Bht5kpUbR1ZwbSrZE6HVaUiwknRuklpnpnd2pZx5dVPas5nsWDnZgtMB2UA2xf+hRfpekYm2XUWPNrAAWKLhmsZk+sI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725998678; c=relaxed/simple;
-	bh=3hegu0TOF7TyWA0Uq6Ws9wifFyVa8Lv1RflAAfIFZ4I=;
+	s=arc-20240116; t=1725998871; c=relaxed/simple;
+	bh=vZJjz9fRezr9De4Orho1wkInbjle+j4xVcnskiX3Jyc=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Ab7qIY2q2Lof4eMbkp1y8O0y7M2ZdRiwiV8PeaH5Sfw56GlClZi1vM+5rE5X+KZxFFJrYn73sbfjKKwt6cye2g3++rTTYA7TxfaAlrdVHnEMURtDI3Xf3RX20QsFQXhHdvj7ObeLv4c3LgjOJ9tqz44V3xryMetIgpdBCumdWZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=kZrlA4dD; arc=none smtp.client-ip=185.70.43.16
+	 MIME-Version:Content-Type; b=vBrkSe7+k8BUfL+ZvRkc/+wRn3Ysdrn1K/gK8hpK1Et5tw2CtR3lnfvYZfoi+waGGbQfG+dHtEcJx06MJvpEIODbr5YFQRVjptW9dq9XATdmcf/DEeVP9Gz3vNwpZfojU9KUL3x/OHvrSzmUXjkXIOCQ/lX50ZvjFQ+JmPz0e0Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=HoXpBPTp; arc=none smtp.client-ip=185.70.40.133
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="kZrlA4dD"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="HoXpBPTp"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1725998673; x=1726257873;
-	bh=ENz53fEk86BgBhfUiQ+jlgzdiXHlf5LBcT9PrqrkEE8=;
+	s=protonmail; t=1725998867; x=1726258067;
+	bh=nOd42zcosTE94cbQZZ/IFTYFSJKMt0GHgSbLskRDVkQ=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=kZrlA4dDTD9K96RQAJnWasRA4TqPHYTJJBgohjGmxTDKmwXjJCUqIsC8feIpjhf2b
-	 1zKz176HFHKBA+tv2y46nn9ZSrS6eOfIHZPAMk/LXGJDKhlZIrBrrFT4GT7NPLABRt
-	 bWYKKZk173BEGJbgrNGUqPPD6Ur8HyacnzHrUStTdlPpEzDi9RegfR8D8Uqch1tCg4
-	 sDzxtf/d5dAT9AAqlBMdWn8AYutAsYBicT13lfO8ucZl8n1a7zba+fGRrKE5Zub7ws
-	 cZieS9v+ScvmbCbMCeXkxiB92rqiBvjoRbhsZ5fH/yr18sgvK73qPwvHHIzdchc89K
-	 u4tepUaUbftgg==
-Date: Tue, 10 Sep 2024 20:04:27 +0000
+	b=HoXpBPTpjnoP5A5V7R4E1D/6NyxD42pKy0jTf0D/ivgvODM8vKNqPF4994eCu9YcA
+	 yNgEc9AqOBqoQtZ0M7tfwgKKb4Kz+nuU3L0nia9V30Jsl/hDSMvR1OQd0HYOovOBHa
+	 Dc0KpmtQxRMW5wqzzYuAmZnHTZA9aB1VNc9tUW32VLt4/q+D7DtHHyB3sqIvmrc+NC
+	 fEdBOtuxp/nYOBfU6R3WupyZZKi2kUMsWSlXk3Wrv6dY4w4XZ1Wxz0TiM2InXts0sN
+	 gaw+zqp2XjA2X9SSH4gqIlPCJl4uTuMYseJw7QUBTJw0R9F0towfyKkXcLsoWFdVNd
+	 /UsKLtnoW+EAw==
+Date: Tue, 10 Sep 2024 20:07:40 +0000
 To: Danilo Krummrich <dakr@kernel.org>, ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@samsung.com, aliceryhl@google.com, akpm@linux-foundation.org
 From: Benno Lossin <benno.lossin@proton.me>
 Cc: daniel.almeida@collabora.com, faith.ekstrand@collabora.com, boris.brezillon@collabora.com, lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com, ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v6 14/26] rust: alloc: implement `IntoIterator` for `Vec`
-Message-ID: <308d40dd-105b-4ebf-ba70-585a97d66928@proton.me>
-In-Reply-To: <20240816001216.26575-15-dakr@kernel.org>
-References: <20240816001216.26575-1-dakr@kernel.org> <20240816001216.26575-15-dakr@kernel.org>
+Subject: Re: [PATCH v6 13/26] rust: alloc: implement kernel `Vec` type
+Message-ID: <a8c31bce-aac2-4ffe-8fab-2e68c9bab035@proton.me>
+In-Reply-To: <20240816001216.26575-14-dakr@kernel.org>
+References: <20240816001216.26575-1-dakr@kernel.org> <20240816001216.26575-14-dakr@kernel.org>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: d3f8bbb264eaf1b88a2abc6facc9fa1fcfeaab7a
+X-Pm-Message-ID: 9747bfca293c10b7ad4bbdb09610026864877931
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -48,275 +48,27 @@ Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
 On 16.08.24 02:10, Danilo Krummrich wrote:
-> Implement `IntoIterator` for `Vec`, `Vec`'s `IntoIter` type, as well as
-> `Iterator` for `IntoIter`.
+> `Vec` provides a contiguous growable array type (such as `Vec`) with
+> contents allocated with the kernel's allocators (e.g. `Kmalloc`,
+> `Vmalloc` or `KVmalloc`).
 >=20
-> `Vec::into_iter` disassembles the `Vec` into its raw parts; additionally,
-> `IntoIter` keeps track of a separate pointer, which is incremented
-> correspondingsly as the iterator advances, while the length, or the count
-> of elements, is decremented.
->=20
-> This also means that `IntoIter` takes the ownership of the backing
-> buffer and is responsible to drop the remaining elements and free the
-> backing buffer, if it's dropped.
+> In contrast to Rust's `Vec` type, the kernel `Vec` type considers the
+> kernel's GFP flags for all appropriate functions, always reports
+> allocation failures through `Result<_, AllocError>` and remains
+> independent from unstable features.
 >=20
 > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
 > ---
->  rust/kernel/alloc.rs      |   1 +
->  rust/kernel/alloc/kvec.rs | 184 ++++++++++++++++++++++++++++++++++++++
->  2 files changed, 185 insertions(+)
->=20
-> diff --git a/rust/kernel/alloc.rs b/rust/kernel/alloc.rs
-> index e88c7e10ee9b..4ff4df4597a3 100644
-> --- a/rust/kernel/alloc.rs
-> +++ b/rust/kernel/alloc.rs
-> @@ -19,6 +19,7 @@
->  pub use self::kbox::KVBox;
->  pub use self::kbox::VBox;
->=20
-> +pub use self::kvec::IntoIter;
->  pub use self::kvec::KVVec;
->  pub use self::kvec::KVec;
->  pub use self::kvec::VVec;
-> diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
-> index 89afc0f25bd4..3b79f977b65e 100644
-> --- a/rust/kernel/alloc/kvec.rs
-> +++ b/rust/kernel/alloc/kvec.rs
-> @@ -11,6 +11,7 @@
->      ops::DerefMut,
->      ops::Index,
->      ops::IndexMut,
-> +    ptr,
->      ptr::NonNull,
->      slice,
->      slice::SliceIndex,
-> @@ -627,3 +628,186 @@ fn eq(&self, other: &$rhs) -> bool { self[..] =3D=
-=3D other[..] }
->  __impl_slice_eq! { [A: Allocator] [T], Vec<U, A> }
->  __impl_slice_eq! { [A: Allocator, const N: usize] Vec<T, A>, [U; N] }
->  __impl_slice_eq! { [A: Allocator, const N: usize] Vec<T, A>, &[U; N] }
-> +
-> +impl<'a, T, A> IntoIterator for &'a Vec<T, A>
-> +where
-> +    A: Allocator,
-> +{
-> +    type Item =3D &'a T;
-> +    type IntoIter =3D slice::Iter<'a, T>;
-> +
-> +    fn into_iter(self) -> Self::IntoIter {
-> +        self.iter()
-> +    }
-> +}
-> +
-> +impl<'a, T, A: Allocator> IntoIterator for &'a mut Vec<T, A>
-> +where
-> +    A: Allocator,
-> +{
-> +    type Item =3D &'a mut T;
-> +    type IntoIter =3D slice::IterMut<'a, T>;
-> +
-> +    fn into_iter(self) -> Self::IntoIter {
-> +        self.iter_mut()
-> +    }
-> +}
-> +
-> +/// An `Iterator` implementation for `Vec<T,A>` that moves elements out =
-of a vector.
+>  rust/kernel/alloc.rs      |   6 +
+>  rust/kernel/alloc/kvec.rs | 629 ++++++++++++++++++++++++++++++++++++++
+>  rust/kernel/prelude.rs    |   2 +-
+>  3 files changed, 636 insertions(+), 1 deletion(-)
+>  create mode 100644 rust/kernel/alloc/kvec.rs
 
-Please make both links.
-
-> +///
-> +/// This structure is created by the `Vec::into_iter` method on [`Vec`] =
-(provided by the
-
-Ditto.
-
-> +/// [`IntoIterator`] trait).
-> +///
-> +/// # Examples
-> +///
-> +/// ```
-> +/// let v =3D kernel::kvec![0, 1, 2]?;
-> +/// let iter =3D v.into_iter();
-> +///
-> +/// # Ok::<(), Error>(())
-> +/// ```
-> +pub struct IntoIter<T, A: Allocator> {
-> +    ptr: *mut T,
-> +    buf: NonNull<T>,
-
-No invariants for these two fields?
-
-> +    len: usize,
-> +    cap: usize,
-> +    _p: PhantomData<A>,
-> +}
-> +
-> +impl<T, A> IntoIter<T, A>
-> +where
-> +    A: Allocator,
-> +{
-> +    fn as_raw_mut_slice(&mut self) -> *mut [T] {
-> +        ptr::slice_from_raw_parts_mut(self.ptr, self.len)
-> +    }
-> +}
-> +
-> +impl<T, A> Iterator for IntoIter<T, A>
-> +where
-> +    A: Allocator,
-> +{
-> +    type Item =3D T;
-> +
-> +    /// # Examples
-> +    ///
-> +    /// ```
-> +    /// let v =3D kernel::kvec![1, 2, 3]?;
-> +    /// let mut it =3D v.into_iter();
-> +    ///
-> +    /// assert_eq!(it.next(), Some(1));
-> +    /// assert_eq!(it.next(), Some(2));
-> +    /// assert_eq!(it.next(), Some(3));
-> +    /// assert_eq!(it.next(), None);
-> +    ///
-> +    /// # Ok::<(), Error>(())
-> +    /// ```
-
-AFAIK documentation on functions in trait implementations won't show up
-in rustdoc (I just checked this). So I would remove it.
-
-> +    fn next(&mut self) -> Option<T> {
-> +        if self.len =3D=3D 0 {
-> +            return None;
-> +        }
-> +
-> +        let ptr =3D self.ptr;
-> +        if !Vec::<T, A>::is_zst() {
-> +            // SAFETY: We can't overflow; `end` is guaranteed to mark th=
-e end of the buffer.
-> +            unsafe { self.ptr =3D self.ptr.add(1) };
-> +        } else {
-> +            // For ZST `ptr` has to stay where it is to remain aligned, =
-so we just reduce `self.len`
-> +            // by 1.
-
-Note that `<*mut T>::add` advances the pointer by `size_of::<T>()`
-bytes. So in the case that `T` is a ZST, it won't be advanced.
-So you could remove this `if`.
-
-> +        }
-> +        self.len -=3D 1;
-> +
-> +        // SAFETY: `ptr` is guaranteed to point at a valid element withi=
-n the buffer.
-> +        Some(unsafe { ptr.read() })
-> +    }
-> +
-> +    /// # Examples
-> +    ///
-> +    /// ```
-> +    /// let v: KVec<u32> =3D kernel::kvec![1, 2, 3]?;
-> +    /// let mut iter =3D v.into_iter();
-> +    /// let size =3D iter.size_hint().0;
-> +    ///
-> +    /// iter.next();
-> +    /// assert_eq!(iter.size_hint().0, size - 1);
-> +    ///
-> +    /// iter.next();
-> +    /// assert_eq!(iter.size_hint().0, size - 2);
-> +    ///
-> +    /// iter.next();
-> +    /// assert_eq!(iter.size_hint().0, size - 3);
-> +    ///
-> +    /// # Ok::<(), Error>(())
-> +    /// ```
-> +    fn size_hint(&self) -> (usize, Option<usize>) {
-> +        (self.len, Some(self.len))
-> +    }
-> +}
-> +
-> +impl<T, A> Drop for IntoIter<T, A>
-> +where
-> +    A: Allocator,
-> +{
-> +    fn drop(&mut self) {
-> +        // SAFETY: Drop the remaining vector's elements in place, before=
- we free the backing
-> +        // memory.
-
-This comment explains why you are doing it, not why it's ok to do it.
-
-> +        unsafe { ptr::drop_in_place(self.as_raw_mut_slice()) };
-> +
-> +        // If `cap =3D=3D 0` we never allocated any memory in the first =
-place.
-> +        if self.cap !=3D 0 {
-> +            // SAFETY: `self.buf` was previously allocated with `A`.
-> +            unsafe { A::free(self.buf.cast()) };
-> +        }
-> +    }
-> +}
-> +
-> +impl<T, A> IntoIterator for Vec<T, A>
-> +where
-> +    A: Allocator,
-> +{
-> +    type Item =3D T;
-> +    type IntoIter =3D IntoIter<T, A>;
-> +
-> +    /// Consumes the `Vec<T, A>` and creates an `Iterator`, which moves =
-each value out of the
-> +    /// vector (from start to end).
-> +    ///
-> +    /// # Examples
-> +    ///
-> +    /// ```
-> +    /// let v =3D kernel::kvec![1, 2]?;
-> +    /// let mut v_iter =3D v.into_iter();
-> +    ///
-> +    /// let first_element: Option<u32> =3D v_iter.next();
-> +    ///
-> +    /// assert_eq!(first_element, Some(1));
-> +    /// assert_eq!(v_iter.next(), Some(2));
-> +    /// assert_eq!(v_iter.next(), None);
-> +    ///
-> +    /// # Ok::<(), Error>(())
-> +    /// ```
-> +    ///
-> +    /// ```
-> +    /// let v =3D kernel::kvec![];
-> +    /// let mut v_iter =3D v.into_iter();
-> +    ///
-> +    /// let first_element: Option<u32> =3D v_iter.next();
-> +    ///
-> +    /// assert_eq!(first_element, None);
-> +    ///
-> +    /// # Ok::<(), Error>(())
-> +    /// ```
-
-I feel a bit bad that you wrote all of this nice documentation for
-functions that receive their documentation from the trait...
+I noticed that you don't have a `pop` or `remove` function implemented,
+I think it would be weird to have all the other functions but not those.
 
 ---
 Cheers,
 Benno
-
-> +    #[inline]
-> +    fn into_iter(self) -> Self::IntoIter {
-> +        let (ptr, len, cap) =3D self.into_raw_parts();
-> +
-> +        IntoIter {
-> +            ptr,
-> +            // SAFETY: `ptr` is either a dangling pointer or a pointer t=
-o a valid memory
-> +            // allocation, allocated with `A`.
-> +            buf: unsafe { NonNull::new_unchecked(ptr) },
-> +            len,
-> +            cap,
-> +            _p: PhantomData::<A>,
-> +        }
-> +    }
-> +}
-> --
-> 2.46.0
->=20
 
