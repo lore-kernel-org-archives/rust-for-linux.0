@@ -1,55 +1,55 @@
-Received: from mail-lf1-f42.google.com (mail-lf1-f42.google.com [209.85.167.42])
+Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FCE91A7051
-	for <rust-for-linux@vger.kernel.org>; Tue, 10 Sep 2024 21:10:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9ADAD17C7B6
+	for <rust-for-linux@vger.kernel.org>; Tue, 10 Sep 2024 21:16:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726002641; cv=none; b=rRpIUVKsikkuQrwlN5Ep2pU/SEE6wjy/cc7PhL9DiVv5TFtWeP+Zd3m20vGaTETP0FZOe8Xj0oRxzFr1NeTJWCyfXsNAIHfNjtpwz3skmEoc0E5V4vQd4qmegaioym9G6LObBLk1cbRUeIGEUWnkB+BZyrs1e0wBgHhtIBP9wpU=
+	t=1726002992; cv=none; b=WNya3+P+Da4YUDgBi0GRN4MLMdJOxRYU7p+WnigJ0Dy3scmNODByMkfK/sHhbXiaIO8VTOSau2GqZUZIUPkEkqzbkkzZm8hXUjmQkuD93Q3QEqriiiBDqMWpoRoPGv/mjDuI0yjY6rW0jNARTSTgX4HD/nD4F8ayFtjVTiYeHj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726002641; c=relaxed/simple;
-	bh=XE4+e/G/h/a5BwWjufqCbsxsDHKt/oX1Y9qt8d3awZg=;
+	s=arc-20240116; t=1726002992; c=relaxed/simple;
+	bh=wFJuViaiJdOUX1o0VuO7DPs78bj+nqTGTP1Bs491x5w=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=jBkhpHHyRGr6GOGU/HWLY5TEzUYMfPVqGQ1DxZ2Z+5EM5fSkftyalbA/JWRULAeYFapHnvYlEAkq00sd3Q0xwjEq7kwThcm849hhIr9N2j9ubEYMvxXxmm44NYlPPgAJpGXuQbe1zEU8EQTAhAZZ12Eyt9tI0jspoRwHl5Vo9kA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=IMhGDA9P; arc=none smtp.client-ip=209.85.167.42
+	 To:Cc:Content-Type; b=iAdGfpthMGWLrjglWOm2Jqf9avOmCsX1jfuDrpRRrBxpMrFxnbqENnn/+zu6YIVAL3pFU3yNgtUcworVj+EGui1icus+jzW5yhF4HNEjI0T6hfxX86wZEbZkt1chJvyLz5JWu6eAsmd1YCs8Yi1MJcS+wXSxGS5wA/oYBD/xWn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=GVRNqdtJ; arc=none smtp.client-ip=209.85.214.175
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="IMhGDA9P"
-Received: by mail-lf1-f42.google.com with SMTP id 2adb3069b0e04-53661d95508so36986e87.1
-        for <rust-for-linux@vger.kernel.org>; Tue, 10 Sep 2024 14:10:39 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="GVRNqdtJ"
+Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-207349fa3d7so258935ad.1
+        for <rust-for-linux@vger.kernel.org>; Tue, 10 Sep 2024 14:16:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1726002638; x=1726607438; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1726002990; x=1726607790; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=XE4+e/G/h/a5BwWjufqCbsxsDHKt/oX1Y9qt8d3awZg=;
-        b=IMhGDA9PtnhJuDgWhIt+osY3utDErZQrpGxHQX1cZem8XR0WPXUblvyuMwCTQJ3LAk
-         ahZZKFHV1qNYkYDe5Leg0qzlS9pghc9TOwrV8mQtndbl/yH7+YoEZ8FQNnDoFmEk+k9o
-         nozManjiVRkA6fsjKSbk8d4W1GV3RvH/a62Q6SHHfFQygos0MNzXua6r7NOwAl/Z7oxd
-         aRq4dNhX9jImXn/M3fjh3iIlh87Punokkgk6plc6zWnCO1CaaWFCtm3zhrsxMIDLVF6M
-         RLluowyvXNv9EQbPygBLYbD8AVqYi04W3q6QJmfHKE+aQEFZP7iequE5UNCH5DB0RH+m
-         A8NA==
+        bh=vQ+GpSXTU6srlPmzzRuOFiYRCInXkHTjNZjLXMTW+8A=;
+        b=GVRNqdtJYK3IhmhglThzmKAdHMxmU+4YbhLEwBKi7X1WLwMRcXOHXU372nGUayqH30
+         VbBZ7rmnlwcaRNhcTHZeoCpSN67Pc6zNIkH2oARK2HwgIlJo641HJZjv4cw2F8CmLgkA
+         nS5Ly9fmlfBKwuzmXuQWLnrGAJE7TlJRowHGcGfgxIFBr5juBtPUWyfoG9toYOoYvc8c
+         +8rgqrBrQE+yIOWJSgwePRO/DbHB1//efnQPOcnHoTFy7hcNtIb4R8YHLvfXbnhdSX9e
+         CUCYwHVyAODTcK/PUK65N76EUfMvHXEgVG8yNadTaJNi3fClsSxJ3o4mVhblT0DbOgSO
+         M3dw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726002638; x=1726607438;
+        d=1e100.net; s=20230601; t=1726002990; x=1726607790;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=XE4+e/G/h/a5BwWjufqCbsxsDHKt/oX1Y9qt8d3awZg=;
-        b=VSWdhnK7L9Kjfha6shD7BF44+JUhPQREwLIjjIRiHjX33C0mHOIgOlf07Nu8jKxK0e
-         clf8uzDgVvma6rHjiTwlOq9GDTqs/wy6Rvxklq6ui5cYw8Pzxs2LN2NzLtvgpDEvTANe
-         Jw7pzq7XBj+UcKhZljBrRK5FCg6M2PgufCNhOCCB+3qgpwrtml+9FECVT2nEX53opQSn
-         y8E4HD3Js7wUe51zY9yhaPWIPyKLaIl+3MGkFn3hnLG6UURWi+J4H1U9aKrKgT2aHEBO
-         SOz2Nk774DZo3DrvaTkk68dJWFPzDXP0UhQCe1+dfB1OIpv2+AMd+jvwwDuIAvhpAhov
-         5I3A==
-X-Forwarded-Encrypted: i=1; AJvYcCVoVucK8K3jk9OKMNCvr3F3H38AJgayiCXWlLPSlQGbO27DN3Dy3hxUMhQ7YGLwV7HjtoW9x6u3EDUpPbDtvA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwarSVftHFjnSO3J2f+Z3m0pabF1LxFJ1MCFCVvV9ugvRWMcN/n
-	4ZN3ba+t3TgS+nUBPR0lrl2A01ioZbhAFw+CvZHp1ZLx3YD0wNsuhRmuOKtIo+fVIT2a4oAl5pC
-	8EDtD4igjkMbATd3p4aEtp8b0FwHvPlxWpz+s
-X-Google-Smtp-Source: AGHT+IHIo/1g0cKAyt8QSBLpZEYQTEjztdB1IERh1UKFzCf1Ts3Mvd2qv8bZQ+qVA3GI1MbRVcan2+yf5xHv8XmvNuo=
-X-Received: by 2002:a05:6512:3f14:b0:52e:934c:1cc0 with SMTP id
- 2adb3069b0e04-53674bbe0demr32143e87.7.1726002637398; Tue, 10 Sep 2024
- 14:10:37 -0700 (PDT)
+        bh=vQ+GpSXTU6srlPmzzRuOFiYRCInXkHTjNZjLXMTW+8A=;
+        b=ZndZNvZxrl4RZAEDPMw68P0OYLSX0PnukeOsZZyDgYwGaf/uFQhzQh4qZ8YjAlStSC
+         a2iUmuV8kOk2y6862snFol5I/Qi/0cnlTNTlEthgArsfO4F8MoWBZyg5TLu1qC09O4gZ
+         ntUQYYXHabPZTqD9fbMNytIUo+5XjHn7doq/mCufIko3lP5TM2kxDqkbhL/59mbLeBv/
+         Gq3mwdmaQ2BgD4zL7H+ECWo5AbvWYndcciPFFr6wmevrWQU/Zm9hnYvYXF1MgvQddMk1
+         Jw/6CW5GGOe1gVrq/jd9zr6/lLuO5h44peGRLM845ZjuLcKJ8vZmb8pzBnjPRNnOhBbd
+         payw==
+X-Forwarded-Encrypted: i=1; AJvYcCVf04aiSCQjIWLrIlQO8pRnGQl+0zhYGirkC/URHqw+J/jkfWTbEkpfwjdej//A3Q9Xf4gggswe6H3Un2DGgw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzTSz6qa/1LObdGKBD2NivXgWmWhQT5KoVj6OwA69nL/NHlkjrY
+	XLOsSYuzuTaJdPfLBiv8PtFz623BcHz55Vnv/pPXBVEB6mQGu0EONqJj66ocU0VnHM6VBorctFh
+	cebOZ1zKAA2au61vgPeouNX6Gyn5TKfsqnE+p
+X-Google-Smtp-Source: AGHT+IEX/psll2dog+nO241fC0V6++ypLFoAuwx9543jGrSb2GAYEQZkZHBT20PjPwI2C62EMdksu+R58p4s5QutSWg=
+X-Received: by 2002:a17:903:2444:b0:201:e2db:7be3 with SMTP id
+ d9443c01a7336-207570ea766mr216155ad.21.1726002989611; Tue, 10 Sep 2024
+ 14:16:29 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -57,50 +57,111 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 References: <20240815173903.4172139-21-samitolvanen@google.com>
- <20240815173903.4172139-22-samitolvanen@google.com> <CAK7LNAQdutCiBkWtA6MbVLpfhB-MQXnszQm8eEiBZpeX++5eLA@mail.gmail.com>
- <CABCJKucott2g8mZyJ0uaG+PdPTMsniR7eNCR9GwHpT_kQ+GFvg@mail.gmail.com> <CAK7LNATyv+zfSwyykKQrSjxR84ST0xTyEarnAudF2VuLPVxqnQ@mail.gmail.com>
-In-Reply-To: <CAK7LNATyv+zfSwyykKQrSjxR84ST0xTyEarnAudF2VuLPVxqnQ@mail.gmail.com>
+ <20240815173903.4172139-34-samitolvanen@google.com> <ac7f8644-453a-4156-b357-ba266a7a0ca6@suse.com>
+In-Reply-To: <ac7f8644-453a-4156-b357-ba266a7a0ca6@suse.com>
 From: Sami Tolvanen <samitolvanen@google.com>
-Date: Tue, 10 Sep 2024 14:09:58 -0700
-Message-ID: <CABCJKueSe0TT7HnoJULVZfz6t8x0WjkWksZ1hzBY7SZQm6iYgw@mail.gmail.com>
-Subject: Re: [PATCH v2 01/19] tools: Add gendwarfksyms
-To: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Luis Chamberlain <mcgrof@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Matthew Maurer <mmaurer@google.com>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	Petr Pavlu <petr.pavlu@suse.com>, Neal Gompa <neal@gompa.dev>, Hector Martin <marcan@marcan.st>, 
-	Janne Grunau <j@jannau.net>, Asahi Linux <asahi@lists.linux.dev>, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
+Date: Tue, 10 Sep 2024 14:15:50 -0700
+Message-ID: <CABCJKufmgJOouD3KytBf8dv5KnNensJvw_7gNP8hygn98GtWDA@mail.gmail.com>
+Subject: Re: [PATCH v2 13/19] gendwarfksyms: Add symtypes output
+To: Petr Pavlu <petr.pavlu@suse.com>
+Cc: Masahiro Yamada <masahiroy@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Matthew Maurer <mmaurer@google.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, Neal Gompa <neal@gompa.dev>, 
+	Hector Martin <marcan@marcan.st>, Janne Grunau <j@jannau.net>, Asahi Linux <asahi@lists.linux.dev>, 
+	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	linux-modules@vger.kernel.org, rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Sep 10, 2024 at 2:44=E2=80=AFAM Masahiro Yamada <masahiroy@kernel.o=
-rg> wrote:
->
-> On Fri, Sep 6, 2024 at 5:53=E2=80=AFAM Sami Tolvanen <samitolvanen@google=
-.com> wrote:
-> >
-> > Thanks for the patch! I think this would otherwise work, but I also
-> > need jhash (or a similar hash function), and I can't combine the
-> > tools/include version with this, because it ends up pulling in a
-> > duplicate definition of struct list_head. Would you consider adding a
-> > hash function as well?
->
->
-> I did it as a part of my kconfig works.
->
-> Check scripts/include/hash.h added by the following patches.
->
-> https://lore.kernel.org/linux-kbuild/20240908124352.1828890-1-masahiroy@k=
-ernel.org/T/#mea41ff4c5b6c77aaaae1ed9dac6723bc2f705107
-> https://lore.kernel.org/linux-kbuild/20240908124352.1828890-1-masahiroy@k=
-ernel.org/T/#m9050a270fedb7df9a54e843674bc9ad8fd068f57
->
->
-> I think simple helpers are enough for name_hash and addr_hash,
-> but please let me know if you encounter a problem.
+Hi Petr,
 
-Great, thanks! Looks like this should have everything I need.
+On Tue, Sep 10, 2024 at 7:58=E2=80=AFAM Petr Pavlu <petr.pavlu@suse.com> wr=
+ote:
+>
+> On 8/15/24 19:39, Sami Tolvanen wrote:
+> > @@ -122,6 +135,16 @@ int main(int argc, const char **argv)
+> >
+> >       check(symbol_read_exports(stdin));
+> >
+> > +     if (symtypes_file) {
+> > +             symfile =3D fopen(symtypes_file, "w+");
+>
+> The file is sufficient to open only for writing.
+
+True, I'll drop the +.
+
+> > +     if (symfile)
+> > +             fclose(symfile);
+> > +
+> >       return 0;
+> >  }
+>
+> The fclose() call should be wrapped in check() to catch a situation when
+> flushing the stream potentially failed.
+
+Ack.
+
+> > +/* See dwarf.c:is_declaration */
+> > +#define SYMBOL_DECLONLY_PREFIX "__gendwarfksyms_declonly_"
+> > +#define SYMBOL_DECLONLY_PREFIX_LEN (sizeof(SYMBOL_DECLONLY_PREFIX) - 1=
+)
+>
+> Nit: These defines should go into the patch 15/19 "gendwarfksyms: Add
+> support for declaration-only data structures".
+
+Yeah, I noticed these too. Will fix in the next version.
+
+> > +struct type_expansion {
+> > +     char *name;
+> > +     struct type_list *expanded;
+> > +     struct type_list *last;
+> > +     size_t len;
+> > +     struct hlist_node hash;
+> > +};
+>
+> I found the manipulation of type_expansion.expanded and
+> type_expansion.last somewhat strange.
+>
+> The list starts already with one element in type_expansion_init(). This
+> is apparently to make the last pointer valid. This element is however
+> empty and gets only assigned on the first call to type_list_append().
+> Other elements are then added normally, always assigned.
+>
+> Perhaps consider using a regular list implementation, similarly to what
+> was discussed under the patch 06/19 "gendwarfksyms: Add a cache for
+> processed DIEs".
+
+Agreed, I'll switch this to a regular list in v3.
+
+> > +     /* Wrap names with spaces in single quotes */
+> > +     if (strstr(cache->fqn, " ")) {
+> > +             format =3D "%c#'%s'";
+> > +             len +=3D 2;
+> > +     } else {
+> > +             format =3D "%c#%s";
+> > +     }
+> > +
+> > +     name =3D malloc(len);
+> > +     if (!name) {
+> > +             error("malloc failed");
+> > +             return NULL;
+> > +     }
+> > +
+> > +     if (snprintf(name, len, format, prefix, cache->fqn) >=3D len) {
+> > +             error("snprintf failed for '%s' (length %zu)", cache->fqn=
+,
+> > +                   len);
+> > +             free(name);
+> > +             return NULL;
+> > +     }
+>
+> This could be quite simplified:
+>
+> const char *quote =3D strstr(cache->fqn, " ") !=3D NULL ? "'" : "";
+> if (asprintf(&name, "%c#%s%s%s", prefix, quote, cache->fqn, quote) < 0)
+>         [...]
+
+Good point, I'll change this too. Thanks for taking a look!
 
 Sami
