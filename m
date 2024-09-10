@@ -1,147 +1,102 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4E5E18A6B9;
-	Tue, 10 Sep 2024 09:44:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23F6F23A6;
+	Tue, 10 Sep 2024 11:11:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725961455; cv=none; b=gIFAGXIOPF0NVQGkd31vSElNXJHorOSDUoUvbEwUr5moa1qDNqxRKa+HEJIDZOj9nY2lRKoR8TA3zumsxXiDg4FRH5nKFIsgrJGqqkMVOk/y9OzWiYBmWh4dv4KT+ZIyupd4lt3HDca5DPAeaGfn3xJWexRQlBH4TAGq+6n8zsU=
+	t=1725966664; cv=none; b=uf3m3L+Qrh52Tzh67WJI9V9zlaZLlW+GlRcV1DjUS5eP8urEyc76Ca4auSx933fBlJBgYus4Wf2hMfN/z7ULxcc3AWl8peQYQTRNXM0ROodECL+cGPR/t6KVweqzO67qsxXhrNnEx+kGotLG8EvPBUDNNt2sw9KNFi+kp3KCCmk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725961455; c=relaxed/simple;
-	bh=D3N04FmIzvqggt9C4bVYVfpcu/iBmJ0tG8QKUZ/Wex4=;
+	s=arc-20240116; t=1725966664; c=relaxed/simple;
+	bh=mfiXV5VkycZzLh5WzQn4rnkI9+MIwHzFuvfRTNj7tMo=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Y21Cv+LYEVxByj7AUUO8O5g2rY3H42Y2c46mEPXLNyKgwQlorWpGWa/MbE0xWNtaTmKks37kVlNL+m8eP8tGxLoBPLVf+FdJD61WanquqjJp5WVAA4DMvm6JD6a9MOK5JKzjzOTTXDV6gVKVhhSHQdafTE7bZ9jjiK4JauwXDX8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V0JpD3e7; arc=none smtp.client-ip=10.30.226.201
+	 To:Cc:Content-Type; b=LnyoY54eDSVHtK7iKGH0vEklYBx1o0lZNzM5Xak1guIxoaAwXYbdNqT4eCESatonbUjCvps00lagMo/nnPrNiGS0XgdAGA+Msnodce8JUInBPJODqLaX3iPDhO13XuAVNgxoWVMXGFE1dI08D+LAMt4JD+YcBjNyZtSL5haMfKk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=GWg0wCBk; arc=none smtp.client-ip=209.85.216.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V0JpD3e7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4C6FC4CECC;
-	Tue, 10 Sep 2024 09:44:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725961454;
-	bh=D3N04FmIzvqggt9C4bVYVfpcu/iBmJ0tG8QKUZ/Wex4=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=V0JpD3e7sKruPeep6Cxyq2dpx6qjdL0MIrRHp5Yy29lynGweoxEznoPIH4IkTuXjZ
-	 p6YtutpNth7tSupJtqjbJ5I55XrfUiAn+/Ou6IAaYynWlmub14PpBZynEnOQ4VpSrU
-	 8x7WrCqIIRZIsecKpg5WILTWBtyowS6vulX3djzTkkF7KMCY0qqytTGQHwIGioYbAY
-	 ZnQ0tjEcEQYZm7eYeXkrTtSIhmLiOiukzLA+ou9YHVkOJBQEewhhJLw9C2LhqojNxY
-	 ttiZW1TvZZVf7EvQIbAHAYhvhZ3ySIZdPfcQ4XrlGYyPyr8OwcGMiS0Fuk+GdHx3p+
-	 lQdhAqe53HHMg==
-Received: by mail-lj1-f174.google.com with SMTP id 38308e7fff4ca-2f6580c2bbfso53433041fa.1;
-        Tue, 10 Sep 2024 02:44:14 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCU5Rae+h2LeHvTrk+v9CnT6V/3ie3Rr3WJz2muI+qHWOs+jbUPWUQhnOVvoEknzDFkIv4Yg0k74rntoMozK@vger.kernel.org, AJvYcCVcbpzoDp0lAZY5sjtL8rzLn/b7NvQ+XuAXof956CNdIzcnsOZg0AQkt03m/+6VNwn1O3J2yq7D3fdz+aOv6sI=@vger.kernel.org, AJvYcCW9Yk0ySK7ovmbKmwAs5m/idN+nYXmBV06i3rrGyfpdEM5PIREmJVuO8ym6iFl0Zaws7HQcIO+kQNxkxsKvYg==@vger.kernel.org, AJvYcCWvEsBojM/dkcf5n9643/4MI/PxL7lU8Yp32JaYJ9JkW9kZ22M8oJzSmlhDrkpqmpsAxMkgV9I0M7YH5jk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwZ2fHgzMYSCSBSgfnthvjgKfI/MWXTuIsjrzGMsvL//3EZur07
-	aVcuWriWRN0LGIhrAiycWil5awupod5AOIvhfz8nsfTRJtQGGCF1ywRWCy/pI0YMY3QQM1ogJyX
-	yVhNY47fV0qlDfBfzSqy7gRfka6I=
-X-Google-Smtp-Source: AGHT+IHdShnxBBjUPptQ41/ldZfk223s5R8ozEYJtzbMZjFzw1UM2NBN4Nfeh9oGsEZBQBVytVHnTCzwafdOaAGxUc8=
-X-Received: by 2002:a2e:bea5:0:b0:2f7:54fb:e68c with SMTP id
- 38308e7fff4ca-2f772603a20mr9852201fa.4.1725961453356; Tue, 10 Sep 2024
- 02:44:13 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="GWg0wCBk"
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-2da5acb95d2so592495a91.0;
+        Tue, 10 Sep 2024 04:11:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1725966662; x=1726571462; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=XYKGK8TlpjrzAn8Qx07BmWTI1YCZDMMMQixpsjlqW1s=;
+        b=GWg0wCBkMYEKntwGO6BlL9VZZtXPSY6b7ftZPMiGJA52uR20vIzBCmJF00hhB9amA1
+         gkc86r0ThrtwrDlwI3KLr2WgVjDYOnwp9Az9aOrimLtSp0Po7WaLLjGG5P4mhqgGbgV0
+         6tM2DlsfSr+fGLcQpl3YIS/SdNv1Pg4EwWI4wAW6mTrxRqMCLlgOHBT8BTnjuw3zS5H8
+         R04KeRrS9fm+NlwzNPhfsy44YKCnPfptpDwpygoetdpSNFKvuzy9mhpBMb5nBM464SSB
+         sLciQE6mO6UGFKTFDWNBZSl6J38aTogHbUoPjYxapiGSbVZu03RWzvT75cCzI5Pum/VB
+         5MwQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1725966662; x=1726571462;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=XYKGK8TlpjrzAn8Qx07BmWTI1YCZDMMMQixpsjlqW1s=;
+        b=niXX+5/r+7dpq1euPwb3i7IK3E0a7Wb9tvZ6hitvU2asKyUO6pperynDaQjCLil2YA
+         U9G/u+87Ootk5WqLSPRoD2wUqAcUb12pyHg0JM2CScsSfgmatTNQ28NWnmf8Cfy/bQof
+         7nkVz+ZWShfHEzB76F24wHsx+IO2YrlBNcsZBIVv8ySjMBc9JbD8QrAgK8EwsUntC3B3
+         buY8kJmR1Or6rO1yrFa79XaqThdz0z5Vnoyd1MpTNnADUJHHxQymf3EhCUHzoCF/Uz/w
+         LAtW69kDhmcI+k/uGn5z6TgDQ/D+aBCZi9r751lrcGZMgIlaUwQI/VMbsjN2Mip7JIFl
+         XUmA==
+X-Forwarded-Encrypted: i=1; AJvYcCX7QWdrGYOcE02TjkRX1GThLvSJT3OIE7D/SHUym+FSqw0H1f9qFJ+RP0UPC+JGK0iCu4EHbRfqgrqVGycK5xo=@vger.kernel.org, AJvYcCXak+goX9ue7oix5qPVPOH8U/r3OkAHQpbzgTk4fI0i+JRXqsNrmtOOX06QE7aJi5N3ROfraU0TCZQ5m8D6@vger.kernel.org, AJvYcCXtqa6qWx3XNRn/yVQL3rRLvNPny8pcCS/IJxemque8fc8jGb5BRg9sAiYUwc4Yxu5X8GLJLio9T6gJ+w==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwNCgRjbTkE7QgUZPpWXxKYK6mQGhqX+klp14UPBfaqLGOjUyyk
+	2lJx2wdCcPwq9yBMuizOQ7f2ZspBgP0PysOZ58Xf81eeRc5XEWtVPjZyV0t8Z4n7TqeZ+mwia8Y
+	OwuSFI3d4psGPqQWQV0LqUjo5ck8=
+X-Google-Smtp-Source: AGHT+IGTP7qFuht9HhfJ+QlqfAYIP5x3WmnewAO7zBOyxe4uOgNrc2C1vsv8OIIU/CXsqoYzPBg7fdhdiHhG1MKL4Fo=
+X-Received: by 2002:a17:90b:4d8c:b0:2db:60b:697f with SMTP id
+ 98e67ed59e1d1-2db060b69a2mr4561126a91.9.1725966662445; Tue, 10 Sep 2024
+ 04:11:02 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240815173903.4172139-21-samitolvanen@google.com>
- <20240815173903.4172139-22-samitolvanen@google.com> <CAK7LNAQdutCiBkWtA6MbVLpfhB-MQXnszQm8eEiBZpeX++5eLA@mail.gmail.com>
- <CABCJKucott2g8mZyJ0uaG+PdPTMsniR7eNCR9GwHpT_kQ+GFvg@mail.gmail.com>
-In-Reply-To: <CABCJKucott2g8mZyJ0uaG+PdPTMsniR7eNCR9GwHpT_kQ+GFvg@mail.gmail.com>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Tue, 10 Sep 2024 18:43:37 +0900
-X-Gmail-Original-Message-ID: <CAK7LNATyv+zfSwyykKQrSjxR84ST0xTyEarnAudF2VuLPVxqnQ@mail.gmail.com>
-Message-ID: <CAK7LNATyv+zfSwyykKQrSjxR84ST0xTyEarnAudF2VuLPVxqnQ@mail.gmail.com>
-Subject: Re: [PATCH v2 01/19] tools: Add gendwarfksyms
-To: Sami Tolvanen <samitolvanen@google.com>
-Cc: Luis Chamberlain <mcgrof@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Matthew Maurer <mmaurer@google.com>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	Petr Pavlu <petr.pavlu@suse.com>, Neal Gompa <neal@gompa.dev>, Hector Martin <marcan@marcan.st>, 
-	Janne Grunau <j@jannau.net>, Asahi Linux <asahi@lists.linux.dev>, linux-kbuild@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org
+References: <20240909161749.147076-1-hridesh699@gmail.com> <7b98dbcc-318d-49e7-b71a-f64cc611c2ad@proton.me>
+In-Reply-To: <7b98dbcc-318d-49e7-b71a-f64cc611c2ad@proton.me>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 10 Sep 2024 13:10:50 +0200
+Message-ID: <CANiq72mS6_PCqfhTtKvAgE=S8gSj44_v9kG3AK_txxdsMo0PdQ@mail.gmail.com>
+Subject: Re: [PATCH] docs: rust: clean up empty `\\\` lines and improve
+ rustdoc formatting
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: hridesh <hridesh699@gmail.com>, linux-block@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Andreas Hindborg <a.hindborg@samsung.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Jens Axboe <axboe@kernel.dk>, 
+	Matt Gilbride <mattgilbride@google.com>, Shuah Khan <skhan@linuxfoundation.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Sep 6, 2024 at 5:53=E2=80=AFAM Sami Tolvanen <samitolvanen@google.c=
-om> wrote:
+On Mon, Sep 9, 2024 at 9:22=E2=80=AFPM Benno Lossin <benno.lossin@proton.me=
+> wrote:
 >
-> Hi,
+> I don't know if the commit title should start with `docs`, maybe we want
+> to do `rust: docs` when changing rustdocs? (This is a question to the
+> other Rust reviewers)
 >
-> On Thu, Sep 5, 2024 at 2:30=E2=80=AFAM Masahiro Yamada <masahiroy@kernel.=
-org> wrote:
-> >
-> > On Fri, Aug 16, 2024 at 2:39=E2=80=AFAM Sami Tolvanen <samitolvanen@goo=
-gle.com> wrote:
-> > >
-> > > +++ b/scripts/gendwarfksyms/gendwarfksyms.h
-> > > @@ -0,0 +1,78 @@
-> > > +/* SPDX-License-Identifier: GPL-2.0-or-later */
-> > > +/*
-> > > + * Copyright (C) 2024 Google LLC
-> > > + */
-> > > +
-> > > +#include <dwarf.h>
-> > > +#include <elfutils/libdw.h>
-> > > +#include <elfutils/libdwfl.h>
-> > > +#include <linux/hashtable.h>
-> > > +#include <inttypes.h>
-> > > +#include <stdlib.h>
-> > > +#include <stdio.h>
-> >
-> >
-> > Could you include external headers first,
-> > then in-tree headers?
-> > (and one blank line in-between).
->
-> Sure, I'll reorder this.
->
-> > Also, please consider using scripts/include/hashtable.h
-> >
-> >
-> >
-> > How about this?
-> >
-> >
-> > #include <dwarf.h>
-> > #include <elfutils/libdw.h>
-> > #include <elfutils/libdwfl.h>
-> > #include <inttypes.h>
-> > #include <stdlib.h>
-> > #include <stdio.h>
-> >
-> > #include <hashtable.h>
-> >
-> >
-> >
-> >
-> >
-> >
-> > If necessary, you can use this patch too:
-> > https://lore.kernel.org/linux-kbuild/20240904235500.700432-1-masahiroy@=
-kernel.org/T/#u
->
-> Thanks for the patch! I think this would otherwise work, but I also
-> need jhash (or a similar hash function), and I can't combine the
-> tools/include version with this, because it ends up pulling in a
-> duplicate definition of struct list_head. Would you consider adding a
-> hash function as well?
+> I think the title doesn't need to mention the exact cleanup, just
+> something along the lines "clean up docs" should suffice.
 
+Yeah, "docs" would be better for Documentation/ bits.
 
-I did it as a part of my kconfig works.
+I think something like this would be ideal:
 
-Check scripts/include/hash.h added by the following patches.
+   rust: kernel: clean up empty `\\\` lines
 
-https://lore.kernel.org/linux-kbuild/20240908124352.1828890-1-masahiroy@ker=
-nel.org/T/#mea41ff4c5b6c77aaaae1ed9dac6723bc2f705107
-https://lore.kernel.org/linux-kbuild/20240908124352.1828890-1-masahiroy@ker=
-nel.org/T/#m9050a270fedb7df9a54e843674bc9ad8fd068f57
+> Instead of adding these backslashes, I personally would prefer if we
 
+Yeah, we have another patch on the list for that, so I would remove it
+from this one.
 
-I think simple helpers are enough for name_hash and addr_hash,
-but please let me know if you encounter a problem.
+Thanks!
 
-
-
---=20
-Best Regards
-Masahiro Yamada
+Cheers,
+Miguel
