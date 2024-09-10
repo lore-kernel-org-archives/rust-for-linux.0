@@ -1,101 +1,106 @@
-Received: from mail-pf1-f174.google.com (mail-pf1-f174.google.com [209.85.210.174])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07A5718F2D5
-	for <rust-for-linux@vger.kernel.org>; Tue, 10 Sep 2024 12:25:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0807818F2DB
+	for <rust-for-linux@vger.kernel.org>; Tue, 10 Sep 2024 13:03:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725971142; cv=none; b=pVWmpOPY1aZfMMg5Gf8rVyhTFqO5Oh/TZe4pKU6bvthXfPlkENw86v8gNVIeW8xg8LmAuhgfaSLmCtUAw8GFDQgoc/qCpI8pMmbYUd37g+llJK0V6iHkfYpHv1H8IsaYDz/nsLTFc79xvJ3mQAjf/zkg7+MKYjk7ay40G69bi3g=
+	t=1725973440; cv=none; b=dmoM/l3P+fS45KR/gGA3aaccPgFZEixCh2T8+u9iwi4FeIFvOY9cYk+S9/pwtXkWCKA1hBIu2z0DWffAP0U1S/v/ncISjRQt3KJwxDCn8PZdV2ZPXZUJ4WtWxaD5wPiyRk2rKnw56NwiSEdw4B/nTPjw6gT5PsEjoG5WRTsF5+w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725971142; c=relaxed/simple;
-	bh=23lw6QTHAeuSEH0lv039QLg2af/dNYhHa9NZAKrZRhQ=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Imt1VsbMOamTh9O64KbiclbNM8MncI/+OadfKec0U1riyERsp9xE7saBau0uPwHZgGZv/oPEWmSAYa1yyICv04RvqN42C17z49k9BUbVGAexxrh1uBz91WPPyHuisKPtAgNnXBhB9kquEKCorkoktwyETExSz1qexs5X5sdsrxE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dS7ly2C6; arc=none smtp.client-ip=209.85.210.174
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1725973440; c=relaxed/simple;
+	bh=x1o0G2D/DnKp2GiG1HSvTPWfErDt/cPj5ZiIWZe9ToM=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=tJa8GRPI73gE4zbwL4tKgPpjdNZVYcIkgw75C9XIZTxqikTa/XIl2ps2KfA1yrzHQIHjyp8O0vlCPDYl0omwoaZ36/aHafdHLu5XVk/yNwiFiYt/ezwX014jXDhEXxR1/SS4bex8HpOas2uBuVmGb6hIOLXZJAZ8HojIEPxkDyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=iFudpvHW; arc=none smtp.client-ip=185.70.40.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dS7ly2C6"
-Received: by mail-pf1-f174.google.com with SMTP id d2e1a72fcca58-717911ef035so4246032b3a.3
-        for <rust-for-linux@vger.kernel.org>; Tue, 10 Sep 2024 05:25:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1725971140; x=1726575940; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=23lw6QTHAeuSEH0lv039QLg2af/dNYhHa9NZAKrZRhQ=;
-        b=dS7ly2C6mW18MR5WDRCx7yZhYZHTRQpb5ukBmzdGqmGg/GRPRPYmVtToRwFihTOmED
-         uYgCSXcxn8Ui786eouO6Y0+k5aPODcOw4fbbNTa+pzvYYqcfawbvnx9S7aSde9L5ID9P
-         MwREmd5z674KI6Dagj5R5I6REfn7/CoIGmLAhU8hj8xe7cZhD5DI3NVZd12LmJkXskaD
-         cI+oUtAQMxVvzSzvu0Rk+Yap2/jcMhB+Qk7Qi5Da8Ef3vEa8tkvZry837SzTFPmg+ojZ
-         bpMqa6CNE55sAalo6fgjtODfcYfDKlOQeOjQCX6Qfkae5UQ9TUz4sitfegq3aKFeZcte
-         WGSw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1725971140; x=1726575940;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=23lw6QTHAeuSEH0lv039QLg2af/dNYhHa9NZAKrZRhQ=;
-        b=dQy+VOXtVrooyzRxeVXy6RKV8FP4gVPD7k62c2UKLAO3d/5m0iKJiK1X2F1C7r7f/Y
-         ezfJydHFZa2jlGtpLIMkGWgwmZBRPr71OhQ71Abw6OhSryh2/jXB9siIUkeNzJ0ftYA2
-         g5bNxcKZ2gM6h/gCP4fn07B8B3Vm91Eqr5YUX93GdssR7B5D9IqdSfM5AURnWY/yJ/rn
-         yIgZ8L6lZM3QGYGNWK9S5GlaVNUvF542unyHpCfMJm6nwmT7BawBWxRe3D+rcXR0Nj5S
-         gdVlxA+0HnoUZ3NEB/KcmcbelIWa6yiy0u+HY13Z3F5jatvYtj+PpIra3dQCjYvxdKkG
-         nVIg==
-X-Forwarded-Encrypted: i=1; AJvYcCWuK5JvgvkBbgeiTQRh2dsUmVeDFOo3lDyqr7SmF5BxJEiBdZYUf9b7H2zO543661cnExxpaZdFbpm0RLH9kA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzqHh5McJMq6ei+ucDpT8yAZRpJa+24HeYf1GfIfVTQuBiuOnzP
-	fM61I5Gm7PFw9GUHToB810qba8gjLaolrFmUrsLjL9ByDnR3U62NkSUOuzHNVyaD9CWbIYsCFW2
-	318/9pN2BnJG1nMXJ8A0rmgLLm1ME/W2i6fOsegIA93WmwpdQENKH
-X-Google-Smtp-Source: AGHT+IEckPhplcOK29+1e83SplE/Ewu9iwiWEbZuc4gFX7LKUtgrRhin1IuO3tBqq9kPB5iAdlcQnaK9T7JP3IeQkrU=
-X-Received: by 2002:a05:6a00:94a2:b0:714:1e36:3bcb with SMTP id
- d2e1a72fcca58-718d5e0f288mr13790061b3a.9.1725971140013; Tue, 10 Sep 2024
- 05:25:40 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="iFudpvHW"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=hw457d576rdmvabsgqk6my4jny.protonmail; t=1725973436; x=1726232636;
+	bh=QL/xny+7YZ+HuSdSBDWfILutCZ1cQLnIIC+OF84XN2U=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=iFudpvHWDUScSVTix+YcNVhOyw09PRzCHdSiyV7hMLU1erXMdLwPZvxTT2YVSB7Ox
+	 GJ9cR68zOWbmrJLfx4CgpcDnxBoe2TAmAMAt+TgKAj2aUD0oDrAZtr2eiZ/BJP4ezh
+	 7x49q374LYEY820SLi80fvRDKUw0Ze/PP8NoH86SzWqWMTfQwV/WeJFlMj0D5jWyWS
+	 jNIqRmblXxHBZ5wRfRc95xrIQESyitdZpiNpRak9wbOSLxwJUBS/8il6RACtjZ0MyR
+	 29DC9rE4D3pY45jGuV5SRFq1B2uAbIcZ9Q/UwtUcEuUGrUDhlsh9TfR9NorO/PJp0l
+	 ownJjUGQNCAMg==
+Date: Tue, 10 Sep 2024 13:03:48 +0000
+To: Danilo Krummrich <dakr@kernel.org>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@samsung.com, aliceryhl@google.com, akpm@linux-foundation.org, daniel.almeida@collabora.com, faith.ekstrand@collabora.com, boris.brezillon@collabora.com, lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com, ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v6 01/26] rust: alloc: add `Allocator` trait
+Message-ID: <d5761d8e-8e17-42a5-9793-92edb121428e@proton.me>
+In-Reply-To: <Ztb5arBBX2LsrFKo@pollux>
+References: <20240816001216.26575-1-dakr@kernel.org> <20240816001216.26575-2-dakr@kernel.org> <60253988-37e7-4acb-b2ae-748b30a4ac21@proton.me> <ZtDuf0QGfhiy5X_I@pollux.localdomain> <44b80095-8b03-4558-967e-138ea712f780@proton.me> <Ztb5arBBX2LsrFKo@pollux>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: 529a7b2793b9f2585f48e36eb06cf94ffed7918e
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240910120721.107877-1-gary@garyguo.net>
-In-Reply-To: <20240910120721.107877-1-gary@garyguo.net>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Tue, 10 Sep 2024 14:25:26 +0200
-Message-ID: <CAH5fLgjwwnqO1p6GaUgKO+XaMiUtae_f_dO=ZX8CetUGxW0caw@mail.gmail.com>
-Subject: Re: [PATCH] rust: enable arbitrary_self_types and remove `Receiver`
-To: Gary Guo <gary@garyguo.net>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Trevor Gross <tmgross@umich.edu>, Masahiro Yamada <masahiroy@kernel.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, 
-	Danilo Krummrich <dakr@redhat.com>, FUJITA Tomonori <fujita.tomonori@gmail.com>, 
-	Valentin Obst <kernel@valentinobst.de>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, 
-	Alex Mantel <alexmantel93@mailbox.org>, Adrian Taylor <ade@hohum.me.uk>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-kbuild@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Tue, Sep 10, 2024 at 2:09=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
->
-> The `arbitrary_self_types` RFC [1] is accepted and the feature is being
-> worked on [2]. As part of the RFC, a new `Receiver` trait is to be added,
-> and it will be automatically implemented for all types that have `Deref`
-> implementation. This is different from the existing `Receiver` trait
-> that we use, which is a custom implementation that opts-in a type into
-> being used as receiver.
->
-> To prepare us for the change, remove the `Receiver` implementation and
-> the associated feature. To still allow `Arc` and others to be used as
-> method receivers, turn on `arbitrary_self_types` feature instead.
->
-> Cc: Adrian Taylor <ade@hohum.me.uk>
-> Link: https://github.com/rust-lang/rfcs/pull/3519 [1]
-> Link: https://github.com/rust-lang/rust/issues/44874 [2]
-> Signed-off-by: Gary Guo <gary@garyguo.net>
+On 03.09.24 13:56, Danilo Krummrich wrote:
+> On Fri, Aug 30, 2024 at 01:06:00PM +0000, Benno Lossin wrote:
+>> On 29.08.24 23:56, Danilo Krummrich wrote:
+>>> On Thu, Aug 29, 2024 at 06:19:09PM +0000, Benno Lossin wrote:
+>>>> On 16.08.24 02:10, Danilo Krummrich wrote:
+>>>>> Add a kernel specific `Allocator` trait, that in contrast to the one =
+in
+>>>>> Rust's core library doesn't require unstable features and supports GF=
+P
+>>>>> flags.
+>>>>>
+>>>>> Subsequent patches add the following trait implementors: `Kmalloc`,
+>>>>> `Vmalloc` and `KVmalloc`.
+>>>>>
+>>>>> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+>>>>> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+>>>>
+>>>> We discussed this in our weekly meeting (I think ~one week ago?). If y=
+ou
+>>>> give me a draft version of the comment that you plan to add regarding
+>>>> the `old_layout` parameter, I can see if I am happy with it. If I am, =
+I
+>>>> would give you my RB.
+>>>
+>>> May I propose you let me know what you would like to see covered, rathe=
+r than
+>>> me trying to guess it. :-)
+>>
+>> I was hoping that we put that in our meeting notes, but I failed to find
+>> them... I would put this in a normal comment, so it doesn't show up in t=
+he
+>> documentation. Preface it like implementation decision/detail:
+>> - Why do `Allocator::{realloc,free}` not have an `old_layout` parameter
+>>   like in the stdlib? (the reasons you had for that decision, like we
+>>   don't need it etc.)
+>=20
+> Ok.
+>=20
+>> - Then something along the lines of "Note that no technical reason is
+>>   listed above, so if you need/want to implement an allocator taking
+>>   advantage of that, you can change it"
+>=20
+> I don't really want to set the conditions for this to change in the
+> documentation. It really depends on whether it's actually needed or the
+> advantage of having it is huge enough to leave the core kernel allocators=
+ with
+> unused arguments.
+>=20
+> This can really only be properly evaluated case by case in a discussion.
 
-Please update the commit message to explain the compatibility
-situation with various rustc releases.
+Agreed, but I don't want people to think that we have a reason against
+doing it in the future. Do you have an idea how to convey this?
 
-Alice
+---
+Cheers,
+Benno
+
