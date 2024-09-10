@@ -1,121 +1,72 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BEC673459;
-	Tue, 10 Sep 2024 13:23:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62FA2187555
+	for <rust-for-linux@vger.kernel.org>; Tue, 10 Sep 2024 13:27:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1725974634; cv=none; b=lyMMJOGs60+hqSJmx2PVEnOWz/G9p+27cTVnkxRfy5C66yWC/TLP37E6skP9ypfGW3YaUPNqPBY1gHDAY1EmTjHiQJeqma6qO9Dbl5qOUvUCkMk7YvuWYF9r3ePs4ct+S5w7ITGJywDtsQHHsUPMcekrhAxt1uV+w5Dfq+BT41U=
+	t=1725974836; cv=none; b=cBwn3MqPdVAUIdyGN8UtBIFm8UEE1ggLkNwBfBhlR0IuieDduATD4r/OaSqrE5EJXUC0Rxgde1PZIUc/y/dCZ0K4Qi/jt0+Tk/w2GJXQj0pE8kD1zV1OHlRNXvW0C48P16ICh3jFP8IJIx86N/tBLxMM4lIJ8SN2brk7TQg1MhY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1725974634; c=relaxed/simple;
-	bh=LFb2YHlrS3wGYB3pz6ZfwEjzOnQjkSzgEc19Fpysuh8=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=CJjX7DaJemHVDbQoH24bO/1lRp2gcTKXgIrs3HYaEL7608dIs+OEEYS2q/0bECvSkElwhH15EDoNXg5aQWec3ZhcIqC2xGLqtake/GK1aCu2i1L5WJ71lmMTQTroBQn5k9A7b5DSCNWw2JXpK3rUHJSCevSaHva2q+/6tRM3pfs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=A4Fd0LAx; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1725974836; c=relaxed/simple;
+	bh=59LhVAIff5XFYxepQj3fCMMGfNu38AxikS6S1TnocIU=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=tTLfOUVpHRtbyi2Ro7gz98nGn5s6kcDglPaRqO/SgOsJDh8dWMRTGtYe9Ukv/e7k21Q2H1dJpEKfkQ1hZrpYj0yHR2UEkd71RJe0ayWU+B3rUZfnTvEWeyiz8snkJr8nXhlWEOCrINr3KeFg3syQHP1k962/63pXA3ANE8lVNls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=iU5C/C4l; arc=none smtp.client-ip=185.70.43.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="A4Fd0LAx"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15A94C4CEC4;
-	Tue, 10 Sep 2024 13:23:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1725974633;
-	bh=LFb2YHlrS3wGYB3pz6ZfwEjzOnQjkSzgEc19Fpysuh8=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=A4Fd0LAxzkz4uP/JKACsrqfRhozSxFHdSAR2K2VqcpDdLpscgVmpjnh8mrF50pPfR
-	 ZRc4EMILUQOpoWe3Uc+QONeXCYucqsH5qxro6u/+q9D2qMC/dPRANDh5TV/BoKqko2
-	 8Tq0z3nGIP6fkMD3o86PC3pX50izL8XVeoDdHxdfGc2bAMtEES8qx73L0UZS/KZhaw
-	 dLKozQiDluu31rpkY8fN3bIqToeZeKj6xjgCDJE/K3+aw7/uG9Qf1hv2vtkQ087cop
-	 jgya0xuSEAtxOO7t3A3/nHATv3iUOg5qmC93Ss/do8k0/FwpSc05HQY3puU1YqtIR+
-	 OQNcQsnSvzv9Q==
-Date: Tue, 10 Sep 2024 15:23:44 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
-	a.hindborg@samsung.com, aliceryhl@google.com,
-	akpm@linux-foundation.org, daniel.almeida@collabora.com,
-	faith.ekstrand@collabora.com, boris.brezillon@collabora.com,
-	lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com,
-	cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com,
-	ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v6 01/26] rust: alloc: add `Allocator` trait
-Message-ID: <ZuBIYNrwIiGXx8Uw@cassiopeiae>
-References: <20240816001216.26575-1-dakr@kernel.org>
- <20240816001216.26575-2-dakr@kernel.org>
- <60253988-37e7-4acb-b2ae-748b30a4ac21@proton.me>
- <ZtDuf0QGfhiy5X_I@pollux.localdomain>
- <44b80095-8b03-4558-967e-138ea712f780@proton.me>
- <Ztb5arBBX2LsrFKo@pollux>
- <d5761d8e-8e17-42a5-9793-92edb121428e@proton.me>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="iU5C/C4l"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=3zq6duxak5funmskg677udfreu.protonmail; t=1725974831; x=1726234031;
+	bh=59LhVAIff5XFYxepQj3fCMMGfNu38AxikS6S1TnocIU=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=iU5C/C4lc1wDQpjvu7u5lF6rLP0RPcCAxj8iItwLBSDbUuC8L0NQe/P9kkpBtTBjA
+	 rIKTPEO7wMAHGZDWw0c6NesqGzwT+xg2uj84RYDve5tEoiWpLOwU44xVS/p3IfJ2Td
+	 /r4A7dbhWxw4qflriH/KMDatltcqfGlN7JeBeixZEJnArKWo9IUycL7ft9pN9PG/IN
+	 xmmP7Q+9Pzda0MWqZdilpz2e5R1oJvioTVEnsUPleLLeuS0L2mf7fEPB6sWps+JLQy
+	 21Y90qkyKAe/B/KcXdODV+xMLNf0s+6w/ivZGF+LUDol8OsabzEC/bQsUaEIHe8Gbl
+	 AV8jcN9Fn55TA==
+Date: Tue, 10 Sep 2024 13:26:34 +0000
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Alice Ryhl <aliceryhl@google.com>, Danilo Krummrich <dakr@kernel.org>, Gary Guo <gary@garyguo.net>, ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com, bjorn3_gh@protonmail.com, a.hindborg@samsung.com, akpm@linux-foundation.org, daniel.almeida@collabora.com, faith.ekstrand@collabora.com, boris.brezillon@collabora.com, lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com, ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v6 26/26] MAINTAINERS: add entry for the Rust `alloc` module
+Message-ID: <05abcf53-4997-4bdc-953b-30bbb5118639@proton.me>
+In-Reply-To: <CANiq72=MD8jmWb9EGA8yW6eMT6Prj8fYEiJM81-HTq3p4dKmGg@mail.gmail.com>
+References: <20240816001216.26575-1-dakr@kernel.org> <20240816001216.26575-27-dakr@kernel.org> <20240831135712.0d7366b6.gary@garyguo.net> <Ztb6_XW3ccnHQDmw@pollux> <CAH5fLgjbnGstjzsudjavzt5+UwK_r8n8X3LPdw29QSkBzaygxQ@mail.gmail.com> <f99d8d3a-5b56-4555-a1fc-bd7685dcea40@proton.me> <CANiq72=MD8jmWb9EGA8yW6eMT6Prj8fYEiJM81-HTq3p4dKmGg@mail.gmail.com>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: cdd673e249abf917c1ab57e7aa7cac4657d773f8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <d5761d8e-8e17-42a5-9793-92edb121428e@proton.me>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Sep 10, 2024 at 01:03:48PM +0000, Benno Lossin wrote:
-> On 03.09.24 13:56, Danilo Krummrich wrote:
-> > On Fri, Aug 30, 2024 at 01:06:00PM +0000, Benno Lossin wrote:
-> >> On 29.08.24 23:56, Danilo Krummrich wrote:
-> >>> On Thu, Aug 29, 2024 at 06:19:09PM +0000, Benno Lossin wrote:
-> >>>> On 16.08.24 02:10, Danilo Krummrich wrote:
-> >>>>> Add a kernel specific `Allocator` trait, that in contrast to the one in
-> >>>>> Rust's core library doesn't require unstable features and supports GFP
-> >>>>> flags.
-> >>>>>
-> >>>>> Subsequent patches add the following trait implementors: `Kmalloc`,
-> >>>>> `Vmalloc` and `KVmalloc`.
-> >>>>>
-> >>>>> Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> >>>>> Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-> >>>>
-> >>>> We discussed this in our weekly meeting (I think ~one week ago?). If you
-> >>>> give me a draft version of the comment that you plan to add regarding
-> >>>> the `old_layout` parameter, I can see if I am happy with it. If I am, I
-> >>>> would give you my RB.
-> >>>
-> >>> May I propose you let me know what you would like to see covered, rather than
-> >>> me trying to guess it. :-)
-> >>
-> >> I was hoping that we put that in our meeting notes, but I failed to find
-> >> them... I would put this in a normal comment, so it doesn't show up in the
-> >> documentation. Preface it like implementation decision/detail:
-> >> - Why do `Allocator::{realloc,free}` not have an `old_layout` parameter
-> >>   like in the stdlib? (the reasons you had for that decision, like we
-> >>   don't need it etc.)
-> > 
-> > Ok.
-> > 
-> >> - Then something along the lines of "Note that no technical reason is
-> >>   listed above, so if you need/want to implement an allocator taking
-> >>   advantage of that, you can change it"
-> > 
-> > I don't really want to set the conditions for this to change in the
-> > documentation. It really depends on whether it's actually needed or the
-> > advantage of having it is huge enough to leave the core kernel allocators with
-> > unused arguments.
-> > 
-> > This can really only be properly evaluated case by case in a discussion.
-> 
-> Agreed, but I don't want people to think that we have a reason against
-> doing it in the future. Do you have an idea how to convey this?
+On 04.09.24 14:57, Miguel Ojeda wrote:
+> On Wed, Sep 4, 2024 at 2:51=E2=80=AFPM Benno Lossin <benno.lossin@proton.=
+me> wrote:
+>>
+>> I forgot the reason for not using it, does anyone remember?
+>=20
+> One of the reasons argued was that `mod.rs` is the same name
+> everywhere, and thus it is hard to notice the difference in some
+> editors and may be harder to "jump into" in history/tabs/etc.
 
-I understand (and agree with) your intention. But I don't think it's necessary
-to document, because, ideally, this is already true for the whole kernel.
+I don't usually open more than 2-4 files anyways, so it's not an issue
+for me. But of course people's workflow is different, does anyone have a
+problem with switching to `mod.rs`?
 
-Generally, I think it's valid to assume that people are willing to change the
-code if the advantages outweigh the disadvantages.
+I have another reason that it might be nicer, when I want to edit eg
+`init.rs` and I decide to directly open it with the editor from my
+shell, not using my fuzzy finder, then I need to press tab to select
+between `rust/kernel/init` and `rust/kernel/init.rs`.
 
-So, we could write something like "This may be changed if the advantages
-outweigh the disadvantages.", but it'd be a bit random, since we could probably
-sprinkle this everywhere.
+---
+Cheers,
+Benno
 
-> 
-> ---
-> Cheers,
-> Benno
-> 
