@@ -1,65 +1,48 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77A651428E4;
-	Wed, 11 Sep 2024 21:52:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 890D22EAE5;
+	Wed, 11 Sep 2024 21:59:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726091542; cv=none; b=mxQrJG9NUCKRoF8GJaB4+M/MY3R0ZoDiJ3J5l5c7AtheY3wZIha1IdcwD/ajSfscnnO9BijuukdyNmjLQlhIVYISuG2t05vkyl6kd+PLD3bVXlBHw0Gx4vcA3JrubvTZSOS3VmfS/9quWJjb0BPw7732SSicd/GL1VEmiMUEirg=
+	t=1726091994; cv=none; b=WK9gL6qJMaYJWzt5WI0dbX/+zl6sykzolPO4adQiqQg8/3ex4nXMHi02vegqyWfDqqvBA9PVpMvy69YTT1qY9DaTqmYJlE0SIyR4mGTcmKvxxcFltEKcLQG5jYqSqM8NamiCzqI3RMDr3Fo+lcGty3rgMDJLrAV6QTisnThUSaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726091542; c=relaxed/simple;
-	bh=uZNWVHvlgdVrrl8vudrG5UITO9VmGf5URzcYnjO4lRQ=;
+	s=arc-20240116; t=1726091994; c=relaxed/simple;
+	bh=UlBTcNzdmM6jbFUy8h3KQwR5Xjcp0b9L4pHQdeczeSY=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aeB/ju0OgUXZW4qOgXvCEt9mGK5bjc+5wV3tohrw5ZRf0e4mnitNB36Pr+fwrDQOPMO3YoXsJyOukQFGWgk4xW6DcKPdreE5hFHFwNY8MKk/C0CHc+OsdlwE5vhSl6lWr7VQogSsw0NOS3orBFwCwhLkE8rSiOrjNhx2jqLs9SM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=d4fnHTmL; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=lgTac/tingWiib3cyaL70TfJFgj1B0+U6V70AbS11Nf8yytUYwuNXvyDAA5AJ0nCMYmnOGWFtX3wAluJ2HJUpKgnYbNYRRtBLRu0ZooKwvBpuOk5N6DK6PyzCI3x7WRY05oMfawagFI/JeUg/Yo6qZZMhzXnvllegSFZhrR+2gs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=MSl2JtNf; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="d4fnHTmL"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F1B8C4CEC0;
-	Wed, 11 Sep 2024 21:52:15 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="MSl2JtNf"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7399EC4CEC0;
+	Wed, 11 Sep 2024 21:59:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726091542;
-	bh=uZNWVHvlgdVrrl8vudrG5UITO9VmGf5URzcYnjO4lRQ=;
+	s=k20201202; t=1726091994;
+	bh=UlBTcNzdmM6jbFUy8h3KQwR5Xjcp0b9L4pHQdeczeSY=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=d4fnHTmLTgMQnhQH6Wt+kNssw78yAWFgbcGCxTROdmd/5AaHIiIexyZa14hgz2o/+
-	 bOM3u3rojGhjMm7yOF/Ux+Xr0IvHwY0kYxu3YW/x7zL/aqpqMbscpCEI9XvNyu4ckA
-	 3BDGE9Yke6LVTljovqd/dUdBGU1T1VfoeuSt6LHMzoApDQM0ZcxEM/CDsqp3PAIIpo
-	 ie04GImUtW8TAtw9l3+anXJSrgyj0YirD7U0Jeg/Mb3qdrUnRYTpOWuKyl4LhNQfQp
-	 iz/KheY4TFDThI1h7XcBVhSn5fiUQ4KG8xb3YTwYmwQ40Vj233x92A7wT7fW4m0ffp
-	 UIEO9QDPhaqHw==
-Date: Wed, 11 Sep 2024 23:52:12 +0200
+	b=MSl2JtNfqq7Q5CPm8ZjFixzRI6Ei2nGSTwOVWUHWpoAqQ0uEqF/8DEYq4OOUm6Ukn
+	 mDwuKb9IB2fx1ri8vw38d2BbJqD5Xl+4Xdri6Zc4ad9w6RNb1moJfsT+ku9QtR71WS
+	 OQSGKbJcWs9+uDnRgIJhX7SBkx6UY/4Oo89GrpB7Sa+bVvme4fHmJbaPg21oMK48/J
+	 y2XTL7y7edSABlgme8e9cMqiHuC31+UXHS8L4Dk4J5NuM52UAhuB1/SWdiEJ08YDGY
+	 qwoproPe/7dGIjwcFGiqGwedKzdSi8eH5EUvhfGPXorZKLuoWufkfdi8fNMLtshYtW
+	 x02cfN8pk4SdQ==
+Date: Wed, 11 Sep 2024 23:59:46 +0200
 From: Danilo Krummrich <dakr@kernel.org>
-To: Ayush Singh <ayush@beagleboard.org>
-Cc: Ayush Singh <ayushdevel1325@gmail.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	fabien.parent@linaro.org, d-gole@ti.com,
-	lorforlinux@beagleboard.org, jkridner@beagleboard.org,
-	robertcnelson@beagleboard.org, Andrew Davis <afd@ti.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Derek Kiernan <derek.kiernan@amd.com>,
-	Dragan Cvetic <dragan.cvetic@amd.com>,
-	Arnd Bergmann <arnd@arndb.de>, Nishanth Menon <nm@ti.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Tero Kristo <kristo@kernel.org>, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 1/8] rust: kernel: Add Platform device and driver
- abstractions
-Message-ID: <ZuIRDGuJ-PmXfd1Y@pollux>
-References: <20240911-mikrobus-dt-v1-0-3ded4dc879e7@beagleboard.org>
- <20240911-mikrobus-dt-v1-1-3ded4dc879e7@beagleboard.org>
- <2024091106-scouring-smitten-e740@gregkh>
- <bd542178-af1c-439d-bde4-9865cf6c853c@gmail.com>
- <16d70285-cbec-4378-98eb-b522a0efbbe6@kernel.org>
- <ba9a5ae8-c5af-4045-9e22-28363dc94d42@beagleboard.org>
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	a.hindborg@samsung.com, aliceryhl@google.com,
+	akpm@linux-foundation.org, daniel.almeida@collabora.com,
+	faith.ekstrand@collabora.com, boris.brezillon@collabora.com,
+	lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com,
+	cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com,
+	ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v6 13/26] rust: alloc: implement kernel `Vec` type
+Message-ID: <ZuIS0lBDyxsxuHwf@cassiopeiae>
+References: <20240816001216.26575-1-dakr@kernel.org>
+ <20240816001216.26575-14-dakr@kernel.org>
+ <a8c31bce-aac2-4ffe-8fab-2e68c9bab035@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -68,42 +51,38 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ba9a5ae8-c5af-4045-9e22-28363dc94d42@beagleboard.org>
+In-Reply-To: <a8c31bce-aac2-4ffe-8fab-2e68c9bab035@proton.me>
 
-On Wed, Sep 11, 2024 at 11:35:43PM +0530, Ayush Singh wrote:
-> On 9/11/24 23:09, Danilo Krummrich wrote:
-> 
-> > On 9/11/24 5:52 PM, Ayush Singh wrote:
-> > > Sure, can you provide me a link to patches or maybe the branch
-> > > containing that work? I also think it would be good to have the link
-> > > in Zulip discussion for Platform Device and Driver.
+On Tue, Sep 10, 2024 at 08:07:40PM +0000, Benno Lossin wrote:
+> On 16.08.24 02:10, Danilo Krummrich wrote:
+> > `Vec` provides a contiguous growable array type (such as `Vec`) with
+> > contents allocated with the kernel's allocators (e.g. `Kmalloc`,
+> > `Vmalloc` or `KVmalloc`).
 > > 
-> > Sure, please see [1]. But please be aware that I plan to rework some
-> > parts
-> > before sending out the next version.
+> > In contrast to Rust's `Vec` type, the kernel `Vec` type considers the
+> > kernel's GFP flags for all appropriate functions, always reports
+> > allocation failures through `Result<_, AllocError>` and remains
+> > independent from unstable features.
 > > 
-> > [1] https://github.com/Rust-for-Linux/linux/tree/staging/rust-device
+> > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> > ---
+> >  rust/kernel/alloc.rs      |   6 +
+> >  rust/kernel/alloc/kvec.rs | 629 ++++++++++++++++++++++++++++++++++++++
+> >  rust/kernel/prelude.rs    |   2 +-
+> >  3 files changed, 636 insertions(+), 1 deletion(-)
+> >  create mode 100644 rust/kernel/alloc/kvec.rs
 > 
-> 
-> Maybe the branch is just out of date? It still contains the generic
-> structures for IdArray, IdTable and RawDeviceId.
-> 
-> Has something changed since the discussion here [0]?
+> I noticed that you don't have a `pop` or `remove` function implemented,
+> I think it would be weird to have all the other functions but not those.
 
-Yes, it has; this refers to what Greg mentioned when he said that we worked
-through this last weekend in his original reply.
+I'd rather not add them for this series anymore. We can add them in subsequent
+patches, or wait until they're actually needed.
 
-Things will probably not remain exactly this way, but the general concept of the
-abstractions will, i.e. the existance of `IdArray`, `IdTable`, and some
-`DeviceId` abstraction. Please also see [1].
-
-[1] https://lore.kernel.org/rust-for-linux/ZuHU5yrJUOKnJGrB@pollux/
+I also already have some subsequent patches in the queue. For instance, in Nova
+we'll need `Vec::resize` and `Vec::truncate`.
 
 > 
-> 
-> [0]:
-> https://lore.kernel.org/rust-for-linux/2024062031-untracked-opt-3ff1@gregkh/
-> 
-> 
-> Ayush Singh
+> ---
+> Cheers,
+> Benno
 > 
