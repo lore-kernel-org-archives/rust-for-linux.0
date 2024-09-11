@@ -1,35 +1,36 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2BCA1B3B2A;
-	Wed, 11 Sep 2024 17:26:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EA2E1AE852;
+	Wed, 11 Sep 2024 17:35:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726075588; cv=none; b=IUfQ1mtl7FERNgraAnnS0P8pWDqdHChdpA6PKpYOlLv26B1E/n6P8H41vbyqxsaeSVF/nyE8E0nF3kNdnYHyl9JAp11fLaJYQTqFxCMC/uvPtKl+6sumFt8dSpnI7XfGx+hD0N0+AoyZzKhV4XVTBSYLzKDg/0CsLiJT4Qc84xA=
+	t=1726076144; cv=none; b=XtvlNr2FJbhlzGR7vUKSPMOlRp8tFYqzQRc0enfspGmpHFPhWdumr2kiyk4P3wiXudLSBprNqACx6LNeBkL00/+1aVtIUtnRUH9pJNyTy5Wo4YO2IqZV4p1zCfa8ZXRd+RpcZgixcmiYZG8Vmu860hhKgY2xehS9W7olRnIrw0c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726075588; c=relaxed/simple;
-	bh=o2NQ7P7ABYg2Zw4KZcHITK9PUPmdqTH02R/Ad7MZb5w=;
+	s=arc-20240116; t=1726076144; c=relaxed/simple;
+	bh=YbkFZVRnO7z0xDZitZm29si1xpSBine6L+hGh61wN1U=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Zi+RN9ZwN/ekzDWIyT9Gyq8jwAoPXlrn5/UkTX/AarCcK94q4gAbIMcWQiwJYj8YlmlC9H00Yu4bw9N1qQki49dip0pri7zO74FsqUpaP1133yiwThewGcMwVZlOfw52Znj51DNnxOkoNATnfxxjISNuVqboMMbN12b1/GjwK5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h4jvy7Ow; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=Rgg2N+y1g0KC9V24EXWMfslTmL/6cKHCqhA/5/a9BSGbKqMcOHP711XDQ1uwBLsY8bmXxezlrgEqYS7zh4uX9jnikVbIBRqpZjp76I4uZO1BDnNJ01lIEEUybrf7c9RLlLBTtaGamiDYyiOxYfNmEiqsSQRN0xHMBw+U5BC/YqE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=miLmdgGo; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h4jvy7Ow"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C6ADC4CECC;
-	Wed, 11 Sep 2024 17:26:27 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="miLmdgGo"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 195EAC4CEC0;
+	Wed, 11 Sep 2024 17:35:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726075587;
-	bh=o2NQ7P7ABYg2Zw4KZcHITK9PUPmdqTH02R/Ad7MZb5w=;
+	s=k20201202; t=1726076143;
+	bh=YbkFZVRnO7z0xDZitZm29si1xpSBine6L+hGh61wN1U=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=h4jvy7OwIrVT70zHVaED2k3JxAQJUwSTyy5XqBPGp8W9UzpQOAvAhTFBG0JGqQlCu
-	 OU1HMaWkboY5gBLTi8/cAxr/UzgG5V/SLHyAZkRfm6RNg6llgtoowqQbof+IAr2Igs
-	 tomXxrvJUbte7P7po1G2HRNrlaEIb8V3nBwFU11tuubHocOMoGYc1xWhF4nz30CXEO
-	 6E3zowvlqKy4GzjQZZx6JLJAuTECTBNPnnfzetbupREFbbEMF1KHU2ecacKQhKJ8t6
-	 Ij7cO1ZqYvltFO9AOPCgPMambACpl1m4AUy8DytLE8cGdtWfERiPQAvQShXIR0AyIe
-	 SOz/lUkgMhLsw==
-Date: Wed, 11 Sep 2024 12:26:26 -0500
-From: Rob Herring <robh@kernel.org>
-To: Ayush Singh <ayush@beagleboard.org>
-Cc: fabien.parent@linaro.org, d-gole@ti.com, lorforlinux@beagleboard.org,
+	b=miLmdgGorlsJh0FQ94RmjTjwSf0/zRABbJ94KLqEmEDIjjdPPXJ34x69OvXCpI9nx
+	 Yxf0CufuinCFr8VaPmOMhDerDsA8hp49UbpnvvfTAUO0R/mssnjDuPOnfVPMsHdwkZ
+	 dmZzUnDLnYY54Wh9WNmYqdfFXYkSkwYzpYoj4W3xgZjzJx/RJjVKlhhbmnaDvQJRzU
+	 PhAPSO4s0fMSwLMAC5lFT22m3syGPJVsOVCuRr41760TEVausfkYOezblo9RkM0xHz
+	 E9v9kAHilNC13DoR/thFVknR2PQsN7/Os4jOIpTQbQECNMdmjxxaKZTPRv47DUpjmM
+	 Ii9Du3WxbVnaw==
+Date: Wed, 11 Sep 2024 19:35:35 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Ayush Singh <ayush@beagleboard.org>, fabien.parent@linaro.org,
+	d-gole@ti.com, lorforlinux@beagleboard.org,
 	jkridner@beagleboard.org, robertcnelson@beagleboard.org,
 	Andrew Davis <afd@ti.com>, Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
@@ -38,20 +39,22 @@ Cc: fabien.parent@linaro.org, d-gole@ti.com, lorforlinux@beagleboard.org,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Rob Herring <robh@kernel.org>,
 	Krzysztof Kozlowski <krzk+dt@kernel.org>,
 	Conor Dooley <conor+dt@kernel.org>,
 	Derek Kiernan <derek.kiernan@amd.com>,
 	Dragan Cvetic <dragan.cvetic@amd.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Nishanth Menon <nm@ti.com>, Vignesh Raghavendra <vigneshr@ti.com>,
+	Arnd Bergmann <arnd@arndb.de>, Nishanth Menon <nm@ti.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
 	Tero Kristo <kristo@kernel.org>, linux-kernel@vger.kernel.org,
 	rust-for-linux@vger.kernel.org, devicetree@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 2/8] dt-bindings: connector: Add MikorBUS connector
-Message-ID: <20240911172626.GB915638-robh@kernel.org>
+Subject: Re: [PATCH 1/8] rust: kernel: Add Platform device and driver
+ abstractions
+Message-ID: <ZuHU5yrJUOKnJGrB@pollux>
 References: <20240911-mikrobus-dt-v1-0-3ded4dc879e7@beagleboard.org>
- <20240911-mikrobus-dt-v1-2-3ded4dc879e7@beagleboard.org>
+ <20240911-mikrobus-dt-v1-1-3ded4dc879e7@beagleboard.org>
+ <2024091106-scouring-smitten-e740@gregkh>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -60,118 +63,46 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240911-mikrobus-dt-v1-2-3ded4dc879e7@beagleboard.org>
+In-Reply-To: <2024091106-scouring-smitten-e740@gregkh>
 
-On Wed, Sep 11, 2024 at 07:57:19PM +0530, Ayush Singh wrote:
-> Add DT bindings for mikroBUS interface. MikroBUS [0] is an open standard
-> developed by MikroElektronika for connecting add-on boards to
-> microcontrollers or microprocessors.
+On Wed, Sep 11, 2024 at 04:56:14PM +0200, Greg Kroah-Hartman wrote:
+> On Wed, Sep 11, 2024 at 07:57:18PM +0530, Ayush Singh wrote:
+> > +/// An identifier for Platform devices.
+> > +///
+> > +/// Represents the kernel's [`struct of_device_id`]. This is used to find an appropriate
+> > +/// Platform driver.
+> > +///
+> > +/// [`struct of_device_id`]: srctree/include/linux/mod_devicetable.h
+> > +pub struct DeviceId(&'static CStr);
+> > +
+> > +impl DeviceId {
+> 
+> <snip>
+> 
+> I appreciate posting this, but this really should go on top of the
+> device driver work Danilo Krummrich has been doing.
 
-Typo in the subject...
+If everyone agrees, I'd offer to just provide platform device / driver
+abstractions with my next patch series. This way you don't need to worry
+about aligning things with the rest of the abstractions yourself and throughout
+potential further versions of the series.
 
-Isn't this v6? Where's the revision history?
+Just be aware that I probably won't get to work on it until after LPC.
 
+> He and I spent a
+> lot of time working through this this past weekend (well, him talking
+> and explaining, and me asking too many stupid questions...)
 > 
-> MikroBUS connector node will optionally act as nexus nodes for routing
-> GPIOs and PWM.
+> I think what he has will make the platform driver/device work simpler
+> here, and I'll be glad to take it based on that, this "independent" code
+> that doesn't interact with that isn't the best idea overall.
 > 
-> For GPIOs, the following pin numbering should be followed:
+> It also will properly handle the "Driver" interaction as well, which we
+> need to get right, not a one-off like this for a platform driver.
+> Hopefully that will not cause much, if any, changes for your use of this
+> in your driver, but let's see.
 > 
->   0: PWM
->   1: INT
->   2: RX
->   3: TX
->   4: SCL
->   5: SDA
->   6: MOSI
->   7: MISO
->   8: SCK
->   9: CS
->   10: RST
->   11: AN
+> thanks,
 > 
-> For PWM, the PWM pin should be on channel 0.
-> 
-> I am not quite sure how to deal with the nexus node properties
-> (#gpio-cells, gpio-map, gpio-map-mask, gpio-map-pass-thru) since they
-> seem to conflict with upstream gpio schema (gpio-controller is a
-> dependency of #gpio-cells).
-> 
-> [0]: https://www.mikroe.com/
-> 
-> Signed-off-by: Ayush Singh <ayush@beagleboard.org>
-> ---
->  .../bindings/connector/mikrobus-connector.yaml     | 40 ++++++++++++++++++++++
->  MAINTAINERS                                        |  5 +++
->  2 files changed, 45 insertions(+)
-> 
-> diff --git a/Documentation/devicetree/bindings/connector/mikrobus-connector.yaml b/Documentation/devicetree/bindings/connector/mikrobus-connector.yaml
-> new file mode 100644
-> index 000000000000..603e4627076c
-> --- /dev/null
-> +++ b/Documentation/devicetree/bindings/connector/mikrobus-connector.yaml
-> @@ -0,0 +1,40 @@
-> +# SPDX-License-Identifier: GPL-2.0 OR BSD-2-Clause
-> +#
-> +# Copyright (c) Ayush Singh <ayush@beagleboard.org>
-> +%YAML 1.2
-> +---
-> +$id: http://devicetree.org/schemas/connector/mikrobus-connector.yaml#
-> +$schema: http://devicetree.org/meta-schemas/core.yaml#
-> +
-> +title: mikroBUS add-on board socket
-> +
-> +maintainers:
-> +  - Ayush Singh <ayush@beagleboard.org>
-> +
-> +properties:
-> +  compatible:
-> +    const: mikrobus-connector
-> +
-> +required:
-> +  - compatible
-> +
-> +additionalProperties: true
-
-Cannot be true. You're schema must be complete. I don't understand what 
-happened to everything else in the binding.
-
-> +
-> +examples:
-> +  - |
-> +    mikrobus_connector0: mikrobus-connector0 {
-> +      status = "okay";
-> +      compatible = "mikrobus-connector";
-> +
-> +      #gpio-cells = <2>;
-> +      gpio-map =
-> +      <0 0 &main_gpio1 11 0>, <1 0 &main_gpio1 9 0>,
-> +      <2 0 &main_gpio1 24 0>, <3 0 &main_gpio1 25 0>,
-> +      <4 0 &main_gpio1 22 0>, <5 0 &main_gpio1 23 0>,
-> +      <6 0 &main_gpio1 7 0>, <7 0 &main_gpio1 8 0>,
-> +      <8 0 &main_gpio1 14 0>, <9 0 &main_gpio1 13 0>,
-> +      <10 0 &main_gpio1 12 0>, <11 0 &main_gpio1 10 0>;
-> +      gpio-map-mask = <0xf 0x0>;
-> +      gpio-map-pass-thru = <0x0 0x1>;
-> +    };
-> +
-> diff --git a/MAINTAINERS b/MAINTAINERS
-> index 0a3d9e17295a..0cc27446b18a 100644
-> --- a/MAINTAINERS
-> +++ b/MAINTAINERS
-> @@ -15429,6 +15429,11 @@ M:	Oliver Neukum <oliver@neukum.org>
->  S:	Maintained
->  F:	drivers/usb/image/microtek.*
->  
-> +MIKROBUS CONNECTOR
-> +M:	Ayush Singh <ayush@beagleboard.org>
-> +S:	Maintained
-> +F:	Documentation/devicetree/bindings/connector/mikrobus-connector.yaml
-> +
->  MIKROTIK CRS3XX 98DX3236 BOARD SUPPORT
->  M:	Luka Kovacic <luka.kovacic@sartura.hr>
->  M:	Luka Perkov <luka.perkov@sartura.hr>
-> 
-> -- 
-> 2.46.0
+> greg k-h
 > 
