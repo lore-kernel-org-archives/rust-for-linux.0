@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0BD801BA273;
-	Wed, 11 Sep 2024 20:04:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0F701B7917;
+	Wed, 11 Sep 2024 20:07:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726085067; cv=none; b=nPVIQS/fOZWkIY0mMKOWlOrMpBHZfj2/CuAFGym1UpXIngRVJYr2p1KNagNCSyWbesEMtGD1xVPevs6Ft8ucx1OwgpPQQKWLXox5cG31s6kmtBYW1wcuy4Ax1axQxAGws8Et90xNI5lxWUOOSig2dPZPHWEHO+QAmlscNLz+s5g=
+	t=1726085226; cv=none; b=WaTG8NMX3P34SZTdysaDzx1fkf1canTKGMUg257e5RIeMLPDUQdiZjn4QfYBeJz441f4HWp3Fv2NLA55mZ027yqlFkjf1mm8is2lDnDjAHiJN+uooJ8ErIDfkSTYx9yuUzJgLhCBwG8WigYfPp5VOzvRRo2Jd1rGt6nn5FdR5iw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726085067; c=relaxed/simple;
-	bh=GXOiEIYsWfuKvKBtFBVA4UteXR8sE5bAKt5Q/mK32Y0=;
+	s=arc-20240116; t=1726085226; c=relaxed/simple;
+	bh=I4BJLT6G+F0wLdMtohFskrraQnFUUj6Fg5Q8+RwPmXk=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SoQ59046ZtOQxh5kznqkOBdTGFn6Z50Fv8tJ3zTXp9X8DklhIB5TqUx0F2JViV2kkBHO6lr1R3Zu256tBQLSEiR9enJKXKLtybWiqosUQFSXbz5OPlOVJ6mTTE9bzrKJlO59V8yWHK3ClMBaGwN2zJWPVPxlDxOzZmOGfkPvbjw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mpkFgOWt; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=mImakz/OzbtyVUZyTOM78aMchaiZ/AaFs6klam+zJO9p/xKmR6+0Z7lVPeibmNcxspkH1ZCsMwM2HQjy0Y91dr/D3r94XAFvKtMW4aEAGXisJ3QZXa0RVQ6Ud2BkuLRGMhv+xX45Oh7TcAR+6auYHpz/IY5bfpXkuT8ErrybDRA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uaeL/Img; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mpkFgOWt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA161C4CEC0;
-	Wed, 11 Sep 2024 20:04:25 +0000 (UTC)
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uaeL/Img"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1A8DC4CEC0;
+	Wed, 11 Sep 2024 20:07:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726085066;
-	bh=GXOiEIYsWfuKvKBtFBVA4UteXR8sE5bAKt5Q/mK32Y0=;
+	s=korg; t=1726085225;
+	bh=I4BJLT6G+F0wLdMtohFskrraQnFUUj6Fg5Q8+RwPmXk=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mpkFgOWt22rc4Hs/PznEZ1kisjL/9YAWdqztfJ/MJ0AXEFWJCniDIxo7dkeQR093h
-	 iTdV11flhCNA/YMyESfAE8+wsXyGOiBNQ3Ok4HL3Uah0YguFxkguAUtAI7jBl72tTi
-	 fP0HB49EeqABIbNnAMr9YsStbrn8sHj2sxX2/7eo=
-Date: Wed, 11 Sep 2024 22:04:23 +0200
+	b=uaeL/Img29qakLFRIxlhJcVZNDw7mlRWB+nv0ap2MGT+YdM3gXm0oEgSWfozHa+Lx
+	 XvJ6mdoLIh2WXW0OdkMo2ojZGuTvOwq/M/inTuZEwj6wwut+FnmPuJgVrwcPjCBZz2
+	 O6jenm5DjSaqhX9tsVcV8tb3RnFMWI2LlwYcDDzY=
+Date: Wed, 11 Sep 2024 22:07:02 +0200
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Ayush Singh <ayushdevel1325@gmail.com>
+To: Danilo Krummrich <dakr@kernel.org>
 Cc: Ayush Singh <ayush@beagleboard.org>, fabien.parent@linaro.org,
 	d-gole@ti.com, lorforlinux@beagleboard.org,
 	jkridner@beagleboard.org, robertcnelson@beagleboard.org,
@@ -46,12 +46,13 @@ Cc: Ayush Singh <ayush@beagleboard.org>, fabien.parent@linaro.org,
 	Tero Kristo <kristo@kernel.org>, linux-kernel@vger.kernel.org,
 	rust-for-linux@vger.kernel.org, devicetree@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 8/8] addon_boards: mikrobus: Add GPS3 Click
-Message-ID: <2024091151-unworldly-dance-9a80@gregkh>
+Subject: Re: [PATCH 1/8] rust: kernel: Add Platform device and driver
+ abstractions
+Message-ID: <2024091158-cardinal-theorize-6efe@gregkh>
 References: <20240911-mikrobus-dt-v1-0-3ded4dc879e7@beagleboard.org>
- <20240911-mikrobus-dt-v1-8-3ded4dc879e7@beagleboard.org>
- <2024091149-vocalize-composite-6e48@gregkh>
- <44039255-159a-4284-abd8-a0f558ad006d@gmail.com>
+ <20240911-mikrobus-dt-v1-1-3ded4dc879e7@beagleboard.org>
+ <2024091106-scouring-smitten-e740@gregkh>
+ <ZuHU5yrJUOKnJGrB@pollux>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -60,33 +61,36 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <44039255-159a-4284-abd8-a0f558ad006d@gmail.com>
+In-Reply-To: <ZuHU5yrJUOKnJGrB@pollux>
 
-On Wed, Sep 11, 2024 at 09:26:06PM +0530, Ayush Singh wrote:
-> On 9/11/24 20:28, Greg Kroah-Hartman wrote:
+On Wed, Sep 11, 2024 at 07:35:35PM +0200, Danilo Krummrich wrote:
+> On Wed, Sep 11, 2024 at 04:56:14PM +0200, Greg Kroah-Hartman wrote:
+> > On Wed, Sep 11, 2024 at 07:57:18PM +0530, Ayush Singh wrote:
+> > > +/// An identifier for Platform devices.
+> > > +///
+> > > +/// Represents the kernel's [`struct of_device_id`]. This is used to find an appropriate
+> > > +/// Platform driver.
+> > > +///
+> > > +/// [`struct of_device_id`]: srctree/include/linux/mod_devicetable.h
+> > > +pub struct DeviceId(&'static CStr);
+> > > +
+> > > +impl DeviceId {
+> > 
+> > <snip>
+> > 
+> > I appreciate posting this, but this really should go on top of the
+> > device driver work Danilo Krummrich has been doing.
 > 
-> > On Wed, Sep 11, 2024 at 07:57:25PM +0530, Ayush Singh wrote:
-> > > - GPS3 Click is a UART MikroBUS addon Board
-> > > 
-> > > Link: https://www.mikroe.com/gps-3-click
-> > > 
-> > > Signed-off-by: Ayush Singh <ayush@beagleboard.org>
-> > > ---
-> > >   addon_boards/mikrobus/Makefile         |  1 +
-> > >   addon_boards/mikrobus/mikroe-1714.dtso | 28 ++++++++++++++++++++++++++++
-> > Odd top-level directory for the kernel, are you sure this is correct?
-> > 
-> > thanks,
-> > 
-> > greg k-h
-> > 
-> Well, it is kinda a temporary location, since well, I could not find a good
-> place for board overlays but a top-level location seems better than putting
-> them in any arch specific location. I am open to moving them to a more
-> suitable location if we have one.
+> If everyone agrees, I'd offer to just provide platform device / driver
+> abstractions with my next patch series. This way you don't need to worry
+> about aligning things with the rest of the abstractions yourself and throughout
+> potential further versions of the series.
 
-top-level location is not ok for something so tiny and "special".  Just
-put it where all other dtso files go.
+That sounds good to me, thanks!
+
+> Just be aware that I probably won't get to work on it until after LPC.
+
+We will not be able to review anything until after LPC either :)
 
 thanks,
 
