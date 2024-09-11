@@ -1,125 +1,82 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B7F41AAE24;
-	Wed, 11 Sep 2024 15:26:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F75C185954;
+	Wed, 11 Sep 2024 15:49:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726068380; cv=none; b=Q3VtYKNTOxJyuMOqtAK2DKgc+Adp3KoOALb8Mi0lxBJZ7+0nsVQ+8RXSmdN/KkZkHQpGMMbKBHgGBpE9bSmDo3IbbMRR9r+Ir4JJXSb/Z76eIs4rW7yBfeNnm7i+ap85Z1VpwtpfYtbLULz3IQDTq1KahZC0JsjNMhNf3VaGg4c=
+	t=1726069758; cv=none; b=d5cF4oEsk3gY/Dt1nrUqIME3kR1RaKPPsfvlaw0phczMH2VInfr9n99xBeglKTSc0eiPi6Gf7GJm+kMHKs7YUyExXuPXvseSfRmhmGzH339zV902p3taYzLiQqbT4k510IxTwKMfJcJme9/QFRzuiklefX/AlCTQqbxT8aRCx/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726068380; c=relaxed/simple;
-	bh=sfAd1RJm9xWGep7rzAdDYP5SkbbDYA93DYShCFEOqsc=;
-	h=Date:Content-Type:MIME-Version:From:To:Cc:In-Reply-To:References:
-	 Message-Id:Subject; b=bn5Sqt/oRqccExBmczIFFWI/5kQdl8rZD4WZZp0k8Togu+gXzNnsrbvVJhLFe4tbDXkEEelTa52RLrSo973VvkCqGSV0TBk4H46Sj466MeROeoSmS3SNGreXLNvwJeycS/ihqgcJIXDXW/UfimLTGPzrZ3GExcucr/0rPFJcNmg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=iGrDlH6X; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1726069758; c=relaxed/simple;
+	bh=jvJrBcnk+D8yfH+0FQrinizcg59VFH4KplTPztnryN4=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=kxeVznSjZOWVt24BCtzBjMsu1Uv/FckEASRW7+SQzy3aVjnKuwYOTb5MqK2+aeiaF8dm0OtXMUvlW2b3Z4M4C63Qk8AMfmc4XUgRYBK61NHHCzeQImhitPyRbNQcx5iuC7OEjhLfzYHBNuE4pUAk+xBhcJoBxaOCJCkwl3cx4ok=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=Wuc/sGyS; arc=none smtp.client-ip=156.67.10.101
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="iGrDlH6X"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D887C4CEC0;
-	Wed, 11 Sep 2024 15:26:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726068379;
-	bh=sfAd1RJm9xWGep7rzAdDYP5SkbbDYA93DYShCFEOqsc=;
-	h=Date:From:To:Cc:In-Reply-To:References:Subject:From;
-	b=iGrDlH6XYuTyIqfvLgKyE3MMbL2FLiXoPJl51itJ/Pel+ywK9KLRiMCEXpubgtJTZ
-	 BOGI5yM+xWOnLvsUrPZ2Sh7H9jY5HMPbBxOdzc7pbJ23Gp2Zj7WTvfCsgLMYoGEhx3
-	 hUNRP1DXj/DQ9LrdhnNk4A7XrxBtQUsFFlS1NUUyjhWYi9XYdgU5HN7ZaXveM+ux/U
-	 2oqtB5WRHJJYnSedLO2NYXu/ReZlo47zq6UJPJPpPCVCdnI/PjUThUWLQCNSX51QVr
-	 KdhkYXu4/DPbpDtRW/hmaF+t1n17MMLExwsDesvW/n7P6nincMEG0AS/X6CLEbyvCp
-	 5ihwlFv/uP4DQ==
-Date: Wed, 11 Sep 2024 10:26:18 -0500
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="Wuc/sGyS"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
+	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
+	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
+	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
+	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
+	bh=t6UG7PLdbkoosunbZul9Kx6uV/hzSw/RTZj0KodJ6ls=; b=Wuc/sGySYMF45bcq3U9BoGJBhg
+	udLHtgMRTDcvtuEAtsLTSvF9hsBCKouVn6Q6JbA2IDlDcRjw1u3NHuPCsCGn9NQiQXDnzrUhCIFf0
+	f0dF9JkCMoeDZ6tn+UAq6FnjDI7HLZvB/alVkHI8L0hBkWCdtbwTd8KP+bWjHJG/mC2c=;
+Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
+	(envelope-from <andrew@lunn.ch>)
+	id 1soPaP-007E9Y-JU; Wed, 11 Sep 2024 17:48:53 +0200
+Date: Wed, 11 Sep 2024 17:48:53 +0200
+From: Andrew Lunn <andrew@lunn.ch>
+To: Ayush Singh <ayush@beagleboard.org>
+Cc: fabien.parent@linaro.org, d-gole@ti.com, lorforlinux@beagleboard.org,
+	jkridner@beagleboard.org, robertcnelson@beagleboard.org,
+	Andrew Davis <afd@ti.com>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Derek Kiernan <derek.kiernan@amd.com>,
+	Dragan Cvetic <dragan.cvetic@amd.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Nishanth Menon <nm@ti.com>, Vignesh Raghavendra <vigneshr@ti.com>,
+	Tero Kristo <kristo@kernel.org>, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 3/8] mikrobus: Add mikrobus driver
+Message-ID: <2a1155b4-f158-4cdd-ad3b-82d4a1841245@lunn.ch>
+References: <20240911-mikrobus-dt-v1-0-3ded4dc879e7@beagleboard.org>
+ <20240911-mikrobus-dt-v1-3-3ded4dc879e7@beagleboard.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-From: "Rob Herring (Arm)" <robh@kernel.org>
-To: Ayush Singh <ayush@beagleboard.org>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, 
- Derek Kiernan <derek.kiernan@amd.com>, Arnd Bergmann <arnd@arndb.de>, 
- Alice Ryhl <aliceryhl@google.com>, Benno Lossin <benno.lossin@proton.me>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
- robertcnelson@beagleboard.org, d-gole@ti.com, linux-kernel@vger.kernel.org, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- jkridner@beagleboard.org, Tero Kristo <kristo@kernel.org>, 
- Vignesh Raghavendra <vigneshr@ti.com>, Miguel Ojeda <ojeda@kernel.org>, 
- rust-for-linux@vger.kernel.org, Gary Guo <gary@garyguo.net>, 
- fabien.parent@linaro.org, Dragan Cvetic <dragan.cvetic@amd.com>, 
- Andrew Davis <afd@ti.com>, Conor Dooley <conor+dt@kernel.org>, 
- Nishanth Menon <nm@ti.com>, Andreas Hindborg <a.hindborg@kernel.org>, 
- lorforlinux@beagleboard.org, Boqun Feng <boqun.feng@gmail.com>, 
- Trevor Gross <tmgross@umich.edu>, linux-arm-kernel@lists.infradead.org, 
- devicetree@vger.kernel.org, Krzysztof Kozlowski <krzk+dt@kernel.org>
-In-Reply-To: <20240911-mikrobus-dt-v1-2-3ded4dc879e7@beagleboard.org>
-References: <20240911-mikrobus-dt-v1-0-3ded4dc879e7@beagleboard.org>
- <20240911-mikrobus-dt-v1-2-3ded4dc879e7@beagleboard.org>
-Message-Id: <172606837860.404675.7012990684888155394.robh@kernel.org>
-Subject: Re: [PATCH 2/8] dt-bindings: connector: Add MikorBUS connector
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240911-mikrobus-dt-v1-3-3ded4dc879e7@beagleboard.org>
 
+> --- a/drivers/misc/Kconfig
+> +++ b/drivers/misc/Kconfig
+> @@ -610,6 +610,23 @@ config MARVELL_CN10K_DPI
+>  	  To compile this driver as a module, choose M here: the module
+>  	  will be called mrvl_cn10k_dpi.
+>  
+> +menuconfig MIKROBUS
+> +	tristate "Module for instantiating devices on mikroBUS ports"
+> +	help
+> +	  This option enables the mikroBUS driver. mikroBUS is an add-on
 
-On Wed, 11 Sep 2024 19:57:19 +0530, Ayush Singh wrote:
-> Add DT bindings for mikroBUS interface. MikroBUS [0] is an open standard
-> developed by MikroElektronika for connecting add-on boards to
-> microcontrollers or microprocessors.
-> 
-> MikroBUS connector node will optionally act as nexus nodes for routing
-> GPIOs and PWM.
-> 
-> For GPIOs, the following pin numbering should be followed:
-> 
->   0: PWM
->   1: INT
->   2: RX
->   3: TX
->   4: SCL
->   5: SDA
->   6: MOSI
->   7: MISO
->   8: SCK
->   9: CS
->   10: RST
->   11: AN
-> 
-> For PWM, the PWM pin should be on channel 0.
-> 
-> I am not quite sure how to deal with the nexus node properties
-> (#gpio-cells, gpio-map, gpio-map-mask, gpio-map-pass-thru) since they
-> seem to conflict with upstream gpio schema (gpio-controller is a
-> dependency of #gpio-cells).
-> 
-> [0]: https://www.mikroe.com/
-> 
-> Signed-off-by: Ayush Singh <ayush@beagleboard.org>
-> ---
->  .../bindings/connector/mikrobus-connector.yaml     | 40 ++++++++++++++++++++++
->  MAINTAINERS                                        |  5 +++
->  2 files changed, 45 insertions(+)
-> 
+You are missing
 
-My bot found errors running 'make dt_binding_check' on your patch:
+        depends on RUST
 
-yamllint warnings/errors:
-
-dtschema/dtc warnings/errors:
-/builds/robherring/dt-review-ci/linux/Documentation/devicetree/bindings/connector/mikrobus-connector.example.dtb: mikrobus-connector0: 'gpio-controller' is a dependency of '#gpio-cells'
-	from schema $id: http://devicetree.org/schemas/gpio/gpio.yaml#
-
-doc reference errors (make refcheckdocs):
-
-See https://patchwork.ozlabs.org/project/devicetree-bindings/patch/20240911-mikrobus-dt-v1-2-3ded4dc879e7@beagleboard.org
-
-The base for the series is generally the latest rc1. A different dependency
-should be noted in *this* patch.
-
-If you already ran 'make dt_binding_check' and didn't see the above
-error(s), then make sure 'yamllint' is installed and dt-schema is up to
-date:
-
-pip3 install dtschema --upgrade
-
-Please check and re-submit after running the above command yourself. Note
-that DT_SCHEMA_FILES can be set to your schema file to speed up checking
-your schema. However, it must be unset to test all examples with your schema.
-
+	Andrew
