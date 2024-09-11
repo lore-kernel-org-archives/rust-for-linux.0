@@ -1,117 +1,123 @@
-Received: from mail-ej1-f43.google.com (mail-ej1-f43.google.com [209.85.218.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3891186E24
-	for <rust-for-linux@vger.kernel.org>; Wed, 11 Sep 2024 11:43:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E38E185B7A;
+	Wed, 11 Sep 2024 12:31:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726055032; cv=none; b=dxzRGl6/lRhkz4zFPvzd8CSqB0MtfdqXQOfsdETIEv9AVAjrUJ7b9MfRW1qhQo5NsHaqfec3HvdxxfrDqkkEkCo7A1VUcQzbxVHR+vT8Qj6ldOeo/hjjWfiY43Lrlxe5D2qVkArLIJLSjfyQYd+FDjOdd6t4UYUCk9kzgqHbB5Y=
+	t=1726057886; cv=none; b=lNF371zEOiBS/a3UwYA24px8jnyTheSLl9ZTDlkRkcz9FZv3BPb+WE3Orfo7U4l+Xy89cZ2AgkcNoXjuLZtvpcnuAj+bZEXgcLlCL4lf2g1l/DwOCfvwmSYCcxOJyb2NUw7RHXOHtU59y04fEf2zWYzYWYxuIlzCqTEYhBrGbvg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726055032; c=relaxed/simple;
-	bh=9hiabN1M+tFNIMHDE9LStpgFSYodQc7eDrfAIyTkOt8=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=QUH4xVxhS0WF3672R1no6ynP5XZhoy3c5bsgCokbFwxqpSru/hbtd/hhQvzjoSj1LIK3bRqDzLLs7E8MkRfjZ1rUGhNfNSsJ1UedK9oGCjqvvtQHc77PnJos5qZUkINVw8uPKATcrDa4zOY6jCnau6tLclZDXw7BkvSB9cRrU2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=Jb8ZBocJ; arc=none smtp.client-ip=209.85.218.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1726057886; c=relaxed/simple;
+	bh=eU3oOgqP7mozRvjpQC5rfw+p/h07bXakoBco4xUGrec=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ruCPtIe3XNrL9rwGHlI67L5lk2nN7hovMBrUwaAzWq/6UNiDsW8h328SM/nYNwhlDGnXYTnpwDODfHUhWXOj4xotOiSmoh82mg5tXUg8X1hSe7E5sWcwEqyTZhsPV5ZJWd+N5RwymtF6HQN86RzTFl/V0k+f8uIa7U61QZgrrtU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=T4A6vh6c; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="Jb8ZBocJ"
-Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-a8a897bd4f1so729084966b.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 11 Sep 2024 04:43:49 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1726055028; x=1726659828; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=0836bPdfIiVhJZmRIpwdukfSHhRJerCCPsKDHVUH+Xo=;
-        b=Jb8ZBocJ7jZyWFF5OTAhOZOcqC4RFE+/vrOVXNe9nZnnRyckUmpcX6gH+63iEWoaPn
-         jv8AOOF0tW+PfpzU3ER3mDJQAFv77eaKEfhqABdlqQcy7zofOqc2eBpyJzwZ8QySxsJ5
-         BeDAi9IBXE5XywostMWjEzru4y14iYalgzcZi2LK1WD9DuO+wPsHoyuRTsOV35jvDnRh
-         I5jQ5a8qxpE+YsPhAL7zDWi7BWkIrM7Xq/u2GS0kMP9eMRMk2v2QrTgHv3JJxeLnpKrh
-         fIV3CWDoETaj07/Z+FQBx85De44D6+7F3hMIopwEpsS0x8ug+EH8ynJE+TFFPqNZR39p
-         HieQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726055028; x=1726659828;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=0836bPdfIiVhJZmRIpwdukfSHhRJerCCPsKDHVUH+Xo=;
-        b=IjVpalWJmnE5xTKUG5229+98ACFacBAMl871SnLWWG4ZHDHC87YI7KEfXcnvLqb2nc
-         NOlog7qKA3b3kXilEpzF46PtsNMsahGTxgyXv2fIisrB41QD5AI2163keX2Z4EVRblSs
-         2Rv0im/EkiorRBVdEdc6tTpijo/5rMBEtqjVguEzIFEN3fbxDjUt9PcX2RpwNWnF9zPA
-         6BYWVWL9lzE2wA45vHZTjqJ8jcYz2utUKwqhLD33YIv/8JbxLaFFD8H5JLcLK9RYSBNO
-         WSC3qIZlEpv8pVh7ULjHOXzYgpqbm+35ylOztzOPsvZH2Is1/YrWHsydh3WnVa7qou2V
-         LaVA==
-X-Forwarded-Encrypted: i=1; AJvYcCVv8w9KCqWxXep0iqt2Fztbg8ShGS/wGRi8cSHoTNNnzsECV4q72xvG9Sf56zP0tCHFM0l7ew0Zw0LlVJJ4RQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzjJSs13TDceVAtS1OQbjS0SWlXg9P0CxMWE6JViws3e8t4EJHr
-	PpOkl6OHzxgL+ii2QjOwPDMzUkGt7yFpegEUM3erga7/hvyWdLs+zAigoOtyXg2i2YqaHD9e0BN
-	q
-X-Google-Smtp-Source: AGHT+IE06+xDqkLYzGpC/L+2NLQeM/nBC/Gy5jIkoMSaoEd70RtXRRQzFeVamgQr7aHe0PKw8Wnx3w==
-X-Received: by 2002:a17:907:2d0a:b0:a86:82e2:8c64 with SMTP id a640c23a62f3a-a8ffab78821mr368553266b.35.1726055027526;
-        Wed, 11 Sep 2024 04:43:47 -0700 (PDT)
-Received: from [10.100.51.161] ([193.86.92.181])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a8d25835d97sm606731866b.4.2024.09.11.04.43.46
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 11 Sep 2024 04:43:47 -0700 (PDT)
-Message-ID: <599892ec-3cf5-4349-984b-7c94f2ba5687@suse.com>
-Date: Wed, 11 Sep 2024 13:43:46 +0200
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="T4A6vh6c"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27802C4CEC5;
+	Wed, 11 Sep 2024 12:31:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1726057883;
+	bh=eU3oOgqP7mozRvjpQC5rfw+p/h07bXakoBco4xUGrec=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=T4A6vh6cbK6ZufKbZhNi3k1K95qYH460093V3SDwP3w3NF0b1mDzp9VAZ1trcsTaf
+	 HPYAU/BozaKvBziW+zGOBpW8jWVHUzaUILaPCAFaWiUwMlRnYSfMrYSBVopGX0WKka
+	 oDG2/p0IJAZuyOy1jiJWFNNy7f85NoRWCDus+XlOiqLkwpalyOsz6deVpSKVRDah39
+	 SpekqTn+vU3RCz0IjjNRDzSNc7p3HrP+Z8dQK8h6ySFLB6yLW3t0BmGig7p54AqLLi
+	 fz5pGEMUZ0KCNRudvLF8WbmUscL/Ig2eHHhGDIvbLxNaIqQr80RuExsjsWDVcF4Wjc
+	 vNv9Cp51/3Dpw==
+Date: Wed, 11 Sep 2024 14:31:16 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	a.hindborg@samsung.com, aliceryhl@google.com,
+	akpm@linux-foundation.org, daniel.almeida@collabora.com,
+	faith.ekstrand@collabora.com, boris.brezillon@collabora.com,
+	lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com,
+	cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com,
+	ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v6 22/26] rust: alloc: implement `Cmalloc` in module
+ allocator_test
+Message-ID: <ZuGNlFluwAmTG19R@cassiopeiae>
+References: <20240816001216.26575-1-dakr@kernel.org>
+ <20240816001216.26575-23-dakr@kernel.org>
+ <e3ccbf52-224e-4869-992b-4fcaa0ec3410@proton.me>
+ <ZtD1TsGm0swi7gyv@pollux.localdomain>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 16/19] gendwarfksyms: Add support for reserved
- structure fields
-To: Sami Tolvanen <samitolvanen@google.com>, Miroslav Benes <mbenes@suse.cz>
-Cc: Masahiro Yamada <masahiroy@kernel.org>,
- Luis Chamberlain <mcgrof@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Matthew Maurer <mmaurer@google.com>, Alex Gaynor <alex.gaynor@gmail.com>,
- Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>,
- Petr Pavlu <petr.pavlu@suse.com>, Neal Gompa <neal@gompa.dev>,
- Hector Martin <marcan@marcan.st>, Janne Grunau <j@jannau.net>,
- Asahi Linux <asahi@lists.linux.dev>, linux-kbuild@vger.kernel.org,
- linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org,
- rust-for-linux@vger.kernel.org
-References: <20240815173903.4172139-21-samitolvanen@google.com>
- <20240815173903.4172139-37-samitolvanen@google.com>
- <alpine.LSU.2.21.2408301114000.1124@pobox.suse.cz>
- <CABCJKucCWfeC0yL6Q2ZcBfef0tMd9L_gmHRJt-cUYkg_4PDtnA@mail.gmail.com>
-Content-Language: en-US
-From: Petr Pavlu <petr.pavlu@suse.com>
-In-Reply-To: <CABCJKucCWfeC0yL6Q2ZcBfef0tMd9L_gmHRJt-cUYkg_4PDtnA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZtD1TsGm0swi7gyv@pollux.localdomain>
 
-On 8/31/24 02:05, Sami Tolvanen wrote:
-> On Fri, Aug 30, 2024 at 9:34 AM Miroslav Benes <mbenes@suse.cz> wrote:
->>
->> yes, this is one of the approaches we use in SLES. We add kabi paddings
->> to some structures in advance (see [1] as a random example) and then use
->> it later if needed.
->>
->> It is not the only approach. Much more often we do not have a padding and
->> use alignment holes ([5]), addition of a new member to the end of a
->> structure ([2] or [3]) and such "tricks" ([4] for a newly fully defined
->> structure).
+On Fri, Aug 30, 2024 at 12:25:27AM +0200, Danilo Krummrich wrote:
+> On Thu, Aug 29, 2024 at 07:14:18PM +0000, Benno Lossin wrote:
+> > On 16.08.24 02:11, Danilo Krummrich wrote:
+> > 
+> > > +
+> > > +        if layout.size() == 0 {
+> > > +            // SAFETY: `src` has been created by `Self::alloc_store_data`.
+> > 
+> > This is not true, consider:
+> > 
+> >     let ptr = alloc(size = 0);
+> >     free(ptr)
+> > 
+> > Alloc will return a dangling pointer due to the first if statement and
+> > then this function will pass it to `free_read_data`, even though it
+> > wasn't created by `alloc_store_data`.
+> > This isn't forbidden by the `Allocator` trait function's safety
+> > requirements.
+> > 
+> > > +            unsafe { Self::free_read_data(src) };
+> > > +
+> > > +            return Ok(NonNull::slice_from_raw_parts(NonNull::dangling(), 0));
+> > > +        }
+> > > +
+> > > +        let dst = Self::alloc(layout, flags)?;
+> > > +
+> > > +        // SAFETY: `src` has been created by `Self::alloc_store_data`.
+> > > +        let data = unsafe { Self::data(src) };
+> > 
+> > Same issue here, if the allocation passed in is zero size. I think you
+> > have no other choice than to allocate even for zero size requests...
+> > Otherwise how would you know that they are zero-sized.
 > 
-> Thanks for bringing this up! Sounds like we're also going to need a
-> way to completely exclude specific fields from the output then. I
-> think we can use a similar union approach, but instead of instructing
-> the tool to use another type, we can just indicate that the field
-> should be skipped. I'll come up with a solution for v3.
+> Good catch - gonna fix it.
 
-It might have been mentioned previously, not sure, but one more case to
-consider is handling of enum declarations. New enumerators can be
-typically added without breaking ABI, e.g. 'enum E { OLD1, OLD2, NEW }'.
-It would be then great to have some ability to hide them from
-gendwarfksyms.
+Almost got me. :) I think the code is fine, callers are not allowed to pass
+pointers to `realloc` and `free`, which haven't been allocated with the same
+corresponding allocator or are dangling.
 
-I think neither of the __kabi_reserved or __gendwarfksyms_declonly
-mechanism can currently help with that.
-
--- 
-Thanks,
-Petr
+> 
+> > 
+> > ---
+> > Cheers,
+> > Benno
+> > 
+> > > +
+> > > +        // SAFETY: `src` has previously been allocated with this `Allocator`; `dst` has just been
+> > > +        // newly allocated. Copy up to the smaller of both sizes.
+> > > +        unsafe {
+> > > +            ptr::copy_nonoverlapping(
+> > > +                src.as_ptr(),
+> > > +                dst.as_ptr().cast(),
+> > > +                cmp::min(layout.size(), data.size),
+> > > +            )
+> > > +        };
+> > > +
+> > > +        // SAFETY: `src` has been created by `Self::alloc_store_data`.
+> > > +        unsafe { Self::free_read_data(src) };
+> > > +
+> > > +        Ok(dst)
+> > >      }
+> > >  }
+> > > --
+> > > 2.46.0
+> > > 
+> > 
