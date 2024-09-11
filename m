@@ -1,160 +1,135 @@
-Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+Received: from mail-pl1-f196.google.com (mail-pl1-f196.google.com [209.85.214.196])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9368E1B142F
-	for <rust-for-linux@vger.kernel.org>; Wed, 11 Sep 2024 16:03:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07DA0192D74
+	for <rust-for-linux@vger.kernel.org>; Wed, 11 Sep 2024 16:10:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.196
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726070629; cv=none; b=erDXNZTAFzuTJQmweGdZDFIjAH8RvzUXnK3jPbMmkWp1/63jnYDmqoNtkgZ/mFYphil9JGLACbiYVp14wMyv48p5FiE9IqMCUjpq1n8eEeAJcWvaN3jcnZvyzw8ecPSeu/j0RT8m3Fjxp13cjISG6a0eKVZ4loy5LXJxdLQoBeo=
+	t=1726071005; cv=none; b=SkmJkWD8rO1+IVI9LeSl3zqoPdZh+LIFnM9hMJd8gz446ZbiZ1+bh15r4Vhq0S0JRJKGbA7LsWhptUXTwUBszWhg7T/5OvY1/dmjlWNDD3pOLu0nzUGAVDbzEMTbfPkYOniFLKLZDZDu22r0qI5mAtwndG38fjmb7ZGbgtYI0U8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726070629; c=relaxed/simple;
-	bh=9sXB+vF2HaFIBrbpsH0gLpHJzwQVTbseoo4NvxT6HN8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=mWSDNdBS6soWHFsGgOa3ut18DnTTUVsR/K6Dq8p/exSo7zVXJuYAVuERUg3o1xiMVEKI55qgGoyKyV6j67QQDqGyPCClmN8WGoB7rJ4X8zvOZPiJwXCQDuNAueR5ekMursgwTOJDJ6eH28iusn7yQ52RdSFfr78uSlSQCfANW4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=digjE51U; arc=none smtp.client-ip=209.85.160.181
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1726071005; c=relaxed/simple;
+	bh=EyC1asarizN+wlHGUbEl5egryrMctUQ9CjTYigbQumg=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Q3zZ4oF/0/S+PhcAOIJePTfzt4/1pXTMk/nVjh3Bw9zwG3eFXCL9Leg6gkQFP1/lbjcCSFvGJYaXWcq7dnK6DbdZKsAn9kdWhtfh4SNd0+W3xHm7znK35dsSoLHNiYYbI3L0+kWWK8gpZaDUVsh9S5n919SPrbiIDZDdU1CqPj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org; spf=fail smtp.mailfrom=beagleboard.org; dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b=hx3SbFYp; arc=none smtp.client-ip=209.85.214.196
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=beagleboard.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="digjE51U"
-Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-4582a5b495cso596761cf.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 11 Sep 2024 09:03:47 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b="hx3SbFYp"
+Received: by mail-pl1-f196.google.com with SMTP id d9443c01a7336-2053525bd90so599055ad.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 11 Sep 2024 09:10:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1726070626; x=1726675426; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=7nej+hDXRQGZRY33WrOI2LiHyYN70vRosnPoaBCwRhc=;
-        b=digjE51Ua/9wuvOdGLvuOu3Yx0OgfKSGYXG/tLoCN8673ZHKqw3CL65wZere2xEHlL
-         CSZF+Dm294ox/O0OVaeJ4J5U1EnTI9cK9IYlwjn/8jrdMUwDT9XvTjV+c1mtWGViu5Pk
-         ZPsRf2dTd57MQ3hdymvwrxxJhVohbwoYg0ndIsXsuunPYxbT3DR0INZh45pLQ+xD1+lQ
-         vTWSpVYUG1+1edNxMg/nSWVsr4Q/+bzOoQq6GfUJeChIcgn7uYKivv4IZj590wYSJtSW
-         PRH9E2BJilIt0TXrnoR9T9WcYmzjNis4Qr+HgcYY5i12LF+r9rS2NWk4p+rdlT+yi9nL
-         YFBw==
+        d=beagleboard-org.20230601.gappssmtp.com; s=20230601; t=1726071003; x=1726675803; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=K7UT67gV1cwJybIxBArzSTyhlTWk6LFWkBtDrmyARac=;
+        b=hx3SbFYpKbxVhdF7hZdOkiAzeCAYdMtfQheuJ/LRRFWCQUa+9mTAVrp7tH+rnCGt0k
+         dsqnuhVwotmn+YP7sayfa7aJ7RBFV0RuaT9cuGh+8WKMbCQ+n4+eGg7xVBbcwjvjuHin
+         5FIA5nLt2xK+Ft5OQ9p+mjYWmeqOtCDw6EI+rZFrKvbVMLrhWwrryQAeUi3jpU0qq//q
+         HN/UYaTw0iiB2cvw6baNv7Ic7Pl1sMrvJ7RQpdUwotjdWjZkuWDEeHj8BpoHyXi+c/Gl
+         qPQrRFC7N8GjAJvGAdyJC820dEjakrIZwj3qSwHo1eFBOE6HuXv2hDjZZM4J9eYV4mlq
+         /XLg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726070626; x=1726675426;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=7nej+hDXRQGZRY33WrOI2LiHyYN70vRosnPoaBCwRhc=;
-        b=k+D8UlYvlPjFmFh5LoKUkrkv5J3+FOhpk9z9McdINwc3VORtl6iFZQkePGTH4+y23f
-         DhwrvP8wItT12U+28Bh/MqyAhrqQ7gdRWAnBhLeYHMc1JJdilsRf2odRtC5/JIcXP81Q
-         HdETEcQL2uN35LUoEWNPFBJ3wmPXLgNh8xt0NGP+3oDrWBtWjgIAgxXyTJ0YbUi9G2u1
-         VzkgGp9boNIYWaT0r/x8pUwJ0fCFBt+bwoam7j4SAI6IFd3p1gSeS5Y0OUl11QoW8tda
-         327qtZDSTKyxwl2EGVrc65vJILLMWwU0lbhtWGoT1xgblCg/Mlx9LiUhiILcbnGcSgNf
-         J9GQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWeWEjGw1h6+yRYKGaseg3P9Huue4GF+oROZ2gSZWKuVgnB9ioBj3T+AuieB+7zyEr0UNLMmPIqwB0NUzm/qQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzy/kpEjWmmKlqsZASVB/hOHWg8JeXPh3gNJvs4wnyYoVshAUdK
-	vITYW+C8wFouTfFdwWFwq82O42l1By33t0wEgZyYZcd+66vTHcYtmgY6HMnqDrCqX4Qqi61kZC+
-	Sbnrh6pd6EUO8P5jsrSBAyDDuwEr47ATnd4xu
-X-Google-Smtp-Source: AGHT+IFqdCZ/zpCHMcTbg+wp9DmWUAH6fN0n+S9E0/kdxeU/B33WqP/WHqvn0q9L2zpcH9hRPg20QhMF9dEBajFDZtI=
-X-Received: by 2002:a05:622a:d2:b0:456:7513:44ba with SMTP id
- d75a77b69052e-4584f3a33d4mr4259221cf.4.1726070626297; Wed, 11 Sep 2024
- 09:03:46 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1726071003; x=1726675803;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=K7UT67gV1cwJybIxBArzSTyhlTWk6LFWkBtDrmyARac=;
+        b=ei3kiUo/Rz7LGfq+sRuRkTErN4ea3FfHMaCY3rWtihK48Y9Y3qTKPRYutIw/AmZZ7S
+         OTRNYgtFvOWnQMSvxoGRfNs/mmTUF3gCOGjOBwyym5JMMb714gLzVJmfZ8PXkq9FCRGv
+         o+o593Zg7xXKlJBuZpZVwg29kBIUqbMbwjyHKpClRsz7cfVqA1e3uwUp2fPBpYj0MdLi
+         ur2aNIvw+R3MUVdUit/pHjpoxb/RaHZdVlVU42KRMuMVWzrxrSiyAvA5kkbGae10U/5a
+         cW6vmpVwKXl6IZziSCWeByM5GgY9x5uKLfxrtlsHx++rwk5DkbgNmmaljooPMHewS350
+         SARQ==
+X-Forwarded-Encrypted: i=1; AJvYcCXEmBOiRAgF2o15Al+UkEoZ7o32a2QZxWWPQdGxMFDGJpeGihpLVYLFkqp5YdRgY6wkCd8RYn/438+MXY+nhA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx79o8ZfX00sTnlZ6G147MHrKsdtlqZoZTfiQG7ZbiRkzFOelv9
+	WiJzCYrdyJpy89lC5rxDxYbEn/tgNw/sjZfdACsU9ixeZ0NQer19+EV1JjJWuOEZGdbMfcZGYJo
+	rcV9E
+X-Google-Smtp-Source: AGHT+IHxqgzZVxYEvY9qL7CLZSUAdKuf7UAGYqozKhceMgYQsh8xQE8qJwCqlU3Otnp7XWn00TTRiw==
+X-Received: by 2002:a17:902:e546:b0:1fb:90e1:c8c5 with SMTP id d9443c01a7336-2074c643e20mr54026305ad.33.1726071003325;
+        Wed, 11 Sep 2024 09:10:03 -0700 (PDT)
+Received: from [172.16.118.100] ([103.15.228.94])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2076ae3fe19sm1602505ad.0.2024.09.11.09.09.54
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 11 Sep 2024 09:10:03 -0700 (PDT)
+Message-ID: <ef948bc7-aa2b-4b45-8e6f-32c28b7d6684@beagleboard.org>
+Date: Wed, 11 Sep 2024 21:39:52 +0530
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240815173903.4172139-21-samitolvanen@google.com>
- <20240815173903.4172139-35-samitolvanen@google.com> <286b1cc5-1757-4f0a-bb66-0875f4608c7e@suse.com>
-In-Reply-To: <286b1cc5-1757-4f0a-bb66-0875f4608c7e@suse.com>
-From: Sami Tolvanen <samitolvanen@google.com>
-Date: Wed, 11 Sep 2024 09:03:07 -0700
-Message-ID: <CABCJKudJR13PJgjr9-5Ff9Dzmb7=pSx7JWM5qTyR8oYRdtSDDA@mail.gmail.com>
-Subject: Re: [PATCH v2 14/19] gendwarfksyms: Add symbol versioning
-To: Petr Pavlu <petr.pavlu@suse.com>
-Cc: Masahiro Yamada <masahiroy@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, 
-	Miguel Ojeda <ojeda@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
-	Matthew Maurer <mmaurer@google.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, Neal Gompa <neal@gompa.dev>, 
-	Hector Martin <marcan@marcan.st>, Janne Grunau <j@jannau.net>, Asahi Linux <asahi@lists.linux.dev>, 
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	linux-modules@vger.kernel.org, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6/8] addon_boards: Add addon_boards plumbing
+Content-Language: en-US
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: fabien.parent@linaro.org, d-gole@ti.com, lorforlinux@beagleboard.org,
+ jkridner@beagleboard.org, robertcnelson@beagleboard.org,
+ Andrew Davis <afd@ti.com>, Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Derek Kiernan <derek.kiernan@amd.com>,
+ Dragan Cvetic <dragan.cvetic@amd.com>, Arnd Bergmann <arnd@arndb.de>,
+ Nishanth Menon <nm@ti.com>, Vignesh Raghavendra <vigneshr@ti.com>,
+ Tero Kristo <kristo@kernel.org>, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org
+References: <20240911-mikrobus-dt-v1-0-3ded4dc879e7@beagleboard.org>
+ <20240911-mikrobus-dt-v1-6-3ded4dc879e7@beagleboard.org>
+ <2024091147-graveness-manmade-d070@gregkh>
+From: Ayush Singh <ayush@beagleboard.org>
+In-Reply-To: <2024091147-graveness-manmade-d070@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Hi Petr,
+On 9/11/24 20:30, Greg Kroah-Hartman wrote:
 
-On Wed, Sep 11, 2024 at 3:08=E2=80=AFAM Petr Pavlu <petr.pavlu@suse.com> wr=
-ote:
+> On Wed, Sep 11, 2024 at 07:57:23PM +0530, Ayush Singh wrote:
+>> A directory to store and build addon_board overlays like mikroBUS,
+>> Groove, etc. The overlays present here should be completely independent
+>> of the underlying connector.
+>>
+>> Signed-off-by: Ayush Singh <ayush@beagleboard.org>
+>> ---
+>>   Kbuild                         |  1 +
+>>   Kconfig                        |  2 ++
+>>   MAINTAINERS                    |  1 +
+>>   addon_boards/Kconfig           | 16 ++++++++++++++++
+>>   addon_boards/Makefile          |  3 +++
+>>   addon_boards/mikrobus/Makefile |  1 +
+>>   6 files changed, 24 insertions(+)
+> Ah, here's where you add this.
 >
-> On 8/15/24 19:39, Sami Tolvanen wrote:
-> > +static inline unsigned long partial_crc32(const char *s, unsigned long=
- crc)
-> > +{
-> > +     while (*s)
-> > +             crc =3D partial_crc32_one(*s++, crc);
-> > +     return crc;
-> > +}
-> > +
-> > +#endif /* __CRC32_H */
+> It should be below drivers/ right?  But what's wrong with drivers/soc/?
+> Why is this so special?  Why not just under
+> drivers/microbus/addon_boards/ ?  Why is this tiny bus/device so
+> different from everything else out there?
 >
-> I think the CRC32 code should be ideally shared between genksyms and
-> gendwarfksyms. One option would be to stick it under scripts/include,
-> not sure if the best one though.
-
-This was carried over from the initial version, which wasn't under
-scripts yet. I'm happy to deduplicate this though. Masahiro, any
-preferences on where this should go?
-
-> > +static int get_symbol_cache(struct state *state, Dwarf_Die *die,
-> > +                         struct die **cache)
-> > +{
-> > +     checkp(symbol_set_die(state->sym, die));
-> > +     check(die_map_get(die, SYMBOL, cache));
-> > +
-> > +     if ((*cache)->state !=3D INCOMPLETE)
-> > +             return 1; /* We already processed a symbol for this DIE *=
-/
-> > +
-> > +     (*cache)->tag =3D dwarf_tag(die);
-> > +     return 0;
-> > +}
+> thanks,
 >
-> Nit: The "get_" prefix in the name of this function is misleading. It
-> isn't a plain getter but has an effect of setting the symbol die.
-> A different name would be better.
+> greg k-h
 
-Sure, I'll clean this up.
 
-> > +static int calculate_version(struct version *version, const char *name=
-,
-> > +                          struct type_list *list)
-> > +{
-> > +     check(version_init(version));
-> > +     check(__calculate_version(version, list));
-> > +     cache_clear_expanded(&expansion_cache);
-> > +     return 0;
-> > +}
->
-> Nit: The name parameter is unused.
+Well, it can go under drivers for mikrobus, but there will be other 
+addon board connectors which will not need any kind of driver. In fact, 
+the original patch series this is based on [0] did not have any driver 
+for the connector.
 
-Ah, so it is. I'll fix this too.
 
-> More importantly, it made me think which names are included in the CRC
-> calculation and which ones are omitted.
->
-> If I'm looking correctly, names of structs, enums and enumerators make
-> it into the calculation. On the other hand, names of struct members,
-> function parameters and exports (functions/variables) are missing.
->
-> I think the names of struct members and function parameters should be
-> added as well. If the code changes 'struct A { int cols; int rows; }' to
-> 'struct A { int rows; int cols; }' then that should be recognized as
-> a different API/ABI. The same applies to function parameters.
+As for bus, see my reply to the other patch in the series [1]. 
+Basically, while the name of the standard itself is "mikroBUS", it is 
+not really a "bus" in Linux sense.
 
-I did leave out member names because typically renaming a member
-doesn't change the ABI, but you're right, it might help capture these
-types of changes where fields with identical types are reordered for
-some reason. I'll add names.
 
-> I'm not sure about export names. I would probably include them as well,
-> if only for consistency.
+[0]: 
+https://lore.kernel.org/linux-arm-kernel/20240702164403.29067-1-afd@ti.com/
 
-I would rather leave out the symbol names to have consistent CRCs
-between symbols that have identical types. Or is there an actual
-benefit in including the symbol name in the CRC? The names are already
-rather explicitly involved when symbol versions are checked.
+[1]: 
+https://lore.kernel.org/all/ecd1fff8-9c15-496a-982f-36e6c58e906a@gmail.com/
 
-Sami
