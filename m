@@ -1,160 +1,142 @@
-Received: from mail-pj1-f66.google.com (mail-pj1-f66.google.com [209.85.216.66])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5593C1A263C
-	for <rust-for-linux@vger.kernel.org>; Wed, 11 Sep 2024 14:29:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.66
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7592919F128;
+	Wed, 11 Sep 2024 14:38:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726064944; cv=none; b=V8SyCbqCAns3GDZm/6thIov2/5+sellbSO7Q76wma6eMmOhnaFPOuO24oEFT096dR7uMzY/aWd1cUZ0Dblo4Z6RFPmqBCrDxtyKfSBxVujU2L9gcdFKN4p661aTTejF3B0CtFahHReio1wEEFLIFdblxScMDwrBy4Y1/x8O4HnI=
+	t=1726065483; cv=none; b=MpMiyf/HCtEjTaIrq0a3Sr1/8S7CbcC3QkAr5kypcBB9/zayU/hsOP25YthDJeq7EEgWRsp594ysYnZLV/ofxt3NAs0OQCsQDCxeKepa3DDuiwIyHSQlQlJLk73nIaZvgMN0ECxmmFROp+WSK8wLK1WN3lgEGOHyrubVuXRmF6o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726064944; c=relaxed/simple;
-	bh=8QEuGIvQLbpjRaTFhH2ZFgvXVrDeGK7gSc8y+imv6Tg=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=f//2AFSSDwNoy9W+Nc583FT0vGfTEyukrILwT0ucQRrOwVnzFEJwYaiHWpoyFpmxolGrJhIJxSPlO4XA1nFoigBHqesb0ICVV5QoQKai155n5YVXpfzJZuygagiTHscIFwWvKL1d01Qu2Zi3iHqqYU5BmmEcqV6/v+H6D+Nt3TE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org; spf=fail smtp.mailfrom=beagleboard.org; dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b=qjJPoobB; arc=none smtp.client-ip=209.85.216.66
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=beagleboard.org
+	s=arc-20240116; t=1726065483; c=relaxed/simple;
+	bh=mqHDA66/2LWiEoFN7msYbfNAJjJbyoJbwWfKXNsRYrc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=mzUh1ywGqqyqM2MRUt08j5lTe94O9Jv478vt9E7mcMP0M5HKQyMhSC9OuPR5hYK6XW/kDFxCDFhrruoNVAQmDPYv7Pw6o0tucbPtZlhQcPaZTJNWrcCDowirloiETF4cHpneQ5Bb9+v6U2TZKm1cPi3Uf96M63sXrmaObCMe+fA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LPV3lDJ0; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b="qjJPoobB"
-Received: by mail-pj1-f66.google.com with SMTP id 98e67ed59e1d1-2d877e9054eso4589334a91.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 11 Sep 2024 07:29:03 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=beagleboard-org.20230601.gappssmtp.com; s=20230601; t=1726064942; x=1726669742; darn=vger.kernel.org;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=P5J0U9Nr2VJWT4UwLDZSs/klCxJAz9CderPyv0geGrk=;
-        b=qjJPoobBsOwywpeei7kzIeKsEzkrEoNl2gNgSdPdYbQkoRK0efTx95jMT7MlWOcowN
-         un7InA1eOsCMSAslLwJqcKhyOGMci8KvzR4GQhazcW7W30UuAWiVfugFIBOGmGPXwTmd
-         UmZnhNyjKcIFce3GKJZZjuAKpuN8phRqIkEahZHgGFhTGebcw0e6Q+X+9kNmoOa6h+q5
-         IdEQQOIPfBIWShAeTAVpmt2pKj4m9LzfmC2Ug4vmP65Gnj8j5P+bEaxBAwUwymJ/4EV8
-         xkh5OVWqVjcCu3VbxDLU8WDi9AoSidA5g8PGfaqeNMjXj4YF1joL91/dj0YzcvTG3j8G
-         ndzg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726064942; x=1726669742;
-        h=cc:to:in-reply-to:references:message-id:content-transfer-encoding
-         :mime-version:subject:date:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=P5J0U9Nr2VJWT4UwLDZSs/klCxJAz9CderPyv0geGrk=;
-        b=RGWgptG/5jL4TRK1+cAj4Ojl3bWcyRnUNEq5Dl60luxXKr7p4jflRSP3uTYwa0chdJ
-         gm50NcAfh2czw2bKWC2TSVd7ZF8AJW1O/YX7ksJMSbEePd+9sELtZJ+lR1C9QVHKwhbj
-         ShRtCjPeproa3oqJ2179Z7/3CqrcwgwANMHff+PCL6lAi8yYOhLG/ZqLOQ1ZXqAFzNxT
-         I5SRPat0dh/oaHyfMeOM5LRQGk3OEezPElfuhx7EI9htsc6KZCuZ8htn7QiW5F9Qf9BG
-         PuMPbG5ETBZwdPIMItcbPqduMQZt9HwkRvpNyH6UpNuPtX2GQMhx0ltHL78ai5QeGueA
-         Pztg==
-X-Forwarded-Encrypted: i=1; AJvYcCUbtpJGkTDw3YOwAAt9alT1rF3astXj14UPOGW9TmY6fSRaLfIEYka97qDG7lGfQYU1CqU/XqnD/Kv1hY5Wlg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzF2l13lZ3ahqNPKkVrmPVYC4Q7IuVUSRsxISMtqTAfEHYTZ6oz
-	s3H9PZArpNSTiN/4eh3yi8NxtbSyqKyOGqEpc5KtGSp8ke0galf2bkcTkPkTfw==
-X-Google-Smtp-Source: AGHT+IFGDayOTdMe5/yDVHYyC7ZbsU8VPfRxdyEq2dpfA1fEpxwlc2wdxNYQ01Lri1PLU0mE/Fh6Jw==
-X-Received: by 2002:a17:90b:1187:b0:2c9:5ecd:e3c5 with SMTP id 98e67ed59e1d1-2daffd0bf4dmr18926938a91.33.1726064942586;
-        Wed, 11 Sep 2024 07:29:02 -0700 (PDT)
-Received: from [172.16.118.100] ([103.15.228.94])
-        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2dadbfe46c9sm10639116a91.11.2024.09.11.07.28.52
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Sep 2024 07:29:02 -0700 (PDT)
-From: Ayush Singh <ayush@beagleboard.org>
-Date: Wed, 11 Sep 2024 19:57:25 +0530
-Subject: [PATCH 8/8] addon_boards: mikrobus: Add GPS3 Click
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LPV3lDJ0"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 244C7C4CEC0;
+	Wed, 11 Sep 2024 14:37:57 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1726065483;
+	bh=mqHDA66/2LWiEoFN7msYbfNAJjJbyoJbwWfKXNsRYrc=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=LPV3lDJ0LW0wWEKaDYHpJ11yP5N2P7CWmzRvEbQBBTjjMqjqYDynZP0lUyYMEkfKs
+	 XUHUC/GkZY8lMJY5M3LC8J1XNQcL53qXwd9xgzwEy1qwTay6K2aNde/kxYbXNVE8Ov
+	 8Xh8Sw+LpQJj1GK63obyZVdTlXfVIZt2wkf3TVZSd1VhCcMUYRejpOx1NuG5BboKOO
+	 4N4IsUWhsSL0XYApgDgw/qY2Ql59mjZseA6a/E2UdcpTFOhGVh1zWhz6E5LBCSg9XI
+	 PXrHtNZ77su4ucdVQRU89k3TWj4G0vrgLoF2ReGeOsK10fGwJGmA0oahiOsFfw3qN9
+	 AfGeY3QZuaXuw==
+Date: Wed, 11 Sep 2024 16:37:53 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	a.hindborg@samsung.com, aliceryhl@google.com,
+	akpm@linux-foundation.org, daniel.almeida@collabora.com,
+	faith.ekstrand@collabora.com, boris.brezillon@collabora.com,
+	lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com,
+	cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com,
+	ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v6 22/26] rust: alloc: implement `Cmalloc` in module
+ allocator_test
+Message-ID: <ZuGrQcLwXi-tiK8l@cassiopeiae>
+References: <20240816001216.26575-1-dakr@kernel.org>
+ <20240816001216.26575-23-dakr@kernel.org>
+ <e3ccbf52-224e-4869-992b-4fcaa0ec3410@proton.me>
+ <ZtD1TsGm0swi7gyv@pollux.localdomain>
+ <ZuGNlFluwAmTG19R@cassiopeiae>
+ <bf158e23-4123-419b-a2ce-a27c4ea51219@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20240911-mikrobus-dt-v1-8-3ded4dc879e7@beagleboard.org>
-References: <20240911-mikrobus-dt-v1-0-3ded4dc879e7@beagleboard.org>
-In-Reply-To: <20240911-mikrobus-dt-v1-0-3ded4dc879e7@beagleboard.org>
-To: fabien.parent@linaro.org, d-gole@ti.com, lorforlinux@beagleboard.org, 
- jkridner@beagleboard.org, robertcnelson@beagleboard.org, 
- Andrew Davis <afd@ti.com>, Miguel Ojeda <ojeda@kernel.org>, 
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
- Gary Guo <gary@garyguo.net>, 
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
- Benno Lossin <benno.lossin@proton.me>, 
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
- Trevor Gross <tmgross@umich.edu>, Rob Herring <robh@kernel.org>, 
- Krzysztof Kozlowski <krzk+dt@kernel.org>, 
- Conor Dooley <conor+dt@kernel.org>, Derek Kiernan <derek.kiernan@amd.com>, 
- Dragan Cvetic <dragan.cvetic@amd.com>, Arnd Bergmann <arnd@arndb.de>, 
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Nishanth Menon <nm@ti.com>, 
- Vignesh Raghavendra <vigneshr@ti.com>, Tero Kristo <kristo@kernel.org>
-Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
- devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
- Ayush Singh <ayush@beagleboard.org>
-X-Mailer: b4 0.14.1
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1426; i=ayush@beagleboard.org;
- h=from:subject:message-id; bh=8QEuGIvQLbpjRaTFhH2ZFgvXVrDeGK7gSc8y+imv6Tg=;
- b=owEBbQKS/ZANAwAIAQXO9ceJ5Vp0AcsmYgBm4ajWfF8HnWfBpRhubrg4fXSooUmChhIDDWBYX
- YkeSu2grEuJAjMEAAEIAB0WIQTfzBMe8k8tZW+lBNYFzvXHieVadAUCZuGo1gAKCRAFzvXHieVa
- dPDnD/9VKgXwMYmbYiNZDn0qIW01JVcxnkYswlcqt3J9IFXKxgf95CvBhUm2GOHf3upxhxWOrof
- PucLmzSRCO5K5GN/kNAKGNR2WUMe0p+fmhzC4tzgUZYfANMK9yVrwJSX0ot4UoqzPQGUFTSVeUy
- DFot/tuROMVehuPsXnJ6Ku/R/FYuVD8fpHuj3c2QLVnr852mqmt2eOrLNxiqsYFlYly4iAulXS0
- AiyJXCLB/g6hPa/na+7Ko3HmDG7Bkkp8Uw0KMC2sQ/goQM0evweTnBoRl5ulz9ADgGJXfJxsaxW
- XidaFPyzj6z3HD4XKlxYGd2YbM6AJJSVVvbxiyvyoK+1O5/Im41irPY0tWtzaCqS3JPirTIN/ew
- ADTPsLbnFTYajl5eB+kfEEoQ151Gy0Ug6AcmsfPwpP9LzvrqSGoCnWUxFpGu1LwyRddrTD/d0iH
- ySln21m+xMwlWNt5EpvYk9Ds2ZBy5MfnGb7qCNaEZPQ1lpsNKU8U2PZimGlQOJqjHzWcg82t/i4
- 1LvwZh1Xj0KuSTfsVIbM00G1zmnZbFFuceiWNQ4sBtanORq+CAwQdZV/nKLgo+g97gEvmyQjfC3
- s/5KC/kK6UecXIphGeKG8z9NYVLJM5CFhQhLQD5jo4i2PtNfwe6ixQbInLrIPEfdnxLKLxkavTg
- H6stu8WIX4LLbGA==
-X-Developer-Key: i=ayush@beagleboard.org; a=openpgp;
- fpr=DFCC131EF24F2D656FA504D605CEF5C789E55A74
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <bf158e23-4123-419b-a2ce-a27c4ea51219@proton.me>
 
-- GPS3 Click is a UART MikroBUS addon Board
+On Wed, Sep 11, 2024 at 01:32:31PM +0000, Benno Lossin wrote:
+> On 11.09.24 14:31, Danilo Krummrich wrote:
+> > On Fri, Aug 30, 2024 at 12:25:27AM +0200, Danilo Krummrich wrote:
+> >> On Thu, Aug 29, 2024 at 07:14:18PM +0000, Benno Lossin wrote:
+> >>> On 16.08.24 02:11, Danilo Krummrich wrote:
+> >>>> +
+> >>>> +        if layout.size() == 0 {
+> >>>> +            // SAFETY: `src` has been created by `Self::alloc_store_data`.
+> >>>
+> >>> This is not true, consider:
+> >>>
+> >>>     let ptr = alloc(size = 0);
+> >>>     free(ptr)
+> >>>
+> >>> Alloc will return a dangling pointer due to the first if statement and
+> >>> then this function will pass it to `free_read_data`, even though it
+> >>> wasn't created by `alloc_store_data`.
+> >>> This isn't forbidden by the `Allocator` trait function's safety
+> >>> requirements.
+> >>>
+> >>>> +            unsafe { Self::free_read_data(src) };
+> >>>> +
+> >>>> +            return Ok(NonNull::slice_from_raw_parts(NonNull::dangling(), 0));
+> >>>> +        }
+> >>>> +
+> >>>> +        let dst = Self::alloc(layout, flags)?;
+> >>>> +
+> >>>> +        // SAFETY: `src` has been created by `Self::alloc_store_data`.
+> >>>> +        let data = unsafe { Self::data(src) };
+> >>>
+> >>> Same issue here, if the allocation passed in is zero size. I think you
+> >>> have no other choice than to allocate even for zero size requests...
+> >>> Otherwise how would you know that they are zero-sized.
+> >>
+> >> Good catch - gonna fix it.
+> > 
+> > Almost got me. :) I think the code is fine, callers are not allowed to pass
+> > pointers to `realloc` and `free`, which haven't been allocated with the same
+> > corresponding allocator or are dangling.
+> 
+> But what about the example above (ie the `alloc(size = 0)` and then
+> `free`)?
 
-Link: https://www.mikroe.com/gps-3-click
+This never has been valid for the `Allocator` trait. Look at `Kmalloc`,
+`Vmalloc` and `KVmalloc`, they don't allow this either.
 
-Signed-off-by: Ayush Singh <ayush@beagleboard.org>
----
- addon_boards/mikrobus/Makefile         |  1 +
- addon_boards/mikrobus/mikroe-1714.dtso | 28 ++++++++++++++++++++++++++++
- 2 files changed, 29 insertions(+)
+We've discussed this already in previous versions of this series, where for this
+purpose, you asked for `old_layout` for `free`. Such that `free` can check if
+the `size` was zero and therefore return without doing anything.
 
-diff --git a/addon_boards/mikrobus/Makefile b/addon_boards/mikrobus/Makefile
-index 4c7a68ea9504..e4b3d1aa7001 100644
---- a/addon_boards/mikrobus/Makefile
-+++ b/addon_boards/mikrobus/Makefile
-@@ -1,3 +1,4 @@
- # SPDX-License-Identifier: GPL-2.0
- 
- dtb-y += mikroe-5761-i2c.dtbo
-+dtb-y += mikroe-1714.dtbo
-diff --git a/addon_boards/mikrobus/mikroe-1714.dtso b/addon_boards/mikrobus/mikroe-1714.dtso
-new file mode 100644
-index 000000000000..c8a0872ba954
---- /dev/null
-+++ b/addon_boards/mikrobus/mikroe-1714.dtso
-@@ -0,0 +1,28 @@
-+// SPDX-License-Identifier: GPL-2.0-or-later OR MIT
-+/**
-+ * MikroBUS - Weather Click
-+ *
-+ * https://www.mikroe.com/weather-click
-+ *
-+ * Copyright (C) 2024 Ayush Singh <ayush@beagleboard.org>
-+ */
-+
-+/dts-v1/;
-+/plugin/;
-+
-+#include <dt-bindings/gpio/gpio.h>
-+
-+&MIKROBUS_CONNECTOR {
-+	status = "okay";
-+};
-+
-+&MIKROBUS_TX_UART {
-+	status = "okay";
-+	pinctrl-names = "default";
-+	pinctrl-0 = <&MIKROBUS_TX_MUX_UART_TX>;
-+
-+	gnss {
-+		compatible = "u-blox,neo-8";
-+		reset-gpios = <&MIKROBUS_ALL_GPIO 10 GPIO_ACTIVE_LOW>;
-+	};
-+};
+> I guess this all depends on how one interprets the term
+> "existing, valid memory allocation". To me that describes anything an
+> `Allocator` returns via `alloc` and `realloc`, including zero-sized
+> allocations.
 
--- 
-2.46.0
+I argue that the dangling pointer returned for `size == 0` does not point to any
+allocation in the sense of those allocators. It's just a dangling `[u8]`
+pointer.
 
+> But if you argue that those are not valid allocations from that
+> allocator, then that is not properly documented in the safety
+> requirements of `Allocator`. 
+
+The safety requirements of `Allocator` where proposed by you and I thought they
+consider this aspect?
+
+`realloc` has:
+
+"If `ptr == Some(p)`, then `p` must point to an existing and valid memory
+allocation created by this allocator."
+
+`free` has:
+
+"`ptr` must point to an existing and valid memory allocation created by this
+`Allocator` and must not be a dangling pointer."
+
+We can add the part about the dangling pointer to `realloc` if you want.
+
+> 
+> ---
+> Cheers,
+> Benno
+> 
