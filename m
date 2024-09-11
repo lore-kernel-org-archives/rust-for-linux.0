@@ -1,82 +1,130 @@
-Received: from vps0.lunn.ch (vps0.lunn.ch [156.67.10.101])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F75C185954;
-	Wed, 11 Sep 2024 15:49:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=156.67.10.101
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A87481B1402;
+	Wed, 11 Sep 2024 15:52:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726069758; cv=none; b=d5cF4oEsk3gY/Dt1nrUqIME3kR1RaKPPsfvlaw0phczMH2VInfr9n99xBeglKTSc0eiPi6Gf7GJm+kMHKs7YUyExXuPXvseSfRmhmGzH339zV902p3taYzLiQqbT4k510IxTwKMfJcJme9/QFRzuiklefX/AlCTQqbxT8aRCx/Y=
+	t=1726069938; cv=none; b=UbsnmWy+WU5YXFb2m/xNQndW56mKPT4/fkswJO+TXiXbZ5xXjjtAR9acBUqpaomHA0ZWWXo7xFrBn8BpZKBXSkx11IJmuOQ21TuOdObbvwek63zkCk/zRX36eOBNskC4We9XvM3/eaMAo1Ek7Bl+JZ/hqgun/M1qz3mwgCUteIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726069758; c=relaxed/simple;
-	bh=jvJrBcnk+D8yfH+0FQrinizcg59VFH4KplTPztnryN4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kxeVznSjZOWVt24BCtzBjMsu1Uv/FckEASRW7+SQzy3aVjnKuwYOTb5MqK2+aeiaF8dm0OtXMUvlW2b3Z4M4C63Qk8AMfmc4XUgRYBK61NHHCzeQImhitPyRbNQcx5iuC7OEjhLfzYHBNuE4pUAk+xBhcJoBxaOCJCkwl3cx4ok=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch; spf=pass smtp.mailfrom=lunn.ch; dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b=Wuc/sGyS; arc=none smtp.client-ip=156.67.10.101
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=lunn.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=lunn.ch
+	s=arc-20240116; t=1726069938; c=relaxed/simple;
+	bh=3Ud0mb7Fg1HcvD+rEM78PvP4bHo6eppubmq0ZnrppIA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Vbge+EllCcpdr177qg/TIWEPR/g6IG+xKVIF7StHf25f5C6CakD6R6jr2ur6WLW3nVVoKB5i8zMGt+qxYCeqRY/lVityPIR6EQYfg2lxD78ja9PBdTtb/DFsZV1u4YEfDBJnvYYa+W8RppiQlcejsiSqYZ9zTnoxvD1rhcEddKg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=k7Qj8nik; arc=none smtp.client-ip=209.85.215.169
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=lunn.ch header.i=@lunn.ch header.b="Wuc/sGyS"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=lunn.ch;
-	s=20171124; h=In-Reply-To:Content-Disposition:Content-Type:MIME-Version:
-	References:Message-ID:Subject:Cc:To:From:Date:From:Sender:Reply-To:Subject:
-	Date:Message-ID:To:Cc:MIME-Version:Content-Type:Content-Transfer-Encoding:
-	Content-ID:Content-Description:Content-Disposition:In-Reply-To:References;
-	bh=t6UG7PLdbkoosunbZul9Kx6uV/hzSw/RTZj0KodJ6ls=; b=Wuc/sGySYMF45bcq3U9BoGJBhg
-	udLHtgMRTDcvtuEAtsLTSvF9hsBCKouVn6Q6JbA2IDlDcRjw1u3NHuPCsCGn9NQiQXDnzrUhCIFf0
-	f0dF9JkCMoeDZ6tn+UAq6FnjDI7HLZvB/alVkHI8L0hBkWCdtbwTd8KP+bWjHJG/mC2c=;
-Received: from andrew by vps0.lunn.ch with local (Exim 4.94.2)
-	(envelope-from <andrew@lunn.ch>)
-	id 1soPaP-007E9Y-JU; Wed, 11 Sep 2024 17:48:53 +0200
-Date: Wed, 11 Sep 2024 17:48:53 +0200
-From: Andrew Lunn <andrew@lunn.ch>
-To: Ayush Singh <ayush@beagleboard.org>
-Cc: fabien.parent@linaro.org, d-gole@ti.com, lorforlinux@beagleboard.org,
-	jkridner@beagleboard.org, robertcnelson@beagleboard.org,
-	Andrew Davis <afd@ti.com>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Derek Kiernan <derek.kiernan@amd.com>,
-	Dragan Cvetic <dragan.cvetic@amd.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Nishanth Menon <nm@ti.com>, Vignesh Raghavendra <vigneshr@ti.com>,
-	Tero Kristo <kristo@kernel.org>, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 3/8] mikrobus: Add mikrobus driver
-Message-ID: <2a1155b4-f158-4cdd-ad3b-82d4a1841245@lunn.ch>
-References: <20240911-mikrobus-dt-v1-0-3ded4dc879e7@beagleboard.org>
- <20240911-mikrobus-dt-v1-3-3ded4dc879e7@beagleboard.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="k7Qj8nik"
+Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-7c1324be8easo787913a12.1;
+        Wed, 11 Sep 2024 08:52:16 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1726069936; x=1726674736; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=mhFBnUxhXfUiwp2BIfSInO3F3yOJroJO17IaiZ1i4bw=;
+        b=k7Qj8nik1FHzciJZj1gDIHSJfGVRrwZMglTBsfCq1FIPqogWfz1aA6YdjCsd3HEiPb
+         q5nRjflYYfoY2LzuLDJX0f9dNroBwnl8X59Nwn8WgcQ7qOV3RjM1O1ZAI7T0N+CTGtz1
+         l+QopIPAPqr7VY2diaVi1NEMJNhjw6zel/6dUoA6azndATATqQ7raPHHOcG1BLsKiFt4
+         jHWdJygEIlvvJmvmdtuF0pSNgbngguOJvlvjOTXa30CLf722KJJ0ibdHgFCFqWo6Ml8G
+         GR3jXJGIoOWCrqDwV5QrNWA/SpBS0a3WUANgDMgu1MQbwBKMOXDKRhdKbN6wrLq6L0Ru
+         Qe5A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1726069936; x=1726674736;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=mhFBnUxhXfUiwp2BIfSInO3F3yOJroJO17IaiZ1i4bw=;
+        b=wwn6rgwW5Dgx4q7xCImtJ21sOGpfmZmgc1sxa3pUIjV+Fo/3919fTAtFmpFolSxXdr
+         IBgR72+4Vo1Jm4mj48FQ5RpYs8aoLJf4wMf6nua5IG0uv53b1aZJXWf/O/eRQ0PmJdz5
+         uVOvdYZ4kOVd1JDUiNtS4Jhu38QjcQUXijiEJDz+8dUTaap0ARTcR4YENUfUTvKsS5eg
+         bGG7OpWxmG6Gs1MQrizEnaNC2trWDKan+MWpEepeTJtBuH9bPk0Z9Rbt35v860qnk9x4
+         jJ8v+f/c8JpdE5Altm8AWUisZQQra+DkJCPLtf3fuWJcOSCg09ewPyZbCHayAiQA+F5q
+         HAQA==
+X-Forwarded-Encrypted: i=1; AJvYcCUh0BVjDTDD3Lo3f+lMF8ezZJH2PcHkxzKyDtzUa+HGXA0NmGXDQxVWx0xbpnsQFybcBieTSAd1g71rdc6j@vger.kernel.org, AJvYcCWhqBDiP1CMnoJDTB/s3YcT2LXyoNp4Xl7vDghHA+i4KAFniDbl3fkBc3PcFcZ26MsCGdXb5pwuoYFy4mDHz2M=@vger.kernel.org, AJvYcCXV5cB8En+C0BmSHty3VeboPO0MVNsKXPOueNFitPI0q41FwKH4UQMlXULwQ/jF5aCJnKtp64sha+2s@vger.kernel.org
+X-Gm-Message-State: AOJu0YzDookNI5kEdaXmi2avzlTA1iLR/H1i5JsiOxCjINm7DuJrxzJP
+	KrNBqPvlVteDl5LsFkxR2Xw/ip71IdRYXT727JbeUbxcNzZbwQed
+X-Google-Smtp-Source: AGHT+IGOs+PCUn2enJi/POGctcONbWacbrDES/fFDJJ5CFqIcJeEOmHs8RNjPCcMjrve1Sv401LJXA==
+X-Received: by 2002:a05:6a20:8424:b0:1cf:4a7e:117b with SMTP id adf61e73a8af0-1cf5e1b9c2amr7477090637.20.1726069935654;
+        Wed, 11 Sep 2024 08:52:15 -0700 (PDT)
+Received: from [172.16.118.100] ([103.15.228.94])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7db1fdee1f0sm131274a12.77.2024.09.11.08.52.05
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 11 Sep 2024 08:52:14 -0700 (PDT)
+Message-ID: <bd542178-af1c-439d-bde4-9865cf6c853c@gmail.com>
+Date: Wed, 11 Sep 2024 21:22:02 +0530
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240911-mikrobus-dt-v1-3-3ded4dc879e7@beagleboard.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/8] rust: kernel: Add Platform device and driver
+ abstractions
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Ayush Singh <ayush@beagleboard.org>
+Cc: fabien.parent@linaro.org, d-gole@ti.com, lorforlinux@beagleboard.org,
+ jkridner@beagleboard.org, robertcnelson@beagleboard.org,
+ Andrew Davis <afd@ti.com>, Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
+ <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Derek Kiernan <derek.kiernan@amd.com>,
+ Dragan Cvetic <dragan.cvetic@amd.com>, Arnd Bergmann <arnd@arndb.de>,
+ Nishanth Menon <nm@ti.com>, Vignesh Raghavendra <vigneshr@ti.com>,
+ Tero Kristo <kristo@kernel.org>, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org
+References: <20240911-mikrobus-dt-v1-0-3ded4dc879e7@beagleboard.org>
+ <20240911-mikrobus-dt-v1-1-3ded4dc879e7@beagleboard.org>
+ <2024091106-scouring-smitten-e740@gregkh>
+Content-Language: en-US
+From: Ayush Singh <ayushdevel1325@gmail.com>
+In-Reply-To: <2024091106-scouring-smitten-e740@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-> --- a/drivers/misc/Kconfig
-> +++ b/drivers/misc/Kconfig
-> @@ -610,6 +610,23 @@ config MARVELL_CN10K_DPI
->  	  To compile this driver as a module, choose M here: the module
->  	  will be called mrvl_cn10k_dpi.
->  
-> +menuconfig MIKROBUS
-> +	tristate "Module for instantiating devices on mikroBUS ports"
-> +	help
-> +	  This option enables the mikroBUS driver. mikroBUS is an add-on
 
-You are missing
+On 9/11/24 20:26, Greg Kroah-Hartman wrote:
+> On Wed, Sep 11, 2024 at 07:57:18PM +0530, Ayush Singh wrote:
+>> +/// An identifier for Platform devices.
+>> +///
+>> +/// Represents the kernel's [`struct of_device_id`]. This is used to find an appropriate
+>> +/// Platform driver.
+>> +///
+>> +/// [`struct of_device_id`]: srctree/include/linux/mod_devicetable.h
+>> +pub struct DeviceId(&'static CStr);
+>> +
+>> +impl DeviceId {
+> <snip>
+>
+> I appreciate posting this, but this really should go on top of the
+> device driver work Danilo Krummrich has been doing.  He and I spent a
+> lot of time working through this this past weekend (well, him talking
+> and explaining, and me asking too many stupid questions...)
+>
+> I think what he has will make the platform driver/device work simpler
+> here, and I'll be glad to take it based on that, this "independent" code
+> that doesn't interact with that isn't the best idea overall.
+>
+> It also will properly handle the "Driver" interaction as well, which we
+> need to get right, not a one-off like this for a platform driver.
+> Hopefully that will not cause much, if any, changes for your use of this
+> in your driver, but let's see.
+>
+> thanks,
+>
+> greg k-h
+>
+Sure, can you provide me a link to patches or maybe the branch 
+containing that work? I also think it would be good to have the link in 
+Zulip discussion for Platform Device and Driver.
 
-        depends on RUST
 
-	Andrew
+Ayush Singh
+
