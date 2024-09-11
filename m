@@ -1,122 +1,289 @@
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f66.google.com (mail-pj1-f66.google.com [209.85.216.66])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0AE8618EFD4;
-	Wed, 11 Sep 2024 14:11:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84A4519E96A
+	for <rust-for-linux@vger.kernel.org>; Wed, 11 Sep 2024 14:27:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.66
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726063865; cv=none; b=eurh65GQ3B5CVqCd24Vh9aKNJlgK6wnbO3S5A1jDkED62frOOwclgdXKCgrtqnPeobVInWcpManWlVjpEm1XsDMrZ+lKosyOraI1YOYdsXevfSbrAaurA2Pn0lkyFwuej2lkBsW6271mPwa/5is4bgCeIiTfg3eAG33tDZWzh2w=
+	t=1726064867; cv=none; b=K+JmkCY5Sfjze02Qp5SfU94U+Bs5Jfy9pSg3KoGmApmr/4xqfpzRk6BVYEoxbVR8P/awIDI9sXdjyrKmukoTcaUyFKxWw8u1qv201myMeo5pE5F67H1awSvoR+VNBxx02p22iGclBsbqKdGsXzF2/7nXCyn4HtFoQY2tLcoFuuQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726063865; c=relaxed/simple;
-	bh=9xwPbs+FW8xyLLdAL+II5yA/9QMzxzCjdfhm7LcTA7o=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=EYzsnllLiGQrhOOTE1wiYK7n7zWduGZHtosHu9SHKjb9ceMKRQC2mIadgT/eJj0UBt+L/JZhpp8SYO8hoXkk8eNX0tbToa/Aw5WE3MxfnXAWV+Knr4YWBFE89PPpoQOzGaI1mF1e6qoSKy9y1byI3VuvqAGNyAkEvXofa88cdTE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=Nu2qpmV2; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+	s=arc-20240116; t=1726064867; c=relaxed/simple;
+	bh=XuUJVYFaL7KrJnI1SIfCWtxVEkhCeaGGZWCG4EnXi4A=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=FyFcqbN83VKZxMmql8Nu78L0wbGxwT1uGcYGuilWFOY/RdEjzGDp+S3NruoEmn4UBRqAT81z0TnSztL5c8TfCibOdRQkJuxfYCI1P7HKUjEOy1Ra79mvrvPV+BKLnj7mrYdyEI6FALB9JMOHVYG8UIGrGGitysseCVuLTtukIcE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org; spf=fail smtp.mailfrom=beagleboard.org; dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b=Qiq1bK0b; arc=none smtp.client-ip=209.85.216.66
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=beagleboard.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="Nu2qpmV2"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1726063864; x=1757599864;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=9xwPbs+FW8xyLLdAL+II5yA/9QMzxzCjdfhm7LcTA7o=;
-  b=Nu2qpmV28UvUqOlupQDNCoXIPus2fFQWEh5jqly/XN+D8UkUh0a8AhRg
-   JmwlVIKHR/H52VxNDEQiYT3uEnkuPyRQDTJ2TAVY4yFdPU3VIAHUGtjXk
-   Y4d/o2LCvQOnBrR5V9i5XkZDSG4XSR3ZpVb8kd4KqU0eHkJFmfKSO78Dh
-   2j7e4MyBLeUFqeZsfCHtcya5ir+rhlJXfPAlWz8819vQWFjjVAvZhe8aE
-   jc+WImpxxhSTAyeOW64+CyCiTXD8XCIGEALxoE7zGMVriJyiiQeOLzI9y
-   aFKGS+IQYt72UbscnBqFcEfjxVYBfxj4/YnwIlMq+tnNROrcFYKIseZLw
-   g==;
-X-CSE-ConnectionGUID: VxgUH5XJT5q+A7menrs3aQ==
-X-CSE-MsgGUID: H2aPYL8iS/Kd0ZXzojH0NA==
-X-IronPort-AV: E=McAfee;i="6700,10204,11192"; a="36253990"
-X-IronPort-AV: E=Sophos;i="6.10,220,1719903600"; 
-   d="scan'208";a="36253990"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2024 07:11:00 -0700
-X-CSE-ConnectionGUID: 7DWbzs2sQ2Geo2poq3LZog==
-X-CSE-MsgGUID: 63S8/QGLReKP9PGIwC9Vhw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.10,220,1719903600"; 
-   d="scan'208";a="67001194"
-Received: from lkp-server01.sh.intel.com (HELO 53e96f405c61) ([10.239.97.150])
-  by fmviesa006.fm.intel.com with ESMTP; 11 Sep 2024 07:10:57 -0700
-Received: from kbuild by 53e96f405c61 with local (Exim 4.96)
-	(envelope-from <lkp@intel.com>)
-	id 1soO3b-0003gi-03;
-	Wed, 11 Sep 2024 14:10:55 +0000
-Date: Wed, 11 Sep 2024 22:10:30 +0800
-From: kernel test robot <lkp@intel.com>
-To: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>
-Cc: llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Alice Ryhl <aliceryhl@google.com>
-Subject: Re: [PATCH v3] rust: add global lock support
-Message-ID: <202409112144.dcfxjqII-lkp@intel.com>
-References: <20240910-static-mutex-v3-1-5bebd11bdf3b@google.com>
+	dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b="Qiq1bK0b"
+Received: by mail-pj1-f66.google.com with SMTP id 98e67ed59e1d1-2d8a7c50607so4469523a91.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 11 Sep 2024 07:27:45 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=beagleboard-org.20230601.gappssmtp.com; s=20230601; t=1726064865; x=1726669665; darn=vger.kernel.org;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=6/WzskX9Go8nWXOifWB23WvB1MNJZrDHBqH1eKR21ek=;
+        b=Qiq1bK0bDw7yRWMBATssev1875nXEK1cn7lRTB/nOS+9NGbgjO+cLpruQojQhI9kRQ
+         1NQILmNHyeKOG/KHHlC+IvBTox9d/x+h/3Rsh1GnXgBeACLdFc/8C07t4QbwcgRLCYdD
+         ApWT2oI2gX8YCYg3HnpQ0TNA4tNDEsZfk3W3tGCdqlhA90Ianem3A1vVdSllDCxzQgzs
+         oSQH/YogwLo4zGcrpSC6tMHIXW1FQ5jDKGFV+jfGRex3JBGYhm/r/MsaVczpCtVc3FLH
+         E07II4A+rXrnVZ5YSZdVALS4Nf44mWFUDMtHs8Myman3sn6N/WJHxNQTXSTzay/uijGC
+         dYsw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1726064865; x=1726669665;
+        h=cc:to:content-transfer-encoding:mime-version:message-id:date
+         :subject:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=6/WzskX9Go8nWXOifWB23WvB1MNJZrDHBqH1eKR21ek=;
+        b=p+JZxLDOD1P45STWZUCOujI6iSRySPpcXLCnp9aMKCgOZCAswVYz4Rp2uWUr98f//x
+         yKo2NAmVIQNeYDmOzGwGXWTWRNfK7pR1y8thuB6RScKfjG4niHkV8q+xk1zbPdJqAxTW
+         OmTo+JT/u3C93NVLsUebOGCvQf9e33Fgor62k172OB4jTmX0TYMUmeUoD4tX4gfSods7
+         ksZJWTixYPa0vNhUGkhCRhOUL40hkXsKw5zFpMLWsOC5FCh79gjLQVJL9lbaII2RX+qi
+         kpmxZDKLMWef5ay5EL/RbYOSkFxlaLSRhRHZwPaHH99YrnToGmT9F+B/pDt239RIrXUH
+         xbFQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUeaf7xMUWAdPob23v188bsZ6/Npu0sQggqOYGe9UVOyJu9yKZfawchqdi+iUKc/AFDljsADyBiRRvc3QwIhQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxNI+7JANHhzZeecMdCzcChNuh69lYyoOPAn/jNfScbCoqMlQg1
+	A3OwFfR/Lw0q8Yr5ygWW8gbVzq5hL/kQm1xtZ7TbyBmxrHc1CsxYDKLnWcTpQQ==
+X-Google-Smtp-Source: AGHT+IE5BKt2yDajA1Yc3kmCBvgh9rPRVNNylDSz69umvGgfJdK38l9Sjwoe7Yv6xKP5opGpv/aOBg==
+X-Received: by 2002:a17:90a:510b:b0:2c9:a3ca:cc98 with SMTP id 98e67ed59e1d1-2dad4de137fmr20670675a91.7.1726064864449;
+        Wed, 11 Sep 2024 07:27:44 -0700 (PDT)
+Received: from [172.16.118.100] ([103.15.228.94])
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2dadbfe46c9sm10639116a91.11.2024.09.11.07.27.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Sep 2024 07:27:44 -0700 (PDT)
+From: Ayush Singh <ayush@beagleboard.org>
+Subject: [PATCH 0/8] Add generic overlay for MikroBUS addon boards
+Date: Wed, 11 Sep 2024 19:57:17 +0530
+Message-Id: <20240911-mikrobus-dt-v1-0-3ded4dc879e7@beagleboard.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240910-static-mutex-v3-1-5bebd11bdf3b@google.com>
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAMao4WYC/6tWKk4tykwtVrJSqFYqSi3LLM7MzwNyDHUUlJIzE
+ vPSU3UzU4B8JSMDIxMDCyMz3dzM7KL8pNJi3ZQSXVOj1MTExJQUgyTDNCWgjoKi1LTMCrBp0bG
+ 1tQDBRQBAXQAAAA==
+To: fabien.parent@linaro.org, d-gole@ti.com, lorforlinux@beagleboard.org, 
+ jkridner@beagleboard.org, robertcnelson@beagleboard.org, 
+ Andrew Davis <afd@ti.com>, Miguel Ojeda <ojeda@kernel.org>, 
+ Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+ Gary Guo <gary@garyguo.net>, 
+ =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+ Benno Lossin <benno.lossin@proton.me>, 
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, 
+ Trevor Gross <tmgross@umich.edu>, Rob Herring <robh@kernel.org>, 
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, 
+ Conor Dooley <conor+dt@kernel.org>, Derek Kiernan <derek.kiernan@amd.com>, 
+ Dragan Cvetic <dragan.cvetic@amd.com>, Arnd Bergmann <arnd@arndb.de>, 
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Nishanth Menon <nm@ti.com>, 
+ Vignesh Raghavendra <vigneshr@ti.com>, Tero Kristo <kristo@kernel.org>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+ devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+ Ayush Singh <ayush@beagleboard.org>
+X-Mailer: b4 0.14.1
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7197; i=ayush@beagleboard.org;
+ h=from:subject:message-id; bh=XuUJVYFaL7KrJnI1SIfCWtxVEkhCeaGGZWCG4EnXi4A=;
+ b=owEBbQKS/ZANAwAIAQXO9ceJ5Vp0AcsmYgBm4ajUEQDU7T96PVlwx8Pj9jyhhfKN/Ay4+kwOx
+ MNUs9SoSX6JAjMEAAEIAB0WIQTfzBMe8k8tZW+lBNYFzvXHieVadAUCZuGo1AAKCRAFzvXHieVa
+ dGsvD/0UlJ0UfQxA8ZCx5fm8/039nBk+VNJ0fh5bOpLVq06oTO3kr8fvZrJ7tDdBJ8LmS3QPaPx
+ Pq3SIY+GZ2p2cYzDBPff8hxhyDzcsxtF2LGCIKG+XrLx1YXcyrqn3GnOxulXVhcH+XVKf6O9rcK
+ xYoLUiGCelS528QMcxL2BH6seKuNj7XrYy+g0jze6k1MtfnmaJ1nOq08cw6M+7M6EDkRzE9QHdI
+ 5Qa1eH3iStuTxyxhbwFkPrqQZ9E98+rs/Pkkk6jch0Ao5Yf/CVBJbN8Aeksazsy908tJf2wEmjy
+ aXRHp3IPKlIosFRFlU6rEOSQxN3jgsLVWE0RDCEyxVTLVrE1XqNypdZ9HPQCmP7j9BGALFRofJf
+ EbXdRg/PwBhVqrnTpIfgrE5/Wpo7sz/CJpga/axW93WZvbRRLCCw1cbHIaq4WaRH0yUziQkrrhP
+ Aco4o1OaGdc/jVgBYurwGrTj9RTJI6nyHK0vDDoLkoqTD3+XDtSWpK6WqucuzDzC93iaUDVA7St
+ +fuyckAO4skO+HQ1uzj2110MSNfM6X9i2/P+oEFZCxZOe0mjT/PbbCpbQQA75bt5vp90r2OktuG
+ W4X1Bl15iCoMnvxBDIdKw5BMcmIzw2C4lhiSvxBbyhxsGRM0idCVzIEdNcRDl1RGN1D8fBQjxpz
+ 7wydyANLwKvev6Q==
+X-Developer-Key: i=ayush@beagleboard.org; a=openpgp;
+ fpr=DFCC131EF24F2D656FA504D605CEF5C789E55A74
 
-Hi Alice,
+Hello all,
 
-kernel test robot noticed the following build errors:
+This is an attempt to add MikroBUS addon support using the approach
+described by Grove connector patch series [0].
 
-[auto build test ERROR on 93dc3be19450447a3a7090bd1dfb9f3daac3e8d2]
+The patch series tests out 2 addon boards + pwm and GPIO on the MikroBUS
+connector. The boards used are GPS3 Click (for UART) [1] and Weather
+Click (for I2C) [2]. Additionally, I have tested relative GPIO numbering
+using devicetree nexus nodes [3].
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Alice-Ryhl/rust-add-global-lock-support/20240910-222519
-base:   93dc3be19450447a3a7090bd1dfb9f3daac3e8d2
-patch link:    https://lore.kernel.org/r/20240910-static-mutex-v3-1-5bebd11bdf3b%40google.com
-patch subject: [PATCH v3] rust: add global lock support
-config: x86_64-rhel-8.3-rust (https://download.01.org/0day-ci/archive/20240911/202409112144.dcfxjqII-lkp@intel.com/config)
-compiler: clang version 18.1.8 (https://github.com/llvm/llvm-project 3b5b5c1ec4a3095ab096dd780e84d7ab81f3d7ff)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240911/202409112144.dcfxjqII-lkp@intel.com/reproduce)
+The patch series does not attempt to do any dynamic discovery for 1-wire
+eeprom MikroBUS addon boards, nor does it provide any sysfs entry for
+board addition/removal. The connector driver might include them after
+the basic support is ironed out, but the existing patches for dynamic
+overlays work fine.
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202409112144.dcfxjqII-lkp@intel.com/
+The patch series has been tested on BeaglePlay [4].
 
-All errors (new ones prefixed by >>):
+I will now go over individual parts of the patch series, but for a
+better picture of the approach, it would be best to checkout [0] first.
 
->> error[E0432]: unresolved import `super::__static_lock_ty_MY_COUNTER`
-   --> rust/doctests_kernel_generated.rs:4818:1
-   |
-   4818 | / kernel::sync::global_lock! {
-   4819 | |     // SAFETY: Initialized in module initializer before first use.
-   4820 | |     static MY_COUNTER: Mutex<u32> = unsafe { uninit };
-   4821 | |     value: 0;
-   4822 | | }
-   | |_^ no `__static_lock_ty_MY_COUNTER` in the root
-   |
-   = note: this error originates in the macro `$crate::global_lock` which comes from the expansion of the macro `kernel::sync::global_lock` (in Nightly builds, run with -Z macro-backtrace for more info)
---
->> error[E0432]: unresolved import `super::__static_lock_ty_MY_MUTEX`
-   --> rust/doctests_kernel_generated.rs:4886:1
-   |
-   4886 | / kernel::sync::global_lock! {
-   4887 | |     // SAFETY: Initialized in module initializer before first use.
-   4888 | |     static MY_MUTEX: Mutex<()> = unsafe { uninit };
-   4889 | |     value: ();
-   4890 | |     guard: MyGuard;
-   4891 | |     locked_by: LockedByMyMutex;
-   4892 | | }
-   | |_^ no `__static_lock_ty_MY_MUTEX` in the root
-   |
-   = note: this error originates in the macro `$crate::global_lock` which comes from the expansion of the macro `kernel::sync::global_lock` (in Nightly builds, run with -Z macro-backtrace for more info)
+MikroBUS connector driver
+-------------------------
 
+Just a stub platform driver for now. Will be extended in the future for
+dynamic board discovery using 1-wire eeprom present in some MikroBUS
+addon boards.
+
+While it is a stub driver, disabling it will make the GPIO connector
+nexus node unreachable (any driver attempting to use it will enter
+differed probing). So it is required.
+
+MikroBUS connector Devicetree
+------------------------------
+
+The connector devicetree defines the MikroBUS GPIO nexus node. This
+allows using pin numbering relative to MikroBUS connector pins in the
+addon boards overlay. Currently, the patch uses a clockwise numbering:
+
+  0: PWM
+  1: INT
+  2: RX
+  3: TX
+  4: SCL
+  5: SDA
+  6: MOSI
+  7: MISO
+  8: SCK
+  9: CS
+  10: RST
+  11: AN
+
+Additionally, in case PWM pin is not using channel 0, a nexus node for pwm
+should also be used and go in the connector devicetree.
+
+MikroBUS connector symbols overlay
+----------------------------------
+
+To make an overlay generic we need a standard name scheme which we
+use across base boards. For the connector pins the pinmux phandle
+shall be:
+
+<connector-name>_<pin-name>_mux_<pin-function>
+
+For the parent provider phandle, we use a similar naming scheme:
+
+<connector-name>_<pin-name>_<pin-function>
+
+For GPIO controller, I am using `MIKROBUS_GPIO` name since with nexus
+nodes, we do not need to define individual pin gpio controllers.
+
+The string symbols can be replaced with phandles once [5] is accepted.
+That will make connector stacking much simpler.
+
+MikroBUS addon board overlay
+----------------------------
+
+The patch puts the addon board overlays in their own directory. I am
+using the following naming scheme for MikroBUS addon boards:
+
+<vendor>-<product_id>.dtso
+
+Mikroe [6] lists this for all boards in their website, but I am not sure
+if other vendors have a product_id.
+
+This naming also makes future dynamic discovery easier, since click id
+spec [7] contains vendor_id and product_id in the header.
+
+Usage
+-----
+
+So what does this all look like? Let's take an example of a BeaglePlay
+with one MikroBUS connectors for which we have physically attached a
+Wather click module to the first connector. Doing ahead of time
+command-line DT overlay application:
+
+./fdtoverlay \
+	-o output.dtb \
+	-i k3-am625-beagleplay.dtb \
+		k3-am625-beagleplay-mikrobus-connector0.dtbo mikroe-5761.dtbo
+
+Open Items
+----------
+
+- SPI Support: 
+  Currently SPI dt requires `reg` property to specify the
+  chipselect to use. This, makes the SPI device overlay dependent on the
+  SPI controller. Thus for SPI support, we need a way to allow defining
+  SPI chipselect relative to MikroBUS pins, and not the actual device
+  controller.
+
+  One possible solution is to introduce something like `named-reg` and
+  allow selecting the chipselect by string array. But this probably
+  requires more discussion so I have left out SPI support for now.
+
+  NOTE: pins other than the CS MikroBUS pin can be used as chipselect.
+  See [8].
+
+- Controller symbol duplication
+  The current symbol scheme has multiple symbols for the same underlying
+  controller (Eg: MIKROBUS_SCL_MUX_I2C_SCL and MIKROBUS_SDA_MUX_I2C_SDA)
+  point to the same i2c controller.
+
+  I think both of them will always use the same i2c controller, but
+  maybe there are some exceptions? So I have left it as it is for this
+  patch series. The same thing also applies to UART and SPI.
+
+  NOTE: with the use of nexus node for GPIO, the GPIO controller symbol
+  will be the same for all pins.
+
+- Nexus node dt-bindings
+  I am not quite sure how to deal with the nexus node properties
+  (#gpio-cells, gpio-map, gpio-map-mask, gpio-map-pass-thru) since they
+  seem to conflict with upstream gpio schema (gpio-controller is a
+  dependency of #gpio-cells).
+
+[0]: https://lore.kernel.org/linux-arm-kernel/20240702164403.29067-1-afd@ti.com/
+[1]: https://www.mikroe.com/gps-3-click
+[2]: https://www.mikroe.com/weather-click
+[3]: https://devicetree-specification.readthedocs.io/en/v0.3/devicetree-basics.html#nexus-nodes-and-specifier-mapping
+[4]: https://www.beagleboard.org/boards/beagleplay
+[5]: https://lore.kernel.org/r/20240902-symbol-phandle-v1-0-683efb2a944b@beagleboard.org
+[6]: https://www.mikroe.com/
+[7]: https://github.com/MikroElektronika/click_id
+[8]: https://www.mikroe.com/spi-extend-click
+
+Signed-off-by: Ayush Singh <ayush@beagleboard.org>
+---
+Ayush Singh (7):
+      dt-bindings: connector: Add MikorBUS connector
+      mikrobus: Add mikrobus driver
+      dts: ti: k3-am625-beagleplay: Enable mikroBUS connector
+      dts: ti: beagleplay: Add mikrobus connector symbols
+      addon_boards: Add addon_boards plumbing
+      addon_boards: mikrobus: Add Weather Click
+      addon_boards: mikrobus: Add GPS3 Click
+
+Fabien Parent (1):
+      rust: kernel: Add Platform device and driver abstractions
+
+ .../bindings/connector/mikrobus-connector.yaml     |  40 +++
+ Kbuild                                             |   1 +
+ Kconfig                                            |   2 +
+ MAINTAINERS                                        |   8 +
+ addon_boards/Kconfig                               |  16 +
+ addon_boards/Makefile                              |   3 +
+ addon_boards/mikrobus/Makefile                     |   4 +
+ addon_boards/mikrobus/mikroe-1714.dtso             |  28 ++
+ addon_boards/mikrobus/mikroe-5761-i2c.dtso         |  28 ++
+ arch/arm64/boot/dts/ti/Makefile                    |   1 +
+ .../k3-am625-beagleplay-mikrobus-connector0.dtso   |  49 +++
+ arch/arm64/boot/dts/ti/k3-am625-beagleplay.dts     |  53 ++-
+ drivers/misc/Kconfig                               |  17 +
+ drivers/misc/Makefile                              |   1 +
+ drivers/misc/mikrobus.rs                           |  32 ++
+ rust/bindings/bindings_helper.h                    |   1 +
+ rust/kernel/lib.rs                                 |   1 +
+ rust/kernel/platform.rs                            | 380 +++++++++++++++++++++
+ 18 files changed, 659 insertions(+), 6 deletions(-)
+---
+base-commit: 9aaeb87ce1e966169a57f53a02ba05b30880ffb8
+change-id: 20240826-mikrobus-dt-52eaaadd0b1f
+
+Best regards,
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Ayush Singh <ayush@beagleboard.org>
+
