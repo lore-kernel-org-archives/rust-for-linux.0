@@ -1,235 +1,185 @@
-Received: from mail-oo1-f41.google.com (mail-oo1-f41.google.com [209.85.161.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4508118C344;
-	Wed, 11 Sep 2024 18:59:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 543091BA263;
+	Wed, 11 Sep 2024 20:03:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726081176; cv=none; b=peZZLzdb0pa+00+f+xJOvjZN0BnThkJTk+UeC/IvwmOZc7bjgy+ZnBqqlwPnJthGkjE+qPN1uaciG3/Zg59C5fn7PQ4p/1yo8Ll0Q+forjiCSuyLSq13b/QPJGXbe/LZLDrB5vrXG+FUyPZua5Mg4yYLd0Sx1GF5gOInDVDKgFE=
+	t=1726085026; cv=none; b=DPYgjy8zl+FPQgFt1qY6T1yk7qjvJfD6nC7S9geX1BVoyTGzuiKxix5ou1BJ1w18TgKlJ+z92moRZG29Hf5CWQwu+wJarn0sXUPIm8SS3EjFZG25c9wdSJE8g1uGTLIVlpaEX23IAJEdTe4v5XdfSnSz+g+zz9K8xPfBtuKNoUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726081176; c=relaxed/simple;
-	bh=31fX0mqF11YiBkL12YdfveYdX1XS8aNbLaEy2k8GHMw=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=WarIM9F4wu3BPp9il0OCc20SYxZpee8Fo1FrsXIDuqxGEcB/Y/lxlqUcwlbXG+AQsBRTbcM1PSkIXTYsFUJn0pYCSB4o50EDwf6obmFHb6GzMUsSX3ZO0hBYWUaIzqBzVK16gzo55ob4KcMHc9gq4W/MjxJigCFdx98qdilAOQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=bfP+h2Z6; arc=none smtp.client-ip=209.85.161.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1726085026; c=relaxed/simple;
+	bh=pwfE9Yhhr5wscRu4DjbCZQgmCxbQ3kOu7Rz3CrHCXJE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Lr3nFs2q8zE4+OYhQnB7B5A92rR7K/OguPuvfZ1ZiNeKLbhT221PvnYoN13HVSrXDeIpIZ1jT7OzHwraLl9Q5qDxGu0gay75y3t2/+Ln+VJ2qw+Ltp0kWgs8S+LmgFikYpQpfA4uBY/PcG17rnOfR35BHaPEiO+3QdITUmYYrmM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dug/kMRV; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="bfP+h2Z6"
-Received: by mail-oo1-f41.google.com with SMTP id 006d021491bc7-5e1cdfe241eso88563eaf.1;
-        Wed, 11 Sep 2024 11:59:34 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1726081174; x=1726685974; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=RSKooU1U1hQ/VIwbHIM1KYqC3Tngd/M3BbIpyV3X5N0=;
-        b=bfP+h2Z6gZpQvWknNaYm7aLfuagRDbnuEleefT0ndVqSLIWX1vBiFzFf3ABiNf9b67
-         +To4qgmZUpob1YMNSSznzoT45emqW8Be3aG/QK6+Imtj0yLeDqhUGLO1FjCSpIqTwTTW
-         8QClxk1/FyjJlysEzd15VeWWd2PyO8U4wxGI3Ei/Dp0U1t3Ro5hv+MvBi1tb/+IGcZNj
-         mGc7Gr8wIe/7Q27bGzw6fYkM/giclP9mHfVwjuedxXq7XGq7emiu3kqAwUWKpsEwnrMC
-         XVE1Z6VqnBsbkakfeAlJaBQFCII5M3b8wbBy1Nb9NjUlEBFL9d7ffjmiCdo4A93s3b78
-         HbFg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726081174; x=1726685974;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=RSKooU1U1hQ/VIwbHIM1KYqC3Tngd/M3BbIpyV3X5N0=;
-        b=r/eNA4OKFDWAUYs2f2PRuzd81vNbBG8TVS8KR1kx7BDU6RsVPBeM/NDjzEKFXTX1fs
-         5nuYPPtZYK5HQn3lyDh9YLicGrA2IdEIvCLsOAX4MH7gEHDFVkTBQ3Ccf/uFfwmf0cVA
-         +Uf31PigGqOrtpreN9mD0hy1K+xcsIf3W9MDRhaFYTZCAbpe7833251/kkturdUNkBcR
-         xqY+usST6P2gfXIZzEGFwNr1fbbyBPt/0F4FSS5Tv/Yu9+nbXWdZojh8Tngh5sIumDLY
-         S3/B25bz/4J4kSx8daXJ9+AHryHYHhGfOp+U45VVxA7c2n25ClU7K09BzPZen6EWMh5D
-         p5Rg==
-X-Forwarded-Encrypted: i=1; AJvYcCUuxq2UsGyRx9DF6c0LBUK7Zq3nLZZGst+e/GWY7K1XKv9XkoNg2UbMsZfgzJDacnTIgJfnkyVZQ2s=@vger.kernel.org, AJvYcCVoCThxsBp/ys9FzMmFKl7ivFJcb4yS2SVmF8/lGzDs7GOpClMUl8YX0Qu7ue8elX8MwTwR35dyGsL9@vger.kernel.org, AJvYcCVw3qqPZKjkk69deoPZmPe069QedFpNHvtIfVZAT2JVAGil9C10iSE597hYRRtqpkRu/frWeyqSJDQe28Yu@vger.kernel.org, AJvYcCWHKva5JcISt2QuxSeFGJhx2SfJ5eJK0GfX5V9CkxWCFAOXSwAN6F1OL15C+9QpbiqgSiToJTZoOCnIy+6KC5E=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw29U6WZCmQxT19mScNPQEur9pGXBOJFj2oEoRWIt8P1+285CVl
-	3SGvNUBn2I7hwbUqbe3nZX4Vznka7oXoiuwxG45yoNl/LoL2t8pU
-X-Google-Smtp-Source: AGHT+IGFYrD2JsWDGvuTdxMxZqchPY23mKraBaSmrroUVisCVdQH8qxiNZMnli2UZNlAI3MPeGVniA==
-X-Received: by 2002:a05:6830:3c09:b0:710:ec4a:b394 with SMTP id 46e09a7af769-7110957134cmr502026a34.29.1726081174149;
-        Wed, 11 Sep 2024 11:59:34 -0700 (PDT)
-Received: from pipaware.tx.rr.com ([2603:8080:7400:36da:dff5:4180:2562:4c1e])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-710d9db2ce0sm2440293a34.57.2024.09.11.11.59.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 11 Sep 2024 11:59:33 -0700 (PDT)
-From: Carlos Bilbao <carlos.bilbao.osdev@gmail.com>
-To: corbet@lwn.net,
-	ojeda@kernel.org
-Cc: alex.gaynor@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	benno.lossin@proton.me,
-	a.hindborg@samsung.com,
-	aliceryhl@google.com,
-	workflows@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	bilbao@vt.edu,
-	Carlos Bilbao <carlos.bilbao.osdev@gmail.com>
-Subject: [PATCH] kernel-docs: Add new section for Rust learning materials
-Date: Wed, 11 Sep 2024 13:59:30 -0500
-Message-ID: <20240911185931.16971-1-carlos.bilbao.osdev@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dug/kMRV"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34B0FC4CEC0;
+	Wed, 11 Sep 2024 20:03:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1726085025;
+	bh=pwfE9Yhhr5wscRu4DjbCZQgmCxbQ3kOu7Rz3CrHCXJE=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=Dug/kMRV4N3W/8nFF7vy1QFM5s62m0Pb3L2NWkxEXPoHHSLwmj+D8F6LWNIT6C5Qe
+	 jR3/lAQGymADOt9q/ZG63IMansCtxtxat3Zkp+oaF+8sCRMd/rXRdbGl9On3elhOIA
+	 B0/pf5pUh6T0L356kRmJgu5LhLsGqaS73aW6nSyw=
+Date: Wed, 11 Sep 2024 22:03:42 +0200
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Ayush Singh <ayushdevel1325@gmail.com>
+Cc: Ayush Singh <ayush@beagleboard.org>, fabien.parent@linaro.org,
+	d-gole@ti.com, lorforlinux@beagleboard.org,
+	jkridner@beagleboard.org, robertcnelson@beagleboard.org,
+	Andrew Davis <afd@ti.com>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Derek Kiernan <derek.kiernan@amd.com>,
+	Dragan Cvetic <dragan.cvetic@amd.com>,
+	Arnd Bergmann <arnd@arndb.de>, Nishanth Menon <nm@ti.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Tero Kristo <kristo@kernel.org>, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 3/8] mikrobus: Add mikrobus driver
+Message-ID: <2024091151-hummus-usher-2561@gregkh>
+References: <20240911-mikrobus-dt-v1-0-3ded4dc879e7@beagleboard.org>
+ <20240911-mikrobus-dt-v1-3-3ded4dc879e7@beagleboard.org>
+ <2024091144-glitzy-kindly-fa74@gregkh>
+ <ecd1fff8-9c15-496a-982f-36e6c58e906a@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ecd1fff8-9c15-496a-982f-36e6c58e906a@gmail.com>
 
-Include a new section in the Index of Further Kernel Documentation with
-resources to learn Rust. Reference it in the Rust index.
+On Wed, Sep 11, 2024 at 09:32:21PM +0530, Ayush Singh wrote:
+> On 9/11/24 20:27, Greg Kroah-Hartman wrote:
+> 
+> > On Wed, Sep 11, 2024 at 07:57:20PM +0530, Ayush Singh wrote:
+> > > A simple platform driver for now that does nothing. This is required
+> > > because without a platform driver, the mikrobus_gpio0 nexus node cannot
+> > > be used.
+> > > 
+> > > In future, this driver will also allow for dynamic board detection using
+> > > 1-wire eeprom in new mikrobus boards.
+> > > 
+> > > Signed-off-by: Ayush Singh <ayush@beagleboard.org>
+> > > ---
+> > >   MAINTAINERS              |  1 +
+> > >   drivers/misc/Kconfig     | 17 +++++++++++++++++
+> > >   drivers/misc/Makefile    |  1 +
+> > >   drivers/misc/mikrobus.rs | 32 ++++++++++++++++++++++++++++++++
+> > >   4 files changed, 51 insertions(+)
+> > > 
+> > > diff --git a/MAINTAINERS b/MAINTAINERS
+> > > index 0cc27446b18a..d0c18bd7b558 100644
+> > > --- a/MAINTAINERS
+> > > +++ b/MAINTAINERS
+> > > @@ -15433,6 +15433,7 @@ MIKROBUS CONNECTOR
+> > >   M:	Ayush Singh <ayush@beagleboard.org>
+> > >   S:	Maintained
+> > >   F:	Documentation/devicetree/bindings/connector/mikrobus-connector.yaml
+> > > +F:	drivers/misc/mikrobus.rs
+> > >   MIKROTIK CRS3XX 98DX3236 BOARD SUPPORT
+> > >   M:	Luka Kovacic <luka.kovacic@sartura.hr>
+> > > diff --git a/drivers/misc/Kconfig b/drivers/misc/Kconfig
+> > > index 3fe7e2a9bd29..30defb522e98 100644
+> > > --- a/drivers/misc/Kconfig
+> > > +++ b/drivers/misc/Kconfig
+> > > @@ -610,6 +610,23 @@ config MARVELL_CN10K_DPI
+> > >   	  To compile this driver as a module, choose M here: the module
+> > >   	  will be called mrvl_cn10k_dpi.
+> > > +menuconfig MIKROBUS
+> > > +	tristate "Module for instantiating devices on mikroBUS ports"
+> > > +	help
+> > > +	  This option enables the mikroBUS driver. mikroBUS is an add-on
+> > > +	  board socket standard that offers maximum expandability with
+> > > +	  the smallest number of pins. The mikroBUS driver instantiates
+> > > +	  devices on a mikroBUS port described by identifying data present
+> > > +	  in an add-on board resident EEPROM, more details on the mikroBUS
+> > > +	  driver support and discussion can be found in this eLinux wiki :
+> > > +	  elinux.org/Mikrobus
+> > So you want to be a bus?  Or just a single driver?  I'm confused, what
+> > exactly is this supposed to do?
+> > 
+> > If a bus, great, let's tie into the proper driver core bus code, don't
+> > "open code" all of that, as that's just going to make things messier and
+> > harder to work overall in the end.
+> > 
+> > If a single driver, why is it called "bus"?  :)
+> > 
+> > thanks,
+> > 
+> > greg k-h
+> 
+> 
+> Well, mikroBUS [0] is the name of the socket standard. It is basically a
+> group of following pins:
+> 
+> Analog - AN
+> Reset - RST
+> SPI Chip Select - CS
+> SPI Clock - SCK
+> SPI Master Input Slave Output - MISO
+> SPI Master Output Slave Input - MOSI
+> VCC-3.3V power - +3.3V
+> Reference Ground - GND
+> PWM - PWM output
+> INT - Hardware Interrupt
+> RX - UART Receive
+> TX - UART Transmit
+> SCL - I2C Clock
+> SDA - I2C Data
+> +5V - VCC-5V power
+> GND - Reference Ground
+> 
+> 
+> I do not think it would qualify as as a "bus" in the Linux driver sense.
+> Especially with the devicetree based approach here which applies overlay
+> directly to the actual uart/i2c/spi controllers and basically not interact
+> with the mikroBUS node much.
 
-Signed-off-by: Carlos Bilbao <carlos.bilbao.osdev@gmail.com>
----
- Documentation/process/kernel-docs.rst | 111 +++++++++++++++++++++++---
- Documentation/rust/index.rst          |   3 +
- 2 files changed, 103 insertions(+), 11 deletions(-)
+It will be a "bus" in the driver sense as you want to have different
+drivers bound to devices that are plugged in here, right?  Or if this is
+just a single driver for the hardware, then no, as you will not have any
+additional drivers for this standard?  It's unclear you want to do here.
 
-diff --git a/Documentation/process/kernel-docs.rst b/Documentation/process/kernel-docs.rst
-index 55552ec4b043..d917accd7fc3 100644
---- a/Documentation/process/kernel-docs.rst
-+++ b/Documentation/process/kernel-docs.rst
-@@ -72,17 +72,6 @@ On-line docs
-         programming. Lots of examples. Currently the new version is being
-         actively maintained at https://github.com/sysprog21/lkmpg.
- 
--    * Title: **Rust for Linux**
--
--      :Author: various
--      :URL: https://rust-for-linux.com/
--      :Date: rolling version
--      :Keywords: glossary, terms, linux-kernel.
--      :Description: From the website: "Rust for Linux is the project adding
--        support for the Rust language to the Linux kernel. This website is
--        intended as a hub of links, documentation and resources related to
--        the project".
--
- Published books
- ---------------
- 
-@@ -220,6 +209,106 @@ Miscellaneous
-         other original research and content related to Linux and software
-         development.
- 
-+Rust
-+----
-+
-+    * Title: **Rust for Linux**
-+
-+      :Author: various
-+      :URL: https://rust-for-linux.com/
-+      :Date: rolling version
-+      :Keywords: glossary, terms, linux-kernel, rust.
-+      :Description: From the website: "Rust for Linux is the project adding
-+        support for the Rust language to the Linux kernel. This website is
-+        intended as a hub of links, documentation and resources related to
-+        the project".
-+
-+    * Title: **Learning Rust the Dangerous Way**
-+
-+      :Author: Cliff L. Biffle
-+      :URL: https://cliffle.com/p/dangerust/
-+      :Date: Accessed Sep 11 2024
-+      :Keywords: rust, blog.
-+      :Description: From the website: "LRtDW is a series of articles
-+        putting Rust features in context for low-level C programmers who
-+        maybe don’t have a formal CS background — the sort of people who
-+        work on firmware, game engines, OS kernels, and the like.
-+        Basically, people like me.". It illustrates line-by-line
-+        conversions from C to Rust.
-+
-+    * Title: **The Rust Book**
-+
-+      :Author: Steve Klabnik and Carol Nichols, with contributions from the
-+        Rust community
-+      :URL: https://doc.rust-lang.org/book/
-+      :Date: Accessed Sep 11 2024
-+      :Keywords: rust, book.
-+      :Description: From the website: "This book fully embraces the
-+        potential of Rust to empower its users. It’s a friendly and
-+        approachable text intended to help you level up not just your
-+        knowledge of Rust, but also your reach and confidence as a
-+        programmer in general. So dive in, get ready to learn—and welcome
-+        to the Rust community!".
-+
-+    * Title: **Rust for the Polyglot Programmer**
-+
-+      :Author: Ian Jackson
-+      :URL: https://www.chiark.greenend.org.uk/~ianmdlvl/rust-polyglot/index.html
-+      :Date: December 2022
-+      :Keywords: rust, blog, tooling.
-+      :Description: From the website: "There are many guides and
-+        introductions to Rust. This one is something different: it is
-+        intended for the experienced programmer who already knows many
-+        other programming languages. I try to be comprehensive enough to be
-+        a starting point for any area of Rust, but to avoid going into too
-+        much detail except where things are not as you might expect. Also
-+        this guide is not entirely free of opinion, including
-+        recommendations of libraries (crates), tooling, etc.".
-+
-+    * Title: **Fasterthanli.me**
-+
-+      :Author: Amos Wenger
-+      :URL: https://fasterthanli.me/
-+      :Date: Accessed Sep 11 2024
-+      :Keywords: rust, blog, news.
-+      :Description: From the website: "I make articles and videos about how
-+        computers work. My content is long-form, didactic and exploratory
-+        — and often an excuse to teach Rust!".
-+
-+    * Title: **You Can't Spell Trust Without Rust**
-+
-+      :Author: Alexis Beingessner
-+      :URL: https://repository.library.carleton.ca/downloads/1j92g820w?locale=en
-+      :Date: 2015
-+      :Keywords: rust, master, thesis.
-+      :Description: This thesis focuses on Rust's ownership system, which
-+        ensures memory safety by controlling data manipulation and
-+        lifetime, while also highlighting its limitations and comparing it
-+        to similar systems in Cyclone and C++.
-+
-+    * Name: **Linux Plumbers (LPC) Rust presentations**
-+
-+      :Title: Rust microconference
-+      :URL: https://lpc.events/event/18/sessions/186/#20240918
-+      :Title: Rust for Linux
-+      :URL: https://lpc.events/event/18/contributions/1912/
-+      :Title: Journey of a C kernel engineer starting a Rust driver project
-+      :URL: https://lpc.events/event/18/contributions/1911/
-+      :Title: Crafting a Linux kernel scheduler that runs in user-space
-+        using Rust
-+      :URL: https://lpc.events/event/18/contributions/1723/
-+      :Title: openHCL: A Linux and Rust based paravisor
-+      :URL: https://lpc.events/event/18/contributions/1956/
-+      :Keywords: rust, lpc, presentations.
-+      :Description: A number of LPC talks related to Rust.
-+
-+    * Name: **The Rustacean Station Podcast**
-+
-+      :URL: https://rustacean-station.org/
-+      :Keywords: rust, podcasts.
-+      :Description: A community project for creating podcast content for
-+        the Rust programming language.
-+
- -------
- 
- This document was originally based on:
-diff --git a/Documentation/rust/index.rst b/Documentation/rust/index.rst
-index 46d35bd395cf..01f09216c229 100644
---- a/Documentation/rust/index.rst
-+++ b/Documentation/rust/index.rst
-@@ -42,6 +42,9 @@ configurations.
-     arch-support
-     testing
- 
-+You can also find learning materials for Rust in its section in
-+:doc:`../process/kernel-docs`.
-+
- .. only::  subproject and html
- 
-    Indices
--- 
-2.43.0
+> The driver is here to enable the following:
+> 
+> 1. Enable dynamic board detection using 1-wire eeprom on some addon boards.
 
+Some, not all?
+
+> 2. Provide sysfs entry for runtime board adding/removal
+
+That's not what sysfs is for, but we can get there eventually...
+
+> 3. Enable using mikrobus connector node as nexus node for GPIO (not having a
+> platform driver makes any driver trying to use the connector as nexus node
+> go into deffered probing state).
+
+Why is this a platform device?  Is this always going to be described by
+DT somehow?
+
+> For this patch series, the driver is mostly here due to point 3. Basically a
+> stub.
+
+Let's see how this really works before coming to conclusions.
+
+As an example, how do you think sysfs should look for this device?  For
+all devices?  Write out the needed sysfs documentation entries first and
+then that will help explain things better.
+
+thanks,
+
+greg k-h
