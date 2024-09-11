@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C760215383B;
-	Wed, 11 Sep 2024 11:32:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1FE13D984;
+	Wed, 11 Sep 2024 11:33:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726054352; cv=none; b=jOhFJPas6VQTUNdxZXBFqziFu2xfJqe1Z06k4lIRy1JNSruZ+nkdGhgbaRe4I2/dgucepk/O67djIFGOanVcxmYzHbS2xAth9XdnufrJ+xIeF43ny742ShCvTwZd7FLTeTg4YxuWr9QBExaQ17BLeR+wIl2PmoFp5PfKXa+OS10=
+	t=1726054391; cv=none; b=jyXQL9UZK7SjuxM93oIXdKhFS28kofXAr4UUW4qe/ARHZC/4kgsTjv5Wc5SOg6Ucb2CkXo+oOldnIpPenJA6SyvuNjYYqQGzEMMkTEgIs143MWjVgzZnx0vm1EUc59lzUCrQZaZsF+QJKO9wzVjZMENMbgZs98PUNj+ml/QaOIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726054352; c=relaxed/simple;
-	bh=wZreKAiqXdRRnDPLI28qQmvvixc/AOTCYGxtJBYNZWc=;
+	s=arc-20240116; t=1726054391; c=relaxed/simple;
+	bh=d/6BYN/hz0vb6byjvWNc4phCG22oIwVbCnvyfL1nmP8=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=kF99f1QNjTT/9tXZGW0eGgiLOGvlBgZhhzs42GolCHpJ/7ifsOarZX6B/GZrkfLKHFKRj4gj2TcVYLYZBseUFGTw8uUGg/REUxLPqlaC5sOQJaP34OxCbsOGd3fw4dJHnAQ3yy1w5UcTghWxe99srDRfbqB1W1+sDThoV1gVH6I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=U8NEgo5v; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=u69PvsG3Xx8r+l1XcU1b84PZl4na24ocHk8Xx72drMWINrh5Zp3cgmNEM8O1lxNm9nyKRT9XFWv08wcyCFZGF/SUHn7sxyb/GurgoDZGsff1g318wFsrpij41yOXg3eJbgduFLUmIHitCul51jFtx+2BOpfnY6guRImOn1bst64=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BJrC1mKu; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="U8NEgo5v"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2591C4CEC5;
-	Wed, 11 Sep 2024 11:32:25 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BJrC1mKu"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A79ECC4CEC5;
+	Wed, 11 Sep 2024 11:33:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726054350;
-	bh=wZreKAiqXdRRnDPLI28qQmvvixc/AOTCYGxtJBYNZWc=;
+	s=k20201202; t=1726054391;
+	bh=d/6BYN/hz0vb6byjvWNc4phCG22oIwVbCnvyfL1nmP8=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=U8NEgo5v03iv7sMsrNvEVAi4+rcivnwhfgoqAl5WNNgmpZ6OOMeHRAcn4hWSkQazj
-	 uoFwwNbLZihasWRa6SeBD9fivIaCamoypbUb/2Vy7KIxwRQXAMG1IdDtsl+jj0F3P8
-	 LlLZZRYMe8fbsuDgicMDoHWu45Dr+E4fGiyghbIDmiXODrxJgOCGo1hOugoFartzvE
-	 48dz5S0kGjwCm9r4wcgov42A2tIjXofXz8k9fi7Pr1RvyC8wTO1ozhyfG5h/YYgM5g
-	 hDT82GfqHbp3Z7g4pk9BkA9riyyEk+6B/CM05alm2qv3HQ1RrwIPFT3hKEmS9UtO5F
-	 cUCSO/ld3/sJg==
-Date: Wed, 11 Sep 2024 13:32:23 +0200
+	b=BJrC1mKuzmCf5h4ZN/N4P6hYPuKbfXWRIhz0oMROBeEZug+h/+T4pMtUcsWl7lkTX
+	 8To1SmRdKnLcEFd2JLUEET9DFIq7A/Hm1LW//VzLbYGoFXDbZezCETlCRMmSAky0su
+	 vrpjyzkqVZnYdsUJY3MFIrYJyiXQpSJDb4v5J+QPpS44wOQwMambL/KQrI7LiEHJG3
+	 vYmAWyrZKU07KfA1nPIQVwji9pk2vPfY30ktwgAqfk7jWt76BH+fxJZvtf7CLutq7n
+	 i0YqtLiubl8yuDc377zIFUzNZn+VaFDwdOJtUVYRFWk5uGQ/67UZhWPe1fI0C/A9Mq
+	 7GP4I/vtLMONw==
+Date: Wed, 11 Sep 2024 13:33:03 +0200
 From: Danilo Krummrich <dakr@kernel.org>
 To: Benno Lossin <benno.lossin@proton.me>
 Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
@@ -38,13 +38,13 @@ Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
 	cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com,
 	ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org,
 	rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v6 14/26] rust: alloc: implement `IntoIterator` for `Vec`
-Message-ID: <ZuF_x__jiP6KHlvZ@pollux>
+Subject: Re: [PATCH v6 15/26] rust: alloc: implement `collect` for `IntoIter`
+Message-ID: <ZuF_76DHQRukLEMb@pollux>
 References: <20240816001216.26575-1-dakr@kernel.org>
- <20240816001216.26575-15-dakr@kernel.org>
- <308d40dd-105b-4ebf-ba70-585a97d66928@proton.me>
- <ZuDYy3HtPwVLgDtS@pollux>
- <a5efe05d-5e03-426f-bc72-5339dc07af19@proton.me>
+ <20240816001216.26575-16-dakr@kernel.org>
+ <747b8c1c-cb7b-422e-b6a0-ea863cc37f0a@proton.me>
+ <ZuDiurdQfvmewzDh@pollux>
+ <503abe24-fbac-440a-a063-fc30a2a6bd77@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -53,59 +53,52 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <a5efe05d-5e03-426f-bc72-5339dc07af19@proton.me>
+In-Reply-To: <503abe24-fbac-440a-a063-fc30a2a6bd77@proton.me>
 
-On Wed, Sep 11, 2024 at 08:52:03AM +0000, Benno Lossin wrote:
-> On 11.09.24 01:39, Danilo Krummrich wrote:
-> > On Tue, Sep 10, 2024 at 08:04:27PM +0000, Benno Lossin wrote:
+On Wed, Sep 11, 2024 at 08:53:24AM +0000, Benno Lossin wrote:
+> On 11.09.24 02:22, Danilo Krummrich wrote:
+> > On Tue, Sep 10, 2024 at 08:12:24PM +0000, Benno Lossin wrote:
 > >> On 16.08.24 02:10, Danilo Krummrich wrote:
-> >>> +/// [`IntoIterator`] trait).
-> >>> +///
-> >>> +/// # Examples
-> >>> +///
-> >>> +/// ```
-> >>> +/// let v = kernel::kvec![0, 1, 2]?;
-> >>> +/// let iter = v.into_iter();
-> >>> +///
-> >>> +/// # Ok::<(), Error>(())
-> >>> +/// ```
-> >>> +pub struct IntoIter<T, A: Allocator> {
-> >>> +    ptr: *mut T,
-> >>> +    buf: NonNull<T>,
+> >>> +    /// Same as `Iterator::collect` but specialized for `Vec`'s `IntoIter`.
+> >>> +    ///
+> >>> +    /// Currently, we can't implement `FromIterator`. There are a couple of issues with this trait
+> >>> +    /// in the kernel, namely:
+> >>> +    ///
+> >>> +    /// - Rust's specialization feature is unstable. This prevents us to optimze for the special
+> >>> +    ///   case where `I::IntoIter` equals `Vec`'s `IntoIter` type.
+> >>> +    /// - We also can't use `I::IntoIter`'s type ID either to work around this, since `FromIterator`
+> >>> +    ///   doesn't require this type to be `'static`.
+> >>> +    /// - `FromIterator::from_iter` does return `Self` instead of `Result<Self, AllocError>`, hence
+> >>> +    ///   we can't properly handle allocation failures.
+> >>> +    /// - Neither `Iterator::collect` nor `FromIterator::from_iter` can handle additional allocation
+> >>> +    ///   flags.
+> >>> +    ///
+> >>> +    /// Instead, provide `IntoIter::collect`, such that we can at least convert a `IntoIter` into a
+> >>> +    /// `Vec` again.
 > >>
-> >> No invariants for these two fields?
+> >> I think it's great that you include this in the code, but I don't think
+> >> that it should be visible in the documentation,
 > > 
-> > Suggestions?
+> > Why not? I think this information is valuable for users of this API.
 > 
-> When determining the invariants, I look at the places where you would
-> want to use them, ie the `SAFETY` comments that use these fields:
-> - for `buf` you only use it to free the backing allocation, so you only
->   need that it has been allocated by `A` if `cap != 0`.
-> - for `ptr` you need that it is valid for reads for `size_of::<T>() *
->   length` bytes.
+> If you want to keep it, then I don't mind, but I would still move it
+> underneath `Examples` and add a section header `# Implementation
+> Details` or similar.
+
+Sure, we can do that.
+
 > 
-> So I would put those two things into invariants.
+> ---
+> Cheers,
+> Benno
 > 
-> >>> +    len: usize,
-> >>> +    cap: usize,
-> >>> +    _p: PhantomData<A>,
-> >>> +}
-> >>> +
-> >>> +impl<T, A> IntoIter<T, A>
-> >>> +where
-> >>> +    A: Allocator,
-> >>> +{
-> >>> +    fn as_raw_mut_slice(&mut self) -> *mut [T] {
-> >>> +        ptr::slice_from_raw_parts_mut(self.ptr, self.len)
-> >>> +    }
-> >>> +}
-> >>> +
-> >>> +impl<T, A> Iterator for IntoIter<T, A>
-> >>> +where
-> >>> +    A: Allocator,
-> >>> +{
-> >>> +    type Item = T;
-> >>> +
+> >> can you move it under
+> >> the `Examples` section and turn it into normal comments?
+> >>
+> >>> +    ///
+> >>> +    /// Note that `IntoIter::collect` doesn't require `Flags`, since it re-uses the existing backing
+> >>> +    /// buffer. However, this backing buffer may be shrunk to the actual count of elements.
+> >>> +    ///
 > >>> +    /// # Examples
 > >>> +    ///
 > >>> +    /// ```
@@ -113,28 +106,11 @@ On Wed, Sep 11, 2024 at 08:52:03AM +0000, Benno Lossin wrote:
 > >>> +    /// let mut it = v.into_iter();
 > >>> +    ///
 > >>> +    /// assert_eq!(it.next(), Some(1));
-> >>> +    /// assert_eq!(it.next(), Some(2));
-> >>> +    /// assert_eq!(it.next(), Some(3));
-> >>> +    /// assert_eq!(it.next(), None);
+> >>> +    ///
+> >>> +    /// let v = it.collect(GFP_KERNEL);
+> >>> +    /// assert_eq!(v, [2, 3]);
 > >>> +    ///
 > >>> +    /// # Ok::<(), Error>(())
 > >>> +    /// ```
-> >>
-> >> AFAIK documentation on functions in trait implementations won't show up
-> >> in rustdoc (I just checked this). So I would remove it.
-> > 
-> > They don't, but the KUnit tests are still executed. :)
-> 
-> Oh I see, then may I suggest moving them to the module documentation or
-> put them onto `Vec`, that way people can also read them :)
-
-Hm, I'd rather keep them close on the functions they're testing. Those examples
-probably don't have a huge documentation purpose. As you've said, the trait is
-documented already and has examples.
-
-> 
-> ---
-> Cheers,
-> Benno
-> 
+> >>> +    pub fn collect(self, flags: Flags) -> Vec<T, A> {
 > 
