@@ -1,197 +1,179 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C20F6FD5;
-	Wed, 11 Sep 2024 00:22:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92B991531E8;
+	Wed, 11 Sep 2024 08:36:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726014146; cv=none; b=oEU4YCdJqP/55Au0k1ZTowQ1W/fY2Vkf+c60OeDUXgtG9oJREKhawBreHQu5X9tRIS5bwn1+Bk7coLxcqZV4Nov+Xd4W6sh7o8YRGx4L86MP/oceE3GrOGvVPF/x35ENig0EX47meShL3R5UIZxyjn02Bis0urSr5MBVR+6nwkU=
+	t=1726043816; cv=none; b=C6MRNsvL44YeRmUCLKX9WBK0TJVzHhdaxHZCqozLxSQgdeL+BI6SJ0zTAgAA0LXW9quAgUuOIM9WE1yQ6bgoys8pPW0hclUYeQ22spJeu4Fn1+JUa7AxRQHoSYgya9nWUECKXEu+JN6YSLzZ5T7hVYElFr4tzbcChQo4+qimewU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726014146; c=relaxed/simple;
-	bh=+LNBlMyxvbRaAdNBPQigbMl3HJSQC/MdjwNU5oKAVHk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SlRXU2BLvFpI1KbNPmW8nilt9sfrr/0zTmbRzawcs8xlBmCKwYr1h6rDy1HoorekiGl3m1S2pmWuyZsU+zWjudwcN6t27QiBC27+Bgw3EobtsKyjLW+nPsIBfw+sJDWVu6dJPx5B2wXfe797zP/it4FJxP9WNF/WAjr8YX1/bYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hAJYtQne; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1726043816; c=relaxed/simple;
+	bh=AtI1JodZDO+8/Tzk/nlctu61CodYyKWQS2JBWhZh7W4=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=etltOx8aGlKJAFJJ9YFckBqzDTyS/MeulhZwKwTBpeNCph3kd1JCqBengtoIfhDc49OmzRFk0WWV75OYVSHOGqB/WN6X9IX/jonmEbwidyDSpjHVXP/wmny+5vHh5Z6/rdj4kz/VI9QtDv5pW6szMi9rTFRi25uM1X8KKFWw7iU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=IGyYJK1x; arc=none smtp.client-ip=185.70.43.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hAJYtQne"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5253FC4CEC3;
-	Wed, 11 Sep 2024 00:22:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726014146;
-	bh=+LNBlMyxvbRaAdNBPQigbMl3HJSQC/MdjwNU5oKAVHk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=hAJYtQneMjP2OTggHTC04Y8ifcN8qpmSKrlfbNZBRBUS1YOLFp6Tw0Pg2M5ofNBON
-	 rgYZ3fTXmv6FWzOWn4J9+dHgLT1vyLVm558Q707l+6gTid+GW9xud7siZbunA3quaq
-	 4z2wymSbLAj9BrDwnxvuOinbbeY7gKYJigBbt3h+xqNP6CyEqwp8OmRBplnS8oBKLs
-	 iwOFz7AgmitwtSxMfd7S7YmGEkrQ2ZrJPxbdSFEVUF5R/6XMWhOEqF7hqdHO7RwLky
-	 2E7FnESyKsFOP9CC6nECWz1y7RiZs8dqbw3x9oKnKp05Fxc0W8rM4kx6vih2sF6O6F
-	 +yKnC5/hNir4w==
-Date: Wed, 11 Sep 2024 02:22:18 +0200
-From: Danilo Krummrich <dakr@kernel.org>
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
-	a.hindborg@samsung.com, aliceryhl@google.com,
-	akpm@linux-foundation.org, daniel.almeida@collabora.com,
-	faith.ekstrand@collabora.com, boris.brezillon@collabora.com,
-	lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com,
-	cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com,
-	ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v6 15/26] rust: alloc: implement `collect` for `IntoIter`
-Message-ID: <ZuDiurdQfvmewzDh@pollux>
-References: <20240816001216.26575-1-dakr@kernel.org>
- <20240816001216.26575-16-dakr@kernel.org>
- <747b8c1c-cb7b-422e-b6a0-ea863cc37f0a@proton.me>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="IGyYJK1x"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=q5xqu33p5zemxkr2vym5jgtsx4.protonmail; t=1726043805; x=1726303005;
+	bh=KnWn/8TtLlH9g5YMgEkjKP7rMW4YOeNrjWYIMxEWl2U=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=IGyYJK1xJG1ico72kpnXAj/gt7H6UCJc5lWmqzFpNeh1O27PFoydWGigCtS85MI3S
+	 g6b1zVwWFM8F5sMh4/GK2+Yh85kFDD/LiwizU3w9ypxO0gwiRthE+w5uYG6FQSVBTj
+	 kJg+3bf0sH1iFB5RhP6VmgusnwyNrvsIOyl5pwvuwLUKZ5jchcwL12XJN8ef3iAYkM
+	 CJYfOyP7DisLRjYtGc6sFq7ECkEB9uM/UhwqahyrIHLTlI4j+gITA4S3J4rIPnzXcj
+	 nx5NsBmwizdxQOkYlV0WhG3kNbUxwFZ3q/BA7TdiHK72J8gH3RiKZZgZOmxydeAq+j
+	 bq1gJxmaMtchg==
+Date: Wed, 11 Sep 2024 08:36:38 +0000
+To: Danilo Krummrich <dakr@kernel.org>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@samsung.com, aliceryhl@google.com, akpm@linux-foundation.org, daniel.almeida@collabora.com, faith.ekstrand@collabora.com, boris.brezillon@collabora.com, lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com, ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v6 09/26] rust: alloc: implement kernel `Box`
+Message-ID: <77b91448-a21e-4e1b-9a8e-3d2052d79a78@proton.me>
+In-Reply-To: <ZuDVekRzfeBkWmKz@pollux>
+References: <20240816001216.26575-1-dakr@kernel.org> <20240816001216.26575-10-dakr@kernel.org> <0146cb78-5a35-4d6b-bc75-fed1fc0c270c@proton.me> <ZuCEneJeXcRo5qs8@pollux> <19d81a27-9600-4990-867c-624104e3ad83@proton.me> <ZuDVekRzfeBkWmKz@pollux>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: 88c99c18904d989862df81bed222d177747790f8
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <747b8c1c-cb7b-422e-b6a0-ea863cc37f0a@proton.me>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, Sep 10, 2024 at 08:12:24PM +0000, Benno Lossin wrote:
-> On 16.08.24 02:10, Danilo Krummrich wrote:
-> > Currently, we can't implement `FromIterator`. There are a couple of
-> > issues with this trait in the kernel, namely:
-> > 
-> >   - Rust's specialization feature is unstable. This prevents us to
-> >     optimze for the special case where `I::IntoIter` equals `Vec`'s
-> >     `IntoIter` type.
-> >   - We also can't use `I::IntoIter`'s type ID either to work around this,
-> >     since `FromIterator` doesn't require this type to be `'static`.
-> >   - `FromIterator::from_iter` does return `Self` instead of
-> >     `Result<Self, AllocError>`, hence we can't properly handle allocation
-> >     failures.
-> >   - Neither `Iterator::collect` nor `FromIterator::from_iter` can handle
-> >     additional allocation flags.
-> > 
-> > Instead, provide `IntoIter::collect`, such that we can at least convert
-> > `IntoIter` into a `Vec` again.
-> > 
-> > Reviewed-by: Alice Ryhl <aliceryhl@google.com>
-> > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
-> > ---
-> >  rust/kernel/alloc/kvec.rs | 78 +++++++++++++++++++++++++++++++++++++++
-> >  1 file changed, 78 insertions(+)
-> > 
-> > diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
-> > index 3b79f977b65e..ad96f4c3af9e 100644
-> > --- a/rust/kernel/alloc/kvec.rs
-> > +++ b/rust/kernel/alloc/kvec.rs
-> > @@ -681,6 +681,84 @@ impl<T, A> IntoIter<T, A>
-> >      fn as_raw_mut_slice(&mut self) -> *mut [T] {
-> >          ptr::slice_from_raw_parts_mut(self.ptr, self.len)
-> >      }
-> > +
-> > +    fn into_raw_parts(self) -> (*mut T, NonNull<T>, usize, usize) {
-> > +        let me = ManuallyDrop::new(self);
-> > +        let ptr = me.ptr;
-> > +        let buf = me.buf;
-> > +        let len = me.len;
-> > +        let cap = me.cap;
-> > +        (ptr, buf, len, cap)
-> > +    }
-> > +
-> > +    /// Same as `Iterator::collect` but specialized for `Vec`'s `IntoIter`.
-> > +    ///
-> > +    /// Currently, we can't implement `FromIterator`. There are a couple of issues with this trait
-> > +    /// in the kernel, namely:
-> > +    ///
-> > +    /// - Rust's specialization feature is unstable. This prevents us to optimze for the special
-> > +    ///   case where `I::IntoIter` equals `Vec`'s `IntoIter` type.
-> > +    /// - We also can't use `I::IntoIter`'s type ID either to work around this, since `FromIterator`
-> > +    ///   doesn't require this type to be `'static`.
-> > +    /// - `FromIterator::from_iter` does return `Self` instead of `Result<Self, AllocError>`, hence
-> > +    ///   we can't properly handle allocation failures.
-> > +    /// - Neither `Iterator::collect` nor `FromIterator::from_iter` can handle additional allocation
-> > +    ///   flags.
-> > +    ///
-> > +    /// Instead, provide `IntoIter::collect`, such that we can at least convert a `IntoIter` into a
-> > +    /// `Vec` again.
-> 
-> I think it's great that you include this in the code, but I don't think
-> that it should be visible in the documentation,
+On 11.09.24 01:25, Danilo Krummrich wrote:
+> On Tue, Sep 10, 2024 at 07:49:42PM +0000, Benno Lossin wrote:
+>> On 10.09.24 19:40, Danilo Krummrich wrote:
+>>> On Sat, Aug 31, 2024 at 05:39:07AM +0000, Benno Lossin wrote:
+>>>> On 16.08.24 02:10, Danilo Krummrich wrote:
+>>>>> +/// # Examples
+>>>>> +///
+>>>>> +/// ```
+>>>>> +/// let b =3D KBox::<u64>::new(24_u64, GFP_KERNEL)?;
+>>>>> +///
+>>>>> +/// assert_eq!(*b, 24_u64);
+>>>>> +/// # Ok::<(), Error>(())
+>>>>> +/// ```
+>>>>> +///
+>>>>> +/// ```
+>>>>> +/// # use kernel::bindings;
+>>>>> +/// const SIZE: usize =3D bindings::KMALLOC_MAX_SIZE as usize + 1;
+>>>>> +/// struct Huge([u8; SIZE]);
+>>>>> +///
+>>>>> +/// assert!(KBox::<Huge>::new_uninit(GFP_KERNEL | __GFP_NOWARN).is_e=
+rr());
+>>>>> +/// ```
+>>>>
+>>>> It would be nice if you could add something like "KBox can't handle bi=
+g
+>>>> allocations:" above this example, so that people aren't confused why
+>>>> this example expects an error.
+>>>
+>>> I don't think that's needed, it's implied by
+>>> `SIZE =3D=3D bindings::KMALLOC_MAX_SIZE + 1`.
+>>>
+>>> Surely, we could add it nevertheless, but it's not very precise to just=
+ say "big
+>>> allocations". And I think this isn't the place for lengthy explanations=
+ of
+>>> `Kmalloc` behavior.
+>>
+>> Fair point, nevertheless I find examples a bit more useful, when the
+>> intention behind them is not only given as code.
+>>
+>>>>> +///
+>>>>> +/// ```
+>>>>> +/// # use kernel::bindings;
+>>>>> +/// const SIZE: usize =3D bindings::KMALLOC_MAX_SIZE as usize + 1;
+>>>>> +/// struct Huge([u8; SIZE]);
+>>>>> +///
+>>>>> +/// assert!(KVBox::<Huge>::new_uninit(GFP_KERNEL).is_ok());
+>>>>> +/// ```
+>>>>
+>>>> Similarly, you could then say above this one "Instead use either `VBox=
+`
+>>>> or `KVBox`:"
+>>>>
+>>>>> +///
+>>>>> +/// # Invariants
+>>>>> +///
+>>>>> +/// The [`Box`]' pointer is always properly aligned and either point=
+s to memory allocated with `A`
+>>>>
+>>>> Please use `self.0` instead of "[`Box`]'".
+>>>>
+>>>>> +/// or, for zero-sized types, is a dangling pointer.
+>>>>
+>>>> Probably "dangling, well aligned pointer.".
+>>>
+>>> Does this add any value? For ZSTs everything is "well aligned", isn't i=
+t?
+>>
+>> ZSTs can have alignment and then unaligned pointers do exist for them
+>> (and dereferencing them is UB!):
+>=20
+> Where is this documented? The documentation says:
+>=20
+> "For operations of size zero, *every* pointer is valid, including the nul=
+l
+> pointer. The following points are only concerned with non-zero-sized acce=
+sses."
+> [1]
 
-Why not? I think this information is valuable for users of this API.
+That's a good point, the documentation looks a bit outdated. I found
+this page in the nomicon: https://doc.rust-lang.org/nomicon/vec/vec-zsts.ht=
+ml
+The first iterator implementation has an alignment issue. (Nevertheless,
+that chapter of the nomicon is probably useful to you, since it goes
+over implementing `Vec`, but maybe you already saw it)
 
-> can you move it under
-> the `Examples` section and turn it into normal comments?
-> 
-> > +    ///
-> > +    /// Note that `IntoIter::collect` doesn't require `Flags`, since it re-uses the existing backing
-> > +    /// buffer. However, this backing buffer may be shrunk to the actual count of elements.
-> > +    ///
-> > +    /// # Examples
-> > +    ///
-> > +    /// ```
-> > +    /// let v = kernel::kvec![1, 2, 3]?;
-> > +    /// let mut it = v.into_iter();
-> > +    ///
-> > +    /// assert_eq!(it.next(), Some(1));
-> > +    ///
-> > +    /// let v = it.collect(GFP_KERNEL);
-> > +    /// assert_eq!(v, [2, 3]);
-> > +    ///
-> > +    /// # Ok::<(), Error>(())
-> > +    /// ```
-> > +    pub fn collect(self, flags: Flags) -> Vec<T, A> {
-> > +        let (mut ptr, buf, len, mut cap) = self.into_raw_parts();
-> > +        let has_advanced = ptr != buf.as_ptr();
-> > +
-> > +        if has_advanced {
-> > +            // SAFETY: Copy the contents we have advanced to at the beginning of the buffer.
-> 
-> This first sentence should not be part of the SAFETY comment.
-> 
-> > +            // `ptr` is guaranteed to be between `buf` and `buf.add(cap)` and `ptr.add(len)` is
-> > +            // guaranteed to be smaller than `buf.add(cap)`.
-> 
-> This doesn't justify all the requirements documented in [1].
-> 
-> [1]: https://doc.rust-lang.org/core/ptr/fn.copy.html#safety
-> 
-> > +            unsafe { ptr::copy(ptr, buf.as_ptr(), len) };
-> > +            ptr = buf.as_ptr();
-> > +        }
-> > +
-> > +        // This can never fail, `len` is guaranteed to be smaller than `cap`.
-> > +        let layout = core::alloc::Layout::array::<T>(len).unwrap();
-> > +
-> > +        // SAFETY: `buf` points to the start of the backing buffer and `len` is guaranteed to be
-> > +        // smaller than `cap`. Depending on `alloc` this operation may shrink the buffer or leaves
-> > +        // it as it is.
-> > +        ptr = match unsafe { A::realloc(Some(buf.cast()), layout, flags) } {
-> > +            // If we fail to shrink, which likely can't even happen, continue with the existing
-> > +            // buffer.
-> > +            Err(_) => ptr,
-> > +            Ok(ptr) => {
-> > +                cap = len;
-> > +                ptr.as_ptr().cast()
-> > +            }
-> > +        };
-> > +
-> > +        // SAFETY: If the iterator has been advanced, the advanced elements have been copied to
-> > +        // the beginning of the buffer and `len` has been adjusted accordingly. `ptr` is guaranteed
-> > +        // to point to the start of the backing buffer. `cap` is either the original capacity or,
-> > +        // after shrinking the buffer, equal to `len`. `alloc` is guaranteed to be unchanged since
-> > +        // `into_iter` has been called on the original `Vec`.
-> 
-> Turn this into bullet points please.
-> 
-> ---
-> Cheers,
-> Benno
-> 
-> > +        unsafe { Vec::from_raw_parts(ptr, len, cap) }
-> > +    }
-> >  }
-> > 
-> >  impl<T, A> Iterator for IntoIter<T, A>
-> > --
-> > 2.46.0
-> > 
-> 
+> [1] https://doc.rust-lang.org/std/ptr/index.html
+
+Might be a good idea to improve/complain about this at the rust project.
+
+>>     #[repr(align(64))]
+>>     struct Token;
+>>
+>>     fn main() {
+>>         let t =3D 64 as *mut Token;
+>>         let t =3D unsafe { t.read() }; // this is fine.
+>>         let t =3D 4 as *mut Token;
+>>         let t =3D unsafe { t.read() }; // this is UB, see below for miri=
+'s output
+>>     }
+>>
+>> Miri complains:
+>>
+>>     error: Undefined Behavior: accessing memory based on pointer with al=
+ignment 4, but alignment 64 is required
+>>      --> src/main.rs:8:22
+>>       |
+>>     8 |     let t =3D unsafe { t.read() }; // this is UB, see below for =
+miri's output
+>>       |                      ^^^^^^^^ accessing memory based on pointer =
+with alignment 4, but alignment 64 is required
+>>       |
+>>       =3D help: this indicates a bug in the program: it performed an inv=
+alid operation, and caused Undefined Behavior
+>>       =3D help: see https://doc.rust-lang.org/nightly/reference/behavior=
+-considered-undefined.html for further information
+>>       =3D note: BACKTRACE:
+>>       =3D note: inside `main` at src/main.rs:8:22: 8:30
+>=20
+> `read` explicitly asks for non-null and properly aligned even if `T` has =
+size
+> zero.
+
+Dereferencing (ie `*t`) also requires that (I just didn't do it, since
+then the `Token` must implement `Copy`).
+
+---
+Cheers,
+Benno
+
