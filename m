@@ -1,43 +1,43 @@
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6149F144D15
-	for <rust-for-linux@vger.kernel.org>; Wed, 11 Sep 2024 08:52:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8F1A14EC46
+	for <rust-for-linux@vger.kernel.org>; Wed, 11 Sep 2024 08:53:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726044732; cv=none; b=NAZAKWLfrN85ecO4Jqp0f/rp1coFvc6CsiJE97iYxH9X1xLJ9tZ/uvpEVYYORhTRrVwfTDPEcWOotorrfw4SxowxOkp/pKxWrdUYC1K3sBWxIj4WuXWinSCbGFW1QqVCKFppqWVr4r1JjLocn5OfskVkZLENzxv3AFedhFalKu8=
+	t=1726044814; cv=none; b=bQcv8Zw77w3k/lN3ahCv8QxajbPGsxca0E2paAyu74sDV3lUf9ybqDKPB2Rvd7NEsXJXa7RZ5VMQOQANfA8UjOzse2+fxr0iGnivRcU00+B3DP+cuGj6Gl0ax/8Pesq0JwI7kKAqe1+Me1Vh5jLlp1bnIXnvK3yLurzsZ+IbpKk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726044732; c=relaxed/simple;
-	bh=4znQhUu8LxiVX6fr/ZOCHM8a2TBpbvw6wCXWyWqGN9A=;
+	s=arc-20240116; t=1726044814; c=relaxed/simple;
+	bh=8eph8ZoPw5th/a4Boxem+pbq7rjO0PIK4L5g+jysul8=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=q48z2N4Nk+CoPhKCaIsWUlnD9888p/x9C7RgO0ZhveDxQYhXBcOdKJ9ajRnpZwx4Ik0k4O3YEzQtjFxFMw+3AxwZFwkslxjofGrTlxgqJVwDmqxhFCGOgETnI1k5bkmcYXJ4I8lzdrSeQAiKLvL3Giu4MYXqlTLuPrJriWeceJA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=b0MC+EOR; arc=none smtp.client-ip=185.70.43.16
+	 MIME-Version:Content-Type; b=HJwOQ0xGUzYWATV9yg7U/EUDf37Dm8FEdFB4loO2LL76k09MoCMmjAgpQyv7tT0lSiVTugOm501za6meNZjssYu1c8dMioYQldDsshcetGE9PIsYSOrmSE49hkAl6yXoIvKZNdn7kLg71jWwJiwHkzKilEcuWpjlz4JtzPXIc7M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=GDzrFMoW; arc=none smtp.client-ip=185.70.40.131
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="b0MC+EOR"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="GDzrFMoW"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1726044729; x=1726303929;
-	bh=7ej536exrAiwdO2l5a1GM7W1na7XjDoAMN2spKpA03Q=;
+	s=protonmail; t=1726044809; x=1726304009;
+	bh=V1DaypacfHgH30QcZbTBIVISoAMB3BZmyLTSZgD+fCw=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=b0MC+EORYPM1eG7rGu9uqZFAa11xU9ar3Xj8+WRjj/IxSr8xw3CNH2Yf0M0jRDi+l
-	 of2INkSQuKw6uCrmZiyDpFwN74/mB40aoKtyi0R9MyTRrHaTauY3qstWIxt6SbDsGk
-	 2NrEycbGAN5Uz9WG+MpUd78xTosJycw32GzQsCfLXH87e4dzwzNRzep0kA7QUpRRgh
-	 iUEzCJanFIbc3NNYLeHfNWUK+2dqQL8v9fHoawAi3XfixSuQjGOPPtdORQsOhOW55A
-	 Gay5+Pt7tFqNZ0GhcAJdA7tybxYA1+7UIz7su8scSSP5ceyU3ZS0m/gbcH2C+kb/1Z
-	 Yk8gjgON5jQIA==
-Date: Wed, 11 Sep 2024 08:52:03 +0000
+	b=GDzrFMoWBDrZGpotXcDnsUADzacYIMxuQESVwPdEnbILhv+MrEfGbM2iPOlAnhi8p
+	 cyYQ29nONdVLSiyaVRhfwMWLMmko4GVgj31fKRBEW5Yzz/jKR0fG+wXYX0rZvZg973
+	 IE02FI6O70Wi7e+bpSDTte51pmWoxjPZPFTAo8Mxsrl9dyqFM6T3pI4TQXLPgeBUX1
+	 YE/DtvwGliwkcluG5rRFki75XIuOXjMGcxicDzBnMiiArFI0MAtUNqQketzaHu4TXQ
+	 58slCmqVi2ueGwiA0HwJNxvOu03MFH4R330Fr9XA+siVOPnRY6duu3BdJ2yB8dt1Lx
+	 p91iRDCqSke0w==
+Date: Wed, 11 Sep 2024 08:53:24 +0000
 To: Danilo Krummrich <dakr@kernel.org>
 From: Benno Lossin <benno.lossin@proton.me>
 Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@samsung.com, aliceryhl@google.com, akpm@linux-foundation.org, daniel.almeida@collabora.com, faith.ekstrand@collabora.com, boris.brezillon@collabora.com, lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com, ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v6 14/26] rust: alloc: implement `IntoIterator` for `Vec`
-Message-ID: <a5efe05d-5e03-426f-bc72-5339dc07af19@proton.me>
-In-Reply-To: <ZuDYy3HtPwVLgDtS@pollux>
-References: <20240816001216.26575-1-dakr@kernel.org> <20240816001216.26575-15-dakr@kernel.org> <308d40dd-105b-4ebf-ba70-585a97d66928@proton.me> <ZuDYy3HtPwVLgDtS@pollux>
+Subject: Re: [PATCH v6 15/26] rust: alloc: implement `collect` for `IntoIter`
+Message-ID: <503abe24-fbac-440a-a063-fc30a2a6bd77@proton.me>
+In-Reply-To: <ZuDiurdQfvmewzDh@pollux>
+References: <20240816001216.26575-1-dakr@kernel.org> <20240816001216.26575-16-dakr@kernel.org> <747b8c1c-cb7b-422e-b6a0-ea863cc37f0a@proton.me> <ZuDiurdQfvmewzDh@pollux>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 113f2dd15dbb08efdbff177ae5499441409002bf
+X-Pm-Message-ID: 6f7b7bfdbfdcc7f366fd5b4e594634851cf4cf85
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,56 +47,55 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On 11.09.24 01:39, Danilo Krummrich wrote:
-> On Tue, Sep 10, 2024 at 08:04:27PM +0000, Benno Lossin wrote:
+On 11.09.24 02:22, Danilo Krummrich wrote:
+> On Tue, Sep 10, 2024 at 08:12:24PM +0000, Benno Lossin wrote:
 >> On 16.08.24 02:10, Danilo Krummrich wrote:
->>> +/// [`IntoIterator`] trait).
->>> +///
->>> +/// # Examples
->>> +///
->>> +/// ```
->>> +/// let v =3D kernel::kvec![0, 1, 2]?;
->>> +/// let iter =3D v.into_iter();
->>> +///
->>> +/// # Ok::<(), Error>(())
->>> +/// ```
->>> +pub struct IntoIter<T, A: Allocator> {
->>> +    ptr: *mut T,
->>> +    buf: NonNull<T>,
+>>> +    /// Same as `Iterator::collect` but specialized for `Vec`'s `IntoI=
+ter`.
+>>> +    ///
+>>> +    /// Currently, we can't implement `FromIterator`. There are a coup=
+le of issues with this trait
+>>> +    /// in the kernel, namely:
+>>> +    ///
+>>> +    /// - Rust's specialization feature is unstable. This prevents us =
+to optimze for the special
+>>> +    ///   case where `I::IntoIter` equals `Vec`'s `IntoIter` type.
+>>> +    /// - We also can't use `I::IntoIter`'s type ID either to work aro=
+und this, since `FromIterator`
+>>> +    ///   doesn't require this type to be `'static`.
+>>> +    /// - `FromIterator::from_iter` does return `Self` instead of `Res=
+ult<Self, AllocError>`, hence
+>>> +    ///   we can't properly handle allocation failures.
+>>> +    /// - Neither `Iterator::collect` nor `FromIterator::from_iter` ca=
+n handle additional allocation
+>>> +    ///   flags.
+>>> +    ///
+>>> +    /// Instead, provide `IntoIter::collect`, such that we can at leas=
+t convert a `IntoIter` into a
+>>> +    /// `Vec` again.
 >>
->> No invariants for these two fields?
+>> I think it's great that you include this in the code, but I don't think
+>> that it should be visible in the documentation,
 >=20
-> Suggestions?
+> Why not? I think this information is valuable for users of this API.
 
-When determining the invariants, I look at the places where you would
-want to use them, ie the `SAFETY` comments that use these fields:
-- for `buf` you only use it to free the backing allocation, so you only
-  need that it has been allocated by `A` if `cap !=3D 0`.
-- for `ptr` you need that it is valid for reads for `size_of::<T>() *
-  length` bytes.
+If you want to keep it, then I don't mind, but I would still move it
+underneath `Examples` and add a section header `# Implementation
+Details` or similar.
 
-So I would put those two things into invariants.
+---
+Cheers,
+Benno
 
->>> +    len: usize,
->>> +    cap: usize,
->>> +    _p: PhantomData<A>,
->>> +}
->>> +
->>> +impl<T, A> IntoIter<T, A>
->>> +where
->>> +    A: Allocator,
->>> +{
->>> +    fn as_raw_mut_slice(&mut self) -> *mut [T] {
->>> +        ptr::slice_from_raw_parts_mut(self.ptr, self.len)
->>> +    }
->>> +}
->>> +
->>> +impl<T, A> Iterator for IntoIter<T, A>
->>> +where
->>> +    A: Allocator,
->>> +{
->>> +    type Item =3D T;
->>> +
+>> can you move it under
+>> the `Examples` section and turn it into normal comments?
+>>
+>>> +    ///
+>>> +    /// Note that `IntoIter::collect` doesn't require `Flags`, since i=
+t re-uses the existing backing
+>>> +    /// buffer. However, this backing buffer may be shrunk to the actu=
+al count of elements.
+>>> +    ///
 >>> +    /// # Examples
 >>> +    ///
 >>> +    /// ```
@@ -104,23 +103,11 @@ So I would put those two things into invariants.
 >>> +    /// let mut it =3D v.into_iter();
 >>> +    ///
 >>> +    /// assert_eq!(it.next(), Some(1));
->>> +    /// assert_eq!(it.next(), Some(2));
->>> +    /// assert_eq!(it.next(), Some(3));
->>> +    /// assert_eq!(it.next(), None);
+>>> +    ///
+>>> +    /// let v =3D it.collect(GFP_KERNEL);
+>>> +    /// assert_eq!(v, [2, 3]);
 >>> +    ///
 >>> +    /// # Ok::<(), Error>(())
 >>> +    /// ```
->>
->> AFAIK documentation on functions in trait implementations won't show up
->> in rustdoc (I just checked this). So I would remove it.
->=20
-> They don't, but the KUnit tests are still executed. :)
-
-Oh I see, then may I suggest moving them to the module documentation or
-put them onto `Vec`, that way people can also read them :)
-
----
-Cheers,
-Benno
-
+>>> +    pub fn collect(self, flags: Flags) -> Vec<T, A> {
 
