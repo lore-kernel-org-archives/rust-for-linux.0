@@ -1,142 +1,162 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7592919F128;
-	Wed, 11 Sep 2024 14:38:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FED91E50B;
+	Wed, 11 Sep 2024 14:50:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726065483; cv=none; b=MpMiyf/HCtEjTaIrq0a3Sr1/8S7CbcC3QkAr5kypcBB9/zayU/hsOP25YthDJeq7EEgWRsp594ysYnZLV/ofxt3NAs0OQCsQDCxeKepa3DDuiwIyHSQlQlJLk73nIaZvgMN0ECxmmFROp+WSK8wLK1WN3lgEGOHyrubVuXRmF6o=
+	t=1726066219; cv=none; b=YvW4DFEBPH++T3Gqfo+Ic4OWMnbS4oaj4oEC3qeBRlc/n0+xTZLXgjcb0DaDh6lbHFrmMfs2+SFlOUbY8WFFrwdTHDSQoevhB7vFQeDuEMoRDoLZhsEPesz0ZNNwEM1yR4YUVT2SlYV0bvG5srf8O7wuf0bpbJcY9FsJgDeXq+U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726065483; c=relaxed/simple;
-	bh=mqHDA66/2LWiEoFN7msYbfNAJjJbyoJbwWfKXNsRYrc=;
+	s=arc-20240116; t=1726066219; c=relaxed/simple;
+	bh=5NUgVGZKhPsPWqKpyoN/ipsM7yaoeIQ2D1gjHv5lqK4=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mzUh1ywGqqyqM2MRUt08j5lTe94O9Jv478vt9E7mcMP0M5HKQyMhSC9OuPR5hYK6XW/kDFxCDFhrruoNVAQmDPYv7Pw6o0tucbPtZlhQcPaZTJNWrcCDowirloiETF4cHpneQ5Bb9+v6U2TZKm1cPi3Uf96M63sXrmaObCMe+fA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=LPV3lDJ0; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=n1KYYaE8ynHvzGOZYX/jvezsoE3YvUwFVzHJIJcMPgQzFNIpne41Mvp35Nnrw5eWdMGbH2hKfRm/wwl0JBY4ogHBqGxWspIA4sQlX76hbSvRDKAAvDJqeAoypJRsKD4ujSSwTLEbnND8RqeY7i9VsExs9IHmhIS0lVmp3hRYsDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bU/sVYc2; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="LPV3lDJ0"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 244C7C4CEC0;
-	Wed, 11 Sep 2024 14:37:57 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bU/sVYc2"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0742C4CEC5;
+	Wed, 11 Sep 2024 14:50:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726065483;
-	bh=mqHDA66/2LWiEoFN7msYbfNAJjJbyoJbwWfKXNsRYrc=;
+	s=k20201202; t=1726066218;
+	bh=5NUgVGZKhPsPWqKpyoN/ipsM7yaoeIQ2D1gjHv5lqK4=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=LPV3lDJ0LW0wWEKaDYHpJ11yP5N2P7CWmzRvEbQBBTjjMqjqYDynZP0lUyYMEkfKs
-	 XUHUC/GkZY8lMJY5M3LC8J1XNQcL53qXwd9xgzwEy1qwTay6K2aNde/kxYbXNVE8Ov
-	 8Xh8Sw+LpQJj1GK63obyZVdTlXfVIZt2wkf3TVZSd1VhCcMUYRejpOx1NuG5BboKOO
-	 4N4IsUWhsSL0XYApgDgw/qY2Ql59mjZseA6a/E2UdcpTFOhGVh1zWhz6E5LBCSg9XI
-	 PXrHtNZ77su4ucdVQRU89k3TWj4G0vrgLoF2ReGeOsK10fGwJGmA0oahiOsFfw3qN9
-	 AfGeY3QZuaXuw==
-Date: Wed, 11 Sep 2024 16:37:53 +0200
+	b=bU/sVYc2192PKf7Us9pOQty5kCoCfdUqYEKsDiTbLmYUKjTJ2rD/tYa3G0wzGs/VV
+	 aYY8jR+6BYZzAHFbvkt2qSuTdEOWpaTYlj3NwlCyfPHbDQyFCtAOZAoos5TYyMZyzB
+	 5jw4lZ6Ec5liT19SJkV5nuxoOclkhanzA/Fd8vqbyfLpy8gkFu0sLyQm7g0nlCQ3mj
+	 asxDJHXOKzUQI5p6iiq92sl0XNIi5X9f/8YSgfydEjNnCbTvHG/X+soTPUv7VE04c5
+	 j3mQ6likvODvO3CTpnmo5xsZWsXIBTvdirO/BzPPW5Fs0pYXukOkdXcevKLa3yYvdr
+	 8kCnjFMpAF47A==
+Date: Wed, 11 Sep 2024 16:50:11 +0200
 From: Danilo Krummrich <dakr@kernel.org>
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
-	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
-	a.hindborg@samsung.com, aliceryhl@google.com,
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Benno Lossin <benno.lossin@proton.me>, ojeda@kernel.org,
+	alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com,
+	gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@samsung.com,
 	akpm@linux-foundation.org, daniel.almeida@collabora.com,
 	faith.ekstrand@collabora.com, boris.brezillon@collabora.com,
 	lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com,
 	cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com,
 	ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org,
 	rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v6 22/26] rust: alloc: implement `Cmalloc` in module
- allocator_test
-Message-ID: <ZuGrQcLwXi-tiK8l@cassiopeiae>
+Subject: Re: [PATCH v6 09/26] rust: alloc: implement kernel `Box`
+Message-ID: <ZuGuI7Ow0jJQBim6@cassiopeiae>
 References: <20240816001216.26575-1-dakr@kernel.org>
- <20240816001216.26575-23-dakr@kernel.org>
- <e3ccbf52-224e-4869-992b-4fcaa0ec3410@proton.me>
- <ZtD1TsGm0swi7gyv@pollux.localdomain>
- <ZuGNlFluwAmTG19R@cassiopeiae>
- <bf158e23-4123-419b-a2ce-a27c4ea51219@proton.me>
+ <20240816001216.26575-10-dakr@kernel.org>
+ <0146cb78-5a35-4d6b-bc75-fed1fc0c270c@proton.me>
+ <ZuCEneJeXcRo5qs8@pollux>
+ <19d81a27-9600-4990-867c-624104e3ad83@proton.me>
+ <ZuDVekRzfeBkWmKz@pollux>
+ <77b91448-a21e-4e1b-9a8e-3d2052d79a78@proton.me>
+ <ZuF444VO8gK8l7UR@pollux>
+ <b80cb238-5fcc-4bbb-8b03-42e173c28653@proton.me>
+ <CAH5fLghwj-rD8zoPFgp3g1JYm8WrOhuiWnm7w=zStqOfRRZUJw@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <bf158e23-4123-419b-a2ce-a27c4ea51219@proton.me>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAH5fLghwj-rD8zoPFgp3g1JYm8WrOhuiWnm7w=zStqOfRRZUJw@mail.gmail.com>
 
-On Wed, Sep 11, 2024 at 01:32:31PM +0000, Benno Lossin wrote:
-> On 11.09.24 14:31, Danilo Krummrich wrote:
-> > On Fri, Aug 30, 2024 at 12:25:27AM +0200, Danilo Krummrich wrote:
-> >> On Thu, Aug 29, 2024 at 07:14:18PM +0000, Benno Lossin wrote:
-> >>> On 16.08.24 02:11, Danilo Krummrich wrote:
-> >>>> +
-> >>>> +        if layout.size() == 0 {
-> >>>> +            // SAFETY: `src` has been created by `Self::alloc_store_data`.
-> >>>
-> >>> This is not true, consider:
-> >>>
-> >>>     let ptr = alloc(size = 0);
-> >>>     free(ptr)
-> >>>
-> >>> Alloc will return a dangling pointer due to the first if statement and
-> >>> then this function will pass it to `free_read_data`, even though it
-> >>> wasn't created by `alloc_store_data`.
-> >>> This isn't forbidden by the `Allocator` trait function's safety
-> >>> requirements.
-> >>>
-> >>>> +            unsafe { Self::free_read_data(src) };
-> >>>> +
-> >>>> +            return Ok(NonNull::slice_from_raw_parts(NonNull::dangling(), 0));
-> >>>> +        }
-> >>>> +
-> >>>> +        let dst = Self::alloc(layout, flags)?;
-> >>>> +
-> >>>> +        // SAFETY: `src` has been created by `Self::alloc_store_data`.
-> >>>> +        let data = unsafe { Self::data(src) };
-> >>>
-> >>> Same issue here, if the allocation passed in is zero size. I think you
-> >>> have no other choice than to allocate even for zero size requests...
-> >>> Otherwise how would you know that they are zero-sized.
-> >>
-> >> Good catch - gonna fix it.
-> > 
-> > Almost got me. :) I think the code is fine, callers are not allowed to pass
-> > pointers to `realloc` and `free`, which haven't been allocated with the same
-> > corresponding allocator or are dangling.
-> 
-> But what about the example above (ie the `alloc(size = 0)` and then
-> `free`)?
+On Wed, Sep 11, 2024 at 03:27:57PM +0200, Alice Ryhl wrote:
+> On Wed, Sep 11, 2024 at 3:26 PM Benno Lossin <benno.lossin@proton.me> wrote:
+> >
+> > On 11.09.24 13:02, Danilo Krummrich wrote:
+> > > On Wed, Sep 11, 2024 at 08:36:38AM +0000, Benno Lossin wrote:
+> > >> On 11.09.24 01:25, Danilo Krummrich wrote:
+> > >>> On Tue, Sep 10, 2024 at 07:49:42PM +0000, Benno Lossin wrote:
+> > >>>> On 10.09.24 19:40, Danilo Krummrich wrote:
+> > >>>>> On Sat, Aug 31, 2024 at 05:39:07AM +0000, Benno Lossin wrote:
+> > >>>>>> On 16.08.24 02:10, Danilo Krummrich wrote:
+> > >>>>>>> +///
+> > >>>>>>> +/// ```
+> > >>>>>>> +/// # use kernel::bindings;
+> > >>>>>>> +/// const SIZE: usize = bindings::KMALLOC_MAX_SIZE as usize + 1;
+> > >>>>>>> +/// struct Huge([u8; SIZE]);
+> > >>>>>>> +///
+> > >>>>>>> +/// assert!(KVBox::<Huge>::new_uninit(GFP_KERNEL).is_ok());
+> > >>>>>>> +/// ```
+> > >>>>>>
+> > >>>>>> Similarly, you could then say above this one "Instead use either `VBox`
+> > >>>>>> or `KVBox`:"
+> > >>>>>>
+> > >>>>>>> +///
+> > >>>>>>> +/// # Invariants
+> > >>>>>>> +///
+> > >>>>>>> +/// The [`Box`]' pointer is always properly aligned and either points to memory allocated with `A`
+> > >>>>>>
+> > >>>>>> Please use `self.0` instead of "[`Box`]'".
+> > >>>>>>
+> > >>>>>>> +/// or, for zero-sized types, is a dangling pointer.
+> > >>>>>>
+> > >>>>>> Probably "dangling, well aligned pointer.".
+> > >>>>>
+> > >>>>> Does this add any value? For ZSTs everything is "well aligned", isn't it?
+> > >>>>
+> > >>>> ZSTs can have alignment and then unaligned pointers do exist for them
+> > >>>> (and dereferencing them is UB!):
+> > >>>
+> > >>> Where is this documented? The documentation says:
+> > >>>
+> > >>> "For operations of size zero, *every* pointer is valid, including the null
+> > >>> pointer. The following points are only concerned with non-zero-sized accesses."
+> > >>> [1]
+> > >>
+> > >> That's a good point, the documentation looks a bit outdated. I found
+> > >> this page in the nomicon: https://doc.rust-lang.org/nomicon/vec/vec-zsts.html
+> > >> The first iterator implementation has an alignment issue. (Nevertheless,
+> > >> that chapter of the nomicon is probably useful to you, since it goes
+> > >> over implementing `Vec`, but maybe you already saw it)
+> > >>
+> > >>> [1] https://doc.rust-lang.org/std/ptr/index.html
+> > >>
+> > >> Might be a good idea to improve/complain about this at the rust project.
+> > >
+> > > Well, my point is how do we know? There's no language specification and the
+> > > documentation is (at least) ambiguous.
+> >
+> > So I went through the unsafe-coding-guidelines issues list and only
+> > found this one: https://github.com/rust-lang/unsafe-code-guidelines/issues/93
+> > Maybe I missed something. You could also try to ask at the rust zulip in
+> > the t-opsem channel for further clarification.
+> >
+> > I think we should just be on the safe side and assume that ZSTs require
+> > alignment. But if you get a convincing answer and if they say that they
+> > will document it, then I don't mind removing the alignment requirement.
 
-This never has been valid for the `Allocator` trait. Look at `Kmalloc`,
-`Vmalloc` and `KVmalloc`, they don't allow this either.
+I agree -- I also wrote this in a previous mail.
 
-We've discussed this already in previous versions of this series, where for this
-purpose, you asked for `old_layout` for `free`. Such that `free` can check if
-the `size` was zero and therefore return without doing anything.
-
-> I guess this all depends on how one interprets the term
-> "existing, valid memory allocation". To me that describes anything an
-> `Allocator` returns via `alloc` and `realloc`, including zero-sized
-> allocations.
-
-I argue that the dangling pointer returned for `size == 0` does not point to any
-allocation in the sense of those allocators. It's just a dangling `[u8]`
-pointer.
-
-> But if you argue that those are not valid allocations from that
-> allocator, then that is not properly documented in the safety
-> requirements of `Allocator`. 
-
-The safety requirements of `Allocator` where proposed by you and I thought they
-consider this aspect?
-
-`realloc` has:
-
-"If `ptr == Some(p)`, then `p` must point to an existing and valid memory
-allocation created by this allocator."
-
-`free` has:
-
-"`ptr` must point to an existing and valid memory allocation created by this
-`Allocator` and must not be a dangling pointer."
-
-We can add the part about the dangling pointer to `realloc` if you want.
+I was just wondering why you are so sure about it, since the documentation
+doesn't seem to be clear about it.
 
 > 
-> ---
-> Cheers,
-> Benno
+> Please see the section on alignment in the same page. Just because a
+> pointer is valid does not mean that it is properly aligned.
+> 
+> From the page:
+> 
+> Valid raw pointers as defined above are not necessarily properly
+> aligned (where “proper” alignment is defined by the pointee type,
+> i.e., *const T must be aligned to mem::align_of::<T>()). However, most
+> functions require their arguments to be properly aligned, and will
+> explicitly state this requirement in their documentation. Notable
+> exceptions to this are read_unaligned and write_unaligned.
+> 
+> When a function requires proper alignment, it does so even if the
+> access has size 0, i.e., even if memory is not actually touched.
+> Consider using NonNull::dangling in such cases.
+
+Good point.
+
+It still sounds like it's only required for functions that explicitly state so.
+
+And as cited from nomicon "This is possibly needless pedantry because ptr::read
+is a noop for a ZST, [...]". But, no question, of course we have to honor it
+anyways.
+
+> 
+> Alice
 > 
