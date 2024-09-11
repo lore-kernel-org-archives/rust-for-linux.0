@@ -1,32 +1,32 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ED761A3044;
-	Wed, 11 Sep 2024 17:02:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2BCA1B3B2A;
+	Wed, 11 Sep 2024 17:26:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726074166; cv=none; b=Ay3cVDPcAI5OWIUt9pJSflDcPh7WjtOACx2HMWimCu+tR18nnUDQ/g+7TyrtmPZQggoSdOQlNv/KUr+dH7dEe4F/iqb/55H6KGWLYix5IerA7t+mAPSNS3BTUNuvc61FT5T5pK/71UTTu5eM5SUGO7VpHx/K/noIgpDCoQNWBhM=
+	t=1726075588; cv=none; b=IUfQ1mtl7FERNgraAnnS0P8pWDqdHChdpA6PKpYOlLv26B1E/n6P8H41vbyqxsaeSVF/nyE8E0nF3kNdnYHyl9JAp11fLaJYQTqFxCMC/uvPtKl+6sumFt8dSpnI7XfGx+hD0N0+AoyZzKhV4XVTBSYLzKDg/0CsLiJT4Qc84xA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726074166; c=relaxed/simple;
-	bh=mh2Qo493SEzH4afd1y74n9VtxlUeYGRc0YzrmKJqHIQ=;
+	s=arc-20240116; t=1726075588; c=relaxed/simple;
+	bh=o2NQ7P7ABYg2Zw4KZcHITK9PUPmdqTH02R/Ad7MZb5w=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oTEy90/PUuf+B8qMal6hUeaE5CTLDqDOyZxkoozEs+HVcfl725xZA5dMoZGYmEmoJanwR0ILnLrya4jJppmKwUYfthUJz9y5S43H3ATjN10zGpVuIewRrIrvlKwAolfAOArbbmTqm+xhBWRIvfEtuXZtHyuOcGimwluyTWNF2Fo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rPyJXXbR; arc=none smtp.client-ip=10.30.226.201
+	 Content-Type:Content-Disposition:In-Reply-To; b=Zi+RN9ZwN/ekzDWIyT9Gyq8jwAoPXlrn5/UkTX/AarCcK94q4gAbIMcWQiwJYj8YlmlC9H00Yu4bw9N1qQki49dip0pri7zO74FsqUpaP1133yiwThewGcMwVZlOfw52Znj51DNnxOkoNATnfxxjISNuVqboMMbN12b1/GjwK5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h4jvy7Ow; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rPyJXXbR"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4827C4CEC0;
-	Wed, 11 Sep 2024 17:02:45 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h4jvy7Ow"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C6ADC4CECC;
+	Wed, 11 Sep 2024 17:26:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726074166;
-	bh=mh2Qo493SEzH4afd1y74n9VtxlUeYGRc0YzrmKJqHIQ=;
+	s=k20201202; t=1726075587;
+	bh=o2NQ7P7ABYg2Zw4KZcHITK9PUPmdqTH02R/Ad7MZb5w=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=rPyJXXbRrYeHY/eUa+OW9d8xMgGC6LG3KpYibaQIDjLasqADBvgTcT8XqdFSWkKKW
-	 0kG8u8UcJhS0DZRBAg8/Jh+3PiZR8kJKcHwgYaUdzxvEkqjBLnTleiJ9uP3laB8XyI
-	 9oCzXetrlcwZosk1iuDh+DAw44asno71HDHJBB8pl8w0TEAtM8PpyWG8iYgJEIOR5+
-	 sOEvnxLYCHHRGwoFCmG2FdVSGw70tqcUxAQncOOvYh+N1S1R6HhxCYwxcUkE/ohVI+
-	 +TQCverzlA+nXhNhCvopDTDPdcXidaaweg+lt2xA2emzLz8Py6l75GlHSxgchs/446
-	 8QLYF34/546Qg==
-Date: Wed, 11 Sep 2024 12:02:45 -0500
+	b=h4jvy7OwIrVT70zHVaED2k3JxAQJUwSTyy5XqBPGp8W9UzpQOAvAhTFBG0JGqQlCu
+	 OU1HMaWkboY5gBLTi8/cAxr/UzgG5V/SLHyAZkRfm6RNg6llgtoowqQbof+IAr2Igs
+	 tomXxrvJUbte7P7po1G2HRNrlaEIb8V3nBwFU11tuubHocOMoGYc1xWhF4nz30CXEO
+	 6E3zowvlqKy4GzjQZZx6JLJAuTECTBNPnnfzetbupREFbbEMF1KHU2ecacKQhKJ8t6
+	 Ij7cO1ZqYvltFO9AOPCgPMambACpl1m4AUy8DytLE8cGdtWfERiPQAvQShXIR0AyIe
+	 SOz/lUkgMhLsw==
+Date: Wed, 11 Sep 2024 12:26:26 -0500
 From: Rob Herring <robh@kernel.org>
 To: Ayush Singh <ayush@beagleboard.org>
 Cc: fabien.parent@linaro.org, d-gole@ti.com, lorforlinux@beagleboard.org,
@@ -48,9 +48,10 @@ Cc: fabien.parent@linaro.org, d-gole@ti.com, lorforlinux@beagleboard.org,
 	Tero Kristo <kristo@kernel.org>, linux-kernel@vger.kernel.org,
 	rust-for-linux@vger.kernel.org, devicetree@vger.kernel.org,
 	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 0/8] Add generic overlay for MikroBUS addon boards
-Message-ID: <20240911170245.GA915638-robh@kernel.org>
+Subject: Re: [PATCH 2/8] dt-bindings: connector: Add MikorBUS connector
+Message-ID: <20240911172626.GB915638-robh@kernel.org>
 References: <20240911-mikrobus-dt-v1-0-3ded4dc879e7@beagleboard.org>
+ <20240911-mikrobus-dt-v1-2-3ded4dc879e7@beagleboard.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -59,47 +60,22 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240911-mikrobus-dt-v1-0-3ded4dc879e7@beagleboard.org>
+In-Reply-To: <20240911-mikrobus-dt-v1-2-3ded4dc879e7@beagleboard.org>
 
-On Wed, Sep 11, 2024 at 07:57:17PM +0530, Ayush Singh wrote:
-> Hello all,
+On Wed, Sep 11, 2024 at 07:57:19PM +0530, Ayush Singh wrote:
+> Add DT bindings for mikroBUS interface. MikroBUS [0] is an open standard
+> developed by MikroElektronika for connecting add-on boards to
+> microcontrollers or microprocessors.
+
+Typo in the subject...
+
+Isn't this v6? Where's the revision history?
+
 > 
-> This is an attempt to add MikroBUS addon support using the approach
-> described by Grove connector patch series [0].
+> MikroBUS connector node will optionally act as nexus nodes for routing
+> GPIOs and PWM.
 > 
-> The patch series tests out 2 addon boards + pwm and GPIO on the MikroBUS
-> connector. The boards used are GPS3 Click (for UART) [1] and Weather
-> Click (for I2C) [2]. Additionally, I have tested relative GPIO numbering
-> using devicetree nexus nodes [3].
-> 
-> The patch series does not attempt to do any dynamic discovery for 1-wire
-> eeprom MikroBUS addon boards, nor does it provide any sysfs entry for
-> board addition/removal. The connector driver might include them after
-> the basic support is ironed out, but the existing patches for dynamic
-> overlays work fine.
-> 
-> The patch series has been tested on BeaglePlay [4].
-> 
-> I will now go over individual parts of the patch series, but for a
-> better picture of the approach, it would be best to checkout [0] first.
-> 
-> MikroBUS connector driver
-> -------------------------
-> 
-> Just a stub platform driver for now. Will be extended in the future for
-> dynamic board discovery using 1-wire eeprom present in some MikroBUS
-> addon boards.
-> 
-> While it is a stub driver, disabling it will make the GPIO connector
-> nexus node unreachable (any driver attempting to use it will enter
-> differed probing). So it is required.
-> 
-> MikroBUS connector Devicetree
-> ------------------------------
-> 
-> The connector devicetree defines the MikroBUS GPIO nexus node. This
-> allows using pin numbering relative to MikroBUS connector pins in the
-> addon boards overlay. Currently, the patch uses a clockwise numbering:
+> For GPIOs, the following pin numbering should be followed:
 > 
 >   0: PWM
 >   1: INT
@@ -114,91 +90,88 @@ On Wed, Sep 11, 2024 at 07:57:17PM +0530, Ayush Singh wrote:
 >   10: RST
 >   11: AN
 > 
-> Additionally, in case PWM pin is not using channel 0, a nexus node for pwm
-> should also be used and go in the connector devicetree.
+> For PWM, the PWM pin should be on channel 0.
 > 
-> MikroBUS connector symbols overlay
-> ----------------------------------
+> I am not quite sure how to deal with the nexus node properties
+> (#gpio-cells, gpio-map, gpio-map-mask, gpio-map-pass-thru) since they
+> seem to conflict with upstream gpio schema (gpio-controller is a
+> dependency of #gpio-cells).
 > 
-> To make an overlay generic we need a standard name scheme which we
-> use across base boards. For the connector pins the pinmux phandle
-> shall be:
+> [0]: https://www.mikroe.com/
 > 
-> <connector-name>_<pin-name>_mux_<pin-function>
+> Signed-off-by: Ayush Singh <ayush@beagleboard.org>
+> ---
+>  .../bindings/connector/mikrobus-connector.yaml     | 40 ++++++++++++++++++++++
+>  MAINTAINERS                                        |  5 +++
+>  2 files changed, 45 insertions(+)
 > 
-> For the parent provider phandle, we use a similar naming scheme:
-> 
-> <connector-name>_<pin-name>_<pin-function>
-> 
-> For GPIO controller, I am using `MIKROBUS_GPIO` name since with nexus
-> nodes, we do not need to define individual pin gpio controllers.
-> 
-> The string symbols can be replaced with phandles once [5] is accepted.
-> That will make connector stacking much simpler.
-> 
-> MikroBUS addon board overlay
-> ----------------------------
-> 
-> The patch puts the addon board overlays in their own directory. I am
-> using the following naming scheme for MikroBUS addon boards:
-> 
-> <vendor>-<product_id>.dtso
-> 
-> Mikroe [6] lists this for all boards in their website, but I am not sure
-> if other vendors have a product_id.
-> 
-> This naming also makes future dynamic discovery easier, since click id
-> spec [7] contains vendor_id and product_id in the header.
-> 
-> Usage
-> -----
-> 
-> So what does this all look like? Let's take an example of a BeaglePlay
-> with one MikroBUS connectors for which we have physically attached a
-> Wather click module to the first connector. Doing ahead of time
-> command-line DT overlay application:
-> 
-> ./fdtoverlay \
-> 	-o output.dtb \
-> 	-i k3-am625-beagleplay.dtb \
-> 		k3-am625-beagleplay-mikrobus-connector0.dtbo mikroe-5761.dtbo
-> 
-> Open Items
-> ----------
-> 
-> - SPI Support: 
->   Currently SPI dt requires `reg` property to specify the
->   chipselect to use. This, makes the SPI device overlay dependent on the
->   SPI controller. Thus for SPI support, we need a way to allow defining
->   SPI chipselect relative to MikroBUS pins, and not the actual device
->   controller.
-> 
->   One possible solution is to introduce something like `named-reg` and
->   allow selecting the chipselect by string array. But this probably
->   requires more discussion so I have left out SPI support for now.
-> 
->   NOTE: pins other than the CS MikroBUS pin can be used as chipselect.
->   See [8].
-> 
-> - Controller symbol duplication
->   The current symbol scheme has multiple symbols for the same underlying
->   controller (Eg: MIKROBUS_SCL_MUX_I2C_SCL and MIKROBUS_SDA_MUX_I2C_SDA)
->   point to the same i2c controller.
-> 
->   I think both of them will always use the same i2c controller, but
->   maybe there are some exceptions? So I have left it as it is for this
->   patch series. The same thing also applies to UART and SPI.
-> 
->   NOTE: with the use of nexus node for GPIO, the GPIO controller symbol
->   will be the same for all pins.
-> 
-> - Nexus node dt-bindings
->   I am not quite sure how to deal with the nexus node properties
->   (#gpio-cells, gpio-map, gpio-map-mask, gpio-map-pass-thru) since they
->   seem to conflict with upstream gpio schema (gpio-controller is a
->   dependency of #gpio-cells).
+> diff --git a/Documentation/devicetree/bindings/connector/mikrobus-connector.yaml b/Documentation/devicetree/bindings/connector/mikrobus-connector.yaml
+> new file mode 100644
+> index 000000000000..603e4627076c
+> --- /dev/null
+> +++ b/Documentation/devicetree/bindings/connector/mikrobus-connector.yaml
+> @@ -0,0 +1,40 @@
+> +# SPDX-License-Identifier: GPL-2.0 OR BSD-2-Clause
+> +#
+> +# Copyright (c) Ayush Singh <ayush@beagleboard.org>
+> +%YAML 1.2
+> +---
+> +$id: http://devicetree.org/schemas/connector/mikrobus-connector.yaml#
+> +$schema: http://devicetree.org/meta-schemas/core.yaml#
+> +
+> +title: mikroBUS add-on board socket
+> +
+> +maintainers:
+> +  - Ayush Singh <ayush@beagleboard.org>
+> +
+> +properties:
+> +  compatible:
+> +    const: mikrobus-connector
+> +
+> +required:
+> +  - compatible
+> +
+> +additionalProperties: true
 
-Please submit a fix to dtschema. Either GH PR or patch to 
-devicetree-spec list.
+Cannot be true. You're schema must be complete. I don't understand what 
+happened to everything else in the binding.
 
-Rob
+> +
+> +examples:
+> +  - |
+> +    mikrobus_connector0: mikrobus-connector0 {
+> +      status = "okay";
+> +      compatible = "mikrobus-connector";
+> +
+> +      #gpio-cells = <2>;
+> +      gpio-map =
+> +      <0 0 &main_gpio1 11 0>, <1 0 &main_gpio1 9 0>,
+> +      <2 0 &main_gpio1 24 0>, <3 0 &main_gpio1 25 0>,
+> +      <4 0 &main_gpio1 22 0>, <5 0 &main_gpio1 23 0>,
+> +      <6 0 &main_gpio1 7 0>, <7 0 &main_gpio1 8 0>,
+> +      <8 0 &main_gpio1 14 0>, <9 0 &main_gpio1 13 0>,
+> +      <10 0 &main_gpio1 12 0>, <11 0 &main_gpio1 10 0>;
+> +      gpio-map-mask = <0xf 0x0>;
+> +      gpio-map-pass-thru = <0x0 0x1>;
+> +    };
+> +
+> diff --git a/MAINTAINERS b/MAINTAINERS
+> index 0a3d9e17295a..0cc27446b18a 100644
+> --- a/MAINTAINERS
+> +++ b/MAINTAINERS
+> @@ -15429,6 +15429,11 @@ M:	Oliver Neukum <oliver@neukum.org>
+>  S:	Maintained
+>  F:	drivers/usb/image/microtek.*
+>  
+> +MIKROBUS CONNECTOR
+> +M:	Ayush Singh <ayush@beagleboard.org>
+> +S:	Maintained
+> +F:	Documentation/devicetree/bindings/connector/mikrobus-connector.yaml
+> +
+>  MIKROTIK CRS3XX 98DX3236 BOARD SUPPORT
+>  M:	Luka Kovacic <luka.kovacic@sartura.hr>
+>  M:	Luka Perkov <luka.perkov@sartura.hr>
+> 
+> -- 
+> 2.46.0
+> 
