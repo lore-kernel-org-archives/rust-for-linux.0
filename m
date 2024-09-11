@@ -1,59 +1,59 @@
-Received: from mail-pg1-f169.google.com (mail-pg1-f169.google.com [209.85.215.169])
+Received: from mail-pj1-f45.google.com (mail-pj1-f45.google.com [209.85.216.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A87481B1402;
-	Wed, 11 Sep 2024 15:52:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.169
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 457331AC8A2;
+	Wed, 11 Sep 2024 15:56:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726069938; cv=none; b=UbsnmWy+WU5YXFb2m/xNQndW56mKPT4/fkswJO+TXiXbZ5xXjjtAR9acBUqpaomHA0ZWWXo7xFrBn8BpZKBXSkx11IJmuOQ21TuOdObbvwek63zkCk/zRX36eOBNskC4We9XvM3/eaMAo1Ek7Bl+JZ/hqgun/M1qz3mwgCUteIw=
+	t=1726070182; cv=none; b=MTvFYNEZToj/lt9fUE2VtUC6gWyZMxTKtwQ5+gVUFy1tExN3XiZsIP0tj5PNLpysPCGrCPEUyqxgwaDLwByfkAJ89EdPcUy2feGO+VIeh5nyU03XWamcAq0bm9LWqT3kkAWDpMBdQ00PJf/TQfU06Jdmlt9MacGb546qUDCVS/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726069938; c=relaxed/simple;
-	bh=3Ud0mb7Fg1HcvD+rEM78PvP4bHo6eppubmq0ZnrppIA=;
+	s=arc-20240116; t=1726070182; c=relaxed/simple;
+	bh=3RzPUMFytqwEGstKy+pM1kJth/A7eKAmDwDt5MnkrsM=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Vbge+EllCcpdr177qg/TIWEPR/g6IG+xKVIF7StHf25f5C6CakD6R6jr2ur6WLW3nVVoKB5i8zMGt+qxYCeqRY/lVityPIR6EQYfg2lxD78ja9PBdTtb/DFsZV1u4YEfDBJnvYYa+W8RppiQlcejsiSqYZ9zTnoxvD1rhcEddKg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=k7Qj8nik; arc=none smtp.client-ip=209.85.215.169
+	 In-Reply-To:Content-Type; b=hpRCdRogzvPDbw9BSHSx3XTThPwL2y9d5KhpNTodl6zAryrjNV8L5MqzuJgF+3RLyhAQyv27FKGzxT8M1cV5gOrMGx+t6JoKc7guY7x838hVGuVXfja+seI/uCMSwBIyo4Fe43VFGz/jstXmZOMLnqgVP3V6rI0M2lSGHLee7Pk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=NPiAHl/6; arc=none smtp.client-ip=209.85.216.45
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="k7Qj8nik"
-Received: by mail-pg1-f169.google.com with SMTP id 41be03b00d2f7-7c1324be8easo787913a12.1;
-        Wed, 11 Sep 2024 08:52:16 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="NPiAHl/6"
+Received: by mail-pj1-f45.google.com with SMTP id 98e67ed59e1d1-2d89229ac81so5486157a91.0;
+        Wed, 11 Sep 2024 08:56:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1726069936; x=1726674736; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=gmail.com; s=20230601; t=1726070180; x=1726674980; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :from:to:cc:subject:date:message-id:reply-to;
-        bh=mhFBnUxhXfUiwp2BIfSInO3F3yOJroJO17IaiZ1i4bw=;
-        b=k7Qj8nik1FHzciJZj1gDIHSJfGVRrwZMglTBsfCq1FIPqogWfz1aA6YdjCsd3HEiPb
-         q5nRjflYYfoY2LzuLDJX0f9dNroBwnl8X59Nwn8WgcQ7qOV3RjM1O1ZAI7T0N+CTGtz1
-         l+QopIPAPqr7VY2diaVi1NEMJNhjw6zel/6dUoA6azndATATqQ7raPHHOcG1BLsKiFt4
-         jHWdJygEIlvvJmvmdtuF0pSNgbngguOJvlvjOTXa30CLf722KJJ0ibdHgFCFqWo6Ml8G
-         GR3jXJGIoOWCrqDwV5QrNWA/SpBS0a3WUANgDMgu1MQbwBKMOXDKRhdKbN6wrLq6L0Ru
-         Qe5A==
+        bh=ekEGS5LhVrz52kPhdjD1qBU5D/FHKxR2d7m0EFtF8wo=;
+        b=NPiAHl/6NRqQlh7axFtTNJWyaSDPZKTSyWgk38VD7vXakEexRqpD63bT5kjYJ8xh0L
+         03wxrKO7gq47UcBWWAXttjDECp1rqlp2BJ9K/yD/YfKXjR60tDoAnkGPuOt6hh97x7+U
+         NbCndbJUcVu9SiF2HrVYo9LUZwXU06gzFwLuiHle8B/XY7ykwF0aofVys5WzFlzvG7lg
+         nxRPrmPWCyha77wXC8pTloM614DPzpJPdcCpul8QqvYgUF5oPZe0DLGy7fqLjEM8UUIT
+         NNRzsB8hlilAH57/DgVjDFiXy7kEoohKu3C4IigrbLM/N+dQ57sz0cyOhHUBE/FpODut
+         e4Zw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726069936; x=1726674736;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
+        d=1e100.net; s=20230601; t=1726070180; x=1726674980;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mhFBnUxhXfUiwp2BIfSInO3F3yOJroJO17IaiZ1i4bw=;
-        b=wwn6rgwW5Dgx4q7xCImtJ21sOGpfmZmgc1sxa3pUIjV+Fo/3919fTAtFmpFolSxXdr
-         IBgR72+4Vo1Jm4mj48FQ5RpYs8aoLJf4wMf6nua5IG0uv53b1aZJXWf/O/eRQ0PmJdz5
-         uVOvdYZ4kOVd1JDUiNtS4Jhu38QjcQUXijiEJDz+8dUTaap0ARTcR4YENUfUTvKsS5eg
-         bGG7OpWxmG6Gs1MQrizEnaNC2trWDKan+MWpEepeTJtBuH9bPk0Z9Rbt35v860qnk9x4
-         jJ8v+f/c8JpdE5Altm8AWUisZQQra+DkJCPLtf3fuWJcOSCg09ewPyZbCHayAiQA+F5q
-         HAQA==
-X-Forwarded-Encrypted: i=1; AJvYcCUh0BVjDTDD3Lo3f+lMF8ezZJH2PcHkxzKyDtzUa+HGXA0NmGXDQxVWx0xbpnsQFybcBieTSAd1g71rdc6j@vger.kernel.org, AJvYcCWhqBDiP1CMnoJDTB/s3YcT2LXyoNp4Xl7vDghHA+i4KAFniDbl3fkBc3PcFcZ26MsCGdXb5pwuoYFy4mDHz2M=@vger.kernel.org, AJvYcCXV5cB8En+C0BmSHty3VeboPO0MVNsKXPOueNFitPI0q41FwKH4UQMlXULwQ/jF5aCJnKtp64sha+2s@vger.kernel.org
-X-Gm-Message-State: AOJu0YzDookNI5kEdaXmi2avzlTA1iLR/H1i5JsiOxCjINm7DuJrxzJP
-	KrNBqPvlVteDl5LsFkxR2Xw/ip71IdRYXT727JbeUbxcNzZbwQed
-X-Google-Smtp-Source: AGHT+IGOs+PCUn2enJi/POGctcONbWacbrDES/fFDJJ5CFqIcJeEOmHs8RNjPCcMjrve1Sv401LJXA==
-X-Received: by 2002:a05:6a20:8424:b0:1cf:4a7e:117b with SMTP id adf61e73a8af0-1cf5e1b9c2amr7477090637.20.1726069935654;
-        Wed, 11 Sep 2024 08:52:15 -0700 (PDT)
+        bh=ekEGS5LhVrz52kPhdjD1qBU5D/FHKxR2d7m0EFtF8wo=;
+        b=PbqlAR7hHBNqk18DWHLP5PTsfcB79USzdBSPVt3/s9j4P0aPglXf/1/Y17Pw6rwPbP
+         60qkTbvlu0IkMPE9lLv1rkec/3AdiVIk9wTjd4kOmF/zckqieru8mgxmHHLYDs4Qc3Jz
+         1ORYHN91gPFBIqradBr/GwhY6XbgcxN30QvFe0JlrcCtsWoMVN1KpVfzEemWaHWazpwN
+         f2dBKtAtJaKlK4ZHdfZrzBl8X7aIh2/AaWYjxR4NEPNU4HlROSy3CZipIvs3V7OMK26f
+         tT/ThpIMj5RcRzyetGDtG+yCtUAM37wbW0yBg2ZYs9KEDRERqdkw73kosymVDl9kCLCu
+         W22A==
+X-Forwarded-Encrypted: i=1; AJvYcCU9GBAHw6+XxMALScaSIe0gJvmnKENLu8Zq2vehtmFw0gSJvM7HZd0W5ov4HQqnK7NhUcqDuqo3+ItjvhhD@vger.kernel.org, AJvYcCWS6jp1kk+ItZPhD9SoPZ8UbI73RrkpK1UGyrGYSIbOi+Iv6uQyb9McBLp/yW+2Vie/NFgze1JSUG/1zYProxM=@vger.kernel.org, AJvYcCXyEuTwvIIi3csp86CnUWQWuwtQkQpVxTe3U2QYwGLKA/PK1J987vUp5a3XZCtONBhdcKbqG8hu7t/u@vger.kernel.org
+X-Gm-Message-State: AOJu0YxZ+08MUVzZ1GyaJx/MUI3hkk7YHLdC6/oKZA8cqdPWCzRpzz3r
+	nSe7rbnwCJDtbTbuqbuJtdaopElGacjxDy8YIhy746alVfD8s+In
+X-Google-Smtp-Source: AGHT+IHnhAO56F3iLPQNKaaUfn3CT/B+2/Stp03j6qiLYfTfQdKSUV5CbkgI8VGevBOXfRC1CJw1Ow==
+X-Received: by 2002:a17:90a:a08e:b0:2d8:8a03:b90d with SMTP id 98e67ed59e1d1-2dad512d6f9mr21023583a91.41.1726070180261;
+        Wed, 11 Sep 2024 08:56:20 -0700 (PDT)
 Received: from [172.16.118.100] ([103.15.228.94])
-        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7db1fdee1f0sm131274a12.77.2024.09.11.08.52.05
+        by smtp.gmail.com with ESMTPSA id 98e67ed59e1d1-2dadb42e6fasm10838752a91.0.2024.09.11.08.56.08
         (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 11 Sep 2024 08:52:14 -0700 (PDT)
-Message-ID: <bd542178-af1c-439d-bde4-9865cf6c853c@gmail.com>
-Date: Wed, 11 Sep 2024 21:22:02 +0530
+        Wed, 11 Sep 2024 08:56:19 -0700 (PDT)
+Message-ID: <44039255-159a-4284-abd8-a0f558ad006d@gmail.com>
+Date: Wed, 11 Sep 2024 21:26:06 +0530
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -61,8 +61,8 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/8] rust: kernel: Add Platform device and driver
- abstractions
+Subject: Re: [PATCH 8/8] addon_boards: mikrobus: Add GPS3 Click
+Content-Language: en-US
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
  Ayush Singh <ayush@beagleboard.org>
 Cc: fabien.parent@linaro.org, d-gole@ti.com, lorforlinux@beagleboard.org,
@@ -81,49 +81,34 @@ Cc: fabien.parent@linaro.org, d-gole@ti.com, lorforlinux@beagleboard.org,
  rust-for-linux@vger.kernel.org, devicetree@vger.kernel.org,
  linux-arm-kernel@lists.infradead.org
 References: <20240911-mikrobus-dt-v1-0-3ded4dc879e7@beagleboard.org>
- <20240911-mikrobus-dt-v1-1-3ded4dc879e7@beagleboard.org>
- <2024091106-scouring-smitten-e740@gregkh>
-Content-Language: en-US
+ <20240911-mikrobus-dt-v1-8-3ded4dc879e7@beagleboard.org>
+ <2024091149-vocalize-composite-6e48@gregkh>
 From: Ayush Singh <ayushdevel1325@gmail.com>
-In-Reply-To: <2024091106-scouring-smitten-e740@gregkh>
+In-Reply-To: <2024091149-vocalize-composite-6e48@gregkh>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 
+On 9/11/24 20:28, Greg Kroah-Hartman wrote:
 
-On 9/11/24 20:26, Greg Kroah-Hartman wrote:
-> On Wed, Sep 11, 2024 at 07:57:18PM +0530, Ayush Singh wrote:
->> +/// An identifier for Platform devices.
->> +///
->> +/// Represents the kernel's [`struct of_device_id`]. This is used to find an appropriate
->> +/// Platform driver.
->> +///
->> +/// [`struct of_device_id`]: srctree/include/linux/mod_devicetable.h
->> +pub struct DeviceId(&'static CStr);
->> +
->> +impl DeviceId {
-> <snip>
->
-> I appreciate posting this, but this really should go on top of the
-> device driver work Danilo Krummrich has been doing.  He and I spent a
-> lot of time working through this this past weekend (well, him talking
-> and explaining, and me asking too many stupid questions...)
->
-> I think what he has will make the platform driver/device work simpler
-> here, and I'll be glad to take it based on that, this "independent" code
-> that doesn't interact with that isn't the best idea overall.
->
-> It also will properly handle the "Driver" interaction as well, which we
-> need to get right, not a one-off like this for a platform driver.
-> Hopefully that will not cause much, if any, changes for your use of this
-> in your driver, but let's see.
+> On Wed, Sep 11, 2024 at 07:57:25PM +0530, Ayush Singh wrote:
+>> - GPS3 Click is a UART MikroBUS addon Board
+>>
+>> Link: https://www.mikroe.com/gps-3-click
+>>
+>> Signed-off-by: Ayush Singh <ayush@beagleboard.org>
+>> ---
+>>   addon_boards/mikrobus/Makefile         |  1 +
+>>   addon_boards/mikrobus/mikroe-1714.dtso | 28 ++++++++++++++++++++++++++++
+> Odd top-level directory for the kernel, are you sure this is correct?
 >
 > thanks,
 >
 > greg k-h
 >
-Sure, can you provide me a link to patches or maybe the branch 
-containing that work? I also think it would be good to have the link in 
-Zulip discussion for Platform Device and Driver.
+Well, it is kinda a temporary location, since well, I could not find a 
+good place for board overlays but a top-level location seems better than 
+putting them in any arch specific location. I am open to moving them to 
+a more suitable location if we have one.
 
 
 Ayush Singh
