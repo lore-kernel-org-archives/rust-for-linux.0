@@ -1,43 +1,60 @@
-Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
+Received: from hop.stappers.nl (hop.stappers.nl [141.105.120.46])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C5CC18E764;
-	Thu, 12 Sep 2024 08:19:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.134
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 160511A28D;
+	Thu, 12 Sep 2024 08:50:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.105.120.46
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726129143; cv=none; b=eXp2ojDirbFDsuX8L4nthQ/VyvMmYEtm1Cxk011jtLQMk10hOZz0eIegN2Os7LCRUCm1ZvecdYrsJqCnozzCSAftqO9Grl2fKjTnzQm6cHV15DieUa9pG+MUKvbFZT5d3Dbed5suHjMIqbmc6LTLK4LTd1D5mtiYFSJg+ll3q1c=
+	t=1726131057; cv=none; b=VPIZMrlNordo7kjzFfLvsse68sI59p1pMh/3KOtXfw7vuTRGeqMD6UsakN0KO7//hNo2Z7sadt9gDaqxp6lEmGqUrOrezufDnAD8NiPRR5lcvhTMO4KA/EzSe+3K1ToFfMCJBv/g1+s4WhjN8xrlY0n4vhD2mZZUCWVXiJaB+9k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726129143; c=relaxed/simple;
-	bh=C7bGRTs5k0M/c+01U+T4gd19hO54MhrssoK3Lu0cgn8=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Xdv4HS3G3xIxub/C3CzaGIN1QJMMwrfwLHl79TJkpoLH2B4TWHWNT/312yBw2Y3U9G0uiZzOqP/I0pvnZu3BNWiICqHTeWO3ApvhySsc+c2RahBUD3ZqJ2nRhklXwh9kNPkEy/a0BnhgnQtQI7wwph2r4McMgVvGSPpFggheynk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=ZUS5ChCC; arc=none smtp.client-ip=185.70.40.134
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="ZUS5ChCC"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=rm764jmzjrfdlpu23jcgp3ybda.protonmail; t=1726129133; x=1726388333;
-	bh=4BCBkUymeOe6HphWwcmNL8sLnaSR+aRCcfpXpcPxwcw=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=ZUS5ChCC71JlgP0VafuBMNeaejGL/HBp/Pkfvrj5+IFLW8uLTnn+7Y+vdLWFYQaj1
-	 5DM/MsgtJy6N4RMMPWe0cLWdBWfEMmuG/jusPJWzcoJxbJRvUdfxOeagrAtEqhhKk0
-	 Xt3SWtlmA9CIbENxMX+U4QHVL91FvgXl0LUHURVOSlUWzjrpJHMqFIFbCUMML6Z7H4
-	 XCm+ttKk6Wrt2HdhXd535JBtlDrVvD70KjmalaBmGAbwijpb2Hia9IvN4dZJqutclv
-	 AP1VlkFzhjv+sD5REWcxLByDqwiHFwy7RthhsbtNFW5NEBcnniEJfA1dOXnN0I2lco
-	 3j2UT5uswxilA==
-Date: Thu, 12 Sep 2024 08:18:49 +0000
-To: Danilo Krummrich <dakr@kernel.org>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@samsung.com, aliceryhl@google.com, akpm@linux-foundation.org, daniel.almeida@collabora.com, faith.ekstrand@collabora.com, boris.brezillon@collabora.com, lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com, ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v6 22/26] rust: alloc: implement `Cmalloc` in module allocator_test
-Message-ID: <9561eb0e-796c-4a39-b49a-00013052fe4b@proton.me>
-In-Reply-To: <ZuGrQcLwXi-tiK8l@cassiopeiae>
-References: <20240816001216.26575-1-dakr@kernel.org> <20240816001216.26575-23-dakr@kernel.org> <e3ccbf52-224e-4869-992b-4fcaa0ec3410@proton.me> <ZtD1TsGm0swi7gyv@pollux.localdomain> <ZuGNlFluwAmTG19R@cassiopeiae> <bf158e23-4123-419b-a2ce-a27c4ea51219@proton.me> <ZuGrQcLwXi-tiK8l@cassiopeiae>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 290574dee1d25111830bc8a59bafc078c55d9c5a
+	s=arc-20240116; t=1726131057; c=relaxed/simple;
+	bh=c8HyqOidXdqkjfP+IvUGSpv3WS5hePUxpBdEbOgNNXw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oenRgkbw0u15pTdl4kUuiuHp5f6ZYJTr8l/FR+vfk1xQNSbrGyzQwCOOdTAfVmOjDyWlNGC/7l/vMHonz7ULyfDvNPij3n1cmHnP8wNvrgU8mpkw36ebiS1wwxoF3KsD7iq7ZKM/lwSV8fqThLGfdnBea7bcOqBbfnn+UdAUIRs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=stappers.nl; spf=pass smtp.mailfrom=stappers.nl; arc=none smtp.client-ip=141.105.120.46
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=stappers.nl
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=stappers.nl
+Received: from gpm.stappers.nl (gpm.stappers.nl [82.168.249.201])
+	by hop.stappers.nl (Postfix) with ESMTP id 476252000E;
+	Thu, 12 Sep 2024 08:50:45 +0000 (UTC)
+Received: by gpm.stappers.nl (Postfix, from userid 1000)
+	id AC09330417C; Thu, 12 Sep 2024 10:50:13 +0200 (CEST)
+Date: Thu, 12 Sep 2024 10:50:12 +0200
+From: Geert Stappers <stappers@stappers.nl>
+To: Ayush Singh <ayush@beagleboard.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Dirk Behme <dirk.behme@de.bosch.com>,
+	Ayush Singh <ayushdevel1325@gmail.com>, fabien.parent@linaro.org,
+	d-gole@ti.com, lorforlinux@beagleboard.org,
+	jkridner@beagleboard.org, robertcnelson@beagleboard.org,
+	Andrew Davis <afd@ti.com>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Derek Kiernan <derek.kiernan@amd.com>,
+	Dragan Cvetic <dragan.cvetic@amd.com>,
+	Arnd Bergmann <arnd@arndb.de>, Nishanth Menon <nm@ti.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>,
+	Tero Kristo <kristo@kernel.org>, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH 8/8] addon_boards: mikrobus: Add GPS3 Click
+Message-ID: <ZuKrRJUwBrcV8ffq@gpm.stappers.nl>
+References: <20240911-mikrobus-dt-v1-0-3ded4dc879e7@beagleboard.org>
+ <20240911-mikrobus-dt-v1-8-3ded4dc879e7@beagleboard.org>
+ <2024091149-vocalize-composite-6e48@gregkh>
+ <44039255-159a-4284-abd8-a0f558ad006d@gmail.com>
+ <2024091151-unworldly-dance-9a80@gregkh>
+ <097159c7-1602-4e32-8e6f-9cd023d62238@beagleboard.org>
+ <419bf74e-74cb-46ca-95d0-03b3bab3948d@de.bosch.com>
+ <2024091211-bladder-runner-2d75@gregkh>
+ <8072c698-93b0-4d3a-a970-e276243f82c4@beagleboard.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -45,122 +62,90 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <8072c698-93b0-4d3a-a970-e276243f82c4@beagleboard.org>
 
-On 11.09.24 16:37, Danilo Krummrich wrote:
-> On Wed, Sep 11, 2024 at 01:32:31PM +0000, Benno Lossin wrote:
->> On 11.09.24 14:31, Danilo Krummrich wrote:
->>> On Fri, Aug 30, 2024 at 12:25:27AM +0200, Danilo Krummrich wrote:
->>>> On Thu, Aug 29, 2024 at 07:14:18PM +0000, Benno Lossin wrote:
->>>>> On 16.08.24 02:11, Danilo Krummrich wrote:
->>>>>> +
->>>>>> +        if layout.size() =3D=3D 0 {
->>>>>> +            // SAFETY: `src` has been created by `Self::alloc_store=
-_data`.
->>>>>
->>>>> This is not true, consider:
->>>>>
->>>>>     let ptr =3D alloc(size =3D 0);
->>>>>     free(ptr)
->>>>>
->>>>> Alloc will return a dangling pointer due to the first if statement an=
-d
->>>>> then this function will pass it to `free_read_data`, even though it
->>>>> wasn't created by `alloc_store_data`.
->>>>> This isn't forbidden by the `Allocator` trait function's safety
->>>>> requirements.
->>>>>
->>>>>> +            unsafe { Self::free_read_data(src) };
->>>>>> +
->>>>>> +            return Ok(NonNull::slice_from_raw_parts(NonNull::dangli=
-ng(), 0));
->>>>>> +        }
->>>>>> +
->>>>>> +        let dst =3D Self::alloc(layout, flags)?;
->>>>>> +
->>>>>> +        // SAFETY: `src` has been created by `Self::alloc_store_dat=
-a`.
->>>>>> +        let data =3D unsafe { Self::data(src) };
->>>>>
->>>>> Same issue here, if the allocation passed in is zero size. I think yo=
-u
->>>>> have no other choice than to allocate even for zero size requests...
->>>>> Otherwise how would you know that they are zero-sized.
->>>>
->>>> Good catch - gonna fix it.
->>>
->>> Almost got me. :) I think the code is fine, callers are not allowed to =
-pass
->>> pointers to `realloc` and `free`, which haven't been allocated with the=
- same
->>> corresponding allocator or are dangling.
->>
->> But what about the example above (ie the `alloc(size =3D 0)` and then
->> `free`)?
->=20
-> This never has been valid for the `Allocator` trait. Look at `Kmalloc`,
-> `Vmalloc` and `KVmalloc`, they don't allow this either.
+On Thu, Sep 12, 2024 at 01:47:18PM +0530, Ayush Singh wrote:
+> On 9/12/24 13:09, Greg Kroah-Hartman wrote:
+> > On Thu, Sep 12, 2024 at 09:29:01AM +0200, Dirk Behme wrote:
+> > > On 12.09.2024 09:16, Ayush Singh wrote:
+> > > > On 9/12/24 01:34, Greg Kroah-Hartman wrote:
+> > > > > On Wed, Sep 11, 2024 at 09:26:06PM +0530, Ayush Singh wrote:
+> > > > > > On 9/11/24 20:28, Greg Kroah-Hartman wrote:
+> > > > > > > >     addon_boards/mikrobus/Makefile         |  1 +
+> > > > > > > >     addon_boards/mikrobus/mikroe-1714.dtso | 28
+> > > > > > > > ++++++++++++++++++++++++++++
+> > > > > > > Odd top-level directory for the kernel, are you sure this is correct?
+> > > > > > I am open to moving them to a more suitable location if we have one.
+> > > > 
+> > > > So here are the directories where dtso files currently go:
+> > > > ❯ find . -type f -name "*.dtso" -printf "%h\n" | sort -u
+> > > > 
+> > > > 
+> > > > Out of these, `drivers/of` and `drivers/of/unittest-data` contain
+> > > > unittest dtso, so probably not the place.
+> > > > 
+> > > > And the `arch/arm` and `arch/arm64` are for arch specific stuff.
+> > > > MikroBUS is supported in RISC-V boards as well (BeagleV-Ahead). So
+> > > > probably not the correct location either.
+> > > > 
+> > > > Maybe something like `arch/common/addon_boards` would be better?
+> > > Whats about
+> > > 
+> > > drivers/misc/mikrobus/mikrobus.rs
+> > > drivers/misc/mikrobus/mikroe-1714.dtso
+> > > drivers/misc/mikrobus/mikroe-5761-i2c.dtso
+> > 
+> > Exactly, put them where the drivers are, like clk and of does.
+> > 
+> > thanks,
+> > greg k-h
+> 
+> 
+> So I am writing a more thorough reply in the driver questions,
 
-That is true.
+As I did read it,
+is it not "driver questions" but about "location of new files"
+and "bus versus device"
 
-> We've discussed this already in previous versions of this series, where f=
-or this
-> purpose, you asked for `old_layout` for `free`. Such that `free` can chec=
-k if
-> the `size` was zero and therefore return without doing anything.
 
-Yes, but that was only about the old_layout parameter (at least that's
-what I thought).
+> but essentially, the driver is not actually required for using the
+> overlay based approach for mikroBUS addon boards. Initially, the driver
+> was not supposed to be included in the patch series at all. But I was
+> not able to find a way to use a GPIO nexus node [0] without having a
+> platform driver attached to the node.
+> 
+> In fact, if the GPIO nexus node is not required (like in the case of
+> weather click), there is no need to even have a mikrobus-connector
+> node in dt, let alone a driver.
+> 
+> So to answer why it probably should not go in the driver directory,
+> the driver for the connector, actually does not register the mikrobus
+> addon board. And if there is a way to have GPIO nexus node without
+> having a platform driver attached to the node, then it should probably
+> be removed.
+> 
+> The reason why the overlay based approach was suggested was because
+> previous approaches could not do board stacking (having chain of
+> mikrobus connector -> grove connector addon board -> grove board). So
+> as you can see, it is beneficial to have grove board overlays compiled
+> even in a board without any grove connectors because of stacking.
 
->> I guess this all depends on how one interprets the term
->> "existing, valid memory allocation". To me that describes anything an
->> `Allocator` returns via `alloc` and `realloc`, including zero-sized
->> allocations.
->=20
-> I argue that the dangling pointer returned for `size =3D=3D 0` does not p=
-oint to any
-> allocation in the sense of those allocators. It's just a dangling `[u8]`
-> pointer.
+Please be explicite about file location.
 
-Sure, but to me the concept of zero-sized allocations does exist.
+And please elaborate on "bus" in mikrobus.
 
->> But if you argue that those are not valid allocations from that
->> allocator, then that is not properly documented in the safety
->> requirements of `Allocator`.
->=20
-> The safety requirements of `Allocator` where proposed by you and I though=
-t they
-> consider this aspect?
 
-No, they did not consider this aspect. I was under the impression, that
-we would still allow zero-sized allocations (in retrospect, this is
-stupid, since dangling pointers shouldn't be passed to `krealloc` etc.).
+Make it possible that your audience gets a completere picture.
 
-> `realloc` has:
->=20
-> "If `ptr =3D=3D Some(p)`, then `p` must point to an existing and valid me=
-mory
-> allocation created by this allocator."
->=20
-> `free` has:
->=20
-> "`ptr` must point to an existing and valid memory allocation created by t=
-his
-> `Allocator` and must not be a dangling pointer."
->=20
-> We can add the part about the dangling pointer to `realloc` if you want.
 
-So I think we should do the following:=20
-(1) Add a paragraph to the `Allocator` trait that explains that
-    zero-sized allocations are not supported.
-(2) Add a check to `realloc` for zero-sized allocations + null pointer
-    (ie a new allocation request) that prints a warning and returns an
-    error
-(3) Instead of writing "existing and valid memory allocation created by
-    this allocator", I think "valid non-zero-sized memory allocation
-    created by this allocator" fits better.
+And for plan B: How important is this patch to the patch serie?
 
----
-Cheers,
-Benno
 
+Groeten
+Geert Stappers
+
+[0]: https://devicetree-specification.readthedocs.io/en/v0.3/devicetree-basics.html#nexus-nodes-and-specifier-mapping
+-- 
+Silence is hard to parse
