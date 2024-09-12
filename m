@@ -1,61 +1,43 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B545186E58;
-	Thu, 12 Sep 2024 07:39:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B8D418DF91
+	for <rust-for-linux@vger.kernel.org>; Thu, 12 Sep 2024 08:03:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726126773; cv=none; b=i/s9U/y68sxPp0WkQ5szORxkDO/GOsd3t4bYA1DeK/cNorcbHdUIXEpV4dUuwlg7gqLvyrjK8wW6xBkrBaWeLpTewdxGFTE7hZb0bjYWtEqicF4rnYtoKvZVjc6Xq5/LtoSo9W9q9dJB1a64fSpZZGRHcHJqRTXCNj4W7gFWFvI=
+	t=1726128193; cv=none; b=R87yMAW73/hZTdm/kxRLp8QXft3ymsz1iIcEi5JyZG6yJxVz8m2w3P97CO+BNFh+tRe+/ISm7vKI3u9Osn7oH+EQSVixjUjnw3ZWxb81jbvb5loSnWD27bTLHdwv+2aZY0sYGFE5ZJXx2Ipuql4WLwqxE1rjSsRyr/oJ+bVR03M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726126773; c=relaxed/simple;
-	bh=gV3RMZWJnnQir9K3hCqxXCfW964fDFkZOcrcBd9k0Q4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=OnA2znkZ7Orl2xfDiIzpnHKC0n3mMDmbtP+9iFH97D9cKF37q2VP+/6LDaEita6A2l7ySF+OMHJxtQ+WHDbtNdpzov+lQm4UkbwacAA9aoKZVmvfWHenftl/vpYe33CsNbCoXEBzWObsFXRBhbqjC65s+TV3us681tcgDpjtTCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ErX2h4WQ; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1726128193; c=relaxed/simple;
+	bh=Xq9/zJGImDodUK6APv8rmLUXRYQWoOSD8nL+qHMbnYM=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=DuB4Zdqv/LFkBRcaJRSRzE0y4kQdP0CvHqgB+MeiccirGvMEhKrZ0G7MaWf6WHb7puNLvvOzFa20QC3zjn2nkerSG1GRhDPk73M9YNbfxrKwYBit+9DVuqqtqBzIOKw0EwEgrskHo0FTnELXpfy4uhk97UhvFZ16kda+gYUur2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=C4CwBt63; arc=none smtp.client-ip=185.70.43.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ErX2h4WQ"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C76AC4CED2;
-	Thu, 12 Sep 2024 07:39:32 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726126773;
-	bh=gV3RMZWJnnQir9K3hCqxXCfW964fDFkZOcrcBd9k0Q4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ErX2h4WQz1LUJl504c7zcNhfCsuRhNJPrRLmgsmmKY8pgeUqQ+g/VxvSXmFr6VUJm
-	 MMqOnbZpOdmirXhV3mgq1fM9jzl8H/5QAgRFUl17Ph4HeLDA+8u53cNK+lEWRRIkhN
-	 wO5FOXcMV8RjS4zf61yY/zXtL+aQi5M2cOUyg64U=
-Date: Thu, 12 Sep 2024 09:39:30 +0200
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: Dirk Behme <dirk.behme@de.bosch.com>
-Cc: Ayush Singh <ayush@beagleboard.org>,
-	Ayush Singh <ayushdevel1325@gmail.com>, fabien.parent@linaro.org,
-	d-gole@ti.com, lorforlinux@beagleboard.org,
-	jkridner@beagleboard.org, robertcnelson@beagleboard.org,
-	Andrew Davis <afd@ti.com>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Derek Kiernan <derek.kiernan@amd.com>,
-	Dragan Cvetic <dragan.cvetic@amd.com>,
-	Arnd Bergmann <arnd@arndb.de>, Nishanth Menon <nm@ti.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Tero Kristo <kristo@kernel.org>, linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, devicetree@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH 8/8] addon_boards: mikrobus: Add GPS3 Click
-Message-ID: <2024091211-bladder-runner-2d75@gregkh>
-References: <20240911-mikrobus-dt-v1-0-3ded4dc879e7@beagleboard.org>
- <20240911-mikrobus-dt-v1-8-3ded4dc879e7@beagleboard.org>
- <2024091149-vocalize-composite-6e48@gregkh>
- <44039255-159a-4284-abd8-a0f558ad006d@gmail.com>
- <2024091151-unworldly-dance-9a80@gregkh>
- <097159c7-1602-4e32-8e6f-9cd023d62238@beagleboard.org>
- <419bf74e-74cb-46ca-95d0-03b3bab3948d@de.bosch.com>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="C4CwBt63"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1726128184; x=1726387384;
+	bh=Xq9/zJGImDodUK6APv8rmLUXRYQWoOSD8nL+qHMbnYM=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=C4CwBt63SnffFih3hoIpqHY1Ol+QUlLNiK1Q+9okWe+1BRA9KOKE8UeiPBL+XThbs
+	 FL478P4CStuTWW52UhdZh7oN5WZQc5VoAZCjeaPOGgvIQdCaSdUEQonz5w1KqxD7zi
+	 8CEc5LDTJq71hMOGRm4QpK+5gh+zINCc6D0U3SujD/knbVjTWFDRnfE68D0sghCyww
+	 2RSnyJQp/Mt31JdvquLUCF2xjdVGNfMkjdupd4AfI7Yk16bUeXWE0ErHA5tdqrXLma
+	 wyoY0PmWm2HcmMSPMZfSqrabiWWZCgjbzrZf+goJyruCVKuk0ouIiW+O3dcsX9KESC
+	 4oq7ktDf9Z16w==
+Date: Thu, 12 Sep 2024 08:03:00 +0000
+To: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@samsung.com, akpm@linux-foundation.org, daniel.almeida@collabora.com, faith.ekstrand@collabora.com, boris.brezillon@collabora.com, lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com, ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v6 09/26] rust: alloc: implement kernel `Box`
+Message-ID: <58c81781-65b5-48ab-9c4c-b4f2dd014445@proton.me>
+In-Reply-To: <ZuGuI7Ow0jJQBim6@cassiopeiae>
+References: <20240816001216.26575-1-dakr@kernel.org> <ZuCEneJeXcRo5qs8@pollux> <19d81a27-9600-4990-867c-624104e3ad83@proton.me> <ZuDVekRzfeBkWmKz@pollux> <77b91448-a21e-4e1b-9a8e-3d2052d79a78@proton.me> <ZuF444VO8gK8l7UR@pollux> <b80cb238-5fcc-4bbb-8b03-42e173c28653@proton.me> <CAH5fLghwj-rD8zoPFgp3g1JYm8WrOhuiWnm7w=zStqOfRRZUJw@mail.gmail.com> <ZuGuI7Ow0jJQBim6@cassiopeiae>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: e1b1c981f8d8dd5b13dddd8bb98baf557cdbfb28
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -63,82 +45,132 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <419bf74e-74cb-46ca-95d0-03b3bab3948d@de.bosch.com>
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Sep 12, 2024 at 09:29:01AM +0200, Dirk Behme wrote:
-> On 12.09.2024 09:16, Ayush Singh wrote:
-> > On 9/12/24 01:34, Greg Kroah-Hartman wrote:
-> > 
-> > > On Wed, Sep 11, 2024 at 09:26:06PM +0530, Ayush Singh wrote:
-> > > > On 9/11/24 20:28, Greg Kroah-Hartman wrote:
-> > > > 
-> > > > > On Wed, Sep 11, 2024 at 07:57:25PM +0530, Ayush Singh wrote:
-> > > > > > - GPS3 Click is a UART MikroBUS addon Board
-> > > > > > 
-> > > > > > Link: https://www.mikroe.com/gps-3-click
-> > > > > > 
-> > > > > > Signed-off-by: Ayush Singh <ayush@beagleboard.org>
-> > > > > > ---
-> > > > > >    addon_boards/mikrobus/Makefile         |  1 +
-> > > > > >    addon_boards/mikrobus/mikroe-1714.dtso | 28
-> > > > > > ++++++++++++++++++++++++++++
-> > > > > Odd top-level directory for the kernel, are you sure this is correct?
-> > > > > 
-> > > > > thanks,
-> > > > > 
-> > > > > greg k-h
-> > > > > 
-> > > > Well, it is kinda a temporary location, since well, I could not
-> > > > find a good
-> > > > place for board overlays but a top-level location seems better
-> > > > than putting
-> > > > them in any arch specific location. I am open to moving them to a more
-> > > > suitable location if we have one.
-> > > top-level location is not ok for something so tiny and "special".  Just
-> > > put it where all other dtso files go.
-> > > 
-> > > thanks,
-> > > 
-> > > greg k-h
-> > 
-> > 
-> > So here are the directories where dtso files currently go:
-> > 
-> > ❯ find . -type f -name "*.dtso" -printf "%h\n" | sort -u
-> > ./arch/arm64/boot/dts/amlogic
-> > ./arch/arm64/boot/dts/freescale
-> > ./arch/arm64/boot/dts/mediatek
-> > ./arch/arm64/boot/dts/qcom
-> > ./arch/arm64/boot/dts/renesas
-> > ./arch/arm64/boot/dts/rockchip
-> > ./arch/arm64/boot/dts/ti
-> > ./arch/arm64/boot/dts/xilinx
-> > ./arch/arm/boot/dts/nxp/imx
-> > ./arch/arm/boot/dts/ti/omap
-> > ./drivers/clk
-> > ./drivers/of
-> > ./drivers/of/unittest-data
-> > 
-> > 
-> > Out of these, `drivers/of` and `drivers/of/unittest-data` contain
-> > unittest dtso, so probably not the place.
-> > 
-> > And the `arch/arm` and `arch/arm64` are for arch specific stuff.
-> > MikroBUS is supported in RISC-V boards as well (BeagleV-Ahead). So
-> > probably not the correct location either.
-> > 
-> > Maybe something like `arch/common/addon_boards` would be better?
-> 
-> Whats about
-> 
-> drivers/misc/mikrobus/mikrobus.rs
-> drivers/misc/mikrobus/mikroe-1714.dtso
-> drivers/misc/mikrobus/mikroe-5761-i2c.dtso
+On 11.09.24 16:50, Danilo Krummrich wrote:
+> On Wed, Sep 11, 2024 at 03:27:57PM +0200, Alice Ryhl wrote:
+>> On Wed, Sep 11, 2024 at 3:26=E2=80=AFPM Benno Lossin <benno.lossin@proto=
+n.me> wrote:
+>>> On 11.09.24 13:02, Danilo Krummrich wrote:
+>>>> On Wed, Sep 11, 2024 at 08:36:38AM +0000, Benno Lossin wrote:
+>>>>> On 11.09.24 01:25, Danilo Krummrich wrote:
+>>>>>> On Tue, Sep 10, 2024 at 07:49:42PM +0000, Benno Lossin wrote:
+>>>>>>> On 10.09.24 19:40, Danilo Krummrich wrote:
+>>>>>>>> On Sat, Aug 31, 2024 at 05:39:07AM +0000, Benno Lossin wrote:
+>>>>>>>>> On 16.08.24 02:10, Danilo Krummrich wrote:
+>>>>>>>>>> +///
+>>>>>>>>>> +/// ```
+>>>>>>>>>> +/// # use kernel::bindings;
+>>>>>>>>>> +/// const SIZE: usize =3D bindings::KMALLOC_MAX_SIZE as usize +=
+ 1;
+>>>>>>>>>> +/// struct Huge([u8; SIZE]);
+>>>>>>>>>> +///
+>>>>>>>>>> +/// assert!(KVBox::<Huge>::new_uninit(GFP_KERNEL).is_ok());
+>>>>>>>>>> +/// ```
+>>>>>>>>>
+>>>>>>>>> Similarly, you could then say above this one "Instead use either =
+`VBox`
+>>>>>>>>> or `KVBox`:"
+>>>>>>>>>
+>>>>>>>>>> +///
+>>>>>>>>>> +/// # Invariants
+>>>>>>>>>> +///
+>>>>>>>>>> +/// The [`Box`]' pointer is always properly aligned and either =
+points to memory allocated with `A`
+>>>>>>>>>
+>>>>>>>>> Please use `self.0` instead of "[`Box`]'".
+>>>>>>>>>
+>>>>>>>>>> +/// or, for zero-sized types, is a dangling pointer.
+>>>>>>>>>
+>>>>>>>>> Probably "dangling, well aligned pointer.".
+>>>>>>>>
+>>>>>>>> Does this add any value? For ZSTs everything is "well aligned", is=
+n't it?
+>>>>>>>
+>>>>>>> ZSTs can have alignment and then unaligned pointers do exist for th=
+em
+>>>>>>> (and dereferencing them is UB!):
+>>>>>>
+>>>>>> Where is this documented? The documentation says:
+>>>>>>
+>>>>>> "For operations of size zero, *every* pointer is valid, including th=
+e null
+>>>>>> pointer. The following points are only concerned with non-zero-sized=
+ accesses."
+>>>>>> [1]
+>>>>>
+>>>>> That's a good point, the documentation looks a bit outdated. I found
+>>>>> this page in the nomicon: https://doc.rust-lang.org/nomicon/vec/vec-z=
+sts.html
+>>>>> The first iterator implementation has an alignment issue. (Neverthele=
+ss,
+>>>>> that chapter of the nomicon is probably useful to you, since it goes
+>>>>> over implementing `Vec`, but maybe you already saw it)
+>>>>>
+>>>>>> [1] https://doc.rust-lang.org/std/ptr/index.html
+>>>>>
+>>>>> Might be a good idea to improve/complain about this at the rust proje=
+ct.
+>>>>
+>>>> Well, my point is how do we know? There's no language specification an=
+d the
+>>>> documentation is (at least) ambiguous.
+>>>
+>>> So I went through the unsafe-coding-guidelines issues list and only
+>>> found this one: https://github.com/rust-lang/unsafe-code-guidelines/iss=
+ues/93
+>>> Maybe I missed something. You could also try to ask at the rust zulip i=
+n
+>>> the t-opsem channel for further clarification.
+>>>
+>>> I think we should just be on the safe side and assume that ZSTs require
+>>> alignment. But if you get a convincing answer and if they say that they
+>>> will document it, then I don't mind removing the alignment requirement.
+>=20
+> I agree -- I also wrote this in a previous mail.
+>=20
+> I was just wondering why you are so sure about it, since the documentatio=
+n
+> doesn't seem to be clear about it.
 
-Exactly, put them where the drivers are, like clk and of does.
+As Alice found below, the documentation is actually clear about this. (I
+think I read it at some point, but forgot exactly where it was)
 
-thanks,
+Maybe it could be better documented that dereferencing has the same
+requirements as `read` (or whatever they are).
 
-greg k-h
+>> Please see the section on alignment in the same page. Just because a
+>> pointer is valid does not mean that it is properly aligned.
+>>
+>> From the page:
+>>
+>> Valid raw pointers as defined above are not necessarily properly
+>> aligned (where =E2=80=9Cproper=E2=80=9D alignment is defined by the poin=
+tee type,
+>> i.e., *const T must be aligned to mem::align_of::<T>()). However, most
+>> functions require their arguments to be properly aligned, and will
+>> explicitly state this requirement in their documentation. Notable
+>> exceptions to this are read_unaligned and write_unaligned.
+>>
+>> When a function requires proper alignment, it does so even if the
+>> access has size 0, i.e., even if memory is not actually touched.
+>> Consider using NonNull::dangling in such cases.
+>=20
+> Good point.
+>=20
+> It still sounds like it's only required for functions that explicitly sta=
+te so.
+>=20
+> And as cited from nomicon "This is possibly needless pedantry because ptr=
+::read
+> is a noop for a ZST, [...]". But, no question, of course we have to honor=
+ it
+> anyways.
+
+This sounds to me like an implementation detail note, not something that
+a caller should consider. But that's my interpretation.
+
+---
+Cheers,
+Benno
+
