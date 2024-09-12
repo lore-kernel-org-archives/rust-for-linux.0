@@ -1,63 +1,65 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDBBE1BC074;
-	Wed, 11 Sep 2024 22:57:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C0C81877
+	for <rust-for-linux@vger.kernel.org>; Thu, 12 Sep 2024 00:55:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726095439; cv=none; b=O5LbY1QrkMk2ZnXXJJ8m0iyKHBMwSG5+Uo+VspCPnxxQaypn0XR+6v6eMGGZ4YgZ+M+NQFzegBvpkYIqoeQALg1miMOwi296uO+tk+af3x2hStS7vXG7G6xqNrZd3EVI44t418a5QOhW14NQ0Sw7xGa29XiPcCMQE/yt/R7Dnzg=
+	t=1726102554; cv=none; b=Cq+GSL2BpDkJiehtbpo7547Sa1jsD1Ryyc2EqkMLQicbGAUe2z8VQjY2VXD0VWUdX4xLl7LnkJa5zI4PdDW9a5MbqzOMhkzCJ9+3wSr/wAHDpN06lghUSNjanDsB0nxeUETYuqyxwOrIWcepX+oQA5q9pbxbHHL+EZms99vCFSY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726095439; c=relaxed/simple;
-	bh=MA63j2l96SFmNAW2ZFKeN7OYc4kzJPq4eXgb27o0nko=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CgZOyKtz9k3duU6JubfvORWzvxYUhxMVzeSwqP5dexJJERsO2nM+AtPDysDcNFDGioOpI+X2tW3R5jL4bo7rkwlW8ggarw6d9IEA0ZRI9rvjDoQXnKfMN7fgFZyjg6nq7cLTtDUJwnLqH5dFRZHGa+pdQc58NhRdcu8m/nGSnkE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NR2myOkh; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1726102554; c=relaxed/simple;
+	bh=allnzNoZ5adyq7EbzXq3qivJGaoQmFasRqpMPa5ZioU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=t1CSJ1wT6+cacXhPuFWO+6VPCiXUABN0lwtJiDa/ZKUwm8vwG7c/i1fWf5aJ3+Xk8x9lXG9IDqZh2LbuCfMPOMyrgsOim+phjWgyj8ChNvYJ8qPwM4BmFFcnqjbV72T2ZopkL0v6OuEf1gnFVdxCtXAvwDuh+iyt/BrYTiczkJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=PEceMrOf; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NR2myOkh"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6657DC4CECD;
-	Wed, 11 Sep 2024 22:57:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726095439;
-	bh=MA63j2l96SFmNAW2ZFKeN7OYc4kzJPq4eXgb27o0nko=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NR2myOkh+9gGnmPS2kTc/yg2gApS991zzrQnL13Z3QDyUHo8klpn52EysPtMFhadg
-	 rBBDarK2Lo3HtvcLZmyafp6cQ/NooD0a5Mr+BbG4ZDKrda9xzsWWbV5qJ8D+Rkk51x
-	 qmYHJcJl8x8siUwA9t2m9zPFZ0mXVEugSCkgMa+VUXsHZr+5nybS6F6pStN0zjZCMi
-	 fdyOg34SRfXUluMcm88odzsoq/DqrnOJ6Am3VF8g1/mcHzcvDXOOKyQ8oUHdexq4RP
-	 /wfna5X5/a7/6l/Dl6GecSb3Si8FLLzmMJzs96MWVGhq1LPrixpNmgFfXvKYxJzSVX
-	 hRx64lF9uLVdQ==
-From: Danilo Krummrich <dakr@kernel.org>
-To: ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	wedsonaf@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me,
-	a.hindborg@samsung.com,
-	aliceryhl@google.com,
-	akpm@linux-foundation.org
-Cc: daniel.almeida@collabora.com,
-	faith.ekstrand@collabora.com,
-	boris.brezillon@collabora.com,
-	lina@asahilina.net,
-	mcanal@igalia.com,
-	zhiw@nvidia.com,
-	cjia@nvidia.com,
-	jhubbard@nvidia.com,
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="PEceMrOf"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1726102551;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=vq8g+VbGslfb1hOl6tAeTLv/FON/Of4no1HXOLBWnao=;
+	b=PEceMrOfv7fv9w+5RQJJKihKldtRCc72hCZ+AZEl+W5GSFv7toekkvESPGv/T2QMx9/cQy
+	VPB2ezcQZOKfnSP6hDjPFv42uYUtHdfJ08r1HJxppBaQfN5oj3CilGHajkY4xOJZAqBmGF
+	3787iDGfDBeMF9C0m/cMoV8TeOEYvLo=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-346-IE3cpcCxNWSLXNZHNWqwrw-1; Wed,
+ 11 Sep 2024 20:55:48 -0400
+X-MC-Unique: IE3cpcCxNWSLXNZHNWqwrw-1
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 5F6001955DD3;
+	Thu, 12 Sep 2024 00:55:46 +0000 (UTC)
+Received: from chopper.lyude.net (unknown [10.22.32.36])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 90A4119560B1;
+	Thu, 12 Sep 2024 00:55:41 +0000 (UTC)
+From: Lyude Paul <lyude@redhat.com>
+To: rust-for-linux@vger.kernel.org
+Cc: Danilo Krummrich <dakr@redhat.com>,
 	airlied@redhat.com,
-	ajanulgu@redhat.com,
-	lyude@redhat.com,
+	Ingo Molnar <mingo@redhat.com>,
+	Will Deacon <will@kernel.org>,
+	Waiman Long <longman@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
 	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	linux-mm@kvack.org,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [PATCH v7 26/26] MAINTAINERS: add entry for the Rust `alloc` module
-Date: Thu, 12 Sep 2024 00:53:02 +0200
-Message-ID: <20240911225449.152928-27-dakr@kernel.org>
-X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240911225449.152928-1-dakr@kernel.org>
-References: <20240911225449.152928-1-dakr@kernel.org>
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>
+Subject: [PATCH v4 0/3] rust: Add irq abstraction, SpinLockIrq
+Date: Wed, 11 Sep 2024 20:55:31 -0400
+Message-ID: <20240912005539.175428-1-lyude@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -65,37 +67,35 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-Add maintainers entry for the Rust `alloc` module.
+This adds a simple interface for disabling and enabling CPUs, along with
+the ability to mark a function as expecting interrupts be disabled -
+along with adding bindings for spin_lock_irqsave/spin_lock_irqrestore().
 
-Currently, this includes the `Allocator` API itself, `Allocator`
-implementations, such as `Kmalloc` or `Vmalloc`, as well as the kernel's
-implementation of the primary memory allocation data structures, `Box`
-and `Vec`.
+Current example usecase (very much WIP driver) in rvkms:
 
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
----
- MAINTAINERS | 7 +++++++
- 1 file changed, 7 insertions(+)
+https://gitlab.freedesktop.org/lyudess/linux/-/commits/rvkms-example-08012024
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 77b395476a80..f57e3b5bc410 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -19929,6 +19929,13 @@ F:	scripts/*rust*
- F:	tools/testing/selftests/rust/
- K:	\b(?i:rust)\b
- 
-+RUST [ALLOC]
-+M:	Danilo Krummrich <dakr@kernel.org>
-+L:	rust-for-linux@vger.kernel.org
-+S:	Maintained
-+F:	rust/kernel/alloc.rs
-+F:	rust/kernel/alloc/
-+
- RXRPC SOCKETS (AF_RXRPC)
- M:	David Howells <dhowells@redhat.com>
- M:	Marc Dionne <marc.dionne@auristor.com>
+specifically drivers/gpu/drm/rvkms/crtc.rs
+
+Lyude Paul (3):
+  rust: Introduce irq module
+  rust: sync: Introduce lock::Backend::Context
+  rust: sync: Add SpinLockIrq
+
+ rust/helpers.c                    |  23 +++++++
+ rust/kernel/irq.rs                |  90 +++++++++++++++++++++++++
+ rust/kernel/lib.rs                |   1 +
+ rust/kernel/sync.rs               |   2 +-
+ rust/kernel/sync/lock.rs          |  17 ++++-
+ rust/kernel/sync/lock/mutex.rs    |   1 +
+ rust/kernel/sync/lock/spinlock.rs | 105 ++++++++++++++++++++++++++++++
+ 7 files changed, 236 insertions(+), 3 deletions(-)
+ create mode 100644 rust/kernel/irq.rs
+
+
+base-commit: 8d8d276ba2fb5f9ac4984f5c10ae60858090babc
 -- 
 2.46.0
 
