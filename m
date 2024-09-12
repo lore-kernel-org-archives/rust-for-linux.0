@@ -1,116 +1,85 @@
-Received: from mail-ej1-f45.google.com (mail-ej1-f45.google.com [209.85.218.45])
+Received: from mail-wm1-f51.google.com (mail-wm1-f51.google.com [209.85.128.51])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4723187552
-	for <rust-for-linux@vger.kernel.org>; Thu, 12 Sep 2024 10:28:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72CF415D5D9
+	for <rust-for-linux@vger.kernel.org>; Thu, 12 Sep 2024 10:56:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726136904; cv=none; b=DFkHbVaNG9MP/iKOm+eAjBSxi+BKkRaPKNmOjGjxtre+0yg4QbcOJ3nhbP1qj0PsIBMB3TNNWxUTAtDgSGmvNlZwu3u6ANdVqXujNVdP+0I2m19bbcwjl8LevQTQ9HIuBP86XeFDulUgY4OvS4TqQ5l4RLTRQrX+j5lj+dkAcaw=
+	t=1726138618; cv=none; b=otitWpQVq0FkLEuX3IY1fViBu3S4YKEYa3olaQZvoanklEBTDpstngpm2AEhymgxt+LHrS6TnLt6ejq2piE2U8cVMSwlBBjdAXNjWIJX8pRIJwRas8HgJ5n/3hCteO39Spejpm76xdIh4PrFNJgPyxHgbEgtykRZqhkU+e94mag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726136904; c=relaxed/simple;
-	bh=PAV4FkicyGirycpFelMM9rAtqpx8O1P09tyQ5d3LSJ4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=Wu9Gvt+TtoMGw9LnqXcLyMbNh5cLpYu8GKVL8Ytr+GvJK/o5Dtw/6O5u5ZLCLyYFioJW2XTlZtNskMo28DkEdX9igfxblxXeEX5iGYWuojjeuGu0zcOC4T6MSAvuiNAHonWxDrfa7ybxH8UES3B7+5qsXpRwAxeyy6GqCoNJhcw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=GoU7zJiT; arc=none smtp.client-ip=209.85.218.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+	s=arc-20240116; t=1726138618; c=relaxed/simple;
+	bh=0zBaW6FoSAGEA5aXcVhQmzrQ0dLCCMuYJiT3vu6f/YI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=UY3szgDqpSvfTd1JI3x8sGcuIp9DyP6WZqIPvv49Jjav2MQwGjwT4SnjWSwoSuacIbMdmhRrsiZvKGrEcaMqJ9dtR7JiGlbznBqfpwI+201bOtmsF9EbY6LHlGn5Yc857oRf5z9O+Ag/NNm7hXhxuIU0RUHUjNneH+E9vdWFyZ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=SzIHUMmU; arc=none smtp.client-ip=209.85.128.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="GoU7zJiT"
-Received: by mail-ej1-f45.google.com with SMTP id a640c23a62f3a-a8d2b24b7a8so359879866b.1
-        for <rust-for-linux@vger.kernel.org>; Thu, 12 Sep 2024 03:28:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="SzIHUMmU"
+Received: by mail-wm1-f51.google.com with SMTP id 5b1f17b1804b1-42cba6cdf32so6731485e9.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 12 Sep 2024 03:56:56 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1726136901; x=1726741701; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=4hMMIAeIq6ngig/u7/oyMUwjRb0NTBFMbk8f4JUhPjk=;
-        b=GoU7zJiTkURHDqOs9GOycv0scs5DDKa/Tf7MkI15PEx2W6aqqZflWOZtpfaU3lfk4e
-         N8hPnbjKGwJXLHOcpHO7xNYKnsfLeMJkKIVyO8nqDMzM05JyK9tP7pDYZXzAvcDN6wfq
-         dlfPGNC3neO0fx0DwDPnqm1+FISI0VNuDzPX4My8fzXgljIn5vmJyVXLpPT36HrN/YNN
-         sTXtQuSm3LGbu68eBzFTcn4aCBbD9c3kzMpYEJFEy17rrCJr7oKSxDBEiWXRvwnMomKi
-         re0MyVBpwrx1N1P4RpJZe2E9OIIuB4p04faHL5Z53z9TJ4oueM31+59WycQYKgrWxhFQ
-         ImfA==
+        d=google.com; s=20230601; t=1726138615; x=1726743415; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=0zBaW6FoSAGEA5aXcVhQmzrQ0dLCCMuYJiT3vu6f/YI=;
+        b=SzIHUMmU9B46YtrCu6fcT42zLMvXcoY/DqAaN7LrBnNu5+98nLxjaNPH1uavLR6ckd
+         KHLOBMC59sFlDQmYW6+XDbepyOBA0jE3IRv1+qpX78E6e6MZEdRSv88wlkt9GcN8mpgk
+         PVz+qoDILeUA36mq5JtUtwf8QchhYm/C8fGutFB+L9cyqoxjvVU2KrSh7Q29jM1DAM3G
+         7tkLg+gHT/y8+zXPZXueDdNqdOJYXm2EueqIKLnbquPihfvb1clFAM5hdK5YHTdFoFOq
+         JJvLkhWbDwQDNYOks3NdZk63Dvleld2jv5DOTovYc5kAGE3NtPJXqYh9veYeB51FUQEq
+         ePtQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726136901; x=1726741701;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=4hMMIAeIq6ngig/u7/oyMUwjRb0NTBFMbk8f4JUhPjk=;
-        b=qafxDDImbteNFaEfl3GgSQPSekvhT1bZM4F7OfvH1q1NgdPgOoWZXyuF+fMPUwmR5N
-         uKDF/6xQGTryvMDG3/6mNbzqfueqkXuIsc6fLtpiW6R36zbd9Je8ztvBheD7jV1ldxzq
-         c1JrhkLcKyXrdLv3Jh7BuBWAqGklEhjNsB7GdjBnHx83wr6MkPG6kYCB9f5LmxZGjmAP
-         nTpxDnNNEIc0ROuYv9MGvYmZmjrs1nEyoFw17xgcnc19k55urVg+HNIBwWzh4dOgzJL4
-         rG7hiAvWyMnKiPUmr2bzLvHF8SjB9aqC1RrfxMGvbw+7l2r26zFabJ8bhKylOyC1YT8K
-         8s/g==
-X-Forwarded-Encrypted: i=1; AJvYcCW7J3y4GBhHtLb+TvqH3mlmuTp2JNjTzVKkY942dK1DNYDOrkfbrkMlP5cJMrAed7PVG13rM+4X5sKP7FGjCw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwZ1pGX7LfuHNGaBmYwiOfPPHyCnUsXNliywrBwhjE23+9TXyig
-	FPz25zMJQ3Adn87y0VQc4u+4uRDSIl8CUBfBH4KXEyhdARpQaST8+sxrsEzCMCY=
-X-Google-Smtp-Source: AGHT+IEewD5Ol7roADv6Jj0UYR3y7brfrq1xLM2ZFdqn9+fQwDXCvDx/TUxbpqTHHJAxgNiQXUxpWw==
-X-Received: by 2002:a17:907:7ea7:b0:a8a:cc5a:7f30 with SMTP id a640c23a62f3a-a902a8c26ffmr254441166b.25.1726136900343;
-        Thu, 12 Sep 2024 03:28:20 -0700 (PDT)
-Received: from [10.100.51.161] ([193.86.92.181])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a8d25835d87sm729255566b.6.2024.09.12.03.28.19
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 12 Sep 2024 03:28:20 -0700 (PDT)
-Message-ID: <5625ef4f-324d-4bc9-ac5f-2374d29a0543@suse.com>
-Date: Thu, 12 Sep 2024 12:28:19 +0200
+        d=1e100.net; s=20230601; t=1726138615; x=1726743415;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=0zBaW6FoSAGEA5aXcVhQmzrQ0dLCCMuYJiT3vu6f/YI=;
+        b=LuthX9FJPIekT5GEfKB7pIDUA2zNxMWgMerkPJIctZaGu0+Y0ZAN4rS5ec0Pu1rDII
+         qsbnZ/XrvYoGsdkNFjwmuZ0eqbUgxH94CgQ/3OMmzUAcTLD+kocb/Vt1O7s3C5F1Wpw9
+         KgC+h3K7R9qaCfXKNKJmuRG9e1EhRF7VfrmfYmJ5pJuhgo5q+TaKP6kciJr91+y5UioG
+         4ks/c1msYZsRj3pJ0nq3wMaoQI++hxxesS5vq4OH1GgE1+0H4QBLBVynmClhshdwVfzA
+         8gQkJwyIxOmlZZV3rNJ6HQXaS8y2+XsSCc4y47cTfxb1m4VI+16EQHDwQby+dmp4+e0Z
+         gjhQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVZRibAqquTQH7DwkdpKPhl3ZdXbJaF4nr1ErVLT66iten6dS5ALx5erYPv1WQ9I+GEDNe+8IzOSpXNaEIHCw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz7QjwLyWfIuXHlSdmOPDiiLiceIOGIMPVJt2u6YYIHiCrMzKuE
+	0HFCTfFqitsl+2/6wgB4zYMl7rc4vaGMnGoh6vZxEj2/khjUJ49sP9zGZIQd0hrgpqCdVOdPpgv
+	cnV5gZwhTSQ+A2G4/GRBNvSqOSwC1Yr5e2U1+
+X-Google-Smtp-Source: AGHT+IF85e2LaHgSssaBIQhk7y4QJ1PfgZyYFIj7atkVMNrN5Jg+9CBt183CyTGgj+TNOdNdfN38bXgAIbtAJRyfGWM=
+X-Received: by 2002:adf:f901:0:b0:374:c318:2188 with SMTP id
+ ffacd0b85a97d-378c2d51913mr1228312f8f.42.1726138614369; Thu, 12 Sep 2024
+ 03:56:54 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 14/19] gendwarfksyms: Add symbol versioning
-To: Sami Tolvanen <samitolvanen@google.com>
-Cc: Masahiro Yamada <masahiroy@kernel.org>,
- Luis Chamberlain <mcgrof@kernel.org>, Miguel Ojeda <ojeda@kernel.org>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Matthew Maurer <mmaurer@google.com>, Alex Gaynor <alex.gaynor@gmail.com>,
- Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>,
- Neal Gompa <neal@gompa.dev>, Hector Martin <marcan@marcan.st>,
- Janne Grunau <j@jannau.net>, Asahi Linux <asahi@lists.linux.dev>,
- linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-modules@vger.kernel.org, rust-for-linux@vger.kernel.org
-References: <20240815173903.4172139-21-samitolvanen@google.com>
- <20240815173903.4172139-35-samitolvanen@google.com>
- <286b1cc5-1757-4f0a-bb66-0875f4608c7e@suse.com>
- <CABCJKudJR13PJgjr9-5Ff9Dzmb7=pSx7JWM5qTyR8oYRdtSDDA@mail.gmail.com>
-Content-Language: en-US
-From: Petr Pavlu <petr.pavlu@suse.com>
-In-Reply-To: <CABCJKudJR13PJgjr9-5Ff9Dzmb7=pSx7JWM5qTyR8oYRdtSDDA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+References: <DM4PR14MB727613E0669989AF7E12357FE9992@DM4PR14MB7276.namprd14.prod.outlook.com>
+In-Reply-To: <DM4PR14MB727613E0669989AF7E12357FE9992@DM4PR14MB7276.namprd14.prod.outlook.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Thu, 12 Sep 2024 12:56:41 +0200
+Message-ID: <CAH5fLgia5Vbta2xFB8d2T1Lzcqsq=aSocVFcvxD=dVE85Ucbxg@mail.gmail.com>
+Subject: Re: [PATCH v2] rust: Make functions accessible outside the kernel crate
+To: Filipe Xavier <felipe_life@live.com>
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 9/11/24 18:03, Sami Tolvanen wrote:
-> On Wed, Sep 11, 2024 at 3:08 AM Petr Pavlu <petr.pavlu@suse.com> wrote:
->> On 8/15/24 19:39, Sami Tolvanen wrote:
->> More importantly, it made me think which names are included in the CRC
->> calculation and which ones are omitted.
->>
->> If I'm looking correctly, names of structs, enums and enumerators make
->> it into the calculation. On the other hand, names of struct members,
->> function parameters and exports (functions/variables) are missing.
->>
->> I think the names of struct members and function parameters should be
->> added as well. If the code changes 'struct A { int cols; int rows; }' to
->> 'struct A { int rows; int cols; }' then that should be recognized as
->> a different API/ABI. The same applies to function parameters.
-> 
-> I did leave out member names because typically renaming a member
-> doesn't change the ABI, but you're right, it might help capture these
-> types of changes where fields with identical types are reordered for
-> some reason. I'll add names.
-> 
->> I'm not sure about export names. I would probably include them as well,
->> if only for consistency.
-> 
-> I would rather leave out the symbol names to have consistent CRCs
-> between symbols that have identical types. Or is there an actual
-> benefit in including the symbol name in the CRC? The names are already
-> rather explicitly involved when symbol versions are checked.
+On Mon, Sep 9, 2024 at 9:59=E2=80=AFPM Filipe Xavier <felipe_life@live.com>=
+ wrote:
+>
+> Change visibility to public of functions in error.rs:
+> from_err_ptr, from_result and to_ptr.
+> Additionally, remove dead_code annotations.
+>
+> Link: https://github.com/Rust-for-Linux/linux/issues/1105
+> Signed-off-by: Filipe Xavier <felipe_life@live.com>
 
-Ok with me. I can't think of a strong argument to do it one way or the
-other.
+The title of the commit message is very generic. It could be improved
+to e.g. "rust: error: make conversion functions public".
 
--- Petr
+Otherwise looks good to me.
+
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
