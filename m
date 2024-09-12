@@ -1,246 +1,133 @@
-Received: from mail-pf1-f196.google.com (mail-pf1-f196.google.com [209.85.210.196])
+Received: from mail-wr1-f74.google.com (mail-wr1-f74.google.com [209.85.221.74])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36DD81A0BD4
-	for <rust-for-linux@vger.kernel.org>; Thu, 12 Sep 2024 13:32:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.196
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C64E55E73
+	for <rust-for-linux@vger.kernel.org>; Thu, 12 Sep 2024 14:20:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726147982; cv=none; b=qxPSrAheCUq7wBmBB1leM2B2hJQFXkEc1XhCMGPcVxLqKcBAPibZmVyWhuON7y1KMa4QQz8WNhLWC5O1HwOu3wcq6XZx0b4DntQkuC14/8kWt9V/naRsBbTwfC3iru+slf4pCtyMJz5aP0HNNFCQna54cCR+k/Pdu/eLATtzU5c=
+	t=1726150847; cv=none; b=rndc71vEwkDGyjCl8Laj/gXkiK154uBsXX+0bDML82rGOzAdOdPrmsELroorK3KiapgnX3keb2ZqoVg/rKKcDtbxYT29XDdqYZy619WMQtQKSUpshzZfOHKikiMq17J2wOnX2+MAvwZapa0xB9k/WL97/MJMeXQzc8O7JpZvHaw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726147982; c=relaxed/simple;
-	bh=y4JXK2nQ+yYVmIJ0dkBzHHepqbMO63NpftfrisvUxuI=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=t03ETwZCcgbFkzW0POmBopWY9eCUJES4cMTGocaPLSlLWd/vJcOGohPiZehLb6fhKvObRVpoOxSfsuaMxFW+6qrQ6m3MHbJA1dU18XKrOfTBsxn1IVi/S1ZryffYjaC9sTPYccM2iqkrrzDr4BPJbYX7QyPhhqxuCNdiRoLCecs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org; spf=fail smtp.mailfrom=beagleboard.org; dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b=A4RXjX5q; arc=none smtp.client-ip=209.85.210.196
-Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=beagleboard.org
+	s=arc-20240116; t=1726150847; c=relaxed/simple;
+	bh=bzS2SQiFMOU6F7XOkTxNzcfaRNJj9Dz0uIvOeW5eVw0=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=iSKqJGoCrv8diI45diCyyHjeHYgoajHIsBwQbTlpwfSud9yoDb1AfKm1Tv9a0zKlLlgoBSPN4ymBneSb+Ls+EuWqAHZovpbFkz2eSonlPkzwK9QjofgftiW6Bc4748+6thMbL0e5RoM8YE8peOww0iNierwwTv7e/4H0I34YDPI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uJbQwlZQ; arc=none smtp.client-ip=209.85.221.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b="A4RXjX5q"
-Received: by mail-pf1-f196.google.com with SMTP id d2e1a72fcca58-718d8d6af8fso639913b3a.3
-        for <rust-for-linux@vger.kernel.org>; Thu, 12 Sep 2024 06:32:59 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uJbQwlZQ"
+Received: by mail-wr1-f74.google.com with SMTP id ffacd0b85a97d-378ab5b74e1so499803f8f.3
+        for <rust-for-linux@vger.kernel.org>; Thu, 12 Sep 2024 07:20:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=beagleboard-org.20230601.gappssmtp.com; s=20230601; t=1726147978; x=1726752778; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=mSCLXgKSR/O6qPpMsarYrPyYwmGaU1cMe+1bP08dBzY=;
-        b=A4RXjX5qHHTYU0yfMFtHtU0/aV0MER28weS4K983LJmrOhYkJaEalq8WfD2SB1UGEn
-         6rzyod7i552ZiAb0cFiP92rz+pX8NWlTrsYdHC7dtCRQrPAZgEPExJvm9u8ttERd1h+g
-         LyEerUKZRj2jX2cOT8t1GrcKrKtBcjMcnBsbVjfZh375RtPq/Yday5S/4270X6Yo9uvV
-         9EP21JkAhU7/qRD6KwOpouTnbrl03irMnvRUhnGwFiIha/NurWyeW+wC4cogYzfefq6B
-         6ebdKGdRcYBroOSE3O/mrsBC0Az8gQ3/hyIGAmVwe7J8SGb+OtKf02D1xzJ9Sg5qZxS0
-         6BMA==
+        d=google.com; s=20230601; t=1726150845; x=1726755645; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=AbxMkKqYpXyzBIW6S2i/vt/W7X6pYpyB4dZLGsN8EFE=;
+        b=uJbQwlZQK1aZNwAqcFW8Xysf/RWk8p9GC2BzPmdi2FeniE1trOMt3qFEjwCTO4Muol
+         +EtW77wxNKaPM625ZnaOJzAUreZaudbdtahl/GMTtpIKaNL1IlS7o6J0Cr/W9+C7X3Xa
+         Q9o7GMEveV/OhUeZ8n1EXkA9jXOOJgkkq98iJKKZb+fjBHbxeBeiyb98GE6eqEdW1bUM
+         ME715DkKlUa6rIxKEyOiCrj8dmi9RZEkikZM9VuVn8JfDC1UgKxcQeOBxgNdz1FV6QsP
+         7EN7DfM8jqywQkaOXyeuHiPwZ5lhhxDKY4IYba09eB1r2ZrBHwQm6nYWtK4Gyoogtkc2
+         SAQg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726147978; x=1726752778;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=mSCLXgKSR/O6qPpMsarYrPyYwmGaU1cMe+1bP08dBzY=;
-        b=TZuMMIj3N9U6nzXbXOmFQBRuVFbpw/e23K78Gu/x2FG3HG0lwAIRluavzRAysRyVCP
-         dYqDNJH7H3+LNER0dcUgVkz4Hs7IngorHIz0k2N0pNJHTEP037e3BPhy/T6A68WjQ374
-         fwokX4f/eRpUzEAcSinkHM3vYaKNmZdh779orVO9fZMEdkZgq2Jn65GaM2lAhc4W8mpt
-         UCZaNOiZWgKOG1YetVqeimiegwlbVBHlfFJ0lKSZzeYf1HOauyG4hIYaq4ECn3ivi2qN
-         n1SUml3YslEfD08jArIMNCMPfE7dTTQphkjNT1+J9IoLY6GX/g8YQVHStBh45Es2KyYI
-         EiHQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVOF1+qWqjAobCfte1vuYTsg0j42LQPo9WibSE/1vsemJIKjpBqfJP8N/y9cpmTfqoFky3Ytcp61fguN8r4Sg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzWq3XT6w5LRHU7dmYwJQbXX5flQzYK/wTCil+e3p5bgyfWPAHz
-	5/sRbQowbPDMsfer3SY82FlLt88epcLlld4G2mk2CWxzmtqB8EYW/MdGjAdsaw==
-X-Google-Smtp-Source: AGHT+IHPBYH3dxSRY7Ys4valC9Nf6OkNReNcuKNFDgx+eOAc4A3ZD0f4f+0ft/cSZzhfPqD2o6437Q==
-X-Received: by 2002:a05:6a21:7108:b0:1cf:539c:5712 with SMTP id adf61e73a8af0-1cf761f9867mr3708626637.38.1726147978258;
-        Thu, 12 Sep 2024 06:32:58 -0700 (PDT)
-Received: from [172.16.118.100] ([103.15.228.94])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-719090b2c3fsm4577209b3a.165.2024.09.12.06.32.48
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 12 Sep 2024 06:32:57 -0700 (PDT)
-Message-ID: <7d3cff7a-ecc0-4744-836f-ce74f335b753@beagleboard.org>
-Date: Thu, 12 Sep 2024 19:02:46 +0530
+        d=1e100.net; s=20230601; t=1726150845; x=1726755645;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=AbxMkKqYpXyzBIW6S2i/vt/W7X6pYpyB4dZLGsN8EFE=;
+        b=aP4wYjBdet7xBrMs4yjJKMtumH2qXXP1yp/uiAT31MbH3UIludpCUMfcsTm4F1WUoR
+         ilyI0O0cT3flLzuoO52WLd2TaCm/cR/HaJVkF28N3EB9VPflXli5prsDYT0AO1nqBnOL
+         INNAfwn/nt+bU48FTYhyO5rzv+oISkZ1dmSFhomPMjbY97usIbhoXCOb5zxY+3qmqOT4
+         rzDhD4OmyCTSfhcAsr10SBhJGjCftKJoe32jUT8jOdoPClIa+N9Yxh8m6IIt/zjCPFcV
+         EI8PS3M2Z3dfaQHee+goAAnxqCteOSJw4XpYDtp+ugtyZnKBL5wgb+FTssKwg75iY6xo
+         q6TA==
+X-Gm-Message-State: AOJu0YwcsGRISGyZ3pxxY2dfeTF1C6P/D7Y5zW0Fj3zNim1T2SzCn4z4
+	sRLCABAriJt99EaShH7NBQitM371tF7vZCCBLCptETyP/PcOUi6sjMAapBjiMcrANFDfAJ1BBEb
+	+MiICpgDCPv9XCA==
+X-Google-Smtp-Source: AGHT+IHlQOs4CTIMMDJxX0/QQ3RZQfLadjCwjj5uZqSBT+YUKZbyayjWXl087HminWVr5lRHhQKfaBoOn+RPaoY=
+X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:35bd])
+ (user=aliceryhl job=sendgmr) by 2002:a5d:4a02:0:b0:377:9867:903f with SMTP id
+ ffacd0b85a97d-378c2d5c4b2mr2842f8f.10.1726150844293; Thu, 12 Sep 2024
+ 07:20:44 -0700 (PDT)
+Date: Thu, 12 Sep 2024 14:20:06 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 3/8] mikrobus: Add mikrobus driver
-Content-Language: en-US
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
- Ayush Singh <ayushdevel1325@gmail.com>
-Cc: fabien.parent@linaro.org, d-gole@ti.com, lorforlinux@beagleboard.org,
- jkridner@beagleboard.org, robertcnelson@beagleboard.org,
- Andrew Davis <afd@ti.com>, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>,
- Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, Rob Herring <robh@kernel.org>,
- Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
- <conor+dt@kernel.org>, Derek Kiernan <derek.kiernan@amd.com>,
- Dragan Cvetic <dragan.cvetic@amd.com>, Arnd Bergmann <arnd@arndb.de>,
- Nishanth Menon <nm@ti.com>, Vignesh Raghavendra <vigneshr@ti.com>,
- Tero Kristo <kristo@kernel.org>, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, devicetree@vger.kernel.org,
- linux-arm-kernel@lists.infradead.org
-References: <20240911-mikrobus-dt-v1-0-3ded4dc879e7@beagleboard.org>
- <20240911-mikrobus-dt-v1-3-3ded4dc879e7@beagleboard.org>
- <2024091144-glitzy-kindly-fa74@gregkh>
- <ecd1fff8-9c15-496a-982f-36e6c58e906a@gmail.com>
- <2024091151-hummus-usher-2561@gregkh>
-From: Ayush Singh <ayush@beagleboard.org>
-In-Reply-To: <2024091151-hummus-usher-2561@gregkh>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Mime-Version: 1.0
+X-B4-Tracking: v=1; b=H4sIAJX44mYC/x2MQQqAIBAAvxJ7bkGtKPtKdChdayksFCKJ/p50n
+ IGZByIFpgh98UCgiyMfPoMsCzDr5BdCtplBCVULLRXuh9nI4pwwJm/Q8Y2ilbqyrlFOd5DDM1D W/3QY3/cDq7c9W2QAAAA=
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=2100; i=aliceryhl@google.com;
+ h=from:subject:message-id; bh=bzS2SQiFMOU6F7XOkTxNzcfaRNJj9Dz0uIvOeW5eVw0=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBm4vimjfLmjrPI4J0Ne/igPdq4mvNQGBfFPylJr
+ DiUznpWybiJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZuL4pgAKCRAEWL7uWMY5
+ Rp9xD/0ZUtGHBh07tF98063h7hmF+lFx8IzuwrjcdNgfefreQcdiMLQCdGf+jLdlMWy7Ur5D24E
+ odw29+EpBqC6uBx7Cpbmz54S9cADK3XSee2+H1WbN28/6sZ/U3s3SiLF1COoaTRwBYyqrB2fE8+
+ LxD8j50x+Ls7Z6mI0KSoEv8r5jY82RBv3oR6katX4Q0g0aJcZ9SkLg3vJl75BwFH7o4seC3/AzE
+ SJ0Zh2lSBjFz8WQ3HzsAVE0ovRkyJtGaQQcmB8oQF485jU8+s2jxTcHuDY7++xQ6YN1VXL4S+z0
+ 0J9IBKDV3wdOhP3H7VGt0M2E8bPsCd9NpUiqtQ+xeqK2oS21ygnONq5P48Hd/ZRwCJPBabtCZby
+ SmZ9453s8Vj6D+xLQwR5yj/1OZNg5tKsChJstazkAM6lizNRTGeFlPxQsFN8VbBlVSVlEU1vj+4
+ bE5bbbvKfFmxNEnBxtHuVoRDz+R0rQuFoBs5DIIT+X89DOOMCViRwR0pSvNb/uvRkyfP8TP0srv
+ FLrGVZaeZHxXqws0/6oGfCJRvzsQjJQ487UQdH1gCXbU5h9i36KK2XecOgyY8BlLEVwP9wQLkRv
+ kfCAPbjz2PHlLNbH/HBkJkYE/7CAJOMeOj5uewMDfCifNYQdAtgGTyzLYozTIwSlk5GgGnkGY4e UWrauSvskU36F5Q==
+X-Mailer: b4 0.13.0
+Message-ID: <20240912-locked-by-sync-fix-v1-1-26433cbccbd2@google.com>
+Subject: [PATCH] rust: sync: fix incorrect Sync bounds for LockedBy
+From: Alice Ryhl <aliceryhl@google.com>
+To: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?utf-8?q?Bj=C3=B6rn_Roy_Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, Trevor Gross <tmgross@umich.edu>, 
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+Cc: rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="utf-8"
 
-On 9/12/24 01:33, Greg Kroah-Hartman wrote:
+The `impl Sync for LockedBy` implementation has insufficient trait
+bounds, as it only requires `T: Send`. However, `T: Sync` is also
+required for soundness because the `LockedBy::access` method could be
+used to provide shared access to the inner value from several threads in
+parallel.
 
-> On Wed, Sep 11, 2024 at 09:32:21PM +0530, Ayush Singh wrote:
->> On 9/11/24 20:27, Greg Kroah-Hartman wrote:
->>
->>> On Wed, Sep 11, 2024 at 07:57:20PM +0530, Ayush Singh wrote:
->>>> A simple platform driver for now that does nothing. This is required
->>>> because without a platform driver, the mikrobus_gpio0 nexus node cannot
->>>> be used.
->>>>
->>>> In future, this driver will also allow for dynamic board detection using
->>>> 1-wire eeprom in new mikrobus boards.
->>>>
->>>> Signed-off-by: Ayush Singh <ayush@beagleboard.org>
->>>> ---
->>>>    MAINTAINERS              |  1 +
->>>>    drivers/misc/Kconfig     | 17 +++++++++++++++++
->>>>    drivers/misc/Makefile    |  1 +
->>>>    drivers/misc/mikrobus.rs | 32 ++++++++++++++++++++++++++++++++
->>>>    4 files changed, 51 insertions(+)
->>>>
->>>> diff --git a/MAINTAINERS b/MAINTAINERS
->>>> index 0cc27446b18a..d0c18bd7b558 100644
->>>> --- a/MAINTAINERS
->>>> +++ b/MAINTAINERS
->>>> @@ -15433,6 +15433,7 @@ MIKROBUS CONNECTOR
->>>>    M:	Ayush Singh <ayush@beagleboard.org>
->>>>    S:	Maintained
->>>>    F:	Documentation/devicetree/bindings/connector/mikrobus-connector.yaml
->>>> +F:	drivers/misc/mikrobus.rs
->>>>    MIKROTIK CRS3XX 98DX3236 BOARD SUPPORT
->>>>    M:	Luka Kovacic <luka.kovacic@sartura.hr>
->>>> diff --git a/drivers/misc/Kconfig b/drivers/misc/Kconfig
->>>> index 3fe7e2a9bd29..30defb522e98 100644
->>>> --- a/drivers/misc/Kconfig
->>>> +++ b/drivers/misc/Kconfig
->>>> @@ -610,6 +610,23 @@ config MARVELL_CN10K_DPI
->>>>    	  To compile this driver as a module, choose M here: the module
->>>>    	  will be called mrvl_cn10k_dpi.
->>>> +menuconfig MIKROBUS
->>>> +	tristate "Module for instantiating devices on mikroBUS ports"
->>>> +	help
->>>> +	  This option enables the mikroBUS driver. mikroBUS is an add-on
->>>> +	  board socket standard that offers maximum expandability with
->>>> +	  the smallest number of pins. The mikroBUS driver instantiates
->>>> +	  devices on a mikroBUS port described by identifying data present
->>>> +	  in an add-on board resident EEPROM, more details on the mikroBUS
->>>> +	  driver support and discussion can be found in this eLinux wiki :
->>>> +	  elinux.org/Mikrobus
->>> So you want to be a bus?  Or just a single driver?  I'm confused, what
->>> exactly is this supposed to do?
->>>
->>> If a bus, great, let's tie into the proper driver core bus code, don't
->>> "open code" all of that, as that's just going to make things messier and
->>> harder to work overall in the end.
->>>
->>> If a single driver, why is it called "bus"?  :)
->>>
->>> thanks,
->>>
->>> greg k-h
->>
->> Well, mikroBUS [0] is the name of the socket standard. It is basically a
->> group of following pins:
->>
->> Analog - AN
->> Reset - RST
->> SPI Chip Select - CS
->> SPI Clock - SCK
->> SPI Master Input Slave Output - MISO
->> SPI Master Output Slave Input - MOSI
->> VCC-3.3V power - +3.3V
->> Reference Ground - GND
->> PWM - PWM output
->> INT - Hardware Interrupt
->> RX - UART Receive
->> TX - UART Transmit
->> SCL - I2C Clock
->> SDA - I2C Data
->> +5V - VCC-5V power
->> GND - Reference Ground
->>
->>
->> I do not think it would qualify as as a "bus" in the Linux driver sense.
->> Especially with the devicetree based approach here which applies overlay
->> directly to the actual uart/i2c/spi controllers and basically not interact
->> with the mikroBUS node much.
-> It will be a "bus" in the driver sense as you want to have different
-> drivers bound to devices that are plugged in here, right?  Or if this is
-> just a single driver for the hardware, then no, as you will not have any
-> additional drivers for this standard?  It's unclear you want to do here.
-No, a single driver. The driver is for board detection and applying 
-proper overlay. There will not be separate drivers for each addon board.
+Cc: stable@vger.kernel.org
+Fixes: 7b1f55e3a984 ("rust: sync: introduce `LockedBy`")
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+ rust/kernel/sync/locked_by.rs | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
->> The driver is here to enable the following:
->>
->> 1. Enable dynamic board detection using 1-wire eeprom on some addon boards.
-> Some, not all?
+diff --git a/rust/kernel/sync/locked_by.rs b/rust/kernel/sync/locked_by.rs
+index babc731bd5f6..153ba4edcb03 100644
+--- a/rust/kernel/sync/locked_by.rs
++++ b/rust/kernel/sync/locked_by.rs
+@@ -83,9 +83,10 @@ pub struct LockedBy<T: ?Sized, U: ?Sized> {
+ // SAFETY: `LockedBy` can be transferred across thread boundaries iff the data it protects can.
+ unsafe impl<T: ?Sized + Send, U: ?Sized> Send for LockedBy<T, U> {}
+ 
+-// SAFETY: `LockedBy` serialises the interior mutability it provides, so it is `Sync` as long as the
+-// data it protects is `Send`.
+-unsafe impl<T: ?Sized + Send, U: ?Sized> Sync for LockedBy<T, U> {}
++// SAFETY: Shared access to the `LockedBy` can provide both `&mut T` references in a synchronized
++// manner, or `&T` access in an unsynchronized manner. The `Send` trait is sufficient for the first
++// case, and `Sync` is sufficient for the second case.
++unsafe impl<T: ?Sized + Send + Sync, U: ?Sized> Sync for LockedBy<T, U> {}
+ 
+ impl<T, U> LockedBy<T, U> {
+     /// Constructs a new instance of [`LockedBy`].
+@@ -127,7 +128,7 @@ pub fn access<'a>(&'a self, owner: &'a U) -> &'a T {
+             panic!("mismatched owners");
+         }
+ 
+-        // SAFETY: `owner` is evidence that the owner is locked.
++        // SAFETY: `owner` is evidence that there are only shared references to the owner.
+         unsafe { &*self.data.get() }
+     }
+ 
 
-Some mikroBUS boards have 1-wire eeprom [0]. This can be used to enable 
-dynamic detection of the board. But this is not part of mikroBUS 
-specification itself, and is like a mikroe addition. So there will be a 
-lot of mikrobus addon boards that do not have any way to do dynamic 
-detection.
+---
+base-commit: 93dc3be19450447a3a7090bd1dfb9f3daac3e8d2
+change-id: 20240912-locked-by-sync-fix-07193df52f98
 
->> 2. Provide sysfs entry for runtime board adding/removal
-> That's not what sysfs is for, but we can get there eventually...
-
->> 3. Enable using mikrobus connector node as nexus node for GPIO (not having a
->> platform driver makes any driver trying to use the connector as nexus node
->> go into deffered probing state).
-> Why is this a platform device?  Is this always going to be described by
-> DT somehow?
-
-
-Well, since greybus does not use a dt based approach right now, that is 
-one case where we potentially cannot describe the connector in DT. But 
-since greybus is mostly staging, I am not sure if there are any plans to 
-use DT before bringing it to mainline.
-
-
->> For this patch series, the driver is mostly here due to point 3. Basically a
->> stub.
-> Let's see how this really works before coming to conclusions.
->
-> As an example, how do you think sysfs should look for this device?  For
-> all devices?  Write out the needed sysfs documentation entries first and
-> then that will help explain things better.
->
-> thanks,
->
-> greg k-h
-
-
-Something like the following:
-
-cat board-overlay.dtbo > /sys/bus/platform/mikrobus-connector0/new_device
-
-
-And to remove the device (revert the overlay)
-
-echo 1 > /sys/bus/platform/mikrobus-connector0/delete_device
-
-
-The main motivation for the sysfs entry is that only the board overlay 
-needs to be provided, since the driver already knows it's own connector 
-(and hence the symbols overlay for the connector).
-
-
-[0]: https://github.com/MikroElektronika/click_id
-
-
-Ayush Singh
+Best regards,
+-- 
+Alice Ryhl <aliceryhl@google.com>
 
