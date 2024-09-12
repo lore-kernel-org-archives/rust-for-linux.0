@@ -1,176 +1,203 @@
-Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f193.google.com (mail-oi1-f193.google.com [209.85.167.193])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B8D418DF91
-	for <rust-for-linux@vger.kernel.org>; Thu, 12 Sep 2024 08:03:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C224B1917F2
+	for <rust-for-linux@vger.kernel.org>; Thu, 12 Sep 2024 08:17:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.193
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726128193; cv=none; b=R87yMAW73/hZTdm/kxRLp8QXft3ymsz1iIcEi5JyZG6yJxVz8m2w3P97CO+BNFh+tRe+/ISm7vKI3u9Osn7oH+EQSVixjUjnw3ZWxb81jbvb5loSnWD27bTLHdwv+2aZY0sYGFE5ZJXx2Ipuql4WLwqxE1rjSsRyr/oJ+bVR03M=
+	t=1726129054; cv=none; b=bCBdX/ISYdlZSzCqZs8IUQBzqsxII80+A+7GEFgiUnenHvkuPLq6z7W6Ll3zQmWI3UB1b8Bmr25g8agj1qBgeN3brEI0ZMY81FVOCiXYzvAjI6MTDV9b/fRmt5gvlqJpZG1Xyq+LB6S1yarM6okf1jbcteVFgpkbTNyyEbT8UsE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726128193; c=relaxed/simple;
-	bh=Xq9/zJGImDodUK6APv8rmLUXRYQWoOSD8nL+qHMbnYM=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DuB4Zdqv/LFkBRcaJRSRzE0y4kQdP0CvHqgB+MeiccirGvMEhKrZ0G7MaWf6WHb7puNLvvOzFa20QC3zjn2nkerSG1GRhDPk73M9YNbfxrKwYBit+9DVuqqtqBzIOKw0EwEgrskHo0FTnELXpfy4uhk97UhvFZ16kda+gYUur2k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=C4CwBt63; arc=none smtp.client-ip=185.70.43.22
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1726129054; c=relaxed/simple;
+	bh=d+BqVvTCnLYNpfUCGWJ+LK6fsMD567B1Xn+U4BteCmk=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=uSKI622vruScq4E1DUdaUJnRZcEbLerSEMoZdX3CvAKdDtvfJ5oRwkKFNki6zQeFlkc/4Yob+WK5/H8B1z89CBtIEriiUis0jGATdlr0fXucDCBAJQyeHsrfSk1Xy8ulmfqGzvIDE5TGZWXIocZCwbux+h8I//agZ5Msb8dH20c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org; spf=fail smtp.mailfrom=beagleboard.org; dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b=J/nxG6FS; arc=none smtp.client-ip=209.85.167.193
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=none dis=none) header.from=beagleboard.org
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=beagleboard.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="C4CwBt63"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1726128184; x=1726387384;
-	bh=Xq9/zJGImDodUK6APv8rmLUXRYQWoOSD8nL+qHMbnYM=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=C4CwBt63SnffFih3hoIpqHY1Ol+QUlLNiK1Q+9okWe+1BRA9KOKE8UeiPBL+XThbs
-	 FL478P4CStuTWW52UhdZh7oN5WZQc5VoAZCjeaPOGgvIQdCaSdUEQonz5w1KqxD7zi
-	 8CEc5LDTJq71hMOGRm4QpK+5gh+zINCc6D0U3SujD/knbVjTWFDRnfE68D0sghCyww
-	 2RSnyJQp/Mt31JdvquLUCF2xjdVGNfMkjdupd4AfI7Yk16bUeXWE0ErHA5tdqrXLma
-	 wyoY0PmWm2HcmMSPMZfSqrabiWWZCgjbzrZf+goJyruCVKuk0ouIiW+O3dcsX9KESC
-	 4oq7ktDf9Z16w==
-Date: Thu, 12 Sep 2024 08:03:00 +0000
-To: Danilo Krummrich <dakr@kernel.org>, Alice Ryhl <aliceryhl@google.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com, a.hindborg@samsung.com, akpm@linux-foundation.org, daniel.almeida@collabora.com, faith.ekstrand@collabora.com, boris.brezillon@collabora.com, lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com, ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v6 09/26] rust: alloc: implement kernel `Box`
-Message-ID: <58c81781-65b5-48ab-9c4c-b4f2dd014445@proton.me>
-In-Reply-To: <ZuGuI7Ow0jJQBim6@cassiopeiae>
-References: <20240816001216.26575-1-dakr@kernel.org> <ZuCEneJeXcRo5qs8@pollux> <19d81a27-9600-4990-867c-624104e3ad83@proton.me> <ZuDVekRzfeBkWmKz@pollux> <77b91448-a21e-4e1b-9a8e-3d2052d79a78@proton.me> <ZuF444VO8gK8l7UR@pollux> <b80cb238-5fcc-4bbb-8b03-42e173c28653@proton.me> <CAH5fLghwj-rD8zoPFgp3g1JYm8WrOhuiWnm7w=zStqOfRRZUJw@mail.gmail.com> <ZuGuI7Ow0jJQBim6@cassiopeiae>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: e1b1c981f8d8dd5b13dddd8bb98baf557cdbfb28
+	dkim=pass (2048-bit key) header.d=beagleboard-org.20230601.gappssmtp.com header.i=@beagleboard-org.20230601.gappssmtp.com header.b="J/nxG6FS"
+Received: by mail-oi1-f193.google.com with SMTP id 5614622812f47-3e03e9d1f8dso380693b6e.2
+        for <rust-for-linux@vger.kernel.org>; Thu, 12 Sep 2024 01:17:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=beagleboard-org.20230601.gappssmtp.com; s=20230601; t=1726129052; x=1726733852; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=8uL3yDQtDSTfprjNMoH8FDOc9dazYHaDt/nHN9xGeXM=;
+        b=J/nxG6FSSHE75sNtV/cLBnR6ClZDRUING+V6GWm4yFtsq+6z+5sfBCRBma8eKkM7hV
+         iFC5+Pkt8t0jnYpFnzY01rc4H+tY+4AYI2Q2g/hHE1ICEhCOKv1L2z+kq6W2ZZoRMpxi
+         Xtm0A3xdWn+HLAMWY8NT1lYvlLONFDz16Wi8P6IJTdAA2RNoYKBEPU4bJwiDrA238c+N
+         qG2jDEQREy9EOGx94aaYpobEKoI2RtfUqtNx0/byph+45ykmRfMyaxOBxQp5TUZyyEsC
+         ok8w0S/KZq2fdfTwISxcquhgtWEhDlDH58VMVBwzmu0FVwrGZS5vO87vYx0TQpmIE+e7
+         bpfw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1726129052; x=1726733852;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=8uL3yDQtDSTfprjNMoH8FDOc9dazYHaDt/nHN9xGeXM=;
+        b=dyw+H0ezhixmDaJbdQtElOmwTHGrZ/khRu2zRxn1OHNFA6br0enHYswdSZVI1bw8LJ
+         9y+oNFdsKZYy7GOrhdHmNoPildQmnUKBofXD9Vyw3TOcALV0uQ9l2+08QXGYkQDFzjlu
+         rGE/58HPJJX+Y0Msl4SuIQ2R5+QXpEF9xlAbD2DIsm0U4C4bG3yxWKGp0FMDUPIKxWa/
+         YOPoB1CEmubaadG43IH7ZjpH1ZwjSjA+wLCEftAmtNt6QFahDRAOysjvzLhEmavpR6km
+         /HwTDJMw91ePL+pcoClMkh7ZyuPqzHw1XqwQwKudwcHeFdT2ONEn+lRIHtuI1wk+Iow8
+         k9ag==
+X-Forwarded-Encrypted: i=1; AJvYcCUrKcNM3FuShxnXNAEkCpFVpj1uonWI43AvwU48jlEsiqzzhNRcel8PFVzR7djkZWyIQi0RWGcSYuSTkB5VAA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwlkiZJPum5UCGw7s/uVkydJ0OHmlrc1UacTQbVV4sKHE/bLrmf
+	Yw9eoe5E7nK0/Z6QLbIBazxjFNzlDa9p0LhVp3bxWa5EaS5gDNYvKk8MZXdqMw==
+X-Google-Smtp-Source: AGHT+IHqXN55m2k9nKnrLVORi16b7s+aS0bP7kpj9K+gERCN7cxXjZ4YnCy9OzUuuNUrn0w1QzZ3/w==
+X-Received: by 2002:a05:6808:3190:b0:3e0:74b1:d676 with SMTP id 5614622812f47-3e074b1dfb8mr974656b6e.27.1726129051808;
+        Thu, 12 Sep 2024 01:17:31 -0700 (PDT)
+Received: from [172.16.118.100] ([103.15.228.94])
+        by smtp.gmail.com with ESMTPSA id 41be03b00d2f7-7db1fddc6e2sm1186225a12.62.2024.09.12.01.17.21
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 12 Sep 2024 01:17:30 -0700 (PDT)
+Message-ID: <8072c698-93b0-4d3a-a970-e276243f82c4@beagleboard.org>
+Date: Thu, 12 Sep 2024 13:47:18 +0530
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 8/8] addon_boards: mikrobus: Add GPS3 Click
+Content-Language: en-US
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ Dirk Behme <dirk.behme@de.bosch.com>
+Cc: Ayush Singh <ayushdevel1325@gmail.com>, fabien.parent@linaro.org,
+ d-gole@ti.com, lorforlinux@beagleboard.org, jkridner@beagleboard.org,
+ robertcnelson@beagleboard.org, Andrew Davis <afd@ti.com>,
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>, Rob Herring <robh@kernel.org>,
+ Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley
+ <conor+dt@kernel.org>, Derek Kiernan <derek.kiernan@amd.com>,
+ Dragan Cvetic <dragan.cvetic@amd.com>, Arnd Bergmann <arnd@arndb.de>,
+ Nishanth Menon <nm@ti.com>, Vignesh Raghavendra <vigneshr@ti.com>,
+ Tero Kristo <kristo@kernel.org>, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, devicetree@vger.kernel.org,
+ linux-arm-kernel@lists.infradead.org
+References: <20240911-mikrobus-dt-v1-0-3ded4dc879e7@beagleboard.org>
+ <20240911-mikrobus-dt-v1-8-3ded4dc879e7@beagleboard.org>
+ <2024091149-vocalize-composite-6e48@gregkh>
+ <44039255-159a-4284-abd8-a0f558ad006d@gmail.com>
+ <2024091151-unworldly-dance-9a80@gregkh>
+ <097159c7-1602-4e32-8e6f-9cd023d62238@beagleboard.org>
+ <419bf74e-74cb-46ca-95d0-03b3bab3948d@de.bosch.com>
+ <2024091211-bladder-runner-2d75@gregkh>
+From: Ayush Singh <ayush@beagleboard.org>
+In-Reply-To: <2024091211-bladder-runner-2d75@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On 11.09.24 16:50, Danilo Krummrich wrote:
-> On Wed, Sep 11, 2024 at 03:27:57PM +0200, Alice Ryhl wrote:
->> On Wed, Sep 11, 2024 at 3:26=E2=80=AFPM Benno Lossin <benno.lossin@proto=
-n.me> wrote:
->>> On 11.09.24 13:02, Danilo Krummrich wrote:
->>>> On Wed, Sep 11, 2024 at 08:36:38AM +0000, Benno Lossin wrote:
->>>>> On 11.09.24 01:25, Danilo Krummrich wrote:
->>>>>> On Tue, Sep 10, 2024 at 07:49:42PM +0000, Benno Lossin wrote:
->>>>>>> On 10.09.24 19:40, Danilo Krummrich wrote:
->>>>>>>> On Sat, Aug 31, 2024 at 05:39:07AM +0000, Benno Lossin wrote:
->>>>>>>>> On 16.08.24 02:10, Danilo Krummrich wrote:
->>>>>>>>>> +///
->>>>>>>>>> +/// ```
->>>>>>>>>> +/// # use kernel::bindings;
->>>>>>>>>> +/// const SIZE: usize =3D bindings::KMALLOC_MAX_SIZE as usize +=
- 1;
->>>>>>>>>> +/// struct Huge([u8; SIZE]);
->>>>>>>>>> +///
->>>>>>>>>> +/// assert!(KVBox::<Huge>::new_uninit(GFP_KERNEL).is_ok());
->>>>>>>>>> +/// ```
->>>>>>>>>
->>>>>>>>> Similarly, you could then say above this one "Instead use either =
-`VBox`
->>>>>>>>> or `KVBox`:"
->>>>>>>>>
->>>>>>>>>> +///
->>>>>>>>>> +/// # Invariants
->>>>>>>>>> +///
->>>>>>>>>> +/// The [`Box`]' pointer is always properly aligned and either =
-points to memory allocated with `A`
->>>>>>>>>
->>>>>>>>> Please use `self.0` instead of "[`Box`]'".
->>>>>>>>>
->>>>>>>>>> +/// or, for zero-sized types, is a dangling pointer.
->>>>>>>>>
->>>>>>>>> Probably "dangling, well aligned pointer.".
->>>>>>>>
->>>>>>>> Does this add any value? For ZSTs everything is "well aligned", is=
-n't it?
+
+On 9/12/24 13:09, Greg Kroah-Hartman wrote:
+> On Thu, Sep 12, 2024 at 09:29:01AM +0200, Dirk Behme wrote:
+>> On 12.09.2024 09:16, Ayush Singh wrote:
+>>> On 9/12/24 01:34, Greg Kroah-Hartman wrote:
+>>>
+>>>> On Wed, Sep 11, 2024 at 09:26:06PM +0530, Ayush Singh wrote:
+>>>>> On 9/11/24 20:28, Greg Kroah-Hartman wrote:
+>>>>>
+>>>>>> On Wed, Sep 11, 2024 at 07:57:25PM +0530, Ayush Singh wrote:
+>>>>>>> - GPS3 Click is a UART MikroBUS addon Board
 >>>>>>>
->>>>>>> ZSTs can have alignment and then unaligned pointers do exist for th=
-em
->>>>>>> (and dereferencing them is UB!):
+>>>>>>> Link: https://www.mikroe.com/gps-3-click
+>>>>>>>
+>>>>>>> Signed-off-by: Ayush Singh <ayush@beagleboard.org>
+>>>>>>> ---
+>>>>>>>     addon_boards/mikrobus/Makefile         |  1 +
+>>>>>>>     addon_boards/mikrobus/mikroe-1714.dtso | 28
+>>>>>>> ++++++++++++++++++++++++++++
+>>>>>> Odd top-level directory for the kernel, are you sure this is correct?
 >>>>>>
->>>>>> Where is this documented? The documentation says:
+>>>>>> thanks,
 >>>>>>
->>>>>> "For operations of size zero, *every* pointer is valid, including th=
-e null
->>>>>> pointer. The following points are only concerned with non-zero-sized=
- accesses."
->>>>>> [1]
->>>>>
->>>>> That's a good point, the documentation looks a bit outdated. I found
->>>>> this page in the nomicon: https://doc.rust-lang.org/nomicon/vec/vec-z=
-sts.html
->>>>> The first iterator implementation has an alignment issue. (Neverthele=
-ss,
->>>>> that chapter of the nomicon is probably useful to you, since it goes
->>>>> over implementing `Vec`, but maybe you already saw it)
->>>>>
->>>>>> [1] https://doc.rust-lang.org/std/ptr/index.html
->>>>>
->>>>> Might be a good idea to improve/complain about this at the rust proje=
-ct.
+>>>>>> greg k-h
+>>>>>>
+>>>>> Well, it is kinda a temporary location, since well, I could not
+>>>>> find a good
+>>>>> place for board overlays but a top-level location seems better
+>>>>> than putting
+>>>>> them in any arch specific location. I am open to moving them to a more
+>>>>> suitable location if we have one.
+>>>> top-level location is not ok for something so tiny and "special".  Just
+>>>> put it where all other dtso files go.
 >>>>
->>>> Well, my point is how do we know? There's no language specification an=
-d the
->>>> documentation is (at least) ambiguous.
+>>>> thanks,
+>>>>
+>>>> greg k-h
 >>>
->>> So I went through the unsafe-coding-guidelines issues list and only
->>> found this one: https://github.com/rust-lang/unsafe-code-guidelines/iss=
-ues/93
->>> Maybe I missed something. You could also try to ask at the rust zulip i=
-n
->>> the t-opsem channel for further clarification.
+>>> So here are the directories where dtso files currently go:
 >>>
->>> I think we should just be on the safe side and assume that ZSTs require
->>> alignment. But if you get a convincing answer and if they say that they
->>> will document it, then I don't mind removing the alignment requirement.
->=20
-> I agree -- I also wrote this in a previous mail.
->=20
-> I was just wondering why you are so sure about it, since the documentatio=
-n
-> doesn't seem to be clear about it.
-
-As Alice found below, the documentation is actually clear about this. (I
-think I read it at some point, but forgot exactly where it was)
-
-Maybe it could be better documented that dereferencing has the same
-requirements as `read` (or whatever they are).
-
->> Please see the section on alignment in the same page. Just because a
->> pointer is valid does not mean that it is properly aligned.
+>>> ❯ find . -type f -name "*.dtso" -printf "%h\n" | sort -u
+>>> ./arch/arm64/boot/dts/amlogic
+>>> ./arch/arm64/boot/dts/freescale
+>>> ./arch/arm64/boot/dts/mediatek
+>>> ./arch/arm64/boot/dts/qcom
+>>> ./arch/arm64/boot/dts/renesas
+>>> ./arch/arm64/boot/dts/rockchip
+>>> ./arch/arm64/boot/dts/ti
+>>> ./arch/arm64/boot/dts/xilinx
+>>> ./arch/arm/boot/dts/nxp/imx
+>>> ./arch/arm/boot/dts/ti/omap
+>>> ./drivers/clk
+>>> ./drivers/of
+>>> ./drivers/of/unittest-data
+>>>
+>>>
+>>> Out of these, `drivers/of` and `drivers/of/unittest-data` contain
+>>> unittest dtso, so probably not the place.
+>>>
+>>> And the `arch/arm` and `arch/arm64` are for arch specific stuff.
+>>> MikroBUS is supported in RISC-V boards as well (BeagleV-Ahead). So
+>>> probably not the correct location either.
+>>>
+>>> Maybe something like `arch/common/addon_boards` would be better?
+>> Whats about
 >>
->> From the page:
->>
->> Valid raw pointers as defined above are not necessarily properly
->> aligned (where =E2=80=9Cproper=E2=80=9D alignment is defined by the poin=
-tee type,
->> i.e., *const T must be aligned to mem::align_of::<T>()). However, most
->> functions require their arguments to be properly aligned, and will
->> explicitly state this requirement in their documentation. Notable
->> exceptions to this are read_unaligned and write_unaligned.
->>
->> When a function requires proper alignment, it does so even if the
->> access has size 0, i.e., even if memory is not actually touched.
->> Consider using NonNull::dangling in such cases.
->=20
-> Good point.
->=20
-> It still sounds like it's only required for functions that explicitly sta=
-te so.
->=20
-> And as cited from nomicon "This is possibly needless pedantry because ptr=
-::read
-> is a noop for a ZST, [...]". But, no question, of course we have to honor=
- it
-> anyways.
+>> drivers/misc/mikrobus/mikrobus.rs
+>> drivers/misc/mikrobus/mikroe-1714.dtso
+>> drivers/misc/mikrobus/mikroe-5761-i2c.dtso
+> Exactly, put them where the drivers are, like clk and of does.
+>
+> thanks,
+>
+> greg k-h
 
-This sounds to me like an implementation detail note, not something that
-a caller should consider. But that's my interpretation.
 
----
-Cheers,
-Benno
+So I am writing a more thorough reply in the driver questions, but 
+essentially, the driver is not actually required for using the overlay 
+based approach for mikroBUS addon boards. Initially, the driver was not 
+supposed to be included in the patch series at all. But I was not able 
+to find a way to use a GPIO nexus node [0] without having a platform 
+driver attached to the node.
+
+In fact, if the GPIO nexus node is not required (like in the case of 
+weather click), there is no need to even have a mikrobus-connector node 
+in dt, let alone a driver.
+
+
+So to answer why it probably should not go in the driver directory, the 
+driver for the connector, actually does not register the mikrobus addon 
+board. And if there is a way to have GPIO nexus node without having a 
+platform driver attached to the node, then it should probably be removed.
+
+
+The reason why the overlay based approach was suggested was because 
+previous approaches could not do board stacking (having chain of 
+mikrobus connector -> grove connector addon board -> grove board). So as 
+you can see, it is beneficial to have grove board overlays compiled even 
+in a board without any grove connectors because of stacking.
+
+
+[0]: 
+https://devicetree-specification.readthedocs.io/en/v0.3/devicetree-basics.html#nexus-nodes-and-specifier-mapping
+
+
+Ayush Singh
 
