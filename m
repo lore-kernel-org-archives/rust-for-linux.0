@@ -1,150 +1,125 @@
-Received: from EUR02-DB5-obe.outbound.protection.outlook.com (mail-db5eur02on2040.outbound.protection.outlook.com [40.107.249.40])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BD7218BBA7;
-	Thu, 12 Sep 2024 06:07:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.249.40
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726121224; cv=fail; b=TrS6FD6cPwu46LTplvGeopWvWbTaPMqgIHfXSqkDHgjLotMCrAj1vzsoWWSpWxrmKOVbQXS81RsJs0xp0ojGdJxfs31fqfubqTSTBqQ+bhcwoZ9cpUFi+qFYWUfjZRSRR0DnCDMRJoBxGus1qpOV+wNmq6XWL0cP9nUKO/mRofs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726121224; c=relaxed/simple;
-	bh=I+apeXjXHQz2zeWTq9w0pG6dZxZlMRI/zva0J5bwT9M=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=EnzQQiekB+hmTXuEyTT/8BxsojU1skjPLMPoyBXUDpGTwyVPNl37/52ef/f95ZUGiJqEWnDjWX66JtQtQUYRuszW4UlYCLS7wbmkpEOLR51U7Pi55BZ4NEqXQ5VE3mWNWvvhxEXW99ovcy3VHnocWLUD3vPY7PJz7RPWwjLXQEA=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com; spf=pass smtp.mailfrom=de.bosch.com; dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b=kzeAw58s; arc=fail smtp.client-ip=40.107.249.40
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.bosch.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B932318BC1C;
+	Thu, 12 Sep 2024 06:44:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.181
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1726123452; cv=none; b=m0a7DEZl2Wf18pSX9cM/GKOxRI4vLARybeHYDCEuaPGKfq4YkHKrQjWmedaoCt1VUhjm+BhnWk41R8YAeMsF97UjmNXnzEWQ2oO81lCBwBaiaH8rffqSh+btMgR8no8PgJ22tEW4rCZLnPpdwHke/oMWn+HAZMI/7TwC6k2MI8E=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1726123452; c=relaxed/simple;
+	bh=z1ni0FIjjWPhSA+Q1iNuKBMOEcDQCRWjIyZ3dFM7cEw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=UacNVuW+kuj/ziIwBtEYf51OJ51AYph73aYCfN37PnR/MJjZ+DUNAnKC0JVHdLx3exEs1+OIA0VfR62Hldkx2W7L0VlbjcCZPYAOl4y3iCeOy61GhnpySH4BLf0YywcV6Oxk+64kFcJNwj0J/4ECD+DspT3R6aZXc4P6bN1MWy0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MLHbJ/kg; arc=none smtp.client-ip=209.85.222.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b="kzeAw58s"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=cFpBVWJRyfwcM7FCFjlVo7eR2v9Rm0blGx0zCHq2AyD7QDLeo0WOgCbs6xFs06nuc1JEG9izRGPPPvhmFFye7Y6gWrMx0+p3Ah4QDYRS/Q9RamoP5oms8CoKbglQGfqkpa8/XDR9bQHWZAImbo2BlcM5yCNbc/zeFZc+LHM99h/KT4tpA14rsdQFhiaNOwVWR84DnhjxQhm3xbm5X/AQnImcFM+SWbe2btGTwChDmrj1WCSdvSYBGrY+pmU0GNQW8lHVXQtqB/AvLdVuw8xd9aVwGQUEmWP6OY2t3lW6bsr549IXbVl8NlPlt1oPuhUNMuB1GbNnqnTPlFHu2KrgKQ==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=8wAl0++hLnxCIx+XPOgkaGvy6LMyn+s3N+fZTVQ+x0U=;
- b=kmGSlmZQ85j7nhyvSi5GTzcURbugJbPmeFQdpSjZ7jUDgrgoSiEKnXwe/2eGLYmLQd5bV3jbnwX4grxPKQzQQ2P1thnBKfRILeQpldxRfCm5u2Rf1qom4aNED+kkx1wotvbkvy/pQ5rFGMbaLooaW9E56bhdv2ZLrLy77MvPoq/0vYaeq+6vbWr+NnaCS+e7geGsIVgB8YoOKshXRFPk+cVSk/oSagYPCaHwFlJOxWFuUE4jOIH6cpNoEVnOgLj9rPXX63V9OjN5Q5giow0/MSJC6ZU//Yz4gm0qfW43Mwi53PmACY4NwRnxHmzy/PjpF01rlQiF9whb4ij9cDjKgg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 139.15.153.206) smtp.rcpttodomain=redhat.com smtp.mailfrom=de.bosch.com;
- dmarc=pass (p=reject sp=none pct=100) action=none header.from=de.bosch.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=de.bosch.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=8wAl0++hLnxCIx+XPOgkaGvy6LMyn+s3N+fZTVQ+x0U=;
- b=kzeAw58sDEY+u12bj5+pEuE8rhPyD9UXHwU86xZt257du3shEx+aeTo9W+4OQEpOqh4C/XbsUsqbFYg76HeSnHLWbGwk5IxKbXWGXmUpzz3mXirY6Im2ht9e0h7Jm+GPIrNWwcRHGLzXH8NlYUtadzn0w6crnbD9WX/hvq4nxpJien58d90LCxur/E/6hGpBqGRB/ynj0fbMA27S3KYABGWOSJqwFtNzFjDMOd5E8bhuWMkWlxHD/RWc5BWqcD3EfYST+nS13gdJf8Fgh3FkWdmGIKQ3vh8BKTUlfBLXFDX11ESFETAOa8gPBq3ie5mNv4uxtDJmaAS0/kO/NMMDGQ==
-Received: from DUZPR01CA0146.eurprd01.prod.exchangelabs.com
- (2603:10a6:10:4bd::9) by AS4PR10MB5497.EURPRD10.PROD.OUTLOOK.COM
- (2603:10a6:20b:4fb::16) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7939.17; Thu, 12 Sep
- 2024 06:06:56 +0000
-Received: from DB5PEPF00014B8B.eurprd02.prod.outlook.com
- (2603:10a6:10:4bd:cafe::b0) by DUZPR01CA0146.outlook.office365.com
- (2603:10a6:10:4bd::9) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7939.25 via Frontend
- Transport; Thu, 12 Sep 2024 06:06:56 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 139.15.153.206)
- smtp.mailfrom=de.bosch.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=de.bosch.com;
-Received-SPF: Pass (protection.outlook.com: domain of de.bosch.com designates
- 139.15.153.206 as permitted sender) receiver=protection.outlook.com;
- client-ip=139.15.153.206; helo=eop.bosch-org.com; pr=C
-Received: from eop.bosch-org.com (139.15.153.206) by
- DB5PEPF00014B8B.mail.protection.outlook.com (10.167.8.199) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.7918.13 via Frontend Transport; Thu, 12 Sep 2024 06:06:56 +0000
-Received: from FE-EXCAS2001.de.bosch.com (10.139.217.200) by eop.bosch-org.com
- (139.15.153.206) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Thu, 12 Sep
- 2024 08:06:35 +0200
-Received: from [10.34.219.93] (10.139.217.196) by FE-EXCAS2001.de.bosch.com
- (10.139.217.200) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Thu, 12 Sep
- 2024 08:06:38 +0200
-Message-ID: <3535d832-7980-4c95-a2f7-b6d90b172173@de.bosch.com>
-Date: Thu, 12 Sep 2024 08:06:24 +0200
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MLHbJ/kg"
+Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-7a7f8b0b7d0so30838585a.2;
+        Wed, 11 Sep 2024 23:44:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1726123449; x=1726728249; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cXBZHn1B8vjCRl1SZPjKQQZgwTON+FrvCPw47Wz5pco=;
+        b=MLHbJ/kg4zYnMfw8vs53KIY+e9PDD/Kuy0iTxU7PQZybvC3NDcCkUoFO+i7PyI3QVq
+         TC4xiEgK090wj0eJlb00csM+FVjeApZ+YBdLfun62+U3A48Uz1bctbWbjdis42BQXwx7
+         g8ouxad9plNtvBNpDidrMgZcseh42F+XCTuaax64Wwa3+A2YNndQrttFP/t0KJqnARgR
+         nAGmlvP0Yu4xvNV/71BWRJQgxQ4PWj6JqAZRrJD2jGYJ7r4ADt1cPCUVa+EHhYUglqsD
+         BITwnbUqvJf91CqXffLrsxQFkLMdNwb5vVkWh7387LF6/consf+Jb8DVLKlCBazcXi6f
+         2BjA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1726123449; x=1726728249;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=cXBZHn1B8vjCRl1SZPjKQQZgwTON+FrvCPw47Wz5pco=;
+        b=dkzyEGrTnoJlbsf/bvgJdq6LLZcmptvgc3NDtKxZAqBjsRfMWE1CDNHTjYpLzlND6s
+         6cdQd/0aDgtWarn26R8ZazBlocK/p/S8gFJgwYl27fk6qvhV3J4kDOyzUhIH173stD4a
+         8kodcHWgNWIWp96ZwEyTctW1+xzQfGyaAFN4LgrlmE5MS9rUMFsvr0HeRwKpRUzeLUGr
+         Ta+AQj/o9/1rycF94OhqniTSDaHTFiRIfUftetw2CEnMYon2/vBQsAuyayo04T15qyEN
+         +78kIT55JZ3oVzRpSg/u8SHVG7TjHiSrtSppTRnQUAQpxSLtTe6yO9ueuDKBLGxkiH4/
+         Nhjg==
+X-Forwarded-Encrypted: i=1; AJvYcCVrdba2+EEXE63mg81wgiefVhBLiDXAP8dNZ3t7e9G3AppINBTSAEgTG/yBc6gtR0pvU2L+bvr4NVJ/01g=@vger.kernel.org
+X-Gm-Message-State: AOJu0YxzaaUr8eCZZc+2zMx8oCGXgI0mMAkv/cLmTtZiEKQVjzKVZb8Q
+	8l1r7h59KX33uNZwrglWZ5bZEXV/9vyFhXdhbIxIo3zoSKSZAMky
+X-Google-Smtp-Source: AGHT+IEyUjQ2Gpp9kdigVBolZ1fzVGPdA0gSynzaIcZbV+UW2haz7OLMCqvibjgqn0KbELzi2Mq4yg==
+X-Received: by 2002:a05:620a:294a:b0:7a9:ad18:11e9 with SMTP id af79cd13be357-7a9e5f7c6e1mr318022185a.59.1726123449356;
+        Wed, 11 Sep 2024 23:44:09 -0700 (PDT)
+Received: from fauth2-smtp.messagingengine.com (fauth2-smtp.messagingengine.com. [103.168.172.201])
+        by smtp.gmail.com with ESMTPSA id d75a77b69052e-45822f95895sm49706281cf.89.2024.09.11.23.44.08
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 11 Sep 2024 23:44:08 -0700 (PDT)
+Received: from phl-compute-03.internal (phl-compute-03.phl.internal [10.202.2.43])
+	by mailfauth.phl.internal (Postfix) with ESMTP id E38311200072;
+	Thu, 12 Sep 2024 02:44:07 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-03.internal (MEProxy); Thu, 12 Sep 2024 02:44:07 -0400
+X-ME-Sender: <xms:t43iZibFAnZBGqs0DABSwkFZEaUV5h-4futo94B4A7Z4otPAOeA2XQ>
+    <xme:t43iZlYxTLcYdQjeIWGbZaI3i2Sgl1vbERdkLpdkPl2mQRrQqqokGiOFDtqRqzhC5
+    BTSlSUCHfM1vHUaBQ>
+X-ME-Received: <xmr:t43iZs-dbIZFib3fP6redjuw7JI7IUPwCkwS6QNbJK4ciP2zneO3FEdu0NSyZg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrudejvddgudduudcutefuodetggdotefrod
+    ftvfcurfhrohhfihhlvgemucfhrghsthforghilhdpggftfghnshhusghstghrihgsvgdp
+    uffrtefokffrpgfnqfghnecuuegrihhlohhuthemuceftddtnecusecvtfgvtghiphhivg
+    hnthhsucdlqddutddtmdenucfjughrpeffhffvvefukfhfgggtuggjsehttdertddttddv
+    necuhfhrohhmpeeuohhquhhnucfhvghnghcuoegsohhquhhnrdhfvghnghesghhmrghilh
+    drtghomheqnecuggftrfgrthhtvghrnhepffeljeelheevleetleetudfghfehvdekgfdv
+    heefieffiefhiefgvddtuefhtdetnecuffhomhgrihhnpehkvghrnhgvlhdrohhrghdpgh
+    hithhhuhgsrdgtohhmnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghi
+    lhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidqie
+    elvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilhdr
+    tghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthhopedvuddpmhhouggvpehsmh
+    htphhouhhtpdhrtghpthhtoheplhihuhguvgesrhgvughhrghtrdgtohhmpdhrtghpthht
+    oheprhhushhtqdhfohhrqdhlihhnuhigsehvghgvrhdrkhgvrhhnvghlrdhorhhgpdhrtg
+    hpthhtohepuggrkhhrsehrvgguhhgrthdrtghomhdprhgtphhtthhopegrihhrlhhivggu
+    sehrvgguhhgrthdrtghomhdprhgtphhtthhopehmihhnghhosehrvgguhhgrthdrtghomh
+    dprhgtphhtthhopeifihhllheskhgvrhhnvghlrdhorhhgpdhrtghpthhtoheplhhonhhg
+    mhgrnhesrhgvughhrghtrdgtohhmpdhrtghpthhtohepphgvthgvrhiisehinhhfrhgrug
+    gvrggurdhorhhgpdhrtghpthhtoheplhhinhhugidqkhgvrhhnvghlsehvghgvrhdrkhgv
+    rhhnvghlrdhorhhg
+X-ME-Proxy: <xmx:t43iZkqXvhOFuFVLlEP16QiZKNbcloH5XQk6LV8eJpH7KaYB4YWNEg>
+    <xmx:t43iZtqqjoSNtdYLTETCiOAYGYcWeu3xqPs3K4oTS0pSOLkamWLYVg>
+    <xmx:t43iZiQ3HawRt8UNYGDpZTB_VpZ82q9L8LbVxfwDkKgAIhxZgEvGxw>
+    <xmx:t43iZtpjyAcPrSJBKDIvmTZRi7eCrZhwdeWK2cYuLsC49uXFh36iHQ>
+    <xmx:t43iZq4ssXs9t95tT4mvclFFQpHAgI9y6AROeF0EbIkke8vD2ZFKib8P>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 12 Sep 2024 02:44:07 -0400 (EDT)
+Date: Wed, 11 Sep 2024 23:44:03 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Lyude Paul <lyude@redhat.com>
+Cc: rust-for-linux@vger.kernel.org, Danilo Krummrich <dakr@redhat.com>,
+	airlied@redhat.com, Ingo Molnar <mingo@redhat.com>,
+	Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>, linux-kernel@vger.kernel.org,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>, Asahi Lina <lina@asahilina.net>,
+	Valentin Obst <kernel@valentinobst.de>,
+	Thomas Gleixner <tglx@linutronix.de>
+Subject: Re: [PATCH v4 1/3] rust: Introduce irq module
+Message-ID: <ZuKNszXSw-LbgW1e@boqun-archlinux>
+References: <20240912005539.175428-1-lyude@redhat.com>
+ <20240912005539.175428-2-lyude@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 1/3] rust: Introduce irq module
-To: Lyude Paul <lyude@redhat.com>, <rust-for-linux@vger.kernel.org>
-CC: Danilo Krummrich <dakr@redhat.com>, <airlied@redhat.com>, Ingo Molnar
-	<mingo@redhat.com>, Will Deacon <will@kernel.org>, Waiman Long
-	<longman@redhat.com>, Peter Zijlstra <peterz@infradead.org>,
-	<linux-kernel@vger.kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor
-	<alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, "Boqun
- Feng" <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin
-	<benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, "Alice
- Ryhl" <aliceryhl@google.com>, Asahi Lina <lina@asahilina.net>, Valentin Obst
-	<kernel@valentinobst.de>
-References: <20240912005539.175428-1-lyude@redhat.com>
- <20240912005539.175428-2-lyude@redhat.com>
-Content-Language: en-US
-From: Dirk Behme <dirk.behme@de.bosch.com>
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 In-Reply-To: <20240912005539.175428-2-lyude@redhat.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DB5PEPF00014B8B:EE_|AS4PR10MB5497:EE_
-X-MS-Office365-Filtering-Correlation-Id: 8812aade-0ccf-43df-0121-08dcd2f11b3b
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|1800799024|376014|82310400026|7416014|36860700013;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?eVZXVFJ6WGZnNnpIU1h1ZTVWZFBYRjgyVm9GRUozeDN0ZUdkNVlrNmNZdElQ?=
- =?utf-8?B?U2xYVjFFWk1pNUcvRG42WUx4ZXpVTUQvTXVtOW9LWnpHVDdmTnUzOFJnb3V4?=
- =?utf-8?B?dmpnSXROem4yQkQzQUZhZnRyOFdQYkVoOHFocFcyZFU0cS83R3NJa1lDN2VX?=
- =?utf-8?B?ak9UdnZDM2FPR3NKb1BLd3BLMWo1T283Rm0xVUJhaGNvcFFVWDduZWpROVhn?=
- =?utf-8?B?T2QxUDdTZ2ozemp1YXZEVWlIRFp5TjAxZEpDTjljS1EvOURpL0NTNURoV2RF?=
- =?utf-8?B?YVh2SjY4Vkp6TFFaZTZJck9JeU8wT1JuUy9PcDBRd1RucDlFNHZuZGZtRDk3?=
- =?utf-8?B?aHN1aDltaVNqRG1Bd05VWEJIdllJekNIL09DM2M0eHNsYXV5OURvbThJd3Fo?=
- =?utf-8?B?bzYxQVJ0SkorS0xZaGR3U3dHTDQ4cWQrVnpGTUhzeEdTcmVNVnFDT2xCNGpD?=
- =?utf-8?B?blJzc0lNTlFhQVVKaENOUG4wNmFpT3MrOG9NN3lNZDdJNjFFNjRXaXRBRlU1?=
- =?utf-8?B?NGkyT3duNms4bGh3cjB3elhNckZTYkdGb3RaOCswYlh4WjhUTWVlUU00WTRT?=
- =?utf-8?B?bnhqcEYxL2JXd1RtZ2QyeVRxSFB0dGxuS0pNUGk0Wm5OVnRERTFvaEE5YVZp?=
- =?utf-8?B?ZEYySWJqNFliOVMvU0pnVklySzBWZDNjSHR5NjJtVjFhVmdTRlJPWUQ2aDl5?=
- =?utf-8?B?c3FBdE1NUDFlN253QkY2Y0x3NkZCbUkvejVmb0VQbkcyK3NDMzg2aXVvU3Jn?=
- =?utf-8?B?WDFsZ05rQ3h4UWpyaFB4QWlFZTQzRzdpRGlEb2hHRWNlVDBQL3BjeC9kU0xm?=
- =?utf-8?B?N3ZtR1JQTWlKaWhCaXorS2RhUUVmVEkwWnVGT2FJZXh1Mlp3dlcwNzEyTTVV?=
- =?utf-8?B?ajJLWlZLdlA3cE0wcWhOQ0dHaFM0NDEyVzZpYW13Y0NCamxRbnlVUDNZSkpH?=
- =?utf-8?B?ZlZxVmtueDRxUjBJbkRMOWhaZFB2dk9XR1ZVVUVKQlMyc09pQTY5UjQ3czM5?=
- =?utf-8?B?aFg1WCttR0dUazNwcE52dUMyYWczamQ1VjRmcG53ZmovR3c1SEVnT0YrN0lh?=
- =?utf-8?B?dzE5bjUrc0tmSzdqeXdYc3JqWURkMlZNOXE0V01BT1k0cUt1bTFHbWFEUUEw?=
- =?utf-8?B?Ujc4d3Z0V0RBdmROYjdZK2dDUTlrNHhyOWN0MzFNTkZxT0tFYWc2VFU2VVRQ?=
- =?utf-8?B?aDBtdXFTNjRKclVkOVYyNUYzelNMRmVyWmpiMHliTFJ3QUhxamVJMlpPbnky?=
- =?utf-8?B?S3ZRVG5SWEJickg5ZnZQSmd5WTB0VHdKYTdsZnVaME51Sis5UDNCTXFGRE5C?=
- =?utf-8?B?bUZsUEZRK0habjhLeVAxV3l4UHpqZ0RJUEdES1hQYWlYSktvOWNFUEJhQ2pj?=
- =?utf-8?B?NjZFa2VGWjdsTFNWODVUZnlISWYwSXdSMWFtT0wwc0NuVUs0ZEN4aVNYeEhW?=
- =?utf-8?B?RDhDVVZZZGNjT2dCUGEyczdacWcvU1ZrVWhOWmpmUHoyT21aRS82QlFMUXpG?=
- =?utf-8?B?YSt1MDZSNHcvanU2ZTlkODlzN2VGRytFNk1iQUY5U2hINGZBUmYya3FXMzgy?=
- =?utf-8?B?TWNYR2xMWW1DZjc0a1BvSklnT1NESCtmZDNyak81N3ZrdWZTMFBPaUlRbkhv?=
- =?utf-8?B?S2R2NDF6NHFqZGNTVXpsVEJSYlZTTFpmSTNNb3JvWkxYeFdvNldtSTlVZElj?=
- =?utf-8?B?UDI2MHN0ZHUyRExJMDBia2YrcHFBUjQ4SjFwTXZWai9lb1RXQlB1cHZxTUUv?=
- =?utf-8?B?ek1RTkVGVnJPcGkvWjJNYXNGMmpGMWF2V0dOR1hoZlFxZXpSampYU3lYVkJq?=
- =?utf-8?B?QUZUYVBkS2NVSnpLWHlUcUtudWZ6RVJCb2JTQ2trczh1QWhhYnFTRTFmZFAz?=
- =?utf-8?B?YmF4VjdMMlZ2YWJKWmFydHdLbThTa2RaL3drU1k3TnB5b3FQanllWmgyMGg0?=
- =?utf-8?Q?dJ9crJSgiOXOxQpsRY0WKek9ctU9PX8E?=
-X-Forefront-Antispam-Report:
-	CIP:139.15.153.206;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eop.bosch-org.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(376014)(82310400026)(7416014)(36860700013);DIR:OUT;SFP:1101;
-X-OriginatorOrg: de.bosch.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 12 Sep 2024 06:06:56.4633
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 8812aade-0ccf-43df-0121-08dcd2f11b3b
-X-MS-Exchange-CrossTenant-Id: 0ae51e19-07c8-4e4b-bb6d-648ee58410f4
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0ae51e19-07c8-4e4b-bb6d-648ee58410f4;Ip=[139.15.153.206];Helo=[eop.bosch-org.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	DB5PEPF00014B8B.eurprd02.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: AS4PR10MB5497
 
-On 12.09.2024 02:55, Lyude Paul wrote:
+On Wed, Sep 11, 2024 at 08:55:32PM -0400, Lyude Paul wrote:
 > This introduces a module for dealing with interrupt-disabled contexts,
 > including the ability to enable and disable interrupts
 > (with_irqs_disabled()) - along with the ability to annotate functions as
@@ -156,12 +131,12 @@ On 12.09.2024 02:55, Lyude Paul wrote:
 > 
 > V2:
 > * Actually make it so that we check whether or not we have interrupts
->    disabled with debug assertions
+>   disabled with debug assertions
 > * Fix issues in the documentation (added suggestions, missing periods, made
->    sure that all rustdoc examples compile properly)
+>   sure that all rustdoc examples compile properly)
 > * Pass IrqDisabled by value, not reference
 > * Ensure that IrqDisabled is !Send and !Sync using
->    PhantomData<(&'a (), *mut ())>
+>   PhantomData<(&'a (), *mut ())>
 > * Add all of the suggested derives from Benno Lossin
 > 
 > V3:
@@ -171,24 +146,150 @@ On 12.09.2024 02:55, Lyude Paul wrote:
 > 
 > V4:
 > * Use the actual unsafe constructor for IrqDisabled in
->    with_irqs_disabled()
+>   with_irqs_disabled()
 > * Fix comment style in with_irqs_disabled example
 > * Check before calling local_irq_restore() in with_irqs_disabled that
->    interrupts are still disabled. 
-
-
-This looks correct ...
-
-
-> It would have been nice to do this from a
->    Drop implementation like I hoped, but I realized rust doesn't allow that
->    for types that implement Copy.
+>   interrupts are still disabled. It would have been nice to do this from a
+>   Drop implementation like I hoped, but I realized rust doesn't allow that
+>   for types that implement Copy.
 > * Document that interrupts can't be re-enabled within the `cb` provided to
->    `with_irqs_disabled`, and link to the github issue I just filed about
->    this that describes the solution for this.
+>   `with_irqs_disabled`, and link to the github issue I just filed about
+>   this that describes the solution for this.
 > 
 > Signed-off-by: Lyude Paul <lyude@redhat.com>
-....
+> ---
+>  rust/helpers.c     | 23 ++++++++++++
+>  rust/kernel/irq.rs | 90 ++++++++++++++++++++++++++++++++++++++++++++++
+>  rust/kernel/lib.rs |  1 +
+>  3 files changed, 114 insertions(+)
+>  create mode 100644 rust/kernel/irq.rs
+> 
+> diff --git a/rust/helpers.c b/rust/helpers.c
+> index 92d3c03ae1bd5..c6109358675ae 100644
+> --- a/rust/helpers.c
+> +++ b/rust/helpers.c
+
+You need to rebase on rust-next, which has the helper split changes.
+
+> @@ -26,6 +26,7 @@
+>  #include <linux/device.h>
+>  #include <linux/err.h>
+>  #include <linux/errname.h>
+> +#include <linux/irqflags.h>
+>  #include <linux/gfp.h>
+>  #include <linux/highmem.h>
+>  #include <linux/mutex.h>
+> @@ -85,6 +86,28 @@ void rust_helper_spin_unlock(spinlock_t *lock)
+>  }
+>  EXPORT_SYMBOL_GPL(rust_helper_spin_unlock);
+>  
+> +unsigned long rust_helper_local_irq_save(void)
+> +{
+> +	unsigned long flags;
+> +
+> +	local_irq_save(flags);
+> +
+> +	return flags;
+> +}
+> +EXPORT_SYMBOL_GPL(rust_helper_local_irq_save);
+> +
+> +void rust_helper_local_irq_restore(unsigned long flags)
+> +{
+> +	local_irq_restore(flags);
+> +}
+> +EXPORT_SYMBOL_GPL(rust_helper_local_irq_restore);
+> +
+> +bool rust_helper_irqs_disabled(void)
+> +{
+> +	return irqs_disabled();
+> +}
+> +EXPORT_SYMBOL_GPL(rust_helper_irqs_disabled);
+> +
+>  void rust_helper_init_wait(struct wait_queue_entry *wq_entry)
+>  {
+>  	init_wait(wq_entry);
+> diff --git a/rust/kernel/irq.rs b/rust/kernel/irq.rs
+> new file mode 100644
+> index 0000000000000..8dd153ba10bde
+> --- /dev/null
+> +++ b/rust/kernel/irq.rs
+> @@ -0,0 +1,90 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! Interrupt controls
+> +//!
+> +//! This module allows Rust code to control processor interrupts. [`with_irqs_disabled()`] may be
+> +//! used for nested disables of interrupts, whereas [`IrqDisabled`] can be used for annotating code
+> +//! that requires interrupts to be disabled.
+> +
+> +use bindings;
+> +use core::marker::*;
+> +
+> +/// A token that is only available in contexts where IRQs are disabled.
+> +///
+> +/// [`IrqDisabled`] is marker made available when interrupts are not active. Certain functions take
+> +/// an [`IrqDisabled`] in order to indicate that they may only be run in IRQ-free contexts.
+> +///
+> +/// This is a marker type; it has no size, and is simply used as a compile-time guarantee that
+> +/// interrupts are disabled where required.
+> +///
+> +/// This token can be created by [`with_irqs_disabled`]. See [`with_irqs_disabled`] for examples and
+> +/// further information.
+> +#[derive(Copy, Clone, Debug, Ord, Eq, PartialOrd, PartialEq, Hash)]
+> +pub struct IrqDisabled<'a>(PhantomData<(&'a (), *mut ())>);
+> +
+
+Maybe define this as:
+
+	pub struct IrqDisabled<'a>(PhantomData<(&'a (), NotThreadSafe)>);
+
+or
+	pub struct IrqDisabled<'a>(PhantomData<&'a ()>, NotThreadSafe);
+
+once `NotThreadSafe` is in mainline:
+
+	https://lore.kernel.org/rust-for-linux/20240808-alice-file-v9-1-2cb7b934e0e1@google.com/
+
+this probably will go in at v6.13, so would your patchset I assume. (But
+it would be tricky since you will have a dependency at the vfs next
+branch).
+
+> +impl IrqDisabled<'_> {
+> +    /// Create a new [`IrqDisabled`] without disabling interrupts.
+
+This is a bit confusing: users could read it as they can create a new
+[`IrqDisabled`] even irq is enabled. How about:
+
+	Creates a new [`IrqDisabled`] token in an interrupt disabled context.
+
+?
+
+> +    ///
+> +    /// This creates an [`IrqDisabled`] token, which can be passed to functions that must be run
+> +    /// without interrupts. If debug assertions are enabled, this function will assert that
+> +    /// interrupts are disabled upon creation. Otherwise, it has no size or cost at runtime.
+> +    ///
+> +    /// # Panics
+> +    ///
+> +    /// If debug assertions are enabled, this function will panic if interrupts are not disabled
+> +    /// upon creation.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// This function must only be called in contexts where it is already known that interrupts have
+> +    /// been disabled for the current CPU, as the user is making a promise that they will remain
+
+s/as/and ?
+
+> +    /// disabled at least until this [`IrqDisabled`] is dropped.
+> +    pub unsafe fn new() -> Self {
+> +        // SAFETY: FFI call with no special requirements
+> +        debug_assert!(unsafe { bindings::irqs_disabled() });
+> +
+> +        Self(PhantomData)
+> +    }
+> +}
+> +
 > +/// Run the closure `cb` with interrupts disabled on the local CPU.
 > +///
 > +/// This creates an [`IrqDisabled`] token, which can be passed to functions that must be run
@@ -211,6 +312,10 @@ This looks correct ...
 > +/// }
 > +///
 > +/// // Disabling interrupts. They'll be re-enabled once this closure completes.
+
+Rather than "re-enabled", I would put "restored" here, since it's
+local_irq_restore() other than local_irq_enable().
+
 > +/// with_irqs_disabled(|irq| dont_interrupt_me(irq));
 > +/// ```
 > +#[inline]
@@ -222,8 +327,37 @@ This looks correct ...
 > +    let ret = cb(unsafe { IrqDisabled::new() });
 > +
 > +    // Confirm that IRQs are still enabled now that the callback has finished
+> +    // SAFETY: FFI call with no special requirements
+> +    debug_assert!(unsafe { bindings::irqs_disabled() });
+> +
 
-... so here it should be 'disabled' instead of 'enabled'? "Confirm that 
-IRQs are still disabled ...".
+(Technically, we should check whether `flags` ==
+`arch_local_save_flags()`, but maybe I'm just being paranoid here. Would
+an architecture have different flags but both indicating irq is
+disabled?)
 
-Dirk
+[Cc Thomas as well]
+
+Regards,
+Boqun
+
+> +    // SAFETY: `flags` comes from our previous call to local_irq_save
+> +    unsafe { bindings::local_irq_restore(flags) };
+> +
+> +    ret
+> +}
+> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> index 274bdc1b0a824..ead3a7ca5ba11 100644
+> --- a/rust/kernel/lib.rs
+> +++ b/rust/kernel/lib.rs
+> @@ -36,6 +36,7 @@
+>  pub mod firmware;
+>  pub mod init;
+>  pub mod ioctl;
+> +pub mod irq;
+>  #[cfg(CONFIG_KUNIT)]
+>  pub mod kunit;
+>  #[cfg(CONFIG_NET)]
+> -- 
+> 2.46.0
+> 
