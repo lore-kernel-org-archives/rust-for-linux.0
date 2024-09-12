@@ -1,236 +1,161 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82D7E1C2442
-	for <rust-for-linux@vger.kernel.org>; Thu, 12 Sep 2024 19:06:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F96313D530;
+	Thu, 12 Sep 2024 19:56:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726167981; cv=none; b=YTQKthwa5xQmB2gjtm7tIPpib3veXCRzvqA/queCddqn23zknIntlrDsEOdD2l8paDp96+YGSh6230/3dOf8dGaIme4l9waZGCWph0eWdN4wAWnunurAOvottiRxAUdULJHMoJtKyAUGihZyF7uedsPo2l61WqcrXTHfFHBkS1o=
+	t=1726171005; cv=none; b=g565rqrMQu2X9laDO0WjA4POPBxKuLTr+LusDSKkDhdPqk/ugKcJtdPwLIwDFRZp6jcuSI7s8IYyJ9nt09jeFYuWoTlFfW+yuxm9rWyuaKzQhIbhIqq7fnac2yFY5HPvDPwUjDH3MB4FoXWVarYoQxG75Pxnr/GICTZqGIc/Zhc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726167981; c=relaxed/simple;
-	bh=NCiAWhLXHRt4Co7rpuhMDCPctoF3Xn4/Hp4FhL+4OxI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZWhjJOvEvN1g3v5TWXgSIzG2JXeJWtZTsAoNFaFDv4h+DJzoMBNr5Ib0mi5F+Im7IXzzWrz/a+Wg0T3snTa4FPGfikPUIiuprIn4OxanmUQwkjiENS1SBbksyMs+6GE3UIFHCdZFErFnpO6R9CxTC8nnMhy9ixJEarT5vUnrAZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=ZXxFJ/Ii; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1726171005; c=relaxed/simple;
+	bh=jn24PCsRq7rS3UjmaQrGE6VHsaCJKDC/zjSJEp9fxgI=;
+	h=Date:To:From:Subject:Message-ID:MIME-Version:Content-Type; b=MfC9uDwH28QmTdnnDbRqNsvcmbpp5QM6J4vgN79pu1+uuR6kd0vFy5yQxALvctxq3PlKEP3GvenxbcsV5ptvaNEoZqFcW/MUGHVgXvwVEj4cEkjAVql6Dt53+NR/DoR1AXYrTO1uLfm4o5aXNigB4At/rynt0Q6P/Bg27SYR26k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=BUPSlXGi; arc=none smtp.client-ip=185.70.43.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="ZXxFJ/Ii"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1726167978;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=+OGhrfJ98BvRkmlDl+pbOcc2LBNeMy80VxbOVlvu+v4=;
-	b=ZXxFJ/Ii1WbnLR8MfPg24LEkagQze4QyStjzqh0Ad9L0uXSaJiNX0zcJYMWGg6A1CKmK69
-	n+bYkJtqya6KYFgR3x/7+jUSt7fgAwuxNyVMbEO02zjUHEcD4sCMn43mq4dYKpxIVonK+/
-	a6W05qzXFpN+0XzMEEfFyYfyIjwK54I=
-Received: from mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-541--kTCIirfN6KJurtP0za4nQ-1; Thu,
- 12 Sep 2024 15:06:13 -0400
-X-MC-Unique: -kTCIirfN6KJurtP0za4nQ-1
-Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id F38531955D4C;
-	Thu, 12 Sep 2024 19:06:10 +0000 (UTC)
-Received: from chopper.lyude.net (unknown [10.22.9.159])
-	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 0320819560B5;
-	Thu, 12 Sep 2024 19:06:06 +0000 (UTC)
-From: Lyude Paul <lyude@redhat.com>
-To: rust-for-linux@vger.kernel.org
-Cc: Danilo Krummrich <dakr@redhat.com>,
-	airlied@redhat.com,
-	Ingo Molnar <mingo@redhat.com>,
-	Will Deacon <will@kernel.org>,
-	Waiman Long <longman@redhat.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	linux-kernel@vger.kernel.org,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-	Valentin Obst <kernel@valentinobst.de>
-Subject: [PATCH v5 3/3] rust: sync: Add SpinLockIrq
-Date: Thu, 12 Sep 2024 15:04:18 -0400
-Message-ID: <20240912190540.53221-4-lyude@redhat.com>
-In-Reply-To: <20240912190540.53221-1-lyude@redhat.com>
-References: <20240912190540.53221-1-lyude@redhat.com>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="BUPSlXGi"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1726171000; x=1726430200;
+	bh=UtTV70sJnMZEWjp2Gmu0UPl2yJFbUM1VFJZP0vfjRqI=;
+	h=Date:To:From:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=BUPSlXGiY7Sog9nnc6qBCwQhLWaxm9T3tVX0AZRrTKhewJHejqSmZa89cyvlAJZRV
+	 kT6VeA604s1udVAjQoNDp/S+eyY6wv9T34eW+Tbp5ccAsyHfrZlS52SjFQz6W42uRt
+	 lUQ2p9jWpFbgV8yJ8LxXmKyAEbeCRvsdmh6bqS0PiYkYtDly7hdBPdfrlTir050MOw
+	 fRkU9f9IEchH3c3WB4Arq85YsTaPXYfrJ+CKoe0HeCw8yzhMLtNeDtcx1sS6asSt5q
+	 h3UNpEMszbNKtk25GJ9+rvlfsD15ZVWohjWSlOPQT0Yl23QVDxiGOVzYK3vKyaMwgf
+	 a7+5O1+aA4cfA==
+Date: Thu, 12 Sep 2024 19:56:36 +0000
+To: a.hindborg@samsung.com, alex.gaynor@gmail.com, alexanderaltman@me.com, alexmantel93@mailbox.org, aliceryhl@google.com, aswinunni01@gmail.com, benno.lossin@proton.me, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, fujita.tomonori@gmail.com, gary@garyguo.net, kernel@valentinobst.de, linux-kernel@vger.kernel.org, ojeda@kernel.org, paddymills@proton.me, rust-for-linux@vger.kernel.org, tmgross@umich.edu, wedsonaf@gmail.com, yakoyoku@gmail.com
+From: Patrick Miller <paddymills@proton.me>
+Subject: [PATCH v3 1/2] docs: rust: make section names plural
+Message-ID: <20240912195629.227696-1-paddymills@proton.me>
+Feedback-ID: 45271957:user:proton
+X-Pm-Message-ID: b1cf0e057c641509777efcb77f939149bf1a1420
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
+Content-Type: multipart/signed; protocol="application/pgp-signature"; micalg=pgp-sha256; boundary="------fa271470f0deb941e48ffe37d3d7b57d36e8427dc6ad3a5518552c2bccb1c818"; charset=utf-8
 
-A variant of SpinLock that is expected to be used in noirq contexts, and
-thus requires that the user provide an kernel::irq::IrqDisabled to prove
-they are in such a context upon lock acquisition. This is the rust
-equivalent of spin_lock_irqsave()/spin_lock_irqrestore().
+This is an OpenPGP/MIME signed message (RFC 4880 and 3156)
+--------fa271470f0deb941e48ffe37d3d7b57d36e8427dc6ad3a5518552c2bccb1c818
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+From: Patrick Miller <paddymills@proton.me>
+To: a.hindborg@samsung.com,
+	alex.gaynor@gmail.com,
+	alexanderaltman@me.com,
+	alexmantel93@mailbox.org,
+	aliceryhl@google.com,
+	aswinunni01@gmail.com,
+	benno.lossin@proton.me,
+	bjorn3_gh@protonmail.com,
+	boqun.feng@gmail.com,
+	fujita.tomonori@gmail.com,
+	gary@garyguo.net,
+	kernel@valentinobst.de,
+	linux-kernel@vger.kernel.org,
+	ojeda@kernel.org,
+	paddymills@proton.me,
+	rust-for-linux@vger.kernel.org,
+	tmgross@umich.edu,
+	wedsonaf@gmail.com,
+	yakoyoku@gmail.com
+Subject: [PATCH v3 1/2] docs: rust: make section names plural
+Date: Thu, 12 Sep 2024 15:56:29 -0400
+Message-ID: <20240912195629.227696-1-paddymills@proton.me>
+X-Mailer: git-send-email 2.46.0
+MIME-Version: 1.0
 
-Signed-off-by: Lyude Paul <lyude@redhat.com>
+Fixes existing rust documentation section headers to be use plural names.
+
+Signed-off-by: Patrick Miller <paddymills@proton.me>
+Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+Link: https://github.com/Rust-for-Linux/linux/issues/1110
 
 ---
+ rust/kernel/init.rs     | 2 +-
+ rust/kernel/list/arc.rs | 2 +-
+ rust/kernel/sync/arc.rs | 2 +-
+ rust/macros/lib.rs      | 2 +-
+ 4 files changed, 4 insertions(+), 4 deletions(-)
 
-V2:
-* s/IrqSpinLock/SpinLockIrq/
-* Implement `lock::Backend` now that we have `Context`
-* Add missing periods
-* Make sure rustdoc examples compile correctly
-* Add documentation suggestions
-
-Signed-off-by: Lyude Paul <lyude@redhat.com>
----
- rust/kernel/sync.rs               |   2 +-
- rust/kernel/sync/lock/spinlock.rs | 104 ++++++++++++++++++++++++++++++
- 2 files changed, 105 insertions(+), 1 deletion(-)
-
-diff --git a/rust/kernel/sync.rs b/rust/kernel/sync.rs
-index 0ab20975a3b5d..b028ee325f2a6 100644
---- a/rust/kernel/sync.rs
-+++ b/rust/kernel/sync.rs
-@@ -15,7 +15,7 @@
- pub use arc::{Arc, ArcBorrow, UniqueArc};
- pub use condvar::{new_condvar, CondVar, CondVarTimeoutResult};
- pub use lock::mutex::{new_mutex, Mutex};
--pub use lock::spinlock::{new_spinlock, SpinLock};
-+pub use lock::spinlock::{new_spinlock, new_spinlock_irq, SpinLock, SpinLockIrq};
- pub use locked_by::LockedBy;
- 
- /// Represents a lockdep class. It's a wrapper around C's `lock_class_key`.
-diff --git a/rust/kernel/sync/lock/spinlock.rs b/rust/kernel/sync/lock/spinlock.rs
-index 97d85a5576615..47c71d779062a 100644
---- a/rust/kernel/sync/lock/spinlock.rs
-+++ b/rust/kernel/sync/lock/spinlock.rs
-@@ -3,6 +3,7 @@
- //! A kernel spinlock.
- //!
- //! This module allows Rust code to use the kernel's `spinlock_t`.
-+use kernel::irq::*;
- 
- /// Creates a [`SpinLock`] initialiser with the given name and a newly-created lock class.
+diff --git a/rust/kernel/init.rs b/rust/kernel/init.rs
+index a17ac8762d8f..98889ddf9828 100644
+--- a/rust/kernel/init.rs
++++ b/rust/kernel/init.rs
+@@ -746,7 +746,7 @@ macro_rules! try_init {
+ /// Asserts that a field on a struct using `#[pin_data]` is marked with `#[pin]` ie. that it is
+ /// structurally pinned.
  ///
-@@ -116,3 +117,106 @@ unsafe fn unlock(ptr: *mut Self::State, _guard_state: &Self::GuardState) {
-         unsafe { bindings::spin_unlock(ptr) }
-     }
- }
-+
-+/// Creates a [`SpinLockIrq`] initialiser with the given name and a newly-created lock class.
-+///
-+/// It uses the name if one is given, otherwise it generates one based on the file name and line
-+/// number.
-+#[macro_export]
-+macro_rules! new_spinlock_irq {
-+    ($inner:expr $(, $name:literal)? $(,)?) => {
-+        $crate::sync::SpinLockIrq::new(
-+            $inner, $crate::optional_name!($($name)?), $crate::static_lock_class!())
-+    };
-+}
-+pub use new_spinlock_irq;
-+
-+/// A spinlock that may be acquired when interrupts are disabled.
-+///
-+/// A version of [`SpinLock`] that can only be used in contexts where interrupts for the local CPU
-+/// are disabled. It requires that the user acquiring the lock provide proof that interrupts are
-+/// disabled through [`IrqDisabled`].
-+///
-+/// For more info, see [`SpinLock`].
-+///
+-/// # Example
 +/// # Examples
-+///
-+/// The following example shows how to declare, allocate initialise and access a struct (`Example`)
-+/// that contains an inner struct (`Inner`) that is protected by a spinlock.
-+///
-+/// ```
-+/// use kernel::{
-+///     sync::{new_spinlock_irq, SpinLockIrq},
-+///     irq::{with_irqs_disabled, IrqDisabled}
-+/// };
-+///
-+/// struct Inner {
-+///     a: u32,
-+///     b: u32,
-+/// }
-+///
-+/// #[pin_data]
-+/// struct Example {
-+///     c: u32,
-+///     #[pin]
-+///     d: SpinLockIrq<Inner>,
-+/// }
-+///
-+/// impl Example {
-+///     fn new() -> impl PinInit<Self> {
-+///         pin_init!(Self {
-+///             c: 10,
-+///             d <- new_spinlock_irq!(Inner { a: 20, b: 30 }),
-+///         })
-+///     }
-+/// }
-+///
-+/// // Accessing an `Example` from a function that can only be called in no-irq contexts
-+/// fn noirq_work(e: &Example, irq: IrqDisabled<'_>) {
-+///     assert_eq!(e.c, 10);
-+///     assert_eq!(e.d.lock_with(irq).a, 20);
-+/// }
-+///
-+/// // Allocate a boxed `Example`
-+/// let e = Box::pin_init(Example::new(), GFP_KERNEL)?;
-+///
-+/// // Accessing an `Example` from a context where IRQs may not be disabled already.
-+/// let b = with_irqs_disabled(|irq| {
-+///     noirq_work(&e, irq);
-+///     e.d.lock_with(irq).b
-+/// });
-+/// assert_eq!(b, 30);
-+/// # Ok::<(), Error>(())
-+/// ```
-+pub type SpinLockIrq<T> = super::Lock<T, SpinLockIrqBackend>;
-+
-+/// A kernel `spinlock_t` lock backend that is acquired in no-irq contexts.
-+pub struct SpinLockIrqBackend;
-+
-+unsafe impl super::Backend for SpinLockIrqBackend {
-+    type State = bindings::spinlock_t;
-+    type GuardState = ();
-+    type Context<'a> = IrqDisabled<'a>;
-+
-+    unsafe fn init(
-+        ptr: *mut Self::State,
-+        name: *const core::ffi::c_char,
-+        key: *mut bindings::lock_class_key,
-+    ) {
-+        // SAFETY: The safety requirements ensure that `ptr` is valid for writes, and `name` and
-+        // `key` are valid for read indefinitely.
-+        unsafe { bindings::__spin_lock_init(ptr, name, key) }
-+    }
-+
-+    unsafe fn lock(ptr: *mut Self::State) -> Self::GuardState {
-+        // SAFETY: The safety requirements of this function ensure that `ptr` points to valid
-+        // memory, and that it has been initialised before.
-+        unsafe { bindings::spin_lock(ptr) }
-+    }
-+
-+    unsafe fn unlock(ptr: *mut Self::State, _guard_state: &Self::GuardState) {
-+        // SAFETY: The safety requirements of this function ensure that `ptr` is valid and that the
-+        // caller is the owner of the spinlock.
-+        unsafe { bindings::spin_unlock(ptr) }
-+    }
-+}
+ ///
+ /// This will succeed:
+ /// ```
+diff --git a/rust/kernel/list/arc.rs b/rust/kernel/list/arc.rs
+index d801b9dc6291..611ce07cd290 100644
+--- a/rust/kernel/list/arc.rs
++++ b/rust/kernel/list/arc.rs
+@@ 
+-464,7 +464,7 @@ impl<T, U, const ID: u64> core::ops::DispatchFromDyn<ListArc<U, ID>> for ListArc
+ 
+ /// A utility for tracking whether a [`ListArc`] exists using an atomic.
+ ///
+-/// # Invariant
++/// # Invariants
+ ///
+ /// If the boolean is `false`, then there is no [`ListArc`] for this value.
+ #[repr(transparent)]
+diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
+index 3021f30fd822..3d3c100b0c0d 100644
+--- a/rust/kernel/sync/arc.rs
++++ b/rust/kernel/sync/arc.rs
+@@ -436,7 +436,7 @@ fn from(item: Pin<UniqueArc<T>>) -> Self {
+ /// There are no mutable references to the underlying [`Arc`], and it remains valid for the
+ /// lifetime of the [`ArcBorrow`] instance.
+ ///
+-/// # Example
++/// # Examples
+ ///
+ /// ```
+ /// use kernel::sync::{Arc, ArcBorrow};
+diff --git a/rust/macros/lib.rs b/rust/macros/lib.rs
+index a626b1145e5c..3879e1162866 100644
+--- a/rust/macros/lib.rs
++++ b/rust/macros/lib.rs
+@@ -307,7 +307,7 @@ pub fn pinned_drop(args: TokenStream, 
+input: TokenStream) -> TokenStream {
+ /// literals (lifetimes and documentation strings are not supported). There is a difference in
+ /// supported modifiers as well.
+ ///
+-/// # Example
++/// # Examples
+ ///
+ /// ```ignore
+ /// use kernel::macro::paste;
 -- 
 2.46.0
+
+
+--------fa271470f0deb941e48ffe37d3d7b57d36e8427dc6ad3a5518552c2bccb1c818
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: OpenPGP digital signature
+Content-Disposition: attachment; filename="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+Version: ProtonMail
+
+wnUEARYIACcFAmbjR3QJEJtRGrsur54RFiEE3KdIkSvUnCve801mm1Eauy6v
+nhEAAG7zAQClZpMPoxdLb1YtVW1FRyB4QwOW+x7uPSJaYV67/1YApwD/aKdO
+MtCDMSdf6ii81N8GgOjimTNxTdhCw5uoGcI1RQs=
+=f4lu
+-----END PGP SIGNATURE-----
+
+
+--------fa271470f0deb941e48ffe37d3d7b57d36e8427dc6ad3a5518552c2bccb1c818--
 
