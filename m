@@ -1,154 +1,123 @@
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D835182D7F
-	for <rust-for-linux@vger.kernel.org>; Fri, 13 Sep 2024 18:45:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC4BD81ACA;
+	Fri, 13 Sep 2024 19:21:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=216.40.44.13
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726253123; cv=none; b=NziJCQF+VpNETmTSxmymDQ2OruHcS7GVR1743HoKctGqtXaBHhsUudgATc/IPI7NIkeve2VBirPeDUvJMyTHLLwQZQyFORFQqRTzRWareptI9nGnkz23sq7CFgWil59G4YpdEHRqCayaLU/oeB8SwHM4Eqo0w+iFRtNuP/tSw1w=
+	t=1726255320; cv=none; b=gKLs4CZJ1gcS4WdPFFIlkA84QSvcTBgugct5CM2vDq1f8q/k4bFuRXs9VSAT+QtgqKIUeuVcngS0ec/NN1PAgwTp5L1vm63nvTbhUDcJz/Mm1InNTrJiNIakiXfpAa0U6Mx8D6NaOC8AB8C8ryTmP0/FWfkQy8xwp251v7YpC80=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726253123; c=relaxed/simple;
-	bh=GlBvP3ViV9KPWtoucCkWNwSLKlfFG/0mIg/gEdqo61M=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ga8kHIZADEUtih09WDkloCxVYXzaWQ/45ij3TOXwrzNH4VruHnTTnMdJQsMap3TgnlAaizm4MPcciybIOdhP4TQF55PL8vO14k8AHFBT4FJhYB7uP/4JxQMRYADFBEmeGUb59H5mabFKGTAGZjSLpaLuXv1pnHcOQMhEDd0kxbE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch; spf=none smtp.mailfrom=ffwll.ch; dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b=YFLfK5Jq; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ffwll.ch
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b="YFLfK5Jq"
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-42cd74c0d16so24027345e9.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 13 Sep 2024 11:45:20 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google; t=1726253119; x=1726857919; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=MSzjfySTjvZJGJIQqb4ynY2CDR7SAt/ILMEUtxFMYeE=;
-        b=YFLfK5JqKannNOx07APWZygbKmCAMb6NOqUFEZsWYDWzi1/KWoJtMxKmBaVRnhtPIn
-         r9medNucrg+cbHiR2iP6Ja2bGK/uCK6hznXX11EB6dT1YZpnvKi/134sHKPy5+RSzvSH
-         BTKdT7WJB33NgfHkVeyahrhsIRStu5LtBrCYU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726253119; x=1726857919;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=MSzjfySTjvZJGJIQqb4ynY2CDR7SAt/ILMEUtxFMYeE=;
-        b=CkgzEeGW96ZLy8ko4ZY+29oy8HsZgJA9PHG/8iYWEwuniQ6XOJFQjeSnoZfIi8zgNX
-         YuNszf7BuawxUTcObx46VI1UcIoy3Y0Tx46qCo4dFC053Mm8ukZ4y8A+8x6InzdpDncu
-         IKBp75f5NlmkUknBR3ChFUvvvKopflca+hVxk/GH8CYATq6oyUoTRyuV4Y9Rps+3ZWFi
-         oMW3eO4KU/ecrMaG17YcztcvqsNzuXPTLQazKnV7Mb0dl9UbQj+J/tdq8ysNNCH/aZ2p
-         PY6+RK8GbbI/tjFwt7xfAT5gVbrng6NGptPJhm33a5/8z+4Cfu2gQXoSJFDd+b2ge507
-         0HYg==
-X-Forwarded-Encrypted: i=1; AJvYcCW0bvy4m9xVOo614wNo4H4jDVEn6OQkGs3Sy7o0MSq4WutfjnCqrBCpDvqFu3zfD8wjymj/+BYkCOQ/yVkpiA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzU3dROhXd3Yi5QR/DFg5cVhhWczRVtpQgFJha3/JRnVTtt7lk8
-	SLzwjEZYoz5P3CgTWzlY/cOq1wl8R/YJcvHA1wouVWEK2f37xRv1lc8oXErc0Lc=
-X-Google-Smtp-Source: AGHT+IFPN0GwoCbn4Rkz9K4zq2VjUv9KlAEsC/5ciNxXM3x3Pn5uZy49vr9hXmEsYYlJz6eJPjBoDg==
-X-Received: by 2002:a05:600c:6b0b:b0:42c:bb41:a077 with SMTP id 5b1f17b1804b1-42cdb56daacmr58188035e9.23.1726253118897;
-        Fri, 13 Sep 2024 11:45:18 -0700 (PDT)
-Received: from phenom.ffwll.local ([2a02:168:57f4:0:5485:d4b2:c087:b497])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-37895665632sm17538008f8f.37.2024.09.13.11.45.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Sep 2024 11:45:18 -0700 (PDT)
-Date: Fri, 13 Sep 2024 20:45:16 +0200
-From: Simona Vetter <simona.vetter@ffwll.ch>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] rust: sync: fix incorrect Sync bounds for LockedBy
-Message-ID: <ZuSIPIHn4gDLm4si@phenom.ffwll.local>
-Mail-Followup-To: Alice Ryhl <aliceryhl@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>, Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-References: <20240912-locked-by-sync-fix-v1-1-26433cbccbd2@google.com>
+	s=arc-20240116; t=1726255320; c=relaxed/simple;
+	bh=ZQM8CD1kD99CvLK6K7g7ZMI2Hq16NJsjb7Dgc1IsfIE=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=tt449XrA/s+JgsFEHzwYq0JGXEnPoqlztJlkS8uO32Fo975otj9XohT7pn2k3x/t+gBD6A7ebdLZjmlpquo4HYBlJRf19sO/fMIksZyEjwcdP9wt/K+qNGg9Im5l5padOgojYsAEE135S7Ua7NzPXgnozJzYHcps2VgLp8gT64Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=perches.com; spf=pass smtp.mailfrom=perches.com; arc=none smtp.client-ip=216.40.44.13
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=perches.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=perches.com
+Received: from omf02.hostedemail.com (a10.router.float.18 [10.200.18.1])
+	by unirelay07.hostedemail.com (Postfix) with ESMTP id A9807160572;
+	Fri, 13 Sep 2024 19:21:48 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by omf02.hostedemail.com (Postfix) with ESMTPA id A1EFB80015;
+	Fri, 13 Sep 2024 19:21:42 +0000 (UTC)
+Message-ID: <ab5a84a40a5bf73001cd35f6f9108830ff70c5ee.camel@perches.com>
+Subject: Re: [PATCH v3 2/2] checkpatch: warn on known non-plural rust doc
+ headers
+From: Joe Perches <joe@perches.com>
+To: Alice Ryhl <aliceryhl@google.com>, Patrick Miller <paddymills@proton.me>
+Cc: a.hindborg@samsung.com, alex.gaynor@gmail.com, apw@canonical.com, 
+	benno.lossin@proton.me, bjorn3_gh@protonmail.com, boqun.feng@gmail.com, 
+	dwaipayanray1@gmail.com, gary@garyguo.net, linux-kernel@vger.kernel.org, 
+	lukas.bulwahn@gmail.com, ojeda@kernel.org, rust-for-linux@vger.kernel.org, 
+	tmgross@umich.edu, wedsonaf@gmail.com
+Date: Fri, 13 Sep 2024 12:21:41 -0700
+In-Reply-To: <CAH5fLghxvLoQp+G1oaaVfBx6DOh-GO0Wc=jboiwz9ZCoEtHVpA@mail.gmail.com>
+References: <20240912195649.227878-1-paddymills@proton.me>
+	 <CAH5fLghxvLoQp+G1oaaVfBx6DOh-GO0Wc=jboiwz9ZCoEtHVpA@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.52.4 (3.52.4-1.fc40) 
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240912-locked-by-sync-fix-v1-1-26433cbccbd2@google.com>
-X-Operating-System: Linux phenom 6.9.12-amd64 
+X-Rspamd-Server: rspamout04
+X-Rspamd-Queue-Id: A1EFB80015
+X-Stat-Signature: tz3qx8g7ouw6t7nkim19u4ckeoubazjp
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Session-ID: U2FsdGVkX1/aRxPMT+/CRXro5IBmWG7I/PzwEEtQu20=
+X-HE-Tag: 1726255302-330878
+X-HE-Meta: U2FsdGVkX18EQHP7P887iFhkJQlxBUfa0+kx6/Qfgins8f89ci0jvtF6gYBreY//mt2+vCBagf0p9zWz77ORsq6SMHcezADxVrALfXSP5gnUfwuVoxQeSL3vV3l4D1AUV/ONp4uEPrZFy5gc2l8fPEeuwFlkk9Zkd5h2ldRrlsKwyk5I/uStOrCKnhysZH1YfeOrTrJubtM3pib700tfi5IYuuIYqIEv7WyDJKDLlF1nTBeb12KBLxWnfSJYr16pDovb22gRnKVhuPq1AmKbzGeLNwgCZ2gRU3FQxpS6A4MsA3bggEXj+dV92IC0z2f5/BA+Ii6UwYROOSwnkwVugpPnM8KazhMNoXd5FiWAj9AWBM7vcIpSRw==
 
-On Thu, Sep 12, 2024 at 02:20:06PM +0000, Alice Ryhl wrote:
-> The `impl Sync for LockedBy` implementation has insufficient trait
-> bounds, as it only requires `T: Send`. However, `T: Sync` is also
-> required for soundness because the `LockedBy::access` method could be
-> used to provide shared access to the inner value from several threads in
-> parallel.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 7b1f55e3a984 ("rust: sync: introduce `LockedBy`")
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+On Fri, 2024-09-13 at 09:33 +0200, Alice Ryhl wrote:
+> On Thu, Sep 12, 2024 at 9:57=E2=80=AFPM Patrick Miller <paddymills@proton=
+.me> wrote:
+> >=20
+> > Adds a check for documentation in rust file. Warns if certain known
+> > documentation headers are not plural.
+> >=20
+> > The rust maintainers prefer document headers to be plural. This is to e=
+nforce
+> > consistency among the documentation as well as to protect against error=
+s when
+> > additions are made. For example, if the header said "Example" because t=
+here was
+> > only 1 example, if a second example was added, making the header plural=
+ could
+> > easily be missed and the maintainers prefer to not have to remind peopl=
+e to fix
+> > their documentation.
+> >=20
+> > Link: https://github.com/Rust-for-Linux/linux/issues/1110
+> >=20
+> > v1: https://lore.kernel.org/rust-for-linux/2024090628-bankable-refusal-=
+5f20@gregkh/T/#t
+> > v2: https://lore.kernel.org/rust-for-linux/92be0b48-cde9-4241-8ef9-7fe4=
+d7c42466@proton.me/T/#t
+> >   - fixed whitespace that was formatted due to editor settings
+> > v3:
+> >   - move && to previous line and remove whitespace in WARN per Joe Perc=
+hes
+> >   - reformat following C coding style
+> > ---
+> >  scripts/checkpatch.pl | 7 ++++
+> > +++
+> >  1 file changed, 7 insertions(+)
+>=20
+> This is missing your Signed-off-by and the changelog should be below
+> the --- line so it doesn't get included in the changelog when applied.
+[]
+> > diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
+[]
+> > @@ -3900,6 +3900,13 @@ sub process {
+> >                              "Avoid using '.L' prefixed local symbol na=
+mes for denoting a range of code via 'SYM_*_START/END' annotations; see Doc=
+umentation/core-api/asm-annotations.rst\n" . $herecurr);
+> >                 }
+> >=20
+> > +# check that document section headers are plural in rust files
+> > +               if ($realfile =3D~ /\.rs$/ &&
+> > +                   $rawline =3D~ /^\+\s*\/\/\/\s+#+\s+(Example|Invaria=
+nt|Guarantee|Panic)\s*$/) {
+> > +                       WARN("RUST_DOC_HEADER",
+> > +                            "Rust doc headers should be plural\n" . $h=
+erecurr);
 
-So I was pondering this forever, because we don't yet have read locks and
-for exclusive locks Send is enough. But since Arc<T> allows us to build
-really funny read locks already we need to require Sync for LockedBy,
-unlike Lock.
+While OK my suggestion would be to add a $fix option
+and be case insensitive
 
-We could split access and access_mut up with a newtype so that Sync is
-only required when needed, but that's not too hard to sneak in when we
-actually need it.
+		if ($realfile =3D~ /\.rs$/ &&
+		    $rawline =3D~ /^\+\s*\/\/\/\s+#+\s+(Example|Invariant|Guarantee|Panic=
+)\s*$/i) {
+			if (WARN("RUST_DOC_HEADER",
+	                       	 "Rust doc header '$1' should be plural\n" . $here=
+curr) &&
+			    $fix) {
+				$fixed[$fixlinenr] =3D s/\b$1\b/ucfirst(lc($1))/e;
+			}
 
-Reviewed-by: Simona Vetter <simona.vetter@ffwll.ch>
+And if there are going to be more rust specific tests,
+there should be a rust specific block to avoid continual
+tests of $realfile =3D~ /\.rs$/
 
-> ---
->  rust/kernel/sync/locked_by.rs | 9 +++++----
->  1 file changed, 5 insertions(+), 4 deletions(-)
-> 
-> diff --git a/rust/kernel/sync/locked_by.rs b/rust/kernel/sync/locked_by.rs
-> index babc731bd5f6..153ba4edcb03 100644
-> --- a/rust/kernel/sync/locked_by.rs
-> +++ b/rust/kernel/sync/locked_by.rs
-> @@ -83,9 +83,10 @@ pub struct LockedBy<T: ?Sized, U: ?Sized> {
->  // SAFETY: `LockedBy` can be transferred across thread boundaries iff the data it protects can.
->  unsafe impl<T: ?Sized + Send, U: ?Sized> Send for LockedBy<T, U> {}
->  
-> -// SAFETY: `LockedBy` serialises the interior mutability it provides, so it is `Sync` as long as the
-> -// data it protects is `Send`.
-> -unsafe impl<T: ?Sized + Send, U: ?Sized> Sync for LockedBy<T, U> {}
-> +// SAFETY: Shared access to the `LockedBy` can provide both `&mut T` references in a synchronized
-> +// manner, or `&T` access in an unsynchronized manner. The `Send` trait is sufficient for the first
-> +// case, and `Sync` is sufficient for the second case.
-> +unsafe impl<T: ?Sized + Send + Sync, U: ?Sized> Sync for LockedBy<T, U> {}
->  
->  impl<T, U> LockedBy<T, U> {
->      /// Constructs a new instance of [`LockedBy`].
-> @@ -127,7 +128,7 @@ pub fn access<'a>(&'a self, owner: &'a U) -> &'a T {
->              panic!("mismatched owners");
->          }
->  
-> -        // SAFETY: `owner` is evidence that the owner is locked.
-> +        // SAFETY: `owner` is evidence that there are only shared references to the owner.
->          unsafe { &*self.data.get() }
->      }
->  
-> 
-> ---
-> base-commit: 93dc3be19450447a3a7090bd1dfb9f3daac3e8d2
-> change-id: 20240912-locked-by-sync-fix-07193df52f98
-> 
-> Best regards,
-> -- 
-> Alice Ryhl <aliceryhl@google.com>
-> 
-
--- 
-Simona Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
