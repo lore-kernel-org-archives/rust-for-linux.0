@@ -1,523 +1,261 @@
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+Received: from mail-oa1-f45.google.com (mail-oa1-f45.google.com [209.85.160.45])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EF90208B0
-	for <rust-for-linux@vger.kernel.org>; Fri, 13 Sep 2024 15:33:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22C80DF60;
+	Fri, 13 Sep 2024 15:38:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726241618; cv=none; b=pNjxJcRQRj/fVMdBwFS9s8SJS6dKNvKa9T8Fl0VciZ4srQVdUnDTq/GDzLltAc1foRF78V8k2wbGgsXjzCAX4sIYmmm6dsVblhIbNhMigcWcYulVS7bBBEzsKy5UxWSSsS0n/3u999lBsNE3QbvZgaw/5jtWtSrvVzO18K14J4Q=
+	t=1726241910; cv=none; b=rtm44F6RK0RBHzegu/7yB4RwoCyLYXwmzeEJBhct82B+YdajO9gar/CYzYf3gwiQ3RKs8lkloTgNEGVnhFrlxkwB0Fxo2OPQY8F9lSYwWx4ayX7KIp3wjPHJSVWr/iUd5V1bu9H0H/21c/tWIE6yKuFTLv9iGmGmchqsQqid+co=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726241618; c=relaxed/simple;
-	bh=pkYLqcKa7oJgwcHnZDJU7Fx65WSpIzX1ksv/hWWVq3I=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Xrf/28swdDriJXFXUcJ+x1Q6EndIKsL6VzD/OI74hikB+2GqCOTLpJaedmuZcCWXGOr2lqgdIwOPmhU8mUvSw6g3ilTz40+MuG31pE2D7VABvjKwW2qulcZH8W0AkCtDpcxlSvjnlQHRrmWqc0qSymobkcogb3M9/Z2p1Uv6ICU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch; spf=none smtp.mailfrom=ffwll.ch; dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b=XDvDVKZQ; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ffwll.ch
+	s=arc-20240116; t=1726241910; c=relaxed/simple;
+	bh=1oUBzH2Lrd/2lTjm9uW9rzeq/PFv9SuAOD4g7xOMbIQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=s38bjerkCbOuhn461o3oMASmcxJNSEjTNGtgSujOK4AEItIIhqm7/ULDiQDw0fbSK/h23tcEQY5d/cCZQpQAxjwnqmfW3zcmdO7lBzenP4bPVr4dg/G0ffGIG2PVnAQvEGNy5M4XuM0ciKrroQWAhA7EBtNnl7wdYawIFjO7Lac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eNYqmg/V; arc=none smtp.client-ip=209.85.160.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b="XDvDVKZQ"
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-42cb8dac900so21956455e9.3
-        for <rust-for-linux@vger.kernel.org>; Fri, 13 Sep 2024 08:33:36 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eNYqmg/V"
+Received: by mail-oa1-f45.google.com with SMTP id 586e51a60fabf-27b55c4b35eso368989fac.3;
+        Fri, 13 Sep 2024 08:38:28 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google; t=1726241615; x=1726846415; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=U55bD0XK9xAtOGCzaUk9mCMvdaSI+QcUnvCZwtiUzlI=;
-        b=XDvDVKZQL4LMcMiXAFv8pXjJJM25uHwSM0VHKdRmShEraDVOYnc8Z1kTKvm3WPCmmd
-         RZKPgAwtb3vPhnyZRRn8p6+mtbBwOyOnDlxcjBoPWLfi5ldzBWzJwKfeP5Bk7xngkSiz
-         kn7EATJiZBlsBjivWss9CAANmT9DQ76Wico0g=
+        d=gmail.com; s=20230601; t=1726241908; x=1726846708; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=FLfwHNRPQKjp8R+M0/7sXVhVRXpTNwRmME8gmf+riNs=;
+        b=eNYqmg/V1INmGCtqussuO/urMFe9ELT3lxsyQo3pb4pFqUxVdblLG0OBWsAY5bTNvZ
+         b71EAIaXs46AkQwnb67Zrc5oygpc3wukjjmgtPb3WZqqz218UI7eO96gm/YSTH+d8pb+
+         q+TgWH0/l2n3DqIixSn3+5N2aLUkdtH91xxgmo3sWCShcFqhL5Momyg4m9vIZGD8WnMw
+         Rf1bJ5ZIR/6ZSCqYy0kY9+ZNJQVsj3OQtGjM7kV07gjrB3DdhDMGb4+W2/T/LaIupX9G
+         FyhNmTHBTyYKkq1RqvyLuEiS3lNqg8KULY8KYefcQ/hY0HrDjbV2/D71aZ+1LINkN1db
+         9wkg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726241615; x=1726846415;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=U55bD0XK9xAtOGCzaUk9mCMvdaSI+QcUnvCZwtiUzlI=;
-        b=N7RcJ4ZMBuRo2Wg6tbWTSOU9Lvg051EzKMUxjBxhIKYdarQTzK2KLay+xPO/phjwzX
-         VGXYUMqeE7PEDk85BXHv48eTpJbToflLPL6F21m4uCm3HVIIC2WoeTP5VDAghaZeK9Ly
-         RWsID0csxcOn+q0EpDCoMYpEEOaMCOzuHMhM8QJXuIsGJzCEDN8+aD0U8vBDu7ChTVtw
-         Jue5diBpjXAeWdZ4wAGVG4b0GvR30F//w2h1f8Cjh2W0MtDiAaRNvQp24PnQYkqE5r0w
-         16NGbmvLxtBGaGvmPvKxJZBU9F4BpFUVI0JnKFaxbE/6u29ECrQo706vpqxeWCWE1aCu
-         hciw==
-X-Forwarded-Encrypted: i=1; AJvYcCUSpXMPp6wl+C3qrU66qzTQ857vBgDW1qbxSENVrjg6sALLpNWd5bFdEeLlcJKJxIKAG3KmjB7RCrwP/46Ilg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzaDU7mCC6Xkfq70TEnfbk28aEHRvJs+ZId8AgSTcYj+Z7P8j/M
-	R3KThXvJoY1X+mhNVwPeVed7PyI61JcdBbW9nN6GugJNFxk5AJBU06FMfz4+csoONJhs7pFpt6J
-	B
-X-Google-Smtp-Source: AGHT+IEHgKLYbwsqieMcCXj7RUXAJQdLBl6Ly1JDbk+pZzhMyTyV9c863qtQob8Kh/DchVJr97jIYQ==
-X-Received: by 2002:a05:600c:3581:b0:42c:c8be:4217 with SMTP id 5b1f17b1804b1-42cdb53192dmr51731915e9.11.1726241614454;
-        Fri, 13 Sep 2024 08:33:34 -0700 (PDT)
-Received: from phenom.ffwll.local ([2a02:168:57f4:0:5485:d4b2:c087:b497])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42cc1374f61sm92153125e9.1.2024.09.13.08.33.33
+        d=1e100.net; s=20230601; t=1726241908; x=1726846708;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=FLfwHNRPQKjp8R+M0/7sXVhVRXpTNwRmME8gmf+riNs=;
+        b=dGIVXXJ5cIyP3Lu5S8kpGUCUReS5gj7+OkEDdm4cbqK2OBwWXQXhIKCFfxVx53q2nt
+         DQViAYMLUmD5EYKkqGSV4QKhlwnvDWqtXm6pKrL4H/oYVXPjo5oUqkauDML8cRRPlkl/
+         akygvgH/DRHV6RlmjW9erMG6OrLsr9Asrc+Cu1Kp1iYzycAw2MVjmS49g3bJNTPEayFb
+         Qh8sE+e17eSNtndNWKX7QfxxHk3IJLkhceKKOJOGS4GhfQauBZ1hSDIy/Em7Q+KZcf1C
+         0Q8Fi/keotez2ymQ0dSQYk9bUgsZFoh85BotQ5wyyxfJLIloW5a3TD7oAFm779ruNI8p
+         WP7w==
+X-Forwarded-Encrypted: i=1; AJvYcCVZqsq5ubBtj6WVCMNg/cXUx98TByFKZZYuAr7FYEGjYO5x6E7CT1IrrzpBU3QZHmM0tURF/y6G66Ks@vger.kernel.org, AJvYcCWth4/qjBcmVwjLAaXc4gXUhNXld7BR+kIBvdp0nvZRy3vQATWxYsXb9acQN6C2dbvhVckCih0SB+w=@vger.kernel.org, AJvYcCXSb8bfzfAxqO98AbF8Lf2YAEjfDZ2L4F+Q1zCRVM63iR22/DKiJHF3gKVBh9/oIndAvPRY72JrDycHKsew@vger.kernel.org, AJvYcCXf1BmteCLVplCftNP8W9GIrPXUCyqBoXNm9AIbPIY14aD5wz/oum6phVexUbd8FED2bsZDRJ9daAJL5HtFfb8=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzfEJKShe5buUxUcGF1CV6+PhuekUA7VU4fI5Q2GXuWf08DJ4fd
+	QybQjHvA2j8cyemkOtksm5TQMwUsHZfDMhKKntmvoP8RmK1seBJg
+X-Google-Smtp-Source: AGHT+IFVVoW6JJ2gEx8dkL4ssj/046MJSupkqjqrm2dz5JDbRsSdE/E9s0lqYcl1CUam3uKpfyiFBw==
+X-Received: by 2002:a05:6870:ac07:b0:27b:63fc:a2af with SMTP id 586e51a60fabf-27c68bf05f7mr1824173fac.39.1726241908090;
+        Fri, 13 Sep 2024 08:38:28 -0700 (PDT)
+Received: from pipaware.tx.rr.com ([2603:8080:7400:36da:dff5:4180:2562:4c1e])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-27ba3f5356dsm3670827fac.34.2024.09.13.08.38.26
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Sep 2024 08:33:34 -0700 (PDT)
-Date: Fri, 13 Sep 2024 17:33:31 +0200
-From: Simona Vetter <simona.vetter@ffwll.ch>
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Greg KH <gregkh@linuxfoundation.org>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/3] rust: add untrusted data abstraction
-Message-ID: <ZuRbSxwlz1xWT1pG@phenom.ffwll.local>
-Mail-Followup-To: Benno Lossin <benno.lossin@proton.me>,
-	Greg KH <gregkh@linuxfoundation.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20240913112643.542914-1-benno.lossin@proton.me>
- <20240913112643.542914-2-benno.lossin@proton.me>
+        Fri, 13 Sep 2024 08:38:27 -0700 (PDT)
+From: Carlos Bilbao <carlos.bilbao.osdev@gmail.com>
+To: corbet@lwn.net,
+	ojeda@kernel.org,
+	dirk.behme@de.bosch.com
+Cc: alex.gaynor@gmail.com,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	benno.lossin@proton.me,
+	a.hindborg@samsung.com,
+	aliceryhl@google.com,
+	workflows@vger.kernel.org,
+	linux-doc@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	bilbao@vt.edu,
+	Carlos Bilbao <carlos.bilbao.osdev@gmail.com>
+Subject: [PATCH v2] kernel-docs: Add new section for Rust learning materials
+Date: Fri, 13 Sep 2024 10:38:24 -0500
+Message-ID: <20240913153824.161150-1-carlos.bilbao.osdev@gmail.com>
+X-Mailer: git-send-email 2.43.5
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240913112643.542914-2-benno.lossin@proton.me>
-X-Operating-System: Linux phenom 6.9.12-amd64 
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
 
-On Fri, Sep 13, 2024 at 11:26:57AM +0000, Benno Lossin wrote:
-> When reading data from userspace, hardware or other external untrusted
-> sources, the data must be validated before it is used for logic within
-> the kernel. This abstraction provides a generic newtype wrapper that
-> prevents direct access to the inner type. It does allow access through
-> the `untrusted()` method, but that should be a telltale sign to
-> reviewers that untrusted data is being used at that point.
-> 
-> Any API that reads data from an untrusted source should return
-> `Untrusted<T>` where `T` is the type of the underlying untrusted data.
-> This generic allows other abstractions to return their custom type
-> wrapped by `Untrusted`, signaling to the caller that the data must be
-> validated before use. This allows those abstractions to be used both in
-> a trusted and untrusted manner, increasing their generality.
-> Additionally, using the arbitrary self types feature, APIs can be
-> designed to explicitly read untrusted data:
-> 
->     impl MyCustomDataSource {
->         pub fn read(self: &Untrusted<Self>) -> &Untrusted<[u8]>;
->     }
-> 
-> To validate data, the `Validator` trait is introduced, readers of
-> untrusted data should implement it for their type and move all of their
-> validation and parsing logic into its `validate` function. That way
-> reviewers and later contributors have a central location to consult for
-> data validation.
-> 
-> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
+Include a new section in the Index of Further Kernel Documentation with
+resources to learn Rust. Reference it in the Rust index.
 
-Yes please. Some thoughts below. Fair warning, my rust is basic at best,
-I'll mix things up probably.
+Signed-off-by: Carlos Bilbao <carlos.bilbao.osdev@gmail.com>
+---
 
-> ---
->  rust/kernel/types.rs | 248 ++++++++++++++++++++++++++++++++++++++++++-
->  1 file changed, 247 insertions(+), 1 deletion(-)
-> 
-> diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
-> index 9e7ca066355c..20ef04b1b417 100644
-> --- a/rust/kernel/types.rs
-> +++ b/rust/kernel/types.rs
-> @@ -8,9 +8,10 @@
->      cell::UnsafeCell,
->      marker::{PhantomData, PhantomPinned},
->      mem::{ManuallyDrop, MaybeUninit},
-> -    ops::{Deref, DerefMut},
-> +    ops::{Deref, DerefMut, Index},
->      pin::Pin,
->      ptr::NonNull,
-> +    slice::SliceIndex,
->  };
->  
->  /// Used to transfer ownership to and from foreign (non-Rust) languages.
-> @@ -532,3 +533,248 @@ unsafe impl AsBytes for str {}
->  // does not have any uninitialized portions either.
->  unsafe impl<T: AsBytes> AsBytes for [T] {}
->  unsafe impl<T: AsBytes, const N: usize> AsBytes for [T; N] {}
-> +
-> +/// Untrusted data of type `T`.
-> +///
-> +/// When reading data from userspace, hardware or other external untrusted sources, the data must
-> +/// be validated before it is used for logic within the kernel. To do so, the [`validate()`]
-> +/// function exists and uses the [`Validator`] trait. For raw bytes validation there also is the
-> +/// [`validate_bytes()`] function.
-> +///
-> +///
-> +/// [`validate()`]: Self::validate
-> +/// [`validate_bytes()`]: Self::validate_bytes
-> +#[repr(transparent)]
-> +pub struct Untrusted<T: ?Sized>(T);
+Changes since v1:
+ - Added two more Rust blogs proposed by Dirk Behme.
 
-I think we could make this a bit more strict and instead of encouraging
-people to put all their validation code into a Validator<T>, force
-them to. Which means assuming apis wrap all untrusted stuff in
-Untrusted<T> reviewers only need to look at validate implementations and
-nothing else.
+---
+ Documentation/process/kernel-docs.rst | 131 +++++++++++++++++++++++---
+ Documentation/rust/index.rst          |   3 +
+ 2 files changed, 123 insertions(+), 11 deletions(-)
 
-If I'm not too wrong with my rust I think this would work with slitting
-Untrusted<T> into two types:
-
-- Untrusted<T> is just a box you can't access, and the type returned by
-  apis for untrusted data. It doesn't have any of the functions except
-  validate and new_untrusted so that you can't get at the data at all.
-
-- UntrustedUnsafe<T> does have all the accessors needed for validation,
-  but you can't construct that outside of this module. Maybe simplest to
-  just nest this within the Untrusted<T> box.
-
-- Untrusted::validate does the unboxing and passes a reference to
-  UntrustedUnsafe<T> to Validator::validate, to guarantee that all the
-  validation code is in there and nowhere else. Similar for
-  validate_bytes.
-
-Of course people can still bypass this easily, but it gets a bit harder to
-do so, and easier for reviewers to verify everything.
-
-> +
-> +impl<T: ?Sized> Untrusted<T> {
-> +    /// Marks the given value as untrusted.
-> +    ///
-> +    /// # Examples
-> +    ///
-> +    /// ```
-> +    /// # mod bindings { unsafe fn read_foo_info() -> [u8; 4] { todo!() } };
-> +    /// fn read_foo_info() -> Untrusted<[u8; 4]> {
-> +    ///     // SAFETY: just an FFI call without preconditions.
-> +    ///     Untrusted::new_untrusted(unsafe { bindings::read_foo_info() })
-> +    /// }
-> +    /// ```
-> +    pub fn new_untrusted(value: T) -> Self
-> +    where
-> +        T: Sized,
-> +    {
-> +        Self(value)
-> +    }
-> +
-> +    /// Marks the value behind the reference as untrusted.
-> +    ///
-> +    /// # Examples
-> +    ///
-> +    /// In this imaginary example there exists the `foo_hardware` struct on the C side, as well as
-> +    /// a `foo_hardware_read` function that reads some data directly from the hardware.
-> +    /// ```
-> +    /// # mod bindings { struct foo_hardware; unsafe fn foo_hardware_read(_foo: *mut Foo, _len: &mut usize) -> *mut u8 { todo!() } };
-> +    /// struct Foo(Opaque<bindings::foo_hardware>);
-> +    ///
-> +    /// impl Foo {
-> +    ///     pub fn read(&mut self, mut len: usize) -> Result<&Untrusted<[u8]>> {
-> +    ///         // SAFETY: just an FFI call without preconditions.
-> +    ///         let data: *mut u8 = unsafe { bindings::foo_hardware_read(self.0.get(), &mut len) };
-> +    ///         let data = error::from_err_ptr(data)?;
-> +    ///         let data = ptr::slice_from_raw_parts(data, len);
-> +    ///         // SAFETY: `data` returned by `foo_hardware_read` is valid for reads as long as the
-> +    ///         // `foo_hardware` object exists. That function updated the
-> +    ///         let data = unsafe { &*data };
-> +    ///         Ok(Untrusted::new_untrusted_ref(data))
-> +    ///     }
-> +    /// }
-> +    /// ```
-> +    pub fn new_untrusted_ref<'a>(value: &'a T) -> &'a Self {
-> +        let ptr: *const T = value;
-> +        // CAST: `Self` is `repr(transparent)` and contains a `T`.
-> +        let ptr = ptr as *const Self;
-> +        // SAFETY: `ptr` came from a shared reference valid for `'a`.
-> +        unsafe { &*ptr }
-> +    }
-> +
-> +    /// Gives direct access to the underlying untrusted data.
-> +    ///
-> +    /// Be careful when accessing the data, as it is untrusted and still needs to be verified! To
-> +    /// do so use [`validate()`].
-> +    ///
-> +    /// [`validate()`]: Self::validate
-> +    pub fn untrusted(&self) -> &T {
-> +        &self.0
-> +    }
-> +
-> +    /// Gives direct access to the underlying untrusted data.
-> +    ///
-> +    /// Be careful when accessing the data, as it is untrusted and still needs to be verified! To
-> +    /// do so use [`validate()`].
-> +    ///
-> +    /// [`validate()`]: Self::validate
-> +    pub fn untrusted_mut(&mut self) -> &mut T {
-> +        &mut self.0
-> +    }
-> +
-> +    /// Unwraps the data and removes the untrusted marking.
-> +    ///
-> +    /// Be careful when accessing the data, as it is untrusted and still needs to be verified! To
-> +    /// do so use [`validate()`].
-> +    ///
-> +    /// [`validate()`]: Self::validate
-> +    pub fn into_inner_untrusted(self) -> T
-
-I don't like the above two since they could be easily and accidentally
-abused to leak untrusted data. And at least in your example I think
-they're fallout from being a bit too eager with annotating data as
-untrusted. The Folio and Mapped itself are just kernel structures, they
-better be correct. So I don't think it's useful to annotate those as
-untrusted and rely on Deref to also annotate the actual data as untrusted,
-because it forces you to peak behind the box a few times.
-
-Instead I think we only want to annotate the Folio Deref:
-
-impl<S> Deref for Mapped<'_, S> {
-    type Target = Untrusted<[u8]>;
-
-Now there will be folios that we trust because they're kernel internal
-data and not file cache, so we need more flexibility here. No idea how to
-best make that happen, but in either case it's only the Deref data itself
-we don't trust, not any of the structures around it. One example would be
-gpu page tables. One way to implement this would be to make the Target
-type a generic of the folio, or well an associated type of the existing
-generics folio paramater:
-
-pub struct Folio<S: FolioType>
-
-pub trait FolioType {
-	type Data;
-}
-
-impl<T> FolioType for PageCache<T> {
-	type Data = Untrusted<[u8]>;
-}
-
-And gpu pagetables would use a something like this instead:
-
-impl FolioType for GpuFolios {
-	type Data = [struct GpuPTE];
-}
-
-All extremely untested.
-
-Now I think there are cases you can't cover with just validate, where you
-have multiple input data which needs to be cross-checked to ensure overall
-validity. But I think that we can cover that by implementing a Validator
-for tuples and making Untrusted a trait so that we can either Accept
-Untrusted<(A, B)> or (Untrusted<A>, Untrusted<B>) interchangably when
-calling validate().
-
-At least with an hour of theorizing and your one example I couldn't come
-up with anything else.
-
-> +    where
-> +        T: Sized,
-> +    {
-> +        self.0
-> +    }
-> +
-> +    /// Dereferences the underlying untrusted data.
-> +    ///
-> +    /// Often, untrusted data is not directly exposed as bytes, but rather as a reader that can
-> +    /// give you access to raw bytes. When such a type implements [`Deref`], then this function
-> +    /// allows you to get access to the underlying data.
-> +    pub fn deref(&self) -> &Untrusted<<T as Deref>::Target>
-> +    where
-> +        T: Deref,
-> +    {
-> +        Untrusted::new_untrusted_ref(self.0.deref())
-> +    }
-> +
-> +    /// Validates and parses the untrusted data.
-> +    ///
-> +    /// See the [`Validator`] trait on how to implement it.
-> +    pub fn validate<V: Validator<Input = T>>(&self) -> Result<V::Output, V::Err> {
-> +        V::validate(self)
-> +    }
-> +}
-> +
-> +impl Untrusted<[u8]> {
-> +    /// Validate the given bytes directly.
-> +    ///
-> +    /// This is a convenience method to not have to implement the [`Validator`] trait to be able to
-> +    /// just parse some bytes. If the bytes that you are validating have some structure and/or you
-> +    /// will parse it into a `struct` or other rust type, then it is very much recommended to use
-> +    /// the [`Validator`] trait and the [`validate()`] function instead.
-> +    ///
-> +    /// # Examples
-> +    ///
-> +    /// ```
-> +    /// # fn get_untrusted_data() -> &'static Untrusted<[u8]> { &[0; 8] }
-> +    ///
-> +    /// let data: &Untrusted<[u8]> = get_untrusted_data();
-> +    /// let data: Result<&[u8], ()> = data.validate_bytes::<()>(|untrusted| {
-> +    ///     if untrusted.len() != 2 {
-> +    ///         return Err(());
-> +    ///     }
-> +    ///     if untrusted[0] & 0xf0 != 0 {
-> +    ///         return Err(());
-> +    ///     }
-> +    ///     if untrusted[1] >= 100 {
-> +    ///         return Err(());
-> +    ///     }
-> +    ///     Ok(())
-> +    /// });
-> +    /// match data {
-> +    ///     Ok(data) => pr_info!("successfully validated the data: {data}"),
-> +    ///     Err(()) => pr_info!("read faulty data from hardware!"),
-> +    /// }
-> +    /// ```
-> +    ///
-> +    /// [`validate()`]: Self::validate
-> +    pub fn validate_bytes<E>(
-
-I think this is a special case of a somewhat common in-place validation
-pattern. For example in in complex syscall or ioctl we need to copy
-structures from userspace anyway and doing yet another copy to put them
-into a rust structure isn't great, instead we validate in-place. So I
-think we need something like
-
-impl Untrusted<T> {
-	pub fn validate_inplace<E>(
-		&self,
-		validator: impl FnOnce(&T) -> Result<(), E>,
-		) -> Result <&T, E> {
-		...
-	}
-}
-
-Eventually we might want a _mut version of this too, because often uapi
-extensions means we need to correctly fill out default values for
-extensions when being called by old userspace, and that requires
-mutability. And it really is often an integral part of input validation.
-
-Also I think we might need an Iterator for Untrusted<I: IntoIterator> so
-that we can validate Untrusted<[T]> and things like that with standard map
-and collect and do it all inplace.
-
-> +        &self,
-> +        validator: impl FnOnce(&[u8]) -> Result<(), E>,
-> +    ) -> Result<&[u8], E> {
-> +        let raw_data = self.untrusted();
-> +        validator(raw_data).map(|()| raw_data)
-> +    }
-> +}
-> +
-> +impl<T, I> Index<I> for Untrusted<[T]>
-> +where
-> +    I: SliceIndex<[T]>,
-> +{
-> +    type Output = Untrusted<I::Output>;
-> +
-> +    fn index(&self, index: I) -> &Self::Output {
-> +        Untrusted::new_untrusted_ref(self.0.index(index))
-> +    }
-> +}
-> +
-> +impl<T> Untrusted<[T]> {
-> +    /// Gets the length of the underlying untrusted slice.
-> +    pub fn len(&self) -> usize {
-> +        self.0.len()
-> +    }
-> +}
-> +
-> +/// Validates untrusted data.
-> +///
-> +/// # Examples
-> +///
-> +/// ## Using an API returning untrusted data
-> +///
-> +/// Create the type of the data that you want to parse:
-> +///
-> +/// ```
-> +/// pub struct FooData {
-> +///     data: [u8; 4],
-> +/// }
-> +/// ```
-> +///
-> +/// Then implement this trait:
-> +///
-> +/// ```
-> +/// use kernel::types::{Untrusted, Validator};
-> +/// # pub struct FooData {
-> +/// #     data: [u8; 4],
-> +/// # }
-> +/// impl Validator for FooData {
-> +///     type Input = [u8];
-> +///     type Output = FooData;
-> +///     type Err = Error;
-> +///
-> +///     fn validate(untrusted: &Untrusted<Self::Input>) -> Result<Self::Output, Self::Err> {
-> +///         let untrusted = untrusted.untrusted();
-> +///         let untrusted = <[u8; 4]>::try_from(untrusted);
-> +///         for byte in &untrusted {
-> +///             if byte & 0xf0 != 0 {
-> +///                 return Err(());
-> +///             }
-> +///         }
-> +///         Ok(FooData { data: untrusted })
-> +///     }
-> +/// }
-> +/// ```
-> +///
-> +/// And then use the API that returns untrusted data:
-> +///
-> +/// ```ignore
-> +/// let result = get_untrusted_data().validate::<FooData>();
-> +/// ```
-> +///
-> +/// ## Creating an API returning untrusted data
-> +///
-> +/// In your API instead of just returning the untrusted data, wrap it in [`Untrusted<T>`]:
-> +///
-> +/// ```
-> +/// pub fn get_untrusted_data(&self) -> &Untrusted<[u8]> {
-> +///     todo!()
-> +/// }
-> +/// ```
-> +pub trait Validator {
-> +    /// Type of the input data that is untrusted.
-> +    type Input: ?Sized;
-> +    /// Type of the validated data.
-> +    type Output;
-
-So I think the explicit Output makes sense if you have multiple different
-untrusted input that validate to the same trusted structure, but I'm not
-sure this makes sense as associated types. Instead I'd go with generics
-and somethign like this:
-
-pub trait Validator<Input: ?Sized> {
-    type Err;
-
-    fn validate(untrusted: &Untrusted<Input>) -> Result<Self, Self::Err>;
-}
-
-That means you can't implement validate for types from other modules
-directly but need a newtype (I think at least, not sure). But I think
-that's actually a good thing, since often that means you're validating
-some generic state plus whatever your own code needs (like the
-inode::Params<tarfs::INodeData> in your example), and both pieces need to
-be consisted overall and not just individually (otherwise why does the
-that other module not do the parsing for you). And so explicitly treating
-the validated output as an explicit new type just makes sense to me. Plus
-with derive(Deref) it's trivial to unbox after validation.
-
-Cheers, Sima
-
-> +    /// Validation error.
-> +    type Err;
-> +
-> +    /// Validate the given untrusted data and parse it into the output type.
-> +    ///
-> +    /// When implementing this function, you can use [`Untrusted::untrusted()`] to get access to
-> +    /// the raw untrusted data.
-> +    fn validate(untrusted: &Untrusted<Self::Input>) -> Result<Self::Output, Self::Err>;
-> +}
-> -- 
-> 2.46.0
-> 
-> 
-
+diff --git a/Documentation/process/kernel-docs.rst b/Documentation/process/kernel-docs.rst
+index 55552ec4b043..b56c2adcb954 100644
+--- a/Documentation/process/kernel-docs.rst
++++ b/Documentation/process/kernel-docs.rst
+@@ -72,17 +72,6 @@ On-line docs
+         programming. Lots of examples. Currently the new version is being
+         actively maintained at https://github.com/sysprog21/lkmpg.
+ 
+-    * Title: **Rust for Linux**
+-
+-      :Author: various
+-      :URL: https://rust-for-linux.com/
+-      :Date: rolling version
+-      :Keywords: glossary, terms, linux-kernel.
+-      :Description: From the website: "Rust for Linux is the project adding
+-        support for the Rust language to the Linux kernel. This website is
+-        intended as a hub of links, documentation and resources related to
+-        the project".
+-
+ Published books
+ ---------------
+ 
+@@ -220,6 +209,126 @@ Miscellaneous
+         other original research and content related to Linux and software
+         development.
+ 
++Rust
++----
++
++    * Title: **Rust for Linux**
++
++      :Author: various
++      :URL: https://rust-for-linux.com/
++      :Date: rolling version
++      :Keywords: glossary, terms, linux-kernel, rust.
++      :Description: From the website: "Rust for Linux is the project adding
++        support for the Rust language to the Linux kernel. This website is
++        intended as a hub of links, documentation and resources related to
++        the project".
++
++    * Title: **Learning Rust the Dangerous Way**
++
++      :Author: Cliff L. Biffle
++      :URL: https://cliffle.com/p/dangerust/
++      :Date: Accessed Sep 11 2024
++      :Keywords: rust, blog.
++      :Description: From the website: "LRtDW is a series of articles
++        putting Rust features in context for low-level C programmers who
++        maybe don’t have a formal CS background — the sort of people who
++        work on firmware, game engines, OS kernels, and the like.
++        Basically, people like me.". It illustrates line-by-line
++        conversions from C to Rust.
++
++    * Title: **The Rust Book**
++
++      :Author: Steve Klabnik and Carol Nichols, with contributions from the
++        Rust community
++      :URL: https://doc.rust-lang.org/book/
++      :Date: Accessed Sep 11 2024
++      :Keywords: rust, book.
++      :Description: From the website: "This book fully embraces the
++        potential of Rust to empower its users. It’s a friendly and
++        approachable text intended to help you level up not just your
++        knowledge of Rust, but also your reach and confidence as a
++        programmer in general. So dive in, get ready to learn—and welcome
++        to the Rust community!".
++
++    * Title: **Rust for the Polyglot Programmer**
++
++      :Author: Ian Jackson
++      :URL: https://www.chiark.greenend.org.uk/~ianmdlvl/rust-polyglot/index.html
++      :Date: December 2022
++      :Keywords: rust, blog, tooling.
++      :Description: From the website: "There are many guides and
++        introductions to Rust. This one is something different: it is
++        intended for the experienced programmer who already knows many
++        other programming languages. I try to be comprehensive enough to be
++        a starting point for any area of Rust, but to avoid going into too
++        much detail except where things are not as you might expect. Also
++        this guide is not entirely free of opinion, including
++        recommendations of libraries (crates), tooling, etc.".
++
++    * Title: **Fasterthanli.me**
++
++      :Author: Amos Wenger
++      :URL: https://fasterthanli.me/
++      :Date: Accessed Sep 11 2024
++      :Keywords: rust, blog, news.
++      :Description: From the website: "I make articles and videos about how
++        computers work. My content is long-form, didactic and exploratory
++        — and often an excuse to teach Rust!".
++
++    * Title: **Comprehensive Rust**
++
++      :Author: Android team at Google
++      :URL: https://google.github.io/comprehensive-rust/
++      :Date: Accessed Sep 13 2024
++      :Keywords: rust, blog.
++      :Description: From the website: "The course covers the full spectrum
++        of Rust, from basic syntax to advanced topics like generics and
++        error handling".
++
++    * Title: **The Embedded Rust Book**
++
++      :Author: Multiple contributors, mostly Jorge Aparicio
++      :URL: https://docs.rust-embedded.org/book/
++      :Date: Accessed Sep 13 2024
++      :Keywords: rust, blog.
++      :Description: From the website: "An introductory book about using
++        the Rust Programming Language on "Bare Metal" embedded systems,
++        such as Microcontrollers".
++
++    * Title: **You Can't Spell Trust Without Rust**
++
++      :Author: Alexis Beingessner
++      :URL: https://repository.library.carleton.ca/downloads/1j92g820w?locale=en
++      :Date: 2015
++      :Keywords: rust, master, thesis.
++      :Description: This thesis focuses on Rust's ownership system, which
++        ensures memory safety by controlling data manipulation and
++        lifetime, while also highlighting its limitations and comparing it
++        to similar systems in Cyclone and C++.
++
++    * Name: **Linux Plumbers (LPC) Rust presentations**
++
++      :Title: Rust microconference
++      :URL: https://lpc.events/event/18/sessions/186/#20240918
++      :Title: Rust for Linux
++      :URL: https://lpc.events/event/18/contributions/1912/
++      :Title: Journey of a C kernel engineer starting a Rust driver project
++      :URL: https://lpc.events/event/18/contributions/1911/
++      :Title: Crafting a Linux kernel scheduler that runs in user-space
++        using Rust
++      :URL: https://lpc.events/event/18/contributions/1723/
++      :Title: openHCL: A Linux and Rust based paravisor
++      :URL: https://lpc.events/event/18/contributions/1956/
++      :Keywords: rust, lpc, presentations.
++      :Description: A number of LPC talks related to Rust.
++
++    * Name: **The Rustacean Station Podcast**
++
++      :URL: https://rustacean-station.org/
++      :Keywords: rust, podcasts.
++      :Description: A community project for creating podcast content for
++        the Rust programming language.
++
+ -------
+ 
+ This document was originally based on:
+diff --git a/Documentation/rust/index.rst b/Documentation/rust/index.rst
+index 46d35bd395cf..01f09216c229 100644
+--- a/Documentation/rust/index.rst
++++ b/Documentation/rust/index.rst
+@@ -42,6 +42,9 @@ configurations.
+     arch-support
+     testing
+ 
++You can also find learning materials for Rust in its section in
++:doc:`../process/kernel-docs`.
++
+ .. only::  subproject and html
+ 
+    Indices
 -- 
-Simona Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
+2.43.5
+
