@@ -1,175 +1,97 @@
-Received: from gimli.kloenk.de (gimli.kloenk.de [49.12.72.200])
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8969B1DA62C;
-	Fri, 13 Sep 2024 13:50:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=49.12.72.200
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9D481D86D1;
+	Fri, 13 Sep 2024 14:14:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726235430; cv=none; b=r8mWpXRBkIvJnYQvwoYKPFsD6R3ln7xCQhs9zQpizNT3ZWb6n1tf1WDv/MZfVxE7gVjo2AlOmlrBAyQ0KXyCTjCVleUS3FaSjVuBj+B7iKiAIHmoyNOrUEuKzr1yUQGJE9t6Q0K66Ry3IwzTMdhNtlGnBpMjv9kMENmbe/2MTbk=
+	t=1726236882; cv=none; b=Ap61gUAKpNt+/PQ/zslqMUtvw2RFtlYozsaVtncYnlV4sq8Eqs7op193sbqUDzDGNaW8Olmvp+p+EHdkF23kkceDGSCZcQpN5//l/1ZnuGaJZXrauF/HWxLaLs0nF0aSTWdL11GqF5VHw4ucpHVtrRNpLsagAIkDZhmi1STXYqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726235430; c=relaxed/simple;
-	bh=rmbVteh3MhMwb6kEdNs/84s2F30jItgTqVYsZhXGmko=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jDnTRYdX6nRcCtk3iVtUMFEXemBwSf2ZiCyNoe47y1WmggLQpGXxC5hlpM89d4RIClX1zPmeC3W5L4x1+o5J2xsm11qgkRI+fZoe3/BmFFsa+aAMhqE/5xEQsa7kmknk8hV2w49hZsmp7H0H8TIShVnMN8SP4C0u9oXiS8s2xlU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev; spf=pass smtp.mailfrom=kloenk.dev; dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b=oq3kYpLJ; arc=none smtp.client-ip=49.12.72.200
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=kloenk.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kloenk.dev
+	s=arc-20240116; t=1726236882; c=relaxed/simple;
+	bh=JGJr3hZsfcYd0hp9+8waZWWoezY4Y5ENA/y/vEDUmIk=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=oWRuti7N2t5FwfxOs4hCcSyDTgrERLYXpJdVXzrmeLSX8/4ItvV98vg2ErJec1CyB2FpRMBSEgvwruhSZ4iFQzb37JSF07MBmTzw2n9s+2Lgn70htmjplv+BZ0OLovPun9dRwevkjp/0mIQyYV/oaLjx9/dFCnt4z1unoIyPnSE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=SvUs1FdG; arc=none smtp.client-ip=185.70.43.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=kloenk.dev header.i=@kloenk.dev header.b="oq3kYpLJ"
-From: Finn Behrens <me@kloenk.dev>
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kloenk.dev; s=mail;
-	t=1726234868; bh=koEIKzayacr7Jw1JspcVjhqLCbSZescfm3Wqy+rjWOs=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References;
-	b=oq3kYpLJwiuDiblrUu8Tds3YRWHP9RXxhCzUyZPChjf4FpGPNNy4sKBPf/B6BGqjv
-	 1L1PNHdNcroidcPyfFjCxY6dd5sUZuPk8laioBYMiHbXqZIDuieYHLIbMfVvXtZFgV
-	 Gvuu4ZpHYeRrzCl/R+7x1q0pof7wkpKDiH6CsOYQ=
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Greg KH <gregkh@linuxfoundation.org>, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>,
- Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
- Gary Guo <gary@garyguo.net>,
- =?utf-8?q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
- Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>,
- Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org,
- linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/3] rust: add untrusted data abstraction
-Date: Fri, 13 Sep 2024 15:41:06 +0200
-Message-ID: <EE2A76E7-58E6-40E5-9075-48A169292250@kloenk.dev>
-In-Reply-To: <20240913112643.542914-2-benno.lossin@proton.me>
-References: <20240913112643.542914-1-benno.lossin@proton.me>
- <20240913112643.542914-2-benno.lossin@proton.me>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="SvUs1FdG"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1726236878; x=1726496078;
+	bh=Er4z/TlLjMShQEFQyDcXytiAA2ZIFl92Wj8NPFuIWds=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=SvUs1FdG2LMmroV5i4IlyW3vnUHGLqWnjtzFbo1YjvTgS3ucNuyIP8D6s6cfmQSPY
+	 tt9HC6UPe8v5R8OTafzpE4cR3PWLfOtxyCv52ZiLE5Miub3sscFpblQksre1zhtH9T
+	 KWl/wiTyopye5H4iTRZGarTMt8F3gqylyKTfUhOc+/insjwTyerhOiyoCeSC5sApoc
+	 1i+093U/dZahXj5uj+lTfaWhs8LHTfud9hBP67LhrRNhMthRXKolSEj8SP9FwU0yU+
+	 5tZR553AF0AuUU1dLldQjppxjbwZGGvi4321DACrOyBsCcdiY1Ap8t1OgZYUEPmFDS
+	 RdnkN1+MhN7og==
+Date: Fri, 13 Sep 2024 14:14:29 +0000
+To: Lyude Paul <lyude@redhat.com>, rust-for-linux@vger.kernel.org
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Danilo Krummrich <dakr@redhat.com>, airlied@redhat.com, Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, linux-kernel@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Valentin Obst <kernel@valentinobst.de>
+Subject: Re: [PATCH v5 2/3] rust: sync: Introduce lock::Backend::Context
+Message-ID: <61f87861-db95-4524-99e9-b552c4cefd3e@proton.me>
+In-Reply-To: <20240912190540.53221-3-lyude@redhat.com>
+References: <20240912190540.53221-1-lyude@redhat.com> <20240912190540.53221-3-lyude@redhat.com>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: 824055d6ec1214d8800ff2fe4fe19bad3e748fbe
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-
-
-On 13 Sep 2024, at 13:26, Benno Lossin wrote:
-
-> When reading data from userspace, hardware or other external untrusted
-> sources, the data must be validated before it is used for logic within
-> the kernel. This abstraction provides a generic newtype wrapper that
-> prevents direct access to the inner type. It does allow access through
-> the `untrusted()` method, but that should be a telltale sign to
-> reviewers that untrusted data is being used at that point.
->
-> Any API that reads data from an untrusted source should return
-> `Untrusted<T>` where `T` is the type of the underlying untrusted data.
-> This generic allows other abstractions to return their custom type
-> wrapped by `Untrusted`, signaling to the caller that the data must be
-> validated before use. This allows those abstractions to be used both in=
-
-> a trusted and untrusted manner, increasing their generality.
-> Additionally, using the arbitrary self types feature, APIs can be
-> designed to explicitly read untrusted data:
->
->     impl MyCustomDataSource {
->         pub fn read(self: &Untrusted<Self>) -> &Untrusted<[u8]>;
->     }
->
-> To validate data, the `Validator` trait is introduced, readers of
-> untrusted data should implement it for their type and move all of their=
-
-> validation and parsing logic into its `validate` function. That way
-> reviewers and later contributors have a central location to consult for=
-
-> data validation.
->
-> Signed-off-by: Benno Lossin <benno.lossin@proton.me>
+On 12.09.24 21:04, Lyude Paul wrote:
+> Now that we've introduced an `IrqDisabled` token for marking contexts in
+> which IRQs are disabled, we need a way to be able to pass it to locks tha=
+t
+> require that IRQs are disabled. In order to continue using the
+> `lock::Backend` type instead of inventing our own thing, we accomplish th=
+is
+> by adding the associated Context type, along with a `lock_with()` functio=
+n
+> that can accept a Context when acquiring a lock. To allow current users o=
+f
+> context-less locks to keep using the normal `lock()` method, we take an
+> example from Wedson Almeida Filho's work and add a `where T<'a>: Default`
+> bound to `lock()` so that it can only be called on lock types where the
+> context is simply a placeholder value, then re-implement it through the n=
+ew
+> `lock_with()` function.
+>=20
+> Signed-off-by: Lyude Paul <lyude@redhat.com>
+>=20
 > ---
->  rust/kernel/types.rs | 248 ++++++++++++++++++++++++++++++++++++++++++-=
+>=20
+> V3:
+> * Use explicit lifetimes in lock_with() to ensure self and _context have
+>   the same lifetime (Benno)
+> * Use () for locks that don't need a Context instead of PhantomData (Benn=
+o)
+> V4:
+> * Fix typo (Dirk)
+>=20
+> Signed-off-by: Lyude Paul <lyude@redhat.com>
 
->  1 file changed, 247 insertions(+), 1 deletion(-)
->
-> diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
-> index 9e7ca066355c..20ef04b1b417 100644
-> --- a/rust/kernel/types.rs
-> +++ b/rust/kernel/types.rs
-=E2=80=A6
-> +
-> +/// Validates untrusted data.
-> +///
-> +/// # Examples
-> +///
-> +/// ## Using an API returning untrusted data
-> +///
-> +/// Create the type of the data that you want to parse:
-> +///
-> +/// ```
-> +/// pub struct FooData {
-> +///     data: [u8; 4],
-> +/// }
-> +/// ```
-> +///
-> +/// Then implement this trait:
-> +///
-> +/// ```
-> +/// use kernel::types::{Untrusted, Validator};
-> +/// # pub struct FooData {
-> +/// #     data: [u8; 4],
-> +/// # }
-> +/// impl Validator for FooData {
-> +///     type Input =3D [u8];
-> +///     type Output =3D FooData;
-> +///     type Err =3D Error;
-> +///
-> +///     fn validate(untrusted: &Untrusted<Self::Input>) -> Result<Self=
-::Output, Self::Err> {
-> +///         let untrusted =3D untrusted.untrusted();
-> +///         let untrusted =3D <[u8; 4]>::try_from(untrusted);
-> +///         for byte in &untrusted {
-> +///             if byte & 0xf0 !=3D 0 {
-> +///                 return Err(());
-> +///             }
-> +///         }
-> +///         Ok(FooData { data: untrusted })
-> +///     }
-> +/// }
-> +/// ```
-> +///
-> +/// And then use the API that returns untrusted data:
-> +///
-> +/// ```ignore
-> +/// let result =3D get_untrusted_data().validate::<FooData>();
-> +/// ```
-> +///
-> +/// ## Creating an API returning untrusted data
-> +///
-> +/// In your API instead of just returning the untrusted data, wrap it =
-in [`Untrusted<T>`]:
-> +///
-> +/// ```
-> +/// pub fn get_untrusted_data(&self) -> &Untrusted<[u8]> {
-> +///     todo!()
-> +/// }
-> +/// ```
-> +pub trait Validator {
-> +    /// Type of the input data that is untrusted.
-> +    type Input: ?Sized;
+I don't think that you need your SOB twice.
 
-I would like to explore this trait with being generic over Input, instead=
- of having Input as an associated type. Might be nicer to have Validators=
- for different input types if the valid data is always the same?
+> ---
+>  rust/kernel/sync/lock.rs          | 17 +++++++++++++++--
+>  rust/kernel/sync/lock/mutex.rs    |  1 +
+>  rust/kernel/sync/lock/spinlock.rs |  1 +
+>  3 files changed, 17 insertions(+), 2 deletions(-)
 
-> +    /// Type of the validated data.
-> +    type Output;
-> +    /// Validation error.
-> +    type Err;
-> +
-> +    /// Validate the given untrusted data and parse it into the output=
- type.
-> +    ///
-> +    /// When implementing this function, you can use [`Untrusted::untr=
-usted()`] to get access to
-> +    /// the raw untrusted data.
-> +    fn validate(untrusted: &Untrusted<Self::Input>) -> Result<Self::Ou=
-tput, Self::Err>;
-> +}
-> -- =
+This looks good:
 
-> 2.46.0
+Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+
+---
+Cheers,
+Benno
+
