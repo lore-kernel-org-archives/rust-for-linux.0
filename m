@@ -1,43 +1,43 @@
-Received: from mail-40131.protonmail.ch (mail-40131.protonmail.ch [185.70.40.131])
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A59958AC4
-	for <rust-for-linux@vger.kernel.org>; Fri, 13 Sep 2024 13:33:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F25F51BDA85;
+	Fri, 13 Sep 2024 13:47:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726234431; cv=none; b=bTGvdWl0b+StKnV6qyGyMYsMPL/3rPnifLl+uQBY/zOOlLM4MNZzHRGPwgC4JHnPyEnxXJ3ol0Namn38nN4InzJ+jhaGj30EbAhvXhRJLwJAEUZ1LAJewOxgMdFoiyFDWF5imQVXk9gdSznk1EOpdWbR5Lbf65c2qoXTyfHKXzM=
+	t=1726235243; cv=none; b=R+GNnOIf+Wybpmyetm0SGapYdIEkKtb9NHrSWXxBBMKO54fW3uPsdqxkjgJTgaYE8jg+4J9BlykkW4z83Xzyl9HJ7YZNOcHnFxihzsnrcFJ30k1M2yo4LR7jwzJ3PdX+N7tAGDngGmw4LUPzr2cdo8YtPTnW/pkvEcZJOao9xeg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726234431; c=relaxed/simple;
-	bh=hnObRO+BR0d8TtaxjbeGnkgGTtnOe0unp/BiDBKXZVo=;
+	s=arc-20240116; t=1726235243; c=relaxed/simple;
+	bh=WYyA5Vp4yB2SzAq5FgsNLkWXyhNzcdO7XMVLMGkAFZE=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pDWPyyiSzp90ag9ZBKRJQsFvoMGvbRjUc61AUZ1Hg4Nz9UUvmRoarbC3hLSeqZUYuRHoh693cZSuogm7cgD7aULjdhTWHUj/eJwvmmS36a+JyvafATcUP7rYszBRi4U6AHwFKKeCkHEfRJA3dF0H8TPebIhuxkQlnmYghUTNous=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=Op/BD4Ey; arc=none smtp.client-ip=185.70.40.131
+	 MIME-Version:Content-Type; b=gfBqMFN8kXF/Pz9Jcauwss8NyHJwW0zIyNC81Ydn2Jzh5AATJ2rW5wXZccSdGYcwxK9w+G3TVdScv0KdAtvwFxVuSOxIADlU2NN0UDgtQDtUqbBATxm8rVLCokjSz0EjxGK+bnUD8JNzoHTHL6Xn8TdLsQGib66DztgVwlrVFH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=bdDo9gnE; arc=none smtp.client-ip=185.70.43.22
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="Op/BD4Ey"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="bdDo9gnE"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1726234426; x=1726493626;
-	bh=T6OFiEYeegJIf9cPUv8SH8bEszc9kqwNM4Y0cpIi5Sk=;
+	s=t23qmclnbfdk7ikjffltxnilny.protonmail; t=1726235239; x=1726494439;
+	bh=SL3UlF5etkuUcpUbBrRU6HGec8qwa3J9DFhxx6wKbmg=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=Op/BD4EyB6aV5cIBD3bMTqSvgwxg/Xmcu6RhWPU7BAYppO5fqYWz3go3deBu9e+a7
-	 bHesSrqDBfhhdCS/KMnR7kblwmMjiLYINCj/89TrvyeFLUkZl0Mid36316UmCjOYk9
-	 xeYUw5UI3193hZ06BcQ+Vh5C4KKTsjVR9z+3XdifT6/iBZfmxV1vexckTHKuEysdzy
-	 2ZJbI5meFiP5/cpFZjC7HxhZS4g09EE8ng9XItx/ekpJNvOnMBRbeo2j+gBDIdRYsK
-	 MNOyS2sLwH7nHk8vKA5tDrCHEVQcWRnB+2f4X2zcNWJvznLnhXRz016wuR/sA1lEZ9
-	 SVtI/YeQKvgUQ==
-Date: Fri, 13 Sep 2024 13:33:43 +0000
-To: Lyude Paul <lyude@redhat.com>, rust-for-linux@vger.kernel.org
+	b=bdDo9gnE0o/bZQrzRUryK5khH6tmq6pRw9ow7rtComZG5xYF5MofCkMkRo6s+400+
+	 KOW+nAfCyf9TTWTPnjlmcwwbCn6mZzRfKnVBqTTO0u9Qo1Kma5GcwfqFbf6rQWTxhq
+	 ZUvM7jhMawYmJuvZO9LgwQ21IhKXBY/oCCSd2IbsPvq2IHKC0m5lk28qtHzVcDAJjq
+	 fFfLXH+Z2MBynPPx9gAwQogl6tkC2Mat1sY0JZLi9fkxu/TjOyRKsqNjhZijGXIDRr
+	 7X9zF7ZbWCj6kTlGgT0wthPdu2+Jvm7APrns1QuThmXZS5UIHDsXESoNq+f9MNgQ5E
+	 JWux13PkN42VQ==
+Date: Fri, 13 Sep 2024 13:47:15 +0000
+To: Finn Behrens <me@kloenk.dev>
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: Danilo Krummrich <dakr@redhat.com>, airlied@redhat.com, Ingo Molnar <mingo@redhat.com>, Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>, Peter Zijlstra <peterz@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, linux-kernel@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, FUJITA Tomonori <fujita.tomonori@gmail.com>, Valentin Obst <kernel@valentinobst.de>
-Subject: Re: [PATCH v5 1/3] rust: Introduce irq module
-Message-ID: <9e2716d8-ec2c-403b-9a3d-ae9784eb9e6f@proton.me>
-In-Reply-To: <20240912190540.53221-2-lyude@redhat.com>
-References: <20240912190540.53221-1-lyude@redhat.com> <20240912190540.53221-2-lyude@redhat.com>
+Cc: Greg KH <gregkh@linuxfoundation.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/3] rust: add untrusted data abstraction
+Message-ID: <5f60a885-733e-4434-ac5e-a70005f11382@proton.me>
+In-Reply-To: <EE2A76E7-58E6-40E5-9075-48A169292250@kloenk.dev>
+References: <20240913112643.542914-1-benno.lossin@proton.me> <20240913112643.542914-2-benno.lossin@proton.me> <EE2A76E7-58E6-40E5-9075-48A169292250@kloenk.dev>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 9bb89ce0d14944f3480f9531b3aa3766f34559aa
+X-Pm-Message-ID: dcd4c3c2fd7e5b9edafd8fb86ab173433798d0dc
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,179 +47,44 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On 12.09.24 21:04, Lyude Paul wrote:
-> This introduces a module for dealing with interrupt-disabled contexts,
-> including the ability to enable and disable interrupts
-> (with_irqs_disabled()) - along with the ability to annotate functions as
-> expecting that IRQs are already disabled on the local CPU.
+On 13.09.24 15:41, Finn Behrens wrote:
+> On 13 Sep 2024, at 13:26, Benno Lossin wrote:
+>> +pub trait Validator {
+>> +    /// Type of the input data that is untrusted.
+>> +    type Input: ?Sized;
 >=20
-> Signed-off-by: Lyude Paul <lyude@redhat.com>
->=20
-> ---
->=20
-> V2:
-> * Actually make it so that we check whether or not we have interrupts
->   disabled with debug assertions
-> * Fix issues in the documentation (added suggestions, missing periods, ma=
-de
->   sure that all rustdoc examples compile properly)
-> * Pass IrqDisabled by value, not reference
-> * Ensure that IrqDisabled is !Send and !Sync using
->   PhantomData<(&'a (), *mut ())>
-> * Add all of the suggested derives from Benno Lossin
->=20
-> V3:
-> * Use `impl` for FnOnce bounds in with_irqs_disabled()
-> * Use higher-ranked trait bounds for the lifetime of with_irqs_disabled()
-> * Wording changes in the documentation for the module itself
->=20
-> V4:
-> * Use the actual unsafe constructor for IrqDisabled in
->   with_irqs_disabled()
-> * Fix comment style in with_irqs_disabled example
-> * Check before calling local_irq_restore() in with_irqs_disabled that
->   interrupts are still disabled. It would have been nice to do this from =
-a
->   Drop implementation like I hoped, but I realized rust doesn't allow tha=
-t
->   for types that implement Copy.
-> * Document that interrupts can't be re-enabled within the `cb` provided t=
-o
->   `with_irqs_disabled`, and link to the github issue I just filed about
->   this that describes the solution for this.
->=20
-> V5:
-> * Rebase against rust-next for the helpers split
-> * Fix typo (enabled -> disabled) - Dirk
->=20
-> Signed-off-by: Lyude Paul <lyude@redhat.com>
-> ---
->  rust/helpers/helpers.c |  1 +
->  rust/helpers/irq.c     | 22 +++++++++++
->  rust/kernel/irq.rs     | 90 ++++++++++++++++++++++++++++++++++++++++++
->  rust/kernel/lib.rs     |  1 +
->  4 files changed, 114 insertions(+)
->  create mode 100644 rust/helpers/irq.c
->  create mode 100644 rust/kernel/irq.rs
+> I would like to explore this trait with being generic over Input, instead=
+ of having Input as an associated type. Might be nicer to have Validators f=
+or different input types if the valid data is always the same?
 
-This looks pretty good, I have two documentation improvements below,
-with those fixed:
+I think I have changed my opinion on this from Kangrejos, I like the
+idea. Then we would also be able to do something like this:
 
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-
-> diff --git a/rust/kernel/irq.rs b/rust/kernel/irq.rs
-> new file mode 100644
-> index 0000000000000..0673087161f08
-> --- /dev/null
-> +++ b/rust/kernel/irq.rs
-> @@ -0,0 +1,90 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +//! Interrupt controls
-> +//!
-> +//! This module allows Rust code to control processor interrupts. [`with=
-_irqs_disabled()`] may be
-> +//! used for nested disables of interrupts, whereas [`IrqDisabled`] can =
-be used for annotating code
-> +//! that requires interrupts to be disabled.
-> +
-> +use bindings;
-> +use core::marker::*;
-> +
-> +/// A token that is only available in contexts where IRQs are disabled.
-> +///
-> +/// [`IrqDisabled`] is marker made available when interrupts are not act=
-ive. Certain functions take
-> +/// an [`IrqDisabled`] in order to indicate that they may only be run in=
- IRQ-free contexts.
-
-I feel like "indicate" is not strong enough, how about using "require"?
-
-> +///
-> +/// This is a marker type; it has no size, and is simply used as a compi=
-le-time guarantee that
-> +/// interrupts are disabled where required.
-> +///
-> +/// This token can be created by [`with_irqs_disabled`]. See [`with_irqs=
-_disabled`] for examples and
-> +/// further information.
-> +#[derive(Copy, Clone, Debug, Ord, Eq, PartialOrd, PartialEq, Hash)]
-> +pub struct IrqDisabled<'a>(PhantomData<(&'a (), *mut ())>);
-
-
-
-> +/// Run the closure `cb` with interrupts disabled on the local CPU.
-> +///
-> +/// This creates an [`IrqDisabled`] token, which can be passed to functi=
-ons that must be run
-> +/// without interrupts. Note that interrupts must be disabled for the en=
-tire duration of `cb`, they
-> +/// cannot be re-enabled. In the future, this may be expanded on
-> +/// [as documented here](https://github.com/Rust-for-Linux/linux/issues/=
-1115).
-> +///
-> +/// # Examples
-> +///
-> +/// Using [`with_irqs_disabled`] to call a function that can only be cal=
-led with interrupts
-> +/// disabled:
-> +///
-> +/// ```
-> +/// use kernel::irq::{IrqDisabled, with_irqs_disabled};
-> +///
-> +/// // Requiring interrupts be disabled to call a function
-> +/// fn dont_interrupt_me(_irq: IrqDisabled<'_>) {
-> +///     // When this token is available, IRQs are known to be disabled. =
-Actions that rely on this
-> +///     // can be safely performed
-> +/// }
-> +///
-> +/// // Disabling interrupts. They'll be re-enabled once this closure com=
-pletes.
-
-Please change this to be "Disables interrupts, their previous state will
-be restored once the closure completes.".
-ie it is important to stress that this can be nested. Please also add
-this in a paragraph above the examples.
+    impl<I> Validator<I> for Foo
+    where
+        I: Deref<Target =3D [u8]>,
+    {
+        /* ... */
+    }
 
 ---
 Cheers,
 Benno
 
-> +/// with_irqs_disabled(|irq| dont_interrupt_me(irq));
-> +/// ```
-> +#[inline]
-> +pub fn with_irqs_disabled<T>(cb: impl for<'a> FnOnce(IrqDisabled<'a>) ->=
- T) -> T {
-> +    // SAFETY: FFI call with no special requirements
-> +    let flags =3D unsafe { bindings::local_irq_save() };
-> +
-> +    // SAFETY: We just disabled IRQs using `local_irq_save()`
-> +    let ret =3D cb(unsafe { IrqDisabled::new() });
-> +
-> +    // Confirm that IRQs are still disabled now that the callback has fi=
-nished
-> +    // SAFETY: FFI call with no special requirements
-> +    debug_assert!(unsafe { bindings::irqs_disabled() });
-> +
-> +    // SAFETY: `flags` comes from our previous call to local_irq_save
-> +    unsafe { bindings::local_irq_restore(flags) };
-> +
-> +    ret
-> +}
-> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> index f10b06a78b9d5..df10c58e95c19 100644
-> --- a/rust/kernel/lib.rs
-> +++ b/rust/kernel/lib.rs
-> @@ -36,6 +36,7 @@
->  pub mod firmware;
->  pub mod init;
->  pub mod ioctl;
-> +pub mod irq;
->  #[cfg(CONFIG_KUNIT)]
->  pub mod kunit;
->  pub mod list;
-> --
-> 2.46.0
->=20
+>> +    /// Type of the validated data.
+>> +    type Output;
+>> +    /// Validation error.
+>> +    type Err;
+>> +
+>> +    /// Validate the given untrusted data and parse it into the output =
+type.
+>> +    ///
+>> +    /// When implementing this function, you can use [`Untrusted::untru=
+sted()`] to get access to
+>> +    /// the raw untrusted data.
+>> +    fn validate(untrusted: &Untrusted<Self::Input>) -> Result<Self::Out=
+put, Self::Err>;
+>> +}
+>> --
+>> 2.46.0
 
