@@ -1,261 +1,80 @@
-Received: from mail-oa1-f45.google.com (mail-oa1-f45.google.com [209.85.160.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from sender4-pp-f112.zoho.com (sender4-pp-f112.zoho.com [136.143.188.112])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22C80DF60;
-	Fri, 13 Sep 2024 15:38:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.45
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726241910; cv=none; b=rtm44F6RK0RBHzegu/7yB4RwoCyLYXwmzeEJBhct82B+YdajO9gar/CYzYf3gwiQ3RKs8lkloTgNEGVnhFrlxkwB0Fxo2OPQY8F9lSYwWx4ayX7KIp3wjPHJSVWr/iUd5V1bu9H0H/21c/tWIE6yKuFTLv9iGmGmchqsQqid+co=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726241910; c=relaxed/simple;
-	bh=1oUBzH2Lrd/2lTjm9uW9rzeq/PFv9SuAOD4g7xOMbIQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=s38bjerkCbOuhn461o3oMASmcxJNSEjTNGtgSujOK4AEItIIhqm7/ULDiQDw0fbSK/h23tcEQY5d/cCZQpQAxjwnqmfW3zcmdO7lBzenP4bPVr4dg/G0ffGIG2PVnAQvEGNy5M4XuM0ciKrroQWAhA7EBtNnl7wdYawIFjO7Lac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=eNYqmg/V; arc=none smtp.client-ip=209.85.160.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E87CF6D1B4;
+	Fri, 13 Sep 2024 15:55:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=136.143.188.112
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1726242939; cv=pass; b=FVNUR0X1Mlhreh0oL5Z13+5kgTgLD7gMxY6ERQJEYRau3gHn6T7/VKZNLY4MSASGOtuhkF1mh5AOZ+G68S4tQ8iRwdXDL2nLzmMy4Zb13YvfpCtjKuU2lnzIivn36d33uVI8nn482rzSBw9GSdx+VUxNaMB3M0urDcRe6AmBVCU=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1726242939; c=relaxed/simple;
+	bh=aTrG2U3nnsahZNHEmxNMi33V9p9IP53O5HAC6ElbmRA=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=hvmpEnp28W0CVLYHOQTEiPjsCg+1Ye6Ux1G3enD0jms7qCtRCk0XbGrt9irtDArbn00t5xDrJO9KYxpdu/RFLO6d3XmvYxyPJaF7Xk4sbHogh4AXdnR0JI0hIWuQv7DJjmNlEDAhuV3kWGfKcfpj52EyEGAwSrbRVXIKQvuPMGk=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b=Z46ER/fx; arc=pass smtp.client-ip=136.143.188.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="eNYqmg/V"
-Received: by mail-oa1-f45.google.com with SMTP id 586e51a60fabf-27b55c4b35eso368989fac.3;
-        Fri, 13 Sep 2024 08:38:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1726241908; x=1726846708; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=FLfwHNRPQKjp8R+M0/7sXVhVRXpTNwRmME8gmf+riNs=;
-        b=eNYqmg/V1INmGCtqussuO/urMFe9ELT3lxsyQo3pb4pFqUxVdblLG0OBWsAY5bTNvZ
-         b71EAIaXs46AkQwnb67Zrc5oygpc3wukjjmgtPb3WZqqz218UI7eO96gm/YSTH+d8pb+
-         q+TgWH0/l2n3DqIixSn3+5N2aLUkdtH91xxgmo3sWCShcFqhL5Momyg4m9vIZGD8WnMw
-         Rf1bJ5ZIR/6ZSCqYy0kY9+ZNJQVsj3OQtGjM7kV07gjrB3DdhDMGb4+W2/T/LaIupX9G
-         FyhNmTHBTyYKkq1RqvyLuEiS3lNqg8KULY8KYefcQ/hY0HrDjbV2/D71aZ+1LINkN1db
-         9wkg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726241908; x=1726846708;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=FLfwHNRPQKjp8R+M0/7sXVhVRXpTNwRmME8gmf+riNs=;
-        b=dGIVXXJ5cIyP3Lu5S8kpGUCUReS5gj7+OkEDdm4cbqK2OBwWXQXhIKCFfxVx53q2nt
-         DQViAYMLUmD5EYKkqGSV4QKhlwnvDWqtXm6pKrL4H/oYVXPjo5oUqkauDML8cRRPlkl/
-         akygvgH/DRHV6RlmjW9erMG6OrLsr9Asrc+Cu1Kp1iYzycAw2MVjmS49g3bJNTPEayFb
-         Qh8sE+e17eSNtndNWKX7QfxxHk3IJLkhceKKOJOGS4GhfQauBZ1hSDIy/Em7Q+KZcf1C
-         0Q8Fi/keotez2ymQ0dSQYk9bUgsZFoh85BotQ5wyyxfJLIloW5a3TD7oAFm779ruNI8p
-         WP7w==
-X-Forwarded-Encrypted: i=1; AJvYcCVZqsq5ubBtj6WVCMNg/cXUx98TByFKZZYuAr7FYEGjYO5x6E7CT1IrrzpBU3QZHmM0tURF/y6G66Ks@vger.kernel.org, AJvYcCWth4/qjBcmVwjLAaXc4gXUhNXld7BR+kIBvdp0nvZRy3vQATWxYsXb9acQN6C2dbvhVckCih0SB+w=@vger.kernel.org, AJvYcCXSb8bfzfAxqO98AbF8Lf2YAEjfDZ2L4F+Q1zCRVM63iR22/DKiJHF3gKVBh9/oIndAvPRY72JrDycHKsew@vger.kernel.org, AJvYcCXf1BmteCLVplCftNP8W9GIrPXUCyqBoXNm9AIbPIY14aD5wz/oum6phVexUbd8FED2bsZDRJ9daAJL5HtFfb8=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzfEJKShe5buUxUcGF1CV6+PhuekUA7VU4fI5Q2GXuWf08DJ4fd
-	QybQjHvA2j8cyemkOtksm5TQMwUsHZfDMhKKntmvoP8RmK1seBJg
-X-Google-Smtp-Source: AGHT+IFVVoW6JJ2gEx8dkL4ssj/046MJSupkqjqrm2dz5JDbRsSdE/E9s0lqYcl1CUam3uKpfyiFBw==
-X-Received: by 2002:a05:6870:ac07:b0:27b:63fc:a2af with SMTP id 586e51a60fabf-27c68bf05f7mr1824173fac.39.1726241908090;
-        Fri, 13 Sep 2024 08:38:28 -0700 (PDT)
-Received: from pipaware.tx.rr.com ([2603:8080:7400:36da:dff5:4180:2562:4c1e])
-        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-27ba3f5356dsm3670827fac.34.2024.09.13.08.38.26
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Sep 2024 08:38:27 -0700 (PDT)
-From: Carlos Bilbao <carlos.bilbao.osdev@gmail.com>
-To: corbet@lwn.net,
-	ojeda@kernel.org,
-	dirk.behme@de.bosch.com
-Cc: alex.gaynor@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	benno.lossin@proton.me,
-	a.hindborg@samsung.com,
-	aliceryhl@google.com,
-	workflows@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	bilbao@vt.edu,
-	Carlos Bilbao <carlos.bilbao.osdev@gmail.com>
-Subject: [PATCH v2] kernel-docs: Add new section for Rust learning materials
-Date: Fri, 13 Sep 2024 10:38:24 -0500
-Message-ID: <20240913153824.161150-1-carlos.bilbao.osdev@gmail.com>
-X-Mailer: git-send-email 2.43.5
+	dkim=pass (1024-bit key) header.d=collabora.com header.i=daniel.almeida@collabora.com header.b="Z46ER/fx"
+ARC-Seal: i=1; a=rsa-sha256; t=1726242898; cv=none; 
+	d=zohomail.com; s=zohoarc; 
+	b=VVw9DMcLQRM84QnM68LTQBkEItUrLRaYyCqxQcAkqWcQ1g27Y2Q6ER0BltJpO9EKC5vxCXioMktlaGCgrtoSD0/RfzprDzZm+WyVTKN59JDIe+Qh/8XDoiWDtx5LIilsFOUYmsH5uKfDI6xCmMFQxKcsq4fNYQ8eUFgnw/br7E0=
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=zohomail.com; s=zohoarc; 
+	t=1726242898; h=Content-Type:Content-Transfer-Encoding:Cc:Cc:Date:Date:From:From:In-Reply-To:MIME-Version:Message-ID:References:Subject:Subject:To:To:Message-Id:Reply-To; 
+	bh=aTrG2U3nnsahZNHEmxNMi33V9p9IP53O5HAC6ElbmRA=; 
+	b=aandjLA3cSDGYo5M5P8I/MIGu8w0oweSvHMAScJLIbU1/79Idmph2qcibzL0Ri1DrKxAE59xekQsSo1eZJ5wCSyugNofg/bQHnXfO96azIGTzjgWHe7iZ1MFje5KrsvVSo4XGli1u926VabsQ03MN3KZu+5hv+ZHs0Xh50L7NDk=
+ARC-Authentication-Results: i=1; mx.zohomail.com;
+	dkim=pass  header.i=collabora.com;
+	spf=pass  smtp.mailfrom=daniel.almeida@collabora.com;
+	dmarc=pass header.from=<daniel.almeida@collabora.com>
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; t=1726242898;
+	s=zohomail; d=collabora.com; i=daniel.almeida@collabora.com;
+	h=Content-Type:Mime-Version:Subject:Subject:From:From:In-Reply-To:Date:Date:Cc:Cc:Content-Transfer-Encoding:Message-Id:Message-Id:References:To:To:Reply-To;
+	bh=aTrG2U3nnsahZNHEmxNMi33V9p9IP53O5HAC6ElbmRA=;
+	b=Z46ER/fxkFBPsRh7Kp01WYRSdqnKesP8v4cIwwe6wV9HbQCcDVpGrtul3kYr3Smz
+	dfeM89DQNf9MnyCo/Bb69SIaaUQKF+Zs/tqbX64xQGXx9s2w8mJD8Af90pecn6TleD5
+	6ed1D32wBCdogcusI8IMNac8aFtOJZQDnuMCiMvA=
+Received: by mx.zohomail.com with SMTPS id 1726242896080493.21314640306775;
+	Fri, 13 Sep 2024 08:54:56 -0700 (PDT)
+Content-Type: text/plain;
+	charset=us-ascii
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3776.700.51\))
+Subject: Re: [PATCH v5 1/3] rust: Introduce irq module
+From: Daniel Almeida <daniel.almeida@collabora.com>
+In-Reply-To: <20240912190540.53221-2-lyude@redhat.com>
+Date: Fri, 13 Sep 2024 17:48:38 +0200
+Cc: rust-for-linux@vger.kernel.org,
+ Danilo Krummrich <dakr@redhat.com>,
+ David Airlie <airlied@redhat.com>,
+ Ingo Molnar <mingo@redhat.com>,
+ Will Deacon <will@kernel.org>,
+ Waiman Long <longman@redhat.com>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Thomas Gleixner <tglx@linutronix.de>,
+ linux-kernel@vger.kernel.org,
+ Miguel Ojeda <ojeda@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Wedson Almeida Filho <wedsonaf@gmail.com>,
+ Boqun Feng <boqun.feng@gmail.com>,
+ Gary Guo <gary@garyguo.net>,
+ =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@samsung.com>,
+ Alice Ryhl <aliceryhl@google.com>,
+ Trevor Gross <tmgross@umich.edu>,
+ FUJITA Tomonori <fujita.tomonori@gmail.com>,
+ Valentin Obst <kernel@valentinobst.de>
+Content-Transfer-Encoding: 7bit
+Message-Id: <EA7D3895-32A9-4EE8-9B86-CA40D7A85FF7@collabora.com>
+References: <20240912190540.53221-1-lyude@redhat.com>
+ <20240912190540.53221-2-lyude@redhat.com>
+To: Lyude Paul <lyude@redhat.com>
+X-Mailer: Apple Mail (2.3776.700.51)
+X-ZohoMailClient: External
 
-Include a new section in the Index of Further Kernel Documentation with
-resources to learn Rust. Reference it in the Rust index.
-
-Signed-off-by: Carlos Bilbao <carlos.bilbao.osdev@gmail.com>
----
-
-Changes since v1:
- - Added two more Rust blogs proposed by Dirk Behme.
-
----
- Documentation/process/kernel-docs.rst | 131 +++++++++++++++++++++++---
- Documentation/rust/index.rst          |   3 +
- 2 files changed, 123 insertions(+), 11 deletions(-)
-
-diff --git a/Documentation/process/kernel-docs.rst b/Documentation/process/kernel-docs.rst
-index 55552ec4b043..b56c2adcb954 100644
---- a/Documentation/process/kernel-docs.rst
-+++ b/Documentation/process/kernel-docs.rst
-@@ -72,17 +72,6 @@ On-line docs
-         programming. Lots of examples. Currently the new version is being
-         actively maintained at https://github.com/sysprog21/lkmpg.
- 
--    * Title: **Rust for Linux**
--
--      :Author: various
--      :URL: https://rust-for-linux.com/
--      :Date: rolling version
--      :Keywords: glossary, terms, linux-kernel.
--      :Description: From the website: "Rust for Linux is the project adding
--        support for the Rust language to the Linux kernel. This website is
--        intended as a hub of links, documentation and resources related to
--        the project".
--
- Published books
- ---------------
- 
-@@ -220,6 +209,126 @@ Miscellaneous
-         other original research and content related to Linux and software
-         development.
- 
-+Rust
-+----
-+
-+    * Title: **Rust for Linux**
-+
-+      :Author: various
-+      :URL: https://rust-for-linux.com/
-+      :Date: rolling version
-+      :Keywords: glossary, terms, linux-kernel, rust.
-+      :Description: From the website: "Rust for Linux is the project adding
-+        support for the Rust language to the Linux kernel. This website is
-+        intended as a hub of links, documentation and resources related to
-+        the project".
-+
-+    * Title: **Learning Rust the Dangerous Way**
-+
-+      :Author: Cliff L. Biffle
-+      :URL: https://cliffle.com/p/dangerust/
-+      :Date: Accessed Sep 11 2024
-+      :Keywords: rust, blog.
-+      :Description: From the website: "LRtDW is a series of articles
-+        putting Rust features in context for low-level C programmers who
-+        maybe don’t have a formal CS background — the sort of people who
-+        work on firmware, game engines, OS kernels, and the like.
-+        Basically, people like me.". It illustrates line-by-line
-+        conversions from C to Rust.
-+
-+    * Title: **The Rust Book**
-+
-+      :Author: Steve Klabnik and Carol Nichols, with contributions from the
-+        Rust community
-+      :URL: https://doc.rust-lang.org/book/
-+      :Date: Accessed Sep 11 2024
-+      :Keywords: rust, book.
-+      :Description: From the website: "This book fully embraces the
-+        potential of Rust to empower its users. It’s a friendly and
-+        approachable text intended to help you level up not just your
-+        knowledge of Rust, but also your reach and confidence as a
-+        programmer in general. So dive in, get ready to learn—and welcome
-+        to the Rust community!".
-+
-+    * Title: **Rust for the Polyglot Programmer**
-+
-+      :Author: Ian Jackson
-+      :URL: https://www.chiark.greenend.org.uk/~ianmdlvl/rust-polyglot/index.html
-+      :Date: December 2022
-+      :Keywords: rust, blog, tooling.
-+      :Description: From the website: "There are many guides and
-+        introductions to Rust. This one is something different: it is
-+        intended for the experienced programmer who already knows many
-+        other programming languages. I try to be comprehensive enough to be
-+        a starting point for any area of Rust, but to avoid going into too
-+        much detail except where things are not as you might expect. Also
-+        this guide is not entirely free of opinion, including
-+        recommendations of libraries (crates), tooling, etc.".
-+
-+    * Title: **Fasterthanli.me**
-+
-+      :Author: Amos Wenger
-+      :URL: https://fasterthanli.me/
-+      :Date: Accessed Sep 11 2024
-+      :Keywords: rust, blog, news.
-+      :Description: From the website: "I make articles and videos about how
-+        computers work. My content is long-form, didactic and exploratory
-+        — and often an excuse to teach Rust!".
-+
-+    * Title: **Comprehensive Rust**
-+
-+      :Author: Android team at Google
-+      :URL: https://google.github.io/comprehensive-rust/
-+      :Date: Accessed Sep 13 2024
-+      :Keywords: rust, blog.
-+      :Description: From the website: "The course covers the full spectrum
-+        of Rust, from basic syntax to advanced topics like generics and
-+        error handling".
-+
-+    * Title: **The Embedded Rust Book**
-+
-+      :Author: Multiple contributors, mostly Jorge Aparicio
-+      :URL: https://docs.rust-embedded.org/book/
-+      :Date: Accessed Sep 13 2024
-+      :Keywords: rust, blog.
-+      :Description: From the website: "An introductory book about using
-+        the Rust Programming Language on "Bare Metal" embedded systems,
-+        such as Microcontrollers".
-+
-+    * Title: **You Can't Spell Trust Without Rust**
-+
-+      :Author: Alexis Beingessner
-+      :URL: https://repository.library.carleton.ca/downloads/1j92g820w?locale=en
-+      :Date: 2015
-+      :Keywords: rust, master, thesis.
-+      :Description: This thesis focuses on Rust's ownership system, which
-+        ensures memory safety by controlling data manipulation and
-+        lifetime, while also highlighting its limitations and comparing it
-+        to similar systems in Cyclone and C++.
-+
-+    * Name: **Linux Plumbers (LPC) Rust presentations**
-+
-+      :Title: Rust microconference
-+      :URL: https://lpc.events/event/18/sessions/186/#20240918
-+      :Title: Rust for Linux
-+      :URL: https://lpc.events/event/18/contributions/1912/
-+      :Title: Journey of a C kernel engineer starting a Rust driver project
-+      :URL: https://lpc.events/event/18/contributions/1911/
-+      :Title: Crafting a Linux kernel scheduler that runs in user-space
-+        using Rust
-+      :URL: https://lpc.events/event/18/contributions/1723/
-+      :Title: openHCL: A Linux and Rust based paravisor
-+      :URL: https://lpc.events/event/18/contributions/1956/
-+      :Keywords: rust, lpc, presentations.
-+      :Description: A number of LPC talks related to Rust.
-+
-+    * Name: **The Rustacean Station Podcast**
-+
-+      :URL: https://rustacean-station.org/
-+      :Keywords: rust, podcasts.
-+      :Description: A community project for creating podcast content for
-+        the Rust programming language.
-+
- -------
- 
- This document was originally based on:
-diff --git a/Documentation/rust/index.rst b/Documentation/rust/index.rst
-index 46d35bd395cf..01f09216c229 100644
---- a/Documentation/rust/index.rst
-+++ b/Documentation/rust/index.rst
-@@ -42,6 +42,9 @@ configurations.
-     arch-support
-     testing
- 
-+You can also find learning materials for Rust in its section in
-+:doc:`../process/kernel-docs`.
-+
- .. only::  subproject and html
- 
-    Indices
--- 
-2.43.5
-
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
