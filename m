@@ -1,151 +1,456 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+Received: from mail-yw1-f202.google.com (mail-yw1-f202.google.com [209.85.128.202])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E13F812C470
-	for <rust-for-linux@vger.kernel.org>; Fri, 13 Sep 2024 20:43:48 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 567D01465BB
+	for <rust-for-linux@vger.kernel.org>; Fri, 13 Sep 2024 21:01:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726260230; cv=none; b=YdIi+ok37E+ooZw4vVUhOyZsa4jObL8Jpk4Nl4aXl6JIHrjznoFYqYv84T5ZhDkJtw07Uh7y0yT9D5rNEjhHxgdtR3jrJk1gBqG04CES3Y7fF2RZ3VmAe9GN3FmO8AIZn8tTGOXWxWUu6N2xtIW4N230icIuGRl2w4PjVZSyByM=
+	t=1726261263; cv=none; b=g1myjVejXqLEaX0KUOnnIOCzYhEy9tFQpX7yfqqHAc8eQkQFM4RUPPmYwPQ4d/ALQpxkSI/MtJG8GSY0412satd9GgAHqv4AZgWLwdqljuww2Gw5mSDEwMs2ePdO0jtGv+J6kaPEYrDLFYmAITvlV6OPnRVx1mQeoZzlgJmZtGc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726260230; c=relaxed/simple;
-	bh=S/p3aVAMiJ5riyAqW4au/bT09fMYwG3jx+BtvYgCkkE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=m5OvpBFpKlaVl+8Zbm0vhmlPJr9x5LrMvwKtCyM/5lHN4LO7gKrhGmdAjyQueofaZzo6R+wTAa/7g3m8/1qKZJdf+NOP2CJz+42J2HnFP5BcVNpWaSzZ64R0A7uH55RyCU2wbcPwoKuAaStR/TNsQPyQG5FOGwlywjxhK3BZMRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch; spf=none smtp.mailfrom=ffwll.ch; dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b=Ugsg5vx5; arc=none smtp.client-ip=209.85.128.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ffwll.ch
+	s=arc-20240116; t=1726261263; c=relaxed/simple;
+	bh=Bsq1xEuw6ejf6xS3xANARgXaND9lpmiO/KJqmLEaZQw=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=TA8aL4yNdufOc4SmX5SjYfpPOmkAkp0A0K6ao16/L2yI7OuFr1Il2VxeiQHJf4+3S8HRbxN9EwEZB2D/BTyVlVsA7xt/MD6rGEHxYk33uuctKHSadpquEVEF+rByosOJfGFuWf+QD46ZtCFt66PmkJBeaLdwV3w6ko/gRLlAEPg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=qN98nIxD; arc=none smtp.client-ip=209.85.128.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b="Ugsg5vx5"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-42cb1758e41so12199305e9.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 13 Sep 2024 13:43:48 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="qN98nIxD"
+Received: by mail-yw1-f202.google.com with SMTP id 00721157ae682-6d7124938d1so67645217b3.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 13 Sep 2024 14:01:00 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google; t=1726260227; x=1726865027; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=lW734B6dGGqgi185LNhncOBlhauaYAtdEaPHNEq/yB0=;
-        b=Ugsg5vx5aAq0YdYrCWScCQmRTiNk9zeJH0c1uo4T1PxfVSWWwCD1HcmhYS2+QOJ6S8
-         Ie+j7ZJIwLDIY1jYyNc61rrMQLGdGjCEB5ci8vU0RueLmQfpf8fWSLjYgxrpdTtoSRKT
-         u3o83Ub4O52UQ8+AxjP4uqSY6ubJmtN35hl60=
+        d=google.com; s=20230601; t=1726261259; x=1726866059; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=JOjhO68VsW+Q44c9vxTifNEWOZBiXq84OSMhawJSCm8=;
+        b=qN98nIxDBGH5L15YrPo+991vk1PQaM2Mn5/5NwBms9WgZTTidmgcIM2rQTV8GFAjaz
+         xswoYMnR98hgyJjReN5rVFQs4ZF1B6eDTMPw0SimnCrXgXyw6bSOxXp8J6XHBo77WiAH
+         D/EhQ9mei6+4XCYXM6nLdygopgneamiE8eX5w3d2K24a4+RWhCMacpSty9wodlX3QP97
+         FYiu+yIdY2GGugwQ6XA5xgfWexqOfZp/5s3DAKWbvckAsPrv5GLlowJfFcLDWOGErrIq
+         HC4QE75u0Nnal03i4zxOJ5P7XarcdOFIX8E/6ehfM6T4r17sYDTbC20V0Vvix1ELJJNF
+         sPZw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726260227; x=1726865027;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lW734B6dGGqgi185LNhncOBlhauaYAtdEaPHNEq/yB0=;
-        b=A9Lm6nRiyaODtYf/DgE1DvGNuJxF6aMX6yDpMHoIB+Doy8/M4UYj+ikHfBsj3llyaM
-         0bkVazGFYOoAw1Fue9SlfPKaJI7xjapK93synGEaGFI/5v7+ohH8qodc9eL9YWKo34GW
-         5LCAEBwanbw3mRR3PnhzQaKE9I5p2OVzVqkT3s/gt6gLPsBPjwefI2ftxYUC5WFwkHCI
-         MrdePhjVf4ftqizmJNMYbVhN9udDWCv80B4meZQDZe3INCauv9EMvFzWFdIUvL5z/PoR
-         54DllVsOBK7vIdG32umDiuTdVblEr9nIb64b7uSknAXYB6d5bIWfg4mFIDyso/35lJsA
-         eH4g==
-X-Forwarded-Encrypted: i=1; AJvYcCUKERapWsmhE4F9oJiPSJXFKpY84nYYEczWP4NpskbYdfb4+yJXRu1hI3ybEbOrzaX4yFQLRUfCb3BADPnEIg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzDCCzm5Zv1/lJpmG//RzJba3x3OeYZ8C/QHZ9Bkj+gi1f5t75f
-	nNxtZjhtKg7dwsub5hNDO280lTfwwN0fn7+RfPz0/yuSFIcYE2p03BVcqXzbck0=
-X-Google-Smtp-Source: AGHT+IHD7Ara0zwFczKqh8iVJkwUGj598PVbMagxYJ5Cq42UbOjHet1lfQHOZ3ZQFCmFt0p8GU1haQ==
-X-Received: by 2002:a05:600c:3d86:b0:426:616e:db8d with SMTP id 5b1f17b1804b1-42d9082a638mr31724815e9.15.1726260226784;
-        Fri, 13 Sep 2024 13:43:46 -0700 (PDT)
-Received: from phenom.ffwll.local ([2a02:168:57f4:0:5485:d4b2:c087:b497])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42da2426d0esm1730625e9.39.2024.09.13.13.43.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 13 Sep 2024 13:43:46 -0700 (PDT)
-Date: Fri, 13 Sep 2024 22:43:44 +0200
-From: Simona Vetter <simona.vetter@ffwll.ch>
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Greg KH <gregkh@linuxfoundation.org>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 0/3] Untrusted data abstraction
-Message-ID: <ZuSkAL8Ulmlx2Xty@phenom.ffwll.local>
-References: <20240913112643.542914-1-benno.lossin@proton.me>
+        d=1e100.net; s=20230601; t=1726261259; x=1726866059;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=JOjhO68VsW+Q44c9vxTifNEWOZBiXq84OSMhawJSCm8=;
+        b=O+ubUGLtCdKo3TeYelksb9sBNRtL80HiSHOzuv8cDYwK/HxmisTV6fiMmWhxQU4yaj
+         gbK0+xhUrMwbmVYW4Y0Zp4wA0FQeK3TJCNU+k16/y22P/kJD+h8x3HbrWLmKY5NxrQcO
+         xJt8po0xRk2hsZwZ36hN9rK+70u8yDIg855DYzow3vg8cC3f4erVP4kyd7rbjvQYX3S/
+         WmttKXL/AFDCFYf3M/gc5ZvX0yucja2vyRx85mJqdYZzkTbs4Y5F93JnWduuopI+fPPa
+         5KbtzTEBrfqc0EnzY2zcfMtFxOF7SnVV3W55cVx+LIj2jNDHLibeGC2/Ha6AcaFO7J+y
+         29Wg==
+X-Forwarded-Encrypted: i=1; AJvYcCVNtDIfje5f9Od1qH78fZYO8snCEg0v/BDkOxHe3nQyMizXBZGmD40cbb7+86iH+8YBrMv2KagqSHK2h2Nrnw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwJie5NBn2PJSepZLc1/8UovhbVG1NDJlmrmFAu8vEVkbcvOaMq
+	KQMrH2yjUPZijASsPqvZQt+8TA2iZk0SWc/Tvm8uoYqmFOuclpMQfci+RWu/rgNX9s9cbXDk2tD
+	SJEVnxjmJzuAeEQ==
+X-Google-Smtp-Source: AGHT+IE78DqEMn1x4D65+Oh79baqNb4ga4Il2b4TZCRvJqsZSc62M4hKIA8WtuEnZU3vVeN7NcM802z1zQlvJD0=
+X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:35bd])
+ (user=aliceryhl job=sendgmr) by 2002:a05:6902:1743:b0:e03:3cfa:1aa7 with SMTP
+ id 3f1490d57ef6-e1d9db9e1b8mr9952276.1.1726261259177; Fri, 13 Sep 2024
+ 14:00:59 -0700 (PDT)
+Date: Fri, 13 Sep 2024 21:00:29 +0000
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240913112643.542914-1-benno.lossin@proton.me>
-X-Operating-System: Linux phenom 6.9.12-amd64 
+Mime-Version: 1.0
+X-Developer-Key: i=aliceryhl@google.com; a=openpgp; fpr=49F6C1FAA74960F43A5B86A1EE7A392FDE96209F
+X-Developer-Signature: v=1; a=openpgp-sha256; l=13917; i=aliceryhl@google.com;
+ h=from:subject; bh=Bsq1xEuw6ejf6xS3xANARgXaND9lpmiO/KJqmLEaZQw=;
+ b=owEBbQKS/ZANAwAKAQRYvu5YxjlGAcsmYgBm5KVfe1mlk3eGa5gVeLGqw7Xv6jTFstXhpxq8H
+ 9z6t88w6qeJAjMEAAEKAB0WIQSDkqKUTWQHCvFIvbIEWL7uWMY5RgUCZuSlXwAKCRAEWL7uWMY5
+ Ro9SEACX5vjaGSujAzvJt0UxP23WeMGhy5m7v99K5ys+26eCi4SpFoLEHSLEzKLMHXqtep1MOo+
+ EOR+OY/OX+xjyf8HdzzqjM6mPp0EIsq4rcsDTupFWFK84MApjkVRJuboXg8x5Ugp163Ne3tcMwF
+ mlzxR7STFFmBDD2RYTlJI073bwUTM3GuMTKvgls7456bC8hyZdYKhZCy0COXoDyXBwF1kCBh61z
+ 0aofaXa7d+102I0EZ7rkVaVX/2fZfteT9nzhXCEZF0WiflBI4BhRploL/N1D7i3WfRWucOlIrG5
+ oVKTBrh22MPKbS35fzzGsfoAE8L15FesD8X0tGGWh0I49f6gtXEdttdNha7uoL8mJH3HScHpokv
+ 8RzvMbVAgpL8JvEcTKyNvY6WiJkmStfUaR4PbtHWZCD5GR3NuiJ90NHE3L27Q2OHnjNiw64YFOB
+ vTIRPzIJji66/9kDdd7VdEyOAcgaRXbx4FXc6pYSyhYyqc8QtxJzWv+A5Gz2UX8d+qwtJRUeBki
+ PI2+pxmPvghNLOi1ATzQHNwZ2kV9+2jFZtMRVv82ObP7zj2QBtQruPeKgGs4OdWyvXmwidP5cg3
+ 9Zo8we3EbgMEp5g1n2U/7RLM2ZFn0d6+ew40YKCLIoO8XZq2c0knYjfIeQ2VIAKIGMfTfFK4pUZ BI4avkwxTjPAnWQ==
+X-Mailer: git-send-email 2.46.0.662.g92d0881bb0-goog
+Message-ID: <20240913210031.20802-1-aliceryhl@google.com>
+Subject: [PATCH 1/2] rust: harden index manipulation using ownership
+From: Alice Ryhl <aliceryhl@google.com>
+To: Miguel Ojeda <ojeda@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Kees Cook <kees@kernel.org>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	"=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?=" <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, Trevor Gross <tmgross@umich.edu>, 
+	Carlos Llamas <cmllamas@google.com>, rust-for-linux@vger.kernel.org, 
+	linux-hardening@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Alice Ryhl <aliceryhl@google.com>
+Content-Type: text/plain; charset="UTF-8"
 
-On Fri, Sep 13, 2024 at 11:26:54AM +0000, Benno Lossin wrote:
-> Enable marking certain data as untrusted. For example data coming from
-> userspace, hardware or any other external data source.
-> 
-> This idea originates from a discussion with Greg at Kangrejos. As far as
-> I understand the rationale, it is to prevent accidentally reading
-> untrusted data and using it for *logic* within the kernel. For example
-> reading the length from the hardware and not validating that it isn't
-> too big. This is a big source for logic bugs that later turn into
-> vulnerabilities.
-> 
-> The API introduced in this series is not a silver bullet, users are
-> still able to access the untrusted value (otherwise how would they be
-> able to validate it?). But it provides additional guardrails to remind
-> users that they ought to validate the value before using it. As already
-> stated, they can access the value directly, but to do that, they need to
-> explicitly call one of the `untrusted_*` functions signaling to
-> reviewers that they are reading untrusted data without validation.
-> 
-> There are still some things to iron out on the Rust side:
-> - allow better handling of `Untrusted<T>`, for example allow comparing
->   `Untrusted<[u8]>` for equality (we should do this via a trait
->   extending `PartialEq`)
-> - rebase this on Gary's patch to enable arbitrary self types. This would
->   allow me to remove one `untrusted_mut()` call in `inode.rs`. I would
->   expose the `cap_len` function even if the underlying data is
->   untrusted.
-> - get more feedback as to what `Untrusted` should make available
-> 
-> In addition to adding the abstraction, I also provide very experimental
-> RFC patches using the API in tarfs by wedson. They are based on his
-> vfs-v2 branch [1] and I will not aim to upstream these patches. They should
-> give you some idea as to how the API is intended to be used.
-> 
-> Open to any suggestions and improvements!
-> 
-> [1]: https://github.com/wedsonaf/linux/tree/vfs-v2
+Rust is very effective at preventing memory safety bugs such as
+use-after-free bugs. Can we also make it effective at preventing bugs
+that arise from using indices incorrectly? As it stands today, accessing
+an array out of bounds is caught and results in a kernel panic, but Rust
+will not stop you from doing it. Accessing an array at the wrong index
+is not caught at all. This patch explores ways to catch these kinds of
+indexing bugs.
 
-I forgot to add: If we do this, we should really wrap Untrusted<> around
-all the copy_from_user wrappers we have in the uaccess module. That's one
-of the main entry points for untrusted garbage into the kernel we have,
-and it's already in upstream rust.
+The Android Binder driver has a component where it "translates" the
+contents of transactions sent using the driver, which involves complex
+and error-prone index manipulation. The C driver has had several bugs in
+this area. A few examples:
 
-There's even a very nice TOCTOU example bug in the docs which would become
-flat out impossible if we wrap everything in Untrusted.
+4df153652cc4 ("binder: fix UAF caused by offsets overwrite")
+bdc1c5fac982 ("binder: fix UAF caused by faulty buffer cleanup")
+16981742717b ("binder: fix incorrect calculation for num_valid")
+a56587065094 ("binder: Set end of SG buffer area properly.")
 
-Also, while I drop some feature requests: I think it'd be very nice to
-have a macro or something to implement FromBytes and AsBytes automatically
-and savely for C structs from the bindings which only contain linux uapi
-safe types.  And also better contain absolutely no padding, since that
-tends to be bugs on the C side too. But no idea whether rust can do that.
--Sima
+Rust is not immune to these issues either. In fact, I've already
+encountered and fixed two bugs like this in Rust Binder. In both cases,
+the bugs could result in `Allocation::cleanup_object` calls on invalid
+data. Rust's safety guarantees prevented these bugs from affecting the
+integrity of kernel itself, but an attacker could use them to e.g.
+manipulate handles that are present in other processes and for example
+obtaining IApplicationThread handle belonging to another app from
+system_server, which in turn allows loading code into that app.
 
-> 
-> Benno Lossin (3):
->   rust: add untrusted data abstraction
->   WIP: rust: fs: mark data returned by inodes untrusted
->   WIP: rust: tarfs: use untrusted data API
-> 
->  fs/tarfs/defs.rs        |   1 +
->  fs/tarfs/tar.rs         | 143 +++++++++++++++++++++++++++-------------
->  rust/kernel/fs/inode.rs |  33 ++++++----
->  rust/kernel/types.rs    | 248 ++++++++++++++++++++++++++++++++++++++++++-
->  4 files changed, 367 insertions(+), 58 deletions(-)
-> 
-> 
-> base-commit: d077242d68a31075ef5f5da041bf8f6fc19aa231
-> -- 
-> 2.46.0
-> 
-> 
+Ultimately, the root cause of all of these bugs is that there is some
+index in the destination buffer that gets written to twice.
 
+The primary idea of this new Range API is to utilize Rust's ownership
+semantics to prevent reuse of indices. The idea is that you create one
+big Range for the entire range of indices, and then there are various
+methods to split it into smaller ranges. An example from Rust Binder,
+where several kinds of data are stored next to each other:
+
+// Split the buffer size into sub-ranges.
+let full_range = Range::new_area(len);
+let (data_range, after_data) = full_range.split_within(aligned_data_size)?;
+let (offsets_range, after_offsets) = after_data.split_within(aligned_offsets_size)?;
+let (buffers_range, after_buffers) = after_offsets.split_within(aligned_buffers_size)?;
+let (secctx_range, after_secctx) = after_buffers.split_within(aligned_secctx_size)?;
+after_secctx.assert_empty()?;
+
+The Range type is set up so that it cannot be copied or cloned, which
+means that any attempts to use a Range more than once will fail to
+compile. For example, if the line creating `buffers_range` accidentally
+tried to split `after_data` instead of `after_offsets`, then that would
+lead to this compilation error:
+
+error[E0382]: use of moved value: `after_data`
+    --> /usr/local/google/home/aliceryhl/rust-android-mainline/common/drivers/android/binder/thread.rs:1101:50
+     |
+1099 | let (data_range, after_data) = full_range.split_within(aligned_data_size)?;
+     |                  ---------- move occurs because `after_data` has type `kernel::range::Range`, which does not implement the `Copy` trait
+1100 | let (offsets_range, after_offsets) = after_data.split_within(aligned_offsets_size)?;
+     |                                                 ---------------------------------- `after_data` moved due to this method call
+1101 | let (buffers_range, after_buffers) = after_data.split_within(aligned_buffers_size)?;
+     |                                      ^^^^^^^^^^ value used here after move
+     |
+note: `kernel::range::Range::split_within` takes ownership of the receiver `self`, which moves `after_data`
+    --> /usr/local/google/home/aliceryhl/rust-android-mainline/common/rust/kernel/range.rs:108:29
+     |
+108  | pub fn split_within(mut self, length: usize) -> Result<(Range, Range), RangeError> {
+     |                         ^^^^
+
+Basically, the error says that you tried to use the `after_data` range
+twice, which is not allowed because `split_within` destroys the object
+you call it on.
+
+In Rust Binder, I am using the ranges to prevent reuse of indices in the
+*destination* buffer. To enforce that, all methods for writing to the
+destination buffer are modified to take a `Range` as an argument,
+consuming the range being written to. As ranges can only be split into
+smaller pieces, this enforces that you will never write to the same
+index twice.
+
+Of course, the API is not completely bullet-proof. If you call
+`Range::new_area` twice, you'll get two overlapping ranges. But we don't
+need it to be completely impossible to misuse. It just needs to be
+really difficult to do so accidentally.
+
+Binder has one case where it intentionally writes to the same location
+twice: when sending file descriptors over Binder, the driver does not
+know what value the fd will have when transferring the data, so it will
+first write u32::MAX. Much later, it will overwrite it with the real fd.
+There is a `duplicate_range_careful` method for this case.
+
+It is interesting to compare with the uaccess patchset [1]. The uaccess
+API takes a userspace pointer and length representing a range of bytes
+in userspace, and lets you read the range incrementally. The API design
+prevents reading the same address twice. This helps prevent
+time-of-check-to-time-of-use bugs where userspace modifies the data in
+between two reads, which can cause bugs if the driver assumes that the
+memory is unchanged.
+
+In fact, both Rust Binder bugs mentioned earlier are caught by this part
+of the uaccess API, as both bugs eventually attempt to read past the end
+of the userspace region, triggering an error. Unfortunately, this
+happens too late, as the previously translated data has already been
+overwritten by the time the error is triggered.
+
+This patchset is also simliar to Benno's untrusted data patchset [2],
+which explores a different way to write misuse-resistant APIs.
+
+Link: https://lore.kernel.org/r/20240528-alice-mm-v7-0-78222c31b8f4@google.com [1]
+Link: https://lore.kernel.org/r/20240913112643.542914-1-benno.lossin@proton.me [2]
+Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+---
+ rust/kernel/lib.rs   |   1 +
+ rust/kernel/range.rs | 236 +++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 237 insertions(+)
+ create mode 100644 rust/kernel/range.rs
+
+diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+index a7fefc4ae725..72a998cd02e0 100644
+--- a/rust/kernel/lib.rs
++++ b/rust/kernel/lib.rs
+@@ -48,6 +48,7 @@
+ pub mod page;
+ pub mod prelude;
+ pub mod print;
++pub mod range;
+ pub mod rbtree;
+ pub mod security;
+ pub mod seq_file;
+diff --git a/rust/kernel/range.rs b/rust/kernel/range.rs
+new file mode 100644
+index 000000000000..8fb9d96ac724
+--- /dev/null
++++ b/rust/kernel/range.rs
+@@ -0,0 +1,236 @@
++// SPDX-License-Identifier: GPL-2.0
++
++// Copyright (C) 2024 Google LLC.
++
++//! Utilities for working with ranges of indices.
++
++/// A range of indices.
++///
++/// This utility is useful for ensuring that no index in the range is used more than once.
++#[derive(Debug)]
++pub struct Range {
++    offset: usize,
++    length: usize,
++}
++
++impl Range {
++    /// Creates a new `Range` for an area of the given size.
++    pub fn new_area(size: usize) -> Self {
++        Self {
++            offset: 0,
++            length: size,
++        }
++    }
++
++    /// Use this range of indices.
++    ///
++    /// This destroys the `Range` object, so these indices cannot be used again after this call.
++    pub fn use_range(self) -> UsedRange {
++        UsedRange {
++            offset: self.offset,
++            length: self.length,
++        }
++    }
++
++    /// Duplicate this range.
++    ///
++    /// Be careful when using this method, as it allows you to use a range twice.
++    pub fn duplicate_range_careful(&self) -> Range {
++        Range {
++            offset: self.offset,
++            length: self.length,
++        }
++    }
++
++    /// Peek at the offset without using the range.
++    ///
++    /// This doesn't destroy the `Range` object, so be careful that the range is not used twice.
++    pub fn peek_offset(&self) -> usize {
++        self.offset
++    }
++
++    /// Peek at the length without using the range.
++    ///
++    /// This doesn't destroy the `Range` object, so be careful that the range is not used twice.
++    pub fn peek_length(&self) -> usize {
++        self.length
++    }
++
++    /// Peek at the end without using the range.
++    ///
++    /// This doesn't destroy the `Range` object, so be careful that the range is not used twice.
++    pub fn peek_end(&self) -> Result<usize, RangeError> {
++        self.offset.checked_add(self.length).ok_or(RangeError)
++    }
++
++    /// Truncates this range to the given length.
++    pub fn truncate(&mut self, length: usize) -> Result<(), RangeError> {
++        if length > self.length {
++            return Err(RangeError);
++        }
++        self.length = length;
++        Ok(())
++    }
++
++    /// Assert that this range is aligned properly.
++    pub fn assert_aligned(&self, alignment: usize) -> Result<(), RangeError> {
++        if self.offset % alignment == 0 {
++            Ok(())
++        } else {
++            Err(RangeError)
++        }
++    }
++
++    /// Assert that this range has the expected length.
++    pub fn assert_length_eq(&self, length: usize) -> Result<(), RangeError> {
++        if self.length == length {
++            Ok(())
++        } else {
++            Err(RangeError)
++        }
++    }
++
++    /// Assert that this range is empty.
++    pub fn assert_empty(self) -> Result<(), RangeError> {
++        self.assert_length_eq(0)
++    }
++
++    /// Splits the range into two sub-ranges.
++    ///
++    /// Fails if the `length` is greater than the range being split.
++    pub fn split_within(mut self, length: usize) -> Result<(Range, Range), RangeError> {
++        let left = self.take_from_start(length)?;
++        Ok((left, self))
++    }
++
++    /// Splits the range into two sub-ranges.
++    ///
++    /// Fails if the `position` is not within the current range.
++    pub fn split_at(mut self, position: usize) -> Result<(Range, Range), RangeError> {
++        let left = self.take_until(position)?;
++        Ok((left, self))
++    }
++
++    /// Modify this range by taking the first `length` bytes.
++    pub fn take_until(&mut self, position: usize) -> Result<Range, RangeError> {
++        let from_start = Range {
++            offset: self.offset,
++            length: position.checked_sub(self.offset).ok_or(RangeError)?,
++        };
++
++        let new_self = Range {
++            offset: position,
++            length: self
++                .length
++                .checked_sub(from_start.length)
++                .ok_or(RangeError)?,
++        };
++
++        *self = new_self;
++
++        Ok(from_start)
++    }
++
++    /// Modify this range by taking the first `length` bytes.
++    pub fn take_from_start(&mut self, length: usize) -> Result<Range, RangeError> {
++        let from_start = Range {
++            offset: self.offset,
++            length: length,
++        };
++
++        let new_self = Range {
++            offset: self.offset.checked_add(length).ok_or(RangeError)?,
++            length: self.length.checked_sub(length).ok_or(RangeError)?,
++        };
++
++        *self = new_self;
++
++        Ok(from_start)
++    }
++
++    /// Split this range into sub-ranges of the given size.
++    pub fn iter_chunks(self, chunk_size: usize) -> Result<ChunkIter, RangeError> {
++        if self.length % chunk_size != 0 {
++            return Err(RangeError);
++        }
++
++        Ok(ChunkIter {
++            pos: self.offset,
++            end: self.offset.checked_add(self.length).ok_or(RangeError)?,
++            chunk_size,
++        })
++    }
++}
++
++/// An iterator over ranges of the same size.
++pub struct ChunkIter {
++    pos: usize,
++    end: usize,
++    chunk_size: usize,
++}
++
++impl Iterator for ChunkIter {
++    type Item = Range;
++    fn next(&mut self) -> Option<Range> {
++        if self.pos >= self.end {
++            return None;
++        }
++
++        let range = Range {
++            offset: self.pos,
++            length: self.chunk_size,
++        };
++        self.pos = self.pos + self.chunk_size;
++
++        Some(range)
++    }
++}
++
++/// A version of [`Range`] where the length is a compile-time constant.
++///
++/// This can be used to store a `Range` without using up space to store the length.
++pub struct RangeFixedSize<const LENGTH: usize> {
++    offset: usize,
++}
++
++impl<const LENGTH: usize> RangeFixedSize<LENGTH> {
++    /// Create a `RangeFixedSize` from a `Range`.
++    pub fn from_range(range: Range) -> Result<Self, RangeError> {
++        if range.length == LENGTH {
++            Ok(Self {
++                offset: range.offset,
++            })
++        } else {
++            Err(RangeError)
++        }
++    }
++
++    /// Convert this back into a `Range`.
++    pub fn into_range(self) -> Range {
++        Range {
++            offset: self.offset,
++            length: LENGTH,
++        }
++    }
++}
++
++/// The return value of [`Range::use_range`].
++///
++/// The only way to access the indices in a range is to mark it "used", which converts it into this
++/// type, destroying the original [`Range`] object.
++#[derive(Copy, Clone)]
++pub struct UsedRange {
++    /// The offset of this range.
++    pub offset: usize,
++    /// The length of this range.
++    pub length: usize,
++}
++
++/// The error type returned when ranges are used incorrectly.
++pub struct RangeError;
++
++impl From<RangeError> for crate::error::Error {
++    fn from(_range: RangeError) -> crate::error::Error {
++        crate::error::code::EINVAL
++    }
++}
 -- 
-Simona Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
+2.46.0.662.g92d0881bb0-goog
+
