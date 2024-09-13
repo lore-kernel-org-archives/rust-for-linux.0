@@ -1,144 +1,113 @@
-Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
+Received: from mx1.tq-group.com (mx1.tq-group.com [93.104.207.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4616613F42F;
-	Fri, 13 Sep 2024 08:01:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A37D51D7991;
+	Fri, 13 Sep 2024 10:05:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=93.104.207.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726214465; cv=none; b=RASsN5t3JsAhQnoQcGMNkYqn7293AFMSobVbyD8DaYFbJJXEOf2/8NBbgjUnTUvqnWmGeuA05mOyR/7mCtOEoIBREHodxVwziAav8O2iIg/QijIqPxfzn9b/lX6xjiQyRQbgbLPHnrbosdWDH5r31L0dbXU7P9RfPLwRQWhRt7U=
+	t=1726221921; cv=none; b=TvH6+2kFb9O2/SINX733hUq8gv0cgFU7z2geSPrApxhabJyubmMrn8pLXMmvnDa7sUoBtRtcH9V0m/Jdff4FKF0gnBPBkholwNTtpGS8S+u4CwzcqZOUE3ttnWxB2pSpO1cty0y7Ya48KgTu4WoF0sm+6xvfwVa3ACC2H9mvsIE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726214465; c=relaxed/simple;
-	bh=WQF04KEZMGaX+rXC+csKFxpNeaJOVChWnA4IHqeeHMc=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GJ00IuCcYSn7yG8DBv1J6UCf0+IChwuVxO/neVSh1dDV75YsJDTJkm33d/BhZpkupADuvOiG4aAZgl7ig1pPY0nZXp66l6mUJntI0FbQFKgDXnZ3wQpHxXTYkc8gEzw2Mx7Zp9SK9FmZ2OiwKJrOmc1H/2jBHr54n5tjrlrNvPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=GtmDrGgo; arc=none smtp.client-ip=185.70.40.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1726221921; c=relaxed/simple;
+	bh=iUwICgjRJY7EChP4Mk7u9O13h+fgwLzpT/CTu01MYg8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ukhVFvsWU+JREXpfpAcJZLCQAxi5tEV21zSCd029VffEzx9gveYxNXoB+0IRaVWjqq86AknYOau5ODeSSX9ugddi2g31ZE7/2Av4yob6AYqMkaentZZGQz7aJ4uptD13pvCo2kc8B+0AP8GpWVtRbG5scAvbkORSeRD6fwG56fk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com; spf=pass smtp.mailfrom=ew.tq-group.com; dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b=g8A9plyT; dkim=fail (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b=dbBs//JG reason="key not found in DNS"; arc=none smtp.client-ip=93.104.207.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=ew.tq-group.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ew.tq-group.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="GtmDrGgo"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1726214461; x=1726473661;
-	bh=iyDJEHYIHv3zMkFgFswy2GwRhPDuLo3wwMT62mkDyZc=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=GtmDrGgoXHAiOQ97YVpac10Iz2v8QIJ6Zih0NUedjqUBFy+M4SDPcN4t7bUSe0OE9
-	 YgDJwvr+hSrPhGV1Pvs87ye5HB/dv3VrYweO+XNca1Ox1E84/EJXJXi5FB69UaaLSx
-	 VeuXFTmUDEpcYfrS3hOebb3f1/vC7JnIgkhumMNh710KkCYUG/xm6qEkly3+7f0Ezm
-	 ItgBSzv1rPT5e0N2JxapWBEp6HBdy4FwV9CIg9reMw3aXlbmkO1WzqvhrRqM/Pj4cS
-	 oL1hkeqA9dohCG5WmmhRX7tuVtTSgJ8mRdesA7F9wVdOO7aFJzo9c6R+OmGCdZVtO2
-	 sWFL1G9wD6wqw==
-Date: Fri, 13 Sep 2024 08:00:57 +0000
-To: Sami Tolvanen <samitolvanen@google.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Petr Pavlu <petr.pavlu@suse.com>, Miroslav Benes <mbenes@suse.cz>, Masahiro Yamada <masahiroy@kernel.org>, Luis Chamberlain <mcgrof@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Matthew Maurer <mmaurer@google.com>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Gary Guo <gary@garyguo.net>, Neal Gompa <neal@gompa.dev>, Hector Martin <marcan@marcan.st>, Janne Grunau <j@jannau.net>, Asahi Linux <asahi@lists.linux.dev>, linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, linux-modules@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH v2 16/19] gendwarfksyms: Add support for reserved structure fields
-Message-ID: <79860bab-4a48-4b6d-ab63-71dd57d6c590@proton.me>
-In-Reply-To: <CABCJKufJD6Zea7P_aPHNQQgCMgqkw98-XcvW8hRaTx6kcg4vUw@mail.gmail.com>
-References: <20240815173903.4172139-21-samitolvanen@google.com> <20240815173903.4172139-37-samitolvanen@google.com> <alpine.LSU.2.21.2408301114000.1124@pobox.suse.cz> <CABCJKucCWfeC0yL6Q2ZcBfef0tMd9L_gmHRJt-cUYkg_4PDtnA@mail.gmail.com> <599892ec-3cf5-4349-984b-7c94f2ba5687@suse.com> <CABCJKuer=O3FnLJNGMg2+-HxFJFUrccTuuHt5OiMpRsAJBvBsg@mail.gmail.com> <2b2d4953-d2a3-4ea2-98a4-078901cfbda3@proton.me> <CABCJKue-YtCQWinad2GW7uJuVN-ZSUmRYttK_PUurJOR51Urgg@mail.gmail.com> <66694e9a-16d1-4d4e-b825-b90707f2b42e@proton.me> <CABCJKufJD6Zea7P_aPHNQQgCMgqkw98-XcvW8hRaTx6kcg4vUw@mail.gmail.com>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 775dd34bad8d236b607b12e5776ebef360e0bc12
+	dkim=pass (2048-bit key) header.d=tq-group.com header.i=@tq-group.com header.b="g8A9plyT";
+	dkim=fail reason="key not found in DNS" (0-bit key) header.d=ew.tq-group.com header.i=@ew.tq-group.com header.b="dbBs//JG"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=tq-group.com; i=@tq-group.com; q=dns/txt; s=key1;
+  t=1726221918; x=1757757918;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=iUwICgjRJY7EChP4Mk7u9O13h+fgwLzpT/CTu01MYg8=;
+  b=g8A9plyTPjI6tswesVHrACiGvH+FKcvJm5maASrohyMon4wBfEWOuCkS
+   EXbrezue3OpWBziT9F066UXtsddaNK9KMYIiYYeO0VYcNEJ6OgWkil9CX
+   aXOzGUDTza/XKznxx+Wekq6xSaUjsKgrutb6aNB1Rnw2myU+CNpoCBihE
+   A9ZLiVH8s7xQkspXRqXi5ET8V6chWmDguJd8iiB7cw5ODrKkDQDcITJDE
+   GcbvFpBuO+SM305is9soaaWXfKu7ZfynZWrVbUDb6+vpOtzTtQdG2hus8
+   Yyb8dRQ7N4soxZKfc8VRgM6r1h6C8e8k1THUAOWUqozt4jcS3cqC3ECvk
+   Q==;
+X-CSE-ConnectionGUID: jMYiFZVGR9K5JwinR1reSg==
+X-CSE-MsgGUID: MT4M9Ws7QyKseA9HON+ZiA==
+X-IronPort-AV: E=Sophos;i="6.10,225,1719871200"; 
+   d="scan'208";a="38931165"
+Received: from vmailcow01.tq-net.de ([10.150.86.48])
+  by mx1.tq-group.com with ESMTP; 13 Sep 2024 12:05:15 +0200
+X-CheckPoint: {66E40E5B-0-22BB8E18-F5F6D0B4}
+X-MAIL-CPID: 7046A3EE398502D92DFD192A872BB005_5
+X-Control-Analysis: str=0001.0A782F22.66E40E5B.008B,ss=1,re=0.000,recu=0.000,reip=0.000,cl=1,cld=1,fgs=0
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 6ED34167CDC;
+	Fri, 13 Sep 2024 12:05:06 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ew.tq-group.com;
+	s=dkim; t=1726221910;
+	h=from:subject:date:message-id:to:cc:mime-version:content-type:
+	 content-transfer-encoding:in-reply-to:references;
+	bh=iUwICgjRJY7EChP4Mk7u9O13h+fgwLzpT/CTu01MYg8=;
+	b=dbBs//JGN/w93yZCVs4TJ3y3UYZdyf0g/eX4ejgS/awaNJqgg98KpIkbLg9mLg/pq6YqDo
+	6aThuJnvYtKm322fowoWEfu/wy7xExwKBoTLC9PVB4XZlTLLKPqnnebyZZBqfbPT0qPsA6
+	xYtCSS4Q3SkaeWRofThVh29okMzwYz67jOeDjlRcNOzGPfdWl46wB4NtoUTyXi97tgyGil
+	QtAPefzNRS4WounJKHxtKfVVnbeD6dmIg3+04DLNl8uvRxRVcVcAvK+e8x7WqqiwhzGm0+
+	G2ZGfHDhULE2YpQEXSHhrFWByL2nPjxiTrC8lRWPZnpsy9HG79uzRfZoMw/a/Q==
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
+To: fabien.parent@linaro.org, d-gole@ti.com, lorforlinux@beagleboard.org, jkridner@beagleboard.org, robertcnelson@beagleboard.org, Andrew Davis <afd@ti.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?ISO-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, Rob Herring <robh@kernel.org>, Krzysztof Kozlowski <krzk+dt@kernel.org>, Conor Dooley <conor+dt@kernel.org>, Derek Kiernan <derek.kiernan@amd.com>, Dragan Cvetic <dragan.cvetic@amd.com>, Arnd Bergmann <arnd@arndb.de>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Nishanth Menon <nm@ti.com>, Vignesh Raghavendra <vigneshr@ti.com>, Tero Kristo <kristo@kernel.org>, Ayush Singh <ayush@beagleboard.org>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org, Ayush Singh <ayush@beagleboard.org>
+Subject: Re: [PATCH 0/8] Add generic overlay for MikroBUS addon boards
+Date: Fri, 13 Sep 2024 12:05:05 +0200
+Message-ID: <8428068.T7Z3S40VBb@steina-w>
+Organization: TQ-Systems GmbH
+In-Reply-To: <20240911-mikrobus-dt-v1-0-3ded4dc879e7@beagleboard.org>
+References: <20240911-mikrobus-dt-v1-0-3ded4dc879e7@beagleboard.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="iso-8859-1"
+X-Last-TLS-Session-Version: TLSv1.3
 
-On 13.09.24 00:37, Sami Tolvanen wrote:
-> Hi,
+Hi,
+
+Am Mittwoch, 11. September 2024, 16:27:17 CEST schrieb Ayush Singh:
+> Hello all,
 >=20
-> On Thu, Sep 12, 2024 at 2:58=E2=80=AFPM Benno Lossin <benno.lossin@proton=
-.me> wrote:
->>
->> On 12.09.24 22:58, Sami Tolvanen wrote:
->>> That's an interesting point. Is the problem that you cannot assign
->>> arbitrary values to the Rust enum that bindgen generates, or is using
->>> a #define the problem? We could probably just make the hidden enum
->>> values visible to bindgen only if needed.
->>
->> So if I take your example from above add it to our bindgen input, then I
->> get the following output:
->>
->>     pub const e_A: my_own_test_enum =3D 0;
->>     pub const e_B: my_own_test_enum =3D 1;
->>     pub type e_enum =3D core::ffi::c_uint;
->>
->> So it doesn't pick up the other constants at all. That is probably
->> because we haven't enabled the bindgen flag that adds support for
->> function-like macros. If I enable that flag (`--clang-macro-fallback`,
->> then the output becomes:
->>
->>     pub const C: u32 =3D 2;
->>     pub const D: u32 =3D 3;
->>     pub const e_A: e =3D 0;
->>     pub const e_B: e =3D 1;
->>     pub type e =3D ::std::os::raw::c_uint;
->>
->> So it doesn't really work as we would like it to (ie missing e_ prefix).
+> This is an attempt to add MikroBUS addon support using the approach
+> described by Grove connector patch series [0].
 >=20
-> If defines are a problem, we can always use a const int instead. It
-> doesn't have to be defined inside the enum either, and probably we can
-> add a prefix too.
-
-They might also be a problem, though I haven't checked. It would be best
-if they can just stay in the `enum`.
-
->> But even if bindgen were to start supporting `#define` inside of the
->> enum. It might still have a problem with the `#define`: there is the
->> `--rustified-enum <REGEX>` option for bindgen that would change the
->> output to this:
->>
->>     #[repr(u32)]
->>     #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
->>     pub enum e {
->>         A =3D 0,
->>         B =3D 1,
->>     }
->>
->> Which makes using the values on the Rust side a lot easier, since you
->> get exhaustiveness checks when using `match`. Adding the
->> `--clang-macro-fallback` flag, I get:
->>
->>     pub const C: u32 =3D 2;
->>     pub const D: u32 =3D 3;
->>     #[repr(u32)]
->>     #[derive(Debug, Copy, Clone, Hash, PartialEq, Eq)]
->>     pub enum e {
->>         A =3D 0,
->>         B =3D 1,
->>     }
->>
->> Which is a big problem, because the enum `e` won't have 2 or 3 as valid
->> values (it will be UB to write them to a variable of type `e`).
+> The patch series tests out 2 addon boards + pwm and GPIO on the MikroBUS
+> connector. The boards used are GPS3 Click (for UART) [1] and Weather
+> Click (for I2C) [2]. Additionally, I have tested relative GPIO numbering
+> using devicetree nexus nodes [3].
 >=20
-> Yes, I sort of thought that this might be an issue. I don't see this
-> in bindgen flags right now, are you planning on switching the kernel
-> bindgen to use --rustified-enum?
+> The patch series does not attempt to do any dynamic discovery for 1-wire
+> eeprom MikroBUS addon boards, nor does it provide any sysfs entry for
+> board addition/removal. The connector driver might include them after
+> the basic support is ironed out, but the existing patches for dynamic
+> overlays work fine.
+> [sniip]
 
-You mean you don't see the `--clang-macro-fallback` option? I think it
-was added in version 0.70.0.
+To put it in a more abstract perspective, aren't you "just" defining some
+kind of connector with a fixed layout of pins and features?
+It's not really different to Arduino Shields and Raspberry Pi hats, no?
+Ignoring multi-purpose pins for GPIO or e.g. I2C, this is about matching
+the plugin module's pins to platform-specific on-board peripherals.
 
-> If you do plan to use --rustified-enum, we could just use #ifdef
-> __BINDGEN__ to hide the fields from everyone else, but I think we
-> might actually need a more generic solution after all. I'll think
-> about it a bit more.
+Sticking the name to MikroBUS might be misleading, because this is AFAICT
+just a trademark for a specific connector pin layout.
+This concept could be applied for any kind of connector, where e.g.
+the I2C interface is mapped to i2c0 on one platform and to lpi2c5
+on a different platform.
 
-Well we don't exactly plan to use `--rustified-enum`, the problem is
-that transmuting the integer that C gives us to that enum is UB, when
-the integer is not a valid bit pattern for that enum. Instead we would
-like to have an option to generate both the Rust-style enum and a
-newtype enum that can hold any integer value. We then check at runtime
-that the value is in range and error otherwise. This is being worked on
-at [1].=20
-I would say that it has the same issue that `--rustified-enum` currently
-has.
+Best regards,
+Alexander
+=2D-=20
+TQ-Systems GmbH | M=FChlstra=DFe 2, Gut Delling | 82229 Seefeld, Germany
+Amtsgericht M=FCnchen, HRB 105018
+Gesch=E4ftsf=FChrer: Detlef Schneider, R=FCdiger Stahl, Stefan Schneider
+http://www.tq-group.com/
 
-[1]: https://github.com/rust-lang/rust-bindgen/pull/2908
-
----
-Cheers,
-Benno
 
