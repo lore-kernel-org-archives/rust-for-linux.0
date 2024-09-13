@@ -1,123 +1,207 @@
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+Received: from LO0P265CU003.outbound.protection.outlook.com (mail-uksouthazon11022143.outbound.protection.outlook.com [52.101.96.143])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D181155389
-	for <rust-for-linux@vger.kernel.org>; Fri, 13 Sep 2024 21:31:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726263090; cv=none; b=FDc6BliQclTNdbhzy9eU/czB8aV5fCnkBt8EYOgGeueBSssegy5Mv0rTje4z1A3Q5lhZpihNCgsUhVh1LOZyaBxTBrphF/+Q4zRIkKf1lmv52GfDMXIejjslzxyjjicSxMW0nbJN9GkBD+mWHaMdtVSUAEO3ga5QQcd0ydKEB6U=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726263090; c=relaxed/simple;
-	bh=yE2O/TCbVUEJl++iI9v7kbdxzMVfIk8qbzcEy9LW+vY=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MU1xGVoAY5fWfvkPTApa0E54TuN8GuzEeI+MEZsePspUww2a+1zJYNEzg7PizSsnHOD9jb/kAy7P0MrS/RNbqKoWUtezLQbonfLRZa28h1TmgMTrWKPpK7tGtWk/F8Ft7AvsqRu+cGpRN5qwTUiVzp+QJU7BLh+xOzpTshCy3Lo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=elaSGnOG; arc=none smtp.client-ip=185.70.43.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 725BA1E884
+	for <rust-for-linux@vger.kernel.org>; Fri, 13 Sep 2024 21:32:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.96.143
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1726263141; cv=fail; b=tyLT3rw1jAe/H+Wfx8nM4OpAGPHrtqUkQBzatx0kppYXdP3mjLEVeDEmX7ag6F9r4neETpzjqWz4uOMCUXf2phO4J1XiNhTNnE2gHH/BZQgqP40JQUBsFj7Pip+jFREGyLC7xDsxjSQcrH9ajxaYTdOU0vhi4OSy04Y9XjlWIis=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1726263141; c=relaxed/simple;
+	bh=Emht75Wa/LrRC41laP+JFN6BU4UYkmABSfdmI/5ekIo=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=Nj5PDFdR5tA9qvZwG+xi7DDXn9mOE38t7tDPGlSwFNlBFbjGeXcnc9lbrf1Qz7qPxdnK8PbwuvTP2P4fcpeOya/ayon0zj2Dph+OhEGRgfkG5Oliha+cQItZ8ChtvtxQUfkQhICh7mi1idGVBOhUMwo26dkXC7H8uSlwq25QjN8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=jAKtyECp; arc=fail smtp.client-ip=52.101.96.143
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="elaSGnOG"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1726263085; x=1726522285;
-	bh=3AgZzUjAfdgxp+molM3zEwtPisdoS/53XcyUIZB27p8=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=elaSGnOGkMKN8piUfR+kqd6xOqLp2fSd3auQd3XZuof35Kymxx3hOzpOM9u1J12RW
-	 /PmVFEvzSeq2hqOiEVhmmWEDdzAghf+qpWpr1WWojnbzFrhHUoKRcA9KB81CJs/wZT
-	 MffqCfH3neCPoNQBpr14673pyQcPxwcFgVCPUKXTazEcY8aHTXtbvJzWafW+ouK1Y1
-	 DyupCR20Oe5sKSV1bPj43Opx5njmqSPLvI2mGNuIYOkPZn/zr3fAbhQWj4F0/0Iq3e
-	 5d/6rwfCPz+C9uTRkciCj3LC1A51Kn4Cfc3L6XBq9enc0jLGGtGzgutY+1rT4zwCzo
-	 pt5xbVwUheYLg==
-Date: Fri, 13 Sep 2024 21:31:20 +0000
-To: Simona Vetter <simona.vetter@ffwll.ch>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Greg KH <gregkh@linuxfoundation.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 0/3] Untrusted data abstraction
-Message-ID: <0bbec37d-2a4e-4a65-9592-c6d36fec87ac@proton.me>
-In-Reply-To: <ZuSkAL8Ulmlx2Xty@phenom.ffwll.local>
-References: <20240913112643.542914-1-benno.lossin@proton.me> <ZuSkAL8Ulmlx2Xty@phenom.ffwll.local>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 0b8f40119c76f3b4e83585f8c7fe8ba683731201
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="jAKtyECp"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=cJIWW+zI7kfF2Uem6YDq1qdm04StBb+5i8zqeJENG62u7JrAfaKL5+1HZHx5U06SZJqjtOqiEVp+X0llxEnXURec+I2WW53SGBqVSKQAvSQs3e+RlHkr6jfrXjwN5mFgp75shJeh9Iu3ETh0H58Vy0ITWRhXgII5F39U9lFTIMrbnxL8UTmQk9lEP4na8BU9yWXSADPrNT30SN/Hd3xXs411TTiXQ7/tXcjw2yrhrhnKft5i3Z7WpT89b9PFlTksAreh7e24pRGARaCqdnap//COFlulo0IUEQX+Czzy0viFmGUdwV9PEV2YHid4Gf7zSqBTRdH7O9rF/B0I3LowYg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=pbOBerPfqDF+uDDQHzzUO9b826jhEys5sMy5Up6Naro=;
+ b=ZcWHhxyrODX5CmAHSHKgnBrQ2EEFCEJFmJoeJrW6rPz/PGT/FIyjqrRV011fcyuhfAlViEC45d9l21JATcm5mNmMgjdtBWJVR5j6tJDUTRm0S7LP0KEI++6q47svkxgceOyuM6x9a1EPLFrgCY8BuiK8LBpUvC8BviVuFXLeZNaXzstSA5lxlQ3HqJ0T/8iujd++BEPTDJdMgEyXdFM+JFTMWSAzC7sMitUBvfVaYCJgLk781J8TjOInVky63ylB8OxmagrgkZLYSZsoFA9GzeorqI0vfN08al2tnxgVyISks2E4WRX3/+XJ0n3Rf6g/TaIZRlw1neRIdpK5R6E3pw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=pbOBerPfqDF+uDDQHzzUO9b826jhEys5sMy5Up6Naro=;
+ b=jAKtyECpywkI5Hy/tvha8NfJHw6MUvYSRM8drvtpd99l9pb/KjT35aek++0haffAQ4V4DXNbhEGn2ryYeXoKdmkPIERu9F4OxgvGOTZZjc+07c/yM3zdbCQeSurCNctZ9XykXRjR3rvoPv0onx21KZ33iFb4h05q7K92FqonOW0=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
+ by LO2P265MB3594.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:1a3::12) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7962.20; Fri, 13 Sep
+ 2024 21:32:16 +0000
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1818:a2bf:38a7:a1e7]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1818:a2bf:38a7:a1e7%4]) with mapi id 15.20.7962.018; Fri, 13 Sep 2024
+ 21:32:16 +0000
+From: Gary Guo <gary@garyguo.net>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>
+Cc: rust-for-linux@vger.kernel.org
+Subject: [PATCH 0/5] use custom FFI integer types
+Date: Fri, 13 Sep 2024 22:29:20 +0100
+Message-ID: <20240913213041.395655-1-gary@garyguo.net>
+X-Mailer: git-send-email 2.44.1
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: LO2P265CA0136.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:9f::28) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:253::10)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LO2P265MB3594:EE_
+X-MS-Office365-Filtering-Correlation-Id: 33489228-69a5-4b3e-6746-08dcd43b89b8
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|366016|1800799024|376014|7416014|921020;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?VRTyzIFjJqKaSkvXSSzRUlJlKMCYjT4N6OKxonHYNnG0Es1oSPgehnELeaqV?=
+ =?us-ascii?Q?OxCm41BId45CRZpAQxDrnn0tQouKyXKF1PBTRg9SkM2ylZG2SeNdsupf7YJA?=
+ =?us-ascii?Q?5OyEY56l7cB9lU+Ol3SDHJMNThHF5GIiGF8eplVj8ay3GGvyjF4vOV3y9Wia?=
+ =?us-ascii?Q?LUQ6nHafhf0bE/T4SAkH/dKMJDq15rWnPW/LcqhKu2EQR4uu+MbHotu3Z4XW?=
+ =?us-ascii?Q?O3km/2s9pvIE5uIyjTHIdgbe2PcOAL3NWV9tJGzCcx/TGqewMqFOb9W2P87N?=
+ =?us-ascii?Q?/JlEfRFjxSiTrg5GVyvZexl1/rqiBK54X8BBPvGNKgIsSrOSncnsxSoNdtgx?=
+ =?us-ascii?Q?bT0MJABjiYt8olpE/uqWmGFpe5bgUag51aBtrtLZxHkpCiebsjLymKEzxKo2?=
+ =?us-ascii?Q?Fgbrtkjui0B33DHe7T7T6oTy8i+W/QoqcFBtn1McNAJHtzGZlwt8Q7sKW/J5?=
+ =?us-ascii?Q?+KDbzX1X3rPfwlq8lGuA9IrutLyuYoesV70QbK+69SNq088ld8TBKqImREvw?=
+ =?us-ascii?Q?nyeAV6xjaSoPGqLqCEFNlRmMu3MVKB5ueO5dV3gSGJEelNboqXtwPKdjc8GR?=
+ =?us-ascii?Q?uHcwzhjGLNywOfn69wEDYD3LNqIcVpN44zmANktwkz2cxm8Y6kvH6NBqETKj?=
+ =?us-ascii?Q?xHmRFXsVlLhlykZFRNmAvKArWTxzEhYOMifiTUstw4b1cGn6pAsjI68KebzO?=
+ =?us-ascii?Q?bw0SkECq0YunVndqDfRiMDZSqohKkBQwiIuX0sk+cVAALLoNXvSnJwu46CMp?=
+ =?us-ascii?Q?DLMqrSOslnibCcG65u+cfY67xy2mBrZLNgAMcCMt9PF2XpQUEoE1Hs4jakGw?=
+ =?us-ascii?Q?luQy8+EPi20Ms4PKY1OlzHKeGAaVKVKtG6DQqLFscSSSIbYQOmtDMGtZM/4g?=
+ =?us-ascii?Q?LdnznApV0Y2HMpcDh8p3hmGSxGdafMG39LaYqb9x8cO9y0XxHS+G6G0CMsuy?=
+ =?us-ascii?Q?IV/9ibDGvxZrPQgIKSwXn9yJrWj1ZhXxV418wj9U6QCtelbszmvXanu6m3Cn?=
+ =?us-ascii?Q?x3oS8hIUGsTN+rJCokCEWWGicJ504n9pAG1EsTppQJDfPqHfOx9TnnWe4eVs?=
+ =?us-ascii?Q?nqeDikLBre88CTkpfU7Rs0ec2wpLZqpB0huFtT0xMBlfAK3YatavivRNDqel?=
+ =?us-ascii?Q?F64QsF/N4H5QfDVFrii+ey+6P1gh+vZqE/qysh3g0EpZd3AsS1YEPlUHFJSg?=
+ =?us-ascii?Q?zchP5PDXk8HBo+1ScOzuqMgNw6o5hk2QpIF2x34ts0fDL4UhcaeIHTFezAdy?=
+ =?us-ascii?Q?n6M48TpQUc6T6dNy9ZJLk22nURkO5uqMg04kXK5svqhgvvYDnV83CJZeJL6b?=
+ =?us-ascii?Q?Xb2qtmJi6jS6+sad2ABjfoRsmkCvTIm1UO3FKY+ZSWCBUOnYwagQpZxJmfWe?=
+ =?us-ascii?Q?83XHKwZqPfpiEKHMJC4iYNSoXvgO?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(366016)(1800799024)(376014)(7416014)(921020);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?vk5Cg2FJMxCt0uUzRaIfqjJqxbI6pcpjBk7mj5ZrCDMGJzrdqWBOgvu/An8Y?=
+ =?us-ascii?Q?vaRbRJK9nfYw/2QTUvpqvAebcMRvweO0y6Jp5Bepdfdbde9gfKHQXOxHFjUZ?=
+ =?us-ascii?Q?yAAx2Izrupb64FitTLV2+6R2U8fjTrV3vZ2K3uc8b7W3Yp+t5/SFe5Muz2v3?=
+ =?us-ascii?Q?2D+rYBT2DH1Un8fEC5DJFLg/GZVuwlpf39TVG80fTvrpNyJE5Y5JB0/cG/Z2?=
+ =?us-ascii?Q?zWz68PvZHXuZn2OvRcRZ5dMwyawn+B6xHbgEInFnG579kKiF4txy/2hbFCmp?=
+ =?us-ascii?Q?5eWXQNxbrC6S3eAUlbUNkZfJVvyJsDkk3WtOFZQfe9u4GZQQedZyUjExhKhx?=
+ =?us-ascii?Q?9u+akq2lXATg3smjpyhfe+sXQbM2xJ4GqA5HiCc1x5xBShw9OQs3o3cOO1mG?=
+ =?us-ascii?Q?tCmH6LiWwD80TzMcVZMrTfGfmG9aCeWGX6IyZTfmI4OWjotQjIgYXBMnJZZS?=
+ =?us-ascii?Q?0Na8UuonetvNmdb6HB3oRP/WuArntSGD+XcyDMc8moHxLXK1MIuX3aVidX0v?=
+ =?us-ascii?Q?JGWCmOxKBDzN9a7T9ldxBpN0P9+B7Twg2JZsgWkHeIESfn+enzHc5jFcCAa1?=
+ =?us-ascii?Q?BFJIrMsz4OxK3rZd02zrwQgrEWBKRzRhGTMwnxojREjUaLUbf9Ao8wrOHMYY?=
+ =?us-ascii?Q?ycdn45CD2oHz1y0k3I8kFmyYzhs43Jh5KlESPVqojWOSgl5E6epR33PX2SUx?=
+ =?us-ascii?Q?7SoYXlY8joYjh3vjQacmy3N1VT7g/HfwO/CbZxJXJO71W3tp+q8z0t2aPLlF?=
+ =?us-ascii?Q?kpaf9TVuAoe2TgN90Di78Feunb3wXKx0xcMr4imaSfcxH65YGff+/QMda5hp?=
+ =?us-ascii?Q?k92IPN2ZhBNXgYXAK2gYF6fGYlGyyZV6M89k/Sobc1e4iY78DTjFRiZuoSDt?=
+ =?us-ascii?Q?HzCu+7ckdieGIbwxnahHaRB3qxhLKeOYdJ868Hw2STCmpnC86vpYslax4bX9?=
+ =?us-ascii?Q?/kQwTurlg4WyLutfoXhX2CkoF613SRDPN7wEX4XN+fgdmBRyKnOzSAJgjoYA?=
+ =?us-ascii?Q?iNvx8C2Dw7/0Uuw3ie0AF+235hbmBMsyOe12BrgX9vGwoNjEauzzReGvHOvy?=
+ =?us-ascii?Q?zMRUF3vnzL4zv31qkXRNHUx51n0PD8n1Xntg+mlrLsyzF1zNX9r+G3Jj6z5u?=
+ =?us-ascii?Q?JEiE9wNn5N7un5wZYHypvCZPDIlYKof+NUdYsxZJBSNETrW23hndiKtAAlhE?=
+ =?us-ascii?Q?GHmv0spbrxhVgeuQH042qZ/uEA8G77xkg1qkNGSiKDolQHRGtviznkW30yFK?=
+ =?us-ascii?Q?uiiPXAF0PAasAQiIyoTbArzsPbSLQ1dXA3Z61epbU6pf4ysWt/WKM72BihpX?=
+ =?us-ascii?Q?hwFgHoc2EHAV0Tv41aqnvDEgVlnE5O0ehXan12nXNj+CiWEBuJRjSC4/HU6s?=
+ =?us-ascii?Q?fZzVP6EdYA1tNNGkzLhxWjxEDcziTuwAC+qZQuesoKkII29d+dOE5E3jNmF3?=
+ =?us-ascii?Q?AMCtlF1HRTwbkNZaWKlQUJPHBr3vVi1rd542rpLMKdyDDS21lDJsT8rmW2m0?=
+ =?us-ascii?Q?XBJ3b2bphXoZINJvIUOz69UhVVVfvcnRn2qt8lN6kdFkUzq8hN5gGnCAV4EE?=
+ =?us-ascii?Q?S2pu5qM0nvbhKdCrppkVbzTJLM1pK3dt8xIl9UJ6?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 33489228-69a5-4b3e-6746-08dcd43b89b8
+X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 13 Sep 2024 21:32:15.9875
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: tnD6zmENa1KiaOdaRK7Ae5L4JFN0IGLY5f1u9RPgSuC9Cp1Hp82AyetbUm3JiQ9LAoHkLEDJ/KpKz3+dMBt2AQ==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO2P265MB3594
 
-On 13.09.24 22:43, Simona Vetter wrote:
-> On Fri, Sep 13, 2024 at 11:26:54AM +0000, Benno Lossin wrote:
->> Enable marking certain data as untrusted. For example data coming from
->> userspace, hardware or any other external data source.
->>
->> This idea originates from a discussion with Greg at Kangrejos. As far as
->> I understand the rationale, it is to prevent accidentally reading
->> untrusted data and using it for *logic* within the kernel. For example
->> reading the length from the hardware and not validating that it isn't
->> too big. This is a big source for logic bugs that later turn into
->> vulnerabilities.
->>
->> The API introduced in this series is not a silver bullet, users are
->> still able to access the untrusted value (otherwise how would they be
->> able to validate it?). But it provides additional guardrails to remind
->> users that they ought to validate the value before using it. As already
->> stated, they can access the value directly, but to do that, they need to
->> explicitly call one of the `untrusted_*` functions signaling to
->> reviewers that they are reading untrusted data without validation.
->>
->> There are still some things to iron out on the Rust side:
->> - allow better handling of `Untrusted<T>`, for example allow comparing
->>   `Untrusted<[u8]>` for equality (we should do this via a trait
->>   extending `PartialEq`)
->> - rebase this on Gary's patch to enable arbitrary self types. This would
->>   allow me to remove one `untrusted_mut()` call in `inode.rs`. I would
->>   expose the `cap_len` function even if the underlying data is
->>   untrusted.
->> - get more feedback as to what `Untrusted` should make available
->>
->> In addition to adding the abstraction, I also provide very experimental
->> RFC patches using the API in tarfs by wedson. They are based on his
->> vfs-v2 branch [1] and I will not aim to upstream these patches. They sho=
-uld
->> give you some idea as to how the API is intended to be used.
->>
->> Open to any suggestions and improvements!
->>
->> [1]: https://github.com/wedsonaf/linux/tree/vfs-v2
->=20
-> I forgot to add: If we do this, we should really wrap Untrusted<> around
-> all the copy_from_user wrappers we have in the uaccess module. That's one
-> of the main entry points for untrusted garbage into the kernel we have,
-> and it's already in upstream rust
+This patch series aim to reduce the unnecessary type casts needed in
+Rust code doing FFI calls.
 
-Will do with the next version.
+With this series, we can ensure:
 
-> There's even a very nice TOCTOU example bug in the docs which would becom=
-e
-> flat out impossible if we wrap everything in Untrusted.
+* `size_t` is mapped to usize. Currently this is mostly true except for
+  C builtin functions, which gets translated by bindgen to c_ulong/c_uint.
 
-Well you technically can still be very stupid and just call `validate()`
-twice (I hope that this doesn't happen in practice, but you never
-know...). But it's another big improvement.
+* `__kernel_size_t` is mapped to usize. Currently this is mapped to
+  c_ulong/c_uint.
 
-> Also, while I drop some feature requests: I think it'd be very nice to
-> have a macro or something to implement FromBytes and AsBytes automaticall=
-y
-> and savely for C structs from the bindings which only contain linux uapi
-> safe types.
+* `unsigned long` is mapped to usize. Currently this is mapped by Rust
+  libcore to either u32 or u64.
 
-We would probably need some changes to bindgen. But I also think that
-it's a good idea.
+* `char` is mapped to `u8`. Currently this is mapped by Rust libcore to
+  either i8 or u8.
 
-> And also better contain absolutely no padding, since that
-> tends to be bugs on the C side too. But no idea whether rust can do that.
+After this series, FFI code needs to use `kernel::ffi` types instead of
+`core::ffi`.
 
-So padding bytes are not allowed for types implementing `AsBytes`. For
-`FromBytes` they are.
+Gary Guo (5):
+  rust: fix size_t in bindgen prototypes of C builtins
+  rust: map `__kernel_size_t` and friends also to usize/isize
+  rust: use custom FFI integer types
+  rust: map `long` to `isize` and `char` to `u8`
+  rust: cleanup unnecessary casts
 
----
-Cheers,
-Benno
+ rust/Makefile                      | 24 ++++++++++-----
+ rust/bindgen_parameters            |  5 ++++
+ rust/bindings/lib.rs               |  5 ++++
+ rust/ffi.rs                        | 48 ++++++++++++++++++++++++++++++
+ rust/kernel/alloc/allocator.rs     |  4 +--
+ rust/kernel/block/mq/operations.rs | 18 +++++------
+ rust/kernel/block/mq/raw_writer.rs |  2 +-
+ rust/kernel/block/mq/tag_set.rs    |  2 +-
+ rust/kernel/error.rs               | 25 +++++++---------
+ rust/kernel/firmware.rs            |  2 +-
+ rust/kernel/init.rs                |  2 +-
+ rust/kernel/kunit.rs               | 10 ++-----
+ rust/kernel/lib.rs                 |  2 ++
+ rust/kernel/net/phy.rs             | 14 ++++-----
+ rust/kernel/print.rs               |  4 +--
+ rust/kernel/str.rs                 | 10 +++----
+ rust/kernel/sync/arc.rs            |  6 ++--
+ rust/kernel/sync/condvar.rs        |  2 +-
+ rust/kernel/sync/lock.rs           |  2 +-
+ rust/kernel/sync/lock/mutex.rs     |  2 +-
+ rust/kernel/sync/lock/spinlock.rs  |  2 +-
+ rust/kernel/task.rs                |  8 ++---
+ rust/kernel/time.rs                |  4 +--
+ rust/kernel/types.rs               | 26 ++++++++--------
+ rust/kernel/uaccess.rs             | 31 ++++++-------------
+ rust/macros/module.rs              |  8 ++---
+ rust/uapi/lib.rs                   |  5 ++++
+ 27 files changed, 161 insertions(+), 112 deletions(-)
+ create mode 100644 rust/ffi.rs
+
+
+base-commit: 93dc3be19450447a3a7090bd1dfb9f3daac3e8d2
+-- 
+2.44.1
 
