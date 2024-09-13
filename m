@@ -1,611 +1,151 @@
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A27C1137905
-	for <rust-for-linux@vger.kernel.org>; Fri, 13 Sep 2024 20:31:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E13F812C470
+	for <rust-for-linux@vger.kernel.org>; Fri, 13 Sep 2024 20:43:48 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726259499; cv=none; b=qLugpjR45PewwvVVO3WjKcIrp7zQSf5nc0VGRA7vDuN9UcVTS2vLq1jjW9ePAUKAuronCqayPzluXNjHRjmuzXc8yi0uTvsV8P4e/mWP8Cvb0SOYGTlMsNL/O+LU4sDDxmX2mWTt8lq4NA9RDxdtGwylFXHITphTNVh/yKxVv1Q=
+	t=1726260230; cv=none; b=YdIi+ok37E+ooZw4vVUhOyZsa4jObL8Jpk4Nl4aXl6JIHrjznoFYqYv84T5ZhDkJtw07Uh7y0yT9D5rNEjhHxgdtR3jrJk1gBqG04CES3Y7fF2RZ3VmAe9GN3FmO8AIZn8tTGOXWxWUu6N2xtIW4N230icIuGRl2w4PjVZSyByM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726259499; c=relaxed/simple;
-	bh=V+B3Q1mO6YXsH7aDvUqVMKegXFcHBT4wV+UdlpkVE14=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Content-Type; b=LD4iFemcOd2JKywwJjlwrpiOyGS6Z1n8IfNLXxgU0l8HWbo+S8D07qguMyb8bbydZIIcIknWg6/CMo97Uiuz+J+ba7gm8b+XCVS8KJqKnv/oH1zafPN3vr/xqZq2JXLqnhxzrvoae3hqQvMsgh1gWjHyFADRHwalTt3QXBNxzzg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=zltOTJYO; arc=none smtp.client-ip=209.85.221.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1726260230; c=relaxed/simple;
+	bh=S/p3aVAMiJ5riyAqW4au/bT09fMYwG3jx+BtvYgCkkE=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=m5OvpBFpKlaVl+8Zbm0vhmlPJr9x5LrMvwKtCyM/5lHN4LO7gKrhGmdAjyQueofaZzo6R+wTAa/7g3m8/1qKZJdf+NOP2CJz+42J2HnFP5BcVNpWaSzZ64R0A7uH55RyCU2wbcPwoKuAaStR/TNsQPyQG5FOGwlywjxhK3BZMRI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch; spf=none smtp.mailfrom=ffwll.ch; dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b=Ugsg5vx5; arc=none smtp.client-ip=209.85.128.47
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ffwll.ch
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="zltOTJYO"
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-374b5f27cf2so1787018f8f.1
-        for <rust-for-linux@vger.kernel.org>; Fri, 13 Sep 2024 13:31:35 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b="Ugsg5vx5"
+Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-42cb1758e41so12199305e9.1
+        for <rust-for-linux@vger.kernel.org>; Fri, 13 Sep 2024 13:43:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1726259494; x=1726864294; darn=vger.kernel.org;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=hp0hM+TBi8EPvvh0ukI/PN3iFtwci/KfwR5JqGqtS98=;
-        b=zltOTJYO6pd945h85Mgnkb9G+o3ZAptdpF/6lO1cXWcrhpT0wLZFFJCScHW3nQRi5U
-         ATQundFejDWSUyeK+DeaagLAVjOEaisJmkbIfuYXaD2Ym1jzE7uLKgvSUggLLFUJkiiP
-         StrQue17ZtQuS4XANxoZYc5Io5j61ve3HpTDRqX/CvdEH16DEjS+95IBVo8vOiAT4m/N
-         G1DeHY23HX1zzvLqxMIYNhvGXF5CY5qH/HnxrlbXuFXunK0Dugx9GE83YjEP4NFJmMeQ
-         eWllrmfRPRNhD79nVMZ9bJ/elprvcFOU0mkEU2I9xE8HHdLlTyTzFAKsuJ6lPTA8xQ8Q
-         hfIw==
+        d=ffwll.ch; s=google; t=1726260227; x=1726865027; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=lW734B6dGGqgi185LNhncOBlhauaYAtdEaPHNEq/yB0=;
+        b=Ugsg5vx5aAq0YdYrCWScCQmRTiNk9zeJH0c1uo4T1PxfVSWWwCD1HcmhYS2+QOJ6S8
+         Ie+j7ZJIwLDIY1jYyNc61rrMQLGdGjCEB5ci8vU0RueLmQfpf8fWSLjYgxrpdTtoSRKT
+         u3o83Ub4O52UQ8+AxjP4uqSY6ubJmtN35hl60=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726259494; x=1726864294;
-        h=content-transfer-encoding:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=hp0hM+TBi8EPvvh0ukI/PN3iFtwci/KfwR5JqGqtS98=;
-        b=lrQbZBh280d95tHtrN5pWbvSy1RgUat2DClQAfQSpsjgCwqha/+yhM6pbH4MXKCH6w
-         1O+1IdkFYXS+5noEazK2i0ABrA5DO3+jdWxey6PSz+/1BgHddN5PUhrIebQCw9ZLVCJE
-         Fk0OdHSfjvS6RB31eR62juRaVhgH4yZ3/XdTZ14oM2fSY8E5zfl5vL8RbuIOTg3TWsYm
-         pKPlRf6ZQ9Ioj4o5DIxdgw43n2/Nq4tEvYOQwjnhQ7/Dn3qHQAhNIVWFnL5GAIMD0uOn
-         obL0a3/uhfReCodYMzSCwt6AeHoJfv9Uoao3Ct6VdU2CmkfSp95QqyDWYt+ar4wQKSds
-         iW2g==
-X-Forwarded-Encrypted: i=1; AJvYcCV6mR8dvhkmt7V1jhHR+R6Er24OdDdt0JXUHikirFQIlS9D9ro9V+9a2LeB05RmE8RB2IVxwBr8YX0d4qt7Sg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzhjxIhq7EonA3esxpZlb1IEv2UELwNHieEsGrRH4VsBFeWVxhX
-	eeG5JW+52Y3v1Y9rf+eHqvvsQc3M9LX5X3viEX801/xg7c2JV3eGc0kh1PJtkwOkbKZzLxsprXt
-	uWWah3dvvOhRnIF+PJx+neMhU+xdO0ziLE8/V
-X-Google-Smtp-Source: AGHT+IF1fnPp9mwLpsUqju5x2gFBE+hqrz3Dt6yYJy5S9tNWMgR4qg6InTZcC0d9XddxCBbc+zqQtwEuta3AOEXvO18=
-X-Received: by 2002:a5d:650c:0:b0:368:5bb4:169b with SMTP id
- ffacd0b85a97d-378c2cd5b95mr4775105f8f.4.1726259493423; Fri, 13 Sep 2024
- 13:31:33 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1726260227; x=1726865027;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lW734B6dGGqgi185LNhncOBlhauaYAtdEaPHNEq/yB0=;
+        b=A9Lm6nRiyaODtYf/DgE1DvGNuJxF6aMX6yDpMHoIB+Doy8/M4UYj+ikHfBsj3llyaM
+         0bkVazGFYOoAw1Fue9SlfPKaJI7xjapK93synGEaGFI/5v7+ohH8qodc9eL9YWKo34GW
+         5LCAEBwanbw3mRR3PnhzQaKE9I5p2OVzVqkT3s/gt6gLPsBPjwefI2ftxYUC5WFwkHCI
+         MrdePhjVf4ftqizmJNMYbVhN9udDWCv80B4meZQDZe3INCauv9EMvFzWFdIUvL5z/PoR
+         54DllVsOBK7vIdG32umDiuTdVblEr9nIb64b7uSknAXYB6d5bIWfg4mFIDyso/35lJsA
+         eH4g==
+X-Forwarded-Encrypted: i=1; AJvYcCUKERapWsmhE4F9oJiPSJXFKpY84nYYEczWP4NpskbYdfb4+yJXRu1hI3ybEbOrzaX4yFQLRUfCb3BADPnEIg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzDCCzm5Zv1/lJpmG//RzJba3x3OeYZ8C/QHZ9Bkj+gi1f5t75f
+	nNxtZjhtKg7dwsub5hNDO280lTfwwN0fn7+RfPz0/yuSFIcYE2p03BVcqXzbck0=
+X-Google-Smtp-Source: AGHT+IHD7Ara0zwFczKqh8iVJkwUGj598PVbMagxYJ5Cq42UbOjHet1lfQHOZ3ZQFCmFt0p8GU1haQ==
+X-Received: by 2002:a05:600c:3d86:b0:426:616e:db8d with SMTP id 5b1f17b1804b1-42d9082a638mr31724815e9.15.1726260226784;
+        Fri, 13 Sep 2024 13:43:46 -0700 (PDT)
+Received: from phenom.ffwll.local ([2a02:168:57f4:0:5485:d4b2:c087:b497])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-42da2426d0esm1730625e9.39.2024.09.13.13.43.45
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 13 Sep 2024 13:43:46 -0700 (PDT)
+Date: Fri, 13 Sep 2024 22:43:44 +0200
+From: Simona Vetter <simona.vetter@ffwll.ch>
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Greg KH <gregkh@linuxfoundation.org>, Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH 0/3] Untrusted data abstraction
+Message-ID: <ZuSkAL8Ulmlx2Xty@phenom.ffwll.local>
+References: <20240913112643.542914-1-benno.lossin@proton.me>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240912-shrinker-v1-1-18b7f1253553@google.com> <ZuSdcybAVM1Ix4bJ@phenom.ffwll.local>
-In-Reply-To: <ZuSdcybAVM1Ix4bJ@phenom.ffwll.local>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Fri, 13 Sep 2024 22:31:20 +0200
-Message-ID: <CAH5fLgh7a7J8Z9xL1A-zY60Jv7kj73-OBM7VaMcy=1gq3y2bug@mail.gmail.com>
-Subject: Re: [PATCH] rust: shrinker: add shrinker abstraction
-To: Alice Ryhl <aliceryhl@google.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Andrew Morton <akpm@linux-foundation.org>, Dave Chinner <david@fromorbit.com>, 
-	Qi Zheng <zhengqi.arch@bytedance.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Muchun Song <muchun.song@linux.dev>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240913112643.542914-1-benno.lossin@proton.me>
+X-Operating-System: Linux phenom 6.9.12-amd64 
 
-On Fri, Sep 13, 2024 at 10:15=E2=80=AFPM Simona Vetter <simona.vetter@ffwll=
-.ch> wrote:
->
-> On Thu, Sep 12, 2024 at 09:54:01AM +0000, Alice Ryhl wrote:
-> > Rust Binder holds incoming transactions in a read-only mmap'd region
-> > where it manually manages the pages. These pages are only in use until
-> > the incoming transaction is consumed by userspace, but the kernel will
-> > keep the pages around for future transactions. Rust Binder registers a
-> > shrinker with the kernel so that it can give back these pages if the
-> > system comes under memory pressure.
-> >
-> > Separate types are provided for registered and unregistered shrinkers.
-> > The unregistered shrinker type can be used to configure the shrinker
-> > before registering it. Separating it into two types also enables the
-> > user to construct the private data between the calls to `shrinker_alloc=
-`
-> > and `shrinker_register` and avoid constructing the private data if
-> > allocating the shrinker fails.
-> >
-> > The user specifies the callbacks in use by implementing the Shrinker
-> > trait for the type used for the private data. This requires specifying
-> > three things: implementations for count_objects and scan_objects, and
-> > the pointer type that the private data will be wrapped in.
-> >
-> > The return values of count_objects and scan_objects are provided using
-> > new types called CountObjects and ScanObjects respectively. These types
-> > prevent the user from e.g. returning SHRINK_STOP from count_objects or
-> > returning SHRINK_EMPTY from scan_objects.
-> >
-> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
->
-> Scary given that drm has a few, but I learned a few new thinks about
-> shrinkers. Some comments below, but looks all really nice imo.
->
-> Cheers, Sima
->
-> > ---
-> >  rust/bindings/bindings_helper.h |   2 +
-> >  rust/kernel/lib.rs              |   1 +
-> >  rust/kernel/shrinker.rs         | 324 ++++++++++++++++++++++++++++++++=
-++++++++
-> >  3 files changed, 327 insertions(+)
-> >
-> > diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_h=
-elper.h
-> > index ae82e9c941af..7fc958e05dc5 100644
-> > --- a/rust/bindings/bindings_helper.h
-> > +++ b/rust/bindings/bindings_helper.h
-> > @@ -18,6 +18,7 @@
-> >  #include <linux/phy.h>
-> >  #include <linux/refcount.h>
-> >  #include <linux/sched.h>
-> > +#include <linux/shrinker.h>
-> >  #include <linux/slab.h>
-> >  #include <linux/wait.h>
-> >  #include <linux/workqueue.h>
-> > @@ -31,4 +32,5 @@ const gfp_t RUST_CONST_HELPER_GFP_KERNEL_ACCOUNT =3D =
-GFP_KERNEL_ACCOUNT;
-> >  const gfp_t RUST_CONST_HELPER_GFP_NOWAIT =3D GFP_NOWAIT;
-> >  const gfp_t RUST_CONST_HELPER___GFP_ZERO =3D __GFP_ZERO;
-> >  const gfp_t RUST_CONST_HELPER___GFP_HIGHMEM =3D ___GFP_HIGHMEM;
-> > +const gfp_t RUST_CONST_HELPER___GFP_FS =3D ___GFP_FS;
-> >  const blk_features_t RUST_CONST_HELPER_BLK_FEAT_ROTATIONAL =3D BLK_FEA=
-T_ROTATIONAL;
-> > diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> > index f10b06a78b9d..f35eb290f2e0 100644
-> > --- a/rust/kernel/lib.rs
-> > +++ b/rust/kernel/lib.rs
-> > @@ -45,6 +45,7 @@
-> >  pub mod prelude;
-> >  pub mod print;
-> >  pub mod rbtree;
-> > +pub mod shrinker;
-> >  mod static_assert;
-> >  #[doc(hidden)]
-> >  pub mod std_vendor;
-> > diff --git a/rust/kernel/shrinker.rs b/rust/kernel/shrinker.rs
-> > new file mode 100644
-> > index 000000000000..9af726bfe0b1
-> > --- /dev/null
-> > +++ b/rust/kernel/shrinker.rs
-> > @@ -0,0 +1,324 @@
-> > +// SPDX-License-Identifier: GPL-2.0
-> > +
-> > +// Copyright (C) 2024 Google LLC.
-> > +
-> > +//! Shrinker for handling memory pressure.
-> > +//!
-> > +//! C header: [`include/linux/shrinker.h`](srctree/include/linux/shrin=
-ker.h)
-> > +
-> > +use crate::{alloc::AllocError, bindings, c_str, str::CStr, types::Fore=
-ignOwnable};
-> > +
-> > +use core::{
-> > +    ffi::{c_int, c_ulong, c_void},
-> > +    marker::PhantomData,
-> > +    ptr::NonNull,
-> > +};
-> > +
-> > +const SHRINK_STOP: c_ulong =3D bindings::SHRINK_STOP as c_ulong;
-> > +const SHRINK_EMPTY: c_ulong =3D bindings::SHRINK_EMPTY as c_ulong;
-> > +
-> > +/// The default value for the number of seeks needed to recreate an ob=
-ject.
-> > +pub const DEFAULT_SEEKS: u32 =3D bindings::DEFAULT_SEEKS;
-> > +
-> > +/// An unregistered shrinker.
-> > +///
-> > +/// This type can be used to modify the settings of the shrinker befor=
-e it is registered.
-> > +///
-> > +/// # Invariants
-> > +///
-> > +/// The `shrinker` pointer references an unregistered shrinker.
-> > +pub struct UnregisteredShrinker {
-> > +    shrinker: NonNull<bindings::shrinker>,
-> > +}
-> > +
-> > +// SAFETY: Moving an unregistered shrinker between threads is okay.
-> > +unsafe impl Send for UnregisteredShrinker {}
-> > +// SAFETY: An unregistered shrinker is thread safe.
-> > +unsafe impl Sync for UnregisteredShrinker {}
-> > +
-> > +impl UnregisteredShrinker {
-> > +    /// Create a new shrinker.
-> > +    pub fn alloc(name: &CStr) -> Result<Self, AllocError> {
-> > +        // SAFETY: Passing `0` as flags is okay. Using `%s` as the for=
-mat string is okay when we
->
-> I'd elaborate here that we have to pass 0 as the only valid value because
-> all the non-zero flags are for memcg and numa aware shrinkers, and we do
-> not support those because we don't expose the relevant data from
-> ShrinkControl.
->
-> > +        // pass a nul-terminated string as the string for `%s` to prin=
-t.
-> > +        let ptr =3D
-> > +            unsafe { bindings::shrinker_alloc(0, c_str!("%s").as_char_=
-ptr(), name.as_char_ptr()) };
-> > +
-> > +        let shrinker =3D NonNull::new(ptr).ok_or(AllocError)?;
-> > +
-> > +        // INVARIANT: The creation of the shrinker was successful.
-> > +        Ok(Self { shrinker })
-> > +    }
-> > +
-> > +    /// Create a new shrinker using format arguments for the name.
-> > +    pub fn alloc_fmt(name: core::fmt::Arguments<'_>) -> Result<Self, A=
-llocError> {
-> > +        // SAFETY: Passing `0` as flags is okay. Using `%pA` as the fo=
-rmat string is okay when we
-> > +        // pass a `fmt::Arguments` as the value to print.
-> > +        let ptr =3D unsafe {
-> > +            bindings::shrinker_alloc(
-> > +                0,
-> > +                c_str!("%pA").as_char_ptr(),
-> > +                &name as *const _ as *const c_void,
-> > +            )
-> > +        };
-> > +
-> > +        let shrinker =3D NonNull::new(ptr).ok_or(AllocError)?;
-> > +
-> > +        // INVARIANT: The creation of the shrinker was successful.
-> > +        Ok(Self { shrinker })
-> > +    }
-> > +
-> > +    /// Set the number of seeks needed to recreate an object.
-> > +    pub fn set_seeks(&mut self, seeks: u32) {
->
-> Not sure we want to expose this, with ssd seeks kinda don't matter and
-> it's just a bit about relative fairness. I think nowadays it's more
-> important that the count_object values are normalized to size, if not all
-> objects you shrink have the same fixed size.
->
-> So not sure we need this, at least initially.
+On Fri, Sep 13, 2024 at 11:26:54AM +0000, Benno Lossin wrote:
+> Enable marking certain data as untrusted. For example data coming from
+> userspace, hardware or any other external data source.
+> 
+> This idea originates from a discussion with Greg at Kangrejos. As far as
+> I understand the rationale, it is to prevent accidentally reading
+> untrusted data and using it for *logic* within the kernel. For example
+> reading the length from the hardware and not validating that it isn't
+> too big. This is a big source for logic bugs that later turn into
+> vulnerabilities.
+> 
+> The API introduced in this series is not a silver bullet, users are
+> still able to access the untrusted value (otherwise how would they be
+> able to validate it?). But it provides additional guardrails to remind
+> users that they ought to validate the value before using it. As already
+> stated, they can access the value directly, but to do that, they need to
+> explicitly call one of the `untrusted_*` functions signaling to
+> reviewers that they are reading untrusted data without validation.
+> 
+> There are still some things to iron out on the Rust side:
+> - allow better handling of `Untrusted<T>`, for example allow comparing
+>   `Untrusted<[u8]>` for equality (we should do this via a trait
+>   extending `PartialEq`)
+> - rebase this on Gary's patch to enable arbitrary self types. This would
+>   allow me to remove one `untrusted_mut()` call in `inode.rs`. I would
+>   expose the `cap_len` function even if the underlying data is
+>   untrusted.
+> - get more feedback as to what `Untrusted` should make available
+> 
+> In addition to adding the abstraction, I also provide very experimental
+> RFC patches using the API in tarfs by wedson. They are based on his
+> vfs-v2 branch [1] and I will not aim to upstream these patches. They should
+> give you some idea as to how the API is intended to be used.
+> 
+> Open to any suggestions and improvements!
+> 
+> [1]: https://github.com/wedsonaf/linux/tree/vfs-v2
 
-Good point about keeping the objects the same fixed size. I'll
-incorporate that in the docs.
+I forgot to add: If we do this, we should really wrap Untrusted<> around
+all the copy_from_user wrappers we have in the uaccess module. That's one
+of the main entry points for untrusted garbage into the kernel we have,
+and it's already in upstream rust.
 
-> > +        unsafe { (*self.shrinker.as_ptr()).seeks =3D seeks as c_int };
-> > +    }
-> > +
-> > +    /// Register the shrinker.
-> > +    ///
-> > +    /// The provided pointer is used as the private data, and the type=
- `T` determines the callbacks
-> > +    /// that the shrinker will use.
-> > +    pub fn register<T: Shrinker>(self, private_data: T::Ptr) -> Regist=
-eredShrinker<T> {
-> > +        let shrinker =3D self.shrinker;
-> > +        let ptr =3D shrinker.as_ptr();
-> > +
-> > +        // The destructor of `self` calls `shrinker_free`, so skip the=
- destructor.
-> > +        core::mem::forget(self);
-> > +
-> > +        let private_data_ptr =3D <T::Ptr as ForeignOwnable>::into_fore=
-ign(private_data);
-> > +
-> > +        // SAFETY: We own the private data, so we can assign to it.
-> > +        unsafe { (*ptr).private_data =3D private_data_ptr.cast_mut() }=
-;
-> > +        // SAFETY: The shrinker is not yet registered, so we can updat=
-e this field.
-> > +        unsafe { (*ptr).count_objects =3D Some(rust_count_objects::<T>=
-) };
-> > +        // SAFETY: The shrinker is not yet registered, so we can updat=
-e this field.
-> > +        unsafe { (*ptr).scan_objects =3D Some(rust_scan_objects::<T>) =
-};
-> > +
-> > +        // SAFETY: The shrinker is unregistered, so it's safe to regis=
-ter it.
-> > +        unsafe { bindings::shrinker_register(ptr) };
-> > +
-> > +        RegisteredShrinker {
-> > +            shrinker,
-> > +            _phantom: PhantomData,
-> > +        }
-> > +    }
-> > +}
-> > +
-> > +impl Drop for UnregisteredShrinker {
-> > +    fn drop(&mut self) {
-> > +        // SAFETY: The shrinker is a valid but unregistered shrinker, =
-and we will not use it
-> > +        // anymore.
-> > +        unsafe { bindings::shrinker_free(self.shrinker.as_ptr()) };
-> > +    }
-> > +}
-> > +
-> > +/// A shrinker that is registered with the kernel.
-> > +///
-> > +/// # Invariants
-> > +///
-> > +/// The `shrinker` pointer refers to a registered shrinker using `T` a=
-s the private data.
-> > +pub struct RegisteredShrinker<T: Shrinker> {
-> > +    shrinker: NonNull<bindings::shrinker>,
-> > +    _phantom: PhantomData<T::Ptr>,
-> > +}
-> > +
-> > +// SAFETY: This allows you to deregister the shrinker from a different=
- thread, which means that
-> > +// private data could be dropped from any thread.
-> > +unsafe impl<T: Shrinker> Send for RegisteredShrinker<T> where T::Ptr: =
-Send {}
-> > +// SAFETY: The only thing you can do with an immutable reference is ac=
-cess the private data, which
-> > +// is okay to access in parallel as the `Shrinker` trait requires the =
-private data to be `Sync`.
-> > +unsafe impl<T: Shrinker> Sync for RegisteredShrinker<T> {}
-> > +
-> > +impl<T: Shrinker> RegisteredShrinker<T> {
-> > +    /// Access the private data in this shrinker.
-> > +    pub fn private_data(&self) -> <T::Ptr as ForeignOwnable>::Borrowed=
-<'_> {
-> > +        // SAFETY: We own the private data, so we can access it.
-> > +        let private =3D unsafe { (*self.shrinker.as_ptr()).private_dat=
-a };
-> > +        // SAFETY: By the type invariants, the private data is `T`. Th=
-is access could happen in
-> > +        // parallel with a shrinker callback, but that's okay as the `=
-Shrinker` trait ensures that
-> > +        // `T::Ptr` is `Sync`.
-> > +        unsafe { <T::Ptr as ForeignOwnable>::borrow(private) }
-> > +    }
-> > +}
-> > +
-> > +impl<T: Shrinker> Drop for RegisteredShrinker<T> {
-> > +    fn drop(&mut self) {
-> > +        // SAFETY: We own the private data, so we can access it.
-> > +        let private =3D unsafe { (*self.shrinker.as_ptr()).private_dat=
-a };
-> > +        // SAFETY: We will not access the shrinker after this call.
-> > +        unsafe { bindings::shrinker_free(self.shrinker.as_ptr()) };
-> > +        // SAFETY: The above call blocked until the completion of any =
-shrinker callbacks, so there
-> > +        // are no longer any users of the private data.
-> > +        drop(unsafe { <T::Ptr as ForeignOwnable>::from_foreign(private=
-) });
-> > +    }
-> > +}
-> > +
-> > +/// Callbacks for a shrinker.
-> > +pub trait Shrinker {
-> > +    /// The pointer type used to store the private data of the shrinke=
-r.
-> > +    ///
-> > +    /// Needs to be `Sync` because the shrinker callback could access =
-this value immutably from
-> > +    /// several thread in parallel.
-> > +    type Ptr: ForeignOwnable + Sync;
-> > +
-> > +    /// Count the number of freeable items in the cache.
-> > +    ///
-> > +    /// May be called from atomic context.
->
-> That's wrong, reclaim is allowed to block. Or my understanding of how thi=
-s
-> works is very busted. We do run in a pseudo locking context, the core
-> code annotates that with fs_reclaim_acquire/release.
+There's even a very nice TOCTOU example bug in the docs which would become
+flat out impossible if we wrap everything in Untrusted.
 
-Ah, ok. Every shrinker I've looked at uses try_lock everywhere so I
-assumed this could happen. Thanks for verifying that.
+Also, while I drop some feature requests: I think it'd be very nice to
+have a macro or something to implement FromBytes and AsBytes automatically
+and savely for C structs from the bindings which only contain linux uapi
+safe types.  And also better contain absolutely no padding, since that
+tends to be bugs on the C side too. But no idea whether rust can do that.
+-Sima
 
-> > +    fn count_objects(
-> > +        me: <Self::Ptr as ForeignOwnable>::Borrowed<'_>,
-> > +        sc: ShrinkControl<'_>,
-> > +    ) -> CountObjects;
-> > +
-> > +    /// Count the number of freeable items in the cache.
-> > +    ///
-> > +    /// May be called from atomic context.
->
-> Same here.
->
-> > +    fn scan_objects(
-> > +        me: <Self::Ptr as ForeignOwnable>::Borrowed<'_>,
-> > +        sc: ShrinkControl<'_>,
-> > +    ) -> ScanObjects;
-> > +}
-> > +
-> > +/// How many objects are there in the cache?
-> > +///
-> > +/// This is used as the return value of [`Shrinker::count_objects`].
-> > +pub struct CountObjects {
-> > +    inner: c_ulong,
-> > +}
-> > +
-> > +impl CountObjects {
-> > +    /// Indicates that the number of objects is unknown.
-> > +    pub const UNKNOWN: Self =3D Self { inner: 0 };
-> > +
-> > +    /// Indicates that the number of objects is zero.
-> > +    pub const EMPTY: Self =3D Self {
-> > +        inner: SHRINK_EMPTY,
->
-> So I spend way too much time looking at all this, and I think overflows
-> don't matter to the core shrinker code (aside from maybe a bit of
-> unfairness), as long as we don't accidently return SHRINK_EMPTY here. But
-> that's only relevant for memcg aware shrinkers I think.
+> 
+> Benno Lossin (3):
+>   rust: add untrusted data abstraction
+>   WIP: rust: fs: mark data returned by inodes untrusted
+>   WIP: rust: tarfs: use untrusted data API
+> 
+>  fs/tarfs/defs.rs        |   1 +
+>  fs/tarfs/tar.rs         | 143 +++++++++++++++++++++++++++-------------
+>  rust/kernel/fs/inode.rs |  33 ++++++----
+>  rust/kernel/types.rs    | 248 ++++++++++++++++++++++++++++++++++++++++++-
+>  4 files changed, 367 insertions(+), 58 deletions(-)
+> 
+> 
+> base-commit: d077242d68a31075ef5f5da041bf8f6fc19aa231
+> -- 
+> 2.46.0
+> 
+> 
 
-Overflow is one thing. The current API automatically converts 0 to
-SHRINK_EMPTY, whereas many C shrinkers just return the size directly,
-which means they return UNKNOWN when it's really empty. Thoughts?
-
-> > +    };
-> > +
-> > +    /// The maximum possible number of freeable objects.
-> > +    pub const MAX: Self =3D Self {
-> > +        // The shrinker code assumes that it can multiply this value b=
-y two without overflow.
-> > +        inner: c_ulong::MAX / 2,
->
-> I think the limits is actually ulong_max/4, since priority can be 0 from
-> drop_slabs() and we multiply by 4 is seeks are nonzero. But then I tried
-> to look at what the limit for nr_to_scan and hence ScanObjects, and I
-> think aside from the special values the mm/shrinker.c simply does not car=
-e
-> about overflows at all. Both unsigned and signed integer math is well
-> defined for overflow in linux, so no compiler license to do stupid stuff,
-> and worst case if you do overflow you just end up shrinking a bit
-> unfairly. But afaict nothing breaks.
->
-> So not sure we should enforce this when core mm doesn't bother.
->
-> Same for ScanObjects below.
->
-> > +    };
-> > +
-> > +    /// Creates a new `CountObjects` with the given value.
-> > +    pub fn from_count(count: usize) -> Self {
-> > +        if count =3D=3D 0 {
-> > +            return Self::EMPTY;
-> > +        }
-> > +
-> > +        if count > Self::MAX.inner as usize {
-> > +            return Self::MAX;
-> > +        }
-> > +
-> > +        Self {
-> > +            inner: count as c_ulong,
-> > +        }
-> > +    }
-> > +}
-> > +
-> > +/// How many objects were freed?
-> > +///
-> > +/// This is used as the return value of [`Shrinker::scan_objects`].
-> > +pub struct ScanObjects {
-> > +    inner: c_ulong,
-> > +}
-> > +
-> > +impl ScanObjects {
-> > +    /// Indicates that the shrinker should stop trying to free objects=
- from this cache due to
-> > +    /// potential deadlocks.
-> > +    pub const STOP: Self =3D Self { inner: SHRINK_STOP };
-> > +
-> > +    /// The maximum possible number of freeable objects.
-> > +    pub const MAX: Self =3D Self {
-> > +        // The shrinker code assumes that it can multiply this value b=
-y two without overflow.
-> > +        inner: c_ulong::MAX / 2,
-> > +    };
-> > +
-> > +    /// Creates a new `CountObjects` with the given value.
-> > +    pub fn from_count(count: usize) -> Self {
-> > +        if count > Self::MAX.inner as usize {
-> > +            return Self::MAX;
-> > +        }
-> > +
-> > +        Self {
-> > +            inner: count as c_ulong,
-> > +        }
-> > +    }
-> > +}
-> > +
-> > +/// This struct is used to pass information from page reclaim to the s=
-hrinkers.
-> > +pub struct ShrinkControl<'a> {
-> > +    ptr: NonNull<bindings::shrink_control>,
-> > +    _phantom: PhantomData<&'a bindings::shrink_control>,
-> > +}
-> > +
-> > +impl<'a> ShrinkControl<'a> {
-> > +    /// Create a `ShrinkControl` from a raw pointer.
-> > +    ///
-> > +    /// # Safety
-> > +    ///
-> > +    /// The pointer should point at a valid `shrink_control` for the d=
-uration of 'a.
-> > +    pub unsafe fn from_raw(ptr: *mut bindings::shrink_control) -> Self=
- {
-> > +        Self {
-> > +            // SAFETY: Caller promises that this pointer is valid.
-> > +            ptr: unsafe { NonNull::new_unchecked(ptr) },
-> > +            _phantom: PhantomData,
-> > +        }
-> > +    }
-> > +
-> > +    /// Determines whether it is safe to recurse into filesystem code.
-> > +    pub fn gfp_fs(&self) -> bool {
->
-> I guess you need this in your new binder code, because the current one
-> seems to side-step __GFP_FS recursion with just trylocking absolutely
-> everything aside from the lru spinlock. At least I haven't found any
-> gfp_fs tests, but I might be blind.
-
-Ah, yeah, I don't think C binder tests for that.
-
-Either way, it probably makes more sense to just expose a method to
-get the flags directly, rather than have a dedicated method for
-testing this particular flags. Or what do you think?
-
-> > +        // SAFETY: Okay by type invariants.
-> > +        let mask =3D unsafe { (*self.ptr.as_ptr()).gfp_mask };
-> > +
-> > +        (mask & bindings::__GFP_FS) !=3D 0
-> > +    }
-> > +
-> > +    /// Returns the number of objects that `scan_objects` should try t=
-o reclaim.
-> > +    pub fn nr_to_scan(&self) -> usize {
-> > +        // SAFETY: Okay by type invariants.
-> > +        unsafe { (*self.ptr.as_ptr()).nr_to_scan as usize }
-> > +    }
-> > +
-> > +    /// The callback should set this value to the number of objects pr=
-ocessed.
-> > +    pub fn set_nr_scanned(&mut self, val: usize) {
->
-> Unless my grep skills are really bad I think the drm/i915 shrinker is the
-> only one that bothers with this. Not sure we want to bother either?
->
-> > +        let mut val =3D val as c_ulong;
-> > +        // SAFETY: Okay by type invariants.
-> > +        let max =3D unsafe { (*self.ptr.as_ptr()).nr_to_scan };
-> > +        if val > max {
-> > +            val =3D max;
-> > +        }
-> > +
-> > +        // SAFETY: Okay by type invariants.
-> > +        unsafe { (*self.ptr.as_ptr()).nr_scanned =3D val };
-> > +    }
-> > +}
-> > +
-> > +unsafe extern "C" fn rust_count_objects<T: Shrinker>(
-> > +    shrink: *mut bindings::shrinker,
-> > +    sc: *mut bindings::shrink_control,
-> > +) -> c_ulong {
-> > +    // SAFETY: We own the private data, so we can access it.
-> > +    let private =3D unsafe { (*shrink).private_data };
-> > +    // SAFETY: This function is only used with shrinkers where `T` is =
-the type of the private data.
-> > +    let private =3D unsafe { <T::Ptr as ForeignOwnable>::borrow(privat=
-e) };
-> > +    // SAFETY: The caller passes a valid `sc` pointer.
-> > +    let sc =3D unsafe { ShrinkControl::from_raw(sc) };
-> > +
-> > +    let ret =3D T::count_objects(private, sc);
-> > +    ret.inner
-> > +}
-> > +
-> > +unsafe extern "C" fn rust_scan_objects<T: Shrinker>(
-> > +    shrink: *mut bindings::shrinker,
-> > +    sc: *mut bindings::shrink_control,
-> > +) -> c_ulong {
-> > +    // SAFETY: We own the private data, so we can access it.
-> > +    let private =3D unsafe { (*shrink).private_data };
-> > +    // SAFETY: This function is only used with shrinkers where `T` is =
-the type of the private data.
-> > +    let private =3D unsafe { <T::Ptr as ForeignOwnable>::borrow(privat=
-e) };
-> > +    // SAFETY: The caller passes a valid `sc` pointer.
-> > +    let sc =3D unsafe { ShrinkControl::from_raw(sc) };
-> > +
-> > +    let ret =3D T::scan_objects(private, sc);
-> > +    ret.inner
-> > +}
-> >
-> > ---
-> > base-commit: 93dc3be19450447a3a7090bd1dfb9f3daac3e8d2
-> > change-id: 20240911-shrinker-f8371af00b68
-> >
-> > Best regards,
-> > --
-> > Alice Ryhl <aliceryhl@google.com>
-> >
->
-> --
-> Simona Vetter
-> Software Engineer, Intel Corporation
-> http://blog.ffwll.ch
+-- 
+Simona Vetter
+Software Engineer, Intel Corporation
+http://blog.ffwll.ch
