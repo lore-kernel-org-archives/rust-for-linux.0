@@ -1,589 +1,219 @@
-Received: from CWXP265CU008.outbound.protection.outlook.com (mail-ukwestazon11020104.outbound.protection.outlook.com [52.101.195.104])
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11olkn2083.outbound.protection.outlook.com [40.92.18.83])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A12391CE70E;
-	Sat, 14 Sep 2024 13:07:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.195.104
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C5D61CF5DF
+	for <rust-for-linux@vger.kernel.org>; Sat, 14 Sep 2024 14:01:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.92.18.83
 ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726319278; cv=fail; b=S5snTa2VDXHRDqcNQ6sZbpa2cqq0RL75LNRjGZRYjPZDU6Gt4B21BlEKCKH2UyO8ynBkJigKy2+R7OMbFcmGX2fFFvogu/F5lqO5ZBXJ9vQVNKLpRLddmjGgTD4L4/kFjs8yfl602ajaMs0ylWeD2dsVKrHfMg6BCJ5fJ2OV+kk=
+	t=1726322478; cv=fail; b=Hxu5+HTuE6Q8tzoq5FzokSDeH8wljy/MKNvW5FdqtGYsTSiaOGE05YtEf7L2gqHeBBMxR7c1o+Sngf1xFLdG0HdF0CzPq3EWespBgOy+huMi3yO29oNqz6+MdFYBhuZxq1Db44sfvY0A0WRCTf6rotQqnOuL4B31/kyLYB5P37A=
 ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726319278; c=relaxed/simple;
-	bh=1FtvblCmXhi+WuqZf6bnifsykQg/TKvXcNWuThQyWIc=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=H6FqRj6J+U/ufe32ARx34AuPymOvZ4DdupwAd/WYaq/Cgx7qfj7MU+NPeGyE3gTNlSO/QVk15FW6y2ykBOE7QpWjxG55SXB5g9Qom1bf3GyVTtLeprdXhypIgwf3qHWR+4vVQWJTcNSPz3YFVdsrtenBX3m3kyUaD6Qc9FcMtdc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=SBbx/B+U; arc=fail smtp.client-ip=52.101.195.104
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	s=arc-20240116; t=1726322478; c=relaxed/simple;
+	bh=Z/d7iQY2ImFY0VpSGyZA+Qi7uHwtBki9HfTs/X3bYPQ=;
+	h=From:To:Cc:Subject:Date:Message-ID:Content-Type:MIME-Version; b=hubsmSGbdGnqUkCHzHyeItqayOekSKNZlWfE55VB4JRo/1p3sn+27WIDHq4DOAuLXvpqyJN/3X/UXI99OgRKb2dDmxghm7Ctr/6X4MUVo+3zUNhmuUJlbnc4bcDPSY31eDwrkTiinLfqWrpbhiWfx5FjbOaMaMGbIQJvykcStgA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=live.com; spf=pass smtp.mailfrom=live.com; dkim=pass (2048-bit key) header.d=live.com header.i=@live.com header.b=kCLPLS86; arc=fail smtp.client-ip=40.92.18.83
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=live.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=live.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="SBbx/B+U"
+	dkim=pass (2048-bit key) header.d=live.com header.i=@live.com header.b="kCLPLS86"
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=DKKWHNGr1iVnBuux+S3IDE/iKqgSCXzay23K6Rm19v4lYvjx+M6WbPMyHIqmnKPvtb0HIljiIX74lgoBlHJIAOPaGkhqJf7TIPb1bQAHgVTDF2Oa5Jr8IrMxlicgXd5K6ghRDPqvoOCJ0bgq1U4pI42cAzk2yishNfHVcOQ86vLKXT2eZW463fR2NW2TSsqGJvWfdliFMw3c6107RmgfMUkKdMUC5Z0tjH7q5LyG9jJ4xi+3F9UFctoGAetYMcckmOlFjPy5W0yfU4vlX9bep/jIHX4C1dEd14G/8rq5bON5ZqehtSNVA88naU/emH6LyIVNzfZWeq34XOat9nlDtQ==
+ b=IiOhjw+pYT45MJ8Khr/XaZbuRk1d5LYw+uP5k4La0y1Eb97VJVdySXQbHaZyCiWBnvS0owGPID51cQOGgtQZBL9uIiqgelCOAUDgJJ6XeWHAysQBSQXObD901616bPLbfAEgYZKQwNz5RBn57cIantblxytlBFCeyrF07KhobT94NmUmKcsQP5IWVDXqCrnmrksc7Yyv21ZY/29w4SREWHtaaUp771kxja5T8hPBQUb9tLTHU7XR5I0EsD2OLbr3ZHbhlqmxRCrK2yeG2ZjUfjEcMFvpTownfxDw0ry5GER+L7dfU0yzl5Z7wICTeH1HC6vMnTWF6bJSuyXO4aflFQ==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector10001;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=oo4Ru4s6iRDJKulWRVqbAbtRzxFY95g5aneGPyacngo=;
- b=LkeC8wnsnhadr3wWd5sLWlQbamZayTO0x9VBLV/iVCP3Ojq867iDOATOGIHiog/vc8rpc7stuCz0JR83lLFl/TnLNjZqAA++zcs/LPKA1i+SgqWS3S6+dszjpkcsozdiaz8BatqDU+lfX+k4lSSZIEsKqhCwKJ72mt3nc8ni6HgeVw/GLjKhYtghcdp1jM0Jo9RYi3DdzfaRINx3asrUu3vhuQj/EeVyuwz3ohZM9itUEBOopeeUwbDRA0gUkatkegta/rljEU/Yrpt8oV4kp9i1WznEBGy2S+Ih0Sc8Jgtzb4a9FHbDlxdcpAw7XosOshJLBaWQ0LPnLZCRTqs+5Q==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
+ bh=dc0xPpdsLiyH1fzkWkchd5P1YPaXNvLn1KUzYIdM8NE=;
+ b=luc6Pq1BABUkl03Ax8X515J4BJjt7grivStPGcdrHcoxKEjwsoOkO2++ums4ebz+R4QcZnf1l9Vg/Wg+r4L0fWVEVgUz7tbzoY/tvA+jnp90wCv1jZek5/7EjJkMzmvKv9SRP73TRYCPEV8wudbzB1aT2WQQhRyYnIFFDd2QrrwUjmelzkF3kgIBXIvd6G+MSakzqM+V8K5vhXLbpYWGRy6fKAlDRqPiu2VMjepxxgG2JZQ1B2hpgC2YxfvOnWle/j634Him2lqDDTKwm9YXTkU/sP8FQubVMg9xyqx7VrureHvOiPHD8xddPAIBiMYvOYRv8cx3n8RsRNUALXfqpQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=none; dmarc=none;
+ dkim=none; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=live.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=oo4Ru4s6iRDJKulWRVqbAbtRzxFY95g5aneGPyacngo=;
- b=SBbx/B+UqVXTRJVSlirTOFLuIDOyrtmTnkhBdzkHymV3lNEoGk8da3b1dZgkRC7JZGIJVSYJ5m0fCrL9aE/ao+9E4ORQ3D9PhEdaam+exSFQfmfZwmfQbPf2oO/1LFr8mr3ZsJw/B+9GMHsKNeG89MqHZonv4Ekq65RcghwT5EI=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
- by LO0P265MB5239.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:281::9) with
+ bh=dc0xPpdsLiyH1fzkWkchd5P1YPaXNvLn1KUzYIdM8NE=;
+ b=kCLPLS86WVHySell0oSUV1WMMu58C2vJbnx1022AIQvu7KewMbLM+ry/rIzwcmUz98NlqWvw6nZZfRosGXpyb6weQgdvKfkMjtLMHphz2rBeD+knrhRmJD1zzD0DpRxFU6hQDkpMOA8ElKGDN9UgUooGM87EXett9GIzzy/KsUzC09cvu4sRWeveo/tHyJ66+mDSQy5zohUEOrIQB3A1icQ8NdB4F5yYm78fBq6vCip29jkftA/CC1okKEAa1SiW5EPMZnMRu8hsT+pG/ZS3nSWG2ftysBWz1Zu6K1oJsO8o4qicxbYPoXspvCkn8DmLiYcpXt3+MeJZNlytXTLTSA==
+Received: from DM4PR14MB7276.namprd14.prod.outlook.com (2603:10b6:8:186::13)
+ by IA1PR14MB7295.namprd14.prod.outlook.com (2603:10b6:208:456::10) with
  Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7962.22; Sat, 14 Sep
- 2024 13:07:51 +0000
-Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1818:a2bf:38a7:a1e7]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1818:a2bf:38a7:a1e7%3]) with mapi id 15.20.7962.022; Sat, 14 Sep 2024
- 13:07:51 +0000
-Date: Sat, 14 Sep 2024 14:07:45 +0100
-From: Gary Guo <gary@garyguo.net>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Andrew Morton
- <akpm@linux-foundation.org>, Dave Chinner <david@fromorbit.com>, Qi Zheng
- <zhengqi.arch@bytedance.com>, Roman Gushchin <roman.gushchin@linux.dev>,
- Muchun Song <muchun.song@linux.dev>, Boqun Feng <boqun.feng@gmail.com>, "
- =?UTF-8?B?QmrDtnJu?= Roy Baron" <bjorn3_gh@protonmail.com>, Benno Lossin
- <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, Trevor
- Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org,
- linux-mm@kvack.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH] rust: shrinker: add shrinker abstraction
-Message-ID: <20240914140745.7b0e5d5c.gary@garyguo.net>
-In-Reply-To: <20240912-shrinker-v1-1-18b7f1253553@google.com>
-References: <20240912-shrinker-v1-1-18b7f1253553@google.com>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO4P123CA0296.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:196::13) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:253::10)
+ 2024 14:01:13 +0000
+Received: from DM4PR14MB7276.namprd14.prod.outlook.com
+ ([fe80::744f:71ea:aec:9c4d]) by DM4PR14MB7276.namprd14.prod.outlook.com
+ ([fe80::744f:71ea:aec:9c4d%4]) with mapi id 15.20.7962.021; Sat, 14 Sep 2024
+ 14:01:12 +0000
+From: Filipe Xavier <felipe_life@live.com>
+To: aliceryhl@google.com,
+	ojeda@kernel.org,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	benno.lossin@proton.me
+Cc: rust-for-linux@vger.kernel.org,
+	Filipe Xavier <felipe_life@live.com>
+Subject: [PATCH] rust: add trylock method support for lock backend
+Date: Sat, 14 Sep 2024 11:00:33 -0300
+Message-ID:
+ <DM4PR14MB727606461A9C870981F44D9BE9662@DM4PR14MB7276.namprd14.prod.outlook.com>
+X-Mailer: git-send-email 2.46.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: CP3P284CA0096.BRAP284.PROD.OUTLOOK.COM
+ (2603:10d6:103:6f::11) To DM4PR14MB7276.namprd14.prod.outlook.com
+ (2603:10b6:8:186::13)
+X-Microsoft-Original-Message-ID:
+ <20240914140033.127848-1-felipe_life@live.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+X-MS-Exchange-MessageSentRepresentingType: 1
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LO0P265MB5239:EE_
-X-MS-Office365-Filtering-Correlation-Id: 13385162-b9a6-4079-5f5d-08dcd4be3d38
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|7416014|376014|366016|1800799024;
+X-MS-TrafficTypeDiagnostic: DM4PR14MB7276:EE_|IA1PR14MB7295:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3ce7cbd4-2fa8-49ca-bb17-08dcd4c5b0c1
+X-Microsoft-Antispam:
+	BCL:0;ARA:14566002|15080799006|461199028|8060799006|19110799003|7092599003|5062599005|5072599009|3412199025|440099028|1710799026;
 X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?m3IVRbfl3PlbzlqQKrU4A+S3gLtLAyPQONu2Ht9yjJWPs/lE6JeSMKL2pCHN?=
- =?us-ascii?Q?Tv2ZA07vbCmMmDi92L/uO36h40IzqTKwx4FWpeXa8m/D6E4vX9BPRD3nHtku?=
- =?us-ascii?Q?1u9Rfp4ud86uuiBIFe2yauRiWKjp1GptfE4FA2Xrgnp4+JfRLZOnEnpfFKl7?=
- =?us-ascii?Q?0vBdex3Jy4/Lx4/42dcy3EqHkpK4GfTxeKK1BdsHc3pjH+40mUsqt/40y3Yq?=
- =?us-ascii?Q?GVoq2zDYHi/wS0a8Lebr1Jos+SAxoO2qfNnV0CgLz8IesEB2vr/1m2sWwaBA?=
- =?us-ascii?Q?4PagidV1c5hIZoczr1wfIbI3aacXn7aze1dvDdausF7jGVCALNXyEuDhVPr5?=
- =?us-ascii?Q?0D2F4QgPFe5ZVNEMsa1PHQZD1HDBPU5KIk7VtHN364COD1f5j00DOr29VAFM?=
- =?us-ascii?Q?Do1yG8j3LbzjMzwgJZWe1bwWw+Lk+pcFXOsTqlYmQaroBSyzuAgCJFLhQl2z?=
- =?us-ascii?Q?K1vyY17WMJ3etGiW49glHZw30N7lTewwbpBYB6mGaSnShgF/XIztZX4tutEW?=
- =?us-ascii?Q?3YiB+GQerq4GVoyj8czZw0YJnS5v8dxF6LK8ds9XYH41YGxh1ipn4mFZpPk3?=
- =?us-ascii?Q?M4th/aKOeNQaRJoDu62n2E6MyYsmwaM1/pQtDYCCOvEL6GhxgbTDWaVbdGEY?=
- =?us-ascii?Q?TEWauruGNz2HJ+tD7WdRTGfAriVKxM4FXyDPV1KbacPwFkAghowlbijQIfdJ?=
- =?us-ascii?Q?tOVnKPPMbkLYIFY1HdVZiT32Fh34qnaQEf9usZ+PIwXJGhrN/Z3VCjWaqnUR?=
- =?us-ascii?Q?LuVrxOoWeZX90IFcOOeb10cayVZFYbhfa9/CrDvr+ZCtDb819qpQQOlHVYzs?=
- =?us-ascii?Q?/F5NM+51dXArXoB3zgOahjYCh631ARLhgMuXc2tMIgFkab3VFzMZMPtuBTyt?=
- =?us-ascii?Q?s3kdxyqZdoN2Y3n249zFAAtB/sNXsqkzauStFfRuv4IvGXfpd2vCxATuehI0?=
- =?us-ascii?Q?yapQFPUveulZ70dsMEUcPQYTUArg7pcyjMEOG4uho4JO7Dr1lmUm0b4DGNOD?=
- =?us-ascii?Q?YvSl4ct3PeWAVPQ5gUOIiI05BKIn5ufFTzi1kagL/ZLOsv86LeOYcCKUDucc?=
- =?us-ascii?Q?0qkFK6cL5oKzB8hXnqCu8rYc9kIQr89TGomweeCTiRRTz/JXvNE2c0ciQ9HY?=
- =?us-ascii?Q?5qPG8sOKtl9mVxKU4Zaoj8MkrcRtWzMlV4tLPxG0SKsd1kw/9nqUYGDzYqFI?=
- =?us-ascii?Q?VLWclp/zOWnATBj8MN5Jdt//8zJefgvp/5J2aca5sKS32z/gPV5KRrd2o66N?=
- =?us-ascii?Q?XkQULSyD77SNRtVV7n9H5t7UiC8leLdG2uR19IXPDXSuaXrO+801hGZJEKBl?=
- =?us-ascii?Q?47lE6IeawWgUDD+I83JQG96xKMIJxQKd6BOIeL9sma/lWQ=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024);DIR:OUT;SFP:1102;
+	YXZ6HDHtTJy8wF/6cwg48s21c64/DgqV78ymWnlh6OVg5gRR8zdnvL2zDT6chorhkNWlrc0Gg6avtSb9DPu88NwreEvSvGpObG2JOJnjKCkoceeg+hfbVgj3L52mXBDyfSMKCoT0J5QIpb9iJHq+7BVyRnzKRr5Z8vTvqK/e8cewbz97mIE822mLpgULe4WxaBklZWtEJExtEH21Hj6IokpZC2XcT82SKRlV1UUHNgULjYIlsW41SF5ylvu2NGcsa60zkP6ESnfnxTAf928ykAVET0++O21WRPFkFjjsGFXywmjje0+ZfG5ByXu34kMQPIFd+rXhEvDnNaHsemre/hKm7a0HotgMD/qOlpNVPfy/H66IG5B3SYjxvNYvRBS/GSI8m940NKP2Le+iSgF9EYr0TCgInMq77QCKzTiKh+cP4xxfs5axdTRUn3WATs3IUSG88yWtt1F7wnfF2ZpcMDSMGP8HW6w5x/Kuzm3fF37ZEy4/nHpk3ykBqgcpOoaC/XTwwGd8niH/0lUjUVHnClMM35lXBK3ap1CLZu4cDmauZT//kNFgNJZNStOODXlsc+yBy4VblNjUVUWfJkJCepWXtEZrNFVzepgdk/pBz/E5ps3pOnU7a07Rd8ZdBsoYmjpT7yd6ryZCulbufgievop4DUpOei21uBOJhHdxyGw+gnq+TmC9+JtEHtrrEpVBj/COdY+iUurPte05G7cat6gdEqMTO04YFJPVDGxEhG8Zx2wa8jnrRpA5QvtgMbeenPJlYkpqcnGdMyJUhUiEBbcMHuISwxu72bMS/ezLWoA=
 X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
 X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?+yqtny/leUu6oKXNNgXzUWMTTsdVqLwl3dQgfKFZJ7vIcqsFeIpNcC7AfHTd?=
- =?us-ascii?Q?2T+x1BCYSnw15dgwgvxpPk3Zm6cfgHdCqaef7IzonrTH0WYh/7Hccz4zHcz+?=
- =?us-ascii?Q?iv+PHvpmaPgd9n9Aw5WShwJZocc4/R4ehlhvxED2YLYuvUS33dkS1ZEHvMdi?=
- =?us-ascii?Q?mKCV64CnOJb2NLHGEympiHrs9vcJ4d+AWHmYy1ou0Lr+/80KrxTcMa3JIF/m?=
- =?us-ascii?Q?PzczKvmO27h16XZ4FzZoisBSGwr59pjUgdbIOvw+YVlS2/S5TdyI6Np8kgur?=
- =?us-ascii?Q?XrchxP43hUZ0HU3kV1BWOUXReQjhON+2xxQb58fa0t9v9mIryAp2iaywSqDm?=
- =?us-ascii?Q?OGpvUAl448W9gsRU4+cBPWUyplfTO1ZjZ+HhH2aj/MgdVRApcdp4wR/9dJxX?=
- =?us-ascii?Q?HDbZbWD3Tcuhx0YUpgAhuAROiVbbwR6/4c5RE3WsEwAqUOSeA2XfPipv0zWj?=
- =?us-ascii?Q?pywpwkxpiaNuwjPTxw5o2K+vx4kTwiylpUfjidy7NtiJq8orQm2gxkpiq9Ge?=
- =?us-ascii?Q?ONhuc6YHIz8f3mbXxtKRmXBQ3xvcMLVa9s8dIfJRIj2aDOG5TgP0ELayAryD?=
- =?us-ascii?Q?5mEwhxAtsKxX9SLheh+G/8/52MQyWwdl7KBzDnroJ6xs5SANNAD8TUMll6zT?=
- =?us-ascii?Q?tQCAkRw+BXzd29Sy/QqQuY54zjw/LBSUGU/C3E8zo26CqNdZYz1rYrREzsPa?=
- =?us-ascii?Q?W4vD4mdmSD759DbdRojMsF6Bz2AORBemiHXfzs7dgT+5tsZwt+e+tr7Vea5W?=
- =?us-ascii?Q?0RlbcPnItZqqHQ7hRPnSf5Tkpf7xJlDk0QKXVeRZFOVwCwi+j26xZ069XNyS?=
- =?us-ascii?Q?/mrJlK1mmqw2YFAsKMXne4BeaOI5KfyWkTR9QxJtyLeANZpBPcBO0scOxXPb?=
- =?us-ascii?Q?8jYNiONdhrCzVdsg+vdnRiHp88YnCeCdkZFsdkqLr/AQGPdudLMlovVzsHXs?=
- =?us-ascii?Q?zLmsD0ortU2WxaWKON3V5e+Oddl9JHbU3omRxXOKNlNYus2cY5aKgGt8OX5N?=
- =?us-ascii?Q?bij6MPE9TzSRvaqHYtmq4Q+XkE2bpId1+cnuHEJFZEFHvHM+ar27af8B+5u7?=
- =?us-ascii?Q?zTBGuQ7nZVxKIk/T4gGCLWbk1eDokYtXD1SD+CXYpBZwC9B4dONeDbkwtI2o?=
- =?us-ascii?Q?JaK0i5l2BthMATk87ZlfoExFDMjYzGqNLCF0c2a38NCvFnlEIS4eu05fSb2v?=
- =?us-ascii?Q?5lo5kuPnn5ica3ITrWHQC3XE+vOxL9bULcca9JFHcj8E+hflLCJ8Ho6BbNq+?=
- =?us-ascii?Q?0KBFxYfCAl+OleUE1CU/D1vzbBzXOxOZULsbq/XxVBqQT7NlZQB5yDEuaxTl?=
- =?us-ascii?Q?SbfDYJ0QzovRUAq+8WX5Od2IoR9xR5ga+Lmo4+KP2bFMD9byigDU06J1q3xC?=
- =?us-ascii?Q?zJtbCPTkYYmPKfcoltdBqpRQgDK8ucIA0Z2MphZRAn+VRg1rc3bsMWtny/9x?=
- =?us-ascii?Q?DQpMjP8C5TbVVWz7ZDq9pDhxxoPmyO8nCn9AhLwT2mwDIt4GJWFdedZLtEyV?=
- =?us-ascii?Q?c2rxFhNCKOqVw0djkvRqhIuiCc8acU/c6vvN+JUDS9+uiOmOtdKcyJsJNsIO?=
- =?us-ascii?Q?BdHd3ljJu1xrby1VVLEdtk2HkbbroFLG3Tm3Yzw9?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 13385162-b9a6-4079-5f5d-08dcd4be3d38
-X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+	=?us-ascii?Q?XhYnEh9dRX2GlwMxiwA5lw7LtozZ7++rOvXXtIJHCQ54Yxq/DW+4S3e3Md3/?=
+ =?us-ascii?Q?/EtUtd9oof3sjtFGxhkHlJQUz8yAuWjlVWtzxgBQbG7ydam2kc8H9Lxh+Qpg?=
+ =?us-ascii?Q?Jw1U1jQ299AD3iDeY8Zrq29e63doAxjslIOsyRoOXW8+hP6+DX29zX3DEzF6?=
+ =?us-ascii?Q?W1zerrnGkpab1aU806O5jAZ2fZ6DzaR+0knAR3vOTQolekAusg1cE1MBLuM5?=
+ =?us-ascii?Q?KsjLSETOYHB6YE9ANwS9XpAmAHvSrgimcp3tjD/9gelJTfkZ/G29cQ7SN1DR?=
+ =?us-ascii?Q?Mo9Lpvtq6pWFgO7N4WucjliER2Qn/EDz58ditKvp38xOl/HcAH2vrMsRA5fV?=
+ =?us-ascii?Q?/tyQqFz7aic4somhjqoI82vGqpNOg2mVQWAnWLR5vGUv8o4p1DOb9ZdEIZFI?=
+ =?us-ascii?Q?zYryAM3UwbfBqUKV5LXIPcpcfBk2vT8ZL5kXlZKdJnGqh2Hv1MoWv2/n3NSI?=
+ =?us-ascii?Q?mBjNsoYn8/E5oT1H7n0OBmMWUMcy5ZhmVPv44GL/cYa+P8GqQwTw/kL0H97g?=
+ =?us-ascii?Q?NAqxpRMxgPgTg4J/we6MnF9baKCYgfQTv3fUR0Q49RYrgDRfg8ZX74QkcO1h?=
+ =?us-ascii?Q?qGfs6Mskc+WSxu0FM4XuQj6DM5fOcSBtF9WVaHbkyEddEij8A4cmwjNqJYVm?=
+ =?us-ascii?Q?4MfUkSUy2aK9x7bMW6UMWKfoiJ0jWfM7n/GaXOfYQeNn02zQ0mshra7CJhv0?=
+ =?us-ascii?Q?9BbmEkoK9MKQ1N+Yod23BF2eoAcqLN5P3Yw60FN482i6PSGp5EIjMtJB59aK?=
+ =?us-ascii?Q?pa2x7DbAYSzgzOnm3gvNXyPPJK+i4so2GKpqyXa3s+RR/Q6RyYUoSDiMiaup?=
+ =?us-ascii?Q?/ASpkB5bnuSI8gnQY/H1mSJZqqCXY6LIIIjkKgRZN4t5frSicZgguF+l6vGm?=
+ =?us-ascii?Q?ox0bKRN4M2O23JZ7hbc7WIalV4X2DdrSO5MQ2MeQd8Z9FR618LGz4qCXvX98?=
+ =?us-ascii?Q?AdHMTee7B8L+Wjb3L/Nr4D1L4cR0YuUhfWXz/uQGI7Ty8ZioIWaUE7EJ67UK?=
+ =?us-ascii?Q?z35QBCj64aiuBV6M6wTxrHi3/2WSzikkmN0TGozaYLjyfe9gQSWmvFjjf+QS?=
+ =?us-ascii?Q?C8uGVUrHxdNESV9ixjUqcziAycmDLVURCwo/ay1eAO/6qkN++65P8E262wUq?=
+ =?us-ascii?Q?4vPtgZr/RWYq8KjTcZPiey3UiwnDznqf3VACy2eshZ+1OzOhDsjRSz63c9pR?=
+ =?us-ascii?Q?p1n5vtYiOA/f+i5r385w558KY5UBnZdAX7Vw4W167iS6RfL0XQ6gY6f/rHM9?=
+ =?us-ascii?Q?ZyqLL7OhO0gTFTBBoDgosCKHoQjiOMeQMarX8dA6zQ61XouLdszA/hpwnxrx?=
+ =?us-ascii?Q?Bl8=3D?=
+X-OriginatorOrg: sct-15-20-4755-11-msonline-outlook-cd57b.templateTenant
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3ce7cbd4-2fa8-49ca-bb17-08dcd4c5b0c1
+X-MS-Exchange-CrossTenant-AuthSource: DM4PR14MB7276.namprd14.prod.outlook.com
 X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Sep 2024 13:07:51.7361
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Sep 2024 14:01:12.1770
  (UTC)
 X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: BagPP9p4sjYT2PDgMOlpHYUx0C2cgdjUhC25AFHnwA7RwI8fhCyS6IlS/pZvZEJ+0O29wqojXgaukrhVA+ubCw==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO0P265MB5239
+X-MS-Exchange-CrossTenant-Id: 84df9e7f-e9f6-40af-b435-aaaaaaaaaaaa
+X-MS-Exchange-CrossTenant-RMS-PersistedConsumerOrg:
+	00000000-0000-0000-0000-000000000000
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA1PR14MB7295
 
-On Thu, 12 Sep 2024 09:54:01 +0000
-Alice Ryhl <aliceryhl@google.com> wrote:
 
-> Rust Binder holds incoming transactions in a read-only mmap'd region
-> where it manually manages the pages. These pages are only in use until
-> the incoming transaction is consumed by userspace, but the kernel will
-> keep the pages around for future transactions. Rust Binder registers a
-> shrinker with the kernel so that it can give back these pages if the
-> system comes under memory pressure.
-> 
-> Separate types are provided for registered and unregistered shrinkers.
-> The unregistered shrinker type can be used to configure the shrinker
-> before registering it. Separating it into two types also enables the
-> user to construct the private data between the calls to `shrinker_alloc`
-> and `shrinker_register` and avoid constructing the private data if
-> allocating the shrinker fails.
-> 
-> The user specifies the callbacks in use by implementing the Shrinker
-> trait for the type used for the private data. This requires specifying
-> three things: implementations for count_objects and scan_objects, and
-> the pointer type that the private data will be wrapped in.
-> 
-> The return values of count_objects and scan_objects are provided using
-> new types called CountObjects and ScanObjects respectively. These types
-> prevent the user from e.g. returning SHRINK_STOP from count_objects or
-> returning SHRINK_EMPTY from scan_objects.
-> 
-> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+Add a non-blocking trylock method to lock backend interface, mutex
+and spinlock implementations. It includes a C helper for spin_trylock.
 
-Some suggestions below. I agree with Boqun that we might want a
-`kernel::mm` to avoid everything flat in the `kernel::` namespace.
 
-Best,
-Gary
+Signed-off-by: Filipe Xavier <felipe_life@live.com>
+---
+ rust/helpers/spinlock.c           |  5 +++++
+ rust/kernel/sync/lock.rs          | 15 +++++++++++++++
+ rust/kernel/sync/lock/mutex.rs    | 11 +++++++++++
+ rust/kernel/sync/lock/spinlock.rs | 11 +++++++++++
+ 4 files changed, 42 insertions(+)
 
-> ---
->  rust/bindings/bindings_helper.h |   2 +
->  rust/kernel/lib.rs              |   1 +
->  rust/kernel/shrinker.rs         | 324 ++++++++++++++++++++++++++++++++++++++++
->  3 files changed, 327 insertions(+)
-> 
-> diff --git a/rust/bindings/bindings_helper.h b/rust/bindings/bindings_helper.h
-> index ae82e9c941af..7fc958e05dc5 100644
-> --- a/rust/bindings/bindings_helper.h
-> +++ b/rust/bindings/bindings_helper.h
-> @@ -18,6 +18,7 @@
->  #include <linux/phy.h>
->  #include <linux/refcount.h>
->  #include <linux/sched.h>
-> +#include <linux/shrinker.h>
->  #include <linux/slab.h>
->  #include <linux/wait.h>
->  #include <linux/workqueue.h>
-> @@ -31,4 +32,5 @@ const gfp_t RUST_CONST_HELPER_GFP_KERNEL_ACCOUNT = GFP_KERNEL_ACCOUNT;
->  const gfp_t RUST_CONST_HELPER_GFP_NOWAIT = GFP_NOWAIT;
->  const gfp_t RUST_CONST_HELPER___GFP_ZERO = __GFP_ZERO;
->  const gfp_t RUST_CONST_HELPER___GFP_HIGHMEM = ___GFP_HIGHMEM;
-> +const gfp_t RUST_CONST_HELPER___GFP_FS = ___GFP_FS;
->  const blk_features_t RUST_CONST_HELPER_BLK_FEAT_ROTATIONAL = BLK_FEAT_ROTATIONAL;
-> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-> index f10b06a78b9d..f35eb290f2e0 100644
-> --- a/rust/kernel/lib.rs
-> +++ b/rust/kernel/lib.rs
-> @@ -45,6 +45,7 @@
->  pub mod prelude;
->  pub mod print;
->  pub mod rbtree;
-> +pub mod shrinker;
->  mod static_assert;
->  #[doc(hidden)]
->  pub mod std_vendor;
-> diff --git a/rust/kernel/shrinker.rs b/rust/kernel/shrinker.rs
-> new file mode 100644
-> index 000000000000..9af726bfe0b1
-> --- /dev/null
-> +++ b/rust/kernel/shrinker.rs
-> @@ -0,0 +1,324 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +// Copyright (C) 2024 Google LLC.
-> +
-> +//! Shrinker for handling memory pressure.
-> +//!
-> +//! C header: [`include/linux/shrinker.h`](srctree/include/linux/shrinker.h)
-> +
-> +use crate::{alloc::AllocError, bindings, c_str, str::CStr, types::ForeignOwnable};
-> +
-> +use core::{
-> +    ffi::{c_int, c_ulong, c_void},
-> +    marker::PhantomData,
-> +    ptr::NonNull,
-> +};
-> +
-> +const SHRINK_STOP: c_ulong = bindings::SHRINK_STOP as c_ulong;
-> +const SHRINK_EMPTY: c_ulong = bindings::SHRINK_EMPTY as c_ulong;
-> +
-> +/// The default value for the number of seeks needed to recreate an object.
-> +pub const DEFAULT_SEEKS: u32 = bindings::DEFAULT_SEEKS;
-> +
-> +/// An unregistered shrinker.
-> +///
-> +/// This type can be used to modify the settings of the shrinker before it is registered.
-> +///
-> +/// # Invariants
-> +///
-> +/// The `shrinker` pointer references an unregistered shrinker.
-> +pub struct UnregisteredShrinker {
-> +    shrinker: NonNull<bindings::shrinker>,
-> +}
-> +
-> +// SAFETY: Moving an unregistered shrinker between threads is okay.
-> +unsafe impl Send for UnregisteredShrinker {}
-> +// SAFETY: An unregistered shrinker is thread safe.
-> +unsafe impl Sync for UnregisteredShrinker {}
-> +
-> +impl UnregisteredShrinker {
-
-I feel like this should have "Builder" in its name. Although I
-struggle to come up with a good one, maybe
-`ShrinkerRegistrationBuilder`? 
-
-> +    /// Create a new shrinker.
-> +    pub fn alloc(name: &CStr) -> Result<Self, AllocError> {
-
-Feels like they should just be named `new`. C-side uses alloc/free pair
-but we don't have an explicit free function (just drop), so I think it
-should just be called `new` by convention.
-
-Also, would we want `&CStr` or `&str` (or `&BStr`)? This particular
-case doesn't really need NUL-terminated strings since you can just pass
-%.*s to shrinker_alloc.
-
-> +        // SAFETY: Passing `0` as flags is okay. Using `%s` as the format string is okay when we
-> +        // pass a nul-terminated string as the string for `%s` to print.
-> +        let ptr =
-> +            unsafe { bindings::shrinker_alloc(0, c_str!("%s").as_char_ptr(), name.as_char_ptr()) };
-> +
-> +        let shrinker = NonNull::new(ptr).ok_or(AllocError)?;
-> +
-> +        // INVARIANT: The creation of the shrinker was successful.
-
-// INVARIANT: The allocated shrinker is unregistered.
-
-> +        Ok(Self { shrinker })
-> +    }
-> +
-> +    /// Create a new shrinker using format arguments for the name.
-> +    pub fn alloc_fmt(name: core::fmt::Arguments<'_>) -> Result<Self, AllocError> {
-> +        // SAFETY: Passing `0` as flags is okay. Using `%pA` as the format string is okay when we
-> +        // pass a `fmt::Arguments` as the value to print.
-> +        let ptr = unsafe {
-> +            bindings::shrinker_alloc(
-> +                0,
-> +                c_str!("%pA").as_char_ptr(),
-> +                &name as *const _ as *const c_void,
-> +            )
-> +        };
-> +
-> +        let shrinker = NonNull::new(ptr).ok_or(AllocError)?;
-> +
-> +        // INVARIANT: The creation of the shrinker was successful.
-
-same here
-
-> +        Ok(Self { shrinker })
-> +    }
-> +
-> +    /// Set the number of seeks needed to recreate an object.
-> +    pub fn set_seeks(&mut self, seeks: u32) {
-> +        unsafe { (*self.shrinker.as_ptr()).seeks = seeks as c_int };
-> +    }
-> +
-> +    /// Register the shrinker.
-> +    ///
-> +    /// The provided pointer is used as the private data, and the type `T` determines the callbacks
-> +    /// that the shrinker will use.
-> +    pub fn register<T: Shrinker>(self, private_data: T::Ptr) -> RegisteredShrinker<T> {
-> +        let shrinker = self.shrinker;
-> +        let ptr = shrinker.as_ptr();
-> +
-> +        // The destructor of `self` calls `shrinker_free`, so skip the destructor.
-> +        core::mem::forget(self);
-> +
-> +        let private_data_ptr = <T::Ptr as ForeignOwnable>::into_foreign(private_data);
-> +
-> +        // SAFETY: We own the private data, so we can assign to it.
-> +        unsafe { (*ptr).private_data = private_data_ptr.cast_mut() };
-> +        // SAFETY: The shrinker is not yet registered, so we can update this field.
-> +        unsafe { (*ptr).count_objects = Some(rust_count_objects::<T>) };
-> +        // SAFETY: The shrinker is not yet registered, so we can update this field.
-> +        unsafe { (*ptr).scan_objects = Some(rust_scan_objects::<T>) };
-> +
-> +        // SAFETY: The shrinker is unregistered, so it's safe to register it.
-> +        unsafe { bindings::shrinker_register(ptr) };
-> +
-> +        RegisteredShrinker {
-> +            shrinker,
-> +            _phantom: PhantomData,
-> +        }
-> +    }
-> +}
-> +
-> +impl Drop for UnregisteredShrinker {
-> +    fn drop(&mut self) {
-> +        // SAFETY: The shrinker is a valid but unregistered shrinker, and we will not use it
-> +        // anymore.
-> +        unsafe { bindings::shrinker_free(self.shrinker.as_ptr()) };
-> +    }
-> +}
-> +
-> +/// A shrinker that is registered with the kernel.
-> +///
-> +/// # Invariants
-> +///
-> +/// The `shrinker` pointer refers to a registered shrinker using `T` as the private data.
-> +pub struct RegisteredShrinker<T: Shrinker> {
-> +    shrinker: NonNull<bindings::shrinker>,
-> +    _phantom: PhantomData<T::Ptr>,
-> +}
-> +
-> +// SAFETY: This allows you to deregister the shrinker from a different thread, which means that
-> +// private data could be dropped from any thread.
-> +unsafe impl<T: Shrinker> Send for RegisteredShrinker<T> where T::Ptr: Send {}
-> +// SAFETY: The only thing you can do with an immutable reference is access the private data, which
-> +// is okay to access in parallel as the `Shrinker` trait requires the private data to be `Sync`.
-> +unsafe impl<T: Shrinker> Sync for RegisteredShrinker<T> {}
-> +
-> +impl<T: Shrinker> RegisteredShrinker<T> {
-> +    /// Access the private data in this shrinker.
-> +    pub fn private_data(&self) -> <T::Ptr as ForeignOwnable>::Borrowed<'_> {
-> +        // SAFETY: We own the private data, so we can access it.
-> +        let private = unsafe { (*self.shrinker.as_ptr()).private_data };
-> +        // SAFETY: By the type invariants, the private data is `T`. This access could happen in
-> +        // parallel with a shrinker callback, but that's okay as the `Shrinker` trait ensures that
-> +        // `T::Ptr` is `Sync`.
-> +        unsafe { <T::Ptr as ForeignOwnable>::borrow(private) }
-> +    }
-> +}
-> +
-> +impl<T: Shrinker> Drop for RegisteredShrinker<T> {
-> +    fn drop(&mut self) {
-> +        // SAFETY: We own the private data, so we can access it.
-> +        let private = unsafe { (*self.shrinker.as_ptr()).private_data };
-> +        // SAFETY: We will not access the shrinker after this call.
-> +        unsafe { bindings::shrinker_free(self.shrinker.as_ptr()) };
-> +        // SAFETY: The above call blocked until the completion of any shrinker callbacks, so there
-> +        // are no longer any users of the private data.
-> +        drop(unsafe { <T::Ptr as ForeignOwnable>::from_foreign(private) });
-> +    }
-> +}
-> +
-> +/// Callbacks for a shrinker.
-> +pub trait Shrinker {
-> +    /// The pointer type used to store the private data of the shrinker.
-> +    ///
-> +    /// Needs to be `Sync` because the shrinker callback could access this value immutably from
-> +    /// several thread in parallel.
-> +    type Ptr: ForeignOwnable + Sync;
-> +
-> +    /// Count the number of freeable items in the cache.
-> +    ///
-> +    /// May be called from atomic context.
-> +    fn count_objects(
-> +        me: <Self::Ptr as ForeignOwnable>::Borrowed<'_>,
-> +        sc: ShrinkControl<'_>,
-> +    ) -> CountObjects;
-
-Any reason that we want this new type instead of just returning
-`Option<usize>` or something like `Result<usize, ShrinkUnknown>`? Would
-the `CountObjects` and `ScanObjects` be used in other places?
-
-If people always use `CountObjects::from_count()` or
-`ConstObjects::UNKNOWN` then I think it's better just to eliminate that
-type.
-
-> +
-> +    /// Count the number of freeable items in the cache.
-> +    ///
-> +    /// May be called from atomic context.
-> +    fn scan_objects(
-> +        me: <Self::Ptr as ForeignOwnable>::Borrowed<'_>,
-> +        sc: ShrinkControl<'_>,
-> +    ) -> ScanObjects;
-> +}
-> +
-> +/// How many objects are there in the cache?
-> +///
-> +/// This is used as the return value of [`Shrinker::count_objects`].
-> +pub struct CountObjects {
-> +    inner: c_ulong,
-> +}
-> +
-> +impl CountObjects {
-> +    /// Indicates that the number of objects is unknown.
-> +    pub const UNKNOWN: Self = Self { inner: 0 };
-> +
-> +    /// Indicates that the number of objects is zero.
-> +    pub const EMPTY: Self = Self {
-> +        inner: SHRINK_EMPTY,
-> +    };
-> +
-> +    /// The maximum possible number of freeable objects.
-> +    pub const MAX: Self = Self {
-> +        // The shrinker code assumes that it can multiply this value by two without overflow.
-> +        inner: c_ulong::MAX / 2,
-> +    };
-> +
-> +    /// Creates a new `CountObjects` with the given value.
-> +    pub fn from_count(count: usize) -> Self {
-> +        if count == 0 {
-> +            return Self::EMPTY;
-> +        }
-> +
-> +        if count > Self::MAX.inner as usize {
-> +            return Self::MAX;
-> +        }
-> +
-> +        Self {
-> +            inner: count as c_ulong,
-> +        }
-> +    }
-> +}
-> +
-> +/// How many objects were freed?
-> +///
-> +/// This is used as the return value of [`Shrinker::scan_objects`].
-> +pub struct ScanObjects {
-> +    inner: c_ulong,
-> +}
-> +
-> +impl ScanObjects {
-> +    /// Indicates that the shrinker should stop trying to free objects from this cache due to
-> +    /// potential deadlocks.
-> +    pub const STOP: Self = Self { inner: SHRINK_STOP };
-> +
-> +    /// The maximum possible number of freeable objects.
-> +    pub const MAX: Self = Self {
-> +        // The shrinker code assumes that it can multiply this value by two without overflow.
-> +        inner: c_ulong::MAX / 2,
-> +    };
-> +
-> +    /// Creates a new `CountObjects` with the given value.
-> +    pub fn from_count(count: usize) -> Self {
-> +        if count > Self::MAX.inner as usize {
-> +            return Self::MAX;
-> +        }
-> +
-> +        Self {
-> +            inner: count as c_ulong,
-> +        }
-> +    }
-> +}
-> +
-> +/// This struct is used to pass information from page reclaim to the shrinkers.
-> +pub struct ShrinkControl<'a> {
-> +    ptr: NonNull<bindings::shrink_control>,
-> +    _phantom: PhantomData<&'a bindings::shrink_control>,
-> +}
-
-I feel like this can just be a wrapper of `Opaque<ShrinkControl>` and
-we hand out `&'a ShrinkControl`?
-
-> +
-> +impl<'a> ShrinkControl<'a> {
-> +    /// Create a `ShrinkControl` from a raw pointer.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// The pointer should point at a valid `shrink_control` for the duration of 'a.
-> +    pub unsafe fn from_raw(ptr: *mut bindings::shrink_control) -> Self {
-> +        Self {
-> +            // SAFETY: Caller promises that this pointer is valid.
-> +            ptr: unsafe { NonNull::new_unchecked(ptr) },
-> +            _phantom: PhantomData,
-> +        }
-> +    }
-> +
-> +    /// Determines whether it is safe to recurse into filesystem code.
-> +    pub fn gfp_fs(&self) -> bool {
-> +        // SAFETY: Okay by type invariants.
-> +        let mask = unsafe { (*self.ptr.as_ptr()).gfp_mask };
-> +
-> +        (mask & bindings::__GFP_FS) != 0
-> +    }
-> +
-> +    /// Returns the number of objects that `scan_objects` should try to reclaim.
-> +    pub fn nr_to_scan(&self) -> usize {
-> +        // SAFETY: Okay by type invariants.
-> +        unsafe { (*self.ptr.as_ptr()).nr_to_scan as usize }
-> +    }
-> +
-> +    /// The callback should set this value to the number of objects processed.
-> +    pub fn set_nr_scanned(&mut self, val: usize) {
-> +        let mut val = val as c_ulong;
-> +        // SAFETY: Okay by type invariants.
-> +        let max = unsafe { (*self.ptr.as_ptr()).nr_to_scan };
-> +        if val > max {
-> +            val = max;
-> +        }
-> +
-> +        // SAFETY: Okay by type invariants.
-> +        unsafe { (*self.ptr.as_ptr()).nr_scanned = val };
-> +    }
-> +}
-> +
-> +unsafe extern "C" fn rust_count_objects<T: Shrinker>(
-
-nit: I think we currently (at least in phy and block mq) use
-<callback_name>_callback as the `extern "C"` function name.
-
-> +    shrink: *mut bindings::shrinker,
-> +    sc: *mut bindings::shrink_control,
-> +) -> c_ulong {
-> +    // SAFETY: We own the private data, so we can access it.
-> +    let private = unsafe { (*shrink).private_data };
-> +    // SAFETY: This function is only used with shrinkers where `T` is the type of the private data.
-> +    let private = unsafe { <T::Ptr as ForeignOwnable>::borrow(private) };
-> +    // SAFETY: The caller passes a valid `sc` pointer.
-> +    let sc = unsafe { ShrinkControl::from_raw(sc) };
-> +
-> +    let ret = T::count_objects(private, sc);
-> +    ret.inner
-> +}
-> +
-> +unsafe extern "C" fn rust_scan_objects<T: Shrinker>(
-> +    shrink: *mut bindings::shrinker,
-> +    sc: *mut bindings::shrink_control,
-> +) -> c_ulong {
-> +    // SAFETY: We own the private data, so we can access it.
-> +    let private = unsafe { (*shrink).private_data };
-> +    // SAFETY: This function is only used with shrinkers where `T` is the type of the private data.
-> +    let private = unsafe { <T::Ptr as ForeignOwnable>::borrow(private) };
-> +    // SAFETY: The caller passes a valid `sc` pointer.
-> +    let sc = unsafe { ShrinkControl::from_raw(sc) };
-> +
-> +    let ret = T::scan_objects(private, sc);
-> +    ret.inner
-> +}
-> 
-> ---
-> base-commit: 93dc3be19450447a3a7090bd1dfb9f3daac3e8d2
-> change-id: 20240911-shrinker-f8371af00b68
-> 
-> Best regards,
+diff --git a/rust/helpers/spinlock.c b/rust/helpers/spinlock.c
+index acc1376b833c..775ed4d549ae 100644
+--- a/rust/helpers/spinlock.c
++++ b/rust/helpers/spinlock.c
+@@ -22,3 +22,8 @@ void rust_helper_spin_unlock(spinlock_t *lock)
+ {
+ 	spin_unlock(lock);
+ }
++
++int rust_helper_spin_trylock(spinlock_t *lock)
++{
++	return spin_trylock(lock);
++}
+diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
+index f6c34ca4d819..c13595a735ae 100644
+--- a/rust/kernel/sync/lock.rs
++++ b/rust/kernel/sync/lock.rs
+@@ -27,6 +27,7 @@
+ ///
+ /// [`lock`]: Backend::lock
+ /// [`unlock`]: Backend::unlock
++/// [`try_lock`]: Backend::try_lock
+ /// [`relock`]: Backend::relock
+ pub unsafe trait Backend {
+     /// The state required by the lock.
+@@ -65,6 +66,13 @@ unsafe fn init(
+     /// It must only be called by the current owner of the lock.
+     unsafe fn unlock(ptr: *mut Self::State, guard_state: &Self::GuardState);
+ 
++    /// Tries to acquire the mutex without blocking.
++    ///
++    /// # Safety
++    ///
++    /// Returns `Some(state)` if successful, `None` if already locked.
++    unsafe fn try_lock(ptr: *mut Self::State) -> Option<Self::GuardState>;
++
+     /// Reacquires the lock, making the caller its owner.
+     ///
+     /// # Safety
+@@ -128,6 +136,13 @@ pub fn lock(&self) -> Guard<'_, T, B> {
+         // SAFETY: The lock was just acquired.
+         unsafe { Guard::new(self, state) }
+     }
++
++    /// Tries to acquire the lock without blocking and returns a guard that can be used
++    /// to access the data protected by the lock if successful.
++    pub fn try_lock(&self) -> Option<Guard<'_, T, B>> {
++        // SAFETY: The backend `try_lock` method has been implemented securely.
++        unsafe { B::try_lock(self.state.get()).map(|state| Guard::new(self, state)) }
++    }
+ }
+ 
+ /// A lock guard.
+diff --git a/rust/kernel/sync/lock/mutex.rs b/rust/kernel/sync/lock/mutex.rs
+index 30632070ee67..c4f3b6cbfe48 100644
+--- a/rust/kernel/sync/lock/mutex.rs
++++ b/rust/kernel/sync/lock/mutex.rs
+@@ -115,4 +115,15 @@ unsafe fn unlock(ptr: *mut Self::State, _guard_state: &Self::GuardState) {
+         // caller is the owner of the mutex.
+         unsafe { bindings::mutex_unlock(ptr) };
+     }
++
++    unsafe fn try_lock(ptr: *mut Self::State) -> Option<Self::GuardState> {
++        // SAFETY: The `ptr` pointer is guaranteed to be valid and initialized before use.
++        let result = unsafe { bindings::mutex_trylock(ptr) };
++
++        if result != 0 {
++            Some(())
++        } else {
++            None
++        }
++    }
+ }
+diff --git a/rust/kernel/sync/lock/spinlock.rs b/rust/kernel/sync/lock/spinlock.rs
+index ea5c5bc1ce12..c900ae23db76 100644
+--- a/rust/kernel/sync/lock/spinlock.rs
++++ b/rust/kernel/sync/lock/spinlock.rs
+@@ -114,4 +114,15 @@ unsafe fn unlock(ptr: *mut Self::State, _guard_state: &Self::GuardState) {
+         // caller is the owner of the spinlock.
+         unsafe { bindings::spin_unlock(ptr) }
+     }
++
++    unsafe fn try_lock(ptr: *mut Self::State) -> Option<Self::GuardState> {
++        // SAFETY: The `ptr` pointer is guaranteed to be valid and initialized before use.
++        let result = unsafe { bindings::spin_trylock(ptr) };
++
++        if result != 0 {
++            Some(())
++        } else {
++            None
++        }
++    }
+ }
+-- 
+2.46.0
 
