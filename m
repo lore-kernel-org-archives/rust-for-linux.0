@@ -1,121 +1,99 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f173.google.com (mail-pg1-f173.google.com [209.85.215.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8005126AFF;
-	Sat, 14 Sep 2024 16:46:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC8CC4414;
+	Sat, 14 Sep 2024 16:57:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726332382; cv=none; b=fCx11QJsYEPItn0+t+LPXdw1sbzhPmMQfCvN16Pc7XfbD9XRC1T+0KEa3nqs69jSQ0okRYmSW6PvRqFYNV5+BuocMLVcdLsygNyHRFI0cIViST5V/NCUG0WrzvRlpYGk41EsSZ95Jg22UhUmw9MpZ2MaMqfvWwa2CF8Y3PE9W3U=
+	t=1726333061; cv=none; b=YQDQ2tEvHUL52yTCBOznsh1zNeZG1xp7Ky38UrHxqvNFjWfncjQEnKKqhVsZG9OTY3apjNddxP9tVYUJtXYJWUFEN78MOMxP49tlZS0cbD4KW3/Dww5J0kAELxwiBG/Ka93wUzNS/J8mFP4mgm72Fg1NEEZZ92AN6y1+CKkXJ/0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726332382; c=relaxed/simple;
-	bh=Z9KLHDysHT+QZFA9N2DhaeAfpGSFeSGzTbu4CvQ+R/g=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HW1kLakv8dP6XoMS9R2jPEdC+lfDTuOrTKg6vUTWnL7klmDTo++lUXMjxjflfC133RmoNc9/4Gxd6Zb9ZS/Z7mqbHpIRHfDQBjn2Gmrc9eg52nIZ8rt72lPv3eevkVGzAlF1Ky9PJy1HTaU2I+Uaus2qLgOmHFKlK+cp10ih7MM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ES4QW2+U; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1726333061; c=relaxed/simple;
+	bh=sWamHUsY/1onflk8CIeKOaBisZMhSZHiw70nbhdLc2o=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=qdI0OPXST8wgsFh2xHtmoQ2MGQ0GIpNGQlo7tUsJyX1NbluFnosw08M9Qli+XVL57SdBEviFPNtwUS60ik/yU8HfwjST4rr0INH3nDUTsJd8qJrN11NiiDz1pz7kyriQjagtvudBNwl463yZ4hquWVk4K1xFKtEgNzU4J23qPaM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JNZ0IbL5; arc=none smtp.client-ip=209.85.215.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ES4QW2+U"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28943C4CEC0;
-	Sat, 14 Sep 2024 16:46:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726332382;
-	bh=Z9KLHDysHT+QZFA9N2DhaeAfpGSFeSGzTbu4CvQ+R/g=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ES4QW2+Uwsj+XxM5lsWtejDsyOt9ZxevTIIBqFbZx8Ekjs8gGHWSIh3a8CpIVW9HY
-	 qNvzSPQulxAR2lc1Zc3mYbp1WxeuanQ/YnOtjtE4tbV7Dk3hpC2ZFMR9Ui/ZcXnJMd
-	 joB8iOzpysPGpZoTeUIclgN/bkqEURdblOs3dA5z94M8KJohCAXAWf6e3+fv3tH/aS
-	 w/hAMRF8JFDk28dxJwTeM70QvXD9PExnCQFxaf7pkYJ1pQtHWRvd23OFe9056W6CiY
-	 9mOw0QVp9E0wRJnUMOiLwN8YTMDpTOuEy4jt3c/ZVaBHUvCUoEMFlZojKSaVomwxHJ
-	 bBo2jcypLgsUQ==
-Date: Sat, 14 Sep 2024 17:46:14 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Gary Guo <gary@garyguo.net>
-Cc: rust-for-linux@vger.kernel.org,
-	Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
-	Jamie Cunliffe <Jamie.Cunliffe@arm.com>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Nathan Chancellor <nathan@kernel.org>, Kees Cook <kees@kernel.org>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nicolas Schier <nicolas@fjasle.eu>, Marc Zyngier <maz@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mark Brown <broonie@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Valentin Obst <kernel@valentinobst.de>,
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	linux-riscv <linux-riscv@lists.infradead.org>
-Subject: Re: [PATCH v7] rust: support for shadow call stack sanitizer
-Message-ID: <20240914-jitters-barber-a0e51e7b83a8@spud>
-References: <20240829-shadow-call-stack-v7-1-2f62a4432abf@google.com>
- <CANiq72kNmvFOXhhAcQJQdMC872908=CWW15_bzyyt9ht2q=twQ@mail.gmail.com>
- <20240913-shack-estate-b376a65921b1@spud>
- <20240914173037.422902b9.gary@garyguo.net>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JNZ0IbL5"
+Received: by mail-pg1-f173.google.com with SMTP id 41be03b00d2f7-7d50e7a3652so2119439a12.3;
+        Sat, 14 Sep 2024 09:57:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1726333059; x=1726937859; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=sWamHUsY/1onflk8CIeKOaBisZMhSZHiw70nbhdLc2o=;
+        b=JNZ0IbL5fLRue6pFXp7XiGuPFE+djmvrAD8dGqN29d2d6DvDGkZoqSaDEeeRiTi9fz
+         w2IajTDXQeODT6n7y3xN4XSx7ht/H1AP/hVeeOrBB6eFKjFw7GOIkQUmQHSlpuBqatmn
+         DL4PNL12BtIlZo6tO/0rvaA5/io9iXI4u6OSm9TFlrRw71EKLY+r2Qw+oCP8H6IkwzzL
+         Ke7gGjXLrqGeerAIxKdWX8EUWpA8fMDJBCCiuKYfPcYVVKXIuiFqK1htaICNyXCpUWnb
+         siX+Bvkh5IqiPnQk81B3vwdD5nsEGNK9b61dcLW3JuV8J/hs7fop0VW5+UI/kmwoR30U
+         Jy1g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1726333059; x=1726937859;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=sWamHUsY/1onflk8CIeKOaBisZMhSZHiw70nbhdLc2o=;
+        b=vdNaOLG/TihuI/mYjmz1bJ/hgMvCZxXdX/BXHsx0ezQiwiQx9RKzv2aJ42GbD+Ygyu
+         BtxpfFnWbo06kbPBJb9OKaswi75nGoDyjsBQPqy5g5lOY/F91/WmkH3nx/bdw26itML0
+         rN7uX1j7S/AykgwqTwWAK9uYx5YNRt6WWPUVRBZ+nTiTB/yq3vxRzvihRS3uf+SPorsJ
+         AXT+cGUU5MO4QTc1TiHbAs8PpMhri5nSVe1cRccBiaLFPXO+QgpUDi8P7EnQp3ifUSYg
+         G28pw9M2pjTEhiUl8teWDK+xwu4kZAeBZymoCGfMNwivxRst35sIg9YFxDKkH4GeHLpA
+         JzIA==
+X-Forwarded-Encrypted: i=1; AJvYcCUqFA3VgMdA3Dfq61syWt1W9cqdCLY4hBJZ1xvoPTrM+TUMz75tyAQiXEKH+Rd+tibxI/rss1H2oLkTBGXj3Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yye8lCtklcz5FUflxLI3sGhQM5RY+Jnn+aTvPwEuQsecPomNJr3
+	7jE/RaS6vnICrmzXO45b7G0HTJSmZMdFKPMXx5hXKOq/Rv+ddn2hRwt6xVRpiBcMT0mC7cEKKV7
+	sBBleRTUrm99caw6TimUuDBHDnjo=
+X-Google-Smtp-Source: AGHT+IHdJq2AvKX1ib+0MKP9D53s3u/6TP280RdkZBHn648wSqhY+E9pVg2teLVhE+lnQyb8WtH9haiwMUpc0t1GthI=
+X-Received: by 2002:a17:90a:10c2:b0:2c9:359c:b0c with SMTP id
+ 98e67ed59e1d1-2dba006d66dmr12134919a91.28.1726333058750; Sat, 14 Sep 2024
+ 09:57:38 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="B4QM7QVF324ySoAc"
-Content-Disposition: inline
-In-Reply-To: <20240914173037.422902b9.gary@garyguo.net>
-
-
---B4QM7QVF324ySoAc
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+References: <aa1b4059dfac001945745db02b6f6d9db2e5d1cb.1726072795.git.hridesh699@gmail.com>
+ <7877d23adba22e2f89a61efc129ecf1b0627510b.1726072795.git.hridesh699@gmail.com>
+ <CALiyAo=Z7SCwCRD_2rBnQrkF71q4MRyMjqJZy8iWGAuFqOmWUw@mail.gmail.com> <20240914174249.107a1533.gary@garyguo.net>
+In-Reply-To: <20240914174249.107a1533.gary@garyguo.net>
+From: Hridesh MG <hridesh699@gmail.com>
+Date: Sat, 14 Sep 2024 22:27:02 +0530
+Message-ID: <CALiyAo=ZdFy0bR03NndODmE7vP_JRzxs52-z=iXKQbO_Z6rtYg@mail.gmail.com>
+Subject: Re: [PATCH v3 2/2] checkpatch: warn on empty rust doc comments
+To: Gary Guo <gary@garyguo.net>
+Cc: linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	Andy Whitcroft <apw@canonical.com>, Joe Perches <joe@perches.com>, 
+	Dwaipayan Ray <dwaipayanray1@gmail.com>, Lukas Bulwahn <lukas.bulwahn@gmail.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
+	Shuah Khan <skhan@linuxfoundation.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Sat, Sep 14, 2024 at 05:30:37PM +0100, Gary Guo wrote:
-> On Fri, 13 Sep 2024 22:17:56 +0100
-> Conor Dooley <conor@kernel.org> wrote:
+On Sat, Sep 14, 2024 at 10:12=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
+>
+> On Sat, 14 Sep 2024 21:01:24 +0530
+> Hridesh MG <hridesh699@gmail.com> wrote:
+>
+> > Ah, sorry. I did not intend to post this version as a reply to the
+> > previous thread, I wrongly assumed that editing the patch manually
+> > wouldn't have side effects. Should I post it again or is this fine?
+>
+> I don't know what happened, somehow in my email client I saw the old
+> replies to your v2 patch becomes reply to your v3 patch.
+>
+> Did you somehow reuse Message-ID between v3 and v2? Not sure how that's
+> supposed to happen...
+>
+> Best,
+> Gary
 
-> > error[E0425]: cannot find function `__mutex_init` in crate `bindings`
-> > --> /stuff/linux/rust/kernel/sync/lock/mutex.rs:104:28 =20
-> > |
-> > 104   |           unsafe { bindings::__mutex_init(ptr, name, key) }
-> > |                              ^^^^^^^^^^^^ help: a function with a sim=
-ilar name exists: `__mutex_rt_init`
-> > |
-> > ::: /stuff/brsdk/work/linux/rust/bindings/bindings_generated.rs:12907:5
-> > |
-> > 12907 | /     pub fn __mutex_rt_init(
-> > 12908 | |         lock: *mut mutex,
-> > 12909 | |         name: *const core::ffi::c_char,
-> > 12910 | |         key: *mut lock_class_key,
-> > 12911 | |     );
-> > | |_____- similarly named function `__mutex_rt_init` defined here
-> >=20
-> > error: aborting due to 1 previous error
-> >=20
->=20
-> Do you have PREEMPT_RT enabled?
-
-I do indeed.
-
-
---B4QM7QVF324ySoAc
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZuW91QAKCRB4tDGHoIJi
-0g1AAP4jVE5sTjh7ZpAYSXX8cAez9VIN9z196SmWTQQotiAMIQEAglBSa7/hmf+1
-k1drziNQUGk/j2h9jhXIhrEAGrRagwI=
-=6Xln
------END PGP SIGNATURE-----
-
---B4QM7QVF324ySoAc--
+Yeah, I did not run git format-patch again to create v3. That messed
+everything up.
