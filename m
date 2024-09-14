@@ -1,141 +1,175 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f177.google.com (mail-qt1-f177.google.com [209.85.160.177])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D54A6BFD4;
-	Fri, 13 Sep 2024 21:48:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C91104C92
+	for <rust-for-linux@vger.kernel.org>; Sat, 14 Sep 2024 02:51:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.177
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726264081; cv=none; b=pi403VL3VWk3ZaumWExsSza0TXHitfYAE+dNYUXq6BmYPpIHgAvP9UW8qNdXV0ddCkWwR1lkyMGLtNfxnFBVAIkvMuVlxHEVA8WGnPM/mSI/Bj6WMzlcs9H+W+uBXkNUXunPXZt3JBvAxc+ZlAFn6Avdpr2CNXPFkhyoEByI7Uw=
+	t=1726282275; cv=none; b=ep4gAhV/DtLdF30yGb2Vs8WIeDbkycCt2FDfbC8F8Mmrp56KFkdpwW8D6fbFrUpvF2k1zOGRHNAfANCS0qPav2ZfbF4WTjNQQaDydV241F+dQKtJ66Ys4jOdFhU3xRja/L96+KbT4GNSjoOkRh3asWILS5gkiLXePmlhr2ZLY4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726264081; c=relaxed/simple;
-	bh=DcEJaz7/MqaLtQJcgIq177t7RurKuxBUY+gSzhJcMig=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=rDHhQgqmGUl05+czakUSLZAeV88xl/dyEKXpwXM0fxg8JuNfFIY+S7Tt/yMWt9ve59+L+iY0lIpWCr2VX0ihv9F5RNNIqv001H+QrJALPwh/wZvdp1CQAtkAAh3yijtcZiUuDPuIxzhtLlbJbbIc1Io9dJN14UJBh+4vHYyKP7E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dTQMeOYC; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1726282275; c=relaxed/simple;
+	bh=714S60HEYqBOe2G85nVsNU+NFuLSc4huCLTfAsIQjAA=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=lz1vz2sfESSLJCyy/kHRNh7iZQrbOAN2APLhDn3NAzFepQcncbReqa7O6xjBW0WqiN7uXALxWHzCYsq+97KdZuwOFhJ7RFHIJjezl71Sh4L0qxJXBrcrS3QyRFEIXl2+GNWErtVFdBXqmGfigQm/44eFZSB496VHtIkC1+rKUU0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=TK15ieSr; arc=none smtp.client-ip=209.85.160.177
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dTQMeOYC"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7E68C4CEC0;
-	Fri, 13 Sep 2024 21:47:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726264080;
-	bh=DcEJaz7/MqaLtQJcgIq177t7RurKuxBUY+gSzhJcMig=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dTQMeOYC7hBejIAS7xCTTvIgO3RtoNfJVnYcFiygoUYS4781paKqk1giyRo52IzcY
-	 NrCZUMR0EMKFi6zxCtzZ3Y8TJc110tLnYejZCD29xytiVQ5C+o6EewjV7Gx7Vn9HOz
-	 NxcsQFXTPlHZ86HNvVqv+TOI1pWOA9sLdW9O9PqIQEP8wULk+bqDlMMs1MrzGrWluL
-	 9wuvqRfdw6gm8lvELOBI4LzoLesWSeNeDGpDGGMr7PubfEqeAlIFLFZfd5NQyVwidn
-	 vyeytts8flGijB0Ssd3eevN/tvw5lroKtQWREMP38m7ZKBGqoIyTRd4Im97pSOd6Pl
-	 hEkpwaYae4kvg==
-Date: Fri, 13 Sep 2024 22:47:52 +0100
-From: Conor Dooley <conor@kernel.org>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
-	Paul Walmsley <paul.walmsley@sifive.com>,
-	Palmer Dabbelt <palmer@dabbelt.com>,
-	Albert Ou <aou@eecs.berkeley.edu>,
-	Catalin Marinas <catalin.marinas@arm.com>,
-	Will Deacon <will@kernel.org>, Ard Biesheuvel <ardb@kernel.org>,
-	Jamie Cunliffe <Jamie.Cunliffe@arm.com>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Nathan Chancellor <nathan@kernel.org>, Kees Cook <kees@kernel.org>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Nicolas Schier <nicolas@fjasle.eu>, Marc Zyngier <maz@kernel.org>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Mark Brown <broonie@kernel.org>,
-	Nick Desaulniers <ndesaulniers@google.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Valentin Obst <kernel@valentinobst.de>,
-	linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	rust-for-linux@vger.kernel.org,
-	linux-riscv <linux-riscv@lists.infradead.org>
-Subject: Re: [PATCH v7] rust: support for shadow call stack sanitizer
-Message-ID: <20240913-pastime-unsheathe-1c7d9161bbea@spud>
-References: <20240829-shadow-call-stack-v7-1-2f62a4432abf@google.com>
- <CANiq72kNmvFOXhhAcQJQdMC872908=CWW15_bzyyt9ht2q=twQ@mail.gmail.com>
- <20240913-shack-estate-b376a65921b1@spud>
- <CAH5fLggX=Uw8T6EqyonJyOkjOVM7ELy4hK8NV80suvDEBnq_Lg@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="TK15ieSr"
+Received: by mail-qt1-f177.google.com with SMTP id d75a77b69052e-4581cec6079so137421cf.0
+        for <rust-for-linux@vger.kernel.org>; Fri, 13 Sep 2024 19:51:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1726282273; x=1726887073; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+blspuoybzNu3AhzC/SMKsKwmuAp3Z3K2v2XJsIopFM=;
+        b=TK15ieSrNnXVuh+IhN1PPm42sTbbUnqwXYY+GocOGlyhPeC4aldzInqcqeGd3exooc
+         FlImbu7aM3dmO5qGLDMUlaqTJZFakw0HTLdKO1DzF2j8QX99ym0mr7ehHkYekF5GcgBU
+         14xZAZGNuSuV2HwPsGJATsMXAWKjOV/Z1syRTP9MHnECUGovz/8olHhXKBgPdQ+kdMAw
+         F1cIMiR6ajKPddSdaXiHzv+MZOzt3KoTj/EfQ9IEjXhPMNBj2wtoBeVvei3FatpZKCsd
+         SCogybk2TeIlhRBLqvCN2MfEbpH3jdzv6cN31hJz7IhqHQOTnzKneVmAiPe2mkmVU7Kv
+         pDWw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1726282273; x=1726887073;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=+blspuoybzNu3AhzC/SMKsKwmuAp3Z3K2v2XJsIopFM=;
+        b=gDOdaXAPqMm1jyTHhx/jW3EXXoTN/QpQ6MJNIGzsL8F/rRePO9GRDjKst3Pl2bs5bg
+         le9+Wg7zpzRUQ4RzSJDEpuyHauUVLsDIa+4JcmSVewLkxv5jgM2ymQr8QLr5+dlzC+KC
+         RK0rXAC9ulj22I+RzcLBaa/sKdC0ptPMayPH62NyWZ0AtEyR9VjqN/A5IWXK4V5cQvX6
+         3AWxjgpvLVumWyf+YOdxTrt4RAcDGAS0aP/NWQfCcREYHzdjZUKf7uKQb29rwf9XOFRU
+         D9ibqM6dYQPO7yJK+s/eyuFM/ogfvGtlv6FkZt0re3iBoKpFOdthlgpuYia4ZlPEHo1w
+         Y30A==
+X-Forwarded-Encrypted: i=1; AJvYcCWNfC2/w0SgJKHbBhxSa3Nibahax7TQAoRGJN4oX7rOF1vhtEqXJPktiVpvKn5j2QwmMEIJ6OmIGQ3wOPGONQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzC0yw+Lthz51JTJ8LhVWcqI1bzyUCwSk1krblmrLKbUG5WnLrp
+	9PRyiA3RGYW2/+q2C4AZz3WFp6IgPc6UwEnXMKsCvtytuG5Ff55P2i/rKl8hRsTbiIa/JOqtjoL
+	IW6dTUmLQWjkLpYojkDav053KNE1tZCGaYufF
+X-Google-Smtp-Source: AGHT+IGWCbJtzQBtPkMgqGnnUdIlSr1NFVYVAQMMT/xk2RmouwM5DwlBs2oIGPKcxYyg5j8qxJE8okxzyOJR8KvtHNg=
+X-Received: by 2002:ac8:7d02:0:b0:44f:e2c1:cc75 with SMTP id
+ d75a77b69052e-45860780694mr9993621cf.8.1726282272496; Fri, 13 Sep 2024
+ 19:51:12 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-	protocol="application/pgp-signature"; boundary="XmBt+U4mG1ij8T4e"
-Content-Disposition: inline
-In-Reply-To: <CAH5fLggX=Uw8T6EqyonJyOkjOVM7ELy4hK8NV80suvDEBnq_Lg@mail.gmail.com>
-
-
---XmBt+U4mG1ij8T4e
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+References: <20240913213041.395655-1-gary@garyguo.net> <14389f99-dfa9-4646-a24e-e5eef1beacf0@proton.me>
+ <CAOcBZOS6BAJ1FTFkB3x6jdag_hL7zrLbFy7TxkvZWKxRZ_+ggA@mail.gmail.com>
+In-Reply-To: <CAOcBZOS6BAJ1FTFkB3x6jdag_hL7zrLbFy7TxkvZWKxRZ_+ggA@mail.gmail.com>
+From: Ramon de C Valle <rcvalle@google.com>
+Date: Fri, 13 Sep 2024 19:51:01 -0700
+Message-ID: <CAOcBZOTcoPEk2Bo05gj66cHiqKxTR7j1z9U_j+Jeh1oCjtOKXg@mail.gmail.com>
+Subject: Re: [PATCH 0/5] use custom FFI integer types
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, 
+	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Sep 13, 2024 at 11:44:26PM +0200, Alice Ryhl wrote:
-> On Fri, Sep 13, 2024 at 11:18=E2=80=AFPM Conor Dooley <conor@kernel.org> =
-wrote:
-> >
-> > On Fri, Sep 13, 2024 at 12:08:20AM +0200, Miguel Ojeda wrote:
-> > > On Thu, Aug 29, 2024 at 10:23=E2=80=AFAM Alice Ryhl <aliceryhl@google=
-=2Ecom> wrote:
-> > > >
-> > > > Add all of the flags that are needed to support the shadow call sta=
-ck
-> > > > (SCS) sanitizer with Rust, and updates Kconfig to allow only
-> > > > configurations that work.
-> > >
-> > > Applied to `rust-next` -- thanks everyone!
-> > >
-> > > Paul/Palmer/Albert/RISC-V: I think you were not Cc'd (at least in this
-> > > version?), so please shout if you have a problem with this.
+Since we're doing this, may I suggest that we use
+https://crates.io/crates/cfi-types by reexporting them as kernel::ffi
+instead? By using those, we would also avoid the granularity loss of
+normalizing integers and using the integer normalization option
+wouldn't be necessary. I could accept any
+contributions/kernel-specific changes that would make it easier for
+the kernel to use them.
 
-> > error[E0425]: cannot find function `__mutex_init` in crate `bindings`
-> > --> /stuff/linux/rust/kernel/sync/lock/mutex.rs:104:28
-> > |
-> > 104   |           unsafe { bindings::__mutex_init(ptr, name, key) }
-> > |                              ^^^^^^^^^^^^ help: a function with a sim=
-ilar name exists: `__mutex_rt_init`
-> > |
-> > ::: /stuff/brsdk/work/linux/rust/bindings/bindings_generated.rs:12907:5
-> > |
-> > 12907 | /     pub fn __mutex_rt_init(
-> > 12908 | |         lock: *mut mutex,
-> > 12909 | |         name: *const core::ffi::c_char,
-> > 12910 | |         key: *mut lock_class_key,
-> > 12911 | |     );
-> > | |_____- similarly named function `__mutex_rt_init` defined here
-> >
-> > error: aborting due to 1 previous error
->=20
-> This looks like an unrelated problem to me. This patch only changes
-> the rustc flags, but these errors have to do with the Rust
-> helpers/bindings, which get generated before the rustc flags are used
-> at all. Most likely, there is a problem under the particular
-> configuration you are using. Were you able to reproduce these errors
-> without this patch?
 
-Oh I'm not blaming you for it, don't worry. I didn't think it would be
-related, but it did stop me from being trivially able to check whether
-there was any problems with the applied patch. I'll give it another go
-tomorrow, with all of the other rust code stripped out and just this
-patch applied.
-
---XmBt+U4mG1ij8T4e
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZuSzCAAKCRB4tDGHoIJi
-0issAP9GjxTOIzL/cqkl1wZ2tWAlpPVRF5uvk4HLHAQG6GT4QgD5AcVnWQaXw4+H
-qjvlVjN40TlXvEnLWp+lmPZDXlHyLg8=
-=Kpsx
------END PGP SIGNATURE-----
-
---XmBt+U4mG1ij8T4e--
+On Fri, Sep 13, 2024 at 7:48=E2=80=AFPM Ramon de C Valle <rcvalle@google.co=
+m> wrote:
+>
+> Since we're doing this, may I suggest that we use https://crates.io/crate=
+s/cfi-types by reexporting them as kernel::ffi instead? By using those, we =
+would also avoid the granularity loss of normalizing integers and using the=
+ integer normalization option wouldn't be necessary. I could accept any con=
+tributions/kernel-specific changes that would make it easier for the kernel=
+ to use them.
+>
+> On Fri, Sep 13, 2024 at 2:43=E2=80=AFPM Benno Lossin <benno.lossin@proton=
+.me> wrote:
+>>
+>> On 13.09.24 23:29, Gary Guo wrote:
+>> > This patch series aim to reduce the unnecessary type casts needed in
+>> > Rust code doing FFI calls.
+>> >
+>> > With this series, we can ensure:
+>> >
+>> > * `size_t` is mapped to usize. Currently this is mostly true except fo=
+r
+>> >   C builtin functions, which gets translated by bindgen to c_ulong/c_u=
+int.
+>> >
+>> > * `__kernel_size_t` is mapped to usize. Currently this is mapped to
+>> >   c_ulong/c_uint.
+>> >
+>> > * `unsigned long` is mapped to usize. Currently this is mapped by Rust
+>> >   libcore to either u32 or u64.
+>> >
+>> > * `char` is mapped to `u8`. Currently this is mapped by Rust libcore t=
+o
+>> >   either i8 or u8.
+>>
+>> Great work!
+>>
+>> > After this series, FFI code needs to use `kernel::ffi` types instead o=
+f
+>> > `core::ffi`.
+>>
+>> I think we should have a lint that checks for this. Can probably be a
+>> checkpatch.pl check and a good-first-issue.
+>>
+>> ---
+>> Cheers,
+>> Benno
+>>
+>> > Gary Guo (5):
+>> >   rust: fix size_t in bindgen prototypes of C builtins
+>> >   rust: map `__kernel_size_t` and friends also to usize/isize
+>> >   rust: use custom FFI integer types
+>> >   rust: map `long` to `isize` and `char` to `u8`
+>> >   rust: cleanup unnecessary casts
+>> >
+>> >  rust/Makefile                      | 24 ++++++++++-----
+>> >  rust/bindgen_parameters            |  5 ++++
+>> >  rust/bindings/lib.rs               |  5 ++++
+>> >  rust/ffi.rs                        | 48 +++++++++++++++++++++++++++++=
++
+>> >  rust/kernel/alloc/allocator.rs     |  4 +--
+>> >  rust/kernel/block/mq/operations.rs | 18 +++++------
+>> >  rust/kernel/block/mq/raw_writer.rs |  2 +-
+>> >  rust/kernel/block/mq/tag_set.rs    |  2 +-
+>> >  rust/kernel/error.rs               | 25 +++++++---------
+>> >  rust/kernel/firmware.rs            |  2 +-
+>> >  rust/kernel/init.rs                |  2 +-
+>> >  rust/kernel/kunit.rs               | 10 ++-----
+>> >  rust/kernel/lib.rs                 |  2 ++
+>> >  rust/kernel/net/phy.rs             | 14 ++++-----
+>> >  rust/kernel/print.rs               |  4 +--
+>> >  rust/kernel/str.rs                 | 10 +++----
+>> >  rust/kernel/sync/arc.rs            |  6 ++--
+>> >  rust/kernel/sync/condvar.rs        |  2 +-
+>> >  rust/kernel/sync/lock.rs           |  2 +-
+>> >  rust/kernel/sync/lock/mutex.rs     |  2 +-
+>> >  rust/kernel/sync/lock/spinlock.rs  |  2 +-
+>> >  rust/kernel/task.rs                |  8 ++---
+>> >  rust/kernel/time.rs                |  4 +--
+>> >  rust/kernel/types.rs               | 26 ++++++++--------
+>> >  rust/kernel/uaccess.rs             | 31 ++++++-------------
+>> >  rust/macros/module.rs              |  8 ++---
+>> >  rust/uapi/lib.rs                   |  5 ++++
+>> >  27 files changed, 161 insertions(+), 112 deletions(-)
+>> >  create mode 100644 rust/ffi.rs
+>> >
+>> >
+>> > base-commit: 93dc3be19450447a3a7090bd1dfb9f3daac3e8d2
+>> > --
+>> > 2.44.1
+>> >
+>>
+>>
