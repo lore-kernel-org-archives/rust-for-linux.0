@@ -1,92 +1,147 @@
-Received: from mail-wm1-f48.google.com (mail-wm1-f48.google.com [209.85.128.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from fout7-smtp.messagingengine.com (fout7-smtp.messagingengine.com [103.168.172.150])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1C5C13A26B
-	for <rust-for-linux@vger.kernel.org>; Sat, 14 Sep 2024 08:52:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D7B71CE6FE;
+	Sat, 14 Sep 2024 10:11:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.150
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726303958; cv=none; b=h8o1Ns9yDGe9DxnpIpI1efTc+LVEJA50Z4NOVTYowf5nLL38j/HPHU0znfTerA4A6pT3jsYFNjwDA+E3wLXCyhzqfooEDOrvM3pR1/1S82zG7fWqhXb/D4WDxFzh/NpKKwxVwePldSQ77otvMFrF11gqgvQMHrFN5g/ThCJCND8=
+	t=1726308715; cv=none; b=RBaqC1/rBTyRVQP+wKPHEV4MYiZ7NnkwA4bj33sbJ/TsMVxPa/hfZrUcuYnEjsYq2w6PuHHT6uZO2NFQPrOiU/zdbc0gNBhbZghKEYxkgWYsx7y7RhSd4VF1GKCg9nLAApo4OZxnRJML/s7p72/RoSkpiYKY2vCt2EZTShUc4wU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726303958; c=relaxed/simple;
-	bh=ozMO80z+jlaDS6Fvvhq2+MR9Mq6RA690VY/VVdqPgn8=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qnYCWeOxaBXNSVMK8k+OC5xes/TJHDQkXNZIX6iGl7yKR2R5pdmmMiHaVNSzkdnT1bfo3RyA+kBsHSyXdwziY+YOZe/wDeDpFED1/WDnUsy09C5nXInQ0grVHhjYng6uYpHZw8Yrhww2Uo5R7bfVadKF0Bwfd7SPJh09u784tc4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=onJiFq0V; arc=none smtp.client-ip=209.85.128.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1726308715; c=relaxed/simple;
+	bh=c7hrh1mNhY5Po59linuz91/Lp273Kl2sAkDSofcmW3U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aCMzOt6OkbAe/h9Sfqeyn5elVWiTNHxlUZKRhWr+bwwepxzKmfAhkFQyKxf+B1we468J6vI1Cb0zXk/pTQI9uPnMphHobHuurlgyKZ1wVVGQJDv+TEyiIG13rxvwGwaS4HqkFTKllBeUfox6bvxYdFCVglIxZoOxh8cJzVkYR1Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jannau.net; spf=pass smtp.mailfrom=jannau.net; dkim=pass (2048-bit key) header.d=jannau.net header.i=@jannau.net header.b=aORr7H8J; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=U9Nm20lH; arc=none smtp.client-ip=103.168.172.150
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jannau.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jannau.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="onJiFq0V"
-Received: by mail-wm1-f48.google.com with SMTP id 5b1f17b1804b1-42cb806623eso25919045e9.2
-        for <rust-for-linux@vger.kernel.org>; Sat, 14 Sep 2024 01:52:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1726303955; x=1726908755; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ozMO80z+jlaDS6Fvvhq2+MR9Mq6RA690VY/VVdqPgn8=;
-        b=onJiFq0VdNHuztxHQhE24AWxKrVl9MuIujfaVDpn76Vl6Rl+AZare+5ooq4GMxv5Pv
-         5Uwpwbmp1eui5PIj1IWpnaotXHMOGbevhgTV/acYJT0PsV2kcsHjUiuGIX8P0Ozo20e9
-         7xhEAvSJI2TQVl9xYTHQqVniPkTMHt5xaxutPKfRoJCRjyp4BNLcMon8QFSpkJJOSqOn
-         ZxmangFyCF9UvHFky5JYV/bRScFC5ur5/m3huGuEKhto/Lo/WxETeXhmcQd/bfc82bmP
-         pK+UJ0qyBFwCCi5TSp6tpMRaXQZuxTm8L4fj+BH2hEND5xLIPfcc+nwuLbFDIvgO76QN
-         TjAA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726303955; x=1726908755;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ozMO80z+jlaDS6Fvvhq2+MR9Mq6RA690VY/VVdqPgn8=;
-        b=CVql6FXNXoQlZNKr4Z0jstdozubJ9+3lYl3jOLCFsAX4vrSXs7CnSXQc03qRRi5/Ql
-         nWzENtRq1adxg3+3rar7KU5/taLXCYV3FH9cxfjYKQ7MR6JxKHxSQc0xWy2d7OxOvH57
-         h5Qi4t/qgdH6OVuOvbUKud5V1o59cRkRpHJvvH2xvb77TBzlLRdlYD8IUQKSSajYzUqm
-         3FylteckA5vLuqUU+OUtWpvAEjtyEGfADi479n1jEMNUKm3karhdQTwf/Vq+PpNn8KGg
-         KoBAAiY7oikUhcp8sEjvhd+oi91rGJ3Bj1E/kKnJGz3hQiHpafBpGPBYrfqv1nP54iRP
-         ZUBA==
-X-Forwarded-Encrypted: i=1; AJvYcCUXBc2J2OtgmfMxS7KDDGkcOUUImG9Tjd6HJTkzngoqO7hPCxALBrOXySv1me5lPwUSww2G9tdZF2D1oVND6Q==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzPsvsk92OGNsgkc2gm/rI0wDxabl3Cxhu9pI4PoZDP3ZntutIm
-	4zztGG7qHFZUGmyCUyaWIg2tEQV1ChjxRUhzyx5bZzVyDaA6bhiKK67XeYUnxuy67NGE7XTZHbl
-	hmd1rnhuANwynPuZNFiRskPYTbkhHdzHYF7tv
-X-Google-Smtp-Source: AGHT+IFUTPfSBDFQnpGz2Br1YanzXRnMioHfouAqA9KRQpEFi41ht5RmajCPi2yYaZYYnmejsMzVF3SlxJdsuf3X3Gw=
-X-Received: by 2002:a05:600c:468a:b0:42c:b309:8d18 with SMTP id
- 5b1f17b1804b1-42cdb53be54mr62773115e9.19.1726303954696; Sat, 14 Sep 2024
- 01:52:34 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=jannau.net header.i=@jannau.net header.b="aORr7H8J";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="U9Nm20lH"
+Received: from phl-compute-09.internal (phl-compute-09.phl.internal [10.202.2.49])
+	by mailfout.phl.internal (Postfix) with ESMTP id 6D141138034D;
+	Sat, 14 Sep 2024 06:11:52 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-09.internal (MEProxy); Sat, 14 Sep 2024 06:11:52 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jannau.net; h=cc
+	:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm3; t=1726308712; x=1726395112; bh=wdYBlJH1j2
+	NJdmrQ3AgD6IKbm38HR2Yf3Znhh5VlisQ=; b=aORr7H8JGhZkcbuntmIvaMOGA0
+	/MNDvEBK3EaaffdNtywXEszDv4oT8lgmjaAJSQ6hG4BZw3pyXUZ0HuxCFgW51Jho
+	3mxbyvmk50xrGYlquXhO9YOAOFGgFsltTBmbcmDFqDlo3RqCG9omkTpF7ayriiuJ
+	HxjmMyu8tF7M7aprtQ8tnmEszHEQLWNueWq5efKeL4iw8HZciroSaRIqJlDdr9Bn
+	8xrCLzoGJ05vb0DdrlD43/tXcrLeGGYtF3NMicV9HmVnUolIb0DH3O6WwBH4S84v
+	Op/8/PmCnq1TsZQqWGzYVx5XtRJUdpUStYtXAiSyjFzJn3UJ22qS14RzkREQ==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=
+	fm1; t=1726308712; x=1726395112; bh=wdYBlJH1j2NJdmrQ3AgD6IKbm38H
+	R2Yf3Znhh5VlisQ=; b=U9Nm20lH/voTbRJWFA4oNdsQX1ya+5iERjCc+qxE3p9N
+	V6H3QXBWhGBNMpDapVyukAbnWJkhnoNY18qLSVd8bKe3irf9zwvfZrn+7KSepErX
+	w3Zt9TGVJspLYGoC5482obPRi5YoxGuIb9hXjuDJLO2Q9jLLi252gYPhVXzXTJBn
+	XHYqPUxlR5VWYeNnYUIFaqiOteX1j7xIaD0kz/A9cp2hOvuxOLzzfG2nfaPOZv+6
+	4g8rDYXNBd5B0iwEjg12ecYIH0xzUDAhusQWpWI7o4TbmTycae11hBm0MKvCc0EC
+	20vZIXKSTkSdDcnkuN4lGVjCK/aTKYGf8HBFo7Gx5g==
+X-ME-Sender: <xms:Z2HlZgLGCIZ8gWL6kJFrNK_OJRgX8CdROU6K_bAEQdAXwk5Z7xh3-A>
+    <xme:Z2HlZgI3cIECw5vwULhBTJ8t9KgInmT1VhnPb5-_kVfEnoo2lqfrZegd5WmuoMDEU
+    Lz5XPEa5LAwbZcr2cs>
+X-ME-Received: <xmr:Z2HlZguQa1dRX1HqSEuHnyIrsg3uN2AoNXiXIL9wWhUTJARPgtvtSegE0y1IC9Fmx5vYQg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrudektddgvdeiucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnh
+    htshculddquddttddmnecujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtjeen
+    ucfhrhhomheplfgrnhhnvgcuifhruhhnrghuuceojhgrnhhnvgesjhgrnhhnrghurdhnvg
+    htqeenucggtffrrghtthgvrhhnpeetkeegfffhhfekhfdtveejueevtdefkeehgeekgeel
+    teeluddugeeuvddukeeuffenucffohhmrghinhepghhithhhuhgsrdgtohhmnecuvehluh
+    hsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepjhgrnhhnvgesjhgr
+    nhhnrghurdhnvghtpdhnsggprhgtphhtthhopeefvddpmhhouggvpehsmhhtphhouhhtpd
+    hrtghpthhtohepuggrkhhrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehgrhgvghhk
+    hheslhhinhhugihfohhunhgurghtihhonhdrohhrghdprhgtphhtthhopegrhihushhhse
+    gsvggrghhlvggsohgrrhgurdhorhhgpdhrtghpthhtohepfhgrsghivghnrdhprghrvghn
+    theslhhinhgrrhhordhorhhgpdhrtghpthhtohepugdqghholhgvsehtihdrtghomhdprh
+    gtphhtthhopehlohhrfhhorhhlihhnuhigsegsvggrghhlvggsohgrrhgurdhorhhgpdhr
+    tghpthhtohepjhhkrhhiughnvghrsegsvggrghhlvggsohgrrhgurdhorhhgpdhrtghpth
+    htoheprhhosggvrhhttghnvghlshhonhessggvrghglhgvsghorghrugdrohhrghdprhgt
+    phhtthhopegrfhgusehtihdrtghomh
+X-ME-Proxy: <xmx:Z2HlZtaiPXWo0hoNfwFmPC9K2ADDDofXYS8ZgxTLBNIaDKBpiSKpDQ>
+    <xmx:Z2HlZnZdFjkun-rTi_pNVt9B7MhEdaB-MEYhEQnEPnt7l3WQBz4S6Q>
+    <xmx:Z2HlZpBrLGThc8Oyk8ay8ddteDZxWvpwHx7WsmKyt6rhy076VLNfMA>
+    <xmx:Z2HlZta96gou4U4zmRiYrSQYPZ7O0VpCGl0y45bvGn_lJHxiPLwY6A>
+    <xmx:aGHlZkwpfgeBBy3OeE8ggur4QJ_hWsPnlquY6Hme4l7QxApo3RtW2okr>
+Feedback-ID: i449149f6:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sat,
+ 14 Sep 2024 06:11:51 -0400 (EDT)
+Date: Sat, 14 Sep 2024 12:11:49 +0200
+From: Janne Grunau <janne@jannau.net>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Ayush Singh <ayush@beagleboard.org>, fabien.parent@linaro.org,
+	d-gole@ti.com, lorforlinux@beagleboard.org,	jkridner@beagleboard.org,
+ robertcnelson@beagleboard.org,	Andrew Davis <afd@ti.com>,
+ Miguel Ojeda <ojeda@kernel.org>,	Alex Gaynor <alex.gaynor@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Rob Herring <robh@kernel.org>,	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Derek Kiernan <derek.kiernan@amd.com>,
+	Dragan Cvetic <dragan.cvetic@amd.com>,	Arnd Bergmann <arnd@arndb.de>,
+ Nishanth Menon <nm@ti.com>,	Vignesh Raghavendra <vigneshr@ti.com>,
+	Tero Kristo <kristo@kernel.org>, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, devicetree@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org, asahi@lists.linux.dev
+Subject: Re: [PATCH 1/8] rust: kernel: Add Platform device and driver
+ abstractions
+Message-ID: <ZuVhZV2KW2Gv340V@robin>
+References: <20240911-mikrobus-dt-v1-0-3ded4dc879e7@beagleboard.org>
+ <20240911-mikrobus-dt-v1-1-3ded4dc879e7@beagleboard.org>
+ <2024091106-scouring-smitten-e740@gregkh>
+ <ZuHU5yrJUOKnJGrB@pollux>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240913213041.395655-1-gary@garyguo.net> <14389f99-dfa9-4646-a24e-e5eef1beacf0@proton.me>
- <CAOcBZOS6BAJ1FTFkB3x6jdag_hL7zrLbFy7TxkvZWKxRZ_+ggA@mail.gmail.com> <CAOcBZOTcoPEk2Bo05gj66cHiqKxTR7j1z9U_j+Jeh1oCjtOKXg@mail.gmail.com>
-In-Reply-To: <CAOcBZOTcoPEk2Bo05gj66cHiqKxTR7j1z9U_j+Jeh1oCjtOKXg@mail.gmail.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Sat, 14 Sep 2024 10:52:21 +0200
-Message-ID: <CAH5fLgj7vcZ3iCyR1ZZCq0JTL1qYiTxn_5fE4anQRhyOHsJd3Q@mail.gmail.com>
-Subject: Re: [PATCH 0/5] use custom FFI integer types
-To: Ramon de C Valle <rcvalle@google.com>
-Cc: Benno Lossin <benno.lossin@proton.me>, Gary Guo <gary@garyguo.net>, 
-	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Andreas Hindborg <a.hindborg@samsung.com>, Trevor Gross <tmgross@umich.edu>, 
-	rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <ZuHU5yrJUOKnJGrB@pollux>
 
-On Sat, Sep 14, 2024 at 4:51=E2=80=AFAM Ramon de C Valle <rcvalle@google.co=
-m> wrote:
->
-> Since we're doing this, may I suggest that we use
-> https://crates.io/crates/cfi-types by reexporting them as kernel::ffi
-> instead? By using those, we would also avoid the granularity loss of
-> normalizing integers and using the integer normalization option
-> wouldn't be necessary. I could accept any
-> contributions/kernel-specific changes that would make it easier for
-> the kernel to use them.
+On Wed, Sep 11, 2024 at 07:35:35PM +0200, Danilo Krummrich wrote:
+> On Wed, Sep 11, 2024 at 04:56:14PM +0200, Greg Kroah-Hartman wrote:
+> > On Wed, Sep 11, 2024 at 07:57:18PM +0530, Ayush Singh wrote:
+> > > +/// An identifier for Platform devices.
+> > > +///
+> > > +/// Represents the kernel's [`struct of_device_id`]. This is used to find an appropriate
+> > > +/// Platform driver.
+> > > +///
+> > > +/// [`struct of_device_id`]: srctree/include/linux/mod_devicetable.h
+> > > +pub struct DeviceId(&'static CStr);
+> > > +
+> > > +impl DeviceId {
+> > 
+> > <snip>
+> > 
+> > I appreciate posting this, but this really should go on top of the
+> > device driver work Danilo Krummrich has been doing.
+> 
+> If everyone agrees, I'd offer to just provide platform device / driver
+> abstractions with my next patch series. This way you don't need to worry
+> about aligning things with the rest of the abstractions yourself and throughout
+> potential further versions of the series.
 
-I've been wondering about this for some time now. Is there any way we
-could improve the language to allow #[cfi_encoding] annotations on
-type aliases? It would go a long way to make this kind of thing more
-convenient to use.
+Covering platform device/driver abstractions in the same series would
+be appreciated from asahi side. It hopefully results in earlier merge
+since it avoids a dependency on the device driver abstractions.
+Feel free to reach out to me for an earlier preview / rabsing of the
+asahi driver.
+https://github.com/AsahiLinux/linux/tree/bits/210-gpu has all relevant
+rust changes from 6.11-rc but I plan to rebase onto 6.11 in the next
+days and possibly import changes from 6.12-rc* / rust-next.
 
-Alice
+Thanks
+Janne
