@@ -1,137 +1,128 @@
-Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f182.google.com (mail-pg1-f182.google.com [209.85.215.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3AD61CBEB5;
-	Sun, 15 Sep 2024 18:39:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.89.141.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E50C41C9DE4;
+	Sun, 15 Sep 2024 19:09:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726425574; cv=none; b=mXxAmg471PSXHc0eis9i9AgeLZMLwNFHot2Dt2Pe8aepdDStl3WTu9VZKLGyR/SLlFqm8B8bMFZdpleF5N+RxJEZit7qaTI3A/gDmqJOZkl+/IAQztebSm0kNS18XjnmZebRzAHw+7X9xBCw1kmJ0h/RbwzR/sk7Lqi5XicW3IM=
+	t=1726427399; cv=none; b=faJzDO+PEQy9SCFL6GuOijLhuKkBs6j0gNFUqo381Phx98PJmkU1xglMadFK8O6Dwt2Tqyvrb4+yUe670KDaIdLO0worh6ksOH1BZjhi3uySJxaOjVJn9g+ynUHHihVjkmViK6hQM2JH9nM8I9pR9MxNWG0NS5gHhQQA1EsP2Nc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726425574; c=relaxed/simple;
-	bh=ujI3ob0yLW4HSxrKVQjvMzAe8JcPZ3eIAEBeL/dVX6U=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tPSuCfCDnvF6asJ8iDP1u9qIXwixdpAlhDUjphc8yjRrDIV+RbruBpKy/YP7CxW1jcAUt7QeByAzo/Z0AwRVBAuXZvpWpzzyjXVl4CCSSxglSAyMZGQNN5EtpN5cOIZ3gAgTd3gtgFxnI5u62sJpeIqFQJoh18mPtVLj8wrsvz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; spf=none smtp.mailfrom=ftp.linux.org.uk; dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b=BfiZuwXU; arc=none smtp.client-ip=62.89.141.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ftp.linux.org.uk
+	s=arc-20240116; t=1726427399; c=relaxed/simple;
+	bh=s7jHNTMqyMp9XtQtQyKBg8Qso4UuUJlOeK2ulSpy4+Y=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=MoVZE1z+O82nzsWe9lMy6HYXGerhNziRKxgerM7R0CrC23LAOxLeMltg3FeCji/FTBFQcD9R5XE76rW1tJY4mk/Vad17hNCQfRHBC855+I71ueZQO6t2Sp/OIOwvx1PcT0mo38Hkbi1u9KOv1nhlZG1Y7tZGb3TzST6IsP9xLIg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=Pg38Fq8j; arc=none smtp.client-ip=209.85.215.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="BfiZuwXU"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=l1/sYaWb1avWw0suXdNddcpJnS6z0B2rjO19tHcg/uI=; b=BfiZuwXU2BH++axM4Gw1YN95tR
-	c1O4s11Y39h0Mz3c1+8MmNLDkr7F3WGYsb/1sp3uPpZOmCNYiYjBuZPwhW7FxF0oa/08uglBM1ggJ
-	0NL+hulG2dqPrP4ONB0plbmWRCVbAr//BF+AteapPoy4tugIR5nsfpv0Fh7DbGLbS8YvkUP5hA+t0
-	5ADTWU/Pz+hNJBSnuZsFmxD8sLk47JDCoWuc6d0igsUP0V9VburIFLorPQohHCFH7b2qUUfr/pR1w
-	j97a+22+AQ99ZAZWYVe/FG6lI5a3H+UqGBY28diMxY1P6UoZo0BisMBS96IZcHOh006QcnEchT1Kf
-	wzugQBoQ==;
-Received: from viro by zeniv.linux.org.uk with local (Exim 4.98 #2 (Red Hat Linux))
-	id 1spu9J-0000000CjB7-3t5m;
-	Sun, 15 Sep 2024 18:39:05 +0000
-Date: Sun, 15 Sep 2024 19:39:05 +0100
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
-	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>,
-	Joel Fernandes <joel@joelfernandes.org>,
-	Carlos Llamas <cmllamas@google.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Thomas Gleixner <tglx@linutronix.de>, Daniel Xu <dxu@dxuuu.xyz>,
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-	Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org,
-	linux-security-module@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	Kees Cook <kees@kernel.org>
-Subject: Re: [PATCH v10 6/8] rust: file: add `FileDescriptorReservation`
-Message-ID: <20240915183905.GI2825852@ZenIV>
-References: <20240915-alice-file-v10-0-88484f7a3dcf@google.com>
- <20240915-alice-file-v10-6-88484f7a3dcf@google.com>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="Pg38Fq8j"
+Received: by mail-pg1-f182.google.com with SMTP id 41be03b00d2f7-7d50ac2e3f8so578051a12.2;
+        Sun, 15 Sep 2024 12:09:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1726427397; x=1727032197; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=s7jHNTMqyMp9XtQtQyKBg8Qso4UuUJlOeK2ulSpy4+Y=;
+        b=Pg38Fq8jkEy24BKFREK9b7lK8+lG5/HWVuHeORQvh8kGMjVkZQYPcfGZKV9mtij1Tg
+         GxfLGGN7cpJHS7ByE1nuMkap5S5Bz/r7D5J+Kqi+SzztKPHC9zofOXS6gsxy1e8k4gN8
+         vVUf0ujJRKY6nYkifvlEp77S2Aep/OJC1i1PjXHFYH3O81xk/vWNZJqWnf6/4aWCaeoM
+         peg7W+lt9GiUJFtpTNHLt6kRxb4nkdR+k2QIE8TfqOHLxm1RVslq5oIUiiu0o4KW31N0
+         SZV03Rb9FPYxO/tqKbfigSv/mz1ouWxsHIaiaytxd9Q3YXXyr46sD7vmzXnF2C7riGHF
+         1b3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1726427397; x=1727032197;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=s7jHNTMqyMp9XtQtQyKBg8Qso4UuUJlOeK2ulSpy4+Y=;
+        b=pIUeJTcTWtf5oT5mOjlZr0qZkKrxxenbMQ8v6+6zKKjEyw/zcAjXj3sC0Mmc0GOUIh
+         VK8/JP6SmzhGUfwuRRLtQo+DBj1IQ04W/V96Or26N0pKpvp2MuZclcBGV66TPdh5Jp5s
+         mPXk41LYiJW768sQpXVl8oFsVNTCzrYOpQcqHv47pBxCOXsPfeZLrWXRtMNFrWaKxbQ2
+         A3H9CevBpjFSV3YyC3xEFukzAn++UY0gK+8WV3Wy4WVXbnino4w5jmunWYG7aKMwgzDe
+         63pCaj1Ss9G6RU6dseDUtwRif13z3zG8NSh6ojqoc2Qxz0weINYNYxeZW6z7u3w4pO2w
+         piMA==
+X-Forwarded-Encrypted: i=1; AJvYcCW+pvRX8lsDJSg/hrcrodFPYTXs5UcZGohkxie18fXU63Uy8ml1yX15SW3OeVJYh5BmA5z1qGnOnC/xYjQx@vger.kernel.org, AJvYcCWkfgiDqj3Nmmc4/TmPJ63FLlzpRMvrWLZJg+8xq+TI5C/ZJNyX4Xw0OFOKqceA4U2zWAyXS6iwSuzINdQ=@vger.kernel.org, AJvYcCX4rgyaze5MCN6wGOaGD6DIjYmxBLs6QtGn4mEu5oR7zMOqT6dq+ji183SnWPBsGdQW2yD8AUsRgd6CEmLD12s=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyfAEXFkE4I92cG0rvYF2eQON8WHZOTw1JEvxAfI7lTFl2EWQXU
+	/4HSzXiJUnaeEUw6EQLP/0mOTAaEcaPVYVN+LXZSxGj9/kvU7raOtPwOY1ggXUiQu0lbv4BKBy2
+	6Y3zzhd+kADvUDZVZB+Nb9sn/tgA=
+X-Google-Smtp-Source: AGHT+IHr0D6TWxTQzv88KR/FDg3V8HgU8w+g0FgRZ0BBw/Zr3pFklWBFV+/D/FvhV7n8gNesZsrEXZhiFnl6lwGFOLY=
+X-Received: by 2002:a17:90b:4d0b:b0:2d8:8e8a:2b0c with SMTP id
+ 98e67ed59e1d1-2db9ff88dcdmr6418732a91.3.1726427397086; Sun, 15 Sep 2024
+ 12:09:57 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240915-alice-file-v10-6-88484f7a3dcf@google.com>
-Sender: Al Viro <viro@ftp.linux.org.uk>
+References: <20240801-kcfi-v2-0-c93caed3d121@google.com> <oehf6r5eftrnuvzulg2yhukf7gjh7jltfdqmtffiok3ro63xe7@y3iplw2gpcy2>
+In-Reply-To: <oehf6r5eftrnuvzulg2yhukf7gjh7jltfdqmtffiok3ro63xe7@y3iplw2gpcy2>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Sun, 15 Sep 2024 21:09:45 +0200
+Message-ID: <CANiq72=hS1xMCQBzkgM=AMhj4BkDubqRG-kmGU8aQXN3kBS6=g@mail.gmail.com>
+Subject: Re: [PATCH v2 0/2] Rust KCFI support
+To: Gatlin Newhouse <gatlin.newhouse@gmail.com>
+Cc: Alice Ryhl <aliceryhl@google.com>, Masahiro Yamada <masahiroy@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, 
+	Sami Tolvanen <samitolvanen@google.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Kees Cook <kees@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Matthew Maurer <mmaurer@google.com>, linux-kbuild@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sun, Sep 15, 2024 at 02:31:32PM +0000, Alice Ryhl wrote:
+On Sat, Aug 17, 2024 at 2:13=E2=80=AFAM Gatlin Newhouse
+<gatlin.newhouse@gmail.com> wrote:
+>
+> To test this patch: I started from v6.11-rc3 tag and applied the new vers=
+ion of
+> Miguel's RUSTC_VERSION_TEXT patch [1] and the Support Arrays in Target JS=
+ON
+> patch [2], before applying this patch. I am on Rust's beta channel and
+> Clang/LLVM 19.
+>
+> I also built a v6.11-rc3 kernel without these patches to establish a base=
+line
+> for LKDTM output in dmesg when testing CFI [3]. I built the v6.11-rc3 ker=
+nel by
+> starting with an x86_64_defconfig, then enabling CFI_CLANG, CFI_PERMISSIV=
+E, and
+> LKDTM.
+>
+> When applying [1], there was an patch does not apply error. I had to manu=
+ally
+> change the init/Kconfig RUSTC_VERSION_TEXT to Miguel's change in [1]. No =
+issues
+> encountered applying [2] afterwards. Similarly, was able to automerge thi=
+s
+> patch without any issues.
+>
+> Then I built the kernel starting with x86_64_defconfig and enabling: RUST=
+,
+> CFI_CLANG, CFI_ICALL_NORMALIZE_INTEGERS, CFI_PERMISSIVE and LKDTM. Compil=
+ed the
+> kernel, load into qemu with Busybox rootfs, test CFI within LKDTM per Kee=
+s's
+> blog [3]. I saw the same expected behavior from LKDTM after applying thes=
+e
+> patches when compared with the behavior from LKDTM on a v6.11-rc3 build w=
+ithout
+> these patches.
+>
+> Link: https://lore.kernel.org/lkml/20240808221138.873750-1-ojeda@kernel.o=
+rg/ [1]
+> Link: https://lore.kernel.org/all/20240730-target-json-arrays-v1-1-2b376f=
+d0ecf4@google.com/ [2]
+> Link: https://outflux.net/blog/archives/2019/11/20/experimenting-with-cla=
+ng-cfi-on-upstream-linux/ [3]
+>
+> Tested-by: Gatlin Newhouse <gatlin.newhouse@gmail.com>
 
-> +impl Drop for FileDescriptorReservation {
-> +    fn drop(&mut self) {
-> +        // SAFETY: By the type invariants of this type, `self.fd` was previously returned by
-> +        // `get_unused_fd_flags`. We have not yet used the fd, so it is still valid, and `current`
-> +        // still refers to the same task, as this type cannot be moved across task boundaries.
-> +        unsafe { bindings::put_unused_fd(self.fd) };
-> +    }
-> +}
+I wanted to point out that this is an excellent testing report.
 
-FWIW, it's a bit more delicate.  The real rules for API users are
-
-	1) anything you get from get_unused_fd_flags() (well, alloc_fd(),
-internally) must be passed either to put_unused_fd() or fd_install() before
-you return from syscall.  That should be done by the same thread and
-all calls of put_unused_fd() or fd_install() should be paired with
-some get_unused_fd_flags() in that manner (i.e. by the same thread,
-within the same syscall, etc.)
-
-	2) calling thread MUST NOT unshare descriptor table while it has
-any reserved descriptors.  I.e.
-	fd = get_unused_fd();
-	unshare_files();
-	fd_install(fd, file);
-is a bug.  Reservations are discarded by that.  Getting rid of that
-constraint would require tracking the sets of reserved descriptors
-separately for each thread that happens to share the descriptor table.
-Conceptually they *are* per-thread - the same thread that has done
-reservation must either discard it or use it.  However, it's easier to
-keep the "it's reserved by some thread" represented in descriptor table
-itself (bit set in ->open_fds bitmap, file reference in ->fd[] array is
-NULL) than try and keep track of who's reserved what.  The constraint is
-basically "all reservations can stay with the old copy", i.e. "caller has
-no reservations of its own to transfer into the new private copy it gets".
-	It's not particularly onerous[*] and it simplifies things
-quite a bit.  However, if we are documenting thing, it needs to be
-put explicitly.  With respect to Rust, if you do e.g. binfmt-in-rust
-support it will immediately become an issue - begin_new_exec() is calling
-unshare_files(), so the example above can become an issue.
-
-	Internally (in fs/file.c, that is) we have additional safety
-rule - anything that might be given an arbitrary descriptor (e.g.
-do_dup2() destination can come directly from dup2(2) argument,
-file_close_fd_locked() victim can come directly from close(2) one,
-etc.) must leave reserved descriptors alone.  Not an issue API users
-need to watch out for, though.
-
-[*] unsharing the descriptor table is done by
-	+ close_range(2), which has no reason to allocate any descriptors
-and is only called by userland.
-	+ unshare(2), which has no reason to allocate any descriptors
-and is only called by userland.
-	+ a place in early init that call ksys_unshare() while arranging
-the environment for /linuxrc from initrd image to be run.  Again, no
-reserved descriptors there.
-	+ coredumping thread in the beginning of do_coredump().
-The caller is at the point of signal delivery, which means that it had
-already left whatever syscall it might have been in.  Which means
-that all reservations must have been undone by that point.
-	+ execve() at the point of no return (in begin_new_exec()).
-That's the only place where violation of that constraint on some later
-changes is plausible.  That one needs to be watched out for.
+Cheers,
+Miguel
