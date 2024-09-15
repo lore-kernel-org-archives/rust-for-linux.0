@@ -1,99 +1,211 @@
-Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from LO2P265CU024.outbound.protection.outlook.com (mail-uksouthazon11021117.outbound.protection.outlook.com [52.101.95.117])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8224286250
-	for <rust-for-linux@vger.kernel.org>; Sun, 15 Sep 2024 08:08:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726387713; cv=none; b=BzGeE1RIxFOU3ggwPqxUqNSiFNeuSXrrc3JkiDEmGm6vZBNzo2kLcmlm47swOO8wgQrAgchRhsUvpGzFM9U5LBrC3Qd6mwEZ95SqlPHJib6KU5jR9LhEcfUjVBio2F8I9CIBoPljlS7vqOvKjaQ+Y9I4v7owwLKIl1DoEZar+cU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726387713; c=relaxed/simple;
-	bh=OyhAR22WFlMKi/ctn3D8oR3Tt3G5DiOqWcpYQ3h3V8Q=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VFpoPHYf1bMLosTcysvcbsFBKXNa9Nb0daXMLbtdz8A8P8MZZlfQ9jnh0q9xpLl5GV0ktQqF7LruDuaTl8snEi0Ltik/Ealnxhqt0tscwcmKNnq3Bx8PLJdyjsoUlgJAz+9cgviP8A0GnWQJXXFf8FRDgdU/nHycgV44jnmrT0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=p0nCy1Bd; arc=none smtp.client-ip=209.85.221.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D475725570;
+	Sun, 15 Sep 2024 11:36:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.95.117
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1726400194; cv=fail; b=oPa8WQBZ9oAgw++qrFmiXPxji5z0RyrX5PWaQG1rpY8t1q7tpfz3EjySxx6XHRz3xfHh+2ULtAv+9BKrf5wttLzM7i1njnL2L/eT5gsSmWJULFt4XdQMMzFCj74pEizvClvVmB7O0ksYbcsEYH+WAedUo3aiARXKsUrbZNWsyM0=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1726400194; c=relaxed/simple;
+	bh=L/j+hqYHiAW51JDufAPMqU4Hsey8ljPkDF1Bq2nWjSc=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=FgtF4C9HeicYAX/3jlx2LCO53tf9+BpIhy43DWFcAEBKWgEleobdLRWxZZnd5auBE1DIDHunWRACu/EQ/RvmyEUNOX9H904XQyMxmhCsiy6tzJtc5pHhcFMSp/2YKEiOdD3AshwMyUvcw+N5qRFrZb3ED09iGNfn0u37dv92KJA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=jll0n45m; arc=fail smtp.client-ip=52.101.95.117
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="p0nCy1Bd"
-Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-378e5d4a80eso949628f8f.0
-        for <rust-for-linux@vger.kernel.org>; Sun, 15 Sep 2024 01:08:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1726387710; x=1726992510; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OyhAR22WFlMKi/ctn3D8oR3Tt3G5DiOqWcpYQ3h3V8Q=;
-        b=p0nCy1BdQbLxdB9zT3ZWJwZczNVHCCP8QCUvUa4kNa+Ua/SJwDh3ATHzrC8BVuSmMj
-         tWhH40gt9sV+I6FDELV5AjHthiV3M90igXSD/PMbjRRoC9TNntcQ/bABkoHaruMKHUzV
-         rmyzIOG0cBKUhzfZjpPFs4WeUSbWhjKiGBUHvNQYZXnHcEiXPXkhaSUfYx9Uny18sVZj
-         lW2hiJ7fNX/m9mbl9yW1cYWh/HtXSELbf+8uW1Z0gwemoT4D55lbNm2VLIuVkT/Vj5E9
-         Q9UPaHTxi3/RKMpRrlW3x4vXQu4cYkb1dHg873tUT3ZCwO6rfBCajmLGi9Xo2y5HfYqD
-         dp6A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726387710; x=1726992510;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=OyhAR22WFlMKi/ctn3D8oR3Tt3G5DiOqWcpYQ3h3V8Q=;
-        b=Ml+ILHe0a4VPF6b/QkxU+XzFUF1TrtIn0cIopmXnh+w5k+wBrGoWa6RofYaX30wxry
-         pJ0wyYTnGa/TPaV9PSykJQ0NGfk2qtpsrjQhgT45/VoWg8Oq2a46P98nHsebDfh6fH8L
-         1fbX3EZL+1Y9dDpc7obHj4oLoMX5F7nqSchTMm6fTRCQOR36Kxa6GBcrIT/x69cEKpRA
-         x6pn3ns2brMMU0LcHO70Q7R+5z6yZVkEr5wnaOWJtrOELgiVOElPuhfzk3vrOYiubbX5
-         Xo+7+5dyaG3jswgEvRevGczXM/4WOf/fuUYxg5TmbNqpTG0gBUAzhRq5E9XFjUpeiIYO
-         gMRg==
-X-Forwarded-Encrypted: i=1; AJvYcCUaiT2dy+iH8+f/0qgoL1ma2Hlk+dnuS1f0ypIptYTxoctzUAbk3XAtnpacYRLWXz+HsrEol4JYZwohyOLGkQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwsMn3Gjyb7bLeLDWWqHP72OCA7AnN5gBI9nQ5wqWfkU0otvnb9
-	PUpPyA04iokI14irFwv45dhJzgRn2OYeZnOQpFRYARVqMHQgHDM0kYtWKXlJhbj7xP1rNjeHjj+
-	nLu19I0z6j+rwbS4kBpEOtEAnyH7Doz4Ej5Sl
-X-Google-Smtp-Source: AGHT+IEIdNbjn/4v4s9FKYE7qXFiuvDm8I3v4DgQtf+GL83WKiVhEzZG5lpy5ahP1rw5SXhdgzel+RQGpGDY5+f1t4c=
-X-Received: by 2002:a5d:4047:0:b0:371:82ec:206e with SMTP id
- ffacd0b85a97d-378c2cd3dbdmr6731831f8f.5.1726387709441; Sun, 15 Sep 2024
- 01:08:29 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="jll0n45m"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=BDYC44T82BF3P0bIDu+AoxB436CwvwyxefGOAw+SlkUKac6P9TjvL5BSeEMBJ5b6RBVqYbSa6kvnvtBlxfw7PD8IxzWjK6HrcEiqk92gbgnftq69Ww6dA0TVXoeGWK9tVep7xKiQuUmt8B0MoFeGT1Fl6ijIcAgjzqz6WOs3Yyn36XQb12aTbkbsBWrzxVVmIuAgx4DHklpxMhyQpqoXBhGxZP+M1IfP0MtuEwN67XMgCYhYHr8B2kX1e7AjPQqN9kpBEudAb6DhMmKZnpLQ9WP95lMJi7s8o4bsHGagBfBYNRCUim5WbHfWRquhr3OzTxvUVFBMb6zxJ0WIQfwvkg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=vplj/AlF4e/0OqqFV8cOHA8JHT9DcEC7HzbjSBijD/U=;
+ b=P3T/z1jMiPdmkDXpKc4iYaBBnNd9lQQBFbRvT5Yb0MuyEWzCFMtEWOqlljn1s/H5y7urDkUQru6hYgliBPNUws8oud6rsdrrvG5SdtL4mKaVzg+5T2eiZCzkoNx++uyjQ+eyacH6Glr2+oQLUyExCvS8amnnIBGrrhduyQquiLXciGb+GeHNPQNouXJGXClL0tDzbvhBxD0CHSZ/x5lX6EJje8W1gHz3i5G8xh0FH1wL+cyLDxcuYVNXUBxdC2HA5zz20kjtca20qE+fOc3jpYH1z7OY2Foew/fBcu/pcW4R3lQ5V2yqIBAh8XakmHjljFbaH6t3rvqB7fYm1wg7Dg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=vplj/AlF4e/0OqqFV8cOHA8JHT9DcEC7HzbjSBijD/U=;
+ b=jll0n45m01bqoUjkXxXI4z/7rUCSk8k1JFGQ+DDRscafVA515/hlWtmm50arkucKSkr8Gzh4ZiLFwqyi+aSsvu99NLdHffeoKII6X2GYMSFFmAu+OiELemIe5itvCqtzSekAe44mE06noEkfKuIEjc4UKDp/o094eqHYySKsYlM=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
+ by LO8P265MB7450.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:3b2::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7962.22; Sun, 15 Sep
+ 2024 11:36:29 +0000
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1818:a2bf:38a7:a1e7]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1818:a2bf:38a7:a1e7%3]) with mapi id 15.20.7962.022; Sun, 15 Sep 2024
+ 11:36:28 +0000
+Date: Sun, 15 Sep 2024 12:36:26 +0100
+From: Gary Guo <gary@garyguo.net>
+To: Dirk Behme <dirk.behme@gmail.com>
+Cc: Alice Ryhl <aliceryhl@google.com>, Conor Dooley <conor@kernel.org>,
+ Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>, Paul Walmsley
+ <paul.walmsley@sifive.com>, Palmer Dabbelt <palmer@dabbelt.com>, Albert Ou
+ <aou@eecs.berkeley.edu>, Catalin Marinas <catalin.marinas@arm.com>, Will
+ Deacon <will@kernel.org>, Ard Biesheuvel <ardb@kernel.org>, Jamie Cunliffe
+ <Jamie.Cunliffe@arm.com>, Sami Tolvanen <samitolvanen@google.com>, Nathan
+ Chancellor <nathan@kernel.org>, Kees Cook <kees@kernel.org>, Masahiro
+ Yamada <masahiroy@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>, Marc
+ Zyngier <maz@kernel.org>, Mark Rutland <mark.rutland@arm.com>, Mark Brown
+ <broonie@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>, Miguel
+ Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson
+ Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>,
+ =?UTF-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin
+ <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>,
+ Valentin Obst <kernel@valentinobst.de>, linux-kbuild@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ rust-for-linux@vger.kernel.org, linux-riscv
+ <linux-riscv@lists.infradead.org>
+Subject: Re: [PATCH v7] rust: support for shadow call stack sanitizer
+Message-ID: <20240915123626.1a170103.gary@garyguo.net>
+In-Reply-To: <c7c5a16b-d033-4b46-8994-259c55bfd8b1@gmail.com>
+References: <20240829-shadow-call-stack-v7-1-2f62a4432abf@google.com>
+	<CANiq72kNmvFOXhhAcQJQdMC872908=CWW15_bzyyt9ht2q=twQ@mail.gmail.com>
+	<20240913-shack-estate-b376a65921b1@spud>
+	<CAH5fLggX=Uw8T6EqyonJyOkjOVM7ELy4hK8NV80suvDEBnq_Lg@mail.gmail.com>
+	<c7c5a16b-d033-4b46-8994-259c55bfd8b1@gmail.com>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: LO2P265CA0296.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:a5::20) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:253::10)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <DM4PR14MB727606461A9C870981F44D9BE9662@DM4PR14MB7276.namprd14.prod.outlook.com>
- <ZuZyIRaGHxGMGUid@boqun-archlinux>
-In-Reply-To: <ZuZyIRaGHxGMGUid@boqun-archlinux>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Sun, 15 Sep 2024 10:08:16 +0200
-Message-ID: <CAH5fLghDr64_ajhGxNHsaijHLQ5j4BqkYxWcvVDSR59iYbLMHg@mail.gmail.com>
-Subject: Re: [PATCH] rust: add trylock method support for lock backend
-To: Boqun Feng <boqun.feng@gmail.com>
-Cc: Filipe Xavier <felipe_life@live.com>, ojeda@kernel.org, gary@garyguo.net, 
-	benno.lossin@proton.me, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LO8P265MB7450:EE_
+X-MS-Office365-Filtering-Correlation-Id: 3d002efc-2305-4760-cc2a-08dcd57aa354
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|7416014|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?d0aq6IQynploul1+etuDdVfsjgPiZi/Lmb+OnbMKTaReAS6XaCEcotSmVzO1?=
+ =?us-ascii?Q?WugN4war74W+BSAitzPI8MrI82EuRD6ZaFr2kd7cwpWtKle58qKfkAS07r53?=
+ =?us-ascii?Q?ZrWbK8MLiJZKe4HsHh06UwjWSlf4rTLSAck5icm8VHUIRo5xBK6W2YoL9ANl?=
+ =?us-ascii?Q?aHVGT9U0jQckVpVixrKn+7G6aIhYE3zdBr4AnSYGUslsWVRHcD3EiZiOOwIH?=
+ =?us-ascii?Q?dMMVrOTWbHhBmKxIakHrypREeIqyx2u16HVIpvAXccDtlZn0JmvIY77sqbmx?=
+ =?us-ascii?Q?ixPk5zsJ5RImM9vrBoTW5gYY529wzs0id52Rr6qz+zPHBtXdfAYhdIHPehEo?=
+ =?us-ascii?Q?HzZhZoWonaN4TC5azqBVgAebH3l1s4MF07McRgUyhwcmGCm3ustyNqBS5vXx?=
+ =?us-ascii?Q?EH0KARikT+HI7mgSu6wzoO4rrp6G9Pmn75FkhH1nbdrC7OtOwPdSohtHpyLw?=
+ =?us-ascii?Q?n52vOeCXg+r5OZzSZXOTpQ64X0lV03Z2E8hwaSzGpIL5raM5nnG2VsktPGLn?=
+ =?us-ascii?Q?YtLCHoOJWFq5UbQSKCH70R1GQMCWpJIsZWo6TEMmqMHVnk4TYxoO2CIiyyIc?=
+ =?us-ascii?Q?olb3zeKFfW1i5igvcLNFgNS7MPmy1YRAZnMX0sxMSnWDicYyzblSpOEFDTKR?=
+ =?us-ascii?Q?oCy47eXs1hlVGi3l2aPDXiPkwDBwCPuFAN3RTabOOrHJlzEdRCwhV1+yMV2W?=
+ =?us-ascii?Q?qEC0ocie9oMZzCv83DEVMKhmsEOxxoacRzYfVu2idJHAZnxppmK/Q4qNZeyj?=
+ =?us-ascii?Q?5ZmRHlLNWegS2Txwf+FmYlz/PfIHXvald1I8zmrnATIdm20YMalaPbGO1tMW?=
+ =?us-ascii?Q?Iy1dStkVprvn55Yzj4gxSNQWXXg/AzZl7uh9FgE8mG5l3JA1eQ42YPz/raEY?=
+ =?us-ascii?Q?fR3E/cav9MEDPP6MppEGRLeCVvS9fCxfYhIBMgU9TbHYtUV7KEp59fdBPj5+?=
+ =?us-ascii?Q?sDWvKRxkIR2VNlbCwJ/h6xEdMHWg76gi4Fo5gtHtR1qTRUBUA5wFCa0WybTl?=
+ =?us-ascii?Q?OiD/aoEAwKtth9gbO6slT2sDRueFYQR0v7NDF/fdR19Y6sRuSUtTRfGICPOX?=
+ =?us-ascii?Q?ONe7ruUR4VCNh3YMkJRnMqCAwAHPz/gs1LEF8IxRwmvwQHMVF0BF6NHU7FHP?=
+ =?us-ascii?Q?S4GDrd1MClhYr+k0ilvfMG+FpBYwdX5JXobV8zQfvBbrt09eAgjac2dxPry3?=
+ =?us-ascii?Q?rDnZ0CuTNujwwX2Whk3iDi0AT3m66rTV0AxVPlRQYfia1TWmhQ/kVELQP3D8?=
+ =?us-ascii?Q?LpjUPUwroywXto3dHKTmKh67jfsTRNQ+JV1xPPTCTdD7FUlZuPh33yfkyYma?=
+ =?us-ascii?Q?B1UKvkWCedLL0JTL6x5wJSm2Iykv0cMR6LXzXzrEK6AbCjefqugrP4SV4HB7?=
+ =?us-ascii?Q?OcqL7Js=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?MlZxSgADvAa7pYLO1cG8qUUr83GGUXRYxxrXv/Vb77mHffSaU05VbPqfYwB0?=
+ =?us-ascii?Q?6wcJCpB/N+2N2oC3AKk8HsjsQJpmvLrFnq4KVLfHxXOTz0cwW7k3tInXsJ9p?=
+ =?us-ascii?Q?TwehResb8JbpoSI3bHjRmyxzZNfwFUxcIebIDVhK07h+MpPGtWF3KCdCvLx2?=
+ =?us-ascii?Q?LhYURq1kGj71775UyImTn3+rmdUB6HfLGtgHAd60WYdHRRPnG93/Hc1/i6tY?=
+ =?us-ascii?Q?g/8x0TUr178nORjzjboFh5mUTqsYrqbmtfArkbMccy4z6a+pzAXgN65jCOAC?=
+ =?us-ascii?Q?x3p9At0JhquejH51UKlgdVjE9ZIXf2fasu505vrf3fy/+PD/3LOObe9rPbqQ?=
+ =?us-ascii?Q?QybdbsBJvGzHMSavRYijYkM0Nenir0Nu+ixi1R9aGqj0AaX71b2JzDuxrgJ8?=
+ =?us-ascii?Q?Wkb2IBkTDvDi1/6OrCrBcZggKWaDpX0n8nohEwn/0xGWOwDcAbSStiroKA1R?=
+ =?us-ascii?Q?POfE+bVbOZzPH4GrHvpSZ0R2S6hp2w+UQ/1Hr38sD+tPnCnj1yTaiMaENa3/?=
+ =?us-ascii?Q?ozhw9eDI08J0f3SIOaEee75cmU7CP38uSSPmH0veqH/14lqz25c6vA/M16RL?=
+ =?us-ascii?Q?QsGIaNa2sZ/q9mIfry3m4mIoj4/AnwyoSwE4l4Dx/xgbsnZBPamX8ECPjiJC?=
+ =?us-ascii?Q?KErrf3aZR9snWzB+0zoD2yOpuuyXcibglKlQYw6QGvt/6fLOYyRdZlZnJrZf?=
+ =?us-ascii?Q?ClivAaQ5Ntlg7Tccr4ucf9O4AYvsrXA7NI6rMxXYRrhwB1sA3nZiq5URgKbs?=
+ =?us-ascii?Q?ZOdRTNUCAtFxIeUryPvySVMW1erRUkAHYW0Hb3nqlugTZQaG3to1qkTAEP31?=
+ =?us-ascii?Q?WHfRxk1VJ8PuIjyTKKXjkV93AurEqdVK1YGtA4R1Ubix92lI4toEFNyfl5BM?=
+ =?us-ascii?Q?aKVwZZLY4bbiXmJnP7A4V7dRDFJrXGjl73aybpAypiHI/q94xctSshG93hOv?=
+ =?us-ascii?Q?3FeufXikhe/ueCs1UZQgz3m4Q7BNcHUWq5q4sEkIgyOgld67fsHSHixiEYJe?=
+ =?us-ascii?Q?oIDNlYf/SigzmKZvLxMmij1IHU9ZIUOJfNfZ7Qf61kj3CbxUwc8oE7fRYudC?=
+ =?us-ascii?Q?tFHSsY22DFd4uRmkeBnubHLUKZQMg+iii5LSKyXp0bmPAjvnlEpTlDqbhKD2?=
+ =?us-ascii?Q?IGIukjmZlw6KpZav48DCB7furZSEnCC1WjrUogyj3yUyXbLcRRf912BGhJov?=
+ =?us-ascii?Q?8IXGpEiq4lGrjCePRPX1RZ1FJhYRsGPUNIyWNEIyd5k0/3PJcZ5CopUOa+hO?=
+ =?us-ascii?Q?G3hbdXup9vUsm4EbmvquMe7spsXB4G7QgccFyZHOUu/yRvvCJLkl6lfDghdm?=
+ =?us-ascii?Q?gw1epfDPTNMo5HvCQxUVvTChO9nR9EUYHmTAosQnxDGKTLndKyMIxwT79YCB?=
+ =?us-ascii?Q?T1Cgi5uA99iqZsxeKzXOGs2qx7No3t1Bz8bihuMl6AoOcNtpFsuuxvJiPycF?=
+ =?us-ascii?Q?2DLZ/2NX0PJv9aN3h95e4DwxzugH1OsLTIOpYcxuDp7NeVZfLti87N2VhTGN?=
+ =?us-ascii?Q?Quj6FPT5gcpCrZQzmbn9aT/OUJYlwhSUGrG5rDGicr5tCMiAUR+dSqZjetV3?=
+ =?us-ascii?Q?rXEWZJHueOp/xQZyyZFSprya/9so9wdjG+ZEXf24+TwYc141hTGky2Mug0bW?=
+ =?us-ascii?Q?Gg=3D=3D?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 3d002efc-2305-4760-cc2a-08dcd57aa354
+X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Sep 2024 11:36:28.6861
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: 901vbxLaMxcVZSaSdYD5UX15C4InlzcQg9evPZWVbU/57XUPbfpzVdEODYmi1GzmGa1s8QCHP+8elK17YWaemg==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO8P265MB7450
 
-On Sun, Sep 15, 2024 at 7:35=E2=80=AFAM Boqun Feng <boqun.feng@gmail.com> w=
-rote:
->
-> Hi Filipe,
->
-> Thanks for the patch.
->
-> On Sat, Sep 14, 2024 at 11:00:33AM -0300, Filipe Xavier wrote:
-> >
->
-> ^ unnecessary empty line here.
->
-> > Add a non-blocking trylock method to lock backend interface, mutex
-> > and spinlock implementations. It includes a C helper for spin_trylock.
->
-> The commit log needs to explain why the change is needed rather than
-> what the change is. Do you have a (potential) usage of these trylock
-> APIs? I know that trylock concept has been there for quite a while, but
-> still an usage will help us understand why this is needed in Rust code.
+On Sun, 15 Sep 2024 09:32:44 +0200
+Dirk Behme <dirk.behme@gmail.com> wrote:
 
-Filipe, you can explain in your commit message that Rust Binder will
-use this together with the new shrinker abstractions [1] to avoid
-deadlocks in the memory shrinker.
+> Yes, it is unrelated to this change. It is PREEMPT_RT usage related. I 
+> think we could add something like
+> 
+> #ifdef CONFIG_PREEMPT_RT
+> void rust_helper___mutex_init(struct mutex *mutex, const char *name,
+> 			 struct lock_class_key *key)
+> {
+> 	return __mutex_init(mutex, name, key);
+> }
+> #endif
 
-Alice
+There's no need to use `ifdef` here (we don't want to try replicate all
+ifdefs). Simply add a helper is sufficient. We have logic in
+rust/bindings/lib.rs to prefer externed function to helpers if an
+externed function exist.
 
-[1]: https://lore.kernel.org/all/20240912-shrinker-v1-1-18b7f1253553@google=
-.com/
+Best,
+Gary
+
+> 
+> to helpers to fix
+> 
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/rust/kernel/sync/lock/mutex.rs?&id=6d20d629c6d8575be98eeebe49a16fb2d7b32350
+> 
+> ?
+> 
+> Explanation: Looking at
+> 
+> https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/include/linux/mutex.h?#n52
+> 
+> we have (simplified)
+> 
+> #ifndef CONFIG_PREEMPT_RT
+> extern void __mutex_init(struct mutex *lock, const char *name,
+> 			 struct lock_class_key *key);
+> #else
+> #define __mutex_init(mutex, name, key)			\
+> do {							\
+> 	rt_mutex_base_init(&(mutex)->rtmutex);		\
+> 	__mutex_rt_init((mutex), name, key);		\
+> } while (0)
+> #endif
+> 
+> So in the CONFIG_PREEMPT_RT case bindgen doesn't resolve the macro 
+> what could be fixed by adding a helper.
+> 
+> Dirk
+
