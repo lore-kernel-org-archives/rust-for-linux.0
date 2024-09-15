@@ -1,169 +1,266 @@
-Received: from LO2P265CU024.outbound.protection.outlook.com (mail-uksouthazon11021086.outbound.protection.outlook.com [52.101.95.86])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33DA28C1F
-	for <rust-for-linux@vger.kernel.org>; Sat, 14 Sep 2024 23:52:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.95.86
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726357964; cv=fail; b=s8Vs9LbrlnBGirKrpN4lj3bsq0r0qntRTJFEwkIU+hPvK/p2UMxmf4dobJQ7mgox0eBaJWeYXaqt6V1yYkBA/sXfyLkTWhvJ47bNGSIyvVTS0WmhPZ6LuvX+Ahzh/vjq+by/AKePMt8LOGO9WdKyfkeCTm6M9SoMqxqqYhYPHKE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726357964; c=relaxed/simple;
-	bh=R4f1McxBSfdHQmNRqHY9lTFdOTLXIz2YZPXPfm0tidM=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=DZTt7HrM23Wc1e4FdAO8Q/eMaMDkgA8JjmEqdD2bd9ovDiYovPLcmh9hZWUqT1IyIraB/hBBlg5AjG8zkwPlkD9S5sK8YqAmOottBk9RdIqKS4IaWSGrD9OsqV5a1hm+IcrUjCUKykGgRogYUHiKyEw3RcZuBCTZY9B1WtAd5zc=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=G4dV7q39; arc=fail smtp.client-ip=52.101.95.86
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 806F4DF49
+	for <rust-for-linux@vger.kernel.org>; Sun, 15 Sep 2024 05:35:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.181
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1726378546; cv=none; b=fIMhFH0JG79sE7YyuSyOz8bBU84jb1mBRijSQc6lctw7FtYg4S59fLHcwLcgFM4yvLWs5Vc2mLfK2rDlY3XjvnA/CUX9TfOMo8TkJQCzZ5UhRL8S0nbE9a5hWncMvgoHLIuzV4qJkdbpfQE9l0slYYkP+O3H+AnB56SOAV8VxPo=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1726378546; c=relaxed/simple;
+	bh=S/me0RORQ2mrh7cuqbe8n/GVH/agAGzAtJFOOE4ymUg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=nRZUBWT1nYVBvkKb//6hbQeXHoXLaRjOvJIW/iT3VddrdwZK+dTI0VEZlPHRAcmSeTCF034S+sNpzdr7T2IRmzYiJ2BLZ9B92hAchmgptm6MOTD9Zn84+Te1OERKP9tJilwWHMp24Lc2qUt4o+RneXBTXWVRLR1L+qSQpgeqDrU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ITOA+FL/; arc=none smtp.client-ip=209.85.222.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="G4dV7q39"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=F8pWFUmCDPOSumM5zLdq5GcL2ZtlmQG5sQbrKGf7XQqdRYqTisFbSYWaJQY9ig8a4i7Jyes3rDtd8piga2iH97bOxjbPeCkM8f3oeJU5v8kNlh/2YNQS/KFvgqi+kVstNVy6CTjWvcKhtJj6hvYBnNVM3WJko1sl/YOc3ZsGsQSTJPZTQEyJVG8I8I9kecFEH21KTAlkFMI1JglYpg86fc2m+xZt8ImtDjhEeQOgc7S7XoeFrLUuN/avjPe/FlY4yvA1NTjuNOOh6sjUdfS/r2wKGPoqcGbNuxkuUVzg26yLndtTqx2aSz1aHUAIJTL5weaRWzqVhiNsKEqlZskX1w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=R4f1McxBSfdHQmNRqHY9lTFdOTLXIz2YZPXPfm0tidM=;
- b=BsU9o6v9J9nhOYPyCSs4u0jSi12FQkLSEO59Q8bOrdN6gKK0PYUE1ga6pgdEAPcCdqyA8Wn8NdFo+JGQwD6uNAJ+uXp4bNZwAbp2irINGCQsv64C7PnPYNut2lB5Pcp73cc+ZaAQfUbxaTaJhOAMcAdoxg/sj0rj0CaQ4APAjR+Rn61mAs58LLdoFslbva8EDhiwpGvGtUyWBKniXvp2IaCwjuJSMXJ61GTSjfachwcbrieXvuRFc6LW7nfYf/EIdQsuUmCF88xBgriETlJzUQSafU/2svlM7ILYHPw9unGGugcjFYuHPmgrZArmLqxMziPymr/La2JpXrpB12pJdg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=R4f1McxBSfdHQmNRqHY9lTFdOTLXIz2YZPXPfm0tidM=;
- b=G4dV7q39PrJvwuR3lv3NStcXjgB2kbahZiZawiKukVo0+qC/GnxVQ9qIpJUHj8SQNv9HyUaDO4bn5mG2jpuRIa/UY5yCFen08gsq8MA5c/ZspjteJ46JTe1230/PZCMmk93Zl6OcOW/Sn+PsGWBhvbjc05p4+R5VPXbZKNB5BiM=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
- by LO6P265MB6476.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:2d2::8) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7962.22; Sat, 14 Sep
- 2024 23:52:40 +0000
-Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1818:a2bf:38a7:a1e7]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1818:a2bf:38a7:a1e7%3]) with mapi id 15.20.7962.022; Sat, 14 Sep 2024
- 23:52:40 +0000
-Date: Sun, 15 Sep 2024 00:52:13 +0100
-From: Gary Guo <gary@garyguo.net>
-To: Ramon de C Valle <rcvalle@google.com>
-Cc: Benno Lossin <benno.lossin@proton.me>, Miguel Ojeda <ojeda@kernel.org>,
- Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho
- <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, =?UTF-8?B?Qmo=?=
- =?UTF-8?B?w7Zybg==?= Roy Baron <bjorn3_gh@protonmail.com>, Andreas Hindborg
- <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross
- <tmgross@umich.edu>, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 0/5] use custom FFI integer types
-Message-ID: <20240915005213.7ee8b814.gary@garyguo.net>
-In-Reply-To: <CAOcBZOTcoPEk2Bo05gj66cHiqKxTR7j1z9U_j+Jeh1oCjtOKXg@mail.gmail.com>
-References: <20240913213041.395655-1-gary@garyguo.net>
-	<14389f99-dfa9-4646-a24e-e5eef1beacf0@proton.me>
-	<CAOcBZOS6BAJ1FTFkB3x6jdag_hL7zrLbFy7TxkvZWKxRZ_+ggA@mail.gmail.com>
-	<CAOcBZOTcoPEk2Bo05gj66cHiqKxTR7j1z9U_j+Jeh1oCjtOKXg@mail.gmail.com>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: LO4P302CA0009.GBRP302.PROD.OUTLOOK.COM
- (2603:10a6:600:2c2::17) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:253::10)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ITOA+FL/"
+Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-7a9a3e731f9so303634785a.0
+        for <rust-for-linux@vger.kernel.org>; Sat, 14 Sep 2024 22:35:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1726378543; x=1726983343; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qKQOLuPS9LN0cAB9FYMxp92FH3flsTpWiBsupktJig4=;
+        b=ITOA+FL/NbLeOMkv+RLUlBsddn8XQrfpKwsKHEqZJkPscU7d9LpO6U5uX4f8q/oeYb
+         uyGBlRsoeF1KbbPS34LUsUyeCqPPtJ7j/C+MhxP5wg1cjEXqO1tPrCiTKtABYkj92JqV
+         n65PrjRKd8F6igwDwdEn1yzzp+HSk34k6x4RuL+lj0Jy1tjZl7oPCCF6l7p4tpYNioYI
+         zbISQJqLj2tcD3d+COkPSilEd2ONzq1RS0oLa4DRfLUzlnlNExa4xe28OZ9MIFaCjf4d
+         HzcevuCmEp4fXETXR7scsFYnhRanXUH2+ReoR4vnS5cj4KsEDVC6PCHZQ/KnzUNQhWu3
+         /ZfQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1726378543; x=1726983343;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=qKQOLuPS9LN0cAB9FYMxp92FH3flsTpWiBsupktJig4=;
+        b=i4Ugh0TX+PG4hiN5wL2FjDvpsF9eQjHgrm8sRhuBo3oV9LWkucS7s6WDrcTRUn1232
+         CHtvgXV8HNVYmPBuaGbUsP/r8stS28d7UFhjKtDsyXmz8T95pCych0ZNG7dfasRdXqTk
+         3AdQr40QczZ0gWfUS2zI8r7eNiaOJb5rXraHZoeFxI+rO+nebfW2R6NIXZo6874rNry/
+         G9S+JXBYZWk5HFAgUb5SrVNke55Eb6p/yxo2DNrcyRgaMfw9vhDznbhPdfBKzdtpaT+N
+         kQU92+MPlEVcaEDPP+yXQc6Nd6EVlMqelz7cGDVWNCgGQ7CZr86xAwaI65lfcbGnSpqL
+         92VA==
+X-Forwarded-Encrypted: i=1; AJvYcCUUwSIrSiJZLEr4tXY4fKQrnbjeRnI1y98lGs6EzDDQNmDAJYamw4YQFF+GT9gJ9/6fAtmW6+5BLoG72qQ0ew==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxq+3n8DyE4T+wjOHFJb/z1201sdnitxDtauwAvbYo4iqxZNJM+
+	tbQ/2LHhjD9aXivXuxyzlt55qK7xTJhrNUwLq9u1PBUbkzr6MLI6
+X-Google-Smtp-Source: AGHT+IEJEV2pCOMI2C1lgg+P7d5mmj9JwwagUW+9WQgIaPDYSTNMduT6C++M8bP4RIdMhwdOP2lXwA==
+X-Received: by 2002:a05:620a:4693:b0:7a6:5b3a:72cc with SMTP id af79cd13be357-7a9e5f81b93mr1866434685a.55.1726378543168;
+        Sat, 14 Sep 2024 22:35:43 -0700 (PDT)
+Received: from fauth1-smtp.messagingengine.com (fauth1-smtp.messagingengine.com. [103.168.172.200])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-7ab3e96544bsm133881085a.22.2024.09.14.22.35.42
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 14 Sep 2024 22:35:42 -0700 (PDT)
+Received: from phl-compute-03.internal (phl-compute-03.phl.internal [10.202.2.43])
+	by mailfauth.phl.internal (Postfix) with ESMTP id 4A98C1200069;
+	Sun, 15 Sep 2024 01:35:42 -0400 (EDT)
+Received: from phl-mailfrontend-01 ([10.202.2.162])
+  by phl-compute-03.internal (MEProxy); Sun, 15 Sep 2024 01:35:42 -0400
+X-ME-Sender: <xms:LnLmZjZ_yxAyWbvI8pebTvXpi8Pj__M-MBksdUGJQxowLEG9T2LqYw>
+    <xme:LnLmZibKrVwCVqT767cr6-5zVo4oHJUrm-JzzKwF-SdxLa1Tjy7TsoEbVK6g8xB4w
+    CXkzGRh3IXX-07G7g>
+X-ME-Received: <xmr:LnLmZl-OBeBJJR6UonlitDy9s1PVHxK3eZGi7oUegrFUp9do4vDvIkWThkeFtg>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrudekuddgleekucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
+    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucenucfjughrpeffhffvve
+    fukfhfgggtuggjsehttdortddttddvnecuhfhrohhmpeeuohhquhhnucfhvghnghcuoegs
+    ohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrthhtvghrnhepjeetle
+    efhffhtdehvefghfdthfefkeefveejgefffeekkedvkeegjefhjeduueejnecuffhomhgr
+    ihhnpehgvghtrdhmrghpnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrg
+    hilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidq
+    ieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilh
+    drtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthhopeejpdhmohguvgepshhm
+    thhpohhuthdprhgtphhtthhopehfvghlihhpvggplhhifhgvsehlihhvvgdrtghomhdprh
+    gtphhtthhopegrlhhitggvrhihhhhlsehgohhoghhlvgdrtghomhdprhgtphhtthhopeho
+    jhgvuggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehgrghrhiesghgrrhihghhuoh
+    drnhgvthdprhgtphhtthhopegsvghnnhhordhlohhsshhinhesphhrohhtohhnrdhmvgdp
+    rhgtphhtthhopehruhhsthdqfhhorhdqlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdroh
+    hrghdprhgtphhtthhopegsohhquhhnsehfihigmhgvrdhnrghmvg
+X-ME-Proxy: <xmx:LnLmZppkvkZ8_7vcnd721kdlPfFzsDkAruAbuCqRjdNO76Xe7RiQxg>
+    <xmx:LnLmZur1rrOMqNcpiHa6kn8sEVYACfsSLTGO-b4toMQ6NvHh561psQ>
+    <xmx:LnLmZvSMDdP7ibqiw0eU3-nSG-iVVufk8NRA8BdmjL5_zVM8q3z4Rg>
+    <xmx:LnLmZmrN9QT_QswHkDCM5cFX-ZdgrUbdPlPbL4yn6j_Rs5bb4swFMQ>
+    <xmx:LnLmZv5-nkVHUaUPgJi0ugOs56wk46rQmoYdEbmSub1MEZ7Bi0-vevo8>
+Feedback-ID: iad51458e:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
+ 15 Sep 2024 01:35:41 -0400 (EDT)
+Date: Sat, 14 Sep 2024 22:35:29 -0700
+From: Boqun Feng <boqun.feng@gmail.com>
+To: Filipe Xavier <felipe_life@live.com>
+Cc: aliceryhl@google.com, ojeda@kernel.org, gary@garyguo.net,
+	benno.lossin@proton.me, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH] rust: add trylock method support for lock backend
+Message-ID: <ZuZyIRaGHxGMGUid@boqun-archlinux>
+References: <DM4PR14MB727606461A9C870981F44D9BE9662@DM4PR14MB7276.namprd14.prod.outlook.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LO6P265MB6476:EE_
-X-MS-Office365-Filtering-Correlation-Id: 41979c8f-3c29-4958-020b-08dcd51850e4
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|376014|7416014|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?4KEiplTnIwzsDjoLl698qCNg0ZZ5Lxs2Ax1cs8GQjlelGr1K1cKaA778Uhxl?=
- =?us-ascii?Q?MW9PE2zuOLzxxaN+d0bli5WDWe1fF4YMOdU1N/olbhlLzieTTJQKTlwwj2Ad?=
- =?us-ascii?Q?xA9r0iDeKGUhzux7IPne9FkyNjLdZcP9wvjXgoRcRL+E/LsIumvoUS+aspnt?=
- =?us-ascii?Q?Tftan58TAhy+CTHVkR0PTzm44/0rsIX4leiwo/e1wQQxgwhccLSJW/08gT1g?=
- =?us-ascii?Q?GJpybmLDGnE/TMbPCaBLcNj2PUqoFG7b4W57WcV+uLryOcW9bicMpPNU3Khk?=
- =?us-ascii?Q?P4Hk5SDecbv0CirZLgGIBNYEOrWYHyWXsnO4aX5ZBTLt2v4rk27Pyn0Ej8Sb?=
- =?us-ascii?Q?vb/k1d0jL57audRyHf2PtVo0pT9q73yX4OYuIVBEYITFPn3+jR0JaekWkR4n?=
- =?us-ascii?Q?RKyzbaSHvVlmEICFsEXetYJoEREOeTa1gH3Gx1jchFsXMMrbEGsMpZv0SsIP?=
- =?us-ascii?Q?qSn6fRE79ImghRRznKVlh6yeUok9eH4QOT/7q3WiwgCJBG8b2TkgTyeKj8eL?=
- =?us-ascii?Q?pkQXeZfXIGrFpFvZ/+XDtTh/xhGVbBc2pXzeU/abgSS8nITnz6Jdz4Kp523K?=
- =?us-ascii?Q?9JEN8F6/vNLSTw6CVp8zY9g3VLkZQ78Vkkg+ueNrdDz5pAroAeGTj2HiRW5E?=
- =?us-ascii?Q?u5pg5WdSuH3gf42Su/1jPfZaY8oWauYwkOu1oF38x5ZrS9Q97pjKPTqOnDu0?=
- =?us-ascii?Q?4ivHGqXPJSIpO/dlhuMefczOXacEEsE5qDeW7k/IxLB8UEr5XsEn0Zqe0bRp?=
- =?us-ascii?Q?wnecnvM6nuuSiI5FBM/6MsFCd9lM8dJk7Yvg4hL1ZF2toZFc3KRfOS/kHNes?=
- =?us-ascii?Q?qo/D+TOEuhl9O/+bB2UeYR2e9uLsSR06a+xaRKQlXN0J7WL612h+AIzvb0Ir?=
- =?us-ascii?Q?DWTX01o34VUdGGbsik2mNP7qZDPK1vVujeMHiHbdjSviSpx5fduN2QQCybAB?=
- =?us-ascii?Q?AiS2hLTFDd6+LSlLHLevP5P6V51+rovc+77ja1AlXS5/0mpO8F6JzSB1uDSN?=
- =?us-ascii?Q?0RuztHz+f1q4StKlSUQ080z/EEVLazzTPBpm3l7EMMqP2lK6Wz5nBpgnX6iM?=
- =?us-ascii?Q?rGg6kcalvWK35NuFRsaSq9nS+QUjpKZ0avxi6mA8CUVsirHzGUAkXFPFWUoJ?=
- =?us-ascii?Q?V3mPHOvErhkeQLk0Rto5NI+CiAtv80RGxz/NEhplAKju/8ivutsK3NJOMvQa?=
- =?us-ascii?Q?FMOWFhGcj07c+8IrdMA3xNk6HDoscKEgs0WrYmrkTUZQKuHAQlkUzMZ7pBzR?=
- =?us-ascii?Q?aKL7eIXjoMnts6THUJCB/kPjm66dStPpUMY1j1sBlKYDw56T1/TDgmOqMPW3?=
- =?us-ascii?Q?CbA=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(376014)(7416014)(366016);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?srAVRDklsGya7jVUey6m+MX+CCT8gJ1i7czKRrFrC715YWeLU2VwLxIonU5K?=
- =?us-ascii?Q?oU14xhPSPOYiTCg8Iskm9r09F61ZAx3Q7fdLHUTUP3VpIdnQ3ip34HNY75VR?=
- =?us-ascii?Q?oc2EGjfqvNKGCCY8kg6yvgGh17nLcBV/qEKzOr7D3keB81T+YKm4cF+1QGzA?=
- =?us-ascii?Q?95rKZxFVW3dBn7pnkdVNVcGglxRfvUMvdluvnme18kMa5+rb5Ez+oo9zgk/+?=
- =?us-ascii?Q?3s7pkLoULjr/Q38oXneDp9R/ql4XS1ruN2ZznEvCjPj6vWDA9pNPoNZsOFQa?=
- =?us-ascii?Q?7EyYa94a/BlDfrM6KVNGJircUCeHgFjH7fETxleT4DGfv9+L1pFZJPBvR0sO?=
- =?us-ascii?Q?9w/tg3qopGgrySUIoZ/kzyi7c4xP0xoIYu6h/B24rXuvlCXdG6gqBtg79DxT?=
- =?us-ascii?Q?N3u4sGkhzv5+5lMVzhsBUsITddxjQWhJXn8HlQkNLunDC+kWuzsuKwLMLtHP?=
- =?us-ascii?Q?4AHQ6LPXsGP81gysBE17KyjAghbBMvSkhUIsUlu0Om70idaMXS1+VoL9k/Fk?=
- =?us-ascii?Q?jpj0LrXGkCVYeIfK5d0Y2m/Nf2xPfiscuKFDhsASBpyQsAM5IiDO4nQZdaLP?=
- =?us-ascii?Q?oRZR/D2DDEvM1x1CGDGQkMNDXPzMfzE/DiWxN4PoSNV64Ni50JU9U/sBKj/V?=
- =?us-ascii?Q?8BVuaBDLhGvS/lUrsQUj+uLyXB8FfqBf9b7r3mJpKKK/aD4JeyxKVsTDEBP/?=
- =?us-ascii?Q?fEGuUodIRdLXFI51jlqi+FfRiDDjkgFQCNbrNW+AEnws2MT55zVSnRZjOZhg?=
- =?us-ascii?Q?MQr1Hc9CJfQ1MA1g+0fNcDFtg5yL77MCApb7EOa02Gp2X8XTrAisAzstED/W?=
- =?us-ascii?Q?nL+XcM3Ovs0JwE79CsTyjvzqrHj9nDJQGwvUHxO+VXOHWjb6ht+GY3XH7wzz?=
- =?us-ascii?Q?nKbr+FUQeUXgZSXGRe7kffBO56EcJMDuBxrjYopk4KfP18ttJoI21NHULNyJ?=
- =?us-ascii?Q?D/hs/6fId0kofdMjkmyA4ZO/gZ1yOGLKRpsIppeMIBpoNu0MP4/pZobSpeo7?=
- =?us-ascii?Q?0HBw7R9L9Eq0DV2sOZaH/2BxMa7gK6WzDRPE7KWiufI7UVFl+99wIA1ZUDKv?=
- =?us-ascii?Q?2RrZwGdQ+0LJApqtYnGcgeSEgtJzmV+ZShfKJJfdE0+m2WoSr4TJggo2KtbS?=
- =?us-ascii?Q?ZPceCKdAoJ5B+qKtJWoqwYcT9BE8fALQz1YX3tFlll1bVXMm0GVwuHVpP+WM?=
- =?us-ascii?Q?VDvkEjXoNC9x4VrajDb8lqjERQ6Mvkm1f5n6yFvp1wSuyB6e191z++4d5oAC?=
- =?us-ascii?Q?L+hVy39YkPeW1uvfTprhvWxwwm85XUCkWLejA75pKNI1/zWTbYvg5jMhGtEJ?=
- =?us-ascii?Q?XT0FZTqqfaAtu3PGANg29EbjTU+I12HqQiyP8308Ns+cyiS54oEReWncfxsd?=
- =?us-ascii?Q?aXeNHnpTPEocK4SF2iXL15whTWUMg/mvgo+1QY0TI6bIAcxF/UZcVSKN2BhL?=
- =?us-ascii?Q?4GdsTub10T29bA1JDszeIfaijHH/f7FSazUcjyNiPiCI18URunXpp9MSue9w?=
- =?us-ascii?Q?/vBh4qr21NyZFWsRwxHPszYAxrCjtcAKDbenNzL80PWC8bHMva8DUF5JXdt+?=
- =?us-ascii?Q?FVh3++dWorWC/RkuRXUp6vSgcq1WDD4q/IgGIgwqCtv3qAWpToeseucrgIYa?=
- =?us-ascii?Q?gg=3D=3D?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 41979c8f-3c29-4958-020b-08dcd51850e4
-X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 14 Sep 2024 23:52:40.0001
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: vtLSBwW/iDRIW4hiMjMaJKLRcPAYUIqy7Zfx9uHUkytsGSV2UjqSswkpkpYk5uzBpDgR0qDgfZ7Ex2EkEunEzQ==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO6P265MB6476
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DM4PR14MB727606461A9C870981F44D9BE9662@DM4PR14MB7276.namprd14.prod.outlook.com>
 
-On Fri, 13 Sep 2024 19:51:01 -0700
-Ramon de C Valle <rcvalle@google.com> wrote:
+Hi Filipe,
 
-> Since we're doing this, may I suggest that we use
-> https://crates.io/crates/cfi-types by reexporting them as kernel::ffi
-> instead? By using those, we would also avoid the granularity loss of
-> normalizing integers and using the integer normalization option
-> wouldn't be necessary. I could accept any
-> contributions/kernel-specific changes that would make it easier for
-> the kernel to use them.
+Thanks for the patch.
 
-I don't think integer normalization is a big issue. Sami said the
-granularity loss only results in ~1% reduction of unique type hashes in
-https://lore.kernel.org/all/CABCJKuc8ue1y7WBPo3YRRoDeGUFpRon4at=Wa1rQjrXzOGpt9w@mail.gmail.com/.
+On Sat, Sep 14, 2024 at 11:00:33AM -0300, Filipe Xavier wrote:
+> 
 
-As Alice said, if the CFI annotation works with type aliases then we
-should switch to use them. Without it though, I think it's quite
-inconvenient if we have to use new types for all FFI integer
-primitives and add a ton of conversions. I'd prefer we still use type
-aliases.
+^ unnecessary empty line here.
 
-Best,
-Gary
+> Add a non-blocking trylock method to lock backend interface, mutex
+> and spinlock implementations. It includes a C helper for spin_trylock.
+
+The commit log needs to explain why the change is needed rather than
+what the change is. Do you have a (potential) usage of these trylock
+APIs? I know that trylock concept has been there for quite a while, but
+still an usage will help us understand why this is needed in Rust code.
+
+Also could you Cc lock maintainers next time, you can find the list of
+their email address at MAINTAINERS file (there is a "LOCKING PRIMITIVES"
+section).
+
+v unnecessary empty line here as well.
+> 
+> 
+> Signed-off-by: Filipe Xavier <felipe_life@live.com>
+> ---
+>  rust/helpers/spinlock.c           |  5 +++++
+>  rust/kernel/sync/lock.rs          | 15 +++++++++++++++
+>  rust/kernel/sync/lock/mutex.rs    | 11 +++++++++++
+>  rust/kernel/sync/lock/spinlock.rs | 11 +++++++++++
+>  4 files changed, 42 insertions(+)
+> 
+> diff --git a/rust/helpers/spinlock.c b/rust/helpers/spinlock.c
+> index acc1376b833c..775ed4d549ae 100644
+> --- a/rust/helpers/spinlock.c
+> +++ b/rust/helpers/spinlock.c
+> @@ -22,3 +22,8 @@ void rust_helper_spin_unlock(spinlock_t *lock)
+>  {
+>  	spin_unlock(lock);
+>  }
+> +
+> +int rust_helper_spin_trylock(spinlock_t *lock)
+
+I'd just change this to `boolean`, but I don't whether it affects
+LTO-inlining, Gary?
+
+> +{
+> +	return spin_trylock(lock);
+> +}
+> diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
+> index f6c34ca4d819..c13595a735ae 100644
+> --- a/rust/kernel/sync/lock.rs
+> +++ b/rust/kernel/sync/lock.rs
+> @@ -27,6 +27,7 @@
+>  ///
+>  /// [`lock`]: Backend::lock
+>  /// [`unlock`]: Backend::unlock
+> +/// [`try_lock`]: Backend::try_lock
+
+Other links are added because they are used in previous document
+section, but this patch doesn't add the corresponding document for
+`try_lock`.
+
+>  /// [`relock`]: Backend::relock
+>  pub unsafe trait Backend {
+>      /// The state required by the lock.
+> @@ -65,6 +66,13 @@ unsafe fn init(
+>      /// It must only be called by the current owner of the lock.
+>      unsafe fn unlock(ptr: *mut Self::State, guard_state: &Self::GuardState);
+>  
+> +    /// Tries to acquire the mutex without blocking.
+
+Why use word "mutex" in a generic trait for all locks?
+
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// Returns `Some(state)` if successful, `None` if already locked.
+
+This is not a safety require for this function.
+
+> +    unsafe fn try_lock(ptr: *mut Self::State) -> Option<Self::GuardState>;
+> +
+>      /// Reacquires the lock, making the caller its owner.
+>      ///
+>      /// # Safety
+> @@ -128,6 +136,13 @@ pub fn lock(&self) -> Guard<'_, T, B> {
+>          // SAFETY: The lock was just acquired.
+>          unsafe { Guard::new(self, state) }
+>      }
+> +
+> +    /// Tries to acquire the lock without blocking and returns a guard that can be used
+
+I'd make a new paragraph for the second part of the second (i..e "and
+returns ..."). "Tries to acquire the lock without blocking" is good
+enough to describe what the function is (although maybe "without
+blocking" can be also dropped, because "blocking" can mean exactly
+"sleep blocking" but that's not the case for spinlock), and the rest of
+the sentence is really further describing the return behavior which
+usually needs a separate paragraph.
+
+> +    /// to access the data protected by the lock if successful.
+> +    pub fn try_lock(&self) -> Option<Guard<'_, T, B>> {
+> +        // SAFETY: The backend `try_lock` method has been implemented securely.
+
+I didn't find any description on how `try_lock` should be implemented
+securely, but yet you mention it here. Could you take the `lock()`
+functions in `Backend` and `Lock` as an example, and see what you are
+missing? You probably need a "safety" section for trait Backend.
+
+Regards,
+Boqun
+
+> +        unsafe { B::try_lock(self.state.get()).map(|state| Guard::new(self, state)) }
+> +    }
+>  }
+>  
+>  /// A lock guard.
+> diff --git a/rust/kernel/sync/lock/mutex.rs b/rust/kernel/sync/lock/mutex.rs
+> index 30632070ee67..c4f3b6cbfe48 100644
+> --- a/rust/kernel/sync/lock/mutex.rs
+> +++ b/rust/kernel/sync/lock/mutex.rs
+> @@ -115,4 +115,15 @@ unsafe fn unlock(ptr: *mut Self::State, _guard_state: &Self::GuardState) {
+>          // caller is the owner of the mutex.
+>          unsafe { bindings::mutex_unlock(ptr) };
+>      }
+> +
+> +    unsafe fn try_lock(ptr: *mut Self::State) -> Option<Self::GuardState> {
+> +        // SAFETY: The `ptr` pointer is guaranteed to be valid and initialized before use.
+> +        let result = unsafe { bindings::mutex_trylock(ptr) };
+> +
+> +        if result != 0 {
+> +            Some(())
+> +        } else {
+> +            None
+> +        }
+> +    }
+>  }
+> diff --git a/rust/kernel/sync/lock/spinlock.rs b/rust/kernel/sync/lock/spinlock.rs
+> index ea5c5bc1ce12..c900ae23db76 100644
+> --- a/rust/kernel/sync/lock/spinlock.rs
+> +++ b/rust/kernel/sync/lock/spinlock.rs
+> @@ -114,4 +114,15 @@ unsafe fn unlock(ptr: *mut Self::State, _guard_state: &Self::GuardState) {
+>          // caller is the owner of the spinlock.
+>          unsafe { bindings::spin_unlock(ptr) }
+>      }
+> +
+> +    unsafe fn try_lock(ptr: *mut Self::State) -> Option<Self::GuardState> {
+> +        // SAFETY: The `ptr` pointer is guaranteed to be valid and initialized before use.
+> +        let result = unsafe { bindings::spin_trylock(ptr) };
+> +
+> +        if result != 0 {
+> +            Some(())
+> +        } else {
+> +            None
+> +        }
+> +    }
+>  }
+> -- 
+> 2.46.0
+> 
