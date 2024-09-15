@@ -1,266 +1,217 @@
-Received: from mail-qk1-f181.google.com (mail-qk1-f181.google.com [209.85.222.181])
+Received: from mail-ej1-f47.google.com (mail-ej1-f47.google.com [209.85.218.47])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 806F4DF49
-	for <rust-for-linux@vger.kernel.org>; Sun, 15 Sep 2024 05:35:44 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.181
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D64B168BE;
+	Sun, 15 Sep 2024 07:32:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.47
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726378546; cv=none; b=fIMhFH0JG79sE7YyuSyOz8bBU84jb1mBRijSQc6lctw7FtYg4S59fLHcwLcgFM4yvLWs5Vc2mLfK2rDlY3XjvnA/CUX9TfOMo8TkJQCzZ5UhRL8S0nbE9a5hWncMvgoHLIuzV4qJkdbpfQE9l0slYYkP+O3H+AnB56SOAV8VxPo=
+	t=1726385571; cv=none; b=XXt0gKPqwJ/U+r4xlf7wn8xtQBzvfOLU+4PLq+h5uALDflZ2MdkoLgx5oh7kGS2nlAcxjy0E9iNtQxzYE2BEEvEKIY3jtQ6Gn3LQO2UasjfqtkyKPyVT6Ca3PZCsGNFvCbdB3JbjJ6bPoU30v2qd8rY7PbFUFO0rRff4kVso9wA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726378546; c=relaxed/simple;
-	bh=S/me0RORQ2mrh7cuqbe8n/GVH/agAGzAtJFOOE4ymUg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nRZUBWT1nYVBvkKb//6hbQeXHoXLaRjOvJIW/iT3VddrdwZK+dTI0VEZlPHRAcmSeTCF034S+sNpzdr7T2IRmzYiJ2BLZ9B92hAchmgptm6MOTD9Zn84+Te1OERKP9tJilwWHMp24Lc2qUt4o+RneXBTXWVRLR1L+qSQpgeqDrU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ITOA+FL/; arc=none smtp.client-ip=209.85.222.181
+	s=arc-20240116; t=1726385571; c=relaxed/simple;
+	bh=Sk8UXaCUA/vlAWm8B2E0We3KmFV1OhCUNjsb6him7uA=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=SzacOAjOXstu7Nx/9ZcSrXb/rwz70Iv9ukek0kwh2dInK0stiw+3zUQWQj7rWcwRvS7f/KyJ8h0rDYngAmah1Kj8bvA0t56apDBwCkw9f8hD5wg9+4hGZ/tEuNbk2K32T7dZWlJ5s90MoWpENannY6LkZv7aCglXCLoke7NQHs4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=LgmIn2ju; arc=none smtp.client-ip=209.85.218.47
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ITOA+FL/"
-Received: by mail-qk1-f181.google.com with SMTP id af79cd13be357-7a9a3e731f9so303634785a.0
-        for <rust-for-linux@vger.kernel.org>; Sat, 14 Sep 2024 22:35:44 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="LgmIn2ju"
+Received: by mail-ej1-f47.google.com with SMTP id a640c23a62f3a-a7a81bd549eso410293066b.3;
+        Sun, 15 Sep 2024 00:32:49 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1726378543; x=1726983343; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qKQOLuPS9LN0cAB9FYMxp92FH3flsTpWiBsupktJig4=;
-        b=ITOA+FL/NbLeOMkv+RLUlBsddn8XQrfpKwsKHEqZJkPscU7d9LpO6U5uX4f8q/oeYb
-         uyGBlRsoeF1KbbPS34LUsUyeCqPPtJ7j/C+MhxP5wg1cjEXqO1tPrCiTKtABYkj92JqV
-         n65PrjRKd8F6igwDwdEn1yzzp+HSk34k6x4RuL+lj0Jy1tjZl7oPCCF6l7p4tpYNioYI
-         zbISQJqLj2tcD3d+COkPSilEd2ONzq1RS0oLa4DRfLUzlnlNExa4xe28OZ9MIFaCjf4d
-         HzcevuCmEp4fXETXR7scsFYnhRanXUH2+ReoR4vnS5cj4KsEDVC6PCHZQ/KnzUNQhWu3
-         /ZfQ==
+        d=gmail.com; s=20230601; t=1726385568; x=1726990368; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=IeRHQu+yKzQUqrXbd5lul2wLwuoHFUxcLP2h5VUYKXk=;
+        b=LgmIn2juHHmgV5K+08jGXQ1nhCtaxw5K3zjL/RLwUSA2ZvG7xeR1LlXHwHuhEZ4R9s
+         EgoaMK3M+R0j+uWWnWR1rNJFQCFg5RE5Bcj+bVG0hxt+YJiPHlKwL1TblpSfr2eZ+O0k
+         Kp3EauMCR2agQKWzR+7o09Zj7zZummC12JTGwjmlqclbaCOmOoIQoAM0Y5q9+sX7gVs4
+         b/xVLSfP71KLq8lctiq7gKnOnEt7xtB133ps4HTMmEoJiXrmpW3uijyU0igd0MTstag9
+         Im3voXN7luRPsZfJejscDXoxRFJNwKnKTzs5Me57m4SX7cxj2SBjkBgm5a6FzIww1iua
+         aPgg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726378543; x=1726983343;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:feedback-id:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=qKQOLuPS9LN0cAB9FYMxp92FH3flsTpWiBsupktJig4=;
-        b=i4Ugh0TX+PG4hiN5wL2FjDvpsF9eQjHgrm8sRhuBo3oV9LWkucS7s6WDrcTRUn1232
-         CHtvgXV8HNVYmPBuaGbUsP/r8stS28d7UFhjKtDsyXmz8T95pCych0ZNG7dfasRdXqTk
-         3AdQr40QczZ0gWfUS2zI8r7eNiaOJb5rXraHZoeFxI+rO+nebfW2R6NIXZo6874rNry/
-         G9S+JXBYZWk5HFAgUb5SrVNke55Eb6p/yxo2DNrcyRgaMfw9vhDznbhPdfBKzdtpaT+N
-         kQU92+MPlEVcaEDPP+yXQc6Nd6EVlMqelz7cGDVWNCgGQ7CZr86xAwaI65lfcbGnSpqL
-         92VA==
-X-Forwarded-Encrypted: i=1; AJvYcCUUwSIrSiJZLEr4tXY4fKQrnbjeRnI1y98lGs6EzDDQNmDAJYamw4YQFF+GT9gJ9/6fAtmW6+5BLoG72qQ0ew==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxq+3n8DyE4T+wjOHFJb/z1201sdnitxDtauwAvbYo4iqxZNJM+
-	tbQ/2LHhjD9aXivXuxyzlt55qK7xTJhrNUwLq9u1PBUbkzr6MLI6
-X-Google-Smtp-Source: AGHT+IEJEV2pCOMI2C1lgg+P7d5mmj9JwwagUW+9WQgIaPDYSTNMduT6C++M8bP4RIdMhwdOP2lXwA==
-X-Received: by 2002:a05:620a:4693:b0:7a6:5b3a:72cc with SMTP id af79cd13be357-7a9e5f81b93mr1866434685a.55.1726378543168;
-        Sat, 14 Sep 2024 22:35:43 -0700 (PDT)
-Received: from fauth1-smtp.messagingengine.com (fauth1-smtp.messagingengine.com. [103.168.172.200])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-7ab3e96544bsm133881085a.22.2024.09.14.22.35.42
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 14 Sep 2024 22:35:42 -0700 (PDT)
-Received: from phl-compute-03.internal (phl-compute-03.phl.internal [10.202.2.43])
-	by mailfauth.phl.internal (Postfix) with ESMTP id 4A98C1200069;
-	Sun, 15 Sep 2024 01:35:42 -0400 (EDT)
-Received: from phl-mailfrontend-01 ([10.202.2.162])
-  by phl-compute-03.internal (MEProxy); Sun, 15 Sep 2024 01:35:42 -0400
-X-ME-Sender: <xms:LnLmZjZ_yxAyWbvI8pebTvXpi8Pj__M-MBksdUGJQxowLEG9T2LqYw>
-    <xme:LnLmZibKrVwCVqT767cr6-5zVo4oHJUrm-JzzKwF-SdxLa1Tjy7TsoEbVK6g8xB4w
-    CXkzGRh3IXX-07G7g>
-X-ME-Received: <xmr:LnLmZl-OBeBJJR6UonlitDy9s1PVHxK3eZGi7oUegrFUp9do4vDvIkWThkeFtg>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeeftddrudekuddgleekucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdggtfgfnhhsuhgsshgtrhhisggvpdfu
-    rfetoffkrfgpnffqhgenuceurghilhhouhhtmecufedttdenucenucfjughrpeffhffvve
-    fukfhfgggtuggjsehttdortddttddvnecuhfhrohhmpeeuohhquhhnucfhvghnghcuoegs
-    ohhquhhnrdhfvghnghesghhmrghilhdrtghomheqnecuggftrfgrthhtvghrnhepjeetle
-    efhffhtdehvefghfdthfefkeefveejgefffeekkedvkeegjefhjeduueejnecuffhomhgr
-    ihhnpehgvghtrdhmrghpnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrg
-    hilhhfrhhomhepsghoqhhunhdomhgvshhmthhprghuthhhphgvrhhsohhnrghlihhthidq
-    ieelvdeghedtieegqddujeejkeehheehvddqsghoqhhunhdrfhgvnhhgpeepghhmrghilh
-    drtghomhesfhhigihmvgdrnhgrmhgvpdhnsggprhgtphhtthhopeejpdhmohguvgepshhm
-    thhpohhuthdprhgtphhtthhopehfvghlihhpvggplhhifhgvsehlihhvvgdrtghomhdprh
-    gtphhtthhopegrlhhitggvrhihhhhlsehgohhoghhlvgdrtghomhdprhgtphhtthhopeho
-    jhgvuggrsehkvghrnhgvlhdrohhrghdprhgtphhtthhopehgrghrhiesghgrrhihghhuoh
-    drnhgvthdprhgtphhtthhopegsvghnnhhordhlohhsshhinhesphhrohhtohhnrdhmvgdp
-    rhgtphhtthhopehruhhsthdqfhhorhdqlhhinhhugiesvhhgvghrrdhkvghrnhgvlhdroh
-    hrghdprhgtphhtthhopegsohhquhhnsehfihigmhgvrdhnrghmvg
-X-ME-Proxy: <xmx:LnLmZppkvkZ8_7vcnd721kdlPfFzsDkAruAbuCqRjdNO76Xe7RiQxg>
-    <xmx:LnLmZur1rrOMqNcpiHa6kn8sEVYACfsSLTGO-b4toMQ6NvHh561psQ>
-    <xmx:LnLmZvSMDdP7ibqiw0eU3-nSG-iVVufk8NRA8BdmjL5_zVM8q3z4Rg>
-    <xmx:LnLmZmrN9QT_QswHkDCM5cFX-ZdgrUbdPlPbL4yn6j_Rs5bb4swFMQ>
-    <xmx:LnLmZv5-nkVHUaUPgJi0ugOs56wk46rQmoYdEbmSub1MEZ7Bi0-vevo8>
-Feedback-ID: iad51458e:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Sun,
- 15 Sep 2024 01:35:41 -0400 (EDT)
-Date: Sat, 14 Sep 2024 22:35:29 -0700
-From: Boqun Feng <boqun.feng@gmail.com>
-To: Filipe Xavier <felipe_life@live.com>
-Cc: aliceryhl@google.com, ojeda@kernel.org, gary@garyguo.net,
-	benno.lossin@proton.me, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH] rust: add trylock method support for lock backend
-Message-ID: <ZuZyIRaGHxGMGUid@boqun-archlinux>
-References: <DM4PR14MB727606461A9C870981F44D9BE9662@DM4PR14MB7276.namprd14.prod.outlook.com>
+        d=1e100.net; s=20230601; t=1726385568; x=1726990368;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=IeRHQu+yKzQUqrXbd5lul2wLwuoHFUxcLP2h5VUYKXk=;
+        b=K5HQKqTXR8SrO5adg0iCp3gE28WXwTBXy+m1ubJFjTyxMrjaxgbpzOwlEdaC8W7ihN
+         iFg3PVxAIEuqn1AT1PbldS1GlupbFOYi/7+wZ/V+NWUX5MtAl/gjgMoKw+Ykf3yHXyST
+         YPvymIE5SpHcaT2PKGVSwEMrrxwm1k9IVXS/asTe9nxqPTVZTJmlRnNhbz+gBFkRg5jE
+         I0o/WjddjrA4uOqg0fuQped6TCDWGCGMp1lnO7vWG3tIE2ur70K4oRlgJTngLGVNu4TN
+         N3p9NUhAPIdyeKpAakbabiyM8W1zmK7Yy8n7CrlHEsTLeubeZNE4DqcwaCiuOc2PbWkk
+         3UFg==
+X-Forwarded-Encrypted: i=1; AJvYcCVKx4yNJ+U8FrinzLnLVHWX0a7hpWhdmXURsPlLgtxw8HZGDVs8cUwS0S8pbbdgijFzYES0nx/eobnGez48pok=@vger.kernel.org, AJvYcCVqppMvOvpjyacU9CG3N9IyDWI/cFEFAaZJnVrB0ZN28UgrbQFdAgjDVSj9c97esezWn933p1w5aHlnDKn0@vger.kernel.org, AJvYcCWNB3a32DzVrmFGN0k44xY1Mtt+4Eu4Kl//d4TMIQGvG1nDBjChX+YO8NB1ObsgOYVtjnuTWuqYsVN0j4c=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw//nVXi+foFNk496KBozO7FCkh3JQFlhNubyprjgCMWWTIGNb4
+	fSZNi4tNoEXOJjbcRJa6GlPOIGPAyqagOXV6C1U3s/Z0ly9OgCwO
+X-Google-Smtp-Source: AGHT+IGlHUAsnPjOFFuTn/tXNwH8GByOCS4k9zUVf6iXg3eJnbjo7p2RPWPflOmT8NKEozFzWvNMPQ==
+X-Received: by 2002:a17:907:e28f:b0:a8d:2ab2:c99e with SMTP id a640c23a62f3a-a9029730615mr1197571366b.55.1726385566847;
+        Sun, 15 Sep 2024 00:32:46 -0700 (PDT)
+Received: from ?IPV6:2003:df:bf21:aa00:bafe:d6:9476:f8d4? (p200300dfbf21aa00bafe00d69476f8d4.dip0.t-ipconnect.de. [2003:df:bf21:aa00:bafe:d6:9476:f8d4])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a90613205b8sm163145166b.188.2024.09.15.00.32.45
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 15 Sep 2024 00:32:46 -0700 (PDT)
+Message-ID: <c7c5a16b-d033-4b46-8994-259c55bfd8b1@gmail.com>
+Date: Sun, 15 Sep 2024 09:32:44 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DM4PR14MB727606461A9C870981F44D9BE9662@DM4PR14MB7276.namprd14.prod.outlook.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v7] rust: support for shadow call stack sanitizer
+To: Alice Ryhl <aliceryhl@google.com>, Conor Dooley <conor@kernel.org>
+Cc: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>,
+ Paul Walmsley <paul.walmsley@sifive.com>, Palmer Dabbelt
+ <palmer@dabbelt.com>, Albert Ou <aou@eecs.berkeley.edu>,
+ Catalin Marinas <catalin.marinas@arm.com>, Will Deacon <will@kernel.org>,
+ Ard Biesheuvel <ardb@kernel.org>, Jamie Cunliffe <Jamie.Cunliffe@arm.com>,
+ Sami Tolvanen <samitolvanen@google.com>,
+ Nathan Chancellor <nathan@kernel.org>, Kees Cook <kees@kernel.org>,
+ Masahiro Yamada <masahiroy@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>,
+ Marc Zyngier <maz@kernel.org>, Mark Rutland <mark.rutland@arm.com>,
+ Mark Brown <broonie@kernel.org>, Nick Desaulniers <ndesaulniers@google.com>,
+ Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng
+ <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@samsung.com>,
+ Valentin Obst <kernel@valentinobst.de>, linux-kbuild@vger.kernel.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ rust-for-linux@vger.kernel.org, linux-riscv <linux-riscv@lists.infradead.org>
+References: <20240829-shadow-call-stack-v7-1-2f62a4432abf@google.com>
+ <CANiq72kNmvFOXhhAcQJQdMC872908=CWW15_bzyyt9ht2q=twQ@mail.gmail.com>
+ <20240913-shack-estate-b376a65921b1@spud>
+ <CAH5fLggX=Uw8T6EqyonJyOkjOVM7ELy4hK8NV80suvDEBnq_Lg@mail.gmail.com>
+Content-Language: en-US
+From: Dirk Behme <dirk.behme@gmail.com>
+In-Reply-To: <CAH5fLggX=Uw8T6EqyonJyOkjOVM7ELy4hK8NV80suvDEBnq_Lg@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-Hi Filipe,
+Am 13.09.24 um 23:44 schrieb Alice Ryhl:
+> On Fri, Sep 13, 2024 at 11:18 PM Conor Dooley <conor@kernel.org> wrote:
+>>
+>> On Fri, Sep 13, 2024 at 12:08:20AM +0200, Miguel Ojeda wrote:
+>>> On Thu, Aug 29, 2024 at 10:23 AM Alice Ryhl <aliceryhl@google.com> wrote:
+>>>>
+>>>> Add all of the flags that are needed to support the shadow call stack
+>>>> (SCS) sanitizer with Rust, and updates Kconfig to allow only
+>>>> configurations that work.
+>>>
+>>> Applied to `rust-next` -- thanks everyone!
+>>>
+>>> Paul/Palmer/Albert/RISC-V: I think you were not Cc'd (at least in this
+>>> version?), so please shout if you have a problem with this.
+>>
+>> For some reason I deleted the series from my mailbox, must've been in
+>> dt-binding review mode and hit ctrl + d. I've been away and busy, so my
+>> apologies Alice for not trying this out sooner.
+>> It's sorta annoying to test rust + scs on riscv, cos you need (unless I
+>> am mistaken) llvm-19. llvm-18 + rust built fine, but has no SCS.
+>>
+>> llvm-19 + rust failed to build for me riscv, producing:
+>>
+>> In file included from /stuff/linux/rust/helpers/helpers.c:22:
+>> /stuff/linux/rust/helpers/spinlock.c:10:23: error: call to undeclared function 'spinlock_check'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
+>> __raw_spin_lock_init(spinlock_check(lock), name, key, LD_WAIT_CONFIG);
+>> ^
+>> /stuff/linux/rust/helpers/spinlock.c:10:23: error: incompatible integer to pointer conversion passing 'int' to parameter of type 'raw_spinlock_t *' (aka 'struct raw_spinlock *') [-Wint-conversion]
+>> __raw_spin_lock_init(spinlock_check(lock), name, key, LD_WAIT_CONFIG);
+>> ^~~~~~~~~~~~~~~~~~~~
+>> /stuff/linux/include/linux/spinlock.h:101:52: note: passing argument to parameter 'lock' here
+>> extern void __raw_spin_lock_init(raw_spinlock_t *lock, const char *name,
+>> ^
+>> 2 errors generated.
+>>
+>> This occurs because I have DEBUG_SPINLOCK enabled. I didn't check why,
+>> but Andreas seems to have introduced that code - luckily he's already on
+>> CC here :)
+>>
+>> With that disabled, there are dozens of warnings along the lines of:
+>> /stuff/linux/rust/helpers/err.c:6:14: warning: symbol 'rust_helper_ERR_PTR' was not declared. Should it be static?
+>> If those are okay for rust code, it would be rather helpful if the
+>> warnings could be disabled - otherwise they should really be fixed.
+>>
+>> Following that, I got a build error:
+>>
+>> error[E0425]: cannot find function `__mutex_init` in crate `bindings`
+>> --> /stuff/linux/rust/kernel/sync/lock/mutex.rs:104:28
+>> |
+>> 104   |           unsafe { bindings::__mutex_init(ptr, name, key) }
+>> |                              ^^^^^^^^^^^^ help: a function with a similar name exists: `__mutex_rt_init`
+>> |
+>> ::: /stuff/brsdk/work/linux/rust/bindings/bindings_generated.rs:12907:5
+>> |
+>> 12907 | /     pub fn __mutex_rt_init(
+>> 12908 | |         lock: *mut mutex,
+>> 12909 | |         name: *const core::ffi::c_char,
+>> 12910 | |         key: *mut lock_class_key,
+>> 12911 | |     );
+>> | |_____- similarly named function `__mutex_rt_init` defined here
+>>
+>> error: aborting due to 1 previous error
+> 
+> This looks like an unrelated problem to me. 
 
-Thanks for the patch.
 
-On Sat, Sep 14, 2024 at 11:00:33AM -0300, Filipe Xavier wrote:
+Yes, it is unrelated to this change. It is PREEMPT_RT usage related. I 
+think we could add something like
+
+#ifdef CONFIG_PREEMPT_RT
+void rust_helper___mutex_init(struct mutex *mutex, const char *name,
+			 struct lock_class_key *key)
+{
+	return __mutex_init(mutex, name, key);
+}
+#endif
+
+to helpers to fix
+
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/rust/kernel/sync/lock/mutex.rs?&id=6d20d629c6d8575be98eeebe49a16fb2d7b32350
+
+?
+
+Explanation: Looking at
+
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/include/linux/mutex.h?#n52
+
+we have (simplified)
+
+#ifndef CONFIG_PREEMPT_RT
+extern void __mutex_init(struct mutex *lock, const char *name,
+			 struct lock_class_key *key);
+#else
+#define __mutex_init(mutex, name, key)			\
+do {							\
+	rt_mutex_base_init(&(mutex)->rtmutex);		\
+	__mutex_rt_init((mutex), name, key);		\
+} while (0)
+#endif
+
+So in the CONFIG_PREEMPT_RT case bindgen doesn't resolve the macro 
+what could be fixed by adding a helper.
+
+Dirk
+
+
+> This patch only changes
+> the rustc flags, but these errors have to do with the Rust
+> helpers/bindings, which get generated before the rustc flags are used
+> at all. Most likely, there is a problem under the particular
+> configuration you are using. Were you able to reproduce these errors
+> without this patch?
+> 
+>> I stopped there, Space Marine 2 awaits.
+>>
+>> Hopefully I'll get to say hello next week,
+>> Conor.
+> 
+> Thanks for taking a look, and see you at Plumbers!
+> 
+> Alice
 > 
 
-^ unnecessary empty line here.
-
-> Add a non-blocking trylock method to lock backend interface, mutex
-> and spinlock implementations. It includes a C helper for spin_trylock.
-
-The commit log needs to explain why the change is needed rather than
-what the change is. Do you have a (potential) usage of these trylock
-APIs? I know that trylock concept has been there for quite a while, but
-still an usage will help us understand why this is needed in Rust code.
-
-Also could you Cc lock maintainers next time, you can find the list of
-their email address at MAINTAINERS file (there is a "LOCKING PRIMITIVES"
-section).
-
-v unnecessary empty line here as well.
-> 
-> 
-> Signed-off-by: Filipe Xavier <felipe_life@live.com>
-> ---
->  rust/helpers/spinlock.c           |  5 +++++
->  rust/kernel/sync/lock.rs          | 15 +++++++++++++++
->  rust/kernel/sync/lock/mutex.rs    | 11 +++++++++++
->  rust/kernel/sync/lock/spinlock.rs | 11 +++++++++++
->  4 files changed, 42 insertions(+)
-> 
-> diff --git a/rust/helpers/spinlock.c b/rust/helpers/spinlock.c
-> index acc1376b833c..775ed4d549ae 100644
-> --- a/rust/helpers/spinlock.c
-> +++ b/rust/helpers/spinlock.c
-> @@ -22,3 +22,8 @@ void rust_helper_spin_unlock(spinlock_t *lock)
->  {
->  	spin_unlock(lock);
->  }
-> +
-> +int rust_helper_spin_trylock(spinlock_t *lock)
-
-I'd just change this to `boolean`, but I don't whether it affects
-LTO-inlining, Gary?
-
-> +{
-> +	return spin_trylock(lock);
-> +}
-> diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
-> index f6c34ca4d819..c13595a735ae 100644
-> --- a/rust/kernel/sync/lock.rs
-> +++ b/rust/kernel/sync/lock.rs
-> @@ -27,6 +27,7 @@
->  ///
->  /// [`lock`]: Backend::lock
->  /// [`unlock`]: Backend::unlock
-> +/// [`try_lock`]: Backend::try_lock
-
-Other links are added because they are used in previous document
-section, but this patch doesn't add the corresponding document for
-`try_lock`.
-
->  /// [`relock`]: Backend::relock
->  pub unsafe trait Backend {
->      /// The state required by the lock.
-> @@ -65,6 +66,13 @@ unsafe fn init(
->      /// It must only be called by the current owner of the lock.
->      unsafe fn unlock(ptr: *mut Self::State, guard_state: &Self::GuardState);
->  
-> +    /// Tries to acquire the mutex without blocking.
-
-Why use word "mutex" in a generic trait for all locks?
-
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// Returns `Some(state)` if successful, `None` if already locked.
-
-This is not a safety require for this function.
-
-> +    unsafe fn try_lock(ptr: *mut Self::State) -> Option<Self::GuardState>;
-> +
->      /// Reacquires the lock, making the caller its owner.
->      ///
->      /// # Safety
-> @@ -128,6 +136,13 @@ pub fn lock(&self) -> Guard<'_, T, B> {
->          // SAFETY: The lock was just acquired.
->          unsafe { Guard::new(self, state) }
->      }
-> +
-> +    /// Tries to acquire the lock without blocking and returns a guard that can be used
-
-I'd make a new paragraph for the second part of the second (i..e "and
-returns ..."). "Tries to acquire the lock without blocking" is good
-enough to describe what the function is (although maybe "without
-blocking" can be also dropped, because "blocking" can mean exactly
-"sleep blocking" but that's not the case for spinlock), and the rest of
-the sentence is really further describing the return behavior which
-usually needs a separate paragraph.
-
-> +    /// to access the data protected by the lock if successful.
-> +    pub fn try_lock(&self) -> Option<Guard<'_, T, B>> {
-> +        // SAFETY: The backend `try_lock` method has been implemented securely.
-
-I didn't find any description on how `try_lock` should be implemented
-securely, but yet you mention it here. Could you take the `lock()`
-functions in `Backend` and `Lock` as an example, and see what you are
-missing? You probably need a "safety" section for trait Backend.
-
-Regards,
-Boqun
-
-> +        unsafe { B::try_lock(self.state.get()).map(|state| Guard::new(self, state)) }
-> +    }
->  }
->  
->  /// A lock guard.
-> diff --git a/rust/kernel/sync/lock/mutex.rs b/rust/kernel/sync/lock/mutex.rs
-> index 30632070ee67..c4f3b6cbfe48 100644
-> --- a/rust/kernel/sync/lock/mutex.rs
-> +++ b/rust/kernel/sync/lock/mutex.rs
-> @@ -115,4 +115,15 @@ unsafe fn unlock(ptr: *mut Self::State, _guard_state: &Self::GuardState) {
->          // caller is the owner of the mutex.
->          unsafe { bindings::mutex_unlock(ptr) };
->      }
-> +
-> +    unsafe fn try_lock(ptr: *mut Self::State) -> Option<Self::GuardState> {
-> +        // SAFETY: The `ptr` pointer is guaranteed to be valid and initialized before use.
-> +        let result = unsafe { bindings::mutex_trylock(ptr) };
-> +
-> +        if result != 0 {
-> +            Some(())
-> +        } else {
-> +            None
-> +        }
-> +    }
->  }
-> diff --git a/rust/kernel/sync/lock/spinlock.rs b/rust/kernel/sync/lock/spinlock.rs
-> index ea5c5bc1ce12..c900ae23db76 100644
-> --- a/rust/kernel/sync/lock/spinlock.rs
-> +++ b/rust/kernel/sync/lock/spinlock.rs
-> @@ -114,4 +114,15 @@ unsafe fn unlock(ptr: *mut Self::State, _guard_state: &Self::GuardState) {
->          // caller is the owner of the spinlock.
->          unsafe { bindings::spin_unlock(ptr) }
->      }
-> +
-> +    unsafe fn try_lock(ptr: *mut Self::State) -> Option<Self::GuardState> {
-> +        // SAFETY: The `ptr` pointer is guaranteed to be valid and initialized before use.
-> +        let result = unsafe { bindings::spin_trylock(ptr) };
-> +
-> +        if result != 0 {
-> +            Some(())
-> +        } else {
-> +            None
-> +        }
-> +    }
->  }
-> -- 
-> 2.46.0
-> 
