@@ -1,147 +1,121 @@
-Received: from mail-wr1-f45.google.com (mail-wr1-f45.google.com [209.85.221.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1888A1EEF9
-	for <rust-for-linux@vger.kernel.org>; Sun, 15 Sep 2024 21:07:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF36A4779F;
+	Sun, 15 Sep 2024 21:37:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726434455; cv=none; b=D50+6Cw5FXWcDdNUYBCHujauq6Z5gjEW5huKk1km7Bg8lNKVecb0LOaOI+EpRi63gK7ty+2Co+j+b+SiVQ1j8eLPYe4jjWTPWETPnAcH/wzGOPm9XL6Y4YM3f85tR2y/BhqbFv2SqoXp4ai/XIThPcrqn7wFqfeWfwfSpPW9dt0=
+	t=1726436267; cv=none; b=efHKTJGNdasW3R4Ey7yvEn+m6ZsJN247yE1/nlNunPzekJtYkdIfcGx/ovtYPnLTns0oco0UPTrqR/EGyDF+2d527zazQE70udVOZeW/dEHt3m0l6QYVM/QulpCFOsQc1P73U9gnRUIRoboyWeldglRWHIGgqFpZiid8WFUL8qE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726434455; c=relaxed/simple;
-	bh=u0mauue4pFbpJvPlGNnG8KmtJCv5osrYKUh15cf2xQw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=hK23RlMJcJ6ArrKiPsDqmHNlTPNjdpN117+cZS69TgzaSmQ8cRlyy6Y+BFbll/j1K3BKhrVvfR+m5R18tp6x9iGio+pLhwkePOfQI/EWDwXlk6Yp35MfJNkJ6mxgVxYePggoU7a5xzNHtVGIIhX3lrqeBmKWM5RVOOMc9EGIzD8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=MHY4Pwzq; arc=none smtp.client-ip=209.85.221.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1726436267; c=relaxed/simple;
+	bh=cFetZ0+pK2Z2v93rcqzXBuQ7IfsY3UoObSRCY2KoNlg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fQ2rnPYCAruIreInnBqJlRksTjpyUWsybvuNDxqA8qT3jX7+Eqe1Zb3zSlf2c4083FBwygD41pWv3Xvm1jVsC6uRaMFRefNObGMS+li3d9UYFBxW8Y1wf30UkZtPsjtYDlYxaKvcxO48vE9w7yhTJ1RTEbXLJi1dOMo4JSrS6PM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=PQcgC3A+; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="MHY4Pwzq"
-Received: by mail-wr1-f45.google.com with SMTP id ffacd0b85a97d-374c3eef39eso2294006f8f.0
-        for <rust-for-linux@vger.kernel.org>; Sun, 15 Sep 2024 14:07:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1726434451; x=1727039251; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=aMSCaCClJjZ0q/vopdrKwBeXnkKAsPzQyB/3kJTnFhk=;
-        b=MHY4Pwzqh5CGlH4wC/IS77bKhiHWywWFmRUFNuzLfK2rzG7Kqgi7VQMs5Gew/tQ9PZ
-         RGfaDvvMg9OmGHo5mkpIZU3YfFTcOrrZbVH/XsseHfMpUTyO8vYXBzGSYyU3Hm/BYEJs
-         KYT5dqzf3twXemIzQWuG3YzWmMEvknhYadBkUYmj9FV6RU5E/EvUNuDDwHeYXRzrLLzl
-         washlT17OTkQnEkEl8+8lZmob7wU+TPq0bhhnpKzFGsUxYNgP0SCN8OxFfiP7C8ifuDk
-         zGSVV4x8rS80PF0Xa18SO69HK6vCOYyaX8hFhZUgIxsAHDjUzsvYsaKZFptHtvpa/Mtg
-         EATA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726434451; x=1727039251;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=aMSCaCClJjZ0q/vopdrKwBeXnkKAsPzQyB/3kJTnFhk=;
-        b=NRIIXEEBaUhh46DWhimeerx2gkplWDCxgkwECMVKh5ofLAwQ1XKouSB6s+FCLb5wnZ
-         3+tEzP//O1++gY4fCYv3PnfUEtNd0VKJH9ZdjLm+TGUaZhVg/av+2PmlJBeJPYD4u/Sz
-         FxAEEGgD2AzP+U+e7w8PZcbWiSbqtUFYmk7IwhvTGaSTa+54VgXgXkEVVvWGdx9gRT7w
-         +HZe8xRwTSmJ7Isw/VGV9X1A4heqLmns9RiJ4KHR8bSr3rMpUHLYk/MyWH05k4sQDTBc
-         4hFysC6mTGqIqVBiVEzmaYubHfR4ql29zdReTRUvpHLDZftJL+K70q1QV4k9tvef8MLt
-         pnXw==
-X-Forwarded-Encrypted: i=1; AJvYcCVth6GEJkklIcgZHSPuMX0+sFGbMmWQBtcvKD37IrdED5MQOjei2+0zaZdR+RPHQGMgn+xXw6XDAOCuq2/MeA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx2UBawbCm/tw3WsU0TdppQtK20QRI5ktGxr3XhOSpXi6jpufCb
-	wm6rjNCTxELdou80LpNcQy7WSXe9Wmd1jzIn7AMJZjJxqDKJFRZmt3ntYofw+wJlL/KaFig4A17
-	RykICGCEAaUp6pRBgm2j8TjDypFEr5pr57IpC
-X-Google-Smtp-Source: AGHT+IHHL9ci38l3QyRKB9ijCz+Na//ffly7AGZW2nAho4rRP9TW1RbmkTpcC/P3ssAUOSVor4hTQsXWMTlb9HHx0V4=
-X-Received: by 2002:a5d:4983:0:b0:374:c1f9:ea79 with SMTP id
- ffacd0b85a97d-378c2cd5e5fmr7840237f8f.5.1726434451067; Sun, 15 Sep 2024
- 14:07:31 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="PQcgC3A+"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A92E7C4CEC4;
+	Sun, 15 Sep 2024 21:37:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1726436266;
+	bh=cFetZ0+pK2Z2v93rcqzXBuQ7IfsY3UoObSRCY2KoNlg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=PQcgC3A+5UyJfuiIQUzVgwzNMgU/GY/avkfzGcA4LaF2kdN0F3yUuBlxab5fEvQcl
+	 9XiIHi0tnp2vfwLrbQxZ+UwfqqXQCNsn5+nyi3PVBxs/z+YiLhhJP08V8WtgIyr3wg
+	 u2+UNkrLtI/zdTxgWuviGikO+pmx6hQcv/3tBFRW3dqMFTczaJnhSQTmhzjdkERJPh
+	 eGkUbQcdUfPqsih17gTrq+jnkeKjIkDF+x9BICgNfW3mRJEcJ/jGUIOxw5+ZMIKoZ7
+	 DF8zAONumxFHNHB9SV2WTygew7XC+VHhGAU4PzRoGVKxbvp/jZA/+H9KLu1szW4Vf/
+	 5rySmtahMopIQ==
+Date: Sun, 15 Sep 2024 23:37:38 +0200
+From: Danilo Krummrich <dakr@kernel.org>
+To: Gary Guo <gary@garyguo.net>
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
+	boqun.feng@gmail.com, bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me, a.hindborg@samsung.com,
+	aliceryhl@google.com, akpm@linux-foundation.org,
+	daniel.almeida@collabora.com, faith.ekstrand@collabora.com,
+	boris.brezillon@collabora.com, lina@asahilina.net,
+	mcanal@igalia.com, zhiw@nvidia.com, cjia@nvidia.com,
+	jhubbard@nvidia.com, airlied@redhat.com, ajanulgu@redhat.com,
+	lyude@redhat.com, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v7 01/26] rust: alloc: add `Allocator` trait
+Message-ID: <ZudTon205iOCdQbq@pollux>
+References: <20240911225449.152928-1-dakr@kernel.org>
+ <20240911225449.152928-2-dakr@kernel.org>
+ <20240915162813.149e21f2.gary@garyguo.net>
+ <ZucTMDCcoVH4oGs1@pollux>
+ <20240915202242.7a16b3d3.gary@garyguo.net>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240915-alice-file-v10-0-88484f7a3dcf@google.com>
- <20240915-alice-file-v10-5-88484f7a3dcf@google.com> <202409151325.09E4F3C2F@keescook>
-In-Reply-To: <202409151325.09E4F3C2F@keescook>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Sun, 15 Sep 2024 23:07:19 +0200
-Message-ID: <CAH5fLghA0tLTwCDBRrm+GAEWhhY7Y8qLtpj0wwcvTK_ZRZVgBw@mail.gmail.com>
-Subject: Re: [PATCH v10 5/8] rust: security: add abstraction for secctx
-To: Kees Cook <kees@kernel.org>
-Cc: Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
-	"Serge E. Hallyn" <serge@hallyn.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Christian Brauner <brauner@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
-	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
-	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Dan Williams <dan.j.williams@intel.com>, 
-	Matthew Wilcox <willy@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, Daniel Xu <dxu@dxuuu.xyz>, 
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240915202242.7a16b3d3.gary@garyguo.net>
 
-On Sun, Sep 15, 2024 at 10:58=E2=80=AFPM Kees Cook <kees@kernel.org> wrote:
->
-> On Sun, Sep 15, 2024 at 02:31:31PM +0000, Alice Ryhl wrote:
-> > Add an abstraction for viewing the string representation of a security
-> > context.
->
-> Hm, this may collide with "LSM: Move away from secids" is going to happen=
-.
-> https://lore.kernel.org/all/20240830003411.16818-1-casey@schaufler-ca.com=
-/
->
-> This series is not yet landed, but in the future, the API changes should
-> be something like this, though the "lsmblob" name is likely to change to
-> "lsmprop"?
-> security_cred_getsecid()   -> security_cred_getlsmblob()
-> security_secid_to_secctx() -> security_lsmblob_to_secctx()
+On Sun, Sep 15, 2024 at 08:22:42PM +0100, Gary Guo wrote:
+> On Sun, 15 Sep 2024 19:02:40 +0200
+> Danilo Krummrich <dakr@kernel.org> wrote:
+> > There is also 4.
+> > 
+> > Let `alloc` and `realloc` return a properly aligned dangling pointer for
+> > `size == 0` and don't accept dangling pointers in `realloc` and `free`.
+> 
+> I'll consider the API design to be bad if I can't pass allocated pointer to
+> free. If caller needs to handle ZST specially then we might as well
+> just ban it completely.
 
-Thanks for the heads up. I'll make sure to look into how this
-interacts with those changes.
+Fine for me -- I don't see a need to support ZSTs with `Allocator`.
 
-> > This is needed by Rust Binder because it has a feature where a process
-> > can view the string representation of the security context for incoming
-> > transactions. The process can use that to authenticate incoming
-> > transactions, and since the feature is provided by the kernel, the
-> > process can trust that the security context is legitimate.
-> >
-> > This abstraction makes the following assumptions about the C side:
-> > * When a call to `security_secid_to_secctx` is successful, it returns a
-> >   pointer and length. The pointer references a byte string and is valid
-> >   for reading for that many bytes.
->
-> Yes. (len includes trailing C-String NUL character.)
+I think its main purpose is to give us an interface to actually allocate memory.
+We probably don't need it to be a "dangling pointer generator".
 
-I suppose the NUL character implies that this API always returns a
-non-zero length? I could simplify the patch a little bit by not
-handling empty strings.
+> 
+> > And 5.
+> > 
+> > Reject the combination of `None` and `size == 0` entirely, as earlier proposed
+> > by Benno.
+> > 
+> > I'm fine with both, 4. and 5. with a slight preference for 4.
+> > 
+> > I'd also go along with 1., as a mix of 4. and 5.
+> > 
+> > I really don't like making `alloc` unsafe, and I really don't want to have
+> > `old_layout` in `free`. Please let's not discuss this again. :-)
+> 
+> I don't buy it.
+> 
+> Your argument for having `old_layout` is so that the caller doesn't
+> need to care about the size. But as demonstrated the caller *does* need
+> to care about whether the size is zero.
+> 
+> Our previous discussion doesn't cover the particular case of ZST and
+> you said that it reason arise that we need this extra parameter, then
+> it could be added. It feels to me that sane behaviour when it comes
+> to ZST allocation is a very good reason.
 
-It looks like the CONFIG_SECURITY=3Dn case returns -EOPNOTSUPP, so we
-don't get an empty string from that case, at least.
+I don't see why we should "optimize" the API for creating dangling pointers and
+be able to pass them to `free` (which does not serve any practical purpose).
 
-> > * The string may be referenced until `security_release_secctx` is
-> >   called.
->
-> Yes.
->
-> > * If CONFIG_SECURITY is set, then the three methods mentioned in
-> >   rust/helpers are available without a helper. (That is, they are not a
-> >   #define or `static inline`.)
->
-> Yes.
->
-> >
-> > Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-> > Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-> > Reviewed-by: Trevor Gross <tmgross@umich.edu>
-> > Reviewed-by: Gary Guo <gary@garyguo.net>
-> > Signed-off-by: Alice Ryhl <aliceryhl@google.com>
->
-> Reviewed-by: Kees Cook <kees@kernel.org>
+I don't want to add arguments that are meaningless for the actual backing
+allocators (such as Kmalloc, Vmalloc, etc.), only to be able to generate and
+"free" pointers for ZSTs with arbitrary alignment.
 
-Thanks for the review!
+Do we even have use cases for ZSTs with other alignments?
 
-Alice
+> 
+> > 
+> > > 
+> > > Best,
+> > > Gary
+> > >   
+> > > > 
+> > > > Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> > > > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> > > > ---
+> > > >  rust/kernel/alloc.rs | 112 +++++++++++++++++++++++++++++++++++++++++++
+> > > >  1 file changed, 112 insertions(+)
+> 
