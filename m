@@ -1,147 +1,281 @@
-Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
+Received: from CWXP265CU008.outbound.protection.outlook.com (mail-ukwestazon11020072.outbound.protection.outlook.com [52.101.195.72])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1C391B85D9;
-	Sun, 15 Sep 2024 19:35:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.89.141.173
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726428910; cv=none; b=szp/RtLi1ndoLWOkrk9FuhM6VXJaMOwdv4n551carqTkjx5fTZJO7hNWoRIWaUTupeh1kaaoTl5m63dqCve3tIhab6/l6ELDWahnNGVbn9PZc0LD9uY362yd8LX+QoPcCzMSQwN6Be78tfAk4+125kEE1HkBePwtQ8HBx7sTyWU=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726428910; c=relaxed/simple;
-	bh=Ztvwstq5klPJincLUXWeb4jXXiG0ODtnWTMdxIzaYcE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QGf+SHj2tU9BnS355+VCqZHp8wYTIEIBeQx+ND1K7DsiQyy3lwHp8hgoSxRlgRUdxVVgWLFZLKZrklBOoJovR8gnEtgbS1FFKKC4pRM5yliLRqA14CyA/0CeQmTZud9TIwvXrhvqxM9Rpz1rU5XxbINV05AcxEJ3sr4tEJZz/m4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; spf=none smtp.mailfrom=ftp.linux.org.uk; dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b=TKOtGGCN; arc=none smtp.client-ip=62.89.141.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ftp.linux.org.uk
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D399DEAE7;
+	Sun, 15 Sep 2024 20:08:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.195.72
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1726430916; cv=fail; b=gVDtfPAxJisFIDKMmQxV4svnxtuXG5/ctoOEu3JkoorVt5E1deF957Dh+Q3nUh8tnODi/nNcQrPhVFyMcW7ivNU0yFb8ACORPZdEkD6sm3jfTQPB9D+deYt7d6mz20mSwCxFyaEmBRy8iBr0xeALSD1EcA1tN7G0tbktM20Wnho=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1726430916; c=relaxed/simple;
+	bh=sxDuSQScMBaGeo0h1y+LiRtkn68K6AMS9PgOv3NZSug=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=Fzu9pNcLKvPeYgziRtca+zXmlbclm528sIk7GYMysHGwQvxTt5IEH4rakeLDOYNywrJfUJdGhiGtd6H9E5m4SBjtlBJ1LxAG+xhvjE+FbXbVDbJwRuzAkez9ju5GWpvniR2jnDU//6gxdzyjj9ggo6tdw0ljwXNvvin6hf12v7k=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=pVzmRkVY; arc=fail smtp.client-ip=52.101.195.72
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="TKOtGGCN"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=0BxDruh7S7ijZk6E+YQkSo4Un7V4HISAaHQSfC2SZJs=; b=TKOtGGCNiaBftnO0gTOnYNx0/D
-	khqaG/bq7ndnBd1/Y8Z6yU1Eaaw7DBQUCyALQM7nxGAB+WedwUumRaufg2e/VKS+627YTt/B02uXO
-	+fjHQxJU8arfVMXzmsO+7bqx6KOOOs8KtvWvC9ZGzKgAjJPoDYoQMqmed0g5INPb2J5MFSpvH0/6C
-	HVI4BtMq9BCV1lHg2iOyiAR7GiSObHZG2F68+EfchvbzK62A8Ingo3CqUrCC75x7mvHSoGBnVWqpN
-	5G+uo0KL8YRIQbWkjIEOZdzq1nXU8qXnaqAp2ShK7cf7Xh01HJQoEW1Qe1EZ2gH1dHLXX6+vkhir8
-	04kwJ/Iw==;
-Received: from viro by zeniv.linux.org.uk with local (Exim 4.98 #2 (Red Hat Linux))
-	id 1spv19-0000000CkLq-2ql2;
-	Sun, 15 Sep 2024 19:34:43 +0000
-Date: Sun, 15 Sep 2024 20:34:43 +0100
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
-	"Serge E. Hallyn" <serge@hallyn.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
-	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>,
-	Joel Fernandes <joel@joelfernandes.org>,
-	Carlos Llamas <cmllamas@google.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Thomas Gleixner <tglx@linutronix.de>, Daniel Xu <dxu@dxuuu.xyz>,
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-	Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org,
-	linux-security-module@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	Kees Cook <kees@kernel.org>
-Subject: Re: [PATCH v10 6/8] rust: file: add `FileDescriptorReservation`
-Message-ID: <20240915193443.GK2825852@ZenIV>
-References: <20240915-alice-file-v10-0-88484f7a3dcf@google.com>
- <20240915-alice-file-v10-6-88484f7a3dcf@google.com>
- <20240915183905.GI2825852@ZenIV>
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="pVzmRkVY"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=IsrrDC4vJSNRDvQuoNr2/rTQpCjEl8ZghVDCe2rvg5fqfp99k2dOI4mTkBVKYUx4y42POv3RyYf1I7jEPZy0ljoMR3q9btqmNt9pm2cb3xI5Yr/SBKp60pPk+MTLH0gmMy9wO/xxdnh7R8JCHxeKbQIihj0tStLgHrgrPoM/rzP9sh04RR50Cj+Y5K5D8VKhcEb0BIc5UVae141orxYzjL7Vq7X2GJ913DIociaPC/yy2XpErXK4jDT205FGG8uA8/uGsZRKQx6XLZSkmLvwqp8ScAKvzilYd62mFiISEzpGFApwt/e6jIcf130ievgz1p4erdXN2VJzkzFH7N4HOw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=55DjzzudYgBYYcrnuiSkzzcg+DLCf8JioRVIw+5NiTA=;
+ b=pSP38Pj01BHoXlHz3iSaRpFZqgH1I1GjWJztLPovIuWeNbRKWjjvBHX0nD4tPMiG7OYlchNOaF15XpgRaFC1jESPA5TyQ2x70MF8rQeZW3HBTHyMp9vL95/9u1agGSz3331cPNQoTFVcsZZwKkkqmuno2ce7dr23RO49kDmw3CaGcG28ruws3ipy5g24A99RcHPhkcKrWtihEM/Tc6HAMgAUyfruCB0/evRLhKzuFonNt/WArNH7VU/esGjQxgVi1ayRHr7Z2C/ZP0BBckLeANjQDd5tTmx8XO7S9e1CuOq11TifxJDaiiD5PkFDuBK1qrJ49lr4mBYFvHALzNf7TQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=55DjzzudYgBYYcrnuiSkzzcg+DLCf8JioRVIw+5NiTA=;
+ b=pVzmRkVY7QxfDihOrtLWR5fzRBFTNBjLWgcJ7xXfjd7Eo0s1cNe5VKRrzcjBKhBmJ+oU3J0IoKkSCuD7Dh+VaEXPAxIA9HPPcS79iyeQIudJ/nAefiR48WscU0Sp38u9uQ0mnEBNX3sdKRS6MdQfNsb4U6jtmNVgXUn3pDZ4eP0=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
+ by LO4P265MB6204.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:278::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7962.23; Sun, 15 Sep
+ 2024 20:08:29 +0000
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1818:a2bf:38a7:a1e7]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1818:a2bf:38a7:a1e7%3]) with mapi id 15.20.7962.022; Sun, 15 Sep 2024
+ 20:08:29 +0000
+Date: Sun, 15 Sep 2024 21:08:27 +0100
+From: Gary Guo <gary@garyguo.net>
+To: Danilo Krummrich <dakr@kernel.org>
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
+ boqun.feng@gmail.com, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
+ a.hindborg@samsung.com, aliceryhl@google.com, akpm@linux-foundation.org,
+ daniel.almeida@collabora.com, faith.ekstrand@collabora.com,
+ boris.brezillon@collabora.com, lina@asahilina.net, mcanal@igalia.com,
+ zhiw@nvidia.com, cjia@nvidia.com, jhubbard@nvidia.com, airlied@redhat.com,
+ ajanulgu@redhat.com, lyude@redhat.com, linux-kernel@vger.kernel.org,
+ rust-for-linux@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v7 01/26] rust: alloc: add `Allocator` trait
+Message-ID: <20240915210827.3ee9adcd.gary@garyguo.net>
+In-Reply-To: <20240915202242.7a16b3d3.gary@garyguo.net>
+References: <20240911225449.152928-1-dakr@kernel.org>
+	<20240911225449.152928-2-dakr@kernel.org>
+	<20240915162813.149e21f2.gary@garyguo.net>
+	<ZucTMDCcoVH4oGs1@pollux>
+	<20240915202242.7a16b3d3.gary@garyguo.net>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: LO4P265CA0037.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:2ac::11) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:253::10)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240915183905.GI2825852@ZenIV>
-Sender: Al Viro <viro@ftp.linux.org.uk>
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LO4P265MB6204:EE_
+X-MS-Office365-Filtering-Correlation-Id: d5ec0843-94e3-4133-a6e6-08dcd5c22abc
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;ARA:13230040|1800799024|7416014|376014|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?71axJxR8Qn4J7HfAzVAuZXlWl0OG/HlEiz9d0FEMaM/jKc+ZcsLfJUmpGqJI?=
+ =?us-ascii?Q?iQukRn3Fn29FYDZuf465yQ6NEL9t0pPV8bmF1ttPuLn/oEyqliYL2YybOf4c?=
+ =?us-ascii?Q?bSSwBBfP9nc20pHjMAYh/LHPYs2IlQ/SGMQRxon+AwYT8quLI73ZflbLLhUF?=
+ =?us-ascii?Q?bCaLfOf3Ks++LvLqX7WPFj7XT+FBpxKkEP8/6AOIuE6VJG9Kuzg1VdSv0fDJ?=
+ =?us-ascii?Q?tUjKeOPWG3GCuDvZgmvP4xOE6ngIQuLVb+reD5MKQ/cDZXeYpfr1ssTFrwPV?=
+ =?us-ascii?Q?RIBwno014xu+u8QjzjUkx/4ytAMHUc23dmA2ha+OfrB3gxKkDKo6P6nHXQ3p?=
+ =?us-ascii?Q?a9WINJH1jOpS/Uf47+Wh1KssdMsOZ9R2Wim+u0XO5s4d/w6kH4VGqueUMEM8?=
+ =?us-ascii?Q?8B0oBVwCegtSVAlTANHO4Jk/LRJmxEatSbddGMzsG/g37c5TuFQ4iRLdoE5u?=
+ =?us-ascii?Q?+vXs9tu4IonEtbG8Qq6Imq1VejT7UdHzRCmG1Dj5A+5OvyVHC0GNNqWw1oIl?=
+ =?us-ascii?Q?fGkcI8dP+mhODYEu9GkOgLuC9cSBTllB6B9fG+K6TxIQsQgopIvkydDcD1Ln?=
+ =?us-ascii?Q?AckKTAbK4lo9xK3DUKZE1wWiRqo23OZyU4wVlj4uISlXbu2jWn0z/3BIyrIg?=
+ =?us-ascii?Q?Ibw4wZedOW25PejbAshnOiR8Nsy10HKMzXz4R+SLaQWWRYbUH2g6//qDYxfn?=
+ =?us-ascii?Q?/Q4rGrdOzzPJanp0W4IML39CwbmoclwVKOBizV6WBSiAeZHggf/MH1zrxz6A?=
+ =?us-ascii?Q?9Zq9ZmEA5QeBLdu/maLI/AAMWs+MvnazVRoIEPC/rln+aU4PcEr71UEA8HEV?=
+ =?us-ascii?Q?BLtmw+TfoucyaQ0KoWu7mDoB9Qm/Lt289/5rwwMGScSW3lXgmrQ6pI1MYRAf?=
+ =?us-ascii?Q?JHC2cNwl92jYIWOUsx7sUt3z8K67kGVloJ35UKbl2UwG5KGjCcA679MUExnl?=
+ =?us-ascii?Q?cI8T+XZ0PTxDx+5gpUxiWJgFpSJ3OrL8w+mxw/8zzH8Mm9tgQIem8NSzIbAd?=
+ =?us-ascii?Q?/V1qaZQYLmWXZgdlCNMF9FrUQ1Utwe52VpJoSaA+zKDjuaAW/byHtuu5nrcd?=
+ =?us-ascii?Q?VTKKYONOvnj2Lcr3k5MqichGviKgLjTcn0yguVRaZh6v16iuneM3IL3fmc4I?=
+ =?us-ascii?Q?SkVGUHAumIWD+cSqHVfgVP1OL/gaqWKtm0KIDgF1RXrRAgl+PM5Oc7tRGNao?=
+ =?us-ascii?Q?EVrK+GQIZh9vgmU8BTvwxPnjJ+9G8fYlvs2SIF1e42EALnCVVcYC8aN+ih1T?=
+ =?us-ascii?Q?LmwPwS5620xG0wAxqNGxEdNYK6TSngnzfW5sfoNvcl14dI6eBX4NNDxKjco7?=
+ =?us-ascii?Q?be4blB4VHAgUFn8cW2MlzuJFnSwYytp7DLiSHMWtd243xA=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(1800799024)(7416014)(376014)(366016);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?helQBr6MZiHgkq3bv8AvmXntwZE9hx+YoB2kROHYbD9eTUv0NzS/Z/GOBaAu?=
+ =?us-ascii?Q?IYbbumAD/o3WoEwSkKrIjTK9W8pZrBnP05PSIEy8I98d3RtPO8Ucq8SqWk8a?=
+ =?us-ascii?Q?oKklkZxvBoB6o2x+dLBjLT3s62xKep7sRveqIugENQp5FjJ7VI+khc6EPB6O?=
+ =?us-ascii?Q?UM9x33ZBX9vk0VdL49CEPTuBBizrUEBArLQzA+v2Oax5H1aCZM0bxsiNxxQM?=
+ =?us-ascii?Q?HSgsOuAqMCAcuCiu/qYix+Si2SdXF4CQ4vptapj65APvTykSlyOhTtrJbnNE?=
+ =?us-ascii?Q?nLmfwKUvnzIIMktrD3PUMPh6gRPxMEUC7LS3/uWRpZviGyEe1o2y3vgpjZZG?=
+ =?us-ascii?Q?ig4caXh/aDhlKba7NdEuXtsmbsQ0nfRONQR1vbxha90QuRWayIbLPj6D7lu5?=
+ =?us-ascii?Q?WP7jqrST8TBokCqg0o0fvRCqA+p8Sm7v01NqTAtku/NoZEfxIYIyuVD9QxDF?=
+ =?us-ascii?Q?Lw31eZoA14iLlGD5/NO4ILaPN1jiGjzw7F2dPLMiaJY+yXzHx+Qagwd6UG7s?=
+ =?us-ascii?Q?TDuK/MKRR+fn5UTTA3fzpei6Mm7ELkm5vF77WAEXGO1MeD/RYxdu7MbkS4jT?=
+ =?us-ascii?Q?OhNg1WhMsrC2EyYoAEpTU1+yan3Io9cjhlm8XiT+fMHPlHTw5gbJxB7D0TfG?=
+ =?us-ascii?Q?Ozmzd3ufZh0FxDfp+7yfF4wolZBRl/Xm8RAW9aljF0/NrtnGj89xo5+YWsYS?=
+ =?us-ascii?Q?bfKS5uytPNp8heh3iBBi/o6ijdMuAbkzBS6Rfzear1GjHGiBZCl4tPtXFjFx?=
+ =?us-ascii?Q?l7aIXKpdeLlBV8Cpe8p7WVa+Ox0BQrIX+ULX0O+q1YJXvbqeVZ+BicMNfXPx?=
+ =?us-ascii?Q?3N00VG/Zkmho1jBHbr54+QBjXycO1vUrXV/GOpEsG3xuhxMPf77Fd/4UZCAD?=
+ =?us-ascii?Q?2mbt9R38DAyx4mkCD31xZ3MeaeMHnFeW0IgP+zE0JesWNBxJ124mnOYJv5OI?=
+ =?us-ascii?Q?605Z1+x4R2n3M7HfJSjdo02oqNjdsYYM61bZJy5bisuAzykA9ILxBQrBJ56j?=
+ =?us-ascii?Q?YeUDdnoIM6/65pemCmGeTJ9kUSwTj20FB3ow+g1U1qLgEzGLMG0LQMT/e2Ix?=
+ =?us-ascii?Q?Eo8wy2tXYHVxXg1e/8eUeko1K+X5t3Rxj8negxCQQP61dgIaDP5amW2EsdnT?=
+ =?us-ascii?Q?tMR79/2z7SarEnFqmTtazvbawTQWoXzDcVUZhVNVYoNs9Zr/tPTBNj/c1MA+?=
+ =?us-ascii?Q?8Oh9SZeVSmRGD5ikgrHyJyzYUQLXeYzjBIJY2gpVg86oNHoaqswii0KMXeuD?=
+ =?us-ascii?Q?9gZSIIPPFF1R7NNcuWoqEwxeHSJ0aVStJ9DVPb7QDsgSHZXhyVYv8qO7EZtb?=
+ =?us-ascii?Q?jmif2MuSpRe8v67B0K6EuzwLAqo1pTDFX85h3fYBu2EdOZDt8lFF6jYclFkh?=
+ =?us-ascii?Q?zK5pTWjOReaBaDzRHHwoi2r4pqnmElXMXQTEbmceaUv2qrQmdc67RvdcJ9Te?=
+ =?us-ascii?Q?P3CA33Yb7bqZx/e8VbgCdH37aEKipbMi3ACxK3bE8gHbdPHH/yvku6Gd1Oip?=
+ =?us-ascii?Q?NYSADuat19R0dAucdrNRAdVILwiz65WnifKWRXzd6nIbLsnu0wf1yRhhPyEd?=
+ =?us-ascii?Q?UF0UpAb1yZzpdfqOs3NvTfwIoZ/7WksBG8q5fmzdBwj6xjaDXbNTG5wiQF/Q?=
+ =?us-ascii?Q?Gg=3D=3D?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: d5ec0843-94e3-4133-a6e6-08dcd5c22abc
+X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Sep 2024 20:08:29.8543
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: fTs7R6Mr+MAFk3qPDHD4LJrEFJRWHd2LQZJBka4v71hbzSEwDNnQdgnqEgJgeZIxcINegrQNO8OCf3+kDi/p4g==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO4P265MB6204
 
-On Sun, Sep 15, 2024 at 07:39:05PM +0100, Al Viro wrote:
-> 	2) calling thread MUST NOT unshare descriptor table while it has
-> any reserved descriptors.  I.e.
-> 	fd = get_unused_fd();
-> 	unshare_files();
-> 	fd_install(fd, file);
-> is a bug.  Reservations are discarded by that.  Getting rid of that
-> constraint would require tracking the sets of reserved descriptors
-> separately for each thread that happens to share the descriptor table.
-> Conceptually they *are* per-thread - the same thread that has done
-> reservation must either discard it or use it.  However, it's easier to
-> keep the "it's reserved by some thread" represented in descriptor table
-> itself (bit set in ->open_fds bitmap, file reference in ->fd[] array is
-> NULL) than try and keep track of who's reserved what.  The constraint is
-> basically "all reservations can stay with the old copy", i.e. "caller has
-> no reservations of its own to transfer into the new private copy it gets".
+On Sun, 15 Sep 2024 20:22:42 +0100
+Gary Guo <gary@garyguo.net> wrote:
 
-FWIW, I toyed with the idea of having reservations kept per-thread;
-it is possible and it simplifies some things, but I hadn't been able to
-find a way to do that without buggering syscall latency for open() et.al.
+> On Sun, 15 Sep 2024 19:02:40 +0200
+> Danilo Krummrich <dakr@kernel.org> wrote:
+> 
+> > Hi Gary,
+> > 
+> > thanks for taking a look.
+> > 
+> > On Sun, Sep 15, 2024 at 04:28:13PM +0100, Gary Guo wrote:  
+> > > On Thu, 12 Sep 2024 00:52:37 +0200
+> > > Danilo Krummrich <dakr@kernel.org> wrote:
+> > >     
+> > > > Add a kernel specific `Allocator` trait, that in contrast to the one in
+> > > > Rust's core library doesn't require unstable features and supports GFP
+> > > > flags.
+> > > > 
+> > > > Subsequent patches add the following trait implementors: `Kmalloc`,
+> > > > `Vmalloc` and `KVmalloc`.    
+> > > 
+> > > Hi Danilo,
+> > > 
+> > > I think the current design is unsound regarding ZST.
+> > > 
+> > > Let's say that `Allocator::alloc` gets called with a ZST type with
+> > > alignment of 4096. Your implementation will call into `krelloc` with
+> > > new_size of 0, which gets turned into of `kfree` of null pointer, which
+> > > is no-op. Everything is fine so far. Krealloc returns `ZERO_SIZE_PTR`,
+> > > and then implementation of `<Kmalloc as Allocator>::realloc` throws it
+> > > away and returns `NonNull::dangling`.
+> > > 
+> > > Since `NonNull::dangling` is called with T=u8, this means the pointer
+> > > returns is 1, and it's invalid for ZSTs with larger alignments.    
+> > 
+> > Right, this interface is not meant to handle "allocations" for ZSTs.
+> > 
+> > But you're right, since `alloc` is a safe function, we should return a properly
+> > aligned pointer.
+> >   
+> > > 
+> > > And this is unfixable even if the realloc implementation is changed.
+> > > Let's say the realloc now returns a dangling pointer that is suitable
+> > > aligned. Now let's see what happens when the `Allocator::free` is
+> > > called. `kfree` would be trying to free a Rust-side ZST pointer, but it
+> > > has no way to know that it's ZST!    
+> > 
+> > Right, that's why it's not valid to call `free` with dangling pointers.
+> > 
+> > From the safety comment of `free`:
+> > 
+> > "`ptr` must point to an existing and valid memory allocation created by this
+> > `Allocator` and must not be a dangling pointer."
+> > 
+> > We still need the same in `realloc` though.  
+> 
+> I don't agree with this reading. If you allocate something with `alloc`
+> and it doesn't return an error then you should be able to feed it to
+> `free`. Whether the allocator does actual allocation when size is zero
+> or return a dangling pointer shouldn't matter to the caller.
+> 
+> The fact you `Kmalloc` returns a dangling pointer for ZST is an
+> implementation detail and the caller shouldn't care (and it also
+> couldn't check whether it's a dangling pointer). Nothing in your
+> `alloc` doc mention about dangling pointer return for zero-sized alloc
+> at all.
+> 
+> >   
+> > > 
+> > > I can see 3 ways of fixing this:
+> > > 1. Reject ZSTs that have larger alignment than 16 and fix the realloc
+> > > implementation to return suitable aligned ZST pointer. I don't
+> > > particularly like the idea of allocating ZST can fail though.
+> > > 2. Say ZST must be handled by the caller, and make alloc function
+> > > unsafe. This means that we essentially revert to the `GlobalAlloc`
+> > > design of Rust, and all callers have to check for ZST.
+> > > 3. Accept the `old_layout` and use it to check whether the allocation
+> > > is ZST allocation.
+> > > 
+> > > My personal preference is 3.    
+> > 
+> > There is also 4.
+> > 
+> > Let `alloc` and `realloc` return a properly aligned dangling pointer for
+> > `size == 0` and don't accept dangling pointers in `realloc` and `free`.  
+> 
+> I'll consider the API design to be bad if I can't pass allocated pointer to
+> free. If caller needs to handle ZST specially then we might as well
+> just ban it completely.
+> 
+> > And 5.
+> > 
+> > Reject the combination of `None` and `size == 0` entirely, as earlier proposed
+> > by Benno.
+> > 
+> > I'm fine with both, 4. and 5. with a slight preference for 4.
+> > 
+> > I'd also go along with 1., as a mix of 4. and 5.
+> > 
+> > I really don't like making `alloc` unsafe, and I really don't want to have
+> > `old_layout` in `free`. Please let's not discuss this again. :-)  
+> 
+> I don't buy it.
+> 
+> Your argument for having `old_layout` is so that the caller doesn't
+> need to care about the size. But as demonstrated the caller *does* need
+> to care about whether the size is zero.
+> 
+> Our previous discussion doesn't cover the particular case of ZST and
+> you said that it reason arise that we need this extra parameter, then
+> it could be added. It feels to me that sane behaviour when it comes
+> to ZST allocation is a very good reason.
 
-It would keep track of the set of reservations in task_struct (count,
-two-element array for the first two + page pointer for spillovers,
-for the rare threads that need more than two reserved simultaneously).
+Just to add that if you *really* want to avoid the old layout param,
+another approach accceptable to me is to have a `NonZeroLayout` and have
+`alloc` only accept that.
 
-Representation in fdtable:
-state		open_fds bit	value in ->fd[] array
-free		clear		0UL
-reserved	set		0UL
-uncommitted	set		1UL|(unsigned long)file
-open		set		(unsigned long)file
+Either `Allocator` trait handles ZST well or it refuses to handle them
+at all. No "it works for alloc but not for free" please.
 
-with file lookup treating any odd value as 0 (i.e. as reserved)
-fd_install() switching reserved to uncommitted *AND* separate
-"commit" operation that does this:
-	if current->reservation_count == 0
-		return
-	if failure
-		for each descriptor in our reserved set
-			v = fdtable->fd[descriptor]
-			if (v) {
-				fdtable->fd[descriptor] = 0;
-				fput((struct file *)(v & ~1);
-			}
-			clear bit in fdtable->open_fds[]
-	else
-		for each descriptor in our reserved set
-			v = fdtable->fd[descriptor]
-			if (v)
-				fdtable->fd[descriptor] = v & ~1;
-			else
-				BUG
-	current->reservation_count = 0
+Best,
+Gary
 
-That "commit" thing would be called on return from syscall
-for userland threads and would be called explicitly in
-kernel threads that have a descriptor table and work with
-it.
+> > >     
+> > > > 
+> > > > Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+> > > > Signed-off-by: Danilo Krummrich <dakr@kernel.org>
+> > > > ---
+> > > >  rust/kernel/alloc.rs | 112 +++++++++++++++++++++++++++++++++++++++++++
+> > > >  1 file changed, 112 insertions(+)  
+> 
 
-The benefit would be that fd_install() would *NOT* have to be done
-after the last possible failure exit - something that installs
-a lot of files wouldn't have to play convoluted games on cleanup.
-Simply returning an error would do the right thing.
-
-Two stores into ->fd[] instead of one is not a big deal;
-however, anything like task_work_add() to arrange the call
-of "commit" ends up being bloody awful.
-
-We could have it called from syscall glue directly, but
-that means touching assembler for quite a few architectures,
-and I hadn't gotten around to that.  Can be done, but it's
-not a pleasant work...
