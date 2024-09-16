@@ -1,44 +1,46 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02B5913E41D
-	for <rust-for-linux@vger.kernel.org>; Mon, 16 Sep 2024 22:08:32 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 578FB165F13
+	for <rust-for-linux@vger.kernel.org>; Mon, 16 Sep 2024 22:08:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726524514; cv=none; b=eZmwR32CFWWiHozKSrDuGGe33w/2USra1E7TI2AUSs9ORqNGAtGWSnvpZsPMv8aOH4d52fRCk+ElN3HCuMcEnO6DL9XTvsqjesk1fJsGi/gzpzlXnedp/jdU65LNZPUHjNeblL8XK5h6t9C1uQGL9V511aOfz2UtTAeT+2JwBIk=
+	t=1726524523; cv=none; b=trFGZyfTwH/F+IzJZq7Xt/R8CXhvWrXykfl1wSE2cvGQ1HTbnrIp8KqfjMXtn86J6bniA2TZSV/VMetspdgLJeuiG3k7ZuR3QJa28hskBaohAGJMRzL5sFfJHX7gJRab+Q89IISuUITCVx1HXoazmmLG+UyIRa9p66MKL5taCgo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726524514; c=relaxed/simple;
-	bh=jIk6JDhGrzbfso5hiK1W/HYLxyAcArm2o+kPc9FaZxY=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oqWNi5dnolnNfMaDtSkL/jhBi+7tPUI4ihTeMlgE62nv14QqskwuYhAxRjGQSXvEE2rNQ5xBbOAvYAkbYzoSRD+MOcsAefhmx/n19FFSm4g9KiSGj+mlxIyr4BIXoD7L7uXQEHg1fFbAwJzG+VXgx5iSIzHk05JgSZ6Jxk+PzVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=iwfwHL7/; arc=none smtp.client-ip=170.10.129.124
+	s=arc-20240116; t=1726524523; c=relaxed/simple;
+	bh=R6345AkMRmI8PD5FrrcYCPyAjlj+bQGiruEd2zOKTzs=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=SG+lw/GZF5LHtE3DDs3iyjlzrHIbJ1iMLixQvDhxuWVpNeolzQ9ZibjmTDgRds38uiUixasCONe2wBKJDNaHdqWRShNkfNHdyqtLVTHJ39KVgQVhGakIcKBWaZ9D5lQEnqWH4fFDcfjD4fhALh4HIMQ3iD41DiZgWKgn+u3r3zc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=Icj7YAfr; arc=none smtp.client-ip=170.10.133.124
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="iwfwHL7/"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="Icj7YAfr"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1726524511;
+	s=mimecast20190719; t=1726524519;
 	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
 	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=xKD5TpxRq2Xi5Y/fuxovAwJrOONXHn7sCTllfhO0AlE=;
-	b=iwfwHL7/wka9mt/MEIRoXT9f86XACv/ozal+bpVxTfm8lX1EJMoHsot8cbYXxoshIppT39
-	U6nHvviB4lzkNncbwDlw74cfbYmiTs7SRQMkPyU1977Mc2Zo7IHWma2n1eeclmgqqX5DLf
-	5eH10kir5Mqh+M09+E4vxYp0R/O/EbU=
-Received: from mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=ZmiYHf+yqLki3fAmJK3SJU3oBY4MUJkPeWm8pdFjQic=;
+	b=Icj7YAfrM8LyFAh5yAdSKa/WwcpMeo7NvcZUYilYMSjqki4jfGKYvv+u0kWGPdYGsFpj/Y
+	N/2MgKqbuRKhW5Y7aIboxm1B8qQI2aF33oOXkRsuxOXiNpvaVnLPhPPZo1kE/NK7ahRV6d
+	ts5HQVqvEmusG1roGiDmm5AA2BDH9s8=
+Received: from mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com
  (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
  relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-215-Z16nLSUQNvSehYzcsATVzQ-1; Mon,
- 16 Sep 2024 18:08:30 -0400
-X-MC-Unique: Z16nLSUQNvSehYzcsATVzQ-1
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-16-f3uc0uTmOXipjOvqYvsiUg-1; Mon,
+ 16 Sep 2024 18:08:35 -0400
+X-MC-Unique: f3uc0uTmOXipjOvqYvsiUg-1
 Received: from mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.40])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by mx-prod-mc-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 0F6421955F41;
-	Mon, 16 Sep 2024 22:08:28 +0000 (UTC)
+	by mx-prod-mc-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 1450919560AD;
+	Mon, 16 Sep 2024 22:08:33 +0000 (UTC)
 Received: from chopper.redhat.com (unknown [10.22.33.131])
-	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 2924C19560AA;
-	Mon, 16 Sep 2024 22:08:22 +0000 (UTC)
+	by mx-prod-int-04.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 8C0F4195605A;
+	Mon, 16 Sep 2024 22:08:28 +0000 (UTC)
 From: Lyude Paul <lyude@redhat.com>
 To: rust-for-linux@vger.kernel.org
 Cc: Danilo Krummrich <dakr@redhat.com>,
@@ -58,10 +60,14 @@ Cc: Danilo Krummrich <dakr@redhat.com>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@samsung.com>,
 	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>
-Subject: [PATCH 0/1] rust: sync: Add Lock::from_raw for ZST data types
-Date: Mon, 16 Sep 2024 18:05:45 -0400
-Message-ID: <20240916220818.567277-1-lyude@redhat.com>
+	Trevor Gross <tmgross@umich.edu>,
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+	Valentin Obst <kernel@valentinobst.de>
+Subject: [PATCH 1/1] rust: sync: Add Lock::from_raw() for ZST data types
+Date: Mon, 16 Sep 2024 18:05:46 -0400
+Message-ID: <20240916220818.567277-2-lyude@redhat.com>
+In-Reply-To: <20240916220818.567277-1-lyude@redhat.com>
+References: <20240916220818.567277-1-lyude@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -71,22 +77,84 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Scanned-By: MIMEDefang 3.0 on 10.30.177.40
 
-This patch just adds a ::from_raw method to the kernel's Lock type,
-which can be used for locks where the data type is a ZST.
+A few of the APIs I've been writing bindings for (KMS in particular) rely
+on the user manually acquiring specific locks before calling certain
+functions. At the moment though, the only way of acquiring these locks in
+bindings is to simply call the C locking functions directly - since said
+locks are not acquired on the rust side of things.
 
-The current example usecase for this is rvkms, specifically
-rust/kernel/drm/device.rs (kernel::drm::device::Device::event_lock())
+However - if we add `#[repr(C)]` to `Lock<T, B>`, then given `T` is a ZST -
+`Lock<T, B>` becomes equivalent in data layout to its inner `B::State`
+type. Since locks in C don't have data explicitly associated with them
+anyway, we can take advantage of this to add a `Lock::from_raw()` function
+that can translate a raw pointer to `B::State` into its proper `Lock<T, B>`
+equivalent. This lets us simply acquire a reference to the lock in question
+and work with it like it was initialized on the rust side of things,
+allowing us to use less unsafe code to implement bindings with lock
+requirements.
 
-https://gitlab.freedesktop.org/lyudess/linux/-/tree/rvkms-example-09162024
-
-Lyude Paul (1):
-  rust: sync: Add Lock::from_raw() for ZST data types
-
+Signed-off-by: Lyude Paul <lyude@redhat.com>
+---
  rust/kernel/sync/lock.rs | 32 ++++++++++++++++++++++++++++++--
  1 file changed, 30 insertions(+), 2 deletions(-)
 
-
-base-commit: a2f11547052001bd448ccec81dd1e68409078fbb
+diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
+index f6c34ca4d819f..f77cb178840b2 100644
+--- a/rust/kernel/sync/lock.rs
++++ b/rust/kernel/sync/lock.rs
+@@ -6,8 +6,8 @@
+ //! spinlocks, raw spinlocks) to be provided with minimal effort.
+ 
+ use super::LockClassKey;
+-use crate::{init::PinInit, pin_init, str::CStr, types::Opaque, types::ScopeGuard};
+-use core::{cell::UnsafeCell, marker::PhantomData, marker::PhantomPinned};
++use crate::{init::PinInit, pin_init, prelude::*, str::CStr, types::Opaque, types::ScopeGuard};
++use core::{cell::UnsafeCell, marker::PhantomData, marker::PhantomPinned, mem};
+ use macros::pin_data;
+ 
+ pub mod mutex;
+@@ -81,6 +81,7 @@ unsafe fn relock(ptr: *mut Self::State, guard_state: &mut Self::GuardState) {
+ ///
+ /// Exposes one of the kernel locking primitives. Which one is exposed depends on the lock
+ /// [`Backend`] specified as the generic parameter `B`.
++#[repr(C)]
+ #[pin_data]
+ pub struct Lock<T: ?Sized, B: Backend> {
+     /// The kernel lock object.
+@@ -117,6 +118,33 @@ pub fn new(t: T, name: &'static CStr, key: &'static LockClassKey) -> impl PinIni
+             }),
+         })
+     }
++
++    /// Constructs a [`Lock`] from a raw pointer.
++    ///
++    /// This can be useful for interacting with a lock which was initialised outside of rust. This
++    /// can only be used when `T` is a ZST type.
++    ///
++    /// # Safety
++    ///
++    /// - The caller promises that `ptr` points to a valid initialised instance of [`State`].
++    /// - The caller promises that `T` is a type that it is allowed to create (e.g. `!` would not be
++    ///   allowed)
++    ///
++    /// [`State`]: Backend::State
++    pub unsafe fn from_raw<'a>(ptr: *mut B::State) -> &'a Self {
++        build_assert!(
++            mem::size_of::<T>() == 0,
++            "Lock::<T, B>::from_raw() can only be used if T is a ZST"
++        );
++
++        // SAFETY:
++        // * By the safety contract `ptr` must point to a valid initialised instance of `B::State`
++        // * We just asserted that `T` is a ZST, making `state` the only non-ZST member of the
++        //   struct
++        // * Combined with `#[repr(C)]`, this guarantees `Self` has an equivalent data layout to
++        //   `B::State`.
++        unsafe { &*ptr.cast() }
++    }
+ }
+ 
+ impl<T: ?Sized, B: Backend> Lock<T, B> {
 -- 
 2.46.0
 
