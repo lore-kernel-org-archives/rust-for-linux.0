@@ -1,105 +1,131 @@
-Received: from mail-pg1-f174.google.com (mail-pg1-f174.google.com [209.85.215.174])
+Received: from mail-pl1-f173.google.com (mail-pl1-f173.google.com [209.85.214.173])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D398288B1;
-	Mon, 16 Sep 2024 08:39:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.174
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 915B414900B;
+	Mon, 16 Sep 2024 09:54:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726475985; cv=none; b=K/0UxCaejAH9Q/r+cE6iq6/NjuptIl9idYinScrtU3p+Jde5mHTMpBJR+4xXKXll0r4DTg+KDCKPt5UshHB/P4KiMuZQ1F9ga4mirizCqXm/8t55bT/tn51i//KQJYcVVFIrl9AueGgcgYCgq07I41zLIaEcTLhnDPGp/NzCg9o=
+	t=1726480474; cv=none; b=W12ujQkHY2xeE6bFJ5pC7SiXNJHZZ2DlhJMusPrQsuJ2Eq++sun99j4+iol19Cs0KI6WGysO8LMsGHw83xSQn/YZCiLlotn6PJakQ5W2gK+ekiu3Ad6Yx73cdA0GolaPiH3oAYizyH+ZGFVv+DoUB/swb502CB/tLTbutxHAbFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726475985; c=relaxed/simple;
-	bh=r1aiawJAUvBE1ZAeT7ppZmQdx7tHrSaRGOpWfYAWL9o=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ZQQdGAy6LU9kYcwaBYMEfM3CF7hyUucdyh3JxI5uOSVUz5BrGySWFl/FxijnPVyBAh0OAFxxbjtR6MpFQnQDxVNUFW8jsrbUrg+gwiVeOoqSU0fvUb8pELnViljw6Qhc3dPKMBTGRB8i6hMt/dvGG9619AdElL2O7Wb2NPbnO+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=c78mPFM9; arc=none smtp.client-ip=209.85.215.174
+	s=arc-20240116; t=1726480474; c=relaxed/simple;
+	bh=O32QPsP5MzyTM8u62T8NKbaDAwFBwNQfNtNHG1gjfgs=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=dRALpCrb06/PkC95OgebjZMJYrETMkpOrqC3gD/zDr8qwoYV+x6jqUZJaVdaTwkkgg25p5fFFaBw2LBmiDeVgQatpGMINi3nG7RxP85LUxaUoESc/S9qgiB+MOe5n9QJgWvedhWJJEtoMCQI39jE4kH6MI/hVzRNKFBD41woHtY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ayKAH3Pe; arc=none smtp.client-ip=209.85.214.173
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="c78mPFM9"
-Received: by mail-pg1-f174.google.com with SMTP id 41be03b00d2f7-7db3e962c2aso101295a12.0;
-        Mon, 16 Sep 2024 01:39:43 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ayKAH3Pe"
+Received: by mail-pl1-f173.google.com with SMTP id d9443c01a7336-20573eb852aso34159955ad.1;
+        Mon, 16 Sep 2024 02:54:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1726475983; x=1727080783; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ubkh6TTC0SSzHx8qCL2vYBVaYHXk6OuKdRV5nCiZIw4=;
-        b=c78mPFM9jLYpmdMUVszxPL6TEys2JbSFgtw/nmVed1f7RlE23/kiOz+wmcHL//Cy8m
-         vz6cmFAuzE0skRqY86up9JiUuOfTZUXWQDSswmrAW5v7WBM8vWZVd90nNzjA+FobROkb
-         mK8uwGZAVSU4DmAZmcwiyWb2V5HoZsWLevyixTR1g0hJ+fSG6TiVRroRjSX/hrrcruXr
-         xXIfSkv7jOehclWjyoAHVr533dNDd6IBFYjioC+aTGXSv/4KwgVsTrIIBPG0g/qpwk2D
-         OBltXlCydY3+sUq+WaFWM3o8KpCrdPFGcP0Au+6t4tCkY+qxa3xa9Hd513e5M1o+ci+a
-         QT6Q==
+        d=gmail.com; s=20230601; t=1726480471; x=1727085271; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=O5sS2BSYOStx5RNImbwHRfjWe3sDQftoV4pR+7Qz1Ww=;
+        b=ayKAH3Pe/XQDneSJKyDmxlUieYUOt1wmZcQ1IDpm4qYsBJe86WS6XwnsCA2FLbBon1
+         ARRJpt2e4JGwxR/8IUR8cxjyYRJ2oeRSqPwD5tkCNHWjk6mY2zXFkFsh2YSQT8pnq9UW
+         BGJhS/vMQ037+zSDkReG+fokTsC46dccyzswct5CSwLPj/WFTQHjGYQsS2aml21yxOL6
+         B7ZE8E4gO2ilUDtjcLgvFR2UR/6EwU8duIZHIpSgddID2IbrYIC0UAh8vOlGOLDqVHM1
+         Kws2z0PmjH4iP1mBe22FelJgdkfFGPjiGOheoR9UR0O6X55Xhk4b0FZOMcGmKi7fxR2X
+         uhAw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726475983; x=1727080783;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ubkh6TTC0SSzHx8qCL2vYBVaYHXk6OuKdRV5nCiZIw4=;
-        b=r+tEK/6swQ/Yk+FDpQ1VB2xQCWCmlJr4iJ1eMimRg4jaX1lEopNv2b0Bbd+kUcUA+G
-         v4dAA2fPhuxGpUlY++bzduok4sHfq2eaTrC5iqn0yIRAky87aAm4Sdd+Rv+n//n+dZYY
-         on/viZi/4e8OqvdqOOkOvmXdvHF3U7DI95/UytA4+6LoNp3ojV7W+GGY2HokCe+9BZCC
-         Emc6ekcK4zJ+qAfTGbrUNcqmzw8Xk3R0EjFq8WlYWOkO3AQhX358LlBaIq+ke1yRP2ZG
-         LF7ct4WZjYEfyXyi2usRVu7C4N8ycXR70QMpMQXx3IKcNenTQIP6taZc+zNiD8kyXGj0
-         3EsQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUW4e8eazQ0pFsf5xjC5+k40lEnbJKNT8YExV3WwRZpm2omY0wdggoYqKLsBWQrWGm9n6hbuoFKZQOxcv7qIjY=@vger.kernel.org, AJvYcCVqV0E3h/KfPEV7fFpb8aboSTnt/mHzZ2O01ytEXeaKW2ObJbFgsY8cf3pMQII4Mnc9Q9H59s5VLwvHad9o@vger.kernel.org, AJvYcCX9op1CopeJ/vzM8AsJ1vsGoxSdytctYQIoMzXwJ8B3gvD/08wOuDnIBzXa+gDtdCBnInJ+TBZ20Vho@vger.kernel.org, AJvYcCXCjDzczsAY5CzOzD2R+Nb+iamlLIqvlEN+3c2ZK1qpQfkZ0sfdlJ08j+B3jNMwFujsG0QNbEI0FRU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyWO50sBp0fqsL5e2Yz8ApdI+bZb+R0tdVGhalCGV5wTAnU/1fv
-	2rh/wjXi0TkrZyrAvbHuXQOR/zHX4Dbejkoq30nYOUdZvBRObofUcU9hkYS5BYa8DIbjtCeEhv2
-	gSZQXfxzlVa05ZtxMLQDt3F4Y2GI=
-X-Google-Smtp-Source: AGHT+IF0jWg/1gtEp2K/kG2nA1SdhPfAODOi8k+DBysvYjHaORRnI+et6X1UBrRFVN0szySihjj1APTsUldJpffBdiY=
-X-Received: by 2002:a17:902:e74e:b0:205:861c:5c37 with SMTP id
- d9443c01a7336-2076e370f21mr93895215ad.6.1726475983139; Mon, 16 Sep 2024
- 01:39:43 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1726480471; x=1727085271;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=O5sS2BSYOStx5RNImbwHRfjWe3sDQftoV4pR+7Qz1Ww=;
+        b=IiasHpWV+1QwK+Q1K2fyNcxvlfRkkjEAfMYbtCYJMAX46Do1FZc/vBmZtE9L0EXuQO
+         7yp6JwtVznNF8Pxz7XJBAvp1MvKG3FdwuQdat1FyaYD5gh61kxU0iidwhb6woeWBx0W/
+         PS9VdbGhpBHmWiJOaW8jfa7FfYI05yGsEkJHC79qQOnrSyRaoccLh7iXjJMXEkwYmLTC
+         ZJd3ix4Snp4MBZjB+D6i4lHBo74iWhVSC2Q7rmedZMDqsw/c2gaoBVHnJ4JXy6ENI7yB
+         neUGiThS2OP5Qf86rpoNgsnLLq6H48F13VM0TDifIYcNxDNN1J7NQTUX4B4P0xxixxaq
+         3KTA==
+X-Forwarded-Encrypted: i=1; AJvYcCVPkIBJtl2HmoTxKUhhlI04fbN4z3JtpgB5f6hPtrHQ2ge+H9/CLDYqM4KFhVY5RTh2berHH7RvnVcNm/c=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwYRc9LvNb1MPy3UIt6PLKbgRMkniLTfCU7RiptxuVlUeRVX+tx
+	Q0yJvu3bE4nT3q8gcrZOdnUvGEZ8A39caVDcIyEhGl0QSNCbpNuB36U7N/5Psbg=
+X-Google-Smtp-Source: AGHT+IFj8ImfMPhNSv9EEs/yJTUuM1DWY2QrbI6FBXkkDFb4p797cs0DIA6ld7KbquKZ+djH8ooIQA==
+X-Received: by 2002:a17:903:2282:b0:205:5284:e510 with SMTP id d9443c01a7336-2076e551ea0mr261032805ad.1.1726480471230;
+        Mon, 16 Sep 2024 02:54:31 -0700 (PDT)
+Received: from localhost.localdomain ([2401:4900:32f5:9b56:32d4:8d34:c09a:f2f6])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-207945dc51esm33033895ad.52.2024.09.16.02.54.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 16 Sep 2024 02:54:30 -0700 (PDT)
+From: Hridesh MG <hridesh699@gmail.com>
+To: rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Cc: Hridesh MG <hridesh699@gmail.com>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
+	Jens Axboe <axboe@kernel.dk>,
+	Matt Gilbride <mattgilbride@google.com>,
+	Shuah Khan <skhan@linuxfoundation.org>
+Subject: [PATCH v3 1/2] rust: kernel: clean up empty `///` lines
+Date: Mon, 16 Sep 2024 15:23:39 +0530
+Message-ID: <320d4bbc9d6f60964366406c4d9903906f5ab0b7.1726479606.git.hridesh699@gmail.com>
+X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240911185931.16971-1-carlos.bilbao.osdev@gmail.com>
-In-Reply-To: <20240911185931.16971-1-carlos.bilbao.osdev@gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 16 Sep 2024 10:39:31 +0200
-Message-ID: <CANiq72nVp=xMQHBbKwayD0e8PpysbVz8eegx+meGqqw3y5HTtA@mail.gmail.com>
-Subject: Re: [PATCH] kernel-docs: Add new section for Rust learning materials
-To: Carlos Bilbao <carlos.bilbao.osdev@gmail.com>
-Cc: corbet@lwn.net, ojeda@kernel.org, alex.gaynor@gmail.com, 
-	boqun.feng@gmail.com, gary@garyguo.net, benno.lossin@proton.me, 
-	a.hindborg@samsung.com, aliceryhl@google.com, workflows@vger.kernel.org, 
-	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, bilbao@vt.edu
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 
-On Wed, Sep 11, 2024 at 8:59=E2=80=AFPM Carlos Bilbao
-<carlos.bilbao.osdev@gmail.com> wrote:
->
-> Include a new section in the Index of Further Kernel Documentation with
-> resources to learn Rust. Reference it in the Rust index.
+Remove unnecessary empty `///` lines in the rust docs.
 
-Thanks for this, Carlos! It would be nice to mention that this came
-out of a session of Kangrejos with suggestions from people in the room
-(or who suggested it).
+Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+Link: https://github.com/Rust-for-Linux/linux/issues/1109
+Signed-off-by: Hridesh MG <hridesh699@gmail.com>
+---
+This is a resubmit because i messed up the message ID's of my previous
+submission
 
-Did you rank/filter them in some way? i.e. my plan was to perhaps make
-a poll or something in Zulip and then pick the best ones.
+Changelog:
+v1->v2:
+- Fixed typo in commit title and description
+- Removed backslashes in kernel::block::mq::Request
+- Link to v1: https://lore.kernel.org/rust-for-linux/20240909161749.147076-1-hridesh699@gmail.com/
 
-A few extra that got mentioned: https://rust-book.cs.brown.edu
-(perhaps could go into the Rust book entry somehow; having said that,
-I am not sure if it is being updated, and it is part of an
-"experiment"), https://newrustacean.com, the reference,
-https://github.com/rust-lang/opsem-team/blob/main/fcps.md...
+v2->v3
+- Fixed From: tag in patch header
+- Link to v2: https://lore.kernel.org/rust-for-linux/aa1b4059dfac001945745db02b6f6d9db2e5d1cb.1726072795.git.hridesh699@gmail.com/
+---
+ rust/kernel/block/mq/request.rs | 1 -
+ rust/kernel/rbtree.rs           | 1 -
+ 2 files changed, 2 deletions(-)
 
-> +    * Name: **Linux Plumbers (LPC) Rust presentations**
+diff --git a/rust/kernel/block/mq/request.rs b/rust/kernel/block/mq/request.rs
+index a0e22827f3f4..313334b1bf18 100644
+--- a/rust/kernel/block/mq/request.rs
++++ b/rust/kernel/block/mq/request.rs
+@@ -30,7 +30,6 @@
+ /// D) Request is owned by driver with more than one `ARef` in existence
+ ///    (refcount > 2)
+ ///
+-///
+ /// We need to track A and B to ensure we fail tag to request conversions for
+ /// requests that are not owned by the driver.
+ ///
+diff --git a/rust/kernel/rbtree.rs b/rust/kernel/rbtree.rs
+index 25eb36fd1cdc..006f6e03aba5 100644
+--- a/rust/kernel/rbtree.rs
++++ b/rust/kernel/rbtree.rs
+@@ -1031,7 +1031,6 @@ fn next(&mut self) -> Option<Self::Item> {
+ 
+ /// A memory reservation for a red-black tree node.
+ ///
+-///
+ /// It contains the memory needed to hold a node that can be inserted into a red-black tree. One
+ /// can be obtained by directly allocating it ([`RBTreeNodeReservation::new`]).
+ pub struct RBTreeNodeReservation<K, V> {
+-- 
+2.46.0
 
-I wonder if listing individual talks may be a bit too much, compared
-to other entries in the file that link to the overall resource.
-Perhaps LPC should be in a different section as a "global" resource,
-perhaps with links to the few latest years' full schedules?
-
-> +    * Name: **The Rustacean Station Podcast**
-
-By the way, are these sorted in any particular way?
-
-Cheers,
-Miguel
