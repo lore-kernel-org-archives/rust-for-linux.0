@@ -1,102 +1,127 @@
-Received: from mail-pf1-f182.google.com (mail-pf1-f182.google.com [209.85.210.182])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FF181BC4E
-	for <rust-for-linux@vger.kernel.org>; Mon, 16 Sep 2024 16:47:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.182
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D90710A18;
+	Mon, 16 Sep 2024 17:08:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.89.141.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726505226; cv=none; b=on1lb0ChMa6nCFm3TNGrmaeDshMUZUz9t1TfbL4V7oNfEueNpwzj3kI5JcZ6gBzJoo2yvNYJ8TJktfHOFmu8+EzfoywNKcMRvHuL1x2d+p9cQrnJPOcPIZ6/yvYP383RNq3I6xKXQge+shpq3dTO1s+lKEcV8Mva3Ja1FR+1Ao4=
+	t=1726506486; cv=none; b=d2W/vFq7fAXpaqTPq5VSDG+WEDlI+arDT9rD5MuMCsQxJM7Ox6mhvv7dJXJkSHJBCGgnscyeAikJPyVSWBuAgyhCg1x7No7fzW/CeEiLjx+ORx26pA4U+fC5gp27vHJf7+aUrI5iuUskMqwo5qz6OcR4T11NSrMvf1Xmn/Ao9Iw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726505226; c=relaxed/simple;
-	bh=JTMsUH/Kl9aapsZQ8rDpX0KFdNRiW1382f+ZrUXpxq0=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=QXZNYatYWlQUe1kjmRmwonqxpqOl/5fCGznf11GZVOrr35VJizsbQ2aBH7sejbmOWiJG9sPHdHXquNmu/d6W6HI1hSaAlhM7IEfJteRf9OLGlE8+NrkNIPZAh8Qdt6CgNAH9PwyOH00B3kzfoycNBZmNPKMHNtbxYBHef+AWlUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=C3n97wGp; arc=none smtp.client-ip=209.85.210.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1726506486; c=relaxed/simple;
+	bh=1dZjd/ClL+1MJKVM0HnPeVDjPRfg9BFy88++S3/i9XI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=LadSmoOFMF1Gl0ji/3MpR9dMEMNcrAxTxse2MISAHQ0lTTVrvyn8qOTVao7l6gVoBzMhInO4DqNx9Zzy2gJLLzKH+Uos4SOG2XFsvZ0CCdCeUxOoKHQkQ5zzL3hODAkBBSb/9mEXv/D8vZSX6bW5mcDjaWLzLMFv+OFEZWB8QeY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; spf=none smtp.mailfrom=ftp.linux.org.uk; dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b=JIdHZtnl; arc=none smtp.client-ip=62.89.141.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ftp.linux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="C3n97wGp"
-Received: by mail-pf1-f182.google.com with SMTP id d2e1a72fcca58-718ef6a26dbso761758b3a.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 16 Sep 2024 09:47:04 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1726505224; x=1727110024; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=OzAN0xAvRZHTYmrnU/A3fZSEHEklGK3Vjb/1gDLdIyc=;
-        b=C3n97wGpnI+4qSNRRuMXK/99yp6RT2T7Wq/xS3rFt0caSuzUPLSYWIIylzNfiGH4Qv
-         rc/ccBQZ6guW6M7dSRSyaaEhwhn+5FBdo3aOPW57pTJywOfsn7lGSX0d2DwGfHAs6zRh
-         OU7q3aQeckBPumESW1Mb7V4Inesllhd8YcTE3WHXXaeuJ5G8+G/h7qccv8Xg3FeyE8Gk
-         pZ0WRZrY3zCJbCRBfkXBQwKVXhI1lIcpSnbQLoJvh65Wf8HB+iwFNBRUpDFhGltlUFOw
-         0XQxrLoyr462ZKCiWcakcUuY7dUnyNHRDXCRyKgPFl56KiPrx8EU79ymH3xsvUBKPN2G
-         3xWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726505224; x=1727110024;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=OzAN0xAvRZHTYmrnU/A3fZSEHEklGK3Vjb/1gDLdIyc=;
-        b=vn12PbAovU6OYlpmkaaCWEbcicu+JcuGrGiaZ6cEjNy3hky2liFkAMhyTxqmK9fPmR
-         06I0jHfgmY2C1NNaooOx5F3KeFXCc7fJsJ40u52w/70UGsYfsqG9Dt47mUsctb8y5U6+
-         rrZFspE9HouApCyVzYXVr0KnGg1NrT3PkAqVzlJJSFW5lA9HMQa6hF7ObBMprul3afP2
-         zMTDn82kFpQm/Qpk1RBOHbA3TNiyzcQpMO4clIp8lTceKIVi2M5zfNHnwDjMBIXxrDMR
-         1WZ3cRt6h/XOsSAnxKyhY61F4LYjqcm9BwlmquW/y6ffMpVygj0xmfSB3Td4uZ/TcGyv
-         KPEg==
-X-Forwarded-Encrypted: i=1; AJvYcCVtq+67zy9tqBvyMabw1vEwIfGU9fId9xRRB3pGZRXh5WtAluGGuAgkzE/vPJ2/HWteTh9frJAAV4NZIXX5sw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy97kzFrAlnlt7+UoRjgNh/StwK06NOe3CZk+Vtf6hnwa2kKG/Z
-	vpNDc6YMl8C73SK5PCPSd2Gnve5ohXBgQ1OFz/RxeCBNk0WmP3m2arKKaCaLCNvaOh9+G0SCzQI
-	+ywNQI45DuoyfNhz6wbSLScYV4n0=
-X-Google-Smtp-Source: AGHT+IGzwvwl4zOI2Siv79HgsewAOMw+JHEgLSjbi/II4ExH83X8+4dRk9iJZKlRCXDrLhPpknwmQEBcqu9MXQQxgVg=
-X-Received: by 2002:a05:6a00:9163:b0:710:5243:4161 with SMTP id
- d2e1a72fcca58-7192620609fmr9753938b3a.5.1726505224337; Mon, 16 Sep 2024
- 09:47:04 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="JIdHZtnl"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=e/xlYRrSDit/b/g6M8c4bdxRyyK3CLNhHmufMU5+ieg=; b=JIdHZtnlwMLdbu7oYdbKGigkqw
+	4s1ccsqYW4bnNBcYLSY3BZe0ZJ/kopW5iM2sTrVkXUF4UDsORvVSyYpnLSmQ36LavMlQVljMR/wcI
+	PTej5tPu6Wgrs4U9MAze6XiUffWeoCpMikl6Gb1WmMj7wnMT2+YRtvBlyxNXJ5PwGkvMnpTA7ANMy
+	93i7Je6/dfBFOtYGaaH48RIaVYTAX0exIEWJ6uddRxIBvbFgY23MynS5G8/GiIjqmJLWI+xNnVWsW
+	Gs+rASaVBVMMkqN16nKduyt0D447xA575Ab1H4OZQ+kITSZzADlYgmlyKhNtsHnOYGSbhZWXBKqjn
+	JzzcFJ2Q==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.98 #2 (Red Hat Linux))
+	id 1sqFCj-0000000D14P-0QWH;
+	Mon, 16 Sep 2024 17:08:01 +0000
+Date: Mon, 16 Sep 2024 18:08:01 +0100
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: Yiyang Wu <toolmanp@tlmp.cc>
+Cc: linux-erofs@lists.ozlabs.org, rust-for-linux@vger.kernel.org,
+	linux-fsdevel@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>
+Subject: Re: [RFC PATCH 19/24] erofs: introduce namei alternative to C
+Message-ID: <20240916170801.GO2825852@ZenIV>
+References: <20240916135634.98554-1-toolmanp@tlmp.cc>
+ <20240916135634.98554-20-toolmanp@tlmp.cc>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240820194910.187826-1-mmaurer@google.com> <CANiq72mv5E0PvZRW5eAEvqvqj74PH01hcRhLWTouB4z32jTeSA@mail.gmail.com>
-In-Reply-To: <CANiq72mv5E0PvZRW5eAEvqvqj74PH01hcRhLWTouB4z32jTeSA@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 16 Sep 2024 18:46:51 +0200
-Message-ID: <CANiq72myZL4_poCMuNFevtpYYc0V0embjSuKb7y=C+m3vVA_8g@mail.gmail.com>
-Subject: Re: [PATCH v4 0/4] Rust KASAN Support
-To: Matthew Maurer <mmaurer@google.com>
-Cc: andreyknvl@gmail.com, ojeda@kernel.org, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Nathan Chancellor <nathan@kernel.org>, dvyukov@google.com, aliceryhl@google.com, 
-	samitolvanen@google.com, kasan-dev@googlegroups.com, linux-mm@kvack.org, 
-	glider@google.com, ryabinin.a.a@gmail.com, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, rust-for-linux@vger.kernel.org, 
-	llvm@lists.linux.dev
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240916135634.98554-20-toolmanp@tlmp.cc>
+Sender: Al Viro <viro@ftp.linux.org.uk>
 
-On Mon, Sep 16, 2024 at 6:15=E2=80=AFPM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
->
-> Applied to `rust-next` -- thanks everyone!
+On Mon, Sep 16, 2024 at 09:56:29PM +0800, Yiyang Wu wrote:
+> +/// Lookup function for dentry-inode lookup replacement.
+> +#[no_mangle]
+> +pub unsafe extern "C" fn erofs_lookup_rust(
+> +    k_inode: NonNull<inode>,
+> +    dentry: NonNull<dentry>,
+> +    _flags: c_uint,
+> +) -> *mut c_void {
+> +    // SAFETY: We are sure that the inode is a Kernel Inode since alloc_inode is called
+> +    let erofs_inode = unsafe { &*container_of!(k_inode.as_ptr(), KernelInode, k_inode) };
 
-Also, for KASAN + RETHUNK builds, I noticed objtool detects this:
+	Ummm...  A wrapper would be highly useful.  And the reason why
+it's safe is different - your function is called only via ->i_op->lookup,
+the is only one instance of inode_operations that has that ->lookup
+method, and the only place where an inode gets ->i_op set to that
+is erofs_fill_inode().  Which is always passed erofs_inode::vfs_inode.
 
-    samples/rust/rust_print.o: warning: objtool:
-asan.module_ctor+0x17: 'naked' return found in MITIGATION_RETHUNK
-build
-    samples/rust/rust_print.o: warning: objtool:
-asan.module_dtor+0x17: 'naked' return found in MITIGATION_RETHUNK
-build
+> +    // SAFETY: The super_block is initialized when the erofs_alloc_sbi_rust is called.
+> +    let sbi = erofs_sbi(unsafe { NonNull::new(k_inode.as_ref().i_sb).unwrap() });
 
-And indeed from a quick look the `ret` is there.
+	Again, that calls for a wrapper - this time not erofs-specific;
+inode->i_sb is *always* non-NULL, is assign-once and always points
+to live struct super_block instance at least until the call of
+destroy_inode().
 
-Since KASAN support is important, I decided to take it nevertheless,
-but please let's make sure this is fixed during the cycle (or add a
-"depends on").
+> +    // SAFETY: this is backed by qstr which is c representation of a valid slice.
 
-Thanks!
+	What is that sentence supposed to mean?  Nevermind "why is it correct"...
 
-Cheers,
-Miguel
+> +    let name = unsafe {
+> +        core::str::from_utf8_unchecked(core::slice::from_raw_parts(
+> +            dentry.as_ref().d_name.name,
+> +            dentry.as_ref().d_name.__bindgen_anon_1.__bindgen_anon_1.len as usize,
+
+	Is that supposed to be an example of idiomatic Rust?  I'm not
+trying to be snide, but my interest here is mostly about safety of
+access to VFS data structures.	And ->d_name is _very_ unpleasant in
+that respect; the locking rules required for its stability are subtle
+and hard to verify on manual code audit.
+
+	Current erofs_lookup() (and your version as well) *is* indeed
+safe in that respect, but the proof (from filesystem POV) is that "it's
+called only as ->lookup() instance, so dentry is initially unhashed
+negative and will remain such until it's passed to d_splice_alias();
+until that point it is guaranteed to have ->d_name and ->d_parent stable".
+
+	Note that once you _have_ called d_splice_alias(), you can't
+count upon the ->d_name stability - or, indeed, upon ->d_name.name you've
+sampled still pointing to allocated memory.
+
+	For directory-modifying methods it's "stable, since parent is held
+exclusive".  Some internal function called from different environments?
+Well...  Swear, look through the call graph and see what can be proven
+for each.
+
+	Expressing that kind of fun in any kind of annotations (Rust type
+system included) is not pleasant.  _Probably_ might be handled by a type
+that would be a dentry pointer with annotation along the lines "->d_name
+and ->d_parent of that one are stable".  Then e.g. ->lookup() would
+take that thing as an argument and d_splice_alias() would consume it.
+->mkdir() would get the same thing, etc.  I hadn't tried to get that
+all way through (the amount of annotation churn in existing filesystems
+would be high and hard to split into reviewable patch series), so there
+might be dragons - and there definitely are places where the stability is
+proven in different ways (e.g. if dentry->d_lock is held, we have the damn
+thing stable; then there's a "take a safe snapshot of name" API; etc.).
+
+	I want to reduce the PITA of regular code audits.  If, at
+some point, Rust use in parts of the tree reduces that - wonderful.
+But then we'd better make sure that Rust-side uses _are_ safe, accurately
+annotated and easy to grep for.  Because we'll almost certainly need to
+change method calling conventions at some points through all of that.
+Even if it's just the annotation-level, any such contract change (it
+is doable and quite a few had been done) will require going through
+the instances and checking how much massage will be needed in those.
+Opaque chunks like the above promise to make that very painful...
