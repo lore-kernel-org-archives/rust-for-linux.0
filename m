@@ -1,77 +1,68 @@
-Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AFACA94F
-	for <rust-for-linux@vger.kernel.org>; Mon, 16 Sep 2024 02:59:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D6052F5B;
+	Mon, 16 Sep 2024 04:18:28 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.89.141.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726455581; cv=none; b=POBjfnZW38ATyh1m/P9Qn6p3cAo1D7XeqULd5b6HfCyrkee7darpnr3oVcSgAQQqmjShDsmlkCQQlGRlhbhsmdiBjUhRL7HLT9i0ipaHUKT6zGpGgIkk4FdWKcJODxXimnQJexvP+wUxGeBbQcS8mdvHVayWl57c/JBNtdLZJB0=
+	t=1726460315; cv=none; b=Oe0YDZl7suUxP+h6suDIYx6dZr3O/Uh1e4CgFsDnIN/56YoESGFwnCDEqFSw58D+6fJLLgCCMXgNzTYtQcPhzPbdED0rqA8yuAhcpahuGZLVhHuZMuRzky4Jo+cdbP5sDPd0lqFdyCr0UxEA+AX3e0EBPX0kws6pqqDQvN1SqMI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726455581; c=relaxed/simple;
-	bh=vtTKLPjhQcDNpuPTi4R7WOcxD130LiM9x7n2YqqRahk=;
+	s=arc-20240116; t=1726460315; c=relaxed/simple;
+	bh=DR5eTYXqizS++Oxp4/zCK03oWTy2bGFeXCwR6HkHWFc=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=gPENmXT9HWJI3T0ohWx2u8QAJRkkvYA04xVSUyyCb9dhqTbLYtq6+mPU7gz8Pm7pUlnGLAUpP+CYIjBdGNcIWfh33Ch7VKbOTzQrTsUJlYdKI6qE4oe5HHUsk0c+cF/74ofcBCaMY643bjg/R0SNm9SAxtD+T08fpRp3PND5LpA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fromorbit.com; spf=pass smtp.mailfrom=fromorbit.com; dkim=pass (2048-bit key) header.d=fromorbit-com.20230601.gappssmtp.com header.i=@fromorbit-com.20230601.gappssmtp.com header.b=tGs/rgpx; arc=none smtp.client-ip=209.85.214.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fromorbit.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fromorbit.com
+	 Content-Type:Content-Disposition:In-Reply-To; b=XneMoVnSzw75NgMyULFQDU2cJA4GVO4o1K5ooB4QN5U+K+b5yn5SScuByqsuIG5PQjOauJthi/RR2SLcDVnbOfpi+DjL4MCqN8K45awbC4tmMdnInFYQ+wMGQKxcCoOIlOIafu+3Ok7eMvqQ52XhK7ZYpsZBdu5m2teUX7zEtQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; spf=none smtp.mailfrom=ftp.linux.org.uk; dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b=Ae/65gvP; arc=none smtp.client-ip=62.89.141.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ftp.linux.org.uk
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fromorbit-com.20230601.gappssmtp.com header.i=@fromorbit-com.20230601.gappssmtp.com header.b="tGs/rgpx"
-Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-20543fdb7acso18600545ad.1
-        for <rust-for-linux@vger.kernel.org>; Sun, 15 Sep 2024 19:59:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fromorbit-com.20230601.gappssmtp.com; s=20230601; t=1726455578; x=1727060378; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=RSbbqBLAJlxb5D5ZWqxy/G4lwCUW9g98Ly58yRRj7LU=;
-        b=tGs/rgpxBYjaSjNkBbpsQa04k1aqf/RI/lTi9WgvvlZQsKuGRI9uC2zauFMIT42NhE
-         Uy8N108l7lMYes/DrgxTq04F2lK8JeBwM/0eGy+dWeAJ3N+7J03QetTsECVAKpfK9IQb
-         5y+iGxb/G8wrJ0qRcFDEuBOGjO9foN16QD1zO5fQapzZapHZY7lEg1pso1sHctHDE90Q
-         dfsUZ/jXpzK39F1DX+2gla4NmbN3fzG8y75J4MqJI4So67x/AeUloEZXXC1vOZk1fkvN
-         b0yzlvFCzMimLOt+0KVs3Zg995US/0aw4CcXV2/xPTriJwPYFjPv2o+/57P0f6NRGhPL
-         jdzQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726455578; x=1727060378;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RSbbqBLAJlxb5D5ZWqxy/G4lwCUW9g98Ly58yRRj7LU=;
-        b=QtKhlF3yJGMiq7Ed+f5bzGNmsIIFqpVHrqI3SANSyh7UA4hoZTt/1rZPCgxlrHNg4X
-         KzJOmQvr+UDH2+QxezUszDdS1Eb+pNJ4mnQwgC8vLwlCnK4J8DjAYlu40vTDi1+elOzX
-         //ZNOc6wILloTHKotaQzrJ5uvXkPgZi8kscKGFOLXmSS3bWFd9vDPLFJ9glqk9x9zUv4
-         RvePAL/z3xB73EZoHDo3XwlcYhJzlKeDTEle5Akpjp07djwwMvyV8MEfuXTvS1d8c1Cb
-         Un5BriQItrxuEN57c2yS1z65Uxzr16lImeDaP6wy0YKLDbztUF6p2DNMdEZYEG5IIjVl
-         xrXQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUSXzxhmj2px5fJcRGBgfCjUeLcXyJ2OwCiw4x8KCyt5nqfXf/XRn02GZFjVok/wz+C+5jHG8FlV8IL1xE1SA==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yzlc+oVU5mjXsa/Lf5l5BNNOdluvqa4PN392grqVAA+qG6NsjAl
-	8W/NtXA/oVPp3rnpczzTbcnzHBjJpppEuOo3KmaUN8BUVM7W+EewFTFJiIp+jqs=
-X-Google-Smtp-Source: AGHT+IGrxbaUIwm2DwH615cdY+BAD4tTTr+b1Q2wOYSYYfq3sf1V7kT4jnQ46vheQxGvDWTGudZYnA==
-X-Received: by 2002:a17:902:e80a:b0:202:190e:2adb with SMTP id d9443c01a7336-2078253791bmr153778185ad.36.1726455578348;
-        Sun, 15 Sep 2024 19:59:38 -0700 (PDT)
-Received: from dread.disaster.area (pa49-179-78-197.pa.nsw.optusnet.com.au. [49.179.78.197])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-207946d27cfsm28140295ad.161.2024.09.15.19.59.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 15 Sep 2024 19:59:37 -0700 (PDT)
-Received: from dave by dread.disaster.area with local (Exim 4.96)
-	(envelope-from <david@fromorbit.com>)
-	id 1sq1xe-005kpl-38;
-	Mon, 16 Sep 2024 12:59:34 +1000
-Date: Mon, 16 Sep 2024 12:59:34 +1000
-From: Dave Chinner <david@fromorbit.com>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
+	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="Ae/65gvP"
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
+	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+	Content-Transfer-Encoding:Content-ID:Content-Description;
+	bh=5DbAG9dxofjmc039hnMVqStrVmflynfUIJTlbchod58=; b=Ae/65gvPFWC1d+1iGXrzaTAwXR
+	VLlQV6jCW2IbzqgXcIFV/aELZEZCVw1SMsCm6TD34Oszu3O29hVKobe4cOhBFgZTIANNBzOSnZuM1
+	7ViT56FwjuRuBPvpZgRqQ1zhh0pzOLH2BpSFxRtULTn3m9Y+rryPIy6hdwMn8YAy5T+LX9wDuzsTs
+	COwQc2kaME+xOCZ35YiXMcFmG8ma49eZrmb5j8J9iXaITD1aaPAFDUYKBE1L+/fgbAMGJlqvp2zRd
+	/9kO3jjIFjrWsgaXDnGaee9xhFlvMuS6p7/H08wAHRWUKr/vURGJk8PnY0lITIuVm40W8apxhQn8V
+	4Z3sGCPg==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.98 #2 (Red Hat Linux))
+	id 1sq3Bt-0000000Cq4Z-455W;
+	Mon, 16 Sep 2024 04:18:22 +0000
+Date: Mon, 16 Sep 2024 05:18:21 +0100
+From: Al Viro <viro@zeniv.linux.org.uk>
+To: linux-fsdevel@vger.kernel.org
+Cc: Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
+	"Serge E. Hallyn" <serge@hallyn.com>,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
 	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
 	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@samsung.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
+	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>,
+	Joel Fernandes <joel@joelfernandes.org>,
+	Carlos Llamas <cmllamas@google.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Thomas Gleixner <tglx@linutronix.de>, Daniel Xu <dxu@dxuuu.xyz>,
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
 	Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH] rust: shrinker: add shrinker abstraction
-Message-ID: <ZuefFhomRvqtFzSn@dread.disaster.area>
-References: <20240912-shrinker-v1-1-18b7f1253553@google.com>
+	linux-security-module@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, Kees Cook <kees@kernel.org>,
+	Alice Ryhl <aliceryhl@google.com>
+Subject: Re: [PATCH v10 6/8] rust: file: add `FileDescriptorReservation`
+Message-ID: <20240916041821.GN2825852@ZenIV>
+References: <20240915-alice-file-v10-0-88484f7a3dcf@google.com>
+ <20240915-alice-file-v10-6-88484f7a3dcf@google.com>
+ <20240915183905.GI2825852@ZenIV>
+ <20240915193443.GK2825852@ZenIV>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -80,323 +71,126 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20240912-shrinker-v1-1-18b7f1253553@google.com>
+In-Reply-To: <20240915193443.GK2825852@ZenIV>
+Sender: Al Viro <viro@ftp.linux.org.uk>
 
-On Thu, Sep 12, 2024 at 09:54:01AM +0000, Alice Ryhl wrote:
-> Rust Binder holds incoming transactions in a read-only mmap'd region
-> where it manually manages the pages. These pages are only in use until
-> the incoming transaction is consumed by userspace, but the kernel will
-> keep the pages around for future transactions. Rust Binder registers a
-> shrinker with the kernel so that it can give back these pages if the
-> system comes under memory pressure.
-> 
-> Separate types are provided for registered and unregistered shrinkers.
-> The unregistered shrinker type can be used to configure the shrinker
-> before registering it. Separating it into two types also enables the
-> user to construct the private data between the calls to `shrinker_alloc`
-> and `shrinker_register` and avoid constructing the private data if
-> allocating the shrinker fails.
+On Sun, Sep 15, 2024 at 08:34:43PM +0100, Al Viro wrote:
 
-This seems a bit nasty. It appears to me that the code does an
-unsafe copy of the internal shrinker state between the unregistered
-and registered types. Shrinkers have additional internal state when
-SHRINKER_MEMCG_AWARE and/or SHRINKER_NUMA_AWARE flags are set,
-and this abstraction doesn't seem to handle either those flags or
-the internal state they use at all.
+> FWIW, I toyed with the idea of having reservations kept per-thread;
+> it is possible and it simplifies some things, but I hadn't been able to
+> find a way to do that without buggering syscall latency for open() et.al.
 
-....
+Hmm...  How about the following:
 
-> diff --git a/rust/kernel/shrinker.rs b/rust/kernel/shrinker.rs
-> new file mode 100644
-> index 000000000000..9af726bfe0b1
-> --- /dev/null
-> +++ b/rust/kernel/shrinker.rs
-> @@ -0,0 +1,324 @@
-> +// SPDX-License-Identifier: GPL-2.0
-> +
-> +// Copyright (C) 2024 Google LLC.
-> +
-> +//! Shrinker for handling memory pressure.
-> +//!
-> +//! C header: [`include/linux/shrinker.h`](srctree/include/linux/shrinker.h)
-> +
-> +use crate::{alloc::AllocError, bindings, c_str, str::CStr, types::ForeignOwnable};
-> +
-> +use core::{
-> +    ffi::{c_int, c_ulong, c_void},
-> +    marker::PhantomData,
-> +    ptr::NonNull,
-> +};
-> +
-> +const SHRINK_STOP: c_ulong = bindings::SHRINK_STOP as c_ulong;
-> +const SHRINK_EMPTY: c_ulong = bindings::SHRINK_EMPTY as c_ulong;
-> +
-> +/// The default value for the number of seeks needed to recreate an object.
-> +pub const DEFAULT_SEEKS: u32 = bindings::DEFAULT_SEEKS;
-> +
-> +/// An unregistered shrinker.
-> +///
-> +/// This type can be used to modify the settings of the shrinker before it is registered.
-> +///
-> +/// # Invariants
-> +///
-> +/// The `shrinker` pointer references an unregistered shrinker.
-> +pub struct UnregisteredShrinker {
-> +    shrinker: NonNull<bindings::shrinker>,
-> +}
-> +
-> +// SAFETY: Moving an unregistered shrinker between threads is okay.
-> +unsafe impl Send for UnregisteredShrinker {}
-> +// SAFETY: An unregistered shrinker is thread safe.
-> +unsafe impl Sync for UnregisteredShrinker {}
-> +
-> +impl UnregisteredShrinker {
-> +    /// Create a new shrinker.
-> +    pub fn alloc(name: &CStr) -> Result<Self, AllocError> {
-> +        // SAFETY: Passing `0` as flags is okay. Using `%s` as the format string is okay when we
-> +        // pass a nul-terminated string as the string for `%s` to print.
-> +        let ptr =
-> +            unsafe { bindings::shrinker_alloc(0, c_str!("%s").as_char_ptr(), name.as_char_ptr()) };
+* add an equivalent of array of pairs (fd, file) to task_struct;
+representation could be e.g. (a _VERY_ preliminary variant)
+	unsigned fd_count;
+	int fds[2];
+	struct file *fp[2];
+	void *spillover;
+with 'spillover' being a separately allocated array of pairs to deal with
+the moments when we have more than 2 simultaneously reserved descriptors.
+Initially NULL, allocated the first time we need more than 2.  Always empty
+outside of syscall.
 
-This passes flags as 0, so doesn't support SHRINKER_MEMCG_AWARE or
-SHRINKER_NUMA_AWARE shrinker variants. These flags should be
-passed through here.
+* inline primitives:
+	count_reserved_fds()
+	reserved_descriptor(index)
+	reserved_file(index)
 
-> +
-> +        let shrinker = NonNull::new(ptr).ok_or(AllocError)?;
-> +
-> +        // INVARIANT: The creation of the shrinker was successful.
-> +        Ok(Self { shrinker })
-> +    }
-> +
-> +    /// Create a new shrinker using format arguments for the name.
-> +    pub fn alloc_fmt(name: core::fmt::Arguments<'_>) -> Result<Self, AllocError> {
-> +        // SAFETY: Passing `0` as flags is okay. Using `%pA` as the format string is okay when we
-> +        // pass a `fmt::Arguments` as the value to print.
-> +        let ptr = unsafe {
-> +            bindings::shrinker_alloc(
-> +                0,
+* int reserve_fd(flags)
+	returns -E... or index.
 
-Same again.
+	slot = current->fd_count
+	if (unlikely(slot == 2) && !current->spillover) {
+		allocate spillover
+		if failed
+			return -ENOMEM
+		set current->spillover
+	}
+	if slot is maximal allowed (2 + how much fits into allocated part?)
+		return -E<something>
+	fd = get_unused_fd_flags(flags);
+	if (unlikely(fd < 0))
+		return fd;
+	if (likely(slot < 2)) {
+		current->fds[slot] = fd;
+		current->fp[slot] = NULL;
+	} else {
+		store (fd, NULL) into element #(slot - 2) of current->spillover
+	}
+	current->fd_count = slot + 1;
 
-> +                c_str!("%pA").as_char_ptr(),
-> +                &name as *const _ as *const c_void,
-> +            )
-> +        };
-> +
-> +        let shrinker = NonNull::new(ptr).ok_or(AllocError)?;
-> +
-> +        // INVARIANT: The creation of the shrinker was successful.
-> +        Ok(Self { shrinker })
-> +    }
-> +
-> +    /// Set the number of seeks needed to recreate an object.
-> +    pub fn set_seeks(&mut self, seeks: u32) {
-> +        unsafe { (*self.shrinker.as_ptr()).seeks = seeks as c_int };
-> +    }
+* void install_file(index, file)
+	
+	if (likely(slot < 2))
+		current->fp[slot] = file;
+	else
+		store file to element #(slot - 2) of current->spillover
 
-Seems kinda weird to have a separate function for setting seeks,
-when...
+* void __commit_reservations(unsigned count, bool failed)
+	// count == current->fd_count
 
-> +
-> +    /// Register the shrinker.
-> +    ///
-> +    /// The provided pointer is used as the private data, and the type `T` determines the callbacks
-> +    /// that the shrinker will use.
-> +    pub fn register<T: Shrinker>(self, private_data: T::Ptr) -> RegisteredShrinker<T> {
+	while (count--) {
+		fd = reserved_descriptor(count);
+		file = reserved_file(count);
+		if (!file)
+			put_unused_fd(fd);
+		else if (!failed)
+			fd_install(fd, file);
+		else {
+			put_unused_fd(fd);
+			fput(file);
+		}
+	}
+	current->fd_count = 0;
 
-.... all the other data needed to set up a shrinker is provided to
-this function....
-
-> +        let shrinker = self.shrinker;
-> +        let ptr = shrinker.as_ptr();
-> +
-> +        // The destructor of `self` calls `shrinker_free`, so skip the destructor.
-> +        core::mem::forget(self);
-> +
-> +        let private_data_ptr = <T::Ptr as ForeignOwnable>::into_foreign(private_data);
-> +
-> +        // SAFETY: We own the private data, so we can assign to it.
-> +        unsafe { (*ptr).private_data = private_data_ptr.cast_mut() };
-> +        // SAFETY: The shrinker is not yet registered, so we can update this field.
-> +        unsafe { (*ptr).count_objects = Some(rust_count_objects::<T>) };
-> +        // SAFETY: The shrinker is not yet registered, so we can update this field.
-> +        unsafe { (*ptr).scan_objects = Some(rust_scan_objects::<T>) };
-
-.... and implemented exactly the same way.
-
-.....
-
-> +/// How many objects are there in the cache?
-> +///
-> +/// This is used as the return value of [`Shrinker::count_objects`].
-> +pub struct CountObjects {
-> +    inner: c_ulong,
-> +}
-> +
-> +impl CountObjects {
-> +    /// Indicates that the number of objects is unknown.
-> +    pub const UNKNOWN: Self = Self { inner: 0 };
-> +
-> +    /// Indicates that the number of objects is zero.
-> +    pub const EMPTY: Self = Self {
-> +        inner: SHRINK_EMPTY,
-> +    };
-> +
-> +    /// The maximum possible number of freeable objects.
-> +    pub const MAX: Self = Self {
-> +        // The shrinker code assumes that it can multiply this value by two without overflow.
-> +        inner: c_ulong::MAX / 2,
-> +    };
-> +
-> +    /// Creates a new `CountObjects` with the given value.
-> +    pub fn from_count(count: usize) -> Self {
-> +        if count == 0 {
-> +            return Self::EMPTY;
-> +        }
-
-No. A return count of 0 is not the same as a return value of
-SHRINK_EMPTY.
-
-A return value of 0 means "no reclaim work can be done right now".
-
-This implies that there are objects that can be reclaimed in the near
-future, but right now they are unavailable for reclaim. This can be
-due to a trylock protecting the count operation failing, the all the
-objects in the cache being dirty and needing work to be done before
-they can be reclaimed, etc.
-
-A return value of SHRINK_EMPTY means "there are no reclaimable
-objects at all".
-
-This implies that the cache is empty - it has absolutely nothing in
-it that can be reclaimed either now or in the near future.
+* static inline void commit_fd_reservations(bool failed)
+	called in syscall glue, right after the syscall returns
+	
+	unsigned slots = current->fd_count;
+	if (unlikely(slots))
+		__commit_reservations(slots, failed);
 
 
-These two return values are treated very differently by the high
-level code. SHRINK_EMPTY is used by shrink_slab_memcg() to maintain
-a "shrinker needs to run" bit in the memcg shrinker search bitmap.
-The bit is cleared when SHRINK_EMPTY is returned, meaning the
-shrinker will not get called again until a new object is queued
-to it's LRU. This sets the "shrinker needs to run" bit again, and
-so the shrinker will run next time shrink_slab_memcg() is called.
+Then we can (in addition to the current use of get_unused_fd_flags() et.al. -
+that still works) do e.g. things like
 
-In constrast, a return value of zero (i.e. no work to be done right
-now) does not change the "shrinker needs to run" state bit, and
-hence it will always be called the next time the shrink_slab_memcg()
-is run to try to reclaim objects from that memcg shrinker...
+	for (i = 0; i < 69; i++) {
+		index = reserve_fd(FD_CLOEXEC);
 
-.....
+		if (unlikely(index < 0))
+			return index;
 
-> +impl ScanObjects {
-> +    /// Indicates that the shrinker should stop trying to free objects from this cache due to
-> +    /// potential deadlocks.
-> +    pub const STOP: Self = Self { inner: SHRINK_STOP };
-> +
-> +    /// The maximum possible number of freeable objects.
-> +    pub const MAX: Self = Self {
-> +        // The shrinker code assumes that it can multiply this value by two without overflow.
-> +        inner: c_ulong::MAX / 2,
+		file = some_driver_shite(some_shite, i);
+		if (IS_ERR(file))
+			return PTR_ERR(file);
 
-No it doesn't. This is purely a count of objects freed by the
-shrinker.
+		install_file(index, file); // consumed file
 
-> +    };
-> +
-> +    /// Creates a new `CountObjects` with the given value.
-> +    pub fn from_count(count: usize) -> Self {
-> +        if count > Self::MAX.inner as usize {
-> +            return Self::MAX;
-> +        }
-> +
-> +        Self {
-> +            inner: count as c_ulong,
-> +        }
-> +    }
-> +}
-> +
-> +/// This struct is used to pass information from page reclaim to the shrinkers.
-> +pub struct ShrinkControl<'a> {
-> +    ptr: NonNull<bindings::shrink_control>,
-> +    _phantom: PhantomData<&'a bindings::shrink_control>,
-> +}
-> +
-> +impl<'a> ShrinkControl<'a> {
-> +    /// Create a `ShrinkControl` from a raw pointer.
-> +    ///
-> +    /// # Safety
-> +    ///
-> +    /// The pointer should point at a valid `shrink_control` for the duration of 'a.
-> +    pub unsafe fn from_raw(ptr: *mut bindings::shrink_control) -> Self {
-> +        Self {
-> +            // SAFETY: Caller promises that this pointer is valid.
-> +            ptr: unsafe { NonNull::new_unchecked(ptr) },
-> +            _phantom: PhantomData,
-> +        }
-> +    }
-> +
-> +    /// Determines whether it is safe to recurse into filesystem code.
-> +    pub fn gfp_fs(&self) -> bool {
-> +        // SAFETY: Okay by type invariants.
-> +        let mask = unsafe { (*self.ptr.as_ptr()).gfp_mask };
-> +
-> +        (mask & bindings::__GFP_FS) != 0
-> +    }
+		ioctl_result.some_array[i] = reserved_descriptor(index);
+		....
+	}
+	...
+	if (copy_to_user(arg, &ioctl_result, sizeof(ioctl_result))
+		return -EFAULT;
+	...
+	return 0;
 
-This needs a check for __GFP_IO as well, as there are block layer
-shrinkers that need to be GFP_NOIO aware...
+and have it DTRT on all failures, no matter how many files we have added,
+etc. - on syscall return we will either commit all reservations
+(on success) or release all reserved descriptors and drop all files we
+had planned to put into descriptor table.  Getting that right manually
+is doable (drm has some examples), but it's _not_ pleasant.
 
-> +
-> +    /// Returns the number of objects that `scan_objects` should try to reclaim.
-> +    pub fn nr_to_scan(&self) -> usize {
-> +        // SAFETY: Okay by type invariants.
-> +        unsafe { (*self.ptr.as_ptr()).nr_to_scan as usize }
-> +    }
-> +
-> +    /// The callback should set this value to the number of objects processed.
-> +    pub fn set_nr_scanned(&mut self, val: usize) {
-> +        let mut val = val as c_ulong;
-> +        // SAFETY: Okay by type invariants.
-> +        let max = unsafe { (*self.ptr.as_ptr()).nr_to_scan };
-> +        if val > max {
-> +            val = max;
-> +        }
+The win here is in simpler cleanup code.  And it can coexist with the
+current API just fine.  The PITA is in the need to add the call
+of commit_fd_reservations() in syscall exit glue and have that done
+on all architectures ;-/
 
-No. Shrinkers are allowed to scan more objects in a batch than
-the high level code asked them to scan. If they do this, they
-*must* report back the count of all the objects they scanned so the
-batched scan accounting can adjust the remaining amount of work that
-needs to be done appropriately.
+FWIW, I suspect that it won't be slower than the current API, even
+if used on hot paths.  pipe(2) would be an interesting testcase
+for that - converting it is easy, and there's a plenty of loads
+where latency of pipe(2) would be visible.
 
-> +
-> +        // SAFETY: Okay by type invariants.
-> +        unsafe { (*self.ptr.as_ptr()).nr_scanned = val };
-> +    }
-> +}
-> +
-> +unsafe extern "C" fn rust_count_objects<T: Shrinker>(
-> +    shrink: *mut bindings::shrinker,
-> +    sc: *mut bindings::shrink_control,
-> +) -> c_ulong {
-> +    // SAFETY: We own the private data, so we can access it.
-> +    let private = unsafe { (*shrink).private_data };
-> +    // SAFETY: This function is only used with shrinkers where `T` is the type of the private data.
-> +    let private = unsafe { <T::Ptr as ForeignOwnable>::borrow(private) };
-> +    // SAFETY: The caller passes a valid `sc` pointer.
-> +    let sc = unsafe { ShrinkControl::from_raw(sc) };
-> +
-> +    let ret = T::count_objects(private, sc);
-> +    ret.inner
-> +}
-
-Why are there two assignments to "private" here? And for the one
-that is borrowing a reference, why is it needed as the shrinker is
-supposed to hold a reference, right? Also, where is that reference
-dropped - it's not at all obvious to me (as a relative n00b to rust)
-what is going on here.
-
-
--Dave.
--- 
-Dave Chinner
-david@fromorbit.com
+Comments?
