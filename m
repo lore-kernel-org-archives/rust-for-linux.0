@@ -1,39 +1,39 @@
 Received: from mail.tlmp.cc (unknown [148.135.17.20])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0408F155359;
-	Mon, 16 Sep 2024 13:56:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECCC315624D;
+	Mon, 16 Sep 2024 13:56:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.135.17.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726494971; cv=none; b=mOKXseVKUMVpX7xyatswRcEDIkbU7OysoXkWliywV44J1zyRKqabb5aWr0K1x2G6AgkLZGZLdeGAQlWrE7fDubaRq/PKIudzHmmvylJnCIh1MBmeoBOTZw+b+mbOTf653SQZXH3Mk/z8KPXBQR+6hoKjAZx+6rFVLI4FXVdr5EU=
+	t=1726494972; cv=none; b=Jm6syxl7TC/d78goVcO07NPcH3SwA495a2Q5s16M8EMM11jmRzcyKz3M7cyQatGH6sYpF93ftvT/jijMNbfaSbYXaDVFhsxGGENmu8kgSm8Yo0pW8r/3kUdHKJa5tc9Q6y+CK5jmUIYSAhUELOzzhm/+HoyIWuUUHTHzTITonz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726494971; c=relaxed/simple;
-	bh=d/XOj0hoNuU9nqfS2fwNSQ1cJ90NqcO0hLBokdH7oBY=;
+	s=arc-20240116; t=1726494972; c=relaxed/simple;
+	bh=+GE0m90lwhlb9OljwVtEQsDCa+zy3VtJ1xGQMp1f3Pc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EPYY60WlyKC96g+3qqjTXrDFCGaW9xXhw0+Elp990NfHWKiXtTXiP2jNfqVand6IxLUcSr24Sq4EPKqejM+K8hit+kA0PvzwjX0RDVVlAd8OVtRGvmHFJ1CIADIS3JyD0QS1ygHPMuwwLiG6FPGXJucaIjnnEeHOcOLwi93RYGA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=tlmp.cc; spf=pass smtp.mailfrom=tlmp.cc; dkim=pass (2048-bit key) header.d=tlmp.cc header.i=@tlmp.cc header.b=WoxzAX5P; arc=none smtp.client-ip=148.135.17.20
+	 MIME-Version; b=DyLqkkiSu6hC7Yivhh5aEpGOeV9w7hhNKcj4iJWM6hxkCLHW9tog9j0sM+NeuD8xaA3ZQCqMFv89D3ALqAr++ThKyICic3dsUtUfnIDG6qQ1qJn2mblrLMidQeAajYJh6iiEH69CaBR82fhnZQ8nXK6wfWf0iLvKQjqFBUD26y4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=tlmp.cc; spf=pass smtp.mailfrom=tlmp.cc; dkim=pass (2048-bit key) header.d=tlmp.cc header.i=@tlmp.cc header.b=UtsePRwI; arc=none smtp.client-ip=148.135.17.20
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=tlmp.cc
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tlmp.cc
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tlmp.cc header.i=@tlmp.cc header.b="WoxzAX5P"
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id B6B4E6997B;
-	Mon, 16 Sep 2024 09:56:03 -0400 (EDT)
+	dkim=pass (2048-bit key) header.d=tlmp.cc header.i=@tlmp.cc header.b="UtsePRwI"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 0826F6997E;
+	Mon, 16 Sep 2024 09:56:08 -0400 (EDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tlmp.cc; s=dkim;
-	t=1726494964; h=from:subject:date:message-id:to:cc:mime-version:
+	t=1726494970; h=from:subject:date:message-id:to:cc:mime-version:
 	 content-transfer-encoding:in-reply-to:references;
-	bh=eiSTaIp2oxZp3XntcBK5EeEI9ViTxMs6XcQ702Or/vY=;
-	b=WoxzAX5PeehcV41pLyQhBKH4D4cyn5EkS57ZSbYTxXHdCEC2oz2WGp604DMrT7Bh1+NKIM
-	aICmeX5CaU2WBrBRze+VXuOByOYJtUeV/7MlgwpXWKMEzfTX1v3pVqiCD+YkgAt1vjNV26
-	RoVMEa/n3Tg+33o3VTiaMw8HWH/+8fjUrK9CODklVnmhZYNYRMl8B1g4pqJCjvFVn5N0Cy
-	nxhbvnXxqPi4t6D+BXooZ0YQtJSJDeu49XSPo0sFm9iMYNRYq8FtTgMb6H2N2siO0ppmI1
-	/gLmefmcZnSjVMgHFC5V4uzzHZHmktTws/kHcqQK7/u+NfYo3teCSQNoJN3PMA==
+	bh=3lB7vMUDAoeBGlHx0db3VH42iw8zhtpQjBkF7LrP3EU=;
+	b=UtsePRwIatPkFI6g47PQN+urQglWghy7rKD4qYfaMY4FAF4z5OzDxPTTk6gpz+Jigq9pCe
+	pl8i1ARy+rPgNfNJTl6jhgPo8f8HIomuGZTdUYJEx+7EA0MtW0/owPnvnrQoKGVzi1mCzr
+	c8thO7gcbdGFqC4ksq3XnA30zw06TcIDYt0+kXfh7Hjjv1yyh6YMUHquiG9DwXNOiQdO7K
+	LnvGPgrtOAyUi0Yu1bnFW6t84EBtf1WiW5ZAv51o1YBPy7AsKlm8kJQRkQX5AKeZdO0H8+
+	KuiOVntwIN0NHGAiYCm/rw7MRKXSByhEaVgeutTYkbNEcFerTEeCahwW5rqhRQ==
 From: Yiyang Wu <toolmanp@tlmp.cc>
 To: linux-erofs@lists.ozlabs.org
 Cc: rust-for-linux@vger.kernel.org,
 	linux-fsdevel@vger.kernel.org
-Subject: [RFC PATCH 02/24] erofs: add superblock data structure in Rust
-Date: Mon, 16 Sep 2024 21:55:19 +0800
-Message-ID: <20240916135541.98096-3-toolmanp@tlmp.cc>
+Subject: [RFC PATCH 05/24] erofs: add inode data structure in Rust
+Date: Mon, 16 Sep 2024 21:55:22 +0800
+Message-ID: <20240916135541.98096-6-toolmanp@tlmp.cc>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240916135541.98096-1-toolmanp@tlmp.cc>
 References: <20240916135541.98096-1-toolmanp@tlmp.cc>
@@ -46,242 +46,326 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Last-TLS-Session-Version: TLSv1.3
 
-This patch adds a compilable super_rs.rs and introduces superblock
-data structure in Rust. Note that this patch leaves C-side code
-untouched.
+This patch introduces the same on-disk erofs data structure
+in rust and also introduces multiple helpers for inode i_format
+and chunk_indexing and later can be used to implement map_blocks.
 
 Signed-off-by: Yiyang Wu <toolmanp@tlmp.cc>
 ---
- fs/erofs/Kconfig                      |  10 ++
- fs/erofs/Makefile                     |   1 +
- fs/erofs/rust/erofs_sys.rs            |  22 +++++
- fs/erofs/rust/erofs_sys/superblock.rs | 132 ++++++++++++++++++++++++++
- fs/erofs/rust/mod.rs                  |   4 +
- fs/erofs/super_rs.rs                  |   9 ++
- 6 files changed, 178 insertions(+)
- create mode 100644 fs/erofs/rust/erofs_sys.rs
- create mode 100644 fs/erofs/rust/erofs_sys/superblock.rs
- create mode 100644 fs/erofs/rust/mod.rs
- create mode 100644 fs/erofs/super_rs.rs
+ fs/erofs/rust/erofs_sys.rs       |   1 +
+ fs/erofs/rust/erofs_sys/inode.rs | 291 +++++++++++++++++++++++++++++++
+ 2 files changed, 292 insertions(+)
+ create mode 100644 fs/erofs/rust/erofs_sys/inode.rs
 
-diff --git a/fs/erofs/Kconfig b/fs/erofs/Kconfig
-index 6ea60661fa55..e2883efbf497 100644
---- a/fs/erofs/Kconfig
-+++ b/fs/erofs/Kconfig
-@@ -178,3 +178,13 @@ config EROFS_FS_PCPU_KTHREAD_HIPRI
- 	  at higher priority.
- 
- 	  If unsure, say N.
-+
-+config EROFS_FS_RUST
-+	bool "EROFS use RUST Replacement (EXPERIMENTAL)"
-+	depends on EROFS_FS && RUST
-+	help
-+	  This permits EROFS to use EXPERIMENTAL Rust implementation
-+	  for EROFS. This should be considered as an experimental
-+	  feature for now.
-+
-+	  If unsure, say N.
-diff --git a/fs/erofs/Makefile b/fs/erofs/Makefile
-index 4331d53c7109..fb46a2c7fb50 100644
---- a/fs/erofs/Makefile
-+++ b/fs/erofs/Makefile
-@@ -9,3 +9,4 @@ erofs-$(CONFIG_EROFS_FS_ZIP_DEFLATE) += decompressor_deflate.o
- erofs-$(CONFIG_EROFS_FS_ZIP_ZSTD) += decompressor_zstd.o
- erofs-$(CONFIG_EROFS_FS_BACKED_BY_FILE) += fileio.o
- erofs-$(CONFIG_EROFS_FS_ONDEMAND) += fscache.o
-+erofs-$(CONFIG_EROFS_FS_RUST) += super_rs.o
 diff --git a/fs/erofs/rust/erofs_sys.rs b/fs/erofs/rust/erofs_sys.rs
-new file mode 100644
-index 000000000000..0f1400175fc2
---- /dev/null
+index 6f3c12665ed6..34267ec7772d 100644
+--- a/fs/erofs/rust/erofs_sys.rs
 +++ b/fs/erofs/rust/erofs_sys.rs
-@@ -0,0 +1,22 @@
-+#![allow(dead_code)]
-+// Copyright 2024 Yiyang Wu
-+// SPDX-License-Identifier: MIT or GPL-2.0-or-later
-+
-+//! A pure Rust implementation of the EROFS filesystem.
-+//! Technical Details are documented in the [EROFS Documentation](https://erofs.docs.kernel.org/en/latest/)
-+
-+// It's unavoidable to import alloc here. Since there are so many backends there and if we want to
-+// to use trait object to export Filesystem pointer. The alloc crate here is necessary.
-+
-+#[cfg(not(CONFIG_EROFS_FS = "y"))]
-+extern crate alloc;
-+
-+/// Erofs requires block index to a 32 bit unsigned integer.
-+pub(crate) type Blk = u32;
-+/// Erofs requires normal offset to be a 64bit unsigned integer.
-+pub(crate) type Off = u64;
-+/// Erofs requires inode nid to be a 64bit unsigned integer.
-+pub(crate) type Nid = u64;
-+/// Erofs Super Offset to read the ondisk superblock
-+pub(crate) const EROFS_SUPER_OFFSET: Off = 1024;
-+pub(crate) mod superblock;
-diff --git a/fs/erofs/rust/erofs_sys/superblock.rs b/fs/erofs/rust/erofs_sys/superblock.rs
+@@ -24,6 +24,7 @@
+ pub(crate) type PosixResult<T> = Result<T, Errno>;
+ 
+ pub(crate) mod errnos;
++pub(crate) mod inode;
+ pub(crate) mod superblock;
+ pub(crate) mod xattrs;
+ pub(crate) use errnos::Errno;
+diff --git a/fs/erofs/rust/erofs_sys/inode.rs b/fs/erofs/rust/erofs_sys/inode.rs
 new file mode 100644
-index 000000000000..213be6dbc553
+index 000000000000..1762023e97f8
 --- /dev/null
-+++ b/fs/erofs/rust/erofs_sys/superblock.rs
-@@ -0,0 +1,132 @@
-+// Copyright 2024 Yiyang Wu
-+// SPDX-License-Identifier: MIT or GPL-2.0-or-later
-+
++++ b/fs/erofs/rust/erofs_sys/inode.rs
+@@ -0,0 +1,291 @@
++use super::xattrs::*;
 +use super::*;
++use core::ffi::*;
 +use core::mem::size_of;
 +
-+/// The ondisk superblock structure.
-+#[derive(Debug, Clone, Copy, Default)]
++/// Represents the compact bitfield of the Erofs Inode format.
++#[repr(transparent)]
++#[derive(Clone, Copy)]
++pub(crate) struct Format(u16);
++
++pub(crate) const INODE_VERSION_MASK: u16 = 0x1;
++pub(crate) const INODE_VERSION_BIT: u16 = 0;
++
++pub(crate) const INODE_LAYOUT_BIT: u16 = 1;
++pub(crate) const INODE_LAYOUT_MASK: u16 = 0x7;
++
++/// Helper macro to extract property from the bitfield.
++macro_rules! extract {
++    ($name: expr, $bit: expr, $mask: expr) => {
++        ($name >> $bit) & ($mask)
++    };
++}
++
++/// The Version of the Inode which represents whether this inode is extended or compact.
++/// Extended inodes have more infos about nlinks + mtime.
++/// This is documented in https://erofs.docs.kernel.org/en/latest/core_ondisk.html#inodes
 +#[repr(C)]
-+pub(crate) struct SuperBlock {
-+    pub(crate) magic: u32,
-+    pub(crate) checksum: i32,
-+    pub(crate) feature_compat: i32,
-+    pub(crate) blkszbits: u8,
-+    pub(crate) sb_extslots: u8,
-+    pub(crate) root_nid: i16,
-+    pub(crate) inos: i64,
-+    pub(crate) build_time: i64,
-+    pub(crate) build_time_nsec: i32,
-+    pub(crate) blocks: i32,
-+    pub(crate) meta_blkaddr: u32,
-+    pub(crate) xattr_blkaddr: u32,
-+    pub(crate) uuid: [u8; 16],
-+    pub(crate) volume_name: [u8; 16],
-+    pub(crate) feature_incompat: i32,
-+    pub(crate) compression: i16,
-+    pub(crate) extra_devices: i16,
-+    pub(crate) devt_slotoff: i16,
-+    pub(crate) dirblkbits: u8,
-+    pub(crate) xattr_prefix_count: u8,
-+    pub(crate) xattr_prefix_start: i32,
-+    pub(crate) packed_nid: i64,
-+    pub(crate) xattr_filter_reserved: u8,
-+    pub(crate) reserved: [u8; 23],
++#[derive(Clone, Copy)]
++pub(crate) enum Version {
++    Compat,
++    Extended,
++    Unknown,
 +}
 +
-+impl TryFrom<&[u8]> for SuperBlock {
-+    type Error = core::array::TryFromSliceError;
-+    fn try_from(value: &[u8]) -> Result<Self, Self::Error> {
-+        value[0..128].try_into()
++/// Represents the data layout backed by the Inode.
++/// As Documented in https://erofs.docs.kernel.org/en/latest/core_ondisk.html#inode-data-layouts
++#[repr(C)]
++#[derive(Clone, Copy, PartialEq)]
++pub(crate) enum Layout {
++    FlatPlain,
++    CompressedFull,
++    FlatInline,
++    CompressedCompact,
++    Chunk,
++    Unknown,
++}
++
++#[repr(C)]
++#[allow(non_camel_case_types)]
++#[derive(Clone, Copy, Debug, PartialEq)]
++pub(crate) enum Type {
++    Regular,
++    Directory,
++    Link,
++    Character,
++    Block,
++    Fifo,
++    Socket,
++    Unknown,
++}
++
++/// This is format extracted from i_format bit representation.
++/// This includes various infos and specs about the inode.
++impl Format {
++    pub(crate) fn version(&self) -> Version {
++        match extract!(self.0, INODE_VERSION_BIT, INODE_VERSION_MASK) {
++            0 => Version::Compat,
++            1 => Version::Extended,
++            _ => Version::Unknown,
++        }
 +    }
-+}
 +
-+impl From<[u8; 128]> for SuperBlock {
-+    fn from(value: [u8; 128]) -> Self {
-+        Self {
-+            magic: u32::from_le_bytes([value[0], value[1], value[2], value[3]]),
-+            checksum: i32::from_le_bytes([value[4], value[5], value[6], value[7]]),
-+            feature_compat: i32::from_le_bytes([value[8], value[9], value[10], value[11]]),
-+            blkszbits: value[12],
-+            sb_extslots: value[13],
-+            root_nid: i16::from_le_bytes([value[14], value[15]]),
-+            inos: i64::from_le_bytes([
-+                value[16], value[17], value[18], value[19], value[20], value[21], value[22],
-+                value[23],
-+            ]),
-+            build_time: i64::from_le_bytes([
-+                value[24], value[25], value[26], value[27], value[28], value[29], value[30],
-+                value[31],
-+            ]),
-+            build_time_nsec: i32::from_le_bytes([value[32], value[33], value[34], value[35]]),
-+            blocks: i32::from_le_bytes([value[36], value[37], value[38], value[39]]),
-+            meta_blkaddr: u32::from_le_bytes([value[40], value[41], value[42], value[43]]),
-+            xattr_blkaddr: u32::from_le_bytes([value[44], value[45], value[46], value[47]]),
-+            uuid: value[48..64].try_into().unwrap(),
-+            volume_name: value[64..80].try_into().unwrap(),
-+            feature_incompat: i32::from_le_bytes([value[80], value[81], value[82], value[83]]),
-+            compression: i16::from_le_bytes([value[84], value[85]]),
-+            extra_devices: i16::from_le_bytes([value[86], value[87]]),
-+            devt_slotoff: i16::from_le_bytes([value[88], value[89]]),
-+            dirblkbits: value[90],
-+            xattr_prefix_count: value[91],
-+            xattr_prefix_start: i32::from_le_bytes([value[92], value[93], value[94], value[95]]),
-+            packed_nid: i64::from_le_bytes([
-+                value[96], value[97], value[98], value[99], value[100], value[101], value[102],
-+                value[103],
-+            ]),
-+            xattr_filter_reserved: value[104],
-+            reserved: value[105..128].try_into().unwrap(),
++    pub(crate) fn layout(&self) -> Layout {
++        match extract!(self.0, INODE_LAYOUT_BIT, INODE_LAYOUT_MASK) {
++            0 => Layout::FlatPlain,
++            1 => Layout::CompressedFull,
++            2 => Layout::FlatInline,
++            3 => Layout::CompressedCompact,
++            4 => Layout::Chunk,
++            _ => Layout::Unknown,
 +        }
 +    }
 +}
 +
-+pub(crate) type SuperBlockBuf = [u8; size_of::<SuperBlock>()];
-+pub(crate) const SUPERBLOCK_EMPTY_BUF: SuperBlockBuf = [0; size_of::<SuperBlock>()];
-+
-+/// Used for external address calculation.
-+pub(crate) struct Accessor {
-+    pub(crate) base: Off,
-+    pub(crate) off: Off,
-+    pub(crate) len: Off,
-+    pub(crate) nr: Off,
++/// Represents the compact inode which resides on-disk.
++/// This is documented in https://erofs.docs.kernel.org/en/latest/core_ondisk.html#inodes
++#[repr(C)]
++#[derive(Clone, Copy)]
++pub(crate) struct CompactInodeInfo {
++    pub(crate) i_format: Format,
++    pub(crate) i_xattr_icount: u16,
++    pub(crate) i_mode: u16,
++    pub(crate) i_nlink: u16,
++    pub(crate) i_size: u32,
++    pub(crate) i_reserved: [u8; 4],
++    pub(crate) i_u: [u8; 4],
++    pub(crate) i_ino: u32,
++    pub(crate) i_uid: u16,
++    pub(crate) i_gid: u16,
++    pub(crate) i_reserved2: [u8; 4],
 +}
 +
-+impl Accessor {
-+    pub(crate) fn new(address: Off, bits: Off) -> Self {
-+        let sz = 1 << bits;
-+        let mask = sz - 1;
-+        Accessor {
-+            base: (address >> bits) << bits,
-+            off: address & mask,
-+            len: sz - (address & mask),
-+            nr: address >> bits,
++/// Represents the extended inode which resides on-disk.
++/// This is documented in https://erofs.docs.kernel.org/en/latest/core_ondisk.html#inodes
++#[repr(C)]
++#[derive(Clone, Copy)]
++pub(crate) struct ExtendedInodeInfo {
++    pub(crate) i_format: Format,
++    pub(crate) i_xattr_icount: u16,
++    pub(crate) i_mode: u16,
++    pub(crate) i_reserved: [u8; 2],
++    pub(crate) i_size: u64,
++    pub(crate) i_u: [u8; 4],
++    pub(crate) i_ino: u32,
++    pub(crate) i_uid: u32,
++    pub(crate) i_gid: u32,
++    pub(crate) i_mtime: u64,
++    pub(crate) i_mtime_nsec: u32,
++    pub(crate) i_nlink: u32,
++    pub(crate) i_reserved2: [u8; 16],
++}
++
++/// Represents the inode info which is either compact or extended.
++#[derive(Clone, Copy)]
++pub(crate) enum InodeInfo {
++    Extended(ExtendedInodeInfo),
++    Compact(CompactInodeInfo),
++}
++
++pub(crate) const CHUNK_BLKBITS_MASK: u16 = 0x1f;
++pub(crate) const CHUNK_FORMAT_INDEX_BIT: u16 = 0x20;
++
++/// Represents on-disk chunk index of the file backing inode.
++#[repr(C)]
++#[derive(Clone, Copy, Debug)]
++pub(crate) struct ChunkIndex {
++    pub(crate) advise: u16,
++    pub(crate) device_id: u16,
++    pub(crate) blkaddr: u32,
++}
++
++impl From<[u8; 8]> for ChunkIndex {
++    fn from(u: [u8; 8]) -> Self {
++        let advise = u16::from_le_bytes([u[0], u[1]]);
++        let device_id = u16::from_le_bytes([u[2], u[3]]);
++        let blkaddr = u32::from_le_bytes([u[4], u[5], u[6], u[7]]);
++        ChunkIndex {
++            advise,
++            device_id,
++            blkaddr,
 +        }
 +    }
 +}
 +
-+impl SuperBlock {
-+    pub(crate) fn blk_access(&self, address: Off) -> Accessor {
-+        Accessor::new(address, self.blkszbits as Off)
-+    }
++/// Chunk format used for indicating the chunkbits and chunkindex.
++#[repr(C)]
++#[derive(Clone, Copy, Debug)]
++pub(crate) struct ChunkFormat(pub(crate) u16);
 +
-+    pub(crate) fn blknr(&self, pos: Off) -> Blk {
-+        (pos >> self.blkszbits) as Blk
++impl ChunkFormat {
++    pub(crate) fn is_chunkindex(&self) -> bool {
++        self.0 & CHUNK_FORMAT_INDEX_BIT != 0
 +    }
-+
-+    pub(crate) fn blkpos(&self, blk: Blk) -> Off {
-+        (blk as Off) << self.blkszbits
-+    }
-+
-+    pub(crate) fn blksz(&self) -> Off {
-+        1 << self.blkszbits
-+    }
-+
-+    pub(crate) fn blk_round_up(&self, addr: Off) -> Blk {
-+        ((addr + self.blksz() - 1) >> self.blkszbits) as Blk
-+    }
-+
-+    pub(crate) fn iloc(&self, nid: Nid) -> Off {
-+        self.blkpos(self.meta_blkaddr) + ((nid as Off) << (5 as Off))
++    pub(crate) fn chunkbits(&self) -> u16 {
++        self.0 & CHUNK_BLKBITS_MASK
 +    }
 +}
-diff --git a/fs/erofs/rust/mod.rs b/fs/erofs/rust/mod.rs
-new file mode 100644
-index 000000000000..e6c0731f2533
---- /dev/null
-+++ b/fs/erofs/rust/mod.rs
-@@ -0,0 +1,4 @@
-+// Copyright 2024 Yiyang Wu
-+// SPDX-License-Identifier: MIT or GPL-2.0-or-later
 +
-+pub(crate) mod erofs_sys;
-diff --git a/fs/erofs/super_rs.rs b/fs/erofs/super_rs.rs
-new file mode 100644
-index 000000000000..4b8cbef507e3
---- /dev/null
-+++ b/fs/erofs/super_rs.rs
-@@ -0,0 +1,9 @@
-+// Copyright 2024 Yiyang Wu
-+// SPDX-License-Identifier: MIT or GPL-2.0-or-later
++/// Represents the inode spec which is either data or device.
++#[derive(Clone, Copy, Debug)]
++#[repr(u32)]
++pub(crate) enum Spec {
++    Chunk(ChunkFormat),
++    RawBlk(u32),
++    Device(u32),
++    CompressedBlocks(u32),
++    Unknown,
++}
 +
-+//! EROFS Rust Kernel Module Helpers Implementation
-+//! This is only for experimental purpose. Feedback is always welcome.
++/// Convert the spec from the format of the inode based on the layout.
++impl From<(&[u8; 4], Layout)> for Spec {
++    fn from(value: (&[u8; 4], Layout)) -> Self {
++        match value.1 {
++            Layout::FlatInline | Layout::FlatPlain => Spec::RawBlk(u32::from_le_bytes(*value.0)),
++            Layout::CompressedFull | Layout::CompressedCompact => {
++                Spec::CompressedBlocks(u32::from_le_bytes(*value.0))
++            }
++            Layout::Chunk => Self::Chunk(ChunkFormat(u16::from_le_bytes([value.0[0], value.0[1]]))),
++            // We don't support compressed inlines or compressed chunks currently.
++            _ => Spec::Unknown,
++        }
++    }
++}
 +
-+#[allow(dead_code)]
-+#[allow(missing_docs)]
-+pub(crate) mod rust;
++/// Helper functions for Inode Info.
++impl InodeInfo {
++    const S_IFMT: u16 = 0o170000;
++    const S_IFSOCK: u16 = 0o140000;
++    const S_IFLNK: u16 = 0o120000;
++    const S_IFREG: u16 = 0o100000;
++    const S_IFBLK: u16 = 0o60000;
++    const S_IFDIR: u16 = 0o40000;
++    const S_IFCHR: u16 = 0o20000;
++    const S_IFIFO: u16 = 0o10000;
++    const S_ISUID: u16 = 0o4000;
++    const S_ISGID: u16 = 0o2000;
++    const S_ISVTX: u16 = 0o1000;
++    pub(crate) fn ino(&self) -> u32 {
++        match self {
++            Self::Extended(extended) => extended.i_ino,
++            Self::Compact(compact) => compact.i_ino,
++        }
++    }
++
++    pub(crate) fn format(&self) -> Format {
++        match self {
++            Self::Extended(extended) => extended.i_format,
++            Self::Compact(compact) => compact.i_format,
++        }
++    }
++
++    pub(crate) fn file_size(&self) -> Off {
++        match self {
++            Self::Extended(extended) => extended.i_size,
++            Self::Compact(compact) => compact.i_size as u64,
++        }
++    }
++
++    pub(crate) fn inode_size(&self) -> Off {
++        match self {
++            Self::Extended(_) => 64,
++            Self::Compact(_) => 32,
++        }
++    }
++
++    pub(crate) fn spec(&self) -> Spec {
++        let mode = match self {
++            Self::Extended(extended) => extended.i_mode,
++            Self::Compact(compact) => compact.i_mode,
++        };
++
++        let u = match self {
++            Self::Extended(extended) => &extended.i_u,
++            Self::Compact(compact) => &compact.i_u,
++        };
++
++        match mode & 0o170000 {
++            0o40000 | 0o100000 | 0o120000 => Spec::from((u, self.format().layout())),
++            // We don't support device inodes currently.
++            _ => Spec::Unknown,
++        }
++    }
++
++    pub(crate) fn inode_type(&self) -> Type {
++        let mode = match self {
++            Self::Extended(extended) => extended.i_mode,
++            Self::Compact(compact) => compact.i_mode,
++        };
++        match mode & Self::S_IFMT {
++            Self::S_IFDIR => Type::Directory, // Directory
++            Self::S_IFREG => Type::Regular,   // Regular File
++            Self::S_IFLNK => Type::Link,      // Symbolic Link
++            Self::S_IFIFO => Type::Fifo,      // FIFO
++            Self::S_IFSOCK => Type::Socket,   // Socket
++            Self::S_IFBLK => Type::Block,     // Block
++            Self::S_IFCHR => Type::Character, // Character
++            _ => Type::Unknown,
++        }
++    }
++
++    pub(crate) fn xattr_size(&self) -> Off {
++        match self {
++            Self::Extended(extended) => {
++                size_of::<XAttrSharedEntrySummary>() as Off
++                    + (size_of::<c_int>() as Off) * (extended.i_xattr_icount as Off - 1)
++            }
++            Self::Compact(_) => 0,
++        }
++    }
++
++    pub(crate) fn xattr_count(&self) -> u16 {
++        match self {
++            Self::Extended(extended) => extended.i_xattr_icount,
++            Self::Compact(compact) => compact.i_xattr_icount,
++        }
++    }
++}
++
++pub(crate) type CompactInodeInfoBuf = [u8; size_of::<CompactInodeInfo>()];
++pub(crate) type ExtendedInodeInfoBuf = [u8; size_of::<ExtendedInodeInfo>()];
++pub(crate) const DEFAULT_INODE_BUF: ExtendedInodeInfoBuf = [0; size_of::<ExtendedInodeInfo>()];
 -- 
 2.46.0
 
