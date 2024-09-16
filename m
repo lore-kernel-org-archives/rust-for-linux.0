@@ -1,391 +1,171 @@
-Received: from mail-wm1-f47.google.com (mail-wm1-f47.google.com [209.85.128.47])
+Received: from mail-lj1-f181.google.com (mail-lj1-f181.google.com [209.85.208.181])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AADB5149C4D
-	for <rust-for-linux@vger.kernel.org>; Mon, 16 Sep 2024 10:22:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A07277BB15
+	for <rust-for-linux@vger.kernel.org>; Mon, 16 Sep 2024 13:41:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726482178; cv=none; b=PTu+faUEwYDL4kmMWc0m4AId+Glb/oQ4lYGb/QJLXlsLOfxNEuxgD3Wice6Uv1eRGtOA3o1EtMsHspT7Jfte4hsSqdMI76yUBVFh35tRtlQnAfnMpAffLqVjNFsh8whRw9dXWgAJ0y9z5tlFvFQu2ENOYH+gt55U69NCc/FssiM=
+	t=1726494075; cv=none; b=fynmGDps9gmuMvVUCikVRIYCf3XOCf88qxFpBTTMBqXqHUfZcjFzMcfEnhiV6rFQEY5C479KtOnQebYq/oAhSiyVzoPgC10PiwxCVekYNcbFzUdabVZGPQeSPGEXTr24XxwAPaKKtc2ux8/65GAt6Z3jptZQCp/wNduT1dut1aM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726482178; c=relaxed/simple;
-	bh=yo3Pcnvp0KuRsnfJjJxO7iC33RlP7+mllK+Ek6MGVBc=;
+	s=arc-20240116; t=1726494075; c=relaxed/simple;
+	bh=7zffz6f9+9dTXuU7HF30nwxvwdmDiNFzFtwvqDSpArI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=KnSmiZ4nsoOs9azTG6ZqyyK+EpQjwHaVCGspstL3LL2VzR7gOHlANRgFSI520lQ3Sh67DqS4lSoGYGNdY09XGPlzo8z/JQauC2QS2n3WrwXds9Rp3owDee63fZqQd9IvrmXRfdCe7n4l79BquQNOhCSUX+grDCC2N/h7AHLX/mM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=2KW4TwoG; arc=none smtp.client-ip=209.85.128.47
+	 To:Cc:Content-Type; b=QEyD/5PkJ+SgRuFZAD5bdTc0Rjd74b8lYs4SgQzTfLMntszLeYngeVtu/MoQxQSWCtd5tkSK4zCWvqV9+5wiqku6ikVkl3V7KnMQulGZ+1chFJPf8qWmk4C96eiazOpn3thnQ8SoL0xZ+WPkOMflvRsu+NOB+aYSyo6FCK6mOr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=vqL6fg5f; arc=none smtp.client-ip=209.85.208.181
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="2KW4TwoG"
-Received: by mail-wm1-f47.google.com with SMTP id 5b1f17b1804b1-42cba8340beso32832775e9.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 16 Sep 2024 03:22:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="vqL6fg5f"
+Received: by mail-lj1-f181.google.com with SMTP id 38308e7fff4ca-2f77be8ffecso49368951fa.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 16 Sep 2024 06:41:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1726482175; x=1727086975; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=aMbnJdw15F4YGIh0jwgo5boSJ7mMbxGA37N7/Qizef4=;
-        b=2KW4TwoG9zlmOkJsvOpMb83fcPiqp43q8KVOISTl8QJQ1LzVAeLsS2RAQakTr+NX62
-         8x0dzph/61pLEzvLnQ03OuxMAUDNM1Tuwa85yXbCidQ0IfCaP0g5XdWDxmkKv2WING1M
-         xGkmjG3Nf4/ehtyV662rB1uSfOcOpLx7A/2I+R5QBUe1Mr/GKOgVe8uNXXYBMX+kqQ95
-         k7Eqfs+TnXnArJJD6hb8xPtYdT0q7F1zfqzwJjWC4wAX25pnDIdCp4JNgvtOaEpSpBoY
-         IQAZrbi8tCaOL8VsFyGoyVSv7KTZJIwDIfKKnNlqAsdZ5qnvNacqvq+kVNKXDg8eZ+w3
-         sFMw==
+        d=google.com; s=20230601; t=1726494071; x=1727098871; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=7zffz6f9+9dTXuU7HF30nwxvwdmDiNFzFtwvqDSpArI=;
+        b=vqL6fg5fX9xskL+ICEsoxzww5oooOp3/j95Wm5OUZq2Uyb1Hm9hL6UBeTnnnuFT/FK
+         5zArrpiMG+lY2SgpvyNi/hskZKiUZD4VdbG2HR+uhOe9q1/nJNV6t0yHZHpUpuJOcpuX
+         17XF8OjvHG/EmDozbcM64DLR28Fy37ixdyZc3qtHTiwlrmZXNnrS/+AwnTp4ohO864nu
+         rT+lLhu7Iok/0ypm90KkS6w7cv89DA3+EjR1VvP9ALKZrYMhy+2BKCZSRjMlCf1STtp4
+         IWjQ/zYuX8PNgU8SEdZXgNAHDGuUnkaCiLMYCxlZta0cdN1PGCVMt4MhJ5xOti/PYl0j
+         c4Tg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726482175; x=1727086975;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=aMbnJdw15F4YGIh0jwgo5boSJ7mMbxGA37N7/Qizef4=;
-        b=R4Cl7NNOLRvwG1G3XZ42xtyu0y4QP03t/rnubx5IERhK4JBHEdxTMxl1SsSZkcH6fw
-         RdqUnGcBnM9VUeka18eZFx1iSb1G30zuj7a62oIHciDxBUrsNJUj+4t8NYzd91kGccBJ
-         qUJhhc6j0ax+XisMw76ZfczQFJms+EWbuquGvIMAdgBCJJ2SYpItvcLkIS2f2Dx5CYSw
-         +DfreObSKIrW8Efi8v4oeN9P6YfXReY/yubG+C8vGDtDv2zgR8rVP173uh5tEaCguQ3/
-         MpirEQVhxGogwhSpp+GHLwB/8pMrlKYDJlzGG6M7jjrFXZSfoUn9KXUfLVFKRTC0Ze2Z
-         XY6g==
-X-Forwarded-Encrypted: i=1; AJvYcCUouhuJGw9/S5rU1YxUkiSzM4roONAYHj5auciI7DS2kus57EVG8mAWekxQbCBoK5n0L+3p5sxRexhGmEL+uw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw+GpBwmveo593X8pausFhTQtSQmWig4kWJnSnhrWWUJggJtTIJ
-	QkHoUvLLvgrictwPfW89h4d9zIf6MBdJIZIFDG1S5o/lsO3c1Ma5erFwEVV6jYvGXL+t3X8PY53
-	iTr7BOCShOPuTMhkEFYJFBZP0+WPFEwlnYLr0
-X-Google-Smtp-Source: AGHT+IGTeHSGKjxyOIBQqUEzMABc1A7njdZDqYuFGdwfUyBxHw+hpXyfrPpmjqB2EUzeaNg5V4jDjFr9eCBIy/D91g8=
-X-Received: by 2002:a5d:46c2:0:b0:371:8685:84c with SMTP id
- ffacd0b85a97d-378c27b0c2dmr8791936f8f.15.1726482174454; Mon, 16 Sep 2024
- 03:22:54 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1726494071; x=1727098871;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=7zffz6f9+9dTXuU7HF30nwxvwdmDiNFzFtwvqDSpArI=;
+        b=eGf3Q1Md1T3HCMxHzhHdDqq4d+WDihi6haXSpltLEE1a+erjx3q8R50/f1UbBm1u7z
+         gOmA+oZfdWfNUa1ilNPTo67IBjcGSrINkjZxBfCICjy4A5ZoBRjN923v3uUrMJwrHwUI
+         zR3y7o0/3y+1erHI7pVyjCfev/QfUjV2P0yp/h1U8T/ZwyGID3DMJG1Bw8EwtHLXBEY3
+         W7r4Xj8RqeeiPJSXsfCBu3Ml5ZWqJToP9bDZAxkU113PBteCxV/rIHXHPr/H+9x4vBoJ
+         eQ8krKQaRrG68gl1qdgGx0DXRfUsToADfjzjYO1foX6kOYOJchRtsFo+aBvO/fhSww0Z
+         WWLA==
+X-Forwarded-Encrypted: i=1; AJvYcCVpYm2Ca6MiswUvVJpSuSbRk7gPqdsKCvFbdDGk/Bxg+q5FbgvsZNmMtsK6G1Bd8ZfhpTaLvw54c4CXS3RcoA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyxGLJdBrjhkE1nfVPOlRAEPz7HizeOr6m7Qp9u0zxthCaLbRlq
+	CiCjR0/kgRL1PjAUUmxLtFvHE2osSVQmjJRvTqVGlvbzozcoLaVL7ZWPAyptAFbwjScXCAMKwu6
+	OALlxIsBtQHR33mxKkAhlbpieJaWgNN2Thhj1
+X-Google-Smtp-Source: AGHT+IGTuz1T5cFsX11jGTdj9wC64zoFaE8zfr1y1SF9nXJUH8c6kxf77d2bSRijJg6lfnRABIn/50xST1PXnkCH4TM=
+X-Received: by 2002:a05:651c:1501:b0:2f7:65b0:ff29 with SMTP id
+ 38308e7fff4ca-2f787f431demr69122171fa.38.1726494070387; Mon, 16 Sep 2024
+ 06:41:10 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240912-shrinker-v1-1-18b7f1253553@google.com> <ZuefFhomRvqtFzSn@dread.disaster.area>
-In-Reply-To: <ZuefFhomRvqtFzSn@dread.disaster.area>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 16 Sep 2024 12:22:40 +0200
-Message-ID: <CAH5fLgjRuGZWMRWTbmS5w+eLG1kPQNo95c6E6db9y8nUt2RH2A@mail.gmail.com>
-Subject: Re: [PATCH] rust: shrinker: add shrinker abstraction
-To: Dave Chinner <david@fromorbit.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
-	Qi Zheng <zhengqi.arch@bytedance.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
-	Muchun Song <muchun.song@linux.dev>, Boqun Feng <boqun.feng@gmail.com>, 
-	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
-	rust-for-linux@vger.kernel.org
+References: <00000000000079eebe05fa2ea9ad@google.com> <CANiq72mor1BkxpAT=v0EsQJN-7fvMjo9K5ooVk1x7ZbBDEyn8g@mail.gmail.com>
+ <CACT4Y+aMdct_tjSYsBvvtGoDji6feOiANogRbp3N41qkzU+5CQ@mail.gmail.com>
+ <CANiq72nm2dU2o_x_GQ5SdsXaK6yZiDXG2hXEYMykViEAZvuMqQ@mail.gmail.com>
+ <CACT4Y+YyYnwg4a1zjTnBU=t0x5Brt1rGuzz-5pXf2Fz3cKf4FQ@mail.gmail.com>
+ <CANiq72=vMydenfkxQx4X7kYvHD0cHzNK19xxxqow3WcLStsdRA@mail.gmail.com>
+ <CACT4Y+ZrwXB1W31Rr7rUUOoW15YbKfnC0khY9KnNk8FTf5uQnA@mail.gmail.com> <CANiq72=pZy6RzomqbKtM5Ky43+Y0y3c1HQkbwrpS-1FHcEqYqg@mail.gmail.com>
+In-Reply-To: <CANiq72=pZy6RzomqbKtM5Ky43+Y0y3c1HQkbwrpS-1FHcEqYqg@mail.gmail.com>
+From: Dmitry Vyukov <dvyukov@google.com>
+Date: Mon, 16 Sep 2024 15:40:58 +0200
+Message-ID: <CACT4Y+aJ4VX5j_Lz7QDb8ynz6vAn_n8d2AM1M5=NUc0ZBUp-dA@mail.gmail.com>
+Subject: Re: [syzbot] upstream boot error: BUG: unable to handle kernel NULL
+ pointer dereference in __dabt_svc
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: syzkaller@googlegroups.com, alex.gaynor@gmail.com, 
+	andriy.shevchenko@linux.intel.com, bjorn3_gh@protonmail.com, 
+	boqun.feng@gmail.com, bpf@vger.kernel.org, gary@garyguo.net, 
+	linux-kernel@vger.kernel.org, linux@rasmusvillemoes.dk, ojeda@kernel.org, 
+	pmladek@suse.com, rostedt@goodmis.org, rust-for-linux@vger.kernel.org, 
+	senozhatsky@chromium.org, syzkaller-bugs@googlegroups.com, wedsonaf@gmail.com, 
+	Joe Perches <joe@perches.com>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Mon, Sep 16, 2024 at 4:59=E2=80=AFAM Dave Chinner <david@fromorbit.com> =
-wrote:
+On Wed, 26 Apr 2023 at 13:37, Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
+> > I understand your intentions and they make sense.
 >
-> On Thu, Sep 12, 2024 at 09:54:01AM +0000, Alice Ryhl wrote:
-> > Rust Binder holds incoming transactions in a read-only mmap'd region
-> > where it manually manages the pages. These pages are only in use until
-> > the incoming transaction is consumed by userspace, but the kernel will
-> > keep the pages around for future transactions. Rust Binder registers a
-> > shrinker with the kernel so that it can give back these pages if the
-> > system comes under memory pressure.
+> Thanks! I am glad you agree it may have some value -- please see below
+> for details.
+>
+> > But adding this logic to syzbot won't help thousands of users of
+> > get_maintainer.pl and dozens of other testing systems. There also will
+>
+> I haven't said otherwise -- as I said, I think it would be nice to
+> have this be part of the kernel itself. :)
+>
+> > be a bit of get_maintainer.pl inside of syzbot code, so now all kernel
+> > developers will need to be aware of it and also submit changes to
+> > syzbot when they want to change maintainers logic.
 > >
-> > Separate types are provided for registered and unregistered shrinkers.
-> > The unregistered shrinker type can be used to configure the shrinker
-> > before registering it. Separating it into two types also enables the
-> > user to construct the private data between the calls to `shrinker_alloc=
-`
-> > and `shrinker_register` and avoid constructing the private data if
-> > allocating the shrinker fails.
+> > I think this also equally applies to all other users of K:.
+> > And a number of them had similar complaints re how K; works.
 >
-> This seems a bit nasty. It appears to me that the code does an
-> unsafe copy of the internal shrinker state between the unregistered
-> and registered types. Shrinkers have additional internal state when
-> SHRINKER_MEMCG_AWARE and/or SHRINKER_NUMA_AWARE flags are set,
-> and this abstraction doesn't seem to handle either those flags or
-> the internal state they use at all.
-
-Doing an unsafe copy of the internal shrinker state is certainly not
-my intent. The UnregisteredShrinker and RegisteredShrinker types just
-wrap a non-null pointer, so the moves inside `register` are not copies
-of the whole `struct shrinker` but just copies of a pointer to the
-shrinker.
-
-> > +impl UnregisteredShrinker {
-> > +    /// Create a new shrinker.
-> > +    pub fn alloc(name: &CStr) -> Result<Self, AllocError> {
-> > +        // SAFETY: Passing `0` as flags is okay. Using `%s` as the for=
-mat string is okay when we
-> > +        // pass a nul-terminated string as the string for `%s` to prin=
-t.
-> > +        let ptr =3D
-> > +            unsafe { bindings::shrinker_alloc(0, c_str!("%s").as_char_=
-ptr(), name.as_char_ptr()) };
+> Yeah, I would imagine so.
 >
-> This passes flags as 0, so doesn't support SHRINKER_MEMCG_AWARE or
-> SHRINKER_NUMA_AWARE shrinker variants. These flags should be
-> passed through here.
-
-I don't have a user for memcg/numa aware shrinkers in Rust, which is
-why I did not extend these abstractions to support them. However, if
-you would like me to, I'm happy to do so. It is easy to add a flags
-argument to this method, but I imagine they also need a few other
-additions elsewhere in the API to really be supported?
-
-Now that I think about it, perhaps Binder's shrinker *could* be memcg
-aware? It uses the list_lru abstraction, and currently calls
-`list_lru_count` in `count_objects`, but maybe we could just use
-`list_lru_shrink_count` instead and magically become memcg aware ...?
-
-> > +    /// Set the number of seeks needed to recreate an object.
-> > +    pub fn set_seeks(&mut self, seeks: u32) {
-> > +        unsafe { (*self.shrinker.as_ptr()).seeks =3D seeks as c_int };
-> > +    }
+> > I am thinking if K: should actually apply just to patches and be
+> > ignored for source files?
 >
-> Seems kinda weird to have a separate function for setting seeks,
-> when...
+> I considered that -- for things like Rust, it could make sense, but
+> perhaps somebody is already using `K:` to match files they do care
+> about, rather than `F:`. So we would need to ask others, but I think
+> it is fine.
 >
-> > +
-> > +    /// Register the shrinker.
-> > +    ///
-> > +    /// The provided pointer is used as the private data, and the type=
- `T` determines the callbacks
-> > +    /// that the shrinker will use.
-> > +    pub fn register<T: Shrinker>(self, private_data: T::Ptr) -> Regist=
-eredShrinker<T> {
+> > If there are files that belong to "rust" (or "bpf" or any other user
+> > of K:), then I think these should be just listed explicitly in the
+> > subsystem (that should be a limited set of files that can be
+> > enumerated with wildcards).
 >
-> .... all the other data needed to set up a shrinker is provided to
-> this function....
+> Yes, at least for Rust, modulo omissions, we match files explicitly
+> with `F:`. We have a couple unimportant omissions, e.g.
+> `.rustfmt.toml`, but I can send a patch.
 >
-> > +        let shrinker =3D self.shrinker;
-> > +        let ptr =3D shrinker.as_ptr();
-> > +
-> > +        // The destructor of `self` calls `shrinker_free`, so skip the=
- destructor.
-> > +        core::mem::forget(self);
-> > +
-> > +        let private_data_ptr =3D <T::Ptr as ForeignOwnable>::into_fore=
-ign(private_data);
-> > +
-> > +        // SAFETY: We own the private data, so we can assign to it.
-> > +        unsafe { (*ptr).private_data =3D private_data_ptr.cast_mut() }=
-;
-> > +        // SAFETY: The shrinker is not yet registered, so we can updat=
-e this field.
-> > +        unsafe { (*ptr).count_objects =3D Some(rust_count_objects::<T>=
-) };
-> > +        // SAFETY: The shrinker is not yet registered, so we can updat=
-e this field.
-> > +        unsafe { (*ptr).scan_objects =3D Some(rust_scan_objects::<T>) =
-};
+> Personally, I have always seen `F:` files (and `N:`-matched ones) as
+> having more weight than `K:`-matched ones, i.e. I saw `K:` as more of
+> a "it depends on what it matches -- discretion needed".
 >
-> .... and implemented exactly the same way.
-
-Well .. this design makes setting `seeks` optional, but `private_data`
-mandatory. We *have* to set the two function pointers, but you don't
-have to set `seeks` explicitly.
-
-It's not obvious, so it's probably worth mentioning that this design
-doesn't actually require you to make an allocation and store a real
-pointer in the private data. When implementing the Shrinker trait for
-your custom shrinker, you have to choose which pointer type to use. If
-you choose the unit type `()` as the pointer type, then no real
-pointer is actually stored.
-
-> > +/// How many objects are there in the cache?
-> > +///
-> > +/// This is used as the return value of [`Shrinker::count_objects`].
-> > +pub struct CountObjects {
-> > +    inner: c_ulong,
-> > +}
-> > +
-> > +impl CountObjects {
-> > +    /// Indicates that the number of objects is unknown.
-> > +    pub const UNKNOWN: Self =3D Self { inner: 0 };
-> > +
-> > +    /// Indicates that the number of objects is zero.
-> > +    pub const EMPTY: Self =3D Self {
-> > +        inner: SHRINK_EMPTY,
-> > +    };
-> > +
-> > +    /// The maximum possible number of freeable objects.
-> > +    pub const MAX: Self =3D Self {
-> > +        // The shrinker code assumes that it can multiply this value b=
-y two without overflow.
-> > +        inner: c_ulong::MAX / 2,
-> > +    };
-> > +
-> > +    /// Creates a new `CountObjects` with the given value.
-> > +    pub fn from_count(count: usize) -> Self {
-> > +        if count =3D=3D 0 {
-> > +            return Self::EMPTY;
-> > +        }
+> From a quick look, most `K:`-using subsystems seem to list `F:` and
+> `N:` as I would expect.
 >
-> No. A return count of 0 is not the same as a return value of
-> SHRINK_EMPTY.
+> > It's also reasonable to apply K: to patches.
 >
-> A return value of 0 means "no reclaim work can be done right now".
+> Yes, definitely, for Rust, that is our main use case, i.e. it is
+> mainly why we wanted to have the `K:` entry: to catch changes to
+> things that are tagged with "Rust" in C files (early on, at least).
 >
-> This implies that there are objects that can be reclaimed in the near
-> future, but right now they are unavailable for reclaim. This can be
-> due to a trylock protecting the count operation failing, the all the
-> objects in the cache being dirty and needing work to be done before
-> they can be reclaimed, etc.
+> It is particularly important for us, since we are also considering
+> having more of these annotations in the future.
 >
-> A return value of SHRINK_EMPTY means "there are no reclaimable
-> objects at all".
+> > But if a random source file happened to mention "rust" somewhere once,
+> > I am not sure you want to be CCed on all issues in that file.
+> > Does it sound reasonable?
 >
-> This implies that the cache is empty - it has absolutely nothing in
-> it that can be reclaimed either now or in the near future.
+> For Rust, yes, that would probably work for us. Not sure for all
+> subsystems using `K:`, though.
 >
+> Having said that, I suggested including the kernel config too in this
+> decision (i.e. not for the patches case, but for testers finding
+> runtime issues), because it adds information: it leaves reports out
+> when something is not even enabled but matched via `K:`, but still
+> allows a Cc when matched via `K:` and enabled. It is, of course, still
+> potentially a false positive, but some subsystems may want to hear
+> about those.
 >
-> These two return values are treated very differently by the high
-> level code. SHRINK_EMPTY is used by shrink_slab_memcg() to maintain
-> a "shrinker needs to run" bit in the memcg shrinker search bitmap.
-> The bit is cleared when SHRINK_EMPTY is returned, meaning the
-> shrinker will not get called again until a new object is queued
-> to it's LRU. This sets the "shrinker needs to run" bit again, and
-> so the shrinker will run next time shrink_slab_memcg() is called.
+> For instance, for Rust, this would be fine early on, since we don't
+> expect many to have `RUST=y` to begin with, and thus the odd false
+> positive report via `K:` is fine. Later on, this heuristic may change,
+> and we may not change those matches anymore (especially since, by
+> then, the goal is that subsystems would be taking care of their own
+> Rust bits).
 >
-> In constrast, a return value of zero (i.e. no work to be done right
-> now) does not change the "shrinker needs to run" state bit, and
-> hence it will always be called the next time the shrink_slab_memcg()
-> is run to try to reclaim objects from that memcg shrinker...
-
-This is a part of the API that I was pretty unsure about, so very
-happy to get your input. For both of the shrinkers I am familiar with,
-they know the exact count of objects and there's no error case for any
-lock. The shrinkers just return the exact count directly from
-count_objects, but that seemed incorrect to me, as this means that the
-shrinker returns 0 when it really should return SHRINK_EMPTY. That's
-why I implemented `from_count` this way - the intent is that you use
-`CountObjects::from_count` when you know the exact count, so if you
-pass 0 to that method, then that means the shrinker really is empty.
-If you don't know what the count is, then you return
-`CountObjects::UNKNOWN` instead.
-
-That said, I guess there is some reason that the C shrinker API is
-designed to use the value 0 for unknown rather than empty, so perhaps
-I should not try to do it differently.
-
-> > +impl ScanObjects {
-> > +    /// Indicates that the shrinker should stop trying to free objects=
- from this cache due to
-> > +    /// potential deadlocks.
-> > +    pub const STOP: Self =3D Self { inner: SHRINK_STOP };
-> > +
-> > +    /// The maximum possible number of freeable objects.
-> > +    pub const MAX: Self =3D Self {
-> > +        // The shrinker code assumes that it can multiply this value b=
-y two without overflow.
-> > +        inner: c_ulong::MAX / 2,
+> This is what I was suggesting to then put in `get_maintainer.pl`, e.g.
+> a `--bot` option (or `--runtime`, or `--config-based-filtering`, or
+> similar) option. Then the bots can add that option on their side.
 >
-> No it doesn't. This is purely a count of objects freed by the
-> shrinker.
+> Thanks again for considering this!
 
-In mm/shrinker.c it multiplies by two here:
-total_scan =3D min(total_scan, (2 * freeable));
+Was looking at what's the status of this, and if we need to file a
+feature request for syzbot.
+Turns out Joe Perches fixed this a bit ago by adding
+--keywords-in-file flag (off by default):
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?id=71ca5ee18708c1f9f086e20ac0a657009bcfe43a
 
-And I guess there is even a multiplication by four a bit earlier in
-the same function if priority is zero.
-
-> > +    /// Determines whether it is safe to recurse into filesystem code.
-> > +    pub fn gfp_fs(&self) -> bool {
-> > +        // SAFETY: Okay by type invariants.
-> > +        let mask =3D unsafe { (*self.ptr.as_ptr()).gfp_mask };
-> > +
-> > +        (mask & bindings::__GFP_FS) !=3D 0
-> > +    }
->
-> This needs a check for __GFP_IO as well, as there are block layer
-> shrinkers that need to be GFP_NOIO aware...
-
-Would you prefer that I add additional methods, or that I modify this
-method to also check __GFP_IO, or that I just expose a way to get the
-`gfp_mask` value directly?
-
-> > +    /// Returns the number of objects that `scan_objects` should try t=
-o reclaim.
-> > +    pub fn nr_to_scan(&self) -> usize {
-> > +        // SAFETY: Okay by type invariants.
-> > +        unsafe { (*self.ptr.as_ptr()).nr_to_scan as usize }
-> > +    }
-> > +
-> > +    /// The callback should set this value to the number of objects pr=
-ocessed.
-> > +    pub fn set_nr_scanned(&mut self, val: usize) {
-> > +        let mut val =3D val as c_ulong;
-> > +        // SAFETY: Okay by type invariants.
-> > +        let max =3D unsafe { (*self.ptr.as_ptr()).nr_to_scan };
-> > +        if val > max {
-> > +            val =3D max;
-> > +        }
->
-> No. Shrinkers are allowed to scan more objects in a batch than
-> the high level code asked them to scan. If they do this, they
-> *must* report back the count of all the objects they scanned so the
-> batched scan accounting can adjust the remaining amount of work that
-> needs to be done appropriately.
-
-Acknowledged.
-
-This is related to another question that I had, actually. Other than
-returning SHRINK_STOP, in what situations should `nr_scanned` be
-different from the return value of `scan_objects`?
-
-> > +
-> > +        // SAFETY: Okay by type invariants.
-> > +        unsafe { (*self.ptr.as_ptr()).nr_scanned =3D val };
-> > +    }
-> > +}
-> > +
-> > +unsafe extern "C" fn rust_count_objects<T: Shrinker>(
-> > +    shrink: *mut bindings::shrinker,
-> > +    sc: *mut bindings::shrink_control,
-> > +) -> c_ulong {
-> > +    // SAFETY: We own the private data, so we can access it.
-> > +    let private =3D unsafe { (*shrink).private_data };
-> > +    // SAFETY: This function is only used with shrinkers where `T` is =
-the type of the private data.
-> > +    let private =3D unsafe { <T::Ptr as ForeignOwnable>::borrow(privat=
-e) };
-> > +    // SAFETY: The caller passes a valid `sc` pointer.
-> > +    let sc =3D unsafe { ShrinkControl::from_raw(sc) };
-> > +
-> > +    let ret =3D T::count_objects(private, sc);
-> > +    ret.inner
-> > +}
->
-> Why are there two assignments to "private" here? And for the one
-> that is borrowing a reference, why is it needed as the shrinker is
-> supposed to hold a reference, right? Also, where is that reference
-> dropped - it's not at all obvious to me (as a relative n00b to rust)
-> what is going on here.
-
-It's just to avoid having one long line. The first line obtains a void
-pointer to the private data. The second line converts it into a
-borrowed form of whichever pointer type the private data has chosen to
-use.
-
-For example:
-* If the private data is `Box<T>`, that is, a pointer with exclusive
-ownership over an allocation created with kmalloc, then the borrowed
-form is a normal shared Rust reference `&T`.
-* If the private data is `Arc<T>`, that is, a pointer that owns a
-refcount on an allocation created with kmalloc, then the borrowed form
-is `ArcBorrow<T>`, which is like `&T` but also gives you the ability
-to increment the refcount and create a new `Arc<T>` if you would like
-one. An `ArcBorrow<T>` does not hold a refcount itself.
-
-Notably, the call to `borrow` does *not* increment any refcounts.
-Think of it as a pointer cast from void pointer to whichever pointer
-type is appropriate for the kind of ownership used with the private
-data. If you look at the definition of ForeignOwnable in
-rust/kernel/types.rs, which is a trait for anything that can be stored
-in a void pointer, you'll find that it has three methods:
-
-* `into_foreign` - converts an owned version of the pointer into a void poi=
-nter.
-* `from_foreign` - converts the void pointer back into an owned
-version, effectively taking ownership of the void pointer
-* `borrow` - let's you look inside a void pointer without taking ownership =
-of it
-
-Here, `from_foreign` requires that there are no active calls to
-`borrow` when you take back ownership.
-
-Alice
+I think that's the right thing to do. syzbot won't be confused by
+widely matched K: patterns with sending reports (since it runs
+get_maintainers.pl on files).
