@@ -1,90 +1,129 @@
-Received: from mail-pf1-f176.google.com (mail-pf1-f176.google.com [209.85.210.176])
+Received: from mail-pj1-f44.google.com (mail-pj1-f44.google.com [209.85.216.44])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0457C17BBE;
-	Mon, 16 Sep 2024 16:14:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D721B15A4B0
+	for <rust-for-linux@vger.kernel.org>; Mon, 16 Sep 2024 16:15:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.44
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726503284; cv=none; b=oCygWCn5kk26KTmk9DejMbaZcvsYB363VYiWzS3SCgFRrwEWXCD00FxJ+/3cCHwMjFrRflarIpj473prJP3bH7/a7K/jwiLcSz3X73U9p1No5JfCHxetk/twDZNJzNJlok1g4OenvhCAylaWdiGvofUiv+s0HBJXIS8zeOaDeIM=
+	t=1726503334; cv=none; b=Ri5wQvRbsMbmZIBLoJIM9CIvyPa8Ykyf0QYoJ0GVMP2ZjvE0lcnCbipQx2KBwqGDjVIUfrWMjcjyp6X4PpTgeBwseM6SfQ5YGNpOuFvuchDgwUDeCgXF65aIiwBhncszblberUBPD52dU8vooOeKqjarA1M9KekagsRnQyieHxk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726503284; c=relaxed/simple;
-	bh=3qUEcfaK4/ka9sFDUJuHN+W1k5GDQiQOOzJa4BmEGh0=;
+	s=arc-20240116; t=1726503334; c=relaxed/simple;
+	bh=CHfKWPhoLol18DWJjUtfaj5l1Pik2/9uMA+WDq8/wKM=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=aAzRG+/YDVL2fSqndEN0EDfupQ481LbVdL0uwHXR3V+xSW5wOpfHnvaCKYs5pIYfXBl+kDSndYLBBC+poVrJqiCoX5YwelTaiAE08/X0RocWnxedETekb05su1CqMLwE1dK2u8fzTaBYC3kXep2OZX129+UEVV2F6n3RWFKi4I4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=kZuwtuZX; arc=none smtp.client-ip=209.85.210.176
+	 To:Cc:Content-Type; b=YH0uO/1WjqwAuvxVKEovbtufryTx3FNbUVglaMXZxfJ/LMgizPpEFGuqNrObGmeeGBImEfpabHIrEqyDxg2FfjRGpuQP85zMjnqkgyFoAQo7vXELeid2+NXw6phOBCtqjmNF02zjdNs2OvMAafCTFfh6Zj32u9erE6DExEMyLWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=k30BteAa; arc=none smtp.client-ip=209.85.216.44
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="kZuwtuZX"
-Received: by mail-pf1-f176.google.com with SMTP id d2e1a72fcca58-717839f9eb6so894168b3a.3;
-        Mon, 16 Sep 2024 09:14:42 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="k30BteAa"
+Received: by mail-pj1-f44.google.com with SMTP id 98e67ed59e1d1-2d8741c85bdso860352a91.1
+        for <rust-for-linux@vger.kernel.org>; Mon, 16 Sep 2024 09:15:32 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1726503282; x=1727108082; darn=vger.kernel.org;
+        d=gmail.com; s=20230601; t=1726503332; x=1727108132; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=aiIXMBq5XTutSIjV4NConN4WgPc3djgc12b0ziG7diY=;
-        b=kZuwtuZXmqfiVGiPwSiWR2FBkaNvDTwzFuoogdFujuVHnZvvL9lJulvG0z4EvN5I7d
-         6MoYi4UFBKj7tuGoL5+LYvLhfBoM6Ry5QbfIyHOQHskZZVwY8Kbhr6jOmcXtP4bOMPKk
-         qFMxUmgcG6CqddddPeIWTvSG6+rCEzgB6rjzJ3PlLoKsVA5RPmLOGruEQY6nhKMGYX1+
-         y1eLab669Tk64YPWaxwOrs40EfDCbCXO1x/Lxd91093NhQN+9EZqOSLYP+PVQ+LlR8qf
-         2RHxEsZyYDsadVMxb6ZgoP0p7hwJQOYRe0CWXEqNvv3DZyuROAXpLyF26UimqwkdT8h7
-         /n0A==
+        bh=UdCaaZaGAuNxnOSLC5REDzZqrguiE6BbNpi1q+AVJDM=;
+        b=k30BteAaOAn78mI7KBBrTUxWOMtOLYdmnuTwYLe1qTPFoOyI6ZcOZKhyMsGm58zemK
+         T/whs3QO4nVaSpB7wYo9zbsSvq8ptwS4d4QU97lBPumYPlAmkb6nUGtc5Bvhl1CqfBdL
+         ZkQIspIvu1rrPCbmaVCSbRCOyU8EPyrl1y5wVl7Jiq2jO0WhYBy00r5pXiMdUJP4v5Iv
+         mdxDT76NwXF+KcPbC/fqu30bv0zspRa/SdAldq5dz/n1p8Zarpyemdp6uTO/O7HedNeo
+         /JIl92E0z3XGQ828/gyQoKXZAXhU24y2hV6ZzHKSqIQHULsMLMnWSNqWh9ozq7ArlJ2B
+         bLtA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726503282; x=1727108082;
+        d=1e100.net; s=20230601; t=1726503332; x=1727108132;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=aiIXMBq5XTutSIjV4NConN4WgPc3djgc12b0ziG7diY=;
-        b=a0YtSOhUjnmff5X8NEZbU1hzup0iBRK7gDfxht1drjt52Jy5VOKSGgwOCcyZkN26gk
-         2h7aEvx38neyo6HitC2WvO4tfJ5FEigxa1Uq5ddYuAhOfm36RkjEwQxKBBtmWd263loB
-         AoPIoWTZZimef2d1VaHP+6oFA5DXO5ZjIW9H3nQjKx27Iiff8QLoSo6sVDAG9bRzaM+T
-         PrzubtMqnE42K2Nzgilsceq/+N3CIpyBS7SEXCI0SrqwTkb7gw9yx6VlFih+sjAE83XM
-         pmjNSkrIHehSL3+KjzmHYgACpq4LyqUXoUZB0UMoFgjvjgWKnlzuHPerrLqYhu+LYGH7
-         Dihw==
-X-Forwarded-Encrypted: i=1; AJvYcCVHGW3943ZxCVygAx1Pf2Ynf83SpwNooQqAyPMqThV6i1MePMzcbzAYTMzfBrb6eplFNkzJM90zi7aYXtyneBw=@vger.kernel.org, AJvYcCVSvRwmbPEWfplIBK7UDAnlGFJ2mhX0rbc+r4UZSsHAoCj7qQf/WsEtBMfP3DWVujicV/NwGsTFwF5dNqc=@vger.kernel.org, AJvYcCW28kVyaReRWjhThy2AHtWrjws/fUpI/q7yw4UzYGKSrCHYY0mX7EKV8ckR8nymZAzVcUFFomzcihN1+V7d@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywr1tcNG/BNly71pt7Wzbh18ELZNyC0+klOLmhKBxhLMO3S3JMN
-	6dQ3HFE7cI92zX8RXZhyJKG+Ih3TAIjwnZTxs+oKNpcPCc+NUrDx0UOb7muKOnE767qBo1xdZlz
-	e6tQAVZFcDzG4TD7rIlLO+EydBxI=
-X-Google-Smtp-Source: AGHT+IHNBDz7/fdjLPwJLc6uvykq4pFaJyTiJPPGBGRYb3y/6qXG+SIzr/7QALlDqgIS3UAoxwL7IvBnhervlWoySYY=
-X-Received: by 2002:a05:6a00:ccb:b0:718:e49f:246e with SMTP id
- d2e1a72fcca58-7192620091cmr9723769b3a.6.1726503282171; Mon, 16 Sep 2024
- 09:14:42 -0700 (PDT)
+        bh=UdCaaZaGAuNxnOSLC5REDzZqrguiE6BbNpi1q+AVJDM=;
+        b=Zq7xNupVN2hHcgA6ccEq3zwuJd/90PzpbBXwM/ir9veeaqk0i5fzMlkxJQWshjZ96I
+         KumJ8gVrSVso7bhY//Wayak0OORORme3i/iQ++HIEybj9ZKoMOneZTZmSffUUqs03VBT
+         0/GazT9d31o5zkGNx5/VlTh3UI0GM1Y+ahtSy8b37nU1ksNWcfMCIGfTNrJVpGM6hAxe
+         zDvWyuXJW4bNxNWGsIA1Xcbr47A/NIP7YLyQHqpy6Z3qYZ9uPBDzT859LQGXbmime5Ts
+         ahs6ua2oxxhllpBtW741ilYTXbZBVsBmUo46Feu0MijLZKFybkK2Hc1rJ/tK+Yr49WPy
+         0Gxg==
+X-Forwarded-Encrypted: i=1; AJvYcCWnrpwh+J1dLEPfU6nxqLsdOdyKlcjOZ12HuNZH53QxvYKa1MmYXuZsAhPwfj4794oXpywqKvtqi7X7jTsQ0Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyOy33IoV3kpZ/zhFDZN/Cqb+uyAyAXcRTJfFqwLfqd653YXTdr
+	YkPX0MN9lTlvpcOfjz1I7Eo6hTpQ84ceAp1taoRzcUCAYrLYkS8xWmsChoHS/BMlLtH9U8DtU8Z
+	Esr5oz2t+uEA4thyXrQOQeJBoS8g=
+X-Google-Smtp-Source: AGHT+IFWqKrB/jwwfMGDT0N94zreaBigF9XO/ixKs8bzKIeBFXv7PUaej4KHwjCw+M371MDTiFimmNQTj/1U22Qe65g=
+X-Received: by 2002:a17:90a:f308:b0:2db:60b:9be4 with SMTP id
+ 98e67ed59e1d1-2dba007b059mr7383255a91.7.1726503332118; Mon, 16 Sep 2024
+ 09:15:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240801-kcfi-v2-2-c93caed3d121@google.com> <20240801-kcfi-v2b-2-c93caed3d121@google.com>
- <CANiq72=B9NmC=1eSaOrg7XutjueQsSXGcBQb7dQFPuL0SFjPsA@mail.gmail.com>
-In-Reply-To: <CANiq72=B9NmC=1eSaOrg7XutjueQsSXGcBQb7dQFPuL0SFjPsA@mail.gmail.com>
+References: <20240820194910.187826-1-mmaurer@google.com>
+In-Reply-To: <20240820194910.187826-1-mmaurer@google.com>
 From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Mon, 16 Sep 2024 18:14:29 +0200
-Message-ID: <CANiq72miDK-Z3v46QX9MQTT_raJTz+ja-Qx5j1qBmptHXkhY+A@mail.gmail.com>
-Subject: Re: [PATCH v2b] rust: cfi: add support for CFI_CLANG with Rust
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: a.hindborg@samsung.com, alex.gaynor@gmail.com, benno.lossin@proton.me, 
-	bjorn3_gh@protonmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
-	kees@kernel.org, linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	masahiroy@kernel.org, mmaurer@google.com, nathan@kernel.org, 
-	nicolas@fjasle.eu, ojeda@kernel.org, peterz@infradead.org, 
-	rust-for-linux@vger.kernel.org, samitolvanen@google.com, wedsonaf@gmail.com
+Date: Mon, 16 Sep 2024 18:15:19 +0200
+Message-ID: <CANiq72mv5E0PvZRW5eAEvqvqj74PH01hcRhLWTouB4z32jTeSA@mail.gmail.com>
+Subject: Re: [PATCH v4 0/4] Rust KASAN Support
+To: Matthew Maurer <mmaurer@google.com>
+Cc: andreyknvl@gmail.com, ojeda@kernel.org, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Nathan Chancellor <nathan@kernel.org>, dvyukov@google.com, aliceryhl@google.com, 
+	samitolvanen@google.com, kasan-dev@googlegroups.com, linux-mm@kvack.org, 
+	glider@google.com, ryabinin.a.a@gmail.com, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, 
+	Justin Stitt <justinstitt@google.com>, rust-for-linux@vger.kernel.org, 
+	llvm@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Sep 16, 2024 at 4:07=E2=80=AFPM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
+On Tue, Aug 20, 2024 at 9:49=E2=80=AFPM Matthew Maurer <mmaurer@google.com>=
+ wrote:
 >
-> It is possible to have CALL_PADDING && !FINEIBT, which means one can
-> trigger a build error if the compiler is not recent enough. Should we
-> test for CALL_PADDING here?
+> Right now, if we turn on KASAN, Rust code will cause violations because
+> it's not enabled properly.
+>
+> This series:
+> 1. Adds flag probe macros for Rust - now that we're setting a minimum rus=
+tc
+>    version instead of an exact one, these could be useful in general. We =
+need
+>    them in this patch because we don't set a restriction on which LLVM ru=
+stc
+>    is using, which is what KASAN actually cares about.
+> 2. Makes `rustc` enable the relevant KASAN sanitizer flags when C does.
+> 3. Adds a smoke test to the `kasan_test` KUnit suite to check basic
+>    integration.
+>
+> This patch series requires the target.json array support patch [1] as
+> the x86_64 target.json file currently produced does not mark itself as KA=
+SAN
+> capable, and is rebased on top of the KASAN Makefile rewrite [2].
 
-Alice confirmed offline that she agrees, so I just changed the
-requirement in `rust-next`.
+Applied to `rust-next` -- thanks everyone!
 
-    [ Replaced `!FINEIBT` requirement with `!CALL_PADDING` to prevent
-      a build error on older Rust compilers. Fixed typo. - Miguel ]
+    [ Applied empty line nit, removed double empty line,
+      applied `rustfmt` and formatted crate comment. - Miguel ]
+
+    [ Applied "SW_TAGS KASAN" nit. - Miguel ]
+
+I think `TMPOUT` needs to be passed though, i.e. like I did in
+https://github.com/Rust-for-Linux/linux/pull/1087#issuecomment-2218445303:
+
+diff --git a/scripts/Makefile.compiler b/scripts/Makefile.compiler
+index 057305eae85c..0ac8679095f4 100644
+--- a/scripts/Makefile.compiler
++++ b/scripts/Makefile.compiler
+@@ -20,6 +20,7 @@ TMPOUT =3D $(if $(KBUILD_EXTMOD),$(firstword
+$(KBUILD_EXTMOD))/).tmp_$$$$
+ # Exit code chooses option. "$$TMP" serves as a temporary file and is
+ # automatically cleaned up.
+ try-run =3D $(shell set -e;              \
++       TMPOUT=3D$(TMPOUT);               \
+        TMP=3D$(TMPOUT)/tmp;              \
+        trap "rm -rf $(TMPOUT)" EXIT;   \
+        mkdir -p $(TMPOUT);             \
+
+Or is there something I am missing?
 
 Cheers,
 Miguel
