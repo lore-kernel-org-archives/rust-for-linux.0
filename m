@@ -1,198 +1,402 @@
-Received: from LO3P265CU004.outbound.protection.outlook.com (mail-uksouthazon11020085.outbound.protection.outlook.com [52.101.196.85])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E389C2CAB;
-	Mon, 16 Sep 2024 00:33:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.196.85
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726446838; cv=fail; b=DVYReXUaN2IEGeOylOgzE/38lBMvyVWMJbh9w8y1/XbBgyhECILpmNUeXpeu8RoHBTZ0O73wIvchSEm7u7DQYIBEUzFehdxFINWD45ibxqqo5NVtHj9XrFpPVbkj0qccOE7jr4Ue22lAePk45ZH4/2D9gYvEGzlsumsH29ppkDs=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726446838; c=relaxed/simple;
-	bh=38JG8A1San3JPGzoUiDCGb02vVRCl7H4xMGbF03EExc=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=t2mf2nslXCzPje6E4N7i9C1hYbL6NGegkowck4WgG0G/kKUzrGr6wv8oKLz48RNnwXjqmFE+3cX2kt8GuDc8jTRfoWmad/jyv6sHbgL8YAEr+jr0qwcJiR+R9t8AJHj/HLwR0nuuM3vndQwPimbljZBS74746tpUhxbm3MxCnkg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=biSi6V7P; arc=fail smtp.client-ip=52.101.196.85
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AFACA94F
+	for <rust-for-linux@vger.kernel.org>; Mon, 16 Sep 2024 02:59:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1726455581; cv=none; b=POBjfnZW38ATyh1m/P9Qn6p3cAo1D7XeqULd5b6HfCyrkee7darpnr3oVcSgAQQqmjShDsmlkCQQlGRlhbhsmdiBjUhRL7HLT9i0ipaHUKT6zGpGgIkk4FdWKcJODxXimnQJexvP+wUxGeBbQcS8mdvHVayWl57c/JBNtdLZJB0=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1726455581; c=relaxed/simple;
+	bh=vtTKLPjhQcDNpuPTi4R7WOcxD130LiM9x7n2YqqRahk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=gPENmXT9HWJI3T0ohWx2u8QAJRkkvYA04xVSUyyCb9dhqTbLYtq6+mPU7gz8Pm7pUlnGLAUpP+CYIjBdGNcIWfh33Ch7VKbOTzQrTsUJlYdKI6qE4oe5HHUsk0c+cF/74ofcBCaMY643bjg/R0SNm9SAxtD+T08fpRp3PND5LpA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fromorbit.com; spf=pass smtp.mailfrom=fromorbit.com; dkim=pass (2048-bit key) header.d=fromorbit-com.20230601.gappssmtp.com header.i=@fromorbit-com.20230601.gappssmtp.com header.b=tGs/rgpx; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fromorbit.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fromorbit.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="biSi6V7P"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=zU8ToY4IkJORSQ6bbX+O/T8SPv57roeszvVG6GMsz9S3zoMkx4njGRjVUuhn1ZuVxVFCxG5CysaMgFRRabadiV8mpDw6Xu7MwCvQ2lxwsxJvZW4iSWdj//a6Ze1ueHhhcoieiZ55V3SRAUaVe7JEtFzNCvtIC+rogM5Z2gAZW/zSJ/bidlqsiaK8PAfTQibyhAfKhAHh6JJIO5Wy/Np0JwyZ7WJg/jnvvvXaYeUOLAcTITsJJvbDi4ouaDSNwTD8Qrd6Bi+XrnQCaEbdkMV9GvdTc6UshSFAMchpyoq6FpJCQrEIXzRSPqYAgCuJuhXB0kCzf0+3Z1qhRqco0ThTzg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=fFftSz9230W/o8mCsyvhGGaqpONFtGaDC2Te+rF57mg=;
- b=UsKH7vrss9XhmZBiyQVl5qouA2VyUYA1VfuZ4UpgfvGxhdh0DOgdlaM3yE6JmPzhn43yCafYNWf744Bs2/FVkzdJBQDiVDQsQ1rXOBGKj4qdg7gl6kQWiX8SFyknztR92PScGk2mW+b24DttmWs+uTOwmCYTz2duTaeboSl0PeWU9yHcx0+D2uDyw3PON0xTLBSuaRiCEO5MAGAxyr1S8Gr1gucbD1I33Q9l6o/zMw5REd9N8K4GqfYaBtC3wOno/lcyYIcShiidA8h+kNzP8kA67aF8SOTXyOJCyGdtAxhLm2oCzvBwLASM483uJf4Wp0U1lRSctQjhZt+sl1rmXw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=fFftSz9230W/o8mCsyvhGGaqpONFtGaDC2Te+rF57mg=;
- b=biSi6V7PibxazAyqB3YjyHH5QJqGH10EIZQ8TtrC+i26ZveD2txh5q6sCJonqrw7uJJ30hz7My41qL2W1Is1qxERfrn+Tz+R86wdmwD+WPcNeMwuMM+PtfAv7NS1PAdMHFK3nIEbM0JmCKG7rJiTa1gx5RmWgVdKPZX+cF89p+0=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
- by LO8P265MB7935.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:3a8::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7962.23; Mon, 16 Sep
- 2024 00:33:53 +0000
-Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1818:a2bf:38a7:a1e7]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1818:a2bf:38a7:a1e7%3]) with mapi id 15.20.7962.022; Mon, 16 Sep 2024
- 00:33:53 +0000
-From: Gary Guo <gary@garyguo.net>
-To: lkp@intel.com,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	dkim=pass (2048-bit key) header.d=fromorbit-com.20230601.gappssmtp.com header.i=@fromorbit-com.20230601.gappssmtp.com header.b="tGs/rgpx"
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-20543fdb7acso18600545ad.1
+        for <rust-for-linux@vger.kernel.org>; Sun, 15 Sep 2024 19:59:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=fromorbit-com.20230601.gappssmtp.com; s=20230601; t=1726455578; x=1727060378; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=RSbbqBLAJlxb5D5ZWqxy/G4lwCUW9g98Ly58yRRj7LU=;
+        b=tGs/rgpxBYjaSjNkBbpsQa04k1aqf/RI/lTi9WgvvlZQsKuGRI9uC2zauFMIT42NhE
+         Uy8N108l7lMYes/DrgxTq04F2lK8JeBwM/0eGy+dWeAJ3N+7J03QetTsECVAKpfK9IQb
+         5y+iGxb/G8wrJ0qRcFDEuBOGjO9foN16QD1zO5fQapzZapHZY7lEg1pso1sHctHDE90Q
+         dfsUZ/jXpzK39F1DX+2gla4NmbN3fzG8y75J4MqJI4So67x/AeUloEZXXC1vOZk1fkvN
+         b0yzlvFCzMimLOt+0KVs3Zg995US/0aw4CcXV2/xPTriJwPYFjPv2o+/57P0f6NRGhPL
+         jdzQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1726455578; x=1727060378;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RSbbqBLAJlxb5D5ZWqxy/G4lwCUW9g98Ly58yRRj7LU=;
+        b=QtKhlF3yJGMiq7Ed+f5bzGNmsIIFqpVHrqI3SANSyh7UA4hoZTt/1rZPCgxlrHNg4X
+         KzJOmQvr+UDH2+QxezUszDdS1Eb+pNJ4mnQwgC8vLwlCnK4J8DjAYlu40vTDi1+elOzX
+         //ZNOc6wILloTHKotaQzrJ5uvXkPgZi8kscKGFOLXmSS3bWFd9vDPLFJ9glqk9x9zUv4
+         RvePAL/z3xB73EZoHDo3XwlcYhJzlKeDTEle5Akpjp07djwwMvyV8MEfuXTvS1d8c1Cb
+         Un5BriQItrxuEN57c2yS1z65Uxzr16lImeDaP6wy0YKLDbztUF6p2DNMdEZYEG5IIjVl
+         xrXQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUSXzxhmj2px5fJcRGBgfCjUeLcXyJ2OwCiw4x8KCyt5nqfXf/XRn02GZFjVok/wz+C+5jHG8FlV8IL1xE1SA==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzlc+oVU5mjXsa/Lf5l5BNNOdluvqa4PN392grqVAA+qG6NsjAl
+	8W/NtXA/oVPp3rnpczzTbcnzHBjJpppEuOo3KmaUN8BUVM7W+EewFTFJiIp+jqs=
+X-Google-Smtp-Source: AGHT+IGrxbaUIwm2DwH615cdY+BAD4tTTr+b1Q2wOYSYYfq3sf1V7kT4jnQ46vheQxGvDWTGudZYnA==
+X-Received: by 2002:a17:902:e80a:b0:202:190e:2adb with SMTP id d9443c01a7336-2078253791bmr153778185ad.36.1726455578348;
+        Sun, 15 Sep 2024 19:59:38 -0700 (PDT)
+Received: from dread.disaster.area (pa49-179-78-197.pa.nsw.optusnet.com.au. [49.179.78.197])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-207946d27cfsm28140295ad.161.2024.09.15.19.59.37
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 15 Sep 2024 19:59:37 -0700 (PDT)
+Received: from dave by dread.disaster.area with local (Exim 4.96)
+	(envelope-from <david@fromorbit.com>)
+	id 1sq1xe-005kpl-38;
+	Mon, 16 Sep 2024 12:59:34 +1000
+Date: Mon, 16 Sep 2024 12:59:34 +1000
+From: Dave Chinner <david@fromorbit.com>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Qi Zheng <zhengqi.arch@bytedance.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Muchun Song <muchun.song@linux.dev>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
 	Benno Lossin <benno.lossin@proton.me>,
 	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>
-Cc: conor.dooley@microchip.com,
-	linux-kernel@vger.kernel.org,
-	llvm@lists.linux.dev,
-	oe-kbuild-all@lists.linux.dev,
-	palmer@rivosinc.com,
-	rust-for-linux@vger.kernel.org
-Subject: [PATCH] rust: fix `ARCH_SLAB_MINALIGN` multiple definition error
-Date: Mon, 16 Sep 2024 01:33:46 +0100
-Message-ID: <20240916003347.1744345-1-gary@garyguo.net>
-X-Mailer: git-send-email 2.44.1
-In-Reply-To: <202409160804.eSg9zh1e-lkp@intel.com>
-References: <202409160804.eSg9zh1e-lkp@intel.com>
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: LO4P123CA0335.GBRP123.PROD.OUTLOOK.COM
- (2603:10a6:600:18c::16) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:253::10)
+	Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org,
+	linux-mm@kvack.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH] rust: shrinker: add shrinker abstraction
+Message-ID: <ZuefFhomRvqtFzSn@dread.disaster.area>
+References: <20240912-shrinker-v1-1-18b7f1253553@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LO8P265MB7935:EE_
-X-MS-Office365-Filtering-Correlation-Id: 94b6e23e-33c6-4069-bba1-08dcd5e73df0
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|7416014|376014|366016|1800799024|921020;
-X-Microsoft-Antispam-Message-Info:
-	=?us-ascii?Q?UKABUcxdgGrx3DjUknfiyEvs9LmYr+Y1YLhk9tf6bCdcjDHyXUvOS3/wNfgW?=
- =?us-ascii?Q?ipTDUsjRyws5TA2aY8qFCZbrCI7WsX3kGojcdL65IKmP1ypL4Giv3wk/yGNc?=
- =?us-ascii?Q?4jlyOWKPeTS9zlafZVDnSLGHxbC/IyoQVuQmsUnQ/JVWhsZXKXW064byE25+?=
- =?us-ascii?Q?kojCYRIQej4ODM2F31yi06nEpPs0sDFyulWycoAVM4RTh34K7g2QRgNVWUet?=
- =?us-ascii?Q?zz0sdgz4ugQJm8YuCqB2y00l5EFJvs27UkZjgqwfrCuJpGtYklMR7Pj1qgC/?=
- =?us-ascii?Q?VqQbyhvfUxP0ipgHsPCfH7ka2sgjoadnbCzPncy78U4e2R1qUjG+XBC5XVd5?=
- =?us-ascii?Q?WHDrsAyeU6vyJKRAM3JZOneOUThMoCP744RQPA4Tt+26JM+oX1aw8fTAw58t?=
- =?us-ascii?Q?YKRJdYn0bpRLzegpX+kmgqws9qkDBW2HIbuTzKTZvNspW1oVEyyDfvHMkYa5?=
- =?us-ascii?Q?8dNmmTqpn0KwdMPCPi0gJvgwQRA//8NP91fKUjOMfj7vFJmCNFYBt34ZyAWn?=
- =?us-ascii?Q?+ZGuQXXWq0co+C8z3+8HlMljGYsqkyftghe//geHAE0u/oDWfLwSNZDG1oSx?=
- =?us-ascii?Q?s1Z+f1THjAOSJL1NpuE36LfcqCw/fzcG/o/35+Xj0mGKjfij/yYuDkDaqlcC?=
- =?us-ascii?Q?Et29wqWkmM4gopA9r121sjxs2/UEfCi+d1SuM/kX+P/3BRU0GKouUKk6s3DG?=
- =?us-ascii?Q?Pg2lZMF4KVWLiKlxGj+vkMpe20YbnhGnUoDFF8IBg6kLqUjcZR7+aL1r7jLK?=
- =?us-ascii?Q?eI57NpUc55I1t93tuL6U4EhJxP+L4APGNup5mmjOT1fTtb3k37Kat10uWS9q?=
- =?us-ascii?Q?8U1LS/Hho76FrjgWBGfkfrFmDv/MDjAawndCiPOd4V+KuZx7Zo7QqXic9RkP?=
- =?us-ascii?Q?natNey1iMmfFK2HvhmrzUTNowZRRbdmE/zE/nOvR1hI9vwZZbtfpKcuTOjVT?=
- =?us-ascii?Q?Ctl3B4vKqXLfLnxR+9llKaYg/sw0TM6I671rkgwSHriGhf5A42CiEj6XisSe?=
- =?us-ascii?Q?fYWwPMH+kIw8qB1KJeARxHfg7alZDo3zlyfIkYH60tMoFaZYF4KCXDVUR2rE?=
- =?us-ascii?Q?W7CfWL23EyCFXUlYg77oXmUA6BFy0M2LPYV+XMyVVuLGGkRpnoBOQ4n5akun?=
- =?us-ascii?Q?hsP/+E7ZJYbltlKHGgXj/hO2uZOvJmPA9cuCTBooj2vE5t4qL90JbaXGW8zz?=
- =?us-ascii?Q?Pcd0d6xXdH3R+Eiaox9pJHZ2SKo/DGRBEGkxD36Alv3FKI8CO715a2dqOPqm?=
- =?us-ascii?Q?EuIu4qrHi2ktuo0V54PwZ1vs6YnIFaqDZV142F+ydYFBcQWMqMUVGhCH3YIX?=
- =?us-ascii?Q?n/vTwJ/5PaOFy92K+ScFSWmoELT/mzoKK0ihZl8VV8eYKWNZZj3Qhq/x58Sl?=
- =?us-ascii?Q?mlnxOmYEtgw9CQ/Cf4uTv2Ue5a0lAl7/tEbr3uPJ9CZa7ms/iA=3D=3D?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(7416014)(376014)(366016)(1800799024)(921020);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?us-ascii?Q?iiC+b3pmKHGOGn9k6dyS/MntMbIGdVX+dJujRcbTMVgQ00IjVihucnCYY3f6?=
- =?us-ascii?Q?vfIKQ5KWXGfX2dp629pB2Xbca59ulDDXCaJaSwhCNuBa0TRFq8SqBbht31+S?=
- =?us-ascii?Q?BnEoltnyaj78vvO2Fd02YAgOPFJ10yFDLCQMqAmwSM7qKBBOQ5Ld4aclNIU6?=
- =?us-ascii?Q?HHU/bL6igO1x9MVk+ve8PLstxyHhtVBGDKT3/GU62J5Z30hnwXQJ/O8/p/N2?=
- =?us-ascii?Q?w78zmoPaPskb/2yadbaY+a5YSBTCBfQkLB564u4sMA1nntEDsRUePnUjt7NV?=
- =?us-ascii?Q?dXj6Adqz6vKfwNsie3pkiMqMuKO+QjnIGglk4atKZct/6RmvmouLGmnxUtqT?=
- =?us-ascii?Q?O3EzHGjz/TkBEemMIShFplNGBGe4A7VfAxbnOgItlkJJEKV1F4zkG4RfnQpM?=
- =?us-ascii?Q?tL9ng85YrRshyVIfzdH7nTSFaKE3TzaGSTZY7EsDhJBL566P77mXI94o4KqF?=
- =?us-ascii?Q?G1oWfxk2EInhkO6R31xQoH/j0NY/XjOtT8AWRyriqsw23emnF1Wb2iR5YgJS?=
- =?us-ascii?Q?dXhY2B1vb7qPI+pAM1ZDzyk3jRx58TTqBT8M1HoynOtg1o83cy2hA3sUK542?=
- =?us-ascii?Q?N/8UD20oknzDoP+gq9nGJSBym0HcEwftCjiRF8EWeTEDaLPBQGC7ujGxICLO?=
- =?us-ascii?Q?xtuKRSnr8iqznzmYbVXyLt3vM/GzuwfXg+hsMPYS1wEx9nED1LnDYlazSuvP?=
- =?us-ascii?Q?aeKCL9z5WUeoi/75I7hWlxov4UHZof2nRSIy+qw8fvTJtWwxW991iBR5K5Xz?=
- =?us-ascii?Q?TLdmcHQHifmCfbpAVD2MDFv3edFrN2W+/yVJQwL0CXEDAQUxGlDPg+unabaE?=
- =?us-ascii?Q?uvAnpPAbjbg6lIQdVDU7Ibv1SjJHMeki/7bths7+6Q3cjX9khoAMz+0a2u+i?=
- =?us-ascii?Q?IimHENcfQ4i54ut9KfA4PTX1lnTnw9ZsVKuzzSmsCsWFSUoTch4yo2dqdDq5?=
- =?us-ascii?Q?fWdQHvxCnnpDF53w44aFCfb3J/BOHTnvO92Jb40R4RilhXWqz13vO/+WUQFG?=
- =?us-ascii?Q?tM/0D3NKa6bEGcM1QsZWPxofqB5e/OcunBWgvmn14HWgONoi+IvIMRxp4rIU?=
- =?us-ascii?Q?kfZoN0CggOFUczIXL/XjxyBFpj0hXfz2saeL1pjsjsoRhIB38zuaPgaLfC88?=
- =?us-ascii?Q?NPYmkA5f2+EVOAZCfBp7Q5Fp1VxL+nRuM5Yv5XY4hevYPS6MMByiKf1rcbT5?=
- =?us-ascii?Q?Wn+CI7oyFJbxykT/XgJqWQWWzIzX0ZkgODDV3/XlHiYhd6QccAG0Q7pAQmm7?=
- =?us-ascii?Q?Iu4aVlEd8wypgo3gBDydFQx8LgCsHw7M6oxnoMgv6q+t4ynZRWYZNM5JF6xd?=
- =?us-ascii?Q?8og+tWgMEY1RxSgRWuRSqHRQ7vXfjHekHVv/Zd23vqP4Y03lMrJddAWKE2+J?=
- =?us-ascii?Q?WWoPk0NN8JaVGT1Eni0a3jL2pchMWLlBdm8uOrP9sGyodmHq3vMrG/doFv89?=
- =?us-ascii?Q?NtHrM11LYHPBtNofSaAdWl4LwtARAjMcEYTrsjrmZysDcZWE+Slzu+N/B7oU?=
- =?us-ascii?Q?tvEr0cU1uJJzdxK3TFebJ9WZG84zj8pXvNsFibWp70pTwf6EVPC4i8HrFgzO?=
- =?us-ascii?Q?1zbsyNjloHhZ6ivxAN7XNLMKl0PLCo1wWFQJkgosBfg0+4/oZwkeC30YrvCW?=
- =?us-ascii?Q?+A=3D=3D?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 94b6e23e-33c6-4069-bba1-08dcd5e73df0
-X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 16 Sep 2024 00:33:53.5486
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: eFXlSSZsCfmXetWVRuHtimvHQeGZoksr/7l5nZ5Ruz/fYu3ND2Pll42LraMseluUmjDWXKXYgVLCAuxeLl9d6g==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO8P265MB7935
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240912-shrinker-v1-1-18b7f1253553@google.com>
 
-We use const helpers in form of
+On Thu, Sep 12, 2024 at 09:54:01AM +0000, Alice Ryhl wrote:
+> Rust Binder holds incoming transactions in a read-only mmap'd region
+> where it manually manages the pages. These pages are only in use until
+> the incoming transaction is consumed by userspace, but the kernel will
+> keep the pages around for future transactions. Rust Binder registers a
+> shrinker with the kernel so that it can give back these pages if the
+> system comes under memory pressure.
+> 
+> Separate types are provided for registered and unregistered shrinkers.
+> The unregistered shrinker type can be used to configure the shrinker
+> before registering it. Separating it into two types also enables the
+> user to construct the private data between the calls to `shrinker_alloc`
+> and `shrinker_register` and avoid constructing the private data if
+> allocating the shrinker fails.
 
-    const size_t RUST_CONST_HELPER_ARCH_SLAB_MINALIGN = ARCH_SLAB_MINALIGN;
+This seems a bit nasty. It appears to me that the code does an
+unsafe copy of the internal shrinker state between the unregistered
+and registered types. Shrinkers have additional internal state when
+SHRINKER_MEMCG_AWARE and/or SHRINKER_NUMA_AWARE flags are set,
+and this abstraction doesn't seem to handle either those flags or
+the internal state they use at all.
 
-to aid generation of constants by bindgen because it is otherwise a
-macro definition of an expression and bindgen doesn't expand the
-constant. The helpers are then have `RUST_CONST_HELPER` prefix stripped
-and exposed to Rust code as if `ARCH_SLAB_MISALIGN` is generated
-natively by bindgen.
+....
 
-This works well for most constants, but on RISC-V, `ARCH_SLAB_MINALIGN`
-is defined directly as literal constant if `!CONFIG_MMU`, and bindgen
-would generate `ARCH_SLAB_MINALIGN` directly, thus conflict with the
-one generated through the helper.
+> diff --git a/rust/kernel/shrinker.rs b/rust/kernel/shrinker.rs
+> new file mode 100644
+> index 000000000000..9af726bfe0b1
+> --- /dev/null
+> +++ b/rust/kernel/shrinker.rs
+> @@ -0,0 +1,324 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +// Copyright (C) 2024 Google LLC.
+> +
+> +//! Shrinker for handling memory pressure.
+> +//!
+> +//! C header: [`include/linux/shrinker.h`](srctree/include/linux/shrinker.h)
+> +
+> +use crate::{alloc::AllocError, bindings, c_str, str::CStr, types::ForeignOwnable};
+> +
+> +use core::{
+> +    ffi::{c_int, c_ulong, c_void},
+> +    marker::PhantomData,
+> +    ptr::NonNull,
+> +};
+> +
+> +const SHRINK_STOP: c_ulong = bindings::SHRINK_STOP as c_ulong;
+> +const SHRINK_EMPTY: c_ulong = bindings::SHRINK_EMPTY as c_ulong;
+> +
+> +/// The default value for the number of seeks needed to recreate an object.
+> +pub const DEFAULT_SEEKS: u32 = bindings::DEFAULT_SEEKS;
+> +
+> +/// An unregistered shrinker.
+> +///
+> +/// This type can be used to modify the settings of the shrinker before it is registered.
+> +///
+> +/// # Invariants
+> +///
+> +/// The `shrinker` pointer references an unregistered shrinker.
+> +pub struct UnregisteredShrinker {
+> +    shrinker: NonNull<bindings::shrinker>,
+> +}
+> +
+> +// SAFETY: Moving an unregistered shrinker between threads is okay.
+> +unsafe impl Send for UnregisteredShrinker {}
+> +// SAFETY: An unregistered shrinker is thread safe.
+> +unsafe impl Sync for UnregisteredShrinker {}
+> +
+> +impl UnregisteredShrinker {
+> +    /// Create a new shrinker.
+> +    pub fn alloc(name: &CStr) -> Result<Self, AllocError> {
+> +        // SAFETY: Passing `0` as flags is okay. Using `%s` as the format string is okay when we
+> +        // pass a nul-terminated string as the string for `%s` to print.
+> +        let ptr =
+> +            unsafe { bindings::shrinker_alloc(0, c_str!("%s").as_char_ptr(), name.as_char_ptr()) };
 
-To fix this, we simply need to block bindgen from generating directly
-without going through helper.
+This passes flags as 0, so doesn't support SHRINKER_MEMCG_AWARE or
+SHRINKER_NUMA_AWARE shrinker variants. These flags should be
+passed through here.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202409160804.eSg9zh1e-lkp@intel.com/
-Signed-off-by: Gary Guo <gary@garyguo.net>
----
- rust/bindgen_parameters | 5 +++++
- 1 file changed, 5 insertions(+)
+> +
+> +        let shrinker = NonNull::new(ptr).ok_or(AllocError)?;
+> +
+> +        // INVARIANT: The creation of the shrinker was successful.
+> +        Ok(Self { shrinker })
+> +    }
+> +
+> +    /// Create a new shrinker using format arguments for the name.
+> +    pub fn alloc_fmt(name: core::fmt::Arguments<'_>) -> Result<Self, AllocError> {
+> +        // SAFETY: Passing `0` as flags is okay. Using `%pA` as the format string is okay when we
+> +        // pass a `fmt::Arguments` as the value to print.
+> +        let ptr = unsafe {
+> +            bindings::shrinker_alloc(
+> +                0,
 
-diff --git a/rust/bindgen_parameters b/rust/bindgen_parameters
-index a721d466bee4b..b7c7483123b7a 100644
---- a/rust/bindgen_parameters
-+++ b/rust/bindgen_parameters
-@@ -24,3 +24,8 @@
- # These functions use the `__preserve_most` calling convention, which neither bindgen
- # nor Rust currently understand, and which Clang currently declares to be unstable.
- --blocklist-function __list_.*_report
-+
-+# These constants are sometimes not recognized by bindgen depending on config.
-+# We use const helpers to aid bindgen, to avoid conflicts when constants are
-+# recognized, block generation of the non-helper constants.
-+--blocklist-item ARCH_SLAB_MINALIGN
+Same again.
 
-base-commit: d077242d68a31075ef5f5da041bf8f6fc19aa231
+> +                c_str!("%pA").as_char_ptr(),
+> +                &name as *const _ as *const c_void,
+> +            )
+> +        };
+> +
+> +        let shrinker = NonNull::new(ptr).ok_or(AllocError)?;
+> +
+> +        // INVARIANT: The creation of the shrinker was successful.
+> +        Ok(Self { shrinker })
+> +    }
+> +
+> +    /// Set the number of seeks needed to recreate an object.
+> +    pub fn set_seeks(&mut self, seeks: u32) {
+> +        unsafe { (*self.shrinker.as_ptr()).seeks = seeks as c_int };
+> +    }
+
+Seems kinda weird to have a separate function for setting seeks,
+when...
+
+> +
+> +    /// Register the shrinker.
+> +    ///
+> +    /// The provided pointer is used as the private data, and the type `T` determines the callbacks
+> +    /// that the shrinker will use.
+> +    pub fn register<T: Shrinker>(self, private_data: T::Ptr) -> RegisteredShrinker<T> {
+
+.... all the other data needed to set up a shrinker is provided to
+this function....
+
+> +        let shrinker = self.shrinker;
+> +        let ptr = shrinker.as_ptr();
+> +
+> +        // The destructor of `self` calls `shrinker_free`, so skip the destructor.
+> +        core::mem::forget(self);
+> +
+> +        let private_data_ptr = <T::Ptr as ForeignOwnable>::into_foreign(private_data);
+> +
+> +        // SAFETY: We own the private data, so we can assign to it.
+> +        unsafe { (*ptr).private_data = private_data_ptr.cast_mut() };
+> +        // SAFETY: The shrinker is not yet registered, so we can update this field.
+> +        unsafe { (*ptr).count_objects = Some(rust_count_objects::<T>) };
+> +        // SAFETY: The shrinker is not yet registered, so we can update this field.
+> +        unsafe { (*ptr).scan_objects = Some(rust_scan_objects::<T>) };
+
+.... and implemented exactly the same way.
+
+.....
+
+> +/// How many objects are there in the cache?
+> +///
+> +/// This is used as the return value of [`Shrinker::count_objects`].
+> +pub struct CountObjects {
+> +    inner: c_ulong,
+> +}
+> +
+> +impl CountObjects {
+> +    /// Indicates that the number of objects is unknown.
+> +    pub const UNKNOWN: Self = Self { inner: 0 };
+> +
+> +    /// Indicates that the number of objects is zero.
+> +    pub const EMPTY: Self = Self {
+> +        inner: SHRINK_EMPTY,
+> +    };
+> +
+> +    /// The maximum possible number of freeable objects.
+> +    pub const MAX: Self = Self {
+> +        // The shrinker code assumes that it can multiply this value by two without overflow.
+> +        inner: c_ulong::MAX / 2,
+> +    };
+> +
+> +    /// Creates a new `CountObjects` with the given value.
+> +    pub fn from_count(count: usize) -> Self {
+> +        if count == 0 {
+> +            return Self::EMPTY;
+> +        }
+
+No. A return count of 0 is not the same as a return value of
+SHRINK_EMPTY.
+
+A return value of 0 means "no reclaim work can be done right now".
+
+This implies that there are objects that can be reclaimed in the near
+future, but right now they are unavailable for reclaim. This can be
+due to a trylock protecting the count operation failing, the all the
+objects in the cache being dirty and needing work to be done before
+they can be reclaimed, etc.
+
+A return value of SHRINK_EMPTY means "there are no reclaimable
+objects at all".
+
+This implies that the cache is empty - it has absolutely nothing in
+it that can be reclaimed either now or in the near future.
+
+
+These two return values are treated very differently by the high
+level code. SHRINK_EMPTY is used by shrink_slab_memcg() to maintain
+a "shrinker needs to run" bit in the memcg shrinker search bitmap.
+The bit is cleared when SHRINK_EMPTY is returned, meaning the
+shrinker will not get called again until a new object is queued
+to it's LRU. This sets the "shrinker needs to run" bit again, and
+so the shrinker will run next time shrink_slab_memcg() is called.
+
+In constrast, a return value of zero (i.e. no work to be done right
+now) does not change the "shrinker needs to run" state bit, and
+hence it will always be called the next time the shrink_slab_memcg()
+is run to try to reclaim objects from that memcg shrinker...
+
+.....
+
+> +impl ScanObjects {
+> +    /// Indicates that the shrinker should stop trying to free objects from this cache due to
+> +    /// potential deadlocks.
+> +    pub const STOP: Self = Self { inner: SHRINK_STOP };
+> +
+> +    /// The maximum possible number of freeable objects.
+> +    pub const MAX: Self = Self {
+> +        // The shrinker code assumes that it can multiply this value by two without overflow.
+> +        inner: c_ulong::MAX / 2,
+
+No it doesn't. This is purely a count of objects freed by the
+shrinker.
+
+> +    };
+> +
+> +    /// Creates a new `CountObjects` with the given value.
+> +    pub fn from_count(count: usize) -> Self {
+> +        if count > Self::MAX.inner as usize {
+> +            return Self::MAX;
+> +        }
+> +
+> +        Self {
+> +            inner: count as c_ulong,
+> +        }
+> +    }
+> +}
+> +
+> +/// This struct is used to pass information from page reclaim to the shrinkers.
+> +pub struct ShrinkControl<'a> {
+> +    ptr: NonNull<bindings::shrink_control>,
+> +    _phantom: PhantomData<&'a bindings::shrink_control>,
+> +}
+> +
+> +impl<'a> ShrinkControl<'a> {
+> +    /// Create a `ShrinkControl` from a raw pointer.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// The pointer should point at a valid `shrink_control` for the duration of 'a.
+> +    pub unsafe fn from_raw(ptr: *mut bindings::shrink_control) -> Self {
+> +        Self {
+> +            // SAFETY: Caller promises that this pointer is valid.
+> +            ptr: unsafe { NonNull::new_unchecked(ptr) },
+> +            _phantom: PhantomData,
+> +        }
+> +    }
+> +
+> +    /// Determines whether it is safe to recurse into filesystem code.
+> +    pub fn gfp_fs(&self) -> bool {
+> +        // SAFETY: Okay by type invariants.
+> +        let mask = unsafe { (*self.ptr.as_ptr()).gfp_mask };
+> +
+> +        (mask & bindings::__GFP_FS) != 0
+> +    }
+
+This needs a check for __GFP_IO as well, as there are block layer
+shrinkers that need to be GFP_NOIO aware...
+
+> +
+> +    /// Returns the number of objects that `scan_objects` should try to reclaim.
+> +    pub fn nr_to_scan(&self) -> usize {
+> +        // SAFETY: Okay by type invariants.
+> +        unsafe { (*self.ptr.as_ptr()).nr_to_scan as usize }
+> +    }
+> +
+> +    /// The callback should set this value to the number of objects processed.
+> +    pub fn set_nr_scanned(&mut self, val: usize) {
+> +        let mut val = val as c_ulong;
+> +        // SAFETY: Okay by type invariants.
+> +        let max = unsafe { (*self.ptr.as_ptr()).nr_to_scan };
+> +        if val > max {
+> +            val = max;
+> +        }
+
+No. Shrinkers are allowed to scan more objects in a batch than
+the high level code asked them to scan. If they do this, they
+*must* report back the count of all the objects they scanned so the
+batched scan accounting can adjust the remaining amount of work that
+needs to be done appropriately.
+
+> +
+> +        // SAFETY: Okay by type invariants.
+> +        unsafe { (*self.ptr.as_ptr()).nr_scanned = val };
+> +    }
+> +}
+> +
+> +unsafe extern "C" fn rust_count_objects<T: Shrinker>(
+> +    shrink: *mut bindings::shrinker,
+> +    sc: *mut bindings::shrink_control,
+> +) -> c_ulong {
+> +    // SAFETY: We own the private data, so we can access it.
+> +    let private = unsafe { (*shrink).private_data };
+> +    // SAFETY: This function is only used with shrinkers where `T` is the type of the private data.
+> +    let private = unsafe { <T::Ptr as ForeignOwnable>::borrow(private) };
+> +    // SAFETY: The caller passes a valid `sc` pointer.
+> +    let sc = unsafe { ShrinkControl::from_raw(sc) };
+> +
+> +    let ret = T::count_objects(private, sc);
+> +    ret.inner
+> +}
+
+Why are there two assignments to "private" here? And for the one
+that is borrowing a reference, why is it needed as the shrinker is
+supposed to hold a reference, right? Also, where is that reference
+dropped - it's not at all obvious to me (as a relative n00b to rust)
+what is going on here.
+
+
+-Dave.
 -- 
-2.44.1
-
+Dave Chinner
+david@fromorbit.com
