@@ -1,84 +1,80 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DD0D3381C2;
-	Mon, 16 Sep 2024 23:35:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from out30-133.freemail.mail.aliyun.com (out30-133.freemail.mail.aliyun.com [115.124.30.133])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CBB05258;
+	Mon, 16 Sep 2024 23:45:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.133
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726529721; cv=none; b=kKXIJnmxgK2OtHrRnBx3geDFLmSIcwc5Sg0FNE/C4mBrUYx0sZ/q1YV8si/Jd9pJRqvklhT0Sh255RuABfCzyiGEDsxIgEuzEGjtzHw5+Y71EhcYynUo+8CS3MiIoFvvmAeff6wmACi4Io3Eo92YdGW3zMaRHu/wdLbhDKLbxZA=
+	t=1726530363; cv=none; b=ra1/c1c6sT/Qbrdm8bXGja/kxfVlpiRyS7un0yXSWs0BYlHonUxDINISIPKBRLXPF6g+AJL5CFuIwLzw+oHIBV6LO1lesD9VcMjVBZ2wRcmEPrg4frbt26s75R3Lj8WFsiKi0IPZB98zYe8K8dGBIOMCbyN6z0tPT5WKhcgXl0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726529721; c=relaxed/simple;
-	bh=uObNZQ6eDPXeqgv+zTSIzRN0CZenM1ZZ0k901t9ysEw=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=t1hLq+DG6aD8+Upj/RF28CbX3hZDoEUuohkG/O8wFT4hOXFvIYQMl0FxJ+kfGuBZeaIuU9JEkvw8DxLmKHFQpbd0ng+hxKmqkGXy49aU6JLv5xDKRrF/Ia3qU0t1b/Fkd5PvPIeRD1Ug3F8ujsFwzbKSqcatlz17ofw2doLQPnI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=n88H5tZM; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+	s=arc-20240116; t=1726530363; c=relaxed/simple;
+	bh=r42L6UXOT+vU5jSITTLDO85zvSoqYuh+K+N6qykrg2w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=Mh+S+LlyydHg0s4+iSA4jhwTxGQSbWqg3nzt9yqr2GvGIJuvoAcVVF8BePyO7dkhSmZhOkkH792fxCeVokKTAOrrstoTkkrINpmTsJyWIYKV2MM8a/Dn81hdTxVrJSxJD/0M5+lhGpn4qjXM5KrNee5xU9pqaIi76oC0U+OWkes=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=lhmtCyxd; arc=none smtp.client-ip=115.124.30.133
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="n88H5tZM"
-Received: from nell-kernel-vm-08-09.ejenzozri2pedhiq2wfesci2lb.xx.internal.cloudapp.net (unknown [13.66.192.56])
-	by linux.microsoft.com (Postfix) with ESMTPSA id B218B20C0948;
-	Mon, 16 Sep 2024 16:35:13 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com B218B20C0948
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1726529713;
-	bh=WpS0syyJZ8aEELqL2HjUDFgqXoXkUUjModKEFleQTzQ=;
-	h=From:To:Cc:Subject:Date:From;
-	b=n88H5tZMKmDHH9bNuezcKYfNlv+Pg2McHEEMD35iMF9aGR22CIFi4TKfDlFmqBN2I
-	 /a10RbXj/XytitErLWDXU4WAijs4wyL/66WnKfhbWOQAdIRNNNtRk3bYn6r6yL69PL
-	 Ahp6eKI71RFYwIQ6A47QAIUZsO2u4ygkhWFtl7wA=
-From: Nell Shamrell-Harrington <nells@linux.microsoft.com>
-To: ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	wedsonaf@gmail.com
-Cc: boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me,
-	a.hindborg@samsung.com,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	linux@obei.io,
-	kernel@valentinobst.de,
-	kent.overstreet@gmail.com,
-	matthew.d.roper@intel.com,
-	kartikprajapati987@gmail.com,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] rust: Adds examples for the `Either` type
-Date: Mon, 16 Sep 2024 23:35:07 +0000
-Message-Id: <20240916233507.11779-1-nells@linux.microsoft.com>
-X-Mailer: git-send-email 2.34.1
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="lhmtCyxd"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1726530352; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=B4rNWlBdjfL9smwu9MlwgNfDAPiZe3aLTcpYgp1odwM=;
+	b=lhmtCyxdXfBp0bpQdJmjzHzw9f+mvRS5lPNPaJ5vMYBvJyU0HgFWFNry5Yx/o9oVcbiUxqZ/atTxdJ1XF3IgULR4b9l6L7rvjjApsif/WadSgxgBQV5G7BojatxvRYhnO0cHGMwiembqDys4ZiFiRON2eUPO9hngpOyp8bUDUpg=
+Received: from 30.27.106.17(mailfrom:hsiangkao@linux.alibaba.com fp:SMTPD_---0WF9HTgY_1726530350)
+          by smtp.aliyun-inc.com;
+          Tue, 17 Sep 2024 07:45:51 +0800
+Message-ID: <2948509e-f250-4723-b618-d737de5ddb56@linux.alibaba.com>
+Date: Tue, 17 Sep 2024 07:45:50 +0800
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 03/24] erofs: add Errno in Rust
+To: Greg KH <gregkh@linuxfoundation.org>, Yiyang Wu <toolmanp@tlmp.cc>
+Cc: linux-erofs@lists.ozlabs.org, rust-for-linux@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>
+References: <20240916135634.98554-1-toolmanp@tlmp.cc>
+ <20240916135634.98554-4-toolmanp@tlmp.cc>
+ <2024091602-bannister-giddy-0d6e@gregkh>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
+In-Reply-To: <2024091602-bannister-giddy-0d6e@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Adds examples for the `Either` type
+Hi Greg,
 
-Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Nell Shamrell-Harrington <nells@linux.microsoft.com>
----
- rust/kernel/types.rs | 6 ++++++
- 1 file changed, 6 insertions(+)
+On 2024/9/17 01:51, Greg KH wrote:
+> On Mon, Sep 16, 2024 at 09:56:13PM +0800, Yiyang Wu wrote:
+>> Introduce Errno to Rust side code. Note that in current Rust For Linux,
+>> Errnos are implemented as core::ffi::c_uint unit structs.
+>> However, EUCLEAN, a.k.a EFSCORRUPTED is missing from error crate.
+>>
+>> Since the errno_base hasn't changed for over 13 years,
+>> This patch merely serves as a temporary workaround for the missing
+>> errno in the Rust For Linux.
+> 
+> Why not just add the missing errno to the core rust code instead?  No
+> need to define a whole new one for this.
 
-diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
-index 9e7ca066355c..f22f6e289198 100644
---- a/rust/kernel/types.rs
-+++ b/rust/kernel/types.rs
-@@ -461,6 +461,12 @@ fn drop(&mut self) {
- }
- 
- /// A sum type that always holds either a value of type `L` or `R`.
-+/// ```
-+/// use kernel::types::Either;
-+///
-+/// let left_value: Either<i32, &str> = Either::Left(7);
-+/// let right_value: Either<i32, &str> = Either::Right("right value");
-+/// ```
- pub enum Either<L, R> {
-     /// Constructs an instance of [`Either`] containing a value of type `L`.
-     Left(L),
--- 
-2.34.1
+I've discussed with Yiyang about this last week.  I also tend to avoid
+our own errno.
+
+The main reason is that Rust errno misses EUCLEAN error number. TBH, I
+don't know why not just introduces all kernel supported errnos for Rust
+in one shot.
+
+I guess just because no Rust user uses other errno?  But for errno
+cases, I think it's odd for users to add their own errno.
+
+Thanks,
+Gao Xiang
+
+> 
+> thanks,
+> 
+> greg k-h
 
