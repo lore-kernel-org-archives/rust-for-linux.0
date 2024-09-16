@@ -1,166 +1,172 @@
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+Received: from sonic311-30.consmr.mail.ne1.yahoo.com (sonic311-30.consmr.mail.ne1.yahoo.com [66.163.188.211])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 846FF1581F2
-	for <rust-for-linux@vger.kernel.org>; Mon, 16 Sep 2024 15:28:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B08DB158851
+	for <rust-for-linux@vger.kernel.org>; Mon, 16 Sep 2024 15:40:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.188.211
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726500498; cv=none; b=fyerbcejyACJ1oLEm208UYYWGvMnGhI0DwG7VnY6Ul4O88bjHdMbD93q8dNTPb1CW1aXcF5fdOfL1Oidrq65KIDqV3U2jsuLRB7mO+Eg5V2bYN4BBSH7Ljw9eKMUqUy7Q271Q6eNKeaeksP5VnnBxz7IOcOxbihOD8CJrVG0G3c=
+	t=1726501234; cv=none; b=reX6W+2udKr7BYTKZ1VCXBf/5AFn2Y1ycA43mnwl8TQ5o48X0DPG07bcgNZvx3LPFrMU6KppVeyD0VjMHZ3Vr9f1XofaEFCJ/TtmYY6+RD+w7K9W50cnfHrirsWYoE/XDFvWKZ9t+UNY7Pc/5vje5be4zUfBtnaClZs7848qQY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726500498; c=relaxed/simple;
-	bh=WlODueikdE8iNg+YcFfV4D9fBjO+4Cw1pzynCIM+K+k=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=cRx2JIPciKJt68YUSSiu8qMzqWBPdpWhWJOUrFVDpROY52NYGOxKh0U8mBHQfDTOQqccVAdAuqMiDlDyYPCy02WIGQKAh/HCmqqw0DEehYAKhs/LISIb9R6/oSaSRtO/ij8kkmwChlvtiWDG96PhRRVg2nB8JMIChE483PSGtxs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch; spf=none smtp.mailfrom=ffwll.ch; dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b=dqtLX7p6; arc=none smtp.client-ip=209.85.221.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ffwll.ch
+	s=arc-20240116; t=1726501234; c=relaxed/simple;
+	bh=lO9KtSC3OSmcPVqS7FhAEp6EptYmKdYo7TyNBLg8ioc=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=IW4sDGOX4rJgWemqlS/2dCckcMUdEwmoY00fnSg6mH2It2w5eDnusaVsNf6THrAGCtIkDY4DcAnEMDaWmVWbHsgc/AR7AR1t4rqUPWvNz0sWdCP2DiBd2i7FYgFORgMu4S0n7RF3+Ac7kPxwJre73NoNxmbcnCCMtJBglav8lsw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=schaufler-ca.com; spf=none smtp.mailfrom=schaufler-ca.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=i0JfVMC6; arc=none smtp.client-ip=66.163.188.211
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=schaufler-ca.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=schaufler-ca.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b="dqtLX7p6"
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-37747c1d928so2210706f8f.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 16 Sep 2024 08:28:16 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google; t=1726500495; x=1727105295; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:mail-followup-to:message-id:subject:cc:to
-         :from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=7m4daR3wtHlZl9dcuxcFnv3RNISgqsCBz2X/zdmjlr4=;
-        b=dqtLX7p65/y7sBWF6zXxus+TD1RMiLVoqiWv/2oloaZUaAARl4liz+ESOOgouOpiWN
-         aHEa9rIXBvPhhaaojmpJebhlcmKw/Wj+1cK7afP8xurOYyrb6dh4k+AVIRLZBs0wXgc3
-         GmpqJTelWqyvUKv35J/NaRAAHtViTliLWkKho=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726500495; x=1727105295;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:mail-followup-to:message-id:subject:cc:to
-         :from:date:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=7m4daR3wtHlZl9dcuxcFnv3RNISgqsCBz2X/zdmjlr4=;
-        b=rskuRYdO3vBM6/T5oMHwb+Soelk7NGWpSLxGtV/rX0LGU+/pgKgHnmvICOqVtgeR8I
-         GddTOa+1DkAN/1Y4WYhIe4/0ydchK2ZhPnqODmLkuP/awcN6QBID1vV0rgk+xuqbCPuG
-         inM4ZxhIU1oO5fqrTk0+GUqauwh9hVHJGHylhY+Ny6W0v7zk9HN4BpbpmesVeWktohem
-         dP6Bx0nhVk1mbTOY5oWGCvh5lORu9GW4x2XadMuQJ+UizkxdCXAtsZeFLQehRbpd5EIL
-         VLNQ/PFAqlGSteZnFaP/S6cD7AZ2+fEENlfQeTeKh5s1X14NIllZiTRScCBFPYR6T2Hi
-         /OVw==
-X-Forwarded-Encrypted: i=1; AJvYcCX5VfPScpnRMOVkX70xthxtO5li7AYU/NKAMHKVaESoKZcQ2At+1Ev/uNx7BgzxG8qW9cJvFIORkthVkb+4Rw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzThBq80lDYko5qTgGh9+ukcJQ94X8uW9qD9zn6H9BIowJR2Spq
-	hSxk0fgiLV/7tdpu8x1JZzSCHtAT7OndDkYTsAAVCFLjRgKQetaKEgm1jcDLPZI=
-X-Google-Smtp-Source: AGHT+IGWvzNIRGqBC8AGUY8qiZPWMwcVmKXq3jZ8qz07XXarJ1ziKNdbe2x93+v1ko+aFpHXY3tsYw==
-X-Received: by 2002:a05:6000:120d:b0:371:82ec:206f with SMTP id ffacd0b85a97d-378d61e2871mr6466145f8f.16.1726500494626;
-        Mon, 16 Sep 2024 08:28:14 -0700 (PDT)
-Received: from phenom.ffwll.local ([2a02:168:57f4:0:5485:d4b2:c087:b497])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-378e78052efsm7470228f8f.97.2024.09.16.08.28.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Sep 2024 08:28:14 -0700 (PDT)
-Date: Mon, 16 Sep 2024 17:28:11 +0200
-From: Simona Vetter <simona.vetter@ffwll.ch>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Gary Guo <gary@garyguo.net>, Boqun Feng <boqun.feng@gmail.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] rust: sync: fix incorrect Sync bounds for LockedBy
-Message-ID: <ZuhOi1xFBNtfGxn5@phenom.ffwll.local>
-Mail-Followup-To: Alice Ryhl <aliceryhl@google.com>,
-	Gary Guo <gary@garyguo.net>, Boqun Feng <boqun.feng@gmail.com>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-References: <20240912-locked-by-sync-fix-v1-1-26433cbccbd2@google.com>
- <ZuSIPIHn4gDLm4si@phenom.ffwll.local>
- <ZuUtFQ9zs6jJkasD@boqun-archlinux>
- <20240915144853.7f85568a.gary@garyguo.net>
- <CAH5fLggoz5gdgOpEiXu7u9hPXjLLeSv9An6jaq0am0-dG7+ohw@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="i0JfVMC6"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1726501225; bh=sUhQibpO8/62h1XbBXqtDdXmPfgnrqmifo7tdJ+Dqy4=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=i0JfVMC6bM6lsj8IqY6dJVJVa/TgxQJYnYNbE64PPuzpPUAIm2MsVFm8Sgx19M8FSYhPDJaElOKNYrKjgFALuL1Tyan919ZNsjyqkrnu70Avfu19DN4obTaupcpQB6GF5fIYwBTAeMZ9Prht7v9WYdDegEQPDJ/k6H2Um8q6yJ+8/QQA+n/m7BxrsRzbAeSyMSDWZBimc9EFVMQxfkIEHpQysY5FfF/8lhqrh3INVYATktuWf6AJAb8QV9dcSkWyjfhCIopqcjv2nYTdb+BowKCfm3KXLr+vJ1vSvdIR2alUJNKsli2wkoMlfo25JKG8T+AjqqZULWIxtrp4GoJTsw==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1726501225; bh=P9RAbSPxpe4ABX0Lcolo4ZOQacHr3qIA9WPAH8LGJm6=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=N17KLeloRL8E67tt8awItFqDoT/iJpTKT4uwCorr9uRzdGigqFqoZvW2jIUGW5m3ywnO8n8fWGiXSpjd6sTUnhALX0DNNokN/CJOw7nXHPoSrCVgZMkjUcEWsHjjXxYQh81T6UWH2WBRE/Gwm5EpG4muUvg/p2lXCAqDdASayGauVsoK0uwHVe+FDoMHv+//PzzcWudGwLqoxEnlnNAsBkMD0dW2d8pf2iHJRnrHmYTBn4lwAW/Mx3cujSoMFs+nWtBawymT5Re9SiuXCiVJM9dt6LhUA4iaZ6wh5BuYGeuNgZaIVf6ziJczST9RuP9xwoydlO1z8Xz6mM7NQjwfiQ==
+X-YMail-OSG: cmZZNKQVM1k7lILdYPfPSycxposlR_QA_LerQEDgjYI6_sRhR15jaSBx_OdpZGh
+ h54LtXvLWlyHiy1uy.jWkWT823G8Ko3AYXM8Bba09CQfzcXYTfoOSxd9PpeQm68m.CP_SVn5ScvT
+ ZJMLH_3BUbLCvB4681YtCGAVHAFoCxsPPsJIcOI2TjmYXf.l2pQNLTICINrzuIW2t3Ae8ClcJTis
+ 8ssMaR1EGUvECbXZh9vQDjQINL6YyJihfYmfelfq9AHt2rx1cd7OPAKMvJC_KmN0OgXQEEJzU8Wx
+ ouxO.91rq2nHhoMll5ERP1vH4t8tov8cWTeop8pa51furUJPDLHhfyxjWsZKAynyCBxOHSVQvJhi
+ hcjatktQEFl6fTHz.zhD944YXZQlrdAFcsJGvQ.2cM7tN1haRO_GVFptCU8OYXYxwSGYFKtUP5RK
+ cXxHdOXBk1ZcQ.VhNzA05fmXE8mioB0_KYqGfcxgRuVN.u.zG3YSHHzrhD_qr0uxHd8l..X3SUBl
+ 06lDbunI81fsEbpJE18.1MCi4g.6_c_Sr.xwtXhg5nNe2OAcGzcJiHeNZ0ifFAxoCA45zdh1Bqh6
+ BpwCMTCewEadtRN64mVVyAB2BHsN2aPItlFbdCy6hOgtCvvqKbC9qdzotj4_wHn7avs14sBfa9p3
+ qLzCYgC_h14nXfXCZx8bWW4xsfefqyqJJ4TIQ3XEhzeZ9rd38NIGG7QIsyIziz0uKPAbd.r9M1HJ
+ yLSrdIovvwNsYXmrhQ3md8TLYihEp1kBkQcepZxaxeegsq2XmyDePuZaMgHnsRYOfrqb1630SUH4
+ RmZcsMiD0UCeTaxU6ZVLcbxH6g3bRLJL6pMGvnLTpxDKO6JiPUyg11LDm_ObkXkx8eQTgC1QvcQC
+ _hphmtrvP_G45n.yTE0foZTUfpAjlYze4hXmpPi0XACK8aG4qtOFOJZQ9KU8IExVV3.TZJ0OYo.H
+ 0ycOrwFyTNXSCc5KSqPOul.UwTZMR4VChDY2nWOm_x6n45eqJqY4MiKcVhbExqoaCL4ax5kiKbgM
+ ygPue6J.jpDKJVPFYWn0ikALh1MozYNfo_ifTFtlYAuXCAvh46aXPUFHIE2jTDNb8lOaZEskIei5
+ JwdNsAtGevjAM68jRr.ofPAkFEeSHsA8uupQGoZb3x9Ir93iVEuc5fb9c1kdl.35o7HDmxDlMJGh
+ SLTmnSA_.BgLmOAxhtFd9TdKrHXwFrV_SWBFxiOtYJDo02nBcBUQOEDKq.pHj.xh11P.YbtHRePF
+ fV88v33iEWn9aWj87SGv7PD7RMxRAD2DEWigmASM7znVHVDP0EmePnJvs15qWuyUz1Gf0BUkZVuS
+ cPOmFYVuGnU3fr7W2uGT.h0VB.Gk.LxkBUT1xBULObGw6ZMRnvaKe5QLmhXeENrZhfzqpXdk6MoD
+ Wov_akHBZpIEslJa8FFS.RuIY2Lt6fVpeQVKutsysq2X6efNyQZymH.lNQGLOV7sA4SIZEue.oCB
+ hIlSamGZR5UFvVGD6U_MZFoC7vituZTWRKbRCC8cojyXYlO.0K4bPm6r2wg0T_.W_hzCMSmAdo8i
+ rEcjEUaYNVEg12bKSBgOyzxnydHcw7iD9ayjWAnI2KfDorYiPphOBPS5iysI9Y7UOe7ozktudVJA
+ Jls2oZ1aa1ASwihG9Tm5OZ4ul3Vr6MDbRHiPxNo_M_DMjKl1bJWJY3pIx4XKm5H7bghYMa5fjarH
+ p0g2uBdFO2ZWcleyBnXYsWgOWKj0uZE8qieO1gN4pGmhqAXriNMTcPD7.bDErDvGhKCaQZES0rHP
+ kGuEIPSoM76UQ.CLMmPd5qaVAwOVGDQZFc.bDcGpdxFj2s8f7OduAkH.AeXHzsyOM0i8Izy7o_bc
+ M1m2_Sy6haM7BeEaaTnd4LRztUI2k2_TX9xK.Ax7NxX4FCGqxoU238C_DA1zjZMVMNT9OjYSaLEs
+ zjkBswResIlP4PrX2JhfI0zqpFQwhxGpQdVvGzaEEexobhsHYv_NhziizwswPHLRfEgGVjN_Js5w
+ 6zp1Jx_gWiHabfGDWAZlu.kKvkxGxKFpW4TuTc52GSnxIvEWq2G.Yn36g0UZXYuZ.e.A1ECfKNVI
+ CNSKB.lXHXtGUuoU09oj4CCPrJ0Y_ZaPViQ6vG3tP_z0X43zuwcG0rT7ZCEi492Th43rENw9kcIN
+ bAgTLdwyEoxSqxnu2yacXF_M5OVOT7XsLVx2SQTypKf0RVJdAZdjqY79hHX6arLXOvsqkzwHuWSH
+ mz644M8ZTJIFFVM8RDjHLGk83gzmn.5obS1aBWxawNojk5hn09fT4pnzw_P4.1oR5ez..iHoJTQs
+ -
+X-Sonic-MF: <casey@schaufler-ca.com>
+X-Sonic-ID: ea7ae0a5-a46d-479a-be24-f6099b835234
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic311.consmr.mail.ne1.yahoo.com with HTTP; Mon, 16 Sep 2024 15:40:25 +0000
+Received: by hermes--production-gq1-5d95dc458-xmcnd (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID a2007bf44c595f8ef49bc843a498bceb;
+          Mon, 16 Sep 2024 15:40:20 +0000 (UTC)
+Message-ID: <39306b5d-82a5-48df-bfd3-5cc2ae52bedb@schaufler-ca.com>
+Date: Mon, 16 Sep 2024 08:40:18 -0700
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v10 5/8] rust: security: add abstraction for secctx
+To: Alice Ryhl <aliceryhl@google.com>, Kees Cook <kees@kernel.org>
+Cc: Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>,
+ "Serge E. Hallyn" <serge@hallyn.com>, Miguel Ojeda <ojeda@kernel.org>,
+ Christian Brauner <brauner@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>,
+ Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng
+ <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@samsung.com>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ =?UTF-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
+ Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>,
+ Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas
+ <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>,
+ Dan Williams <dan.j.williams@intel.com>, Matthew Wilcox
+ <willy@infradead.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Daniel Xu <dxu@dxuuu.xyz>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+ Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org,
+ linux-security-module@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, Casey Schaufler <casey@schaufler-ca.com>
+References: <20240915-alice-file-v10-0-88484f7a3dcf@google.com>
+ <20240915-alice-file-v10-5-88484f7a3dcf@google.com>
+ <202409151325.09E4F3C2F@keescook>
+ <CAH5fLghA0tLTwCDBRrm+GAEWhhY7Y8qLtpj0wwcvTK_ZRZVgBw@mail.gmail.com>
+Content-Language: en-US
+From: Casey Schaufler <casey@schaufler-ca.com>
+In-Reply-To: <CAH5fLghA0tLTwCDBRrm+GAEWhhY7Y8qLtpj0wwcvTK_ZRZVgBw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAH5fLggoz5gdgOpEiXu7u9hPXjLLeSv9An6jaq0am0-dG7+ohw@mail.gmail.com>
-X-Operating-System: Linux phenom 6.9.12-amd64 
+X-Mailer: WebService/1.1.22645 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
 
-On Sun, Sep 15, 2024 at 04:11:57PM +0200, Alice Ryhl wrote:
-> On Sun, Sep 15, 2024 at 3:49 PM Gary Guo <gary@garyguo.net> wrote:
-> >
-> > On Fri, 13 Sep 2024 23:28:37 -0700
-> > Boqun Feng <boqun.feng@gmail.com> wrote:
-> >
-> > > Hmm.. I think it makes more sense to make `access()` requires `where T:
-> > > Sync` instead of the current fix? I.e. I propose we do:
-> > >
-> > >       impl<T, U> LockedBy<T, U> {
-> > >           pub fn access<'a>(&'a self, owner: &'a U) -> &'a T
-> > >           where T: Sync {
-> > >               ...
-> > >           }
-> > >       }
-> > >
-> > > The current fix in this patch disallows the case where a user has a
-> > > `Foo: !Sync`, but want to have multiple `&LockedBy<Foo, X>` in different
-> > > threads (they would use `access_mut()` to gain unique accesses), which
-> > > seems to me is a valid use case.
-> > >
-> > > The where-clause fix disallows the case where a user has a `Foo: !Sync`,
-> > > a `&LockedBy<Foo, X>` and a `&X`, and is trying to get a `&Foo` with
-> > > `access()`, this doesn't seems to be a common usage, but maybe I'm
-> > > missing something?
-> >
-> > +1 on this. Our `LockedBy` type only works with `Lock` -- which
-> > provides mutual exclusion rather than `RwLock`-like semantics, so I
-> > think it should be perfectly valid for people to want to use `LockedBy`
-> > for `Send + !Sync` types and only use `access_mut`. So placing `Sync`
-> > bound on `access` sounds better.
-> 
-> I will add the `where` bound to `access`.
+On 9/15/2024 2:07 PM, Alice Ryhl wrote:
+> On Sun, Sep 15, 2024 at 10:58 PM Kees Cook <kees@kernel.org> wrote:
+>> On Sun, Sep 15, 2024 at 02:31:31PM +0000, Alice Ryhl wrote:
+>>> Add an abstraction for viewing the string representation of a security
+>>> context.
+>> Hm, this may collide with "LSM: Move away from secids" is going to happen.
+>> https://lore.kernel.org/all/20240830003411.16818-1-casey@schaufler-ca.com/
+>>
+>> This series is not yet landed, but in the future, the API changes should
+>> be something like this, though the "lsmblob" name is likely to change to
+>> "lsmprop"?
+>> security_cred_getsecid()   -> security_cred_getlsmblob()
+>> security_secid_to_secctx() -> security_lsmblob_to_secctx()
 
-Yeah I considered but it felt a bit icky to put constraints on the
-functions. But I didn't come up with a real use-case that would be
-prevented, so I think it's fine.
+The referenced patch set does not change security_cred_getsecid()
+nor remove security_secid_to_secctx(). There remain networking interfaces
+that are unlikely to ever be allowed to move away from secids. It will
+be necessary to either retain some of the secid interfaces or introduce
+scaffolding around the lsm_prop structure.
 
-Even the use-case below where a shared references only gives you the
-guarantee something is valid you likely have additional locks to protected
-the data if it's mutable.
+Binder is currently only supported in SELinux, so this isn't a real issue
+today. The BPF LSM could conceivably support binder, but only in cases where
+SELinux isn't enabled. Should there be additional LSMs that support binder
+the hooks would have to be changed to use lsm_prop interfaces, but I have
+not included that *yet*.
 
-> > There's even a way to not requiring `Sync` bound at all, which is to
-> > ensure that the owner itself is a `!Sync` type:
-> >
-> >         impl<T, U> LockedBy<T, U> {
-> >             pub fn access<'a, B: Backend>(&'a self, owner: &'a Guard<U, B>) -> &'a T {
-> >                 ...
-> >             }
-> >         }
-> >
-> > Because there's no way for `Guard<U, B>` to be sent across threads, we
-> > can also deduce that all caller of `access` must be from a single
-> > thread and thus the `Sync` bound is unnecessary.
-> 
-> Isn't Guard Sync? Either way, it's inconvenient to make Guard part of
-> the interface. That prevents you from using it from within
-> `&self`/`&mut self` methods on the owner.
+> Thanks for the heads up. I'll make sure to look into how this
+> interacts with those changes.
 
-I think there's also plenty of patterns where just having reference is
-enoug to guarantee access and exclusive ownership gives exclusive access.
-E.g. in drm we have some objects that are generally attached to a File,
-but get independently destroyed. But some of the fields/values are only
-valid as long as the corresponding File is still around. Lockedby as-is
-can perfectly encode these kind of rules.
+There will be a follow on patch set as well that replaces the LSMs use
+of string/length pairs with a structure. This becomes necessary in cases
+where more than one active LSM uses secids and security contexts. This
+will affect binder.
 
-So I don't think tying LockedBy to Guard, or even a specific Lock type is
-a good idea.
--Sima
--- 
-Simona Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
+>
+>>> This is needed by Rust Binder because it has a feature where a process
+>>> can view the string representation of the security context for incoming
+>>> transactions. The process can use that to authenticate incoming
+>>> transactions, and since the feature is provided by the kernel, the
+>>> process can trust that the security context is legitimate.
+>>>
+>>> This abstraction makes the following assumptions about the C side:
+>>> * When a call to `security_secid_to_secctx` is successful, it returns a
+>>>   pointer and length. The pointer references a byte string and is valid
+>>>   for reading for that many bytes.
+>> Yes. (len includes trailing C-String NUL character.)
+> I suppose the NUL character implies that this API always returns a
+> non-zero length? I could simplify the patch a little bit by not
+> handling empty strings.
+>
+> It looks like the CONFIG_SECURITY=n case returns -EOPNOTSUPP, so we
+> don't get an empty string from that case, at least.
+>
+>>> * The string may be referenced until `security_release_secctx` is
+>>>   called.
+>> Yes.
+>>
+>>> * If CONFIG_SECURITY is set, then the three methods mentioned in
+>>>   rust/helpers are available without a helper. (That is, they are not a
+>>>   #define or `static inline`.)
+>> Yes.
+>>
+>>> Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+>>> Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+>>> Reviewed-by: Trevor Gross <tmgross@umich.edu>
+>>> Reviewed-by: Gary Guo <gary@garyguo.net>
+>>> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+>> Reviewed-by: Kees Cook <kees@kernel.org>
+> Thanks for the review!
+>
+> Alice
+>
