@@ -1,135 +1,88 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from out30-112.freemail.mail.aliyun.com (out30-112.freemail.mail.aliyun.com [115.124.30.112])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E77C4611E
-	for <rust-for-linux@vger.kernel.org>; Tue, 17 Sep 2024 00:11:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA0DA7F6;
+	Tue, 17 Sep 2024 00:18:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.112
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726531874; cv=none; b=fd/0nRrK7UNu5x1KHqmgx+hOEYycTM5bJD/AcWxmrVWVN0FLFO9VsCT72+hWnTjH6TTyhcTY/PQ/1m3wlgJVGEvmBsghw34BbUTew3qz51U1WwVUz1E1T7zb6nLsWe7XwxV2oToB86Neh75iwYu6McrDO9JHzYA7WJjlhEzLKB0=
+	t=1726532299; cv=none; b=PxgJUUKdrOYrz3+0v4a+FjPZjEuWSziqZepAH6Cv7uK+wlstQjpgFJTVHr7wAvCCk5VSy0x8VYuQCDEXY5xWztMNeBpTUcQSzoK57tB9TgakKpDgFzCOCTcLRPA1OZWD72ONpgbncGgXnZadaLJc7PHR5Kum69IoChKlwLjTtPY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726531874; c=relaxed/simple;
-	bh=W56FUMR9QIT0LTtxeEn0yFfK/pN99UsZE7+uyX1M+rg=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=A6nvwZy1stqf59978gLJVQbzYvIOrnVTgomd633BHTAiOjtt/sDUTIT9PCiCenaIrdvZXvPWW15hwCbm7r4shLI6/g7ERh5znsq0JsUN23VPro8Htz/LaSHwCivALTOCGIaEQ8lk/QqH1+OqOGcUpiFLmo3kj3I17gHSzxUYK+Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=bAEBeoMe; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1726532299; c=relaxed/simple;
+	bh=WoOQFaL0Y91OIdupY2RuKodx73uY16jH/9yrW8snJOE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ItsBaQkRaZA6pUs9Zc5CaDBl4I4VLLPVn+PJlvfN3z5h8Ap4F/D2L079i/BhOKiC8YjH6kT4G13M8wKJW8+Yz7ptThHgv6EpWoI8gXY6ifXvG/LUBj3evAb0dogmrFKtxEwGlbTBgXsaNcp0vvNHBc3u/MfGTCoqu0Ypgz7gdFg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=n51OusJS; arc=none smtp.client-ip=115.124.30.112
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="bAEBeoMe"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1726531871;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=P3XRknCuZ+rddMbA9raqM8xFOQmhedysMspZNVnmtig=;
-	b=bAEBeoMeSu1d5TCIyvN4CuqaCzDv5/SPZbMvnwW5Ho9ybG5r/0wXWBQ4uk+E+WX6oX+K9H
-	TZdbb0EnRW3OMJDwz6IrVOg9sufImzY1zs+8UMoot1sMKOyE6/b86L5lapy4PwtQnSLh1S
-	9qFiy6rx2oCl0OYgMG36lLn+JQ06xuo=
-Received: from mail-qv1-f72.google.com (mail-qv1-f72.google.com
- [209.85.219.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-388-QJVO3klcOhesF-QoPvaJwA-1; Mon, 16 Sep 2024 20:11:10 -0400
-X-MC-Unique: QJVO3klcOhesF-QoPvaJwA-1
-Received: by mail-qv1-f72.google.com with SMTP id 6a1803df08f44-6c3540067b1so97256106d6.1
-        for <rust-for-linux@vger.kernel.org>; Mon, 16 Sep 2024 17:11:09 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726531869; x=1727136669;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=P3XRknCuZ+rddMbA9raqM8xFOQmhedysMspZNVnmtig=;
-        b=I5Rq4sTT92LBgiT6FjTuunVwJ61HSnlijURPwP0CELewbALP7ff/Y8fIFhyXvczqMb
-         5aiusE8REMPZLzM6o/c0qiefQjyFJASdEpZzjT1e8mu/a5R06Vk7RnN/5bGVrdbHAkf0
-         BcxU9rUl+fOvh/RPcZbh+1RQHu5+V27FIU2DRnZ0tJ2U6xC05qkVmHJ3mexVem7Vuly8
-         My9Il94TTxJqrpTQD9IMwBrJ3cXG+dP/ND3ECLcj1j6HmFNxd1Ur4+XmU7NjYN60NvMG
-         0X3A+DxfVEtTTt2bqhRLg+HZmnJBi1jIFk+zPjCp45eQ8ibu0R4XMN3IO4kLsbpDW5vP
-         vywg==
-X-Gm-Message-State: AOJu0Yw8o5TtXPudfuj84WPAM5ePW4ccbLd9iISRaxP3Xsh4LGFZks8b
-	0ECBDOTXp8WLSv66PT7+M+k2+UOoBIAo15b5c8G6LisJsrQV/5hgQg/6VlkkvmDPzd5Lo+VYT+C
-	cm3juWMpqmgShCwgpBOd5f1JAK0tgmFZPrhmv3Sg9Dz8j0jfeetQtViKGTK/vp7sn
-X-Received: by 2002:a05:6214:311a:b0:6c3:5496:3e06 with SMTP id 6a1803df08f44-6c57350b986mr276808186d6.10.1726531868910;
-        Mon, 16 Sep 2024 17:11:08 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IEHnGglfemeo+Af3oezjiRWKnnZJZ0HiOz3D898c3WHVJObvGXlST1AzNl9ohW/gu5HlG6/gw==
-X-Received: by 2002:a05:6214:311a:b0:6c3:5496:3e06 with SMTP id 6a1803df08f44-6c57350b986mr276807636d6.10.1726531868420;
-        Mon, 16 Sep 2024 17:11:08 -0700 (PDT)
-Received: from towerofpower.montleon.net (syn-066-026-073-226.res.spectrum.com. [66.26.73.226])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6c58c62633bsm29221956d6.25.2024.09.16.17.11.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Sep 2024 17:11:07 -0700 (PDT)
-From: Jason Montleon <jmontleo@redhat.com>
-To: ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me,
-	a.hindborg@kernel.org,
-	aliceryhl@google.com,
-	paul.walmsley@sifive.com,
-	palmer@dabbelt.com,
-	aou@eecs.berkeley.edu,
-	nathan@kernel.org,
-	ndesaulniers@google.com,
-	morbo@google.com,
-	justinstitt@google.com
-Cc: rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-riscv@lists.infradead.org,
-	llvm@lists.linux.dev,
-	Jason Montleon <jmontleo@redhat.com>,
-	stable@vger.kernel.org
-Subject: [PATCH] RISC-V: Fix building rust when using GCC toolchain
-Date: Mon, 16 Sep 2024 20:08:48 -0400
-Message-ID: <20240917000848.720765-2-jmontleo@redhat.com>
-X-Mailer: git-send-email 2.46.0
-In-Reply-To: <20240917000848.720765-1-jmontleo@redhat.com>
-References: <20240917000848.720765-1-jmontleo@redhat.com>
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="n51OusJS"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1726532288; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=7GIfLCzeyMWB6rR4gwhPkw73w43jwPFWmSDKoY5Td70=;
+	b=n51OusJSW6EkSmJH04obf0NssvbHBOESLGDGO7yR9gayqfoLrw8teR7IXxAwz2OeKzFRwqvljz60rs9AMb9SkISN0qwD7Ene1XW5voa7YezyVbWy1lWeDJCzUSzYG3e5fuPSamQeTfqp8wB6c2+dOgcDholOGDDRRw/gbo/w04Y=
+Received: from 30.27.106.17(mailfrom:hsiangkao@linux.alibaba.com fp:SMTPD_---0WF9M2-u_1726532286)
+          by smtp.aliyun-inc.com;
+          Tue, 17 Sep 2024 08:18:07 +0800
+Message-ID: <aa7a902a-25f6-491c-88a3-ad0a3204d2ff@linux.alibaba.com>
+Date: Tue, 17 Sep 2024 08:18:06 +0800
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain; charset="US-ASCII"; x-default=true
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 02/24] erofs: add superblock data structure in Rust
+To: Greg KH <gregkh@linuxfoundation.org>, Yiyang Wu <toolmanp@tlmp.cc>
+Cc: linux-fsdevel@vger.kernel.org, linux-erofs@lists.ozlabs.org,
+ LKML <linux-kernel@vger.kernel.org>, rust-for-linux@vger.kernel.org
+References: <20240916135634.98554-1-toolmanp@tlmp.cc>
+ <20240916135634.98554-3-toolmanp@tlmp.cc>
+ <2024091655-sneeze-pacify-cf28@gregkh>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
+In-Reply-To: <2024091655-sneeze-pacify-cf28@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-Clang does not support '-mno-riscv-attribute' resulting in the error
-error: unknown argument: '-mno-riscv-attribute'
+Hi Greg,
 
-Not setting BINDGEN_TARGET_riscv results in the in the error
-error: unsupported argument 'medany' to option '-mcmodel=' for target \
-'unknown'
-error: unknown target triple 'unknown'
+On 2024/9/17 01:55, Greg KH wrote:
+> On Mon, Sep 16, 2024 at 09:56:12PM +0800, Yiyang Wu wrote:
+>> diff --git a/fs/erofs/rust/erofs_sys.rs b/fs/erofs/rust/erofs_sys.rs
+>> new file mode 100644
+>> index 000000000000..0f1400175fc2
+>> --- /dev/null
+>> +++ b/fs/erofs/rust/erofs_sys.rs
+>> @@ -0,0 +1,22 @@
+>> +#![allow(dead_code)]
+>> +// Copyright 2024 Yiyang Wu
+>> +// SPDX-License-Identifier: MIT or GPL-2.0-or-later
+> 
+> Sorry, but I have to ask, why a dual license here?  You are only linking
+> to GPL-2.0-only code, so why the different license?  Especially if you
+> used the GPL-2.0-only code to "translate" from.
+> 
+> If you REALLY REALLY want to use a dual license, please get your
+> lawyers to document why this is needed and put it in the changelog for
+> the next time you submit this series when adding files with dual
+> licenses so I don't have to ask again :)
 
-Signed-off-by: Jason Montleon <jmontleo@redhat.com>
-Cc: stable@vger.kernel.org
----
- rust/Makefile | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+As a new Rust kernel developper, Yiyang is working on EROFS Rust
+userspace implementation too.
 
-diff --git a/rust/Makefile b/rust/Makefile
-index f168d2c98a15..73eceaaae61e 100644
---- a/rust/Makefile
-+++ b/rust/Makefile
-@@ -228,11 +228,12 @@ bindgen_skip_c_flags := -mno-fp-ret-in-387 -mpreferred-stack-boundary=% \
- 	-fzero-call-used-regs=% -fno-stack-clash-protection \
- 	-fno-inline-functions-called-once -fsanitize=bounds-strict \
- 	-fstrict-flex-arrays=% -fmin-function-alignment=% \
--	--param=% --param asan-%
-+	--param=% --param asan-% -mno-riscv-attribute
- 
- # Derived from `scripts/Makefile.clang`.
- BINDGEN_TARGET_x86	:= x86_64-linux-gnu
- BINDGEN_TARGET_arm64	:= aarch64-linux-gnu
-+BINDGEN_TARGET_riscv	:= riscv64-linux-gnu
- BINDGEN_TARGET		:= $(BINDGEN_TARGET_$(SRCARCH))
- 
- # All warnings are inhibited since GCC builds are very experimental,
+I think he just would like to share the common Rust logic between
+kernel and userspace.  Since for the userspace side, Apache-2.0
+or even MIT is more friendly for 3rd applications (especially
+cloud-native applications). So the dual license is proposed here,
+if you don't have strong opinion, I will ask Yiyang document this
+in the next version.  Or we're fine to drop MIT too.
 
-base-commit: ad060dbbcfcfcba624ef1a75e1d71365a98b86d8
--- 
-2.46.0
+Thanks,
+Gao Xiang
+
+> 
+> thanks,
+> 
+> greg k-h
 
