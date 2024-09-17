@@ -1,105 +1,107 @@
-Received: from out30-111.freemail.mail.aliyun.com (out30-111.freemail.mail.aliyun.com [115.124.30.111])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FA0514D43D;
-	Mon, 16 Sep 2024 23:58:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.111
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BFCB182
+	for <rust-for-linux@vger.kernel.org>; Tue, 17 Sep 2024 00:11:04 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726531119; cv=none; b=am+4SJXP2i8TafBBnyi2i+Orc8klMFeT6msd8c8ifOo2rvQiKsU813UzWdTRrja2e1IEbVIzPr1z/4HyuVOy0EUk7ImkjM1zcSxeb7ycwqpgO5s9kajX4qtJCL2iEvkUJqbH7mi5jNyqSgUawtIxonPzGn6MnMbfIOauhMVDdiw=
+	t=1726531866; cv=none; b=M0t/alQkU9nF3Fte5MqMRWzBHgephX2Lqo3hnfV551+wZ7xpvup919Wz2+iv3fbEH0V9AlgIVbt4n9uOqjGSbmkO5/7qSLOi0rFQhvHX9eyP6c/7TOiYbEpEqYFIjpWJHpqDhheLa6Z/GwHM0/mvCt+e5VHEhCLYDsOrEJARMig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726531119; c=relaxed/simple;
-	bh=jOPX79pQYTa+acSPRfSWzxYnVrqvjkdmS2IYO5zjv+o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KfPkehvf1YZXbkndPw9rRgUD53XeM8Gxk8lZIxqY6C9vfKp6SsC1KKSBgzHwrhV5YKBHQ9MsCRhlJrtehJgl+SwCo5dI5ZBCbOJtxH3+Rm8PtI+u3XbN9SrCoJF2WCjFvU78m5rN+2XxxaL967pBEfyGJ0nPdalfF5UA3hfA9o8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=qrBvKWwL; arc=none smtp.client-ip=115.124.30.111
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	s=arc-20240116; t=1726531866; c=relaxed/simple;
+	bh=hU5iLxSH47Q+dO7j9wFD3aK57rS6msnzhfZQwB1PLck=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=emxoz/0GfbO+Pz7QMh+Hk5oLHbNczU9B1DP0o9AWh031JZMBk5NElJ649hj00wdhrnVSfhFnQ+awQcpWkLnIwMaiVoFMaUwf3fmzArTh5s9PhHr0JT3f74GiIhPLvmsA/UCRPB6N2SSjRFqdihlUQQNcxOh/nZRzdimnWXIMSwg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=RXLIsGlW; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="qrBvKWwL"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1726531108; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=yLAj4r6pPBKpE+85JctjglgVpEkYjcC6fvMHSgvTiHQ=;
-	b=qrBvKWwLGQdAVVqD2uCtMmWGr3fMkF6jPWqBweC5HV50hxYxJOr3B9iuz/EPgEUwT4LGbhQOTjauQhi9BO+xO8nhTDGS7WKx5AE5JLh6I2eLTRdHEIOlnHSZxVmU0viqbI4IXI2/ALVsOhBSdVPeE7nz6QUMXkdjPFFpCLJiZC4=
-Received: from 30.27.106.17(mailfrom:hsiangkao@linux.alibaba.com fp:SMTPD_---0WF9MKgN_1726531106)
-          by smtp.aliyun-inc.com;
-          Tue, 17 Sep 2024 07:58:27 +0800
-Message-ID: <2b04937c-1359-4771-86c6-bf5820550c92@linux.alibaba.com>
-Date: Tue, 17 Sep 2024 07:58:26 +0800
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="RXLIsGlW"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1726531863;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=Tmm8QBHX9hBz4OCA1JEiQcNTP6WIrwV8Na168B9eMdQ=;
+	b=RXLIsGlWCDYWG75S2f36Er9HdYrdUo/SlK6oBepvDrSyPvueeTKDSBl4Mj5qO//U1/b+NI
+	azzHW+KC0B9hS5pUuoFxaFEbtOA4a8iB7v1PnCymyrBWZLDfgzvhxBDM27zZRRrA5ZC512
+	0BKSYVPIITfQnpddgftViYmGInVuLUE=
+Received: from mail-qt1-f199.google.com (mail-qt1-f199.google.com
+ [209.85.160.199]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-389-ldzjf0JiMfS-MVwNAmSogw-1; Mon, 16 Sep 2024 20:11:02 -0400
+X-MC-Unique: ldzjf0JiMfS-MVwNAmSogw-1
+Received: by mail-qt1-f199.google.com with SMTP id d75a77b69052e-45856a29545so98554181cf.3
+        for <rust-for-linux@vger.kernel.org>; Mon, 16 Sep 2024 17:11:02 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1726531862; x=1727136662;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Tmm8QBHX9hBz4OCA1JEiQcNTP6WIrwV8Na168B9eMdQ=;
+        b=jA1qyfysjdLl04TThDnKVdvUsdk3Zh7+yPOCt2vK5sq/y0qqO8I2La/jUu96Bbmgz8
+         xGBoE5gqQ9bbgp9DOnHEiohfbG6vW/M5U6h4Eif+2z/GjRrjok0OUM2aJ5JB9lctrY4J
+         Bgh2MfPwq23fDAzf32JcAFn4myHAlwnBQtNPjO0XwpiJuzj/bwVoINJdS88rG9RnaFXw
+         Wutmk5p5e4QTabdvb8sAp8+LT2K7wnv6oLfGu/uA2yT3CQ3LUHieQeGdprPPIw34VCbW
+         ddg9CcnT8dTe3jagdrauXQr7OJTzFsuzRw3RMr7yX7jYEmzjXNg75EBqpKyWlIe8P/7Y
+         XBXA==
+X-Gm-Message-State: AOJu0YxZ7mo7f7hrShlVG2zQ1LbFoRT8ss+4jT5zEA3FmgA8OYBp5EiU
+	2RlZLTACZ1nA7z9K/k1Q/fK3AB4TTPMmwVkbzvwFWQK5VaJ+TRNx7ZPcS6aTaoZRWSnnBj+vXVh
+	GyF2Js/tjUOAOwzd4U6J83O3anvTmK8Ca0ibaz/suUr+wC0Eb++fc1P2DOiQqnp9H
+X-Received: by 2002:a05:622a:53cf:b0:458:42aa:9853 with SMTP id d75a77b69052e-4599d2393f1mr205215141cf.23.1726531862059;
+        Mon, 16 Sep 2024 17:11:02 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFPpDTLWSZw+zeRZnpq/bYJ/50ETGEyIM5xiGEn5/ULUALhOfBRgLa1LxUZ/Zwgxif9zNnwBA==
+X-Received: by 2002:a05:622a:53cf:b0:458:42aa:9853 with SMTP id d75a77b69052e-4599d2393f1mr205214611cf.23.1726531861627;
+        Mon, 16 Sep 2024 17:11:01 -0700 (PDT)
+Received: from towerofpower.montleon.net (syn-066-026-073-226.res.spectrum.com. [66.26.73.226])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6c58c62633bsm29221956d6.25.2024.09.16.17.10.59
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 16 Sep 2024 17:11:01 -0700 (PDT)
+From: Jason Montleon <jmontleo@redhat.com>
+To: ojeda@kernel.org,
+	alex.gaynor@gmail.com,
+	boqun.feng@gmail.com,
+	gary@garyguo.net,
+	bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me,
+	a.hindborg@kernel.org,
+	aliceryhl@google.com,
+	paul.walmsley@sifive.com,
+	palmer@dabbelt.com,
+	aou@eecs.berkeley.edu,
+	nathan@kernel.org,
+	ndesaulniers@google.com,
+	morbo@google.com,
+	justinstitt@google.com
+Cc: rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	linux-riscv@lists.infradead.org,
+	llvm@lists.linux.dev,
+	Jason Montleon <jmontleo@redhat.com>
+Subject: [PATCH 0/1] RISC-V: Fix building rust when using GCC toolchain
+Date: Mon, 16 Sep 2024 20:08:47 -0400
+Message-ID: <20240917000848.720765-1-jmontleo@redhat.com>
+X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 03/24] erofs: add Errno in Rust
-To: Gary Guo <gary@garyguo.net>, Yiyang Wu <toolmanp@tlmp.cc>
-Cc: linux-erofs@lists.ozlabs.org, rust-for-linux@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
- Al Viro <viro@zeniv.linux.org.uk>
-References: <20240916135634.98554-1-toolmanp@tlmp.cc>
- <20240916135634.98554-4-toolmanp@tlmp.cc>
- <20240916210111.502e7d6d.gary@garyguo.net>
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
-In-Reply-To: <20240916210111.502e7d6d.gary@garyguo.net>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+X-Mimecast-Spam-Score: 0
+X-Mimecast-Originator: redhat.com
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset="US-ASCII"; x-default=true
 
-Hi Gary,
+The following patch resolves errors encountered while building on RISC-V
+using the gcc toolchain with RUST_CONFIG=y
 
-On 2024/9/17 04:01, Gary Guo wrote:
-> On Mon, 16 Sep 2024 21:56:13 +0800
-> Yiyang Wu <toolmanp@tlmp.cc> wrote:
-> 
->> Introduce Errno to Rust side code. Note that in current Rust For Linux,
->> Errnos are implemented as core::ffi::c_uint unit structs.
->> However, EUCLEAN, a.k.a EFSCORRUPTED is missing from error crate.
->>
->> Since the errno_base hasn't changed for over 13 years,
->> This patch merely serves as a temporary workaround for the missing
->> errno in the Rust For Linux.
->>
->> Signed-off-by: Yiyang Wu <toolmanp@tlmp.cc>
-> 
-> As Greg said, please add missing errno that you need to kernel crate
-> instead.
+Jason Montleon (1):
+  RISC-V: Fix building rust when using GCC toolchain
 
-I've answered Greg about this in another email.
+ rust/Makefile | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-> 
-> Also, it seems that you're building abstractions into EROFS directly
-> without building a generic abstraction. We have been avoiding that. If
-> there's an abstraction that you need and missing, please add that
-> abstraction. In fact, there're a bunch of people trying to add FS
 
-No, I'd like to try to replace some EROFS C logic first to Rust (by
-using EROFS C API interfaces) and try if Rust is really useful for
-a real in-tree filesystem.  If Rust can improve EROFS security or
-performance (although I'm sceptical on performance), As an EROFS
-maintainer, I'm totally fine to accept EROFS Rust logic landed to
-help the whole filesystem better.
+base-commit: ad060dbbcfcfcba624ef1a75e1d71365a98b86d8
+-- 
+2.46.0
 
-For Rust VFS abstraction, that is a different and indepenent story,
-Yiyang don't have any bandwidth on this due to his limited time.
-And I _also_ don't think an incomplete ROFS VFS Rust abstraction
-is useful to Linux community (because IMO for generic interface
-design, we need a global vision for all filesystems instead of
-just ROFSes.  No existing user is not an excuse for an incomplete
-abstraction.)
-
-If a reasonble Rust VFS abstraction landed, I think we will switch
-to use that, but as I said, they are completely two stories.
-
-> support, please coordinate instead of rolling your own.
-> 
-> You also have been referencing `kernel::bindings::` directly in various
-> places in the patch series. The module is marked as `#[doc(hidden)]`
-> for a reason -- it's not supposed to referenced directly. It's only
-> exposed so that macros can reference them. In fact, we have a policy
-> that direct reference to raw bindings are not allowed from drivers.
-
-This patch can be avoided if EUCLEAN is added to errno.
-
-Thanks,
-Gao Xiang
