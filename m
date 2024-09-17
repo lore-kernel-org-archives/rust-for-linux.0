@@ -1,254 +1,303 @@
-Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4821B15B551;
-	Tue, 17 Sep 2024 22:22:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.89.141.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C0B9A29;
+	Tue, 17 Sep 2024 22:28:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726611742; cv=none; b=V1Z8VDJQ/gq/MufTSOKz79pgn+L2TxllfCDjGYRak9xCikaVDAgxhl8KU53IhlaUk+v7pehaO3bXL2Gj0C7uWjlvO6U85b8kWMyBxCb83MvZUF/vKdaTEDwhUy/n9IVOcU8zxMDM/xhB0ow8zXjwR1iyA9WwRd3Lc05rsyQ67ys=
+	t=1726612104; cv=none; b=dVEw3RccLFLV6Eb583PetW3eAmeM24gx6oYHTPS420PpLxiCkvAFztYLNRFSdqvyppf7yZyXcyFOhP4mPdIh8uWZ4rCLLGvX+cayTwkIPgtzGstSgQsF5MOuoCuIBGQ72TVl0qEjAZIwQGLDTs+H7TJk9bhoklHib/EzpiQohfg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726611742; c=relaxed/simple;
-	bh=UjcRyY1Dvy8LHiMl+Gg+gbnBQD/E0+QZGy/iCcLrcDw=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ow/4aw7XFWhnRDp6lLr3NKQUVSNnP5YvYRIqaCJr3WNNvNWDvY06yhNXjmdNb/vHLWIHaWZnPcUJVS68DTBwbEM7CE45WY3VciJqTWZb4KCXARBx4Nv6ynUZi5bjmo+KnCpdGsFaUVIZNMOQv75ayZJDDX/TX1+ewRE26bDNrAk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; spf=none smtp.mailfrom=ftp.linux.org.uk; dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b=bkVOdYuO; arc=none smtp.client-ip=62.89.141.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ftp.linux.org.uk
+	s=arc-20240116; t=1726612104; c=relaxed/simple;
+	bh=xKL5HMeRstFVPof1hsTkfQs0tfaKDeMRSFDFcVRIIXU=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=d6o3xXPO/pBYGiL0ZnXNScdHR6IGMTJMpWlaePZxQmUcgFUzybdWV8hY/jxk5rOUZNZ+1S5tiPdLQkqJbHFD9T1fm6TLQr8llF33BtuHwzTgbDIW2vBrJBSQ0qF4JqOnw6TI+u+b6ex8DQC6OGTqhv/L9bQgp36K8lLxK01x5r0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QhfPgZrX; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="bkVOdYuO"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=iLQ5LiZffWjY0HKID2pJokQ+7vMW0GhlCO+qySBS8dA=; b=bkVOdYuOwPg80KgLMJGdoYMcRG
-	wLzPnAAj9GE+DC3QXzU/yJ9lkHW1WbPFoJx94t8fLUD3RgkS4jzLyj3bvrroQuTlXCgy74FhjD8fV
-	YgvTPj7HvivM9mzttpf3hy2A7AsUWcDBQ9E3bOThKoWGb6oAPPk5A+DzJ9IHeupSOV/kHZuo5Qpfb
-	XbL3m1JHwhb76Qq6bwgJoZJ4Uk1ukQSvULg9QUhuAwFQso20pZXd7S36tDPUD9zQMH/WtGDAn44Rj
-	iL6FAd0w++VJvRtz1/gP/AaU9ObAY0CMkDw8MsKjMNNKDYQIbS7wA6XxD39vI9/nrIVdcLykek4y+
-	VGsEdF/w==;
-Received: from viro by zeniv.linux.org.uk with local (Exim 4.98 #2 (Red Hat Linux))
-	id 1sqgaM-0000000DGfH-3tnr;
-	Tue, 17 Sep 2024 22:22:14 +0000
-Date: Tue, 17 Sep 2024 23:22:14 +0100
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: Gao Xiang <hsiangkao@linux.alibaba.com>
-Cc: Yiyang Wu <toolmanp@tlmp.cc>, linux-erofs@lists.ozlabs.org,
-	rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	LKML <linux-kernel@vger.kernel.org>
-Subject: Re: [RFC PATCH 19/24] erofs: introduce namei alternative to C
-Message-ID: <20240917222214.GF3107530@ZenIV>
-References: <20240916135634.98554-1-toolmanp@tlmp.cc>
- <20240916135634.98554-20-toolmanp@tlmp.cc>
- <20240916170801.GO2825852@ZenIV>
- <ocmc6tmkyl6fnlijx4r3ztrmjfv5eep6q6dvbtfja4v43ujtqx@y43boqba3p5f>
- <1edf9fe3-5e39-463b-8825-67b4d1ad01be@linux.alibaba.com>
- <20240917073149.GD3107530@ZenIV>
- <20240917074429.GE3107530@ZenIV>
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QhfPgZrX"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58E5CC4CEC5;
+	Tue, 17 Sep 2024 22:28:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1726612103;
+	bh=xKL5HMeRstFVPof1hsTkfQs0tfaKDeMRSFDFcVRIIXU=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=QhfPgZrXFHbhj/Eocoonc754jCAxq5uQ47x20nvz4UWISsdm4/Yr2HJnl1pv4qXCk
+	 aD8vRGrLs47/xg9auyftIih2BKh1RV+VuB0GtQsdcnDnrZ7Nn9gtF/eSGA/w3Xfcp7
+	 Saz2on0FLq/mo7V3Bvl4bixeslReFvjsFTFnmuOARa7zFYPLM9uYioKA7VOOUNkKpz
+	 MdA0vAXG5yJ7YhgJvUVj0tnRc83MQc1orjMwrL6DV1Iv+emwFFSeXK43AXaEt/3fxw
+	 PcfiJNMHn2C2B38ONHohxbN+ay0Wo7Yac7D6QfihRHxo0OcvVInuxtBaIJG2Nf0LXP
+	 kLcFPDbR4oxCw==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Anna-Maria Behnsen <anna-maria@linutronix.de>,
+	Frederic Weisbecker <frederic@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>
+Cc: Andreas Hindborg <a.hindborg@kernel.org>,
+	Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Alice Ryhl <aliceryhl@google.com>,
+	rust-for-linux@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH v2 05/14] rust: hrtimer: implement `TimerPointer` for `Arc`
+Date: Wed, 18 Sep 2024 00:27:29 +0200
+Message-ID: <20240917222739.1298275-6-a.hindborg@kernel.org>
+X-Mailer: git-send-email 2.46.0
+In-Reply-To: <20240917222739.1298275-1-a.hindborg@kernel.org>
+References: <20240917222739.1298275-1-a.hindborg@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240917074429.GE3107530@ZenIV>
-Sender: Al Viro <viro@ftp.linux.org.uk>
+X-Developer-Signature: v=1; a=openpgp-sha256; l=7855; i=a.hindborg@kernel.org; h=from:subject; bh=xKL5HMeRstFVPof1hsTkfQs0tfaKDeMRSFDFcVRIIXU=; b=LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgpvd0o0bkFGdEFwTDlrQTBEQUFvQjRiZ2FQb mtvWTNjQnl5WmlBR2JxQWZrcDNaWXIwSVY2UGRad2xrVVNhMDJwCnI0TU9jR0E1Q3gyUzFpUGhL VFF5YllrQ013UUFBUW9BSFJZaEJCTEIrVWRXdjN3cUZkYkFFdUc0R2o1NUtHTjMKQlFKbTZnSDV BQW9KRU9HNEdqNTVLR04zUmxFUUFNU2ZrRG1QU1FFMS9ZN1Z0YUV0UkdWQmlaTFg5TmtYSWE2Uw pkV2lsYUZYU01VZlA4a285UTVUYmZRblhYVnp2M29xOVExTDNxdmFJbG1mUTRqR0xWZktMcVJ5N lVRdU5BQVhxCkVnWHFIOElKTEV0eFZYd0Z2SWphOWY2eVM3dTFuZWVaMW9xdG5saXkvVERoYkln S0ZvcG9WMitHZ1NmSWwwSloKS2o4c3d1aGRqN0JEU0pTQitBcVBrYU5GbFZuWFpMbmxOWURyaTh obWJJK3FCbHFDWCsxdURnczY5TThjQTdIOApKcytQbnI1aHFLcnhTVWE2L01WdlRrOXBkRHRIbG gvWXRSMVlXSFFSMDdwZHVXYW5jaEVkbkdwTTZHclM0V3ZpCjdrSW1CenAzZkJvTDg0VUFuNlN6V ytQb1VYbG41UTJISEEwTEp4RVZtSGg0eTAydVZyWEtpaHN4ZENQRkNOMVUKVm9WNGRpNlF2aWFH NDR2RzE2dHFqR0t3ZnYrV2RIZDcxSzBDQy9jTjhsRUhEOUhmZG93b0cwWDZqWkEvTlJ6cwpvL0J xVmFRVitXa0dzbWw1am1lalNJMzc5N1FwM3hzS0pWTzEyRnlMZHBwaXh3czQvY0Z0RkY3Mk43V3 NqKzl1CmVTWitoUi8rdzBRcE1LMTVtdEpXU1pIVjN1NE96VGl5Uy9neEpSYmM0dEpoRmVIY2Nre FZYc1pmekgvbTYzUU4KTUZsOFZENERjRk1uR3RNN2xYbHlkZ0hicHFRUVhVN3hWaFpUMG1TY2s0 RDdRa3dmR0FaQTZrSlZGVG1pWTdZZwp2NWRWeVcvb2pHYmxRMVFYemlsN2FDY3hvOVZUYUtOeDZ ZZ0V2S1V2bWNqWGFBenNjTi9kdkpDcTQ0WVN3WHpsCnlDd2ptYlBlckNZaDJ3PT0KPW5wRkgKLS 0tLS1FTkQgUEdQIE1FU1NBR0UtLS0tLQo=
+X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp; fpr=3108C10F46872E248D1FB221376EB100563EF7A7
+Content-Transfer-Encoding: 8bit
 
-On Tue, Sep 17, 2024 at 08:44:29AM +0100, Al Viro wrote:
+This patch allows the use of intrusive `hrtimer` fields in structs that are
+managed by an `Arc`.
 
-> Anyway, I'm half-asleep at the moment and I'd rather leave writing these
-> rules up until tomorrow.  Sorry...
+Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+---
+ rust/kernel/hrtimer.rs     | 102 ++++++++++++++++++++++++++++++++++++-
+ rust/kernel/hrtimer/arc.rs |  87 +++++++++++++++++++++++++++++++
+ 2 files changed, 188 insertions(+), 1 deletion(-)
+ create mode 100644 rust/kernel/hrtimer/arc.rs
+
+diff --git a/rust/kernel/hrtimer.rs b/rust/kernel/hrtimer.rs
+index 5c92afd8eb2c..fd1520ba9fba 100644
+--- a/rust/kernel/hrtimer.rs
++++ b/rust/kernel/hrtimer.rs
+@@ -4,6 +4,64 @@
+ //!
+ //! Allows scheduling timer callbacks without doing allocations at the time of
+ //! scheduling. For now, only one timer per type is allowed.
++//!
++//! # Example
++//!
++//! ```
++//! use kernel::{
++//!     hrtimer::{Timer, TimerCallback, TimerPointer},
++//!     impl_has_timer, new_condvar, new_mutex,
++//!     prelude::*,
++//!     sync::{Arc, CondVar, Mutex},
++//!     time::Ktime,
++//! };
++//!
++//! #[pin_data]
++//! struct ArcIntrusiveTimer {
++//!     #[pin]
++//!     timer: Timer<Self>,
++//!     #[pin]
++//!     flag: Mutex<bool>,
++//!     #[pin]
++//!     cond: CondVar,
++//! }
++//!
++//! impl ArcIntrusiveTimer {
++//!     fn new() -> impl PinInit<Self, kernel::error::Error> {
++//!         try_pin_init!(Self {
++//!             timer <- Timer::new(),
++//!             flag <- new_mutex!(false),
++//!             cond <- new_condvar!(),
++//!         })
++//!     }
++//! }
++//!
++//! impl TimerCallback for ArcIntrusiveTimer {
++//!     type CallbackTarget<'a> = Arc<Self>;
++//!
++//!     fn run(this: Self::CallbackTarget<'_>) {
++//!         pr_info!("Timer called\n");
++//!         *this.flag.lock() = true;
++//!         this.cond.notify_all();
++//!     }
++//! }
++//!
++//! impl_has_timer! {
++//!     impl HasTimer<Self> for ArcIntrusiveTimer { self.timer }
++//! }
++//!
++//!
++//! let has_timer = Arc::pin_init(ArcIntrusiveTimer::new(), GFP_KERNEL)?;
++//! let _handle = has_timer.clone().schedule(Ktime::from_ns(200_000_000));
++//! let mut guard = has_timer.flag.lock();
++//!
++//! while !*guard {
++//!     has_timer.cond.wait(&mut guard);
++//! }
++//!
++//! pr_info!("Flag raised\n");
++//! # Ok::<(), kernel::error::Error>(())
++//! ```
+ 
+ use crate::{init::PinInit, prelude::*, time::Ktime, types::Opaque};
+ use core::marker::PhantomData;
+@@ -72,6 +130,25 @@ unsafe fn raw_get(ptr: *const Self) -> *mut bindings::hrtimer {
+         // allocation of at least the size of `Self`.
+         unsafe { Opaque::raw_get(core::ptr::addr_of!((*ptr).timer)) }
+     }
++
++    /// Cancel an initialized and potentially armed timer.
++    ///
++    /// If the timer handler is running, this will block until the handler is
++    /// finished.
++    ///
++    /// # Safety
++    ///
++    /// `self_ptr` must point to a valid `Self`.
++    unsafe fn raw_cancel(self_ptr: *const Self) -> bool {
++        // SAFETY: timer_ptr points to an allocation of at least `Timer` size.
++        let c_timer_ptr = unsafe { Timer::raw_get(self_ptr) };
++
++        // If handler is running, this will wait for handler to finish before
++        // returning.
++        // SAFETY: `c_timer_ptr` is initialized and valid. Synchronization is
++        // handled on C side.
++        unsafe { bindings::hrtimer_cancel(c_timer_ptr) != 0 }
++    }
+ }
+ 
+ /// Implemented by pointer types that point to structs that embed a [`Timer`].
+@@ -139,7 +216,11 @@ fn run(this: Self::CallbackTarget<'_>)
+ /// When dropped, the timer represented by this handle must be cancelled, if it
+ /// is armed. If the timer handler is running when the handle is dropped, the
+ /// drop method must wait for the handler to finish before returning.
+-pub unsafe trait TimerHandle {}
++pub unsafe trait TimerHandle {
++    /// Cancel the timer, if it is armed. If the timer handler is running, block
++    /// till the handler has finished.
++    fn cancel(&mut self) -> bool;
++}
+ 
+ /// Implemented by structs that contain timer nodes.
+ ///
+@@ -196,6 +277,23 @@ unsafe fn c_timer_ptr(self_ptr: *const Self) -> *const bindings::hrtimer {
+         // SAFETY: timer_ptr points to an allocation of at least `Timer` size.
+         unsafe { Timer::raw_get(timer_ptr) }
+     }
++
++    /// Schedule the timer contained in the `Self` pointed to by `self_ptr`. If
++    /// it is already scheduled it is removed and inserted.
++    ///
++    /// # Safety
++    ///
++    /// `self_ptr` must point to a valid `Self`.
++    unsafe fn schedule(self_ptr: *const Self, expires: Ktime) {
++        unsafe {
++            bindings::hrtimer_start_range_ns(
++                Self::c_timer_ptr(self_ptr).cast_mut(),
++                expires.to_ns(),
++                0,
++                bindings::hrtimer_mode_HRTIMER_MODE_REL,
++            );
++        }
++    }
+ }
+ 
+ /// Use to implement the [`HasTimer<T>`] trait.
+@@ -229,3 +327,5 @@ unsafe fn raw_get_timer(ptr: *const Self) ->
+         }
+     }
+ }
++
++mod arc;
+diff --git a/rust/kernel/hrtimer/arc.rs b/rust/kernel/hrtimer/arc.rs
+new file mode 100644
+index 000000000000..80f6c20f95a9
+--- /dev/null
++++ b/rust/kernel/hrtimer/arc.rs
+@@ -0,0 +1,87 @@
++// SPDX-License-Identifier: GPL-2.0
++
++use super::HasTimer;
++use super::RawTimerCallback;
++use super::Timer;
++use super::TimerCallback;
++use super::TimerHandle;
++use super::TimerPointer;
++use crate::sync::Arc;
++use crate::time::Ktime;
++
++/// A handle for an `Arc<HasTimer<U>>` returned by a call to
++/// [`TimerPointer::schedule`].
++pub struct ArcTimerHandle<U>
++where
++    U: HasTimer<U>,
++{
++    pub(crate) inner: Arc<U>,
++}
++
++// SAFETY: We implement drop below, and we cancel the timer in the drop
++// implementation.
++unsafe impl<U> TimerHandle for ArcTimerHandle<U>
++where
++    U: HasTimer<U>,
++{
++    fn cancel(&mut self) -> bool {
++        let self_ptr = self.inner.as_ptr();
++
++        // SAFETY: As we obtained `self_ptr` from a valid reference above, it
++        // must point to a valid `U`.
++        let timer_ptr = unsafe { <U as HasTimer<U>>::raw_get_timer(self_ptr) };
++
++        // SAFETY: As `timer_ptr` points into `U` and `U` is valid, `timer_ptr`
++        // must point to a valid `Timer` instance.
++        unsafe { Timer::<U>::raw_cancel(timer_ptr) }
++    }
++}
++
++impl<U> Drop for ArcTimerHandle<U>
++where
++    U: HasTimer<U>,
++{
++    fn drop(&mut self) {
++        self.cancel();
++    }
++}
++
++impl<U> TimerPointer for Arc<U>
++where
++    U: Send + Sync,
++    U: HasTimer<U>,
++    U: for<'a> TimerCallback<CallbackTarget<'a> = Self>,
++{
++    type TimerHandle = ArcTimerHandle<U>;
++
++    fn schedule(self, expires: Ktime) -> ArcTimerHandle<U> {
++        // SAFETY: Since we generate the pointer passed to `schedule` from a
++        // valid reference, it is a valid pointer.
++        unsafe { U::schedule(self.as_ptr(), expires) };
++
++        ArcTimerHandle { inner: self }
++    }
++}
++
++impl<U> RawTimerCallback for Arc<U>
++where
++    U: HasTimer<U>,
++    U: for<'a> TimerCallback<CallbackTarget<'a> = Self>,
++{
++    unsafe extern "C" fn run(ptr: *mut bindings::hrtimer) -> bindings::hrtimer_restart {
++        // `Timer` is `repr(transparent)`
++        let timer_ptr = ptr.cast::<kernel::hrtimer::Timer<U>>();
++
++        // SAFETY: By C API contract `ptr` is the pointer we passed when
++        // queuing the timer, so it is a `Timer<T>` embedded in a `T`.
++        let data_ptr = unsafe { U::timer_container_of(timer_ptr) };
++
++        // SAFETY: `data_ptr` points to the `U` that was used to queue the
++        // timer. This `U` is contained in an `Arc`.
++        let receiver = unsafe { Arc::clone_from_raw(data_ptr) };
++
++        U::run(receiver);
++
++        bindings::hrtimer_restart_HRTIMER_NORESTART
++    }
++}
+-- 
+2.46.0
 
 
-[Below are the bits of my notes related to d_name and d_parent,
-with most of the unprintable parts thrown out and minimal markup added.
-Probably not all relevant notes are here - this has been culled from
-a bunch of files sitting around and I might've missed some]
-
-NOTE: ->d_parent and ->d_name are by far the worst parts of dentry
-wrt stability rules.  Code audits are not pleasant, to put it mildly.
-This covers the bits outside of VFS proper - verifying the locking
-rules is a separate story.
-
-
-A Really Blunt Tool You Should Not Use.
-======================================
-
-All changes of ->d_parent are serialized on rename_lock.  It's *NOT*
-something you want the stuff outside of core VFS to touch, though.
-It's a seqlock, and write_seqlock() on it is limited to fs/dcache.c
-alone.  Reader side is allowed, but it's still not something you
-want to use lightly - outside of fs/dcache.c, fs/d_path.c and fs/namei.c
-there are only 3 users (ceph_mdsc_build_path(), nfs_path() and
-auditsc handle_path()).  Don't add more without a discussion on fsdevel
-and detailed ACKs; it's quite likely that a better solution will be
-found.
-
-With one exception (see the discussion of d_mark_tmpfile() in the end),
-->d_name is also stabilized by that.
-
-
-Slightly Less Blunt Tool You Still Should Not Use.
-==================================================
-
-->s_vfs_rename_mutex will stabilize ->d_parent.  The trouble is,
-while it's not system-wide like rename_lock, it's fs-wide, so there's
-a plenty of contention to run into *AND* if you try that while
-->i_rwsem is held on some directory in that filesystem, you are fucked -
-lock_rename() (and rename(2), and...) will deadlock on you.
-Nothing outside of fs/{namei,dcache}.c touches it directly; there is
-an indirect use (lock_rename()), but that should be done only around
-the call of cross-directory rename on _another_ filesystem - overlayfs
-moving stuff within the writable layer, ecryptfs doing rename on
-underlying filesystem, nfsd handling rename request from client, etc.
-
-Anyone trying to use that hammer without a good reason will be very
-sorry - that's a promise.  The pain will begin with the request to
-adjust the proof of deadlock avoidance in directory locking and it
-will only go downwards from there...
-
-
-Parent's ->i_rwsem Held Exclusive.
-==================================
-
-That stabilizes ->d_parent and ->d_name.  To be more precise,
-
-holding parent->d_inode->i_rwsem exclusive stabilizes the result
-of (dentry->d_parent == parent).  That is to say, dentry
-that is a child of parent will remain such and dentry that isn't
-a child won't become a child.
-
-holding parent->d_inode->i_rwsem exclusive stabilizes ->d_name of
-all children.  In other words, if you've locked the parent exclusive
-and found something to be its child while keeping the parent locked,
-child will have ->d_parent and ->d_name stable until you unlock the
-parent.
-
-That covers most of the directory-modifying methods - stuff like
-->mkdir(), ->unlink(), ->rename(), etc. can access ->d_parent and
-->d_name of the dentry argument(s) without any extra locks; the
-caller is already holding enough.  Well, unless you are special
-(*cough* apparmor *cough*) and feel like dropping and regaining
-the lock on parent inside your ->mkdir()...  Don't do that, please -
-you might have no renames, but there's a plenty of other headache
-you can get into that way.
-
-
-Negatives.
-==========
-
-Negative dentry doesn't change ->d_parent or ->d_name.  Of course,
-that is only worth something if you are guaranteed that it won't
-become positive under you - if that happens, all bets are off.
-
-Holding the inode of parent locked (at least) shared is enough to
-guarantee that.  That takes care of ->lookup() instances - their
-dentry argument has ->d_parent and ->d_name stable until you make
-it positive (normally - by d_splice_alias()).  Once you've done
-d_splice_alias(), you'd better be careful with access to those;
-you won't get hit by concurrent rename() (it locks parent(s)
-exclusive), but if your inode is a directory and d_splice_alias()
-*elsewhere* picks the same inode (fs image corruption, network
-filesystem with rename done from another client behind your back,
-etc.), you'll see the sucker moved.
-
-In practice, d_splice_alias() is the last thing done by most of ->lookup()
-instances - whatever it has returned gets returned by ->lookup() itself,
-possibly after freeing some temporary allocations, etc.  The rest needs
-to watch out for accesses to ->d_name and ->d_parent downstream of
-d_splice_alias() return.
-
-Another case where we are guaranteed that dentry is negative and
-will stay so is ->d_release() - it's called for a dentry that is
-well on the way to becoming an ex-parrot; it's already marked
-dead, unhashed and negative.  So a ->d_release() instance doesn't
-have to worry about ->d_name and ->d_parent - both are valid and
-stable.
-
-
-sprintf().
-==========
-
-%pd prints dentry name, safely.  %p2d - parent_name/dentry_name, etc. up
-to %p4d.  %pD .. %p4D  do the same by file reference.  Any time you see
-pr_warn("Some weird bollocks with %s (%d)\n", dentry->d_name, err);
-it should've been
-pr_warn("Some weird bollocks with %pd (%d)\n", dentry, err)...
-
-d_path() and friends are there for purpose - don't open-code those without
-a damn good reason.
-
-
-Checking if one dentry is an ancestor of another.
-=================================================
-
-Use the damn is_subdir(), don't open-code it.
-
-
-Spinlocks.
-==========
-
-dentry->d_lock stabilizes ->d_parent and ->d_name (as well as almost
-everything else about dentry); downside is that it's a spinlock
-*and* nesting it is not to be attempted easily; you are allowed
-to lock child while holding lock on parent, but very few places
-have any business doing that (only 2 outside of VFS - tree-walking
-in autofs, which might eventually get redone avoiding that and
-fsnotify_set_children_dentry_flags(), which just might get moved to
-fs/dcache.c itself; we'll see)
-
-Note that "almost everything" includes refcount; that is to say, dget()
-and dput() will spin if you are holding ->d_lock, so you can't dget()
-the parent under ->d_lock on child - that's a locking order violation
-that can easily deadlock on you.  dget_parent() does that kind of thing
-safely, and a look at it might be instructive.  Try to open-code something
-of that sort, and you'll be hurt.
-
-Said that, dget_parent() is overused - it has legitimate uses, but
-more often than not it's the wrong tool.  In particular, while you
-grab a reference to something that was the parent at some point during
-dget_parent(), it might not be the parent anymore by the time it is
-returned to caller.
-
-Most of the dget_parent() uses are due to bad calling conventions of
-->d_revalidate().  When that gets sanitized, those will be gone.
-
-The methods that are called with ->d_lock get the protection - that
-would be ->d_delete() and ->d_prune().
-
-->d_lock on parent is also sufficient; similar to exclusive ->i_rwsem,
-parent->d_lock stabilizes (dentry->d_parent == parent) and if child
-has been observed to have child->d_parent equal to parent after
-you've locked parent->d_lock, you know that child->d_{parent,name}
-will remain stable until you unlock the parent.
-
-
-Name Snapshots.
-===============
-
-There's take_dentry_name_snapshot()/release_dentry_name_snapshot().
-That stuff eats about 64 bytes on stack (longer names _are_ handled
-correctly; no allocations are needed, we can simply grab an extra
-reference to external name and hold it).  Can't be done under
-->d_lock, won't do anything about ->d_parent *and* there's nothing
-to prevent dentry being renamed while you are looking at the name
-snapshot.  Sometimes it's useful...
-
-
-RCU Headaches.
-==============
-
-See e.g. https://git.kernel.org/pub/scm/linux/kernel/git/viro/vfs.git/commit/?h=fixes.pathwalk-rcu-2&id=8d0a75eba81813cbb00beb73a67783e1cde9982f
-(NB: ought to repost that)
-
-
-[*] d_mark_tmpfile() is pretty much a delayed bit of constructor.  There is
-a possible intermediate state of dentry ("will be tmpfile one"); dentries
-in that state are all created in vfs_tmpfile(), get passed to ->tmpfile()
-where they transition to normal unhashed postive dentries.  The reason why
-name is not set from the very beginning is that at that point we do not know
-the inumber of inode they are going to get (that becomes known inside
-->tmpfile() instance) and we want that inumber seen in their names (for
-/proc/*/fd/*, basically).  Name change is done while holding ->d_lock both
-on dentry itself and on its parent.
