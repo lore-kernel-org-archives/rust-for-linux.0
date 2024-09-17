@@ -1,31 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F8F4197A7E;
-	Tue, 17 Sep 2024 22:28:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C69B4198857;
+	Tue, 17 Sep 2024 22:29:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726612137; cv=none; b=OiQhvOGMruUPRX56hhV/Af8WQ2Z7F7CRbMQYrtrJJg4jutY0KNykU34ZTSiZXPrsU0JLVYw0L4IeMedyoXKphm16q7hZjdHqfOQTuceCdg6B7JRMz4jUgN4FpNbBc+ho4o1Gzqo8lJJJfI+PvJRBIFBOsjhtVXVHokzpCOb1plQ=
+	t=1726612142; cv=none; b=mrnq0iso13IceJxh9GI0Wt0RmBwLyiU6xDBVAd1RcnUadY6Gn3exG2k8V8VIacpL7408/CKZ1cGiUsTJ5x1MfI1gWy9yKaZE1GDzaKwaFrlYaZ+TxHVZyGY1MfsEVF+wKHbPvgDhoNWknYLU6YB3AAqe/oaIZIfaRkiLAR/jpT8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726612137; c=relaxed/simple;
-	bh=7F6IwUa6gAZ2Wot7skn1+aM4FyXNbXssvNoIcRbAycI=;
+	s=arc-20240116; t=1726612142; c=relaxed/simple;
+	bh=XWnKE68vcP/rwqWTFNK3jUi79rHtK9rXpgWFPSw+jzE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dOSwbwWeF04GfpxZge41RD6s3d0cEA0paXxf8S4SFz3LB9mpTc5Ynwv6Btqo9CjUJRjnhWj7mle0xFDHyz4uba7M5V9AmRRKme2P/uBK191lzJbuwgMaiXVETnqtjuJ6QdrKyk/7Ouo0C4WPlgJeb/tZjorkODSiojpNJ0fC/oQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=bM28Mg00; arc=none smtp.client-ip=10.30.226.201
+	 MIME-Version; b=RJLrtgnj0iGfvQYVF7lXGJoWguil/kpoxo3f4nBdj7/52yIkCSeOywdbO1C8zacXbAkTDOK+2NqmeK9/x0qrFGYmxRMybIDRUe6tmaWfbL70hSaqt+c8vaJUSiMVA9aBG1jeWW3Co2n4LigNRcAY5+tczZuEWc4Kry+QzEapDZw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=gdlksakP; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="bM28Mg00"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 872CDC4CECF;
-	Tue, 17 Sep 2024 22:28:53 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="gdlksakP"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 727A5C4CECD;
+	Tue, 17 Sep 2024 22:28:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726612137;
-	bh=7F6IwUa6gAZ2Wot7skn1+aM4FyXNbXssvNoIcRbAycI=;
+	s=k20201202; t=1726612142;
+	bh=XWnKE68vcP/rwqWTFNK3jUi79rHtK9rXpgWFPSw+jzE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bM28Mg00bcAAeAufli76hTeLb7GEaZSAZUJf7g3g0/lNzH79eyfzp5I2KUNqoRPG9
-	 2Xj3rQJbdGkeuVMdiIfHY0xH5nODpeQyCvHaUfkkz+M/MULRL7N9tEJhHgRb41K1Ol
-	 p7vfyp0UCktP+zqCEtodvm5d/mfTKyLQCnZtFVVcTfGebo7ZsdK/mn6InBnS2Worzh
-	 jNft+3wIbdysYaZSugD3b0fFzMlMrQfI0pmHs2htKx/7xftguMCfCTp/K3ZXMDDHFN
-	 l74rJcOjgcLWJW6DHmd1kAjSM4l0ZcE64QQhl8bVIuDoDDrPqmRoN2Qer+7f7RGkrB
-	 6D36IBIycpNgA==
+	b=gdlksakPvGSbWQX94A/tPXY5O2KSs7WiOKyujQL/RJva2nASAySyNSALbkZ0b+V9X
+	 J0sX6FepdEBWKUTF9n5nXWjdC9GQkUJ6H5zGJLsUBvsh0GCSv+urEfwRHjL5w29vUn
+	 q7RFTEWGsGKVEYTASOwqffjMofrutrMzJJHzExwHlhriaJIOdRpPFQQ/doYMk7oZFT
+	 /pAuX+PMLYHmPjE0L2ZZF8duha+HFTayk8iPh2wIaRgkSsd84Zsw/ZqgHw2r8rk6LA
+	 hR5bapCPf1xTh4VxAmIgxK+exuZf+SwAMzA7tTjASbmwKRa+7n/D1NffT6nKQP1SBP
+	 N2HT4wzs8E35A==
 From: Andreas Hindborg <a.hindborg@kernel.org>
 To: Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
@@ -40,9 +40,9 @@ Cc: Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>,
 	rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 07/14] rust: hrtimer: add `UnsafeTimerPointer`
-Date: Wed, 18 Sep 2024 00:27:31 +0200
-Message-ID: <20240917222739.1298275-8-a.hindborg@kernel.org>
+Subject: [PATCH v2 13/14] rust: hrtimer: add `schedule_function` to schedule closures
+Date: Wed, 18 Sep 2024 00:27:37 +0200
+Message-ID: <20240917222739.1298275-14-a.hindborg@kernel.org>
 X-Mailer: git-send-email 2.46.0
 In-Reply-To: <20240917222739.1298275-1-a.hindborg@kernel.org>
 References: <20240917222739.1298275-1-a.hindborg@kernel.org>
@@ -52,61 +52,164 @@ List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2054; i=a.hindborg@kernel.org; h=from:subject; bh=7F6IwUa6gAZ2Wot7skn1+aM4FyXNbXssvNoIcRbAycI=; b=LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgpvd0o0bkFGdEFwTDlrQTBEQUFvQjRiZ2FQb mtvWTNjQnl5WmlBR2JxQWZ0Wm5rVDhyUUcwZVpjc3pUeFp1emtjCndQd3ZmdlRKbjRTSWlhOGE0 ektjd1lrQ013UUFBUW9BSFJZaEJCTEIrVWRXdjN3cUZkYkFFdUc0R2o1NUtHTjMKQlFKbTZnSDd BQW9KRU9HNEdqNTVLR04zWlBjUUFNTStkN0Q3MEw5bXlIUWZOTElNL2RlWkhqSjA0Rnh5ZEw0Rg o3NVU3Wlh5eHQyeEVLLzEzVFBSL0QzV3ByMDk4ZzBERjZqTENkZmwxSUhCUnFZSllSYmhYb0NGa ndGbkNWK0FrClRwQUVoTzQ5dWxPQzBGdjgyVUxDdlBUQUUvYUU1dFAwNDBZeXBBbjdmcmFhcjJm RGppa1NWQlhBcWRKeG94MlYKV0hheU1Ga3dacDg2VnJCeFh1bGhRRVdUbEFQYm13bSt2dndNZ2d 4endZTkRrcW91QitBK04rK0wxZ3dmWHpYUwplcXE1S2F3RkF4YzlEUlRabWpaRDcxVjNtUDM5Vn g0dWdtbUtsTUp3R3YyM2RLZE1Xb21uSWJhL3VYMjNLR2p5CjhYNml6R2c1a0N3YjhzaGcvZXVTb GxwR2YxazFnK2JZMGtacVk4VDFkYW1aZWlnZlcrc3hvcFcrWTdkUXY4ZW8KK25FcUMxSnBRNURp L3Q1SHkxMXZJcy92L0dUNVMzQTJNYy8rYUxZbktSK2g1Y3V1OVI1WFkrSlM3ZFdVSkVZegpWQlp 4VXYxSG5DNGRRYmNmOUZJVlBKa0ViQVh4UjZWQ051am5tTDk3bDRselZVYmJlY3J5aUpuYVZ2b3 FzVzdYCnVjQmJYV0xhRm9BSExMTFVVeE5telp2OUFpTUlPdFZGMjJPVTMxNDlwdk5DNTlNRFdXb Dh6bXpHV2R6cUlwU1kKOXQxQ2c3MVVvOW9Oc2k1Qjk2eVFDTVRDeTA5VXRIZ1NNM0hqbWE4bWZa N3pIT3FKV25Qdk4rOFlWVjdLS3VsTgoyS1ZLVkpSa1kvWWJ6WG0wR2NVaHFNVFVmQU1NOEVJM1p XVnl0ZnVtaktTbFY5VVB1UUZxQ29HdVJ6TDV6MjJUCkQyOTJXdjF2Si9vdVRRPT0KPWFJSlMKLS 0tLS1FTkQgUEdQIE1FU1NBR0UtLS0tLQo=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4136; i=a.hindborg@kernel.org; h=from:subject; bh=XWnKE68vcP/rwqWTFNK3jUi79rHtK9rXpgWFPSw+jzE=; b=LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgpvd0o0bkFGdEFwTDlrQTBEQUFvQjRiZ2FQb mtvWTNjQnl5WmlBR2JxQWdHejBqTWtCa3Avd1BVSGw4a05KUE1PCnZUWDRHemtCYTdMemQ2eEUy Umcvam9rQ013UUFBUW9BSFJZaEJCTEIrVWRXdjN3cUZkYkFFdUc0R2o1NUtHTjMKQlFKbTZnSUJ BQW9KRU9HNEdqNTVLR04zYmNnUUFJRDBCNm5ZN3pMeVh1SS9zM2g5RkZwTDA4UzJDd2dENWpLRQ ptbGlZSUZYUW9sRlAxd2xSdGZrRENnOFJoWFpNaVlFUGhhdnZLVWYvS2J6NkU3VDdSbHE2RDVEZ lUrVjlCbU9oCkZobkhMUDE5eEJFeTFxRExlelNUUnl1d2tLVCtlSUt2WSt2eDljZ3NVKzdkTVBL Qys0NUtpcUh5dVNlTTRPS1gKRjN2YjRSazE2cWc2S1huajZyQlBlRmxFZk9HZ2NFTDZjaW9TREV zamNzQjZqRjRUam1lS0wrczZyeTVIZlFpcgo2U2xoQTJHU0F3MFhRcGdrOCtLTlFFZGZObFVNWH hQWHF2a3E4WVQ3QTBhYVpJRWZqQlF4VzhTeXBTQzRjZktRCi9UU01hbUdSaHY5dEdWcGJud2RqU zBVTHY0SVVkZERmT0NJSVNMamVWSTFodWRydEJ6MzNmTGtMM1lSRVpSb3IKY2U5WnlSak5kbUdl WllzNTdLMThpZFRGTEtLMDhxNU8vdERzZ3V3aGFtazdLd1dlT3BYQmVTT05vTDdkZ2d4VwpjbTI 2czliRk1FWGZBdlVHWEdabStjbDA3ZnQ4bmgwUEcxR2FvUkRGWHNvM0lMT3Z5ZTdNWTJWQ3FZY1 AvSHRtClRPdVJkR0QwU2U4UGNMd1FBdHMwanZhY0R6MFZOLzl4QXc5aXdXbFlBd09YRUs1QTBXd E9ISnZCUHBjd3NIb3UKV0lTMkUrclhPbkg2eGR1UHVtUlFLT1JubXpzZ0RkWUhNb2FDZDRRNVdT WkdRMU9sQmJObEY4cmxWTlJkUG1iZApVNnM4V2d6VWx2bGxSeUR0cU1jdDVlNk9idExmck14RUV rT2d0YlZnYzNkOS9lcXFzQ1V4NWtJa2xoRGR6Z3VuCnhuMEVMNms1bzNBZHF3PT0KPUNoNjQKLS 0tLS1FTkQgUEdQIE1FU1NBR0UtLS0tLQo=
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp; fpr=3108C10F46872E248D1FB221376EB100563EF7A7
 Content-Transfer-Encoding: 8bit
 
-Add a trait to allow unsafely queuing stack allocated timers.
+Add a way to quickly schedule functions for execution after a certain
+duration has elapsed.
 
 Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
- rust/kernel/hrtimer.rs | 33 +++++++++++++++++++++++++++++++++
- 1 file changed, 33 insertions(+)
+ rust/kernel/hrtimer.rs         | 49 +++++++++++++++++++++++
+ rust/kernel/hrtimer/closure.rs | 72 ++++++++++++++++++++++++++++++++++
+ 2 files changed, 121 insertions(+)
+ create mode 100644 rust/kernel/hrtimer/closure.rs
 
 diff --git a/rust/kernel/hrtimer.rs b/rust/kernel/hrtimer.rs
-index d6c3fa89f77e..bb6349f440e2 100644
+index 1750016b2b22..2fd3e68368da 100644
 --- a/rust/kernel/hrtimer.rs
 +++ b/rust/kernel/hrtimer.rs
-@@ -191,6 +191,39 @@ pub trait TimerPointer: Sync + Sized {
-     fn schedule(self, expires: Ktime) -> Self::TimerHandle;
- }
+@@ -132,6 +132,52 @@
+ //! pr_info!("Flag raised\n");
+ //! # Ok::<(), kernel::error::Error>(())
+ //! ```
++//!
++//! Using a helper:
++//! ```
++//! use kernel::{
++//!     hrtimer::schedule_function,
++//!     impl_has_timer, new_condvar, new_mutex,
++//!     prelude::*,
++//!     stack_try_pin_init,
++//!     sync::{Arc, CondVar, Mutex},
++//!     time::Ktime,
++//! };
++//!
++//! #[pin_data]
++//! struct Data {
++//!     #[pin]
++//!     flag: Mutex<bool>,
++//!     #[pin]
++//!     cond: CondVar,
++//! }
++//!
++//! impl Data {
++//!     fn new() -> impl PinInit<Self, kernel::error::Error> {
++//!         try_pin_init!(Self {
++//!             flag <- new_mutex!(false),
++//!             cond <- new_condvar!(),
++//!         })
++//!     }
++//! }
++//!
++//! let data = Arc::pin_init(Data::new(), GFP_KERNEL)?;
++//! let data2 = data.clone();
++//!
++//! let handle = schedule_function(Ktime::from_ns(200_000_000), move || {
++//!     pr_info!("Hello from the future");
++//!     *data2.flag.lock() = true;
++//!     data2.cond.notify_all();
++//! });
++//!
++//! let mut guard = data.flag.lock();
++//! while !*guard {
++//!     data.cond.wait(&mut guard);
++//! }
++//!
++//! pr_info!("Flag raised\n");
++//! # Ok::<(), kernel::error::Error>(())
++//! ```
  
-+/// Unsafe version of [`TimerPointer`] for situations where leaking the
-+/// `TimerHandle` returned by `schedule` would be unsound. This is the case for
-+/// stack allocated timers.
-+///
-+/// Typical implementers are pinned references such as [`Pin<&T>].
-+///
-+/// # Safety
-+///
-+/// Implementers of this trait must ensure that instances of types implementing
-+/// [`UnsafeTimerPointer`] outlives any associated [`TimerPointer::TimerHandle`]
-+/// instances.
-+///
-+/// [`Pin<&T>`]: Box
-+pub unsafe trait UnsafeTimerPointer: Sync + Sized {
-+    /// A handle representing a scheduled timer.
-+    ///
-+    /// # Safety
-+    ///
-+    /// If the timer is armed, or if the timer callback is running when the
-+    /// handle is dropped, the drop method of `TimerHandle` must not return
-+    /// until the timer is unarmed and the callback has completed.
-+    type TimerHandle: TimerHandle;
+ use crate::{init::PinInit, prelude::*, time::Ktime, types::Opaque};
+ use core::marker::PhantomData;
+@@ -497,5 +543,8 @@ unsafe fn raw_get_timer(ptr: *const Self) ->
+ mod tbox;
+ 
+ mod arc;
++mod closure;
+ mod pin;
+ mod pin_mut;
 +
-+    /// Schedule the timer after `expires` time units. If the timer was already
-+    /// scheduled, it is rescheduled at the new expiry time.
-+    ///
-+    /// # Safety
-+    ///
-+    /// Caller promises keep the timer structure alive until the timer is dead.
-+    /// Caller can ensure this by not leaking the returned `Self::TimerHandle`.
-+    unsafe fn schedule(self, expires: Ktime) -> Self::TimerHandle;
++pub use closure::schedule_function;
+diff --git a/rust/kernel/hrtimer/closure.rs b/rust/kernel/hrtimer/closure.rs
+new file mode 100644
+index 000000000000..96286a12e87a
+--- /dev/null
++++ b/rust/kernel/hrtimer/closure.rs
+@@ -0,0 +1,72 @@
++// SPDX-License-Identifier: GPL-2.0
++
++use super::{pin_init, tbox::BoxTimerHandle, Timer, TimerCallback, TimerPointer, TimerRestart};
++use crate::{
++    alloc::{flags, Flags},
++    impl_has_timer, new_mutex,
++    prelude::*,
++    sync::Mutex,
++    time::Ktime,
++};
++use macros::pin_data;
++
++#[pin_data]
++pub struct ClosureTimer<T> {
++    #[pin]
++    timer: Timer<ClosureTimer<T>>,
++    #[pin]
++    callback: Mutex<Option<T>>,
 +}
 +
- /// Implemented by [`TimerPointer`] implementers to give the C timer callback a
- /// function to call.
- // This is split from `TimerPointer` to make it easier to specify trait bounds.
++impl_has_timer! {
++    impl{T} HasTimer<Self> for ClosureTimer<T> { self.timer }
++}
++
++impl<T> TimerCallback for ClosureTimer<T>
++where
++    T: FnOnce() + 'static,
++{
++    type CallbackTarget<'a> = Pin<Box<ClosureTimer<T>>>;
++    type CallbackPointer<'a> = &'a ClosureTimer<T>;
++
++    fn run(this: Self::CallbackPointer<'_>) -> TimerRestart
++    where
++        Self: Sized,
++    {
++        if let Some(callback) = this.callback.lock().take() {
++            callback();
++        }
++        TimerRestart::NoRestart
++    }
++}
++
++impl<T> ClosureTimer<T>
++where
++    T: FnOnce() + 'static,
++    T: Send,
++    T: Sync,
++{
++    fn new(f: T, flags: Flags) -> Result<Pin<Box<Self>>> {
++        Box::pin_init(
++            pin_init!(
++                Self {
++                    timer <- Timer::new(),
++                    callback <- new_mutex!(Some(f)),
++                }
++            ),
++            flags,
++        )
++    }
++}
++
++/// Schedule `f` for execution after `expires` time.
++pub fn schedule_function<T>(expires: Ktime, f: T) -> Result<BoxTimerHandle<ClosureTimer<T>>>
++where
++    T: FnOnce() + 'static,
++    T: Send,
++    T: Sync,
++{
++    let timer = ClosureTimer::<T>::new(f, flags::GFP_KERNEL)?;
++    let handle = <Pin<Box<ClosureTimer<T>>> as TimerPointer>::schedule(timer, expires);
++    Ok(handle)
++}
 -- 
 2.46.0
 
