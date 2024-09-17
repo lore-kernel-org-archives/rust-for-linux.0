@@ -1,30 +1,31 @@
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E45F192D80;
-	Tue, 17 Sep 2024 22:28:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0442617C9A7;
+	Tue, 17 Sep 2024 22:28:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726612109; cv=none; b=TMbspRrOoAe4w8zrCPIVwRpGav4SC6mxAcrtIq/2hiPAX6QYRjCi9MqhxU5SIn9UUxxqOns7iz9nHjki8W4c0QxOCIhaAUp8PH6jxqXPlmqroVCNyG1t5hm59BYYFPnmLNMNkjhN7j+oPQ/4CKlcH9EC7SZeDsqoBOucPj5QQLA=
+	t=1726612115; cv=none; b=iEKGjNF7IEmDYuA6bdM7W1ySjbwHBAG9tF1Ytfc2+Fu64ui+tLZx4ahEam9Kq00G+Na0KKJsEvYQsFrpkypqN4OnTFtMVT+T0PxFQvMUhsOutFmpxSRSYKQ/ulh4/GuJBIiLiOqOH3QVuomRU6aNAEc34ZcJZhibkz1SKK1Vc4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726612109; c=relaxed/simple;
-	bh=v8a0nJ/rc+OK18Wxq94GBNtOb5DtDJoxXv1oZUTW0wM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=YhAQ7SCE5PSV0b9Mc/x92PWNB5FHsNFNu9R6XVeAtn/YeljxhgPNIaTGRLOlIdGLqvqG2R+XzJSHCpSHt8kR4/RpH1ZDSkL9r0dfuY4UXCA+NNTPtj8c++GeQPCAyPiPB9Q2VpjMu57WIaJbAyJ3ooZc/p/qPtpx+YTuX79M9L0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=h6cE/FRm; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1726612115; c=relaxed/simple;
+	bh=UnDWowuW7CyJq38pqnIU9YY6NT3h2llZspKVDqamff4=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=lLFzfMpFLMC7Zo16/HPuuB7UvXFGSYM2agWwbrwOZONRi8t5g14YvqGVUgLkJif17bRjceKqKB3wT7/aDMXsy1DlpYM1w7J2V/+XuIIEtckV/DMnSSZt/QDROQoXuQicLFqNTyAhRSAMgHpraA29LEmNOl/hkO+8HRrhJdFGDJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=NYSSy84D; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="h6cE/FRm"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8B91C4CECE;
-	Tue, 17 Sep 2024 22:28:24 +0000 (UTC)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="NYSSy84D"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C755C4CECE;
+	Tue, 17 Sep 2024 22:28:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726612109;
-	bh=v8a0nJ/rc+OK18Wxq94GBNtOb5DtDJoxXv1oZUTW0wM=;
-	h=From:To:Cc:Subject:Date:From;
-	b=h6cE/FRmA24GKvvdS6JAFjorlADzEj2zyVDWQt9tvLr3hFb/pwTudioJRgT/KO112
-	 37f0VMsgpNSkkgPSHXDuyeuXqLRaISxt/GqFZdVdUl9osNjKN0Z30ZxIrK+loC/fpz
-	 i7h2ll+G2V+JuevpD/Xc14gkbJgiNQc8T4Zx5q6q2n/t0yoDkctCKYPeCU25uziEVr
-	 B07hWx78oqRWyXXI7hDwNuugVxGAWK9Gn8eEi1YOyh7Hv6hb3uJwfriJxQbfoTftM2
-	 a2K6R+jg8HgpSo3vETLJZOUWSoYfCd+Z3sYWhD53Ee+WHa5Nhp9Q3ATm+UKxN+hXaQ
-	 P4/sHvtTFOBrA==
+	s=k20201202; t=1726612114;
+	bh=UnDWowuW7CyJq38pqnIU9YY6NT3h2llZspKVDqamff4=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=NYSSy84DQt/Mqjo1TPU9xzIFhRL0oWvn88DmZRwucGx+rQSYfwxnwqVj9MPndX1zp
+	 dF38KegR903hNhJgSRWVUMi4uhLdBzRu9DtAfJMRAb9eIUN6w4qW2ZSN/C8mrkVg3U
+	 d7FZsZZwCDaxlI5huqIqfuvKjpQvfgeQBTBNwXRbLOrz7HW+sPwXdKrBf6lMI3AnFx
+	 gCG5XlDd182ilVY+XEw1TBLfkRNhEhuzHR0j19y+0/h1sc5duvxU4k2XTNsccKX7mi
+	 3+5bZNM6tCUWXcrYESGEPTXQy4NViiYbg8Z0x63UTw9mB8BofGKa6BG8tVWVi4L09o
+	 6dOwrhQmaJW6A==
 From: Andreas Hindborg <a.hindborg@kernel.org>
 To: Miguel Ojeda <ojeda@kernel.org>,
 	Alex Gaynor <alex.gaynor@gmail.com>,
@@ -39,115 +40,155 @@ Cc: Andreas Hindborg <a.hindborg@kernel.org>,
 	Alice Ryhl <aliceryhl@google.com>,
 	rust-for-linux@vger.kernel.org,
 	linux-kernel@vger.kernel.org
-Subject: [PATCH v2 00/14] hrtimer Rust API
-Date: Wed, 18 Sep 2024 00:27:24 +0200
-Message-ID: <20240917222739.1298275-1-a.hindborg@kernel.org>
+Subject: [PATCH v2 06/14] rust: hrtimer: allow timer restart from timer handler
+Date: Wed, 18 Sep 2024 00:27:30 +0200
+Message-ID: <20240917222739.1298275-7-a.hindborg@kernel.org>
 X-Mailer: git-send-email 2.46.0
+In-Reply-To: <20240917222739.1298275-1-a.hindborg@kernel.org>
+References: <20240917222739.1298275-1-a.hindborg@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=3771; i=a.hindborg@kernel.org; h=from:subject; bh=v8a0nJ/rc+OK18Wxq94GBNtOb5DtDJoxXv1oZUTW0wM=; b=LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgpvd0o0bkFGdEFwTDlrQTBEQUFvQjRiZ2FQb mtvWTNjQnl5WmlBR2JxQWZHWExSeWNmQ3ZHR0Z6RS9XTFY4NmkwCjliRHVRRnhLTUNNbU5qSmxB REpORW9rQ013UUFBUW9BSFJZaEJCTEIrVWRXdjN3cUZkYkFFdUc0R2o1NUtHTjMKQlFKbTZnSHh BQW9KRU9HNEdqNTVLR04zc1hVUUFJUWl5MzQzRVlvN0ovbDc1eXRncU9zcGgvK1grVkh2T2tDUw pmMlVKVXZRcUZXSnpvcEJCVytWUEtaY2crb2grSzlGeHdOY3JXSFYvSFlsS1ByYThVdWhzdERoc ElSMWZRWFltClNKUGhIN01kM1hncUFpTFE2NW1OQTJsVkF3NFZBRE01NGJDQUNMVGV3NXROVkZQ NlBPWE9lanFVUk5CUzMzNnYKVHQ1cjVLTms3N05RelJoREJIUi9aWGo5alo0cGY0VU1DdEc4eWN GT3hOeDQ4ejZBZnd5Rm43THNGNCtyMzBLbQpDWWRMUGJwYlYzanI4ZmdESnYwUlZDUDJjOVBhQU ZCTFJrMFh5VGlTWmVueDdjVFFSYzZRaVplMk1kU0lnek1sCnZaNWdpb3RreHA5N3l6VENsOWZaQ khjSndaaW9LYmIyZ0dQYm1rSkUwcm1zMUs0WjFXQjdwYlFsSy92SmY5WHMKaFhHMGxrMG1rOGRK VWpETU5lT0loT3FKWC9hek41RHc4dDJERTh3RmJScE1FTDNkN0tZQW4yb0NiNW56b0xOTgprQ2Z obWVrbUJlenBua0NYVVZmczdLNERlbHVid3luUitBbVg4bDZuWlgxRGduMkJuVkIxR0ZlL2R3RX BVN3VvCjBKenQwbDhjZ29YMHZLOTB4NnhWQ0tvM0lDVTBIbFhsbnRYTEJia2RkSzc5eEVpbzQvV 2xTeVdjSUlTaXBaTzUKbDhza1NBR3FmOXFFUGs4YmEwRXlCVk9ucmtSYlpQa08zL2JLZWhhZnBD Z21iaytOcDltSjNwYkFJYjZuTmZqaQplTjF3cGhINGh2VmRQUnpOUWI5RzM4Yjlzb1EyRTQrUEd zQTgvK2V5bElzVGhmbnVBck41c3VEcmpQdE5NZnVvCnhyRlJSZnpqU1dFdFp3PT0KPWh6T0wKLS 0tLS1FTkQgUEdQIE1FU1NBR0UtLS0tLQo=
+X-Developer-Signature: v=1; a=openpgp-sha256; l=4129; i=a.hindborg@kernel.org; h=from:subject; bh=UnDWowuW7CyJq38pqnIU9YY6NT3h2llZspKVDqamff4=; b=LS0tLS1CRUdJTiBQR1AgTUVTU0FHRS0tLS0tCgpvd0o0bkFGdEFwTDlrQTBEQUFvQjRiZ2FQb mtvWTNjQnl5WmlBR2JxQWZwR3hpU2VYWVE3WGtPRTFDTXUzSmJOCkYrYWd3RUI1Q0o4WndrU2ov K2RBKzRrQ013UUFBUW9BSFJZaEJCTEIrVWRXdjN3cUZkYkFFdUc0R2o1NUtHTjMKQlFKbTZnSDZ BQW9KRU9HNEdqNTVLR04zRGp3UC8wVnhLQ0ozNDVJNFF1QU9yYm1iUWZZZmVtM2Ywd2VPOEhzcQ oxUytWZGg3ZHhVbU1KakJUK2Q0cVRJY2xGRkhETXBneTJYcE03ZWtwTzNGNzVIdGJKQ2VFQ2NnW mo3eFhGU1VWClBCMjhKVWdSZVVSRGQxS04vMFZqOXEySzU4Y3F2VDY2RDBRVFpRaks5M29QeEJI UEJWK3VDTnhsT1E1MXZCWE8KQ1V5NnJiR0E5VDZoODE4N1RxMkpiZWMyRHJvaFMyMUhqYTYyT2Z wckRtQU4zSWQ4aUdTZkZseW1VZ2xGY0pxcwpwZEt3VTJtYWlqNEx6OWQ3Y0ZxdjBmc0E3cVdmck FPZ0hRNTBlZmtaMzgzeGdGeGI0TTJhYzBtV2owenhRZkd3CnlQbkJrcjlwYm9nTHg1MkNmL3ZJN mFqeC83WVNTUzk2VThnUlNBbWcyMW5sbCt1QjZJM3ZSYjZ0R295eXJMZjIKVktHdE9SYUt0TkxL SDZ5cHV5YnRlY0dDV1NXNDYwRU8vZ1pxWDFTQUpYVzF1TUJTZmFtNDd1OTNjR2RJS2QxbgpMTWF BL011N05oWlp1Ym1IZ0h0TkVaQ2dZK0lwNUlHWmR3YzhieFBDS3V5c1dOb0dxUUNBS1pyTU9keW oxT0tCCng0a0MzOG1nSUI5c28veFFIalR5VXNoQWJZYktsMUQrQXNuMkZacW5BUWxLMENhblRUS UJWU2p5d20wSFJpM0QKc1BsRzZuNGpTNTUyL2p2alJOaXZlQUl3SHdjdWxVYURwaUdFOFpGREg4 RzZmU045bXRybEFCUFBvSzVuSDhKUwpqeGJUVUhmQmZPS05KQVo2N2VkT2loczhDVG9QK3hHR3V kNzN0aVRpMCtmR3BYQm1iNUFYY0d2K1JkZ1JLeFJ5ClNGS3o2aERSRFh3a2hRPT0KPTFZeDEKLS 0tLS1FTkQgUEdQIE1FU1NBR0UtLS0tLQo=
 X-Developer-Key: i=a.hindborg@kernel.org; a=openpgp; fpr=3108C10F46872E248D1FB221376EB100563EF7A7
 Content-Transfer-Encoding: 8bit
 
-Hi!
+This patch allows timer handlers to report that they want a timer to be
+restarted after the timer handler has finished executing.
 
-This series adds support for using the `hrtimer` subsystem from Rust code.
+Also update the `hrtimer` documentation to showcase the new feature.
 
-I tried breaking up the code in some smaller patches, hopefully that will
-ease the review process a bit.
-
-The major change in this series is the use of a handle to carry ownership
-of the callback target. In v1, we used the armed timer to carry ownership
-of the callback target. This caused issues when the live timer became the
-last owner of the callback target, because the target would be dropped in
-timer callback context. That is solved by using a handle instead.
-
-A request from Thomas on v1 was to add a more complete API. While I did add
-more features, we are still missing some. In the interest of getting the
-patches on list prior to LPC 2024, I am leaving out the following planned
-features:
-
- - hrtimer_sleeper, schedule_hrtimeout, hrtimer_nanosleep  and friends
- - introspection functions:
-   - try_cancel
-   - get_remaining
-   - active
-   - queued
-   - callback_running
- - hrtimer_forward
- - access to timer callback target through timer handle
-
-I plan to add these features in the comming months. Adding the above
-features should not cause much churn, and pending positive review, I see no
-reason to not pick up this series first.
-
-To make it absolutely clear that I am willing to maintain the code I
-submit, I added a mantainer entry in the last patch. Feel free to drop it,
-if you want to make other arrangements.
-
+Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
 ---
+ rust/kernel/hrtimer.rs     | 50 ++++++++++++++++++++++++++++++++------
+ rust/kernel/hrtimer/arc.rs |  4 +--
+ 2 files changed, 43 insertions(+), 11 deletions(-)
 
-Changes from v1:
- - use a handle to own the timer callback target
- - add ability to for callback to reschedule timer
- - improve `impl_has_timer` to allow generics
- - add support for stack allocated timers
- - add support for scheduling closures
- - use `Ktime` for setting expiration
- - use `CondVar` instead of `AtomicBool` in examples
- - rebase on 6.11
- - improve documentation
-
-This series is a dependency for unmerged features of the Rust null block driver
-[1], and for rkvms [2].
-
-Link: https://git.kernel.org/pub/scm/linux/kernel/git/a.hindborg/linux.git/log/?h=rnull-v6.11-rc2 [1]
-Link: https://gitlab.freedesktop.org/lyudess/linux/-/tree/rvkms-wip [2]
-
----
-
-Andreas Hindborg (13):
-  rust: hrtimer: introduce hrtimer support
-  rust: sync: add `Arc::as_ptr`
-  rust: sync: add `Arc::clone_from_raw`
-  rust: hrtimer: implement `TimerPointer` for `Arc`
-  rust: hrtimer: allow timer restart from timer handler
-  rust: hrtimer: add `UnsafeTimerPointer`
-  rust: hrtimer: implement `UnsafeTimerPointer` for `Pin<&T>`
-  rust: hrtimer: implement `UnsafeTimerPointer` for `Pin<&mut T>`
-  rust: hrtimer: add `hrtimer::ScopedTimerPointer`
-  rust: hrtimer: allow specifying a distinct callback parameter
-  rust: hrtimer: implement `TimerPointer` for `Pin<Box<T>>`
-  rust: hrtimer: add `schedule_function` to schedule closures
-  rust: hrtimer: add maintainer entry
-
-Lyude Paul (1):
-  rust: time: Add Ktime::from_ns()
-
- MAINTAINERS                    |  10 +
- rust/kernel/hrtimer.rs         | 550 +++++++++++++++++++++++++++++++++
- rust/kernel/hrtimer/arc.rs     |  86 ++++++
- rust/kernel/hrtimer/closure.rs |  72 +++++
- rust/kernel/hrtimer/pin.rs     |  97 ++++++
- rust/kernel/hrtimer/pin_mut.rs |  99 ++++++
- rust/kernel/hrtimer/tbox.rs    |  95 ++++++
- rust/kernel/lib.rs             |   1 +
- rust/kernel/sync/arc.rs        |  28 ++
- rust/kernel/time.rs            |   8 +
- 10 files changed, 1046 insertions(+)
- create mode 100644 rust/kernel/hrtimer.rs
- create mode 100644 rust/kernel/hrtimer/arc.rs
- create mode 100644 rust/kernel/hrtimer/closure.rs
- create mode 100644 rust/kernel/hrtimer/pin.rs
- create mode 100644 rust/kernel/hrtimer/pin_mut.rs
- create mode 100644 rust/kernel/hrtimer/tbox.rs
-
-
-base-commit: 98f7e32f20d28ec452afb208f9cffc08448a2652
+diff --git a/rust/kernel/hrtimer.rs b/rust/kernel/hrtimer.rs
+index fd1520ba9fba..d6c3fa89f77e 100644
+--- a/rust/kernel/hrtimer.rs
++++ b/rust/kernel/hrtimer.rs
+@@ -9,7 +9,7 @@
+ //!
+ //! ```
+ //! use kernel::{
+-//!     hrtimer::{Timer, TimerCallback, TimerPointer},
++//!     hrtimer::{Timer, TimerCallback, TimerPointer, TimerRestart},
+ //!     impl_has_timer, new_condvar, new_mutex,
+ //!     prelude::*,
+ //!     sync::{Arc, CondVar, Mutex},
+@@ -21,7 +21,7 @@
+ //!     #[pin]
+ //!     timer: Timer<Self>,
+ //!     #[pin]
+-//!     flag: Mutex<bool>,
++//!     flag: Mutex<u64>,
+ //!     #[pin]
+ //!     cond: CondVar,
+ //! }
+@@ -30,7 +30,7 @@
+ //!     fn new() -> impl PinInit<Self, kernel::error::Error> {
+ //!         try_pin_init!(Self {
+ //!             timer <- Timer::new(),
+-//!             flag <- new_mutex!(false),
++//!             flag <- new_mutex!(0),
+ //!             cond <- new_condvar!(),
+ //!         })
+ //!     }
+@@ -39,10 +39,18 @@
+ //! impl TimerCallback for ArcIntrusiveTimer {
+ //!     type CallbackTarget<'a> = Arc<Self>;
+ //!
+-//!     fn run(this: Self::CallbackTarget<'_>) {
++//!     fn run(this: Self::CallbackTarget<'_>) -> TimerRestart {
+ //!         pr_info!("Timer called\n");
+-//!         *this.flag.lock() = true;
++//!         let mut guard = this.flag.lock();
++//!         *guard += 1;
+ //!         this.cond.notify_all();
++//!         if *guard == 5 {
++//!             TimerRestart::NoRestart
++//!         }
++//!         else {
++//!             TimerRestart::Restart
++//!
++//!         }
+ //!     }
+ //! }
+ //!
+@@ -55,11 +63,11 @@
+ //! let _handle = has_timer.clone().schedule(Ktime::from_ns(200_000_000));
+ //! let mut guard = has_timer.flag.lock();
+ //!
+-//! while !*guard {
++//! while *guard != 5 {
+ //!     has_timer.cond.wait(&mut guard);
+ //! }
+ //!
+-//! pr_info!("Flag raised\n");
++//! pr_info!("Counted to 5\n");
+ //! # Ok::<(), kernel::error::Error>(())
+ //! ```
+ 
+@@ -202,7 +210,7 @@ pub trait TimerCallback {
+     type CallbackTarget<'a>: RawTimerCallback;
+ 
+     /// Called by the timer logic when the timer fires.
+-    fn run(this: Self::CallbackTarget<'_>)
++    fn run(this: Self::CallbackTarget<'_>) -> TimerRestart
+     where
+         Self: Sized;
+ }
+@@ -296,6 +304,32 @@ unsafe fn schedule(self_ptr: *const Self, expires: Ktime) {
+     }
+ }
+ 
++/// Restart policy for timers.
++pub enum TimerRestart {
++    /// Timer should not be restarted.
++    NoRestart,
++    /// Timer should be restarted.
++    Restart,
++}
++
++impl From<u32> for TimerRestart {
++    fn from(value: bindings::hrtimer_restart) -> Self {
++        match value {
++            0 => Self::NoRestart,
++            _ => Self::Restart,
++        }
++    }
++}
++
++impl From<TimerRestart> for bindings::hrtimer_restart {
++    fn from(value: TimerRestart) -> Self {
++        match value {
++            TimerRestart::NoRestart => bindings::hrtimer_restart_HRTIMER_NORESTART,
++            TimerRestart::Restart => bindings::hrtimer_restart_HRTIMER_RESTART,
++        }
++    }
++}
++
+ /// Use to implement the [`HasTimer<T>`] trait.
+ ///
+ /// See [`module`] documentation for an example.
+diff --git a/rust/kernel/hrtimer/arc.rs b/rust/kernel/hrtimer/arc.rs
+index 80f6c20f95a9..fb8a40484add 100644
+--- a/rust/kernel/hrtimer/arc.rs
++++ b/rust/kernel/hrtimer/arc.rs
+@@ -80,8 +80,6 @@ impl<U> RawTimerCallback for Arc<U>
+         // timer. This `U` is contained in an `Arc`.
+         let receiver = unsafe { Arc::clone_from_raw(data_ptr) };
+ 
+-        U::run(receiver);
+-
+-        bindings::hrtimer_restart_HRTIMER_NORESTART
++        U::run(receiver).into()
+     }
+ }
 -- 
 2.46.0
 
