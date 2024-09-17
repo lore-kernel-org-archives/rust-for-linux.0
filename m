@@ -1,135 +1,122 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 433C6183CB7;
-	Tue, 17 Sep 2024 15:26:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE81245BEC;
+	Tue, 17 Sep 2024 18:01:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726586803; cv=none; b=R6hb07ptLckxaqnUBDR0nFpQxfyOe69I6IY7L4AiQLZD51wbZaJwQHqBneK4PfufGDDzdNIeWs6Aw/HHgDwmnWaCccMX0zMKkONJyYzAYww2gX4jWXOm1OZ6VRA4/B62OtvMCmvxb/atyRH6SpgSoqMxOLBC554KFUCgWx1Jywo=
+	t=1726596066; cv=none; b=XLtyM5CCtyWg1VUAZvtcH0CoTmhI6zvpAdLeSk4aU6Ozb2ZtT5yhHTQkJzGGDFMTRF//KMsnzCEkSBvlBjWOCInU+B5px41RnZSY1csJZXm84fjYxmU9xYEosEdxPCI1OcrKeVPVi37ZlRCB50IdGxJgbn+EjuRStQf4oSEw+pI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726586803; c=relaxed/simple;
-	bh=1Y09J/5W6IHV5VTgs8vwAGfTMn4lqzG5/gPcakv1nfQ=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:Message-ID:
-	 MIME-Version:Content-Type; b=j8X0gf7EefsU/sxL0EF+Ym1btqr6pFMSQRXDzlXiqv2HHWqezeHTv0k9yAVQ/eiE2JMA4BQuaGtF8JxBxDwQagHub2itf+rs8YrPT4/SR1o/GqKUcGszGue8RumnHVKS9mn2I/XxP9g2Kgs+MiBB3jGAjdI5nr2+6j/Gz3f7+U0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=REkev21b; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1726596066; c=relaxed/simple;
+	bh=SzIPpoz5vRioVwcU2NPU0N1Id1AdePpy+2IhzM85PIY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=FeZuNByznjMtbxfKhEZyu5NNw/ABlEEQ1+9WPQSHECP8ntBIb9f/+AXlCnM5y0eZuVO8T3lo2At67DLwvp/+1zimq/UWpki2/YB084MgLBkoGjqIx3d8gVRZ4LVGn+XKDYnUl+mXGFd+94DRw11POJMYMQGH74E7c9pXq/ud1GA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=TdEowdeO; arc=none smtp.client-ip=13.77.154.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="REkev21b"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E70AC4CEC5;
-	Tue, 17 Sep 2024 15:26:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726586803;
-	bh=1Y09J/5W6IHV5VTgs8vwAGfTMn4lqzG5/gPcakv1nfQ=;
-	h=Date:From:To:CC:Subject:In-Reply-To:References:From;
-	b=REkev21bgewL0wukX5RNcZfTF3QJT//wBxJvlGd5u0itFEboL9HIyJ/y+I+Sfa9bJ
-	 UghplBhcRX2nUwlwuffRQHIc+/3Azl/VJQxLmFgYaVAliK7+QYRJsw83YywwDavOxR
-	 /6dsnU/paby0LKCyImt3YZmAW9H6FGmWW9Cmt60AbbTU/Ryqj3pQMY5OQtGfnoVlAR
-	 EPEKos2FaqiinGWPJLq8th+h11fCsAdiEnUVq1ZNFsM2Yu1feGK6SahaPJ1Xzpx8h9
-	 VcnhGiUtwY0S86MLQ5u2nb/OTqjmB/1QSJi0FbELZaIeRptdConr/r45oB2gDPa1lz
-	 EZoaFmu8MTsdQ==
-Date: Tue, 17 Sep 2024 17:26:40 +0200
-From: Conor Dooley <conor@kernel.org>
-To: Gary Guo <gary@garyguo.net>
-CC: Jason Montleon <jmontleo@redhat.com>, ojeda@kernel.org, alex.gaynor@gmail.com,
- boqun.feng@gmail.com, bjorn3_gh@protonmail.com, benno.lossin@proton.me,
- a.hindborg@kernel.org, aliceryhl@google.com, paul.walmsley@sifive.com,
- palmer@dabbelt.com, aou@eecs.berkeley.edu, nathan@kernel.org,
- ndesaulniers@google.com, morbo@google.com, justinstitt@google.com,
- rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
- linux-riscv@lists.infradead.org, llvm@lists.linux.dev,
- stable@vger.kernel.org
-Subject: Re: [PATCH] RISC-V: Fix building rust when using GCC toolchain
-User-Agent: K-9 Mail for Android
-In-Reply-To: <20240917142950.48d800ac@eugeo>
-References: <20240917000848.720765-1-jmontleo@redhat.com> <20240917000848.720765-2-jmontleo@redhat.com> <334EBB3A-6ABF-4FBF-89D2-DF3A6DCCCEA2@kernel.org> <20240917142950.48d800ac@eugeo>
-Message-ID: <31885EDD-EF6D-4EF1-94CA-276BA7A340B7@kernel.org>
+	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="TdEowdeO"
+Received: by linux.microsoft.com (Postfix, from userid 1194)
+	id 29C9A20C095C; Tue, 17 Sep 2024 11:01:03 -0700 (PDT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 29C9A20C095C
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
+	s=default; t=1726596063;
+	bh=V4qe9HDDgdOF61DGMBtQSmlpHMiRxOZMDOMGGI/r19c=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=TdEowdeOEo/96+nhoDeW0x+h1cNQfUBcHabwxHTuv3mDz1ucZKflCzmyro/cc/nqK
+	 SSJP22bTz+iQdNInSViBOROaFppXT9PehF182pQ/Q/uLbv7GBudI19vDWCtwQeTsdt
+	 6sA2fv0ZdCw++o1YyWdHRgc1URaBMLk137bsFst8=
+Date: Tue, 17 Sep 2024 11:01:03 -0700
+From: Nell Shamrell-Harrington <nells@linux.microsoft.com>
+To: Dirk Behme <dirk.behme@de.bosch.com>
+Cc: ojeda@kernel.org, alex.gaynor@gmail.com, wedsonaf@gmail.com,
+	boqun.feng@gmail.com, gary@garyguo.net, bjorn3_gh@protonmail.com,
+	benno.lossin@proton.me, a.hindborg@samsung.com,
+	aliceryhl@google.com, tmgross@umich.edu, linux@obei.io,
+	kernel@valentinobst.de, kent.overstreet@gmail.com,
+	matthew.d.roper@intel.com, kartikprajapati987@gmail.com,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] rust: Adds examples for the `Either` type
+Message-ID: <20240917180103.GA16431@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net>
+References: <20240916233507.11779-1-nells@linux.microsoft.com>
+ <1037016e-d3fc-45a5-9607-38ca85eeb65c@de.bosch.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain;
- charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <1037016e-d3fc-45a5-9607-38ca85eeb65c@de.bosch.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
 
+On Tue, Sep 17, 2024 at 10:35:20AM +0200, Dirk Behme wrote:
+> On 17.09.2024 01:35, Nell Shamrell-Harrington wrote:
+> >Adds examples for the `Either` type
+> 
+> You might want to check
+> 
+> https://www.kernel.org/doc/html/latest/process/submitting-patches.html
+> 
+> "Describe your changes in imperative mood, e.g. “make xyzzy do
+> frotz” instead of “[This patch] makes xyzzy do frotz” or
+> “[I] changed xyzzy to do frotz”, as if you are giving orders to
+> the codebase to change its behaviour."
+> 
+> For example:
+> 
+> [PATCH] rust: types: Add examples for the `Either` type
+> 
+> Add examples for the `Either` types.
 
+Will do!
 
-On 17 September 2024 15:29:50 GMT+02:00, Gary Guo <gary@garyguo=2Enet> wro=
-te:
->On Tue, 17 Sep 2024 10:35:12 +0100
->Conor Dooley <conor@kernel=2Eorg> wrote:
->
->> On 17 September 2024 01:08:48 IST, Jason Montleon <jmontleo@redhat=2Eco=
-m> wrote:
->> >Clang does not support '-mno-riscv-attribute' resulting in the error
->> >error: unknown argument: '-mno-riscv-attribute' =20
->>=20
->> This appears to conflict with your subject, which cities gcc, but I sus=
-pect that's due to poor wording of the body of the commit message than a mi=
-stake in the subject=2E
->> I'd rather disable rust on riscv when building with gcc, I've never bee=
-n satisfied with the interaction between gcc and rustc's libclang w=2Er=2Et=
-=2E extensions=2E
->>=20
->> Cheers,
->> Conor=2E
->
->Hi Conor,
->
->What happens is that when building against GCC, Kbuild gathers flag
->assuming CC is GCC, but bindgen uses clang instead=2E In this case, the
->CC is GCC and all C code is built by GCC=2E We have a filtering mechanism
->to only give bindgen (libclang) flags that it can understand=2E
+> 
+> 
+> >Suggested-by: Miguel Ojeda <ojeda@kernel.org>
+> >Signed-off-by: Nell Shamrell-Harrington <nells@linux.microsoft.com>
+> >---
+> >  rust/kernel/types.rs | 6 ++++++
+> >  1 file changed, 6 insertions(+)
+> >
+> >diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
+> >index 9e7ca066355c..f22f6e289198 100644
+> >--- a/rust/kernel/types.rs
+> >+++ b/rust/kernel/types.rs
+> >@@ -461,6 +461,12 @@ fn drop(&mut self) {
+> >  }
+> >  /// A sum type that always holds either a value of type `L` or `R`.
+> 
+> It looks to me that the default is to add
+> 
+> /// # Examples
 
-Yes, but unfortunately I already knew how it worked=2E It's not flags I am=
- worried about, it is extensions=2E
-Even using a libclang that doesn't match clang could be a problem, but we =
-can at least declare that unsupported=2E
-Not digging it out on an airport bus, but we discussed the lack of GCC sup=
-port on the original patch adding riscv, and decided against it=2E
+Thank you, I will add this in and resubmit the patch.
 
->
->While I do think this is a bit fragile, this is what I think all
->distros that enable Rust use=2E They still prefer to build C code with
->GCC=2E So I hope we can still keep that option around=2E
->
->Best,
->Gary
->
->
->>=20
->> >
->> >Not setting BINDGEN_TARGET_riscv results in the in the error
->> >error: unsupported argument 'medany' to option '-mcmodel=3D' for targe=
-t \
->> >'unknown'
->> >error: unknown target triple 'unknown'
->> >
->> >Signed-off-by: Jason Montleon <jmontleo@redhat=2Ecom>
->> >Cc: stable@vger=2Ekernel=2Eorg
->> >---
->> > rust/Makefile | 3 ++-
->> > 1 file changed, 2 insertions(+), 1 deletion(-)
->> >
->> >diff --git a/rust/Makefile b/rust/Makefile
->> >index f168d2c98a15=2E=2E73eceaaae61e 100644
->> >--- a/rust/Makefile
->> >+++ b/rust/Makefile
->> >@@ -228,11 +228,12 @@ bindgen_skip_c_flags :=3D -mno-fp-ret-in-387 -mp=
-referred-stack-boundary=3D% \
->> > 	-fzero-call-used-regs=3D% -fno-stack-clash-protection \
->> > 	-fno-inline-functions-called-once -fsanitize=3Dbounds-strict \
->> > 	-fstrict-flex-arrays=3D% -fmin-function-alignment=3D% \
->> >-	--param=3D% --param asan-%
->> >+	--param=3D% --param asan-% -mno-riscv-attribute
->> >=20
->> > # Derived from `scripts/Makefile=2Eclang`=2E
->> > BINDGEN_TARGET_x86	:=3D x86_64-linux-gnu
->> > BINDGEN_TARGET_arm64	:=3D aarch64-linux-gnu
->> >+BINDGEN_TARGET_riscv	:=3D riscv64-linux-gnu
->> > BINDGEN_TARGET		:=3D $(BINDGEN_TARGET_$(SRCARCH))
->> >=20
->> > # All warnings are inhibited since GCC builds are very experimental,
->> >
->> >base-commit: ad060dbbcfcfcba624ef1a75e1d71365a98b86d8 =20
->
+> 
+> followed by some verbose explanation before the test code below.
+> 
+> >+/// ```
+> >+/// use kernel::types::Either;
+> >+///
+> >+/// let left_value: Either<i32, &str> = Either::Left(7);
+> >+/// let right_value: Either<i32, &str> = Either::Right("right value");
+> >+/// ```
+> 
+> I ran that on the the target and got:
+> 
+> # rust_doctest_kernel_types_rs_3.location: rust/kernel/types.rs:485
+> ok 107 rust_doctest_kernel_types_rs_3
+> 
+> So:
+> 
+> Tested-by: Dirk Behme <dirk.behme@de.bosch.com>
+
+Thank you for doing this, I appreciate you taking the time!
+
+> 
+> Thanks
+> 
+> Dirk
+> 
+> 
