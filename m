@@ -1,483 +1,265 @@
-Received: from mail-pl1-f169.google.com (mail-pl1-f169.google.com [209.85.214.169])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from EUR02-VI1-obe.outbound.protection.outlook.com (mail-vi1eur02on2064.outbound.protection.outlook.com [40.107.241.64])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E706A3C08A
-	for <rust-for-linux@vger.kernel.org>; Tue, 17 Sep 2024 01:59:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.169
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726538398; cv=none; b=hOJwXeIONmYSBjYVwjq10SZTyju0iCl5Ce2vNbYlExB+TUIiHOBvAuRwUJdZUqqw6WoFRGZw8mwA0YPXvvl+J7rx36oo3e+ej5r9bYU043duKrU8OLksUUbMtF0enzZEcsVU7L6dAyUBgAIs10jb5dcmzeYUKJi+OawV2B3lRq0=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726538398; c=relaxed/simple;
-	bh=maATjhNijp0xT498YPX3M5eDfze66pzpSqJwg9xmE/Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=HcCvG5an9RVTbxeKbA/iKho7gHQglYegk5UA1kesKg9nts+FMvbPKs2SkQbz3s3aNiUw82m/MM1agUATFjdQxLDWPx2onrbtLRQaopadm3Nywpi/9VvGSATMYQbh8e/EQhlf1oxATM0+sVYUuqqmb/fR3XQzyfyXVx2HkIhZFjA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fromorbit.com; spf=pass smtp.mailfrom=fromorbit.com; dkim=pass (2048-bit key) header.d=fromorbit-com.20230601.gappssmtp.com header.i=@fromorbit-com.20230601.gappssmtp.com header.b=2+eLjWPD; arc=none smtp.client-ip=209.85.214.169
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=fromorbit.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=fromorbit.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BA502572
+	for <rust-for-linux@vger.kernel.org>; Tue, 17 Sep 2024 04:54:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.241.64
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1726548881; cv=fail; b=D1MiqSB9f3z5kEHNHD5VO5RDlNfPz4S46I3ueSJ7rgOzmYkNTRq41z1+8xd2NvPPhbTrTl3UHEWxVSeZUUZjYtyNkI4Wh3wdrx5FXFDUplfnl2ZhlqFA0M97egUZo04EsI4Wk4H2olgyyDdde8xnUNPCvMfrz2oTo1FQ9/m5wnk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1726548881; c=relaxed/simple;
+	bh=FlXQQ5ea67lMiLxMG/dN+yYSvFLQUKGfyavuF+McDNY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=UMcPjUWGN7qpobOkfyVJUs1P0Mv+sBUtIlVgEDkSm4WJqjsEA7FZ96W3cJKdC6hfC2vJH6MzJOooVIfSidRp3LzZg5PsevOjoP6qUZt/bC1ZbffaLX6nWsDpflbjDogSzolCflnfFJXsuvZYyoAMzbw5wFrA1+ejz+xl88bYCMs=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com; spf=pass smtp.mailfrom=de.bosch.com; dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b=IQT7FtcD; arc=fail smtp.client-ip=40.107.241.64
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=de.bosch.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=de.bosch.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=fromorbit-com.20230601.gappssmtp.com header.i=@fromorbit-com.20230601.gappssmtp.com header.b="2+eLjWPD"
-Received: by mail-pl1-f169.google.com with SMTP id d9443c01a7336-206aee40676so29255845ad.0
-        for <rust-for-linux@vger.kernel.org>; Mon, 16 Sep 2024 18:59:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=fromorbit-com.20230601.gappssmtp.com; s=20230601; t=1726538395; x=1727143195; darn=vger.kernel.org;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=Cw2U/XEaaQG67q1n3SHABwcmT4ImShucmpz9PcbS1PQ=;
-        b=2+eLjWPDR5GFj6oJ3ouqjmGKIfONZscCNkowg7d31wjkOrWk6CL47FDqKzxxCa4Kda
-         E8h6qaWMiY7UbejN9hbQ5yyA40+0u9BtL04EEXWnU+k8gwJuQP7vw1lfNkdIGBWb0WR2
-         4bHd+uIXvoO5iFWAQoMKdBxYDY7OKmyTPYvNCSYPhHBTb5H/syDPUz8Tki3RwiUdd/Yu
-         C8zTz4micsQCYOyL4Wz8Mvzmp2Oo1pZnviNbUZer+T6fAPqdaw5Xd1BbZh7XEbaia5Bi
-         zvJVdk39vM9w0feJzMQ5PPeMba9VJwZt30BR0OOqtV4HM16BUhDI602LL7uD8UPVp0Hu
-         H6Kw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726538395; x=1727143195;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Cw2U/XEaaQG67q1n3SHABwcmT4ImShucmpz9PcbS1PQ=;
-        b=u0DaGDeOsoepOICWVh05DQwLFzeD+tnNN5mdvQqXVApWcjYgP6b1mYnm4OpM9MnjfD
-         qP9qLbIZad1vMalv7Akvlqy/H+D0g4Kq4ACwL6pNFczVhvvr0OnSbYfbrY21832TnA+K
-         UhBJ/HLyrFtssQUzuLmbjSaw3aXy+aiHdnt6S4NwzgrLmb6sSP/TY2IrdA0Nrhy6auBf
-         TI9ys48F9MrACZV6EN09c8mNQJZj526f3b4Zi2fZFgwC5PytvTEfuvncIclvMlnGjJvd
-         wNowWwbgTExUF+qBcckLGTmT7sadbYXaR30Z7o2Dmq5TMosoCauerLDcwaIQXPnaODGz
-         UX2w==
-X-Forwarded-Encrypted: i=1; AJvYcCUZ54harvh52MCbpJsXgaN6++QRo2TFx163kmOdfADXsdihx/BXyM6KrzdO85o9DJAnk64t+AB0VlI0ClAUAQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YyAOxp3nfFS11PTOUdwiRABgrGkenFdbNBs+OO2jS2fs36U+61S
-	G2q2p9nwZIJcHXHVgeHABCrBwka6rFSBrtTqzMfM7b2m4jqUNvnlZJt74q6Mwho=
-X-Google-Smtp-Source: AGHT+IHgKznBoUF0CPOd86StgVoFTb9npVIpk6TXb6/8gY4dAvicDfZVh1n0dEI6Ubz6KFnFSPsVcA==
-X-Received: by 2002:a17:903:32cb:b0:206:9536:9778 with SMTP id d9443c01a7336-2078284c185mr189609555ad.19.1726538394849;
-        Mon, 16 Sep 2024 18:59:54 -0700 (PDT)
-Received: from dread.disaster.area (pa49-179-78-197.pa.nsw.optusnet.com.au. [49.179.78.197])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2079471a2e6sm42244585ad.240.2024.09.16.18.59.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 16 Sep 2024 18:59:54 -0700 (PDT)
-Received: from dave by dread.disaster.area with local (Exim 4.96)
-	(envelope-from <david@fromorbit.com>)
-	id 1sqNVP-006Apv-09;
-	Tue, 17 Sep 2024 11:59:51 +1000
-Date: Tue, 17 Sep 2024 11:59:51 +1000
-From: Dave Chinner <david@fromorbit.com>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Miguel Ojeda <ojeda@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
-	Roman Gushchin <roman.gushchin@linux.dev>,
-	Muchun Song <muchun.song@linux.dev>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org,
-	linux-mm@kvack.org, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH] rust: shrinker: add shrinker abstraction
-Message-ID: <ZujilxJumUAafp+3@dread.disaster.area>
-References: <20240912-shrinker-v1-1-18b7f1253553@google.com>
- <ZuefFhomRvqtFzSn@dread.disaster.area>
- <CAH5fLgjRuGZWMRWTbmS5w+eLG1kPQNo95c6E6db9y8nUt2RH2A@mail.gmail.com>
+	dkim=pass (2048-bit key) header.d=de.bosch.com header.i=@de.bosch.com header.b="IQT7FtcD"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=ABh2RpdYi2T8Cly9d7WFivT/IoKxzjX3Wf0ISF8ebMiSz2KodcH66LoDSn+P2BwVMY6+/yju/qkheCSqBJuzow4QKGmUipK3tARkBsWgVU5QhvjsLTsE1ebQyUF0t8DiChQw3FnCrz+K0VQRhGYaoIJvyTYBpMBhhZf4He9jIV6nJgEVXQoIiqLGfIHppAUNDxIUl8rsI7Jf0SP5tXarFfslQ8B6wqacTiYesqi1kIXu8rCqSJUUCJEzpdSqY1ACK/CJ+wYrxV4irZg8T7oq1dgKyveXH/160HY/j4w7IfO71dL657btAcrVck1NEDHP3nZ9MGyFWD/T/LYm83HrjQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=nGVs4ErKAOYiWAtv4873T1fglqPWHES1VdzYrvRFJCo=;
+ b=ATfTuzJzPe5l1ocwPoTgTkDcME55ePUNX7kToh1z5T6G7n+tPGBFE5fOh4QuXria4TpDX3aHdc13hUcMQjDlQYPPoJST+UVt/9p9Via6Qo9D0DtkuXLI9wRyRhKW2I4eUvvd2erhARym2oztxXGsIHtkbwKsI+neHSju0BlcSXGjl0uXqP+RYkHhxmj9s004YYtqLd4vzTUSKluhF/7HgbM8EuHbhckUFxa7vOjLnAPejx6up1t7YvDlsbI1MOQqlfz8rkyND/kKQYQf6JG2cSLxta/VFPxqu40yyOMkLr/2kkwRVeKE1/5L29ufr7gITv7R9/HISpAGh828YMXgWA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 139.15.153.206) smtp.rcpttodomain=kernel.org smtp.mailfrom=de.bosch.com;
+ dmarc=pass (p=reject sp=none pct=100) action=none header.from=de.bosch.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=de.bosch.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=nGVs4ErKAOYiWAtv4873T1fglqPWHES1VdzYrvRFJCo=;
+ b=IQT7FtcDKn5ub4Kd6JqPJsiIEIxpqzPkwdNfsM4YO8MQsH9ZDgH0UrH4WT/JSqaHsZjERMPiuzXfk78uyUghr2TzL6YQvRt3A3E3BY7t0HXtBxXHRabBEiNVgJK0fi0+l+w4G1fG+QHGWH+0ECtmEcFw6qIRYSQrhFfSQs0JkRhRkBloB1+jirBNnX+pS7G+otQs0V90D61Iz0BPOxlxOdtFrqgFbe52O692G9wneQ3FoZ4wuelaAP+Vix8XYtt9HQr/Neypy9ix620q9rkTonwNf5WyyoQ0YfGqsuouyInhW03KdEmS/zQvYpgJFjP+7kluVQ+/cexr43LppN09LA==
+Received: from DU7P194CA0020.EURP194.PROD.OUTLOOK.COM (2603:10a6:10:553::11)
+ by VI1PR10MB3486.EURPRD10.PROD.OUTLOOK.COM (2603:10a6:800:137::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7939.24; Tue, 17 Sep
+ 2024 04:54:32 +0000
+Received: from DB5PEPF00014B9C.eurprd02.prod.outlook.com
+ (2603:10a6:10:553:cafe::87) by DU7P194CA0020.outlook.office365.com
+ (2603:10a6:10:553::11) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7939.30 via Frontend
+ Transport; Tue, 17 Sep 2024 04:54:32 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 139.15.153.206)
+ smtp.mailfrom=de.bosch.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=de.bosch.com;
+Received-SPF: Pass (protection.outlook.com: domain of de.bosch.com designates
+ 139.15.153.206 as permitted sender) receiver=protection.outlook.com;
+ client-ip=139.15.153.206; helo=eop.bosch-org.com; pr=C
+Received: from eop.bosch-org.com (139.15.153.206) by
+ DB5PEPF00014B9C.mail.protection.outlook.com (10.167.8.170) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.7918.13 via Frontend Transport; Tue, 17 Sep 2024 04:54:31 +0000
+Received: from SI-EXCAS2001.de.bosch.com (10.139.217.202) by eop.bosch-org.com
+ (139.15.153.206) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1544.11; Tue, 17 Sep
+ 2024 06:54:29 +0200
+Received: from [10.34.219.93] (10.139.217.196) by SI-EXCAS2001.de.bosch.com
+ (10.139.217.202) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.1.2507.39; Tue, 17 Sep
+ 2024 06:54:28 +0200
+Message-ID: <33b744e5-6acc-404b-aaa1-91a734df1714@de.bosch.com>
+Date: Tue, 17 Sep 2024 06:54:17 +0200
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] rust: mutex: fix __mutex_init() usage in case of
+ PREEMPT_RT
+To: Miguel Ojeda <ojeda@kernel.org>, <rust-for-linux@vger.kernel.org>
+CC: Conor Dooley <conor@kernel.org>, Gary Guo <gary@garyguo.net>
+References: <20240916073752.3123484-1-dirk.behme@de.bosch.com>
+ <20240916202831.136eb76b.gary@garyguo.net>
+Content-Language: en-US
+From: Dirk Behme <dirk.behme@de.bosch.com>
+In-Reply-To: <20240916202831.136eb76b.gary@garyguo.net>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAH5fLgjRuGZWMRWTbmS5w+eLG1kPQNo95c6E6db9y8nUt2RH2A@mail.gmail.com>
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DB5PEPF00014B9C:EE_|VI1PR10MB3486:EE_
+X-MS-Office365-Filtering-Correlation-Id: 242bea04-b596-49d7-06af-08dcd6d4d1c6
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|36860700013|1800799024|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?M2cwUWZlRkdmSjdqcWhMR1p6eksrRkJPM29MWERVd3psTmlweXUramlBRENz?=
+ =?utf-8?B?QWswUktvTVpBWWNBV0txak1UMGJ6aFh3bWlZNUJIbHd4TGU1YTZoQnBvUllL?=
+ =?utf-8?B?d2g4QlVPQWdvK21Za3d1UTVscUV3WlBYK1AyelF1eE1QRE9TbDJlNmJndjRt?=
+ =?utf-8?B?WlNnaGdNUzRQOVJDRXNqYUhtNXpKYytXUTFhVFQxVGJxTnR1WDlVMmliVCtY?=
+ =?utf-8?B?NHFmWVJWQ2pUUzdmOTJDVWFIWjQ1ZWVldWkzeXdoaGh1Z3VPbVhOOGkzYXNr?=
+ =?utf-8?B?dEpnYmU4d013VnAxbWZZZDE0K29heGYvQ1RpMkxvMjk4UFhVYUM5d05vY3hE?=
+ =?utf-8?B?V2ZZcFR3aDJWZmR6TzIycDVNcTkxNDJ6azY3N21VUXZEL0JUWFpDOG9SLzBk?=
+ =?utf-8?B?ZGRYVlVVUGhYWVRFQm5zTngrWHFQcENjdHZ3ZGxKRkdnMEszK01EeXVoUlFt?=
+ =?utf-8?B?TEdsOGhSVTNvZWoxRkQyTUo3NWxpdDZFSzFKcGpQUyswR0x0MllKMk9GaTNS?=
+ =?utf-8?B?MitXeXBZUWJTNjJabEdMRko4R0p4UkVyUlNLcFNhNmdJYjlrVWhkWFRPcFZm?=
+ =?utf-8?B?ekVWR3JOdUs5TUliMDg5M3JzQnZPUFRrVkhRWDZGdjVYKzBqOUlNVDlSVHl4?=
+ =?utf-8?B?b0dvMTdrbU02Y0QzdlpWYzRXeU5jUURTemxVWURKQ2I1ZnVuUlpxc1c2WVlR?=
+ =?utf-8?B?eG80V1FkSmdVVEQvY3NrbU1ZRXl5bTBWbEFGVzFDa0hOSmFQcmtueE84cGUr?=
+ =?utf-8?B?dk5XQjV1RUtXKzlCSjdmU3pIRkFoTzdWZ3piNFZqK0cxc2p5M25HRTBLLzJm?=
+ =?utf-8?B?UUErak1Xek91U1RFZHQvd0lGZ1FPeFZGdm12ZHJyWmpsQVlGdEpaa0Q1ZWZS?=
+ =?utf-8?B?N0Jlek1wdE9XVVE4Yi9ML2ppcjZhcWlpa1FrOFJ4WG4xQnBUZUJvbjQ5QWJG?=
+ =?utf-8?B?NEtmWTB6VG5TeWlTdG1EOHdPdUlGNjd1Z3hIbW45eDZOUFZ6bktvN1Axa2d6?=
+ =?utf-8?B?QkxFUExWM2FFYUhXeHJEbVNndi84U1FXR3FreDI0bE5iaUhvOUxQOGc5SmlY?=
+ =?utf-8?B?alZDTndSTHZJZm1EVjdxM3pCR2t6NkhacWoyWE1GSlJNeWtpRTFGdjBYU2I1?=
+ =?utf-8?B?RlJGMXY2R296MS9RODRIS1RoUmZqOUZFTzBDaWpwZmhVYjByK29Od3JySlZY?=
+ =?utf-8?B?V2lwRnpFanllWGw3N0ZJdEJicWlRN2gxQm85NjBwa1VlOU5WaVJPRXQ1OU9q?=
+ =?utf-8?B?c3RxN2Z6WFgyN2VuN2NFdkNnKzYxQXFrYUlqc1NZN0hTVHM5UmlTbXVnRG1z?=
+ =?utf-8?B?NmtPWDROREVSeGt3eWp0RGMvZkRMSDBEVmo4Y0hiMGNqSmhGK2N1aXBOVE0z?=
+ =?utf-8?B?TW5zNnp0dDdFVlFwK3Z2U2RseW1PNkRFbWpMQndpMnBsVEFIUG96elpZOE05?=
+ =?utf-8?B?QVdSOUtyNWVvVWlXeDlGOHRYY1ltUEtVM3FuR3U1NGUxakVtd0pQTEVwVXp4?=
+ =?utf-8?B?aE1OdEQ0N0tmaVc4blhuaFBTNzdZUUU1UUo2WjJhbUY0RElXcDJScGYyaWh5?=
+ =?utf-8?B?b012a1FWM2taSmVhVlZUMFIvNXJwdHhFcDNGSnNBSjFXbFdEd29CSXJWcFRa?=
+ =?utf-8?B?cWhhSit2VDVZZGVaMGhEZjVIME82U1ZRWmFlYUluRnp0UUxUV1hZMHE1QVhN?=
+ =?utf-8?B?WlhtcWRJVW1SSExJRitNNmsvbWJEdDdYNnBSUndrTVV1MnBBNjNMcGFhYm1L?=
+ =?utf-8?B?TUJHS3dMMVBaZFN0dDhMajN3SENDdE5MUFFBclVzV2FGUDlkb3JYcDZSSXkr?=
+ =?utf-8?B?ZjNHU0t1Rit6ZTJwV2U3VDg1ci9IVnpXZ3dOWnFXdE96Z21mZVZJYXVNZU5l?=
+ =?utf-8?B?TlgwTC8vSzVZc1JCbm42ZW5ZZTlRSUF2OVVsaXNKMERXZzlmaUZoNFlTYjdU?=
+ =?utf-8?Q?qoE2vt7lgNIJpQUzmjOwjfb5+DHX5JDJ?=
+X-Forefront-Antispam-Report:
+	CIP:139.15.153.206;CTRY:DE;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:eop.bosch-org.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(36860700013)(1800799024)(376014);DIR:OUT;SFP:1101;
+X-OriginatorOrg: de.bosch.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 17 Sep 2024 04:54:31.9657
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 242bea04-b596-49d7-06af-08dcd6d4d1c6
+X-MS-Exchange-CrossTenant-Id: 0ae51e19-07c8-4e4b-bb6d-648ee58410f4
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=0ae51e19-07c8-4e4b-bb6d-648ee58410f4;Ip=[139.15.153.206];Helo=[eop.bosch-org.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	DB5PEPF00014B9C.eurprd02.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: VI1PR10MB3486
 
-On Mon, Sep 16, 2024 at 12:22:40PM +0200, Alice Ryhl wrote:
-> On Mon, Sep 16, 2024 at 4:59 AM Dave Chinner <david@fromorbit.com> wrote:
-> >
-> > On Thu, Sep 12, 2024 at 09:54:01AM +0000, Alice Ryhl wrote:
-> > > Rust Binder holds incoming transactions in a read-only mmap'd region
-> > > where it manually manages the pages. These pages are only in use until
-> > > the incoming transaction is consumed by userspace, but the kernel will
-> > > keep the pages around for future transactions. Rust Binder registers a
-> > > shrinker with the kernel so that it can give back these pages if the
-> > > system comes under memory pressure.
-> > >
-> > > Separate types are provided for registered and unregistered shrinkers.
-> > > The unregistered shrinker type can be used to configure the shrinker
-> > > before registering it. Separating it into two types also enables the
-> > > user to construct the private data between the calls to `shrinker_alloc`
-> > > and `shrinker_register` and avoid constructing the private data if
-> > > allocating the shrinker fails.
-> >
-> > This seems a bit nasty. It appears to me that the code does an
-> > unsafe copy of the internal shrinker state between the unregistered
-> > and registered types. Shrinkers have additional internal state when
-> > SHRINKER_MEMCG_AWARE and/or SHRINKER_NUMA_AWARE flags are set,
-> > and this abstraction doesn't seem to handle either those flags or
-> > the internal state they use at all.
+On 16.09.2024 21:28, Gary Guo wrote:
+> On Mon, 16 Sep 2024 09:37:52 +0200
+> Dirk Behme <dirk.behme@de.bosch.com> wrote:
 > 
-> Doing an unsafe copy of the internal shrinker state is certainly not
-> my intent. The UnregisteredShrinker and RegisteredShrinker types just
-> wrap a non-null pointer, so the moves inside `register` are not copies
-> of the whole `struct shrinker` but just copies of a pointer to the
-> shrinker.
+>> In case CONFIG_PREEMPT_RT is enabled __mutex_init() becomes a macro
+>> instead of an extern function (simplified from
+>> include/linux/mutex.h):
+>>
+>> extern void __mutex_init(struct mutex *lock, const char *name,
+>> 			 struct lock_class_key *key);
+>> do {							\
+>> 	rt_mutex_base_init(&(mutex)->rtmutex);		\
+>> 	__mutex_rt_init((mutex), name, key);		\
+>> } while (0)
 
-So you're playing type casting games with the same structure just to
-avoid the potential doing a little bit of unnecessary work in an
-error situation?
 
-This all seems rather convoluted and largely unnecessary to me as
-the shrinker_free() C code transparent handles both registered and
-unregistered shrinkers being passed to it. There really is no
-difference between the two cases in terms of error handling and
-teardown....
+I just noticed that git commit fooled me and of course removed the 
+C-macro lines beginning with '#' as git interprets that as comments :(
 
-> > > +impl UnregisteredShrinker {
-> > > +    /// Create a new shrinker.
-> > > +    pub fn alloc(name: &CStr) -> Result<Self, AllocError> {
-> > > +        // SAFETY: Passing `0` as flags is okay. Using `%s` as the format string is okay when we
-> > > +        // pass a nul-terminated string as the string for `%s` to print.
-> > > +        let ptr =
-> > > +            unsafe { bindings::shrinker_alloc(0, c_str!("%s").as_char_ptr(), name.as_char_ptr()) };
-> >
-> > This passes flags as 0, so doesn't support SHRINKER_MEMCG_AWARE or
-> > SHRINKER_NUMA_AWARE shrinker variants. These flags should be
-> > passed through here.
+The above simplified example from mutex.h in the commit message should 
+be correctly:
+
+-- cut --
+  #ifndef CONFIG_PREEMPT_RT
+  extern void __mutex_init(struct mutex *lock, const char *name,
+			 struct lock_class_key *key);
+  #else
+  #define __mutex_init(mutex, name, key)			\
+  do {							\
+	rt_mutex_base_init(&(mutex)->rtmutex);		\
+	__mutex_rt_init((mutex), name, key);		\
+  } while (0)
+  #endif
+-- cut --
+
+Please let me know if you want a v2 with corrected commit message or if 
+that could be corrected while applying :)
+
+Best regards
+
+Dirk
+
+>> The macro isn't resolved by bindgen, then. What results in a build
+>> error:
+>>
+>> error[E0425]: cannot find function `__mutex_init` in crate `bindings`
+>>       --> rust/kernel/sync/lock/mutex.rs:104:28
+>>        |
+>> 104   |           unsafe { bindings::__mutex_init(ptr, name, key) }
+>>        |                              ^^^^^^^^^^^^ help: a function with a similar name exists: `__mutex_rt_init`
+>>        |
+>>       ::: rust/bindings/bindings_generated.rs:23722:5
+>>        |
+>> 23722 | /     pub fn __mutex_rt_init(
+>> 23723 | |         lock: *mut mutex,
+>> 23724 | |         name: *const core::ffi::c_char,
+>> 23725 | |         key: *mut lock_class_key,
+>> 23726 | |     );
+>>        | |_____- similarly named function `__mutex_rt_init` defined here
+>>
+>> Fix this by adding a helper.
+>>
+>> As explained by Gary Guo in [1] no #ifdef CONFIG_PREEMPT_RT
+>> is needed here as rust/bindings/lib.rs prefers externed function to
+>> helpers if an externed function exists.
+>>
+>> Reported-by: Conor Dooley <conor@kernel.org>
+>> Link: https://lore.kernel.org/rust-for-linux/20240913-shack-estate-b376a65921b1@spud/
+>> Link: https://lore.kernel.org/rust-for-linux/20240915123626.1a170103.gary@garyguo.net/ [1]
+>> Fixes: 6d20d629c6d8 ("rust: lock: introduce `Mutex`")
+>> Signed-off-by: Dirk Behme <dirk.behme@de.bosch.com>
 > 
-> I don't have a user for memcg/numa aware shrinkers in Rust, which is
-> why I did not extend these abstractions to support them. However, if
-> you would like me to, I'm happy to do so.
-
-Please do. A partial implementation only makes it harder for the
-next person to use the API....
-
-> It is easy to add a flags
-> argument to this method, but I imagine they also need a few other
-> additions elsewhere in the API to really be supported?
-
-In the shrinker API, nothing extra needs to be done.
-
-If you haven't added bindings to the list_lru interfaces yet, then
-you are going to need to, including the memcg and numa aware
-interfaces for that.
-
-> Now that I think about it, perhaps Binder's shrinker *could* be memcg
-> aware? It uses the list_lru abstraction, and currently calls
-> `list_lru_count` in `count_objects`, but maybe we could just use
-> `list_lru_shrink_count` instead and magically become memcg aware ...?
-
-The scan code also needs to use list_lru_shrink_walk(), too,
-not list_lru_walk().
-
-And, yes, that's really the whole point of the list_lru abstraction -
-almost nothing extra needs to be done to enable both NUMA and memcg
-based reclaim context support for a cache once it's been converted
-to use list_lru for tracking reclaimable objects.
-
+> Hi Dirk,
 > 
-> > > +    /// Set the number of seeks needed to recreate an object.
-> > > +    pub fn set_seeks(&mut self, seeks: u32) {
-> > > +        unsafe { (*self.shrinker.as_ptr()).seeks = seeks as c_int };
-> > > +    }
-> >
-> > Seems kinda weird to have a separate function for setting seeks,
-> > when...
-> >
-> > > +
-> > > +    /// Register the shrinker.
-> > > +    ///
-> > > +    /// The provided pointer is used as the private data, and the type `T` determines the callbacks
-> > > +    /// that the shrinker will use.
-> > > +    pub fn register<T: Shrinker>(self, private_data: T::Ptr) -> RegisteredShrinker<T> {
-> >
-> > .... all the other data needed to set up a shrinker is provided to
-> > this function....
-> >
-> > > +        let shrinker = self.shrinker;
-> > > +        let ptr = shrinker.as_ptr();
-> > > +
-> > > +        // The destructor of `self` calls `shrinker_free`, so skip the destructor.
-> > > +        core::mem::forget(self);
-> > > +
-> > > +        let private_data_ptr = <T::Ptr as ForeignOwnable>::into_foreign(private_data);
-> > > +
-> > > +        // SAFETY: We own the private data, so we can assign to it.
-> > > +        unsafe { (*ptr).private_data = private_data_ptr.cast_mut() };
-> > > +        // SAFETY: The shrinker is not yet registered, so we can update this field.
-> > > +        unsafe { (*ptr).count_objects = Some(rust_count_objects::<T>) };
-> > > +        // SAFETY: The shrinker is not yet registered, so we can update this field.
-> > > +        unsafe { (*ptr).scan_objects = Some(rust_scan_objects::<T>) };
-> >
-> > .... and implemented exactly the same way.
+> Reviewed-by: Gary Guo <gary@garyguo.net>
 > 
-> Well .. this design makes setting `seeks` optional, but `private_data`
-> mandatory. We *have* to set the two function pointers, but you don't
-> have to set `seeks` explicitly.
+> Thanks for sending the patch.
 > 
-> It's not obvious, so it's probably worth mentioning that this design
-> doesn't actually require you to make an allocation and store a real
-> pointer in the private data.
-
-Yes, definitely worth mentioning, because I think we need to require
-new shrinkers to provide a direct pointer to the context the
-shrinker will operate on. We want to move away from anonymous
-"global" shrinkers that don't provide a context for the shrinker to
-operation on for a number of reasons...
-
-If we change the C code to work this way, then the private pointer
-in the rust binding will become mandatory. Hence it might be worth
-making the rust bindings and shrinker implementations behave this
-way from the start....
-
-> When implementing the Shrinker trait for
-> your custom shrinker, you have to choose which pointer type to use. If
-> you choose the unit type `()` as the pointer type, then no real
-> pointer is actually stored.
->
-> > > +/// How many objects are there in the cache?
-> > > +///
-> > > +/// This is used as the return value of [`Shrinker::count_objects`].
-> > > +pub struct CountObjects {
-> > > +    inner: c_ulong,
-> > > +}
-> > > +
-> > > +impl CountObjects {
-> > > +    /// Indicates that the number of objects is unknown.
-> > > +    pub const UNKNOWN: Self = Self { inner: 0 };
-> > > +
-> > > +    /// Indicates that the number of objects is zero.
-> > > +    pub const EMPTY: Self = Self {
-> > > +        inner: SHRINK_EMPTY,
-> > > +    };
-> > > +
-> > > +    /// The maximum possible number of freeable objects.
-> > > +    pub const MAX: Self = Self {
-> > > +        // The shrinker code assumes that it can multiply this value by two without overflow.
-> > > +        inner: c_ulong::MAX / 2,
-> > > +    };
-> > > +
-> > > +    /// Creates a new `CountObjects` with the given value.
-> > > +    pub fn from_count(count: usize) -> Self {
-> > > +        if count == 0 {
-> > > +            return Self::EMPTY;
-> > > +        }
-> >
-> > No. A return count of 0 is not the same as a return value of
-> > SHRINK_EMPTY.
-> >
-> > A return value of 0 means "no reclaim work can be done right now".
-> >
-> > This implies that there are objects that can be reclaimed in the near
-> > future, but right now they are unavailable for reclaim. This can be
-> > due to a trylock protecting the count operation failing, the all the
-> > objects in the cache being dirty and needing work to be done before
-> > they can be reclaimed, etc.
-> >
-> > A return value of SHRINK_EMPTY means "there are no reclaimable
-> > objects at all".
-> >
-> > This implies that the cache is empty - it has absolutely nothing in
-> > it that can be reclaimed either now or in the near future.
-> >
-> > These two return values are treated very differently by the high
-> > level code. SHRINK_EMPTY is used by shrink_slab_memcg() to maintain
-> > a "shrinker needs to run" bit in the memcg shrinker search bitmap.
-> > The bit is cleared when SHRINK_EMPTY is returned, meaning the
-> > shrinker will not get called again until a new object is queued
-> > to it's LRU. This sets the "shrinker needs to run" bit again, and
-> > so the shrinker will run next time shrink_slab_memcg() is called.
-> >
-> > In constrast, a return value of zero (i.e. no work to be done right
-> > now) does not change the "shrinker needs to run" state bit, and
-> > hence it will always be called the next time the shrink_slab_memcg()
-> > is run to try to reclaim objects from that memcg shrinker...
+> Best,
+> Gary
 > 
-> This is a part of the API that I was pretty unsure about, so very
-> happy to get your input. For both of the shrinkers I am familiar with,
-> they know the exact count of objects and there's no error case for any
-> lock. The shrinkers just return the exact count directly from
-> count_objects, but that seemed incorrect to me, as this means that the
-> shrinker returns 0 when it really should return SHRINK_EMPTY.
-
-Yes, they should be returning SHRINK_EMPTY and not 0 in this case.
-See super_cache_count() for example.
-
->
-> That's
-> why I implemented `from_count` this way - the intent is that you use
-> `CountObjects::from_count` when you know the exact count, so if you
-> pass 0 to that method, then that means the shrinker really is empty.
-> If you don't know what the count is, then you return
-> `CountObjects::UNKNOWN` instead.
-
-Understood, and I see your point. I think it's a good approach to
-take, but I don't think that the rust binding implementation is the
-appropriate place to introduce such API/semantic enhancements.
-
-I would really like to avoid the situation where rust-based
-shrinkers have explicitly different API and behavioural semantics to
-the C shrinkers. Hence I would prefer the rust bindings to implement
-the existing C semantics and then, as a separate piece of work, we
-move everything (both C and Rust) to the new set of semantics as a
-single changeset.
-
-I know that is more difficult to do and co-ordinate, but I think we
-are going to be much better off in the long run if we start from a
-common base and then make improvements to both sides of the API at
-the same time. Note that I'm not asking you to change all the C code
-here - I can certainly help there - but I am asking that we try
-really hard to keep APIs and behavioural semantics as close together
-as possible.
-
-> That said, I guess there is some reason that the C shrinker API is
-> designed to use the value 0 for unknown rather than empty, so perhaps
-> I should not try to do it differently.
-
-No reason, it just evolved organically that way over the past decade
-- SHRINK_EMPTY was introduced (historically speaking) fairly
-recently and only propogated into the shrinkers that needed to set
-it (i.e. the memcg aware shrinkers).
-
-This is the sort of API fragmentation I would like us to avoid - I
-don't want to see some shrinkers with SHRINK_EMPTY, some with 0, and
-then yet another new subset with UNKNOWN, yet all largely meaning
-the same thing in a global shrinker context but 2 of the three types
-being incorrect in a memcg shrinker context...
-
-> > > +impl ScanObjects {
-> > > +    /// Indicates that the shrinker should stop trying to free objects from this cache due to
-> > > +    /// potential deadlocks.
-> > > +    pub const STOP: Self = Self { inner: SHRINK_STOP };
-> > > +
-> > > +    /// The maximum possible number of freeable objects.
-> > > +    pub const MAX: Self = Self {
-> > > +        // The shrinker code assumes that it can multiply this value by two without overflow.
-> > > +        inner: c_ulong::MAX / 2,
-> >
-> > No it doesn't. This is purely a count of objects freed by the
-> > shrinker.
+>> ---
+>>
+>> This is against rust-next to use the new helpers layout.
+>> Due to the helpers layout change I'm thinking it is not worth
+>> the effort to backport to older kernel versions, so I intentionally
+>> did not include -stable.
+>>
+>>   rust/helpers/mutex.c | 6 ++++++
+>>   1 file changed, 6 insertions(+)
+>>
+>> diff --git a/rust/helpers/mutex.c b/rust/helpers/mutex.c
+>> index 200db7e6279f0..a17ca8cdb50ca 100644
+>> --- a/rust/helpers/mutex.c
+>> +++ b/rust/helpers/mutex.c
+>> @@ -7,3 +7,9 @@ void rust_helper_mutex_lock(struct mutex *lock)
+>>   {
+>>   	mutex_lock(lock);
+>>   }
+>> +
+>> +void rust_helper___mutex_init(struct mutex *mutex, const char *name,
+>> +			      struct lock_class_key *key)
+>> +{
+>> +	__mutex_init(mutex, name, key);
+>> +}
 > 
-> In mm/shrinker.c it multiplies by two here:
-> total_scan = min(total_scan, (2 * freeable));
-
-freeable is derived from the return of ->count_objects, not
-from ->scan_objects (i.e. it is a CountObjects type, not a
-ScanObjects type).
-
-->scan_objects() returns SHRINK_STOP to indicate that scanning
-should stop immediately or the number of objects freed. The only
-thing that is done with value other than SHRINK_STOP is to aggregate
-it across repeated calls to ->scan_objects().
-
-> > > +    /// Determines whether it is safe to recurse into filesystem code.
-> > > +    pub fn gfp_fs(&self) -> bool {
-> > > +        // SAFETY: Okay by type invariants.
-> > > +        let mask = unsafe { (*self.ptr.as_ptr()).gfp_mask };
-> > > +
-> > > +        (mask & bindings::__GFP_FS) != 0
-> > > +    }
-> >
-> > This needs a check for __GFP_IO as well, as there are block layer
-> > shrinkers that need to be GFP_NOIO aware...
 > 
-> Would you prefer that I add additional methods, or that I modify this
-> method to also check __GFP_IO, or that I just expose a way to get the
-> `gfp_mask` value directly?
 
-If it was C code, I would suggest the API would something like:
-
-	if (!reclaim_allowed(sc, __GFP_FS))
-		return SHRINK_STOP;
-
-or
-	if (!reclaim_allowed(sc, __GFP_IO))
-		return SHRINK_STOP;
-
-As this matches the typical usage (e.g. see super_cache_scan()).
-
-> 
-> > > +    /// Returns the number of objects that `scan_objects` should try to reclaim.
-> > > +    pub fn nr_to_scan(&self) -> usize {
-> > > +        // SAFETY: Okay by type invariants.
-> > > +        unsafe { (*self.ptr.as_ptr()).nr_to_scan as usize }
-> > > +    }
-> > > +
-> > > +    /// The callback should set this value to the number of objects processed.
-> > > +    pub fn set_nr_scanned(&mut self, val: usize) {
-> > > +        let mut val = val as c_ulong;
-> > > +        // SAFETY: Okay by type invariants.
-> > > +        let max = unsafe { (*self.ptr.as_ptr()).nr_to_scan };
-> > > +        if val > max {
-> > > +            val = max;
-> > > +        }
-> >
-> > No. Shrinkers are allowed to scan more objects in a batch than
-> > the high level code asked them to scan. If they do this, they
-> > *must* report back the count of all the objects they scanned so the
-> > batched scan accounting can adjust the remaining amount of work that
-> > needs to be done appropriately.
-> 
-> Acknowledged.
-> 
-> This is related to another question that I had, actually. Other than
-> returning SHRINK_STOP, in what situations should `nr_scanned` be
-> different from the return value of `scan_objects`?
-
-nr_scanned will almost always be different to the return value of
-->scan_objects. 
-
-There are 3 values of note here.
-
-- nr_scanned is set by the shrinker scan setup code to the batch
-  size the shrinker should scan in it's next invocation.
-
-  If the shrinker ignores nr_to_scan batch limits, it can indicate
-  how many objects it scanned by setting the number it scanned to
-  nr_scanned before it returns.
-
-- nr_to_scan is set to nr_scanned at setup.
-
-  The shrinker should then decrement nr_scanned for each object that
-  is scanned by the shrinker.  The shrinker should stop scanning and
-  return nr_freed when nr_to_scan reaches zero.
-
-  If the value of this is non-zero when the scan returns, it is an
-  indication that the shrinker either did not scan the entire
-  batch or the batch size was larger than the remaining number of
-  objects in the cache.
-
-- nr_freed: return value from the shrinker
-
-  This is a count of the number of objects the shrinker freed during
-  the scan.
-
-  If the shrinker cannot make progress for any reason it
-  should immediately return SHRINK_STOP.
-
-So on a typical shrinker pass, we'll exit with:
-
-	nr_scanned = batch size;
-	nr_to_scan = 0;
-	nr_freed = [0..batch size];
-
-Some shrinkers, however, have variable sized objects, and so they
-will normalise nr_freed and nr_scanned to the object size. The
-i915/gem shrinker does this, as it considers a page to be an object,
-but in reality is has a smaller number of variable sized multi-page
-objects being tracked. Hence it might be asked to scan 128 objects
-(default batch size), but the scan iterated over objects that
-contain 256 pages.
-
-In that case, it will return:
-
-	nr_scanned = 256;
-	nr_to_scan = 0;
-	nr_freed = [0..256]
-
-And the high level shrinker code will treat that as having scanned
-256 objects rather than the 128 objects it asked for.
-
-There are several shrinkers that play weird accounting games like
-this. It's not really all that nice and it would be ice to clean all
-this up, but there's been no real urgency to do this because it's
-just a slightly different manner of accounting reclaim progress....
-
--Dave.
 -- 
-Dave Chinner
-david@fromorbit.com
+======================================================================
+Dirk Behme                      Robert Bosch Car Multimedia GmbH
+                                 CM/ESO2
+Phone: +49 5121 49-3274         Dirk Behme
+Fax:   +49 711 811 5053274      PO Box 77 77 77
+mailto:dirk.behme@de.bosch.com  D-31132 Hildesheim - Germany
+
+Bosch Group, Car Multimedia (CM)
+              Engineering SW Operating Systems 2 (ESO2)
+
+Robert Bosch Car Multimedia GmbH - Ein Unternehmen der Bosch Gruppe
+Sitz: Hildesheim
+Registergericht: Amtsgericht Hildesheim HRB 201334
+Aufsichtsratsvorsitzender: Dr. Dirk Hoheisel
+Geschäftsführung: Dr. Steffen Berns;
+                   Dr. Sven Ost, Jörg Pollak, Dr. Walter Schirm
+======================================================================
+
