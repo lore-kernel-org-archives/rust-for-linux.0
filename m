@@ -1,51 +1,72 @@
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E8FF13792B;
-	Wed, 18 Sep 2024 21:21:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=13.77.154.182
+Received: from mail-qv1-f42.google.com (mail-qv1-f42.google.com [209.85.219.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90206135417
+	for <rust-for-linux@vger.kernel.org>; Wed, 18 Sep 2024 22:51:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726694472; cv=none; b=T65xECBYeZE0o3njKeFam6t/FBFUZVT0ErJZwJo7d8FaQ3KjYwHi4WnIdu57U/rix3Up87eWUlJN8eLX2s4H4FDk8lUtFHGaaI0t2aRBsL6wSOHOiQk04I1BDw2vKMbOtWuiyzihWQw+gG3IW5opmf7LqEJsFDcmsYymiKIl1/E=
+	t=1726699887; cv=none; b=rWBHIVlSTpCjc/9UlafteT/LRJiVSQxbqjKO5TABlPK1j/H2j0ctx55sG+Dz1/fpxMF19Cerb7b8CtLyukfADAR1IruREY3UiqNNRPPi/6O72WJfXrU86TIDhnoCIaoZRMmJEYcnRCJnNlAxMi0CrFNp7uNGTmN1REYygKr3wDI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726694472; c=relaxed/simple;
-	bh=GK5S9iKp79ueNMdTOZBcBx7mwwXHMNSQ1nxVCDlFJus=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=NaNUsBPdoNGwtSjiLSZ85UZIpqArgvWeoPeE8Q4e0k27uR/8s2t/aIiEmere4cDcTNrzVl54UGHMY43uyqD3QRYAaEGuvcXi6A0IZhPbmI3VvFFOGZgIYv2Gm4/Q072bYMRK6bN1d61zFh11uh1nBMhC7fLUAFsSLQJ3q1KmDxw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com; spf=pass smtp.mailfrom=linux.microsoft.com; dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b=DnxDSCL8; arc=none smtp.client-ip=13.77.154.182
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.microsoft.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.microsoft.com
+	s=arc-20240116; t=1726699887; c=relaxed/simple;
+	bh=GptCSnw6bLPxkpJ5oTlmZ05/oFCQAfLe7B+WX1CnGFg=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=SAfThSeMqyclJNfmZPxXm03+wkKs+E9XU1+Qy5IiYvoBU1rS8Peq5n6yKn12al3oR2Dg3mtd6Y23v1jhT4TD4ifcO8Pr9+hSF7AXXECPtIB6sKkGef3R1FqJAyMf4r5khDY3GRRa69eYm0I9cmCfiDqFS9hA7RSsiL3SPDGVUjY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=SPGTQ91k; arc=none smtp.client-ip=209.85.219.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.microsoft.com header.i=@linux.microsoft.com header.b="DnxDSCL8"
-Received: from nell-kernel-vm-08-09.ejenzozri2pedhiq2wfesci2lb.xx.internal.cloudapp.net (unknown [13.66.192.56])
-	by linux.microsoft.com (Postfix) with ESMTPSA id 485FC20C0A0C;
-	Wed, 18 Sep 2024 14:21:05 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 485FC20C0A0C
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-	s=default; t=1726694465;
-	bh=2MMaw3724sZ++Ne7FpHpXyS950zBAoGoyZ5LANf+mfE=;
-	h=From:To:Cc:Subject:Date:From;
-	b=DnxDSCL8Cv+dmF/sr+oXK86ZMM3mytYbv0W18URfNVJ58Rqbn8WN5BqE10HDRbGkr
-	 eKw82g+ugLL4QE6BkmJlIQYBYnpqRkdQke0aVpwBloDYuELlYZ12nbVA68qBvB6Qsc
-	 JNrGaLD31Alq9LfaAzxju3vMB5ZIqhbn2NnqOiDc=
-From: Nell Shamrell-Harrington <nells@linux.microsoft.com>
-To: ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	wedsonaf@gmail.com
-Cc: boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me,
-	a.hindborg@samsung.com,
-	aliceryhl@google.com,
-	tmgross@umich.edu,
-	linux@obei.io,
-	kernel@valentinobst.de,
-	kent.overstreet@gmail.com,
-	matthew.d.roper@intel.com,
-	kartikprajapati987@gmail.com,
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="SPGTQ91k"
+Received: by mail-qv1-f42.google.com with SMTP id 6a1803df08f44-6c548eb3380so846276d6.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 18 Sep 2024 15:51:25 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1726699884; x=1727304684; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=burxdGBX6ZpEMnT/xYsYp3I9CoEZTGeikfV2oXFSZXQ=;
+        b=SPGTQ91k6pJDPI/TIC1LVZg03yAQZl9FWKDFyn5CCFk800tBOArejwj59Fi+zvyaeE
+         vt/VaOGyNfKd392LZbit8hK+eYJc/KavmeTKar1xvne/66r4Lw7PVqsuhnl/nag8HQUN
+         d52RW5XaHEFhRlz8ytpsCVaKJSnOCj6ewHcJcDPmA+7PZ91kBiZ4uerEAQQqnOyWW2mn
+         SzZXjjCv+rkejlE+Yt5GfOlmzG7X0vvEYn8B3Mis6UQJLNcXBPV1ytEm1JtDev6qRjeK
+         +LZ9JnusMY7nY/kvAXXxFt8O8ZpyrTJZ4YYiF9uotYrNrrgKR6W2k72w/hLeiIDAZ4Fy
+         NyGQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1726699884; x=1727304684;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=burxdGBX6ZpEMnT/xYsYp3I9CoEZTGeikfV2oXFSZXQ=;
+        b=UYtvE405S5qVlfXFlRYWxhNeqVxFflz417DwOBTS+J7RxSeXvRbx13wwoX1/mr7DUW
+         eyr6/1WKhZNRF3ZOoti7IaIkBN3NXwuL7yXfQDbS86moA15XkYOlNp6xNFwYOZsivune
+         8/t6d1fyzB0t9EFcG8iEOhJH7srY6RTXXsSTRbqWyAl31iO8WVUA4wBkmKk4i4bEeewA
+         446ZimuDt6HUE05e1ccYI+C6IkSsZYHClTbkbSj7vTwQ3xHAhWuI6pp7T8PR60p2LcyZ
+         97UBD/adzyGT3a7HXyhGvBru27EQXgMclLswoOoRokmsIH4Z4n9aUp1dgzxO+77A4rLI
+         hVWA==
+X-Forwarded-Encrypted: i=1; AJvYcCWvrCRC0RletpZ8QhE8RR405AOXSTnY3qPY/XOOrXmt5ZboLQqf93Ey3xL0nd3nuf/1n63Kr0bmFgzH9ZA3RQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwKrrQzAXL8Adj8Mf9DfhewzriddyNsxS7x9dbSPBdzkEzO5jWx
+	mt0Josc9WuITv3Xwmy/Jd0erwsaY41zjd2IP6izqZEYdHjOGYHQn
+X-Google-Smtp-Source: AGHT+IHxBipqsgbHxJxhCaeei/WWqNOBuoorHYVp4g2RhQnjUuCQq/KYosQ7yjF8uiDuAmp9c/t/2w==
+X-Received: by 2002:a05:6214:4988:b0:6c5:4e4a:cb9a with SMTP id 6a1803df08f44-6c573543b92mr462234146d6.10.1726699884256;
+        Wed, 18 Sep 2024 15:51:24 -0700 (PDT)
+Received: from localhost.localdomain ([146.70.202.153])
+        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-6c75e46f58esm1675736d6.56.2024.09.18.15.51.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 18 Sep 2024 15:51:23 -0700 (PDT)
+From: Aliet Exposito Garcia <aliet.exposito@gmail.com>
+To: Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>
+Cc: Boqun Feng <boqun.feng@gmail.com>,
+	Gary Guo <gary@garyguo.net>,
+	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>,
+	Trevor Gross <tmgross@umich.edu>,
 	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH v2] rust: types: Add examples for the `Either` type
-Date: Wed, 18 Sep 2024 21:20:52 +0000
-Message-Id: <20240918212052.8790-1-nells@linux.microsoft.com>
-X-Mailer: git-send-email 2.34.1
+	Aliet Exposito Garcia <aliet.exposito@gmail.com>
+Subject: [PATCH 0/2] rust: Move unfit code out of `rust/kernel/types.rs`
+Date: Wed, 18 Sep 2024 18:51:13 -0400
+Message-ID: <20240918225115.2309224-1-aliet.exposito@gmail.com>
+X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -54,37 +75,39 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-Add examples for the `Either` type
+Hello all,
+These are the patches for a good first issue that Benno Lossin oppened
+on https://github.com/Rust-for-Linux/linux/issues/1117
+According to the issue description, the file `rust/kernel/types.rs` is a
+rather non-descriptive, general file that contains code that might be
+better suited elsewhere:
+ - `ARef<T>` and `AlwaysRefCounted` should be in `rust/kernel/sync/aref.rs`
+ - The `FromBytes` and `AsBytes` traits and implementations should be in
+    `rust/kernel/transmute.rs`
 
-Suggested-by: Miguel Ojeda <ojeda@kernel.org>
-Signed-off-by: Nell Shamrell-Harrington <nells@linux.microsoft.com>
-Tested-by: Dirk Behme <dirk.behme@de.bosch.com>
----
-V1 -> V2: Cleaned up commit message and addressed review comments
+Aliet Exposito Garcia (2):
+  rust: Move `FromBytes` and `AsBytes` traits to a new `transmute`
+    module
+  rust: Move `ARef<T>` and `AlwaysRefCounted` to new `sync::aref` module
 
- rust/kernel/types.rs | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/block/rnull.rs             |   3 +-
+ rust/kernel/block/mq.rs            |   6 +-
+ rust/kernel/block/mq/operations.rs |   2 +-
+ rust/kernel/block/mq/request.rs    |   3 +-
+ rust/kernel/device.rs              |   8 +-
+ rust/kernel/lib.rs                 |   1 +
+ rust/kernel/sync.rs                |   1 +
+ rust/kernel/sync/aref.rs           | 152 ++++++++++++++++++++
+ rust/kernel/task.rs                |   4 +-
+ rust/kernel/transmute.rs           |  67 +++++++++
+ rust/kernel/types.rs               | 216 +----------------------------
+ rust/kernel/uaccess.rs             |   2 +-
+ 12 files changed, 236 insertions(+), 229 deletions(-)
+ create mode 100644 rust/kernel/sync/aref.rs
+ create mode 100644 rust/kernel/transmute.rs
 
-diff --git a/rust/kernel/types.rs b/rust/kernel/types.rs
-index 9e7ca066355c..e2f3ab11cfda 100644
---- a/rust/kernel/types.rs
-+++ b/rust/kernel/types.rs
-@@ -461,6 +461,15 @@ fn drop(&mut self) {
- }
- 
- /// A sum type that always holds either a value of type `L` or `R`.
-+///
-+/// # Examples
-+///
-+/// ```
-+/// use kernel::types::Either;
-+///
-+/// let left_value: Either<i32, &str> = Either::Left(7);
-+/// let right_value: Either<i32, &str> = Either::Right("right value");
-+/// ```
- pub enum Either<L, R> {
-     /// Constructs an instance of [`Either`] containing a value of type `L`.
-     Left(L),
+
+base-commit: a2f11547052001bd448ccec81dd1e68409078fbb
 -- 
-2.34.1
+2.46.0
 
