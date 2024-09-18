@@ -1,82 +1,271 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2E241ACE0F;
-	Wed, 18 Sep 2024 17:39:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66CF61C9DFF
+	for <rust-for-linux@vger.kernel.org>; Wed, 18 Sep 2024 18:13:16 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726681173; cv=none; b=XhasENx7KzkhN51V1n+uev8F1hz4sbBomzLbyncTKGi7eMWHVHj5aTu9WAJ1bNveO0S3Haf557POx1sMEvXVH2mYPs8h/lAs9dDA7iDfD52D12CAye4X6TkR+1/G0VlOaipchQ/6m+4zYCoHILUuPZ7xF7Jeeka+Y4xj+KVauNU=
+	t=1726683198; cv=none; b=SN2aRlpwjIHAOG4Fn/ZUk/EEp+PXkgBSwsCbMNHJC59ZZHv+bJ6C1g39ZpGBeQtp4y4Kl4hyiiaOD9FB59vs/i2vAOMuoREbw/TrtE2GIhDKeOMQubDkyh592wkbkToOPnPnpehCBfDERMqfZhupWAwrpQ8DZ8ospNkFFaWxXJU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726681173; c=relaxed/simple;
-	bh=6fvGOTYPpuxD1CfR1yv0PU9tWs8bxTCP6YOL9Y+thPc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=ozXc6xAaijDXCnh6fUVJ42uO9hvRSNcn17wPQsQ+9G6JHlrg6FOtqi7l3J5n1mSk0UlELtuTeObaclpCrZB7/HgjSB7I5hHujPctLf5Fh5Zirf0HX/Rp8oKmb7B5TCh9FrFz6bXBmbiIahRIhn9Gq+RXBzc0hWNvUTUl1tJSwEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dQ3OEi6i; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1726683198; c=relaxed/simple;
+	bh=fgypAt171m5So09Wjj7w+t5PaO9kShJN9gLRg5dNG2o=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=LUESEt4XfEzMKlGEH8a4shWWBBL4gSh43kb+YoCFWcWGnrzTUm8VXmr8LeQ+IcdLENZmi/+5CwMjhZx1SQ7TnbDSo+7AL/qCb0MAQlBUYSbv4GJ8gZvyWIU5/Kftv/RI6RCB3SvxRuWbnd1/hqQkYLxttiT8gPaj3f9xirYgAbQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=BeGB10Gw; arc=none smtp.client-ip=185.70.43.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dQ3OEi6i"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03C27C4CEC2;
-	Wed, 18 Sep 2024 17:39:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726681170;
-	bh=6fvGOTYPpuxD1CfR1yv0PU9tWs8bxTCP6YOL9Y+thPc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=dQ3OEi6iVKmBcu4BXzJVHl2FKsTMlM/S1tXhInU+mvobRVRzwc9L3NkmfMMbarvpd
-	 Vg6RqkZVf/71p4X11ixduN0fovtgJ536vmubTa4SxKoPERhQK9NumAM0AzRbpr9E5N
-	 LHivkx31jGC5OR6bWV9LS423/HNhzK/P+Rg25lUw=
-Date: Wed, 18 Sep 2024 19:39:28 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Simona Vetter <simona.vetter@ffwll.ch>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/3] rust: add untrusted data abstraction
-Message-ID: <2024091812-baffle-cubbyhole-34b9@gregkh>
-References: <20240913112643.542914-1-benno.lossin@proton.me>
- <20240913112643.542914-2-benno.lossin@proton.me>
- <ZuRbSxwlz1xWT1pG@phenom.ffwll.local>
- <cf0d6189-e81c-4b7c-ab50-7a297c69b132@proton.me>
- <ZuhTdwCqz61bQEgq@phenom.ffwll.local>
- <26534d80-989d-4b77-9720-84575275890f@proton.me>
- <2024091858-surrender-broadcast-e11f@gregkh>
- <af028585-d253-4460-acdc-99b349f49d47@proton.me>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="BeGB10Gw"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=doooutqqifdwzm5d56xktn2yam.protonmail; t=1726683194; x=1726942394;
+	bh=2tKN1tTfgLVEdmHrDZ46MrwbY6b4WkLLPf4HJl3zkj0=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=BeGB10GwtkrRLhYKS/B7xXoOwd8Q2Rb3GzeoFjhbnLd/wqGErjNjiWQ3U1N6fdGBQ
+	 eeN7Mtni9kvyOlmxKTLuVPJVa4aiY22U+T3FTyGRoXp5dRpTbp4cK7kvcRzCNMqGVE
+	 GVLblhl+ROgFpjNyPGPq5hm3LqvON/2qP19qm9++OB8pPUBYYhedllrnSKPC91Cqnu
+	 nJb6WgsjJocO1qXCNpCAt0j+CIdMfDJcseYve2KqQ/azqZ07T8ax7x5cmXlTGSN9vO
+	 gKcEhR8LieKVdEST30jiKbVqfnFLlORQUshkPGPX4oxXJh+FVnmmvuIE66ssfY3mFv
+	 FZlDLsYW2mzSg==
+Date: Wed, 18 Sep 2024 18:13:11 +0000
+To: Andreas Hindborg <a.hindborg@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Anna-Maria Behnsen <anna-maria@linutronix.de>, Frederic Weisbecker <frederic@kernel.org>, Thomas Gleixner <tglx@linutronix.de>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 02/14] rust: hrtimer: introduce hrtimer support
+Message-ID: <f502f6c6-40b7-4ec4-8d0c-09adb0df1a30@proton.me>
+In-Reply-To: <20240917222739.1298275-3-a.hindborg@kernel.org>
+References: <20240917222739.1298275-1-a.hindborg@kernel.org> <20240917222739.1298275-3-a.hindborg@kernel.org>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: 953dc1dc911ca6c34dab7db4b90dcbf4cf744df6
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <af028585-d253-4460-acdc-99b349f49d47@proton.me>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Sep 18, 2024 at 05:33:33PM +0000, Benno Lossin wrote:
-> On 18.09.24 19:09, Greg KH wrote:
-> > On Wed, Sep 18, 2024 at 03:40:54PM +0000, Benno Lossin wrote:
-> >>>> Yeah, we need more users of this to know the full way to express this
-> >>>> correctly. I would like to avoid huge refactorings in the future.
-> >>>
-> >>> I think adding it to the copy_*_user functions we already have in
-> >>> upstream, and then asking Alice to rebase binder should be a really solid
-> >>> real-world testcase. And I think currently for the things in-flight
-> >>> copy*user is going to be the main source of untrusted data anyway, not so
-> >>> much page cache folios.
-> >>
-> >> Sure. I chose tarfs as the use-case, because Greg mentioned to me that
-> >> it would benefit from adding this API. (I have no prior linux kernel
-> >> experience, so you giving me some pointers where this will be useful is
-> >> very helpful!)
-> > 
-> > I just had tarfs as an easy example where we were reading data off the
-> > disk and acting on it, in a way just like C where if the data is
-> > corrupted we can do "not normal" things.  Sorry it got tied up with
-> 
-> No worries! I was just under the impression that this would be common
-> (maybe it's common for filesystems?), so just having that clarification
-> now makes more sense.
+On 18.09.24 00:27, Andreas Hindborg wrote:
+> This patch adds support for intrusive use of the hrtimer system. For now,
+> only one timer can be embedded in a Rust struct.
+>=20
+> The hrtimer Rust API is based on the intrusive style pattern introduced b=
+y
+> the Rust workqueue API.
+>=20
+> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+> ---
+>  rust/kernel/hrtimer.rs | 231 +++++++++++++++++++++++++++++++++++++++++
+>  rust/kernel/lib.rs     |   1 +
+>  2 files changed, 232 insertions(+)
+>  create mode 100644 rust/kernel/hrtimer.rs
+>=20
+> diff --git a/rust/kernel/hrtimer.rs b/rust/kernel/hrtimer.rs
+> new file mode 100644
+> index 000000000000..5c92afd8eb2c
+> --- /dev/null
+> +++ b/rust/kernel/hrtimer.rs
+> @@ -0,0 +1,231 @@
+> +// SPDX-License-Identifier: GPL-2.0
+> +
+> +//! Intrusive high resolution timers.
+> +//!
+> +//! Allows scheduling timer callbacks without doing allocations at the t=
+ime of
+> +//! scheduling. For now, only one timer per type is allowed.
+> +
+> +use crate::{init::PinInit, prelude::*, time::Ktime, types::Opaque};
+> +use core::marker::PhantomData;
+> +
+> +/// A timer backed by a C `struct hrtimer`.
+> +///
+> +/// # Invariants
+> +///
+> +/// * `self.timer` is initialized by `bindings::hrtimer_init`.
+> +#[repr(transparent)]
+> +#[pin_data]
+> +pub struct Timer<U> {
+> +    #[pin]
+> +    timer: Opaque<bindings::hrtimer>,
+> +    _t: PhantomData<U>,
+> +}
+> +
+> +// SAFETY: A `Timer` can be moved to other threads and used/dropped from=
+ there.
+> +unsafe impl<U> Send for Timer<U> {}
+> +
+> +// SAFETY: Timer operations are locked on C side, so it is safe to opera=
+te on a
+> +// timer from multiple threads
+> +unsafe impl<U> Sync for Timer<U> {}
+> +
+> +impl<T> Timer<T> {
+> +    /// Return an initializer for a new timer instance.
+> +    pub fn new() -> impl PinInit<Self>
+> +    where
+> +        T: TimerCallback,
+> +    {
+> +        pin_init!( Self {
 
-Yes, this would be common for filesystems.
+I would remove the space after the `(`.
+Would be great if we had rustfmt support for custom macros.
+
+> +            // INVARIANTS: We initialize `timer` with `hrtimer_init` bel=
+ow.
+> +            timer <- Opaque::ffi_init(move |place: *mut bindings::hrtime=
+r| {
+> +                // SAFETY: By design of `pin_init!`, `place` is a pointe=
+r live
+> +                // allocation. hrtimer_init will initialize `place` and =
+does not
+> +                // require `place` to be initialized prior to the call.
+> +                unsafe {
+> +                    bindings::hrtimer_init(
+> +                        place,
+> +                        bindings::CLOCK_MONOTONIC as i32,
+> +                        bindings::hrtimer_mode_HRTIMER_MODE_REL,
+> +                    );
+> +                }
+> +
+> +                // SAFETY: `place` is pointing to a live allocation, so =
+the deref
+> +                // is safe.
+> +                let function: *mut Option<_> =3D
+
+Do you really need this type hint?
+
+> +                    unsafe { core::ptr::addr_of_mut!((*place).function) =
+};
+> +
+> +                // SAFETY: `function` points to a valid allocation and w=
+e have
+> +                // exclusive access.
+> +                unsafe { core::ptr::write(function, Some(T::CallbackTarg=
+et::run)) };
+> +            }),
+> +            _t: PhantomData,
+> +        })
+> +    }
+> +
+> +    /// Get a pointer to the contained `bindings::hrtimer`.
+> +    ///
+> +    /// # Safety
+> +    ///
+> +    /// `ptr` must point to a live allocation of at least the size of `S=
+elf`.
+> +    unsafe fn raw_get(ptr: *const Self) -> *mut bindings::hrtimer {
+> +        // SAFETY: The field projection to `timer` does not go out of bo=
+unds,
+> +        // because the caller of this function promises that `ptr` point=
+s to an
+> +        // allocation of at least the size of `Self`.
+> +        unsafe { Opaque::raw_get(core::ptr::addr_of!((*ptr).timer)) }
+> +    }
+> +}
+> +
+> +/// Implemented by pointer types that point to structs that embed a [`Ti=
+mer`].
+> +///
+> +/// Typical implementers would be [`Box<T>`], [`Arc<T>`], [`ARef<T>`] wh=
+ere `T`
+> +/// has a field of type `Timer`.
+> +///
+> +/// Target must be [`Sync`] because timer callbacks happen in another th=
+read of
+> +/// execution (hard or soft interrupt context).
+> +///
+> +/// Scheduling a timer returns a [`TimerHandle`] that can be used to man=
+ipulate
+> +/// the timer. Note that it is OK to call the schedule function repeated=
+ly, and
+> +/// that more than one [`TimerHandle`] associated with a `TimerPointer` =
+may
+> +/// exist. A timer can be manipulated through any of the handles, and a =
+handle
+> +/// may represent a cancelled timer.
+> +///
+> +/// [`Box<T>`]: Box
+> +/// [`Arc<T>`]: crate::sync::Arc
+> +/// [`ARef<T>`]: crate::types::ARef
+> +pub trait TimerPointer: Sync + Sized {
+> +    /// A handle representing a scheduled timer.
+> +    ///
+> +    /// If the timer is armed or if the timer callback is running when t=
+he
+> +    /// handle is dropped, the drop method of `TimerHandle` should not r=
+eturn
+> +    /// until the timer is unarmed and the callback has completed.
+> +    ///
+> +    /// Note: It must be safe to leak the handle.
+> +    type TimerHandle: TimerHandle;
+
+Why does this need to be an associated type? Couldn't we have a
+`TimerHandle<T>` struct? The schedule function below could then return
+`TimerHandle<Self>`.
+
+> +
+> +    /// Schedule the timer after `expires` time units. If the timer was =
+already
+> +    /// scheduled, it is rescheduled at the new expiry time.
+> +    fn schedule(self, expires: Ktime) -> Self::TimerHandle;
+> +}
+
+
+
+> +/// Use to implement the [`HasTimer<T>`] trait.
+> +///
+> +/// See [`module`] documentation for an example.
+> +///
+> +/// [`module`]: crate::hrtimer
+> +#[macro_export]
+> +macro_rules! impl_has_timer {
+> +    (
+> +        impl$({$($generics:tt)*})?
+> +            HasTimer<$timer_type:ty>
+> +            for $self:ty
+> +        { self.$field:ident }
+> +        $($rest:tt)*
+> +    ) =3D> {
+> +        // SAFETY: This implementation of `raw_get_timer` only compiles =
+if the
+> +        // field has the right type.
+> +        unsafe impl$(<$($generics)*>)? $crate::hrtimer::HasTimer<$timer_=
+type>  for $self {
+
+There is a double space in front of `for`.
+
+> +            const OFFSET: usize =3D ::core::mem::offset_of!(Self, $field=
+) as usize;
+> +
+> +            #[inline]
+> +            unsafe fn raw_get_timer(ptr: *const Self) ->
+> +                *const $crate::hrtimer::Timer<$timer_type>
+> +            {
+> +                // SAFETY: The caller promises that the pointer is not d=
+angling.
+> +                unsafe {
+> +                    ::core::ptr::addr_of!((*ptr).$field)
+> +                }
+> +            }
+> +        }
+> +    }
+> +}
+> diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
+> index 274bdc1b0a82..55f846c5a849 100644
+> --- a/rust/kernel/lib.rs
+> +++ b/rust/kernel/lib.rs
+> @@ -34,6 +34,7 @@
+>  pub mod error;
+>  #[cfg(CONFIG_RUST_FW_LOADER_ABSTRACTIONS)]
+>  pub mod firmware;
+> +pub mod hrtimer;
+>  pub mod init;
+>  pub mod ioctl;
+>  #[cfg(CONFIG_KUNIT)]
+> --
+> 2.46.0
+>=20
+>=20
+
