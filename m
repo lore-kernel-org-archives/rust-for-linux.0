@@ -1,86 +1,86 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pf1-f181.google.com (mail-pf1-f181.google.com [209.85.210.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E97F1C8FD6;
-	Wed, 18 Sep 2024 17:09:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9C561C9EBD;
+	Wed, 18 Sep 2024 17:15:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726679367; cv=none; b=HZCdg/SOcJHc/qczCndzELFdWhWIZEERwInCdUULAOKimSxmoiwd75q2Pj9cDysgJXhKo+3xxJmyxUh+mHqODr+ZYU7Ai7LN0aX33uFl3c/CUX8vKF63GSzL5g1+dSjRqDrs6ku+dTtH0o6Gk5ikC840rd7zsesrG09/bbOBliA=
+	t=1726679714; cv=none; b=TEobrdKa4LZKGCz1fRmzJQ/OAS1nLVXbSNtklN8dosmn4kYy9Pc6ZkkoVxF5FfnhbN6koILVg43PU/zphTwC7uVEWO46pp646hAlHNWibARojlCsL9tqz8LksLIXPB6XRo3p43fYWvYcoOhewwPs4Po8tS85TKqwjdCsora4ajU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726679367; c=relaxed/simple;
-	bh=FjdzQixOrS4xco7SjipZFJ0Xmm9C+Bz6r1mwO7Pw+Y4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=SWIbNbjod4uMZHYsYKUsYZKKMS0ZzNc47qQf4ggF7MEgTT2rDrc1Nevx9wgzHrk/1hg36fjOCQeJEqBHLCDXPCnUgVGkz0ud/Z/3zSXFU+1T1iKPQwtpLaS8CED+O05ZAGiMuhtiI5QOqU0qyOFRs5Y1J8OQYTcqSEVyCL0qh50=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o5wvbk1e; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1726679714; c=relaxed/simple;
+	bh=0T4dzBMSx9q2Pd8rRyNMc3An/s/+jpL4XqaACOjlOKw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=RMJANttH4+5LArhif4mun701E5YjJLRSJIN1zTaqvR3XJS4Z/RjzI3Dl4N8hD1IZk0ZmK1UQSBvll/WRwQC6wFrfSXLGfZcC6Y7Ku709amEvq4kfx8yyHvaRyHnRe+hp17pfgIkXK77j7LXae/zAGHKDWzXH48dMUjhOxx7qEw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=JZmKNUWi; arc=none smtp.client-ip=209.85.210.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o5wvbk1e"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 474F1C4CEC6;
-	Wed, 18 Sep 2024 17:09:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1726679366;
-	bh=FjdzQixOrS4xco7SjipZFJ0Xmm9C+Bz6r1mwO7Pw+Y4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=o5wvbk1e6XvoXZbaNeYLCwVF8Qvhzh9ijZpMWH+AZwcEQjZij5nPNvvzhwkMOps6O
-	 GYz2q1lQ3VjgOnBXblrnX3k/FehTsRxafJw3DtNSZMwJpFpdvjlXzFrDaOnY0rE2dd
-	 4x+Dhm8dUwaW5lF+MvCxiwZWZM6jVqE6WQt85ZHg=
-Date: Wed, 18 Sep 2024 19:09:24 +0200
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Simona Vetter <simona.vetter@ffwll.ch>, Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 1/3] rust: add untrusted data abstraction
-Message-ID: <2024091858-surrender-broadcast-e11f@gregkh>
-References: <20240913112643.542914-1-benno.lossin@proton.me>
- <20240913112643.542914-2-benno.lossin@proton.me>
- <ZuRbSxwlz1xWT1pG@phenom.ffwll.local>
- <cf0d6189-e81c-4b7c-ab50-7a297c69b132@proton.me>
- <ZuhTdwCqz61bQEgq@phenom.ffwll.local>
- <26534d80-989d-4b77-9720-84575275890f@proton.me>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="JZmKNUWi"
+Received: by mail-pf1-f181.google.com with SMTP id d2e1a72fcca58-717839f9eb6so1220056b3a.3;
+        Wed, 18 Sep 2024 10:15:12 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1726679712; x=1727284512; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=A7mOTp2QbM6JpO/W/v9h01oSVJjDYr1umsEL0GXcYKM=;
+        b=JZmKNUWizL+DQ79r0bjFTSNSoLgaxXtTjAdwP3jIZ7H5wINmo8xXpJsboyuzTmkNU2
+         NFW8VPmA+lkO4lzOL1+5EEWEfY36IlmNi6lH8JM/ZWkqgl8IdnSSJnvK0ybQsAkFD3s+
+         v4QfBTHrPG4azxQesKdI4gpX30ase45atShM7/yg84Kcm/EKfLGHGSHeB5UFoomYAKXm
+         2PZkPJAwkRVfHq3TYqq6SCznb/YWKWfa3J57Wu/mHaSQupafGKgK/hnphRA2jWPRlcb1
+         D6Dfs9PNBSOPecnIgiy2HtcOHXpFk2wQCDQsIMVCBKZR5Zk3FcxqUi3lpGxTk/9x9EZl
+         DbGg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1726679712; x=1727284512;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=A7mOTp2QbM6JpO/W/v9h01oSVJjDYr1umsEL0GXcYKM=;
+        b=oos8qCFaaMC2QRgf8LxUeAR5YhHnL4D1XGug4U7Bycmj1OchETz+1Bk94pYO+rLw7r
+         eXZm+rcUTSLvhbtaAYUee7JllKfW9kOa6lBv0xrlqBLqh07KJtL4K7VwXeixnLuiqXas
+         OXnBRQrMre2OehsMq0q8gLQkAlmOcGDNSjjQa6AoAjGe3J+RTNdFy5ThjVC4gIVD4n0Q
+         9Ywv/HUo5tY/fva9F8c6BxQMgmRiLP/JdiIruaDNczDLu3nieB2/ubZyI3bDh5PKLcxU
+         oCW3aBmngejOU2jBfOAotEmtlPk/KCAx0s6rn5BH7i0FGqU/QZ/RB9t194xvuDovjxlr
+         wjxA==
+X-Forwarded-Encrypted: i=1; AJvYcCUEKovbqAksj/Rc/hql4Ny9WadJsQAf79FMvbIr2dXHpVA8Y3wCsb+WPooi0D6vF7SwtF/iyPlWx3ixwN+y@vger.kernel.org, AJvYcCVnu36CmLgzdl0+qZIDhAsxIGQTYfKHr8FMJT72c5fNA8L14mFXhnUEoDbp47s4nGKflDZPYTgnRHOxsJM=@vger.kernel.org, AJvYcCXJ/iI40qd+ceO+ctMMm1iUi52jGZgtQxqS6bkySlIgzv5pgJB6ErPcaHHHBQH+cUiVEQAmP3xlOi4b4dl/s0w=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyVOXsKf1OjXGApBE0G3ahyXMRHZ+5kJ85G8ntO6uSeuyClw1Xt
+	NRkBpZ8sfsWmYjopAs2JwKjB66gb4XHZtOfxJeG2NM3bE7u6OCefDGX0Bodb1vrgFvslmkgS1fx
+	vg2kozZKbw1VShha/ZnRPzNVONzI=
+X-Google-Smtp-Source: AGHT+IFF/LgKgX/HNMX/z0sTSTA3m/uP1n0NQbvd23SX9AXcy4JiGh1ahWMx5sX7FZO7LoZTcKcEbe5HMqBMTNNhF7U=
+X-Received: by 2002:a05:6a20:6a20:b0:1cf:3be6:9f65 with SMTP id
+ adf61e73a8af0-1cf756c40eamr15771809637.0.1726679711964; Wed, 18 Sep 2024
+ 10:15:11 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <26534d80-989d-4b77-9720-84575275890f@proton.me>
+References: <20240801-kcfi-v2-2-c93caed3d121@google.com> <20240801-kcfi-v2b-2-c93caed3d121@google.com>
+ <CANiq72=B9NmC=1eSaOrg7XutjueQsSXGcBQb7dQFPuL0SFjPsA@mail.gmail.com> <CANiq72miDK-Z3v46QX9MQTT_raJTz+ja-Qx5j1qBmptHXkhY+A@mail.gmail.com>
+In-Reply-To: <CANiq72miDK-Z3v46QX9MQTT_raJTz+ja-Qx5j1qBmptHXkhY+A@mail.gmail.com>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Wed, 18 Sep 2024 19:14:59 +0200
+Message-ID: <CANiq72mF0_RUU4=-OGCHv-O4MBt5vkNYvNByEAVQ3teA2cEapQ@mail.gmail.com>
+Subject: Re: [PATCH v2b] rust: cfi: add support for CFI_CLANG with Rust
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: a.hindborg@samsung.com, alex.gaynor@gmail.com, benno.lossin@proton.me, 
+	bjorn3_gh@protonmail.com, boqun.feng@gmail.com, gary@garyguo.net, 
+	kees@kernel.org, linux-kbuild@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	masahiroy@kernel.org, mmaurer@google.com, nathan@kernel.org, 
+	nicolas@fjasle.eu, ojeda@kernel.org, peterz@infradead.org, 
+	rust-for-linux@vger.kernel.org, samitolvanen@google.com, wedsonaf@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Sep 18, 2024 at 03:40:54PM +0000, Benno Lossin wrote:
-> >> Yeah, we need more users of this to know the full way to express this
-> >> correctly. I would like to avoid huge refactorings in the future.
-> > 
-> > I think adding it to the copy_*_user functions we already have in
-> > upstream, and then asking Alice to rebase binder should be a really solid
-> > real-world testcase. And I think currently for the things in-flight
-> > copy*user is going to be the main source of untrusted data anyway, not so
-> > much page cache folios.
-> 
-> Sure. I chose tarfs as the use-case, because Greg mentioned to me that
-> it would benefit from adding this API. (I have no prior linux kernel
-> experience, so you giving me some pointers where this will be useful is
-> very helpful!)
+On Mon, Sep 16, 2024 at 6:14=E2=80=AFPM Miguel Ojeda
+<miguel.ojeda.sandonis@gmail.com> wrote:
+>
+>     [ Replaced `!FINEIBT` requirement with `!CALL_PADDING` to prevent
+>       a build error on older Rust compilers. Fixed typo. - Miguel ]
 
-I just had tarfs as an easy example where we were reading data off the
-disk and acting on it, in a way just like C where if the data is
-corrupted we can do "not normal" things.  Sorry it got tied up with
-folios, that is not the normal way drivers work, they either get data
-from userspace through a char device node (ioctls) or from hardware
-(memory copies/reads/something) and for them the "untrusted data"
-abstraction should be much simpler than dealing with a folio.
+I also noticed we need Rust 1.81.0 for the flag rather than 1.80.0 --
+I will send a patch later and/or rebase.
 
-We don't really have any other good examples of drivers in rust yet that
-I could find other than maybe binder, but Alice has already posted her
-solution for how to handle untrusted data there (comes in through a char
-device node and/or a filesystem entry point) but it's much more complex
-and possibly harder to use as a simple example of the api ideas.
-
-thanks,
-
-greg k-h
+Cheers,
+Miguel
