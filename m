@@ -1,68 +1,68 @@
-Received: from mail.avm.de (mail.avm.de [212.42.244.120])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.tlmp.cc (unknown [148.135.17.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D93119D075;
-	Thu, 19 Sep 2024 11:23:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.42.244.120
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B90C319DFB5
+	for <rust-for-linux@vger.kernel.org>; Thu, 19 Sep 2024 13:36:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.135.17.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726744987; cv=none; b=L3g8PehvyeGMH5fDrsZ0DI6VWID9xJtRHFfVnnv2FLNfg9f0UHQRQhdwkVio25kmHkef85dMmYQ8opRtETgYQ1vA6RmcZC8gWEP2QLjxzE013ExBHfaMXLlOzX5PYzYAa2ygy9Yg4zRtLf9d52+JQ9+F+Fn4tx2Un2Be+yRtJMI=
+	t=1726752999; cv=none; b=BaRzcTHzLxNAcRS2zijS7ZIQJoASZVT3ALBnlFz+WMUupbjbsXgDx87eLazIyw30NxXgBmJZtCYx+B3NItCD2kOkKNlgVz4nRsLgfE3ZUExbNaawiygy3gksQgxvgHvs3FpGsPpbXPx1BK+P2p/zTbV7WOQHMbJFeOmG8SrVMFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726744987; c=relaxed/simple;
-	bh=2GcU97FWBzcutfhJlOlsgw8NOSC3pVOmgDLZMGtqtCA=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WWdu/iysDxrsehaCiDbnBJb6p9enrNPJktYX0lGniEN9AEogT7JoGIHof7oCXZmS2motcCnRZoAc8G/BNPBQsei9Cm2T5Ncv+Mx6WkS3jx1vf5EPx7snTazy+n2lSxUgIV7rF7vBs3a5M8kWZHpjiN60lre7K96j/me7l+dURKk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=avm.de; spf=pass smtp.mailfrom=avm.de; dkim=pass (1024-bit key) header.d=avm.de header.i=@avm.de header.b=V9FR4baU; arc=none smtp.client-ip=212.42.244.120
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=avm.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=avm.de
+	s=arc-20240116; t=1726752999; c=relaxed/simple;
+	bh=/KypmyLCgg4+8C3xQrngmxr+U9GlgA4CDXwAOAQzk3Y=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=uOCvMlnuGjOgsbw0No4uVJKCcR1KfbhX4xwOT7+2CpmBDOXj+9RLISuUR3UD3WEt3hBzVpc+JR+sTdC0nZUuz6DG6h5H9O0hbGPzJ17obmbcKIg/kRwXXPuwwnZtgxisdmIM4MRjAg/y2UKipT4SIp9jqO/t9eir0IQm78bsY3s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=tlmp.cc; spf=pass smtp.mailfrom=tlmp.cc; dkim=pass (2048-bit key) header.d=tlmp.cc header.i=@tlmp.cc header.b=Egw2MLlA; arc=none smtp.client-ip=148.135.17.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=tlmp.cc
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tlmp.cc
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=avm.de header.i=@avm.de header.b="V9FR4baU"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=avm.de; s=mail;
-	t=1726744982; bh=2GcU97FWBzcutfhJlOlsgw8NOSC3pVOmgDLZMGtqtCA=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=V9FR4baUo+eGIGwGcTm9cL5MOtiaoW1TQbbuXugV3FzcmvoA+pM8FArQZfkLbOglR
-	 +lgen5s7MqtAsNAr+CroAciJ/TEzMeiqgdNRHPtcVOQYgcRWoy8zU/15ThS9cIjfAd
-	 DqZ6+cuYyar0EbSfg2vU38optsdFCHYC4OHF0HBU=
-Received: from mail-auth.avm.de (dovecot-mx-01.avm.de [212.42.244.71])
-	by mail.avm.de (Postfix) with ESMTPS;
-	Thu, 19 Sep 2024 13:23:02 +0200 (CEST)
-Received: from l-nschier-nb (unknown [83.68.141.146])
-	by mail-auth.avm.de (Postfix) with ESMTPSA id 112D8807BC;
-	Thu, 19 Sep 2024 13:23:03 +0200 (CEST)
-Date: Thu, 19 Sep 2024 13:23:01 +0200
-From: Nicolas Schier <n.schier@avm.de>
-To: Masahiro Yamada <masahiroy@kernel.org>
-Cc: linux-kbuild@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Nathan Chancellor <nathan@kernel.org>
-Subject: Re: [PATCH 07/23] kbuild: remove unnecessary prune of rust/alloc for
- rustfmt
-Message-ID: <ZuwJlaeFfo7CW5dC@l-nschier-nb>
-References: <20240917141725.466514-1-masahiroy@kernel.org>
- <20240917141725.466514-8-masahiroy@kernel.org>
+	dkim=pass (2048-bit key) header.d=tlmp.cc header.i=@tlmp.cc header.b="Egw2MLlA"
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id BDA6F69843;
+	Thu, 19 Sep 2024 09:36:19 -0400 (EDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tlmp.cc; s=dkim;
+	t=1726752990; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=2bExOyozlLKkNWf1a01yisUbY1uNY/FBKGdt0ypk1eE=;
+	b=Egw2MLlABoojgRplxCKWIbnTj4wS4b7uurv5+QF/pOo9VGlKVM3CEdUSlJ00n+RrjzfwdO
+	LePSPIMtBAeY5RcZg54F/qGggZ2ZUvHy1bpHEA/zdStXdZ6zr+545cV37C+iodsKJAh1KS
+	6entuJPqSyjo2B5p3Zx3V57znsDsOXn/Pwlz17DU9+OcgQnW7rTyjKyWbTcOEEPLI4sBvX
+	NOH8wh9pIEqMlieDMC1dylXQZ+EB8o4ZuzJq0b/rw2GYoUAdigON3qWXdsCwv8GePEd2cl
+	qWF4qWlk2mzSL/mE9eAJq9Rx0T0CDGJfMI7Hh5HhIF0AQqvaghu0jGQ23Aih1Q==
+From: Yiyang Wu <toolmanp@tlmp.cc>
+To: rust-for-linux@vger.kernel.org
+Cc: Yiyang Wu <toolmanp@tlmp.cc>
+Subject: [PATCH 0/1] rust: introduce declare_err! autogeneration
+Date: Thu, 19 Sep 2024 21:35:44 +0800
+Message-ID: <20240919133545.942223-1-toolmanp@tlmp.cc>
+X-Mailer: git-send-email 2.46.0
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20240917141725.466514-8-masahiroy@kernel.org>
-X-purgate-ID: 149429::1726744982-91B09E44-B3F29078/0/0
-X-purgate-type: clean
-X-purgate-size: 357
-X-purgate-Ad: Categorized by eleven eXpurgate (R) http://www.eleven.de
-X-purgate: This mail is considered clean (visit http://www.eleven.de for further information)
-X-purgate: clean
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Tue, Sep 17, 2024 at 11:16:35PM +0900, Masahiro Yamada wrote:
-> Commit 9d0441bab775 ("rust: alloc: remove our fork of the `alloc`
-> crate") removed the rust/alloc/ directory.
-> 
-> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-> ---
-> 
->  Makefile | 2 --
->  1 file changed, 2 deletions(-)
+Currently, the error.rs's errno import is done manually by copying the
+comments from include/linux/errno.h and uses the declare_err! to wrap
+the constant errno.
 
-Reviewed-by: Nicolas Schier <n.schier@avm.de>
+However, this reduces the readability and increases difficulty of
+maintaining the error.rs if the errno list is growing too long or
+or if errno.h gets updated for new semantics.
+
+This patchset solves this issues by introducing a rule to generate
+errno_generated.rs by seding the errno.h and
+including the generated file in the error.rs.
+
+This patch is based on the rust-next branch.
+
+Yiyang Wu (1):
+  rust: error: auto-generate error declarations
+
+ rust/.gitignore      |  1 +
+ rust/Makefile        | 14 ++++++++++-
+ rust/kernel/error.rs | 58 +++-----------------------------------------
+ 3 files changed, 18 insertions(+), 55 deletions(-)
+
+-- 
+2.46.0
+
