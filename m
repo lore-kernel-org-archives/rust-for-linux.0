@@ -1,43 +1,43 @@
-Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
+Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBBE519FA9F
-	for <rust-for-linux@vger.kernel.org>; Thu, 19 Sep 2024 14:10:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 436DB19F475;
+	Thu, 19 Sep 2024 14:15:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.134
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726755008; cv=none; b=JrqRmeAeprSm3vbEpXELfFZCH6W6DVEGRk15RG5lqcQxbh2icftopW6/w6yc6nkFC+Uc+ipgIEFzLm/HNM64vcGKNVnh27PfLhXuLOIaAUfnx/9OtDX0oTJ2nyKy3PEGT67EjaBZeC7zCZXCmRn3d8+GLe4ciLK1XunmCaJQ1nw=
+	t=1726755311; cv=none; b=vChx43avfsGRevqYEQBEyMLwNuB827IhYq9stl0Vz1yZw24hn59iWnJsnr2XvOfytWWaPo+/6XYmfry8UaYQCX+tpoutZPq4h+oZr7YfdKmBRJFIktVeTyFMbIu/46jwT1zaj+lwoEEdq8ggqoePnOsl+3/O+YIltgBI2H1VWz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726755008; c=relaxed/simple;
-	bh=tDmLvz/Y7OenXYuiyXOW7bsxhHtOZJEYyrLX/MxP900=;
+	s=arc-20240116; t=1726755311; c=relaxed/simple;
+	bh=KOga4SC1i23o//+1L9L8R3rgFxzKEjiozXYwhCJtYqM=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=aaHaR+bxMWZPPDiccSItuNj45usS5zoqlKCSeornzFUktTE+1Mr+6nLPtlEMfYnbsbbjziXGDY9MqIbdZVqngSDdQvNEPk4UbsvZcvGn6sNzuuxZXVB0iQbU8PaHUePyzlKv1dc0Ntg2OBai2NKC7N9N0xthnR1IPFGgLWtnfmc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=SBuIOvVo; arc=none smtp.client-ip=185.70.40.133
+	 MIME-Version:Content-Type; b=SUSzzcQ8ywdE8L5cl9bK43EGzb3s96MH/KxSi/TYwC90mw99nFhJrwFFoG5Rn5U6vpvcY2DkiRuHNEfTVMxOu3hM8aiSPSyvxWZltA4ED9p+ENp3qHXjACmNDy475CdFO3S6NaiDVZ7NMUMGJ7dfGpokGUGajdIOL03FlafdHQg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=hM1CCv04; arc=none smtp.client-ip=185.70.40.134
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="SBuIOvVo"
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="hM1CCv04"
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1726755004; x=1727014204;
-	bh=96ZYgEByMfbz6YW/0tUf2gqunHhdd5rTtOylGYwYymE=;
+	s=protonmail; t=1726755307; x=1727014507;
+	bh=8N+kn0X34iYoaUsWVNZUgCP4SUSsHwlQ0rPgNJGb1U8=;
 	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
 	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
 	 Message-ID:BIMI-Selector;
-	b=SBuIOvVokMrDdEne4qDvbt6MHDRROwv+VVKRZSdyJ3a9Fs7fwUbFQZygYNeAaw2XM
-	 hMtjkepMV3p2pon/eqVkePmTlZZGhlrpsgtcNzQ7+m/FdlaIajNvkp7qBxJPabACEe
-	 o73hZ1Ge3mB5I67dTslDaIB2WweFu5ghRqCynvmVUH+NwvwQLr6j9VO/4s+sBGIuMw
-	 uQ84HoiBcMTICUtGPPoJm3IyLSg8dmLCnf7tgGQ3DfWrne2mUUp1t/3/H2IlI4up6I
-	 YFk3CRNxKZoGias9vloXAzIImoO3IFGPAV1vzkniS/5YjBNq7Re17kExrMaoI0Ngme
-	 CBkqWqgzfg/yg==
-Date: Thu, 19 Sep 2024 14:09:58 +0000
-To: Andreas Hindborg <a.hindborg@kernel.org>
+	b=hM1CCv04YiSFu3AOp8LkaJ02KEZxUxxb+8airbLE6//wjnSqMfkN7le4CvL5BD/8l
+	 H7FEezl6Gz6Zmy+toreMu9jXYmpKkmPXRUiQsRK3bFrFQfQZlOUAxLv3/U8+7BWkJp
+	 +L5M/8U+NjnKEe07t6EH4uzs3rXQN07/6swwoeTiZDuqK8MUE9vy47XbeyGsCw9NC/
+	 jP/7Hh+ofYk9Bghxv8CR5rvxlupyhpigK4jSuTOkXBYlxDZdl9JgdHDcldC8aBMUvk
+	 dwuRdb3EQVzuT96ESSeQxfucveUCr2wAmFIqyGuNZTSWnyVDSD9OggcjeqStmZXvZF
+	 LXUf7UQLx8PHw==
+Date: Thu, 19 Sep 2024 14:15:02 +0000
+To: Andreas Hindborg <a.hindborg@kernel.org>, Gary Guo <gary@garyguo.net>
 From: Benno Lossin <benno.lossin@proton.me>
-Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Anna-Maria Behnsen <anna-maria@linutronix.de>, Frederic Weisbecker <frederic@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 02/14] rust: hrtimer: introduce hrtimer support
-Message-ID: <33c65715-3af5-44f9-93c5-149d07a4c503@proton.me>
-In-Reply-To: <878qvojj0o.fsf@kernel.org>
-References: <20240917222739.1298275-1-a.hindborg@kernel.org> <20240917222739.1298275-3-a.hindborg@kernel.org> <Wohby8PLjQeZ47sXKGeWKOxdA2ShTjjvqOM6xWzhJY1aZ-SYk9TCDAnZN2EqiWuJUKwPKoFCsCofDHjtfeG--w==@protonmail.internalid> <f502f6c6-40b7-4ec4-8d0c-09adb0df1a30@proton.me> <878qvojj0o.fsf@kernel.org>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Anna-Maria Behnsen <anna-maria@linutronix.de>, Frederic Weisbecker <frederic@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Boqun Feng <boqun.feng@gmail.com>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 04/14] rust: sync: add `Arc::clone_from_raw`
+Message-ID: <19760254-bc0b-49e2-88a0-7088ab55d9b1@proton.me>
+In-Reply-To: <87zfo4i3nc.fsf@kernel.org>
+References: <20240917222739.1298275-1-a.hindborg@kernel.org> <20240917222739.1298275-5-a.hindborg@kernel.org> <43b9bc9b-f64c-4421-8cf2-795f1f0ec94a@proton.me> <6J_M8_wAnE5epFRUo8RBkYFL5p36woueX8MHQleKVFw_WOitLFZNQ6808RjS7RmizhQ07qDQpze2G3UDLZgHDA==@protonmail.internalid> <20240918211211.73b1324e.gary@garyguo.net> <87zfo4i3nc.fsf@kernel.org>
 Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: ca01b5eda54d01da0110fc778d9fccfa6d2c6792
+X-Pm-Message-ID: a4840b0f3aaae0674dba73bc5a819c869b64e028
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -47,93 +47,80 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On 19.09.24 07:43, Andreas Hindborg wrote:
-> Hi Benno,
+On 19.09.24 08:00, Andreas Hindborg wrote:
+> "Gary Guo" <gary@garyguo.net> writes:
 >=20
-> Thanks for the feedback. I will incorporate all the whitespace
-> suggestions you have =3DF0=3D9F=3D91=3D8D
-
-There seems to be something wrong with the encoding in this email, is
-that an issue on my side or yours?
-
-> "Benno Lossin" <benno.lossin@proton.me> writes:
->=20
->> On 18.09.24 00:27, Andreas Hindborg wrote:
+>> On Wed, 18 Sep 2024 18:19:20 +0000
+>> Benno Lossin <benno.lossin@proton.me> wrote:
+>>
+>>> On 18.09.24 00:27, Andreas Hindborg wrote:
 > [...]
->>> +
->>> +impl<T> Timer<T> {
->>> +    /// Return an initializer for a new timer instance.
->>> +    pub fn new() -> impl PinInit<Self>
->>> +    where
->>> +        T: TimerCallback,
->>> +    {
->>> +        pin_init!( Self {
+>>>> +    pub unsafe fn clone_from_raw(ptr: *const T) -> Self {
+>>>> +        // SAFETY: The caller promises that this pointer points to da=
+ta
+>>>> +        // contained in an `Arc` that is still valid.
+>>>> +        let inner =3D unsafe { ArcInner::container_of(ptr).as_ref() }=
+;
+>>>> +
+>>>> +        // INVARIANT: C `refcount_inc` saturates the refcount, so it =
+cannot
+>>>> +        // overflow to zero. SAFETY: By the function safety requireme=
+nt, there
+>>>> +        // is necessarily a reference to the object, so it is safe to=
+ increment
+>>>> +        // the refcount.
+>>>> +        unsafe { bindings::refcount_inc(inner.refcount.get()) };
+>>>> +
+>>>> +        // SAFETY: We just incremented the refcount. This increment i=
+s now owned by the new `Arc`.
+>>>> +        unsafe { Self::from_inner(inner.into()) }
+>>>
+>>> The implementation of this function looks a bit strange to me, how abou=
+t
+>>> this?:
+>>>
+>>>     // SAFETY: this function has the same safety requirements as `from_=
+raw`.
+>>>     let arc =3D unsafe { Self::from_raw(ptr) };
+>>>     let clone =3D arc.clone();
+>>>     // Prevent decrementing the refcount.
+>>>     mem::forget(arc);
+>>>     clone
+>>>
+>>> (of course you would need to change the safety requirements of
+>>> `clone_from_raw` to point to `from_raw`)
 >>
->> I would remove the space after the `(`.
->> Would be great if we had rustfmt support for custom macros.
->=20
-> Yes, that would be great!
->=20
+>> Wouldn't this function simply be
 >>
->>> +            // INVARIANTS: We initialize `timer` with `hrtimer_init` b=
-e=3D
-> low.
->>> +            timer <- Opaque::ffi_init(move |place: *mut bindings::hrti=
-m=3D
-> er| {
->>> +                // SAFETY: By design of `pin_init!`, `place` is a poin=
-t=3D
-> er live
->>> +                // allocation. hrtimer_init will initialize `place` an=
-d=3D
->  does not
->>> +                // require `place` to be initialized prior to the call=
-.
->>> +                unsafe {
->>> +                    bindings::hrtimer_init(
->>> +                        place,
->>> +                        bindings::CLOCK_MONOTONIC as i32,
->>> +                        bindings::hrtimer_mode_HRTIMER_MODE_REL,
->>> +                    );
->>> +                }
->>> +
->>> +                // SAFETY: `place` is pointing to a live allocation, s=
-o=3D
->  the deref
->>> +                // is safe.
->>> +                let function: *mut Option<_> =3D3D
+>> =09// SAFETY: ...
+>> =09let borrow =3D unsafe { ArcBorrow::from_raw(ptr) }
+>>   =09borrow.into()
 >>
->> Do you really need this type hint?
->=20
-> Apparently not!
->=20
-> [...]
->>> +pub trait TimerPointer: Sync + Sized {
->>> +    /// A handle representing a scheduled timer.
->>> +    ///
->>> +    /// If the timer is armed or if the timer callback is running when=
- =3D
-> the
->>> +    /// handle is dropped, the drop method of `TimerHandle` should not=
- =3D
-> return
->>> +    /// until the timer is unarmed and the callback has completed.
->>> +    ///
->>> +    /// Note: It must be safe to leak the handle.
->>> +    type TimerHandle: TimerHandle;
+>> ?
 >>
->> Why does this need to be an associated type? Couldn't we have a
->> `TimerHandle<T>` struct? The schedule function below could then return
->> `TimerHandle<Self>`.
+>> Maybe this function doesn't even need to exist...
 >=20
-> At one point, I had some cycles in trait resolution. Moving generics to
-> associated types solved that issue. Maybe this can be changed to a
-> generic. But are generics preferred over associated types for some
-> reason?
+> Maybe that could work. But my use case does not satisfy the safety
+> requirements on `ArcBorrow::from_raw`. The`Arc::into_raw` was not
+> called. Perhaps we can update the requirements for that function?
 
-The associated type is more complicated IMO, because then every
-implementer of the trait needs to create one. If we can avoid that, I
-would prefer a generic type.
+If I understood the code correctly, you are essentially doing this:
+
+    let arc =3D Arc::<T>::new(..);
+    let ptr =3D Arc::as_ptr(&arc);
+    let ptr =3D T::raw_get_timer(ptr);
+    let ptr =3D Timer::raw_get(ptr);
+
+    // ptr is now used by the timer subsystem to fire the timer
+
+    let ptr =3D ptr.cast::<Timer>();
+    let ptr =3D T::timer_container_of(ptr);
+    let borrow =3D ArcBorrow::from_raw(ptr);
+    let arc =3D borrow.into();
+
+The only thing that we would have to change would be adding
+`Arc::as_ptr` as a source in the `ArcBorrow::from_raw` safety
+requirements.
 
 ---
 Cheers,
