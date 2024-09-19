@@ -1,83 +1,209 @@
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 15D1D19E82C
-	for <rust-for-linux@vger.kernel.org>; Thu, 19 Sep 2024 14:39:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 509661A2548;
+	Thu, 19 Sep 2024 15:13:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.113
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726756794; cv=none; b=GRwTgkcNKQhnM7/j/D3WDigsVFKKG4gcH5MAXi0DD/yvVdGlzNdwQxsZMaGkviEAuaDwm+bg3++in2HZvLINXPlszbGQKZlQay7uI17pTPl1xQxmhF/Z83TQ6u3Nh8VMnMMnwwAnPIEdu5lNFRibYXsGUkDLcV1RZPonnVBK6mg=
+	t=1726758866; cv=none; b=Pp8IazVP+76NY+jncEDHgOLpvIKm25zk1aX6B1JDYcaQXq8pZruzBpVtAavD15opjHmL+Jkh9gDqKhD3Wy5sZAOK5d6NE+yrbUzk6J9oBOjOINepvYiA2vKdIWBWRz4dLLuN3oxcsTtuHR/vrL2KqzVe2YkCDHDUCDbUvQ1GdyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726756794; c=relaxed/simple;
-	bh=88r3s4Gt43BwSsZMQMD3IOoTkbYAGoLuCOgRZJhZcT0=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=bUIOlPh2shkIkAjt2oPn1WZDHg1Ab/kw5LBcba73hP56vrWbgORE+beC85uOuV6yxFsvNQNw7mT6p25wpS6/E/4VP0GLGGjGLvcSA6cqwG0mP+60qcxkVdxch+io1zeYVOUFRaMhwLZyCM7eX7inadtYJCcxeGDnAJtcw7x/7hI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=J9pc70EG; arc=none smtp.client-ip=185.70.43.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1726758866; c=relaxed/simple;
+	bh=aA6ncyqbB5zG1a+0fNn+ZX9FSpsfipgLPNOmW1nff8c=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=svFnHG/TnBB+aZwfMoRB6WEB00qFnkfNVHAEocJntmDPAkWZzaHxx8qBhFtDJ+adjXKMLLC0swy+EZcR5EalLx9Bt4VACnYVYQGHnaVdKv+aq1e9YTOY5lk/oi4EmkguGQoOXhnO5c69cEOJCJ3yAG5pePJ1rlQpHiWvxatorg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=qSQdo6Lm; arc=none smtp.client-ip=115.124.30.113
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="J9pc70EG"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1726756790; x=1727015990;
-	bh=/GXV+D9CyT5Q1quPesTWQXOslu02sMlxmIBaL2Uvh9o=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=J9pc70EG/xIHzMF68j93AhX/QkvH24oFfWsUDMRnhTWfR5sAjNnXMbF4hWgdSUW3u
-	 hE/qOko2lhzhFGyyB9+NsrJmcokYTdvY6mttE6auokk0ZEqPgRLuRmsdpzW9b/qpny
-	 ZQqDYOTxL+5jbwnrqtNXguSEZE7yqvD1S0F/sOfudSYsIjp+5x0HoJHEyx2I3vYQeH
-	 xT/owx86wiTxnZ8RJ9zUzDTrKG6ddGRkQ+wEkqgteTpaN/+70dLLgVFgLqLjgzmHqw
-	 BTRXiCTBZgFCCfEMepVPTr2phDPCFbNBqLTAuQqda3N0RN7aQDpPcolVEKDYPx0kL1
-	 J3cq0DVSCD75Q==
-Date: Thu, 19 Sep 2024 14:39:46 +0000
-To: Aliet Exposito Garcia <aliet.exposito@gmail.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org
-Subject: Re: [PATCH 2/2] rust: Move `ARef<T>` and `AlwaysRefCounted` to new `sync::aref` module
-Message-ID: <cc9cf121-93dc-43f7-97ef-e3532aae56d4@proton.me>
-In-Reply-To: <20240918225115.2309224-3-aliet.exposito@gmail.com>
-References: <20240918225115.2309224-1-aliet.exposito@gmail.com> <20240918225115.2309224-3-aliet.exposito@gmail.com>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 4d310cb514cf44052b1cecc3ed4408b5952cd5e5
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="qSQdo6Lm"
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1726758824; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=5VCFEuYCnHsfOuo1YYnMThvXIJQAqGa76+hoecHZapM=;
+	b=qSQdo6LmLHBbbh2nJBAp1ZgWqrucWl39jfPg2PO5vCgHBX0pJFHcfqdSBEkc9EcxYyiArtPe7Vj2YUP2PtvCdSkJo16zZj3kEbzywUpwzcQ4T42bUcLI3aILGqnEHOSwdbNRV9EGZuLD3rAig7T6quZCfQuxYEegFjxHNtJ6cMo=
+Received: from 30.27.101.7(mailfrom:hsiangkao@linux.alibaba.com fp:SMTPD_---0WFI-2kQ_1726758821)
+          by smtp.aliyun-inc.com;
+          Thu, 19 Sep 2024 23:13:43 +0800
+Message-ID: <9bbbac63-c05f-4f7b-91c2-141a93783cd3@linux.alibaba.com>
+Date: Thu, 19 Sep 2024 23:13:41 +0800
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 03/24] erofs: add Errno in Rust
+To: Benno Lossin <benno.lossin@proton.me>, Gary Guo <gary@garyguo.net>,
+ Yiyang Wu <toolmanp@tlmp.cc>
+Cc: linux-erofs@lists.ozlabs.org, rust-for-linux@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
+ Al Viro <viro@zeniv.linux.org.uk>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+References: <20240916135634.98554-1-toolmanp@tlmp.cc>
+ <20240916135634.98554-4-toolmanp@tlmp.cc>
+ <20240916210111.502e7d6d.gary@garyguo.net>
+ <2b04937c-1359-4771-86c6-bf5820550c92@linux.alibaba.com>
+ <ac871d1e-9e4e-4d1b-82be-7ae87b78d33e@proton.me>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
+In-Reply-To: <ac871d1e-9e4e-4d1b-82be-7ae87b78d33e@proton.me>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-On 19.09.24 00:51, Aliet Exposito Garcia wrote:
-> This patch refactors the `ARef` type and `AlwaysRefCounted` trait from
-> `types.rs` into a new `sync/aref.rs` module.
-> The type and trait definitions remain unchanged.
->  - Adds `rust/kernel/sync/aref.rs` with the definitions of `ARef` and
->     `AlwaysRefCounted`
->  - Removes the same type and trait definitions from `rust/kernel/types.rs=
-`
->  - Updates relevant files to import `ARef` and `AlwaysRefCounted` from
->     `sync/aref.rs`
->=20
-> Suggested-by: Benno Lossin <benno.lossin@proton.me>
->=20
-> Link: https://github.com/Rust-for-Linux/linux/issues/1117
-> Signed-off-by: Aliet Exposito Garcia <aliet.exposito@gmail.com>
+Hi Benno,
+
+On 2024/9/19 21:45, Benno Lossin wrote:
+> Hi,
+> 
+> Thanks for the patch series. I think it's great that you want to use
+> Rust for this filesystem.
+> 
+> On 17.09.24 01:58, Gao Xiang wrote:
+>> On 2024/9/17 04:01, Gary Guo wrote:
+>>> Also, it seems that you're building abstractions into EROFS directly
+>>> without building a generic abstraction. We have been avoiding that. If
+>>> there's an abstraction that you need and missing, please add that
+>>> abstraction. In fact, there're a bunch of people trying to add FS
+>>
+>> No, I'd like to try to replace some EROFS C logic first to Rust (by
+>> using EROFS C API interfaces) and try if Rust is really useful for
+>> a real in-tree filesystem.  If Rust can improve EROFS security or
+>> performance (although I'm sceptical on performance), As an EROFS
+>> maintainer, I'm totally fine to accept EROFS Rust logic landed to
+>> help the whole filesystem better.
+> 
+> As Gary already said, we have been using a different approach and it has
+> served us well. Your approach of calling directly into C from the driver
+> can be used to create a proof of concept, but in our opinion it is not
+> something that should be put into mainline. That is because calling C
+> from Rust is rather complicated due to the many nuanced features that
+> Rust provides (for example the safety requirements of references).
+> Therefore moving the dangerous parts into a central location is crucial
+> for making use of all of Rust's advantages inside of your code.
+
+I'm not quite sure about your point honestly.  In my opinion, there
+is nothing different to use Rust _within a filesystem_ or _within a
+driver_ or _within a Linux subsystem_ as long as all negotiated APIs
+are audited.
+
+Otherwise, it means Rust will never be used to write Linux core parts
+such as MM, VFS or block layer. Does this point make sense? At least,
+Rust needs to get along with the existing C code (in an audited way)
+rather than refuse C code.
+
+My personal idea about Rust: I think Rust is just another _language
+tool_ for the Linux kernel which could save us time and make the
+kernel development better.
+
+Or I wonder why not writing a complete new Rust stuff instead rather
+than living in the C world?
+
+> 
+>> For Rust VFS abstraction, that is a different and indepenent story,
+>> Yiyang don't have any bandwidth on this due to his limited time.
+> 
+> This seems a bit weird, you have the bandwidth to write your own
+> abstractions, but not use the stuff that has already been developed?
+
+It's not written by me, Yiyang is still an undergraduate tudent.
+It's his research project and I don't think it's his responsibility
+to make an upstreamable VFS abstraction.
+
+> 
+> I have quickly glanced over the patchset and the abstractions seem
+> rather immature, not general enough for other filesystems to also take
+
+I don't have enough time to take a full look of this patchset too
+due to other ongoing work for now (Rust EROFS is not quite a high
+priority stuff for me).
+
+And that's why it's called "RFC PATCH".
+
+> advantage of them. They also miss safety documentation and are in
+
+I don't think it needs to be general enough, since we'd like to use
+the new Rust language tool within a subsystem.
+
+So why it needs to take care of other filesystems? Again, I'm not
+working on a full VFS abstriction.
+
+Yes, this patchset is not perfect.  But I've asked Yiyang to isolate
+all VFS structures as much as possible, but it seems that it still
+touches something.
+
+> general poorly documented.
+
+Okay, I think it can be improved then if you give more detailed hints.
+
+> 
+> Additionally, all of the code that I saw is put into the `fs/erofs` and
+> `rust/erofs_sys` directories. That way people can't directly benefit
+> from your code, put your general abstractions into the kernel crate.
+> Soon we will be split the kernel crate, I could imagine that we end up
+> with an `fs` crate, when that happens, we would put those abstractions
+> there.
+> 
+> As I don't have the bandwidth to review two different sets of filesystem
+> abstractions, I can only provide you with feedback if you use the
+> existing abstractions.
+
+I think Rust is just a tool, if you could have extra time to review
+our work, that would be wonderful!  Many thanks then.
+
+However, if you don't have time to review, IMHO, Rust is just a tool,
+I think each subsystem can choose to use Rust in their codebase, or
+I'm not sure what's your real point is?
+
+> 
+>> And I _also_ don't think an incomplete ROFS VFS Rust abstraction
+>> is useful to Linux community
+> 
+> IIRC Wedson created ROFS VFS abstractions before going for the full
+> filesystem. So it would definitely be useful for other read-only
+> filesystems (as well as filesystems that also allow writing, since last
+> time I checked, they often also support reading).
+
+Leaving aside everything else, an incomplete Rust read-only VFS
+abstraction itself is just an unsafe stuff.
+
+> 
+>> (because IMO for generic interface
+>> design, we need a global vision for all filesystems instead of
+>> just ROFSes.  No existing user is not an excuse for an incomplete
+>> abstraction.)
+> 
+> Yes we need a global vision, but if you would use the existing
+> abstractions, then you would participate in this global vision.
+> 
+> Sorry for repeating this point so many times, but it is *really*
+> important that we don't have multiple abstractions for the same thing.
+
+I've expressed my viewpoint.
+
+> 
+>> If a reasonble Rust VFS abstraction landed, I think we will switch
+>> to use that, but as I said, they are completely two stories.
+> 
+> For them to land, there has to be some kind of user. For example, a rust
+> reference driver, or a new filesystem. For example this one.
+
+Without a full proper VFS abstraction, it's just broken and
+needs to be refactored.  And that will be painful to all
+users then.
+
+=======
+In the end,
+
+Other thoughts, comments are helpful here since I wonder how "Rust
+-for-Linux" works in the long term, and decide whether I will work
+on Kernel Rust or not at least in the short term.
+
+Thanks,
+Gao Xiang
+
+> 
 > ---
->  drivers/block/rnull.rs             |   3 +-
->  rust/kernel/block/mq.rs            |   6 +-
->  rust/kernel/block/mq/operations.rs |   2 +-
->  rust/kernel/block/mq/request.rs    |   3 +-
->  rust/kernel/device.rs              |   8 +-
->  rust/kernel/sync.rs                |   1 +
->  rust/kernel/sync/aref.rs           | 152 +++++++++++++++++++++++++++++
->  rust/kernel/task.rs                |   4 +-
->  rust/kernel/types.rs               | 152 +----------------------------
->  9 files changed, 167 insertions(+), 164 deletions(-)
->  create mode 100644 rust/kernel/sync/aref.rs
-
-Reviewed-by: Benno Lossin <benno.lossin@proton.me>
-
----
-Cheers,
-Benno
+> Cheers,
+> Benno
+> 
 
