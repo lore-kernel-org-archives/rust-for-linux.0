@@ -1,131 +1,98 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36C3F14A4D2;
-	Thu, 19 Sep 2024 06:01:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E393118A957
+	for <rust-for-linux@vger.kernel.org>; Thu, 19 Sep 2024 06:17:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726725700; cv=none; b=fOZGA0Qw/QBfre4hVwjAojMunVQudLoLFdmWANffil7hUpiqTeXHHr4kEryeNTcvCFBiKliuJ9fz1DBMQouNNwg4SKDBlzENCDJP/gBFBW61lg1dX8Q2j7Mxb0IxS81G4vfjVztU88twXTMe+sTtdPBOm1cJvfu9mAQa/p/k6D4=
+	t=1726726682; cv=none; b=ZskQhmb69l7/ImjnE2u/oAaYRBTXfU1+sT9/U1lFc7e3I+IUCL1V/S0UgN4tEsRJb2UPcQr3m8iCPMQNCiCgJGwRBuHWscIzqFj003XZp0PIvyV7meB8rq5MvY07LhHcE07XX9te/F7qw5Xm9WkMaJv8nDXHQB5BNA2nInoYyvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726725700; c=relaxed/simple;
-	bh=Tavix2DjYUpx/L6KLOj9yAdZF5jGIMZhgXaAgOdqhy0=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=lm0CkcaKDCUyFCznvWAQeDukg0FTwS2nxsvPSScMuYOuISgcIyqTuoBpqFvQjDDBLol310yTs9ZIgxVqRe2DavINpB5V7phcdlY2QBQkPduEcYBBUKGzoJ1RrNjBIHdkkvW0Gpqa6Fow6so9Yn5lz22L6gqMAPGbeOPNnZ74mBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=q6+IMQEY; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1726726682; c=relaxed/simple;
+	bh=drHiTrZGIbdD9m9cxZ5KaLt5PLoDqs6yDSgFCLJgi5I=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=fr1eHfYG7QVOGiyDJqWTDborpKffGfPKBWo5y986HG4Z1/ugw/AScBLI0606MYY67XuE60fQHZPsKM17RbNrskPkoq9A2IYOQoMLf72TayYuUC5Oiib9zueIWggX6RK+Ym/Mdte5y5laL5fdckuT9PKQ8T3qSZB/I2eRs9/DWtE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FaYFrih8; arc=none smtp.client-ip=209.85.128.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="q6+IMQEY"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABC78C4CEC4;
-	Thu, 19 Sep 2024 06:01:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726725699;
-	bh=Tavix2DjYUpx/L6KLOj9yAdZF5jGIMZhgXaAgOdqhy0=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=q6+IMQEYsIWaRUXZimA6J9n8+NQK6W5laZfVkHahJRlJMnBNn883iGbYWd4EksTwF
-	 It3Ypy+hKFJ50K6k5mynJ1qmGnxzan+YIoFOeHnXHJW29xYdinDvjVgfy06PaHPw+q
-	 N0S4gs1pk5t0mtaCdzEmMHsmYY4PgrfIYupOZVxOwx+bjanrbyy/ueifgvhLv1VROW
-	 cfGTHvh9i544pDFXmb5UXMuJnlmNYlsb6ocla8gZPHN6aqZiuDrCI7UAHc5fmtgIey
-	 tiwzdYKSr9/MGGUr6p8nZCB0kCTdJWxPd1B/j3nVBW1qsN1gBvLMVStmISncyDx9IO
-	 3y2t41Uekc8lw==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Benno Lossin" <benno.lossin@proton.me>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
- <alex.gaynor@gmail.com>,  "Anna-Maria Behnsen" <anna-maria@linutronix.de>,
-  "Frederic Weisbecker" <frederic@kernel.org>,  "Thomas Gleixner"
- <tglx@linutronix.de>,  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo"
- <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  "Alice
- Ryhl" <aliceryhl@google.com>,  <rust-for-linux@vger.kernel.org>,
-  <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 02/14] rust: hrtimer: introduce hrtimer support
-In-Reply-To: <f502f6c6-40b7-4ec4-8d0c-09adb0df1a30@proton.me> (Benno Lossin's
-	message of "Wed, 18 Sep 2024 18:13:11 +0000")
-References: <20240917222739.1298275-1-a.hindborg@kernel.org>
-	<20240917222739.1298275-3-a.hindborg@kernel.org>
-	<Wohby8PLjQeZ47sXKGeWKOxdA2ShTjjvqOM6xWzhJY1aZ-SYk9TCDAnZN2EqiWuJUKwPKoFCsCofDHjtfeG--w==@protonmail.internalid>
-	<f502f6c6-40b7-4ec4-8d0c-09adb0df1a30@proton.me>
-Date: Thu, 19 Sep 2024 07:43:19 +0200
-Message-ID: <878qvojj0o.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FaYFrih8"
+Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-42cb1e623d1so3981625e9.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 18 Sep 2024 23:17:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1726726678; x=1727331478; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=2ZL7k5kl10Cd4+ycwob7PCF2YJq0BzwUlfnL19Gx80U=;
+        b=FaYFrih8ewQRTXIUa332EpLfFXXWvz5TIkCMPO/bUIMvabTHlxUeixG7cW2muU+Tmh
+         4PzWdA8inxr+9XdANC0cjsp8u1UyTe++ZbinHug8Cc2htVvyYEi2+me2qoqaNnHia3XF
+         OEPHE/XRex2/Z9odH+6S/neop7g/gLFPj5CsOS6kGD4Zx0bsI240Ti3Frvc6RYnaOH84
+         02fyhGgSsyoDzfg+PJWjrE9ejNR7tPZmQ6ADJrmvEQv+rl++kBTKpF2RlXuNBXVzkkxQ
+         FQae0f0rQaJiaJWFiVe7yLXIk+aBOtFG4aIa/blAVdYSOPtaUfjfP2dhTUI/L9zuGklR
+         oXWg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1726726678; x=1727331478;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2ZL7k5kl10Cd4+ycwob7PCF2YJq0BzwUlfnL19Gx80U=;
+        b=PHzq1sO0o+/qAOQ2NpUFfc3gZX56mHB++0Kz1wMWUVQd/iAhAJ//Z7wISHMhuZsedb
+         1uaN1yMsCAqzEDPF1ym6L6KEXobOk/fYpJQZvG0wvCNKBm3t5d582wy3JSlk/GJfEqJI
+         Nu0qXeHiok4uSOEEbUwWw9g1ReF5Qaa/u0GcOcEn4hF/MkTYuXSU2kPxn5yF+K2nbTjy
+         oUsUzGOLoXWsFZokj4XHQvdLIAcLQQQ66F/X9WHcrggH4JAJ0CShkpHt6NhtLKx6w9MF
+         sinrb3wKQFroBcPgjKzos7eThVdGinQa935i98LKVMgl5JCjm15ErLqG/xzxdlfCds1R
+         pWQQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUtKrFzJKPcB9LT0RTM7KsZkWE1jE+gfEeAu8JYUhhT16dLutUJva8XXSGnsmUOMkXOPhJ6QkpMFL5EXD2tfg==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx1Nlbmu2V5/232ptnhQpsqOk8lvqv7rRsvkkFK9TN6iaB1yvhy
+	rLXCrToxjLu9OjTfyxCoH9WVyHsz7mJdO4MuitbpP8DiverIr+J4SPCxagzIeX3TpnEGT+QbZ3+
+	+X7vdGfIWoQEdDSJ0riwY9o32m22m69OfXbvv
+X-Google-Smtp-Source: AGHT+IEv0Hb/pxkbcM7u49CU9rhXxPCHskB33M65/kNvWzendN9J/iLoewCRd3ZirTm/ihKlJl9xLQ5NeaXoC0pBL4w=
+X-Received: by 2002:adf:f0cd:0:b0:371:7c71:9ab2 with SMTP id
+ ffacd0b85a97d-378c2d55524mr13476034f8f.52.1726726678067; Wed, 18 Sep 2024
+ 23:17:58 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain
+References: <20240919043707.206400-1-fujita.tomonori@gmail.com>
+In-Reply-To: <20240919043707.206400-1-fujita.tomonori@gmail.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Thu, 19 Sep 2024 08:17:42 +0200
+Message-ID: <CAH5fLgiJyvSztvCDz8KZ4kF0--a0mqi7M4WowB==CCs2FmVk8A@mail.gmail.com>
+Subject: Re: [PATCH net] net: phy: qt2025: Fix warning: unused import DeviceId
+To: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, andrew@lunn.ch, 
+	tmgross@umich.edu, kernel test robot <lkp@intel.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Benno,
-
-Thanks for the feedback. I will incorporate all the whitespace
-suggestions you have =F0=9F=91=8D
-
-"Benno Lossin" <benno.lossin@proton.me> writes:
-
-> On 18.09.24 00:27, Andreas Hindborg wrote:
-[...]
->> +
->> +impl<T> Timer<T> {
->> +    /// Return an initializer for a new timer instance.
->> +    pub fn new() -> impl PinInit<Self>
->> +    where
->> +        T: TimerCallback,
->> +    {
->> +        pin_init!( Self {
+On Thu, Sep 19, 2024 at 6:39=E2=80=AFAM FUJITA Tomonori
+<fujita.tomonori@gmail.com> wrote:
 >
-> I would remove the space after the `(`.
-> Would be great if we had rustfmt support for custom macros.
-
-Yes, that would be great!
-
+> Fix the following warning when the driver is compiled as built-in:
 >
->> +            // INVARIANTS: We initialize `timer` with `hrtimer_init` be=
-low.
->> +            timer <- Opaque::ffi_init(move |place: *mut bindings::hrtim=
-er| {
->> +                // SAFETY: By design of `pin_init!`, `place` is a point=
-er live
->> +                // allocation. hrtimer_init will initialize `place` and=
- does not
->> +                // require `place` to be initialized prior to the call.
->> +                unsafe {
->> +                    bindings::hrtimer_init(
->> +                        place,
->> +                        bindings::CLOCK_MONOTONIC as i32,
->> +                        bindings::hrtimer_mode_HRTIMER_MODE_REL,
->> +                    );
->> +                }
->> +
->> +                // SAFETY: `place` is pointing to a live allocation, so=
- the deref
->> +                // is safe.
->> +                let function: *mut Option<_> =3D
+> >> warning: unused import: `DeviceId`
+>    --> drivers/net/phy/qt2025.rs:18:5
+>    |
+>    18 |     DeviceId, Driver,
+>    |     ^^^^^^^^
+>    |
+>    =3D note: `#[warn(unused_imports)]` on by default
 >
-> Do you really need this type hint?
-
-Apparently not!
-
-[...]
->> +pub trait TimerPointer: Sync + Sized {
->> +    /// A handle representing a scheduled timer.
->> +    ///
->> +    /// If the timer is armed or if the timer callback is running when =
-the
->> +    /// handle is dropped, the drop method of `TimerHandle` should not =
-return
->> +    /// until the timer is unarmed and the callback has completed.
->> +    ///
->> +    /// Note: It must be safe to leak the handle.
->> +    type TimerHandle: TimerHandle;
+> device_table in module_phy_driver macro is defined only when the
+> driver is built as module. Use an absolute module path in the macro
+> instead of importing `DeviceId`.
 >
-> Why does this need to be an associated type? Couldn't we have a
-> `TimerHandle<T>` struct? The schedule function below could then return
-> `TimerHandle<Self>`.
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202409190717.i135rfVo-lkp@i=
+ntel.com/
+> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
 
-At one point, I had some cycles in trait resolution. Moving generics to
-associated types solved that issue. Maybe this can be changed to a
-generic. But are generics preferred over associated types for some
-reason?
+It may be nice to change the macro to always use the expression so
+that this warning doesn't happen again.
 
+Anyway, that is a separate issue.
 
-Best regards,
-Andreas
-
+Reviewed-by: Alice Ryhl <aliceryhl@google.com>
