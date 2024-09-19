@@ -1,165 +1,126 @@
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
+Received: from mail-yb1-f178.google.com (mail-yb1-f178.google.com [209.85.219.178])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6760054658
-	for <rust-for-linux@vger.kernel.org>; Thu, 19 Sep 2024 06:41:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED58319882F
+	for <rust-for-linux@vger.kernel.org>; Thu, 19 Sep 2024 07:56:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.178
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726728114; cv=none; b=NVQvB51OpVR7Y15fdKOydoxRO0ViZBORYWGqGRoRJ/Gho/pMmp0ZokAvJQDAwtBaTn7gDw8WKPL3J1V6rfp6Bs/D7ByOJciITkFntouy4CD3QmmSfkq1NapbTQKRofRY9PUgvNc4nQYY5fRDYMbm664ErrHqHtPZADUV8r1mJC4=
+	t=1726732609; cv=none; b=dxTziEwjwPdkI2v4LIGyjGR1jFEYArXJihaXKRSQp6ZPrXfdxUg7aYezpN8m0WXCBUHc0rT1hSUreXM9DstVWgBNWSWvhrC3SCKPKE1pxGenvRr/1+S/ljVZVe1QGNHiD9T9w2lSe4vtiqRyMHdnhe/VU0ifwKqZFzV4+r5SWfc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726728114; c=relaxed/simple;
-	bh=e4Nu5MGmGZequOr+3wn9e4KbQgdR2rd2ZaJgzM1jll8=;
+	s=arc-20240116; t=1726732609; c=relaxed/simple;
+	bh=licP1aKu2lO31lzxZuFaxdBKh2M+wK8LBAdaKCY5Plg=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=PQQvcJ5ekv7BT8iLyRO7AA1TvFIcCED0F9bDCYsXXmJK+6887jx9FrazR4PKebfyYlcDQWBcki+kDIbQrQnetW04J7UW306xY5pwGPCslWQQ2GaEeKbPyGqmpWC5fWMkQ0KBV5Zt6Ywhwa9wpUmXe6KCvZC2ANy0Q4qXVa6G61I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=dJrx8AGn; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	 To:Cc:Content-Type; b=RROVpC8WlcMfmaG2zcZixL6d9lrc66w/40TwcpMX/pXBXavSN2h9X8v5Mijwf3g+fpsn+TPE0Q5HJ69OTfFXwFtlqvT1cYBWvOpLBQbGm9NujcJqEPSZLdms7MGvq97Og8ngCbwydzAC714PXKnC4jABeeS0J9cnE46LIL7U1Ls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com; spf=pass smtp.mailfrom=paul-moore.com; dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b=N+xPWqwO; arc=none smtp.client-ip=209.85.219.178
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=paul-moore.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=paul-moore.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="dJrx8AGn"
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-42bb7298bdeso5522665e9.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 18 Sep 2024 23:41:52 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=paul-moore.com header.i=@paul-moore.com header.b="N+xPWqwO"
+Received: by mail-yb1-f178.google.com with SMTP id 3f1490d57ef6-e1a80979028so591341276.1
+        for <rust-for-linux@vger.kernel.org>; Thu, 19 Sep 2024 00:56:46 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1726728111; x=1727332911; darn=vger.kernel.org;
+        d=paul-moore.com; s=google; t=1726732606; x=1727337406; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=mWdqrGJZj3KqeR7dMvmtNPPn0JD8u6tlo67ak5aubqY=;
-        b=dJrx8AGnuClOsCH7mxmHdkx6M1tlgJzOXE2gS8rkHkSIkYFJn/ti0rcgonrDhTdpdw
-         KIFcZXV3Rb2BByHjtkEvmnsrR467HHyfIb6Jq+hIHqgMcMNjt5hNb03L8Tzhv830O727
-         bsAxTUsWE2tZ2rwzsDV4lEWkpUbV9vpbJJPInOvGg+5UfS0/87c2CMKBUcx+LRlquG2Q
-         nci9+1Hwb4dirRwWFdwPG0aqLIPqho7a7Thr/yTBDrYMp3vrG2Jmfe6e5JbR0jva60sN
-         NA8GtyHI2+O2Z2fkAkKxfv17gpu0vSul6QBO+yWHiVJkUYdCo5lfL569CZ8bTIPRwwI8
-         qF7g==
+        bh=x2a4eRU49xX2INaiUTp0IA2e1oYGO5r7N/3DbhAJv4c=;
+        b=N+xPWqwODKHsUmthiIGyTezlBk3rD1u9YnFtaR30d87kI+jLGAtYp80doTOuzxvnyn
+         7viwLUbqihUKYmgpVWr5r3OUSQQYjBBWuEwXoPrON9Xbkl2/m0qCPXzEHVJJry2zbLJP
+         MeN98aRA1VSusTVYQV8/DJgw0cloQ8z4QvRFIjrklFB3CNoGMPA90WPyon1/bo11Q+oJ
+         1F3Lkf4togrvqtLXIoaCG2GMl5PyeNHWm4TbPuOkuezsdrl2YgMHDVkhqi4kyntET/ky
+         5r3XZXCwsav9+C3e+0EM1nTFFnj7Ia2XtTPDDaed1uikGj6y6yuedasWvNYDA4DTDYMt
+         wyqg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726728111; x=1727332911;
+        d=1e100.net; s=20230601; t=1726732606; x=1727337406;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=mWdqrGJZj3KqeR7dMvmtNPPn0JD8u6tlo67ak5aubqY=;
-        b=szGVHRc+v/Zhr3TDYeVCNGj8U37Lfl5apZnK792ANnjTW/XPs7/0d1MCGGWuMlUPZl
-         VCk6pl7eYIKHJhEnY78LAWx5Af9o7oQGRr8AAYva7yBuQdI8DVW2IimAnz7XugJWw1Sd
-         reBawVfn9/AJ6FICE5GnUMW2FOrnq7gVm4Ue5ePwsd92aqQjV7fSt61+61DR/+LYKulq
-         V2Kwb6CrCCYMTRbpHziYPgg9DRnY7FmdGmryRQncTR/DULnNxI75MnICwgjtFJAWEhA+
-         Mo8PF5T3M7ZQsCqDb5FWCl5lB7QWG8oIlYcgHNCwLGQpmswpA9F7fhE7PxKJDM7xzPd1
-         AZtg==
-X-Forwarded-Encrypted: i=1; AJvYcCWTM9Y8xdgMEpzsQrYsHcCsFVo0WtsB+y6mERzXAiU7seed0xcePuthEN+Fxni4T+QRcLzkRBmqGcnjqjU2+A==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwzlOfhul6IyoYOj8JGUX9DbfR03/ab89Q/JNh3hc+UvsytN3jN
-	Y6K0NCVRPvkjXaueyzUznTXwcCWrInSchZgRN61k6U3lWaKLFEmiPJeKgmXUX9jx6R3PTlR8hFT
-	ftnrL9a/fBi1FgTkU7D4rTwoSgSgq+rgbzElC
-X-Google-Smtp-Source: AGHT+IEAY6SNMgMRXWCLfhmIRUzjKDV0SG60S0x4zyYpYl2/gWmxNOGZKQIUMkh2I62LrYx87ycjwgfX01cHn2EFbf4=
-X-Received: by 2002:adf:e546:0:b0:374:ba2b:4d1c with SMTP id
- ffacd0b85a97d-378d61f09cfmr17330821f8f.31.1726728110548; Wed, 18 Sep 2024
- 23:41:50 -0700 (PDT)
+        bh=x2a4eRU49xX2INaiUTp0IA2e1oYGO5r7N/3DbhAJv4c=;
+        b=A8V7c0n6bdGIC1jkbC58C08nYcVO3gtB4SSQg1d8jmAJqgaAAksQT66h/UR5FvX0H6
+         3h+kujmHQfrWO5ZIAXa0hJh5YEmF9MoBwerxHoSk5QgfvXwxEfwlz64e/EVypbIN4OXO
+         ZHFj/AHiySyHQJ36Eu//IVgxEwlm/uEcgBJDcxGSCKMcxntlX9YajxEHg520VcZRVheA
+         0lyKP8WyYm2hll5+19rpsWEOvmImhx2U3Vq1g62uctgZJn1ZjU8rHkYHH4aGI+ZJz02D
+         Ib/XX6VaQa9N5fpot/s38vent0u6fN/cXYww6h33KFL5iVjGlwws7pdupA+X7Mj4NKGc
+         ZSOg==
+X-Forwarded-Encrypted: i=1; AJvYcCVShF7R55667sVt3vPUPoLtSOVPgPA06nKr7anQ3ttA/DL2t+rnJGRfwOtrrHdA4OSfnMD+sGa39lfYZl0yKQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yzd9HppviVM15PR+UC6MHA9ZfkRh0IM4DEQX89I3p0rvDdPTzu3
+	iv5pAVootdAr97wqJu9JtGDczAAwWOUxIvHkrT/hk1TzdX0t7e/zxqR/r+jC8f1umez0rT/v837
+	rnwzp5FYU/1t7jQbqbtt2b2CDsXXaR2X5+uxZ
+X-Google-Smtp-Source: AGHT+IGGUSzdO2I0anZLf3+uZThLjZFuPCtbBPnYMnHwjyRvn0j/ljOlNxpzQq6H2AStCXdo/UzmJxPrBrb4KTlZPh4=
+X-Received: by 2002:a05:6902:1612:b0:e0b:efa8:18b6 with SMTP id
+ 3f1490d57ef6-e1d9dc412cfmr21057746276.45.1726732605952; Thu, 19 Sep 2024
+ 00:56:45 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240917222739.1298275-1-a.hindborg@kernel.org>
- <20240917222739.1298275-5-a.hindborg@kernel.org> <uQyhqKNsbshVFUyAbdqOai1BfuYEl6ygcM8T-tTRf2rvmh6yIVNKqODmQavLegAedRUKVZ8JZoe7O-obhoz3Uw==@protonmail.internalid>
- <43b9bc9b-f64c-4421-8cf2-795f1f0ec94a@proton.me> <874j6cjiip.fsf@kernel.org> <87v7ysi2sd.fsf@kernel.org>
-In-Reply-To: <87v7ysi2sd.fsf@kernel.org>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 19 Sep 2024 08:41:37 +0200
-Message-ID: <CAH5fLgjLf4nqH2m_VkB4kXzhuuN21wDF1BOd49qYLMR2R_E=kA@mail.gmail.com>
-Subject: Re: [PATCH v2 04/14] rust: sync: add `Arc::clone_from_raw`
-To: Andreas Hindborg <a.hindborg@kernel.org>
-Cc: Benno Lossin <benno.lossin@proton.me>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Anna-Maria Behnsen <anna-maria@linutronix.de>, 
-	Frederic Weisbecker <frederic@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+References: <20240915-alice-file-v10-0-88484f7a3dcf@google.com> <20240915-alice-file-v10-5-88484f7a3dcf@google.com>
+In-Reply-To: <20240915-alice-file-v10-5-88484f7a3dcf@google.com>
+From: Paul Moore <paul@paul-moore.com>
+Date: Thu, 19 Sep 2024 03:56:34 -0400
+Message-ID: <CAHC9VhQmgQP=WPGdg_2fGUAuKLQ0V2DF8FWXhfVrou=RdLE4bg@mail.gmail.com>
+Subject: Re: [PATCH v10 5/8] rust: security: add abstraction for secctx
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, Miguel Ojeda <ojeda@kernel.org>, 
+	Christian Brauner <brauner@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Peter Zijlstra <peterz@infradead.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
+	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
+	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Dan Williams <dan.j.williams@intel.com>, 
+	Matthew Wilcox <willy@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, Daniel Xu <dxu@dxuuu.xyz>, 
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, Kees Cook <kees@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Sep 19, 2024 at 8:19=E2=80=AFAM Andreas Hindborg <a.hindborg@kernel=
-.org> wrote:
+On Sun, Sep 15, 2024 at 10:31=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> =
+wrote:
 >
-> Andreas Hindborg <a.hindborg@kernel.org> writes:
+> Add an abstraction for viewing the string representation of a security
+> context.
 >
-> > "Benno Lossin" <benno.lossin@proton.me> writes:
-> >
-> >> On 18.09.24 00:27, Andreas Hindborg wrote:
-> >>> Add a method to clone an arc from a pointer to the data managed by th=
-e
-> >>> `Arc`.
-> >>>
-> >>> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
-> >>> ---
-> >>>  rust/kernel/sync/arc.rs | 20 ++++++++++++++++++++
-> >>>  1 file changed, 20 insertions(+)
-> >>>
-> >>> diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
-> >>> index a57ea3e2b44c..2c95712d12a2 100644
-> >>> --- a/rust/kernel/sync/arc.rs
-> >>> +++ b/rust/kernel/sync/arc.rs
-> >>> @@ -282,6 +282,26 @@ pub unsafe fn from_raw(ptr: *const T) -> Self {
-> >>>          unsafe { Self::from_inner(ptr) }
-> >>>      }
-> >>>
-> >>> +    /// Clones an [`Arc`] instance from a pointer to the contained d=
-ata.
-> >>> +    ///
-> >>> +    /// # Safety
-> >>> +    ///
-> >>> +    /// `ptr` must point to an allocation that is contained within a=
- live [`Arc<T>`].
-> >>> +    pub unsafe fn clone_from_raw(ptr: *const T) -> Self {
-> >>> +        // SAFETY: The caller promises that this pointer points to d=
-ata
-> >>> +        // contained in an `Arc` that is still valid.
-> >>> +        let inner =3D unsafe { ArcInner::container_of(ptr).as_ref() =
-};
-> >>> +
-> >>> +        // INVARIANT: C `refcount_inc` saturates the refcount, so it=
- cannot
-> >>> +        // overflow to zero. SAFETY: By the function safety requirem=
-ent, there
-> >>> +        // is necessarily a reference to the object, so it is safe t=
-o increment
-> >>> +        // the refcount.
-> >>> +        unsafe { bindings::refcount_inc(inner.refcount.get()) };
-> >>> +
-> >>> +        // SAFETY: We just incremented the refcount. This increment =
-is now owned by the new `Arc`.
-> >>> +        unsafe { Self::from_inner(inner.into()) }
-> >>
-> >> The implementation of this function looks a bit strange to me, how abo=
-ut
-> >> this?:
-> >>
-> >>     // SAFETY: this function has the same safety requirements as `from=
-_raw`.
-> >>     let arc =3D unsafe { Self::from_raw(ptr) };
-> >>     let clone =3D arc.clone();
-> >>     // Prevent decrementing the refcount.
-> >>     mem::forget(arc);
-> >>     clone
-> >>
-> >
-> > We do not own
-> > a refcount on the Arc. For a short duration you will have a wrong
-> > refcount. If you have two Arcs and the refcount is 1, the ArcInner migh=
-t
-> > be dropped after the first line of this suggestion, before you do clone=
-,
-> > and then this is not sound.
+> This is needed by Rust Binder because it has a feature where a process
+> can view the string representation of the security context for incoming
+> transactions. The process can use that to authenticate incoming
+> transactions, and since the feature is provided by the kernel, the
+> process can trust that the security context is legitimate.
 >
-> Well, disregard that. This is why one should not reply to emails before
-> coffee in the morning.
+> This abstraction makes the following assumptions about the C side:
+> * When a call to `security_secid_to_secctx` is successful, it returns a
+>   pointer and length. The pointer references a byte string and is valid
+>   for reading for that many bytes.
+> * The string may be referenced until `security_release_secctx` is
+>   called.
+> * If CONFIG_SECURITY is set, then the three methods mentioned in
+>   rust/helpers are available without a helper. (That is, they are not a
+>   #define or `static inline`.)
 >
-> Of course, a precondition for calling this function is that the arc
-> containing the data pointed to by `ptr` is live for the duration. So
-> what you wrote would work. But I still do not like having two `Arc`s in
-> existence with the wrong refcount.
+> Reviewed-by: Benno Lossin <benno.lossin@proton.me>
+> Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+> Reviewed-by: Trevor Gross <tmgross@umich.edu>
+> Reviewed-by: Gary Guo <gary@garyguo.net>
+> Signed-off-by: Alice Ryhl <aliceryhl@google.com>
+> ---
+>  rust/bindings/bindings_helper.h |  1 +
+>  rust/helpers/helpers.c          |  1 +
+>  rust/helpers/security.c         | 20 +++++++++++
+>  rust/kernel/cred.rs             |  8 +++++
+>  rust/kernel/lib.rs              |  1 +
+>  rust/kernel/security.rs         | 74 +++++++++++++++++++++++++++++++++++=
+++++++
+>  6 files changed, 105 insertions(+)
 
-Doing it this way has been pretty standard with std for a long time,
-until the Arc::increment_strong_count and similar methods were added.
-I think it's fine, though I would have used ManuallyDrop instead of
-mem::forget.
+I doubt my ACK is strictly necessary here since the Rust bindings
+aren't actually modifying anything in the LSM, but just in case ...
 
-Of course, in this particular case, using `ArcBorrow` is even better.
+Acked-by: Paul Moore <paul@paul-moore.com>
 
-Alice
+--=20
+paul-moore.com
