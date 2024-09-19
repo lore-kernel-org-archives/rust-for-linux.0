@@ -1,123 +1,93 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pg1-f181.google.com (mail-pg1-f181.google.com [209.85.215.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88D261804F;
-	Thu, 19 Sep 2024 06:19:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D564218C34F;
+	Thu, 19 Sep 2024 06:29:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726726759; cv=none; b=orrLXlxoG7dIbqajmgquAe6Q1Xhd3dZ7L8qsFIPHb2yQdHTClq+wI0K2wZuY7+o8+romwvNF46QyO/PhLg4+wPDZoqKKuUYpdleSx8Yv+72XQBnXw5e8TW+4kSM5tX8gnJHCNv7qFWj0g9ksM7Q9OCGbHqnojWv+7N1VhgELsx4=
+	t=1726727363; cv=none; b=J7PTWYbCRRh80ONHQxYFj7Afo6UpImr+xe1CgeIx75Kf+dn6/Ot4gymNtV6SNz1pG6v5bqdzicBQ/sbld665+VPfJz2jbJdQ/ebLKuvcG+9F3yWoKQPA/PZiDyvn0QS0LlhIrEsEV14ctPxIc8jU63RIiG/VUwnErWvxNeHj7sA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726726759; c=relaxed/simple;
-	bh=O3+KD1aEgMlytNwpJ/m3GJud5SAVm2MTMn9TmKmaVLA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
-	 MIME-Version:Content-Type; b=lFmYj7/Q+utzcBgyTpzZUfRj8WS3ZULHaZ4vjFyP5MM5tijZ23VENU0QWnzM48o4YAoDYTuSt7SAC6cuNUZ098Zw7Esea39A8KwZtHQFtSB/V6H3Bk8xtsNKavx1FOoF4H9Fw09QmVbt+TO9BFGGKhBfYFrblNBGdoue38QVof8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GXg+Ohdl; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1726727363; c=relaxed/simple;
+	bh=938CjvFom+LejqKZBOgywlJ1AHCtc7uRhymgS7xcK20=;
+	h=Date:Message-Id:To:Cc:Subject:From:In-Reply-To:References:
+	 Mime-Version:Content-Type; b=kR4CDLFfK0Wp9EGXJMgJQRXF/xFvnH2opppV9R2/b81q70rgTfrHIiG9jw7Gz0bji4sh3SCvyRD4cHv1Gx7JVDnrxFT1kYEOCQg9F/rK7wo6CHUvgLhcG/LzZFWqMZ/mg39q+gm2Ps9iDEe70rK7RuZI5QMUTtTWRVTGbrGp4SQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dnjGgpZ3; arc=none smtp.client-ip=209.85.215.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GXg+Ohdl"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DD68C4CEC4;
-	Thu, 19 Sep 2024 06:19:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726726759;
-	bh=O3+KD1aEgMlytNwpJ/m3GJud5SAVm2MTMn9TmKmaVLA=;
-	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
-	b=GXg+Ohdlm3GwqVscJQJbWybf4ilppyhpX1sPlnv4WLAkhGkBOypmfIQtTq6av8NUX
-	 yNXE4sjQp1uiCUU82nApV0a/3sFJPYmpBqobOL0fihuVZxlB3ATwXjO8a4b0NALsSu
-	 H+GVk2xLZT5toO4HLn1eCpG4zg5duMqw6snbjewQEcIOrsbd9ntmifurfAiR27f9uG
-	 m75RiIV6WQxxk1CFGTZClR+pBXIq8RGTieRUCHiBfLZ8DDmEpgXm7mR95pC4INLZ3l
-	 LkzMKPL0dEumTZgc299EM7jarhkaXvuJrkQBs7PBXVMW62ZZRN7KBlb2FRmICIMs4R
-	 J/ne0E+nC31uQ==
-From: Andreas Hindborg <a.hindborg@kernel.org>
-To: "Benno Lossin" <benno.lossin@proton.me>
-Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
- <alex.gaynor@gmail.com>,  "Anna-Maria Behnsen" <anna-maria@linutronix.de>,
-  "Frederic Weisbecker" <frederic@kernel.org>,  "Thomas Gleixner"
- <tglx@linutronix.de>,  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo"
- <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
- <bjorn3_gh@protonmail.com>,  "Alice
- Ryhl" <aliceryhl@google.com>,  <rust-for-linux@vger.kernel.org>,
-  <linux-kernel@vger.kernel.org>
-Subject: Re: [PATCH v2 04/14] rust: sync: add `Arc::clone_from_raw`
-In-Reply-To: <874j6cjiip.fsf@kernel.org> (Andreas Hindborg's message of "Thu,
-	19 Sep 2024 07:54:06 +0200")
-References: <20240917222739.1298275-1-a.hindborg@kernel.org>
-	<20240917222739.1298275-5-a.hindborg@kernel.org>
-	<uQyhqKNsbshVFUyAbdqOai1BfuYEl6ygcM8T-tTRf2rvmh6yIVNKqODmQavLegAedRUKVZ8JZoe7O-obhoz3Uw==@protonmail.internalid>
-	<43b9bc9b-f64c-4421-8cf2-795f1f0ec94a@proton.me>
- <874j6cjiip.fsf@kernel.org>
-Date: Thu, 19 Sep 2024 08:19:14 +0200
-Message-ID: <87v7ysi2sd.fsf@kernel.org>
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dnjGgpZ3"
+Received: by mail-pg1-f181.google.com with SMTP id 41be03b00d2f7-7ae3d7222d4so360584a12.3;
+        Wed, 18 Sep 2024 23:29:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1726727361; x=1727332161; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=C63+s7ScHmJVMBST1esdfNvtDUvk9bPr8WqCmBeXBJI=;
+        b=dnjGgpZ3b5z5CCmO19+SILTqNtU3W6S/Alotvbr6nl32CSo4kvlzZoXcW3wQZr6yAg
+         Se2/Q+027UWd0mDNoRilsR2ghOM9SnkY92FlxvEZN74M6Y2AtuwdGK2byPH8ENERbouG
+         vOZN5RC1mt+N+ga/AqrkwaSJcNUYypnJBJ6vZS15fgS4Ck37dsHVNdQiz0HEzUlX068a
+         Lmi1Tnz9ksb5UzXjAkZbPgc0ee0QMBPW63j4HKGKwArBsBnp4uRUtXjzaYeztsvVG/RQ
+         WLzIjuhFPFaKt/98nZ9PotP5X46J/9d690OVzZEnMQrRgE8nBjwGOOZk+dsdJ0jR3Wys
+         12zA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1726727361; x=1727332161;
+        h=content-transfer-encoding:mime-version:references:in-reply-to:from
+         :subject:cc:to:message-id:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=C63+s7ScHmJVMBST1esdfNvtDUvk9bPr8WqCmBeXBJI=;
+        b=Ba0Ga7jmdpYjwhFk2glv18xoE6DRseEOr278AzuH9NnMSo/pozSbuJDDpe82yAaFWv
+         xtQzCCappFNpK4VuumSM4wBjFsUD7lMYFKk9e6iuIjG1vEOslie/LgFA22R45GQxxYId
+         L6dB5DTzkAppgDTb8J49/+pJyMGqelX/NqDwlJ6lsZ2ivW/Z9XSQ0EAhCCkhi1jwsoHF
+         gBD44eTY+RGPPTCyVKgrUTNz5Hl8rlHd5JxCT2Dge+pd+1eH/WSTiVo1eVcl/YRXisol
+         LAH6qsSEZQVhEh/ESGWizhgQJDyv3yW/jsT+8IVqRfJyf48gpBdfo80zJLQPzFfY4dru
+         4y+w==
+X-Gm-Message-State: AOJu0YzYDzR9QocXwbj3yHyT5i2V6fs3gZrhp98MT/khJDNHFqIh4JpG
+	m3EtEt+GL8qA5P9zW6gYC1XPZiKkJ+qjov494ddP5Vwc8na+kDrPUtmyT7Fd
+X-Google-Smtp-Source: AGHT+IEhK/q3G4Y6ya8di+Tc98O0c30tpMfD8ruEfFW3KLyhK6WZpg/2rz6fjtMY3fsmWZBfnys8LQ==
+X-Received: by 2002:a05:6a20:30c4:b0:1cf:9a86:56ac with SMTP id adf61e73a8af0-1cf9a8657b2mr679660637.17.1726727360854;
+        Wed, 18 Sep 2024 23:29:20 -0700 (PDT)
+Received: from localhost (p4468007-ipxg23001hodogaya.kanagawa.ocn.ne.jp. [153.204.200.7])
+        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-71944b7b1a2sm7638240b3a.132.2024.09.18.23.29.19
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 18 Sep 2024 23:29:20 -0700 (PDT)
+Date: Thu, 19 Sep 2024 06:29:07 +0000 (UTC)
+Message-Id: <20240919.062907.1995257915073920166.fujita.tomonori@gmail.com>
+To: netdev@vger.kernel.org
+Cc: rust-for-linux@vger.kernel.org, andrew@lunn.ch, tmgross@umich.edu,
+ lkp@intel.com
+Subject: Re: [PATCH net] net: phy: qt2025: Fix warning: unused import
+ DeviceId
+From: FUJITA Tomonori <fujita.tomonori@gmail.com>
+In-Reply-To: <20240919043707.206400-1-fujita.tomonori@gmail.com>
+References: <20240919043707.206400-1-fujita.tomonori@gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain
+Mime-Version: 1.0
+Content-Type: Text/Plain; charset=us-ascii
+Content-Transfer-Encoding: 7bit
 
-Andreas Hindborg <a.hindborg@kernel.org> writes:
+On Thu, 19 Sep 2024 04:37:07 +0000
+FUJITA Tomonori <fujita.tomonori@gmail.com> wrote:
 
-> "Benno Lossin" <benno.lossin@proton.me> writes:
->
->> On 18.09.24 00:27, Andreas Hindborg wrote:
->>> Add a method to clone an arc from a pointer to the data managed by the
->>> `Arc`.
->>>
->>> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
->>> ---
->>>  rust/kernel/sync/arc.rs | 20 ++++++++++++++++++++
->>>  1 file changed, 20 insertions(+)
->>>
->>> diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
->>> index a57ea3e2b44c..2c95712d12a2 100644
->>> --- a/rust/kernel/sync/arc.rs
->>> +++ b/rust/kernel/sync/arc.rs
->>> @@ -282,6 +282,26 @@ pub unsafe fn from_raw(ptr: *const T) -> Self {
->>>          unsafe { Self::from_inner(ptr) }
->>>      }
->>>
->>> +    /// Clones an [`Arc`] instance from a pointer to the contained data.
->>> +    ///
->>> +    /// # Safety
->>> +    ///
->>> +    /// `ptr` must point to an allocation that is contained within a live [`Arc<T>`].
->>> +    pub unsafe fn clone_from_raw(ptr: *const T) -> Self {
->>> +        // SAFETY: The caller promises that this pointer points to data
->>> +        // contained in an `Arc` that is still valid.
->>> +        let inner = unsafe { ArcInner::container_of(ptr).as_ref() };
->>> +
->>> +        // INVARIANT: C `refcount_inc` saturates the refcount, so it cannot
->>> +        // overflow to zero. SAFETY: By the function safety requirement, there
->>> +        // is necessarily a reference to the object, so it is safe to increment
->>> +        // the refcount.
->>> +        unsafe { bindings::refcount_inc(inner.refcount.get()) };
->>> +
->>> +        // SAFETY: We just incremented the refcount. This increment is now owned by the new `Arc`.
->>> +        unsafe { Self::from_inner(inner.into()) }
->>
->> The implementation of this function looks a bit strange to me, how about
->> this?:
->>
->>     // SAFETY: this function has the same safety requirements as `from_raw`.
->>     let arc = unsafe { Self::from_raw(ptr) };
->>     let clone = arc.clone();
->>     // Prevent decrementing the refcount.
->>     mem::forget(arc);
->>     clone
->>
->
-> We do not own
-> a refcount on the Arc. For a short duration you will have a wrong
-> refcount. If you have two Arcs and the refcount is 1, the ArcInner might
-> be dropped after the first line of this suggestion, before you do clone,
-> and then this is not sound.
+> Fix the following warning when the driver is compiled as built-in:
+> 
+>>> warning: unused import: `DeviceId`
+>    --> drivers/net/phy/qt2025.rs:18:5
+>    |
+>    18 |     DeviceId, Driver,
+>    |     ^^^^^^^^
+>    |
+>    = note: `#[warn(unused_imports)]` on by default
+> 
+> device_table in module_phy_driver macro is defined only when the
+> driver is built as module. Use an absolute module path in the macro
+> instead of importing `DeviceId`.
 
-Well, disregard that. This is why one should not reply to emails before
-coffee in the morning.
+Oops, the last sentence isn't correct. It should've been something like:
 
-Of course, a precondition for calling this function is that the arc
-containing the data pointed to by `ptr` is live for the duration. So
-what you wrote would work. But I still do not like having two `Arc`s in
-existence with the wrong refcount. 
-
-BR Andreas
-
+Use phy::DeviceId in the macro instead of importing `DeviceId` since
+`phy` is always used.
