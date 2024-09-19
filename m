@@ -1,130 +1,92 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB24619D8BB;
-	Thu, 19 Sep 2024 13:59:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60F8B19B59D
+	for <rust-for-linux@vger.kernel.org>; Thu, 19 Sep 2024 14:03:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726754393; cv=none; b=cvAssE0/AHGOYZ9Sujhu/8hiA934NF0A8BhBUwhnEdKW+Ytszrrf4wvvETuV9DO4K4rm6OtkJcBzkKA9cB84ZVW63LAFqd8N0uADX1qiENfD328zVb8+Y3BiAjU19GA+O0Do4EOubDsPsPYftkY/M9/QzgSqGKDPg9IC8xza8GQ=
+	t=1726754639; cv=none; b=JCGcing2X2zJy64Lmqrbl1k0gD4LT3nYyDktctcsoBBrsmPppWdtPyOkXz71xdZnYVn4dlvrqndtXNHc3HX2A3A2bnMBXG3cZ+a3Rk5ggCqU3FhSJnBk9VbE9KRTMA07mkAErTTYG9I51VHZwHlnr+N5XfECUtX50um5jG7W7Os=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726754393; c=relaxed/simple;
-	bh=CePZyLigDVF6yDHPAAbBXKiYFarym/OrWA9cBQu4ghA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=E3ScSRXFX/F82yVemsvWEVKwsiuXUUOnnw4edY/X1w5IhbWRYSrQYH/VLmrUz+UHo8Hkyz9HPiyTtbeytZoMQTd3ckOH7BHn0Ms4qlOynrAXhwZRpFohKCaeUdpeFT64sDITfk1tuALLzQ5o8Dbhv20WZclplczH+pt68IHWYFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J/BD329B; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1726754639; c=relaxed/simple;
+	bh=cmGLd08CsjOKNV4VxVyn6jm5trLijeF6uQOC7KHDSF8=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=QpDOhml3DT94TzfJThTNBjusMZSLLL4oJxnGApej/0gAZIGPrHO4npuitT8ArMvrTNz7qW+xOHeDxM9ahjp9LAOiCWMdyeKzWtZm6e22HuqYhwS9/UkuDdTMG9sWiRBwd3BpGEwhLV1NsthPQeNZuRU7amr3tcumbM6DQzPRnQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=DHGQ+5Bt; arc=none smtp.client-ip=185.70.43.16
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J/BD329B"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CD47C4CEC4;
-	Thu, 19 Sep 2024 13:59:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726754392;
-	bh=CePZyLigDVF6yDHPAAbBXKiYFarym/OrWA9cBQu4ghA=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=J/BD329BZWQwimY+QTC03Yv2DqIsRli2jZItPqpe91eYxZ85Blppw/GAY8Jbmhucl
-	 a+8nmLcaL1U0bx0Y7dtdqjB/qqLveEkpNg38OAOHNQTEncjS/hBDyaXvQPRgjjGzfA
-	 lmEC9lWZOpW24p3ZdyyPiBYz9L73Cf2fbmK/0Zc4ktOxhB41QbZ+wfpVZA8zwTV4mJ
-	 2rbP+HiN8DXC4yFERJDnAkn5NoDmE8LLCazbuE0/Nb17/tXJt2CNXb9JqWURLZA1md
-	 6Jlg+f2kFG1YPoyTrKgrH05v64aAQfAX0ifUh0156yITQvlIIyU+/BtybnYsAQ7tun
-	 /QYSb3fIaZifQ==
-Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-2f754d4a6e4so9684791fa.3;
-        Thu, 19 Sep 2024 06:59:52 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCU/ZvLi+ay/ABy1NZxKfg/YxdYlweBppqTbRmMhXimUrNFE8lyWDeMMv2P/p2VJwStl4HbW49cbrF7fGtfgSQU=@vger.kernel.org, AJvYcCWHvQXyXh2vKgfNbhikRqZk1FWwjt1M2dkyb9QsktB9AuLp3C2ZFus4/p/ftVUo6/gc7QZJpzskPnY0Ukw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxY6Dse09zW3GdCw1Z7PbgMjbqERQFPacNa8cj9SgnlpQxhJexL
-	TWEnqT2NhkmrCCrXW+JM4KgdEkI46xyT0ukZnWS8IjeyPFWEpL0Cj6dcf1OHfbz8nkVf+7H6oQk
-	tWW58vtuYip5AaSO0PEUFE7cK/c4=
-X-Google-Smtp-Source: AGHT+IHhk8Dp9O86HEjI233s+GywkPv0eYie/FG0b1jEU9QzXUp+qIVvljtiBd//Xdk4DPfWcomKwoUyj0aHwliPIqg=
-X-Received: by 2002:a2e:b8c4:0:b0:2f7:c76f:3c62 with SMTP id
- 38308e7fff4ca-2f7c76f3cfdmr12015431fa.24.1726754391049; Thu, 19 Sep 2024
- 06:59:51 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="DHGQ+5Bt"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1726754635; x=1727013835;
+	bh=jnmHS2qymuDnyC8ztO5a6S72SS+8B0fe54CXhWxCzn0=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=DHGQ+5BtHIzhIFeFrkl/rwj7V6Kz3E9Xw9GMv7ww509RdJhBQDq2wsklSEl42tCpG
+	 fTVHhXzQnq0zo6bT5YlU1+I4dTjRUmmlxybGyVjitCV8bwLm/j9axXOwnIkWLgPdPK
+	 GzLrpggWvYJ35LkbcEPZKmfzfC+Bjyw/deHWHVOb28uJDUveFVBFyBSGvo8+eLpa+Z
+	 y+wOjcgmCY3j69my1E0MVywf00RBI+oroAgqYGY8yAnofkZIaMFSfpykni4U+LOaTc
+	 0v/0zx8YuAE1sX8mKYygHbV20aRLCwz4IFKc7GrGzOBW4pEWfl3iAn9BWHo/XX5uAY
+	 FiF0u/X7zerGg==
+Date: Thu, 19 Sep 2024 14:03:50 +0000
+To: Andreas Hindborg <a.hindborg@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Anna-Maria Behnsen <anna-maria@linutronix.de>, Frederic Weisbecker <frederic@kernel.org>, Thomas Gleixner <tglx@linutronix.de>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 03/14] rust: sync: add `Arc::as_ptr`
+Message-ID: <e7e42ff2-1543-48b3-9bd3-bdef5ce66348@proton.me>
+In-Reply-To: <20240917222739.1298275-4-a.hindborg@kernel.org>
+References: <20240917222739.1298275-1-a.hindborg@kernel.org> <20240917222739.1298275-4-a.hindborg@kernel.org>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: dde87f36e2780ed2bd55c6f5db9b6bd5e2920797
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240917141725.466514-1-masahiroy@kernel.org> <20240917141725.466514-9-masahiroy@kernel.org>
- <Zuws_qal2uJs0B2V@l-nschier-nb>
-In-Reply-To: <Zuws_qal2uJs0B2V@l-nschier-nb>
-From: Masahiro Yamada <masahiroy@kernel.org>
-Date: Thu, 19 Sep 2024 22:59:14 +0900
-X-Gmail-Original-Message-ID: <CAK7LNATxynY4yrZgtqezt__DNvUt2pjetpuG25K050y=-bUCNQ@mail.gmail.com>
-Message-ID: <CAK7LNATxynY4yrZgtqezt__DNvUt2pjetpuG25K050y=-bUCNQ@mail.gmail.com>
-Subject: Re: [PATCH 08/23] kbuild: simplify find command for rustfmt
-To: Nicolas Schier <n.schier@avm.de>
-Cc: linux-kbuild@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Nathan Chancellor <nathan@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Sep 19, 2024 at 10:54=E2=80=AFPM Nicolas Schier <n.schier@avm.de> w=
-rote:
->
-> On Tue, Sep 17, 2024 at 11:16:36PM +0900, Masahiro Yamada wrote:
-> > The current 'find' command does not prune the rust/test directory
-> > itself, requiring an additional 'grep -Fv' command to exclude it.
-> > This is cumbersome.
-> >
-> > The correct use of the -prune option can be seen in the 'make clean'
-> > rule.
-> >
-> > [Current command]
-> >
-> >   $ find . -type f -name '*.rs' -o -path ./rust/test -prune | wc
-> >        70      70    1939
-> >   $ find . -type f -name '*.rs' -o -path ./rust/test -prune | grep rust=
-/test
-> >   ./rust/test
-> >
-> > [Improved command]
-> >
-> >   $ find . -path ./rust/test -prune -o -type f -name '*.rs' -print | wc
-> >        69      69    1927
-> >   $ find . -path ./rust/test -prune -o -type f -name '*.rs' -print | gr=
-ep rust/test
-> >
-> > With the improved 'find' command, the grep command is no longer needed.
-> >
-> > There is also no need to use the absolute path, so $(abs_srctree) can b=
-e
-> > replaced with $(srctree).
-> >
-> > The pruned directory rust/test must be prefixed with $(srctree) instead
-> > of $(objtree). Otherwise, 'make O=3D... rustfmt' would visit the stale
-> > rust/test directory remaining in the source tree.
-> >
-> > Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-> > ---
-> >
-> >  Makefile | 5 ++---
-> >  1 file changed, 2 insertions(+), 3 deletions(-)
-> >
-> > diff --git a/Makefile b/Makefile
-> > index 5b16e0605a77..4992b2895dd5 100644
-> > --- a/Makefile
-> > +++ b/Makefile
-> > @@ -1740,9 +1740,8 @@ PHONY +=3D rustfmt rustfmtcheck
-> >  # when matching, which is a problem when e.g. `srctree` is `..`.
-> >  # We `grep` afterwards in order to remove the directory entry itself.
-> >  rustfmt:
-> > -     $(Q)find $(abs_srctree) -type f -name '*.rs' \
-> > -             -o -path $(abs_objtree)/rust/test -prune \
-> > -             | grep -Fv $(abs_objtree)/rust/test \
-> > +     $(Q)find $(srctree) -path $(srctree)/rust/test -prune \
-> > +             -o -type f -name '*.rs' -print \
-> >               | grep -Fv generated \
->
-> Is there a reason for keeping the grep for generated instead of turning
-> it also into a find prune argument?
+On 18.09.24 00:27, Andreas Hindborg wrote:
+> Add a method to get a pointer to the data contained in an `Arc`.
+>=20
+> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+> ---
+>  rust/kernel/sync/arc.rs | 8 ++++++++
+>  1 file changed, 8 insertions(+)
+>=20
+> diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
+> index 3673496c2363..a57ea3e2b44c 100644
+> --- a/rust/kernel/sync/arc.rs
+> +++ b/rust/kernel/sync/arc.rs
+> @@ -258,6 +258,14 @@ pub fn into_raw(self) -> *const T {
+>          unsafe { core::ptr::addr_of!((*ptr).data) }
+>      }
+>=20
+> +    /// Return a raw pointer to the data in this arc.
+> +    pub fn as_ptr(&self) -> *const T {
 
+I don't know if we have a convention for this, but shouldn't this be an
+associated function? Because if `T` also has an `as_ptr` function, it
+will be shadowed by this one.=20
 
-This commit answers your question:
+---
+Cheers,
+Benno
 
-https://github.com/Rust-for-Linux/linux/commit/73243a8a27a67
+> +        let ptr =3D self.ptr.as_ptr();
+> +        // SAFETY: As we derive the pointer from a reference above, the =
+pointer
+> +        // must be valid.
+> +        unsafe { core::ptr::addr_of!((*ptr).data) }
+> +    }
+> +
+>      /// Recreates an [`Arc`] instance previously deconstructed via [`Arc=
+::into_raw`].
+>      ///
+>      /// # Safety
+> --
+> 2.46.0
+>=20
+>=20
 
-
-
-
---=20
-Best Regards
-Masahiro Yamada
