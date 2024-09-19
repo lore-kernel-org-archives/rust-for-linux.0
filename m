@@ -1,43 +1,45 @@
-Received: from mail-40133.protonmail.ch (mail-40133.protonmail.ch [185.70.40.133])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.avm.de (mail.avm.de [212.42.244.119])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B2031EB5B;
-	Thu, 19 Sep 2024 13:46:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.133
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECD4D19D074;
+	Thu, 19 Sep 2024 13:46:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.42.244.119
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726753566; cv=none; b=DS+jKXVSccDLN/eYpSqnzYECT6K2QLteBv/ytRzUQa/TUakQH1C2vjveq8/0+CLDni2Tzt+LqDC1vk0vZMK19BT6R9ISlKTuf3hA9+w5DweEO+HfUq27yXK4XtPaGsHbRxL+jYAxx5MXhbWLHm0wNdiNq4UzQLuC0fIVhPKqWqs=
+	t=1726753620; cv=none; b=nnWAq7MhytD+KBQqoCc25wXvfATq3fVz3j2qR36S1HTpLxJESbq1YCxbE+gQneNvZENGsjvX0tgkuit+ewfqLC7vkPvDwMQIwydlkdoQS1v4l51SLjwFHwObCMSxQ36SUyNOKrOAKFq+qH1s3DzCqmKnwLL2f+OSXZXUrvXGZag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726753566; c=relaxed/simple;
-	bh=08Hrq/1zy42WL1U0lqBIB2EDF7K+U052L8fQ6GMV8/k=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AYscFlPUeZXjyGOSELO7Rc31F6jn70nhKkRDkvdC5LYMHkHJy1WOPFXFRWAlSAYW2yvU0L/k1CVlkcNsRVqO3FohKhGV3FlIzw5gjnSE5ptDP7NtrBnUMqZ8Upt+zXmEvuIne9TllAlilgU3NTztyFnTcGg2EAIPd5rPiPiMmQY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=W/c+d0T9; arc=none smtp.client-ip=185.70.40.133
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1726753620; c=relaxed/simple;
+	bh=bBCKrBP/m9jzUH0l4n1n4F5b11X1RLN15QJFdMW5NeU=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oN+LYXo0eNbQYP9CrB1GpJgKLunNgHZFOG61YBb3CjPQ/EvN7YY/bcVGKC5VdhowAVzNgF5cwswX4R5IDAwrVBMdPvxOkvyVbzB8S3pcRRCVBBC7179u08XgM2vqzYo4RkESoMllcfWDfoYCJw3Mypv+fC+dJEm5JvmgG4mjPtY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=avm.de; spf=pass smtp.mailfrom=avm.de; dkim=pass (1024-bit key) header.d=avm.de header.i=@avm.de header.b=T+ioQNxi; arc=none smtp.client-ip=212.42.244.119
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=avm.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=avm.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="W/c+d0T9"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1726753559; x=1727012759;
-	bh=NT33HsfNCSAYhZK5GJl2I4nckfuU7LN1MNbY5TeJz/U=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=W/c+d0T9UMJnzXhcPX0tffEyYNAXdVQ+ZIaXB0VTMs1MRV7bUq5IwH9btO4HfM1pJ
-	 yGSUotJheJm/LCtYz6S53Q6FMYIfvb8Tv7FEwJor03A+vLxB/NOJwouepTn+dPx83z
-	 cM5+ywIXqOdJrklOAEOTBTmVcm0li0VJYCOZNGV0YOgDFSk2fBea4iSpnBx+E1NBx4
-	 i9YtFWce7sywTDWT7nYWo2fvilMHPrcOdMs4fdQNw7k+3+Ua0Pjr4BIw8jKepNT8ph
-	 hM6CNgXzRMkHrf2kE1k8nXbQpOml2SzPCIkoZ+3yyqakRpDn+mhr45jPiecfE5R9eY
-	 Mhntehp3wQNUg==
-Date: Thu, 19 Sep 2024 13:45:56 +0000
-To: Gao Xiang <hsiangkao@linux.alibaba.com>, Gary Guo <gary@garyguo.net>, Yiyang Wu <toolmanp@tlmp.cc>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: linux-erofs@lists.ozlabs.org, rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>, Al Viro <viro@zeniv.linux.org.uk>
-Subject: Re: [RFC PATCH 03/24] erofs: add Errno in Rust
-Message-ID: <ac871d1e-9e4e-4d1b-82be-7ae87b78d33e@proton.me>
-In-Reply-To: <2b04937c-1359-4771-86c6-bf5820550c92@linux.alibaba.com>
-References: <20240916135634.98554-1-toolmanp@tlmp.cc> <20240916135634.98554-4-toolmanp@tlmp.cc> <20240916210111.502e7d6d.gary@garyguo.net> <2b04937c-1359-4771-86c6-bf5820550c92@linux.alibaba.com>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: b8d97f78ee362a1aa80e09e4076bc52d0a830dd6
+	dkim=pass (1024-bit key) header.d=avm.de header.i=@avm.de header.b="T+ioQNxi"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=avm.de; s=mail;
+	t=1726753614; bh=bBCKrBP/m9jzUH0l4n1n4F5b11X1RLN15QJFdMW5NeU=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=T+ioQNxiZw0ZZOJcXacLdeTbAZzoXATCCdgmR35JHq4Vx3lg4YyJJdNUqV49mpSYP
+	 fVp22rrFv1HDSgM1gRUaPziZT2PNhZOryoupjaMJPuOpK742yITnIx/5UUGrirzwUh
+	 a6vUT/bKH5aMFlM/DC5BxGcK6df8hsFVgQcxaVf0=
+Received: from mail-auth.avm.de (dovecot-mx-01.avm.de [212.42.244.71])
+	by mail.avm.de (Postfix) with ESMTPS;
+	Thu, 19 Sep 2024 15:46:53 +0200 (CEST)
+Received: from l-nschier-nb (unknown [83.68.141.146])
+	by mail-auth.avm.de (Postfix) with ESMTPSA id 8CB6C805CA;
+	Thu, 19 Sep 2024 15:46:53 +0200 (CEST)
+Date: Thu, 19 Sep 2024 15:46:52 +0200
+From: Nicolas Schier <n.schier@avm.de>
+To: Masahiro Yamada <masahiroy@kernel.org>
+Cc: linux-kbuild@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Nathan Chancellor <nathan@kernel.org>
+Subject: Re: [PATCH 07/23] kbuild: remove unnecessary prune of rust/alloc for
+ rustfmt
+Message-ID: <ZuwrTJftLlWNtrFs@l-nschier-nb>
+References: <20240917141725.466514-1-masahiroy@kernel.org>
+ <20240917141725.466514-8-masahiroy@kernel.org>
+ <ZuwJlaeFfo7CW5dC@l-nschier-nb>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -45,84 +47,27 @@ List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Disposition: inline
+In-Reply-To: <ZuwJlaeFfo7CW5dC@l-nschier-nb>
+X-purgate-ID: 149429::1726753613-54DB9BF0-A91DD983/0/0
+X-purgate-type: clean
+X-purgate-size: 548
+X-purgate-Ad: Categorized by eleven eXpurgate (R) http://www.eleven.de
+X-purgate: This mail is considered clean (visit http://www.eleven.de for further information)
+X-purgate: clean
 
-Hi,
+On Thu, Sep 19, 2024 at 01:23:01PM +0200, Nicolas Schier wrote:
+> On Tue, Sep 17, 2024 at 11:16:35PM +0900, Masahiro Yamada wrote:
+> > Commit 9d0441bab775 ("rust: alloc: remove our fork of the `alloc`
+> > crate") removed the rust/alloc/ directory.
+> > 
+> > Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+> > ---
+> > 
+> >  Makefile | 2 --
+> >  1 file changed, 2 deletions(-)
+> 
+> Reviewed-by: Nicolas Schier <n.schier@avm.de>
 
-Thanks for the patch series. I think it's great that you want to use
-Rust for this filesystem.
-
-On 17.09.24 01:58, Gao Xiang wrote:
-> On 2024/9/17 04:01, Gary Guo wrote:
->> Also, it seems that you're building abstractions into EROFS directly
->> without building a generic abstraction. We have been avoiding that. If
->> there's an abstraction that you need and missing, please add that
->> abstraction. In fact, there're a bunch of people trying to add FS
->=20
-> No, I'd like to try to replace some EROFS C logic first to Rust (by
-> using EROFS C API interfaces) and try if Rust is really useful for
-> a real in-tree filesystem.  If Rust can improve EROFS security or
-> performance (although I'm sceptical on performance), As an EROFS
-> maintainer, I'm totally fine to accept EROFS Rust logic landed to
-> help the whole filesystem better.
-
-As Gary already said, we have been using a different approach and it has
-served us well. Your approach of calling directly into C from the driver
-can be used to create a proof of concept, but in our opinion it is not
-something that should be put into mainline. That is because calling C
-from Rust is rather complicated due to the many nuanced features that
-Rust provides (for example the safety requirements of references).
-Therefore moving the dangerous parts into a central location is crucial
-for making use of all of Rust's advantages inside of your code.
-
-> For Rust VFS abstraction, that is a different and indepenent story,
-> Yiyang don't have any bandwidth on this due to his limited time.
-
-This seems a bit weird, you have the bandwidth to write your own
-abstractions, but not use the stuff that has already been developed?
-
-I have quickly glanced over the patchset and the abstractions seem
-rather immature, not general enough for other filesystems to also take
-advantage of them. They also miss safety documentation and are in
-general poorly documented.
-
-Additionally, all of the code that I saw is put into the `fs/erofs` and
-`rust/erofs_sys` directories. That way people can't directly benefit
-from your code, put your general abstractions into the kernel crate.
-Soon we will be split the kernel crate, I could imagine that we end up
-with an `fs` crate, when that happens, we would put those abstractions
-there.
-
-As I don't have the bandwidth to review two different sets of filesystem
-abstractions, I can only provide you with feedback if you use the
-existing abstractions.
-
-> And I _also_ don't think an incomplete ROFS VFS Rust abstraction
-> is useful to Linux community
-
-IIRC Wedson created ROFS VFS abstractions before going for the full
-filesystem. So it would definitely be useful for other read-only
-filesystems (as well as filesystems that also allow writing, since last
-time I checked, they often also support reading).
-
-> (because IMO for generic interface
-> design, we need a global vision for all filesystems instead of
-> just ROFSes.  No existing user is not an excuse for an incomplete
-> abstraction.)
-
-Yes we need a global vision, but if you would use the existing
-abstractions, then you would participate in this global vision.
-
-Sorry for repeating this point so many times, but it is *really*
-important that we don't have multiple abstractions for the same thing.
-
-> If a reasonble Rust VFS abstraction landed, I think we will switch
-> to use that, but as I said, they are completely two stories.
-
-For them to land, there has to be some kind of user. For example, a rust
-reference driver, or a new filesystem. For example this one.
-
----
-Cheers,
-Benno
-
+oh, there is still a comment about 'rust/alloc' in Makefile that
+probably wants to be removed, too.
