@@ -1,98 +1,123 @@
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E393118A957
-	for <rust-for-linux@vger.kernel.org>; Thu, 19 Sep 2024 06:17:59 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88D261804F;
+	Thu, 19 Sep 2024 06:19:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726726682; cv=none; b=ZskQhmb69l7/ImjnE2u/oAaYRBTXfU1+sT9/U1lFc7e3I+IUCL1V/S0UgN4tEsRJb2UPcQr3m8iCPMQNCiCgJGwRBuHWscIzqFj003XZp0PIvyV7meB8rq5MvY07LhHcE07XX9te/F7qw5Xm9WkMaJv8nDXHQB5BNA2nInoYyvc=
+	t=1726726759; cv=none; b=orrLXlxoG7dIbqajmgquAe6Q1Xhd3dZ7L8qsFIPHb2yQdHTClq+wI0K2wZuY7+o8+romwvNF46QyO/PhLg4+wPDZoqKKuUYpdleSx8Yv+72XQBnXw5e8TW+4kSM5tX8gnJHCNv7qFWj0g9ksM7Q9OCGbHqnojWv+7N1VhgELsx4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726726682; c=relaxed/simple;
-	bh=drHiTrZGIbdD9m9cxZ5KaLt5PLoDqs6yDSgFCLJgi5I=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=fr1eHfYG7QVOGiyDJqWTDborpKffGfPKBWo5y986HG4Z1/ugw/AScBLI0606MYY67XuE60fQHZPsKM17RbNrskPkoq9A2IYOQoMLf72TayYuUC5Oiib9zueIWggX6RK+Ym/Mdte5y5laL5fdckuT9PKQ8T3qSZB/I2eRs9/DWtE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=FaYFrih8; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1726726759; c=relaxed/simple;
+	bh=O3+KD1aEgMlytNwpJ/m3GJud5SAVm2MTMn9TmKmaVLA=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=lFmYj7/Q+utzcBgyTpzZUfRj8WS3ZULHaZ4vjFyP5MM5tijZ23VENU0QWnzM48o4YAoDYTuSt7SAC6cuNUZ098Zw7Esea39A8KwZtHQFtSB/V6H3Bk8xtsNKavx1FOoF4H9Fw09QmVbt+TO9BFGGKhBfYFrblNBGdoue38QVof8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=GXg+Ohdl; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="FaYFrih8"
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-42cb1e623d1so3981625e9.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 18 Sep 2024 23:17:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1726726678; x=1727331478; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2ZL7k5kl10Cd4+ycwob7PCF2YJq0BzwUlfnL19Gx80U=;
-        b=FaYFrih8ewQRTXIUa332EpLfFXXWvz5TIkCMPO/bUIMvabTHlxUeixG7cW2muU+Tmh
-         4PzWdA8inxr+9XdANC0cjsp8u1UyTe++ZbinHug8Cc2htVvyYEi2+me2qoqaNnHia3XF
-         OEPHE/XRex2/Z9odH+6S/neop7g/gLFPj5CsOS6kGD4Zx0bsI240Ti3Frvc6RYnaOH84
-         02fyhGgSsyoDzfg+PJWjrE9ejNR7tPZmQ6ADJrmvEQv+rl++kBTKpF2RlXuNBXVzkkxQ
-         FQae0f0rQaJiaJWFiVe7yLXIk+aBOtFG4aIa/blAVdYSOPtaUfjfP2dhTUI/L9zuGklR
-         oXWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726726678; x=1727331478;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=2ZL7k5kl10Cd4+ycwob7PCF2YJq0BzwUlfnL19Gx80U=;
-        b=PHzq1sO0o+/qAOQ2NpUFfc3gZX56mHB++0Kz1wMWUVQd/iAhAJ//Z7wISHMhuZsedb
-         1uaN1yMsCAqzEDPF1ym6L6KEXobOk/fYpJQZvG0wvCNKBm3t5d582wy3JSlk/GJfEqJI
-         Nu0qXeHiok4uSOEEbUwWw9g1ReF5Qaa/u0GcOcEn4hF/MkTYuXSU2kPxn5yF+K2nbTjy
-         oUsUzGOLoXWsFZokj4XHQvdLIAcLQQQ66F/X9WHcrggH4JAJ0CShkpHt6NhtLKx6w9MF
-         sinrb3wKQFroBcPgjKzos7eThVdGinQa935i98LKVMgl5JCjm15ErLqG/xzxdlfCds1R
-         pWQQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUtKrFzJKPcB9LT0RTM7KsZkWE1jE+gfEeAu8JYUhhT16dLutUJva8XXSGnsmUOMkXOPhJ6QkpMFL5EXD2tfg==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx1Nlbmu2V5/232ptnhQpsqOk8lvqv7rRsvkkFK9TN6iaB1yvhy
-	rLXCrToxjLu9OjTfyxCoH9WVyHsz7mJdO4MuitbpP8DiverIr+J4SPCxagzIeX3TpnEGT+QbZ3+
-	+X7vdGfIWoQEdDSJ0riwY9o32m22m69OfXbvv
-X-Google-Smtp-Source: AGHT+IEv0Hb/pxkbcM7u49CU9rhXxPCHskB33M65/kNvWzendN9J/iLoewCRd3ZirTm/ihKlJl9xLQ5NeaXoC0pBL4w=
-X-Received: by 2002:adf:f0cd:0:b0:371:7c71:9ab2 with SMTP id
- ffacd0b85a97d-378c2d55524mr13476034f8f.52.1726726678067; Wed, 18 Sep 2024
- 23:17:58 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="GXg+Ohdl"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DD68C4CEC4;
+	Thu, 19 Sep 2024 06:19:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1726726759;
+	bh=O3+KD1aEgMlytNwpJ/m3GJud5SAVm2MTMn9TmKmaVLA=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:From;
+	b=GXg+Ohdlm3GwqVscJQJbWybf4ilppyhpX1sPlnv4WLAkhGkBOypmfIQtTq6av8NUX
+	 yNXE4sjQp1uiCUU82nApV0a/3sFJPYmpBqobOL0fihuVZxlB3ATwXjO8a4b0NALsSu
+	 H+GVk2xLZT5toO4HLn1eCpG4zg5duMqw6snbjewQEcIOrsbd9ntmifurfAiR27f9uG
+	 m75RiIV6WQxxk1CFGTZClR+pBXIq8RGTieRUCHiBfLZ8DDmEpgXm7mR95pC4INLZ3l
+	 LkzMKPL0dEumTZgc299EM7jarhkaXvuJrkQBs7PBXVMW62ZZRN7KBlb2FRmICIMs4R
+	 J/ne0E+nC31uQ==
+From: Andreas Hindborg <a.hindborg@kernel.org>
+To: "Benno Lossin" <benno.lossin@proton.me>
+Cc: "Miguel Ojeda" <ojeda@kernel.org>,  "Alex Gaynor"
+ <alex.gaynor@gmail.com>,  "Anna-Maria Behnsen" <anna-maria@linutronix.de>,
+  "Frederic Weisbecker" <frederic@kernel.org>,  "Thomas Gleixner"
+ <tglx@linutronix.de>,  "Boqun Feng" <boqun.feng@gmail.com>,  "Gary Guo"
+ <gary@garyguo.net>,  =?utf-8?Q?Bj=C3=B6rn?= Roy Baron
+ <bjorn3_gh@protonmail.com>,  "Alice
+ Ryhl" <aliceryhl@google.com>,  <rust-for-linux@vger.kernel.org>,
+  <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2 04/14] rust: sync: add `Arc::clone_from_raw`
+In-Reply-To: <874j6cjiip.fsf@kernel.org> (Andreas Hindborg's message of "Thu,
+	19 Sep 2024 07:54:06 +0200")
+References: <20240917222739.1298275-1-a.hindborg@kernel.org>
+	<20240917222739.1298275-5-a.hindborg@kernel.org>
+	<uQyhqKNsbshVFUyAbdqOai1BfuYEl6ygcM8T-tTRf2rvmh6yIVNKqODmQavLegAedRUKVZ8JZoe7O-obhoz3Uw==@protonmail.internalid>
+	<43b9bc9b-f64c-4421-8cf2-795f1f0ec94a@proton.me>
+ <874j6cjiip.fsf@kernel.org>
+Date: Thu, 19 Sep 2024 08:19:14 +0200
+Message-ID: <87v7ysi2sd.fsf@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240919043707.206400-1-fujita.tomonori@gmail.com>
-In-Reply-To: <20240919043707.206400-1-fujita.tomonori@gmail.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Thu, 19 Sep 2024 08:17:42 +0200
-Message-ID: <CAH5fLgiJyvSztvCDz8KZ4kF0--a0mqi7M4WowB==CCs2FmVk8A@mail.gmail.com>
-Subject: Re: [PATCH net] net: phy: qt2025: Fix warning: unused import DeviceId
-To: FUJITA Tomonori <fujita.tomonori@gmail.com>
-Cc: netdev@vger.kernel.org, rust-for-linux@vger.kernel.org, andrew@lunn.ch, 
-	tmgross@umich.edu, kernel test robot <lkp@intel.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 
-On Thu, Sep 19, 2024 at 6:39=E2=80=AFAM FUJITA Tomonori
-<fujita.tomonori@gmail.com> wrote:
->
-> Fix the following warning when the driver is compiled as built-in:
->
-> >> warning: unused import: `DeviceId`
->    --> drivers/net/phy/qt2025.rs:18:5
->    |
->    18 |     DeviceId, Driver,
->    |     ^^^^^^^^
->    |
->    =3D note: `#[warn(unused_imports)]` on by default
->
-> device_table in module_phy_driver macro is defined only when the
-> driver is built as module. Use an absolute module path in the macro
-> instead of importing `DeviceId`.
->
-> Reported-by: kernel test robot <lkp@intel.com>
-> Closes: https://lore.kernel.org/oe-kbuild-all/202409190717.i135rfVo-lkp@i=
-ntel.com/
-> Signed-off-by: FUJITA Tomonori <fujita.tomonori@gmail.com>
+Andreas Hindborg <a.hindborg@kernel.org> writes:
 
-It may be nice to change the macro to always use the expression so
-that this warning doesn't happen again.
+> "Benno Lossin" <benno.lossin@proton.me> writes:
+>
+>> On 18.09.24 00:27, Andreas Hindborg wrote:
+>>> Add a method to clone an arc from a pointer to the data managed by the
+>>> `Arc`.
+>>>
+>>> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+>>> ---
+>>>  rust/kernel/sync/arc.rs | 20 ++++++++++++++++++++
+>>>  1 file changed, 20 insertions(+)
+>>>
+>>> diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
+>>> index a57ea3e2b44c..2c95712d12a2 100644
+>>> --- a/rust/kernel/sync/arc.rs
+>>> +++ b/rust/kernel/sync/arc.rs
+>>> @@ -282,6 +282,26 @@ pub unsafe fn from_raw(ptr: *const T) -> Self {
+>>>          unsafe { Self::from_inner(ptr) }
+>>>      }
+>>>
+>>> +    /// Clones an [`Arc`] instance from a pointer to the contained data.
+>>> +    ///
+>>> +    /// # Safety
+>>> +    ///
+>>> +    /// `ptr` must point to an allocation that is contained within a live [`Arc<T>`].
+>>> +    pub unsafe fn clone_from_raw(ptr: *const T) -> Self {
+>>> +        // SAFETY: The caller promises that this pointer points to data
+>>> +        // contained in an `Arc` that is still valid.
+>>> +        let inner = unsafe { ArcInner::container_of(ptr).as_ref() };
+>>> +
+>>> +        // INVARIANT: C `refcount_inc` saturates the refcount, so it cannot
+>>> +        // overflow to zero. SAFETY: By the function safety requirement, there
+>>> +        // is necessarily a reference to the object, so it is safe to increment
+>>> +        // the refcount.
+>>> +        unsafe { bindings::refcount_inc(inner.refcount.get()) };
+>>> +
+>>> +        // SAFETY: We just incremented the refcount. This increment is now owned by the new `Arc`.
+>>> +        unsafe { Self::from_inner(inner.into()) }
+>>
+>> The implementation of this function looks a bit strange to me, how about
+>> this?:
+>>
+>>     // SAFETY: this function has the same safety requirements as `from_raw`.
+>>     let arc = unsafe { Self::from_raw(ptr) };
+>>     let clone = arc.clone();
+>>     // Prevent decrementing the refcount.
+>>     mem::forget(arc);
+>>     clone
+>>
+>
+> We do not own
+> a refcount on the Arc. For a short duration you will have a wrong
+> refcount. If you have two Arcs and the refcount is 1, the ArcInner might
+> be dropped after the first line of this suggestion, before you do clone,
+> and then this is not sound.
 
-Anyway, that is a separate issue.
+Well, disregard that. This is why one should not reply to emails before
+coffee in the morning.
 
-Reviewed-by: Alice Ryhl <aliceryhl@google.com>
+Of course, a precondition for calling this function is that the arc
+containing the data pointed to by `ptr` is live for the duration. So
+what you wrote would work. But I still do not like having two `Arc`s in
+existence with the wrong refcount. 
+
+BR Andreas
+
