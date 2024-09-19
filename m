@@ -1,209 +1,154 @@
-Received: from out30-113.freemail.mail.aliyun.com (out30-113.freemail.mail.aliyun.com [115.124.30.113])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 509661A2548;
-	Thu, 19 Sep 2024 15:13:47 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.113
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3494214F98;
+	Thu, 19 Sep 2024 16:54:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726758866; cv=none; b=Pp8IazVP+76NY+jncEDHgOLpvIKm25zk1aX6B1JDYcaQXq8pZruzBpVtAavD15opjHmL+Jkh9gDqKhD3Wy5sZAOK5d6NE+yrbUzk6J9oBOjOINepvYiA2vKdIWBWRz4dLLuN3oxcsTtuHR/vrL2KqzVe2YkCDHDUCDbUvQ1GdyU=
+	t=1726764877; cv=none; b=YPjALGVJ95NxRov64aeMvzhwacD41BAJQJbTqVNsGS2+jMCy6QOU8C8oPpBHflWZGd2W2uihTYolFkR+lohEnhFTRIQ1F37N7SeWe3AZDZbJ0PqigkIIboyD+e4e6wvyDfn8D8eIMf/MZcZ07lRPEiwx+UaZVSmmiJeQqFKj6JQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726758866; c=relaxed/simple;
-	bh=aA6ncyqbB5zG1a+0fNn+ZX9FSpsfipgLPNOmW1nff8c=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=svFnHG/TnBB+aZwfMoRB6WEB00qFnkfNVHAEocJntmDPAkWZzaHxx8qBhFtDJ+adjXKMLLC0swy+EZcR5EalLx9Bt4VACnYVYQGHnaVdKv+aq1e9YTOY5lk/oi4EmkguGQoOXhnO5c69cEOJCJ3yAG5pePJ1rlQpHiWvxatorg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=qSQdo6Lm; arc=none smtp.client-ip=115.124.30.113
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+	s=arc-20240116; t=1726764877; c=relaxed/simple;
+	bh=KOhrJiIshTb1OpPyQQvp49IsLx81dr58aho0eHExREI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=l9xwBVddpGHd8uIiHCFq65q3T9Zd8lC8grPYs8V6VjXa2nBg9d51c6/HJnoc7Gf6IWiD/K+3FKphbOcOk1zn5pZR03dEOs0b1ey8MPxWrWlLMm4KUkjUDuyOxDdLPCrY+j8axK8Y7ktb1d9C9NAB5RaU8T+Qzj/dcJeW65aeFAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Gtl4CYPD; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="qSQdo6Lm"
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1726758824; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=5VCFEuYCnHsfOuo1YYnMThvXIJQAqGa76+hoecHZapM=;
-	b=qSQdo6LmLHBbbh2nJBAp1ZgWqrucWl39jfPg2PO5vCgHBX0pJFHcfqdSBEkc9EcxYyiArtPe7Vj2YUP2PtvCdSkJo16zZj3kEbzywUpwzcQ4T42bUcLI3aILGqnEHOSwdbNRV9EGZuLD3rAig7T6quZCfQuxYEegFjxHNtJ6cMo=
-Received: from 30.27.101.7(mailfrom:hsiangkao@linux.alibaba.com fp:SMTPD_---0WFI-2kQ_1726758821)
-          by smtp.aliyun-inc.com;
-          Thu, 19 Sep 2024 23:13:43 +0800
-Message-ID: <9bbbac63-c05f-4f7b-91c2-141a93783cd3@linux.alibaba.com>
-Date: Thu, 19 Sep 2024 23:13:41 +0800
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Gtl4CYPD"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8885C4CECE;
+	Thu, 19 Sep 2024 16:54:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1726764876;
+	bh=KOhrJiIshTb1OpPyQQvp49IsLx81dr58aho0eHExREI=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=Gtl4CYPDKHsj+01dmY1sEkpYO2xeMulFz7QLZYO6+5L3SQdhobGds2ITCiLy3kQac
+	 /EwO1t6gVI4SNvdtM7Dt7zFFkXxgSLbW3Hb2W9RMyJE2prTqxGVf+q1VkoixrOGFbw
+	 KCSc9jfYc9XxLzIMOLKcp7MMakW94DKh21i9dnfJYd+s8fjKROTTHbfLeP4F5hm8Ob
+	 M1vc6DZEVzT8IOCycHVvoYA8dFwUUszUWR8X2QSNlk6hdob7B4u41Tc2wXCuEkkCvj
+	 7Owss05bqAibSI+zmWnP2qfePBf5soSlREwnHAXAjNvSOGckH7zsX+4JWEhF87eXOi
+	 wyqFczuIiZvmw==
+Received: by mail-lj1-f173.google.com with SMTP id 38308e7fff4ca-2f752d9ab62so11352731fa.3;
+        Thu, 19 Sep 2024 09:54:36 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCUi/9g7mbNE+YnLovk7lRuo660xWsrmOTntRQC1NYZa1fEROXuS881fBd9swwlL5u14rCHGznxNr2lraxE=@vger.kernel.org, AJvYcCUuM8HAgAZiPqHH0Z03RbEOAxsBM2wJSxAaX7wzOK5epwFAUPcNT0tDFBNLJg+ObsEJeoCR5BI8pIqByoZZPGY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyxyunnuuKBHPwA1O/3cYOKPw7HrM4k3/DLulINq7a33Vd4UfSv
+	qJDdo7cHY8+WV16CNAZE79ySMcL+19dNcS4shN4ulWQ+Fxlga36Fw5Z2VKr9/iMhVvuE0jMZoed
+	mRXT1X/YUhB0t1he8OPjJ0vQMkBQ=
+X-Google-Smtp-Source: AGHT+IFhuePW8rNcXV6JZlcNLCTba6sLje14MEX0SQW9HdS1v7f/TnZcVoaCRRA7xNspiY8Ac4OElOWIR7WdH/1Acfw=
+X-Received: by 2002:a2e:be1b:0:b0:2f7:56c2:7288 with SMTP id
+ 38308e7fff4ca-2f7cb2cfe47mr1755291fa.7.1726764875384; Thu, 19 Sep 2024
+ 09:54:35 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 03/24] erofs: add Errno in Rust
-To: Benno Lossin <benno.lossin@proton.me>, Gary Guo <gary@garyguo.net>,
- Yiyang Wu <toolmanp@tlmp.cc>
-Cc: linux-erofs@lists.ozlabs.org, rust-for-linux@vger.kernel.org,
- linux-fsdevel@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>,
- Al Viro <viro@zeniv.linux.org.uk>,
- Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-References: <20240916135634.98554-1-toolmanp@tlmp.cc>
- <20240916135634.98554-4-toolmanp@tlmp.cc>
- <20240916210111.502e7d6d.gary@garyguo.net>
- <2b04937c-1359-4771-86c6-bf5820550c92@linux.alibaba.com>
- <ac871d1e-9e4e-4d1b-82be-7ae87b78d33e@proton.me>
-From: Gao Xiang <hsiangkao@linux.alibaba.com>
-In-Reply-To: <ac871d1e-9e4e-4d1b-82be-7ae87b78d33e@proton.me>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20240917141725.466514-1-masahiroy@kernel.org> <20240917141725.466514-5-masahiroy@kernel.org>
+ <Zur-pVW_2oBJdjgy@l-nschier-nb>
+In-Reply-To: <Zur-pVW_2oBJdjgy@l-nschier-nb>
+From: Masahiro Yamada <masahiroy@kernel.org>
+Date: Fri, 20 Sep 2024 01:53:58 +0900
+X-Gmail-Original-Message-ID: <CAK7LNATf0MznDOOaz9gkhT+a95q=Y0ocaLrJT6wrj3sYrEi3wQ@mail.gmail.com>
+Message-ID: <CAK7LNATf0MznDOOaz9gkhT+a95q=Y0ocaLrJT6wrj3sYrEi3wQ@mail.gmail.com>
+Subject: Re: [PATCH 04/23] kbuild: doc: remove the description about shipped files
+To: Nicolas Schier <n.schier@avm.de>
+Cc: linux-kbuild@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Nathan Chancellor <nathan@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi Benno,
+On Thu, Sep 19, 2024 at 1:24=E2=80=AFAM Nicolas Schier <n.schier@avm.de> wr=
+ote:
+>
+> On Tue, Sep 17, 2024 at 11:16:32PM +0900, Masahiro Yamada wrote:
+> > The use of shipped files is discouraged in the upstream kernel these
+> > days. [1]
+> >
+> > Downstream Makefiles have the freedom to use shipped files or other
+> > options to handle binaries, but this is not what should be advertised
+> > in the upstream document.
+> >
+> > [1]: https://lore.kernel.org/all/CAHk-=3DwgSEi_ZrHdqr=3D20xv+d6dr5G895C=
+bOAi8ok+7-CQUN=3DfQ@mail.gmail.com/
+> >
+> > Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+> > ---
+> >
+> >  Documentation/kbuild/modules.rst | 35 +++-----------------------------
+> >  1 file changed, 3 insertions(+), 32 deletions(-)
+>
+> Do you want to remove the TODO point refering to *_shipped files from
+> Documentation/kbuild/makefiles.rst as well?
 
-On 2024/9/19 21:45, Benno Lossin wrote:
-> Hi,
-> 
-> Thanks for the patch series. I think it's great that you want to use
-> Rust for this filesystem.
-> 
-> On 17.09.24 01:58, Gao Xiang wrote:
->> On 2024/9/17 04:01, Gary Guo wrote:
->>> Also, it seems that you're building abstractions into EROFS directly
->>> without building a generic abstraction. We have been avoiding that. If
->>> there's an abstraction that you need and missing, please add that
->>> abstraction. In fact, there're a bunch of people trying to add FS
->>
->> No, I'd like to try to replace some EROFS C logic first to Rust (by
->> using EROFS C API interfaces) and try if Rust is really useful for
->> a real in-tree filesystem.  If Rust can improve EROFS security or
->> performance (although I'm sceptical on performance), As an EROFS
->> maintainer, I'm totally fine to accept EROFS Rust logic landed to
->> help the whole filesystem better.
-> 
-> As Gary already said, we have been using a different approach and it has
-> served us well. Your approach of calling directly into C from the driver
-> can be used to create a proof of concept, but in our opinion it is not
-> something that should be put into mainline. That is because calling C
-> from Rust is rather complicated due to the many nuanced features that
-> Rust provides (for example the safety requirements of references).
-> Therefore moving the dangerous parts into a central location is crucial
-> for making use of all of Rust's advantages inside of your code.
 
-I'm not quite sure about your point honestly.  In my opinion, there
-is nothing different to use Rust _within a filesystem_ or _within a
-driver_ or _within a Linux subsystem_ as long as all negotiated APIs
-are audited.
+Yes.
 
-Otherwise, it means Rust will never be used to write Linux core parts
-such as MM, VFS or block layer. Does this point make sense? At least,
-Rust needs to get along with the existing C code (in an audited way)
-rather than refuse C code.
+Good catch.
 
-My personal idea about Rust: I think Rust is just another _language
-tool_ for the Linux kernel which could save us time and make the
-kernel development better.
 
-Or I wonder why not writing a complete new Rust stuff instead rather
-than living in the C world?
 
-> 
->> For Rust VFS abstraction, that is a different and indepenent story,
->> Yiyang don't have any bandwidth on this due to his limited time.
-> 
-> This seems a bit weird, you have the bandwidth to write your own
-> abstractions, but not use the stuff that has already been developed?
+> $ git grep -Hrne _shipped Documentation/
+> Documentation/kbuild/makefiles.rst:1668:- Describe how kbuild supports sh=
+ipped files with _shipped.
+>
+> >
+> > diff --git a/Documentation/kbuild/modules.rst b/Documentation/kbuild/mo=
+dules.rst
+> > index 7eceb9a65e9c..1afa6b1b4090 100644
+> > --- a/Documentation/kbuild/modules.rst
+> > +++ b/Documentation/kbuild/modules.rst
+> [...]
+> > @@ -240,35 +235,11 @@ module 8123.ko, which is built from the following=
+ files::
+> >               default:
+> >                       $(MAKE) -C $(KDIR) M=3D$$PWD
+> >
+> > -             # Module specific targets
+> > -             genbin:
+> > -                     echo "X" > 8123_bin.o_shipped
+> > -
+> >       The split in example 2 is questionable due to the simplicity of
+> >       each file; however, some external modules use makefiles
+> >       consisting of several hundred lines, and here it really pays
+> >       off to separate the kbuild part from the rest.
+> >
+> > -3.3 Binary Blobs
+> > -----------------
+> > -
+> > -     Some external modules need to include an object file as a blob.
+> > -     kbuild has support for this, but requires the blob file to be
+> > -     named <filename>_shipped. When the kbuild rules kick in, a copy
+> > -     of <filename>_shipped is created with _shipped stripped off,
+> > -     giving us <filename>. This shortened filename can be used in
+> > -     the assignment to the module.
+> > -
+> > -     Throughout this section, 8123_bin.o_shipped has been used to
+> > -     build the kernel module 8123.ko; it has been included as
+> > -     8123_bin.o::
+> > -
+> > -             8123-y :=3D 8123_if.o 8123_pci.o 8123_bin.o
+> > -
+> > -     Although there is no distinction between the ordinary source
+> > -     files and the binary file, kbuild will pick up different rules
+> > -     when creating the object file for the module.
+> > -
+>
+> I think renumbering the following sections would provide a more consisten=
+t document.  If you think that keeping the numbering constant:  would you m=
+ind adding a note about section 3.3 being removed?
+> (And possibly as well in the table of contents?)
 
-It's not written by me, Yiyang is still an undergraduate tudent.
-It's his research project and I don't think it's his responsibility
-to make an upstreamable VFS abstraction.
+Rather, I'd like to remove section numbers.
 
-> 
-> I have quickly glanced over the patchset and the abstractions seem
-> rather immature, not general enough for other filesystems to also take
+Let me do that way.
 
-I don't have enough time to take a full look of this patchset too
-due to other ongoing work for now (Rust EROFS is not quite a high
-priority stuff for me).
 
-And that's why it's called "RFC PATCH".
+> Either way,
+>
+> Reviewed-by: Nicolas Schier <n.schier@avm.de>
 
-> advantage of them. They also miss safety documentation and are in
 
-I don't think it needs to be general enough, since we'd like to use
-the new Rust language tool within a subsystem.
 
-So why it needs to take care of other filesystems? Again, I'm not
-working on a full VFS abstriction.
-
-Yes, this patchset is not perfect.  But I've asked Yiyang to isolate
-all VFS structures as much as possible, but it seems that it still
-touches something.
-
-> general poorly documented.
-
-Okay, I think it can be improved then if you give more detailed hints.
-
-> 
-> Additionally, all of the code that I saw is put into the `fs/erofs` and
-> `rust/erofs_sys` directories. That way people can't directly benefit
-> from your code, put your general abstractions into the kernel crate.
-> Soon we will be split the kernel crate, I could imagine that we end up
-> with an `fs` crate, when that happens, we would put those abstractions
-> there.
-> 
-> As I don't have the bandwidth to review two different sets of filesystem
-> abstractions, I can only provide you with feedback if you use the
-> existing abstractions.
-
-I think Rust is just a tool, if you could have extra time to review
-our work, that would be wonderful!  Many thanks then.
-
-However, if you don't have time to review, IMHO, Rust is just a tool,
-I think each subsystem can choose to use Rust in their codebase, or
-I'm not sure what's your real point is?
-
-> 
->> And I _also_ don't think an incomplete ROFS VFS Rust abstraction
->> is useful to Linux community
-> 
-> IIRC Wedson created ROFS VFS abstractions before going for the full
-> filesystem. So it would definitely be useful for other read-only
-> filesystems (as well as filesystems that also allow writing, since last
-> time I checked, they often also support reading).
-
-Leaving aside everything else, an incomplete Rust read-only VFS
-abstraction itself is just an unsafe stuff.
-
-> 
->> (because IMO for generic interface
->> design, we need a global vision for all filesystems instead of
->> just ROFSes.  No existing user is not an excuse for an incomplete
->> abstraction.)
-> 
-> Yes we need a global vision, but if you would use the existing
-> abstractions, then you would participate in this global vision.
-> 
-> Sorry for repeating this point so many times, but it is *really*
-> important that we don't have multiple abstractions for the same thing.
-
-I've expressed my viewpoint.
-
-> 
->> If a reasonble Rust VFS abstraction landed, I think we will switch
->> to use that, but as I said, they are completely two stories.
-> 
-> For them to land, there has to be some kind of user. For example, a rust
-> reference driver, or a new filesystem. For example this one.
-
-Without a full proper VFS abstraction, it's just broken and
-needs to be refactored.  And that will be painful to all
-users then.
-
-=======
-In the end,
-
-Other thoughts, comments are helpful here since I wonder how "Rust
--for-Linux" works in the long term, and decide whether I will work
-on Kernel Rust or not at least in the short term.
-
-Thanks,
-Gao Xiang
-
-> 
-> ---
-> Cheers,
-> Benno
-> 
-
+--=20
+Best Regards
+Masahiro Yamada
