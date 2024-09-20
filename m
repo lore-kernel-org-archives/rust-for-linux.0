@@ -1,530 +1,235 @@
-Received: from mail-wm1-f45.google.com (mail-wm1-f45.google.com [209.85.128.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5454417BB21
-	for <rust-for-linux@vger.kernel.org>; Fri, 20 Sep 2024 14:29:12 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34E9F17CA00
+	for <rust-for-linux@vger.kernel.org>; Fri, 20 Sep 2024 15:28:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.134
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726842554; cv=none; b=RyaNKiHO85/pBxcaPtERoqhe6MabARabEhJD6xv6Xaxx6hR1x2gqQjM8P+k5JJ0Cb5TW620yXJJxdBYiUzsfHwumFD7LZiMrCdWQa6QjpACL7NVRFUF22hLEo/g+dJH22wug1YYrRuI1lBocWaycTRR6qGV68UE8zWrDrYuO3/Y=
+	t=1726846139; cv=none; b=Ohrl37N/qUd+FaaT6rN1Ubl4IHaLDxw/LOWnaJMRPA3MlbQSEjCi6Vt+6QBf4fVnTB2MKx3Fm4JldyVd/PEg/LZg0RY+Hgozx5CZvpd7idri80r8sG0epC/8vrfr7UU1CRhDsuK25QUm6mXyFWR9qG4ojKHuNAk4OPLJBEE5rL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726842554; c=relaxed/simple;
-	bh=0zq1PlLaF0XLS5V+BH1BCUYfFlf8KTrFx161kq/4xP0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QyACzSHtDqwUaG4VxxYRJ/sgngUHr3pdXQ0nTqJ8gujWbyzB8mtc13rul4hcfBeUCORMcdayhwYy23ZyNZvTCb0XKik5QXRJGMwVlGMZx2NOdC6V0GK5XXjKvrWUQL73GdsXuIw752XyMJ2HJpYN2qYApa2wcBJZ4sXx5faBYac=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch; spf=none smtp.mailfrom=ffwll.ch; dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b=keSHs3Od; arc=none smtp.client-ip=209.85.128.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=ffwll.ch
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ffwll.ch
+	s=arc-20240116; t=1726846139; c=relaxed/simple;
+	bh=Xru1Xw6EXxrCV55SOq8vDOrd/yHDyBJip3dmdKkU954=;
+	h=Date:To:From:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=IZ9IpRs8Skem18uC/2j4HR2xvTcUn2/9KvRPEQQqARrx8L3YkiCe8rfPjQ55L5H9L4FR6D1XKITTnBXW0tXitqbIex9L53QLW3Wu025uCdiUQrHUWEi5KKReWcxJj2g8dchIefseF3CxSvLSQL0ReDZauCtKEl4QjJAMRA4d2ms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=Op14Gnkx; arc=none smtp.client-ip=185.70.40.134
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=ffwll.ch header.i=@ffwll.ch header.b="keSHs3Od"
-Received: by mail-wm1-f45.google.com with SMTP id 5b1f17b1804b1-42cae4eb026so19465965e9.0
-        for <rust-for-linux@vger.kernel.org>; Fri, 20 Sep 2024 07:29:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=ffwll.ch; s=google; t=1726842551; x=1727447351; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Ug30u+FX8a3Qn9eAfXuu/xh4m5BzwPDgoNnMylvURq4=;
-        b=keSHs3OdJAvXmnKdslG0q3A9JgX4agPYfFlGcjAepuqM5EKxOK0iaRD0GcspOIsVfO
-         oSb6ErvKjPz04s/VOVLYNvtOVorYFgLIzGB09DZM8eqWHluU5O0APnSgsrx2vY4+PlzK
-         p9sCXNZzfBB70lVgZbHsGUL3FaYNAdjfRM9Pw=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726842551; x=1727447351;
-        h=in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Ug30u+FX8a3Qn9eAfXuu/xh4m5BzwPDgoNnMylvURq4=;
-        b=fSf09oG0kpxEZ1bw0uIkc0C8XdXY//ptdWuBYhk/pgf3Cq+0elMV0pu+ALobcPdgcx
-         ZzPQIoE7qxkWd1TZmQe0xjRi3mSdyWZPJREBzXdhHo7cMWEHhaMvzCPlptkgmXT6hw8d
-         1ihojAzD28byyNEjMZDyUJO7jtbmIllpw5fh6HXQMoGHiuNjdFMVo5IXrzEk5kwPW1t5
-         hBv2iFTY8S3WJ7ASqIlfW1RxOjAy2QqnxwrZDC08bsWtLg4w/IFe6gPgETlfDIkEzQkf
-         wSGQ7gxUy3c6/NJzFx763CElp9QfzqYgf+OdmSQUDhLaY/BSKInQ99EgNfoiIW/FXd2m
-         t60w==
-X-Forwarded-Encrypted: i=1; AJvYcCXbcTNDeKdpa9JR4LwlYV+voMUCSgxISCluWcppqwVD+SG7brAOSOUwxO4htYJLVpHA5q8aIzqFhEyQ/MRuNg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwGua4stWIdb1ia1vQCrSNWqlHIbDjq+koutcUCLIvY2GRePUsF
-	qCfZ+lXBGjhgFuC6E3F1yVGXYR51E3MXc9j1g0IjwLx36+3m6B5JhFEZdLR7cG8=
-X-Google-Smtp-Source: AGHT+IG3fy+6T+kCFnBj5Y2ccrD+mwbI8PUUqGqZVmSp4wfPsOLC49T72LgtOC40Akc2DlpCCUmmzw==
-X-Received: by 2002:adf:f50e:0:b0:374:c1de:5525 with SMTP id ffacd0b85a97d-37a4312aa40mr1866964f8f.6.1726842550405;
-        Fri, 20 Sep 2024 07:29:10 -0700 (PDT)
-Received: from phenom.ffwll.local ([2a02:168:57f4:0:5485:d4b2:c087:b497])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-378e78044dfsm17727472f8f.94.2024.09.20.07.29.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 20 Sep 2024 07:29:09 -0700 (PDT)
-Date: Fri, 20 Sep 2024 16:29:07 +0200
-From: Simona Vetter <simona.vetter@ffwll.ch>
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Simona Vetter <simona.vetter@ffwll.ch>,
-	Greg KH <gregkh@linuxfoundation.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="Op14Gnkx"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=en6br3hjingk7jsrrmzwetwexe.protonmail; t=1726846129; x=1727105329;
+	bh=N7F0vlhEavmWrnMWcAbLj6GIz5oqybxOWyz+kMUkRoU=;
+	h=Date:To:From:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=Op14Gnkxt+QNcu+eSIg0ZO8dYWBZ3YxrUUDdBBQ3Wq39g/UGcOchQFj8LNxzYFXtq
+	 fhvgf1Xj5k/6AuYso91nX7HypBNLNVITflI0RzG8Nbe9jeXk8COXuo5uksnzKQeGNc
+	 hWvVOHNDil5M/1MEn10scdsL3CUwoof7hNOvOwPZb995bO1GIBswfSdIottsErZLo5
+	 lMEie7uVZlSdi0/YAvJ12wKxUUYdF677VdwqmiVNYjtBjM0aMmJnjBoyy379tjxYHR
+	 tJvQj5G41tAL/BQ8pXLyKoJDGT67EEX0rhW6G4l2LHyzqDh3l0Q+X/u1BwB0N/NWlN
+	 N3+4jIA1zlyAQ==
+Date: Fri, 20 Sep 2024 15:28:47 +0000
+To: Simona Vetter <simona.vetter@ffwll.ch>, Greg KH <gregkh@linuxfoundation.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@samsung.com>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+From: Benno Lossin <benno.lossin@proton.me>
 Subject: Re: [PATCH 1/3] rust: add untrusted data abstraction
-Message-ID: <Zu2Gs3zk-F2XIg8A@phenom.ffwll.local>
-Mail-Followup-To: Benno Lossin <benno.lossin@proton.me>,
-	Simona Vetter <simona.vetter@ffwll.ch>,
-	Greg KH <gregkh@linuxfoundation.org>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-References: <20240913112643.542914-1-benno.lossin@proton.me>
- <20240913112643.542914-2-benno.lossin@proton.me>
- <ZuRbSxwlz1xWT1pG@phenom.ffwll.local>
- <cf0d6189-e81c-4b7c-ab50-7a297c69b132@proton.me>
- <ZuhTdwCqz61bQEgq@phenom.ffwll.local>
- <26534d80-989d-4b77-9720-84575275890f@proton.me>
+Message-ID: <e9de0ead-2ab4-44c6-b7f5-8bf416799664@proton.me>
+In-Reply-To: <Zu2Gs3zk-F2XIg8A@phenom.ffwll.local>
+References: <20240913112643.542914-1-benno.lossin@proton.me> <20240913112643.542914-2-benno.lossin@proton.me> <ZuRbSxwlz1xWT1pG@phenom.ffwll.local> <cf0d6189-e81c-4b7c-ab50-7a297c69b132@proton.me> <ZuhTdwCqz61bQEgq@phenom.ffwll.local> <26534d80-989d-4b77-9720-84575275890f@proton.me> <Zu2Gs3zk-F2XIg8A@phenom.ffwll.local>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: 899cc48ae97e3cd27dbaf4cbf3c6cf2d4d2f223c
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <26534d80-989d-4b77-9720-84575275890f@proton.me>
-X-Operating-System: Linux phenom 6.9.12-amd64 
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Wed, Sep 18, 2024 at 03:40:54PM +0000, Benno Lossin wrote:
-> On 16.09.24 17:49, Simona Vetter wrote:
-> > On Fri, Sep 13, 2024 at 04:49:29PM +0000, Benno Lossin wrote:
-> >> On 13.09.24 17:33, Simona Vetter wrote:
-> >>> On Fri, Sep 13, 2024 at 11:26:57AM +0000, Benno Lossin wrote:
-> >>>>  /// Used to transfer ownership to and from foreign (non-Rust) languages.
-> >>>> @@ -532,3 +533,248 @@ unsafe impl AsBytes for str {}
-> >>>>  // does not have any uninitialized portions either.
-> >>>>  unsafe impl<T: AsBytes> AsBytes for [T] {}
-> >>>>  unsafe impl<T: AsBytes, const N: usize> AsBytes for [T; N] {}
-> >>>> +
-> >>>> +/// Untrusted data of type `T`.
-> >>>> +///
-> >>>> +/// When reading data from userspace, hardware or other external untrusted sources, the data must
-> >>>> +/// be validated before it is used for logic within the kernel. To do so, the [`validate()`]
-> >>>> +/// function exists and uses the [`Validator`] trait. For raw bytes validation there also is the
-> >>>> +/// [`validate_bytes()`] function.
-> >>>> +///
-> >>>> +///
-> >>>> +/// [`validate()`]: Self::validate
-> >>>> +/// [`validate_bytes()`]: Self::validate_bytes
-> >>>> +#[repr(transparent)]
-> >>>> +pub struct Untrusted<T: ?Sized>(T);
-> >>>
-> >>> I think we could make this a bit more strict and instead of encouraging
-> >>> people to put all their validation code into a Validator<T>, force
-> >>> them to. Which means assuming apis wrap all untrusted stuff in
-> >>> Untrusted<T> reviewers only need to look at validate implementations and
-> >>> nothing else.
-> >>>
-> >>> If I'm not too wrong with my rust I think this would work with slitting
-> >>> Untrusted<T> into two types:
-> >>>
-> >>> - Untrusted<T> is just a box you can't access, and the type returned by
-> >>>   apis for untrusted data. It doesn't have any of the functions except
-> >>>   validate and new_untrusted so that you can't get at the data at all.
-> >>>
-> >>> - UntrustedUnsafe<T> does have all the accessors needed for validation,
-> >>>   but you can't construct that outside of this module. Maybe simplest to
-> >>>   just nest this within the Untrusted<T> box.
-> >>>
-> >>> - Untrusted::validate does the unboxing and passes a reference to
-> >>>   UntrustedUnsafe<T> to Validator::validate, to guarantee that all the
-> >>>   validation code is in there and nowhere else. Similar for
-> >>>   validate_bytes.
-> >>>
-> >>> Of course people can still bypass this easily, but it gets a bit harder to
-> >>> do so, and easier for reviewers to verify everything.
-> >>
-> >> This is a great idea!
-> >> I think we should also remove `validate_bytes`, then you really must
-> >> implement `Validator`. If we figure out later that people need it, we
-> >> can add it later again. I added it because I thought that implementing
-> >> `Validator` for something very small might be very annoying, but it
-> >> seems like you actually want to force people to implement it :)
-> > 
-> > See further down, I think there's a real use-case for validate_bytes, or
-> > something really close to it at least.
-> 
-> That's good to know, then I will keep it.
-> 
-> >> I think we should discuss the name `UntrustedUnsafe` though, I don't
-> >> really like the `Unsafe` although I understand why you used it. What do
-> >> you think of renaming the current `Untrusted` (and the one that only
-> >> exposes `validate`) to `Unvalidated` and using `Untrusted` as the
-> >> parameter for `Validator::validate`?
-> > 
-> > Much better, I didn't like my naming either.
-> 
-> While designing my LPC slides, I think that we actually don't need two
-> types. We can just have `Untrusted` that exposes nothing except
-> `validate[_bytes]` and have the `Validator::validate` function take the
-> input data directly unwrapped. Thoughts?
+On 20.09.24 16:29, Simona Vetter wrote:
+> On Wed, Sep 18, 2024 at 03:40:54PM +0000, Benno Lossin wrote:
+>> On 16.09.24 17:49, Simona Vetter wrote:
+>>> On Fri, Sep 13, 2024 at 04:49:29PM +0000, Benno Lossin wrote:
+>>>> What I think we should do instead is make our APIs that return untrust=
+ed
+>>>> data just return `Untrusted<Folio>` and implement the following method=
+:
+>>>>
+>>>>     impl Folio {
+>>>>         pub fn read(self: &Untrusted<Self>) -> &Untrusted<[u8]>;
+>>>>     }
+>>>>
+>>>> I think that is the best of both worlds: we don't need to do excessive
+>>>> type shenanigans for every type carrying potentially untrusted data an=
+d
+>>>> we get to have methods specific to untrusted data.
+>>>>
+>>>> However, I think implementing this method will be a bit difficult with
+>>>> the `Untrusted`/`Unvalidated` split. Maybe we can have some `pub(crate=
+)`
+>>>> methods on `Unvalidated` to perform some mappings?
+>>>
+>>> The thing is, folios are just a pile of contig pages, and there's nothi=
+ng
+>>> in the rules that they only contain untrusted data. Currently in rust c=
+ode
+>>> we have that's the case, but not in general. So we need that associated
+>>> type.
+>>>
+>>> But I also think Folio here is special, a lot of the other places where=
+ I
+>>> want this annotation it's the case that the data returned is _always_
+>>> untrusted. So we don't need to place associated types all over the
+>>> codebase to make this work, it's just that the rfc example you've picke=
+d
+>>> needs it.
+>>
+>> I think we should try to make just wrapping stuff in `Untrusted` work. I
+>> don't see how the associated types would help you any more than just
+>> implementing stuff on `&Untrusted<Self`.
+>=20
+> I guess you could wrap it as Untrusted in each use site when you get the
+> data out of the Folio, but that makes the guarantees we get out of these
+> annotations much less stringent. Which is why I think for Folio<> (well
+> really for Pagecache) we need to go with the associated type or it's a bi=
+t
+> self-defeating.
 
-I think the only tricky case is when you want to validate multiple
-untrusted things together. But we could sort that out by making untrusted
-a trait (or at least the validate function that runs on it), and then
-implement it for tuples.
+Let's just implement both ways and see which one is better.
 
-Which is an entirely irrelevant detour out of the way of saying "yes I
-think this works and is much simpler."
- 
-> >> Alternatively, we could use `Unverified`/`Untrusted`, because
-> >> unvalidated is not a "real English word". But then I think we also
-> >> should rename `Validator` to `Verifier` etc.
-> >>
-> >>>> +    /// Gives direct access to the underlying untrusted data.
-> >>>> +    ///
-> >>>> +    /// Be careful when accessing the data, as it is untrusted and still needs to be verified! To
-> >>>> +    /// do so use [`validate()`].
-> >>>> +    ///
-> >>>> +    /// [`validate()`]: Self::validate
-> >>>> +    pub fn untrusted(&self) -> &T {
-> >>>> +        &self.0
-> >>>> +    }
-> >>>> +
-> >>>> +    /// Gives direct access to the underlying untrusted data.
-> >>>> +    ///
-> >>>> +    /// Be careful when accessing the data, as it is untrusted and still needs to be verified! To
-> >>>> +    /// do so use [`validate()`].
-> >>>> +    ///
-> >>>> +    /// [`validate()`]: Self::validate
-> >>>> +    pub fn untrusted_mut(&mut self) -> &mut T {
-> >>>> +        &mut self.0
-> >>>> +    }
-> >>>> +
-> >>>> +    /// Unwraps the data and removes the untrusted marking.
-> >>>> +    ///
-> >>>> +    /// Be careful when accessing the data, as it is untrusted and still needs to be verified! To
-> >>>> +    /// do so use [`validate()`].
-> >>>> +    ///
-> >>>> +    /// [`validate()`]: Self::validate
-> >>>> +    pub fn into_inner_untrusted(self) -> T
-> >>>
-> >>> I don't like the above two since they could be easily and accidentally
-> >>> abused to leak untrusted data. And at least in your example I think
-> >>> they're fallout from being a bit too eager with annotating data as
-> >>> untrusted. The Folio and Mapped itself are just kernel structures, they
-> >>> better be correct. So I don't think it's useful to annotate those as
-> >>> untrusted and rely on Deref to also annotate the actual data as untrusted,
-> >>> because it forces you to peak behind the box a few times.
-> >>
-> >> As I wrote in patch 2, I have no idea if I added the `Untrusted<T>` in
-> >> the correct places, as I don't know folios. I would disagree, that these
-> >> methods are necessary because of marking the entire folio as untrusted,
-> >> they are needed to access the data from within the `Validator::validate`
-> >> function, but with your above suggestion, we can move them to the
-> >> internal type.
-> >>
-> >>> Instead I think we only want to annotate the Folio Deref:
-> >>>
-> >>> impl<S> Deref for Mapped<'_, S> {
-> >>>     type Target = Untrusted<[u8]>;
-> >>>
-> >>> Now there will be folios that we trust because they're kernel internal
-> >>> data and not file cache, so we need more flexibility here. No idea how to
-> >>> best make that happen, but in either case it's only the Deref data itself
-> >>> we don't trust, not any of the structures around it. One example would be
-> >>> gpu page tables. One way to implement this would be to make the Target
-> >>> type a generic of the folio, or well an associated type of the existing
-> >>> generics folio paramater:
-> >>>
-> >>> pub struct Folio<S: FolioType>
-> >>>
-> >>> pub trait FolioType {
-> >>> 	type Data;
-> >>> }
-> >>>
-> >>> impl<T> FolioType for PageCache<T> {
-> >>> 	type Data = Untrusted<[u8]>;
-> >>> }
-> >>>
-> >>> And gpu pagetables would use a something like this instead:
-> >>>
-> >>> impl FolioType for GpuFolios {
-> >>> 	type Data = [struct GpuPTE];
-> >>> }
-> >>>
-> >>> All extremely untested.
-> >>
-> >> What I would like to avoid is having to do this for every possible data
-> >> source. Ideally we could just wrap trusted data sources with `Untrusted`
-> >> and be done with it.
-> >> If the wrapped type is not plain data, but rather a smart pointer or
-> >> other abstraction, then only the underlying data is marked untrusted
-> >> (otherwise how would you even know that the pointer can be used?). So
-> >> for example one might have an `Untrusted<ARef<[u8]>>`.
-> > 
-> > Yeah I think for pure smart pointers this is great, hence why I didn't
-> > object to your Deref implementation. But if there's an entire
-> > datastructure around it (like with pagecache) I think we need to sprinkle
-> > associated types around to make this work.
-> > 
-> > What imo breaks annotations like this is if you have a lot of false
-> > positive cases that force people to jump through hoops and normalize
-> > having random uncecessary "validate" code all over. That defeats the
-> > point.
-> 
-> Agreed.
-> 
-> >> What I think we should do instead is make our APIs that return untrusted
-> >> data just return `Untrusted<Folio>` and implement the following method:
-> >>
-> >>     impl Folio {
-> >>         pub fn read(self: &Untrusted<Self>) -> &Untrusted<[u8]>;
-> >>     }
-> >>
-> >> I think that is the best of both worlds: we don't need to do excessive
-> >> type shenanigans for every type carrying potentially untrusted data and
-> >> we get to have methods specific to untrusted data.
-> >>
-> >> However, I think implementing this method will be a bit difficult with
-> >> the `Untrusted`/`Unvalidated` split. Maybe we can have some `pub(crate)`
-> >> methods on `Unvalidated` to perform some mappings?
-> > 
-> > The thing is, folios are just a pile of contig pages, and there's nothing
-> > in the rules that they only contain untrusted data. Currently in rust code
-> > we have that's the case, but not in general. So we need that associated
-> > type.
-> > 
-> > But I also think Folio here is special, a lot of the other places where I
-> > want this annotation it's the case that the data returned is _always_
-> > untrusted. So we don't need to place associated types all over the
-> > codebase to make this work, it's just that the rfc example you've picked
-> > needs it.
-> 
-> I think we should try to make just wrapping stuff in `Untrusted` work. I
-> don't see how the associated types would help you any more than just
-> implementing stuff on `&Untrusted<Self`.
+[...]
 
-I guess you could wrap it as Untrusted in each use site when you get the
-data out of the Folio, but that makes the guarantees we get out of these
-annotations much less stringent. Which is why I think for Folio<> (well
-really for Pagecache) we need to go with the associated type or it's a bit
-self-defeating.
+>>>>>> +pub trait Validator {
+>>>>>> +    /// Type of the input data that is untrusted.
+>>>>>> +    type Input: ?Sized;
+>>>>>> +    /// Type of the validated data.
+>>>>>> +    type Output;
+>>>>>
+>>>>> So I think the explicit Output makes sense if you have multiple diffe=
+rent
+>>>>> untrusted input that validate to the same trusted structure, but I'm =
+not
+>>>>> sure this makes sense as associated types. Instead I'd go with generi=
+cs
+>>>>> and somethign like this:
+>>>>>
+>>>>> pub trait Validator<Input: ?Sized> {
+>>>>>     type Err;
+>>>>>
+>>>>>     fn validate(untrusted: &Untrusted<Input>) -> Result<Self, Self::E=
+rr>;
+>>>>> }
+>>>>>
+>>>>> That means you can't implement validate for types from other modules
+>>>>> directly but need a newtype (I think at least, not sure). But I think
+>>>>> that's actually a good thing, since often that means you're validatin=
+g
+>>>>> some generic state plus whatever your own code needs (like the
+>>>>> inode::Params<tarfs::INodeData> in your example), and both pieces nee=
+d to
+>>>>> be consisted overall and not just individually (otherwise why does th=
+e
+>>>>> that other module not do the parsing for you). And so explicitly trea=
+ting
+>>>>> the validated output as an explicit new type just makes sense to me. =
+Plus
+>>>>> with derive(Deref) it's trivial to unbox after validation.
+>>>>
+>>>> There might be the need to validate the same piece of data with
+>>>> different ways and I am not convinced adding a newtype for every singl=
+e
+>>>> case is a good way to achieve it.
+>>>> Although it would simplify the `Validator` trait... I will think a bit
+>>>> about this.
+>>>
+>>> Hm, but unless I misunderstand you already need a random type to attach
+>>> your current trait too? So not worse if we require that for the
+>>> less-common type of multiple ways to validate the same, and simpler for
+>>> the common one.
+>>
+>> Yes, but you wouldn't have to unwrap the return type. For example with
+>> your proposal we have:
+>>
+>>     struct MyINodeParams(INodeParams);
+>>
+>>     impl Validator<[u8]> for MyINodeParams {
+>>         type Err =3D Error;
+>>
+>>         fn validate(untrusted: &Untrusted<[u8]>) -> Result<Self> {
+>>             /*...*/
+>>             Ok(Self(params))
+>>         }
+>>     }
+>>
+>>     impl MyINodeParams {
+>>         fn into_inner(self) -> INodeParams {
+>>             self.0
+>>         }
+>>     }
+>>
+>> And then you would do:
+>>
+>>     let params =3D untrusted.validate::<MyINodeParams>().into_inner();
+>>
+>> I find the `into_inner()` a bit annoying (one could just use `.0`
+>> instead, but I also don't like that). I find specifying the `Output` a
+>> bit cleaner.
+>=20
+> Hm right. But I guess with your new plan to only support validate, which
+> gets the inner passed in explicitly and returns whatever the closure
+> returns?
 
-> > E.g. copy_from_user is _always_ untrusted, not exception. Network packets
-> > we read are also always untrusted. When you have a device driver and want
-> > to be robust against evil implementations (external bus like usb or cloud
-> > virtual hw with confidential compute), then also everything you ever read
-> > from that device is always untrusted until validated.
-> > 
-> > And the neat thing is if we get this right, there's a lot of cases where
-> > the Untrusted<> wrapper doesn't matter, because we just pass from one
-> > untrusted to another. E.g. for the write() syscall (or an implemenation of
-> > that in an fs) we get a Untrusted<[u8]> from Folio and let copy_from_user
-> > directly write into that. But that only works if the annotations are
-> > exactly right, not too much, not too little.
-> 
-> Yeah this would be very nice, if you never need to look inside of the
-> untrusted data, then you can just move it along.
-> 
-> > Oh another one we need:
-> > 
-> > impl<T: AsBytes> AsBytes for Untrusted<AsBytes>
-> > 
-> > Otherwise you can't write untrusted stuff to userspace, which is really no
-> > issue at all (e.g. networking, where the kernel only parses the headers
-> > and shovels the data to userspace unchecked).
-> 
-> Sure.
-> 
-> >>> Now I think there are cases you can't cover with just validate, where you
-> >>> have multiple input data which needs to be cross-checked to ensure overall
-> >>> validity. But I think that we can cover that by implementing a Validator
-> >>> for tuples and making Untrusted a trait so that we can either Accept
-> >>> Untrusted<(A, B)> or (Untrusted<A>, Untrusted<B>) interchangably when
-> >>> calling validate().
-> >>
-> >> I could imagine us adding conversion functions that can combine
-> >> untrusted values. Additionally, we should probably add a `Context` type
-> >> to `Validator` that is an additional parameter.
-> >>
-> >>> At least with an hour of theorizing and your one example I couldn't come
-> >>> up with anything else.
-> >>
-> >> Yeah, we need more users of this to know the full way to express this
-> >> correctly. I would like to avoid huge refactorings in the future.
-> > 
-> > I think adding it to the copy_*_user functions we already have in
-> > upstream, and then asking Alice to rebase binder should be a really solid
-> > real-world testcase. And I think currently for the things in-flight
-> > copy*user is going to be the main source of untrusted data anyway, not so
-> > much page cache folios.
-> 
-> Sure. I chose tarfs as the use-case, because Greg mentioned to me that
-> it would benefit from adding this API. (I have no prior linux kernel
-> experience, so you giving me some pointers where this will be useful is
-> very helpful!)
-> 
-> >>>> +impl Untrusted<[u8]> {
-> >>>> +    /// Validate the given bytes directly.
-> >>>> +    ///
-> >>>> +    /// This is a convenience method to not have to implement the [`Validator`] trait to be able to
-> >>>> +    /// just parse some bytes. If the bytes that you are validating have some structure and/or you
-> >>>> +    /// will parse it into a `struct` or other rust type, then it is very much recommended to use
-> >>>> +    /// the [`Validator`] trait and the [`validate()`] function instead.
-> >>>> +    ///
-> >>>> +    /// # Examples
-> >>>> +    ///
-> >>>> +    /// ```
-> >>>> +    /// # fn get_untrusted_data() -> &'static Untrusted<[u8]> { &[0; 8] }
-> >>>> +    ///
-> >>>> +    /// let data: &Untrusted<[u8]> = get_untrusted_data();
-> >>>> +    /// let data: Result<&[u8], ()> = data.validate_bytes::<()>(|untrusted| {
-> >>>> +    ///     if untrusted.len() != 2 {
-> >>>> +    ///         return Err(());
-> >>>> +    ///     }
-> >>>> +    ///     if untrusted[0] & 0xf0 != 0 {
-> >>>> +    ///         return Err(());
-> >>>> +    ///     }
-> >>>> +    ///     if untrusted[1] >= 100 {
-> >>>> +    ///         return Err(());
-> >>>> +    ///     }
-> >>>> +    ///     Ok(())
-> >>>> +    /// });
-> >>>> +    /// match data {
-> >>>> +    ///     Ok(data) => pr_info!("successfully validated the data: {data}"),
-> >>>> +    ///     Err(()) => pr_info!("read faulty data from hardware!"),
-> >>>> +    /// }
-> >>>> +    /// ```
-> >>>> +    ///
-> >>>> +    /// [`validate()`]: Self::validate
-> >>>> +    pub fn validate_bytes<E>(
-> >>>
-> >>> I think this is a special case of a somewhat common in-place validation
-> >>> pattern. For example in in complex syscall or ioctl we need to copy
-> >>> structures from userspace anyway and doing yet another copy to put them
-> >>> into a rust structure isn't great, instead we validate in-place. So I
-> >>> think we need something like
-> >>>
-> >>> impl Untrusted<T> {
-> >>> 	pub fn validate_inplace<E>(
-> >>> 		&self,
-> >>> 		validator: impl FnOnce(&T) -> Result<(), E>,
-> >>> 		) -> Result <&T, E> {
-> >>> 		...
-> >>> 	}
-> >>> }
-> >>
-> >> I had thought about in-place validation as well, but I first wanted to
-> >> get a feel for how to do it, since I felt that in-place might make it
-> >> significantly more complicated.
-> >> In your proposal, you give a reference back, but maybe the data started
-> >> out as a `Box<[u8]>` (or how do you usually copy from userspace?), so it
-> >> would be better to be able to also handle owned data.
-> > 
-> > The code in upstream is just MaybUninit<[u8]>.
-> 
-> Where is that stored though? On the heap or the stack?
-> 
-> >> Also, it might be a good idea to just make the copy to kernel and
-> >> validate a single step.
-> > 
-> > Yeah that'd be a nice helper, but I think conceptually you want it to be
-> > two steps: Often for efficiency complex structures are linearized into one
-> > single memory block, so that you can pull it all in with one
-> > copy_from_user. But validation would need to look at each piece (and it's
-> > often mixed, not just an array), probably together with Alice's Range
-> > datatype to make sure we're don't have index confusions.
-> 
-> Yeah that makes sense.
-> 
-> >>> Eventually we might want a _mut version of this too, because often uapi
-> >>> extensions means we need to correctly fill out default values for
-> >>> extensions when being called by old userspace, and that requires
-> >>> mutability. And it really is often an integral part of input validation.
-> >>
-> >> I see, will have to think about how to include this as well.
-> >>
-> >>> Also I think we might need an Iterator for Untrusted<I: IntoIterator> so
-> >>> that we can validate Untrusted<[T]> and things like that with standard map
-> >>> and collect and do it all inplace.
-> >>
-> >> Hmm, so a general iterator for `Unvalidated` might be a bad idea, but
-> >> for the `Untrusted`, it should be fine.
-> > 
-> > Yup that was my thinking too, the idea being that you write a validator
-> > for a single element, and then let Iterator magic handle things when you
-> > need to validate an entire array.
-> > 
-> >>>> +pub trait Validator {
-> >>>> +    /// Type of the input data that is untrusted.
-> >>>> +    type Input: ?Sized;
-> >>>> +    /// Type of the validated data.
-> >>>> +    type Output;
-> >>>
-> >>> So I think the explicit Output makes sense if you have multiple different
-> >>> untrusted input that validate to the same trusted structure, but I'm not
-> >>> sure this makes sense as associated types. Instead I'd go with generics
-> >>> and somethign like this:
-> >>>
-> >>> pub trait Validator<Input: ?Sized> {
-> >>>     type Err;
-> >>>
-> >>>     fn validate(untrusted: &Untrusted<Input>) -> Result<Self, Self::Err>;
-> >>> }
-> >>>
-> >>> That means you can't implement validate for types from other modules
-> >>> directly but need a newtype (I think at least, not sure). But I think
-> >>> that's actually a good thing, since often that means you're validating
-> >>> some generic state plus whatever your own code needs (like the
-> >>> inode::Params<tarfs::INodeData> in your example), and both pieces need to
-> >>> be consisted overall and not just individually (otherwise why does the
-> >>> that other module not do the parsing for you). And so explicitly treating
-> >>> the validated output as an explicit new type just makes sense to me. Plus
-> >>> with derive(Deref) it's trivial to unbox after validation.
-> >>
-> >> There might be the need to validate the same piece of data with
-> >> different ways and I am not convinced adding a newtype for every single
-> >> case is a good way to achieve it.
-> >> Although it would simplify the `Validator` trait... I will think a bit
-> >> about this.
-> > 
-> > Hm, but unless I misunderstand you already need a random type to attach
-> > your current trait too? So not worse if we require that for the
-> > less-common type of multiple ways to validate the same, and simpler for
-> > the common one.
-> 
-> Yes, but you wouldn't have to unwrap the return type. For example with
-> your proposal we have:
-> 
->     struct MyINodeParams(INodeParams);
-> 
->     impl Validator<[u8]> for MyINodeParams {
->         type Err = Error;
-> 
->         fn validate(untrusted: &Untrusted<[u8]>) -> Result<Self> {
->             /*...*/
->             Ok(Self(params))
->         }
->     }
-> 
->     impl MyINodeParams {
->         fn into_inner(self) -> INodeParams {
->             self.0
->         }
->     }
-> 
-> And then you would do:
-> 
->     let params = untrusted.validate::<MyINodeParams>().into_inner();
-> 
-> I find the `into_inner()` a bit annoying (one could just use `.0`
-> instead, but I also don't like that). I find specifying the `Output` a
-> bit cleaner.
+The only thing that changes with my suggestion is the parameter type of
+`validate` (and the names):
 
-Hm right. But I guess with your new plan to only support validate, which
-gets the inner passed in explicitly and returns whatever the closure
-returns?
 
-Cheers, Sima
--- 
-Simona Vetter
-Software Engineer, Intel Corporation
-http://blog.ffwll.ch
+    struct MyINodeParams(INodeParams);
+
+    impl Validate<[u8]> for MyINodeParams {
+        type Err =3D Error;
+
+        fn validate(untrusted: &[u8]) -> Result<Self> {
+            /* ... */
+            Ok(Self(params))
+        }
+    }
+
+    let params =3D untrusted.validate::<MyINodeParams>().into_inner();
+
+And with the `Output` type on the trait we would have:
+
+    struct MyINodeParams;
+
+    impl Validate<[u8]> for MyINodeParams {
+        type Err =3D Error;
+        type Output =3D INodeParams;
+
+        fn validate(untrusted: &[u8]) -> Result<Self::Output> {
+            // ...
+        }
+    }
+
+    let params =3D untrusted.validate::<MyINodeParams>();
+
+I don't think that it's a huge difference, but nonetheless it is
+probably useful.
+
+But, I just remembered a probably more important thing: returning
+`Result<Self>` will make it possible to use type inference in places
+wehre you *do* want your custom type, so
+
+    struct Foo { /* ... */ }
+    impl Validate for Foo { /* ... */ }
+    fn use_my_foo(foo: Foo) { /* ... */ }
+   =20
+    use_my_foo(untrusted.validate()?)
+
+Should work (ie the `.validate()` call doesn't need the generic
+argument).
+
+So I think I will go for no `Output` type in the next version.
+
+---
+Cheers,
+Benno
+
