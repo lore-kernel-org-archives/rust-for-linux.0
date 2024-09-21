@@ -1,167 +1,118 @@
-Received: from mail-yw1-f179.google.com (mail-yw1-f179.google.com [209.85.128.179])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.19])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74026153803;
-	Sat, 21 Sep 2024 09:44:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60A1C137E;
+	Sat, 21 Sep 2024 14:52:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.19
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726911892; cv=none; b=MosNikk/cb6qc+uAIlI9jCMHZQ5m6kZ2/I91fsqXXrJk/v+MSAgMRRyejqd1fRpMCBy+6A2h07PqOfGVJGh7h7BK/N+7qIHJTLhspDqTjnx7YyQCgI/L7lwXGn7wmEvfJUV2e1mrnqOJwZr6DhdVQnNdZ1KYBH5qWOZ538O+bJo=
+	t=1726930378; cv=none; b=U3bnNbFarpYIgn/7ZX3i7ETSM0RjX6+E/LDRkSw9Am6Sr5bzo2aYvx9ZI01FsS6XkSJ8z/CYytsONT8BfK2nnyJIKaguAss6Mz95W2Y4PyBSydUnxtry/DPHprESyCkXV99xdz+yCRaXw/ZxtMrCE4Fev64a3866V3t3CF1Mk5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726911892; c=relaxed/simple;
-	bh=6Phqsl9iMeUtupsVAY2eZ8WVBngHTyrcT+r5eK72yfU=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=h2uyWfZrec4iwJh4JQi0mbYLcUOEjv7DEPmQkg0EUWDf7A5K4fqP2xx7GHcPd4ShkyB6p5hxUsYLKtOeF27TbsmTbfC/n30SGebM5RNCgfEHTWxQ088zISHb/Qwy1f1+sDaYDWhwaFUeradd6mjttD1epfrHXtOZnPxoBcfDf+o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=g+tgV2iV; arc=none smtp.client-ip=209.85.128.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1726930378; c=relaxed/simple;
+	bh=lG1SRfaLD1UdbyIEUgDKyHqo7ZP/pLR83fqNtNPYI0Q=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Q7KOifDsJVFGna1rka3U1fLJY+6hnvxmzkeyAmrxGPcu3BhaG1OR4ArwjxQaOQqtH3/U+UkkR6iYYyymyFtQO+go5CFgLGr71s1ubgQ7z8VcVVHsCrnG90NvjPA/YO2PllIX4dtshJcKfn+M/lMnCzRAz9YfOXaqxg5byzM1dIA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=NVhTOdH5; arc=none smtp.client-ip=192.198.163.19
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="g+tgV2iV"
-Received: by mail-yw1-f179.google.com with SMTP id 00721157ae682-6dbb24ee34dso24414067b3.2;
-        Sat, 21 Sep 2024 02:44:50 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1726911889; x=1727516689; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=iT/pooyDWx+cXonngBHeD7hY6o8n6hEZ+T12BUFn3eU=;
-        b=g+tgV2iVKL0S39gv64nB2vdg0Mt5sISh/OndWkEjkXyfnMVYmIpSBMF1Tni+VLShsK
-         VCeyisjYlEYUCrMbHelW6qJ31k7BFg94xeZX1AncxkshsOMrL/zItKuoThJjMewqrpnP
-         iTG6Ux3Ie02yT2idxJV9Or1eAbQAQiLAXTzKf9kyhRNMi0SYegveeBwaeaPcApiSUtdE
-         yDkZ0O9ERK06ph2ab4LczSdBi1O6v4IMuJkg1jJh/Yqoyw6tRHmieWYqdjX0trqiHRCI
-         1uDJanSsnB0ieKaowrPJICXkorTlAtkmiQWnnGLU0gSPZqbQluvLntf7G8PJhgUjL0ae
-         jNZw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1726911889; x=1727516689;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=iT/pooyDWx+cXonngBHeD7hY6o8n6hEZ+T12BUFn3eU=;
-        b=uabcHsI0EvIS6jlFntPzcn1/cNmj0N39a/NmuhbiM/mcJKsw3WsvJ8pAmElj4tardq
-         gPFDvDqzhmJqZb/MfxJI0DEWV4T03IPPXZ9BFrQpRjAYciNq69yXlM+NKxmilrJ4c4yq
-         84lL1v660saP0kpAq0ncLIH+suf77bzOLf3BeLkaXXzqLbv99TFVJ88um+GS/02yZ3YD
-         sgIo/99eC0v1lcDnJw/SGZT4Y+Lp4fwkZDTokuWS2gAOqyOuERTS4iUA0yE2m9mDMiw5
-         sKrOMZq+DUS9ZCO5zoRtSyWCvgUOH7ivhgZllryO1O0IyFRXEi4Ejg8FMVZ5snLufgZd
-         YnWQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVRPCGyQ/GU4Vgq9tALOpAK/b/quRrr1adBBj4kgCMS424RAQHaqy1YQ9Ah8fgS70JAIyY+Km4fQ9OonF/3OPA=@vger.kernel.org, AJvYcCW+5qSsmapN+f8d+ALIa8SmsS0wxQzRabfYmMejqrJYcKpog2hTnFrp4185IQaDabcs+QrPhzIc27yZysU6@vger.kernel.org, AJvYcCXApA+kf9kVHOm5BV9T5ESJP+/8cUGyustOGnv+zqkz/9urjFqbEqMfKhDd/bgRH26v0/HlIC2CBjAF02TX@vger.kernel.org
-X-Gm-Message-State: AOJu0YxugJfu0pwnFN13bSHuu5Dyhi8S+4i/42m7MqqwhI09DJPsbx72
-	xhwrLtKnlRrg+P0GgcUwDCRzqgZz+twal1d030zco1EcytBpPoXfVzPcGiApm96YM0Aw1NnLaDt
-	f+XUzjS0gUxVK86WFAdfvgRgfxSLxBMM8LKY=
-X-Google-Smtp-Source: AGHT+IH7ANdlTlvW/Mj7eVhLgLzw9ibdGPzl72d8JbFblPa9x1BA+ryCfZKd5D4ZNR1894gY3DwL4D76QQESJDYX57Y=
-X-Received: by 2002:a05:690c:d81:b0:6dd:d82c:4923 with SMTP id
- 00721157ae682-6dfeec1393amr60883837b3.7.1726911889342; Sat, 21 Sep 2024
- 02:44:49 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="NVhTOdH5"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1726930377; x=1758466377;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=lG1SRfaLD1UdbyIEUgDKyHqo7ZP/pLR83fqNtNPYI0Q=;
+  b=NVhTOdH5PgD/RVRX5FbJiHXhXXEdBCJ1LP4IoJA+bENWPPFg6U/7o3Lk
+   DD1LVMHKlDq7tcfqabumLfDpIAKT9WmvlTmAkBWFbCTfZDkRnn1K+3HXN
+   z7FiZ+ZZVt3GMfIaXkCQC3eBJ2X9L3KDOYbPKP5l+0PBwh3jaP2w+Enan
+   qR4I+t+fcgcvVRJpquWMBmmZs2p9TudjqxyPUdkdJoCz9wtSK09ts7+EF
+   RWSxFULNBI4XoQpeDCigPmcuqF+71KtfQimASByGhFZVx5SUKX3bJRNSe
+   TSqHpGo+mTFPAK8qnkm+WhhQ6IiQVr689PgAvbOm8ujgqfY97u8qIa25z
+   A==;
+X-CSE-ConnectionGUID: WRRKVO9QQ2yKvx0tUnO+OQ==
+X-CSE-MsgGUID: VQ6SlsUTS0Om5BCgFnythg==
+X-IronPort-AV: E=McAfee;i="6700,10204,11202"; a="25444909"
+X-IronPort-AV: E=Sophos;i="6.10,247,1719903600"; 
+   d="scan'208";a="25444909"
+Received: from orviesa003.jf.intel.com ([10.64.159.143])
+  by fmvoesa113.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 21 Sep 2024 07:52:57 -0700
+X-CSE-ConnectionGUID: scy/9CAcSzW/WW2J6fP1KA==
+X-CSE-MsgGUID: OFFCUvr+TEG1zg49RKe03w==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,247,1719903600"; 
+   d="scan'208";a="75379106"
+Received: from lkp-server01.sh.intel.com (HELO 53e96f405c61) ([10.239.97.150])
+  by orviesa003.jf.intel.com with ESMTP; 21 Sep 2024 07:52:51 -0700
+Received: from kbuild by 53e96f405c61 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1ss1Td-000FVD-0O;
+	Sat, 21 Sep 2024 14:52:49 +0000
+Date: Sat, 21 Sep 2024 22:52:41 +0800
+From: kernel test robot <lkp@intel.com>
+To: Lyude Paul <lyude@redhat.com>, rust-for-linux@vger.kernel.org
+Cc: oe-kbuild-all@lists.linux.dev, Danilo Krummrich <dakr@redhat.com>,
+	airlied@redhat.com, Ingo Molnar <mingo@redhat.com>,
+	Will Deacon <will@kernel.org>, Waiman Long <longman@redhat.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Thomas Gleixner <tglx@linutronix.de>, linux-kernel@vger.kernel.org,
+	Miguel Ojeda <ojeda@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+	Valentin Obst <kernel@valentinobst.de>
+Subject: Re: [PATCH v2 1/1] rust: sync: Add Lock::from_raw() for Lock<(), B>
+Message-ID: <202409212236.CKCTlTCJ-lkp@intel.com>
+References: <20240916231817.643934-4-lyude@redhat.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240916135634.98554-1-toolmanp@tlmp.cc> <20240916135634.98554-11-toolmanp@tlmp.cc>
-In-Reply-To: <20240916135634.98554-11-toolmanp@tlmp.cc>
-From: Jianan Huang <jnhuang95@gmail.com>
-Date: Sat, 21 Sep 2024 17:44:34 +0800
-Message-ID: <CAJfKizpW1rQuVfB3cNKVsEMYvHBegGcy5fgxqTBrr0wGsjjpjw@mail.gmail.com>
-Subject: Re: [RFC PATCH 10/24] erofs: add device_infos implementation in Rust
-To: Yiyang Wu <toolmanp@tlmp.cc>
-Cc: linux-erofs@lists.ozlabs.org, linux-fsdevel@vger.kernel.org, 
-	LKML <linux-kernel@vger.kernel.org>, rust-for-linux@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240916231817.643934-4-lyude@redhat.com>
 
-Yiyang Wu via Linux-erofs <linux-erofs@lists.ozlabs.org> =E4=BA=8E2024=E5=
-=B9=B49=E6=9C=8816=E6=97=A5=E5=91=A8=E4=B8=80 21:57=E5=86=99=E9=81=93=EF=BC=
-=9A
->
-> Add device_infos implementation in rust. It will later be used
-> to be put inside the SuperblockInfo. This mask and spec can later
-> be used to chunk-based image file block mapping.
->
-> Signed-off-by: Yiyang Wu <toolmanp@tlmp.cc>
-> ---
->  fs/erofs/rust/erofs_sys/devices.rs | 47 ++++++++++++++++++++++++++++++
->  1 file changed, 47 insertions(+)
->
-> diff --git a/fs/erofs/rust/erofs_sys/devices.rs b/fs/erofs/rust/erofs_sys=
-/devices.rs
-> index 097676ee8720..7495164c7bd0 100644
-> --- a/fs/erofs/rust/erofs_sys/devices.rs
-> +++ b/fs/erofs/rust/erofs_sys/devices.rs
-> @@ -1,6 +1,10 @@
->  // Copyright 2024 Yiyang Wu
->  // SPDX-License-Identifier: MIT or GPL-2.0-or-later
->
-> +use super::alloc_helper::*;
-> +use super::data::raw_iters::*;
-> +use super::data::*;
-> +use super::*;
->  use alloc::vec::Vec;
->
->  /// Device specification.
-> @@ -21,8 +25,51 @@ pub(crate) struct DeviceSlot {
->      reserved: [u8; 56],
->  }
->
-> +impl From<[u8; 128]> for DeviceSlot {
-> +    fn from(data: [u8; 128]) -> Self {
-> +        Self {
-> +            tags: data[0..64].try_into().unwrap(),
-> +            blocks: u32::from_le_bytes([data[64], data[65], data[66], da=
-ta[67]]),
-> +            mapped_blocks: u32::from_le_bytes([data[68], data[69], data[=
-70], data[71]]),
-> +            reserved: data[72..128].try_into().unwrap(),
-> +        }
-> +    }
-> +}
-> +
->  /// Device information.
->  pub(crate) struct DeviceInfo {
->      pub(crate) mask: u16,
->      pub(crate) specs: Vec<DeviceSpec>,
->  }
-> +
-> +pub(crate) fn get_device_infos<'a>(
-> +    iter: &mut (dyn ContinuousBufferIter<'a> + 'a),
-> +) -> PosixResult<DeviceInfo> {
-> +    let mut specs =3D Vec::new();
-> +    for data in iter {
-> +        let buffer =3D data?;
-> +        let mut cur: usize =3D 0;
-> +        let len =3D buffer.content().len();
-> +        while cur + 128 <=3D len {
+Hi Lyude,
 
+kernel test robot noticed the following build warnings:
 
-It is better to use macros instead of hardcode, like:
-const EROFS_DEVT_SLOT_SIZE: usize =3D size_of::<DeviceSlot>();
-Also works to the other similar usages in this patch set.
+[auto build test WARNING on a2f11547052001bd448ccec81dd1e68409078fbb]
 
-Thanks,
-Jianan
+url:    https://github.com/intel-lab-lkp/linux/commits/Lyude-Paul/rust-sync-Add-Lock-from_raw-for-Lock-B/20240917-071956
+base:   a2f11547052001bd448ccec81dd1e68409078fbb
+patch link:    https://lore.kernel.org/r/20240916231817.643934-4-lyude%40redhat.com
+patch subject: [PATCH v2 1/1] rust: sync: Add Lock::from_raw() for Lock<(), B>
+config: x86_64-randconfig-104-20240921 (https://download.01.org/0day-ci/archive/20240921/202409212236.CKCTlTCJ-lkp@intel.com/config)
+compiler: clang version 18.1.8 (https://github.com/llvm/llvm-project 3b5b5c1ec4a3095ab096dd780e84d7ab81f3d7ff)
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240921/202409212236.CKCTlTCJ-lkp@intel.com/reproduce)
 
->
-> +            let slot_data: [u8; 128] =3D buffer.content()[cur..cur + 128=
-].try_into().unwrap();
-> +            let slot =3D DeviceSlot::from(slot_data);
-> +            cur +=3D 128;
-> +            push_vec(
-> +                &mut specs,
-> +                DeviceSpec {
-> +                    tags: slot.tags,
-> +                    blocks: slot.blocks,
-> +                    mapped_blocks: slot.mapped_blocks,
-> +                },
-> +            )?;
-> +        }
-> +    }
-> +
-> +    let mask =3D if specs.is_empty() {
-> +        0
-> +    } else {
-> +        (1 << (specs.len().ilog2() + 1)) - 1
-> +    };
-> +
-> +    Ok(DeviceInfo { mask, specs })
-> +}
-> --
-> 2.46.0
->
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202409212236.CKCTlTCJ-lkp@intel.com/
+
+All warnings (new ones prefixed by >>):
+
+>> warning: unused import: `mem`
+   --> rust/kernel/sync/lock.rs:10:74
+   |
+   10 | use core::{cell::UnsafeCell, marker::PhantomData, marker::PhantomPinned, mem};
+   |                                                                          ^^^
+   |
+   = note: `#[warn(unused_imports)]` on by default
+--
+>> warning: unused import: `prelude`
+   --> rust/kernel/sync/lock.rs:9:38
+   |
+   9 | use crate::{init::PinInit, pin_init, prelude::*, str::CStr, types::Opaque, types::ScopeGuard};
+   |                                      ^^^^^^^
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
