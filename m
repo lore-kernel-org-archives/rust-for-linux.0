@@ -1,387 +1,199 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from GBR01-CWX-obe.outbound.protection.outlook.com (mail-cwxgbr01on2103.outbound.protection.outlook.com [40.107.121.103])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94B921EA91;
-	Sat, 21 Sep 2024 15:33:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726932814; cv=none; b=BnVzCo6415sT2g360b+ElT4TBuLS+shzyCcMlwKXxluW0HPxXI5W77cAnTe+U+GTSMQpZOxxl8pUQM6nduiiTsn3OSlxYm31Hm2SxU3aMT8WxizCQXTeHF2DJ8x2kSkMgcKPMBCyGt68LXKH5AspyqpTMWrHrdStwESkxok0SbA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726932814; c=relaxed/simple;
-	bh=u6SkMDARmiJpubJd+bhVyKAuAzfP2dIXTmGflsC+2IE=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XTTcQWtbq8VXfcLORDim8sk2puS6t10rMDVpHyfTTNq5j9gxVQJOlxAoHmXKT9pYpC2HzlHfIF+at4mV2Rm3Jh8BBa4hXvCUsePXYoPjtTJBJIf/Ikv4nYvsJDS6kP28+FdI5Vrk+9BaRyFzI6SoZQ4uniGVvEEhc23s4Sg7SQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BWH+XVg7; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D8BD1EA91;
+	Sat, 21 Sep 2024 15:58:09 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.121.103
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1726934291; cv=fail; b=mhoqQCgjT1pH7M7wWNm0e8YU9iwzAcTka198tqArPXkexm1zfHFzthGt4sZ+8CijVtZ55iJMUn4NzMlt0uvRIAiQi/SyDBd8dZvx3+O9rQmwBt4aEVgNz3uOKyP3602QZbXm/qZvVWBlTudm+ns3H2HhBy+LM9kDVcP6a8lroMk=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1726934291; c=relaxed/simple;
+	bh=sAV00VzC0GEX+lmUeYjRAt3cK2sw8hpj+i8tphdx0xo=;
+	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=jAowtdYIJtEjSGpq61RslwSepUXXmZJZCgRuM4Vpwhu7b739M/njKvJvsEo5IPODLhp+5UDltUtPUlWgmGtzRQt47JT1Qau4OT83dLFmfKTqTQoLcXcOfN7sbUWLyNsPkPxm2XopQO59CqIzi7J33kdkWH3fnvTCFKu7cGaiClw=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=qx7Zo7ql; arc=fail smtp.client-ip=40.107.121.103
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BWH+XVg7"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28443C4CEC2;
-	Sat, 21 Sep 2024 15:33:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1726932814;
-	bh=u6SkMDARmiJpubJd+bhVyKAuAzfP2dIXTmGflsC+2IE=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BWH+XVg7nDKLhIgvleuHSahCfA+asylLR9Zt71HpOfLhRlUcTcUlvIp6VvXbI2tm6
-	 qDCJPwb3vcVgWZKDkRq5NJhbogiP02zgXBWBMCGk3stpdn1OeM7z3heXgMZs7aW+Hs
-	 eyDqlWevxv/3FaT9HlNGB3ZRjesckEknNAJWckjuETs9eYA+7wH3qwAa1qIXjel+eX
-	 aOPMB3sFckQo2wJSy4jw7Mkt90vZJopAWvMGlZkm83Lj56D3HTnU7gpOOW5Mhga8b0
-	 avGDtR2xK+g72hcnFN+B4PSv0ftu18BFQQZDomU1yKluoBe6Uh+YTBQH+kSewe8dAy
-	 WusEkD7ACd2zQ==
-From: Danilo Krummrich <dakr@kernel.org>
-To: ojeda@kernel.org,
-	alex.gaynor@gmail.com,
-	wedsonaf@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	bjorn3_gh@protonmail.com,
-	benno.lossin@proton.me,
-	a.hindborg@samsung.com,
-	aliceryhl@google.com,
-	akpm@linux-foundation.org
-Cc: daniel.almeida@collabora.com,
-	faith.ekstrand@collabora.com,
-	boris.brezillon@collabora.com,
-	lina@asahilina.net,
-	mcanal@igalia.com,
-	zhiw@nvidia.com,
-	cjia@nvidia.com,
-	jhubbard@nvidia.com,
-	airlied@redhat.com,
-	ajanulgu@redhat.com,
-	lyude@redhat.com,
-	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	linux-mm@kvack.org,
-	Danilo Krummrich <dakr@kernel.org>
-Subject: [RFC PATCH] rust: alloc: pass `old_layout` to `Allocator`
-Date: Sat, 21 Sep 2024 17:32:46 +0200
-Message-ID: <20240921153315.70860-1-dakr@kernel.org>
-X-Mailer: git-send-email 2.46.1
-In-Reply-To: <20240911225449.152928-2-dakr@kernel.org>
-References: <20240911225449.152928-2-dakr@kernel.org>
+	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="qx7Zo7ql"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=Xur4Obt0hkRYMs1cMiWObDvFbI67AHpHjdM91FHY93j8Z+X75xn27C3jAPqGoKZ2BScxNjtKk0dsoDBzuTKPfhCN8jaf3FXZCcUNMenA/M+x8O1YjZqfEtWmM6LJZoZ7BZ+wKsBzoFB/sjMUjh/XmT2eA0B8ZzsApghkZR1mRLjKT9QiXB4Sy5PwWrQG7b78M5epguxBxtBn/mAuPT9ki3Vhnhj6ke4cPOT8VAwmVmUJHruhZZ3UReUkDIfo+X8A7gSc0Fa07vrNYwvu/lGFrs2Aua7Xb01ZY/gOKmsBeK/6cYeRQbzr3CKf07lifer2abrqGR9RFrODGa1IWP7mUw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=Ixv3jL/Tg+XYqgFiY7MWFgSrLreIynnocxXHHLsAFjk=;
+ b=tn+H9w3FQ8XVlkWC4ujWPaEM07qnV+bloNcZboEo7rwtsJAMO0umo9Xfi9DCJzZ2lqkhZAidCLtelagVAg6sRexWgSclArn1FaMHrh087D7BWJ25EijnQwEC4diF/34beoscqpJTjF/3jhvbr8GvvbXqITkFx3mEFtgmuzGdRl5Q8+/HaBgwdu6s1Whh9vMXYng4dRsaedaolBvICI+fty2j3hvzc6EE9ikU1JhbBibJZSOSFFSmOchQOq+uheSuOkSRWJM4DdLJA6fQ16q6IHk3QqG6mpU3MN5oGdyBems/uCBZOdnNRVq2pyzI35lAaBB855Sqe+xDEinBiCo+oQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
+ dkim=pass header.d=garyguo.net; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
+ s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=Ixv3jL/Tg+XYqgFiY7MWFgSrLreIynnocxXHHLsAFjk=;
+ b=qx7Zo7qliHNdJgNrQqprX1UQvvo8FUOAJ5VOUuDdeEeGHj/IPw7IznIWQepb3ZzXjOT8RwxXDt5UKIjdYJSSIJl9R/7eokeZ8b2NFty5nElpKaMBV1kCSGnVjm27zvq0ciodVs9EzAVnvuRBkHJQwcb5yVCvILO3GZ6kiPbWDko=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=garyguo.net;
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
+ by CWLP265MB2435.GBRP265.PROD.OUTLOOK.COM (2603:10a6:400:91::7) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7982.24; Sat, 21 Sep
+ 2024 15:58:04 +0000
+Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1818:a2bf:38a7:a1e7]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ ([fe80::1818:a2bf:38a7:a1e7%3]) with mapi id 15.20.7982.022; Sat, 21 Sep 2024
+ 15:58:04 +0000
+Date: Sat, 21 Sep 2024 16:58:01 +0100
+From: Gary Guo <gary@garyguo.net>
+To: Benno Lossin <benno.lossin@proton.me>
+Cc: Andreas Hindborg <a.hindborg@kernel.org>, Miguel Ojeda
+ <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Anna-Maria Behnsen
+ <anna-maria@linutronix.de>, Frederic Weisbecker <frederic@kernel.org>,
+ Thomas Gleixner <tglx@linutronix.de>, Boqun Feng <boqun.feng@gmail.com>,
+ =?UTF-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Alice Ryhl
+ <aliceryhl@google.com>, rust-for-linux@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2 03/14] rust: sync: add `Arc::as_ptr`
+Message-ID: <20240921165801.1d1df6ab.gary@garyguo.net>
+In-Reply-To: <e7e42ff2-1543-48b3-9bd3-bdef5ce66348@proton.me>
+References: <20240917222739.1298275-1-a.hindborg@kernel.org>
+	<20240917222739.1298275-4-a.hindborg@kernel.org>
+	<e7e42ff2-1543-48b3-9bd3-bdef5ce66348@proton.me>
+X-Mailer: Claws Mail 4.2.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: LO4P123CA0575.GBRP123.PROD.OUTLOOK.COM
+ (2603:10a6:600:276::7) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+ (2603:10a6:600:253::10)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|CWLP265MB2435:EE_
+X-MS-Office365-Filtering-Correlation-Id: 086c5375-5a26-4936-b836-08dcda562d6b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|10070799003|1800799024|7416014|376014|366016;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?5g4U8xB/BT69CCusuXwIzScDjwjmwhb+kMAGRxIcajX9f8f5OcJfOXOkPHIo?=
+ =?us-ascii?Q?sNrZH3tuXnBxphxICkCql2tTIYh0IvfSjN5147E1s3utaJfe4K5OSF2Sh8Tt?=
+ =?us-ascii?Q?/YXk4Xa0a/2d3nZOs/vWEmpKnwqpSNowFeAKdts2NM0NCZKEDXGrbP69au/a?=
+ =?us-ascii?Q?YK2y/r+nO7fsg1s+KZEvp9roqx/kxNCDpPqv+KlbF/bvz21dd/SmFUF1viqa?=
+ =?us-ascii?Q?qVFcL/N4zFG/5wzwKXm1Ru8zJoq1F9PwZTwa7SUAInldT2jm8vTiQ/0hydmJ?=
+ =?us-ascii?Q?Vc0WpCskGxVO2li3LaBw6+ghBLKkmk9QCQDxeHji1MLeQdrFIb0NmedX5Gmp?=
+ =?us-ascii?Q?U4RFfRq7qjC3jj1RTFKB3tZCtUSjVYoNjLCGb0arYhjyqJANtFwf1JeMhr5c?=
+ =?us-ascii?Q?O1IfqJWDMVQcNKhueFnym6zTWSeFQ5LcBFC6dE4KPjt84u6FHY3mzkSX8OiY?=
+ =?us-ascii?Q?nTSW64q6jNRNvSmeyckwt+b8hD3ql8X6+ZhzYB7xQvIYC8DFzqR1omu5U3Tk?=
+ =?us-ascii?Q?g2/IeDFqp8yNr6YNCtCzzFEULolkdTiHhd4we79cT7efFVqg6nwUP+f7l2uk?=
+ =?us-ascii?Q?PsqlzVX6WkyBLCpwdm9EF4b2IJXf4hmW+ABwe69cJoapPVKXyV63ace3w5aB?=
+ =?us-ascii?Q?RWgrVCmcwiTFP2NR3GZtTkgkSX4fS0ojlH+Y0+zSmf03dRynemTpVwHCAR77?=
+ =?us-ascii?Q?1jPdBZpL9gx+NKVgbmoDovU86NIf4UKlzU1U1cvxT4gLasgmgxK2wL5Fc7/S?=
+ =?us-ascii?Q?gUw0iSTQPyKgSeF2b1m7s46YFE1tSj6gRIihyns0jCIj5OUFT7xUDNdSro3r?=
+ =?us-ascii?Q?5brE0+3IzF5cHHjsd9iwj0b0e6zsKpNSZ+/6xCdTSP884nSinOhMLjK1phTz?=
+ =?us-ascii?Q?aP0jq5n9IlXuRnI3X5aKW4YhsjoIWcIEqr+7CffCGLbw5np0pPhMJwk4KHmS?=
+ =?us-ascii?Q?vmq29iy84w8r4d4sKiF5qNFFUsgmul9aICo0ABLO23k+wlKpm6Kvpr2ROrAT?=
+ =?us-ascii?Q?6jQfZwue7MuBW6q8OYGJmGKV4IfBfyHRU8WiG9e7QqX0SHSBfNxPRO3IsrLN?=
+ =?us-ascii?Q?J71ssWTNPiEbs2QVYYDLop7b/fimPdNqs1h7llEPxXPDa62ueKrTL/paAJZ6?=
+ =?us-ascii?Q?4vB0AsZOxILfj/FcJapRoaHsyO3HaWirb73GyGMLYekeBgY4JxQSxWrfKaCM?=
+ =?us-ascii?Q?8S2Vh0MBru8XN7tr+blR7/at5QalkH8lMK4lAMo4KSJouiLJIvLT41fkmEju?=
+ =?us-ascii?Q?mIZOgU9fHKRCk2kuOiegQVrnNA+qLlvMDOTkIf5StQ=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(1800799024)(7416014)(376014)(366016);DIR:OUT;SFP:1102;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0:
+	=?us-ascii?Q?4YhhV62AhHnTNb1Y2dMj3Ipypm7ClmlDLu1bQbJjQkmYGcqTZ7AfEk4dAwh+?=
+ =?us-ascii?Q?QCG5y0vTQRV7yUkd6i9oOlNeDuFsLk9YACU8zdmN/0Y7+K7n+xBC3kmSNwSu?=
+ =?us-ascii?Q?P5yRXegtrJB+GTg1yk0jU2I78wmk3YW7asLgEO44syD7Nmvzi4sXfPSX9aic?=
+ =?us-ascii?Q?w99VGl4txIdAHcM0aM60uZPuJU76MQrLMwJhiZUnlfRwoiMoSrpbmkXP/r95?=
+ =?us-ascii?Q?9aC0Q39/4U8XmKODtwS9Or0uM5iwWTyY0hWkY5F9R4wAboXBePs208e2OuLZ?=
+ =?us-ascii?Q?RwMi/8hYAQxdiPVGvBBBp4RwYFY2lAsmsnO09y44boqP9s1RzpYnrso7+xeV?=
+ =?us-ascii?Q?h5N9sYFRQm1olaw3BLdyFvzeIAqTLxqagr5FjnIqpAM3OjF57x9OlFh4V01V?=
+ =?us-ascii?Q?tM3hYRj2fBm49RaeHVM1q1ju86B4kXvkSMxUfIIm2r/tBIK5xEBlejJTWa7r?=
+ =?us-ascii?Q?+wKCK2uirTSrZVH9PaCNf5QbFukF5qMU1iQRVMZUjL/rPv5nmdcoNOh4PxfM?=
+ =?us-ascii?Q?WXbn9dec+oxDgG74uRPTh7oMR5q6EAe84sWjM4hdjf6ATmuYt5auZAklqfkd?=
+ =?us-ascii?Q?vOUiu/8r5eNEzwvnLGslxfg+4Lhb5JfwIAygSf1q8xHHOHiVZbwHuvgLLJ3N?=
+ =?us-ascii?Q?ZuozEFmSibJnHLRzGYCpTBhqmVvZBsUwje8RBmqnPy3NwOQIJMB6cb7270C8?=
+ =?us-ascii?Q?XsBZ45EnwnsGDPitPsI/nbN5iLF0+xlWJY5IIgGjDhO58zme6ZXgbgWYzGB8?=
+ =?us-ascii?Q?ktVrqBtXdulIQaB3TM44xFj1GKmm541Ysrh8K9puNkiVr7Oze3LJiaS4zr4N?=
+ =?us-ascii?Q?r89ZtQUdfyuMzGRqu01pNOKlaw2eIWJx+9K5qBZ8M6g0GOUGUNErNWvwKCMv?=
+ =?us-ascii?Q?USRgFBEOCKmVM1Xf1eYM2nnxXYK0OoCediQtQwmbVc4q+b4Z/Uu8NgNERh+W?=
+ =?us-ascii?Q?e/WFr9YoBuAKtYYGsRhO15489gSpUKolO8QnzM0wHHBskxMCshkl/nyMxT/5?=
+ =?us-ascii?Q?263JLgIkvw+a6kp8LM3+QvxAwSuN95kgth8RKOS7YyR/KYjXYzcCrDDF63WR?=
+ =?us-ascii?Q?1TAqaaBSQK60TKYeLiAnS7e+hLnysuqiTqFjMWUSGXKKIUJgcxFTGshD1gqp?=
+ =?us-ascii?Q?VUjNCqD1l5DjX6SFdOrLWJzz9Ufi9uMLSTWWS0aoJXvMsVWIGJByY0gYDAkm?=
+ =?us-ascii?Q?yeeoptb5zODNLz52Y7xzjQCMkePE7lf2C+8LQFtkGJ7n5teM+hehCrRy/eYk?=
+ =?us-ascii?Q?37r4AJFLwT9YQP2zks1fFV9gPj8XC07CQOC7dEuGL8k/PZeKVfsMymjCY7EY?=
+ =?us-ascii?Q?9iYILkJhs5I2UxYETdUWcFYHKwWI+Litt5Xubz12em3OMFm0i1k9/GC+vWUF?=
+ =?us-ascii?Q?cMAteeZoYWKbp4Vxia7NtlSjeEm1YeqB/75TrsAz5ADhyQ8/Negy8QI366M8?=
+ =?us-ascii?Q?sfQ3hRLaakv4NEWh+iMvVRjXw3bCZNYtGBHsoFMkqRW4YQ1dQ23rZAnv5s02?=
+ =?us-ascii?Q?aW4XMFuf4ft+CI5U+x2Q/eMYfup/fLKBEDGqkulZhiF67UQ9H0IF24SWhzHa?=
+ =?us-ascii?Q?7O90XK8rT3wVhxXbW1626qfc4yWxnCGE2AWoou/pEK/xnioURSFl/zQzAu08?=
+ =?us-ascii?Q?9w=3D=3D?=
+X-OriginatorOrg: garyguo.net
+X-MS-Exchange-CrossTenant-Network-Message-Id: 086c5375-5a26-4936-b836-08dcda562d6b
+X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 21 Sep 2024 15:58:04.5372
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: uZ0WNBtlU27TphnC9lKE4cVNPQVUK9VWrhjNXVqi9HaeBrR4/9KvpMCw5fW65UO9/QZOskn9M9MqFQZn5areug==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CWLP265MB2435
 
-Since this came up a few times, this patch shows how the implementation
-looks like with an `old_layout` argument.
+On Thu, 19 Sep 2024 14:03:50 +0000
+Benno Lossin <benno.lossin@proton.me> wrote:
 
-Signed-off-by: Danilo Krummrich <dakr@kernel.org>
----
- rust/kernel/alloc.rs           | 32 ++++++++++++--------------
- rust/kernel/alloc/allocator.rs | 28 +++++++++++++++++++----
- rust/kernel/alloc/kbox.rs      | 13 ++++++-----
- rust/kernel/alloc/kvec.rs      | 42 +++++++++++++++++++++++++++-------
- 4 files changed, 78 insertions(+), 37 deletions(-)
+> On 18.09.24 00:27, Andreas Hindborg wrote:
+> > Add a method to get a pointer to the data contained in an `Arc`.
+> > 
+> > Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+> > ---
+> >  rust/kernel/sync/arc.rs | 8 ++++++++
+> >  1 file changed, 8 insertions(+)
+> > 
+> > diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
+> > index 3673496c2363..a57ea3e2b44c 100644
+> > --- a/rust/kernel/sync/arc.rs
+> > +++ b/rust/kernel/sync/arc.rs
+> > @@ -258,6 +258,14 @@ pub fn into_raw(self) -> *const T {
+> >          unsafe { core::ptr::addr_of!((*ptr).data) }
+> >      }
+> > 
+> > +    /// Return a raw pointer to the data in this arc.
+> > +    pub fn as_ptr(&self) -> *const T {  
+> 
+> I don't know if we have a convention for this, but shouldn't this be an
+> associated function? Because if `T` also has an `as_ptr` function, it
+> will be shadowed by this one. 
 
-diff --git a/rust/kernel/alloc.rs b/rust/kernel/alloc.rs
-index 2170b53acd0c..78564eeb987d 100644
---- a/rust/kernel/alloc.rs
-+++ b/rust/kernel/alloc.rs
-@@ -166,7 +166,7 @@ pub unsafe trait Allocator {
-     fn alloc(layout: Layout, flags: Flags) -> Result<NonNull<[u8]>, AllocError> {
-         // SAFETY: Passing `None` to `realloc` is valid by it's safety requirements and asks for a
-         // new memory allocation.
--        unsafe { Self::realloc(None, layout, flags) }
-+        unsafe { Self::realloc(None, layout, Layout::new::<()>(), flags) }
-     }
- 
-     /// Re-allocate an existing memory allocation to satisfy the requested `layout`.
-@@ -186,26 +186,23 @@ fn alloc(layout: Layout, flags: Flags) -> Result<NonNull<[u8]>, AllocError> {
-     ///
-     /// # Safety
-     ///
--    /// If `ptr == Some(p)`, then `p` must point to an existing and valid memory allocation created
--    /// by this allocator. The alignment encoded in `layout` must be smaller than or equal to the
--    /// alignment requested in the previous `alloc` or `realloc` call of the same allocation.
--    ///
--    /// Additionally, `ptr` is allowed to be `None`; in this case a new memory allocation is
--    /// created.
-+    /// - If `ptr == Some(p)`, then `p` must point to an existing and valid memory allocation
-+    ///   created by this allocator.
-+    /// - `ptr` is allowed to be `None`; in this case a new memory allocation is created.
-+    /// - `old_layout` must match the `Layout` the allocation has been created with.
-     ///
-     /// # Guarantees
-     ///
-     /// This function has the same guarantees as [`Allocator::alloc`]. When `ptr == Some(p)`, then
-     /// it additionally guarantees that:
-     /// - the contents of the memory pointed to by `p` are preserved up to the lesser of the new
--    ///   and old size,
--    ///   and old size, i.e.
--    ///   `ret_ptr[0..min(layout.size(), old_size)] == p[0..min(layout.size(), old_size)]`, where
--    ///   `old_size` is the size of the allocation that `p` points at.
--    /// - when the return value is `Err(AllocError)`, then `p` is still valid.
-+    ///   and old size, i.e. `ret_ptr[0..min(layout.size(), old_layout.size())] ==
-+    ///   p[0..min(layout.size(), old_layout.size())]`.
-+    /// - when the return value is `Err(AllocError)`, then `ptr` is still valid.
-     unsafe fn realloc(
-         ptr: Option<NonNull<u8>>,
-         layout: Layout,
-+        old_layout: Layout,
-         flags: Flags,
-     ) -> Result<NonNull<[u8]>, AllocError>;
- 
-@@ -213,14 +210,13 @@ unsafe fn realloc(
-     ///
-     /// # Safety
-     ///
--    /// `ptr` must point to an existing and valid memory allocation created by this `Allocator` and
--    /// must not be a dangling pointer.
--    ///
--    /// The memory allocation at `ptr` must never again be read from or written to.
--    unsafe fn free(ptr: NonNull<u8>) {
-+    /// - `ptr` must point to an existing and valid memory allocation created by this `Allocator`.
-+    /// - `layout` must match the `Layout` the allocation has been created with.
-+    /// - The memory allocation at `ptr` must never again be read from or written to.
-+    unsafe fn free(ptr: NonNull<u8>, layout: Layout) {
-         // SAFETY: The caller guarantees that `ptr` points at a valid allocation created by this
-         // allocator. We are passing a `Layout` with the smallest possible alignment, so it is
-         // smaller than or equal to the alignment previously used with this allocation.
--        let _ = unsafe { Self::realloc(Some(ptr), Layout::new::<()>(), Flags(0)) };
-+        let _ = unsafe { Self::realloc(Some(ptr), Layout::new::<()>(), layout, Flags(0)) };
-     }
- }
-diff --git a/rust/kernel/alloc/allocator.rs b/rust/kernel/alloc/allocator.rs
-index 0b586c0361f4..07820c8c4e17 100644
---- a/rust/kernel/alloc/allocator.rs
-+++ b/rust/kernel/alloc/allocator.rs
-@@ -54,6 +54,14 @@ fn aligned_size(new_layout: Layout) -> usize {
-     layout.size()
- }
- 
-+/// Returns a properly aligned dangling pointer from the given `layout`.
-+fn zst_realloc(layout: Layout) -> NonNull<u8> {
-+    let ptr = layout.align() as *mut u8;
-+
-+    // SAFETY: `layout.align()` (and hence `ptr`) is guaranteed to be non-zero.
-+    unsafe { NonNull::new_unchecked(ptr) }
-+}
-+
- /// # Invariants
- ///
- /// One of the following `krealloc`, `vrealloc`, `kvrealloc`.
-@@ -84,11 +92,18 @@ unsafe fn call(
-         &self,
-         ptr: Option<NonNull<u8>>,
-         layout: Layout,
-+        old_layout: Layout,
-         flags: Flags,
-     ) -> Result<NonNull<[u8]>, AllocError> {
-         let size = aligned_size(layout);
-         let ptr = match ptr {
--            Some(ptr) => ptr.as_ptr(),
-+            Some(ptr) => {
-+                if old_layout.size() == 0 {
-+                    ptr::null()
-+                } else {
-+                    ptr.as_ptr()
-+                }
-+            }
-             None => ptr::null(),
-         };
- 
-@@ -106,7 +121,7 @@ unsafe fn call(
-         };
- 
-         let ptr = if size == 0 {
--            NonNull::dangling()
-+            zst_realloc(layout)
-         } else {
-             NonNull::new(raw_ptr).ok_or(AllocError)?
-         };
-@@ -124,10 +139,11 @@ unsafe impl Allocator for Kmalloc {
-     unsafe fn realloc(
-         ptr: Option<NonNull<u8>>,
-         layout: Layout,
-+        old_layout: Layout,
-         flags: Flags,
-     ) -> Result<NonNull<[u8]>, AllocError> {
-         // SAFETY: `ReallocFunc::call` has the same safety requirements as `Allocator::realloc`.
--        unsafe { ReallocFunc::KREALLOC.call(ptr, layout, flags) }
-+        unsafe { ReallocFunc::KREALLOC.call(ptr, layout, old_layout, flags) }
-     }
- }
- 
-@@ -140,6 +156,7 @@ unsafe impl Allocator for Vmalloc {
-     unsafe fn realloc(
-         ptr: Option<NonNull<u8>>,
-         layout: Layout,
-+        old_layout: Layout,
-         flags: Flags,
-     ) -> Result<NonNull<[u8]>, AllocError> {
-         // TODO: Support alignments larger than PAGE_SIZE.
-@@ -150,7 +167,7 @@ unsafe fn realloc(
- 
-         // SAFETY: If not `None`, `ptr` is guaranteed to point to valid memory, which was previously
-         // allocated with this `Allocator`.
--        unsafe { ReallocFunc::VREALLOC.call(ptr, layout, flags) }
-+        unsafe { ReallocFunc::VREALLOC.call(ptr, layout, old_layout, flags) }
-     }
- }
- 
-@@ -163,6 +180,7 @@ unsafe impl Allocator for KVmalloc {
-     unsafe fn realloc(
-         ptr: Option<NonNull<u8>>,
-         layout: Layout,
-+        old_layout: Layout,
-         flags: Flags,
-     ) -> Result<NonNull<[u8]>, AllocError> {
-         // TODO: Support alignments larger than PAGE_SIZE.
-@@ -173,6 +191,6 @@ unsafe fn realloc(
- 
-         // SAFETY: If not `None`, `ptr` is guaranteed to point to valid memory, which was previously
-         // allocated with this `Allocator`.
--        unsafe { ReallocFunc::KVREALLOC.call(ptr, layout, flags) }
-+        unsafe { ReallocFunc::KVREALLOC.call(ptr, layout, old_layout, flags) }
-     }
- }
-diff --git a/rust/kernel/alloc/kbox.rs b/rust/kernel/alloc/kbox.rs
-index 6188494f040d..e9e2e94430ef 100644
---- a/rust/kernel/alloc/kbox.rs
-+++ b/rust/kernel/alloc/kbox.rs
-@@ -5,6 +5,7 @@
- #[allow(unused_imports)] // Used in doc comments.
- use super::allocator::{KVmalloc, Kmalloc, Vmalloc};
- use super::{AllocError, Allocator, Flags};
-+use core::alloc::Layout;
- use core::fmt;
- use core::marker::PhantomData;
- use core::mem::ManuallyDrop;
-@@ -233,7 +234,7 @@ pub fn new_uninit(flags: Flags) -> Result<Box<MaybeUninit<T>, A>, AllocError> {
-         let ptr = if Self::is_zst() {
-             NonNull::dangling()
-         } else {
--            let layout = core::alloc::Layout::new::<MaybeUninit<T>>();
-+            let layout = Layout::new::<MaybeUninit<T>>();
-             let ptr = A::alloc(layout, flags)?;
- 
-             ptr.cast()
-@@ -452,14 +453,14 @@ impl<T, A> Drop for Box<T, A>
-     A: Allocator,
- {
-     fn drop(&mut self) {
--        let size = core::mem::size_of_val::<T>(self);
-+        let layout = Layout::for_value::<T>(self);
- 
-         // SAFETY: The pointer in `self.0` is guaranteed to be valid by the type invariant.
-         unsafe { core::ptr::drop_in_place::<T>(self.deref_mut()) };
- 
--        if size != 0 {
--            // SAFETY: As `size` is not zero, `self.0` was previously allocated with `A`.
--            unsafe { A::free(self.0.cast()) };
--        }
-+        // SAFETY:
-+        // - `self.0` was previously allocated with `A`.
-+        // - `layout` is equal to the `Layout´ `self.0` was allocated with.
-+        unsafe { A::free(self.0.cast(), layout) };
-     }
- }
-diff --git a/rust/kernel/alloc/kvec.rs b/rust/kernel/alloc/kvec.rs
-index 686e969463f8..fb979013562c 100644
---- a/rust/kernel/alloc/kvec.rs
-+++ b/rust/kernel/alloc/kvec.rs
-@@ -7,6 +7,7 @@
-     AllocError, Allocator, Box, Flags,
- };
- use core::{
-+    alloc::Layout,
-     fmt,
-     marker::PhantomData,
-     mem::{ManuallyDrop, MaybeUninit},
-@@ -452,21 +453,28 @@ pub fn reserve(&mut self, additional: usize, flags: Flags) -> Result<(), AllocEr
-         // We know `cap` is <= `isize::MAX` because of the type invariants of `Self`. So the
-         // multiplication by two won't overflow.
-         let new_cap = core::cmp::max(cap * 2, len.checked_add(additional).ok_or(AllocError)?);
--        let layout = core::alloc::Layout::array::<T>(new_cap).map_err(|_| AllocError)?;
-+        let layout = Layout::array::<T>(new_cap).map_err(|_| AllocError)?;
-+
-+        let old_layout = Layout::array::<T>(self.cap).map_err(|_| AllocError)?;
- 
-         // We need to make sure that `ptr` is either NULL or comes from a previous call to
-         // `realloc_flags`. A `Vec<T, A>`'s `ptr` value is not guaranteed to be NULL and might be
-         // dangling after being created with `Vec::new`. Instead, we can rely on `Vec<T, A>`'s
-         // capacity to be zero if no memory has been allocated yet.
-+        //
-+        // Still required? In `Vec::new` we use `NonNull::dangling`, which effectively would be
-+        // valid to pass to `A::realloc`, but was never created by one the `Allocator`'s functions.
-         let ptr = if cap == 0 {
-             None
-         } else {
-             Some(self.ptr.cast())
-         };
- 
--        // SAFETY: `ptr` is valid because it's either `None` or comes from a previous call to
--        // `A::realloc`. We also verified that the type is not a ZST.
--        let ptr = unsafe { A::realloc(ptr, layout, flags)? };
-+        // SAFETY:
-+        // - `ptr` is valid because it's either `None` or comes from a previous call to
-+        //   `A::realloc`.
-+        // - `old_layout` matches the `Layout` of the preceeding allocation, if any.
-+        let ptr = unsafe { A::realloc(ptr, layout, old_layout, flags)? };
- 
-         self.ptr = ptr.cast();
- 
-@@ -528,9 +536,16 @@ fn drop(&mut self) {
-         };
- 
-         // If `cap == 0` we never allocated any memory in the first place.
-+        //
-+        // Same here, theoretically, we know that `NonNull::dangling` from `Vec::new` is valid for
-+        // `A::free`, but it was never created by any of the `Allocator` functions.
-         if self.cap != 0 {
-+            // This can never fail; since this `Layout` is equivalent to the one of the original
-+            // allocation.
-+            let layout = Layout::array::<T>(self.cap).unwrap();
-+
-             // SAFETY: `self.ptr` was previously allocated with `A`.
--            unsafe { A::free(self.ptr.cast()) };
-+            unsafe { A::free(self.ptr.cast(), layout) };
-         }
-     }
- }
-@@ -751,13 +766,17 @@ pub fn collect(self, flags: Flags) -> Vec<T, A> {
-             ptr = buf.as_ptr();
-         }
- 
-+        // This can never fail; since this `Layout` is equivalent to the one of the original
-+        // allocation.
-+        let old_layout = Layout::array::<T>(cap).unwrap();
-+
-         // This can never fail, `len` is guaranteed to be smaller than `cap`.
--        let layout = core::alloc::Layout::array::<T>(len).unwrap();
-+        let layout = Layout::array::<T>(len).unwrap();
- 
-         // SAFETY: `buf` points to the start of the backing buffer and `len` is guaranteed to be
-         // smaller than `cap`. Depending on `alloc` this operation may shrink the buffer or leaves
-         // it as it is.
--        ptr = match unsafe { A::realloc(Some(buf.cast()), layout, flags) } {
-+        ptr = match unsafe { A::realloc(Some(buf.cast()), layout, old_layout, flags) } {
-             // If we fail to shrink, which likely can't even happen, continue with the existing
-             // buffer.
-             Err(_) => ptr,
-@@ -846,9 +865,16 @@ fn drop(&mut self) {
-         unsafe { ptr::drop_in_place(self.as_raw_mut_slice()) };
- 
-         // If `cap == 0` we never allocated any memory in the first place.
-+        //
-+        // Same here, theoretically, we know that `NonNull::dangling` from `Vec::new` is valid for
-+        // `A::free`, but it was never created by any of the `Allocator` functions.
-         if self.cap != 0 {
-+            // This can never fail; since this `Layout` is equivalent to the one of the original
-+            // allocation.
-+            let layout = Layout::array::<T>(self.cap).unwrap();
-+
-             // SAFETY: `self.buf` was previously allocated with `A`.
--            unsafe { A::free(self.buf.cast()) };
-+            unsafe { A::free(self.buf.cast(), layout) };
-         }
-     }
- }
--- 
-2.46.1
+The usual Rust convention is usually that if `Deref` is implemented,
+then unless there's a good reason to do otherwise, associated function
+should be used.
+
+Best,
+Gary
+
+> 
+> ---
+> Cheers,
+> Benno
+> 
+> > +        let ptr = self.ptr.as_ptr();
+> > +        // SAFETY: As we derive the pointer from a reference above, the pointer
+> > +        // must be valid.
+> > +        unsafe { core::ptr::addr_of!((*ptr).data) }
+> > +    }
+> > +
+> >      /// Recreates an [`Arc`] instance previously deconstructed via [`Arc::into_raw`].
+> >      ///
+> >      /// # Safety
+> > --
+> > 2.46.0
+> > 
+> >   
+> 
 
