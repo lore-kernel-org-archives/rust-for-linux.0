@@ -1,126 +1,181 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f74.google.com (mail-wm1-f74.google.com [209.85.128.74])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5537637;
-	Sun, 22 Sep 2024 13:16:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A475B664
+	for <rust-for-linux@vger.kernel.org>; Sun, 22 Sep 2024 15:01:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.74
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727010999; cv=none; b=pmhPUazS9Zt7J+MvT/IjzjG607Kr0LjwX5cRqXhRs0O39hYCAk4pHQjytWaBgCMTwLm4J1bHs0GjXwa3dCt3Y6ClxpMSad1OOCSNFiFxaRMttRFNtkolc1Rw3s1Qfew5srqPNfSQi0Q/0fV9RdJre2XuHZfL1dntG0uw0hIhcR0=
+	t=1727017315; cv=none; b=GjCPMApqp4v+ksqbUQhmsX0g0rxXvw3Ig1MwPTuGCCdliczFAd+e8N1/Q3llLZMEzscWSYAM9rIefUTy1zP0anoybUCBXN8Lbt1SrNvG+MDgpwW8APG2cO2fNV53JZ4ZdSjogGWF/vfPpQRtINRNpFh+P5tcMyxkqbgPcJjq0UA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727010999; c=relaxed/simple;
-	bh=3rRxgBShBqpcovq3vY/cbRQuMcbMgN8wYzfCKoUgETc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=tUeG8QPJ9GeSYsAAWRevUhypyU4ivffRyPA9nX6nFxavTRG9HKaKTU+eOtVxMtzMuHQXSWcgaqHlh7iXYENxzPGZduswyvFaARNPyWkwnH9aq/x7KtvJJWw0OroEOruN5E/3WZyZr+PAqcdtT8Uvryywv8Bcm+lO6LbHxi9Cjrw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Irk/UfnB; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1727017315; c=relaxed/simple;
+	bh=s0cShEYCAg+X7bWLg16m54ENQ3s7Xz+W1wGNdQR3+kE=;
+	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
+	 To:Cc:Content-Type; b=LYuB2Yv62w6/5p66Y/kls8WxVq57/XHPgZxAfSOaCriPlnGJIk8iVawcpWTrrpkp207OuZdXCDWHxtkJTMe42m9+3iovEbsJ65w0TEhuxjAevsZOaJSoRfyB+TVHj0iZcn8BI3VMrcfrPDR9IN2/IerT2ghCH77yh+IXLww5DfU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Jb1oDkJ3; arc=none smtp.client-ip=209.85.128.74
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--aliceryhl.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Irk/UfnB"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23012C4CEC3;
-	Sun, 22 Sep 2024 13:16:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727010998;
-	bh=3rRxgBShBqpcovq3vY/cbRQuMcbMgN8wYzfCKoUgETc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Irk/UfnBn6jTTFmkWa1K7ZeS+4/YWB2bCmxuN1B7ZVJjaodHUx5aFeM2ehw4DuxzX
-	 b66W57SuuU7jqJa8j5lZiqkwHxV6rQrPUxovtTUFwA8cGYLkaPmtqtc1RzOa1sXNe2
-	 tfMXAghm/WeLXreLVI59kwqR3Wj0xO/kfP35KdhSVKK/BsioPfZFm6SLhwKQKS4j8j
-	 oHewziQjOaM/JwLiDQjfw9MVNft6DoB21oX7ltnQ/rVSi4zGoBODdHKuTMCpmTNip8
-	 6hQAqjYOnKo8GZCFWZ7WBtEWoxOXDQKqvnCGjGVmdCNW3V/loH39rSJoGii63rnXW1
-	 LKPS7udjAsubA==
-Date: Sun, 22 Sep 2024 09:16:36 -0400
-From: Sasha Levin <sashal@kernel.org>
-To: Arnd Bergmann <arnd@arndb.de>
-Cc: Alice Ryhl <aliceryhl@google.com>, Tariq Toukan <tariqt@nvidia.com>,
-	linux-rdma@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
-	Matthew Wilcox <willy@infradead.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Kees Cook <keescook@chromium.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
-	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>,
-	Joel Fernandes <joel@joelfernandes.org>,
-	Carlos Llamas <cmllamas@google.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Trevor Gross <tmgross@umich.edu>, linux-mm@kvack.org,
-	linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org,
-	Christian Brauner <brauner@kernel.org>
-Subject: Re: [PATCH v7 2/4] uaccess: always export _copy_[from|to]_user with
- CONFIG_RUST
-Message-ID: <ZvAYtImQujuiHIVe@sashalap>
-References: <20240528-alice-mm-v7-0-78222c31b8f4@google.com>
- <20240528-alice-mm-v7-2-78222c31b8f4@google.com>
- <Zu_CeRfMKyyt4E5O@sashalap>
- <de6cb179-b21f-4e2d-a329-da5c4a138878@app.fastmail.com>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Jb1oDkJ3"
+Received: by mail-wm1-f74.google.com with SMTP id 5b1f17b1804b1-42cb115566eso32771795e9.2
+        for <rust-for-linux@vger.kernel.org>; Sun, 22 Sep 2024 08:01:53 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1727017312; x=1727622112; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=ncjkm+xBj4wAiYMDJEPjMYUCoBiTLntYFoQkyKAzX14=;
+        b=Jb1oDkJ3H7aBKFNJEWFyPgBQBBR97CB1W++3olg361eINWwG+xHmdarp+p6WWQCcZp
+         nZV6r3LOF7jz4oyY6YLBIByvHkQzxUCYQaO2cgY0CZ6bF0eJ8dlP3vCa5auqWHvB8FMM
+         Kk2CU5+fBYg+yvhmdUYOoxxPYlMe8pYH3d4AH03VH7a9WHb/v8JNqNDHpXSPkRwFF++x
+         qtsOhA4N82/+EX2t4fsgEHPbqEYVdvmitOGsjJcFABdSfsGqRXcQxTXe769OnQd5BAeY
+         QzbcCDw//nIxtm5nn34rSOinnCyZyxwmzJRzf/Gwa05BYxdJVnlH1Krpnb2WvgI6PBZj
+         rTEg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727017312; x=1727622112;
+        h=content-transfer-encoding:cc:to:from:subject:message-id:references
+         :mime-version:in-reply-to:date:x-gm-message-state:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=ncjkm+xBj4wAiYMDJEPjMYUCoBiTLntYFoQkyKAzX14=;
+        b=DTVHnyjwrtHSY1TaSjooA5mMxigqp3zwBgedlKTwVGNm3YHnqulCWgOW8iFvjq8lvc
+         6YF53dEz3fsZJsL4mh9tSNEFPcF2naPCl9rE1BnOACAWEG8iPn2TcGVXo3u2jzLXrI2R
+         tMKY7oR1MU9juy4xfz5HY2PLaZhqq/u4m3eUw6FifYvZEiDw/ujEcFhdV9zE4Qh6Ro5q
+         SbJTmHalbQ102TpXbmLZJmFH93BteTv4J+dvQSwgiHUlknCgmnng+6Ar/f2MD/5p+H+d
+         E/ROJAt9faoQLq7w8PiZ6/JnRBrdayBByNUYyduRdjq94HCck3iZ6qo0MOmphndzuDce
+         m1Kw==
+X-Forwarded-Encrypted: i=1; AJvYcCWpwS0PZwXfUalWcCdQjRkMao86Z1oDVKNIMHK+4UN7dJhdVPGF6T3bAOKLacMpuo1G2JqYdcRaBhdxHT8bYw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyiaAwvhMDZc7wRagRVUhZ681p9WpmlLOY8489D2rwRU4k8YhDV
+	17sZ/XRwxzGmz/tZkK1Z5A8xuxy6yvTZhPhwuQ7MrQloAYRfim4tsUhUMi42rQrcneJBcHDlq/n
+	x3dT/HZB5OmaLVw==
+X-Google-Smtp-Source: AGHT+IECOclje4KsJl4Qt6l3KZ6Ti1CSsZjZP+0DmuLkcdwDN8cc/Ojour1aePp9l+ZstwUCPP+UzAnPRELuCaU=
+X-Received: from aliceryhl.c.googlers.com ([fda3:e722:ac3:cc00:28:9cb1:c0a8:35bd])
+ (user=aliceryhl job=sendgmr) by 2002:a05:600c:1515:b0:42c:b32e:6ba7 with SMTP
+ id 5b1f17b1804b1-42e7ad85690mr98575e9.6.1727017311494; Sun, 22 Sep 2024
+ 08:01:51 -0700 (PDT)
+Date: Sun, 22 Sep 2024 15:01:49 +0000
+In-Reply-To: <CAHC9VhQX0k68fwWF08eMCiMsewRRSqN3q=QwirV_0XjoJ4wo5A@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii; format=flowed
-Content-Disposition: inline
-In-Reply-To: <de6cb179-b21f-4e2d-a329-da5c4a138878@app.fastmail.com>
+Mime-Version: 1.0
+References: <CAHC9VhQX0k68fwWF08eMCiMsewRRSqN3q=QwirV_0XjoJ4wo5A@mail.gmail.com>
+X-Mailer: git-send-email 2.46.0.792.g87dc391469-goog
+Message-ID: <20240922150149.3133570-1-aliceryhl@google.com>
+Subject: Re: [PATCH v10 5/8] rust: security: add abstraction for secctx
+From: Alice Ryhl <aliceryhl@google.com>
+To: paul@paul-moore.com
+Cc: a.hindborg@samsung.com, alex.gaynor@gmail.com, aliceryhl@google.com, 
+	arve@android.com, benno.lossin@proton.me, bjorn3_gh@protonmail.com, 
+	boqun.feng@gmail.com, brauner@kernel.org, casey@schaufler-ca.com, 
+	cmllamas@google.com, dan.j.williams@intel.com, dxu@dxuuu.xyz, 
+	gary@garyguo.net, gregkh@linuxfoundation.org, jmorris@namei.org, 
+	joel@joelfernandes.org, kees@kernel.org, linux-fsdevel@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-security-module@vger.kernel.org, 
+	maco@android.com, ojeda@kernel.org, peterz@infradead.org, 
+	rust-for-linux@vger.kernel.org, serge@hallyn.com, surenb@google.com, 
+	tglx@linutronix.de, tkjos@android.com, tmgross@umich.edu, 
+	viro@zeniv.linux.org.uk, wedsonaf@gmail.com, willy@infradead.org, 
+	yakoyoku@gmail.com
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Sun, Sep 22, 2024 at 07:52:34AM +0000, Arnd Bergmann wrote:
->On Sun, Sep 22, 2024, at 07:08, Sasha Levin wrote:
->> On Tue, May 28, 2024 at 02:58:03PM +0000, Alice Ryhl wrote:
->>>From: Arnd Bergmann <arnd@arndb.de>
->>>
->>>Rust code needs to be able to access _copy_from_user and _copy_to_user
->>>so that it can skip the check_copy_size check in cases where the length
->>>is known at compile-time, mirroring the logic for when C code will skip
->>>check_copy_size. To do this, we ensure that exported versions of these
->>>methods are available when CONFIG_RUST is enabled.
->>>
->>>Alice has verified that this patch passes the CONFIG_TEST_USER_COPY test
->>>on x86 using the Android cuttlefish emulator.
->>
->> Hi folks,
->>
->> I've noticed a build failure using GCC 9.5.0 on arm64 allmodconfig
->> builds:
->>
->> In file included from ./arch/arm64/include/asm/preempt.h:6,
->>                   from ./include/linux/preempt.h:79,
->>                   from ./include/linux/alloc_tag.h:11,
->>                   from ./include/linux/percpu.h:5,
->>                   from ./include/linux/context_tracking_state.h:5,
->>                   from ./include/linux/hardirq.h:5,
->>                   from drivers/net/ethernet/mellanox/mlx4/cq.c:37:
->> In function 'check_copy_size',
->>      inlined from 'mlx4_init_user_cqes' at
->> ./include/linux/uaccess.h:203:7:
->> ./include/linux/thread_info.h:244:4: error: call to '__bad_copy_from'
->> declared with attribute error: copy source size is too small
->>    244 |    __bad_copy_from();
->>        |    ^~~~~~~~~~~~~~~~~
->> make[7]: *** [scripts/Makefile.build:244:
->> drivers/net/ethernet/mellanox/mlx4/cq.o] Error 1
->>
->> I do not have CONFIG_RUST enabled in those builds.
->>
->> I've bisected the issue (twice!) and bisection points to this patch
->> which landed upstream as 1f9a8286bc0c ("uaccess: always export
->> _copy_[from|to]_user with CONFIG_RUST").
->>
->> Reverting said commit on top of Linus's tree fixes the build breakage.
+On Tue, Sep 17, 2024 at 3:18=E2=80=AFPM Paul Moore <paul@paul-moore.com> wr=
+ote:
 >
->Right, it seems we still need the fix I posted in
+> On Mon, Sep 16, 2024 at 11:40=E2=80=AFAM Casey Schaufler <casey@schaufler=
+-ca.com> wrote:
+> > On 9/15/2024 2:07 PM, Alice Ryhl wrote:
+> > > On Sun, Sep 15, 2024 at 10:58=E2=80=AFPM Kees Cook <kees@kernel.org> =
+wrote:
+> > >> On Sun, Sep 15, 2024 at 02:31:31PM +0000, Alice Ryhl wrote:
+> > >>> Add an abstraction for viewing the string representation of a secur=
+ity
+> > >>> context.
+> > >> Hm, this may collide with "LSM: Move away from secids" is going to h=
+appen.
+> > >> https://lore.kernel.org/all/20240830003411.16818-1-casey@schaufler-c=
+a.com/
+> > >>
+> > >> This series is not yet landed, but in the future, the API changes sh=
+ould
+> > >> be something like this, though the "lsmblob" name is likely to chang=
+e to
+> > >> "lsmprop"?
+> > >> security_cred_getsecid() =C2=A0 -> security_cred_getlsmblob()
+> > >> security_secid_to_secctx() -> security_lsmblob_to_secctx()
+> >
+> > The referenced patch set does not change security_cred_getsecid()
+> > nor remove security_secid_to_secctx(). There remain networking interfac=
+es
+> > that are unlikely to ever be allowed to move away from secids. It will
+> > be necessary to either retain some of the secid interfaces or introduce
+> > scaffolding around the lsm_prop structure ...
 >
->https://lore.kernel.org/lkml/20230418114730.3674657-1-arnd@kernel.org/
+> First, thanks for CC'ing the LSM list Alice, I appreciate it.
 >
->Tariq, should I resend this with your Reviewed-by, or can you
->apply it from the old version and make sure it finds its way
->into mainline and 6.11?
+> As Kees and Casey already pointed out, there are relevant LSM changes
+> that are nearing inclusion which might be relevant to the Rust
+> abstractions. =C2=A0I don't think there is going to be anything too
+> painful, but I must admit that my Rust knowledge has sadly not
+> progressed much beyond the most basic "hello world" example.
 
-The patch above fixes the build issue for me, thanks!
+We discussed this email in-person at Plumbers. I'll outline what we
+discussed here.
 
--- 
-Thanks,
-Sasha
+> This brings up the point I really want to discuss: what portions of
+> the LSM framework are currently accessible to Rust,
+
+It's relatively limited. I'm adding a way to access the secctx as a
+string, and a way to manipulate `struct cred`. Basically it just lets
+you take and drop refcounts on the credential and pass a credential to
+functions.
+
+Other than what is in this patch series, Binder also needs a few other
+methods. Here are the signatures:
+
+fn binder_set_context_mgr(mgr: &Credential) -> Result;
+fn binder_transaction(from: &Credential, to: &Credential) -> Result;
+fn binder_transfer_binder(from: &Credential, to: &Credential) -> Result;
+fn binder_transfer_file(from: &Credential, to: &Credential, file: &File) ->=
+ Result;
+
+These methods just call into the equivalent C functions. The `Result`
+return type can hold either an "Ok" which indicates success, or an "Err"
+which indicates an error. In the latter case, it will hold whichever
+errno that the C api returns.
+
+> and what do we
+> (the LSM devs) need to do to preserve the Rust LSM interfaces when the
+> LSM framework is modified?  While the LSM framework does not change
+> often, we do modify both the LSM hooks (the security_XXX() calls that
+> serve as the LSM interface/API) and the LSM callbacks (the individual
+> LSM hook implementations) on occasion as they are intentionally not
+> part of any sort of stable API.
+
+That's fine. None of the Rust APIs are stable either.
+
+Rust uses the bindgen tool to convert C headers into Rust declarations,
+so changes to the C api will result in a build failure. This makes it
+easy to discover issues.
+
+> In a perfect world we/I would have a
+> good enough understanding of the Rust kernel abstractions and would
+> submit patches to update the Rust code as appropriate, but that isn't
+> the current situation and I want to make sure the LSM framework and
+> the Rust interfaces don't fall out of sync. =C2=A0Do you watch the LSM li=
+st
+> or linux-next for patches that could affect the Rust abstractions? =C2=A0=
+Is
+> there something else you would recommend?
+
+Ideally, you would add a CONFIG_RUST build to your CI setup so that you
+catch issues early. Of course, if something slips through, then we run
+build tests on linux-next too, so anything that falls through the cracks
+should get caught by that.
+
+If anything needs Rust changes, you can CC the rust-for-linux list and
+me, and we will take a look. Same applies to review of Rust code.
+
+Alice
+
