@@ -1,135 +1,127 @@
-Received: from mail-wm1-f53.google.com (mail-wm1-f53.google.com [209.85.128.53])
+Received: from mail-ot1-f43.google.com (mail-ot1-f43.google.com [209.85.210.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97545AD52
-	for <rust-for-linux@vger.kernel.org>; Sun, 22 Sep 2024 15:08:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF9B7B652;
+	Sun, 22 Sep 2024 15:22:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727017705; cv=none; b=DDv4/Z26TxV0FGSMTCxuXgopEEf2ifgV4PsSYlNdV9Ha2krE14cCZfYQxh0NPmghrYk5iX7m5xHt1pg3gBhBqCD6Vfsb0nUdGL6CC1s2hmELIWOhhZHipqDMlPKwIUG7bDDkH3LJCN/7ogopVWpjxOnTMLQDK0gu7AsKaEViWnw=
+	t=1727018580; cv=none; b=MvI3srfMXLQ1fLAw22an3mvcT/4otMTzC40Wt+FBbZBSrrpi5bMg6awRPKlkZA1oBP8BMXJTCp5kHmh+6d0od2kFM5ujbghuu5/0QOd8GcYXO6QasrNRLZ+ifOWDuYXrmdtvdI0FR1fIwfpva+sBj6elNsSvMr1BjEvV7ZK/3Xo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727017705; c=relaxed/simple;
-	bh=MoxLQntrUUoBxHnrc81SIjQBbgnESJ+mo2PgPhhKzIE=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=A6wfDIwSSjhy4kVcCl4anQIYq3rtsZMuS8LQoPDX1ijUcNbSqsPUbehhTvGLrEK8+xLUqi/uS+cbdta3oVGav3MJqgELEl+A/8dbtpo+vrrHYAAbQxOjyMmCQirZoxPbleU4MHAzzeuG8wxYs/utEUFvxr68ycEDw4SS/Z4z76k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=F2dVclGU; arc=none smtp.client-ip=209.85.128.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1727018580; c=relaxed/simple;
+	bh=vEks30XG+J2MzciQrA/QX7ue128ALxFN/tguqw4FM2M=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=G/h6ws7zahXCaKrwIciuSQlpL4orit1QBTCIVrj5/7ZhdThNcJA9g3Z+SYlwRsYV8EDAvA8hSxT5rurK57rNBrNa4t244XzwYROMrEVU0mrQ/KrVae7ckP8h3cZBlIDwzaNAacInKYm/ooQQu9vHjeGhfKXNVKpi1QNp/qE4/lA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=EQ4kosgc; arc=none smtp.client-ip=209.85.210.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="F2dVclGU"
-Received: by mail-wm1-f53.google.com with SMTP id 5b1f17b1804b1-42cae102702so27661125e9.0
-        for <rust-for-linux@vger.kernel.org>; Sun, 22 Sep 2024 08:08:23 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="EQ4kosgc"
+Received: by mail-ot1-f43.google.com with SMTP id 46e09a7af769-713aebfe8b8so295672a34.1;
+        Sun, 22 Sep 2024 08:22:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1727017702; x=1727622502; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Hrk84WPNDauMmuWhCZFOUjncMPCI7YUNKYrU5/9qDmA=;
-        b=F2dVclGUp5a7EM4tP9+xCCMYqkbaoRIRxlNETzqmzVxWFsYvPNcSTRMkKWx4fXuUHk
-         7CNbV2yGyCGsEHeZMwII0IkKcKtetbtFJl72SzWUsvCGV+KVdF1kxXA8v727JShkuFtV
-         1veYL3UrwnX9obfwGokHplauqFDkJv88KTl26ljdZ/XgB2hCGTVyhY3Sb4IzbEAwocPz
-         pu59ZMoUnZFOES1VKaZPe2DEYnQD4t6+/3Sy2LCZbVODHgLurM8wx7mcbx7gg2T+wolv
-         /9TWR6OO82bwEATbf95r2ZiQnNW+/zd/3NKadlMvY95hZg+ylyos5M3g69sYEFeHlkbk
-         BmRg==
+        d=gmail.com; s=20230601; t=1727018578; x=1727623378; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=o0rK5v0Q5x3GJhtFt709TlT+VjbeaoHoLjvE3G3gB9o=;
+        b=EQ4kosgcIP29jkqqGgcLkJ0Wq5ZRasN/N58rY9KvDQKiboT8P9n63rx0AREqNF7eCy
+         TIU+ncGat3iMwsRktrG7cDoZcu1w57MGAPmpuxKqyzyGzgUHG+8Udu8Wi627Fzu6loWa
+         HbGBagT7zQTrLApWXR4d4OtHcLVl6cp1Y21pwOlRfunOvkEy3eHRKwZ1u/svPmMU3ciq
+         jUsePvM6oG7i61IUzMKjz0jDrCSSw3Mobm8tOSWt6G/0aIP9Df7PPhR1Grv7JXVsFqIC
+         BbISJLGovaXxlcf23APWhtWFCE8znRicFiSooi5OZv9JPfNI2C/1k7SeiaJsNrorC/G6
+         NczQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727017702; x=1727622502;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Hrk84WPNDauMmuWhCZFOUjncMPCI7YUNKYrU5/9qDmA=;
-        b=bFczaz9yb77OYUybmDwZagndPmd7UgkJAD8710OmpVnYyhTE8+4imcQ7Io6TV5D7/r
-         qcGRq6CVyS8S+y6xIAFMMAfKUeKhRd36ngPJfITzFe9rsP/mBIcqcgFYY4xueLi9OiMe
-         J8FKsQchm0uFwgZvfjscGSkkG3Qpe5mdSRoMwDPjF6nRyAimdVQ+j+cI5lRrg6e0yvEK
-         l1Or98DlHVaySMO5J3EIIA8Z6ho1RGk4VvCdi0uawWWCVLVIzsR2D6uzM+xCFDm6RBmf
-         PKT5cLwev+Djp6VLviEWQAMv6zcUmgivJPSP8Ib4eYfDIxvSegIfs24oKGzN+076zEz+
-         7dqQ==
-X-Forwarded-Encrypted: i=1; AJvYcCWyvsZ/0WTjQAGdp4sxoatnoUz9F9sPVSTznF0HPgrbl+SenDB4clrRhaTur8WWsObyjeiaAHIZBN18B3PAAw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzvKOS51by64YqswSLdAJVA65B4vypXpNS54FJhz7y6HhQTyGfC
-	M/xNOUssSkc9BJJnSvzXGjfWvkJKvI9WNAWMdxex+v6mQU/i9AtLvYEb6A2ajOCvoa6JAFU7u4D
-	HFGIv3arH5JLNZmmIkeeTW0cqD6Z7JWO+tkp8
-X-Google-Smtp-Source: AGHT+IGsADpkm2OD+9HXWvm6Vc0+DYXpUjMQmyyBBb8VDvBcDtBLRCFADYlT+Lh/yx62UTYueWg79gtvFb1xPGK/3S0=
-X-Received: by 2002:a05:600c:1c04:b0:428:1b0d:8657 with SMTP id
- 5b1f17b1804b1-42e7ad8e706mr66211845e9.22.1727017701846; Sun, 22 Sep 2024
- 08:08:21 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1727018578; x=1727623378;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=o0rK5v0Q5x3GJhtFt709TlT+VjbeaoHoLjvE3G3gB9o=;
+        b=CuqpxGhFSTg608ufrrLP2xj0YILbkDxfdkz6zanTx3O2CpXBUWKLZhQtkTpaxldWyJ
+         W/RcnbXgLAWzoHcD6Yi0svC/ttj7d/agUqLjjNF3yDRUpZzh/0RbmjPNJga4DKDO0Pb4
+         k+TRE0NOaadBKQUPR+Fkw1QRZd5vkGjcQQUJhsi9hu7pR5f8JwIktXv7vKJyrflBpYZM
+         q7PnQpl14lZfNzqgc4YoI+Ru2K0/M2hrYfgxQIWsWE6g8ej1Cuw0QCAnfFo7xU2/a+Sc
+         Ku+n5P4uaPC4/SNCxiUjJlyBW4aw+SAk5nt6H5Hp/pCFyy/Tz2DJ+Xlcr75thkFjCNe2
+         DikQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUfm/mXwczk692SOk0aud0buOcZQmqkS2XXMNErSLZVfkdwiqt10sxIQlWwCL69h9Qk8pJF6JbuYIJmBkrz@vger.kernel.org, AJvYcCUr/uKxiF5Wdb0hi5eq1kDxVL6JUslWhwcCUPRBoQdERiKgjx3fJ8qe2JN650XkyQd3vsZ6Amj6hRfXHctshSA=@vger.kernel.org, AJvYcCUrqFRveh4PcsX7wV3/5+1YzmVH0Z841LKTuzye4sHKCm+XNHERldhwCe/WNsxeuXu6lAhZ4zu1KcQ=@vger.kernel.org, AJvYcCXAUTTKN3idRNfsa8zblUFOAZZCKY+1D4HF14sh2sfMoVORbpO4wJ8zVsF1pj6WBP3XB13CzR6KP7mw@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy7t5dlI4BEh2cGJKtrJDbMqSP9nNGxQ7AVZW5aLnLKF+88+9HC
+	7plm2H9+6gAltSEzTaJt6qD1OUR1PGJ+Y5Mn7tDDgxTl4luvwDjU
+X-Google-Smtp-Source: AGHT+IENQHPBnNnxGrZL657GF5Q0NATAuF6B3WDHGqqmXLVTCWJK8uRt0HBsBkTQVDSfIAt1300t3w==
+X-Received: by 2002:a05:6830:4124:b0:704:470d:a470 with SMTP id 46e09a7af769-71393557ff2mr4484784a34.28.1727018577674;
+        Sun, 22 Sep 2024 08:22:57 -0700 (PDT)
+Received: from ?IPV6:2603:8080:7400:36da:dff5:4180:2562:4c1e? ([2603:8080:7400:36da:dff5:4180:2562:4c1e])
+        by smtp.gmail.com with ESMTPSA id 46e09a7af769-71389bb318csm1646334a34.59.2024.09.22.08.22.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 22 Sep 2024 08:22:56 -0700 (PDT)
+Message-ID: <f6fd25ce-5eb0-4c3c-927c-ac6022b3c21f@gmail.com>
+Date: Sun, 22 Sep 2024 10:22:55 -0500
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240915-alice-file-v10-0-88484f7a3dcf@google.com>
- <20240915-alice-file-v10-5-88484f7a3dcf@google.com> <202409151325.09E4F3C2F@keescook>
- <CAH5fLghA0tLTwCDBRrm+GAEWhhY7Y8qLtpj0wwcvTK_ZRZVgBw@mail.gmail.com> <39306b5d-82a5-48df-bfd3-5cc2ae52bedb@schaufler-ca.com>
-In-Reply-To: <39306b5d-82a5-48df-bfd3-5cc2ae52bedb@schaufler-ca.com>
-From: Alice Ryhl <aliceryhl@google.com>
-Date: Sun, 22 Sep 2024 17:08:08 +0200
-Message-ID: <CAH5fLgjWkK0gXsGcT3gLEhYZvgnW9FPuV1eOZKRagEVvL5cGpw@mail.gmail.com>
-Subject: Re: [PATCH v10 5/8] rust: security: add abstraction for secctx
-To: Casey Schaufler <casey@schaufler-ca.com>
-Cc: Kees Cook <kees@kernel.org>, Paul Moore <paul@paul-moore.com>, 
-	James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, Miguel Ojeda <ojeda@kernel.org>, 
-	Christian Brauner <brauner@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Peter Zijlstra <peterz@infradead.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
-	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
-	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
-	Suren Baghdasaryan <surenb@google.com>, Dan Williams <dan.j.williams@intel.com>, 
-	Matthew Wilcox <willy@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, Daniel Xu <dxu@dxuuu.xyz>, 
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, 
-	linux-security-module@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-fsdevel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2] kernel-docs: Add new section for Rust learning
+ materials
+To: Dirk Behme <dirk.behme@de.bosch.com>, corbet@lwn.net, ojeda@kernel.org
+Cc: alex.gaynor@gmail.com, boqun.feng@gmail.com, gary@garyguo.net,
+ benno.lossin@proton.me, a.hindborg@samsung.com, aliceryhl@google.com,
+ workflows@vger.kernel.org, linux-doc@vger.kernel.org,
+ linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org, bilbao@vt.edu
+References: <20240913153824.161150-1-carlos.bilbao.osdev@gmail.com>
+ <3a421753-07fa-451a-90fa-e04d1a731b1a@de.bosch.com>
+Content-Language: en-US
+From: Carlos Bilbao <carlos.bilbao.osdev@gmail.com>
+In-Reply-To: <3a421753-07fa-451a-90fa-e04d1a731b1a@de.bosch.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Mon, Sep 16, 2024 at 5:40=E2=80=AFPM Casey Schaufler <casey@schaufler-ca=
-.com> wrote:
->
-> On 9/15/2024 2:07 PM, Alice Ryhl wrote:
-> > On Sun, Sep 15, 2024 at 10:58=E2=80=AFPM Kees Cook <kees@kernel.org> wr=
-ote:
-> >> On Sun, Sep 15, 2024 at 02:31:31PM +0000, Alice Ryhl wrote:
-> >>> Add an abstraction for viewing the string representation of a securit=
-y
-> >>> context.
-> >> Hm, this may collide with "LSM: Move away from secids" is going to hap=
-pen.
-> >> https://lore.kernel.org/all/20240830003411.16818-1-casey@schaufler-ca.=
-com/
-> >>
-> >> This series is not yet landed, but in the future, the API changes shou=
-ld
-> >> be something like this, though the "lsmblob" name is likely to change =
-to
-> >> "lsmprop"?
-> >> security_cred_getsecid()   -> security_cred_getlsmblob()
-> >> security_secid_to_secctx() -> security_lsmblob_to_secctx()
->
-> The referenced patch set does not change security_cred_getsecid()
-> nor remove security_secid_to_secctx(). There remain networking interfaces
-> that are unlikely to ever be allowed to move away from secids. It will
-> be necessary to either retain some of the secid interfaces or introduce
-> scaffolding around the lsm_prop structure.
->
-> Binder is currently only supported in SELinux, so this isn't a real issue
-> today. The BPF LSM could conceivably support binder, but only in cases wh=
-ere
-> SELinux isn't enabled. Should there be additional LSMs that support binde=
-r
-> the hooks would have to be changed to use lsm_prop interfaces, but I have
-> not included that *yet*.
->
-> > Thanks for the heads up. I'll make sure to look into how this
-> > interacts with those changes.
->
-> There will be a follow on patch set as well that replaces the LSMs use
-> of string/length pairs with a structure. This becomes necessary in cases
-> where more than one active LSM uses secids and security contexts. This
-> will affect binder.
+On 9/16/24 00:33, Dirk Behme wrote:
 
-When are these things expected to land? If this patch series gets
-merged in the same kernel cycle as those changes, it'll probably need
-special handling.
+> On 13.09.2024 17:38, Carlos Bilbao wrote:
+>> Include a new section in the Index of Further Kernel Documentation with
+>> resources to learn Rust. Reference it in the Rust index.
+>>
+>> Signed-off-by: Carlos Bilbao <carlos.bilbao.osdev@gmail.com>
+>
+> Many thanks!
+>
+> Two minor things below. With these:
+>
+> Reviewed-by: Dirk Behme <dirk.behme@de.bosch.com>
 
-Alice
+
+Thanks! will add fixes in v3.
+
+
+>
+> Dirk
+>
+>
+>> ---
+>>
+>> Changes since v1:
+>>   - Added two more Rust blogs proposed by Dirk Behme.
+>>
+>> ---
+>>   Documentation/process/kernel-docs.rst | 131 +++++++++++++++++++++++---
+>>   Documentation/rust/index.rst          |   3 +
+>>   2 files changed, 123 insertions(+), 11 deletions(-)
+>>
+>> diff --git a/Documentation/process/kernel-docs.rst b/Documentation/process/kernel-docs.rst
+>> index 55552ec4b043..b56c2adcb954 100644
+>> --- a/Documentation/process/kernel-docs.rst
+>> +++ b/Documentation/process/kernel-docs.rst
+>> @@ -72,17 +72,6 @@ On-line docs
+> ...
+>> +    * Title: **Learning Rust the Dangerous Way**
+> It looks to me the that it is called "Learn" and not "Learning"?
+>
+> ...
+>> +    * Name: **Linux Plumbers (LPC) Rust presentations**
+> Here I would add the year "2024" somewhere. There have been previous 
+> LPCs and most probably there will be some in the next years ;)
+
+
+Thanks, Carlos
+
