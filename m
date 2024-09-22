@@ -1,300 +1,149 @@
-Received: from mail-oo1-f47.google.com (mail-oo1-f47.google.com [209.85.161.47])
+Received: from sonic311-30.consmr.mail.ne1.yahoo.com (sonic311-30.consmr.mail.ne1.yahoo.com [66.163.188.211])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CFC9EEDB;
-	Sun, 22 Sep 2024 16:04:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.161.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A805615E90
+	for <rust-for-linux@vger.kernel.org>; Sun, 22 Sep 2024 16:50:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=66.163.188.211
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727021057; cv=none; b=GImSk5BfjUJwh1X56RWxGch6N9OzB4i4SeKKonfgTvuO4w4yHC/YBFk/2cXoCKukBQYyNS5O/2vQgEJ996cO7I2N/SPYdcz3EicX2R240qh868YcxtXE/NNP3vounMoTT75nnzbC+E7e1Vd4t94wM0bQqDQLKs7Exwy2Ret1Y7I=
+	t=1727023848; cv=none; b=Y3cX7j623/I1xQ2oL55dMW8zWWdLJKPuBFr9xKJUOk7ocnnYuWN9KfMENAt81apIhURNsrHeMp7owsI++saO3JN+nJjExOA1xPWHlfZZZuyt2DblG+xLH8FlonaBx0xuDzwoRY8MZzP3ueneG8v1TPw66IqY+RsgKskjfRVHiLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727021057; c=relaxed/simple;
-	bh=v47I497c9099S7GRuyki8vzh9uGwxmnc3vs0DCyoe/g=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=Zvp902W50sbJ/M6iCVoBGtqZsXCyTGY4jTqo2otVUY69dOq+LT07sPDdeRr7hetQG8Ayh+pFolrGA24krvRoCzyT5BLxiUpu2Dactsc2qkC65vpy1P9BeWp9BvR1n1LoN9gFc2Li5AR3mYWEeY6Blax/NuMHGKRwrFlKrFhyJjE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nimBSNCH; arc=none smtp.client-ip=209.85.161.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1727023848; c=relaxed/simple;
+	bh=Tyr9i8ipkgWmeb2qVyjavDvEUVtyEtTlYitSUClBqwI=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LEn0JkjKKRt44DhMo7RFg2uqoC/zTZeJEruMTMSPLMRHcOsXDSA+n7DbubXz6sqwKC/SQbyGmf2K8S9EcxfbBKPJTOsA3jiRJ5QyMSBCFAS+kJa03aDYWBqFtukjS1N/VlmhbZsoE5GaivdavgeXLUqi/6/vt5/j6jdSRPGvgvU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=schaufler-ca.com; spf=none smtp.mailfrom=schaufler-ca.com; dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b=UwRDJcqj; arc=none smtp.client-ip=66.163.188.211
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=schaufler-ca.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=schaufler-ca.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nimBSNCH"
-Received: by mail-oo1-f47.google.com with SMTP id 006d021491bc7-5e1b35030aeso2193608eaf.3;
-        Sun, 22 Sep 2024 09:04:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727021054; x=1727625854; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=I+gNyCaAD+TOTnrO/NBqECrEAJIs7LcLi9tZJZGskPE=;
-        b=nimBSNCHwtkVQupHa7LSS0eIEzNiP+sg07sXaLAQ3Sk6EYHxvuhPY9AlcTo0vS5oCv
-         rgzDfLX1fxYm7V5g7tH0Y7IjgLXV9e8WZpvII7QGnxk3lHR+80qKjPPHWhTCeVwBf3WA
-         7lyNS5VCK1pGjH6t60tAQSEqWvKs7nlTuMSLCEy7ZexCo6mxCPAZqmltel+YHP+oASP+
-         7VkEmT4N/OW4tw4mD/qKQIn3bZNjHUzZ5RXotMvX2zepSBe8jck/R1Bf9m5p94PYRqv3
-         85gFcmhdZ/UZwrRPATQ9HWiYuV6Jt447ufT02QqR0hHybMkr771BY22xPugu2DTmsgzk
-         97HA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727021054; x=1727625854;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=I+gNyCaAD+TOTnrO/NBqECrEAJIs7LcLi9tZJZGskPE=;
-        b=McNqLI/BuFpqPPfFadSefQV1KEb/o3Zqy84xjXqfzbodvInLq5C1QCghY4GNMCqT5y
-         niMu7flZNBW0ioHPS8UmFK9JPN3pKAmu9im+vM36uysWg22lCdTpWrm45t2hjqZeFqig
-         JQCWJhlEO1pf59q89yY7SZ3V7iSkpcpCxVfCitucA6a3KH6Dto7Tsh7cSI6Kbf00dNjC
-         dwO+52p4eEUktJNMnylQseH2WAEjIYTluJQ1Sp1aBK15gGfMSbDlvAnX/vUpqRNqHNL7
-         aSEiJLY/qXgHHy1w1x59fm43annC99bNhi3+yoaw/GNEHrMDguY1nBGFzu8mH5WBju6S
-         iGcg==
-X-Forwarded-Encrypted: i=1; AJvYcCUUtIWi5JsRF0Z9qSZXwF9uqaw2x+bvp/reD5tqnXFmImEGZQ+yQqsYXbysmTVnirpV+oFjrK7SS1c/Z9Eb@vger.kernel.org, AJvYcCV577LQaSeVZfPK9aAT39oNXbtm3R3fgTijozf9XWJqD/Ji3yH3s4rCInNdE58HpM+AN8OoJjKTNRA=@vger.kernel.org, AJvYcCXIC/zNHwfmPj1NVwdpaH2F6b3ryu7nW4FvEGMt2T9LM4Vuo/LWnoo///GVjZHH41dQSrSzFcnVo0BU@vger.kernel.org, AJvYcCXY2UmK/shTD85aSz+NVjQmSvfsfAlY4/PKzXfK27PKm4Cx2583ZVEOfmc0eC/qS7OgWTue7SieKSrXAM/s458=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyfiNv1qDkay96pbp9PzJN1pFGE7L9IaOrdr4WnmAVaRquMK1vt
-	oDR5eORENZZP6p/pHHysufzAJC/jCRoGXeBHl9I9zY8C3kHz+ARL
-X-Google-Smtp-Source: AGHT+IEAEakKH/ljxA/oUObGAy7miHpcONk2WzcXaRVIh3octTpny8DSbw1yQWXwtKfv82nEkGXFDw==
-X-Received: by 2002:a05:6820:1628:b0:5e1:dcbc:218c with SMTP id 006d021491bc7-5e58d1b0c39mr3563032eaf.7.1727021054137;
-        Sun, 22 Sep 2024 09:04:14 -0700 (PDT)
-Received: from pipaware.tx.rr.com ([2603:8080:7400:36da:dff5:4180:2562:4c1e])
-        by smtp.gmail.com with ESMTPSA id 46e09a7af769-71389bb2dd3sm1679107a34.51.2024.09.22.09.04.12
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 22 Sep 2024 09:04:13 -0700 (PDT)
-From: Carlos Bilbao <carlos.bilbao.osdev@gmail.com>
-To: corbet@lwn.net,
-	ojeda@kernel.org,
-	dirk.behme@de.bosch.com
-Cc: alex.gaynor@gmail.com,
-	boqun.feng@gmail.com,
-	gary@garyguo.net,
-	benno.lossin@proton.me,
-	a.hindborg@samsung.com,
-	aliceryhl@google.com,
-	workflows@vger.kernel.org,
-	linux-doc@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	rust-for-linux@vger.kernel.org,
-	bilbao@vt.edu,
-	Carlos Bilbao <carlos.bilbao.osdev@gmail.com>
-Subject: [PATCH v3] kernel-docs: Add new section for Rust learning materials
-Date: Sun, 22 Sep 2024 11:04:10 -0500
-Message-ID: <20240922160411.274949-1-carlos.bilbao.osdev@gmail.com>
-X-Mailer: git-send-email 2.43.5
+	dkim=pass (2048-bit key) header.d=yahoo.com header.i=@yahoo.com header.b="UwRDJcqj"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1727023839; bh=RkemQxSTekqBWW7gSaSVQi9ocEzIYYZgCqHh75M1TmU=; h=Date:Subject:To:Cc:References:From:In-Reply-To:From:Subject:Reply-To; b=UwRDJcqjY3dTothR/Wd5VnZeSRGRavmeuAKHhdpuB1JLyfXIyO66qpIUgqHV6EeHAMOUc8ZQAVgXw0YHgrm/85TcpXVcDplH+xk+wlTVML4GA7NOG3jH+qe+VGX2hqiX9rflPFyLoloWt3nnsfTBMz9sBaRtg8sa0bFotn7WWTYCBsbPaWMlTbc4QUr0HZVgxKasm2cGgHeplU1DTRZlwKp/Ch2SIIn1Ag51ruKQPnZBy/hrTSD13djIQEHX+pgQPLJE6KkY6Xc06siFx3Bhu19ujoJAY0yDaRtEIiqK811ddYrcytqnrsWeKscdCUubxXQfS5fZlbIle50FodUt2A==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1727023839; bh=i+/Kmoz7yPrAzKAWS6N+sz+eQCTb2zbtDQvoiOT9K9N=; h=X-Sonic-MF:Date:Subject:To:From:From:Subject; b=KSGv+SBQthd35oevC5B018TD5aaqekurHoAH9FrBLJERX0YcEG1CTiIwsPefMsnB2nxKtFG3vt87k8/Efccb2JAtF5PTzxRtC6uM8iKElObBefx6PDaHru0NroOhkI5kxNInT1PoE/5JgCJrJkCK7JbMKOqznlnt+/ARRg+YhCquxQMpxglGdobvwil1rm87R5KYSbnvpJbajAOKoVnJWT6NVGq/YnGUkEXZ9751E9jCZ3CfsdvhCpgp0vOEv2Unb/nuU+JQxpNB6IK1fix0hISSH0S65sG/IQWL/WraDumgZmELfd/Z6QNRGTi4aWk9Kycyih9/cecFviRzpixF7g==
+X-YMail-OSG: rSeCZIsVM1nwHEwIqfLJtUZ5_uREOgskC9k2_NL7g_qFbdiC7W4iDl3VElv6XC3
+ G40_IzyiDgA._EBfqZqM5kSyCj_cRK8W4WrrT0vIazHr90T.w78ozUIilwv8.QAMAC7AEw_mPNnr
+ WwPfCj48O3eKfZ5O4ZJ1N3l23pcAhzTAXVfnzpijo6Z_V.YZKODQCpoMWS2iefW7tIvroefmKbXQ
+ JI.l1vgttQX38vVUfCgHeSzKW_3xDUcIPSrtV0rsM8ix9b9iiEzvh0iZ3ZyeNlfosnLqcjfs3GzR
+ GVUr12bWh_Dh7QwQTOiQyMyJdgdRGgiMVYEu0Vg3kyiPZxqSbMrR00wNmDgmJPtpnaj8uE9nsBAk
+ Izsv2HHdYs3TPvGGmJc92YhuSrCOWyGMqCFoyEeGFHoJLYeFuRb16aHh3JoyhPxweNn0tzUkJCzA
+ Tg5L7De3iiIXAfVaR6VGV4q5hie6VGPVsmeyEAI.u18YfDPAX2EEKYGno8MoV7DrTec6TttDB8LO
+ OnhXljQEaPvVpBtXd0Krv0ezKZf__tYoggKYbiS7o0WXSgTbQLyJLVwxrfjvncVUpGPKxZblG1hx
+ hNZZJrGr7GG9TrRlz4ilWBieBaKbkhY.Emlx4GszhHO3KbEEZoFjPEM5MhVs4q_5rEbadWk8O3js
+ At.0AlCVXBm6xhPv5TKtUuLG.iN4uBWKz4PRX3uRoaJdN3O41Ul9JanvMKFfF2gRK_e1U0sNeMxr
+ bXyxfcpRKBsu3aLCQiwwfspJNVHekQReEU7YMZ74phA.5Nhm4t1BgMVrt2kyZVRCMsw4lrAlSZZ6
+ zsBt32nk6oJ0043G9EGc0QPsUkYNfcHHkbhGKuAWPizLLUStEFlhjjOxeYGOH.NINMzu9FkxLOj9
+ H1gdymCL7z6wfLRIef.GcvBDd92KPqiMz0XfUndbPHV9lp28B4aklvgFB_.n.g4dVjxy6eDjzgBt
+ Jr5M_C2_NTTbHYjcePriKJvJlGSnJebHUtyIlERMA2M4mIP0iEtBV34yUkd.Nu2niNwpD60GLV4f
+ Q8eF2q3FW8yCvhM62KU0wwTWUllOr9tyActdADKIRsNH6EtODd5X2RdvikP.Crmg6mL8xisYR1Lw
+ foeoG6gVcOYfwjtFEOmfs9XMQ1SJuAMZxMvmP8k.IxH1ciHqsPWclKPhoRE.y.yXjM_yx3Yjp9L7
+ TL4EJt0ViaLh.ElnpA7Ezc7ApR4Yy18ptVzX7q1J0i9308LS_Xqnr.2oBFY0ORKxBrT.gpNEEVs6
+ vvbJXUPp8l6TLOcGDSJ0dJKe.c0RlTvK5ybHP0qplPvWkHI1u9IkQmaxUes7lVO7gAiwwoxNZsA6
+ 61Qvb.CYZAYFo1UYnoQAym9Z6bS3r44oyLs7wXV_0SW6v6i2E71XxrYv7Hn42nA5ax.TwOHqZIq6
+ AtCCNffI5UkmSePtBdTUvnM3_xe2ytx024PsLK8pZqd8FEoh5NDvqUbmwXoKIUm0wvFelDygm51M
+ M7WTfFRCa2ImcEh2grV0n3vSowfiES1smV_jsXq7j.wgb_dE5FddQrHGRO76Hf4u9FFHiR9IcA7u
+ PRnV6CI46pphH2Zy2lB3dfEHSJp2.YQFNK30vFfk1kiKr6m28p_YJ9IXnSNnGODc4W_OpjYtmvso
+ 2zgeOIziHSvxZCrX8Gpi.nlOxNyBtnTe5X.KC3ti8QIFe58ysxVXJwcYAulUpfpda7iA.CvudNE0
+ TKhzAKW5MOx1gvAqKb_TioJWDBmN5TR7ApCE7.EA_etvwQCZ9UwBKJDg1wam_kxwoOsIwGOlLFBb
+ MqAVSib_hRUKCRQHy7PQY80qabP7TEEEkCdVeBAssJPGjsNqf4oIlQ0.2ga_7M85kGnfse1INVBo
+ qRcxuSwOVBLXSCH2OJF.nfkDyFQftL1Q1F.vk6laUYGEBvgF0QX.xCkGW37QEgGHWCfxcq2gmohj
+ H30_RCe8H9CNfEoLkRNjXU86YuMzEwruxzap_vRZ7Lk8TF8OOuzsOanwjBapKAptgixe8BkVEmuf
+ 1ECgL3nQm4NYrMQZHH8Q4w8yJSvfs.e_IkCHGW6_kbl4Vk6BRw6r8_3YcHfthzAmOK25.AYWkgUx
+ nrVURNWK3HzYI3c9HzPJtRhL1Xl3wf9yxRxn2VXYsUC0hi_BdbxyHUjJ1SV9FqxiTDk.teQZBkKM
+ fGvUl5ObqFUaGyOJLDizr5yZRwoOpC6B.ZV.OWc9sQqHW54u_UJMn4jXk2gjBi8PTIJgXdsQTA_d
+ yUwGvP5oQc1fuXHwdB2jq6gfYybWUeFfDNDnLkk8J.tBbOsngRuIXkxZfbS9xIP.qVmKRXKZo1WY
+ -
+X-Sonic-MF: <casey@schaufler-ca.com>
+X-Sonic-ID: 6048f999-efd8-471c-b66a-c3dd3b4a8a1e
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic311.consmr.mail.ne1.yahoo.com with HTTP; Sun, 22 Sep 2024 16:50:39 +0000
+Received: by hermes--production-gq1-5d95dc458-4tw7n (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 3aff9c2f61c09c580cdd04eaf820b205;
+          Sun, 22 Sep 2024 16:50:33 +0000 (UTC)
+Message-ID: <afe99ad2-bb53-4e80-bc43-f48b03b014cf@schaufler-ca.com>
+Date: Sun, 22 Sep 2024 09:50:30 -0700
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v10 5/8] rust: security: add abstraction for secctx
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Kees Cook <kees@kernel.org>, Paul Moore <paul@paul-moore.com>,
+ James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>,
+ Miguel Ojeda <ojeda@kernel.org>, Christian Brauner <brauner@kernel.org>,
+ Alex Gaynor <alex.gaynor@gmail.com>,
+ Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng
+ <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+ =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>,
+ Benno Lossin <benno.lossin@proton.me>,
+ Andreas Hindborg <a.hindborg@samsung.com>,
+ Peter Zijlstra <peterz@infradead.org>,
+ Alexander Viro <viro@zeniv.linux.org.uk>,
+ Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+ =?UTF-8?Q?Arve_Hj=C3=B8nnev=C3=A5g?= <arve@android.com>,
+ Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>,
+ Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas
+ <cmllamas@google.com>, Suren Baghdasaryan <surenb@google.com>,
+ Dan Williams <dan.j.williams@intel.com>, Matthew Wilcox
+ <willy@infradead.org>, Thomas Gleixner <tglx@linutronix.de>,
+ Daniel Xu <dxu@dxuuu.xyz>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+ Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org,
+ linux-security-module@vger.kernel.org, rust-for-linux@vger.kernel.org,
+ linux-fsdevel@vger.kernel.org, Casey Schaufler <casey@schaufler-ca.com>
+References: <20240915-alice-file-v10-0-88484f7a3dcf@google.com>
+ <20240915-alice-file-v10-5-88484f7a3dcf@google.com>
+ <202409151325.09E4F3C2F@keescook>
+ <CAH5fLghA0tLTwCDBRrm+GAEWhhY7Y8qLtpj0wwcvTK_ZRZVgBw@mail.gmail.com>
+ <39306b5d-82a5-48df-bfd3-5cc2ae52bedb@schaufler-ca.com>
+ <CAH5fLgjWkK0gXsGcT3gLEhYZvgnW9FPuV1eOZKRagEVvL5cGpw@mail.gmail.com>
+Content-Language: en-US
+From: Casey Schaufler <casey@schaufler-ca.com>
+In-Reply-To: <CAH5fLgjWkK0gXsGcT3gLEhYZvgnW9FPuV1eOZKRagEVvL5cGpw@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-Mailer: WebService/1.1.22645 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.yahoo
 
-Include a new section in the Index of Further Kernel Documentation with
-resources to learn Rust. Reference it in the Rust index. The resources
-are a product of a survey among assistants to the conference Kangrejos'24.
+On 9/22/2024 8:08 AM, Alice Ryhl wrote:
+> On Mon, Sep 16, 2024 at 5:40 PM Casey Schaufler <casey@schaufler-ca.com> wrote:
+>> On 9/15/2024 2:07 PM, Alice Ryhl wrote:
+>>> On Sun, Sep 15, 2024 at 10:58 PM Kees Cook <kees@kernel.org> wrote:
+>>>> On Sun, Sep 15, 2024 at 02:31:31PM +0000, Alice Ryhl wrote:
+>>>>> Add an abstraction for viewing the string representation of a security
+>>>>> context.
+>>>> Hm, this may collide with "LSM: Move away from secids" is going to happen.
+>>>> https://lore.kernel.org/all/20240830003411.16818-1-casey@schaufler-ca.com/
+>>>>
+>>>> This series is not yet landed, but in the future, the API changes should
+>>>> be something like this, though the "lsmblob" name is likely to change to
+>>>> "lsmprop"?
+>>>> security_cred_getsecid()   -> security_cred_getlsmblob()
+>>>> security_secid_to_secctx() -> security_lsmblob_to_secctx()
+>> The referenced patch set does not change security_cred_getsecid()
+>> nor remove security_secid_to_secctx(). There remain networking interfaces
+>> that are unlikely to ever be allowed to move away from secids. It will
+>> be necessary to either retain some of the secid interfaces or introduce
+>> scaffolding around the lsm_prop structure.
+>>
+>> Binder is currently only supported in SELinux, so this isn't a real issue
+>> today. The BPF LSM could conceivably support binder, but only in cases where
+>> SELinux isn't enabled. Should there be additional LSMs that support binder
+>> the hooks would have to be changed to use lsm_prop interfaces, but I have
+>> not included that *yet*.
+>>
+>>> Thanks for the heads up. I'll make sure to look into how this
+>>> interacts with those changes.
+>> There will be a follow on patch set as well that replaces the LSMs use
+>> of string/length pairs with a structure. This becomes necessary in cases
+>> where more than one active LSM uses secids and security contexts. This
+>> will affect binder.
+> When are these things expected to land?
 
-Signed-off-by: Carlos Bilbao <carlos.bilbao.osdev@gmail.com>
-Reviewed-by: Dirk Behme <dirk.behme@de.bosch.com>
----
+I would like them to land in 6.14, but history would lead me to think
+it will be later than that. A lot will depend on how well the large set
+of LSM changes that went into 6.12 are received.
 
-Changes since v2:
-  - Fix wrong title and added date of LPC talks.
-  - Add more resources proposed by Miguel Ojeda.
-  - Add review tag of Dirk Behme.
+>  If this patch series gets
+> merged in the same kernel cycle as those changes, it'll probably need
+> special handling.
 
-Changes since v1:
-  - Added two more Rust blogs proposed by Dirk Behme.
+Yes, this is the fundamental downside of the tree merge development model.
 
----
- Documentation/process/kernel-docs.rst | 163 ++++++++++++++++++++++++--
- Documentation/rust/index.rst          |   3 +
- 2 files changed, 155 insertions(+), 11 deletions(-)
-
-diff --git a/Documentation/process/kernel-docs.rst b/Documentation/process/kernel-docs.rst
-index 55552ec4b043..3b5b5983fea8 100644
---- a/Documentation/process/kernel-docs.rst
-+++ b/Documentation/process/kernel-docs.rst
-@@ -72,17 +72,6 @@ On-line docs
-         programming. Lots of examples. Currently the new version is being
-         actively maintained at https://github.com/sysprog21/lkmpg.
- 
--    * Title: **Rust for Linux**
--
--      :Author: various
--      :URL: https://rust-for-linux.com/
--      :Date: rolling version
--      :Keywords: glossary, terms, linux-kernel.
--      :Description: From the website: "Rust for Linux is the project adding
--        support for the Rust language to the Linux kernel. This website is
--        intended as a hub of links, documentation and resources related to
--        the project".
--
- Published books
- ---------------
- 
-@@ -220,6 +209,158 @@ Miscellaneous
-         other original research and content related to Linux and software
-         development.
- 
-+Rust
-+----
-+
-+    * Title: **Rust for Linux**
-+
-+      :Author: various
-+      :URL: https://rust-for-linux.com/
-+      :Date: rolling version
-+      :Keywords: glossary, terms, linux-kernel, rust.
-+      :Description: From the website: "Rust for Linux is the project adding
-+        support for the Rust language to the Linux kernel. This website is
-+        intended as a hub of links, documentation and resources related to
-+        the project".
-+
-+    * Title: **Learn Rust the Dangerous Way**
-+
-+      :Author: Cliff L. Biffle
-+      :URL: https://cliffle.com/p/dangerust/
-+      :Date: Accessed Sep 11 2024
-+      :Keywords: rust, blog.
-+      :Description: From the website: "LRtDW is a series of articles
-+        putting Rust features in context for low-level C programmers who
-+        maybe don’t have a formal CS background — the sort of people who
-+        work on firmware, game engines, OS kernels, and the like.
-+        Basically, people like me.". It illustrates line-by-line
-+        conversions from C to Rust.
-+
-+    * Title: **The Rust Book**
-+
-+      :Author: Steve Klabnik and Carol Nichols, with contributions from the
-+        Rust community
-+      :URL: https://doc.rust-lang.org/book/
-+      :Date: Accessed Sep 11 2024
-+      :Keywords: rust, book.
-+      :Description: From the website: "This book fully embraces the
-+        potential of Rust to empower its users. It’s a friendly and
-+        approachable text intended to help you level up not just your
-+        knowledge of Rust, but also your reach and confidence as a
-+        programmer in general. So dive in, get ready to learn—and welcome
-+        to the Rust community!".
-+
-+    * Title: **Rust for the Polyglot Programmer**
-+
-+      :Author: Ian Jackson
-+      :URL: https://www.chiark.greenend.org.uk/~ianmdlvl/rust-polyglot/index.html
-+      :Date: December 2022
-+      :Keywords: rust, blog, tooling.
-+      :Description: From the website: "There are many guides and
-+        introductions to Rust. This one is something different: it is
-+        intended for the experienced programmer who already knows many
-+        other programming languages. I try to be comprehensive enough to be
-+        a starting point for any area of Rust, but to avoid going into too
-+        much detail except where things are not as you might expect. Also
-+        this guide is not entirely free of opinion, including
-+        recommendations of libraries (crates), tooling, etc.".
-+
-+    * Title: **Fasterthanli.me**
-+
-+      :Author: Amos Wenger
-+      :URL: https://fasterthanli.me/
-+      :Date: Accessed Sep 11 2024
-+      :Keywords: rust, blog, news.
-+      :Description: From the website: "I make articles and videos about how
-+        computers work. My content is long-form, didactic and exploratory
-+        — and often an excuse to teach Rust!".
-+
-+    * Title: **Comprehensive Rust**
-+
-+      :Author: Android team at Google
-+      :URL: https://google.github.io/comprehensive-rust/
-+      :Date: Accessed Sep 13 2024
-+      :Keywords: rust, blog.
-+      :Description: From the website: "The course covers the full spectrum
-+        of Rust, from basic syntax to advanced topics like generics and
-+        error handling".
-+
-+    * Title: **The Embedded Rust Book**
-+
-+      :Author: Multiple contributors, mostly Jorge Aparicio
-+      :URL: https://docs.rust-embedded.org/book/
-+      :Date: Accessed Sep 13 2024
-+      :Keywords: rust, blog.
-+      :Description: From the website: "An introductory book about using
-+        the Rust Programming Language on "Bare Metal" embedded systems,
-+        such as Microcontrollers".
-+
-+   * Title: **Experiment: Improving the Rust Book**
-+
-+      :Author: Cognitive Engineering Lab at Brown University
-+      :URL: https://rust-book.cs.brown.edu/
-+      :Date: Accessed Sep 22 2024
-+      :Keywords: rust, blog.
-+      :Description: From the website: "The goal of this experiment is to
-+        evaluate and improve the content of the Rust Book to help people
-+        learn Rust more effectively.".
-+
-+   * Title: **New Rustacean** (podcast)
-+
-+      :Author: Chris Krycho
-+      :URL: https://newrustacean.com/
-+      :Date: Accessed Sep 22 2024
-+      :Keywords: rust, podcast.
-+      :Description: From the website: "This is a podcast about learning
-+        the programming language Rust—from scratch! Apart from this spiffy
-+        landing page, all the site content is built with Rust's own
-+        documentation tools.".
-+
-+   * Title: **Opsem-team** (repository)
-+
-+      :Author: Operational semantics team
-+      :URL: https://github.com/rust-lang/opsem-team/tree/main
-+      :Date: Accessed Sep 22 2024
-+      :Keywords: rust, repository.
-+      :Description: From the README: "The opsem team is the successor of
-+        the unsafe-code-guidelines working group and responsible for
-+        answering many of the difficult questions about the semantics of
-+        unsafe Rust".
-+
-+    * Title: **You Can't Spell Trust Without Rust**
-+
-+      :Author: Alexis Beingessner
-+      :URL: https://repository.library.carleton.ca/downloads/1j92g820w?locale=en
-+      :Date: 2015
-+      :Keywords: rust, master, thesis.
-+      :Description: This thesis focuses on Rust's ownership system, which
-+        ensures memory safety by controlling data manipulation and
-+        lifetime, while also highlighting its limitations and comparing it
-+        to similar systems in Cyclone and C++.
-+
-+    * Name: **Linux Plumbers (LPC) 2024 Rust presentations**
-+
-+      :Title: Rust microconference
-+      :URL: https://lpc.events/event/18/sessions/186/#20240918
-+      :Title: Rust for Linux
-+      :URL: https://lpc.events/event/18/contributions/1912/
-+      :Title: Journey of a C kernel engineer starting a Rust driver project
-+      :URL: https://lpc.events/event/18/contributions/1911/
-+      :Title: Crafting a Linux kernel scheduler that runs in user-space
-+        using Rust
-+      :URL: https://lpc.events/event/18/contributions/1723/
-+      :Title: openHCL: A Linux and Rust based paravisor
-+      :URL: https://lpc.events/event/18/contributions/1956/
-+      :Keywords: rust, lpc, presentations.
-+      :Description: A number of LPC talks related to Rust.
-+
-+    * Name: **The Rustacean Station Podcast**
-+
-+      :URL: https://rustacean-station.org/
-+      :Keywords: rust, podcasts.
-+      :Description: A community project for creating podcast content for
-+        the Rust programming language.
-+
- -------
- 
- This document was originally based on:
-diff --git a/Documentation/rust/index.rst b/Documentation/rust/index.rst
-index 46d35bd395cf..01f09216c229 100644
---- a/Documentation/rust/index.rst
-+++ b/Documentation/rust/index.rst
-@@ -42,6 +42,9 @@ configurations.
-     arch-support
-     testing
- 
-+You can also find learning materials for Rust in its section in
-+:doc:`../process/kernel-docs`.
-+
- .. only::  subproject and html
- 
-    Indices
--- 
-2.43.5
-
+> Alice
