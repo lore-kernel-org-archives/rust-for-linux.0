@@ -1,87 +1,108 @@
-Received: from mail-40134.protonmail.ch (mail-40134.protonmail.ch [185.70.40.134])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83C4E15CB
-	for <rust-for-linux@vger.kernel.org>; Sat, 21 Sep 2024 18:17:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.40.134
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1BDD13D893;
+	Sun, 22 Sep 2024 07:08:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1726942663; cv=none; b=BZPMHqrhNr97Tkf0T+ZjbbugwJsTU5xCF6gmCh2M0J4/nklMxF4DwlfGBomH12vjGIRriijpgDRVtZ7LbYOpBJtWFvrUEt+S666Tb83MPV7qSzoizzwIcXwwsEHe+lQsQGpvrm7Q0YmYSTLo8uy0Boxbu5EXSeTuLZ6BI56axiI=
+	t=1726988923; cv=none; b=XpRZ3FA878aHkXrFryR25b42bbvxI/51CdW+z6VBpiZOnQX2lsY4qEtckHyIVJkc4pbgH7JftJ9Kcz/4507DNoYc+0D86mNthVB7TZOlE9Oavo7LmaucGSGQaRisOsl7W7fv2sjqWR9ePOE7uBYkVItpGedc5Pwc5K0HDT1Jl5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1726942663; c=relaxed/simple;
-	bh=+zZzvpYsjiMLGPjW+Uq4V+hbMBU3iVu6OsOZfpgUfOg=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LBf8UtFrWk7P3zkj4wn6LdhLSJ/C6OEw3cX5WTLuPFQy6y+gUOSs+ZKRsi+nLnYJ0wEQahgA+T4UOxLo1/2g17DXqwDAn9E/HCWGA7zIuno6yYSCUzf5hirVVN3GKZVSXfWyk1tiX8DMlX7htQeNCrtVf16cY/isvvrueLQ7MNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=Sle0wEUI; arc=none smtp.client-ip=185.70.40.134
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	s=arc-20240116; t=1726988923; c=relaxed/simple;
+	bh=Pl7LYO3PH7IY3j9QY3/tjp3FFfGRuEsI3T5Rp9sTW6U=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tW3ahb8nfDI6ifFyK9WE6K+OjqDjVxSPnT7LVzCPXCB+RYCtpHOwfXyE9BgY4Y64TQNgctAf41gQYSqodelvmtS5Nj+4vpb3YarKjI901TpuzmmTiCzlfJ81KEopXwnIUqE4Nb24UkjddB/5CkB/lIvWXfWQRkgeT4b7eJxSdEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ivwm1e57; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="Sle0wEUI"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=haqvyreks5eyvegt2trpidsa5y.protonmail; t=1726942652; x=1727201852;
-	bh=yeK76Bk0BDezi0jZb9h2y9nESrzmMD2f7BNouxUWIFg=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=Sle0wEUIF7CucS0LVwU+8Nc2/n5HUjcQNPy4W68M5Dg5jZnlR6RXr5VWmo+hh6Fr4
-	 Koo6AjXwta5nX6EOMMnaL0feTZ9x7x5Fg1hj7FyBtUKqarrU4kAv/ILhxK3l/n6/Nh
-	 qMuzNh4JGuA6GSqrMvdGXs/aIDJ4E1nwsBgFeftKJaOCTjZCN9xdofseoMT68eBvhH
-	 7xrTn+hrp2KoZzDdgsjEHik1VKyJjLzfxzIDziR4P76v7jufNCut0j6bdYI1ojbxCq
-	 7DCAN/2XFEhVHuW4qSoIOUcJRuAHAnbJWHmdHZeyue8ujDaIet43SE25CUIpoNrjZi
-	 TjNhFK4S4Nm3g==
-Date: Sat, 21 Sep 2024 18:17:28 +0000
-To: Gary Guo <gary@garyguo.net>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Andreas Hindborg <a.hindborg@kernel.org>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Anna-Maria Behnsen <anna-maria@linutronix.de>, Frederic Weisbecker <frederic@kernel.org>, Thomas Gleixner <tglx@linutronix.de>, Boqun Feng <boqun.feng@gmail.com>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v2 03/14] rust: sync: add `Arc::as_ptr`
-Message-ID: <a7d28a22-d782-43cf-8ec0-d239c467ffb3@proton.me>
-In-Reply-To: <20240921165801.1d1df6ab.gary@garyguo.net>
-References: <20240917222739.1298275-1-a.hindborg@kernel.org> <20240917222739.1298275-4-a.hindborg@kernel.org> <e7e42ff2-1543-48b3-9bd3-bdef5ce66348@proton.me> <20240921165801.1d1df6ab.gary@garyguo.net>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: f0092004b425cd41355e93a0052ea668103f1855
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ivwm1e57"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A5E7C4CEC3;
+	Sun, 22 Sep 2024 07:08:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1726988923;
+	bh=Pl7LYO3PH7IY3j9QY3/tjp3FFfGRuEsI3T5Rp9sTW6U=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ivwm1e571wNQdXqM6SOXXlWAWg8UkYarzwFQC5sWGuzkMmdX95fCmpn0YJq60zBHy
+	 PxvhmAjic/dTRGPHGEIyWAOQ68Z7cXvDH/ahPQSwfwHfr4mVBMNFP3DI2AKkR/j6KH
+	 D7ucUtNXJwAWbQsTKeTnWSrXxSJUz0cfOijaLz7+G33K4TlvqaH9+xbBVLtjNvBURK
+	 A7N05XyA7EIVnp2IHIi2VjT6k3m8jUi7eAlEFzEd7AfUp2ZiUXqMS3G4TZOXwZMHjE
+	 jQSQdwE23Sn0ikDmaHeFzTtoPTaMdvX84sO1GwpC5jVJqk5mVjCCuphrUnyUH5DYbU
+	 5UGvBXXsxj61Q==
+Date: Sun, 22 Sep 2024 03:08:41 -0400
+From: Sasha Levin <sashal@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Matthew Wilcox <willy@infradead.org>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Kees Cook <keescook@chromium.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
+	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>,
+	Joel Fernandes <joel@joelfernandes.org>,
+	Carlos Llamas <cmllamas@google.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Arnd Bergmann <arnd@arndb.de>, Trevor Gross <tmgross@umich.edu>,
+	linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org,
+	Christian Brauner <brauner@kernel.org>
+Subject: Re: [PATCH v7 2/4] uaccess: always export _copy_[from|to]_user with
+ CONFIG_RUST
+Message-ID: <Zu_CeRfMKyyt4E5O@sashalap>
+References: <20240528-alice-mm-v7-0-78222c31b8f4@google.com>
+ <20240528-alice-mm-v7-2-78222c31b8f4@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <20240528-alice-mm-v7-2-78222c31b8f4@google.com>
 
-On 21.09.24 17:58, Gary Guo wrote:
-> On Thu, 19 Sep 2024 14:03:50 +0000
-> Benno Lossin <benno.lossin@proton.me> wrote:
->=20
->> On 18.09.24 00:27, Andreas Hindborg wrote:
->>> Add a method to get a pointer to the data contained in an `Arc`.
->>>
->>> Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
->>> ---
->>>  rust/kernel/sync/arc.rs | 8 ++++++++
->>>  1 file changed, 8 insertions(+)
->>>
->>> diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
->>> index 3673496c2363..a57ea3e2b44c 100644
->>> --- a/rust/kernel/sync/arc.rs
->>> +++ b/rust/kernel/sync/arc.rs
->>> @@ -258,6 +258,14 @@ pub fn into_raw(self) -> *const T {
->>>          unsafe { core::ptr::addr_of!((*ptr).data) }
->>>      }
->>>
->>> +    /// Return a raw pointer to the data in this arc.
->>> +    pub fn as_ptr(&self) -> *const T {
->>
->> I don't know if we have a convention for this, but shouldn't this be an
->> associated function? Because if `T` also has an `as_ptr` function, it
->> will be shadowed by this one.
->=20
-> The usual Rust convention is usually that if `Deref` is implemented,
-> then unless there's a good reason to do otherwise, associated function
-> should be used.
+On Tue, May 28, 2024 at 02:58:03PM +0000, Alice Ryhl wrote:
+>From: Arnd Bergmann <arnd@arndb.de>
+>
+>Rust code needs to be able to access _copy_from_user and _copy_to_user
+>so that it can skip the check_copy_size check in cases where the length
+>is known at compile-time, mirroring the logic for when C code will skip
+>check_copy_size. To do this, we ensure that exported versions of these
+>methods are available when CONFIG_RUST is enabled.
+>
+>Alice has verified that this patch passes the CONFIG_TEST_USER_COPY test
+>on x86 using the Android cuttlefish emulator.
 
-We don't do this for `into_raw` (ie it takes `self`), I will open a
-good-first-issue to fix that then.
+Hi folks,
 
----
-Cheers,
-Benno
+I've noticed a build failure using GCC 9.5.0 on arm64 allmodconfig
+builds:
 
+In file included from ./arch/arm64/include/asm/preempt.h:6,
+                  from ./include/linux/preempt.h:79,
+                  from ./include/linux/alloc_tag.h:11,
+                  from ./include/linux/percpu.h:5,
+                  from ./include/linux/context_tracking_state.h:5,
+                  from ./include/linux/hardirq.h:5,
+                  from drivers/net/ethernet/mellanox/mlx4/cq.c:37:
+In function 'check_copy_size',
+     inlined from 'mlx4_init_user_cqes' at ./include/linux/uaccess.h:203:7:
+./include/linux/thread_info.h:244:4: error: call to '__bad_copy_from' declared with attribute error: copy source size is too small
+   244 |    __bad_copy_from();
+       |    ^~~~~~~~~~~~~~~~~
+make[7]: *** [scripts/Makefile.build:244: drivers/net/ethernet/mellanox/mlx4/cq.o] Error 1
+
+I do not have CONFIG_RUST enabled in those builds.
+
+I've bisected the issue (twice!) and bisection points to this patch
+which landed upstream as 1f9a8286bc0c ("uaccess: always export
+_copy_[from|to]_user with CONFIG_RUST").
+
+Reverting said commit on top of Linus's tree fixes the build breakage.
+
+-- 
+Thanks,
+Sasha
