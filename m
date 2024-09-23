@@ -1,91 +1,94 @@
-Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3CBF51C45
-	for <rust-for-linux@vger.kernel.org>; Mon, 23 Sep 2024 09:19:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D04381946D0
+	for <rust-for-linux@vger.kernel.org>; Mon, 23 Sep 2024 09:20:22 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727083161; cv=none; b=a2K//VEDnGlCyY+F9PSEWAAcfqR9qD9YwvV35oxAz9cPcdi9ovIzi3i7nEgTRljFkTepnuWki9obQB7vAfbL0O2QK2JPfVcct5tQwQmUx26OSpMfILYfmKB/A9FnarWsBLJN+BYR0GtI2RH5VpP3O10OVyXQ7r7gezXaSaw+eAs=
+	t=1727083224; cv=none; b=ASuL+SYmUDAGsPntiZCT5qTDW9Owdl274H1JEr3YueHI0xWLqAzYnMAPjvicIw5V4lQhdhqOdR6pQiE216OpMG+UDsxZmseUz0CaYX6yOOz1wyXq2yJZ7QiggQyP8RnKZH7Fch+2xZRrYmTdIJ36kebHy3c1UuMNXI9rfRWzkKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727083161; c=relaxed/simple;
-	bh=B3l/swgMf574HH64zSYfiVu/QiFNrAq4Z16UV6S+QtA=;
+	s=arc-20240116; t=1727083224; c=relaxed/simple;
+	bh=LUJqCBYoA7r6i35cAvMvjpYb006fDJvu//QTM+gRFsk=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=AosoSVmjRECm7vCtUrQNSlWnBOrticjdWdaVEqxaxWInjezmFNP/PQGqzma4uX/uJthcpTZ/aVaao7HOoJd9fSa9foapZtCQTuYaRwCBmy2uQX5t8z/vEkyiNnV1M92rYpjGob/IXudlo0hWZuJuWbn23VNNwOytxUqqtQtIOg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QblQaMIz; arc=none smtp.client-ip=209.85.221.43
+	 To:Cc:Content-Type; b=rluFkb7U6DaW9PjmHhzJukuyHNMpUP+jT3LSXaJ9pG11N3UjTiK9muQaQzGr/yYfKU/MkNdCkf0HtziNbnD6E/IlVKSe2ApXGWTAfTkIB+aABi+cE65Izgnl7bOiGjF6bgQgGAZB7cKzhHuonEX3XTUVNWnTSib5dUv0T1UvfDQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=r7OSHg5/; arc=none smtp.client-ip=209.85.221.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="QblQaMIz"
-Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-374c3400367so3662210f8f.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 23 Sep 2024 02:19:19 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="r7OSHg5/"
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-374d29ad8a7so2731660f8f.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 23 Sep 2024 02:20:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1727083158; x=1727687958; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1727083221; x=1727688021; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=B3l/swgMf574HH64zSYfiVu/QiFNrAq4Z16UV6S+QtA=;
-        b=QblQaMIzanz4vcpxR4tinf4AJ/ZLQh5LqiPgyQFVSjNiF1AH4+SE4103PysS7ew3bt
-         f1XjQY8fFkhDxqYJIpZ9YsdcHe+h6I3JZqZCMM1cqOU5FbAkqgMvl6VCi+AdpD88TS31
-         c31rbGk3vNRET+47HB3asSp0x/HM26Tdlmn9CbRy63x189E2ocm0rlsbSI9DSN65n0Gf
-         JAC7A9t3DDMLLQFlKU0QDNl1APdfvMePrpxH7g6PQb/Nr63UKB/hflB9w5VQL8azfrZl
-         ymBa77BKtbsKPQaLWkw6JOQciI66QTAb+OIDH8iC7ErcseCqOy7/TDNMJsRHuE0ROO2j
-         Y/tA==
+        bh=B5v31aSV/t4R50GVbVslRfoyEWN82f1OJViIijZKvS4=;
+        b=r7OSHg5/C/oy6x8lHlgrc7QrD2CjdEmOhOY+0oewQeehV/eQYz6T73eOHAIA1K66L4
+         hBEAmUXZ7OEo8MUJcy/uMmOl6THZiGLBSTWIpDLqi8n9TlJ/mEJ2+qIwpHEuJzKCALCk
+         Yxtq2BEbI5xmzTCRaeuhObikLJtRusJ8kjPYZlr51Yp+U/us/FtgXKVUoJqXhUnVDZUk
+         VvGaMTIbgtr6w9sjWpOdflvcPVSEqpU8VlhbeotrvgAwD8oRZIUpvyxb/AsRbVzD9d9f
+         i4hICIHgQ0KanuUwyzJ/PKoX92KyXmJjxAfzSuRU8Lod/sROrvhdWFVDiEPZgdCdFsDZ
+         xqoA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727083158; x=1727687958;
+        d=1e100.net; s=20230601; t=1727083221; x=1727688021;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=B3l/swgMf574HH64zSYfiVu/QiFNrAq4Z16UV6S+QtA=;
-        b=YaoVrMnrK635dGuFABC8W2ZIciyv4cLt2DBdr66z4AMWY/+HKRX0exsOx+TXnL+bd+
-         D3eimHFi+WbPFoWf9SCvuDVMc779BE9H3mmxkhP9bEuIAzKndWSTzrPMksK4Rr7Jdhav
-         OwhE1137O6rT0fn1eHR+I6L7XpEeo6qzQSKth6YsDns3zB7Ftx/0jKDqs1tkyQNnXprV
-         sqVz64G7QL7gP+21ZhBj9+OLjgw8Njw27/no0FH37e3TWlnmwKeUKWl9T4fMkIeBzRXY
-         kSi+vif5IBUg3b0PBLN/OvQ2yKOz3TQklxMOsI38+gNcMmlUEfpJwp700Ok/gj2zTjkj
-         eLDw==
-X-Forwarded-Encrypted: i=1; AJvYcCU93HszJhb3DIVthxrKnrCVW/LSGHBHlO3X6jgijeVPqYDLn4JFZpSCzGTBftAoKCbHxK7mQAnsqnBGHWqYoQ==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwFZvdMug0W/zCe0BmOlQ54x4msfGOMVTUU60jkQqIUGfX1VIRo
-	MDTNCzxVNEOIz+8lAB6JNJ4S/qtY9RWjKWpMtxu6GjLNBc8If5xHkXW7rwyCA+HTHFnCVTCj8zT
-	ymtfcHpZNdvgbc1G+EkLMYyc7cSoMK0KQZ61o
-X-Google-Smtp-Source: AGHT+IG8mTC7dZL5MuqZKSFkhdYrDhY5fQw3AdXSlqu/ln2d+nUSR0gl5ejLSmoHcOVCy570O482RNIR3NkEQQXC1dQ=
-X-Received: by 2002:a5d:4144:0:b0:374:c29a:a0d6 with SMTP id
- ffacd0b85a97d-37a422533bemr8151963f8f.2.1727083158117; Mon, 23 Sep 2024
- 02:19:18 -0700 (PDT)
+        bh=B5v31aSV/t4R50GVbVslRfoyEWN82f1OJViIijZKvS4=;
+        b=CNyC1NcJpyS307fThRthBC3POThoFTimy9nl6er339Y78YOxyuvgzA4QtqSfVHZkSi
+         DGWte/vciW8o9jzJqj8sRwbY3Kg+M8dDUcs3PCJv23aB88FTPw4VPLssIwClV4lKX3L5
+         tadF5CKA1HiiFMpAf4DmpdVhSMjx92f+CEK7E4qJ82WOnnzHEbSdsgBj9UyHGh45xp6O
+         iUXS10Scv1DyAJQYJu/RW3outCqz7K30jBQIrjDmu8H3nO/y2QkBY0G/kEiVO2GXor+F
+         AznuhQk26Qk5020QieQcPmo1rWZ62zkKmo6apUmMuJQ7nXMWWRDNvMJIPZQZfYgMeXjq
+         sQYQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVhrhOtM3cxaJcM6iQW0dNwttkpnqUp4fJnbA39lqtc578pjTXaDJQ9J5J3qbcdf77haGU/krYWK0MJ+w2J2g==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzVZvCxz4hqwtOoMFyjPESiNArXXtqMDJi5lfH3C4V4e19SV1W7
+	SkTjYRk3GjSHypuP+66PxMna5k49cXoMW/WlWG5N/zf46Xrs8BkPqtOEM0iorWHSz1BtinmrZFi
+	Ik7l8L4Gckkk6BgjhKR2JdDfl8GYkyCCidXme
+X-Google-Smtp-Source: AGHT+IGchuHW9JDX+p0I4FINfy4vGsmRp0oMKE6SuKZxKhlImyu7vfUQ09lWmPWLgKJNZnJaUmXsVgSh/rP2sguvHGE=
+X-Received: by 2002:a5d:64e1:0:b0:374:c847:83a with SMTP id
+ ffacd0b85a97d-37a422521cdmr8004007f8f.8.1727083220872; Mon, 23 Sep 2024
+ 02:20:20 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240913213041.395655-1-gary@garyguo.net> <20240913213041.395655-6-gary@garyguo.net>
-In-Reply-To: <20240913213041.395655-6-gary@garyguo.net>
+References: <20240913213041.395655-1-gary@garyguo.net> <20240913213041.395655-5-gary@garyguo.net>
+In-Reply-To: <20240913213041.395655-5-gary@garyguo.net>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 23 Sep 2024 11:19:05 +0200
-Message-ID: <CAH5fLgj2_8ej2Xs8rSj1rasYj6S+oQcoh7=+vRnfdZXz71Obxg@mail.gmail.com>
-Subject: Re: [PATCH 5/5] rust: cleanup unnecessary casts
+Date: Mon, 23 Sep 2024 11:20:09 +0200
+Message-ID: <CAH5fLghjBv3zypCSEgsttFFzdgjcztPWC_7wb6V_7C6EMBhHmA@mail.gmail.com>
+Subject: Re: [PATCH 4/5] rust: map `long` to `isize` and `char` to `u8`
 To: Gary Guo <gary@garyguo.net>
-Cc: Brendan Higgins <brendan.higgins@linux.dev>, David Gow <davidgow@google.com>, 
-	Rae Moar <rmoar@google.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+Cc: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
 	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Trevor Gross <tmgross@umich.edu>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, 
-	Michael Vetter <jubalh@iodoru.org>, Finn Behrens <me@kloenk.dev>, 
-	Valentin Obst <kernel@valentinobst.de>, Danilo Krummrich <dakr@redhat.com>, 
-	Yutaro Ohno <yutaro.ono.418@gmail.com>, Wedson Almeida Filho <walmeida@microsoft.com>, 
-	Asahi Lina <lina@asahilina.net>, linux-kselftest@vger.kernel.org, 
-	kunit-dev@googlegroups.com, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+	Trevor Gross <tmgross@umich.edu>, Luis Chamberlain <mcgrof@kernel.org>, 
+	Russ Weight <russ.weight@linux.dev>, Danilo Krummrich <dakr@redhat.com>, 
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Finn Behrens <me@kloenk.dev>, 
+	Valentin Obst <kernel@valentinobst.de>, Wedson Almeida Filho <walmeida@microsoft.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
 On Fri, Sep 13, 2024 at 11:33=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
 >
-> With `long` mapped to `isize`, `size_t`/`__kernel_size_t` mapped to
-> usize and `char` mapped to `u8`, many of the existing casts are no
-> longer necessary.
+> The following FFI types are replaced compared to `core::ffi`:
+>
+> 1. `char` type is now always mapped to `u8`, since kernel uses
+>    `-funsigned-char` on the C code. `core::ffi` maps it to platform
+>    default ABI, which can be either signed or unsigned.
+>
+> 2. `long` is now always mapped to `isize`. It's very common in the
+>    kernel to use `long` to represent a pointer-sized integer, and in
+>    fact `intptr_t` is a typedef of `long` in the kernel. Enforce this
+>    mapping rather than mapping to `i32/i64` depending on platform can
+>    save us a lot of unnecessary casts.
 >
 > Signed-off-by: Gary Guo <gary@garyguo.net>
-
-This is great!
 
 Reviewed-by: Alice Ryhl <aliceryhl@google.com>
