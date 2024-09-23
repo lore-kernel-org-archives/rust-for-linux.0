@@ -1,238 +1,116 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f48.google.com (mail-wr1-f48.google.com [209.85.221.48])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 134D147772;
-	Mon, 23 Sep 2024 07:57:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1B841885A4
+	for <rust-for-linux@vger.kernel.org>; Mon, 23 Sep 2024 08:14:35 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.48
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727078239; cv=none; b=VCUg8lsoO1WCzDkEnAPYACidQE5gaqE7dMNsEKPIc9s3STFCk5FeTpmjEs//zBLEgioz1UCFWn4T3Kk/a2qRlTzbXQP3jhSC3pvLmXohW4dP+vfI+GCVqMnyAntsO/WJwfMq+cbe8vmBBMYFHTOCljl0gaELpI2lOFrvC0Kqt3g=
+	t=1727079277; cv=none; b=hggPGqSMRZ3qS1WaN+gwGn4bz63oi7HeIb1ZsLco8eEW+JM1V03DfaxibZsBaGDhcGmhOTBwJoRrCO5loYGy5rnV+snBu/tllE8B+vCLirRH+uBeKK2gjTZIIp9PlganvDD6RmswQRdjyzKUEh03owltzAIjH55Llx+cOnvRs0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727078239; c=relaxed/simple;
-	bh=TWkMdFBTmQmqmpC+xZ/pwB45UvOXbJoKSGnpNu/GFSM=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IML/M4b/EyCEgSVnOITXYnHFFlvUM0upEEvwaovlolRV9DDd8SHN4DrhAuNxU8oIUXCi+sEQOEhxXqPtejsQF+T5EcWxBDe3NcGwPUMYFWVd5Ck6TPshvFvPl68WJlEhsasu0Nf3N5bZ/q7lwdah3yoHdNAGsO35OkzjcIydPQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YTPTb9+j; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1727079277; c=relaxed/simple;
+	bh=o9RYAZ+ihKi/qnu3t8fCvW1gHNpjjOjwY4lKAZHoHaE=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=q2uxZFS7H155EdN2KWhAoYWQisEepok3VesL93l3Fa/l+2ypOlSUxKARZy6xzpFt1aLBxc2+5842Sj9A0hwk3xMsEZKQ6ZXcOY+zhDWW0mhoX0Bjpl08ICPVG0by+z5OcOGT105qpQ/cwDDau3vdPo1+nrBJs6MEl5QXWpJBXHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=19t8NNHK; arc=none smtp.client-ip=209.85.221.48
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YTPTb9+j"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41952C4CECE;
-	Mon, 23 Sep 2024 07:57:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727078238;
-	bh=TWkMdFBTmQmqmpC+xZ/pwB45UvOXbJoKSGnpNu/GFSM=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YTPTb9+jxBilMY8haTRI1bORDb8Vh7bjneQOb1eNaKcr5uHJyV75WZtqhwX/Q98Xr
-	 jz8r5Ys+2gIJMjFPFeMl9pGMkqEIcSQtMOvIxiJVbXAEEJSmlXkd/utqFoO+8+B+B3
-	 BIOBnVVRKPYxS+ctVP7ZnHFDqZrrhAaoBE8Olndp84ZMyaD1NdZft66XZn5dyAPWZc
-	 BXuOBYUX2BEjx+xd+bkU4jST8PrUZqG5jmglLdSfqzY9rZNGjPUygD33afhGyv2Ejp
-	 JsSUBBY6iQX9ISTkI2ZF8sXUlB2OzHt6dC6MXwvi5OrPs7RARbRqiL4S4KSXADEVGJ
-	 o9N6hW+VTtRew==
-From: Masahiro Yamada <masahiroy@kernel.org>
-To: linux-kbuild@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org,
-	Andrea della Porta <andrea.porta@suse.com>,
-	linux-clk@vger.kernel.org,
-	Stephen Boyd <sboyd@kernel.org>,
-	Brendan Higgins <brendanhiggins@google.com>,
-	Rob Herring <robh@kernel.org>,
-	devicetree@vger.kernel.org,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	Miguel Ojeda <ojeda@kernel.org>,
-	Nathan Chancellor <nathan@kernel.org>,
-	Nicolas Schier <nicolas@fjasle.eu>,
-	Saravana Kannan <saravanak@google.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	rust-for-linux@vger.kernel.org
-Subject: [PATCH v3 2/2] kbuild: add generic support for built-in boot DTBs
-Date: Mon, 23 Sep 2024 16:56:03 +0900
-Message-ID: <20240923075704.3567313-2-masahiroy@kernel.org>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20240923075704.3567313-1-masahiroy@kernel.org>
-References: <20240923075704.3567313-1-masahiroy@kernel.org>
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="19t8NNHK"
+Received: by mail-wr1-f48.google.com with SMTP id ffacd0b85a97d-374cacf18b1so2440621f8f.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 23 Sep 2024 01:14:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1727079274; x=1727684074; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=qhm6VDUyFbk0AMF8tTtB6iaMTp7O9/A12f5FRSU8wmY=;
+        b=19t8NNHKU7P3mcepq7lVhdUhszBdWl/8KCs3Z1q5ibOSnHiD467Pa1Zrc4ZIdcIQrg
+         Two8PjeUnXJYimTqPf9yhWkigzxDVjELdrlbTWZjC6JroYY+iswI4LIC8Oke6EVzqadM
+         8nKx1252s0Jp/lL2h9qZVA/igqq+wKGfw7EdE4pmXuAxqfJbipEUEI4AWsPg5M/CWz+0
+         kxouq+YNh6UfwLpBAsaBO0tt3udrXCkR0T5YT0bRYtBQNAi3ag0TwWlmMRJBlYUx4tax
+         vhkSYtpO0/ReJBphhecoaOYuX+e2IT1BMawZITYJuUnNRiWDf+xqb9/M3+nxFGpe55V3
+         t0ng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727079274; x=1727684074;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=qhm6VDUyFbk0AMF8tTtB6iaMTp7O9/A12f5FRSU8wmY=;
+        b=FP8VGdsIihYsqlNrXK0LEBPciXNhpQY81lGL+Ds8rtBjwlQwP59k+deaa3j33sdwHP
+         MfMq7HVdwBeTFBZ0LOZoQmpl/MMEYSG49jyWyMKwlA6PNUYxk2/R4/6Nlyvfa6L31pG+
+         jwG0aU929I3Xh8+xbyFZ5GLNeLwvGMb9gylrEQLCmkDiMkbaIuGfRaa3w8XQ00MApqTX
+         YV2be63aGIKXMdXykNoc0gTl5WShqK0lTyP8sbrQ/niLiizGY28O6yioNZNFu2xOxl4L
+         vKCCuK8j8IkhqoHNhkBT9lcPlzmlsMmqX6gAnJHtIOLW1KzBPkWKInRsYu/kW52YXgnx
+         Zfug==
+X-Forwarded-Encrypted: i=1; AJvYcCWqF41QxHAqEq6Gcb0DTgN7W3ru/Z+oLfUR1XJCtpcNO5QMJVR1zeVXHOXtb+OTaNMlf+UtycvIMohkSKCQ2Q==@vger.kernel.org
+X-Gm-Message-State: AOJu0YzxNlUXP+XlhHt8oyGn9wcDUshMflfoYtuyOhBBRrO4EXYZ0WG1
+	n3xth3CzRXli0W9zPRf6SZv1xFLPsy6WliOhyqoD0OMY7TsFw6nnTagRLTf9bIHeWPsMQByit6E
+	7SS2F+oazgA+rPHB/0uOXi6eU+P6V4dV1Rg1n
+X-Google-Smtp-Source: AGHT+IGaGz3aAPtcpdOxV3K/A6xg/czFRCBlIbwHkW2YwCfRu8a/ULBRxzRicaQamRV5tPXenSsxkSmgE7i4TKwB1/0=
+X-Received: by 2002:a05:6000:1f81:b0:374:c9aa:f24d with SMTP id
+ ffacd0b85a97d-37a431bc6famr6549449f8f.59.1727079273754; Mon, 23 Sep 2024
+ 01:14:33 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20240917222739.1298275-1-a.hindborg@kernel.org>
+ <20240917222739.1298275-4-a.hindborg@kernel.org> <e7e42ff2-1543-48b3-9bd3-bdef5ce66348@proton.me>
+ <20240921165801.1d1df6ab.gary@garyguo.net>
+In-Reply-To: <20240921165801.1d1df6ab.gary@garyguo.net>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Mon, 23 Sep 2024 10:14:22 +0200
+Message-ID: <CAH5fLggudKg0x5jjOHxdSq4-m8x=OE7WM+uCtTCJKzG8rm37dg@mail.gmail.com>
+Subject: Re: [PATCH v2 03/14] rust: sync: add `Arc::as_ptr`
+To: Gary Guo <gary@garyguo.net>
+Cc: Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Anna-Maria Behnsen <anna-maria@linutronix.de>, Frederic Weisbecker <frederic@kernel.org>, 
+	Thomas Gleixner <tglx@linutronix.de>, Boqun Feng <boqun.feng@gmail.com>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Some architectures embed boot DTBs in vmlinux. A potential issue for
-these architectures is a race condition during parallel builds because
-Kbuild descends into arch/*/boot/dts/ twice.
+On Sat, Sep 21, 2024 at 5:58=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
+>
+> On Thu, 19 Sep 2024 14:03:50 +0000
+> Benno Lossin <benno.lossin@proton.me> wrote:
+>
+> > On 18.09.24 00:27, Andreas Hindborg wrote:
+> > > Add a method to get a pointer to the data contained in an `Arc`.
+> > >
+> > > Signed-off-by: Andreas Hindborg <a.hindborg@kernel.org>
+> > > ---
+> > >  rust/kernel/sync/arc.rs | 8 ++++++++
+> > >  1 file changed, 8 insertions(+)
+> > >
+> > > diff --git a/rust/kernel/sync/arc.rs b/rust/kernel/sync/arc.rs
+> > > index 3673496c2363..a57ea3e2b44c 100644
+> > > --- a/rust/kernel/sync/arc.rs
+> > > +++ b/rust/kernel/sync/arc.rs
+> > > @@ -258,6 +258,14 @@ pub fn into_raw(self) -> *const T {
+> > >          unsafe { core::ptr::addr_of!((*ptr).data) }
+> > >      }
+> > >
+> > > +    /// Return a raw pointer to the data in this arc.
+> > > +    pub fn as_ptr(&self) -> *const T {
+> >
+> > I don't know if we have a convention for this, but shouldn't this be an
+> > associated function? Because if `T` also has an `as_ptr` function, it
+> > will be shadowed by this one.
+>
+> The usual Rust convention is usually that if `Deref` is implemented,
+> then unless there's a good reason to do otherwise, associated function
+> should be used.
 
-One build thread is initiated by the 'dtbs' target, which is a
-prerequisite of the 'all' target in the top-level Makefile:
+The reason for this convention is that adding new &self methods on a
+smart pointer is a breaking change, but we don't care about breaking
+changes, so it doesn't fully apply to us.
 
-  ifdef CONFIG_OF_EARLY_FLATTREE
-  all: dtbs
-  endif
+Not that we shouldn't follow the convention, but it's not completely
+clear to me either.
 
-For architectures that support the built-in boot dtb, arch/*/boot/dts/
-is visited also during the ordinary directory traversal in order to
-build obj-y objects that wrap DTBs.
-
-Since these build threads are unaware of each other, they can run
-simultaneously during parallel builds.
-
-This commit introduces a generic build rule to scripts/Makefile.vmlinux
-to support embedded boot DTBs in a race-free way. Architectures that
-want to use this rule need to select CONFIG_GENERIC_BUILTIN_DTB.
-
-After the migration, Makefiles under arch/*/boot/dts/ will be visited
-only once to build only *.dtb files.
-
-This change also aims to unify the CONFIG options used for built-in DTBs
-support. Currently, different architectures use different CONFIG options
-for the same purposes.
-
-With this commit, the CONFIG options will be unified as follows:
-
- - CONFIG_GENERIC_BUILTIN_DTB
-
-   This enables the generic rule for built-in boot DTBs. This will be
-   renamed to CONFIG_BUILTIN_DTB after all architectures migrate to the
-   generic rule.
-
- - CONFIG_BUILTIN_DTB_NAME
-
-   This specifies the path to the embedded DTB.
-   (relative to arch/*/boot/dts/)
-
- - CONFIG_BUILTIN_DTB_ALL
-
-   If this is enabled, all DTB files compiled under arch/*/boot/dts/ are
-   embedded into vmlinux. Only used by MIPS.
-
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
----
-
-(no changes since v1)
-
- Makefile                 |  7 ++++++-
- drivers/of/Kconfig       |  6 ++++++
- scripts/Makefile.vmlinux | 44 ++++++++++++++++++++++++++++++++++++++++
- scripts/link-vmlinux.sh  |  4 ++++
- 4 files changed, 60 insertions(+), 1 deletion(-)
-
-diff --git a/Makefile b/Makefile
-index 0d3d45a88a71..35b8392d2bef 100644
---- a/Makefile
-+++ b/Makefile
-@@ -1413,6 +1413,10 @@ ifdef CONFIG_OF_EARLY_FLATTREE
- all: dtbs
- endif
- 
-+ifdef CONFIG_GENERIC_BUILTIN_DTB
-+vmlinux: dtbs
-+endif
-+
- endif
- 
- PHONY += scripts_dtc
-@@ -1480,7 +1484,8 @@ CLEAN_FILES += vmlinux.symvers modules-only.symvers \
- 	       modules.builtin modules.builtin.modinfo modules.nsdeps \
- 	       modules.builtin.ranges vmlinux.o.map \
- 	       compile_commands.json rust/test \
--	       rust-project.json .vmlinux.objs .vmlinux.export.c
-+	       rust-project.json .vmlinux.objs .vmlinux.export.c \
-+               .builtin-dtbs-list .builtin-dtb.S
- 
- # Directories & files removed with 'make mrproper'
- MRPROPER_FILES += include/config include/generated          \
-diff --git a/drivers/of/Kconfig b/drivers/of/Kconfig
-index dd726c7056bf..5142e7d7fef8 100644
---- a/drivers/of/Kconfig
-+++ b/drivers/of/Kconfig
-@@ -2,6 +2,12 @@
- config DTC
- 	bool
- 
-+config GENERIC_BUILTIN_DTB
-+	bool
-+
-+config BUILTIN_DTB_ALL
-+	bool
-+
- menuconfig OF
- 	bool "Device Tree and Open Firmware support"
- 	help
-diff --git a/scripts/Makefile.vmlinux b/scripts/Makefile.vmlinux
-index 1284f05555b9..9ef0480ed755 100644
---- a/scripts/Makefile.vmlinux
-+++ b/scripts/Makefile.vmlinux
-@@ -17,6 +17,50 @@ quiet_cmd_cc_o_c = CC      $@
- %.o: %.c FORCE
- 	$(call if_changed_dep,cc_o_c)
- 
-+quiet_cmd_as_o_S = AS      $@
-+      cmd_as_o_S = $(CC) $(a_flags) -c -o $@ $<
-+
-+%.o: %.S FORCE
-+	$(call if_changed_dep,as_o_S)
-+
-+# Built-in dtb
-+# ---------------------------------------------------------------------------
-+
-+quiet_cmd_wrap_dtbs = WRAP    $@
-+      cmd_wrap_dtbs = {							\
-+	echo '\#include <asm-generic/vmlinux.lds.h>';			\
-+	echo '.section .dtb.init.rodata,"a"';				\
-+	while read dtb; do						\
-+		symbase=__dtb_$$(basename -s .dtb "$${dtb}" | tr - _);	\
-+		echo '.balign STRUCT_ALIGNMENT';			\
-+		echo ".global $${symbase}_begin";			\
-+		echo "$${symbase}_begin:";				\
-+		echo '.incbin "'$$dtb'" ';				\
-+		echo ".global $${symbase}_end";				\
-+		echo "$${symbase}_end:";				\
-+	done < $<;							\
-+	} > $@
-+
-+.builtin-dtbs.S: .builtin-dtbs-list FORCE
-+	$(call if_changed,wrap_dtbs)
-+
-+quiet_cmd_gen_dtbs_list = GEN     $@
-+      cmd_gen_dtbs_list = \
-+	$(if $(CONFIG_BUILTIN_DTB_NAME), echo "arch/$(SRCARCH)/boot/dts/$(CONFIG_BUILTIN_DTB_NAME).dtb",:) > $@
-+
-+.builtin-dtbs-list: arch/$(SRCARCH)/boot/dts/dtbs-list FORCE
-+	$(call if_changed,$(if $(CONFIG_BUILTIN_DTB_ALL),copy,gen_dtbs_list))
-+
-+targets += .builtin-dtbs-list
-+
-+ifdef CONFIG_GENERIC_BUILTIN_DTB
-+targets += .builtin-dtbs.S .builtin-dtbs.o
-+vmlinux: .builtin-dtbs.o
-+endif
-+
-+# vmlinux
-+# ---------------------------------------------------------------------------
-+
- ifdef CONFIG_MODULES
- targets += .vmlinux.export.o
- vmlinux: .vmlinux.export.o
-diff --git a/scripts/link-vmlinux.sh b/scripts/link-vmlinux.sh
-index c27b4e969f20..bd196944e350 100755
---- a/scripts/link-vmlinux.sh
-+++ b/scripts/link-vmlinux.sh
-@@ -68,6 +68,10 @@ vmlinux_link()
- 		libs="${KBUILD_VMLINUX_LIBS}"
- 	fi
- 
-+	if is_enabled CONFIG_GENERIC_BUILTIN_DTB; then
-+		objs="${objs} .builtin-dtbs.o"
-+	fi
-+
- 	if is_enabled CONFIG_MODULES; then
- 		objs="${objs} .vmlinux.export.o"
- 	fi
--- 
-2.43.0
-
+Alice
