@@ -1,207 +1,264 @@
-Received: from CWXP265CU009.outbound.protection.outlook.com (mail-ukwestazon11021097.outbound.protection.outlook.com [52.101.100.97])
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.17])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C236719D067;
-	Mon, 23 Sep 2024 16:13:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.100.97
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727108004; cv=fail; b=nCA4mGG9cRPwbOw2tPJjbKfQP4XlXnSih50x2ykzV5RGqHqIA8ocKNUG1WmLWMhhiGxYY8XLn2T+ROOCWeNLqHM29Sn2nJZIZVQ/Cx4R0tw7ph7hq8Aqx3340MxhteoIWNVsLAUek+qzSxgxcIgc3TWSQVEd9goyb0bu+nBC1vE=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727108004; c=relaxed/simple;
-	bh=IALWHVg2vW19nFblKWei1Kh4o+LsQ38Pd1xxBnYJ60s=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=TesDUY/JI7a/H8ogLxOGFrncFgQKiurN7dy34fpouTBhuwdPyX1goL8rZRQ7wlbkpxc/7IVg58JG3yi7L7A6fdy6jn8BS+1uCcQXP5gSq26nUYZy1cfBXVi8YjR/cwZXpuBAN9QgDxFEdBeg/F4KlvOWJLCh/CiEcTztcIcJ8vQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net; spf=pass smtp.mailfrom=garyguo.net; dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b=IFIsbU56; arc=fail smtp.client-ip=52.101.100.97
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=garyguo.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=garyguo.net
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFB1E14A8B;
+	Mon, 23 Sep 2024 16:29:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.17
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1727108979; cv=none; b=eL/wubt5ZkwB6EM7vb88+Aa7RSjY/avJ6JR74Q5vtV/ga2A7B0iyJdNg4H/fjvViCbQfGq5P5sRUowedcNQmWEL1gf6da79kElUaOaKsxJI8K0wQgTex2Oz9RfZzexFvXYFFrfgUeUtzly1BzCNsBf98s2STjFT/+cxFsFaJ008=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1727108979; c=relaxed/simple;
+	bh=lvl/tpp3D2iigerhPqJlAeR64cN3GRVe7gUUIkF0zyQ=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tgNXfdNIwc7s+YkH7mr2Yp6ss8+T7vzMQQe+Bcc55q48XRnJo1yK8Z1Ra7kVRhEdqqZMLquk9/bjHsOeFvuRVGuzRTfPYURlmQFDDSbBr55+tmukH0GUA/14NV8sp/ounC6hsnZ899HVcrwb7VcSca2tGn4IQ6tmJdjB4gEs/Sw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=U+702F4G; arc=none smtp.client-ip=198.175.65.17
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=garyguo.net header.i=@garyguo.net header.b="IFIsbU56"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=gGHfOJIDKSDs5evGu6mrZ6ZSOzMS3w9FbKzrtdTkP+wH6+XON9nxwwMK7UV2q6qpaBq3ePJaKarGsNfrQ2DSFpRZdMMOaZFZQrgR3A6QSsp+5M/6bFwllhEKvdpasb9Qb24PjeuuCcdnNCE/ZWNU/dLKykCigzdC5VqmDtKJIoCGnMe7IK5bmvyYgH9mDH4unpONbI/+IF4x9vUX6f5kdbikC0s+MLNwGkedHttpP3Y1+rxDFW9mSmq/70vafxnFccqBW+MH37rpZ0VLfZetuwhnTBLCgvxWs/zvBbFahhgCw2763dtpyH2pRKru6u06c8lHcSmaBRXeOE/9DDl+8Q==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=2TRn1Yq6L9nY52paGBhWSdK3+M4ww1kSDlc8abb174w=;
- b=F50aExVOHa6mVUsdcl2xIqEi4TMzSjrVD62V9mQYH/4IYLeyHczsKT/2iu3pEznQmucCvyU68z6KDU6ywa5Mcm1ws0+9ZzKMfDjvPj+5yb8LXKzOdv3Zwv2BadhuzzDwd6qurxllB6nye0D2DnCFQrzV8BLjQjX6UlWug/0kBFISfZajgB3ULVm9CydHc5sm5a+tNj5bFLnwd40ne9VAGnPRsmVsnuzjtOmF10VqxOIn2xat3lamgI//KRVJC7E7dS357vvZABzqxNrFrvnaEpvN/QB7N5CLiOP0lRYLT8vKV5eWowdW4TzVNfDL5nVw4eLzkFZYZDn4T+wMM79xbA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=garyguo.net; dmarc=pass action=none header.from=garyguo.net;
- dkim=pass header.d=garyguo.net; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=garyguo.net;
- s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=2TRn1Yq6L9nY52paGBhWSdK3+M4ww1kSDlc8abb174w=;
- b=IFIsbU56j3BmsPSBpSNorjPIrSaYpg5xOGXs3lRc8HpAP/68zybHA3soJ0KRaKp3XsGpYukO8cuY0h4j4MvGZJ09QuBDyM1L4puFucVh33CmseFvHKpG5D7aAklidxeRcwrvHxiYKZnayeZ0g7efL090jAa6bAKgo8w27evFgog=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=garyguo.net;
-Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:253::10)
- by LO0P265MB5525.GBRP265.PROD.OUTLOOK.COM (2603:10a6:600:274::10) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7982.25; Mon, 23 Sep
- 2024 16:13:19 +0000
-Received: from LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1818:a2bf:38a7:a1e7]) by LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- ([fe80::1818:a2bf:38a7:a1e7%3]) with mapi id 15.20.7982.022; Mon, 23 Sep 2024
- 16:13:19 +0000
-Date: Mon, 23 Sep 2024 17:13:15 +0100
-From: Gary Guo <gary@garyguo.net>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Danilo Krummrich <dakr@kernel.org>, ojeda@kernel.org,
- alex.gaynor@gmail.com, wedsonaf@gmail.com, boqun.feng@gmail.com,
- bjorn3_gh@protonmail.com, benno.lossin@proton.me, a.hindborg@samsung.com,
- akpm@linux-foundation.org, daniel.almeida@collabora.com,
- faith.ekstrand@collabora.com, boris.brezillon@collabora.com,
- lina@asahilina.net, mcanal@igalia.com, zhiw@nvidia.com, cjia@nvidia.com,
- jhubbard@nvidia.com, airlied@redhat.com, ajanulgu@redhat.com,
- lyude@redhat.com, linux-kernel@vger.kernel.org,
- rust-for-linux@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [RFC PATCH] rust: alloc: pass `old_layout` to `Allocator`
-Message-ID: <20240923171315.64327fe7.gary@garyguo.net>
-In-Reply-To: <CAH5fLgievsJOe7QET+Wh2c0upygv-nhSnOuTN8K_QkruLwOPgA@mail.gmail.com>
-References: <20240911225449.152928-2-dakr@kernel.org>
-	<20240921153315.70860-1-dakr@kernel.org>
-	<CAH5fLgievsJOe7QET+Wh2c0upygv-nhSnOuTN8K_QkruLwOPgA@mail.gmail.com>
-X-Mailer: Claws Mail 4.2.0 (GTK 3.24.43; x86_64-pc-linux-gnu)
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-ClientProxiedBy: PA7P264CA0255.FRAP264.PROD.OUTLOOK.COM
- (2603:10a6:102:371::11) To LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
- (2603:10a6:600:253::10)
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="U+702F4G"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1727108978; x=1758644978;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=lvl/tpp3D2iigerhPqJlAeR64cN3GRVe7gUUIkF0zyQ=;
+  b=U+702F4GwtZoEwes7p9m605q6fbG5cK6IntV+L2z0qmN20C3c7vV1ZJD
+   BdKUif26jAFayddMjhw+WoF07ks64qkz8/UL+TQsUb/PXB71ssGSn47Ws
+   J5ezz0xHaQK/Jzl+r91y+AbK1YI5ClWh3e+ZPUkUkl6bfaFvq8xBRci+2
+   a24/q7WMQ5hrfWNE2j07Y5q07aCroigXefQwmZVy0PJY0U+XcPH6UXAtO
+   l1hcqMPIpAsvoEGNTx5RHPIyoxDGGzHGhwa/YhIrkWqBzJaAcDkZGfQ4s
+   Q7X0TBeaX3RdVmBxBfYNhuXqURKRHntzqlQg+JOntXXnlUFo2wsgF6Vx2
+   A==;
+X-CSE-ConnectionGUID: tgAbKqw5RG+bybNoV41Q1Q==
+X-CSE-MsgGUID: NIN7HEWxRMaPDEVQJQUnKQ==
+X-IronPort-AV: E=McAfee;i="6700,10204,11204"; a="26222978"
+X-IronPort-AV: E=Sophos;i="6.10,251,1719903600"; 
+   d="scan'208";a="26222978"
+Received: from orviesa004.jf.intel.com ([10.64.159.144])
+  by orvoesa109.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Sep 2024 09:29:37 -0700
+X-CSE-ConnectionGUID: /JOl0swhT9GGULE0YxRVpw==
+X-CSE-MsgGUID: GD5dfzzrQGSjs2Y1gpF1kg==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.10,251,1719903600"; 
+   d="scan'208";a="76047545"
+Received: from lkp-server01.sh.intel.com (HELO 53e96f405c61) ([10.239.97.150])
+  by orviesa004.jf.intel.com with ESMTP; 23 Sep 2024 09:29:35 -0700
+Received: from kbuild by 53e96f405c61 with local (Exim 4.96)
+	(envelope-from <lkp@intel.com>)
+	id 1sslwK-000HP2-0C;
+	Mon, 23 Sep 2024 16:29:32 +0000
+Date: Tue, 24 Sep 2024 00:28:56 +0800
+From: kernel test robot <lkp@intel.com>
+To: Alice Ryhl <aliceryhl@google.com>, Matthew Wilcox <willy@infradead.org>,
+	Jonathan Corbet <corbet@lwn.net>
+Cc: oe-kbuild-all@lists.linux.dev, linux-fsdevel@vger.kernel.org,
+	linux-doc@vger.kernel.org, linux-kernel@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, Alice Ryhl <aliceryhl@google.com>
+Subject: Re: [PATCH] xarray: rename xa_lock/xa_unlock to xa_enter/xa_leave
+Message-ID: <202409240026.7kkshSxM-lkp@intel.com>
+References: <20240923-xa_enter_leave-v1-1-6ff365e8520a@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: LO2P265MB5183:EE_|LO0P265MB5525:EE_
-X-MS-Office365-Filtering-Correlation-Id: 06c802d0-3f00-440d-1e1c-08dcdbeaa385
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|10070799003|376014|7416014|1800799024|366016;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?Q1hEeGpTY3BQTnJta09iYUhjdG5TQkVOeTJhUy82RmhUVmJQTG12UUJWbDZs?=
- =?utf-8?B?aFRMN0Fkb1c0Sytzbk5Fa3hkRURhMXFMVFJoM2VxamwyVmdVbW0vR1pOMzYw?=
- =?utf-8?B?aDFIWjNHWks3bTl4N0lYU09QREI1SzNabWxlaDFPOWZLVFluOElBeHYrc1RZ?=
- =?utf-8?B?YTR0YW5IdGJ2ZkE4S3NvQW8vNkZNQ29rWVJ3MnByMlNZYmJ6YmZtZTdUM3Nt?=
- =?utf-8?B?NmZGa3lSRi9LTW53VXVGR1ZGMVB0aVIyMmJmTW1HQXhBMEFMdncwdHNRT3Za?=
- =?utf-8?B?ZWI5eElNQW1qR2N2Nm5CYUFieExxR0xNcEhNek9IL0xWU2hlVjV6b01NRUV2?=
- =?utf-8?B?aFhIS095MFBvSExWak5lTURYQ2NNeEt5dUJQaEdwbHdWa1hVNnFkTnFBbnN4?=
- =?utf-8?B?S0FHVkpBd0FwU0k3WE0xUUU4dno0MS9ZYnEwUTBzUDNTWFNLaktrRnlGY0Fl?=
- =?utf-8?B?cEVFc000RGYvRGo4MWJ2eDJwckxZSHFQOHpFVnIzd09SR2NLMkFYN1JUc0Ez?=
- =?utf-8?B?NE1qRjBINUcxRUlTQmlaMENUSTNmT0xGWTRjS1U0SzJhNDZlaDhiU1c3L2Qv?=
- =?utf-8?B?cElGQTM1SlN1bUROTEdrMitQSWpCZm9UL0RINVZCWUxBTnlmbUZUZncrRURr?=
- =?utf-8?B?MmViMHZjVS9jTDVZSnVDekE3S2lHbjY5a2ErZDFiV2RwUndEUmdHOGsvTUtX?=
- =?utf-8?B?TjRKSEhFQy9pNk41NGNTK3V4bkRtNDlmZEhLT3Q2S2k0VDljOUJJYTZydmNx?=
- =?utf-8?B?V3RXNk5FMEJqaDF5aG9UdElqZ3I0dmdVYXIvd0RGS3JGWDJXQjFocnN3b0xa?=
- =?utf-8?B?WHFQN1ZBRmJRVVY0dkp2b1g0YmZMd2RycTczNkVFc09SU1F5TEFuNzZTT2pG?=
- =?utf-8?B?aW9VaWVmejUyYVoyMHJvdWlpQkxVdVVFb1BjYkxvcUJDRU9oYmh5YWZZRGlF?=
- =?utf-8?B?bG5EcGhYYzBrbSt6SVJHeEQ2OXZxamdIZStzanhSaVNEK3pESXcyZmlhd1N6?=
- =?utf-8?B?S1lNZzJaWlhTRkNVMi9UcGJKbnBTTjJFdGJDbUZCOS9MTGRZMGJHNHhTaVE4?=
- =?utf-8?B?cVFWdCs2WklWSHJwbjl4bHhHalczTVRxUW1KNzhteW13d3JwRmVoVlJzTlV6?=
- =?utf-8?B?bit6MldWQ2ZudjgrMmRURHZGSlFUVGRDeE00ZGNTaHdreHdhRHVkWkk0MVhR?=
- =?utf-8?B?WDkyRC9jZEt3UHpHOE5PZndyS0RZY0JOd2hocHhQSjRmeCtEaTBnZmdrVCtr?=
- =?utf-8?B?M0F3a2dsQlIyZTloMlVHRmdnU3lWeE9EQjhnSzdlR3lJWm5wQ2JBeXZDemZN?=
- =?utf-8?B?cWhDWjZDZnV0NW54WUNXVnZJZk1Ibmh1Z0dsdkVPYVVuWW1wK2wybGNlWEVl?=
- =?utf-8?B?dVVhNmc4VGxobzFvb2xoUitQTDVNSTJsT291akwrZTAreGlzUXZaU2FGcFRu?=
- =?utf-8?B?UEo2SmhHU1p2enIvU0hNVDdINFZpNW1rcURUcVZudEFhbThjQUNjUStPTmpx?=
- =?utf-8?B?VFN1SXRSR2ljT1NxTDNzc0RqcFdabmxlL0oxTmg5dHovaEh4NFYvTEFiVDV3?=
- =?utf-8?B?UUhFaUdDSjZyQUI5ZTNTamtYc1U3MThuSHEvYStTTHZYYzJSelV4SHFHTURW?=
- =?utf-8?B?RmNaMk1QV2pLcE4wcTNvelBscjVjcVdjN2E5OVlEWndJSFFjeE9sY05JcnUx?=
- =?utf-8?B?dUF1eXROYWxlaFpydVV4OUZwdXJyYzlGRldLMGVYaGxHWTZMbDM1UXJRPT0=?=
-X-Forefront-Antispam-Report:
-	CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM;PTR:;CAT:NONE;SFS:(13230040)(10070799003)(376014)(7416014)(1800799024)(366016);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0:
-	=?utf-8?B?WHhmMlpSTE5NSlZybUl6YjViSENpWFJ4dTZOZkVxbGFZeS82ck9ZdlM0N2NI?=
- =?utf-8?B?V1dYOGt2S1VPcGpoM3VnOVBjblJqN1RhcjliUXJsVTlvZVgwZmJGdVpGTkw3?=
- =?utf-8?B?bTYrYzI5dW5BTUJwUUMyYnYvbCt0cnFYOFJZUEoydTlNdmt0TU1zWEk3VWU4?=
- =?utf-8?B?UTVzZHR6cmVwTEZ1WTBDRm1DZGpZb3hSUCt5QWtLU05OMUNoN0pSc085d3VR?=
- =?utf-8?B?TWFEMEswcHZBZGlYVzl5UEVYMjU5R0hMZkxRV3FwSCtDUnFScmtmL0w2ZWRx?=
- =?utf-8?B?ZjRtNVh2bVdsVkVQWnRpSm5OOG1IZUdJVkl1SWFFR1ltWmY5MVBCaVJMTTQv?=
- =?utf-8?B?WnViUVRZUVFUZnNSTUh6eWdmTWVObzIvMUxhcTRtWGxoYXlsTTllY0pkVUVZ?=
- =?utf-8?B?VzBlY2pEa3JpdUovblp2Qm9xcFB4Mm9SUHN6bU5sb1hoY2o0YkNscVlXcWVM?=
- =?utf-8?B?Q0lhblZEZ2x1V1lvMVFZSDhFQW5EZXFlMmdFOExkT3RMZ09XK3VxOXFBNFlV?=
- =?utf-8?B?clJreUVCVkE0VUpFZ2lNcm9nem1jbzZGcllsR0NKMjA3cEJLMXlnT2ZvRXkr?=
- =?utf-8?B?RWNtTVYvWXd3d0Z0UWZCanMrdTdTQ05WTVVZV0c0ODNBM1JqQU10aEZNaVJS?=
- =?utf-8?B?QkVLMUZmc3ArdmQya0NGUU1Zb095VStMWkxjYWNxeHFDSzBTRkRUQkp3QVlp?=
- =?utf-8?B?MzBtNGphd2VTYlRMM0dTQ2EzcjBabVB2aUJJeTlDSzFna1djZ0FaRzRBc29N?=
- =?utf-8?B?ZVdBem5rMDVDclpKaDJoQVhydktJcGNENVQwNUtYUG1WUkZ5WExON0lEY1Yr?=
- =?utf-8?B?aU8vR3hEOU1WS0pXamNSaUhZVUZ4bFQyalBsTkFLSG0xYkgybFl6MjZzM0p6?=
- =?utf-8?B?eldSbnpiKzJMWnByVUNsQnhxMzNkcmhoYllQUzhwbmFHMG5VQmM2T0dnM3Zl?=
- =?utf-8?B?clJhWHZSZEhOUWRPaTdFeGxNS3Y4V3pyTzY2U1UzS3ZyODRsSXNocWxtSW9m?=
- =?utf-8?B?b0locHAzNFQyTk5aMGxQaFlKTmN0cXlXeWlRMGpTZ2ltRlpFKzNlTXY5ZzZh?=
- =?utf-8?B?U0V3RjNuYmJLcDBaN0dJUGlhak1TSjlrSmtHd3ZOdS9ISDlUY2UyQlpNQXVD?=
- =?utf-8?B?MXM5MDJXeTRPejk1WGFNVmUvajdaeE5BbGlieWlKMEZCQXVRYlVvanBRdDN5?=
- =?utf-8?B?VFBwQlUrR0V5T2xGb0ZxNjYybERtOGVzZ211TFNzL01PRFpSNW1pNm9kVGRG?=
- =?utf-8?B?ZWgyaUVCcmJSanpBMlNOWXFnUGtHNVhiV3NJSGFSOXhSMk1sd09WeTYwNnBi?=
- =?utf-8?B?Y05vbnNPQWxuTzVSNVdjbCt2UExjKzhZaVFuNWgwdHFpYVJmR2hXZUowaGQ2?=
- =?utf-8?B?TlpwemNTcTFzSlp4cmJpeEEyRmI4UnZpZldTQmk0WnJWRlQ5cWswRGVEdVNV?=
- =?utf-8?B?OGtZeGx3SlU3NENCcE9DUnFWNjhTMlZuQjhUbVV3c3JpV016ZVdIT1haNVdN?=
- =?utf-8?B?MDE3Y0gyMjliQndyaWs4WjNVc09keUdDYStQZGJ3OTBHbXd1K3pUQ0JlUTlY?=
- =?utf-8?B?YytzUW85SEF2d0pCejV4OU5RUjlJcEFvQThkYmR3Zmt6cEJ2UGN5M2FudnY1?=
- =?utf-8?B?aW43VElieUU2NEFva2d1M3A3eTRxcUVQaVBTQWFkdERZVHk5VXdiaU9menpo?=
- =?utf-8?B?YlBZb1ZxNm1SbkppWllUbU9KYnErZmNDbnUreUhvbHBGTVFFc1htSmRqZTJu?=
- =?utf-8?B?aEFmOFlWcmFjMWRLM1Urb3ZuQlpxZTRuNFdDd2UwdXNlRUYrNmpsbzdDSGZi?=
- =?utf-8?B?cFNyb2VieE50WHQ5U09xdjlYVFc5VTlYK1FmRWdpdit1YTFVVmxBOHpPbkVP?=
- =?utf-8?B?bEZKQS9VZFBoMzNDeWFnQkdqOHdJMk5CN1NUSDZ2czdnRUYwdUJMZlJ2dUtX?=
- =?utf-8?B?NHdjWkFHL2pINk5VUEh1b05CY3RqRFBaeE5IQThkbDJpdGNYSWlUR1BWUy9Z?=
- =?utf-8?B?OGN2SzhLRDkwY2dVNDIzbk5WbksyWk1QeFg2UmoyT2Z1aHlJekpRS2NBRTFU?=
- =?utf-8?B?bWlOT1FNbFZMMDAyRklBUmx0cEdXU0JQc3M0K0dWRzdjbmI4dG50NkNWdU9m?=
- =?utf-8?Q?RroNU08jkCpOngGkir6FF2yB5?=
-X-OriginatorOrg: garyguo.net
-X-MS-Exchange-CrossTenant-Network-Message-Id: 06c802d0-3f00-440d-1e1c-08dcdbeaa385
-X-MS-Exchange-CrossTenant-AuthSource: LO2P265MB5183.GBRP265.PROD.OUTLOOK.COM
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 23 Sep 2024 16:13:19.3169
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: bbc898ad-b10f-4e10-8552-d9377b823d45
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: O1puvaz0rRRXhJPlwKQjs25fpdX3QvI8iTLs64NXMEp6qf+J3hyYCzbk5iqEtL+BoWBq8mFk/p3clI/vi5Z7ng==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LO0P265MB5525
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20240923-xa_enter_leave-v1-1-6ff365e8520a@google.com>
 
-On Mon, 23 Sep 2024 15:56:28 +0200
-Alice Ryhl <aliceryhl@google.com> wrote:
+Hi Alice,
 
-> On Sat, Sep 21, 2024 at 5:33=E2=80=AFPM Danilo Krummrich <dakr@kernel.org=
-> wrote:
-> > @@ -84,11 +92,18 @@ unsafe fn call(
-> >          &self,
-> >          ptr: Option<NonNull<u8>>,
-> >          layout: Layout,
-> > +        old_layout: Layout,
-> >          flags: Flags,
-> >      ) -> Result<NonNull<[u8]>, AllocError> {
-> >          let size =3D aligned_size(layout);
-> >          let ptr =3D match ptr {
-> > -            Some(ptr) =3D> ptr.as_ptr(),
-> > +            Some(ptr) =3D> {
-> > +                if old_layout.size() =3D=3D 0 {
-> > +                    ptr::null()
-> > +                } else {
-> > +                    ptr.as_ptr()
-> > +                }
-> > +            } =20
->=20
-> This is making Allocator work with zero-sized types, which deviates
-> from std. We should not do that without a reason. What is the reason?
->=20
-> Alice
+kernel test robot noticed the following build errors:
 
-As Benno said, this makes the API closer to Rust `allocator_api`
-Allocator trait as opposed to deviation.
+[auto build test ERROR on 98f7e32f20d28ec452afb208f9cffc08448a2652]
 
-There's one benefit of doing this (discussed with Danilo off-list),
-which is it removes ZST special casing from caller. This RFC patch
-simplifies `Box` handling, and if we add this line to the safety doc
+url:    https://github.com/intel-lab-lkp/linux/commits/Alice-Ryhl/xarray-rename-xa_lock-xa_unlock-to-xa_enter-xa_leave/20240923-184045
+base:   98f7e32f20d28ec452afb208f9cffc08448a2652
+patch link:    https://lore.kernel.org/r/20240923-xa_enter_leave-v1-1-6ff365e8520a%40google.com
+patch subject: [PATCH] xarray: rename xa_lock/xa_unlock to xa_enter/xa_leave
+config: x86_64-defconfig (https://download.01.org/0day-ci/archive/20240924/202409240026.7kkshSxM-lkp@intel.com/config)
+compiler: gcc-11 (Debian 11.3.0-12) 11.3.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20240924/202409240026.7kkshSxM-lkp@intel.com/reproduce)
 
-	`ptr` does not need to be a pointer returned by this
-	allocator if the layout is zero-sized.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202409240026.7kkshSxM-lkp@intel.com/
 
-then the `Vec` can also be simplified, removing all logics handling ZST
-specially, except for `Vec::new()` which it forges a well-aligned
-dangling pointer from nowhere.
+All errors (new ones prefixed by >>):
 
-Best,
-Gary
+   In file included from include/linux/list_lru.h:14,
+                    from include/linux/fs.h:13,
+                    from mm/page-writeback.c:19:
+   mm/page-writeback.c: In function '__folio_mark_dirty':
+>> include/linux/xarray.h:567:41: error: implicit declaration of function 'xa_leave_irqsave'; did you mean 'xa_lock_irqsave'? [-Werror=implicit-function-declaration]
+     567 | #define xa_unlock_irqrestore(xa, flags) xa_leave_irqsave(xa, flags)
+         |                                         ^~~~~~~~~~~~~~~~
+   mm/page-writeback.c:2801:9: note: in expansion of macro 'xa_unlock_irqrestore'
+    2801 |         xa_unlock_irqrestore(&mapping->i_pages, flags);
+         |         ^~~~~~~~~~~~~~~~~~~~
+   mm/page-writeback.c: In function '__folio_start_writeback':
+>> include/linux/xarray.h:1453:49: error: implicit declaration of function 'xas_leave_irqsave'; did you mean 'xas_lock_irqsave'? [-Werror=implicit-function-declaration]
+    1453 | #define xas_unlock_irqrestore(xas, flags)       xas_leave_irqsave(xas, flags)
+         |                                                 ^~~~~~~~~~~~~~~~~
+   mm/page-writeback.c:3155:17: note: in expansion of macro 'xas_unlock_irqrestore'
+    3155 |                 xas_unlock_irqrestore(&xas, flags);
+         |                 ^~~~~~~~~~~~~~~~~~~~~
+   cc1: some warnings being treated as errors
+
+
+vim +567 include/linux/xarray.h
+
+   426	
+   427	/**
+   428	 * xa_for_each_range() - Iterate over a portion of an XArray.
+   429	 * @xa: XArray.
+   430	 * @index: Index of @entry.
+   431	 * @entry: Entry retrieved from array.
+   432	 * @start: First index to retrieve from array.
+   433	 * @last: Last index to retrieve from array.
+   434	 *
+   435	 * During the iteration, @entry will have the value of the entry stored
+   436	 * in @xa at @index.  You may modify @index during the iteration if you
+   437	 * want to skip or reprocess indices.  It is safe to modify the array
+   438	 * during the iteration.  At the end of the iteration, @entry will be set
+   439	 * to NULL and @index will have a value less than or equal to max.
+   440	 *
+   441	 * xa_for_each_range() is O(n.log(n)) while xas_for_each() is O(n).  You have
+   442	 * to handle your own locking with xas_for_each(), and if you have to unlock
+   443	 * after each iteration, it will also end up being O(n.log(n)).
+   444	 * xa_for_each_range() will spin if it hits a retry entry; if you intend to
+   445	 * see retry entries, you should use the xas_for_each() iterator instead.
+   446	 * The xas_for_each() iterator will expand into more inline code than
+   447	 * xa_for_each_range().
+   448	 *
+   449	 * Context: Any context.  Takes and releases the RCU lock.
+   450	 */
+   451	#define xa_for_each_range(xa, index, entry, start, last)		\
+   452		for (index = start,						\
+   453		     entry = xa_find(xa, &index, last, XA_PRESENT);		\
+   454		     entry;							\
+   455		     entry = xa_find_after(xa, &index, last, XA_PRESENT))
+   456	
+   457	/**
+   458	 * xa_for_each_start() - Iterate over a portion of an XArray.
+   459	 * @xa: XArray.
+   460	 * @index: Index of @entry.
+   461	 * @entry: Entry retrieved from array.
+   462	 * @start: First index to retrieve from array.
+   463	 *
+   464	 * During the iteration, @entry will have the value of the entry stored
+   465	 * in @xa at @index.  You may modify @index during the iteration if you
+   466	 * want to skip or reprocess indices.  It is safe to modify the array
+   467	 * during the iteration.  At the end of the iteration, @entry will be set
+   468	 * to NULL and @index will have a value less than or equal to max.
+   469	 *
+   470	 * xa_for_each_start() is O(n.log(n)) while xas_for_each() is O(n).  You have
+   471	 * to handle your own locking with xas_for_each(), and if you have to unlock
+   472	 * after each iteration, it will also end up being O(n.log(n)).
+   473	 * xa_for_each_start() will spin if it hits a retry entry; if you intend to
+   474	 * see retry entries, you should use the xas_for_each() iterator instead.
+   475	 * The xas_for_each() iterator will expand into more inline code than
+   476	 * xa_for_each_start().
+   477	 *
+   478	 * Context: Any context.  Takes and releases the RCU lock.
+   479	 */
+   480	#define xa_for_each_start(xa, index, entry, start) \
+   481		xa_for_each_range(xa, index, entry, start, ULONG_MAX)
+   482	
+   483	/**
+   484	 * xa_for_each() - Iterate over present entries in an XArray.
+   485	 * @xa: XArray.
+   486	 * @index: Index of @entry.
+   487	 * @entry: Entry retrieved from array.
+   488	 *
+   489	 * During the iteration, @entry will have the value of the entry stored
+   490	 * in @xa at @index.  You may modify @index during the iteration if you want
+   491	 * to skip or reprocess indices.  It is safe to modify the array during the
+   492	 * iteration.  At the end of the iteration, @entry will be set to NULL and
+   493	 * @index will have a value less than or equal to max.
+   494	 *
+   495	 * xa_for_each() is O(n.log(n)) while xas_for_each() is O(n).  You have
+   496	 * to handle your own locking with xas_for_each(), and if you have to unlock
+   497	 * after each iteration, it will also end up being O(n.log(n)).  xa_for_each()
+   498	 * will spin if it hits a retry entry; if you intend to see retry entries,
+   499	 * you should use the xas_for_each() iterator instead.  The xas_for_each()
+   500	 * iterator will expand into more inline code than xa_for_each().
+   501	 *
+   502	 * Context: Any context.  Takes and releases the RCU lock.
+   503	 */
+   504	#define xa_for_each(xa, index, entry) \
+   505		xa_for_each_start(xa, index, entry, 0)
+   506	
+   507	/**
+   508	 * xa_for_each_marked() - Iterate over marked entries in an XArray.
+   509	 * @xa: XArray.
+   510	 * @index: Index of @entry.
+   511	 * @entry: Entry retrieved from array.
+   512	 * @filter: Selection criterion.
+   513	 *
+   514	 * During the iteration, @entry will have the value of the entry stored
+   515	 * in @xa at @index.  The iteration will skip all entries in the array
+   516	 * which do not match @filter.  You may modify @index during the iteration
+   517	 * if you want to skip or reprocess indices.  It is safe to modify the array
+   518	 * during the iteration.  At the end of the iteration, @entry will be set to
+   519	 * NULL and @index will have a value less than or equal to max.
+   520	 *
+   521	 * xa_for_each_marked() is O(n.log(n)) while xas_for_each_marked() is O(n).
+   522	 * You have to handle your own locking with xas_for_each(), and if you have
+   523	 * to unlock after each iteration, it will also end up being O(n.log(n)).
+   524	 * xa_for_each_marked() will spin if it hits a retry entry; if you intend to
+   525	 * see retry entries, you should use the xas_for_each_marked() iterator
+   526	 * instead.  The xas_for_each_marked() iterator will expand into more inline
+   527	 * code than xa_for_each_marked().
+   528	 *
+   529	 * Context: Any context.  Takes and releases the RCU lock.
+   530	 */
+   531	#define xa_for_each_marked(xa, index, entry, filter) \
+   532		for (index = 0, entry = xa_find(xa, &index, ULONG_MAX, filter); \
+   533		     entry; entry = xa_find_after(xa, &index, ULONG_MAX, filter))
+   534	
+   535	#define xa_tryenter(xa)		spin_trylock(&(xa)->xa_lock)
+   536	#define xa_enter(xa)		spin_lock(&(xa)->xa_lock)
+   537	#define xa_leave(xa)		spin_unlock(&(xa)->xa_lock)
+   538	#define xa_enter_bh(xa)		spin_lock_bh(&(xa)->xa_lock)
+   539	#define xa_leave_bh(xa)		spin_unlock_bh(&(xa)->xa_lock)
+   540	#define xa_enter_irq(xa)	spin_lock_irq(&(xa)->xa_lock)
+   541	#define xa_leave_irq(xa)	spin_unlock_irq(&(xa)->xa_lock)
+   542	#define xa_enter_irqsave(xa, flags) \
+   543					spin_lock_irqsave(&(xa)->xa_lock, flags)
+   544	#define xa_leave_irqrestore(xa, flags) \
+   545					spin_unlock_irqrestore(&(xa)->xa_lock, flags)
+   546	#define xa_enter_nested(xa, subclass) \
+   547					spin_lock_nested(&(xa)->xa_lock, subclass)
+   548	#define xa_enter_bh_nested(xa, subclass) \
+   549					spin_lock_bh_nested(&(xa)->xa_lock, subclass)
+   550	#define xa_enter_irq_nested(xa, subclass) \
+   551					spin_lock_irq_nested(&(xa)->xa_lock, subclass)
+   552	#define xa_enter_irqsave_nested(xa, flags, subclass) \
+   553			spin_lock_irqsave_nested(&(xa)->xa_lock, flags, subclass)
+   554	
+   555	/*
+   556	 * These names are deprecated. Please use xa_enter instead of xa_lock, and
+   557	 * xa_leave instead of xa_unlock.
+   558	 */
+   559	#define xa_trylock(xa)			xa_tryenter(xa)
+   560	#define xa_lock(xa)			xa_enter(xa)
+   561	#define xa_unlock(xa)			xa_leave(xa)
+   562	#define xa_lock_bh(xa)			xa_enter_bh(xa)
+   563	#define xa_unlock_bh(xa)		xa_leave_bh(xa)
+   564	#define xa_lock_irq(xa)			xa_enter_irq(xa)
+   565	#define xa_unlock_irq(xa)		xa_leave_irq(xa)
+   566	#define xa_lock_irqsave(xa, flags)	xa_enter_irqsave(xa, flags)
+ > 567	#define xa_unlock_irqrestore(xa, flags) xa_leave_irqsave(xa, flags)
+   568	#define xa_lock_nested(xa, subclass)	xa_enter_nested(xa, subclass)
+   569	#define xa_lock_bh_nested(xa, subclass) xa_enter_bh_nested(xa, subclass)
+   570	#define xa_lock_irq_nested(xa, subclass) xa_enter_irq_nested(xa, subclass)
+   571	#define xa_lock_irqsave_nested(xa, flags, subclass) \
+   572			xa_enter_irqsave_nested(xa, flags, subclass)
+   573	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
