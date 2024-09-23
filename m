@@ -1,97 +1,91 @@
-Received: from mail-wr1-f53.google.com (mail-wr1-f53.google.com [209.85.221.53])
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A35D8194123
-	for <rust-for-linux@vger.kernel.org>; Mon, 23 Sep 2024 09:17:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3CBF51C45
+	for <rust-for-linux@vger.kernel.org>; Mon, 23 Sep 2024 09:19:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727083057; cv=none; b=TLqsX3X76c5sDX6dFh6Pc+mEmt3rv2fR+RevPjRx1WzB5F6PD4NM8lGjRoHObn8mgLJBmkhmzeYLSRzyoRSoTYx2yoNsegJW4ipfo1hyQuehjagrwYLCoWnYKfbd5X3VNcYAjuev5x93+c5GR906uWaMa5HyiOn/l4QoqeYmjVU=
+	t=1727083161; cv=none; b=a2K//VEDnGlCyY+F9PSEWAAcfqR9qD9YwvV35oxAz9cPcdi9ovIzi3i7nEgTRljFkTepnuWki9obQB7vAfbL0O2QK2JPfVcct5tQwQmUx26OSpMfILYfmKB/A9FnarWsBLJN+BYR0GtI2RH5VpP3O10OVyXQ7r7gezXaSaw+eAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727083057; c=relaxed/simple;
-	bh=dXtU+p8lSm5203QVSlqw3BD+P2o/6IwPYH/o0HqI2a8=;
+	s=arc-20240116; t=1727083161; c=relaxed/simple;
+	bh=B3l/swgMf574HH64zSYfiVu/QiFNrAq4Z16UV6S+QtA=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=e8Z+Yu3U3c+Z0Ek5VEz8XcWNE+KEQB4DHLiL6XITZGvCh+G6qR5UUrsOOzEz6dUBjnPwk7m8cntgAZQDVwciq8m4xWQqSGBQZk4uz6KpKZVa4OGQs6RFefpj33JKXF3rqpRylvkfNvOhYcUu6KEV9UdieXPlwp1v5PzQFeE8KWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Cu0/2Oxt; arc=none smtp.client-ip=209.85.221.53
+	 To:Cc:Content-Type; b=AosoSVmjRECm7vCtUrQNSlWnBOrticjdWdaVEqxaxWInjezmFNP/PQGqzma4uX/uJthcpTZ/aVaao7HOoJd9fSa9foapZtCQTuYaRwCBmy2uQX5t8z/vEkyiNnV1M92rYpjGob/IXudlo0hWZuJuWbn23VNNwOytxUqqtQtIOg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=QblQaMIz; arc=none smtp.client-ip=209.85.221.43
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Cu0/2Oxt"
-Received: by mail-wr1-f53.google.com with SMTP id ffacd0b85a97d-374cacf18b1so2476302f8f.2
-        for <rust-for-linux@vger.kernel.org>; Mon, 23 Sep 2024 02:17:35 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="QblQaMIz"
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-374c3400367so3662210f8f.2
+        for <rust-for-linux@vger.kernel.org>; Mon, 23 Sep 2024 02:19:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1727083054; x=1727687854; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1727083158; x=1727687958; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=hVtSaoR0biX2T9CVpvtypIFchxY0cdh/phffmHsW2PM=;
-        b=Cu0/2OxtLAxf0yQk82JJqmZXNnj0Z7R1j99eH4BGHfcIimv1OKbWpkA35JyM2u7iy6
-         Qw+wBQ7v+lZl11cq7tbgKwFtgKtC5IBcqUZZRhUWznKh7xDE8EiBdt3H3dvQKqTFT3dh
-         sxvPHpRxfy/5ynXvi/edK3ihvtj8MbeW2SQDC7S5NHg8/THM8AxToG6z8D1feOfhySn/
-         0wzTkCIz/pYZtw6x+xPqNNukQUI/ZqqaZhxp5OBRpCRFg7LyAnufNHJSKajqOM54UeeQ
-         xKhR1sqCwd51/CJoSpPLUTAiMDPiZeGoEcQv5yJfUjtvcj7nhvmb6wl/gSxtSZddlVUD
-         RXzg==
+        bh=B3l/swgMf574HH64zSYfiVu/QiFNrAq4Z16UV6S+QtA=;
+        b=QblQaMIzanz4vcpxR4tinf4AJ/ZLQh5LqiPgyQFVSjNiF1AH4+SE4103PysS7ew3bt
+         f1XjQY8fFkhDxqYJIpZ9YsdcHe+h6I3JZqZCMM1cqOU5FbAkqgMvl6VCi+AdpD88TS31
+         c31rbGk3vNRET+47HB3asSp0x/HM26Tdlmn9CbRy63x189E2ocm0rlsbSI9DSN65n0Gf
+         JAC7A9t3DDMLLQFlKU0QDNl1APdfvMePrpxH7g6PQb/Nr63UKB/hflB9w5VQL8azfrZl
+         ymBa77BKtbsKPQaLWkw6JOQciI66QTAb+OIDH8iC7ErcseCqOy7/TDNMJsRHuE0ROO2j
+         Y/tA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727083054; x=1727687854;
+        d=1e100.net; s=20230601; t=1727083158; x=1727687958;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=hVtSaoR0biX2T9CVpvtypIFchxY0cdh/phffmHsW2PM=;
-        b=d9pu9PUTl2uk4ypajo6ovrO+fLoJ6TgMhpsJT9nqmY5iu+FrCeNbzZ1UpD7uUlSFf9
-         12LSzFNV9chBmoZB1aE2yvmBDJEp6h+XplP5EebocJz6g1rQdGkhCbKBiC7aizhRy8ut
-         0SgAETEE5nN49+1BG2yagXQHRCAHXuvaRVOiNdgGXjaCtaT363OU7isxapA73Vjb4Ih0
-         tbFSQ5Y/RRKoBkP7EvA8Wi/1U3veZqplPdt87f29cHip20preYCUw+bBtYFUMN8nrbq8
-         hSfTqSxE/v8zl5HPDL3MHXriAK37pWKq437EH+GKE0QWOzLffXmTGsL/FxU1LTm4k0uf
-         tD1g==
-X-Forwarded-Encrypted: i=1; AJvYcCXs2G6OMiproH1znEghx7z4w9d8QVAcpmI2R9L0K7uw1g+RozBN7jZRP174CWQCxysS8wf6eQluLPk29LWNrg==@vger.kernel.org
-X-Gm-Message-State: AOJu0YzV/Xr1/o7HRgXc1yVhTkwhG1WFJ4tqvqYYrRmLJrnDPg4SCVUI
-	VurrvbZ+zvTcwpGwWI8nJOs11RowxT4oc6BajSCwW4NGoJ8dn4K6CxzrbxD1TgXheVdMBdQEURC
-	joDgZJSOFLj9L+H7WBn6/i7DhRYhZRNQyZuq/
-X-Google-Smtp-Source: AGHT+IHI74AJM69zd78KpzyQE1BtUUEeyU7RmQjBJekSb/384i3CmT5ZOtSPPuGLTObOrptz9khgPTIsTLIdBob0qW8=
-X-Received: by 2002:a5d:64c1:0:b0:374:c3e4:d6c5 with SMTP id
- ffacd0b85a97d-37a431a7142mr6905859f8f.57.1727083053706; Mon, 23 Sep 2024
- 02:17:33 -0700 (PDT)
+        bh=B3l/swgMf574HH64zSYfiVu/QiFNrAq4Z16UV6S+QtA=;
+        b=YaoVrMnrK635dGuFABC8W2ZIciyv4cLt2DBdr66z4AMWY/+HKRX0exsOx+TXnL+bd+
+         D3eimHFi+WbPFoWf9SCvuDVMc779BE9H3mmxkhP9bEuIAzKndWSTzrPMksK4Rr7Jdhav
+         OwhE1137O6rT0fn1eHR+I6L7XpEeo6qzQSKth6YsDns3zB7Ftx/0jKDqs1tkyQNnXprV
+         sqVz64G7QL7gP+21ZhBj9+OLjgw8Njw27/no0FH37e3TWlnmwKeUKWl9T4fMkIeBzRXY
+         kSi+vif5IBUg3b0PBLN/OvQ2yKOz3TQklxMOsI38+gNcMmlUEfpJwp700Ok/gj2zTjkj
+         eLDw==
+X-Forwarded-Encrypted: i=1; AJvYcCU93HszJhb3DIVthxrKnrCVW/LSGHBHlO3X6jgijeVPqYDLn4JFZpSCzGTBftAoKCbHxK7mQAnsqnBGHWqYoQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwFZvdMug0W/zCe0BmOlQ54x4msfGOMVTUU60jkQqIUGfX1VIRo
+	MDTNCzxVNEOIz+8lAB6JNJ4S/qtY9RWjKWpMtxu6GjLNBc8If5xHkXW7rwyCA+HTHFnCVTCj8zT
+	ymtfcHpZNdvgbc1G+EkLMYyc7cSoMK0KQZ61o
+X-Google-Smtp-Source: AGHT+IG8mTC7dZL5MuqZKSFkhdYrDhY5fQw3AdXSlqu/ln2d+nUSR0gl5ejLSmoHcOVCy570O482RNIR3NkEQQXC1dQ=
+X-Received: by 2002:a5d:4144:0:b0:374:c29a:a0d6 with SMTP id
+ ffacd0b85a97d-37a422533bemr8151963f8f.2.1727083158117; Mon, 23 Sep 2024
+ 02:19:18 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240913180622.1327656-1-masahiroy@kernel.org>
-In-Reply-To: <20240913180622.1327656-1-masahiroy@kernel.org>
+References: <20240913213041.395655-1-gary@garyguo.net> <20240913213041.395655-6-gary@garyguo.net>
+In-Reply-To: <20240913213041.395655-6-gary@garyguo.net>
 From: Alice Ryhl <aliceryhl@google.com>
-Date: Mon, 23 Sep 2024 11:17:20 +0200
-Message-ID: <CAH5fLghY0TQWX1T2jjxEFQ0kQ9cCVVZ6hHsMFknn8RX8K0X2jA@mail.gmail.com>
-Subject: Re: [PATCH] kbuild: remove unnecessary export of RUST_LIB_SRC
-To: Masahiro Yamada <masahiroy@kernel.org>
-Cc: linux-kbuild@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	rust-for-linux@vger.kernel.org, Finn Behrens <me@kloenk.de>, linux-kernel@vger.kernel.org, 
-	Andreas Hindborg <a.hindborg@samsung.com>, Benno Lossin <benno.lossin@proton.me>, 
+Date: Mon, 23 Sep 2024 11:19:05 +0200
+Message-ID: <CAH5fLgj2_8ej2Xs8rSj1rasYj6S+oQcoh7=+vRnfdZXz71Obxg@mail.gmail.com>
+Subject: Re: [PATCH 5/5] rust: cleanup unnecessary casts
+To: Gary Guo <gary@garyguo.net>
+Cc: Brendan Higgins <brendan.higgins@linux.dev>, David Gow <davidgow@google.com>, 
+	Rae Moar <rmoar@google.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Trevor Gross <tmgross@umich.edu>, Martin Rodriguez Reboredo <yakoyoku@gmail.com>, 
+	Michael Vetter <jubalh@iodoru.org>, Finn Behrens <me@kloenk.dev>, 
+	Valentin Obst <kernel@valentinobst.de>, Danilo Krummrich <dakr@redhat.com>, 
+	Yutaro Ohno <yutaro.ono.418@gmail.com>, Wedson Almeida Filho <walmeida@microsoft.com>, 
+	Asahi Lina <lina@asahilina.net>, linux-kselftest@vger.kernel.org, 
+	kunit-dev@googlegroups.com, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Fri, Sep 13, 2024 at 8:06=E2=80=AFPM Masahiro Yamada <masahiroy@kernel.o=
-rg> wrote:
+On Fri, Sep 13, 2024 at 11:33=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote:
 >
-> If RUST_LIB_SRC is defined in the top-level Makefile (via an environment
-> variable or command line), it is already exported.
+> With `long` mapped to `isize`, `size_t`/`__kernel_size_t` mapped to
+> usize and `char` mapped to `u8`, many of the existing casts are no
+> longer necessary.
 >
-> The only situation where it is defined but not exported is when the
-> top-level Makefile is wrapped by another Makefile (e.g., GNUmakefile).
-> I cannot think of any other use cases.
->
-> I know some people use this tip to define custom variables. However,
-> even in that case, you can export it directly in the wrapper Makefile.
->
-> Example GNUmakefile:
->
->     export RUST_LIB_SRC =3D /path/to/your/sysroot/lib/rustlib/src/rust/li=
-brary
->     include Makefile
->
-> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+> Signed-off-by: Gary Guo <gary@garyguo.net>
+
+This is great!
 
 Reviewed-by: Alice Ryhl <aliceryhl@google.com>
