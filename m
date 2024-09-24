@@ -1,93 +1,94 @@
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pj1-f49.google.com (mail-pj1-f49.google.com [209.85.216.49])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F0AE11CA0
-	for <rust-for-linux@vger.kernel.org>; Tue, 24 Sep 2024 18:31:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 707691A4F0C;
+	Tue, 24 Sep 2024 18:42:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727202719; cv=none; b=LxGdxF19c2DTAnuZJj6QTqdU78IyTpJ84Dtx1DBvAAk3Osia0F6A2A/ecal/S/9h9d7i75FkEibMTpqZbf0teJM1UNRXUJoTpF1FDAUuuwzuY8Rh7Pi/lxQy9vy0VHRR/jJkYbAlPOrke+zlWU0F1iTd2aUtxY1oNOk+EdZKfJw=
+	t=1727203378; cv=none; b=i9zCCEgkXhnyHlwNFXsZ3U6RxY5OxmS2rItHq4mTKMzM8Ys/pzMQhU5lbo6UMd0u0rV3XPlWITnCpntRx8vAZQL4j1KtuUgmjh4YPMO1EKtzEWfkGju93T4YmeXAJuI2x597norOF03U4TNOWV6ZrEZEi/oKuqxht0b5xWZ8R9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727202719; c=relaxed/simple;
-	bh=eAlEqlnFKxw99tuoJn9T7UJ/7w3qa6+uKHLx3oYiMI0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=n8pS4oCfWn+tqZV9AdS7qNzsY5l209tZ5cmpx0tqo7lkFC/foBVSgSU76MsHOT4PktLgd1fXlo0CkLwm6nv+/cmbNzb5pu2RJzkygTelz4KO6qPuVp0fCDQfa+oyc7M2ml9zXlFsi8u9gED5/z0WmIHwALCHi/XrkhWomqel9dk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=dQU+2WKP; arc=none smtp.client-ip=170.10.129.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+	s=arc-20240116; t=1727203378; c=relaxed/simple;
+	bh=qem24K8hDJtqOZflZxzGoBu2Q9HuUP6RNgJ8qSOhPoQ=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=WRcots78mpBnKsQ0T+QiEtK91tAVbID1QNmnOQbrPZuJmYOVEYvt0gM/hNgLYYirNDOv88G1d7ho9lVTYR/yOEgqS1wwGOo8ptUehcuT0QWcN4/f5uPQGzg5mxW8MP9JPCP8a4clMXMz2xXZd0gpo6NdDOmgGvpzj4llIgSs+1I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UvxwJMmK; arc=none smtp.client-ip=209.85.216.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="dQU+2WKP"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1727202717;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=hWEro6+TZCX0c9y7ajSJKcVMwKuIv2bm1FybTA79CcI=;
-	b=dQU+2WKPm3Ms5HvXJRbJ7hoOeyTX08gX9iU5AhIwCYOXxucppZfWTqs+wWyBECber2SvlL
-	WP+ZxQpPabChpzWfSfOqyB2kd586u1io7GuhdI84WpW716FBKWjdxLp7kuiHE4hdJZDlC/
-	6A2p2Xx7ZlO345P5Fem7FcbFz2iqRzE=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-661-HigSunj1MN2KLtqlfxcE6Q-1; Tue,
- 24 Sep 2024 14:31:54 -0400
-X-MC-Unique: HigSunj1MN2KLtqlfxcE6Q-1
-Received: from mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (unknown [10.30.177.15])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id A66E0188FE98;
-	Tue, 24 Sep 2024 18:31:46 +0000 (UTC)
-Received: from [10.2.16.229] (unknown [10.2.16.229])
-	by mx-prod-int-02.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id BFD6A1956088;
-	Tue, 24 Sep 2024 18:31:44 +0000 (UTC)
-Message-ID: <4c94912d-b0d9-4b7e-8490-ffd91fdd2184@redhat.com>
-Date: Tue, 24 Sep 2024 14:31:43 -0400
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UvxwJMmK"
+Received: by mail-pj1-f49.google.com with SMTP id 98e67ed59e1d1-2d8afdd62e8so1072419a91.3;
+        Tue, 24 Sep 2024 11:42:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1727203376; x=1727808176; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=AfURFzn65sh6X2dItLUMd07O5TuGvYCWV/xXT4OYjhY=;
+        b=UvxwJMmKk/1fHqe++25JLeGaQoTYzxu8qozRHm1QJvW0IIErPMm5/5nHTuecF7VcJh
+         Q8T3Q223Da0Brj+LzWmH0raxeOtYVddVRGVG1qzRVN5XUUd0Muq4SOlunyK9SeGSuTGh
+         PPihLjZrAlXsjLkrmf28tYmAbxHEUpn/HJCOTiKlj2r6GHgYFPFEnDLrnzt+AyLaEPk3
+         bjwL4F5N8GdZkCcASaKyW6dsOD83VsHIyZiojZbRiQrCTWqvBv1pymKiVptsYgEllLgZ
+         pUWrr6BZSqPUChBRKlmT1GWhkepJwXv5E1rmi+cyeVYpE6o6MTgA0+XqCs0vuoLK9SCs
+         pnmg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727203376; x=1727808176;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=AfURFzn65sh6X2dItLUMd07O5TuGvYCWV/xXT4OYjhY=;
+        b=obBkmd5YElShTnVmQDj6ElXg2wg2cuDtBa+5GNjcIQud/XBAYlkn4vS5JSwYADeloL
+         AFG47NdE9VknXTQVu9d2pgl5vGHBz8PH3zHA4kdkzRwmPBA17XTMQ5fSzVro9hvNPHxe
+         v8MqoxeRdZZ2VOWIdfYizzZ9X5TqjtNb5nU25FVHPFbF483ExcRnVJLR4c5L404PhV/s
+         Tv7V2QYvEJH//T8ZanucBHiWXcNOOM4S93TxsjV+Lq5r0ISf/N6zEVzmE8Xs1Tza35ae
+         lUoKvk9K6LT/kt7wY1lTWZcgTrexZQuXMwNjKA8Zx6+4dYjq2J+/UlvnujtD+fILGO5d
+         guEg==
+X-Forwarded-Encrypted: i=1; AJvYcCV/7ryEaB7gVehSy23PsoMhgb4EGCadzgXJBvFWD0j+SHA5ezNd9uCMgqJ7qcn7pveMUfL3Cqq6vyCF5BqL910=@vger.kernel.org, AJvYcCVdFtPWae8ardJ+eJt6x9Giq294vQjkZBGJfCl5V3YvWg5qmmb8PI1WtdHKVEJalIFrzv5cmWL09zpbrKI=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzLIWvrfe4BjxRlIsnoUBNCkgRAYVRVA0uGk5XHO0Iuwp6B6ZFM
+	J6fE/JjywqBhzb4kG4yBuuPSyNL3dhzLtDH93ROl3yCQAGeLI5NsadCdpudGvcpbcnM63HIYrul
+	0pmnMtNSoR8g86w03Jy8SbTrw2zU=
+X-Google-Smtp-Source: AGHT+IGRLgHGVhSijck+qaah7MB5r4zyIKNkXh5xMY4YGSKcSP21XOEKI+3jbVBEVqm+Ow49sg6OJYTpkozSDQXoWdw=
+X-Received: by 2002:a17:90b:1c11:b0:2d8:b071:e10e with SMTP id
+ 98e67ed59e1d1-2e06ae2605emr63840a91.1.1727203376556; Tue, 24 Sep 2024
+ 11:42:56 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2] rust: add trylock method support for lock backend
-To: Boqun Feng <boqun.feng@gmail.com>, Filipe Xavier <felipe_life@live.com>
-Cc: aliceryhl@google.com, ojeda@kernel.org, gary@garyguo.net,
- benno.lossin@proton.me, will@kernel.org, rust-for-linux@vger.kernel.org
-References: <DM4PR14MB727673292DEC9134C3FE559CE9672@DM4PR14MB7276.namprd14.prod.outlook.com>
- <ZvJkFr6kdVx8kIMq@boqun-archlinux>
-From: Waiman Long <longman@redhat.com>
-In-Reply-To: <ZvJkFr6kdVx8kIMq@boqun-archlinux>
-X-Scanned-By: MIMEDefang 3.0 on 10.30.177.15
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: redhat.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+References: <20240913180622.1327656-1-masahiroy@kernel.org>
+In-Reply-To: <20240913180622.1327656-1-masahiroy@kernel.org>
+From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Date: Tue, 24 Sep 2024 20:42:43 +0200
+Message-ID: <CANiq72=ynULSpiBwvpau62ym0cx+WDd99T-4LBh5V_h1YCfeag@mail.gmail.com>
+Subject: Re: [PATCH] kbuild: remove unnecessary export of RUST_LIB_SRC
+To: Masahiro Yamada <masahiroy@kernel.org>, Fiona Behrens <me@kloenk.de>
+Cc: linux-kbuild@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Alice Ryhl <aliceryhl@google.com>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Benno Lossin <benno.lossin@proton.me>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	Nathan Chancellor <nathan@kernel.org>, Nicolas Schier <nicolas@fjasle.eu>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 9/24/24 03:02, Boqun Feng wrote:
->> +
->> +int rust_helper_spin_trylock(spinlock_t *lock)
->> +{
->> +	return spin_trylock(lock);
->> +}
->> diff --git a/rust/kernel/sync/lock.rs b/rust/kernel/sync/lock.rs
->> index f6c34ca4d819..f4e51a5a1f23 100644
->> --- a/rust/kernel/sync/lock.rs
->> +++ b/rust/kernel/sync/lock.rs
->> @@ -58,6 +58,13 @@ unsafe fn init(
->>       #[must_use]
->>       unsafe fn lock(ptr: *mut Self::State) -> Self::GuardState;
->>   
->> +    /// Tries to acquire the lock without blocking.
-> As I suggested in v1, "without blocking" is not accurate here because
-> a lock can be a spinlock. So you can just remove it. I think the word
-> "Tries" itself implies "neither busy waiting nor blocking".
+On Fri, Sep 13, 2024 at 8:06=E2=80=AFPM Masahiro Yamada <masahiroy@kernel.o=
+rg> wrote:
+>
+> This code was added by this commit:
+>
+>   https://github.com/Rust-for-Linux/linux/commit/3f46885dc03ed2d750085b22=
+37078a1628323964
+>
+> Please me know if I am missing something.
 
-Actually a spinlock in a PREEMPT_RT kernel is a sleeping lock. Not all 
-people will associate "Tries" with not blocking. Anyway, I don't think 
-it is a problem with the "without blocking" phrase.
+I think it is OK -- unless Fiona recalls something:
+
+Acked-by: Miguel Ojeda <ojeda@kernel.org>
+Tested-by: Miguel Ojeda <ojeda@kernel.org>
+
+Thanks Masahiro for the simplification!
 
 Cheers,
-Longman
-
+Miguel
