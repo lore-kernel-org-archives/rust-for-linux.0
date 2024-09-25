@@ -1,469 +1,558 @@
-Received: from mail-wm1-f73.google.com (mail-wm1-f73.google.com [209.85.128.73])
+Received: from mail-lj1-f170.google.com (mail-lj1-f170.google.com [209.85.208.170])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1E0019F49D
-	for <rust-for-linux@vger.kernel.org>; Wed, 25 Sep 2024 15:03:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B146D146A63
+	for <rust-for-linux@vger.kernel.org>; Wed, 25 Sep 2024 15:06:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727276585; cv=none; b=Xe6buGxd1vPod/kNLriHTEqunL5cbQpD8W3bsiN7jeatUnZOLgs2RHApplpHkl7Q6rD10l/UEo4jfY+De0oEjuFEGKkMdYUKu2jBL1+xzTTG6H6XA8aDD5TRyd1GAIME77orKgEnWtzyujHmpplWr9rHOaOciSqIMesX+INB9Ec=
+	t=1727276789; cv=none; b=OTEn1cw9gclJUtDyGpoB8VenpLuAcvivQ2Sd1e+IIvVovdH7BDpBA9D8ZRtoHx0cuisAg2FHyWM6+AHEWsVO3CF/WjAjojj+iYuLQtiemSKG+YjK5hkrPfRB9kdKFPq9M+T4idX30cuMfhJdOoGwaJ0R9B/5+BgKcPuCrC7VTMc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727276585; c=relaxed/simple;
-	bh=YvM9TRdamHMMVDaQnr/PY1VL/3cpzPBrLHBshWo7LWw=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=gW2Ocd9oJIZCDzI/NFCA9O2feBc9PrJSsgHCdVWJJLlCvpliriupEym7bNSpvoJ8hDnqI7ENhiSIIE7xiKrHIpvTNMOo59u589LaR0hH6yVCBYNaDURcdeagJxqGgle7kbAcZLaEIv9Rzi+d2JDnWfV1Q1X4pqu2F8ASKFlofeM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ongWkgeN; arc=none smtp.client-ip=209.85.128.73
+	s=arc-20240116; t=1727276789; c=relaxed/simple;
+	bh=LUKbfunRecVuYfJ8G0Lir1SSiMNVQRMfYPtinEX6e/g=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=iudqBGJbrXQHYfPuE+73rTXIyQoW4neJ7LjYYJSuRNR6RaorS9T0g0JzrvZ8fXRuDcB0Vea70Lu7iRfHVmWh3jShIV9HpeJmt05umGiK5J1/O31TciME1cP1isro3HorwDNRaTkBmlNJSKZnrDl3lBCKcyc3gt0/zdFJ2cn9GUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=ASQu25Vc; arc=none smtp.client-ip=209.85.208.170
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ongWkgeN"
-Received: by mail-wm1-f73.google.com with SMTP id 5b1f17b1804b1-42cbcf60722so52510605e9.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 25 Sep 2024 08:03:02 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="ASQu25Vc"
+Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-2f75aaaade6so73786101fa.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 25 Sep 2024 08:06:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1727276581; x=1727881381; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=H/fxT1DdHMwMyeW8np4BBTWW8phQCD6XQ4SETP482c8=;
-        b=ongWkgeNEUsXO/yFix7MO/NjZ2xvYjoDtIUAZporkb9MuWeyH9GspZlyxNuptzMS9z
-         27Wcx+k6toKj75Lqn7eTnYkTBw2H2B/ooJKtEmb4PCjaA7tabdO0KaZ0MASZ2VwCe6tF
-         dCZWRxhB0Df0qIrum8EqqV+z13+lw9hhfUWtEGwpL0BsUWnrImwdQkmrlVuWFiGfgQHl
-         eZS6XOrp4ju9m/p48G2u5gOy3ga2/DqLQRrgaaVl4yJsa7a2bT7kHX5MYA4LyuWo4zSD
-         gRzCcLC+XGFxdW9bdOm28v1dXeZRvGrlwwA3ODwA2n6vokwpU4qtgvNJ+5kk0Dpe76FB
-         qzQg==
+        d=google.com; s=20230601; t=1727276785; x=1727881585; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=48tc8SG27vBYFvQ5zAQ542g7tFhfOjr7SSLh16Fe278=;
+        b=ASQu25VcLLmT3TfxI8sDgR1dPFtYFt+dKsmjPPpUY/TLrW8krfqP+g7Ih2rQKaVjTi
+         CpiOcW3k5WPs9BINKihcNqQ2/yzkmJuX84pYGuRnIdWNvxXkIyFcWTedFPM9YOkTTG8r
+         rdb0IoWw5PqroPX9dA2LwXlYBJDXi7No7Y3igKlX+hUfGRvfZncwLO/QPYHVJBFhWHD/
+         tG1RBJZ6zw7//OXusLo27+OdmSKclMLYB/1U5PbXAaSdKyp0+CjIDljBTqmWUp/aax+K
+         xzpie7xpJPnrPOQzmwhXrkh7kDPhIQtu3dGr9VXtgQ75j4l3w59+LY9TFOwQ50I3Pqr0
+         SazA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727276581; x=1727881381;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=H/fxT1DdHMwMyeW8np4BBTWW8phQCD6XQ4SETP482c8=;
-        b=XvdfBH+yIEOhbcmezP/7oqiCCNAPppxsj1/9FTGW2Mh3DxmHP0kVtPhcSXfxykJ9k0
-         Bmf5JT2MKkS2566OVZ3mQsRmscDsIwhbaxilzoJKJ8y44r5juSvwTo1N+ALbEzgilptd
-         WErybxToVvLzxPBmGls5XB0XBj/ZRqTAdIqlqEsNaz0eZvyG5nMnO98UNm37RbDC3/Xn
-         rseHEaw7QUbjDSa/ETAmKv2Jsj9FC7/qpvFctVEZ+RNu5bP1HnHTaEHy3nkkUknc7eq3
-         58ITDZMJqMlL6iIQZb1EFoMrJavQbgEzWe/yn2MQLDNNl5dFym47Hdd8YYAUbI4VYdrh
-         sISg==
-X-Forwarded-Encrypted: i=1; AJvYcCVXtuVDWT4vuGzOPCVTWoegnQRO2ZQZs+J018n+NO1K0O11W7ekPRWQJ2nKSjpBsDGYUDViDzDI4O7QG+FYrw==@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy8rfq4Pt0LOZlFkDkLiyb60wVt3qZmmqtDnEcRgpcBeE5oWecQ
-	IlgYr5V5CoSYl8Wtu5bUhO5Vcitnys2hJciFEB7NOSbtbTmL7Ubu7MFPSmH+upuWOFH7vA==
-X-Google-Smtp-Source: AGHT+IH1WYrW/UKZ6ngnkIpIsR2dgkaJ0zFY0ft3XgXQ0QWdCfqsR4NIFZKbE/zMO6K3p2uoWgwYBDA5
-X-Received: from palermo.c.googlers.com ([fda3:e722:ac3:cc00:7b:198d:ac11:8138])
- (user=ardb job=sendgmr) by 2002:a05:600c:5709:b0:42c:a879:3d0f with SMTP id
- 5b1f17b1804b1-42e960af3c0mr226185e9.0.1727276581262; Wed, 25 Sep 2024
- 08:03:01 -0700 (PDT)
-Date: Wed, 25 Sep 2024 17:01:28 +0200
-In-Reply-To: <20240925150059.3955569-30-ardb+git@google.com>
+        d=1e100.net; s=20230601; t=1727276785; x=1727881585;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=48tc8SG27vBYFvQ5zAQ542g7tFhfOjr7SSLh16Fe278=;
+        b=YyeuM6kLjwRNkJdJ3Jc+HJtAWsagEgqMMgcTDgUt0tI6qwIzJ3lqU6jiTO/nNzmqMx
+         YHKoiLOJ32mDUBo6VwKJAl3mWoICUyWSmM90nGGBs97LzXh723RFpMs851GxcAvgwr6h
+         wLxSmnwTOZXUCuvStl3UdLn2J3aF88n+DbQp5XDfYDgBykHDOoxlTHPqZIVva0XaShI9
+         yXoQULEtNzJqHQI+ULYppmrKJnYJ25VP9nVrZYJyRZfuepV3xNwEz+g8E1c4KYEsXASM
+         91ycX5Qr6dSuHryAVpGuM6IjVvqe1kLu0QjeKTYkj1UEfRBwuWAGH3xnxtB2+LmZSOiu
+         G9qA==
+X-Forwarded-Encrypted: i=1; AJvYcCW1+HGRnJTs7jGOqA8q8JzNekdj6DY7Dhv1/12fH5EwIyYK/MJRcSwI/sHzlfiswvucFRmKyjorjc8DF12FbQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyGGsEzcjqwNFPruwuJGZVBBIvVb/Le1tp3bm3mih7T0mnFMxXZ
+	xZUB/KXdaGKd5WEpbaDpylCYA2aUTV4qHGR6TvsRJEB5jNGHmD91lZ10D6ehLsY0N2QKR+Wq+wn
+	2V4joXjZEEG8ABDMBGcuRne90dPyrSqEeE4TNHoRDdHLa8Uvg87f+
+X-Google-Smtp-Source: AGHT+IF7Q966CidmsWMMn+XFu0HxutWsKfg6Bw/SWMj3O7CxaP2N7VqvVpZyQ4TtcjFOeET21JVaARUAO/17q5KdgGo=
+X-Received: by 2002:a2e:a985:0:b0:2ef:1db2:c02c with SMTP id
+ 38308e7fff4ca-2f915fe71f9mr22285521fa.10.1727276784326; Wed, 25 Sep 2024
+ 08:06:24 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20240925150059.3955569-30-ardb+git@google.com>
-X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-X-Developer-Signature: v=1; a=openpgp-sha256; l=11373; i=ardb@kernel.org;
- h=from:subject; bh=vOsRO/wusTOgSIMrTbPQkuvbTEvedgqm5gFKQyyQ6LE=;
- b=owGbwMvMwCFmkMcZplerG8N4Wi2JIe2L6uU7KcXh52pbo2UXaeZq6U587fAt6o/qk6KOindLu
- xmSJDk6SlkYxDgYZMUUWQRm/3238/REqVrnWbIwc1iZQIYwcHEKwES8vjP8D6r8/Whqj0Ue89/g
- jLlev1knyS9cOWlNtI5Y6rLiT9GiiYwMF5pPLt85df5ck61Kskef/1wi37sr+6Xjrf+r3xWdTEj U5wUA
-X-Mailer: git-send-email 2.46.0.792.g87dc391469-goog
-Message-ID: <20240925150059.3955569-58-ardb+git@google.com>
-Subject: [RFC PATCH 28/28] x86/tools: Drop x86_64 support from 'relocs' tool
-From: Ard Biesheuvel <ardb+git@google.com>
-To: linux-kernel@vger.kernel.org
-Cc: Ard Biesheuvel <ardb@kernel.org>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
-	Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, Uros Bizjak <ubizjak@gmail.com>, 
-	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, Christoph Lameter <cl@linux.com>, 
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, Paolo Bonzini <pbonzini@redhat.com>, 
-	Vitaly Kuznetsov <vkuznets@redhat.com>, Juergen Gross <jgross@suse.com>, 
-	Boris Ostrovsky <boris.ostrovsky@oracle.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arnd Bergmann <arnd@arndb.de>, 
-	Masahiro Yamada <masahiroy@kernel.org>, Kees Cook <kees@kernel.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Keith Packard <keithp@keithp.com>, 
-	Justin Stitt <justinstitt@google.com>, Josh Poimboeuf <jpoimboe@kernel.org>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Jiri Olsa <jolsa@kernel.org>, 
-	Ian Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, 
-	Kan Liang <kan.liang@linux.intel.com>, linux-doc@vger.kernel.org, 
-	linux-pm@vger.kernel.org, kvm@vger.kernel.org, xen-devel@lists.xenproject.org, 
-	linux-efi@vger.kernel.org, linux-arch@vger.kernel.org, 
-	linux-sparse@vger.kernel.org, linux-kbuild@vger.kernel.org, 
-	linux-perf-users@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	llvm@lists.linux.dev
+MIME-Version: 1.0
+References: <20240912-shrinker-v1-1-18b7f1253553@google.com>
+ <ZuefFhomRvqtFzSn@dread.disaster.area> <CAH5fLgjRuGZWMRWTbmS5w+eLG1kPQNo95c6E6db9y8nUt2RH2A@mail.gmail.com>
+ <ZujilxJumUAafp+3@dread.disaster.area>
+In-Reply-To: <ZujilxJumUAafp+3@dread.disaster.area>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Wed, 25 Sep 2024 17:06:12 +0200
+Message-ID: <CAH5fLghMi+CHs=UOJCs+COi3rOq6Bhi4ZkiVwcYC+fKwXmGmOA@mail.gmail.com>
+Subject: Re: [PATCH] rust: shrinker: add shrinker abstraction
+To: Dave Chinner <david@fromorbit.com>
+Cc: Miguel Ojeda <ojeda@kernel.org>, Andrew Morton <akpm@linux-foundation.org>, 
+	Qi Zheng <zhengqi.arch@bytedance.com>, Roman Gushchin <roman.gushchin@linux.dev>, 
+	Muchun Song <muchun.song@linux.dev>, Boqun Feng <boqun.feng@gmail.com>, 
+	Gary Guo <gary@garyguo.net>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, linux-mm@kvack.org, 
+	rust-for-linux@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Ard Biesheuvel <ardb@kernel.org>
+On Tue, Sep 17, 2024 at 3:59=E2=80=AFAM Dave Chinner <david@fromorbit.com> =
+wrote:
+>
+> On Mon, Sep 16, 2024 at 12:22:40PM +0200, Alice Ryhl wrote:
+> > On Mon, Sep 16, 2024 at 4:59=E2=80=AFAM Dave Chinner <david@fromorbit.c=
+om> wrote:
+> > >
+> > > On Thu, Sep 12, 2024 at 09:54:01AM +0000, Alice Ryhl wrote:
+> > > > Rust Binder holds incoming transactions in a read-only mmap'd regio=
+n
+> > > > where it manually manages the pages. These pages are only in use un=
+til
+> > > > the incoming transaction is consumed by userspace, but the kernel w=
+ill
+> > > > keep the pages around for future transactions. Rust Binder register=
+s a
+> > > > shrinker with the kernel so that it can give back these pages if th=
+e
+> > > > system comes under memory pressure.
+> > > >
+> > > > Separate types are provided for registered and unregistered shrinke=
+rs.
+> > > > The unregistered shrinker type can be used to configure the shrinke=
+r
+> > > > before registering it. Separating it into two types also enables th=
+e
+> > > > user to construct the private data between the calls to `shrinker_a=
+lloc`
+> > > > and `shrinker_register` and avoid constructing the private data if
+> > > > allocating the shrinker fails.
+> > >
+> > > This seems a bit nasty. It appears to me that the code does an
+> > > unsafe copy of the internal shrinker state between the unregistered
+> > > and registered types. Shrinkers have additional internal state when
+> > > SHRINKER_MEMCG_AWARE and/or SHRINKER_NUMA_AWARE flags are set,
+> > > and this abstraction doesn't seem to handle either those flags or
+> > > the internal state they use at all.
+> >
+> > Doing an unsafe copy of the internal shrinker state is certainly not
+> > my intent. The UnregisteredShrinker and RegisteredShrinker types just
+> > wrap a non-null pointer, so the moves inside `register` are not copies
+> > of the whole `struct shrinker` but just copies of a pointer to the
+> > shrinker.
+>
+> So you're playing type casting games with the same structure just to
+> avoid the potential doing a little bit of unnecessary work in an
+> error situation?
+>
+> This all seems rather convoluted and largely unnecessary to me as
+> the shrinker_free() C code transparent handles both registered and
+> unregistered shrinkers being passed to it. There really is no
+> difference between the two cases in terms of error handling and
+> teardown....
 
-The relocs tool is no longer used on vmlinux, which is the only 64-bit
-ELF executable that it used to operate on in the 64-bit build. (It is
-still used for parts of the decompressor)
+Well another thing it does is make it possible to specify shrinker
+without making it mandatory. I don't think it's so bad to have a
+builder type, but I can drop it if you prefer that.
 
-So drop the 64-bit handling - it is dead code now.
+If we replace the builder with a single function for constructing it,
+then we need to pick one of:
+* Not accept a value for "seeks" at all.
+* Always require an explicit value for "seeks".
+* Make a "shrinker options" struct that we can pass to the constructor.
+* Have multiple constructors.
 
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
----
- arch/x86/tools/Makefile        |   2 +-
- arch/x86/tools/relocs.c        | 178 +-------------------
- arch/x86/tools/relocs.h        |   9 +-
- arch/x86/tools/relocs_64.c     |  18 --
- arch/x86/tools/relocs_common.c |  11 +-
- 5 files changed, 9 insertions(+), 209 deletions(-)
+> > > > +impl UnregisteredShrinker {
+> > > > +    /// Create a new shrinker.
+> > > > +    pub fn alloc(name: &CStr) -> Result<Self, AllocError> {
+> > > > +        // SAFETY: Passing `0` as flags is okay. Using `%s` as the=
+ format string is okay when we
+> > > > +        // pass a nul-terminated string as the string for `%s` to =
+print.
+> > > > +        let ptr =3D
+> > > > +            unsafe { bindings::shrinker_alloc(0, c_str!("%s").as_c=
+har_ptr(), name.as_char_ptr()) };
+> > >
+> > > This passes flags as 0, so doesn't support SHRINKER_MEMCG_AWARE or
+> > > SHRINKER_NUMA_AWARE shrinker variants. These flags should be
+> > > passed through here.
+> >
+> > I don't have a user for memcg/numa aware shrinkers in Rust, which is
+> > why I did not extend these abstractions to support them. However, if
+> > you would like me to, I'm happy to do so.
+>
+> Please do. A partial implementation only makes it harder for the
+> next person to use the API....
 
-diff --git a/arch/x86/tools/Makefile b/arch/x86/tools/Makefile
-index 7278e2545c35..f7d12a9dccfc 100644
---- a/arch/x86/tools/Makefile
-+++ b/arch/x86/tools/Makefile
-@@ -40,7 +40,7 @@ $(obj)/insn_sanity.o: $(srctree)/tools/arch/x86/lib/insn.c $(srctree)/tools/arch
- 
- HOST_EXTRACFLAGS += -I$(srctree)/tools/include
- hostprogs	+= relocs
--relocs-objs     := relocs_32.o relocs_64.o relocs_common.o
-+relocs-objs     := relocs_32.o relocs_common.o
- PHONY += relocs
- relocs: $(obj)/relocs
- 	@:
-diff --git a/arch/x86/tools/relocs.c b/arch/x86/tools/relocs.c
-index 22c2d3f07a57..ff5578e63ff8 100644
---- a/arch/x86/tools/relocs.c
-+++ b/arch/x86/tools/relocs.c
-@@ -28,12 +28,7 @@ struct relocs {
- static struct relocs		relocs16;
- static struct relocs		relocs32;
- 
--#if ELF_BITS == 64
--static struct relocs		relocs64;
--# define FMT PRIu64
--#else
- # define FMT PRIu32
--#endif
- 
- struct section {
- 				Elf_Shdr         shdr;
-@@ -86,10 +81,6 @@ static const char * const	sym_regex_kernel[S_NSYMTYPES] = {
- 	"__end_rodata_aligned|"
- 	"__initramfs_start|"
- 	"(jiffies|jiffies_64)|"
--#if ELF_BITS == 64
--	"__per_cpu_load|"
--	"__end_rodata_hpage_align|"
--#endif
- 	"__vvar_page|"
- 	"_end)$"
- };
-@@ -210,27 +201,6 @@ static const char *rel_type(unsigned type)
- {
- 	static const char *type_name[] = {
- #define REL_TYPE(X) [X] = #X
--#if ELF_BITS == 64
--		REL_TYPE(R_X86_64_NONE),
--		REL_TYPE(R_X86_64_64),
--		REL_TYPE(R_X86_64_PC64),
--		REL_TYPE(R_X86_64_PC32),
--		REL_TYPE(R_X86_64_GOT32),
--		REL_TYPE(R_X86_64_PLT32),
--		REL_TYPE(R_X86_64_COPY),
--		REL_TYPE(R_X86_64_GLOB_DAT),
--		REL_TYPE(R_X86_64_JUMP_SLOT),
--		REL_TYPE(R_X86_64_RELATIVE),
--		REL_TYPE(R_X86_64_GOTPCREL),
--		REL_TYPE(R_X86_64_GOTPCRELX),
--		REL_TYPE(R_X86_64_REX_GOTPCRELX),
--		REL_TYPE(R_X86_64_32),
--		REL_TYPE(R_X86_64_32S),
--		REL_TYPE(R_X86_64_16),
--		REL_TYPE(R_X86_64_PC16),
--		REL_TYPE(R_X86_64_8),
--		REL_TYPE(R_X86_64_PC8),
--#else
- 		REL_TYPE(R_386_NONE),
- 		REL_TYPE(R_386_32),
- 		REL_TYPE(R_386_PC32),
-@@ -246,7 +216,6 @@ static const char *rel_type(unsigned type)
- 		REL_TYPE(R_386_PC8),
- 		REL_TYPE(R_386_16),
- 		REL_TYPE(R_386_PC16),
--#endif
- #undef REL_TYPE
- 	};
- 	const char *name = "unknown type rel type name";
-@@ -312,19 +281,9 @@ static uint32_t elf32_to_cpu(uint32_t val)
- #define elf_half_to_cpu(x)	elf16_to_cpu(x)
- #define elf_word_to_cpu(x)	elf32_to_cpu(x)
- 
--#if ELF_BITS == 64
--static uint64_t elf64_to_cpu(uint64_t val)
--{
--        return le64_to_cpu(val);
--}
--# define elf_addr_to_cpu(x)	elf64_to_cpu(x)
--# define elf_off_to_cpu(x)	elf64_to_cpu(x)
--# define elf_xword_to_cpu(x)	elf64_to_cpu(x)
--#else
- # define elf_addr_to_cpu(x)	elf32_to_cpu(x)
- # define elf_off_to_cpu(x)	elf32_to_cpu(x)
- # define elf_xword_to_cpu(x)	elf32_to_cpu(x)
--#endif
- 
- static int sym_index(Elf_Sym *sym)
- {
-@@ -515,10 +474,7 @@ static void print_absolute_symbols(void)
- 	int i;
- 	const char *format;
- 
--	if (ELF_BITS == 64)
--		format = "%5d %016"PRIx64" %5"PRId64" %10s %10s %12s %s\n";
--	else
--		format = "%5d %08"PRIx32"  %5"PRId32" %10s %10s %12s %s\n";
-+	format = "%5d %08"PRIx32"  %5"PRId32" %10s %10s %12s %s\n";
- 
- 	printf("Absolute symbols\n");
- 	printf(" Num:    Value Size  Type       Bind        Visibility  Name\n");
-@@ -559,10 +515,7 @@ static void print_absolute_relocs(void)
- 	int i, printed = 0;
- 	const char *format;
- 
--	if (ELF_BITS == 64)
--		format = "%016"PRIx64" %016"PRIx64" %10s %016"PRIx64"  %s\n";
--	else
--		format = "%08"PRIx32" %08"PRIx32" %10s %08"PRIx32"  %s\n";
-+	format = "%08"PRIx32" %08"PRIx32" %10s %08"PRIx32"  %s\n";
- 
- 	for (i = 0; i < shnum; i++) {
- 		struct section *sec = &secs[i];
-@@ -694,104 +647,6 @@ static void walk_relocs(int (*process)(struct section *sec, Elf_Rel *rel,
- 	}
- }
- 
--#if ELF_BITS == 64
--
--static int do_reloc64(struct section *sec, Elf_Rel *rel, ElfW(Sym) *sym,
--		      const char *symname)
--{
--	unsigned r_type = ELF64_R_TYPE(rel->r_info);
--	ElfW(Addr) offset = rel->r_offset;
--	int shn_abs = (sym->st_shndx == SHN_ABS) && !is_reloc(S_REL, symname);
--
--	if (sym->st_shndx == SHN_UNDEF)
--		return 0;
--
--	switch (r_type) {
--	case R_X86_64_NONE:
--		/* NONE can be ignored. */
--		break;
--
--	case R_X86_64_PC32:
--	case R_X86_64_PLT32:
--		/*
--		 * PC relative relocations don't need to be adjusted.
--		 *
--		 * NB: R_X86_64_PLT32 can be treated as R_X86_64_PC32.
--		 */
--		break;
--
--	case R_X86_64_PC64:
--		/*
--		 * Only used by jump labels
--		 */
--		break;
--
--	case R_X86_64_32:
--	case R_X86_64_32S:
--	case R_X86_64_64:
--	case R_X86_64_GOTPCREL:
--		if (shn_abs) {
--			/*
--			 * Whitelisted absolute symbols do not require
--			 * relocation.
--			 */
--			if (is_reloc(S_ABS, symname))
--				break;
--
--			die("Invalid absolute %s relocation: %s\n", rel_type(r_type), symname);
--			break;
--		}
--
--		if (r_type == R_X86_64_GOTPCREL) {
--			Elf_Shdr *s = &secs[sec->shdr.sh_info].shdr;
--			unsigned file_off = offset - s->sh_addr + s->sh_offset;
--
--			/*
--			 * GOTPCREL relocations refer to instructions that load
--			 * a 64-bit address via a 32-bit relative reference to
--			 * the GOT.  In this case, it is the GOT entry that
--			 * needs to be fixed up, not the immediate offset in
--			 * the opcode. Note that the linker will have applied an
--			 * addend of -4 to compensate for the delta between the
--			 * relocation offset and the value of RIP when the
--			 * instruction executes, and this needs to be backed out
--			 * again. (Addends other than -4 are permitted in
--			 * principle, but make no sense in practice so they are
--			 * not supported.)
--                         */
--			if (rel->r_addend != -4) {
--				die("invalid addend (%ld) for %s relocation: %s\n",
--				    rel->r_addend, rel_type(r_type), symname);
--				break;
--			}
--			offset += 4 + (int32_t)get_unaligned_le32(elf_image + file_off);
--		}
--
--		/*
--		 * Relocation offsets for 64 bit kernels are output
--		 * as 32 bits and sign extended back to 64 bits when
--		 * the relocations are processed.
--		 * Make sure that the offset will fit.
--		 */
--		if ((int32_t)offset != (int64_t)offset)
--			die("Relocation offset doesn't fit in 32 bits\n");
--
--		if (r_type == R_X86_64_64 || r_type == R_X86_64_GOTPCREL)
--			add_reloc(&relocs64, offset);
--		else
--			add_reloc(&relocs32, offset);
--		break;
--
--	default:
--		die("Unsupported relocation type: %s (%d)\n", rel_type(r_type), r_type);
--		break;
--	}
--
--	return 0;
--}
--
--#else
--
- static int do_reloc32(struct section *sec, Elf_Rel *rel, Elf_Sym *sym,
- 		      const char *symname)
- {
-@@ -902,8 +757,6 @@ static int do_reloc_real(struct section *sec, Elf_Rel *rel, Elf_Sym *sym, const
- 	return 0;
- }
- 
--#endif
--
- static int cmp_relocs(const void *va, const void *vb)
- {
- 	const uint32_t *a, *b;
-@@ -939,17 +792,10 @@ static void emit_relocs(int as_text, int use_real_mode)
- 	int (*write_reloc)(uint32_t, FILE *) = write32;
- 	int (*do_reloc)(struct section *sec, Elf_Rel *rel, Elf_Sym *sym, const char *symname);
- 
--#if ELF_BITS == 64
--	if (!use_real_mode)
--		do_reloc = do_reloc64;
--	else
--		die("--realmode not valid for a 64-bit ELF file");
--#else
- 	if (!use_real_mode)
- 		do_reloc = do_reloc32;
- 	else
- 		do_reloc = do_reloc_real;
--#endif
- 
- 	/* Collect up the relocations */
- 	walk_relocs(do_reloc);
-@@ -959,11 +805,7 @@ static void emit_relocs(int as_text, int use_real_mode)
- 
- 	/* Order the relocations for more efficient processing */
- 	sort_relocs(&relocs32);
--#if ELF_BITS == 64
--	sort_relocs(&relocs64);
--#else
- 	sort_relocs(&relocs16);
--#endif
- 
- 	/* Print the relocations */
- 	if (as_text) {
-@@ -984,16 +826,6 @@ static void emit_relocs(int as_text, int use_real_mode)
- 		for (i = 0; i < relocs32.count; i++)
- 			write_reloc(relocs32.offset[i], stdout);
- 	} else {
--#if ELF_BITS == 64
--		/* Print a stop */
--		write_reloc(0, stdout);
--
--		/* Now print each relocation */
--		for (i = 0; i < relocs64.count; i++)
--			if (!i || relocs64.offset[i] != relocs64.offset[i - 1])
--				write_reloc(relocs64.offset[i], stdout);
--#endif
--
- 		/* Print a stop */
- 		write_reloc(0, stdout);
- 
-@@ -1027,12 +859,6 @@ static void print_reloc_info(void)
- 	walk_relocs(do_reloc_info);
- }
- 
--#if ELF_BITS == 64
--# define process process_64
--#else
--# define process process_32
--#endif
--
- void process(FILE *fp, int use_real_mode, int as_text,
- 	     int show_absolute_syms, int show_absolute_relocs,
- 	     int show_reloc_info)
-diff --git a/arch/x86/tools/relocs.h b/arch/x86/tools/relocs.h
-index 7a509604ff92..ef9eec96bd62 100644
---- a/arch/x86/tools/relocs.h
-+++ b/arch/x86/tools/relocs.h
-@@ -32,10 +32,7 @@ enum symtype {
- 	S_NSYMTYPES
- };
- 
--void process_32(FILE *fp, int use_real_mode, int as_text,
--		int show_absolute_syms, int show_absolute_relocs,
--		int show_reloc_info);
--void process_64(FILE *fp, int use_real_mode, int as_text,
--		int show_absolute_syms, int show_absolute_relocs,
--		int show_reloc_info);
-+void process(FILE *fp, int use_real_mode, int as_text,
-+	     int show_absolute_syms, int show_absolute_relocs,
-+	     int show_reloc_info);
- #endif /* RELOCS_H */
-diff --git a/arch/x86/tools/relocs_64.c b/arch/x86/tools/relocs_64.c
-deleted file mode 100644
-index 9029cb619cb1..000000000000
---- a/arch/x86/tools/relocs_64.c
-+++ /dev/null
-@@ -1,18 +0,0 @@
--// SPDX-License-Identifier: GPL-2.0
--#include "relocs.h"
--
--#define ELF_BITS 64
--
--#define ELF_MACHINE             EM_X86_64
--#define ELF_MACHINE_NAME        "x86_64"
--#define SHT_REL_TYPE            SHT_RELA
--#define Elf_Rel                 Elf64_Rela
--
--#define ELF_CLASS               ELFCLASS64
--#define ELF_R_SYM(val)          ELF64_R_SYM(val)
--#define ELF_R_TYPE(val)         ELF64_R_TYPE(val)
--#define ELF_ST_TYPE(o)          ELF64_ST_TYPE(o)
--#define ELF_ST_BIND(o)          ELF64_ST_BIND(o)
--#define ELF_ST_VISIBILITY(o)    ELF64_ST_VISIBILITY(o)
--
--#include "relocs.c"
-diff --git a/arch/x86/tools/relocs_common.c b/arch/x86/tools/relocs_common.c
-index 6634352a20bc..167985ecd544 100644
---- a/arch/x86/tools/relocs_common.c
-+++ b/arch/x86/tools/relocs_common.c
-@@ -72,14 +72,9 @@ int main(int argc, char **argv)
- 		die("Cannot read %s: %s", fname, strerror(errno));
- 	}
- 	rewind(fp);
--	if (e_ident[EI_CLASS] == ELFCLASS64)
--		process_64(fp, use_real_mode, as_text,
--			   show_absolute_syms, show_absolute_relocs,
--			   show_reloc_info);
--	else
--		process_32(fp, use_real_mode, as_text,
--			   show_absolute_syms, show_absolute_relocs,
--			   show_reloc_info);
-+	process(fp, use_real_mode, as_text,
-+		show_absolute_syms, show_absolute_relocs,
-+		show_reloc_info);
- 	fclose(fp);
- 	return 0;
- }
--- 
-2.46.0.792.g87dc391469-goog
+Alright.
 
+> > It is easy to add a flags
+> > argument to this method, but I imagine they also need a few other
+> > additions elsewhere in the API to really be supported?
+>
+> In the shrinker API, nothing extra needs to be done.
+>
+> If you haven't added bindings to the list_lru interfaces yet, then
+> you are going to need to, including the memcg and numa aware
+> interfaces for that.
+
+I'm not familiar with the memcg/numa aware interfaces for list_lru, as
+I only know about Binder's usage. Is there a good example of using
+them somewhere?
+
+Or does it not require anything beyond just adding Rust versions of
+list_lru_shrink_walk and list_lru_shrink_count that accept a
+ShrinkControl from a shrinker?
+
+> > Now that I think about it, perhaps Binder's shrinker *could* be memcg
+> > aware? It uses the list_lru abstraction, and currently calls
+> > `list_lru_count` in `count_objects`, but maybe we could just use
+> > `list_lru_shrink_count` instead and magically become memcg aware ...?
+>
+> The scan code also needs to use list_lru_shrink_walk(), too,
+> not list_lru_walk().
+>
+> And, yes, that's really the whole point of the list_lru abstraction -
+> almost nothing extra needs to be done to enable both NUMA and memcg
+> based reclaim context support for a cache once it's been converted
+> to use list_lru for tracking reclaimable objects.
+
+If it's that easy, then that's great!
+
+> > > > +    /// Set the number of seeks needed to recreate an object.
+> > > > +    pub fn set_seeks(&mut self, seeks: u32) {
+> > > > +        unsafe { (*self.shrinker.as_ptr()).seeks =3D seeks as c_in=
+t };
+> > > > +    }
+> > >
+> > > Seems kinda weird to have a separate function for setting seeks,
+> > > when...
+> > >
+> > > > +
+> > > > +    /// Register the shrinker.
+> > > > +    ///
+> > > > +    /// The provided pointer is used as the private data, and the =
+type `T` determines the callbacks
+> > > > +    /// that the shrinker will use.
+> > > > +    pub fn register<T: Shrinker>(self, private_data: T::Ptr) -> Re=
+gisteredShrinker<T> {
+> > >
+> > > .... all the other data needed to set up a shrinker is provided to
+> > > this function....
+> > >
+> > > > +        let shrinker =3D self.shrinker;
+> > > > +        let ptr =3D shrinker.as_ptr();
+> > > > +
+> > > > +        // The destructor of `self` calls `shrinker_free`, so skip=
+ the destructor.
+> > > > +        core::mem::forget(self);
+> > > > +
+> > > > +        let private_data_ptr =3D <T::Ptr as ForeignOwnable>::into_=
+foreign(private_data);
+> > > > +
+> > > > +        // SAFETY: We own the private data, so we can assign to it=
+.
+> > > > +        unsafe { (*ptr).private_data =3D private_data_ptr.cast_mut=
+() };
+> > > > +        // SAFETY: The shrinker is not yet registered, so we can u=
+pdate this field.
+> > > > +        unsafe { (*ptr).count_objects =3D Some(rust_count_objects:=
+:<T>) };
+> > > > +        // SAFETY: The shrinker is not yet registered, so we can u=
+pdate this field.
+> > > > +        unsafe { (*ptr).scan_objects =3D Some(rust_scan_objects::<=
+T>) };
+> > >
+> > > .... and implemented exactly the same way.
+> >
+> > Well .. this design makes setting `seeks` optional, but `private_data`
+> > mandatory. We *have* to set the two function pointers, but you don't
+> > have to set `seeks` explicitly.
+> >
+> > It's not obvious, so it's probably worth mentioning that this design
+> > doesn't actually require you to make an allocation and store a real
+> > pointer in the private data.
+>
+> Yes, definitely worth mentioning, because I think we need to require
+> new shrinkers to provide a direct pointer to the context the
+> shrinker will operate on. We want to move away from anonymous
+> "global" shrinkers that don't provide a context for the shrinker to
+> operation on for a number of reasons...
+>
+> If we change the C code to work this way, then the private pointer
+> in the rust binding will become mandatory. Hence it might be worth
+> making the rust bindings and shrinker implementations behave this
+> way from the start....
+
+Thanks for the context. That is good to know.
+
+> > When implementing the Shrinker trait for
+> > your custom shrinker, you have to choose which pointer type to use. If
+> > you choose the unit type `()` as the pointer type, then no real
+> > pointer is actually stored.
+> >
+> > > > +/// How many objects are there in the cache?
+> > > > +///
+> > > > +/// This is used as the return value of [`Shrinker::count_objects`=
+].
+> > > > +pub struct CountObjects {
+> > > > +    inner: c_ulong,
+> > > > +}
+> > > > +
+> > > > +impl CountObjects {
+> > > > +    /// Indicates that the number of objects is unknown.
+> > > > +    pub const UNKNOWN: Self =3D Self { inner: 0 };
+> > > > +
+> > > > +    /// Indicates that the number of objects is zero.
+> > > > +    pub const EMPTY: Self =3D Self {
+> > > > +        inner: SHRINK_EMPTY,
+> > > > +    };
+> > > > +
+> > > > +    /// The maximum possible number of freeable objects.
+> > > > +    pub const MAX: Self =3D Self {
+> > > > +        // The shrinker code assumes that it can multiply this val=
+ue by two without overflow.
+> > > > +        inner: c_ulong::MAX / 2,
+> > > > +    };
+> > > > +
+> > > > +    /// Creates a new `CountObjects` with the given value.
+> > > > +    pub fn from_count(count: usize) -> Self {
+> > > > +        if count =3D=3D 0 {
+> > > > +            return Self::EMPTY;
+> > > > +        }
+> > >
+> > > No. A return count of 0 is not the same as a return value of
+> > > SHRINK_EMPTY.
+> > >
+> > > A return value of 0 means "no reclaim work can be done right now".
+> > >
+> > > This implies that there are objects that can be reclaimed in the near
+> > > future, but right now they are unavailable for reclaim. This can be
+> > > due to a trylock protecting the count operation failing, the all the
+> > > objects in the cache being dirty and needing work to be done before
+> > > they can be reclaimed, etc.
+> > >
+> > > A return value of SHRINK_EMPTY means "there are no reclaimable
+> > > objects at all".
+> > >
+> > > This implies that the cache is empty - it has absolutely nothing in
+> > > it that can be reclaimed either now or in the near future.
+> > >
+> > > These two return values are treated very differently by the high
+> > > level code. SHRINK_EMPTY is used by shrink_slab_memcg() to maintain
+> > > a "shrinker needs to run" bit in the memcg shrinker search bitmap.
+> > > The bit is cleared when SHRINK_EMPTY is returned, meaning the
+> > > shrinker will not get called again until a new object is queued
+> > > to it's LRU. This sets the "shrinker needs to run" bit again, and
+> > > so the shrinker will run next time shrink_slab_memcg() is called.
+> > >
+> > > In constrast, a return value of zero (i.e. no work to be done right
+> > > now) does not change the "shrinker needs to run" state bit, and
+> > > hence it will always be called the next time the shrink_slab_memcg()
+> > > is run to try to reclaim objects from that memcg shrinker...
+> >
+> > This is a part of the API that I was pretty unsure about, so very
+> > happy to get your input. For both of the shrinkers I am familiar with,
+> > they know the exact count of objects and there's no error case for any
+> > lock. The shrinkers just return the exact count directly from
+> > count_objects, but that seemed incorrect to me, as this means that the
+> > shrinker returns 0 when it really should return SHRINK_EMPTY.
+>
+> Yes, they should be returning SHRINK_EMPTY and not 0 in this case.
+> See super_cache_count() for example.
+
+Okay.
+
+> > That's
+> > why I implemented `from_count` this way - the intent is that you use
+> > `CountObjects::from_count` when you know the exact count, so if you
+> > pass 0 to that method, then that means the shrinker really is empty.
+> > If you don't know what the count is, then you return
+> > `CountObjects::UNKNOWN` instead.
+>
+> Understood, and I see your point. I think it's a good approach to
+> take, but I don't think that the rust binding implementation is the
+> appropriate place to introduce such API/semantic enhancements.
+>
+> I would really like to avoid the situation where rust-based
+> shrinkers have explicitly different API and behavioural semantics to
+> the C shrinkers. Hence I would prefer the rust bindings to implement
+> the existing C semantics and then, as a separate piece of work, we
+> move everything (both C and Rust) to the new set of semantics as a
+> single changeset.
+>
+> I know that is more difficult to do and co-ordinate, but I think we
+> are going to be much better off in the long run if we start from a
+> common base and then make improvements to both sides of the API at
+> the same time. Note that I'm not asking you to change all the C code
+> here - I can certainly help there - but I am asking that we try
+> really hard to keep APIs and behavioural semantics as close together
+> as possible.
+
+That is reasonable. What do you prefer that I do with the CountObjects
+type I have now? I can change it to this:
+
+* CountObjects::EMPTY
+* CountObjects::new(number)
+
+Where `new` just uses the provided number as-is (unless it's too big).
+
+I can also get rid of the CountObjects type entirely.
+
+> > That said, I guess there is some reason that the C shrinker API is
+> > designed to use the value 0 for unknown rather than empty, so perhaps
+> > I should not try to do it differently.
+>
+> No reason, it just evolved organically that way over the past decade
+> - SHRINK_EMPTY was introduced (historically speaking) fairly
+> recently and only propogated into the shrinkers that needed to set
+> it (i.e. the memcg aware shrinkers).
+>
+> This is the sort of API fragmentation I would like us to avoid - I
+> don't want to see some shrinkers with SHRINK_EMPTY, some with 0, and
+> then yet another new subset with UNKNOWN, yet all largely meaning
+> the same thing in a global shrinker context but 2 of the three types
+> being incorrect in a memcg shrinker context...
+
+Yeah, that makes sense. I'm on board with keeping things consistent.
+
+> > > > +impl ScanObjects {
+> > > > +    /// Indicates that the shrinker should stop trying to free obj=
+ects from this cache due to
+> > > > +    /// potential deadlocks.
+> > > > +    pub const STOP: Self =3D Self { inner: SHRINK_STOP };
+> > > > +
+> > > > +    /// The maximum possible number of freeable objects.
+> > > > +    pub const MAX: Self =3D Self {
+> > > > +        // The shrinker code assumes that it can multiply this val=
+ue by two without overflow.
+> > > > +        inner: c_ulong::MAX / 2,
+> > >
+> > > No it doesn't. This is purely a count of objects freed by the
+> > > shrinker.
+> >
+> > In mm/shrinker.c it multiplies by two here:
+> > total_scan =3D min(total_scan, (2 * freeable));
+>
+> freeable is derived from the return of ->count_objects, not
+> from ->scan_objects (i.e. it is a CountObjects type, not a
+> ScanObjects type).
+>
+> ->scan_objects() returns SHRINK_STOP to indicate that scanning
+> should stop immediately or the number of objects freed. The only
+> thing that is done with value other than SHRINK_STOP is to aggregate
+> it across repeated calls to ->scan_objects().
+
+Fair point. I can change the maximum to SHRINK_STOP-1. Or do you want
+me to get rid of it completely?
+
+> > > > +    /// Determines whether it is safe to recurse into filesystem c=
+ode.
+> > > > +    pub fn gfp_fs(&self) -> bool {
+> > > > +        // SAFETY: Okay by type invariants.
+> > > > +        let mask =3D unsafe { (*self.ptr.as_ptr()).gfp_mask };
+> > > > +
+> > > > +        (mask & bindings::__GFP_FS) !=3D 0
+> > > > +    }
+> > >
+> > > This needs a check for __GFP_IO as well, as there are block layer
+> > > shrinkers that need to be GFP_NOIO aware...
+> >
+> > Would you prefer that I add additional methods, or that I modify this
+> > method to also check __GFP_IO, or that I just expose a way to get the
+> > `gfp_mask` value directly?
+>
+> If it was C code, I would suggest the API would something like:
+>
+>         if (!reclaim_allowed(sc, __GFP_FS))
+>                 return SHRINK_STOP;
+>
+> or
+>         if (!reclaim_allowed(sc, __GFP_IO))
+>                 return SHRINK_STOP;
+>
+> As this matches the typical usage (e.g. see super_cache_scan()).
+
+I guess there are several options. A few Rust versions:
+
+fn reclaim_allowed(&self, mode: ReclaimMode) -> bool;
+enum ReclaimMode {
+    __GFP_FS,
+    __GFP_IO,
+}
+
+or perhaps just:
+
+fn reclaim_fs_allowed(&self) -> bool;
+fn reclaim_io_allowed(&self) -> bool;
+
+> > > > +    /// Returns the number of objects that `scan_objects` should t=
+ry to reclaim.
+> > > > +    pub fn nr_to_scan(&self) -> usize {
+> > > > +        // SAFETY: Okay by type invariants.
+> > > > +        unsafe { (*self.ptr.as_ptr()).nr_to_scan as usize }
+> > > > +    }
+> > > > +
+> > > > +    /// The callback should set this value to the number of object=
+s processed.
+> > > > +    pub fn set_nr_scanned(&mut self, val: usize) {
+> > > > +        let mut val =3D val as c_ulong;
+> > > > +        // SAFETY: Okay by type invariants.
+> > > > +        let max =3D unsafe { (*self.ptr.as_ptr()).nr_to_scan };
+> > > > +        if val > max {
+> > > > +            val =3D max;
+> > > > +        }
+> > >
+> > > No. Shrinkers are allowed to scan more objects in a batch than
+> > > the high level code asked them to scan. If they do this, they
+> > > *must* report back the count of all the objects they scanned so the
+> > > batched scan accounting can adjust the remaining amount of work that
+> > > needs to be done appropriately.
+> >
+> > Acknowledged.
+> >
+> > This is related to another question that I had, actually. Other than
+> > returning SHRINK_STOP, in what situations should `nr_scanned` be
+> > different from the return value of `scan_objects`?
+>
+> nr_scanned will almost always be different to the return value of
+> ->scan_objects.
+>
+> There are 3 values of note here.
+>
+> - nr_scanned is set by the shrinker scan setup code to the batch
+>   size the shrinker should scan in it's next invocation.
+>
+>   If the shrinker ignores nr_to_scan batch limits, it can indicate
+>   how many objects it scanned by setting the number it scanned to
+>   nr_scanned before it returns.
+>
+> - nr_to_scan is set to nr_scanned at setup.
+>
+>   The shrinker should then decrement nr_scanned for each object that
+>   is scanned by the shrinker.  The shrinker should stop scanning and
+>   return nr_freed when nr_to_scan reaches zero.
+>
+>   If the value of this is non-zero when the scan returns, it is an
+>   indication that the shrinker either did not scan the entire
+>   batch or the batch size was larger than the remaining number of
+>   objects in the cache.
+>
+> - nr_freed: return value from the shrinker
+>
+>   This is a count of the number of objects the shrinker freed during
+>   the scan.
+>
+>   If the shrinker cannot make progress for any reason it
+>   should immediately return SHRINK_STOP.
+>
+> So on a typical shrinker pass, we'll exit with:
+>
+>         nr_scanned =3D batch size;
+>         nr_to_scan =3D 0;
+>         nr_freed =3D [0..batch size];
+>
+> Some shrinkers, however, have variable sized objects, and so they
+> will normalise nr_freed and nr_scanned to the object size. The
+> i915/gem shrinker does this, as it considers a page to be an object,
+> but in reality is has a smaller number of variable sized multi-page
+> objects being tracked. Hence it might be asked to scan 128 objects
+> (default batch size), but the scan iterated over objects that
+> contain 256 pages.
+>
+> In that case, it will return:
+>
+>         nr_scanned =3D 256;
+>         nr_to_scan =3D 0;
+>         nr_freed =3D [0..256]
+>
+> And the high level shrinker code will treat that as having scanned
+> 256 objects rather than the 128 objects it asked for.
+>
+> There are several shrinkers that play weird accounting games like
+> this. It's not really all that nice and it would be ice to clean all
+> this up, but there's been no real urgency to do this because it's
+> just a slightly different manner of accounting reclaim progress....
+
+Ahh ... so the numbers can be different if you scan an object without
+freeing it.
+
+Alice
