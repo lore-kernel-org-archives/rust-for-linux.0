@@ -1,104 +1,117 @@
-Received: from mail-pg1-f179.google.com (mail-pg1-f179.google.com [209.85.215.179])
+Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1E9180043
-	for <rust-for-linux@vger.kernel.org>; Wed, 25 Sep 2024 10:21:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.215.179
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BAD8139590
+	for <rust-for-linux@vger.kernel.org>; Wed, 25 Sep 2024 11:06:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727259666; cv=none; b=ORTHNlPUzli3m5f+Lemgp+jDEu+3bhPRiGSbw+KBLj3WZ8xjDeWSX+/RNAc4Qr9/85gZ/yKvJyqovQQWoqKimCJByv1fscVcO4ERfRcfgoaIaLE65rMpz4TQ1563O09Qj02EN7jxm4RE4n0Z7pm1pPASuivMKDjXqPIYZRHVnvA=
+	t=1727262386; cv=none; b=HAhaVTCBVy7Knw5WuA0IfUfOO3iu4T/l0MC0JQgOvdU3/A+uUGoexpv8ZamfhAVmKA1W2FiUIl0Ng39nUjD4oYvgTy3F9qhMee4V1PS4CZtRzYEOsjJpmAC3mGODopvLDY4vjHtUDkjSGDMjCeB+qoItWtHJbNrfDYsNyWFIi3o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727259666; c=relaxed/simple;
-	bh=TCDnE5O1Qj4Sx4FFyUqVkcdfYPO8wvEkGDEg/b8x6RM=;
+	s=arc-20240116; t=1727262386; c=relaxed/simple;
+	bh=v9SOENpp+GEqMEfpbzjHUOzd9Uxz8a8eI7GUtlWQs+g=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=qItglTk8DPatppgsreKsTEW1OKOrPyNDyndSpgH/2ckhyel4VdZxvHLOxIzyTaVmFBfMnumoUxTseChnbI3mDHgTMkALnc5KfTR0dv4+Vlvaf1WC2sWsI8CJi1czYpKGezaPsJdEaQNBX8UyKQXF5FYHiPnreg38vhpMWGEcebs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=KxBaG2Eh; arc=none smtp.client-ip=209.85.215.179
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	 To:Cc:Content-Type; b=TTni0YI/EgV8TkiAV7gwNrkNuMxV+aKh6umIebvE7CSb9jHdwskz9MLGSFxcynmcO4plInUx/hAyHJYbKzA/+NsY0lZLezpxAi/Dj6+v3JgSYazoATUjLKIuKDnoIMdZ67wS7XXm+zpPKgS1iqkspJGMEH9G5y9HV7n/4cBOJ90=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=Y0qoZkaG; arc=none smtp.client-ip=209.85.128.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="KxBaG2Eh"
-Received: by mail-pg1-f179.google.com with SMTP id 41be03b00d2f7-7db3e962c2aso529402a12.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 25 Sep 2024 03:21:04 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="Y0qoZkaG"
+Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-42cb57f8b41so84336265e9.0
+        for <rust-for-linux@vger.kernel.org>; Wed, 25 Sep 2024 04:06:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727259664; x=1727864464; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1727262382; x=1727867182; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=TCDnE5O1Qj4Sx4FFyUqVkcdfYPO8wvEkGDEg/b8x6RM=;
-        b=KxBaG2Eh+70+OkbrNIltMwsPrICJcVqeM9U3KSgrbFJmFRXCyAqLJCBNr317Lz3fnf
-         gr23iLAv88Hc/KKjKLCq0mgs69wQDEoXFadMuRm2d73CL3OSYtCNHdd/VjJpttKxRlBn
-         4pZ8fVauBd80RolQapPRAQYFISlu4j4OZsbvluagbctMkjyAUBbNXYkrf0f3Iar1QSH9
-         hi5DUbwguGrGjaNUuedKoRM3yhAzs+nfZOrJVp1aAJBND9b+3DS3zf5tBZ6qZ6Y6nkWd
-         buQrpHer/rkDZAHqMgBsLlROdX/Ftfzv/4OXd1sHecBe2HXfwYY9L14iN9fou3Vi4V5x
-         GbbA==
+        bh=JhQ4TPCHuI58LZ38MBixhcUn27fdFhOzEs54JQFmEu4=;
+        b=Y0qoZkaGAi7LcUT3oJb4NisLSJU/jQJH27zodADr2z0dvPpCGPDg5u7nQ4RIsCYMak
+         le/mIhlmqZ8X6+GmN3PP2QMCKp6vbmxzotaBm1Yuw0RXmtw32VA+G7yMyWtf4xmzAhKM
+         UcGaIYxfzd8JowKxx+i3zJ6nNRBJXXxEklTgZMxjg+YgF1Z3ofeLDp/41kfNnENqDcCI
+         luE4FdlQEo4BAdOUU66phuSQdN3pka/+v/NSGPGVtV4o41NqrBDjLgAdZqbjZXl89pIh
+         tYk0Dth2KHO+fllaG9Qs7ETkDZAIAD0pLvwMM632vU9VIipk2b6BElfMGUO2065bcTEx
+         X8cw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727259664; x=1727864464;
+        d=1e100.net; s=20230601; t=1727262382; x=1727867182;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=TCDnE5O1Qj4Sx4FFyUqVkcdfYPO8wvEkGDEg/b8x6RM=;
-        b=FS1JOzoidabcII6f67TPBrrFT8el4t3JsJKXfdUqy+91KC8RhaskcSu+DtH00JMiqc
-         zt4+nb/ZGI3bQOGTeKiKFZwQqRBCfw1Z0WSuWuBCWt3NQsgTE5hUZC/VS/xt83IH5Uug
-         gO42IT7089dQ1YfcGksgahUdXzf67q+AQw45ctAK+I4Req12K/Qi1JVhvdksiO/MpEXE
-         gLVZNvXv3oozjY1/Fea3rI6uhcFfeqzm4vAwjiIJ0s1rEjMZ1ofoxGfqXCYgiRTdYcDY
-         viIxeQHS6rLk6ooVuarf0/sTZMwW2GLxwrW8vQMNQQDwdFovKWSYBQNNzhFWhEgCULgS
-         ToAA==
-X-Forwarded-Encrypted: i=1; AJvYcCV5MxNlnHyPEzImfDUE2dLRlV+6RfZ4mMtnr67Zt8J9nx8g7CUePfcDkI5UP6eYteN6XI09VNf6inyjm2oaOA==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxQ8uwoEX90+e8ZHZZ4VfcYxSCdkLwH3fEMgwdasFki+KSzLBcs
-	+W4Pb/JzKcctdEGtnLJQsQ51K6P7zza53yFcnfKrGNiMZeMpF3DU/No1YTk1oeSknYPfCtmbp+G
-	zJJnxR55RcdIT1M03VFLSy11QJU4=
-X-Google-Smtp-Source: AGHT+IHrc4qeLncDvmI5by0PktN7ToaZFg+oGS0r8KUPyktOQT8smdBpXd4RQ/kBZQLt1sN+Zznoq/2KTkDYdaikT8c=
-X-Received: by 2002:a05:6a00:1149:b0:70d:140c:7369 with SMTP id
- d2e1a72fcca58-71b0ac5a8c4mr1439818b3a.3.1727259664158; Wed, 25 Sep 2024
- 03:21:04 -0700 (PDT)
+        bh=JhQ4TPCHuI58LZ38MBixhcUn27fdFhOzEs54JQFmEu4=;
+        b=YpdD26utBFN7VJSb7C0IEeSSIlYmrB8SmcMOvNlKY22NwkmfjVHxIEUKowItY4D0dM
+         Mulx/B/lE/9ngt7PKLD0iRve36a9ChHIDyYn0XqJut0hyoLD8eerYupR7UvRg2mapa57
+         lFiTIB5Ot4pLnhKgClfVoD9xQ6N9GSuogEqzEvP+vGvAQAAH7pJyHT8K2gJJvbPPB/kc
+         wLNFMPi5zfAtCGdwiS1nXz4YNuvkmrScVzaFvGDnvVCJYhgJ6mmcO8EwA2920qMPe5VK
+         2K5lGLomGYQgi+BVUIC290SxF3s9OQOsMA1fS0HcCw6i0nzRv2V1b/MA9t0/maUIbeNA
+         +DHg==
+X-Forwarded-Encrypted: i=1; AJvYcCUSQlSa7dQ3oy5FVsPz4gapMVbcxy1VEd4Yb6XwFD5p/uWE45eR3ZuKRocPF3gnGiIm/wUQ9yOO+QfnmIg6yA==@vger.kernel.org
+X-Gm-Message-State: AOJu0YwYG94kacGwUnXwFBZfYgsMDMTifegy+Ey66LcC8QC+bg/coajq
+	AUW4mHcOcxjvOCKNqfntbL3RTkTv+SWEh/kaNwVcVaQmiRfOYnPDBIbUIzVzl1Y8hP4TDcpcvxf
+	nY5cu6+0CAO7Ny10PnKUjIqbiL7PCw4LN7yyX
+X-Google-Smtp-Source: AGHT+IGFAj+j04oaHOFqsP7FAM4DEPPjCdbCbDCCKy/XEfJz3JFRtsBnFMPeIPy5+2A+yRs/huLSjBw7dGu97fMWSko=
+X-Received: by 2002:a5d:5d86:0:b0:37c:c51b:8d9c with SMTP id
+ ffacd0b85a97d-37cc51b8ee6mr1224327f8f.38.1727262382323; Wed, 25 Sep 2024
+ 04:06:22 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240820194910.187826-1-mmaurer@google.com> <CANiq72mv5E0PvZRW5eAEvqvqj74PH01hcRhLWTouB4z32jTeSA@mail.gmail.com>
- <CANiq72myZL4_poCMuNFevtpYYc0V0embjSuKb7y=C+m3vVA_8g@mail.gmail.com>
- <CAH5fLgheG47LdgJGX6grHXL6h08tsSM1DACRkkzQk_1U8VAOxQ@mail.gmail.com> <CAH5fLgj7E03DKBcptgmZ8SLgco=Qs4puO=O6=v9=-3SSuqJyUQ@mail.gmail.com>
-In-Reply-To: <CAH5fLgj7E03DKBcptgmZ8SLgco=Qs4puO=O6=v9=-3SSuqJyUQ@mail.gmail.com>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 25 Sep 2024 12:20:50 +0200
-Message-ID: <CANiq72mFKE4tLp1bgr+c0-Hi+dmReFT4m5RcV6MigjyiAiuwmg@mail.gmail.com>
-Subject: Re: [PATCH v4 0/4] Rust KASAN Support
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Matthew Maurer <mmaurer@google.com>, andreyknvl@gmail.com, ojeda@kernel.org, 
+References: <20240915-alice-file-v10-0-88484f7a3dcf@google.com>
+ <20240915-alice-file-v10-1-88484f7a3dcf@google.com> <20240924194540.GA636453@mail.hallyn.com>
+In-Reply-To: <20240924194540.GA636453@mail.hallyn.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Wed, 25 Sep 2024 13:06:10 +0200
+Message-ID: <CAH5fLgggtjNAAotBzwRQ4RYQ9+WDom0MRyYFMnQ+E5UXgOc3RQ@mail.gmail.com>
+Subject: Re: [PATCH v10 1/8] rust: types: add `NotThreadSafe`
+To: "Serge E. Hallyn" <serge@hallyn.com>
+Cc: Paul Moore <paul@paul-moore.com>, James Morris <jmorris@namei.org>, 
+	Miguel Ojeda <ojeda@kernel.org>, Christian Brauner <brauner@kernel.org>, 
 	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Nathan Chancellor <nathan@kernel.org>, dvyukov@google.com, samitolvanen@google.com, 
-	kasan-dev@googlegroups.com, linux-mm@kvack.org, glider@google.com, 
-	ryabinin.a.a@gmail.com, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
 	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
 	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, 
-	Justin Stitt <justinstitt@google.com>, rust-for-linux@vger.kernel.org, 
-	llvm@lists.linux.dev
+	Peter Zijlstra <peterz@infradead.org>, Alexander Viro <viro@zeniv.linux.org.uk>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, =?UTF-8?B?QXJ2ZSBIasO4bm5ldsOlZw==?= <arve@android.com>, 
+	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
+	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Dan Williams <dan.j.williams@intel.com>, 
+	Matthew Wilcox <willy@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, Daniel Xu <dxu@dxuuu.xyz>, 
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, rust-for-linux@vger.kernel.org, 
+	linux-fsdevel@vger.kernel.org, Kees Cook <kees@kernel.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Wed, Sep 25, 2024 at 12:00=E2=80=AFPM Alice Ryhl <aliceryhl@google.com> =
+On Tue, Sep 24, 2024 at 9:45=E2=80=AFPM Serge E. Hallyn <serge@hallyn.com> =
 wrote:
 >
-> I posted a fix:
-> https://github.com/rust-lang/rust/pull/130824
+> On Sun, Sep 15, 2024 at 02:31:27PM +0000, Alice Ryhl wrote:
+> > This introduces a new marker type for types that shouldn't be thread
+> > safe. By adding a field of this type to a struct, it becomes non-Send
+> > and non-Sync, which means that it cannot be accessed in any way from
+> > threads other than the one it was created on.
+> >
+> > This is useful for APIs that require globals such as `current` to remai=
+n
+> > constant while the value exists.
+> >
+> > We update two existing users in the Kernel to use this helper:
+> >
+> >  * `Task::current()` - moving the return type of this value to a
+> >    different thread would not be safe as you can no longer be guarantee=
+d
+> >    that the `current` pointer remains valid.
+> >  * Lock guards. Mutexes and spinlocks should be unlocked on the same
+> >    thread as where they were locked, so we enforce this using the Send
+> >    trait.
+>
+> Hi,
+>
+> this sounds useful, however from kernel side when I think thread-safe,
+> I think must not be used across a sleep.  Would something like ThreadLock=
+ed
+> or LockedToThread make sense?
 
-Reviewed, tagged and added to the lists -- thanks!
+Hmm, those names seem pretty similar to the current name to me?
 
-> We'll need a check on RUSTC_VERSION in Kconfig for this. If the PR
-> gets merged within the next 22 days, this will land in 1.83.0. Would
-> you like me to send a fix with that version number now or wait for it
-> to get merged before I send that fix?
-
-Perhaps it could also go into 1.82.0 since it is a fix? (there are
-still a couple weeks for that)
-
-In any case, I think we can put 1.83 in the fix already and modify
-later if needed. Even then, I am not sure if the requirement is a big
-deal, i.e. I guess we could keep the warning and avoid adding the
-restriction. But since this is for KASAN-enabled, I guess it is fine
-adding the restriction and being safe & proper.
-
-Cheers,
-Miguel
+Alice
