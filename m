@@ -1,166 +1,116 @@
-Received: from mailout1.w1.samsung.com (mailout1.w1.samsung.com [210.118.77.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f54.google.com (mail-wr1-f54.google.com [209.85.221.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55354136E01
-	for <rust-for-linux@vger.kernel.org>; Wed, 25 Sep 2024 09:00:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=210.118.77.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54A071EB36
+	for <rust-for-linux@vger.kernel.org>; Wed, 25 Sep 2024 10:00:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727254842; cv=none; b=jefx82oq9Ue+ILusPDfQ6CNrkGzxaIiPs2XVIi+1JHMRbjQ0FsbIgfqLQLTU5kxrV1SnRgEEMpfMf28sjFOqD8vDHrGJ+5NAXEw/SywIPVm2zgWqT/Y4W4saC9byw/Xo1jHBZZRz/3ax04bi9hytlqrfy8kQPrFRE/CE2TRsxxs=
+	t=1727258436; cv=none; b=goTRHf2GJv5c/NdDG6feshScPrUTOXAoVH9W1I/3a5f84tde4nB7tZHDZoT2C8+rhX0cjvBNQn+ybgpT+CPjLlxlpzEkAG3/bTC7JmCWMQbsWNUJfi6S/dPXgFODvwl2IB39tVJk0dlmNmrPgiAyN1wI/7y7Sy+YfpqH7i4eUkI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727254842; c=relaxed/simple;
-	bh=HPNeAlYSdlRRq+YCT4R4fY7napkCrhEl3ChvA2zOdBc=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:From:In-Reply-To:
-	 Content-Type:References; b=dZrawWJDi6Yn8X1AV+JLRfcMkV3OiyadkCbJWanrLVmqUTNtzRfp2rXLOKYZtHa6JGLrxPpk1auIvmc+PcLMPYrnUoMYqAJt+Wzri2ro5DfxB3f63vBMTLRERhkXEAIPQ6K9G3gVLZw5OUIg9SkpZsJk893AhIrXWiWnWqShRpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com; spf=pass smtp.mailfrom=samsung.com; dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b=U3jMNt06; arc=none smtp.client-ip=210.118.77.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=samsung.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=samsung.com
+	s=arc-20240116; t=1727258436; c=relaxed/simple;
+	bh=pJ2juEFqj+48bXu5zvFqiWfX3lEeexWtmQCXqHMpLug=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=m8GRwB/AolRQPvMtc4RBJymZeFAdOdtNNuFnR6I0gcx8wPBHIXmPJTf3Y2Y/Fe343i56B+W7YDv69qj2wpC7IUQfQPKKi4ELb/Bq1mpQjtLkZxJc07g2Es4aW2OFlLMSPCBnTbeH1M12nKxo3ppz69tfs8DhNC0MSOM+pvMixZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=t52S434D; arc=none smtp.client-ip=209.85.221.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=samsung.com header.i=@samsung.com header.b="U3jMNt06"
-Received: from eucas1p2.samsung.com (unknown [182.198.249.207])
-	by mailout1.w1.samsung.com (KnoxPortal) with ESMTP id 20240925090031euoutp019bdc633d68136fc218e8491084bae706~4cR44nsjJ2564025640euoutp01P
-	for <rust-for-linux@vger.kernel.org>; Wed, 25 Sep 2024 09:00:31 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout1.w1.samsung.com 20240925090031euoutp019bdc633d68136fc218e8491084bae706~4cR44nsjJ2564025640euoutp01P
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-	s=mail20170921; t=1727254831;
-	bh=2vKSe6/JZz+muAFZRzO/XNOcdLFOD89z6zjjuikN+o0=;
-	h=Date:Subject:To:CC:From:In-Reply-To:References:From;
-	b=U3jMNt06x5MvlmWOr9X50DEjofSB+/9NfVlyX+bn7HvPNrKBdjK7omYQCm5vI0Mvy
-	 ig18XV+sU2qZ1GU4xJKyFSsCXVeRg4rMDhrsmHM5pwpcXjxVj2Fo5KttIyybD/vGnt
-	 Mn1Pg2toNqM0bH/ywLucCB4PnxeNrZJLy90xWZdQ=
-Received: from eusmges1new.samsung.com (unknown [203.254.199.242]) by
-	eucas1p2.samsung.com (KnoxPortal) with ESMTP id
-	20240925090031eucas1p24042a68b10ce23b48c54b77abd7844b3~4cR4XZZaP3115131151eucas1p2E;
-	Wed, 25 Sep 2024 09:00:31 +0000 (GMT)
-Received: from eucas1p2.samsung.com ( [182.198.249.207]) by
-	eusmges1new.samsung.com (EUCPMTA) with SMTP id 24.AF.09624.F21D3F66; Wed, 25
-	Sep 2024 10:00:31 +0100 (BST)
-Received: from eusmtrp2.samsung.com (unknown [182.198.249.139]) by
-	eucas1p1.samsung.com (KnoxPortal) with ESMTPA id
-	20240925090030eucas1p14b2475bfce11ec300d133934220e346e~4cR33p3QF2975029750eucas1p1i;
-	Wed, 25 Sep 2024 09:00:30 +0000 (GMT)
-Received: from eusmgms1.samsung.com (unknown [182.198.249.179]) by
-	eusmtrp2.samsung.com (KnoxPortal) with ESMTP id
-	20240925090030eusmtrp2c0a54ebb6ec4ea948bc679f08f845142~4cR32r6mG1697916979eusmtrp2E;
-	Wed, 25 Sep 2024 09:00:30 +0000 (GMT)
-X-AuditID: cbfec7f2-bfbff70000002598-92-66f3d12f7a79
-Received: from eusmtip1.samsung.com ( [203.254.199.221]) by
-	eusmgms1.samsung.com (EUCPMTA) with SMTP id B3.A2.14621.E21D3F66; Wed, 25
-	Sep 2024 10:00:30 +0100 (BST)
-Received: from CAMSVWEXC02.scsc.local (unknown [106.1.227.72]) by
-	eusmtip1.samsung.com (KnoxPortal) with ESMTPA id
-	20240925090030eusmtip199f7f9e1d7a3899daf889ffe5d704f27~4cR3onXIh0358003580eusmtip1X;
-	Wed, 25 Sep 2024 09:00:30 +0000 (GMT)
-Received: from [106.110.32.87] (106.110.32.87) by CAMSVWEXC02.scsc.local
-	(2002:6a01:e348::6a01:e348) with Microsoft SMTP Server (TLS) id 15.0.1497.2;
-	Wed, 25 Sep 2024 10:00:28 +0100
-Message-ID: <d56f36da-afd9-4956-8b74-8b0b17baadf2@samsung.com>
-Date: Wed, 25 Sep 2024 11:00:28 +0200
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="t52S434D"
+Received: by mail-wr1-f54.google.com with SMTP id ffacd0b85a97d-374c4c6cb29so6431552f8f.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 25 Sep 2024 03:00:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1727258432; x=1727863232; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pzoOml1YCYEgfJn8QSXq3DVawdpDp//KSF0cYbIea6E=;
+        b=t52S434DrvkJwkwV68afVW0pd8X3KR2cdzGxROMi4PLduMUO0wZSY30LxjfDsWxtVu
+         4fDblR8UCpnjfrnIxdbszv0romy2eP1sBuAwGa4HXZ07zaQj0EbqArcFLrsUAPuKr2SO
+         IeEpoFxVwpAxDJfXzisOgwj+WR3xG41ejGjeiksd7QEZg28E4o2PVfHM8W317bbn3wEY
+         ruZXQdNuuo/jdsI+Docat2WKYxaBOORKD7TqXyJU7ylJFVk43K/eDXtR6Ea2trhjR7ag
+         vHlRAAXfSIl0ToOoZCsARF+nKaBTg5sBa0DQySqGJLhnoN8ROjjFehO64jJOo3cGp/OA
+         DzAw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727258432; x=1727863232;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=pzoOml1YCYEgfJn8QSXq3DVawdpDp//KSF0cYbIea6E=;
+        b=GhD91rho0HKthhsy+QVleZf/o+/ktfBnhxzknpFqwo2MHPo9Zc8EbySnFRMvev3Aqe
+         i1gkTeZS4nPeIOo0csAwbuwfdOQcTO0pLVvjgZnHUut0ylYDKQJi7bMN4iQxLH738Iah
+         BwBfM2QUVfOnEt21UWmKgeinufAXGd48DuMq6d0QVsTeeisfoBMr/5eT/0/nQHgWBO55
+         4YenfbBdIPjOwNzRY38VUASP0b9NJxNHa5qZv1Z6zBLgmtaPFScK4HSsRK6QgRrvjX9m
+         2EAaW9HeR30mvi8rvCaB8Uye0GwvKDbiWIWtJYOlPPAw0/Z+XdrG8sNwqRbEwucOCE5i
+         FkuA==
+X-Forwarded-Encrypted: i=1; AJvYcCWd4sqwrsfRfCiKtv6kM6yGeCFAQMgshclD21Qe0kdJ4oxp0yS7L1z+8DljY8lhAnvJkFLUiyXYd6PR1qLtfw==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yym/XmqfOf1o9IK2bybjK4CnKTAupu3nHf4qz4LR7uHQUPiEN6E
+	/16uOLnRxHck6i5YsmJO+KHpcYBI/WrDejr1rTxOfUbvSUyoikJBbTpxesLFULtTrkYPHcxL79x
+	bBGFFqTFooLe+XqDoB09cEPqm4GnUBrBKd2Qm
+X-Google-Smtp-Source: AGHT+IGKx3uL22uVQI6NHByefGqy6iXJLA73m1W8DO6NEIobANtIbLRvc5jJ2Ew/h8x1OdttDYdjCDqwhHlO027Qz2g=
+X-Received: by 2002:a5d:5547:0:b0:371:8dd3:27c8 with SMTP id
+ ffacd0b85a97d-37cc246a5cemr1937135f8f.23.1727258432326; Wed, 25 Sep 2024
+ 03:00:32 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v4 01/16] module: Take const arg in
- validate_section_offset
-Content-Language: en-GB
-To: Matthew Maurer <mmaurer@google.com>, <masahiroy@kernel.org>,
-	<ndesaulniers@google.com>, <ojeda@kernel.org>, <gary@garyguo.net>,
-	<mcgrof@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>
-CC: <rust-for-linux@vger.kernel.org>, <linux-kbuild@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <neal@gompa.dev>, <marcan@marcan.st>,
-	<j@jannau.net>, <asahi@lists.linux.dev>, Petr Pavlu <petr.pavlu@suse.com>,
-	Sami Tolvanen <samitolvanen@google.com>, Boqun Feng <boqun.feng@gmail.com>,
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin
-	<benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Alice
-	Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>,
-	<linux-modules@vger.kernel.org>
-From: Daniel Gomez <da.gomez@samsung.com>
-In-Reply-To: <20240924212024.540574-2-mmaurer@google.com>
-Content-Type: text/plain; charset="UTF-8"; format="flowed"
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: CAMSVWEXC01.scsc.local (2002:6a01:e347::6a01:e347) To
-	CAMSVWEXC02.scsc.local (2002:6a01:e348::6a01:e348)
-X-Brightmail-Tracker: H4sIAAAAAAAAA01SbUxTVxjOuff29rah7PIVTthCs7omjkSoxJiDLmbNMLszW4AoMbKY2a2X
-	jw0ottSPsZrKlgkMu2I2KBWVICBlVFglfFQiBJ0UC1MGxcIQJAHKlCJSJrLpGOVi5N/zvO/z
-	vO/7nBwKD/6JjKAysnNZdbYiU0IKiZbbK3e3xQz4UmVDczgam5jioZfnW/nIcT+fQCuuQLQw
-	nM9D7nudOGpoPo2hgb7HADXW7Ucv7G0YGrRXkEh/fpmHnMOVfDT50L2mNU4D5HlixdCCcRVD
-	vtM3MGS5dAWgmqV5HDXO3MRRTZ2Xh/pb7vDfD2eqC//BmHbzAz4zMmYhmEqbluka0uOMrb6Q
-	ZGavlQPmcm07ySyf6SCZ4u9tGNPY7CIYr8PAY3y2yERRivA9JZuZcYxVx+w5IkxvKB7Bc5YE
-	J6ZrOgk9OEsVAQEF6R2wxHqBLAJCKpiuA9Bpvs7nyBKA/X3f4RzxAdgx+Bi8shRO/rVhuQJg
-	Rd/Z1yqD9TeCI+0ANv47g/stInoPbOi8yvNjgpbCucUnJFcPgr3lU4Qfh9FiODFq4vtxCJ0E
-	XdMOzI9xOhzmL1nWvaF0F4D1f6j8C3D6MgENzzzrN5H0u/BGr23dLKDjoNNRsGam1kS7YJnj
-	I26OGLZ6K3AuwtvQVGIhOKyDd5pHMf9MSP8qhIWdt3hcIx4+WKjdEIXARz3NfA6/BVfbL2Ec
-	ToPVV80bmhzY8aeZ598L6d3Q0JfJleVwTF++UQ6Ebm8Qd04gPNdShhuB1LzpJcybEptfBzBv
-	ClAJiHoQzmo1WWmsZns2ezxao8jSaLPTor9QZdnA2sd1/tez2AYuPHoa3Q0wCnQDSOGSUNG5
-	kaepwSKl4uTXrFr1mVqbyWq6wZsUIQkXSZViNphOU+SyX7FsDqt+1cUoQYQe003Yxbt3+Yov
-	Pt+7OJ9c8OlD27xlx2LUmVZj6Y9lUsFB2p0kFi7LGNv93nfs+z4uzQgYOuiKkepCm3bCkqRt
-	pWTGwMpLQ96x+KrUnVr5aNXdKU/U0W8jZc6C4gO/3FYlJeZuCdhn/Xz2jdVTcREpSt3hyK21
-	10/25NnDnKeqtHmBdkJIJXw4fo+pbCvptkqGVddmXMNi33JAQore4dly/BvZoDskK7mIjA36
-	0lM9d7Qp7sisz/uz8EVsQcDf6nHB3h+64lzSoIHofuOt2A+UB56Nl22VH/q9okP6/GZXuj2R
-	0Wll8hWLKUz0Sfzh0hPS+YZJeYJJbkouaiL2XySRhNCkK7ZH4WqN4n8a++tiJwQAAA==
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFjrNKsWRmVeSWpSXmKPExsVy+t/xu7p6Fz+nGUx5Kmdx5/4TVou/s7ez
-	W5y43sRi8fMqn8WHa02sFjcu7Ge2WLOlkcni4pnXjBbrVwRb/Nm1g8ni8q45bBYNs7+zWpy+
-	toDd4uGDG0C1E54yWjx/v5bJ4sOE/0wWnxv3MVmsnL+c0WLpl3fMFuufHWa2WLriLavF2W2n
-	2B3EPZZ0/mLy2DnrLrvHzTsrWTwWbCr1OHClgdlj06pONo8Xm2cyeixetpPN43v7HjaPnrZN
-	TB7rt1xl8Xh7oo/V4/MmuQDeKD2bovzSklSFjPziElulaEMLIz1DSws9IxNLPUNj81grI1Ml
-	fTublNSczLLUIn27BL2MNT03mQu+cFY8XbqfpYGxl6OLkZNDQsBEovPhS7YuRi4OIYGljBI/
-	Lq1ghEjISGz8cpUVwhaW+HOtiw3EFhL4yChxdAs7RMNORonbdy+BJXgF7CTW7F8H1sAioCrx
-	5tN7qLigxMmZT1hAbFEBeYn7t2awg9jCAoESV5+eYAKxmQXEJZq+rATrFRE4wCix6lI+yAJm
-	gcUsEss6nrFCbNvNKHHs/HuwSWwCmhL7Tm4Cm8QpYClx+kQH1CQLicVvDrJD2PIS29/OYYZ4
-	QVFixsSVLBB2rcTnv88YJzCKzkJy4Cwkh8xCMmoWklELGFlWMYqklhbnpucWG+oVJ+YWl+al
-	6yXn525iBKaqbcd+bt7BOO/VR71DjEwcjIcYJTiYlUR4J938mCbEm5JYWZValB9fVJqTWnyI
-	0RQYShOZpUST84HJMq8k3tDMwNTQxMzSwNTSzFhJnNft8vk0IYH0xJLU7NTUgtQimD4mDk6p
-	BiZD+617i7i15U/7eU/4mWa/V6t2eU/uz7bKRrn9gdZHbnnOOX8w2ufy/Lib82VfdP6tWLl7
-	e5Eac4bpvFpHf9/935yvT9ZRzNIx17wmu65SKNqcsUlwWqPJtrcfpEw6voft+vlr7fQriXe3
-	vd/vJ12QqpD2vS3hptDl26savv/d2XHHVvnECrXOT9d/PTlRr128eL77obMfNX6fNPqx8inX
-	1MsvZUM5f6QuyTvvxx3hyqJgklecte7x5M7z11p8njxyrThfrN72+wzXukLf5+073NqqAvx+
-	qUswn12iv6vKQejUf/4NS5n8DZdsWdNZUnspuqUt44CxgYZb08abPvO3On/XzlxzpcWM20Ro
-	UZ4SS3FGoqEWc1FxIgDywEmB3gMAAA==
-X-CMS-MailID: 20240925090030eucas1p14b2475bfce11ec300d133934220e346e
-X-Msg-Generator: CA
-X-RootMTR: 20240924212037eucas1p253dc701411a9684750103c7da7acd79e
-X-EPHeader: CA
-CMS-TYPE: 201P
-X-CMS-RootMailID: 20240924212037eucas1p253dc701411a9684750103c7da7acd79e
-References: <20240924212024.540574-1-mmaurer@google.com>
-	<CGME20240924212037eucas1p253dc701411a9684750103c7da7acd79e@eucas1p2.samsung.com>
-	<20240924212024.540574-2-mmaurer@google.com>
+References: <20240820194910.187826-1-mmaurer@google.com> <CANiq72mv5E0PvZRW5eAEvqvqj74PH01hcRhLWTouB4z32jTeSA@mail.gmail.com>
+ <CANiq72myZL4_poCMuNFevtpYYc0V0embjSuKb7y=C+m3vVA_8g@mail.gmail.com> <CAH5fLgheG47LdgJGX6grHXL6h08tsSM1DACRkkzQk_1U8VAOxQ@mail.gmail.com>
+In-Reply-To: <CAH5fLgheG47LdgJGX6grHXL6h08tsSM1DACRkkzQk_1U8VAOxQ@mail.gmail.com>
+From: Alice Ryhl <aliceryhl@google.com>
+Date: Wed, 25 Sep 2024 12:00:19 +0200
+Message-ID: <CAH5fLgj7E03DKBcptgmZ8SLgco=Qs4puO=O6=v9=-3SSuqJyUQ@mail.gmail.com>
+Subject: Re: [PATCH v4 0/4] Rust KASAN Support
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+Cc: Matthew Maurer <mmaurer@google.com>, andreyknvl@gmail.com, ojeda@kernel.org, 
+	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
+	Nathan Chancellor <nathan@kernel.org>, dvyukov@google.com, samitolvanen@google.com, 
+	kasan-dev@googlegroups.com, linux-mm@kvack.org, glider@google.com, 
+	ryabinin.a.a@gmail.com, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
+	Nick Desaulniers <ndesaulniers@google.com>, Bill Wendling <morbo@google.com>, 
+	Justin Stitt <justinstitt@google.com>, rust-for-linux@vger.kernel.org, 
+	llvm@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 9/24/2024 11:19 PM, Matthew Maurer wrote:
-> `validate_section_offset` doesn't modify the info passed in. Make this
-> clear by adjusting the type signature.
-> 
-> Signed-off-by: Matthew Maurer <mmaurer@google.com>
-> ---
->   kernel/module/main.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/kernel/module/main.c b/kernel/module/main.c
-> index 49b9bca9de12..1a2dd52147ba 100644
-> --- a/kernel/module/main.c
-> +++ b/kernel/module/main.c
-> @@ -1645,7 +1645,7 @@ bool __weak module_exit_section(const char *name)
->   	return strstarts(name, ".exit");
->   }
->   
-> -static int validate_section_offset(struct load_info *info, Elf_Shdr *shdr)
-> +static int validate_section_offset(const struct load_info *info, Elf_Shdr *shdr)
->   {
->   #if defined(CONFIG_64BIT)
->   	unsigned long long secend;
+On Wed, Sep 25, 2024 at 10:26=E2=80=AFAM Alice Ryhl <aliceryhl@google.com> =
+wrote:
+>
+> On Mon, Sep 16, 2024 at 6:47=E2=80=AFPM Miguel Ojeda
+> <miguel.ojeda.sandonis@gmail.com> wrote:
+> >
+> > On Mon, Sep 16, 2024 at 6:15=E2=80=AFPM Miguel Ojeda
+> > <miguel.ojeda.sandonis@gmail.com> wrote:
+> > >
+> > > Applied to `rust-next` -- thanks everyone!
+> >
+> > Also, for KASAN + RETHUNK builds, I noticed objtool detects this:
+> >
+> >     samples/rust/rust_print.o: warning: objtool:
+> > asan.module_ctor+0x17: 'naked' return found in MITIGATION_RETHUNK
+> > build
+> >     samples/rust/rust_print.o: warning: objtool:
+> > asan.module_dtor+0x17: 'naked' return found in MITIGATION_RETHUNK
+> > build
+> >
+> > And indeed from a quick look the `ret` is there.
+> >
+> > Since KASAN support is important, I decided to take it nevertheless,
+> > but please let's make sure this is fixed during the cycle (or add a
+> > "depends on").
+>
+> I figured out what the problem is. I will follow up with a fix soon.
 
+I posted a fix:
+https://github.com/rust-lang/rust/pull/130824
 
-The cover letter is missing a From/Cc to the linux-modules list. So I 
-was missing the context here. Looking at lore I found it here:
+We'll need a check on RUSTC_VERSION in Kconfig for this. If the PR
+gets merged within the next 22 days, this will land in 1.83.0. Would
+you like me to send a fix with that version number now or wait for it
+to get merged before I send that fix?
 
-https://lore.kernel.org/asahi/20240924212024.540574-1-mmaurer@google.com/
-
-Can you add linux-modules list in case there's a next revision?
-
-Also, the cover letter is missing a full changelog other than a 
-reference to the previous discussions and to the last changes.
-
-Daniel
-
+Alice
