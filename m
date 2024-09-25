@@ -1,112 +1,111 @@
-Received: from mail-qt1-f171.google.com (mail-qt1-f171.google.com [209.85.160.171])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3762714D2B8
-	for <rust-for-linux@vger.kernel.org>; Wed, 25 Sep 2024 20:49:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.171
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59BA3130E58
+	for <rust-for-linux@vger.kernel.org>; Wed, 25 Sep 2024 20:53:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727297399; cv=none; b=M7ylQ5qn6sglTAf8nelC9tNpL4PJuymntjOO15Eb+/CURqOoYL69IoBmVnsbRa/1hOP9R3Pub+pjySY8VkBobyVbezaMYtM8kqFaqxg0wVrhY6ygyR212CqlTlTB0RCgRWcjETqAWYKlevHHcSIn/y6TBM75q25XSQkHLikRVDo=
+	t=1727297594; cv=none; b=ZGv68mPFE03JdGjrL1kzEG1emkJ0AUK8dQh36voEjjfXWn3Wbd7lSecP3r1k+rmTeY3tdxVVriDyO0JmRRaE3OPiftxwwYcya7ZDPZrvzxz+7DhQxAz2k0e17WhctnIN1sKzLPSdFIpg0sV5s0iQeMFgq6mT5qJGTekNAcxw8Z8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727297399; c=relaxed/simple;
-	bh=yFyt4ZAfbTza4kgpQ2ByFfmkCT4IPxCH65j3lXLi7cM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VjBkQl1cJZ9VXuc7b48YbNUiokdWgBFDJcK2fYmatPJ6yvZ1Ljoqm28unTKejx4XtKcGJiIaiVvmjNAAXn6rS2Iz+CzgVbXIFbUcV7LHSSrQvVvuW3mTohj82exoVBN46Ne4+Avnsry6DUvfECNs2KHQ58Zf+fhpDaUs+qLA2Dk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=YNuVeNgl; arc=none smtp.client-ip=209.85.160.171
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+	s=arc-20240116; t=1727297594; c=relaxed/simple;
+	bh=TzBDLy6N493QMLQpsQ2LY8Q2Fg2q2bJBUZteDeaXIUM=;
+	h=Date:To:From:Cc:Subject:Message-ID:MIME-Version:Content-Type; b=MrDMqvXaYNZWnAN7i0D+Z8XOP4ZL/1uIgj2/IP5JYpLgnMme0NV0Hgyjm2Xcr9XsUyQ4vZC7o0wy7i2sKtV0k1FeaSzaUw4g7uYmJuKIeWekGrC1Sua6OEkMHfHYcsLBKo0Q6/HeZcfQ+YKcFRPDDHDzaBrMsoBrKYrl8D7TUa8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=caT1m7ep; arc=none smtp.client-ip=185.70.43.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="YNuVeNgl"
-Received: by mail-qt1-f171.google.com with SMTP id d75a77b69052e-4581cec6079so80851cf.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 25 Sep 2024 13:49:57 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1727297397; x=1727902197; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=wvYmhrylDEbk9n8b2naCO/v3xUja8t5gV4dA2FQkQ7I=;
-        b=YNuVeNglKQXaqvVX9rim92ZTpFPMaHtfssyaUtYjUxx3ncQy1+3qEsy85cmE3lyELq
-         cAbyd9HNx695GgjNhdVs/THibGad/RmXosE3M4B6o+Tlmq2aXlFToNzXuRcZ/Y5VKSeb
-         Pwvx5J1YjfE99ET8RFZ1jlV9FU72rDdj9lL3ipPeBXEjw/NhWWHdijB+f1M2bdyvzRvZ
-         IUfdeIXfLn9kX4idLCMJ/rSvhhIB0iFuNUtPgrMfM00cwicsD69PgBFkopQzhSZ3ikZa
-         T8PfCUXiKaM1Ga+boEz1YxCg6H81jfDdXePc7hnMkg9Wuvk07KlM3VMQ9/4NKkYWtR5n
-         oMvQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727297397; x=1727902197;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=wvYmhrylDEbk9n8b2naCO/v3xUja8t5gV4dA2FQkQ7I=;
-        b=Orvt6e2lacmAC/7IES1QpkvbHHzfXKTJRvTqP38fuCojVKdV87xN1GtgUQWUQjCQu8
-         De/KU32rIohK31bPIcOUM7ThjYh9UI8HhpXBnlZpXQLwCxqDblWMksBGt8+gSeLb5HXy
-         12cFZfex5L2Gbn0yEVI4hfZP1/P1nHr4uB7pGk0IgFNV6nK5QLKl0srWT9GO6BNCSLN0
-         QZNZnTDc06bPW5VBflCBmGyHXfdgKi9EOvqDv2I5vEjwsBXOf8Nd1JY6qvvnglb9IDUL
-         6nk6s+KbwHAei3C3IcIuF1TJJxMCLdNJu308rX3aY76v4sis64pI+zLbFzCuYpK9Sxvu
-         638g==
-X-Forwarded-Encrypted: i=1; AJvYcCXHHvdHPt55xKsmFWzhuY80cOK1Lmji36L/UKdPjyETU+ZV13RHGu226Kgbd+rW+uQbK1GGbnFOLQn0vo2Zgw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YwPsFNv7WrVZwyM/+plEpzxYfJg6g1iH7Vwcm89GdhkcPAZpV/Z
-	9daB6vFr8pAnS/7mZfz9rtPfg8i0Hx76rLl0fkNPgM62wYOFPYWFjd/QeEpfzFfvnteQNeZAOad
-	YoIZTF8xt1ke3gaurETqhkT34mc16vf4cXWc+
-X-Google-Smtp-Source: AGHT+IGWFq0uUM30Rl9pLsPQ8yT/Z+iLdvuHWHRcOOv7CSHswcGCnvxhsS+E7taeAjlF9bj9AGIbRzczXwTmweEJDk8=
-X-Received: by 2002:a05:622a:5b86:b0:456:7d9f:2af8 with SMTP id
- d75a77b69052e-45c96bc1d07mr139391cf.7.1727297396761; Wed, 25 Sep 2024
- 13:49:56 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="caT1m7ep"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=protonmail; t=1727297583; x=1727556783;
+	bh=KK0Svy852RZhnC3Vtm8HIYsanhnHdigtbcOvKn9oJeI=;
+	h=Date:To:From:Cc:Subject:Message-ID:Feedback-ID:From:To:Cc:Date:
+	 Subject:Reply-To:Feedback-ID:Message-ID:BIMI-Selector;
+	b=caT1m7epBg2FDn6Zat5R93CV2aZ0Razi+wuoVymc09o41R6BVC7FAv3Q2LFsqAgR/
+	 s0TGdu6d3g3DQxhddwz6zfFSSHYNIsKs9Y4SAFTy/3JaAwlHwutw4UiclWkvOF2Xg3
+	 6LnYJuGh6mV5qDYV51xqJO+l+rBgxHwcQ5gn0pPTKpTBr9jUJ7roXaNjDagJw9vUH8
+	 FFbs5LupwuEFx8IYTx6S1svw/U7b/h1D3SPLDGAE7TkLwz31PBbcfooT2EQls/Dt79
+	 3WCaF7Z4ESFsWmN30CIZ3kSQCuG4h3+mXqdZwnae3IARu+2UPv33YoMW1m2BAUGN6N
+	 ce0JMQ6jUDbjg==
+Date: Wed, 25 Sep 2024 20:52:57 +0000
+To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: Greg KH <gregkh@linuxfoundation.org>, Simona Vetter <simona.vetter@ffwll.ch>, rust-for-linux@vger.kernel.org
+Subject: [PATCH v2 0/2] Untrusted Data Abstraction
+Message-ID: <20240925205244.873020-1-benno.lossin@proton.me>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: ad3f6dcfdc992f5427bbe05d81bdba002957ab55
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240817165302.3852499-1-gary@garyguo.net> <CANiq72mGbdKRKuEPbmC7TLOJVXMmpvap8Vinpex-TCtorKaUVw@mail.gmail.com>
-In-Reply-To: <CANiq72mGbdKRKuEPbmC7TLOJVXMmpvap8Vinpex-TCtorKaUVw@mail.gmail.com>
-From: Sami Tolvanen <samitolvanen@google.com>
-Date: Wed, 25 Sep 2024 20:49:16 +0000
-Message-ID: <CABCJKudqAEvLcdqTqyfE2+iW+jeqBpnTGgYJvrZ0by6hGdfevQ@mail.gmail.com>
-Subject: Re: [PATCH v2] kbuild: rust: auto generate rust helper exports
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, =?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, Dirk Behme <dirk.behme@de.bosch.com>, 
-	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=utf-8
 Content-Transfer-Encoding: quoted-printable
 
-Hi folks,
+Enable marking certain data as untrusted. For example data coming from
+userspace, hardware or any other external data source.
 
-On Mon, Aug 19, 2024 at 1:04=E2=80=AFPM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
->
-> On Sat, Aug 17, 2024 at 6:54=E2=80=AFPM Gary Guo <gary@garyguo.net> wrote=
-:
-> >
-> > This removes the need for explicit exporting all symbols.
-> >
-> > Generate helper exports similar to what's currently done for Rust
-> > crates. These helpers are exclusively called from within Rust code
-> > and therefore can be treated similar as other Rust symbols.
-> >
-> > Signed-off-by: Gary Guo <gary@garyguo.net>
->
-> Applied to `rust-next` -- thanks everyone!
->
->     [ Fixed dependency path, reworded slightly, edited comment a bit and
->       rebased on top of the changes made when applying Andreas' patch
->       (e.g. no `README.md` anymore, so moved the edits).  - Miguel ]
+This idea originates from a discussion with Greg at Kangrejos. As far as I
+understand the rationale, it is to prevent accidentally reading untrusted d=
+ata
+and using it for *logic* within the kernel. For example reading the length =
+from
+the hardware and not validating that it isn't too big. This is a big source=
+ for
+logic bugs that later turn into vulnerabilities.
 
-I noticed this patch when I was rebasing the modversions series, and
-it breaks module versioning for the C helpers because they no longer
-export anything. Since helpers.o is not Rust code either, it seems
-we'd have to add a special rule to generate modversions just for this
-one object file, which doesn't feel ideal.
+The API introduced in this series is not a silver bullet, users are still a=
+ble
+to access the untrusted value (otherwise how would they be able to validate
+it?). But it provides additional guardrails to remind users that they ought=
+ to
+validate the value before using it.
 
-I ended up reverting this patch for now in my personal test tree [1],
-but I'd like to understand if there are benefits in using Rust-style
-exports for this C code other than being able to drop a few lines of
-exports? The comment added to rust/Makefile says that "In the future,
-this may be revisited to reduce the number of exports" which sounds
-like this might be a temporary clean-up?
+There are still some things to iron out on the Rust side:
+- allow better handling of `Untrusted<T>`, for example allow comparing
+  `Untrusted<[u8]>` for equality (we should do this via a trait extending
+  `PartialEq`)
+- rebase this on Gary's patch to enable arbitrary self types.
+- get more feedback as to what `Untrusted` should make available
 
-[1] https://github.com/samitolvanen/linux/commits/rustmodversions-v3
+In this version I removed the API showcase using tarfs. I did this,
+because I have added the API to `uaccess.rs`. Also, this version
+requires [1] to compile the doctests.
 
-Sami
+[1]: https://lore.kernel.org/rust-for-linux/DM4PR14MB7276E6948E67B3B23D8EA8=
+47E9652@DM4PR14MB7276.namprd14.prod.outlook.com/
+
+Benno Lossin (2):
+  rust: add untrusted data abstraction
+  rust: switch uaccess to untrusted data API
+
+ rust/kernel/lib.rs      |   1 +
+ rust/kernel/page.rs     |   8 +-
+ rust/kernel/uaccess.rs  | 135 ++++-----
+ rust/kernel/validate.rs | 602 ++++++++++++++++++++++++++++++++++++++++
+ 4 files changed, 677 insertions(+), 69 deletions(-)
+ create mode 100644 rust/kernel/validate.rs
+
+---
+
+Changelog
+
+v1: https://lore.kernel.org/rust-for-linux/20240913112643.542914-1-benno.lo=
+ssin@proton.me/
+- split `Untrusted` into `Untrusted` and `Unvalidated` (great suggestion
+  by Simona Vetter)
+- remove `validate_bytes`, `untrusted*` (Simona Vetter)
+- rename `Validator` -> `Validate`
+- change `Validator::Input` to an generic parameter (Fiona Behrens)
+- remove `Validator::Output` and change return type to
+  `Result<Self, Self::Err>` (Simona Vetter)
+- use the new API on the `uaccess` module (Simona Vetter)
+- add support for in-place validation (Simona Vetter)
+
+
+base-commit: a2f11547052001bd448ccec81dd1e68409078fbb
+--=20
+2.46.0
+
+
