@@ -1,142 +1,112 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35D6C13B287;
-	Wed, 25 Sep 2024 17:43:15 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B134E1870
+	for <rust-for-linux@vger.kernel.org>; Wed, 25 Sep 2024 17:46:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727286195; cv=none; b=Tf/2mauNsd/MV244xJL1sfYz1OYA4x3maSQNHoNkaM8pbGCdxgtL4xAPrFReqh6+QIDe9d4WueCfFLhV31UP01Z+RYiSrt21vngQNnBr61IGcAvu7+m6efwIFloJo5pT4nnkO/PzrObw/HntNZzxA2dbWaiRRKg+WQrPIDdNe2o=
+	t=1727286404; cv=none; b=b7v13NMr1zVToWfPFyG6RkfEGqjadlaSob/pMcZNJP4v3pnJDmKnruYUa8ZA9Fb+vh6ss1337l6o8EYETOuuvfjks6/Mfoe+IyxioRLHeO4ozk0EHGZ97GQTAZ2Wrq1ByMdXEqMLQkPubkjFCvfpcWiGhU5HcEeQ4PgQlWreuw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727286195; c=relaxed/simple;
-	bh=F9RWq/rXxSYntRpuJCLCsbi4j1kIhMfwU6j+9oqCDbQ=;
+	s=arc-20240116; t=1727286404; c=relaxed/simple;
+	bh=M0I8Ig3rWuZiRXKwtw6xWqst8IlFBQrwd0ojV3Hws8A=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ncNRihlKL8WJ3bYrXGEn1b89jEGMdBcDJMaF4Seeyg4CpF2JyAQx7SsHreZpAFrjAbZcHFKsaAAsrXItMZ5FuIRAHPgTyW5nxI39GNougXjiyPVEwYjNCxF6J3orxv5BfWaFb0o157+GvyqA3bzcWNvG5DekLUPjXmTHGzWaxVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=XSCNkXh6; arc=none smtp.client-ip=10.30.226.201
+	 To:Cc:Content-Type; b=N4P0XX78LpRAtfbXUwvBK9ZtxWSk/oUms73cF9j0SwyERBKjvjAMlIyFdY2T8mqZ4tO8gVhkJ2MeXUH17HDkslQ/04EG6rG13hq1iCeo73qYKsLAsgCspj+Mo5WfYIdjivAtohMWhzuioyfq05CFWaFWCdyhL2ixmDwQxB3kAjI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=DxAB4quA; arc=none smtp.client-ip=209.85.218.41
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="XSCNkXh6"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D95DFC4CEC9;
-	Wed, 25 Sep 2024 17:43:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727286194;
-	bh=F9RWq/rXxSYntRpuJCLCsbi4j1kIhMfwU6j+9oqCDbQ=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=XSCNkXh6Nl50YIGnJnoFX/5doL7AaTWE4fzrWVW0hSaX6cA89l8hRUPk0oOxn0/0a
-	 7wc981hmfdlzSpnQY9sbk8hjpbuMbi04gUV4NOBjSxdcCRv0l+9U93iqbaEjA7uRhU
-	 mKtjlR2QJTTICDfJYJBjgq/4Of69bkzakvzTKnEkZPXKAUWDroeMGQqp7mYfMFud4z
-	 uQ0NYsGBrrIejc9vp+uWBUcVTSKskJLtavBZiLaEDucMz7IKhONgqP809zorLVgWwD
-	 pZlBp4L5B0EYbSgxxe/GU/Rb8Xjee15oLOBozXq0EZiQYQCQOu5KSgugF3iAd1kCu0
-	 d9ygt3KDerlZg==
-Received: by mail-lj1-f170.google.com with SMTP id 38308e7fff4ca-2f75c6ed397so918571fa.2;
-        Wed, 25 Sep 2024 10:43:14 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCU0NZguSYRaESNaMLCxRnrnJBujIGWqp5RSwdEDBVFl1iZ6uxtaZDi3oGZDsBXrkwU5CuUl8Ho9pDnMVj/t@vger.kernel.org, AJvYcCU4rkrjglJdW6N/3Tn4CviyNkRnvcgek2M9ZvK3wixQjwZgiWeZL6mMOi/iVe3ajP0TVYRCDZem4P4Afvgx@vger.kernel.org, AJvYcCUB4gs1GDhVtdjY3yokCK6y2Mgfy+PrxOEWttNewzfDgaameMoAAhb8MbZJau4jU22bNWg=@vger.kernel.org, AJvYcCUXqqGfM9kEoabAXq2UFW69UprDDHfZ9t6Xx1hWC+z4fHTxOk118xgYFV07Lk0yzAwUCm/4mRovB04245+rVso=@vger.kernel.org, AJvYcCUZWD5pNGaRoLvjvqs4+YguaYVh1mp5YtOhJAbfOmk1OVUMWKRFPG2kJwUgqlq3huNb0a/WyHY3sz7h@vger.kernel.org, AJvYcCV2JhnMQ1eMwtgl9w5nyULw9XiHzHBf+b5ynFnpEqItN2vODXdrAn7SZsGOmIjab6+770+RNBaLbv0=@vger.kernel.org, AJvYcCVPAf3T4PLp45gATMgqSOItD7FjcPMvRMkqFrkXjgFs0qZBRalArhgeYFNksP02KvxhVX6t2ObpfyFhag==@vger.kernel.org, AJvYcCVgvSe7X2bfsHYoKn4QERQRqami54TlaGT3X+HKpxzfiNzbdVKALpHoMr436/g2uGxlA+00wRPoCEqv@vger.kernel.org, AJvYcCWmfYSzVKmxZYYq7DzySb+Ar/wVAXL23NPMPIyRThI0KJwXh7txuEr7akcDCitfXLRgqM6490aoXpSAveult5Zp1g==@vger.kernel.org, AJvYcCWtTb3O21Ie4t0MKjEk3TQq4Ulnn7rzsckBX1+eLPIT/G9+I4zRUx6U7IFC5JwQuoVSr7NONcSMrEE9q60z@vger.kernel.org
-X-Gm-Message-State: AOJu0YzU54WlhGCv2KZbv0ekJIVdl33DEHGM70dlZvYCaxwjNa0P5XbN
-	n4cDTL8XpI0Q7MVlaXf5LPM7qW1kWersdyft8s7ViN+Pa9Jc5/mKzoBKgqzSxZ581vJOFpRfxqh
-	0TrMWsb4TBnv1zxSWMzN9OtxcoV4=
-X-Google-Smtp-Source: AGHT+IE+in2ujKNOqfeviyH74B95luqIkWPFYLgeNJlVInDDisJWQsgCamgzHX+iXC0QURdLGLDiXb1g2DagGfPNhfo=
-X-Received: by 2002:a05:651c:1504:b0:2f6:5f7b:e5e0 with SMTP id
- 38308e7fff4ca-2f915ff58a0mr23471981fa.21.1727286193113; Wed, 25 Sep 2024
- 10:43:13 -0700 (PDT)
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="DxAB4quA"
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-a8b155b5e9eso17261966b.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 25 Sep 2024 10:46:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linux-foundation.org; s=google; t=1727286401; x=1727891201; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=q7bFD0zsvjm6ZC77c3M7GAfUg/FjJi2MmJVwp+M6KhE=;
+        b=DxAB4quAZ5VdKYBItJt/W5a5XGW1QTHwuRueDF8Af38DgCnGC8jdHixHxRt5cp8wp8
+         gY9SHoAw2BiveZSjqie92N7CMh93mBh1/Ur3J1LBtfMeUUNd5Br9x6wcoBNgGzKiDNDy
+         FQ5jFQf+luYL50HRhuEaWGSz5WiLt456tedPk=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727286401; x=1727891201;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=q7bFD0zsvjm6ZC77c3M7GAfUg/FjJi2MmJVwp+M6KhE=;
+        b=MPwC9H2ZHXZfU5PRVTdx9TDU2sk8XiUFW2q8KVX9hZKJcZA442gRp3Qp0IG5wH1fPQ
+         UWQc8MP8fHBsiiAsQdZKT+CacFgI6zCLJTrPkiuQrvQ5Z+sIaJ4lmlFkvOIlpLOF7YCf
+         K5wvSYX5W0FDnw7ehvDz59N9XmfA0otFC+ODKnEFyZBidmz/VTsddQgfa0peU5ZnZumw
+         37uGjvCZYGy6Mq28FvVXRw79hhQOXfEXwieJCM7BIdtOYK5Qv/3R2xCEfQ9Q+ubZm19b
+         T85O5LczsOdUp+BmhT11Hx4eFvyhRafwddOPhyDyxOM4t4R9lshZ9trWV2uT16JfzMrb
+         cv3Q==
+X-Forwarded-Encrypted: i=1; AJvYcCVV2kH7T9AAiTQSPU3d38S63SpQmsC9uNL49IGrgipQnVP7MwPf4O+in/VaatbLxFQxMwXB0caSWhr7LpzZjw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxIRumNn9sQQgUFHl8Mu7gHjBFFrtVL2Tax6k6z2nEGw/+ddNKP
+	rBkbQ2sOIxpJjhLblEIYflnufIb6ul/JkEvpIm5TQbOjWQPPB69hMMfuVWAFyC9KsjLLAB7lYl8
+	wDYmuJw==
+X-Google-Smtp-Source: AGHT+IFs37IH3q/kNp9IB/K6VQEWuJ/glPJrwMOkWJmQYuyNcWFo6Z9AgiQWuasjpILugTEYZ/VASQ==
+X-Received: by 2002:a17:907:86a2:b0:a7a:9447:3e8c with SMTP id a640c23a62f3a-a93a0341d48mr279106466b.3.1727286400740;
+        Wed, 25 Sep 2024 10:46:40 -0700 (PDT)
+Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com. [209.85.218.46])
+        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9392f34291sm240733066b.14.2024.09.25.10.46.39
+        for <rust-for-linux@vger.kernel.org>
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 25 Sep 2024 10:46:39 -0700 (PDT)
+Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-a8a6d1766a7so15367466b.3
+        for <rust-for-linux@vger.kernel.org>; Wed, 25 Sep 2024 10:46:39 -0700 (PDT)
+X-Forwarded-Encrypted: i=1; AJvYcCXw+wtsL1xq613w+U0IBDpAE1X6qU6IYJDhHM/DXLYTS9W5LfEsan5Sq+fguUh5s5vQsN22EYJR6LLAQbffPg==@vger.kernel.org
+X-Received: by 2002:a17:906:f5aa:b0:a8d:2ab2:c9b1 with SMTP id
+ a640c23a62f3a-a93a06b92camr365210666b.56.1727286399053; Wed, 25 Sep 2024
+ 10:46:39 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240925150059.3955569-30-ardb+git@google.com>
- <20240925150059.3955569-35-ardb+git@google.com> <CAP-5=fXw1rcgWgMeDSVqiDYh2XYApyaJpNvukvJ7vMs7ZPMr6g@mail.gmail.com>
-In-Reply-To: <CAP-5=fXw1rcgWgMeDSVqiDYh2XYApyaJpNvukvJ7vMs7ZPMr6g@mail.gmail.com>
-From: Ard Biesheuvel <ardb@kernel.org>
-Date: Wed, 25 Sep 2024 19:43:01 +0200
-X-Gmail-Original-Message-ID: <CAMj1kXEmssrOhu20aLW4v88YVdkCfbeRg6arkgUoDNHm-4vbMA@mail.gmail.com>
-Message-ID: <CAMj1kXEmssrOhu20aLW4v88YVdkCfbeRg6arkgUoDNHm-4vbMA@mail.gmail.com>
-Subject: Re: [RFC PATCH 05/28] x86: Define the stack protector guard symbol explicitly
-To: Ian Rogers <irogers@google.com>
-Cc: Ard Biesheuvel <ardb+git@google.com>, linux-kernel@vger.kernel.org, x86@kernel.org, 
-	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
-	Uros Bizjak <ubizjak@gmail.com>, Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, 
-	Christoph Lameter <cl@linux.com>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
-	Paolo Bonzini <pbonzini@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
-	Juergen Gross <jgross@suse.com>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, 
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arnd Bergmann <arnd@arndb.de>, 
-	Masahiro Yamada <masahiroy@kernel.org>, Kees Cook <kees@kernel.org>, 
-	Nathan Chancellor <nathan@kernel.org>, Keith Packard <keithp@keithp.com>, 
-	Justin Stitt <justinstitt@google.com>, Josh Poimboeuf <jpoimboe@kernel.org>, 
-	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Jiri Olsa <jolsa@kernel.org>, 
-	Adrian Hunter <adrian.hunter@intel.com>, Kan Liang <kan.liang@linux.intel.com>, 
-	linux-doc@vger.kernel.org, linux-pm@vger.kernel.org, kvm@vger.kernel.org, 
-	xen-devel@lists.xenproject.org, linux-efi@vger.kernel.org, 
-	linux-arch@vger.kernel.org, linux-sparse@vger.kernel.org, 
-	linux-kbuild@vger.kernel.org, linux-perf-users@vger.kernel.org, 
-	rust-for-linux@vger.kernel.org, llvm@lists.linux.dev
+References: <20240924221023.197610-1-ojeda@kernel.org>
+In-Reply-To: <20240924221023.197610-1-ojeda@kernel.org>
+From: Linus Torvalds <torvalds@linux-foundation.org>
+Date: Wed, 25 Sep 2024 10:46:22 -0700
+X-Gmail-Original-Message-ID: <CAHk-=wjuMrUMceYX01T0SBz4E0yL4Kh2Jb_8qyKxJwwitCG6Zw@mail.gmail.com>
+Message-ID: <CAHk-=wjuMrUMceYX01T0SBz4E0yL4Kh2Jb_8qyKxJwwitCG6Zw@mail.gmail.com>
+Subject: Re: [GIT PULL] Rust for 6.12
+To: Miguel Ojeda <ojeda@kernel.org>
+Cc: Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
+	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
+	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
+	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
+	linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 
-On Wed, 25 Sept 2024 at 17:54, Ian Rogers <irogers@google.com> wrote:
+On Tue, 24 Sept 2024 at 15:11, Miguel Ojeda <ojeda@kernel.org> wrote:
 >
-> On Wed, Sep 25, 2024 at 8:02=E2=80=AFAM Ard Biesheuvel <ardb+git@google.c=
-om> wrote:
-> >
-> > From: Ard Biesheuvel <ardb@kernel.org>
-> >
-> > Specify the guard symbol for the stack cookie explicitly, rather than
-> > positioning it exactly 40 bytes into the per-CPU area. Doing so removes
-> > the need for the per-CPU region to be absolute rather than relative to
-> > the placement of the per-CPU template region in the kernel image, and
-> > this allows the special handling for absolute per-CPU symbols to be
-> > removed entirely.
-> >
-> > This is a worthwhile cleanup in itself, but it is also a prerequisite
-> > for PIE codegen and PIE linking, which can replace our bespoke and
-> > rather clunky runtime relocation handling.
-> >
-> > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-> > ---
-> >  arch/x86/Makefile                     |  4 ++++
-> >  arch/x86/include/asm/init.h           |  2 +-
-> >  arch/x86/include/asm/processor.h      | 11 +++--------
-> >  arch/x86/include/asm/stackprotector.h |  4 ----
-> >  tools/perf/util/annotate.c            |  4 ++--
-> >  5 files changed, 10 insertions(+), 15 deletions(-)
-> >
-...
-> > diff --git a/tools/perf/util/annotate.c b/tools/perf/util/annotate.c
-> > index 37ce43c4eb8f..7ecfedf5edb9 100644
-> > --- a/tools/perf/util/annotate.c
-> > +++ b/tools/perf/util/annotate.c
-> > @@ -2485,10 +2485,10 @@ static bool is_stack_operation(struct arch *arc=
-h, struct disasm_line *dl)
-> >
-> >  static bool is_stack_canary(struct arch *arch, struct annotated_op_loc=
- *loc)
-> >  {
-> > -       /* On x86_64, %gs:40 is used for stack canary */
-> > +       /* On x86_64, %gs:0 is used for stack canary */
-> >         if (arch__is(arch, "x86")) {
-> >                 if (loc->segment =3D=3D INSN_SEG_X86_GS && loc->imm &&
-> > -                   loc->offset =3D=3D 40)
-> > +                   loc->offset =3D=3D 0)
->
-> As a new perf tool  can run on old kernels we may need to have this be
-> something like:
-> (loc->offset =3D=3D 40 /* pre v6.xx kernels */ || loc->offset =3D=3D 0 /*
-> v6.xx and later */ )
->
-> We could make this dependent on the kernel by processing the os_release s=
-tring:
-> https://git.kernel.org/pub/scm/linux/kernel/git/perf/perf-tools-next.git/=
-tree/tools/perf/util/env.h#n55
-> but that could well be more trouble than it is worth.
->
+> Rust changes for v6.12
 
-Yeah. I also wonder what the purpose of this feature is. At the end of
-this series, the stack cookie will no longer be at a fixed offset of
-%GS anyway, and so perf will not be able to identify it in the same
-manner. So it is probably better to just leave this in place, as the
-%gs:0 case will not exist in the field (assuming that the series lands
-all at once).
+So it looks like now the only thing holding Rust testing back for the
+allmodconfig case is the MODVERSIONS support (assuming modern enough
+tool chains etc).
 
-Any idea why this deviates from other architectures? Is x86_64 the
-only arch that needs to identify stack canary accesses in perf? We
-could rename the symbol to something identifiable, and do it across
-all architectures, if this really serves a need (and assuming that
-perf has insight into the symbol table).
+I'm inclined to just do this:
+
+   config MODVERSIONS
+          bool "Module versioning support"
+  +       depends on !COMPILE_TEST
+          help
+            Usually, you have to use modules compiled with your kernel.
+            Saying Y here makes it sometimes possible to use modules
+
+in order to have the basic Rust stuff be part of the usual allmodconfig build.
+
+That gets it building for me on x86-64, at least. But at the
+maintainer summit I think you said MODVERSIONS support is being worked
+on too, no?
+
+On my arm64 box, Rust support is still disabled due to
+RUSTC_SUPPORTS_ARM64 not being true (which in turn seems to be due to
+SHADOW_CALL_STACK support, and that needs rust 18.2 which I don't
+have).
+
+Anyway, just a heads up that I think we'll have more "unintentional"
+Rust build test coverage this way.
+
+                  Linus
