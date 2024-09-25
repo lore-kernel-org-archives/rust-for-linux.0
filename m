@@ -1,205 +1,229 @@
-Received: from rcdn-iport-1.cisco.com (rcdn-iport-1.cisco.com [173.37.86.72])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-il1-f182.google.com (mail-il1-f182.google.com [209.85.166.182])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A3331A29A;
-	Wed, 25 Sep 2024 15:49:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=173.37.86.72
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13E901AAC4
+	for <rust-for-linux@vger.kernel.org>; Wed, 25 Sep 2024 15:54:02 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.166.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727279392; cv=none; b=tfcR9vtHfQSKaygS68IOYX1qH/YtR3wYb25nVgj/oPOruMKXzKUbL408yhx6VFnFE69MxZ7ynftFhMQVh/V8d7W6gn5o8Y28601jS6t8fdxKmuM7Y2wZGUOiiDLsB4l+MRYSvZ7erLLNIlTdnPT62LM5ts4F0DClsP9uaY8d/7Q=
+	t=1727279645; cv=none; b=LWfrU5VbD95Lv5IvltDaBS7LfexLMrqKBcL+tMfqBuBJHPUi6D0959ap294zqJ4+knMPYps+7icvmRGsTbieuoXoLlL2yIW3g9RZX/GeMV9sMDDF66vDTdBxVHkE0yw+xkJFBbEsNJ2ujbMHBJKBz0DPk1JkcKbE6gMnY5BPvnM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727279392; c=relaxed/simple;
-	bh=danQdMcwzKfF3crSfdrq3/vNVhfp5ODpJa2SM9OmHR4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=QmCinSoL1sg3w6Y1yQvI6Tfcmuyt7BRLN1TxLLRT9ezZQN8OuCMlXnRIM3SWP/vVt7vEg4HsWhRAcpegtghuSIloyLj8v8V/bs5EHJ+1xF9w2cIelc9Tl56Y9hWr62tw3SdR9Uxx1Pt7SrEf3ux9gq1EMLCEfIKBBBb1SclxM0E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com; spf=pass smtp.mailfrom=cisco.com; dkim=pass (1024-bit key) header.d=cisco.com header.i=@cisco.com header.b=TmW9vfQ9; arc=none smtp.client-ip=173.37.86.72
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cisco.com
+	s=arc-20240116; t=1727279645; c=relaxed/simple;
+	bh=viYabtJz1TITnQz4Qa7lIMio94cIQKuN9RXprlUUn20=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=j5cRiRt2jRHCVO0Q06+E0wv6wIczAV73t72p/5WQv53waTSZnzvK1SR8QLX5Elh0PUBTYylFGkSEByrgPKCfOCIyHyW5ZH6rSWgYh7HwI0guLhFLBHmNE+YZi19okkOQZ984OVuArIyxI4lPbdBI1/LxknMOOw41vqt0IpxHnCA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=uBo8zCYc; arc=none smtp.client-ip=209.85.166.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=cisco.com header.i=@cisco.com header.b="TmW9vfQ9"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="uBo8zCYc"
+Received: by mail-il1-f182.google.com with SMTP id e9e14a558f8ab-3a1a662a633so313635ab.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 25 Sep 2024 08:54:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=cisco.com; i=@cisco.com; l=4990; q=dns/txt; s=iport;
-  t=1727279390; x=1728488990;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=84x+b1yJmo5yjAGxNW6xYtoM6UF1YBrDV7rxlGckoBg=;
-  b=TmW9vfQ9BBxIF7DAKFBt0MiUx4TPpxAnnPAWcWCcyXKa3wN4wYqkZvcG
-   L0EIqvsH84Hk0+oAxuNAmb4+3uaVfX8j/KBJZ/EkCyPvclvdzn0N396eE
-   1Ghyjo/ycD8ke2yxoMj7mxoQuvJuCEoZ2syOFX0AjTsEznaEEOLpq5FWu
-   k=;
-X-CSE-ConnectionGUID: YATZGHMxRxSMaM7FgO50rg==
-X-CSE-MsgGUID: s3VwVFXbRFe+N0aYayv+bA==
-X-IPAS-Result: =?us-ascii?q?A0DEAAAvMPRmmI9dJa1aHAEBAQEBAQcBARIBAQQEAQFAg?=
- =?us-ascii?q?U+EFgRDlGqCIgOgEw8BAQENAQFEBAEBhQcCigMCJjgTAQIEAQEBAQMCAwEBA?=
- =?us-ascii?q?QEBAQEBAQUBAQUBAQECAQcFFAEBAQEBAQEBNwVJhTsBBUGGXAEBAQM6PxALG?=
- =?us-ascii?q?C5WBoMUgmUDr0F4gTSBAd4ygWyBSIhLAYVmhHcnG4FJRIM9gQI+hBqGbQSSC?=
- =?us-ascii?q?YEnhDpvUIIVgT18JU2JA5BnUnt4IQIRAVUTFwsJBYk4CoMcKYFFJoEKgwuBM?=
- =?us-ascii?q?4NygWcJYYhJgQ2BPoFZAYM3SoNPgXkFOAo/glFrTjkCDQI3giiBDoJahQAlH?=
- =?us-ascii?q?UADC209NRQbsGsbG4EUGUZhFUEaDEsDlgOOYp9FgT6EIaE8TRMDg2+NAQOGQ?=
- =?us-ascii?q?TqSQZh2o1yFFwIEBgUCF4F+I4FbMxoIGxWDI1EZD4hKgyqCOQ0JxAJDbQIHC?=
- =?us-ascii?q?wEBAwmLVYF9AQE?=
-IronPort-Data: A9a23:J6gqHKyvgdNZlPRo0VJ6t+dMwSrEfRIJ4+MujC+fZmUNrF6WrkUOy
- jQcUGyBPviJYmqne9gnOo20pk4GsMLQy4NlGVRp+1hgHilAwSbn6Xt1DatR0we6dJCroJdPt
- p1GAjX4BJlpCCKa/FH1a+iJQUBUjcmgXqD7BPPPJhd/TAplTDZJoR94kobVuKYw6TSCK13L4
- IuaT/H3Ygf/h2YlaD9MsspvlTs21BjMkGJA1rABTagjUG/2zxE9EJ8ZLKetGHr0KqE8NvK6X
- evK0Iai9Wrf+Ro3Yvv9+losWhRXKlJ6FVHmZkt+A8BOsDAbzsAB+vpT2M4nVKtio27hc+adZ
- zl6ncfYpQ8BZsUgkQmGOvVSO3kW0aZuoNcrLZUj2CCe5xWuTpfi/xlhJHAfAb832sNnO3F10
- PU9dx4CSU3bne3jldpXSsE07igiBNPgMIVasXZ6wHSGS/0nWpvEBa7N4Le03h9p2ZsIRqmYN
- pFfMGY0BPjDS0Un1lM/AZc/l/qsj2LXeDxDo1XTrq0yi4TW5FYvjei1bIuIJbRmQ+1OxXiHm
- Ez29V7XD1I8bNWuwCubsXiF07qncSTTA99KS+biqZaGmma7wm0VFQ1TWEG8r+KRjk+lR8kZL
- F4Q8yA1668o+ySDStj7Qg39rmWIswARX/JOHOAgrgKA0KzZ50CeHGdsZiBActsOpsIwRCJs0
- l6PgsOvAiZg9qCWIVqZ97GJvXaxNDITIGsqeyAJV00G7sPlrYV1iQjAJv5sCqO6jd3dHTD23
- iCEqzU4i7wPjMkNkaKh8jjvmS+3ut3HSRRw4gTRQ3KN8Ax0fsimapau5Fyd6uxPRK6FSV6Fu
- XECg+CC6OUWS5qG/ASCSf8cNL6g/eeKLTqah1Nzd7Eh7DWk/XGgdId45DB4OVcvO8IFczbja
- QnYvgY5zJVeOn2tK6tweJmwDewy16/8EtKjU/28UzZVSoJ6eAnC9yZ0aAvPmWvsi0Mr16o4P
- P93bPpAE14rIJhV4xqTV90N6poi438QykSOHYr0mkHPPaWlWFaZTrIMMV2rZ+8/7b+ZrAi9z
- zq5H5XWo/m4eLOiChQ74bIuwUY2wW/X7K0aRuRNfeKFZwFhAmxkVLnawKgqfMpumKE9egb0E
- pOVBBEwJLnX3CGvxeC2hpZLM++HsXFX9i5TAMDUFQz0s0XPmK72hEvlS7M5fKM86MtoxuNuQ
- v8Odq2oW6sVFW6foWpMNsCn/eSOkShHYyrQZ0JJhxBiL/Zdq/DhoIOMkvbHrXNXV3Hm76PSX
- ZX7jlqCHPLvuDiO/O6NNarwlAnu1ZTssOlzREDPasJCY1nh9ZMiKir6yJcKzzIkd33+Ks+h/
- 1/OW38w/LCVy6dsqYmhrf7f9e+BTbAhdne26kGGt95awwGAoDr6qWKBOc7VFQ3guJTcof/yO
- LUFlqqgb5XqXj9i6uJBLlqi9opmj/OHmlOQ5l0M8KnjB7hzNo5dHw==
-IronPort-HdrOrdr: A9a23:8f0Yp6gBTjOILD/Aen29Li1ZjHBQXvUji2hC6mlwRA09TyVXra
- +TddAgpHrJYVcqKRMdcL+7UpVoLUmwyXcx2/h0AV7AZniEhILLFuBfBOLZqlWKJ8S9zI5gPM
- xbHZSWZuedMXFKye7n/Qi1FMshytGb/K3tuf3T1B5WPGZXg2UK1XYBNu5deXcGIjV7OQ==
-X-Talos-CUID: =?us-ascii?q?9a23=3ACqO9AmiWcQQI1c16sELUCkzXuTJuQ1Th/ljwBl+?=
- =?us-ascii?q?CGV1MQZjKZ1C3pft+nJ87?=
-X-Talos-MUID: 9a23:mpIE4QoO4b9yPD/lwb0ezyo5CthWzZSkMm4A0rNesviNJDIzMR7I2Q==
-X-IronPort-Anti-Spam-Filtered: true
-X-IronPort-AV: E=Sophos;i="6.10,257,1719878400"; 
-   d="scan'208";a="265804957"
-Received: from rcdn-core-7.cisco.com ([173.37.93.143])
-  by rcdn-iport-1.cisco.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Sep 2024 15:48:40 +0000
-Received: from localhost ([10.239.198.28])
-	(authenticated bits=0)
-	by rcdn-core-7.cisco.com (8.15.2/8.15.2) with ESMTPSA id 48PFmbaC008220
-	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-	Wed, 25 Sep 2024 15:48:40 GMT
-Date: Wed, 25 Sep 2024 18:48:31 +0300
-From: Ariel Miculas <amiculas@cisco.com>
-To: Benno Lossin <benno.lossin@proton.me>
-Cc: Gao Xiang <hsiangkao@linux.alibaba.com>, Gary Guo <gary@garyguo.net>,
-        Yiyang Wu <toolmanp@tlmp.cc>, rust-for-linux@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        LKML <linux-kernel@vger.kernel.org>, Al Viro <viro@zeniv.linux.org.uk>,
-        linux-fsdevel@vger.kernel.org, linux-erofs@lists.ozlabs.org
-Subject: Re: [RFC PATCH 03/24] erofs: add Errno in Rust
-Message-ID: <20240925154831.6fe4ig4dny2h7lpw@amiculas-l-PF3FCGJH>
-References: <20240916135634.98554-1-toolmanp@tlmp.cc>
- <20240916135634.98554-4-toolmanp@tlmp.cc>
- <20240916210111.502e7d6d.gary@garyguo.net>
- <2b04937c-1359-4771-86c6-bf5820550c92@linux.alibaba.com>
- <ac871d1e-9e4e-4d1b-82be-7ae87b78d33e@proton.me>
- <9bbbac63-c05f-4f7b-91c2-141a93783cd3@linux.alibaba.com>
- <239b5d1d-64a7-4620-9075-dc645d2bab74@proton.me>
+        d=google.com; s=20230601; t=1727279642; x=1727884442; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mtlWMtq+JiEyWaKdO0nlwORQa61CRpWkCRYLpleOmWc=;
+        b=uBo8zCYcIUJhS/PETf/69bupBGH621jT9YSETyyoKqXOKliYYHE14wU2XYwl3A0Sxs
+         avFXLpOlKG1iDnsgjPremaiZ/sL8gi+DhtPwdzSnvI9BAx2FWDnXRCsGB00rhwxzIPSC
+         y3Bmqq/uDBl+VjgBgr8MJd6URamV2xVVzRYBUjPI5rZAOeS5jZGZQZrKMFy1fM9TP5ji
+         K1iPoZA+53P9UDeQG5OUIKnrRY6lKNRw6n6gWP3NWCb6oLnR5jncL6e/W8GqmOJwZx/2
+         6CfvKnZYnueW+VBXDB4Z2aXesW6PBGjI7CM1zz957Cg0zLfk2PmXluePf7E1SPKoB+cz
+         tdrA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1727279642; x=1727884442;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=mtlWMtq+JiEyWaKdO0nlwORQa61CRpWkCRYLpleOmWc=;
+        b=xD8iDWEGpjcu6Tt7mKMlurSpFdsNqNG1ona4r8gxYb8qiWO/smOspB4ap4EDwL1FEt
+         dM/sPjtdkazFUc71+7iM4RMea6FmiNWK8+uX/IzI5jolBU80yXaqrCz7PYM3RDUdDoZL
+         rO+ChiI3T9r1oSpawPadNBtEdc3Y+pSmIwAqCTBCmP9ZfcZiG4yDZ0vhCbcVnQmAdPGB
+         nV/9mak3Oe2VNwBlfwbekYB51Vu4k6FbW0hXvbp7mSWphTqd7rm8cqUbQXwxTzeTGubq
+         Qti68dlktbcsIm5cVLcmVRo2R31UoGgON7c0AWHDSyuIlAWlwio+LkGQea2Zz2U6dqpN
+         z9GA==
+X-Forwarded-Encrypted: i=1; AJvYcCX3tdi8J0sA6qR7jOjo+X4m+CpX/v6yxID+dcr0Ic/RV22tVA73HZ/jivqUb9B+NxwAEGYWi7WT1Xe1D2i1yw==@vger.kernel.org
+X-Gm-Message-State: AOJu0YxWFYqy7xTSU2UhJV075VD5OotzbZHKDN5EH7Gp90VOeGueTgdW
+	ZhYGgY6SXd51c/P5nPh5lC7ZEhSAPHCr9qwRn6h98rAzFr9OvGcbQ66DesivWaUA2lB6EZjeWvf
+	0kMS9uw5XoSJ7kBY4ZZ78sUhTJlTVq9RlKVeC
+X-Google-Smtp-Source: AGHT+IECKVgNpXJyra6xJfQTQh6aQ7i0vY0ZTk0QtA5OBdxknRIVX3nOfLE4llLAa859tdiG19FbtS4i20eJ0xsZ7pg=
+X-Received: by 2002:a05:6e02:b2e:b0:3a0:926a:8d35 with SMTP id
+ e9e14a558f8ab-3a27443ee75mr1540455ab.17.1727279641904; Wed, 25 Sep 2024
+ 08:54:01 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <239b5d1d-64a7-4620-9075-dc645d2bab74@proton.me>
-X-Authenticated-User: amiculas@cisco.com
-X-Outbound-SMTP-Client: 10.239.198.28, [10.239.198.28]
-X-Outbound-Node: rcdn-core-7.cisco.com
+References: <20240925150059.3955569-30-ardb+git@google.com> <20240925150059.3955569-35-ardb+git@google.com>
+In-Reply-To: <20240925150059.3955569-35-ardb+git@google.com>
+From: Ian Rogers <irogers@google.com>
+Date: Wed, 25 Sep 2024 08:53:50 -0700
+Message-ID: <CAP-5=fXw1rcgWgMeDSVqiDYh2XYApyaJpNvukvJ7vMs7ZPMr6g@mail.gmail.com>
+Subject: Re: [RFC PATCH 05/28] x86: Define the stack protector guard symbol explicitly
+To: Ard Biesheuvel <ardb+git@google.com>
+Cc: linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Uros Bizjak <ubizjak@gmail.com>, Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, 
+	Christoph Lameter <cl@linux.com>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
+	Juergen Gross <jgross@suse.com>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Masahiro Yamada <masahiroy@kernel.org>, Kees Cook <kees@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Keith Packard <keithp@keithp.com>, 
+	Justin Stitt <justinstitt@google.com>, Josh Poimboeuf <jpoimboe@kernel.org>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>, Jiri Olsa <jolsa@kernel.org>, 
+	Adrian Hunter <adrian.hunter@intel.com>, Kan Liang <kan.liang@linux.intel.com>, 
+	linux-doc@vger.kernel.org, linux-pm@vger.kernel.org, kvm@vger.kernel.org, 
+	xen-devel@lists.xenproject.org, linux-efi@vger.kernel.org, 
+	linux-arch@vger.kernel.org, linux-sparse@vger.kernel.org, 
+	linux-kbuild@vger.kernel.org, linux-perf-users@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, llvm@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On 24/09/19 07:36, Benno Lossin via Linux-erofs wrote:
-> On 19.09.24 17:13, Gao Xiang wrote:
-> > Hi Benno,
-> > 
-> > On 2024/9/19 21:45, Benno Lossin wrote:
-> >> Hi,
-> >>
-> >> Thanks for the patch series. I think it's great that you want to use
-> >> Rust for this filesystem.
-> >>
-> >> On 17.09.24 01:58, Gao Xiang wrote:
-> >>> On 2024/9/17 04:01, Gary Guo wrote:
-> >>>> Also, it seems that you're building abstractions into EROFS directly
-> >>>> without building a generic abstraction. We have been avoiding that. If
-> >>>> there's an abstraction that you need and missing, please add that
-> >>>> abstraction. In fact, there're a bunch of people trying to add FS
-> >>>
-> >>> No, I'd like to try to replace some EROFS C logic first to Rust (by
-> >>> using EROFS C API interfaces) and try if Rust is really useful for
-> >>> a real in-tree filesystem.  If Rust can improve EROFS security or
-> >>> performance (although I'm sceptical on performance), As an EROFS
-> >>> maintainer, I'm totally fine to accept EROFS Rust logic landed to
-> >>> help the whole filesystem better.
-> >>
-> >> As Gary already said, we have been using a different approach and it has
-> >> served us well. Your approach of calling directly into C from the driver
-> >> can be used to create a proof of concept, but in our opinion it is not
-> >> something that should be put into mainline. That is because calling C
-> >> from Rust is rather complicated due to the many nuanced features that
-> >> Rust provides (for example the safety requirements of references).
-> >> Therefore moving the dangerous parts into a central location is crucial
-> >> for making use of all of Rust's advantages inside of your code.
-> > 
-> > I'm not quite sure about your point honestly.  In my opinion, there
-> > is nothing different to use Rust _within a filesystem_ or _within a
-> > driver_ or _within a Linux subsystem_ as long as all negotiated APIs
-> > are audited.
-> 
-> To us there is a big difference: If a lot of functions in an API are
-> `unsafe` without being inherent from the problem that it solves, then
-> it's a bad API.
-> 
-> > Otherwise, it means Rust will never be used to write Linux core parts
-> > such as MM, VFS or block layer. Does this point make sense? At least,
-> > Rust needs to get along with the existing C code (in an audited way)
-> > rather than refuse C code.
-> 
-> I am neither requiring you to write solely safe code, nor am I banning
-> interacting with the C side. What we mean when we talk about
-> abstractions is that we want to minimize the Rust code that directly
-> interfaces with C. Rust-to-Rust interfaces can be a lot safer and are
-> easier to implement correctly.
-> 
-> > My personal idea about Rust: I think Rust is just another _language
-> > tool_ for the Linux kernel which could save us time and make the
-> > kernel development better.
-> 
-> Yes, but we do have conventions, rules and guidelines for writing such
-> code. C code also has them. If you want/need to break them, there should
-> be a good reason to do so. I don't see one in this instance.
-> 
-> > Or I wonder why not writing a complete new Rust stuff instead rather
-> > than living in the C world?
-> 
-> There are projects that do that yes. But Rust-for-Linux is about
-> bringing Rust to the kernel and part of that is coming up with good
-> conventions and rules.
-> 
-> >>> For Rust VFS abstraction, that is a different and indepenent story,
-> >>> Yiyang don't have any bandwidth on this due to his limited time.
-> >>
-> >> This seems a bit weird, you have the bandwidth to write your own
-> >> abstractions, but not use the stuff that has already been developed?
-> > 
-> > It's not written by me, Yiyang is still an undergraduate tudent.
-> > It's his research project and I don't think it's his responsibility
-> > to make an upstreamable VFS abstraction.
-> 
-> That is fair, but he wouldn't have to start from scratch, Wedsons
-> abstractions were good enough for him to write a Rust version of ext2.
-> In addition, tarfs and puzzlefs also use those bindings.
-> To me it sounds as if you have not taken the time to try to make it work
-> with the existing abstractions. Have you tried reaching out to Ariel? He
-> is working on puzzlefs and might have some insight to give you. Sadly
-> Wedson has left the project, so someone will have to pick up his work.
+On Wed, Sep 25, 2024 at 8:02=E2=80=AFAM Ard Biesheuvel <ardb+git@google.com=
+> wrote:
+>
+> From: Ard Biesheuvel <ardb@kernel.org>
+>
+> Specify the guard symbol for the stack cookie explicitly, rather than
+> positioning it exactly 40 bytes into the per-CPU area. Doing so removes
+> the need for the per-CPU region to be absolute rather than relative to
+> the placement of the per-CPU template region in the kernel image, and
+> this allows the special handling for absolute per-CPU symbols to be
+> removed entirely.
+>
+> This is a worthwhile cleanup in itself, but it is also a prerequisite
+> for PIE codegen and PIE linking, which can replace our bespoke and
+> rather clunky runtime relocation handling.
+>
+> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> ---
+>  arch/x86/Makefile                     |  4 ++++
+>  arch/x86/include/asm/init.h           |  2 +-
+>  arch/x86/include/asm/processor.h      | 11 +++--------
+>  arch/x86/include/asm/stackprotector.h |  4 ----
+>  tools/perf/util/annotate.c            |  4 ++--
+>  5 files changed, 10 insertions(+), 15 deletions(-)
+>
+> diff --git a/arch/x86/Makefile b/arch/x86/Makefile
+> index 6b3fe6e2aadd..b78b7623a4a9 100644
+> --- a/arch/x86/Makefile
+> +++ b/arch/x86/Makefile
+> @@ -193,6 +193,10 @@ else
+>          KBUILD_RUSTFLAGS +=3D -Cno-redzone=3Dy
+>          KBUILD_RUSTFLAGS +=3D -Ccode-model=3Dkernel
+>
+> +        ifeq ($(CONFIG_STACKPROTECTOR),y)
+> +                KBUILD_CFLAGS +=3D -mstack-protector-guard-symbol=3Dfixe=
+d_percpu_data
+> +        endif
+> +
+>          # Don't emit relaxable GOTPCREL relocations
+>          KBUILD_AFLAGS_KERNEL +=3D -Wa,-mrelax-relocations=3Dno
+>          KBUILD_CFLAGS_KERNEL +=3D -Wa,-mrelax-relocations=3Dno
+> diff --git a/arch/x86/include/asm/init.h b/arch/x86/include/asm/init.h
+> index 14d72727d7ee..3ed0e8ec973f 100644
+> --- a/arch/x86/include/asm/init.h
+> +++ b/arch/x86/include/asm/init.h
+> @@ -2,7 +2,7 @@
+>  #ifndef _ASM_X86_INIT_H
+>  #define _ASM_X86_INIT_H
+>
+> -#define __head __section(".head.text")
+> +#define __head __section(".head.text") __no_stack_protector
+>
+>  struct x86_mapping_info {
+>         void *(*alloc_pgt_page)(void *); /* allocate buf for page table *=
+/
+> diff --git a/arch/x86/include/asm/processor.h b/arch/x86/include/asm/proc=
+essor.h
+> index 4a686f0e5dbf..56bc36116814 100644
+> --- a/arch/x86/include/asm/processor.h
+> +++ b/arch/x86/include/asm/processor.h
+> @@ -402,14 +402,9 @@ struct irq_stack {
+>  #ifdef CONFIG_X86_64
+>  struct fixed_percpu_data {
+>         /*
+> -        * GCC hardcodes the stack canary as %gs:40.  Since the
+> -        * irq_stack is the object at %gs:0, we reserve the bottom
+> -        * 48 bytes of the irq stack for the canary.
+> -        *
+> -        * Once we are willing to require -mstack-protector-guard-symbol=
+=3D
+> -        * support for x86_64 stackprotector, we can get rid of this.
+> +        * Since the irq_stack is the object at %gs:0, the bottom 8 bytes=
+ of
+> +        * the irq stack are reserved for the canary.
+>          */
+> -       char            gs_base[40];
+>         unsigned long   stack_canary;
+>  };
+>
+> @@ -418,7 +413,7 @@ DECLARE_INIT_PER_CPU(fixed_percpu_data);
+>
+>  static inline unsigned long cpu_kernelmode_gs_base(int cpu)
+>  {
+> -       return (unsigned long)per_cpu(fixed_percpu_data.gs_base, cpu);
+> +       return (unsigned long)&per_cpu(fixed_percpu_data, cpu);
+>  }
+>
+>  extern asmlinkage void entry_SYSCALL32_ignore(void);
+> diff --git a/arch/x86/include/asm/stackprotector.h b/arch/x86/include/asm=
+/stackprotector.h
+> index 00473a650f51..d1dcd22a0a4c 100644
+> --- a/arch/x86/include/asm/stackprotector.h
+> +++ b/arch/x86/include/asm/stackprotector.h
+> @@ -51,10 +51,6 @@ static __always_inline void boot_init_stack_canary(voi=
+d)
+>  {
+>         unsigned long canary =3D get_random_canary();
+>
+> -#ifdef CONFIG_X86_64
+> -       BUILD_BUG_ON(offsetof(struct fixed_percpu_data, stack_canary) !=
+=3D 40);
+> -#endif
+> -
+>         current->stack_canary =3D canary;
+>  #ifdef CONFIG_X86_64
+>         this_cpu_write(fixed_percpu_data.stack_canary, canary);
+> diff --git a/tools/perf/util/annotate.c b/tools/perf/util/annotate.c
+> index 37ce43c4eb8f..7ecfedf5edb9 100644
+> --- a/tools/perf/util/annotate.c
+> +++ b/tools/perf/util/annotate.c
+> @@ -2485,10 +2485,10 @@ static bool is_stack_operation(struct arch *arch,=
+ struct disasm_line *dl)
+>
+>  static bool is_stack_canary(struct arch *arch, struct annotated_op_loc *=
+loc)
+>  {
+> -       /* On x86_64, %gs:40 is used for stack canary */
+> +       /* On x86_64, %gs:0 is used for stack canary */
+>         if (arch__is(arch, "x86")) {
+>                 if (loc->segment =3D=3D INSN_SEG_X86_GS && loc->imm &&
+> -                   loc->offset =3D=3D 40)
+> +                   loc->offset =3D=3D 0)
 
-I share the same opinions as Benno that we should try to use the
-existing filesystem abstractions, even if they are not yet upstream.
-Since erofs is a read-only filesystem and the Rust filesystem
-abstractions are also used by other two read-only filesystems (TarFS and
-PuzzleFS), it shouldn't be too difficult to adapt the erofs Rust code so
-that it also uses the existing filesystem abstractions. And if there is
-anything lacking, we can improve the existing generic APIs. This would
-also increase the chances of upstreaming them.
+As a new perf tool  can run on old kernels we may need to have this be
+something like:
+(loc->offset =3D=3D 40 /* pre v6.xx kernels */ || loc->offset =3D=3D 0 /*
+v6.xx and later */ )
 
-I'm happy to help you if you decide to go down this route.
+We could make this dependent on the kernel by processing the os_release str=
+ing:
+https://git.kernel.org/pub/scm/linux/kernel/git/perf/perf-tools-next.git/tr=
+ee/tools/perf/util/env.h#n55
+but that could well be more trouble than it is worth.
 
-Cheers,
-Ariel
+Thanks,
+Ian
+
+>                         return true;
+>         }
+
+>
+> --
+> 2.46.0.792.g87dc391469-goog
+>
