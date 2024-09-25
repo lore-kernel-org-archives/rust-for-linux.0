@@ -1,114 +1,97 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.avm.de (mail.avm.de [212.42.244.94])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCE171922C6;
-	Wed, 25 Sep 2024 14:06:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBE761922EB;
+	Wed, 25 Sep 2024 14:10:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.42.244.94
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727273215; cv=none; b=kCasAGL+iedcT+agORyTfMaG3/xu305QlgUTBlVlh30o7NigL+Y70TZJuX27YAd6slbowN8q5CO7YXCEjA62hOGBCQyul2W8FPdHcxlqTh///gMbBStWXGEG2B9Ju/1OkFmtSwcHsEFVXHPDhYhQOM964jIzS8GDqkjqyNYEJUI=
+	t=1727273413; cv=none; b=Y295sZJWCJWnz14uptga42PY+lVZc/5pTKh+XJ8g26UActkhy6wTj/ODvYFrMUcmG4ow9jHnxBQ37qDA9V3SL2NCqIbdFh2uBgICSPypCGq6gZiDNfwzLNXbDkjsA20uco2ss9esq4strH9g7uNxdnReqNcFG5i9lEp5Mung2ZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727273215; c=relaxed/simple;
-	bh=3vvdp1yQQNf/xwOS6Vizv6KAU4OM+82E1VYtghgaJJ0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=p1u0x4RKqv0FKjh0C7g2478sn/ooiPkiL1qS2MnaWKsue1XGeW7cvLRSNMTGPNA/TPf5tcq/Q4oKCGcJ0yvq6gF7BdhiMIS+ar8SvY9CMqCiDf9WJUEJ0Perw4Go78hXBesTXqfcgZId+ZFKIrYPwmxn3pc8Sug14x+srXYmW/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SdCPP5vw; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1727273413; c=relaxed/simple;
+	bh=jMbh8EIoBcNAiLcYUayH9PzTT/FazOE+eEcWJvKJ1wg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=fKR/MBzvbdNC+uWzLo0toTfAIE4Adl4JxvGTIdwFEQ+5XDKCn7G3H5eQujNmZJy1cadaGiJ9c73JlWTLGq4E/8yE088dsCDwCslkCMM8c9HqI7qJdQaHwY777IV6bDQLqbvQj5MA1H5MhHepmX+5z5myNwIVmHMpEn/e8Q7qS84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=avm.de; spf=pass smtp.mailfrom=avm.de; dkim=pass (1024-bit key) header.d=avm.de header.i=@avm.de header.b=YYrqZx01; arc=none smtp.client-ip=212.42.244.94
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=avm.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=avm.de
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SdCPP5vw"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B82DBC4CEC3;
-	Wed, 25 Sep 2024 14:06:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727273215;
-	bh=3vvdp1yQQNf/xwOS6Vizv6KAU4OM+82E1VYtghgaJJ0=;
-	h=From:To:Cc:Subject:Date:From;
-	b=SdCPP5vw76qXysR37EwC5f0TZptfGY+fbumb14ld3aoPEJwrUgxjrz5CSUAjddzO+
-	 0u56l9TARvh40PdmXSoeeEyD2wZ59LXX6MaD1K7XFhbs5HMFYHaxhazlWcqf4WH8/k
-	 EMA1RVmYy7DbIagUx/IAlFRGZYVWHUwYOosukpvRAePJV2S4sFGfJSZLbIA/QZ+Cxf
-	 RRyKUUuT+W2l7Yek4xVSux02HACPjdmma47VlvY3ygIOt5dnIS/A2v9b34mprWsm/u
-	 6JutUtZrDepuUkal0ZHzLRS1OzAtW1bVthFfF6mfNM5v/OIUwjhQmwSlQDHFssuA98
-	 w8KRjn+OidfpQ==
-From: Miguel Ojeda <ojeda@kernel.org>
-To: Miguel Ojeda <ojeda@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>
-Cc: Boqun Feng <boqun.feng@gmail.com>,
-	Gary Guo <gary@garyguo.net>,
-	=?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Alice Ryhl <aliceryhl@google.com>,
-	Trevor Gross <tmgross@umich.edu>,
-	Zixing Liu <zixing.liu@canonical.com>,
-	William Grant <wgrant@ubuntu.com>,
-	Kees Cook <kees@kernel.org>,
-	rust-for-linux@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	patches@lists.linux.dev
-Subject: [PATCH] docs: rust: quick-start: add Ubuntu
-Date: Wed, 25 Sep 2024 16:06:00 +0200
-Message-ID: <20240925140600.275429-1-ojeda@kernel.org>
+	dkim=pass (1024-bit key) header.d=avm.de header.i=@avm.de header.b="YYrqZx01"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=avm.de; s=mail;
+	t=1727273408; bh=jMbh8EIoBcNAiLcYUayH9PzTT/FazOE+eEcWJvKJ1wg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=YYrqZx01em46u+78Ce9xo15ynsZieKfBZb1lh4stwg7JAxNG1E9gy1SAjCxTPbfth
+	 YZt5hygkbNE315aYVSeYQrHEf1hmMDZtB8LlQbObVem2sKXNm1I77bUj5uhfckGg6y
+	 0gmkc7nJraWtditRn37FlVttbmsi21TXPz0FBxXs=
+Received: from mail-auth.avm.de (dovecot-mx-01.avm.de [IPv6:2001:bf0:244:244::71])
+	by mail.avm.de (Postfix) with ESMTPS;
+	Wed, 25 Sep 2024 16:10:08 +0200 (CEST)
+Received: from l-nschier-nb (unknown [61.8.139.63])
+	by mail-auth.avm.de (Postfix) with ESMTPSA id 79A5380515;
+	Wed, 25 Sep 2024 16:10:07 +0200 (CEST)
+Date: Wed, 25 Sep 2024 16:10:05 +0200
+From: Nicolas Schier <n.schier@avm.de>
+To: Masahiro Yamada <masahiroy@kernel.org>
+Cc: linux-kbuild@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Nathan Chancellor <nathan@kernel.org>
+Subject: Re: [PATCH 11/23] kbuild: check the presence of
+ include/generated/rustc_cfg
+Message-ID: <ZvQZvUEzQAx0aFAl@l-nschier-nb>
+References: <20240917141725.466514-1-masahiroy@kernel.org>
+ <20240917141725.466514-12-masahiroy@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+In-Reply-To: <20240917141725.466514-12-masahiroy@kernel.org>
+X-purgate-ID: 149429::1727273408-DA50800A-50DB458E/0/0
+X-purgate-type: clean
+X-purgate-size: 1624
+X-purgate-Ad: Categorized by eleven eXpurgate (R) http://www.eleven.de
+X-purgate: This mail is considered clean (visit http://www.eleven.de for further information)
+X-purgate: clean
 
-Ubuntu has changed their maintenance model for Rust toolchains and is
-now providing recent Rust releases in their releases, including both
-LTS and non-LTS (interim) releases.
+On Tue, Sep 17, 2024 at 11:16:39PM +0900, Masahiro Yamada wrote:
+> Since commit 2f7ab1267dc9 ("Kbuild: add Rust support"), Kconfig
+> generates include/generated/rustc_cfg, but its presence is not checked
+> in the top-level Makefile. It should be checked similarly to the C
+> header counterpart, include/generated/autoconf.h.
+> 
+> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+> ---
+> 
+>  Makefile | 5 +++--
+>  1 file changed, 3 insertions(+), 2 deletions(-)
+> 
+> diff --git a/Makefile b/Makefile
+> index 3f5c273c2901..5700d08c9b57 100644
+> --- a/Makefile
+> +++ b/Makefile
+> @@ -780,7 +780,7 @@ else # !may-sync-config
+>  # and include/config/auto.conf but do not care if they are up-to-date.
+>  # Use auto.conf to show the error message
+>  
+> -checked-configs := include/generated/autoconf.h include/config/auto.conf
+> +checked-configs := include/generated/autoconf.h include/generated/rustc_cfg include/config/auto.conf
+>  missing-configs := $(filter-out $(wildcard $(checked-configs)), $(checked-configs))
+>  
+>  ifdef missing-configs
+> @@ -1187,7 +1187,8 @@ PHONY += prepare archprepare
+>  
+>  archprepare: outputmakefile archheaders archscripts scripts include/config/kernel.release \
+>  	asm-generic $(version_h) include/generated/utsrelease.h \
+> -	include/generated/compile.h include/generated/autoconf.h remove-stale-files
+> +	include/generated/compile.h include/generated/autoconf.h \
+> +	include/generated/rustc_cfg remove-stale-files
+>  
+>  prepare0: archprepare
+>  	$(Q)$(MAKE) $(build)=scripts/mod
+> -- 
+> 2.43.0
+> 
 
-Therefore, add instructions to the Quick Start guide for Ubuntu, like
-it is done for the other distributions.
-
-Link: https://packages.ubuntu.com/search?keywords=rustc-1
-Link: https://packages.ubuntu.com/search?keywords=bindgen-0
-Cc: Zixing Liu <zixing.liu@canonical.com>
-Cc: William Grant <wgrant@ubuntu.com>
-Reviewed-by: Kees Cook <kees@kernel.org>
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
----
-RFC: https://lore.kernel.org/rust-for-linux/20240816181545.45789-1-ojeda@kernel.org/
-
-Compared to the RFC, Ubuntu now provides the versioned `rustc-*`
-packages in older LTSs (the ones with standard support), which is great!
-
-I can confirm I can build the latest kernel in 20.04 LTS (using a
-newer LLVM), 22.04 LTS, 24.04 LTS and 24.10.
-
-The `bindgen-*` versioned packages are not backported (yet?) to the
-older LTSs, so I added a note about that compared to the RFC patch.
-
- Documentation/rust/quick-start.rst | 17 +++++++++++++++++
- 1 file changed, 17 insertions(+)
-
-diff --git a/Documentation/rust/quick-start.rst b/Documentation/rust/quick-start.rst
-index ed5af2b5339a..393b3e2f2a05 100644
---- a/Documentation/rust/quick-start.rst
-+++ b/Documentation/rust/quick-start.rst
-@@ -87,6 +87,23 @@ they should generally work out of the box, e.g.::
- 	zypper install rust rust1.79-src rust-bindgen clang
-
-
-+Ubuntu
-+******
-+
-+Ubuntu LTS and non-LTS (interim) releases provide recent Rust releases and thus
-+they should generally work out of the box, e.g.::
-+
-+	apt install rustc-1.80 rust-1.80-src bindgen-0.65 rustfmt-1.80 rust-1.80-clippy
-+
-+``RUST_LIB_SRC`` needs to be set when using the versioned packages, e.g.::
-+
-+	RUST_LIB_SRC=/usr/src/rustc-$(rustc-1.80 --version | cut -d' ' -f2)/library
-+
-+In addition, ``bindgen-0.65`` is available in newer releases (24.04 LTS and
-+24.10), but it may not be available in older ones (20.04 LTS and 22.04 LTS),
-+thus ``bindgen`` may need to be built manually (please see below).
-+
-+
- Requirements: Building
- ----------------------
-
-
-base-commit: a2f11547052001bd448ccec81dd1e68409078fbb
---
-2.46.2
+Reviewed-by: Nicolas Schier <n.schier@avm.de>
