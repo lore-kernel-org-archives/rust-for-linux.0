@@ -1,54 +1,54 @@
-Received: from mail-ej1-f73.google.com (mail-ej1-f73.google.com [209.85.218.73])
+Received: from mail-yb1-f201.google.com (mail-yb1-f201.google.com [209.85.219.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A24418E77B
-	for <rust-for-linux@vger.kernel.org>; Wed, 25 Sep 2024 15:02:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14CFA18E761
+	for <rust-for-linux@vger.kernel.org>; Wed, 25 Sep 2024 15:02:24 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727276545; cv=none; b=rra5PwRrUkK9VZT6aQo/z+GaLUVepUErTdUc+eTB+wXod6ZSPT9lZWZlPJ77CkT9GhWFhaCZKFjpScPuu34JpOCdqxmcVZ+7acfgiMzQ6Aen8omonsGMMmbhNpmMSE3fxzV4cNPV37eHuK+NDXsn4y/lSv0/plfMP68loaHUniY=
+	t=1727276546; cv=none; b=PFU8OmvukddfkmsLRaUkHq2SMkSPuzWb6XuKEIHtj/OS39IPHfjnTxAF6hMT5yXfNuLihp7CHYIlsovDxsLlMXaKa06t3X7tcuZjuhF1DQnqlaKsGaUUmvsY1WZGByPw6G6hdyjZB+CLdGlJBs+R0vLznS4LkOTg3RNWSWBMiGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727276545; c=relaxed/simple;
-	bh=5QDZ8e6v38oe4vdIzJiUkWBfZtQ8UHIt+vUykdg9FgY=;
+	s=arc-20240116; t=1727276546; c=relaxed/simple;
+	bh=P2FcDMrWaViJAVOVZOgFhqVr7ndECoGt9aNdX1NbL6A=;
 	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=KOglT7U2oEA9tDGtfFZlxvXvO0mij2bH9gaiJfB3sCV1WtPr7LmiOXYBbl5f337Y1GnoRcprFFewGWv9m2bkGf3msjM4JSLksHfxD8CQFfIgyut4wgmQQRjD9RU/q2/tHgzXSIpVQst+DBwmBZgyVnkVqAl2XpbD6HYXeQUM1JY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=btIfw3b8; arc=none smtp.client-ip=209.85.218.73
+	 To:Cc:Content-Type; b=aYq+QTY0t6oTld6IUqa4KIVPESwxrOtIw9uiowsp/VShg5O5FZve5UikQ/FNJA6glrqyDCRQdT6Rb68Bhs/8VG5TMKDQO+yUlpsfFYgcKs5yGZrxeyVVn3aCJOwE74tJCU25yn/0scFXE/uIQJ50BJSht/0xZeEeExg0rBys+C8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=lQtn/1YJ; arc=none smtp.client-ip=209.85.219.201
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--ardb.bounces.google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="btIfw3b8"
-Received: by mail-ej1-f73.google.com with SMTP id a640c23a62f3a-a870f3a65a0so523819866b.0
-        for <rust-for-linux@vger.kernel.org>; Wed, 25 Sep 2024 08:02:22 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="lQtn/1YJ"
+Received: by mail-yb1-f201.google.com with SMTP id 3f1490d57ef6-e1d46cee0b0so10267430276.2
+        for <rust-for-linux@vger.kernel.org>; Wed, 25 Sep 2024 08:02:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1727276540; x=1727881340; darn=vger.kernel.org;
+        d=google.com; s=20230601; t=1727276543; x=1727881343; darn=vger.kernel.org;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=sMLI1adUSxUIp8UXfDcqdD38QxXI+e+F/+Ag4yCxL7E=;
-        b=btIfw3b8uzUX3qs7RbZNOIodIRQS3kYxnKbB07MkGpXPYtKc+y45geOrWIRE35o0GJ
-         5YzfMc8m/wwUmK922QVfZyXI+B9wuA11T+flD5UOxahZBXEtemDkGE3W7/J4g0rup0hY
-         RyswEcm3adw5fvIh3eha8RaOBvemjfbbMcjxK6TO86cFNcWaluqJU/uHawwpriFuKlzC
-         b5Ay07lm9xUJ9+hbAhwj5blziH/yfFSGqOTaAfwczL1nqILOKB83UYvc+v0ZoNMQWtNe
-         zpF1gMq1hKxaI61gGVFhZCZNMi0lZFV8gGArhbSqFgJ/PphdZxS/hEKLUNBePwgIibqI
-         GGTQ==
+        bh=vu/ZbROFphQGBAR+273iXbk1tlXuWo8crbz4dEomRj0=;
+        b=lQtn/1YJn8ofwp00YPqh/7ezdca6i/dHyOqwIKn9NYR/t34JCf/JnPUsE/CTB64V03
+         XZQA9DoCVY0P4KsZmS6kF6A3RLqm2zeGzo6VDPM6iwiemCFUih2Dg0OCxkYSE/SMg1Us
+         cW7HeP21m6KnShkftmJzo9cbUKesSxLQSeKXdqNy6YyZxhbp0xOCN+it/zMTpFMhQ21A
+         5K4QzdOBDM237nQcdJz6PAF+hW1p8zl8uML/NoXt6W8agRnzoo/bdG273F4gG0tLvBj4
+         KUtgPm9oCEZZYT+PQrU4BKNIjVqOkVLcWKePKSU60RBD5kDm8Gt0DAAzS+wIlRIB6Dta
+         8nfw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727276540; x=1727881340;
+        d=1e100.net; s=20230601; t=1727276543; x=1727881343;
         h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
          :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=sMLI1adUSxUIp8UXfDcqdD38QxXI+e+F/+Ag4yCxL7E=;
-        b=jJyQaiUKtycxUpb7CdGjFbW5RFoZ8s13h2MDfd707x2DrSMjO49wZfK9mq/hcJQ5R8
-         74sn7zP7PKkOEWIGBx806ES6MmY9BMESp60x6PdqnGth9blpbNV9jfnKWGTlzjToaHPZ
-         z3kZ2W5h6JClhe4AY5BzW+nt+dGK4lo5t6zZtDZF62i1v3mfgQDNt/U2ICoGOIT3gckc
-         Pquv3o0x74ZURXYSsuSOoVnYJg4EHA2gh6qAIKQoXPcY1KN2POp5t14lvo9iSvFcIwWG
-         fcRBO/aAEMc6bVAQEwcGYpY+43MenvKNS2ok1UXnzEsDHRUPSK5A9/sj9brPYjMjlsUW
-         vxoQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXiPFOsRyyso3KUvljc54wCBXU8EDmEWW/ZWAUqNSMZBtAJqAL6BB/fEkRx3nBNh5BTGP/XPQS3QPxOmEOC8w==@vger.kernel.org
-X-Gm-Message-State: AOJu0YylwQsG64/ccLtZu5qMHPl8HNXUIhYe6T/PAyO4+oqitY7rq1ML
-	2PFCa93WcTEgGZTGsrArpIr+AL8ggqIh5Uw2lGE2aVzmtsRY5huZNYmlJ6m5FOYR1iusmw==
-X-Google-Smtp-Source: AGHT+IHqdrbnTURYSpf/5afh17e1i3rk5opqYbKAlLurQBauppiTWqSh5+YV6ICpl369+Ha35/G5jy3r
+        bh=vu/ZbROFphQGBAR+273iXbk1tlXuWo8crbz4dEomRj0=;
+        b=H6CbCRWfzQohXofjSPGKfraVkVkGs6YJt5wY4B5Lw+6mWKaekFyJ2llrdRf517QxhO
+         E392vd5aOckPcCvqyluyG8jpWEA7O6/h+3GsTU2NqEwhBZXhbbwO7yYEg7PMaKRgS3e/
+         QP4RXnlHFHy75bbOCWEIW1j1RM/A4l273d782A6cAithINOCMIe1LhfyfMiGXPV3QL4C
+         VX4UKDwBQ55rrJUjhr0V/ihCa0KatOmrBARPA22ZPwwCsBqivsrcyj/w2rYwJ1PyXtbe
+         ltZyMHLTAx7TW87BWwJxT5dKiv4lFESE1Jr+r4M3gO+gxcnolSenGLfuJVmjMaOib7UW
+         ji3g==
+X-Forwarded-Encrypted: i=1; AJvYcCUT2uGxHH+RHKDeFmDoTTbJqduo68NTT2Bh2UBLaykSgigOZiC28zbkPme1Xxtru+qNlOMAH/KrnhMalBJCwg==@vger.kernel.org
+X-Gm-Message-State: AOJu0YyVhWRLemkQoAO/v5PVfRhy9gnuX0VBm2mMdcRvb4sVkjmJ7Pzb
+	DIjf0y0O1VbKEu9xymg1txm9zORPlRfTiCPYd1CtcP6+nh4YCTX6k7UqNsugb/ba5x3Wzw==
+X-Google-Smtp-Source: AGHT+IEyaWBDeaj2o4LzPpSYVvpQbis55gp/KI/SuWbxXUep7wBTAaa7DqSfUrTGsylfjBz2VoxVb7Nf
 X-Received: from palermo.c.googlers.com ([fda3:e722:ac3:cc00:7b:198d:ac11:8138])
- (user=ardb job=sendgmr) by 2002:a17:906:6d8:b0:a8a:76fd:ae67 with SMTP id
- a640c23a62f3a-a93a061ba72mr129666b.10.1727276539991; Wed, 25 Sep 2024
- 08:02:19 -0700 (PDT)
-Date: Wed, 25 Sep 2024 17:01:12 +0200
+ (user=ardb job=sendgmr) by 2002:a05:6902:1782:b0:e0b:958a:3344 with SMTP id
+ 3f1490d57ef6-e24da39b0c3mr17936276.10.1727276543053; Wed, 25 Sep 2024
+ 08:02:23 -0700 (PDT)
+Date: Wed, 25 Sep 2024 17:01:13 +0200
 In-Reply-To: <20240925150059.3955569-30-ardb+git@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
@@ -58,14 +58,14 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 Mime-Version: 1.0
 References: <20240925150059.3955569-30-ardb+git@google.com>
 X-Developer-Key: i=ardb@kernel.org; a=openpgp; fpr=F43D03328115A198C90016883D200E9CA6329909
-X-Developer-Signature: v=1; a=openpgp-sha256; l=2056; i=ardb@kernel.org;
- h=from:subject; bh=VKZKKQxE7f774DDxhaNjhf6gM8y+4CHtkhz4ITFKHVU=;
- b=owGbwMvMwCFmkMcZplerG8N4Wi2JIe2L6l6HjphM91K+tMbfPlum+q87xXbcaBq/plqB6J0rH
- Clz7dQ6SlkYxDgYZMUUWQRm/3238/REqVrnWbIwc1iZQIYwcHEKwESez2L4w3XU9mNkQveSSXqf
- bkfpTfktlPbu753X3m4//t4RvX456gUjw9ItwQrWWxY9aPiwtX3xVeeW5YpKNdGO1l4qU7KmnF4 VzwoA
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1397; i=ardb@kernel.org;
+ h=from:subject; bh=OCB6ogDK8zWwsvV7jOJ7CFiQBF2ggvTbOxK6mQJaX9A=;
+ b=owGbwMvMwCFmkMcZplerG8N4Wi2JIe2L6r76WO61FcfVRPyObM7vdxPl3nB63j7e+T6H1Wu+r
+ TX46mXYUcrCIMbBICumyCIw+++7nacnStU6z5KFmcPKBDKEgYtTACYyaR4jwzOv6S8kr9nwfXyX
+ 9iPzW9q5kzeEqzTXKbA29B6+VB8ddZORYZns0cK9u93/3DfuTd/m9X/T7v+32d81/dIy2BMjHfO RgwMA
 X-Mailer: git-send-email 2.46.0.792.g87dc391469-goog
-Message-ID: <20240925150059.3955569-42-ardb+git@google.com>
-Subject: [RFC PATCH 12/28] x86/pm-trace: Use RIP-relative accesses for .tracedata
+Message-ID: <20240925150059.3955569-43-ardb+git@google.com>
+Subject: [RFC PATCH 13/28] x86/kvm: Use RIP-relative addressing
 From: Ard Biesheuvel <ardb+git@google.com>
 To: linux-kernel@vger.kernel.org
 Cc: Ard Biesheuvel <ardb@kernel.org>, x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
@@ -90,57 +90,36 @@ Content-Type: text/plain; charset="UTF-8"
 
 From: Ard Biesheuvel <ardb@kernel.org>
 
-Use RIP-relative accesses and 32-bit offsets for .tracedata, to avoid
-the need for relocation fixups at boot time.
+Avoid absolute references in code, which require fixing up at boot time,
+and replace them with RIP-relative ones. In this particular case, due to
+the register pressure, they cannot be avoided entirely, so one absolute
+reference is retained but the resulting reference via the GOT is
+compatible with running the linker in PIE mode.
 
 Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 ---
- arch/x86/include/asm/pm-trace.h | 4 ++--
- drivers/base/power/trace.c      | 6 +++---
- 2 files changed, 5 insertions(+), 5 deletions(-)
+ arch/x86/kernel/kvm.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/arch/x86/include/asm/pm-trace.h b/arch/x86/include/asm/pm-trace.h
-index bfa32aa428e5..123faf978473 100644
---- a/arch/x86/include/asm/pm-trace.h
-+++ b/arch/x86/include/asm/pm-trace.h
-@@ -8,10 +8,10 @@
- do {								\
- 	if (pm_trace_enabled) {					\
- 		const void *tracedata;				\
--		asm volatile(_ASM_MOV " $1f,%0\n"		\
-+		asm volatile("lea " _ASM_RIP(1f) ", %0\n"	\
- 			     ".section .tracedata,\"a\"\n"	\
- 			     "1:\t.word %c1\n\t"		\
--			     _ASM_PTR " %c2\n"			\
-+			     ".long %c2 - .\n"			\
- 			     ".previous"			\
- 			     :"=r" (tracedata)			\
- 			     : "i" (__LINE__), "i" (__FILE__));	\
-diff --git a/drivers/base/power/trace.c b/drivers/base/power/trace.c
-index cd6e559648b2..686a0276ccfc 100644
---- a/drivers/base/power/trace.c
-+++ b/drivers/base/power/trace.c
-@@ -167,7 +167,7 @@ EXPORT_SYMBOL(set_trace_device);
- void generate_pm_trace(const void *tracedata, unsigned int user)
- {
- 	unsigned short lineno = *(unsigned short *)tracedata;
--	const char *file = *(const char **)(tracedata + 2);
-+	const char *file = offset_to_ptr((int *)(tracedata + 2));
- 	unsigned int user_hash_value, file_hash_value;
+diff --git a/arch/x86/kernel/kvm.c b/arch/x86/kernel/kvm.c
+index 263f8aed4e2c..8eac209a31aa 100644
+--- a/arch/x86/kernel/kvm.c
++++ b/arch/x86/kernel/kvm.c
+@@ -800,9 +800,11 @@ extern bool __raw_callee_save___kvm_vcpu_is_preempted(long);
+  * Hand-optimize version for x86-64 to avoid 8 64-bit register saving and
+  * restoring to/from the stack.
+  */
+-#define PV_VCPU_PREEMPTED_ASM						     \
+- "movq   __per_cpu_offset(,%rdi,8), %rax\n\t"				     \
+- "cmpb   $0, " __stringify(KVM_STEAL_TIME_preempted) "+steal_time(%rax)\n\t" \
++#define PV_VCPU_PREEMPTED_ASM						\
++ "leaq   __per_cpu_offset(%rip), %rax				\n\t"	\
++ "movq   (%rax,%rdi,8), %rax					\n\t"	\
++ "addq   steal_time@GOTPCREL(%rip), %rax			\n\t"	\
++ "cmpb   $0, " __stringify(KVM_STEAL_TIME_preempted) "(%rax)	\n\t"	\
+  "setne  %al\n\t"
  
- 	if (!x86_platform.legacy.rtc)
-@@ -187,9 +187,9 @@ static int show_file_hash(unsigned int value)
- 
- 	match = 0;
- 	for (tracedata = __tracedata_start ; tracedata < __tracedata_end ;
--			tracedata += 2 + sizeof(unsigned long)) {
-+			tracedata += 2 + sizeof(int)) {
- 		unsigned short lineno = *(unsigned short *)tracedata;
--		const char *file = *(const char **)(tracedata + 2);
-+		const char *file = offset_to_ptr((int *)(tracedata + 2));
- 		unsigned int hash = hash_string(lineno, file, FILEHASH);
- 		if (hash != value)
- 			continue;
+ DEFINE_ASM_FUNC(__raw_callee_save___kvm_vcpu_is_preempted,
 -- 
 2.46.0.792.g87dc391469-goog
 
