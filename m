@@ -1,185 +1,225 @@
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2069.outbound.protection.outlook.com [40.107.94.69])
+Received: from rcdn-iport-6.cisco.com (rcdn-iport-6.cisco.com [173.37.86.77])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 893E21D5AD5;
-	Wed, 25 Sep 2024 21:12:58 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.69
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727298780; cv=fail; b=cdwyecU0qn+ldPh6NtovnkRVjShQp+KjJD/Dh5Na25BaqpUaxh0myHBdW17WjNcqJ9fuaXW1GENDQ3Vlxfe/P3JOhWisK0Rut48WtbK4H+b7YyZpbELapAMKyMJ55wLY0cp8qxGT6lODqfT2z73553UOVPts7laa6WPtbhW7paU=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727298780; c=relaxed/simple;
-	bh=MRuvYRKDuThrJoBb+1lZ4jkgQ3/784bKkbAI2wm0/Vo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
-	 In-Reply-To:Content-Type; b=Dag4mShxckhRhQjJLRrgbBoEvKPKvhOie0IOt+LSERee0goXJjTzH0zz6n9IWsXq0l7Gv0bwyrJpRpNqW0bDlCHJi/S3rahM7982A1D01wLrv/FFpyk/6t1vUKc4hUcfPY3s0fb355RessxxqSn+ewGyYURb67rQ8Jqb0TtSPjQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=2a9RFKZc; arc=fail smtp.client-ip=40.107.94.69
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAA001534FB;
+	Wed, 25 Sep 2024 21:46:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=173.37.86.77
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1727300796; cv=none; b=jNfW5HTiJErsSQ/yvtDoWhg5PxWhRNvc5jkHf9Eo/AnFkmvNOSG3bUx4rPUWNPq3SQLSyjZE+2BKEuuPJVWKhx4d9yq5VIiXX/dXUl3CmJrUhzNVA9LYojhWasWgMPpNWkpRUddJuF/jZrdQpKktmBi4E251gB54WHMdfcasZRY=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1727300796; c=relaxed/simple;
+	bh=Kx2+4ZXFIWfwPwQqzWzCQt1Dr+Ll7UJtTbovdy752CY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Q6ElJNXdjVnOP9FBLdepFWpg2/VsxJKts9NcFkqAyJgnOjBDza/LlMBzYks/jTfwMChwkLwKfStqLQ1VxKMLzfjulyAevESdrF5zuLIWwfLK/p8+kuOIMd9T8B4UOmSLYLY9qEXniawr3cXoHps5E0FR7hi+Hpk7D4J3zIQvoik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com; spf=pass smtp.mailfrom=cisco.com; dkim=pass (1024-bit key) header.d=cisco.com header.i=@cisco.com header.b=cCJt1xVl; arc=none smtp.client-ip=173.37.86.77
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=cisco.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=cisco.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="2a9RFKZc"
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
- b=r1CyvXCUjXqbEgAD4/VZRask0GCIyWRXPX8KMa9dRa1X0wZbsbM7N1VKSDFgbR/qrwoNDycBljk0q7/Aw7OTsKV1aSWgnkfAN5D9FdTa+Bna55q5b2f/+kFelBDFnwVdntfikLH3n1o5I6bp/+K/P4/lfP/3tyUEXPC3+/RYsXppZHlTva3ElZT3AJC/ztwppWsTyw62b+gf4dfW5CgMuZ5L0JrdUTuNnZSHb5pGLCKUdh1rGNPXSwsgvB1BayxZgor9mLkb+Hj0jvYXb3E9Su6HEDDYWXliExfo7rBvUDmdQskgRnrQEtVbPqSzGtHKaANp5ddM/hcAsJndpFe31g==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector10001;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=o27dxBRXuZ+4jCUFs4ZeVgNjzLT5Saz5jMSaDeWCRf8=;
- b=pgrs/TWjc+ozl3mZ8El55t+SYeNu9Cu5IVr1JH9g9x2oSmeaBRjh8jiAyIn2ykphOU58oD6+lF45rW27j/QSg8MQ1ut74cbCLcn5sAusun89oSqeUCoa0M6bxzcZFJ4ZRfSepfSk4DLpK2cbjsX5L1kP8SPp0Q5hPmvkg8XVc2B+/CkS6+A4AGkG/PlXPV/QTDSF1+nnsJ4vVgAxqINq95PSEMxeKGlykynmHoKYLKnrjEotOmRRTK10ZyZrG2v3WITfrufpXpdOMGYV/c1Qlj7rf4OWm8Cb9j0mJvZ8hK1gvRJFMJMAPw9q7C/QcK115T6W/uYO62j6zZujNTLtlA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
- (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
- dkim=none (message not signed); arc=none (0)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=o27dxBRXuZ+4jCUFs4ZeVgNjzLT5Saz5jMSaDeWCRf8=;
- b=2a9RFKZcHtoJY+0jmlCh6qTgIDHBQz+heojripxsqzKlld/FPT2J1lhmmNPem73qIUGZ7796Jj4oghp8dPF3PeXoNQEupd0nl1V7pqsQ51IpNrRYIQY6hB4N7TSAwv3B3nBfT0YhyfmXyLpQMD/8rl2pIF0Eg9H4slLQr1XpWJU=
-Received: from BN9P221CA0028.NAMP221.PROD.OUTLOOK.COM (2603:10b6:408:10a::10)
- by LV8PR12MB9360.namprd12.prod.outlook.com (2603:10b6:408:205::16) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7982.25; Wed, 25 Sep
- 2024 21:12:55 +0000
-Received: from BN2PEPF000055DC.namprd21.prod.outlook.com
- (2603:10b6:408:10a:cafe::3e) by BN9P221CA0028.outlook.office365.com
- (2603:10b6:408:10a::10) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7982.26 via Frontend
- Transport; Wed, 25 Sep 2024 21:12:55 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
- smtp.mailfrom=amd.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=amd.com;
-Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
- 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
- client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
-Received: from SATLEXMB04.amd.com (165.204.84.17) by
- BN2PEPF000055DC.mail.protection.outlook.com (10.167.245.6) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.20.8026.0 via Frontend Transport; Wed, 25 Sep 2024 21:12:55 +0000
-Received: from SATLEXMB05.amd.com (10.181.40.146) by SATLEXMB04.amd.com
- (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 25 Sep
- 2024 16:12:54 -0500
-Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB05.amd.com
- (10.181.40.146) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 25 Sep
- 2024 16:12:54 -0500
-Received: from [172.18.112.153] (10.180.168.240) by SATLEXMB03.amd.com
- (10.181.40.144) with Microsoft SMTP Server id 15.1.2507.39 via Frontend
- Transport; Wed, 25 Sep 2024 16:12:51 -0500
-Message-ID: <1258d32d-ee54-4a5d-bc92-6c1f8179235a@amd.com>
-Date: Wed, 25 Sep 2024 17:12:51 -0400
+	dkim=pass (1024-bit key) header.d=cisco.com header.i=@cisco.com header.b="cCJt1xVl"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=cisco.com; i=@cisco.com; l=5105; q=dns/txt; s=iport;
+  t=1727300794; x=1728510394;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=VckOAgRjdjkhJ0K9ZO4MPe4CiswPipPZEA7GbCxjh5M=;
+  b=cCJt1xVlKcpZq1SXiYwfeNDNowxyck0wBWeYdi0Fi26mNCSCPyNg5DMi
+   L75QA/8M9KzqmnzwEhlcGHNQeNCxFHA63iA76OowwTfmxzl6THEeZy0Xm
+   kXRZZEwCxtnXwD4Wr7QxMMFL1PpTqfK/Qyfc3wX9Onclxin7vyWHk/ysD
+   Q=;
+X-CSE-ConnectionGUID: WQuQom6JQ06Xd3Zv61Pf8w==
+X-CSE-MsgGUID: 8zLzPAsSQv2dNIE0WjRMNg==
+X-IPAS-Result: =?us-ascii?q?A0ADAAC0g/RmmJxdJa1aGwEBAQEBAQEBBQEBARIBAQEDA?=
+ =?us-ascii?q?wEBAUCBOwYBAQELAYNAWUNIBIxuhzCCIgOeFYF+DwEBAQ0BATsJBAEBhEFGA?=
+ =?us-ascii?q?ooEAiY0CQ4BAgQBAQEBAwIDAQEBAQEBAQEBBQEBBQEBAQIBBwUUAQEBAQEBA?=
+ =?us-ascii?q?QE3BUmFdQ2GWwEBAQECATo0CwULCw4KLlYGExSCbQGCQSMDEQawF3iBNIEBg?=
+ =?us-ascii?q?2IB2k+BZgaBSAGISgGFZhuEXCcbgUlEhD8+glUMAQECgUiGWgSGcIp+DQ6BJ?=
+ =?us-ascii?q?4lLfCVNiHATkH1Se3ghAhEBVRMXCwkFiTgKgxwpgUUmgQqDC4Ezg3KBZwlhi?=
+ =?us-ascii?q?EmBDYE+gVkBgzdKg0+BeQU4Cj+CUWtOOQINAjeCKIEOglqFAE0dQAMLbT01F?=
+ =?us-ascii?q?BusOYFbSIMFRSgQBAEEDAsCLAINcBgkQS0DkkpLB4JnjmKBOZ9KhCGMFpUmT?=
+ =?us-ascii?q?RMDg2+NAYZEOpJBmHaNe5VhhRcCBAYFAheBZzqBWzMaCBsVgyITDDMZD44tD?=
+ =?us-ascii?q?QmDWIRZO7oFQzICATgCBwsBAQMJi1aBfAEB?=
+IronPort-Data: A9a23:FvU1bqM2Hhuk3+bvrR29kMFynXyQoLVcMsEvi/4bfWQNrUol1zEHy
+ 2YfWW/SOPyMZDCkctgiaIyw8R9QuJ/WztYwSXM5pCpnJ55oRWUpJjg4wmPYZX76whjrFRo/h
+ ykmQoCdap1yFDmE/0fF3oHJ9RFUzbuPSqf3FNnKMyVwQR4MYCo6gHqPocZh6mJTqYb/WlvlV
+ e/a+ZWFZAf0gWMsaAr41orawP9RlKWq0N8nlgRWicBj5Df2i3QTBZQDEqC9R1OQapVUBOOzW
+ 9HYx7i/+G7Dlz91Yj9yuu+mGqGiaue60Tmm0hK6aYD76vRxjnBaPpIACRYpQRw/ZwNlMDxG4
+ I4lWZSYEW/FN0BX8QgXe0Ew/ypWZcWq9FJbSJSymZT78qHIT5fj68pXEXgxONM6w74pMW0Vx
+ +JGcQgDPg/W0opawJrjIgVtrt4oIM+uN4QFtzQ9izrYFv0hB5vERs0m5/cBg2x23Z8ITK2YP
+ pdHAdZsREyojxlnM1IWA486lfyAjXjkeDoeo1WQzUYyyzKNklYsieWzb7I5fPTaV+FHpm+Dn
+ VvYpWjfIzxCC96l7ByKpyfEaujnxn6jB9lIS9VU7MVCnFqJ2GUXBAY+UVq9vOn8hEmjXd5WN
+ 00T/Gwpt6da3EiqSMTtGhCip3CflhodQMZLVeoo7AiH0ezT+QnxLmwFSCNRLdI9uMIoSDgCy
+ FCEhZXqCCZpvbnTTmiSnp+KrCm1EToYK24cIysFSxYVpd75r8cujXrnStdlDb7wjdDvHzz06
+ y6FoTJ4hLgJi8MPkaKh8jjvjCihqZvJZgo04BjHUGW46A9weI+iYcqv81ezxexdN5rcQF6b+
+ XwFndWOxP4BAIvLlyGXRugJWraz6J6tLDrbhVtmGYEJ6zCo4zioduh47zhkNW9mO9wVdiLuJ
+ knepWt57pJVOnzsaahseIO3I9wwyrTnE5LgW5j8bsFPa55+dwaA1CVvY1OAmWnpkUIlm6h5M
+ pCeGftAFl4AAqhhiTGxXepYjPkgxzs1wiXYQpWTIwmbPaS2W0eIcLAAbnm3Nr4J4Pi2vluMy
+ 9gPKJ7fo/lAa9HWbi7S+I8VCFkFK3knGJz7w/C7kMbdfmKK/0l/V5fsLaMdRmBzo0hCeg71E
+ pyVQERUzh/0gmfKbFjMYXF4Y7SpVpF6xZ7aAcDOFQj0s5TASd/zhEv6S3fRVeJ6nACE5aUoJ
+ 8Tpg+3aXpxyps3volzxl6XVoo14bwiMjgmTJSejazVXV8c/HVOTooW6L1C2rnhm4s+LWS0W/
+ eXIOuTzHMpreuieJJyKAB5S5wrr5CFGybgas7XgeYEKIRiEHHdWx9zZ1aJvfJpWdn0vNxOR1
+ h2dBl8DtPLRroouuNjPjubskmtaO7UWI6auJEGCtezeHXCDpgKLmNYQOM7WJmq1fD2vp82fi
+ RB9kquU3Asvxgga6uKR0t9DkMoD2jcYj+UHlV88QyuXPgvD53EJCiDu4PSjf5Zlntdx0TZak
+ GrWkjWGEd1l4P/YLWM=
+IronPort-HdrOrdr: A9a23:lRCHlqlZzZSEcjSRQa3F8T9TXMDpDfID3DAbv31ZSRFFG/FwWf
+ rAoB0+726QtN9xYgBDpTnuAsO9qB/nmKKdpLNhWYtKPzOW21dATrsC0WKK+VSJcBEWtNQ86U
+ 4KScZD4bPLYWRSvILT/BS4H9E8wNOO7aykwdvFw2wFd3AMV0mlhD0Jczpy1SZNNW97OaY=
+X-Talos-CUID: =?us-ascii?q?9a23=3AXp24JGsFh2/+uU3Er4puKZVJ6IsaS2Dky3KOAXb?=
+ =?us-ascii?q?gV1ZlE4+LFwao9vN7xp8=3D?=
+X-Talos-MUID: 9a23:w5wbjQrd+hl7jmlbCOUez2FwENVQyr+VMV5XnbMnlpG7NxZVHTjI2Q==
+X-IronPort-Anti-Spam-Filtered: true
+X-IronPort-AV: E=Sophos;i="6.10,258,1719878400"; 
+   d="scan'208";a="266251567"
+Received: from rcdn-core-5.cisco.com ([173.37.93.156])
+  by rcdn-iport-6.cisco.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Sep 2024 21:45:26 +0000
+Received: from localhost ([10.239.198.28])
+	(authenticated bits=0)
+	by rcdn-core-5.cisco.com (8.15.2/8.15.2) with ESMTPSA id 48PLjMBV025421
+	(version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
+	Wed, 25 Sep 2024 21:45:25 GMT
+Date: Thu, 26 Sep 2024 00:45:18 +0300
+From: Ariel Miculas <amiculas@cisco.com>
+To: Gao Xiang <hsiangkao@linux.alibaba.com>
+Cc: Benno Lossin <benno.lossin@proton.me>, Gary Guo <gary@garyguo.net>,
+        Yiyang Wu <toolmanp@tlmp.cc>, rust-for-linux@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        LKML <linux-kernel@vger.kernel.org>, Al Viro <viro@zeniv.linux.org.uk>,
+        linux-fsdevel@vger.kernel.org, linux-erofs@lists.ozlabs.org,
+        Linus Torvalds <torvalds@linux-foundation.org>
+Subject: Re: [RFC PATCH 03/24] erofs: add Errno in Rust
+Message-ID: <20240925214518.fvig2n6cop3sliqy@amiculas-l-PF3FCGJH>
+References: <20240916135634.98554-1-toolmanp@tlmp.cc>
+ <20240916135634.98554-4-toolmanp@tlmp.cc>
+ <20240916210111.502e7d6d.gary@garyguo.net>
+ <2b04937c-1359-4771-86c6-bf5820550c92@linux.alibaba.com>
+ <ac871d1e-9e4e-4d1b-82be-7ae87b78d33e@proton.me>
+ <9bbbac63-c05f-4f7b-91c2-141a93783cd3@linux.alibaba.com>
+ <239b5d1d-64a7-4620-9075-dc645d2bab74@proton.me>
+ <20240925154831.6fe4ig4dny2h7lpw@amiculas-l-PF3FCGJH>
+ <80cd0899-f14c-42f4-a0aa-3b8fa3717443@linux.alibaba.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [RFC PATCH 01/28] x86/pvh: Call C code via the kernel virtual
- mapping
-To: Ard Biesheuvel <ardb+git@google.com>, <linux-kernel@vger.kernel.org>
-CC: Ard Biesheuvel <ardb@kernel.org>, <x86@kernel.org>, "H. Peter Anvin"
-	<hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>, Peter Zijlstra
-	<peterz@infradead.org>, Uros Bizjak <ubizjak@gmail.com>, Dennis Zhou
-	<dennis@kernel.org>, Tejun Heo <tj@kernel.org>, Christoph Lameter
-	<cl@linux.com>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, "Paolo
- Bonzini" <pbonzini@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>,
-	Juergen Gross <jgross@suse.com>, Boris Ostrovsky
-	<boris.ostrovsky@oracle.com>, Greg Kroah-Hartman
-	<gregkh@linuxfoundation.org>, Arnd Bergmann <arnd@arndb.de>, Masahiro Yamada
-	<masahiroy@kernel.org>, Kees Cook <kees@kernel.org>, Nathan Chancellor
-	<nathan@kernel.org>, Keith Packard <keithp@keithp.com>, Justin Stitt
-	<justinstitt@google.com>, Josh Poimboeuf <jpoimboe@kernel.org>, "Arnaldo
- Carvalho de Melo" <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>,
-	"Jiri Olsa" <jolsa@kernel.org>, Ian Rogers <irogers@google.com>, Adrian
- Hunter <adrian.hunter@intel.com>, Kan Liang <kan.liang@linux.intel.com>,
-	<linux-doc@vger.kernel.org>, <linux-pm@vger.kernel.org>,
-	<kvm@vger.kernel.org>, <xen-devel@lists.xenproject.org>,
-	<linux-efi@vger.kernel.org>, <linux-arch@vger.kernel.org>,
-	<linux-sparse@vger.kernel.org>, <linux-kbuild@vger.kernel.org>,
-	<linux-perf-users@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
-	<llvm@lists.linux.dev>
-References: <20240925150059.3955569-30-ardb+git@google.com>
- <20240925150059.3955569-31-ardb+git@google.com>
-Content-Language: en-US
-From: Jason Andryuk <jason.andryuk@amd.com>
-In-Reply-To: <20240925150059.3955569-31-ardb+git@google.com>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-Received-SPF: None (SATLEXMB05.amd.com: jason.andryuk@amd.com does not
- designate permitted sender hosts)
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: BN2PEPF000055DC:EE_|LV8PR12MB9360:EE_
-X-MS-Office365-Filtering-Correlation-Id: f2ea1ed0-686e-47fc-1992-08dcdda6d310
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam:
-	BCL:0;ARA:13230040|376014|7416014|36860700013|1800799024|82310400026;
-X-Microsoft-Antispam-Message-Info:
-	=?utf-8?B?MHh0aS9xdXBOWkNYSmRtcUEvWUYyanpaQi9sTFNreTBnMmJFUC8yRld0SnlN?=
- =?utf-8?B?RUVrekREVWR3cllESzZHZTVnM21qZVlGWER1dTdTZEt6d1JUU2ZBQ1JxcWE4?=
- =?utf-8?B?aW5XbDJzM3NZRUN6anRYR2xIZkI4R29QSXdmTmRKb0U4ZGRpS0NqZVd5Ny9T?=
- =?utf-8?B?dnZxaVI5dmFaeXRORmc1YzhncWllZDZJcWNpQmpPSkc3aGUzeVV1UnBoemxE?=
- =?utf-8?B?RTNaSjNESStZV011TE1aRTluUjNjMHNzeWlOdG12VXF2dUJEUS9KUEFHM2Ex?=
- =?utf-8?B?WkJ5M2pud1RsdGE5UXVXRndXK2NyT1I3U0xJR016VHRCWkU0cmM0OVdhTVJO?=
- =?utf-8?B?U1hIRWtSMFZ4R29MbTlOT2c2aXZqWDk1V2hUTkNuZlBSMVVsTFZWemo4c3dx?=
- =?utf-8?B?VFV2SWJlRnBJWUY5aFJtMzJmZDVISVJwUlBEaTE1TDlEb0dwdEdpeDZ2b3Rq?=
- =?utf-8?B?aDdzeU5CTWYxYytEWGVFNkx5SlRDN3BHOE9wV2VHZ3lOTENtOVAyQ0FTNWgr?=
- =?utf-8?B?ekVxMjZ0TllDOVBTaHRjTFE3V3VlSHJyWVRDSkI5R1A5elBESm8rZGFsWkE3?=
- =?utf-8?B?SG5IWmFJZ1dJVXlNMStvVnFKZnA0alVxVitHOWhhOWVFL3Y4M1BsSkV3UW1k?=
- =?utf-8?B?QWxRNWdZZjhIbE1yTzE5ZGFTNy9EcjZOS083cWVmTllSV09yWUZWZTZvWEYy?=
- =?utf-8?B?WTZibGFiMXNrQVY0UTA4SGhRVDlqemV4SjlNd2JSYnNMdHo0VnRlczhNd3ZE?=
- =?utf-8?B?Tlh1b3htTTg1d2JtMDhVejRDYWJnbThTUHRycEFCWlJmb2drcS9YbGtQL0c3?=
- =?utf-8?B?MldyTHVYMUZwQ0FBaGw4TlYrL0dDQVhSdnVwYVBIUHltYXhSUnFvem1EQ055?=
- =?utf-8?B?bG04RlBiaXMwNGMzR1lrRURPK2UwYjV4ZHZIVXMrenBtS29rR094Qk5sS2Vl?=
- =?utf-8?B?eWlWLzQxZHlFcnlVY3gyRXZNSGVSODlwSzF4alM1eFRWeFBrOUJBOXc1QTBB?=
- =?utf-8?B?MEs1SWQwc1NjRmFuSHFRa0ZiVkpnVDJiRVBwRlNrTDl1bVcyRFpaT3U5b3pm?=
- =?utf-8?B?SzR4ZTl5WFRmZngrRUFxRHdwQkExK1AxaG9sNkQ2L0NJNGJ5NXhkSzNSNGR4?=
- =?utf-8?B?d1dkNVd0NjQ1eTVlTWE0dHkveDRBZi9LQmR6dkpTZU1JNjAzOXNjR3dpT0NI?=
- =?utf-8?B?b05Pcmw5ZXVWaGdPcWpzV1NONXN6bzROekF0UnVxbEFSTmRrZFowK2U5QSts?=
- =?utf-8?B?ZVlUR2R4SEJGUVgyODg1WlN3U0ltSnNFVWZWcnY2OXcyODhweWlsc3cwVFFw?=
- =?utf-8?B?K1RlZ3hrUzRST2VnUDJoMTYxT0VCODlTN0dwenFMV0V3R21ndzBNOU5ZNEh5?=
- =?utf-8?B?YjlyaHIvTXZraXo0S3o0WStzd3VyeElsRGJiVExkU1Jyc3REK29Va25aUVhy?=
- =?utf-8?B?UTVpYjhkQkRJTy9hNnA4SHQzSlFzSkwrd21SUndaVVJNNmFjVWhRR2tNb0FT?=
- =?utf-8?B?a2FzWnRXT1BvbUVtUkljVGxXMlJVd0pkTWtITFZKMXFCdHJFWE5lcGE4ZGtG?=
- =?utf-8?B?QTAvWTRrVjNCVTY1bFFtcE1ialpvRCsvVUNPTG4yQTc1T1BKRXNqeWNJTEZI?=
- =?utf-8?B?QkswK0VGWEh1cUk3WGFKTmJ0eG5jWFNQbFk2R1NlUXFDOEJueW9YT2lmUVht?=
- =?utf-8?B?NHNIYlJtTjZUcndCMnJ6NVpjb283b1RpTXJkcU5yNGw5TE53SnJjbjNXSnVX?=
- =?utf-8?B?Y1lYdlpacVFEdE9DSmxSam53d3dzYWpOK2didlptL0p2YTF3V3ZwQlg0MmJD?=
- =?utf-8?Q?mAG5gbbmFUCO6ntA+6BmX721jACkTf9uoy1CE=3D?=
-X-Forefront-Antispam-Report:
-	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(376014)(7416014)(36860700013)(1800799024)(82310400026);DIR:OUT;SFP:1101;
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Sep 2024 21:12:55.4187
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: f2ea1ed0-686e-47fc-1992-08dcdda6d310
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
-X-MS-Exchange-CrossTenant-AuthSource:
-	BN2PEPF000055DC.namprd21.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV8PR12MB9360
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <80cd0899-f14c-42f4-a0aa-3b8fa3717443@linux.alibaba.com>
+X-Authenticated-User: amiculas@cisco.com
+X-Outbound-SMTP-Client: 10.239.198.28, [10.239.198.28]
+X-Outbound-Node: rcdn-core-5.cisco.com
 
-On 2024-09-25 11:01, Ard Biesheuvel wrote:
-> From: Ard Biesheuvel <ardb@kernel.org>
+On 24/09/26 12:35, Gao Xiang wrote:
+> Hi Ariel,
 > 
-> Calling C code via a different mapping than it was linked at is
-> problematic, because the compiler assumes that RIP-relative and absolute
-> symbol references are interchangeable. GCC in particular may use
-> RIP-relative per-CPU variable references even when not using -fpic.
+> On 2024/9/25 23:48, Ariel Miculas wrote:
 > 
-> So call xen_prepare_pvh() via its kernel virtual mapping on x86_64, so
-> that those RIP-relative references produce the correct values. This
-> matches the pre-existing behavior for i386, which also invokes
-> xen_prepare_pvh() via the kernel virtual mapping before invoking
-> startup_32 with paging disabled again.
+> ...
 > 
-> Fixes: 7243b93345f7 ("xen/pvh: Bootstrap PVH guest")
-> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> > I share the same opinions as Benno that we should try to use the
+> > existing filesystem abstractions, even if they are not yet upstream.
+> > Since erofs is a read-only filesystem and the Rust filesystem
+> > abstractions are also used by other two read-only filesystems (TarFS and
+> > PuzzleFS), it shouldn't be too difficult to adapt the erofs Rust code so
+> > that it also uses the existing filesystem abstractions. And if there is
+> > anything lacking, we can improve the existing generic APIs. This would
+> > also increase the chances of upstreaming them.
+> 
+> I've expressed my ideas about "TarFS" [1] and PuzzleFS already: since
+> I'm one of the EROFS authors, I should be responsible for this
+> long-term project as my own promise to the Linux community and makes
+> it serve for more Linux users (it has not been interrupted since 2017,
+> even I sacrificed almost all my leisure time because the EROFS project
+> isn't all my paid job, I need to maintain our internal kernel storage
+> stack too).
+> 
+> [1] https://lore.kernel.org/r/3a6314fc-7956-47f3-8727-9dc026f3f50e@linux.alibaba.com
+> 
+> Basically there should be some good reasons to upstream a new stuff to
+> Linux kernel, I believe it has no exception on the Rust side even it's
+> somewhat premature: please help compare to the prior arts in details.
+> 
+> And there are all thoughts for reference [2][3][4][5]:
+> [2] https://github.com/project-machine/puzzlefs/issues/114#issuecomment-2369872133
+> [3] https://github.com/opencontainers/image-spec/issues/1190#issuecomment-2138572683
+> [4] https://lore.kernel.org/linux-fsdevel/b9358e7c-8615-1b12-e35d-aae59bf6a467@linux.alibaba.com/
+> [5] https://lore.kernel.org/linux-fsdevel/20230609-nachrangig-handwagen-375405d3b9f1@brauner/
+> 
+> Here still, I do really want to collaborate with you on your
+> reasonable use cases.  But if you really want to do your upstream
+> attempt without even any comparsion, please go ahead because I
+> believe I can only express my own opinion, but I really don't
+> decide if your work is acceptable for the kernel.
+> 
 
-Tested-by: Jason Andryuk <jason.andryuk@amd.com>
-Reviewed-by: Jason Andryuk <jason.andryuk@amd.com>
+Thanks for your thoughts on PuzzleFS, I would really like if we could
+centralize the discussions on the latest patch series I sent to the
+mailing lists back in May [1]. The reason I say this is because looking
+at that thread, it seems there is no feedback for PuzzleFS. The feedback
+exists, it's just scattered throughout different mediums. On top of
+this, I would also like to engage in the discussions with Dave Chinner,
+so I can better understand the limitations of PuzzleFS and the reasons
+for which it might be rejected in the Linux Kernel. I do appreciate your
+feedback and I need to take my time to respond to the technical issues
+that you brought up in the github issue.
 
-I found that before this change xen_prepare_pvh() would call through 
-some pv_ops function pointers into the kernel virtual mapping.
+However, even if it's not upstream, PuzzleFS does use the latest Rust
+filesystem abstractions and thus it stands as an example of how to use
+them. And this thread is not about PuzzleFS, but about the Rust
+filesystem abstractions and how one might start to use them. That's
+where I offered to help, since I already went through the process of
+having to use them.
 
-Regards,
-Jason
+[1] https://lore.kernel.org/all/20240516190345.957477-1-amiculas@cisco.com/
+
+> > 
+> > I'm happy to help you if you decide to go down this route.
+> 
+> Again, the current VFS abstraction is totally incomplete and broken
+> [6].
+
+If they're incomplete, we can work together to implement the missing
+functionalities. Furthermore, we can work to fix the broken stuff. I
+don't think these are good reasons to completely ignore the work that's
+already been done on this topic.
+
+By the way, what is it that's actually broken? You've linked to an LWN
+article [2] (or at least I think your 6th link was supposed to link to
+"Rust for filesystems" instead of the "Committing to Rust in the kernel"
+one), but I'm interested in the specifics. What exactly doesn't work as
+expected from the filesystem abstractions?
+
+[2] https://lwn.net/Articles/978738/
+
+> 
+> I believe it should be driven by a full-featured read-write fs [7]
+> (even like a simple minix fs in pre-Linux 1.0 era) and EROFS will
+
+I do find it weird that you want a full-featured read-write fs
+implemented in Rust, when erofs is a read-only filesystem.
+
+> use Rust in "fs/erofs" as the experiment, but I will definitely
+> polish the Rust version until it looks good before upstreaming.
+
+I honestly don't see how it would look good if they're not using the
+existing filesystem abstractions. And I'm not convinced that Rust in the
+kernel would be useful in any way without the many subsystem
+abstractions which were implemented by the Rust for Linux team for the
+past few years.
+
+Cheers,
+Ariel
+
+> 
+> I really don't want to be a repeater again.
+> 
+> [6] https://lwn.net/SubscriberLink/991062/9de8e9a466a3faf5
+> [7] https://lore.kernel.org/linux-fsdevel/ZZ3GeehAw%2F78gZJk@dread.disaster.area
+> 
+> Thanks,
+> Gao Xiang
+> 
+> > 
+> > Cheers,
+> > Ariel
+> 
