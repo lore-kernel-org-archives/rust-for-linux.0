@@ -1,772 +1,195 @@
-Received: from mail-4316.protonmail.ch (mail-4316.protonmail.ch [185.70.43.16])
+Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2073.outbound.protection.outlook.com [40.107.94.73])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52A7414EC5D;
-	Wed, 25 Sep 2024 20:53:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.16
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727297600; cv=none; b=WPd5fRx4vKTBTXk9D9tlUwbaYOYZHlxhqh4RfSJU+KXNSWBbvvlzdO6rFfEhrUfohJntrAQofDOJyUArfJFB/zpH+mw1k33/lkfrSOvWdEVeVMLULkIibFSY6uo+ye4Nh76rYvc50zprw9HyZ1xLBiRgRQf4A+QEnqFVs52ibOQ=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727297600; c=relaxed/simple;
-	bh=nHKVM6jVyy6XtdH6RPwIDEYx+HH5nQo6nYpf3OuSyK8=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jkcs2NGdFCHPFHqvRk89HUu3nTXz7quGkgX9W9M16FhOFBu4R08+n4hjx8nLogB0EJdni33hrxhiIwhh/WCFEAfqqyWPCd4d4/tjqyR1YHJA1nNuyvzuGCoRMNjGHHJHtbLVNF+HJ1wpKInyWVWkWlWSXcySli119faDn5wBlx4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=hn8oUkjN; arc=none smtp.client-ip=185.70.43.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A417B22EE4;
+	Wed, 25 Sep 2024 21:11:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.94.73
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1727298668; cv=fail; b=Am4+LQmF5FKO2G6qDd3ZFcc9e0L767CLY+37zUIDkKcQPMbMIhN3/0Wi+SAa+ALmNF2ecBQEYgPr1AIXW9e75frIirR8xZzukDQIyl7FzfXfqRkIOCYWN5S0JZPG4ntPrhzjtR1MoGNQgJSWSl2zxiZIMw/Sv39eDGEMqOuMctg=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1727298668; c=relaxed/simple;
+	bh=ssIs9WtPLkYu01Dj+z1Mc0lHQSYIPGLQzn3LK0r2/QY=;
+	h=Message-ID:Date:MIME-Version:Subject:To:CC:References:From:
+	 In-Reply-To:Content-Type; b=nmZubnjtzeo37Vd0oyCEeADQhdp7jZcYPsplNXarjctQjsSfiTAN053gDItAUxlL2MGWEp65jgbWO8anyWR2QXWdh94wBvIikBukvO8Vstuv2S7XLkgMJc2ndLtG/vX6ge36KxNAIj8eBB7rOS3RgEXwjGL6Pc9ktxBv5ccRQP4=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=h6Z48oLx; arc=fail smtp.client-ip=40.107.94.73
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="hn8oUkjN"
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
-	s=protonmail; t=1727297590; x=1727556790;
-	bh=qiyKQWQNCUk2/ZfZxnftGeTOeoA1CywONUeEx4QsYLk=;
-	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
-	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
-	 Message-ID:BIMI-Selector;
-	b=hn8oUkjNo93Eddg21mTQCTGQ9EattnlDUVbm6mq6EZa4zpzjymwMjJRjuV7B9E0KI
-	 H/X0imRE8EzteTef04LxtzzA+Qavtz78KO3Nb3QtLQ4gxtlcYORkXoKyUznnGjzrTm
-	 1wfPTNjXyE1cv92SpDpyFqoz6QJRllupWj20A5Jzn2cvc3EOVUIlyoOaGw1MH9dIaE
-	 s9/JvZCia312M1M+cCoQRRnGX3LhIlt9N6RUkSq9cnOhvhnw5zhmqhtz/+7OImERVU
-	 DdaNO/AHy2micNmfZU4tIrWejHnd/U9l22dsA70mE38gQppV31/KnW1Cp9LK36LCYK
-	 UXYsB0WGcG1cQ==
-Date: Wed, 25 Sep 2024 20:53:05 +0000
-To: Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>
-From: Benno Lossin <benno.lossin@proton.me>
-Cc: Greg KH <gregkh@linuxfoundation.org>, Simona Vetter <simona.vetter@ffwll.ch>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
-Subject: [PATCH v2 1/2] rust: add untrusted data abstraction
-Message-ID: <20240925205244.873020-2-benno.lossin@proton.me>
-In-Reply-To: <20240925205244.873020-1-benno.lossin@proton.me>
-References: <20240925205244.873020-1-benno.lossin@proton.me>
-Feedback-ID: 71780778:user:proton
-X-Pm-Message-ID: 3f67bea4faef9b3cbced77f3a1778216b81cf81c
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="h6Z48oLx"
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=cqT95vw/VV8DqM7+q5RQ6kDVcqMAiEwJReRSupa/k+gLdONpBQdJ2y/3AW7axB8SHameZOsfWdjlVxIYzNAqaHreHmaY9F9tzniJ9wnXWAF+NaLP3JHsCBXkyzHHy1jkmekYqo1N/P2yPFozWn5j1L+uVxF/LdoiBzgh3auZ9vEeImmmXhPvIFpbqIezwOfyjlYfCN7OIiQxAJHxS7szfrt0/ZmQwbnylt6y6+fFwGiGI75GSVBwz13RxfGcgZ22H1N/SYMHL7NjtMJVcE5Bf5QmjtWEXv05+HQH8XGuQi3N3MSEsW1tEvpl/Y7/biiR6Xl+udnyb2sxoX4Dba8ryg==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=G0seTHlNHKQRCkaKgJf0QsO+AMWS+fi600xH0eeDjsI=;
+ b=VS5xwu3RXucPSM5uqoxfFbbVTpKUyM9XXS179XfKTfjvz61gR88GBCEkvycxDmVJQ3pyOJkxFSXgVqzTzoA8b/z5wZHyZHR09xUU2JkcB0aHrhpWxM9exJhz4ryCF2cRrTbD3lk792bx5lEfgehNxJtq97Giskga75h5UPWdsWeURwf1DziEkpaOvwQCiboUxPnsVSitPD+klPLSXDKUjx6GK0z6UZUC6a4Ez0AnFFME3mmeO+SSsleGm9iEyCcUJElA8lKYor8nQYdAmCwcJZcob50HvTQTH4TW9NaZ5VNOkBYEQCMWYXy3ekKXuyJCKzG/DirZhxPD9s/y9swvig==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=google.com smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=G0seTHlNHKQRCkaKgJf0QsO+AMWS+fi600xH0eeDjsI=;
+ b=h6Z48oLxyTskg8BvMmpDA2Eomh1ZNb0XlNtkZW9UttutjmeSvHlMuO41N/vpI4bAu+2QspT6lYEOmybH4l/+K+E6ekA4vKGZyIoHda+WMm/d/w4LWhSY18YifIqOHyerA2eBy8YhFqt25NEiVzW9bIv7JRmi2aLL0jtb2ZzwKDM=
+Received: from BN9P221CA0014.NAMP221.PROD.OUTLOOK.COM (2603:10b6:408:10a::19)
+ by SA0PR12MB4430.namprd12.prod.outlook.com (2603:10b6:806:70::20) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7982.28; Wed, 25 Sep
+ 2024 21:11:03 +0000
+Received: from BN2PEPF000055DC.namprd21.prod.outlook.com
+ (2603:10b6:408:10a:cafe::3a) by BN9P221CA0014.outlook.office365.com
+ (2603:10b6:408:10a::19) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.7982.26 via Frontend
+ Transport; Wed, 25 Sep 2024 21:11:03 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ BN2PEPF000055DC.mail.protection.outlook.com (10.167.245.6) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.8026.0 via Frontend Transport; Wed, 25 Sep 2024 21:11:03 +0000
+Received: from SATLEXMB05.amd.com (10.181.40.146) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 25 Sep
+ 2024 16:11:03 -0500
+Received: from SATLEXMB03.amd.com (10.181.40.144) by SATLEXMB05.amd.com
+ (10.181.40.146) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.39; Wed, 25 Sep
+ 2024 16:11:02 -0500
+Received: from [172.18.112.153] (10.180.168.240) by SATLEXMB03.amd.com
+ (10.181.40.144) with Microsoft SMTP Server id 15.1.2507.39 via Frontend
+ Transport; Wed, 25 Sep 2024 16:10:59 -0500
+Message-ID: <81fb3f6b-4ded-41d1-be66-d86af4f22171@amd.com>
+Date: Wed, 25 Sep 2024 17:10:56 -0400
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [RFC PATCH 11/28] x86/pvh: Avoid absolute symbol references in
+ .head.text
+To: Ard Biesheuvel <ardb+git@google.com>, <linux-kernel@vger.kernel.org>
+CC: Ard Biesheuvel <ardb@kernel.org>, <x86@kernel.org>, "H. Peter Anvin"
+	<hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>, Peter Zijlstra
+	<peterz@infradead.org>, Uros Bizjak <ubizjak@gmail.com>, Dennis Zhou
+	<dennis@kernel.org>, Tejun Heo <tj@kernel.org>, Christoph Lameter
+	<cl@linux.com>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, "Paolo
+ Bonzini" <pbonzini@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>,
+	Juergen Gross <jgross@suse.com>, Boris Ostrovsky
+	<boris.ostrovsky@oracle.com>, Greg Kroah-Hartman
+	<gregkh@linuxfoundation.org>, Arnd Bergmann <arnd@arndb.de>, Masahiro Yamada
+	<masahiroy@kernel.org>, Kees Cook <kees@kernel.org>, Nathan Chancellor
+	<nathan@kernel.org>, Keith Packard <keithp@keithp.com>, Justin Stitt
+	<justinstitt@google.com>, Josh Poimboeuf <jpoimboe@kernel.org>, "Arnaldo
+ Carvalho de Melo" <acme@kernel.org>, Namhyung Kim <namhyung@kernel.org>,
+	"Jiri Olsa" <jolsa@kernel.org>, Ian Rogers <irogers@google.com>, Adrian
+ Hunter <adrian.hunter@intel.com>, Kan Liang <kan.liang@linux.intel.com>,
+	<linux-doc@vger.kernel.org>, <linux-pm@vger.kernel.org>,
+	<kvm@vger.kernel.org>, <xen-devel@lists.xenproject.org>,
+	<linux-efi@vger.kernel.org>, <linux-arch@vger.kernel.org>,
+	<linux-sparse@vger.kernel.org>, <linux-kbuild@vger.kernel.org>,
+	<linux-perf-users@vger.kernel.org>, <rust-for-linux@vger.kernel.org>,
+	<llvm@lists.linux.dev>
+References: <20240925150059.3955569-30-ardb+git@google.com>
+ <20240925150059.3955569-41-ardb+git@google.com>
+Content-Language: en-US
+From: Jason Andryuk <jason.andryuk@amd.com>
+In-Reply-To: <20240925150059.3955569-41-ardb+git@google.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 7bit
+Received-SPF: None (SATLEXMB05.amd.com: jason.andryuk@amd.com does not
+ designate permitted sender hosts)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: BN2PEPF000055DC:EE_|SA0PR12MB4430:EE_
+X-MS-Office365-Filtering-Correlation-Id: 2a8b3ce5-d2b6-407b-9a44-08dcdda69057
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|1800799024|82310400026|36860700013|7416014|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?OEJwb29wcWhNT2x0SDFYTTlrdFNpeXNaNG1QcnFKM2hsMDlQS2RMOHNXSWNw?=
+ =?utf-8?B?QTZrKzVTaytRaWk2WFU0Z1RHWjJxNkJ3ZGNoeTNtYVBGQXU5TkxNZDJPZWtO?=
+ =?utf-8?B?ZXFSNm5xQm50blV0UGpWaUlXQy9XZC9wZXAzL3Avd09mdHZ5MjFGTEZ5czlU?=
+ =?utf-8?B?Tmtidk93YjdEc0xScG1qYXJtcUNTNjI5NDlCbmZZWHM2TUxZVE9NK3ZmWFZk?=
+ =?utf-8?B?b2crQlBOOFdJa3VUWkZXQkd6T2Yyb2wzTThLbDUxVTJMN205azNmWEQzUzlS?=
+ =?utf-8?B?UVluRmtYNXp5eEYwL0c1TXVJb2RXSDAvdjNmTC8ramFpVmVNZGdqY1Nma2RT?=
+ =?utf-8?B?WFB5ZExVdDdYd0pJTGtGNGdra2lJMkE4emxBdk9HZTNRR3BwQk5pdk83L1Rl?=
+ =?utf-8?B?UVNTNE9Nakc0SDZQZ3crVFNoZjFKZkhjRVoydStBQmQxeDl3RnN3MDFQVXlP?=
+ =?utf-8?B?ZEpxbndkZDlqMjY0VzBhUENpQWFlMTlGcTFxNzV4aEJHV1Jnai9jelpOMGRR?=
+ =?utf-8?B?eFk2WWh5c3pOTmpYN2ZhVVg5aWhoTVV4Sm5BcWhod3RVOEROWVcwaHcrYWxQ?=
+ =?utf-8?B?WGdLZEovZFRjSWx2NFlRdlorclQwdUg5TG9KS3pxTEhkbUFPMGFNeUhhb3d3?=
+ =?utf-8?B?bkxxYUpZbkMxcnpJby9hTGpkNnRyVEdHSDczeUlYNUgwYU9HYnF1OHE2emZU?=
+ =?utf-8?B?OXpNMEZnVXJjNmpKY3hQbVhMT3Awc3lzVmE0andMbVU4Sld1d2Rqa3VSZGp3?=
+ =?utf-8?B?MS9jTk8yVW5NbGVkZU1yZ1BIVTE1UVZ2UlRlL0EwN0VwZ2lySEdqbktHK2M2?=
+ =?utf-8?B?bExaZ0pIcHR1OTlIcGNDYTE4ZnFoTGFiR2dqOW1JWXVhdWl3YVNJZDJTeWpR?=
+ =?utf-8?B?YzlpaEk3UEszMWw5cUd0RmpOb1ZuMU41N3pHQ28zRVdDNVhaTGFFeS9MbVI1?=
+ =?utf-8?B?Z2ZyVTJsYU43cUlkT21scHN5OHVFWUlraSs4OHVFWnRLVzhNL1lxVEJDNTZm?=
+ =?utf-8?B?OEdKTmk1dmw0eHM1U0c3QzkxT0ZRL0Y4Uks0T21mc1RsNXB0WjMxdCtnN2ZN?=
+ =?utf-8?B?OEpxZU43c2F0UVhnSXlaSGYwZjFrWkNzQ0tOMzFCQnhZYnJYY1VqVmVsN2Ex?=
+ =?utf-8?B?ZG9xajlZU0ZpNndCWHI5Z2gyOFF6M3pNODNKcGE4blgrYzA4Wk55eFViN1RT?=
+ =?utf-8?B?WndIZ3RGTDhDSWNBYnM3S0toOVd5OWdzY3JlODhFdTFHaGF0RUp5RkcwWVk5?=
+ =?utf-8?B?NTNjL3laaFNBUDVFd3hPYVZTajZ2Ykk3OUJBM1I2aHl4bzdYZGlieUp0NDdi?=
+ =?utf-8?B?T3dTT25XNHBZbnBsTlMwNzZzWFdUNkVkWWxrTWJCbDFvUkZ4VVNtTzc4cXB4?=
+ =?utf-8?B?VUFuVmh0b2FsbzY5dlhXWTBCMS9IMzY4TjVZSTNpZjU1c2NFRVNBUC9OdTFQ?=
+ =?utf-8?B?NzFvRjYrTDlrbjFRWWIrTzFvYTVvN2pBOEJacnQ0UkYrQUczUWRONVc1eVp0?=
+ =?utf-8?B?aHVwQW5sOU9uWWtJeExZSFlKQU9hVE8rT2dxbUVuRCt4bVFjNmF5VHlGTEhZ?=
+ =?utf-8?B?bjQxY0tadnlMb0hYVUlBOG5PZTBMSEdCdDdmTUVSRmRDRXVqamNxRVpjYkRp?=
+ =?utf-8?B?aC9BQ0RuUWJ1VzRwTmpmamtNWVJocUxnRkxGajQyZ3M4THl0cUJOQVhtaEFI?=
+ =?utf-8?B?UHJ0bWs1bkluR0xVOWJMUnJBMDRibXcwVFN5S05kajZJdE43aWtQS1Qwa2J5?=
+ =?utf-8?B?c2JsblY3Um5TY1g3SUgrTWN5bStOdkVpSmxjK3RRaStBUS9XL3ArR3NVcndr?=
+ =?utf-8?B?cVp5S0pZTHNBd0lZM2oxOHVRVkFiS2FUWXY1YzFJVnkvOFRCUmhhZjhNdXpJ?=
+ =?utf-8?Q?quEuBNmFiQ/hN?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(1800799024)(82310400026)(36860700013)(7416014)(376014);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Sep 2024 21:11:03.4956
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 2a8b3ce5-d2b6-407b-9a44-08dcdda69057
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	BN2PEPF000055DC.namprd21.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA0PR12MB4430
 
-When reading data from userspace, hardware or other external untrusted
-sources, the data must be validated before it is used for logic within
-the kernel. This abstraction provides a generic newtype wrapper
-`Untrusted`; it prevents direct access to the inner type. The only way
-to use the underlying data is to call `.validate()` on such a value.
+Hi Ard,
 
-Doing so utilizes the new `Validate` trait that is responsible for all
-of the validation logic. This trait gives access to the inner value of
-`Untrusted` by means of another newtype wrapper `Unvalidated`. In
-contrast to `Untrusted`, `Unvalidated` allows direct access and
-additionally provides several helper functions for slices.
+On 2024-09-25 11:01, Ard Biesheuvel wrote:
+> From: Ard Biesheuvel <ardb@kernel.org>
+> 
+> The .head.text section contains code that may execute from a different
+> address than it was linked at. This is fragile, given that the x86 ABI
+> can refer to global symbols via absolute or relative references, and the
+> toolchain assumes that these are interchangeable, which they are not in
+> this particular case.
+> 
+> In the case of the PVH code, there are some additional complications:
+> - the absolute references are in 32-bit code, which get emitted with
+>    R_X86_64_32 relocations, and these are not permitted in PIE code;
+> - the code in question is not actually relocatable: it can only run
+>    correctly from the physical load address specified in the ELF note.
+> 
+> So rewrite the code to only rely on relative symbol references: these
+> are always 32-bits wide, even in 64-bit code, and are resolved by the
+> linker at build time.
+> 
+> Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 
-Having these two different newtype wrappers is an idea from Simona
-Vetter. It has several benefits: it fully prevents safe access to the
-underlying value of `Untrusted` without going through the `Validate`
-API. Additionally, it allows one to grep for validation logic by simply
-looking for `Unvalidated<`.
+Juergen queued up my patches to make the PVH entry point position 
+independent (5 commits):
+https://git.kernel.org/pub/scm/linux/kernel/git/xen/tip.git/log/?h=linux-next
 
-Any API that reads data from an untrusted source should return
-`Untrusted<T>` where `T` is the type of the underlying untrusted data.
-This generic allows other abstractions to return their custom type
-wrapped by `Untrusted`, signaling to the caller that the data must be
-validated before use. This allows those abstractions to be used both in
-a trusted and untrusted manner, increasing their generality.
-Additionally, using the arbitrary self types feature, APIs can be
-designed to explicitly read untrusted data:
+My commit that corresponds to this patch of yours is:
+https://git.kernel.org/pub/scm/linux/kernel/git/xen/tip.git/commit/?h=linux-next&id=1db29f99edb056d8445876292f53a63459142309
 
-    impl MyCustomDataSource {
-        pub fn read(self: &Untrusted<Self>) -> &Untrusted<[u8]>;
-    }
+(There are more changes to handle adjusting the page tables.)
 
-Cc: Simona Vetter <simona.vetter@ffwll.ch>
-Signed-off-by: Benno Lossin <benno.lossin@proton.me>
----
- rust/kernel/lib.rs      |   1 +
- rust/kernel/validate.rs | 602 ++++++++++++++++++++++++++++++++++++++++
- 2 files changed, 603 insertions(+)
- create mode 100644 rust/kernel/validate.rs
-
-diff --git a/rust/kernel/lib.rs b/rust/kernel/lib.rs
-index f10b06a78b9d..3125936eae45 100644
---- a/rust/kernel/lib.rs
-+++ b/rust/kernel/lib.rs
-@@ -54,6 +54,7 @@
- pub mod time;
- pub mod types;
- pub mod uaccess;
-+pub mod validate;
- pub mod workqueue;
-=20
- #[doc(hidden)]
-diff --git a/rust/kernel/validate.rs b/rust/kernel/validate.rs
-new file mode 100644
-index 000000000000..b325349e7dc3
---- /dev/null
-+++ b/rust/kernel/validate.rs
-@@ -0,0 +1,604 @@
-+// SPDX-License-Identifier: GPL-2.0
-+
-+//! Types for handling and validating untrusted data.
-+//!
-+//! # Overview
-+//!
-+//! Untrusted data is marked using the [`Untrusted<T>`] type. See [Rationa=
-le](#rationale) for the
-+//! reasons to mark untrusted data throught the kernel. It is a totally op=
-aque wrapper, it is not
-+//! possible to read the data inside; but it is possible to [`Untrusted::w=
-rite`] into it.
-+//!
-+//! The only way to "access" the data inside an [`Untrusted<T>`] is to [`U=
-ntrusted::validate`] it;
-+//! turning it into a different form using the [`Validate`] trait. That tr=
-ait receives the data in
-+//! the form of [`Unvalidated<T>`], which in contrast to [`Untrusted<T>`],=
- allows access to the
-+//! underlying data. It additionally provides several utility functions to=
- simplify validation.
-+//!
-+//! # Rationale
-+//!
-+//! When reading data from an untrusted source, it must be validated befor=
-e it can be used for
-+//! logic. For example, this is a very bad idea:
-+//!
-+//! ```
-+//! # fn read_bytes_from_network() -> Box<[u8]> {
-+//! #     Box::new([1, 0], kernel::alloc::flags::GFP_KERNEL).unwrap()
-+//! # }
-+//! let bytes: Box<[u8]> =3D read_bytes_from_network();
-+//! let data_index =3D bytes[0];
-+//! let data =3D bytes[usize::from(data_index)];
-+//! ```
-+//!
-+//! While this will not lead to a memory violation (because the array inde=
-x checks the bounds), it
-+//! might result in a kernel panic. For this reason, all untrusted data mu=
-st be wrapped in
-+//! [`Untrusted<T>`]. This type only allows validating the data or passing=
- it along, since copying
-+//! data from one userspace buffer into another is allowed for untrusted d=
-ata.
-+
-+use crate::init::Init;
-+use core::{
-+    mem::MaybeUninit,
-+    ops::{Index, IndexMut},
-+    ptr, slice,
-+};
-+
-+/// Untrusted data of type `T`.
-+///
-+/// When reading data from userspace, hardware or other external untrusted=
- sources, the data must
-+/// be validated before it is used for logic within the kernel. To do so, =
-the [`validate()`]
-+/// function exists and uses the [`Validate`] trait.
-+///
-+/// Also see the [module] description.
-+///
-+/// [`validate()`]: Self::validate
-+/// [module]: self
-+#[repr(transparent)]
-+pub struct Untrusted<T: ?Sized>(Unvalidated<T>);
-+
-+impl<T: ?Sized> Untrusted<T> {
-+    /// Marks the given value as untrusted.
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// use kernel::validate::Untrusted;
-+    ///
-+    /// # mod bindings { pub(crate) unsafe fn read_foo_info() -> [u8; 4] {=
- todo!() } };
-+    /// fn read_foo_info() -> Untrusted<[u8; 4]> {
-+    ///     // SAFETY: just an FFI call without preconditions.
-+    ///     Untrusted::new(unsafe { bindings::read_foo_info() })
-+    /// }
-+    /// ```
-+    pub fn new(value: T) -> Self
-+    where
-+        T: Sized,
-+    {
-+        Self(Unvalidated::new(value))
-+    }
-+
-+    /// Marks the value behind the reference as untrusted.
-+    ///
-+    /// # Examples
-+    ///
-+    /// In this imaginary example there exists the `foo_hardware` struct o=
-n the C side, as well as
-+    /// a `foo_hardware_read` function that reads some data directly from =
-the hardware.
-+    /// ```
-+    /// use kernel::{error, types::Opaque, validate::Untrusted};
-+    /// use core::ptr;
-+    ///
-+    /// # #[allow(non_camel_case_types)]
-+    /// # mod bindings {
-+    /// #     pub(crate) struct foo_hardware;
-+    /// #     pub(crate) unsafe fn foo_hardware_read(_foo: *mut foo_hardwa=
-re, _len: &mut usize) -> *mut u8 {
-+    /// #         todo!()
-+    /// #     }
-+    /// # }
-+    /// struct Foo(Opaque<bindings::foo_hardware>);
-+    ///
-+    /// impl Foo {
-+    ///     fn read(&mut self, mut len: usize) -> Result<&Untrusted<[u8]>>=
- {
-+    ///         // SAFETY: just an FFI call without preconditions.
-+    ///         let data: *mut u8 =3D unsafe { bindings::foo_hardware_read=
-(self.0.get(), &mut len) };
-+    ///         let data =3D error::from_err_ptr(data)?;
-+    ///         let data =3D ptr::slice_from_raw_parts(data, len);
-+    ///         // SAFETY: `data` returned by `foo_hardware_read` is valid=
- for reads as long as the
-+    ///         // `foo_hardware` object exists. That function updated the
-+    ///         let data =3D unsafe { &*data };
-+    ///         Ok(Untrusted::new_ref(data))
-+    ///     }
-+    /// }
-+    /// ```
-+    pub fn new_ref(value: &T) -> &Self {
-+        let ptr: *const T =3D value;
-+        // CAST: `Self` and `Unvalidated` are `repr(transparent)` and cont=
-ain a `T`.
-+        let ptr =3D ptr as *const Self;
-+        // SAFETY: `ptr` came from a shared reference valid for `'a`.
-+        unsafe { &*ptr }
-+    }
-+
-+    /// Marks the value behind the reference as untrusted.
-+    ///
-+    /// # Examples
-+    ///
-+    /// In this imaginary example there exists the `foo_hardware` struct o=
-n the C side, as well as
-+    /// a `foo_hardware_read` function that reads some data directly from =
-the hardware.
-+    /// ```
-+    /// use kernel::{error, types::Opaque, validate::Untrusted};
-+    /// use core::ptr;
-+    ///
-+    /// # #[allow(non_camel_case_types)]
-+    /// # mod bindings {
-+    /// #     pub(crate) struct foo_hardware;
-+    /// #     pub(crate) unsafe fn foo_hardware_read(_foo: *mut foo_hardwa=
-re, _len: &mut usize) -> *mut u8 {
-+    /// #         todo!()
-+    /// #     }
-+    /// # }
-+    /// struct Foo(Opaque<bindings::foo_hardware>);
-+    ///
-+    /// impl Foo {
-+    ///     fn read(&mut self, mut len: usize) -> Result<&mut Untrusted<[u=
-8]>> {
-+    ///         // SAFETY: just an FFI call without preconditions.
-+    ///         let data: *mut u8 =3D unsafe { bindings::foo_hardware_read=
-(self.0.get(), &mut len) };
-+    ///         let data =3D error::from_err_ptr(data)?;
-+    ///         let data =3D ptr::slice_from_raw_parts_mut(data, len);
-+    ///         // SAFETY: `data` returned by `foo_hardware_read` is valid=
- for reads as long as the
-+    ///         // `foo_hardware` object exists. That function updated the
-+    ///         let data =3D unsafe { &mut *data };
-+    ///         Ok(Untrusted::new_mut(data))
-+    ///     }
-+    /// }
-+    /// ```
-+    pub fn new_mut(value: &mut T) -> &mut Self {
-+        let ptr: *mut T =3D value;
-+        // CAST: `Self` and `Unvalidated` are `repr(transparent)` and cont=
-ain a `T`.
-+        let ptr =3D ptr as *mut Self;
-+        // SAFETY: `ptr` came from a mutable reference valid for `'a`.
-+        unsafe { &mut *ptr }
-+    }
-+
-+    /// Validates and parses the untrusted data.
-+    ///
-+    /// See the [`Validate`] trait on how to implement it.
-+    pub fn validate<'a, V: Validate<&'a Unvalidated<T>>>(&'a self) -> Resu=
-lt<V, V::Err> {
-+        V::validate(&self.0)
-+    }
-+
-+    /// Validates and parses the untrusted data.
-+    ///
-+    /// See the [`Validate`] trait on how to implement it.
-+    pub fn validate_mut<'a, V: Validate<&'a mut Unvalidated<T>>>(
-+        &'a mut self,
-+    ) -> Result<V, V::Err> {
-+        V::validate(&mut self.0)
-+    }
-+
-+    /// Sets the underlying untrusted value.
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// use kernel::validate::Untrusted;
-+    ///
-+    /// let mut untrusted =3D Untrusted::new(42);
-+    /// untrusted.write(24);
-+    /// ```
-+    pub fn write(&mut self, value: impl Init<T>) {
-+        let ptr: *mut T =3D &mut self.0 .0;
-+        // SAFETY: `ptr` came from a mutable reference and the value is ov=
-erwritten before it is
-+        // read.
-+        unsafe { ptr::drop_in_place(ptr) };
-+        // SAFETY: `ptr` came from a mutable reference and the initializer=
- cannot error.
-+        match unsafe { value.__init(ptr) } {
-+            Ok(()) =3D> {}
-+        }
-+    }
-+
-+    /// Turns a slice of untrusted values into an untrusted slice of value=
-s.
-+    pub fn transpose_slice(slice: &[Untrusted<T>]) -> &Untrusted<[T]>
-+    where
-+        T: Sized,
-+    {
-+        let ptr =3D slice.as_ptr().cast::<T>();
-+        // SAFETY: `ptr` and `len` come from the same slice reference.
-+        let slice =3D unsafe { slice::from_raw_parts(ptr, slice.len()) };
-+        Untrusted::new_ref(slice)
-+    }
-+
-+    /// Turns a slice of uninitialized, untrusted values into an untrusted=
- slice of uninitialized
-+    /// values.
-+    pub fn transpose_slice_uninit(
-+        slice: &[MaybeUninit<Untrusted<T>>],
-+    ) -> &Untrusted<[MaybeUninit<T>]>
-+    where
-+        T: Sized,
-+    {
-+        let ptr =3D slice.as_ptr().cast::<MaybeUninit<T>>();
-+        // SAFETY: `ptr` and `len` come from the same mutable slice refere=
-nce.
-+        let slice =3D unsafe { slice::from_raw_parts(ptr, slice.len()) };
-+        Untrusted::new_ref(slice)
-+    }
-+
-+    /// Turns a slice of uninitialized, untrusted values into an untrusted=
- slice of uninitialized
-+    /// values.
-+    pub fn transpose_slice_uninit_mut(
-+        slice: &mut [MaybeUninit<Untrusted<T>>],
-+    ) -> &mut Untrusted<[MaybeUninit<T>]>
-+    where
-+        T: Sized,
-+    {
-+        // CAST: `MaybeUninit<T>` and `MaybeUninit<Untrusted<T>>` have the=
- same layout.
-+        let ptr =3D slice.as_mut_ptr().cast::<MaybeUninit<T>>();
-+        // SAFETY: `ptr` and `len` come from the same mutable slice refere=
-nce.
-+        let slice =3D unsafe { slice::from_raw_parts_mut(ptr, slice.len())=
- };
-+        Untrusted::new_mut(slice)
-+    }
-+}
-+
-+impl<T> Untrusted<MaybeUninit<T>> {
-+    /// Sets the underlying untrusted value.
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// use kernel::validate::Untrusted;
-+    ///
-+    /// let mut untrusted =3D Untrusted::new(42);
-+    /// untrusted.write(24);
-+    /// ```
-+    pub fn write_uninit<E>(&mut self, value: impl Init<T, E>) -> Result<&m=
-ut Untrusted<T>, E> {
-+        let ptr: *mut MaybeUninit<T> =3D &mut self.0 .0;
-+        // CAST: `MaybeUninit<T>` is `repr(transparent)`.
-+        let ptr =3D ptr.cast::<T>();
-+        // SAFETY: `ptr` came from a reference and if `Err` is returned, t=
-he underlying memory is
-+        // considered uninitialized.
-+        unsafe { value.__init(ptr) }.map(|()| {
-+            let this =3D self.0.raw_mut();
-+            // SAFETY: we initialized the memory above.
-+            Untrusted::new_mut(unsafe { this.assume_init_mut() })
-+        })
-+    }
-+}
-+
-+impl<T> Untrusted<[MaybeUninit<T>]> {
-+    /// Sets the underlying untrusted value.
-+    ///
-+    /// # Examples
-+    ///
-+    /// ```
-+    /// use kernel::validate::Untrusted;
-+    ///
-+    /// let mut untrusted =3D Untrusted::new(42);
-+    /// untrusted.write(24);
-+    /// ```
-+    pub fn write_uninit_slice<E>(
-+        &mut self,
-+        value: impl Init<[T], E>,
-+    ) -> Result<&mut Untrusted<[T]>, E> {
-+        let ptr: *mut [MaybeUninit<T>] =3D &mut self.0 .0;
-+        // CAST: `MaybeUninit<T>` is `repr(transparent)`.
-+        let ptr =3D ptr as *mut [T];
-+        // SAFETY: `ptr` came from a reference and if `Err` is returned, t=
-he underlying memory is
-+        // considered uninitialized.
-+        unsafe { value.__init(ptr) }.map(|()| {
-+            let this =3D self.0.raw_mut().as_mut_ptr();
-+            // CAST: `MaybeUninit<T>` is `repr(transparent)`.
-+            let this =3D this.cast::<T>();
-+            // SAFETY: `this` and `len` came from the same slice reference=
-.
-+            let this =3D unsafe { slice::from_raw_parts_mut(this, self.0.l=
-en()) };
-+            Untrusted::new_mut(this)
-+        })
-+    }
-+}
-+
-+/// Marks types that can be used as input to [`Validate::validate`].
-+pub trait ValidateInput: private::Sealed + Sized {}
-+
-+mod private {
-+    pub trait Sealed {}
-+}
-+
-+impl<'a, T: ?Sized> private::Sealed for &'a Unvalidated<T> {}
-+impl<'a, T: ?Sized> ValidateInput for &'a Unvalidated<T> {}
-+
-+impl<'a, T: ?Sized> private::Sealed for &'a mut Unvalidated<T> {}
-+impl<'a, T: ?Sized> ValidateInput for &'a mut Unvalidated<T> {}
-+
-+/// Validates untrusted data.
-+///
-+/// # Examples
-+///
-+/// The simplest way to validate data is to just implement `Validate<&Unva=
-lidated<[u8]>>` for the
-+/// type that you wish to validate:
-+///
-+/// ```
-+/// use kernel::{
-+///     error::{code::EINVAL, Error},
-+///     str::{CStr, CString},
-+///     validate::{Unvalidated, Validate},
-+/// };
-+///
-+/// struct Data {
-+///     flags: u8,
-+///     name: CString,
-+/// }
-+///
-+/// impl Validate<&Unvalidated<[u8]>> for Data {
-+///     type Err =3D Error;
-+///
-+///     fn validate(unvalidated: &Unvalidated<[u8]>) -> Result<Self, Self:=
-:Err> {
-+///         let raw =3D unvalidated.raw();
-+///         let (&flags, name) =3D raw.split_first().ok_or(EINVAL)?;
-+///         let name =3D CStr::from_bytes_with_nul(name)?.to_cstring()?;
-+///         Ok(Data { flags, name })
-+///     }
-+/// }
-+/// ```
-+///
-+/// This approach copies the data and requires allocation. If you want to =
-avoid the allocation and
-+/// copying the data, you can borrow from the input like this:
-+///
-+/// ```
-+/// use kernel::{
-+///     error::{code::EINVAL, Error},
-+///     str::CStr,
-+///     validate::{Unvalidated, Validate},
-+/// };
-+///
-+/// struct Data<'a> {
-+///     flags: u8,
-+///     name: &'a CStr,
-+/// }
-+///
-+/// impl<'a> Validate<&'a Unvalidated<[u8]>> for Data<'a> {
-+///     type Err =3D Error;
-+///
-+///     fn validate(unvalidated: &'a Unvalidated<[u8]>) -> Result<Self, Se=
-lf::Err> {
-+///         let raw =3D unvalidated.raw();
-+///         let (&flags, name) =3D raw.split_first().ok_or(EINVAL)?;
-+///         let name =3D CStr::from_bytes_with_nul(name)?;
-+///         Ok(Data { flags, name })
-+///     }
-+/// }
-+/// ```
-+///
-+/// If you need to in-place validate your data, you currently need to reso=
-rt to `unsafe`:
-+///
-+/// ```
-+/// use kernel::{
-+///     error::{code::EINVAL, Error},
-+///     str::CStr,
-+///     validate::{Unvalidated, Validate},
-+/// };
-+/// use core::mem;
-+///
-+/// // Important: use `repr(C)`, this ensures a linear layout of this type=
-.
-+/// #[repr(C)]
-+/// struct Data {
-+///     version: u8,
-+///     flags: u8,
-+///     _reserved: [u8; 2],
-+///     count: u64,
-+///     // lots of other fields...
-+/// }
-+///
-+/// impl Validate<&Unvalidated<[u8]>> for &Data {
-+///     type Err =3D Error;
-+///
-+///     fn validate(unvalidated: &Unvalidated<[u8]>) -> Result<Self, Self:=
-:Err> {
-+///         let raw =3D unvalidated.raw();
-+///         if raw.len() < mem::size_of::<Data>() {
-+///             return Err(EINVAL);
-+///         }
-+///         // can only handle version 0
-+///         if raw[0] !=3D 0 {
-+///             return Err(EINVAL);
-+///         }
-+///         // version 0 only uses the lower 4 bits of flags
-+///         if raw[1] & 0xf0 !=3D 0 {
-+///             return Err(EINVAL);
-+///         }
-+///         let ptr =3D raw.as_ptr();
-+///         // CAST: `Data` only contains integers and has `repr(C)`.
-+///         let ptr =3D ptr.cast::<Data>();
-+///         // SAFETY: `ptr` came from a reference and the cast above is v=
-alid.
-+///         Ok(unsafe { &*ptr })
-+///     }
-+/// }
-+/// ```
-+///
-+/// To be able to modify the parsed data, while still supporting zero-copy=
-, you can implement
-+/// `Validate<&mut Unvalidated<[u8]>>`:
-+///
-+/// ```
-+/// use kernel::{
-+///     error::{code::EINVAL, Error},
-+///     str::CStr,
-+///     validate::{Unvalidated, Validate},
-+/// };
-+/// use core::mem;
-+///
-+/// // Important: use `repr(C)`, this ensures a linear layout of this type=
-.
-+/// #[repr(C)]
-+/// struct Data {
-+///     version: u8,
-+///     flags: u8,
-+///     _reserved: [u8; 2],
-+///     count: u64,
-+///     // lots of other fields...
-+/// }
-+///
-+/// impl Validate<&mut Unvalidated<[u8]>> for &Data {
-+///     type Err =3D Error;
-+///
-+///     fn validate(unvalidated: &mut Unvalidated<[u8]>) -> Result<Self, S=
-elf::Err> {
-+///         let raw =3D unvalidated.raw_mut();
-+///         if raw.len() < mem::size_of::<Data>() {
-+///             return Err(EINVAL);
-+///         }
-+///         match raw[0] {
-+///             0 =3D> {},
-+///             1 =3D> {
-+///                 // version 1 implicitly sets the first bit.
-+///                 raw[1] |=3D 1;
-+///             },
-+///             // can only handle version 0 and 1
-+///             _ =3D> return Err(EINVAL),
-+///         }
-+///         // version 0 and 1 only use the lower 4 bits of flags
-+///         if raw[1] & 0xf0 !=3D 0 {
-+///             return Err(EINVAL);
-+///         }
-+///         if raw[1] =3D=3D 0 {}
-+///         let ptr =3D raw.as_ptr();
-+///         // CAST: `Data` only contains integers and has `repr(C)`.
-+///         let ptr =3D ptr.cast::<Data>();
-+///         // SAFETY: `ptr` came from a reference and the cast above is v=
-alid.
-+///         Ok(unsafe { &*ptr })
-+///     }
-+/// }
-+/// ```
-+pub trait Validate<I: ValidateInput>: Sized {
-+    /// Validation error.
-+    type Err;
-+
-+    /// Validate the given untrusted data and parse it into the output typ=
-e.
-+    fn validate(unvalidated: I) -> Result<Self, Self::Err>;
-+}
-+
-+/// Unvalidated data of type `T`.
-+#[repr(transparent)]
-+pub struct Unvalidated<T: ?Sized>(T);
-+
-+impl<T: ?Sized> Unvalidated<T> {
-+    fn new(value: T) -> Self
-+    where
-+        T: Sized,
-+    {
-+        Self(value)
-+    }
-+
-+    fn new_ref(value: &T) -> &Self {
-+        let ptr: *const T =3D value;
-+        // CAST: `Self` is `repr(transparent)` and contains a `T`.
-+        let ptr =3D ptr as *const Self;
-+        // SAFETY: `ptr` came from a mutable reference valid for `'a`.
-+        unsafe { &*ptr }
-+    }
-+
-+    fn new_mut(value: &mut T) -> &mut Self {
-+        let ptr: *mut T =3D value;
-+        // CAST: `Self` is `repr(transparent)` and contains a `T`.
-+        let ptr =3D ptr as *mut Self;
-+        // SAFETY: `ptr` came from a mutable reference valid for `'a`.
-+        unsafe { &mut *ptr }
-+    }
-+
-+    /// Validates and parses the untrusted data.
-+    ///
-+    /// See the [`Validate`] trait on how to implement it.
-+    pub fn validate_ref<'a, V: Validate<&'a Unvalidated<T>>>(&'a self) -> =
-Result<V, V::Err> {
-+        V::validate(self)
-+    }
-+
-+    /// Validates and parses the untrusted data.
-+    ///
-+    /// See the [`Validate`] trait on how to implement it.
-+    pub fn validate_mut<'a, V: Validate<&'a mut Unvalidated<T>>>(
-+        &'a mut self,
-+    ) -> Result<V, V::Err> {
-+        V::validate(self)
-+    }
-+
-+    /// Gives immutable access to the underlying value.
-+    pub fn raw(&self) -> &T {
-+        &self.0
-+    }
-+
-+    /// Gives mutable access to the underlying value.
-+    pub fn raw_mut(&mut self) -> &mut T {
-+        &mut self.0
-+    }
-+}
-+
-+impl<T, I> Index<I> for Unvalidated<[T]>
-+where
-+    I: slice::SliceIndex<[T]>,
-+{
-+    type Output =3D Unvalidated<I::Output>;
-+
-+    fn index(&self, index: I) -> &Self::Output {
-+        Unvalidated::new_ref(self.0.index(index))
-+    }
-+}
-+
-+impl<T, I> IndexMut<I> for Unvalidated<[T]>
-+where
-+    I: slice::SliceIndex<[T]>,
-+{
-+    fn index_mut(&mut self, index: I) -> &mut Self::Output {
-+        Unvalidated::new_mut(self.0.index_mut(index))
-+    }
-+}
-+
-+/// Immutable unvalidated slice iterator.
-+pub struct Iter<'a, T>(slice::Iter<'a, T>);
-+
-+/// Mutable unvalidated slice iterator.
-+pub struct IterMut<'a, T>(slice::IterMut<'a, T>);
-+
-+impl<'a, T> Iterator for Iter<'a, T> {
-+    type Item =3D &'a Unvalidated<T>;
-+
-+    fn next(&mut self) -> Option<Self::Item> {
-+        self.0.next().map(Unvalidated::new_ref)
-+    }
-+}
-+
-+impl<'a, T> IntoIterator for &'a Unvalidated<[T]> {
-+    type Item =3D &'a Unvalidated<T>;
-+    type IntoIter =3D Iter<'a, T>;
-+
-+    fn into_iter(self) -> Self::IntoIter {
-+        Iter(self.0.iter())
-+    }
-+}
-+
-+impl<'a, T> Iterator for IterMut<'a, T> {
-+    type Item =3D &'a mut Unvalidated<T>;
-+
-+    fn next(&mut self) -> Option<Self::Item> {
-+        self.0.next().map(Unvalidated::new_mut)
-+    }
-+}
-+
-+impl<'a, T> IntoIterator for &'a mut Unvalidated<[T]> {
-+    type Item =3D &'a mut Unvalidated<T>;
-+    type IntoIter =3D IterMut<'a, T>;
-+
-+    fn into_iter(self) -> Self::IntoIter {
-+        IterMut(self.0.iter_mut())
-+    }
-+}
-+
-+impl<T> Unvalidated<[T]> {
-+    /// Returns the number of elements in the underlying slice.
-+    pub fn len(&self) -> usize {
-+        self.0.len()
-+    }
-+
-+    /// Returns true if the underlying slice has a length of 0.
-+    pub fn is_empty(&self) -> bool {
-+        self.0.is_empty()
-+    }
-+
-+    /// Iterates over all items and validates each of them individually.
-+    pub fn validate_iter<'a, V: Validate<&'a Unvalidated<T>>>(
-+        &'a self,
-+    ) -> impl Iterator<Item =3D Result<V, V::Err>> + 'a {
-+        self.into_iter().map(|item| V::validate(item))
-+    }
-+
-+    /// Iterates over all items and validates each of them individually.
-+    pub fn validate_iter_mut<'a, V: Validate<&'a mut Unvalidated<T>>>(
-+        &'a mut self,
-+    ) -> impl Iterator<Item =3D Result<V, V::Err>> + 'a {
-+        self.into_iter().map(|item| V::validate(item))
-+    }
-+}
---=20
-2.46.0
-
-
+Regards,
+Jason
