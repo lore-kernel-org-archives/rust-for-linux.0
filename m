@@ -1,63 +1,88 @@
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from gentwo.org (gentwo.org [62.72.0.81])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3556C13A25B;
-	Wed, 25 Sep 2024 18:23:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07B5784A31;
+	Wed, 25 Sep 2024 18:27:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.72.0.81
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727288632; cv=none; b=O1EZGtfqULmcv1IFO3DBby8Kb8YySn2zBrZsXg09iOeXbYJw7leczcONTWARxA2rLZ0B86QH9Byvij8ql/yHSm7UYdYbXcQPAr9raYnlNxRyOYWOnxAvrFWRgkaDeVDbJ43fSdIO0312YuIClnSPi9KC0nrb5HUq0J3eIkgO8Kc=
+	t=1727288874; cv=none; b=C8n1nkcuuC8fhEYbYjZ1TjqgOeLK2/XYb3rNKQablIcwNnYBXaCKXvDdfPy68A2cDJaDt7xKL/yjPjT6oFnvYSyURlajyh0NTYVb6N7OboH3AOiFc8a40UhMYyakkqgUwb0f2G3WxOu+qp6Nco70kGKNV8C8/OXXs5Fuqn8cGXI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727288632; c=relaxed/simple;
-	bh=4b5e/lcbHJGLJmbQdNnJRl9bA7qRLTJjfw5yh1V7U0g=;
-	h=Subject:From:In-Reply-To:References:Message-Id:Date:To:Cc; b=RoUGech2FgRh5WwiYeCC3Oh9walo3pRW5hMJZ7QQL7a+zEpP75VNDb672cKf/1QbQYFC7+W21IzoJr7TLdDQZ9ZGWatjUeFsIZ65iPs9CqwoC9nqL72TSYUIrbSFonCXtJBSUVpIjVZ6iIKyBZNHk2ugcyrZ6VLMVpsocJoo/Kk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Fg09ZNYt; arc=none smtp.client-ip=10.30.226.201
+	s=arc-20240116; t=1727288874; c=relaxed/simple;
+	bh=JzQWbfOrfYxZbx1u+F5TLFsCW+d1dC/t+zlnRXg1aTo=;
+	h=Date:From:To:cc:Subject:In-Reply-To:Message-ID:References:
+	 MIME-Version:Content-Type; b=dDjYoniWrhoc7+6g86OgEF+M9xsu3H0e1ktE5s20ZRDBP89zQbn6n/WjPfqq8vzIjhYiST++3S8KP0heKjsb0al8sRYN/9KFOywwchRhB3BIdzZ6EVi1medLw+FBj0tLdHXCn5cQRHHWeO3lEdnu0HiiHvm0Kg0X7BHQPlYRrqU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=gentwo.org; spf=pass smtp.mailfrom=gentwo.org; dkim=pass (1024-bit key) header.d=gentwo.org header.i=@gentwo.org header.b=ENf3gmdN; arc=none smtp.client-ip=62.72.0.81
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=gentwo.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gentwo.org
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Fg09ZNYt"
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05E70C4CEC3;
-	Wed, 25 Sep 2024 18:23:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1727288632;
-	bh=4b5e/lcbHJGLJmbQdNnJRl9bA7qRLTJjfw5yh1V7U0g=;
-	h=Subject:From:In-Reply-To:References:Date:To:Cc:From;
-	b=Fg09ZNYt3hrRwJofgUckqs4RGSQdrnufHgPXQYd35EhOrEaKJ11SBpkljdA6pjnFV
-	 n6/B7S2rArRmi3XEkUlV0L2+PAGliZ6E6Ii66VqLwk0gDdR4rMzkV1i5FXLHBTrStk
-	 dcQ5D0HodlQgKjgdcguweotLZiUhJ3IC+oedoqfc3DYUlwCMScnaG5zzfVmYRUk55B
-	 Vmrd3mlVzJYw78FQeoiIlzgCLeNW7wx1hIb1HT5m5UUeO7f236qyUsCBiv5Tq7z+nI
-	 xVb3X+2yot0zac7puYDVFBnbjqCIsd6LDyXHx1cr5AdpCOhA2f1IC2oP2Lbnalyr11
-	 /u1W6d47oSxIQ==
-Received: from [10.30.226.235] (localhost [IPv6:::1])
-	by aws-us-west-2-korg-oddjob-rhel9-1.codeaurora.org (Postfix) with ESMTP id AE56A3809A8F;
-	Wed, 25 Sep 2024 18:23:55 +0000 (UTC)
-Subject: Re: [GIT PULL] Rust for 6.12
-From: pr-tracker-bot@kernel.org
-In-Reply-To: <20240924221023.197610-1-ojeda@kernel.org>
-References: <20240924221023.197610-1-ojeda@kernel.org>
-X-PR-Tracked-List-Id: <linux-kernel.vger.kernel.org>
-X-PR-Tracked-Message-Id: <20240924221023.197610-1-ojeda@kernel.org>
-X-PR-Tracked-Remote: https://github.com/Rust-for-Linux/linux.git tags/rust-6.12
-X-PR-Tracked-Commit-Id: a2f11547052001bd448ccec81dd1e68409078fbb
-X-PR-Merge-Tree: torvalds/linux.git
-X-PR-Merge-Refname: refs/heads/master
-X-PR-Merge-Commit-Id: 570172569238c66a482ec3eb5d766cc9cf255f69
-Message-Id: <172728863414.682824.9814808100238149341.pr-tracker-bot@kernel.org>
-Date: Wed, 25 Sep 2024 18:23:54 +0000
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>, Miguel Ojeda <ojeda@kernel.org>, Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?UTF-8?q?Bj=C3=B6rn=20Roy=20Baron?= <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org
+	dkim=pass (1024-bit key) header.d=gentwo.org header.i=@gentwo.org header.b="ENf3gmdN"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gentwo.org;
+	s=default; t=1727286998;
+	bh=JzQWbfOrfYxZbx1u+F5TLFsCW+d1dC/t+zlnRXg1aTo=;
+	h=Date:From:To:cc:Subject:In-Reply-To:References:From;
+	b=ENf3gmdNOzt5kB/scKgyNgokVg82OzC76ZN4/YF8VlUv1bRir3KWi37eV+i/D7Xez
+	 Z5XbR4kUlSRyKbxlzzZRLBN7clHZ2LO2BU5gH0H7RQVCi6hfAu+SXyoqfJtQRocwP3
+	 D9Ah5X6dCKhSwWEojhc0qMzPTKaZpdvB/V2zxYX8=
+Received: by gentwo.org (Postfix, from userid 1003)
+	id 70FD5401C7; Wed, 25 Sep 2024 10:56:38 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+	by gentwo.org (Postfix) with ESMTP id 6F6F0401C6;
+	Wed, 25 Sep 2024 10:56:38 -0700 (PDT)
+Date: Wed, 25 Sep 2024 10:56:38 -0700 (PDT)
+From: "Christoph Lameter (Ampere)" <cl@gentwo.org>
+To: Ard Biesheuvel <ardb+git@google.com>
+cc: linux-kernel@vger.kernel.org, Ard Biesheuvel <ardb@kernel.org>, 
+    x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>, 
+    Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+    Uros Bizjak <ubizjak@gmail.com>, Dennis Zhou <dennis@kernel.org>, 
+    Tejun Heo <tj@kernel.org>, 
+    Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+    Paolo Bonzini <pbonzini@redhat.com>, 
+    Vitaly Kuznetsov <vkuznets@redhat.com>, Juergen Gross <jgross@suse.com>, 
+    Boris Ostrovsky <boris.ostrovsky@oracle.com>, 
+    Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+    Arnd Bergmann <arnd@arndb.de>, Masahiro Yamada <masahiroy@kernel.org>, 
+    Kees Cook <kees@kernel.org>, Nathan Chancellor <nathan@kernel.org>, 
+    Keith Packard <keithp@keithp.com>, Justin Stitt <justinstitt@google.com>, 
+    Josh Poimboeuf <jpoimboe@kernel.org>, 
+    Arnaldo Carvalho de Melo <acme@kernel.org>, 
+    Namhyung Kim <namhyung@kernel.org>, Jiri Olsa <jolsa@kernel.org>, 
+    Ian Rogers <irogers@google.com>, Adrian Hunter <adrian.hunter@intel.com>, 
+    Kan Liang <kan.liang@linux.intel.com>, linux-doc@vger.kernel.org, 
+    linux-pm@vger.kernel.org, kvm@vger.kernel.org, 
+    xen-devel@lists.xenproject.org, linux-efi@vger.kernel.org, 
+    linux-arch@vger.kernel.org, linux-sparse@vger.kernel.org, 
+    linux-kbuild@vger.kernel.org, linux-perf-users@vger.kernel.org, 
+    rust-for-linux@vger.kernel.org, llvm@lists.linux.dev
+Subject: Re: [RFC PATCH 06/28] x86/percpu: Get rid of absolute per-CPU variable
+ placement
+In-Reply-To: <20240925150059.3955569-36-ardb+git@google.com>
+Message-ID: <c4bc67dd-2a42-b318-7830-6741e3579775@gentwo.org>
+References: <20240925150059.3955569-30-ardb+git@google.com> <20240925150059.3955569-36-ardb+git@google.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=US-ASCII
 
-The pull request you sent on Wed, 25 Sep 2024 00:10:23 +0200:
+On Wed, 25 Sep 2024, Ard Biesheuvel wrote:
 
-> https://github.com/Rust-for-Linux/linux.git tags/rust-6.12
+> The x86_64 approach was needed to accommodate per-task stack protector
+> cookies, which used to live at a fixed offset of GS+40, requiring GS to
+> be treated as a base register. This is no longer the case, though, and
+> so GS can be repurposed as a true per-CPU offset, adopting the same
+> strategy as other architectures.
+>
+> This also removes the need for linker tricks to emit the per-CPU ELF
+> segment at a different virtual address. It also means RIP-relative
+> per-CPU variables no longer need to be relocated in the opposite
+> direction when KASLR is applied, which was necessary because the 0x0
+> based per-CPU region remains in place even when the kernel is moved
+> around.
 
-has been merged into torvalds/linux.git:
-https://git.kernel.org/torvalds/c/570172569238c66a482ec3eb5d766cc9cf255f69
+Looks like a good cleanup. Hope it does not break anything that relies on
+structures %GS points to.
 
-Thank you!
-
--- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/prtracker.html
+Reviewed-by: Christoph Lameter <cl@linux.com>
