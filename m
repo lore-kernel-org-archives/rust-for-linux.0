@@ -1,55 +1,35 @@
-Received: from mail.hallyn.com (mail.hallyn.com [178.63.66.53])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail.avm.de (mail.avm.de [212.42.244.94])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31CE2187568;
-	Wed, 25 Sep 2024 13:59:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.63.66.53
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 642471B374F;
+	Wed, 25 Sep 2024 14:04:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.42.244.94
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727272748; cv=none; b=Se1NCsdtuvWun5ZSJQU9jT+x6vnfTxfqE4iVVjgpXWkPCOwgQHsgkYYH5zQCVL8X1CfLvxT6MwljxG/m9NjMwc9TQ9oAi97HMwymr8WaNIzrklQP2QOhsg6/Cb88tWkjMGQZlyIN+K3+qZzMRqYp+z9ZKTGSCQ+3fFKyPlgpve4=
+	t=1727273112; cv=none; b=Eh4TCJWsJ1SfWhje9znOZy1E3p/POcRj9prnsPpZadHKEzFHsfzFXdxbv2ylURczYG/IuEGRNa4B/JyPklAN8rpcIYugBevWj1PfLF6FTJOl4NnBU+YMR073XzCtcaIA38AfSH0WERLJcfzy3TcFVjYPx1wMC/aJYbKUJP+f250=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727272748; c=relaxed/simple;
-	bh=LaqiujrabjNuCdxLtvhTjGOIPotsoV1whHWw7yZzMB8=;
+	s=arc-20240116; t=1727273112; c=relaxed/simple;
+	bh=hVcsjbCXGSrM5YivSiFQQKpyz1XYcihBNH9PdAo7ZRQ=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=oAPBqkbQ5UoY1IugkQeXuBbuAEfbV3THf2RrQnz0WK3L/pXQ7rxM+zH/BegzfdvtINH5iX/BGaVbXLDNHBcQeei7ylwHW32kshX2BXAvqTPPXtwZru32F5Tmx9N7ntLUn0ybir/ki2PEjRL7b9u7ucU2MPqPqDM4APNjGFUyBQw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hallyn.com; spf=pass smtp.mailfrom=mail.hallyn.com; arc=none smtp.client-ip=178.63.66.53
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hallyn.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mail.hallyn.com
-Received: by mail.hallyn.com (Postfix, from userid 1001)
-	id 4A016A05; Wed, 25 Sep 2024 08:59:04 -0500 (CDT)
-Date: Wed, 25 Sep 2024 08:59:04 -0500
-From: "Serge E. Hallyn" <serge@hallyn.com>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: "Serge E. Hallyn" <serge@hallyn.com>, Paul Moore <paul@paul-moore.com>,
-	James Morris <jmorris@namei.org>, Miguel Ojeda <ojeda@kernel.org>,
-	Christian Brauner <brauner@kernel.org>,
-	Alex Gaynor <alex.gaynor@gmail.com>,
-	Wedson Almeida Filho <wedsonaf@gmail.com>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@samsung.com>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
-	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>,
-	Joel Fernandes <joel@joelfernandes.org>,
-	Carlos Llamas <cmllamas@google.com>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Dan Williams <dan.j.williams@intel.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	Thomas Gleixner <tglx@linutronix.de>, Daniel Xu <dxu@dxuuu.xyz>,
-	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-	Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org,
-	linux-security-module@vger.kernel.org,
-	rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-	Kees Cook <kees@kernel.org>
-Subject: Re: [PATCH v10 1/8] rust: types: add `NotThreadSafe`
-Message-ID: <20240925135904.GA654417@mail.hallyn.com>
-References: <20240915-alice-file-v10-0-88484f7a3dcf@google.com>
- <20240915-alice-file-v10-1-88484f7a3dcf@google.com>
- <20240924194540.GA636453@mail.hallyn.com>
- <CAH5fLgggtjNAAotBzwRQ4RYQ9+WDom0MRyYFMnQ+E5UXgOc3RQ@mail.gmail.com>
+	 Content-Type:Content-Disposition:In-Reply-To; b=sSRDF+tjB9vcDQfJ++97BRPEgShm4W+f4QPvOHXEHF3nAQKTe9o5ceG4T+wc8QGaIjkgeQyAPhRqcBvMLgQ2DY9tVcDWm9mDi/ClsZroCgvnqj1AGMFllNpMVJWhMURRjyh5srVZRggVHp1okWiStToS/hZkAn5L87tGaPMgz00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=fjasle.eu; spf=fail smtp.mailfrom=fjasle.eu; arc=none smtp.client-ip=212.42.244.94
+Authentication-Results: smtp.subspace.kernel.org; dmarc=fail (p=quarantine dis=none) header.from=fjasle.eu
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=fjasle.eu
+Received: from mail-auth.avm.de (dovecot-mx-01.avm.de [IPv6:2001:bf0:244:244::71])
+	by mail.avm.de (Postfix) with ESMTPS;
+	Wed, 25 Sep 2024 16:04:47 +0200 (CEST)
+Received: from l-nschier-nb (unknown [61.8.139.63])
+	by mail-auth.avm.de (Postfix) with ESMTPSA id D9CC2808C8;
+	Wed, 25 Sep 2024 16:04:46 +0200 (CEST)
+Date: Wed, 25 Sep 2024 16:04:45 +0200
+From: Nicolas Schier <nicolas@fjasle.eu>
+To: Masahiro Yamada <masahiroy@kernel.org>
+Cc: linux-kbuild@vger.kernel.org, Miguel Ojeda <ojeda@kernel.org>,
+	rust-for-linux@vger.kernel.org, linux-kernel@vger.kernel.org,
+	Nathan Chancellor <nathan@kernel.org>
+Subject: Re: [PATCH 10/23] kbuild: refactor the check for missing config files
+Message-ID: <ZvQYfTgmmQXwr9Rw@l-nschier-nb>
+References: <20240917141725.466514-1-masahiroy@kernel.org>
+ <20240917141725.466514-11-masahiroy@kernel.org>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
@@ -58,44 +38,39 @@ List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAH5fLgggtjNAAotBzwRQ4RYQ9+WDom0MRyYFMnQ+E5UXgOc3RQ@mail.gmail.com>
+In-Reply-To: <20240917141725.466514-11-masahiroy@kernel.org>
+X-purgate-ID: 149429::1727273087-2AA9600A-923F287A/0/0
+X-purgate-type: clean
+X-purgate-size: 981
+X-purgate-Ad: Categorized by eleven eXpurgate (R) http://www.eleven.de
+X-purgate: This mail is considered clean (visit http://www.eleven.de for further information)
+X-purgate: clean
 
-On Wed, Sep 25, 2024 at 01:06:10PM +0200, Alice Ryhl wrote:
-> On Tue, Sep 24, 2024 at 9:45 PM Serge E. Hallyn <serge@hallyn.com> wrote:
-> >
-> > On Sun, Sep 15, 2024 at 02:31:27PM +0000, Alice Ryhl wrote:
-> > > This introduces a new marker type for types that shouldn't be thread
-> > > safe. By adding a field of this type to a struct, it becomes non-Send
-> > > and non-Sync, which means that it cannot be accessed in any way from
-> > > threads other than the one it was created on.
-> > >
-> > > This is useful for APIs that require globals such as `current` to remain
-> > > constant while the value exists.
-> > >
-> > > We update two existing users in the Kernel to use this helper:
-> > >
-> > >  * `Task::current()` - moving the return type of this value to a
-> > >    different thread would not be safe as you can no longer be guaranteed
-> > >    that the `current` pointer remains valid.
-> > >  * Lock guards. Mutexes and spinlocks should be unlocked on the same
-> > >    thread as where they were locked, so we enforce this using the Send
-> > >    trait.
-> >
-> > Hi,
-> >
-> > this sounds useful, however from kernel side when I think thread-safe,
-> > I think must not be used across a sleep.  Would something like ThreadLocked
-> > or LockedToThread make sense?
+On Tue, Sep 17, 2024 at 11:16:38PM +0900, Masahiro Yamada wrote:
+> This commit refactors the check for missing configuration files, making
+> it easier to add more files to the list.
 > 
-> Hmm, those names seem pretty similar to the current name to me?
+> The format of the error message has been slightly changed, as follows:
+> 
+> [Before]
+> 
+>     ERROR: Kernel configuration is invalid.
+>            include/generated/autoconf.h or include/config/auto.conf are missing.
+>            Run 'make oldconfig && make prepare' on kernel src to fix it.
+> 
+> [After]
+> 
+>   ***
+>   ***  ERROR: Kernel configuration is invalid. The following files are missing:
+>   ***    - include/generated/autoconf.h
+>   ***    - include/config/auto.conf
+>   ***  Run "make oldconfig && make prepare" on kernel source to fix it.
+>   ***
+> 
+> Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
+> ---
+> 
+>  Makefile | 21 +++++++++++++--------
+>  1 file changed, 13 insertions(+), 8 deletions(-)
 
-Seems very different to me:
-
-If @foo is not threadsafe, it may be global or be usable by many
-threads, but must be locked to one thread during access.
-
-What you're describing here is (iiuc) that @foo must only be used
-by one particular thread.
-
--serge
+Reviewed-by: Nicolas Schier <n.schier@avm.de>
