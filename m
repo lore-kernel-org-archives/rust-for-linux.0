@@ -1,112 +1,173 @@
-Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+Received: from mail-pl1-f182.google.com (mail-pl1-f182.google.com [209.85.214.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B134E1870
-	for <rust-for-linux@vger.kernel.org>; Wed, 25 Sep 2024 17:46:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8862813B2B6
+	for <rust-for-linux@vger.kernel.org>; Wed, 25 Sep 2024 17:48:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727286404; cv=none; b=b7v13NMr1zVToWfPFyG6RkfEGqjadlaSob/pMcZNJP4v3pnJDmKnruYUa8ZA9Fb+vh6ss1337l6o8EYETOuuvfjks6/Mfoe+IyxioRLHeO4ozk0EHGZ97GQTAZ2Wrq1ByMdXEqMLQkPubkjFCvfpcWiGhU5HcEeQ4PgQlWreuw8=
+	t=1727286525; cv=none; b=mq6clkOeqHrQVzaQoy8LhQe0A/Gm5BuIcWjf5TvSgrr6uE7U9wow2yib07da7cFcNivBJ+W52yHkx1S+cmDxFMe2XtdmkfmJjvfL7yHCZY94UbPzpPQJCB8HAASJC+1MBCU2PpGZRTTVxzYVCCosmTgaCXHt0niFf1kZis9YsfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727286404; c=relaxed/simple;
-	bh=M0I8Ig3rWuZiRXKwtw6xWqst8IlFBQrwd0ojV3Hws8A=;
+	s=arc-20240116; t=1727286525; c=relaxed/simple;
+	bh=A8pJXK5Zztv371Oe9drq6CplFViPG0d7lDriodHWbVE=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=N4P0XX78LpRAtfbXUwvBK9ZtxWSk/oUms73cF9j0SwyERBKjvjAMlIyFdY2T8mqZ4tO8gVhkJ2MeXUH17HDkslQ/04EG6rG13hq1iCeo73qYKsLAsgCspj+Mo5WfYIdjivAtohMWhzuioyfq05CFWaFWCdyhL2ixmDwQxB3kAjI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org; spf=pass smtp.mailfrom=linuxfoundation.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=DxAB4quA; arc=none smtp.client-ip=209.85.218.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=linux-foundation.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linuxfoundation.org
+	 To:Cc:Content-Type; b=WXJGaFxgUry3SFxnCRReXaxhcGvruglv68jOYSdWvHR49WhZf1tK9JBO1Zk/RKFzh8HiFqFmjzr6e3X+P7RHZycOEEw8XF7bBLFCJt3iwueY9xFS7md1drX4BcKUU2+6Yf1twdrnEcT/znj6oOJfM9xPnGO5In/QdyK5c8FzkhY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=EhfvPwe5; arc=none smtp.client-ip=209.85.214.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="DxAB4quA"
-Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-a8b155b5e9eso17261966b.1
-        for <rust-for-linux@vger.kernel.org>; Wed, 25 Sep 2024 10:46:42 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="EhfvPwe5"
+Received: by mail-pl1-f182.google.com with SMTP id d9443c01a7336-20b061b7299so14075ad.1
+        for <rust-for-linux@vger.kernel.org>; Wed, 25 Sep 2024 10:48:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linux-foundation.org; s=google; t=1727286401; x=1727891201; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=q7bFD0zsvjm6ZC77c3M7GAfUg/FjJi2MmJVwp+M6KhE=;
-        b=DxAB4quAZ5VdKYBItJt/W5a5XGW1QTHwuRueDF8Af38DgCnGC8jdHixHxRt5cp8wp8
-         gY9SHoAw2BiveZSjqie92N7CMh93mBh1/Ur3J1LBtfMeUUNd5Br9x6wcoBNgGzKiDNDy
-         FQ5jFQf+luYL50HRhuEaWGSz5WiLt456tedPk=
+        d=google.com; s=20230601; t=1727286522; x=1727891322; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=lrK3h7FdOSPKkdvPmV4/inQbE4aDL8B9EB3Kr7AaA5w=;
+        b=EhfvPwe52EJcoK5OTD/Baq29N3KooUMm7CDlp7y5ZrJVaZvCNr8JqLYQh7dWcKboLs
+         IBUfLMcCYJjIGvVShgr7/f/OXpTV2jPv3O+fSX6gm4tLDkMS+FFr8C0AhxIeSOML9jwc
+         VYQXw/PVz/BV3p2E5K7SnFnASduW83uLL+qP2+FngFQA2L0rJ7s/2Yck3jVMsGBv45I1
+         I2+s58Oy5yXD5PBZHKfuNgZQJLcLXiHW+gHT78cDPv3V5NhxBxxKxulUoy+TCpfFiika
+         xxUaNwK1vVGaB9gWfmfPzY6EhlIVKP0pV3pSWTFStoU7isVzNW8Qwc18VTrQaGvU4gim
+         uSnA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727286401; x=1727891201;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=q7bFD0zsvjm6ZC77c3M7GAfUg/FjJi2MmJVwp+M6KhE=;
-        b=MPwC9H2ZHXZfU5PRVTdx9TDU2sk8XiUFW2q8KVX9hZKJcZA442gRp3Qp0IG5wH1fPQ
-         UWQc8MP8fHBsiiAsQdZKT+CacFgI6zCLJTrPkiuQrvQ5Z+sIaJ4lmlFkvOIlpLOF7YCf
-         K5wvSYX5W0FDnw7ehvDz59N9XmfA0otFC+ODKnEFyZBidmz/VTsddQgfa0peU5ZnZumw
-         37uGjvCZYGy6Mq28FvVXRw79hhQOXfEXwieJCM7BIdtOYK5Qv/3R2xCEfQ9Q+ubZm19b
-         T85O5LczsOdUp+BmhT11Hx4eFvyhRafwddOPhyDyxOM4t4R9lshZ9trWV2uT16JfzMrb
-         cv3Q==
-X-Forwarded-Encrypted: i=1; AJvYcCVV2kH7T9AAiTQSPU3d38S63SpQmsC9uNL49IGrgipQnVP7MwPf4O+in/VaatbLxFQxMwXB0caSWhr7LpzZjw==@vger.kernel.org
-X-Gm-Message-State: AOJu0YxIRumNn9sQQgUFHl8Mu7gHjBFFrtVL2Tax6k6z2nEGw/+ddNKP
-	rBkbQ2sOIxpJjhLblEIYflnufIb6ul/JkEvpIm5TQbOjWQPPB69hMMfuVWAFyC9KsjLLAB7lYl8
-	wDYmuJw==
-X-Google-Smtp-Source: AGHT+IFs37IH3q/kNp9IB/K6VQEWuJ/glPJrwMOkWJmQYuyNcWFo6Z9AgiQWuasjpILugTEYZ/VASQ==
-X-Received: by 2002:a17:907:86a2:b0:a7a:9447:3e8c with SMTP id a640c23a62f3a-a93a0341d48mr279106466b.3.1727286400740;
-        Wed, 25 Sep 2024 10:46:40 -0700 (PDT)
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com. [209.85.218.46])
-        by smtp.gmail.com with ESMTPSA id a640c23a62f3a-a9392f34291sm240733066b.14.2024.09.25.10.46.39
-        for <rust-for-linux@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 25 Sep 2024 10:46:39 -0700 (PDT)
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-a8a6d1766a7so15367466b.3
-        for <rust-for-linux@vger.kernel.org>; Wed, 25 Sep 2024 10:46:39 -0700 (PDT)
-X-Forwarded-Encrypted: i=1; AJvYcCXw+wtsL1xq613w+U0IBDpAE1X6qU6IYJDhHM/DXLYTS9W5LfEsan5Sq+fguUh5s5vQsN22EYJR6LLAQbffPg==@vger.kernel.org
-X-Received: by 2002:a17:906:f5aa:b0:a8d:2ab2:c9b1 with SMTP id
- a640c23a62f3a-a93a06b92camr365210666b.56.1727286399053; Wed, 25 Sep 2024
- 10:46:39 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1727286522; x=1727891322;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=lrK3h7FdOSPKkdvPmV4/inQbE4aDL8B9EB3Kr7AaA5w=;
+        b=EkanVP+tGoZIVjNcfMoYgAuR3DgDz12dzdKWqI7iinnKX4WwlerbCw4GP5N9G0xMYN
+         T5Db/Or2SjzNZRkaur934zbPffU7gA7hfLCXWT5ysREh8PHAH0bWPT/b/6S4SOFuLcjn
+         eOCQJPnI84TOBVffJwkyxVwsUbPL2fSmGuHIgxJX2EvbNPiHSlIindEeQls9RhzsqTQJ
+         sE+qcLCep6FKEWgBZpVhEgJ8AhcQ2t5x70JH92nNEgXNHXxBfi6e0C234mu/ucdXmVDd
+         cJIQBHMFQw5JOLwyJ8H1udVBWPgZbyIpyFLJn4pZYv/uczdkk0577039qulWYAND+TE2
+         IS6w==
+X-Forwarded-Encrypted: i=1; AJvYcCUcD3S0oNE+WIIvFFDarxXgoF3reLJRYdI49TuSBhTLnmUfacTJ3EcP9ILZWQIyOESgGo5kD8TSzUgnA1TZeQ==@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw7dCbg+o7j84iEQ9Or77Tigz2mS+HFAqGIm5x6JD++BfW/ponN
+	awQqemBRtrBL9LwfEAB42t6wUnvhanNQIuGvIW4A0ajheNBZLomiEYA4cZT6S1b0ijGUJHxy1cd
+	60Rztg1GeS2VIsuxwxgnwIgrqHDMInlJVSCmo
+X-Google-Smtp-Source: AGHT+IFiXYlI29ocsY9jVI8vGIQKmEL8X6grxbcgFKgyWyz2ix/vsNm7/Zsem2ox1yGF0FtMygKog55oBTNJR6Dh6yI=
+X-Received: by 2002:a17:903:1210:b0:206:a913:96b9 with SMTP id
+ d9443c01a7336-20b1b302843mr105105ad.10.1727286521405; Wed, 25 Sep 2024
+ 10:48:41 -0700 (PDT)
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240924221023.197610-1-ojeda@kernel.org>
-In-Reply-To: <20240924221023.197610-1-ojeda@kernel.org>
-From: Linus Torvalds <torvalds@linux-foundation.org>
-Date: Wed, 25 Sep 2024 10:46:22 -0700
-X-Gmail-Original-Message-ID: <CAHk-=wjuMrUMceYX01T0SBz4E0yL4Kh2Jb_8qyKxJwwitCG6Zw@mail.gmail.com>
-Message-ID: <CAHk-=wjuMrUMceYX01T0SBz4E0yL4Kh2Jb_8qyKxJwwitCG6Zw@mail.gmail.com>
-Subject: Re: [GIT PULL] Rust for 6.12
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Wedson Almeida Filho <wedsonaf@gmail.com>, Alex Gaynor <alex.gaynor@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org
+References: <20240925150059.3955569-30-ardb+git@google.com>
+ <20240925150059.3955569-35-ardb+git@google.com> <CAP-5=fXw1rcgWgMeDSVqiDYh2XYApyaJpNvukvJ7vMs7ZPMr6g@mail.gmail.com>
+ <CAMj1kXEmssrOhu20aLW4v88YVdkCfbeRg6arkgUoDNHm-4vbMA@mail.gmail.com>
+In-Reply-To: <CAMj1kXEmssrOhu20aLW4v88YVdkCfbeRg6arkgUoDNHm-4vbMA@mail.gmail.com>
+From: Ian Rogers <irogers@google.com>
+Date: Wed, 25 Sep 2024 10:48:27 -0700
+Message-ID: <CAP-5=fXstnbX7rY1_RcOP_TmuXqY3HTt__4VgEkgNEJQPHxezg@mail.gmail.com>
+Subject: Re: [RFC PATCH 05/28] x86: Define the stack protector guard symbol explicitly
+To: Ard Biesheuvel <ardb@kernel.org>, Namhyung Kim <namhyung@kernel.org>
+Cc: Ard Biesheuvel <ardb+git@google.com>, linux-kernel@vger.kernel.org, x86@kernel.org, 
+	"H. Peter Anvin" <hpa@zytor.com>, Andy Lutomirski <luto@kernel.org>, Peter Zijlstra <peterz@infradead.org>, 
+	Uros Bizjak <ubizjak@gmail.com>, Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>, 
+	Christoph Lameter <cl@linux.com>, Mathieu Desnoyers <mathieu.desnoyers@efficios.com>, 
+	Paolo Bonzini <pbonzini@redhat.com>, Vitaly Kuznetsov <vkuznets@redhat.com>, 
+	Juergen Gross <jgross@suse.com>, Boris Ostrovsky <boris.ostrovsky@oracle.com>, 
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>, Arnd Bergmann <arnd@arndb.de>, 
+	Masahiro Yamada <masahiroy@kernel.org>, Kees Cook <kees@kernel.org>, 
+	Nathan Chancellor <nathan@kernel.org>, Keith Packard <keithp@keithp.com>, 
+	Justin Stitt <justinstitt@google.com>, Josh Poimboeuf <jpoimboe@kernel.org>, 
+	Arnaldo Carvalho de Melo <acme@kernel.org>, Jiri Olsa <jolsa@kernel.org>, 
+	Adrian Hunter <adrian.hunter@intel.com>, Kan Liang <kan.liang@linux.intel.com>, 
+	linux-doc@vger.kernel.org, linux-pm@vger.kernel.org, kvm@vger.kernel.org, 
+	xen-devel@lists.xenproject.org, linux-efi@vger.kernel.org, 
+	linux-arch@vger.kernel.org, linux-sparse@vger.kernel.org, 
+	linux-kbuild@vger.kernel.org, linux-perf-users@vger.kernel.org, 
+	rust-for-linux@vger.kernel.org, llvm@lists.linux.dev
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Tue, 24 Sept 2024 at 15:11, Miguel Ojeda <ojeda@kernel.org> wrote:
+On Wed, Sep 25, 2024 at 10:43=E2=80=AFAM Ard Biesheuvel <ardb@kernel.org> w=
+rote:
 >
-> Rust changes for v6.12
+> On Wed, 25 Sept 2024 at 17:54, Ian Rogers <irogers@google.com> wrote:
+> >
+> > On Wed, Sep 25, 2024 at 8:02=E2=80=AFAM Ard Biesheuvel <ardb+git@google=
+.com> wrote:
+> > >
+> > > From: Ard Biesheuvel <ardb@kernel.org>
+> > >
+> > > Specify the guard symbol for the stack cookie explicitly, rather than
+> > > positioning it exactly 40 bytes into the per-CPU area. Doing so remov=
+es
+> > > the need for the per-CPU region to be absolute rather than relative t=
+o
+> > > the placement of the per-CPU template region in the kernel image, and
+> > > this allows the special handling for absolute per-CPU symbols to be
+> > > removed entirely.
+> > >
+> > > This is a worthwhile cleanup in itself, but it is also a prerequisite
+> > > for PIE codegen and PIE linking, which can replace our bespoke and
+> > > rather clunky runtime relocation handling.
+> > >
+> > > Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+> > > ---
+> > >  arch/x86/Makefile                     |  4 ++++
+> > >  arch/x86/include/asm/init.h           |  2 +-
+> > >  arch/x86/include/asm/processor.h      | 11 +++--------
+> > >  arch/x86/include/asm/stackprotector.h |  4 ----
+> > >  tools/perf/util/annotate.c            |  4 ++--
+> > >  5 files changed, 10 insertions(+), 15 deletions(-)
+> > >
+> ...
+> > > diff --git a/tools/perf/util/annotate.c b/tools/perf/util/annotate.c
+> > > index 37ce43c4eb8f..7ecfedf5edb9 100644
+> > > --- a/tools/perf/util/annotate.c
+> > > +++ b/tools/perf/util/annotate.c
+> > > @@ -2485,10 +2485,10 @@ static bool is_stack_operation(struct arch *a=
+rch, struct disasm_line *dl)
+> > >
+> > >  static bool is_stack_canary(struct arch *arch, struct annotated_op_l=
+oc *loc)
+> > >  {
+> > > -       /* On x86_64, %gs:40 is used for stack canary */
+> > > +       /* On x86_64, %gs:0 is used for stack canary */
+> > >         if (arch__is(arch, "x86")) {
+> > >                 if (loc->segment =3D=3D INSN_SEG_X86_GS && loc->imm &=
+&
+> > > -                   loc->offset =3D=3D 40)
+> > > +                   loc->offset =3D=3D 0)
+> >
+> > As a new perf tool  can run on old kernels we may need to have this be
+> > something like:
+> > (loc->offset =3D=3D 40 /* pre v6.xx kernels */ || loc->offset =3D=3D 0 =
+/*
+> > v6.xx and later */ )
+> >
+> > We could make this dependent on the kernel by processing the os_release=
+ string:
+> > https://git.kernel.org/pub/scm/linux/kernel/git/perf/perf-tools-next.gi=
+t/tree/tools/perf/util/env.h#n55
+> > but that could well be more trouble than it is worth.
+> >
+>
+> Yeah. I also wonder what the purpose of this feature is. At the end of
+> this series, the stack cookie will no longer be at a fixed offset of
+> %GS anyway, and so perf will not be able to identify it in the same
+> manner. So it is probably better to just leave this in place, as the
+> %gs:0 case will not exist in the field (assuming that the series lands
+> all at once).
+>
+> Any idea why this deviates from other architectures? Is x86_64 the
+> only arch that needs to identify stack canary accesses in perf? We
+> could rename the symbol to something identifiable, and do it across
+> all architectures, if this really serves a need (and assuming that
+> perf has insight into the symbol table).
 
-So it looks like now the only thing holding Rust testing back for the
-allmodconfig case is the MODVERSIONS support (assuming modern enough
-tool chains etc).
+This is relatively new work coming from Namhyung for data type
+profiling and I believe is pretty much just x86 at the moment -
+although the ever awesome IBM made contributions for PowerPC. The data
+type profiling is trying to classify memory accesses which is why it
+cares about the stack canary instruction, the particular encoding
+shouldn't matter.
 
-I'm inclined to just do this:
-
-   config MODVERSIONS
-          bool "Module versioning support"
-  +       depends on !COMPILE_TEST
-          help
-            Usually, you have to use modules compiled with your kernel.
-            Saying Y here makes it sometimes possible to use modules
-
-in order to have the basic Rust stuff be part of the usual allmodconfig build.
-
-That gets it building for me on x86-64, at least. But at the
-maintainer summit I think you said MODVERSIONS support is being worked
-on too, no?
-
-On my arm64 box, Rust support is still disabled due to
-RUSTC_SUPPORTS_ARM64 not being true (which in turn seems to be due to
-SHADOW_CALL_STACK support, and that needs rust 18.2 which I don't
-have).
-
-Anyway, just a heads up that I think we'll have more "unintentional"
-Rust build test coverage this way.
-
-                  Linus
+Thanks,
+Ian
