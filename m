@@ -1,102 +1,101 @@
-Received: from mail-pj1-f48.google.com (mail-pj1-f48.google.com [209.85.216.48])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mail.hallyn.com (mail.hallyn.com [178.63.66.53])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9129184552;
-	Wed, 25 Sep 2024 13:06:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.48
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31CE2187568;
+	Wed, 25 Sep 2024 13:59:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.63.66.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727269598; cv=none; b=JhzHwqFmD6akaO/ehGV8aobo53dJ4Mgel/gsqAqJ2G2/OVNHfh7C9UUk0RaCPOGOqEAQQLCbmd9qduyBA4u9YVYgDmg+KVAxGNEleWGNXVbLqIvCsu63lDd4LjK4q+5p91+wEXZo3XGLYpb/hux1ZGKVTX07q3NWPHHZ4QhAJUo=
+	t=1727272748; cv=none; b=Se1NCsdtuvWun5ZSJQU9jT+x6vnfTxfqE4iVVjgpXWkPCOwgQHsgkYYH5zQCVL8X1CfLvxT6MwljxG/m9NjMwc9TQ9oAi97HMwymr8WaNIzrklQP2QOhsg6/Cb88tWkjMGQZlyIN+K3+qZzMRqYp+z9ZKTGSCQ+3fFKyPlgpve4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727269598; c=relaxed/simple;
-	bh=iB6hdwxjFFfqGkel1dMY8vFpPFOXTTJKCe8eW4+Bi5c=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=ej1VdUCMXVvaMoA491oHE5pLssP9zosTK/DTzMCz2/7FvHN4D9ep2gfe+tDEx25yGK1RyYJeGyLRY3SbJbJvDLWknR/MZlunCOeqCro5QhNHAlLJaP0PuheqdrxO9npP5u4DsKG70kL99cMBRAuSkKaxGcLKOilECqgwp709/vA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=R+iqg4Ik; arc=none smtp.client-ip=209.85.216.48
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="R+iqg4Ik"
-Received: by mail-pj1-f48.google.com with SMTP id 98e67ed59e1d1-2db6e80555dso836812a91.0;
-        Wed, 25 Sep 2024 06:06:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727269596; x=1727874396; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=iB6hdwxjFFfqGkel1dMY8vFpPFOXTTJKCe8eW4+Bi5c=;
-        b=R+iqg4IkwOaXUPbDKRogKJvqDXl/arJ4c/9Y07FWLI0yyuqlrejkf5jBMXA3tbAEn9
-         LqqCYx2i2z08YXglmR/5Uyq/98KQFFsHQnq4pYF+2A66C91nX3KIW5VA/8I7OmDRg98b
-         Wt+92owGP88sevUEpL+pSp2KLttr4E39vfkvf9LYX4UCrwT+daXRPpKtS/kS1nMoXQSh
-         HKhTliA4gRDAbhEHe8gYnvUUvER0bHdg9Rj+8+kbbIQjIHf2WBSx/hzS/p2msfQnvjmb
-         wm4tcsJRUbbHkiBwR1KnGyg4qTDTht+9Zp2K/sf9hv3FnLAcwRGrEpp/yagVioYFgIBQ
-         xPPw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727269596; x=1727874396;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=iB6hdwxjFFfqGkel1dMY8vFpPFOXTTJKCe8eW4+Bi5c=;
-        b=aBv1bNz+ZNezgH8sgasDz7UKFPWVPzJnKhlwEQxNIEEGwXBoXqDy1I+rVKMvEvRRRW
-         7VSw+MWL5ZJaeuLAKrnSE+a4YDZUFG6YSAzLAmlAnJwOTgBmLf0+J23XK13mvNXDMmUK
-         wPMmf7rkRp5hcQsYydlWoj/eHSQ7OJfUbcz4yLKooG88NMrFdrQvQyYuCH2f6KjIpKcy
-         NL8enOsTM+rIJRnPCXNxmD4NGvceug0+/D1TxegdwwYbFqxt8quzCGuJj1+y/FX0/vxK
-         c6v1AD/ifurEp1PH6UNPF+S3LpoT9OrZQCypBr3/ZALkj4IaMQhJqlY2UoWK7SMk0/o1
-         7mYQ==
-X-Forwarded-Encrypted: i=1; AJvYcCVCl0A4DvHfTDQ5JwyfXeVfGF5pET+w/9d+Bdp37l2zKqFcW7avWsJFDmDl33ICZjsDsKIdQ0HhWPJz4p9vgZE=@vger.kernel.org, AJvYcCXdjRxg1zshlTjmAkfM+SPjlw9Y8xVvjpAbgy1m5Xs2PWrkhA+sE2lJWaKuvgbd0hu0rYZTAStANoIuhHg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzCvSwAm40UHgZ3jQcMLsVd2HrCnvgV4xr6xMidLc333zfiPaSl
-	tASIVztPlmJlAM0zNQlHjlz7Tes9CK8Ca8E/Q7D8OfkD4sHZQIkmk0kYu+lXP/shSBDUXmUY1cs
-	gnoLlnXBo+Z8atEFm4Ow5iQpT5s8=
-X-Google-Smtp-Source: AGHT+IF7dd2wxaKwlXRqdkEhcjMFw4qV18UITJsIdeRTYuV2STRNWFgGJI/WJ2qnF1mkzpyinwhH0XCUdaEJWAefdRQ=
-X-Received: by 2002:a17:90b:30d7:b0:2e0:8c23:fe5a with SMTP id
- 98e67ed59e1d1-2e08c240880mr232340a91.3.1727269596173; Wed, 25 Sep 2024
- 06:06:36 -0700 (PDT)
+	s=arc-20240116; t=1727272748; c=relaxed/simple;
+	bh=LaqiujrabjNuCdxLtvhTjGOIPotsoV1whHWw7yZzMB8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=oAPBqkbQ5UoY1IugkQeXuBbuAEfbV3THf2RrQnz0WK3L/pXQ7rxM+zH/BegzfdvtINH5iX/BGaVbXLDNHBcQeei7ylwHW32kshX2BXAvqTPPXtwZru32F5Tmx9N7ntLUn0ybir/ki2PEjRL7b9u7ucU2MPqPqDM4APNjGFUyBQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hallyn.com; spf=pass smtp.mailfrom=mail.hallyn.com; arc=none smtp.client-ip=178.63.66.53
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=hallyn.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mail.hallyn.com
+Received: by mail.hallyn.com (Postfix, from userid 1001)
+	id 4A016A05; Wed, 25 Sep 2024 08:59:04 -0500 (CDT)
+Date: Wed, 25 Sep 2024 08:59:04 -0500
+From: "Serge E. Hallyn" <serge@hallyn.com>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: "Serge E. Hallyn" <serge@hallyn.com>, Paul Moore <paul@paul-moore.com>,
+	James Morris <jmorris@namei.org>, Miguel Ojeda <ojeda@kernel.org>,
+	Christian Brauner <brauner@kernel.org>,
+	Alex Gaynor <alex.gaynor@gmail.com>,
+	Wedson Almeida Filho <wedsonaf@gmail.com>,
+	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
+	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
+	Benno Lossin <benno.lossin@proton.me>,
+	Andreas Hindborg <a.hindborg@samsung.com>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Alexander Viro <viro@zeniv.linux.org.uk>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	Arve =?iso-8859-1?B?SGr4bm5lduVn?= <arve@android.com>,
+	Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>,
+	Joel Fernandes <joel@joelfernandes.org>,
+	Carlos Llamas <cmllamas@google.com>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Dan Williams <dan.j.williams@intel.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Thomas Gleixner <tglx@linutronix.de>, Daniel Xu <dxu@dxuuu.xyz>,
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+	Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org,
+	linux-security-module@vger.kernel.org,
+	rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+	Kees Cook <kees@kernel.org>
+Subject: Re: [PATCH v10 1/8] rust: types: add `NotThreadSafe`
+Message-ID: <20240925135904.GA654417@mail.hallyn.com>
+References: <20240915-alice-file-v10-0-88484f7a3dcf@google.com>
+ <20240915-alice-file-v10-1-88484f7a3dcf@google.com>
+ <20240924194540.GA636453@mail.hallyn.com>
+ <CAH5fLgggtjNAAotBzwRQ4RYQ9+WDom0MRyYFMnQ+E5UXgOc3RQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240816181545.45789-1-ojeda@kernel.org>
-In-Reply-To: <20240816181545.45789-1-ojeda@kernel.org>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Wed, 25 Sep 2024 15:06:24 +0200
-Message-ID: <CANiq72=y3uy4ehCY-UHgywO8T_EOrh5da88sFt2Xg__E1VAHkw@mail.gmail.com>
-Subject: Re: [RFC PATCH] docs: rust: quick-start: add Ubuntu
-To: Miguel Ojeda <ojeda@kernel.org>
-Cc: Alex Gaynor <alex.gaynor@gmail.com>, Wedson Almeida Filho <wedsonaf@gmail.com>, 
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@samsung.com>, 
-	Alice Ryhl <aliceryhl@google.com>, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, patches@lists.linux.dev, 
-	Zixing Liu <zixing.liu@canonical.com>, William Grant <wgrant@ubuntu.com>, 
-	Kees Cook <kees@kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAH5fLgggtjNAAotBzwRQ4RYQ9+WDom0MRyYFMnQ+E5UXgOc3RQ@mail.gmail.com>
 
-On Fri, Aug 16, 2024 at 8:16=E2=80=AFPM Miguel Ojeda <ojeda@kernel.org> wro=
-te:
->
-> This is a potential patch for the future -- Ubuntu Oracular (future
-> release) works today, but the Rust versioned releases are not backported
-> (yet?). If Ubuntu ends up deciding to backport them, which would be
-> amazing, or at least when they start to appear in an actual release,
-> then we can apply this. Thanks William & Zixing!
+On Wed, Sep 25, 2024 at 01:06:10PM +0200, Alice Ryhl wrote:
+> On Tue, Sep 24, 2024 at 9:45 PM Serge E. Hallyn <serge@hallyn.com> wrote:
+> >
+> > On Sun, Sep 15, 2024 at 02:31:27PM +0000, Alice Ryhl wrote:
+> > > This introduces a new marker type for types that shouldn't be thread
+> > > safe. By adding a field of this type to a struct, it becomes non-Send
+> > > and non-Sync, which means that it cannot be accessed in any way from
+> > > threads other than the one it was created on.
+> > >
+> > > This is useful for APIs that require globals such as `current` to remain
+> > > constant while the value exists.
+> > >
+> > > We update two existing users in the Kernel to use this helper:
+> > >
+> > >  * `Task::current()` - moving the return type of this value to a
+> > >    different thread would not be safe as you can no longer be guaranteed
+> > >    that the `current` pointer remains valid.
+> > >  * Lock guards. Mutexes and spinlocks should be unlocked on the same
+> > >    thread as where they were locked, so we enforce this using the Send
+> > >    trait.
+> >
+> > Hi,
+> >
+> > this sounds useful, however from kernel side when I think thread-safe,
+> > I think must not be used across a sleep.  Would something like ThreadLocked
+> > or LockedToThread make sense?
+> 
+> Hmm, those names seem pretty similar to the current name to me?
 
-An update on this: Ubuntu now provides the versioned `rustc-*`
-packages in older LTSs (the ones with standard support), which is
-great!
+Seems very different to me:
 
-I can confirm I can build the latest kernel in 20.04 LTS (using a
-newer LLVM), 22.04 LTS, 24.04 LTS and 24.10.
+If @foo is not threadsafe, it may be global or be usable by many
+threads, but must be locked to one thread during access.
 
-The `bindgen-*` versioned packages are not backported (yet?) to the
-older LTSs, so users need to build `bindgen` manually in 20.04 LTS and
-22.04 LTS. For 24.04 LTS and 24.10, it works with the package. I will
-add a sentence about that and send the non-RFC patch.
+What you're describing here is (iiuc) that @foo must only be used
+by one particular thread.
 
-Link: https://packages.ubuntu.com/search?keywords=3Drustc-1
-Link: https://packages.ubuntu.com/search?keywords=3Dbindgen-0
-
-Cheers,
-Miguel
+-serge
