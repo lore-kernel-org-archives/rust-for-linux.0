@@ -1,101 +1,88 @@
-Received: from mail-pl1-f175.google.com (mail-pl1-f175.google.com [209.85.214.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4F2D15820C;
-	Thu, 26 Sep 2024 16:29:42 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 91A5C12BEBB;
+	Thu, 26 Sep 2024 16:33:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727368184; cv=none; b=X8jC0zWsuo8b/hYXZFeJjHEP7N04osI7GzWP+0YIdlWgy1M7PxHiSW2uMFdrjxOTo/YoBS512rlPppBYUoc7OP9AtiDNOmwpEeOFqyXJT4Cq2o+tNyUpXuMz6BKqal+Z2ZLBknE+9eelsxLAo8f+3Z0HLKRsvbqtfTsauG3iAKg=
+	t=1727368417; cv=none; b=AA3OnRQaLGrgDejNQJgwwrxsoxJfhty2C4fr7akMKV4eamogkqWUxiAKbtzJ/ipWsOQ6VxauiD+PP4pI+52QF/HAZjpfUvhnzmXKeXfb/bWzqCzWRSpxFBK91qBOAshk96RMQ7bwkwWvws1bsqwJfKvbq38E0p3XPQbfCSAERSY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727368184; c=relaxed/simple;
-	bh=enYKeiYzEZuiXlgCfHWUHkKt206E3RtoQkmTSzufcAk=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=kfg+gobqWIf+bkQYR5GjRyxsWaidg8WL68r9Kb24ki+h+EDtHclazH+EJN0heiElU9PlUZ2pHOIAQM8j2JkfXrue6K2K7PYEHzVpxTPso4zbkvexlaWIohTF+wPpJuV5ezRBF7RWgP/WTj6bGdCMmHJC/FtYW6mBOdue/3imNX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=dP2LS+zS; arc=none smtp.client-ip=209.85.214.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+	s=arc-20240116; t=1727368417; c=relaxed/simple;
+	bh=ejaVUT8P5sthltU9KFU5rxsOBgn1t9y5j9O71lgbcTw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=TKdLAtd2mr6nrosOebchFr356GkSEtVXSXzhz+HheS/Kn8r6WYam3xCwJLrDlET/k/5crFGBO0zTzT61XVu/WuXrDPJttQYrHWQlw5PyFTnKV5jf7SoMy1ueC6tsFyGXxMPW9Y7s7TIFoT9kbOfAfqlPYF37zWQwKLbBHQjjMd8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QmFf8xkU; arc=none smtp.client-ip=10.30.226.201
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="dP2LS+zS"
-Received: by mail-pl1-f175.google.com with SMTP id d9443c01a7336-206b9ab5717so914625ad.2;
-        Thu, 26 Sep 2024 09:29:42 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1727368182; x=1727972982; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=enYKeiYzEZuiXlgCfHWUHkKt206E3RtoQkmTSzufcAk=;
-        b=dP2LS+zS0aj/rkQdn3btRS998U6BQv9jYK5xqCOmscU0zwMqJtrXTnLVnt2SKPZ/zF
-         rGXPIw+e7iy+R7mIiZ/AkkVMSTMXEgQw1l9Kcc04XV8sZlOXCLLWBiM8AcCyDyOoRntr
-         H2vO7uCvSeBjVh0bDwbrPAxl/zs91u2keIWxw6noLJZ3p4A2QrfCFDqA6wFP4F1eAie7
-         Sog7IGjdrDOu1d3+IUUCqgsTqHL9LR20/88tsRJ+r6SkGDXVgaKAsdsVaBF6bBFi83HC
-         mlhYpfyKoiDb9RIgVSAKm66IMwE3duN4Vf0u24BQ2V+RB+r2hS9RnRDt7eNBCC7lvpVS
-         Mwsw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1727368182; x=1727972982;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=enYKeiYzEZuiXlgCfHWUHkKt206E3RtoQkmTSzufcAk=;
-        b=s75ladhbpyx3XFSIXokxG2HSGSdDe3zFiH2RYtrHRFsFx/FXDmmElf850Oh1wvoIeS
-         5kfMXgI94DHft3PMZwM+xt+sSoIjMpwO23+i6k4Wrs9RExH+glPSarTLwcWsCJUPlzX7
-         DtRp9CpRE6x7WZFuIPhbeZE6s8Ephd1LJS8/LIHYYiMMSa1OzdEE2pBMd5o8c0Qzh9Lc
-         jH2MPcl+H99vUYmk7GQtYdgVwIGtliMVmwYjTzms1Qnu4SsP6Crc3iPPyj4WRsqdOOAf
-         xZyF2gzS8yKMhFOJyV24SDfDncIxZlZUMET88gUa4w1S0l+mZHprVVmYXk+vaM8Erp/g
-         jDcw==
-X-Forwarded-Encrypted: i=1; AJvYcCV1l7U6c2Exi+mzXuQ0x4FGml+dsRgk5gxL9u91Eq5vspY5SsisF3ZYgMVeIFauuvEutRHkCdTNOYdoDhQ0q2E=@vger.kernel.org, AJvYcCWFMWLiEtc0I34ScLkaY6yia40yh1S/q1FvdPKCHTR9KJoB2b+50xm9ba9hwLzcIahMfVTiVzJ1BwEO4Uk=@vger.kernel.org, AJvYcCXqz6BGdR11Y8YZOunydyQPPhy0iIP33F8jjpeZjmoF3R2q8xP3BwVYTt6PX50Uv2O+AQU+O5Qd@vger.kernel.org
-X-Gm-Message-State: AOJu0YzmdK0EiKNZ28r1FsurqJxgP9pnoP50JIf2IqqE4QYyNz4PpQY7
-	tL2VULf9YW3VrBBixWSv0cvJ1iyhF4F2kKTgIVT3e+Ykex0golDE4iWKer9FC6o5yTw3YOtlrxz
-	Ehp8cNHddWbj3Az1YYeyEJB3uf98=
-X-Google-Smtp-Source: AGHT+IFWnPCIvNcird/b9jtNo2ic1qoJxCG4l3sNzelSgtW5Pt3GkMD1EioV4GRyG3deDzQmsovWpn69wT7w++8wlz0=
-X-Received: by 2002:a17:903:191:b0:20b:9aa:efca with SMTP id
- d9443c01a7336-20b36adbadamr1866825ad.9.1727368181789; Thu, 26 Sep 2024
- 09:29:41 -0700 (PDT)
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QmFf8xkU"
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C929C4CEC5;
+	Thu, 26 Sep 2024 16:33:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1727368417;
+	bh=ejaVUT8P5sthltU9KFU5rxsOBgn1t9y5j9O71lgbcTw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=QmFf8xkUqQEBV4U5U7Uy6ywRX7H5+GmCC/aCAViW/aPypmjg+umwE++TQPZXyqxiq
+	 X4Kgo1lgkMYe+HIBC7FyS5GRSdnSmgAFHhSMN8qNpMwcGuYXGHwthq/6L7GrQRTrQ0
+	 FM8o/+ypRxh6WPLV9MRZT9QneXWcKL24f+njtc1QJ58Q950C0u6VWqBalFApvFdhDi
+	 Mgzr5rM1a4ZWHf0AeGVHfI5sqs5SDK6BUxWlMsvWAw1R5f4kyNVuq9vp+hGfPT59qx
+	 GvscRxgVC/m7tW59RV/t9O27X5IW0Xm3oS0Ukjk9La5q/TlUvJoAaWNgLiAOw9MDMZ
+	 EZ+MN1TcQuodg==
+Date: Thu, 26 Sep 2024 18:33:28 +0200
+From: Christian Brauner <brauner@kernel.org>
+To: Alice Ryhl <aliceryhl@google.com>
+Cc: Gary Guo <gary@garyguo.net>, Paul Moore <paul@paul-moore.com>, 
+	James Morris <jmorris@namei.org>, "Serge E. Hallyn" <serge@hallyn.com>, 
+	Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, 
+	Wedson Almeida Filho <wedsonaf@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
+	=?utf-8?B?QmrDtnJu?= Roy Baron <bjorn3_gh@protonmail.com>, Benno Lossin <benno.lossin@proton.me>, 
+	Andreas Hindborg <a.hindborg@samsung.com>, Peter Zijlstra <peterz@infradead.org>, 
+	Alexander Viro <viro@zeniv.linux.org.uk>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, 
+	Arve =?utf-8?B?SGrDuG5uZXbDpWc=?= <arve@android.com>, Todd Kjos <tkjos@android.com>, Martijn Coenen <maco@android.com>, 
+	Joel Fernandes <joel@joelfernandes.org>, Carlos Llamas <cmllamas@google.com>, 
+	Suren Baghdasaryan <surenb@google.com>, Dan Williams <dan.j.williams@intel.com>, 
+	Matthew Wilcox <willy@infradead.org>, Thomas Gleixner <tglx@linutronix.de>, Daniel Xu <dxu@dxuuu.xyz>, 
+	Martin Rodriguez Reboredo <yakoyoku@gmail.com>, Trevor Gross <tmgross@umich.edu>, linux-kernel@vger.kernel.org, 
+	linux-security-module@vger.kernel.org, rust-for-linux@vger.kernel.org, linux-fsdevel@vger.kernel.org, 
+	Kees Cook <kees@kernel.org>
+Subject: Re: [PATCH v10 7/8] rust: file: add `Kuid` wrapper
+Message-ID: <20240926-bewundere-beseitigen-59808f199f82@brauner>
+References: <20240915-alice-file-v10-0-88484f7a3dcf@google.com>
+ <20240915-alice-file-v10-7-88484f7a3dcf@google.com>
+ <20240915230211.420f48a9.gary@garyguo.net>
+ <CAH5fLgixve=E5=ghc3maXVC+JdqkrPSDqKgJiYEJ9j_MD4GAzg@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20240917000848.720765-1-jmontleo@redhat.com> <20240917000848.720765-2-jmontleo@redhat.com>
- <334EBB3A-6ABF-4FBF-89D2-DF3A6DCCCEA2@kernel.org> <20240917142950.48d800ac@eugeo>
- <31885EDD-EF6D-4EF1-94CA-276BA7A340B7@kernel.org> <CANiq72=KdF2zrcHJEH+YGv9Mn6szsHrZpEWb_y2QkFzButm3Ag@mail.gmail.com>
- <20240926-plated-guts-e84b822c40cc@spud> <CANiq72=ShT8O0GcN8G-YRE1CB8Z9Ztr-ZNcQ6cphHYvDGanTKg@mail.gmail.com>
- <20240926-battering-revolt-6c6a7827413e@spud>
-In-Reply-To: <20240926-battering-revolt-6c6a7827413e@spud>
-From: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Date: Thu, 26 Sep 2024 18:29:28 +0200
-Message-ID: <CANiq72=JNS8eaQXJYCTNw8vNymD-0A-g4FmagyLkaH7L1DqhwA@mail.gmail.com>
-Subject: Re: [PATCH] RISC-V: Fix building rust when using GCC toolchain
-To: Conor Dooley <conor@kernel.org>
-Cc: Gary Guo <gary@garyguo.net>, Jason Montleon <jmontleo@redhat.com>, ojeda@kernel.org, 
-	alex.gaynor@gmail.com, boqun.feng@gmail.com, bjorn3_gh@protonmail.com, 
-	benno.lossin@proton.me, a.hindborg@kernel.org, aliceryhl@google.com, 
-	paul.walmsley@sifive.com, palmer@dabbelt.com, aou@eecs.berkeley.edu, 
-	nathan@kernel.org, ndesaulniers@google.com, morbo@google.com, 
-	justinstitt@google.com, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, linux-riscv@lists.infradead.org, 
-	llvm@lists.linux.dev, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAH5fLgixve=E5=ghc3maXVC+JdqkrPSDqKgJiYEJ9j_MD4GAzg@mail.gmail.com>
 
-On Thu, Sep 26, 2024 at 6:21=E2=80=AFPM Conor Dooley <conor@kernel.org> wro=
-te:
->
-> No. Things like clang + ld & gas.
-> I don't care about out of tree modules ;)
+On Mon, Sep 23, 2024 at 11:13:56AM GMT, Alice Ryhl wrote:
+> On Mon, Sep 16, 2024 at 12:02 AM Gary Guo <gary@garyguo.net> wrote:
+> >
+> > On Sun, 15 Sep 2024 14:31:33 +0000
+> > Alice Ryhl <aliceryhl@google.com> wrote:
+> > > +    /// Returns the given task's pid in the current pid namespace.
+> > > +    pub fn pid_in_current_ns(&self) -> Pid {
+> > > +        // SAFETY: We know that `self.0.get()` is valid by the type invariant, and passing a null
+> > > +        // pointer as the namespace is correct for using the current namespace.
+> > > +        unsafe { bindings::task_tgid_nr_ns(self.0.get(), ptr::null_mut()) }
+> >
+> > Do we want to rely on the behaviour of `task_tgid_nr_ns` with null
+> > pointer as namespace, or use `task_tgid_vnr`?
+> 
+> Hmm. Looks like C Binder actually does:
+> trd->sender_pid = task_tgid_nr_ns(sender, task_active_pid_ns(current));
+> 
+> Not sure why I'm using a null pointer here.
 
-Ah, other tools, not just the C compiler, I see -- that is why I
-mentioned out-of-tree modules, because otherwise I was not sure how
-you would get mix the C compiler itself, i.e. GCC and Clang.
+Passing a NULL pointer for task_tgid_nr_ns() is fine. Under the hood
+it's just __task_pid_nr_ns(task, PIDTYPE_TGID, NULL) which causes
+task_active_pid_ns(current) to be called internally. So it's equivalent.
 
-> Yes, just for riscv. The logic in our Kconfig menu is currently something
-> like
-> select HAVE_RUST if RUSTC_SUPPORTS_RISCV
-> so that would just become
-> select HAVE_RUST if RUSTC_SUPPORTS_RISCV && CC_IS_CLANG
-
-If that is what you think it is best for RISC-V, then sure, up to you -- th=
-anks!
-
-Cheers,
-Miguel
+In any case, I did add Rust wrappers for struct pid_namespace just to
+see how far I would get as task_active_pid_ns() is rather subtle even if
+it isn't obvious at first glance. Sending that in a second.
