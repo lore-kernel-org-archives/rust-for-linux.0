@@ -1,74 +1,95 @@
-Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [62.89.141.173])
+Received: from mail-4322.protonmail.ch (mail-4322.protonmail.ch [185.70.43.22])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63F6218991A;
-	Thu, 26 Sep 2024 22:08:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=62.89.141.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1C401667DA;
+	Thu, 26 Sep 2024 22:15:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.70.43.22
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1727388512; cv=none; b=rezFAnykkIoA/lE4R7MMnMM0oPpV7MN9cl+jS4PVOyJRGMhClZQ/nqXqptvoCjGBjRQn5xstwkAuQKrPLkX4GlRLX6UoF0Onh5iIj/wWofM6uLV9Mnny9Hyac5zFxfGNllKPXIEBgun+n64lZvv35HFGKLAXGrhCrEoY9JwJBxc=
+	t=1727388943; cv=none; b=C7N1zcifVVIqSSgshBC41HbeLXJCSgNBFfmNqQPNJRMkt92Kvsnb+aw1kgJp7Wx5s5SaPMh+jZ2kGcoeU/WBmSvg6cP2uVBD8dLU8aRpwYGRHwX1/DHESjZ4yxrlPBrmNwE3r/yBD1OE2f0Mgg3yGYm9b4ADWNAQGR3lY/1m9Sw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1727388512; c=relaxed/simple;
-	bh=SEcyKZhUdqyvT/a0YMGjgny0uLX7fCadLutERnzCrDE=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=mf+roGOKKMM37N8JK47oFc8+ZfiyAZBckxJMVAXzuamW7fhTz1cey/YAiC3GYPHMpLKEvMLGpe1W9wgkHv07QpfVK5tRjRM+dcud5ofgtRHN9q2jgx2UfsVJhA5SuW7sdp1kta5wLkntoB+YxwgQYXiKvjtKFB9wR/iqpXV6CwM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk; spf=none smtp.mailfrom=ftp.linux.org.uk; dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b=STgj/2H9; arc=none smtp.client-ip=62.89.141.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=zeniv.linux.org.uk
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=ftp.linux.org.uk
+	s=arc-20240116; t=1727388943; c=relaxed/simple;
+	bh=a7lQxjB5vAt7XR3D70QQkmA1FkD61vFz2NnvkH4tqqw=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=bvTk5JKkRWJ7BOkA6jTZ8LDMRKRQWtMsKNZOwIa/aW0G/P5uYw+VJS+bGlTGo/qFeq9krsFNTW75i3QbOD/56G/jBdh1qlb9IjvU778WYrLuUIDZr72ZcwcZrOkUFn88CkW/6MImzg4ZrRdBXgGfy8Zmf3btTyncxxku7DvitG8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me; spf=pass smtp.mailfrom=proton.me; dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b=EHCz+yYq; arc=none smtp.client-ip=185.70.43.22
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=proton.me
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=proton.me
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linux.org.uk header.i=@linux.org.uk header.b="STgj/2H9"
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
-	d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
-	MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
-	Content-Transfer-Encoding:Content-ID:Content-Description;
-	bh=iSRgFKCG9F0JO0YOzBUN908kFzxuI0PQwnx9+5kbiSw=; b=STgj/2H920gV0pTP7QbaJhpcMF
-	NQfUOGnmBqKc2pHmYDkLNdKk9pFuF6Q0thBOWoxSoNrl0lGcTQDn83BEUI1AcK8DdicAaUULVG5zO
-	O9SKrFeK88XCW+mD1+OsEGkbzf9W7os/85XgLDVIEpgdf45RZNdLJ1MMrL8jqs+LBN2KCK5eTDlVR
-	UR2DfGlT9pqCEoC+zTOrJiEXPhXXlEYZTaa9HumBiI4BaYsTV8Vwp5rzyLY6Nww2cM/0+5v/Gy/bS
-	wH3xEqWer0N2VNKT5uXD5z0Xi+cBKUwf5SVDSp+TsGKAg899qiYZNvjCcD1eq9OekTZ54VyYNuPIQ
-	mb7v66qQ==;
-Received: from viro by zeniv.linux.org.uk with local (Exim 4.98 #2 (Red Hat Linux))
-	id 1stwer-0000000FnUw-1JsK;
-	Thu, 26 Sep 2024 22:08:21 +0000
-Date: Thu, 26 Sep 2024 23:08:21 +0100
-From: Al Viro <viro@zeniv.linux.org.uk>
-To: Alice Ryhl <aliceryhl@google.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Arnd Bergmann <arnd@arndb.de>, Miguel Ojeda <ojeda@kernel.org>,
-	Christian Brauner <brauner@kernel.org>, Jan Kara <jack@suse.cz>,
-	Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>,
-	=?iso-8859-1?Q?Bj=F6rn?= Roy Baron <bjorn3_gh@protonmail.com>,
-	Benno Lossin <benno.lossin@proton.me>,
-	Andreas Hindborg <a.hindborg@kernel.org>,
-	Trevor Gross <tmgross@umich.edu>, rust-for-linux@vger.kernel.org,
-	linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 2/3] rust: file: add f_pos and set_f_pos
-Message-ID: <20240926220821.GP3550746@ZenIV>
-References: <20240926-b4-miscdevice-v1-0-7349c2b2837a@google.com>
- <20240926-b4-miscdevice-v1-2-7349c2b2837a@google.com>
+	dkim=pass (2048-bit key) header.d=proton.me header.i=@proton.me header.b="EHCz+yYq"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=proton.me;
+	s=sjiompxxgzbblb7bsqakrkztua.protonmail; t=1727388933; x=1727648133;
+	bh=a7lQxjB5vAt7XR3D70QQkmA1FkD61vFz2NnvkH4tqqw=;
+	h=Date:To:From:Cc:Subject:Message-ID:In-Reply-To:References:
+	 Feedback-ID:From:To:Cc:Date:Subject:Reply-To:Feedback-ID:
+	 Message-ID:BIMI-Selector;
+	b=EHCz+yYqVWBYvE7QhsXsxR61fLdJvTVrtKKx4w1X26nZmhDKHgRSrUqT/zh7UUDAH
+	 mCzsKQNbxiL57yYOsS7tP2K7ITlfQvnJvdrBjLawzn++rsqD/HR/hm9KqeaLKMUDRJ
+	 qjwZ4fDkttopSYNY88JTN7PcTde0E/4HEt/lgXG5F6l6x/wZG4h9YxyyHljShfsM0x
+	 rL7BObhcMoSlbuFqczkhjQB5vOQBnJQY4l8pBLauaLu/KoNQ71C+04bd6Z/J+5Kh1h
+	 m5D6yG8oWkKG1+8ELWLIhiyPdS3rlCIZL+n3KV2nLZhBfmfG/g5DhBQhm5EvpZ8uDY
+	 SxMlTv5lmwX9A==
+Date: Thu, 26 Sep 2024 22:15:30 +0000
+To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
+From: Benno Lossin <benno.lossin@proton.me>
+Cc: kernel test robot <lkp@intel.com>, Miguel Ojeda <ojeda@kernel.org>, Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, Gary Guo <gary@garyguo.net>, =?utf-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, Andreas Hindborg <a.hindborg@kernel.org>, Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev, Greg KH <greg@kroah.com>, Simona Vetter <simona.vetter@ffwll.ch>, linux-kernel@vger.kernel.org, rust-for-linux@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] rust: add untrusted data abstraction
+Message-ID: <1aa088b1-ca4d-4a97-b25c-96a18f62a79c@proton.me>
+In-Reply-To: <CANiq72kXGNyLg0Ooo3Ne=KmZWBnSO9HE2tcfP=gf+WGFqnjDEg@mail.gmail.com>
+References: <20240925205244.873020-2-benno.lossin@proton.me> <202409270303.kUIAmOmY-lkp@intel.com> <42d17306-1ac6-4fc7-ab1b-69ef045039ac@proton.me> <CANiq72kXGNyLg0Ooo3Ne=KmZWBnSO9HE2tcfP=gf+WGFqnjDEg@mail.gmail.com>
+Feedback-ID: 71780778:user:proton
+X-Pm-Message-ID: b17224aafd5919dafc1c1151b0f42860ba81b85d
 Precedence: bulk
 X-Mailing-List: rust-for-linux@vger.kernel.org
 List-Id: <rust-for-linux.vger.kernel.org>
 List-Subscribe: <mailto:rust-for-linux+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:rust-for-linux+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20240926-b4-miscdevice-v1-2-7349c2b2837a@google.com>
-Sender: Al Viro <viro@ftp.linux.org.uk>
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, Sep 26, 2024 at 02:58:56PM +0000, Alice Ryhl wrote:
-> Add accessors for the file position. Most of the time, you should not
-> use these methods directly, and you should instead use a guard for the
-> file position to prove that you hold the fpos lock. However, under
-> limited circumstances, files are allowed to choose a different locking
-> strategy for their file position. These accessors can be used to handle
-> that case.
-> 
-> For now, these accessors are the only way to access the file position
-> within the llseek and read_iter callbacks.
+On 26.09.24 23:56, Miguel Ojeda wrote:
+> On Thu, Sep 26, 2024 at 11:40=E2=80=AFPM Benno Lossin <benno.lossin@proto=
+n.me> wrote:
+>>
+>> I would like to use `#[cfg("rust version <=3D 1.82")]`, but I don't know
+>> how to do that. Do we already have support for checking the version in a
+>> cfg? The alternative would be `#[allow(unreachable_patterns)]`, but I
+>> would like to avoid that.
+>=20
+> We can do it, but it requires adding a Kconfig symbol, sadly, since
+> `cfg` does not support numerical comparisons there.
+>=20
+> See commit 93dc3be19450 ("docs: rust: include other expressions in
+> conditional compilation section") where I explained it.
 
-You really should not do that within ->read_iter().  If your method
-does that, it has the wrong signature.
+Thanks!
 
-If nothing else, it should be usable for preadv(2), so what file position
-are you talking about?
+> So depending on how often we think we will hit this, we may want to
+> pay the "cost" of the extra Kconfig symbol. Otherwise, we can just
+> `allow` it as you say.
+
+Personally, I would prefer adding a symbol. Since if we allow it, then
+it might take a long time until the code is removed once we increase the
+minimum version.
+
+It would be best, if it produces an error when we raise the minimum
+version beyond the one represented by the symbol. Is that already the
+case?
+
+On 26.09.24 23:57, Miguel Ojeda wrote:
+> On Thu, Sep 26, 2024 at 11:40=E2=80=AFPM Benno Lossin <benno.lossin@proto=
+n.me> wrote:
+>>
+>> I can reproduce this error locally in a Rust project, but am unable to
+>> do so on play.rust-lang.org. That seems very strange to me, anyone else
+>> on 1.83 or 1.82 can confirm? AFAIK, it was stabilized in 1.82, see [1].
+>=20
+> Can you try in Compiler Explorer? That allows you to select more versions=
+ etc.
+
+Gave it a try and I also can't reproduce the error there...
+
+---
+Cheers,
+Benno
+
